@@ -1,5 +1,5 @@
-//Render a simple button
-//TODO: Button.js is not ready for use in simulations, it will need further development & discussion first.
+//Render a simple toggle button (without icons or anything)
+//TODO: not ready for use in simulations, it will need further development & discussion first.
 define( function( require ) {
   "use strict";
 
@@ -8,7 +8,7 @@ define( function( require ) {
   var Shape = require( 'KITE/Shape' );
   var Inheritance = require( 'PHETCOMMON/util/Inheritance' );
 
-  function Button( content, options, callback ) {
+  function ToggleButton( content, options, property ) {
     options = options || {};
     options.cursor = 'pointer';
     Node.call( this, options );
@@ -18,10 +18,10 @@ define( function( require ) {
     content.centerX = buttonShape.width / 2;
     content.centerY = buttonShape.height / 2;
     this.addChild( content );
-    this.addInputListener( {down: function() {callback();}} );
+    this.addInputListener( {down: function() { property.set( !property.get() ); }} );
   }
 
-  Inheritance.inheritPrototype( Button, Node );
+  Inheritance.inheritPrototype( ToggleButton, Node );
 
-  return Button;
+  return ToggleButton;
 } );
