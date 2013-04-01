@@ -6,14 +6,15 @@ define( function( require ) {
 
   var Node = require( 'SCENERY/nodes/Node' );
   var Text = require( 'SCENERY/nodes/Text' );
+  var Image = require( 'SCENERY/nodes/Image' );
+  var DOM = require( 'SCENERY/nodes/DOM' );
   var Inheritance = require( 'PHETCOMMON/util/Inheritance' );
 
   function CheckBoxIcon( property ) {
     var checkBoxIcon = this;
     Node.call( this, {} );
-    var checked = new Text( '\uf046', {fontFamily: 'FontAwesome', fontSize: '36px', x: 0, y: 0, renderer: 'svg'} );
-    var unchecked = new Text( '\uf096', {fontFamily: 'FontAwesome', fontSize: '36px', x: 0, y: 0, renderer: 'svg'} );
-    this.addChild( checked );
+    var checked = new Image( $( '.phet-icon-check' )[0], {scale: 0.025} );
+    var unchecked = new Image( $( '.phet-icon-unchecked' )[0], {scale: 0.025} );
     property.link( function( m, newValue ) {
       checkBoxIcon.children = [newValue ? checked : unchecked];
     } );
