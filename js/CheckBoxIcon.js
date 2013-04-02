@@ -8,7 +8,7 @@ define( function( require ) {
   var Text = require( 'SCENERY/nodes/Text' );
   var Image = require( 'SCENERY/nodes/Image' );
   var DOM = require( 'SCENERY/nodes/DOM' );
-  var Inheritance = require( 'PHETCOMMON/util/Inheritance' );
+  var inherit = require( 'PHET_CORE/inherit' );
 
   function CheckBoxIcon( property ) {
     var checkBoxIcon = this;
@@ -20,7 +20,7 @@ define( function( require ) {
     } );
   }
 
-  Inheritance.inheritPrototype( CheckBoxIcon, Node );
+  inherit( CheckBoxIcon, Node );
 
   return CheckBoxIcon;
 } );

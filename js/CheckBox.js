@@ -7,7 +7,7 @@ define( function( require ) {
   var ToggleButton = require( 'SUN/ToggleButton' );
   var CheckBoxIcon = require( 'SUN/CheckBoxIcon' );
   var HBox = require( 'SCENERY/nodes/HBox' );
-  var Inheritance = require( 'PHETCOMMON/util/Inheritance' );
+  var inherit = require( 'PHET_CORE/inherit' );
 
   function CheckBox( content, options, property ) {
     options = options || {};
@@ -17,7 +17,7 @@ define( function( require ) {
     this.addChild( new ToggleButton( new HBox( {spacing: 10, children: [new CheckBoxIcon( property ), content]} ), {}, property ) );
   }
 
-  Inheritance.inheritPrototype( CheckBox, Node );
+  inherit( CheckBox, Node );
 
   return CheckBox;
 } );

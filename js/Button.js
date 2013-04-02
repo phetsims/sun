@@ -6,7 +6,7 @@ define( function( require ) {
   var Node = require( 'SCENERY/nodes/Node' );
   var Path = require( 'SCENERY/nodes/Path' );
   var Shape = require( 'KITE/Shape' );
-  var Inheritance = require( 'PHETCOMMON/util/Inheritance' );
+  var inherit = require( 'PHET_CORE/inherit' );
 
   function Button( content, options, callback ) {
     options = options || {};
@@ -21,7 +21,7 @@ define( function( require ) {
     this.addInputListener( {down: function() {callback();}} );
   }
 
-  Inheritance.inheritPrototype( Button, Node );
+  inherit( Button, Node );
 
   return Button;
 } );
