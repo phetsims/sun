@@ -12,10 +12,10 @@ define( function( require ) {
     options.cursor = 'pointer';
     Node.call( this, options );
 
-    var buttonShape = new Rectangle( 0, 0, content.width + 10, content.height + 10, 10, 10, {stroke: 'black', lineWidth: 1, fill: 'orange'} );
-    this.addChild( buttonShape );
-    content.centerX = buttonShape.width / 2;
-    content.centerY = buttonShape.height / 2;
+    var path = new Rectangle( 0, 0, content.width + 10, content.height + 10, 10, 10, {stroke: 'black', lineWidth: 1, fill: 'orange'} );
+    this.addChild( path );
+    content.centerX = path.width / 2;
+    content.centerY = path.height / 2;
     this.addChild( content );
     this.addInputListener( {down: function() { property.set( !property.get() ); }} );
   }
