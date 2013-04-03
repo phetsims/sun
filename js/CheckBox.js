@@ -7,14 +7,26 @@ define( function( require ) {
   var ToggleButton = require( 'SUN/ToggleButton' );
   var CheckBoxIcon = require( 'SUN/CheckBoxIcon' );
   var HBox = require( 'SCENERY/nodes/HBox' );
+  var DOM = require( 'SCENERY/nodes/DOM' );
   var inherit = require( 'PHET_CORE/inherit' );
 
   function CheckBox( content, options, property ) {
+    var checkBox = this;
     options = options || {};
     options.cursor = 'pointer';
     Node.call( this, options );
 
-    this.addChild( new ToggleButton( new HBox( {spacing: 10, children: [new CheckBoxIcon( property ), content]} ), {}, property ) );
+    var toggleButton = new ToggleButton( new HBox( {spacing: 10, children: [new CheckBoxIcon( property ), content]} ), {}, property );
+    this.addChild( toggleButton );
+
+    //Create a peer for accessibility
+    this.peer = new DOM( $( '<input type="checkbox">' ), { interactive: true} );
+    var $elm = $( checkBox.peer.element );
+    property.link( function( m, value ) { $elm.attr( 'checked', value ); } );
+    $elm.click( function() {property.set( !property.get() )} );
+    //TODO: Add Public API for focus highlight?
+    $elm.focusin( function() { toggleButton.path.lineWidth = 5; } );
+    $elm.focusout( function() {toggleButton.path.lineWidth = 1;} );
   }
 
   inherit( CheckBox, Node );

@@ -4,10 +4,12 @@ define( function( require ) {
   "use strict";
 
   var Node = require( 'SCENERY/nodes/Node' );
+  var DOM = require( 'SCENERY/nodes/DOM' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
 
   function Button( content, options, callback ) {
+    var button = this;
     options = options || {};
     options.cursor = 'pointer';
     Node.call( this, options );
@@ -18,6 +20,13 @@ define( function( require ) {
     content.centerY = path.height / 2;
     this.addChild( content );
     this.addInputListener( {down: function() {callback();}} );
+
+    //Add accessibility peer
+    this.peer = new DOM( $( '<input type="button">' ), { interactive: true} );
+    var $elm = $( button.peer.element );
+    $elm.click( function() {callback();} );
+    $elm.focusin( function() { path.lineWidth = 5; } );
+    $elm.focusout( function() {path.lineWidth = 1;} );
   }
 
   inherit( Button, Node );
