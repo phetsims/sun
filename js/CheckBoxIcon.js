@@ -4,23 +4,17 @@
 define( function( require ) {
   "use strict";
 
-  var Node = require( 'SCENERY/nodes/Node' );
-  var Text = require( 'SCENERY/nodes/Text' );
+  var ToggleNode = require( 'SUN/ToggleNode' );
   var Image = require( 'SCENERY/nodes/Image' );
-  var DOM = require( 'SCENERY/nodes/DOM' );
   var inherit = require( 'PHET_CORE/inherit' );
 
   function CheckBoxIcon( property ) {
-    var checkBoxIcon = this;
-    Node.call( this, {} );
     var checked = new Image( $( '.phet-icon-check' )[0], {scale: 0.025} );
     var unchecked = new Image( $( '.phet-icon-unchecked' )[0], {scale: 0.025} );
-    property.link( function( m, newValue ) {
-      checkBoxIcon.children = [newValue ? checked : unchecked];
-    } );
+    ToggleNode.call( this, unchecked, checked, property );
   }
 
-  inherit( CheckBoxIcon, Node );
+  inherit( CheckBoxIcon, ToggleNode );
 
   return CheckBoxIcon;
 } );
