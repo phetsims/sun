@@ -4,10 +4,12 @@ define( function( require ) {
   "use strict";
 
   var Node = require( 'SCENERY/nodes/Node' );
+  var DOM = require( 'SCENERY/nodes/DOM' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
 
   function ToggleButton( content, property, options ) {
+    var toggleButton = this;
     options = options || {};
     options.cursor = 'pointer';
     Node.call( this, options );
@@ -18,6 +20,15 @@ define( function( require ) {
     content.centerY = this.path.height / 2;
     this.addChild( content );
     this.addInputListener( {down: function() { property.set( !property.get() ); }} );
+
+    //Create a peer for accessibility
+    this.peer = new DOM( $( '<input type="checkbox">' ), { interactive: true} );
+    var $elm = $( this.peer.element );
+    property.link( function( m, value ) { $elm.attr( 'checked', value ); } );
+    $elm.click( function() {property.set( !property.get() )} );
+    //TODO: Add Public API for focus highlight?
+    $elm.focusin( function() { toggleButton.path.lineWidth = 5; } );
+    $elm.focusout( function() {toggleButton.path.lineWidth = 1;} );
   }
 
   inherit( ToggleButton, Node );
