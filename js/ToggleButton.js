@@ -7,7 +7,7 @@ define( function( require ) {
   var inherit = require( 'PHET_CORE/inherit' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
 
-  function ToggleButton( content, options, property ) {
+  function ToggleButton( content, property, options ) {
     options = options || {};
     options.cursor = 'pointer';
     Node.call( this, options );

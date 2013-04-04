@@ -16,7 +16,7 @@ define( function( require ) {
     options.cursor = 'pointer';
     Node.call( this, options );
 
-    var toggleButton = new ToggleButton( new HBox( {spacing: 10, children: [new CheckBoxIcon( property ), content]} ), {}, property );
+    var toggleButton = new ToggleButton( new HBox( {spacing: 10, children: [new CheckBoxIcon( property ), content]} ), property );
     this.addChild( toggleButton );
 
     //Create a peer for accessibility
