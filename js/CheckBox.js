@@ -10,7 +10,7 @@ define( function( require ) {
   var DOM = require( 'SCENERY/nodes/DOM' );
   var inherit = require( 'PHET_CORE/inherit' );
 
-  function CheckBox( content, options, property ) {
+  function CheckBox( content, property, options ) {
     var checkBox = this;
     options = options || {};
     options.cursor = 'pointer';
