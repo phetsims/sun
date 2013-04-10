@@ -7,10 +7,11 @@ define( function( require ) {
   var ToggleNode = require( 'SUN/ToggleNode' );
   var Image = require( 'SCENERY/nodes/Image' );
   var inherit = require( 'PHET_CORE/inherit' );
+  var FontAwesomeNode = require( 'SUN/FontAwesomeNode' );
 
   function CheckBoxIcon( property ) {
-    var checked = new Image( $( '.phet-icon-check' )[0], {scale: 0.025} );
-    var unchecked = new Image( $( '.phet-icon-unchecked' )[0], {scale: 0.025} );
+    var checked = new FontAwesomeNode( 'check' );
+    var unchecked = new FontAwesomeNode( 'check_empty' );
     ToggleNode.call( this, unchecked, checked, property );
   }
 
