@@ -10,8 +10,8 @@ define( function( require ) {
   var FontAwesomeNode = require( 'SUN/FontAwesomeNode' );
 
   function CheckBoxIcon( property ) {
-    var checked = new FontAwesomeNode( 'check' );
-    var unchecked = new FontAwesomeNode( 'check_empty' );
+    var checked = new FontAwesomeNode( 'check', {scale: 0.75} );
+    var unchecked = new FontAwesomeNode( 'check_empty', {scale: 0.75} );
     ToggleNode.call( this, unchecked, checked, property );
   }
 

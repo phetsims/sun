@@ -14,7 +14,7 @@ define( function( require ) {
     options.cursor = 'pointer';
     Node.call( this, options );
 
-    this.path = new Rectangle( 0, 0, content.width + 10, content.height + 10, 10, 10, {stroke: 'black', lineWidth: 1, fill: 'orange'} );
+    this.path = new Rectangle( 0, 0, content.width + 10, content.height + 10, 10, 10, {stroke: 'black', lineWidth: 1, fill: '#e3e980'} );
     this.addChild( this.path );
     content.centerX = this.path.width / 2;
     content.centerY = this.path.height / 2;
