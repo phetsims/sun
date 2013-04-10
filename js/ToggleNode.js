@@ -11,7 +11,7 @@ define( function( require ) {
     var toggleNode = this;
     Node.call( this, {} );
     var background = new Path( {shape: Shape.bounds( on.bounds.union( off.bounds ) )} );
-    property.link( function( m, newValue ) { toggleNode.children = [background, newValue ? on : off]; } );
+    property.link( function( newValue ) { toggleNode.children = [background, newValue ? on : off]; } );
   }
 
   inherit( ToggleNode, Node );

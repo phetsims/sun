@@ -19,13 +19,13 @@ define( function( require ) {
     content.centerX = this.path.width / 2;
     content.centerY = this.path.height / 2;
     this.addChild( content );
-    this.addInputListener( {down: function() { property.set( !property.get() ); }} );
+    this.addInputListener( {down: function() { property.value = !property.value; }} );
 
     //Create a peer for accessibility
     this.peer = new DOM( $( '<input type="checkbox">' ), { interactive: true} );
     var $elm = $( this.peer.element );
-    property.link( function( m, value ) { $elm.attr( 'checked', value ); } );
-    $elm.click( function() {property.set( !property.get() )} );
+    property.link( function( value ) { $elm.attr( 'checked', value ); } );
+    $elm.click( function() {property.value = !property.value;} );
     //TODO: Add Public API for focus highlight?
     $elm.focusin( function() { toggleButton.path.lineWidth = 5; } );
     $elm.focusout( function() {toggleButton.path.lineWidth = 1;} );
