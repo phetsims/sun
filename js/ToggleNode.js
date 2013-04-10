@@ -3,12 +3,15 @@ define( function( require ) {
   "use strict";
 
   var Node = require( 'SCENERY/nodes/Node' );
+  var Path = require( 'SCENERY/nodes/Path' );
+  var Shape = require( 'KITE/Shape' );
   var inherit = require( 'PHET_CORE/inherit' );
 
   function ToggleNode( off, on, property ) {
     var toggleNode = this;
     Node.call( this, {} );
-    property.link( function( m, newValue ) { toggleNode.children = [newValue ? on : off]; } );
+    var background = new Path( {shape: Shape.bounds( on.bounds.union( off.bounds ) )} );
+    property.link( function( m, newValue ) { toggleNode.children = [background, newValue ? on : off]; } );
   }
 
   inherit( ToggleNode, Node );
