@@ -18,6 +18,7 @@ define( function( require ) {
    */
   function VerticalCheckBoxGroup( items, options ) {
     options = options || {};
+    var padding = options.padding ? options.padding : 8;
 
     var width = 0;
     for ( var i = 0; i < items.length; i++ ) {
@@ -28,7 +29,7 @@ define( function( require ) {
     for ( i = 0; i < items.length; i++ ) {
 
       //Add an invisible strut to each content to make the widths match
-      var content = new Path( {shape: Shape.rect( 0, 0, width, 0 ), children: [items[i].content]} );
+      var content = new Path( {shape: Shape.rect( 0, 0, width + padding, 0 ), children: [items[i].content]} );
       children.push( new CheckBox( content, items[i].property ) );
     }
 
