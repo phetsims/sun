@@ -9,6 +9,13 @@ define( function( require ) {
   var Shape = require( 'KITE/Shape' );
   var inherit = require( 'PHET_CORE/inherit' );
 
+  /**
+   * Main constructor.
+   *
+   * @param items  an array of {content, property}
+   * @param options
+   * @constructor
+   */
   function VerticalCheckBoxGroup( items, options ) {
     options = options || {};
 
