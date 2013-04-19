@@ -18,7 +18,9 @@ define( function( require ) {
     this.addChild( content );
 
     //Apply options after the layout done so that options that use the bounds will work properly
-    this.mutate( options );
+    if ( options ) {
+      this.mutate( options );
+    }
   }
 
   inherit( PanelNode, Node );
