@@ -9,9 +9,13 @@ define( function( require ) {
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
 
   function PanelNode( content, options ) {
+    options = options || {};
+    var fill = options.fill || 'white';
+    var stroke = options.stroke || 'black';
+    var lineWidth = options.lineWidth || 1;
     Node.call( this );
 
-    this.path = new Rectangle( 0, 0, content.width + 10, content.height + 10, 10, 10, {stroke: 'black', lineWidth: 1, fill: '#e3e980'} );
+    this.path = new Rectangle( 0, 0, content.width + 10, content.height + 10, 10, 10, {stroke: stroke, lineWidth: lineWidth, fill: fill} );
     this.addChild( this.path );
     content.centerX = this.path.width / 2;
     content.centerY = this.path.height / 2;
