@@ -23,12 +23,10 @@ define( function( require ) {
 
     //Create a peer for accessibility
     this.peer = new DOM( $( '<input type="checkbox">' ), { interactive: true} );
+    this.peer.origin = this;
     var $elm = $( this.peer.element );
     property.link( function( value ) { $elm.attr( 'checked', value ); } );
     $elm.click( function() {property.value = !property.value;} );
-    //TODO: Add Public API for focus highlight?
-    $elm.focusin( function() { toggleButton.path.lineWidth = 5; } );
-    $elm.focusout( function() {toggleButton.path.lineWidth = 1;} );
   }
 
   inherit( ToggleButton, Node );

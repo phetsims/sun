@@ -23,10 +23,9 @@ define( function( require ) {
 
     //Add accessibility peer
     this.peer = new DOM( $( '<input type="button">' ), { interactive: true} );
+    this.peer.origin=this;
     var $elm = $( button.peer.element );
     $elm.click( function() {callback();} );
-    $elm.focusin( function() { path.lineWidth = 5; } );
-    $elm.focusout( function() {path.lineWidth = 1;} );
   }
 
   inherit( Button, Node );
