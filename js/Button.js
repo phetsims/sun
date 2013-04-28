@@ -7,6 +7,7 @@ define( function( require ) {
   var DOM = require( 'SCENERY/nodes/DOM' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
+  var AccessibilityPeer = require( 'SCENERY/util/AccessibilityPeer' );
 
   function Button( content, options, callback ) {
     var button = this;
@@ -21,11 +22,7 @@ define( function( require ) {
     this.addChild( content );
     this.addInputListener( {down: function() {callback();}} );
 
-    //Add accessibility peer
-    this.peer = new DOM( $( '<input type="button">' ), { interactive: true} );
-    this.peer.origin=this;
-    var $elm = $( button.peer.element );
-    $elm.click( function() {callback();} );
+    this.accessibilityPeer = new AccessibilityPeer( this, '<input type="button">', {click: callback} );
   }
 
   inherit( Button, Node );

@@ -7,6 +7,7 @@ define( function( require ) {
   var DOM = require( 'SCENERY/nodes/DOM' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
+  var AccessibilityPeer = require( 'SCENERY/util/AccessibilityPeer' );
 
   function ToggleButton( content, property, options ) {
     var toggleButton = this;
@@ -21,12 +22,9 @@ define( function( require ) {
     this.addChild( content );
     this.addInputListener( {down: function() { property.value = !property.value; }} );
 
-    //Create a peer for accessibility
-    this.peer = new DOM( $( '<input type="checkbox">' ), { interactive: true} );
-    this.peer.origin = this;
-    var $elm = $( this.peer.element );
-    property.link( function( value ) { $elm.attr( 'checked', value ); } );
-    $elm.click( function() {property.value = !property.value;} );
+//    Create a peer for accessibility
+    this.accessibilityPeer = new AccessibilityPeer( this, '<input type="checkbox">', {click: function() {property.value = !property.value;}} );
+    property.link( function( value ) { toggleButton.accessibilityPeer.$element.attr( 'checked', value ); } );
   }
 
   inherit( ToggleButton, Node );
