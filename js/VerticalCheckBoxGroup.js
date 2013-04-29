@@ -29,11 +29,12 @@ define( function( require ) {
     for ( i = 0; i < items.length; i++ ) {
 
       //Add an invisible strut to each content to make the widths match
-      var content = new Path( {shape: Shape.rect( 0, 0, width + padding, 0 ), children: [items[i].content]} );
+      var content = new Path( {shape: Shape.rect( 0, 0, width + padding, 0 ), children: [items[i].content], renderer: 'svg'} );
       children.push( new CheckBox( content, items[i].property ) );
     }
 
     options.children = children;
+    options.renderer = 'svg';
     VBox.call( this, options );
   }
 

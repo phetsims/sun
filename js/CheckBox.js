@@ -13,9 +13,10 @@ define( function( require ) {
   function CheckBox( content, property, options ) {
     options = options || {};
     options.cursor = 'pointer';
+    options.renderer = 'svg';
     Node.call( this, options );
 
-    var toggleButton = new ToggleButton( new HBox( {spacing: 10, children: [new CheckBoxIcon( property ), content]} ), property );
+    var toggleButton = new ToggleButton( new HBox( {spacing: 10, children: [new CheckBoxIcon( property ), content], renderer: 'svg'} ), property );
     this.addChild( toggleButton );
   }
 
