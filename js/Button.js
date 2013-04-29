@@ -18,7 +18,7 @@ define( function( require ) {
   function Button( content, callback, options ) {
 
     var button = this;
-    Node.call( this );
+    Node.call( this, options );
 
     // options
     options = options || {};
