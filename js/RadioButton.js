@@ -32,6 +32,7 @@ define( function ( require ) {
     var radius = options.radius || 12; // radius of the button
     var xSpacing = options.xSpacing || 6; // horizontal space between the button and the node
     var stroke = options.stroke || 'black'; // color used to stroke the outer edge of the button
+    thisNode.cursor = options.cursor || 'pointer';
 
     // nodes
     var outerCircle = new Circle( radius, { fill: unselectedColor, stroke: stroke } );
