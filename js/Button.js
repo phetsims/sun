@@ -21,7 +21,7 @@ define( function( require ) {
     content.centerX = path.width / 2;
     content.centerY = path.height / 2;
     this.addChild( content );
-    this.addInputListener( {down: function() {callback();}} );
+    this.addInputListener( {up: function() {callback();}} );
 
     this.accessibilityPeer = new AccessibilityPeer( this, '<input type="button">', {click: callback} );
   }

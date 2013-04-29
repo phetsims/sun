@@ -20,7 +20,7 @@ define( function( require ) {
     content.centerX = this.path.width / 2;
     content.centerY = this.path.height / 2;
     this.addChild( content );
-    this.addInputListener( {down: function() { property.value = !property.value; }} );
+    this.addInputListener( {up: function() { property.value = !property.value; }} );
 
 //    Create a peer for accessibility
     this.accessibilityPeer = new AccessibilityPeer( this, '<input type="checkbox">', {click: function() {property.value = !property.value;}} );
