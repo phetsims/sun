@@ -19,7 +19,7 @@ define( function ( require ) {
    * @param {object} options
    * @constructor
    */
-  function RadioButtonNode( property, value, node, options ) {
+  function RadioButton( property, value, node, options ) {
 
     var thisNode = this;
     Node.call( thisNode );
@@ -61,7 +61,7 @@ define( function ( require ) {
       } );
   }
 
-  inherit( RadioButtonNode, Node );
+  inherit( RadioButton, Node );
 
-  return RadioButtonNode;
+  return RadioButton;
 } );
