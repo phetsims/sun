@@ -9,21 +9,37 @@ define( function( require ) {
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var AccessibilityPeer = require( 'SCENERY/util/AccessibilityPeer' );
 
-  function Button( content, options, callback ) {
-    var button = this;
-    options = options || {};
-    options.cursor = 'pointer';
-    Node.call( this, options );
+  /**
+   * @param {Node} content
+   * @param {function} callback
+   * @param {object} options
+   * @constructor
+   */
+  function Button( content, callback, options ) {
 
+    var button = this;
+    Node.call( this );
+
+    // options
+    options = options || {};
+    button.cursor = 'pointer';
     var fill = options.fill || 'white';
-    var path = new Rectangle( 0, 0, content.width + 10, content.height + 10, 10, 10, {stroke: 'black', lineWidth: 1, fill: fill } );
-    this.addChild( path );
+    var stroke = options.stroke || 'black';
+    var lineWidth = options.lineWidth || 1;
+    //TODO default margins should be computed based on content dimensions
+    var xMargin = options.xMargin || 5;
+    var yMargin = options.yMargin || 5;
+    var cornerRadius = 10;
+
+    var path = new Rectangle( 0, 0, content.width + ( 2 * xMargin ), content.height + ( 2 * yMargin ), cornerRadius, cornerRadius,
+                              {stroke: stroke, lineWidth: lineWidth, fill: fill } );
+    button.addChild( path );
     content.centerX = path.width / 2;
     content.centerY = path.height / 2;
-    this.addChild( content );
-    this.addInputListener( {up: function() {callback();}} );
+    button.addChild( content );
+    button.addInputListener( {up: function() {callback();}} );
 
-    this.accessibilityPeer = new AccessibilityPeer( this, '<input type="button">', {click: callback} );
+    button.accessibilityPeer = new AccessibilityPeer( button, '<input type="button">', {click: callback} );
   }
 
   inherit( Button, Node );
