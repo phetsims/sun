@@ -22,7 +22,7 @@ define( function ( require ) {
   function RadioButton( property, value, node, options ) {
 
     var thisNode = this;
-    Node.call( thisNode );
+    Node.call( thisNode, options );
 
     // options
     options = options || {};
