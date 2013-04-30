@@ -21,22 +21,22 @@ define( function ( require ) {
    */
   function RadioButton( property, value, node, options ) {
 
+    options = _.extend( {
+                          cursor: 'pointer',
+                          selectedColor: 'rgb( 143, 197, 250 )', // color used to fill the button when it's selected
+                          unselectedColor: 'white', // color used to fill the button when it's unselected
+                          centerColor: 'black', // color used to fill the center of teh button when it's selected
+                          radius: 12, // radius of the button
+                          xSpacing: 6, // horizontal space between the button and the node
+                          stroke: 'black' // color used to stroke the outer edge of the button
+                        }, options );
+
     var thisNode = this;
     Node.call( thisNode, options );
 
-    // options
-    options = options || {};
-    var selectedColor = options.selectedColor || 'rgb( 143, 197, 250 )'; // color used to fill the button when it's selected
-    var unselectedColor = options.unselectedColor || 'white'; // color used to fill the button when it's unselected
-    var centerColor = options.centerColor || 'black'; // color used to fill the center of teh button when it's selected
-    var radius = options.radius || 12; // radius of the button
-    var xSpacing = options.xSpacing || 6; // horizontal space between the button and the node
-    var stroke = options.stroke || 'black'; // color used to stroke the outer edge of the button
-    thisNode.cursor = options.cursor || 'pointer';
-
     // nodes
-    var outerCircle = new Circle( radius, { fill: unselectedColor, stroke: stroke } );
-    var innerCircle = new Circle( radius / 3, { fill: centerColor } );
+    var outerCircle = new Circle( options.radius, { fill: options.unselectedColor, stroke: options.stroke } );
+    var innerCircle = new Circle( options.radius / 3, { fill: options.centerColor } );
 
     // rendering order
     thisNode.addChild( outerCircle );
@@ -44,12 +44,12 @@ define( function ( require ) {
     thisNode.addChild( node );
 
     // layout
-    node.left = outerCircle.right + xSpacing;
+    node.left = outerCircle.right + options.xSpacing;
     node.centerY = outerCircle.centerY;
 
     // sync control with model
     property.addObserver( function ( newValue ) {
-      outerCircle.fill = ( newValue === value ) ? selectedColor : unselectedColor;
+      outerCircle.fill = ( newValue === value ) ? options.selectedColor : options.unselectedColor;
       innerCircle.visible = ( newValue === value );
     } );
 
