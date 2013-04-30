@@ -17,22 +17,23 @@ define( function( require ) {
    */
   function Button( content, callback, options ) {
 
+    options = _.extend( {
+                          cursor: 'pointer',
+                          fill: 'white',
+                          stroke: 'black',
+                          lineWidth: 1,
+                          //TODO default margins should be computed based on content dimensions
+                          xMargin: 5,
+                          yMargin: 5,
+                          cornerRadius: 10
+                        },
+                        options );
+
     var button = this;
     Node.call( this, options );
 
-    // options
-    options = options || {};
-    button.cursor = 'pointer';
-    var fill = options.fill || 'white';
-    var stroke = options.stroke || 'black';
-    var lineWidth = options.lineWidth || 1;
-    //TODO default margins should be computed based on content dimensions
-    var xMargin = options.xMargin || 5;
-    var yMargin = options.yMargin || 5;
-    var cornerRadius = 10;
-
-    var path = new Rectangle( 0, 0, content.width + ( 2 * xMargin ), content.height + ( 2 * yMargin ), cornerRadius, cornerRadius,
-                              {stroke: stroke, lineWidth: lineWidth, fill: fill } );
+    var path = new Rectangle( 0, 0, content.width + ( 2 * options.xMargin ), content.height + ( 2 * options.yMargin ), options.cornerRadius, options.cornerRadius,
+                              {stroke: options.stroke, lineWidth: options.lineWidth, fill: options.fill } );
     button.addChild( path );
     content.centerX = path.width / 2;
     content.centerY = path.height / 2;
