@@ -9,16 +9,21 @@ define( function( require ) {
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
 
   function PanelNode( content, options ) {
-    options = options || {};
-    var fill = options.fill || 'white';
-    var stroke = options.stroke || 'black';
-    var lineWidth = options.lineWidth || 1;
+
+    options = _.extend( { fill: 'white',
+                          stroke: 'black',
+                          lineWidth: 1,
+                          xMargin: 5,
+                          yMargin: 5
+                        }, options );
+
     Node.call( this );
 
-    this.path = new Rectangle( 0, 0, content.width + 10, content.height + 10, 10, 10, {stroke: stroke, lineWidth: lineWidth, fill: fill} );
+    this.path = new Rectangle( 0, 0, content.width + ( 2 * options.xMargin ), content.height + ( 2 * options.yMargin ), 10, 10,
+                               {stroke: options.stroke, lineWidth: options.lineWidth, fill: options.fill} );
     this.addChild( this.path );
-    content.centerX = this.path.width / 2;
-    content.centerY = this.path.height / 2;
+    content.centerX = this.path.centerX;
+    content.centerY = this.path.centerY;
     this.addChild( content );
 
     //Apply options after the layout done so that options that use the bounds will work properly
