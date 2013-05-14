@@ -12,6 +12,7 @@ define( function ( require ) {
   var Circle = require( 'SCENERY/nodes/Circle' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Node = require( 'SCENERY/nodes/Node' );
+  var Rectangle = require( 'SCENERY/nodes/Rectangle' );
 
   /**
    * @param property
@@ -47,6 +48,9 @@ define( function ( require ) {
     // layout
     node.left = outerCircle.right + options.xSpacing;
     node.centerY = outerCircle.centerY;
+
+    // add a "hit area" over the entire button, so we don't have a dead spot between button and node
+    thisNode.addChild( new Rectangle( thisNode.left, thisNode.top, thisNode.width, thisNode.height ) );
 
     // sync control with model
     property.addObserver( function ( newValue ) {
