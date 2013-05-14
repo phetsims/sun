@@ -16,7 +16,7 @@ define( function ( require ) {
   /**
    * @param property
    * @param value the value that corresponds to this button, same type as property
-   * @param {Node} node node that will be vertically centered to the right of the button
+   * @param {Node} node that will be vertically centered to the right of the button
    * @param {object} options
    * @constructor
    */
