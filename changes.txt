@@ -1,2 +1,3 @@
+5/14/13 cleanup PanelNode, use in BLL
 5/14/13 increase default size of radio buttons to work better on tablets
 5/14/13 add a "hit area" to radio buttons, so we don't have a dead spot between button and node
