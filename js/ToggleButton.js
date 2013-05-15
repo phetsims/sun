@@ -25,7 +25,11 @@ define( function( require ) {
     this.addPeer( '<input type="checkbox">', {click: function() {property.value = !property.value;}} );
     property.link( function( value ) {
       _.each( toggleButton.instances, function( instance ) {
-        instance.peers[0].element.setAttribute( 'checked', value );
+
+        //Make sure accessibility is enabled, then apply the change to the peer
+        if ( instance.peers ) {
+          instance.peers[0].element.setAttribute( 'checked', value );
+        }
       } );
     } );
   }
