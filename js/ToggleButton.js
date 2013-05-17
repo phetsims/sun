@@ -27,9 +27,9 @@ define( function( require ) {
       _.each( toggleButton.instances, function( instance ) {
 
         //Make sure accessibility is enabled, then apply the change to the peer
-        if ( instance.peers ) {
-          instance.peers[0].element.setAttribute( 'checked', value );
-        }
+        _.each( instance.peers, function( peer ) {
+          peer.element.setAttribute( 'checked', value );
+        } );
       } );
     } );
   }
