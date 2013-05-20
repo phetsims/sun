@@ -5,7 +5,7 @@
  *
  * @author Chris Malley (PixelZoom, Inc.)
  */
-define( function ( require ) {
+define( function( require ) {
   'use strict';
 
   // imports
@@ -53,18 +53,18 @@ define( function ( require ) {
     thisNode.addChild( new Rectangle( thisNode.left, thisNode.top, thisNode.width, thisNode.height ) );
 
     // sync control with model
-    property.addObserver( function ( newValue ) {
+    property.addObserver( function( newValue ) {
       outerCircle.fill = ( newValue === value ) ? options.selectedColor : options.unselectedColor;
       innerCircle.visible = ( newValue === value );
     } );
 
     // set property value on 'up' event
     thisNode.addInputListener(
-      {
-        up: function () {
-          property.set( value );
-        }
-      } );
+        {
+          up: function() {
+            property.set( value );
+          }
+        } );
   }
 
   inherit( RadioButton, Node );
