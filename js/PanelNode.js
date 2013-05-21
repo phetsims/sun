@@ -1,19 +1,19 @@
 // Copyright 2002-2013, University of Colorado
 
-//TODO not ready for use in simulations, it will need further development & discussion first.
-//TODO add ability to detect when bounds of content node changes
 /**
  * Control panel around a content node.
  *
  * @author Sam Reid
+ * @author Chris Malley (PixelZoom, Inc.)
  */
 define( function( require ) {
-  "use strict";
+  'use strict';
 
-  var Node = require( 'SCENERY/nodes/Node' );
-  var DOM = require( 'SCENERY/nodes/DOM' );
+  // imports
   var inherit = require( 'PHET_CORE/inherit' );
-  var Rectangle = require( 'SCENERY/nodes/Rectangle' );
+  var Node = require( 'SCENERY/nodes/Node' );
+  var Path = require( 'SCENERY/nodes/Path' );
+  var Shape = require( 'KITE/Shape' );
 
   /**
    * @param {Node} content
@@ -22,25 +22,38 @@ define( function( require ) {
    */
   function PanelNode( content, options ) {
 
+    var thisNode = this;
+
     // default options
     options = _.extend( { fill: 'white',
                           stroke: 'black',
-                          lineWidth: 1,
+                          lineWidth: 1, // width of the background border
                           xMargin: 5,
-                          yMargin: 5
+                          yMargin: 5,
+                          cornerRadius: 10, // radius of the rounded corners on the background
+                          resize: true // dynamically resize when content bounds change?
                         }, options );
 
-    Node.call( this );
+    Node.call( thisNode );
 
-    this.path = new Rectangle( 0, 0, content.width + ( 2 * options.xMargin ), content.height + ( 2 * options.yMargin ), 10, 10,
-                               {stroke: options.stroke, lineWidth: options.lineWidth, fill: options.fill} );
-    this.addChild( this.path );
+    var background = new Path( {stroke: options.stroke, lineWidth: options.lineWidth, fill: options.fill} );
+    this.addChild( background );
     this.addChild( content );
 
-    content.centerX = this.path.centerX;
-    content.centerY = this.path.centerY;
+    // Adjust the background size to match the content.
+    var updateBackground = function() {
+      background.setShape( Shape.roundRect( 0, 0, content.width + ( 2 * options.xMargin ), content.height + ( 2 * options.yMargin ), options.cornerRadius, options.cornerRadius ) );
+      content.centerX = background.centerX;
+      content.centerY = background.centerY;
+    };
+    if ( options.resize ) {
+      content.addEventListener( 'bounds', function() {
+        updateBackground();
+      } );
+    }
+    updateBackground();
 
-    //Apply options after the layout done so that options that use the bounds will work properly
+    // Apply options after the layout is done, so that options that use the bounds will work properly.
     if ( options ) {
       this.mutate( options );
     }
