@@ -12,8 +12,7 @@ define( function( require ) {
   // imports
   var inherit = require( 'PHET_CORE/inherit' );
   var Node = require( 'SCENERY/nodes/Node' );
-  var Path = require( 'SCENERY/nodes/Path' );
-  var Shape = require( 'KITE/Shape' );
+  var Rectangle = require( 'SCENERY/nodes/Rectangle' );
 
   /**
    * @param {Node} content
@@ -36,13 +35,14 @@ define( function( require ) {
 
     Node.call( thisNode );
 
-    var background = new Path( {stroke: options.stroke, lineWidth: options.lineWidth, fill: options.fill} );
+    // correct size will be set by updateBackground
+    var background = new Rectangle( 0, 0, 1, 1, {stroke: options.stroke, lineWidth: options.lineWidth, fill: options.fill} );
     this.addChild( background );
     this.addChild( content );
 
     // Adjust the background size to match the content.
     var updateBackground = function() {
-      background.setShape( Shape.roundRect( 0, 0, content.width + ( 2 * options.xMargin ), content.height + ( 2 * options.yMargin ), options.cornerRadius, options.cornerRadius ) );
+      background.setRect( 0, 0, content.width + ( 2 * options.xMargin ), content.height + ( 2 * options.yMargin ), options.cornerRadius, options.cornerRadius );
       content.centerX = background.centerX;
       content.centerY = background.centerY;
     };
