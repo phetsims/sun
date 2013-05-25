@@ -1,3 +1,4 @@
+5/24/13 migrate ComboBox from beers-law-lab to sun
 5/21/13 make PanelNode resize dynamically to match its content (#1)
 5/14/13 cleanup PanelNode, use in BLL
 5/14/13 increase default size of radio buttons to work better on tablets
