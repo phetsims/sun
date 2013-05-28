@@ -16,7 +16,7 @@ define( function( require ) {
     options.renderer = 'svg';
     Node.call( this, options );
 
-    var toggleButton = new ToggleButton( new HBox( {spacing: 10, children: [new CheckBoxIcon( property ), content], renderer: 'svg'} ), property );
+    var toggleButton = new ToggleButton( new HBox( {spacing: 10, children: [new CheckBoxIcon( property ), content], renderer: 'svg'} ), property, {label: options.label} );
     this.addChild( toggleButton );
   }
 

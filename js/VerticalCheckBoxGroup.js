@@ -30,7 +30,7 @@ define( function( require ) {
 
       //Add an invisible strut to each content to make the widths match
       var content = new Path( {shape: Shape.rect( 0, 0, width + padding, 0 ), children: [items[i].content], renderer: 'svg'} );
-      children.push( new CheckBox( content, items[i].property ) );
+      children.push( new CheckBox( content, items[i].property, {label: items[i].label} ) );
     }
 
     options.children = children;

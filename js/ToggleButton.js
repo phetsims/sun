@@ -22,7 +22,7 @@ define( function( require ) {
     this.addInputListener( {up: function() { property.value = !property.value; }} );
 
 //    Create a peer for accessibility
-    this.addPeer( '<input type="checkbox">', {click: function() {property.value = !property.value;}} );
+    this.addPeer( '<input type="checkbox">', {click: function() {property.value = !property.value;}, label: options.label} );
     property.link( function( value ) {
       _.each( toggleButton.instances, function( instance ) {
 
