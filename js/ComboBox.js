@@ -88,7 +88,7 @@ define( function( require ) {
 
   /**
    * @param {Array} items
-   * @param {Property<Node>} property
+   * @param {*} property
    * @param {*} options object with optional properties
    */
   function ComboBox( items, property, options ) {
@@ -164,7 +164,7 @@ define( function( require ) {
       down: function( event ) {
         event.currentTarget.fill = null;
         event.currentTarget.stroke = null;
-        property.set( event.currentTarget.item.value );
+        property.value = event.currentTarget.item.value;
       }
     };
 
@@ -244,7 +244,7 @@ define( function( require ) {
     }
 
     // when property changes, update button
-    property.addObserver( function( value ) {
+    property.link( function( value ) {
       // TODO brute force search, better way?
       var item = null;
       for ( var i = 0; i < items.length; i++ ) {
