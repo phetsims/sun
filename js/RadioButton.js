@@ -9,6 +9,7 @@ define( function( require ) {
   'use strict';
 
   // imports
+  var ButtonListener = require( 'SCENERY/input/ButtonListener' );
   var Circle = require( 'SCENERY/nodes/Circle' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Node = require( 'SCENERY/nodes/Node' );
@@ -59,12 +60,11 @@ define( function( require ) {
     } );
 
     // set property value on 'up' event
-    thisNode.addInputListener(
-        {
-          up: function() {
-            property.set( value );
-          }
-        } );
+    thisNode.addInputListener( new ButtonListener( {
+      fire: function() {
+        property.set( value );
+      }
+    } ) );
   }
 
   inherit( RadioButton, Node );
