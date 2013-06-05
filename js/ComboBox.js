@@ -22,6 +22,7 @@ define( function( require ) {
   var Vector2 = require( "DOT/Vector2" );
 
   /**
+   * The button that is clicked to show the list of items.
    * @param {Node} itemNode
    * @param {*} options object with optional properties
    * @constructor
@@ -151,20 +152,34 @@ define( function( require ) {
     var listNode = new Rectangle( 0, 0, listWidth, listHeight, options.listCornerRadius, options.listCornerRadius,
                                   { fill: options.listFill, stroke: options.listStroke, lineWidth: options.listLineWidth } );
 
+    //TODO move these to ItemNode
+    // how to highlight an item in the list
+    var highlightItem = function( itemNode ) {
+      itemNode.fill = options.itemHighlightFill;
+      itemNode.stroke = options.itemHighlightStroke;
+    };
+    var unhighlightItem = function( itemNode ) {
+      itemNode.fill = null;
+      itemNode.stroke = null;
+    };
+
     // listener that we'll attach to each item in the list
     var itemListener = {
       enter: function( event ) {
-        event.currentTarget.fill = options.itemHighlightFill;
-        event.currentTarget.stroke = options.itemHighlightStroke;
+        highlightItem( event.currentTarget );
       },
       exit: function( event ) {
-        event.currentTarget.fill = null;
-        event.currentTarget.stroke = null;
+        unhighlightItem( event.currentTarget );
       },
       down: function( event ) {
-        event.currentTarget.fill = null;
-        event.currentTarget.stroke = null;
-        property.value = event.currentTarget.item.value;
+        event.abort(); // prevent click-to-dismiss on the list
+      },
+      up: function( event ) {
+        unhighlightItem( event.currentTarget );
+        property.value = event.currentTarget.item.value; // set the property
+        options.listParent.removeChild( listNode ); // close the list
+        thisNode.getUniqueTrail().rootNode().removeInputListener( clickToDismissListener ); // remove the click-to-dismiss listener
+        event.abort(); // prevent nodes (eg, controls) behind the list from receiving the event
       }
     };
 
@@ -236,7 +251,6 @@ define( function( require ) {
           }
         } );
 
-
     // layout
     if ( options.labelNode ) {
       buttonNode.left = options.labelNode.right + options.labelXSpacing;
@@ -261,6 +275,7 @@ define( function( require ) {
 
   /**
    * Creates a combo box item.
+   * This exists primarily to document the structure of an item.
    * @param {Node} node
    * @param {*} value
    * @returns {{node: *, value: *}}
