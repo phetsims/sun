@@ -25,14 +25,14 @@ define( function( require ) {
   function RadioButton( property, value, node, options ) {
 
     options = _.extend( {
-                          cursor: 'pointer',
-                          selectedColor: 'rgb( 143, 197, 250 )', // color used to fill the button when it's selected
-                          unselectedColor: 'white', // color used to fill the button when it's unselected
-                          centerColor: 'black', // color used to fill the center of teh button when it's selected
-                          radius: 16, // radius of the button
-                          xSpacing: 8, // horizontal space between the button and the node
-                          stroke: 'black' // color used to stroke the outer edge of the button
-                        }, options );
+      cursor: 'pointer',
+      selectedColor: 'rgb( 143, 197, 250 )', // color used to fill the button when it's selected
+      unselectedColor: 'white', // color used to fill the button when it's unselected
+      centerColor: 'black', // color used to fill the center of teh button when it's selected
+      radius: 16, // radius of the button
+      xSpacing: 8, // horizontal space between the button and the node
+      stroke: 'black' // color used to stroke the outer edge of the button
+    }, options );
 
     var thisNode = this;
     Node.call( thisNode, options );

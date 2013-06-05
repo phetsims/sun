@@ -24,14 +24,15 @@ define( function( require ) {
     var thisNode = this;
 
     // default options
-    options = _.extend( { fill: 'white',
-                          stroke: 'black',
-                          lineWidth: 1, // width of the background border
-                          xMargin: 5,
-                          yMargin: 5,
-                          cornerRadius: 10, // radius of the rounded corners on the background
-                          resize: true // dynamically resize when content bounds change?
-                        }, options );
+    options = _.extend( {
+      fill: 'white',
+      stroke: 'black',
+      lineWidth: 1, // width of the background border
+      xMargin: 5,
+      yMargin: 5,
+      cornerRadius: 10, // radius of the rounded corners on the background
+      resize: true // dynamically resize when content bounds change?
+    }, options );
 
     Node.call( thisNode );
 

@@ -45,7 +45,7 @@ define( function( require ) {
     // button background
     var width = itemNode.width + ( 2 * options.buttonXMargin ) + arrow.width + 5;
     var background = new Rectangle( 0, 0, width, itemNode.height + ( 2 * options.buttonYMargin ), options.buttonCornerRadius, options.buttonCornerRadius,
-                                    { fill: options.buttonFill, stroke: options.buttonStroke, lineWidth: options.buttonLineWidth } );
+      { fill: options.buttonFill, stroke: options.buttonStroke, lineWidth: options.buttonLineWidth } );
 
     // itemNode's parent
     var itemNodeParent = new Node();
@@ -97,33 +97,33 @@ define( function( require ) {
     var thisNode = this;
 
     options = _.extend( {
-                          labelNode: null, // optional label, placed to the left of the combo box
-                          labelXSpacing: 10, // horizontal space between label and combo box
-                          // button
-                          buttonFill: "white",
-                          buttonStroke: "black",
-                          buttonLineWidth: 1,
-                          buttonCornerRadius: 3,
-                          buttonXMargin: 4,
-                          buttonYMargin: 4,
-                          // list
-                          listPosition: "below", // where the list is positioned relative to the button, either "below" or "above"
-                          //TODO consider defaulting this to the scene, so that list can be guaranteed to be in front
-                          listParent: thisNode, // node that will be used as the list's parent, useful for ensuring that the list is in front of everything else
-                          listXMargin: 4,
-                          listYMargin: 4,
-                          listFill: "white",
-                          listStroke: 'black',
-                          listLineWidth: 1,
-                          listCornerRadius: 5,
-                          // items
-                          itemXMargin: 6,
-                          itemYMargin: 6,
-                          itemHighlightFill: "rgb(245,245,245)",
-                          itemHighlightStroke: null,
-                          itemHighlightLineWidth: 1
-                        },
-                        options );
+        labelNode: null, // optional label, placed to the left of the combo box
+        labelXSpacing: 10, // horizontal space between label and combo box
+        // button
+        buttonFill: "white",
+        buttonStroke: "black",
+        buttonLineWidth: 1,
+        buttonCornerRadius: 3,
+        buttonXMargin: 4,
+        buttonYMargin: 4,
+        // list
+        listPosition: "below", // where the list is positioned relative to the button, either "below" or "above"
+        //TODO consider defaulting this to the scene, so that list can be guaranteed to be in front
+        listParent: thisNode, // node that will be used as the list's parent, useful for ensuring that the list is in front of everything else
+        listXMargin: 4,
+        listYMargin: 4,
+        listFill: "white",
+        listStroke: 'black',
+        listLineWidth: 1,
+        listCornerRadius: 5,
+        // items
+        itemXMargin: 6,
+        itemYMargin: 6,
+        itemHighlightFill: "rgb(245,245,245)",
+        itemHighlightStroke: null,
+        itemHighlightLineWidth: 1
+      },
+      options );
 
     Node.call( thisNode, options );
 
@@ -150,7 +150,7 @@ define( function( require ) {
     var listWidth = itemWidth + ( 2 * options.listXMargin );
     var listHeight = ( items.length * itemHeight ) + ( 2 * options.listYMargin );
     var listNode = new Rectangle( 0, 0, listWidth, listHeight, options.listCornerRadius, options.listCornerRadius,
-                                  { fill: options.listFill, stroke: options.listStroke, lineWidth: options.listLineWidth } );
+      { fill: options.listFill, stroke: options.listStroke, lineWidth: options.listLineWidth } );
 
     //TODO move these to ItemNode
     // how to highlight an item in the list
@@ -240,16 +240,16 @@ define( function( require ) {
     // button interactivity
     buttonNode.cursor = "pointer";
     buttonNode.addInputListener(
-        {
-          down: function( event ) {
-            if ( !options.listParent.isChild( listNode ) ) {
-              moveList();
-              options.listParent.addChild( listNode );
-              enableClickToDismissListener = false;
-              thisNode.getUniqueTrail().rootNode().addInputListener( clickToDismissListener ); // add listener to scene
-            }
+      {
+        down: function( event ) {
+          if ( !options.listParent.isChild( listNode ) ) {
+            moveList();
+            options.listParent.addChild( listNode );
+            enableClickToDismissListener = false;
+            thisNode.getUniqueTrail().rootNode().addInputListener( clickToDismissListener ); // add listener to scene
           }
-        } );
+        }
+      } );
 
     // layout
     if ( options.labelNode ) {
@@ -281,7 +281,7 @@ define( function( require ) {
    * @returns {{node: *, value: *}}
    */
   ComboBox.createItem = function( node, value ) {
-     return { node: node, value: value };
+    return { node: node, value: value };
   };
 
   return ComboBox;
