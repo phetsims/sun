@@ -66,7 +66,7 @@ define( function( require ) {
     arrow.centerY = background.centerY;
   }
 
-  inherit( ButtonNode, Node );
+  inherit( Node, ButtonNode );
 
   /**
    * A wrapper around the combo box item, adds margins, etc.
@@ -85,7 +85,7 @@ define( function( require ) {
     item.node.centerY = height / 2;
   }
 
-  inherit( ItemNode, Rectangle );
+  inherit( Rectangle, ItemNode );
 
   /**
    * @param {Array} items
@@ -271,7 +271,7 @@ define( function( require ) {
     } );
   }
 
-  inherit( ComboBox, Node );
+  inherit( Node, ComboBox );
 
   /**
    * Creates a combo box item.

@@ -23,7 +23,7 @@ define( function( require ) {
     this.addChild( child );
   }
 
-  inherit( BoundsNode, Node );
+  inherit( Node, BoundsNode );
 
   return BoundsNode;
 } );

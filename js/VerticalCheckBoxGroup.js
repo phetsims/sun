@@ -38,7 +38,7 @@ define( function( require ) {
     VBox.call( this, options );
   }
 
-  inherit( VerticalCheckBoxGroup, VBox );
+  inherit( VBox, VerticalCheckBoxGroup );
 
   return VerticalCheckBoxGroup;
 } );

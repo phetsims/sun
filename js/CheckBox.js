@@ -20,7 +20,7 @@ define( function( require ) {
     this.addChild( toggleButton );
   }
 
-  inherit( CheckBox, Node );
+  inherit( Node, CheckBox );
 
   return CheckBox;
 } );

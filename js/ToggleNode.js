@@ -14,7 +14,7 @@ define( function( require ) {
     property.link( function( newValue ) { toggleNode.children = [background, newValue ? on : off]; } );
   }
 
-  inherit( ToggleNode, Node );
+  inherit( Node, ToggleNode );
 
   return ToggleNode;
 } );

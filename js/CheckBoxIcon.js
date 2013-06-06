@@ -15,7 +15,7 @@ define( function( require ) {
     ToggleNode.call( this, unchecked, checked, property );
   }
 
-  inherit( CheckBoxIcon, ToggleNode );
+  inherit( ToggleNode, CheckBoxIcon );
 
   return CheckBoxIcon;
 } );

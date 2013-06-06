@@ -67,7 +67,7 @@ define( function( require ) {
     } ) );
   }
 
-  inherit( RadioButton, Node );
+  inherit( Node, RadioButton );
 
   return RadioButton;
 } );

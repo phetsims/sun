@@ -50,7 +50,7 @@ define( function( require ) {
     button.addPeer( '<input type="button">', {click: button.buttonModel.fireListeners.bind( button.buttonModel )} );
   }
 
-  inherit( Button, Node, {
+  inherit( Node, Button, {
     addListener: function( listener ) {
       this.buttonModel.listeners.push( listener );
     }

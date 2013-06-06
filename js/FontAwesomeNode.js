@@ -276,7 +276,7 @@ define( function( require ) {
     Path.call( this, options );
   }
 
-  inherit( FontAwesomeNode, Path );
+  inherit( Path, FontAwesomeNode );
 
   return FontAwesomeNode;
 } );

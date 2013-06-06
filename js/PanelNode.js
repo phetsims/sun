@@ -60,7 +60,7 @@ define( function( require ) {
     }
   }
 
-  inherit( PanelNode, Node );
+  inherit( Node, PanelNode );
 
   return PanelNode;
 } );
