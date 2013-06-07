@@ -50,10 +50,7 @@ define( function( require ) {
                                   3,
                                   3,
                                   {stroke: 'black', lineWidth: 1, fill: 'green', cursor: 'pointer' } );
-    openNode.addInputListener( {down: function() {
-      console.log( "Yo, open node pressed!!!!!" );
-      open.set( true );
-    }} );
+    openNode.addInputListener( {down: function() { open.set( true ); }} );
 
     var closeNode = new Rectangle( CONTROL_BUTTON_INSET,
                                    CONTROL_BUTTON_INSET,
@@ -62,32 +59,37 @@ define( function( require ) {
                                    3,
                                    3,
                                    {stroke: 'black', lineWidth: 1, fill: 'red', cursor: 'pointer'} );
-    closeNode.addInputListener( {down: function() {
-      console.log( "Yo, close node pressed!!!!!" );
-      open.set( false );
-    }} );
+    closeNode.addInputListener( {down: function() { open.set( false ); }} );
 
     var panelWidth = contentNode.width + 2 * CONTENT_INSET;
     var closedHeight = CONTROL_BUTTON_INSET * 2 + closeNode.height;
     var openHeight = CONTROL_BUTTON_INSET * 2 + openNode.height + 2 * CONTENT_INSET + contentNode.height;
 
-    var container = new Rectangle( 0, 0, panelWidth, openHeight, 3, 3,
-                                   {
-                                     stroke: options.stroke,
-                                     lineWidth: options.lineWidth,
-                                     fill: options.fill
-                                   } );
-    container.addChild( openNode );
-    container.addChild( closeNode );
+    var openContainer = new Rectangle( 0, 0, panelWidth, openHeight, 3, 3,
+                                       {
+                                         stroke: options.stroke,
+                                         lineWidth: options.lineWidth,
+                                         fill: options.fill
+                                       } );
+    openContainer.addChild( closeNode );
     contentNode.center = new Vector2( panelWidth / 2, openHeight - CONTENT_INSET - contentNode.height / 2 );
-    container.addChild( contentNode );
-    this.addChild( container );
+    openContainer.addChild( contentNode );
+    this.addChild( openContainer );
+
+    var closedContainer = new Rectangle( 0, 0, panelWidth, closedHeight, 3, 3,
+                                       {
+                                         stroke: options.stroke,
+                                         lineWidth: options.lineWidth,
+                                         fill: options.fill
+                                       } );
+    closedContainer.addChild( openNode );
+    this.addChild( closedContainer );
+
 
     // Update the state of this node based on the open/closed state.
     open.link( function( isOpen ) {
-      openNode.visible = !isOpen;
-      closeNode.visible = isOpen;
-      console.log( "isOpen = " + isOpen );
+      openContainer.visible = isOpen;
+      closedContainer.visible = !isOpen;
     } );
   }
 
