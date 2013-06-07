@@ -15,6 +15,7 @@ define( function( require ) {
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var Text = require( 'SCENERY/nodes/Text' );
   var Vector2 = require( 'DOT/Vector2' );
+  var Property = require( 'AXON/Property' );
 
   // Constants
   var CONTROL_BUTTON_INSET = 4; // Can make this an option if desired.
@@ -23,7 +24,7 @@ define( function( require ) {
 
   /**
    * @param {Node} contentNode that will be vertically centered to the right of the button
-   * @param {object} options
+   * @param {object} options TODO: Clean up option info.  List: initiallyOpen
    * @constructor
    */
   function AccordionBox( contentNode, options ) {
@@ -38,40 +39,56 @@ define( function( require ) {
     var thisNode = this;
     Node.call( this, options );
 
-    if ( options.openNode === undefined ) {
-      options.openNode = new Rectangle( CONTROL_BUTTON_INSET,
-                                        CONTROL_BUTTON_INSET,
-                                        DEFAULT_CONTROL_BUTTON_DIMENSION,
-                                        DEFAULT_CONTROL_BUTTON_DIMENSION,
-                                        3,
-                                        3,
-                                        {stroke: 'black', lineWidth: 1, fill: 'green'} );
-    }
-    if ( options.closeNode === undefined ) {
-      options.closeNode = new Rectangle( CONTROL_BUTTON_INSET,
-                                         CONTROL_BUTTON_INSET,
-                                         DEFAULT_CONTROL_BUTTON_DIMENSION,
-                                         DEFAULT_CONTROL_BUTTON_DIMENSION,
-                                         3,
-                                         3,
-                                         {stroke: 'black', lineWidth: 1, fill: 'red'} );
-    }
+    // Create a property that tracks the open/closed state.
+    var open = new Property( options.initiallyOpen || true );
+
+    // Create the open/close nodes.
+    var openNode = new Rectangle( CONTROL_BUTTON_INSET,
+                                  CONTROL_BUTTON_INSET,
+                                  DEFAULT_CONTROL_BUTTON_DIMENSION,
+                                  DEFAULT_CONTROL_BUTTON_DIMENSION,
+                                  3,
+                                  3,
+                                  {stroke: 'black', lineWidth: 1, fill: 'green', cursor: 'pointer' } );
+    openNode.addInputListener( {down: function() {
+      console.log( "Yo, open node pressed!!!!!" );
+      open.set( true );
+    }} );
+
+    var closeNode = new Rectangle( CONTROL_BUTTON_INSET,
+                                   CONTROL_BUTTON_INSET,
+                                   DEFAULT_CONTROL_BUTTON_DIMENSION,
+                                   DEFAULT_CONTROL_BUTTON_DIMENSION,
+                                   3,
+                                   3,
+                                   {stroke: 'black', lineWidth: 1, fill: 'red', cursor: 'pointer'} );
+    closeNode.addInputListener( {down: function() {
+      console.log( "Yo, close node pressed!!!!!" );
+      open.set( false );
+    }} );
 
     var panelWidth = contentNode.width + 2 * CONTENT_INSET;
-    var closedHeight = CONTROL_BUTTON_INSET * 2 + options.closeNode.height;
-    var openHeight = CONTROL_BUTTON_INSET * 2 + options.closeNode.width + 2 * CONTENT_INSET + contentNode.height;
+    var closedHeight = CONTROL_BUTTON_INSET * 2 + closeNode.height;
+    var openHeight = CONTROL_BUTTON_INSET * 2 + openNode.height + 2 * CONTENT_INSET + contentNode.height;
 
-//    var box = new Rectangle( 0, 0, panelWidth, openHeight, 4, 4 );
     var container = new Rectangle( 0, 0, panelWidth, openHeight, 3, 3,
                                    {
                                      stroke: options.stroke,
                                      lineWidth: options.lineWidth,
                                      fill: options.fill
                                    } );
-    container.addChild( options.openNode );
+    container.addChild( openNode );
+    container.addChild( closeNode );
     contentNode.center = new Vector2( panelWidth / 2, openHeight - CONTENT_INSET - contentNode.height / 2 );
     container.addChild( contentNode );
     this.addChild( container );
+
+    // Update the state of this node based on the open/closed state.
+    open.link( function( isOpen ) {
+      openNode.visible = !isOpen;
+      closeNode.visible = isOpen;
+      console.log( "isOpen = " + isOpen );
+    } );
   }
 
   inherit( Node, AccordionBox );
