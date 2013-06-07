@@ -144,9 +144,9 @@ define( function( require ) {
       titleLeftBound = openNode.right + TITLE_INSET;
     }
     else {
-      openNode.right = CONTROL_BUTTON_INSET;
-      closeNode.right = CONTROL_BUTTON_INSET;
-      titleLeftBound = openNode.left - TITLE_INSET;
+      openNode.right = containerWidth - CONTROL_BUTTON_INSET;
+      closeNode.right = containerWidth - CONTROL_BUTTON_INSET;
+      titleLeftBound = TITLE_INSET;
     }
 
     if ( options.contentPosition === 'left' ) {
