@@ -29,8 +29,17 @@ define( function( require ) {
   var SYMBOL_LINE_WIDTH = 3;
 
   /**
-   * @param {Node} contentNode that will be vertically centered to the right of the button
-   * @param {object} options TODO: Clean up option info.  List: initiallyOpen, minWidth, title, buttonPosition, contentPosition, titlePosition
+   * @param {Node} contentNode that will be shown or hidden as the accordian
+   * box is opened/closed.
+   * @param {object} options Various key-value pairs that control the
+   * appearance and behavior.  These are passed through to the Node super
+   * class.  Additional options specific to this class are:
+   *    initiallyOpen: boolean, controls initial open/closed state
+   *    minWidth: minimum width in pixels.  If none specified, this will be calculated
+   *    title: string
+   *    buttonPosition: left, right, or center
+   *    contentPosition: left, right, or center
+   *    titlePosition: left, right, or center
    * @constructor
    */
   function AccordionBox( contentNode, options ) {
@@ -49,7 +58,7 @@ define( function( require ) {
     Node.call( this, options );
 
     // Create a property that tracks the open/closed state.
-    var open = new Property( options.initiallyOpen || true );
+    var open = new Property( options.initiallyOpen !== undefined ? options.initiallyOpen : true );
 
     // Create the open/close control nodes.
     var openNode = new Rectangle( 0, 0, CONTROL_BUTTON_DIMENSION, CONTROL_BUTTON_DIMENSION, 3, 3,
@@ -101,6 +110,7 @@ define( function( require ) {
                                              CONTROL_BUTTON_INSET * 2 + CONTROL_BUTTON_DIMENSION + TITLE_INSET * 2 + title.width ) );
     var closedContainerHeight = CONTROL_BUTTON_INSET * 2 + CONTROL_BUTTON_DIMENSION;
     var openContainerHeight = CONTROL_BUTTON_INSET * 2 + CONTROL_BUTTON_DIMENSION + 2 * CONTENT_INSET + contentNode.height;
+    this.openHeight = openContainerHeight; // This needs to be visible externally for layout purposes.
 
     var openContainer = new Rectangle( 0, 0, containerWidth, openContainerHeight, 3, 3,
                                        {
