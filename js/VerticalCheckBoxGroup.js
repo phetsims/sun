@@ -17,7 +17,7 @@ define( function( require ) {
    * @constructor
    */
   function VerticalCheckBoxGroup( items, options ) {
-    options = options || {};
+    options = _.extend( { spacing: 3 }, options );
     var padding = options.padding ? options.padding : 8;
 
     var width = 0;
