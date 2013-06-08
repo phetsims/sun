@@ -1,23 +1,66 @@
-//Render a simple toggle button (without icons or anything)
-//TODO: not ready for use in simulations, it will need further development & discussion first.
+// Copyright 2002-2013, University of Colorado
+
+/**
+ * Check box.
+ *
+ * @author Chris Malley (PixelZoom, Inc.)
+ */
 define( function( require ) {
   "use strict";
 
-  var Node = require( 'SCENERY/nodes/Node' );
-  var ToggleButton = require( 'SUN/ToggleButton' );
-  var CheckBoxIcon = require( 'SUN/CheckBoxIcon' );
-  var HBox = require( 'SCENERY/nodes/HBox' );
-  var DOM = require( 'SCENERY/nodes/DOM' );
-  var inherit = require( 'PHET_CORE/inherit' );
+  // imports
+  var ButtonListener = require( "SCENERY/input/ButtonListener" );
+  var FontAwesomeNode = require( "SUN/FontAwesomeNode" );
+  var inherit = require( "PHET_CORE/inherit" );
+  var Node = require( "SCENERY/nodes/Node" );
+  var Rectangle = require( "SCENERY/nodes/Rectangle" );
 
+  /**
+   * @param {Node} content
+   * @param {Property<Boolean>} property
+   * @constructor
+   * @param options
+   */
   function CheckBox( content, property, options ) {
-    options = options || {};
-    options.cursor = 'pointer';
-    options.renderer = 'svg';
-    Node.call( this, options );
 
-    var toggleButton = new ToggleButton( new HBox( {spacing: 10, children: [new CheckBoxIcon( property ), content], renderer: 'svg'} ), property, {label: options.label} );
-    this.addChild( toggleButton );
+    options = _.extend(
+      {
+        spacing: 5,
+        boxScale: 0.75,
+        cursor: 'pointer'
+      }, options );
+
+    var thisNode = this;
+    Node.call( this );
+
+    var checkedNode = new FontAwesomeNode( "check", { scale: options.boxScale } );
+    var uncheckedNode = new FontAwesomeNode( "check_empty", { scale: options.boxScale } );
+
+    thisNode.addChild( checkedNode );
+    thisNode.addChild( uncheckedNode );
+    thisNode.addChild( content );
+
+    content.left = checkedNode.right + options.spacing;
+    content.centerY = checkedNode.centerY;
+
+    // put a rectangle on top of everything to prevent dead zones which clicking
+    thisNode.addChild( new Rectangle( thisNode.left, thisNode.top, thisNode.width, thisNode.height ) );
+
+    // interactivity
+    thisNode.addInputListener( new ButtonListener( {
+      fire: function() {
+        property.value = !property.value;
+      }
+    } ) );
+
+    // sync with property
+    property.link( function( checked ) {
+      checkedNode.visible = checked;
+      uncheckedNode.visible = !checked;
+    } );
+
+    // Apply additional options
+    this.mutate( options );
   }
 
   inherit( Node, CheckBox );
