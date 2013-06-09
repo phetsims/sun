@@ -54,7 +54,7 @@ define( function( require ) {
     thisNode.addChild( new Rectangle( thisNode.left, thisNode.top, thisNode.width, thisNode.height ) );
 
     // sync control with model
-    property.addObserver( function( newValue ) {
+    property.link( function( newValue ) {
       outerCircle.fill = ( newValue === value ) ? options.selectedColor : options.unselectedColor;
       innerCircle.visible = ( newValue === value );
     } );
