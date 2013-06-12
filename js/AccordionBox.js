@@ -27,6 +27,7 @@ define( function( require ) {
   var CONTROL_BUTTON_SYMBOL_WIDTH = CONTROL_BUTTON_DIMENSION * 0.6;
   var CONTENT_INSET = 5; // Can make this an option if desired.
   var SYMBOL_LINE_WIDTH = 3;
+  var CORNER_ROUNDING = 3;
 
   /**
    * @param {Node} contentNode that will be shown or hidden as the accordian
@@ -63,7 +64,6 @@ define( function( require ) {
     // Create the open/close control nodes.
     var openNode = new Rectangle( 0, 0, CONTROL_BUTTON_DIMENSION, CONTROL_BUTTON_DIMENSION, 3, 3,
                                   {
-                                    cursor: 'pointer',
                                     fill: new LinearGradient( 0, 0, CONTROL_BUTTON_DIMENSION, CONTROL_BUTTON_DIMENSION ).
                                       addColorStop( 0, 'rgb(0, 230, 0 )' ).
                                       addColorStop( 1, 'rgb(0, 179, 0 )' )
@@ -79,11 +79,9 @@ define( function( require ) {
                                    centerX: CONTROL_BUTTON_DIMENSION / 2,
                                    centerY: CONTROL_BUTTON_DIMENSION / 2
                                  } ) );
-    openNode.addInputListener( {down: function() { open.set( true ); }} );
 
     var closeNode = new Rectangle( 0, 0, CONTROL_BUTTON_DIMENSION, CONTROL_BUTTON_DIMENSION, 3, 3,
                                    {
-                                     cursor: 'pointer',
                                      fill: new LinearGradient( 0, 0, CONTROL_BUTTON_DIMENSION, CONTROL_BUTTON_DIMENSION ).
                                        addColorStop( 0, 'rgb(255, 26, 26 )' ).
                                        addColorStop( 1, 'rgb(200, 0, 0 )' )
@@ -96,7 +94,6 @@ define( function( require ) {
                                     centerX: CONTROL_BUTTON_DIMENSION / 2,
                                     centerY: CONTROL_BUTTON_DIMENSION / 2
                                   } ) );
-    closeNode.addInputListener( {down: function() { open.set( false ); }} );
 
     // Create the title, if present.
     var title = new Node();
@@ -112,7 +109,7 @@ define( function( require ) {
     var openContainerHeight = CONTROL_BUTTON_INSET * 2 + CONTROL_BUTTON_DIMENSION + 2 * CONTENT_INSET + contentNode.height;
     this.openHeight = openContainerHeight; // This needs to be visible externally for layout purposes.
 
-    var openContainer = new Rectangle( 0, 0, containerWidth, openContainerHeight, 3, 3,
+    var openContainer = new Rectangle( 0, 0, containerWidth, openContainerHeight, CORNER_ROUNDING, CORNER_ROUNDING,
                                        {
                                          stroke: options.stroke,
                                          lineWidth: options.lineWidth,
@@ -124,7 +121,7 @@ define( function( require ) {
     this.addChild( openContainer );
 
     // Create the node that represents the closed container.
-    var closedContainer = new Rectangle( 0, 0, containerWidth, closedContainerHeight, 3, 3,
+    var closedContainer = new Rectangle( 0, 0, containerWidth, closedContainerHeight, CORNER_ROUNDING, CORNER_ROUNDING,
                                          {
                                            stroke: options.stroke,
                                            lineWidth: options.lineWidth,
@@ -139,6 +136,18 @@ define( function( require ) {
     if ( title.width > availableTitleSpace ) {
       title.scale( availableTitleSpace / title.width );
     }
+
+    // Create an invisible rectangle that allows the user to click on any part
+    // of the top of the container (closed or open) in order to toggle the
+    // state.
+    var openCloseNode = new Rectangle( 0, 0, containerWidth, closedContainerHeight, CORNER_ROUNDING, CORNER_ROUNDING,
+                                       {
+                                         fill: 'rgba( 0, 0, 0, 0)', // Invisible.
+                                         cursor: 'pointer'
+                                       } );
+    openCloseNode.addInputListener( {down: function() { open.set( !open.get() ); }} );
+    openContainer.addChild( openCloseNode );
+    closedContainer.addChild( openCloseNode );
 
     // Lay out the contents of the containers.
     openNode.top = CONTROL_BUTTON_INSET;
