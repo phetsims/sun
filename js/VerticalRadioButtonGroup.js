@@ -24,7 +24,6 @@ define( function( require ) {
     var width = 0;
     for ( var i = 0; i < items.length; i++ ) {
       width = Math.max( width, items[i].node.width );
-      console.log( items[i].node.width );
     }
 
     var children = [];
