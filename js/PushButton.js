@@ -33,7 +33,7 @@ define( function( require ) {
       fire: function() {
         booleanProperty.set( true );
       }
-    } ) )
+    } ) );
   }
 
   inherit( ToggleNode, PushButton );
