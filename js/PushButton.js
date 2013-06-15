@@ -19,8 +19,12 @@ define( function( require ) {
    */
   function PushButton( content, booleanProperty, options ) {
 
-    var pressed = new PanelNode( content, {fill: 'red'} );
-    var unpressed = new PanelNode( content );
+    var pressed = new PanelNode( content );
+    var upButton = new PanelNode( content );
+    upButton.x = -2;
+    upButton.y = -2;
+    var unpressed = new Node( {children: [new Rectangle( upButton.x + 4, upButton.y + 4, upButton.width, upButton.height, 10, 10, {fill: 'black'} ),
+      upButton]} );
 
     ToggleNode.call( this, unpressed, pressed, booleanProperty );
 
