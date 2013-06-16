@@ -52,12 +52,22 @@ define( function( require ) {
     //Mutate with the options after the layout is complete so that you can use width-dependent fields like centerX, etc.
     //TODO: Does this remove the need to put options in the super call above?
     this.mutate( options );
+
+    //TODO: Make it possible to enable/disable the content (if the content supports it)
+    //TODO: gray out the border
+    //TODO: Gray should be a bit brighter
+    button.buttonModel.enabledProperty.link( function( enabled ) {
+      path.fill = enabled ? options.fill : 'gray';
+      path.stroke = enabled ? options.stroke : 'gray';
+    } );
   }
 
   inherit( Node, Button, {
     addListener: function( listener ) {
       this.buttonModel.listeners.push( listener );
-    }
+    },
+    set enabled( enabled ) { this.buttonModel.enabled = enabled; },
+    get enabled() { return this.buttonModel.enabled;}
   } );
 
   return Button;
