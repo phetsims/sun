@@ -48,6 +48,10 @@ define( function( require ) {
     } ) );
 
     button.addPeer( '<input type="button">', {click: button.buttonModel.fireListeners.bind( button.buttonModel )} );
+
+    //Mutate with the options after the layout is complete so that you can use width-dependent fields like centerX, etc.
+    //TODO: Does this remove the need to put options in the super call above?
+    this.mutate( options );
   }
 
   inherit( Node, Button, {
