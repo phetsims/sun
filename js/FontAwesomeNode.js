@@ -269,10 +269,14 @@ define( function( require ) {
   };
 
   function FontAwesomeNode( iconName, options ) {
-    options = options || {};
-    options.shape = new Shape( icons[iconName] );
-    options.matrix = options.matrix || new Matrix3( 0.025, 0, 0, 0, -0.025, 0, 0, 0, 1 );
-    options.fill = options.fill || '#000';
+    options = _.extend( {
+      shape: new Shape( icons[iconName] ),
+      matrix: new Matrix3( 0.025, 0, 0, 0, -0.025, 0, 0, 0, 1 ),
+      fill: "#000",
+
+      //Font awesome nodes are expensive to pick (and have a lot of holes in them which you may wish to pick anyways, such as the door of the 'home' icon, so don't pick by default
+      pickable: false
+    }, options );
     Path.call( this, options );
   }
 
