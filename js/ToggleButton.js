@@ -10,11 +10,17 @@ define( function( require ) {
 
   function ToggleButton( content, property, options ) {
     var toggleButton = this;
-    options = options || {};
+
+    options = _.extend( {
+      padX: 10,
+      padY: 10,
+      cursor: 'pointer'
+    }, options );
+
     options.cursor = 'pointer';
     Node.call( this, options );
 
-    this.path = new Rectangle( 0, 0, content.width + 10, content.height + 10, 10, 10, {stroke: 'black', lineWidth: 1, fill: '#e3e980'} );
+    this.path = new Rectangle( 0, 0, content.width + options.padX, content.height + options.padY, 10, 10, {stroke: 'black', lineWidth: 1, fill: '#e3e980'} );
     this.addChild( this.path );
     content.centerX = this.path.width / 2;
     content.centerY = this.path.height / 2;
