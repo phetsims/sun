@@ -59,7 +59,7 @@ define( function( require ) {
     Node.call( this, options );
 
     // Create a property that tracks the open/closed state.
-    var open = new Property( options.initiallyOpen !== undefined ? options.initiallyOpen : true );
+    this.open = new Property( options.initiallyOpen !== undefined ? options.initiallyOpen : true );
 
     // Create the open/close control nodes.
     var openNode = new Rectangle( 0, 0, CONTROL_BUTTON_DIMENSION, CONTROL_BUTTON_DIMENSION, 3, 3,
@@ -145,7 +145,7 @@ define( function( require ) {
                                          fill: 'rgba( 0, 0, 0, 0)', // Invisible.
                                          cursor: 'pointer'
                                        } );
-    openCloseNode.addInputListener( {down: function() { open.set( !open.get() ); }} );
+    openCloseNode.addInputListener( {down: function() { thisNode.open.set( !thisNode.open.get() ); }} );
     openContainer.addChild( openCloseNode );
     closedContainer.addChild( openCloseNode );
 
@@ -189,7 +189,7 @@ define( function( require ) {
     }
 
     // Update the visibility of the containers based on the open/closed state.
-    open.link( function( isOpen ) {
+    this.open.link( function( isOpen ) {
       openContainer.visible = isOpen;
       closedContainer.visible = !isOpen;
     } );
