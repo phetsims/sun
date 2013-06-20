@@ -55,9 +55,7 @@ define( function( require ) {
     updateBackground();
 
     // Apply options after the layout is done, so that options that use the bounds will work properly.
-    if ( options ) {
-      this.mutate( options );
-    }
+    this.mutate( options );
   }
 
   inherit( Node, PanelNode );

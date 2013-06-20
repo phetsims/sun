@@ -30,7 +30,7 @@ define( function( require ) {
       options );
 
     var button = this;
-    Node.call( button, options );
+    Node.call( button );
 
     button.buttonModel = new ButtonModel();
     button.buttonModel.listeners.push( callback );

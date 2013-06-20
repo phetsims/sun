@@ -19,6 +19,8 @@ define( function( require ) {
    */
   function PushButton( content, booleanProperty, options ) {
 
+    options = _.extend( {}, options ); //TODO add default options
+
     var pressed = new PanelNode( content );
     var upButton = new PanelNode( content );
     upButton.x = -2;
@@ -29,9 +31,7 @@ define( function( require ) {
     ToggleNode.call( this, unpressed, pressed, booleanProperty );
 
     this.cursor = 'pointer';
-    if ( options ) {
-      this.mutate( options );
-    }
+    this.mutate( options );
 
     this.addInputListener( new ButtonListener( {
       fire: function() {
