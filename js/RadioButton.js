@@ -50,6 +50,7 @@ define( function( require ) {
     node.left = outerCircle.right + options.xSpacing;
     node.centerY = outerCircle.centerY;
 
+    //TODO replace this with mouseArea and touchArea
     // add a "hit area" over the entire button, so we don't have a dead spot between button and node
     thisNode.addChild( new Rectangle( thisNode.left, thisNode.top, thisNode.width, thisNode.height ) );
 
