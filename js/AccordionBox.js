@@ -49,7 +49,7 @@ define( function( require ) {
                           stroke: 'black', // color used to stroke the outer edge of the button
                           lineWidth: 1,
                           fill: 'rgb( 238, 238, 238 )', // default background color
-                          font: '20px Tahoma',
+                          font: '20px Arial',
                           contentPosition: 'center',
                           buttonPosition: 'left',
                           titlePosition: 'center'
