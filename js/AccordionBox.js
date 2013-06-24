@@ -25,7 +25,7 @@ define( function( require ) {
   var TITLE_INSET = 10;
   var CONTROL_BUTTON_DIMENSION = 20; // Can make this an option if desired.
   var CONTROL_BUTTON_SYMBOL_WIDTH = CONTROL_BUTTON_DIMENSION * 0.6;
-  var CONTENT_INSET = 5; // Can make this an option if desired.
+  var CONTENT_INSET = 10; // Can make this an option if desired.
   var SYMBOL_LINE_WIDTH = 3;
   var CORNER_ROUNDING = 3;
 
