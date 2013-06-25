@@ -22,7 +22,7 @@ define( function( require ) {
    * @param options
    */
   function CheckBox( content, property, options ) {
-
+    var checkBox = this;
     options = _.extend(
       {
         spacing: 5,
@@ -57,6 +57,18 @@ define( function( require ) {
     property.link( function( checked ) {
       checkedNode.visible = checked;
       uncheckedNode.visible = !checked;
+    } );
+
+    //Add accessibility
+    this.addPeer( '<input type="checkbox">', {click: function() {property.value = !property.value;}, label: options.label} );
+    property.link( function( value ) {
+      _.each( checkBox.instances, function( instance ) {
+
+        //Make sure accessibility is enabled, then apply the change to the peer
+        _.each( instance.peers, function( peer ) {
+          peer.element.setAttribute( 'checked', value );
+        } );
+      } );
     } );
 
     // Apply additional options
