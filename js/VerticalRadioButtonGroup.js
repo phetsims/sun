@@ -1,3 +1,5 @@
+// Copyright 2002-2013, University of Colorado Boulder
+
 //Render a simple vertical check box group, where the buttons all have the same sizes
 //TODO: not ready for use in simulations, it will need further development & discussion first.
 //TODO: Abstract out common functionality between this and VerticalCheckBoxGroup

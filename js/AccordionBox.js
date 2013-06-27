@@ -1,4 +1,4 @@
-// Copyright 2013, University of Colorado
+// Copyright 2002-2013, University of Colorado Boulder
 
 /**
  * Collapsible box that hides/shows contents when closed/open.

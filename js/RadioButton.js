@@ -1,4 +1,4 @@
-// Copyright 2013, University of Colorado
+// Copyright 2002-2013, University of Colorado Boulder
 
 /**
  * Scenery-based radio button, pseudo-Aqua look. See "options" comment for list of options.

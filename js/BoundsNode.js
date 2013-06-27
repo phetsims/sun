@@ -1,3 +1,5 @@
+// Copyright 2002-2013, University of Colorado Boulder
+
 //Possibly invisible rectangular background for a node for purposes of increasing hit area or making it so that an unfilled shape is filled for purposes of pickability (such as FontAwesomeNodes) 
 define( function( require ) {
   "use strict";

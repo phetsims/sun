@@ -1,3 +1,5 @@
+// Copyright 2002-2013, University of Colorado Boulder
+
 //Render a simple button
 //TODO: Button.js is not ready for use in simulations, it will need further development & discussion first.
 define( function( require ) {

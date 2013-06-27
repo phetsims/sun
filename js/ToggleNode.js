@@ -1,3 +1,5 @@
+// Copyright 2002-2013, University of Colorado Boulder
+
 //Icon that just shows one value if the property is selected or another value if the property is deselected
 define( function( require ) {
   "use strict";
