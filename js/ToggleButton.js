@@ -16,7 +16,8 @@ define( function( require ) {
     options = _.extend( {
       padX: 10,
       padY: 10,
-      cursor: 'pointer'
+      cursor: 'pointer',
+      label: ''
     }, options );
 
     options.cursor = 'pointer';
@@ -30,7 +31,11 @@ define( function( require ) {
     this.addInputListener( {up: function() { property.value = !property.value; }} );
 
 //    Create a peer for accessibility
-    this.addPeer( '<input type="checkbox">', {click: function() {property.value = !property.value;}, label: options.label} );
+    this.addPeer( '<input type="checkbox" aria-label="' + _.escape( options.label ) + '">', {
+      click: function() {
+        property.value = !property.value;
+      },
+      label: options.label} );//TODO: is the latter 'label' used?
     property.link( function( value ) {
       _.each( toggleButton.instances, function( instance ) {
 

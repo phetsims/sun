@@ -27,7 +27,8 @@ define( function( require ) {
         //TODO default margins should be computed based on content dimensions
         xMargin: 5,
         yMargin: 5,
-        cornerRadius: 10
+        cornerRadius: 10,
+        label: ''
       },
       options );
 
@@ -49,7 +50,7 @@ define( function( require ) {
       }
     } ) );
 
-    button.addPeer( '<input type="button">', {click: button.buttonModel.fireListeners.bind( button.buttonModel )} );
+    button.addPeer( '<input type="button" aria-label="' + _.escape( options.label ) + '">', {click: button.buttonModel.fireListeners.bind( button.buttonModel )} );
 
     //Mutate with the options after the layout is complete so that you can use width-dependent fields like centerX, etc.
     //TODO: Does this remove the need to put options in the super call above?
