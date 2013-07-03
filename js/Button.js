@@ -59,6 +59,7 @@ define( function( require ) {
     //TODO: Make it possible to enable/disable the content (if the content supports it)
     //TODO: gray out the border
     //TODO: Gray should be a bit brighter
+    //TODO: Non-pickable when disabled
     button.buttonModel.enabledProperty.link( function( enabled ) {
       path.fill = enabled ? options.fill : 'gray';
       path.stroke = enabled ? options.stroke : 'gray';
