@@ -21,7 +21,7 @@ define( function( require ) {
    */
   function VerticalCheckBoxGroup( items, options ) {
     options = _.extend( { spacing: 3 }, options );
-    var padding = options.padding ? options.padding : 8;
+    var padding = options.padding ? options.padding : 8; //TODO should be handled in _.extend
 
     var width = 0;
     for ( var i = 0; i < items.length; i++ ) {
@@ -36,6 +36,7 @@ define( function( require ) {
       children.push( new RadioButton( items[i].property, items[i].value, content, {radius: 12} ) );//Made the radius smaller here so the whole panel won't take up too much vertical space
     }
 
+    //TODO these options should be added using _.extend(options, {children:..., renderer:....})
     options.children = children;
     options.renderer = 'svg';
     VBox.call( this, options );
