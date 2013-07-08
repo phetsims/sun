@@ -15,6 +15,12 @@ define( function( require ) {
   var Shape = require( 'KITE/Shape' );
   var inherit = require( 'PHET_CORE/inherit' );
 
+  /**
+   * @param {Node} trueNode
+   * @param {Node} falseNode
+   * @param {Property} booleanProperty
+   * @constructor
+   */
   function ToggleNode( trueNode, falseNode, booleanProperty ) {
     var thisNode = this;
     Node.call( thisNode );
