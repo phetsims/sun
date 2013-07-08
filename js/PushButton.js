@@ -1,7 +1,8 @@
 // Copyright 2002-2013, University of Colorado Boulder
 
-//Render a simple button
-//TODO: PushButton.js is not ready for use in simulations, it will need further development & discussion first.
+/**
+ * Radio button that looks pressed in or popped out.
+ */
 define( function( require ) {
   "use strict";
 
@@ -13,23 +14,38 @@ define( function( require ) {
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
 
   /**
-   * @param {Node} content
-   * @param {function} callback
+   * @param property
+   * @param value the value that corresponds to this button, same type as property
+   * @param {Node} content node that will be displayed on the button
    * @param {object} options
    * @constructor
    */
-  function PushButton( booleanProperty, value, content, options ) {
+  function PushButton( property, value, content, options ) {
 
-    options = _.extend( {}, options ); //TODO add default options
+    options = _.extend( {
+      motionXOffset: 2,
+      motionYOffset: 2,
+      shadowXOffset: 4,
+      shadowYOffset: 4,
+      cornerRadius: 10,
+      shadowFill: 'black'
+    }, options );
 
+    // put content in a rounded rectangle
     var pressed = new Panel( content );
     var upButton = new Panel( content );
-    upButton.x = -2;
-    upButton.y = -2;
-    var unpressed = new Node( {children: [new Rectangle( upButton.x + 4, upButton.y + 4, upButton.width, upButton.height, 10, 10, {fill: 'black'} ),
-      upButton]} );
 
-    RadioButton.call( this, booleanProperty, value, pressed, unpressed );
+    // make the button appear to move
+    upButton.x = -options.motionXOffset;
+    upButton.y = -options.motionYOffset;
+
+    // add a drop shadow to the unpressed state
+    var unpressed = new Node( {children: [
+      new Rectangle( upButton.x + options.shadowXOffset, upButton.y + options.shadowYOffset, upButton.width, upButton.height, options.cornerRadius, options.cornerRadius, { fill: options.shadowFill } ),
+      upButton
+    ]} );
+
+    RadioButton.call( this, property, value, pressed, unpressed );
   }
 
   inherit( RadioButton, PushButton );

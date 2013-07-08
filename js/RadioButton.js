@@ -14,6 +14,14 @@ define( function( require ) {
   var Path = require( "SCENERY/nodes/Path" );
   var Shape = require( "KITE/Shape" );
 
+  /**
+   * @param property
+   * @param value the value that corresponds to this button, same type as property
+   * @param {Node} selectedNode node that will be displayed when the button is selected
+   * @param {Node} deselectedNode node that will be displayed when the button is deselected
+   * @param {object} options
+   * @constructor
+   */
   function RadioButton( property, value, selectedNode, deselectedNode, options ) {
 
     options = _.extend( {
