@@ -1,5 +1,10 @@
 // Copyright 2002-2013, University of Colorado Boulder
 
+/**
+ * Provides access to font-awesome glyphs as scenery nodes.
+ *
+ * @author Sam Reid
+ */
 define( function( require ) {
   "use strict";
 
@@ -271,14 +276,20 @@ define( function( require ) {
   };
 
   function FontAwesomeNode( iconName, options ) {
-    options = _.extend( {
-      shape: new Shape( icons[iconName] ),
-      matrix: new Matrix3( 0.025, 0, 0, 0, -0.025, 0, 0, 0, 1 ),
-      fill: "#000",
 
+    // default values
+    options = _.extend( {
+      fill: "#000",
       //Font awesome nodes are expensive to pick (and have a lot of holes in them which you may wish to pick anyways, such as the door of the 'home' icon, so don't pick by default
       pickable: false
     }, options );
+
+    // add internal values required by supertype constructor
+    options = _.extend( options, {
+      shape: new Shape( icons[iconName] ),
+      matrix: new Matrix3( 0.025, 0, 0, 0, -0.025, 0, 0, 0, 1 )
+    } );
+
     Path.call( this, options );
   }
 
