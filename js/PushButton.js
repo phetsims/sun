@@ -11,7 +11,7 @@ define( function( require ) {
   var ButtonModel = require( 'SUN/ButtonModel' );
   var ButtonListener = require( 'SCENERY/input/ButtonListener' );
   var Panel = require( 'SUN/Panel' );
-  var ToggleButton = require( 'SUN/ToggleButton' );
+  var ToggleNode = require( 'SUN/ToggleNode' );
 
   /**
    * @param {Node} content
@@ -30,12 +30,19 @@ define( function( require ) {
     var unpressed = new Node( {children: [new Rectangle( upButton.x + 4, upButton.y + 4, upButton.width, upButton.height, 10, 10, {fill: 'black'} ),
       upButton]} );
 
-    ToggleButton.call( this, pressed, unpressed, booleanProperty );
+    ToggleNode.call( this, pressed, unpressed, booleanProperty );
 
+    this.cursor = 'pointer';
     this.mutate( options );
+
+    this.addInputListener( new ButtonListener( {
+      fire: function() {
+        booleanProperty.set( true );
+      }
+    } ) );
   }
 
-  inherit( ToggleButton, PushButton );
+  inherit( ToggleNode, PushButton );
 
   return PushButton;
 } );
