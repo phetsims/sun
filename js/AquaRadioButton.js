@@ -1,7 +1,7 @@
 // Copyright 2002-2013, University of Colorado Boulder
 
 /**
- * Scenery-based radio button with a pseudo-Aqua look. See "options" comment for list of options.
+ * Radio button with a pseudo-Aqua (Mac OS) look. See "options" comment for list of options.
  *
  * @author Chris Malley (PixelZoom, Inc.)
  */
@@ -9,11 +9,10 @@ define( function( require ) {
   'use strict';
 
   // imports
-  var ButtonListener = require( 'SCENERY/input/ButtonListener' );
   var Circle = require( 'SCENERY/nodes/Circle' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Node = require( 'SCENERY/nodes/Node' );
-  var Rectangle = require( 'SCENERY/nodes/Rectangle' );
+  var RadioButton = require( 'SUN/RadioButton' );
 
   /**
    * @param property
@@ -27,48 +26,36 @@ define( function( require ) {
     options = _.extend( {
       cursor: 'pointer',
       selectedColor: 'rgb( 143, 197, 250 )', // color used to fill the button when it's selected
-      unselectedColor: 'white', // color used to fill the button when it's unselected
+      deselectedColor: 'white', // color used to fill the button when it's deselected
       centerColor: 'black', // color used to fill the center of teh button when it's selected
       radius: 16, // radius of the button
       xSpacing: 8, // horizontal space between the button and the node
       stroke: 'black' // color used to stroke the outer edge of the button
     }, options );
 
-    var thisNode = this;
-    Node.call( thisNode, options );
-
-    // nodes
-    var outerCircle = new Circle( options.radius, { fill: options.unselectedColor, stroke: options.stroke } );
+    // selected node
+    var selectedNode = new Node();
     var innerCircle = new Circle( options.radius / 3, { fill: options.centerColor } );
+    var outerCircleSelected = new Circle( options.radius, { fill: options.selectedColor, stroke: options.stroke } );
+    selectedNode.addChild( outerCircleSelected );
+    selectedNode.addChild( innerCircle );
+    selectedNode.addChild( node );
+    node.left = outerCircleSelected.right + options.xSpacing;
+    node.centerY = outerCircleSelected.centerY;
 
-    // rendering order
-    thisNode.addChild( outerCircle );
-    thisNode.addChild( innerCircle );
-    thisNode.addChild( node );
+    // deselected node
+    var deselectedNode = new Node();
+    var outerCircleDeselected = new Circle( options.radius, { fill: options.deselectedColor, stroke: options.stroke } );
+    deselectedNode.addChild( outerCircleDeselected );
+    deselectedNode.addChild( innerCircle );
+    deselectedNode.addChild( node );
+    node.left = outerCircleDeselected.right + options.xSpacing;
+    node.centerY = outerCircleDeselected.centerY;
 
-    // layout
-    node.left = outerCircle.right + options.xSpacing;
-    node.centerY = outerCircle.centerY;
-
-    //TODO replace this with mouseArea and touchArea
-    // add a "hit area" over the entire button, so we don't have a dead spot between button and node
-    thisNode.addChild( new Rectangle( thisNode.left, thisNode.top, thisNode.width, thisNode.height ) );
-
-    // sync control with model
-    property.link( function( newValue ) {
-      outerCircle.fill = ( newValue === value ) ? options.selectedColor : options.unselectedColor;
-      innerCircle.visible = ( newValue === value );
-    } );
-
-    // set property value on 'up' event
-    thisNode.addInputListener( new ButtonListener( {
-      fire: function() {
-        property.set( value );
-      }
-    } ) );
+    RadioButton.call( this, property, value, selectedNode, deselectedNode, options );
   }
 
-  inherit( Node, AquaRadioButton );
+  inherit( RadioButton, AquaRadioButton );
 
   return AquaRadioButton;
 } );
