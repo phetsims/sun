@@ -30,7 +30,7 @@ define( function( require ) {
     var unpressed = new Node( {children: [new Rectangle( upButton.x + 4, upButton.y + 4, upButton.width, upButton.height, 10, 10, {fill: 'black'} ),
       upButton]} );
 
-    ToggleNode.call( this, unpressed, pressed, booleanProperty );
+    ToggleNode.call( this, pressed, unpressed, booleanProperty );
 
     this.cursor = 'pointer';
     this.mutate( options );

@@ -16,12 +16,12 @@ define( function( require ) {
   var inherit = require( 'PHET_CORE/inherit' );
 
   /**
-   * @param {Node} falseNode
    * @param {Node} trueNode
+   * @param {Node} falseNode
    * @param {Property} booleanProperty
    * @constructor
    */
-  function ToggleNode( falseNode, trueNode, booleanProperty ) {
+  function ToggleNode( trueNode, falseNode, booleanProperty ) {
     var thisNode = this;
     Node.call( thisNode );
     var background = new Path( { shape: Shape.bounds( trueNode.bounds.union( falseNode.bounds ) ) } );
