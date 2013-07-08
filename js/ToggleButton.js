@@ -15,6 +15,7 @@ define( function( require ) {
     var toggleButton = this;
 
     options = _.extend( {
+      addRectangle: false,
       padX: 10,
       padY: 10,
       cursor: 'pointer',
@@ -25,10 +26,12 @@ define( function( require ) {
 
     var content = new ToggleNode( trueNode, falseNode, booleanProperty );
 
-    this.path = new Rectangle( 0, 0, content.width + options.padX, content.height + options.padY, 10, 10, {stroke: 'black', lineWidth: 1, fill: '#e3e980'} );
-    this.addChild( this.path );
-    content.centerX = this.path.width / 2;
-    content.centerY = this.path.height / 2;
+    if ( options.addRectangle ) {
+      this.path = new Rectangle( 0, 0, content.width + options.padX, content.height + options.padY, 10, 10, {stroke: 'black', lineWidth: 1, fill: '#e3e980'} );
+      this.addChild( this.path );
+      content.centerX = this.path.width / 2;
+      content.centerY = this.path.height / 2;
+    }
     this.addChild( content );
     this.addInputListener( {
       up: function() {
