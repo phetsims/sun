@@ -2,6 +2,7 @@
 
 /**
  * Control panel around a content node.
+ * Dynamically adjusts its size to fit its contents.
  *
  * @author Sam Reid
  * @author Chris Malley (PixelZoom, Inc.)
