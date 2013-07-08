@@ -19,7 +19,7 @@ define( function( require ) {
    * @param options
    * @constructor
    */
-  function VerticalCheckBoxGroup( items, options ) {
+  function VerticalAquaRadioButtonGroup( items, options ) {
     options = _.extend( { spacing: 3 }, options );
     var padding = options.padding ? options.padding : 8; //TODO should be handled in _.extend
 
@@ -42,7 +42,7 @@ define( function( require ) {
     VBox.call( this, options );
   }
 
-  inherit( VBox, VerticalCheckBoxGroup );
+  inherit( VBox, VerticalAquaRadioButtonGroup );
 
-  return VerticalCheckBoxGroup;
+  return VerticalAquaRadioButtonGroup;
 } );
