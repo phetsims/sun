@@ -10,7 +10,7 @@ define( function( require ) {
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var ButtonModel = require( 'SUN/ButtonModel' );
   var ButtonListener = require( 'SCENERY/input/ButtonListener' );
-  var PanelNode = require( 'SUN/PanelNode' );
+  var Panel = require( 'SUN/Panel' );
   var ToggleNode = require( 'SUN/ToggleNode' );
 
   /**
@@ -23,8 +23,8 @@ define( function( require ) {
 
     options = _.extend( {}, options ); //TODO add default options
 
-    var pressed = new PanelNode( content );
-    var upButton = new PanelNode( content );
+    var pressed = new Panel( content );
+    var upButton = new Panel( content );
     upButton.x = -2;
     upButton.y = -2;
     var unpressed = new Node( {children: [new Rectangle( upButton.x + 4, upButton.y + 4, upButton.width, upButton.height, 10, 10, {fill: 'black'} ),

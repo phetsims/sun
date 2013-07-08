@@ -20,7 +20,7 @@ define( function( require ) {
    * @param {object} options
    * @constructor
    */
-  function PanelNode( content, options ) {
+  function Panel( content, options ) {
 
     var thisNode = this;
 
@@ -59,7 +59,7 @@ define( function( require ) {
     this.mutate( options );
   }
 
-  inherit( Node, PanelNode );
+  inherit( Node, Panel );
 
-  return PanelNode;
+  return Panel;
 } );
