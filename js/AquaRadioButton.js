@@ -47,7 +47,6 @@ define( function( require ) {
     var deselectedNode = new Node();
     var outerCircleDeselected = new Circle( options.radius, { fill: options.deselectedColor, stroke: options.stroke } );
     deselectedNode.addChild( outerCircleDeselected );
-    deselectedNode.addChild( innerCircle );
     deselectedNode.addChild( node );
     node.left = outerCircleDeselected.right + options.xSpacing;
     node.centerY = outerCircleDeselected.centerY;
