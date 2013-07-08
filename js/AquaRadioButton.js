@@ -1,7 +1,7 @@
 // Copyright 2002-2013, University of Colorado Boulder
 
 /**
- * Scenery-based radio button, pseudo-Aqua look. See "options" comment for list of options.
+ * Scenery-based radio button with a pseudo-Aqua look. See "options" comment for list of options.
  *
  * @author Chris Malley (PixelZoom, Inc.)
  */
@@ -22,7 +22,7 @@ define( function( require ) {
    * @param {object} options
    * @constructor
    */
-  function RadioButton( property, value, node, options ) {
+  function AquaRadioButton( property, value, node, options ) {
 
     options = _.extend( {
       cursor: 'pointer',
@@ -68,7 +68,7 @@ define( function( require ) {
     } ) );
   }
 
-  inherit( Node, RadioButton );
+  inherit( Node, AquaRadioButton );
 
-  return RadioButton;
+  return AquaRadioButton;
 } );

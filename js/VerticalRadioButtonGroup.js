@@ -7,7 +7,7 @@ define( function( require ) {
   "use strict";
 
   var Path = require( 'SCENERY/nodes/Path' );
-  var RadioButton = require( 'SUN/RadioButton' );
+  var AquaRadioButton = require( 'SUN/AquaRadioButton' );
   var VBox = require( 'SCENERY/nodes/VBox' );
   var Shape = require( 'KITE/Shape' );
   var inherit = require( 'PHET_CORE/inherit' );
@@ -33,7 +33,7 @@ define( function( require ) {
 
       //Add an invisible strut to each content to make the widths match
       var content = new Path( {shape: Shape.rect( 0, 0, width + padding, 0 ), children: [items[i].node], renderer: 'svg'} );
-      children.push( new RadioButton( items[i].property, items[i].value, content, {radius: 12} ) );//Made the radius smaller here so the whole panel won't take up too much vertical space
+      children.push( new AquaRadioButton( items[i].property, items[i].value, content, {radius: 12} ) );//Made the radius smaller here so the whole panel won't take up too much vertical space
     }
 
     //TODO these options should be added using _.extend(options, {children:..., renderer:....})
