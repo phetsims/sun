@@ -9,8 +9,9 @@ define( function( require ) {
   var DOM = require( 'SCENERY/nodes/DOM' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
+  var ToggleNode = require( 'SUN/ToggleNode' );
 
-  function ToggleButton( content, booleanProperty, options ) {
+  function ToggleButton( trueNode, falseNode, booleanProperty, options ) {
     var toggleButton = this;
 
     options = _.extend( {
@@ -20,15 +21,20 @@ define( function( require ) {
       label: ''
     }, options );
 
-    options.cursor = 'pointer';
     Node.call( this, options );
+
+    var content = new ToggleNode( trueNode, falseNode, booleanProperty );
 
     this.path = new Rectangle( 0, 0, content.width + options.padX, content.height + options.padY, 10, 10, {stroke: 'black', lineWidth: 1, fill: '#e3e980'} );
     this.addChild( this.path );
     content.centerX = this.path.width / 2;
     content.centerY = this.path.height / 2;
     this.addChild( content );
-    this.addInputListener( {up: function() { booleanProperty.value = !booleanProperty.value; }} );
+    this.addInputListener( {
+      up: function() {
+        booleanProperty.value = !booleanProperty.value;
+      }
+    } );
 
 //    Create a peer for accessibility
     this.addPeer( '<input type="checkbox" aria-label="' + _.escape( options.label ) + '">', {
@@ -36,6 +42,7 @@ define( function( require ) {
         booleanProperty.value = !booleanProperty.value;
       },
       label: options.label} );//TODO: is the latter 'label' used?
+
     booleanProperty.link( function( value ) {
       _.each( toggleButton.instances, function( instance ) {
 
