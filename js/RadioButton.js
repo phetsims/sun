@@ -16,6 +16,10 @@ define( function( require ) {
 
   function RadioButton( property, value, selectedNode, deselectedNode, options ) {
 
+    options = _.extend( {
+      cursor: 'pointer'
+    }, options );
+
     var thisNode = this;
     Node.call( thisNode, options );
 

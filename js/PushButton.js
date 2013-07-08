@@ -5,13 +5,12 @@
 define( function( require ) {
   "use strict";
 
-  var Node = require( 'SCENERY/nodes/Node' );
+  // imports
   var inherit = require( 'PHET_CORE/inherit' );
-  var Rectangle = require( 'SCENERY/nodes/Rectangle' );
-  var ButtonModel = require( 'SUN/ButtonModel' );
-  var ButtonListener = require( 'SCENERY/input/ButtonListener' );
+  var Node = require( 'SCENERY/nodes/Node' );
   var Panel = require( 'SUN/Panel' );
-  var ToggleNode = require( 'SUN/ToggleNode' );
+  var RadioButton = require( 'SUN/RadioButton' );
+  var Rectangle = require( 'SCENERY/nodes/Rectangle' );
 
   /**
    * @param {Node} content
@@ -19,7 +18,7 @@ define( function( require ) {
    * @param {object} options
    * @constructor
    */
-  function PushButton( content, booleanProperty, options ) {
+  function PushButton( booleanProperty, value, content, options ) {
 
     options = _.extend( {}, options ); //TODO add default options
 
@@ -30,19 +29,10 @@ define( function( require ) {
     var unpressed = new Node( {children: [new Rectangle( upButton.x + 4, upButton.y + 4, upButton.width, upButton.height, 10, 10, {fill: 'black'} ),
       upButton]} );
 
-    ToggleNode.call( this, pressed, unpressed, booleanProperty );
-
-    this.cursor = 'pointer';
-    this.mutate( options );
-
-    this.addInputListener( new ButtonListener( {
-      fire: function() {
-        booleanProperty.set( true );
-      }
-    } ) );
+    RadioButton.call( this, booleanProperty, value, pressed, unpressed );
   }
 
-  inherit( ToggleNode, PushButton );
+  inherit( RadioButton, PushButton );
 
   return PushButton;
 } );
