@@ -10,7 +10,7 @@ define( function( require ) {
   var inherit = require( 'PHET_CORE/inherit' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
 
-  function ToggleButton( content, property, options ) {
+  function ToggleButton( content, booleanProperty, options ) {
     var toggleButton = this;
 
     options = _.extend( {
@@ -28,15 +28,15 @@ define( function( require ) {
     content.centerX = this.path.width / 2;
     content.centerY = this.path.height / 2;
     this.addChild( content );
-    this.addInputListener( {up: function() { property.value = !property.value; }} );
+    this.addInputListener( {up: function() { booleanProperty.value = !booleanProperty.value; }} );
 
 //    Create a peer for accessibility
     this.addPeer( '<input type="checkbox" aria-label="' + _.escape( options.label ) + '">', {
       click: function() {
-        property.value = !property.value;
+        booleanProperty.value = !booleanProperty.value;
       },
       label: options.label} );//TODO: is the latter 'label' used?
-    property.link( function( value ) {
+    booleanProperty.link( function( value ) {
       _.each( toggleButton.instances, function( instance ) {
 
         //Make sure accessibility is enabled, then apply the change to the peer
