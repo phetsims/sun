@@ -16,17 +16,17 @@ define( function( require ) {
   var inherit = require( 'PHET_CORE/inherit' );
 
   /**
-   * @param {Node} trueNode
    * @param {Node} falseNode
+   * @param {Node} trueNode
    * @param {Property} booleanProperty
    * @constructor
    */
-  function ToggleNode( trueNode, falseNode, booleanProperty ) {
+  function ToggleNode( falseNode, trueNode, booleanProperty ) {
     var thisNode = this;
     Node.call( thisNode );
-    var background = new Path( { shape: Shape.bounds( falseNode.bounds.union( trueNode.bounds ) ) } );
+    var background = new Path( { shape: Shape.bounds( trueNode.bounds.union( falseNode.bounds ) ) } );
     booleanProperty.link( function( value ) {
-      thisNode.children = [ background, value ? falseNode : trueNode ];
+      thisNode.children = [ background, value ? trueNode : falseNode ];
     } );
   }
 
