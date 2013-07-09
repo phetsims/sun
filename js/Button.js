@@ -19,7 +19,7 @@ define( function( require ) {
    * @param {object} options
    * @constructor
    */
-  function Button2( content, callback, options ) {
+  function Button( content, callback, options ) {
 
     options = _.extend( {
         cursor: 'pointer',
@@ -54,7 +54,7 @@ define( function( require ) {
     thisButton.mutate( options );
   }
 
-  inherit( Node, Button2, {
+  inherit( Node, Button, {
 
     // Adds a listener. If already a listener, this is a no-op.
     addListener: function( listener ) {
@@ -82,5 +82,5 @@ define( function( require ) {
     get enabled() { return this._enabled.get(); }
   } );
 
-  return Button2;
+  return Button;
 } );
