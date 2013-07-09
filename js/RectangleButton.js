@@ -24,7 +24,7 @@ define( function( require ) {
 
     options = _.extend( {
         rectangleFill: 'white',
-        rectangleFillDisabled: 'rgb(210,210,210)',
+        rectangleFillDisabled: 'rgb(225,225,225)',
         rectangleStroke: 'black',
         rectangleStrokeDisabled: 'rgb(175,175,175)',
         rectangleLineWidth: 1,

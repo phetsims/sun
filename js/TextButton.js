@@ -15,6 +15,11 @@ define( function( require ) {
 
   function TextButton( text, callback, options ) {
 
+    options = _.extend( {
+      textFill: 'black',
+      textFillDisabled: 'rgb(175,175,175)'
+    }, options );
+
     var textNode = new Text( text, options );
 
     RectangleButton.call( this, textNode, callback, options );
