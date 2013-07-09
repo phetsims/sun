@@ -23,15 +23,15 @@ define( function( require ) {
   function RectangleButton( content, callback, options ) {
 
     options = _.extend( {
-        fill: 'white',
-        disabledFill: 'rgb(210,210,210)',
-        stroke: 'black',
-        disabledStroke: 'rgb(175,175,175)',
-        lineWidth: 1,
+        rectangleFill: 'white',
+        rectangleFillDisabled: 'rgb(210,210,210)',
+        rectangleStroke: 'black',
+        rectangleStrokeDisabled: 'rgb(175,175,175)',
+        rectangleLineWidth: 1,
         //TODO default margins and corner radius should be computed based on content dimensions
-        xMargin: 5,
-        yMargin: 5,
-        cornerRadius: 10
+        rectangleXMargin: 5,
+        rectangleYMargin: 5,
+        rectangleCornerRadius: 10
       },
       options );
 
@@ -42,8 +42,8 @@ define( function( require ) {
 
     // rectangle around the content
     var rectangle = new Rectangle(
-      0, 0, content.width + ( 2 * options.xMargin ), content.height + ( 2 * options.yMargin ), options.cornerRadius, options.cornerRadius,
-      { lineWidth: options.lineWidth } );
+      0, 0, content.width + ( 2 * options.rectangleXMargin ), content.height + ( 2 * options.rectangleYMargin ), options.rectangleCornerRadius, options.rectangleCornerRadius,
+      { rectangleLineWidth: options.lineWidth } );
     node.addChild( rectangle );
 
     // content centered in the rectangle
@@ -55,8 +55,8 @@ define( function( require ) {
 
     // enable/disable the pieces that are specific to this subtype
     thisButton._enabled.link( function( enabled ) {
-      rectangle.fill = enabled ? options.fill : options.disabledFill;
-      rectangle.stroke = enabled ? options.stroke : options.disabledStroke;
+      rectangle.fill = enabled ? options.rectangleFill : options.rectangleFillDisabled;
+      rectangle.stroke = enabled ? options.rectangleStroke : options.rectangleStrokeDisabled;
     } );
 
     thisButton.mutate( options );
