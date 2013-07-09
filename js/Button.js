@@ -1,7 +1,7 @@
 // Copyright 2002-2013, University of Colorado Boulder
 
 /**
- * Button with a rectangle around its content.
+ * Base class for buttons.
  */
 define( function( require ) {
   "use strict";
@@ -19,20 +19,11 @@ define( function( require ) {
    * @param {object} options
    * @constructor
    */
-  function Button( content, callback, options ) {
+  function Button2( content, callback, options ) {
 
     options = _.extend( {
         cursor: 'pointer',
-        fill: 'white',
-        disabledFill: 'rgb(175,175,175)',
-        stroke: 'black',
-        disabledStroke: 'rgb(175,175,175)',
-        lineWidth: 1,
-        //TODO default margins should be computed based on content dimensions
-        xMargin: 5,
-        yMargin: 5,
-        cornerRadius: 10,
-        label: ''
+        label: 'Button'
       },
       options );
 
@@ -42,14 +33,6 @@ define( function( require ) {
     thisButton._enabled = new Property( true );
     thisButton._listeners = [ callback ];
 
-    // rectangle around the content
-    var rectangle = new Rectangle( 0, 0, content.width + ( 2 * options.xMargin ), content.height + ( 2 * options.yMargin ), options.cornerRadius, options.cornerRadius,
-      {stroke: options.stroke, lineWidth: options.lineWidth, fill: options.fill } );
-    thisButton.addChild( rectangle );
-
-    // content centered in the rectangle
-    content.centerX = rectangle.width / 2;
-    content.centerY = rectangle.height / 2;
     thisButton.addChild( content );
 
     thisButton.addInputListener( new ButtonListener( {
@@ -63,8 +46,6 @@ define( function( require ) {
 
     thisButton._enabled.link( function( enabled ) {
       //TODO: enable/disable the content (if the content supports it)
-      rectangle.fill = enabled ? options.fill : options.disabledFill;
-      rectangle.stroke = enabled ? options.stroke : options.disabledStroke;
       thisButton.pickable = enabled;
     } );
 
@@ -73,7 +54,7 @@ define( function( require ) {
     thisButton.mutate( options );
   }
 
-  inherit( Node, Button, {
+  inherit( Node, Button2, {
 
     // Adds a listener. If already a listener, this is a no-op.
     addListener: function( listener ) {
@@ -101,5 +82,5 @@ define( function( require ) {
     get enabled() { return this._enabled.get(); }
   } );
 
-  return Button;
+  return Button2;
 } );
