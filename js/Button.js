@@ -36,41 +36,41 @@ define( function( require ) {
       },
       options );
 
-    var button = this;
-    Node.call( button );
+    var thisButton = this;
+    Node.call( thisButton );
 
-    button._enabled = new Property( true );
-    button._listeners = [ callback ];
+    thisButton._enabled = new Property( true );
+    thisButton._listeners = [ callback ];
 
     // rectangle around the content
     var rectangle = new Rectangle( 0, 0, content.width + ( 2 * options.xMargin ), content.height + ( 2 * options.yMargin ), options.cornerRadius, options.cornerRadius,
       {stroke: options.stroke, lineWidth: options.lineWidth, fill: options.fill } );
-    button.addChild( rectangle );
+    thisButton.addChild( rectangle );
 
     // content centered in the rectangle
     content.centerX = rectangle.width / 2;
     content.centerY = rectangle.height / 2;
-    button.addChild( content );
+    thisButton.addChild( content );
 
-    button.addInputListener( new ButtonListener( {
-      fire: function() { button._fire(); }
+    thisButton.addInputListener( new ButtonListener( {
+      fire: function() { thisButton._fire(); }
     } ) );
 
     // accessibility
-    button.addPeer( '<input type="button" aria-label="' + _.escape( options.label ) + '">',
-      { click: button._fire.bind( button ) }
+    thisButton.addPeer( '<input type="button" aria-label="' + _.escape( options.label ) + '">',
+      { click: thisButton._fire.bind( thisButton ) }
     );
 
-    //Mutate with the options after the layout is complete so that you can use width-dependent fields like centerX, etc.
-    //TODO: Does this remove the need to put options in the super call above?
-    button.mutate( options );
-
-    button._enabled.link( function( enabled ) {
+    thisButton._enabled.link( function( enabled ) {
       //TODO: enable/disable the content (if the content supports it)
       rectangle.fill = enabled ? options.fill : options.disabledFill;
       rectangle.stroke = enabled ? options.stroke : options.disabledStroke;
-      button.pickable = enabled;
+      thisButton.pickable = enabled;
     } );
+
+    //Mutate with the options after the layout is complete so that you can use width-dependent fields like centerX, etc.
+    //TODO: Does this remove the need to put options in the super call above?
+    thisButton.mutate( options );
   }
 
   inherit( Node, Button, {
