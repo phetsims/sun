@@ -80,7 +80,7 @@ define( function( require ) {
       } );
     },
 
-    set enabled( enabled ) { this._enabled.set( enabled ); },
+    set enabled( value ) { this._enabled.set( value ); },
 
     get enabled() { return this._enabled.get(); }
   } );
