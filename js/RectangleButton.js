@@ -9,7 +9,7 @@ define( function( require ) {
   'use strict';
 
   // imports
-  var Button = require( 'SUN/Button' ); //TODO use SUN/Button
+  var Button = require( 'SUN/Button' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Node = require( 'SCENERY/nodes/Node' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
