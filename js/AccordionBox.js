@@ -23,9 +23,10 @@ define( function( require ) {
   // Constants
   var CONTROL_BUTTON_INSET = 4;
   var TITLE_INSET = 10;
-  var CONTROL_BUTTON_DIMENSION = 20; // Can make this an option if desired.
+  var CONTROL_BUTTON_DIMENSION = 16; // Can make this an option if desired.
   var CONTROL_BUTTON_SYMBOL_WIDTH = CONTROL_BUTTON_DIMENSION * 0.6;
-  var CONTENT_INSET = 10; // Can make this an option if desired.
+  var CONTENT_HORIZONTAL_INSET = 15; // Can make this an option if desired.
+  var CONTENT_VERTICAL_INSET = 8; // Can make this an option if desired.
   var SYMBOL_LINE_WIDTH = 3;
   var CORNER_ROUNDING = 3;
 
@@ -103,10 +104,10 @@ define( function( require ) {
 
     // Create the container that will hold the contents when open.
     var containerWidth = Math.max( options.minWidth || 0,
-                                   Math.max( contentNode.width + 2 * CONTENT_INSET,
+                                   Math.max( contentNode.width + 2 * CONTENT_HORIZONTAL_INSET,
                                              CONTROL_BUTTON_INSET * 2 + CONTROL_BUTTON_DIMENSION + TITLE_INSET * 2 + title.width ) );
     var closedContainerHeight = CONTROL_BUTTON_INSET * 2 + CONTROL_BUTTON_DIMENSION;
-    var openContainerHeight = CONTROL_BUTTON_INSET * 2 + CONTROL_BUTTON_DIMENSION + 2 * CONTENT_INSET + contentNode.height;
+    var openContainerHeight = CONTROL_BUTTON_INSET * 2 + CONTROL_BUTTON_DIMENSION + 2 * CONTENT_VERTICAL_INSET + contentNode.height;
     this.openHeight = openContainerHeight; // This needs to be visible externally for layout purposes.
 
     var openContainer = new Rectangle( 0, 0, containerWidth, openContainerHeight, CORNER_ROUNDING, CORNER_ROUNDING,
@@ -155,7 +156,7 @@ define( function( require ) {
     title.centerY = openNode.centerY;
     var titleLeftBound = TITLE_INSET;
     var titleRightBound = containerWidth - TITLE_INSET;
-    contentNode.bottom = openContainerHeight - CONTENT_INSET;
+    contentNode.bottom = openContainerHeight - CONTENT_VERTICAL_INSET;
 
     if ( options.buttonPosition === 'left' ) {
       openNode.left = CONTROL_BUTTON_INSET;
@@ -169,10 +170,10 @@ define( function( require ) {
     }
 
     if ( options.contentPosition === 'left' ) {
-      contentNode.left = CONTENT_INSET;
+      contentNode.left = CONTENT_HORIZONTAL_INSET;
     }
     else if ( options.contentPosition === 'right' ) {
-      contentNode.right = CONTENT_INSET;
+      contentNode.right = CONTENT_HORIZONTAL_INSET;
     }
     else {
       contentNode.centerX = containerWidth / 2;
