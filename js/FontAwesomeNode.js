@@ -6,7 +6,7 @@
  * @author Sam Reid
  */
 define( function( require ) {
-  "use strict";
+  'use strict';
 
   var Image = require( 'SCENERY/nodes/Image' );
   var VBox = require( 'SCENERY/nodes/VBox' );

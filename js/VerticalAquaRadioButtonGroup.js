@@ -4,7 +4,7 @@
 //TODO: not ready for use in simulations, it will need further development & discussion first.
 //TODO: Abstract out common functionality between this and VerticalCheckBoxGroup
 define( function( require ) {
-  "use strict";
+  'use strict';
 
   var Path = require( 'SCENERY/nodes/Path' );
   var AquaRadioButton = require( 'SUN/AquaRadioButton' );

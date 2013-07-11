@@ -3,7 +3,7 @@
 //Render a simple vertical check box group, where the buttons all have the same sizes
 //TODO: not ready for use in simulations, it will need further development & discussion first.
 define( function( require ) {
-  "use strict";
+  'use strict';
 
   var Path = require( 'SCENERY/nodes/Path' );
   var CheckBox = require( 'SUN/CheckBox' );

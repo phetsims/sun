@@ -10,16 +10,16 @@
  * @author Chris Malley (PixelZoom, Inc.)
  */
 define( function( require ) {
-  "use strict";
+  'use strict';
 
   // imports
-  var assert = require( "ASSERT/assert" )( "beers-law-lab" );
-  var inherit = require( "PHET_CORE/inherit" );
-  var Node = require( "SCENERY/nodes/Node" );
-  var Path = require( "SCENERY/nodes/Path" );
-  var Rectangle = require( "SCENERY/nodes/Rectangle" );
-  var Shape = require( "KITE/Shape" );
-  var Vector2 = require( "DOT/Vector2" );
+  var assert = require( 'ASSERT/assert' )( 'beers-law-lab' );
+  var inherit = require( 'PHET_CORE/inherit' );
+  var Node = require( 'SCENERY/nodes/Node' );
+  var Path = require( 'SCENERY/nodes/Path' );
+  var Rectangle = require( 'SCENERY/nodes/Rectangle' );
+  var Shape = require( 'KITE/Shape' );
+  var Vector2 = require( 'DOT/Vector2' );
 
   /**
    * The button that is clicked to show the list of items.
@@ -32,10 +32,10 @@ define( function( require ) {
     Node.call( this );
 
     // up or down arrow
-    var arrow = new Path( { fill: "black" } );
+    var arrow = new Path( { fill: 'black' } );
     var arrowWidth = 0.5 * itemNode.height;
     var arrowHeight = arrowWidth * Math.sqrt( 3 ) / 2; // height of equilateral triangle
-    if ( options.listPosition === "above" ) {
+    if ( options.listPosition === 'above' ) {
       arrow.shape = new Shape().moveTo( 0, arrowHeight ).lineTo( arrowWidth / 2, 0 ).lineTo( arrowWidth, arrowHeight ).close(); // up arrow
     }
     else {
@@ -100,26 +100,26 @@ define( function( require ) {
         labelNode: null, // optional label, placed to the left of the combo box
         labelXSpacing: 10, // horizontal space between label and combo box
         // button
-        buttonFill: "white",
-        buttonStroke: "black",
+        buttonFill: 'white',
+        buttonStroke: 'black',
         buttonLineWidth: 1,
         buttonCornerRadius: 3,
         buttonXMargin: 4,
         buttonYMargin: 4,
         // list
-        listPosition: "below", // where the list is positioned relative to the button, either "below" or "above"
+        listPosition: 'below', // where the list is positioned relative to the button, either 'below' or 'above'
         //TODO consider defaulting this to the scene, so that list can be guaranteed to be in front
         listParent: thisNode, // node that will be used as the list's parent, useful for ensuring that the list is in front of everything else
         listXMargin: 4,
         listYMargin: 4,
-        listFill: "white",
+        listFill: 'white',
         listStroke: 'black',
         listLineWidth: 1,
         listCornerRadius: 5,
         // items
         itemXMargin: 6,
         itemYMargin: 6,
-        itemHighlightFill: "rgb(245,245,245)",
+        itemHighlightFill: 'rgb(245,245,245)',
         itemHighlightStroke: null,
         itemHighlightLineWidth: 1
       },
@@ -192,7 +192,7 @@ define( function( require ) {
       itemNode.top = options.listYMargin + ( j * itemHeight );
 
       // item interactivity
-      itemNode.cursor = "pointer";
+      itemNode.cursor = 'pointer';
       itemNode.addInputListener( itemListener );
     }
 
@@ -206,7 +206,7 @@ define( function( require ) {
         yOffset = thisNode.y - pParentLocal.y;
       }
       listNode.left = buttonNode.left + xOffset;
-      if ( options.listPosition === "above" ) {
+      if ( options.listPosition === 'above' ) {
         listNode.bottom = buttonNode.top + yOffset;
       }
       else {
@@ -224,7 +224,7 @@ define( function( require ) {
      */
     var enableClickToDismissListener;
 
-    // listener for "click outside to dismiss"
+    // listener for 'click outside to dismiss'
     var clickToDismissListener = {
       down: function( event ) {
         if ( enableClickToDismissListener ) {
@@ -238,7 +238,7 @@ define( function( require ) {
     };
 
     // button interactivity
-    buttonNode.cursor = "pointer";
+    buttonNode.cursor = 'pointer';
     buttonNode.addInputListener(
       {
         down: function( event ) {

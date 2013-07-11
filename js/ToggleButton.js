@@ -3,7 +3,7 @@
 //Render a simple toggle button (without icons or anything)
 //TODO: not ready for use in simulations, it will need further development & discussion first.
 define( function( require ) {
-  "use strict";
+  'use strict';
 
   var Node = require( 'SCENERY/nodes/Node' );
   var DOM = require( 'SCENERY/nodes/DOM' );

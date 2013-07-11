@@ -6,14 +6,14 @@
  * @author Chris Malley (PixelZoom, Inc.)
  */
 define( function( require ) {
-  "use strict";
+  'use strict';
 
   // imports
-  var ButtonListener = require( "SCENERY/input/ButtonListener" );
-  var FontAwesomeNode = require( "SUN/FontAwesomeNode" );
-  var inherit = require( "PHET_CORE/inherit" );
-  var Node = require( "SCENERY/nodes/Node" );
-  var Rectangle = require( "SCENERY/nodes/Rectangle" );
+  var ButtonListener = require( 'SCENERY/input/ButtonListener' );
+  var FontAwesomeNode = require( 'SUN/FontAwesomeNode' );
+  var inherit = require( 'PHET_CORE/inherit' );
+  var Node = require( 'SCENERY/nodes/Node' );
+  var Rectangle = require( 'SCENERY/nodes/Rectangle' );
 
   /**
    * @param {Node} content
@@ -33,8 +33,8 @@ define( function( require ) {
     var thisNode = this;
     Node.call( this );
 
-    var checkedNode = new FontAwesomeNode( "check", { scale: options.boxScale } );
-    var uncheckedNode = new FontAwesomeNode( "check_empty", { scale: options.boxScale } );
+    var checkedNode = new FontAwesomeNode( 'check', { scale: options.boxScale } );
+    var uncheckedNode = new FontAwesomeNode( 'check_empty', { scale: options.boxScale } );
 
     thisNode.addChild( checkedNode );
     thisNode.addChild( uncheckedNode );

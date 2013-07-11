@@ -7,7 +7,7 @@
  * @author Chris Malley (PixelZoom, Inc.)
  */
 define( function( require ) {
-  "use strict";
+  'use strict';
 
   // import
   var ButtonListener = require( 'SCENERY/input/ButtonListener' );
