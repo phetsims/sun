@@ -21,7 +21,7 @@ define( function( require ) {
    * @constructor
    */
   function VerticalCheckBoxGroup( items, options ) {
-    options = _.extend( { spacing: 3 }, options );
+    options = _.extend( { spacing: 3, checkBoxColor: 'black' }, options );
     var padding = options.padding ? options.padding : 8; //TODO should be handled in _.extend
 
     var width = 0;
@@ -35,11 +35,12 @@ define( function( require ) {
       var offset = items[i].indent || 0;
       var content = new Path( {shape: Shape.rect( 0, 0, width + padding - offset, 0 ), children: [items[i].content], renderer: 'svg'} );
       //Add an invisible strut to each content to make the widths match
+      var checkBox = new CheckBox( content, items[i].property, {label: items[i].label, checkBoxColor: options.checkBoxColor} );
       if ( items[i].indent ) {
-        children.push( new HBox( {children: [new Rectangle( 0, 0, items[i].indent, 1 ), new CheckBox( content, items[i].property, {label: items[i].label} )]} ) );
+        children.push( new HBox( {children: [ new Rectangle( 0, 0, items[i].indent, 1 ), checkBox ]} ) );
       }
       else {
-        children.push( new HBox( {children: [new CheckBox( content, items[i].property, {label: items[i].label} )]} ) );
+        children.push( new HBox( {children: [checkBox]} ) );
       }
     }
 

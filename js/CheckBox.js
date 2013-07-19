@@ -27,14 +27,15 @@ define( function( require ) {
       {
         spacing: 5,
         boxScale: 0.75,
-        cursor: 'pointer'
+        cursor: 'pointer',
+        checkBoxColor: 'black'
       }, options );
 
     var thisNode = this;
     Node.call( this );
 
-    var checkedNode = new FontAwesomeNode( 'check', { scale: options.boxScale } );
-    var uncheckedNode = new FontAwesomeNode( 'check_empty', { scale: options.boxScale } );
+    var checkedNode = new FontAwesomeNode( 'check', { scale: options.boxScale, fill: options.checkBoxColor } );
+    var uncheckedNode = new FontAwesomeNode( 'check_empty', { scale: options.boxScale, fill: options.checkBoxColor } );
 
     thisNode.addChild( checkedNode );
     thisNode.addChild( uncheckedNode );
