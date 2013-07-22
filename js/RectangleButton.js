@@ -37,6 +37,7 @@ define( function( require ) {
    */
   function RectangleButton( content, callback, options ) {
 
+    //TODO it would be nice to have less-verbose names, but supertypes may have similar options. For example, TextButton has textFill.
     options = _.extend( {
         // stroke
         rectangleStroke: 'black',
