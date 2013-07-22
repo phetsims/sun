@@ -126,7 +126,7 @@ define( function( require ) {
           this._parent.addChild( this._downNode );
         }
         else {
-          throw new Exception( "unsupported state: " + this._state );
+          throw new Error( "unsupported state: " + this._state );
         }
       }
       else {
