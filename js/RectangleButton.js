@@ -1,7 +1,7 @@
 // Copyright 2002-2013, University of Colorado Boulder
 
 /**
- * A rectangular button.
+ * A rectangular button. The background fill changes to give feedback about state. The content node is centered in the rectangle.
  *
  * @author Chris Malley (PixelZoom, Inc.)
  */
@@ -9,10 +9,25 @@ define( function( require ) {
   'use strict';
 
   // imports
-  var Button = require( 'SUN/Button' );
+  var assert = require( 'ASSERT/assert' )( 'sun' );
+  var Color = require( 'SCENERY/util/Color' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Node = require( 'SCENERY/nodes/Node' );
+  var PushButton = require( 'SUN/PushButton' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
+
+  // Creates a node that represents the button is a specific state.
+  var createNode = function( content, stroke, fill, rectangleLineWidth, rectangleXMargin, rectangleYMargin, rectangleCornerRadius ) {
+    var node = new Node();
+    var rectangle = new Rectangle(
+      0, 0, content.width + rectangleXMargin + rectangleXMargin, content.height + rectangleYMargin + rectangleYMargin, rectangleCornerRadius, rectangleCornerRadius,
+      { stroke: stroke, fill: fill, rectangleLineWidth: rectangleLineWidth } );
+    node.addChild( rectangle );
+    node.addChild( content );
+    content.centerX = rectangle.centerX;
+    content.centerY = rectangle.centerY;
+    return node;
+  };
 
   /**
    * @param {Node} content
@@ -23,46 +38,32 @@ define( function( require ) {
   function RectangleButton( content, callback, options ) {
 
     options = _.extend( {
-        rectangleFill: 'white',
-        rectangleFillDisabled: 'rgb(225,225,225)',
+        // stroke
         rectangleStroke: 'black',
         rectangleStrokeDisabled: 'rgb(175,175,175)',
+        // fill
+        rectangleFillUp: new Color( 255, 200, 0 ),
+        rectangleFillDisabled: 'white',
+        // options that apply to all states
         rectangleLineWidth: 1,
-        //TODO default margins and corner radius should be computed based on content dimensions
         rectangleXMargin: 5,
         rectangleYMargin: 5,
         rectangleCornerRadius: 10
       },
       options );
 
-    var thisButton = this;
+    // generated colors
+    assert && assert( options.rectangleFillUp instanceof Color ); //TODO can we relax this requirement?
+    options.rectangleFillOver = options.rectangleFillOver || options.rectangleFillUp.brighterColor( 0.9 );
+    options.rectangleFillDown = options.rectangleFillDown || options.rectangleFillUp.darkerColor( 0.9 );
 
-    // parent for content + rectangle
-    var node = new Node();
-
-    // rectangle around the content
-    var rectangle = new Rectangle(
-      0, 0, content.width + ( 2 * options.rectangleXMargin ), content.height + ( 2 * options.rectangleYMargin ), options.rectangleCornerRadius, options.rectangleCornerRadius,
-      { rectangleLineWidth: options.lineWidth } );
-    node.addChild( rectangle );
-
-    // content centered in the rectangle
-    content.centerX = rectangle.width / 2;
-    content.centerY = rectangle.height / 2;
-    node.addChild( content );
-
-    Button.call( thisButton, node, callback );
-
-    // enable/disable the pieces that are specific to this subtype
-    thisButton._enabled.link( function( enabled ) {
-      rectangle.fill = enabled ? options.rectangleFill : options.rectangleFillDisabled;
-      rectangle.stroke = enabled ? options.rectangleStroke : options.rectangleStrokeDisabled;
-    } );
-
-    thisButton.mutate( options );
+    PushButton.call( this,
+      createNode( content, options.rectangleStroke, options.rectangleFillUp, options.rectangleLineWidth, options.rectangleXMargin, options.rectangleYMargin, options.rectangleCornerRadius ),
+      createNode( content, options.rectangleStroke, options.rectangleFillOver, options.rectangleLineWidth, options.rectangleXMargin, options.rectangleYMargin, options.rectangleCornerRadius ),
+      createNode( content, options.rectangleStroke, options.rectangleFillDown, options.rectangleLineWidth, options.rectangleXMargin, options.rectangleYMargin, options.rectangleCornerRadius ),
+      createNode( content, options.rectangleStrokeDisabled, options.rectangleFillDisabled, options.rectangleLineWidth, options.rectangleXMargin, options.rectangleYMargin, options.rectangleCornerRadius ),
+      callback, options );
   }
 
-  inherit( Button, RectangleButton );
-
-  return RectangleButton;
+  return inherit( PushButton, RectangleButton );
 } );
