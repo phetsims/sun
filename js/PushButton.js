@@ -41,7 +41,7 @@ define( function( require ) {
     thisButton._disabledNode = disabledNode;
 
     thisButton._state = 'up';
-    thisButton._enabled = new Property( true );
+    thisButton._enabled = new Property( true ); //TODO make this public and ditch the ES5 set/get?
     thisButton._listeners = [ callback ];
 
     // state nodes are attached to a parent, so we still addChild to a button without worrying about affects of removing children
