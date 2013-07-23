@@ -114,6 +114,7 @@ define( function( require ) {
     },
 
     _update: function() {
+      // use visible instead of add/removeChild to prevent flickering
       var enabled = this._enabled.get();
       this._upNode.visible = ( this._state === 'up' && enabled );
       this._downNode.visible = ( this._state === 'down' && enabled );
