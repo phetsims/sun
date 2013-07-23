@@ -44,10 +44,10 @@ define( function( require ) {
     thisButton._enabled = new Property( true ); //TODO make this public and ditch the ES5 set/get?
     thisButton._listeners = [ callback ];
 
-    // state nodes are attached to a parent, so we still addChild to a button without worrying about affects of removing children
-    thisButton._parent = new Node();
-    thisButton._parent.addChild( upNode );
-    thisButton.addChild( thisButton._parent );
+    thisButton.addChild( upNode );
+    thisButton.addChild( overNode );
+    thisButton.addChild( downNode );
+    thisButton.addChild( disabledNode );
 
     thisButton.addInputListener( new ButtonListener( {
 
@@ -114,24 +114,11 @@ define( function( require ) {
     },
 
     _update: function() {
-      this._parent.removeAllChildren();
-      if ( this._enabled.get() ) {
-        if ( this._state === 'up' ) {
-          this._parent.addChild( this._upNode );
-        }
-        else if ( this._state === 'over' ) {
-          this._parent.addChild( this._overNode );
-        }
-        else if ( this._state === 'down' ) {
-          this._parent.addChild( this._downNode );
-        }
-        else {
-          throw new Error( "unsupported state: " + this._state );
-        }
-      }
-      else {
-        this._parent.addChild( this._disabledNode );
-      }
+      var enabled = this._enabled.get();
+      this._upNode.visible = ( this._state === 'up' && enabled );
+      this._downNode.visible = ( this._state === 'down' && enabled );
+      this._overNode.visible = ( this._state === 'over' && enabled );
+      this._disabledNode.visible = !enabled;
     },
 
     set enabled( value ) { this._enabled.set( value ); },
