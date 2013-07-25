@@ -223,12 +223,13 @@ define( function( require ) {
      * This behavior is may change, and is being discussed in scenery#58.
      */
     var enableClickToDismissListener;
+    var sceneNode; // store the node that clickToDismissListener is added to, because the scene may change, see sun#14
 
     // listener for 'click outside to dismiss'
     var clickToDismissListener = {
       down: function( event ) {
         if ( enableClickToDismissListener ) {
-          thisNode.getUniqueTrail().rootNode().removeInputListener( clickToDismissListener );
+          sceneNode.removeInputListener( clickToDismissListener );
           options.listParent.removeChild( listNode );
         }
         else {
@@ -246,7 +247,8 @@ define( function( require ) {
             moveList();
             options.listParent.addChild( listNode );
             enableClickToDismissListener = false;
-            thisNode.getUniqueTrail().rootNode().addInputListener( clickToDismissListener ); // add listener to scene
+            sceneNode = thisNode.getUniqueTrail().rootNode();
+            sceneNode.addInputListener( clickToDismissListener ); // add listener to scene
           }
         }
       } );
