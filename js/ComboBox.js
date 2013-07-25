@@ -248,7 +248,7 @@ define( function( require ) {
             options.listParent.addChild( listNode );
             enableClickToDismissListener = false;
             sceneNode = thisNode.getUniqueTrail().rootNode();
-            sceneNode.addInputListener( clickToDismissListener ); // add listener to scene
+            sceneNode.addInputListener( clickToDismissListener );
           }
         }
       } );
