@@ -26,7 +26,7 @@ define( function( require ) {
     options = _.extend(
       {
         spacing: 5,
-        boxScale: 0.75,
+        boxScale: 0.6,
         cursor: 'pointer',
         checkBoxColor: 'black'
       }, options );
@@ -34,8 +34,10 @@ define( function( require ) {
     var thisNode = this;
     Node.call( this );
 
+    var x = options.boxScale / 0.75;
+
     //Make the background white.  Until we are creating our own shapes, just put a white rectangle behind the font awesome check box icons
-    var whiteBackground = new Rectangle( 0, -25, 25, 25, 5, 5, {fill: 'white'} );
+    var whiteBackground = new Rectangle( 0, -25 * x, 25 * x, 25 * x, 5 * x, 5 * x, {fill: 'white'} );
 
     var checkedNode = new FontAwesomeNode( 'check', { scale: options.boxScale, fill: options.checkBoxColor } );
     var uncheckedNode = new FontAwesomeNode( 'check_empty', { scale: options.boxScale, fill: options.checkBoxColor } );
