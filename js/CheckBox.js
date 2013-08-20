@@ -82,7 +82,5 @@ define( function( require ) {
     this.mutate( options );
   }
 
-  inherit( Node, CheckBox );
-
-  return CheckBox;
+  return inherit( Node, CheckBox );
 } );
