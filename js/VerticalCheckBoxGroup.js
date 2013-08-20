@@ -35,7 +35,13 @@ define( function( require ) {
       var offset = items[i].indent || 0;
       var content = new Path( {shape: Shape.rect( 0, 0, width + padding - offset, 0 ), children: [items[i].content], renderer: 'svg'} );
       //Add an invisible strut to each content to make the widths match
-      var checkBox = new CheckBox( content, items[i].property, {label: items[i].label, checkBoxColor: options.checkBoxColor} );
+      var checkBox = new CheckBox( content, items[i].property, {label: items[i].label, checkBoxColor: options.checkBoxColor,
+
+        //Increase padding to match the spacing so the touch hit areas will be adjacent.
+        touchAreaTopPadding: 5,
+        touchAreaBottomPadding: 5,
+        touchAreaLeftPadding: 5,
+        touchAreaRightPadding: 5} );
       if ( items[i].indent ) {
         children.push( new HBox( {children: [ new Rectangle( 0, 0, items[i].indent, 1 ), checkBox ]} ) );
       }
