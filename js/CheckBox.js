@@ -14,6 +14,7 @@ define( function( require ) {
   var inherit = require( 'PHET_CORE/inherit' );
   var Node = require( 'SCENERY/nodes/Node' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
+  var Shape = require( 'KITE/Shape' );
 
   /**
    * @param {Node} content
@@ -28,7 +29,13 @@ define( function( require ) {
         spacing: 5,
         boxScale: 0.6,
         cursor: 'pointer',
-        checkBoxColor: 'black'
+        checkBoxColor: 'black',
+
+        //TODO: Should these default to something larger?
+        touchAreaTopPadding: 0,
+        touchAreaBottomPadding: 0,
+        touchAreaLeftPadding: 0,
+        touchAreaRightPadding: 0
       }, options );
 
     var thisNode = this;
@@ -51,7 +58,7 @@ define( function( require ) {
     content.centerY = checkedNode.centerY;
 
     // put a rectangle on top of everything to prevent dead zones which clicking
-    thisNode.addChild( new Rectangle( thisNode.left, thisNode.top, thisNode.width, thisNode.height ) );
+    thisNode.mouseArea = thisNode.touchArea = Shape.rectangle( thisNode.left - options.touchAreaLeftPadding, thisNode.top - options.touchAreaTopPadding, thisNode.width + options.touchAreaLeftPadding + options.touchAreaRightPadding, thisNode.height + options.touchAreaTopPadding + options.touchAreaBottomPadding );
 
     // interactivity
     thisNode.addInputListener( new ButtonListener( {
