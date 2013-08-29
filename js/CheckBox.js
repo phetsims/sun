@@ -11,10 +11,12 @@ define( function( require ) {
   // imports
   var ButtonListener = require( 'SCENERY/input/ButtonListener' );
   var FontAwesomeNode = require( 'SUN/FontAwesomeNode' );
+  var Image = require( 'SCENERY/nodes/Image' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Node = require( 'SCENERY/nodes/Node' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var Shape = require( 'KITE/Shape' );
+  var Text = require( 'SCENERY/nodes/Text' );
 
   /**
    * @param {Node} content
@@ -89,5 +91,61 @@ define( function( require ) {
     this.mutate( options );
   }
 
-  return inherit( Node, CheckBox );
+  return inherit( Node, CheckBox, { /* prototype properties */ }, {
+
+    // static properties
+
+    /**
+     * Factory method, creates a check box with a text label.
+     * @param {String} text
+     * @param {*} textOptions options that apply to the text, same as scenery.Text
+     * @param {Property<Boolean>} property
+     * @param checkBoxOptions options that apply to the check box as a whole
+     * @returns {CheckBox}
+     */
+    createTextCheckBox: function( text, textOptions, property, checkBoxOptions ) {
+       return new CheckBox( new Text( text, textOptions ), property, checkBoxOptions );
+    },
+
+    /**
+     * Factory method, creates a check box with an image.
+     * @param {Image} image
+     * @param {*} imageOptions options that apply to the image, same as scenery.Image
+     * @param {Property<Boolean>} property
+     * @param checkBoxOptions options that apply to the check box as a whole
+     * @returns {CheckBox}
+     */
+    createImageCheckBox: function( image, imageOptions, property, checkBoxOptions ) {
+      return new CheckBox( new Image( image, imageOptions ), property, checkBoxOptions );
+    },
+
+    /**
+     * Factory method, creates a check box with text and and image.
+     * The image is to the right of the text, and vertically centered.
+     * @param {String} text
+     * @param {*} textOptions options that apply to the text, same as scenery.Text
+     * @param {Image} image
+     * @param {*} imageOptions options that apply to the image, same as scenery.Image
+     * @param {Property<Boolean>} property
+     * @param checkBoxOptions options that apply to the check box as a whole
+     * @returns {CheckBox}
+     */
+    createTextImageCheckBox: function( text, textOptions, image, imageOptions, property, checkBoxOptions ) {
+
+      checkBoxOptions = _.extend( {
+        xSpacing: 6
+      }, checkBoxOptions );
+
+      var textNode = new Text( text, textOptions );
+      var imageNode = new Image( image, imageOptions );
+      var content = new Node();
+      content.addChild( textNode );
+      content.addChild( imageNode );
+      //TODO support different layouts of text and image?
+      imageNode.left = textNode.right + checkBoxOptions.xSpacing;
+      imageNode.centerY = textNode.centerY;
+
+      return new CheckBox( content, property, checkBoxOptions );
+    }
+  } );
 } );
