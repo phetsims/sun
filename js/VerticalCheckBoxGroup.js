@@ -37,6 +37,7 @@ define( function( require ) {
       //Add an invisible strut to each content to make the widths match
       var checkBox = new CheckBox( content, items[i].property, {label: items[i].label, checkBoxColor: options.checkBoxColor,
 
+        //TODO '5' appears to be dependent on options.spacing
         //Increase padding to match the spacing so the touch hit areas will be adjacent.
         touchAreaTopPadding: 5,
         touchAreaBottomPadding: 5,
