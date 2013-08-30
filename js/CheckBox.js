@@ -154,9 +154,9 @@ define( function( require ) {
         checkBoxOptions.icon.centerY = textNode.centerY;
       }
 
-       //TODO adding a property to content like this has a bad smell. But this is how CheckBox currently enables/disabled content.
       content.setEnabled = function( value ) {
         textNode.stroke = value ? textOptions.stroke : textOptions.strokeDisabled;
+        // enabled/disable the content if it implements setEnabled
         if ( checkBoxOptions.icon && checkBoxOptions.icon.setEnabled ) {
           checkBoxOptions.icon.setEnabled( value );
         }
