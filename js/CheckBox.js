@@ -26,19 +26,18 @@ define( function( require ) {
    */
   function CheckBox( content, property, options ) {
     var checkBox = this;
-    options = _.extend(
-      {
-        spacing: 5,
-        boxScale: 0.6,
-        cursor: 'pointer',
-        checkBoxColor: 'black',
-        checkBoxColorDisabled: 'gray',
-        touchAreaTopPadding: 0,
-        touchAreaBottomPadding: 0,
-        touchAreaLeftPadding: 0,
-        touchAreaRightPadding: 0
-      }, options );
-    
+    options = _.extend( {
+      spacing: 5,
+      boxScale: 0.6,
+      cursor: 'pointer',
+      checkBoxColor: 'black',
+      checkBoxColorDisabled: 'gray',
+      touchAreaTopPadding: 0,
+      touchAreaBottomPadding: 0,
+      touchAreaLeftPadding: 0,
+      touchAreaRightPadding: 0
+    }, options );
+
     var thisNode = this;
     Node.call( this );
 
