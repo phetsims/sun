@@ -138,7 +138,7 @@ define( function( require ) {
 
       checkBoxOptions = _.extend( {
         icon: null,  // an optional node, added to the right of the text
-        xSpacing: 5
+        iconSpacing: 5
       }, checkBoxOptions );
 
       var content = new Node();
@@ -151,7 +151,7 @@ define( function( require ) {
       if ( checkBoxOptions.icon ) {
         content.addChild( checkBoxOptions.icon );
         //TODO support different layouts of text and image?
-        checkBoxOptions.icon.left = textNode.right + checkBoxOptions.xSpacing;
+        checkBoxOptions.icon.left = textNode.right + checkBoxOptions.iconSpacing;
         checkBoxOptions.icon.centerY = textNode.centerY;
       }
 
