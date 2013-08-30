@@ -32,51 +32,59 @@ define( function( require ) {
         boxScale: 0.6,
         cursor: 'pointer',
         checkBoxColor: 'black',
-
-        //TODO: Should these default to something larger?
+        checkBoxColorDisabled: 'gray',
         touchAreaTopPadding: 0,
         touchAreaBottomPadding: 0,
         touchAreaLeftPadding: 0,
         touchAreaRightPadding: 0
       }, options );
-
+    
     var thisNode = this;
     Node.call( this );
+
+    // save this stuff for use in prototype functions
+    thisNode._options = options;
+    thisNode._content = content;
+    thisNode._enabled = true;
 
     var x = options.boxScale / 0.75;
 
     //Make the background white.  Until we are creating our own shapes, just put a white rectangle behind the font awesome check box icons
     var whiteBackground = new Rectangle( 0, -25 * x, 25 * x, 25 * x, 5 * x, 5 * x, {fill: 'white'} );
 
-    var checkedNode = new FontAwesomeNode( 'check', { scale: options.boxScale, fill: options.checkBoxColor } );
-    var uncheckedNode = new FontAwesomeNode( 'check_empty', { scale: options.boxScale, fill: options.checkBoxColor } );
+    thisNode._checkedNode = new FontAwesomeNode( 'check', { scale: options.boxScale, fill: options.checkBoxColor } );
+    thisNode._uncheckedNode = new FontAwesomeNode( 'check_empty', { scale: options.boxScale, fill: options.checkBoxColor } );
 
     thisNode.addChild( whiteBackground );
-    thisNode.addChild( checkedNode );
-    thisNode.addChild( uncheckedNode );
+    thisNode.addChild( thisNode._checkedNode );
+    thisNode.addChild( thisNode._uncheckedNode );
     thisNode.addChild( content );
 
-    content.left = checkedNode.right + options.spacing;
-    content.centerY = checkedNode.centerY;
+    content.left = thisNode._checkedNode.right + options.spacing;
+    content.centerY = thisNode._checkedNode.centerY;
 
     // put a rectangle on top of everything to prevent dead zones which clicking
-    thisNode.mouseArea = thisNode.touchArea = Shape.rectangle( thisNode.left - options.touchAreaLeftPadding, thisNode.top - options.touchAreaTopPadding, thisNode.width + options.touchAreaLeftPadding + options.touchAreaRightPadding, thisNode.height + options.touchAreaTopPadding + options.touchAreaBottomPadding );
+    thisNode.mouseArea = thisNode.touchArea = Shape.rectangle(
+      thisNode.left - options.touchAreaLeftPadding, thisNode.top - options.touchAreaTopPadding,
+      thisNode.width + options.touchAreaLeftPadding + options.touchAreaRightPadding, thisNode.height + options.touchAreaTopPadding + options.touchAreaBottomPadding );
 
     // interactivity
     thisNode.addInputListener( new ButtonListener( {
       fire: function() {
-        property.value = !property.value;
+        if ( thisNode._enabled ) {
+          property.value = !property.value;
+        }
       }
     } ) );
 
     // sync with property
     property.link( function( checked ) {
-      checkedNode.visible = checked;
-      uncheckedNode.visible = !checked;
+      thisNode._checkedNode.visible = checked;
+      thisNode._uncheckedNode.visible = !checked;
     } );
 
     //Add accessibility
-    this.addPeer( '<input type="checkbox">', {click: function() {property.value = !property.value;}, label: options.label} );
+    thisNode.addPeer( '<input type="checkbox">', {click: function() {property.value = !property.value;}, label: options.label} );
     property.link( function( value ) {
       _.each( checkBox.instances, function( instance ) {
 
@@ -88,62 +96,72 @@ define( function( require ) {
     } );
 
     // Apply additional options
-    this.mutate( options );
+    thisNode.mutate( options );
   }
 
-  return inherit( Node, CheckBox, { /* prototype properties */ }, {
+  return inherit( Node, CheckBox, {
+
+    // prototype properties
+
+    get enabled() { return this._enabled; },
+
+    set enabled( value ) {
+
+      this._enabled = value;
+
+      // set the color of the check box icons
+      this._checkedNode.fill = value ? this._options.checkBoxColor : this._options.checkBoxColorDisabled;
+      this._uncheckedNode.fill = this._checkedNode.fill;
+      
+      // enable/disable the content, if it supports it
+      if ( this._content.setEnabled ) {
+        this._content.setEnabled( value );
+      }
+    }
+    
+  }, {
 
     // static properties
 
     /**
-     * Factory method, creates a check box with a text label.
+     * Factory method, creates a check box with a text label and optional icon.
      * @param {String} text
      * @param {*} textOptions options that apply to the text, same as scenery.Text
      * @param {Property<Boolean>} property
-     * @param checkBoxOptions options that apply to the check box as a whole
      * @returns {CheckBox}
      */
     createTextCheckBox: function( text, textOptions, property, checkBoxOptions ) {
-       return new CheckBox( new Text( text, textOptions ), property, checkBoxOptions );
-    },
 
-    /**
-     * Factory method, creates a check box with an image.
-     * @param {Image} image
-     * @param {*} imageOptions options that apply to the image, same as scenery.Image
-     * @param {Property<Boolean>} property
-     * @param checkBoxOptions options that apply to the check box as a whole
-     * @returns {CheckBox}
-     */
-    createImageCheckBox: function( image, imageOptions, property, checkBoxOptions ) {
-      return new CheckBox( new Image( image, imageOptions ), property, checkBoxOptions );
-    },
-
-    /**
-     * Factory method, creates a check box with text and and image.
-     * The image is to the right of the text, and vertically centered.
-     * @param {String} text
-     * @param {*} textOptions options that apply to the text, same as scenery.Text
-     * @param {Image} image
-     * @param {*} imageOptions options that apply to the image, same as scenery.Image
-     * @param {Property<Boolean>} property
-     * @param checkBoxOptions options that apply to the check box as a whole
-     * @returns {CheckBox}
-     */
-    createTextImageCheckBox: function( text, textOptions, image, imageOptions, property, checkBoxOptions ) {
+      textOptions = _.extend( {
+        stroke: 'black',
+        strokeDisabled: 'gray'
+      }, textOptions );
 
       checkBoxOptions = _.extend( {
-        xSpacing: 6
+        icon: null  // an optional node, added to the right of the text
       }, checkBoxOptions );
 
-      var textNode = new Text( text, textOptions );
-      var imageNode = new Image( image, imageOptions );
       var content = new Node();
+
+      // text
+      var textNode = new Text( text, textOptions );
       content.addChild( textNode );
-      content.addChild( imageNode );
-      //TODO support different layouts of text and image?
-      imageNode.left = textNode.right + checkBoxOptions.xSpacing;
-      imageNode.centerY = textNode.centerY;
+
+      // options icon
+      if ( checkBoxOptions.icon ) {
+        content.addChild( checkBoxOptions.icon );
+        //TODO support different layouts of text and image?
+        checkBoxOptions.icon.left = textNode.left + checkBoxOptions.xSpacing;
+        checkBoxOptions.icon.centerY = textNode.centerY;
+      }
+
+       //TODO adding a property to content like this has a bad smell. But this is how CheckBox currently enables/disabled content.
+      content.setEnabled = function( value ) {
+        textNode.stroke = value ? textOptions.stroke : textOptions.strokeDisabled;
+        if ( checkBoxOptions.icon && checkBoxOptions.icon.setEnabled ) {
+          checkBoxOptions.icon.setEnabled( value );
+        }
+      };
 
       return new CheckBox( content, property, checkBoxOptions );
     }
