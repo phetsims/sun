@@ -137,7 +137,8 @@ define( function( require ) {
       }, textOptions );
 
       checkBoxOptions = _.extend( {
-        icon: null  // an optional node, added to the right of the text
+        icon: null,  // an optional node, added to the right of the text
+        xSpacing: 5
       }, checkBoxOptions );
 
       var content = new Node();
