@@ -1,3 +1,4 @@
+9/3/13 #18, use visible instead of add/removeChild to control ComboBox popup list
 6/4/13 integrate scenery.ButtonListener into sun.RadioButton
 6/4/13 integrate scenery.ButtonListener into sun.Button
 6/4/13 call event.abort at appropriate places in ComboBox, so that controls aren't selected behind popup

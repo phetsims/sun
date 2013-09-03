@@ -150,7 +150,8 @@ define( function( require ) {
     var listWidth = itemWidth + ( 2 * options.listXMargin );
     var listHeight = ( items.length * itemHeight ) + ( 2 * options.listYMargin );
     var listNode = new Rectangle( 0, 0, listWidth, listHeight, options.listCornerRadius, options.listCornerRadius,
-      { fill: options.listFill, stroke: options.listStroke, lineWidth: options.listLineWidth } );
+      { fill: options.listFill, stroke: options.listStroke, lineWidth: options.listLineWidth, visible: false } );
+    options.listParent.addChild( listNode );
 
     //TODO move these to ItemNode
     // how to highlight an item in the list
@@ -177,7 +178,7 @@ define( function( require ) {
       up: function( event ) {
         unhighlightItem( event.currentTarget );
         property.value = event.currentTarget.item.value; // set the property
-        options.listParent.removeChild( listNode ); // close the list
+        listNode.visible = false; // close the list
         thisNode.getUniqueTrail().rootNode().removeInputListener( clickToDismissListener ); // remove the click-to-dismiss listener
         event.abort(); // prevent nodes (eg, controls) behind the list from receiving the event
       }
@@ -230,7 +231,7 @@ define( function( require ) {
       down: function( event ) {
         if ( enableClickToDismissListener ) {
           sceneNode.removeInputListener( clickToDismissListener );
-          options.listParent.removeChild( listNode );
+          listNode.visible = false;
         }
         else {
           enableClickToDismissListener = true;
@@ -243,9 +244,9 @@ define( function( require ) {
     buttonNode.addInputListener(
       {
         down: function( event ) {
-          if ( !options.listParent.isChild( listNode ) ) {
+          if ( !listNode.visible ) {
             moveList();
-            options.listParent.addChild( listNode );
+            listNode.visible = true;
             enableClickToDismissListener = false;
             sceneNode = thisNode.getUniqueTrail().rootNode();
             sceneNode.addInputListener( clickToDismissListener );
