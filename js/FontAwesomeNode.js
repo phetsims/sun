@@ -45,11 +45,10 @@ define( function( require ) {
 
     // add internal values required by supertype constructor
     options = _.extend( options, {
-      shape: new Shape( icons[iconName] ),
       matrix: new Matrix3( 0.025, 0, 0, 0, -0.025, 0, 0, 0, 1 )
     } );
 
-    Path.call( this, options );
+    Path.call( this, new Shape( icons[iconName] ), options );
   }
 
   inherit( Path, FontAwesomeNode );

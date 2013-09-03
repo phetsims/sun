@@ -24,7 +24,7 @@ define( function( require ) {
   function ToggleNode( trueNode, falseNode, booleanProperty ) {
     var thisNode = this;
     Node.call( thisNode );
-    var background = new Path( { shape: Shape.bounds( trueNode.bounds.union( falseNode.bounds ) ) } );
+    var background = new Path( Shape.bounds( trueNode.bounds.union( falseNode.bounds ) ) );
     booleanProperty.link( function( value ) {
       thisNode.children = [ background, value ? trueNode : falseNode ];
     } );

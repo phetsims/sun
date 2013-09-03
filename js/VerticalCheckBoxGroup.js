@@ -33,7 +33,7 @@ define( function( require ) {
     for ( i = 0; i < items.length; i++ ) {
 
       var offset = items[i].indent || 0;
-      var content = new Path( {shape: Shape.rect( 0, 0, width + padding - offset, 0 ), children: [items[i].content], renderer: 'svg'} );
+      var content = new Path( Shape.rect( 0, 0, width + padding - offset, 0 ), { children: [items[i].content], renderer: 'svg'} );
       //Add an invisible strut to each content to make the widths match
       var checkBox = new CheckBox( content, items[i].property, {label: items[i].label, checkBoxColor: options.checkBoxColor,
 

@@ -32,7 +32,7 @@ define( function( require ) {
     var thisNode = this;
     Node.call( thisNode, options );
 
-    var background = new Path( { shape: Shape.bounds( selectedNode.bounds.union( deselectedNode.bounds ) ) } );
+    var background = new Path( Shape.bounds( selectedNode.bounds.union( deselectedNode.bounds ) ) );
 
     thisNode.addChild( background );
     thisNode.addChild( selectedNode );

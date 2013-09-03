@@ -74,7 +74,7 @@ define( function( require ) {
       lineTo( CONTROL_BUTTON_SYMBOL_WIDTH / 2, CONTROL_BUTTON_SYMBOL_WIDTH ).
       moveTo( 0, CONTROL_BUTTON_SYMBOL_WIDTH / 2 ).
       lineTo( CONTROL_BUTTON_SYMBOL_WIDTH, CONTROL_BUTTON_SYMBOL_WIDTH / 2 );
-    openNode.addChild( new Path( { shape: plusSymbolShape,
+    openNode.addChild( new Path( plusSymbolShape, {
       lineWidth: SYMBOL_LINE_WIDTH,
       stroke: 'white',
       centerX: CONTROL_BUTTON_DIMENSION / 2,
@@ -89,7 +89,7 @@ define( function( require ) {
       } );
     var minusSymbolShape = new Shape().moveTo( -CONTROL_BUTTON_SYMBOL_WIDTH / 2, 0 ).
       lineTo( CONTROL_BUTTON_SYMBOL_WIDTH / 2, 0 );
-    closeNode.addChild( new Path( { shape: minusSymbolShape,
+    closeNode.addChild( new Path( minusSymbolShape, {
       lineWidth: SYMBOL_LINE_WIDTH,
       stroke: 'white',
       centerX: CONTROL_BUTTON_DIMENSION / 2,
