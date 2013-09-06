@@ -199,15 +199,16 @@ define( function( require ) {
     //TODO handle scale and rotation
     // Handles the coordinate transform required to make the list pop up near the button.
     var moveList = function() {
+      var pButtonGlobal, pButtonLocal;
       if ( options.listPosition === 'above' ) {
-        var pButtonGlobal = thisNode.localToGlobalPoint( new Vector2( buttonNode.left, buttonNode.top ) );
-        var pButtonLocal = listParent.globalToLocalPoint( pButtonGlobal );
+        pButtonGlobal = thisNode.localToGlobalPoint( new Vector2( buttonNode.left, buttonNode.top ) );
+        pButtonLocal = listParent.globalToLocalPoint( pButtonGlobal );
         listNode.left = pButtonLocal.x;
         listNode.bottom = pButtonLocal.y;
       }
       else {
-        var pButtonGlobal = thisNode.localToGlobalPoint( new Vector2( buttonNode.left, buttonNode.bottom ) );
-        var pButtonLocal = listParent.globalToLocalPoint( pButtonGlobal );
+        pButtonGlobal = thisNode.localToGlobalPoint( new Vector2( buttonNode.left, buttonNode.bottom ) );
+        pButtonLocal = listParent.globalToLocalPoint( pButtonGlobal );
         listNode.left = pButtonLocal.x;
         listNode.top = pButtonLocal.y;
       }
