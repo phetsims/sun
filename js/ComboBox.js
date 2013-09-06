@@ -90,9 +90,10 @@ define( function( require ) {
   /**
    * @param {Array} items
    * @param {*} property
+   * @param {Node} listParent node that will be used as the list's parent, use this to ensuring that the list is in front of everything else
    * @param {*} options object with optional properties
    */
-  function ComboBox( items, property, options ) {
+  function ComboBox( items, property, listParent, options ) {
 
     var thisNode = this;
 
@@ -108,8 +109,6 @@ define( function( require ) {
         buttonYMargin: 4,
         // list
         listPosition: 'below', // where the list is positioned relative to the button, either 'below' or 'above'
-        //TODO consider defaulting this to the scene, so that list can be guaranteed to be in front
-        listParent: thisNode, // node that will be used as the list's parent, useful for ensuring that the list is in front of everything else
         listXMargin: 4,
         listYMargin: 4,
         listFill: 'white',
@@ -151,7 +150,7 @@ define( function( require ) {
     var listHeight = ( items.length * itemHeight ) + ( 2 * options.listYMargin );
     var listNode = new Rectangle( 0, 0, listWidth, listHeight, options.listCornerRadius, options.listCornerRadius,
       { fill: options.listFill, stroke: options.listStroke, lineWidth: options.listLineWidth, visible: false } );
-    options.listParent.addChild( listNode );
+    listParent.addChild( listNode );
 
     //TODO move these to ItemNode
     // how to highlight an item in the list
@@ -197,21 +196,20 @@ define( function( require ) {
       itemNode.addInputListener( itemListener );
     }
 
+    //TODO handle scale and rotation
     // Handles the coordinate transform required to make the list pop up near the button.
     var moveList = function() {
-      var xOffset = 0, yOffset = 0;
-      if ( options.listParent !== thisNode ) {
-        var pParentGlobal = options.listParent.localToGlobalPoint( options.listParent.translation );
-        var pParentLocal = thisNode.globalToLocalPoint( pParentGlobal );
-        xOffset = thisNode.x - pParentLocal.x;
-        yOffset = thisNode.y - pParentLocal.y;
-      }
-      listNode.left = buttonNode.left + xOffset;
       if ( options.listPosition === 'above' ) {
-        listNode.bottom = buttonNode.top + yOffset;
+        var pButtonGlobal = thisNode.localToGlobalPoint( new Vector2( buttonNode.left, buttonNode.top ) );
+        var pButtonLocal = listParent.globalToLocalPoint( pButtonGlobal );
+        listNode.left = pButtonLocal.x;
+        listNode.bottom = pButtonLocal.y;
       }
       else {
-        listNode.top = buttonNode.bottom + yOffset;
+        var pButtonGlobal = thisNode.localToGlobalPoint( new Vector2( buttonNode.left, buttonNode.bottom ) );
+        var pButtonLocal = listParent.globalToLocalPoint( pButtonGlobal );
+        listNode.left = pButtonLocal.x;
+        listNode.top = pButtonLocal.y;
       }
     };
 
