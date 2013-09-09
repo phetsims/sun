@@ -27,7 +27,8 @@ define( function( require ) {
 
     options = _.extend( {
         cursor: 'pointer',
-        label: 'Button'
+        label: 'Button',
+        enabled: true
       },
       options );
 
@@ -41,7 +42,7 @@ define( function( require ) {
     thisButton._disabledNode = disabledNode;
 
     thisButton._state = 'up';
-    thisButton._enabled = new Property( true ); //TODO make this public and ditch the ES5 set/get?
+    thisButton._enabled = new Property( options.enabled );
     thisButton._listeners = [ callback ];
 
     thisButton.addChild( upNode );
