@@ -111,7 +111,8 @@ define( function( require ) {
     },
 
     _fire: function() {
-      this._listeners.forEach( function( listener ) {
+      var copy = this._listeners.slice( 0 );
+      copy.forEach( function( listener ) {
         listener();
       } );
     },
