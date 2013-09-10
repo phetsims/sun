@@ -73,7 +73,9 @@ define( function( require ) {
       },
 
       fire: function() {
-        thisButton._fire();
+        if ( thisButton._enabled.get() ) {
+          thisButton._fire();
+        }
       }
     } ) );
 
