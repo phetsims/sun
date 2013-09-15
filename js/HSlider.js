@@ -47,7 +47,7 @@ define( function( require ) {
 
     // options
     options = _.extend( {
-      snapToMinWhenReleased: true
+      snapToMinWhenReleased: false
     }, options );
 
     var thisSlider = this;
