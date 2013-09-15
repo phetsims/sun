@@ -19,7 +19,10 @@ define( function( require ) {
       padX: 10,
       padY: 10,
       cursor: 'pointer',
-      label: ''
+      label: '',
+
+      //In 'radioButton' mode, pressing a toggle button repeatedly sets the value only to true.  Otherwise it sets it to true/false alternately.
+      radioButton: false
     }, options );
 
     Node.call( this, options );
@@ -33,11 +36,22 @@ define( function( require ) {
       content.centerY = this.path.height / 2;
     }
     this.addChild( content );
-    this.addInputListener( {
-      up: function() {
-        booleanProperty.value = !booleanProperty.value;
-      }
-    } );
+
+    if ( options.radioButton ) {
+      this.addInputListener( {
+        up: function() {
+          booleanProperty.value = true;
+        }
+      } );
+    }
+    else {
+      this.addInputListener( {
+        up: function() {
+          booleanProperty.value = !booleanProperty.value;
+        }
+      } );
+    }
+
 
 //    Create a peer for accessibility
     this.addPeer( '<input type="checkbox" aria-label="' + _.escape( options.label ) + '">', {
