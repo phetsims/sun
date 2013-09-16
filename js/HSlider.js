@@ -19,6 +19,7 @@ define( function( require ) {
   var LinearFunction = require( 'DOT/LinearFunction' );
   var Node = require( 'SCENERY/nodes/Node' );
   var Path = require( 'SCENERY/nodes/Path' );
+  var Property = require( 'AXON/Property' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var Shape = require( 'KITE/Shape' );
   var SimpleDragHandler = require( 'SCENERY/input/SimpleDragHandler' );
@@ -28,11 +29,10 @@ define( function( require ) {
   /**
    * @param {Property<Number>} valueProperty
    * @param {Range} range
-   * @param {Property<Boolean>} enabledProperty
    * @param {*} options
    * @constructor
    */
-  function HSlider( valueProperty, range, enabledProperty, options ) {
+  function HSlider( valueProperty, range, options ) {
 
     var thisSlider = this;
     Node.call( thisSlider );
@@ -46,6 +46,7 @@ define( function( require ) {
       thumbFillDisabled: '#F0F0F0',
       majorTickLength: 30,
       minorTickLength: 16,
+      enabledProperty: new Property( true ),
       endDrag: function() { /* do nothing */ } // called when thumb is released at end of drag sequence
     };
 
@@ -62,7 +63,7 @@ define( function( require ) {
 
     // thumb, points up
     var arcWidth = 0.25 * this._options.thumbSize.width;
-    var thumbFill = enabledProperty.get() ? thisSlider._options.thumbFillEnabled : thisSlider._options.thumbFillDisabled;
+    var thumbFill = thisSlider._options.enabledProperty.get() ? thisSlider._options.thumbFillEnabled : thisSlider._options.thumbFillDisabled;
     var thumb = new Rectangle( -thisSlider._options.thumbSize.width / 2, -thisSlider._options.thumbSize.height / 2, thisSlider._options.thumbSize.width, thisSlider._options.thumbSize.height, arcWidth, arcWidth,
       { cursor: 'pointer', fill: thumbFill, stroke: 'black', lineWidth: 1 } );
     var centerLineYMargin = 3;
@@ -79,7 +80,7 @@ define( function( require ) {
     thisSlider._valueToPosition = new LinearFunction( range.min, range.max, 0, this._options.trackSize.width, true /* clamp */ );
 
     // highlight on mouse enter
-    thumb.addInputListener( new FillHighlightListener( thisSlider._options.thumbFillEnabled, thisSlider._options.thumbFillHighlighted, enabledProperty ) );
+    thumb.addInputListener( new FillHighlightListener( thisSlider._options.thumbFillEnabled, thisSlider._options.thumbFillHighlighted, thisSlider._options.enabledProperty ) );
 
     // update value when thumb is dragged
     var clickXOffset = 0; // x-offset between initial click and thumb's origin
@@ -89,7 +90,7 @@ define( function( require ) {
         clickXOffset = thumb.globalToParentPoint( event.pointer.point ).x - thumb.x;
       },
       drag: function( event ) {
-        if ( enabledProperty.get() ) {
+        if ( thisSlider._options.enabledProperty.get() ) {
           var x = thumb.globalToParentPoint( event.pointer.point ).x - clickXOffset;
           valueProperty.set( thisSlider._valueToPosition.inverse( x ) );
         }
@@ -102,7 +103,7 @@ define( function( require ) {
     thumb.addInputListener( dragHandler );
 
     // enable/disable thumb
-    enabledProperty.link( function( enabled ) {
+    thisSlider._options.enabledProperty.link( function( enabled ) {
       thumb.fill = enabled ? thisSlider._options.thumbFillEnabled : thisSlider._options.thumbFillDisabled;
       thumb.cursor = enabled ? 'pointer' : 'default';
       if ( !enabled && dragHandler.dragging ) {
