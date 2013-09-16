@@ -148,14 +148,10 @@ define( function( require ) {
     _addTick: function( tickLength, value, label ) {
       var labelX = this._valueToPosition( value );
       // ticks
-      var tick = new Path(
-        new Shape()
-          .moveTo( labelX, this._track.top )
-          .lineTo( labelX, this._track.bottom - tickLength ),
-        {
-          lineWidth: 1,
-          stroke: 'black'
-        } );
+      var tick = new Path( new Shape()
+        .moveTo( labelX, this._track.top )
+        .lineTo( labelX, this._track.bottom - tickLength ),
+        { lineWidth: 1, stroke: 'black' } );
       this._ticksParent.addChild( tick );
       // label
       if ( label ) {
