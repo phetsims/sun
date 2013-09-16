@@ -26,13 +26,13 @@ define( function( require ) {
   var Util = require( 'DOT/Util' );
 
   /**
-   * @param {Property<Number>} value
+   * @param {Property<Number>} valueProperty
    * @param {Range} range
-   * @param {Property<Boolean>} enabled
+   * @param {Property<Boolean>} enabledProperty
    * @param {*} options
    * @constructor
    */
-  function HSlider( value, range, enabled, options ) {
+  function HSlider( valueProperty, range, enabledProperty, options ) {
 
     var thisSlider = this;
     Node.call( thisSlider );
@@ -62,7 +62,7 @@ define( function( require ) {
 
     // thumb, points up
     var arcWidth = 0.25 * this._options.thumbSize.width;
-    var thumbFill = enabled.get() ? thisSlider._options.thumbFillEnabled : thisSlider._options.thumbFillDisabled;
+    var thumbFill = enabledProperty.get() ? thisSlider._options.thumbFillEnabled : thisSlider._options.thumbFillDisabled;
     var thumb = new Rectangle( -thisSlider._options.thumbSize.width / 2, -thisSlider._options.thumbSize.height / 2, thisSlider._options.thumbSize.width, thisSlider._options.thumbSize.height, arcWidth, arcWidth,
       { cursor: 'pointer', fill: thumbFill, stroke: 'black', lineWidth: 1 } );
     var centerLineYMargin = 3;
@@ -79,7 +79,7 @@ define( function( require ) {
     thisSlider._valueToPosition = new LinearFunction( range.min, range.max, 0, this._options.trackSize.width, true /* clamp */ );
 
     // highlight on mouse enter
-    thumb.addInputListener( new FillHighlightListener( thisSlider._options.thumbFillEnabled, thisSlider._options.thumbFillHighlighted, enabled ) );
+    thumb.addInputListener( new FillHighlightListener( thisSlider._options.thumbFillEnabled, thisSlider._options.thumbFillHighlighted, enabledProperty ) );
 
     // update value when thumb is dragged
     var clickXOffset = 0; // x-offset between initial click and thumb's origin
@@ -89,9 +89,9 @@ define( function( require ) {
         clickXOffset = thumb.globalToParentPoint( event.pointer.point ).x - thumb.x;
       },
       drag: function( event ) {
-        if ( enabled.get() ) {
+        if ( enabledProperty.get() ) {
           var x = thumb.globalToParentPoint( event.pointer.point ).x - clickXOffset;
-          value.set( thisSlider._valueToPosition.inverse( x ) );
+          valueProperty.set( thisSlider._valueToPosition.inverse( x ) );
         }
       },
       end: function() {
@@ -102,7 +102,7 @@ define( function( require ) {
     thumb.addInputListener( dragHandler );
 
     // enable/disable thumb
-    enabled.link( function( enabled ) {
+    enabledProperty.link( function( enabled ) {
       thumb.fill = enabled ? thisSlider._options.thumbFillEnabled : thisSlider._options.thumbFillDisabled;
       thumb.cursor = enabled ? 'pointer' : 'default';
       if ( !enabled && dragHandler.dragging ) {
@@ -111,7 +111,7 @@ define( function( require ) {
     } );
 
     // update thumb location when value changes
-    value.link( function( value ) {
+    valueProperty.link( function( value ) {
       thumb.centerX = thisSlider._valueToPosition( value );
     } );
 
