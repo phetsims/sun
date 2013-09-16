@@ -2,7 +2,6 @@
 
 /**
  * Horizontal slider.
- * Optionally snaps to min when released.
  *
  * Moved from beers-law-lab/EvaporationSlider on 9/15/2013
  * see https://github.com/phetsims/sun/issues/9
