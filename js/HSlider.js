@@ -71,10 +71,36 @@ define( function( require ) {
     thisSlider._ticksParent = new Node();
     thisSlider.addChild( thisSlider._ticksParent );
 
+    // mapping between value and track position
+    thisSlider._valueToPosition = new LinearFunction( range.min, range.max, 0, this._options.trackSize.width, true /* clamp */ );
+
     // track
     thisSlider._track = new Rectangle( 0, 0, thisSlider._options.trackSize.width, thisSlider._options.trackSize.height,
       { fill: thisSlider._options.trackFill, stroke: thisSlider._options.trackStroke, lineWidth: thisSlider._options.trackLineWidth } );
     thisSlider.addChild( thisSlider._track );
+
+    // click in the track to change the value, continue dragging if desired
+    var trackHandler = new SimpleDragHandler( {
+      handleTrackEvent: function( event ) {
+        if ( thisSlider._options.enabledProperty.get() ) {
+          var x = thisSlider._track.globalToLocalPoint( event.pointer.point ).x;
+          valueProperty.set( thisSlider._valueToPosition.inverse( x ) );
+        }
+      },
+      start: function( event ) {
+        this.handleTrackEvent( event );
+      },
+      drag: function( event ) {
+        this.handleTrackEvent( event );
+      },
+      end: function() {
+        if ( thisSlider._options.enabledProperty.get() ) {
+          thisSlider._options.endDrag();
+        }
+      },
+      translate: function() { /* do nothing, override default behavior */ }
+    } );
+    thisSlider._track.addInputListener( trackHandler );
 
     // thumb, points up
     var arcWidth = 0.25 * this._options.thumbSize.width;
@@ -91,38 +117,38 @@ define( function( require ) {
     var dy = 0.25 * thumb.height;
     thumb.touchArea = Shape.rectangle( ( -thumb.width / 2 ) - dx, ( -thumb.height / 2 ) - dy, thumb.width + dx + dx, thumb.height + dy + dy );
 
-    // mapping between value and track position
-    thisSlider._valueToPosition = new LinearFunction( range.min, range.max, 0, this._options.trackSize.width, true /* clamp */ );
-
     // highlight on mouse enter
     thumb.addInputListener( new FillHighlightListener( thisSlider._options.thumbFillEnabled, thisSlider._options.thumbFillHighlighted, thisSlider._options.enabledProperty ) );
 
     // update value when thumb is dragged
-    var clickXOffset = 0; // x-offset between initial click and thumb's origin
-    var dragHandler = new SimpleDragHandler( {
+    var thumbHandler = new SimpleDragHandler( {
+      clickXOffset: 0, // x-offset between initial click and thumb's origin
       allowTouchSnag: true,
       start: function( event ) {
-        clickXOffset = thumb.globalToParentPoint( event.pointer.point ).x - thumb.x;
+        this.clickXOffset = thumb.globalToParentPoint( event.pointer.point ).x - thumb.x;
       },
       drag: function( event ) {
         if ( thisSlider._options.enabledProperty.get() ) {
-          var x = thumb.globalToParentPoint( event.pointer.point ).x - clickXOffset;
+          var x = thumb.globalToParentPoint( event.pointer.point ).x - this.clickXOffset;
           valueProperty.set( thisSlider._valueToPosition.inverse( x ) );
         }
       },
       end: function() {
-        thisSlider._options.endDrag();
+        if ( thisSlider._options.enabledProperty.get() ) {
+          thisSlider._options.endDrag();
+        }
       },
-      translate: function() { /* override default behavior, do nothing */ }
+      translate: function() { /* do nothing, override default behavior */ }
     } );
-    thumb.addInputListener( dragHandler );
+    thumb.addInputListener( thumbHandler );
 
     // enable/disable thumb
     thisSlider._options.enabledProperty.link( function( enabled ) {
       thumb.fill = enabled ? thisSlider._options.thumbFillEnabled : thisSlider._options.thumbFillDisabled;
       thumb.cursor = enabled ? 'pointer' : 'default';
-      if ( !enabled && dragHandler.dragging ) {
-        dragHandler.endDrag();
+      if ( !enabled ) {
+        if ( thumbHandler.dragging ) { thumbHandler.endDrag(); }
+        if ( trackHandler.dragging ) { trackHandler.endDrag(); }
       }
     } );
 
