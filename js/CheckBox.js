@@ -67,6 +67,8 @@ define( function( require ) {
       thisNode.left - options.touchAreaLeftPadding, thisNode.top - options.touchAreaTopPadding,
       thisNode.width + options.touchAreaLeftPadding + options.touchAreaRightPadding, thisNode.height + options.touchAreaTopPadding + options.touchAreaBottomPadding );
 
+    content.pickable = false; // since there's a pickable rectangle on top of content
+
     // interactivity
     thisNode.addInputListener( new ButtonListener( {
       fire: function() {
