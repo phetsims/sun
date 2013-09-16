@@ -47,7 +47,7 @@ define( function( require ) {
 
     // options
     options = _.extend( {
-      snapToMinWhenReleased: false
+      endDrag: function() { /* do nothing */ } // called when thumb is released at end of drag sequence
     }, options );
 
     var thisSlider = this;
@@ -95,12 +95,9 @@ define( function( require ) {
         }
       },
       end: function() {
-        if ( options.snapToMinWhenReleased ) {
-          value.set( range.min );
-        }
+        options.endDrag();
       },
-      translate: function() {
-      }
+      translate: function() { /* override default behavior, do nothing */ }
     } );
     thumb.addInputListener( dragHandler );
 
