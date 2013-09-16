@@ -38,7 +38,7 @@ define( function( require ) {
     Node.call( thisNode );
 
     // correct size will be set by updateBackground
-    var background = new Rectangle( 0, 0, 1, 1, {stroke: options.stroke, lineWidth: options.lineWidth, fill: options.fill} );
+    var background = new Rectangle( 0, 0, 1, 1, {stroke: options.stroke, lineWidth: options.lineWidth, fill: options.fill, pickable: false } );
     this.addChild( background );
     this.addChild( content );
 
