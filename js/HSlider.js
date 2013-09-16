@@ -38,13 +38,28 @@ define( function( require ) {
 
     // default options, these will not be passed to supertype
     var defaultOptions = {
+      // track
       trackSize: new Dimension2( 100, 5 ),
+      trackFill: 'white',
+      trackStroke: 'black',
+      trackLineWidth: 1,
+      // thumb
       thumbSize: new Dimension2( 22, 45 ),
       thumbFillEnabled: 'rgb(50,145,184)',
       thumbFillHighlighted: 'rgb(71,207,255)',
       thumbFillDisabled: '#F0F0F0',
-      majorTickLength: 30,
-      minorTickLength: 16,
+      thumbStroke: 'black',
+      thumbLineWidth: 1,
+      // ticks
+      tickLabelSpacing: 6,
+      majorTickLength: 25,
+      majorTickStroke: 'black',
+      majorTickLineWidth: 1,
+      minorTickLength: 10,
+      minorTickStroke: 'black',
+      minorTickLineWidth: 1,
+      // other
+      cursor: 'pointer',
       enabledProperty: new Property( true ),
       endDrag: function() { /* do nothing */ } // called when thumb is released at end of drag sequence
     };
@@ -57,14 +72,15 @@ define( function( require ) {
     thisSlider.addChild( thisSlider._ticksParent );
 
     // track
-    thisSlider._track = new Rectangle( 0, 0, thisSlider._options.trackSize.width, thisSlider._options.trackSize.height, { fill: 'white', stroke: 'black', lineWidth: 1 } );
+    thisSlider._track = new Rectangle( 0, 0, thisSlider._options.trackSize.width, thisSlider._options.trackSize.height,
+      { fill: thisSlider._options.trackFill, stroke: thisSlider._options.trackStroke, lineWidth: thisSlider._options.trackLineWidth } );
     thisSlider.addChild( thisSlider._track );
 
     // thumb, points up
     var arcWidth = 0.25 * this._options.thumbSize.width;
     var thumbFill = thisSlider._options.enabledProperty.get() ? thisSlider._options.thumbFillEnabled : thisSlider._options.thumbFillDisabled;
     var thumb = new Rectangle( -thisSlider._options.thumbSize.width / 2, -thisSlider._options.thumbSize.height / 2, thisSlider._options.thumbSize.width, thisSlider._options.thumbSize.height, arcWidth, arcWidth,
-      { cursor: 'pointer', fill: thumbFill, stroke: 'black', lineWidth: 1 } );
+      { cursor: thisSlider._options.cursor, fill: thumbFill, stroke: thisSlider._options.thumbStroke, lineWidth: thisSlider._options.thumbLineWidth } );
     var centerLineYMargin = 3;
     thumb.addChild( new Path( Shape.lineSegment( 0, -( thisSlider._options.thumbSize.height / 2 ) + centerLineYMargin, 0, ( thisSlider._options.thumbSize.height / 2 ) - centerLineYMargin ), { stroke: 'white' } ) );
     thumb.centerY = thisSlider._track.centerY;
@@ -126,7 +142,7 @@ define( function( require ) {
      * @param {Node} label optional
      */
     addMajorTick: function( value, label ) {
-      this._addTick( this._options.majorTickLength, value, label );
+      this._addTick( value, label, this._options.majorTickLength, this._options.majorTickStroke, this._options.majorTickLineWidth );
     },
 
     /**
@@ -135,28 +151,30 @@ define( function( require ) {
      * @param {Node} label optional
      */
     addMinorTick: function( value, label ) {
-      this._addTick( this._options.majorTickLength, value, label );
+      this._addTick( value, label, this._options.minorTickLength, this._options.minorTickStroke, this._options.minorTickLineWidth );
     },
 
     /*
      * Adds a tick mark above the track.
-     * @param {Number} tickLength
      * @param {Number} value
      * @param {Node} label optional
+     * @param {Number} length
+     * @param {Number} stroke
+     * @param {Number} lineWidth
      */
-    _addTick: function( tickLength, value, label ) {
+    _addTick: function( value, label, length, stroke, lineWidth ) {
       var labelX = this._valueToPosition( value );
       // ticks
       var tick = new Path( new Shape()
         .moveTo( labelX, this._track.top )
-        .lineTo( labelX, this._track.bottom - tickLength ),
-        { lineWidth: 1, stroke: 'black' } );
+        .lineTo( labelX, this._track.top - length ),
+        { stroke: stroke, lineWidth: lineWidth } );
       this._ticksParent.addChild( tick );
       // label
       if ( label ) {
         this._ticksParent.addChild( label );
         label.centerX = tick.centerX;
-        label.bottom = tick.top - 6;
+        label.bottom = tick.top - this._options.tickLabelSpacing;
       }
     }
   } );
