@@ -25,48 +25,45 @@ define( function( require ) {
   var Text = require( 'SCENERY/nodes/Text' );
   var Util = require( 'DOT/Util' );
 
-  // thumb constants
-  var THUMB_SIZE = new Dimension2( 22, 45 );
-  var THUMB_FILL_ENABLED = 'rgb(50,145,184)';
-  var THUMB_FILL_HIGHLIGHTED = 'rgb(71,207,255)';
-  var THUMB_FILL_DISABLED = '#F0F0F0';
-
-  // tick constants
-  var MAJOR_TICK_LENGTH = 30;
-  var MINOR_TICK_LENGTH = 16;
-
   /**
-   * @param {Range} range
-   * @param {Dimension2} trackSize
    * @param {Property<Number>} value
+   * @param {Range} range
    * @param {Property<Boolean>} enabled
    * @param {*} options
    * @constructor
    */
-  function HSlider( range, trackSize, value, enabled, options ) {
-
-    // options
-    options = _.extend( {
-      endDrag: function() { /* do nothing */ } // called when thumb is released at end of drag sequence
-    }, options );
+  function HSlider( value, range, enabled, options ) {
 
     var thisSlider = this;
     Node.call( thisSlider );
+
+    // options
+    thisSlider._options = _.extend( {
+      trackSize: new Dimension2( 100, 5 ),
+      thumbSize: new Dimension2( 22, 45 ),
+      thumbFillEnabled: 'rgb(50,145,184)',
+      thumbFillHighlighted: 'rgb(71,207,255)',
+      thumbFillDisabled: '#F0F0F0',
+      majorTickLength: 30,
+      minorTickLength: 16,
+      endDrag: function() { /* do nothing */ } // called when thumb is released at end of drag sequence
+    }, options );
 
     // ticks are added to this parent, so they are behind knob
     thisSlider._ticksParent = new Node();
     thisSlider.addChild( thisSlider._ticksParent );
 
     // track
-    thisSlider._track = new Rectangle( 0, 0, trackSize.width, trackSize.height, { fill: 'white', stroke: 'black', lineWidth: 1 } );
+    thisSlider._track = new Rectangle( 0, 0, thisSlider._options.trackSize.width, thisSlider._options.trackSize.height, { fill: 'white', stroke: 'black', lineWidth: 1 } );
     thisSlider.addChild( thisSlider._track );
 
     // thumb, points up
-    var arcWidth = 0.25 * THUMB_SIZE.width;
-    var thumb = new Rectangle( -THUMB_SIZE.width / 2, -THUMB_SIZE.height / 2, THUMB_SIZE.width, THUMB_SIZE.height, arcWidth, arcWidth,
-      { cursor: 'pointer', fill: THUMB_FILL_ENABLED, stroke: 'black', lineWidth: 1 } );
+    var arcWidth = 0.25 * this._options.thumbSize.width;
+    var thumbFill = enabled.get() ? thisSlider._options.thumbFillEnabled : thisSlider._options.thumbFillDisabled;
+    var thumb = new Rectangle( -thisSlider._options.thumbSize.width / 2, -thisSlider._options.thumbSize.height / 2, thisSlider._options.thumbSize.width, thisSlider._options.thumbSize.height, arcWidth, arcWidth,
+      { cursor: 'pointer', fill: thumbFill, stroke: 'black', lineWidth: 1 } );
     var centerLineYMargin = 3;
-    thumb.addChild( new Path( Shape.lineSegment( 0, -( THUMB_SIZE.height / 2 ) + centerLineYMargin, 0, ( THUMB_SIZE.height / 2 ) - centerLineYMargin ), { stroke: 'white' } ) );
+    thumb.addChild( new Path( Shape.lineSegment( 0, -( thisSlider._options.thumbSize.height / 2 ) + centerLineYMargin, 0, ( thisSlider._options.thumbSize.height / 2 ) - centerLineYMargin ), { stroke: 'white' } ) );
     thumb.centerY = thisSlider._track.centerY;
     thisSlider.addChild( thumb );
 
@@ -76,10 +73,10 @@ define( function( require ) {
     thumb.touchArea = Shape.rectangle( ( -thumb.width / 2 ) - dx, ( -thumb.height / 2 ) - dy, thumb.width + dx + dx, thumb.height + dy + dy );
 
     // mapping between value and track position
-    thisSlider._valueToPosition = new LinearFunction( range.min, range.max, 0, trackSize.width, true /* clamp */ );
+    thisSlider._valueToPosition = new LinearFunction( range.min, range.max, 0, this._options.trackSize.width, true /* clamp */ );
 
     // highlight on mouse enter
-    thumb.addInputListener( new FillHighlightListener( THUMB_FILL_ENABLED, THUMB_FILL_HIGHLIGHTED, enabled ) );
+    thumb.addInputListener( new FillHighlightListener( thisSlider._options.thumbFillEnabled, thisSlider._options.thumbFillHighlighted, enabled ) );
 
     // update value when thumb is dragged
     var clickXOffset = 0; // x-offset between initial click and thumb's origin
@@ -95,7 +92,7 @@ define( function( require ) {
         }
       },
       end: function() {
-        options.endDrag();
+        thisSlider._options.endDrag();
       },
       translate: function() { /* override default behavior, do nothing */ }
     } );
@@ -103,7 +100,7 @@ define( function( require ) {
 
     // enable/disable thumb
     enabled.link( function( enabled ) {
-      thumb.fill = enabled ? THUMB_FILL_ENABLED : THUMB_FILL_DISABLED;
+      thumb.fill = enabled ? thisSlider._options.thumbFillEnabled : thisSlider._options.thumbFillDisabled;
       thumb.cursor = enabled ? 'pointer' : 'default';
       if ( !enabled && dragHandler.dragging ) {
         dragHandler.endDrag();
@@ -114,6 +111,8 @@ define( function( require ) {
     value.link( function( value ) {
       thumb.centerX = thisSlider._valueToPosition( value );
     } );
+
+    thisSlider.mutate( thisSlider._options ); //TODO omit options that are specific to this type before passing to supertype
   }
 
   inherit( Node, HSlider, {
@@ -124,7 +123,7 @@ define( function( require ) {
      * @param {Node} label optional
      */
     addMajorTick: function( value, label ) {
-      this._addTick( MAJOR_TICK_LENGTH, value, label );
+      this._addTick( this._options.majorTickLength, value, label );
     },
 
     /**
@@ -133,7 +132,7 @@ define( function( require ) {
      * @param {Node} label optional
      */
     addMinorTick: function( value, label ) {
-      this._addTick( MINOR_TICK_LENGTH, value, label );
+      this._addTick( this._options.majorTickLength, value, label );
     },
 
     /*
