@@ -32,13 +32,14 @@ define( function( require ) {
       xMargin: 5,
       yMargin: 5,
       cornerRadius: 10, // radius of the rounded corners on the background
-      resize: true // dynamically resize when content bounds change?
+      resize: true, // dynamically resize when content bounds change?
+      backgroundPickable: false
     }, options );
 
     Node.call( thisNode );
 
     // correct size will be set by updateBackground
-    var background = new Rectangle( 0, 0, 1, 1, {stroke: options.stroke, lineWidth: options.lineWidth, fill: options.fill, pickable: options.pickable} );
+    var background = new Rectangle( 0, 0, 1, 1, {stroke: options.stroke, lineWidth: options.lineWidth, fill: options.fill, pickable: options.backgroundPickable} );
     this.addChild( background );
     this.addChild( content );
 
