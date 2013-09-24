@@ -134,8 +134,8 @@ define( function( require ) {
     createTextCheckBox: function( text, textOptions, property, checkBoxOptions ) {
 
       textOptions = _.extend( {
-        stroke: 'black',
-        strokeDisabled: 'rgb(220,220,220)'
+        fill: 'black',
+        fillDisabled: 'rgb(220,220,220)'
       }, textOptions );
 
       checkBoxOptions = _.extend( {
@@ -158,7 +158,7 @@ define( function( require ) {
       }
 
       content.setEnabled = function( enabled ) {
-        textNode.stroke = enabled ? textOptions.stroke : textOptions.strokeDisabled;
+        textNode.fill = enabled ? textOptions.fill : textOptions.fillDisabled;
         // enabled/disable the content if it implements setEnabled
         if ( checkBoxOptions.icon && checkBoxOptions.icon.setEnabled ) {
           checkBoxOptions.icon.setEnabled( enabled );
