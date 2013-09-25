@@ -43,7 +43,8 @@ define( function( require ) {
 
     thisButton._state = 'up';
     thisButton._enabled = new Property( options.enabled );
-    thisButton._listeners = [ callback ];
+    thisButton._listeners = [];
+    if ( callback ) { thisButton._listeners.push( callback ); }
 
     thisButton.addChild( upNode );
     thisButton.addChild( overNode );
