@@ -20,7 +20,7 @@ define( function( require ) {
    * @param {object} options
    * @constructor
    */
-  function PushButton( property, value, content, options ) {
+  function InOutRadioButton( property, value, content, options ) {
 
     options = _.extend( {
       motionXOffset: 2,
@@ -48,7 +48,5 @@ define( function( require ) {
     RadioButton.call( this, property, value, pressed, unpressed );
   }
 
-  inherit( RadioButton, PushButton );
-
-  return PushButton;
+  return inherit( RadioButton, InOutRadioButton );
 } );
