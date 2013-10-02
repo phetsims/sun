@@ -176,10 +176,10 @@ define( function( require ) {
       },
       up: function( event ) {
         unhighlightItem( event.currentTarget );
-        property.value = event.currentTarget.item.value; // set the property
-        listNode.visible = false; // close the list
+        listNode.visible = false; // close the list, do this before changing property value, in case it's expensive
         thisNode.getUniqueTrail().rootNode().removeInputListener( clickToDismissListener ); // remove the click-to-dismiss listener
         event.abort(); // prevent nodes (eg, controls) behind the list from receiving the event
+        property.value = event.currentTarget.item.value; // set the property
       }
     };
 
