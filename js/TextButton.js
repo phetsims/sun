@@ -10,18 +10,20 @@ define( function( require ) {
 
   // imports
   var inherit = require( 'PHET_CORE/inherit' );
+  var Font = require( 'SCENERY/util/Font' );
   var RectangleButton = require( 'SUN/RectangleButton' );
   var Text = require( 'SCENERY/nodes/Text' );
 
   function TextButton( text, callback, options ) {
 
     options = _.extend( {
+      font: new Font(),
       textFill: 'black',
       textFillDisabled: 'rgb(175,175,175)'
     }, options );
 
     //TODO sun#24, apply options to both TextButton and Text will cause problems for options like x,y,scale,...
-    var textNode = new Text( text, options );
+    var textNode = new Text( text, { font: options.font } );
 
     RectangleButton.call( this, textNode, callback, options );
 
