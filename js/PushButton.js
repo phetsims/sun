@@ -127,7 +127,10 @@ define( function( require ) {
       this._disabledNode.visible = !enabled;
     },
 
-    set enabled( value ) { this._enabled.set( value ); },
+    set enabled( value ) {
+      assert && assert( typeof value === 'boolean', 'PushButton.enabled must be a boolean value' ); // Scenery complains about visible otherwise
+      this._enabled.set( value );
+    },
 
     get enabled() { return this._enabled.get(); }
   } );
