@@ -15,6 +15,7 @@ define( function( require ) {
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var Text = require( 'SCENERY/nodes/Text' );
   var Property = require( 'AXON/Property' );
+  var Shape = require( 'KITE/Shape' );
 
   // Constants
   var CONTROL_BUTTON_INSET = 4;
@@ -59,6 +60,16 @@ define( function( require ) {
     // Create the expand/collapse button.
     var expandCollapseButton = new ExpandCollapseButton( CONTROL_BUTTON_DIMENSION, this.open );
 
+    // Add an expanded touch area to the expand/collapse button so it works ok
+    // on small screens.   Size could be moved into an option if necessary.
+    var expandedTouchAreaDimension = CONTROL_BUTTON_DIMENSION * 3;
+    expandCollapseButton.touchArea = Shape.rectangle(
+      -expandedTouchAreaDimension / 2 + CONTROL_BUTTON_DIMENSION / 2,
+      -expandedTouchAreaDimension / 2 + CONTROL_BUTTON_DIMENSION / 2,
+      expandedTouchAreaDimension,
+      expandedTouchAreaDimension
+    );
+
     // Create the title, if present.
     var title = new Node();
     if ( options.title !== undefined ) {
@@ -79,9 +90,9 @@ define( function( require ) {
         lineWidth: options.lineWidth,
         fill: options.fill
       } );
-    openContainer.addChild( expandCollapseButton );
     openContainer.addChild( contentNode );
     openContainer.addChild( title );
+    openContainer.addChild( expandCollapseButton );
     this.addChild( openContainer );
 
     // Create the node that represents the closed container.
@@ -91,8 +102,8 @@ define( function( require ) {
         lineWidth: options.lineWidth,
         fill: options.fill
       } );
-    closedContainer.addChild( expandCollapseButton );
     closedContainer.addChild( title );
+    closedContainer.addChild( expandCollapseButton );
     this.addChild( closedContainer );
 
     // If necessary, scale title to fit in available space.
