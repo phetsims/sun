@@ -13,6 +13,7 @@ define( function( require ) {
   var inherit = require( 'PHET_CORE/inherit' );
   var Node = require( 'SCENERY/nodes/Node' );
   var Path = require( 'SCENERY/nodes/Path' );
+  var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var Shape = require( 'KITE/Shape' );
 
   /**
@@ -32,7 +33,8 @@ define( function( require ) {
     var thisNode = this;
     Node.call( thisNode, options );
 
-    var background = new Path( Shape.bounds( selectedNode.bounds.union( deselectedNode.bounds ) ) );
+    //Add an invisible node to make sure the layout for selected vs deselected is the same
+    var background = new Rectangle( selectedNode.bounds.union( deselectedNode.bounds ) );
 
     thisNode.addChild( background );
     thisNode.addChild( selectedNode );
