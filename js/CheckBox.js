@@ -140,7 +140,7 @@ define( function( require ) {
 
       checkBoxOptions = _.extend( {
         icon: null,  // an optional node, added to the right of the text
-        iconSpacing: 5
+        iconSpacing: 15
       }, checkBoxOptions );
 
       var content = new Node();
