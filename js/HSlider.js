@@ -97,8 +97,7 @@ define( function( require ) {
         if ( thisSlider._options.enabledProperty.get() ) {
           thisSlider._options.endDrag();
         }
-      },
-      translate: function() { /* do nothing, override default behavior */ }
+      }
     } );
     thisSlider._track.addInputListener( trackHandler );
 
@@ -137,8 +136,7 @@ define( function( require ) {
         if ( thisSlider._options.enabledProperty.get() ) {
           thisSlider._options.endDrag();
         }
-      },
-      translate: function() { /* do nothing, override default behavior */ }
+      }
     } );
     thumb.addInputListener( thumbHandler );
 
