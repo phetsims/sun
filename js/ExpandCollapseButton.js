@@ -1,5 +1,6 @@
 // Copyright 2002-2013, University of Colorado Boulder
 
+//TODO reimplement as a RectangleButton subtype
 //TODO add button color change for 'over' and 'down'
 //TODO add enabled/disabled, probably via options.enabledProperty
 /**
