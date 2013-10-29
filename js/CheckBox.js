@@ -31,11 +31,7 @@ define( function( require ) {
       boxScale: 0.6,
       cursor: 'pointer',
       checkBoxColor: 'black',
-      checkBoxColorDisabled: 'gray',
-      touchAreaTopPadding: 0,
-      touchAreaBottomPadding: 0,
-      touchAreaLeftPadding: 0,
-      touchAreaRightPadding: 0
+      checkBoxColorDisabled: 'gray'
     }, options );
 
     var thisNode = this;
@@ -62,10 +58,8 @@ define( function( require ) {
     content.left = thisNode._checkedNode.right + options.spacing;
     content.centerY = thisNode._checkedNode.centerY;
 
-    // put a rectangle on top of everything to prevent dead zones which clicking
-    thisNode.mouseArea = thisNode.touchArea = Shape.rectangle(
-      thisNode.left - options.touchAreaLeftPadding, thisNode.top - options.touchAreaTopPadding,
-      thisNode.width + options.touchAreaLeftPadding + options.touchAreaRightPadding, thisNode.height + options.touchAreaTopPadding + options.touchAreaBottomPadding );
+    // put a rectangle on top of everything to prevent dead zones when clicking
+    thisNode.addChild( new Rectangle( thisNode.left, thisNode.top, thisNode.width, thisNode.height ) );
 
     content.pickable = false; // since there's a pickable rectangle on top of content
 

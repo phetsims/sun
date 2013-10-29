@@ -1,6 +1,10 @@
 // Copyright 2002-2013, University of Colorado Boulder
 
-//Render a simple vertical check box group, where the buttons all have the same sizes
+/**
+ * A vertical group of check boxes.
+ *
+ * @author Sam Reid
+ */
 //TODO: not ready for use in simulations, it will need further development & discussion first.
 define( function( require ) {
   'use strict';
@@ -21,28 +25,29 @@ define( function( require ) {
    * @constructor
    */
   function VerticalCheckBoxGroup( items, options ) {
-    options = _.extend( { spacing: 10, checkBoxColor: 'black' }, options );
-    var padding = options.padding ? options.padding : 8; //TODO should be handled in _.extend
 
-    var width = 0;
+    options = _.extend( {
+      spacing: 10, // vertical spacing
+      padding: 8, //TODO what is this? It looks like it's added to the right of the check box. Shouldn't this be an x-margin, added to left and right?
+      checkBoxColor: 'black',
+      align: 'left',
+      renderer: 'svg' //TODO this should be up to the client, and the default should be set by scenery, not sun
+    }, options );
+
+    // compute max width of the items
+    var maxWidth = 0;
     for ( var i = 0; i < items.length; i++ ) {
-      width = Math.max( width, items[i].content.width );
+      maxWidth = Math.max( maxWidth, items[i].content.width );
     }
 
+    // process each item
     var children = [];
     for ( i = 0; i < items.length; i++ ) {
-
       var offset = items[i].indent || 0;
-      var content = new Path( Shape.rect( 0, 0, width + padding - offset, 0 ), { children: [items[i].content], renderer: 'svg'} );
-      //Add an invisible strut to each content to make the widths match
-      var checkBox = new CheckBox( content, items[i].property, {label: items[i].label, checkBoxColor: options.checkBoxColor,
-
-        //TODO '5' appears to be dependent on options.spacing
-        //Increase padding to match the spacing so the touch hit areas will be adjacent.
-        touchAreaTopPadding: 5,
-        touchAreaBottomPadding: 5,
-        touchAreaLeftPadding: 5,
-        touchAreaRightPadding: 5} );
+      //Attach each item to an invisible strut to make the widths match.
+      var content = new Path( Shape.rect( 0, 0, maxWidth + options.padding - offset, 0 ), { children: [items[i].content], renderer: 'svg'} ); //TODO should not be setting renderer here!
+      var checkBox = new CheckBox( content, items[i].property, {label: items[i].label, checkBoxColor: options.checkBoxColor} );
+      checkBox.mouseArea = checkBox.touchArea = Shape.bounds( checkBox.bounds.dilatedXY( 5, options.spacing / 2 ) );
       if ( items[i].indent ) {
         children.push( new HBox( {children: [ new Rectangle( 0, 0, items[i].indent, 1 ), checkBox ]} ) );
       }
@@ -51,10 +56,7 @@ define( function( require ) {
       }
     }
 
-    //TODO these options should be added using _.extend(options, {children:..., renderer:..., align:...})
-    options.children = children;
-    options.renderer = 'svg';
-    options.align = 'left';
+    options.children = children; //TODO bad form, if options.children was already set, then this will blow it away
     VBox.call( this, options );
   }
 
