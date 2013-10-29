@@ -30,8 +30,7 @@ define( function( require ) {
       spacing: 10, // vertical spacing
       padding: 8, //TODO what is this? It looks like it's added to the right of the check box. Shouldn't this be an x-margin, added to left and right?
       checkBoxColor: 'black',
-      align: 'left',
-      renderer: 'svg' //TODO this should be up to the client, and the default should be set by scenery, not sun
+      align: 'left'
     }, options );
 
     // compute max width of the items
@@ -45,7 +44,7 @@ define( function( require ) {
     for ( i = 0; i < items.length; i++ ) {
       var offset = items[i].indent || 0;
       //Attach each item to an invisible strut to make the widths match.
-      var content = new Path( Shape.rect( 0, 0, maxWidth + options.padding - offset, 0 ), { children: [items[i].content], renderer: 'svg'} ); //TODO should not be setting renderer here!
+      var content = new Path( Shape.rect( 0, 0, maxWidth + options.padding - offset, 0 ), { children: [items[i].content] } );
       var checkBox = new CheckBox( content, items[i].property, {label: items[i].label, checkBoxColor: options.checkBoxColor} );
       checkBox.mouseArea = checkBox.touchArea = Shape.bounds( checkBox.bounds.dilatedXY( 5, options.spacing / 2 ) );
       if ( items[i].indent ) {

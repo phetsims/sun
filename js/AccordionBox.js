@@ -73,7 +73,7 @@ define( function( require ) {
     // Create the title, if present.
     var title = new Node();
     if ( options.title !== undefined ) {
-      title = new Text( options.title, { font: options.font, renderer: 'svg' } );
+      title = new Text( options.title, { font: options.font } );
     }
 
     // Create the container that will hold the contents when open.
