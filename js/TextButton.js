@@ -22,7 +22,6 @@ define( function( require ) {
       textFillDisabled: 'rgb(175,175,175)'
     }, options );
 
-    //TODO sun#24, apply options to both TextButton and Text will cause problems for options like x,y,scale,...
     var textNode = new Text( text, { font: options.font } );
 
     RectangleButton.call( this, textNode, callback, options );
