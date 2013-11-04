@@ -19,16 +19,16 @@ define( function( require ) {
    * @param {Node} overNode
    * @param {Node} downNode
    * @param {Node} disabledNode
-   * @param {function} callback
    * @param {object} options
    * @constructor
    */
-  function PushButton( upNode, overNode, downNode, disabledNode, callback, options ) {
+  function PushButton( upNode, overNode, downNode, disabledNode, options ) {
 
     options = _.extend( {
         cursor: 'pointer',
         label: 'Button',
-        enabled: true
+        enabled: true,
+        callback: null
       },
       options );
 
@@ -44,7 +44,7 @@ define( function( require ) {
     thisButton._state = 'up';
     thisButton._enabled = new Property( options.enabled );
     thisButton._listeners = [];
-    if ( callback ) { thisButton._listeners.push( callback ); }
+    if ( options.callback ) { thisButton._listeners.push( options.callback ); }
 
     thisButton.addChild( upNode );
     thisButton.addChild( overNode );

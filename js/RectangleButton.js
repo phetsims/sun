@@ -32,11 +32,10 @@ define( function( require ) {
 
   /**
    * @param {Node} content
-   * @param {Function} callback
    * @param options
    * @constructor
    */
-  function RectangleButton( content, callback, options ) {
+  function RectangleButton( content, options ) {
 
     //TODO it would be nice to have less-verbose names, but supertypes may have similar options. For example, TextButton has textFill.
     options = _.extend( {
@@ -64,7 +63,7 @@ define( function( require ) {
       createNode( content, options.rectangleStroke, options.rectangleFillOver, options.rectangleLineWidth, options.rectangleXMargin, options.rectangleYMargin, options.rectangleCornerRadius ),
       createNode( content, options.rectangleStroke, options.rectangleFillDown, options.rectangleLineWidth, options.rectangleXMargin, options.rectangleYMargin, options.rectangleCornerRadius ),
       createNode( content, options.rectangleStrokeDisabled, options.rectangleFillDisabled, options.rectangleLineWidth, options.rectangleXMargin, options.rectangleYMargin, options.rectangleCornerRadius ),
-      callback, options );
+      options );
   }
 
   return inherit( PushButton, RectangleButton );

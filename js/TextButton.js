@@ -14,7 +14,7 @@ define( function( require ) {
   var RectangleButton = require( 'SUN/RectangleButton' );
   var Text = require( 'SCENERY/nodes/Text' );
 
-  function TextButton( text, callback, options ) {
+  function TextButton( text, options ) {
 
     options = _.extend( {
       font: new Font(),
@@ -24,7 +24,7 @@ define( function( require ) {
 
     var textNode = new Text( text, { font: options.font } );
 
-    RectangleButton.call( this, textNode, callback, options );
+    RectangleButton.call( this, textNode, options );
 
     // enable/disable the pieces that are specific to this subtype
     this._enabled.link( function( enabled ) {

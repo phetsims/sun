@@ -13,7 +13,7 @@ define( function( require ) {
   var RectangleButton = require( 'SUN/RectangleButton' );
   var HTMLText = require( 'SCENERY/nodes/HTMLText' );
 
-  function HTMLTextButton( text, callback, options ) {
+  function HTMLTextButton( text, options ) {
 
     options = _.extend( {
       textFill: 'black',
@@ -22,7 +22,7 @@ define( function( require ) {
 
     var htmlTextNode = new HTMLText( text, options );
 
-    RectangleButton.call( this, htmlTextNode, callback, options );
+    RectangleButton.call( this, htmlTextNode, options );
 
     // enable/disable the pieces that are specific to this subtype
     this._enabled.link( function( enabled ) {
