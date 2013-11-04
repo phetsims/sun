@@ -24,6 +24,7 @@ define( function( require ) {
       { stroke: stroke, fill: fill, rectangleLineWidth: rectangleLineWidth } );
     node.addChild( rectangle );
     node.addChild( content );
+    content.pickable = false; // the rectangle will receive hits
     content.centerX = rectangle.centerX;
     content.centerY = rectangle.centerY;
     return node;
