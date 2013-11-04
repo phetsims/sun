@@ -1,7 +1,7 @@
 // Copyright 2002-2013, University of Colorado Boulder
 
 /**
- * Button with HTML text on a rectangle.
+ * Push button with HTML text on a rectangle.
  *
  * @author Chris Malley (PixelZoom, Inc.)
  */
@@ -10,10 +10,10 @@ define( function( require ) {
 
   // imports
   var inherit = require( 'PHET_CORE/inherit' );
-  var RectangleButton = require( 'SUN/RectangleButton' );
+  var RectanglePushButton = require( 'SUN/RectanglePushButton' );
   var HTMLText = require( 'SCENERY/nodes/HTMLText' );
 
-  function HTMLTextButton( text, options ) {
+  function HTMLTextPushButton( text, options ) {
 
     options = _.extend( {
       textFill: 'black',
@@ -22,7 +22,7 @@ define( function( require ) {
 
     var htmlTextNode = new HTMLText( text, options );
 
-    RectangleButton.call( this, htmlTextNode, options );
+    RectanglePushButton.call( this, htmlTextNode, options );
 
     // enable/disable the pieces that are specific to this subtype
     this._enabled.link( function( enabled ) {
@@ -30,7 +30,5 @@ define( function( require ) {
     } );
   }
 
-  inherit( RectangleButton, HTMLTextButton );
-
-  return HTMLTextButton;
+  return inherit( RectanglePushButton, HTMLTextPushButton );
 } );

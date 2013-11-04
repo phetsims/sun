@@ -1,8 +1,7 @@
 // Copyright 2002-2013, University of Colorado Boulder
 
-//TODO rename this RectanglePushButton?
 /**
- * A rectangular button. The background fill changes to give feedback about state. The content node is centered in the rectangle.
+ * A rectangular push button. The background fill changes to give feedback about state. The content node is centered in the rectangle.
  *
  * @author Chris Malley (PixelZoom, Inc.)
  */
@@ -35,9 +34,9 @@ define( function( require ) {
    * @param options
    * @constructor
    */
-  function RectangleButton( content, options ) {
+  function RectanglePushButton( content, options ) {
 
-    //TODO it would be nice to have less-verbose names, but supertypes may have similar options. For example, TextButton has textFill.
+    //TODO it would be nice to have less-verbose names, but supertypes may have similar options. For example, TextPushButton has textFill.
     options = _.extend( {
         // stroke
         rectangleStroke: 'black',
@@ -66,5 +65,5 @@ define( function( require ) {
       options );
   }
 
-  return inherit( PushButton, RectangleButton );
+  return inherit( PushButton, RectanglePushButton );
 } );
