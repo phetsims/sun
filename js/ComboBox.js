@@ -80,6 +80,7 @@ define( function( require ) {
     Rectangle.call( this, 0, 0, width, height );
     this.item = item;
     thisNode.addChild( item.node );
+    item.node.pickable = false; // hits will occur on the rectangle
     item.node.x = xMargin;
     item.node.centerY = height / 2;
   }

@@ -35,6 +35,7 @@ define( function( require ) {
 
     //Add an invisible node to make sure the layout for selected vs deselected is the same
     var background = new Rectangle( selectedNode.bounds.union( deselectedNode.bounds ) );
+    selectedNode.pickable = deselectedNode.pickable = false; // the background rectangle suffices
 
     thisNode.addChild( background );
     thisNode.addChild( selectedNode );
