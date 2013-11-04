@@ -28,7 +28,7 @@ define( function( require ) {
         cursor: 'pointer',
         label: 'Button',
         enabled: true,
-        callback: null
+        listener: null
       },
       options );
 
@@ -44,7 +44,7 @@ define( function( require ) {
     thisButton._state = 'up';
     thisButton._enabled = new Property( options.enabled );
     thisButton._listeners = [];
-    if ( options.callback ) { thisButton._listeners.push( options.callback ); }
+    if ( options.listener ) { thisButton._listeners.push( options.listener ); }
 
     thisButton.addChild( upNode );
     thisButton.addChild( overNode );
