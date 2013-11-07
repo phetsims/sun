@@ -21,16 +21,17 @@ define( function( require ) {
    * @param {Property} booleanProperty
    * @constructor
    */
-  function ToggleNode( trueNode, falseNode, booleanProperty ) {
+  function ToggleNode( trueNode, falseNode, booleanProperty, options ) {
     var thisNode = this;
     Node.call( thisNode );
     var background = new Path( Shape.bounds( trueNode.bounds.union( falseNode.bounds ) ) );
     booleanProperty.link( function( value ) {
       thisNode.children = [ background, value ? trueNode : falseNode ];
     } );
+    if ( options ) {
+      this.mutate( options );
+    }
   }
 
-  inherit( Node, ToggleNode );
-
-  return ToggleNode;
+  return inherit( Node, ToggleNode );
 } );
