@@ -22,15 +22,28 @@ define( function( require ) {
    * @constructor
    */
   function ToggleNode( trueNode, falseNode, booleanProperty, options ) {
+
+    options = _.extend( { // defaults
+
+      //Wrap the nodes so that visibility flags won't be toggled on the passed-in nodes directly (in case they appear elsewhere in the DAG)
+      //Or opt-out if you know the nodes don't appear elsewhere and want to opt out of the increased tree depth and associated performance costs
+      wrapChildren: true
+    }, options );
+
     var thisNode = this;
     Node.call( thisNode );
     var background = new Path( Shape.bounds( trueNode.bounds.union( falseNode.bounds ) ) );
     this.addChild( background );
-    this.addChild( falseNode );
-    this.addChild( trueNode );
+
+    var targetTrueNode = options.wrapChildren ? new Node( {children: [trueNode]} ) : trueNode;
+    var targetFalseNode = options.wrapChildren ? new Node( {children: [falseNode]} ) : falseNode;
+
+    this.addChild( targetFalseNode );
+    this.addChild( targetTrueNode );
+
     booleanProperty.link( function( value ) {
-      trueNode.setVisible( value );
-      falseNode.setVisible( !value );
+      targetTrueNode.setVisible( value );
+      targetFalseNode.setVisible( !value );
     } );
     if ( options ) {
       this.mutate( options );
