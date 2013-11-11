@@ -25,8 +25,12 @@ define( function( require ) {
     var thisNode = this;
     Node.call( thisNode );
     var background = new Path( Shape.bounds( trueNode.bounds.union( falseNode.bounds ) ) );
+    this.addChild( background );
+    this.addChild( falseNode );
+    this.addChild( trueNode );
     booleanProperty.link( function( value ) {
-      thisNode.children = [ background, value ? trueNode : falseNode ];
+      trueNode.setVisible( value );
+      falseNode.setVisible( !value );
     } );
     if ( options ) {
       this.mutate( options );
