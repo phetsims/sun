@@ -28,12 +28,27 @@ define( function( require ) {
       shadowXOffset: 4,
       shadowYOffset: 4,
       cornerRadius: 10,
-      shadowFill: 'black'
+      shadowFill: 'black',
+      xMargin: 5,
+      yMargin: 5,
+      stroke: 'black'
     }, options );
 
     // put content in a rounded rectangle
-    var pressed = new Panel( content );
-    var upButton = new Panel( content );
+    var pressed = new Panel( content,
+      {
+        xMargin: options.xMargin,
+        yMargin: options.yMargin,
+        cornerRadius: options.cornerRadius,
+        stroke: options.stroke
+      } );
+    var upButton = new Panel( content,
+      {
+        xMargin: options.xMargin,
+        yMargin: options.yMargin,
+        cornerRadius: options.cornerRadius,
+        stroke: options.stroke
+      } );
 
     // make the button appear to move
     upButton.x = -options.motionXOffset;
