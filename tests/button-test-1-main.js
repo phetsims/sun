@@ -9,11 +9,19 @@ define( function( require ) {
   'use strict';
 
   // Imports
+  var Color = require( 'SCENERY/util/Color' );
+  var LinearGradient = require( 'SCENERY/util/LinearGradient' );
+  var Path = require( 'SCENERY/nodes/Path' );
+  var PhetFont = require( 'SCENERY_PHET/PhetFont' );
+  var PushButtonNew = require( 'SCENERY_PHET/PushButtonNew' );
+  var PushButtonNew2 = require( 'SCENERY_PHET/PushButtonNew2' );
+  var Rectangle = require( 'SCENERY/nodes/Rectangle' );
+  var ResetAllButton = require( 'SCENERY_PHET/ResetAllButton' );
   var Scene = require( 'SCENERY/Scene' );
   var scenery = require( 'SCENERY/scenery' );
-  var Rectangle = require( 'SCENERY/nodes/Rectangle' );
-  var LinearGradient = require( 'SCENERY/util/LinearGradient' );
-  var ResetAllButton = require( 'SCENERY_PHET/ResetAllButton' );
+  var Shape = require( 'KITE/Shape' );
+  var SimpleClockIcon = require( 'SCENERY_PHET/SimpleClockIcon' );
+  var Text = require( 'SCENERY/nodes/Text' );
 
   // Constants
   var SCENE_WIDTH = 1024;
@@ -62,5 +70,38 @@ define( function( require ) {
       stroke: 'black'
     } ) );
 
+  // Add the buttons to be demonstrated.
   scene.addChild( new ResetAllButton( function() {}, { centerX: SCENE_WIDTH * 0.4, centerY: SCENE_HEIGHT * 0.6 } ) );
+
+  scene.addChild( new PushButtonNew2(
+    function() { },
+    new SimpleClockIcon( 12 ),
+    {
+      centerX: SCENE_WIDTH * 0.2,
+      centerY: SCENE_HEIGHT * 0.2
+    } ) );
+  scene.addChild( new PushButtonNew2(
+    function() { },
+    new Text( 'Test Button', { font: new PhetFont( { size: 14 } ) } ),
+    {
+      centerX: SCENE_WIDTH * 0.1,
+      centerY: SCENE_HEIGHT * 0.5
+    } ) );
+
+  var rightArrowShape = new Shape().
+    moveTo( 0, 0 ).
+    lineTo( 17, 10 ).
+    lineTo( 0, 20 ).
+    close();
+  var rightArrowNode = new Path( rightArrowShape, { fill: 'black' } );
+  scene.addChild( new PushButtonNew2(
+    function() { },
+    rightArrowNode,
+    {
+      widthProportion: 1.6,
+      heightProportion: 1.4,
+      baseColor: new Color( 80, 255, 36 ),
+      centerX: SCENE_WIDTH * 0.4,
+      centerY: SCENE_HEIGHT * 0.8
+    } ) );
 } );
