@@ -50,10 +50,9 @@ define( function( require ) {
 
     // Adjust the background size to match the content.
     var updateBackground = function() {
-      var inherentWidth = content.width + ( 2 * options.xMargin );
-      background.setRect( 0, 0, Math.max( inherentWidth, options.minWidth ), content.height + ( 2 * options.yMargin ), options.cornerRadius, options.cornerRadius );
+      background.setRect( 0, 0, Math.max( content.width + ( 2 * options.xMargin ), options.minWidth ), content.height + ( 2 * options.yMargin ), options.cornerRadius, options.cornerRadius );
       content.centerY = background.centerY;
-      if ( options.align === 'center' || options.minWidth < inherentWidth ) {
+      if ( options.align === 'center' ) {
         content.centerX = background.centerX;
       }
       else if ( options.align === 'left' ) {
