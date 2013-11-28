@@ -33,7 +33,12 @@ define( function( require ) {
       yMargin: 5,
       cornerRadius: 10, // radius of the rounded corners on the background
       resize: true, // dynamically resize when content bounds change?
-      backgroundPickable: false
+      backgroundPickable: false,
+      minWidth: 0,
+
+      // alignment of content, value values are 'left', 'right', and 'center',
+      // only used if the minWidth is greater than inherent width.
+      align: 'center'
     }, options );
 
     Node.call( thisNode );
@@ -45,9 +50,18 @@ define( function( require ) {
 
     // Adjust the background size to match the content.
     var updateBackground = function() {
-      background.setRect( 0, 0, content.width + ( 2 * options.xMargin ), content.height + ( 2 * options.yMargin ), options.cornerRadius, options.cornerRadius );
-      content.centerX = background.centerX;
+      var inherentWidth = content.width + ( 2 * options.xMargin );
+      background.setRect( 0, 0, Math.max( inherentWidth, options.minWidth ), content.height + ( 2 * options.yMargin ), options.cornerRadius, options.cornerRadius );
       content.centerY = background.centerY;
+      if ( options.align === 'center' || options.minWidth < inherentWidth ) {
+        content.centerX = background.centerX;
+      }
+      else if ( options.align === 'left' ) {
+        content.left = options.xMargin;
+      }
+      else if ( options.align === 'right' ) {
+        content.right = background.width - options.xMargin;
+      }
     };
     if ( options.resize ) {
       content.addEventListener( 'bounds', function() {
