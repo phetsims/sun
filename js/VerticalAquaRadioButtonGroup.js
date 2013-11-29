@@ -20,8 +20,12 @@ define( function( require ) {
    * @constructor
    */
   function VerticalAquaRadioButtonGroup( items, options ) {
-    options = _.extend( { spacing: 3 }, options );
-    var padding = options.padding ? options.padding : 8; //TODO should be handled in _.extend
+    options = _.extend(
+      {
+        spacing: 3,
+        padding: 8,
+        radius: 12
+      }, options );
 
     var width = 0;
     for ( var i = 0; i < items.length; i++ ) {
@@ -32,8 +36,8 @@ define( function( require ) {
     for ( i = 0; i < items.length; i++ ) {
 
       //Add an invisible strut to each content to make the widths match
-      var content = new Path( Shape.rect( 0, 0, width + padding, 0 ), {children: [items[i].node]} );
-      children.push( new AquaRadioButton( items[i].property, items[i].value, content, {radius: 12} ) );//Made the radius smaller here so the whole panel won't take up too much vertical space
+      var content = new Path( Shape.rect( 0, 0, width + options.padding, 0 ), {children: [items[i].node]} );
+      children.push( new AquaRadioButton( items[i].property, items[i].value, content, {radius: options.radius} ) );//Made the radius smaller here so the whole panel won't take up too much vertical space
     }
 
     //TODO these options should be added using _.extend(options, {children:..., renderer:....})
