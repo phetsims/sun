@@ -30,7 +30,8 @@ define( function( require ) {
       spacing: 10, // vertical spacing
       padding: 8, //TODO what is this? It looks like it's added to the right of the check box. Shouldn't this be an x-margin, added to left and right?
       checkBoxColor: 'black',
-      align: 'left'
+      align: 'left',
+      boxWidth: 21
     }, options );
 
     // compute max width of the items
@@ -45,7 +46,7 @@ define( function( require ) {
       var offset = items[i].indent || 0;
       //Attach each item to an invisible strut to make the widths match.
       var content = new Path( Shape.rect( 0, 0, maxWidth + options.padding - offset, 0 ), { children: [items[i].content] } );
-      var checkBox = new CheckBox( content, items[i].property, {label: items[i].label, checkBoxColor: options.checkBoxColor} );
+      var checkBox = new CheckBox( content, items[i].property, {label: items[i].label, checkBoxColor: options.checkBoxColor, boxWidth: options.boxWidth} );
       checkBox.mouseArea = checkBox.touchArea = Shape.bounds( checkBox.bounds.dilatedXY( 5, options.spacing / 2 ) );
       if ( items[i].indent ) {
         children.push( new HBox( {children: [ new Rectangle( 0, 0, items[i].indent, 1 ), checkBox ]} ) );

@@ -28,7 +28,7 @@ define( function( require ) {
     var checkBox = this;
     options = _.extend( {
       spacing: 5,
-      boxScale: 0.6,
+      boxWidth: 21,
       cursor: 'pointer',
       checkBoxColor: 'black',
       checkBoxColorDisabled: 'gray'
@@ -42,13 +42,15 @@ define( function( require ) {
     thisNode._content = content;
     thisNode._enabled = true;
 
-    var x = options.boxScale / 0.75;
+    // Make the background white.  Until we are creating our own shapes, just
+    // put a white rectangle behind the font awesome check box icons.
+    var whiteBackground = new Rectangle( 0, -options.boxWidth, options.boxWidth * 0.95, options.boxWidth * 0.95,
+      options.boxWidth * 0.2, options.boxWidth * 0.2, {fill: 'white'} );
 
-    //Make the background white.  Until we are creating our own shapes, just put a white rectangle behind the font awesome check box icons
-    var whiteBackground = new Rectangle( 0, -25 * x, 25 * x, 25 * x, 5 * x, 5 * x, {fill: 'white'} );
-
-    thisNode._checkedNode = new FontAwesomeNode( 'check', { scale: options.boxScale, fill: options.checkBoxColor } );
-    thisNode._uncheckedNode = new FontAwesomeNode( 'check_empty', { scale: options.boxScale, fill: options.checkBoxColor } );
+    thisNode._uncheckedNode = new FontAwesomeNode( 'check_empty', { fill: options.checkBoxColor } );
+    var iconScale = options.boxWidth / thisNode._uncheckedNode.width;
+    thisNode._uncheckedNode.scale( iconScale );
+    thisNode._checkedNode = new FontAwesomeNode( 'check', { scale: iconScale, fill: options.checkBoxColor } );
 
     thisNode.addChild( whiteBackground );
     thisNode.addChild( thisNode._checkedNode );
@@ -107,13 +109,13 @@ define( function( require ) {
       // set the color of the check box icons
       this._checkedNode.fill = value ? this._options.checkBoxColor : this._options.checkBoxColorDisabled;
       this._uncheckedNode.fill = this._checkedNode.fill;
-      
+
       // enable/disable the content, if it supports it
       if ( this._content.setEnabled ) {
         this._content.setEnabled( value );
       }
     }
-    
+
   }, {
 
     // static properties
