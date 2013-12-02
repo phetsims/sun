@@ -37,7 +37,7 @@ define( function( require ) {
 
       //Add an invisible strut to each content to make the widths match
       var content = new Path( Shape.rect( 0, 0, width + options.padding, 0 ), {children: [items[i].node]} );
-      children.push( new AquaRadioButton( items[i].property, items[i].value, content, {radius: options.radius} ) );//Made the radius smaller here so the whole panel won't take up too much vertical space
+      children.push( new AquaRadioButton( items[i].property, items[i].value, content, {radius: options.radius} ) );
     }
 
     //TODO these options should be added using _.extend(options, {children:..., renderer:....})
