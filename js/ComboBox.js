@@ -14,6 +14,7 @@ define( function( require ) {
 
   // imports
   var inherit = require( 'PHET_CORE/inherit' );
+  var Line = require( 'SCENERY/nodes/Line' );
   var Node = require( 'SCENERY/nodes/Node' );
   var Path = require( 'SCENERY/nodes/Path' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
@@ -42,15 +43,21 @@ define( function( require ) {
     }
 
     // button background
-    var width = itemNode.width + ( 2 * options.buttonXMargin ) + arrow.width + 5;
-    var background = new Rectangle( 0, 0, width, itemNode.height + ( 2 * options.buttonYMargin ), options.buttonCornerRadius, options.buttonCornerRadius,
+    var width = itemNode.width + ( 3 * options.buttonXMargin ) + arrow.width;
+    var height = itemNode.height + ( 2 * options.buttonYMargin );
+    var background = new Rectangle( 0, 0, width, height, options.buttonCornerRadius, options.buttonCornerRadius,
       { fill: options.buttonFill, stroke: options.buttonStroke, lineWidth: options.buttonLineWidth } );
+
+    // vertical separator to left of arrow
+    var separator = new Line( 0, 0, 0, height, { stroke: 'black'} );
 
     // itemNode's parent
     var itemNodeParent = new Node();
 
+    // rendering order
     thisNode.addChild( background );
     thisNode.addChild( arrow );
+    thisNode.addChild( separator );
     thisNode.addChild( itemNodeParent );
 
     thisNode.setItemNode = function( itemNode ) {
@@ -61,7 +68,10 @@ define( function( require ) {
     };
     thisNode.setItemNode( itemNode );
 
-    arrow.left = itemNode.right;
+    // layout
+    separator.left = itemNode.right;
+    separator.top = background.top;
+    arrow.left = separator.right + options.buttonXMargin;
     arrow.centerY = background.centerY;
   }
 
@@ -104,8 +114,8 @@ define( function( require ) {
         buttonFill: 'white',
         buttonStroke: 'black',
         buttonLineWidth: 1,
-        buttonCornerRadius: 3,
-        buttonXMargin: 4,
+        buttonCornerRadius: 8,
+        buttonXMargin: 10,
         buttonYMargin: 4,
         // list
         listPosition: 'below', // where the list is positioned relative to the button, either 'below' or 'above'
