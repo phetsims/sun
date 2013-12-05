@@ -43,7 +43,7 @@ define( function( require ) {
     }
 
     // button background
-    var width = itemNode.width + ( 3 * options.buttonXMargin ) + arrow.width;
+    var width = itemNode.width + ( 4 * options.buttonXMargin ) + arrow.width;
     var height = itemNode.height + ( 2 * options.buttonYMargin );
     var background = new Rectangle( 0, 0, width, height, options.buttonCornerRadius, options.buttonCornerRadius,
       { fill: options.buttonFill, stroke: options.buttonStroke, lineWidth: options.buttonLineWidth } );
@@ -69,7 +69,7 @@ define( function( require ) {
     thisNode.setItemNode( itemNode );
 
     // layout
-    separator.left = itemNode.right;
+    separator.left = itemNode.right + options.buttonXMargin;
     separator.top = background.top;
     arrow.left = separator.right + options.buttonXMargin;
     arrow.centerY = background.centerY;
@@ -119,7 +119,6 @@ define( function( require ) {
         buttonYMargin: 4,
         // list
         listPosition: 'below', // where the list is positioned relative to the button, either 'below' or 'above'
-        listXMargin: 4,
         listYMargin: 4,
         listFill: 'white',
         listStroke: 'black',
@@ -156,7 +155,7 @@ define( function( require ) {
     thisNode.addChild( buttonNode );
 
     // list
-    var listWidth = itemWidth + ( 2 * options.listXMargin );
+    var listWidth = itemWidth + ( 2 * options.buttonXMargin );
     var listHeight = ( items.length * itemHeight ) + ( 2 * options.listYMargin );
     var listNode = new Rectangle( 0, 0, listWidth, listHeight, options.listCornerRadius, options.listCornerRadius,
       { fill: options.listFill, stroke: options.listStroke, lineWidth: options.listLineWidth, visible: false } );
@@ -198,7 +197,7 @@ define( function( require ) {
       // add item to list
       var itemNode = new ItemNode( items[j], itemWidth, itemHeight, options.itemXMargin );
       listNode.addChild( itemNode );
-      itemNode.left = options.listXMargin;
+      itemNode.left = options.buttonXMargin;
       itemNode.top = options.listYMargin + ( j * itemHeight );
 
       // item interactivity
