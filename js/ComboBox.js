@@ -49,7 +49,7 @@ define( function( require ) {
       { fill: options.buttonFill, stroke: options.buttonStroke, lineWidth: options.buttonLineWidth } );
 
     // vertical separator to left of arrow
-    var separator = new Line( 0, 0, 0, height, { stroke: 'black'} );
+    var separator = new Line( 0, 0, 0, height, { stroke: 'black', lineWidth: options.buttonLineWidth } );
 
     // itemNode's parent
     var itemNodeParent = new Node();
