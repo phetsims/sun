@@ -236,7 +236,7 @@ define( function( require ) {
 
     // listener for 'click outside to dismiss'
     var clickToDismissListener = {
-      down: function( event ) {
+      down: function() {
         if ( enableClickToDismissListener ) {
           sceneNode.removeInputListener( clickToDismissListener );
           listNode.visible = false;
@@ -251,7 +251,7 @@ define( function( require ) {
     buttonNode.cursor = 'pointer';
     buttonNode.addInputListener(
       {
-        down: function( event ) {
+        down: function() {
           if ( !listNode.visible ) {
             moveList();
             listNode.visible = true;
