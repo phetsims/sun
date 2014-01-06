@@ -46,6 +46,8 @@ define( function( require ) {
     thisButton._listeners = [];
     if ( options.listener ) { thisButton._listeners.push( options.listener ); }
 
+    thisButton._stateListeners = [];
+
     thisButton.addChild( upNode );
     thisButton.addChild( overNode );
     thisButton.addChild( downNode );
@@ -118,6 +120,21 @@ define( function( require ) {
       } );
     },
 
+    // Adds a state listener. If already a listener, this is a no-op.
+    addStateListener: function( listener ) {
+      if ( this._stateListeners.indexOf( listener ) === -1 ) {
+        this._stateListeners.push( listener );
+      }
+    },
+
+    // Remove a listener. If not a listener, this is a no-op.
+    removeStateListener: function( listener ) {
+      var i = this._stateListeners.indexOf( listener );
+      if ( i !== -1 ) {
+        this._stateListeners.splice( i, 1 );
+      }
+    },
+
     _update: function() {
       // use visible instead of add/removeChild to prevent flickering
       var enabled = this._enabled.get();
@@ -125,6 +142,9 @@ define( function( require ) {
       this._downNode.visible = ( this._state === 'down' && enabled );
       this._overNode.visible = ( this._state === 'over' && enabled );
       this._disabledNode.visible = !enabled;
+      for ( var i = 0; i < this._stateListeners.length; i++ ) {
+        this._stateListeners[i]( this._state );
+      }
     },
 
     set enabled( value ) {
