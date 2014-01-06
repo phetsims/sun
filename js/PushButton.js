@@ -152,6 +152,8 @@ define( function( require ) {
       this._enabled.set( value );
     },
 
-    get enabled() { return this._enabled.get(); }
+    get enabled() { return this._enabled.get(); },
+
+    getEnabledProperty: function() { return this._enabled; }
   } );
 } );
