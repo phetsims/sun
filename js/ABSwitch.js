@@ -36,7 +36,7 @@ define( function( require ) {
       switchSize: new Dimension2( 60, 30 ),
       xSpacing: 8,
       cursor: 'pointer',
-      centerOnButton: true,
+      centerOnButton: false,
       // uses opacity as the default method of indicating whether a {Node} node is {Boolean} enabled
       setEnabled: function( node, enabled ) { node.opacity = enabled ? 1.0 : 0.5; }
     }, options );
