@@ -11,7 +11,7 @@ define( function( require ) {
   'use strict';
 
   var Node = require( 'SCENERY/nodes/Node' );
-  var Path = require( 'SCENERY/nodes/Path' );
+  var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var Shape = require( 'KITE/Shape' );
   var inherit = require( 'PHET_CORE/inherit' );
 
@@ -32,7 +32,7 @@ define( function( require ) {
 
     var thisNode = this;
     Node.call( thisNode );
-    var background = new Path( Shape.bounds( trueNode.bounds.union( falseNode.bounds ) ) );
+    var background = Rectangle.bounds( trueNode.bounds.union( falseNode.bounds ), { visible: false } );
     this.addChild( background );
 
     var targetTrueNode = options.wrapChildren ? new Node( {children: [trueNode]} ) : trueNode;
