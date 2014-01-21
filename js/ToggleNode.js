@@ -12,7 +12,6 @@ define( function( require ) {
 
   var Node = require( 'SCENERY/nodes/Node' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
-  var Shape = require( 'KITE/Shape' );
   var inherit = require( 'PHET_CORE/inherit' );
 
   /**
