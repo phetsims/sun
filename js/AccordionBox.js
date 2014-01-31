@@ -18,12 +18,10 @@ define( function( require ) {
   var Shape = require( 'KITE/Shape' );
 
   // Constants
-  var CONTROL_BUTTON_INSET = 4;
   var TITLE_INSET = 10;
   var CONTROL_BUTTON_DIMENSION = 16; // Can make this an option if desired.
   var CONTENT_HORIZONTAL_INSET = 15; // Can make this an option if desired.
   var CONTENT_VERTICAL_INSET = 8; // Can make this an option if desired.
-  var CORNER_ROUNDING = 3;
 
   /**
    * @param {Node} contentNode that will be shown or hidden as the accordion
@@ -48,7 +46,10 @@ define( function( require ) {
       font: '20px Arial',
       contentPosition: 'center',
       buttonPosition: 'left',
-      titlePosition: 'center'
+      titlePosition: 'center',
+      cornerRadius: 3,
+      controlButtonInsetX: 4,
+      controlButtonInsetY: 4
     }, options );
 
     var thisNode = this;
@@ -79,12 +80,12 @@ define( function( require ) {
     // Create the container that will hold the contents when open.
     var containerWidth = Math.max( options.minWidth || 0,
       Math.max( contentNode.width + 2 * CONTENT_HORIZONTAL_INSET,
-        CONTROL_BUTTON_INSET * 2 + CONTROL_BUTTON_DIMENSION + TITLE_INSET * 2 + title.width ) );
-    var closedContainerHeight = CONTROL_BUTTON_INSET * 2 + CONTROL_BUTTON_DIMENSION;
-    var openContainerHeight = CONTROL_BUTTON_INSET * 2 + CONTROL_BUTTON_DIMENSION + 2 * CONTENT_VERTICAL_INSET + contentNode.height;
+        options.controlButtonInsetX * 2 + CONTROL_BUTTON_DIMENSION + TITLE_INSET * 2 + title.width ) );
+    var closedContainerHeight = options.controlButtonInsetY * 2 + CONTROL_BUTTON_DIMENSION;
+    var openContainerHeight = options.controlButtonInsetY * 2 + CONTROL_BUTTON_DIMENSION + 2 * CONTENT_VERTICAL_INSET + contentNode.height;
     this.openHeight = openContainerHeight; // This needs to be visible externally for layout purposes.
 
-    var openContainer = new Rectangle( 0, 0, containerWidth, openContainerHeight, CORNER_ROUNDING, CORNER_ROUNDING,
+    var openContainer = new Rectangle( 0, 0, containerWidth, openContainerHeight, options.cornerRadius, options.cornerRadius,
       {
         stroke: options.stroke,
         lineWidth: options.lineWidth,
@@ -96,7 +97,7 @@ define( function( require ) {
     this.addChild( openContainer );
 
     // Create the node that represents the closed container.
-    var closedContainer = new Rectangle( 0, 0, containerWidth, closedContainerHeight, CORNER_ROUNDING, CORNER_ROUNDING,
+    var closedContainer = new Rectangle( 0, 0, containerWidth, closedContainerHeight, options.cornerRadius, options.cornerRadius,
       {
         stroke: options.stroke,
         lineWidth: options.lineWidth,
@@ -107,7 +108,7 @@ define( function( require ) {
     this.addChild( closedContainer );
 
     // If necessary, scale title to fit in available space.
-    var availableTitleSpace = containerWidth - CONTROL_BUTTON_INSET - CONTROL_BUTTON_DIMENSION - 2 * TITLE_INSET;
+    var availableTitleSpace = containerWidth - options.controlButtonInsetX - CONTROL_BUTTON_DIMENSION - 2 * TITLE_INSET;
     if ( title.width > availableTitleSpace ) {
       title.scale( availableTitleSpace / title.width );
     }
@@ -115,7 +116,7 @@ define( function( require ) {
     // Create an invisible rectangle that allows the user to click on any part
     // of the top of the container (closed or open) in order to toggle the
     // state.
-    var openCloseNode = new Rectangle( 0, 0, containerWidth, closedContainerHeight, CORNER_ROUNDING, CORNER_ROUNDING,
+    var openCloseNode = new Rectangle( 0, 0, containerWidth, closedContainerHeight, options.cornerRadius, options.cornerRadius,
       {
         fill: 'rgba( 0, 0, 0, 0)', // Invisible.
         cursor: 'pointer'
@@ -125,18 +126,18 @@ define( function( require ) {
     closedContainer.addChild( openCloseNode );
 
     // Lay out the contents of the containers.
-    expandCollapseButton.top = CONTROL_BUTTON_INSET;
+    expandCollapseButton.top = options.controlButtonInsetY;
     title.centerY = expandCollapseButton.centerY;
     var titleLeftBound = TITLE_INSET;
     var titleRightBound = containerWidth - TITLE_INSET;
     contentNode.bottom = openContainerHeight - CONTENT_VERTICAL_INSET;
 
     if ( options.buttonPosition === 'left' ) {
-      expandCollapseButton.left = CONTROL_BUTTON_INSET;
+      expandCollapseButton.left = options.controlButtonInsetX;
       titleLeftBound = expandCollapseButton.right + TITLE_INSET;
     }
     else {
-      expandCollapseButton.right = containerWidth - CONTROL_BUTTON_INSET;
+      expandCollapseButton.right = containerWidth - options.controlButtonInsetX;
       titleLeftBound = TITLE_INSET;
     }
 
