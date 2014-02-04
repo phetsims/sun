@@ -59,7 +59,8 @@ define( function( require ) {
       // other
       cursor: 'pointer',
       enabledProperty: new Property( true ),
-      endDrag: function() { /* do nothing */ } // called when thumb is released at end of drag sequence
+      startDrag: function() {}, // called when a drag sequence starts
+      endDrag: function() {} // called when a drag sequence ends
     };
 
     // fill in options with defaults
@@ -86,6 +87,9 @@ define( function( require ) {
         }
       },
       start: function( event ) {
+        if ( thisSlider._options.enabledProperty.get() ) {
+          thisSlider._options.startDrag();
+        }
         this.handleTrackEvent( event );
       },
       drag: function( event ) {
@@ -122,6 +126,9 @@ define( function( require ) {
       clickXOffset: 0, // x-offset between initial click and thumb's origin
       allowTouchSnag: true,
       start: function( event ) {
+        if ( thisSlider._options.enabledProperty.get() ) {
+          thisSlider._options.startDrag();
+        }
         this.clickXOffset = thumb.globalToParentPoint( event.pointer.point ).x - thumb.x;
       },
       drag: function( event ) {
