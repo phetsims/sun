@@ -25,7 +25,8 @@ require.config(
       SCENERY: '../../scenery/js',
       SCENERY_PHET: '../../scenery-phet/js',
       SHERPA: '../../sherpa',
-      SUN: '../../sun/js'
+      SUN: '../../sun/js',
+      VEGAS: '../../vegas/js'
     },
 
     urlArgs: new Date().getTime()  // cache buster to make browser refresh load all included scripts

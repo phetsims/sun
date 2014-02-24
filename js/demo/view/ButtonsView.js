@@ -13,6 +13,7 @@ define( function( require ) {
   var TestButton01 = require( 'SUN/experimental/buttons/TestButton01' );
   var RefreshButton = require( 'SUN/experimental/buttons/RefreshButton' );
   var ReturnToLevelSelectButton = require( 'SUN/experimental/buttons/ReturnToLevelSelectButton' );
+  var ReturnToLevelSelectButton2 = require( 'SUN/experimental/buttons/ReturnToLevelSelectButton2' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
 
   function ButtonsView( model ) {
@@ -34,6 +35,7 @@ define( function( require ) {
     this.addChild( new ReturnToLevelSelectButton( function() { console.log( 'Return to level selection pressed' ); }, { centerX: 400, centerY: 100 } ) );
     this.addChild( new ResetAllButton( function() { console.log( 'Reset All pressed' ); }, { radius: 22, x: 400, y: 300 } ) );
     this.addChild( new TestButton01( { centerX: 300, centerY: 300 } ) );
+    this.addChild( new ReturnToLevelSelectButton2( function() { console.log( 'Return to level selection pressed' ); }, { centerX: 375, centerY: 150 } ) );
   }
 
   return inherit( ScreenView, ButtonsView, {
