@@ -9,16 +9,17 @@ define( function( require ) {
   'use strict';
 
   // Includes
+  var Color = require( 'SCENERY/util/Color' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Matrix3 = require( 'DOT/Matrix3' );
   var Node = require( 'SCENERY/nodes/Node' );
   var Path = require( 'SCENERY/nodes/Path' );
-  var RaisedEdgesButton = require( 'SUN/experimental/buttons/RaisedEdgesButton' );
+  var RectangularPushButton = require( 'SUN/experimental/buttons/RectangularPushButton' );
   var Shape = require( 'KITE/Shape' );
   var Vector2 = require( 'DOT/Vector2' );
 
   // Constants
-  var DEFAULT_WIDTH = 15;
+  var DEFAULT_ICON_WIDTH = 30;
 
   /**
    * @param {function} callback
@@ -27,18 +28,20 @@ define( function( require ) {
    */
   function RefreshButton( callback, options ) {
     options = _.extend( {
-      width: DEFAULT_WIDTH
+      iconWidth: DEFAULT_ICON_WIDTH,
+      xPadding: DEFAULT_ICON_WIDTH / 2,
+      baseColor: new Color( 255, 242, 2 )
     }, options );
 
     // Create the top arrow shape, starting at the rightmost edge.  The
     // following params can be tweaked to adjust the look.
-    var tailThickness = options.width * 0.3;
+    var tailThickness = options.iconWidth * 0.2;
+    var radius = options.iconWidth / 2 - tailThickness / 2;
     var headWidth = tailThickness * 2.2;
-    var radius = options.width - tailThickness / 2;
     var neckAngle = -Math.PI * 0.175;
     var endToNeckAngularSpan = -0.75 * Math.PI;
-    var arrowHeadAngularSpan = -Math.PI * 0.25;
-    var pointOffset = 0.05 * options.width;
+    var arrowHeadAngularSpan = -Math.PI * 0.3;
+    var pointOffset = 0.3 * radius;
     //---- End of tweak params ----
     var tailCenter = new Vector2( radius, 0 );
     var neckCenter = tailCenter.rotated( endToNeckAngularSpan );
@@ -47,15 +50,15 @@ define( function( require ) {
     var headOuterPoint = neckCenter.plus( new Vector2( headWidth / 2, 0 ).rotated( Math.PI - neckAngle ) );
     var headInnerPoint = neckCenter.plus( new Vector2( headWidth / 2, 0 ).rotated( -neckAngle ) );
     var neckInner = neckCenter.plus( new Vector2( tailThickness / 2, 0 ).rotated( -neckAngle ) );
-    var outerControlPointDistance = options.width * 1.3; // Multiplier empirically determined
+    var outerControlPointDistance = radius * 1.75; // Multiplier empirically determined
     var ocp1 = new Vector2( outerControlPointDistance, 0 ).rotated( endToNeckAngularSpan / 3 );
     var ocp2 = new Vector2( outerControlPointDistance, 0 ).rotated( 2 / 3 * endToNeckAngularSpan );
-    var icpScale = 0.7;  // Multiplier empirically determined
+    var icpScale = 0.6;  // Multiplier empirically determined
     var icp1 = new Vector2( ocp2.x * icpScale, ocp2.y * icpScale );
     var icp2 = new Vector2( ocp1.x * icpScale, ocp1.y * icpScale );
     var upperArrowShape = new Shape();
-    upperArrowShape.moveTo( options.width - tailThickness, 0 );
-    upperArrowShape.lineTo( options.width, 0 );
+    upperArrowShape.moveTo( radius - tailThickness, 0 );
+    upperArrowShape.lineTo( radius + tailThickness, 0 );
     upperArrowShape.cubicCurveTo( ocp1.x, ocp1.y, ocp2.x, ocp2.y, neckOuter.x, neckOuter.y );
     upperArrowShape.lineTo( headOuterPoint.x, headOuterPoint.y );
     upperArrowShape.lineTo( tip.x, tip.y );
@@ -70,10 +73,10 @@ define( function( require ) {
     // Put it all together.
     var doubleArrowNode = new Node();
     doubleArrowNode.addChild( new Path( upperArrowShape, { fill: 'rgb( 88, 88, 90 )' } ) );
-    doubleArrowNode.addChild( new Path( lowerArrowShape, { fill: 'rgb( 88, 88, 90 )', y: options.width * 0.2 } ) );
+    doubleArrowNode.addChild( new Path( lowerArrowShape, { fill: 'rgb( 88, 88, 90 )', y: options.iconWidth * 0.2 } ) );
 
-    RaisedEdgesButton.call( this, callback, doubleArrowNode, options );
+    RectangularPushButton.call( this, callback, doubleArrowNode, options );
   }
 
-  return inherit( RaisedEdgesButton, RefreshButton );
+  return inherit( RectangularPushButton, RefreshButton );
 } );

@@ -9,7 +9,7 @@ define( function( require ) {
   var Text = require( 'SCENERY/nodes/Text' );
 
   function TestButton01( options ) {
-    RectangularPushButton.call( this, new Text( 'You\'re pushing it...' ), function() { console.log( 'TestButton01 pushed' );}, options );
+    RectangularPushButton.call( this, function() { console.log( 'TestButton01 pushed' );}, new Text( 'You\'re pushing it...' ), options );
   }
 
   return inherit( RectangularPushButton, TestButton01 );

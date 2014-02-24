@@ -13,14 +13,22 @@ define( function( require ) {
   var TestButton01 = require( 'SUN/experimental/buttons/TestButton01' );
   var RefreshButton = require( 'SUN/experimental/buttons/RefreshButton' );
   var ReturnToLevelSelectButton = require( 'SUN/experimental/buttons/ReturnToLevelSelectButton' );
+  var Rectangle = require( 'SCENERY/nodes/Rectangle' );
 
   function ButtonsView( model ) {
     ScreenView.call( this, { renderer: 'svg' } );
 
+    // Add background colors.
+    this.addChild( new Rectangle( 0, 0, 500, 100, 0, 0, { fill: 'black', top: 100 } ) );
+    this.addChild( new Rectangle( 0, 0, 500, 100, 0, 0, { fill: 'green', top: 200 } ) );
+    this.addChild( new Rectangle( 0, 0, 500, 100, 0, 0, { fill: 'rgb( 254, 255, 153 )', top: 300 } ) );
+
     // add various test buttons.
-    this.addChild( new RefreshButton( function() { console.log( 'Refresh pressed' ); }, { width: 20, centerX: 100, centerY: 200 } ) );
-    this.addChild( new RefreshButton( function() { console.log( 'Refresh pressed' ); }, { centerX: 100, centerY: 100 } ) );
-    var disabledRefreshButton = new RefreshButton( function() { console.log( 'Refresh pressed' ); }, { centerX: 200, centerY: 100 } );
+    this.addChild( new RefreshButton( function() { console.log( 'Refresh pressed' ); }, { centerX: 100, centerY: 50 } ) );
+    this.addChild( new RefreshButton( function() { console.log( 'Refresh pressed' ); }, { centerX: 100, centerY: 150 } ) );
+    this.addChild( new RefreshButton( function() { console.log( 'Refresh pressed' ); }, { centerX: 100, centerY: 250 } ) );
+    this.addChild( new RefreshButton( function() { console.log( 'Refresh pressed' ); }, { centerX: 100, centerY: 350 } ) );
+    var disabledRefreshButton = new RefreshButton( function() { console.log( 'Refresh pressed' ); }, { centerX: 250, centerY: 100 } );
     disabledRefreshButton.enabled = false;
     this.addChild( disabledRefreshButton );
     this.addChild( new ReturnToLevelSelectButton( function() { console.log( 'Return to level selection pressed' ); }, { centerX: 400, centerY: 100 } ) );
