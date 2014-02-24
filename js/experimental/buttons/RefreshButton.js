@@ -19,7 +19,7 @@ define( function( require ) {
   var Vector2 = require( 'DOT/Vector2' );
 
   // Constants
-  var DEFAULT_ICON_WIDTH = 30;
+  var DEFAULT_ICON_WIDTH = 24;
 
   /**
    * @param {function} callback

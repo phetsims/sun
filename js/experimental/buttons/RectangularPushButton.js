@@ -80,15 +80,15 @@ define( function( require ) {
 
     thisButton.overFillVertical = new LinearGradient( 0, 0, 0, thisButton.buttonHeight )
       .addColorStop( 0, thisButton.baseColor.colorUtilsBrighter( 0.9 ) )
-      .addColorStop( verticalHighlightStop, thisButton.baseColor.colorUtilsBrighter( 0.2 ) )
-      .addColorStop( verticalShadowStop, thisButton.baseColor.colorUtilsBrighter( 0.2 ) )
-      .addColorStop( 1, thisButton.baseColor.colorUtilsDarker( 0.5 ) );
+      .addColorStop( verticalHighlightStop, thisButton.baseColor.colorUtilsBrighter( 0.5 ) )
+      .addColorStop( verticalShadowStop, thisButton.baseColor.colorUtilsBrighter( 0.5 ) )
+      .addColorStop( 1, thisButton.baseColor.colorUtilsDarker( 0.1 ) );
 
     thisButton.overFillHorizontal = new LinearGradient( 0, 0, thisButton.buttonWidth, 0 )
       .addColorStop( 0, thisButton.baseColor.colorUtilsBrighter( 0.9 ) )
       .addColorStop( horizontalHighlightStop, transparentBaseColor )
       .addColorStop( horizontalShadowStop, transparentBaseColor )
-      .addColorStop( 1, thisButton.baseColor.colorUtilsDarker( 0.5 ) );
+      .addColorStop( 1, thisButton.baseColor.colorUtilsDarker( 0.1 ) );
 
     thisButton.downFill = new LinearGradient( 0, 0, 0, thisButton.buttonHeight )
       .addColorStop( 0, thisButton.baseColor.colorUtilsDarker( 0.3 ) )
