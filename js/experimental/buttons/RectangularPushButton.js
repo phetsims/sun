@@ -210,7 +210,7 @@ define( function( require ) {
 
           case 'down':
             this.background.fill = this.downFill;
-            this.overlayForHorizGradient.fill = this.downFill;
+            this.overlayForHorizGradient.fill = this.overFillHorizontal;
             this.label.center = this.downCenter;
             break;
 

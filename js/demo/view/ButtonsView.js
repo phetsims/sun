@@ -11,10 +11,12 @@ define( function( require ) {
   var inherit = require( 'PHET_CORE/inherit' );
   var ResetAllButton = require( 'SCENERY_PHET/ResetAllButton' );
   var TestButton01 = require( 'SUN/experimental/buttons/TestButton01' );
+  var TestButton02 = require( 'SUN/experimental/buttons/TestButton02' );
   var RefreshButton = require( 'SUN/experimental/buttons/RefreshButton' );
   var ReturnToLevelSelectButton = require( 'SUN/experimental/buttons/ReturnToLevelSelectButton' );
   var ReturnToLevelSelectButton2 = require( 'SUN/experimental/buttons/ReturnToLevelSelectButton2' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
+  var Color = require( 'SCENERY/util/Color' );
 
   function ButtonsView( model ) {
     ScreenView.call( this, { renderer: 'svg' } );
@@ -35,6 +37,7 @@ define( function( require ) {
     this.addChild( new ReturnToLevelSelectButton( function() { console.log( 'Return to level selection pressed' ); }, { centerX: 400, centerY: 100 } ) );
     this.addChild( new ResetAllButton( function() { console.log( 'Reset All pressed' ); }, { radius: 22, x: 400, y: 300 } ) );
     this.addChild( new TestButton01( { centerX: 300, centerY: 300 } ) );
+    this.addChild( new TestButton02( { centerX: 300, centerY: 350, baseColor: new Color( 0, 100, 0 ) } ) );
     this.addChild( new ReturnToLevelSelectButton2( function() { console.log( 'Return to level selection pressed' ); }, { centerX: 375, centerY: 150 } ) );
   }
 
