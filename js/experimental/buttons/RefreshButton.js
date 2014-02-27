@@ -29,7 +29,7 @@ define( function( require ) {
   function RefreshButton( callback, options ) {
     options = _.extend( {
       iconWidth: DEFAULT_ICON_WIDTH,
-      xPadding: DEFAULT_ICON_WIDTH / 2,
+      xPadding: DEFAULT_ICON_WIDTH / 3,
       baseColor: new Color( 255, 242, 2 )
     }, options );
 

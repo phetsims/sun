@@ -22,7 +22,7 @@ define( function( require ) {
   function ReturnToLevelSelectButton2( callback, options ) {
 
     options = _.extend( {
-      xPadding: 10,
+      xPadding: 7,
       baseColor: new Color( 255, 242, 2 )
     }, options );
 
