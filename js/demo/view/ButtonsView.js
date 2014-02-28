@@ -17,6 +17,8 @@ define( function( require ) {
   var ReturnToLevelSelectButton2 = require( 'SUN/experimental/buttons/ReturnToLevelSelectButton2' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var Color = require( 'SCENERY/util/Color' );
+  var RectangularPushButton2 = require( 'SUN/experimental/buttons/RectangularPushButton2' );
+  var Text = require( 'SCENERY/nodes/Text' );
 
   function ButtonsView( model ) {
     ScreenView.call( this, { renderer: 'svg' } );
@@ -39,6 +41,12 @@ define( function( require ) {
     this.addChild( new TestButton01( { centerX: 300, centerY: 300 } ) );
     this.addChild( new TestButton02( { centerX: 300, centerY: 350, baseColor: new Color( 0, 100, 0 ) } ) );
     this.addChild( new ReturnToLevelSelectButton2( function() { console.log( 'Return to level selection pressed' ); }, { centerX: 375, centerY: 150 } ) );
+    this.addChild( new RectangularPushButton2( new Text( 'Model Test' ),
+      {
+        centerX: 250,
+        centerY: 250,
+        listener: function() { console.log( 'Dude, you pressed it!' ); }
+      } ) );
   }
 
   return inherit( ScreenView, ButtonsView, {

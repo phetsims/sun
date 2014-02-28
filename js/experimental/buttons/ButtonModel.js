@@ -12,10 +12,18 @@ define( function( require ) {
    * @param {Object} options
    * @constructor
    */
-  function ButtonModel( callback, options ) {
-    if ( typeof( callback ) !== 'function' ) { throw new Error( 'Must supply callback function to button model.' ); }
+  function ButtonModel( options ) {
     var self = this;
-    options = _.extend( { fireOnDown: false }, options );
+    options = _.extend(
+      {
+        fireOnDown: false,
+        listener: null
+      }, options );
+
+    this.listeners = [];
+    if ( options.listener !== null ) {
+      this.listeners.push( options.listener );
+    }
 
     // A property that can be monitored externally in order to modify the
     // appearance of a button.  Valid values are idle, over, pressed, and
@@ -38,7 +46,7 @@ define( function( require ) {
           if ( self.downPointers.indexOf( event.pointer ) !== -1 ) { throw new Error( 'Pointer already in downPointers.' ); }
           self.downPointers.push( event.pointer );
           if ( options.fireOnDown ) {
-            callback();
+            self.fire();
           }
         }
       },
@@ -51,7 +59,7 @@ define( function( require ) {
 
           if ( self.overPointers.indexOf( event.pointer ) !== -1 && !options.fireOnDown ) {
             // Fire the callback.
-            callback();
+            self.fire();
           }
           self.downPointers = _.without( self.downPointers, event.pointer );
         }
@@ -81,6 +89,30 @@ define( function( require ) {
           this.interactionState.value = 'idle';
         }
       }
+    },
+
+    // Adds a listener. If already a listener, this is a no-op.
+    addListener: function( listener ) {
+      if ( this.listeners.indexOf( listener ) === -1 ) {
+        this.listeners.push( listener );
+      }
+    },
+
+    // Remove a listener. If not a listener, this is a no-op.
+    removeListener: function( listener ) {
+      var i = this.listeners.indexOf( listener );
+      if ( i !== -1 ) {
+        this.listeners.splice( i, 1 );
+      }
+    },
+
+    // Fires all listeners.  Should not be called outside of this file with
+    // the possible exception of hooking up for accessibility.
+    fire: function() {
+      var copy = this.listeners.slice( 0 );
+      copy.forEach( function( listener ) {
+        listener();
+      } );
     },
 
     // ES5 getter for enabled state.
