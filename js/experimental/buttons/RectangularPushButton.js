@@ -12,6 +12,7 @@ define( function( require ) {
 
   // Includes
   var ButtonListener = require( 'SCENERY/input/ButtonListener' );
+  var ButtonModel = require( 'SUN/experimental/buttons/ButtonModel' );
   var Color = require( 'SCENERY/util/Color' );
   var inherit = require( 'PHET_CORE/inherit' );
   var LinearGradient = require( 'SCENERY/util/LinearGradient' );
@@ -40,7 +41,7 @@ define( function( require ) {
       // Default values.
       cursor: 'pointer',
       cornerRounding: 4,
-      baseColor: new Color( 153, 206, 255 ), // TODO: Discuss preference for Color, rgb strings, or whatever.
+      baseColor: new Color( 153, 206, 255 ),
       disabledBaseColor: new Color( 220, 220, 220 ),
       xPadding: 5,
       yPadding: 5,
@@ -145,6 +146,12 @@ define( function( require ) {
         }
       }
     } ) );
+
+    var buttonModel = new ButtonModel( callback );
+    this.addInputListener( buttonModel );
+    buttonModel.interactionState.link( function( state ) {
+      console.log( 'interactionState changed, new value = ' + state );
+    } );
 
     // Add an explicit mouse area so that the child nodes can all be non-pickable.
     this.mouseArea = Shape.rectangle( 0, 0, thisButton.buttonWidth, thisButton.buttonHeight );

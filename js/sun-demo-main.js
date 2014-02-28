@@ -1,7 +1,7 @@
 // Copyright 2002-2014, University of Colorado Boulder
 
 /**
- * Main file for the Under Pressure simulation.
+ * Main file for the Sun library demo.
  */
 define( function( require ) {
   'use strict';
