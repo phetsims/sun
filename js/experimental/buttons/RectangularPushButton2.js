@@ -1,8 +1,8 @@
 // Copyright 2002-2014, University of Colorado Boulder
 
 /**
- * Push Button - prototype of a version that draws gradients and such in order
- * to try to get a somewhat 2D effect.
+ * A rectangular push button that draws gradients and such in order to create
+ * a somewhat 2D effect.
  *
  * @author John Blanco
  */
@@ -48,81 +48,77 @@ define( function( require ) {
       fireOnDown: false
     }, options );
 
-    thisButton.buttonWidth = content.width + options.xPadding * 2;
-    thisButton.buttonHeight = content.height + options.yPadding * 2;
-    thisButton.baseColor = options.baseColor;
-    thisButton.disabledBaseColor = options.disabledBaseColor;
-    thisButton.label = content;
-    thisButton.upCenter = new Vector2( thisButton.buttonWidth / 2, thisButton.buttonHeight / 2 );
-    thisButton.downCenter = thisButton.upCenter;
+    var buttonWidth = content.width + options.xPadding * 2;
+    var buttonHeight = content.height + options.yPadding * 2;
+    var upCenter = new Vector2( buttonWidth / 2, buttonHeight / 2 );
+    var downCenter = upCenter.plus( new Vector2( 0.5, 0.5 ) ); // Displacement empirically determined.
+    var baseColor = options.baseColor;
+    var disabledBaseColor = options.disabledBaseColor;
+    var verticalHighlightStop = HIGHLIGHT_GRADIENT_LENGTH / buttonHeight;
+    var verticalShadowStop = 1 - SHADE_GRADIENT_LENGTH / buttonHeight;
+    var horizontalHighlightStop = HIGHLIGHT_GRADIENT_LENGTH / buttonWidth;
+    var horizontalShadowStop = 1 - SHADE_GRADIENT_LENGTH / buttonWidth;
 
-    var verticalHighlightStop = HIGHLIGHT_GRADIENT_LENGTH / thisButton.buttonHeight;
-    var verticalShadowStop = 1 - SHADE_GRADIENT_LENGTH / thisButton.buttonHeight;
-    var horizontalHighlightStop = HIGHLIGHT_GRADIENT_LENGTH / thisButton.buttonWidth;
-    var horizontalShadowStop = 1 - SHADE_GRADIENT_LENGTH / thisButton.buttonWidth;
+    // Create the gradient fills used for various button states
+    thisButton.upFillVertical = new LinearGradient( 0, 0, 0, buttonHeight )
+      .addColorStop( 0, baseColor.colorUtilsBrighter( 0.7 ) )
+      .addColorStop( verticalHighlightStop, baseColor )
+      .addColorStop( verticalShadowStop, baseColor )
+      .addColorStop( 1, baseColor.colorUtilsDarker( 0.5 ) );
 
-    // Gradient fills used for various button states
-    thisButton.upFillVertical = new LinearGradient( 0, 0, 0, thisButton.buttonHeight )
-      .addColorStop( 0, thisButton.baseColor.colorUtilsBrighter( 0.7 ) )
-      .addColorStop( verticalHighlightStop, thisButton.baseColor )
-      .addColorStop( verticalShadowStop, thisButton.baseColor )
-      .addColorStop( 1, thisButton.baseColor.colorUtilsDarker( 0.5 ) );
-
-    var transparentBaseColor = new Color( thisButton.baseColor.getRed(), thisButton.baseColor.getGreen(), thisButton.baseColor.getBlue(), 0 );
-    thisButton.upFillHorizontal = new LinearGradient( 0, 0, thisButton.buttonWidth, 0 )
-      .addColorStop( 0, thisButton.baseColor.colorUtilsBrighter( 0.7 ) )
+    var transparentBaseColor = new Color( baseColor.getRed(), baseColor.getGreen(), baseColor.getBlue(), 0 );
+    thisButton.upFillHorizontal = new LinearGradient( 0, 0, buttonWidth, 0 )
+      .addColorStop( 0, baseColor.colorUtilsBrighter( 0.7 ) )
       .addColorStop( horizontalHighlightStop, transparentBaseColor )
       .addColorStop( horizontalShadowStop, transparentBaseColor )
-      .addColorStop( 1, thisButton.baseColor.colorUtilsDarker( 0.5 ) );
+      .addColorStop( 1, baseColor.colorUtilsDarker( 0.5 ) );
 
-    thisButton.overFillVertical = new LinearGradient( 0, 0, 0, thisButton.buttonHeight )
-      .addColorStop( 0, thisButton.baseColor.colorUtilsBrighter( 0.7 ) )
-      .addColorStop( verticalHighlightStop, thisButton.baseColor.colorUtilsBrighter( 0.5 ) )
-      .addColorStop( verticalShadowStop, thisButton.baseColor.colorUtilsBrighter( 0.5 ) )
-      .addColorStop( 1, thisButton.baseColor.colorUtilsDarker( 0.5 ) );
+    thisButton.overFillVertical = new LinearGradient( 0, 0, 0, buttonHeight )
+      .addColorStop( 0, baseColor.colorUtilsBrighter( 0.7 ) )
+      .addColorStop( verticalHighlightStop, baseColor.colorUtilsBrighter( 0.5 ) )
+      .addColorStop( verticalShadowStop, baseColor.colorUtilsBrighter( 0.5 ) )
+      .addColorStop( 1, baseColor.colorUtilsDarker( 0.5 ) );
 
-    thisButton.overFillHorizontal = new LinearGradient( 0, 0, thisButton.buttonWidth, 0 )
-      .addColorStop( 0, thisButton.baseColor.colorUtilsBrighter( 0.7 ) )
+    thisButton.overFillHorizontal = new LinearGradient( 0, 0, buttonWidth, 0 )
+      .addColorStop( 0, baseColor.colorUtilsBrighter( 0.7 ) )
       .addColorStop( horizontalHighlightStop, transparentBaseColor )
       .addColorStop( horizontalShadowStop, transparentBaseColor )
-      .addColorStop( 1, thisButton.baseColor.colorUtilsDarker( 0.5 ) );
+      .addColorStop( 1, baseColor.colorUtilsDarker( 0.5 ) );
 
-    thisButton.downFill = new LinearGradient( 0, 0, 0, thisButton.buttonHeight )
-      .addColorStop( 0, thisButton.baseColor.colorUtilsBrighter( 0.7 ) )
-      .addColorStop( verticalHighlightStop * 0.67, thisButton.baseColor.colorUtilsDarker( 0.3 ) )
-      .addColorStop( verticalShadowStop, thisButton.baseColor.colorUtilsBrighter( 0.2 ) )
-      .addColorStop( 1, thisButton.baseColor.colorUtilsDarker( 0.5 ) );
+    thisButton.downFill = new LinearGradient( 0, 0, 0, buttonHeight )
+      .addColorStop( 0, baseColor.colorUtilsBrighter( 0.7 ) )
+      .addColorStop( verticalHighlightStop * 0.67, baseColor.colorUtilsDarker( 0.3 ) )
+      .addColorStop( verticalShadowStop, baseColor.colorUtilsBrighter( 0.2 ) )
+      .addColorStop( 1, baseColor.colorUtilsDarker( 0.5 ) );
 
-    thisButton.disabledFillVertical = new LinearGradient( 0, 0, 0, thisButton.buttonHeight )
-      .addColorStop( 0, options.disabledBaseColor.colorUtilsBrighter( 0.7 ) )
-      .addColorStop( verticalHighlightStop, options.disabledBaseColor.colorUtilsBrighter( 0.5 ) )
-      .addColorStop( verticalShadowStop, options.disabledBaseColor.colorUtilsBrighter( 0.5 ) )
-      .addColorStop( 1, options.disabledBaseColor.colorUtilsDarker( 0.5 ) );
+    thisButton.disabledFillVertical = new LinearGradient( 0, 0, 0, buttonHeight )
+      .addColorStop( 0, disabledBaseColor.colorUtilsBrighter( 0.7 ) )
+      .addColorStop( verticalHighlightStop, disabledBaseColor.colorUtilsBrighter( 0.5 ) )
+      .addColorStop( verticalShadowStop, disabledBaseColor.colorUtilsBrighter( 0.5 ) )
+      .addColorStop( 1, disabledBaseColor.colorUtilsDarker( 0.5 ) );
 
-    thisButton.disabledFillHorizontal = new LinearGradient( 0, 0, thisButton.buttonWidth, 0 )
-      .addColorStop( 0, options.disabledBaseColor.colorUtilsBrighter( 0.7 ) )
+    thisButton.disabledFillHorizontal = new LinearGradient( 0, 0, buttonWidth, 0 )
+      .addColorStop( 0, disabledBaseColor.colorUtilsBrighter( 0.7 ) )
       .addColorStop( horizontalHighlightStop, transparentBaseColor )
       .addColorStop( horizontalShadowStop, transparentBaseColor )
-      .addColorStop( 1, options.disabledBaseColor.colorUtilsDarker( 0.5 ) );
+      .addColorStop( 1, disabledBaseColor.colorUtilsDarker( 0.5 ) );
 
-    thisButton.background = new Rectangle( 0, 0, thisButton.buttonWidth, thisButton.buttonHeight, options.cornerRounding, options.cornerRounding,
+    // Create the basic button shape.
+    thisButton.background = new Rectangle( 0, 0, buttonWidth, buttonHeight, options.cornerRounding, options.cornerRounding,
       {
-        fill: options.baseColor,
-        stroke: options.stroke,
-        lineWidth: options.lineWidth
+        fill: options.baseColor
       } );
     this.addChild( thisButton.background );
 
-    thisButton.overlayForHorizGradient = new Rectangle( 0, 0, thisButton.buttonWidth, thisButton.buttonHeight, options.cornerRounding, options.cornerRounding,
+    // Create the overlay that is used to add horizontal shading.
+    thisButton.overlayForHorizGradient = new Rectangle( 0, 0, buttonWidth, buttonHeight, options.cornerRounding, options.cornerRounding,
       {
-        fill: options.baseColor,
-        stroke: options.stroke,
-        lineWidth: options.lineWidth
+        fill: options.baseColor
       } );
     this.addChild( thisButton.overlayForHorizGradient );
 
-    thisButton.label.center = thisButton.upCenter;
-    thisButton.addChild( thisButton.label );
+    content.center = upCenter;
+    thisButton.addChild( content );
 
     // Hook up the button model.
     this.buttonModel = new ButtonModel( { listener: options.listener, fireOnDown: options.fireOnDown } );
@@ -137,23 +133,23 @@ define( function( require ) {
         case 'idle':
           thisButton.background.fill = thisButton.upFillVertical;
           thisButton.overlayForHorizGradient.fill = thisButton.upFillHorizontal;
-          thisButton.label.center = thisButton.upCenter;
+          content.center = upCenter;
           break;
 
         case 'over':
-          thisButton.label.center = thisButton.upCenter;
+          content.center = upCenter;
           thisButton.background.fill = thisButton.overFillVertical;
           thisButton.overlayForHorizGradient.fill = thisButton.overFillHorizontal;
           break;
 
         case 'pressed':
-          thisButton.label.center = thisButton.downCenter;
+          content.center = downCenter;
           thisButton.background.fill = thisButton.downFill;
           thisButton.overlayForHorizGradient.fill = thisButton.overFillHorizontal;
           break;
 
         case 'disabled':
-          thisButton.label.center = thisButton.downCenter;
+          content.center = upCenter;
           thisButton.background.fill = thisButton.disabledFillVertical;
           thisButton.overlayForHorizGradient.fill = thisButton.disabledFillHorizontal;
           break;
@@ -161,11 +157,11 @@ define( function( require ) {
     } );
 
     // Add an explicit mouse area so that the child nodes can all be non-pickable.
-    this.mouseArea = Shape.rectangle( 0, 0, thisButton.buttonWidth, thisButton.buttonHeight );
+    this.mouseArea = Shape.rectangle( 0, 0, buttonWidth, buttonHeight );
 
     // Expand the touch area so that the button works better on touch devices.
-    var touchAreaWidth = thisButton.buttonWidth * options.touchAreaExpansionFactor;
-    var touchAreaHeight = thisButton.buttonHeight * options.touchAreaExpansionFactor;
+    var touchAreaWidth = buttonWidth * options.touchAreaExpansionFactor;
+    var touchAreaHeight = buttonHeight * options.touchAreaExpansionFactor;
     this.touchArea = Shape.rectangle( -touchAreaWidth / 2, -touchAreaHeight / 2, touchAreaWidth, touchAreaHeight );
 
     // accessibility
