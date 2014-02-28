@@ -19,6 +19,7 @@ define( function( require ) {
   var Color = require( 'SCENERY/util/Color' );
   var RectangularPushButton2 = require( 'SUN/experimental/buttons/RectangularPushButton2' );
   var Text = require( 'SCENERY/nodes/Text' );
+  var PhetFont = require( 'SCENERY_PHET/PhetFont' );
 
   function ButtonsView( model ) {
     ScreenView.call( this, { renderer: 'svg' } );
@@ -47,6 +48,15 @@ define( function( require ) {
         centerY: 250,
         listener: function() { console.log( 'Dude, you pressed it!' ); }
       } ) );
+    var buttonA = new RectangularPushButton2( new Text( '--- A ---', { font: new PhetFont( 20 )} ),
+      {
+        centerX: 250,
+        centerY: 200,
+        listener: function() { console.log( 'Dude, you pressed it!' ); }
+      } );
+    buttonA.enabled = false;
+    this.addChild( buttonA );
+
   }
 
   return inherit( ScreenView, ButtonsView, {
