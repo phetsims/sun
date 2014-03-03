@@ -10,13 +10,11 @@ define( function( require ) {
   'use strict';
 
   // Includes
-  var ButtonListener = require( 'SCENERY/input/ButtonListener' );
   var ButtonModel = require( 'SUN/experimental/buttons/ButtonModel' );
   var Color = require( 'SCENERY/util/Color' );
   var inherit = require( 'PHET_CORE/inherit' );
   var LinearGradient = require( 'SCENERY/util/LinearGradient' );
   var Node = require( 'SCENERY/nodes/Node' );
-  var Property = require( 'AXON/Property' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var Shape = require( 'KITE/Shape' );
   var Vector2 = require( 'DOT/Vector2' );
