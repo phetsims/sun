@@ -82,6 +82,7 @@ define( function( require ) {
       drag: function() { dragged = true; },
 
       translate: function( params ) {
+
         // move the thumb while it's being dragged
         if ( thumbNode.left + params.delta.x < 0 ) {
           thumbNode.left = 0;
@@ -92,8 +93,10 @@ define( function( require ) {
         else {
           thumbNode.x = thumbNode.x + params.delta.x;
         }
+
         // track fill changes based on the thumb positions
         trackNode.fill = this.thumbPositionToValue() ? options.trackOnFill : options.trackOffFill;
+
         // optionally toggle the property value
         if ( options.toggleWhileDragging ) {
           onProperty.set( this.thumbPositionToValue() );
