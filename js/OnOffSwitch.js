@@ -70,17 +70,16 @@ define( function( require ) {
 
     // sync with onProperty
     onProperty.link( updateThumb.bind( thisNode ) );
-    
-    // converts the thumb position to a boolean on/off value
-    var thumbPositionToValue = function() { return thumbNode.centerX > trackNode.centerX; }; 
 
     // thumb interactivity
-    var dragging = false;
+    var dragged = false; // was the thumb dragged?
     thumbNode.addInputListener( new SimpleDragHandler( {
 
       allowTouchSnag: true,
 
-      drag: function() { dragging = true; },
+      start: function() { dragged = false; },
+
+      drag: function() { dragged = true; },
 
       translate: function( params ) {
         // move the thumb while it's being dragged
@@ -94,29 +93,31 @@ define( function( require ) {
           thumbNode.x = thumbNode.x + params.delta.x;
         }
         // track fill changes based on the thumb positions
-        trackNode.fill = thumbPositionToValue() ? options.trackOnFill : options.trackOffFill;
+        trackNode.fill = this.thumbPositionToValue() ? options.trackOnFill : options.trackOffFill;
         // optionally toggle the property value
         if ( options.toggleWhileDragging ) {
-          onProperty.set( thumbPositionToValue() );
+          onProperty.set( this.thumbPositionToValue() );
         }
       },
 
       end: function() {
-        // snap to whichever end the thumb is closest to
-        onProperty.set( thumbPositionToValue() );
-        updateThumb( onProperty.get() );
+        if ( dragged ) {
+          // snap to whichever end the thumb is closest to
+          onProperty.set( this.thumbPositionToValue() );
+          updateThumb( onProperty.get() ); // in case onProperty didn't change
+        }
+      },
+
+      // converts the thumb position to a boolean on/off value
+      thumbPositionToValue: function() {
+        return ( thumbNode.centerX > trackNode.centerX );
       }
     } ) );
 
-    // clicking anywhere toggles on/off, if we aren't dragging the thumb
+    // clicking anywhere toggles on/off, if we didn't drag the thumb
     thisNode.addInputListener( new ButtonListener( {
       fire: function() {
-        if ( !dragging ) {
-          onProperty.set( !onProperty.get() );
-        }
-        else {
-          dragging = false;
-        }
+        if ( !dragged ) { onProperty.set( !onProperty.get() ); }
       }
     } ) );
 
