@@ -15,19 +15,22 @@ define( function( require ) {
   var RefreshButton = require( 'SUN/experimental/buttons/RefreshButton' );
   var ReturnToLevelSelectButton = require( 'SUN/experimental/buttons/ReturnToLevelSelectButton' );
   var ReturnToLevelSelectButton2 = require( 'SUN/experimental/buttons/ReturnToLevelSelectButton2' );
-  var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var Color = require( 'SCENERY/util/Color' );
   var RectangularPushButton2 = require( 'SUN/experimental/buttons/RectangularPushButton2' );
   var Text = require( 'SCENERY/nodes/Text' );
   var PhetFont = require( 'SCENERY_PHET/PhetFont' );
   var OutsideBackgroundNode = require( 'SCENERY_PHET/OutsideBackgroundNode' );
   var ModelViewTransform2 = require( 'PHETCOMMON/view/ModelViewTransform2' );
+  var Vector2 = require( 'DOT/Vector2' );
 
   function ButtonsView( model ) {
     ScreenView.call( this, { renderer: 'svg' } );
 
     // Add background colors.
-    this.addChild( new OutsideBackgroundNode( ModelViewTransform2.createIdentity(), 0, 1000 ) );
+    this.addChild( new OutsideBackgroundNode(
+      ModelViewTransform2.createOffsetXYScaleMapping( new Vector2( 0, this.layoutBounds.height / 2 ), 1, -1 ),
+      this.layoutBounds.height / 2,
+      -this.layoutBounds.height / 2 ) );
 
     // add various test buttons.
     this.addChild( new RefreshButton( function() { console.log( 'Refresh pressed' ); }, { centerX: 100, centerY: 50 } ) );
