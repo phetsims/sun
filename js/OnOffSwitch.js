@@ -2,7 +2,13 @@
 
 /**
  * On/off switch, similar to iOS' UISwitch, used in iOS `'Settings' app.
+ * Off (false) is to the left, on (true) is to the right.
+ * <p>
+ * Interaction behavior is as follows:
  * Drag the thumb to change the value, or click anywhere to toggle the value.
+ * If you click without dragging, it's a toggle.
+ * If you drag but don't cross the midpoint of the track, then it's a toggle.
+ * If you drag past the midpoint of the track, releasing the thumb snaps to whichever end the thumb is closest to.
  *
  * @author Chris Malley (PixelZoom, Inc.)
  */
@@ -76,10 +82,15 @@ define( function( require ) {
     thumbNode.addInputListener( new SimpleDragHandler( {
 
       allowTouchSnag: true,
+      thumbCrossedMidpoint: false, // true if thumb is dragged past track's midpoint
 
-      start: function() { dragged = false; },
+      start: function() {
+        this.thumbCrossedMidpoint = false;
+      },
 
-      drag: function() { dragged = true; },
+      drag: function() {
+        dragged = true;
+      },
 
       translate: function( params ) {
 
@@ -94,33 +105,45 @@ define( function( require ) {
           thumbNode.x = thumbNode.x + params.delta.x;
         }
 
+        var value = this.thumbPositionToValue(); // value represented by the current thumb position
+
         // track fill changes based on the thumb positions
-        trackNode.fill = this.thumbPositionToValue() ? options.trackOnFill : options.trackOffFill;
+        trackNode.fill = value ? options.trackOnFill : options.trackOffFill;
+
+        this.thumbCrossedMidpoint = this.thumbCrossedMidpoint || ( value !== onProperty.get() );
 
         // optionally toggle the property value
         if ( options.toggleWhileDragging ) {
-          onProperty.set( this.thumbPositionToValue() );
+          onProperty.set( value );
         }
       },
 
       end: function() {
         if ( dragged ) {
-          // snap to whichever end the thumb is closest to
-          onProperty.set( this.thumbPositionToValue() );
-          updateThumb( onProperty.get() ); // in case onProperty didn't change
+          if ( this.thumbCrossedMidpoint ) {
+            onProperty.set( this.thumbPositionToValue() ); // snap to whichever end the thumb is closest to
+            updateThumb( onProperty.get() ); // in case onProperty didn't change
+          }
+          else {
+            onProperty.set( !onProperty.get() ); // toggle
+          }
         }
       },
 
-      // converts the thumb position to a boolean on/off value
+      /*
+       * Converts the thumb position to a boolean on/off value.
+       * Off (false) is to the left, on (true) is to the right.
+       */
       thumbPositionToValue: function() {
         return ( thumbNode.centerX > trackNode.centerX );
       }
     } ) );
 
-    // clicking anywhere toggles on/off, if we didn't drag the thumb
+    // clicking anywhere on the entire node results in a toggles, if we didn't drag the thumb
     thisNode.addInputListener( new ButtonListener( {
       fire: function() {
         if ( !dragged ) { onProperty.set( !onProperty.get() ); }
+        dragged = false;
       }
     } ) );
 
