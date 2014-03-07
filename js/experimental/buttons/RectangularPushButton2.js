@@ -28,7 +28,7 @@ define( function( require ) {
    * @param {Object} options
    * @constructor
    */
-  function RectangularPushButton( content, options ) {
+  function RectangularPushButton2( content, options ) {
 
     var thisButton = this;
     Node.call( thisButton );
@@ -133,24 +133,28 @@ define( function( require ) {
           background.fill = upFillVertical;
           overlayForHorizGradient.fill = upFillHorizontal;
           content.center = upCenter;
+          thisButton.pickable = true;
           break;
 
         case 'over':
           content.center = upCenter;
           background.fill = overFillVertical;
           overlayForHorizGradient.fill = overFillHorizontal;
+          thisButton.pickable = true;
           break;
 
         case 'pressed':
           content.center = downCenter;
           background.fill = downFill;
           overlayForHorizGradient.fill = overFillHorizontal;
+          thisButton.pickable = true;
           break;
 
         case 'disabled':
           content.center = upCenter;
           background.fill = disabledFillVertical;
           overlayForHorizGradient.fill = disabledFillHorizontal;
+          thisButton.pickable = false;
           break;
       }
     } );
@@ -173,7 +177,7 @@ define( function( require ) {
     thisButton.mutate( options );
   }
 
-  return inherit( Node, RectangularPushButton, {
+  return inherit( Node, RectangularPushButton2, {
 
     addListener: function( listener ) {
       // Pass through to button model.

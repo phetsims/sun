@@ -14,7 +14,7 @@ define( function( require ) {
   var Matrix3 = require( 'DOT/Matrix3' );
   var Node = require( 'SCENERY/nodes/Node' );
   var Path = require( 'SCENERY/nodes/Path' );
-  var RectangularPushButton = require( 'SUN/experimental/buttons/RectangularPushButton' );
+  var RectangularPushButton2 = require( 'SUN/experimental/buttons/RectangularPushButton2' );
   var Shape = require( 'KITE/Shape' );
   var Vector2 = require( 'DOT/Vector2' );
 
@@ -26,11 +26,12 @@ define( function( require ) {
    * @param {Object} options
    * @constructor
    */
-  function RefreshButton( callback, options ) {
+  function RefreshButton( options ) {
     options = _.extend( {
       iconWidth: DEFAULT_ICON_WIDTH,
       xPadding: DEFAULT_ICON_WIDTH / 3,
-      baseColor: new Color( 255, 242, 2 )
+      baseColor: new Color( 255, 242, 2 ),
+      listener: null
     }, options );
 
     // Create the top arrow shape, starting at the rightmost edge.  The
@@ -71,12 +72,12 @@ define( function( require ) {
     var lowerArrowShape = upperArrowShape.copy().transformed( Matrix3.rotationZ( Math.PI ) );
 
     // Put it all together.
-    var doubleArrowNode = new Node();
-    doubleArrowNode.addChild( new Path( upperArrowShape, { fill: 'rgb( 88, 88, 90 )' } ) );
-    doubleArrowNode.addChild( new Path( lowerArrowShape, { fill: 'rgb( 88, 88, 90 )', y: options.iconWidth * 0.2 } ) );
+    var refreshIconNode = new Node();
+    refreshIconNode.addChild( new Path( upperArrowShape, { fill: 'rgb( 88, 88, 90 )' } ) );
+    refreshIconNode.addChild( new Path( lowerArrowShape, { fill: 'rgb( 88, 88, 90 )', y: options.iconWidth * 0.2 } ) );
 
-    RectangularPushButton.call( this, callback, doubleArrowNode, options );
+    RectangularPushButton2.call( this, refreshIconNode, options );
   }
 
-  return inherit( RectangularPushButton, RefreshButton );
+  return inherit( RectangularPushButton2, RefreshButton );
 } );
