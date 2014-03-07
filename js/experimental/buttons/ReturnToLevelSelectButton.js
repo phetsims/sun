@@ -1,7 +1,7 @@
 // Copyright 2002-2014, University of Colorado Boulder
 
 /**
- * Base type for a button with a s
+ * Button for returning to the level selection screen.
  *
  * @author John Blanco
  */
@@ -9,13 +9,10 @@ define( function( require ) {
   'use strict';
 
   // Includes
+  var Color = require( 'SCENERY/util/Color' );
   var inherit = require( 'PHET_CORE/inherit' );
-  var Node = require( 'SCENERY/nodes/Node' );
-  var RaisedEdgesButton = require( 'SUN/experimental/buttons/RaisedEdgesButton' );
-  var Rectangle = require( 'SCENERY/nodes/rectangle' );
-
-  // Constants
-  var DEFAULT_WIDTH = 80;
+  var RectangularPushButton = require( 'SUN/experimental/buttons/RectangularPushButton' );
+  var Star = require( 'VEGAS/Star' );
 
   /**
    * @param {function} callback
@@ -23,28 +20,14 @@ define( function( require ) {
    * @constructor
    */
   function ReturnToLevelSelectButton( callback, options ) {
+
     options = _.extend( {
-      width: DEFAULT_WIDTH
+      xPadding: 7,
+      baseColor: new Color( 255, 242, 2 )
     }, options );
 
-    var root = new Node();
-    for ( var i = 0; i < 3; i++ ) {
-      var iconWidth = options.width * 0.25;
-      var icon = new Rectangle( 0, 0, iconWidth, iconWidth, 2, 2, { fill: 'white', stroke: 'black', lineWidth: 1.5 } );
-      icon.addChild( new Rectangle( 0, 0, iconWidth, iconWidth * 0.2, 4, 4,
-        {
-          fill: 'black',
-          stroke: 'black',
-          bottom: iconWidth
-        } ) );
-      icon.left = iconWidth * i * 1.2;
-      root.addChild( icon );
-    }
-
-    options.xMargin = 7;
-    options.yMargin = 7;
-    RaisedEdgesButton.call( this, callback, root, options );
+    RectangularPushButton.call( this, callback, new Star( 30, { fill: 'rgb( 88, 88, 90 )' } ), options );
   }
 
-  return inherit( RaisedEdgesButton, ReturnToLevelSelectButton );
+  return inherit( RectangularPushButton, ReturnToLevelSelectButton );
 } );
