@@ -20,14 +20,14 @@ define( function( require ) {
   var RectangularPushButton2 = require( 'SUN/experimental/buttons/RectangularPushButton2' );
   var Text = require( 'SCENERY/nodes/Text' );
   var PhetFont = require( 'SCENERY_PHET/PhetFont' );
+  var OutsideBackgroundNode = require( 'SCENERY_PHET/OutsideBackgroundNode' );
+  var ModelViewTransform2 = require( 'PHETCOMMON/view/ModelViewTransform2' );
 
   function ButtonsView( model ) {
     ScreenView.call( this, { renderer: 'svg' } );
 
     // Add background colors.
-    this.addChild( new Rectangle( 0, 0, 500, 100, 0, 0, { fill: 'black', top: 100 } ) );
-    this.addChild( new Rectangle( 0, 0, 500, 100, 0, 0, { fill: 'green', top: 200 } ) );
-    this.addChild( new Rectangle( 0, 0, 500, 100, 0, 0, { fill: 'rgb( 254, 255, 153 )', top: 300 } ) );
+    this.addChild( new OutsideBackgroundNode( ModelViewTransform2.createIdentity(), 0, 1000 ) );
 
     // add various test buttons.
     this.addChild( new RefreshButton( function() { console.log( 'Refresh pressed' ); }, { centerX: 100, centerY: 50 } ) );
