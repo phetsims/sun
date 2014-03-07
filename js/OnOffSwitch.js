@@ -144,6 +144,10 @@ define( function( require ) {
       fire: function() {
         if ( !dragged ) { onProperty.set( !onProperty.get() ); }
         dragged = false;
+      },
+      
+      up: function() {
+        dragged = false;
       }
     } ) );
 
