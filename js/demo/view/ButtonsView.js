@@ -38,7 +38,7 @@ define( function( require ) {
       -this.layoutBounds.height / 2 ) );
 
     // convenience vars for layout
-    var rightEdge = this.layoutBounds.width * 0.67;
+    var rightEdge = this.layoutBounds.width * 0.6;
     var buttonSpacing = 10;
 
     // add refresh button and caption
@@ -77,23 +77,32 @@ define( function( require ) {
     this.addChild( soundToggleButtonLabel );
 
     // add timer toggle button
-    var timerToggleButton = new TimerToggleButton2( new Property( true ), { centerX: refreshButton.centerX, y: soundToggleButton.bottom + 5 } );
+    var timerEnabled = new Property( true );
+    var timerToggleButton = new TimerToggleButton2( timerEnabled, { centerX: refreshButton.centerX, y: soundToggleButton.bottom + 5 } );
     this.addChild( timerToggleButton );
     var timerToggleButtonLabel = new Text( 'Timer Toggle Button: ', { font: BUTTON_CAPTION_FONT, right: timerToggleButton.left - 5, centerY: timerToggleButton.centerY } );
     this.addChild( timerToggleButtonLabel );
 
+    // In order to demonstrate what disabled looks like, hook the timer
+    // enabled property up to enable/disable the other buttons.
+    timerEnabled.link( function( enabled ) {
+      refreshButton.enabled = enabled;
+      returnToLevelSelectButton.enabled = enabled;
+      soundToggleButton.enabled = enabled;
+    } );
+
     this.addChild( new TestButton01( { centerX: 300, centerY: 300 } ) );
-    this.addChild( new TestButton02( { centerX: 300, centerY: 350, baseColor: new Color( 0, 100, 0 ) } ) );
+    this.addChild( new TestButton02( { centerX: 300, centerY: 370, baseColor: new Color( 0, 100, 0 ) } ) );
     this.addChild( new RectangularPushButton2( new Text( 'Model Test' ),
       {
-        centerX: 250,
-        centerY: 250,
+        centerX: 500,
+        centerY: 300,
         listener: function() { console.log( 'Dude, you pressed it!' ); }
       } ) );
     var buttonA = new RectangularPushButton2( new Text( '--- A ---', { font: new PhetFont( 20 )} ),
       {
-        centerX: 250,
-        centerY: 200,
+        centerX: 500,
+        centerY: 370,
         listener: function() { console.log( 'Dude, you pressed it!' ); }
       } );
     buttonA.enabled = false;

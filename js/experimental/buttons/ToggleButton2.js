@@ -32,6 +32,7 @@ define( function( require ) {
 
     RectangularPushButton2.call( this, content, options );
 
+    // TODO: Is this needed with the new version (new as of March 2014)?
     if ( options.addRectangle ) {
       this.path = new Rectangle( 0, 0, content.width + options.padX, content.height + options.padY, 10, 10, {stroke: 'black', lineWidth: 1, fill: '#e3e980'} );
       this.addChild( this.path );
