@@ -7,19 +7,22 @@
  */
 define( function( require ) {
   'use strict';
-  var ScreenView = require( 'JOIST/ScreenView' );
+  var Color = require( 'SCENERY/util/Color' );
   var inherit = require( 'PHET_CORE/inherit' );
+  var ModelViewTransform2 = require( 'PHETCOMMON/view/ModelViewTransform2' );
+  var OutsideBackgroundNode = require( 'SCENERY_PHET/OutsideBackgroundNode' );
+  var PhetFont = require( 'SCENERY_PHET/PhetFont' );
+  var Property = require( 'AXON/Property' );
+  var RectangularPushButton2 = require( 'SUN/experimental/buttons/RectangularPushButton2' );
+  var RefreshButton = require( 'SUN/experimental/buttons/RefreshButton' );
   var ResetAllButton = require( 'SCENERY_PHET/ResetAllButton' );
+  var ReturnToLevelSelectButton = require( 'SUN/experimental/buttons/ReturnToLevelSelectButton' );
+  var ScreenView = require( 'JOIST/ScreenView' );
+  var SoundToggleButton2 = require( 'SUN/experimental/buttons/SoundToggleButton2' );
   var TestButton01 = require( 'SUN/experimental/buttons/TestButton01' );
   var TestButton02 = require( 'SUN/experimental/buttons/TestButton02' );
-  var RefreshButton = require( 'SUN/experimental/buttons/RefreshButton' );
-  var ReturnToLevelSelectButton = require( 'SUN/experimental/buttons/ReturnToLevelSelectButton' );
-  var Color = require( 'SCENERY/util/Color' );
-  var RectangularPushButton2 = require( 'SUN/experimental/buttons/RectangularPushButton2' );
   var Text = require( 'SCENERY/nodes/Text' );
-  var PhetFont = require( 'SCENERY_PHET/PhetFont' );
-  var OutsideBackgroundNode = require( 'SCENERY_PHET/OutsideBackgroundNode' );
-  var ModelViewTransform2 = require( 'PHETCOMMON/view/ModelViewTransform2' );
+  var TimerToggleButton2 = require( 'SUN/experimental/buttons/TimerToggleButton2' );
   var Vector2 = require( 'DOT/Vector2' );
 
   // Constants
@@ -30,7 +33,7 @@ define( function( require ) {
 
     // background
     this.addChild( new OutsideBackgroundNode(
-      ModelViewTransform2.createOffsetXYScaleMapping( new Vector2( 0, this.layoutBounds.height / 2 ), 1, -1 ),
+      ModelViewTransform2.createOffsetXYScaleMapping( new Vector2( 0, this.layoutBounds.height * 0.67 ), 1, -1 ),
       this.layoutBounds.height / 2,
       -this.layoutBounds.height / 2 ) );
 
@@ -39,27 +42,45 @@ define( function( require ) {
     var buttonSpacing = 10;
 
     // add refresh button and caption
-    var refreshButton = new RefreshButton( { listener: function() { console.log( 'Refresh pressed' ) }, right: rightEdge, centerY: 50 } );
+    var refreshButton = new RefreshButton(
+      {
+        listener: function() { console.log( 'Refresh pressed' ) },
+        right: rightEdge,
+        top: 10
+      } );
     this.addChild( refreshButton );
     var refreshButtonLabel = new Text( 'Refresh Button: ', { font: BUTTON_CAPTION_FONT, right: refreshButton.left - 5, centerY: refreshButton.centerY } );
     this.addChild( refreshButtonLabel );
 
     // add return to level select button and caption
-    var returnToLevelSelectButton = new ReturnToLevelSelectButton( function() { console.log( 'Return to level select pressed' ); }, { right: rightEdge, centerY: 100 } );
+    var returnToLevelSelectButton = new ReturnToLevelSelectButton(
+      {
+        listener: function() { console.log( 'Return to level select pressed' ) },
+        centerX: refreshButton.centerX,
+        top: refreshButton.bottom + buttonSpacing
+      } );
     this.addChild( returnToLevelSelectButton );
     var returnToLevelSelectButtonLabel = new Text( 'Return to Level Selection Button: ', { font: BUTTON_CAPTION_FONT, right: returnToLevelSelectButton.left - 5, centerY: returnToLevelSelectButton.centerY } );
     this.addChild( returnToLevelSelectButtonLabel );
 
     // add reset all button and caption
-    var resetAllButton = new ResetAllButton( function() { console.log( 'Reset All pressed' ); }, { radius: 22, centerX: refreshButton.centerX, y: 150 } );
+    var resetAllButton = new ResetAllButton( function() { console.log( 'Reset All pressed' ); },
+      { radius: 22, centerX: refreshButton.centerX, top: returnToLevelSelectButton.bottom + buttonSpacing } );
     this.addChild( resetAllButton );
     var resetAllButtonLabel = new Text( 'Reset All Button: ', { font: BUTTON_CAPTION_FONT, right: resetAllButton.left - 5, centerY: resetAllButton.centerY } );
     this.addChild( resetAllButtonLabel );
 
-    // test disabled refresh button
-    var disabledRefreshButton = new RefreshButton( { right: rightEdge, centerY: 200 } );
-    disabledRefreshButton.enabled = false;
-    this.addChild( disabledRefreshButton );
+    // add sound toggle button
+    var soundToggleButton = new SoundToggleButton2( new Property( true ), { centerX: refreshButton.centerX, y: resetAllButton.bottom + buttonSpacing } );
+    this.addChild( soundToggleButton );
+    var soundToggleButtonLabel = new Text( 'Sound Toggle Button: ', { font: BUTTON_CAPTION_FONT, right: soundToggleButton.left - 5, centerY: soundToggleButton.centerY } );
+    this.addChild( soundToggleButtonLabel );
+
+    // add timer toggle button
+    var timerToggleButton = new TimerToggleButton2( new Property( true ), { centerX: refreshButton.centerX, y: soundToggleButton.bottom + 5 } );
+    this.addChild( timerToggleButton );
+    var timerToggleButtonLabel = new Text( 'Timer Toggle Button: ', { font: BUTTON_CAPTION_FONT, right: timerToggleButton.left - 5, centerY: timerToggleButton.centerY } );
+    this.addChild( timerToggleButtonLabel );
 
     this.addChild( new TestButton01( { centerX: 300, centerY: 300 } ) );
     this.addChild( new TestButton02( { centerX: 300, centerY: 350, baseColor: new Color( 0, 100, 0 ) } ) );
