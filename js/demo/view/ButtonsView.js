@@ -44,7 +44,7 @@ define( function( require ) {
     // add refresh button and caption
     var refreshButton = new RefreshButton(
       {
-        listener: function() { console.log( 'Refresh pressed' ) },
+        listener: function() { console.log( 'Refresh pressed' ); },
         right: rightEdge,
         top: 10
       } );
@@ -55,7 +55,7 @@ define( function( require ) {
     // add return to level select button and caption
     var returnToLevelSelectButton = new ReturnToLevelSelectButton(
       {
-        listener: function() { console.log( 'Return to level select pressed' ) },
+        listener: function() { console.log( 'Return to level select pressed' ); },
         centerX: refreshButton.centerX,
         top: refreshButton.bottom + buttonSpacing
       } );
