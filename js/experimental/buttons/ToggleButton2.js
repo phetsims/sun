@@ -20,7 +20,6 @@ define( function( require ) {
       padX: 10,
       padY: 10,
       cursor: 'pointer',
-
       label: '', // TODO: Rename this to something more intuitive, like 'soundCaption'
 
       // In 'radioButton' mode, pressing a toggle button repeatedly sets the
@@ -30,8 +29,6 @@ define( function( require ) {
 
     var content = new ToggleNode( trueNode, falseNode, booleanProperty );
 
-    RectangularPushButton2.call( this, content, options );
-
     // TODO: Is this needed with the new version (new as of March 2014)?
     if ( options.addRectangle ) {
       this.path = new Rectangle( 0, 0, content.width + options.padX, content.height + options.padY, 10, 10, {stroke: 'black', lineWidth: 1, fill: '#e3e980'} );
@@ -39,7 +36,8 @@ define( function( require ) {
       content.centerX = this.path.width / 2;
       content.centerY = this.path.height / 2;
     }
-    this.addChild( content );
+
+    RectangularPushButton2.call( this, content, options );
 
     if ( options.radioButton ) {
       this.addInputListener( {

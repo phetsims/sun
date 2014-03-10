@@ -23,9 +23,11 @@ define( function( require ) {
   var TestButton02 = require( 'SUN/experimental/buttons/TestButton02' );
   var Text = require( 'SCENERY/nodes/Text' );
   var TimerToggleButton2 = require( 'SUN/experimental/buttons/TimerToggleButton2' );
+  var ToggleButton2 = require( 'SUN/experimental/buttons/ToggleButton2' );
   var Vector2 = require( 'DOT/Vector2' );
 
   // Constants
+  var BUTTON_FONT = new PhetFont( { size: 20 } );
   var BUTTON_CAPTION_FONT = new PhetFont( { size: 16 } );
 
   function ButtonsView( model ) {
@@ -33,7 +35,7 @@ define( function( require ) {
 
     // background
     this.addChild( new OutsideBackgroundNode(
-      ModelViewTransform2.createOffsetXYScaleMapping( new Vector2( 0, this.layoutBounds.height * 0.67 ), 1, -1 ),
+      ModelViewTransform2.createOffsetXYScaleMapping( new Vector2( 0, this.layoutBounds.height * 0.55 ), 1, -1 ),
       this.layoutBounds.height / 2,
       -this.layoutBounds.height / 2 ) );
 
@@ -91,23 +93,67 @@ define( function( require ) {
       soundToggleButton.enabled = enabled;
     } );
 
-    this.addChild( new TestButton01( { centerX: 300, centerY: 300 } ) );
-    this.addChild( new TestButton02( { centerX: 300, centerY: 370, baseColor: new Color( 0, 100, 0 ) } ) );
-    this.addChild( new RectangularPushButton2( new Text( 'Model Test' ),
-      {
-        centerX: 500,
-        centerY: 300,
-        listener: function() { console.log( 'Dude, you pressed it!' ); }
-      } ) );
-    var buttonA = new RectangularPushButton2( new Text( '--- A ---', { font: new PhetFont( 20 )} ),
-      {
-        centerX: 500,
-        centerY: 370,
-        listener: function() { console.log( 'Dude, you pressed it!' ); }
-      } );
-    buttonA.enabled = false;
-    this.addChild( buttonA );
+    // Text area for outputting test information
+    var outputText = new Text( 'Output Area', { font: new PhetFont( 16 ), bottom: this.layoutBounds.height - 5, left: this.layoutBounds + 10  } );
+    this.addChild( outputText );
 
+    // Test button behavior.
+    var buttonA = new RectangularPushButton2(
+      new Text( '--- A ---', { font: BUTTON_FONT } ),
+      {
+        listener: function() { outputText.text = 'Button A pressed'},
+        left: 100,
+        top: 300
+      } );
+    this.addChild( buttonA );
+    var buttonB = new RectangularPushButton2(
+      new Text( '--- B ---', { font: BUTTON_FONT } ),
+      {
+        listener: function() { outputText.text = 'Button B pressed'},
+        left: buttonA.right + 10,
+        centerY: buttonA.centerY,
+        baseColor: new Color( 250, 0, 0 )
+      } );
+    this.addChild( buttonB );
+
+    var buttonC = new RectangularPushButton2(
+      new Text( '--- C ---', { font: BUTTON_FONT } ),
+      {
+        listener: function() { outputText.text = 'Button C pressed'},
+        left: buttonB.right + 10,
+        centerY: buttonB.centerY,
+        baseColor: new Color( 204, 102, 204 )
+      } );
+    this.addChild( buttonC );
+
+    var fireOnDownButton = new RectangularPushButton2(
+      new Text( 'Fire on Down Button', { font: BUTTON_FONT } ),
+      {
+        listener: function() { outputText.text = 'Fire on down button pressed' },
+        left: buttonC.right + 30,
+        centerY: buttonC.centerY,
+        baseColor: new Color( 255, 255, 61 ),
+        fireOnDown: true
+      } );
+    this.addChild( fireOnDownButton );
+
+    // Set up a property for testing button enable/disable.
+    var buttonsEnabled = new Property( true );
+
+    buttonsEnabled.link( function( enabled ) {
+      buttonA.enabled = enabled;
+      buttonB.enabled = enabled;
+      buttonC.enabled = enabled;
+      fireOnDownButton.enabled = enabled;
+    } );
+
+    var buttonEnableButton = new ToggleButton2(
+      new Text( 'Disable Buttons', { font: BUTTON_CAPTION_FONT } ),
+      new Text( 'Enable Buttons', { font: BUTTON_CAPTION_FONT } ),
+      buttonsEnabled,
+      { baseColor: new Color( 204, 255, 51 ), left: buttonA.left, top: buttonA.bottom + 30 }
+    );
+    this.addChild( buttonEnableButton );
   }
 
   return inherit( ScreenView, ButtonsView, {
