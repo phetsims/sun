@@ -1,5 +1,9 @@
 // Copyright 2002-2014, University of Colorado Boulder
 
+/**
+ * Basic button model, intended to be added as an input listener to any
+ * Scenery node in order to allow it to behave as a button.
+ */
 define( function( require ) {
   'use strict';
 
@@ -8,7 +12,6 @@ define( function( require ) {
   var inherit = require( 'PHET_CORE/inherit' );
 
   /**
-   * @param {function} callback
    * @param {Object} options
    * @constructor
    */
@@ -26,14 +29,17 @@ define( function( require ) {
     }
 
     // A property that can be monitored externally in order to modify the
-    // appearance of a button.  Valid values are idle, over, pressed, and
-    // disabled.  Should not be set externally.
+    // appearance of a button.  The values that it can take on are idle, over,
+    // pressed, and disabled.  Should not be set externally.
     this.interactionState = new Property( 'idle' );
 
     // Enabled state, for internal use.
     this._enabled = true;
 
-    // Track pointers that are over this button and that are currently down.
+    // Arrays used to track pointers that are over this button and that are
+    // currently down.  Note that if a pointer goes down over the node but
+    // then goes outside of the node, it will be on the down list but not the
+    // over list.
     this.downPointers = [];
     this.overPointers = [];
 
@@ -56,9 +62,8 @@ define( function( require ) {
           self.interactionState.value = self.overPointers.length > 0 ? 'over' : 'idle';
           // TODO: Next line is temp for testing, remove once this class is fully debugged.
           if ( self.downPointers.indexOf( event.pointer ) === -1 ) { throw new Error( 'Pointer not in downPointers.' ); }
-
           if ( self.overPointers.indexOf( event.pointer ) !== -1 && !options.fireOnDown ) {
-            // Fire the callback.
+            // Fire the listener(s).
             self.fire();
           }
           self.downPointers = _.without( self.downPointers, event.pointer );
@@ -125,6 +130,8 @@ define( function( require ) {
 
       if ( !value ) {
         this.interactionState.value = 'disabled';
+        this.downPointers.length = 0;
+        this.overPointers.length = 0;
       }
       else {
         // TODO: Determine if we want/need to handle multi-touch situations
