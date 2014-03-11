@@ -59,7 +59,6 @@ define( function( require ) {
 
       up: function( event, trail ) {
         if ( self._enabled ) {
-          self.interactionState.value = self.anyPointerOverAndDown ? 'pressed' : self.overPointers.length > 0 ? 'over' : 'idle';
           // TODO: Next line is temp for testing, remove once this class is fully debugged.
           if ( self.downPointers.indexOf( event.pointer ) === -1 ) { throw new Error( 'Pointer not in downPointers.' ); }
           if ( self.overPointers.indexOf( event.pointer ) !== -1 && !options.fireOnDown ) {
@@ -67,6 +66,7 @@ define( function( require ) {
             self.fire();
           }
           self.downPointers = _.without( self.downPointers, event.pointer );
+          self.interactionState.value = self.anyPointerOverAndDown() ? 'pressed' : self.overPointers.length > 0 ? 'over' : 'idle';
         }
       }
     } );
