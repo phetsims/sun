@@ -9,7 +9,6 @@ define( function( require ) {
   'use strict';
   var Color = require( 'SCENERY/util/Color' );
   var inherit = require( 'PHET_CORE/inherit' );
-  var ModelViewTransform2 = require( 'PHETCOMMON/view/ModelViewTransform2' );
   var OutsideBackgroundNode = require( 'SCENERY_PHET/OutsideBackgroundNode' );
   var PhetFont = require( 'SCENERY_PHET/PhetFont' );
   var Property = require( 'AXON/Property' );
@@ -32,10 +31,10 @@ define( function( require ) {
     ScreenView.call( this, { renderer: 'svg' } );
 
     // background
-    this.addChild( new OutsideBackgroundNode(
-      ModelViewTransform2.createOffsetXYScaleMapping( new Vector2( 0, this.layoutBounds.height * 0.55 ), 1, -1 ),
-      this.layoutBounds.height / 2,
-      -this.layoutBounds.height / 2 ) );
+    this.addChild( new OutsideBackgroundNode( -this.layoutBounds.width, -this.layoutBounds.height, this.layoutBounds.width * 3, this.layoutBounds.height * 3,
+      {
+        skyHeight: this.layoutBounds.height * 1.55
+      } ) );
 
     // Set up a property for testing button enable/disable.
     var buttonsEnabled = new Property( true );
