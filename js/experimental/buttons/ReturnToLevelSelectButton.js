@@ -11,7 +11,7 @@ define( function( require ) {
   // Includes
   var Color = require( 'SCENERY/util/Color' );
   var inherit = require( 'PHET_CORE/inherit' );
-  var RectangularPushButton2 = require( 'SUN/experimental/buttons/RectangularPushButton2' );
+  var RectangularPushButton = require( 'SUN/experimental/buttons/RectangularPushButton' );
   var Star = require( 'VEGAS/Star' );
 
   /**
@@ -26,8 +26,8 @@ define( function( require ) {
       baseColor: new Color( 255, 242, 2 )
     }, options );
 
-    RectangularPushButton2.call( this, new Star( 30, { fill: 'rgb( 88, 88, 90 )' } ), options );
+    RectangularPushButton.call( this, new Star( 30, { fill: 'rgb( 88, 88, 90 )' } ), options );
   }
 
-  return inherit( RectangularPushButton2, ReturnToLevelSelectButton );
+  return inherit( RectangularPushButton, ReturnToLevelSelectButton );
 } );

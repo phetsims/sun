@@ -28,7 +28,7 @@ define( function( require ) {
    * @param {Object} options
    * @constructor
    */
-  function RectangularPushButton2( content, options ) {
+  function RectangularPushButton( content, options ) {
 
     var thisButton = this;
     AbstractButton.call( thisButton, { listener: options.listener, fireOnDown: options.fireOnDown } );
@@ -162,5 +162,5 @@ define( function( require ) {
     thisButton.mutate( options );
   }
 
-  return inherit( AbstractButton, RectangularPushButton2 );
+  return inherit( AbstractButton, RectangularPushButton );
 } );

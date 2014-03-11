@@ -13,7 +13,7 @@ define( function( require ) {
   var OutsideBackgroundNode = require( 'SCENERY_PHET/OutsideBackgroundNode' );
   var PhetFont = require( 'SCENERY_PHET/PhetFont' );
   var Property = require( 'AXON/Property' );
-  var RectangularPushButton2 = require( 'SUN/experimental/buttons/RectangularPushButton2' );
+  var RectangularPushButton = require( 'SUN/experimental/buttons/RectangularPushButton' );
   var RefreshButton = require( 'SUN/experimental/buttons/RefreshButton' );
   var ResetAllButton = require( 'SCENERY_PHET/ResetAllButton' );
   var ReturnToLevelSelectButton = require( 'SUN/experimental/buttons/ReturnToLevelSelectButton' );
@@ -96,7 +96,7 @@ define( function( require ) {
     this.addChild( outputText );
 
     // Test button behavior.
-    var buttonA = new RectangularPushButton2(
+    var buttonA = new RectangularPushButton(
       new Text( '--- A ---', { font: BUTTON_FONT } ),
       {
         listener: function() { outputText.text = 'Button A pressed'; },
@@ -104,7 +104,7 @@ define( function( require ) {
         top: 300
       } );
     this.addChild( buttonA );
-    var buttonB = new RectangularPushButton2(
+    var buttonB = new RectangularPushButton(
       new Text( '--- B ---', { font: BUTTON_FONT } ),
       {
         listener: function() { outputText.text = 'Button B pressed'; },
@@ -114,7 +114,7 @@ define( function( require ) {
       } );
     this.addChild( buttonB );
 
-    var buttonC = new RectangularPushButton2(
+    var buttonC = new RectangularPushButton(
       new Text( '--- C ---', { font: BUTTON_FONT } ),
       {
         listener: function() { outputText.text = 'Button C pressed'; },
@@ -124,7 +124,7 @@ define( function( require ) {
       } );
     this.addChild( buttonC );
 
-    var fireOnDownButton = new RectangularPushButton2(
+    var fireOnDownButton = new RectangularPushButton(
       new Text( 'Fire on Down Button', { font: BUTTON_FONT } ),
       {
         listener: function() { outputText.text = 'Fire on down button pressed'; },

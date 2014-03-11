@@ -8,7 +8,7 @@ define( function( require ) {
   'use strict';
 
   var inherit = require( 'PHET_CORE/inherit' );
-  var RectangularPushButton2 = require( 'SUN/experimental/buttons/RectangularPushButton2' );
+  var RectangularPushButton = require( 'SUN/experimental/buttons/RectangularPushButton' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var ToggleNode = require( 'SUN/ToggleNode' );
 
@@ -37,7 +37,7 @@ define( function( require ) {
       content.centerY = this.path.height / 2;
     }
 
-    RectangularPushButton2.call( this, content, options );
+    RectangularPushButton.call( this, content, options );
 
     // TODO: Revisit this and decide if we should just have a separate radio
     // button.  For now, as of March 2014, support for radio button mode is
@@ -62,5 +62,5 @@ define( function( require ) {
      */
   }
 
-  return inherit( RectangularPushButton2, ToggleButton2 );
+  return inherit( RectangularPushButton, ToggleButton2 );
 } );
