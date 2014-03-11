@@ -19,8 +19,6 @@ define( function( require ) {
   var ReturnToLevelSelectButton = require( 'SUN/experimental/buttons/ReturnToLevelSelectButton' );
   var ScreenView = require( 'JOIST/ScreenView' );
   var SoundToggleButton2 = require( 'SUN/experimental/buttons/SoundToggleButton2' );
-  var TestButton01 = require( 'SUN/experimental/buttons/TestButton01' );
-  var TestButton02 = require( 'SUN/experimental/buttons/TestButton02' );
   var Text = require( 'SCENERY/nodes/Text' );
   var TimerToggleButton2 = require( 'SUN/experimental/buttons/TimerToggleButton2' );
   var ToggleButton2 = require( 'SUN/experimental/buttons/ToggleButton2' );
@@ -101,7 +99,7 @@ define( function( require ) {
     var buttonA = new RectangularPushButton2(
       new Text( '--- A ---', { font: BUTTON_FONT } ),
       {
-        listener: function() { outputText.text = 'Button A pressed'},
+        listener: function() { outputText.text = 'Button A pressed'; },
         left: 100,
         top: 300
       } );
@@ -109,7 +107,7 @@ define( function( require ) {
     var buttonB = new RectangularPushButton2(
       new Text( '--- B ---', { font: BUTTON_FONT } ),
       {
-        listener: function() { outputText.text = 'Button B pressed'},
+        listener: function() { outputText.text = 'Button B pressed'; },
         left: buttonA.right + 10,
         centerY: buttonA.centerY,
         baseColor: new Color( 250, 0, 0 )
@@ -119,7 +117,7 @@ define( function( require ) {
     var buttonC = new RectangularPushButton2(
       new Text( '--- C ---', { font: BUTTON_FONT } ),
       {
-        listener: function() { outputText.text = 'Button C pressed'},
+        listener: function() { outputText.text = 'Button C pressed'; },
         left: buttonB.right + 10,
         centerY: buttonB.centerY,
         baseColor: new Color( 204, 102, 204 )
@@ -129,7 +127,7 @@ define( function( require ) {
     var fireOnDownButton = new RectangularPushButton2(
       new Text( 'Fire on Down Button', { font: BUTTON_FONT } ),
       {
-        listener: function() { outputText.text = 'Fire on down button pressed' },
+        listener: function() { outputText.text = 'Fire on down button pressed'; },
         left: buttonC.right + 30,
         centerY: buttonC.centerY,
         baseColor: new Color( 255, 255, 61 ),
