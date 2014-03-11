@@ -31,11 +31,7 @@ define( function( require ) {
     ScreenView.call( this, { renderer: 'svg' } );
 
     // background
-    this.addChild( new OutsideBackgroundNode( -this.layoutBounds.width, -this.layoutBounds.height, this.layoutBounds.width * 3, this.layoutBounds.height * 3,
-      {
-        skyHeight: this.layoutBounds.height * 1.55
-      } ) );
-
+    this.addChild( new OutsideBackgroundNode( this.layoutBounds.centerX, this.layoutBounds.centerY + 20, this.layoutBounds.width * 3, this.layoutBounds.height, this.layoutBounds.height ) );
     // Set up a property for testing button enable/disable.
     var buttonsEnabled = new Property( true );
 
