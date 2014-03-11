@@ -131,7 +131,8 @@ define( function( require ) {
         left: buttonC.right + 30,
         centerY: buttonC.centerY,
         baseColor: new Color( 255, 255, 61 ),
-        fireOnDown: true
+        fireOnDown: true,
+        logNode: outputText
       } );
     this.addChild( fireOnDownButton );
 

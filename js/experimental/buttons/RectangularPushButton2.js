@@ -41,9 +41,10 @@ define( function( require ) {
       disabledBaseColor: new Color( 220, 220, 220 ),
       xPadding: 5,
       yPadding: 5,
-      touchAreaExpansionFactor: 1.3,
       listener: null,
-      fireOnDown: false
+      fireOnDown: false,
+      //TODO: For debug, remove ASAP
+      logNode: null
     }, options );
 
     var buttonWidth = content.width + options.xPadding * 2;
@@ -125,7 +126,9 @@ define( function( require ) {
     this.buttonModel.interactionState.link( function( interactionState ) {
 
       // TODO: Following line for debug, remove once things are fully working.
-      console.log( 'interactionState changed, new value = ' + interactionState );
+      if ( options.logNode !== null ) {
+        options.logNode.setText( 'interactionState changed, new value = ' + interactionState );
+      }
 
       switch( interactionState ) {
 
@@ -159,13 +162,9 @@ define( function( require ) {
       }
     } );
 
-    // Add an explicit mouse area so that the child nodes can all be non-pickable.
+    // Add explicit mouse and touch areas so that the child nodes can all be non-pickable.
     this.mouseArea = Shape.rectangle( 0, 0, buttonWidth, buttonHeight );
-
-    // Expand the touch area so that the button works better on touch devices.
-    var touchAreaWidth = buttonWidth * options.touchAreaExpansionFactor;
-    var touchAreaHeight = buttonHeight * options.touchAreaExpansionFactor;
-    this.touchArea = Shape.rectangle( -touchAreaWidth / 2, -touchAreaHeight / 2, touchAreaWidth, touchAreaHeight );
+    this.touchArea = this.mouseArea;
 
     // accessibility
     thisButton.addPeer( '<input type="button" aria-label="' + _.escape( options.label ) + '">',

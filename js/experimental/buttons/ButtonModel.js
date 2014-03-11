@@ -59,7 +59,7 @@ define( function( require ) {
 
       up: function( event, trail ) {
         if ( self._enabled ) {
-          self.interactionState.value = self.overPointers.length > 0 ? 'over' : 'idle';
+          self.interactionState.value = self.anyPointerOverAndDown ? 'pressed' : self.overPointers.length > 0 ? 'over' : 'idle';
           // TODO: Next line is temp for testing, remove once this class is fully debugged.
           if ( self.downPointers.indexOf( event.pointer ) === -1 ) { throw new Error( 'Pointer not in downPointers.' ); }
           if ( self.overPointers.indexOf( event.pointer ) !== -1 && !options.fireOnDown ) {
@@ -77,7 +77,7 @@ define( function( require ) {
     enter: function( event ) {
       if ( this._enabled ) {
         this.overPointers.push( event.pointer );
-        if ( this.downPointers.indexOf( event.pointer ) !== -1 ) {
+        if ( this.anyPointerOverAndDown() ) {
           this.interactionState.value = 'pressed';
         }
         else {
@@ -94,6 +94,16 @@ define( function( require ) {
           this.interactionState.value = 'idle';
         }
       }
+    },
+
+    // Return true if at least one pointer is both over and down on this node.
+    anyPointerOverAndDown: function() {
+      for ( var i = 0; i < this.overPointers.length; i++ ) {
+        if ( this.downPointers.indexOf( this.overPointers[ i ] ) !== -1 ) {
+          return true;
+        }
+      }
+      return false;
     },
 
     // Adds a listener. If already a listener, this is a no-op.
