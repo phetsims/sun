@@ -1,72 +1,57 @@
 // Copyright 2002-2014, University of Colorado Boulder
 
 /**
- * Base type for buttons that provides a set of properties that clients can
- * use to changes the appearance of the buttons.
+ * Base type for buttons.  This provides a property that can be monitored by
+ * descendant classes to modify the appearance of the button as the user
+ * interacts with it, and also handles firing of the listener functions.
+ *
  */
 define( function( require ) {
   'use strict';
 
   // Imports
-  var ButtonListener = require( 'SCENERY/input/ButtonListener' );
+  var ButtonModel = require( 'SUN/experimental/buttons/ButtonModel' );
+  var DownUpListener = require( 'SCENERY/input/DownUpListener' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Node = require( 'SCENERY/nodes/Node' );
   var Property = require( 'AXON/Property' );
 
   /**
-   * @param node
-   * @param callback
    * @param options
    * @constructor
    */
-  function AbstractButton( node, callback, options ) {
+  function AbstractButton( options ) {
 
-    var thisButton = this;
-    Node.call( this );
-    thisButton.addChild( node );
-
-    // Properties that can be monitored by clients to trigger changes in the
-    // button's appearance.
-    thisButton.over = new Property( false );
-    thisButton.down = new Property( false );
-    thisButton.enabled = new Property( true );
-
-    // Hook up the listener that will set the property states.
-    node.addInputListener( new ButtonListener(
+    options = _.extend(
       {
-        up: function( event, oldState ) {
-          thisButton.down.value = false;
-          console.log( 'up' );
-        },
+        fireOnDown: false,
+        listener: null
+      }, options );
 
-        over: function( event, oldState ) {
-          thisButton.over.value = true;
-          console.log( 'over' );
-        },
+    Node.call( this, options );
 
-        down: function( event, oldState ) {
-          thisButton.down.value = true;
-          console.log( 'down' );
-        },
-
-        out: function( event, oldState ) {
-          thisButton.over.value = false;
-          console.log( 'out' );
-        },
-
-        fire: function( event ) {
-          callback();
-        }
-      }
-    ) );
-
-    this.mutate( options );
+    // Hook up the button model.
+    this.buttonModel = new ButtonModel( { listener: options.listener, fireOnDown: options.fireOnDown } );
+    this.addInputListener( this.buttonModel );
   }
 
   return inherit( Node, AbstractButton,
     {
-      setEnabled: function( enabled ) {
-        this.enabled.value = enabled;
-      }
+      addListener: function( listener ) {
+        // Pass through to button model.
+        this.buttonModel.addListener( listener );
+      },
+
+      removeListener: function( listener ) {
+        // Pass through to button model.
+        this.buttonModel.removeListener( listener );
+      },
+
+      set enabled( value ) {
+        assert && assert( typeof value === 'boolean', 'AbstractButton.enabled must be a boolean value' );
+        this.buttonModel.enabled = value;
+      },
+
+      get enabled() { return this.buttonModel.enabled; }
     } );
 } );
