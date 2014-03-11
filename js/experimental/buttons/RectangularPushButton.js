@@ -42,7 +42,9 @@ define( function( require ) {
       xPadding: 5,
       yPadding: 5,
       listener: null,
-      fireOnDown: false
+      fireOnDown: false,
+      touchExpansionX: 5,
+      touchExpansionY: 5
     }, options );
 
     var buttonWidth = content.width + options.xPadding * 2;
@@ -155,7 +157,7 @@ define( function( require ) {
 
     // Add explicit mouse and touch areas so that the child nodes can all be non-pickable.
     this.mouseArea = Shape.rectangle( 0, 0, buttonWidth, buttonHeight );
-    this.touchArea = this.mouseArea;
+    this.touchArea = Shape.rectangle( -options.touchExpansionX, -options.touchExpansionY, buttonWidth + options.touchExpansionX * 2, buttonHeight + options.touchExpansionY * 2 );
 
     // Mutate with the options after the layout is complete so that
     // width-dependent fields like centerX will work.
