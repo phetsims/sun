@@ -19,7 +19,7 @@ define( function( require ) {
       padY: 10,
       cursor: 'pointer',
       listener: function() { booleanProperty.value = !booleanProperty.value },
-      label: '', // TODO: Rename this to something more intuitive, like 'soundCaption'
+      accessibilityLabel: '',
 
       // In 'radioButton' mode, pressing a toggle button repeatedly sets the
       // value only to true.  Otherwise it sets it to true/false alternately.

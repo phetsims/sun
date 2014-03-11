@@ -61,7 +61,7 @@ define( function( require ) {
       timerOnNode,
       timerOffNode,
       enabledProperty,
-      _.extend( { baseColor: new Color( 227, 233, 128 ), label: 'Timer' }, options ) ); // TODO: i18n
+      _.extend( { baseColor: new Color( 227, 233, 128 ), accessibilityLabel: 'Timer' }, options ) ); // TODO: i18n
   }
 
   return inherit( ToggleButton2, TimerToggleButton2 );
