@@ -37,14 +37,21 @@ define( function( require ) {
       this.layoutBounds.height / 2,
       -this.layoutBounds.height / 2 ) );
 
+    // Set up a property for testing button enable/disable.
+    var buttonsEnabled = new Property( true );
+
     // convenience vars for layout
     var rightEdge = this.layoutBounds.width * 0.6;
     var buttonSpacing = 10;
 
+    // Text area for outputting test information
+    var outputText = new Text( '---', { font: new PhetFont( 16 ), bottom: this.layoutBounds.height - 5, left: this.layoutBounds + 10  } );
+    this.addChild( outputText );
+
     // add refresh button and caption
     var refreshButton = new RefreshButton(
       {
-        listener: function() { console.log( 'Refresh pressed' ); },
+        listener: function() { outputText.text = 'Refresh pressed'; },
         right: rightEdge,
         top: 10
       } );
@@ -55,7 +62,7 @@ define( function( require ) {
     // add return to level select button and caption
     var returnToLevelSelectButton = new ReturnToLevelSelectButton(
       {
-        listener: function() { console.log( 'Return to level select pressed' ); },
+        listener: function() { outputText.text = 'Return to level select pressed'; },
         centerX: refreshButton.centerX,
         top: refreshButton.bottom + buttonSpacing
       } );
@@ -63,37 +70,27 @@ define( function( require ) {
     var returnToLevelSelectButtonLabel = new Text( 'Return to Level Selection Button: ', { font: BUTTON_CAPTION_FONT, right: returnToLevelSelectButton.left - 5, centerY: returnToLevelSelectButton.centerY } );
     this.addChild( returnToLevelSelectButtonLabel );
 
-    // add reset all button and caption
-    var resetAllButton = new ResetAllButton( function() { console.log( 'Reset All pressed' ); },
-      { radius: 22, centerX: refreshButton.centerX, top: returnToLevelSelectButton.bottom + buttonSpacing } );
-    this.addChild( resetAllButton );
-    var resetAllButtonLabel = new Text( 'Reset All Button: ', { font: BUTTON_CAPTION_FONT, right: resetAllButton.left - 5, centerY: resetAllButton.centerY } );
-    this.addChild( resetAllButtonLabel );
-
     // add sound toggle button
-    var soundToggleButton = new SoundToggleButton2( new Property( true ), { centerX: refreshButton.centerX, y: resetAllButton.bottom + buttonSpacing } );
+    var soundToggleButton = new SoundToggleButton2( new Property( true ), { centerX: refreshButton.centerX, top: returnToLevelSelectButton.bottom + buttonSpacing } );
     this.addChild( soundToggleButton );
     var soundToggleButtonLabel = new Text( 'Sound Toggle Button: ', { font: BUTTON_CAPTION_FONT, right: soundToggleButton.left - 5, centerY: soundToggleButton.centerY } );
     this.addChild( soundToggleButtonLabel );
 
     // add timer toggle button
-    var timerEnabled = new Property( true );
-    var timerToggleButton = new TimerToggleButton2( timerEnabled, { centerX: refreshButton.centerX, y: soundToggleButton.bottom + 5 } );
+    var timerToggleButton = new TimerToggleButton2( new Property( true ), { centerX: refreshButton.centerX, y: soundToggleButton.bottom + 5 } );
     this.addChild( timerToggleButton );
     var timerToggleButtonLabel = new Text( 'Timer Toggle Button: ', { font: BUTTON_CAPTION_FONT, right: timerToggleButton.left - 5, centerY: timerToggleButton.centerY } );
     this.addChild( timerToggleButtonLabel );
 
-    // In order to demonstrate what disabled looks like, hook the timer
-    // enabled property up to enable/disable the other buttons.
-    timerEnabled.link( function( enabled ) {
-      refreshButton.enabled = enabled;
-      returnToLevelSelectButton.enabled = enabled;
-      soundToggleButton.enabled = enabled;
-    } );
-
-    // Text area for outputting test information
-    var outputText = new Text( 'Output Area', { font: new PhetFont( 16 ), bottom: this.layoutBounds.height - 5, left: this.layoutBounds + 10  } );
-    this.addChild( outputText );
+    // add reset all button and caption
+    var resetAllButton = new ResetAllButton( function() {
+        outputText.text = 'Reset All pressed';
+        buttonsEnabled.reset()
+      },
+      { radius: 22, centerX: refreshButton.centerX, top: timerToggleButton.bottom + buttonSpacing } );
+    this.addChild( resetAllButton );
+    var resetAllButtonLabel = new Text( 'Reset All Button: ', { font: BUTTON_CAPTION_FONT, right: resetAllButton.left - 5, centerY: resetAllButton.centerY } );
+    this.addChild( resetAllButtonLabel );
 
     // Test button behavior.
     var buttonA = new RectangularPushButton(
@@ -135,14 +132,16 @@ define( function( require ) {
       } );
     this.addChild( fireOnDownButton );
 
-    // Set up a property for testing button enable/disable.
-    var buttonsEnabled = new Property( true );
-
+    // Hook up button enable property
     buttonsEnabled.link( function( enabled ) {
       buttonA.enabled = enabled;
       buttonB.enabled = enabled;
       buttonC.enabled = enabled;
       fireOnDownButton.enabled = enabled;
+      refreshButton.enabled = enabled;
+      returnToLevelSelectButton.enabled = enabled;
+      soundToggleButton.enabled = enabled;
+      timerToggleButton.enabled = enabled;
     } );
 
     var buttonEnableButton = new ToggleButton2(
