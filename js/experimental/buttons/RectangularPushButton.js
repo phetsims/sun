@@ -126,14 +126,16 @@ define( function( require ) {
       switch( interactionState ) {
 
         case 'idle':
+          content.center = upCenter;
+          content.opacity = 1;
           background.fill = upFillVertical;
           overlayForHorizGradient.fill = upFillHorizontal;
-          content.center = upCenter;
           thisButton.pickable = true;
           break;
 
         case 'over':
           content.center = upCenter;
+          content.opacity = 1;
           background.fill = overFillVertical;
           overlayForHorizGradient.fill = overFillHorizontal;
           thisButton.pickable = true;
@@ -141,6 +143,7 @@ define( function( require ) {
 
         case 'pressed':
           content.center = downCenter;
+          content.opacity = 1;
           background.fill = downFill;
           overlayForHorizGradient.fill = overFillHorizontal;
           thisButton.pickable = true;
@@ -148,6 +151,7 @@ define( function( require ) {
 
         case 'disabled':
           content.center = upCenter;
+          content.opacity = 0.3;
           background.fill = disabledFillVertical;
           overlayForHorizGradient.fill = disabledFillHorizontal;
           thisButton.pickable = false;
