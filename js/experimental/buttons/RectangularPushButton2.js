@@ -10,7 +10,7 @@ define( function( require ) {
   'use strict';
 
   // Includes
-  var ButtonModel = require( 'SUN/experimental/buttons/ButtonModel' );
+  var AbstractButton = require( 'SUN/experimental/buttons/AbstractButton' );
   var Color = require( 'SCENERY/util/Color' );
   var inherit = require( 'PHET_CORE/inherit' );
   var LinearGradient = require( 'SCENERY/util/LinearGradient' );
@@ -31,7 +31,7 @@ define( function( require ) {
   function RectangularPushButton2( content, options ) {
 
     var thisButton = this;
-    Node.call( thisButton );
+    AbstractButton.call( thisButton, { listener: options.listener, fireOnDown: options.fireOnDown } );
 
     options = _.extend( {
       // Default values.
@@ -42,9 +42,7 @@ define( function( require ) {
       xPadding: 5,
       yPadding: 5,
       listener: null,
-      fireOnDown: false,
-      //TODO: For debug, remove ASAP
-      logNode: null
+      fireOnDown: false
     }, options );
 
     var buttonWidth = content.width + options.xPadding * 2;
@@ -120,15 +118,8 @@ define( function( require ) {
     content.center = upCenter;
     thisButton.addChild( content );
 
-    // Hook up the button model.
-    this.buttonModel = new ButtonModel( { listener: options.listener, fireOnDown: options.fireOnDown } );
-    this.addInputListener( this.buttonModel );
+    // Hook up the function that will modify button appearance as the state changes.
     this.buttonModel.interactionState.link( function( interactionState ) {
-
-      // TODO: Following line for debug, remove once things are fully working.
-      if ( options.logNode !== null ) {
-        options.logNode.setText( 'interactionState changed, new value = ' + interactionState );
-      }
 
       switch( interactionState ) {
 
@@ -166,34 +157,10 @@ define( function( require ) {
     this.mouseArea = Shape.rectangle( 0, 0, buttonWidth, buttonHeight );
     this.touchArea = this.mouseArea;
 
-    // accessibility
-    thisButton.addPeer( '<input type="button" aria-label="' + _.escape( options.label ) + '">',
-      { click: thisButton.buttonModel.fire.bind( thisButton ) }
-    );
-
     // Mutate with the options after the layout is complete so that
     // width-dependent fields like centerX will work.
     thisButton.mutate( options );
   }
 
-  return inherit( Node, RectangularPushButton2, {
-
-    addListener: function( listener ) {
-      // Pass through to button model.
-      this.buttonModel.addListener( listener );
-    },
-
-    // Remove a listener. If not a listener, this is a no-op.
-    removeListener: function( listener ) {
-      // Pass through to button model.
-      this.buttonModel.removeListener( listener );
-    },
-
-    set enabled( value ) {
-      assert && assert( typeof value === 'boolean', 'RectangularPushButton.enabled must be a boolean value' );
-      this.buttonModel.enabled = value;
-    },
-
-    get enabled() { return this.buttonModel.enabled; }
-  } );
+  return inherit( AbstractButton, RectangularPushButton2 );
 } );

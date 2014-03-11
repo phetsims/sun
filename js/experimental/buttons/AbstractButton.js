@@ -22,6 +22,7 @@ define( function( require ) {
    */
   function AbstractButton( options ) {
 
+    var thisButton = this;
     options = _.extend(
       {
         fireOnDown: false,
@@ -32,7 +33,12 @@ define( function( require ) {
 
     // Hook up the button model.
     this.buttonModel = new ButtonModel( { listener: options.listener, fireOnDown: options.fireOnDown } );
-    this.addInputListener( this.buttonModel );
+    this.addInputListener( this.buttonModel );    // accessibility
+
+    // accessibility
+    this.addPeer( '<input type="button" aria-label="' + _.escape( options.label ) + '">',
+      { click: thisButton.buttonModel.fire.bind( thisButton ) }
+    );
   }
 
   return inherit( Node, AbstractButton,

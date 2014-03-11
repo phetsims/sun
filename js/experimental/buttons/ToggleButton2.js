@@ -13,17 +13,17 @@ define( function( require ) {
   var ToggleNode = require( 'SUN/ToggleNode' );
 
   function ToggleButton2( trueNode, falseNode, booleanProperty, options ) {
-    var toggleButton = this;
-
     options = _.extend( {
       addRectangle: false,
       padX: 10,
       padY: 10,
       cursor: 'pointer',
+      listener: function() { booleanProperty.value = !booleanProperty.value },
       label: '', // TODO: Rename this to something more intuitive, like 'soundCaption'
 
       // In 'radioButton' mode, pressing a toggle button repeatedly sets the
       // value only to true.  Otherwise it sets it to true/false alternately.
+      // TODO: See note below about removing support for this mode.
       radioButton: false
     }, options );
 
@@ -39,7 +39,13 @@ define( function( require ) {
 
     RectangularPushButton2.call( this, content, options );
 
-    if ( options.radioButton ) {
+    // TODO: Revisit this and decide if we should just have a separate radio
+    // button.  For now, as of March 2014, support for radio button mode is
+    // being removed.
+    if ( options.radioButton ) { throw new Error( 'Radio button mode not supported by ToggleButton' ) }
+    ;
+    /*
+     if ( options.radioButton ) {
       this.addInputListener( {
         up: function() {
           booleanProperty.value = true;
@@ -53,23 +59,7 @@ define( function( require ) {
         }
       } );
     }
-
-    // Create a peer for accessibility
-    this.addPeer( '<input type="checkbox" aria-label="' + _.escape( options.label ) + '">', {
-      click: function() {
-        booleanProperty.value = !booleanProperty.value;
-      },
-      label: options.label} );//TODO: is the latter 'label' used?
-
-    booleanProperty.link( function( value ) {
-      _.each( toggleButton.instances, function( instance ) {
-
-        //Make sure accessibility is enabled, then apply the change to the peer
-        _.each( instance.peers, function( peer ) {
-          peer.element.setAttribute( 'checked', value );
-        } );
-      } );
-    } );
+     */
   }
 
   return inherit( RectangularPushButton2, ToggleButton2 );
