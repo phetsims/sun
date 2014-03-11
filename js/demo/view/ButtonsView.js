@@ -71,13 +71,15 @@ define( function( require ) {
     this.addChild( returnToLevelSelectButtonLabel );
 
     // add sound toggle button
-    var soundToggleButton = new SoundToggleButton2( new Property( true ), { centerX: refreshButton.centerX, top: returnToLevelSelectButton.bottom + buttonSpacing } );
+    var soundEnabled = new Property( true );
+    var soundToggleButton = new SoundToggleButton2( soundEnabled, { centerX: refreshButton.centerX, top: returnToLevelSelectButton.bottom + buttonSpacing } );
     this.addChild( soundToggleButton );
     var soundToggleButtonLabel = new Text( 'Sound Toggle Button: ', { font: BUTTON_CAPTION_FONT, right: soundToggleButton.left - 5, centerY: soundToggleButton.centerY } );
     this.addChild( soundToggleButtonLabel );
 
     // add timer toggle button
-    var timerToggleButton = new TimerToggleButton2( new Property( true ), { centerX: refreshButton.centerX, y: soundToggleButton.bottom + 5 } );
+    var timerEnabled = new Property( true );
+    var timerToggleButton = new TimerToggleButton2( timerEnabled, { centerX: refreshButton.centerX, y: soundToggleButton.bottom + 5 } );
     this.addChild( timerToggleButton );
     var timerToggleButtonLabel = new Text( 'Timer Toggle Button: ', { font: BUTTON_CAPTION_FONT, right: timerToggleButton.left - 5, centerY: timerToggleButton.centerY } );
     this.addChild( timerToggleButtonLabel );
@@ -85,7 +87,9 @@ define( function( require ) {
     // add reset all button and caption
     var resetAllButton = new ResetAllButton( function() {
         outputText.text = 'Reset All pressed';
-        buttonsEnabled.reset()
+        buttonsEnabled.reset();
+        soundEnabled.reset();
+        timerEnabled.reset();
       },
       { radius: 22, centerX: refreshButton.centerX, top: timerToggleButton.bottom + buttonSpacing } );
     this.addChild( resetAllButton );
