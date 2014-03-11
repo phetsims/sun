@@ -11,7 +11,6 @@ define( function( require ) {
   var Sim = require( 'JOIST/Sim' );
   var SimLauncher = require( 'JOIST/SimLauncher' );
   var ScreenView = require( 'JOIST/ScreenView' );
-  var ButtonsModel = require( 'SUN/demo/model/ButtonsModel' );
   var ButtonsView = require( 'SUN/demo/view/ButtonsView' );
 
   // Strings
@@ -28,8 +27,8 @@ define( function( require ) {
     //Create and start the sim
     new Sim( simTitle, [
       new Screen( simTitle, null,
-        function() {return new ButtonsModel( ScreenView.DEFAULT_LAYOUT_BOUNDS.width, ScreenView.DEFAULT_LAYOUT_BOUNDS.height );},
-        function( model ) {return new ButtonsView( model );},
+        function() {return {};},
+        function( model ) {return new ButtonsView();},
         { backgroundColor: '#fff' }
       )
     ], simOptions ).start();

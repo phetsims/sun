@@ -28,7 +28,7 @@ define( function( require ) {
   var BUTTON_FONT = new PhetFont( { size: 20 } );
   var BUTTON_CAPTION_FONT = new PhetFont( { size: 16 } );
 
-  function ButtonsView( model ) {
+  function ButtonsView() {
     ScreenView.call( this, { renderer: 'svg' } );
 
     // background
