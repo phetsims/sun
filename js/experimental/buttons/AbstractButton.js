@@ -11,10 +11,8 @@ define( function( require ) {
 
   // Imports
   var ButtonModel = require( 'SUN/experimental/buttons/ButtonModel' );
-  var DownUpListener = require( 'SCENERY/input/DownUpListener' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Node = require( 'SCENERY/nodes/Node' );
-  var Property = require( 'AXON/Property' );
 
   /**
    * @param options

@@ -21,7 +21,6 @@ define( function( require ) {
   var Text = require( 'SCENERY/nodes/Text' );
   var TimerToggleButton2 = require( 'SUN/experimental/buttons/TimerToggleButton2' );
   var ToggleButton2 = require( 'SUN/experimental/buttons/ToggleButton2' );
-  var Vector2 = require( 'DOT/Vector2' );
 
   // Constants
   var BUTTON_FONT = new PhetFont( { size: 20 } );

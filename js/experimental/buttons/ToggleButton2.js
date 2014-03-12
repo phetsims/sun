@@ -18,7 +18,7 @@ define( function( require ) {
       padX: 10,
       padY: 10,
       cursor: 'pointer',
-      listener: function() { booleanProperty.value = !booleanProperty.value },
+      listener: function() { booleanProperty.value = !booleanProperty.value; },
       accessibilityLabel: '',
 
       // In 'radioButton' mode, pressing a toggle button repeatedly sets the
@@ -42,8 +42,7 @@ define( function( require ) {
     // TODO: Revisit this and decide if we should just have a separate radio
     // button.  For now, as of March 2014, support for radio button mode is
     // being removed.
-    if ( options.radioButton ) { throw new Error( 'Radio button mode not supported by ToggleButton' ) }
-    ;
+    if ( options.radioButton ) { throw new Error( 'Radio button mode not supported by ToggleButton' ); }
     /*
      if ( options.radioButton ) {
       this.addInputListener( {

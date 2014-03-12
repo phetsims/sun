@@ -10,7 +10,6 @@ define( function( require ) {
   var Screen = require( 'JOIST/Screen' );
   var Sim = require( 'JOIST/Sim' );
   var SimLauncher = require( 'JOIST/SimLauncher' );
-  var ScreenView = require( 'JOIST/ScreenView' );
   var ButtonsView = require( 'SUN/demo/view/ButtonsView' );
 
   // Strings
