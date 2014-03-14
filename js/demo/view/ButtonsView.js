@@ -39,7 +39,7 @@ define( function( require ) {
     var buttonSpacing = 10;
 
     // Text area for outputting test information
-    var outputText = new Text( '---', { font: new PhetFont( 16 ), bottom: this.layoutBounds.height - 5, left: this.layoutBounds + 10  } );
+    var outputText = new Text( '(output text)', { font: new PhetFont( 16 ), bottom: this.layoutBounds.height - 5, left: this.layoutBounds.minX + 10  } );
     this.addChild( outputText );
 
     // add refresh button and caption
@@ -149,6 +149,11 @@ define( function( require ) {
       { baseColor: new Color( 204, 255, 51 ), left: buttonA.left, top: buttonA.bottom + 30 }
     );
     this.addChild( buttonEnableButton );
+
+    // TODO: For debug, don't leave this here long term.
+    var debugText = new Text( '(debug text)', { font: new PhetFont( 16 ), bottom: outputText.top - 5, left: this.layoutBounds.minX + 10  } );
+    this.addChild( debugText );
+    window.debugText = debugText;
   }
 
   return inherit( ScreenView, ButtonsView, {

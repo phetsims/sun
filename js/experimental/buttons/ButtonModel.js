@@ -36,21 +36,15 @@ define( function( require ) {
     // Enabled state, for internal use.
     this._enabled = true;
 
-    // Arrays used to track pointers that are over this button and that are
-    // currently down.  Note that if a pointer goes down over the node but
-    // then goes outside of the node, it will be on the down list but not the
-    // over list.
-    this.downPointers = [];
-    this.overPointers = [];
+    // Track the pointer the is currently interacting with this button, ignore others.
+    this.overPointer = null;
 
     DownUpListener.call( this, {
 
       down: function( event, trail ) {
         if ( self._enabled ) {
+          assert && assert( self.overPointer === event.pointer, 'down event received from unexpected pointer' );
           self.interactionState.value = 'pressed';
-          // TODO: Next line is temp for testing, remove once this class is fully debugged.
-          if ( self.downPointers.indexOf( event.pointer ) !== -1 ) { throw new Error( 'Pointer already in downPointers.' ); }
-          self.downPointers.push( event.pointer );
           if ( options.fireOnDown ) {
             self.fire();
           }
@@ -59,14 +53,12 @@ define( function( require ) {
 
       up: function( event, trail ) {
         if ( self._enabled ) {
-          // TODO: Next line is temp for testing, remove once this class is fully debugged.
-          if ( self.downPointers.indexOf( event.pointer ) === -1 ) { throw new Error( 'Pointer not in downPointers.' ); }
-          if ( self.overPointers.indexOf( event.pointer ) !== -1 && !options.fireOnDown ) {
+          assert && assert( self.overPointer === event.pointer, 'up event received from unexpected pointer' );
+          if ( !options.fireOnDown && self.overPointer === event.pointer ) {
             // Fire the listener(s).
             self.fire();
           }
-          self.downPointers = _.without( self.downPointers, event.pointer );
-          self.interactionState.value = self.anyPointerOverAndDown() ? 'pressed' : self.overPointers.length > 0 ? 'over' : 'idle';
+          self.interactionState.value = self.overPointer === null ? 'idle' : 'over';
         }
       }
     } );
@@ -75,35 +67,17 @@ define( function( require ) {
   return inherit( DownUpListener, ButtonModel, {
 
     enter: function( event ) {
-      if ( this._enabled ) {
-        this.overPointers.push( event.pointer );
-        if ( this.anyPointerOverAndDown() ) {
-          this.interactionState.value = 'pressed';
-        }
-        else {
-          this.interactionState.value = 'over';
-        }
+      if ( this._enabled && this.overPointer === null ) {
+        this.overPointer = event.pointer;
+        this.interactionState.value = 'over';
       }
     },
 
     exit: function( event ) {
       if ( this._enabled ) {
-        assert && assert( this.overPointers.length > 0, 'Exit events not matched by an enter' );
-        this.overPointers = _.without( this.overPointers, event.pointer );
-        if ( this.overPointers.length === 0 ) {
-          this.interactionState.value = 'idle';
-        }
+        this.overPointer = null;
+        this.interactionState.value = 'idle';
       }
-    },
-
-    // Return true if at least one pointer is both over and down on this node.
-    anyPointerOverAndDown: function() {
-      for ( var i = 0; i < this.overPointers.length; i++ ) {
-        if ( this.downPointers.indexOf( this.overPointers[ i ] ) !== -1 ) {
-          return true;
-        }
-      }
-      return false;
     },
 
     // Adds a listener. If already a listener, this is a no-op.
@@ -140,8 +114,7 @@ define( function( require ) {
 
       if ( !value ) {
         this.interactionState.value = 'disabled';
-        this.downPointers.length = 0;
-        this.overPointers.length = 0;
+        this.overPointer = null;
       }
       else {
         // TODO: Determine if we want/need to handle multi-touch situations
