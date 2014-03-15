@@ -109,10 +109,14 @@ define( function( require ) {
       } );
     this.addChild( buttonB );
 
+    var fireCount = 0;
     var buttonC = new RectangularPushButton(
       new Text( '--- C ---', { font: BUTTON_FONT } ),
       {
-        listener: function() { outputText.text = 'Button C pressed'; },
+        listener: function() {
+          outputText.text = 'Button C pressed ' + fireCount;
+          fireCount++;
+        },
         left: buttonB.right + 10,
         centerY: buttonB.centerY,
         baseColor: new Color( 204, 102, 204 )

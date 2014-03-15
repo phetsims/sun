@@ -3,6 +3,8 @@
 /**
  * Basic button model, intended to be added as an input listener to any
  * Scenery node in order to allow it to behave as a button.
+ *
+ * In general, only one of these should be added to a given node.
  */
 define( function( require ) {
   'use strict';
@@ -34,7 +36,7 @@ define( function( require ) {
     this.interactionState = new Property( 'idle' );
 
     // Enabled state, for internal use.
-    this._enabled = true;
+    this.buttonEnabled = true;
 
     // Track the pointer the is currently interacting with this button, ignore others.
     this.overPointer = null;
@@ -42,7 +44,7 @@ define( function( require ) {
     DownUpListener.call( this, {
 
       down: function( event, trail ) {
-        if ( self._enabled ) {
+        if ( self.buttonEnabled ) {
           assert && assert( self.overPointer === event.pointer, 'down event received from unexpected pointer' );
           self.interactionState.value = 'pressed';
           if ( options.fireOnDown ) {
@@ -52,8 +54,7 @@ define( function( require ) {
       },
 
       up: function( event, trail ) {
-        if ( self._enabled ) {
-          assert && assert( self.overPointer === event.pointer, 'up event received from unexpected pointer' );
+        if ( self.buttonEnabled ) {
           if ( !options.fireOnDown && self.overPointer === event.pointer ) {
             // Fire the listener(s).
             self.fire();
@@ -66,15 +67,15 @@ define( function( require ) {
 
   return inherit( DownUpListener, ButtonModel, {
 
-    enter: function( event ) {
-      if ( this._enabled && this.overPointer === null ) {
+    enter: function( event, trail ) {
+      if ( this.buttonEnabled && this.overPointer === null ) {
         this.overPointer = event.pointer;
         this.interactionState.value = 'over';
       }
     },
 
-    exit: function( event ) {
-      if ( this._enabled ) {
+    exit: function( event, trail ) {
+      if ( this.buttonEnabled && event.pointer === this.overPointer ) {
         this.overPointer = null;
         this.interactionState.value = 'idle';
       }
@@ -105,22 +106,21 @@ define( function( require ) {
     },
 
     // ES5 getter for enabled state.
-    get enabled() { return this._enabled; },
+    get enabled() { return this.buttonEnabled; },
 
     // ES5 setter for enabled state.
     set enabled( value ) {
 
-      this._enabled = value;
+      if ( this.buttonEnabled !== value ) {
+        this.buttonEnabled = value;
 
-      if ( !value ) {
-        this.interactionState.value = 'disabled';
-        this.overPointer = null;
-      }
-      else {
-        // TODO: Determine if we want/need to handle multi-touch situations
-        // here.  If so, we would need to track some sort of 'shadow state'
-        // when the button is disabled and restore it here.
-        this.interactionState.value = 'idle';
+        if ( !value ) {
+          this.interactionState.value = 'disabled';
+          this.overPointer = null;
+        }
+        else {
+          this.interactionState.value = 'idle';
+        }
       }
     }
   } );
