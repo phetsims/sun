@@ -30,7 +30,6 @@ define( function( require ) {
   function RectangularPushButton( content, options ) {
 
     var thisButton = this;
-    AbstractButton.call( thisButton, { listener: options.listener, fireOnDown: options.fireOnDown } );
 
     options = _.extend( {
       // Default values.
@@ -45,6 +44,8 @@ define( function( require ) {
       touchExpansionX: 5,
       touchExpansionY: 5
     }, options );
+
+    AbstractButton.call( thisButton, { listener: options.listener, fireOnDown: options.fireOnDown } );
 
     var buttonWidth = content.width + options.xPadding * 2;
     var buttonHeight = content.height + options.yPadding * 2;
