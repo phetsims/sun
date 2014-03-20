@@ -19,8 +19,7 @@ define( function( require ) {
   var Vector2 = require( 'DOT/Vector2' );
 
   // Constants
-  var HIGHLIGHT_GRADIENT_LENGTH = 7; // In screen coords, which are roughly pixels.
-  var SHADE_GRADIENT_LENGTH = 7; // In screen coords, which are roughly pixels.
+  var HIGHLIGHT_GRADIENT_LENGTH = 5; // In screen coords, which are roughly pixels.
 
   /**
    * @param {Node} content - Node to put on surface of button, could be text, icon, or whatever
@@ -53,35 +52,40 @@ define( function( require ) {
     var transparentBaseColor = new Color( baseColor.getRed(), baseColor.getGreen(), baseColor.getBlue(), 0 );
     var transparentDisabledBaseColor = new Color( disabledBaseColor.getRed(), disabledBaseColor.getGreen(), disabledBaseColor.getBlue(), 0 );
 
+    // The multiplier below can be varied in order to tweak the highlight appearance.
+    var innerGradientRadius = buttonRadius - HIGHLIGHT_GRADIENT_LENGTH / 2;
+    var outerGradientRadius = buttonRadius + HIGHLIGHT_GRADIENT_LENGTH / 2;
+    var gradientOffset = HIGHLIGHT_GRADIENT_LENGTH / 2;
+
     // Create the gradient fills used for various button states
-    var upFillHighlight = new RadialGradient( HIGHLIGHT_GRADIENT_LENGTH / 4, HIGHLIGHT_GRADIENT_LENGTH / 4, buttonRadius - HIGHLIGHT_GRADIENT_LENGTH / 2, 0, 0, buttonRadius )
+    var upFillHighlight = new RadialGradient( gradientOffset, gradientOffset, innerGradientRadius, gradientOffset, gradientOffset, outerGradientRadius )
       .addColorStop( 0, baseColor )
       .addColorStop( 1, baseColor.colorUtilsBrighter( 0.7 ) );
 
-    var upFillShadow = new RadialGradient( -SHADE_GRADIENT_LENGTH / 4, -SHADE_GRADIENT_LENGTH / 4, buttonRadius - SHADE_GRADIENT_LENGTH / 2, 0, 0, buttonRadius )
+    var upFillShadow = new RadialGradient( -gradientOffset, -gradientOffset, innerGradientRadius, -gradientOffset, -gradientOffset, outerGradientRadius )
       .addColorStop( 0, transparentBaseColor )
       .addColorStop( 1, baseColor.colorUtilsDarker( 0.5 ) );
 
-    var overFillHighlight = new RadialGradient( HIGHLIGHT_GRADIENT_LENGTH / 4, HIGHLIGHT_GRADIENT_LENGTH / 4, buttonRadius - HIGHLIGHT_GRADIENT_LENGTH / 2, 0, 0, buttonRadius )
+    var overFillHighlight = new RadialGradient( gradientOffset, gradientOffset, innerGradientRadius, gradientOffset, gradientOffset, outerGradientRadius )
       .addColorStop( 0, baseColor.colorUtilsBrighter( 0.4 ) )
       .addColorStop( 1, baseColor.colorUtilsBrighter( 0.8 ) );
 
-    var overFillShadow = new RadialGradient( -SHADE_GRADIENT_LENGTH / 4, -SHADE_GRADIENT_LENGTH / 4, buttonRadius - SHADE_GRADIENT_LENGTH / 2, 0, 0, buttonRadius )
+    var overFillShadow = new RadialGradient( -gradientOffset, -gradientOffset, innerGradientRadius, -gradientOffset, -gradientOffset, outerGradientRadius )
       .addColorStop( 0, transparentBaseColor )
       .addColorStop( 1, baseColor.colorUtilsDarker( 0.5 ) );
 
-    var downFill = new RadialGradient( HIGHLIGHT_GRADIENT_LENGTH / 4, HIGHLIGHT_GRADIENT_LENGTH / 4, 0, 0, 0, buttonRadius )
+    var downFill = new RadialGradient( 0, 0, 0, 0, 0, outerGradientRadius )
       .addColorStop( 0, baseColor )
       .addColorStop( 0.5, baseColor )
       .addColorStop( 0.7, baseColor.colorUtilsDarker( 0.1 ) )
       .addColorStop( 0.9, baseColor )
       .addColorStop( 1, baseColor.colorUtilsBrighter( 0.7 ) );
 
-    var disabledFillHighlight = new RadialGradient( HIGHLIGHT_GRADIENT_LENGTH / 4, HIGHLIGHT_GRADIENT_LENGTH / 4, buttonRadius - HIGHLIGHT_GRADIENT_LENGTH / 2, 0, 0, buttonRadius )
+    var disabledFillHighlight = new RadialGradient( gradientOffset, gradientOffset, innerGradientRadius, gradientOffset, gradientOffset, outerGradientRadius )
       .addColorStop( 0, disabledBaseColor )
       .addColorStop( 1, disabledBaseColor.colorUtilsBrighter( 0.5 ) );
 
-    var disabledFillShadow = new RadialGradient( -SHADE_GRADIENT_LENGTH / 4, -SHADE_GRADIENT_LENGTH / 4, buttonRadius - SHADE_GRADIENT_LENGTH / 2, 0, 0, buttonRadius )
+    var disabledFillShadow = new RadialGradient( -gradientOffset, -gradientOffset, innerGradientRadius, -gradientOffset, -gradientOffset, outerGradientRadius )
       .addColorStop( 0, transparentDisabledBaseColor )
       .addColorStop( 1, disabledBaseColor.colorUtilsDarker( 0.5 ) );
 
@@ -92,12 +96,12 @@ define( function( require ) {
       } );
     this.addChild( background );
 
-    // Create the overlay that is used to add horizontal shading.
-    var overlayForHorizGradient = new Circle( buttonRadius,
+    // Create the overlay that is used to add shading.
+    var overlayForShadowGradient = new Circle( buttonRadius,
       {
         fill: options.baseColor
       } );
-    this.addChild( overlayForHorizGradient );
+    this.addChild( overlayForShadowGradient );
 
     content.center = upCenter;
     thisButton.addChild( content );
@@ -111,7 +115,7 @@ define( function( require ) {
           content.center = upCenter;
           content.opacity = 1;
           background.fill = upFillHighlight;
-          overlayForHorizGradient.fill = upFillShadow;
+          overlayForShadowGradient.fill = upFillShadow;
           thisButton.pickable = true;
           break;
 
@@ -119,7 +123,7 @@ define( function( require ) {
           content.center = upCenter;
           content.opacity = 1;
           background.fill = overFillHighlight;
-          overlayForHorizGradient.fill = overFillShadow;
+          overlayForShadowGradient.fill = overFillShadow;
           thisButton.pickable = true;
           break;
 
@@ -127,7 +131,7 @@ define( function( require ) {
           content.center = downCenter;
           content.opacity = 1;
           background.fill = downFill;
-          overlayForHorizGradient.fill = overFillShadow;
+          overlayForShadowGradient.fill = overFillShadow;
           thisButton.pickable = true;
           break;
 
@@ -135,7 +139,7 @@ define( function( require ) {
           content.center = upCenter;
           content.opacity = 0.3;
           background.fill = disabledFillHighlight;
-          overlayForHorizGradient.fill = disabledFillShadow;
+          overlayForShadowGradient.fill = disabledFillShadow;
           thisButton.pickable = false;
           break;
       }
