@@ -16,6 +16,7 @@ define( function( require ) {
   var RefreshButton = require( 'SUN/experimental/buttons/RefreshButton' );
   var ResetAllButton = require( 'SCENERY_PHET/ResetAllButton' );
   var ReturnToLevelSelectButton = require( 'SUN/experimental/buttons/ReturnToLevelSelectButton' );
+  var RoundPushButton = require( 'SUN/experimental/buttons/RoundPushButton' );
   var ScreenView = require( 'JOIST/ScreenView' );
   var SoundToggleButton2 = require( 'SUN/experimental/buttons/SoundToggleButton2' );
   var Text = require( 'SCENERY/nodes/Text' );
@@ -99,6 +100,7 @@ define( function( require ) {
         top: 300
       } );
     this.addChild( buttonA );
+
     var buttonB = new RectangularPushButton(
       new Text( '--- B ---', { font: BUTTON_FONT } ),
       {
@@ -134,11 +136,21 @@ define( function( require ) {
       } );
     this.addChild( fireOnDownButton );
 
+    var buttonD = new RoundPushButton(
+      new Text( '--- D ---', { font: BUTTON_FONT } ),
+      {
+        listener: function() { outputText.text = 'Button D pressed'; },
+        centerX: fireOnDownButton.centerX,
+        top: fireOnDownButton.bottom + 10
+      } );
+    this.addChild( buttonD );
+
     // Hook up button enable property
     buttonsEnabled.link( function( enabled ) {
       buttonA.enabled = enabled;
       buttonB.enabled = enabled;
       buttonC.enabled = enabled;
+      buttonD.enabled = enabled;
       fireOnDownButton.enabled = enabled;
       refreshButton.enabled = enabled;
       returnToLevelSelectButton.enabled = enabled;

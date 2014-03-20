@@ -1,0 +1,157 @@
+// Copyright 2002-2014, University of Colorado Boulder
+
+/**
+ * A round push button that draws gradients and such in order to create
+ * a somewhat 3D look.
+ *
+ * @author John Blanco
+ */
+define( function( require ) {
+  'use strict';
+
+  // Includes
+  var AbstractButton = require( 'SUN/experimental/buttons/AbstractButton' );
+  var Circle = require( 'SCENERY/nodes/Circle' );
+  var Color = require( 'SCENERY/util/Color' );
+  var inherit = require( 'PHET_CORE/inherit' );
+  var RadialGradient = require( 'SCENERY/util/RadialGradient' );
+  var Rectangle = require( 'SCENERY/nodes/Rectangle' );
+  var Shape = require( 'KITE/Shape' );
+  var Vector2 = require( 'DOT/Vector2' );
+
+  // Constants
+  var HIGHLIGHT_GRADIENT_LENGTH = 7; // In screen coords, which are roughly pixels.
+  var SHADE_GRADIENT_LENGTH = 7; // In screen coords, which are roughly pixels.
+
+  /**
+   * @param {Node} content - Node to put on surface of button, could be text, icon, or whatever
+   * @param {Object} options
+   * @constructor
+   */
+  function RoundPushButton( content, options ) {
+
+    var thisButton = this;
+
+    options = _.extend( {
+      // Default values.
+      cursor: 'pointer',
+      baseColor: new Color( 153, 206, 255 ),
+      disabledBaseColor: new Color( 220, 220, 220 ),
+      minXPadding: 5, // Minimum padding in x direction, i.e. on left and right
+      minYPadding: 5, // Minimum padding in x direction, i.e. on top and bottom
+      listener: null,
+      fireOnDown: false,
+      touchExpansion: 5 // In screen units (roughly pixels) beyond button's edge.
+    }, options );
+
+    AbstractButton.call( thisButton, { listener: options.listener, fireOnDown: options.fireOnDown } );
+
+    var buttonRadius = Math.max( content.width + options.minXPadding * 2, content.height + options.minYPadding * 2 ) / 2;
+    var upCenter = Vector2.ZERO;
+    var downCenter = upCenter.plus( new Vector2( 0.5, 0.5 ) ); // Displacement empirically determined.
+    var baseColor = options.baseColor;
+    var disabledBaseColor = options.disabledBaseColor;
+    var transparentBaseColor = new Color( baseColor.getRed(), baseColor.getGreen(), baseColor.getBlue(), 0 );
+    var transparentDisabledBaseColor = new Color( disabledBaseColor.getRed(), disabledBaseColor.getGreen(), disabledBaseColor.getBlue(), 0 );
+
+    // Create the gradient fills used for various button states
+    var upFillHighlight = new RadialGradient( HIGHLIGHT_GRADIENT_LENGTH / 4, HIGHLIGHT_GRADIENT_LENGTH / 4, buttonRadius - HIGHLIGHT_GRADIENT_LENGTH / 2, 0, 0, buttonRadius )
+      .addColorStop( 0, baseColor )
+      .addColorStop( 1, baseColor.colorUtilsBrighter( 0.7 ) );
+
+    var upFillShadow = new RadialGradient( -SHADE_GRADIENT_LENGTH / 4, -SHADE_GRADIENT_LENGTH / 4, buttonRadius - SHADE_GRADIENT_LENGTH / 2, 0, 0, buttonRadius )
+      .addColorStop( 0, transparentBaseColor )
+      .addColorStop( 1, baseColor.colorUtilsDarker( 0.5 ) );
+
+    var overFillHighlight = new RadialGradient( HIGHLIGHT_GRADIENT_LENGTH / 4, HIGHLIGHT_GRADIENT_LENGTH / 4, buttonRadius - HIGHLIGHT_GRADIENT_LENGTH / 2, 0, 0, buttonRadius )
+      .addColorStop( 0, baseColor.colorUtilsBrighter( 0.4 ) )
+      .addColorStop( 1, baseColor.colorUtilsBrighter( 0.8 ) );
+
+    var overFillShadow = new RadialGradient( -SHADE_GRADIENT_LENGTH / 4, -SHADE_GRADIENT_LENGTH / 4, buttonRadius - SHADE_GRADIENT_LENGTH / 2, 0, 0, buttonRadius )
+      .addColorStop( 0, transparentBaseColor )
+      .addColorStop( 1, baseColor.colorUtilsDarker( 0.5 ) );
+
+    var downFill = new RadialGradient( HIGHLIGHT_GRADIENT_LENGTH / 4, HIGHLIGHT_GRADIENT_LENGTH / 4, 0, 0, 0, buttonRadius )
+      .addColorStop( 0, baseColor )
+      .addColorStop( 0.5, baseColor )
+      .addColorStop( 0.7, baseColor.colorUtilsDarker( 0.1 ) )
+      .addColorStop( 0.9, baseColor )
+      .addColorStop( 1, baseColor.colorUtilsBrighter( 0.7 ) );
+
+    var disabledFillHighlight = new RadialGradient( HIGHLIGHT_GRADIENT_LENGTH / 4, HIGHLIGHT_GRADIENT_LENGTH / 4, buttonRadius - HIGHLIGHT_GRADIENT_LENGTH / 2, 0, 0, buttonRadius )
+      .addColorStop( 0, disabledBaseColor )
+      .addColorStop( 1, disabledBaseColor.colorUtilsBrighter( 0.5 ) );
+
+    var disabledFillShadow = new RadialGradient( -SHADE_GRADIENT_LENGTH / 4, -SHADE_GRADIENT_LENGTH / 4, buttonRadius - SHADE_GRADIENT_LENGTH / 2, 0, 0, buttonRadius )
+      .addColorStop( 0, transparentDisabledBaseColor )
+      .addColorStop( 1, disabledBaseColor.colorUtilsDarker( 0.5 ) );
+
+    // Create the basic button shape.
+    var background = new Circle( buttonRadius,
+      {
+        fill: options.baseColor
+      } );
+    this.addChild( background );
+
+    // Create the overlay that is used to add horizontal shading.
+    var overlayForHorizGradient = new Circle( buttonRadius,
+      {
+        fill: options.baseColor
+      } );
+    this.addChild( overlayForHorizGradient );
+
+    content.center = upCenter;
+    thisButton.addChild( content );
+
+    // Hook up the function that will modify button appearance as the state changes.
+    this.buttonModel.interactionState.link( function( interactionState ) {
+
+      switch( interactionState ) {
+
+        case 'idle':
+          content.center = upCenter;
+          content.opacity = 1;
+          background.fill = upFillHighlight;
+          overlayForHorizGradient.fill = upFillShadow;
+          thisButton.pickable = true;
+          break;
+
+        case 'over':
+          content.center = upCenter;
+          content.opacity = 1;
+          background.fill = overFillHighlight;
+          overlayForHorizGradient.fill = overFillShadow;
+          thisButton.pickable = true;
+          break;
+
+        case 'pressed':
+          content.center = downCenter;
+          content.opacity = 1;
+          background.fill = downFill;
+          overlayForHorizGradient.fill = overFillShadow;
+          thisButton.pickable = true;
+          break;
+
+        case 'disabled':
+          content.center = upCenter;
+          content.opacity = 0.3;
+          background.fill = disabledFillHighlight;
+          overlayForHorizGradient.fill = disabledFillShadow;
+          thisButton.pickable = false;
+          break;
+      }
+    } );
+
+    // Expand the touch area.
+    this.touchArea = Shape.circle( 0, 0, buttonRadius + options.touchExpansion );
+
+    // Set pickable such that sub-nodes are pruned from hit testing.
+    this.pickable = null;
+
+    // Mutate with the options after the layout is complete so that
+    // width-dependent fields like centerX will work.
+    thisButton.mutate( options );
+  }
+
+  return inherit( AbstractButton, RoundPushButton );
+} );

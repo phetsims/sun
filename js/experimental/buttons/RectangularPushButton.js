@@ -2,7 +2,7 @@
 
 /**
  * A rectangular push button that draws gradients and such in order to create
- * a somewhat 2D effect.
+ * a somewhat 3D look.
  *
  * @author John Blanco
  */
