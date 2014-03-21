@@ -73,7 +73,7 @@ define( function( require ) {
       .addColorStop( 1, baseColor.colorUtilsDarker( 0.5 ) );
 
     var overFillHighlight = new RadialGradient( gradientOffset, gradientOffset, innerGradientRadius, gradientOffset, gradientOffset, outerGradientRadius )
-      .addColorStop( 0, baseColor.colorUtilsBrighter( 0.4 ) )
+      .addColorStop( 0, baseColor.colorUtilsBrighter( 0.3 ) )
       .addColorStop( 1, baseColor.colorUtilsBrighter( 0.8 ) );
 
     var overFillShadow = new RadialGradient( -gradientOffset, -gradientOffset, innerGradientRadius, -gradientOffset, -gradientOffset, outerGradientRadius )
@@ -83,8 +83,8 @@ define( function( require ) {
     var downFill = new RadialGradient( 0, 0, 0, 0, 0, outerGradientRadius )
       .addColorStop( 0, baseColor )
       .addColorStop( 0.5, baseColor )
-      .addColorStop( 0.7, baseColor.colorUtilsDarker( 0.1 ) )
-      .addColorStop( 0.9, baseColor )
+      .addColorStop( 0.6, baseColor.colorUtilsDarker( 0.1 ) )
+      .addColorStop( 0.8, baseColor )
       .addColorStop( 1, baseColor.colorUtilsBrighter( 0.7 ) );
 
     var disabledFillHighlight = new RadialGradient( gradientOffset, gradientOffset, innerGradientRadius, gradientOffset, gradientOffset, outerGradientRadius )
