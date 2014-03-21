@@ -182,7 +182,7 @@ define( function( require ) {
     var goButton = new RoundPushButton(
       new Text( 'Go!', { font: new PhetFont( { size: 30, weight: 'bold' } ), fill: 'white' } ),
       {
-        listener: function() { outputText.text = 'Button E pressed'; },
+        listener: function() { outputText.text = 'Go button pressed'; },
         baseColor: new Color( 0, 163, 0 ),
         minXPadding: 10,
         left: buttonE.right + buttonSpacing,
