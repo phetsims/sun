@@ -39,13 +39,19 @@ define( function( require ) {
       minYPadding: 5, // Minimum padding in x direction, i.e. on top and bottom
       listener: null,
       fireOnDown: false,
-      touchExpansion: 5 // In screen units (roughly pixels) beyond button's edge.
+      touchExpansion: 5, // In screen units (roughly pixels) beyond button's edge.
+
+      // By default, icons are centered in the button, but icons with odd
+      // shapes that are not wrapped in a normalizing parent node may need to
+      // specify offsets to line things up properly
+      iconOffsetX: 0,
+      iconOffsetY: 0
     }, options );
 
     AbstractButton.call( thisButton, { listener: options.listener, fireOnDown: options.fireOnDown } );
 
     var buttonRadius = Math.max( content.width + options.minXPadding * 2, content.height + options.minYPadding * 2 ) / 2;
-    var upCenter = Vector2.ZERO;
+    var upCenter = new Vector2( options.iconOffsetX, options.iconOffsetY );
     var downCenter = upCenter.plus( new Vector2( 0.5, 0.5 ) ); // Displacement empirically determined.
     var baseColor = options.baseColor;
     var disabledBaseColor = options.disabledBaseColor;

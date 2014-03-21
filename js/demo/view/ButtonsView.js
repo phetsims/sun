@@ -15,6 +15,7 @@ define( function( require ) {
   var RectangularPushButton = require( 'SUN/experimental/buttons/RectangularPushButton' );
   var RefreshButton = require( 'SUN/experimental/buttons/RefreshButton' );
   var ResetAllButton = require( 'SCENERY_PHET/ResetAllButton' );
+  var ResetAllButton2 = require( 'SUN/experimental/buttons/ResetAllButton2' );
   var ReturnToLevelSelectButton = require( 'SUN/experimental/buttons/ReturnToLevelSelectButton' );
   var RoundPushButton = require( 'SUN/experimental/buttons/RoundPushButton' );
   var ScreenView = require( 'JOIST/ScreenView' );
@@ -136,28 +137,6 @@ define( function( require ) {
       } );
     this.addChild( fireOnDownButton );
 
-    var buttonD = new RoundPushButton(
-      new Text( '--- D ---', { font: BUTTON_FONT } ),
-      {
-        listener: function() { outputText.text = 'Button D pressed'; },
-        centerX: fireOnDownButton.centerX,
-        top: fireOnDownButton.bottom + 10
-      } );
-    this.addChild( buttonD );
-
-    // Hook up button enable property
-    buttonsEnabled.link( function( enabled ) {
-      buttonA.enabled = enabled;
-      buttonB.enabled = enabled;
-      buttonC.enabled = enabled;
-      buttonD.enabled = enabled;
-      fireOnDownButton.enabled = enabled;
-      refreshButton.enabled = enabled;
-      returnToLevelSelectButton.enabled = enabled;
-      soundToggleButton.enabled = enabled;
-      timerToggleButton.enabled = enabled;
-    } );
-
     var buttonEnableButton = new ToggleButton2(
       new Text( 'Disable Buttons', { font: BUTTON_CAPTION_FONT } ),
       new Text( 'Enable Buttons', { font: BUTTON_CAPTION_FONT } ),
@@ -165,6 +144,66 @@ define( function( require ) {
       { baseColor: new Color( 204, 255, 51 ), left: buttonA.left, top: buttonA.bottom + 30 }
     );
     this.addChild( buttonEnableButton );
+
+    // add alternative reset all button
+    var resetAllButton2 = new ResetAllButton2(
+      {
+        radius: 30,
+        centerX: buttonC.centerX,
+        centerY: buttonEnableButton.centerY,
+        listener: function() {
+          outputText.text = 'Reset All pressed';
+          buttonsEnabled.reset();
+          soundEnabled.reset();
+          timerEnabled.reset();
+        }
+      } );
+    this.addChild( resetAllButton2 );
+
+    var buttonD = new RoundPushButton(
+      new Text( '- D -', { font: BUTTON_FONT } ),
+      {
+        listener: function() { outputText.text = 'Button D pressed'; },
+        left: resetAllButton2.right + buttonSpacing,
+        centerY: resetAllButton2.centerY
+      } );
+    this.addChild( buttonD );
+
+    var buttonE = new RoundPushButton(
+      new Text( '-- E --', { font: BUTTON_FONT } ),
+      {
+        listener: function() { outputText.text = 'Button E pressed'; },
+        baseColor: new Color( 245, 184, 0 ),
+        left: buttonD.right + buttonSpacing,
+        centerY: buttonD.centerY
+      } );
+    this.addChild( buttonE );
+
+    var goButton = new RoundPushButton(
+      new Text( 'Go!', { font: new PhetFont( { size: 30, weight: 'bold' } ), fill: 'white' } ),
+      {
+        listener: function() { outputText.text = 'Button E pressed'; },
+        baseColor: new Color( 0, 163, 0 ),
+        minXPadding: 10,
+        left: buttonE.right + buttonSpacing,
+        centerY: buttonE.centerY
+      } );
+    this.addChild( goButton );
+
+    // Hook up button enable property
+    buttonsEnabled.link( function( enabled ) {
+      buttonA.enabled = enabled;
+      buttonB.enabled = enabled;
+      buttonC.enabled = enabled;
+      buttonD.enabled = enabled;
+      buttonE.enabled = enabled;
+      goButton.enabled = enabled;
+      fireOnDownButton.enabled = enabled;
+      refreshButton.enabled = enabled;
+      returnToLevelSelectButton.enabled = enabled;
+      soundToggleButton.enabled = enabled;
+      timerToggleButton.enabled = enabled;
+    } );
 
     // TODO: For debug, don't leave this here long term.
     var debugText = new Text( '(debug text)', { font: new PhetFont( 16 ), bottom: outputText.top - 5, left: this.layoutBounds.minX + 10  } );
