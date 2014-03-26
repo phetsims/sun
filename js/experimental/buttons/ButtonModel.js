@@ -5,6 +5,8 @@
  * Scenery node in order to allow it to behave as a button.
  *
  * In general, only one of these should be added to a given node.
+ *
+ * @author John Blanco
  */
 define( function( require ) {
   'use strict';
@@ -40,6 +42,7 @@ define( function( require ) {
 
     // Track the pointer the is currently interacting with this button, ignore others.
     this.overPointer = null;
+    this.downPointer = null;
 
     DownUpListener.call( this, {
 
@@ -47,6 +50,7 @@ define( function( require ) {
         if ( self.buttonEnabled ) {
           assert && assert( self.overPointer === event.pointer, 'down event received from unexpected pointer' );
           self.interactionState.value = 'pressed';
+          self.downPointer = event.pointer;
           if ( options.fireOnDown ) {
             self.fire();
           }
@@ -60,6 +64,7 @@ define( function( require ) {
             self.fire();
           }
           self.interactionState.value = self.overPointer === null ? 'idle' : 'over';
+          self.downPointer = null;
         }
       }
     } );
@@ -68,9 +73,15 @@ define( function( require ) {
   return inherit( DownUpListener, ButtonModel, {
 
     enter: function( event, trail ) {
-      if ( this.buttonEnabled && this.overPointer === null ) {
-        this.overPointer = event.pointer;
-        this.interactionState.value = 'over';
+      if ( this.buttonEnabled ) {
+        if ( this.overPointer === null && this.downPointer === null ) {
+          this.overPointer = event.pointer;
+          this.interactionState.value = 'over';
+        }
+        else if ( this.overPointer === null && this.downPointer === event.pointer ) {
+          this.overPointer = event.pointer;
+          this.interactionState.value = 'pressed';
+        }
       }
     },
 
