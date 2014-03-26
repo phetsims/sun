@@ -33,7 +33,7 @@ define( function( require ) {
 
       // The arrow shape is not perfectly centered, account for that here, and see docs in RoundPushButton
       iconOffsetX: 1,
-      iconOffsetY: 0
+      iconOffsetY: -0.3
     }, options );
 
     // Create the curved arrow shape, starting at the inside of the non-
