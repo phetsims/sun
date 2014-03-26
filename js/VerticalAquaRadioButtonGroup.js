@@ -25,7 +25,9 @@ define( function( require ) {
         spacing: 3,
         padding: 8,
         radius: 12,
-        radioButtonOptions: {} // will be passed to the AquaRadioButtons
+        radioButtonOptions: {}, // will be passed to the AquaRadioButtons
+        touchPaddingX: 5,
+        mousePaddingX: 0
       }, options );
 
     var width = 0;
@@ -38,7 +40,10 @@ define( function( require ) {
 
       //Add an invisible strut to each content to make the widths match
       var content = new Path( Shape.rect( 0, 0, width + options.padding, 0 ), {children: [items[i].node]} );
-      children.push( new AquaRadioButton( items[i].property, items[i].value, content, _.extend( {}, options.radioButtonOptions, {radius: options.radius} ) ) );
+      var radioButton = new AquaRadioButton( items[i].property, items[i].value, content, _.extend( {}, options.radioButtonOptions, {radius: options.radius} ) );
+      radioButton.mouseArea = Shape.bounds( radioButton.bounds.dilatedXY( options.mousePaddingX, options.spacing / 2 ) );
+      radioButton.touchArea = Shape.bounds( radioButton.bounds.dilatedXY( options.touchPaddingX, options.spacing / 2 ) );
+      children.push( radioButton );
     }
 
     //TODO these options should be added using _.extend(options, {children:..., renderer:....})
