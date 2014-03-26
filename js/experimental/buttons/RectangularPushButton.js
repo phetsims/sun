@@ -50,7 +50,7 @@ define( function( require ) {
     var buttonWidth = content.width + options.xPadding * 2;
     var buttonHeight = content.height + options.yPadding * 2;
     var upCenter = new Vector2( buttonWidth / 2, buttonHeight / 2 );
-    var downCenter = upCenter.plus( new Vector2( 0.5, 0.5 ) ); // Displacement empirically determined.
+    var downCenter = upCenter.plus( new Vector2( 0.0, 0.0 ) ); // TODO: Set to zero on 3/36/2014 because text was moving inconsistently.  Decide whether to eliminate completely.
     var verticalHighlightStop = HIGHLIGHT_GRADIENT_LENGTH / buttonHeight;
     var verticalShadowStop = 1 - SHADE_GRADIENT_LENGTH / buttonHeight;
     var horizontalHighlightStop = HIGHLIGHT_GRADIENT_LENGTH / buttonWidth;

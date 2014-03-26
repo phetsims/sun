@@ -52,7 +52,7 @@ define( function( require ) {
 
     var buttonRadius = Math.max( content.width + options.minXPadding * 2, content.height + options.minYPadding * 2 ) / 2;
     var upCenter = new Vector2( options.iconOffsetX, options.iconOffsetY );
-    var downCenter = upCenter.plus( new Vector2( 0.5, 0.5 ) ); // Displacement empirically determined.
+    var downCenter = upCenter.plus( new Vector2( 0.0, 0.0 ) ); // TODO: Set to zero on 3/36/2014 because text was moving inconsistently.  Decide whether to eliminate completely.
     var baseColor = options.baseColor;
     var disabledBaseColor = options.disabledBaseColor;
     var transparentBaseColor = new Color( baseColor.getRed(), baseColor.getGreen(), baseColor.getBlue(), 0 );
