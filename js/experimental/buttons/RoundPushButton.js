@@ -81,11 +81,10 @@ define( function( require ) {
       .addColorStop( 1, baseColor.colorUtilsDarker( 0.5 ) );
 
     var downFill = new RadialGradient( 0, 0, 0, 0, 0, outerGradientRadius )
-      .addColorStop( 0, baseColor )
-      .addColorStop( 0.5, baseColor )
-      .addColorStop( 0.6, baseColor.colorUtilsDarker( 0.1 ) )
+      .addColorStop( 0, baseColor.colorUtilsDarker( 0.1 ) )
+      .addColorStop( 0.6, baseColor.colorUtilsDarker( 0.2 ) )
       .addColorStop( 0.8, baseColor )
-      .addColorStop( 1, baseColor.colorUtilsBrighter( 0.7 ) );
+      .addColorStop( 1, baseColor.colorUtilsBrighter( 0.8 ) );
 
     var disabledFillHighlight = new RadialGradient( gradientOffset, gradientOffset, innerGradientRadius, gradientOffset, gradientOffset, outerGradientRadius )
       .addColorStop( 0, disabledBaseColor )
