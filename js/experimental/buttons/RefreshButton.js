@@ -73,8 +73,8 @@ define( function( require ) {
 
     // Put it all together.
     var refreshIconNode = new Node();
-    refreshIconNode.addChild( new Path( upperArrowShape, { fill: 'rgb( 88, 88, 90 )' } ) );
-    refreshIconNode.addChild( new Path( lowerArrowShape, { fill: 'rgb( 88, 88, 90 )', y: options.iconWidth * 0.2 } ) );
+    refreshIconNode.addChild( new Path( upperArrowShape, { fill: 'black' } ) );
+    refreshIconNode.addChild( new Path( lowerArrowShape, { fill: 'black', y: options.iconWidth * 0.2 } ) );
 
     RectangularPushButton.call( this, refreshIconNode, options );
   }
