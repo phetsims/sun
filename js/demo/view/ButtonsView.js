@@ -133,7 +133,8 @@ define( function( require ) {
         left: buttonC.right + 30,
         centerY: buttonC.centerY,
         baseColor: new Color( 255, 255, 61 ),
-        fireOnDown: true
+        fireOnDown: true,
+        stroke: 'black'
       } );
     this.addChild( fireOnDownButton );
 
@@ -179,16 +180,42 @@ define( function( require ) {
       } );
     this.addChild( buttonE );
 
+    var fireButton = new RoundPushButton(
+      new Text( 'Fire!', { font: new PhetFont( { size: 16, style: 'italic' } ) } ),
+      {
+        listener: function() { outputText.text = 'Fire button pressed'; },
+        baseColor: new Color( 255, 100, 51 ),
+        left: buttonE.right + buttonSpacing,
+        centerY: buttonE.centerY,
+        stroke: 'black',
+        lineWidth: 0.5
+      } );
+    this.addChild( fireButton );
+
     var goButton = new RoundPushButton(
       new Text( 'Go!', { font: new PhetFont( { size: 30, weight: 'bold' } ), fill: 'white' } ),
       {
         listener: function() { outputText.text = 'Go button pressed'; },
         baseColor: new Color( 0, 163, 0 ),
         minXPadding: 10,
-        left: buttonE.right + buttonSpacing,
-        centerY: buttonE.centerY
+        centerX: resetAllButton2.centerX,
+        top: buttonE.bottom + 5
       } );
     this.addChild( goButton );
+
+    var helpButtonBaseColor = new Color( 244, 154, 194 );
+    var helpButton = new RoundPushButton(
+      new Text( 'Help', { font: BUTTON_FONT } ),
+      {
+        listener: function() { outputText.text = 'Help button pressed'; },
+        baseColor: new Color( 244, 154, 194 ),
+        minXPadding: 10,
+        left: goButton.right + 5,
+        centerY: goButton.centerY,
+        stroke: helpButtonBaseColor.colorUtilsDarker( 0.4 ),
+        lineWidth: 0.5
+      } );
+    this.addChild( helpButton );
 
     // Hook up button enable property
     buttonsEnabled.link( function( enabled ) {
@@ -197,6 +224,7 @@ define( function( require ) {
       buttonC.enabled = enabled;
       buttonD.enabled = enabled;
       buttonE.enabled = enabled;
+      fireButton.enabled = enabled;
       goButton.enabled = enabled;
       fireOnDownButton.enabled = enabled;
       refreshButton.enabled = enabled;

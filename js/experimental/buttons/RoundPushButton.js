@@ -40,6 +40,8 @@ define( function( require ) {
       listener: null,
       fireOnDown: false,
       touchExpansion: 5, // In screen units (roughly pixels) beyond button's edge.
+      stroke: null, // No outline stroke by default
+      lineWidth: 1, // Only meaningful if stroke is non-null
 
       // By default, icons are centered in the button, but icons with odd
       // shapes that are not wrapped in a normalizing parent node may need to
@@ -97,14 +99,18 @@ define( function( require ) {
     // Create the basic button shape.
     var background = new Circle( buttonRadius,
       {
-        fill: options.baseColor
+        fill: options.baseColor,
+        stroke: options.stroke,
+        lineWidth: options.lineWidth
       } );
     this.addChild( background );
 
     // Create the overlay that is used to add shading.
     var overlayForShadowGradient = new Circle( buttonRadius,
       {
-        fill: options.baseColor
+        fill: options.baseColor,
+        stroke: options.stroke,
+        lineWidth: options.lineWidth
       } );
     this.addChild( overlayForShadowGradient );
 

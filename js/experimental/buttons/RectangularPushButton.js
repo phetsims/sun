@@ -42,7 +42,9 @@ define( function( require ) {
       listener: null,
       fireOnDown: false,
       touchExpansionX: 5,
-      touchExpansionY: 5
+      touchExpansionY: 5,
+      stroke: null, // No outline stroke by default
+      lineWidth: 1 // Only meaningful if stroke is non-null
     }, options );
 
     AbstractButton.call( thisButton, { listener: options.listener, fireOnDown: options.fireOnDown } );
@@ -106,14 +108,18 @@ define( function( require ) {
     // Create the basic button shape.
     var background = new Rectangle( 0, 0, buttonWidth, buttonHeight, options.cornerRounding, options.cornerRounding,
       {
-        fill: options.baseColor
+        fill: options.baseColor,
+        stroke: options.stroke,
+        lineWidth: options.lineWidth
       } );
     this.addChild( background );
 
     // Create the overlay that is used to add horizontal shading.
     var overlayForHorizGradient = new Rectangle( 0, 0, buttonWidth, buttonHeight, options.cornerRounding, options.cornerRounding,
       {
-        fill: options.baseColor
+        fill: options.baseColor,
+        stroke: options.stroke,
+        lineWidth: options.lineWidth
       } );
     this.addChild( overlayForHorizGradient );
 
