@@ -40,6 +40,7 @@ define( function( require ) {
 
     // correct size will be set by updateBackground
     var background = new Rectangle( 0, 0, 1, 1, {stroke: options.stroke, lineWidth: options.lineWidth, fill: options.fill, pickable: options.backgroundPickable} );
+    this.background = background;
     this.addChild( background );
     this.addChild( content );
 
@@ -60,7 +61,14 @@ define( function( require ) {
     this.mutate( options );
   }
 
-  inherit( Node, Panel );
+  inherit( Node, Panel, {
+
+    //Setters for the background rectangle stroke
+    set stroke( s ) { this.background.stroke = s; },
+
+    //Getter for the background rectangle stroke
+    get stroke() {return this.backgound.stroke;}
+  } );
 
   return Panel;
 } );
