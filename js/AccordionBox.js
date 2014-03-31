@@ -49,7 +49,8 @@ define( function( require ) {
       titlePosition: 'center',
       cornerRadius: 3,
       controlButtonInsetX: 4,
-      controlButtonInsetY: 4
+      controlButtonInsetY: 4,
+      titleFill: 'black'
     }, options );
 
     var thisNode = this;
@@ -65,8 +66,8 @@ define( function( require ) {
     // on small screens.   Size could be moved into an option if necessary.
     var expandedTouchAreaDimension = CONTROL_BUTTON_DIMENSION * 3;
     expandCollapseButton.touchArea = Shape.rectangle(
-      -expandedTouchAreaDimension / 2 + CONTROL_BUTTON_DIMENSION / 2,
-      -expandedTouchAreaDimension / 2 + CONTROL_BUTTON_DIMENSION / 2,
+        -expandedTouchAreaDimension / 2 + CONTROL_BUTTON_DIMENSION / 2,
+        -expandedTouchAreaDimension / 2 + CONTROL_BUTTON_DIMENSION / 2,
       expandedTouchAreaDimension,
       expandedTouchAreaDimension
     );
@@ -74,13 +75,13 @@ define( function( require ) {
     // Create the title, if present.
     var title = new Node();
     if ( options.title !== undefined ) {
-      title = new Text( options.title, { font: options.font } );
+      title = new Text( options.title, { font: options.font, fill: options.titleFill } );
     }
 
     // Create the container that will hold the contents when open.
     var containerWidth = Math.max( options.minWidth || 0,
       Math.max( contentNode.width + 2 * CONTENT_HORIZONTAL_INSET,
-        options.controlButtonInsetX * 2 + CONTROL_BUTTON_DIMENSION + TITLE_INSET * 2 + title.width ) );
+          options.controlButtonInsetX * 2 + CONTROL_BUTTON_DIMENSION + TITLE_INSET * 2 + title.width ) );
     var closedContainerHeight = options.controlButtonInsetY * 2 + CONTROL_BUTTON_DIMENSION;
     var openContainerHeight = options.controlButtonInsetY * 2 + CONTROL_BUTTON_DIMENSION + 2 * CONTENT_VERTICAL_INSET + contentNode.height;
     this.openHeight = openContainerHeight; // This needs to be visible externally for layout purposes.
