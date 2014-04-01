@@ -17,7 +17,7 @@ define( function( require ) {
   var RoundPushButton = require( 'SUN/experimental/buttons/RoundPushButton' );
 
   // Constants
-  var DEFAULT_RADIUS = 32; // Derived from images initially used for reset button.
+  var DEFAULT_RADIUS = 24; // Derived from images initially used for reset button.
 
   /**
    * @param {Object} options
@@ -26,7 +26,7 @@ define( function( require ) {
   function ResetAllButton2( options ) {
     options = _.extend( {
       radius: DEFAULT_RADIUS,
-      minXPadding: DEFAULT_RADIUS * 0.2,
+      minXPadding: ( options.radius || DEFAULT_RADIUS ) * 0.2,
 
       // Default orange color scheme, standard for PhET reset buttons
       baseColor: new Color( 247, 151, 34 ),
