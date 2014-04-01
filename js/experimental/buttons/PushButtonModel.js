@@ -1,10 +1,10 @@
 // Copyright 2002-2014, University of Colorado Boulder
 
 /**
- * Basic button model, intended to be added as an input listener to any
- * Scenery node in order to allow it to behave as a button.
+ * Basic model for a push button, intended to be added as an input listener to
+ * any Scenery node in order to allow it to behave as a button.
  *
- * In general, only one of these should be added to a given node.
+ * Generally speaking, only one of these should be added to a given node.
  *
  * @author John Blanco
  */
@@ -19,7 +19,7 @@ define( function( require ) {
    * @param {Object} options
    * @constructor
    */
-  function ButtonModel( options ) {
+  function PushButtonModel( options ) {
     var self = this;
     options = _.extend(
       {
@@ -70,7 +70,7 @@ define( function( require ) {
     } );
   }
 
-  return inherit( DownUpListener, ButtonModel, {
+  return inherit( DownUpListener, PushButtonModel, {
 
     enter: function( event, trail ) {
       if ( this.buttonEnabled ) {

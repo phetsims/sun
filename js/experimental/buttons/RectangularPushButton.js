@@ -10,7 +10,7 @@ define( function( require ) {
   'use strict';
 
   // Includes
-  var AbstractButton = require( 'SUN/experimental/buttons/AbstractButton' );
+  var AbstractPushButton = require( 'SUN/experimental/buttons/AbstractPushButton' );
   var Color = require( 'SCENERY/util/Color' );
   var inherit = require( 'PHET_CORE/inherit' );
   var LinearGradient = require( 'SCENERY/util/LinearGradient' );
@@ -47,7 +47,7 @@ define( function( require ) {
       lineWidth: 1 // Only meaningful if stroke is non-null
     }, options );
 
-    AbstractButton.call( thisButton, { listener: options.listener, fireOnDown: options.fireOnDown } );
+    AbstractPushButton.call( thisButton, { listener: options.listener, fireOnDown: options.fireOnDown } );
 
     var buttonWidth = content.width + options.xPadding * 2;
     var buttonHeight = content.height + options.yPadding * 2;
@@ -174,5 +174,5 @@ define( function( require ) {
     thisButton.mutate( options );
   }
 
-  return inherit( AbstractButton, RectangularPushButton );
+  return inherit( AbstractPushButton, RectangularPushButton );
 } );

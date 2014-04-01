@@ -10,7 +10,7 @@ define( function( require ) {
   'use strict';
 
   // Includes
-  var AbstractButton = require( 'SUN/experimental/buttons/AbstractButton' );
+  var AbstractPushButton = require( 'SUN/experimental/buttons/AbstractPushButton' );
   var Circle = require( 'SCENERY/nodes/Circle' );
   var Color = require( 'SCENERY/util/Color' );
   var inherit = require( 'PHET_CORE/inherit' );
@@ -50,7 +50,7 @@ define( function( require ) {
       iconOffsetY: 0
     }, options );
 
-    AbstractButton.call( thisButton, { listener: options.listener, fireOnDown: options.fireOnDown } );
+    AbstractPushButton.call( thisButton, { listener: options.listener, fireOnDown: options.fireOnDown } );
 
     var buttonRadius = Math.max( content.width + options.minXPadding * 2, content.height + options.minYPadding * 2 ) / 2;
     var upCenter = new Vector2( options.iconOffsetX, options.iconOffsetY );
@@ -167,5 +167,5 @@ define( function( require ) {
     thisButton.mutate( options );
   }
 
-  return inherit( AbstractButton, RoundPushButton );
+  return inherit( AbstractPushButton, RoundPushButton );
 } );

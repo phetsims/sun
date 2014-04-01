@@ -10,7 +10,7 @@ define( function( require ) {
   'use strict';
 
   // Imports
-  var ButtonModel = require( 'SUN/experimental/buttons/ButtonModel' );
+  var PushButtonModel = require( 'SUN/experimental/buttons/PushButtonModel' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Node = require( 'SCENERY/nodes/Node' );
 
@@ -18,7 +18,7 @@ define( function( require ) {
    * @param options
    * @constructor
    */
-  function AbstractButton( options ) {
+  function AbstractPushButton( options ) {
 
     var thisButton = this;
     options = _.extend(
@@ -30,7 +30,7 @@ define( function( require ) {
     Node.call( this, options );
 
     // Hook up the button model.
-    this.buttonModel = new ButtonModel( { listener: options.listener, fireOnDown: options.fireOnDown } );
+    this.buttonModel = new PushButtonModel( { listener: options.listener, fireOnDown: options.fireOnDown } );
     this.addInputListener( this.buttonModel );    // accessibility
 
     // accessibility
@@ -39,7 +39,7 @@ define( function( require ) {
     );
   }
 
-  return inherit( Node, AbstractButton,
+  return inherit( Node, AbstractPushButton,
     {
       addListener: function( listener ) {
         // Pass through to button model.
@@ -52,7 +52,7 @@ define( function( require ) {
       },
 
       set enabled( value ) {
-        assert && assert( typeof value === 'boolean', 'AbstractButton.enabled must be a boolean value' );
+        assert && assert( typeof value === 'boolean', 'AbstractPushButton.enabled must be a boolean value' );
         this.buttonModel.enabled = value;
       },
 

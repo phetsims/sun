@@ -149,7 +149,6 @@ define( function( require ) {
     // add alternative reset all button
     var resetAllButton2 = new ResetAllButton2(
       {
-        radius: 30,
         centerX: buttonC.centerX,
         centerY: buttonEnableButton.centerY,
         listener: function() {
