@@ -124,7 +124,7 @@ define( function( require ) {
       new Text( '--- C ---', { font: BUTTON_FONT } ),
       {
         listener: function() {
-          outputText.text = 'Button C pressed ' + ++buttonCFireCount + 'x';
+          outputText.text = 'Button C pressed ' + ( ++buttonCFireCount ) + 'x';
         },
         left: buttonB.right + 10,
         centerY: buttonB.centerY,
@@ -135,7 +135,7 @@ define( function( require ) {
     var fireOnDownButton = new RectangularPushButton(
       new Text( 'Fire on Down Button', { font: BUTTON_FONT } ),
       {
-        listener: function() { outputText.text = 'Fire on down button pressed ' + ++fireOnDownCount + 'x'; },
+        listener: function() { outputText.text = 'Fire on down button pressed ' + ( ++fireOnDownCount ) + 'x'; },
         left: buttonC.right + 30,
         centerY: buttonC.centerY,
         baseColor: new Color( 255, 255, 61 ),
