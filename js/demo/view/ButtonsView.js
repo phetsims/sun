@@ -80,14 +80,22 @@ define( function( require ) {
     var timerToggleButtonLabel = new Text( 'Timer Toggle Button: ', { font: BUTTON_CAPTION_FONT, right: timerToggleButton.left - 5, centerY: timerToggleButton.centerY } );
     this.addChild( timerToggleButtonLabel );
 
+    // Count variables, declared here so that they can be reset.
+    var buttonCFireCount = 0;
+    var fireOnDownCount = 0;
+
+    // Reset function
+    function resetAll() {
+      outputText.text = 'Reset All pressed';
+      buttonsEnabled.reset();
+      soundEnabled.reset();
+      timerEnabled.reset();
+      buttonCFireCount = 0;
+      fireOnDownCount = 0;
+    }
+
     // add reset all button and caption
-    var resetAllButton = new ResetAllButton( function() {
-        outputText.text = 'Reset All pressed';
-        buttonsEnabled.reset();
-        soundEnabled.reset();
-        timerEnabled.reset();
-      },
-      { radius: 22, centerX: refreshButton.centerX, top: timerToggleButton.bottom + buttonSpacing } );
+    var resetAllButton = new ResetAllButton( resetAll, { radius: 22, centerX: refreshButton.centerX, top: timerToggleButton.bottom + buttonSpacing } );
     this.addChild( resetAllButton );
     var resetAllButtonLabel = new Text( 'Reset All Button: ', { font: BUTTON_CAPTION_FONT, right: resetAllButton.left - 5, centerY: resetAllButton.centerY } );
     this.addChild( resetAllButtonLabel );
@@ -112,13 +120,11 @@ define( function( require ) {
       } );
     this.addChild( buttonB );
 
-    var fireCount = 0;
     var buttonC = new RectangularPushButton(
       new Text( '--- C ---', { font: BUTTON_FONT } ),
       {
         listener: function() {
-          outputText.text = 'Button C pressed ' + fireCount;
-          fireCount++;
+          outputText.text = 'Button C pressed ' + ++buttonCFireCount + 'x';
         },
         left: buttonB.right + 10,
         centerY: buttonB.centerY,
@@ -129,7 +135,7 @@ define( function( require ) {
     var fireOnDownButton = new RectangularPushButton(
       new Text( 'Fire on Down Button', { font: BUTTON_FONT } ),
       {
-        listener: function() { outputText.text = 'Fire on down button pressed'; },
+        listener: function() { outputText.text = 'Fire on down button pressed ' + ++fireOnDownCount + 'x'; },
         left: buttonC.right + 30,
         centerY: buttonC.centerY,
         baseColor: new Color( 255, 255, 61 ),
@@ -147,17 +153,7 @@ define( function( require ) {
     this.addChild( buttonEnableButton );
 
     // add alternative reset all button
-    var resetAllButton2 = new ResetAllButton2(
-      {
-        centerX: buttonC.centerX,
-        centerY: buttonEnableButton.centerY,
-        listener: function() {
-          outputText.text = 'Reset All pressed';
-          buttonsEnabled.reset();
-          soundEnabled.reset();
-          timerEnabled.reset();
-        }
-      } );
+    var resetAllButton2 = new ResetAllButton2( { listener: resetAll, radius: 22, centerX: buttonC.centerX, centerY: buttonEnableButton.centerY } );
     this.addChild( resetAllButton2 );
 
     var buttonD = new RoundPushButton(
@@ -223,9 +219,10 @@ define( function( require ) {
       buttonC.enabled = enabled;
       buttonD.enabled = enabled;
       buttonE.enabled = enabled;
+      fireOnDownButton.enabled = enabled;
       fireButton.enabled = enabled;
       goButton.enabled = enabled;
-      fireOnDownButton.enabled = enabled;
+      helpButton.enabled = enabled;
       refreshButton.enabled = enabled;
       returnToLevelSelectButton.enabled = enabled;
       soundToggleButton.enabled = enabled;

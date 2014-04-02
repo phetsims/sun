@@ -127,7 +127,7 @@ define( function( require ) {
           content.opacity = 1;
           background.fill = upFillHighlight;
           overlayForShadowGradient.fill = upFillShadow;
-          thisButton.pickable = true;
+          thisButton.cursor = 'pointer';
           break;
 
         case 'over':
@@ -135,7 +135,7 @@ define( function( require ) {
           content.opacity = 1;
           background.fill = overFillHighlight;
           overlayForShadowGradient.fill = overFillShadow;
-          thisButton.pickable = true;
+          thisButton.cursor = 'pointer';
           break;
 
         case 'pressed':
@@ -143,7 +143,7 @@ define( function( require ) {
           content.opacity = 1;
           background.fill = downFill;
           overlayForShadowGradient.fill = overFillShadow;
-          thisButton.pickable = true;
+          thisButton.cursor = 'pointer';
           break;
 
         case 'disabled':
@@ -151,7 +151,7 @@ define( function( require ) {
           content.opacity = 0.3;
           background.fill = disabledFillHighlight;
           overlayForShadowGradient.fill = disabledFillShadow;
-          thisButton.pickable = false;
+          thisButton.cursor = null;
           break;
       }
     } );

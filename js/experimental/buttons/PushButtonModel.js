@@ -4,7 +4,10 @@
  * Basic model for a push button, intended to be added as an input listener to
  * any Scenery node in order to allow it to behave as a button.
  *
- * Generally speaking, only one of these should be added to a given node.
+ * IMPORTANT USAGE NOTES:
+ * - The node to which this is added should not be made non-pickable when
+ *   the disabled state is entered, or subsequent states may not be correct.
+ * - Generally speaking, only one of these should be added to a given node.
  *
  * @author John Blanco
  */
@@ -47,10 +50,11 @@ define( function( require ) {
     DownUpListener.call( this, {
 
       down: function( event, trail ) {
-        if ( self.buttonEnabled ) {
-          assert && assert( self.overPointer === event.pointer, 'down event received from unexpected pointer' );
-          self.interactionState.value = 'pressed';
+        if ( self.downPointer === null ) {
           self.downPointer = event.pointer;
+        }
+        if ( self.buttonEnabled && event.pointer === self.downPointer ) {
+          self.interactionState.value = 'pressed';
           if ( options.fireOnDown ) {
             self.fire();
           }
@@ -59,11 +63,13 @@ define( function( require ) {
 
       up: function( event, trail ) {
         if ( self.buttonEnabled ) {
-          if ( !options.fireOnDown && self.overPointer === event.pointer ) {
+          if ( !options.fireOnDown && self.downPointer === event.pointer && self.overPointer === event.pointer ) {
             // Fire the listener(s).
             self.fire();
           }
           self.interactionState.value = self.overPointer === null ? 'idle' : 'over';
+        }
+        if ( event.pointer === self.downPointer ) {
           self.downPointer = null;
         }
       }
@@ -73,22 +79,25 @@ define( function( require ) {
   return inherit( DownUpListener, PushButtonModel, {
 
     enter: function( event, trail ) {
+      if ( this.overPointer === null ) {
+        this.overPointer = event.pointer;
+      }
       if ( this.buttonEnabled ) {
-        if ( this.overPointer === null && this.downPointer === null ) {
-          this.overPointer = event.pointer;
-          this.interactionState.value = 'over';
-        }
-        else if ( this.overPointer === null && this.downPointer === event.pointer ) {
-          this.overPointer = event.pointer;
-          this.interactionState.value = 'pressed';
+        if ( this.overPointer === event.pointer ) {
+          this.interactionState.value = this.downPointer === event.pointer ? 'pressed' : 'over';
         }
       }
     },
 
     exit: function( event, trail ) {
       if ( this.buttonEnabled && event.pointer === this.overPointer ) {
-        this.overPointer = null;
         this.interactionState.value = 'idle';
+      }
+      if ( event.pointer === this.overPointer ) {
+        this.overPointer = null;
+        if ( this.buttonEnabled ) {
+          this.interactionState.value = 'idle';
+        }
       }
     },
 
@@ -127,10 +136,14 @@ define( function( require ) {
 
         if ( !value ) {
           this.interactionState.value = 'disabled';
-          this.overPointer = null;
         }
         else {
-          this.interactionState.value = 'idle';
+          if ( this.overPointer === null ) {
+            this.interactionState.value = 'idle';
+          }
+          else {
+            this.interactionState.value = this.downPointer === null ? 'over' : 'pressed';
+          }
         }
       }
     }
