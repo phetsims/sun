@@ -61,6 +61,10 @@ define( function( require ) {
     var disabledBaseColor = options.disabledBaseColor;
     var transparentBaseColor = new Color( baseColor.getRed(), baseColor.getGreen(), baseColor.getBlue(), 0 );
     var transparentDisabledBaseColor = new Color( disabledBaseColor.getRed(), disabledBaseColor.getGreen(), disabledBaseColor.getBlue(), 0 );
+    var lightenedStroke = null;
+    if ( options.stroke ) {
+      lightenedStroke = options.stroke instanceof Color ? options.stroke.colorUtilsBrighter( 0.5 ) : new Color( options.stroke ).colorUtilsBrighter( 0.5 );
+    }
 
     // Create the gradient fills used for various button states
     var upFillVertical = new LinearGradient( 0, 0, 0, buttonHeight )
@@ -109,7 +113,6 @@ define( function( require ) {
     var background = new Rectangle( 0, 0, buttonWidth, buttonHeight, options.cornerRounding, options.cornerRounding,
       {
         fill: options.baseColor,
-        stroke: options.stroke,
         lineWidth: options.lineWidth
       } );
     this.addChild( background );
@@ -135,6 +138,7 @@ define( function( require ) {
           content.center = upCenter;
           content.opacity = 1;
           background.fill = upFillVertical;
+          overlayForHorizGradient.stroke = options.stroke;
           overlayForHorizGradient.fill = upFillHorizontal;
           thisButton.cursor = 'pointer';
           break;
@@ -143,6 +147,7 @@ define( function( require ) {
           content.center = upCenter;
           content.opacity = 1;
           background.fill = overFillVertical;
+          overlayForHorizGradient.stroke = options.stroke;
           overlayForHorizGradient.fill = overFillHorizontal;
           thisButton.cursor = 'pointer';
           break;
@@ -151,6 +156,7 @@ define( function( require ) {
           content.center = downCenter;
           content.opacity = 1;
           background.fill = downFill;
+          overlayForHorizGradient.stroke = options.stroke;
           overlayForHorizGradient.fill = overFillHorizontal;
           thisButton.cursor = 'pointer';
           break;
@@ -159,6 +165,8 @@ define( function( require ) {
           content.center = upCenter;
           content.opacity = 0.3;
           background.fill = disabledFillVertical;
+          background.stroke = lightenedStroke;
+          overlayForHorizGradient.stroke = lightenedStroke;
           overlayForHorizGradient.fill = disabledFillHorizontal;
           thisButton.cursor = null;
           break;

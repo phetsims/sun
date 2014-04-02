@@ -59,6 +59,10 @@ define( function( require ) {
     var disabledBaseColor = options.disabledBaseColor;
     var transparentBaseColor = new Color( baseColor.getRed(), baseColor.getGreen(), baseColor.getBlue(), 0 );
     var transparentDisabledBaseColor = new Color( disabledBaseColor.getRed(), disabledBaseColor.getGreen(), disabledBaseColor.getBlue(), 0 );
+    var lightenedStroke = null;
+    if ( options.stroke ) {
+      lightenedStroke = options.stroke instanceof Color ? options.stroke.colorUtilsBrighter( 0.5 ) : new Color( options.stroke ).colorUtilsBrighter( 0.5 );
+    }
 
     // The multiplier below can be varied in order to tweak the highlight appearance.
     var innerGradientRadius = buttonRadius - HIGHLIGHT_GRADIENT_LENGTH / 2;
@@ -100,7 +104,6 @@ define( function( require ) {
     var background = new Circle( buttonRadius,
       {
         fill: options.baseColor,
-        stroke: options.stroke,
         lineWidth: options.lineWidth
       } );
     this.addChild( background );
@@ -126,6 +129,7 @@ define( function( require ) {
           content.center = upCenter;
           content.opacity = 1;
           background.fill = upFillHighlight;
+          overlayForShadowGradient.stroke = options.stroke;
           overlayForShadowGradient.fill = upFillShadow;
           thisButton.cursor = 'pointer';
           break;
@@ -134,6 +138,7 @@ define( function( require ) {
           content.center = upCenter;
           content.opacity = 1;
           background.fill = overFillHighlight;
+          overlayForShadowGradient.stroke = options.stroke;
           overlayForShadowGradient.fill = overFillShadow;
           thisButton.cursor = 'pointer';
           break;
@@ -142,6 +147,7 @@ define( function( require ) {
           content.center = downCenter;
           content.opacity = 1;
           background.fill = downFill;
+          overlayForShadowGradient.stroke = options.stroke;
           overlayForShadowGradient.fill = overFillShadow;
           thisButton.cursor = 'pointer';
           break;
@@ -150,6 +156,7 @@ define( function( require ) {
           content.center = upCenter;
           content.opacity = 0.3;
           background.fill = disabledFillHighlight;
+          overlayForShadowGradient.stroke = lightenedStroke;
           overlayForShadowGradient.fill = disabledFillShadow;
           thisButton.cursor = null;
           break;
