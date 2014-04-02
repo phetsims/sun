@@ -19,7 +19,8 @@ define( function( require ) {
   var Vector2 = require( 'DOT/Vector2' );
 
   // Constants
-  var HIGHLIGHT_GRADIENT_LENGTH = 7; // In screen coords, which are roughly pixels.
+  var VERTICAL_HIGHLIGHT_GRADIENT_LENGTH = 7; // In screen coords, which are roughly pixels.
+  var HORIZONTAL_HIGHLIGHT_GRADIENT_LENGTH = 7; // In screen coords, which are roughly pixels.
   var SHADE_GRADIENT_LENGTH = 3; // In screen coords, which are roughly pixels.
 
   /**
@@ -53,9 +54,9 @@ define( function( require ) {
     var buttonHeight = content.height + options.yPadding * 2;
     var upCenter = new Vector2( buttonWidth / 2, buttonHeight / 2 );
     var downCenter = upCenter.plus( new Vector2( 0.0, 0.0 ) ); // TODO: Set to zero on 3/36/2014 because text was moving inconsistently.  Decide whether to eliminate completely.
-    var verticalHighlightStop = HIGHLIGHT_GRADIENT_LENGTH / buttonHeight;
+    var verticalHighlightStop = VERTICAL_HIGHLIGHT_GRADIENT_LENGTH / buttonHeight;
     var verticalShadowStop = 1 - SHADE_GRADIENT_LENGTH / buttonHeight;
-    var horizontalHighlightStop = HIGHLIGHT_GRADIENT_LENGTH / buttonWidth;
+    var horizontalHighlightStop = HORIZONTAL_HIGHLIGHT_GRADIENT_LENGTH / buttonWidth;
     var horizontalShadowStop = 1 - SHADE_GRADIENT_LENGTH / buttonWidth;
     var baseColor = options.baseColor;
     var disabledBaseColor = options.disabledBaseColor;
@@ -65,6 +66,7 @@ define( function( require ) {
     if ( options.stroke ) {
       lightenedStroke = options.stroke instanceof Color ? options.stroke.colorUtilsBrighter( 0.5 ) : new Color( options.stroke ).colorUtilsBrighter( 0.5 );
     }
+    var transparentWhite = new Color( 256, 256, 256, 0.7 );
 
     // Create the gradient fills used for various button states
     var upFillVertical = new LinearGradient( 0, 0, 0, buttonHeight )
@@ -74,7 +76,7 @@ define( function( require ) {
       .addColorStop( 1, baseColor.colorUtilsDarker( 0.5 ) );
 
     var upFillHorizontal = new LinearGradient( 0, 0, buttonWidth, 0 )
-      .addColorStop( 0, baseColor.colorUtilsBrighter( 0.7 ) )
+      .addColorStop( 0, transparentWhite )
       .addColorStop( horizontalHighlightStop, transparentBaseColor )
       .addColorStop( horizontalShadowStop, transparentBaseColor )
       .addColorStop( 1, baseColor.colorUtilsDarker( 0.5 ) );
@@ -85,11 +87,21 @@ define( function( require ) {
       .addColorStop( verticalShadowStop, baseColor.colorUtilsBrighter( 0.5 ) )
       .addColorStop( 1, baseColor.colorUtilsDarker( 0.5 ) );
 
+//    var overFillHorizontal = new LinearGradient( 0, 0, buttonWidth, 0 )
+//      .addColorStop( 0, baseColor.colorUtilsBrighter( 0.9 ) )
+//      .addColorStop( horizontalHighlightStop * 2, transparentBaseColor )
+//      .addColorStop( horizontalShadowStop, transparentBaseColor )
+//      .addColorStop( 1, baseColor.colorUtilsDarker( 0.3 ) );
+//    var overFillHorizontal = new LinearGradient( 0, 0, buttonWidth, 0 )
+//      .addColorStop( 0, black.colorUtilsBrighter( 0.9 ) )
+//      .addColorStop( horizontalHighlightStop * 2, new Color( 0, 0, 0, 0 ) )
+//      .addColorStop( horizontalShadowStop, transparentBaseColor )
+//      .addColorStop( 1, baseColor.colorUtilsDarker( 0.3 ) );
     var overFillHorizontal = new LinearGradient( 0, 0, buttonWidth, 0 )
-      .addColorStop( 0, baseColor.colorUtilsBrighter( 0.7 ) )
-      .addColorStop( horizontalHighlightStop, transparentBaseColor )
+      .addColorStop( 0, transparentWhite )
+      .addColorStop( horizontalHighlightStop / 2, new Color( 256, 256, 256, 0 ) )
       .addColorStop( horizontalShadowStop, transparentBaseColor )
-      .addColorStop( 1, baseColor.colorUtilsDarker( 0.5 ) );
+      .addColorStop( 1, baseColor.colorUtilsDarker( 0.3 ) );
 
     var downFill = new LinearGradient( 0, 0, 0, buttonHeight )
       .addColorStop( 0, baseColor.colorUtilsBrighter( 0.7 ) )
