@@ -20,7 +20,7 @@ define( function( require ) {
     var node = new Node();
     var rectangle = new Rectangle(
       0, 0, content.width + rectangleXMargin + rectangleXMargin, content.height + rectangleYMargin + rectangleYMargin, rectangleCornerRadius, rectangleCornerRadius,
-      { stroke: stroke, fill: fill, rectangleLineWidth: rectangleLineWidth } );
+      { stroke: stroke, fill: fill, lineWidth: rectangleLineWidth } );
     node.addChild( rectangle );
     node.addChild( content );
     content.pickable = false; // the rectangle will receive hits
