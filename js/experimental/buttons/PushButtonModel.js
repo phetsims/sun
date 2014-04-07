@@ -17,6 +17,7 @@ define( function( require ) {
   var DownUpListener = require( 'SCENERY/input/DownUpListener' );
   var Property = require( 'AXON/Property' );
   var inherit = require( 'PHET_CORE/inherit' );
+  var ButtonModel = require( 'SUN/experimental/buttons/ButtonModel' );
 
   /**
    * @param {Object} options
@@ -35,19 +36,7 @@ define( function( require ) {
       this.listeners.push( options.listener );
     }
 
-    // A property that can be monitored externally in order to modify the
-    // appearance of a button.  The values that it can take on are idle, over,
-    // pressed, and disabled.  Should not be set externally.
-    this.interactionState = new Property( 'idle' );
-
-    // Enabled state, for internal use.
-    this.buttonEnabled = true;
-
-    // Track the pointer the is currently interacting with this button, ignore others.
-    this.overPointer = null;
-    this.downPointer = null;
-
-    DownUpListener.call( this, {
+    ButtonModel.call( this, {
 
       down: function( event, trail ) {
         if ( self.downPointer === null ) {
@@ -76,30 +65,7 @@ define( function( require ) {
     } );
   }
 
-  return inherit( DownUpListener, PushButtonModel, {
-
-    enter: function( event, trail ) {
-      if ( this.overPointer === null ) {
-        this.overPointer = event.pointer;
-      }
-      if ( this.buttonEnabled ) {
-        if ( this.overPointer === event.pointer ) {
-          this.interactionState.value = this.downPointer === event.pointer ? 'pressed' : 'over';
-        }
-      }
-    },
-
-    exit: function( event, trail ) {
-      if ( this.buttonEnabled && event.pointer === this.overPointer ) {
-        this.interactionState.value = 'idle';
-      }
-      if ( event.pointer === this.overPointer ) {
-        this.overPointer = null;
-        if ( this.buttonEnabled ) {
-          this.interactionState.value = 'idle';
-        }
-      }
-    },
+  return inherit( ButtonModel, PushButtonModel, {
 
     // Adds a listener. If already a listener, this is a no-op.
     addListener: function( listener ) {
@@ -123,29 +89,6 @@ define( function( require ) {
       copy.forEach( function( listener ) {
         listener();
       } );
-    },
-
-    // ES5 getter for enabled state.
-    get enabled() { return this.buttonEnabled; },
-
-    // ES5 setter for enabled state.
-    set enabled( value ) {
-
-      if ( this.buttonEnabled !== value ) {
-        this.buttonEnabled = value;
-
-        if ( !value ) {
-          this.interactionState.value = 'disabled';
-        }
-        else {
-          if ( this.overPointer === null ) {
-            this.interactionState.value = 'idle';
-          }
-          else {
-            this.interactionState.value = this.downPointer === null ? 'over' : 'pressed';
-          }
-        }
-      }
     }
   } );
 } );
