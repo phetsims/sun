@@ -19,6 +19,7 @@ define( function( require ) {
   var RadialGradient = require( 'SCENERY/util/RadialGradient' );
   var Shape = require( 'KITE/Shape' );
   var Vector2 = require( 'DOT/Vector2' );
+  var Rectangle = require( 'SCENERY/nodes/Rectangle' );
 
   // Constants
   var HIGHLIGHT_GRADIENT_LENGTH = 5; // In screen coords, which are roughly pixels.
@@ -32,8 +33,14 @@ define( function( require ) {
 
     var thisButton = this;
 
+    if ( !(options.content || options.radius) ) {
+      throw new Error( 'RoundButtonView should have content or radius' );
+    }
+
     options = _.extend( {
       // Default values.
+      radius: null,
+      content: null,
       cursor: 'pointer',
       baseColor: new Color( 153, 206, 255 ),
       disabledBaseColor: new Color( 220, 220, 220 ),
@@ -52,10 +59,16 @@ define( function( require ) {
       iconOffsetY: 0
     }, options );
 
+    var content = options.content;
+
     Node.call( thisButton, { listener: options.listener, fireOnDown: options.fireOnDown } );
 
     // Create convenience vars for creating the various gradients
-    var buttonRadius = Math.max( content.width + options.minXPadding * 2, content.height + options.minYPadding * 2 ) / 2;
+
+    //Choose a radius for the button based on the content and the padding
+    //If the user specified the radius of the button explicitly, then use it instead.
+    var buttonRadius = options.radius || Math.max( content.width + options.minXPadding * 2, content.height + options.minYPadding * 2 ) / 2;
+
     var upCenter = new Vector2( options.iconOffsetX, options.iconOffsetY );
     var downCenter = upCenter.plus( new Vector2( 0.0, 0.0 ) ); // TODO: Set to zero on 3/36/2014 because text was moving inconsistently.  Decide whether to eliminate completely.
     var baseColor = options.baseColor;
@@ -120,8 +133,17 @@ define( function( require ) {
       } );
     this.addChild( overlayForShadowGradient );
 
-    content.center = upCenter;
-    thisButton.addChild( content );
+    if ( content ) {
+      content.center = upCenter;
+      thisButton.addChild( content );
+    }
+
+    //Set the opacity of the content, but only if it exists
+    function setContentOpacity( opacity ) {
+      if ( content ) {
+        content.opacity = opacity
+      }
+    }
 
     // Hook up the function that will modify button appearance as the state changes.
     buttonModel.interactionState.link( function( interactionState ) {
@@ -129,8 +151,7 @@ define( function( require ) {
       switch( interactionState ) {
 
         case 'idle':
-          content.center = upCenter;
-          content.opacity = 1;
+          setContentOpacity( 1 );
           background.fill = upFillHighlight;
           overlayForShadowGradient.stroke = options.stroke;
           overlayForShadowGradient.fill = upFillShadow;
@@ -138,8 +159,7 @@ define( function( require ) {
           break;
 
         case 'over':
-          content.center = upCenter;
-          content.opacity = 1;
+          setContentOpacity( 1 );
           background.fill = overFillHighlight;
           overlayForShadowGradient.stroke = options.stroke;
           overlayForShadowGradient.fill = overFillShadow;
@@ -147,8 +167,7 @@ define( function( require ) {
           break;
 
         case 'pressed':
-          content.center = downCenter;
-          content.opacity = 1;
+          setContentOpacity( 1 );
           background.fill = downFill;
           overlayForShadowGradient.stroke = options.stroke;
           overlayForShadowGradient.fill = overFillShadow;
@@ -156,8 +175,7 @@ define( function( require ) {
           break;
 
         case 'disabled':
-          content.center = upCenter;
-          content.opacity = 0.3;
+          setContentOpacity( 0.3 );
           background.fill = disabledFillHighlight;
           overlayForShadowGradient.stroke = lightenedStroke;
           overlayForShadowGradient.fill = disabledFillShadow;

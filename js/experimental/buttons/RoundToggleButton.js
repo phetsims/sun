@@ -11,21 +11,24 @@ define( function( require ) {
   var inherit = require( 'PHET_CORE/inherit' );
   var AbstractToggleButton = require( 'SUN/experimental/buttons/AbstractToggleButton' );
   var ToggleNode = require( 'SUN/ToggleNode' );
+  var RoundButtonView = require( 'SUN/experimental/buttons/RoundButtonView' );
+  var Rectangle = require( 'SCENERY/nodes/Rectangle' );
 
   function RoundToggleButton( booleanProperty, options ) {
+    this.booleanProperty = booleanProperty;
     options = _.extend( {
-      content: null, // By default, there is nothing on this button
-      padX: 10,
-      padY: 10,
+      radius: options.content ? undefined : 30,
       cursor: 'pointer',
       listener: null,
       accessibilityLabel: ''
     }, options );
 
-    this.button = new RoundButtonView( this.buttonModel );
+    AbstractToggleButton.call( this, booleanProperty );
+
+    this.button = new RoundButtonView( this.buttonModel, options );
     this.addChild( this.button );
 
-    AbstractToggleButton.call( this, booleanProperty, options );
+    this.mutate( options );
   }
 
   return inherit( AbstractToggleButton, RoundToggleButton );

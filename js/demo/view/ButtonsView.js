@@ -18,6 +18,7 @@ define( function( require ) {
   var ResetAllButton2 = require( 'SUN/experimental/buttons/ResetAllButton2' );
   var ReturnToLevelSelectButton = require( 'SUN/experimental/buttons/ReturnToLevelSelectButton' );
   var RoundPushButton = require( 'SUN/experimental/buttons/RoundPushButton' );
+  var RoundToggleButton = require( 'SUN/experimental/buttons/RoundToggleButton' );
   var ScreenView = require( 'JOIST/ScreenView' );
   var SoundToggleButton2 = require( 'SUN/experimental/buttons/SoundToggleButton2' );
   var Text = require( 'SCENERY/nodes/Text' );
@@ -211,6 +212,14 @@ define( function( require ) {
         lineWidth: 0.5
       } );
     this.addChild( helpButton );
+
+    var roundToggleButton = new RoundToggleButton( new Property( false ), {
+      listener: function() { outputText.text = 'Toggle button toggled, property = ' + this.booleanProperty.value; },
+      baseColor: new Color( 255, 0, 0 ),
+      left: helpButton.right + 5,
+      centerY: goButton.centerY
+    } );
+    this.addChild( roundToggleButton );
 
     // Hook up button enable property
     buttonsEnabled.link( function( enabled ) {
