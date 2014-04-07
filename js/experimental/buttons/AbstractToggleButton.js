@@ -13,6 +13,7 @@ define( function( require ) {
   var PushButtonModel = require( 'SUN/experimental/buttons/PushButtonModel' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Node = require( 'SCENERY/nodes/Node' );
+  var ToggleButtonModel = require( 'SUN/experimental/buttons/ToggleButtonModel' );
 
   /**
    * @param options
@@ -23,19 +24,18 @@ define( function( require ) {
     var thisButton = this;
     options = _.extend(
       {
-        fireOnDown: false,
-        listener: null
+        toggleOnDown: false
       }, options );
 
     Node.call( this, options );
 
     // Hook up the button model.
-    this.buttonModel = new PushButtonModel( { listener: options.listener, fireOnDown: options.fireOnDown } );
+    this.buttonModel = new ToggleButtonModel( { toggleOnDown: options.toggleOnDown } );
     this.addInputListener( this.buttonModel );
 
     // accessibility
     this.addPeer( '<input type="button" aria-label="' + _.escape( options.label ) + '">',
-      { click: thisButton.buttonModel.fire.bind( thisButton ) }
+      { click: thisButton.booleanProperty.toggleFunction}
     );
   }
 
