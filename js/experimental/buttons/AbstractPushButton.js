@@ -31,7 +31,7 @@ define( function( require ) {
 
     // Hook up the button model.
     this.buttonModel = new PushButtonModel( { listener: options.listener, fireOnDown: options.fireOnDown } );
-    this.addInputListener( this.buttonModel );    // accessibility
+    this.addInputListener( this.buttonModel );
 
     // accessibility
     this.addPeer( '<input type="button" aria-label="' + _.escape( options.label ) + '">',

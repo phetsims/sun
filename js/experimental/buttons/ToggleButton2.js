@@ -13,7 +13,6 @@ define( function( require ) {
 
   function ToggleButton2( trueNode, falseNode, booleanProperty, options ) {
     options = _.extend( {
-      addRectangle: false,
       padX: 10,
       padY: 10,
       cursor: 'pointer',
