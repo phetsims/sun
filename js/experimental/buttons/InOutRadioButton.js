@@ -8,6 +8,7 @@ define( function( require ) {
 
   var inherit = require( 'PHET_CORE/inherit' );
   var InOutRadioButtonView = require( 'SUN/experimental/buttons/InOutRadioButtonView' );
+  var PushButtonModel = require( 'SUN/experimental/buttons/PushButtonModel' );
 
   /**
    * @param property
@@ -21,6 +22,9 @@ define( function( require ) {
       cursor: 'pointer'
     }, options );
     InOutRadioButtonView.call( this, content, property.valueEquals( value ), options );
+
+    this.buttonModel = new PushButtonModel( { } );
+    this.addInputListener( this.buttonModel );
   }
 
   return inherit( InOutRadioButtonView, InOutRadioButton );
