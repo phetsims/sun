@@ -73,7 +73,6 @@ define( function( require ) {
 
     // ES5 setter for enabled state.
     set enabled( value ) {
-
       if ( this.buttonEnabled !== value ) {
         this.buttonEnabled = value;
 

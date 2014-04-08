@@ -88,6 +88,25 @@ define( function( require ) {
           this.interactionState.value = 'idle';
         }
       }
+    },
+
+    // Overrides parent implementation so that disabled can be handled a little differently
+    set enabled( value ) {
+      if ( this.buttonEnabled !== value ) {
+        this.buttonEnabled = value;
+
+        if ( !value ) {
+          this.interactionState.value = this.interactionState.value === 'pressed' ? 'disabled-pressed' : 'disabled';
+        }
+        else {
+          if ( this.overPointer === null ) {
+            this.interactionState.value = this.interactionState.value === 'disabled-pressed' ? 'pressed' : 'idle';
+          }
+          else {
+            this.interactionState.value = this.downPointer === null ? 'over' : 'pressed';
+          }
+        }
+      }
     }
   } );
 } );

@@ -100,11 +100,16 @@ define( function( require ) {
       .addColorStop( 0, transparentBaseColor )
       .addColorStop( 1, baseColor.colorUtilsDarker( 0.5 ) );
 
-    var downFill = new RadialGradient( 0, 0, 0, 0, 0, outerGradientRadius )
-      .addColorStop( 0, baseColor.colorUtilsDarker( 0.1 ) )
-      .addColorStop( 0.6, baseColor.colorUtilsDarker( 0.2 ) )
-      .addColorStop( 0.8, baseColor )
-      .addColorStop( 1, baseColor.colorUtilsBrighter( 0.8 ) );
+    // Function to create a fill that represents a pressed in round button.
+    function createPressedFill( color ) {
+      return new RadialGradient( -gradientOffset, -gradientOffset, 0, 0, 0, outerGradientRadius )
+        .addColorStop( 0, color.colorUtilsDarker( 0.1 ) )
+        .addColorStop( 0.6, color.colorUtilsDarker( 0.2 ) )
+        .addColorStop( 0.8, color )
+        .addColorStop( 1, color.colorUtilsBrighter( 0.8 ) );
+    }
+
+    var pressedFill = createPressedFill( baseColor );
 
     var disabledFillHighlight = new RadialGradient( gradientOffset, gradientOffset, innerGradientRadius, gradientOffset, gradientOffset, outerGradientRadius )
       .addColorStop( 0, disabledBaseColor )
@@ -113,6 +118,8 @@ define( function( require ) {
     var disabledFillShadow = new RadialGradient( -gradientOffset, -gradientOffset, innerGradientRadius, -gradientOffset, -gradientOffset, outerGradientRadius )
       .addColorStop( 0, transparentDisabledBaseColor )
       .addColorStop( 1, disabledBaseColor.colorUtilsDarker( 0.5 ) );
+
+    var disabledPressedFillHighlight = createPressedFill( disabledBaseColor );
 
     // Create the basic button shape.
     var background = new Circle( buttonRadius,
@@ -166,7 +173,7 @@ define( function( require ) {
 
         case 'pressed':
           setContentOpacity( 1 );
-          background.fill = downFill;
+          background.fill = pressedFill;
           overlayForShadowGradient.stroke = options.stroke;
           overlayForShadowGradient.fill = overFillShadow;
           thisButton.cursor = 'pointer';
@@ -175,6 +182,14 @@ define( function( require ) {
         case 'disabled':
           setContentOpacity( 0.3 );
           background.fill = disabledFillHighlight;
+          overlayForShadowGradient.stroke = lightenedStroke;
+          overlayForShadowGradient.fill = disabledFillShadow;
+          thisButton.cursor = null;
+          break;
+
+        case 'disabled-pressed':
+          setContentOpacity( 0.3 );
+          background.fill = disabledPressedFillHighlight;
           overlayForShadowGradient.stroke = lightenedStroke;
           overlayForShadowGradient.fill = disabledFillShadow;
           thisButton.cursor = null;
