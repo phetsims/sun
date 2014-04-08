@@ -14,7 +14,7 @@
 define( function( require ) {
   'use strict';
 
-  var DownUpListener = require( 'SCENERY/input/DownUpListener' );
+  var ButtonModel = require( 'SUN/experimental/buttons/ButtonModel' );
   var Property = require( 'AXON/Property' );
   var inherit = require( 'PHET_CORE/inherit' );
 
@@ -32,19 +32,7 @@ define( function( require ) {
     //Property that keeps track of whether the button is up (untoggled) or down (toggled)
     this.buttonStateUp = new Property( true );
 
-    // A property that can be monitored externally in order to modify the
-    // appearance of a button.  The values that it can take on are idle, over,
-    // pressed, and disabled.  Should not be set externally.
-    this.interactionState = new Property( 'idle' );
-
-    // Enabled state, for internal use.
-    this.buttonEnabled = true;
-
-    // Track the pointer the is currently interacting with this button, ignore others.
-    this.overPointer = null;
-    this.downPointer = null;
-
-    DownUpListener.call( this, {
+    ButtonModel.call( this, {
 
       down: function( event, trail ) {
         if ( self.downPointer === null ) {
@@ -75,7 +63,7 @@ define( function( require ) {
     } );
   }
 
-  return inherit( DownUpListener, ToggleButtonModel, {
+  return inherit( ButtonModel, ToggleButtonModel, {
 
     //Overrides parent implementation
     enter: function( event, trail ) {

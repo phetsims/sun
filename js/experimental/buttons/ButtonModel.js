@@ -22,7 +22,7 @@ define( function( require ) {
    * @param {Object} options
    * @constructor
    */
-  function PushButtonModel( options ) {
+  function ButtonModel( options ) {
     options = _.extend(
       {
         fireOnDown: false,
@@ -52,7 +52,7 @@ define( function( require ) {
     } );
   }
 
-  return inherit( DownUpListener, PushButtonModel, {
+  return inherit( DownUpListener, ButtonModel, {
 
     enter: function( event, trail ) {
       if ( this.overPointer === null ) {
