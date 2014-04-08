@@ -15,16 +15,17 @@ define( function( require ) {
   var ToggleButtonModel = require( 'SUN/experimental/buttons/ToggleButtonModel' );
 
   /**
-   * @param options
+   * @param {Property} booleanProperty
+   * @param {Object} options
    * @constructor
    */
-  function AbstractToggleButton( options ) {
+  function AbstractToggleButton( booleanProperty, options ) {
 
     var thisButton = this;
     Node.call( this, options );
 
     // Hook up the button model.
-    this.buttonModel = new ToggleButtonModel( options.toggleOnDown ? { toggleOnDown: options.toggleOnDown } : {} );
+    this.buttonModel = new ToggleButtonModel( booleanProperty, { toggleOnDown: typeof options.toggleOnDown === 'undefined' ? true : options.toggleOnDown } );
     this.addInputListener( this.buttonModel );
 
     // accessibility

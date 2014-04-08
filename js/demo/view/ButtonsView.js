@@ -218,7 +218,8 @@ define( function( require ) {
       listener: function() { outputText.text = 'Toggle button toggled, property = ' + this.booleanProperty.value; },
       baseColor: new Color( 255, 0, 0 ),
       left: helpButton.right + 5,
-      centerY: goButton.centerY
+      centerY: goButton.centerY,
+      toggleOnDown: false
     } );
     this.addChild( roundToggleButton );
 

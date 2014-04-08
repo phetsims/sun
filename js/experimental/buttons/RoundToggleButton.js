@@ -17,10 +17,11 @@ define( function( require ) {
     options = _.extend( {
       radius: options.content ? undefined : 30,
       listener: null,
-      accessibilityLabel: ''
+      accessibilityLabel: '',
+      toggleOnDown: true
     }, options );
 
-    AbstractToggleButton.call( this, booleanProperty );
+    AbstractToggleButton.call( this, booleanProperty, { toggleOnDown: options.toggleOnDown } );
 
     this.button = new RoundButtonView( this.buttonModel, options );
     this.addChild( this.button );

@@ -19,10 +19,11 @@ define( function( require ) {
   var inherit = require( 'PHET_CORE/inherit' );
 
   /**
+   * @param {Property} booleanProperty
    * @param {Object} options
    * @constructor
    */
-  function ToggleButtonModel( options ) {
+  function ToggleButtonModel( booleanProperty, options ) {
     var self = this;
     options = _.extend(
       {
@@ -42,6 +43,7 @@ define( function( require ) {
           if ( options.toggleOnDown ) {
             self.interactionState.value = 'pressed';
             self.toggledProperty.toggle();
+            booleanProperty.toggle();
           }
         }
       },
@@ -52,6 +54,7 @@ define( function( require ) {
             self.interactionState.value = self.toggledProperty.value ? 'pressed' : 'over';
             if ( !options.toggleOnDown && self.downPointer === event.pointer ) {
               // Toggle the model
+              booleanProperty.toggle();
               self.toggledProperty.toggle();
             }
           }
