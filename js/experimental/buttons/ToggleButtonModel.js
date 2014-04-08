@@ -85,14 +85,6 @@ define( function( require ) {
 
     //Overrides parent implementation
     exit: function( event, trail ) {
-      if ( this.buttonEnabled && event.pointer === this.overPointer ) {
-        if ( this.buttonStateUp.value ) {
-          this.interactionState.value = 'idle';
-        }
-        else {
-
-        }
-      }
       if ( event.pointer === this.overPointer ) {
         this.overPointer = null;
         if ( this.buttonEnabled && this.buttonStateUp.value ) {
