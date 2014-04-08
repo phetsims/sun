@@ -1,8 +1,8 @@
 // Copyright 2002-2014, University of Colorado Boulder
 
 /**
- * Basic model for a push button, intended to be added as an input listener to
- * any Scenery node in order to allow it to behave as a button.
+ * Basic model for a toggle button, intended to be added as an input listener
+ * to any Scenery node in order to allow it to behave as a button.
  *
  * IMPORTANT USAGE NOTES:
  * - The node to which this is added should not be made non-pickable when

@@ -25,14 +25,8 @@ define( function( require ) {
   function ButtonModel( options ) {
     options = _.extend(
       {
-        fireOnDown: false,
-        listener: null
+        fireOnDown: false
       }, options );
-
-    this.listeners = [];
-    if ( options.listener !== null ) {
-      this.listeners.push( options.listener );
-    }
 
     // A property that can be monitored externally in order to modify the
     // appearance of a button.  The values that it can take on are idle, over,
@@ -75,30 +69,6 @@ define( function( require ) {
           this.interactionState.value = 'idle';
         }
       }
-    },
-
-    // Adds a listener. If already a listener, this is a no-op.
-    addListener: function( listener ) {
-      if ( this.listeners.indexOf( listener ) === -1 ) {
-        this.listeners.push( listener );
-      }
-    },
-
-    // Remove a listener. If not a listener, this is a no-op.
-    removeListener: function( listener ) {
-      var i = this.listeners.indexOf( listener );
-      if ( i !== -1 ) {
-        this.listeners.splice( i, 1 );
-      }
-    },
-
-    // Fires all listeners.  Should not be called outside of this file with
-    // the possible exception of hooking up for accessibility.
-    fire: function() {
-      var copy = this.listeners.slice( 0 );
-      copy.forEach( function( listener ) {
-        listener();
-      } );
     },
 
     // ES5 getter for enabled state.
