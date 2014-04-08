@@ -77,6 +77,7 @@ define( function( require ) {
 
   return inherit( DownUpListener, ToggleButtonModel, {
 
+    //Overrides parent implementation
     enter: function( event, trail ) {
       if ( this.overPointer === null ) {
         this.overPointer = event.pointer;
@@ -94,6 +95,7 @@ define( function( require ) {
       }
     },
 
+    //Overrides parent implementation
     exit: function( event, trail ) {
       if ( this.buttonEnabled && event.pointer === this.overPointer ) {
         if ( this.buttonStateUp.value ) {
