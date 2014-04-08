@@ -107,6 +107,10 @@ define( function( require ) {
           }
         }
       }
-    }
+    },
+
+    // Have to override getter if setter overridden, else lint complains
+    get enabled() { return this.buttonEnabled; }
+
   } );
 } );
