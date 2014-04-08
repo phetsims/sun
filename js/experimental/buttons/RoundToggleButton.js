@@ -16,7 +16,6 @@ define( function( require ) {
     this.booleanProperty = booleanProperty;
     options = _.extend( {
       radius: options.content ? undefined : 30,
-      cursor: 'pointer',
       listener: null,
       accessibilityLabel: ''
     }, options );

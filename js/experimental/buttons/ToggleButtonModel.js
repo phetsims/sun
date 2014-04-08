@@ -48,11 +48,12 @@ define( function( require ) {
 
       up: function( event, trail ) {
         if ( self.buttonEnabled ) {
-          self.interactionState.value = self.toggledProperty.value ? 'pressed' :
-                                        'over';
-          if ( !options.toggleOnDown && self.downPointer === event.pointer && self.overPointer === event.pointer ) {
-            // Toggle the model
-            self.toggledProperty.toggle();
+          if ( self.overPointer === event.pointer ) {
+            self.interactionState.value = self.toggledProperty.value ? 'pressed' : 'over';
+            if ( !options.toggleOnDown && self.downPointer === event.pointer ) {
+              // Toggle the model
+              self.toggledProperty.toggle();
+            }
           }
         }
         if ( event.pointer === self.downPointer ) {
@@ -74,9 +75,6 @@ define( function( require ) {
 
           if ( !this.toggledProperty.value ) {
             this.interactionState.value = this.downPointer === event.pointer ? 'pressed' : 'over';
-          }
-          else {
-
           }
         }
       }
