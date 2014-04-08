@@ -250,6 +250,7 @@ define( function( require ) {
       returnToLevelSelectButton.enabled = enabled;
       soundToggleButton.enabled = enabled;
       timerToggleButton.enabled = enabled;
+      roundToggleButton.enabled = enabled;
     } );
 
     // TODO: For debug, don't leave this here long term.
