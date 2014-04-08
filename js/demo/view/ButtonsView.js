@@ -221,6 +221,16 @@ define( function( require ) {
     } );
     this.addChild( roundToggleButton );
 
+    var transparentButton = new RectangularPushButton(
+      new Text( 'Transparent Button', { font: BUTTON_FONT } ),
+      {
+        listener: function() { outputText.text = 'Transparent button pressed'; },
+        left: helpButton.centerX,
+        centerY: helpButton.bottom,
+        baseColor: new Color( 255, 255, 0, 0.7 )
+      } );
+    this.addChild( transparentButton );
+
     // Hook up button enable property
     buttonsEnabled.link( function( enabled ) {
       buttonA.enabled = enabled;
