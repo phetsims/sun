@@ -19,6 +19,7 @@ define( function( require ) {
   var ReturnToLevelSelectButton = require( 'SUN/experimental/buttons/ReturnToLevelSelectButton' );
   var RoundPushButton = require( 'SUN/experimental/buttons/RoundPushButton' );
   var RoundToggleButton = require( 'SUN/experimental/buttons/RoundToggleButton' );
+  var InOutRadioButton = require( 'SUN/experimental/buttons/InOutRadioButton' );
   var ScreenView = require( 'JOIST/ScreenView' );
   var SoundToggleButton2 = require( 'SUN/experimental/buttons/SoundToggleButton2' );
   var Text = require( 'SCENERY/nodes/Text' );
@@ -220,6 +221,9 @@ define( function( require ) {
       centerY: goButton.centerY
     } );
     this.addChild( roundToggleButton );
+
+    var inOutRadioButton = new InOutRadioButton( new Property( true ), true, new Text( 'In/Out' ) );
+    this.addChild( inOutRadioButton );
 
     var transparentButton = new RectangularPushButton(
       new Text( 'Transparent Button', { font: BUTTON_FONT } ),

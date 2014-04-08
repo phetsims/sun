@@ -14,7 +14,7 @@
 define( function( require ) {
   'use strict';
 
-  var DownUpListener = require( 'SCENERY/input/DownUpListener' );
+  var ButtonModel = require( 'SUN/experimental/buttons/ButtonModel' );
   var Property = require( 'AXON/Property' );
   var inherit = require( 'PHET_CORE/inherit' );
 
@@ -32,19 +32,7 @@ define( function( require ) {
     //Property that keeps track of whether the button is up (untoggled) or down (toggled)
     this.buttonStateUp = new Property( true );
 
-    // A property that can be monitored externally in order to modify the
-    // appearance of a button.  The values that it can take on are idle, over,
-    // pressed, and disabled.  Should not be set externally.
-    this.interactionState = new Property( 'idle' );
-
-    // Enabled state, for internal use.
-    this.buttonEnabled = true;
-
-    // Track the pointer the is currently interacting with this button, ignore others.
-    this.overPointer = null;
-    this.downPointer = null;
-
-    DownUpListener.call( this, {
+    ButtonModel.call( this, {
 
       down: function( event, trail ) {
         if ( self.downPointer === null ) {
@@ -75,50 +63,40 @@ define( function( require ) {
     } );
   }
 
-  return inherit( DownUpListener, ToggleButtonModel, {
+  return inherit( ButtonModel, ToggleButtonModel, {
 
+    //Overrides parent implementation
     enter: function( event, trail ) {
       if ( this.overPointer === null ) {
         this.overPointer = event.pointer;
       }
       if ( this.buttonEnabled ) {
         if ( this.overPointer === event.pointer ) {
-          this.interactionState.value = this.downPointer === event.pointer ? 'pressed' : 'over';
+
+          if ( this.buttonStateUp.value ) {
+            this.interactionState.value = this.downPointer === event.pointer ? 'pressed' : 'over';
+          }
+          else {
+
+          }
         }
       }
     },
 
+    //Overrides parent implementation
     exit: function( event, trail ) {
       if ( this.buttonEnabled && event.pointer === this.overPointer ) {
-        this.interactionState.value = 'idle';
+        if ( this.buttonStateUp.value ) {
+          this.interactionState.value = 'idle';
+        }
+        else {
+
+        }
       }
       if ( event.pointer === this.overPointer ) {
         this.overPointer = null;
-        if ( this.buttonEnabled ) {
+        if ( this.buttonEnabled && this.buttonStateUp.value ) {
           this.interactionState.value = 'idle';
-        }
-      }
-    },
-
-    // ES5 getter for enabled state.
-    get enabled() { return this.buttonEnabled; },
-
-    // ES5 setter for enabled state.
-    set enabled( value ) {
-
-      if ( this.buttonEnabled !== value ) {
-        this.buttonEnabled = value;
-
-        if ( !value ) {
-          this.interactionState.value = 'disabled';
-        }
-        else {
-          if ( this.overPointer === null ) {
-            this.interactionState.value = 'idle';
-          }
-          else {
-            this.interactionState.value = this.downPointer === null ? 'over' : 'pressed';
-          }
         }
       }
     }
