@@ -23,7 +23,6 @@ define( function( require ) {
    * @constructor
    */
   function PushButtonModel( options ) {
-    var self = this;
     options = _.extend(
       {
         fireOnDown: false,

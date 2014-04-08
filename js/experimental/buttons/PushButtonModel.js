@@ -14,8 +14,6 @@
 define( function( require ) {
   'use strict';
 
-  var DownUpListener = require( 'SCENERY/input/DownUpListener' );
-  var Property = require( 'AXON/Property' );
   var inherit = require( 'PHET_CORE/inherit' );
   var ButtonModel = require( 'SUN/experimental/buttons/ButtonModel' );
 

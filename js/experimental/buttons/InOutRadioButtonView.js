@@ -10,8 +10,6 @@ define( function( require ) {
   'use strict';
 
   var inherit = require( 'PHET_CORE/inherit' );
-  var RectangularPushButton = require( 'SUN/experimental/buttons/RectangularPushButton' );
-  var ToggleNode = require( 'SUN/ToggleNode' );
   var Node = require( 'SCENERY/nodes/Node' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var Panel = require( 'SUN/Panel' );

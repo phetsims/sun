@@ -10,7 +10,6 @@ define( function( require ) {
   'use strict';
 
   // Imports
-  var PushButtonModel = require( 'SUN/experimental/buttons/PushButtonModel' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Node = require( 'SCENERY/nodes/Node' );
   var ToggleButtonModel = require( 'SUN/experimental/buttons/ToggleButtonModel' );

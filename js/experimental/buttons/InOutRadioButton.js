@@ -6,13 +6,8 @@
 define( function( require ) {
   'use strict';
 
-  // imports
   var inherit = require( 'PHET_CORE/inherit' );
-  var Node = require( 'SCENERY/nodes/Node' );
-  var Panel = require( 'SUN/Panel' );
-  var RadioButton = require( 'SUN/RadioButton' );
   var InOutRadioButtonView = require( 'SUN/experimental/buttons/InOutRadioButtonView' );
-  var Rectangle = require( 'SCENERY/nodes/Rectangle' );
 
   /**
    * @param property

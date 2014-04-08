@@ -10,9 +10,7 @@ define( function( require ) {
 
   var inherit = require( 'PHET_CORE/inherit' );
   var AbstractToggleButton = require( 'SUN/experimental/buttons/AbstractToggleButton' );
-  var ToggleNode = require( 'SUN/ToggleNode' );
   var RoundButtonView = require( 'SUN/experimental/buttons/RoundButtonView' );
-  var Rectangle = require( 'SCENERY/nodes/Rectangle' );
 
   function RoundToggleButton( booleanProperty, options ) {
     this.booleanProperty = booleanProperty;
