@@ -26,11 +26,11 @@ define( function( require ) {
     var self = this;
     options = _.extend(
       {
-        toggleOnDown: false
+        toggleOnDown: true
       }, options );
 
-    //Property that keeps track of whether the button is up (untoggled) or down (toggled)
-    this.buttonStateUp = new Property( true );
+    // Property that keeps track of whether the button is up (untoggled) or down (toggled)
+    this.toggledProperty = new Property( false );
 
     ButtonModel.call( this, {
 
@@ -39,21 +39,20 @@ define( function( require ) {
           self.downPointer = event.pointer;
         }
         if ( self.buttonEnabled && event.pointer === self.downPointer ) {
-          self.interactionState.value = 'pressed';
           if ( options.toggleOnDown ) {
-            self.buttonStateUp.toggle();
+            self.interactionState.value = 'pressed';
+            self.toggledProperty.toggle();
           }
         }
       },
 
       up: function( event, trail ) {
         if ( self.buttonEnabled ) {
-          self.interactionState.value = self.overPointer === null ? 'idle' :
-                                        self.buttonStateUp.value ? 'pressed' :
+          self.interactionState.value = self.toggledProperty.value ? 'pressed' :
                                         'over';
           if ( !options.toggleOnDown && self.downPointer === event.pointer && self.overPointer === event.pointer ) {
             // Toggle the model
-            self.buttonStateUp.toggle();
+            self.toggledProperty.toggle();
           }
         }
         if ( event.pointer === self.downPointer ) {
@@ -73,7 +72,7 @@ define( function( require ) {
       if ( this.buttonEnabled ) {
         if ( this.overPointer === event.pointer ) {
 
-          if ( this.buttonStateUp.value ) {
+          if ( !this.toggledProperty.value ) {
             this.interactionState.value = this.downPointer === event.pointer ? 'pressed' : 'over';
           }
           else {
@@ -87,7 +86,7 @@ define( function( require ) {
     exit: function( event, trail ) {
       if ( event.pointer === this.overPointer ) {
         this.overPointer = null;
-        if ( this.buttonEnabled && this.buttonStateUp.value ) {
+        if ( this.buttonEnabled && !this.toggledProperty.value ) {
           this.interactionState.value = 'idle';
         }
       }

@@ -21,15 +21,10 @@ define( function( require ) {
   function AbstractToggleButton( options ) {
 
     var thisButton = this;
-    options = _.extend(
-      {
-        toggleOnDown: false
-      }, options );
-
     Node.call( this, options );
 
     // Hook up the button model.
-    this.buttonModel = new ToggleButtonModel( { toggleOnDown: options.toggleOnDown } );
+    this.buttonModel = new ToggleButtonModel( options.toggleOnDown ? { toggleOnDown: options.toggleOnDown } : {} );
     this.addInputListener( this.buttonModel );
 
     // accessibility
