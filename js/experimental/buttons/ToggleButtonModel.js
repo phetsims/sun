@@ -59,7 +59,6 @@ define( function( require ) {
       },
 
       up: function( event, trail ) {
-        debugger;
         if ( self.buttonEnabled ) {
           self.interactionState.value = self.overPointer === null ? 'idle' :
                                         self.buttonStateUp.value ? 'pressed' :

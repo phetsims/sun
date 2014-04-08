@@ -19,7 +19,6 @@ define( function( require ) {
   var RadialGradient = require( 'SCENERY/util/RadialGradient' );
   var Shape = require( 'KITE/Shape' );
   var Vector2 = require( 'DOT/Vector2' );
-  var Rectangle = require( 'SCENERY/nodes/Rectangle' );
 
   // Constants
   var HIGHLIGHT_GRADIENT_LENGTH = 5; // In screen coords, which are roughly pixels.
@@ -70,7 +69,6 @@ define( function( require ) {
     var buttonRadius = options.radius || Math.max( content.width + options.minXPadding * 2, content.height + options.minYPadding * 2 ) / 2;
 
     var upCenter = new Vector2( options.iconOffsetX, options.iconOffsetY );
-    var downCenter = upCenter.plus( new Vector2( 0.0, 0.0 ) ); // TODO: Set to zero on 3/36/2014 because text was moving inconsistently.  Decide whether to eliminate completely.
     var baseColor = options.baseColor;
     var disabledBaseColor = options.disabledBaseColor;
     var transparentBaseColor = new Color( baseColor.getRed(), baseColor.getGreen(), baseColor.getBlue(), 0 );
@@ -141,7 +139,7 @@ define( function( require ) {
     //Set the opacity of the content, but only if it exists
     function setContentOpacity( opacity ) {
       if ( content ) {
-        content.opacity = opacity
+        content.opacity = opacity;
       }
     }
 
