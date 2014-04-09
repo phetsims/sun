@@ -49,7 +49,7 @@ define( function( require ) {
     //If the button is untoggled and the user presses it, show it pressed and toggle the state right away
     //When the button is released, untoggle the state (unless it was part of the same action that toggled the button down in the first place).
     this.property( 'down' ).link( function( down ) {
-      if ( toggleButtonModel.enabled ) {
+      if ( toggleButtonModel.enabled && toggleButtonModel.over ) {
         if ( down && !toggleButtonModel.toggled ) {
           toggleButtonModel.toggledProperty.toggle();
           readyToToggleUp = false;
