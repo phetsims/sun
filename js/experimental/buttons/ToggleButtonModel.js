@@ -28,13 +28,8 @@ define( function( require ) {
     PropertySet.call( this, {
       over: false,
       down: false,
-      enabled: true,
+      enabled: true
     } );
-
-    this.listeners = [];
-    if ( options.listener !== null ) {
-      this.listeners.push( options.listener );
-    }
 
     //When the user releases the toggle button, it should only fire a toggle event if it is not during the same action in which they pressed the button
     //Track the state to see if they have already pushed the button or not.
@@ -69,30 +64,6 @@ define( function( require ) {
   }
 
   return inherit( PropertySet, ToggleButtonModel, {
-    // Adds a listener. If already a listener, this is a no-op.
-    addListener: function( listener ) {
-      if ( this.listeners.indexOf( listener ) === -1 ) {
-        this.listeners.push( listener );
-      }
-    },
-
-    // Remove a listener. If not a listener, this is a no-op.
-    removeListener: function( listener ) {
-      var i = this.listeners.indexOf( listener );
-      if ( i !== -1 ) {
-        this.listeners.splice( i, 1 );
-      }
-    },
-
-    // Fires all listeners.  Should not be called outside of this file with
-    // the possible exception of hooking up for accessibility.
-    fire: function() {
-      var copy = this.listeners.slice( 0 );
-      copy.forEach( function( listener ) {
-        listener();
-      } );
-    },
-
     set toggled( t ) { this.toggledProperty.value = t; },
 
     get toggled() {return this.toggledProperty.value;}
