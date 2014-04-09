@@ -32,13 +32,9 @@ define( function( require ) {
     this.buttonModel = buttonModel;
     var thisButton = this;
 
-    if ( !(options.content || options.radius) ) {
-      throw new Error( 'RoundButtonView should have content or radius' );
-    }
-
     options = _.extend( {
       // Default values.
-      radius: null,
+      radius: options.content ? undefined : 30,
       content: null,
       cursor: 'pointer',
       baseColor: new Color( 153, 206, 255 ),

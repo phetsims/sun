@@ -16,9 +16,6 @@ define( function( require ) {
   function RoundToggleButton( booleanProperty, options ) {
     this.booleanProperty = booleanProperty;
     options = _.extend( {
-      radius: options.content ? undefined : 30,
-      listener: null,
-      accessibilityLabel: '',
       toggleOnDown: true
     }, options );
 
