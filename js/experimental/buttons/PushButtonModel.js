@@ -15,7 +15,7 @@ define( function( require ) {
    * @param {Object} options
    * @constructor
    */
-  function ButtonModel( options ) {
+  function PushButtonModel( options ) {
     var buttonModel = this;
 
     options = _.extend( {
@@ -57,7 +57,7 @@ define( function( require ) {
     } );
   }
 
-  return inherit( PropertySet, ButtonModel, {
+  return inherit( PropertySet, PushButtonModel, {
     // Adds a listener. If already a listener, this is a no-op.
     addListener: function( listener ) {
       if ( this.listeners.indexOf( listener ) === -1 ) {

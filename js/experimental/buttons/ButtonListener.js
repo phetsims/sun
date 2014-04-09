@@ -1,7 +1,8 @@
 // Copyright 2002-2014, University of Colorado Boulder
 
 /**
- * The ButtonListener is a scenery Input Listener that translates input events (down, up, enter, exit) into states in a ButtonModel.
+ * The ButtonListener is a scenery Input Listener that translates input events (down, up, enter, exit) into states in a button model.
+ * Duck typing is used for the buttonModel, it can be anything with "down" and "over" properties, such as a PushButtonModel or a ToggleButtonModel.
  */
 define( function( require ) {
   'use strict';
