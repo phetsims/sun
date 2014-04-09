@@ -214,7 +214,11 @@ define( function( require ) {
       } );
     this.addChild( helpButton );
 
-    var roundToggleButton = new RoundToggleButton( new Property( false ), {
+    var toggleButtonProperty = new Property( false );
+    toggleButtonProperty.lazyLink( function( toggleButton ) {
+      outputText.text = "Toggle button state changed to: " + toggleButton;
+    } );
+    var roundToggleButton = new RoundToggleButton( toggleButtonProperty, {
       listener: function() { outputText.text = 'Toggle button toggled, property = ' + this.booleanProperty.value; },
       baseColor: new Color( 255, 0, 0 ),
       left: helpButton.right + 5,

@@ -15,8 +15,10 @@ define( function( require ) {
    * @param {Object} options
    * @constructor
    */
-  function ToggleButtonModel( options ) {
+  function ToggleButtonModel( toggledProperty, options ) {
     var toggleButtonModel = this;
+
+    this.toggledProperty = toggledProperty;
 
     options = _.extend( {
       fireOnDown: false,
@@ -27,13 +29,7 @@ define( function( require ) {
       over: false,
       down: false,
       enabled: true,
-      toggled: false
     } );
-
-    this.overProperty.debug( 'over' );
-    this.downProperty.debug( 'down' );
-    this.enabledProperty.debug( 'enabled' );
-    this.toggledProperty.debug( 'toggled' );
 
     this.listeners = [];
     if ( options.listener !== null ) {
@@ -95,6 +91,10 @@ define( function( require ) {
       copy.forEach( function( listener ) {
         listener();
       } );
-    }
+    },
+
+    set toggled( t ) { this.toggledProperty.value = t; },
+
+    get toggled() {return this.toggledProperty.value;}
   } );
 } );

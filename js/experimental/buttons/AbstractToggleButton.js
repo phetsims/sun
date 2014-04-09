@@ -26,7 +26,7 @@ define( function( require ) {
     Node.call( this, options );
 
     // Hook up the button model.
-    this.buttonModel = new ToggleButtonModel( { toggleOnDown: typeof options.toggleOnDown === 'undefined' ? true : options.toggleOnDown } );
+    this.buttonModel = new ToggleButtonModel( booleanProperty, { toggleOnDown: typeof options.toggleOnDown === 'undefined' ? true : options.toggleOnDown } );
     this.addInputListener( new ButtonListener( this.buttonModel ) );
 
     // accessibility
