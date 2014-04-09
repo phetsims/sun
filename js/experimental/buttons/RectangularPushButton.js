@@ -142,7 +142,7 @@ define( function( require ) {
     thisButton.addChild( content );
 
     // Hook up the function that will modify button appearance as the state changes.
-    this.buttonModel.interactionState.link( function( interactionState ) {
+    this.buttonModel.interactionStateProperty.link( function( interactionState ) {
 
       switch( interactionState ) {
 

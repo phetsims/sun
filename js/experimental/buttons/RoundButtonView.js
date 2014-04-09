@@ -151,7 +151,7 @@ define( function( require ) {
     }
 
     // Hook up the function that will modify button appearance as the state changes.
-    buttonModel.interactionState.link( function( interactionState ) {
+    buttonModel.interactionStateProperty.link( function( interactionState ) {
 
       switch( interactionState ) {
 

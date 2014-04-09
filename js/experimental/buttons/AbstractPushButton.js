@@ -10,7 +10,8 @@ define( function( require ) {
   'use strict';
 
   // Imports
-  var PushButtonModel = require( 'SUN/experimental/buttons/PushButtonModel' );
+  var ButtonModel = require( 'SUN/experimental/buttons/ButtonModel' );
+  var ButtonListener = require( 'SUN/experimental/buttons/ButtonListener' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Node = require( 'SCENERY/nodes/Node' );
 
@@ -30,8 +31,8 @@ define( function( require ) {
     Node.call( this, options );
 
     // Hook up the button model.
-    this.buttonModel = new PushButtonModel( { listener: options.listener, fireOnDown: options.fireOnDown } );
-    this.addInputListener( this.buttonModel );
+    this.buttonModel = new ButtonModel( { listener: options.listener, fireOnDown: options.fireOnDown } );
+    this.addInputListener( new ButtonListener( this.buttonModel ) );
 
     // accessibility
     this.addPeer( '<input type="button" aria-label="' + _.escape( options.label ) + '">',
