@@ -10,15 +10,12 @@ define( function( require ) {
   var inherit = require( 'PHET_CORE/inherit' );
 
   /**
-   * @param {Object} options
+   * @param buttonModel
    * @constructor
    */
-  function ButtonListener( buttonModel, options ) {
+  function ButtonListener( buttonModel ) {
     this.buttonModel = buttonModel;
     var self = this;
-    options = _.extend( {
-      fireOnDown: false
-    }, options );
 
     // Track the pointer the is currently interacting with this button, ignore others.
     this.overPointer = null;
