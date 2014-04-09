@@ -38,7 +38,6 @@ define( function( require ) {
 
     //Create the "interactionState" which is often used to determine how to render the button
     this.addDerivedProperty( 'interactionState', ['over', 'down', 'enabled'], function( over, down, enabled ) {
-      //idle, over, pressed, disabled
       return !enabled ? 'disabled' :
              over && !down ? 'over' :
              over && down ? 'pressed' :
