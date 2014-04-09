@@ -12,7 +12,7 @@ define( function( require ) {
   // Imports
   var inherit = require( 'PHET_CORE/inherit' );
   var Node = require( 'SCENERY/nodes/Node' );
-  var ToggleButtonListener = require( 'SUN/experimental/buttons/ToggleButtonListener' );
+  var ButtonListener = require( 'SUN/experimental/buttons/ButtonListener' );
   var ToggleButtonModel = require( 'SUN/experimental/buttons/ToggleButtonModel' );
 
   /**
@@ -27,7 +27,7 @@ define( function( require ) {
 
     // Hook up the button model.
     this.buttonModel = new ToggleButtonModel( { toggleOnDown: typeof options.toggleOnDown === 'undefined' ? true : options.toggleOnDown } );
-    this.addInputListener( new ToggleButtonListener( this.buttonModel ) );
+    this.addInputListener( new ButtonListener( this.buttonModel ) );
 
     // accessibility
     this.addPeer( '<input type="button" aria-label="' + _.escape( options.label ) + '">',
