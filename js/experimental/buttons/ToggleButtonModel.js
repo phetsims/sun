@@ -33,11 +33,12 @@ define( function( require ) {
       readyToToggleUp: false
     } );
 
-    this.overProperty.debug( 'over' );
-    this.downProperty.debug( 'down' );
-    this.enabledProperty.debug( 'enabled' );
-    this.toggledProperty.debug( 'toggled' );
-    this.readyToToggleUpProperty.debug( 'readyToToggleUp' );
+    //For debugging
+//    this.overProperty.debug( 'over' );
+//    this.downProperty.debug( 'down' );
+//    this.enabledProperty.debug( 'enabled' );
+//    this.toggledProperty.debug( 'toggled' );
+//    this.readyToToggleUpProperty.debug( 'readyToToggleUp' );
 
     //When the user releases the toggle button, it should only fire a toggle event if it is not during the same action in which they pressed the button
     //Track the state to see if they have already pushed the button or not.

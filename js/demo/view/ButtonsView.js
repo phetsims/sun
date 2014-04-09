@@ -94,6 +94,7 @@ define( function( require ) {
       timerEnabled.reset();
       buttonCFireCount = 0;
       fireOnDownCount = 0;
+      toggleButtonProperty.reset();
     }
 
     // add reset all button and caption
