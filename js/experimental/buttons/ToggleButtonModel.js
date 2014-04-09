@@ -12,6 +12,8 @@ define( function( require ) {
   var PropertySet = require( 'AXON/PropertySet' );
 
   /**
+   * @param {Property<Boolean>} toggledProperty the property that represents the model state of whether the button
+   * (and corresponding model domain feature) is toggled or not.
    * @param {Object} options
    * @constructor
    */
@@ -21,8 +23,7 @@ define( function( require ) {
     this.toggledProperty = toggledProperty;
 
     options = _.extend( {
-      fireOnDown: false,
-      listener: null
+      toggleOnDown: true
     }, options );
 
     PropertySet.call( this, {
