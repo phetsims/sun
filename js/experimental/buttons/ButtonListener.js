@@ -10,7 +10,7 @@ define( function( require ) {
   var inherit = require( 'PHET_CORE/inherit' );
 
   /**
-   * @param buttonModel
+   * @param {ButtonModel|ToggleButtonModel} buttonModel
    * @constructor
    */
   function ButtonListener( buttonModel ) {
