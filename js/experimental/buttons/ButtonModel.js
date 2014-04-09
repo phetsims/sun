@@ -57,10 +57,11 @@ define( function( require ) {
     } );
 
     //If the user was pressing down on a button when the button becomes disabled,
-    // clear its down & over flags so it won't appear pressed when the button becomes enabled again.
-    this.property( 'enabled' ).onValue( false, function() {
-      buttonModel.down = false;
-      buttonModel.over = false;
+    // clear its down flag so it won't appear pressed when the button becomes enabled again.
+    this.property( 'over' ).onValue( false, function() {
+      if ( !buttonModel.enabled ) {
+        buttonModel.down = false;
+      }
     } );
   }
 
