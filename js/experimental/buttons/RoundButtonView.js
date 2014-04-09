@@ -29,7 +29,7 @@ define( function( require ) {
    * @constructor
    */
   function RoundButtonView( buttonModel, options ) {
-
+    this.buttonModel = buttonModel;
     var thisButton = this;
 
     if ( !(options.content || options.radius) ) {
@@ -208,5 +208,22 @@ define( function( require ) {
     thisButton.mutate( options );
   }
 
-  return inherit( Node, RoundButtonView );
+  return inherit( Node, RoundButtonView, {
+    addListener: function( listener ) {
+      // Pass through to button model.
+      this.buttonModel.addListener( listener );
+    },
+
+    removeListener: function( listener ) {
+      // Pass through to button model.
+      this.buttonModel.removeListener( listener );
+    },
+
+    set enabled( value ) {
+      assert && assert( typeof value === 'boolean', 'AbstractPushButton.enabled must be a boolean value' );
+      this.buttonModel.enabled = value;
+    },
+
+    get enabled() { return this.buttonModel.enabled; }
+  } );
 } );

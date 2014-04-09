@@ -23,6 +23,9 @@ define( function( require ) {
 
     AbstractToggleButton.call( this, booleanProperty, { toggleOnDown: options.toggleOnDown } );
 
+    //TODO: In general cannot pass options through two places because effects may be cumulative (such as translation or rotation)
+    //TODO: May be best to extend RoundButtonView and add the listeners here in the subclass
+    //TODO: See RoundPushButton for details
     this.button = new RoundButtonView( this.buttonModel, options );
     this.addChild( this.button );
 
