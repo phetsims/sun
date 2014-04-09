@@ -1,7 +1,7 @@
 // Copyright 2002-2014, University of Colorado Boulder
 
 /**
- * TODO: Docs
+ * The ButtonListener is a scenery Input Listener that translates input events (down, up, enter, exit) into states in a ButtonModel.
  */
 define( function( require ) {
   'use strict';
