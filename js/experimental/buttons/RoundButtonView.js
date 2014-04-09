@@ -1,9 +1,9 @@
 // Copyright 2002-2014, University of Colorado Boulder
 
 /**
- * A round button that draws gradients and such in order to create a somewhat
- * 3D look.  It is provided with a 'button model' that is monitored to change
- * the appearance of the button.
+ * Visual representation of a round button that uses gradients and such in
+ * order to create a somewhat 3D look.  It is provided with a 'button model'
+ * that is monitored to change the appearance of the button.
  *
  * @author John Blanco
  * @author Sam Reid

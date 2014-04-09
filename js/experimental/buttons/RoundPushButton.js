@@ -1,7 +1,8 @@
 // Copyright 2002-2014, University of Colorado Boulder
 
 /**
- * An interactive round push button.  This inherits from RoundButtonView instead of using composition so that the options can pass through directly without filtering.
+ * An interactive round push button.  This is the file in which the appearance
+ * and behavior are brought together.
  *
  * @author John Blanco
  * @author Sam Reid
