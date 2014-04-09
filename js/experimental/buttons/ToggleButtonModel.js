@@ -78,6 +78,11 @@ define( function( require ) {
         toggleButtonModel.readyToToggleUp = true;
       }
     } );
+
+    //Make the button ready to toggle when enabled
+    this.property( 'enabled' ).onValue( true, function() {
+      toggleButtonModel.readyToToggleUp = true;
+    } );
   }
 
   return inherit( PropertySet, ToggleButtonModel, {
