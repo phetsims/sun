@@ -30,6 +30,11 @@ define( function( require ) {
       over: false,
       down: false,
       enabled: true,
+
+      //When the user releases the toggle button, it should only fire a toggle event if it is not during the same action in which they pressed the button
+      //Track the state to see if they have already pushed the button or not.
+      //Note: Does this need to be reset when the simulation does "reset all"?  I can't find any negative consequences in the user interface of not resetting it, but maybe I missed something.
+      //Or maybe it would be safe to reset in anyways.
       readyToToggleUp: false
     } );
 
@@ -39,10 +44,6 @@ define( function( require ) {
 //    this.enabledProperty.debug( 'enabled' );
 //    this.toggledProperty.debug( 'toggled' );
 //    this.readyToToggleUpProperty.debug( 'readyToToggleUp' );
-
-    //When the user releases the toggle button, it should only fire a toggle event if it is not during the same action in which they pressed the button
-    //Track the state to see if they have already pushed the button or not.
-//    var readyToToggleUp = false;
 
     //Create the "interactionState" which is often used to determine how to render the button
     this.addDerivedProperty( 'interactionState', ['over', 'down', 'enabled', 'toggled'], function( over, down, enabled, toggled ) {
