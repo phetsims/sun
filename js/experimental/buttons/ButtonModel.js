@@ -44,23 +44,15 @@ define( function( require ) {
 
     //If button was pressed and "fire on down" was set, fire the listeners
     this.property( 'down' ).onValue( true, function() {
-      if ( options.fireOnDown ) {
+      if ( options.fireOnDown && buttonModel.enabled ) {
         buttonModel.fire();
       }
     } );
 
     //If button was released and "fire on down" was not set, fire the listeners
     this.property( 'down' ).onValue( false, function() {
-      if ( !options.fireOnDown && buttonModel.over ) {
+      if ( !options.fireOnDown && buttonModel.over && buttonModel.enabled ) {
         buttonModel.fire();
-      }
-    } );
-
-    //If the user was pressing down on a button when the button becomes disabled,
-    // clear its down flag so it won't appear pressed when the button becomes enabled again.
-    this.property( 'over' ).onValue( false, function() {
-      if ( !buttonModel.enabled ) {
-        buttonModel.down = false;
       }
     } );
   }
