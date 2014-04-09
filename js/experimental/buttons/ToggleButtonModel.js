@@ -29,12 +29,19 @@ define( function( require ) {
     PropertySet.call( this, {
       over: false,
       down: false,
-      enabled: true
+      enabled: true,
+      readyToToggleUp: false
     } );
+
+    this.overProperty.debug( 'over' );
+    this.downProperty.debug( 'down' );
+    this.enabledProperty.debug( 'enabled' );
+    this.toggledProperty.debug( 'toggled' );
+    this.readyToToggleUpProperty.debug( 'readyToToggleUp' );
 
     //When the user releases the toggle button, it should only fire a toggle event if it is not during the same action in which they pressed the button
     //Track the state to see if they have already pushed the button or not.
-    var readyToToggleUp = false;
+//    var readyToToggleUp = false;
 
     //Create the "interactionState" which is often used to determine how to render the button
     this.addDerivedProperty( 'interactionState', ['over', 'down', 'enabled', 'toggled'], function( over, down, enabled, toggled ) {
@@ -52,16 +59,21 @@ define( function( require ) {
       if ( toggleButtonModel.enabled && toggleButtonModel.over ) {
         if ( down && !toggleButtonModel.toggled ) {
           toggleButtonModel.toggledProperty.toggle();
-          readyToToggleUp = false;
+          toggleButtonModel.readyToToggleUp = false;
         }
         if ( !down && toggleButtonModel.toggled ) {
-          if ( readyToToggleUp ) {
+          if ( toggleButtonModel.readyToToggleUp ) {
             toggleButtonModel.toggledProperty.toggle();
           }
           else {
-            readyToToggleUp = true;
+            toggleButtonModel.readyToToggleUp = true;
           }
         }
+      }
+
+      //Handle the case where the pointer moved out then up over a toggle button, so it will respond to the next press
+      if ( !down && !toggleButtonModel.over ) {
+        toggleButtonModel.readyToToggleUp = true;
       }
     } );
   }
