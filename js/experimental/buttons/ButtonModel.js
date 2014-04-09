@@ -8,8 +8,6 @@
 define( function( require ) {
   'use strict';
 
-  var DownUpListener = require( 'SCENERY/input/DownUpListener' );
-  var Property = require( 'AXON/Property' );
   var inherit = require( 'PHET_CORE/inherit' );
   var PropertySet = require( 'AXON/PropertySet' );
 
@@ -31,7 +29,7 @@ define( function( require ) {
       enabled: true
     } );
 
-    this.listeners = []
+    this.listeners = [];
     if ( options.listener !== null ) {
       this.listeners.push( options.listener );
     }

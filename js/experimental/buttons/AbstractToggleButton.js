@@ -12,7 +12,8 @@ define( function( require ) {
   // Imports
   var inherit = require( 'PHET_CORE/inherit' );
   var Node = require( 'SCENERY/nodes/Node' );
-  var ToggleButtonModel = require( 'SUN/experimental/buttons/ToggleButtonModel' );
+  var ButtonListener = require( 'SUN/experimental/buttons/ButtonListener' );
+  var ButtonModel = require( 'SUN/experimental/buttons/ButtonModel' );
 
   /**
    * @param {Property} booleanProperty
@@ -25,8 +26,8 @@ define( function( require ) {
     Node.call( this, options );
 
     // Hook up the button model.
-    this.buttonModel = new ToggleButtonModel( booleanProperty, { toggleOnDown: typeof options.toggleOnDown === 'undefined' ? true : options.toggleOnDown } );
-    this.addInputListener( this.buttonModel );
+    this.buttonModel = new ButtonModel( { toggleOnDown: typeof options.toggleOnDown === 'undefined' ? true : options.toggleOnDown } );
+    this.addInputListener( new ButtonListener( this.buttonModel ) );
 
     // accessibility
     this.addPeer( '<input type="button" aria-label="' + _.escape( options.label ) + '">',
