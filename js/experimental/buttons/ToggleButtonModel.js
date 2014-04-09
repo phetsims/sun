@@ -30,10 +30,19 @@ define( function( require ) {
       toggled: false
     } );
 
+    this.overProperty.debug( 'over' );
+    this.downProperty.debug( 'down' );
+    this.enabledProperty.debug( 'enabled' );
+    this.toggledProperty.debug( 'toggled' );
+
     this.listeners = [];
     if ( options.listener !== null ) {
       this.listeners.push( options.listener );
     }
+
+    //When the user releases the toggle button, it should only fire a toggle event if it is not during the same action in which they pressed the button
+    //Track the state to see if they have already pushed the button or not.
+    var readyToToggleUp = false;
 
     //Create the "interactionState" which is often used to determine how to render the button
     this.addDerivedProperty( 'interactionState', ['over', 'down', 'enabled', 'toggled'], function( over, down, enabled, toggled ) {
@@ -45,19 +54,20 @@ define( function( require ) {
              'idle';
     } );
 
-    //If button was pressed and "fire on down" was set, fire the listeners
-    this.property( 'down' ).onValue( true, function() {
-      if ( options.fireOnDown ) {
-        toggleButtonModel.fire();
+    //If the button is untoggled and the user presses it, show it pressed and toggle the state right away
+    //When the button is released, untoggle the state (unless it was part of the same action that toggled the button down in the first place).
+    this.property( 'down' ).link( function( down ) {
+      if ( down && !toggleButtonModel.toggled ) {
         toggleButtonModel.toggledProperty.toggle();
+        readyToToggleUp = false;
       }
-    } );
-
-    //If button was released and "fire on down" was not set, fire the listeners
-    this.property( 'down' ).onValue( false, function() {
-      if ( !options.fireOnDown && toggleButtonModel.over ) {
-        toggleButtonModel.fire();
-        toggleButtonModel.toggledProperty.toggle();
+      if ( !down && toggleButtonModel.toggled ) {
+        if ( readyToToggleUp ) {
+          toggleButtonModel.toggledProperty.toggle();
+        }
+        else {
+          readyToToggleUp = true;
+        }
       }
     } );
   }
