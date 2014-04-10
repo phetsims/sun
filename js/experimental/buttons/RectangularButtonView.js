@@ -8,6 +8,7 @@
  * @author Sam Reid
  */
 define( function( require ) {
+  'use strict';
 
   // Includes
   var Color = require( 'SCENERY/util/Color' );
@@ -16,7 +17,6 @@ define( function( require ) {
   var Node = require( 'SCENERY/nodes/Node' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var Shape = require( 'KITE/Shape' );
-  var Vector2 = require( 'DOT/Vector2' );
 
   // Constants
   var VERTICAL_HIGHLIGHT_GRADIENT_LENGTH = 7; // In screen coords, which are roughly pixels.
