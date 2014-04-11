@@ -4,6 +4,7 @@
  * Basic model for a push button, including over/down/enabled properties and the derived property "interactionState".
  *
  * @author Sam Reid
+ * @author John Blanco
  */
 define( function( require ) {
   'use strict';

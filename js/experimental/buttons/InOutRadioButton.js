@@ -2,6 +2,8 @@
 
 /**
  * Radio button that looks pressed in or popped out.
+ *
+ * TODO: Implement me
  */
 define( function( require ) {
   'use strict';

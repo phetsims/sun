@@ -4,6 +4,10 @@
  * An interactive round push button.  This is the file in which the appearance
  * and behavior are brought together.
  *
+ * This class inherits from RoundButtonView instead of using composition to
+ * simplify the logic for the options (and potentially performance improvements
+ * since there will be fewer nodes in the scene graph).
+ *
  * @author John Blanco
  * @author Sam Reid
  */

@@ -4,6 +4,7 @@
  * Basic model for a push button, including over/down/enabled properties and the derived property "interactionState".
  *
  * @author Sam Reid
+ * @author John Blanco
  */
 define( function( require ) {
   'use strict';
@@ -17,14 +18,10 @@ define( function( require ) {
    * @param {Object} options
    * @constructor
    */
-  function ToggleButtonModel( toggledProperty, options ) {
+  function ToggleButtonModel( toggledProperty ) {
     var toggleButtonModel = this;
 
     this.toggledProperty = toggledProperty;
-
-    options = _.extend( {
-      toggleOnDown: true
-    }, options );
 
     PropertySet.call( this, {
       over: false,

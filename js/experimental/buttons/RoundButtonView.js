@@ -5,6 +5,11 @@
  * order to create a somewhat 3D look.  It is provided with a 'button model'
  * that is monitored to change the appearance of the button.
  *
+ * Note: this is only the visual representation and does not have associated
+ * input listeners (so that it can be reused in multiple contexts)
+ * For a button that looks like this but has input listeners wired up,
+ * please see RoundPushButton or RoundToggleButton.
+ *
  * @author John Blanco
  * @author Sam Reid
  */

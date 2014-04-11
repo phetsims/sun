@@ -1,7 +1,7 @@
 // Copyright 2002-2014, University of Colorado Boulder
 
 /**
- * Base type for a button with a s
+ * Refresh button, which is a RectangularPushButton that allows the user to "refresh" a feature, such as getting new game challenges.
  *
  * @author John Blanco
  */

@@ -5,6 +5,8 @@
  * descendant classes to modify the appearance of the button as the user
  * interacts with it, and also handles firing of the listener functions.
  *
+ * @author John Blanco
+ * @author Sam Reid
  */
 define( function( require ) {
   'use strict';
