@@ -169,6 +169,11 @@ define( function( require ) {
       this.updateTitleLocation();
     },
 
+    //TODO: What to do if no titleNode?
+    get title() {
+      return this.titleNode.text;
+    },
+
     updateTitleLocation: function() {
       this.titleNode.centerY = this.expandCollapseButton.centerY;
       if ( this.options.titlePosition === 'left' ) {
