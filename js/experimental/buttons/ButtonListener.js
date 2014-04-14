@@ -1,11 +1,14 @@
 // Copyright 2002-2014, University of Colorado Boulder
 
 /**
- * The ButtonListener is a scenery Input Listener that translates input events (down, up, enter, exit) into states in a button model.
- * Duck typing is used for the buttonModel, it can be anything with "down" and "over" properties, such as a PushButtonModel or a ToggleButtonModel.
+ * The ButtonListener is a scenery Input Listener that translates input events
+ * (down, up, enter, exit) into states in a button model.  Duck typing is used
+ * for the buttonModel, it can be anything with "down" and "over" properties,
+ * such as a PushButtonModel or a ToggleButtonModel.
  *
- * One assumption of this ButtonListener is that only one pointer can interact with the button at a time, and the other pointers are
- * effective "locked out" while another pointer is using the button.
+ * One assumption of this ButtonListener is that only one pointer can interact
+ * with the button at a time, and the other pointers are effective "locked
+ * out" while another pointer is using the button.
  *
  * @author John Blanco
  * @author Sam Reid
@@ -24,7 +27,7 @@ define( function( require ) {
     this.buttonModel = buttonModel;
     var self = this;
 
-    // Track the pointer the is currently interacting with this button, ignore others.
+    // Track the pointer that is currently interacting with this button, ignore others.
     this.overPointer = null;
     this.downPointer = null;
 
@@ -46,7 +49,6 @@ define( function( require ) {
         }
       }
     );
-
   }
 
   return inherit( DownUpListener, ButtonListener, {
@@ -62,5 +64,5 @@ define( function( require ) {
         this.overPointer = null;
         this.buttonModel.over = false;
       }
-    }} );
+    } } );
 } );
