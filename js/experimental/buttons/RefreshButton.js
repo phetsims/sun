@@ -1,7 +1,8 @@
 // Copyright 2002-2014, University of Colorado Boulder
 
 /**
- * Refresh button, which is a RectangularPushButton that allows the user to "refresh" a feature, such as getting new game challenges.
+ * Refresh button, which is a RectangularPushButton that allows the user to
+ * "refresh" a feature, such as getting a new game challenge.
  *
  * @author John Blanco
  */

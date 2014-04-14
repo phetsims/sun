@@ -18,7 +18,7 @@ define( function( require ) {
   var ResetAllButton2 = require( 'SUN/experimental/buttons/ResetAllButton2' );
   var ReturnToLevelSelectButton = require( 'SUN/experimental/buttons/ReturnToLevelSelectButton' );
   var RoundPushButton = require( 'SUN/experimental/buttons/RoundPushButton' );
-  var RoundToggleButton = require( 'SUN/experimental/buttons/RoundToggleButton' );
+  var RoundStickyToggleButton = require( 'SUN/experimental/buttons/RoundStickyToggleButton' );
   var InOutRadioButton = require( 'SUN/experimental/buttons/InOutRadioButton' );
   var ScreenView = require( 'JOIST/ScreenView' );
   var SoundToggleButton2 = require( 'SUN/experimental/buttons/SoundToggleButton2' );
@@ -219,7 +219,7 @@ define( function( require ) {
     toggleButtonProperty.lazyLink( function( toggleButton ) {
       outputText.text = "Toggle button state changed to: " + toggleButton;
     } );
-    var roundToggleButton = new RoundToggleButton( toggleButtonProperty, {
+    var roundToggleButton = new RoundStickyToggleButton( toggleButtonProperty, {
       baseColor: new Color( 255, 0, 0 ),
       left: helpButton.right + 5,
       centerY: goButton.centerY,

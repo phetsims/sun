@@ -8,7 +8,7 @@
  * Note: this is only the visual representation and does not have associated
  * input listeners (so that it can be reused in multiple contexts)
  * For a button that looks like this but has input listeners wired up,
- * please see RoundPushButton or RoundToggleButton.
+ * please see RoundPushButton or RoundStickyToggleButton.
  *
  * @author John Blanco
  * @author Sam Reid

@@ -17,19 +17,19 @@ define( function( require ) {
 
   var inherit = require( 'PHET_CORE/inherit' );
   var RoundButtonView = require( 'SUN/experimental/buttons/RoundButtonView' );
-  var ToggleButtonModel = require( 'SUN/experimental/buttons/ToggleButtonModel' );
+  var StickyToggleButtonModel = require( 'SUN/experimental/buttons/StickyToggleButtonModel' );
   var ButtonListener = require( 'SUN/experimental/buttons/ButtonListener' );
 
-  function RoundToggleButton( booleanProperty, options ) {
+  function RoundStickyToggleButton( booleanProperty, options ) {
     this.booleanProperty = booleanProperty;
     options = _.extend( {
       toggleOnDown: true
     }, options );
 
-    this.buttonModel = new ToggleButtonModel( booleanProperty );
+    this.buttonModel = new StickyToggleButtonModel( booleanProperty );
     RoundButtonView.call( this, this.buttonModel, options );
     this.addInputListener( new ButtonListener( this.buttonModel ) );
   }
 
-  return inherit( RoundButtonView, RoundToggleButton );
+  return inherit( RoundButtonView, RoundStickyToggleButton );
 } );

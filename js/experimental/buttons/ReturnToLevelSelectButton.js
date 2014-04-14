@@ -15,7 +15,6 @@ define( function( require ) {
   var Star = require( 'VEGAS/Star' );
 
   /**
-   * @param {function} callback
    * @param {Object} options
    * @constructor
    */
