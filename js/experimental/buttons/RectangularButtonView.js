@@ -205,7 +205,7 @@ define( function( require ) {
       },
 
       set enabled( value ) {
-        assert && assert( typeof value === 'boolean', 'AbstractPushButton.enabled must be a boolean value' );
+        assert && assert( typeof value === 'boolean', 'RectangularButtonView.enabled must be a boolean value' );
         this.buttonModel.enabled = value;
       },
 
