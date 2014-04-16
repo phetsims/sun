@@ -11,13 +11,15 @@
  * If you drag past the midpoint of the track, releasing the thumb snaps to whichever end the thumb is closest to.
  *
  * @author Chris Malley (PixelZoom, Inc.)
+ * @author Jonathan Olson (jonathan.olson@colorado.edu)
  */
 define( function( require ) {
   'use strict';
 
   // imports
-  var ButtonListener = require( 'SCENERY/input/ButtonListener' );
   var Dimension2 = require( 'DOT/Dimension2' );
+  var Vector2 = require( 'DOT/Vector2' );
+  var clamp = require( 'DOT/Util' ).clamp;
   var inherit = require( 'PHET_CORE/inherit' );
   var Node = require( 'SCENERY/nodes/Node' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
@@ -39,7 +41,8 @@ define( function( require ) {
       trackOffFill: 'white', // track fill when onProperty is false
       trackOnFill: 'rgb(0,200,0)', // track fill when onProperty is true
       trackStroke: 'black',
-      toggleWhileDragging: false // set this to true if you want the property to toggle while you're dragging the thumb
+      toggleWhileDragging: false, // set this to true if you want the property to toggle while you're dragging the thumb
+      dragThreshold: 3 // number of view-space units the drag needs to cover to be considered a "drag" instead of a "click/tap"
     }, options );
 
     var thisNode = this;
@@ -47,14 +50,14 @@ define( function( require ) {
 
     // track that the thumb slides in
     var cornerRadius = options.size.height / 2;
-    var trackNode = new Rectangle( 0, 0, options.size.width, options.size.height, cornerRadius, cornerRadius, {
+    var trackNode = this.trackNode = new Rectangle( 0, 0, options.size.width, options.size.height, cornerRadius, cornerRadius, {
       fill: options.trackOffFill,
       stroke: options.trackStroke
     } );
     thisNode.addChild( trackNode );
 
     // thumb (aka knob)
-    var thumbNode = new Rectangle( 0, 0, 0.5 * options.size.width, options.size.height, cornerRadius, cornerRadius, {
+    var thumbNode = this.thumbNode = new Rectangle( 0, 0, 0.5 * options.size.width, options.size.height, cornerRadius, cornerRadius, {
       fill: options.thumbFill,
       stroke: options.thumbStroke
     } );
@@ -76,83 +79,70 @@ define( function( require ) {
 
     // sync with onProperty
     onProperty.link( updateThumb.bind( thisNode ) );
-
+    
     // thumb interactivity
-    var dragged = false; // was the thumb dragged?
-    thumbNode.addInputListener( new SimpleDragHandler( {
-
-      allowTouchSnag: true,
-      thumbCrossedMidpoint: false, // true if thumb is dragged past track's midpoint
-
-      start: function() {
-        this.thumbCrossedMidpoint = false;
+    var dragThresholdSquared = options.dragThreshold * options.dragThreshold; // comparing squared magnitudes is a bit faster
+    var accumulatedDelta = new Vector2(); // stores how far we are from where our drag started, in our local coordinate frame
+    var passedDragThreshold = false; // whether we have dragged far enough to be considered for "drag" behavior (pick closest side), or "tap" behavior (toggle)
+    
+    thisNode.addInputListener( new SimpleDragHandler( {
+      
+      // only touch to snag when over the thumb (don't snag on the track itself)
+      allowTouchSnag: function( evt ) {
+        return _.contains( evt.trail.nodes, thumbNode );
       },
-
-      drag: function() {
-        dragged = true;
+      
+      start: function( evt, trail ) {
+        // resets our state
+        accumulatedDelta.setXY( 0, 0 ); // reset it mutably (less allocation)
+        passedDragThreshold = false;
       },
-
-      translate: function( params ) {
-
-        // move the thumb while it's being dragged
-        if ( thumbNode.left + params.delta.x < 0 ) {
-          thumbNode.left = 0;
+      
+      end: function( evt, trail ) {
+        if ( passedDragThreshold ) {
+          // snap to whichever end the thumb is closest to
+          onProperty.set( thisNode.thumbPositionToValue() );
+        } else {
+          // toggle
+          onProperty.set( !onProperty.get() );
         }
-        else if ( thumbNode.right + params.delta.x > options.size.width ) {
-          thumbNode.right = options.size.width;
-        }
-        else {
-          thumbNode.x = thumbNode.x + params.delta.x;
-        }
+        
+        // update the thumb location (sanity check that it's here, only needs to be run if passedDragThreshold===true)
+        updateThumb( onProperty.get() );
+      },
+      
+      drag: function( evt, trail ) {
+        // center the thumb on the pointer's x-coordinate if possible (but clamp to left and right ends)
+        var viewPoint = trail.globalToLocalPoint( evt.pointer.point );
+        var halfThumbWidth = thumbNode.width / 2;
+        thumbNode.centerX = clamp( viewPoint.x, halfThumbWidth, options.size.width - halfThumbWidth );
 
-        var value = this.thumbPositionToValue(); // value represented by the current thumb position
+        var value = thisNode.thumbPositionToValue(); // value represented by the current thumb position
 
         // track fill changes based on the thumb positions
         trackNode.fill = value ? options.trackOnFill : options.trackOffFill;
-
-        this.thumbCrossedMidpoint = this.thumbCrossedMidpoint || ( value !== onProperty.get() );
-
-        // optionally toggle the property value
+        
         if ( options.toggleWhileDragging ) {
           onProperty.set( value );
         }
       },
-
-      end: function() {
-        if ( dragged ) {
-          if ( this.thumbCrossedMidpoint ) {
-            onProperty.set( this.thumbPositionToValue() ); // snap to whichever end the thumb is closest to
-          }
-          else {
-            onProperty.set( !onProperty.get() ); // toggle
-          }
-          updateThumb( onProperty.get() ); // in case onProperty didn't change (or if we need to reset the thumb to one side)
-        }
-      },
-
-      /*
-       * Converts the thumb position to a boolean on/off value.
-       * Off (false) is to the left, on (true) is to the right.
-       */
-      thumbPositionToValue: function() {
-        return ( thumbNode.centerX > trackNode.centerX );
-      }
-    } ) );
-
-    // clicking anywhere on the entire node results in a toggles, if we didn't drag the thumb
-    thisNode.addInputListener( new ButtonListener( {
-      fire: function() {
-        if ( !dragged ) { onProperty.set( !onProperty.get() ); }
-        dragged = false;
-      },
       
-      up: function() {
-        dragged = false;
+      translate: function( params ) {
+        accumulatedDelta.add( params.delta );
+        passedDragThreshold = passedDragThreshold || ( accumulatedDelta.magnitudeSquared() > dragThresholdSquared );
       }
     } ) );
 
     thisNode.mutate( options );
   }
 
-  return inherit( Node, OnOffSwitch );
+  return inherit( Node, OnOffSwitch, {
+    /*
+     * Converts the thumb position to a boolean on/off value.
+     * Off (false) is to the left, on (true) is to the right.
+     */
+    thumbPositionToValue: function() {
+      return this.thumbNode.centerX > this.trackNode.centerX;
+    }
+  } );
 } );
