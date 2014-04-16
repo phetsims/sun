@@ -103,6 +103,7 @@ define( function( require ) {
     set enabled( value ) {
 
       this._enabled = value;
+      this.pickable = value;
 
       // set the color of the check box icons
       this._checkedNode.fill = value ? this._options.checkBoxColor : this._options.checkBoxColorDisabled;
