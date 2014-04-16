@@ -122,11 +122,11 @@ define( function( require ) {
         if ( dragged ) {
           if ( this.thumbCrossedMidpoint ) {
             onProperty.set( this.thumbPositionToValue() ); // snap to whichever end the thumb is closest to
-            updateThumb( onProperty.get() ); // in case onProperty didn't change
           }
           else {
             onProperty.set( !onProperty.get() ); // toggle
           }
+          updateThumb( onProperty.get() ); // in case onProperty didn't change (or if we need to reset the thumb to one side)
         }
       },
 
