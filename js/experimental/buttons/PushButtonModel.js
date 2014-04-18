@@ -12,6 +12,7 @@
 define( function( require ) {
   'use strict';
 
+  // Includes
   var inherit = require( 'PHET_CORE/inherit' );
   var PropertySet = require( 'AXON/PropertySet' );
 
@@ -23,7 +24,7 @@ define( function( require ) {
     var buttonModel = this;
 
     options = _.extend( {
-      fireOnDown: false,
+      fireOnDown: false, // true: fire on pointer down; false: fire on pointer up if pointer is over button
       listener: null
     }, options );
 
@@ -33,7 +34,7 @@ define( function( require ) {
       enabled: true
     } );
 
-    this.listeners = [];
+    this.listeners = []; //@private
     if ( options.listener !== null ) {
       this.listeners.push( options.listener );
     }
@@ -62,6 +63,7 @@ define( function( require ) {
   }
 
   return inherit( PropertySet, PushButtonModel, {
+
     // Adds a listener. If already a listener, this is a no-op.
     addListener: function( listener ) {
       if ( this.listeners.indexOf( listener ) === -1 ) {
@@ -77,8 +79,8 @@ define( function( require ) {
       }
     },
 
-    // Fires all listeners.  Should not be called outside of this file with
-    // the possible exception of hooking up for accessibility.
+    // Fires all listeners.
+    // @private with the possible exception of hooking up for accessibility.
     fire: function() {
       var copy = this.listeners.slice( 0 );
       copy.forEach( function( listener ) {
