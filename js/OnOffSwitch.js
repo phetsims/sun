@@ -113,7 +113,7 @@ define( function( require ) {
       
       drag: function( evt, trail ) {
         // center the thumb on the pointer's x-coordinate if possible (but clamp to left and right ends)
-        var viewPoint = trail.globalToLocalPoint( evt.pointer.point );
+        var viewPoint = evt.currentTarget.globalToLocalPoint( evt.pointer.point );
         var halfThumbWidth = thumbNode.width / 2;
         thumbNode.centerX = clamp( viewPoint.x, halfThumbWidth, options.size.width - halfThumbWidth );
 
