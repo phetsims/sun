@@ -29,9 +29,9 @@ define( function( require ) {
     options = _.extend( {content: content}, options );
 
     //Safe to pass through options to the pushButtonModel like "fireOnDown".  Other scenery options will be safely ignored.
-    var buttonModel = new PushButtonModel( options );
-    RoundButtonView.call( this, buttonModel, options );
-    this.addInputListener( new ButtonListener( buttonModel ) );
+    var pushButtonModel = new PushButtonModel( options );
+    RoundButtonView.call( this, pushButtonModel, options );
+    this.addInputListener( new ButtonListener( pushButtonModel ) );
   }
 
   return inherit( RoundButtonView, RoundPushButton );
