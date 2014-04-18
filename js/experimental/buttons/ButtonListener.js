@@ -20,7 +20,7 @@ define( function( require ) {
   var inherit = require( 'PHET_CORE/inherit' );
 
   /**
-   * @param { down:Property<Boolean> over:Property<Boolean> } buttonModel
+   * @param {*} buttonModel any object with 'down' and 'over' boolean properties
    * @constructor
    */
   function ButtonListener( buttonModel ) {
