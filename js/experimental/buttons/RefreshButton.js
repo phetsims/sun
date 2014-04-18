@@ -32,6 +32,7 @@ define( function( require ) {
       iconWidth: DEFAULT_ICON_WIDTH,
       xPadding: DEFAULT_ICON_WIDTH / 3,
       baseColor: new Color( 255, 242, 2 ),
+      //REVIEW is it necessary to set listener to null? that appears to be handled in PushButtonModel
       listener: null
     }, options );
 
