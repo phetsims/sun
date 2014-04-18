@@ -7,7 +7,7 @@
  * such as a PushButtonModel or a StickyToggleButtonModel.
  *
  * One assumption of this ButtonListener is that only one pointer can interact
- * with the button at a time, and the other pointers are effective "locked
+ * with the button at a time, and the other pointers are effectively "locked
  * out" while another pointer is using the button.
  *
  * @author John Blanco
