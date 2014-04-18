@@ -40,8 +40,10 @@ define( function( require ) {
       // uses opacity as the default method of indicating whether a {Node} node is {Boolean} enabled
       setEnabled: function( node, enabled ) { node.opacity = enabled ? 1.0 : 0.5; }
     }, options );
-    options.trackFill = options.trackFill ||
-                        new LinearGradient( 0, 0, 0, options.switchSize.height ).addColorStop( 0, 'rgb(40,40,40)' ).addColorStop( 1, 'rgb(200,200,200)' );
+
+    var defaultTrackFill = new LinearGradient( 0, 0, 0, options.switchSize.height ).addColorStop( 0, 'rgb(40,40,40)' ).addColorStop( 1, 'rgb(200,200,200)' );
+    options.trackFillA = options.trackFillA || defaultTrackFill;
+    options.trackFillB = options.trackFillB || defaultTrackFill;
     options.thumbFill = options.thumbFill ||
                         new LinearGradient( 0, 0, 0, options.switchSize.height ).addColorStop( 0, 'white' ).addColorStop( 1, 'rgb(200,200,200)' );
 
@@ -55,8 +57,8 @@ define( function( require ) {
       size: options.switchSize,
       cursor: options.cursor,
       thumbFill: options.thumbFill,
-      trackOnFill: options.trackFill,
-      trackOffFill: options.trackFill
+      trackOnFill: options.trackFillB,
+      trackOffFill: options.trackFillA
     } );
 
     // rendering order
