@@ -21,7 +21,7 @@ define( function( require ) {
    * @constructor
    */
   function PushButtonModel( options ) {
-    var buttonModel = this;
+    var pushButtonModel = this;
 
     options = _.extend( {
       fireOnDown: false, // true: fire on pointer down; false: fire on pointer up if pointer is over button
@@ -49,15 +49,15 @@ define( function( require ) {
 
     // If button was pressed and "fire on down" was set, fire the listeners
     this.property( 'down' ).onValue( true, function() {
-      if ( options.fireOnDown && buttonModel.enabled ) {
-        buttonModel.fire();
+      if ( options.fireOnDown && pushButtonModel.enabled ) {
+        pushButtonModel.fire();
       }
     } );
 
     // If button was released and "fire on down" was not set, fire the listeners
     this.property( 'down' ).onValue( false, function() {
-      if ( !options.fireOnDown && buttonModel.over && buttonModel.enabled ) {
-        buttonModel.fire();
+      if ( !options.fireOnDown && pushButtonModel.over && pushButtonModel.enabled ) {
+        pushButtonModel.fire();
       }
     } );
   }
