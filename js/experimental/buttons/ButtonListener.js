@@ -20,12 +20,12 @@ define( function( require ) {
   var inherit = require( 'PHET_CORE/inherit' );
 
   /**
-   * @param {ButtonModel} buttonModel
+   * @param { down:Property<Boolean> over:Property<Boolean> } buttonModel
    * @constructor
    */
   function ButtonListener( buttonModel ) {
     this.buttonModel = buttonModel;
-    var self = this;
+    var buttonListener = this;
 
     // Track the pointer that is currently interacting with this button, ignore others.
     this.overPointer = null;
@@ -33,17 +33,17 @@ define( function( require ) {
 
     DownUpListener.call( this, {
         down: function( event, trail ) {
-          if ( self.downPointer === null ) {
-            self.downPointer = event.pointer;
+          if ( buttonListener.downPointer === null ) {
+            buttonListener.downPointer = event.pointer;
           }
-          if ( event.pointer === self.downPointer ) {
+          if ( event.pointer === buttonListener.downPointer ) {
             buttonModel.down = true;
           }
         },
 
         up: function( event, trail ) {
-          if ( event.pointer === self.downPointer ) {
-            self.downPointer = null;
+          if ( event.pointer === buttonListener.downPointer ) {
+            buttonListener.downPointer = null;
             buttonModel.down = false;
           }
         }
