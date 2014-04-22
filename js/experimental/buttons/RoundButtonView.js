@@ -44,8 +44,8 @@ define( function( require ) {
       cursor: 'pointer',
       baseColor: new Color( 153, 206, 255 ),
       disabledBaseColor: new Color( 220, 220, 220 ),
-      minXPadding: 5, // Minimum padding in x direction, i.e. on left and right
-      minYPadding: 5, // Minimum padding in x direction, i.e. on top and bottom
+      minXMargin: 5, // Minimum margin in x direction, i.e. on left and right
+      minYMargin: 5, // Minimum margin in y direction, i.e. on top and bottom
       listener: null,
       fireOnDown: false,
       touchExpansion: 5, // Radius expansion for touch area, in screen units (roughly pixels)
@@ -63,11 +63,9 @@ define( function( require ) {
 
     Node.call( thisButton, { listener: options.listener, fireOnDown: options.fireOnDown } );
 
-    // Create convenience vars for creating the various gradients
-
-    //Choose a radius for the button based on the content and the padding
-    //If the user specified the radius of the button explicitly, then use it instead.
-    var buttonRadius = options.radius || Math.max( content.width + options.minXPadding * 2, content.height + options.minYPadding * 2 ) / 2;
+    // Use the user-specified radius if present, otherwise calculate the
+    // radius based on the content and the margin.
+    var buttonRadius = options.radius || Math.max( content.width + options.minXMargin * 2, content.height + options.minYMargin * 2 ) / 2;
 
     var upCenter = new Vector2( options.iconOffsetX, options.iconOffsetY );
     var baseColor = options.baseColor;

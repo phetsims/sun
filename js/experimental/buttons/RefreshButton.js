@@ -30,7 +30,7 @@ define( function( require ) {
   function RefreshButton( options ) {
     options = _.extend( {
       iconWidth: DEFAULT_ICON_WIDTH,
-      xPadding: DEFAULT_ICON_WIDTH / 3,
+      xMargin: DEFAULT_ICON_WIDTH / 3,
       baseColor: new Color( 255, 242, 2 ),
       //REVIEW is it necessary to set listener to null? that appears to be handled in PushButtonModel
       listener: null

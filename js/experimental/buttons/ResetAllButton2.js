@@ -26,7 +26,7 @@ define( function( require ) {
   function ResetAllButton2( options ) {
     options = _.extend( {
       radius: DEFAULT_RADIUS,
-      minXPadding: ( options.radius || DEFAULT_RADIUS ) * 0.2,
+      minXMargin: ( options.radius || DEFAULT_RADIUS ) * 0.2,
 
       // Default orange color scheme, standard for PhET reset buttons
       baseColor: new Color( 247, 151, 34 ),

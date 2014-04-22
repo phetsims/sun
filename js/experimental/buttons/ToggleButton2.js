@@ -13,8 +13,8 @@ define( function( require ) {
 
   function ToggleButton2( trueNode, falseNode, booleanProperty, options ) {
     options = _.extend( {
-      padX: 10,
-      padY: 10,
+      xMargin: 5,
+      yMargin: 5,
       cursor: 'pointer',
       listener: function() { booleanProperty.value = !booleanProperty.value; },
       accessibilityLabel: ''

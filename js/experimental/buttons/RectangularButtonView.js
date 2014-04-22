@@ -41,8 +41,8 @@ define( function( require ) {
       cornerRounding: 4,
       baseColor: new Color( 153, 206, 255 ),
       disabledBaseColor: new Color( 220, 220, 220 ),
-      xPadding: 5,
-      yPadding: 5,
+      xMargin: 5,
+      yMargin: 5,
       listener: null,
       fireOnDown: false,
       xTouchExpansion: 5,
@@ -55,8 +55,8 @@ define( function( require ) {
 
     Node.call( thisButton, { listener: options.listener, fireOnDown: options.fireOnDown } );
 
-    var buttonWidth = Math.max( content ? content.width + options.xPadding * 2 : 0, options.minWidth );
-    var buttonHeight = Math.max( content ? content.height + options.yPadding * 2 : 0, options.minHeight );
+    var buttonWidth = Math.max( content ? content.width + options.xMargin * 2 : 0, options.minWidth );
+    var buttonHeight = Math.max( content ? content.height + options.yMargin * 2 : 0, options.minHeight );
     var verticalHighlightStop = VERTICAL_HIGHLIGHT_GRADIENT_LENGTH / buttonHeight;
     var verticalShadowStop = 1 - SHADE_GRADIENT_LENGTH / buttonHeight;
     var horizontalHighlightStop = HORIZONTAL_HIGHLIGHT_GRADIENT_LENGTH / buttonWidth;
