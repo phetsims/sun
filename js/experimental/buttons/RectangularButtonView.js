@@ -11,6 +11,7 @@ define( function( require ) {
   'use strict';
 
   // modules
+  var ButtonListener = require( 'SUN/experimental/buttons/ButtonListener' );
   var Color = require( 'SCENERY/util/Color' );
   var inherit = require( 'PHET_CORE/inherit' );
   var LinearGradient = require( 'SCENERY/util/LinearGradient' );
@@ -59,10 +60,13 @@ define( function( require ) {
       }
     }, options );
 
-    var content = options.content;
-
     Node.call( thisButton, { listener: options.listener, fireOnDown: options.fireOnDown } );
 
+    // Hook up the input listener
+    this.addInputListener( new ButtonListener( buttonModel ) );
+
+    // Set up variables needed to create the various gradient fills
+    var content = options.content;
     var buttonWidth = Math.max( content ? content.width + options.xMargin * 2 : 0, options.minWidth );
     var buttonHeight = Math.max( content ? content.height + options.yMargin * 2 : 0, options.minHeight );
     var verticalHighlightStop = VERTICAL_HIGHLIGHT_GRADIENT_LENGTH / buttonHeight;

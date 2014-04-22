@@ -15,10 +15,9 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var RoundButtonView = require( 'SUN/experimental/buttons/RoundButtonView' );
-  var PushButtonModel = require( 'SUN/experimental/buttons/PushButtonModel' );
-  var ButtonListener = require( 'SUN/experimental/buttons/ButtonListener' );
   var inherit = require( 'PHET_CORE/inherit' );
+  var PushButtonModel = require( 'SUN/experimental/buttons/PushButtonModel' );
+  var RoundButtonView = require( 'SUN/experimental/buttons/RoundButtonView' );
 
   /**
    * @param {Node} content - Node to put on surface of button, could be text, icon, or whatever
@@ -29,10 +28,8 @@ define( function( require ) {
 
     options = _.extend( {content: content}, options );
 
-    //Safe to pass through options to the pushButtonModel like "fireOnDown".  Other scenery options will be safely ignored.
-    var pushButtonModel = new PushButtonModel( options );
-    RoundButtonView.call( this, pushButtonModel, options );
-    this.addInputListener( new ButtonListener( pushButtonModel ) );
+    // Safe to pass through options to the pushButtonModel like "fireOnDown".  Other scenery options will be safely ignored.
+    RoundButtonView.call( this, new PushButtonModel( options ), options );
   }
 
   return inherit( RoundButtonView, RoundPushButton );

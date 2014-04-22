@@ -17,6 +17,7 @@ define( function( require ) {
   'use strict';
 
   // modules
+  var ButtonListener = require( 'SUN/experimental/buttons/ButtonListener' );
   var Circle = require( 'SCENERY/nodes/Circle' );
   var Color = require( 'SCENERY/util/Color' );
   var inherit = require( 'PHET_CORE/inherit' );
@@ -67,14 +68,17 @@ define( function( require ) {
       }
     }, options );
 
-    var content = options.content;
-
     Node.call( thisButton, { listener: options.listener, fireOnDown: options.fireOnDown } );
+    var content = options.content; // convenience variable
+
+    // Hook up the input listener
+    this.addInputListener( new ButtonListener( buttonModel ) );
 
     // Use the user-specified radius if present, otherwise calculate the
     // radius based on the content and the margin.
     var buttonRadius = options.radius || Math.max( content.width + options.minXMargin * 2, content.height + options.minYMargin * 2 ) / 2;
 
+    // Set up variables needed to create the various gradient fills and otherwise mod the appearance
     var upCenter = new Vector2( options.iconOffsetX, options.iconOffsetY );
     var baseColor = options.baseColor;
     var disabledBaseColor = options.disabledBaseColor;
