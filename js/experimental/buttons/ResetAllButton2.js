@@ -31,9 +31,11 @@ define( function( require ) {
       // Default orange color scheme, standard for PhET reset buttons
       baseColor: new Color( 247, 151, 34 ),
 
-      // The arrow shape is not perfectly centered, account for that here, and see docs in RoundPushButton
-      iconOffsetX: 1,
-      iconOffsetY: -0.3
+      // The arrow shape doesn't look right when perfectly centered, account
+      // for that here, and see docs in RoundButtonView.  The multiplier
+      // values were empirically determined.
+      iconOffsetX: ( options.radius || DEFAULT_RADIUS ) * 0.03,
+      iconOffsetY: ( options.radius || DEFAULT_RADIUS ) * ( -0.0125 )
     }, options );
 
     // Create the curved arrow shape, starting at the inside of the non-
