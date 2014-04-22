@@ -56,7 +56,15 @@ define( function( require ) {
       // shapes that are not wrapped in a normalizing parent node may need to
       // specify offsets to line things up properly
       iconOffsetX: 0,
-      iconOffsetY: 0
+      iconOffsetY: 0,
+
+      // The following function controls how the appearance of the content
+      // node is modified when this button is disabled.
+      setContentEnabledLook: function( enabled ) {
+        if ( content ) {
+          enabled ? content.opacity = 1.0 : content.opacity = 0.3;
+        }
+      }
     }, options );
 
     var content = options.content;
@@ -142,20 +150,13 @@ define( function( require ) {
       thisButton.addChild( content );
     }
 
-    //Set the opacity of the content, but only if it exists
-    function setContentOpacity( opacity ) {
-      if ( content ) {
-        content.opacity = opacity;
-      }
-    }
-
     // Hook up the function that will modify button appearance as the state changes.
     buttonModel.interactionStateProperty.link( function( interactionState ) {
 
       switch( interactionState ) {
 
         case 'idle':
-          setContentOpacity( 1 );
+          options.setContentEnabledLook( true );
           background.fill = upFillHighlight;
           overlayForShadowGradient.stroke = options.stroke;
           overlayForShadowGradient.fill = upFillShadow;
@@ -163,7 +164,7 @@ define( function( require ) {
           break;
 
         case 'over':
-          setContentOpacity( 1 );
+          options.setContentEnabledLook( true );
           background.fill = overFillHighlight;
           overlayForShadowGradient.stroke = options.stroke;
           overlayForShadowGradient.fill = overFillShadow;
@@ -171,7 +172,7 @@ define( function( require ) {
           break;
 
         case 'pressed':
-          setContentOpacity( 1 );
+          options.setContentEnabledLook( true );
           background.fill = pressedFill;
           overlayForShadowGradient.stroke = options.stroke;
           overlayForShadowGradient.fill = overFillShadow;
@@ -179,7 +180,7 @@ define( function( require ) {
           break;
 
         case 'disabled':
-          setContentOpacity( 0.3 );
+          options.setContentEnabledLook( false );
           background.fill = disabledFillHighlight;
           overlayForShadowGradient.stroke = lightenedStroke;
           overlayForShadowGradient.fill = disabledFillShadow;
@@ -187,7 +188,7 @@ define( function( require ) {
           break;
 
         case 'disabled-pressed':
-          setContentOpacity( 0.3 );
+          options.setContentEnabledLook( false );
           background.fill = disabledPressedFillHighlight;
           overlayForShadowGradient.stroke = lightenedStroke;
           overlayForShadowGradient.fill = disabledFillShadow;

@@ -48,7 +48,15 @@ define( function( require ) {
       xTouchExpansion: 5,
       yTouchExpansion: 5,
       stroke: null, // No outline stroke by default
-      lineWidth: 1 // Only meaningful if stroke is non-null
+      lineWidth: 1, // Only meaningful if stroke is non-null
+
+      // The following function controls how the appearance of the content
+      // node is modified when this button is disabled.
+      setContentEnabledLook: function( enabled ) {
+        if ( content ) {
+          enabled ? content.opacity = 1.0 : content.opacity = 0.3;
+        }
+      }
     }, options );
 
     var content = options.content;
@@ -136,20 +144,13 @@ define( function( require ) {
       thisButton.addChild( content );
     }
 
-    //Set the opacity of the content, but only if it exists
-    function setContentOpacity( opacity ) {
-      if ( content ) {
-        content.opacity = opacity;
-      }
-    }
-
     // Hook up the function that will modify button appearance as the state changes.
     buttonModel.interactionStateProperty.link( function( interactionState ) {
 
       switch( interactionState ) {
 
         case 'idle':
-          setContentOpacity( 1 );
+          options.setContentEnabledLook( true );
           background.fill = upFillVertical;
           overlayForHorizGradient.stroke = options.stroke;
           overlayForHorizGradient.fill = upFillHorizontal;
@@ -157,7 +158,7 @@ define( function( require ) {
           break;
 
         case 'over':
-          setContentOpacity( 1 );
+          options.setContentEnabledLook( true );
           background.fill = overFillVertical;
           overlayForHorizGradient.stroke = options.stroke;
           overlayForHorizGradient.fill = overFillHorizontal;
@@ -165,7 +166,7 @@ define( function( require ) {
           break;
 
         case 'pressed':
-          setContentOpacity( 1 );
+          options.setContentEnabledLook( true );
           background.fill = downFill;
           overlayForHorizGradient.stroke = options.stroke;
           overlayForHorizGradient.fill = overFillHorizontal;
@@ -173,7 +174,7 @@ define( function( require ) {
           break;
 
         case 'disabled':
-          setContentOpacity( 0.3 );
+          options.setContentEnabledLook( false );
           background.fill = disabledFillVertical;
           background.stroke = lightenedStroke;
           overlayForHorizGradient.stroke = lightenedStroke;
