@@ -1,8 +1,8 @@
 // Copyright 2002-2014, University of Colorado Boulder
 
 /**
- * Visual representation of a rectangular push button that uses gradients in
- * order to create a somewhat 3D look.
+ * Visual representation of a rectangular button that uses gradients in order
+ * to create a somewhat 3D look.
  *
  * @author John Blanco
  * @author Sam Reid
