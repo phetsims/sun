@@ -13,6 +13,7 @@
 define( function( require ) {
   'use strict';
 
+  // modules
   var RectangularButtonView = require( 'SUN/experimental/buttons/RectangularButtonView' );
   var PushButtonModel = require( 'SUN/experimental/buttons/PushButtonModel' );
   var ButtonListener = require( 'SUN/experimental/buttons/ButtonListener' );

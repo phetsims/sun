@@ -16,6 +16,7 @@
 define( function( require ) {
   'use strict';
 
+  // modules
   var DownUpListener = require( 'SCENERY/input/DownUpListener' );
   var inherit = require( 'PHET_CORE/inherit' );
 

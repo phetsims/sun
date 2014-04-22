@@ -8,6 +8,7 @@
 define( function( require ) {
   'use strict';
 
+  // modules
   var inherit = require( 'PHET_CORE/inherit' );
   var InOutRadioButtonView = require( 'SUN/experimental/buttons/InOutRadioButtonView' );
 

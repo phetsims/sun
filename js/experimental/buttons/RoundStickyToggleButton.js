@@ -15,6 +15,7 @@
 define( function( require ) {
   'use strict';
 
+  // modules
   var inherit = require( 'PHET_CORE/inherit' );
   var RoundButtonView = require( 'SUN/experimental/buttons/RoundButtonView' );
   var StickyToggleButtonModel = require( 'SUN/experimental/buttons/StickyToggleButtonModel' );

@@ -12,7 +12,7 @@
 define( function( require ) {
   'use strict';
 
-  // Includes
+  // modules
   var inherit = require( 'PHET_CORE/inherit' );
   var PropertySet = require( 'AXON/PropertySet' );
 

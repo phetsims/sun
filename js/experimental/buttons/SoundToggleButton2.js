@@ -10,6 +10,7 @@
 define( function( require ) {
   'use strict';
 
+  // modules
   var Color = require( 'SCENERY/util/Color' );
   var FontAwesomeNode = require( 'SUN/FontAwesomeNode' );
   var inherit = require( 'PHET_CORE/inherit' );
