@@ -48,7 +48,7 @@ define( function( require ) {
       minYPadding: 5, // Minimum padding in x direction, i.e. on top and bottom
       listener: null,
       fireOnDown: false,
-      touchExpansion: 5, // In screen units (roughly pixels) beyond button's edge.
+      touchExpansion: 5, // Radius expansion for touch area, in screen units (roughly pixels)
       stroke: null, // No outline stroke by default
       lineWidth: 1, // Only meaningful if stroke is non-null
 
