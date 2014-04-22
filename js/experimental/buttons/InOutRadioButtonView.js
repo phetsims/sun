@@ -19,8 +19,7 @@ define( function( require ) {
       xMargin: 5,
       yMargin: 5,
       shadowOffsetX: 4,
-      shadowOffsetY: 4,
-      accessibilityLabel: ''
+      shadowOffsetY: 4
     }, options );
 
     var buttonPanel = new Panel( contentNode, {

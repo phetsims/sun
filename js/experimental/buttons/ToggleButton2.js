@@ -16,8 +16,7 @@ define( function( require ) {
       xMargin: 5,
       yMargin: 5,
       cursor: 'pointer',
-      listener: function() { booleanProperty.value = !booleanProperty.value; },
-      accessibilityLabel: ''
+      listener: function() { booleanProperty.value = !booleanProperty.value; }
     }, options );
 
     var content = new ToggleNode( trueNode, falseNode, booleanProperty );
