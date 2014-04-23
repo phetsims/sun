@@ -30,7 +30,7 @@ define( function( require ) {
   var HIGHLIGHT_GRADIENT_LENGTH = 5; // In screen coords, which are roughly pixels.
 
   /**
-   * @param {Object} buttonModel
+   * @param {ButtonModel} buttonModel
    * @param {Object} options
    * @constructor
    */

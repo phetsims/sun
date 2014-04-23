@@ -14,7 +14,7 @@ define( function( require ) {
 
   // modules
   var inherit = require( 'PHET_CORE/inherit' );
-  var PropertySet = require( 'AXON/PropertySet' );
+  var ButtonModel = require( 'SUN/experimental/buttons/ButtonModel' );
 
   /**
    * @param {Object} options
@@ -28,11 +28,7 @@ define( function( require ) {
       listener: null
     }, options );
 
-    PropertySet.call( this, {
-      over: false,
-      down: false,
-      enabled: true
-    } );
+    ButtonModel.call( this );
 
     this.listeners = []; //@private
     if ( options.listener !== null ) {
@@ -62,7 +58,7 @@ define( function( require ) {
     } );
   }
 
-  return inherit( PropertySet, PushButtonModel, {
+  return inherit( ButtonModel, PushButtonModel, {
 
     // Adds a listener. If already a listener, this is a no-op.
     addListener: function( listener ) {

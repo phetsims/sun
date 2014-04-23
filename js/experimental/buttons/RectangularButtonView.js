@@ -25,8 +25,8 @@ define( function( require ) {
   var SHADE_GRADIENT_LENGTH = 3; // In screen coords, which are roughly pixels.
 
   /**
-   * @param buttonModel - Model that defines the button's behavior.
-   * @param options
+   * @param {ButtonModel} buttonModel - Model that defines the button's behavior.
+   * @param {Object} options
    * @constructor
    */
   function RectangularButtonView( buttonModel, options ) {
