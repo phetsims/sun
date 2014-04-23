@@ -56,8 +56,8 @@ define( function( require ) {
       // By default, icons are centered in the button, but icons with odd
       // shapes that are not wrapped in a normalizing parent node may need to
       // specify offsets to line things up properly
-      iconOffsetX: 0,
-      iconOffsetY: 0,
+      xContentOffset: 0,
+      yContentOffset: 0,
 
       // The following function controls how the appearance of the content
       // node is modified when this button is disabled.
@@ -79,7 +79,7 @@ define( function( require ) {
     var buttonRadius = options.radius || Math.max( content.width + options.minXMargin * 2, content.height + options.minYMargin * 2 ) / 2;
 
     // Set up variables needed to create the various gradient fills and otherwise mod the appearance
-    var upCenter = new Vector2( options.iconOffsetX, options.iconOffsetY );
+    var upCenter = new Vector2( options.xContentOffset, options.yContentOffset );
     var baseColor = options.baseColor;
     var disabledBaseColor = options.disabledBaseColor;
     var transparentBaseColor = new Color( baseColor.getRed(), baseColor.getGreen(), baseColor.getBlue(), 0 );

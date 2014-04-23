@@ -12,6 +12,13 @@ define( function( require ) {
   var RectangularPushButton = require( 'SUN/experimental/buttons/RectangularPushButton' );
   var ToggleNode = require( 'SUN/ToggleNode' );
 
+  /**
+   * @param trueNode
+   * @param falseNode
+   * @param booleanProperty
+   * @param options - See Rectangular push button for a description of the available options
+   * @constructor
+   */
   function ToggleButton2( trueNode, falseNode, booleanProperty, options ) {
     options = _.extend( {
       xMargin: 5,

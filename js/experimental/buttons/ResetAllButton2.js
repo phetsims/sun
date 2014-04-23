@@ -34,8 +34,8 @@ define( function( require ) {
       // The arrow shape doesn't look right when perfectly centered, account
       // for that here, and see docs in RoundButtonView.  The multiplier
       // values were empirically determined.
-      iconOffsetX: ( options.radius || DEFAULT_RADIUS ) * 0.03,
-      iconOffsetY: ( options.radius || DEFAULT_RADIUS ) * ( -0.0125 )
+      xContentOffset: ( options.radius || DEFAULT_RADIUS ) * 0.03,
+      yContentOffset: ( options.radius || DEFAULT_RADIUS ) * ( -0.0125 )
     }, options );
 
     // Create the curved arrow shape, starting at the inside of the non-
