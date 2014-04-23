@@ -69,10 +69,10 @@ define( function( require ) {
     var content = options.content;
     var buttonWidth = Math.max( content ? content.width + options.xMargin * 2 : 0, options.minWidth );
     var buttonHeight = Math.max( content ? content.height + options.yMargin * 2 : 0, options.minHeight );
-    var verticalHighlightStop = VERTICAL_HIGHLIGHT_GRADIENT_LENGTH / buttonHeight;
-    var verticalShadowStop = 1 - SHADE_GRADIENT_LENGTH / buttonHeight;
-    var horizontalHighlightStop = HORIZONTAL_HIGHLIGHT_GRADIENT_LENGTH / buttonWidth;
-    var horizontalShadowStop = 1 - SHADE_GRADIENT_LENGTH / buttonWidth;
+    var verticalHighlightStop = Math.min( VERTICAL_HIGHLIGHT_GRADIENT_LENGTH / buttonHeight, 1 );
+    var verticalShadowStop = Math.max( 1 - SHADE_GRADIENT_LENGTH / buttonHeight, 0 );
+    var horizontalHighlightStop = Math.min( HORIZONTAL_HIGHLIGHT_GRADIENT_LENGTH / buttonWidth, 1 );
+    var horizontalShadowStop = Math.max( 1 - SHADE_GRADIENT_LENGTH / buttonWidth, 0 );
     var baseColor = options.baseColor;
     var disabledBaseColor = options.disabledBaseColor;
     var transparentBaseColor = new Color( baseColor.getRed(), baseColor.getGreen(), baseColor.getBlue(), 0 );
