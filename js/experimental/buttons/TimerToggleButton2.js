@@ -39,7 +39,7 @@ define( function( require ) {
 
     // Create the node that represents the timer being off.
     var timerOffNode = new Node();
-    var timerOffNodeBackground = new SimpleClockIcon( clockRadius, { opacity: 0.4 } );
+    var timerOffNodeBackground = new SimpleClockIcon( clockRadius );
     timerOffNode.addChild( timerOffNodeBackground );
     var xNode = new Shape();
     var xNodeWidth = timerOffNode.width * 0.8;
