@@ -50,7 +50,7 @@ define( function( require ) {
     timerOffNode.addChild( new Path( xNode,
       {
         stroke: 'red',
-        opacity: '0.4',
+        opacity: '0.55',
         lineWidth: X_STROKE_WIDTH,
         lineCap: 'round',
         centerX: timerOffNode.width / 2,
