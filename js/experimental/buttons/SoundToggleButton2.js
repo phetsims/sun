@@ -37,7 +37,7 @@ define( function( require ) {
       new FontAwesomeNode( 'volume_up' ),
       soundOffNode,
       property,
-      _.extend( { baseColor: new Color( 227, 233, 128 ) }, options ) );
+      _.extend( { baseColor: new Color( 255, 242, 2 ) }, options ) );
   }
 
   inherit( ToggleButton2, SoundToggleButton2 );
