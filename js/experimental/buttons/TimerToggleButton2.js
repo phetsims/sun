@@ -19,7 +19,7 @@ define( function( require ) {
   var ToggleButton2 = require( 'SUN/experimental/buttons/ToggleButton2' );
 
   // Constants
-  var X_STROKE_WIDTH = 4;
+  var X_STROKE_WIDTH = 6;
 
   /**
    * @param {Property} enabledProperty
