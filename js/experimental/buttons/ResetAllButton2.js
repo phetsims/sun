@@ -55,12 +55,12 @@ define( function( require ) {
     curvedArrowShape.arc( 0, 0, outerRadius, startAngle, neckAngle, true ); // Outer curve.
     var headWidthExtrusion = ( headWidth - ( outerRadius - innerRadius ) ) / 2;
     curvedArrowShape.lineTo(
-      ( outerRadius + headWidthExtrusion ) * Math.cos( neckAngle ),
-      ( outerRadius + headWidthExtrusion ) * Math.sin( neckAngle ) );
+        ( outerRadius + headWidthExtrusion ) * Math.cos( neckAngle ),
+        ( outerRadius + headWidthExtrusion ) * Math.sin( neckAngle ) );
     var pointRadius = ( outerRadius + innerRadius ) * 0.55; // Tweaked a little from center for better look.
     curvedArrowShape.lineTo( // Tip of arrowhead.
-      pointRadius * Math.cos( neckAngle + arrowHeadAngularSpan ),
-      pointRadius * Math.sin( neckAngle + arrowHeadAngularSpan ) );
+        pointRadius * Math.cos( neckAngle + arrowHeadAngularSpan ),
+        pointRadius * Math.sin( neckAngle + arrowHeadAngularSpan ) );
     curvedArrowShape.lineTo( ( innerRadius - headWidthExtrusion ) * Math.cos( neckAngle ), ( innerRadius - headWidthExtrusion ) * Math.sin( neckAngle ) );
     curvedArrowShape.lineTo( innerRadius * Math.cos( neckAngle ), innerRadius * Math.sin( neckAngle ) );
     curvedArrowShape.arc( 0, 0, innerRadius, neckAngle, startAngle ); // Inner curve.
@@ -68,7 +68,7 @@ define( function( require ) {
 
     var icon = new Path( curvedArrowShape, { fill: 'white' } );
 
-    RoundPushButton.call( this, icon, options );
+    RoundPushButton.call( this, _.extend( { content: icon }, options ) );
   }
 
   return inherit( RoundPushButton, ResetAllButton2 );

@@ -106,8 +106,8 @@ define( function( require ) {
 
     // Test button behavior.
     var buttonA = new RectangularPushButton(
-      new Text( '--- A ---', { font: BUTTON_FONT } ),
       {
+        content: new Text( '--- A ---', { font: BUTTON_FONT } ),
         listener: function() { outputText.text = 'Button A pressed'; },
         left: 100,
         top: 300
@@ -115,8 +115,8 @@ define( function( require ) {
     this.addChild( buttonA );
 
     var buttonB = new RectangularPushButton(
-      new Text( '--- B ---', { font: BUTTON_FONT } ),
       {
+        content: new Text( '--- B ---', { font: BUTTON_FONT } ),
         listener: function() { outputText.text = 'Button B pressed'; },
         left: buttonA.right + 10,
         centerY: buttonA.centerY,
@@ -125,8 +125,8 @@ define( function( require ) {
     this.addChild( buttonB );
 
     var buttonC = new RectangularPushButton(
-      new Text( '--- C ---', { font: BUTTON_FONT } ),
       {
+        content: new Text( '--- C ---', { font: BUTTON_FONT } ),
         listener: function() {
           outputText.text = 'Button C pressed ' + ( ++buttonCFireCount ) + 'x';
         },
@@ -137,8 +137,8 @@ define( function( require ) {
     this.addChild( buttonC );
 
     var fireOnDownButton = new RectangularPushButton(
-      new Text( 'Fire on Down Button', { font: BUTTON_FONT } ),
       {
+        content: new Text( 'Fire on Down Button', { font: BUTTON_FONT } ),
         listener: function() { outputText.text = 'Fire on down button pressed ' + ( ++fireOnDownCount ) + 'x'; },
         left: buttonC.right + 30,
         centerY: buttonC.centerY,
@@ -161,8 +161,8 @@ define( function( require ) {
     this.addChild( resetAllButton2 );
 
     var buttonD = new RoundPushButton(
-      new Text( '- D -', { font: BUTTON_FONT } ),
       {
+        content: new Text( '--- C ---', { font: BUTTON_FONT } ),
         listener: function() { outputText.text = 'Button D pressed'; },
         left: resetAllButton2.right + buttonSpacing,
         centerY: resetAllButton2.centerY
@@ -170,8 +170,8 @@ define( function( require ) {
     this.addChild( buttonD );
 
     var buttonE = new RoundPushButton(
-      new Text( '-- E --', { font: BUTTON_FONT } ),
       {
+        content: new Text( '--- E ---', { font: BUTTON_FONT } ),
         listener: function() { outputText.text = 'Button E pressed'; },
         baseColor: new Color( 245, 184, 0 ),
         left: buttonD.right + buttonSpacing,
@@ -180,8 +180,8 @@ define( function( require ) {
     this.addChild( buttonE );
 
     var fireButton = new RoundPushButton(
-      new Text( 'Fire!', { font: new PhetFont( { size: 16, style: 'italic' } ) } ),
       {
+        content: new Text( 'Fire!', { font: BUTTON_FONT } ),
         listener: function() { outputText.text = 'Fire button pressed'; },
         baseColor: new Color( 255, 100, 51 ),
         left: buttonE.right + buttonSpacing,
@@ -192,8 +192,8 @@ define( function( require ) {
     this.addChild( fireButton );
 
     var goButton = new RoundPushButton(
-      new Text( 'Go!', { font: new PhetFont( { size: 30, weight: 'bold' } ), fill: 'white' } ),
       {
+        content: new Text( 'Go!', { font: BUTTON_FONT } ),
         listener: function() { outputText.text = 'Go button pressed'; },
         baseColor: new Color( 0, 163, 0 ),
         minXPadding: 10,
@@ -204,8 +204,8 @@ define( function( require ) {
 
     var helpButtonBaseColor = new Color( 244, 154, 194 );
     var helpButton = new RoundPushButton(
-      new Text( 'Help', { font: BUTTON_FONT } ),
       {
+        content: new Text( 'Help', { font: BUTTON_FONT } ),
         listener: function() { outputText.text = 'Help button pressed'; },
         baseColor: new Color( 244, 154, 194 ),
         minXPadding: 10,
@@ -246,8 +246,8 @@ define( function( require ) {
     this.addChild( inOutRadioButton );
 
     var transparentButton = new RectangularPushButton(
-      new Text( 'Transparent Button', { font: BUTTON_FONT } ),
       {
+        content: new Text( 'Transparent Button', { font: BUTTON_FONT } ),
         listener: function() { outputText.text = 'Transparent button pressed'; },
         left: helpButton.centerX,
         top: roundStickyToggleButton.bottom - 10,

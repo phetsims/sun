@@ -22,14 +22,11 @@ define( function( require ) {
   var ButtonListener = require( 'SUN/experimental/buttons/ButtonListener' );
 
   function RoundStickyToggleButton( booleanProperty, options ) {
-    this.booleanProperty = booleanProperty;
     options = _.extend( {
       toggleOnDown: true
     }, options );
 
-    this.buttonModel = new StickyToggleButtonModel( booleanProperty );
-    RoundButtonView.call( this, this.buttonModel, options );
-    this.addInputListener( new ButtonListener( this.buttonModel ) );
+    RoundButtonView.call( this, new StickyToggleButtonModel( booleanProperty ), options );
   }
 
   return inherit( RoundButtonView, RoundStickyToggleButton );

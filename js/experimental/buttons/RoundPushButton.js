@@ -30,6 +30,7 @@ define( function( require ) {
    * All of these values have defaults, so only specify them when needed.
    *
    *    baseColor:              The color for the main portion of the button, other colors for highlights and shadows will be based off of this
+   *    content:                The node to display on the button, can be null for a blank button
    *    disabledBaseColor:      The color for the main portion of the button when disabled, other colors for highlights and shadows will be based of of this
    *    fireOnDown:             Boolean that controls whether the listener function(s) are fired when the button is pressed down instead of when released
    *    listener:               Function that is called when this button is fired
@@ -43,9 +44,7 @@ define( function( require ) {
    *
    * @constructor
    */
-  function RoundPushButton( content, options ) {
-
-    options = _.extend( {content: content}, options );
+  function RoundPushButton( options ) {
 
     // Safe to pass through options to the pushButtonModel like "fireOnDown".  Other scenery options will be safely ignored.
     RoundButtonView.call( this, new PushButtonModel( options ), options );

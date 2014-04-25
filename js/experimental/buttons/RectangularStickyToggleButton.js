@@ -12,7 +12,6 @@ define( function( require ) {
   var ButtonListener = require( 'SUN/experimental/buttons/ButtonListener' );
 
   function RectangularStickyToggleButton( booleanProperty, options ) {
-    this.booleanProperty = booleanProperty;
     options = _.extend( {
       toggleOnDown: true
     }, options );

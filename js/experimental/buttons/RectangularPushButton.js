@@ -30,6 +30,7 @@ define( function( require ) {
    * All of these values have defaults, so only specify them when needed.
    *
    *    baseColor:              The color for the main portion of the button, other colors for highlights and shadows will be based off of this
+   *    content:                The node to display on the button, can be null for a blank button
    *    cornerRounding:         Just like the usual option for a rectangular shape
    *    disabledBaseColor:      The color for the main portion of the button when disabled, other colors for highlights and shadows will be based of of this
    *    fireOnDown:             Boolean that controls whether the listener function(s) are fired when the button is pressed down instead of when released
@@ -44,9 +45,9 @@ define( function( require ) {
    *
    * @constructor
    */
-  function RectangularPushButton( content, options ) {
+  function RectangularPushButton( options ) {
 
-    options = _.extend( {content: content}, options );
+    options = _.extend( options );
 
     // Safe to pass through options to the pushButtonModel like "fireOnDown".  Other scenery options will be safely ignored.
     RectangularButtonView.call( this, new PushButtonModel( options ), options );

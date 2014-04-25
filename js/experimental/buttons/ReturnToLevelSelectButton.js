@@ -25,7 +25,7 @@ define( function( require ) {
       baseColor: new Color( 255, 242, 2 )
     }, options );
 
-    RectangularPushButton.call( this, new Star( 30, { fill: 'black' } ), options );
+    RectangularPushButton.call( this, _.extend( { content: new Star( 30, { fill: 'black' } ) }, options ) );
   }
 
   return inherit( RectangularPushButton, ReturnToLevelSelectButton );

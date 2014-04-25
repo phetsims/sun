@@ -27,9 +27,7 @@ define( function( require ) {
       listener: function() { booleanProperty.value = !booleanProperty.value; }
     }, options );
 
-    var content = new ToggleNode( trueNode, falseNode, booleanProperty );
-
-    RectangularPushButton.call( this, content, options );
+    RectangularPushButton.call( this, _.extend( { content: new ToggleNode( trueNode, falseNode, booleanProperty ) }, options ) );
   }
 
   return inherit( RectangularPushButton, ToggleButton2 );

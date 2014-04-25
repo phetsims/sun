@@ -23,7 +23,6 @@ define( function( require ) {
   var DEFAULT_ICON_WIDTH = 24;
 
   /**
-   * @param {function} callback
    * @param {Object} options
    * @constructor
    */
@@ -31,9 +30,7 @@ define( function( require ) {
     options = _.extend( {
       iconWidth: DEFAULT_ICON_WIDTH,
       xMargin: DEFAULT_ICON_WIDTH / 3,
-      baseColor: new Color( 255, 242, 2 ),
-      //REVIEW is it necessary to set listener to null? that appears to be handled in PushButtonModel
-      listener: null
+      baseColor: new Color( 255, 242, 2 )
     }, options );
 
     // Create the top arrow shape, starting at the rightmost edge.  The
@@ -78,7 +75,7 @@ define( function( require ) {
     refreshIconNode.addChild( new Path( upperArrowShape, { fill: 'black' } ) );
     refreshIconNode.addChild( new Path( lowerArrowShape, { fill: 'black', y: options.iconWidth * 0.2 } ) );
 
-    RectangularPushButton.call( this, refreshIconNode, options );
+    RectangularPushButton.call( this, _.extend( { content: refreshIconNode }, options ) );
   }
 
   return inherit( RectangularPushButton, RefreshButton );
