@@ -215,12 +215,16 @@ define( function( require ) {
   return inherit( Node, RoundButtonView, {
     addListener: function( listener ) {
       // Pass through to button model.
-      this.buttonModel.addListener( listener );
+      assert && assert( typeof( this.buttonModel.addListener ) === 'function', 'The button model has no addListener method' );
+      if ( this.buttonModel.addListener ) { this.buttonModel.addListener( listener ) }
+      ;
     },
 
     removeListener: function( listener ) {
       // Pass through to button model.
-      this.buttonModel.removeListener( listener );
+      assert && assert( typeof( this.buttonModel.removeListener ) === 'function', 'The button model has no removeListener method' );
+      if ( this.buttonModel.removeListener ) { this.buttonModel.removeListener( listener ) }
+      ;
     },
 
     set enabled( value ) {
