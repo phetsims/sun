@@ -18,16 +18,15 @@ define( function( require ) {
   // modules
   var inherit = require( 'PHET_CORE/inherit' );
   var RoundButtonView = require( 'SUN/experimental/buttons/RoundButtonView' );
-  var BooleanRoundStickyToggleButton = require( 'SUN/experimental/buttons/BooleanRoundStickyToggleButton' );
-  var ToggleProperty = require( 'AXON/ToggleProperty' );
+  var StickyToggleButtonModel = require( 'SUN/experimental/buttons/StickyToggleButtonModel' );
 
-  function RoundStickyToggleButton( valueA, valueB, property, options ) {
+  function BooleanRoundStickyToggleButton( booleanProperty, options ) {
     options = _.extend( {
       toggleOnDown: true
     }, options );
 
-    BooleanRoundStickyToggleButton.call( this, new ToggleProperty( valueA, valueB, property ), options );
+    RoundButtonView.call( this, new StickyToggleButtonModel( booleanProperty ), options );
   }
 
-  return inherit( RoundButtonView, RoundStickyToggleButton );
+  return inherit( RoundButtonView, BooleanRoundStickyToggleButton );
 } );
