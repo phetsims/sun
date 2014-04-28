@@ -19,8 +19,6 @@ define( function( require ) {
   var PushButtonModel = require( 'SUN/experimental/buttons/PushButtonModel' );
 
   /**
-   * @param {Node} content - Node to put on surface of button, could be text,
-   * icon, or whatever
    * @param {Object} options - All of the general Scenery node options can be
    * used, see Node.js or the Scenery documentation. In addition, the
    * following options are available. Note that there is no automated process
@@ -47,11 +45,23 @@ define( function( require ) {
    */
   function RectangularPushButton( options ) {
 
-    options = _.extend( options );
+    options = _.extend( { listener: null }, options );
+
+    this.buttonModel = new PushButtonModel( options );
 
     // Safe to pass through options to the pushButtonModel like "fireOnDown".  Other scenery options will be safely ignored.
-    RectangularButtonView.call( this, new PushButtonModel( options ), options );
+    RectangularButtonView.call( this, this.buttonModel, options );
   }
 
-  return inherit( RectangularButtonView, RectangularPushButton );
+  return inherit( RectangularButtonView, RectangularPushButton, {
+    addListener: function( listener ) {
+      // Pass through to button model.
+      this.buttonModel.addListener( listener );
+    },
+
+    removeListener: function( listener ) {
+      // Pass through to button model.
+      this.buttonModel.removeListener( listener );
+    }
+  } );
 } );

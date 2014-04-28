@@ -47,7 +47,6 @@ define( function( require ) {
       disabledBaseColor: new Color( 220, 220, 220 ),
       minXMargin: 5, // Minimum margin in x direction, i.e. on left and right
       minYMargin: 5, // Minimum margin in y direction, i.e. on top and bottom
-      listener: null,
       fireOnDown: false,
       touchExpansion: 5, // Radius expansion for touch area, in screen units (roughly pixels)
       stroke: null, // No outline stroke by default
@@ -213,20 +212,6 @@ define( function( require ) {
   }
 
   return inherit( Node, RoundButtonView, {
-    addListener: function( listener ) {
-      // Pass through to button model.
-      assert && assert( typeof( this.buttonModel.addListener ) === 'function', 'The button model has no addListener method' );
-      if ( this.buttonModel.addListener ) { this.buttonModel.addListener( listener ) }
-      ;
-    },
-
-    removeListener: function( listener ) {
-      // Pass through to button model.
-      assert && assert( typeof( this.buttonModel.removeListener ) === 'function', 'The button model has no removeListener method' );
-      if ( this.buttonModel.removeListener ) { this.buttonModel.removeListener( listener ) }
-      ;
-    },
-
     set enabled( value ) {
       assert && assert( typeof value === 'boolean', 'RoundButtonView.enabled must be a boolean value' );
       this.buttonModel.enabled = value;

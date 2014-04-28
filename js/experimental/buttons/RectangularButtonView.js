@@ -44,7 +44,6 @@ define( function( require ) {
       disabledBaseColor: new Color( 220, 220, 220 ),
       xMargin: 5,
       yMargin: 5,
-      listener: null,
       fireOnDown: false,
       xTouchExpansion: 5,
       yTouchExpansion: 5,
@@ -199,20 +198,6 @@ define( function( require ) {
 
   return inherit( Node, RectangularButtonView,
     {
-      addListener: function( listener ) {
-        // Pass through to button model.
-        assert && assert( typeof( this.buttonModel.addListener ) === 'function', 'The button model has no addListener method' );
-        if ( this.buttonModel.addListener ) { this.buttonModel.addListener( listener ) }
-        ;
-      },
-
-      removeListener: function( listener ) {
-        // Pass through to button model.
-        assert && assert( typeof( this.buttonModel.removeListener ) === 'function', 'The button model has no removeListener method' );
-        if ( this.buttonModel.removeListener ) { this.buttonModel.removeListener( listener ) }
-        ;
-      },
-
       set enabled( value ) {
         assert && assert( typeof value === 'boolean', 'RectangularButtonView.enabled must be a boolean value' );
         this.buttonModel.enabled = value;
