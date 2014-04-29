@@ -3,9 +3,9 @@
 /**
  * Button for toggling sound on and off.
  *
+ * @author John Blanco
  * @author Chris Malley (PixelZoom, Inc.)
  * @author Sam Reid
- * @author John Blanco
  */
 define( function( require ) {
   'use strict';
@@ -19,11 +19,18 @@ define( function( require ) {
   var Shape = require( 'KITE/Shape' );
   var ToggleButton2 = require( 'SUN/experimental/buttons/ToggleButton2' );
 
-  var X_WIDTH = 12; // Empirically determined.
+  // Constants
+  var WIDTH = 50;
+  var HEIGHT = 50;
+  var MARGIN = 4;
+  var X_WIDTH = WIDTH * 0.25; // Empirically determined.
 
   function SoundToggleButton2( property, options ) {
     var soundOffNode = new Node();
-    soundOffNode.addChild( new FontAwesomeNode( 'volume_off' ) );
+    var soundOnNode = new FontAwesomeNode( 'volume_up' );
+    var scale = ( WIDTH - ( 2 * MARGIN ) ) / soundOnNode.width;
+    soundOnNode.scale( scale );
+    soundOffNode.addChild( new FontAwesomeNode( 'volume_off', { scale: scale } ) );
     var soundOffX = new Path( new Shape().moveTo( 0, 0 ).lineTo( X_WIDTH, X_WIDTH ).moveTo( 0, X_WIDTH ).lineTo( X_WIDTH, 0 ),
       {
         stroke: 'black',
@@ -34,13 +41,18 @@ define( function( require ) {
     soundOffNode.addChild( soundOffX );
 
     ToggleButton2.call( this,
-      new FontAwesomeNode( 'volume_up' ),
+      soundOnNode,
       soundOffNode,
       property,
-      _.extend( { baseColor: new Color( 255, 242, 2 ) }, options ) );
+      _.extend(
+        {
+          baseColor: new Color( 255, 242, 2 ),
+          minWidth: WIDTH,
+          minHeight: HEIGHT,
+          xMargin: MARGIN,
+          yMargin: MARGIN
+        }, options ) );
   }
 
-  inherit( ToggleButton2, SoundToggleButton2 );
-
-  return SoundToggleButton2;
+  return inherit( ToggleButton2, SoundToggleButton2 );
 } );
