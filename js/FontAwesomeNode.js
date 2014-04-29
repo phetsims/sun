@@ -40,7 +40,7 @@ define( function( require ) {
 
     // add internal values required by supertype constructor
     options = _.extend( options, {
-      matrix: new Matrix3( 0.025, 0, 0, 0, -0.025, 0, 0, 0, 1 )
+      matrix: Matrix3.createFromPool( 0.025, 0, 0, 0, -0.025, 0, 0, 0, 1 )
     } );
 
     Path.call( this, new Shape( icons[iconName] ), options );
