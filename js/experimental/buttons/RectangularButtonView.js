@@ -126,6 +126,12 @@ define( function( require ) {
       .addColorStop( horizontalShadowStop, transparentDisabledBaseColor )
       .addColorStop( 1, disabledBaseColor.colorUtilsDarker( 0.5 ) );
 
+    var disabledPressedFillVertical = new LinearGradient( 0, 0, 0, buttonHeight )
+      .addColorStop( 0, disabledBaseColor.colorUtilsBrighter( 0.7 ) )
+      .addColorStop( verticalHighlightStop * 0.67, disabledBaseColor.colorUtilsDarker( 0.3 ) )
+      .addColorStop( verticalShadowStop, disabledBaseColor.colorUtilsBrighter( 0.2 ) )
+      .addColorStop( 1, disabledBaseColor.colorUtilsDarker( 0.5 ) );
+
     // Create the basic button shape.
     var background = new Rectangle( 0, 0, buttonWidth, buttonHeight, options.cornerRounding, options.cornerRounding,
       {
@@ -180,6 +186,15 @@ define( function( require ) {
         case 'disabled':
           options.setContentEnabledLook( false );
           background.fill = disabledFillVertical;
+          background.stroke = lightenedStroke;
+          overlayForHorizGradient.stroke = lightenedStroke;
+          overlayForHorizGradient.fill = disabledFillHorizontal;
+          thisButton.cursor = null;
+          break;
+
+        case 'disabled-pressed':
+          options.setContentEnabledLook( false );
+          background.fill = disabledPressedFillVertical;
           background.stroke = lightenedStroke;
           overlayForHorizGradient.stroke = lightenedStroke;
           overlayForHorizGradient.fill = disabledFillHorizontal;
