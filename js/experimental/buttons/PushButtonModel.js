@@ -1,10 +1,7 @@
 // Copyright 2002-2014, University of Colorado Boulder
 
 /**
- * Basic model for a push button, including over/down/enabled properties and
- * the derived property "interactionState".  The "interactionState" property
- * is intended to be used by a view that will update its appearance when state
- * changes occur.
+ * Basic model for a push button, including over/down/enabled properties.
  *
  * @author Sam Reid
  * @author John Blanco
