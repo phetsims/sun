@@ -50,12 +50,10 @@ define( function( require ) {
 
   return inherit( RoundButtonView, RoundPushButton, {
     addListener: function( listener ) {
-      // Pass through to button model.
       this.buttonModel.addListener( listener );
     },
 
     removeListener: function( listener ) {
-      // Pass through to button model.
       this.buttonModel.removeListener( listener );
     } } );
 } );
