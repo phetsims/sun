@@ -44,7 +44,7 @@ define( function( require ) {
    * @constructor
    */
   function RoundPushButton( options ) {
-    // Safe to pass through options to the pushButtonModel like "fireOnDown".  Other scenery options will be safely ignored.
+    // Safe to pass through options to the PushButtonModel like "fireOnDown".  Other scenery options will be safely ignored.
     RoundButtonView.call( this, new PushButtonModel( options ), options );
   }
 
