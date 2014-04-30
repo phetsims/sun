@@ -13,16 +13,21 @@ define( function( require ) {
   // modules
   var inherit = require( 'PHET_CORE/inherit' );
   var ButtonModel = require( 'SUN/experimental/buttons/ButtonModel' );
+  var DerivedProperty = require( 'AXON/DerivedProperty' );
 
   /**
-   * @param {Property<Boolean>} toggledProperty the property that represents the model state of whether the button
-   * (and corresponding model domain feature) is toggled or not.
+   *
+   * @param valueA {Object} one value for the toggle
+   * @param valueB {Object} other value for the toggle
+   * @param valueProperty {Property<Object>} axon property that can be either valueA or valueB.  Would have preferred to call this `property` but it would clash with the property function name.
    * @constructor
    */
-  function StickyToggleButtonModel( toggledProperty ) {
+  function StickyToggleButtonModel( valueA, valueB, valueProperty ) {
     var thisModel = this;
 
-    this.toggledProperty = toggledProperty;
+    this.valueA = valueA;
+    this.valueB = valueB;
+    this.valueProperty = valueProperty;
 
     ButtonModel.call( this );
 
@@ -37,7 +42,8 @@ define( function( require ) {
     this.addProperty( 'readyToToggleUp', false );
 
     // Create the "interactionState" which is generally used to determine how to render the button
-    this.addDerivedProperty( 'interactionState', ['over', 'down', 'enabled', 'toggled'], function( over, down, enabled, toggled ) {
+    this.interactionStateProperty = new DerivedProperty( [this.overProperty, this.downProperty, this.enabledProperty, valueProperty], function( over, down, enabled, propertyValue ) {
+      var toggled = propertyValue === valueB;
       return !enabled && toggled ? 'disabled-pressed' :
              !enabled ? 'disabled' :
              over && !(down || toggled) ? 'over' :
@@ -52,13 +58,13 @@ define( function( require ) {
     // down in the first place).
     this.property( 'down' ).link( function( down ) {
       if ( thisModel.enabled && thisModel.over ) {
-        if ( down && !thisModel.toggled ) {
-          thisModel.toggledProperty.toggle();
+        if ( down && valueProperty.value === valueA ) {
+          thisModel.toggle();
           thisModel.readyToToggleUp = false;
         }
-        if ( !down && thisModel.toggled ) {
+        if ( !down && valueProperty.value === valueB ) {
           if ( thisModel.readyToToggleUp ) {
-            thisModel.toggledProperty.toggle();
+            thisModel.toggle();
           }
           else {
             thisModel.readyToToggleUp = true;
@@ -79,8 +85,14 @@ define( function( require ) {
   }
 
   return inherit( ButtonModel, StickyToggleButtonModel, {
-    set toggled( t ) { this.toggledProperty.value = t; },
-
-    get toggled() {return this.toggledProperty.value;}
+    toggle: function() {
+      assert && assert( this.valueProperty.value === this.valueA || this.valueProperty.value === this.valueB );
+      if ( this.valueProperty.value === this.valueA ) {
+        this.valueProperty.value = this.valueB;
+      }
+      else {
+        this.valueProperty.value = this.valueA;
+      }
+    }
   } );
 } );
