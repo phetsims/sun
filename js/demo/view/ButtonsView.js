@@ -13,7 +13,7 @@ define( function( require ) {
   var PhetFont = require( 'SCENERY_PHET/PhetFont' );
   var Property = require( 'AXON/Property' );
   var RectangularPushButton = require( 'SUN/experimental/buttons/RectangularPushButton' );
-  var RectangularStickyToggleButton = require( 'SUN/experimental/buttons/RectangularStickyToggleButton' );
+  var BooleanRectangularStickyToggleButton = require( 'SUN/experimental/buttons/BooleanRectangularStickyToggleButton' );
   var RefreshButton = require( 'SUN/experimental/buttons/RefreshButton' );
   var ResetAllButton = require( 'SCENERY_PHET/ResetAllButton' );
   var ResetAllButton2 = require( 'SUN/experimental/buttons/ResetAllButton2' );
@@ -216,11 +216,12 @@ define( function( require ) {
       } );
     this.addChild( helpButton );
 
-    var roundToggleButtonProperty = new Property( false );
+    //Demonstrate using arbitrary values for toggle button.  Wrap in extra quotes so it is clear that it is a string in the debugging UI.
+    var roundToggleButtonProperty = new Property( '"off"' );
     roundToggleButtonProperty.lazyLink( function( toggleButton ) {
       outputText.text = "Round sticky toggle button state changed to: " + toggleButton;
     } );
-    var roundStickyToggleButton = new RoundStickyToggleButton( roundToggleButtonProperty, {
+    var roundStickyToggleButton = new RoundStickyToggleButton( '"off"', '"on"', roundToggleButtonProperty, {
       baseColor: new Color( 255, 0, 0 ),
       left: helpButton.right + 5,
       centerY: goButton.centerY,
@@ -232,7 +233,7 @@ define( function( require ) {
     rectangularToggleButtonProperty.lazyLink( function( toggleButton ) {
       outputText.text = "Rectangular sticky toggle button state changed to: " + toggleButton;
     } );
-    var rectangularStickyToggleButton = new RectangularStickyToggleButton( rectangularToggleButtonProperty, {
+    var booleanRectangularStickyToggleButton = new BooleanRectangularStickyToggleButton( rectangularToggleButtonProperty, {
       baseColor: new Color( 0, 200, 200 ),
       left: roundStickyToggleButton.right + 10,
       centerY: goButton.centerY,
@@ -240,7 +241,7 @@ define( function( require ) {
       minWidth: 50,
       minHeight: 35
     } );
-    this.addChild( rectangularStickyToggleButton );
+    this.addChild( booleanRectangularStickyToggleButton );
 
     var inOutRadioButton = new InOutRadioButton( new Property( true ), true, new Text( 'In/Out' ) );
     this.addChild( inOutRadioButton );
@@ -271,7 +272,7 @@ define( function( require ) {
       soundToggleButton.enabled = enabled;
       timerToggleButton.enabled = enabled;
       roundStickyToggleButton.enabled = enabled;
-      rectangularStickyToggleButton.enabled = enabled;
+      booleanRectangularStickyToggleButton.enabled = enabled;
     } );
 
     // TODO: For debug, don't leave this here long term.
