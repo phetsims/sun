@@ -162,7 +162,7 @@ define( function( require ) {
 
     var buttonD = new RoundPushButton(
       {
-        content: new Text( '--- C ---', { font: BUTTON_FONT } ),
+        content: new Text( '--- D ---', { font: BUTTON_FONT } ),
         listener: function() { outputText.text = 'Button D pressed'; },
         left: resetAllButton2.right + buttonSpacing,
         centerY: resetAllButton2.centerY

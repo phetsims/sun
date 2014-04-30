@@ -17,7 +17,6 @@ define( function( require ) {
       over: false,
       down: false,
       enabled: true
-      // Note: All descendant classes should add an 'interactionState' property.
     } );
   }
 
