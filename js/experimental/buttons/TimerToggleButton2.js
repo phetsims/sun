@@ -24,11 +24,11 @@ define( function( require ) {
   var X_STROKE_WIDTH = 6;
 
   /**
-   * @param {Property} enabledProperty
+   * @param {Property} timerRunningProperty
    * @param {*} options
    * @constructor
    */
-  function TimerToggleButton2( enabledProperty, options ) {
+  function TimerToggleButton2( timerRunningProperty, options ) {
 
     // Create the node that represents the timer being on.
     var clockRadius = WIDTH * 0.35;
@@ -58,7 +58,7 @@ define( function( require ) {
     ToggleButton2.call( this,
       timerOnNode,
       timerOffNode,
-      enabledProperty,
+      timerRunningProperty,
       _.extend(
         {
           baseColor: new Color( 255, 242, 2 ),
