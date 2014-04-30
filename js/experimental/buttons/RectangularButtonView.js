@@ -59,7 +59,7 @@ define( function( require ) {
       }
     }, options );
 
-    Node.call( thisButton, { listener: options.listener, fireOnDown: options.fireOnDown } );
+    Node.call( thisButton );
 
     // Hook up the input listener
     this.addInputListener( new ButtonListener( buttonModel ) );
