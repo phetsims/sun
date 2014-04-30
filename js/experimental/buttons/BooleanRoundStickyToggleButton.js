@@ -25,7 +25,7 @@ define( function( require ) {
       toggleOnDown: true
     }, options );
 
-    RoundButtonView.call( this, new StickyToggleButtonModel( booleanProperty ), options );
+    RoundButtonView.call( this, new StickyToggleButtonModel( false, true, booleanProperty ), options );
   }
 
   return inherit( RoundButtonView, BooleanRoundStickyToggleButton );

@@ -16,7 +16,7 @@ define( function( require ) {
   var ButtonListener = require( 'SUN/experimental/buttons/ButtonListener' );
 
   function BooleanRectangularStickyToggleButton( booleanProperty, options ) {
-    this.buttonModel = new StickyToggleButtonModel( booleanProperty );
+    this.buttonModel = new StickyToggleButtonModel( false, true, booleanProperty );
     RectangularButtonView.call( this, this.buttonModel, options );
     this.addInputListener( new ButtonListener( this.buttonModel ) );
   }
