@@ -67,7 +67,7 @@ define( function( require ) {
       }
     }, options );
 
-    Node.call( thisButton, { listener: options.listener, fireOnDown: options.fireOnDown } );
+    Node.call( thisButton );
     var content = options.content; // convenience variable
 
     // Hook up the input listener
