@@ -7,6 +7,7 @@
  */
 define( function( require ) {
   'use strict';
+
   var Color = require( 'SCENERY/util/Color' );
   var inherit = require( 'PHET_CORE/inherit' );
   var OutsideBackgroundNode = require( 'SCENERY_PHET/OutsideBackgroundNode' );
@@ -96,6 +97,7 @@ define( function( require ) {
       buttonCFireCount = 0;
       fireOnDownCount = 0;
       roundToggleButtonProperty.reset();
+      rectangularToggleButtonProperty.reset();
     }
 
     // add reset all button and caption
