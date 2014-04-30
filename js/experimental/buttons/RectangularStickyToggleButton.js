@@ -15,12 +15,9 @@ define( function( require ) {
   var inherit = require( 'PHET_CORE/inherit' );
   var RectangularButtonView = require( 'SUN/experimental/buttons/RectangularButtonView' );
   var StickyToggleButtonModel = require( 'SUN/experimental/buttons/StickyToggleButtonModel' );
-  var ButtonListener = require( 'SUN/experimental/buttons/ButtonListener' );
 
   function RectangularStickyToggleButton( valueA, valueB, property, options ) {
-    this.buttonModel = new StickyToggleButtonModel( valueA, valueB, property );
-    RectangularButtonView.call( this, this.buttonModel, options );
-    this.addInputListener( new ButtonListener( this.buttonModel ) );
+    RectangularButtonView.call( this, new StickyToggleButtonModel( valueA, valueB, property ), options );
   }
 
   return inherit( RectangularButtonView, RectangularStickyToggleButton );
