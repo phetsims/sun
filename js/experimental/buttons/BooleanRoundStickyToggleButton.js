@@ -5,9 +5,7 @@
  * sticks in the down position when pressed, popping back up when pressed
  * again.
  *
- * This class inherits from RoundButtonView instead of using composition to
- * simplify the logic for the options (and potentially performance improvements
- * since there will be fewer nodes in the scene graph).
+ * This class inherits from the more general RoundStickyToggleButton, which can take any values.
  *
  * @author John Blanco
  * @author Sam Reid
@@ -17,16 +15,11 @@ define( function( require ) {
 
   // modules
   var inherit = require( 'PHET_CORE/inherit' );
-  var RoundButtonView = require( 'SUN/experimental/buttons/RoundButtonView' );
-  var StickyToggleButtonModel = require( 'SUN/experimental/buttons/StickyToggleButtonModel' );
+  var RoundStickyToggleButton = require( 'SUN/experimental/buttons/RoundStickyToggleButton' );
 
   function BooleanRoundStickyToggleButton( booleanProperty, options ) {
-    options = _.extend( {
-      toggleOnDown: true
-    }, options );
-
-    RoundButtonView.call( this, new StickyToggleButtonModel( false, true, booleanProperty ), options );
+    RoundStickyToggleButton.call( this, false, true, booleanProperty, options );
   }
 
-  return inherit( RoundButtonView, BooleanRoundStickyToggleButton );
+  return inherit( RoundStickyToggleButton, BooleanRoundStickyToggleButton );
 } );

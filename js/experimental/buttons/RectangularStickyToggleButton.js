@@ -1,8 +1,9 @@
 // Copyright 2002-2014, University of Colorado Boulder
 
 /**
- * RectangularStickyToggleButton is a sticky toggle button that takes one of two values: valueA or valueB and a Property that takes one of the two values.
- * Pressing the button toggles between valueA and valueB.
+ * A rectangular toggle button that switches the value of a property that can take on valueA or valueB.  It
+ * sticks in the down position when pressed, popping back up when pressed
+ * again.
  *
  * @author John Blanco
  * @author Sam Reid
@@ -12,16 +13,15 @@ define( function( require ) {
 
   // modules
   var inherit = require( 'PHET_CORE/inherit' );
-  var BooleanRectangularStickyToggleButton = require( 'SUN/experimental/buttons/BooleanRectangularStickyToggleButton' );
-  var ToggleProperty = require( 'AXON/ToggleProperty' );
+  var RectangularButtonView = require( 'SUN/experimental/buttons/RectangularButtonView' );
+  var StickyToggleButtonModel = require( 'SUN/experimental/buttons/StickyToggleButtonModel' );
+  var ButtonListener = require( 'SUN/experimental/buttons/ButtonListener' );
 
   function RectangularStickyToggleButton( valueA, valueB, property, options ) {
-    options = _.extend( {
-      toggleOnDown: true
-    }, options );
-
-    BooleanRectangularStickyToggleButton.call( this, new ToggleProperty( valueA, valueB, property ), options );
+    this.buttonModel = new StickyToggleButtonModel( valueA, valueB, property );
+    RectangularButtonView.call( this, this.buttonModel, options );
+    this.addInputListener( new ButtonListener( this.buttonModel ) );
   }
 
-  return inherit( BooleanRectangularStickyToggleButton, RectangularStickyToggleButton );
+  return inherit( RectangularButtonView, RectangularStickyToggleButton );
 } );
