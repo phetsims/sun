@@ -18,6 +18,7 @@ define( function( require ) {
   var inherit = require( 'PHET_CORE/inherit' );
   var PushButtonModel = require( 'SUN/experimental/buttons/PushButtonModel' );
   var RoundButtonView = require( 'SUN/experimental/buttons/RoundButtonView' );
+  var PushButtonInteractionState = require( 'SUN/experimental/buttons/PushButtonInteractionState' );
 
   /**
    * @param {Object} options - All of the general Scenery node options can be
@@ -45,7 +46,8 @@ define( function( require ) {
    */
   function RoundPushButton( options ) {
     // Safe to pass through options to the PushButtonModel like "fireOnDown".  Other scenery options will be safely ignored.
-    RoundButtonView.call( this, new PushButtonModel( options ), options );
+    var buttonModel = new PushButtonModel( options );
+    RoundButtonView.call( this, buttonModel, new PushButtonInteractionState( buttonModel ), options );
   }
 
   return inherit( RoundButtonView, RoundPushButton, {

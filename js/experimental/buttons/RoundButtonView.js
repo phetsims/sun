@@ -31,10 +31,11 @@ define( function( require ) {
 
   /**
    * @param {ButtonModel} buttonModel
+   * @param {Property} interactionState - A property that is used to drive the visual appearance of the button.
    * @param {Object} options
    * @constructor
    */
-  function RoundButtonView( buttonModel, options ) {
+  function RoundButtonView( buttonModel, interactionState, options ) {
     this.buttonModel = buttonModel; // @protected
     var thisButton = this;
 
@@ -154,9 +155,9 @@ define( function( require ) {
     }
 
     // Hook up the function that will modify button appearance as the state changes.
-    buttonModel.interactionStateProperty.link( function( interactionState ) {
+    interactionState.link( function( state ) {
 
-      switch( interactionState ) {
+      switch( state ) {
 
         case 'idle':
           options.setContentEnabledLook( true );

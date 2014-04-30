@@ -41,17 +41,6 @@ define( function( require ) {
     // it would be safe to reset it anyway.
     this.addProperty( 'readyToToggleUp', false );
 
-    // Create the "interactionState" which is generally used to determine how to render the button
-    this.interactionStateProperty = new DerivedProperty( [this.overProperty, this.downProperty, this.enabledProperty, valueProperty], function( over, down, enabled, propertyValue ) {
-      var toggled = propertyValue === valueB;
-      return !enabled && toggled ? 'disabled-pressed' :
-             !enabled ? 'disabled' :
-             over && !(down || toggled) ? 'over' :
-             over && (down || toggled) ? 'pressed' :
-             toggled ? 'pressed' :
-             'idle';
-    } );
-
     // If the button is untoggled and the user presses it, show it pressed and
     // toggle the state right away.  When the button is released, untoggle the
     // state (unless it was part of the same action that toggled the button

@@ -35,14 +35,6 @@ define( function( require ) {
       this.listeners.push( options.listener );
     }
 
-    // Create the "interactionState" which is often used to determine how to render the button
-    this.addDerivedProperty( 'interactionState', ['over', 'down', 'enabled'], function( over, down, enabled ) {
-      return !enabled ? 'disabled' :
-             over && !down ? 'over' :
-             over && down ? 'pressed' :
-             'idle';
-    } );
-
     // If button was pressed and "fire on down" was set, fire the listeners
     this.property( 'down' ).onValue( true, function() {
       if ( options.fireOnDown && pushButtonModel.enabled ) {
