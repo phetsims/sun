@@ -25,12 +25,12 @@ define( function( require ) {
    * @constructor
    */
   function ButtonListener( buttonModel ) {
-    this.buttonModel = buttonModel;
+    this.buttonModel = buttonModel; // @private
     var buttonListener = this;
 
     // Track the pointer that is currently interacting with this button, ignore others.
-    this.overPointer = null;
-    this.downPointer = null;
+    this.overPointer = null; // @private
+    this.downPointer = null; // @private
 
     DownUpListener.call( this, {
         down: function( event, trail ) {
