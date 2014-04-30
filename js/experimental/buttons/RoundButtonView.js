@@ -35,7 +35,7 @@ define( function( require ) {
    * @constructor
    */
   function RoundButtonView( buttonModel, options ) {
-    this.buttonModel = buttonModel;
+    this.buttonModel = buttonModel; // @protected
     var thisButton = this;
 
     options = _.extend( {

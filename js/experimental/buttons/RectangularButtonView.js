@@ -30,7 +30,7 @@ define( function( require ) {
    * @constructor
    */
   function RectangularButtonView( buttonModel, options ) {
-    this.buttonModel = buttonModel;
+    this.buttonModel = buttonModel; // @protected
     var thisButton = this;
 
     options = _.extend( {

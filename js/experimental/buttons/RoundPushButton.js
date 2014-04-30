@@ -44,11 +44,8 @@ define( function( require ) {
    * @constructor
    */
   function RoundPushButton( options ) {
-
-    this.buttonModel = new PushButtonModel( options ); // @private
-
     // Safe to pass through options to the pushButtonModel like "fireOnDown".  Other scenery options will be safely ignored.
-    RoundButtonView.call( this, this.buttonModel, options );
+    RoundButtonView.call( this, new PushButtonModel( options ), options );
   }
 
   return inherit( RoundButtonView, RoundPushButton, {
