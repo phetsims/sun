@@ -31,11 +31,11 @@ define( function( require ) {
 
   /**
    * @param {ButtonModel} buttonModel
-   * @param {Property} interactionState - A property that is used to drive the visual appearance of the button.
+   * @param {Property} interactionStateProperty - A property that is used to drive the visual appearance of the button.
    * @param {Object} options
    * @constructor
    */
-  function RoundButtonView( buttonModel, interactionState, options ) {
+  function RoundButtonView( buttonModel, interactionStateProperty, options ) {
     this.buttonModel = buttonModel; // @protected
     var thisButton = this;
 
@@ -155,7 +155,7 @@ define( function( require ) {
     }
 
     // Hook up the function that will modify button appearance as the state changes.
-    interactionState.link( function( state ) {
+    interactionStateProperty.link( function( state ) {
 
       switch( state ) {
 

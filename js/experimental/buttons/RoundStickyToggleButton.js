@@ -14,7 +14,7 @@ define( function( require ) {
   // modules
   var inherit = require( 'PHET_CORE/inherit' );
   var RoundButtonView = require( 'SUN/experimental/buttons/RoundButtonView' );
-  var StickyToggleButtonInteractionState = require( 'SUN/experimental/buttons/StickyToggleButtonInteractionState' );
+  var StickyToggleButtonInteractionStateProperty = require( 'SUN/experimental/buttons/StickyToggleButtonInteractionStateProperty' );
   var StickyToggleButtonModel = require( 'SUN/experimental/buttons/StickyToggleButtonModel' );
 
   function RoundStickyToggleButton( valueA, valueB, property, options ) {
@@ -23,7 +23,7 @@ define( function( require ) {
     }, options );
 
     var buttonModel = new StickyToggleButtonModel( valueA, valueB, property );
-    RoundButtonView.call( this, buttonModel, new StickyToggleButtonInteractionState( buttonModel ), options );
+    RoundButtonView.call( this, buttonModel, new StickyToggleButtonInteractionStateProperty( buttonModel ), options );
   }
 
   return inherit( RoundButtonView, RoundStickyToggleButton );

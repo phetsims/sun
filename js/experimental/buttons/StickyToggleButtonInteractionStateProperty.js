@@ -11,7 +11,7 @@ define( function( require ) {
   var inherit = require( 'PHET_CORE/inherit' );
   var DerivedProperty = require( 'AXON/DerivedProperty' );
 
-  function StickyToggleButtonInteractionState( buttonModel ) {
+  function StickyToggleButtonInteractionStateProperty( buttonModel ) {
     DerivedProperty.call(
       this,
       [ buttonModel.overProperty, buttonModel.downProperty, buttonModel.enabledProperty, buttonModel.valueProperty ],
@@ -26,5 +26,5 @@ define( function( require ) {
       } );
   }
 
-  return inherit( DerivedProperty, StickyToggleButtonInteractionState );
+  return inherit( DerivedProperty, StickyToggleButtonInteractionStateProperty );
 } );

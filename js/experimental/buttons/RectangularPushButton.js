@@ -16,7 +16,7 @@ define( function( require ) {
   // modules
   var inherit = require( 'PHET_CORE/inherit' );
   var RectangularButtonView = require( 'SUN/experimental/buttons/RectangularButtonView' );
-  var PushButtonInteractionState = require( 'SUN/experimental/buttons/PushButtonInteractionState' );
+  var PushButtonInteractionStateProperty = require( 'SUN/experimental/buttons/PushButtonInteractionStateProperty' );
   var PushButtonModel = require( 'SUN/experimental/buttons/PushButtonModel' );
 
   /**
@@ -47,7 +47,7 @@ define( function( require ) {
   function RectangularPushButton( options ) {
     // Safe to pass through options to the PushButtonModel like "fireOnDown".  Other scenery options will be safely ignored.
     var buttonModel = new PushButtonModel( options );
-    RectangularButtonView.call( this, buttonModel, new PushButtonInteractionState( buttonModel ), options );
+    RectangularButtonView.call( this, buttonModel, new PushButtonInteractionStateProperty( buttonModel ), options );
   }
 
   return inherit( RectangularButtonView, RectangularPushButton, {

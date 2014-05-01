@@ -11,7 +11,7 @@ define( function( require ) {
   var inherit = require( 'PHET_CORE/inherit' );
   var DerivedProperty = require( 'AXON/DerivedProperty' );
 
-  function PushButtonInteractionState( buttonModel ) {
+  function PushButtonInteractionStateProperty( buttonModel ) {
     DerivedProperty.call(
       this,
       [ buttonModel.overProperty, buttonModel.downProperty, buttonModel.enabledProperty ],
@@ -23,5 +23,5 @@ define( function( require ) {
       } );
   }
 
-  return inherit( DerivedProperty, PushButtonInteractionState );
+  return inherit( DerivedProperty, PushButtonInteractionStateProperty );
 } );
