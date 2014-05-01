@@ -1,8 +1,7 @@
 // Copyright 2002-2014, University of Colorado Boulder
 
 /**
- * Toggle button that switches the value of a boolean property when pressed
- * and also switches the displayed icon.
+ * This toggle button uses a boolean property and a trueNode and falseNode to display its content.
  */
 define( function( require ) {
   'use strict';
