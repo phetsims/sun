@@ -15,8 +15,7 @@ define( function( require ) {
   var Path = require( 'SCENERY/nodes/Path' );
   var Shape = require( 'KITE/Shape' );
   var SimpleClockIcon = require( 'SCENERY_PHET/SimpleClockIcon' );
-  var ToggleButton2 = require( 'SUN/experimental/buttons/BooleanRectangularToggleButtonWithContent' );
-  var RectangularToggleButton = require( 'SUN/experimental/buttons/RectangularToggleButton' );
+  var BooleanRectangularToggleButtonWithContent = require( 'SUN/experimental/buttons/BooleanRectangularToggleButtonWithContent' );
   var ToggleNode = require( 'SUN/ToggleNode' );
 
   // Constants
@@ -56,9 +55,8 @@ define( function( require ) {
         centerY: timerOffNode.height / 2
       } ) );
 
-    RectangularToggleButton.call( this, false, true, timerRunningProperty, _.extend(
+    BooleanRectangularToggleButtonWithContent.call( this, timerOnNode, timerOffNode, timerRunningProperty, _.extend(
       {
-        content: new ToggleNode( timerOnNode, timerOffNode, timerRunningProperty ),
         baseColor: new Color( 255, 242, 2 ),
         minWidth: WIDTH,
         minHeight: HEIGHT,
@@ -67,5 +65,5 @@ define( function( require ) {
       }, options ) );
   }
 
-  return inherit( ToggleButton2, TimerToggleButton2 );
+  return inherit( BooleanRectangularToggleButtonWithContent, TimerToggleButton2 );
 } );
