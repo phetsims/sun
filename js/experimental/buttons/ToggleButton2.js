@@ -9,7 +9,7 @@ define( function( require ) {
 
   // modules
   var inherit = require( 'PHET_CORE/inherit' );
-  var RectangularPushButton = require( 'SUN/experimental/buttons/RectangularPushButton' );
+  var RectangularToggleButton = require( 'SUN/experimental/buttons/RectangularToggleButton' );
   var ToggleNode = require( 'SUN/ToggleNode' );
 
   /**
@@ -27,8 +27,8 @@ define( function( require ) {
       listener: function() { booleanProperty.value = !booleanProperty.value; }
     }, options );
 
-    RectangularPushButton.call( this, _.extend( { content: new ToggleNode( trueNode, falseNode, booleanProperty ) }, options ) );
+    RectangularToggleButton.call( this, false, true, booleanProperty, _.extend( { content: new ToggleNode( trueNode, falseNode, booleanProperty ) }, options ) );
   }
 
-  return inherit( RectangularPushButton, ToggleButton2 );
+  return inherit( RectangularToggleButton, ToggleButton2 );
 } );
