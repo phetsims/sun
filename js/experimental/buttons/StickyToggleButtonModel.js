@@ -1,8 +1,8 @@
 // Copyright 2002-2014, University of Colorado Boulder
 
 /**
- * Model for a toggle button that sticks when pushed down and pops up when
- * pushed a second time.
+ * Model for a toggle button that sticks when pushed down ("toggles") and pops up when
+ * pushed a second time ("untoggles").
  *
  * @author Sam Reid
  * @author John Blanco
