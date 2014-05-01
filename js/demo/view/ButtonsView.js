@@ -26,7 +26,7 @@ define( function( require ) {
   var SoundToggleButton2 = require( 'SUN/experimental/buttons/SoundToggleButton2' );
   var Text = require( 'SCENERY/nodes/Text' );
   var TimerToggleButton2 = require( 'SUN/experimental/buttons/TimerToggleButton2' );
-  var ToggleButton2 = require( 'SUN/experimental/buttons/ToggleButton2' );
+  var BooleanRectangularToggleButtonWithContent = require( 'SUN/experimental/buttons/BooleanRectangularToggleButtonWithContent' );
 
   // Constants
   var BUTTON_FONT = new PhetFont( { size: 20 } );
@@ -150,7 +150,7 @@ define( function( require ) {
       } );
     this.addChild( fireOnDownButton );
 
-    var buttonEnableButton = new ToggleButton2(
+    var buttonEnableButton = new BooleanRectangularToggleButtonWithContent(
       new Text( 'Disable Buttons', { font: BUTTON_CAPTION_FONT } ),
       new Text( 'Enable Buttons', { font: BUTTON_CAPTION_FONT } ),
       buttonsEnabled,
