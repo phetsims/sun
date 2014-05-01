@@ -18,6 +18,8 @@ define( function( require ) {
   var Path = require( 'SCENERY/nodes/Path' );
   var Shape = require( 'KITE/Shape' );
   var ToggleButton2 = require( 'SUN/experimental/buttons/ToggleButton2' );
+  var RectangularToggleButton = require( 'SUN/experimental/buttons/RectangularToggleButton' );
+  var ToggleNode = require( 'SUN/ToggleNode' );
 
   // Constants
   var WIDTH = 50;
@@ -40,19 +42,15 @@ define( function( require ) {
       } );
     soundOffNode.addChild( soundOffX );
 
-    ToggleButton2.call( this,
-      soundOnNode,
-      soundOffNode,
-      property,
-      _.extend(
-        {
-          baseColor: new Color( 255, 242, 2 ),
-          minWidth: WIDTH,
-          minHeight: HEIGHT,
-          xMargin: MARGIN,
-          yMargin: MARGIN
-        }, options ) );
+    RectangularToggleButton.call( this, false, true, property, _.extend( { content: new ToggleNode( soundOnNode, soundOffNode, property ) }, _.extend(
+      {
+        baseColor: new Color( 255, 242, 2 ),
+        minWidth: WIDTH,
+        minHeight: HEIGHT,
+        xMargin: MARGIN,
+        yMargin: MARGIN
+      }, options ) ) )
   }
 
-  return inherit( ToggleButton2, SoundToggleButton2 );
+  return inherit( RectangularToggleButton, SoundToggleButton2 );
 } );
