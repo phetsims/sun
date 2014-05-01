@@ -20,13 +20,6 @@ define( function( require ) {
    * @constructor
    */
   function ToggleButton2( trueNode, falseNode, booleanProperty, options ) {
-    options = _.extend( {
-      xMargin: 5,
-      yMargin: 5,
-      cursor: 'pointer',
-      listener: function() { booleanProperty.value = !booleanProperty.value; }
-    }, options );
-
     RectangularToggleButton.call( this, false, true, booleanProperty, _.extend( { content: new ToggleNode( trueNode, falseNode, booleanProperty ) }, options ) );
   }
 
