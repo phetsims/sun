@@ -17,9 +17,7 @@ define( function( require ) {
   var Node = require( 'SCENERY/nodes/Node' );
   var Path = require( 'SCENERY/nodes/Path' );
   var Shape = require( 'KITE/Shape' );
-  var RectangularToggleButton = require( 'SUN/experimental/buttons/RectangularToggleButton' );
   var BooleanRectangularToggleButtonWithContent = require( 'SUN/experimental/buttons/BooleanRectangularToggleButtonWithContent' );
-  var ToggleNode = require( 'SUN/ToggleNode' );
 
   // Constants
   var WIDTH = 50;
