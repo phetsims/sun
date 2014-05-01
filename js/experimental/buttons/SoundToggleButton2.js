@@ -42,14 +42,15 @@ define( function( require ) {
       } );
     soundOffNode.addChild( soundOffX );
 
-    RectangularToggleButton.call( this, false, true, property, _.extend( { content: new ToggleNode( soundOnNode, soundOffNode, property ) }, _.extend(
+    RectangularToggleButton.call( this, false, true, property, _.extend(
       {
+        content: new ToggleNode( soundOnNode, soundOffNode, property ),
         baseColor: new Color( 255, 242, 2 ),
         minWidth: WIDTH,
         minHeight: HEIGHT,
         xMargin: MARGIN,
         yMargin: MARGIN
-      }, options ) ) )
+      }, options ) );
   }
 
   return inherit( RectangularToggleButton, SoundToggleButton2 );
