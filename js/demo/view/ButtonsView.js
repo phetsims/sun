@@ -26,7 +26,7 @@ define( function( require ) {
   var SoundToggleButton2 = require( 'SUN/experimental/buttons/SoundToggleButton2' );
   var Text = require( 'SCENERY/nodes/Text' );
   var TimerToggleButton2 = require( 'SUN/experimental/buttons/TimerToggleButton2' );
-  var BooleanRectangularToggleButtonWithContent = require( 'SUN/experimental/buttons/BooleanRectangularToggleButtonWithContent' );
+  var BooleanRectangularToggleButtonWithContent = require( 'SUN/experimental/buttons/BooleanRectangularToggleButton' );
 
   // Constants
   var BUTTON_FONT = new PhetFont( { size: 20 } );

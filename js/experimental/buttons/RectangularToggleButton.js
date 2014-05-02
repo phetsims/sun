@@ -1,9 +1,7 @@
 // Copyright 2002-2014, University of Colorado Boulder
 
 /**
- * A rectangular toggle button that switches the value of a property that can take on valueA or valueB.  It
- * sticks in the down position when pressed, popping back up when pressed
- * again.
+ * A rectangular toggle button that switches the value of a property that can take on valueA or valueB.
  *
  * @author John Blanco
  * @author Sam Reid

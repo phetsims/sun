@@ -15,7 +15,7 @@ define( function( require ) {
   var Path = require( 'SCENERY/nodes/Path' );
   var Shape = require( 'KITE/Shape' );
   var SimpleClockIcon = require( 'SCENERY_PHET/SimpleClockIcon' );
-  var BooleanRectangularToggleButtonWithContent = require( 'SUN/experimental/buttons/BooleanRectangularToggleButtonWithContent' );
+  var BooleanRectangularToggleButtonWithContent = require( 'SUN/experimental/buttons/BooleanRectangularToggleButton' );
 
   // Constants
   var WIDTH = 50;

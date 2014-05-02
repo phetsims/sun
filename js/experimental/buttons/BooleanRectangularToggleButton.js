@@ -18,9 +18,9 @@ define( function( require ) {
    * @param options - See Rectangular push button for a description of the available options
    * @constructor
    */
-  function BooleanRectangularToggleButtonWithContent( trueNode, falseNode, booleanProperty, options ) {
+  function BooleanRectangularToggleButton( trueNode, falseNode, booleanProperty, options ) {
     RectangularToggleButton.call( this, false, true, booleanProperty, _.extend( { content: new ToggleNode( trueNode, falseNode, booleanProperty ) }, options ) );
   }
 
-  return inherit( RectangularToggleButton, BooleanRectangularToggleButtonWithContent );
+  return inherit( RectangularToggleButton, BooleanRectangularToggleButton );
 } );
