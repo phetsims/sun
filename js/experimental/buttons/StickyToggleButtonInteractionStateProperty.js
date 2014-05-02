@@ -16,12 +16,12 @@ define( function( require ) {
       this,
       [ buttonModel.overProperty, buttonModel.downProperty, buttonModel.enabledProperty, buttonModel.valueProperty ],
       function( over, down, enabled, propertyValue ) {
-        var isValueB = propertyValue === buttonModel.valueB;
-        return !enabled && isValueB ? 'disabled-pressed' :
+        var isValueDown = propertyValue === buttonModel.valueB;
+        return !enabled && isValueDown ? 'disabled-pressed' :
                !enabled ? 'disabled' :
-               over && !(down || isValueB) ? 'over' :
-               over && (down || isValueB) ? 'pressed' :
-               isValueB ? 'pressed' :
+               over && !(down || isValueDown) ? 'over' :
+               over && (down || isValueDown) ? 'pressed' :
+               isValueDown ? 'pressed' :
                'idle';
       } );
   }
