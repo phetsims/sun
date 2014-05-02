@@ -1,7 +1,7 @@
 // Copyright 2002-2014, University of Colorado Boulder
 
 /**
- * Model for a toggle button that changes value on each "up" event.
+ * Model for a toggle button that changes value on each "up" event when the button is relased.
  *
  * @author Sam Reid
  * @author John Blanco
@@ -28,10 +28,7 @@ define( function( require ) {
 
     ButtonModel.call( this );
 
-    // If the button is up and the user presses it, show it pressed and
-    // toggle the state right away.  When the button is released, pop up the button
-    // (unless it was part of the same action that pressed the button
-    // down in the first place).
+    // Behaves like a push button (with fireOnDown:false), but toggles its state when the button is released.
     this.property( 'down' ).link( function( down ) {
       if ( thisModel.enabled && thisModel.over ) {
         if ( !down ) {
