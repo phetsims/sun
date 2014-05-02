@@ -1,7 +1,7 @@
 // Copyright 2002-2014, University of Colorado Boulder
 
 /**
- * Model for a toggle button that changes value on each "up" event when the button is relased.
+ * Model for a toggle button that changes value on each "up" event when the button is released.
  *
  * @author Sam Reid
  * @author John Blanco
@@ -14,9 +14,10 @@ define( function( require ) {
   var ButtonModel = require( 'SUN/experimental/buttons/ButtonModel' );
 
   /**
-   * @param valueA {Object} one possible value for the toggle, when the button is in an "up" state
-   * @param valueB {Object} other value for the toggle, when the button is in a "down" state
-   * @param valueProperty {Property<Object>} axon property that can be either valueA or valueB.  Would have preferred to call this `property` but it would clash with the property function name.
+   * @param valueA {Object} one possible value for the toggle
+   * @param valueB {Object} the other value for the toggle
+   * @param valueProperty {Property<Object>} axon property that can be either valueA or valueB.
+   *        (Would have preferred to call this `property` but it would clash with the property function name.)
    * @constructor
    */
   function ToggleButtonModel( valueA, valueB, valueProperty ) {
