@@ -34,7 +34,7 @@ define( function( require ) {
    * @param options
    * @constructor
    */
-  function RectanglePushButton( content, options ) {
+  function RectanglePushButtonDeprecated( content, options ) {
 
     //TODO it would be nice to have less-verbose names, but supertypes may have similar options. For example, TextPushButton has textFill.
     options = _.extend( {
@@ -65,5 +65,5 @@ define( function( require ) {
       options );
   }
 
-  return inherit( PushButton, RectanglePushButton );
+  return inherit( PushButton, RectanglePushButtonDeprecated );
 } );

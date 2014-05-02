@@ -10,7 +10,7 @@ define( function( require ) {
 
   // imports
   var inherit = require( 'PHET_CORE/inherit' );
-  var RectanglePushButton = require( 'SUN/RectanglePushButton' );
+  var RectanglePushButtonDeprecated = require( 'SUN/RectanglePushButtonDeprecated' );
   var HTMLText = require( 'SCENERY/nodes/HTMLText' );
 
   function HTMLTextPushButton( text, options ) {
@@ -22,7 +22,7 @@ define( function( require ) {
 
     var htmlTextNode = new HTMLText( text, options );
 
-    RectanglePushButton.call( this, htmlTextNode, options );
+    RectanglePushButtonDeprecated.call( this, htmlTextNode, options );
 
     // enable/disable the pieces that are specific to this subtype
     this._enabled.link( function( enabled ) {
@@ -30,5 +30,5 @@ define( function( require ) {
     } );
   }
 
-  return inherit( RectanglePushButton, HTMLTextPushButton );
+  return inherit( RectanglePushButtonDeprecated, HTMLTextPushButton );
 } );

@@ -11,7 +11,7 @@ define( function( require ) {
   // imports
   var inherit = require( 'PHET_CORE/inherit' );
   var Font = require( 'SCENERY/util/Font' );
-  var RectanglePushButton = require( 'SUN/RectanglePushButton' );
+  var RectanglePushButtonDeprecated = require( 'SUN/RectanglePushButtonDeprecated' );
   var Text = require( 'SCENERY/nodes/Text' );
 
   function TextPushButton( text, options ) {
@@ -24,7 +24,7 @@ define( function( require ) {
 
     var textNode = new Text( text, { font: options.font } );
 
-    RectanglePushButton.call( this, textNode, options );
+    RectanglePushButtonDeprecated.call( this, textNode, options );
 
     // enable/disable the pieces that are specific to this subtype
     this._enabled.link( function( enabled ) {
@@ -32,5 +32,5 @@ define( function( require ) {
     } );
   }
 
-  return inherit( RectanglePushButton, TextPushButton );
+  return inherit( RectanglePushButtonDeprecated, TextPushButton );
 } );
