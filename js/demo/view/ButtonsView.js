@@ -226,8 +226,7 @@ define( function( require ) {
     var roundStickyToggleButton = new RoundStickyToggleButton( '"off"', '"on"', roundToggleButtonProperty, {
       baseColor: new Color( 255, 0, 0 ),
       left: helpButton.right + 5,
-      centerY: goButton.centerY,
-      toggleOnDown: true
+      centerY: goButton.centerY
     } );
     this.addChild( roundStickyToggleButton );
 
@@ -239,7 +238,6 @@ define( function( require ) {
       baseColor: new Color( 0, 200, 200 ),
       left: roundStickyToggleButton.right + 10,
       centerY: goButton.centerY,
-      toggleOnDown: true,
       minWidth: 50,
       minHeight: 35
     } );

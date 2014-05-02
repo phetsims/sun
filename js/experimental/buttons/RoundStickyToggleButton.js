@@ -18,10 +18,6 @@ define( function( require ) {
   var StickyToggleButtonModel = require( 'SUN/experimental/buttons/StickyToggleButtonModel' );
 
   function RoundStickyToggleButton( valueA, valueB, property, options ) {
-    options = _.extend( {
-      toggleOnDown: true
-    }, options );
-
     var buttonModel = new StickyToggleButtonModel( valueA, valueB, property );
     RoundButtonView.call( this, buttonModel, new StickyToggleButtonInteractionStateProperty( buttonModel ), options );
   }
