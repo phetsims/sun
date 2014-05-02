@@ -15,6 +15,13 @@ define( function( require ) {
   var ToggleButtonInteractionState = require( 'SUN/experimental/buttons/ToggleButtonInteractionState' );
   var ToggleButtonModel = require( 'SUN/experimental/buttons/ToggleButtonModel' );
 
+  /**
+   * @param valueA {Object} one possible value for the toggle
+   * @param valueB {Object} the other value for the toggle
+   * @param property {Property<Object>} axon property that can be either valueA or valueB.
+   * @param {*} options
+   * @constructor
+   */
   function RectangularToggleButton( valueA, valueB, property, options ) {
     var buttonModel = new ToggleButtonModel( valueA, valueB, property );
     RectangularButtonView.call( this, buttonModel, new ToggleButtonInteractionState( buttonModel ), options );
