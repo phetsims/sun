@@ -218,7 +218,8 @@ define( function( require ) {
       } );
     this.addChild( helpButton );
 
-    //Demonstrate using arbitrary values for toggle button.  Wrap in extra quotes so it is clear that it is a string in the debugging UI.
+    // Demonstrate using arbitrary values for toggle button.  Wrap in extra
+    // quotes so it is clear that it is a string in the debugging UI.
     var roundToggleButtonProperty = new Property( '"off"' );
     roundToggleButtonProperty.lazyLink( function( toggleButton ) {
       outputText.text = "Round sticky toggle button state changed to: " + toggleButton;
@@ -232,7 +233,7 @@ define( function( require ) {
 
     var rectangularToggleButtonProperty = new Property( false );
     rectangularToggleButtonProperty.lazyLink( function( toggleButton ) {
-      outputText.text = "Rectangular sticky toggle button state changed to: " + toggleButton;
+      outputText.text = 'Rectangular sticky toggle button state changed to: ' + toggleButton;
     } );
     var booleanRectangularStickyToggleButton = new BooleanRectangularStickyToggleButton( rectangularToggleButtonProperty, {
       baseColor: new Color( 0, 200, 200 ),
