@@ -16,7 +16,7 @@ define( function( require ) {
   var RectangularPushButton = require( 'SUN/experimental/buttons/RectangularPushButton' );
   var BooleanRectangularStickyToggleButton = require( 'SUN/experimental/buttons/BooleanRectangularStickyToggleButton' );
   var RefreshButton = require( 'SUN/experimental/buttons/RefreshButton' );
-  var ResetAllButton = require( 'SCENERY_PHET/ResetAllButton' );
+  var ResetAllButtonDeprecated = require( 'SCENERY_PHET/ResetAllButtonDeprecated' );
   var ResetAllButton2 = require( 'SUN/experimental/buttons/ResetAllButton2' );
   var ReturnToLevelSelectButton = require( 'SUN/experimental/buttons/ReturnToLevelSelectButton' );
   var RoundPushButton = require( 'SUN/experimental/buttons/RoundPushButton' );
@@ -101,7 +101,7 @@ define( function( require ) {
     }
 
     // add reset all button and caption
-    var resetAllButton = new ResetAllButton( resetAll, { radius: 22, centerX: refreshButton.centerX, top: timerToggleButton.bottom + buttonSpacing } );
+    var resetAllButton = new ResetAllButtonDeprecated( resetAll, { radius: 22, centerX: refreshButton.centerX, top: timerToggleButton.bottom + buttonSpacing } );
     this.addChild( resetAllButton );
     var resetAllButtonLabel = new Text( 'Reset All Button: ', { font: BUTTON_CAPTION_FONT, right: resetAllButton.left - 5, centerY: resetAllButton.centerY } );
     this.addChild( resetAllButtonLabel );
