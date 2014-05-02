@@ -1,8 +1,9 @@
 // Copyright 2002-2014, University of Colorado Boulder
 
 /**
- * Model for a toggle button that sticks when pushed down and pops up when
- * pushed a second time.
+ * Model for a toggle button that sticks when pushed down and pops up when pushed a second time.
+ * Unlike other general sun models, 'sticky' implies a specific type of user-interface component,
+ * a button that is either popped up or pressed down.
  *
  * @author Sam Reid
  * @author John Blanco
