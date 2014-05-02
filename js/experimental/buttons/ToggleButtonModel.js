@@ -14,7 +14,6 @@ define( function( require ) {
   var ButtonModel = require( 'SUN/experimental/buttons/ButtonModel' );
 
   /**
-   *
    * @param valueA {Object} one possible value for the toggle, when the button is in an "up" state
    * @param valueB {Object} other value for the toggle, when the button is in a "down" state
    * @param valueProperty {Property<Object>} axon property that can be either valueA or valueB.  Would have preferred to call this `property` but it would clash with the property function name.
