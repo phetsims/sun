@@ -15,16 +15,16 @@ define( function( require ) {
   var ButtonModel = require( 'SUN/experimental/buttons/ButtonModel' );
 
   /**
-   * @param valueA {Object} one possible value for the toggle, when the button is in an "up" state
-   * @param valueB {Object} other value for the toggle, when the button is in a "down" state
-   * @param valueProperty {Property<Object>} axon property that can be either valueA or valueB.  Would have preferred to call this `property` but it would clash with the property function name.
+   * @param valueUp {Object} value when the toggle is in the 'up' position
+   * @param valueDown {Object} value when the toggle is in the 'down' position
+   * @param valueProperty {Property<Object>} axon property that can be either valueUp or valueDown.  Would have preferred to call this `property` but it would clash with the property function name.
    * @constructor
    */
-  function StickyToggleButtonModel( valueA, valueB, valueProperty ) {
+  function StickyToggleButtonModel( valueUp, valueDown, valueProperty ) {
     var thisModel = this;
 
-    this.valueA = valueA;
-    this.valueB = valueB;
+    this.valueUp = valueUp;
+    this.valueDown = valueDown;
     this.valueProperty = valueProperty;
 
     ButtonModel.call( this );
@@ -45,11 +45,11 @@ define( function( require ) {
     // down in the first place).
     this.property( 'down' ).link( function( down ) {
       if ( thisModel.enabled && thisModel.over ) {
-        if ( down && valueProperty.value === valueA ) {
+        if ( down && valueProperty.value === valueUp ) {
           thisModel.toggle();
           thisModel.pressedWhileDown = false;
         }
-        if ( !down && valueProperty.value === valueB ) {
+        if ( !down && valueProperty.value === valueDown ) {
           if ( thisModel.pressedWhileDown ) {
             thisModel.toggle();
           }
@@ -73,12 +73,12 @@ define( function( require ) {
 
   return inherit( ButtonModel, StickyToggleButtonModel, {
     toggle: function() {
-      assert && assert( this.valueProperty.value === this.valueA || this.valueProperty.value === this.valueB );
-      if ( this.valueProperty.value === this.valueA ) {
-        this.valueProperty.value = this.valueB;
+      assert && assert( this.valueProperty.value === this.valueUp || this.valueProperty.value === this.valueDown );
+      if ( this.valueProperty.value === this.valueUp ) {
+        this.valueProperty.value = this.valueDown;
       }
       else {
-        this.valueProperty.value = this.valueA;
+        this.valueProperty.value = this.valueUp;
       }
     }
   } );

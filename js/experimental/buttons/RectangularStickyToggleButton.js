@@ -1,9 +1,8 @@
 // Copyright 2002-2014, University of Colorado Boulder
 
 /**
- * A rectangular toggle button that switches the value of a property that can take on valueA or valueB.  It
- * sticks in the down position when pressed, popping back up when pressed
- * again.
+ * A rectangular toggle button that switches the value of a property that can take on valueUp or valueDown.
+ * It sticks in the down position when pressed, popping back up when pressed again.
  *
  * @author John Blanco
  * @author Sam Reid
@@ -17,8 +16,15 @@ define( function( require ) {
   var StickyToggleButtonInteractionStateProperty = require( 'SUN/experimental/buttons/StickyToggleButtonInteractionStateProperty' );
   var StickyToggleButtonModel = require( 'SUN/experimental/buttons/StickyToggleButtonModel' );
 
-  function RectangularStickyToggleButton( valueA, valueB, property, options ) {
-    var buttonModel = new StickyToggleButtonModel( valueA, valueB, property );
+  /**
+   * @param valueUp {Object} value when the toggle is in the 'up' position
+   * @param valueDown {Object} value when the toggle is in the 'down' position
+   * @param property {Property<Object>} axon property that can be either valueUp or valueDown.
+   * @param {*} options
+   * @constructor
+   */
+  function RectangularStickyToggleButton( valueUp, valueDown, property, options ) {
+    var buttonModel = new StickyToggleButtonModel( valueUp, valueDown, property );
     RectangularButtonView.call( this, buttonModel, new StickyToggleButtonInteractionStateProperty( buttonModel ), options );
   }
 
