@@ -15,7 +15,7 @@ define( function( require ) {
    * @param trueNode
    * @param falseNode
    * @param booleanProperty
-   * @param options - See Rectangular push button for a description of the available options
+   * @param options
    * @constructor
    */
   function BooleanRectangularToggleButton( trueNode, falseNode, booleanProperty, options ) {
