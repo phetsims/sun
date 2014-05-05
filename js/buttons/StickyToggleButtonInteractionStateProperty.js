@@ -16,7 +16,7 @@ define( function( require ) {
       this,
       [ buttonModel.overProperty, buttonModel.downProperty, buttonModel.enabledProperty, buttonModel.valueProperty ],
       function( over, down, enabled, propertyValue ) {
-        var isValueDown = propertyValue === buttonModel.valueB;
+        var isValueDown = propertyValue === buttonModel.valueDown;
         return !enabled && isValueDown ? 'disabled-pressed' :
                !enabled ? 'disabled' :
                over && !(down || isValueDown) ? 'over' :
