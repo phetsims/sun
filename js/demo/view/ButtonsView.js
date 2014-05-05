@@ -17,15 +17,15 @@ define( function( require ) {
   var BooleanRectangularStickyToggleButton = require( 'SUN/experimental/buttons/BooleanRectangularStickyToggleButton' );
   var RefreshButton = require( 'SUN/experimental/buttons/RefreshButton' );
   var ResetAllButtonDeprecated = require( 'SCENERY_PHET/ResetAllButtonDeprecated' );
-  var ResetAllButton2 = require( 'SUN/experimental/buttons/ResetAllButton2' );
+  var ResetAllButton = require( 'SUN/experimental/buttons/ResetAllButton' );
   var ReturnToLevelSelectButton = require( 'SUN/experimental/buttons/ReturnToLevelSelectButton' );
   var RoundPushButton = require( 'SUN/experimental/buttons/RoundPushButton' );
   var RoundStickyToggleButton = require( 'SUN/experimental/buttons/RoundStickyToggleButton' );
   var InOutRadioButton = require( 'SUN/experimental/buttons/InOutRadioButton' );
   var ScreenView = require( 'JOIST/ScreenView' );
-  var SoundToggleButton2 = require( 'SUN/experimental/buttons/SoundToggleButton2' );
+  var SoundToggleButton = require( 'SUN/experimental/buttons/SoundToggleButton' );
   var Text = require( 'SCENERY/nodes/Text' );
-  var TimerToggleButton2 = require( 'SUN/experimental/buttons/TimerToggleButton2' );
+  var TimerToggleButton = require( 'SUN/experimental/buttons/TimerToggleButton' );
   var BooleanRectangularToggleButtonWithContent = require( 'SUN/experimental/buttons/BooleanRectangularToggleButton' );
 
   // Constants
@@ -72,14 +72,14 @@ define( function( require ) {
 
     // add sound toggle button
     var soundEnabled = new Property( true );
-    var soundToggleButton = new SoundToggleButton2( soundEnabled, { centerX: refreshButton.centerX, top: returnToLevelSelectButton.bottom + buttonSpacing } );
+    var soundToggleButton = new SoundToggleButton( soundEnabled, { centerX: refreshButton.centerX, top: returnToLevelSelectButton.bottom + buttonSpacing } );
     this.addChild( soundToggleButton );
     var soundToggleButtonLabel = new Text( 'Sound Toggle Button: ', { font: BUTTON_CAPTION_FONT, right: soundToggleButton.left - 5, centerY: soundToggleButton.centerY } );
     this.addChild( soundToggleButtonLabel );
 
     // add timer toggle button
     var timerEnabled = new Property( true );
-    var timerToggleButton = new TimerToggleButton2( timerEnabled, { centerX: refreshButton.centerX, y: soundToggleButton.bottom + 5 } );
+    var timerToggleButton = new TimerToggleButton( timerEnabled, { centerX: refreshButton.centerX, y: soundToggleButton.bottom + 5 } );
     this.addChild( timerToggleButton );
     var timerToggleButtonLabel = new Text( 'Timer Toggle Button: ', { font: BUTTON_CAPTION_FONT, right: timerToggleButton.left - 5, centerY: timerToggleButton.centerY } );
     this.addChild( timerToggleButtonLabel );
@@ -159,7 +159,7 @@ define( function( require ) {
     this.addChild( buttonEnableButton );
 
     // add alternative reset all button
-    var resetAllButton2 = new ResetAllButton2( { listener: resetAll, radius: 22, centerX: buttonC.centerX, centerY: buttonEnableButton.centerY } );
+    var resetAllButton2 = new ResetAllButton( { listener: resetAll, radius: 22, centerX: buttonC.centerX, centerY: buttonEnableButton.centerY } );
     this.addChild( resetAllButton2 );
 
     var buttonD = new RoundPushButton(

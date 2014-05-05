@@ -25,7 +25,7 @@ define( function( require ) {
   var MARGIN = 4;
   var X_WIDTH = WIDTH * 0.25; // Empirically determined.
 
-  function SoundToggleButton2( property, options ) {
+  function SoundToggleButton( property, options ) {
     var soundOffNode = new Node();
     var soundOnNode = new FontAwesomeNode( 'volume_up' );
     var scale = ( WIDTH - ( 2 * MARGIN ) ) / soundOnNode.width;
@@ -50,5 +50,5 @@ define( function( require ) {
       }, options ) );
   }
 
-  return inherit( BooleanRectangularToggleButtonWithContent, SoundToggleButton2 );
+  return inherit( BooleanRectangularToggleButtonWithContent, SoundToggleButton );
 } );

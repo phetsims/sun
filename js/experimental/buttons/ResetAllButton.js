@@ -23,7 +23,7 @@ define( function( require ) {
    * @param {Object} options
    * @constructor
    */
-  function ResetAllButton2( options ) {
+  function ResetAllButton( options ) {
     options = _.extend( {
       radius: DEFAULT_RADIUS,
       minXMargin: ( options.radius || DEFAULT_RADIUS ) * 0.2,
@@ -71,5 +71,5 @@ define( function( require ) {
     RoundPushButton.call( this, _.extend( { content: icon }, options ) );
   }
 
-  return inherit( RoundPushButton, ResetAllButton2 );
+  return inherit( RoundPushButton, ResetAllButton );
 } );

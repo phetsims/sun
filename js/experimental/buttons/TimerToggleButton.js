@@ -28,7 +28,7 @@ define( function( require ) {
    * @param {*} options
    * @constructor
    */
-  function TimerToggleButton2( timerRunningProperty, options ) {
+  function TimerToggleButton( timerRunningProperty, options ) {
 
     // Create the node that represents the timer being on.
     var clockRadius = WIDTH * 0.35;
@@ -64,5 +64,5 @@ define( function( require ) {
       }, options ) );
   }
 
-  return inherit( BooleanRectangularToggleButtonWithContent, TimerToggleButton2 );
+  return inherit( BooleanRectangularToggleButtonWithContent, TimerToggleButton );
 } );
