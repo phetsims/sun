@@ -1,23 +1,24 @@
 // Copyright 2002-2014, University of Colorado Boulder
 
 /**
- * A rectangular push button.  This is the file in which the appearance and
- * behavior are brought together.
+ * An interactive round push button.  This is the file in which the appearance
+ * and behavior are brought together.
  *
- * This class inherits from RectangularButtonView, which contains all of the
+ * This class inherits from RoundButtonView, which contains all of the
  * code that defines the button's appearance, and adds the button's behavior
  * by hooking up a button model.
  *
  * @author John Blanco
+ * @author Sam Reid
  */
 define( function( require ) {
   'use strict';
 
   // modules
   var inherit = require( 'PHET_CORE/inherit' );
-  var RectangularButtonView = require( 'SUN/experimental/buttons/RectangularButtonView' );
-  var PushButtonInteractionStateProperty = require( 'SUN/experimental/buttons/PushButtonInteractionStateProperty' );
-  var PushButtonModel = require( 'SUN/experimental/buttons/PushButtonModel' );
+  var PushButtonModel = require( 'SUN/buttons/PushButtonModel' );
+  var RoundButtonView = require( 'SUN/buttons/RoundButtonView' );
+  var PushButtonInteractionStateProperty = require( 'SUN/buttons/PushButtonInteractionStateProperty' );
 
   /**
    * @param {Object} options - All of the general Scenery node options can be
@@ -30,33 +31,31 @@ define( function( require ) {
    *
    *    baseColor:              The color for the main portion of the button, other colors for highlights and shadows will be based off of this
    *    content:                The node to display on the button, can be null for a blank button
-   *    cornerRounding:         Just like the usual option for a rectangular shape
    *    disabledBaseColor:      The color for the main portion of the button when disabled, other colors for highlights and shadows will be based of of this
    *    fireOnDown:             Boolean that controls whether the listener function(s) are fired when the button is pressed down instead of when released
    *    listener:               Function that is called when this button is fired
-   *    minHeight:              Minimum height for the button, not needed unless a fixed height beyond that of the content is desired
-   *    minWidth:               Minimum width for the button, not needed unless a fixed width beyond that of the content is desired
+   *    minXMargin:             Minimum margin between the content and the edge in the x (i.e. horizontal) direction
+   *    minYMargin:             Minimum margin between the content and the edge in the y (i.e. vertical) direction
+   *    radius:                 Radius of the button, not needed unless a fixed radius beyond the size of the content is needed
    *    setContentEnabledLook:  Function that controls how the content appearance changes when the button is disabled
-   *    xMargin:                Margin between the content and the edge in the x (i.e. horizontal) direction
-   *    yMargin:                Margin between the content and the edge in the y (i.e. vertical) direction
-   *    xTouchExpansion:        Amount of space beyond the left and right edges where the button will sense touch events
-   *    yTouchExpansion:        Amount of space beyond the top and bottom edges where the button will sense touch events
+   *    touchExpansion:         Amount added beyond the radius to the touch area
+   *    xContentOffset:         Offset from center in the X direction for the content node, sometimes needed for a good visual look
+   *    yContentOffset:         Offset from center in the Y direction for the content node, sometimes needed for a good visual look
    *
    * @constructor
    */
-  function RectangularPushButton( options ) {
+  function RoundPushButton( options ) {
     // Safe to pass through options to the PushButtonModel like "fireOnDown".  Other scenery options will be safely ignored.
     var buttonModel = new PushButtonModel( options );
-    RectangularButtonView.call( this, buttonModel, new PushButtonInteractionStateProperty( buttonModel ), options );
+    RoundButtonView.call( this, buttonModel, new PushButtonInteractionStateProperty( buttonModel ), options );
   }
 
-  return inherit( RectangularButtonView, RectangularPushButton, {
+  return inherit( RoundButtonView, RoundPushButton, {
     addListener: function( listener ) {
       this.buttonModel.addListener( listener );
     },
 
     removeListener: function( listener ) {
       this.buttonModel.removeListener( listener );
-    }
-  } );
+    } } );
 } );

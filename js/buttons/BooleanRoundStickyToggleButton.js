@@ -15,7 +15,7 @@ define( function( require ) {
 
   // modules
   var inherit = require( 'PHET_CORE/inherit' );
-  var RoundStickyToggleButton = require( 'SUN/experimental/buttons/RoundStickyToggleButton' );
+  var RoundStickyToggleButton = require( 'SUN/buttons/RoundStickyToggleButton' );
 
   function BooleanRoundStickyToggleButton( booleanProperty, options ) {
     RoundStickyToggleButton.call( this, false, true, booleanProperty, options );

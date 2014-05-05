@@ -8,7 +8,7 @@ define( function( require ) {
 
   // modules
   var inherit = require( 'PHET_CORE/inherit' );
-  var RectangularToggleButton = require( 'SUN/experimental/buttons/RectangularToggleButton' );
+  var RectangularToggleButton = require( 'SUN/buttons/RectangularToggleButton' );
   var ToggleNode = require( 'SUN/ToggleNode' );
 
   /**

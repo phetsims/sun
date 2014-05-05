@@ -11,7 +11,7 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var ButtonListener = require( 'SUN/experimental/buttons/ButtonListener' );
+  var ButtonListener = require( 'SUN/buttons/ButtonListener' );
   var Color = require( 'SCENERY/util/Color' );
   var inherit = require( 'PHET_CORE/inherit' );
   var LinearGradient = require( 'SCENERY/util/LinearGradient' );

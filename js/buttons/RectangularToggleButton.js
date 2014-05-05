@@ -11,9 +11,9 @@ define( function( require ) {
 
   // modules
   var inherit = require( 'PHET_CORE/inherit' );
-  var RectangularButtonView = require( 'SUN/experimental/buttons/RectangularButtonView' );
-  var ToggleButtonInteractionState = require( 'SUN/experimental/buttons/ToggleButtonInteractionState' );
-  var ToggleButtonModel = require( 'SUN/experimental/buttons/ToggleButtonModel' );
+  var RectangularButtonView = require( 'SUN/buttons/RectangularButtonView' );
+  var ToggleButtonInteractionState = require( 'SUN/buttons/ToggleButtonInteractionState' );
+  var ToggleButtonModel = require( 'SUN/buttons/ToggleButtonModel' );
 
   /**
    * @param valueA {Object} one possible value for the toggle

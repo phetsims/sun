@@ -13,7 +13,7 @@ define( function( require ) {
 
   // modules
   var inherit = require( 'PHET_CORE/inherit' );
-  var ButtonModel = require( 'SUN/experimental/buttons/ButtonModel' );
+  var ButtonModel = require( 'SUN/buttons/ButtonModel' );
 
   /**
    * @param valueUp {Object} value when the toggle is in the 'up' position

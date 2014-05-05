@@ -10,7 +10,7 @@ define( function( require ) {
 
   // modules
   var inherit = require( 'PHET_CORE/inherit' );
-  var InOutRadioButtonView = require( 'SUN/experimental/buttons/InOutRadioButtonView' );
+  var InOutRadioButtonView = require( 'SUN/buttons/InOutRadioButtonView' );
 
   /**
    * @param property

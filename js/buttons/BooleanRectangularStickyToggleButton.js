@@ -15,7 +15,7 @@ define( function( require ) {
 
   // modules
   var inherit = require( 'PHET_CORE/inherit' );
-  var RectangularStickyToggleButton = require( 'SUN/experimental/buttons/RectangularStickyToggleButton' );
+  var RectangularStickyToggleButton = require( 'SUN/buttons/RectangularStickyToggleButton' );
 
   function BooleanRectangularStickyToggleButton( booleanProperty, options ) {
     RectangularStickyToggleButton.call( this, false, true, booleanProperty, options );

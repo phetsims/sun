@@ -12,9 +12,9 @@ define( function( require ) {
 
   // modules
   var inherit = require( 'PHET_CORE/inherit' );
-  var RectangularButtonView = require( 'SUN/experimental/buttons/RectangularButtonView' );
-  var StickyToggleButtonInteractionStateProperty = require( 'SUN/experimental/buttons/StickyToggleButtonInteractionStateProperty' );
-  var StickyToggleButtonModel = require( 'SUN/experimental/buttons/StickyToggleButtonModel' );
+  var RectangularButtonView = require( 'SUN/buttons/RectangularButtonView' );
+  var StickyToggleButtonInteractionStateProperty = require( 'SUN/buttons/StickyToggleButtonInteractionStateProperty' );
+  var StickyToggleButtonModel = require( 'SUN/buttons/StickyToggleButtonModel' );
 
   /**
    * @param valueUp {Object} value when the toggle is in the 'up' position

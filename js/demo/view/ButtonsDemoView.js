@@ -13,26 +13,24 @@ define( function( require ) {
   var OutsideBackgroundNode = require( 'SCENERY_PHET/OutsideBackgroundNode' );
   var PhetFont = require( 'SCENERY_PHET/PhetFont' );
   var Property = require( 'AXON/Property' );
-  var RectangularPushButton = require( 'SUN/experimental/buttons/RectangularPushButton' );
-  var BooleanRectangularStickyToggleButton = require( 'SUN/experimental/buttons/BooleanRectangularStickyToggleButton' );
-  var RefreshButton = require( 'SUN/experimental/buttons/RefreshButton' );
-  var ResetAllButtonDeprecated = require( 'SCENERY_PHET/ResetAllButtonDeprecated' );
-  var ResetAllButton = require( 'SUN/experimental/buttons/ResetAllButton' );
-  var ReturnToLevelSelectButton = require( 'SUN/experimental/buttons/ReturnToLevelSelectButton' );
-  var RoundPushButton = require( 'SUN/experimental/buttons/RoundPushButton' );
-  var RoundStickyToggleButton = require( 'SUN/experimental/buttons/RoundStickyToggleButton' );
-  var InOutRadioButton = require( 'SUN/experimental/buttons/InOutRadioButton' );
+  var RectangularPushButton = require( 'SUN/buttons/RectangularPushButton' );
+  var BooleanRectangularStickyToggleButton = require( 'SUN/buttons/BooleanRectangularStickyToggleButton' );
+  var RefreshButton = require( 'SCENERY_PHET/RefreshButton' );
+  var ResetAllButton = require( 'SCENERY_PHET/ResetAllButton' );
+  var ReturnToLevelSelectButton = require( 'SCENERY_PHET/ReturnToLevelSelectButton' );
+  var RoundPushButton = require( 'SUN/buttons/RoundPushButton' );
+  var RoundStickyToggleButton = require( 'SUN/buttons/RoundStickyToggleButton' );
   var ScreenView = require( 'JOIST/ScreenView' );
-  var SoundToggleButton = require( 'SUN/experimental/buttons/SoundToggleButton' );
+  var SoundToggleButton = require( 'SCENERY_PHET/SoundToggleButton' );
   var Text = require( 'SCENERY/nodes/Text' );
-  var TimerToggleButton = require( 'SUN/experimental/buttons/TimerToggleButton' );
-  var BooleanRectangularToggleButtonWithContent = require( 'SUN/experimental/buttons/BooleanRectangularToggleButton' );
+  var TimerToggleButton = require( 'SCENERY_PHET/TimerToggleButton' );
+  var BooleanRectangularToggleButtonWithContent = require( 'SUN/buttons/BooleanRectangularToggleButton' );
 
   // Constants
   var BUTTON_FONT = new PhetFont( { size: 20 } );
   var BUTTON_CAPTION_FONT = new PhetFont( { size: 16 } );
 
-  function ButtonsView() {
+  function ButtonsDemoView() {
     ScreenView.call( this, { renderer: 'svg' } );
 
     // background
@@ -100,12 +98,6 @@ define( function( require ) {
       rectangularToggleButtonProperty.reset();
     }
 
-    // add reset all button and caption
-    var resetAllButton = new ResetAllButtonDeprecated( resetAll, { radius: 22, centerX: refreshButton.centerX, top: timerToggleButton.bottom + buttonSpacing } );
-    this.addChild( resetAllButton );
-    var resetAllButtonLabel = new Text( 'Reset All Button: ', { font: BUTTON_CAPTION_FONT, right: resetAllButton.left - 5, centerY: resetAllButton.centerY } );
-    this.addChild( resetAllButtonLabel );
-
     // Test button behavior.
     var buttonA = new RectangularPushButton(
       {
@@ -159,15 +151,15 @@ define( function( require ) {
     this.addChild( buttonEnableButton );
 
     // add alternative reset all button
-    var resetAllButton2 = new ResetAllButton( { listener: resetAll, radius: 22, centerX: buttonC.centerX, centerY: buttonEnableButton.centerY } );
-    this.addChild( resetAllButton2 );
+    var resetAllButton = new ResetAllButton( { listener: resetAll, radius: 22, centerX: buttonC.centerX, centerY: buttonEnableButton.centerY } );
+    this.addChild( resetAllButton );
 
     var buttonD = new RoundPushButton(
       {
         content: new Text( '--- D ---', { font: BUTTON_FONT } ),
         listener: function() { outputText.text = 'Button D pressed'; },
-        left: resetAllButton2.right + buttonSpacing,
-        centerY: resetAllButton2.centerY
+        left: resetAllButton.right + buttonSpacing,
+        centerY: resetAllButton.centerY
       } );
     this.addChild( buttonD );
 
@@ -199,7 +191,7 @@ define( function( require ) {
         listener: function() { outputText.text = 'Go button pressed'; },
         baseColor: new Color( 0, 163, 0 ),
         minXPadding: 10,
-        centerX: resetAllButton2.centerX,
+        centerX: resetAllButton.centerX,
         top: buttonE.bottom + 5
       } );
     this.addChild( goButton );
@@ -244,9 +236,6 @@ define( function( require ) {
     } );
     this.addChild( booleanRectangularStickyToggleButton );
 
-    var inOutRadioButton = new InOutRadioButton( new Property( true ), true, new Text( 'In/Out' ) );
-    this.addChild( inOutRadioButton );
-
     var transparentButton = new RectangularPushButton(
       {
         content: new Text( 'Transparent Button', { font: BUTTON_FONT } ),
@@ -282,7 +271,7 @@ define( function( require ) {
     window.debugText = debugText;
   }
 
-  return inherit( ScreenView, ButtonsView, {
+  return inherit( ScreenView, ButtonsDemoView, {
     step: function( timeElapsed ) {
       // Does nothing for now.
     }

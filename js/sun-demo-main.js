@@ -10,7 +10,7 @@ define( function( require ) {
   var Screen = require( 'JOIST/Screen' );
   var Sim = require( 'JOIST/Sim' );
   var SimLauncher = require( 'JOIST/SimLauncher' );
-  var ButtonsView = require( 'SUN/demo/view/ButtonsView' );
+  var ButtonsDemoView = require( 'SUN/demo/view/ButtonsDemoView' );
 
   // Strings
   var simTitle = 'Sun demo';
@@ -27,7 +27,7 @@ define( function( require ) {
     new Sim( simTitle, [
       new Screen( simTitle, null,
         function() {return {};},
-        function( model ) {return new ButtonsView();},
+        function( model ) {return new ButtonsDemoView();},
         { backgroundColor: '#fff' }
       )
     ], simOptions ).start();
