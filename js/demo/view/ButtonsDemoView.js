@@ -204,9 +204,7 @@ define( function( require ) {
         baseColor: new Color( 244, 154, 194 ),
         minXPadding: 10,
         left: goButton.right + 5,
-        centerY: goButton.centerY,
-        stroke: helpButtonBaseColor.colorUtilsDarker( 0.4 ),
-        lineWidth: 0.5
+        centerY: goButton.centerY
       } );
     this.addChild( helpButton );
 

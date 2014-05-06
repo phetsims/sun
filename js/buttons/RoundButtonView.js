@@ -28,6 +28,12 @@ define( function( require ) {
 
   // Constants
   var HIGHLIGHT_GRADIENT_LENGTH = 5; // In screen coords, which are roughly pixels.
+  var DEFAULT_COLOR = new Color( 153, 206, 255 );
+
+  // Convenience function to convert a color spec to a color object if needed.
+  function getColorObject( colorSpec ) {
+    return colorSpec instanceof Color ? colorSpec : colorSpec instanceof String ? new Color( colorSpec ) : null;
+  }
 
   /**
    * @param {ButtonModel} buttonModel
@@ -50,8 +56,8 @@ define( function( require ) {
       minYMargin: 5, // Minimum margin in y direction, i.e. on top and bottom
       fireOnDown: false,
       touchExpansion: 5, // Radius expansion for touch area, in screen units (roughly pixels)
-      stroke: null, // No outline stroke by default
-      lineWidth: 1, // Only meaningful if stroke is non-null
+      stroke: getColorObject( options.baseColor || DEFAULT_COLOR ).colorUtilsDarker( 0.4 ),
+      lineWidth: 0.5, // Only meaningful if stroke is non-null
 
       // By default, icons are centered in the button, but icons with odd
       // shapes that are not wrapped in a normalizing parent node may need to
