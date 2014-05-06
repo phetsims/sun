@@ -196,7 +196,6 @@ define( function( require ) {
       } );
     this.addChild( goButton );
 
-    var helpButtonBaseColor = new Color( 244, 154, 194 );
     var helpButton = new RoundPushButton(
       {
         content: new Text( 'Help', { font: BUTTON_FONT } ),
