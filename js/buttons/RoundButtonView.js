@@ -77,6 +77,11 @@ define( function( require ) {
     Node.call( thisButton );
     var content = options.content; // convenience variable
 
+//    if ( content ) {
+//      content.top = 0;
+//      content.left = 0;
+//    }
+
     // Hook up the input listener
     this.addInputListener( new ButtonListener( buttonModel ) );
 
