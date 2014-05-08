@@ -14,7 +14,7 @@ define( function( require ) {
   var RectanglePushButtonDeprecated = require( 'SUN/RectanglePushButtonDeprecated' );
   var Text = require( 'SCENERY/nodes/Text' );
 
-  function TextPushButton( text, options ) {
+  function TextPushButtonDeprecated( text, options ) {
 
     options = _.extend( {
       font: new Font(),
@@ -32,5 +32,5 @@ define( function( require ) {
     } );
   }
 
-  return inherit( RectanglePushButtonDeprecated, TextPushButton );
+  return inherit( RectanglePushButtonDeprecated, TextPushButtonDeprecated );
 } );
