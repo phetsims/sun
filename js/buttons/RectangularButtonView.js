@@ -23,6 +23,12 @@ define( function( require ) {
   var VERTICAL_HIGHLIGHT_GRADIENT_LENGTH = 7; // In screen coords, which are roughly pixels.
   var HORIZONTAL_HIGHLIGHT_GRADIENT_LENGTH = 7; // In screen coords, which are roughly pixels.
   var SHADE_GRADIENT_LENGTH = 3; // In screen coords, which are roughly pixels.
+  var DEFAULT_COLOR = new Color( 153, 206, 255 );
+
+  // Convenience function to convert a color spec to a color object if needed.
+  function getColorObject( colorSpec ) {
+    return colorSpec instanceof Color ? colorSpec : colorSpec instanceof String ? new Color( colorSpec ) : null;
+  }
 
   /**
    * @param {ButtonModel} buttonModel - Model that defines the button's behavior.
@@ -41,15 +47,15 @@ define( function( require ) {
       minHeight: 1,
       cursor: 'pointer',
       cornerRounding: 4,
-      baseColor: new Color( 153, 206, 255 ),
+      baseColor: DEFAULT_COLOR,
       disabledBaseColor: new Color( 220, 220, 220 ),
       xMargin: 5,
       yMargin: 5,
       fireOnDown: false,
       xTouchExpansion: 5,
       yTouchExpansion: 5,
-      stroke: null, // No outline stroke by default
-      lineWidth: 1, // Only meaningful if stroke is non-null
+      stroke: getColorObject( options.baseColor || DEFAULT_COLOR ).colorUtilsDarker( 0.4 ),
+      lineWidth: 0.5, // Only meaningful if stroke is non-null
 
       // The following function controls how the appearance of the content
       // node is modified when this button is disabled.

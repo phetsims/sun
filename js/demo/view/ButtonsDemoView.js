@@ -138,7 +138,8 @@ define( function( require ) {
         centerY: buttonC.centerY,
         baseColor: new Color( 255, 255, 61 ),
         fireOnDown: true,
-        stroke: 'black'
+        stroke: 'black',
+        lineWidth: 1
       } );
     this.addChild( fireOnDownButton );
 
