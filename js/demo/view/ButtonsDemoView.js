@@ -70,7 +70,7 @@ define( function( require ) {
 
     // add sound toggle button
     var soundEnabled = new Property( true );
-    var soundToggleButton = new SoundToggleButton( soundEnabled, { centerX: refreshButton.centerX, top: returnToLevelSelectButton.bottom + buttonSpacing } );
+    var soundToggleButton = new SoundToggleButton( soundEnabled, { centerX: refreshButton.centerX, top: returnToLevelSelectButton.bottom + buttonSpacing * 5 } );
     this.addChild( soundToggleButton );
     var soundToggleButtonLabel = new Text( 'Sound Toggle Button: ', { font: BUTTON_CAPTION_FONT, right: soundToggleButton.left - 5, centerY: soundToggleButton.centerY } );
     this.addChild( soundToggleButtonLabel );
@@ -103,7 +103,7 @@ define( function( require ) {
       content: new Text( '--- A ---', { font: BUTTON_FONT } ),
         listener: function() { outputText.text = 'Button A pressed'; },
         left: 100,
-        top: 300
+      top: 285
       } );
     this.addChild( buttonA );
 
