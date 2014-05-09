@@ -8,13 +8,15 @@
 define( function( require ) {
   'use strict';
 
+  var BooleanRectangularStickyToggleButton = require( 'SUN/buttons/BooleanRectangularStickyToggleButton' );
+  var BooleanRectangularToggleButtonWithContent = require( 'SUN/buttons/BooleanRectangularToggleButton' );
   var Color = require( 'SCENERY/util/Color' );
+  var HTMLPushButton = require( 'SUN/buttons/HTMLPushButton' );
   var inherit = require( 'PHET_CORE/inherit' );
   var OutsideBackgroundNode = require( 'SCENERY_PHET/OutsideBackgroundNode' );
   var PhetFont = require( 'SCENERY_PHET/PhetFont' );
   var Property = require( 'AXON/Property' );
   var RectangularPushButton = require( 'SUN/buttons/RectangularPushButton' );
-  var BooleanRectangularStickyToggleButton = require( 'SUN/buttons/BooleanRectangularStickyToggleButton' );
   var RefreshButton = require( 'SCENERY_PHET/RefreshButton' );
   var ResetAllButton = require( 'SCENERY_PHET/ResetAllButton' );
   var ReturnToLevelSelectButton = require( 'SCENERY_PHET/ReturnToLevelSelectButton' );
@@ -24,7 +26,6 @@ define( function( require ) {
   var SoundToggleButton = require( 'SCENERY_PHET/SoundToggleButton' );
   var Text = require( 'SCENERY/nodes/Text' );
   var TimerToggleButton = require( 'SCENERY_PHET/TimerToggleButton' );
-  var BooleanRectangularToggleButtonWithContent = require( 'SUN/buttons/BooleanRectangularToggleButton' );
 
   // Constants
   var BUTTON_FONT = new PhetFont( { size: 20 } );
@@ -147,7 +148,14 @@ define( function( require ) {
     );
     this.addChild( buttonEnableButton );
 
-    // add alternative reset all button
+    var htmlButton = new HTMLPushButton( 'HTML <em>button</em> <b>example</b>', {
+      listener: function() { outputText.text = 'HTML button pressed'; },
+      baseColor: new Color( 64, 225, 0 ),
+      centerX: buttonEnableButton.centerX,
+      top: buttonEnableButton.bottom + buttonSpacing * 2
+    } );
+    this.addChild( htmlButton );
+
     var resetAllButton = new ResetAllButton( { listener: resetAll, radius: 22, centerX: buttonC.centerX, centerY: buttonEnableButton.centerY } );
     this.addChild( resetAllButton );
 
