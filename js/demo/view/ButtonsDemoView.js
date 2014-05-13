@@ -259,6 +259,8 @@ define( function( require ) {
       timerToggleButton.enabled = enabled;
       roundStickyToggleButton.enabled = enabled;
       booleanRectangularStickyToggleButton.enabled = enabled;
+      transparentButton.enabled = enabled;
+      htmlButton.enabled = enabled;
     } );
 
     // TODO: For debug, don't leave this here long term.
