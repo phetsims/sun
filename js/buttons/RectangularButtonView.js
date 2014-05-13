@@ -80,7 +80,7 @@ define( function( require ) {
     var transparentDisabledBaseColor = new Color( disabledBaseColor.getRed(), disabledBaseColor.getGreen(), disabledBaseColor.getBlue(), 0 );
     var lightenedStroke = null;
     if ( options.stroke ) {
-      lightenedStroke = Color.toColor( options.stroke ).colorUtilsBrighter( 0.5 );
+      lightenedStroke = disabledBaseColor.colorUtilsDarker( 0.4 );
     }
     var transparentWhite = new Color( 256, 256, 256, 0.7 );
 
