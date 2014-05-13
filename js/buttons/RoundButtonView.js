@@ -50,13 +50,13 @@ define( function( require ) {
       radius: options.content ? undefined : 30,
       content: null,
       cursor: 'pointer',
-      baseColor: new Color( 153, 206, 255 ),
+      baseColor: DEFAULT_COLOR,
       disabledBaseColor: new Color( 220, 220, 220 ),
       minXMargin: 5, // Minimum margin in x direction, i.e. on left and right
       minYMargin: 5, // Minimum margin in y direction, i.e. on top and bottom
       fireOnDown: false,
       touchExpansion: 5, // Radius expansion for touch area, in screen units (roughly pixels)
-      stroke: getColorObject( options.baseColor || DEFAULT_COLOR ).colorUtilsDarker( 0.4 ),
+      stroke: DEFAULT_COLOR.colorUtilsDarker( 0.4 ),
       lineWidth: 0.5, // Only meaningful if stroke is non-null
 
       // By default, icons are centered in the button, but icons with odd
@@ -77,11 +77,6 @@ define( function( require ) {
     Node.call( thisButton );
     var content = options.content; // convenience variable
 
-//    if ( content ) {
-//      content.top = 0;
-//      content.left = 0;
-//    }
-
     // Hook up the input listener
     this.addInputListener( new ButtonListener( buttonModel ) );
 
@@ -91,13 +86,13 @@ define( function( require ) {
 
     // Set up variables needed to create the various gradient fills and otherwise mod the appearance
     var upCenter = new Vector2( options.xContentOffset, options.yContentOffset );
-    var baseColor = options.baseColor;
-    var disabledBaseColor = options.disabledBaseColor;
+    var baseColor = Color.toColor( options.baseColor );
+    var disabledBaseColor = Color.toColor( options.disabledBaseColor );
     var transparentBaseColor = new Color( baseColor.getRed(), baseColor.getGreen(), baseColor.getBlue(), 0 );
     var transparentDisabledBaseColor = new Color( disabledBaseColor.getRed(), disabledBaseColor.getGreen(), disabledBaseColor.getBlue(), 0 );
     var lightenedStroke = null;
     if ( options.stroke ) {
-      lightenedStroke = options.stroke instanceof Color ? options.stroke.colorUtilsBrighter( 0.5 ) : new Color( options.stroke ).colorUtilsBrighter( 0.5 );
+      lightenedStroke = Color.toColor( options.stroke ).colorUtilsBrighter( 0.5 );
     }
 
     // The multiplier below can be varied in order to tweak the highlight appearance.

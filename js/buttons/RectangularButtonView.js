@@ -25,11 +25,6 @@ define( function( require ) {
   var SHADE_GRADIENT_LENGTH = 3; // In screen coords, which are roughly pixels.
   var DEFAULT_COLOR = new Color( 153, 206, 255 );
 
-  // Convenience function to convert a color spec to a color object if needed.
-  function getColorObject( colorSpec ) {
-    return colorSpec instanceof Color ? colorSpec : colorSpec instanceof String ? new Color( colorSpec ) : null;
-  }
-
   /**
    * @param {ButtonModel} buttonModel - Model that defines the button's behavior.
    * @param {Property} interactionStateProperty - A property that is used to drive the visual appearance of the button.
@@ -54,7 +49,7 @@ define( function( require ) {
       fireOnDown: false,
       xTouchExpansion: 5,
       yTouchExpansion: 5,
-      stroke: getColorObject( options.baseColor || DEFAULT_COLOR ).colorUtilsDarker( 0.4 ),
+      stroke: DEFAULT_COLOR.colorUtilsDarker( 0.4 ),
       lineWidth: 0.5, // Only meaningful if stroke is non-null
 
       // The following function controls how the appearance of the content
@@ -79,13 +74,13 @@ define( function( require ) {
     var verticalShadowStop = Math.max( 1 - SHADE_GRADIENT_LENGTH / buttonHeight, 0 );
     var horizontalHighlightStop = Math.min( HORIZONTAL_HIGHLIGHT_GRADIENT_LENGTH / buttonWidth, 1 );
     var horizontalShadowStop = Math.max( 1 - SHADE_GRADIENT_LENGTH / buttonWidth, 0 );
-    var baseColor = options.baseColor;
-    var disabledBaseColor = options.disabledBaseColor;
+    var baseColor = Color.toColor( options.baseColor );
+    var disabledBaseColor = Color.toColor( options.disabledBaseColor );
     var transparentBaseColor = new Color( baseColor.getRed(), baseColor.getGreen(), baseColor.getBlue(), 0 );
     var transparentDisabledBaseColor = new Color( disabledBaseColor.getRed(), disabledBaseColor.getGreen(), disabledBaseColor.getBlue(), 0 );
     var lightenedStroke = null;
     if ( options.stroke ) {
-      lightenedStroke = options.stroke instanceof Color ? options.stroke.colorUtilsBrighter( 0.5 ) : new Color( options.stroke ).colorUtilsBrighter( 0.5 );
+      lightenedStroke = Color.toColor( options.stroke ).colorUtilsBrighter( 0.5 );
     }
     var transparentWhite = new Color( 256, 256, 256, 0.7 );
 

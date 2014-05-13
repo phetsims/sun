@@ -124,7 +124,7 @@ define( function( require ) {
         },
         left: buttonB.right + 10,
         centerY: buttonB.centerY,
-        baseColor: new Color( 204, 102, 204 )
+      baseColor: 'rgb( 204, 102, 204 )'
       } );
     this.addChild( buttonC );
 
@@ -179,7 +179,7 @@ define( function( require ) {
     var fireButton = new RoundPushButton( {
       content: new Text( 'Fire!', { font: BUTTON_FONT } ),
         listener: function() { outputText.text = 'Fire button pressed'; },
-        baseColor: new Color( 255, 100, 51 ),
+      baseColor: 'orange',
         left: buttonE.right + buttonSpacing,
         centerY: buttonE.centerY,
         stroke: 'black',
