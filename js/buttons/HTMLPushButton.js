@@ -15,7 +15,6 @@ define( function( require ) {
   var HTMLText = require( 'SCENERY/nodes/HTMLText' );
 
   function HTMLPushButton( html, options ) {
-
     options = _.extend( {
       textFill: 'black'
     }, options );
