@@ -30,11 +30,6 @@ define( function( require ) {
   var HIGHLIGHT_GRADIENT_LENGTH = 5; // In screen coords, which are roughly pixels.
   var DEFAULT_COLOR = new Color( 153, 206, 255 );
 
-  // Convenience function to convert a color spec to a color object if needed.
-  function getColorObject( colorSpec ) {
-    return colorSpec instanceof Color ? colorSpec : colorSpec instanceof String ? new Color( colorSpec ) : null;
-  }
-
   /**
    * @param {ButtonModel} buttonModel
    * @param {Property} interactionStateProperty - A property that is used to drive the visual appearance of the button.
