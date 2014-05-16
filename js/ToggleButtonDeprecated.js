@@ -10,7 +10,7 @@ define( function( require ) {
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var ToggleNode = require( 'SUN/ToggleNode' );
 
-  function ToggleButton( trueNode, falseNode, booleanProperty, options ) {
+  function ToggleButtonDeprecated( trueNode, falseNode, booleanProperty, options ) {
     var toggleButton = this;
 
     options = _.extend( {
@@ -70,7 +70,7 @@ define( function( require ) {
     } );
   }
 
-  inherit( Node, ToggleButton );
+  inherit( Node, ToggleButtonDeprecated );
 
-  return ToggleButton;
+  return ToggleButtonDeprecated;
 } );
