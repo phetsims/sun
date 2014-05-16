@@ -12,7 +12,7 @@ define( function( require ) {
   var Color = require( 'SCENERY/util/Color' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Node = require( 'SCENERY/nodes/Node' );
-  var PushButton = require( 'SUN/PushButton' );
+  var PushButtonDeprecated = require( 'SUN/PushButtonDeprecated' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
 
   // Creates a node that represents the button is a specific state.
@@ -57,7 +57,7 @@ define( function( require ) {
     options.rectangleFillOver = options.rectangleFillOver || options.rectangleFillUp.brighterColor( 0.9 );
     options.rectangleFillDown = options.rectangleFillDown || options.rectangleFillUp.darkerColor( 0.9 );
 
-    PushButton.call( this,
+    PushButtonDeprecated.call( this,
       createNode( content, options.rectangleStroke, options.rectangleFillUp, options.rectangleLineWidth, options.rectangleXMargin, options.rectangleYMargin, options.rectangleCornerRadius ),
       createNode( content, options.rectangleStroke, options.rectangleFillOver, options.rectangleLineWidth, options.rectangleXMargin, options.rectangleYMargin, options.rectangleCornerRadius ),
       createNode( content, options.rectangleStroke, options.rectangleFillDown, options.rectangleLineWidth, options.rectangleXMargin, options.rectangleYMargin, options.rectangleCornerRadius ),
@@ -65,5 +65,5 @@ define( function( require ) {
       options );
   }
 
-  return inherit( PushButton, RectanglePushButtonDeprecated );
+  return inherit( PushButtonDeprecated, RectanglePushButtonDeprecated );
 } );

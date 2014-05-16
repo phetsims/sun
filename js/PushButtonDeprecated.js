@@ -22,7 +22,7 @@ define( function( require ) {
    * @param {object} options
    * @constructor
    */
-  function PushButton( upNode, overNode, downNode, disabledNode, options ) {
+  function PushButtonDeprecated( upNode, overNode, downNode, disabledNode, options ) {
 
     options = _.extend( {
         cursor: 'pointer',
@@ -96,7 +96,7 @@ define( function( require ) {
     thisButton.mutate( options );
   }
 
-  return inherit( Node, PushButton, {
+  return inherit( Node, PushButtonDeprecated, {
 
     // Adds a listener. If already a listener, this is a no-op.
     addListener: function( listener ) {
