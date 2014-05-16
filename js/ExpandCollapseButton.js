@@ -1,6 +1,6 @@
 // Copyright 2002-2013, University of Colorado Boulder
 
-//TODO reimplement as a subtype of sun.buttons.RectangularPushButton
+//TODO reimplement as a subtype of something from sun.buttons
 /**
  * Button for expanding/collapsing something.
  *
