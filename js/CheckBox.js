@@ -154,9 +154,17 @@ define( function( require ) {
 
       content.setEnabled = function( enabled ) {
         textNode.fill = enabled ? textOptions.fill : textOptions.fillDisabled;
-        // enabled/disable the content if it implements setEnabled
-        if ( checkBoxOptions.icon && checkBoxOptions.icon.setEnabled ) {
-          checkBoxOptions.icon.setEnabled( enabled );
+
+        // if the check box has an icon...
+        if ( checkBoxOptions.icon ) {
+          if ( checkBoxOptions.icon.setEnabled ) {
+            // use setEnabled if provided by icon
+            checkBoxOptions.icon.setEnabled( enabled );
+          }
+          else {
+            // fallback to using opacity
+            checkBoxOptions.icon.opacity = enabled ? 1 : 0.3;
+          }
         }
       };
 
