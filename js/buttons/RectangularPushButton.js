@@ -30,7 +30,7 @@ define( function( require ) {
    *
    *    baseColor:              The color for the main portion of the button, other colors for highlights and shadows will be based off of this
    *    content:                The node to display on the button, can be null for a blank button
-   *    cornerRounding:         Just like the usual option for a rectangular shape
+   *    cornerRadius:           Just like the usual option for a rectangular shape
    *    disabledBaseColor:      The color for the main portion of the button when disabled, other colors for highlights and shadows will be based of of this
    *    fireOnDown:             Boolean that controls whether the listener function(s) are fired when the button is pressed down instead of when released
    *    listener:               Function that is called when this button is fired

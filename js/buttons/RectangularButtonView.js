@@ -41,7 +41,7 @@ define( function( require ) {
       minWidth: 1,
       minHeight: 1,
       cursor: 'pointer',
-      cornerRounding: 4,
+      cornerRadius: 4,
       baseColor: DEFAULT_COLOR,
       disabledBaseColor: new Color( 220, 220, 220 ),
       xMargin: 5,
@@ -134,7 +134,7 @@ define( function( require ) {
       .addColorStop( 1, disabledBaseColor.colorUtilsDarker( 0.5 ) );
 
     // Create the basic button shape.
-    var background = new Rectangle( 0, 0, buttonWidth, buttonHeight, options.cornerRounding, options.cornerRounding,
+    var background = new Rectangle( 0, 0, buttonWidth, buttonHeight, options.cornerRadius, options.cornerRadius,
       {
         fill: options.baseColor,
         lineWidth: options.lineWidth
@@ -142,7 +142,7 @@ define( function( require ) {
     this.addChild( background );
 
     // Create the overlay that is used to add horizontal shading.
-    var overlayForHorizGradient = new Rectangle( 0, 0, buttonWidth, buttonHeight, options.cornerRounding, options.cornerRounding,
+    var overlayForHorizGradient = new Rectangle( 0, 0, buttonWidth, buttonHeight, options.cornerRadius, options.cornerRadius,
       {
         fill: options.baseColor,
         stroke: options.stroke,
