@@ -36,7 +36,6 @@ define( function( require ) {
    */
   function RectanglePushButtonDeprecated( content, options ) {
 
-    //TODO it would be nice to have less-verbose names, but supertypes may have similar options. For example, TextPushButtonDeprecated has textFill.
     options = _.extend( {
         // stroke
         rectangleStroke: 'black',
