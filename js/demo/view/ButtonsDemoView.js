@@ -13,6 +13,8 @@ define( function( require ) {
   var Color = require( 'SCENERY/util/Color' );
   var HTMLPushButton = require( 'SUN/buttons/HTMLPushButton' );
   var inherit = require( 'PHET_CORE/inherit' );
+  var Line = require( 'SCENERY/nodes/Line' );
+  var Node = require( 'SCENERY/nodes/Node' );
   var OutsideBackgroundNode = require( 'SCENERY_PHET/OutsideBackgroundNode' );
   var PhetFont = require( 'SCENERY_PHET/PhetFont' );
   var Property = require( 'AXON/Property' );
@@ -23,9 +25,11 @@ define( function( require ) {
   var RoundPushButton = require( 'SUN/buttons/RoundPushButton' );
   var RoundStickyToggleButton = require( 'SUN/buttons/RoundStickyToggleButton' );
   var ScreenView = require( 'JOIST/ScreenView' );
+  var SimpleDragHandler = require( 'SCENERY/input/SimpleDragHandler' );
   var SoundToggleButton = require( 'SCENERY_PHET/SoundToggleButton' );
   var Text = require( 'SCENERY/nodes/Text' );
   var TimerToggleButton = require( 'SCENERY_PHET/TimerToggleButton' );
+  var Vector2 = require( 'DOT/Vector2' );
 
   // Constants
   var BUTTON_FONT = new PhetFont( { size: 20 } );
@@ -102,42 +106,42 @@ define( function( require ) {
     // Test button behavior.
     var buttonA = new RectangularPushButton( {
       content: new Text( '--- A ---', { font: BUTTON_FONT } ),
-        listener: function() { outputText.text = 'Button A pressed'; },
-        left: 100,
+      listener: function() { outputText.text = 'Button A pressed'; },
+      left: 100,
       top: 285
-      } );
+    } );
     this.addChild( buttonA );
 
     var buttonB = new RectangularPushButton( {
       content: new Text( '--- B ---', { font: BUTTON_FONT } ),
-        listener: function() { outputText.text = 'Button B pressed'; },
-        left: buttonA.right + 10,
-        centerY: buttonA.centerY,
-        baseColor: new Color( 250, 0, 0 )
-      } );
+      listener: function() { outputText.text = 'Button B pressed'; },
+      left: buttonA.right + 10,
+      centerY: buttonA.centerY,
+      baseColor: new Color( 250, 0, 0 )
+    } );
     this.addChild( buttonB );
 
     var buttonC = new RectangularPushButton( {
       content: new Text( '--- C ---', { font: BUTTON_FONT } ),
-        listener: function() {
-          outputText.text = 'Button C pressed ' + ( ++buttonCFireCount ) + 'x';
-        },
-        left: buttonB.right + 10,
-        centerY: buttonB.centerY,
+      listener: function() {
+        outputText.text = 'Button C pressed ' + ( ++buttonCFireCount ) + 'x';
+      },
+      left: buttonB.right + 10,
+      centerY: buttonB.centerY,
       baseColor: 'rgb( 204, 102, 204 )'
-      } );
+    } );
     this.addChild( buttonC );
 
     var fireOnDownButton = new RectangularPushButton( {
       content: new Text( 'Fire on Down Button', { font: BUTTON_FONT } ),
-        listener: function() { outputText.text = 'Fire on down button pressed ' + ( ++fireOnDownCount ) + 'x'; },
-        left: buttonC.right + 30,
-        centerY: buttonC.centerY,
-        baseColor: new Color( 255, 255, 61 ),
-        fireOnDown: true,
-        stroke: 'black',
-        lineWidth: 1
-      } );
+      listener: function() { outputText.text = 'Fire on down button pressed ' + ( ++fireOnDownCount ) + 'x'; },
+      left: buttonC.right + 30,
+      centerY: buttonC.centerY,
+      baseColor: new Color( 255, 255, 61 ),
+      fireOnDown: true,
+      stroke: 'black',
+      lineWidth: 1
+    } );
     this.addChild( fireOnDownButton );
 
     var buttonEnableButton = new BooleanRectangularToggleButtonWithContent(
@@ -152,7 +156,7 @@ define( function( require ) {
       listener: function() { outputText.text = 'HTML button pressed'; },
       baseColor: new Color( 64, 225, 0 ),
       centerX: buttonEnableButton.centerX,
-      top: buttonEnableButton.bottom + buttonSpacing * 2
+      top: buttonEnableButton.bottom + buttonSpacing
     } );
     this.addChild( htmlButton );
 
@@ -161,50 +165,50 @@ define( function( require ) {
 
     var buttonD = new RoundPushButton( {
       content: new Text( '--- D ---', { font: BUTTON_FONT } ),
-        listener: function() { outputText.text = 'Button D pressed'; },
-        left: resetAllButton.right + buttonSpacing,
-        centerY: resetAllButton.centerY
-      } );
+      listener: function() { outputText.text = 'Button D pressed'; },
+      left: resetAllButton.right + buttonSpacing,
+      centerY: resetAllButton.centerY
+    } );
     this.addChild( buttonD );
 
     var buttonE = new RoundPushButton( {
       content: new Text( '--- E ---', { font: BUTTON_FONT } ),
-        listener: function() { outputText.text = 'Button E pressed'; },
-        baseColor: new Color( 245, 184, 0 ),
-        left: buttonD.right + buttonSpacing,
-        centerY: buttonD.centerY
-      } );
+      listener: function() { outputText.text = 'Button E pressed'; },
+      baseColor: new Color( 245, 184, 0 ),
+      left: buttonD.right + buttonSpacing,
+      centerY: buttonD.centerY
+    } );
     this.addChild( buttonE );
 
     var fireButton = new RoundPushButton( {
       content: new Text( 'Fire!', { font: BUTTON_FONT } ),
-        listener: function() { outputText.text = 'Fire button pressed'; },
+      listener: function() { outputText.text = 'Fire button pressed'; },
       baseColor: 'orange',
-        left: buttonE.right + buttonSpacing,
-        centerY: buttonE.centerY,
-        stroke: 'black',
-        lineWidth: 0.5
-      } );
+      left: buttonE.right + buttonSpacing,
+      centerY: buttonE.centerY,
+      stroke: 'black',
+      lineWidth: 0.5
+    } );
     this.addChild( fireButton );
 
     var goButton = new RoundPushButton( {
       content: new Text( 'Go!', { font: BUTTON_FONT } ),
-        listener: function() { outputText.text = 'Go button pressed'; },
-        baseColor: new Color( 0, 163, 0 ),
-        minXPadding: 10,
-        centerX: resetAllButton.centerX,
-        top: buttonE.bottom + 5
-      } );
+      listener: function() { outputText.text = 'Go button pressed'; },
+      baseColor: new Color( 0, 163, 0 ),
+      minXPadding: 10,
+      centerX: resetAllButton.centerX,
+      top: buttonE.bottom + 5
+    } );
     this.addChild( goButton );
 
     var helpButton = new RoundPushButton( {
       content: new Text( 'Help', { font: BUTTON_FONT } ),
-        listener: function() { outputText.text = 'Help button pressed'; },
-        baseColor: new Color( 244, 154, 194 ),
-        minXPadding: 10,
-        left: goButton.right + 5,
-        centerY: goButton.centerY
-      } );
+      listener: function() { outputText.text = 'Help button pressed'; },
+      baseColor: new Color( 244, 154, 194 ),
+      minXPadding: 10,
+      left: goButton.right + 5,
+      centerY: goButton.centerY
+    } );
     this.addChild( helpButton );
 
     // Demonstrate using arbitrary values for toggle button.  Wrap in extra
@@ -235,12 +239,50 @@ define( function( require ) {
 
     var transparentButton = new RectangularPushButton( {
       content: new Text( 'Transparent Button', { font: BUTTON_FONT } ),
-        listener: function() { outputText.text = 'Transparent button pressed'; },
-        left: helpButton.centerX,
-        top: roundStickyToggleButton.bottom - 10,
-        baseColor: new Color( 255, 255, 0, 0.7 )
-      } );
+      listener: function() { outputText.text = 'Transparent button pressed'; },
+      left: helpButton.centerX,
+      top: roundStickyToggleButton.bottom - 10,
+      baseColor: new Color( 255, 255, 0, 0.7 )
+    } );
     this.addChild( transparentButton );
+
+    // TODO: Mid-may 2014 - It has been requested that a slider knob be
+    // TODO: created that uses the new button look.  Below is an attempt at
+    // TODO: this.  It should be removed when finalised.
+
+    var sliderPrototype1 = new Node();
+    var track1 = new Line( 0, 0, 80, 0, { stroke: 'black', lineWidth: 6 } );
+    sliderPrototype1.addChild( track1 );
+
+    var prototypeSliderButton = new RectangularPushButton( {
+      content: new Line( 0, 0, 0, 25, { stroke: 'white', lineWidth: 2 } ),
+      xMargin: 8,
+      yMargin: 5,
+      center: Vector2.ZERO,
+      baseColor: '#00bfff'
+    } );
+
+    prototypeSliderButton.addInputListener( new SimpleDragHandler( {
+      // Allow moving a finger (touch) across a node to pick it up.
+      allowTouchSnag: true,
+
+      // Handler that moves the shape in model space.
+      translate: function( translationParams ) {
+        if ( ( translationParams.delta.x > 0 && prototypeSliderButton.centerX < track1.width ) ||
+             ( translationParams.delta.x < 0 && prototypeSliderButton.centerX > 0 ) ) {
+          prototypeSliderButton.centerX += translationParams.delta.x;
+        }
+        console.log( prototypeSliderButton.centerX );
+
+        return translationParams.position;
+      }
+    } ) );
+    sliderPrototype1.addChild( prototypeSliderButton );
+    sliderPrototype1.centerX = htmlButton.centerX;
+    sliderPrototype1.top = htmlButton.bottom + buttonSpacing;
+    this.addChild( sliderPrototype1 );
+
+    // TODO: End of slider knob prototype(s)
 
     // Hook up button enable property
     buttonsEnabled.link( function( enabled ) {
