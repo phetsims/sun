@@ -142,9 +142,9 @@ define( function( require ) {
     var disabledBaseColor = Color.toColor( options.disabledBaseColor );
     var transparentBaseColor = new Color( baseColor.getRed(), baseColor.getGreen(), baseColor.getBlue(), 0 );
     var transparentDisabledBaseColor = new Color( disabledBaseColor.getRed(), disabledBaseColor.getGreen(), disabledBaseColor.getBlue(), 0 );
-    var lightenedStroke = null;
+    var disabledStroke = null;
     if ( options.stroke ) {
-      lightenedStroke = disabledBaseColor.colorUtilsDarker( 0.4 );
+      disabledStroke = disabledBaseColor.colorUtilsDarker( 0.4 );
     }
     var transparentWhite = new Color( 256, 256, 256, 0.7 );
 
@@ -206,8 +206,6 @@ define( function( require ) {
       } );
     background.addChild( overlayForHorizGradient );
 
-    var surroundingRect = new Rectangle( -2, -2, background.width + 4, background.height + 4, 0, 0, { lineWidth: 2 } );
-    background.addChild( surroundingRect );
     interactionStateProperty.link( function( state ) {
       switch( state ) {
 
@@ -231,16 +229,73 @@ define( function( require ) {
 
         case 'disabled':
           background.fill = disabledFillVertical;
-          background.stroke = lightenedStroke;
-          overlayForHorizGradient.stroke = lightenedStroke;
+          background.stroke = disabledStroke;
+          overlayForHorizGradient.stroke = disabledStroke;
           overlayForHorizGradient.fill = disabledFillHorizontal;
           break;
 
         case 'disabled-pressed':
           background.fill = disabledPressedFillVertical;
-          background.stroke = lightenedStroke;
-          overlayForHorizGradient.stroke = lightenedStroke;
+          background.stroke = disabledStroke;
+          overlayForHorizGradient.stroke = disabledStroke;
           overlayForHorizGradient.fill = disabledFillHorizontal;
+          break;
+      }
+    } );
+  };
+
+  /**
+   * Strategy for buttons that look flat, i.e. no shading or highlighting, but
+   * that change color on mouseover, press, etc.
+   *
+   * @param background
+   * @param interactionStateProperty
+   * @param options
+   * @constructor
+   */
+  RectangularButtonView.FlatAppearanceStrategy = function( background, interactionStateProperty, options ) {
+
+    // Set up variables needed to create the various gradient fills
+    var baseColor = Color.toColor( options.baseColor );
+    var disabledBaseColor = Color.toColor( options.disabledBaseColor );
+    var disabledStroke = null;
+    if ( options.stroke ) {
+      disabledStroke = disabledBaseColor.colorUtilsDarker( 0.4 );
+    }
+
+    // Create the fills used for various button states
+    var upFill = baseColor;
+    var overFill = baseColor.colorUtilsBrighter( 0.4 );
+    var downFill = baseColor.colorUtilsDarker( 0.4 );
+    var disabledFill = disabledBaseColor;
+    var disabledPressedFillVertical = disabledFill;
+
+    interactionStateProperty.link( function( state ) {
+      switch( state ) {
+
+        case 'idle':
+          background.fill = upFill;
+          background.stroke = options.stroke;
+          break;
+
+        case 'over':
+          background.fill = overFill;
+          background.stroke = options.stroke;
+          break;
+
+        case 'pressed':
+          background.fill = downFill;
+          background.stroke = options.stroke;
+          break;
+
+        case 'disabled':
+          background.fill = disabledFill;
+          background.stroke = disabledStroke;
+          break;
+
+        case 'disabled-pressed':
+          background.fill = disabledPressedFillVertical;
+          background.stroke = disabledStroke;
           break;
       }
     } );

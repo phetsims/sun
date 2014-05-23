@@ -18,6 +18,7 @@ define( function( require ) {
   var OutsideBackgroundNode = require( 'SCENERY_PHET/OutsideBackgroundNode' );
   var PhetFont = require( 'SCENERY_PHET/PhetFont' );
   var Property = require( 'AXON/Property' );
+  var RectangularButtonView = require( 'SUN/buttons/RectangularButtonView' );
   var RectangularPushButton = require( 'SUN/buttons/RectangularPushButton' );
   var RefreshButton = require( 'SCENERY_PHET/RefreshButton' );
   var ResetAllButton = require( 'SCENERY_PHET/ResetAllButton' );
@@ -143,6 +144,45 @@ define( function( require ) {
       lineWidth: 1
     } );
     this.addChild( fireOnDownButton );
+
+    var button1 = new RectangularPushButton( {
+      content: new Text( '-- 1 --', { font: BUTTON_FONT } ),
+      listener: function() {
+        outputText.text = 'Button 1 pressed ' + ( ++buttonCFireCount ) + 'x';
+      },
+      left: fireOnDownButton.right + 10,
+      centerY: fireOnDownButton.centerY,
+      baseColor: 'rgb( 204, 102, 204 )',
+      BackgroundAppearanceStrategy: RectangularButtonView.FlatAppearanceStrategy
+    } );
+    this.addChild( button1 );
+
+    var button2 = new RectangularPushButton( {
+      content: new Text( '-- 2 --', { font: BUTTON_FONT } ),
+      listener: function() {
+        outputText.text = 'Button 2 pressed ' + ( ++buttonCFireCount ) + 'x';
+      },
+      centerX: button1.centerX,
+      top: button1.bottom + 10,
+      baseColor: '#A0D022',
+      BackgroundAppearanceStrategy: RectangularButtonView.FlatAppearanceStrategy,
+      lineWidth: 1,
+      stroke: '#202020'
+    } );
+    this.addChild( button2 );
+
+    var button3 = new RectangularPushButton( {
+      content: new Text( '-- 3 --', { font: BUTTON_FONT } ),
+      listener: function() {
+        outputText.text = 'Button 3 pressed ' + ( ++buttonCFireCount ) + 'x';
+      },
+      centerX: button1.centerX,
+      top: button2.bottom + 10,
+      BackgroundAppearanceStrategy: RectangularButtonView.FlatAppearanceStrategy
+    } );
+    this.addChild( button3 );
+
+
 
     var buttonEnableButton = new BooleanRectangularToggleButtonWithContent(
       new Text( 'Disable Buttons', { font: BUTTON_CAPTION_FONT } ),
