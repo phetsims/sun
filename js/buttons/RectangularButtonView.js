@@ -19,7 +19,7 @@ define( function( require ) {
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var Shape = require( 'KITE/Shape' );
 
-  // Constants
+  // constants
   var VERTICAL_HIGHLIGHT_GRADIENT_LENGTH = 7; // In screen coords, which are roughly pixels.
   var HORIZONTAL_HIGHLIGHT_GRADIENT_LENGTH = 7; // In screen coords, which are roughly pixels.
   var SHADE_GRADIENT_LENGTH = 3; // In screen coords, which are roughly pixels.
@@ -52,6 +52,19 @@ define( function( require ) {
       stroke: DEFAULT_COLOR.colorUtilsDarker( 0.4 ),
       lineWidth: 0.5, // Only meaningful if stroke is non-null
 
+      // Strategy for controlling the button background's appearance.  This
+      // must be usable as a constructor (i.e. using 'new'). It can be a stock
+      // strategy from this file, or custom.  To create a custom one, model it
+      // off of the stock strategies defined in this file.
+      BackgroundAppearanceStrategy: RectangularButtonView.ThreeDAppearanceStrategy,
+
+      // Strategy for controlling the appearance of the button's content based
+      // on the button's state.  This must be usable as a constructor (i.e.
+      // using 'new'). It can be a stock strategy from this file, or custom.
+      // To create a custom one, model it off of the stock version(s) defined
+      // in this file.
+      ContentAppearanceStrategy: RectangularButtonView.FadeContentWhenDisabled,
+
       // The following function controls how the appearance of the content
       // node is modified when this button is disabled.
       setContentEnabledLook: function( enabled ) {
@@ -66,10 +79,61 @@ define( function( require ) {
     // Hook up the input listener
     this.addInputListener( new ButtonListener( buttonModel ) );
 
-    // Set up variables needed to create the various gradient fills
+    // Figure out the size of the button.
     var content = options.content;
     var buttonWidth = Math.max( content ? content.width + options.xMargin * 2 : 0, options.minWidth );
     var buttonHeight = Math.max( content ? content.height + options.yMargin * 2 : 0, options.minHeight );
+
+    // Create the basic button shape.
+    var background = new Rectangle( 0, 0, buttonWidth, buttonHeight, options.cornerRadius, options.cornerRadius,
+      {
+        fill: options.baseColor,
+        lineWidth: options.lineWidth
+      } );
+    this.addChild( background );
+
+    // Create and hook up the strategy that will control the background appearance.
+    // TODO: Do we need to keep a reference so it doesn't get garbage
+    // TODO: collected, or could this just be a var?
+    this.backgroundAppearanceStrategy = new options.BackgroundAppearanceStrategy( background, interactionStateProperty, options );
+
+    // Add the content to the button.
+    if ( content ) {
+      content.center = background.center;
+      thisButton.addChild( content );
+    }
+
+    // Control the content's appearance based on button state.
+    this.contentAppearanceStrategy = new options.ContentAppearanceStrategy( content, interactionStateProperty );
+
+    // Control the pointer state based on the interaction state.
+    interactionStateProperty.link( function( state ) {
+      thisButton.cursor = state === 'disabled' || state === 'disabled-pressed' ? null : 'pointer';
+    } );
+
+    // Add explicit mouse and touch areas so that the child nodes can all be non-pickable.
+    this.mouseArea = Shape.rectangle( 0, 0, buttonWidth, buttonHeight );
+    this.touchArea = Shape.rectangle( -options.xTouchExpansion, -options.yTouchExpansion, buttonWidth + options.xTouchExpansion * 2, buttonHeight + options.yTouchExpansion * 2 );
+
+    // Mutate with the options after the layout is complete so that width-
+    // dependent fields like centerX will work.
+    thisButton.mutate( options );
+  }
+
+  /**
+   * Strategy for making a button look 3D-ish by using gradients that create
+   * the appearance of highlighted and shaded edges.
+   *
+   * @param background
+   * @param interactionStateProperty
+   * @param options
+   * @constructor
+   */
+  RectangularButtonView.ThreeDAppearanceStrategy = function( background, interactionStateProperty, options ) {
+
+    // Set up variables needed to create the various gradient fills
+    var buttonWidth = background.width;
+    var buttonHeight = background.height;
     var verticalHighlightStop = Math.min( VERTICAL_HIGHLIGHT_GRADIENT_LENGTH / buttonHeight, 1 );
     var verticalShadowStop = Math.max( 1 - SHADE_GRADIENT_LENGTH / buttonHeight, 0 );
     var horizontalHighlightStop = Math.min( HORIZONTAL_HIGHLIGHT_GRADIENT_LENGTH / buttonWidth, 1 );
@@ -133,14 +197,6 @@ define( function( require ) {
       .addColorStop( verticalShadowStop, disabledBaseColor.colorUtilsBrighter( 0.2 ) )
       .addColorStop( 1, disabledBaseColor.colorUtilsDarker( 0.5 ) );
 
-    // Create the basic button shape.
-    var background = new Rectangle( 0, 0, buttonWidth, buttonHeight, options.cornerRadius, options.cornerRadius,
-      {
-        fill: options.baseColor,
-        lineWidth: options.lineWidth
-      } );
-    this.addChild( background );
-
     // Create the overlay that is used to add horizontal shading.
     var overlayForHorizGradient = new Rectangle( 0, 0, buttonWidth, buttonHeight, options.cornerRadius, options.cornerRadius,
       {
@@ -148,70 +204,63 @@ define( function( require ) {
         stroke: options.stroke,
         lineWidth: options.lineWidth
       } );
-    this.addChild( overlayForHorizGradient );
+    background.addChild( overlayForHorizGradient );
 
-    if ( content ) {
-      content.center = background.center;
-      thisButton.addChild( content );
-    }
-
-    // Hook up the function that will modify button appearance as the state changes.
+    var surroundingRect = new Rectangle( -2, -2, background.width + 4, background.height + 4, 0, 0, { lineWidth: 2 } );
+    background.addChild( surroundingRect );
     interactionStateProperty.link( function( state ) {
-
       switch( state ) {
 
         case 'idle':
-          options.setContentEnabledLook( true );
           background.fill = upFillVertical;
           overlayForHorizGradient.stroke = options.stroke;
           overlayForHorizGradient.fill = upFillHorizontal;
-          thisButton.cursor = 'pointer';
           break;
 
         case 'over':
-          options.setContentEnabledLook( true );
           background.fill = overFillVertical;
           overlayForHorizGradient.stroke = options.stroke;
           overlayForHorizGradient.fill = overFillHorizontal;
-          thisButton.cursor = 'pointer';
           break;
 
         case 'pressed':
-          options.setContentEnabledLook( true );
           background.fill = downFill;
           overlayForHorizGradient.stroke = options.stroke;
           overlayForHorizGradient.fill = overFillHorizontal;
-          thisButton.cursor = 'pointer';
           break;
 
         case 'disabled':
-          options.setContentEnabledLook( false );
           background.fill = disabledFillVertical;
           background.stroke = lightenedStroke;
           overlayForHorizGradient.stroke = lightenedStroke;
           overlayForHorizGradient.fill = disabledFillHorizontal;
-          thisButton.cursor = null;
           break;
 
         case 'disabled-pressed':
-          options.setContentEnabledLook( false );
           background.fill = disabledPressedFillVertical;
           background.stroke = lightenedStroke;
           overlayForHorizGradient.stroke = lightenedStroke;
           overlayForHorizGradient.fill = disabledFillHorizontal;
-          thisButton.cursor = null;
           break;
       }
     } );
+  };
 
-    // Add explicit mouse and touch areas so that the child nodes can all be non-pickable.
-    this.mouseArea = Shape.rectangle( 0, 0, buttonWidth, buttonHeight );
-    this.touchArea = Shape.rectangle( -options.xTouchExpansion, -options.yTouchExpansion, buttonWidth + options.xTouchExpansion * 2, buttonHeight + options.yTouchExpansion * 2 );
-
-    // Mutate with the options after the layout is complete so that width-
-    // dependent fields like centerX will work.
-    thisButton.mutate( options );
-  }
+  /**
+   * Basic strategy for controlling content appearance, fades the content by
+   * making it transparent when disabled.
+   *
+   * @param {Node} content
+   * @param {Property} interactionStateProperty
+   * @constructor
+   */
+  RectangularButtonView.FadeContentWhenDisabled = function( content, interactionStateProperty ) {
+    if ( content ) {
+      interactionStateProperty.link( function( state ) {
+        content.opacity = state === 'disabled' || state === 'disabled-pressed' ? 0.3 : 1;
+      } );
+    }
+  };
 
   return inherit( Node, RectangularButtonView,
     {
