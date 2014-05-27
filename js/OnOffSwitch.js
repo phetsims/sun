@@ -16,7 +16,7 @@
 define( function( require ) {
   'use strict';
 
-  // imports
+  // modules
   var Dimension2 = require( 'DOT/Dimension2' );
   var Vector2 = require( 'DOT/Vector2' );
   var clamp = require( 'DOT/Util' ).clamp;
