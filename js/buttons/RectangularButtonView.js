@@ -52,15 +52,16 @@ define( function( require ) {
       stroke: DEFAULT_COLOR.colorUtilsDarker( 0.4 ),
       lineWidth: 0.5, // Only meaningful if stroke is non-null
 
-      // Strategy for controlling the button background's appearance.  It can
-      // be a stock strategy from this file or custom.  To create a custom
-      // one, model it off of the stock strategies defined in this file.
-      backgroundAppearanceStrategy: RectangularButtonView.threeDAppearanceStrategy,
+      // Strategy for controlling the button's appearance, excluding any
+      // content.  This can be a stock strategy from this file or custom.  To
+      // create a custom one, model it off of the stock strategies defined in
+      // this file.
+      buttonAppearanceStrategy: RectangularButtonView.threeDAppearanceStrategy,
 
       // Strategy for controlling the appearance of the button's content based
-      // on the button's state.  It can be a stock strategy from this file, or
-      // custom.  To create a custom one, model it off of the stock version(s)
-      // defined in this file.
+      // on the button's state.  This can be a stock strategy from this file,
+      // or custom.  To create a custom one, model it off of the stock
+      // version(s) defined in this file.
       contentAppearanceStrategy: RectangularButtonView.fadeContentWhenDisabled,
 
       // The following function controls how the appearance of the content
@@ -83,19 +84,19 @@ define( function( require ) {
     var buttonHeight = Math.max( content ? content.height + options.yMargin * 2 : 0, options.minHeight );
 
     // Create the basic button shape.
-    var background = new Rectangle( 0, 0, buttonWidth, buttonHeight, options.cornerRadius, options.cornerRadius,
+    var button = new Rectangle( 0, 0, buttonWidth, buttonHeight, options.cornerRadius, options.cornerRadius,
       {
         fill: options.baseColor,
         lineWidth: options.lineWidth
       } );
-    this.addChild( background );
+    this.addChild( button );
 
-    // Hook up the strategy that will control the background appearance.
-    options.backgroundAppearanceStrategy( background, interactionStateProperty, options );
+    // Hook up the strategy that will control the basic button appearance.
+    options.buttonAppearanceStrategy( button, interactionStateProperty, options );
 
     // Add the content to the button.
     if ( content ) {
-      content.center = background.center;
+      content.center = button.center;
       thisButton.addChild( content );
     }
 
@@ -120,16 +121,16 @@ define( function( require ) {
    * Strategy for making a button look 3D-ish by using gradients that create
    * the appearance of highlighted and shaded edges.
    *
-   * @param background
-   * @param interactionStateProperty
-   * @param options
+   * @param {Node} button
+   * @param {Property} interactionStateProperty
+   * @param {Object} options
    * @constructor
    */
-  RectangularButtonView.threeDAppearanceStrategy = function( background, interactionStateProperty, options ) {
+  RectangularButtonView.threeDAppearanceStrategy = function( button, interactionStateProperty, options ) {
 
     // Set up variables needed to create the various gradient fills
-    var buttonWidth = background.width;
-    var buttonHeight = background.height;
+    var buttonWidth = button.width;
+    var buttonHeight = button.height;
     var verticalHighlightStop = Math.min( VERTICAL_HIGHLIGHT_GRADIENT_LENGTH / buttonHeight, 1 );
     var verticalShadowStop = Math.max( 1 - SHADE_GRADIENT_LENGTH / buttonHeight, 0 );
     var horizontalHighlightStop = Math.min( HORIZONTAL_HIGHLIGHT_GRADIENT_LENGTH / buttonWidth, 1 );
@@ -200,39 +201,39 @@ define( function( require ) {
         stroke: options.stroke,
         lineWidth: options.lineWidth
       } );
-    background.addChild( overlayForHorizGradient );
+    button.addChild( overlayForHorizGradient );
 
     interactionStateProperty.link( function( state ) {
       switch( state ) {
 
         case 'idle':
-          background.fill = upFillVertical;
+          button.fill = upFillVertical;
           overlayForHorizGradient.stroke = options.stroke;
           overlayForHorizGradient.fill = upFillHorizontal;
           break;
 
         case 'over':
-          background.fill = overFillVertical;
+          button.fill = overFillVertical;
           overlayForHorizGradient.stroke = options.stroke;
           overlayForHorizGradient.fill = overFillHorizontal;
           break;
 
         case 'pressed':
-          background.fill = downFill;
+          button.fill = downFill;
           overlayForHorizGradient.stroke = options.stroke;
           overlayForHorizGradient.fill = overFillHorizontal;
           break;
 
         case 'disabled':
-          background.fill = disabledFillVertical;
-          background.stroke = disabledStroke;
+          button.fill = disabledFillVertical;
+          button.stroke = disabledStroke;
           overlayForHorizGradient.stroke = disabledStroke;
           overlayForHorizGradient.fill = disabledFillHorizontal;
           break;
 
         case 'disabled-pressed':
-          background.fill = disabledPressedFillVertical;
-          background.stroke = disabledStroke;
+          button.fill = disabledPressedFillVertical;
+          button.stroke = disabledStroke;
           overlayForHorizGradient.stroke = disabledStroke;
           overlayForHorizGradient.fill = disabledFillHorizontal;
           break;
@@ -244,12 +245,12 @@ define( function( require ) {
    * Strategy for buttons that look flat, i.e. no shading or highlighting, but
    * that change color on mouseover, press, etc.
    *
-   * @param background
-   * @param interactionStateProperty
-   * @param options
+   * @param {Node} button
+   * @param {Property} interactionStateProperty
+   * @param {Object} options
    * @constructor
    */
-  RectangularButtonView.flatAppearanceStrategy = function( background, interactionStateProperty, options ) {
+  RectangularButtonView.flatAppearanceStrategy = function( button, interactionStateProperty, options ) {
 
     // Set up variables needed to create the various gradient fills
     var baseColor = Color.toColor( options.baseColor );
@@ -270,28 +271,28 @@ define( function( require ) {
       switch( state ) {
 
         case 'idle':
-          background.fill = upFill;
-          background.stroke = options.stroke;
+          button.fill = upFill;
+          button.stroke = options.stroke;
           break;
 
         case 'over':
-          background.fill = overFill;
-          background.stroke = options.stroke;
+          button.fill = overFill;
+          button.stroke = options.stroke;
           break;
 
         case 'pressed':
-          background.fill = downFill;
-          background.stroke = options.stroke;
+          button.fill = downFill;
+          button.stroke = options.stroke;
           break;
 
         case 'disabled':
-          background.fill = disabledFill;
-          background.stroke = disabledStroke;
+          button.fill = disabledFill;
+          button.stroke = disabledStroke;
           break;
 
         case 'disabled-pressed':
-          background.fill = disabledPressedFillVertical;
-          background.stroke = disabledStroke;
+          button.fill = disabledPressedFillVertical;
+          button.stroke = disabledStroke;
           break;
       }
     } );

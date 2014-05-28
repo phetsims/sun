@@ -28,20 +28,20 @@ define( function( require ) {
    *
    * All of these values have defaults, so only specify them when needed.
    *
-   *    backgroundAppearanceStrategy:  Object that controls how the button's appearance changes as the user interacts with it
-   *    baseColor:                     The color for the main portion of the button, other colors for highlights and shadows will be based off of this
-   *    content:                       The node to display on the button, can be null for a blank button
-   *    contentAppearanceStrategy:     Object that controls how the content node's appearance changes as the user interacts with the button
-   *    cornerRadius:                  Just like the usual option for a rectangular shape
-   *    disabledBaseColor:             The color for the main portion of the button when disabled, other colors for highlights and shadows will be based of of this
-   *    fireOnDown:                    Boolean that controls whether the listener function(s) are fired when the button is pressed down instead of when released
-   *    listener:                      Function that is called when this button is fired
-   *    minHeight:                     Minimum height for the button, not needed unless a fixed height beyond that of the content is desired
-   *    minWidth:                      Minimum width for the button, not needed unless a fixed width beyond that of the content is desired
-   *    xMargin:                       Margin between the content and the edge in the x (i.e. horizontal) direction
-   *    yMargin:                       Margin between the content and the edge in the y (i.e. vertical) direction
-   *    xTouchExpansion:               Amount of space beyond the left and right edges where the button will sense touch events
-   *    yTouchExpansion:               Amount of space beyond the top and bottom edges where the button will sense touch events
+   *    buttonAppearanceStrategy:   Object that controls how the button's appearance changes as the user interacts with it
+   *    baseColor:                  The color for the main portion of the button, other colors for highlights and shadows will be based off of this
+   *    content:                    The node to display on the button, can be null for a blank button
+   *    contentAppearanceStrategy:  Object that controls how the content node's appearance changes as the user interacts with the button
+   *    cornerRadius:               Just like the usual option for a rectangular shape
+   *    disabledBaseColor:          The color for the main portion of the button when disabled, other colors for highlights and shadows will be based of of this
+   *    fireOnDown:                 Boolean that controls whether the listener function(s) are fired when the button is pressed down instead of when released
+   *    listener:                   Function that is called when this button is fired
+   *    minHeight:                  Minimum height for the button, not needed unless a fixed height beyond that of the content is desired
+   *    minWidth:                   Minimum width for the button, not needed unless a fixed width beyond that of the content is desired
+   *    xMargin:                    Margin between the content and the edge in the x (i.e. horizontal) direction
+   *    yMargin:                    Margin between the content and the edge in the y (i.e. vertical) direction
+   *    xTouchExpansion:            Amount of space beyond the left and right edges where the button will sense touch events
+   *    yTouchExpansion:            Amount of space beyond the top and bottom edges where the button will sense touch events
    *
    * @constructor
    */
