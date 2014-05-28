@@ -19,6 +19,7 @@ define( function( require ) {
   var PhetFont = require( 'SCENERY_PHET/PhetFont' );
   var Property = require( 'AXON/Property' );
   var RectangularButtonView = require( 'SUN/buttons/RectangularButtonView' );
+  var RoundButtonView = require( 'SUN/buttons/RoundButtonView' );
   var RectangularPushButton = require( 'SUN/buttons/RectangularPushButton' );
   var RefreshButton = require( 'SCENERY_PHET/RefreshButton' );
   var ResetAllButton = require( 'SCENERY_PHET/ResetAllButton' );
@@ -171,18 +172,28 @@ define( function( require ) {
     } );
     this.addChild( button2 );
 
-    var button3 = new RectangularPushButton( {
-      content: new Text( '-- 3 --', { font: BUTTON_FONT } ),
+    var button3 = new RoundPushButton( {
+      content: new Text( '- 3 -', { font: BUTTON_FONT } ),
       listener: function() {
-        outputText.text = 'Button 3 pressed ' + ( ++buttonCFireCount ) + 'x';
+        outputText.text = 'Button 3 pressed ';
       },
       centerX: button1.centerX,
       top: button2.bottom + 10,
-      buttonAppearanceStrategy: RectangularButtonView.flatAppearanceStrategy
+      buttonAppearanceStrategy: RoundButtonView.flatAppearanceStrategy
     } );
     this.addChild( button3 );
 
-
+    var button4 = new RoundPushButton( {
+      content: new Text( '-- 4 --', { font: BUTTON_FONT, fill: 'white' } ),
+      listener: function() {
+        outputText.text = 'Button 4 pressed ';
+      },
+      baseColor: '#CC3300',
+      centerX: button1.centerX,
+      top: button3.bottom + 10,
+      buttonAppearanceStrategy: RoundButtonView.flatAppearanceStrategy
+    } );
+    this.addChild( button4 );
 
     var buttonEnableButton = new BooleanRectangularToggleButtonWithContent(
       new Text( 'Disable Buttons', { font: BUTTON_CAPTION_FONT } ),
@@ -343,6 +354,10 @@ define( function( require ) {
       booleanRectangularStickyToggleButton.enabled = enabled;
       transparentButton.enabled = enabled;
       htmlButton.enabled = enabled;
+      button1.enabled = enabled;
+      button2.enabled = enabled;
+      button3.enabled = enabled;
+      button4.enabled = enabled;
     } );
 
     // TODO: For debug, don't leave this here long term.
