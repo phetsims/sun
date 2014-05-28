@@ -28,10 +28,10 @@ define( function( require ) {
    *
    * All of these values have defaults, so only specify them when needed.
    *
-   *    BackgroundAppearanceStrategy:  Object that controls how the button's appearance changes as the user interacts with it
+   *    backgroundAppearanceStrategy:  Object that controls how the button's appearance changes as the user interacts with it
    *    baseColor:                     The color for the main portion of the button, other colors for highlights and shadows will be based off of this
    *    content:                       The node to display on the button, can be null for a blank button
-   *    ContentAppearanceStrategy:     Object that controls how the content node's appearance changes as the user interacts with the button
+   *    contentAppearanceStrategy:     Object that controls how the content node's appearance changes as the user interacts with the button
    *    cornerRadius:                  Just like the usual option for a rectangular shape
    *    disabledBaseColor:             The color for the main portion of the button when disabled, other colors for highlights and shadows will be based of of this
    *    fireOnDown:                    Boolean that controls whether the listener function(s) are fired when the button is pressed down instead of when released

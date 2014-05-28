@@ -153,7 +153,7 @@ define( function( require ) {
       left: fireOnDownButton.right + 10,
       centerY: fireOnDownButton.centerY,
       baseColor: 'rgb( 204, 102, 204 )',
-      BackgroundAppearanceStrategy: RectangularButtonView.FlatAppearanceStrategy
+      backgroundAppearanceStrategy: RectangularButtonView.flatAppearanceStrategy
     } );
     this.addChild( button1 );
 
@@ -165,7 +165,7 @@ define( function( require ) {
       centerX: button1.centerX,
       top: button1.bottom + 10,
       baseColor: '#A0D022',
-      BackgroundAppearanceStrategy: RectangularButtonView.FlatAppearanceStrategy,
+      backgroundAppearanceStrategy: RectangularButtonView.flatAppearanceStrategy,
       lineWidth: 1,
       stroke: '#202020'
     } );
@@ -178,7 +178,7 @@ define( function( require ) {
       },
       centerX: button1.centerX,
       top: button2.bottom + 10,
-      BackgroundAppearanceStrategy: RectangularButtonView.FlatAppearanceStrategy
+      backgroundAppearanceStrategy: RectangularButtonView.flatAppearanceStrategy
     } );
     this.addChild( button3 );
 

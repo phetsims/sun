@@ -52,18 +52,16 @@ define( function( require ) {
       stroke: DEFAULT_COLOR.colorUtilsDarker( 0.4 ),
       lineWidth: 0.5, // Only meaningful if stroke is non-null
 
-      // Strategy for controlling the button background's appearance.  This
-      // must be usable as a constructor (i.e. using 'new'). It can be a stock
-      // strategy from this file, or custom.  To create a custom one, model it
-      // off of the stock strategies defined in this file.
-      BackgroundAppearanceStrategy: RectangularButtonView.ThreeDAppearanceStrategy,
+      // Strategy for controlling the button background's appearance.  It can
+      // be a stock strategy from this file or custom.  To create a custom
+      // one, model it off of the stock strategies defined in this file.
+      backgroundAppearanceStrategy: RectangularButtonView.threeDAppearanceStrategy,
 
       // Strategy for controlling the appearance of the button's content based
-      // on the button's state.  This must be usable as a constructor (i.e.
-      // using 'new'). It can be a stock strategy from this file, or custom.
-      // To create a custom one, model it off of the stock version(s) defined
-      // in this file.
-      ContentAppearanceStrategy: RectangularButtonView.FadeContentWhenDisabled,
+      // on the button's state.  It can be a stock strategy from this file, or
+      // custom.  To create a custom one, model it off of the stock version(s)
+      // defined in this file.
+      contentAppearanceStrategy: RectangularButtonView.fadeContentWhenDisabled,
 
       // The following function controls how the appearance of the content
       // node is modified when this button is disabled.
@@ -92,10 +90,8 @@ define( function( require ) {
       } );
     this.addChild( background );
 
-    // Create and hook up the strategy that will control the background appearance.
-    // TODO: Do we need to keep a reference so it doesn't get garbage
-    // TODO: collected, or could this just be a var?
-    this.backgroundAppearanceStrategy = new options.BackgroundAppearanceStrategy( background, interactionStateProperty, options );
+    // Hook up the strategy that will control the background appearance.
+    options.backgroundAppearanceStrategy( background, interactionStateProperty, options );
 
     // Add the content to the button.
     if ( content ) {
@@ -103,8 +99,8 @@ define( function( require ) {
       thisButton.addChild( content );
     }
 
-    // Control the content's appearance based on button state.
-    this.contentAppearanceStrategy = new options.ContentAppearanceStrategy( content, interactionStateProperty );
+    // Hook up the strategy that will control the content appearance.
+    options.contentAppearanceStrategy( content, interactionStateProperty );
 
     // Control the pointer state based on the interaction state.
     interactionStateProperty.link( function( state ) {
@@ -129,7 +125,7 @@ define( function( require ) {
    * @param options
    * @constructor
    */
-  RectangularButtonView.ThreeDAppearanceStrategy = function( background, interactionStateProperty, options ) {
+  RectangularButtonView.threeDAppearanceStrategy = function( background, interactionStateProperty, options ) {
 
     // Set up variables needed to create the various gradient fills
     var buttonWidth = background.width;
@@ -253,7 +249,7 @@ define( function( require ) {
    * @param options
    * @constructor
    */
-  RectangularButtonView.FlatAppearanceStrategy = function( background, interactionStateProperty, options ) {
+  RectangularButtonView.flatAppearanceStrategy = function( background, interactionStateProperty, options ) {
 
     // Set up variables needed to create the various gradient fills
     var baseColor = Color.toColor( options.baseColor );
@@ -309,7 +305,7 @@ define( function( require ) {
    * @param {Property} interactionStateProperty
    * @constructor
    */
-  RectangularButtonView.FadeContentWhenDisabled = function( content, interactionStateProperty ) {
+  RectangularButtonView.fadeContentWhenDisabled = function( content, interactionStateProperty ) {
     if ( content ) {
       interactionStateProperty.link( function( state ) {
         content.opacity = state === 'disabled' || state === 'disabled-pressed' ? 0.3 : 1;
