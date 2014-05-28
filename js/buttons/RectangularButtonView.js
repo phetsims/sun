@@ -1,8 +1,7 @@
 // Copyright 2002-2014, University of Colorado Boulder
 
 /**
- * Visual representation of a rectangular button that uses gradients in order
- * to create a somewhat 3D look.
+ * Visual representation of a rectangular button.
  *
  * @author John Blanco
  * @author Sam Reid
@@ -63,14 +62,6 @@ define( function( require ) {
       // or custom.  To create a custom one, model it off of the stock
       // version(s) defined in this file.
       contentAppearanceStrategy: RectangularButtonView.fadeContentWhenDisabled,
-
-      // The following function controls how the appearance of the content
-      // node is modified when this button is disabled.
-      setContentEnabledLook: function( enabled ) {
-        if ( content ) {
-          enabled ? content.opacity = 1.0 : content.opacity = 0.3;
-        }
-      }
     }, options );
 
     Node.call( thisButton );
