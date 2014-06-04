@@ -37,7 +37,14 @@ define( function( require ) {
 
     options.xMargin = ( options.width - 2 ) / 2;
     options.yMargin = 5;
-    options.content = new Line( 0, 0, 0, options.height - options.yMargin * 2, { stroke: 'white', lineWidth: 2 } );
+    var HBox = require( 'SCENERY/nodes/HBox' );
+    options.content = new HBox( {
+      children: [
+        new Line( 0, 0, 0, options.height - options.yMargin * 2, { stroke: '#cccccc', lineWidth: 1 } ),
+        new Line( 0, 0, 0, options.height - options.yMargin * 2, { stroke: '#ffffff', lineWidth: 1 } )
+      ],
+      spacing: 0
+    } );
 
     RectangularPushButton.call( this, options );
   }
