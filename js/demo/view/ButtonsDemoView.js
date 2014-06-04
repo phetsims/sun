@@ -26,6 +26,7 @@ define( function( require ) {
   var ReturnToLevelSelectButton = require( 'SCENERY_PHET/ReturnToLevelSelectButton' );
   var RoundPushButton = require( 'SUN/buttons/RoundPushButton' );
   var RoundStickyToggleButton = require( 'SUN/buttons/RoundStickyToggleButton' );
+  var SliderKnob = require( 'SUN/experimental/SliderKnob' );
   var ScreenView = require( 'JOIST/ScreenView' );
   var SimpleDragHandler = require( 'SCENERY/input/SimpleDragHandler' );
   var SoundToggleButton = require( 'SCENERY_PHET/SoundToggleButton' );
@@ -305,30 +306,24 @@ define( function( require ) {
     var track1 = new Line( 0, 0, 80, 0, { stroke: 'black', lineWidth: 6 } );
     sliderPrototype1.addChild( track1 );
 
-    var prototypeSliderButton = new RectangularPushButton( {
-      content: new Line( 0, 0, 0, 25, { stroke: 'white', lineWidth: 2 } ),
-      xMargin: 8,
-      yMargin: 5,
-      center: Vector2.ZERO,
-      baseColor: '#00bfff'
-    } );
+    var sliderKnob = new SliderKnob( { center: track1.center } );
 
-    prototypeSliderButton.addInputListener( new SimpleDragHandler( {
+    sliderKnob.addInputListener( new SimpleDragHandler( {
       // Allow moving a finger (touch) across a node to pick it up.
       allowTouchSnag: true,
 
       // Handler that moves the shape in model space.
       translate: function( translationParams ) {
-        if ( ( translationParams.delta.x > 0 && prototypeSliderButton.centerX < track1.width ) ||
-             ( translationParams.delta.x < 0 && prototypeSliderButton.centerX > 0 ) ) {
-          prototypeSliderButton.centerX += translationParams.delta.x;
+        if ( ( translationParams.delta.x > 0 && sliderKnob.centerX < track1.width ) ||
+             ( translationParams.delta.x < 0 && sliderKnob.centerX > 0 ) ) {
+          sliderKnob.centerX += translationParams.delta.x;
         }
-        console.log( prototypeSliderButton.centerX );
+        console.log( sliderKnob.centerX );
 
         return translationParams.position;
       }
     } ) );
-    sliderPrototype1.addChild( prototypeSliderButton );
+    sliderPrototype1.addChild( sliderKnob );
     sliderPrototype1.centerX = htmlButton.centerX;
     sliderPrototype1.top = htmlButton.bottom + buttonSpacing;
     this.addChild( sliderPrototype1 );
@@ -358,6 +353,7 @@ define( function( require ) {
       button2.enabled = enabled;
       button3.enabled = enabled;
       button4.enabled = enabled;
+      sliderKnob.enabled = enabled;
     } );
 
     // TODO: For debug, don't leave this here long term.
