@@ -318,8 +318,6 @@ define( function( require ) {
              ( translationParams.delta.x < 0 && sliderKnob.centerX > 0 ) ) {
           sliderKnob.centerX += translationParams.delta.x;
         }
-        console.log( sliderKnob.centerX );
-
         return translationParams.position;
       }
     } ) );
