@@ -32,7 +32,6 @@ define( function( require ) {
   var SoundToggleButton = require( 'SCENERY_PHET/SoundToggleButton' );
   var Text = require( 'SCENERY/nodes/Text' );
   var TimerToggleButton = require( 'SCENERY_PHET/TimerToggleButton' );
-  var Vector2 = require( 'DOT/Vector2' );
 
   // Constants
   var BUTTON_FONT = new PhetFont( { size: 20 } );
