@@ -25,16 +25,9 @@ define( function( require ) {
       width: DEFAULT_WIDTH,
       height: DEFAULT_HEIGHT,
       baseColor: '#00bfff',
-      centerIndentWidth: 3, // use 0 for no line
+      centerIndentWidth: 2, // use 0 for no line
       centerIndentColor: '#dddddd',
-      buttonAppearanceStrategy: SliderKnob.threeDNoSquishAppearanceStrategy,
-      contentAppearanceStrategy: function( content, interactionStateProperty ) {
-        if ( content ) {
-          interactionStateProperty.link( function( state ) {
-            content.fill = state === 'disabled' || state === 'disabled-pressed' ? '#cccccc' : 'white';
-          } );
-        }
-      }
+      buttonAppearanceStrategy: SliderKnob.threeDNoSquishAppearanceStrategy
     }, options );
 
     // Set up the margins to create the targeted height and width
@@ -46,8 +39,8 @@ define( function( require ) {
       var indentWidth = options.centerIndentWidth;
       var indentHeight = options.height - options.yMargin * 2;
       var indentFill = new LinearGradient( 0, 0, indentWidth, 0 )
-        .addColorStop( 0, Color.toColor( options.centerIndentColor ).colorUtilsDarker( 0.8 ) )
-        .addColorStop( 1, Color.toColor( options.centerIndentColor ).colorUtilsBrighter( 0.8 ) );
+        .addColorStop( 0, Color.toColor( options.centerIndentColor ).colorUtilsDarker( 0.6 ) )
+        .addColorStop( 1, Color.toColor( options.centerIndentColor ).colorUtilsBrighter( 0.6 ) );
       options.content = new Rectangle( 0, 0, indentWidth, indentHeight, 0, 0, { fill: indentFill } );
 //      options.content = new Rectangle( 0, 0, indentWidth, indentHeight, 0, 0, { fill: 'pink', stroke: null } );
     }
