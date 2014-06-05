@@ -25,13 +25,13 @@ define( function( require ) {
       width: DEFAULT_WIDTH,
       height: DEFAULT_HEIGHT,
       baseColor: '#00bfff',
-      centerIndentWidth: 2, // use 0 for no line
-      centerIndentColor: '#dddddd',
+      centerIndentWidth: 0, // use 0 for no line
+      centerIndentColor: '#808080',
       buttonAppearanceStrategy: SliderKnob.threeDNoSquishAppearanceStrategy
     }, options );
 
     // Set up the margins to create the targeted height and width
-    options.xMargin = ( options.width - 2 ) / 2;
+    options.xMargin = ( options.width - options.centerIndentWidth ) / 2;
     options.yMargin = 5;
 
     // Create the center line
@@ -39,10 +39,13 @@ define( function( require ) {
       var indentWidth = options.centerIndentWidth;
       var indentHeight = options.height - options.yMargin * 2;
       var indentFill = new LinearGradient( 0, 0, indentWidth, 0 )
-        .addColorStop( 0, Color.toColor( options.centerIndentColor ).colorUtilsDarker( 0.6 ) )
-        .addColorStop( 1, Color.toColor( options.centerIndentColor ).colorUtilsBrighter( 0.6 ) );
+        .addColorStop( 0, Color.toColor( options.centerIndentColor ).colorUtilsDarker( 0.8 ) )
+        .addColorStop( 0.75, Color.toColor( options.centerIndentColor ).colorUtilsBrighter( 0.8 ) );
       options.content = new Rectangle( 0, 0, indentWidth, indentHeight, 0, 0, { fill: indentFill } );
-//      options.content = new Rectangle( 0, 0, indentWidth, indentHeight, 0, 0, { fill: 'pink', stroke: null } );
+    }
+    else {
+      options.minWidth = options.width;
+      options.minHeight = options.height;
     }
 
     RectangularPushButton.call( this, options );
@@ -59,9 +62,9 @@ define( function( require ) {
     var buttonWidth = button.width;
     var buttonHeight = button.height;
     var verticalHighlightStop = Math.min( VERTICAL_HIGHLIGHT_GRADIENT_LENGTH / buttonHeight, 1 );
-    var verticalShadowStop = Math.max( 1 - SHADE_GRADIENT_LENGTH / buttonHeight, 0 );
+    var verticalShadowStart = Math.max( 1 - SHADE_GRADIENT_LENGTH / buttonHeight, 1 );
     var horizontalHighlightStop = Math.min( HORIZONTAL_HIGHLIGHT_GRADIENT_LENGTH / buttonWidth, 1 );
-    var horizontalShadowStop = Math.max( 1 - SHADE_GRADIENT_LENGTH / buttonWidth, 0 );
+    var horizontalShadowStart = Math.max( 1 - SHADE_GRADIENT_LENGTH / buttonWidth, 1 );
     var baseColor = Color.toColor( options.baseColor );
     var disabledBaseColor = Color.toColor( options.disabledBaseColor );
     var transparentBaseColor = new Color( baseColor.getRed(), baseColor.getGreen(), baseColor.getBlue(), 0 );
@@ -76,49 +79,49 @@ define( function( require ) {
     var upFillVertical = new LinearGradient( 0, 0, 0, buttonHeight )
       .addColorStop( 0, baseColor.colorUtilsBrighter( 0.7 ) )
       .addColorStop( verticalHighlightStop, baseColor )
-      .addColorStop( verticalShadowStop, baseColor )
+      .addColorStop( verticalShadowStart, baseColor )
       .addColorStop( 1, baseColor.colorUtilsDarker( 0.5 ) );
 
     var upFillHorizontal = new LinearGradient( 0, 0, buttonWidth, 0 )
       .addColorStop( 0, transparentWhite )
       .addColorStop( horizontalHighlightStop, transparentBaseColor )
-      .addColorStop( horizontalShadowStop, transparentBaseColor )
+      .addColorStop( horizontalShadowStart, transparentBaseColor )
       .addColorStop( 1, baseColor.colorUtilsDarker( 0.5 ) );
 
     var overFillVertical = new LinearGradient( 0, 0, 0, buttonHeight )
       .addColorStop( 0, baseColor.colorUtilsBrighter( 0.7 ) )
       .addColorStop( verticalHighlightStop, baseColor.colorUtilsBrighter( 0.5 ) )
-      .addColorStop( verticalShadowStop, baseColor.colorUtilsBrighter( 0.5 ) )
+      .addColorStop( verticalShadowStart, baseColor.colorUtilsBrighter( 0.5 ) )
       .addColorStop( 1, baseColor.colorUtilsDarker( 0.5 ) );
 
     var overFillHorizontal = new LinearGradient( 0, 0, buttonWidth, 0 )
       .addColorStop( 0, transparentWhite )
       .addColorStop( horizontalHighlightStop / 2, new Color( 256, 256, 256, 0 ) )
-      .addColorStop( horizontalShadowStop, transparentBaseColor )
+      .addColorStop( horizontalShadowStart, transparentBaseColor )
       .addColorStop( 1, baseColor.colorUtilsDarker( 0.3 ) );
 
     var downFill = new LinearGradient( 0, 0, 0, buttonHeight )
       .addColorStop( 0, baseColor.colorUtilsBrighter( 0.5 ) )
       .addColorStop( verticalHighlightStop, baseColor.colorUtilsDarker( 0.2 ) )
-      .addColorStop( verticalShadowStop, baseColor.colorUtilsDarker( 0.2 ) )
+      .addColorStop( verticalShadowStart, baseColor.colorUtilsDarker( 0.2 ) )
       .addColorStop( 1, baseColor.colorUtilsDarker( 0.3 ) );
 
     var disabledFillVertical = new LinearGradient( 0, 0, 0, buttonHeight )
       .addColorStop( 0, disabledBaseColor.colorUtilsBrighter( 0.7 ) )
       .addColorStop( verticalHighlightStop, disabledBaseColor.colorUtilsBrighter( 0.5 ) )
-      .addColorStop( verticalShadowStop, disabledBaseColor.colorUtilsBrighter( 0.5 ) )
+      .addColorStop( verticalShadowStart, disabledBaseColor.colorUtilsBrighter( 0.5 ) )
       .addColorStop( 1, disabledBaseColor.colorUtilsDarker( 0.5 ) );
 
     var disabledFillHorizontal = new LinearGradient( 0, 0, buttonWidth, 0 )
       .addColorStop( 0, disabledBaseColor.colorUtilsBrighter( 0.7 ) )
       .addColorStop( horizontalHighlightStop, transparentDisabledBaseColor )
-      .addColorStop( horizontalShadowStop, transparentDisabledBaseColor )
+      .addColorStop( horizontalShadowStart, transparentDisabledBaseColor )
       .addColorStop( 1, disabledBaseColor.colorUtilsDarker( 0.5 ) );
 
     var disabledPressedFillVertical = new LinearGradient( 0, 0, 0, buttonHeight )
       .addColorStop( 0, disabledBaseColor.colorUtilsBrighter( 0.7 ) )
       .addColorStop( verticalHighlightStop * 0.67, disabledBaseColor.colorUtilsDarker( 0.3 ) )
-      .addColorStop( verticalShadowStop, disabledBaseColor.colorUtilsBrighter( 0.2 ) )
+      .addColorStop( verticalShadowStart, disabledBaseColor.colorUtilsBrighter( 0.2 ) )
       .addColorStop( 1, disabledBaseColor.colorUtilsDarker( 0.5 ) );
 
     // Create the overlay that is used to add horizontal shading.
