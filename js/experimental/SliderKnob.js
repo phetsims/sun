@@ -25,26 +25,32 @@ define( function( require ) {
       width: DEFAULT_WIDTH,
       height: DEFAULT_HEIGHT,
       baseColor: '#00bfff',
+      centerIndentWidth: 3, // use 0 for no line
+      centerIndentColor: '#dddddd',
       buttonAppearanceStrategy: SliderKnob.threeDNoSquishAppearanceStrategy,
       contentAppearanceStrategy: function( content, interactionStateProperty ) {
         if ( content ) {
           interactionStateProperty.link( function( state ) {
-            content.stroke = state === 'disabled' || state === 'disabled-pressed' ? '#cccccc' : 'white';
+            content.fill = state === 'disabled' || state === 'disabled-pressed' ? '#cccccc' : 'white';
           } );
         }
       }
     }, options );
 
+    // Set up the margins to create the targeted height and width
     options.xMargin = ( options.width - 2 ) / 2;
     options.yMargin = 5;
-    var HBox = require( 'SCENERY/nodes/HBox' );
-    options.content = new HBox( {
-      children: [
-        new Line( 0, 0, 0, options.height - options.yMargin * 2, { stroke: '#cccccc', lineWidth: 1 } ),
-        new Line( 0, 0, 0, options.height - options.yMargin * 2, { stroke: '#ffffff', lineWidth: 1 } )
-      ],
-      spacing: 0
-    } );
+
+    // Create the center line
+    if ( options.centerIndentWidth > 0 ) {
+      var indentWidth = options.centerIndentWidth;
+      var indentHeight = options.height - options.yMargin * 2;
+      var indentFill = new LinearGradient( 0, 0, indentWidth, 0 )
+        .addColorStop( 0, Color.toColor( options.centerIndentColor ).colorUtilsDarker( 0.8 ) )
+        .addColorStop( 1, Color.toColor( options.centerIndentColor ).colorUtilsBrighter( 0.8 ) );
+      options.content = new Rectangle( 0, 0, indentWidth, indentHeight, 0, 0, { fill: indentFill } );
+//      options.content = new Rectangle( 0, 0, indentWidth, indentHeight, 0, 0, { fill: 'pink', stroke: null } );
+    }
 
     RectangularPushButton.call( this, options );
   }
