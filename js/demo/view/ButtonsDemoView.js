@@ -18,18 +18,20 @@ define( function( require ) {
   var OutsideBackgroundNode = require( 'SCENERY_PHET/OutsideBackgroundNode' );
   var PhetFont = require( 'SCENERY_PHET/PhetFont' );
   var Property = require( 'AXON/Property' );
+  var RectangularButtonView = require( 'SUN/buttons/RectangularButtonView' );
+  var RoundButtonView = require( 'SUN/buttons/RoundButtonView' );
   var RectangularPushButton = require( 'SUN/buttons/RectangularPushButton' );
   var RefreshButton = require( 'SCENERY_PHET/RefreshButton' );
   var ResetAllButton = require( 'SCENERY_PHET/ResetAllButton' );
   var ReturnToLevelSelectButton = require( 'SCENERY_PHET/ReturnToLevelSelectButton' );
   var RoundPushButton = require( 'SUN/buttons/RoundPushButton' );
   var RoundStickyToggleButton = require( 'SUN/buttons/RoundStickyToggleButton' );
+  var SliderKnob = require( 'SUN/experimental/SliderKnob' );
   var ScreenView = require( 'JOIST/ScreenView' );
   var SimpleDragHandler = require( 'SCENERY/input/SimpleDragHandler' );
   var SoundToggleButton = require( 'SCENERY_PHET/SoundToggleButton' );
   var Text = require( 'SCENERY/nodes/Text' );
   var TimerToggleButton = require( 'SCENERY_PHET/TimerToggleButton' );
-  var Vector2 = require( 'DOT/Vector2' );
 
   // Constants
   var BUTTON_FONT = new PhetFont( { size: 20 } );
@@ -144,6 +146,55 @@ define( function( require ) {
     } );
     this.addChild( fireOnDownButton );
 
+    var button1 = new RectangularPushButton( {
+      content: new Text( '-- 1 --', { font: BUTTON_FONT } ),
+      listener: function() {
+        outputText.text = 'Button 1 pressed ' + ( ++buttonCFireCount ) + 'x';
+      },
+      left: fireOnDownButton.right + 10,
+      centerY: fireOnDownButton.centerY,
+      baseColor: 'rgb( 204, 102, 204 )',
+      buttonAppearanceStrategy: RectangularButtonView.flatAppearanceStrategy
+    } );
+    this.addChild( button1 );
+
+    var button2 = new RectangularPushButton( {
+      content: new Text( '-- 2 --', { font: BUTTON_FONT } ),
+      listener: function() {
+        outputText.text = 'Button 2 pressed ' + ( ++buttonCFireCount ) + 'x';
+      },
+      centerX: button1.centerX,
+      top: button1.bottom + 10,
+      baseColor: '#A0D022',
+      buttonAppearanceStrategy: RectangularButtonView.flatAppearanceStrategy,
+      lineWidth: 1,
+      stroke: '#202020'
+    } );
+    this.addChild( button2 );
+
+    var button3 = new RoundPushButton( {
+      content: new Text( '- 3 -', { font: BUTTON_FONT } ),
+      listener: function() {
+        outputText.text = 'Button 3 pressed ';
+      },
+      centerX: button1.centerX,
+      top: button2.bottom + 10,
+      buttonAppearanceStrategy: RoundButtonView.flatAppearanceStrategy
+    } );
+    this.addChild( button3 );
+
+    var button4 = new RoundPushButton( {
+      content: new Text( '-- 4 --', { font: BUTTON_FONT, fill: 'white' } ),
+      listener: function() {
+        outputText.text = 'Button 4 pressed ';
+      },
+      baseColor: '#CC3300',
+      centerX: button1.centerX,
+      top: button3.bottom + 10,
+      buttonAppearanceStrategy: RoundButtonView.flatAppearanceStrategy
+    } );
+    this.addChild( button4 );
+
     var buttonEnableButton = new BooleanRectangularToggleButtonWithContent(
       new Text( 'Disable Buttons', { font: BUTTON_CAPTION_FONT } ),
       new Text( 'Enable Buttons', { font: BUTTON_CAPTION_FONT } ),
@@ -254,30 +305,22 @@ define( function( require ) {
     var track1 = new Line( 0, 0, 80, 0, { stroke: 'black', lineWidth: 6 } );
     sliderPrototype1.addChild( track1 );
 
-    var prototypeSliderButton = new RectangularPushButton( {
-      content: new Line( 0, 0, 0, 25, { stroke: 'white', lineWidth: 2 } ),
-      xMargin: 8,
-      yMargin: 5,
-      center: Vector2.ZERO,
-      baseColor: '#00bfff'
-    } );
+    var sliderKnob = new SliderKnob( { center: track1.center } );
 
-    prototypeSliderButton.addInputListener( new SimpleDragHandler( {
+    sliderKnob.addInputListener( new SimpleDragHandler( {
       // Allow moving a finger (touch) across a node to pick it up.
       allowTouchSnag: true,
 
       // Handler that moves the shape in model space.
       translate: function( translationParams ) {
-        if ( ( translationParams.delta.x > 0 && prototypeSliderButton.centerX < track1.width ) ||
-             ( translationParams.delta.x < 0 && prototypeSliderButton.centerX > 0 ) ) {
-          prototypeSliderButton.centerX += translationParams.delta.x;
+        if ( ( translationParams.delta.x > 0 && sliderKnob.centerX < track1.width ) ||
+             ( translationParams.delta.x < 0 && sliderKnob.centerX > 0 ) ) {
+          sliderKnob.centerX += translationParams.delta.x;
         }
-        console.log( prototypeSliderButton.centerX );
-
         return translationParams.position;
       }
     } ) );
-    sliderPrototype1.addChild( prototypeSliderButton );
+    sliderPrototype1.addChild( sliderKnob );
     sliderPrototype1.centerX = htmlButton.centerX;
     sliderPrototype1.top = htmlButton.bottom + buttonSpacing;
     this.addChild( sliderPrototype1 );
@@ -303,6 +346,11 @@ define( function( require ) {
       booleanRectangularStickyToggleButton.enabled = enabled;
       transparentButton.enabled = enabled;
       htmlButton.enabled = enabled;
+      button1.enabled = enabled;
+      button2.enabled = enabled;
+      button3.enabled = enabled;
+      button4.enabled = enabled;
+      sliderKnob.enabled = enabled;
     } );
 
     // TODO: For debug, don't leave this here long term.

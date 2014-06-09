@@ -1,14 +1,11 @@
 // Copyright 2002-2014, University of Colorado Boulder
 
 /**
- * Visual representation of a round button that uses gradients and such in
- * order to create a somewhat 3D look.  It is provided with a 'button model'
- * that is monitored to change the appearance of the button.
+ * Visual representation of a round button.  It is provided with a 'button
+ * model' that is monitored to change the appearance of the button.
  *
  * Note: this is only the visual representation and does not have associated
- * input listeners (so that it can be reused in multiple contexts)
- * For a button that looks like this but has input listeners wired up,
- * please see RoundPushButton or RoundStickyToggleButton.
+ * input listeners so that it can be reused in multiple contexts.
  *
  * @author John Blanco
  * @author Sam Reid
@@ -60,17 +57,22 @@ define( function( require ) {
       xContentOffset: 0,
       yContentOffset: 0,
 
-      // The following function controls how the appearance of the content
-      // node is modified when this button is disabled.
-      setContentEnabledLook: function( enabled ) {
-        if ( content ) {
-          enabled ? content.opacity = 1.0 : content.opacity = 0.3;
-        }
-      }
+      // Strategy for controlling the button's appearance, excluding any
+      // content.  This can be a stock strategy from this file or custom.  To
+      // create a custom one, model it off of the stock strategies defined in
+      // this file.
+      buttonAppearanceStrategy: RoundButtonView.threeDAppearanceStrategy,
+
+      // Strategy for controlling the appearance of the button's content based
+      // on the button's state.  This can be a stock strategy from this file,
+      // or custom.  To create a custom one, model it off of the stock
+      // version(s) defined in this file.
+      contentAppearanceStrategy: RoundButtonView.fadeContentWhenDisabled
     }, options );
 
     Node.call( thisButton );
     var content = options.content; // convenience variable
+    var upCenter = new Vector2( options.xContentOffset, options.yContentOffset );
 
     // Hook up the input listener
     this.addInputListener( new ButtonListener( buttonModel ) );
@@ -79,16 +81,69 @@ define( function( require ) {
     // radius based on the content and the margin.
     var buttonRadius = options.radius || Math.max( content.width + options.minXMargin * 2, content.height + options.minYMargin * 2 ) / 2;
 
+    // Create the basic button shape.
+    var button = new Circle( buttonRadius,
+      {
+        fill: options.baseColor,
+        lineWidth: options.lineWidth
+      } );
+    this.addChild( button );
+
+    // Hook up the strategy that will control the basic button appearance.
+    options.buttonAppearanceStrategy( button, interactionStateProperty, options );
+
+    // Add the content to the button.
+    if ( content ) {
+      content.center = upCenter;
+      thisButton.addChild( content );
+    }
+
+    // Hook up the strategy that will control the content appearance.
+    options.contentAppearanceStrategy( content, interactionStateProperty );
+
+    // Control the pointer state based on the interaction state.
+    interactionStateProperty.link( function( state ) {
+      thisButton.cursor = state === 'disabled' || state === 'disabled-pressed' ? null : 'pointer';
+    } );
+
+    // Expand the touch area.
+    this.touchArea = Shape.circle( 0, 0, buttonRadius + options.touchExpansion );
+
+    // Set pickable such that sub-nodes are pruned from hit testing.
+    this.pickable = null;
+
+    // Mutate with the options after the layout is complete so that
+    // width-dependent fields like centerX will work.
+    thisButton.mutate( options );
+  }
+
+  /**
+   * Strategy for making a button look 3D-ish by using gradients that create
+   * the appearance of highlighted and shaded edges.
+   *
+   * @param {Node} button
+   * @param {Property} interactionStateProperty
+   * @param {Object} options
+   * @constructor
+   */
+  RoundButtonView.threeDAppearanceStrategy = function( button, interactionStateProperty, options ) {
+
     // Set up variables needed to create the various gradient fills and otherwise mod the appearance
-    var upCenter = new Vector2( options.xContentOffset, options.yContentOffset );
+    var buttonRadius = button.width / 2;
     var baseColor = Color.toColor( options.baseColor );
     var disabledBaseColor = Color.toColor( options.disabledBaseColor );
     var transparentBaseColor = new Color( baseColor.getRed(), baseColor.getGreen(), baseColor.getBlue(), 0 );
     var transparentDisabledBaseColor = new Color( disabledBaseColor.getRed(), disabledBaseColor.getGreen(), disabledBaseColor.getBlue(), 0 );
-    var lightenedStroke = null;
-    if ( options.stroke ) {
-      lightenedStroke = disabledBaseColor.colorUtilsDarker( 0.4 );
-    }
+    var disabledStroke = options.stroke ? disabledBaseColor.colorUtilsDarker( 0.4 ) : null;
+
+    // Create the overlay that is used to add shading.
+    var overlayForShadowGradient = new Circle( buttonRadius,
+      {
+        fill: options.baseColor,
+        stroke: options.stroke,
+        lineWidth: options.lineWidth
+      } );
+    button.addChild( overlayForShadowGradient );
 
     // The multiplier below can be varied in order to tweak the highlight appearance.
     var innerGradientRadius = buttonRadius - HIGHLIGHT_GRADIENT_LENGTH / 2;
@@ -133,85 +188,115 @@ define( function( require ) {
 
     var disabledPressedFillHighlight = createPressedFill( disabledBaseColor );
 
-    // Create the basic button shape.
-    var background = new Circle( buttonRadius,
-      {
-        fill: options.baseColor,
-        lineWidth: options.lineWidth
-      } );
-    this.addChild( background );
-
-    // Create the overlay that is used to add shading.
-    var overlayForShadowGradient = new Circle( buttonRadius,
-      {
-        fill: options.baseColor,
-        stroke: options.stroke,
-        lineWidth: options.lineWidth
-      } );
-    this.addChild( overlayForShadowGradient );
-
-    if ( content ) {
-      content.center = upCenter;
-      thisButton.addChild( content );
-    }
-
-    // Hook up the function that will modify button appearance as the state changes.
+    // Hook up to the property that will trigger visual appearance changes.
     interactionStateProperty.link( function( state ) {
-
       switch( state ) {
 
         case 'idle':
-          options.setContentEnabledLook( true );
-          background.fill = upFillHighlight;
+          button.fill = upFillHighlight;
           overlayForShadowGradient.stroke = options.stroke;
           overlayForShadowGradient.fill = upFillShadow;
-          thisButton.cursor = 'pointer';
           break;
 
         case 'over':
-          options.setContentEnabledLook( true );
-          background.fill = overFillHighlight;
+          button.fill = overFillHighlight;
           overlayForShadowGradient.stroke = options.stroke;
           overlayForShadowGradient.fill = overFillShadow;
-          thisButton.cursor = 'pointer';
           break;
 
         case 'pressed':
-          options.setContentEnabledLook( true );
-          background.fill = pressedFill;
+          button.fill = pressedFill;
           overlayForShadowGradient.stroke = options.stroke;
           overlayForShadowGradient.fill = overFillShadow;
-          thisButton.cursor = 'pointer';
           break;
 
         case 'disabled':
-          options.setContentEnabledLook( false );
-          background.fill = disabledFillHighlight;
-          overlayForShadowGradient.stroke = lightenedStroke;
+          button.fill = disabledFillHighlight;
+          overlayForShadowGradient.stroke = disabledStroke;
           overlayForShadowGradient.fill = disabledFillShadow;
-          thisButton.cursor = null;
           break;
 
         case 'disabled-pressed':
-          options.setContentEnabledLook( false );
-          background.fill = disabledPressedFillHighlight;
-          overlayForShadowGradient.stroke = lightenedStroke;
+          button.fill = disabledPressedFillHighlight;
+          overlayForShadowGradient.stroke = disabledStroke;
           overlayForShadowGradient.fill = disabledFillShadow;
-          thisButton.cursor = null;
           break;
       }
     } );
+  };
 
-    // Expand the touch area.
-    this.touchArea = Shape.circle( 0, 0, buttonRadius + options.touchExpansion );
+  /**
+   * Strategy for buttons that look flat, i.e. no shading or highlighting, but
+   * that change color on mouseover, press, etc.
+   *
+   * @param {Node} button
+   * @param {Property} interactionStateProperty
+   * @param {Object} options
+   * @constructor
+   */
+  RoundButtonView.flatAppearanceStrategy = function( button, interactionStateProperty, options ) {
 
-    // Set pickable such that sub-nodes are pruned from hit testing.
-    this.pickable = null;
+    // Set up variables needed to create the various gradient fills
+    var baseColor = Color.toColor( options.baseColor );
+    var disabledBaseColor = Color.toColor( options.disabledBaseColor );
+    var disabledStroke = null;
+    if ( options.stroke ) {
+      disabledStroke = disabledBaseColor.colorUtilsDarker( 0.4 );
+    }
 
-    // Mutate with the options after the layout is complete so that
-    // width-dependent fields like centerX will work.
-    thisButton.mutate( options );
-  }
+    // Create the fills used for various button states
+    var upFill = baseColor;
+    var overFill = baseColor.colorUtilsBrighter( 0.4 );
+    var downFill = baseColor.colorUtilsDarker( 0.4 );
+    var disabledFill = disabledBaseColor;
+    var disabledPressedFillVertical = disabledFill;
+
+    interactionStateProperty.link( function( state ) {
+      switch( state ) {
+
+        case 'idle':
+          button.fill = upFill;
+          button.stroke = options.stroke;
+          break;
+
+        case 'over':
+          button.fill = overFill;
+          button.stroke = options.stroke;
+          break;
+
+        case 'pressed':
+          button.fill = downFill;
+          button.stroke = options.stroke;
+          break;
+
+        case 'disabled':
+          button.fill = disabledFill;
+          button.stroke = disabledStroke;
+          break;
+
+        case 'disabled-pressed':
+          button.fill = disabledPressedFillVertical;
+          button.stroke = disabledStroke;
+          break;
+      }
+    } );
+  };
+
+  /**
+   * Basic strategy for controlling content appearance, fades the content by
+   * making it transparent when disabled.
+   *
+   * @param {Node} content
+   * @param {Property} interactionStateProperty
+   * @constructor
+   */
+  RoundButtonView.fadeContentWhenDisabled = function( content, interactionStateProperty ) {
+    if ( content ) {
+      interactionStateProperty.link( function( state ) {
+        content.opacity = state === 'disabled' || state === 'disabled-pressed' ? 0.3 : 1;
+      } );
+    }
+  };
 
   return inherit( Node, RoundButtonView, {
     set enabled( value ) {
