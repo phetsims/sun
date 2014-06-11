@@ -24,25 +24,19 @@ define( function( require ) {
   var CONTENT_VERTICAL_INSET = 8; // Can make this an option if desired.
 
   /**
-   * @param {Node} contentNode that will be shown or hidden as the accordion
-   * box is opened/closed.
-   * @param {object} options Various key-value pairs that control the
-   * appearance and behavior.  These are passed through to the Node super
-   * class.  Additional options specific to this class are:
-   *    initiallyOpen: boolean, controls initial open/closed state
-   *    minWidth: minimum width in pixels.  If none specified, this will be calculated
-   *    title: string
-   *    buttonPosition: left, right, or center
-   *    contentPosition: left, right, or center
-   *    titlePosition: left, right, or center
+   * @param {Node} contentNode that will be shown or hidden as the accordion box is opened/closed.
+   * @param {Object} options Various key-value pairs that control the appearance and behavior.  Some options are
+   * specific to this class while some are passed to the superclass.  See the code where the options are set in the
+   * early portion of the constructor for details.
    * @constructor
    */
   function AccordionBox( contentNode, options ) {
 
-    options = _.extend( { // defaults
-      stroke: 'black', // color used to stroke the outer edge of the button
+    options = _.extend( {
+      // defaults
+      stroke: 'black', // color used to stroke the outer edge of the container
       lineWidth: 1,
-      fill: 'rgb( 238, 238, 238 )', // default background color
+      fill: 'rgb( 238, 238, 238 )', // background color
       font: '20px Arial',
       contentPosition: 'center',
       buttonPosition: 'left',
@@ -51,7 +45,8 @@ define( function( require ) {
       controlButtonInsetX: 4,
       controlButtonInsetY: 4,
       titleFill: 'black',
-      title: undefined
+      title: undefined,
+      showTitleWhenOpen: true
     }, options );
     this.options = options;
 
@@ -78,17 +73,29 @@ define( function( require ) {
     var titleNode = new Node();
     if ( options.title !== undefined ) {
       titleNode = new Text( options.title, { font: options.font, fill: options.titleFill } );
-
-      //TODO: remove title var and replace with this.titleNode
       this.titleNode = titleNode;
     }
 
+    // Control title visibility, if applicable.
+    if ( !options.showTitleWhenOpen ) {
+      this.open.link( function( open ) {
+        titleNode.visible = !open;
+      } );
+    }
+
     // Create the container that will hold the contents when open.
-    this.containerWidth = Math.max( options.minWidth || 0,
-      Math.max( contentNode.width + 2 * CONTENT_HORIZONTAL_INSET,
-          options.controlButtonInsetX * 2 + CONTROL_BUTTON_DIMENSION + TITLE_INSET * 2 + titleNode.width ) );
+    this.containerWidth = Math.max( options.minWidth || 0, options.controlButtonInsetX * 2 + CONTROL_BUTTON_DIMENSION + TITLE_INSET * 2 + titleNode.width );
+    if ( options.showTitleWhenOpen ) {
+      this.containerWidth = Math.max( this.containerWidth, contentNode.width + 2 * CONTENT_HORIZONTAL_INSET );
+    }
+    else {
+      this.containerWidth = Math.max( this.containerWidth, options.controlButtonInsetX * 2 + CONTROL_BUTTON_DIMENSION + CONTENT_HORIZONTAL_INSET * 2 + contentNode.width );
+    }
     var closedContainerHeight = options.controlButtonInsetY * 2 + CONTROL_BUTTON_DIMENSION;
-    var openContainerHeight = options.controlButtonInsetY * 2 + CONTROL_BUTTON_DIMENSION + 2 * CONTENT_VERTICAL_INSET + contentNode.height;
+    var openContainerHeight = 2 * CONTENT_VERTICAL_INSET + contentNode.height;
+    if ( options.showTitleWhenOpen ) {
+      openContainerHeight += options.controlButtonInsetY * 2 + CONTROL_BUTTON_DIMENSION;
+    }
     this.openHeight = openContainerHeight; // This needs to be visible externally for layout purposes.
 
     var openContainer = new Rectangle( 0, 0, this.containerWidth, openContainerHeight, options.cornerRadius, options.cornerRadius,
@@ -143,14 +150,24 @@ define( function( require ) {
       this.titleLeftBound = TITLE_INSET;
     }
 
+    var contentXSpanMin = CONTENT_HORIZONTAL_INSET;
+    var contentXSpanMax = this.containerWidth - CONTENT_HORIZONTAL_INSET;
+    if ( !options.showTitleWhenOpen && options.buttonPosition === 'left' ) {
+      if ( options.buttonPosition === 'left' ) {
+        contentXSpanMin += options.controlButtonInsetX * 2 + CONTROL_BUTTON_DIMENSION;
+      }
+      else if ( options.buttonPosition === 'left' ) {
+        contentXSpanMax -= options.controlButtonInsetX * 2 + CONTROL_BUTTON_DIMENSION;
+      }
+    }
     if ( options.contentPosition === 'left' ) {
-      contentNode.left = CONTENT_HORIZONTAL_INSET;
+      contentNode.left = contentXSpanMin;
     }
     else if ( options.contentPosition === 'right' ) {
-      contentNode.right = CONTENT_HORIZONTAL_INSET;
+      contentNode.right = contentXSpanMax;
     }
     else {
-      contentNode.centerX = this.containerWidth / 2;
+      contentNode.centerX = ( contentXSpanMin + contentXSpanMax ) / 2;
     }
 
     this.updateTitleLocation();
