@@ -20,8 +20,6 @@ define( function( require ) {
   // Constants
   var TITLE_INSET = 10;
   var CONTROL_BUTTON_DIMENSION = 16; // Can make this an option if desired.
-  var CONTENT_HORIZONTAL_INSET = 15; // Can make this an option if desired.
-  var CONTENT_VERTICAL_INSET = 8; // Can make this an option if desired.
 
   /**
    * @param {Node} contentNode that will be shown or hidden as the accordion box is opened/closed.
@@ -42,8 +40,10 @@ define( function( require ) {
       buttonPosition: 'left',
       titlePosition: 'center',
       cornerRadius: 3,
-      controlButtonInsetX: 4,
-      controlButtonInsetY: 4,
+      controlButtonXMargin: 4,
+      controlButtonYMargin: 4,
+      contentXMargin: 15,
+      contentYMargin: 8,
       titleFill: 'black',
       title: undefined,
       showTitleWhenOpen: true
@@ -59,8 +59,8 @@ define( function( require ) {
     // Create the expand/collapse button.
     this.expandCollapseButton = new ExpandCollapseButton( CONTROL_BUTTON_DIMENSION, this.open );
 
-    // Add an expanded touch area to the expand/collapse button so it works ok
-    // on small screens.   Size could be moved into an option if necessary.
+    // Add an expanded touch area to the expand/collapse button so it works well on small screens.   Size could be
+    // moved into an option if necessary.
     var expandedTouchAreaDimension = CONTROL_BUTTON_DIMENSION * 3;
     this.expandCollapseButton.touchArea = Shape.rectangle(
         -expandedTouchAreaDimension / 2 + CONTROL_BUTTON_DIMENSION / 2,
@@ -84,17 +84,17 @@ define( function( require ) {
     }
 
     // Create the container that will hold the contents when open.
-    this.containerWidth = Math.max( options.minWidth || 0, options.controlButtonInsetX * 2 + CONTROL_BUTTON_DIMENSION + TITLE_INSET * 2 + titleNode.width );
+    this.containerWidth = Math.max( options.minWidth || 0, options.controlButtonXMargin * 2 + CONTROL_BUTTON_DIMENSION + TITLE_INSET * 2 + titleNode.width );
     if ( options.showTitleWhenOpen ) {
-      this.containerWidth = Math.max( this.containerWidth, contentNode.width + 2 * CONTENT_HORIZONTAL_INSET );
+      this.containerWidth = Math.max( this.containerWidth, contentNode.width + 2 * options.contentXMargin );
     }
     else {
-      this.containerWidth = Math.max( this.containerWidth, options.controlButtonInsetX * 2 + CONTROL_BUTTON_DIMENSION + CONTENT_HORIZONTAL_INSET * 2 + contentNode.width );
+      this.containerWidth = Math.max( this.containerWidth, options.controlButtonXMargin * 2 + CONTROL_BUTTON_DIMENSION + options.contentXMargin * 2 + contentNode.width );
     }
-    var closedContainerHeight = options.controlButtonInsetY * 2 + CONTROL_BUTTON_DIMENSION;
-    var openContainerHeight = 2 * CONTENT_VERTICAL_INSET + contentNode.height;
+    var closedContainerHeight = options.controlButtonYMargin * 2 + CONTROL_BUTTON_DIMENSION;
+    var openContainerHeight = 2 * options.contentYMargin + contentNode.height;
     if ( options.showTitleWhenOpen ) {
-      openContainerHeight += options.controlButtonInsetY * 2 + CONTROL_BUTTON_DIMENSION;
+      openContainerHeight += options.controlButtonYMargin * 2 + CONTROL_BUTTON_DIMENSION;
     }
     this.openHeight = openContainerHeight; // This needs to be visible externally for layout purposes.
 
@@ -123,9 +123,8 @@ define( function( require ) {
     // If necessary, scale titleNode to fit in available space.
     this.adjustTitleNodeSize();
 
-    // Create an invisible rectangle that allows the user to click on any part
-    // of the top of the container (closed or open) in order to toggle the
-    // state.
+    // Create an invisible rectangle that allows the user to click on any part of the top of the container (closed or
+    // open) in order to toggle the state.
     var openCloseNode = new Rectangle( 0, 0, this.containerWidth, closedContainerHeight, options.cornerRadius, options.cornerRadius,
       {
         fill: 'rgba( 0, 0, 0, 0)', // Invisible.
@@ -136,28 +135,28 @@ define( function( require ) {
     closedContainer.addChild( openCloseNode );
 
     // Lay out the contents of the containers.
-    this.expandCollapseButton.top = options.controlButtonInsetY;
+    this.expandCollapseButton.top = options.controlButtonYMargin;
     this.titleLeftBound = TITLE_INSET;
     this.titleRightBound = this.containerWidth - TITLE_INSET;
-    contentNode.bottom = openContainerHeight - CONTENT_VERTICAL_INSET;
+    contentNode.bottom = openContainerHeight - options.contentYMargin;
 
     if ( options.buttonPosition === 'left' ) {
-      this.expandCollapseButton.left = options.controlButtonInsetX;
+      this.expandCollapseButton.left = options.controlButtonXMargin;
       this.titleLeftBound = this.expandCollapseButton.right + TITLE_INSET;
     }
     else {
-      this.expandCollapseButton.right = this.containerWidth - options.controlButtonInsetX;
+      this.expandCollapseButton.right = this.containerWidth - options.controlButtonXMargin;
       this.titleLeftBound = TITLE_INSET;
     }
 
-    var contentXSpanMin = CONTENT_HORIZONTAL_INSET;
-    var contentXSpanMax = this.containerWidth - CONTENT_HORIZONTAL_INSET;
+    var contentXSpanMin = options.contentXMargin;
+    var contentXSpanMax = this.containerWidth - options.contentXMargin;
     if ( !options.showTitleWhenOpen && options.buttonPosition === 'left' ) {
       if ( options.buttonPosition === 'left' ) {
-        contentXSpanMin += options.controlButtonInsetX * 2 + CONTROL_BUTTON_DIMENSION;
+        contentXSpanMin += options.controlButtonXMargin * 2 + CONTROL_BUTTON_DIMENSION;
       }
       else if ( options.buttonPosition === 'left' ) {
-        contentXSpanMax -= options.controlButtonInsetX * 2 + CONTROL_BUTTON_DIMENSION;
+        contentXSpanMax -= options.controlButtonXMargin * 2 + CONTROL_BUTTON_DIMENSION;
       }
     }
     if ( options.contentPosition === 'left' ) {
@@ -206,7 +205,7 @@ define( function( require ) {
 
     adjustTitleNodeSize: function() {
       this.titleNode.resetTransform();
-      var availableTitleSpace = this.containerWidth - this.options.controlButtonInsetX - CONTROL_BUTTON_DIMENSION - 2 * TITLE_INSET;
+      var availableTitleSpace = this.containerWidth - this.options.controlButtonXMargin - CONTROL_BUTTON_DIMENSION - 2 * TITLE_INSET;
       if ( this.titleNode.width > availableTitleSpace ) {
         this.titleNode.scale( availableTitleSpace / this.titleNode.width );
       }
