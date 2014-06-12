@@ -301,6 +301,7 @@ define( function( require ) {
     // TODO: created that uses the new button look.  Below is an attempt at
     // TODO: this.  It should be removed when finalised.
 
+    // ----- 1 -------
     var sliderPrototype1 = new Node();
     var track1 = new Line( 0, 0, 80, 0, { stroke: 'black', lineWidth: 6 } );
     sliderPrototype1.addChild( track1 );
@@ -324,6 +325,56 @@ define( function( require ) {
     sliderPrototype1.centerX = htmlButton.centerX;
     sliderPrototype1.top = htmlButton.bottom + buttonSpacing;
     this.addChild( sliderPrototype1 );
+
+    // ----- 2 -------
+    var sliderPrototype2 = new Node();
+    var track2 = new Line( 0, 0, 80, 0, { stroke: 'black', lineWidth: 6 } );
+    sliderPrototype2.addChild( track2 );
+
+    var sliderKnob2 = new SliderKnob( { center: track2.center, baseColor: 'orange' } );
+
+    sliderKnob2.addInputListener( new SimpleDragHandler( {
+      // Allow moving a finger (touch) across a node to pick it up.
+      allowTouchSnag: true,
+
+      // Handler that moves the shape in model space.
+      translate: function( translationParams ) {
+        if ( ( translationParams.delta.x > 0 && sliderKnob2.centerX < track2.width ) ||
+             ( translationParams.delta.x < 0 && sliderKnob2.centerX > 0 ) ) {
+          sliderKnob2.centerX += translationParams.delta.x;
+        }
+        return translationParams.position;
+      }
+    } ) );
+    sliderPrototype2.addChild( sliderKnob2 );
+    sliderPrototype2.left = refreshButton.right + 50;
+    sliderPrototype2.centerY = refreshButton.centerY;
+    this.addChild( sliderPrototype2 );
+
+    // ----- 3 -------
+    var sliderPrototype3 = new Node();
+    var track3 = new Line( 0, 0, 80, 0, { stroke: 'black', lineWidth: 6 } );
+    sliderPrototype3.addChild( track3 );
+
+    var sliderKnob3 = new SliderKnob( { center: track3.center, width: 15, baseColor: '#00CC66', stroke: 'black', centerIndentWidth: 0 } );
+
+    sliderKnob3.addInputListener( new SimpleDragHandler( {
+      // Allow moving a finger (touch) across a node to pick it up.
+      allowTouchSnag: true,
+
+      // Handler that moves the shape in model space.
+      translate: function( translationParams ) {
+        if ( ( translationParams.delta.x > 0 && sliderKnob3.centerX < track3.width ) ||
+             ( translationParams.delta.x < 0 && sliderKnob3.centerX > 0 ) ) {
+          sliderKnob3.centerX += translationParams.delta.x;
+        }
+        return translationParams.position;
+      }
+    } ) );
+    sliderPrototype3.addChild( sliderKnob3 );
+    sliderPrototype3.left = sliderPrototype2.left;
+    sliderPrototype3.top = sliderPrototype2.bottom + 30;
+    this.addChild( sliderPrototype3 );
 
     // TODO: End of slider knob prototype(s)
 

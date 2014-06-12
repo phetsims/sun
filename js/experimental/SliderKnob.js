@@ -33,7 +33,7 @@ define( function( require ) {
     options.xMargin = ( options.width - options.centerIndentWidth ) / 2;
     options.yMargin = 5;
 
-    // Create the center line
+    // Create the center indent
     if ( options.centerIndentWidth > 0 ) {
       var indentWidth = options.centerIndentWidth;
       var indentHeight = options.height - options.yMargin * 2;
