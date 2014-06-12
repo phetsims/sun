@@ -9,6 +9,7 @@
  * If you click without dragging, it's a toggle.
  * If you drag but don't cross the midpoint of the track, then it's a toggle.
  * If you drag past the midpoint of the track, releasing the thumb snaps to whichever end the thumb is closest to.
+ * If you drag the thumb far enough to the side (outside of the switch), it will immediately toggle the model behavior.
  *
  * @author Chris Malley (PixelZoom, Inc.)
  * @author Jonathan Olson (jonathan.olson@colorado.edu)
@@ -41,8 +42,13 @@ define( function( require ) {
       trackOffFill: 'white', // track fill when onProperty is false
       trackOnFill: 'rgb(0,200,0)', // track fill when onProperty is true
       trackStroke: 'black',
-      toggleWhileDragging: false, // set this to true if you want the property to toggle while you're dragging the thumb
-      dragThreshold: 3 // number of view-space units the drag needs to cover to be considered a "drag" instead of a "click/tap"
+      toggleWhileDragging: null, // controls the behavior of when model value changes occur during dragging (if any)
+                                 // true: triggers model changes whenever the thumb crosses sides
+                                 // null (default: triggers model changes when thumb is dragged far enough to the side
+                                 //      NOTE: this is also the iOS behavior
+                                 // false: only trigger model changes until release
+      dragThreshold: 3, // number of view-space units the drag needs to cover to be considered a "drag" instead of a "click/tap"
+      toggleThreshold: 1 // number of thumb-widths outside the normal range past where the model value will change
     }, options );
 
     var thisNode = this;
@@ -116,13 +122,18 @@ define( function( require ) {
         var viewPoint = evt.currentTarget.globalToLocalPoint( evt.pointer.point );
         var halfThumbWidth = thumbNode.width / 2;
         thumbNode.centerX = clamp( viewPoint.x, halfThumbWidth, options.size.width - halfThumbWidth );
+        
+        // whether the thumb is dragged outside of the possible range far enough beyond our threshold to potentially
+        // trigger an immediate model change
+        var isDraggedOutside = viewPoint.x < ( 1 - 2 * options.toggleThreshold ) * halfThumbWidth ||
+                               viewPoint.x > ( -1 + 2 * options.toggleThreshold ) * halfThumbWidth + options.size.width;
 
         var value = thisNode.thumbPositionToValue(); // value represented by the current thumb position
 
         // track fill changes based on the thumb positions
         trackNode.fill = value ? options.trackOnFill : options.trackOffFill;
         
-        if ( options.toggleWhileDragging ) {
+        if ( options.toggleWhileDragging === true || ( isDraggedOutside && options.toggleWhileDragging === null ) ) {
           onProperty.set( value );
         }
       },
