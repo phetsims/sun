@@ -24,7 +24,7 @@ define( function( require ) {
       width: DEFAULT_WIDTH,
       height: DEFAULT_HEIGHT,
       baseColor: '#00bfff',
-      centerIndentWidth: 0, // use 0 for no line
+      centerIndentWidth: 2, // use 0 for no line
       centerIndentColor: '#808080',
       buttonAppearanceStrategy: SliderKnob.threeDNoSquishAppearanceStrategy
     }, options );
