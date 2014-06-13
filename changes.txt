@@ -1,3 +1,4 @@
+6/13/14 moved things around a bit to match the 'demo' naming and directory structure used in vegas
 5/27/14 change 'imports' to 'modules' in require comments
 9/6/13 #20, ComboBox: make listParent a required constructor parameter, fix moveList
 9/3/13 #18, use visible instead of add/removeChild to control ComboBox popup list

@@ -3,7 +3,7 @@
 // RequireJS configuration file for Sun (UI component lib) demo.
 require.config(
   {
-    deps: ['sun-demo-main'],
+    deps: ['sun-main'],
 
     paths: {
 
