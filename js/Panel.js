@@ -47,8 +47,11 @@ define( function( require ) {
     // Adjust the background size to match the content.
     var updateBackground = function() {
       background.setRect( 0, 0, content.width + ( 2 * options.xMargin ), content.height + ( 2 * options.yMargin ), options.cornerRadius, options.cornerRadius );
-      content.centerX = background.centerX;
-      content.centerY = background.centerY;
+
+      // Prevent oscillation and stack overflow due to numerical imprecision, see https://github.com/phetsims/sun/issues/110
+      if ( background.center.distanceSquared( content.center ) > 1E-6 ) {
+        content.center = background.center;
+      }
     };
     if ( options.resize ) {
       content.addEventListener( 'bounds', function() {
