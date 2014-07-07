@@ -1,8 +1,8 @@
 // Copyright 2002-2014, University of Colorado Boulder
 
 /**
- * Base class for button models, which describe the behavior of buttons when
- * users interact with them.
+ * Base class for button models, which describe the behavior of buttons when users interact with them.  Property values
+ * are set by an associated listener, see ButtonListener for details.
  */
 define( function( require ) {
   'use strict';
@@ -15,18 +15,13 @@ define( function( require ) {
 
     PropertySet.call( this, {
 
-      // Property that tracks whether or not a pointer that could interact
-      // with the button is currently over the button.  For detailed semantics
-      // please see the descendant classes.
+      // Property that tracks whether or not a pointer that could interact with the button is currently over the button.
       over: false,
 
-      // Property that tracks whether a pointer is currently down on, a.k.a.
-      // pressing, the button.  For detailed semantics please see the
-      // descendant classes.
+      // Property that tracks whether a pointer is currently down on, a.k.a. pressing, the button.
       down: false,
 
-      // Property that tracks whether or not the button is enabled.  For
-      // detailed semantics please see the descendant classes.
+      // Property that tracks whether or not the button is enabled.
       enabled: true
     } );
   }
