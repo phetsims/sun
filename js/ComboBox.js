@@ -133,7 +133,7 @@ define( function( require ) {
       },
       options );
 
-    Node.call( thisNode, options );
+    Node.call( thisNode );
 
     // optional label
     if ( options.labelNode !== null ) {
@@ -280,6 +280,8 @@ define( function( require ) {
       assert && assert( item !== null );
       buttonNode.setItemNode( new ItemNode( item, itemWidth, itemHeight, options.itemXMargin ) );
     } );
+
+    this.mutate( options );
   }
 
   inherit( Node, ComboBox );
