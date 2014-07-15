@@ -43,7 +43,7 @@ define( function( require ) {
       cornerRadius: 4,
       baseColor: DEFAULT_COLOR,
       disabledBaseColor: new Color( 220, 220, 220 ),
-      xMargin: 8,
+      xMargin: 8, // see issue #109
       yMargin: 5,
       fireOnDown: false,
       xTouchExpansion: 5,
