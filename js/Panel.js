@@ -70,7 +70,7 @@ define( function( require ) {
     set stroke( s ) { this.background.stroke = s; },
 
     //Getter for the background rectangle stroke
-    get stroke() {return this.backgound.stroke;}
+    get stroke() {return this.background.stroke;}
   } );
 
   return Panel;
