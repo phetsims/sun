@@ -34,7 +34,6 @@ define( function( require ) {
     var thisSlider = this;
     Node.call( thisSlider );
 
-    // default options, these will not be passed to supertype
     options = _.extend( {
       // track
       trackSize: new Dimension2( 100, 5 ),
