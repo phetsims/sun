@@ -35,7 +35,7 @@ define( function( require ) {
     Node.call( thisSlider );
 
     // default options, these will not be passed to supertype
-    var defaultOptions = {
+    this._options = _.extend( {
       // track
       trackSize: new Dimension2( 100, 5 ),
       trackFill: 'white',
@@ -61,10 +61,7 @@ define( function( require ) {
       enabledProperty: new Property( true ),
       startDrag: function() {}, // called when a drag sequence starts
       endDrag: function() {} // called when a drag sequence ends
-    };
-
-    // fill in options with defaults
-    thisSlider._options = _.extend( defaultOptions, options );
+    }, options );
 
     // ticks are added to this parent, so they are behind knob
     thisSlider._ticksParent = new Node();
@@ -160,7 +157,7 @@ define( function( require ) {
       thumb.centerX = thisSlider._valueToPosition( value );
     } );
 
-    thisSlider.mutate( _.omit( thisSlider._options, Object.keys( defaultOptions ) ) );
+    thisSlider.mutate( thisSlider._options );
   }
 
   inherit( Node, HSlider, {
