@@ -36,27 +36,27 @@ define( function( require ) {
     Node.call( this );
 
     // save this stuff for use in prototype functions
-    thisNode._options = options;
-    thisNode._content = content;
-    thisNode._enabled = true;
+    thisNode.options = options; // @private
+    thisNode.content = content; // @private
+    thisNode.enabled = true; // @private
 
     // Make the background white.  Until we are creating our own shapes, just
     // put a white rectangle behind the font awesome check box icons.
     var whiteBackground = new Rectangle( 0, -options.boxWidth, options.boxWidth * 0.95, options.boxWidth * 0.95,
       options.boxWidth * 0.2, options.boxWidth * 0.2, {fill: 'white'} );
 
-    thisNode._uncheckedNode = new FontAwesomeNode( 'check_empty', { fill: options.checkBoxColor } );
-    var iconScale = options.boxWidth / thisNode._uncheckedNode.width;
-    thisNode._uncheckedNode.scale( iconScale );
-    thisNode._checkedNode = new FontAwesomeNode( 'check', { scale: iconScale, fill: options.checkBoxColor } );
+    thisNode.uncheckedNode = new FontAwesomeNode( 'check_empty', { fill: options.checkBoxColor } ); // @private
+    var iconScale = options.boxWidth / thisNode.uncheckedNode.width;
+    thisNode.uncheckedNode.scale( iconScale );
+    thisNode.checkedNode = new FontAwesomeNode( 'check', { scale: iconScale, fill: options.checkBoxColor } ); // @private
 
     thisNode.addChild( whiteBackground );
-    thisNode.addChild( thisNode._checkedNode );
-    thisNode.addChild( thisNode._uncheckedNode );
+    thisNode.addChild( thisNode.checkedNode );
+    thisNode.addChild( thisNode.uncheckedNode );
     thisNode.addChild( content );
 
-    content.left = thisNode._checkedNode.right + options.spacing;
-    content.centerY = thisNode._checkedNode.centerY;
+    content.left = thisNode.checkedNode.right + options.spacing;
+    content.centerY = thisNode.checkedNode.centerY;
 
     // put a rectangle on top of everything to prevent dead zones when clicking
     thisNode.addChild( new Rectangle( thisNode.left, thisNode.top, thisNode.width, thisNode.height ) );
@@ -66,7 +66,7 @@ define( function( require ) {
     // interactivity
     thisNode.addInputListener( new ButtonListener( {
       fire: function() {
-        if ( thisNode._enabled ) {
+        if ( thisNode.enabled ) {
           property.value = !property.value;
         }
       }
@@ -74,8 +74,8 @@ define( function( require ) {
 
     // sync with property
     property.link( function( checked ) {
-      thisNode._checkedNode.visible = checked;
-      thisNode._uncheckedNode.visible = !checked;
+      thisNode.checkedNode.visible = checked;
+      thisNode.uncheckedNode.visible = !checked;
     } );
 
     //Add accessibility
@@ -98,20 +98,20 @@ define( function( require ) {
 
     // prototype properties
 
-    get enabled() { return this._enabled; },
+    get enabled() { return this.enabled; },
 
     set enabled( value ) {
 
-      this._enabled = value;
+      this.enabled = value;
       this.pickable = value;
 
       // set the color of the check box icons
-      this._checkedNode.fill = value ? this._options.checkBoxColor : this._options.checkBoxColorDisabled;
-      this._uncheckedNode.fill = this._checkedNode.fill;
+      this.checkedNode.fill = value ? this.options.checkBoxColor : this.options.checkBoxColorDisabled;
+      this.uncheckedNode.fill = this.checkedNode.fill;
 
       // enable/disable the content, if it supports it
-      if ( this._content.setEnabled ) {
-        this._content.setEnabled( value );
+      if ( this.content.setEnabled ) {
+        this.content.setEnabled( value );
       }
     }
 
