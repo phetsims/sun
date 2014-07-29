@@ -35,7 +35,7 @@ define( function( require ) {
     Node.call( thisSlider );
 
     // default options, these will not be passed to supertype
-    this._options = _.extend( {
+    options = _.extend( {
       // track
       trackSize: new Dimension2( 100, 5 ),
       trackFill: 'white',
@@ -62,30 +62,31 @@ define( function( require ) {
       startDrag: function() {}, // called when a drag sequence starts
       endDrag: function() {} // called when a drag sequence ends
     }, options );
+    this.options = options; // @private TODO save only the options that are needed by prototype functions
 
-    // ticks are added to this parent, so they are behind knob
-    thisSlider._ticksParent = new Node();
-    thisSlider.addChild( thisSlider._ticksParent );
+    // @private ticks are added to this parent, so they are behind knob
+    thisSlider.ticksParent = new Node();
+    thisSlider.addChild( thisSlider.ticksParent );
 
-    // mapping between value and track position
-    thisSlider._valueToPosition = new LinearFunction( range.min, range.max, 0, this._options.trackSize.width, true /* clamp */ );
+    // @private mapping between value and track position
+    thisSlider.valueToPosition = new LinearFunction( range.min, range.max, 0, options.trackSize.width, true /* clamp */ );
 
-    // track
-    thisSlider._track = new Rectangle( 0, 0, thisSlider._options.trackSize.width, thisSlider._options.trackSize.height,
-      { fill: thisSlider._options.trackFill, stroke: thisSlider._options.trackStroke, lineWidth: thisSlider._options.trackLineWidth } );
-    thisSlider.addChild( thisSlider._track );
+    // @private track
+    thisSlider.track = new Rectangle( 0, 0, options.trackSize.width, options.trackSize.height,
+      { fill: options.trackFill, stroke: options.trackStroke, lineWidth: options.trackLineWidth } );
+    thisSlider.addChild( thisSlider.track );
 
     // click in the track to change the value, continue dragging if desired
     var trackHandler = new SimpleDragHandler( {
       handleTrackEvent: function( event ) {
-        if ( thisSlider._options.enabledProperty.get() ) {
-          var x = thisSlider._track.globalToLocalPoint( event.pointer.point ).x;
-          valueProperty.set( thisSlider._valueToPosition.inverse( x ) );
+        if ( options.enabledProperty.get() ) {
+          var x = thisSlider.track.globalToLocalPoint( event.pointer.point ).x;
+          valueProperty.set( thisSlider.valueToPosition.inverse( x ) );
         }
       },
       start: function( event ) {
-        if ( thisSlider._options.enabledProperty.get() ) {
-          thisSlider._options.startDrag();
+        if ( options.enabledProperty.get() ) {
+          options.startDrag();
         }
         this.handleTrackEvent( event );
       },
@@ -93,21 +94,21 @@ define( function( require ) {
         this.handleTrackEvent( event );
       },
       end: function() {
-        if ( thisSlider._options.enabledProperty.get() ) {
-          thisSlider._options.endDrag();
+        if ( options.enabledProperty.get() ) {
+          options.endDrag();
         }
       }
     } );
-    thisSlider._track.addInputListener( trackHandler );
+    thisSlider.track.addInputListener( trackHandler );
 
     // thumb, points up
-    var arcWidth = 0.25 * this._options.thumbSize.width;
-    var thumbFill = thisSlider._options.enabledProperty.get() ? thisSlider._options.thumbFillEnabled : thisSlider._options.thumbFillDisabled;
-    var thumb = new Rectangle( -thisSlider._options.thumbSize.width / 2, -thisSlider._options.thumbSize.height / 2, thisSlider._options.thumbSize.width, thisSlider._options.thumbSize.height, arcWidth, arcWidth,
-      { cursor: thisSlider._options.cursor, fill: thumbFill, stroke: thisSlider._options.thumbStroke, lineWidth: thisSlider._options.thumbLineWidth } );
+    var arcWidth = 0.25 * options.thumbSize.width;
+    var thumbFill = options.enabledProperty.get() ? options.thumbFillEnabled : options.thumbFillDisabled;
+    var thumb = new Rectangle( -options.thumbSize.width / 2, -options.thumbSize.height / 2, options.thumbSize.width, options.thumbSize.height, arcWidth, arcWidth,
+      { cursor: options.cursor, fill: thumbFill, stroke: options.thumbStroke, lineWidth: options.thumbLineWidth } );
     var centerLineYMargin = 3;
-    thumb.addChild( new Path( Shape.lineSegment( 0, -( thisSlider._options.thumbSize.height / 2 ) + centerLineYMargin, 0, ( thisSlider._options.thumbSize.height / 2 ) - centerLineYMargin ), { stroke: 'white' } ) );
-    thumb.centerY = thisSlider._track.centerY;
+    thumb.addChild( new Path( Shape.lineSegment( 0, -( options.thumbSize.height / 2 ) + centerLineYMargin, 0, ( options.thumbSize.height / 2 ) - centerLineYMargin ), { stroke: 'white' } ) );
+    thumb.centerY = thisSlider.track.centerY;
     thisSlider.addChild( thumb );
 
     // thumb touch area
@@ -116,35 +117,35 @@ define( function( require ) {
     thumb.touchArea = Shape.rectangle( ( -thumb.width / 2 ) - dx, ( -thumb.height / 2 ) - dy, thumb.width + dx + dx, thumb.height + dy + dy );
 
     // highlight on mouse enter
-    thumb.addInputListener( new FillHighlightListener( thisSlider._options.thumbFillEnabled, thisSlider._options.thumbFillHighlighted, thisSlider._options.enabledProperty ) );
+    thumb.addInputListener( new FillHighlightListener( options.thumbFillEnabled, options.thumbFillHighlighted, options.enabledProperty ) );
 
     // update value when thumb is dragged
     var thumbHandler = new SimpleDragHandler( {
       clickXOffset: 0, // x-offset between initial click and thumb's origin
       allowTouchSnag: true,
       start: function( event ) {
-        if ( thisSlider._options.enabledProperty.get() ) {
-          thisSlider._options.startDrag();
+        if ( options.enabledProperty.get() ) {
+          options.startDrag();
         }
         this.clickXOffset = thumb.globalToParentPoint( event.pointer.point ).x - thumb.x;
       },
       drag: function( event ) {
-        if ( thisSlider._options.enabledProperty.get() ) {
+        if ( options.enabledProperty.get() ) {
           var x = thumb.globalToParentPoint( event.pointer.point ).x - this.clickXOffset;
-          valueProperty.set( thisSlider._valueToPosition.inverse( x ) );
+          valueProperty.set( thisSlider.valueToPosition.inverse( x ) );
         }
       },
       end: function() {
-        if ( thisSlider._options.enabledProperty.get() ) {
-          thisSlider._options.endDrag();
+        if ( options.enabledProperty.get() ) {
+          options.endDrag();
         }
       }
     } );
     thumb.addInputListener( thumbHandler );
 
     // enable/disable thumb
-    thisSlider._options.enabledProperty.link( function( enabled ) {
-      thumb.fill = enabled ? thisSlider._options.thumbFillEnabled : thisSlider._options.thumbFillDisabled;
+    options.enabledProperty.link( function( enabled ) {
+      thumb.fill = enabled ? options.thumbFillEnabled : options.thumbFillDisabled;
       thumb.cursor = enabled ? 'pointer' : 'default';
       if ( !enabled ) {
         if ( thumbHandler.dragging ) { thumbHandler.endDrag(); }
@@ -154,10 +155,10 @@ define( function( require ) {
 
     // update thumb location when value changes
     valueProperty.link( function( value ) {
-      thumb.centerX = thisSlider._valueToPosition( value );
+      thumb.centerX = thisSlider.valueToPosition( value );
     } );
 
-    thisSlider.mutate( thisSlider._options );
+    thisSlider.mutate( options );
   }
 
   inherit( Node, HSlider, {
@@ -168,7 +169,7 @@ define( function( require ) {
      * @param {Node} label optional
      */
     addMajorTick: function( value, label ) {
-      this._addTick( value, label, this._options.majorTickLength, this._options.majorTickStroke, this._options.majorTickLineWidth );
+      this.addTick( value, label, this.options.majorTickLength, this.options.majorTickStroke, this.options.majorTickLineWidth );
     },
 
     /**
@@ -177,7 +178,7 @@ define( function( require ) {
      * @param {Node} label optional
      */
     addMinorTick: function( value, label ) {
-      this._addTick( value, label, this._options.minorTickLength, this._options.minorTickStroke, this._options.minorTickLineWidth );
+      this.addTick( value, label, this.options.minorTickLength, this.options.minorTickStroke, this.options.minorTickLineWidth );
     },
 
     /*
@@ -187,20 +188,21 @@ define( function( require ) {
      * @param {Number} length
      * @param {Number} stroke
      * @param {Number} lineWidth
+     * @private
      */
-    _addTick: function( value, label, length, stroke, lineWidth ) {
-      var labelX = this._valueToPosition( value );
+    addTick: function( value, label, length, stroke, lineWidth ) {
+      var labelX = this.valueToPosition( value );
       // ticks
       var tick = new Path( new Shape()
-        .moveTo( labelX, this._track.top )
-        .lineTo( labelX, this._track.top - length ),
+        .moveTo( labelX, this.track.top )
+        .lineTo( labelX, this.track.top - length ),
         { stroke: stroke, lineWidth: lineWidth } );
-      this._ticksParent.addChild( tick );
+      this.ticksParent.addChild( tick );
       // label
       if ( label ) {
-        this._ticksParent.addChild( label );
+        this.ticksParent.addChild( label );
         label.centerX = tick.centerX;
-        label.bottom = tick.top - this._options.tickLabelSpacing;
+        label.bottom = tick.top - this.options.tickLabelSpacing;
       }
     }
   } );
