@@ -38,7 +38,7 @@ define( function( require ) {
     // save this stuff for use in prototype functions
     thisNode.options = options; // @private
     thisNode.content = content; // @private
-    thisNode.enabled = true; // @private
+    thisNode._enabled = true; // @private
 
     // Make the background white.  Until we are creating our own shapes, just
     // put a white rectangle behind the font awesome check box icons.
@@ -66,7 +66,7 @@ define( function( require ) {
     // interactivity
     thisNode.addInputListener( new ButtonListener( {
       fire: function() {
-        if ( thisNode.enabled ) {
+        if ( thisNode._enabled ) {
           property.value = !property.value;
         }
       }
@@ -98,11 +98,11 @@ define( function( require ) {
 
     // prototype properties
 
-    get enabled() { return this.enabled; },
+    get enabled() { return this._enabled; },
 
     set enabled( value ) {
 
-      this.enabled = value;
+      this._enabled = value;
       this.pickable = value;
 
       // set the color of the check box icons
