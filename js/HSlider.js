@@ -193,8 +193,8 @@ define( function( require ) {
       var labelX = this.valueToPosition( value );
       // ticks
       var tick = new Path( new Shape()
-        .moveTo( labelX, this.track.top )
-        .lineTo( labelX, this.track.top - length ),
+          .moveTo( labelX, this.track.top )
+          .lineTo( labelX, this.track.top - length ),
         { stroke: stroke, lineWidth: lineWidth } );
       this.ticksParent.addChild( tick );
       // label
