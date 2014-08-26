@@ -72,10 +72,16 @@ define( function( require ) {
     } ) );
 
     // sync with property
-    expandedProperty.link( function( expanded ) {
+    var expandedPropertyObserver = function( expanded ) {
       expandButton.visible = !expanded;
       collapseButton.visible = expanded;
-    } );
+    };
+    expandedProperty.link( expandedPropertyObserver );
+
+    // @public Unlinks from the property. Button in not functional after calling this.
+    this.unlink = function() {
+      expandedProperty.unlink( expandedPropertyObserver );
+    };
 
     thisButton.mutate( options );
   }
