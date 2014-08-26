@@ -17,30 +17,31 @@ define( function( require ) {
   var Shape = require( 'KITE/Shape' );
 
   /**
-   * @param {Number} sideLength length of one side of the square button
    * @param {Property<Boolean>} expandedProperty
    * @param {*} options
    * @constructor
    */
-  function ExpandCollapseButton( sideLength, expandedProperty, options ) {
+  function ExpandCollapseButton( expandedProperty, options ) {
 
-    options = _.extend( {}, options );
+    options = _.extend( {
+      sideLength: 25  // length of one side of the square button
+    }, options );
 
     var thisButton = this;
     Node.call( thisButton );
 
     // configure the button shape
-    var cornerRadius = 0.1 * sideLength;
-    var buttonShape = Shape.roundRectangle( 0, 0, sideLength, sideLength, cornerRadius, cornerRadius );
+    var cornerRadius = 0.1 * options.sideLength;
+    var buttonShape = Shape.roundRectangle( 0, 0, options.sideLength, options.sideLength, cornerRadius, cornerRadius );
 
     // configure the +/- symbol on the button
-    var symbolLength = 0.6 * sideLength;
-    var symbolLineWidth = 0.15 * sideLength;
+    var symbolLength = 0.6 * options.sideLength;
+    var symbolLineWidth = 0.15 * options.sideLength;
     var symbolOptions = {
       lineWidth: symbolLineWidth,
       stroke: 'white',
-      centerX: sideLength / 2,
-      centerY: sideLength / 2
+      centerX: options.sideLength / 2,
+      centerY: options.sideLength / 2
     };
 
     // Expand '+' button

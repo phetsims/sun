@@ -40,7 +40,7 @@ define( function( require ) {
     Node.call( thisNode );
 
     // expand/collapse button
-    var button = new ExpandCollapseButton( options.buttonLength, expandedProperty );
+    var button = new ExpandCollapseButton( expandedProperty, { sideLength: options.buttonLength } );
     button.touchArea = Shape.bounds( button.localBounds.dilatedXY( 10, 10 ) );
 
     // bar
