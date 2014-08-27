@@ -57,7 +57,7 @@ define( function( require ) {
     this.open = new Property( options.initiallyOpen !== undefined ? options.initiallyOpen : true );
 
     // Create the expand/collapse button.
-    this.expandCollapseButton = new ExpandCollapseButton( CONTROL_BUTTON_DIMENSION, this.open );
+    this.expandCollapseButton = new ExpandCollapseButton( this.open, { sideLength: CONTROL_BUTTON_DIMENSION } );
 
     // Add an expanded touch area to the expand/collapse button so it works well on small screens.   Size could be
     // moved into an option if necessary.
