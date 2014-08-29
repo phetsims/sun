@@ -40,7 +40,7 @@ define( function( require ) {
       cornerRadius: 3,
 
       // title
-      title: undefined, // title {string}  //TODO support {Node}
+      title: '', // {string}  //TODO support {Node}
       font: new PhetFont( 20 ),
       titleAlign: 'center', // horizontal alignment of the title, 'left'|'center'|'right'
       titleFill: 'black',
@@ -76,15 +76,11 @@ define( function( require ) {
       expandedTouchAreaDimension
     );
 
-    // Create the titleNode, if present.
-    var titleNode = new Node();
-    if ( options.title !== undefined ) {
-      titleNode = new Text( options.title, { font: options.font, fill: options.titleFill } );
-      this.titleNode = titleNode;
-    }
+    // @private Create the titleNode, if present.
+    this.titleNode = new Text( options.title, { font: options.font, fill: options.titleFill } );
 
     // @private Create the box that will hold the contents when expanded.
-    this.boxWidth = Math.max( options.minWidth || 0, options.buttonXMargin * 2 + BUTTON_SIZE + TITLE_X_MARGIN * 2 + titleNode.width );
+    this.boxWidth = Math.max( options.minWidth || 0, options.buttonXMargin * 2 + BUTTON_SIZE + TITLE_X_MARGIN * 2 + this.titleNode.width );
     if ( options.showTitleWhenExpanded ) {
       this.boxWidth = Math.max( this.boxWidth, contentNode.width + 2 * options.contentXMargin );
     }
@@ -105,7 +101,7 @@ define( function( require ) {
         fill: options.fill
       } );
     expandedBox.addChild( contentNode );
-    expandedBox.addChild( titleNode );
+    expandedBox.addChild( this.titleNode );
     expandedBox.addChild( this.expandCollapseButton );
     this.addChild( expandedBox );
 
@@ -116,7 +112,7 @@ define( function( require ) {
         lineWidth: options.lineWidth,
         fill: options.fill
       } );
-    collapsedBox.addChild( titleNode );
+    collapsedBox.addChild( this.titleNode );
     collapsedBox.addChild( this.expandCollapseButton );
     this.addChild( collapsedBox );
 
@@ -175,7 +171,7 @@ define( function( require ) {
     options.expandedProperty.link( function( expanded ) {
       expandedBox.visible = expanded;
       collapsedBox.visible = !expanded;
-      titleNode.visible = !expanded || options.showTitleWhenExpanded;
+      thisNode.titleNode.visible = !expanded || options.showTitleWhenExpanded;
     } );
   }
 
