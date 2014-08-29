@@ -37,12 +37,12 @@ define( function( require ) {
       lineWidth: 1,
       fill: 'rgb( 238, 238, 238 )', // background color
       font: new PhetFont( 20 ),
-      contentPosition: 'center',
-      buttonPosition: 'left',
-      titlePosition: 'center',
+      contentAlign: 'center', // horizontal alignment of the content, 'left'|'center'|'right'
+      buttonAlign: 'left',  // expand/collapsed button alignment, 'left'|'right'
+      titleAlign: 'center', // horizontal alignment of the title, 'left'|'center'|'right'
       cornerRadius: 3,
-      controlButtonXMargin: 4,
-      controlButtonYMargin: 4,
+      buttonXMargin: 4,
+      buttonYMargin: 4,
       contentXMargin: 15,
       contentYMargin: 8,
       titleFill: 'black',
@@ -85,17 +85,17 @@ define( function( require ) {
     }
 
     // Create the container that will hold the contents when open.
-    this.containerWidth = Math.max( options.minWidth || 0, options.controlButtonXMargin * 2 + CONTROL_BUTTON_DIMENSION + TITLE_INSET * 2 + titleNode.width );
+    this.containerWidth = Math.max( options.minWidth || 0, options.buttonXMargin * 2 + CONTROL_BUTTON_DIMENSION + TITLE_INSET * 2 + titleNode.width );
     if ( options.showTitleWhenOpen ) {
       this.containerWidth = Math.max( this.containerWidth, contentNode.width + 2 * options.contentXMargin );
     }
     else {
-      this.containerWidth = Math.max( this.containerWidth, options.controlButtonXMargin * 2 + CONTROL_BUTTON_DIMENSION + options.contentXMargin * 2 + contentNode.width );
+      this.containerWidth = Math.max( this.containerWidth, options.buttonXMargin * 2 + CONTROL_BUTTON_DIMENSION + options.contentXMargin * 2 + contentNode.width );
     }
-    var closedContainerHeight = options.controlButtonYMargin * 2 + CONTROL_BUTTON_DIMENSION;
+    var closedContainerHeight = options.buttonYMargin * 2 + CONTROL_BUTTON_DIMENSION;
     var openContainerHeight = 2 * options.contentYMargin + contentNode.height;
     if ( options.showTitleWhenOpen ) {
-      openContainerHeight += options.controlButtonYMargin * 2 + CONTROL_BUTTON_DIMENSION;
+      openContainerHeight += options.buttonYMargin * 2 + CONTROL_BUTTON_DIMENSION;
     }
     this.openHeight = openContainerHeight; // This needs to be visible externally for layout purposes.
 
@@ -136,34 +136,34 @@ define( function( require ) {
     closedContainer.addChild( openCloseNode );
 
     // Lay out the contents of the containers.
-    this.expandCollapseButton.top = options.controlButtonYMargin;
+    this.expandCollapseButton.top = options.buttonYMargin;
     this.titleLeftBound = TITLE_INSET;
     this.titleRightBound = this.containerWidth - TITLE_INSET;
     contentNode.bottom = openContainerHeight - options.contentYMargin;
 
-    if ( options.buttonPosition === 'left' ) {
-      this.expandCollapseButton.left = options.controlButtonXMargin;
+    if ( options.buttonAlign === 'left' ) {
+      this.expandCollapseButton.left = options.buttonXMargin;
       this.titleLeftBound = this.expandCollapseButton.right + TITLE_INSET;
     }
     else {
-      this.expandCollapseButton.right = this.containerWidth - options.controlButtonXMargin;
+      this.expandCollapseButton.right = this.containerWidth - options.buttonXMargin;
       this.titleLeftBound = TITLE_INSET;
     }
 
     var contentXSpanMin = options.contentXMargin;
     var contentXSpanMax = this.containerWidth - options.contentXMargin;
-    if ( !options.showTitleWhenOpen && options.buttonPosition === 'left' ) {
-      if ( options.buttonPosition === 'left' ) {
-        contentXSpanMin += options.controlButtonXMargin * 2 + CONTROL_BUTTON_DIMENSION;
+    if ( !options.showTitleWhenOpen && options.buttonAlign === 'left' ) {
+      if ( options.buttonAlign === 'left' ) {
+        contentXSpanMin += options.buttonXMargin * 2 + CONTROL_BUTTON_DIMENSION;
       }
-      else if ( options.buttonPosition === 'left' ) {
-        contentXSpanMax -= options.controlButtonXMargin * 2 + CONTROL_BUTTON_DIMENSION;
+      else if ( options.buttonAlign === 'left' ) {
+        contentXSpanMax -= options.buttonXMargin * 2 + CONTROL_BUTTON_DIMENSION;
       }
     }
-    if ( options.contentPosition === 'left' ) {
+    if ( options.contentAlign === 'left' ) {
       contentNode.left = contentXSpanMin;
     }
-    else if ( options.contentPosition === 'right' ) {
+    else if ( options.contentAlign === 'right' ) {
       contentNode.right = contentXSpanMax;
     }
     else {
@@ -193,10 +193,10 @@ define( function( require ) {
 
     updateTitleLocation: function() {
       this.titleNode.centerY = this.expandCollapseButton.centerY;
-      if ( this.options.titlePosition === 'left' ) {
+      if ( this.options.titleAlign === 'left' ) {
         this.titleNode.left = this.titleLeftBound;
       }
-      else if ( this.options.titlePosition === 'right' ) {
+      else if ( this.options.titleAlign === 'right' ) {
         this.titleNode.right = this.titleRightBound;
       }
       else {
@@ -206,7 +206,7 @@ define( function( require ) {
 
     adjustTitleNodeSize: function() {
       this.titleNode.resetTransform();
-      var availableTitleSpace = this.containerWidth - this.options.controlButtonXMargin - CONTROL_BUTTON_DIMENSION - 2 * TITLE_INSET;
+      var availableTitleSpace = this.containerWidth - this.options.buttonXMargin - CONTROL_BUTTON_DIMENSION - 2 * TITLE_INSET;
       if ( this.titleNode.width > availableTitleSpace ) {
         this.titleNode.scale( availableTitleSpace / this.titleNode.width );
       }
