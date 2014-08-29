@@ -76,7 +76,7 @@ define( function( require ) {
       expandedTouchAreaDimension
     );
 
-    // Create the box that will hold the contents when expanded.
+    // Expanded box
     var boxWidth = Math.max( options.minWidth, options.buttonXMargin * 2 + BUTTON_SIZE + TITLE_X_MARGIN * 2 + options.titleNode.width );
     if ( options.showTitleWhenExpanded ) {
       boxWidth = Math.max( boxWidth, contentNode.width + 2 * options.contentXMargin );
@@ -102,7 +102,7 @@ define( function( require ) {
     expandedBox.addChild( expandCollapseButton );
     this.addChild( expandedBox );
 
-    // Create the node that represents the collapsed box.
+    // Collapsed box
     var collapsedBox = new Rectangle( 0, 0, boxWidth, collapsedBoxHeight, options.cornerRadius, options.cornerRadius,
       {
         stroke: options.stroke,
@@ -113,8 +113,7 @@ define( function( require ) {
     collapsedBox.addChild( expandCollapseButton );
     this.addChild( collapsedBox );
 
-    // Create an invisible rectangle that allows the user to click on any part of the top of the box (expanded or
-    // collapsed) in order to toggle the state.
+    // Invisible rectangle at top that operates like expand/collapse button
     var expandCollapseBar = new Rectangle( 0, 0, boxWidth, collapsedBoxHeight, options.cornerRadius, options.cornerRadius,
       {
         fill: 'rgba( 0, 0, 0, 0)', // Invisible.
@@ -124,7 +123,7 @@ define( function( require ) {
     expandedBox.addChild( expandCollapseBar );
     collapsedBox.addChild( expandCollapseBar );
 
-    // Lay out the contents of the boxes.
+    // Layout
     expandCollapseButton.top = options.buttonYMargin;
     contentNode.bottom = expandedBoxHeight - options.contentYMargin;
     var contentXSpanMin = options.contentXMargin;
