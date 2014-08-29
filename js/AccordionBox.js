@@ -39,8 +39,8 @@ define( function( require ) {
       // title
       titleNode: new Text( '' ), // a {Node} with well-defined bounds
       titleAlign: 'center', // horizontal alignment of the title, 'left'|'center'|'right'
-      titleXMargin: 10,
-      titleYMargin: 10,
+      titleXMargin: 4,
+      titleYMargin: 4,
       showTitleWhenExpanded: true, // true = title is visible when expanded, false = title is hidden when expanded
 
       // expand/collapse button
@@ -68,55 +68,54 @@ define( function( require ) {
     expandCollapseButton.touchArea = expandCollapseButton.localBounds.dilatedXY( options.buttonTouchAreaDilatedX, options.buttonTouchAreaDilatedY );
     expandCollapseButton.mouseArea = expandCollapseButton.localBounds.dilatedXY( options.buttonMouseAreaDilatedX, options.buttonMouseAreaDilatedY );
 
-    // Expanded box
-    var boxWidth = Math.max( options.minWidth, options.buttonXMargin * 2 + options.buttonLength + options.titleXMargin * 2 + options.titleNode.width );
+    // Compute box dimensions
+    var boxWidth = Math.max( options.minWidth, expandCollapseButton.width + ( 2 * options.buttonXMargin ) + options.titleNode.width + ( 2 * options.titleXMargin ) );
     if ( options.showTitleWhenExpanded ) {
-      boxWidth = Math.max( boxWidth, contentNode.width + 2 * options.contentXMargin );
+      // content is below button + title
+      boxWidth = Math.max( boxWidth, contentNode.width + ( 2 * options.contentXMargin ) );
     }
     else {
-      boxWidth = Math.max( boxWidth, options.buttonXMargin * 2 + options.buttonLength + options.contentXMargin * 2 + contentNode.width );
+      // content is next to button
+      boxWidth = Math.max( boxWidth, expandCollapseButton.width + ( 2 * options.buttonXMargin ) + contentNode.width + ( 2 * options.contentXMargin ) );
     }
-    var collapsedBoxHeight = options.buttonYMargin * 2 + options.buttonLength;
-    var expandedBoxHeight = 2 * options.contentYMargin + contentNode.height;
+    var collapsedBoxHeight = Math.max( expandCollapseButton.height + ( 2 * options.buttonYMargin ), options.titleNode.height + ( 2 * options.titleYMargin ) );
+    var expandedBoxHeight = contentNode.height + ( 2 * options.contentYMargin );
     if ( options.showTitleWhenExpanded ) {
-      expandedBoxHeight += options.buttonYMargin * 2 + options.buttonLength;
+      expandedBoxHeight += collapsedBoxHeight;
     }
     this.expandedHeight = expandedBoxHeight; // @public This needs to be visible externally for layout purposes.
 
-    var expandedBox = new Rectangle( 0, 0, boxWidth, expandedBoxHeight, options.cornerRadius, options.cornerRadius,
-      {
-        stroke: options.stroke,
-        lineWidth: options.lineWidth,
-        fill: options.fill
-      } );
+    // Options common to both boxes
+    var boxOptions = {
+      stroke: options.stroke,
+      lineWidth: options.lineWidth,
+      fill: options.fill
+    };
+
+    // Expanded box
+    var expandedBox = new Rectangle( 0, 0, boxWidth, expandedBoxHeight, options.cornerRadius, options.cornerRadius, boxOptions );
     expandedBox.addChild( contentNode );
-    expandedBox.addChild( options.titleNode );
     expandedBox.addChild( expandCollapseButton );
+    if ( options.showTitleWhenExpanded ) {
+      expandedBox.addChild( options.titleNode );
+    }
     this.addChild( expandedBox );
 
     // Collapsed box
-    var collapsedBox = new Rectangle( 0, 0, boxWidth, collapsedBoxHeight, options.cornerRadius, options.cornerRadius,
-      {
-        stroke: options.stroke,
-        lineWidth: options.lineWidth,
-        fill: options.fill
-      } );
+    var collapsedBox = new Rectangle( 0, 0, boxWidth, collapsedBoxHeight, options.cornerRadius, options.cornerRadius, boxOptions );
     collapsedBox.addChild( options.titleNode );
     collapsedBox.addChild( expandCollapseButton );
     this.addChild( collapsedBox );
 
     // Invisible rectangle at top that operates like expand/collapse button
-    var expandCollapseBar = new Rectangle( 0, 0, boxWidth, collapsedBoxHeight, options.cornerRadius, options.cornerRadius,
-      {
-        fill: 'rgba( 0, 0, 0, 0)', // Invisible.
-        cursor: 'pointer'
-      } );
+    var expandCollapseBar = new Rectangle( 0, 0, boxWidth, collapsedBoxHeight, options.cornerRadius, options.cornerRadius, {
+      fill: 'rgba( 0, 0, 0, 0)', // Invisible.
+      cursor: 'pointer'
+    } );
     expandCollapseBar.addInputListener( {down: function() { options.expandedProperty.set( !options.expandedProperty.get() ); }} );
-    expandedBox.addChild( expandCollapseBar );
-    collapsedBox.addChild( expandCollapseBar );
+    this.addChild( expandCollapseBar );
 
     // Layout
-    expandCollapseButton.top = options.buttonYMargin;
     contentNode.bottom = expandedBoxHeight - options.contentYMargin;
     var contentXSpanMin = options.contentXMargin;
     var contentXSpanMax = boxWidth - options.contentXMargin;
@@ -139,6 +138,7 @@ define( function( require ) {
     }
 
     // title location
+    expandCollapseButton.centerY = options.titleNode.centerY = collapsedBoxHeight / 2;
     var titleLeftBound = options.titleXMargin;
     var titleRightBound = boxWidth - options.titleXMargin;
     if ( options.buttonAlign === 'left' ) {
@@ -149,7 +149,6 @@ define( function( require ) {
       expandCollapseButton.right = boxWidth - options.buttonXMargin;
       titleLeftBound = options.titleXMargin;
     }
-    options.titleNode.centerY = expandCollapseButton.centerY;
     if ( options.titleAlign === 'left' ) {
       options.titleNode.left = titleLeftBound;
     }
@@ -160,11 +159,10 @@ define( function( require ) {
       options.titleNode.centerX = ( titleLeftBound + titleRightBound ) / 2;
     }
 
-    // Update the visibility of the boxes and title based on the expanded/collapsed state.
+    // Update the visibility of the boxes based on the expanded/collapsed state.
     options.expandedProperty.link( function( expanded ) {
       expandedBox.visible = expanded;
       collapsedBox.visible = !expanded;
-      options.titleNode.visible = ( expanded && options.showTitleWhenExpanded ) || !expanded;
     } );
 
     this.mutate( options );
