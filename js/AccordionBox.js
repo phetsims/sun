@@ -113,7 +113,11 @@ define( function( require ) {
       fill: 'rgba( 0, 0, 0, 0)', // Invisible.
       cursor: 'pointer'
     } );
-    expandCollapseBar.addInputListener( {down: function() { options.expandedProperty.set( !options.expandedProperty.get() ); }} );
+    expandCollapseBar.addInputListener( {
+      down: function() {
+        options.expandedProperty.value = !options.expandedProperty.value;
+      }
+    } );
     this.addChild( expandCollapseBar );
 
     this.addChild( options.titleNode );
