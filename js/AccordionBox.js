@@ -195,9 +195,8 @@ define( function( require ) {
       this.updateTitleLocation();
     },
 
-    //TODO: What to do if no titleNode?
     get title() {
-      return this.titleNode.text;
+      return this.title;
     },
 
     updateTitleLocation: function() {
