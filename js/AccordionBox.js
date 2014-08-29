@@ -168,11 +168,17 @@ define( function( require ) {
     }
 
     // Update the visibility of the boxes based on the expanded/collapsed state.
-    options.expandedProperty.link( function( expanded ) {
+    var expandedPropertyObserver = function( expanded ) {
       expandedBox.visible = expanded;
       collapsedBox.visible = !expanded;
       options.titleNode.visible = ( expanded && options.showTitleWhenExpanded ) || !expanded;
-    } );
+    };
+    options.expandedProperty.link( expandedPropertyObserver );
+
+    // @public Unlinks from expandedProperty. The node is no longer functional after calling this function.
+    this.unlink = function() {
+      options.expandedProperty.unlink( expandedPropertyObserver );
+    };
 
     this.mutate( options );
   }
