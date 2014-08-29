@@ -1,9 +1,10 @@
 // Copyright 2002-2013, University of Colorado Boulder
 
 /**
- * Collapsible box that show/hides contents when expanded/collapsed.
+ * Box that can be expanded/collapsed to show/hide contents.
  *
  * @author John Blanco
+ * @author Chris Malley (PixelZoom, Inc.)
  */
 define( function( require ) {
   'use strict';
@@ -38,6 +39,7 @@ define( function( require ) {
       lineWidth: 1,
       fill: 'rgb( 238, 238, 238 )',
       cornerRadius: 3,
+      minWidth: 0,
 
       // title
       titleNode: new Text( '' ), // a {Node} with well-defined bounds
@@ -61,7 +63,7 @@ define( function( require ) {
 
     Node.call( this );
 
-    // @private Create the expand/collapse button.
+    // Expand/collapse button
     var expandCollapseButton = new ExpandCollapseButton( options.expandedProperty, { sideLength: BUTTON_SIZE } );
 
     // Add an expanded touch area to the expand/collapse button so it works well on small screens.   Size could be
@@ -75,7 +77,7 @@ define( function( require ) {
     );
 
     // Create the box that will hold the contents when expanded.
-    var boxWidth = Math.max( options.minWidth || 0, options.buttonXMargin * 2 + BUTTON_SIZE + TITLE_X_MARGIN * 2 + options.titleNode.width );
+    var boxWidth = Math.max( options.minWidth, options.buttonXMargin * 2 + BUTTON_SIZE + TITLE_X_MARGIN * 2 + options.titleNode.width );
     if ( options.showTitleWhenExpanded ) {
       boxWidth = Math.max( boxWidth, contentNode.width + 2 * options.contentXMargin );
     }
@@ -124,19 +126,7 @@ define( function( require ) {
 
     // Lay out the contents of the boxes.
     expandCollapseButton.top = options.buttonYMargin;
-    this.titleLeftBound = TITLE_X_MARGIN;
-    this.titleRightBound = boxWidth - TITLE_X_MARGIN;
     contentNode.bottom = expandedBoxHeight - options.contentYMargin;
-
-    if ( options.buttonAlign === 'left' ) {
-      expandCollapseButton.left = options.buttonXMargin;
-      this.titleLeftBound = expandCollapseButton.right + TITLE_X_MARGIN;
-    }
-    else {
-      expandCollapseButton.right = boxWidth - options.buttonXMargin;
-      this.titleLeftBound = TITLE_X_MARGIN;
-    }
-
     var contentXSpanMin = options.contentXMargin;
     var contentXSpanMax = boxWidth - options.contentXMargin;
     if ( !options.showTitleWhenExpanded && options.buttonAlign === 'left' ) {
@@ -166,15 +156,25 @@ define( function( require ) {
     }
 
     // title location
-    options.titleNode.centerY = expandCollapseButton.centerY;
-    if ( this.options.titleAlign === 'left' ) {
-      options.titleNode.left = this.titleLeftBound;
-    }
-    else if ( this.options.titleAlign === 'right' ) {
-      options.titleNode.right = this.titleRightBound;
+    var titleLeftBound = TITLE_X_MARGIN;
+    var titleRightBound = boxWidth - TITLE_X_MARGIN;
+    if ( options.buttonAlign === 'left' ) {
+      expandCollapseButton.left = options.buttonXMargin;
+      titleLeftBound = expandCollapseButton.right + TITLE_X_MARGIN;
     }
     else {
-      options.titleNode.centerX = ( this.titleLeftBound + this.titleRightBound ) / 2;
+      expandCollapseButton.right = boxWidth - options.buttonXMargin;
+      titleLeftBound = TITLE_X_MARGIN;
+    }
+    options.titleNode.centerY = expandCollapseButton.centerY;
+    if ( this.options.titleAlign === 'left' ) {
+      options.titleNode.left = titleLeftBound;
+    }
+    else if ( this.options.titleAlign === 'right' ) {
+      options.titleNode.right = titleRightBound;
+    }
+    else {
+      options.titleNode.centerX = ( titleLeftBound + titleRightBound ) / 2;
     }
 
     // Update the visibility of the boxes and title based on the expanded/collapsed state.
