@@ -16,6 +16,7 @@ define( function( require ) {
   var Text = require( 'SCENERY/nodes/Text' );
   var Property = require( 'AXON/Property' );
   var Shape = require( 'KITE/Shape' );
+  var PhetFont = require( 'SCENERY_PHET/PhetFont' );
 
   // Constants
   var TITLE_INSET = 10;
@@ -35,7 +36,7 @@ define( function( require ) {
       stroke: 'black', // color used to stroke the outer edge of the container
       lineWidth: 1,
       fill: 'rgb( 238, 238, 238 )', // background color
-      font: '20px Arial',
+      font: new PhetFont( 20 ),
       contentPosition: 'center',
       buttonPosition: 'left',
       titlePosition: 'center',
