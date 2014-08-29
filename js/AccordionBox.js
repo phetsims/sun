@@ -60,7 +60,6 @@ define( function( require ) {
       contentYMargin: 8
 
     }, options );
-    this.options = options; // @private
 
     Node.call( this );
 
@@ -142,7 +141,7 @@ define( function( require ) {
     //TODO this is currently ignoring scale issues in the y dimension
     // title scale
     options.titleNode.resetTransform();
-    var availableTitleSpace = boxWidth - this.options.buttonXMargin - options.buttonLength - ( 2 * options.titleXMargin );
+    var availableTitleSpace = boxWidth - options.buttonXMargin - options.buttonLength - ( 2 * options.titleXMargin );
     if ( options.titleNode.width > availableTitleSpace ) {
       options.titleNode.scale( availableTitleSpace / options.titleNode.width );
     }
@@ -159,10 +158,10 @@ define( function( require ) {
       titleLeftBound = options.titleXMargin;
     }
     options.titleNode.centerY = expandCollapseButton.centerY;
-    if ( this.options.titleAlign === 'left' ) {
+    if ( options.titleAlign === 'left' ) {
       options.titleNode.left = titleLeftBound;
     }
-    else if ( this.options.titleAlign === 'right' ) {
+    else if ( options.titleAlign === 'right' ) {
       options.titleNode.right = titleRightBound;
     }
     else {
