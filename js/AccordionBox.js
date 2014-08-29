@@ -38,7 +38,6 @@ define( function( require ) {
       lineWidth: 1,
       fill: 'rgb( 238, 238, 238 )',
       cornerRadius: 3,
-      initiallyExpanded: true,
 
       // title
       title: undefined, // title {string}  //TODO support {Node}
@@ -51,6 +50,7 @@ define( function( require ) {
       buttonAlign: 'left',  // button alignment, 'left'|'right'
       buttonXMargin: 4,
       buttonYMargin: 4,
+      expandedProperty: new Property( true ),
 
       // content
       contentAlign: 'center', // horizontal alignment of the content, 'left'|'center'|'right'
@@ -63,11 +63,8 @@ define( function( require ) {
     var thisNode = this;
     Node.call( this, options );
 
-    // Create a property that tracks the expanded/collapsed state.
-    this.expandedProperty = new Property( options.initiallyExpanded );
-
     // @private Create the expand/collapse button.
-    this.expandCollapseButton = new ExpandCollapseButton( this.expandedProperty, { sideLength: BUTTON_SIZE } );
+    this.expandCollapseButton = new ExpandCollapseButton( options.expandedProperty, { sideLength: BUTTON_SIZE } );
 
     // Add an expanded touch area to the expand/collapse button so it works well on small screens.   Size could be
     // moved into an option if necessary.
@@ -133,7 +130,7 @@ define( function( require ) {
         fill: 'rgba( 0, 0, 0, 0)', // Invisible.
         cursor: 'pointer'
       } );
-    expandCollapseBar.addInputListener( {down: function() { thisNode.expandedProperty.set( !thisNode.expandedProperty.get() ); }} );
+    expandCollapseBar.addInputListener( {down: function() { options.expandedProperty.set( !options.expandedProperty.get() ); }} );
     expandedBox.addChild( expandCollapseBar );
     collapsedBox.addChild( expandCollapseBar );
 
@@ -175,7 +172,7 @@ define( function( require ) {
     this.updateTitleLocation();
 
     // Update the visibility of the boxes and title based on the expanded/collapsed state.
-    this.expandedProperty.link( function( expanded ) {
+    options.expandedProperty.link( function( expanded ) {
       expandedBox.visible = expanded;
       collapsedBox.visible = !expanded;
       titleNode.visible = !expanded || options.showTitleWhenExpanded;
