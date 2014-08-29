@@ -19,8 +19,8 @@ define( function( require ) {
   var PhetFont = require( 'SCENERY_PHET/PhetFont' );
 
   // Constants
-  var TITLE_INSET = 10;
-  var CONTROL_BUTTON_DIMENSION = 16; // Can make this an option if desired.
+  var TITLE_X_MARGIN = 10;
+  var BUTTON_SIZE = 16; // Can make this an option if desired.
 
   /**
    * @param {Node} contentNode that will be shown or hidden as the accordion box is opened/closed.
@@ -57,7 +57,7 @@ define( function( require ) {
       contentYMargin: 8
 
     }, options );
-    this.options = options;
+    this.options = options; // @private
 
     var thisNode = this;
     Node.call( this, options );
@@ -65,15 +65,15 @@ define( function( require ) {
     // Create a property that tracks the open/closed state.
     this.open = new Property( options.initiallyOpen !== undefined ? options.initiallyOpen : true );
 
-    // Create the expand/collapse button.
-    this.expandCollapseButton = new ExpandCollapseButton( this.open, { sideLength: CONTROL_BUTTON_DIMENSION } );
+    // @private Create the expand/collapse button.
+    this.expandCollapseButton = new ExpandCollapseButton( this.open, { sideLength: BUTTON_SIZE } );
 
     // Add an expanded touch area to the expand/collapse button so it works well on small screens.   Size could be
     // moved into an option if necessary.
-    var expandedTouchAreaDimension = CONTROL_BUTTON_DIMENSION * 3;
+    var expandedTouchAreaDimension = BUTTON_SIZE * 3;
     this.expandCollapseButton.touchArea = Shape.rectangle(
-        -expandedTouchAreaDimension / 2 + CONTROL_BUTTON_DIMENSION / 2,
-        -expandedTouchAreaDimension / 2 + CONTROL_BUTTON_DIMENSION / 2,
+        -expandedTouchAreaDimension / 2 + BUTTON_SIZE / 2,
+        -expandedTouchAreaDimension / 2 + BUTTON_SIZE / 2,
       expandedTouchAreaDimension,
       expandedTouchAreaDimension
     );
@@ -92,20 +92,20 @@ define( function( require ) {
       } );
     }
 
-    // Create the container that will hold the contents when open.
-    this.containerWidth = Math.max( options.minWidth || 0, options.buttonXMargin * 2 + CONTROL_BUTTON_DIMENSION + TITLE_INSET * 2 + titleNode.width );
+    // @private Create the container that will hold the contents when open.
+    this.containerWidth = Math.max( options.minWidth || 0, options.buttonXMargin * 2 + BUTTON_SIZE + TITLE_X_MARGIN * 2 + titleNode.width );
     if ( options.showTitleWhenOpen ) {
       this.containerWidth = Math.max( this.containerWidth, contentNode.width + 2 * options.contentXMargin );
     }
     else {
-      this.containerWidth = Math.max( this.containerWidth, options.buttonXMargin * 2 + CONTROL_BUTTON_DIMENSION + options.contentXMargin * 2 + contentNode.width );
+      this.containerWidth = Math.max( this.containerWidth, options.buttonXMargin * 2 + BUTTON_SIZE + options.contentXMargin * 2 + contentNode.width );
     }
-    var closedContainerHeight = options.buttonYMargin * 2 + CONTROL_BUTTON_DIMENSION;
+    var closedContainerHeight = options.buttonYMargin * 2 + BUTTON_SIZE;
     var openContainerHeight = 2 * options.contentYMargin + contentNode.height;
     if ( options.showTitleWhenOpen ) {
-      openContainerHeight += options.buttonYMargin * 2 + CONTROL_BUTTON_DIMENSION;
+      openContainerHeight += options.buttonYMargin * 2 + BUTTON_SIZE;
     }
-    this.openHeight = openContainerHeight; // This needs to be visible externally for layout purposes.
+    this.openHeight = openContainerHeight; // @public This needs to be visible externally for layout purposes.
 
     var openContainer = new Rectangle( 0, 0, this.containerWidth, openContainerHeight, options.cornerRadius, options.cornerRadius,
       {
@@ -145,27 +145,27 @@ define( function( require ) {
 
     // Lay out the contents of the containers.
     this.expandCollapseButton.top = options.buttonYMargin;
-    this.titleLeftBound = TITLE_INSET;
-    this.titleRightBound = this.containerWidth - TITLE_INSET;
+    this.titleLeftBound = TITLE_X_MARGIN;
+    this.titleRightBound = this.containerWidth - TITLE_X_MARGIN;
     contentNode.bottom = openContainerHeight - options.contentYMargin;
 
     if ( options.buttonAlign === 'left' ) {
       this.expandCollapseButton.left = options.buttonXMargin;
-      this.titleLeftBound = this.expandCollapseButton.right + TITLE_INSET;
+      this.titleLeftBound = this.expandCollapseButton.right + TITLE_X_MARGIN;
     }
     else {
       this.expandCollapseButton.right = this.containerWidth - options.buttonXMargin;
-      this.titleLeftBound = TITLE_INSET;
+      this.titleLeftBound = TITLE_X_MARGIN;
     }
 
     var contentXSpanMin = options.contentXMargin;
     var contentXSpanMax = this.containerWidth - options.contentXMargin;
     if ( !options.showTitleWhenOpen && options.buttonAlign === 'left' ) {
       if ( options.buttonAlign === 'left' ) {
-        contentXSpanMin += options.buttonXMargin * 2 + CONTROL_BUTTON_DIMENSION;
+        contentXSpanMin += options.buttonXMargin * 2 + BUTTON_SIZE;
       }
       else if ( options.buttonAlign === 'left' ) {
-        contentXSpanMax -= options.buttonXMargin * 2 + CONTROL_BUTTON_DIMENSION;
+        contentXSpanMax -= options.buttonXMargin * 2 + BUTTON_SIZE;
       }
     }
     if ( options.contentAlign === 'left' ) {
@@ -214,7 +214,7 @@ define( function( require ) {
 
     adjustTitleNodeSize: function() {
       this.titleNode.resetTransform();
-      var availableTitleSpace = this.containerWidth - this.options.buttonXMargin - CONTROL_BUTTON_DIMENSION - 2 * TITLE_INSET;
+      var availableTitleSpace = this.containerWidth - this.options.buttonXMargin - BUTTON_SIZE - 2 * TITLE_X_MARGIN;
       if ( this.titleNode.width > availableTitleSpace ) {
         this.titleNode.scale( availableTitleSpace / this.titleNode.width );
       }
