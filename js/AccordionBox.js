@@ -39,15 +39,16 @@ define( function( require ) {
       // title
       titleNode: new Text( '' ), // a {Node} with well-defined bounds
       titleAlign: 'center', // horizontal alignment of the title, 'left'|'center'|'right'
-      titleXMargin: 10,
-      titleYMargin: 2,
+      titleXMargin: 10, // horizontal space between title and left|right edge of box
+      titleYMargin: 2, // vertical space between title and top of box
+      titleXSpacing: 5, // horizontal space between title and expand/collapse button
       showTitleWhenExpanded: true, // true = title is visible when expanded, false = title is hidden when expanded
 
       // expand/collapse button
       buttonLength: 16, // button is a square, this is the length of one side
       buttonAlign: 'left',  // button alignment, 'left'|'right'
-      buttonXMargin: 4,
-      buttonYMargin: 2,
+      buttonXMargin: 4, // horizontal space between button and left|right edge of box
+      buttonYMargin: 2, // vertical space between button and top edge of box
       expandedProperty: new Property( true ),
       buttonTouchAreaDilatedX: 16,
       buttonTouchAreaDilatedY: 16,
@@ -56,8 +57,10 @@ define( function( require ) {
 
       // content
       contentAlign: 'center', // horizontal alignment of the content, 'left'|'center'|'right'
-      contentXMargin: 15,
-      contentYMargin: 8
+      contentXMargin: 15, // horizontal space between content and left/right edges of box
+      contentYMargin: 8,  // horizontal space between content and bottom edge of box
+      contentXSpacing: 5, // horizontal space between content and button, ignored if showTitleWhenExpanded is true
+      contentYSpacing: 10 // vertical space between content and title+button, ignored if showTitleWhenExpanded is false
 
     }, options );
 
@@ -74,21 +77,21 @@ define( function( require ) {
     expandCollapseButton.mouseArea = expandCollapseButton.localBounds.dilatedXY( options.buttonMouseAreaDilatedX, options.buttonMouseAreaDilatedY );
 
     // Compute box dimensions
-    var boxWidth = Math.max( options.minWidth, expandCollapseButton.width + ( 2 * options.buttonXMargin ) + options.titleNode.width + ( 2 * options.titleXMargin ) );
+    var boxWidth = Math.max( options.minWidth, expandCollapseButton.width + options.titleNode.width + options.buttonXMargin + options.titleXMargin + options.titleXSpacing );
+    var expandedBoxHeight;
     if ( options.showTitleWhenExpanded ) {
-      // content is below button + title
+      // content is below button+title
       boxWidth = Math.max( boxWidth, contentNode.width + ( 2 * options.contentXMargin ) );
+      expandedBoxHeight = Math.max( expandCollapseButton.height + options.buttonYMargin, options.titleNode.height + options.titleYMargin ) +
+                          contentNode.height + options.contentYMargin + options.contentYSpacing;
     }
     else {
       // content is next to button
-      boxWidth = Math.max( boxWidth, expandCollapseButton.width + ( 2 * options.buttonXMargin ) + contentNode.width + ( 2 * options.contentXMargin ) );
-    }
-    var collapsedBoxHeight = Math.max( expandCollapseButton.height + ( 2 * options.buttonYMargin ), options.titleNode.height + ( 2 * options.titleYMargin ) );
-    var expandedBoxHeight = contentNode.height + ( 2 * options.contentYMargin );
-    if ( options.showTitleWhenExpanded ) {
-      expandedBoxHeight += collapsedBoxHeight;
+      boxWidth = Math.max( boxWidth, expandCollapseButton.width + contentNode.width + options.buttonXMargin + options.contentXMargin + options.contentXSpacing )
+      expandedBoxHeight = Math.max( expandCollapseButton.height + ( 2 * options.buttonYMargin ), contentNode.height + ( 2 * options.contentYMargin ) );
     }
     this.expandedHeight = expandedBoxHeight; // @public This needs to be visible externally for layout purposes.
+    var collapsedBoxHeight = Math.max( expandCollapseButton.height + ( 2 * options.buttonYMargin ), options.titleNode.height + ( 2 * options.titleYMargin ) );
 
     // Options common to both boxes
     var boxOptions = {
@@ -126,12 +129,11 @@ define( function( require ) {
     var contentSpanRight = boxWidth - options.contentXMargin;
     if ( !options.showTitleWhenExpanded ) {
       // content will be placed next to button
-      var buttonXSpan = expandCollapseButton.width + ( 2 * options.buttonXMargin );
       if ( options.buttonAlign === 'left' ) {
-        contentSpanLeft += buttonXSpan;
+        contentSpanLeft += expandCollapseButton.width + options.contentXSpacing;
       }
       else { // right on right
-        contentSpanRight -= buttonXSpan;
+        contentSpanRight -= expandCollapseButton.width + options.contentXSpacing;
       }
     }
     if ( options.contentAlign === 'left' ) {
@@ -150,11 +152,11 @@ define( function( require ) {
     var titleRightSpan = boxWidth - options.titleXMargin;
     if ( options.buttonAlign === 'left' ) {
       expandCollapseButton.left = options.buttonXMargin;
-      titleLeftSpan = expandCollapseButton.right + options.titleXMargin + options.buttonXMargin;
+      titleLeftSpan = expandCollapseButton.right + options.titleXSpacing;
     }
     else {
       expandCollapseButton.right = boxWidth - options.buttonXMargin;
-      titleRightSpan = expandCollapseButton.left - options.titleXMargin - options.buttonXMargin;
+      titleRightSpan = expandCollapseButton.left - options.titleXSpacing;
     }
     if ( options.titleAlign === 'left' ) {
       options.titleNode.left = titleLeftSpan;
