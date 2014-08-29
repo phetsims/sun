@@ -39,15 +39,15 @@ define( function( require ) {
       // title
       titleNode: new Text( '' ), // a {Node} with well-defined bounds
       titleAlign: 'center', // horizontal alignment of the title, 'left'|'center'|'right'
-      titleXMargin: 4,
-      titleYMargin: 4,
+      titleXMargin: 10,
+      titleYMargin: 2,
       showTitleWhenExpanded: true, // true = title is visible when expanded, false = title is hidden when expanded
 
       // expand/collapse button
       buttonLength: 16, // button is a square, this is the length of one side
       buttonAlign: 'left',  // button alignment, 'left'|'right'
       buttonXMargin: 4,
-      buttonYMargin: 4,
+      buttonYMargin: 2,
       expandedProperty: new Property( true ),
       buttonTouchAreaDilatedX: 16,
       buttonTouchAreaDilatedY: 16,
