@@ -59,7 +59,7 @@ define( function( require ) {
     }, options );
     this.options = options; // @private
 
-    Node.call( this, options );
+    Node.call( this );
 
     // @private Create the expand/collapse button.
     var expandCollapseButton = new ExpandCollapseButton( options.expandedProperty, { sideLength: BUTTON_SIZE } );
@@ -183,6 +183,8 @@ define( function( require ) {
       collapsedBox.visible = !expanded;
       options.titleNode.visible = !expanded || options.showTitleWhenExpanded;
     } );
+
+    this.mutate( options );
   }
 
   return inherit( Node, AccordionBox );
