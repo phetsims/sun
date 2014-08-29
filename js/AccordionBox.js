@@ -41,7 +41,7 @@ define( function( require ) {
       titleAlign: 'center', // horizontal alignment of the title, 'left'|'center'|'right'
       titleXMargin: 10,
       titleYMargin: 10,
-      showTitleWhenExpanded: true,
+      showTitleWhenExpanded: true, // true = title is visible when expanded, false = title is hidden when expanded
 
       // expand/collapse button
       buttonLength: 16, // button is a square, this is the length of one side
@@ -49,6 +49,10 @@ define( function( require ) {
       buttonXMargin: 4,
       buttonYMargin: 4,
       expandedProperty: new Property( true ),
+      buttonTouchAreaDilatedX: 16,
+      buttonTouchAreaDilatedY: 16,
+      buttonMouseAreaDilatedX: 0,
+      buttonMouseAreaDilatedY: 0,
 
       // content
       contentAlign: 'center', // horizontal alignment of the content, 'left'|'center'|'right'
@@ -62,16 +66,8 @@ define( function( require ) {
 
     // Expand/collapse button
     var expandCollapseButton = new ExpandCollapseButton( options.expandedProperty, { sideLength: options.buttonLength } );
-
-    // Add an expanded touch area to the expand/collapse button so it works well on small screens.   Size could be
-    // moved into an option if necessary.
-    var expandedTouchAreaDimension = options.buttonLength * 3;
-    expandCollapseButton.touchArea = Shape.rectangle(
-        -expandedTouchAreaDimension / 2 + options.buttonLength / 2,
-        -expandedTouchAreaDimension / 2 + options.buttonLength / 2,
-      expandedTouchAreaDimension,
-      expandedTouchAreaDimension
-    );
+    expandCollapseButton.touchArea = expandCollapseButton.localBounds.dilatedXY( options.buttonTouchAreaDilatedX, options.buttonTouchAreaDilatedY );
+    expandCollapseButton.mouseArea = expandCollapseButton.localBounds.dilatedXY( options.buttonMouseAreaDilatedX, options.buttonMouseAreaDilatedY );
 
     // Expanded box
     var boxWidth = Math.max( options.minWidth, options.buttonXMargin * 2 + options.buttonLength + options.titleXMargin * 2 + options.titleNode.width );
