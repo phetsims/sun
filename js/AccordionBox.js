@@ -138,14 +138,6 @@ define( function( require ) {
       contentNode.centerX = ( contentXSpanMin + contentXSpanMax ) / 2;
     }
 
-    //TODO this is currently ignoring scale issues in the y dimension
-    // title scale
-    options.titleNode.resetTransform();
-    var availableTitleSpace = boxWidth - options.buttonXMargin - options.buttonLength - ( 2 * options.titleXMargin );
-    if ( options.titleNode.width > availableTitleSpace ) {
-      options.titleNode.scale( availableTitleSpace / options.titleNode.width );
-    }
-
     // title location
     var titleLeftBound = options.titleXMargin;
     var titleRightBound = boxWidth - options.titleXMargin;
