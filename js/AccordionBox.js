@@ -122,46 +122,48 @@ define( function( require ) {
 
     // content layout
     contentNode.bottom = expandedBoxHeight - options.contentYMargin;
-    var contentXSpanMin = options.contentXMargin;
-    var contentXSpanMax = boxWidth - options.contentXMargin;
+    var contentSpanLeft = options.contentXMargin;
+    var contentSpanRight = boxWidth - options.contentXMargin;
     if ( !options.showTitleWhenExpanded ) {
+      // content will be placed next to button
+      var buttonXSpan = expandCollapseButton.width + ( 2 * options.buttonXMargin );
       if ( options.buttonAlign === 'left' ) {
-        contentXSpanMin += options.buttonXMargin * 2 + options.buttonLength;
+        contentSpanLeft += buttonXSpan;
       }
-      else { // right
-        contentXSpanMax -= options.buttonXMargin * 2 + options.buttonLength;
+      else { // right on right
+        contentSpanRight -= buttonXSpan;
       }
     }
     if ( options.contentAlign === 'left' ) {
-      contentNode.left = contentXSpanMin;
+      contentNode.left = contentSpanLeft;
     }
     else if ( options.contentAlign === 'right' ) {
-      contentNode.right = contentXSpanMax;
+      contentNode.right = contentSpanRight;
     }
     else { // center
-      contentNode.centerX = ( contentXSpanMin + contentXSpanMax ) / 2;
+      contentNode.centerX = ( contentSpanLeft + contentSpanRight ) / 2;
     }
 
     // button & title layout
     expandCollapseButton.centerY = options.titleNode.centerY = collapsedBoxHeight / 2;
-    var titleLeftBound = options.titleXMargin;
-    var titleRightBound = boxWidth - options.titleXMargin;
+    var titleLeftSpan = options.titleXMargin;
+    var titleRightSpan = boxWidth - options.titleXMargin;
     if ( options.buttonAlign === 'left' ) {
       expandCollapseButton.left = options.buttonXMargin;
-      titleLeftBound = expandCollapseButton.right + options.titleXMargin;
+      titleLeftSpan = expandCollapseButton.right + options.titleXMargin + options.buttonXMargin;
     }
     else {
       expandCollapseButton.right = boxWidth - options.buttonXMargin;
-      titleLeftBound = options.titleXMargin;
+      titleRightSpan = expandCollapseButton.left - options.titleXMargin - options.buttonXMargin;
     }
     if ( options.titleAlign === 'left' ) {
-      options.titleNode.left = titleLeftBound;
+      options.titleNode.left = titleLeftSpan;
     }
     else if ( options.titleAlign === 'right' ) {
-      options.titleNode.right = titleRightBound;
+      options.titleNode.right = titleRightSpan;
     }
     else { // center
-      options.titleNode.centerX = ( titleLeftBound + titleRightBound ) / 2;
+      options.titleNode.centerX = ( titleLeftSpan + titleRightSpan ) / 2;
     }
 
     // Update the visibility of the boxes based on the expanded/collapsed state.
