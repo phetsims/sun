@@ -59,7 +59,7 @@ define( function( require ) {
       contentXMargin: 15, // horizontal space between content and left/right edges of box
       contentYMargin: 8,  // horizontal space between content and bottom edge of box
       contentXSpacing: 5, // horizontal space between content and button, ignored if showTitleWhenExpanded is true
-      contentYSpacing: 10 // vertical space between content and title+button, ignored if showTitleWhenExpanded is false
+      contentYSpacing: 8 // vertical space between content and title+button, ignored if showTitleWhenExpanded is false
 
     }, options );
 
@@ -76,13 +76,13 @@ define( function( require ) {
     expandCollapseButton.mouseArea = expandCollapseButton.localBounds.dilatedXY( options.buttonMouseAreaDilatedX, options.buttonMouseAreaDilatedY );
 
     // Compute box dimensions
+    var collapsedBoxHeight = Math.max( expandCollapseButton.height + ( 2 * options.buttonYMargin ), options.titleNode.height + ( 2 * options.titleYMargin ) );
     var boxWidth = Math.max( options.minWidth, expandCollapseButton.width + options.titleNode.width + options.buttonXMargin + options.titleXMargin + options.titleXSpacing );
     var expandedBoxHeight;
     if ( options.showTitleWhenExpanded ) {
       // content is below button+title
       boxWidth = Math.max( boxWidth, contentNode.width + ( 2 * options.contentXMargin ) );
-      expandedBoxHeight = Math.max( expandCollapseButton.height + options.buttonYMargin, options.titleNode.height + options.titleYMargin ) +
-                          contentNode.height + options.contentYMargin + options.contentYSpacing;
+      expandedBoxHeight = collapsedBoxHeight + contentNode.height + options.contentYMargin + options.contentYSpacing;
     }
     else {
       // content is next to button
@@ -90,7 +90,6 @@ define( function( require ) {
       expandedBoxHeight = Math.max( expandCollapseButton.height + ( 2 * options.buttonYMargin ), contentNode.height + ( 2 * options.contentYMargin ) );
     }
     this.expandedHeight = expandedBoxHeight; // @public This needs to be visible externally for layout purposes.
-    var collapsedBoxHeight = Math.max( expandCollapseButton.height + ( 2 * options.buttonYMargin ), options.titleNode.height + ( 2 * options.titleYMargin ) );
 
     // Options common to both boxes
     var boxOptions = {
