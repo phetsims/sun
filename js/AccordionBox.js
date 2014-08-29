@@ -182,14 +182,13 @@ define( function( require ) {
   return inherit( Node, AccordionBox, {
 
     set title( t ) {
-      this.options.text = t;
       this.titleNode.text = t;
       this.adjustTitleNodeSize();
       this.updateTitleLocation();
     },
 
     get title() {
-      return this.options.title;
+      return this.titleNode.text;
     },
 
     updateTitleLocation: function() {
