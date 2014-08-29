@@ -17,7 +17,6 @@ define( function( require ) {
   var Text = require( 'SCENERY/nodes/Text' );
   var Property = require( 'AXON/Property' );
   var Shape = require( 'KITE/Shape' );
-  var PhetFont = require( 'SCENERY_PHET/PhetFont' );
 
   // Constants
   var TITLE_X_MARGIN = 10;
@@ -42,7 +41,6 @@ define( function( require ) {
 
       // title
       titleNode: new Text( '' ), // a {Node} with well-defined bounds
-      font: new PhetFont( 20 ),
       titleAlign: 'center', // horizontal alignment of the title, 'left'|'center'|'right'
       showTitleWhenExpanded: true,
 
