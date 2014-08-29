@@ -16,7 +16,6 @@ define( function( require ) {
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var Text = require( 'SCENERY/nodes/Text' );
   var Property = require( 'AXON/Property' );
-  var Shape = require( 'KITE/Shape' );
 
   /**
    * @param {Node} contentNode that will be shown or hidden as the accordion box is expanded/collapsed.
@@ -87,7 +86,7 @@ define( function( require ) {
     }
     else {
       // content is next to button
-      boxWidth = Math.max( boxWidth, expandCollapseButton.width + contentNode.width + options.buttonXMargin + options.contentXMargin + options.contentXSpacing )
+      boxWidth = Math.max( boxWidth, expandCollapseButton.width + contentNode.width + options.buttonXMargin + options.contentXMargin + options.contentXSpacing );
       expandedBoxHeight = Math.max( expandCollapseButton.height + ( 2 * options.buttonYMargin ), contentNode.height + ( 2 * options.contentYMargin ) );
     }
     this.expandedHeight = expandedBoxHeight; // @public This needs to be visible externally for layout purposes.
