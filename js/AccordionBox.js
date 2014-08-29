@@ -40,10 +40,9 @@ define( function( require ) {
       cornerRadius: 3,
 
       // title
-      title: '', // {string}  //TODO support {Node}
+      titleNode: new Text( '' ), // a {Node} with well-defined bounds
       font: new PhetFont( 20 ),
       titleAlign: 'center', // horizontal alignment of the title, 'left'|'center'|'right'
-      titleFill: 'black',
       showTitleWhenExpanded: true,
 
       // expand/collapse button
@@ -64,28 +63,25 @@ define( function( require ) {
     Node.call( this, options );
 
     // @private Create the expand/collapse button.
-    this.expandCollapseButton = new ExpandCollapseButton( options.expandedProperty, { sideLength: BUTTON_SIZE } );
+    var expandCollapseButton = new ExpandCollapseButton( options.expandedProperty, { sideLength: BUTTON_SIZE } );
 
     // Add an expanded touch area to the expand/collapse button so it works well on small screens.   Size could be
     // moved into an option if necessary.
     var expandedTouchAreaDimension = BUTTON_SIZE * 3;
-    this.expandCollapseButton.touchArea = Shape.rectangle(
+    expandCollapseButton.touchArea = Shape.rectangle(
         -expandedTouchAreaDimension / 2 + BUTTON_SIZE / 2,
         -expandedTouchAreaDimension / 2 + BUTTON_SIZE / 2,
       expandedTouchAreaDimension,
       expandedTouchAreaDimension
     );
 
-    // @private Create the titleNode, if present.
-    this.titleNode = new Text( options.title, { font: options.font, fill: options.titleFill } );
-
-    // @private Create the box that will hold the contents when expanded.
-    this.boxWidth = Math.max( options.minWidth || 0, options.buttonXMargin * 2 + BUTTON_SIZE + TITLE_X_MARGIN * 2 + this.titleNode.width );
+    // Create the box that will hold the contents when expanded.
+    var boxWidth = Math.max( options.minWidth || 0, options.buttonXMargin * 2 + BUTTON_SIZE + TITLE_X_MARGIN * 2 + options.titleNode.width );
     if ( options.showTitleWhenExpanded ) {
-      this.boxWidth = Math.max( this.boxWidth, contentNode.width + 2 * options.contentXMargin );
+      boxWidth = Math.max( boxWidth, contentNode.width + 2 * options.contentXMargin );
     }
     else {
-      this.boxWidth = Math.max( this.boxWidth, options.buttonXMargin * 2 + BUTTON_SIZE + options.contentXMargin * 2 + contentNode.width );
+      boxWidth = Math.max( boxWidth, options.buttonXMargin * 2 + BUTTON_SIZE + options.contentXMargin * 2 + contentNode.width );
     }
     var collapsedBoxHeight = options.buttonYMargin * 2 + BUTTON_SIZE;
     var expandedBoxHeight = 2 * options.contentYMargin + contentNode.height;
@@ -94,34 +90,31 @@ define( function( require ) {
     }
     this.expandedHeight = expandedBoxHeight; // @public This needs to be visible externally for layout purposes.
 
-    var expandedBox = new Rectangle( 0, 0, this.boxWidth, expandedBoxHeight, options.cornerRadius, options.cornerRadius,
+    var expandedBox = new Rectangle( 0, 0, boxWidth, expandedBoxHeight, options.cornerRadius, options.cornerRadius,
       {
         stroke: options.stroke,
         lineWidth: options.lineWidth,
         fill: options.fill
       } );
     expandedBox.addChild( contentNode );
-    expandedBox.addChild( this.titleNode );
-    expandedBox.addChild( this.expandCollapseButton );
+    expandedBox.addChild( options.titleNode );
+    expandedBox.addChild( expandCollapseButton );
     this.addChild( expandedBox );
 
     // Create the node that represents the collapsed box.
-    var collapsedBox = new Rectangle( 0, 0, this.boxWidth, collapsedBoxHeight, options.cornerRadius, options.cornerRadius,
+    var collapsedBox = new Rectangle( 0, 0, boxWidth, collapsedBoxHeight, options.cornerRadius, options.cornerRadius,
       {
         stroke: options.stroke,
         lineWidth: options.lineWidth,
         fill: options.fill
       } );
-    collapsedBox.addChild( this.titleNode );
-    collapsedBox.addChild( this.expandCollapseButton );
+    collapsedBox.addChild( options.titleNode );
+    collapsedBox.addChild( expandCollapseButton );
     this.addChild( collapsedBox );
-
-    // If necessary, scale titleNode to fit in available space.
-    this.adjustTitleNodeSize();
 
     // Create an invisible rectangle that allows the user to click on any part of the top of the box (expanded or
     // collapsed) in order to toggle the state.
-    var expandCollapseBar = new Rectangle( 0, 0, this.boxWidth, collapsedBoxHeight, options.cornerRadius, options.cornerRadius,
+    var expandCollapseBar = new Rectangle( 0, 0, boxWidth, collapsedBoxHeight, options.cornerRadius, options.cornerRadius,
       {
         fill: 'rgba( 0, 0, 0, 0)', // Invisible.
         cursor: 'pointer'
@@ -131,22 +124,22 @@ define( function( require ) {
     collapsedBox.addChild( expandCollapseBar );
 
     // Lay out the contents of the boxes.
-    this.expandCollapseButton.top = options.buttonYMargin;
+    expandCollapseButton.top = options.buttonYMargin;
     this.titleLeftBound = TITLE_X_MARGIN;
-    this.titleRightBound = this.boxWidth - TITLE_X_MARGIN;
+    this.titleRightBound = boxWidth - TITLE_X_MARGIN;
     contentNode.bottom = expandedBoxHeight - options.contentYMargin;
 
     if ( options.buttonAlign === 'left' ) {
-      this.expandCollapseButton.left = options.buttonXMargin;
-      this.titleLeftBound = this.expandCollapseButton.right + TITLE_X_MARGIN;
+      expandCollapseButton.left = options.buttonXMargin;
+      this.titleLeftBound = expandCollapseButton.right + TITLE_X_MARGIN;
     }
     else {
-      this.expandCollapseButton.right = this.boxWidth - options.buttonXMargin;
+      expandCollapseButton.right = boxWidth - options.buttonXMargin;
       this.titleLeftBound = TITLE_X_MARGIN;
     }
 
     var contentXSpanMin = options.contentXMargin;
-    var contentXSpanMax = this.boxWidth - options.contentXMargin;
+    var contentXSpanMax = boxWidth - options.contentXMargin;
     if ( !options.showTitleWhenExpanded && options.buttonAlign === 'left' ) {
       if ( options.buttonAlign === 'left' ) {
         contentXSpanMin += options.buttonXMargin * 2 + BUTTON_SIZE;
@@ -165,48 +158,33 @@ define( function( require ) {
       contentNode.centerX = ( contentXSpanMin + contentXSpanMax ) / 2;
     }
 
-    this.updateTitleLocation();
+    //TODO this is currently ignoring scale issues in the y dimension
+    // title scale
+    options.titleNode.resetTransform();
+    var availableTitleSpace = boxWidth - this.options.buttonXMargin - BUTTON_SIZE - 2 * TITLE_X_MARGIN;
+    if ( options.titleNode.width > availableTitleSpace ) {
+      options.titleNode.scale( availableTitleSpace / options.titleNode.width );
+    }
+
+    // title location
+    options.titleNode.centerY = expandCollapseButton.centerY;
+    if ( this.options.titleAlign === 'left' ) {
+      options.titleNode.left = this.titleLeftBound;
+    }
+    else if ( this.options.titleAlign === 'right' ) {
+      options.titleNode.right = this.titleRightBound;
+    }
+    else {
+      options.titleNode.centerX = ( this.titleLeftBound + this.titleRightBound ) / 2;
+    }
 
     // Update the visibility of the boxes and title based on the expanded/collapsed state.
     options.expandedProperty.link( function( expanded ) {
       expandedBox.visible = expanded;
       collapsedBox.visible = !expanded;
-      thisNode.titleNode.visible = !expanded || options.showTitleWhenExpanded;
+      options.titleNode.visible = !expanded || options.showTitleWhenExpanded;
     } );
   }
 
-  return inherit( Node, AccordionBox, {
-
-    set title( t ) {
-      this.titleNode.text = t;
-      this.adjustTitleNodeSize();
-      this.updateTitleLocation();
-    },
-
-    get title() {
-      return this.titleNode.text;
-    },
-
-    updateTitleLocation: function() {
-      this.titleNode.centerY = this.expandCollapseButton.centerY;
-      if ( this.options.titleAlign === 'left' ) {
-        this.titleNode.left = this.titleLeftBound;
-      }
-      else if ( this.options.titleAlign === 'right' ) {
-        this.titleNode.right = this.titleRightBound;
-      }
-      else {
-        this.titleNode.centerX = ( this.titleLeftBound + this.titleRightBound ) / 2;
-      }
-    },
-
-    //TODO this is currently ignoring scale issues in the y dimension
-    adjustTitleNodeSize: function() {
-      this.titleNode.resetTransform();
-      var availableTitleSpace = this.boxWidth - this.options.buttonXMargin - BUTTON_SIZE - 2 * TITLE_X_MARGIN;
-      if ( this.titleNode.width > availableTitleSpace ) {
-        this.titleNode.scale( availableTitleSpace / this.titleNode.width );
-      }
-    }
-  } );
+  return inherit( Node, AccordionBox );
 } );
