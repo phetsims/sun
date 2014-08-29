@@ -102,16 +102,10 @@ define( function( require ) {
     // Expanded box
     var expandedBox = new Rectangle( 0, 0, boxWidth, expandedBoxHeight, options.cornerRadius, options.cornerRadius, boxOptions );
     expandedBox.addChild( contentNode );
-    expandedBox.addChild( expandCollapseButton );
-    if ( options.showTitleWhenExpanded ) {
-      expandedBox.addChild( options.titleNode );
-    }
     this.addChild( expandedBox );
 
     // Collapsed box
     var collapsedBox = new Rectangle( 0, 0, boxWidth, collapsedBoxHeight, options.cornerRadius, options.cornerRadius, boxOptions );
-    collapsedBox.addChild( options.titleNode );
-    collapsedBox.addChild( expandCollapseButton );
     this.addChild( collapsedBox );
 
     // Invisible rectangle at top that operates like expand/collapse button
@@ -121,6 +115,9 @@ define( function( require ) {
     } );
     expandCollapseBar.addInputListener( {down: function() { options.expandedProperty.set( !options.expandedProperty.get() ); }} );
     this.addChild( expandCollapseBar );
+
+    this.addChild( options.titleNode );
+    this.addChild( expandCollapseButton );
 
     // content layout
     contentNode.bottom = expandedBoxHeight - options.contentYMargin;
@@ -171,6 +168,7 @@ define( function( require ) {
     options.expandedProperty.link( function( expanded ) {
       expandedBox.visible = expanded;
       collapsedBox.visible = !expanded;
+      options.titleNode.visible = ( expanded && options.showTitleWhenExpanded ) || !expanded;
     } );
 
     this.mutate( options );
