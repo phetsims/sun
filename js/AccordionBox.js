@@ -86,13 +86,6 @@ define( function( require ) {
       this.titleNode = titleNode;
     }
 
-    // Control title visibility, if applicable.
-    if ( !options.showTitleWhenExpanded ) {
-      this.expandedProperty.link( function( expanded ) {
-        titleNode.visible = !expanded;
-      } );
-    }
-
     // @private Create the box that will hold the contents when expanded.
     this.boxWidth = Math.max( options.minWidth || 0, options.buttonXMargin * 2 + BUTTON_SIZE + TITLE_X_MARGIN * 2 + titleNode.width );
     if ( options.showTitleWhenExpanded ) {
@@ -181,10 +174,11 @@ define( function( require ) {
 
     this.updateTitleLocation();
 
-    // Update the visibility of the boxes based on the expanded/collapsed state.
-    this.expandedProperty.link( function( isOpen ) {
-      expandedBox.visible = isOpen;
-      collapsedBox.visible = !isOpen;
+    // Update the visibility of the boxes and title based on the expanded/collapsed state.
+    this.expandedProperty.link( function( expanded ) {
+      expandedBox.visible = expanded;
+      collapsedBox.visible = !expanded;
+      titleNode.visible = !expanded || options.showTitleWhenExpanded;
     } );
   }
 
