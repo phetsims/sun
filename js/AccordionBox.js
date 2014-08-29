@@ -206,6 +206,7 @@ define( function( require ) {
       }
     },
 
+    //TODO this is currently ignoring scale issues in the y dimension
     adjustTitleNodeSize: function() {
       this.titleNode.resetTransform();
       var availableTitleSpace = this.boxWidth - this.options.buttonXMargin - BUTTON_SIZE - 2 * TITLE_X_MARGIN;
