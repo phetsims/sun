@@ -173,7 +173,7 @@ define( function( require ) {
     options.expandedProperty.link( function( expanded ) {
       expandedBox.visible = expanded;
       collapsedBox.visible = !expanded;
-      options.titleNode.visible = !expanded || options.showTitleWhenExpanded;
+      options.titleNode.visible = ( expanded && options.showTitleWhenExpanded ) || !expanded;
     } );
 
     this.mutate( options );
