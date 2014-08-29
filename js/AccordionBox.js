@@ -59,7 +59,6 @@ define( function( require ) {
     }, options );
     this.options = options; // @private
 
-    var thisNode = this;
     Node.call( this, options );
 
     // @private Create the expand/collapse button.
