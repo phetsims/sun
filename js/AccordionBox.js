@@ -21,7 +21,6 @@ define( function( require ) {
 
   // Constants
   var TITLE_X_MARGIN = 10;
-  var BUTTON_SIZE = 16; // Can make this an option if desired.
 
   /**
    * @param {Node} contentNode that will be shown or hidden as the accordion box is expanded/collapsed.
@@ -48,6 +47,7 @@ define( function( require ) {
       showTitleWhenExpanded: true,
 
       // expand/collapse button
+      buttonLength: 16, // button is a square, this is the length of one side
       buttonAlign: 'left',  // button alignment, 'left'|'right'
       buttonXMargin: 4,
       buttonYMargin: 4,
@@ -64,30 +64,30 @@ define( function( require ) {
     Node.call( this );
 
     // Expand/collapse button
-    var expandCollapseButton = new ExpandCollapseButton( options.expandedProperty, { sideLength: BUTTON_SIZE } );
+    var expandCollapseButton = new ExpandCollapseButton( options.expandedProperty, { sideLength: options.buttonLength } );
 
     // Add an expanded touch area to the expand/collapse button so it works well on small screens.   Size could be
     // moved into an option if necessary.
-    var expandedTouchAreaDimension = BUTTON_SIZE * 3;
+    var expandedTouchAreaDimension = options.buttonLength * 3;
     expandCollapseButton.touchArea = Shape.rectangle(
-        -expandedTouchAreaDimension / 2 + BUTTON_SIZE / 2,
-        -expandedTouchAreaDimension / 2 + BUTTON_SIZE / 2,
+        -expandedTouchAreaDimension / 2 + options.buttonLength / 2,
+        -expandedTouchAreaDimension / 2 + options.buttonLength / 2,
       expandedTouchAreaDimension,
       expandedTouchAreaDimension
     );
 
     // Expanded box
-    var boxWidth = Math.max( options.minWidth, options.buttonXMargin * 2 + BUTTON_SIZE + TITLE_X_MARGIN * 2 + options.titleNode.width );
+    var boxWidth = Math.max( options.minWidth, options.buttonXMargin * 2 + options.buttonLength + TITLE_X_MARGIN * 2 + options.titleNode.width );
     if ( options.showTitleWhenExpanded ) {
       boxWidth = Math.max( boxWidth, contentNode.width + 2 * options.contentXMargin );
     }
     else {
-      boxWidth = Math.max( boxWidth, options.buttonXMargin * 2 + BUTTON_SIZE + options.contentXMargin * 2 + contentNode.width );
+      boxWidth = Math.max( boxWidth, options.buttonXMargin * 2 + options.buttonLength + options.contentXMargin * 2 + contentNode.width );
     }
-    var collapsedBoxHeight = options.buttonYMargin * 2 + BUTTON_SIZE;
+    var collapsedBoxHeight = options.buttonYMargin * 2 + options.buttonLength;
     var expandedBoxHeight = 2 * options.contentYMargin + contentNode.height;
     if ( options.showTitleWhenExpanded ) {
-      expandedBoxHeight += options.buttonYMargin * 2 + BUTTON_SIZE;
+      expandedBoxHeight += options.buttonYMargin * 2 + options.buttonLength;
     }
     this.expandedHeight = expandedBoxHeight; // @public This needs to be visible externally for layout purposes.
 
@@ -130,10 +130,10 @@ define( function( require ) {
     var contentXSpanMax = boxWidth - options.contentXMargin;
     if ( !options.showTitleWhenExpanded && options.buttonAlign === 'left' ) {
       if ( options.buttonAlign === 'left' ) {
-        contentXSpanMin += options.buttonXMargin * 2 + BUTTON_SIZE;
+        contentXSpanMin += options.buttonXMargin * 2 + options.buttonLength;
       }
       else if ( options.buttonAlign === 'left' ) {
-        contentXSpanMax -= options.buttonXMargin * 2 + BUTTON_SIZE;
+        contentXSpanMax -= options.buttonXMargin * 2 + options.buttonLength;
       }
     }
     if ( options.contentAlign === 'left' ) {
@@ -149,7 +149,7 @@ define( function( require ) {
     //TODO this is currently ignoring scale issues in the y dimension
     // title scale
     options.titleNode.resetTransform();
-    var availableTitleSpace = boxWidth - this.options.buttonXMargin - BUTTON_SIZE - 2 * TITLE_X_MARGIN;
+    var availableTitleSpace = boxWidth - this.options.buttonXMargin - options.buttonLength - ( 2 * TITLE_X_MARGIN );
     if ( options.titleNode.width > availableTitleSpace ) {
       options.titleNode.scale( availableTitleSpace / options.titleNode.width );
     }
