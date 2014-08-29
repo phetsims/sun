@@ -61,6 +61,11 @@ define( function( require ) {
 
     }, options );
 
+    // verify string options
+    assert && assert( options.buttonAlign === 'left' || options.buttonAlign === 'right' );
+    assert && assert( options.contentAlign === 'left' || options.contentAlign === 'right' || options.contentAlign === 'center' );
+    assert && assert( options.titleAlign === 'left' || options.titleAlign === 'right' || options.titleAlign === 'center' );
+
     Node.call( this );
 
     // Expand/collapse button
@@ -115,15 +120,15 @@ define( function( require ) {
     expandCollapseBar.addInputListener( {down: function() { options.expandedProperty.set( !options.expandedProperty.get() ); }} );
     this.addChild( expandCollapseBar );
 
-    // Layout
+    // content layout
     contentNode.bottom = expandedBoxHeight - options.contentYMargin;
     var contentXSpanMin = options.contentXMargin;
     var contentXSpanMax = boxWidth - options.contentXMargin;
-    if ( !options.showTitleWhenExpanded && options.buttonAlign === 'left' ) {
+    if ( !options.showTitleWhenExpanded ) {
       if ( options.buttonAlign === 'left' ) {
         contentXSpanMin += options.buttonXMargin * 2 + options.buttonLength;
       }
-      else if ( options.buttonAlign === 'left' ) {
+      else { // right
         contentXSpanMax -= options.buttonXMargin * 2 + options.buttonLength;
       }
     }
@@ -133,11 +138,11 @@ define( function( require ) {
     else if ( options.contentAlign === 'right' ) {
       contentNode.right = contentXSpanMax;
     }
-    else {
+    else { // center
       contentNode.centerX = ( contentXSpanMin + contentXSpanMax ) / 2;
     }
 
-    // title location
+    // button & title layout
     expandCollapseButton.centerY = options.titleNode.centerY = collapsedBoxHeight / 2;
     var titleLeftBound = options.titleXMargin;
     var titleRightBound = boxWidth - options.titleXMargin;
@@ -155,7 +160,7 @@ define( function( require ) {
     else if ( options.titleAlign === 'right' ) {
       options.titleNode.right = titleRightBound;
     }
-    else {
+    else { // center
       options.titleNode.centerX = ( titleLeftBound + titleRightBound ) / 2;
     }
 
