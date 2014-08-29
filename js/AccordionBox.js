@@ -143,7 +143,7 @@ define( function( require ) {
     }
 
     // button & title layout
-    expandCollapseButton.centerY = options.titleNode.centerY = collapsedBoxHeight / 2;
+    expandCollapseButton.centerY = options.titleNode.centerY = collapsedBox.centerY;
     var titleLeftSpan = expandedBox.left + options.titleXMargin;
     var titleRightSpan = expandedBox.right - options.titleXMargin;
     if ( options.buttonAlign === 'left' ) {
