@@ -18,9 +18,6 @@ define( function( require ) {
   var Property = require( 'AXON/Property' );
   var Shape = require( 'KITE/Shape' );
 
-  // Constants
-  var TITLE_X_MARGIN = 10;
-
   /**
    * @param {Node} contentNode that will be shown or hidden as the accordion box is expanded/collapsed.
    * @param {*} options Various key-value pairs that control the appearance and behavior.  Some options are
@@ -42,6 +39,8 @@ define( function( require ) {
       // title
       titleNode: new Text( '' ), // a {Node} with well-defined bounds
       titleAlign: 'center', // horizontal alignment of the title, 'left'|'center'|'right'
+      titleXMargin: 10,
+      titleYMargin: 10,
       showTitleWhenExpanded: true,
 
       // expand/collapse button
@@ -75,7 +74,7 @@ define( function( require ) {
     );
 
     // Expanded box
-    var boxWidth = Math.max( options.minWidth, options.buttonXMargin * 2 + options.buttonLength + TITLE_X_MARGIN * 2 + options.titleNode.width );
+    var boxWidth = Math.max( options.minWidth, options.buttonXMargin * 2 + options.buttonLength + options.titleXMargin * 2 + options.titleNode.width );
     if ( options.showTitleWhenExpanded ) {
       boxWidth = Math.max( boxWidth, contentNode.width + 2 * options.contentXMargin );
     }
@@ -147,21 +146,21 @@ define( function( require ) {
     //TODO this is currently ignoring scale issues in the y dimension
     // title scale
     options.titleNode.resetTransform();
-    var availableTitleSpace = boxWidth - this.options.buttonXMargin - options.buttonLength - ( 2 * TITLE_X_MARGIN );
+    var availableTitleSpace = boxWidth - this.options.buttonXMargin - options.buttonLength - ( 2 * options.titleXMargin );
     if ( options.titleNode.width > availableTitleSpace ) {
       options.titleNode.scale( availableTitleSpace / options.titleNode.width );
     }
 
     // title location
-    var titleLeftBound = TITLE_X_MARGIN;
-    var titleRightBound = boxWidth - TITLE_X_MARGIN;
+    var titleLeftBound = options.titleXMargin;
+    var titleRightBound = boxWidth - options.titleXMargin;
     if ( options.buttonAlign === 'left' ) {
       expandCollapseButton.left = options.buttonXMargin;
-      titleLeftBound = expandCollapseButton.right + TITLE_X_MARGIN;
+      titleLeftBound = expandCollapseButton.right + options.titleXMargin;
     }
     else {
       expandCollapseButton.right = boxWidth - options.buttonXMargin;
-      titleLeftBound = TITLE_X_MARGIN;
+      titleLeftBound = options.titleXMargin;
     }
     options.titleNode.centerY = expandCollapseButton.centerY;
     if ( this.options.titleAlign === 'left' ) {
