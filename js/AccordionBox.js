@@ -32,22 +32,30 @@ define( function( require ) {
   function AccordionBox( contentNode, options ) {
 
     options = _.extend( {
-      // defaults
-      stroke: 'black', // color used to stroke the outer edge of the container
+
+      // box
+      stroke: 'black',
       lineWidth: 1,
-      fill: 'rgb( 238, 238, 238 )', // background color
-      font: new PhetFont( 20 ),
-      contentAlign: 'center', // horizontal alignment of the content, 'left'|'center'|'right'
-      buttonAlign: 'left',  // expand/collapsed button alignment, 'left'|'right'
-      titleAlign: 'center', // horizontal alignment of the title, 'left'|'center'|'right'
+      fill: 'rgb( 238, 238, 238 )',
       cornerRadius: 3,
+
+      // title
+      title: undefined, // title {string}  //TODO support {Node}
+      font: new PhetFont( 20 ),
+      titleAlign: 'center', // horizontal alignment of the title, 'left'|'center'|'right'
+      titleFill: 'black',
+      showTitleWhenOpen: true,
+
+      // expand/collapse button
+      buttonAlign: 'left',  // button alignment, 'left'|'right'
       buttonXMargin: 4,
       buttonYMargin: 4,
+
+      // content
+      contentAlign: 'center', // horizontal alignment of the content, 'left'|'center'|'right'
       contentXMargin: 15,
-      contentYMargin: 8,
-      titleFill: 'black',
-      title: undefined,
-      showTitleWhenOpen: true
+      contentYMargin: 8
+
     }, options );
     this.options = options;
 
