@@ -164,7 +164,7 @@ define( function( require ) {
       options.titleNode.right = titleRightSpan;
     }
     else { // center
-      options.titleNode.centerX = ( titleLeftSpan + titleRightSpan ) / 2;
+      options.titleNode.centerX = boxWidth / 2;
     }
 
     // Update the visibility of the boxes based on the expanded/collapsed state.
