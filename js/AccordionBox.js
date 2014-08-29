@@ -196,7 +196,7 @@ define( function( require ) {
     },
 
     get title() {
-      return this.title;
+      return this.options.title;
     },
 
     updateTitleLocation: function() {
