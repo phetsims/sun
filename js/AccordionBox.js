@@ -1,9 +1,10 @@
 // Copyright 2002-2013, University of Colorado Boulder
 
 /**
- * Collapsible box that hides/shows contents when closed/open.
+ * Box that can be expanded/collapsed to show/hide contents.
  *
  * @author John Blanco
+ * @author Chris Malley (PixelZoom, Inc.)
  */
 define( function( require ) {
   'use strict';
@@ -15,15 +16,10 @@ define( function( require ) {
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var Text = require( 'SCENERY/nodes/Text' );
   var Property = require( 'AXON/Property' );
-  var Shape = require( 'KITE/Shape' );
-
-  // Constants
-  var TITLE_INSET = 10;
-  var CONTROL_BUTTON_DIMENSION = 16; // Can make this an option if desired.
 
   /**
-   * @param {Node} contentNode that will be shown or hidden as the accordion box is opened/closed.
-   * @param {Object} options Various key-value pairs that control the appearance and behavior.  Some options are
+   * @param {Node} contentNode that will be shown or hidden as the accordion box is expanded/collapsed.
+   * @param {*} options Various key-value pairs that control the appearance and behavior.  Some options are
    * specific to this class while some are passed to the superclass.  See the code where the options are set in the
    * early portion of the constructor for details.
    * @constructor
@@ -31,184 +27,161 @@ define( function( require ) {
   function AccordionBox( contentNode, options ) {
 
     options = _.extend( {
-      // defaults
-      stroke: 'black', // color used to stroke the outer edge of the container
+
+      // box
+      stroke: 'black',
       lineWidth: 1,
-      fill: 'rgb( 238, 238, 238 )', // background color
-      font: '20px Arial',
-      contentPosition: 'center',
-      buttonPosition: 'left',
-      titlePosition: 'center',
+      fill: 'rgb( 238, 238, 238 )',
       cornerRadius: 3,
-      controlButtonXMargin: 4,
-      controlButtonYMargin: 4,
-      contentXMargin: 15,
-      contentYMargin: 8,
-      titleFill: 'black',
-      title: undefined,
-      showTitleWhenOpen: true
+      minWidth: 0,
+
+      // title
+      titleNode: new Text( '' ), // a {Node} with well-defined bounds
+      titleAlign: 'center', // horizontal alignment of the title, 'left'|'center'|'right'
+      titleXMargin: 10, // horizontal space between title and left|right edge of box
+      titleYMargin: 2, // vertical space between title and top of box
+      titleXSpacing: 5, // horizontal space between title and expand/collapse button
+      showTitleWhenExpanded: true, // true = title is visible when expanded, false = title is hidden when expanded
+
+      // expand/collapse button
+      buttonLength: 16, // button is a square, this is the length of one side
+      buttonAlign: 'left',  // button alignment, 'left'|'right'
+      buttonXMargin: 4, // horizontal space between button and left|right edge of box
+      buttonYMargin: 2, // vertical space between button and top edge of box
+      expandedProperty: new Property( true ),
+      buttonTouchAreaDilatedX: 16,
+      buttonTouchAreaDilatedY: 16,
+      buttonMouseAreaDilatedX: 0,
+      buttonMouseAreaDilatedY: 0,
+
+      // content
+      contentAlign: 'center', // horizontal alignment of the content, 'left'|'center'|'right'
+      contentXMargin: 15, // horizontal space between content and left/right edges of box
+      contentYMargin: 8,  // horizontal space between content and bottom edge of box
+      contentXSpacing: 5, // horizontal space between content and button, ignored if showTitleWhenExpanded is true
+      contentYSpacing: 8 // vertical space between content and title+button, ignored if showTitleWhenExpanded is false
+
     }, options );
-    this.options = options;
 
-    var thisNode = this;
-    Node.call( this, options );
+    // verify string options
+    assert && assert( options.buttonAlign === 'left' || options.buttonAlign === 'right' );
+    assert && assert( options.contentAlign === 'left' || options.contentAlign === 'right' || options.contentAlign === 'center' );
+    assert && assert( options.titleAlign === 'left' || options.titleAlign === 'right' || options.titleAlign === 'center' );
 
-    // Create a property that tracks the open/closed state.
-    this.open = new Property( options.initiallyOpen !== undefined ? options.initiallyOpen : true );
+    Node.call( this );
 
-    // Create the expand/collapse button.
-    this.expandCollapseButton = new ExpandCollapseButton( this.open, { sideLength: CONTROL_BUTTON_DIMENSION } );
+    // Expand/collapse button
+    var expandCollapseButton = new ExpandCollapseButton( options.expandedProperty, { sideLength: options.buttonLength } );
+    expandCollapseButton.touchArea = expandCollapseButton.localBounds.dilatedXY( options.buttonTouchAreaDilatedX, options.buttonTouchAreaDilatedY );
+    expandCollapseButton.mouseArea = expandCollapseButton.localBounds.dilatedXY( options.buttonMouseAreaDilatedX, options.buttonMouseAreaDilatedY );
 
-    // Add an expanded touch area to the expand/collapse button so it works well on small screens.   Size could be
-    // moved into an option if necessary.
-    var expandedTouchAreaDimension = CONTROL_BUTTON_DIMENSION * 3;
-    this.expandCollapseButton.touchArea = Shape.rectangle(
-        -expandedTouchAreaDimension / 2 + CONTROL_BUTTON_DIMENSION / 2,
-        -expandedTouchAreaDimension / 2 + CONTROL_BUTTON_DIMENSION / 2,
-      expandedTouchAreaDimension,
-      expandedTouchAreaDimension
-    );
-
-    // Create the titleNode, if present.
-    var titleNode = new Node();
-    if ( options.title !== undefined ) {
-      titleNode = new Text( options.title, { font: options.font, fill: options.titleFill } );
-      this.titleNode = titleNode;
-    }
-
-    // Control title visibility, if applicable.
-    if ( !options.showTitleWhenOpen ) {
-      this.open.link( function( open ) {
-        titleNode.visible = !open;
-      } );
-    }
-
-    // Create the container that will hold the contents when open.
-    this.containerWidth = Math.max( options.minWidth || 0, options.controlButtonXMargin * 2 + CONTROL_BUTTON_DIMENSION + TITLE_INSET * 2 + titleNode.width );
-    if ( options.showTitleWhenOpen ) {
-      this.containerWidth = Math.max( this.containerWidth, contentNode.width + 2 * options.contentXMargin );
+    // Compute box dimensions
+    var collapsedBoxHeight = Math.max( expandCollapseButton.height + ( 2 * options.buttonYMargin ), options.titleNode.height + ( 2 * options.titleYMargin ) );
+    var boxWidth = Math.max( options.minWidth, expandCollapseButton.width + options.titleNode.width + options.buttonXMargin + options.titleXMargin + options.titleXSpacing );
+    var expandedBoxHeight;
+    if ( options.showTitleWhenExpanded ) {
+      // content is below button+title
+      boxWidth = Math.max( boxWidth, contentNode.width + ( 2 * options.contentXMargin ) );
+      expandedBoxHeight = collapsedBoxHeight + contentNode.height + options.contentYMargin + options.contentYSpacing;
     }
     else {
-      this.containerWidth = Math.max( this.containerWidth, options.controlButtonXMargin * 2 + CONTROL_BUTTON_DIMENSION + options.contentXMargin * 2 + contentNode.width );
+      // content is next to button
+      boxWidth = Math.max( boxWidth, expandCollapseButton.width + contentNode.width + options.buttonXMargin + options.contentXMargin + options.contentXSpacing );
+      expandedBoxHeight = Math.max( expandCollapseButton.height + ( 2 * options.buttonYMargin ), contentNode.height + ( 2 * options.contentYMargin ) );
     }
-    var closedContainerHeight = options.controlButtonYMargin * 2 + CONTROL_BUTTON_DIMENSION;
-    var openContainerHeight = 2 * options.contentYMargin + contentNode.height;
-    if ( options.showTitleWhenOpen ) {
-      openContainerHeight += options.controlButtonYMargin * 2 + CONTROL_BUTTON_DIMENSION;
-    }
-    this.openHeight = openContainerHeight; // This needs to be visible externally for layout purposes.
+    this.expandedHeight = expandedBoxHeight; // @public This needs to be visible externally for layout purposes.
 
-    var openContainer = new Rectangle( 0, 0, this.containerWidth, openContainerHeight, options.cornerRadius, options.cornerRadius,
-      {
-        stroke: options.stroke,
-        lineWidth: options.lineWidth,
-        fill: options.fill
-      } );
-    openContainer.addChild( contentNode );
-    openContainer.addChild( titleNode );
-    openContainer.addChild( this.expandCollapseButton );
-    this.addChild( openContainer );
+    // Options common to both boxes
+    var boxOptions = {
+      stroke: options.stroke,
+      lineWidth: options.lineWidth,
+      fill: options.fill
+    };
 
-    // Create the node that represents the closed container.
-    var closedContainer = new Rectangle( 0, 0, this.containerWidth, closedContainerHeight, options.cornerRadius, options.cornerRadius,
-      {
-        stroke: options.stroke,
-        lineWidth: options.lineWidth,
-        fill: options.fill
-      } );
-    closedContainer.addChild( titleNode );
-    closedContainer.addChild( this.expandCollapseButton );
-    this.addChild( closedContainer );
+    // Expanded box
+    var expandedBox = new Rectangle( 0, 0, boxWidth, expandedBoxHeight, options.cornerRadius, options.cornerRadius, boxOptions );
+    expandedBox.addChild( contentNode );
+    this.addChild( expandedBox );
 
-    // If necessary, scale titleNode to fit in available space.
-    this.adjustTitleNodeSize();
+    // Collapsed box
+    var collapsedBox = new Rectangle( 0, 0, boxWidth, collapsedBoxHeight, options.cornerRadius, options.cornerRadius, boxOptions );
+    this.addChild( collapsedBox );
 
-    // Create an invisible rectangle that allows the user to click on any part of the top of the container (closed or
-    // open) in order to toggle the state.
-    var openCloseNode = new Rectangle( 0, 0, this.containerWidth, closedContainerHeight, options.cornerRadius, options.cornerRadius,
-      {
-        fill: 'rgba( 0, 0, 0, 0)', // Invisible.
-        cursor: 'pointer'
-      } );
-    openCloseNode.addInputListener( {down: function() { thisNode.open.set( !thisNode.open.get() ); }} );
-    openContainer.addChild( openCloseNode );
-    closedContainer.addChild( openCloseNode );
-
-    // Lay out the contents of the containers.
-    this.expandCollapseButton.top = options.controlButtonYMargin;
-    this.titleLeftBound = TITLE_INSET;
-    this.titleRightBound = this.containerWidth - TITLE_INSET;
-    contentNode.bottom = openContainerHeight - options.contentYMargin;
-
-    if ( options.buttonPosition === 'left' ) {
-      this.expandCollapseButton.left = options.controlButtonXMargin;
-      this.titleLeftBound = this.expandCollapseButton.right + TITLE_INSET;
-    }
-    else {
-      this.expandCollapseButton.right = this.containerWidth - options.controlButtonXMargin;
-      this.titleLeftBound = TITLE_INSET;
-    }
-
-    var contentXSpanMin = options.contentXMargin;
-    var contentXSpanMax = this.containerWidth - options.contentXMargin;
-    if ( !options.showTitleWhenOpen && options.buttonPosition === 'left' ) {
-      if ( options.buttonPosition === 'left' ) {
-        contentXSpanMin += options.controlButtonXMargin * 2 + CONTROL_BUTTON_DIMENSION;
-      }
-      else if ( options.buttonPosition === 'left' ) {
-        contentXSpanMax -= options.controlButtonXMargin * 2 + CONTROL_BUTTON_DIMENSION;
-      }
-    }
-    if ( options.contentPosition === 'left' ) {
-      contentNode.left = contentXSpanMin;
-    }
-    else if ( options.contentPosition === 'right' ) {
-      contentNode.right = contentXSpanMax;
-    }
-    else {
-      contentNode.centerX = ( contentXSpanMin + contentXSpanMax ) / 2;
-    }
-
-    this.updateTitleLocation();
-
-    // Update the visibility of the containers based on the open/closed state.
-    this.open.link( function( isOpen ) {
-      openContainer.visible = isOpen;
-      closedContainer.visible = !isOpen;
+    // Invisible rectangle at top that operates like expand/collapse button
+    var expandCollapseBar = new Rectangle( 0, 0, boxWidth, collapsedBoxHeight, options.cornerRadius, options.cornerRadius, {
+      fill: 'rgba( 0, 0, 0, 0)', // Invisible.
+      cursor: 'pointer'
     } );
+    expandCollapseBar.addInputListener( {
+      down: function() {
+        options.expandedProperty.value = !options.expandedProperty.value;
+      }
+    } );
+    this.addChild( expandCollapseBar );
+
+    this.addChild( options.titleNode );
+    this.addChild( expandCollapseButton );
+
+    // content layout
+    contentNode.bottom = expandedBox.bottom - options.contentYMargin;
+    var contentSpanLeft = expandedBox.left + options.contentXMargin;
+    var contentSpanRight = expandedBox.right - options.contentXMargin;
+    if ( !options.showTitleWhenExpanded ) {
+      // content will be placed next to button
+      if ( options.buttonAlign === 'left' ) {
+        contentSpanLeft += expandCollapseButton.width + options.contentXSpacing;
+      }
+      else { // right on right
+        contentSpanRight -= expandCollapseButton.width + options.contentXSpacing;
+      }
+    }
+    if ( options.contentAlign === 'left' ) {
+      contentNode.left = contentSpanLeft;
+    }
+    else if ( options.contentAlign === 'right' ) {
+      contentNode.right = contentSpanRight;
+    }
+    else { // center
+      contentNode.centerX = ( contentSpanLeft + contentSpanRight ) / 2;
+    }
+
+    // button & title layout
+    expandCollapseButton.centerY = options.titleNode.centerY = collapsedBox.centerY;
+    var titleLeftSpan = expandedBox.left + options.titleXMargin;
+    var titleRightSpan = expandedBox.right - options.titleXMargin;
+    if ( options.buttonAlign === 'left' ) {
+      expandCollapseButton.left = expandedBox.left + options.buttonXMargin;
+      titleLeftSpan = expandCollapseButton.right + options.titleXSpacing;
+    }
+    else {
+      expandCollapseButton.right = expandedBox.right - options.buttonXMargin;
+      titleRightSpan = expandCollapseButton.left - options.titleXSpacing;
+    }
+    if ( options.titleAlign === 'left' ) {
+      options.titleNode.left = titleLeftSpan;
+    }
+    else if ( options.titleAlign === 'right' ) {
+      options.titleNode.right = titleRightSpan;
+    }
+    else { // center
+      options.titleNode.centerX = expandedBox.centerX;
+    }
+
+    // Update the visibility of the boxes based on the expanded/collapsed state.
+    var expandedPropertyObserver = function( expanded ) {
+      expandedBox.visible = expanded;
+      collapsedBox.visible = !expanded;
+      options.titleNode.visible = ( expanded && options.showTitleWhenExpanded ) || !expanded;
+    };
+    options.expandedProperty.link( expandedPropertyObserver );
+
+    // @public Unlinks from expandedProperty. The node is no longer functional after calling this function.
+    this.unlink = function() {
+      options.expandedProperty.unlink( expandedPropertyObserver );
+    };
+
+    this.mutate( options );
   }
 
-  return inherit( Node, AccordionBox, {
-    set title( t ) {
-      this.titleNode.text = t;
-      this.adjustTitleNodeSize();
-      this.updateTitleLocation();
-    },
-
-    //TODO: What to do if no titleNode?
-    get title() {
-      return this.titleNode.text;
-    },
-
-    updateTitleLocation: function() {
-      this.titleNode.centerY = this.expandCollapseButton.centerY;
-      if ( this.options.titlePosition === 'left' ) {
-        this.titleNode.left = this.titleLeftBound;
-      }
-      else if ( this.options.titlePosition === 'right' ) {
-        this.titleNode.right = this.titleRightBound;
-      }
-      else {
-        this.titleNode.centerX = ( this.titleLeftBound + this.titleRightBound ) / 2;
-      }
-    },
-
-    adjustTitleNodeSize: function() {
-      this.titleNode.resetTransform();
-      var availableTitleSpace = this.containerWidth - this.options.controlButtonXMargin - CONTROL_BUTTON_DIMENSION - 2 * TITLE_INSET;
-      if ( this.titleNode.width > availableTitleSpace ) {
-        this.titleNode.scale( availableTitleSpace / this.titleNode.width );
-      }
-    }
-  } );
+  return inherit( Node, AccordionBox );
 } );
