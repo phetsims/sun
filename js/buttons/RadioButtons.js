@@ -42,7 +42,8 @@ define( function( require ) {
       alignVertically: false,
       cornerRadius: 4,
       deselectedOpacity: 0.5,
-      buttonAppearanceStrategy: RectangularButtonView.threeDAppearanceStrategy,
+      selectedButtonAppearanceStrategy: RectangularButtonView.flatAppearanceStrategy,
+      deselectedButtonAppearanceStrategy: RectangularButtonView.threeDAppearanceStrategy,
       contentAppearanceStrategy: RectangularButtonView.fadeContentWhenDisabled
     }, options );
 
@@ -55,13 +56,12 @@ define( function( require ) {
       cornerRadius: options.cornerRadius,
       fill: options.contentFill,
       stroke: options.stroke,
-      buttonAppearanceStrategy: options.buttonAppearanceStrategy,
       contentAppearanceStrategy: options.contentAppearanceStrategy
     };
 
     // add extra for selected vs deselcted panels
-    var selectedOptions = _.extend( { lineWidth: options.selectedLineWidth }, panelOptions );
-    var deselectedOptions = _.extend( { lineWidth: options.deselectedLineWidth, opacity: options.deselectedOpacity }, panelOptions );
+    var selectedOptions = _.extend( { lineWidth: options.selectedLineWidth, buttonAppearanceStrategy: options.selectedButtonAppearanceStrategy }, panelOptions );
+    var deselectedOptions = _.extend( { lineWidth: options.deselectedLineWidth, opacity: options.deselectedOpacity, buttonAppearanceStrategy: options.deselectedButtonAppearanceStrategy }, panelOptions );
 
     // calculate the maximum width and height of the content so we can make all radio buttons the same size
     var maxWidth = 0, maxHeight = 0, i;
