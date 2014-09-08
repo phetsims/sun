@@ -15,6 +15,10 @@ define( function( require ) {
   var RectangularPushButton = require( 'SUN/buttons/RectangularPushButton' );
   var RectangularButtonView = require( 'SUN/buttons/RectangularButtonView' );
   var RadioButton = require( 'SUN/RadioButton' );
+  var Color = require( 'SCENERY/util/Color' );
+
+  // constants
+  var DEFAULT_COLOR = new Color( 153, 206, 255 );
 
   // this var is needed in this scope for the require return statement
   var alignVertically = false;
@@ -32,7 +36,7 @@ define( function( require ) {
     assert && assert( content.length === values.length );
 
     options = _.extend( {
-      contentFill: null,
+      baseColor: DEFAULT_COLOR,
       stroke: null,
       selectedLineWidth: 0,
       deselectedLineWidth: 0,
@@ -41,7 +45,7 @@ define( function( require ) {
       contentYMargin: 5,
       alignVertically: false,
       cornerRadius: 4,
-      deselectedOpacity: 0.5,
+      deselectedOpacity: 1,
       selectedButtonAppearanceStrategy: RectangularButtonView.flatAppearanceStrategy,
       deselectedButtonAppearanceStrategy: RectangularButtonView.threeDAppearanceStrategy,
       contentAppearanceStrategy: RectangularButtonView.fadeContentWhenDisabled
@@ -54,7 +58,7 @@ define( function( require ) {
       xMargin: options.contentXMargin,
       yMargin: options.contentYMargin,
       cornerRadius: options.cornerRadius,
-      fill: options.contentFill,
+      baseColor: options.baseColor,
       stroke: options.stroke,
       contentAppearanceStrategy: options.contentAppearanceStrategy
     };
