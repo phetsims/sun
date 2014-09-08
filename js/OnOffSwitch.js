@@ -29,7 +29,7 @@ define( function( require ) {
 
   /**
    * @param {Property<String>} onProperty
-   * @param {*} options
+   * @param {Object} options
    * @constructor
    */
   function OnOffSwitch( onProperty, options ) {
