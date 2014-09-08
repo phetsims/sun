@@ -32,6 +32,7 @@ define( function( require ) {
   var SoundToggleButton = require( 'SCENERY_PHET/SoundToggleButton' );
   var Text = require( 'SCENERY/nodes/Text' );
   var TimerToggleButton = require( 'SCENERY_PHET/TimerToggleButton' );
+  var RadioButtons = require( 'SUN/buttons/RadioButtons' );
 
   // Constants
   var BUTTON_FONT = new PhetFont( { size: 20 } );
@@ -74,6 +75,26 @@ define( function( require ) {
     this.addChild( returnToLevelSelectButton );
     var returnToLevelSelectButtonLabel = new Text( 'Return to Level Selection Button: ', { font: BUTTON_CAPTION_FONT, right: returnToLevelSelectButton.left - 5, centerY: returnToLevelSelectButton.centerY } );
     this.addChild( returnToLevelSelectButtonLabel );
+
+    // add radio buttons
+    var radioButtonNodes = [
+      new Text( 'ONE', { font: BUTTON_FONT } ),
+      new Text( 'TWO', { font: BUTTON_FONT } ),
+      new Text( 'THREE', { font: BUTTON_FONT } ),
+      new Text( 'FOUR', { font: BUTTON_FONT } )
+    ];
+    var radioButtonPropertyValues = [ 'one', 'two', 'three', 'four' ];
+    var radioButtonProperty = new Property( 'two' );
+    var radioButtons = new RadioButtons( radioButtonProperty, radioButtonNodes, radioButtonPropertyValues,
+      {
+        alignVertically: true,
+        y: 15
+      } );
+    this.addChild( radioButtons );
+
+    radioButtonProperty.link( function( value ) {
+      outputText.text = 'Radio button ' + value + ' pressed';
+    } );
 
     // add sound toggle button
     var soundEnabled = new Property( true );
