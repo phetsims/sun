@@ -13,6 +13,7 @@ define( function( require ) {
   var HBox = require( 'SCENERY/nodes/HBox' );
   var VBox = require( 'SCENERY/nodes/VBox' );
   var RectangularPushButton = require( 'SUN/buttons/RectangularPushButton' );
+  var RectangularButtonView = require( 'SUN/buttons/RectangularButtonView' );
   var RadioButton = require( 'SUN/RadioButton' );
 
   // this var is needed in this scope for the require return statement
@@ -40,7 +41,9 @@ define( function( require ) {
       contentYMargin: 5,
       alignVertically: false,
       cornerRadius: 4,
-      deselectedOpacity: 0.5
+      deselectedOpacity: 0.5,
+      buttonAppearanceStrategy: RectangularButtonView.threeDAppearanceStrategy,
+      contentAppearanceStrategy: RectangularButtonView.fadeContentWhenDisabled
     }, options );
 
     alignVertically = options.alignVertically;
@@ -51,7 +54,9 @@ define( function( require ) {
       yMargin: options.contentYMargin,
       cornerRadius: options.cornerRadius,
       fill: options.contentFill,
-      stroke: options.stroke
+      stroke: options.stroke,
+      buttonAppearanceStrategy: options.buttonAppearanceStrategy,
+      contentAppearanceStrategy: options.contentAppearanceStrategy
     };
 
     // add extra for selected vs deselcted panels
