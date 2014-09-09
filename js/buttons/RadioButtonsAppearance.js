@@ -92,9 +92,6 @@ define( function( require ) {
    */
   RadioButtonsAppearance.flatAppearanceStrategyWithBorder = function( button, interactionStateProperty, options ) {
 
-    var stroke = 'black';
-    options.stroke = stroke;
-
     // Set up variables needed to create the various gradient fills
     var baseColor = Color.toColor( options.baseColor );
     var disabledBaseColor = Color.toColor( options.disabledBaseColor );
@@ -109,9 +106,6 @@ define( function( require ) {
     var downFill = baseColor.colorUtilsDarker( 0.4 );
     var disabledFill = disabledBaseColor;
     var disabledPressedFillVertical = disabledFill;
-
-    button.stroke = 'black';
-    button.lineWidth = 1.5;
 
     interactionStateProperty.link( function( state ) {
       switch( state ) {
