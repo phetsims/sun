@@ -38,8 +38,10 @@ define( function( require ) {
 
     options = _.extend( {
       baseColor: DEFAULT_COLOR,
-      stroke: null,
-      selectedLineWidth: 0,
+      disabledBaseColor: DEFAULT_COLOR,
+      selectedStroke: 'black',
+      deselectedStroke: null,
+      selectedLineWidth: 1.5,
       deselectedLineWidth: 0,
       spacing: 10,
       contentXMargin: 5,
@@ -60,13 +62,25 @@ define( function( require ) {
       yMargin: options.contentYMargin,
       cornerRadius: options.cornerRadius,
       baseColor: options.baseColor,
-      stroke: options.stroke,
+      disabledBaseColor: options.disabledBaseColor,
       contentAppearanceStrategy: options.contentAppearanceStrategy
     };
 
     // add extra for selected vs deselcted panels
-    var selectedOptions = _.extend( { lineWidth: options.selectedLineWidth, buttonAppearanceStrategy: options.selectedButtonAppearanceStrategy }, panelOptions );
-    var deselectedOptions = _.extend( { lineWidth: options.deselectedLineWidth, opacity: options.deselectedOpacity, buttonAppearanceStrategy: options.deselectedButtonAppearanceStrategy }, panelOptions );
+    var selectedOptions = _.extend(
+      {
+        stroke: options.selectedStroke,
+        lineWidth: options.selectedLineWidth,
+        buttonAppearanceStrategy: options.selectedButtonAppearanceStrategy
+      }, panelOptions );
+
+    var deselectedOptions = _.extend(
+      {
+        stroke: options.deselectedStroke,
+        lineWidth: options.deselectedLineWidth,
+        opacity: options.deselectedOpacity,
+        buttonAppearanceStrategy: options.deselectedButtonAppearanceStrategy
+      }, panelOptions );
 
     // calculate the maximum width and height of the content so we can make all radio buttons the same size
     var maxWidth = 0, maxHeight = 0, i;
@@ -102,6 +116,7 @@ define( function( require ) {
       // selectedNodes[index].enabled = false;
       for ( var j = 0; j < values.length; j++ ) {
         if ( j !== index ) {
+          console.log(deselectedNodes[j]);
           deselectedNodes[j].pickable = true;
           deselectedNodes[j].cursor = 'pointer';
           // deselectedNodes[j].enabled = true;
