@@ -1,7 +1,9 @@
 // Copyright 2002-2014, University of Colorado Boulder
 
 /**
- * Radio buttons.
+ * Radio buttons. When calling the constructor, the array of Nodes that make up the content of the buttons
+ * must be in the same order as the array of values that the property can take on. See ButtonsDemoView for
+ * an example.
  *
  * @author Aaron Davis
  */
