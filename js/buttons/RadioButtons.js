@@ -116,7 +116,6 @@ define( function( require ) {
       // selectedNodes[index].enabled = false;
       for ( var j = 0; j < values.length; j++ ) {
         if ( j !== index ) {
-          console.log(deselectedNodes[j]);
           deselectedNodes[j].pickable = true;
           deselectedNodes[j].cursor = 'pointer';
           // deselectedNodes[j].enabled = true;
