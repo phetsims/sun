@@ -16,6 +16,7 @@ define( function( require ) {
   var RectangularButtonView = require( 'SUN/buttons/RectangularButtonView' );
   var RadioButton = require( 'SUN/RadioButton' );
   var Color = require( 'SCENERY/util/Color' );
+  var RadioButtonsAppearance = require( 'SUN/buttons/RadioButtonsAppearance' );
 
   // constants
   var DEFAULT_COLOR = new Color( 153, 206, 255 );
@@ -46,8 +47,8 @@ define( function( require ) {
       alignVertically: false,
       cornerRadius: 4,
       deselectedOpacity: 1,
-      selectedButtonAppearanceStrategy: RectangularButtonView.flatAppearanceStrategy,
-      deselectedButtonAppearanceStrategy: RectangularButtonView.threeDAppearanceStrategy,
+      selectedButtonAppearanceStrategy: RadioButtonsAppearance.flatAppearanceStrategyWithBorder,
+      deselectedButtonAppearanceStrategy: RadioButtonsAppearance.flatAppearanceStrategyDeselected,
       contentAppearanceStrategy: RectangularButtonView.fadeContentWhenDisabled
     }, options );
 

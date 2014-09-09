@@ -33,6 +33,7 @@ define( function( require ) {
   var Text = require( 'SCENERY/nodes/Text' );
   var TimerToggleButton = require( 'SCENERY_PHET/TimerToggleButton' );
   var RadioButtons = require( 'SUN/buttons/RadioButtons' );
+  var Panel = require( 'SUN/Panel' );
 
   // Constants
   var BUTTON_FONT = new PhetFont( { size: 20 } );
@@ -90,7 +91,7 @@ define( function( require ) {
         alignVertically: true,
         y: 15
       } );
-    this.addChild( radioButtons );
+    this.addChild( new Panel( radioButtons, {stroke: null, x: 5, y: 5} ) );
 
     radioButtonProperty.link( function( value ) {
       outputText.text = 'Radio button ' + value + ' pressed';
