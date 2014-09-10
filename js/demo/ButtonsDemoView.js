@@ -78,15 +78,14 @@ define( function( require ) {
     this.addChild( returnToLevelSelectButtonLabel );
 
     // add radio buttons
-    var radioButtonNodes = [
-      new Text( 'ONE', { font: BUTTON_FONT } ),
-      new Text( 'TWO', { font: BUTTON_FONT } ),
-      new Text( 'THREE', { font: BUTTON_FONT } ),
-      new Text( 'FOUR', { font: BUTTON_FONT } )
+    var radioButtonContent = [
+      { value: 'one', node: new Text( 'ONE', { font: BUTTON_FONT } ) },
+      { value: 'two', node: new Text( 'TWO', { font: BUTTON_FONT } ) },
+      { value: 'three', node: new Text( 'THREE', { font: BUTTON_FONT } ) },
+      { value: 'four', node: new Text( 'FOUR', { font: BUTTON_FONT } ) }
     ];
-    var radioButtonPropertyValues = [ 'one', 'two', 'three', 'four' ];
     var radioButtonProperty = new Property( 'two' );
-    var radioButtons = new RadioButtons( radioButtonProperty, radioButtonNodes, radioButtonPropertyValues,
+    var radioButtons = new RadioButtons( radioButtonProperty, radioButtonContent,
       {
         alignVertically: true,
         y: 15
