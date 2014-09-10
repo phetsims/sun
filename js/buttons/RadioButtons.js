@@ -33,6 +33,11 @@ define( function( require ) {
    */
   function RadioButtons( property, content, options ) {
 
+    // make sure every object in the content array has properties 'node' and 'value'
+    assert && assert( _.every( content, function( obj ) {
+      return obj.hasOwnProperty( 'node' ) && obj.hasOwnProperty( 'value' );
+    } ) );
+
     options = _.extend( {
       baseColor: new Color( 153, 206, 255 ),
       disabledBaseColor: new Color( 220, 220, 220 ),
@@ -80,20 +85,13 @@ define( function( require ) {
       }, panelOptions );
 
     // calculate the maximum width and height of the content so we can make all radio buttons the same size
-    var maxWidth = 0, maxHeight = 0, i;
-    for ( i = 0; i < content.length; i++ ) {
-      if ( content[i].node.width > maxWidth ) {
-        maxWidth = content[i].node.width;
-      }
-      if ( content[i].node.height > maxHeight ) {
-        maxHeight = content[i].node.height;
-      }
-    }
+    var maxWidth = _.max( content, function( obj ) { return obj.node.width } ).node.width;
+    var maxHeight = _.max( content, function( obj ) { return obj.node.height } ).node.height;
 
     var buttons = [];
     var selectedNodes = [];
     var deselectedNodes = [];
-    for ( i = 0; i < content.length; i++ ) {
+    for ( var i = 0; i < content.length; i++ ) {
       // make sure all radio buttons are the same size
       selectedOptions.xMargin = ( ( maxWidth - content[i].node.width ) / 2 ) + options.contentXMargin;
       selectedOptions.yMargin = ( ( maxHeight - content[i].node.height ) / 2 ) + options.contentYMargin;
@@ -138,7 +136,6 @@ define( function( require ) {
     };
 
     var boxOptions = { children: buttons, spacing: options.spacing };
-
     ( options.alignVertically ) ? VBox.call( this, boxOptions ) : HBox.call( this, boxOptions );
 
     this.mutate( options );
