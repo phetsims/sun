@@ -19,9 +19,6 @@ define( function( require ) {
   var RadioButtonsAppearance = require( 'SUN/buttons/RadioButtonsAppearance' );
   var Property = require( 'AXON/Property' );
 
-  // constants
-  var DEFAULT_COLOR = new Color( 153, 206, 255 );
-
   // this var is needed in this scope for the require return statement
   var alignVertically = false;
 
@@ -37,8 +34,8 @@ define( function( require ) {
   function RadioButtons( property, content, options ) {
 
     options = _.extend( {
-      baseColor: DEFAULT_COLOR,
-      disabledBaseColor: DEFAULT_COLOR,
+      baseColor: new Color( 153, 206, 255 ),
+      disabledBaseColor: new Color( 220, 220, 220 ),
       selectedStroke: 'black',
       deselectedStroke: 'rgb(50,50,50)',
       selectedLineWidth: 1.5,
