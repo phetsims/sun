@@ -1,9 +1,7 @@
 // Copyright 2002-2014, University of Colorado Boulder
 
 /**
- * Radio buttons. When calling the constructor, the array of Nodes that make up the content of the buttons
- * must be in the same order as the array of values that the property can take on. See ButtonsDemoView for
- * an example.
+ * Radio buttons. See ButtonsDemoView for example usage.
  *
  * @author Aaron Davis
  */
@@ -19,38 +17,35 @@ define( function( require ) {
   var RadioButton = require( 'SUN/RadioButton' );
   var Color = require( 'SCENERY/util/Color' );
   var RadioButtonsAppearance = require( 'SUN/buttons/RadioButtonsAppearance' );
-
-  // constants
-  var DEFAULT_COLOR = new Color( 153, 206, 255 );
+  var Property = require( 'AXON/Property' );
 
   // this var is needed in this scope for the require return statement
   var alignVertically = false;
 
   /**
    * @param {Property} property
-   * @param {Array<Node>} content an array of nodes that will be the content for each radio button
-   * @param {Array<*>} values an array of values that enumerates all possible values for the property
+   * @param {Array<Object>} content an array of objects that have two keys each: value and node
+                                    the node key holds a scenery Node that is the content for a given radio button.
+                                    the value key should hold the value that the property takes on for the corrosponding
+                                    node to be selected.
    * @param {Object} options
    * @constructor
    */
-  function RadioButtons( property, content, values, options ) {
-
-    // the number of buttons must match the number of property values
-    assert && assert( content.length === values.length );
+  function RadioButtons( property, content, options ) {
 
     options = _.extend( {
-      baseColor: DEFAULT_COLOR,
-      disabledBaseColor: DEFAULT_COLOR,
+      baseColor: new Color( 153, 206, 255 ),
+      disabledBaseColor: new Color( 220, 220, 220 ),
       selectedStroke: 'black',
-      deselectedStroke: null,
+      deselectedStroke: 'rgb(50,50,50)',
       selectedLineWidth: 1.5,
-      deselectedLineWidth: 0,
+      deselectedLineWidth: 1,
       spacing: 10,
       contentXMargin: 5,
       contentYMargin: 5,
       alignVertically: false,
       cornerRadius: 4,
-      deselectedOpacity: 1,
+      deselectedOpacity: 0.6,
       selectedButtonAppearanceStrategy: RadioButtonsAppearance.flatAppearanceStrategyWithBorder,
       deselectedButtonAppearanceStrategy: RadioButtonsAppearance.flatAppearanceStrategyDeselected,
       contentAppearanceStrategy: RectangularButtonView.fadeContentWhenDisabled
@@ -87,11 +82,11 @@ define( function( require ) {
     // calculate the maximum width and height of the content so we can make all radio buttons the same size
     var maxWidth = 0, maxHeight = 0, i;
     for ( i = 0; i < content.length; i++ ) {
-      if ( content[i].width > maxWidth ) {
-        maxWidth = content[i].width;
+      if ( content[i].node.width > maxWidth ) {
+        maxWidth = content[i].node.width;
       }
-      if ( content[i].height > maxHeight ) {
-        maxHeight = content[i].height;
+      if ( content[i].node.height > maxHeight ) {
+        maxHeight = content[i].node.height;
       }
     }
 
@@ -100,30 +95,47 @@ define( function( require ) {
     var deselectedNodes = [];
     for ( i = 0; i < content.length; i++ ) {
       // make sure all radio buttons are the same size
-      selectedOptions.xMargin = ( ( maxWidth - content[i].width ) / 2 ) + options.contentXMargin;
-      selectedOptions.yMargin = ( ( maxHeight - content[i].height ) / 2 ) + options.contentYMargin;
-      deselectedOptions.xMargin = ( ( maxWidth - content[i].width ) / 2 ) + options.contentXMargin;
-      deselectedOptions.yMargin = ( ( maxHeight - content[i].height ) / 2 ) + options.contentYMargin;
+      selectedOptions.xMargin = ( ( maxWidth - content[i].node.width ) / 2 ) + options.contentXMargin;
+      selectedOptions.yMargin = ( ( maxHeight - content[i].node.height ) / 2 ) + options.contentYMargin;
+      deselectedOptions.xMargin = ( ( maxWidth - content[i].node.width ) / 2 ) + options.contentXMargin;
+      deselectedOptions.yMargin = ( ( maxHeight - content[i].node.height ) / 2 ) + options.contentYMargin;
 
-      selectedNodes.push( new RectangularPushButton( _.extend( { content: content[i] }, selectedOptions ) ) );
-      deselectedNodes.push( new RectangularPushButton( _.extend( { content: content[i] }, deselectedOptions ) ) );
-      buttons.push( new RadioButton( property, values[i], selectedNodes[i], deselectedNodes[i], { cursor: null } ) );
+      selectedNodes.push( new RectangularPushButton( _.extend( { content: content[i].node }, selectedOptions ) ) );
+      deselectedNodes.push( new RectangularPushButton( _.extend( { content: content[i].node }, deselectedOptions ) ) );
+      buttons.push( new RadioButton( property, content[i].value, selectedNodes[i], deselectedNodes[i], { cursor: null } ) );
     }
+
+    // this property determines whether the set of radio buttons as a whole is enabled or disabled
+    var enabledProperty = new Property( true );
+    enabledProperty.link( function( isEnabled ) {
+      for ( i = 0; i < content.length; i++ ) {
+        selectedNodes[i].enabled = isEnabled;
+        deselectedNodes[i].enabled = isEnabled;
+        buttons[i].pickable = isEnabled;
+      }
+    } );
 
     // make the unselected buttons pickable and have a pointer cursor
     property.link( function( value ) {
-      var index = values.indexOf( value );
-      selectedNodes[index].pickable = false;
-      selectedNodes[index].cursor = null;
-      // selectedNodes[index].enabled = false;
-      for ( var j = 0; j < values.length; j++ ) {
-        if ( j !== index ) {
-          deselectedNodes[j].pickable = true;
-          deselectedNodes[j].cursor = 'pointer';
-          // deselectedNodes[j].enabled = true;
+      if ( enabledProperty.get() ) {
+        for ( i = 0; i < content.length; i++ ) {
+          if ( content[i].value === value ) {
+            selectedNodes[i].pickable = false;
+            selectedNodes[i].cursor = null;
+          }
+          else {
+            deselectedNodes[i].pickable = true;
+            deselectedNodes[i].cursor = 'pointer';
+          }
         }
       }
     } );
+
+    // public method of RadioButtons, used to set the entire set of buttons to be enabled or not
+    this.setEnabled = function( isEnabled ) {
+      assert && assert( typeof value === 'boolean', 'RadioButtons.setEnabled must take a boolean value' );
+      enabledProperty.set( isEnabled );
+    };
 
     var boxOptions = { children: buttons, spacing: options.spacing };
 
