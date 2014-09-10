@@ -17,6 +17,7 @@ define( function( require ) {
   var RadioButton = require( 'SUN/RadioButton' );
   var Color = require( 'SCENERY/util/Color' );
   var RadioButtonsAppearance = require( 'SUN/buttons/RadioButtonsAppearance' );
+  var Property = require( 'AXON/Property' );
 
   // constants
   var DEFAULT_COLOR = new Color( 153, 206, 255 );
@@ -107,19 +108,37 @@ define( function( require ) {
       buttons.push( new RadioButton( property, content[i].value, selectedNodes[i], deselectedNodes[i], { cursor: null } ) );
     }
 
+    // this property determines whether the set of radio buttons as a whole is enabled or disabled
+    var enabledProperty = new Property( true );
+    enabledProperty.link( function( isEnabled ) {
+      for ( i = 0; i < content.length; i++ ) {
+        selectedNodes[i].enabled = isEnabled;
+        deselectedNodes[i].enabled = isEnabled;
+        buttons[i].pickable = isEnabled;
+      }
+    } );
+
     // make the unselected buttons pickable and have a pointer cursor
     property.link( function( value ) {
-      for ( i = 0; i < content.length; i++ ) {
-        if ( content[i].value === value ) {
-          selectedNodes[i].pickable = false;
-          selectedNodes[i].cursor = null;
-        }
-        else {
-          deselectedNodes[i].pickable = true;
-          deselectedNodes[i].cursor = 'pointer';
+      if ( enabledProperty.get() ) {
+        for ( i = 0; i < content.length; i++ ) {
+          if ( content[i].value === value ) {
+            selectedNodes[i].pickable = false;
+            selectedNodes[i].cursor = null;
+          }
+          else {
+            deselectedNodes[i].pickable = true;
+            deselectedNodes[i].cursor = 'pointer';
+          }
         }
       }
     } );
+
+    // public method of RadioButtons, used to set the entire set of buttons to be enabled or not
+    this.setEnabled = function( isEnabled ) {
+      assert && assert( typeof value === 'boolean', 'RadioButtons.setEnabled must take a boolean value' );
+      enabledProperty.set( isEnabled );
+    };
 
     var boxOptions = { children: buttons, spacing: options.spacing };
 
