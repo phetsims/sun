@@ -10,6 +10,7 @@ define( function( require ) {
 
   // modules
   var inherit = require( 'PHET_CORE/inherit' );
+  var Node = require( 'SCENERY/nodes/Node' );
   var HBox = require( 'SCENERY/nodes/HBox' );
   var VBox = require( 'SCENERY/nodes/VBox' );
   var RectangularPushButton = require( 'SUN/buttons/RectangularPushButton' );
@@ -18,9 +19,6 @@ define( function( require ) {
   var Color = require( 'SCENERY/util/Color' );
   var RadioButtonsAppearance = require( 'SUN/buttons/RadioButtonsAppearance' );
   var Property = require( 'AXON/Property' );
-
-  // this var is needed in this scope for the require return statement
-  var alignVertically = false;
 
   /**
    * @param {Property} property
@@ -51,12 +49,11 @@ define( function( require ) {
       alignVertically: false,
       cornerRadius: 4,
       deselectedOpacity: 0.6,
+      enabledProperty: new Property( true ), // whether or not the set of radio buttons as a whole is enabled
       selectedButtonAppearanceStrategy: RadioButtonsAppearance.flatAppearanceStrategyWithBorder,
       deselectedButtonAppearanceStrategy: RadioButtonsAppearance.flatAppearanceStrategyDeselected,
       contentAppearanceStrategy: RectangularButtonView.fadeContentWhenDisabled
     }, options );
-
-    alignVertically = options.alignVertically;
 
     // options for the panels that house each radio button
     var panelOptions = {
@@ -103,9 +100,8 @@ define( function( require ) {
       buttons.push( new RadioButton( property, content[i].value, selectedNodes[i], deselectedNodes[i], { cursor: null } ) );
     }
 
-    // this property determines whether the set of radio buttons as a whole is enabled or disabled
-    var enabledProperty = new Property( true );
-    enabledProperty.link( function( isEnabled ) {
+    this.enabledProperty = options.enabledProperty;
+    this.enabledProperty.link( function( isEnabled ) {
       for ( i = 0; i < content.length; i++ ) {
         selectedNodes[i].enabled = isEnabled;
         deselectedNodes[i].enabled = isEnabled;
@@ -114,8 +110,9 @@ define( function( require ) {
     } );
 
     // make the unselected buttons pickable and have a pointer cursor
+    var thisNode = this;
     property.link( function( value ) {
-      if ( enabledProperty.get() ) {
+      if ( thisNode.enabledProperty.get() ) {
         for ( i = 0; i < content.length; i++ ) {
           if ( content[i].value === value ) {
             selectedNodes[i].pickable = false;
@@ -129,17 +126,23 @@ define( function( require ) {
       }
     } );
 
-    // public method of RadioButtons, used to set the entire set of buttons to be enabled or not
-    this.setEnabled = function( isEnabled ) {
-      assert && assert( typeof value === 'boolean', 'RadioButtons.setEnabled must take a boolean value' );
-      enabledProperty.set( isEnabled );
-    };
-
     var boxOptions = { children: buttons, spacing: options.spacing };
-    ( options.alignVertically ) ? VBox.call( this, boxOptions ) : HBox.call( this, boxOptions );
+    var box = ( options.alignVertically ) ? new VBox( boxOptions ) : new HBox( boxOptions );
+
+    Node.call( this, { children: [box] } );
 
     this.mutate( options );
   }
 
-  return ( alignVertically ) ? inherit( VBox, RadioButtons ) : inherit( HBox, RadioButtons );
+  return inherit( Node, RadioButtons,
+    {
+
+      set enabled( value ) {
+        assert && assert( typeof value === 'boolean', 'RadioButtons.enabled must be a boolean value' );
+        this.enabledProperty.set( value );
+      },
+
+      get enabled() { return this.enabledProperty.get(); }
+
+    } );
 } );
