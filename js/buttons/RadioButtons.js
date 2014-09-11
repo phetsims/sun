@@ -85,8 +85,8 @@ define( function( require ) {
       }, panelOptions );
 
     // calculate the maximum width and height of the content so we can make all radio buttons the same size
-    var maxWidth = _.max( content, function( obj ) { return obj.node.width } ).node.width;
-    var maxHeight = _.max( content, function( obj ) { return obj.node.height } ).node.height;
+    var maxWidth = _.max( content, function( obj ) { return obj.node.width; } ).node.width;
+    var maxHeight = _.max( content, function( obj ) { return obj.node.height; } ).node.height;
 
     var buttons = [];
     var selectedNodes = [];
