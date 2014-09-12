@@ -53,8 +53,8 @@ define( function( require ) {
       spacing: 10,
 
       //These margins are *within* each button
-      contentXMargin: 5,
-      contentYMargin: 5,
+      buttonContentXMargin: 5,
+      buttonContentYMargin: 5,
 
       alignVertically: false,
       cornerRadius: 4,
@@ -67,8 +67,8 @@ define( function( require ) {
 
     // options for the panels that house each radio button
     var panelOptions = {
-      xMargin: options.contentXMargin,
-      yMargin: options.contentYMargin,
+      xMargin: options.buttonContentXMargin,
+      yMargin: options.buttonContentYMargin,
       cornerRadius: options.cornerRadius,
       baseColor: options.baseColor,
       disabledBaseColor: options.disabledBaseColor,
@@ -100,10 +100,10 @@ define( function( require ) {
     var deselectedNodes = [];
     for ( var i = 0; i < content.length; i++ ) {
       // make sure all radio buttons are the same size
-      selectedOptions.xMargin = ( ( maxWidth - content[i].node.width ) / 2 ) + options.contentXMargin;
-      selectedOptions.yMargin = ( ( maxHeight - content[i].node.height ) / 2 ) + options.contentYMargin;
-      deselectedOptions.xMargin = ( ( maxWidth - content[i].node.width ) / 2 ) + options.contentXMargin;
-      deselectedOptions.yMargin = ( ( maxHeight - content[i].node.height ) / 2 ) + options.contentYMargin;
+      selectedOptions.xMargin = ( ( maxWidth - content[i].node.width ) / 2 ) + options.buttonContentXMargin;
+      selectedOptions.yMargin = ( ( maxHeight - content[i].node.height ) / 2 ) + options.buttonContentYMargin;
+      deselectedOptions.xMargin = ( ( maxWidth - content[i].node.width ) / 2 ) + options.buttonContentXMargin;
+      deselectedOptions.yMargin = ( ( maxHeight - content[i].node.height ) / 2 ) + options.buttonContentYMargin;
 
       selectedNodes.push( new RectangularPushButton( _.extend( { content: content[i].node }, selectedOptions ) ) );
       deselectedNodes.push( new RectangularPushButton( _.extend( { content: content[i].node }, deselectedOptions ) ) );
