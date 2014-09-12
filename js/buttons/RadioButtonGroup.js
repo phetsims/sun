@@ -21,7 +21,7 @@ define( function( require ) {
   var Property = require( 'AXON/Property' );
 
   /**
-   * RadioButtons constructor.
+   * RadioButtonGroup constructor.
    *
    * @param {Property} property
    * @param {Array<Object>} content an array of objects that have two keys each: value and node
@@ -31,7 +31,7 @@ define( function( require ) {
    * @param {Object} options
    * @constructor
    */
-  function RadioButtons( property, content, options ) {
+  function RadioButtonGroup( property, content, options ) {
 
     // make sure every object in the content array has properties 'node' and 'value'
     assert && assert( _.every( content, function( obj ) {
@@ -136,11 +136,11 @@ define( function( require ) {
     this.mutate( options );
   }
 
-  return inherit( Node, RadioButtons,
+  return inherit( Node, RadioButtonGroup,
     {
 
       set enabled( value ) {
-        assert && assert( typeof value === 'boolean', 'RadioButtons.enabled must be a boolean value' );
+        assert && assert( typeof value === 'boolean', 'RadioButtonGroup.enabled must be a boolean value' );
         this.enabledProperty.set( value );
       },
 

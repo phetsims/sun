@@ -1,7 +1,7 @@
 //  Copyright 2002-2014, University of Colorado Boulder
 
 /**
- * Defines the appearance of the radio buttons, see RadioButtons.js
+ * Defines the appearance of the radio buttons, see RadioButtonGroup.js
  * TODO: The appearance should be customizable
  * TODO: There is much duplicated here, and copied from RectangularButtonView.  We should find a way to consolidate.
  *

@@ -32,7 +32,7 @@ define( function( require ) {
   var SoundToggleButton = require( 'SCENERY_PHET/SoundToggleButton' );
   var Text = require( 'SCENERY/nodes/Text' );
   var TimerToggleButton = require( 'SCENERY_PHET/TimerToggleButton' );
-  var RadioButtons = require( 'SUN/buttons/RadioButtons' );
+  var RadioButtonGroup = require( 'SUN/buttons/RadioButtonGroup' );
   var Panel = require( 'SUN/Panel' );
 
   // Constants
@@ -85,7 +85,7 @@ define( function( require ) {
       { value: 'four', node: new Text( 'FOUR', { font: BUTTON_FONT } ) }
     ];
     var radioButtonProperty = new Property( 'two' );
-    var radioButtons = new RadioButtons( radioButtonProperty, radioButtonContent,
+    var radioButtons = new RadioButtonGroup( radioButtonProperty, radioButtonContent,
       {
         alignVertically: true,
         y: 15
