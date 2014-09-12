@@ -17,12 +17,13 @@ define( function( require ) {
   var Node = require( 'SCENERY/nodes/Node' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var Shape = require( 'KITE/Shape' );
+  var ColorConstants = require( 'SUN/ColorConstants' );
 
   // constants
   var VERTICAL_HIGHLIGHT_GRADIENT_LENGTH = 7; // In screen coords, which are roughly pixels.
   var HORIZONTAL_HIGHLIGHT_GRADIENT_LENGTH = 7; // In screen coords, which are roughly pixels.
   var SHADE_GRADIENT_LENGTH = 3; // In screen coords, which are roughly pixels.
-  var DEFAULT_COLOR = new Color( 153, 206, 255 );
+  var DEFAULT_COLOR = ColorConstants.LIGHT_BLUE;
 
   /**
    * @param {ButtonModel} buttonModel - Model that defines the button's behavior.

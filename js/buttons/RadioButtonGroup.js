@@ -19,6 +19,7 @@ define( function( require ) {
   var Color = require( 'SCENERY/util/Color' );
   var RadioButtonsAppearance = require( 'SUN/buttons/RadioButtonsAppearance' );
   var Property = require( 'AXON/Property' );
+  var ColorConstants = require( 'SUN/ColorConstants' );
 
   /**
    * RadioButtonGroup constructor.
@@ -39,7 +40,9 @@ define( function( require ) {
     } ) );
 
     options = _.extend( {
-      baseColor: new Color( 153, 206, 255 ),
+
+      //The fill for the rectangle behind the radio buttons.  Default color is bluish color, as in the other button library.
+      baseColor: ColorConstants.LIGHT_BLUE,
       disabledBaseColor: new Color( 220, 220, 220 ),
       selectedStroke: 'black',
       deselectedStroke: 'rgb(50,50,50)',
