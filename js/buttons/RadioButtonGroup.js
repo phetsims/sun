@@ -25,17 +25,17 @@ define( function( require ) {
    * RadioButtonGroup constructor.
    *
    * @param {Property} property
-   * @param {Array<Object>} content an array of objects that have two keys each: value and node
+   * @param {Array<Object>} contentArray an array of objects that have two keys each: value and node
    * the node key holds a scenery Node that is the content for a given radio button.
    * the value key should hold the value that the property takes on for the corresponding
    * node to be selected.
    * @param {Object} options
    * @constructor
    */
-  function RadioButtonGroup( property, content, options ) {
+  function RadioButtonGroup( property, contentArray, options ) {
 
     // make sure every object in the content array has properties 'node' and 'value'
-    assert && assert( _.every( content, function( obj ) {
+    assert && assert( _.every( contentArray, function( obj ) {
       return obj.hasOwnProperty( 'node' ) && obj.hasOwnProperty( 'value' );
     } ) );
 
@@ -102,27 +102,27 @@ define( function( require ) {
       }, buttonOptions );
 
     // calculate the maximum width and height of the content so we can make all radio buttons the same size
-    var maxWidth = _.max( content, function( obj ) { return obj.node.width; } ).node.width;
-    var maxHeight = _.max( content, function( obj ) { return obj.node.height; } ).node.height;
+    var maxWidth = _.max( contentArray, function( content ) { return content.node.width; } ).node.width;
+    var maxHeight = _.max( contentArray, function( content ) { return content.node.height; } ).node.height;
 
     var buttons = [];
     var selectedNodes = [];
     var deselectedNodes = [];
-    for ( var i = 0; i < content.length; i++ ) {
+    for ( var i = 0; i < contentArray.length; i++ ) {
       // make sure all radio buttons are the same size
-      selectedOptions.xMargin = ( ( maxWidth - content[i].node.width ) / 2 ) + options.buttonContentXMargin;
-      selectedOptions.yMargin = ( ( maxHeight - content[i].node.height ) / 2 ) + options.buttonContentYMargin;
-      deselectedOptions.xMargin = ( ( maxWidth - content[i].node.width ) / 2 ) + options.buttonContentXMargin;
-      deselectedOptions.yMargin = ( ( maxHeight - content[i].node.height ) / 2 ) + options.buttonContentYMargin;
+      selectedOptions.xMargin = ( ( maxWidth - contentArray[i].node.width ) / 2 ) + options.buttonContentXMargin;
+      selectedOptions.yMargin = ( ( maxHeight - contentArray[i].node.height ) / 2 ) + options.buttonContentYMargin;
+      deselectedOptions.xMargin = ( ( maxWidth - contentArray[i].node.width ) / 2 ) + options.buttonContentXMargin;
+      deselectedOptions.yMargin = ( ( maxHeight - contentArray[i].node.height ) / 2 ) + options.buttonContentYMargin;
 
-      selectedNodes.push( new RectangularPushButton( _.extend( { content: content[i].node }, selectedOptions ) ) );
-      deselectedNodes.push( new RectangularPushButton( _.extend( { content: content[i].node }, deselectedOptions ) ) );
-      buttons.push( new RadioButton( property, content[i].value, selectedNodes[i], deselectedNodes[i], { cursor: null } ) );
+      selectedNodes.push( new RectangularPushButton( _.extend( { content: contentArray[i].node }, selectedOptions ) ) );
+      deselectedNodes.push( new RectangularPushButton( _.extend( { content: contentArray[i].node }, deselectedOptions ) ) );
+      buttons.push( new RadioButton( property, contentArray[i].value, selectedNodes[i], deselectedNodes[i], { cursor: null } ) );
     }
 
     this.enabledProperty = options.enabledProperty;
     this.enabledProperty.link( function( isEnabled ) {
-      for ( i = 0; i < content.length; i++ ) {
+      for ( i = 0; i < contentArray.length; i++ ) {
         selectedNodes[i].enabled = isEnabled;
         deselectedNodes[i].enabled = isEnabled;
         buttons[i].pickable = isEnabled;
@@ -133,8 +133,8 @@ define( function( require ) {
     var thisNode = this;
     property.link( function( value ) {
       if ( thisNode.enabledProperty.get() ) {
-        for ( i = 0; i < content.length; i++ ) {
-          if ( content[i].value === value ) {
+        for ( i = 0; i < contentArray.length; i++ ) {
+          if ( contentArray[i].value === value ) {
             selectedNodes[i].pickable = false;
             selectedNodes[i].cursor = null;
           }
