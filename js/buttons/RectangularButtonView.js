@@ -43,7 +43,7 @@ define( function( require ) {
       cursor: 'pointer',
       cornerRadius: 4,
       baseColor: DEFAULT_COLOR,
-      disabledBaseColor: new Color( 220, 220, 220 ),
+      disabledBaseColor: ColorConstants.LIGHT_GRAY,
       xMargin: 8, // should be visibly greater than yMargin, see issue #109
       yMargin: 5,
       fireOnDown: false,

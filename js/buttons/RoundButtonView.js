@@ -44,7 +44,7 @@ define( function( require ) {
       content: null,
       cursor: 'pointer',
       baseColor: DEFAULT_COLOR,
-      disabledBaseColor: new Color( 220, 220, 220 ),
+      disabledBaseColor: ColorConstants.LIGHT_GRAY,
       minXMargin: 5, // Minimum margin in x direction, i.e. on left and right
       minYMargin: 5, // Minimum margin in y direction, i.e. on top and bottom
       fireOnDown: false,
