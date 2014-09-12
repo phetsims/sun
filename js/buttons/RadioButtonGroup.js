@@ -49,14 +49,24 @@ define( function( require ) {
       //The fill for the rectangle behind the radio buttons.  Default color is bluish color, as in the other button library.
       baseColor: ColorConstants.LIGHT_BLUE,
       disabledBaseColor: ColorConstants.LIGHT_GRAY,
-      selectedStroke: 'black',
 
       //The selected node by default is fully opaque, but we specify 'null' because if you specify '1' then a more expensive
       //rendering pipeline may be triggered. (Maybe?)
       selectedOpacity: null,
+      deselectedOpacity: 0.6,
+
+      selectedStroke: 'black',
       deselectedStroke: new Color( 50, 50, 50 ),
       selectedLineWidth: 1.5,
       deselectedLineWidth: 1,
+
+      //The following options speciy highlight behavior overrides, leave as null to get the default behavior
+      selectedHighlightColor: null,
+      deselectedHighlightColor: null,
+      selectedHighlightStroke: null,
+      deselectedHighlightStroke: null,
+      selectedHighlightLineWidth: null,
+      deselectedHighlightLineWidth: null,
 
       //These margins are *within* each button
       buttonContentXMargin: 5,
@@ -64,16 +74,15 @@ define( function( require ) {
 
       //The radius for each button
       cornerRadius: 4,
-      deselectedOpacity: 0.6,
 
       //The default appearances use the color values specified above, but other appearances could be specified for more
       //customized behavior.  Generally setting the color values above should be enough to specify the desired look.
-      selectedButtonAppearanceStrategy: RadioButtonsAppearance.flatAppearanceStrategyWithBorder,
-      deselectedButtonAppearanceStrategy: RadioButtonsAppearance.flatAppearanceStrategyDeselected,
+      selectedButtonAppearanceStrategy: RadioButtonsAppearance.defaultRadioButtonsAppearance,
+      deselectedButtonAppearanceStrategy: RadioButtonsAppearance.defaultRadioButtonsAppearance,
       contentAppearanceStrategy: RectangularButtonView.fadeContentWhenDisabled
     }, options );
 
-    // options for the panels that house each radio button
+    // options for the RectangularPushButtons that house each radio button
     // These options are the same for buttons whether they are selected or deselected
     var buttonOptions = {
       xMargin: options.buttonContentXMargin,
@@ -90,6 +99,9 @@ define( function( require ) {
         stroke: options.selectedStroke,
         lineWidth: options.selectedLineWidth,
         opacity: options.selectedOpacity,
+        highlightColor: options.selectedHighlightColor,
+        highlightStroke: options.selectedHighlightStroke,
+        highlightLineWidth: options.selectedHighlightLineWidth,
         buttonAppearanceStrategy: options.selectedButtonAppearanceStrategy
       }, buttonOptions );
 
@@ -98,6 +110,9 @@ define( function( require ) {
         stroke: options.deselectedStroke,
         lineWidth: options.deselectedLineWidth,
         opacity: options.deselectedOpacity,
+        highlightColor: options.deselectedHighlightColor,
+        highlightStroke: options.deselectedHighlightStroke,
+        highlightLineWidth: options.deselectedHighlightLineWidth,
         buttonAppearanceStrategy: options.deselectedButtonAppearanceStrategy
       }, buttonOptions );
 

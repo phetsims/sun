@@ -88,7 +88,9 @@ define( function( require ) {
     var radioButtons = new RadioButtonGroup( radioButtonProperty, radioButtonContent,
       {
         alignVertically: true,
-        y: 15
+        y: 15,
+        deselectedHighlightStroke: 'red',
+        deselectedHighlightLineWidth: 5
       } );
     this.addChild( new Panel( radioButtons, {stroke: null, x: 5, y: 5} ) );
 
