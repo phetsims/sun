@@ -21,11 +21,13 @@ define( function( require ) {
   var Property = require( 'AXON/Property' );
 
   /**
+   * RadioButtons constructor.
+   *
    * @param {Property} property
    * @param {Array<Object>} content an array of objects that have two keys each: value and node
-                                    the node key holds a scenery Node that is the content for a given radio button.
-   the value key should hold the value that the property takes on for the corresponding
-                                    node to be selected.
+   * the node key holds a scenery Node that is the content for a given radio button.
+   * the value key should hold the value that the property takes on for the corresponding
+   * node to be selected.
    * @param {Object} options
    * @constructor
    */
