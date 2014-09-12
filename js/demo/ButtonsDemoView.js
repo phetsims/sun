@@ -423,7 +423,7 @@ define( function( require ) {
       button3.enabled = enabled;
       button4.enabled = enabled;
       sliderKnob.enabled = enabled;
-      radioButtons.setEnabled( enabled );
+      radioButtons.enabled = enabled;
     } );
 
     // TODO: For debug, don't leave this here long term.
