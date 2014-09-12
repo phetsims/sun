@@ -45,7 +45,7 @@ define( function( require ) {
       baseColor: ColorConstants.LIGHT_BLUE,
       disabledBaseColor: ColorConstants.LIGHT_GRAY,
       selectedStroke: 'black',
-      deselectedStroke: 'rgb(50,50,50)',
+      deselectedStroke: new Color( 50, 50, 50 ),
       selectedLineWidth: 1.5,
       deselectedLineWidth: 1,
       spacing: 10,
