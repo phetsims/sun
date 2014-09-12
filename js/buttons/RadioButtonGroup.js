@@ -41,6 +41,11 @@ define( function( require ) {
 
     options = _.extend( {
 
+      //The distance between the radio buttons (as in VBox or HBox)
+      spacing: 10,
+      alignVertically: false,
+      enabledProperty: new Property( true ), // whether or not the set of radio buttons as a whole is enabled
+
       //The fill for the rectangle behind the radio buttons.  Default color is bluish color, as in the other button library.
       baseColor: ColorConstants.LIGHT_BLUE,
       disabledBaseColor: ColorConstants.LIGHT_GRAY,
@@ -49,17 +54,16 @@ define( function( require ) {
       selectedLineWidth: 1.5,
       deselectedLineWidth: 1,
 
-      //The distance between the radio buttons (as in VBox or HBox)
-      spacing: 10,
-
       //These margins are *within* each button
       buttonContentXMargin: 5,
       buttonContentYMargin: 5,
 
-      alignVertically: false,
+      //The radius for each button
       cornerRadius: 4,
       deselectedOpacity: 0.6,
-      enabledProperty: new Property( true ), // whether or not the set of radio buttons as a whole is enabled
+
+      //The default appearances use the color values specified above, but other appearances could be specified for more
+      //customized behavior.  Generally setting the color values above should be enough to specify the desired look.
       selectedButtonAppearanceStrategy: RadioButtonsAppearance.flatAppearanceStrategyWithBorder,
       deselectedButtonAppearanceStrategy: RadioButtonsAppearance.flatAppearanceStrategyDeselected,
       contentAppearanceStrategy: RectangularButtonView.fadeContentWhenDisabled
