@@ -48,9 +48,14 @@ define( function( require ) {
       deselectedStroke: new Color( 50, 50, 50 ),
       selectedLineWidth: 1.5,
       deselectedLineWidth: 1,
+
+      //The distance between the radio buttons (as in VBox or HBox)
       spacing: 10,
+
+      //These margins are *within* each button
       contentXMargin: 5,
       contentYMargin: 5,
+
       alignVertically: false,
       cornerRadius: 4,
       deselectedOpacity: 0.6,
