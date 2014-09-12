@@ -50,6 +50,10 @@ define( function( require ) {
       baseColor: ColorConstants.LIGHT_BLUE,
       disabledBaseColor: ColorConstants.LIGHT_GRAY,
       selectedStroke: 'black',
+
+      //The selected node by default is fully opaque, but we specify 'null' because if you specify '1' then a more expensive
+      //rendering pipeline may be triggered. (Maybe?)
+      selectedOpacity: null,
       deselectedStroke: new Color( 50, 50, 50 ),
       selectedLineWidth: 1.5,
       deselectedLineWidth: 1,
@@ -70,7 +74,8 @@ define( function( require ) {
     }, options );
 
     // options for the panels that house each radio button
-    var panelOptions = {
+    // These options are the same for buttons whether they are selected or deselected
+    var buttonOptions = {
       xMargin: options.buttonContentXMargin,
       yMargin: options.buttonContentYMargin,
       cornerRadius: options.cornerRadius,
@@ -79,13 +84,14 @@ define( function( require ) {
       contentAppearanceStrategy: options.contentAppearanceStrategy
     };
 
-    // add extra for selected vs deselcted panels
+    // add extra options for selected vs deselcted panels
     var selectedOptions = _.extend(
       {
         stroke: options.selectedStroke,
         lineWidth: options.selectedLineWidth,
+        opacity: options.selectedOpacity,
         buttonAppearanceStrategy: options.selectedButtonAppearanceStrategy
-      }, panelOptions );
+      }, buttonOptions );
 
     var deselectedOptions = _.extend(
       {
@@ -93,7 +99,7 @@ define( function( require ) {
         lineWidth: options.deselectedLineWidth,
         opacity: options.deselectedOpacity,
         buttonAppearanceStrategy: options.deselectedButtonAppearanceStrategy
-      }, panelOptions );
+      }, buttonOptions );
 
     // calculate the maximum width and height of the content so we can make all radio buttons the same size
     var maxWidth = _.max( content, function( obj ) { return obj.node.width; } ).node.width;
