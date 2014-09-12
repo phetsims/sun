@@ -105,22 +105,33 @@ define( function( require ) {
     var maxWidth = _.max( contentArray, function( content ) { return content.node.width; } ).node.width;
     var maxHeight = _.max( contentArray, function( content ) { return content.node.height; } ).node.height;
 
+    // make sure all radio buttons are the same size and create the RadioButtons
     var buttons = [];
     var selectedNodes = [];
     var deselectedNodes = [];
     for ( var i = 0; i < contentArray.length; i++ ) {
-      // make sure all radio buttons are the same size
-      selectedOptions.xMargin = ( ( maxWidth - contentArray[i].node.width ) / 2 ) + options.buttonContentXMargin;
-      selectedOptions.yMargin = ( ( maxHeight - contentArray[i].node.height ) / 2 ) + options.buttonContentYMargin;
-      deselectedOptions.xMargin = ( ( maxWidth - contentArray[i].node.width ) / 2 ) + options.buttonContentXMargin;
-      deselectedOptions.yMargin = ( ( maxHeight - contentArray[i].node.height ) / 2 ) + options.buttonContentYMargin;
+
+      var xMargin = ( ( maxWidth - contentArray[i].node.width ) / 2 ) + options.buttonContentXMargin;
+      var yMargin = ( ( maxHeight - contentArray[i].node.height ) / 2 ) + options.buttonContentYMargin;
+
+      selectedOptions.xMargin = xMargin;
+      selectedOptions.yMargin = yMargin;
+
+      deselectedOptions.xMargin = xMargin;
+      deselectedOptions.yMargin = yMargin;
 
       selectedNodes.push( new RectangularPushButton( _.extend( { content: contentArray[i].node }, selectedOptions ) ) );
       deselectedNodes.push( new RectangularPushButton( _.extend( { content: contentArray[i].node }, deselectedOptions ) ) );
+
+      // Create the RadioButton itself, which switches between rendering the selected node and the deselected node.
+      // By default, RadioButton uses a cursor 'pointer' but that is being handled below (so that selected nodes don't
+      // have 'pointer')
       buttons.push( new RadioButton( property, contentArray[i].value, selectedNodes[i], deselectedNodes[i], { cursor: null } ) );
     }
 
     this.enabledProperty = options.enabledProperty;
+
+    // When the entire RadioButtonGroup gets disabled, gray them out and make them unpickable (and vice versa)
     this.enabledProperty.link( function( isEnabled ) {
       for ( i = 0; i < contentArray.length; i++ ) {
         selectedNodes[i].enabled = isEnabled;
