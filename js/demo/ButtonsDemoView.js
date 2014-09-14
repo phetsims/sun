@@ -32,7 +32,7 @@ define( function( require ) {
   var SoundToggleButton = require( 'SCENERY_PHET/SoundToggleButton' );
   var Text = require( 'SCENERY/nodes/Text' );
   var TimerToggleButton = require( 'SCENERY_PHET/TimerToggleButton' );
-  var RadioButtons = require( 'SUN/buttons/RadioButtons' );
+  var RadioButtonGroup = require( 'SUN/buttons/RadioButtonGroup' );
   var Panel = require( 'SUN/Panel' );
 
   // Constants
@@ -85,10 +85,12 @@ define( function( require ) {
       { value: 'four', node: new Text( 'FOUR', { font: BUTTON_FONT } ) }
     ];
     var radioButtonProperty = new Property( 'two' );
-    var radioButtons = new RadioButtons( radioButtonProperty, radioButtonContent,
+    var radioButtons = new RadioButtonGroup( radioButtonProperty, radioButtonContent,
       {
         alignVertically: true,
-        y: 15
+        y: 15,
+        deselectedHighlightStroke: 'red',
+        deselectedHighlightLineWidth: 5
       } );
     this.addChild( new Panel( radioButtons, {stroke: null, x: 5, y: 5} ) );
 
@@ -423,7 +425,7 @@ define( function( require ) {
       button3.enabled = enabled;
       button4.enabled = enabled;
       sliderKnob.enabled = enabled;
-      radioButtons.setEnabled( enabled );
+      radioButtons.enabled = enabled;
     } );
 
     // TODO: For debug, don't leave this here long term.

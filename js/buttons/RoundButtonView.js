@@ -22,10 +22,11 @@ define( function( require ) {
   var RadialGradient = require( 'SCENERY/util/RadialGradient' );
   var Shape = require( 'KITE/Shape' );
   var Vector2 = require( 'DOT/Vector2' );
+  var ColorConstants = require( 'SUN/ColorConstants' );
 
   // Constants
   var HIGHLIGHT_GRADIENT_LENGTH = 5; // In screen coords, which are roughly pixels.
-  var DEFAULT_COLOR = new Color( 153, 206, 255 );
+  var DEFAULT_COLOR = ColorConstants.LIGHT_BLUE;
 
   /**
    * @param {ButtonModel} buttonModel
@@ -43,7 +44,7 @@ define( function( require ) {
       content: null,
       cursor: 'pointer',
       baseColor: DEFAULT_COLOR,
-      disabledBaseColor: new Color( 220, 220, 220 ),
+      disabledBaseColor: ColorConstants.LIGHT_GRAY,
       minXMargin: 5, // Minimum margin in x direction, i.e. on left and right
       minYMargin: 5, // Minimum margin in y direction, i.e. on top and bottom
       fireOnDown: false,
