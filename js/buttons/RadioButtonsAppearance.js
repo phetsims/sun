@@ -27,7 +27,7 @@ define( function( require ) {
    *
    * @param {Node} button
    * @param {Property} interactionStateProperty
-   * @param {Object} options
+   * @param {Object} [options]
    * @constructor
    */
   RadioButtonsAppearance.defaultRadioButtonsAppearance = function( button, interactionStateProperty, options ) {

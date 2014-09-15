@@ -21,7 +21,7 @@ define( function( require ) {
   var PushButtonInteractionStateProperty = require( 'SUN/buttons/PushButtonInteractionStateProperty' );
 
   /**
-   * @param {Object} options - All of the general Scenery node options can be
+   * @param {Object} [options] - All of the general Scenery node options can be
    * used, see Node.js or the Scenery documentation. In addition, the
    * following options are available. Note that there is no automated process
    * to keep these up to date, so keep that in mind when using these (and

@@ -14,7 +14,7 @@ define( function( require ) {
   var ButtonModel = require( 'SUN/buttons/ButtonModel' );
 
   /**
-   * @param {Object} options
+   * @param {Object} [options]
    * @constructor
    */
   function PushButtonModel( options ) {

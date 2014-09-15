@@ -17,7 +17,7 @@ define( function( require ) {
 
   /**
    * @param {Node} content
-   * @param {object} options
+   * @param {Object} [options]
    * @constructor
    */
   function Panel( content, options ) {

@@ -18,7 +18,7 @@ define( function( require ) {
   /**
    * @param {Node} titleNode
    * @param {Property<Boolean>} expandedProperty
-   * @param {Object} options
+   * @param {Object} [options]
    * @constructor
    */
   function ExpandCollapseBar( titleNode, expandedProperty, options ) {

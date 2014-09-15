@@ -18,7 +18,7 @@ define( function( require ) {
 
   /**
    * @param {Property<Boolean>} expandedProperty
-   * @param {Object} options
+   * @param {Object} [options]
    * @constructor
    */
   function ExpandCollapseButton( expandedProperty, options ) {

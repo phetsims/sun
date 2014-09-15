@@ -26,7 +26,7 @@ define( function( require ) {
    * @param {Node} labelA label for choice 'A'
    * @param {*} valueB value for choice 'B'
    * @param {Node} labelB label for choice 'B'
-   * @param {Object} options
+   * @param {Object} [options]
    * @constructor
    */
   function ABSwitch( property, valueA, labelA, valueB, labelB, options ) {

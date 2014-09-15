@@ -31,7 +31,7 @@ define( function( require ) {
   /**
    * @param {ButtonModel} buttonModel
    * @param {Property} interactionStateProperty - A property that is used to drive the visual appearance of the button.
-   * @param {Object} options
+   * @param {Object} [options]
    * @constructor
    */
   function RoundButtonView( buttonModel, interactionStateProperty, options ) {
@@ -124,7 +124,7 @@ define( function( require ) {
    *
    * @param {Node} button
    * @param {Property} interactionStateProperty
-   * @param {Object} options
+   * @param {Object} [options]
    * @constructor
    */
   RoundButtonView.threeDAppearanceStrategy = function( button, interactionStateProperty, options ) {
@@ -232,7 +232,7 @@ define( function( require ) {
    *
    * @param {Node} button
    * @param {Property} interactionStateProperty
-   * @param {Object} options
+   * @param {Object} [options]
    * @constructor
    */
   RoundButtonView.flatAppearanceStrategy = function( button, interactionStateProperty, options ) {

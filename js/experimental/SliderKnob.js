@@ -15,7 +15,7 @@ define( function( require ) {
   var DEFAULT_HEIGHT = 40;
 
   /**
-   * @param {Object} options See parent type for info about options not shown in this file
+   * @param {Object} [options] See parent type for info about options not shown in this file
    * @constructor
    */
   function SliderKnob( options ) {

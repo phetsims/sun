@@ -17,7 +17,7 @@ define( function( require ) {
    * @param property
    * @param value the value that corresponds to this button, same type as property
    * @param {Node} content node that will be displayed on the button
-   * @param {object} options
+   * @param {Object} [options]
    * @constructor
    */
   function InOutRadioButton( property, value, content, options ) {
