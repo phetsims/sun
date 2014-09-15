@@ -50,11 +50,8 @@ define( function( require ) {
       baseColor: ColorConstants.LIGHT_BLUE,
       disabledBaseColor: ColorConstants.LIGHT_GRAY,
 
-      //The selected node by default is fully opaque, but we specify 'null' because if you specify '1' then a more expensive
-      //rendering pipeline may be triggered. (Maybe?)
-      selectedOpacity: null,
+      selectedOpacity: 1,
       deselectedOpacity: 0.6,
-
       selectedStroke: 'black',
       deselectedStroke: new Color( 50, 50, 50 ),
       selectedLineWidth: 1.5,
@@ -93,7 +90,7 @@ define( function( require ) {
       contentAppearanceStrategy: options.contentAppearanceStrategy
     };
 
-    // add extra options for selected vs deselcted panels
+    // add extra options for selected vs deselected panels
     var selectedOptions = _.extend(
       {
         stroke: options.selectedStroke,
