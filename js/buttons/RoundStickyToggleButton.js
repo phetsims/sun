@@ -21,7 +21,7 @@ define( function( require ) {
    * @param valueUp {Object} value when the toggle is in the 'up' position
    * @param valueDown {Object} value when the toggle is in the 'down' position
    * @param property {Property<Object>} axon property that can be either valueUp or valueDown.
-   * @param {Object} options
+   * @param {Object} [options]
    * @constructor
    */
   function RoundStickyToggleButton( valueUp, valueDown, property, options ) {

@@ -28,7 +28,7 @@ define( function( require ) {
   /**
    * @param {ButtonModel} buttonModel - Model that defines the button's behavior.
    * @param {Property} interactionStateProperty - A property that is used to drive the visual appearance of the button.
-   * @param {Object} options
+   * @param {Object} [options]
    * @constructor
    */
   function RectangularButtonView( buttonModel, interactionStateProperty, options ) {
@@ -115,7 +115,7 @@ define( function( require ) {
    *
    * @param {Node} button
    * @param {Property} interactionStateProperty
-   * @param {Object} options
+   * @param {Object} [options]
    * @constructor
    */
   RectangularButtonView.threeDAppearanceStrategy = function( button, interactionStateProperty, options ) {
@@ -239,7 +239,7 @@ define( function( require ) {
    *
    * @param {Node} button
    * @param {Property} interactionStateProperty
-   * @param {Object} options
+   * @param {Object} [options]
    * @constructor
    */
   RectangularButtonView.flatAppearanceStrategy = function( button, interactionStateProperty, options ) {

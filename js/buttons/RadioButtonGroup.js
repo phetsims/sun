@@ -29,7 +29,7 @@ define( function( require ) {
    * the node key holds a scenery Node that is the content for a given radio button.
    * the value key should hold the value that the property takes on for the corresponding
    * node to be selected.
-   * @param {Object} options
+   * @param {Object} [options]
    * @constructor
    */
   function RadioButtonGroup( property, contentArray, options ) {

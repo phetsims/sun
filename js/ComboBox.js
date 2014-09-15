@@ -24,7 +24,7 @@ define( function( require ) {
   /**
    * The button that is clicked to show the list of items.
    * @param {Node} itemNode
-   * @param {Object} options object with optional properties
+   * @param {Object} [options] object with optional properties
    * @constructor
    */
   function ButtonNode( itemNode, options ) {
@@ -101,7 +101,7 @@ define( function( require ) {
    * @param {Array} items
    * @param {*} property
    * @param {Node} listParent node that will be used as the list's parent, use this to ensuring that the list is in front of everything else
-   * @param {Object} options object with optional properties
+   * @param {Object} [options] object with optional properties
    */
   function ComboBox( items, property, listParent, options ) {
 

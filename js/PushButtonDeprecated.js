@@ -19,7 +19,7 @@ define( function( require ) {
    * @param {Node} overNode
    * @param {Node} downNode
    * @param {Node} disabledNode
-   * @param {object} options
+   * @param {Object} [options]
    * @constructor
    */
   function PushButtonDeprecated( upNode, overNode, downNode, disabledNode, options ) {

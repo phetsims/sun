@@ -19,7 +19,7 @@ define( function( require ) {
    * @param value the value that corresponds to this button, same type as property
    * @param {Node} selectedNode node that will be displayed when the button is selected
    * @param {Node} deselectedNode node that will be displayed when the button is deselected
-   * @param {object} options
+   * @param {Object} [options]
    * @constructor
    */
   function RadioButton( property, value, selectedNode, deselectedNode, options ) {
