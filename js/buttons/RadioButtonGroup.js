@@ -43,7 +43,7 @@ define( function( require ) {
 
       //The distance between the radio buttons (as in VBox or HBox)
       spacing: 10,
-      alignVertically: false,
+      orientation: 'vertical',
       enabledProperty: new Property( true ), // whether or not the set of radio buttons as a whole is enabled
 
       //The fill for the rectangle behind the radio buttons.  Default color is bluish color, as in the other button library.
@@ -57,7 +57,7 @@ define( function( require ) {
       selectedLineWidth: 1.5,
       deselectedLineWidth: 1,
 
-      //The following options speciy highlight behavior overrides, leave as null to get the default behavior
+      //The following options specify highlight behavior overrides, leave as null to get the default behavior
       selectedHighlightColor: null,
       deselectedHighlightColor: null,
       selectedHighlightStroke: null,
@@ -170,7 +170,16 @@ define( function( require ) {
     } );
 
     var boxOptions = { children: buttons, spacing: options.spacing };
-    var box = ( options.alignVertically ) ? new VBox( boxOptions ) : new HBox( boxOptions );
+    var box;
+    if ( options.orientation === 'vertical' ) {
+      box = new VBox( boxOptions );
+    }
+    else if ( options.orientation === 'horizontal' ) {
+      box = new HBox( boxOptions );
+    }
+    else {
+      throw new Error( 'options.orientation must be either horizontal or vertical' );
+    }
 
     Node.call( this, { children: [box] } );
 
