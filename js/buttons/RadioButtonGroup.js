@@ -10,14 +10,12 @@ define( function( require ) {
 
   // modules
   var inherit = require( 'PHET_CORE/inherit' );
-  var Node = require( 'SCENERY/nodes/Node' );
-  var HBox = require( 'SCENERY/nodes/HBox' );
-  var VBox = require( 'SCENERY/nodes/VBox' );
   var SingleRadioButton = require( 'SUN/buttons/SingleRadioButton' );
   var Color = require( 'SCENERY/util/Color' );
   var RadioButtonsAppearance = require( 'SUN/buttons/RadioButtonsAppearance' );
   var Property = require( 'AXON/Property' );
   var ColorConstants = require( 'SUN/ColorConstants' );
+  var LayoutBox = require( 'SCENERY/nodes/LayoutBox' );
 
   /**
    * RadioButtonGroup constructor.
@@ -31,6 +29,8 @@ define( function( require ) {
    * @constructor
    */
   function RadioButtonGroup( property, contentArray, options ) {
+    assert && assert( options.hasOwnProperty( 'children' ), 'Cannot pass in children to a RadioButtonGroup, ' +
+                                                            'use siblings instead' );
 
     // make sure every object in the content array has properties 'node' and 'value'
     assert && assert( _.every( contentArray, function( obj ) {
@@ -87,7 +87,8 @@ define( function( require ) {
 
     // make sure all radio buttons are the same size and create the RadioButtons
     var buttons = [];
-    for ( var i = 0; i < contentArray.length; i++ ) {
+    var i;
+    for ( i = 0; i < contentArray.length; i++ ) {
       options.xMargin = ( ( maxWidth - contentArray[i].node.width ) / 2 ) + options.buttonContentXMargin;
       options.yMargin = ( ( maxHeight - contentArray[i].node.height ) / 2 ) + options.buttonContentYMargin;
 
@@ -122,25 +123,11 @@ define( function( require ) {
         }
       }
     } );
-
-    var boxOptions = { children: buttons, spacing: options.spacing };
-    var box;
-    if ( options.orientation === 'vertical' ) {
-      box = new VBox( boxOptions );
-    }
-    else if ( options.orientation === 'horizontal' ) {
-      box = new HBox( boxOptions );
-    }
-    else {
-      throw new Error( 'options.orientation must be either horizontal or vertical' );
-    }
-
-    Node.call( this, { children: [box] } );
-
-    this.mutate( options );
+    options.children = buttons;
+    LayoutBox.call( this, options );
   }
 
-  return inherit( Node, RadioButtonGroup,
+  return inherit( LayoutBox, RadioButtonGroup,
     {
 
       set enabled( value ) {
