@@ -6,6 +6,7 @@
  * TODO: There is much duplicated here, and copied from RectangularButtonView.  We should find a way to consolidate.
  *
  * @author Sam Reid (PhET Interactive Simulations)
+ * @author Aaron Davis (PhET Interactive Simulations)
  */
 define( function( require ) {
   'use strict';
@@ -32,57 +33,93 @@ define( function( require ) {
    */
   RadioButtonsAppearance.defaultRadioButtonsAppearance = function( button, interactionStateProperty, options ) {
 
-    // Set up variables needed to create the various gradient fills
+    // Set up variables needed to create the various fills and strokes
     var baseColor = Color.toColor( options.baseColor );
     var disabledBaseColor = Color.toColor( options.disabledBaseColor );
-    var disabledStroke = null;
-    if ( options.stroke || true ) {
-      disabledStroke = disabledBaseColor.colorUtilsDarker( 0.4 );
-    }
+    var deselectedStroke = Color.toColor( options.deselectedStroke );
 
-    // Create the fills used for various button states
-    var upFill = baseColor;
-    var overFill = ( options.hightlightColor ) ? options.hightlightColor : baseColor.colorUtilsBrighter( 0.4 );
-    var downFill = baseColor.colorUtilsDarker( 0.4 );
-    var disabledFill = disabledBaseColor;
-    var disabledPressedFillVertical = disabledFill;
-
-    var overStroke = ( options.highlightStroke ) ? options.highlightStroke : options.stroke;
-    var overLineWidth = ( options.highlightLineWidth ) ? options.highlightLineWidth : options.lineWidth;
-
-    button.opacity = options.opacity;
+    // Create the fills and strokes used for various button states
+    var disabledStroke = disabledBaseColor.colorUtilsDarker( 0.4 );
+    var overStroke = deselectedStroke.colorUtilsDarker( 0.4 );
+    var overFill = baseColor.colorUtilsBrighter( 0.4 );
 
     interactionStateProperty.link( function( state ) {
       switch( state ) {
 
+        // deselected
         case 'idle':
-          button.fill = upFill;
-          button.stroke = options.stroke;
-          button.lineWidth = options.lineWidth;
+          button.fill = baseColor;
+          button.stroke = options.deselectedStroke;
+          button.lineWidth = options.deselectedLineWidth;
+          button.opacity = options.deselectedButtonOpacity;
           break;
 
+        // mouseover for deselected buttons
         case 'over':
-          button.fill = overFill;
-          button.stroke = overStroke;
-          button.lineWidth = overLineWidth;
+          button.fill = ( options.overFill ) ? options.overFill : overFill;
+          button.stroke = ( options.overStroke ) ? options.overStroke : overStroke;
+          button.lineWidth = ( options.overLineWidth ) ? options.overLineWidth : options.deselectedLineWidth;
+          button.opacity = options.overButtonOpacity;
           break;
 
+        // selected
         case 'pressed':
-          button.fill = downFill;
-          button.stroke = options.stroke;
-          button.lineWidth = options.lineWidth;
+          button.fill = baseColor;
+          button.stroke = options.selectedStroke;
+          button.lineWidth = options.selectedLineWidth;
+          button.opacity = options.selectedButtonOpacity;
           break;
 
+        // disabled and deselected
         case 'disabled':
-          button.fill = disabledFill;
+          button.fill = disabledBaseColor;
           button.stroke = disabledStroke;
-          button.lineWidth = options.lineWidth;
+          button.lineWidth = options.deselectedLineWidth;
+          button.opacity = options.deselectedButtonOpacity;
           break;
 
+        // disabled and selected
         case 'disabled-pressed':
-          button.fill = disabledPressedFillVertical;
+          button.fill = disabledBaseColor;
           button.stroke = disabledStroke;
-          button.lineWidth = options.lineWidth;
+          button.lineWidth = options.selectedLineWidth;
+          button.opacity = options.selectedButtonOpacity;
+          break;
+      }
+    } );
+  };
+
+  RadioButtonsAppearance.contentAppearanceStrategy = function( content, interactionStateProperty, options ) {
+
+    // for some reason setting the opacity on the buttons directly seems to have no effect if the content in an
+    // image. Therefore, there is an option to set the content opacity here in addition to the button opacity in
+    // defaultRadioButtonsAppearance.
+    interactionStateProperty.link( function( state ) {
+      switch( state ) {
+
+        // deselected
+        case 'idle':
+          content.opacity = options.deselectedContentOpacity;
+          break;
+
+        // mouseover for deselected buttons
+        case 'over':
+          content.opacity = options.overContentOpacity;
+          break;
+
+        // selected
+        case 'pressed':
+          content.opacity = options.selectedContentOpacity;
+          break;
+
+        // disabled and deselected
+        case 'disabled':
+          content.opacity = options.deselectedContentOpacity;
+          break;
+
+        // disabled and selected
+        case 'disabled-pressed':
+          content.opacity = options.selectedContentOpacity;
           break;
       }
     } );
