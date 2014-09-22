@@ -93,7 +93,7 @@ define( function( require ) {
     }
 
     // Hook up the strategy that will control the content appearance.
-    options.contentAppearanceStrategy( content, interactionStateProperty );
+    options.contentAppearanceStrategy( content, interactionStateProperty, options );
 
     // Control the pointer state based on the interaction state.
     interactionStateProperty.link( function( state ) {
