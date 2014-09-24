@@ -24,7 +24,8 @@ define( function( require ) {
    * @param {Array<Object>} contentArray an array of objects that have two keys each: value and node
    * the node key holds a scenery Node that is the content for a given radio button.
    * the value key should hold the value that the property takes on for the corresponding
-   * node to be selected.
+   * node to be selected. Optionally, these object can contain an attribute 'label', which contains a text node
+   * label that will appear under the button.
    * @param {Object} [options]
    * @constructor
    */
@@ -35,7 +36,7 @@ define( function( require ) {
     // make sure every object in the content array has properties 'node' and 'value'
     assert && assert( _.every( contentArray, function( obj ) {
       return obj.hasOwnProperty( 'node' ) && obj.hasOwnProperty( 'value' );
-    } ) );
+    } ), 'contentArray must be an array of objects with properties "node" and "value"' );
 
     options = _.extend( {
 
@@ -75,6 +76,13 @@ define( function( require ) {
       //The radius for each button
       cornerRadius: 4,
 
+      //How far from the button the text label is (only applies if labels are passed in)
+      labelSpacing: 0,
+
+      //Which side of the button the label will appear, options are 'top', 'bottom', 'left', 'right'
+      //(only applies if labels are passed in)
+      labelAlign: 'bottom',
+
       //The default appearances use the color values specified above, but other appearances could be specified for more
       //customized behavior.  Generally setting the color values above should be enough to specify the desired look.
       buttonAppearanceStrategy: RadioButtonsAppearance.defaultRadioButtonsAppearance,
@@ -87,14 +95,22 @@ define( function( require ) {
 
     // make sure all radio buttons are the same size and create the RadioButtons
     var buttons = [];
-    var i;
+    var i, button, radioButton;
     for ( i = 0; i < contentArray.length; i++ ) {
       options.xMargin = ( ( maxWidth - contentArray[i].node.width ) / 2 ) + options.buttonContentXMargin;
       options.yMargin = ( ( maxHeight - contentArray[i].node.height ) / 2 ) + options.buttonContentYMargin;
 
-      buttons.push( new SingleRadioButton( contentArray[i].value, property,
-        _.extend( { content: contentArray[i].node }, options )
-      ) );
+      radioButton = new SingleRadioButton( contentArray[i].value, property, _.extend( { content: contentArray[i].node }, options ) );
+      if ( contentArray[i].label ) {
+        var labelOrientation = ( options.labelAlign === 'bottom' || options.labelAlign === 'top' ) ? 'vertical' : 'horizontal';
+        var labelChildren = ( options.labelAlign === 'left' || options.labelAlign === 'top' ) ?
+          [contentArray[i].label, radioButton] : [radioButton, contentArray[i].label];
+        button = new LayoutBox( { children: labelChildren, spacing: options.labelSpacing, orientation: labelOrientation } );
+      }
+      else {
+        button = radioButton;
+      }
+      buttons.push( button );
     }
 
     this.enabledProperty = options.enabledProperty;
@@ -115,10 +131,16 @@ define( function( require ) {
           if ( contentArray[i].value === value ) {
             buttons[i].pickable = false;
             buttons[i].cursor = null;
+            if ( contentArray[i].label ) {
+              contentArray[i].label.opacity = 1;
+            }
           }
           else {
             buttons[i].pickable = true;
             buttons[i].cursor = 'pointer';
+            if ( contentArray[i].label ) {
+              contentArray[i].label.opacity = 0.5;
+            }
           }
         }
       }
