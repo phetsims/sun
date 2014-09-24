@@ -29,6 +29,7 @@ define( function( require ) {
    * @constructor
    */
   function RadioButtonGroup( property, contentArray, options ) {
+    console.log( options );
     assert && assert( options.hasOwnProperty( 'children' ), 'Cannot pass in children to a RadioButtonGroup, ' +
                                                             'use siblings instead' );
 
