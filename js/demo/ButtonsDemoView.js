@@ -88,7 +88,8 @@ define( function( require ) {
     var radioButtons = new RadioButtonGroup( radioButtonProperty, radioButtonContent,
       {
         orientation: 'vertical',
-        y: 15
+        y: 15,
+        selectedLineWidth: 4
       } );
     this.addChild( new Panel( radioButtons, {stroke: null, x: 5, y: 5} ) );
 
