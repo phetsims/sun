@@ -31,7 +31,7 @@ define( function( require ) {
 
   /**
    * @param {Node} content
-   * @param options
+   * @param {Object} [options]
    * @constructor
    */
   function RectanglePushButtonDeprecated( content, options ) {

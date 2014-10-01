@@ -21,7 +21,7 @@ define( function( require ) {
    * Main constructor.
    *
    * @param items  an array of {content, property, indent}
-   * @param options
+   * @param {Object} [options]
    * @constructor
    */
   function VerticalCheckBoxGroup( items, options ) {
