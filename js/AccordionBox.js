@@ -176,7 +176,7 @@ define( function( require ) {
     options.expandedProperty.link( expandedPropertyObserver );
 
     // @public Unlinks from expandedProperty. The node is no longer functional after calling this function.
-    this.unlink = function() {
+    this.dispose = function() {
       options.expandedProperty.unlink( expandedPropertyObserver );
     };
 
