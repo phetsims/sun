@@ -21,7 +21,7 @@ define( function( require ) {
   var Property = require( 'AXON/Property' );
 
   /**
-   * @param {Property<*>} property stores the value of the current choice
+   * @param {Property.<*>} property stores the value of the current choice
    * @param {*} valueA value for choice 'A'
    * @param {Node} labelA label for choice 'A'
    * @param {*} valueB value for choice 'B'
@@ -37,7 +37,7 @@ define( function( require ) {
       xSpacing: 8,
       cursor: 'pointer',
       centerOnButton: false,
-      // uses opacity as the default method of indicating whether a {Node} node is {Boolean} enabled
+      // uses opacity as the default method of indicating whether a {Node} node is {boolean} enabled
       setEnabled: function( node, enabled ) { node.opacity = enabled ? 1.0 : 0.5; }
     }, options );
 

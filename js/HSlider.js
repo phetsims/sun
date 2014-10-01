@@ -24,8 +24,8 @@ define( function( require ) {
   var SimpleDragHandler = require( 'SCENERY/input/SimpleDragHandler' );
 
   /**
-   * @param {Property<Number>} valueProperty
-   * @param { {min:Number, max:Number} } range
+   * @param {Property.<number>} valueProperty
+   * @param { {min:number, max:number} } range
    * @param {Object} [options]
    * @constructor
    */
@@ -164,7 +164,7 @@ define( function( require ) {
 
     /**
      * Adds a major tick mark.
-     * @param {Number} value
+     * @param {number} value
      * @param {Node} label optional
      */
     addMajorTick: function( value, label ) {
@@ -173,7 +173,7 @@ define( function( require ) {
 
     /**
      * Adds a minor tick mark.
-     * @param {Number} value
+     * @param {number} value
      * @param {Node} label optional
      */
     addMinorTick: function( value, label ) {
@@ -182,11 +182,11 @@ define( function( require ) {
 
     /*
      * Adds a tick mark above the track.
-     * @param {Number} value
+     * @param {number} value
      * @param {Node} label optional
-     * @param {Number} length
-     * @param {Number} stroke
-     * @param {Number} lineWidth
+     * @param {number} length
+     * @param {number} stroke
+     * @param {number} lineWidth
      * @private
      */
     addTick: function( value, label, length, stroke, lineWidth ) {

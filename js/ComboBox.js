@@ -80,9 +80,9 @@ define( function( require ) {
   /**
    * A wrapper around the combo box item, adds margins, etc.
    * @param item
-   * @param {Number} width
-   * @param {Number} height
-   * @param {Number} xMargin
+   * @param {number} width
+   * @param {number} height
+   * @param {number} xMargin
    * @constructor
    */
   function ItemNode( item, width, height, xMargin ) {

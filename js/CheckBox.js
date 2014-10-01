@@ -18,7 +18,7 @@ define( function( require ) {
 
   /**
    * @param {Node} content
-   * @param {Property<Boolean>} property
+   * @param {Property.<boolean>} property
    * @constructor
    * @param {Object} [options]
    */
@@ -121,9 +121,9 @@ define( function( require ) {
 
     /**
      * Factory method, creates a check box with a text label and optional icon.
-     * @param {String} text
+     * @param {string} text
      * @param {*} textOptions options that apply to the text, same as scenery.Text
-     * @param {Property<Boolean>} property
+     * @param {Property.<boolean>} property
      * @returns {CheckBox}
      */
     createTextCheckBox: function( text, textOptions, property, checkBoxOptions ) {

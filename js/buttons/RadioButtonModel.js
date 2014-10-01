@@ -14,7 +14,7 @@ define( function( require ) {
 
   /**
    * @param valueDown {Object} the value that valueProperty takes when this particular SingleRadioButton is selected
-   * @param valueProperty {Property<Object>}
+   * @param valueProperty {Property}
    * @constructor
    */
   function RadioButtonModel( valueDown, valueProperty ) {

@@ -18,7 +18,7 @@ define( function( require ) {
   /**
    * @param valueUp {Object} value when the toggle is in the 'up' position
    * @param valueDown {Object} value when the toggle is in the 'down' position
-   * @param valueProperty {Property<Object>} axon property that can be either valueUp or valueDown.  Would have preferred to call this `property` but it would clash with the property function name.
+   * @param valueProperty {Property} axon property that can be either valueUp or valueDown.  Would have preferred to call this `property` but it would clash with the property function name.
    * @constructor
    */
   function StickyToggleButtonModel( valueUp, valueDown, valueProperty ) {
