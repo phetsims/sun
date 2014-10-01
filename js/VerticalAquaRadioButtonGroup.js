@@ -16,7 +16,7 @@ define( function( require ) {
    * Main constructor.
    *
    * @param items  an array of {content, property}
-   * @param options
+   * @param {Object} [options]
    * @constructor
    */
   function VerticalAquaRadioButtonGroup( items, options ) {

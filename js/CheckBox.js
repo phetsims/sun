@@ -20,7 +20,7 @@ define( function( require ) {
    * @param {Node} content
    * @param {Property<Boolean>} property
    * @constructor
-   * @param options
+   * @param {Object} [options]
    */
   function CheckBox( content, property, options ) {
     var checkBox = this;
@@ -43,7 +43,7 @@ define( function( require ) {
     // Make the background white.  Until we are creating our own shapes, just
     // put a white rectangle behind the font awesome check box icons.
     var whiteBackground = new Rectangle( 0, -options.boxWidth, options.boxWidth * 0.95, options.boxWidth * 0.95,
-      options.boxWidth * 0.2, options.boxWidth * 0.2, {fill: 'white'} );
+        options.boxWidth * 0.2, options.boxWidth * 0.2, {fill: 'white'} );
 
     thisNode.uncheckedNode = new FontAwesomeNode( 'check_empty', { fill: options.checkBoxColor } ); // @private
     var iconScale = options.boxWidth / thisNode.uncheckedNode.width;

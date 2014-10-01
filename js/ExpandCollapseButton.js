@@ -1,6 +1,6 @@
 // Copyright 2002-2013, University of Colorado Boulder
 
-//TODO reimplement as a subtype of something from sun.buttons
+//TODO see sun#29, reimplement as a subtype of something from sun.buttons
 /**
  * Button for expanding/collapsing something.
  *

@@ -15,7 +15,7 @@ define( function( require ) {
    * @param trueNode
    * @param falseNode
    * @param booleanProperty
-   * @param options
+   * @param {Object} [options]
    * @constructor
    */
   function BooleanRoundToggleButton( trueNode, falseNode, booleanProperty, options ) {
