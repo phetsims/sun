@@ -17,7 +17,7 @@ define( function( require ) {
 
   /**
    * @param value {Object} value when this radio button is selected
-   * @param property {Property<Object>} axon property that can take on a set of values, one for each radio button in the
+   * @param property {Property} axon property that can take on a set of values, one for each radio button in the
    * group
    * @param {Object} [options]
    * @constructor

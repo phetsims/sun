@@ -17,7 +17,7 @@ define( function( require ) {
   var Shape = require( 'KITE/Shape' );
 
   /**
-   * @param {Property<Boolean>} expandedProperty
+   * @param {Property.<boolean>} expandedProperty
    * @param {Object} [options]
    * @constructor
    */

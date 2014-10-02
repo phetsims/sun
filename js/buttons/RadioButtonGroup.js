@@ -21,7 +21,7 @@ define( function( require ) {
    * RadioButtonGroup constructor.
    *
    * @param {Property} property
-   * @param {Array<Object>} contentArray an array of objects that have two keys each: value and node
+   * @param {Array} contentArray an array of objects that have two keys each: value and node
    * the node key holds a scenery Node that is the content for a given radio button.
    * the value key should hold the value that the property takes on for the corresponding
    * node to be selected. Optionally, these object can contain an attribute 'label', which contains a text node

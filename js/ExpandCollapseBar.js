@@ -17,7 +17,7 @@ define( function( require ) {
 
   /**
    * @param {Node} titleNode
-   * @param {Property<Boolean>} expandedProperty
+   * @param {Property.<boolean>} expandedProperty
    * @param {Object} [options]
    * @constructor
    */

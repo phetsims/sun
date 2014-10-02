@@ -16,7 +16,7 @@ define( function( require ) {
   /**
    * @param valueA {Object} one possible value for the toggle
    * @param valueB {Object} the other value for the toggle
-   * @param valueProperty {Property<Object>} axon property that can be either valueA or valueB.
+   * @param valueProperty {Property} axon property that can be either valueA or valueB.
    *        (Would have preferred to call this `property` but it would clash with the property function name.)
    * @constructor
    */
