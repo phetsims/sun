@@ -39,8 +39,16 @@ define( function( require ) {
     Node.call( thisNode );
 
     // correct size will be set by updateBackground
-    var background = new Rectangle( 0, 0, 1, 1, {stroke: options.stroke, lineWidth: options.lineWidth, fill: options.fill, pickable: options.backgroundPickable, lineDash: options.lineDash} );
+    var background = new Rectangle( 0, 0, 1, 1, {
+      lineWidth: options.lineWidth,
+      pickable: options.backgroundPickable,
+      lineDash: options.lineDash
+    } );
     this.background = background;
+    // update the fill and stroke
+    this.setStroke( options.stroke );
+    this.setFill( options.fill );
+
     this.addChild( background );
     this.addChild( content );
 
@@ -66,11 +74,34 @@ define( function( require ) {
 
   inherit( Node, Panel, {
 
-    //Setters for the background rectangle stroke
-    set stroke( s ) { this.background.stroke = s; },
+     // Change the background rectangle's stroke (can be overridden)
+    setStroke: function( stroke ) {
+      this.background.stroke = stroke;
+    },
 
-    //Getter for the background rectangle stroke
-    get stroke() {return this.background.stroke;}
+    // Get the background rectangle's stroke (can be overridden)
+    getStroke: function() {
+      return this.background.stroke;
+    },
+
+    // Getter/setter for background stroke
+    set stroke( value ) { this.setStroke( value ); },
+    get stroke() { return this.getStroke(); },
+
+
+    // Change the background rectangle's fill (can be overridden)
+    setFill: function( fill ) {
+      this.background.fill = fill;
+    },
+
+    // Get the background rectangle's fill (can be overridden)
+    getFill: function() {
+      return this.background.fill;
+    },
+
+    // Getter/setter for background fill
+    set fill( value ) { this.setFill( value ); },
+    get fill() { return this.getFill(); }
   } );
 
   return Panel;
