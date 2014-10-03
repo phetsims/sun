@@ -29,7 +29,7 @@ define( function( require ) {
     }, options );
 
     var thisNode = this;
-    Node.call( thisNode, options );
+    Node.call( thisNode );
 
     //Add an invisible node to make sure the layout for selected vs deselected is the same
     var background = new Rectangle( selectedNode.bounds.union( deselectedNode.bounds ) );
@@ -51,6 +51,8 @@ define( function( require ) {
         property.set( value );
       }
     } ) );
+
+    this.mutate( options );
   }
 
   inherit( Node, RadioButton );
