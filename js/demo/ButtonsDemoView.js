@@ -21,17 +21,17 @@ define( function( require ) {
   var RectangularButtonView = require( 'SUN/buttons/RectangularButtonView' );
   var RoundButtonView = require( 'SUN/buttons/RoundButtonView' );
   var RectangularPushButton = require( 'SUN/buttons/RectangularPushButton' );
-  var RefreshButton = require( 'SCENERY_PHET/RefreshButton' );
-  var ResetAllButton = require( 'SCENERY_PHET/ResetAllButton' );
-  var ReturnToLevelSelectButton = require( 'SCENERY_PHET/ReturnToLevelSelectButton' );
+  var RefreshButton = require( 'SCENERY_PHET/buttons/RefreshButton' );
+  var ResetAllButton = require( 'SCENERY_PHET/buttons/ResetAllButton' );
+  var ReturnToLevelSelectButton = require( 'SCENERY_PHET/buttons/ReturnToLevelSelectButton' );
   var RoundPushButton = require( 'SUN/buttons/RoundPushButton' );
   var RoundStickyToggleButton = require( 'SUN/buttons/RoundStickyToggleButton' );
   var SliderKnob = require( 'SUN/experimental/SliderKnob' );
   var ScreenView = require( 'JOIST/ScreenView' );
   var SimpleDragHandler = require( 'SCENERY/input/SimpleDragHandler' );
-  var SoundToggleButton = require( 'SCENERY_PHET/SoundToggleButton' );
+  var SoundToggleButton = require( 'SCENERY_PHET/buttons/SoundToggleButton' );
   var Text = require( 'SCENERY/nodes/Text' );
-  var TimerToggleButton = require( 'SCENERY_PHET/TimerToggleButton' );
+  var TimerToggleButton = require( 'SCENERY_PHET/buttons/TimerToggleButton' );
   var RadioButtonGroup = require( 'SUN/buttons/RadioButtonGroup' );
   var Panel = require( 'SUN/Panel' );
 
