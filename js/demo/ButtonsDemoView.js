@@ -53,7 +53,7 @@ define( function( require ) {
     // Radio buttons
     //===================================================================================
 
-    var radioButtonProperty = new Property( 'two' );
+    var radioButtonProperty = new Property( 'TWO' );
     radioButtonProperty.lazyLink( function( value ) {
       message( 'Radio button ' + value + ' pressed' );
     } );
