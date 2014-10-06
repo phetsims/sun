@@ -16,7 +16,7 @@ define( function( require ) {
   var Line = require( 'SCENERY/nodes/Line' );
   var Node = require( 'SCENERY/nodes/Node' );
   var OutsideBackgroundNode = require( 'SCENERY_PHET/OutsideBackgroundNode' );
-  var PhetFont = require( 'SCENERY_PHET/PhetFont' );
+  var Font = require( 'SCENERY/util/Font' );
   var Property = require( 'AXON/Property' );
   var RectangularButtonView = require( 'SUN/buttons/RectangularButtonView' );
   var RoundButtonView = require( 'SUN/buttons/RoundButtonView' );
@@ -36,8 +36,8 @@ define( function( require ) {
   var Panel = require( 'SUN/Panel' );
 
   // Constants
-  var BUTTON_FONT = new PhetFont( { size: 20 } );
-  var BUTTON_CAPTION_FONT = new PhetFont( { size: 16 } );
+  var BUTTON_FONT = new Font( { size: 20 } );
+  var BUTTON_CAPTION_FONT = new Font( { size: 16 } );
 
   function ButtonsDemoView() {
     ScreenView.call( this, { renderer: 'svg' } );
@@ -52,7 +52,7 @@ define( function( require ) {
     var buttonSpacing = 10;
 
     // Text area for outputting test information
-    var outputText = new Text( '(output text)', { font: new PhetFont( 16 ), bottom: this.layoutBounds.height - 5, left: this.layoutBounds.minX + 10  } );
+    var outputText = new Text( '(output text)', { font: new Font( { size: 16 } ), bottom: this.layoutBounds.height - 5, left: this.layoutBounds.minX + 10  } );
     this.addChild( outputText );
 
     // add refresh button and caption
@@ -428,7 +428,7 @@ define( function( require ) {
     } );
 
     // TODO: For debug, don't leave this here long term.
-    var debugText = new Text( '(debug text)', { font: new PhetFont( 16 ), bottom: outputText.top - 5, left: this.layoutBounds.minX + 10  } );
+    var debugText = new Text( '(debug text)', { font: new Font( { size: 16 } ), bottom: outputText.top - 5, left: this.layoutBounds.minX + 10  } );
     this.addChild( debugText );
     window.debugText = debugText;
   }
