@@ -13,7 +13,6 @@ define( function( require ) {
 
   // modules
   var Dimension2 = require( 'DOT/Dimension2' );
-  var FillHighlightListener = require( 'SCENERY_PHET/input/FillHighlightListener' );
   var inherit = require( 'PHET_CORE/inherit' );
   var LinearFunction = require( 'DOT/LinearFunction' );
   var Node = require( 'SCENERY/nodes/Node' );
@@ -22,6 +21,7 @@ define( function( require ) {
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var Shape = require( 'KITE/Shape' );
   var SimpleDragHandler = require( 'SCENERY/input/SimpleDragHandler' );
+  var ButtonListener = require( 'SCENERY/input/ButtonListener' );
 
   /**
    * @param {Property.<number>} valueProperty
@@ -115,8 +115,11 @@ define( function( require ) {
     var dy = 0.25 * thumb.height;
     thumb.touchArea = Shape.rectangle( ( -thumb.width / 2 ) - dx, ( -thumb.height / 2 ) - dy, thumb.width + dx + dx, thumb.height + dy + dy );
 
-    // highlight on mouse enter
-    thumb.addInputListener( new FillHighlightListener( options.thumbFillEnabled, options.thumbFillHighlighted, options.enabledProperty ) );
+    // highlight thumb on pointer over
+    thumb.addInputListener( new ButtonListener( {
+      over: function( event ) { if ( options.enabledProperty.get() ) { thumb.fill = options.thumbFillHighlighted; } },
+      up: function( event ) { if ( options.enabledProperty.get() ) { thumb.fill = options.thumbFillEnabled; } }
+    } ) );
 
     // update value when thumb is dragged
     var thumbHandler = new SimpleDragHandler( {
