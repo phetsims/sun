@@ -267,7 +267,7 @@ define( function( require ) {
     this.addChild( toggleButtonsBox );
 
     //===================================================================================
-    // Sliders
+    // Slider prototypes
     //===================================================================================
 
     // TODO: Mid-may 2014 - It has been requested that a slider knob be
