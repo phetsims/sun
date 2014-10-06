@@ -36,7 +36,6 @@ define( function( require ) {
   // constants
   var BUTTON_FONT = new Font( { size: 20 } );
   var BUTTON_CAPTION_FONT = new Font( { size: 16 } );
-  var BUTTON_BUTTON_X_SPACING = 10; // horizontal spacing between buttons
 
   function ButtonsDemoView() {
     ScreenView.call( this, { renderer: 'svg' } );
@@ -66,11 +65,11 @@ define( function( require ) {
       { value: 'three', node: new Text( 'THREE', { font: BUTTON_FONT } ) },
       { value: 'four', node: new Text( 'FOUR', { font: BUTTON_FONT } ) }
     ];
-    var radioButtons = new RadioButtonGroup( radioButtonProperty, radioButtonContent, {
+    var radioButtonGroup = new RadioButtonGroup( radioButtonProperty, radioButtonContent, {
       orientation: 'vertical',
       selectedLineWidth: 4
     } );
-    var radioButtonPanel = new Panel( radioButtons, {
+    var radioButtonPanel = new Panel( radioButtonGroup, {
       stroke: 'black',
       left: this.layoutBounds.left + 15,
       top: this.layoutBounds.top + 15
@@ -282,6 +281,7 @@ define( function( require ) {
 
       // Handler that moves the shape in model space.
       translate: function( translationParams ) {
+        //TODO this should not be possible if the slider is disabled
         if ( ( translationParams.delta.x > 0 && knob1.centerX < track1.width ) ||
              ( translationParams.delta.x < 0 && knob1.centerX > 0 ) ) {
           knob1.centerX += translationParams.delta.x;
@@ -328,6 +328,7 @@ define( function( require ) {
     } ) );
     var sliderPrototype3 = new Node( { children: [ track3, knob3 ] } );
 
+    //TODO putting these sliders in a VBox demonstrates that the sliders have resize problems at min/max values
     var slidersBox = new VBox( {
       spacing: 25,
       children: [ sliderPrototype1, sliderPrototype2, sliderPrototype3 ],
@@ -342,7 +343,7 @@ define( function( require ) {
 
     //TODO shouldn't all of these buttons should be able to observe a single 'enabled' property?
     buttonsEnabled.link( function( enabled ) {
-      radioButtons.enabled = enabled;
+      radioButtonGroup.enabled = enabled;
       buttonA.enabled = enabled;
       buttonB.enabled = enabled;
       buttonC.enabled = enabled;
