@@ -294,7 +294,6 @@ define( function( require ) {
     var sliderPrototype1 = new Node( { children: [ track1, knob1 ] } );
 
     // ----- 2 -------
-
     var track2 = new Line( 0, 0, 80, 0, { stroke: 'black', lineWidth: 6 } );
     var knob2 = new SliderKnob( { center: track2.center, baseColor: 'orange' } );
     knob2.addInputListener( new SimpleDragHandler( {
