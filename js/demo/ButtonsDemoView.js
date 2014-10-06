@@ -8,6 +8,7 @@
 define( function( require ) {
   'use strict';
 
+  // modules
   var BooleanRectangularStickyToggleButton = require( 'SUN/buttons/BooleanRectangularStickyToggleButton' );
   var BooleanRectangularToggleButtonWithContent = require( 'SUN/buttons/BooleanRectangularToggleButton' );
   var Color = require( 'SCENERY/util/Color' );
@@ -15,67 +16,34 @@ define( function( require ) {
   var inherit = require( 'PHET_CORE/inherit' );
   var Line = require( 'SCENERY/nodes/Line' );
   var Node = require( 'SCENERY/nodes/Node' );
-  var OutsideBackgroundNode = require( 'SCENERY_PHET/OutsideBackgroundNode' );
   var Font = require( 'SCENERY/util/Font' );
   var Property = require( 'AXON/Property' );
   var RectangularButtonView = require( 'SUN/buttons/RectangularButtonView' );
   var RoundButtonView = require( 'SUN/buttons/RoundButtonView' );
   var RectangularPushButton = require( 'SUN/buttons/RectangularPushButton' );
-  var RefreshButton = require( 'SCENERY_PHET/buttons/RefreshButton' );
-  var ResetAllButton = require( 'SCENERY_PHET/buttons/ResetAllButton' );
-  var ReturnToLevelSelectButton = require( 'SCENERY_PHET/buttons/ReturnToLevelSelectButton' );
   var RoundPushButton = require( 'SUN/buttons/RoundPushButton' );
   var RoundStickyToggleButton = require( 'SUN/buttons/RoundStickyToggleButton' );
   var SliderKnob = require( 'SUN/experimental/SliderKnob' );
   var ScreenView = require( 'JOIST/ScreenView' );
   var SimpleDragHandler = require( 'SCENERY/input/SimpleDragHandler' );
-  var SoundToggleButton = require( 'SCENERY_PHET/buttons/SoundToggleButton' );
   var Text = require( 'SCENERY/nodes/Text' );
-  var TimerToggleButton = require( 'SCENERY_PHET/buttons/TimerToggleButton' );
   var RadioButtonGroup = require( 'SUN/buttons/RadioButtonGroup' );
   var Panel = require( 'SUN/Panel' );
 
-  // Constants
+  // constants
   var BUTTON_FONT = new Font( { size: 20 } );
   var BUTTON_CAPTION_FONT = new Font( { size: 16 } );
+  var BUTTON_BUTTON_X_SPACING = 10; // horizontal spacing between buttons
 
   function ButtonsDemoView() {
     ScreenView.call( this, { renderer: 'svg' } );
 
-    // background
-    this.addChild( new OutsideBackgroundNode( this.layoutBounds.centerX, this.layoutBounds.centerY + 20, this.layoutBounds.width * 3, this.layoutBounds.height, this.layoutBounds.height ) );
     // Set up a property for testing button enable/disable.
     var buttonsEnabled = new Property( true );
-
-    // convenience vars for layout
-    var rightEdge = this.layoutBounds.width * 0.6;
-    var buttonSpacing = 10;
 
     // Text area for outputting test information
     var outputText = new Text( '(output text)', { font: new Font( { size: 16 } ), bottom: this.layoutBounds.height - 5, left: this.layoutBounds.minX + 10  } );
     this.addChild( outputText );
-
-    // add refresh button and caption
-    var refreshButton = new RefreshButton(
-      {
-        listener: function() { outputText.text = 'Refresh pressed'; },
-        right: rightEdge,
-        top: 10
-      } );
-    this.addChild( refreshButton );
-    var refreshButtonLabel = new Text( 'Refresh Button: ', { font: BUTTON_CAPTION_FONT, right: refreshButton.left - 5, centerY: refreshButton.centerY } );
-    this.addChild( refreshButtonLabel );
-
-    // add return to level select button and caption
-    var returnToLevelSelectButton = new ReturnToLevelSelectButton(
-      {
-        listener: function() { outputText.text = 'Return to level select pressed'; },
-        centerX: refreshButton.centerX,
-        top: refreshButton.bottom + buttonSpacing
-      } );
-    this.addChild( returnToLevelSelectButton );
-    var returnToLevelSelectButtonLabel = new Text( 'Return to Level Selection Button: ', { font: BUTTON_CAPTION_FONT, right: returnToLevelSelectButton.left - 5, centerY: returnToLevelSelectButton.centerY } );
-    this.addChild( returnToLevelSelectButtonLabel );
 
     // add radio buttons
     var radioButtonContent = [
@@ -97,35 +65,9 @@ define( function( require ) {
       outputText.text = 'Radio button ' + value + ' pressed';
     } );
 
-    // add sound toggle button
-    var soundEnabled = new Property( true );
-    var soundToggleButton = new SoundToggleButton( soundEnabled, { centerX: refreshButton.centerX, top: returnToLevelSelectButton.bottom + buttonSpacing * 5 } );
-    this.addChild( soundToggleButton );
-    var soundToggleButtonLabel = new Text( 'Sound Toggle Button: ', { font: BUTTON_CAPTION_FONT, right: soundToggleButton.left - 5, centerY: soundToggleButton.centerY } );
-    this.addChild( soundToggleButtonLabel );
-
-    // add timer toggle button
-    var timerEnabled = new Property( true );
-    var timerToggleButton = new TimerToggleButton( timerEnabled, { centerX: refreshButton.centerX, y: soundToggleButton.bottom + 5 } );
-    this.addChild( timerToggleButton );
-    var timerToggleButtonLabel = new Text( 'Timer Toggle Button: ', { font: BUTTON_CAPTION_FONT, right: timerToggleButton.left - 5, centerY: timerToggleButton.centerY } );
-    this.addChild( timerToggleButtonLabel );
-
     // Count variables, declared here so that they can be reset.
     var buttonCFireCount = 0;
     var fireOnDownCount = 0;
-
-    // Reset function
-    function resetAll() {
-      outputText.text = 'Reset All pressed';
-      buttonsEnabled.reset();
-      soundEnabled.reset();
-      timerEnabled.reset();
-      buttonCFireCount = 0;
-      fireOnDownCount = 0;
-      roundToggleButtonProperty.reset();
-      rectangularToggleButtonProperty.reset();
-    }
 
     // Test button behavior.
     var buttonA = new RectangularPushButton( {
@@ -229,18 +171,15 @@ define( function( require ) {
       listener: function() { outputText.text = 'HTML button pressed'; },
       baseColor: new Color( 64, 225, 0 ),
       centerX: buttonEnableButton.centerX,
-      top: buttonEnableButton.bottom + buttonSpacing
+      top: buttonEnableButton.bottom + BUTTON_BUTTON_X_SPACING
     } );
     this.addChild( htmlButton );
-
-    var resetAllButton = new ResetAllButton( { listener: resetAll, radius: 22, centerX: buttonC.centerX, centerY: buttonEnableButton.centerY } );
-    this.addChild( resetAllButton );
 
     var buttonD = new RoundPushButton( {
       content: new Text( '--- D ---', { font: BUTTON_FONT } ),
       listener: function() { outputText.text = 'Button D pressed'; },
-      left: resetAllButton.right + buttonSpacing,
-      centerY: resetAllButton.centerY
+      left: buttonEnableButton.right + 20,
+      centerY: buttonEnableButton.centerY
     } );
     this.addChild( buttonD );
 
@@ -248,7 +187,7 @@ define( function( require ) {
       content: new Text( '--- E ---', { font: BUTTON_FONT } ),
       listener: function() { outputText.text = 'Button E pressed'; },
       baseColor: new Color( 245, 184, 0 ),
-      left: buttonD.right + buttonSpacing,
+      left: buttonD.right + BUTTON_BUTTON_X_SPACING,
       centerY: buttonD.centerY
     } );
     this.addChild( buttonE );
@@ -257,7 +196,7 @@ define( function( require ) {
       content: new Text( 'Fire!', { font: BUTTON_FONT } ),
       listener: function() { outputText.text = 'Fire button pressed'; },
       baseColor: 'orange',
-      left: buttonE.right + buttonSpacing,
+      left: buttonE.right + BUTTON_BUTTON_X_SPACING,
       centerY: buttonE.centerY,
       stroke: 'black',
       lineWidth: 0.5
@@ -269,7 +208,7 @@ define( function( require ) {
       listener: function() { outputText.text = 'Go button pressed'; },
       baseColor: new Color( 0, 163, 0 ),
       minXPadding: 10,
-      centerX: resetAllButton.centerX,
+      centerX: buttonEnableButton.centerX,
       top: buttonE.bottom + 5
     } );
     this.addChild( goButton );
@@ -345,7 +284,7 @@ define( function( require ) {
     } ) );
     sliderPrototype1.addChild( sliderKnob );
     sliderPrototype1.centerX = htmlButton.centerX;
-    sliderPrototype1.top = htmlButton.bottom + buttonSpacing;
+    sliderPrototype1.top = htmlButton.bottom + BUTTON_BUTTON_X_SPACING;
     this.addChild( sliderPrototype1 );
 
     // ----- 2 -------
@@ -369,8 +308,8 @@ define( function( require ) {
       }
     } ) );
     sliderPrototype2.addChild( sliderKnob2 );
-    sliderPrototype2.left = refreshButton.right + 50;
-    sliderPrototype2.centerY = refreshButton.centerY;
+    sliderPrototype2.left = this.layoutBounds.centerX;
+    sliderPrototype2.centerY = this.layoutBounds.centerY;
     this.addChild( sliderPrototype2 );
 
     // ----- 3 -------
@@ -411,10 +350,6 @@ define( function( require ) {
       fireButton.enabled = enabled;
       goButton.enabled = enabled;
       helpButton.enabled = enabled;
-      refreshButton.enabled = enabled;
-      returnToLevelSelectButton.enabled = enabled;
-      soundToggleButton.enabled = enabled;
-      timerToggleButton.enabled = enabled;
       roundStickyToggleButton.enabled = enabled;
       booleanRectangularStickyToggleButton.enabled = enabled;
       transparentButton.enabled = enabled;
