@@ -148,7 +148,7 @@ define( function( require ) {
           }
         }
         if ( count !== 1 ) {
-          throw new Error( 'RadioButtonGroup does not have exactly one selected button' );
+          throw new Error( 'RadioButtonGroup does not have exactly one selected button for value=' + value );
         }
       }
     } );
