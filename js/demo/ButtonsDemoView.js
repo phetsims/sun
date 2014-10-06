@@ -29,6 +29,9 @@ define( function( require ) {
   var Text = require( 'SCENERY/nodes/Text' );
   var RadioButtonGroup = require( 'SUN/buttons/RadioButtonGroup' );
   var Panel = require( 'SUN/Panel' );
+  var HBox = require( 'SCENERY/nodes/HBox' );
+  var VBox = require( 'SCENERY/nodes/VBox' );
+  var Rectangle = require( 'SCENERY/nodes/Rectangle' );
 
   // constants
   var BUTTON_FONT = new Font( { size: 20 } );
@@ -41,187 +44,194 @@ define( function( require ) {
     // Set up a property for testing button enable/disable.
     var buttonsEnabled = new Property( true );
 
+    // Count variables, declared here so that they can be reset.
+    var buttonCFireCount = 0;
+    var fireOnDownCount = 0;
+
     // Text area for outputting test information
     var outputText = new Text( '(output text)', { font: new Font( { size: 16 } ), bottom: this.layoutBounds.height - 5, left: this.layoutBounds.minX + 10  } );
     this.addChild( outputText );
 
-    // add radio buttons
+    //===================================================================================
+    // Radio buttons
+    //===================================================================================
+
+    var radioButtonProperty = new Property( 'two' );
+    radioButtonProperty.link( function( value ) {
+      outputText.text = 'Radio button ' + value + ' pressed';
+    } );
     var radioButtonContent = [
       { value: 'one', node: new Text( 'ONE', { font: BUTTON_FONT } ) },
       { value: 'two', node: new Text( 'TWO', { font: BUTTON_FONT } ) },
       { value: 'three', node: new Text( 'THREE', { font: BUTTON_FONT } ) },
       { value: 'four', node: new Text( 'FOUR', { font: BUTTON_FONT } ) }
     ];
-    var radioButtonProperty = new Property( 'two' );
-    var radioButtons = new RadioButtonGroup( radioButtonProperty, radioButtonContent,
-      {
-        orientation: 'vertical',
-        y: 15,
-        selectedLineWidth: 4
-      } );
-    this.addChild( new Panel( radioButtons, {stroke: 'black', x: 5, y: 5} ) );
-
-    radioButtonProperty.link( function( value ) {
-      outputText.text = 'Radio button ' + value + ' pressed';
+    var radioButtons = new RadioButtonGroup( radioButtonProperty, radioButtonContent, {
+      orientation: 'vertical',
+      selectedLineWidth: 4
     } );
+    var radioButtonPanel = new Panel( radioButtons, {
+      stroke: 'black',
+      left: this.layoutBounds.left + 15,
+      top: this.layoutBounds.top + 15
+    } );
+    this.addChild( radioButtonPanel );
 
-    // Count variables, declared here so that they can be reset.
-    var buttonCFireCount = 0;
-    var fireOnDownCount = 0;
+    //===================================================================================
+    // Pseudo-3D buttons A, B, C, D, E
+    //===================================================================================
 
-    // Test button behavior.
     var buttonA = new RectangularPushButton( {
       content: new Text( '--- A ---', { font: BUTTON_FONT } ),
       listener: function() { outputText.text = 'Button A pressed'; },
-      left: 100,
-      top: 285
     } );
-    this.addChild( buttonA );
 
     var buttonB = new RectangularPushButton( {
       content: new Text( '--- B ---', { font: BUTTON_FONT } ),
       listener: function() { outputText.text = 'Button B pressed'; },
-      left: buttonA.right + 10,
-      centerY: buttonA.centerY,
       baseColor: new Color( 250, 0, 0 )
     } );
-    this.addChild( buttonB );
 
     var buttonC = new RectangularPushButton( {
       content: new Text( '--- C ---', { font: BUTTON_FONT } ),
-      listener: function() {
-        outputText.text = 'Button C pressed ' + ( ++buttonCFireCount ) + 'x';
-      },
-      left: buttonB.right + 10,
-      centerY: buttonB.centerY,
+      listener: function() { outputText.text = 'Button C pressed ' + ( ++buttonCFireCount ) + 'x'; },
       baseColor: 'rgb( 204, 102, 204 )'
     } );
-    this.addChild( buttonC );
 
-    var fireOnDownButton = new RectangularPushButton( {
-      content: new Text( 'Fire on Down Button', { font: BUTTON_FONT } ),
-      listener: function() { outputText.text = 'Fire on down button pressed ' + ( ++fireOnDownCount ) + 'x'; },
-      left: buttonC.right + 30,
-      centerY: buttonC.centerY,
-      baseColor: new Color( 255, 255, 61 ),
-      fireOnDown: true,
-      stroke: 'black',
-      lineWidth: 1
+    var buttonD = new RoundPushButton( {
+      content: new Text( '--- D ---', { font: BUTTON_FONT } ),
+      listener: function() { outputText.text = 'Button D pressed'; }
     } );
-    this.addChild( fireOnDownButton );
+
+    var buttonE = new RoundPushButton( {
+      content: new Text( '--- E ---', { font: BUTTON_FONT } ),
+      listener: function() { outputText.text = 'Button E pressed'; },
+      baseColor: new Color( 245, 184, 0 )
+    } );
+
+    var pseudo3DButtonsBox = new HBox( {
+      children: [ buttonA, buttonB, buttonC, buttonD, buttonE ],
+      spacing: 10,
+      left: radioButtonPanel.right + 25,
+      top: this.layoutBounds.top + 15
+    } );
+
+    this.addChild( pseudo3DButtonsBox );
+
+    //===================================================================================
+    // Flat buttons labeled 1, 2, 3, 4
+    //===================================================================================
 
     var button1 = new RectangularPushButton( {
       content: new Text( '-- 1 --', { font: BUTTON_FONT } ),
-      listener: function() {
-        outputText.text = 'Button 1 pressed ' + ( ++buttonCFireCount ) + 'x';
-      },
-      left: fireOnDownButton.right + 10,
-      centerY: fireOnDownButton.centerY,
+      listener: function() { outputText.text = 'Button 1 pressed ' + ( ++buttonCFireCount ) + 'x'; },
       baseColor: 'rgb( 204, 102, 204 )',
       buttonAppearanceStrategy: RectangularButtonView.flatAppearanceStrategy
     } );
-    this.addChild( button1 );
 
     var button2 = new RectangularPushButton( {
       content: new Text( '-- 2 --', { font: BUTTON_FONT } ),
-      listener: function() {
-        outputText.text = 'Button 2 pressed ' + ( ++buttonCFireCount ) + 'x';
-      },
-      centerX: button1.centerX,
-      top: button1.bottom + 10,
+      listener: function() { outputText.text = 'Button 2 pressed ' + ( ++buttonCFireCount ) + 'x'; },
       baseColor: '#A0D022',
       buttonAppearanceStrategy: RectangularButtonView.flatAppearanceStrategy,
       lineWidth: 1,
       stroke: '#202020'
     } );
-    this.addChild( button2 );
 
     var button3 = new RoundPushButton( {
       content: new Text( '- 3 -', { font: BUTTON_FONT } ),
-      listener: function() {
-        outputText.text = 'Button 3 pressed ';
-      },
-      centerX: button1.centerX,
-      top: button2.bottom + 10,
+      listener: function() { outputText.text = 'Button 3 pressed '; },
       buttonAppearanceStrategy: RoundButtonView.flatAppearanceStrategy
     } );
-    this.addChild( button3 );
 
     var button4 = new RoundPushButton( {
       content: new Text( '-- 4 --', { font: BUTTON_FONT, fill: 'white' } ),
-      listener: function() {
-        outputText.text = 'Button 4 pressed ';
-      },
+      listener: function() { outputText.text = 'Button 4 pressed '; },
       baseColor: '#CC3300',
-      centerX: button1.centerX,
-      top: button3.bottom + 10,
       buttonAppearanceStrategy: RoundButtonView.flatAppearanceStrategy
     } );
-    this.addChild( button4 );
 
-    var buttonEnableButton = new BooleanRectangularToggleButtonWithContent(
-      new Text( 'Disable Buttons', { font: BUTTON_CAPTION_FONT } ),
-      new Text( 'Enable Buttons', { font: BUTTON_CAPTION_FONT } ),
-      buttonsEnabled,
-      { baseColor: new Color( 204, 255, 51 ), left: buttonA.left, top: buttonA.bottom + 30 }
-    );
-    this.addChild( buttonEnableButton );
-
-    var htmlButton = new HTMLPushButton( 'HTML <em>button</em> <b>example</b>', {
-      listener: function() { outputText.text = 'HTML button pressed'; },
-      baseColor: new Color( 64, 225, 0 ),
-      centerX: buttonEnableButton.centerX,
-      top: buttonEnableButton.bottom + BUTTON_BUTTON_X_SPACING
+    var flatButtonsBox = new HBox( {
+      children: [ button1, button2, button3, button4 ],
+      spacing: 10,
+      left: pseudo3DButtonsBox.left,
+      top: pseudo3DButtonsBox.bottom + 30
     } );
-    this.addChild( htmlButton );
+    this.addChild( flatButtonsBox );
 
-    var buttonD = new RoundPushButton( {
-      content: new Text( '--- D ---', { font: BUTTON_FONT } ),
-      listener: function() { outputText.text = 'Button D pressed'; },
-      left: buttonEnableButton.right + 20,
-      centerY: buttonEnableButton.centerY
-    } );
-    this.addChild( buttonD );
-
-    var buttonE = new RoundPushButton( {
-      content: new Text( '--- E ---', { font: BUTTON_FONT } ),
-      listener: function() { outputText.text = 'Button E pressed'; },
-      baseColor: new Color( 245, 184, 0 ),
-      left: buttonD.right + BUTTON_BUTTON_X_SPACING,
-      centerY: buttonD.centerY
-    } );
-    this.addChild( buttonE );
+    //===================================================================================
+    // Fire! Go! Help! buttons
+    //===================================================================================
 
     var fireButton = new RoundPushButton( {
       content: new Text( 'Fire!', { font: BUTTON_FONT } ),
       listener: function() { outputText.text = 'Fire button pressed'; },
       baseColor: 'orange',
-      left: buttonE.right + BUTTON_BUTTON_X_SPACING,
-      centerY: buttonE.centerY,
       stroke: 'black',
       lineWidth: 0.5
     } );
-    this.addChild( fireButton );
 
     var goButton = new RoundPushButton( {
       content: new Text( 'Go!', { font: BUTTON_FONT } ),
       listener: function() { outputText.text = 'Go button pressed'; },
       baseColor: new Color( 0, 163, 0 ),
-      minXPadding: 10,
-      centerX: buttonEnableButton.centerX,
-      top: buttonE.bottom + 5
+      minXPadding: 10
     } );
-    this.addChild( goButton );
 
     var helpButton = new RoundPushButton( {
       content: new Text( 'Help', { font: BUTTON_FONT } ),
       listener: function() { outputText.text = 'Help button pressed'; },
       baseColor: new Color( 244, 154, 194 ),
-      minXPadding: 10,
-      left: goButton.right + 5,
-      centerY: goButton.centerY
+      minXPadding: 10
     } );
-    this.addChild( helpButton );
+
+    var actionButtonsBox = new HBox( {
+      children: [ fireButton, goButton, helpButton ],
+      spacing: 15,
+      left: flatButtonsBox.left,
+      top: flatButtonsBox.bottom + 25
+    } );
+    this.addChild( actionButtonsBox );
+
+    //===================================================================================
+    // Miscellaneous other button examples
+    //===================================================================================
+
+    var fireOnDownButton = new RectangularPushButton( {
+      content: new Text( 'Fire on Down Button', { font: BUTTON_FONT } ),
+      listener: function() { outputText.text = 'Fire on down button pressed ' + ( ++fireOnDownCount ) + 'x'; },
+      baseColor: new Color( 255, 255, 61 ),
+      fireOnDown: true,
+      stroke: 'black',
+      lineWidth: 1
+    } );
+
+    var htmlButton = new HTMLPushButton( 'HTML <em>button</em> <b>example</b>', {
+      listener: function() { outputText.text = 'HTML button pressed'; },
+      baseColor: new Color( 64, 225, 0 )
+    } );
+
+    // transparent button with something behind it
+    var rectangleNode = new Rectangle( 0, 0, 25, 50, { fill: 'red' } );
+    var transparentButton = new RectangularPushButton( {
+      content: new Text( 'Transparent Button', { font: BUTTON_FONT } ),
+      listener: function() { outputText.text = 'Transparent button pressed'; },
+      baseColor: new Color( 255, 255, 0, 0.7 ),
+      center: rectangleNode.center
+    } );
+    var transparentParent = new Node( { children: [ rectangleNode, transparentButton ] } );
+
+    var miscButtonsBox = new VBox( {
+      children: [ fireOnDownButton, htmlButton, transparentParent ],
+      spacing: 15,
+      left: actionButtonsBox.left,
+      top: actionButtonsBox.bottom + 25
+    } );
+    this.addChild( miscButtonsBox );
+
+    //===================================================================================
+    // Toggle buttons
+    //===================================================================================
 
     // Demonstrate using arbitrary values for toggle button.  Wrap in extra
     // quotes so it is clear that it is a string in the debugging UI.
@@ -234,7 +244,6 @@ define( function( require ) {
       left: helpButton.right + 5,
       centerY: goButton.centerY
     } );
-    this.addChild( roundStickyToggleButton );
 
     var rectangularToggleButtonProperty = new Property( false );
     rectangularToggleButtonProperty.lazyLink( function( toggleButton ) {
@@ -247,120 +256,124 @@ define( function( require ) {
       minWidth: 50,
       minHeight: 35
     } );
-    this.addChild( booleanRectangularStickyToggleButton );
 
-    var transparentButton = new RectangularPushButton( {
-      content: new Text( 'Transparent Button', { font: BUTTON_FONT } ),
-      listener: function() { outputText.text = 'Transparent button pressed'; },
-      left: helpButton.centerX,
-      top: roundStickyToggleButton.bottom - 10,
-      baseColor: new Color( 255, 255, 0, 0.7 )
+    var toggleButtonsBox = new VBox( {
+      children: [ roundStickyToggleButton, booleanRectangularStickyToggleButton ],
+      spacing: 15,
+      left: miscButtonsBox.right + 25,
+      top: miscButtonsBox.top
     } );
-    this.addChild( transparentButton );
+    this.addChild( toggleButtonsBox );
+
+    //===================================================================================
+    // Sliders
+    //===================================================================================
 
     // TODO: Mid-may 2014 - It has been requested that a slider knob be
     // TODO: created that uses the new button look.  Below is an attempt at
     // TODO: this.  It should be removed when finalised.
 
     // ----- 1 -------
-    var sliderPrototype1 = new Node();
     var track1 = new Line( 0, 0, 80, 0, { stroke: 'black', lineWidth: 6 } );
-    sliderPrototype1.addChild( track1 );
-
-    var sliderKnob = new SliderKnob( { center: track1.center } );
-
-    sliderKnob.addInputListener( new SimpleDragHandler( {
+    var knob1 = new SliderKnob( { center: track1.center } ); //TODO UX APIs typically call this SliderThumb, not SliderKnob
+    knob1.addInputListener( new SimpleDragHandler( {  //TODO listener should be an option to SliderKnob
       // Allow moving a finger (touch) across a node to pick it up.
       allowTouchSnag: true,
 
       // Handler that moves the shape in model space.
       translate: function( translationParams ) {
-        if ( ( translationParams.delta.x > 0 && sliderKnob.centerX < track1.width ) ||
-             ( translationParams.delta.x < 0 && sliderKnob.centerX > 0 ) ) {
-          sliderKnob.centerX += translationParams.delta.x;
+        if ( ( translationParams.delta.x > 0 && knob1.centerX < track1.width ) ||
+             ( translationParams.delta.x < 0 && knob1.centerX > 0 ) ) {
+          knob1.centerX += translationParams.delta.x;
         }
         return translationParams.position;
       }
     } ) );
-    sliderPrototype1.addChild( sliderKnob );
-    sliderPrototype1.centerX = htmlButton.centerX;
-    sliderPrototype1.top = htmlButton.bottom + BUTTON_BUTTON_X_SPACING;
-    this.addChild( sliderPrototype1 );
+    var sliderPrototype1 = new Node( { children: [ track1, knob1 ] } );
 
     // ----- 2 -------
-    var sliderPrototype2 = new Node();
+
     var track2 = new Line( 0, 0, 80, 0, { stroke: 'black', lineWidth: 6 } );
-    sliderPrototype2.addChild( track2 );
-
-    var sliderKnob2 = new SliderKnob( { center: track2.center, baseColor: 'orange' } );
-
-    sliderKnob2.addInputListener( new SimpleDragHandler( {
+    var knob2 = new SliderKnob( { center: track2.center, baseColor: 'orange' } );
+    knob2.addInputListener( new SimpleDragHandler( {
       // Allow moving a finger (touch) across a node to pick it up.
       allowTouchSnag: true,
 
       // Handler that moves the shape in model space.
       translate: function( translationParams ) {
-        if ( ( translationParams.delta.x > 0 && sliderKnob2.centerX < track2.width ) ||
-             ( translationParams.delta.x < 0 && sliderKnob2.centerX > 0 ) ) {
-          sliderKnob2.centerX += translationParams.delta.x;
+        if ( ( translationParams.delta.x > 0 && knob2.centerX < track2.width ) ||
+             ( translationParams.delta.x < 0 && knob2.centerX > 0 ) ) {
+          knob2.centerX += translationParams.delta.x;
         }
         return translationParams.position;
       }
     } ) );
-    sliderPrototype2.addChild( sliderKnob2 );
-    sliderPrototype2.left = this.layoutBounds.centerX;
-    sliderPrototype2.centerY = this.layoutBounds.centerY;
-    this.addChild( sliderPrototype2 );
+    var sliderPrototype2 = new Node( { children: [ track2, knob2 ] } );
 
     // ----- 3 -------
-    var sliderPrototype3 = new Node();
     var track3 = new Line( 0, 0, 80, 0, { stroke: 'black', lineWidth: 6 } );
-    sliderPrototype3.addChild( track3 );
-
-    var sliderKnob3 = new SliderKnob( { center: track3.center, width: 15, baseColor: '#00CC66', stroke: 'black', centerIndentWidth: 0 } );
-
-    sliderKnob3.addInputListener( new SimpleDragHandler( {
+    var knob3 = new SliderKnob( { center: track3.center, width: 15, baseColor: '#00CC66', stroke: 'black', centerIndentWidth: 0 } );
+    knob3.addInputListener( new SimpleDragHandler( {
       // Allow moving a finger (touch) across a node to pick it up.
       allowTouchSnag: true,
 
       // Handler that moves the shape in model space.
       translate: function( translationParams ) {
-        if ( ( translationParams.delta.x > 0 && sliderKnob3.centerX < track3.width ) ||
-             ( translationParams.delta.x < 0 && sliderKnob3.centerX > 0 ) ) {
-          sliderKnob3.centerX += translationParams.delta.x;
+        if ( ( translationParams.delta.x > 0 && knob3.centerX < track3.width ) ||
+             ( translationParams.delta.x < 0 && knob3.centerX > 0 ) ) {
+          knob3.centerX += translationParams.delta.x;
         }
         return translationParams.position;
       }
     } ) );
-    sliderPrototype3.addChild( sliderKnob3 );
-    sliderPrototype3.left = sliderPrototype2.left;
-    sliderPrototype3.top = sliderPrototype2.bottom + 30;
-    this.addChild( sliderPrototype3 );
+    var sliderPrototype3 = new Node( { children: [ track3, knob3 ] } );
 
-    // TODO: End of slider knob prototype(s)
+    var slidersBox = new VBox( {
+      spacing: 25,
+      children: [ sliderPrototype1, sliderPrototype2, sliderPrototype3 ],
+      right: this.layoutBounds.right - 15,
+      top: this.layoutBounds.top + 15
+    } );
+    this.addChild( slidersBox );
 
-    // Hook up button enable property
+    //===================================================================================
+    // Enable/Disable buttons
+    //===================================================================================
+
+    //TODO shouldn't all of these buttons should be able to observe a single 'enabled' property?
     buttonsEnabled.link( function( enabled ) {
+      radioButtons.enabled = enabled;
       buttonA.enabled = enabled;
       buttonB.enabled = enabled;
       buttonC.enabled = enabled;
       buttonD.enabled = enabled;
       buttonE.enabled = enabled;
-      fireOnDownButton.enabled = enabled;
-      fireButton.enabled = enabled;
-      goButton.enabled = enabled;
-      helpButton.enabled = enabled;
-      roundStickyToggleButton.enabled = enabled;
-      booleanRectangularStickyToggleButton.enabled = enabled;
-      transparentButton.enabled = enabled;
-      htmlButton.enabled = enabled;
       button1.enabled = enabled;
       button2.enabled = enabled;
       button3.enabled = enabled;
       button4.enabled = enabled;
-      sliderKnob.enabled = enabled;
-      radioButtons.enabled = enabled;
+      fireButton.enabled = enabled;
+      goButton.enabled = enabled;
+      helpButton.enabled = enabled;
+      fireOnDownButton.enabled = enabled;
+      htmlButton.enabled = enabled;
+      transparentButton.enabled = enabled;
+      roundStickyToggleButton.enabled = enabled;
+      booleanRectangularStickyToggleButton.enabled = enabled;
+      knob1.enabled = enabled; //TODO enabled should be a property of slider, not knob
+      knob2.enabled = enabled;
+      knob3.enabled = enabled;
     } );
+    var enableDisableButton = new BooleanRectangularToggleButtonWithContent(
+      new Text( 'Disable Buttons', { font: BUTTON_CAPTION_FONT } ),
+      new Text( 'Enable Buttons', { font: BUTTON_CAPTION_FONT } ),
+      buttonsEnabled, {
+        baseColor: new Color( 204, 255, 51 ),
+        right: this.layoutBounds.right - 15,
+        bottom: this.layoutBounds.bottom - 15
+      }
+    );
+    this.addChild( enableDisableButton );
 
     // TODO: For debug, don't leave this here long term.
     var debugText = new Text( '(debug text)', { font: new Font( { size: 16 } ), bottom: outputText.top - 5, left: this.layoutBounds.minX + 10  } );
@@ -368,9 +381,5 @@ define( function( require ) {
     window.debugText = debugText;
   }
 
-  return inherit( ScreenView, ButtonsDemoView, {
-    step: function( timeElapsed ) {
-      // Does nothing for now.
-    }
-  } );
+  return inherit( ScreenView, ButtonsDemoView );
 } );
