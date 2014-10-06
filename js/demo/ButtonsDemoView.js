@@ -38,12 +38,10 @@ define( function( require ) {
   var BUTTON_CAPTION_FONT = new Font( { size: 16 } );
 
   function ButtonsDemoView() {
+
     ScreenView.call( this, { renderer: 'svg' } );
 
-    // Set up a property for testing button enable/disable.
-    var buttonsEnabled = new Property( true );
-
-    // Text area for outputting test information
+    // Message area, for outputting test message
     var messagePrefix = 'Message: ';
     var messageText = new Text( messagePrefix, { font: new Font( { size: 16 } ), bottom: this.layoutBounds.height - 5, left: this.layoutBounds.minX + 10  } );
     this.addChild( messageText );
@@ -162,6 +160,8 @@ define( function( require ) {
     //===================================================================================
     // Fire! Go! Help! buttons
     //===================================================================================
+
+    //TODO what purpose do these buttons serve that buttons A-D don't serve?
 
     var fireButton = new RoundPushButton( {
       content: new Text( 'Fire!', { font: BUTTON_FONT } ),
@@ -343,8 +343,10 @@ define( function( require ) {
     // Enable/Disable buttons
     //===================================================================================
 
-    //TODO shouldn't all of these buttons should be able to observe a single 'enabled' property?
-    buttonsEnabled.link( function( enabled ) {
+    //TODO Shouldn't all of these buttons be able to observe buttonEnabledProperty?
+    // Set up a property for testing button enable/disable.
+    var buttonsEnabledProperty = new Property( true );
+    buttonsEnabledProperty.link( function( enabled ) {
       radioButtonGroup.enabled = enabled;
       buttonA.enabled = enabled;
       buttonB.enabled = enabled;
@@ -370,7 +372,7 @@ define( function( require ) {
     var disableEnableButton = new BooleanRectangularToggleButtonWithContent(
       new Text( 'Disable Buttons', { font: BUTTON_CAPTION_FONT } ),
       new Text( 'Enable Buttons', { font: BUTTON_CAPTION_FONT } ),
-      buttonsEnabled, {
+      buttonsEnabledProperty, {
         baseColor: new Color( 204, 255, 51 ),
         right: this.layoutBounds.right - 15,
         bottom: this.layoutBounds.bottom - 15
