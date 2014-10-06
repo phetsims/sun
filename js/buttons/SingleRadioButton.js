@@ -16,8 +16,8 @@ define( function( require ) {
   var RadioButtonModel = require( 'SUN/buttons/RadioButtonModel' );
 
   /**
-   * @param value {Object} value when this radio button is selected
-   * @param property {Property} axon property that can take on a set of values, one for each radio button in the
+   * @param {Object} value value when this radio button is selected
+   * @param {Property} property axon property that can take on a set of values, one for each radio button in the
    * group
    * @param {Object} [options]
    * @constructor

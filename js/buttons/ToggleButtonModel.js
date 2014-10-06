@@ -14,9 +14,9 @@ define( function( require ) {
   var ButtonModel = require( 'SUN/buttons/ButtonModel' );
 
   /**
-   * @param valueA {Object} one possible value for the toggle
-   * @param valueB {Object} the other value for the toggle
-   * @param valueProperty {Property} axon property that can be either valueA or valueB.
+   * @param {Object} valueA one possible value for the toggle
+   * @param {Object} valueB the other value for the toggle
+   * @param {Property} valueProperty axon property that can be either valueA or valueB.
    *        (Would have preferred to call this `property` but it would clash with the property function name.)
    * @constructor
    */

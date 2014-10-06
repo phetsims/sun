@@ -18,9 +18,9 @@ define( function( require ) {
   var StickyToggleButtonModel = require( 'SUN/buttons/StickyToggleButtonModel' );
 
   /**
-   * @param valueUp {Object} value when the toggle is in the 'up' position
-   * @param valueDown {Object} value when the toggle is in the 'down' position
-   * @param property {Property} axon property that can be either valueUp or valueDown.
+   * @param {Object} valueUp value when the toggle is in the 'up' position
+   * @param {Object} valueDown value when the toggle is in the 'down' position
+   * @param {Property} property axon property that can be either valueUp or valueDown.
    * @param {Object} [options]
    * @constructor
    */
