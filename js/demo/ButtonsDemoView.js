@@ -365,7 +365,7 @@ define( function( require ) {
       knob2.enabled = enabled;
       knob3.enabled = enabled;
     } );
-    var enableDisableButton = new BooleanRectangularToggleButtonWithContent(
+    var disableEnableButton = new BooleanRectangularToggleButtonWithContent(
       new Text( 'Disable Buttons', { font: BUTTON_CAPTION_FONT } ),
       new Text( 'Enable Buttons', { font: BUTTON_CAPTION_FONT } ),
       buttonsEnabled, {
@@ -374,7 +374,7 @@ define( function( require ) {
         bottom: this.layoutBounds.bottom - 15
       }
     );
-    this.addChild( enableDisableButton );
+    this.addChild( disableEnableButton );
 
     // TODO: For debug, don't leave this here long term.
     var debugText = new Text( '(debug text)', { font: new Font( { size: 16 } ), bottom: outputText.top - 5, left: this.layoutBounds.minX + 10  } );
