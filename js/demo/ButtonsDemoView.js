@@ -58,10 +58,10 @@ define( function( require ) {
       message( 'Radio button ' + value + ' pressed' );
     } );
     var radioButtonContent = [
-      { value: 'ONE', node: new Text( 'ONE', { font: BUTTON_FONT } ) },
-      { value: 'TWO', node: new Text( 'TWO', { font: BUTTON_FONT } ) },
-      { value: 'THREE', node: new Text( 'THREE', { font: BUTTON_FONT } ) },
-      { value: 'FOUR', node: new Text( 'FOUR', { font: BUTTON_FONT } ) }
+      { value: 'one', node: new Text( 'ONE', { font: BUTTON_FONT } ) },
+      { value: 'two', node: new Text( 'TWO', { font: BUTTON_FONT } ) },
+      { value: 'three', node: new Text( 'THREE', { font: BUTTON_FONT } ) },
+      { value: 'four', node: new Text( 'FOUR', { font: BUTTON_FONT } ) }
     ];
     var radioButtonGroup = new RadioButtonGroup( radioButtonProperty, radioButtonContent, {
       orientation: 'vertical',
