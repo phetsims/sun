@@ -43,27 +43,27 @@ define( function( require ) {
     // Set up a property for testing button enable/disable.
     var buttonsEnabled = new Property( true );
 
-    // Count variables, declared here so that they can be reset.
-    var buttonCFireCount = 0;
-    var fireOnDownCount = 0;
-
     // Text area for outputting test information
-    var outputText = new Text( '(output text)', { font: new Font( { size: 16 } ), bottom: this.layoutBounds.height - 5, left: this.layoutBounds.minX + 10  } );
-    this.addChild( outputText );
+    var messagePrefix = 'Message: ';
+    var messageText = new Text( messagePrefix, { font: new Font( { size: 16 } ), bottom: this.layoutBounds.height - 5, left: this.layoutBounds.minX + 10  } );
+    this.addChild( messageText );
+    var message = function( text ) {
+      messageText.text = messagePrefix + text;
+    };
 
     //===================================================================================
     // Radio buttons
     //===================================================================================
 
     var radioButtonProperty = new Property( 'two' );
-    radioButtonProperty.link( function( value ) {
-      outputText.text = 'Radio button ' + value + ' pressed';
+    radioButtonProperty.lazyLink( function( value ) {
+      message( 'Radio button ' + value + ' pressed' );
     } );
     var radioButtonContent = [
-      { value: 'one', node: new Text( 'ONE', { font: BUTTON_FONT } ) },
-      { value: 'two', node: new Text( 'TWO', { font: BUTTON_FONT } ) },
-      { value: 'three', node: new Text( 'THREE', { font: BUTTON_FONT } ) },
-      { value: 'four', node: new Text( 'FOUR', { font: BUTTON_FONT } ) }
+      { value: 'ONE', node: new Text( 'ONE', { font: BUTTON_FONT } ) },
+      { value: 'TWO', node: new Text( 'TWO', { font: BUTTON_FONT } ) },
+      { value: 'THREE', node: new Text( 'THREE', { font: BUTTON_FONT } ) },
+      { value: 'FOUR', node: new Text( 'FOUR', { font: BUTTON_FONT } ) }
     ];
     var radioButtonGroup = new RadioButtonGroup( radioButtonProperty, radioButtonContent, {
       orientation: 'vertical',
@@ -80,31 +80,32 @@ define( function( require ) {
     // Pseudo-3D buttons A, B, C, D, E
     //===================================================================================
 
+    var buttonAFireCount = 0;
     var buttonA = new RectangularPushButton( {
       content: new Text( '--- A ---', { font: BUTTON_FONT } ),
-      listener: function() { outputText.text = 'Button A pressed'; },
+      listener: function() { message( 'Button A pressed ' + ( ++buttonAFireCount ) + 'x' ); }
     } );
 
     var buttonB = new RectangularPushButton( {
       content: new Text( '--- B ---', { font: BUTTON_FONT } ),
-      listener: function() { outputText.text = 'Button B pressed'; },
+      listener: function() { message( 'Button B pressed' ); },
       baseColor: new Color( 250, 0, 0 )
     } );
 
     var buttonC = new RectangularPushButton( {
       content: new Text( '--- C ---', { font: BUTTON_FONT } ),
-      listener: function() { outputText.text = 'Button C pressed ' + ( ++buttonCFireCount ) + 'x'; },
+      listener: function() { message( 'Button C pressed' ); },
       baseColor: 'rgb( 204, 102, 204 )'
     } );
 
     var buttonD = new RoundPushButton( {
       content: new Text( '--- D ---', { font: BUTTON_FONT } ),
-      listener: function() { outputText.text = 'Button D pressed'; }
+      listener: function() { message( 'Button D pressed' ); }
     } );
 
     var buttonE = new RoundPushButton( {
       content: new Text( '--- E ---', { font: BUTTON_FONT } ),
-      listener: function() { outputText.text = 'Button E pressed'; },
+      listener: function() { message( 'Button E pressed' ); },
       baseColor: new Color( 245, 184, 0 )
     } );
 
@@ -123,14 +124,14 @@ define( function( require ) {
 
     var button1 = new RectangularPushButton( {
       content: new Text( '-- 1 --', { font: BUTTON_FONT } ),
-      listener: function() { outputText.text = 'Button 1 pressed ' + ( ++buttonCFireCount ) + 'x'; },
+      listener: function() { message( 'Button 1 pressed' ); },
       baseColor: 'rgb( 204, 102, 204 )',
       buttonAppearanceStrategy: RectangularButtonView.flatAppearanceStrategy
     } );
 
     var button2 = new RectangularPushButton( {
       content: new Text( '-- 2 --', { font: BUTTON_FONT } ),
-      listener: function() { outputText.text = 'Button 2 pressed ' + ( ++buttonCFireCount ) + 'x'; },
+      listener: function() { message( 'Button 2 pressed' ); },
       baseColor: '#A0D022',
       buttonAppearanceStrategy: RectangularButtonView.flatAppearanceStrategy,
       lineWidth: 1,
@@ -139,13 +140,13 @@ define( function( require ) {
 
     var button3 = new RoundPushButton( {
       content: new Text( '- 3 -', { font: BUTTON_FONT } ),
-      listener: function() { outputText.text = 'Button 3 pressed '; },
+      listener: function() { message( 'Button 3 pressed ' ); },
       buttonAppearanceStrategy: RoundButtonView.flatAppearanceStrategy
     } );
 
     var button4 = new RoundPushButton( {
       content: new Text( '-- 4 --', { font: BUTTON_FONT, fill: 'white' } ),
-      listener: function() { outputText.text = 'Button 4 pressed '; },
+      listener: function() { message( 'Button 4 pressed ' ); },
       baseColor: '#CC3300',
       buttonAppearanceStrategy: RoundButtonView.flatAppearanceStrategy
     } );
@@ -164,7 +165,7 @@ define( function( require ) {
 
     var fireButton = new RoundPushButton( {
       content: new Text( 'Fire!', { font: BUTTON_FONT } ),
-      listener: function() { outputText.text = 'Fire button pressed'; },
+      listener: function() { message( 'Fire button pressed' ); },
       baseColor: 'orange',
       stroke: 'black',
       lineWidth: 0.5
@@ -172,14 +173,14 @@ define( function( require ) {
 
     var goButton = new RoundPushButton( {
       content: new Text( 'Go!', { font: BUTTON_FONT } ),
-      listener: function() { outputText.text = 'Go button pressed'; },
+      listener: function() { message( 'Go button pressed' ); },
       baseColor: new Color( 0, 163, 0 ),
       minXPadding: 10
     } );
 
     var helpButton = new RoundPushButton( {
       content: new Text( 'Help', { font: BUTTON_FONT } ),
-      listener: function() { outputText.text = 'Help button pressed'; },
+      listener: function() { message( 'Help button pressed' ); },
       baseColor: new Color( 244, 154, 194 ),
       minXPadding: 10
     } );
@@ -196,9 +197,10 @@ define( function( require ) {
     // Miscellaneous other button examples
     //===================================================================================
 
+    var fireOnDownCount = 0;
     var fireOnDownButton = new RectangularPushButton( {
       content: new Text( 'Fire on Down Button', { font: BUTTON_FONT } ),
-      listener: function() { outputText.text = 'Fire on down button pressed ' + ( ++fireOnDownCount ) + 'x'; },
+      listener: function() { message( 'Fire on down button pressed ' + ( ++fireOnDownCount ) + 'x' ); },
       baseColor: new Color( 255, 255, 61 ),
       fireOnDown: true,
       stroke: 'black',
@@ -206,7 +208,7 @@ define( function( require ) {
     } );
 
     var htmlButton = new HTMLPushButton( 'HTML <em>button</em> <b>example</b>', {
-      listener: function() { outputText.text = 'HTML button pressed'; },
+      listener: function() { message( 'HTML button pressed' ); },
       baseColor: new Color( 64, 225, 0 )
     } );
 
@@ -214,7 +216,7 @@ define( function( require ) {
     var rectangleNode = new Rectangle( 0, 0, 25, 50, { fill: 'red' } );
     var transparentButton = new RectangularPushButton( {
       content: new Text( 'Transparent Button', { font: BUTTON_FONT } ),
-      listener: function() { outputText.text = 'Transparent button pressed'; },
+      listener: function() { message( 'Transparent button pressed' ); },
       baseColor: new Color( 255, 255, 0, 0.7 ),
       center: rectangleNode.center
     } );
@@ -235,8 +237,8 @@ define( function( require ) {
     // Demonstrate using arbitrary values for toggle button.  Wrap in extra
     // quotes so it is clear that it is a string in the debugging UI.
     var roundToggleButtonProperty = new Property( '"off"' );
-    roundToggleButtonProperty.lazyLink( function( toggleButton ) {
-      outputText.text = "Round sticky toggle button state changed to: " + toggleButton;
+    roundToggleButtonProperty.lazyLink( function( value ) {
+      message( 'Round sticky toggle button state changed to: ' + value );
     } );
     var roundStickyToggleButton = new RoundStickyToggleButton( '"off"', '"on"', roundToggleButtonProperty, {
       baseColor: new Color( 255, 0, 0 ),
@@ -245,8 +247,8 @@ define( function( require ) {
     } );
 
     var rectangularToggleButtonProperty = new Property( false );
-    rectangularToggleButtonProperty.lazyLink( function( toggleButton ) {
-      outputText.text = 'Rectangular sticky toggle button state changed to: ' + toggleButton;
+    rectangularToggleButtonProperty.lazyLink( function( value ) {
+      message( 'Rectangular sticky toggle button state changed to: ' + value );
     } );
     var booleanRectangularStickyToggleButton = new BooleanRectangularStickyToggleButton( rectangularToggleButtonProperty, {
       baseColor: new Color( 0, 200, 200 ),
@@ -377,7 +379,7 @@ define( function( require ) {
     this.addChild( disableEnableButton );
 
     // TODO: For debug, don't leave this here long term.
-    var debugText = new Text( '(debug text)', { font: new Font( { size: 16 } ), bottom: outputText.top - 5, left: this.layoutBounds.minX + 10  } );
+    var debugText = new Text( '(debug text)', { font: new Font( { size: 16 } ), bottom: messageText.top - 5, left: this.layoutBounds.minX + 10  } );
     this.addChild( debugText );
     window.debugText = debugText;
   }
