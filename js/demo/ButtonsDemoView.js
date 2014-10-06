@@ -59,7 +59,7 @@ define( function( require ) {
         y: 15,
         selectedLineWidth: 4
       } );
-    this.addChild( new Panel( radioButtons, {stroke: null, x: 5, y: 5} ) );
+    this.addChild( new Panel( radioButtons, {stroke: 'black', x: 5, y: 5} ) );
 
     radioButtonProperty.link( function( value ) {
       outputText.text = 'Radio button ' + value + ' pressed';
