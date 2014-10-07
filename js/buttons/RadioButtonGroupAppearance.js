@@ -2,8 +2,6 @@
 
 /**
  * Defines the appearance of the radio buttons, see RadioButtonGroup.js
- * TODO: The appearance should be customizable
- * TODO: There is much duplicated here, and copied from RectangularButtonView.  We should find a way to consolidate.
  *
  * @author Sam Reid (PhET Interactive Simulations)
  * @author Aaron Davis (PhET Interactive Simulations)
@@ -15,6 +13,9 @@ define( function( require ) {
   var inherit = require( 'PHET_CORE/inherit' );
   var Color = require( 'SCENERY/util/Color' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
+
+  // constants
+  var DISABLED_OPACITY = 0.3;
 
   /**
    *
@@ -86,7 +87,7 @@ define( function( require ) {
           button.fill = disabledBaseColor;
           button.stroke = disabledStroke;
           button.lineWidth = options.deselectedLineWidth;
-          button.opacity = options.deselectedButtonOpacity;
+          button.opacity = DISABLED_OPACITY;
           break;
 
         // disabled and selected
@@ -94,7 +95,7 @@ define( function( require ) {
           button.fill = disabledBaseColor;
           button.stroke = disabledStroke;
           button.lineWidth = options.selectedLineWidth;
-          button.opacity = options.selectedButtonOpacity;
+          button.opacity = DISABLED_OPACITY;
           break;
       }
     } );
@@ -125,12 +126,12 @@ define( function( require ) {
 
         // disabled and deselected
         case 'disabled':
-          content.opacity = options.deselectedContentOpacity;
+          content.opacity = DISABLED_OPACITY;
           break;
 
         // disabled and selected
         case 'disabled-pressed':
-          content.opacity = options.selectedContentOpacity;
+          content.opacity = DISABLED_OPACITY;
           break;
       }
     } );
