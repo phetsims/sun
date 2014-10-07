@@ -24,8 +24,8 @@ define( function( require ) {
    * @param {Array} contentArray an array of objects that have two keys each: value and node
    * the node key holds a scenery Node that is the content for a given radio button.
    * the value key should hold the value that the property takes on for the corresponding
-   * node to be selected. Optionally, these object can contain an attribute 'label', which contains a label node (possibly text)
-   * label that will appear under the button.
+   * node to be selected. Optionally, these objects can have an attribute 'label', which is
+   * a {Node} used to label the button.
    * @param {Object} [options]
    * @constructor
    */
