@@ -87,7 +87,7 @@ define( function( require ) {
           button.fill = disabledBaseColor;
           button.stroke = disabledStroke;
           button.lineWidth = options.deselectedLineWidth;
-          button.opacity = DISABLED_OPACITY;
+          button.opacity = options.deselectedOpacity;
           break;
 
         // disabled and selected
@@ -95,7 +95,7 @@ define( function( require ) {
           button.fill = disabledBaseColor;
           button.stroke = disabledStroke;
           button.lineWidth = options.selectedLineWidth;
-          button.opacity = DISABLED_OPACITY;
+          button.opacity = options.selectedOpacity;
           break;
       }
     } );
