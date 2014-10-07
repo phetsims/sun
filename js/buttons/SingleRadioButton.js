@@ -24,7 +24,10 @@ define( function( require ) {
    */
   function SingleRadioButton( value, property, options ) {
     var buttonModel = new RadioButtonModel( value, property );
-    RectangularButtonView.call( this, buttonModel, new StickyToggleButtonInteractionStateProperty( buttonModel ), options );
+
+    // keep a reference to this property to be used in RadioButtonGroup for managing the labels
+    this.interactionStateProperty = new StickyToggleButtonInteractionStateProperty( buttonModel );
+    RectangularButtonView.call( this, buttonModel, this.interactionStateProperty, options );
   }
 
   return inherit( RectangularButtonView, SingleRadioButton );

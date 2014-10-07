@@ -126,15 +126,11 @@ define( function( require ) {
 
       var radioButton = new SingleRadioButton( contentArray[i].value, property, _.extend( { content: contentArray[i].node }, options ) );
 
+      // if a label is given, the button becomes a LayoutBox with the label and button
       if ( contentArray[i].label ) {
+        var label = contentArray[i].label;
         var labelOrientation = ( options.labelAlign === 'bottom' || options.labelAlign === 'top' ) ? 'vertical' : 'horizontal';
-
-        // this seems hacky, but without doing this clicks on the label won't work. Setting label.pickable = true doesn't work
-        contentArray[i].label.mouseArea = Shape.rectangle( 0, 0, 0, 0 );
-        contentArray[i].label.touchArea = Shape.rectangle( 0, 0, 0, 0 );
-
-        var labelChildren = ( options.labelAlign === 'left' || options.labelAlign === 'top' ) ?
-                            [contentArray[i].label, radioButton] : [radioButton, contentArray[i].label];
+        var labelChildren = ( options.labelAlign === 'left' || options.labelAlign === 'top' ) ? [label, radioButton] : [radioButton, label];
         button = new LayoutBox( { children: labelChildren, spacing: options.labelSpacing, orientation: labelOrientation } );
 
         // overrides the touchArea defined in RectangularButtonView
@@ -142,6 +138,14 @@ define( function( require ) {
         var yExpand = options.yTouchExpansion;
         radioButton.touchArea = Shape.rectangle( -xExpand, -yExpand, button.width + 2 * xExpand, button.height + 2 * yExpand );
         radioButton.mouseArea = Shape.rectangle( 0, 0, button.width, button.height );
+
+        // make sure the label mouse and touch areas don't block the expanded button touch and mouse areas
+        // is there a better way to do this?
+        label.mouseArea = Shape.rectangle( 0, 0, 0, 0 );
+        label.touchArea = Shape.rectangle( 0, 0, 0, 0 );
+
+        // use the same content appearance strategy for the labels that is used for the button content
+        options.contentAppearanceStrategy( label, radioButton.interactionStateProperty, options );
       }
       else {
         button = radioButton;
@@ -178,17 +182,11 @@ define( function( require ) {
           if ( contentArray[i].value === value ) {
             buttons[i].pickable = false;
             buttons[i].cursor = null;
-            if ( contentArray[i].label ) {
-              contentArray[i].label.opacity = 1;
-            }
             count++;
           }
           else {
             buttons[i].pickable = true;
             buttons[i].cursor = 'pointer';
-            if ( contentArray[i].label ) {
-              contentArray[i].label.opacity = 0.5;
-            }
           }
         }
         if ( count !== 1 ) {
