@@ -16,6 +16,7 @@ define( function( require ) {
   var Property = require( 'AXON/Property' );
   var ColorConstants = require( 'SUN/ColorConstants' );
   var LayoutBox = require( 'SCENERY/nodes/LayoutBox' );
+  var Shape = require( 'KITE/Shape' );
 
   /**
    * RadioButtonGroup constructor.
@@ -92,6 +93,10 @@ define( function( require ) {
       buttonContentXMargin: 5,
       buttonContentYMargin: 5,
 
+      //TouchArea expansion
+      xTouchExpansion: 5,
+      yTouchExpansion: 5,
+
       //The radius for each button
       cornerRadius: 4,
 
@@ -114,17 +119,29 @@ define( function( require ) {
 
     // make sure all radio buttons are the same size and create the RadioButtons
     var buttons = [];
-    var button, radioButton;
+    var button;
     for ( i = 0; i < contentArray.length; i++ ) {
       options.xMargin = ( ( maxWidth - contentArray[i].node.width ) / 2 ) + options.buttonContentXMargin;
       options.yMargin = ( ( maxHeight - contentArray[i].node.height ) / 2 ) + options.buttonContentYMargin;
 
-      radioButton = new SingleRadioButton( contentArray[i].value, property, _.extend( { content: contentArray[i].node }, options ) );
+      var radioButton = new SingleRadioButton( contentArray[i].value, property, _.extend( { content: contentArray[i].node }, options ) );
+
       if ( contentArray[i].label ) {
         var labelOrientation = ( options.labelAlign === 'bottom' || options.labelAlign === 'top' ) ? 'vertical' : 'horizontal';
+
+        // this seems hacky, but without doing this clicks on the label won't work. Setting label.pickable = true doesn't work
+        contentArray[i].label.mouseArea = Shape.rectangle( 0, 0, 0, 0 );
+        contentArray[i].label.touchArea = Shape.rectangle( 0, 0, 0, 0 );
+
         var labelChildren = ( options.labelAlign === 'left' || options.labelAlign === 'top' ) ?
                             [contentArray[i].label, radioButton] : [radioButton, contentArray[i].label];
         button = new LayoutBox( { children: labelChildren, spacing: options.labelSpacing, orientation: labelOrientation } );
+
+        // overrides the touchArea defined in RectangularButtonView
+        var xExpand = options.xTouchExpansion;
+        var yExpand = options.yTouchExpansion;
+        radioButton.touchArea = Shape.rectangle( -xExpand, -yExpand, button.width + 2 * xExpand, button.height + 2 * yExpand );
+        radioButton.mouseArea = Shape.rectangle( 0, 0, button.width, button.height );
       }
       else {
         button = radioButton;
@@ -138,7 +155,15 @@ define( function( require ) {
     this.enabledProperty.link( function( isEnabled ) {
       for ( i = 0; i < contentArray.length; i++ ) {
         buttons[i].pickable = isEnabled;
-        buttons[i].enabled = isEnabled;
+
+        if ( buttons[i] instanceof LayoutBox ) {
+          for ( var j = 0; j < 2; j++ ) {
+            buttons[i].children[j].enabled = isEnabled;
+          }
+        }
+        else {
+          buttons[i].enabled = isEnabled;
+        }
       }
     } );
 
