@@ -20,7 +20,7 @@ define( function( require ) {
    *
    * @constructor
    */
-  function RadioButtonsAppearance() {
+  function RadioButtonGroupAppearance() {
   }
 
   /**
@@ -32,7 +32,7 @@ define( function( require ) {
    * @param {Object} [options]
    * @constructor
    */
-  RadioButtonsAppearance.defaultRadioButtonsAppearance = function( button, interactionStateProperty, options ) {
+  RadioButtonGroupAppearance.defaultRadioButtonsAppearance = function( button, interactionStateProperty, options ) {
 
     // Set up variables needed to create the various fills and strokes
     var baseColor = Color.toColor( options.baseColor );
@@ -100,7 +100,7 @@ define( function( require ) {
     } );
   };
 
-  RadioButtonsAppearance.contentAppearanceStrategy = function( content, interactionStateProperty, options ) {
+  RadioButtonGroupAppearance.contentAppearanceStrategy = function( content, interactionStateProperty, options ) {
 
     // for some reason setting the opacity on the buttons directly seems to have no effect if the content in an
     // image. Therefore, there is an option to set the content opacity here in addition to the button opacity in
@@ -136,6 +136,6 @@ define( function( require ) {
     } );
   };
 
-  return inherit( Object, RadioButtonsAppearance, {}, {
+  return inherit( Object, RadioButtonGroupAppearance, {}, {
   } );
 } );

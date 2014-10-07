@@ -12,7 +12,7 @@ define( function( require ) {
   var inherit = require( 'PHET_CORE/inherit' );
   var SingleRadioButton = require( 'SUN/buttons/SingleRadioButton' );
   var Color = require( 'SCENERY/util/Color' );
-  var RadioButtonsAppearance = require( 'SUN/buttons/RadioButtonsAppearance' );
+  var RadioButtonGroupAppearance = require( 'SUN/buttons/RadioButtonGroupAppearance' );
   var Property = require( 'AXON/Property' );
   var ColorConstants = require( 'SUN/ColorConstants' );
   var LayoutBox = require( 'SCENERY/nodes/LayoutBox' );
@@ -104,8 +104,8 @@ define( function( require ) {
 
       //The default appearances use the color values specified above, but other appearances could be specified for more
       //customized behavior.  Generally setting the color values above should be enough to specify the desired look.
-      buttonAppearanceStrategy: RadioButtonsAppearance.defaultRadioButtonsAppearance,
-      contentAppearanceStrategy: RadioButtonsAppearance.contentAppearanceStrategy
+      buttonAppearanceStrategy: RadioButtonGroupAppearance.defaultRadioButtonsAppearance,
+      contentAppearanceStrategy: RadioButtonGroupAppearance.contentAppearanceStrategy
     }, options );
 
     // calculate the maximum width and height of the content so we can make all radio buttons the same size
