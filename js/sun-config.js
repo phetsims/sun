@@ -24,6 +24,7 @@ require.config(
       PHETCOMMON: '../../phetcommon/js',
       PHET_CORE: '../../phet-core/js',
       SCENERY: '../../scenery/js',
+      SCENERY_PHET: '../../scenery-phet/js',
       SHERPA: '../../sherpa',
       SUN: '../../sun/js',
       VEGAS: '../../vegas/js'
