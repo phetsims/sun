@@ -175,22 +175,15 @@ define( function( require ) {
     var thisNode = this;
     property.link( function( value ) {
       if ( thisNode.enabledProperty.get() ) {
-
-        var count = 0; // for making sure there is exactly one selected button
-
         for ( i = 0; i < contentArray.length; i++ ) {
           if ( contentArray[i].value === value ) {
             buttons[i].pickable = false;
             buttons[i].cursor = null;
-            count++;
           }
           else {
             buttons[i].pickable = true;
             buttons[i].cursor = 'pointer';
           }
-        }
-        if ( count !== 1 ) {
-          throw new Error( 'RadioButtonGroup does not have exactly one selected button for value=' + value );
         }
       }
     } );
