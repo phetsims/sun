@@ -12,7 +12,6 @@ define( function( require ) {
   // modules
   var inherit = require( 'PHET_CORE/inherit' );
   var Color = require( 'SCENERY/util/Color' );
-  var Rectangle = require( 'SCENERY/nodes/Rectangle' );
 
   // constants
   var DISABLED_OPACITY = 0.3;
@@ -44,16 +43,6 @@ define( function( require ) {
     var disabledStroke = disabledBaseColor.colorUtilsDarker( 0.4 );
     var overStroke = deselectedStroke.colorUtilsDarker( 0.4 );
     var overFill = baseColor.colorUtilsBrighter( 0.4 );
-
-    // ensure the buttons don't resize when selected vs unselected by adding a rectangle with the max size
-    var maxWidth = Math.max( options.selectedLineWidth, options.deselectedLineWidth ) + options.content.width + options.xMargin * 2;
-    var maxHeight = Math.max( options.selectedLineWidth, options.deselectedLineWidth ) + options.content.height + options.yMargin * 2;
-    var extraWidth = new Rectangle( 0, 0, maxWidth, maxHeight,
-      {
-        fill: 'rgba(0,0,0,0)',
-        center: button.center
-      } );
-    button.addChild(extraWidth);
 
     interactionStateProperty.link( function( state ) {
       switch( state ) {
