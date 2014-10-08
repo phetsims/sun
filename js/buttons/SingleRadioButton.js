@@ -37,7 +37,7 @@ define( function( require ) {
     var maxHeight = maxLineWidth + options.content.height + options.yMargin * 2;
     var extraWidth = new Rectangle( 0, 0, maxWidth, maxHeight,
       {
-        fill: 'rgba(0,0,0,0.3)',
+        fill: 'rgba(0,0,0,0)',
         center: this.center
       } );
     this.addChild( extraWidth );
