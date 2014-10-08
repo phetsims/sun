@@ -29,28 +29,33 @@ define( function( require ) {
       boxWidth: 21,
       cursor: 'pointer',
       checkBoxColor: 'black',
-      checkBoxColorDisabled: 'gray'
+      checkBoxColorDisabled: 'gray',
+      checkBoxColorBackground: 'white'
     }, options );
 
     var thisNode = this;
     Node.call( this );
+
+    thisNode._checkBoxColor = options.checkBoxColor; // @private
+    thisNode._checkBoxColorDisabled = options.checkBoxColorDisabled; // @private
+    thisNode._checkBoxColorBackground = options.checkBoxColorBackground; // @private
 
     // save this stuff for use in prototype functions
     thisNode.options = options; // @private
     thisNode.content = content; // @private
     thisNode._enabled = true; // @private
 
-    // Make the background white.  Until we are creating our own shapes, just
-    // put a white rectangle behind the font awesome check box icons.
-    var whiteBackground = new Rectangle( 0, -options.boxWidth, options.boxWidth * 0.95, options.boxWidth * 0.95,
-        options.boxWidth * 0.2, options.boxWidth * 0.2, {fill: 'white'} );
+    // Make the background.  Until we are creating our own shapes, just
+    // put a rectangle behind the font awesome check box icons.
+    thisNode.backgroundNode = new Rectangle( 0, -options.boxWidth, options.boxWidth * 0.95, options.boxWidth * 0.95,
+        options.boxWidth * 0.2, options.boxWidth * 0.2 );
 
-    thisNode.uncheckedNode = new FontAwesomeNode( 'check_empty', { fill: options.checkBoxColor } ); // @private
+    thisNode.uncheckedNode = new FontAwesomeNode( 'check_empty' ); // @private
     var iconScale = options.boxWidth / thisNode.uncheckedNode.width;
     thisNode.uncheckedNode.scale( iconScale );
-    thisNode.checkedNode = new FontAwesomeNode( 'check', { scale: iconScale, fill: options.checkBoxColor } ); // @private
+    thisNode.checkedNode = new FontAwesomeNode( 'check', { scale: iconScale } ); // @private
 
-    thisNode.addChild( whiteBackground );
+    thisNode.addChild( thisNode.backgroundNode );
     thisNode.addChild( thisNode.checkedNode );
     thisNode.addChild( thisNode.uncheckedNode );
     thisNode.addChild( content );
@@ -90,6 +95,8 @@ define( function( require ) {
       } );
     } );
 
+    this.updateColors();
+
     // Apply additional options
     thisNode.mutate( options );
   }
@@ -97,6 +104,37 @@ define( function( require ) {
   return inherit( Node, CheckBox, {
 
     // prototype properties
+
+    get checkBoxColorBackground() { return this._checkBoxColorBackground; },
+    set checkBoxColorBackground( value ) {
+      if ( this._checkBoxColorBackground !== value ) {
+        this._checkBoxColorBackground = value;
+        this.updateColors();
+      }
+    },
+
+    get checkBoxColor() { return this._checkBoxColor; },
+    set checkBoxColor( value ) {
+      if ( this._checkBoxColor !== value ) {
+        this._checkBoxColor = value;
+        this.updateColors();
+      }
+    },
+
+    get checkBoxColorDisabled() { return this._checkBoxColorDisabled; },
+    set checkBoxColorDisabled( value ) {
+      if ( this._checkBoxColorDisabled !== value ) {
+        this._checkBoxColorDisabled = value;
+        this.updateColors();
+      }
+    },
+
+    // @private
+    updateColors: function() {
+      this.backgroundNode.fill = this._checkBoxColorBackground;
+      this.checkedNode.fill = this._enabled ? this._checkBoxColor : this._checkBoxColorDisabled;
+      this.uncheckedNode.fill = this.checkedNode.fill;
+    },
 
     get enabled() { return this._enabled; },
 
@@ -106,8 +144,7 @@ define( function( require ) {
       this.pickable = value;
 
       // set the color of the check box icons
-      this.checkedNode.fill = value ? this.options.checkBoxColor : this.options.checkBoxColorDisabled;
-      this.uncheckedNode.fill = this.checkedNode.fill;
+      this.updateColors();
 
       // enable/disable the content, if it supports it
       if ( this.content.setEnabled ) {
