@@ -38,7 +38,7 @@ define( function( require ) {
       cursor: 'pointer',
       centerOnButton: false,
       // uses opacity as the default method of indicating whether a {Node} label is {boolean} enabled
-      setEnabled: function( node, enabled ) { node.opacity = enabled ? 1.0 : 0.5; }
+      setEnabled: function( label, enabled ) { label.opacity = enabled ? 1.0 : 0.5; }
     }, options );
 
     var defaultTrackFill = new LinearGradient( 0, 0, 0, options.switchSize.height ).addColorStop( 0, 'rgb(40,40,40)' ).addColorStop( 1, 'rgb(200,200,200)' );
