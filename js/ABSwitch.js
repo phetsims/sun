@@ -86,12 +86,6 @@ define( function( require ) {
       }
     }
 
-    // initial enabled state
-    if ( options.setEnabled ) {
-      options.setEnabled( labelA, property.get() === valueA );
-      options.setEnabled( labelB, property.get() === valueB );
-    }
-
     // sync properties
     property.link( function( object ) {
       onProperty.set( valueB === object );
