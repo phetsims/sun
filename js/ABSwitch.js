@@ -37,7 +37,7 @@ define( function( require ) {
       xSpacing: 8,
       cursor: 'pointer',
       centerOnButton: false,
-      // uses opacity as the default method of indicating whether a {Node} node is {boolean} enabled
+      // uses opacity as the default method of indicating whether a {Node} label is {boolean} enabled
       setEnabled: function( node, enabled ) { node.opacity = enabled ? 1.0 : 0.5; }
     }, options );
 
