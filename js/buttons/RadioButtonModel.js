@@ -13,8 +13,8 @@ define( function( require ) {
   var ButtonModel = require( 'SUN/buttons/ButtonModel' );
 
   /**
-   * @param valueDown {Object} the value that valueProperty takes when this particular SingleRadioButton is selected
-   * @param valueProperty {Property}
+   * @param {Object} valueDown the value that valueProperty takes when this particular SingleRadioButton is selected
+   * @param {Property} valueProperty
    * @constructor
    */
   function RadioButtonModel( valueDown, valueProperty ) {

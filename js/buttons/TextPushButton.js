@@ -12,15 +12,12 @@ define( function( require ) {
   var inherit = require( 'PHET_CORE/inherit' );
   var RectangularPushButton = require( 'SUN/buttons/RectangularPushButton' );
   var Text = require( 'SCENERY/nodes/Text' );
-  var PhetFont = require( 'SCENERY_PHET/PhetFont' );
-
-  // constants
-  var DEFAULT_FONT = new PhetFont( 20 );
+  var Font = require( 'SCENERY/util/Font' );
 
   function TextPushButton( text, options ) {
 
     options = _.extend( {
-      font: DEFAULT_FONT,
+      font: new Font( 20 ),
       textFill: 'black'
     }, options );
 

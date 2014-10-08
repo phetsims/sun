@@ -47,6 +47,9 @@ define( function( require ) {
       options.minHeight = options.height;
     }
 
+    //TODO (CM) Inheriting from RectangularPushButton is a bad approach. If you want the "look" of a rectangular
+    //TODO push button, that should be factored out so that it is generally reusable with rectangles.
+    //TODO But a slider knob is not a push button.
     RectangularPushButton.call( this, options );
   }
 

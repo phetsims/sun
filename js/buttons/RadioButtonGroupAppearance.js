@@ -2,8 +2,6 @@
 
 /**
  * Defines the appearance of the radio buttons, see RadioButtonGroup.js
- * TODO: The appearance should be customizable
- * TODO: There is much duplicated here, and copied from RectangularButtonView.  We should find a way to consolidate.
  *
  * @author Sam Reid (PhET Interactive Simulations)
  * @author Aaron Davis (PhET Interactive Simulations)
@@ -16,11 +14,14 @@ define( function( require ) {
   var Color = require( 'SCENERY/util/Color' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
 
+  // constants
+  var DISABLED_OPACITY = 0.3;
+
   /**
    *
    * @constructor
    */
-  function RadioButtonsAppearance() {
+  function RadioButtonGroupAppearance() {
   }
 
   /**
@@ -32,7 +33,7 @@ define( function( require ) {
    * @param {Object} [options]
    * @constructor
    */
-  RadioButtonsAppearance.defaultRadioButtonsAppearance = function( button, interactionStateProperty, options ) {
+  RadioButtonGroupAppearance.defaultRadioButtonsAppearance = function( button, interactionStateProperty, options ) {
 
     // Set up variables needed to create the various fills and strokes
     var baseColor = Color.toColor( options.baseColor );
@@ -86,7 +87,7 @@ define( function( require ) {
           button.fill = disabledBaseColor;
           button.stroke = disabledStroke;
           button.lineWidth = options.deselectedLineWidth;
-          button.opacity = options.deselectedButtonOpacity;
+          button.opacity = options.deselectedOpacity;
           break;
 
         // disabled and selected
@@ -94,13 +95,13 @@ define( function( require ) {
           button.fill = disabledBaseColor;
           button.stroke = disabledStroke;
           button.lineWidth = options.selectedLineWidth;
-          button.opacity = options.selectedButtonOpacity;
+          button.opacity = options.selectedOpacity;
           break;
       }
     } );
   };
 
-  RadioButtonsAppearance.contentAppearanceStrategy = function( content, interactionStateProperty, options ) {
+  RadioButtonGroupAppearance.contentAppearanceStrategy = function( content, interactionStateProperty, options ) {
 
     // for some reason setting the opacity on the buttons directly seems to have no effect if the content in an
     // image. Therefore, there is an option to set the content opacity here in addition to the button opacity in
@@ -125,17 +126,17 @@ define( function( require ) {
 
         // disabled and deselected
         case 'disabled':
-          content.opacity = options.deselectedContentOpacity;
+          content.opacity = DISABLED_OPACITY;
           break;
 
         // disabled and selected
         case 'disabled-pressed':
-          content.opacity = options.selectedContentOpacity;
+          content.opacity = DISABLED_OPACITY;
           break;
       }
     } );
   };
 
-  return inherit( Object, RadioButtonsAppearance, {}, {
+  return inherit( Object, RadioButtonGroupAppearance, {}, {
   } );
 } );

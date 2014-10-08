@@ -16,15 +16,18 @@ define( function( require ) {
   var RadioButtonModel = require( 'SUN/buttons/RadioButtonModel' );
 
   /**
-   * @param value {Object} value when this radio button is selected
-   * @param property {Property} axon property that can take on a set of values, one for each radio button in the
+   * @param {Object} value value when this radio button is selected
+   * @param {Property} property axon property that can take on a set of values, one for each radio button in the
    * group
    * @param {Object} [options]
    * @constructor
    */
   function SingleRadioButton( value, property, options ) {
     var buttonModel = new RadioButtonModel( value, property );
-    RectangularButtonView.call( this, buttonModel, new StickyToggleButtonInteractionStateProperty( buttonModel ), options );
+
+    // keep a reference to this property to be used in RadioButtonGroup for managing the labels
+    this.interactionStateProperty = new StickyToggleButtonInteractionStateProperty( buttonModel );
+    RectangularButtonView.call( this, buttonModel, this.interactionStateProperty, options );
   }
 
   return inherit( RectangularButtonView, SingleRadioButton );

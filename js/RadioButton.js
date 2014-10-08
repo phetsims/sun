@@ -15,8 +15,8 @@ define( function( require ) {
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
 
   /**
-   * @param property
-   * @param value the value that corresponds to this button, same type as property
+   * @param {Property} property
+   * @param {*} value the value that corresponds to this button, same type as property
    * @param {Node} selectedNode node that will be displayed when the button is selected
    * @param {Node} deselectedNode node that will be displayed when the button is deselected
    * @param {Object} [options]

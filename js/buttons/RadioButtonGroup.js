@@ -12,10 +12,11 @@ define( function( require ) {
   var inherit = require( 'PHET_CORE/inherit' );
   var SingleRadioButton = require( 'SUN/buttons/SingleRadioButton' );
   var Color = require( 'SCENERY/util/Color' );
-  var RadioButtonsAppearance = require( 'SUN/buttons/RadioButtonsAppearance' );
+  var RadioButtonGroupAppearance = require( 'SUN/buttons/RadioButtonGroupAppearance' );
   var Property = require( 'AXON/Property' );
   var ColorConstants = require( 'SUN/ColorConstants' );
   var LayoutBox = require( 'SCENERY/nodes/LayoutBox' );
+  var Shape = require( 'KITE/Shape' );
 
   /**
    * RadioButtonGroup constructor.
@@ -24,8 +25,8 @@ define( function( require ) {
    * @param {Array} contentArray an array of objects that have two keys each: value and node
    * the node key holds a scenery Node that is the content for a given radio button.
    * the value key should hold the value that the property takes on for the corresponding
-   * node to be selected. Optionally, these object can contain an attribute 'label', which contains a text node
-   * label that will appear under the button.
+   * node to be selected. Optionally, these objects can have an attribute 'label', which is
+   * a {Node} used to label the button.
    * @param {Object} [options]
    * @constructor
    */
@@ -37,6 +38,25 @@ define( function( require ) {
     assert && assert( _.every( contentArray, function( obj ) {
       return obj.hasOwnProperty( 'node' ) && obj.hasOwnProperty( 'value' );
     } ), 'contentArray must be an array of objects with properties "node" and "value"' );
+
+    var i; // for loops
+
+    // make sure that each value passed into the contentArray is unique
+    var uniqueValues = [];
+    for ( i = 0; i < contentArray.length; i++ ) {
+      if ( uniqueValues.indexOf( contentArray[i].value ) < 0 ) {
+        uniqueValues.push( contentArray[i].value );
+      }
+      else {
+        throw new Error( 'Duplicate value: "' + contentArray[i].value + '" passed into RadioButtonGroup.js' );
+      }
+    }
+
+    // make sure that the property passed in currently has a value from the contentArray
+    if ( uniqueValues.indexOf( property.get() ) === -1 ) {
+      throw new Error( 'The property passed in to RadioButtonGroup has an illegal value "' + property.get() +
+                       '" that is not present in the contentArray' );
+    }
 
     options = _.extend( {
 
@@ -73,6 +93,10 @@ define( function( require ) {
       buttonContentXMargin: 5,
       buttonContentYMargin: 5,
 
+      //TouchArea expansion
+      xTouchExpansion: 5,
+      yTouchExpansion: 5,
+
       //The radius for each button
       cornerRadius: 4,
 
@@ -85,8 +109,8 @@ define( function( require ) {
 
       //The default appearances use the color values specified above, but other appearances could be specified for more
       //customized behavior.  Generally setting the color values above should be enough to specify the desired look.
-      buttonAppearanceStrategy: RadioButtonsAppearance.defaultRadioButtonsAppearance,
-      contentAppearanceStrategy: RadioButtonsAppearance.contentAppearanceStrategy
+      buttonAppearanceStrategy: RadioButtonGroupAppearance.defaultRadioButtonsAppearance,
+      contentAppearanceStrategy: RadioButtonGroupAppearance.contentAppearanceStrategy
     }, options );
 
     // calculate the maximum width and height of the content so we can make all radio buttons the same size
@@ -95,17 +119,33 @@ define( function( require ) {
 
     // make sure all radio buttons are the same size and create the RadioButtons
     var buttons = [];
-    var i, button, radioButton;
+    var button;
     for ( i = 0; i < contentArray.length; i++ ) {
       options.xMargin = ( ( maxWidth - contentArray[i].node.width ) / 2 ) + options.buttonContentXMargin;
       options.yMargin = ( ( maxHeight - contentArray[i].node.height ) / 2 ) + options.buttonContentYMargin;
 
-      radioButton = new SingleRadioButton( contentArray[i].value, property, _.extend( { content: contentArray[i].node }, options ) );
+      var radioButton = new SingleRadioButton( contentArray[i].value, property, _.extend( { content: contentArray[i].node }, options ) );
+
+      // if a label is given, the button becomes a LayoutBox with the label and button
       if ( contentArray[i].label ) {
+        var label = contentArray[i].label;
         var labelOrientation = ( options.labelAlign === 'bottom' || options.labelAlign === 'top' ) ? 'vertical' : 'horizontal';
-        var labelChildren = ( options.labelAlign === 'left' || options.labelAlign === 'top' ) ?
-          [contentArray[i].label, radioButton] : [radioButton, contentArray[i].label];
+        var labelChildren = ( options.labelAlign === 'left' || options.labelAlign === 'top' ) ? [label, radioButton] : [radioButton, label];
         button = new LayoutBox( { children: labelChildren, spacing: options.labelSpacing, orientation: labelOrientation } );
+
+        // overrides the touchArea defined in RectangularButtonView
+        var xExpand = options.xTouchExpansion;
+        var yExpand = options.yTouchExpansion;
+        radioButton.touchArea = Shape.rectangle( -xExpand, -yExpand, button.width + 2 * xExpand, button.height + 2 * yExpand );
+        radioButton.mouseArea = Shape.rectangle( 0, 0, button.width, button.height );
+
+        // make sure the label mouse and touch areas don't block the expanded button touch and mouse areas
+        // is there a better way to do this?
+        label.mouseArea = Shape.rectangle( 0, 0, 0, 0 );
+        label.touchArea = Shape.rectangle( 0, 0, 0, 0 );
+
+        // use the same content appearance strategy for the labels that is used for the button content
+        options.contentAppearanceStrategy( label, radioButton.interactionStateProperty, options );
       }
       else {
         button = radioButton;
@@ -119,7 +159,15 @@ define( function( require ) {
     this.enabledProperty.link( function( isEnabled ) {
       for ( i = 0; i < contentArray.length; i++ ) {
         buttons[i].pickable = isEnabled;
-        buttons[i].enabled = isEnabled;
+
+        if ( buttons[i] instanceof LayoutBox ) {
+          for ( var j = 0; j < 2; j++ ) {
+            buttons[i].children[j].enabled = isEnabled;
+          }
+        }
+        else {
+          buttons[i].enabled = isEnabled;
+        }
       }
     } );
 
@@ -131,16 +179,10 @@ define( function( require ) {
           if ( contentArray[i].value === value ) {
             buttons[i].pickable = false;
             buttons[i].cursor = null;
-            if ( contentArray[i].label ) {
-              contentArray[i].label.opacity = 1;
-            }
           }
           else {
             buttons[i].pickable = true;
             buttons[i].cursor = 'pointer';
-            if ( contentArray[i].label ) {
-              contentArray[i].label.opacity = 0.5;
-            }
           }
         }
       }
