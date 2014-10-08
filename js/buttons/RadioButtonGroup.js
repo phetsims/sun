@@ -133,11 +133,15 @@ define( function( require ) {
         var labelChildren = ( options.labelAlign === 'left' || options.labelAlign === 'top' ) ? [label, radioButton] : [radioButton, label];
         button = new LayoutBox( { children: labelChildren, spacing: options.labelSpacing, orientation: labelOrientation } );
 
-        // overrides the touchArea defined in RectangularButtonView
+        var lineWidth = Math.max( options.selectedLineWidth, options.deselectedLineWidth );
         var xExpand = options.xTouchExpansion;
         var yExpand = options.yTouchExpansion;
-        radioButton.touchArea = Shape.rectangle( -xExpand, -yExpand, button.width + 2 * xExpand, button.height + 2 * yExpand );
-        radioButton.mouseArea = Shape.rectangle( 0, 0, button.width, button.height );
+
+        // override the touch and mouse areas defined in RectangularButtonView
+        // extra width is added to the SingleRadioButtons so they don't change size if the line width changes,
+        // that is why lineWidth is subtracted from the width and height when calculating these new areas
+        radioButton.touchArea = Shape.rectangle( -xExpand, -yExpand, button.width + 2 * xExpand - lineWidth, button.height + 2 * yExpand - lineWidth);
+        radioButton.mouseArea = Shape.rectangle( 0, 0, button.width - lineWidth, button.height - lineWidth );
 
         // make sure the label mouse and touch areas don't block the expanded button touch and mouse areas
         // is there a better way to do this?
