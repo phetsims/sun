@@ -83,7 +83,7 @@ define( function( require ) {
       selectedLineWidth: 1.5,
       deselectedLineWidth: 1,
 
-      //The following options speciy highlight behavior overrides, leave as null to get the default behavior
+      //The following options specify highlight behavior overrides, leave as null to get the default behavior
       //Note that highlighting applies only to deselected buttons
       overFill: null,
       overStroke: null,
