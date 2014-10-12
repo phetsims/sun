@@ -14,7 +14,6 @@ define( function( require ) {
   var RectangularButtonView = require( 'SUN/buttons/RectangularButtonView' );
   var StickyToggleButtonInteractionStateProperty = require( 'SUN/buttons/StickyToggleButtonInteractionStateProperty' );
   var RadioButtonModel = require( 'SUN/buttons/RadioButtonModel' );
-  var Rectangle = require( 'SCENERY/nodes/Rectangle' );
 
   /**
    * @param {Object} value value when this radio button is selected
@@ -29,17 +28,6 @@ define( function( require ) {
     this.interactionStateProperty = new StickyToggleButtonInteractionStateProperty( buttonModel );
 
     RectangularButtonView.call( this, buttonModel, this.interactionStateProperty, options );
-
-    // ensure the buttons don't resize when selected vs unselected by adding a rectangle with the max size
-    var maxLineWidth = Math.max( options.selectedLineWidth, options.deselectedLineWidth );
-    var maxWidth = maxLineWidth + options.content.width + options.xMargin * 2;
-    var maxHeight = maxLineWidth + options.content.height + options.yMargin * 2;
-    var extraWidth = new Rectangle( 0, 0, maxWidth, maxHeight,
-      {
-        fill: 'rgba(0,0,0,0)',
-        center: this.center
-      } );
-    this.addChild( extraWidth );
   }
 
   return inherit( RectangularButtonView, SingleRadioButton );

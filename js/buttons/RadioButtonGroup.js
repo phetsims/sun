@@ -21,6 +21,7 @@ define( function( require ) {
   var ColorConstants = require( 'SUN/ColorConstants' );
   var LayoutBox = require( 'SCENERY/nodes/LayoutBox' );
   var Shape = require( 'KITE/Shape' );
+  var Rectangle = require( 'SCENERY/nodes/Rectangle' );
 
   /**
    * RadioButtonGroup constructor.
@@ -129,10 +130,23 @@ define( function( require ) {
     var buttons = [];
     var button;
     for ( i = 0; i < contentArray.length; i++ ) {
-      options.xMargin = ( ( maxWidth - contentArray[i].node.width ) / 2 ) + options.buttonContentXMargin;
-      options.yMargin = ( ( maxHeight - contentArray[i].node.height ) / 2 ) + options.buttonContentYMargin;
+      // each individual radio button will have a different margin to make sure they are all the same size
+      var xMargin = ( ( maxWidth - contentArray[i].node.width ) / 2 ) + options.buttonContentXMargin;
+      var yMargin = ( ( maxHeight - contentArray[i].node.height ) / 2 ) + options.buttonContentYMargin;
 
-      var radioButton = new SingleRadioButton( contentArray[i].value, property, _.extend( { content: contentArray[i].node }, options ) );
+      var radioButton = new SingleRadioButton( contentArray[i].value, property,
+        _.extend( { content: contentArray[i].node, xMargin: xMargin, yMargin: yMargin }, options ) );
+
+      // ensure the buttons don't resize when selected vs unselected by adding a rectangle with the max size
+      var maxLineWidth = Math.max( options.selectedLineWidth, options.deselectedLineWidth );
+      var maxButtonWidth = maxLineWidth + contentArray[i].node.width + xMargin * 2;
+      var maxButtonHeight = maxLineWidth + contentArray[i].node.height + yMargin * 2;
+      var boundingRect = new Rectangle( 0, 0, maxButtonWidth, maxButtonHeight,
+        {
+          fill: 'rgba(0,0,0,0)',
+          center: radioButton.center
+        } );
+      radioButton.addChild( boundingRect );
 
       // if a label is given, the button becomes a LayoutBox with the label and button
       if ( contentArray[i].label ) {
@@ -141,18 +155,17 @@ define( function( require ) {
         var labelChildren = ( options.labelAlign === 'left' || options.labelAlign === 'top' ) ? [label, radioButton] : [radioButton, label];
         button = new LayoutBox( { children: labelChildren, spacing: options.labelSpacing, orientation: labelOrientation } );
 
-        var lineWidth = Math.max( options.selectedLineWidth, options.deselectedLineWidth );
         var xExpand = options.xTouchExpansion;
         var yExpand = options.yTouchExpansion;
 
         // override the touch and mouse areas defined in RectangularButtonView
         // extra width is added to the SingleRadioButtons so they don't change size if the line width changes,
         // that is why lineWidth is subtracted from the width and height when calculating these new areas
-        radioButton.touchArea = Shape.rectangle( -xExpand, -yExpand, button.width + 2 * xExpand - lineWidth, button.height + 2 * yExpand - lineWidth);
+        radioButton.touchArea = Shape.rectangle( -xExpand, -yExpand, button.width + 2 * xExpand - maxLineWidth, button.height + 2 * yExpand - maxLineWidth);
 
         xExpand = options.xMouseExpansion;
         yExpand = options.yMouseExpansion;
-        radioButton.mouseArea = Shape.rectangle( -xExpand, -yExpand, button.width + 2 * xExpand - lineWidth, button.height + 2 * yExpand - lineWidth);
+        radioButton.mouseArea = Shape.rectangle( -xExpand, -yExpand, button.width + 2 * xExpand - maxLineWidth, button.height + 2 * yExpand - maxLineWidth);
 
         // make sure the label mouse and touch areas don't block the expanded button touch and mouse areas
         label.pickable = false;
