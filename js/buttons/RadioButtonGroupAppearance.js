@@ -10,18 +10,10 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var inherit = require( 'PHET_CORE/inherit' );
   var Color = require( 'SCENERY/util/Color' );
 
   // constants
   var DISABLED_OPACITY = 0.3;
-
-  /**
-   *
-   * @constructor
-   */
-  function RadioButtonGroupAppearance() {
-  }
 
   /**
    * Strategy for buttons that look flat, i.e. no shading or highlighting, but
@@ -32,7 +24,7 @@ define( function( require ) {
    * @param {Object} [options]
    * @constructor
    */
-  RadioButtonGroupAppearance.defaultRadioButtonsAppearance = function( button, interactionStateProperty, options ) {
+  var defaultRadioButtonsAppearance = function( button, interactionStateProperty, options ) {
 
     // Set up variables needed to create the various fills and strokes
     var baseColor = Color.toColor( options.baseColor );
@@ -90,7 +82,7 @@ define( function( require ) {
     } );
   };
 
-  RadioButtonGroupAppearance.contentAppearanceStrategy = function( content, interactionStateProperty, options ) {
+  var contentAppearanceStrategy = function( content, interactionStateProperty, options ) {
 
     // for some reason setting the opacity on the buttons directly seems to have no effect if the content in an
     // image. Therefore, there is an option to set the content opacity here in addition to the button opacity in
@@ -126,6 +118,9 @@ define( function( require ) {
     } );
   };
 
-  return inherit( Object, RadioButtonGroupAppearance, {}, {
-  } );
+  return {
+   defaultRadioButtonsAppearance: defaultRadioButtonsAppearance,
+   contentAppearanceStrategy: contentAppearanceStrategy
+  };
+
 } );
