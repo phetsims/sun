@@ -2,6 +2,10 @@
 
 /**
  * Radio buttons. See ButtonsDemoView for example usage.
+ * This class creates a group of radio buttons in either a horizontal or vertical formation.
+ * Each button inherits from RectangularButtonView, and can take a Scenery Node as its content.
+ * A typical use case is when you want to have a different modes a of a view to select. Typically,
+ * RadioButtonGroup radio buttons display some kind of icon or image, but that is not mandatory.
  *
  * @author Aaron Davis
  */
@@ -32,7 +36,7 @@ define( function( require ) {
    */
   function RadioButtonGroup( property, contentArray, options ) {
     assert && assert( !options.hasOwnProperty( 'children' ), 'Cannot pass in children to a RadioButtonGroup, ' +
-                                                             'use siblings instead' );
+                                                             'create siblings in the parent node instead' );
 
     // make sure every object in the content array has properties 'node' and 'value'
     assert && assert( _.every( contentArray, function( obj ) {
@@ -83,7 +87,7 @@ define( function( require ) {
       selectedLineWidth: 1.5,
       deselectedLineWidth: 1,
 
-      //The following options specify highlight behavior overrides, leave as null to get the default behavior
+      //The following options speciy highlight behavior overrides, leave as null to get the default behavior
       //Note that highlighting applies only to deselected buttons
       overFill: null,
       overStroke: null,
@@ -96,6 +100,10 @@ define( function( require ) {
       //TouchArea expansion
       xTouchExpansion: 5,
       yTouchExpansion: 5,
+
+      //MouseArea expansion
+      xMouseExpansion: 0,
+      yMouseExpansion: 0,
 
       //The radius for each button
       cornerRadius: 4,
@@ -141,12 +149,13 @@ define( function( require ) {
         // extra width is added to the SingleRadioButtons so they don't change size if the line width changes,
         // that is why lineWidth is subtracted from the width and height when calculating these new areas
         radioButton.touchArea = Shape.rectangle( -xExpand, -yExpand, button.width + 2 * xExpand - lineWidth, button.height + 2 * yExpand - lineWidth);
-        radioButton.mouseArea = Shape.rectangle( 0, 0, button.width - lineWidth, button.height - lineWidth );
+
+        xExpand = options.xMouseExpansion;
+        yExpand = options.yMouseExpansion;
+        radioButton.mouseArea = Shape.rectangle( -xExpand, -yExpand, button.width + 2 * xExpand - lineWidth, button.height + 2 * yExpand - lineWidth);
 
         // make sure the label mouse and touch areas don't block the expanded button touch and mouse areas
-        // is there a better way to do this?
-        label.mouseArea = Shape.rectangle( 0, 0, 0, 0 );
-        label.touchArea = Shape.rectangle( 0, 0, 0, 0 );
+        label.pickable = false;
 
         // use the same content appearance strategy for the labels that is used for the button content
         options.contentAppearanceStrategy( label, radioButton.interactionStateProperty, options );
