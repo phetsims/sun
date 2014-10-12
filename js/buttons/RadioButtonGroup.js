@@ -166,13 +166,19 @@ define( function( require ) {
       buttons.push( button );
     }
 
+    // @private
     this.enabledProperty = options.enabledProperty;
+
+    // super call
+    options.children = buttons;
+    LayoutBox.call( this, options );
+    var thisNode = this;
 
     // When the entire RadioButtonGroup gets disabled, gray them out and make them unpickable (and vice versa)
     this.enabledProperty.link( function( isEnabled ) {
-      for ( i = 0; i < contentArray.length; i++ ) {
-        buttons[i].pickable = isEnabled;
+      thisNode.pickable = isEnabled;
 
+      for ( i = 0; i < contentArray.length; i++ ) {
         if ( buttons[i] instanceof LayoutBox ) {
           for ( var j = 0; j < 2; j++ ) {
             buttons[i].children[j].enabled = isEnabled;
@@ -185,7 +191,6 @@ define( function( require ) {
     } );
 
     // make the unselected buttons pickable and have a pointer cursor
-    var thisNode = this;
     property.link( function( value ) {
       if ( thisNode.enabledProperty.get() ) {
         for ( i = 0; i < contentArray.length; i++ ) {
@@ -200,8 +205,6 @@ define( function( require ) {
         }
       }
     } );
-    options.children = buttons;
-    LayoutBox.call( this, options );
   }
 
   return inherit( LayoutBox, RadioButtonGroup,
