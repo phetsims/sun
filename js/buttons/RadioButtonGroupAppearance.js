@@ -82,10 +82,19 @@ define( function( require ) {
     } );
   };
 
+  /**
+   * Strategy for changing the button content opacity for each of the different states:
+   * mouseover, selected, deselected, and disabled
+   *
+   * @param {Node} button
+   * @param {Property} interactionStateProperty
+   * @param {Object} [options]
+   * @constructor
+   */
   var contentAppearanceStrategy = function( content, interactionStateProperty, options ) {
 
     // The button is not the parent of the content, therefore it is necessary to set the opacity on
-    // the content separately if you wish to do so.
+    // the content separately
     interactionStateProperty.link( function( state ) {
       if ( content !== null ) {
         switch( state ) {
