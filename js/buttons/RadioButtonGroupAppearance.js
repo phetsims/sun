@@ -84,9 +84,8 @@ define( function( require ) {
 
   var contentAppearanceStrategy = function( content, interactionStateProperty, options ) {
 
-    // for some reason setting the opacity on the buttons directly seems to have no effect if the content in an
-    // image. Therefore, there is an option to set the content opacity here in addition to the button opacity in
-    // defaultRadioButtonsAppearance.
+    // The button is not the parent of the content, therefore it is necessary to set the opacity on
+    // the content separately if you wish to do so.
     interactionStateProperty.link( function( state ) {
       if ( content !== null ) {
         switch( state ) {

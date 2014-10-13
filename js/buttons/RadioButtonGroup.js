@@ -74,8 +74,7 @@ define( function( require ) {
       baseColor: ColorConstants.LIGHT_BLUE,
       disabledBaseColor: ColorConstants.LIGHT_GRAY,
 
-      //Opacity can be set separately for the buttons and button content. If the button content is an Image, setting
-      //the opacity on the button as a whole seems to have no effect on it.
+      //Opacity can be set separately for the buttons and button content.
       selectedButtonOpacity: 1,
       deselectedButtonOpacity: 0.6,
       selectedContentOpacity: 1,
