@@ -2,7 +2,7 @@
 
 /**
  * A single radio button. This class is designed to be part of a RadioButtonGroup and there should be no need to use it
- * outside of RadioButtonGroup. It is called SingleRadioButton to differentiate from RadioButton, which already exists.
+ * outside of RadioButtonGroup. It is called RadioButtonGroupMember to differentiate from RadioButton, which already exists.
  *
  * @author Aaron Davis
  */
@@ -24,7 +24,7 @@ define( function( require ) {
    * @param {Object} [options]
    * @constructor
    */
-  function SingleRadioButton( value, property, options ) {
+  function RadioButtonGroupMember( value, property, options ) {
 
     options = _.extend( {
       //The fill for the rectangle behind the radio buttons.  Default color is bluish color, as in the other button library.
@@ -64,5 +64,5 @@ define( function( require ) {
     RectangularButtonView.call( this, buttonModel, this.interactionStateProperty, options );
   }
 
-  return inherit( RectangularButtonView, SingleRadioButton );
+  return inherit( RectangularButtonView, RadioButtonGroupMember );
 } );

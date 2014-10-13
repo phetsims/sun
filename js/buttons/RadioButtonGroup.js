@@ -14,7 +14,7 @@ define( function( require ) {
 
   // modules
   var inherit = require( 'PHET_CORE/inherit' );
-  var SingleRadioButton = require( 'SUN/buttons/SingleRadioButton' );
+  var RadioButtonGroupMember = require( 'SUN/buttons/RadioButtonGroupMember' );
   var Color = require( 'SCENERY/util/Color' );
   var RadioButtonGroupAppearance = require( 'SUN/buttons/RadioButtonGroupAppearance' );
   var Property = require( 'AXON/Property' );
@@ -134,7 +134,7 @@ define( function( require ) {
       var xMargin = ( ( maxWidth - contentArray[i].node.width ) / 2 ) + options.buttonContentXMargin;
       var yMargin = ( ( maxHeight - contentArray[i].node.height ) / 2 ) + options.buttonContentYMargin;
 
-      var radioButton = new SingleRadioButton( contentArray[i].value, property,
+      var radioButton = new RadioButtonGroupMember( contentArray[i].value, property,
         _.extend( { content: contentArray[i].node, xMargin: xMargin, yMargin: yMargin }, options ) );
 
       // ensure the buttons don't resize when selected vs unselected by adding a rectangle with the max size
