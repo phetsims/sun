@@ -88,39 +88,41 @@ define( function( require ) {
     // image. Therefore, there is an option to set the content opacity here in addition to the button opacity in
     // defaultRadioButtonsAppearance.
     interactionStateProperty.link( function( state ) {
-      switch( state ) {
+      if ( content !== null ) {
+        switch( state ) {
 
-        // deselected
-        case 'idle':
-          content.opacity = options.deselectedContentOpacity;
-          break;
+          // deselected
+          case 'idle':
+            content.opacity = options.deselectedContentOpacity;
+            break;
 
-        // mouseover for deselected buttons
-        case 'over':
-          content.opacity = options.overContentOpacity;
-          break;
+          // mouseover for deselected buttons
+          case 'over':
+            content.opacity = options.overContentOpacity;
+            break;
 
-        // selected
-        case 'pressed':
-          content.opacity = options.selectedContentOpacity;
-          break;
+          // selected
+          case 'pressed':
+            content.opacity = options.selectedContentOpacity;
+            break;
 
-        // disabled and deselected
-        case 'disabled':
-          content.opacity = DISABLED_OPACITY;
-          break;
+          // disabled and deselected
+          case 'disabled':
+            content.opacity = DISABLED_OPACITY;
+            break;
 
-        // disabled and selected
-        case 'disabled-pressed':
-          content.opacity = DISABLED_OPACITY;
-          break;
+          // disabled and selected
+          case 'disabled-pressed':
+            content.opacity = DISABLED_OPACITY;
+            break;
+        }
       }
     } );
   };
 
   return {
-   defaultRadioButtonsAppearance: defaultRadioButtonsAppearance,
-   contentAppearanceStrategy: contentAppearanceStrategy
+    defaultRadioButtonsAppearance: defaultRadioButtonsAppearance,
+    contentAppearanceStrategy: contentAppearanceStrategy
   };
 
 } );

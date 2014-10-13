@@ -4,7 +4,7 @@
  * Radio buttons. See ButtonsDemoView for example usage.
  * This class creates a group of radio buttons in either a horizontal or vertical formation.
  * Each button inherits from RectangularButtonView, and can take a Scenery Node as its content.
- * A typical use case is when you want to have a different modes a of a view to select. Typically,
+ * A typical use case is when you want to have a different modes a of a view to select from. Typically,
  * RadioButtonGroup radio buttons display some kind of icon or image, but that is not mandatory.
  *
  * @author Aaron Davis
@@ -88,7 +88,7 @@ define( function( require ) {
       selectedLineWidth: 1.5,
       deselectedLineWidth: 1,
 
-      //The following options speciy highlight behavior overrides, leave as null to get the default behavior
+      //The following options specify highlight behavior overrides, leave as null to get the default behavior
       //Note that highlighting applies only to deselected buttons
       overFill: null,
       overStroke: null,
