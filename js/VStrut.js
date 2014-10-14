@@ -10,8 +10,8 @@ define( function( require ) {
   var inherit = require( 'PHET_CORE/inherit' );
   var Line = require( 'SCENERY/nodes/Line' );
 
-  function VStrut( height ) {
-    Line.call( this, 0, 0, 0, height );
+  function VStrut( height, options ) {
+    Line.call( this, 0, 0, 0, height, options );
   }
 
   return inherit( Line, VStrut );

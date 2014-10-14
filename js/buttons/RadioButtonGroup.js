@@ -2,6 +2,10 @@
 
 /**
  * Radio buttons. See ButtonsDemoView for example usage.
+ * This class creates a group of radio buttons in either a horizontal or vertical formation.
+ * Each button inherits from RectangularButtonView, and can take a Scenery Node as its content.
+ * A typical use case is when you want to have a different modes a of a view to select from. Typically,
+ * RadioButtonGroup radio buttons display some kind of icon or image, but that is not mandatory.
  *
  * @author Aaron Davis
  */
@@ -10,13 +14,14 @@ define( function( require ) {
 
   // modules
   var inherit = require( 'PHET_CORE/inherit' );
-  var SingleRadioButton = require( 'SUN/buttons/SingleRadioButton' );
+  var RadioButtonGroupMember = require( 'SUN/buttons/RadioButtonGroupMember' );
   var Color = require( 'SCENERY/util/Color' );
   var RadioButtonGroupAppearance = require( 'SUN/buttons/RadioButtonGroupAppearance' );
   var Property = require( 'AXON/Property' );
   var ColorConstants = require( 'SUN/ColorConstants' );
   var LayoutBox = require( 'SCENERY/nodes/LayoutBox' );
   var Shape = require( 'KITE/Shape' );
+  var Rectangle = require( 'SCENERY/nodes/Rectangle' );
 
   /**
    * RadioButtonGroup constructor.
@@ -32,7 +37,7 @@ define( function( require ) {
    */
   function RadioButtonGroup( property, contentArray, options ) {
     assert && assert( !options.hasOwnProperty( 'children' ), 'Cannot pass in children to a RadioButtonGroup, ' +
-                                                             'use siblings instead' );
+                                                             'create siblings in the parent node instead' );
 
     // make sure every object in the content array has properties 'node' and 'value'
     assert && assert( _.every( contentArray, function( obj ) {
@@ -69,8 +74,7 @@ define( function( require ) {
       baseColor: ColorConstants.LIGHT_BLUE,
       disabledBaseColor: ColorConstants.LIGHT_GRAY,
 
-      //Opacity can be set separately for the buttons and button content. If the button content is an Image, setting
-      //the opacity on the button as a whole seems to have no effect on it.
+      //Opacity can be set separately for the buttons and button content.
       selectedButtonOpacity: 1,
       deselectedButtonOpacity: 0.6,
       selectedContentOpacity: 1,
@@ -83,7 +87,7 @@ define( function( require ) {
       selectedLineWidth: 1.5,
       deselectedLineWidth: 1,
 
-      //The following options speciy highlight behavior overrides, leave as null to get the default behavior
+      //The following options specify highlight behavior overrides, leave as null to get the default behavior
       //Note that highlighting applies only to deselected buttons
       overFill: null,
       overStroke: null,
@@ -96,6 +100,10 @@ define( function( require ) {
       //TouchArea expansion
       xTouchExpansion: 5,
       yTouchExpansion: 5,
+
+      //MouseArea expansion
+      xMouseExpansion: 0,
+      yMouseExpansion: 0,
 
       //The radius for each button
       cornerRadius: 4,
@@ -121,10 +129,23 @@ define( function( require ) {
     var buttons = [];
     var button;
     for ( i = 0; i < contentArray.length; i++ ) {
-      options.xMargin = ( ( maxWidth - contentArray[i].node.width ) / 2 ) + options.buttonContentXMargin;
-      options.yMargin = ( ( maxHeight - contentArray[i].node.height ) / 2 ) + options.buttonContentYMargin;
+      // each individual radio button will have a different margin to make sure they are all the same size
+      var xMargin = ( ( maxWidth - contentArray[i].node.width ) / 2 ) + options.buttonContentXMargin;
+      var yMargin = ( ( maxHeight - contentArray[i].node.height ) / 2 ) + options.buttonContentYMargin;
 
-      var radioButton = new SingleRadioButton( contentArray[i].value, property, _.extend( { content: contentArray[i].node }, options ) );
+      var radioButton = new RadioButtonGroupMember( contentArray[i].value, property,
+        _.extend( { content: contentArray[i].node, xMargin: xMargin, yMargin: yMargin }, options ) );
+
+      // ensure the buttons don't resize when selected vs unselected by adding a rectangle with the max size
+      var maxLineWidth = Math.max( options.selectedLineWidth, options.deselectedLineWidth );
+      var maxButtonWidth = maxLineWidth + contentArray[i].node.width + xMargin * 2;
+      var maxButtonHeight = maxLineWidth + contentArray[i].node.height + yMargin * 2;
+      var boundingRect = new Rectangle( 0, 0, maxButtonWidth, maxButtonHeight,
+        {
+          fill: 'rgba(0,0,0,0)',
+          center: radioButton.center
+        } );
+      radioButton.addChild( boundingRect );
 
       // if a label is given, the button becomes a LayoutBox with the label and button
       if ( contentArray[i].label ) {
@@ -133,20 +154,20 @@ define( function( require ) {
         var labelChildren = ( options.labelAlign === 'left' || options.labelAlign === 'top' ) ? [label, radioButton] : [radioButton, label];
         button = new LayoutBox( { children: labelChildren, spacing: options.labelSpacing, orientation: labelOrientation } );
 
-        var lineWidth = Math.max( options.selectedLineWidth, options.deselectedLineWidth );
         var xExpand = options.xTouchExpansion;
         var yExpand = options.yTouchExpansion;
 
         // override the touch and mouse areas defined in RectangularButtonView
         // extra width is added to the SingleRadioButtons so they don't change size if the line width changes,
         // that is why lineWidth is subtracted from the width and height when calculating these new areas
-        radioButton.touchArea = Shape.rectangle( -xExpand, -yExpand, button.width + 2 * xExpand - lineWidth, button.height + 2 * yExpand - lineWidth);
-        radioButton.mouseArea = Shape.rectangle( 0, 0, button.width - lineWidth, button.height - lineWidth );
+        radioButton.touchArea = Shape.rectangle( -xExpand, -yExpand, button.width + 2 * xExpand - maxLineWidth, button.height + 2 * yExpand - maxLineWidth);
+
+        xExpand = options.xMouseExpansion;
+        yExpand = options.yMouseExpansion;
+        radioButton.mouseArea = Shape.rectangle( -xExpand, -yExpand, button.width + 2 * xExpand - maxLineWidth, button.height + 2 * yExpand - maxLineWidth);
 
         // make sure the label mouse and touch areas don't block the expanded button touch and mouse areas
-        // is there a better way to do this?
-        label.mouseArea = Shape.rectangle( 0, 0, 0, 0 );
-        label.touchArea = Shape.rectangle( 0, 0, 0, 0 );
+        label.pickable = false;
 
         // use the same content appearance strategy for the labels that is used for the button content
         options.contentAppearanceStrategy( label, radioButton.interactionStateProperty, options );
@@ -157,13 +178,19 @@ define( function( require ) {
       buttons.push( button );
     }
 
+    // @private
     this.enabledProperty = options.enabledProperty;
+
+    // super call
+    options.children = buttons;
+    LayoutBox.call( this, options );
+    var thisNode = this;
 
     // When the entire RadioButtonGroup gets disabled, gray them out and make them unpickable (and vice versa)
     this.enabledProperty.link( function( isEnabled ) {
-      for ( i = 0; i < contentArray.length; i++ ) {
-        buttons[i].pickable = isEnabled;
+      thisNode.pickable = isEnabled;
 
+      for ( i = 0; i < contentArray.length; i++ ) {
         if ( buttons[i] instanceof LayoutBox ) {
           for ( var j = 0; j < 2; j++ ) {
             buttons[i].children[j].enabled = isEnabled;
@@ -176,7 +203,6 @@ define( function( require ) {
     } );
 
     // make the unselected buttons pickable and have a pointer cursor
-    var thisNode = this;
     property.link( function( value ) {
       if ( thisNode.enabledProperty.get() ) {
         for ( i = 0; i < contentArray.length; i++ ) {
@@ -191,8 +217,6 @@ define( function( require ) {
         }
       }
     } );
-    options.children = buttons;
-    LayoutBox.call( this, options );
   }
 
   return inherit( LayoutBox, RadioButtonGroup,

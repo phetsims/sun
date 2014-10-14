@@ -10,18 +10,10 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var inherit = require( 'PHET_CORE/inherit' );
   var Color = require( 'SCENERY/util/Color' );
 
   // constants
   var DISABLED_OPACITY = 0.3;
-
-  /**
-   *
-   * @constructor
-   */
-  function RadioButtonGroupAppearance() {
-  }
 
   /**
    * Strategy for buttons that look flat, i.e. no shading or highlighting, but
@@ -32,7 +24,7 @@ define( function( require ) {
    * @param {Object} [options]
    * @constructor
    */
-  RadioButtonGroupAppearance.defaultRadioButtonsAppearance = function( button, interactionStateProperty, options ) {
+  var defaultRadioButtonsAppearance = function( button, interactionStateProperty, options ) {
 
     // Set up variables needed to create the various fills and strokes
     var baseColor = Color.toColor( options.baseColor );
@@ -90,42 +82,55 @@ define( function( require ) {
     } );
   };
 
-  RadioButtonGroupAppearance.contentAppearanceStrategy = function( content, interactionStateProperty, options ) {
+  /**
+   * Strategy for changing the button content opacity for each of the different states:
+   * mouseover, selected, deselected, and disabled
+   *
+   * @param {Node} button
+   * @param {Property} interactionStateProperty
+   * @param {Object} [options]
+   * @constructor
+   */
+  var contentAppearanceStrategy = function( content, interactionStateProperty, options ) {
 
-    // for some reason setting the opacity on the buttons directly seems to have no effect if the content in an
-    // image. Therefore, there is an option to set the content opacity here in addition to the button opacity in
-    // defaultRadioButtonsAppearance.
+    // The button is not the parent of the content, therefore it is necessary to set the opacity on
+    // the content separately
     interactionStateProperty.link( function( state ) {
-      switch( state ) {
+      if ( content !== null ) {
+        switch( state ) {
 
-        // deselected
-        case 'idle':
-          content.opacity = options.deselectedContentOpacity;
-          break;
+          // deselected
+          case 'idle':
+            content.opacity = options.deselectedContentOpacity;
+            break;
 
-        // mouseover for deselected buttons
-        case 'over':
-          content.opacity = options.overContentOpacity;
-          break;
+          // mouseover for deselected buttons
+          case 'over':
+            content.opacity = options.overContentOpacity;
+            break;
 
-        // selected
-        case 'pressed':
-          content.opacity = options.selectedContentOpacity;
-          break;
+          // selected
+          case 'pressed':
+            content.opacity = options.selectedContentOpacity;
+            break;
 
-        // disabled and deselected
-        case 'disabled':
-          content.opacity = DISABLED_OPACITY;
-          break;
+          // disabled and deselected
+          case 'disabled':
+            content.opacity = DISABLED_OPACITY;
+            break;
 
-        // disabled and selected
-        case 'disabled-pressed':
-          content.opacity = DISABLED_OPACITY;
-          break;
+          // disabled and selected
+          case 'disabled-pressed':
+            content.opacity = DISABLED_OPACITY;
+            break;
+        }
       }
     } );
   };
 
-  return inherit( Object, RadioButtonGroupAppearance, {}, {
-  } );
+  return {
+    defaultRadioButtonsAppearance: defaultRadioButtonsAppearance,
+    contentAppearanceStrategy: contentAppearanceStrategy
+  };
+
 } );
