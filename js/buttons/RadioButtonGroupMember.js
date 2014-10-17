@@ -12,9 +12,9 @@ define( function( require ) {
   // modules
   var inherit = require( 'PHET_CORE/inherit' );
   var RectangularButtonView = require( 'SUN/buttons/RectangularButtonView' );
-  var StickyToggleButtonInteractionStateProperty = require( 'SUN/buttons/StickyToggleButtonInteractionStateProperty' );
+  var RadioButtonInteractionStateProperty = require( 'SUN/buttons/RadioButtonInteractionStateProperty' );
   var RadioButtonGroupAppearance = require( 'SUN/buttons/RadioButtonGroupAppearance' );
-  var RadioButtonModel = require( 'SUN/buttons/RadioButtonModel' );
+  var RadioButtonGroupMemberModel = require( 'SUN/buttons/RadioButtonGroupMemberModel' );
   var ColorConstants = require( 'SUN/ColorConstants' );
   var Color = require( 'SCENERY/util/Color' );
 
@@ -56,10 +56,10 @@ define( function( require ) {
       contentAppearanceStrategy: RadioButtonGroupAppearance.contentAppearanceStrategy
     }, options );
 
-    var buttonModel = new RadioButtonModel( value, property );
+    var buttonModel = new RadioButtonGroupMemberModel( value, property );
 
     // keep a reference to this property to be used in RadioButtonGroup for managing the labels
-    this.interactionStateProperty = new StickyToggleButtonInteractionStateProperty( buttonModel );
+    this.interactionStateProperty = new RadioButtonInteractionStateProperty( buttonModel );
 
     RectangularButtonView.call( this, buttonModel, this.interactionStateProperty, options );
   }

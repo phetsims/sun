@@ -39,8 +39,7 @@ define( function( require ) {
     interactionStateProperty.link( function( state ) {
       switch( state ) {
 
-        // deselected
-        case 'idle':
+        case 'deselected':
           button.fill = baseColor;
           button.stroke = options.deselectedStroke;
           button.lineWidth = options.deselectedLineWidth;
@@ -55,25 +54,29 @@ define( function( require ) {
           button.opacity = options.overButtonOpacity;
           break;
 
-        // selected
-        case 'pressed':
+        case 'selected':
           button.fill = baseColor;
           button.stroke = options.selectedStroke;
           button.lineWidth = options.selectedLineWidth;
           button.opacity = options.selectedButtonOpacity;
           break;
 
-        // disabled and deselected
-        case 'disabled':
+        case 'disabled-deselected':
           button.fill = disabledBaseColor;
           button.stroke = disabledStroke;
           button.lineWidth = options.deselectedLineWidth;
           button.opacity = options.deselectedOpacity;
           break;
 
-        // disabled and selected
-        case 'disabled-pressed':
+        case 'disabled-selected':
           button.fill = disabledBaseColor;
+          button.stroke = disabledStroke;
+          button.lineWidth = options.selectedLineWidth;
+          button.opacity = options.selectedOpacity;
+          break;
+
+        case 'pressed':
+          button.fill = baseColor;
           button.stroke = disabledStroke;
           button.lineWidth = options.selectedLineWidth;
           button.opacity = options.selectedOpacity;
@@ -99,8 +102,7 @@ define( function( require ) {
       if ( content !== null ) {
         switch( state ) {
 
-          // deselected
-          case 'idle':
+          case 'deselected':
             content.opacity = options.deselectedContentOpacity;
             break;
 
@@ -109,19 +111,20 @@ define( function( require ) {
             content.opacity = options.overContentOpacity;
             break;
 
-          // selected
-          case 'pressed':
+          case 'selected':
             content.opacity = options.selectedContentOpacity;
             break;
 
-          // disabled and deselected
-          case 'disabled':
+          case 'disabled-deselected':
             content.opacity = DISABLED_OPACITY;
             break;
 
-          // disabled and selected
-          case 'disabled-pressed':
+          case 'disabled-selected':
             content.opacity = DISABLED_OPACITY;
+            break;
+
+          case 'pressed':
+            content.opacity = options.deselectedContentOpacity;
             break;
         }
       }
