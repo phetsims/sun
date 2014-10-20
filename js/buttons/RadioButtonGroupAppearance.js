@@ -35,6 +35,7 @@ define( function( require ) {
     var disabledStroke = disabledBaseColor.colorUtilsDarker( 0.4 );
     var overStroke = deselectedStroke.colorUtilsDarker( 0.4 );
     var overFill = baseColor.colorUtilsBrighter( 0.4 );
+    var pressedFill = baseColor.colorUtilsDarker( 0.4 );
 
     interactionStateProperty.link( function( state ) {
       switch( state ) {
@@ -76,9 +77,9 @@ define( function( require ) {
           break;
 
         case 'pressed':
-          button.fill = baseColor;
-          button.stroke = disabledStroke;
-          button.lineWidth = options.selectedLineWidth;
+          button.fill = pressedFill;
+          button.stroke = options.deselectedStroke;
+          button.lineWidth = options.deselectedLineWidth;
           button.opacity = options.selectedButtonOpacity;
           break;
       }
