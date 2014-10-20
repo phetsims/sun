@@ -65,21 +65,21 @@ define( function( require ) {
           button.fill = disabledBaseColor;
           button.stroke = disabledStroke;
           button.lineWidth = options.deselectedLineWidth;
-          button.opacity = options.deselectedOpacity;
+          button.opacity = options.deselectedButtonOpacity;
           break;
 
         case 'disabled-selected':
           button.fill = disabledBaseColor;
           button.stroke = disabledStroke;
           button.lineWidth = options.selectedLineWidth;
-          button.opacity = options.selectedOpacity;
+          button.opacity = options.selectedButtonOpacity;
           break;
 
         case 'pressed':
           button.fill = baseColor;
           button.stroke = disabledStroke;
           button.lineWidth = options.selectedLineWidth;
-          button.opacity = options.selectedOpacity;
+          button.opacity = options.selectedButtonOpacity;
           break;
       }
     } );
