@@ -195,6 +195,10 @@ define( function( require ) {
       } );
     button.addChild( overlayForHorizGradient );
 
+    // keep the gradients in memory, so switching back and forth has improved performance
+    button.fillKept = true;
+    overlayForHorizGradient.fillKept = true;
+
     interactionStateProperty.link( function( state ) {
       switch( state ) {
 
