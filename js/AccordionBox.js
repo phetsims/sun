@@ -14,6 +14,8 @@ define( function( require ) {
   var inherit = require( 'PHET_CORE/inherit' );
   var Node = require( 'SCENERY/nodes/Node' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
+  var Shape = require( 'KITE/Shape' );
+  var Path = require( 'SCENERY/nodes/Path' );
   var Text = require( 'SCENERY/nodes/Text' );
   var Property = require( 'AXON/Property' );
 
@@ -103,16 +105,42 @@ define( function( require ) {
     this.addChild( collapsedBox );
 
     // Title bar at top, clicking it operates like expand/collapse button
-    var titleBar = new Rectangle( 0, 0, boxWidth, collapsedBoxHeight, options.cornerRadius, options.cornerRadius, {
+    var titleBarOptions = {
       fill: options.titleBarFill,
       cursor: 'pointer'
-    } );
-    titleBar.addInputListener( {
+    };
+    // Collapsed title bar has corners that match the box.
+    var collapsedTitleBar = new Rectangle( 0, 0, boxWidth, collapsedBoxHeight, options.cornerRadius, options.cornerRadius, titleBarOptions );
+    // Expanded title bar has rounded top corners, square bottom corners
+    var expandedTitleBar = null;
+    if ( options.cornerRadius === 0 || !options.titleBarFill ) {
+      // no rounded corners or no title bar visible, so use a Rectangle
+      expandedTitleBar = new Rectangle( 0, 0, boxWidth, collapsedBoxHeight, titleBarOptions );
+    }
+    else {
+      // rounded top corners, square bottom corners (start at bottom left and move clockwise)
+      expandedTitleBar = new Path( new Shape()
+          .moveTo( 0, collapsedBoxHeight )
+          .lineTo( 0, options.cornerRadius )
+          .quadraticCurveTo( 0, 0, options.cornerRadius, 0 )
+          .lineTo( boxWidth - options.cornerRadius )
+          .quadraticCurveTo( boxWidth, 0, boxWidth, options.cornerRadius )
+          .lineTo( boxWidth, collapsedBoxHeight )
+          .close(),
+        titleBarOptions );
+    }
+    expandedTitleBar.addInputListener( {
       down: function() {
-        options.expandedProperty.value = !options.expandedProperty.value;
+        options.expandedProperty.value = false;
       }
     } );
-    this.addChild( titleBar );
+    collapsedTitleBar.addInputListener( {
+      down: function() {
+        options.expandedProperty.value = true;
+      }
+    } );
+    expandedBox.addChild( expandedTitleBar );
+    collapsedBox.addChild( collapsedTitleBar );
 
     this.addChild( options.titleNode );
     this.addChild( expandCollapseButton );
@@ -123,8 +151,8 @@ define( function( require ) {
       var outlineOptions = { stroke: options.stroke, lineWidth: options.lineWidth };
       expandedBoxOutline = new Rectangle( 0, 0, boxWidth, expandedBoxHeight, options.cornerRadius, options.cornerRadius, outlineOptions );
       collapsedBoxOutline = new Rectangle( 0, 0, boxWidth, collapsedBoxHeight, options.cornerRadius, options.cornerRadius, outlineOptions );
-      this.addChild( expandedBoxOutline );
-      this.addChild( collapsedBoxOutline );
+      expandedBox.addChild( expandedBoxOutline );
+      collapsedBox.addChild( collapsedBoxOutline );
     }
 
     // content layout
@@ -174,8 +202,8 @@ define( function( require ) {
 
     // Update the visibility of the boxes based on the expanded/collapsed state.
     var expandedPropertyObserver = function( expanded ) {
-      expandedBox.visible = expandedBoxOutline.visible = expanded;
-      collapsedBox.visible = collapsedBoxOutline.visible = !expanded;
+      expandedBox.visible = expanded;
+      collapsedBox.visible = !expanded;
       options.titleNode.visible = ( expanded && options.showTitleWhenExpanded ) || !expanded;
     };
     options.expandedProperty.link( expandedPropertyObserver );
