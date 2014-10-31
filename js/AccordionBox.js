@@ -42,6 +42,7 @@ define( function( require ) {
       titleYMargin: 2, // vertical space between title and top of box
       titleXSpacing: 5, // horizontal space between title and expand/collapse button
       showTitleWhenExpanded: true, // true = title is visible when expanded, false = title is hidden when expanded
+      titleBarFill: null, // title bar is invisible by default
 
       // expand/collapse button
       buttonLength: 16, // button is a square, this is the length of one side
@@ -91,14 +92,8 @@ define( function( require ) {
     }
     this.expandedHeight = expandedBoxHeight; // @public This needs to be visible externally for layout purposes.
 
-    // Options common to both boxes
-    var boxOptions = {
-      stroke: options.stroke,
-      lineWidth: options.lineWidth,
-      fill: options.fill
-    };
-
     // Expanded box
+    var boxOptions = { fill: options.fill };
     var expandedBox = new Rectangle( 0, 0, boxWidth, expandedBoxHeight, options.cornerRadius, options.cornerRadius, boxOptions );
     expandedBox.addChild( contentNode );
     this.addChild( expandedBox );
@@ -107,20 +102,30 @@ define( function( require ) {
     var collapsedBox = new Rectangle( 0, 0, boxWidth, collapsedBoxHeight, options.cornerRadius, options.cornerRadius, boxOptions );
     this.addChild( collapsedBox );
 
-    // Invisible rectangle at top that operates like expand/collapse button
-    var expandCollapseBar = new Rectangle( 0, 0, boxWidth, collapsedBoxHeight, options.cornerRadius, options.cornerRadius, {
-      fill: 'rgba( 0, 0, 0, 0)', // Invisible.
+    // Title bar at top, clicking it operates like expand/collapse button
+    var titleBar = new Rectangle( 0, 0, boxWidth, collapsedBoxHeight, options.cornerRadius, options.cornerRadius, {
+      fill: options.titleBarFill,
       cursor: 'pointer'
     } );
-    expandCollapseBar.addInputListener( {
+    titleBar.addInputListener( {
       down: function() {
         options.expandedProperty.value = !options.expandedProperty.value;
       }
     } );
-    this.addChild( expandCollapseBar );
+    this.addChild( titleBar );
 
     this.addChild( options.titleNode );
     this.addChild( expandCollapseButton );
+
+    // box outline, on top of everything else
+    var expandedBoxOutline, collapsedBoxOutline;
+    if ( options.stroke ) {
+      var outlineOptions = { stroke: options.stroke, lineWidth: options.lineWidth };
+      expandedBoxOutline = new Rectangle( 0, 0, boxWidth, expandedBoxHeight, options.cornerRadius, options.cornerRadius, outlineOptions );
+      collapsedBoxOutline = new Rectangle( 0, 0, boxWidth, collapsedBoxHeight, options.cornerRadius, options.cornerRadius, outlineOptions );
+      this.addChild( expandedBoxOutline );
+      this.addChild( collapsedBoxOutline );
+    }
 
     // content layout
     contentNode.bottom = expandedBox.bottom - options.contentYMargin;
@@ -169,8 +174,8 @@ define( function( require ) {
 
     // Update the visibility of the boxes based on the expanded/collapsed state.
     var expandedPropertyObserver = function( expanded ) {
-      expandedBox.visible = expanded;
-      collapsedBox.visible = !expanded;
+      expandedBox.visible = expandedBoxOutline.visible = expanded;
+      collapsedBox.visible = collapsedBoxOutline.visible = !expanded;
       options.titleNode.visible = ( expanded && options.showTitleWhenExpanded ) || !expanded;
     };
     options.expandedProperty.link( expandedPropertyObserver );
