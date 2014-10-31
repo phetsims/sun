@@ -92,7 +92,6 @@ define( function( require ) {
       boxWidth = Math.max( boxWidth, expandCollapseButton.width + contentNode.width + options.buttonXMargin + options.contentXMargin + options.contentXSpacing );
       expandedBoxHeight = Math.max( expandCollapseButton.height + ( 2 * options.buttonYMargin ), contentNode.height + ( 2 * options.contentYMargin ) );
     }
-    this.expandedHeight = expandedBoxHeight; // @public This needs to be visible externally for layout purposes.
 
     // Expanded box
     var boxOptions = { fill: options.fill };
