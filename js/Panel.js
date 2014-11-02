@@ -15,6 +15,17 @@ define( function( require ) {
   var Node = require( 'SCENERY/nodes/Node' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
 
+  var defaultOptions = {
+    fill: 'white',
+    stroke: 'black',
+    lineWidth: 1, // width of the background border
+    xMargin: 5,
+    yMargin: 5,
+    cornerRadius: 10, // radius of the rounded corners on the background
+    resize: true, // dynamically resize when content bounds change
+    backgroundPickable: false
+  };
+
   /**
    * @param {Node} content
    * @param {Object} [options]
@@ -25,16 +36,7 @@ define( function( require ) {
     var thisNode = this;
 
     // default options
-    options = _.extend( {
-      fill: 'white',
-      stroke: 'black',
-      lineWidth: 1, // width of the background border
-      xMargin: 5,
-      yMargin: 5,
-      cornerRadius: 10, // radius of the rounded corners on the background
-      resize: true, // dynamically resize when content bounds change
-      backgroundPickable: false
-    }, options );
+    options = _.extend( {}, defaultOptions, options );
 
     Node.call( thisNode );
 
@@ -102,6 +104,8 @@ define( function( require ) {
     // Getter/setter for background fill
     set fill( value ) { this.setFill( value ); },
     get fill() { return this.getFill(); }
+  }, {
+    defaultOptions: defaultOptions
   } );
 
   return Panel;
