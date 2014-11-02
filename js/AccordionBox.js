@@ -14,6 +14,8 @@ define( function( require ) {
   var inherit = require( 'PHET_CORE/inherit' );
   var Node = require( 'SCENERY/nodes/Node' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
+  var Shape = require( 'KITE/Shape' );
+  var Path = require( 'SCENERY/nodes/Path' );
   var Text = require( 'SCENERY/nodes/Text' );
   var Property = require( 'AXON/Property' );
 
@@ -42,6 +44,7 @@ define( function( require ) {
       titleYMargin: 2, // vertical space between title and top of box
       titleXSpacing: 5, // horizontal space between title and expand/collapse button
       showTitleWhenExpanded: true, // true = title is visible when expanded, false = title is hidden when expanded
+      titleBarFill: null, // title bar is invisible by default
 
       // expand/collapse button
       buttonLength: 16, // button is a square, this is the length of one side
@@ -89,16 +92,9 @@ define( function( require ) {
       boxWidth = Math.max( boxWidth, expandCollapseButton.width + contentNode.width + options.buttonXMargin + options.contentXMargin + options.contentXSpacing );
       expandedBoxHeight = Math.max( expandCollapseButton.height + ( 2 * options.buttonYMargin ), contentNode.height + ( 2 * options.contentYMargin ) );
     }
-    this.expandedHeight = expandedBoxHeight; // @public This needs to be visible externally for layout purposes.
-
-    // Options common to both boxes
-    var boxOptions = {
-      stroke: options.stroke,
-      lineWidth: options.lineWidth,
-      fill: options.fill
-    };
 
     // Expanded box
+    var boxOptions = { fill: options.fill };
     var expandedBox = new Rectangle( 0, 0, boxWidth, expandedBoxHeight, options.cornerRadius, options.cornerRadius, boxOptions );
     expandedBox.addChild( contentNode );
     this.addChild( expandedBox );
@@ -107,20 +103,56 @@ define( function( require ) {
     var collapsedBox = new Rectangle( 0, 0, boxWidth, collapsedBoxHeight, options.cornerRadius, options.cornerRadius, boxOptions );
     this.addChild( collapsedBox );
 
-    // Invisible rectangle at top that operates like expand/collapse button
-    var expandCollapseBar = new Rectangle( 0, 0, boxWidth, collapsedBoxHeight, options.cornerRadius, options.cornerRadius, {
-      fill: 'rgba( 0, 0, 0, 0)', // Invisible.
+    // Title bar at top, clicking it operates like expand/collapse button
+    var titleBarOptions = {
+      fill: options.titleBarFill,
       cursor: 'pointer'
-    } );
-    expandCollapseBar.addInputListener( {
+    };
+    // Collapsed title bar has corners that match the box.
+    var collapsedTitleBar = new Rectangle( 0, 0, boxWidth, collapsedBoxHeight, options.cornerRadius, options.cornerRadius, titleBarOptions );
+    // Expanded title bar has rounded top corners, square bottom corners
+    var expandedTitleBar = null;
+    if ( options.cornerRadius === 0 || !options.titleBarFill ) {
+      // no rounded corners or no title bar visible, so use a Rectangle
+      expandedTitleBar = new Rectangle( 0, 0, boxWidth, collapsedBoxHeight, titleBarOptions );
+    }
+    else {
+      // rounded top corners, square bottom corners (start at bottom left and move clockwise)
+      expandedTitleBar = new Path( new Shape()
+          .moveTo( 0, collapsedBoxHeight )
+          .lineTo( 0, options.cornerRadius )
+          .quadraticCurveTo( 0, 0, options.cornerRadius, 0 )
+          .lineTo( boxWidth - options.cornerRadius )
+          .quadraticCurveTo( boxWidth, 0, boxWidth, options.cornerRadius )
+          .lineTo( boxWidth, collapsedBoxHeight )
+          .close(),
+        titleBarOptions );
+    }
+    expandedTitleBar.addInputListener( {
       down: function() {
-        options.expandedProperty.value = !options.expandedProperty.value;
+        options.expandedProperty.value = false;
       }
     } );
-    this.addChild( expandCollapseBar );
+    collapsedTitleBar.addInputListener( {
+      down: function() {
+        options.expandedProperty.value = true;
+      }
+    } );
+    expandedBox.addChild( expandedTitleBar );
+    collapsedBox.addChild( collapsedTitleBar );
 
     this.addChild( options.titleNode );
     this.addChild( expandCollapseButton );
+
+    // box outline, on top of everything else
+    var expandedBoxOutline, collapsedBoxOutline;
+    if ( options.stroke ) {
+      var outlineOptions = { stroke: options.stroke, lineWidth: options.lineWidth };
+      expandedBoxOutline = new Rectangle( 0, 0, boxWidth, expandedBoxHeight, options.cornerRadius, options.cornerRadius, outlineOptions );
+      collapsedBoxOutline = new Rectangle( 0, 0, boxWidth, collapsedBoxHeight, options.cornerRadius, options.cornerRadius, outlineOptions );
+      expandedBox.addChild( expandedBoxOutline );
+      collapsedBox.addChild( collapsedBoxOutline );
+    }
 
     // content layout
     contentNode.bottom = expandedBox.bottom - options.contentYMargin;
