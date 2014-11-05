@@ -256,7 +256,7 @@ define( function( require ) {
     }
 
     // Do the initial update explicitly, then lazy link to the properties.  This keeps the number of initial updates to
-    // a minimum and allows us to update a flag the first time the base color is actually changed.
+    // a minimum and allows us to update some optimization flags the first time the base color is actually changed.
     updateFillsAndStrokes( baseColorProperty.value );
     updateAppearanceForState( interactionStateProperty.value );
 
@@ -377,6 +377,5 @@ define( function( require ) {
 
       set baseColor( baseColor ) { this.baseColorProperty.value = Color.toColor( baseColor ); },
       get baseColor() { return this.baseColorProperty.value; }
-
     } );
 } );

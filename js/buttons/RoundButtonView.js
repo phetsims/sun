@@ -17,12 +17,13 @@ define( function( require ) {
   var ButtonListener = require( 'SUN/buttons/ButtonListener' );
   var Circle = require( 'SCENERY/nodes/Circle' );
   var Color = require( 'SCENERY/util/Color' );
+  var ColorConstants = require( 'SUN/ColorConstants' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Node = require( 'SCENERY/nodes/Node' );
+  var Property = require( 'AXON/Property' );
   var RadialGradient = require( 'SCENERY/util/RadialGradient' );
   var Shape = require( 'KITE/Shape' );
   var Vector2 = require( 'DOT/Vector2' );
-  var ColorConstants = require( 'SUN/ColorConstants' );
 
   // Constants
   var HIGHLIGHT_GRADIENT_LENGTH = 5; // In screen coords, which are roughly pixels.
@@ -39,6 +40,7 @@ define( function( require ) {
     var thisButton = this;
 
     options = _.extend( {
+
       // Default values.
       radius: options.content ? undefined : 30,
       content: null,
@@ -75,6 +77,9 @@ define( function( require ) {
     var content = options.content; // convenience variable
     var upCenter = new Vector2( options.xContentOffset, options.yContentOffset );
 
+    // Make the base color into a property so that the appearance strategy can update itself if changes occur.
+    this.baseColorProperty = new Property( Color.toColor( options.baseColor ) );
+
     // Hook up the input listener
     this.addInputListener( new ButtonListener( buttonModel ) );
 
@@ -83,15 +88,11 @@ define( function( require ) {
     var buttonRadius = options.radius || Math.max( content.width + options.minXMargin * 2, content.height + options.minYMargin * 2 ) / 2;
 
     // Create the basic button shape.
-    var button = new Circle( buttonRadius,
-      {
-        fill: options.baseColor,
-        lineWidth: options.lineWidth
-      } );
+    var button = new Circle( buttonRadius, { fill: options.baseColor, lineWidth: options.lineWidth } );
     this.addChild( button );
 
     // Hook up the strategy that will control the basic button appearance.
-    options.buttonAppearanceStrategy( button, interactionStateProperty, options );
+    options.buttonAppearanceStrategy( button, interactionStateProperty, this.baseColorProperty, options );
 
     // Add the content to the button.
     if ( content ) {
@@ -123,50 +124,36 @@ define( function( require ) {
    * the appearance of highlighted and shaded edges.
    *
    * @param {Node} button
-   * @param {Property} interactionStateProperty
+   * @param {Property.<boolean>} interactionStateProperty
+   * @param {Property.<Color>} baseColorProperty
    * @param {Object} [options]
    * @constructor
    */
-  RoundButtonView.threeDAppearanceStrategy = function( button, interactionStateProperty, options ) {
+  RoundButtonView.threeDAppearanceStrategy = function( button, interactionStateProperty, baseColorProperty, options ) {
 
     // Set up variables needed to create the various gradient fills and otherwise mod the appearance
     var buttonRadius = button.width / 2;
-    var baseColor = Color.toColor( options.baseColor );
     var disabledBaseColor = Color.toColor( options.disabledBaseColor );
-    var transparentBaseColor = new Color( baseColor.getRed(), baseColor.getGreen(), baseColor.getBlue(), 0 );
     var transparentDisabledBaseColor = new Color( disabledBaseColor.getRed(), disabledBaseColor.getGreen(), disabledBaseColor.getBlue(), 0 );
     var disabledStroke = options.stroke ? disabledBaseColor.colorUtilsDarker( 0.4 ) : null;
-
-    // Create the overlay that is used to add shading.
-    var overlayForShadowGradient = new Circle( buttonRadius,
-      {
-        fill: options.baseColor,
-        stroke: options.stroke,
-        lineWidth: options.lineWidth
-      } );
-    button.addChild( overlayForShadowGradient );
-
-    // The multiplier below can be varied in order to tweak the highlight appearance.
     var innerGradientRadius = buttonRadius - HIGHLIGHT_GRADIENT_LENGTH / 2;
     var outerGradientRadius = buttonRadius + HIGHLIGHT_GRADIENT_LENGTH / 2;
     var gradientOffset = HIGHLIGHT_GRADIENT_LENGTH / 2;
 
-    // Create the gradient fills used for various button states
-    var upFillHighlight = new RadialGradient( gradientOffset, gradientOffset, innerGradientRadius, gradientOffset, gradientOffset, outerGradientRadius )
-      .addColorStop( 0, baseColor )
-      .addColorStop( 1, baseColor.colorUtilsBrighter( 0.7 ) );
+    // Create and add the overlay that is used to add shading.
+    var overlayForShadowGradient = new Circle( buttonRadius, { lineWidth: options.lineWidth } );
+    button.addChild( overlayForShadowGradient );
 
-    var upFillShadow = new RadialGradient( -gradientOffset, -gradientOffset, innerGradientRadius, -gradientOffset, -gradientOffset, outerGradientRadius )
-      .addColorStop( 0, transparentBaseColor )
-      .addColorStop( 1, baseColor.colorUtilsDarker( 0.5 ) );
-
-    var overFillHighlight = new RadialGradient( gradientOffset, gradientOffset, innerGradientRadius, gradientOffset, gradientOffset, outerGradientRadius )
-      .addColorStop( 0, baseColor.colorUtilsBrighter( 0.3 ) )
-      .addColorStop( 1, baseColor.colorUtilsBrighter( 0.8 ) );
-
-    var overFillShadow = new RadialGradient( -gradientOffset, -gradientOffset, innerGradientRadius, -gradientOffset, -gradientOffset, outerGradientRadius )
-      .addColorStop( 0, transparentBaseColor )
-      .addColorStop( 1, baseColor.colorUtilsDarker( 0.5 ) );
+    // various fills used to alter the appearance of the button, values set below
+    var upFillHighlight;
+    var upFillShadow;
+    var overFillHighlight;
+    var overFillShadow;
+    var pressedFill;
+    var disabledFillHighlight;
+    var disabledFillShadow;
+    var disabledPressedFillHighlight;
+    var enabledStroke = null;
 
     // Function to create a fill that represents a pressed in round button.
     function createPressedFill( color ) {
@@ -177,37 +164,65 @@ define( function( require ) {
         .addColorStop( 1, color.colorUtilsBrighter( 0.8 ) );
     }
 
-    var pressedFill = createPressedFill( baseColor );
+    // Function for creating the fills and strokes used to control the button's appearance.
+    function updateFillsAndStrokes( baseColor ) {
 
-    var disabledFillHighlight = new RadialGradient( gradientOffset, gradientOffset, innerGradientRadius, gradientOffset, gradientOffset, outerGradientRadius )
-      .addColorStop( 0, disabledBaseColor )
-      .addColorStop( 1, disabledBaseColor.colorUtilsBrighter( 0.5 ) );
+      var transparentBaseColor = new Color( baseColor.getRed(), baseColor.getGreen(), baseColor.getBlue(), 0 );
 
-    var disabledFillShadow = new RadialGradient( -gradientOffset, -gradientOffset, innerGradientRadius, -gradientOffset, -gradientOffset, outerGradientRadius )
-      .addColorStop( 0, transparentDisabledBaseColor )
-      .addColorStop( 1, disabledBaseColor.colorUtilsDarker( 0.5 ) );
+      upFillHighlight = new RadialGradient( gradientOffset, gradientOffset, innerGradientRadius, gradientOffset, gradientOffset, outerGradientRadius )
+        .addColorStop( 0, baseColor )
+        .addColorStop( 1, baseColor.colorUtilsBrighter( 0.7 ) );
 
-    var disabledPressedFillHighlight = createPressedFill( disabledBaseColor );
+      upFillShadow = new RadialGradient( -gradientOffset, -gradientOffset, innerGradientRadius, -gradientOffset, -gradientOffset, outerGradientRadius )
+        .addColorStop( 0, transparentBaseColor )
+        .addColorStop( 1, baseColor.colorUtilsDarker( 0.5 ) );
 
-    // Hook up to the property that will trigger visual appearance changes.
-    interactionStateProperty.link( function( state ) {
-      switch( state ) {
+      overFillHighlight = new RadialGradient( gradientOffset, gradientOffset, innerGradientRadius, gradientOffset, gradientOffset, outerGradientRadius )
+        .addColorStop( 0, baseColor.colorUtilsBrighter( 0.3 ) )
+        .addColorStop( 1, baseColor.colorUtilsBrighter( 0.8 ) );
+
+      overFillShadow = new RadialGradient( -gradientOffset, -gradientOffset, innerGradientRadius, -gradientOffset, -gradientOffset, outerGradientRadius )
+        .addColorStop( 0, transparentBaseColor )
+        .addColorStop( 1, baseColor.colorUtilsDarker( 0.5 ) );
+
+      pressedFill = createPressedFill( baseColor );
+
+      disabledFillHighlight = new RadialGradient( gradientOffset, gradientOffset, innerGradientRadius, gradientOffset, gradientOffset, outerGradientRadius )
+        .addColorStop( 0, disabledBaseColor )
+        .addColorStop( 1, disabledBaseColor.colorUtilsBrighter( 0.5 ) );
+
+      disabledFillShadow = new RadialGradient( -gradientOffset, -gradientOffset, innerGradientRadius, -gradientOffset, -gradientOffset, outerGradientRadius )
+        .addColorStop( 0, transparentDisabledBaseColor )
+        .addColorStop( 1, disabledBaseColor.colorUtilsDarker( 0.5 ) );
+
+      disabledPressedFillHighlight = createPressedFill( disabledBaseColor );
+
+      if ( options.stroke !== null ) {
+        enabledStroke = baseColor.colorUtilsDarker( 0.4 );
+        disabledStroke = disabledBaseColor.colorUtilsDarker( 0.4 );
+      }
+    }
+
+    // Function for updating the button's appearance based on the current interaction state.
+    function updateAppearanceForState( interactionState ) {
+
+      switch( interactionState ) {
 
         case 'idle':
           button.fill = upFillHighlight;
-          overlayForShadowGradient.stroke = options.stroke;
+          overlayForShadowGradient.stroke = enabledStroke;
           overlayForShadowGradient.fill = upFillShadow;
           break;
 
         case 'over':
           button.fill = overFillHighlight;
-          overlayForShadowGradient.stroke = options.stroke;
+          overlayForShadowGradient.stroke = enabledStroke;
           overlayForShadowGradient.fill = overFillShadow;
           break;
 
         case 'pressed':
           button.fill = pressedFill;
-          overlayForShadowGradient.stroke = options.stroke;
+          overlayForShadowGradient.stroke = enabledStroke;
           overlayForShadowGradient.fill = overFillShadow;
           break;
 
@@ -223,6 +238,26 @@ define( function( require ) {
           overlayForShadowGradient.fill = disabledFillShadow;
           break;
       }
+    }
+
+    // Do the initial update explicitly, then lazy link to the properties.  This keeps the number of initial updates to
+    // a minimum and allows us to update some optimization flags the first time the base color is actually changed.
+    updateFillsAndStrokes( baseColorProperty.value );
+    updateAppearanceForState( interactionStateProperty.value );
+
+    baseColorProperty.lazyLink( function( baseColor ) {
+
+      // Turn off the memory optimization for gradients, since this button instance is apparently changing colors.
+      button.fillKept = false;
+      overlayForShadowGradient.fillKept = false;
+
+      // Do the appearance updates.
+      updateFillsAndStrokes( baseColor );
+      updateAppearanceForState( interactionStateProperty.value );
+    } );
+
+    interactionStateProperty.lazyLink( function( interactionState ) {
+      updateAppearanceForState( interactionState );
     } );
   };
 
@@ -231,43 +266,52 @@ define( function( require ) {
    * that change color on mouseover, press, etc.
    *
    * @param {Node} button
-   * @param {Property} interactionStateProperty
+   * @param {Property.<boolean>} interactionStateProperty
+   * @param {Property.<Color>} baseColorProperty
    * @param {Object} [options]
    * @constructor
    */
-  RoundButtonView.flatAppearanceStrategy = function( button, interactionStateProperty, options ) {
+  RoundButtonView.flatAppearanceStrategy = function( button, interactionStateProperty, baseColorProperty, options ) {
 
     // Set up variables needed to create the various gradient fills
-    var baseColor = Color.toColor( options.baseColor );
     var disabledBaseColor = Color.toColor( options.disabledBaseColor );
     var disabledStroke = null;
-    if ( options.stroke ) {
-      disabledStroke = disabledBaseColor.colorUtilsDarker( 0.4 );
+
+    // various fills that are used to alter the button's appearance
+    var upFill;
+    var overFill;
+    var downFill;
+    var disabledFill;
+    var disabledPressedFillVertical;
+    var enabledStroke = null;
+
+    function updateFillsAndStrokes( baseColor ) {
+      upFill = baseColor;
+      overFill = baseColor.colorUtilsBrighter( 0.4 );
+      downFill = baseColor.colorUtilsDarker( 0.4 );
+      disabledFill = disabledBaseColor;
+      disabledPressedFillVertical = disabledFill;
+      if ( options.stroke !== null ) {
+        enabledStroke = baseColor.colorUtilsDarker( 0.4 );
+        disabledStroke = disabledBaseColor.colorUtilsDarker( 0.4 );
+      }
     }
 
-    // Create the fills used for various button states
-    var upFill = baseColor;
-    var overFill = baseColor.colorUtilsBrighter( 0.4 );
-    var downFill = baseColor.colorUtilsDarker( 0.4 );
-    var disabledFill = disabledBaseColor;
-    var disabledPressedFillVertical = disabledFill;
-
-    interactionStateProperty.link( function( state ) {
-      switch( state ) {
-
+    function updateAppearanceForState( interactionState ) {
+      switch( interactionState ) {
         case 'idle':
           button.fill = upFill;
-          button.stroke = options.stroke;
+          button.stroke = enabledStroke;
           break;
 
         case 'over':
           button.fill = overFill;
-          button.stroke = options.stroke;
+          button.stroke = enabledStroke;
           break;
 
         case 'pressed':
           button.fill = downFill;
-          button.stroke = options.stroke;
+          button.stroke = enabledStroke;
           break;
 
         case 'disabled':
@@ -280,6 +324,16 @@ define( function( require ) {
           button.stroke = disabledStroke;
           break;
       }
+    }
+
+    baseColorProperty.link( function( baseColor ) {
+      updateFillsAndStrokes( baseColor );
+      updateAppearanceForState( interactionStateProperty.value );
+    } );
+
+    // Lazy link to interaction state to avoid two updates at init.
+    interactionStateProperty.lazyLink( function( interactionState ) {
+      updateAppearanceForState( interactionState );
     } );
   };
 
@@ -304,7 +358,9 @@ define( function( require ) {
       assert && assert( typeof value === 'boolean', 'RoundButtonView.enabled must be a boolean value' );
       this.buttonModel.enabled = value;
     },
+    get enabled() { return this.buttonModel.enabled; },
 
-    get enabled() { return this.buttonModel.enabled; }
+    set baseColor( baseColor ) { this.baseColorProperty.value = Color.toColor( baseColor ); },
+    get baseColor() { return this.baseColorProperty.value; }
   } );
 } );
