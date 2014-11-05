@@ -13,11 +13,11 @@ define( function( require ) {
   var ButtonModel = require( 'SUN/buttons/ButtonModel' );
 
   /**
-   * @param {Object} selectedValue the value that selectorProperty takes when this particular SingleRadioButton is selected
    * @param {Property} selectorProperty the property for the RadioButtonGroup that determines which button is selected
+   * @param {Object} selectedValue the value that selectorProperty takes when this particular SingleRadioButton is selected
    * @constructor
    */
-  function RadioButtonGroupMemberModel( selectedValue, selectorProperty ) {
+  function RadioButtonGroupMemberModel( selectorProperty, selectedValue ) {
     ButtonModel.call( this );
     var thisModel = this;
 

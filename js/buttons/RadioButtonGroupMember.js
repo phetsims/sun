@@ -19,12 +19,12 @@ define( function( require ) {
   var Color = require( 'SCENERY/util/Color' );
 
   /**
-   * @param {Object} value value when this radio button is selected
    * @param {Property} property axon property that can take on a set of values, one for each radio button in the group
+   * @param {Object} value value when this radio button is selected
    * @param {Object} [options]
    * @constructor
    */
-  function RadioButtonGroupMember( value, property, options ) {
+  function RadioButtonGroupMember( property, value, options ) {
 
     options = _.extend( {
       // The fill for the rectangle behind the radio buttons.  Default color is bluish color, as in the other button library.
@@ -56,7 +56,7 @@ define( function( require ) {
       contentAppearanceStrategy: RadioButtonGroupAppearance.contentAppearanceStrategy
     }, options );
 
-    var buttonModel = new RadioButtonGroupMemberModel( value, property );
+    var buttonModel = new RadioButtonGroupMemberModel( property, value );
 
     // keep a reference to this property to be used in RadioButtonGroup for managing the labels
     this.interactionStateProperty = new RadioButtonInteractionStateProperty( buttonModel );
