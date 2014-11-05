@@ -35,6 +35,9 @@ define( function( require ) {
   // stripped the box out of the 'check'
   icons.check_without_box = 'M1639 1095l-814 -814q-24 -24 -57 -24t-57 24l-430 430q-24 24 -24 57t24 57l110 110q24 24 57 24t57 -24l263 -263l647 647q24 24 57 24t57 -24l110 -110 q24 -24 24 -57t-24 -57z';
 
+  // constants
+  var SHAPE_MATRIX = Matrix3.createFromPool( 0.025, 0, 0, 0, -0.025, 0, 0, 0, 1 ); // to create a unity-scale icon
+
   function FontAwesomeNode( iconName, options ) {
 
     // default values
@@ -44,12 +47,10 @@ define( function( require ) {
       pickable: false
     }, options );
 
-    // add internal values required by supertype constructor
-    options = _.extend( options, {
-      matrix: Matrix3.createFromPool( 0.025, 0, 0, 0, -0.025, 0, 0, 0, 1 )
-    } );
+    // create the shape for what we'll consider 'unity' scale
+    var shape = new Shape( icons[iconName] ).transformed( SHAPE_MATRIX );
 
-    Path.call( this, new Shape( icons[iconName] ), options );
+    Path.call( this, shape, options );
   }
 
   inherit( Path, FontAwesomeNode );
