@@ -15,6 +15,7 @@ define( function( require ) {
   var inherit = require( 'PHET_CORE/inherit' );
   var LinearGradient = require( 'SCENERY/util/LinearGradient' );
   var Node = require( 'SCENERY/nodes/Node' );
+  var Property = require( 'AXON/Property' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var Shape = require( 'KITE/Shape' );
   var ColorConstants = require( 'SUN/ColorConstants' );
@@ -70,6 +71,9 @@ define( function( require ) {
     // Hook up the input listener
     this.addInputListener( new ButtonListener( buttonModel ) );
 
+    // Make the base color into a property so that the appearance strategy can update itself if changes occur.
+    this.baseColorProperty = new Property( Color.toColor( options.baseColor ) );
+
     // Figure out the size of the button.
     var content = options.content;
     var buttonWidth = Math.max( content ? content.width + options.xMargin * 2 : 0, options.minWidth );
@@ -84,7 +88,7 @@ define( function( require ) {
     this.addChild( button );
 
     // Hook up the strategy that will control the basic button appearance.
-    options.buttonAppearanceStrategy( button, interactionStateProperty, options );
+    options.buttonAppearanceStrategy( button, interactionStateProperty, this.baseColorProperty, options );
 
     // Add the content to the button.
     if ( content ) {
@@ -110,15 +114,16 @@ define( function( require ) {
   }
 
   /**
-   * Strategy for making a button look 3D-ish by using gradients that create
-   * the appearance of highlighted and shaded edges.
+   * Strategy for making a button look 3D-ish by using gradients that create the appearance of highlighted and shaded
+   * edges.
    *
    * @param {Node} button
-   * @param {Property} interactionStateProperty
+   * @param {Property.<Boolean>} interactionStateProperty
+   * @param {Property.<Color>} baseColorProperty
    * @param {Object} [options]
    * @constructor
    */
-  RectangularButtonView.threeDAppearanceStrategy = function( button, interactionStateProperty, options ) {
+  RectangularButtonView.threeDAppearanceStrategy = function( button, interactionStateProperty, baseColorProperty, options ) {
 
     // Set up variables needed to create the various gradient fills
     var buttonWidth = button.width;
@@ -127,9 +132,7 @@ define( function( require ) {
     var verticalShadowStop = Math.max( 1 - SHADE_GRADIENT_LENGTH / buttonHeight, 0 );
     var horizontalHighlightStop = Math.min( HORIZONTAL_HIGHLIGHT_GRADIENT_LENGTH / buttonWidth, 1 );
     var horizontalShadowStop = Math.max( 1 - SHADE_GRADIENT_LENGTH / buttonWidth, 0 );
-    var baseColor = Color.toColor( options.baseColor );
     var disabledBaseColor = Color.toColor( options.disabledBaseColor );
-    var transparentBaseColor = new Color( baseColor.getRed(), baseColor.getGreen(), baseColor.getBlue(), 0 );
     var transparentDisabledBaseColor = new Color( disabledBaseColor.getRed(), disabledBaseColor.getGreen(), disabledBaseColor.getBlue(), 0 );
     var disabledStroke = null;
     if ( options.stroke ) {
@@ -137,70 +140,88 @@ define( function( require ) {
     }
     var transparentWhite = new Color( 256, 256, 256, 0.7 );
 
-    // Create the gradient fills used for various button states
-    var upFillVertical = new LinearGradient( 0, 0, 0, buttonHeight )
-      .addColorStop( 0, baseColor.colorUtilsBrighter( 0.7 ) )
-      .addColorStop( verticalHighlightStop, baseColor )
-      .addColorStop( verticalShadowStop, baseColor )
-      .addColorStop( 1, baseColor.colorUtilsDarker( 0.5 ) );
-
-    var upFillHorizontal = new LinearGradient( 0, 0, buttonWidth, 0 )
-      .addColorStop( 0, transparentWhite )
-      .addColorStop( horizontalHighlightStop, transparentBaseColor )
-      .addColorStop( horizontalShadowStop, transparentBaseColor )
-      .addColorStop( 1, baseColor.colorUtilsDarker( 0.5 ) );
-
-    var overFillVertical = new LinearGradient( 0, 0, 0, buttonHeight )
-      .addColorStop( 0, baseColor.colorUtilsBrighter( 0.7 ) )
-      .addColorStop( verticalHighlightStop, baseColor.colorUtilsBrighter( 0.5 ) )
-      .addColorStop( verticalShadowStop, baseColor.colorUtilsBrighter( 0.5 ) )
-      .addColorStop( 1, baseColor.colorUtilsDarker( 0.5 ) );
-
-    var overFillHorizontal = new LinearGradient( 0, 0, buttonWidth, 0 )
-      .addColorStop( 0, transparentWhite )
-      .addColorStop( horizontalHighlightStop / 2, new Color( 256, 256, 256, 0 ) )
-      .addColorStop( horizontalShadowStop, transparentBaseColor )
-      .addColorStop( 1, baseColor.colorUtilsDarker( 0.3 ) );
-
-    var downFill = new LinearGradient( 0, 0, 0, buttonHeight )
-      .addColorStop( 0, baseColor.colorUtilsBrighter( 0.7 ) )
-      .addColorStop( verticalHighlightStop * 0.67, baseColor.colorUtilsDarker( 0.3 ) )
-      .addColorStop( verticalShadowStop, baseColor.colorUtilsBrighter( 0.2 ) )
-      .addColorStop( 1, baseColor.colorUtilsDarker( 0.5 ) );
-
-    var disabledFillVertical = new LinearGradient( 0, 0, 0, buttonHeight )
-      .addColorStop( 0, disabledBaseColor.colorUtilsBrighter( 0.7 ) )
-      .addColorStop( verticalHighlightStop, disabledBaseColor.colorUtilsBrighter( 0.5 ) )
-      .addColorStop( verticalShadowStop, disabledBaseColor.colorUtilsBrighter( 0.5 ) )
-      .addColorStop( 1, disabledBaseColor.colorUtilsDarker( 0.5 ) );
-
-    var disabledFillHorizontal = new LinearGradient( 0, 0, buttonWidth, 0 )
-      .addColorStop( 0, disabledBaseColor.colorUtilsBrighter( 0.7 ) )
-      .addColorStop( horizontalHighlightStop, transparentDisabledBaseColor )
-      .addColorStop( horizontalShadowStop, transparentDisabledBaseColor )
-      .addColorStop( 1, disabledBaseColor.colorUtilsDarker( 0.5 ) );
-
-    var disabledPressedFillVertical = new LinearGradient( 0, 0, 0, buttonHeight )
-      .addColorStop( 0, disabledBaseColor.colorUtilsBrighter( 0.7 ) )
-      .addColorStop( verticalHighlightStop * 0.67, disabledBaseColor.colorUtilsDarker( 0.3 ) )
-      .addColorStop( verticalShadowStop, disabledBaseColor.colorUtilsBrighter( 0.2 ) )
-      .addColorStop( 1, disabledBaseColor.colorUtilsDarker( 0.5 ) );
-
-    // Create the overlay that is used to add horizontal shading.
+    // Create the overlay that is used to add shading to left and right edges of the button.
     var overlayForHorizGradient = new Rectangle( 0, 0, buttonWidth, buttonHeight, options.cornerRadius, options.cornerRadius,
       {
-        fill: options.baseColor,
-        stroke: options.stroke,
         lineWidth: options.lineWidth
       } );
     button.addChild( overlayForHorizGradient );
 
-    // keep the gradients in memory, so switching back and forth has improved performance
+    // Various fills used in the button's appearance, updated below.
+    var upFillVertical;
+    var upFillHorizontal;
+    var overFillVertical;
+    var overFillHorizontal;
+    var downFill;
+    var disabledFillVertical;
+    var disabledFillHorizontal;
+    var disabledPressedFillVertical;
+
+    // Keep the gradients in memory, so switching back and forth has improved performance.
     button.fillKept = true;
     overlayForHorizGradient.fillKept = true;
 
-    interactionStateProperty.link( function( state ) {
-      switch( state ) {
+    // Function for creating the fills and strokes used to control the button's appearance.
+    function updateFillsAndStrokes( baseColor ) {
+
+      var transparentBaseColor = new Color( baseColor.getRed(), baseColor.getGreen(), baseColor.getBlue(), 0 );
+
+      // Create the gradient fills used for various button states
+      upFillVertical = new LinearGradient( 0, 0, 0, buttonHeight )
+        .addColorStop( 0, baseColor.colorUtilsBrighter( 0.7 ) )
+        .addColorStop( verticalHighlightStop, baseColor )
+        .addColorStop( verticalShadowStop, baseColor )
+        .addColorStop( 1, baseColor.colorUtilsDarker( 0.5 ) );
+
+      upFillHorizontal = new LinearGradient( 0, 0, buttonWidth, 0 )
+        .addColorStop( 0, transparentWhite )
+        .addColorStop( horizontalHighlightStop, transparentBaseColor )
+        .addColorStop( horizontalShadowStop, transparentBaseColor )
+        .addColorStop( 1, baseColor.colorUtilsDarker( 0.5 ) );
+
+      overFillVertical = new LinearGradient( 0, 0, 0, buttonHeight )
+        .addColorStop( 0, baseColor.colorUtilsBrighter( 0.7 ) )
+        .addColorStop( verticalHighlightStop, baseColor.colorUtilsBrighter( 0.5 ) )
+        .addColorStop( verticalShadowStop, baseColor.colorUtilsBrighter( 0.5 ) )
+        .addColorStop( 1, baseColor.colorUtilsDarker( 0.5 ) );
+
+      overFillHorizontal = new LinearGradient( 0, 0, buttonWidth, 0 )
+        .addColorStop( 0, transparentWhite )
+        .addColorStop( horizontalHighlightStop / 2, new Color( 256, 256, 256, 0 ) )
+        .addColorStop( horizontalShadowStop, transparentBaseColor )
+        .addColorStop( 1, baseColor.colorUtilsDarker( 0.3 ) );
+
+      downFill = new LinearGradient( 0, 0, 0, buttonHeight )
+        .addColorStop( 0, baseColor.colorUtilsBrighter( 0.7 ) )
+        .addColorStop( verticalHighlightStop * 0.67, baseColor.colorUtilsDarker( 0.3 ) )
+        .addColorStop( verticalShadowStop, baseColor.colorUtilsBrighter( 0.2 ) )
+        .addColorStop( 1, baseColor.colorUtilsDarker( 0.5 ) );
+
+      disabledFillVertical = new LinearGradient( 0, 0, 0, buttonHeight )
+        .addColorStop( 0, disabledBaseColor.colorUtilsBrighter( 0.7 ) )
+        .addColorStop( verticalHighlightStop, disabledBaseColor.colorUtilsBrighter( 0.5 ) )
+        .addColorStop( verticalShadowStop, disabledBaseColor.colorUtilsBrighter( 0.5 ) )
+        .addColorStop( 1, disabledBaseColor.colorUtilsDarker( 0.5 ) );
+
+      disabledFillHorizontal = new LinearGradient( 0, 0, buttonWidth, 0 )
+        .addColorStop( 0, disabledBaseColor.colorUtilsBrighter( 0.7 ) )
+        .addColorStop( horizontalHighlightStop, transparentDisabledBaseColor )
+        .addColorStop( horizontalShadowStop, transparentDisabledBaseColor )
+        .addColorStop( 1, disabledBaseColor.colorUtilsDarker( 0.5 ) );
+
+      disabledPressedFillVertical = new LinearGradient( 0, 0, 0, buttonHeight )
+        .addColorStop( 0, disabledBaseColor.colorUtilsBrighter( 0.7 ) )
+        .addColorStop( verticalHighlightStop * 0.67, disabledBaseColor.colorUtilsDarker( 0.3 ) )
+        .addColorStop( verticalShadowStop, disabledBaseColor.colorUtilsBrighter( 0.2 ) )
+        .addColorStop( 1, disabledBaseColor.colorUtilsDarker( 0.5 ) );
+    }
+
+    // Function for updating the button's appearance based on the current interaction state.
+    function updateAppearanceForState( interactionState ) {
+      var baseColor = baseColorProperty.value;
+      var transparentBaseColor = new Color( baseColor.getRed(), baseColor.getGreen(), baseColor.getBlue(), 0 );
+
+      switch( interactionState ) {
 
         case 'idle':
           button.fill = upFillVertical;
@@ -234,37 +255,65 @@ define( function( require ) {
           overlayForHorizGradient.fill = disabledFillHorizontal;
           break;
       }
+    }
+
+    // Do the initial update explicitly, then lazy link to the properties.  This keeps the number of initial updates to
+    // a minimum and allows us to update a flag the first time the base color is actually changed.
+    updateFillsAndStrokes( baseColorProperty.value );
+    updateAppearanceForState( interactionStateProperty.value );
+
+    baseColorProperty.lazyLink( function( baseColor ) {
+
+      // Turn off the memory optimization for gradients, since this button instance is apparently changing colors.
+      button.fillKept = false;
+      overlayForHorizGradient.fillKept = false;
+
+      // Do the appearance updates.
+      updateFillsAndStrokes( baseColor );
+      updateAppearanceForState( interactionStateProperty.value );
+    } );
+
+    interactionStateProperty.lazyLink( function( interactionState ) {
+      updateAppearanceForState( interactionState );
     } );
   };
 
   /**
-   * Strategy for buttons that look flat, i.e. no shading or highlighting, but
-   * that change color on mouseover, press, etc.
+   * Strategy for buttons that look flat, i.e. no shading or highlighting, but that change color on mouseover, press,
+   * etc.
    *
    * @param {Node} button
-   * @param {Property} interactionStateProperty
+   * @param {Property.<boolean>} interactionStateProperty
+   * @param {Property.<Color>} baseColorProperty
    * @param {Object} [options]
    * @constructor
    */
-  RectangularButtonView.flatAppearanceStrategy = function( button, interactionStateProperty, options ) {
+  RectangularButtonView.flatAppearanceStrategy = function( button, interactionStateProperty, baseColorProperty, options ) {
 
     // Set up variables needed to create the various gradient fills
-    var baseColor = Color.toColor( options.baseColor );
     var disabledBaseColor = Color.toColor( options.disabledBaseColor );
     var disabledStroke = null;
     if ( options.stroke ) {
       disabledStroke = disabledBaseColor.colorUtilsDarker( 0.4 );
     }
 
-    // Create the fills used for various button states
-    var upFill = baseColor;
-    var overFill = baseColor.colorUtilsBrighter( 0.4 );
-    var downFill = baseColor.colorUtilsDarker( 0.4 );
-    var disabledFill = disabledBaseColor;
-    var disabledPressedFillVertical = disabledFill;
+    // fills used for various button states
+    var upFill;
+    var overFill;
+    var downFill;
+    var disabledFill;
+    var disabledPressedFillVertical;
 
-    interactionStateProperty.link( function( state ) {
-      switch( state ) {
+    function updateFillsAndStrokes( baseColor ) {
+      upFill = baseColor;
+      overFill = baseColor.colorUtilsBrighter( 0.4 );
+      downFill = baseColor.colorUtilsDarker( 0.4 );
+      disabledFill = disabledBaseColor;
+      disabledPressedFillVertical = disabledFill;
+    }
+
+    function updateAppearanceForState( interactionState ) {
+      switch( interactionState ) {
 
         case 'idle':
           button.fill = upFill;
@@ -291,6 +340,16 @@ define( function( require ) {
           button.stroke = disabledStroke;
           break;
       }
+    }
+
+    baseColorProperty.link( function( baseColor ) {
+      updateFillsAndStrokes( baseColor );
+      updateAppearanceForState( interactionStateProperty.value );
+    } );
+
+    // Lazy link to interaction state to avoid two updates at init.
+    interactionStateProperty.lazyLink( function( interactionState ) {
+      updateAppearanceForState( interactionState );
     } );
   };
 
@@ -316,7 +375,10 @@ define( function( require ) {
         assert && assert( typeof value === 'boolean', 'RectangularButtonView.enabled must be a boolean value' );
         this.buttonModel.enabled = value;
       },
+      get enabled() { return this.buttonModel.enabled; },
 
-      get enabled() { return this.buttonModel.enabled; }
+      set baseColor( baseColor ) { this.baseColorProperty.value = Color.toColor( baseColor ) },
+      get baseColor() { return this.baseColorProperty.value }
+
     } );
 } );
