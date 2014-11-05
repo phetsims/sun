@@ -379,6 +379,23 @@ define( function( require ) {
     );
     this.addChild( disableEnableButton );
 
+    // Add a button to set alternative color scheme.
+    var changeButtonColorsButton = new RectangularPushButton( {
+        content: new Text( 'Change Some Button Colors', { font: BUTTON_CAPTION_FONT } ),
+        listener: function() {
+          buttonA.baseColor = new Color( _.random( 0, 255 ), _.random( 0, 255 ), _.random( 0, 255 ) );
+          buttonD.baseColor = new Color( _.random( 0, 255 ), _.random( 0, 255 ), _.random( 0, 255 ) );
+          button1.baseColor = new Color( _.random( 0, 255 ), _.random( 0, 255 ), _.random( 0, 255 ) );
+          button3.baseColor = new Color( _.random( 0, 255 ), _.random( 0, 255 ), _.random( 0, 255 ) );
+          message( 'Button colors changed' );
+        },
+        right: disableEnableButton.right,
+        bottom: disableEnableButton.top - 5
+      }
+    );
+    this.addChild( changeButtonColorsButton );
+
+
     // TODO: For debug, don't leave this here long term.
     var debugText = new Text( '(debug text)', { font: new Font( { size: 16 } ), bottom: messageText.top - 5, left: this.layoutBounds.minX + 10  } );
     this.addChild( debugText );

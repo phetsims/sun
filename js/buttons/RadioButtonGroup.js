@@ -2,9 +2,9 @@
 
 /**
  * Radio buttons. See ButtonsDemoView for example usage.
- * This class creates a group of radio buttons in either a horizontal or vertical formation.
+ * This type creates a group of radio buttons in either a horizontal or vertical formation.
  * Each button inherits from RectangularButtonView, and can take a Scenery Node as its content.
- * A typical use case is when you want to have a different modes a of a view to select from. Typically,
+ * A typical use case is when you want to have different modes of a view to select from. Typically,
  * RadioButtonGroup radio buttons display some kind of icon or image, but that is not mandatory.
  *
  * @author Aaron Davis
@@ -65,16 +65,16 @@ define( function( require ) {
 
     options = _.extend( {
 
-      //The distance between the radio buttons (as in VBox or HBox)
+      // The distance between the radio buttons (as in VBox or HBox)
       spacing: 10,
       orientation: 'vertical',
       enabledProperty: new Property( true ), // whether or not the set of radio buttons as a whole is enabled
 
-      //The fill for the rectangle behind the radio buttons.  Default color is bluish color, as in the other button library.
+      // The fill for the rectangle behind the radio buttons.  Default color is bluish color, as in the other button library.
       baseColor: ColorConstants.LIGHT_BLUE,
       disabledBaseColor: ColorConstants.LIGHT_GRAY,
 
-      //Opacity can be set separately for the buttons and button content.
+      // Opacity can be set separately for the buttons and button content.
       selectedButtonOpacity: 1,
       deselectedButtonOpacity: 0.6,
       selectedContentOpacity: 1,
@@ -87,36 +87,36 @@ define( function( require ) {
       selectedLineWidth: 1.5,
       deselectedLineWidth: 1,
 
-      //The following options specify highlight behavior overrides, leave as null to get the default behavior
-      //Note that highlighting applies only to deselected buttons
+      // The following options specify highlight behavior overrides, leave as null to get the default behavior
+      // Note that highlighting applies only to deselected buttons
       overFill: null,
       overStroke: null,
       overLineWidth: null,
 
-      //These margins are *within* each button
+      // These margins are *within* each button
       buttonContentXMargin: 5,
       buttonContentYMargin: 5,
 
-      //TouchArea expansion
+      // TouchArea expansion
       xTouchExpansion: 5,
       yTouchExpansion: 5,
 
-      //MouseArea expansion
+      // MouseArea expansion
       xMouseExpansion: 0,
       yMouseExpansion: 0,
 
       //The radius for each button
       cornerRadius: 4,
 
-      //How far from the button the text label is (only applies if labels are passed in)
+      // How far from the button the text label is (only applies if labels are passed in)
       labelSpacing: 0,
 
-      //Which side of the button the label will appear, options are 'top', 'bottom', 'left', 'right'
-      //(only applies if labels are passed in)
+      // Which side of the button the label will appear, options are 'top', 'bottom', 'left', 'right'
+      // (only applies if labels are passed in)
       labelAlign: 'bottom',
 
-      //The default appearances use the color values specified above, but other appearances could be specified for more
-      //customized behavior.  Generally setting the color values above should be enough to specify the desired look.
+      // The default appearances use the color values specified above, but other appearances could be specified for more
+      // customized behavior.  Generally setting the color values above should be enough to specify the desired look.
       buttonAppearanceStrategy: RadioButtonGroupAppearance.defaultRadioButtonsAppearance,
       contentAppearanceStrategy: RadioButtonGroupAppearance.contentAppearanceStrategy
     }, options );
@@ -133,7 +133,7 @@ define( function( require ) {
       var xMargin = ( ( maxWidth - contentArray[i].node.width ) / 2 ) + options.buttonContentXMargin;
       var yMargin = ( ( maxHeight - contentArray[i].node.height ) / 2 ) + options.buttonContentYMargin;
 
-      var radioButton = new RadioButtonGroupMember( contentArray[i].value, property,
+      var radioButton = new RadioButtonGroupMember( property, contentArray[i].value,
         _.extend( { content: contentArray[i].node, xMargin: xMargin, yMargin: yMargin }, options ) );
 
       // ensure the buttons don't resize when selected vs unselected by adding a rectangle with the max size
@@ -219,15 +219,14 @@ define( function( require ) {
     } );
   }
 
-  return inherit( LayoutBox, RadioButtonGroup,
-    {
+  return inherit( LayoutBox, RadioButtonGroup, {
 
-      set enabled( value ) {
-        assert && assert( typeof value === 'boolean', 'RadioButtonGroup.enabled must be a boolean value' );
-        this.enabledProperty.set( value );
-      },
+    set enabled( value ) {
+      assert && assert( typeof value === 'boolean', 'RadioButtonGroup.enabled must be a boolean value' );
+      this.enabledProperty.set( value );
+    },
 
-      get enabled() { return this.enabledProperty.get(); }
+    get enabled() { return this.enabledProperty.get(); }
 
-    } );
+  } );
 } );

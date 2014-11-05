@@ -58,7 +58,7 @@ define( function( require ) {
   var VERTICAL_HIGHLIGHT_GRADIENT_LENGTH = 7; // In screen coords, which are roughly pixels.
   var HORIZONTAL_HIGHLIGHT_GRADIENT_LENGTH = 7; // In screen coords, which are roughly pixels.
   var SHADE_GRADIENT_LENGTH = 3; // In screen coords, which are roughly pixels.
-  SliderKnob.threeDNoSquishAppearanceStrategy = function( button, interactionStateProperty, options ) {
+  SliderKnob.threeDNoSquishAppearanceStrategy = function( button, interactionStateProperty, baseColorProperty, options ) {
 
     // Set up variables needed to create the various gradient fills
     var buttonWidth = button.width;
@@ -67,7 +67,7 @@ define( function( require ) {
     var verticalShadowStart = Math.max( 1 - SHADE_GRADIENT_LENGTH / buttonHeight, 1 );
     var horizontalHighlightStop = Math.min( HORIZONTAL_HIGHLIGHT_GRADIENT_LENGTH / buttonWidth, 1 );
     var horizontalShadowStart = Math.max( 1 - SHADE_GRADIENT_LENGTH / buttonWidth, 1 );
-    var baseColor = Color.toColor( options.baseColor );
+    var baseColor = Color.toColor( baseColorProperty.value ); // TODO - dynamic base color not handled yet, see https://github.com/phetsims/sun/issues/138
     var disabledBaseColor = Color.toColor( options.disabledBaseColor );
     var transparentBaseColor = new Color( baseColor.getRed(), baseColor.getGreen(), baseColor.getBlue(), 0 );
     var transparentDisabledBaseColor = new Color( disabledBaseColor.getRed(), disabledBaseColor.getGreen(), disabledBaseColor.getBlue(), 0 );

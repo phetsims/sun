@@ -21,13 +21,21 @@ define( function( require ) {
    *
    * @param {Node} button
    * @param {Property} interactionStateProperty
+   * @param {Property} baseColorProperty
    * @param {Object} [options]
    * @constructor
    */
-  var defaultRadioButtonsAppearance = function( button, interactionStateProperty, options ) {
+  var defaultRadioButtonsAppearance = function( button, interactionStateProperty, baseColorProperty, options ) {
+
+    // TODO: Changes were made to the appearance strategies to support dynamic changes of the base color, see
+    // https://github.com/phetsims/sun/issues/138.  This feature has not yet been implemented in this appearance
+    // strategy, please add it if you need it.
+    baseColorProperty.lazyLink( function() {
+      assert && assert( false, 'Dynamic base color not yet implemented in this appearance strategy.' );
+    } );
 
     // Set up variables needed to create the various fills and strokes
-    var baseColor = Color.toColor( options.baseColor );
+    var baseColor = Color.toColor( baseColorProperty.value );
     var disabledBaseColor = Color.toColor( options.disabledBaseColor );
     var deselectedStroke = Color.toColor( options.deselectedStroke );
 
