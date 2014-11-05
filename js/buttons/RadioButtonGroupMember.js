@@ -27,11 +27,11 @@ define( function( require ) {
   function RadioButtonGroupMember( value, property, options ) {
 
     options = _.extend( {
-      //The fill for the rectangle behind the radio buttons.  Default color is bluish color, as in the other button library.
+      // The fill for the rectangle behind the radio buttons.  Default color is bluish color, as in the other button library.
       baseColor: ColorConstants.LIGHT_BLUE,
       disabledBaseColor: ColorConstants.LIGHT_GRAY,
 
-      //Opacity can be set separately for the buttons and button content.
+      // Opacity can be set separately for the buttons and button content.
       selectedButtonOpacity: 1,
       deselectedButtonOpacity: 0.6,
       selectedContentOpacity: 1,
@@ -44,14 +44,14 @@ define( function( require ) {
       selectedLineWidth: 1.5,
       deselectedLineWidth: 1,
 
-      //The following options specify highlight behavior overrides, leave as null to get the default behavior
-      //Note that highlighting applies only to deselected buttons
+      // The following options specify highlight behavior overrides, leave as null to get the default behavior
+      // Note that highlighting applies only to deselected buttons
       overFill: null,
       overStroke: null,
       overLineWidth: null,
 
-      //The default appearances use the color values specified above, but other appearances could be specified for more
-      //customized behavior.  Generally setting the color values above should be enough to specify the desired look.
+      // The default appearances use the color values specified above, but other appearances could be specified for more
+      // customized behavior.  Generally setting the color values above should be enough to specify the desired look.
       buttonAppearanceStrategy: RadioButtonGroupAppearance.defaultRadioButtonsAppearance,
       contentAppearanceStrategy: RadioButtonGroupAppearance.contentAppearanceStrategy
     }, options );
