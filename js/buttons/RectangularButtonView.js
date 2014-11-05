@@ -218,8 +218,6 @@ define( function( require ) {
 
     // Function for updating the button's appearance based on the current interaction state.
     function updateAppearanceForState( interactionState ) {
-      var baseColor = baseColorProperty.value;
-      var transparentBaseColor = new Color( baseColor.getRed(), baseColor.getGreen(), baseColor.getBlue(), 0 );
 
       switch( interactionState ) {
 
@@ -377,8 +375,8 @@ define( function( require ) {
       },
       get enabled() { return this.buttonModel.enabled; },
 
-      set baseColor( baseColor ) { this.baseColorProperty.value = Color.toColor( baseColor ) },
-      get baseColor() { return this.baseColorProperty.value }
+      set baseColor( baseColor ) { this.baseColorProperty.value = Color.toColor( baseColor ); },
+      get baseColor() { return this.baseColorProperty.value; }
 
     } );
 } );
