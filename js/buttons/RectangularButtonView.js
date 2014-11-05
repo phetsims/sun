@@ -156,6 +156,7 @@ define( function( require ) {
     var disabledFillVertical;
     var disabledFillHorizontal;
     var disabledPressedFillVertical;
+    var enabledStroke = null;
 
     // Keep the gradients in memory, so switching back and forth has improved performance.
     button.fillKept = true;
@@ -214,6 +215,11 @@ define( function( require ) {
         .addColorStop( verticalHighlightStop * 0.67, disabledBaseColor.colorUtilsDarker( 0.3 ) )
         .addColorStop( verticalShadowStop, disabledBaseColor.colorUtilsBrighter( 0.2 ) )
         .addColorStop( 1, disabledBaseColor.colorUtilsDarker( 0.5 ) );
+
+      if ( options.stroke !== null ) {
+        enabledStroke = baseColor.colorUtilsDarker( 0.4 );
+        disabledStroke = disabledBaseColor.colorUtilsDarker( 0.4 );
+      }
     }
 
     // Function for updating the button's appearance based on the current interaction state.
@@ -223,19 +229,19 @@ define( function( require ) {
 
         case 'idle':
           button.fill = upFillVertical;
-          overlayForHorizGradient.stroke = options.stroke;
+          overlayForHorizGradient.stroke = enabledStroke;
           overlayForHorizGradient.fill = upFillHorizontal;
           break;
 
         case 'over':
           button.fill = overFillVertical;
-          overlayForHorizGradient.stroke = options.stroke;
+          overlayForHorizGradient.stroke = enabledStroke;
           overlayForHorizGradient.fill = overFillHorizontal;
           break;
 
         case 'pressed':
           button.fill = downFill;
-          overlayForHorizGradient.stroke = options.stroke;
+          overlayForHorizGradient.stroke = enabledStroke;
           overlayForHorizGradient.fill = overFillHorizontal;
           break;
 
@@ -301,6 +307,7 @@ define( function( require ) {
     var downFill;
     var disabledFill;
     var disabledPressedFillVertical;
+    var enabledStroke = null;
 
     function updateFillsAndStrokes( baseColor ) {
       upFill = baseColor;
@@ -308,6 +315,10 @@ define( function( require ) {
       downFill = baseColor.colorUtilsDarker( 0.4 );
       disabledFill = disabledBaseColor;
       disabledPressedFillVertical = disabledFill;
+      if ( options.stroke !== null ) {
+        enabledStroke = baseColor.colorUtilsDarker( 0.4 );
+        disabledStroke = disabledBaseColor.colorUtilsDarker( 0.4 );
+      }
     }
 
     function updateAppearanceForState( interactionState ) {
@@ -315,17 +326,17 @@ define( function( require ) {
 
         case 'idle':
           button.fill = upFill;
-          button.stroke = options.stroke;
+          button.stroke = enabledStroke;
           break;
 
         case 'over':
           button.fill = overFill;
-          button.stroke = options.stroke;
+          button.stroke = enabledStroke;
           break;
 
         case 'pressed':
           button.fill = downFill;
-          button.stroke = options.stroke;
+          button.stroke = enabledStroke;
           break;
 
         case 'disabled':
