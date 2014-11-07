@@ -135,9 +135,6 @@ define( function( require ) {
     var disabledBaseColor = Color.toColor( options.disabledBaseColor );
     var transparentDisabledBaseColor = new Color( disabledBaseColor.getRed(), disabledBaseColor.getGreen(), disabledBaseColor.getBlue(), 0 );
     var disabledStroke = null;
-    if ( options.stroke ) {
-      disabledStroke = disabledBaseColor.colorUtilsDarker( 0.4 );
-    }
     var transparentWhite = new Color( 256, 256, 256, 0.7 );
 
     // Create the overlay that is used to add shading to left and right edges of the button.
