@@ -1,7 +1,8 @@
 //  Copyright 2002-2014, University of Colorado Boulder
 
 /**
- * Defines the appearance of the radio buttons, see RadioButtonGroup.js
+ * Defines the appearance of the radio buttons, see RadioButtonGroup.js. This file is designed to be used
+ * by RadioButtonGroup and RadioButtonGroupMember internally, so you should not need use it outside of these files.
  *
  * @author Sam Reid (PhET Interactive Simulations)
  * @author Aaron Davis (PhET Interactive Simulations)
