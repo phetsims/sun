@@ -275,7 +275,6 @@ define( function( require ) {
 
     // Set up variables needed to create the various gradient fills
     var disabledBaseColor = Color.toColor( options.disabledBaseColor );
-    var disabledStroke = null;
 
     // various fills that are used to alter the button's appearance
     var upFill;
@@ -284,6 +283,7 @@ define( function( require ) {
     var disabledFill;
     var disabledPressedFillVertical;
     var enabledStroke = null;
+    var disabledStroke = null;
 
     function updateFillsAndStrokes( baseColor ) {
       upFill = baseColor;
