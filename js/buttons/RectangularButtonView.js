@@ -135,9 +135,6 @@ define( function( require ) {
     var disabledBaseColor = Color.toColor( options.disabledBaseColor );
     var transparentDisabledBaseColor = new Color( disabledBaseColor.getRed(), disabledBaseColor.getGreen(), disabledBaseColor.getBlue(), 0 );
     var disabledStroke = null;
-    if ( options.stroke ) {
-      disabledStroke = disabledBaseColor.colorUtilsDarker( 0.4 );
-    }
     var transparentWhite = new Color( 256, 256, 256, 0.7 );
 
     // Create the overlay that is used to add shading to left and right edges of the button.
@@ -223,7 +220,7 @@ define( function( require ) {
     }
 
     // Function for updating the button's appearance based on the current interaction state.
-    function updateAppearanceForState( interactionState ) {
+    function updateAppearance( interactionState ) {
 
       switch( interactionState ) {
 
@@ -264,7 +261,7 @@ define( function( require ) {
     // Do the initial update explicitly, then lazy link to the properties.  This keeps the number of initial updates to
     // a minimum and allows us to update some optimization flags the first time the base color is actually changed.
     updateFillsAndStrokes( baseColorProperty.value );
-    updateAppearanceForState( interactionStateProperty.value );
+    updateAppearance( interactionStateProperty.value );
 
     baseColorProperty.lazyLink( function( baseColor ) {
 
@@ -274,11 +271,11 @@ define( function( require ) {
 
       // Do the appearance updates.
       updateFillsAndStrokes( baseColor );
-      updateAppearanceForState( interactionStateProperty.value );
+      updateAppearance( interactionStateProperty.value );
     } );
 
     interactionStateProperty.lazyLink( function( interactionState ) {
-      updateAppearanceForState( interactionState );
+      updateAppearance( interactionState );
     } );
   };
 
@@ -321,7 +318,7 @@ define( function( require ) {
       }
     }
 
-    function updateAppearanceForState( interactionState ) {
+    function updateAppearance( interactionState ) {
       switch( interactionState ) {
 
         case 'idle':
@@ -353,12 +350,12 @@ define( function( require ) {
 
     baseColorProperty.link( function( baseColor ) {
       updateFillsAndStrokes( baseColor );
-      updateAppearanceForState( interactionStateProperty.value );
+      updateAppearance( interactionStateProperty.value );
     } );
 
     // Lazy link to interaction state to avoid two updates at init.
     interactionStateProperty.lazyLink( function( interactionState ) {
-      updateAppearanceForState( interactionState );
+      updateAppearance( interactionState );
     } );
   };
 
