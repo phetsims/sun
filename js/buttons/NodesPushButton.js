@@ -31,7 +31,9 @@ define( function( require ) {
     options = _.extend( {
       cursor: 'pointer', // {string}
       enabled: true, // {boolean}
-      listener: null // {function}
+      listener: null, // {function}
+      alignX: 'center', // {string} how the nodes are horizontally aligned: center, left, right
+      alignY: 'center' // {string} how the nodes are vertically aligned: center, top, bottom
     }, options );
     options.children = [ idleNode, overNode, pressedNode, disabledNode ];
 
@@ -49,6 +51,42 @@ define( function( require ) {
       pressedNode.visible = ( interactionState === 'pressed' );
       disabledNode.visible = ( interactionState === 'disabled' );
     } );
+
+    //TODO this alignment feature would be useful to extract into a general scenery node
+    // Alignment of nodes
+    var nodes = options.children;
+    for ( var i = 1; i < nodes.length; i++ ) {
+
+      // x alignment
+      switch( options.alignX ) {
+        case 'center':
+          nodes[i].centerX = nodes[0].centerX;
+          break;
+        case 'left':
+          nodes[i].left = nodes[0].left;
+          break;
+        case 'right':
+          nodes[i].right = nodes[0].right;
+          break;
+        default:
+          throw new Error( 'unsupported alignX: ' + options.alignX );
+      }
+
+      // y alignment
+      switch( options.alignY ) {
+        case 'center':
+          nodes[i].centerY = nodes[0].centerY;
+          break;
+        case 'top':
+          nodes[i].top = nodes[0].top;
+          break;
+        case 'bottom':
+          nodes[i].bottom = nodes[0].bottom;
+          break;
+        default:
+          throw new Error( 'unsupported alignY: ' + options.alignY );
+      }
+    }
 
     this.mutate( options );
   }
@@ -79,7 +117,7 @@ define( function( require ) {
      * @static
      */
     createImageButton: function( upImage, overImage, downImage, disabledImage, options ) {
-       return new NodesPushButton( new Image( upImage ), new Image( overImage ), new Image( downImage ), new Image( disabledImage ), options );
+      return new NodesPushButton( new Image( upImage ), new Image( overImage ), new Image( downImage ), new Image( disabledImage ), options );
     }
   } );
 } );
