@@ -55,6 +55,7 @@ define( function( require ) {
     //TODO this alignment feature would be useful to extract into a general layout node
     // Alignment of nodes
     var nodes = options.children;
+    assert && assert( nodes.length > 0 );
     for ( var i = 1; i < nodes.length; i++ ) {
 
       // x alignment
