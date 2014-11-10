@@ -32,8 +32,8 @@ define( function( require ) {
       cursor: 'pointer', // {string}
       enabled: true, // {boolean}
       listener: null, // {function}
-      alignX: 'center', // {string} how the nodes are horizontally aligned: center, left, right
-      alignY: 'center' // {string} how the nodes are vertically aligned: center, top, bottom
+      xAlign: 'center', // {string} how the nodes are horizontally aligned: center, left, right
+      yAlign: 'center' // {string} how the nodes are vertically aligned: center, top, bottom
     }, options );
     options.children = [ idleNode, overNode, pressedNode, disabledNode ];
 
@@ -59,7 +59,7 @@ define( function( require ) {
     for ( var i = 1; i < nodes.length; i++ ) {
 
       // x alignment
-      switch( options.alignX ) {
+      switch( options.xAlign ) {
         case 'center':
           nodes[i].centerX = nodes[0].centerX;
           break;
@@ -70,11 +70,11 @@ define( function( require ) {
           nodes[i].right = nodes[0].right;
           break;
         default:
-          throw new Error( 'unsupported alignX: ' + options.alignX );
+          throw new Error( 'unsupported xAlign: ' + options.xAlign );
       }
 
       // y alignment
-      switch( options.alignY ) {
+      switch( options.yAlign ) {
         case 'center':
           nodes[i].centerY = nodes[0].centerY;
           break;
@@ -85,7 +85,7 @@ define( function( require ) {
           nodes[i].bottom = nodes[0].bottom;
           break;
         default:
-          throw new Error( 'unsupported alignY: ' + options.alignY );
+          throw new Error( 'unsupported yAlign: ' + options.yAlign );
       }
     }
 
