@@ -58,11 +58,13 @@ define( function( require ) {
     // Adds a {function} listener.
     addListener: function( listener ) { this.buttonModel.addListener( listener ); },
 
-    // Remove a {function} listener.
+    // Removes a {function} listener.
     removeListener: function( listener ) { this.buttonModel.removeListener( listener ); },
 
+    // Enables or disables the button.
     set enabled( value ) { this.buttonModel.enabled = !!value; },
 
+    // Is the button enabled?
     get enabled() { return this.buttonModel.enabled; }
   }, {
 
