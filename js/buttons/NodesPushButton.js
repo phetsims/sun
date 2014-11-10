@@ -52,7 +52,7 @@ define( function( require ) {
       disabledNode.visible = ( interactionState === 'disabled' );
     } );
 
-    //TODO this alignment feature would be useful to extract into a general scenery node
+    //TODO this alignment feature would be useful to extract into a general layout node
     // Alignment of nodes
     var nodes = options.children;
     for ( var i = 1; i < nodes.length; i++ ) {
