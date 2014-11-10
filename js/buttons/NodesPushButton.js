@@ -15,7 +15,6 @@ define( function( require ) {
   var Image = require( 'SCENERY/nodes/Image' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Node = require( 'SCENERY/nodes/Node' );
-  var Property = require( 'AXON/Property' );
   var PushButtonInteractionStateProperty = require( 'SUN/buttons/PushButtonInteractionStateProperty' );
   var PushButtonModel = require( 'SUN/buttons/PushButtonModel' );
 
