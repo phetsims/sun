@@ -1,9 +1,9 @@
 // Copyright 2002-2014, University of Colorado Boulder
 
 /**
- * A push button whose appearance is based on a set of scenery Nodes.
- * Unlike other sun buttons, this type does not have a separate 'view' type, because the Nodes
- * provided determine the look of the button.
+ * A push button whose appearance is based on a set of scenery Nodes, one node for each button 'interaction state'.
+ * Unlike other sun buttons, this button does not have a separate 'view' type, because the Nodes provided determine
+ * the appearance of the button.
  *
  * @author Chris Malley (PixelZoom, Inc.)
  */
