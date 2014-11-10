@@ -44,7 +44,7 @@ define( function( require ) {
       titleYMargin: 2, // vertical space between title and top of box
       titleXSpacing: 5, // horizontal space between title and expand/collapse button
       showTitleWhenExpanded: true, // true = title is visible when expanded, false = title is hidden when expanded
-      titleBarFill: null, // title bar is invisible by default
+      titleBarFill: null, // title bar has no fill
 
       // expand/collapse button
       buttonLength: 16, // button is a square, this is the length of one side
