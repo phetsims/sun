@@ -72,7 +72,7 @@ define( function( require ) {
     this.addInputListener( new ButtonListener( buttonModel ) );
 
     // Make the base color into a property so that the appearance strategy can update itself if changes occur.
-    this.baseColorProperty = new Property( Color.toColor( options.baseColor ) );
+    this.baseColorProperty = new Property( Color.toColor( options.baseColor ) ); // @private
 
     // Figure out the size of the button.
     var content = options.content;
