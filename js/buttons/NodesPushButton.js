@@ -9,108 +9,60 @@ define( function( require ) {
   'use strict';
 
   // import
-  var ButtonListener = require( 'SCENERY/input/ButtonListener' );
+  var ButtonListener = require( 'SUN/buttons/ButtonListener' );
   var Image = require( 'SCENERY/nodes/Image' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Node = require( 'SCENERY/nodes/Node' );
   var Property = require( 'AXON/Property' );
+  var PushButtonInteractionStateProperty = require( 'SUN/buttons/PushButtonInteractionStateProperty' );
+  var PushButtonModel = require( 'SUN/buttons/PushButtonModel' );
 
   /**
    * @param {Node} upNode
    * @param {Node} overNode
-   * @param {Node} downNode
+   * @param {Node} pressedNode
    * @param {Node} disabledNode
    * @param {Object} [options]
    * @constructor
    */
-  function NodesPushButton( upNode, overNode, downNode, disabledNode, options ) {
+  function NodesPushButton( idleNode, overNode, pressedNode, disabledNode, options ) {
 
     options = _.extend( {
       cursor: 'pointer', // {string}
       enabled: true, // {boolean}
       listener: null // {function}
     }, options );
+    options.children = [ idleNode, overNode, pressedNode, disabledNode ];
 
-    var thisButton = this;
+    Node.call( this );
 
-    // @private nodes for each state
-    thisButton.upNode = upNode;
-    thisButton.overNode = overNode;
-    thisButton.downNode = downNode;
-    thisButton.disabledNode = disabledNode;
+    // Button model
+    this.buttonModel = new PushButtonModel( options ); // @private
+    this.addInputListener( new ButtonListener( this.buttonModel ) );
 
-    thisButton.state = 'up'; // @private {string}
-    thisButton.enabledProperty = new Property( options.enabled ); // @private
-    thisButton.listeners = []; // @private {[function]}
-    if ( options.listener ) { thisButton.listeners.push( options.listener ); }
-
-    options.children = [ upNode, overNode, downNode, disabledNode ];
-    Node.call( thisButton, options );
-
-    thisButton.addInputListener( new ButtonListener( {
-
-      up: function() { thisButton.update( 'up' ); },
-
-      over: function() { thisButton.update( 'over' ); },
-
-      down: function() { thisButton.update( 'down' ); },
-
-      out: function() { thisButton.update( 'up' ); }, // 'out' looks the same as 'up'
-
-      fire: function() {
-        if ( thisButton.enabledProperty.get() ) {
-          thisButton.notifyListeners();
-        }
-      }
-    } ) );
-
-    thisButton.enabledProperty.link( function( enabled ) {
-      thisButton.cursor = enabled ? options.cursor : 'default';
-      thisButton.update( thisButton.state );
+    // Button interactions
+    var interactionStateProperty = new PushButtonInteractionStateProperty( this.buttonModel );
+    interactionStateProperty.link( function( interactionState ) {
+      idleNode.visible = ( interactionState === 'idle' );
+      overNode.visible = ( interactionState === 'over' );
+      pressedNode.visible = ( interactionState === 'pressed' );
+      disabledNode.visible = ( interactionState === 'disabled' );
     } );
+
+    this.mutate( options );
   }
 
   return inherit( Node, NodesPushButton, {
 
-    // Adds a {function} listener. If already a listener, this is a no-op.
-    addListener: function( listener ) {
-      if ( this.listeners.indexOf( listener ) === -1 ) {
-        this.listeners.push( listener );
-      }
-    },
+    // Adds a {function} listener.
+    addListener: function( listener ) { this.buttonModel.addListener( listener ); },
 
-    // Remove a {function} listener. If not a listener, this is a no-op.
-    removeListener: function( listener ) {
-      var i = this.listeners.indexOf( listener );
-      if ( i !== -1 ) {
-        this.listeners.splice( i, 1 );
-      }
-    },
+    // Remove a {function} listener.
+    removeListener: function( listener ) { this.buttonModel.removeListener( listener ); },
 
-    // @private Notifies listeners.
-    notifyListeners: function() {
-      var listenersCopy = this.listeners.slice( 0 );
-      for ( var i = 0; i < listenersCopy.length; i++ ) {
-        listenersCopy[i]();
-      }
-    },
+    set enabled( value ) { this.buttonModel.enabled = !!value; },
 
-    // @private Updates the button to match the specified {string} state.
-    update: function( state ) {
-      this.state = state;
-      var enabled = this.enabledProperty.get();
-      this.upNode.visible = ( state === 'up' && enabled );
-      this.overNode.visible = ( state === 'over' && enabled );
-      this.downNode.visible = ( state === 'down' && enabled );
-      this.disabledNode.visible = !enabled;
-    },
-
-    set enabled( value ) {
-      assert && assert( typeof value === 'boolean', 'enabled must be a boolean value' ); // Scenery complains about visible otherwise
-      this.enabledProperty.set( value );
-    },
-
-    get enabled() { return this.enabledProperty.get(); }
+    get enabled() { return this.buttonModel.enabled; }
   }, {
 
     /**
