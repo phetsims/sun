@@ -21,9 +21,9 @@ define( function( require ) {
 
   /**
    * @param {Node} contentNode that will be shown or hidden as the accordion box is expanded/collapsed.
-   * @param {Object} [options] Various key-value pairs that control the appearance and behavior.  Some options are specific
-   * to this class while some are passed to the superclass.  See the code where the options are set in the early
-   * portion of the constructor for details.
+   * @param {Object} [options] Various key-value pairs that control the appearance and behavior.  Some options are
+   * specific to this class while some are passed to the superclass.  See the code where the options are set in the
+   * early portion of the constructor for details.
    * @constructor
    */
   function AccordionBox( contentNode, options ) {
@@ -106,6 +106,7 @@ define( function( require ) {
     // Title bar at top, clicking it operates like expand/collapse button
     var titleBarOptions = {
       fill: options.titleBarFill,
+      stroke: '#888888',
       cursor: 'pointer'
     };
     // Collapsed title bar has corners that match the box.
