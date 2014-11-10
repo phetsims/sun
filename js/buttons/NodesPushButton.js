@@ -2,6 +2,8 @@
 
 /**
  * A push button whose appearance is based on a set of scenery Nodes.
+ * Unlike other sun buttons, this type does not have a separate 'view' type, because the Nodes
+ * provided determine the look of the button.
  *
  * @author Chris Malley (PixelZoom, Inc.)
  */
