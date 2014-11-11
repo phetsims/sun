@@ -21,20 +21,23 @@ define( function( require ) {
 
   /**
    * @param {Node} contentNode that will be shown or hidden as the accordion box is expanded/collapsed.
-   * @param {Object} [options] Various key-value pairs that control the appearance and behavior.  Some options are specific
-   * to this class while some are passed to the superclass.  See the code where the options are set in the early
-   * portion of the constructor for details.
+   * @param {Object} [options] Various key-value pairs that control the appearance and behavior.  Some options are
+   * specific to this class while some are passed to the superclass.  See the code where the options are set in the
+   * early portion of the constructor for details.
    * @constructor
    */
   function AccordionBox( contentNode, options ) {
 
     options = _.extend( {
 
+      // applied to multiple parts of this UI component
+      cursor: 'pointer', // {string} default cursor
+      lineWidth: 1,
+      cornerRadius: 3,
+
       // box
       stroke: 'black',
-      lineWidth: 1,
       fill: 'rgb( 238, 238, 238 )',
-      cornerRadius: 3,
       minWidth: 0,
 
       // title
@@ -44,7 +47,8 @@ define( function( require ) {
       titleYMargin: 2, // vertical space between title and top of box
       titleXSpacing: 5, // horizontal space between title and expand/collapse button
       showTitleWhenExpanded: true, // true = title is visible when expanded, false = title is hidden when expanded
-      titleBarFill: null, // title bar is invisible by default
+      titleBarFill: null, // {Color|String} title bar fill
+      titleBarStroke: null, // {Color|String} title bar stroke, used only for the expanded title bar
 
       // expand/collapse button
       buttonLength: 16, // button is a square, this is the length of one side
@@ -74,7 +78,10 @@ define( function( require ) {
     Node.call( this );
 
     // Expand/collapse button
-    var expandCollapseButton = new ExpandCollapseButton( options.expandedProperty, { sideLength: options.buttonLength } );
+    var expandCollapseButton = new ExpandCollapseButton( options.expandedProperty, {
+      sideLength: options.buttonLength,
+      cursor: options.cursor
+    } );
     expandCollapseButton.touchArea = expandCollapseButton.localBounds.dilatedXY( options.buttonTouchAreaDilatedX, options.buttonTouchAreaDilatedY );
     expandCollapseButton.mouseArea = expandCollapseButton.localBounds.dilatedXY( options.buttonMouseAreaDilatedX, options.buttonMouseAreaDilatedY );
 
@@ -103,18 +110,17 @@ define( function( require ) {
     var collapsedBox = new Rectangle( 0, 0, boxWidth, collapsedBoxHeight, options.cornerRadius, options.cornerRadius, boxOptions );
     this.addChild( collapsedBox );
 
-    // Title bar at top, clicking it operates like expand/collapse button
-    var titleBarOptions = {
-      fill: options.titleBarFill,
-      cursor: 'pointer'
-    };
-    // Collapsed title bar has corners that match the box.
-    var collapsedTitleBar = new Rectangle( 0, 0, boxWidth, collapsedBoxHeight, options.cornerRadius, options.cornerRadius, titleBarOptions );
-    // Expanded title bar has rounded top corners, square bottom corners
+    // Expanded title bar has rounded top corners, square bottom corners. Clicking it operates like expand/collapse button.
     var expandedTitleBar = null;
+    var expandedTitleBarOptions = {
+      fill: options.titleBarFill,
+      stroke: options.titleBarStroke,
+      lineWidth: options.lineWidth, // use same lineWidth as box, for consistent look
+      cursor: options.cursor
+    };
     if ( options.cornerRadius === 0 || !options.titleBarFill ) {
       // no rounded corners or no title bar visible, so use a Rectangle
-      expandedTitleBar = new Rectangle( 0, 0, boxWidth, collapsedBoxHeight, titleBarOptions );
+      expandedTitleBar = new Rectangle( 0, 0, boxWidth, collapsedBoxHeight, expandedTitleBarOptions );
     }
     else {
       // rounded top corners, square bottom corners (start at bottom left and move clockwise)
@@ -126,20 +132,26 @@ define( function( require ) {
           .quadraticCurveTo( boxWidth, 0, boxWidth, options.cornerRadius )
           .lineTo( boxWidth, collapsedBoxHeight )
           .close(),
-        titleBarOptions );
+        expandedTitleBarOptions );
     }
+    expandedBox.addChild( expandedTitleBar );
     expandedTitleBar.addInputListener( {
       down: function() {
         options.expandedProperty.value = false;
       }
     } );
+
+    // Collapsed title bar has corners that match the box. Clicking it operates like expand/collapse button.
+    var collapsedTitleBar = new Rectangle( 0, 0, boxWidth, collapsedBoxHeight, options.cornerRadius, options.cornerRadius, {
+      fill: options.titleBarFill,
+      cursor: options.cursor
+    } );
+    collapsedBox.addChild( collapsedTitleBar );
     collapsedTitleBar.addInputListener( {
       down: function() {
         options.expandedProperty.value = true;
       }
     } );
-    expandedBox.addChild( expandedTitleBar );
-    collapsedBox.addChild( collapsedTitleBar );
 
     this.addChild( options.titleNode );
     this.addChild( expandCollapseButton );
