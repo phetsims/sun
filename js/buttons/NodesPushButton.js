@@ -19,7 +19,7 @@ define( function( require ) {
   var PushButtonModel = require( 'SUN/buttons/PushButtonModel' );
 
   /**
-   * @param {Node} upNode
+   * @param {Node} idleNode
    * @param {Node} overNode
    * @param {Node} pressedNode
    * @param {Node} disabledNode
