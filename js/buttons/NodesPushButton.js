@@ -30,7 +30,6 @@ define( function( require ) {
 
     options = _.extend( {
       cursor: 'pointer', // {string}
-      enabled: true, // {boolean}
       listener: null, // {function}
       xAlign: 'center', // {string} how the nodes are horizontally aligned: center, left, right
       yAlign: 'center' // {string} how the nodes are vertically aligned: center, top, bottom
