@@ -224,7 +224,7 @@ define( function( require ) {
       options.expandedProperty.unlink( expandedPropertyObserver );
     };
 
-    this.mutate( options );
+    this.mutate( _.omit( options, 'cursor' ) );
   }
 
   return inherit( Node, AccordionBox );
