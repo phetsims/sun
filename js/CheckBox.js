@@ -30,7 +30,8 @@ define( function( require ) {
       cursor: 'pointer',
       checkBoxColor: 'black',
       checkBoxColorDisabled: 'gray',
-      checkBoxColorBackground: 'white'
+      checkBoxColorBackground: 'white',
+      tabIndex: 0
     }, options );
 
     var thisNode = this;
@@ -84,7 +85,13 @@ define( function( require ) {
     } );
 
     //Add accessibility
-    thisNode.addPeer( '<input type="checkbox">', {click: function() {property.value = !property.value;}, label: options.label} );
+    thisNode.addPeer( '<input type="checkbox">', {
+      click: function() {property.value = !property.value;},
+      label: options.label,
+
+      //This is here solely to support FAMB accessibility, see https://github.com/phetsims/forces-and-motion-basics/issues/110
+      tabIndex: options.tabIndex
+    } );
     property.link( function( value ) {
       _.each( checkBox.instances, function( instance ) {
 

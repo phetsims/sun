@@ -7,6 +7,9 @@
  * A typical use case is when you want to have different modes of a view to select from. Typically,
  * RadioButtonGroup radio buttons display some kind of icon or image, but that is not mandatory.
  *
+ * WARNING: RadioButtonGroup does not currently take scenery options (top, bottom, etc.). If you pass in scenery
+ * options, unexpected things are likely to happen. We can look into fixing this in the future.
+ *
  * @author Aaron Davis
  */
 define( function( require ) {
@@ -160,11 +163,11 @@ define( function( require ) {
         // override the touch and mouse areas defined in RectangularButtonView
         // extra width is added to the SingleRadioButtons so they don't change size if the line width changes,
         // that is why lineWidth is subtracted from the width and height when calculating these new areas
-        radioButton.touchArea = Shape.rectangle( -xExpand, -yExpand, button.width + 2 * xExpand - maxLineWidth, button.height + 2 * yExpand - maxLineWidth);
+        radioButton.touchArea = Shape.rectangle( -xExpand, -yExpand, button.width + 2 * xExpand - maxLineWidth, button.height + 2 * yExpand - maxLineWidth );
 
         xExpand = options.xMouseExpansion;
         yExpand = options.yMouseExpansion;
-        radioButton.mouseArea = Shape.rectangle( -xExpand, -yExpand, button.width + 2 * xExpand - maxLineWidth, button.height + 2 * yExpand - maxLineWidth);
+        radioButton.mouseArea = Shape.rectangle( -xExpand, -yExpand, button.width + 2 * xExpand - maxLineWidth, button.height + 2 * yExpand - maxLineWidth );
 
         // make sure the label mouse and touch areas don't block the expanded button touch and mouse areas
         label.pickable = false;
