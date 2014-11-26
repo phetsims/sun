@@ -66,9 +66,11 @@ define( function( require ) {
 
     options = _.extend( {
 
-      // The distance between the radio buttons (as in VBox or HBox)
+      // LayoutBox options (super class of RadioButtonGroup)
       spacing: 10,
       orientation: 'vertical',
+      align: 'center',
+
       enabledProperty: new Property( true ), // whether or not the set of radio buttons as a whole is enabled
 
       // The fill for the rectangle behind the radio buttons.  Default color is bluish color, as in the other button library.
@@ -122,15 +124,16 @@ define( function( require ) {
       contentAppearanceStrategy: RadioButtonGroupAppearance.contentAppearanceStrategy
     }, options );
 
-    // Separate out the options that apply to the group of buttons as opposed to individual buttons,
-    // these are the vanilla Node options and the LayoutBox options.
-    // The remaining options are passed to the individual buttons, and we want to make sure Node options
-    // aren't being applied there too.
-    var groupOptions = { spacing: options.spacing, orientation: options.orientation };
-    Node.prototype._mutatorKeys.forEach( function( key ) {
+    // Separate out the options that apply to the group of buttons as opposed to individual buttons
+    // (the vanilla Node options and the LayoutBox options). The remaining options are passed to the individual buttons
+    var groupOptions = { // LayoutBox options
+      spacing: options.spacing,
+      orientation: options.orientation,
+      align: options.align };
+    Node.prototype._mutatorKeys.forEach( function( key ) { // Node options
       if ( options.hasOwnProperty( key ) ) {
         groupOptions[key] = options[key];
-        delete options[key];
+        delete options[key]; // bad things will happen if these options are applied to the individual buttons too
       }
     } );
 
