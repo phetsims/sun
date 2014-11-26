@@ -7,9 +7,6 @@
  * A typical use case is when you want to have different modes of a view to select from. Typically,
  * RadioButtonGroup radio buttons display some kind of icon or image, but that is not mandatory.
  *
- * WARNING: RadioButtonGroup does not currently take scenery options (top, bottom, etc.). If you pass in scenery
- * options, unexpected things are likely to happen. We can look into fixing this in the future.
- *
  * @author Aaron Davis
  */
 define( function( require ) {
@@ -25,6 +22,7 @@ define( function( require ) {
   var LayoutBox = require( 'SCENERY/nodes/LayoutBox' );
   var Shape = require( 'KITE/Shape' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
+  var Node = require( 'SCENERY/nodes/Node' );
 
   /**
    * RadioButtonGroup constructor.
@@ -124,6 +122,18 @@ define( function( require ) {
       contentAppearanceStrategy: RadioButtonGroupAppearance.contentAppearanceStrategy
     }, options );
 
+    // Separate out the options that apply to the group of buttons as opposed to individual buttons,
+    // these are the vanilla Node options and the LayoutBox options.
+    // The remaining options are passed to the individual buttons, and we want to make sure Node options
+    // aren't being applied there too.
+    var groupOptions = { spacing: options.spacing, orientation: options.orientation };
+    Node.prototype._mutatorKeys.forEach( function( key ) {
+      if ( options.hasOwnProperty( key ) ) {
+        groupOptions[key] = options[key];
+        delete options[key];
+      }
+    } );
+
     // calculate the maximum width and height of the content so we can make all radio buttons the same size
     var maxWidth = _.max( contentArray, function( content ) { return content.node.width; } ).node.width;
     var maxHeight = _.max( contentArray, function( content ) { return content.node.height; } ).node.height;
@@ -185,8 +195,8 @@ define( function( require ) {
     this.enabledProperty = options.enabledProperty;
 
     // super call
-    options.children = buttons;
-    LayoutBox.call( this, options );
+    groupOptions.children = buttons;
+    LayoutBox.call( this, groupOptions );
     var thisNode = this;
 
     // When the entire RadioButtonGroup gets disabled, gray them out and make them unpickable (and vice versa)
