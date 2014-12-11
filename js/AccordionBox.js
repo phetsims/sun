@@ -211,21 +211,23 @@ define( function( require ) {
       options.titleNode.centerX = expandedBox.centerX;
     }
 
-    // Update the visibility of the boxes based on the expanded/collapsed state.
-    var expandedPropertyObserver = function( expanded ) {
+    // @private expand/collapse the box
+    this.expandedPropertyObserver = function( expanded ) {
       expandedBox.visible = expanded;
       collapsedBox.visible = !expanded;
       options.titleNode.visible = ( expanded && options.showTitleWhenExpanded ) || !expanded;
     };
-    options.expandedProperty.link( expandedPropertyObserver );
-
-    // @public Unlinks from expandedProperty. The node is no longer functional after calling this function.
-    this.dispose = function() {
-      options.expandedProperty.unlink( expandedPropertyObserver );
-    };
+    this.expandedProperty = options.expandedProperty; // @private
+    this.expandedProperty.link( this.expandedPropertyObserver ); // must be unlinked in dispose
 
     this.mutate( _.omit( options, 'cursor' ) );
   }
 
-  return inherit( Node, AccordionBox );
+  return inherit( Node, AccordionBox, {
+
+    // Ensures that this node is eligible for GC.
+    dispose: function() {
+       this.expandedProperty.unlink( this.expandedPropertyObserver );
+    }
+  } );
 } );
