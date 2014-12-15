@@ -126,10 +126,7 @@ define( function( require ) {
     options = _.extend( _.clone( defaultOptions ), options );
 
     // make a copy of the options to pass to individual buttons that includes all default options but not scenery options
-    var buttonOptions = {};
-    for ( var defaultOption in defaultOptions ) {
-      buttonOptions[defaultOption] = options[defaultOption];
-    }
+    var buttonOptions = _.pick( options, _.keys( defaultOptions ) );
 
     // calculate the maximum width and height of the content so we can make all radio buttons the same size
     var maxWidth = _.max( contentArray, function( content ) { return content.node.width; } ).node.width;
