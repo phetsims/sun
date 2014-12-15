@@ -47,6 +47,7 @@ define( function( require ) {
       thumbFillDisabled: '#F0F0F0',
       thumbStroke: 'black',
       thumbLineWidth: 1,
+      thumbCenterLineStroke: 'white',
       // ticks
       tickLabelSpacing: 6,
       majorTickLength: 25,
@@ -106,7 +107,7 @@ define( function( require ) {
     var thumb = new Rectangle( -options.thumbSize.width / 2, -options.thumbSize.height / 2, options.thumbSize.width, options.thumbSize.height, arcWidth, arcWidth,
       { cursor: options.cursor, fill: thumbFill, stroke: options.thumbStroke, lineWidth: options.thumbLineWidth } );
     var centerLineYMargin = 3;
-    thumb.addChild( new Path( Shape.lineSegment( 0, -( options.thumbSize.height / 2 ) + centerLineYMargin, 0, ( options.thumbSize.height / 2 ) - centerLineYMargin ), { stroke: 'white' } ) );
+    thumb.addChild( new Path( Shape.lineSegment( 0, -( options.thumbSize.height / 2 ) + centerLineYMargin, 0, ( options.thumbSize.height / 2 ) - centerLineYMargin ), { stroke: options.thumbCenterLineStroke } ) );
     thumb.centerY = thisSlider.track.centerY;
     thisSlider.addChild( thumb );
 
