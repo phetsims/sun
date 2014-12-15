@@ -72,20 +72,22 @@ define( function( require ) {
       }
     } ) );
 
-    // sync with property
-    var expandedPropertyObserver = function( expanded ) {
+    // @private
+    thisButton.expandedPropertyObserver = function( expanded ) {
       expandButton.visible = !expanded;
       collapseButton.visible = expanded;
     };
-    expandedProperty.link( expandedPropertyObserver );
-
-    // @public Unlinks from the property. Button in not functional after calling this.
-    this.unlink = function() {
-      expandedProperty.unlink( expandedPropertyObserver );
-    };
+    thisButton.expandedProperty = expandedProperty; // @private
+    thisButton.expandedProperty.link( thisButton.expandedPropertyObserver ); // must be unlinked in dispose
 
     thisButton.mutate( options );
   }
 
-  return inherit( Node, ExpandCollapseButton );
+  return inherit( Node, ExpandCollapseButton, {
+
+    // Ensures that this node is eligible for GC.
+    dispose: function() {
+      this.expandedProperty.unlink( this.expandedPropertyObserver )
+    }
+  } );
 } );
