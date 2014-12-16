@@ -87,6 +87,7 @@ define( function( require ) {
 
     // Compute box dimensions
     var collapsedBoxHeight = Math.max( this.expandCollapseButton.height + ( 2 * options.buttonYMargin ), options.titleNode.height + ( 2 * options.titleYMargin ) );
+    assert && assert( options.cornerRadius < collapsedBoxHeight / 2 );
     var boxWidth = Math.max( options.minWidth, this.expandCollapseButton.width + options.titleNode.width + options.buttonXMargin + options.titleXMargin + options.titleXSpacing );
     var expandedBoxHeight;
     if ( options.showTitleWhenExpanded ) {
@@ -127,9 +128,9 @@ define( function( require ) {
       expandedTitleBar = new Path( new Shape()
           .moveTo( 0, collapsedBoxHeight )
           .lineTo( 0, options.cornerRadius )
-          .quadraticCurveTo( 0, 0, options.cornerRadius, 0 )
-          .lineTo( boxWidth - options.cornerRadius )
-          .quadraticCurveTo( boxWidth, 0, boxWidth, options.cornerRadius )
+          .arc( options.cornerRadius, options.cornerRadius, options.cornerRadius, Math.PI, 1.5 * Math.PI )
+          .lineTo( boxWidth - options.cornerRadius, 0 )
+          .arc( boxWidth - options.cornerRadius, options.cornerRadius, options.cornerRadius, 1.5 * Math.PI, 0 )
           .lineTo( boxWidth, collapsedBoxHeight )
           .close(),
         expandedTitleBarOptions );
