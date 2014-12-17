@@ -87,7 +87,7 @@ define( function( require ) {
 
     // Ensures that this node is eligible for GC.
     dispose: function() {
-      this.expandedProperty.unlink( this.expandedPropertyObserver )
+      this.expandedProperty.unlink( this.expandedPropertyObserver );
     }
   } );
 } );
