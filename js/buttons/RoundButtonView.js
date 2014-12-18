@@ -371,4 +371,4 @@ define( function( require ) {
     //@override see issue #146
     set fillKept( value ) { throw new Error( 'fillKept setter is not supported for buttons, set via options' ); }
   } );
-} );                    l
+} );
