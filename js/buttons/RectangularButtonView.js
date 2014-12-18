@@ -52,6 +52,7 @@ define( function( require ) {
       yTouchExpansion: 5,
       stroke: DEFAULT_COLOR.colorUtilsDarker( 0.4 ),
       lineWidth: 0.5, // Only meaningful if stroke is non-null
+      fillKept: false, // gradient caching, see issue #146
 
       // Strategy for controlling the button's appearance, excluding any
       // content.  This can be a stock strategy from this file or custom.  To
@@ -155,9 +156,9 @@ define( function( require ) {
     var disabledPressedFillVertical;
     var enabledStroke = null;
 
-    // Keep the gradients in memory, so switching back and forth has improved performance.
-    button.fillKept = true;
-    overlayForHorizGradient.fillKept = true;
+    // gradient caching
+    button.fillKept = options.fillKept;
+    overlayForHorizGradient.fillKept = options.fillKept;
 
     // Function for creating the fills and strokes used to control the button's appearance.
     function updateFillsAndStrokes( baseColor ) {
@@ -265,7 +266,7 @@ define( function( require ) {
 
     baseColorProperty.lazyLink( function( baseColor ) {
 
-      // Turn off the memory optimization for gradients, since this button instance is apparently changing colors.
+      // Turn off the gradient caching, since this button is changing colors.
       button.fillKept = false;
       overlayForHorizGradient.fillKept = false;
 
@@ -384,6 +385,9 @@ define( function( require ) {
       get enabled() { return this.buttonModel.enabled; },
 
       set baseColor( baseColor ) { this.baseColorProperty.value = Color.toColor( baseColor ); },
-      get baseColor() { return this.baseColorProperty.value; }
+      get baseColor() { return this.baseColorProperty.value; },
+
+      //@override see issue #146
+      set fillKept( value ) { throw new Error( 'fillKept setter is not supported for buttons, set via options' ); }
     } );
 } );
