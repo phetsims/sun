@@ -386,8 +386,5 @@ define( function( require ) {
 
       set baseColor( baseColor ) { this.baseColorProperty.value = Color.toColor( baseColor ); },
       get baseColor() { return this.baseColorProperty.value; },
-
-      //@override see issue #146
-      set fillKept( value ) { throw new Error( 'fillKept setter is not supported for buttons, set via options' ); }
     } );
 } );
