@@ -22,7 +22,6 @@ define( function( require ) {
   var LayoutBox = require( 'SCENERY/nodes/LayoutBox' );
   var Shape = require( 'KITE/Shape' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
-  var Node = require( 'SCENERY/nodes/Node' );
 
   /**
    * RadioButtonGroup constructor.
@@ -64,7 +63,7 @@ define( function( require ) {
                        '" that is not present in the contentArray' );
     }
 
-    options = _.extend( {
+    var defaultOptions = {
 
       // LayoutBox options (super class of RadioButtonGroup)
       spacing: 10,
@@ -122,20 +121,12 @@ define( function( require ) {
       // customized behavior.  Generally setting the color values above should be enough to specify the desired look.
       buttonAppearanceStrategy: RadioButtonGroupAppearance.defaultRadioButtonsAppearance,
       contentAppearanceStrategy: RadioButtonGroupAppearance.contentAppearanceStrategy
-    }, options );
+    };
 
-    // Separate out the options that apply to the group of buttons as opposed to individual buttons
-    // (the vanilla Node options and the LayoutBox options). The remaining options are passed to the individual buttons
-    var groupOptions = { // LayoutBox options
-      spacing: options.spacing,
-      orientation: options.orientation,
-      align: options.align };
-    Node.prototype._mutatorKeys.forEach( function( key ) { // Node options
-      if ( options.hasOwnProperty( key ) ) {
-        groupOptions[key] = options[key];
-        delete options[key]; // bad things will happen if these options are applied to the individual buttons too
-      }
-    } );
+    options = _.extend( _.clone( defaultOptions ), options );
+
+    // make a copy of the options to pass to individual buttons that includes all default options but not scenery options
+    var buttonOptions = _.pick( options, _.keys( defaultOptions ) );
 
     // calculate the maximum width and height of the content so we can make all radio buttons the same size
     var maxWidth = _.max( contentArray, function( content ) { return content.node.width; } ).node.width;
@@ -150,7 +141,7 @@ define( function( require ) {
       var yMargin = ( ( maxHeight - contentArray[i].node.height ) / 2 ) + options.buttonContentYMargin;
 
       var radioButton = new RadioButtonGroupMember( property, contentArray[i].value,
-        _.extend( { content: contentArray[i].node, xMargin: xMargin, yMargin: yMargin }, options ) );
+        _.extend( { content: contentArray[i].node, xMargin: xMargin, yMargin: yMargin }, buttonOptions ) );
 
       // ensure the buttons don't resize when selected vs unselected by adding a rectangle with the max size
       var maxLineWidth = Math.max( options.selectedLineWidth, options.deselectedLineWidth );
@@ -198,8 +189,8 @@ define( function( require ) {
     this.enabledProperty = options.enabledProperty;
 
     // super call
-    groupOptions.children = buttons;
-    LayoutBox.call( this, groupOptions );
+    options.children = buttons;
+    LayoutBox.call( this, options );
     var thisNode = this;
 
     // When the entire RadioButtonGroup gets disabled, gray them out and make them unpickable (and vice versa)

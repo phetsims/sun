@@ -77,17 +77,18 @@ define( function( require ) {
 
     Node.call( this );
 
-    // Expand/collapse button
-    var expandCollapseButton = new ExpandCollapseButton( options.expandedProperty, {
+    // @private Expand/collapse button, links to expandedProperty, must be disposed of
+    this.expandCollapseButton = new ExpandCollapseButton( options.expandedProperty, {
       sideLength: options.buttonLength,
       cursor: options.cursor
     } );
-    expandCollapseButton.touchArea = expandCollapseButton.localBounds.dilatedXY( options.buttonTouchAreaDilatedX, options.buttonTouchAreaDilatedY );
-    expandCollapseButton.mouseArea = expandCollapseButton.localBounds.dilatedXY( options.buttonMouseAreaDilatedX, options.buttonMouseAreaDilatedY );
+    this.expandCollapseButton.touchArea = this.expandCollapseButton.localBounds.dilatedXY( options.buttonTouchAreaDilatedX, options.buttonTouchAreaDilatedY );
+    this.expandCollapseButton.mouseArea = this.expandCollapseButton.localBounds.dilatedXY( options.buttonMouseAreaDilatedX, options.buttonMouseAreaDilatedY );
 
     // Compute box dimensions
-    var collapsedBoxHeight = Math.max( expandCollapseButton.height + ( 2 * options.buttonYMargin ), options.titleNode.height + ( 2 * options.titleYMargin ) );
-    var boxWidth = Math.max( options.minWidth, expandCollapseButton.width + options.titleNode.width + options.buttonXMargin + options.titleXMargin + options.titleXSpacing );
+    var collapsedBoxHeight = Math.max( this.expandCollapseButton.height + ( 2 * options.buttonYMargin ), options.titleNode.height + ( 2 * options.titleYMargin ) );
+    assert && assert( options.cornerRadius < collapsedBoxHeight / 2 );
+    var boxWidth = Math.max( options.minWidth, this.expandCollapseButton.width + options.titleNode.width + options.buttonXMargin + options.titleXMargin + options.titleXSpacing );
     var expandedBoxHeight;
     if ( options.showTitleWhenExpanded ) {
       // content is below button+title
@@ -96,8 +97,8 @@ define( function( require ) {
     }
     else {
       // content is next to button
-      boxWidth = Math.max( boxWidth, expandCollapseButton.width + contentNode.width + options.buttonXMargin + options.contentXMargin + options.contentXSpacing );
-      expandedBoxHeight = Math.max( expandCollapseButton.height + ( 2 * options.buttonYMargin ), contentNode.height + ( 2 * options.contentYMargin ) );
+      boxWidth = Math.max( boxWidth, this.expandCollapseButton.width + contentNode.width + options.buttonXMargin + options.contentXMargin + options.contentXSpacing );
+      expandedBoxHeight = Math.max( this.expandCollapseButton.height + ( 2 * options.buttonYMargin ), contentNode.height + ( 2 * options.contentYMargin ) );
     }
 
     // Expanded box
@@ -127,9 +128,9 @@ define( function( require ) {
       expandedTitleBar = new Path( new Shape()
           .moveTo( 0, collapsedBoxHeight )
           .lineTo( 0, options.cornerRadius )
-          .quadraticCurveTo( 0, 0, options.cornerRadius, 0 )
-          .lineTo( boxWidth - options.cornerRadius )
-          .quadraticCurveTo( boxWidth, 0, boxWidth, options.cornerRadius )
+          .arc( options.cornerRadius, options.cornerRadius, options.cornerRadius, Math.PI, 1.5 * Math.PI )
+          .lineTo( boxWidth - options.cornerRadius, 0 )
+          .arc( boxWidth - options.cornerRadius, options.cornerRadius, options.cornerRadius, 1.5 * Math.PI, 0 )
           .lineTo( boxWidth, collapsedBoxHeight )
           .close(),
         expandedTitleBarOptions );
@@ -154,7 +155,7 @@ define( function( require ) {
     } );
 
     this.addChild( options.titleNode );
-    this.addChild( expandCollapseButton );
+    this.addChild( this.expandCollapseButton );
 
     // box outline, on top of everything else
     var expandedBoxOutline, collapsedBoxOutline;
@@ -173,10 +174,10 @@ define( function( require ) {
     if ( !options.showTitleWhenExpanded ) {
       // content will be placed next to button
       if ( options.buttonAlign === 'left' ) {
-        contentSpanLeft += expandCollapseButton.width + options.contentXSpacing;
+        contentSpanLeft += this.expandCollapseButton.width + options.contentXSpacing;
       }
       else { // right on right
-        contentSpanRight -= expandCollapseButton.width + options.contentXSpacing;
+        contentSpanRight -= this.expandCollapseButton.width + options.contentXSpacing;
       }
     }
     if ( options.contentAlign === 'left' ) {
@@ -190,16 +191,16 @@ define( function( require ) {
     }
 
     // button & title layout
-    expandCollapseButton.centerY = options.titleNode.centerY = collapsedBox.centerY;
+    this.expandCollapseButton.centerY = options.titleNode.centerY = collapsedBox.centerY;
     var titleLeftSpan = expandedBox.left + options.titleXMargin;
     var titleRightSpan = expandedBox.right - options.titleXMargin;
     if ( options.buttonAlign === 'left' ) {
-      expandCollapseButton.left = expandedBox.left + options.buttonXMargin;
-      titleLeftSpan = expandCollapseButton.right + options.titleXSpacing;
+      this.expandCollapseButton.left = expandedBox.left + options.buttonXMargin;
+      titleLeftSpan = this.expandCollapseButton.right + options.titleXSpacing;
     }
     else {
-      expandCollapseButton.right = expandedBox.right - options.buttonXMargin;
-      titleRightSpan = expandCollapseButton.left - options.titleXSpacing;
+      this.expandCollapseButton.right = expandedBox.right - options.buttonXMargin;
+      titleRightSpan = this.expandCollapseButton.left - options.titleXSpacing;
     }
     if ( options.titleAlign === 'left' ) {
       options.titleNode.left = titleLeftSpan;
@@ -227,7 +228,9 @@ define( function( require ) {
 
     // Ensures that this node is eligible for GC.
     dispose: function() {
-       this.expandedProperty.unlink( this.expandedPropertyObserver );
+      this.expandCollapseButton.dispose();
+      this.expandCollapseButton = null;
+      this.expandedProperty.unlink( this.expandedPropertyObserver );
     }
   } );
 } );
