@@ -53,10 +53,12 @@ define( function( require ) {
       } );
       checkBox.mouseArea = checkBox.touchArea = Shape.bounds( checkBox.bounds.dilatedXY( 5, options.spacing / 2 ) );
       if ( items[i].indent ) {
-        children.push( new HBox( {children: [ new Rectangle( 0, 0, items[i].indent, 1 ), checkBox ]} ) );
+        var hBox = new HBox( {focusable: true, children: [ new Rectangle( 0, 0, items[i].indent, 1 ), checkBox ]} );
+        children.push( hBox );
       }
       else {
-        children.push( new HBox( {children: [checkBox]} ) );
+        var simpleBox = new HBox( {focusable: true, children: [checkBox]} );
+        children.push( simpleBox );
       }
     }
 
