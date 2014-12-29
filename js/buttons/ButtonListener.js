@@ -61,7 +61,6 @@ define( function( require ) {
      * @param {Trail} trail
      */
     keydown: function( event, trail ) {
-      debugger;
       if ( event.domEvent.keyCode === Input.KEY_ENTER || event.domEvent.keyCode === Input.KEY_SPACE ) {
         this.enter( event, trail );
         this.buttonModel.down = true;
