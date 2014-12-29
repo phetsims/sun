@@ -18,6 +18,7 @@ define( function( require ) {
 
   // modules
   var DownUpListener = require( 'SCENERY/input/DownUpListener' );
+  var Input = require( 'SCENERY/input/Input' );
   var inherit = require( 'PHET_CORE/inherit' );
 
   /**
@@ -53,6 +54,32 @@ define( function( require ) {
   }
 
   return inherit( DownUpListener, ButtonListener, {
+    /**
+     * When this Button has focus, pressing a key down presses the button.  This is part of the accessibility feature set.
+     * This API is subject to change (if we make a more specific ENTER/SPACE callback
+     * @param {Event} event
+     * @param {Trail} trail
+     */
+    keydown: function( event, trail ) {
+      debugger;
+      if ( event.domEvent.keyCode === Input.KEY_ENTER || event.domEvent.keyCode === Input.KEY_SPACE ) {
+        this.enter( event, trail );
+        this.buttonModel.down = true;
+      }
+    },
+
+    /**
+     * When this Button has focus, pressing a key up releases the button.  This is part of the accessibility feature set.
+     * This API is subject to change (if we make a more specific ENTER/SPACE callback
+     * @param {Event} event
+     * @param {Trail} trail
+     */
+    keyup: function( event, trail ) {
+      if ( event.domEvent.keyCode === Input.KEY_ENTER || event.domEvent.keyCode === Input.KEY_SPACE ) {
+        this.buttonModel.down = false;
+        this.exit( event, trail );
+      }
+    },
     enter: function( event, trail ) {
       if ( this.overPointer === null ) {
         this.overPointer = event.pointer;
