@@ -16,6 +16,7 @@ define( function( require ) {
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var Shape = require( 'KITE/Shape' );
   var inherit = require( 'PHET_CORE/inherit' );
+  var Input = require( 'SCENERY/input/Input' );
 
   /**
    * Main constructor.
@@ -44,20 +45,41 @@ define( function( require ) {
     // process each item
     var children = [];
     for ( i = 0; i < items.length; i++ ) {
-      var offset = items[i].indent || 0;
-      //Attach each item to an invisible strut to make the widths match.
-      var content = new Path( Shape.rect( 0, 0, maxWidth + options.padding - offset, 0 ), { children: [items[i].content] } );
-      var checkBox = new CheckBox( content, items[i].property, {
-        label: items[i].label, checkBoxColor: options.checkBoxColor, boxWidth: options.boxWidth,
-        tabIndex: options.tabIndex
-      } );
-      checkBox.mouseArea = checkBox.touchArea = Shape.bounds( checkBox.bounds.dilatedXY( 5, options.spacing / 2 ) );
-      if ( items[i].indent ) {
-        children.push( new HBox( {children: [ new Rectangle( 0, 0, items[i].indent, 1 ), checkBox ]} ) );
-      }
-      else {
-        children.push( new HBox( {children: [checkBox]} ) );
-      }
+      (function( i ) {
+        var offset = items[i].indent || 0;
+
+        //Attach each item to an invisible strut to make the widths match.
+        var content = new Path( Shape.rect( 0, 0, maxWidth + options.padding - offset, 0 ), { children: [items[i].content] } );
+        var checkBox = new CheckBox( content, items[i].property, {
+          label: items[i].label, checkBoxColor: options.checkBoxColor, boxWidth: options.boxWidth,
+          tabIndex: options.tabIndex
+        } );
+        checkBox.mouseArea = checkBox.touchArea = Shape.bounds( checkBox.bounds.dilatedXY( 5, options.spacing / 2 ) );
+        if ( items[i].indent ) {
+          var hBox = new HBox( {focusable: true, children: [ new Rectangle( 0, 0, items[i].indent, 1 ), checkBox ]} );
+          hBox.addInputListener( {
+            keydown: function( event, trail ) {
+              // Enter or Space
+              if ( event.domEvent.keyCode === Input.KEY_ENTER || event.domEvent.keyCode === Input.KEY_SPACE ) {
+                items[i].property.value = !items[i].property.value;
+              }
+            }
+          } );
+          children.push( hBox );
+        }
+        else {
+          var simpleBox = new HBox( {focusable: true, children: [checkBox]} );
+          simpleBox.addInputListener( {
+            keydown: function( event, trail ) {
+              // Enter or Space
+              if ( event.domEvent.keyCode === Input.KEY_ENTER || event.domEvent.keyCode === Input.KEY_SPACE ) {
+                items[i].property.value = !items[i].property.value;
+              }
+            }
+          } );
+          children.push( simpleBox );
+        }
+      })( i );
     }
 
     options.children = children; //TODO bad form, if options.children was already set, then this will blow it away

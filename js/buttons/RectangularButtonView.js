@@ -38,6 +38,7 @@ define( function( require ) {
 
     options = _.extend( {
       // Default values.
+      focusable: true,
       content: null,
       minWidth: 1,
       minHeight: 1,
