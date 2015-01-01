@@ -71,11 +71,11 @@ define( function( require ) {
 
     // interactivity
     thisNode.addInputListener( new ButtonListener( {
-      fire: function() {
+      fire: phet.arch.wrap( 'checkboxFired', function() {
         if ( thisNode._enabled ) {
           property.value = !property.value;
         }
-      }
+      }, {id: options.id} )
     } ) );
 
     // sync with property

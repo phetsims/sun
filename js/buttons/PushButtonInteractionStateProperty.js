@@ -21,6 +21,8 @@ define( function( require ) {
                over && down ? 'pressed' :
                'idle';
       } );
+    // Turn off data logging for this property, since it isn't that useful;
+    this.setSendPhetEvents( false );
   }
 
   return inherit( DerivedProperty, PushButtonInteractionStateProperty );
