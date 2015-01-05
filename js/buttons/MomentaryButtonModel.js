@@ -21,6 +21,13 @@ define( function( require ) {
     var thisModel = this;
     ButtonModel.call( thisModel );
 
+     // @private sync with the property, do this before wiring up to supertype properties
+    this.onObserver = function( on ) {
+      thisModel.down = on;
+    };
+    this.onProperty = onProperty; // @private
+    this.onProperty.link( this.onObserver );
+
     // turn on when pressed (if enabled)
     this.property( 'down' ).onValue( true, function() {
       if ( thisModel.enabled ) { onProperty.set( true ); }
@@ -37,5 +44,11 @@ define( function( require ) {
     } );
   }
 
-  return inherit( ButtonModel, MomentaryButtonModel );
+  return inherit( ButtonModel, MomentaryButtonModel, {
+
+    // Ensures that this model is eligible for GC.
+    dispose: function() {
+      this.onProperty.unlink( this.onObserver );
+    }
+  } );
 } );
