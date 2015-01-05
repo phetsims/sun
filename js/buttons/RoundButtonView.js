@@ -42,7 +42,7 @@ define( function( require ) {
     options = _.extend( {
 
       // Default values.
-      radius: options.content ? undefined : 30,
+      radius: ( options && options.content ) ? undefined : 30,
       content: null,
       cursor: 'pointer',
       baseColor: DEFAULT_COLOR,

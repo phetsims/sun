@@ -31,7 +31,8 @@ define( function( require ) {
       checkBoxColor: 'black',
       checkBoxColorDisabled: 'gray',
       checkBoxColorBackground: 'white',
-      tabIndex: 0
+      tabIndex: 0,
+      componentID: 'componentID'
     }, options );
 
     var thisNode = this;
@@ -71,11 +72,11 @@ define( function( require ) {
 
     // interactivity
     thisNode.addInputListener( new ButtonListener( {
-      fire: function() {
+      fire: phet.arch.wrap( 'user', options.componentID, 'CheckBox', 'toggled', function() {
         if ( thisNode._enabled ) {
           property.value = !property.value;
         }
-      }
+      } )
     } ) );
 
     // sync with property
