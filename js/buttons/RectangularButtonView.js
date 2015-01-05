@@ -40,8 +40,8 @@ define( function( require ) {
       // Default values.
       focusable: true,
       content: null,
-      minWidth: 1,
-      minHeight: 1,
+      minWidth: HORIZONTAL_HIGHLIGHT_GRADIENT_LENGTH + SHADE_GRADIENT_LENGTH,
+      minHeight: VERTICAL_HIGHLIGHT_GRADIENT_LENGTH + SHADE_GRADIENT_LENGTH,
       cursor: 'pointer',
       cornerRadius: 4,
       baseColor: DEFAULT_COLOR,
@@ -127,13 +127,17 @@ define( function( require ) {
    */
   RectangularButtonView.threeDAppearanceStrategy = function( button, interactionStateProperty, baseColorProperty, options ) {
 
-    // Set up variables needed to create the various gradient fills
     var buttonWidth = button.width;
     var buttonHeight = button.height;
+
+    // compute color stops for gradient, see issue #148
+    assert && assert( buttonWidth >= HORIZONTAL_HIGHLIGHT_GRADIENT_LENGTH + SHADE_GRADIENT_LENGTH );
+    assert && assert( buttonHeight >= VERTICAL_HIGHLIGHT_GRADIENT_LENGTH + SHADE_GRADIENT_LENGTH );
     var verticalHighlightStop = Math.min( VERTICAL_HIGHLIGHT_GRADIENT_LENGTH / buttonHeight, 1 );
     var verticalShadowStop = Math.max( 1 - SHADE_GRADIENT_LENGTH / buttonHeight, 0 );
     var horizontalHighlightStop = Math.min( HORIZONTAL_HIGHLIGHT_GRADIENT_LENGTH / buttonWidth, 1 );
     var horizontalShadowStop = Math.max( 1 - SHADE_GRADIENT_LENGTH / buttonWidth, 0 );
+
     var disabledBaseColor = Color.toColor( options.disabledBaseColor );
     var transparentDisabledBaseColor = new Color( disabledBaseColor.getRed(), disabledBaseColor.getGreen(), disabledBaseColor.getBlue(), 0 );
     var disabledStroke = null;
