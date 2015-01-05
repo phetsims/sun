@@ -13,7 +13,7 @@ define( function( require ) {
   var ButtonModel = require( 'SUN/buttons/ButtonModel' );
 
   /**
-   * @param {Property.<boolean>} onProperty
+   * @param {Property.<boolean>} onProperty - is the momentary button on or off?
    * @constructor
    */
   function MomentaryButtonModel( onProperty ) {
