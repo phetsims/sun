@@ -33,6 +33,8 @@ define( function( require ) {
   var HBox = require( 'SCENERY/nodes/HBox' );
   var VBox = require( 'SCENERY/nodes/VBox' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
+  var RoundMomentaryButton = require( 'SUN/buttons/RoundMomentaryButton' );
+  var RectangularMomentaryButton = require( 'SUN/buttons/RectangularMomentaryButton' );
 
   // constants
   var BUTTON_FONT = new Font( { size: 20 } );
@@ -193,6 +195,31 @@ define( function( require ) {
       top: flatButtonsBox.bottom + 25
     } );
     this.addChild( actionButtonsBox );
+
+    //===================================================================================
+    // Momentary buttons
+    //===================================================================================
+
+    // round
+    var roundOnProperty = new Property( false );
+    roundOnProperty.lazyLink( function( on ) { console.log( 'RoundMomentaryButton on=' + on ); } );
+    var roundMomentaryButton = new RoundMomentaryButton( roundOnProperty, {
+      baseColor: 'orange',
+      right: this.layoutBounds.right - 10,
+      centerY: this.layoutBounds.centerY
+    } );
+    this.addChild( roundMomentaryButton );
+
+    // rectangular
+    var rectangularOnProperty = new Property( false );
+    rectangularOnProperty.lazyLink( function( on ) { console.log( 'RectangularMomentaryButton on=' + on ); } );
+    var rectangularMomentaryButton = new RectangularMomentaryButton( rectangularOnProperty, {
+      minWidth: 50,
+      minHeight: 40,
+      right: roundMomentaryButton.right,
+      top: roundMomentaryButton.bottom + 10
+    } );
+    this.addChild( rectangularMomentaryButton );
 
     //===================================================================================
     // Miscellaneous other button examples
