@@ -3,7 +3,7 @@
 // RequireJS configuration file for Sun (UI component lib) demo.
 require.config(
   {
-    deps: ['sun-main'],
+    deps: [ 'sun-main' ],
 
     paths: {
 
@@ -15,7 +15,7 @@ require.config(
       string: '../../chipper/requirejs-plugins/string',
 
       // PhET libs, uppercase names to identify them in require.js imports
-        AXON: '../../axon/js',
+      AXON: '../../axon/js',
       BRAND: '../../brand/js',
       DOT: '../../dot/js',
       JOIST: '../../joist/js',

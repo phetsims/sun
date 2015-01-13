@@ -49,11 +49,11 @@ define( function( require ) {
     // make sure that each value passed into the contentArray is unique
     var uniqueValues = [];
     for ( i = 0; i < contentArray.length; i++ ) {
-      if ( uniqueValues.indexOf( contentArray[i].value ) < 0 ) {
-        uniqueValues.push( contentArray[i].value );
+      if ( uniqueValues.indexOf( contentArray[ i ].value ) < 0 ) {
+        uniqueValues.push( contentArray[ i ].value );
       }
       else {
-        throw new Error( 'Duplicate value: "' + contentArray[i].value + '" passed into RadioButtonGroup.js' );
+        throw new Error( 'Duplicate value: "' + contentArray[ i ].value + '" passed into RadioButtonGroup.js' );
       }
     }
 
@@ -137,16 +137,16 @@ define( function( require ) {
     var button;
     for ( i = 0; i < contentArray.length; i++ ) {
       // each individual radio button will have a different margin to make sure they are all the same size
-      var xMargin = ( ( maxWidth - contentArray[i].node.width ) / 2 ) + options.buttonContentXMargin;
-      var yMargin = ( ( maxHeight - contentArray[i].node.height ) / 2 ) + options.buttonContentYMargin;
+      var xMargin = ( ( maxWidth - contentArray[ i ].node.width ) / 2 ) + options.buttonContentXMargin;
+      var yMargin = ( ( maxHeight - contentArray[ i ].node.height ) / 2 ) + options.buttonContentYMargin;
 
-      var radioButton = new RadioButtonGroupMember( property, contentArray[i].value,
-        _.extend( { content: contentArray[i].node, xMargin: xMargin, yMargin: yMargin }, buttonOptions ) );
+      var radioButton = new RadioButtonGroupMember( property, contentArray[ i ].value,
+        _.extend( { content: contentArray[ i ].node, xMargin: xMargin, yMargin: yMargin }, buttonOptions ) );
 
       // ensure the buttons don't resize when selected vs unselected by adding a rectangle with the max size
       var maxLineWidth = Math.max( options.selectedLineWidth, options.deselectedLineWidth );
-      var maxButtonWidth = maxLineWidth + contentArray[i].node.width + xMargin * 2;
-      var maxButtonHeight = maxLineWidth + contentArray[i].node.height + yMargin * 2;
+      var maxButtonWidth = maxLineWidth + contentArray[ i ].node.width + xMargin * 2;
+      var maxButtonHeight = maxLineWidth + contentArray[ i ].node.height + yMargin * 2;
       var boundingRect = new Rectangle( 0, 0, maxButtonWidth, maxButtonHeight,
         {
           fill: 'rgba(0,0,0,0)',
@@ -155,10 +155,10 @@ define( function( require ) {
       radioButton.addChild( boundingRect );
 
       // if a label is given, the button becomes a LayoutBox with the label and button
-      if ( contentArray[i].label ) {
-        var label = contentArray[i].label;
+      if ( contentArray[ i ].label ) {
+        var label = contentArray[ i ].label;
         var labelOrientation = ( options.labelAlign === 'bottom' || options.labelAlign === 'top' ) ? 'vertical' : 'horizontal';
-        var labelChildren = ( options.labelAlign === 'left' || options.labelAlign === 'top' ) ? [label, radioButton] : [radioButton, label];
+        var labelChildren = ( options.labelAlign === 'left' || options.labelAlign === 'top' ) ? [ label, radioButton ] : [ radioButton, label ];
         button = new LayoutBox( { children: labelChildren, spacing: options.labelSpacing, orientation: labelOrientation } );
 
         var xExpand = options.xTouchExpansion;
@@ -198,13 +198,13 @@ define( function( require ) {
       thisNode.pickable = isEnabled;
 
       for ( i = 0; i < contentArray.length; i++ ) {
-        if ( buttons[i] instanceof LayoutBox ) {
+        if ( buttons[ i ] instanceof LayoutBox ) {
           for ( var j = 0; j < 2; j++ ) {
-            buttons[i].children[j].enabled = isEnabled;
+            buttons[ i ].children[ j ].enabled = isEnabled;
           }
         }
         else {
-          buttons[i].enabled = isEnabled;
+          buttons[ i ].enabled = isEnabled;
         }
       }
     } );
@@ -213,13 +213,13 @@ define( function( require ) {
     property.link( function( value ) {
       if ( thisNode.enabledProperty.get() ) {
         for ( i = 0; i < contentArray.length; i++ ) {
-          if ( contentArray[i].value === value ) {
-            buttons[i].pickable = false;
-            buttons[i].cursor = null;
+          if ( contentArray[ i ].value === value ) {
+            buttons[ i ].pickable = false;
+            buttons[ i ].cursor = null;
           }
           else {
-            buttons[i].pickable = true;
-            buttons[i].cursor = 'pointer';
+            buttons[ i ].pickable = true;
+            buttons[ i ].cursor = 'pointer';
           }
         }
       }

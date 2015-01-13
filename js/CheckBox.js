@@ -50,7 +50,7 @@ define( function( require ) {
     // Make the background.  Until we are creating our own shapes, just
     // put a rectangle behind the font awesome check box icons.
     thisNode.backgroundNode = new Rectangle( 0, -options.boxWidth, options.boxWidth * 0.95, options.boxWidth * 0.95,
-        options.boxWidth * 0.2, options.boxWidth * 0.2 );
+      options.boxWidth * 0.2, options.boxWidth * 0.2 );
 
     thisNode.uncheckedNode = new FontAwesomeNode( 'check_empty' ); // @private
     var iconScale = options.boxWidth / thisNode.uncheckedNode.width;

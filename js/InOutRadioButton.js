@@ -55,10 +55,12 @@ define( function( require ) {
     upButton.y = -options.motionYOffset;
 
     // add a drop shadow to the unpressed state
-    var unpressed = new Node( {children: [
-      new Rectangle( upButton.x + options.shadowXOffset, upButton.y + options.shadowYOffset, upButton.width, upButton.height, options.cornerRadius, options.cornerRadius, { fill: options.shadowFill } ),
-      upButton
-    ]} );
+    var unpressed = new Node( {
+      children: [
+        new Rectangle( upButton.x + options.shadowXOffset, upButton.y + options.shadowYOffset, upButton.width, upButton.height, options.cornerRadius, options.cornerRadius, { fill: options.shadowFill } ),
+        upButton
+      ]
+    } );
 
     RadioButton.call( this, property, value, pressed, unpressed );
   }

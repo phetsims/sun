@@ -57,5 +57,6 @@ define( function( require ) {
 
     removeListener: function( listener ) {
       this.buttonModel.removeListener( listener );
-    } } );
+    }
+  } );
 } );

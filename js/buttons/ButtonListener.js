@@ -91,5 +91,6 @@ define( function( require ) {
         this.overPointer = null;
         this.buttonModel.over = false;
       }
-    } } );
+    }
+  } );
 } );

@@ -46,7 +46,11 @@ define( function( require ) {
 
     // Message area, for outputting test message
     var messagePrefix = 'Message: ';
-    var messageText = new Text( messagePrefix, { font: new Font( { size: 16 } ), bottom: this.layoutBounds.height - 5, left: this.layoutBounds.minX + 10  } );
+    var messageText = new Text( messagePrefix, {
+      font: new Font( { size: 16 } ),
+      bottom: this.layoutBounds.height - 5,
+      left:   this.layoutBounds.minX + 10
+    } );
     this.addChild( messageText );
     var message = function( text ) {
       messageText.text = messagePrefix + text;
@@ -73,7 +77,7 @@ define( function( require ) {
     var radioButtonPanel = new Panel( radioButtonGroup, {
       stroke: 'black',
       left: this.layoutBounds.left + 15,
-      top: this.layoutBounds.top + 15
+      top:  this.layoutBounds.top + 15
     } );
     this.addChild( radioButtonPanel );
 
@@ -114,7 +118,7 @@ define( function( require ) {
       children: [ buttonA, buttonB, buttonC, buttonD, buttonE ],
       spacing: 10,
       left: radioButtonPanel.right + 25,
-      top: this.layoutBounds.top + 15
+      top:  this.layoutBounds.top + 15
     } );
 
     this.addChild( pseudo3DButtonsBox );
@@ -362,7 +366,7 @@ define( function( require ) {
       spacing: 25,
       children: [ sliderPrototype1, sliderPrototype2, sliderPrototype3 ],
       right: this.layoutBounds.right - 15,
-      top: this.layoutBounds.top + 15
+      top:   this.layoutBounds.top + 15
     } );
     this.addChild( slidersBox );
 
@@ -425,7 +429,7 @@ define( function( require ) {
 
 
     // TODO: For debug, don't leave this here long term.
-    var debugText = new Text( '(debug text)', { font: new Font( { size: 16 } ), bottom: messageText.top - 5, left: this.layoutBounds.minX + 10  } );
+    var debugText = new Text( '(debug text)', { font: new Font( { size: 16 } ), bottom: messageText.top - 5, left: this.layoutBounds.minX + 10 } );
     this.addChild( debugText );
     window.debugText = debugText;
   }

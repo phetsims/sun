@@ -21,7 +21,7 @@ define( function( require ) {
     var thisModel = this;
     ButtonModel.call( thisModel );
 
-     // @private sync with the property, do this before wiring up to supertype properties
+    // @private sync with the property, do this before wiring up to supertype properties
     this.onObserver = function( on ) {
       thisModel.down = on;
     };
