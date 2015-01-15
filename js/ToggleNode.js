@@ -34,8 +34,8 @@ define( function( require ) {
     var background = Rectangle.bounds( trueNode.bounds.union( falseNode.bounds ), { visible: false } );
     this.addChild( background );
 
-    var targetTrueNode = options.wrapChildren ? new Node( {children: [trueNode]} ) : trueNode;
-    var targetFalseNode = options.wrapChildren ? new Node( {children: [falseNode]} ) : falseNode;
+    var targetTrueNode = options.wrapChildren ? new Node( { children: [ trueNode ] } ) : trueNode;
+    var targetFalseNode = options.wrapChildren ? new Node( { children: [ falseNode ] } ) : falseNode;
 
     this.addChild( targetFalseNode );
     this.addChild( targetTrueNode );

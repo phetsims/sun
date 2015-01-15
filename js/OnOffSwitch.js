@@ -85,44 +85,45 @@ define( function( require ) {
 
     // sync with onProperty
     onProperty.link( updateThumb.bind( thisNode ) );
-    
+
     // thumb interactivity
     var dragThresholdSquared = options.dragThreshold * options.dragThreshold; // comparing squared magnitudes is a bit faster
     var accumulatedDelta = new Vector2(); // stores how far we are from where our drag started, in our local coordinate frame
     var passedDragThreshold = false; // whether we have dragged far enough to be considered for "drag" behavior (pick closest side), or "tap" behavior (toggle)
-    
+
     thisNode.addInputListener( new SimpleDragHandler( {
-      
+
       // only touch to snag when over the thumb (don't snag on the track itself)
       allowTouchSnag: function( evt ) {
         return _.contains( evt.trail.nodes, thumbNode );
       },
-      
+
       start: function( evt, trail ) {
         // resets our state
         accumulatedDelta.setXY( 0, 0 ); // reset it mutably (less allocation)
         passedDragThreshold = false;
       },
-      
+
       end: function( evt, trail ) {
         if ( passedDragThreshold ) {
           // snap to whichever end the thumb is closest to
           onProperty.set( thisNode.thumbPositionToValue() );
-        } else {
+        }
+        else {
           // toggle
           onProperty.set( !onProperty.get() );
         }
-        
+
         // update the thumb location (sanity check that it's here, only needs to be run if passedDragThreshold===true)
         updateThumb( onProperty.get() );
       },
-      
+
       drag: function( evt, trail ) {
         // center the thumb on the pointer's x-coordinate if possible (but clamp to left and right ends)
         var viewPoint = evt.currentTarget.globalToLocalPoint( evt.pointer.point );
         var halfThumbWidth = thumbNode.width / 2;
         thumbNode.centerX = clamp( viewPoint.x, halfThumbWidth, options.size.width - halfThumbWidth );
-        
+
         // whether the thumb is dragged outside of the possible range far enough beyond our threshold to potentially
         // trigger an immediate model change
         var isDraggedOutside = viewPoint.x < ( 1 - 2 * options.toggleThreshold ) * halfThumbWidth ||
@@ -132,12 +133,12 @@ define( function( require ) {
 
         // track fill changes based on the thumb positions
         trackNode.fill = value ? options.trackOnFill : options.trackOffFill;
-        
+
         if ( options.toggleWhileDragging === true || ( isDraggedOutside && options.toggleWhileDragging === null ) ) {
           onProperty.set( value );
         }
       },
-      
+
       translate: function( params ) {
         accumulatedDelta.add( params.delta );
         passedDragThreshold = passedDragThreshold || ( accumulatedDelta.magnitudeSquared() > dragThresholdSquared );

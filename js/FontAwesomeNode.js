@@ -48,7 +48,7 @@ define( function( require ) {
     }, options );
 
     // create the shape for what we'll consider 'unity' scale
-    var shape = new Shape( icons[iconName] ).transformed( SHAPE_MATRIX );
+    var shape = new Shape( icons[ iconName ] ).transformed( SHAPE_MATRIX );
 
     Path.call( this, shape, options );
   }

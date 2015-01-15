@@ -60,13 +60,13 @@ define( function( require ) {
       // x alignment
       switch( options.xAlign ) {
         case 'center':
-          nodes[i].centerX = nodes[0].centerX;
+          nodes[ i ].centerX = nodes[ 0 ].centerX;
           break;
         case 'left':
-          nodes[i].left = nodes[0].left;
+          nodes[ i ].left = nodes[ 0 ].left;
           break;
         case 'right':
-          nodes[i].right = nodes[0].right;
+          nodes[ i ].right = nodes[ 0 ].right;
           break;
         default:
           throw new Error( 'unsupported xAlign: ' + options.xAlign );
@@ -75,13 +75,13 @@ define( function( require ) {
       // y alignment
       switch( options.yAlign ) {
         case 'center':
-          nodes[i].centerY = nodes[0].centerY;
+          nodes[ i ].centerY = nodes[ 0 ].centerY;
           break;
         case 'top':
-          nodes[i].top = nodes[0].top;
+          nodes[ i ].top = nodes[ 0 ].top;
           break;
         case 'bottom':
-          nodes[i].bottom = nodes[0].bottom;
+          nodes[ i ].bottom = nodes[ 0 ].bottom;
           break;
         default:
           throw new Error( 'unsupported yAlign: ' + options.yAlign );

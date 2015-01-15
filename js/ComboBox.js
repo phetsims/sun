@@ -143,7 +143,7 @@ define( function( require ) {
     // determine uniform dimensions for button and list items
     var itemWidth = 0, itemHeight = 0;
     for ( var i = 0; i < items.length; i++ ) {
-      var item = items[i];
+      var item = items[ i ];
       if ( item.node.width > itemWidth ) { itemWidth = item.node.width; }
       if ( item.node.height > itemHeight ) { itemHeight = item.node.height; }
     }
@@ -151,7 +151,7 @@ define( function( require ) {
     itemHeight += ( 2 * options.itemYMargin );
 
     // button, will be set to correct value when property observer is registered
-    var buttonNode = new ButtonNode( new ItemNode( items[0], itemWidth, itemHeight, options.itemXMargin ), options );
+    var buttonNode = new ButtonNode( new ItemNode( items[ 0 ], itemWidth, itemHeight, options.itemXMargin ), options );
     thisNode.addChild( buttonNode );
 
     // list
@@ -195,7 +195,7 @@ define( function( require ) {
     // populate list with items
     for ( var j = 0; j < items.length; j++ ) {
       // add item to list
-      var itemNode = new ItemNode( items[j], itemWidth, itemHeight, options.itemXMargin );
+      var itemNode = new ItemNode( items[ j ], itemWidth, itemHeight, options.itemXMargin );
       listNode.addChild( itemNode );
       itemNode.left = options.buttonXMargin;
       itemNode.top = options.listYMargin + ( j * itemHeight );
@@ -273,8 +273,8 @@ define( function( require ) {
       // TODO brute force search, better way?
       var item = null;
       for ( var i = 0; i < items.length; i++ ) {
-        if ( items[i].value === value ) {
-          item = items[i];
+        if ( items[ i ].value === value ) {
+          item = items[ i ];
         }
       }
       assert && assert( item !== null );

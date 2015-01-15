@@ -14,7 +14,7 @@ define( function( require ) {
   function ToggleButtonInteractionState( buttonModel ) {
     DerivedProperty.call(
       this,
-      [ buttonModel.overProperty, buttonModel.downProperty, buttonModel.enabledProperty],
+      [ buttonModel.overProperty, buttonModel.downProperty, buttonModel.enabledProperty ],
       function( over, down, enabled ) {
         return !enabled ? 'disabled' :
                over && !(down ) ? 'over' :

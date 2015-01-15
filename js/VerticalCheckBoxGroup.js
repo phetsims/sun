@@ -39,41 +39,41 @@ define( function( require ) {
     // compute max width of the items
     var maxWidth = 0;
     for ( var i = 0; i < items.length; i++ ) {
-      maxWidth = Math.max( maxWidth, items[i].content.width );
+      maxWidth = Math.max( maxWidth, items[ i ].content.width );
     }
 
     // process each item
     var children = [];
     for ( i = 0; i < items.length; i++ ) {
       (function( i ) {
-        var offset = items[i].indent || 0;
+        var offset = items[ i ].indent || 0;
 
         //Attach each item to an invisible strut to make the widths match.
-        var content = new Path( Shape.rect( 0, 0, maxWidth + options.padding - offset, 0 ), { children: [items[i].content] } );
-        var checkBox = new CheckBox( content, items[i].property, {
-          label: items[i].label, checkBoxColor: options.checkBoxColor, boxWidth: options.boxWidth,
+        var content = new Path( Shape.rect( 0, 0, maxWidth + options.padding - offset, 0 ), { children: [ items[ i ].content ] } );
+        var checkBox = new CheckBox( content, items[ i ].property, {
+          label: items[ i ].label, checkBoxColor: options.checkBoxColor, boxWidth: options.boxWidth,
           tabIndex: options.tabIndex
         } );
         checkBox.mouseArea = checkBox.touchArea = Shape.bounds( checkBox.bounds.dilatedXY( 5, options.spacing / 2 ) );
-        if ( items[i].indent ) {
-          var hBox = new HBox( {focusable: true, children: [ new Rectangle( 0, 0, items[i].indent, 1 ), checkBox ]} );
+        if ( items[ i ].indent ) {
+          var hBox = new HBox( { focusable: true, children: [ new Rectangle( 0, 0, items[ i ].indent, 1 ), checkBox ] } );
           hBox.addInputListener( {
             keydown: function( event, trail ) {
               // Enter or Space
               if ( event.domEvent.keyCode === Input.KEY_ENTER || event.domEvent.keyCode === Input.KEY_SPACE ) {
-                items[i].property.value = !items[i].property.value;
+                items[ i ].property.value = !items[ i ].property.value;
               }
             }
           } );
           children.push( hBox );
         }
         else {
-          var simpleBox = new HBox( {focusable: true, children: [checkBox]} );
+          var simpleBox = new HBox( { focusable: true, children: [ checkBox ] } );
           simpleBox.addInputListener( {
             keydown: function( event, trail ) {
               // Enter or Space
               if ( event.domEvent.keyCode === Input.KEY_ENTER || event.domEvent.keyCode === Input.KEY_SPACE ) {
-                items[i].property.value = !items[i].property.value;
+                items[ i ].property.value = !items[ i ].property.value;
               }
             }
           } );

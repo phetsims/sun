@@ -76,7 +76,7 @@ define( function( require ) {
 
   inherit( Node, Panel, {
 
-     // Change the background rectangle's stroke (can be overridden)
+    // Change the background rectangle's stroke (can be overridden)
     setStroke: function( stroke ) {
       this.background.stroke = stroke;
     },

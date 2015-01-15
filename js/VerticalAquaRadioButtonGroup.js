@@ -32,15 +32,15 @@ define( function( require ) {
 
     var width = 0;
     for ( var i = 0; i < items.length; i++ ) {
-      width = Math.max( width, items[i].node.width );
+      width = Math.max( width, items[ i ].node.width );
     }
 
     var children = [];
     for ( i = 0; i < items.length; i++ ) {
 
       //Add an invisible strut to each content to make the widths match
-      var content = new Path( Shape.rect( 0, 0, width + options.padding, 0 ), {children: [items[i].node]} );
-      var radioButton = new AquaRadioButton( items[i].property, items[i].value, content, _.extend( {}, options.radioButtonOptions, {radius: options.radius} ) );
+      var content = new Path( Shape.rect( 0, 0, width + options.padding, 0 ), { children: [ items[ i ].node ] } );
+      var radioButton = new AquaRadioButton( items[ i ].property, items[ i ].value, content, _.extend( {}, options.radioButtonOptions, { radius: options.radius } ) );
       radioButton.mouseArea = Shape.bounds( radioButton.bounds.dilatedXY( options.mouseXPadding, options.spacing / 2 ) );
       radioButton.touchArea = Shape.bounds( radioButton.bounds.dilatedXY( options.touchXPadding, options.spacing / 2 ) );
       children.push( radioButton );
