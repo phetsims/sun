@@ -52,7 +52,8 @@ define( function( require ) {
         var content = new Path( Shape.rect( 0, 0, maxWidth + options.padding - offset, 0 ), { children: [ items[ i ].content ] } );
         var checkBox = new CheckBox( content, items[ i ].property, {
           label: items[ i ].label, checkBoxColor: options.checkBoxColor, boxWidth: options.boxWidth,
-          tabIndex: options.tabIndex
+          tabIndex: options.tabIndex,
+          componentID: items[i].componentID || '???'
         } );
         checkBox.mouseArea = checkBox.touchArea = Shape.bounds( checkBox.bounds.dilatedXY( 5, options.spacing / 2 ) );
         if ( items[ i ].indent ) {
