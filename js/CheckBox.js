@@ -15,6 +15,7 @@ define( function( require ) {
   var Node = require( 'SCENERY/nodes/Node' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var Text = require( 'SCENERY/nodes/Text' );
+  var AriaSpeech = require( 'SCENERY/accessibility/AriaSpeech' );
 
   /**
    * @param {Node} content
@@ -32,7 +33,8 @@ define( function( require ) {
       checkBoxColorDisabled: 'gray',
       checkBoxColorBackground: 'white',
       tabIndex: 0,
-      componentID: 'componentID'
+      componentID: 'componentID',
+      focusable: true
     }, options );
 
     var thisNode = this;
@@ -83,16 +85,9 @@ define( function( require ) {
     property.link( function( checked ) {
       thisNode.checkedNode.visible = checked;
       thisNode.uncheckedNode.visible = !checked;
+      AriaSpeech.setText( property.value ? 'checked' : 'unchecked' );
     } );
 
-    //Add accessibility
-    thisNode.addPeer( '<input type="checkbox">', {
-      click: function() {property.value = !property.value;},
-      label: options.label,
-
-      //This is here solely to support FAMB accessibility, see https://github.com/phetsims/forces-and-motion-basics/issues/110
-      tabIndex: options.tabIndex
-    } );
     property.link( function( value ) {
       _.each( checkBox.instances, function( instance ) {
 

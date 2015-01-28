@@ -53,7 +53,6 @@ define( function( require ) {
       touchExpansion: 5, // Radius expansion for touch area, in screen units (roughly pixels)
       stroke: DEFAULT_COLOR.colorUtilsDarker( 0.4 ),
       lineWidth: 0.5, // Only meaningful if stroke is non-null
-      fillKept: false, // gradient caching, see issue #146
 
       // By default, icons are centered in the button, but icons with odd
       // shapes that are not wrapped in a normalizing parent node may need to
@@ -156,10 +155,6 @@ define( function( require ) {
     var disabledPressedFillHighlight;
     var enabledStroke = null;
 
-    // gradient caching
-    button.fillKept = options.fillKept;
-    overlayForShadowGradient.fillKept = options.fillKept;
-
     // Function to create a fill that represents a pressed in round button.
     function createPressedFill( color ) {
       return new RadialGradient( -gradientOffset, -gradientOffset, 0, 0, 0, outerGradientRadius )
@@ -251,11 +246,6 @@ define( function( require ) {
     updateAppearance( interactionStateProperty.value );
 
     baseColorProperty.lazyLink( function( baseColor ) {
-
-      // Turn off the gradient caching, since this button is changing colors.
-      button.fillKept = false;
-      overlayForShadowGradient.fillKept = false;
-
       // Do the appearance updates.
       updateFillsAndStrokes( baseColor );
       updateAppearance( interactionStateProperty.value );

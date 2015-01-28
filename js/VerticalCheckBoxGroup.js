@@ -51,13 +51,17 @@ define( function( require ) {
         //Attach each item to an invisible strut to make the widths match.
         var content = new Path( Shape.rect( 0, 0, maxWidth + options.padding - offset, 0 ), { children: [ items[ i ].content ] } );
         var checkBox = new CheckBox( content, items[ i ].property, {
-          label: items[ i ].label, checkBoxColor: options.checkBoxColor, boxWidth: options.boxWidth,
+          textDescription: items[ i ].label + ': Checkbox (' + 'unchecked' + ')',
+          checkBoxColor: options.checkBoxColor,
+          boxWidth: options.boxWidth,
           tabIndex: options.tabIndex,
-          componentID: items[i].componentID || '???'
+          componentID:     items[ i ].componentID || '???'
         } );
         checkBox.mouseArea = checkBox.touchArea = Shape.bounds( checkBox.bounds.dilatedXY( 5, options.spacing / 2 ) );
         if ( items[ i ].indent ) {
-          var hBox = new HBox( { focusable: true, children: [ new Rectangle( 0, 0, items[ i ].indent, 1 ), checkBox ] } );
+          var hBox = new HBox( {
+            children: [ new Rectangle( 0, 0, items[ i ].indent, 1 ), checkBox ]
+          } );
           hBox.addInputListener( {
             keydown: function( event, trail ) {
               // Enter or Space
@@ -69,7 +73,7 @@ define( function( require ) {
           children.push( hBox );
         }
         else {
-          var simpleBox = new HBox( { focusable: true, children: [ checkBox ] } );
+          var simpleBox = new HBox( { children: [ checkBox ] } );
           simpleBox.addInputListener( {
             keydown: function( event, trail ) {
               // Enter or Space
