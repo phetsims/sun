@@ -53,7 +53,6 @@ define( function( require ) {
       yTouchExpansion: 5,
       stroke: DEFAULT_COLOR.colorUtilsDarker( 0.4 ),
       lineWidth: 0.5, // Only meaningful if stroke is non-null
-      fillKept: false, // gradient caching, see issue #146
 
       // Strategy for controlling the button's appearance, excluding any
       // content.  This can be a stock strategy from this file or custom.  To
@@ -161,10 +160,6 @@ define( function( require ) {
     var disabledPressedFillVertical;
     var enabledStroke = null;
 
-    // gradient caching
-    button.fillKept = options.fillKept;
-    overlayForHorizGradient.fillKept = options.fillKept;
-
     // Function for creating the fills and strokes used to control the button's appearance.
     function updateFillsAndStrokes( baseColor ) {
 
@@ -270,11 +265,6 @@ define( function( require ) {
     updateAppearance( interactionStateProperty.value );
 
     baseColorProperty.lazyLink( function( baseColor ) {
-
-      // Turn off the gradient caching, since this button is changing colors.
-      button.fillKept = false;
-      overlayForHorizGradient.fillKept = false;
-
       // Do the appearance updates.
       updateFillsAndStrokes( baseColor );
       updateAppearance( interactionStateProperty.value );
