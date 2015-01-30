@@ -21,7 +21,7 @@ define( function( require ) {
     }
   };
 
-  var backgroundColor = window.phetcommon.getQueryParameter( 'backgroundColor' ) || 'white';
+  var backgroundColor = phet.phetcommon.getQueryParameter( 'backgroundColor' ) || 'white';
 
   SimLauncher.launch( function() {
     // Create and start the sim

@@ -426,12 +426,6 @@ define( function( require ) {
       }
     );
     this.addChild( changeButtonColorsButton );
-
-
-    // TODO: For debug, don't leave this here long term.
-    var debugText = new Text( '(debug text)', { font: new Font( { size: 16 } ), bottom: messageText.top - 5, left: this.layoutBounds.minX + 10 } );
-    this.addChild( debugText );
-    window.debugText = debugText;
   }
 
   return inherit( ScreenView, ButtonsDemoView );
