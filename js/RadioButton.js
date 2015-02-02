@@ -25,7 +25,8 @@ define( function( require ) {
   function RadioButton( property, value, selectedNode, deselectedNode, options ) {
 
     options = _.extend( {
-      cursor: 'pointer'
+      cursor: 'pointer',
+      focusable: true
     }, options );
 
     var thisNode = this;
@@ -55,7 +56,5 @@ define( function( require ) {
     this.mutate( options );
   }
 
-  inherit( Node, RadioButton );
-
-  return RadioButton;
+  return inherit( Node, RadioButton );
 } );
