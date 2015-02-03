@@ -76,9 +76,9 @@ define( function( require ) {
     thisNode.addInputListener( new ButtonListener( {
       fire: function() {
         if ( thisNode._enabled ) {
-          arch && arch.start( 'user', options.componentID, 'CheckBox', 'toggled' );
+          var archID = arch && arch.start( 'user', options.componentID, 'CheckBox', 'toggled' );
           property.value = !property.value;
-          arch && arch.end();
+          arch && arch.end( archID );
         }
       }
     } ) );
