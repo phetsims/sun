@@ -74,11 +74,13 @@ define( function( require ) {
 
     // interactivity
     thisNode.addInputListener( new ButtonListener( {
-      fire: phet.arch.wrap( 'user', options.componentID, 'CheckBox', 'toggled', function() {
+      fire: function() {
         if ( thisNode._enabled ) {
+          var archID = arch && arch.start( 'user', options.componentID, 'CheckBox', 'toggled' );
           property.value = !property.value;
+          arch && arch.end( archID );
         }
-      } )
+      }
     } ) );
 
     // sync with property

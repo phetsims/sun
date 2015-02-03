@@ -16,7 +16,6 @@ define( function( require ) {
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var Shape = require( 'KITE/Shape' );
   var inherit = require( 'PHET_CORE/inherit' );
-  var Input = require( 'SCENERY/input/Input' );
 
   /**
    * Main constructor.
@@ -62,26 +61,10 @@ define( function( require ) {
           var hBox = new HBox( {
             children: [ new Rectangle( 0, 0, items[ i ].indent, 1 ), checkBox ]
           } );
-          hBox.addInputListener( {
-            keydown: function( event, trail ) {
-              // Enter or Space
-              if ( event.domEvent.keyCode === Input.KEY_ENTER || event.domEvent.keyCode === Input.KEY_SPACE ) {
-                items[ i ].property.value = !items[ i ].property.value;
-              }
-            }
-          } );
           children.push( hBox );
         }
         else {
           var simpleBox = new HBox( { children: [ checkBox ] } );
-          simpleBox.addInputListener( {
-            keydown: function( event, trail ) {
-              // Enter or Space
-              if ( event.domEvent.keyCode === Input.KEY_ENTER || event.domEvent.keyCode === Input.KEY_SPACE ) {
-                items[ i ].property.value = !items[ i ].property.value;
-              }
-            }
-          } );
           children.push( simpleBox );
         }
       })( i );
