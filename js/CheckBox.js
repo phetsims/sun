@@ -78,7 +78,7 @@ define( function( require ) {
         if ( thisNode._enabled ) {
           arch && arch.start( 'user', options.componentID, 'CheckBox', 'toggled' );
           property.value = !property.value;
-          arch && arch.end()
+          arch && arch.end();
         }
       }
     } ) );
