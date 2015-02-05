@@ -78,20 +78,21 @@ define( function( require ) {
 
     // click in the track to change the value, continue dragging if desired
     var trackHandler = new SimpleDragHandler( {
-      handleTrackEvent: function( event ) {
+      handleTrackEvent: function( event, trail ) {
         if ( options.enabledProperty.get() ) {
-          var x = thisSlider.track.globalToLocalPoint( event.pointer.point ).x;
+          var transform = trail.subtrailTo( thisSlider ).getTransform();
+          var x = transform.inversePosition2( event.pointer.point ).x;
           valueProperty.set( thisSlider.valueToPosition.inverse( x ) );
         }
       },
-      start: function( event ) {
+      start: function( event, trail ) {
         if ( options.enabledProperty.get() ) {
           options.startDrag();
         }
-        this.handleTrackEvent( event );
+        this.handleTrackEvent( event, trail );
       },
-      drag: function( event ) {
-        this.handleTrackEvent( event );
+      drag: function( event, trail ) {
+        this.handleTrackEvent( event, trail );
       },
       end: function() {
         if ( options.enabledProperty.get() ) {
@@ -126,15 +127,17 @@ define( function( require ) {
     var thumbHandler = new SimpleDragHandler( {
       clickXOffset: 0, // x-offset between initial click and thumb's origin
       allowTouchSnag: true,
-      start: function( event ) {
+      start: function( event, trail ) {
         if ( options.enabledProperty.get() ) {
           options.startDrag();
         }
-        this.clickXOffset = thumb.globalToParentPoint( event.pointer.point ).x - thumb.x;
+        var transform = trail.subtrailTo( thisSlider ).getTransform();
+        this.clickXOffset = transform.inversePosition2( event.pointer.point ).x - thumb.x;
       },
-      drag: function( event ) {
+      drag: function( event, trail ) {
         if ( options.enabledProperty.get() ) {
-          var x = thumb.globalToParentPoint( event.pointer.point ).x - this.clickXOffset;
+          var transform = trail.subtrailTo( thisSlider ).getTransform(); // we only want the transform to our parent
+          var x = transform.inversePosition2( event.pointer.point ).x - this.clickXOffset;
           valueProperty.set( thisSlider.valueToPosition.inverse( x ) );
         }
       },
