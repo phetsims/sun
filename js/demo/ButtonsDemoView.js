@@ -165,10 +165,8 @@ define( function( require ) {
     this.addChild( flatButtonsBox );
 
     //===================================================================================
-    // Fire! Go! Help! buttons
+    // Fire! Go! Help! buttons - these demonstrate more colors and sizes of buttons
     //===================================================================================
-
-    //TODO what purpose do these buttons serve that buttons A-D don't serve?
 
     var fireButton = new RoundPushButton( {
       content: new Text( 'Fire!', { font: BUTTON_FONT } ),
@@ -206,7 +204,7 @@ define( function( require ) {
 
     // round
     var roundOnProperty = new Property( false );
-    roundOnProperty.lazyLink( function( on ) { console.log( 'RoundMomentaryButton on=' + on ); } );
+    roundOnProperty.lazyLink( function( on ) { message( 'RoundMomentaryButton on=' + on ); } );
     var roundMomentaryButton = new RoundMomentaryButton( roundOnProperty, {
       baseColor: 'orange',
       right: this.layoutBounds.right - 10,
@@ -216,7 +214,7 @@ define( function( require ) {
 
     // rectangular
     var rectangularOnProperty = new Property( false );
-    rectangularOnProperty.lazyLink( function( on ) { console.log( 'RectangularMomentaryButton on=' + on ); } );
+    rectangularOnProperty.lazyLink( function( on ) { message( 'RectangularMomentaryButton on=' + on ); } );
     var rectangularMomentaryButton = new RectangularMomentaryButton( rectangularOnProperty, {
       minWidth: 50,
       minHeight: 40,
@@ -399,6 +397,8 @@ define( function( require ) {
       knob1.enabled = enabled; //TODO enabled should be a property of slider, not knob
       knob2.enabled = enabled;
       knob3.enabled = enabled;
+      rectangularMomentaryButton.enabled = enabled;
+      roundMomentaryButton.enabled = enabled;
     } );
     var disableEnableButton = new BooleanRectangularToggleButtonWithContent(
       new Text( 'Disable Buttons', { font: BUTTON_CAPTION_FONT } ),
