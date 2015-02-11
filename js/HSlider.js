@@ -41,6 +41,7 @@ define( function( require ) {
       trackStroke: 'black',
       trackLineWidth: 1,
       // thumb
+      thumbNode: null, // node for the thumb.  thumbSize, thumbStroke, thumbLineWidth, and thumbCenterLineStroke become irrelevant.
       thumbSize: new Dimension2( 22, 45 ),
       thumbFillEnabled: 'rgb(50,145,184)',
       thumbFillHighlighted: 'rgb(71,207,255)',
@@ -102,13 +103,21 @@ define( function( require ) {
     } );
     thisSlider.track.addInputListener( trackHandler );
 
-    // thumb, points up
-    var arcWidth = 0.25 * options.thumbSize.width;
-    var thumbFill = options.enabledProperty.get() ? options.thumbFillEnabled : options.thumbFillDisabled;
-    var thumb = new Rectangle( -options.thumbSize.width / 2, -options.thumbSize.height / 2, options.thumbSize.width, options.thumbSize.height, arcWidth, arcWidth,
-      { cursor: options.cursor, fill: thumbFill, stroke: options.thumbStroke, lineWidth: options.thumbLineWidth } );
-    var centerLineYMargin = 3;
-    thumb.addChild( new Path( Shape.lineSegment( 0, -( options.thumbSize.height / 2 ) + centerLineYMargin, 0, ( options.thumbSize.height / 2 ) - centerLineYMargin ), { stroke: options.thumbCenterLineStroke } ) );
+    // assign desired thumb
+    var thumb = options.thumbNode;
+
+    // create default if thumb node not passed in
+    if( !( thumb instanceof Node ) ){
+      // thumb, points up
+      var arcWidth = 0.25 * options.thumbSize.width;
+      var thumbFill = options.enabledProperty.get() ? options.thumbFillEnabled : options.thumbFillDisabled;
+      thumb = new Rectangle( -options.thumbSize.width / 2, -options.thumbSize.height / 2, options.thumbSize.width, options.thumbSize.height, arcWidth, arcWidth,
+        { cursor: options.cursor, fill: thumbFill, stroke: options.thumbStroke, lineWidth: options.thumbLineWidth } );
+      var centerLineYMargin = 3;
+      thumb.addChild( new Path( Shape.lineSegment( 0, -( options.thumbSize.height / 2 ) + centerLineYMargin, 0, ( options.thumbSize.height / 2 ) - centerLineYMargin ), { stroke: options.thumbCenterLineStroke } ) );
+    }
+
+    // add the thumb
     thumb.centerY = thisSlider.track.centerY;
     thisSlider.addChild( thumb );
 
