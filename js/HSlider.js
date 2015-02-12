@@ -108,6 +108,7 @@ define( function( require ) {
 
     // thumb
     var thumb = options.thumbNode || new ThumbNode( options );
+    thisSlider.thumb = thumb; // must be disposed of
     thumb.centerY = thisSlider.track.centerY;
     thisSlider.addChild( thumb );
 
@@ -153,24 +154,36 @@ define( function( require ) {
     } );
     thumb.addInputListener( thumbHandler );
 
-    // enable/disable
-    options.enabledProperty.link( function( enabled ) {
+    // @private enable/disable
+    thisSlider.enabledObserver = function( enabled ) {
       thisSlider.cursor = options.enabledProperty.get() ? options.cursor : 'default';
       if ( !enabled ) {
         if ( thumbHandler.dragging ) { thumbHandler.endDrag(); }
         if ( trackHandler.dragging ) { trackHandler.endDrag(); }
       }
-    } );
+    };
+    thisSlider.enabledProperty = options.enabledProperty; // @private
+    thisSlider.enabledProperty.link( thisSlider.enabledObserver ); // must be unlinked in dispose
 
-    // update thumb location when value changes
-    valueProperty.link( function( value ) {
+    // @private update thumb location when value changes
+    thisSlider.valueObserver = function( value ) {
       thumb.centerX = thisSlider.valueToPosition( value );
-    } );
+    };
+    thisSlider.valueProperty = valueProperty; // @private
+    thisSlider.valueProperty.link( thisSlider.valueObserver ); // must be unlinked in dispose
 
     thisSlider.mutate( options );
   }
 
   inherit( Node, HSlider, {
+
+    // Ensures that this object is eligible for GC.
+    dispose: function() {
+      this.thumb.dispose();
+      this.thumb = null;
+      this.valueProperty.unlink( this.valueObserver );
+      this.enabledProperty.unlink( this.enabledObserver );
+    },
 
     /**
      * Adds a major tick mark.
@@ -257,13 +270,21 @@ define( function( require ) {
       }
     } ) );
 
-    // enable/disable the look of the thumb
-    options.enabledProperty.link( function( enabled ) {
+    // @private enable/disable the look of the thumb
+    this.enabledObserver = function( enabled ) {
       thisNode.fill = enabled ? options.thumbFillEnabled : options.thumbFillDisabled;
-    } );
+    };
+    this.enabledProperty = options.enabledProperty; // @private
+    this.enabledProperty.link( this.enabledObserver ); // must be unlinked in dispose
   }
 
-  inherit( Rectangle, ThumbNode );
+  inherit( Rectangle, ThumbNode, {
+
+    // Ensures that this object is eligible for GC.
+    dispose: function() {
+      this.enabledProperty.unlink( this.enabledObserver );
+    }
+  } );
 
   return HSlider;
 } );
