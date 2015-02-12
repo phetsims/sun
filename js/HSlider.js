@@ -105,8 +105,19 @@ define( function( require ) {
     // thumb, points up
     var arcWidth = 0.25 * options.thumbSize.width;
     var thumbFill = options.enabledProperty.get() ? options.thumbFillEnabled : options.thumbFillDisabled;
-    var thumb = new Rectangle( -options.thumbSize.width / 2, -options.thumbSize.height / 2, options.thumbSize.width, options.thumbSize.height, arcWidth, arcWidth,
-      { cursor: options.cursor, fill: thumbFill, stroke: options.thumbStroke, lineWidth: options.thumbLineWidth } );
+    var thumb = new Rectangle(
+      -options.thumbSize.width / 2,
+      -options.thumbSize.height / 2,
+      options.thumbSize.width,
+      options.thumbSize.height,
+      arcWidth,
+      arcWidth,
+      {
+        cursor: options.cursor,
+        fill: thumbFill,
+        stroke: options.thumbStroke,
+        lineWidth: options.thumbLineWidth
+      } );
     var centerLineYMargin = 3;
     thumb.addChild( new Path( Shape.lineSegment( 0, -( options.thumbSize.height / 2 ) + centerLineYMargin, 0, ( options.thumbSize.height / 2 ) - centerLineYMargin ), { stroke: options.thumbCenterLineStroke } ) );
     thumb.centerY = thisSlider.track.centerY;
