@@ -22,6 +22,8 @@ define( function( require ) {
   var Shape = require( 'KITE/Shape' );
   var SimpleDragHandler = require( 'SCENERY/input/SimpleDragHandler' );
   var ButtonListener = require( 'SCENERY/input/ButtonListener' );
+  var Input = require( 'SCENERY/input/Input' );
+  var Util = require( 'DOT/Util' );
 
   /**
    * @param {Property.<number>} valueProperty
@@ -116,12 +118,24 @@ define( function( require ) {
         cursor: options.cursor,
         fill: thumbFill,
         stroke: options.thumbStroke,
-        lineWidth: options.thumbLineWidth
+        lineWidth: options.thumbLineWidth,
+        focusable: true
       } );
     var centerLineYMargin = 3;
     thumb.addChild( new Path( Shape.lineSegment( 0, -( options.thumbSize.height / 2 ) + centerLineYMargin, 0, ( options.thumbSize.height / 2 ) - centerLineYMargin ), { stroke: options.thumbCenterLineStroke } ) );
     thumb.centerY = thisSlider.track.centerY;
     thisSlider.addChild( thumb );
+
+    // Keyboard accessibility
+    thumb.addInputListener( {
+      keydown: function( event, trail ) {
+        var keyCode = event.domEvent.keyCode;
+        var delta = keyCode === Input.KEY_LEFT_ARROW || keyCode === Input.KEY_DOWN_ARROW ? -1 :
+                    keyCode === Input.KEY_RIGHT_ARROW || keyCode === Input.KEY_UP_ARROW ? +1 :
+                    0;
+        valueProperty.set( Util.clamp( valueProperty.get() + (range.max - range.min) * 0.1 * delta, range.min, range.max ) );
+      }
+    } );
 
     // thumb touch area
     var dx = 0.5 * thumb.width;
