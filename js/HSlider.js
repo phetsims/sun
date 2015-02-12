@@ -155,6 +155,7 @@ define( function( require ) {
 
     // enable/disable
     options.enabledProperty.link( function( enabled ) {
+      thisSlider.cursor = options.enabledProperty.get() ? options.cursor : 'default';
       if ( !enabled ) {
         if ( thumbHandler.dragging ) { thumbHandler.endDrag(); }
         if ( trackHandler.dragging ) { trackHandler.endDrag(); }
@@ -233,7 +234,6 @@ define( function( require ) {
       options.thumbSize.width, options.thumbSize.height,
       arcWidth, arcWidth,
       {
-        cursor: options.cursor,
         fill: options.enabledProperty.get() ? options.thumbFillEnabled : options.thumbFillDisabled,
         stroke: options.thumbStroke,
         lineWidth: options.thumbLineWidth,
@@ -260,7 +260,6 @@ define( function( require ) {
     // enable/disable the look of the thumb
     options.enabledProperty.link( function( enabled ) {
       thisNode.fill = enabled ? options.thumbFillEnabled : options.thumbFillDisabled;
-      thisNode.cursor = enabled ? options.cursor : 'default';
     } );
   }
 
