@@ -42,7 +42,9 @@ define( function( require ) {
       trackFill: 'white',
       trackStroke: 'black',
       trackLineWidth: 1,
-      // thumb
+      // {Node} optional thumb, replaces the default. Client is responsible for highlighting and disabling. Centered in the track.
+      thumbNode: null,
+      // default thumb (ignored if thumbNode is provided)
       thumbSize: new Dimension2( 22, 45 ),
       thumbFillEnabled: 'rgb(50,145,184)',
       thumbFillHighlighted: 'rgb(71,207,255)',
@@ -104,25 +106,8 @@ define( function( require ) {
     } );
     thisSlider.track.addInputListener( trackHandler );
 
-    // thumb, points up
-    var arcWidth = 0.25 * options.thumbSize.width;
-    var thumbFill = options.enabledProperty.get() ? options.thumbFillEnabled : options.thumbFillDisabled;
-    var thumb = new Rectangle(
-      -options.thumbSize.width / 2,
-      -options.thumbSize.height / 2,
-      options.thumbSize.width,
-      options.thumbSize.height,
-      arcWidth,
-      arcWidth,
-      {
-        cursor: options.cursor,
-        fill: thumbFill,
-        stroke: options.thumbStroke,
-        lineWidth: options.thumbLineWidth,
-        focusable: true
-      } );
-    var centerLineYMargin = 3;
-    thumb.addChild( new Path( Shape.lineSegment( 0, -( options.thumbSize.height / 2 ) + centerLineYMargin, 0, ( options.thumbSize.height / 2 ) - centerLineYMargin ), { stroke: options.thumbCenterLineStroke } ) );
+    // thumb
+    var thumb = options.thumbNode || new ThumbNode( options );
     thumb.centerY = thisSlider.track.centerY;
     thisSlider.addChild( thumb );
 
@@ -141,12 +126,6 @@ define( function( require ) {
     var dx = 0.5 * thumb.width;
     var dy = 0.25 * thumb.height;
     thumb.touchArea = Shape.rectangle( ( -thumb.width / 2 ) - dx, ( -thumb.height / 2 ) - dy, thumb.width + dx + dx, thumb.height + dy + dy );
-
-    // highlight thumb on pointer over
-    thumb.addInputListener( new ButtonListener( {
-      over: function( event ) { if ( options.enabledProperty.get() ) { thumb.fill = options.thumbFillHighlighted; } },
-      up: function( event ) { if ( options.enabledProperty.get() ) { thumb.fill = options.thumbFillEnabled; } }
-    } ) );
 
     // update value when thumb is dragged
     var thumbHandler = new SimpleDragHandler( {
@@ -174,10 +153,8 @@ define( function( require ) {
     } );
     thumb.addInputListener( thumbHandler );
 
-    // enable/disable thumb
+    // enable/disable
     options.enabledProperty.link( function( enabled ) {
-      thumb.fill = enabled ? options.thumbFillEnabled : options.thumbFillDisabled;
-      thumb.cursor = enabled ? 'pointer' : 'default';
       if ( !enabled ) {
         if ( thumbHandler.dragging ) { thumbHandler.endDrag(); }
         if ( trackHandler.dragging ) { trackHandler.endDrag(); }
@@ -237,6 +214,57 @@ define( function( require ) {
       }
     }
   } );
+
+  /**
+   * Default thumb, a rectangle with a vertical white line down the center
+   * @param {Object} options see HSlider constructor
+   * @constructor
+   */
+  function ThumbNode( options ) {
+
+    assert && assert( options ); // these are options provided to HSlider, not optional for this inner type
+
+    var thisNode = this;
+
+    // rectangle
+    var arcWidth = 0.25 * options.thumbSize.width;
+    Rectangle.call( thisNode,
+      -options.thumbSize.width / 2, -options.thumbSize.height / 2,
+      options.thumbSize.width, options.thumbSize.height,
+      arcWidth, arcWidth,
+      {
+        cursor: options.cursor,
+        fill: options.enabledProperty.get() ? options.thumbFillEnabled : options.thumbFillDisabled,
+        stroke: options.thumbStroke,
+        lineWidth: options.thumbLineWidth,
+        focusable: true
+      } );
+
+    // vertical line down the center
+    var centerLineYMargin = 3;
+    thisNode.addChild( new Path( Shape.lineSegment(
+        0, -( options.thumbSize.height / 2 ) + centerLineYMargin,
+        0, ( options.thumbSize.height / 2 ) - centerLineYMargin ),
+      { stroke: options.thumbCenterLineStroke } ) );
+
+    // highlight thumb on pointer over
+    thisNode.addInputListener( new ButtonListener( {
+      over: function( event ) {
+        if ( options.enabledProperty.get() ) { thisNode.fill = options.thumbFillHighlighted; }
+      },
+      up: function( event ) {
+        if ( options.enabledProperty.get() ) { thisNode.fill = options.thumbFillEnabled; }
+      }
+    } ) );
+
+    // enable/disable the look of the thumb
+    options.enabledProperty.link( function( enabled ) {
+      thisNode.fill = enabled ? options.thumbFillEnabled : options.thumbFillDisabled;
+      thisNode.cursor = enabled ? options.cursor : 'default';
+    } );
+  }
+
+  inherit( Rectangle, ThumbNode );
 
   return HSlider;
 } );
