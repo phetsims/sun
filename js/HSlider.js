@@ -108,6 +108,10 @@ define( function( require ) {
 
     // thumb
     var thumb = options.thumbNode || new ThumbNode( options );
+
+    // Make the thumb focusable for keyboard accessibility 
+    thumb.focusable = true;
+    
     thisSlider.thumb = thumb; // must be disposed of
     thumb.centerY = thisSlider.track.centerY;
     thisSlider.addChild( thumb );
@@ -249,8 +253,7 @@ define( function( require ) {
       {
         fill: options.enabledProperty.get() ? options.thumbFillEnabled : options.thumbFillDisabled,
         stroke: options.thumbStroke,
-        lineWidth: options.thumbLineWidth,
-        focusable: true
+        lineWidth: options.thumbLineWidth
       } );
 
     // vertical line down the center
