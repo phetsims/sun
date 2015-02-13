@@ -22,6 +22,8 @@ define( function( require ) {
   var Shape = require( 'KITE/Shape' );
   var SimpleDragHandler = require( 'SCENERY/input/SimpleDragHandler' );
   var ButtonListener = require( 'SCENERY/input/ButtonListener' );
+  var Input = require( 'SCENERY/input/Input' );
+  var Util = require( 'DOT/Util' );
 
   /**
    * @param {Property.<number>} valueProperty
@@ -40,8 +42,9 @@ define( function( require ) {
       trackFill: 'white',
       trackStroke: 'black',
       trackLineWidth: 1,
-      // thumb
-      thumbNode: null, // node for the thumb.  thumbSize, thumbStroke, thumbLineWidth, and thumbCenterLineStroke become irrelevant.
+      // {Node} optional thumb, replaces the default. Client is responsible for highlighting and disabling. Centered in the track.
+      thumbNode: null,
+      // default thumb (ignored if thumbNode is provided)
       thumbSize: new Dimension2( 22, 45 ),
       thumbFillEnabled: 'rgb(50,145,184)',
       thumbFillHighlighted: 'rgb(71,207,255)',
@@ -103,34 +106,27 @@ define( function( require ) {
     } );
     thisSlider.track.addInputListener( trackHandler );
 
-    // assign desired thumb
-    var thumb = options.thumbNode;
-
-    // create default if thumb node not passed in
-    if( !( thumb instanceof Node ) ){
-      // thumb, points up
-      var arcWidth = 0.25 * options.thumbSize.width;
-      var thumbFill = options.enabledProperty.get() ? options.thumbFillEnabled : options.thumbFillDisabled;
-      thumb = new Rectangle( -options.thumbSize.width / 2, -options.thumbSize.height / 2, options.thumbSize.width, options.thumbSize.height, arcWidth, arcWidth,
-        { cursor: options.cursor, fill: thumbFill, stroke: options.thumbStroke, lineWidth: options.thumbLineWidth } );
-      var centerLineYMargin = 3;
-      thumb.addChild( new Path( Shape.lineSegment( 0, -( options.thumbSize.height / 2 ) + centerLineYMargin, 0, ( options.thumbSize.height / 2 ) - centerLineYMargin ), { stroke: options.thumbCenterLineStroke } ) );
-    }
-
-    // add the thumb
+    // thumb
+    var thumb = options.thumbNode || new ThumbNode( options );
+    thisSlider.thumb = thumb; // must be disposed of
     thumb.centerY = thisSlider.track.centerY;
     thisSlider.addChild( thumb );
+
+    // Keyboard accessibility
+    thumb.addInputListener( {
+      keydown: function( event, trail ) {
+        var keyCode = event.domEvent.keyCode;
+        var delta = keyCode === Input.KEY_LEFT_ARROW || keyCode === Input.KEY_DOWN_ARROW ? -1 :
+                    keyCode === Input.KEY_RIGHT_ARROW || keyCode === Input.KEY_UP_ARROW ? +1 :
+                    0;
+        valueProperty.set( Util.clamp( valueProperty.get() + (range.max - range.min) * 0.1 * delta, range.min, range.max ) );
+      }
+    } );
 
     // thumb touch area
     var dx = 0.5 * thumb.width;
     var dy = 0.25 * thumb.height;
     thumb.touchArea = Shape.rectangle( ( -thumb.width / 2 ) - dx, ( -thumb.height / 2 ) - dy, thumb.width + dx + dx, thumb.height + dy + dy );
-
-    // highlight thumb on pointer over
-    thumb.addInputListener( new ButtonListener( {
-      over: function( event ) { if ( options.enabledProperty.get() ) { thumb.fill = options.thumbFillHighlighted; } },
-      up: function( event ) { if ( options.enabledProperty.get() ) { thumb.fill = options.thumbFillEnabled; } }
-    } ) );
 
     // update value when thumb is dragged
     var thumbHandler = new SimpleDragHandler( {
@@ -158,25 +154,36 @@ define( function( require ) {
     } );
     thumb.addInputListener( thumbHandler );
 
-    // enable/disable thumb
-    options.enabledProperty.link( function( enabled ) {
-      thumb.fill = enabled ? options.thumbFillEnabled : options.thumbFillDisabled;
-      thumb.cursor = enabled ? 'pointer' : 'default';
+    // @private enable/disable
+    thisSlider.enabledObserver = function( enabled ) {
+      thisSlider.cursor = options.enabledProperty.get() ? options.cursor : 'default';
       if ( !enabled ) {
         if ( thumbHandler.dragging ) { thumbHandler.endDrag(); }
         if ( trackHandler.dragging ) { trackHandler.endDrag(); }
       }
-    } );
+    };
+    thisSlider.enabledProperty = options.enabledProperty; // @private
+    thisSlider.enabledProperty.link( thisSlider.enabledObserver ); // must be unlinked in dispose
 
-    // update thumb location when value changes
-    valueProperty.link( function( value ) {
+    // @private update thumb location when value changes
+    thisSlider.valueObserver = function( value ) {
       thumb.centerX = thisSlider.valueToPosition( value );
-    } );
+    };
+    thisSlider.valueProperty = valueProperty; // @private
+    thisSlider.valueProperty.link( thisSlider.valueObserver ); // must be unlinked in dispose
 
     thisSlider.mutate( options );
   }
 
   inherit( Node, HSlider, {
+
+    // Ensures that this object is eligible for GC.
+    dispose: function() {
+      this.thumb.dispose();
+      this.thumb = null;
+      this.valueProperty.unlink( this.valueObserver );
+      this.enabledProperty.unlink( this.enabledObserver );
+    },
 
     /**
      * Adds a major tick mark.
@@ -219,6 +226,63 @@ define( function( require ) {
         label.centerX = tick.centerX;
         label.bottom = tick.top - this.options.tickLabelSpacing;
       }
+    }
+  } );
+
+  /**
+   * Default thumb, a rectangle with a vertical white line down the center
+   * @param {Object} options see HSlider constructor
+   * @constructor
+   */
+  function ThumbNode( options ) {
+
+    assert && assert( options ); // these are options provided to HSlider, not optional for this inner type
+
+    var thisNode = this;
+
+    // rectangle
+    var arcWidth = 0.25 * options.thumbSize.width;
+    Rectangle.call( thisNode,
+      -options.thumbSize.width / 2, -options.thumbSize.height / 2,
+      options.thumbSize.width, options.thumbSize.height,
+      arcWidth, arcWidth,
+      {
+        fill: options.enabledProperty.get() ? options.thumbFillEnabled : options.thumbFillDisabled,
+        stroke: options.thumbStroke,
+        lineWidth: options.thumbLineWidth,
+        focusable: true
+      } );
+
+    // vertical line down the center
+    var centerLineYMargin = 3;
+    thisNode.addChild( new Path( Shape.lineSegment(
+        0, -( options.thumbSize.height / 2 ) + centerLineYMargin,
+        0, ( options.thumbSize.height / 2 ) - centerLineYMargin ),
+      { stroke: options.thumbCenterLineStroke } ) );
+
+    // highlight thumb on pointer over
+    thisNode.addInputListener( new ButtonListener( {
+      over: function( event ) {
+        if ( options.enabledProperty.get() ) { thisNode.fill = options.thumbFillHighlighted; }
+      },
+      up: function( event ) {
+        if ( options.enabledProperty.get() ) { thisNode.fill = options.thumbFillEnabled; }
+      }
+    } ) );
+
+    // @private enable/disable the look of the thumb
+    this.enabledObserver = function( enabled ) {
+      thisNode.fill = enabled ? options.thumbFillEnabled : options.thumbFillDisabled;
+    };
+    this.enabledProperty = options.enabledProperty; // @private
+    this.enabledProperty.link( this.enabledObserver ); // must be unlinked in dispose
+  }
+
+  inherit( Rectangle, ThumbNode, {
+
+    // Ensures that this object is eligible for GC.
+    dispose: function() {
+      this.enabledProperty.unlink( this.enabledObserver );
     }
   } );
 

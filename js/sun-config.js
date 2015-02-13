@@ -10,8 +10,8 @@ require.config( {
     text: '../../sherpa/text',
 
     // plugins
-    image: '../../chipper/requirejs-plugins/image',
-    string: '../../chipper/requirejs-plugins/string',
+    image: '../../chipper/js/requirejs-plugins/image',
+    string: '../../chipper/js/requirejs-plugins/string',
 
     // PhET libs, uppercase names to identify them in require.js imports
     AXON: '../../axon/js',
@@ -29,5 +29,5 @@ require.config( {
   },
 
   // optional cache buster to make browser refresh load all included scripts, can be disabled with ?cacheBuster=false
-  urlArgs: phet.phetcommon.getCacheBusterArgs()
+  urlArgs: phet.chipper.getCacheBusterArgs()
 } );
