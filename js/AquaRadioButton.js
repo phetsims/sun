@@ -54,7 +54,5 @@ define( function( require ) {
     RadioButton.call( this, property, value, selectedNode, deselectedNode, options );
   }
 
-  inherit( RadioButton, AquaRadioButton );
-
-  return AquaRadioButton;
+  return inherit( RadioButton, AquaRadioButton );
 } );
