@@ -1,17 +1,16 @@
 // Copyright 2002-2014, University of Colorado Boulder
 
 /**
- * A derived property that maps push button model states to the values needed
- * by the button view.
+ * A derived property that maps push button model states to the values needed by the button view.
  */
 define( function( require ) {
   'use strict';
 
-  // Imports
+  // modules
   var inherit = require( 'PHET_CORE/inherit' );
   var DerivedProperty = require( 'AXON/DerivedProperty' );
 
-  function PushButtonInteractionStateProperty( buttonModel ) {
+  function PushButtonInteractionStateProperty( buttonModel, options ) {
     DerivedProperty.call(
       this,
       [ buttonModel.overProperty, buttonModel.downProperty, buttonModel.enabledProperty ],
@@ -20,9 +19,7 @@ define( function( require ) {
                over && !down ? 'over' :
                over && down ? 'pressed' :
                'idle';
-      } );
-    // Turn off data logging for this property, since it isn't that useful;
-    this.setSendPhetEvents( false );
+      }, options );
   }
 
   return inherit( DerivedProperty, PushButtonInteractionStateProperty );
