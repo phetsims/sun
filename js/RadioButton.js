@@ -49,7 +49,9 @@ define( function( require ) {
     // set property value on fire
     thisNode.addInputListener( new ButtonListener( {
       fire: function() {
+        var archID = arch && arch.start( 'user', options.componentID, 'radioButton', 'fire', { value: value } );
         property.set( value );
+        arch && arch.end( archID );
       }
     } ) );
 
