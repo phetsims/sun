@@ -24,9 +24,6 @@ define( function( require ) {
       // Property that tracks whether or not the button is enabled.
       enabled: true
     }, 'buttonModel' );
-
-    // Disable some of the data collection messages to cut down on noise.
-    this.overProperty.setSendPhetEvents( false );
   }
 
   return inherit( PropertySet, ButtonModel );
