@@ -45,9 +45,17 @@ define( function( require ) {
    * @constructor
    */
   function RoundPushButton( options ) {
+
+    options = _.extend( {
+
+      // Should be filled in by the sim
+      componentID: 'RoundPushButton'
+    }, options );
     // Safe to pass through options to the PushButtonModel like "fireOnDown".  Other scenery options will be safely ignored.
     this.buttonModel = new PushButtonModel( options );
-    RoundButtonView.call( this, this.buttonModel, new PushButtonInteractionStateProperty( this.buttonModel ), options );
+    RoundButtonView.call( this, this.buttonModel, new PushButtonInteractionStateProperty( this.buttonModel, {
+      propertyID: options.componentID + 'InteractionStateProperty'
+    } ), options );
   }
 
   return inherit( RoundButtonView, RoundPushButton, {

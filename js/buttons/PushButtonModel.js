@@ -67,10 +67,12 @@ define( function( require ) {
     // Fires all listeners.
     // @private with the possible exception of hooking up for accessibility.
     fire: function() {
+      var archID = arch && arch.start( 'user', this.componentID, 'button', 'fire' );
       var copy = this.listeners.slice( 0 );
       copy.forEach( function( listener ) {
         listener();
       } );
+      arch && arch.end( archID );
     }
   } );
 } );
