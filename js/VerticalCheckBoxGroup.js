@@ -5,7 +5,6 @@
  *
  * @author Sam Reid
  */
-//TODO: not ready for use in simulations, it will need further development & discussion first.
 define( function( require ) {
   'use strict';
 
