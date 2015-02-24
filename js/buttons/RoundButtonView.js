@@ -199,8 +199,19 @@ define( function( require ) {
 
       disabledPressedFillHighlight = createPressedFill( disabledBaseColor );
 
-      if ( options.stroke !== null ) {
+      if ( options.stroke === null ) {
+        // The stroke was explicitly set to null, so the button should have no stroke.
+        enabledStroke = null;
+        disabledStroke = null;
+      }
+      else if ( typeof( options.stroke ) === 'undefined' ) {
+        // No stroke was defined, but it wasn't set to null, so default to a stroke based on the base color of the
+        // button.  This behavior is a bit unconventional for Scenery nodes, but it makes the buttons look much better.
         enabledStroke = baseColor.colorUtilsDarker( 0.4 );
+        disabledStroke = disabledBaseColor.colorUtilsDarker( 0.4 );
+      }
+      else {
+        enabledStroke = Color.toColor( options.stroke );
         disabledStroke = disabledBaseColor.colorUtilsDarker( 0.4 );
       }
     }
@@ -288,8 +299,19 @@ define( function( require ) {
       downFill = baseColor.colorUtilsDarker( 0.4 );
       disabledFill = disabledBaseColor;
       disabledPressedFillVertical = disabledFill;
-      if ( options.stroke !== null ) {
+      if ( options.stroke === null ) {
+        // The stroke was explicitly set to null, so the button should have no stroke.
+        enabledStroke = null;
+        disabledStroke = null;
+      }
+      else if ( typeof( options.stroke ) === 'undefined' ) {
+        // No stroke was defined, but it wasn't set to null, so default to a stroke based on the base color of the
+        // button.  This behavior is a bit unconventional for Scenery nodes, but it makes the buttons look much better.
         enabledStroke = baseColor.colorUtilsDarker( 0.4 );
+        disabledStroke = disabledBaseColor.colorUtilsDarker( 0.4 );
+      }
+      else {
+        enabledStroke = Color.toColor( options.stroke );
         disabledStroke = disabledBaseColor.colorUtilsDarker( 0.4 );
       }
     }

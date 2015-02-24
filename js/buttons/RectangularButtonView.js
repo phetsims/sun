@@ -139,7 +139,6 @@ define( function( require ) {
 
     var disabledBaseColor = Color.toColor( options.disabledBaseColor );
     var transparentDisabledBaseColor = new Color( disabledBaseColor.getRed(), disabledBaseColor.getGreen(), disabledBaseColor.getBlue(), 0 );
-    var disabledStroke = null;
     var transparentWhite = new Color( 256, 256, 256, 0.7 );
 
     // Create the overlay that is used to add shading to left and right edges of the button.
@@ -158,7 +157,8 @@ define( function( require ) {
     var disabledFillVertical;
     var disabledFillHorizontal;
     var disabledPressedFillVertical;
-    var enabledStroke = null;
+    var enabledStroke;
+    var disabledStroke;
 
     // Function for creating the fills and strokes used to control the button's appearance.
     function updateFillsAndStrokes( baseColor ) {
@@ -214,8 +214,19 @@ define( function( require ) {
         .addColorStop( verticalShadowStop, disabledBaseColor.colorUtilsBrighter( 0.2 ) )
         .addColorStop( 1, disabledBaseColor.colorUtilsDarker( 0.5 ) );
 
-      if ( options.stroke !== null ) {
+      if ( options.stroke === null ) {
+        // The stroke was explicitly set to null, so the button should have no stroke.
+        enabledStroke = null;
+        disabledStroke = null;
+      }
+      else if ( typeof( options.stroke ) === 'undefined' ) {
+        // No stroke was defined, but it wasn't set to null, so default to a stroke based on the base color of the
+        // button.  This behavior is a bit unconventional for Scenery nodes, but it makes the buttons look much better.
         enabledStroke = baseColor.colorUtilsDarker( 0.4 );
+        disabledStroke = disabledBaseColor.colorUtilsDarker( 0.4 );
+      }
+      else {
+        enabledStroke = Color.toColor( options.stroke );
         disabledStroke = disabledBaseColor.colorUtilsDarker( 0.4 );
       }
     }
@@ -289,10 +300,6 @@ define( function( require ) {
 
     // Set up variables needed to create the various gradient fills
     var disabledBaseColor = Color.toColor( options.disabledBaseColor );
-    var disabledStroke = null;
-    if ( options.stroke ) {
-      disabledStroke = disabledBaseColor.colorUtilsDarker( 0.4 );
-    }
 
     // fills used for various button states
     var upFill;
@@ -300,7 +307,8 @@ define( function( require ) {
     var downFill;
     var disabledFill;
     var disabledPressedFillVertical;
-    var enabledStroke = null;
+    var enabledStroke;
+    var disabledStroke;
 
     function updateFillsAndStrokes( baseColor ) {
       upFill = baseColor;
@@ -308,8 +316,19 @@ define( function( require ) {
       downFill = baseColor.colorUtilsDarker( 0.4 );
       disabledFill = disabledBaseColor;
       disabledPressedFillVertical = disabledFill;
-      if ( options.stroke !== null ) {
+      if ( options.stroke === null ) {
+        // The stroke was explicitly set to null, so the button should have no stroke.
+        enabledStroke = null;
+        disabledStroke = null;
+      }
+      else if ( typeof( options.stroke ) === 'undefined' ) {
+        // No stroke was defined, but it wasn't set to null, so default to a stroke based on the base color of the
+        // button.  This behavior is a bit unconventional for Scenery nodes, but it makes the buttons look much better.
         enabledStroke = baseColor.colorUtilsDarker( 0.4 );
+        disabledStroke = disabledBaseColor.colorUtilsDarker( 0.4 );
+      }
+      else {
+        enabledStroke = Color.toColor( options.stroke );
         disabledStroke = disabledBaseColor.colorUtilsDarker( 0.4 );
       }
     }
@@ -380,6 +399,6 @@ define( function( require ) {
       get enabled() { return this.buttonModel.enabled; },
 
       set baseColor( baseColor ) { this.baseColorProperty.value = Color.toColor( baseColor ); },
-      get baseColor() { return this.baseColorProperty.value; },
+      get baseColor() { return this.baseColorProperty.value; }
     } );
 } );
