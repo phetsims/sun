@@ -23,7 +23,9 @@ define( function( require ) {
     yMargin: 5,
     cornerRadius: 10, // radius of the rounded corners on the background
     resize: true, // dynamically resize when content bounds change
-    backgroundPickable: false
+    backgroundPickable: false,
+    align: 'right', // {string} horizontal of content in the pane, left|center|right
+    minWidth: 0 // minimum width of the panel
   };
 
   /**
@@ -37,6 +39,7 @@ define( function( require ) {
 
     // default options
     options = _.extend( {}, defaultOptions, options );
+    assert && assert( options.align === 'left' || options.align === 'center' || options.align === 'right' );
 
     Node.call( thisNode );
 
@@ -56,11 +59,23 @@ define( function( require ) {
 
     // Adjust the background size to match the content.
     var updateBackground = function() {
-      background.setRect( 0, 0, content.width + ( 2 * options.xMargin ), content.height + ( 2 * options.yMargin ), options.cornerRadius, options.cornerRadius );
+
+      var contentWidth = Math.max( options.minWidth, content.width );
+      background.setRect( 0, 0, contentWidth + ( 2 * options.xMargin ), content.height + ( 2 * options.yMargin ), options.cornerRadius, options.cornerRadius );
 
       // Prevent oscillation and stack overflow due to numerical imprecision, see https://github.com/phetsims/sun/issues/110
       if ( background.center.distanceSquared( content.center ) > 1E-6 ) {
-        content.center = background.center;
+        if ( options.align === 'center' ) {
+          content.center = background.center;
+        }
+        else if ( options.align === 'left' ) {
+          content.left = background.left + options.xMargin;
+          content.centerY = background.centerY;
+        }
+        else { /* right */
+          content.right = background.right - options.xMargin;
+          content.centerY = background.centerY;
+        }
       }
     };
     if ( options.resize ) {
