@@ -53,7 +53,7 @@ define( function( require ) {
       minYMargin: 5, // Minimum margin in y direction, i.e. on top and bottom
       fireOnDown: false,
       touchExpansion: 5, // Radius expansion for touch area, in screen units (roughly pixels)
-      stroke: DEFAULT_COLOR.colorUtilsDarker( 0.4 ),
+      stroke: undefined, // undefined by default, which will cause a stroke to be derived from the base color
       lineWidth: 0.5, // Only meaningful if stroke is non-null
 
       // By default, icons are centered in the button, but icons with odd

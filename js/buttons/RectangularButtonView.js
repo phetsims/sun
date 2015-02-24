@@ -51,7 +51,7 @@ define( function( require ) {
       fireOnDown: false,
       xTouchExpansion: 5,
       yTouchExpansion: 5,
-      stroke: DEFAULT_COLOR.colorUtilsDarker( 0.4 ),
+      stroke: undefined, // undefined by default, which will cause a stroke to be derived from the base color
       lineWidth: 0.5, // Only meaningful if stroke is non-null
 
       // Strategy for controlling the button's appearance, excluding any

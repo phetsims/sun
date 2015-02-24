@@ -140,19 +140,19 @@ define( function( require ) {
 
         case 'idle':
           button.fill = upFillVertical;
-          overlayForHorizGradient.stroke = options.stroke;
+          overlayForHorizGradient.stroke = options.stroke || null;
           overlayForHorizGradient.fill = upFillHorizontal;
           break;
 
         case 'over':
           button.fill = overFillVertical;
-          overlayForHorizGradient.stroke = options.stroke;
+          overlayForHorizGradient.stroke = options.stroke || null;
           overlayForHorizGradient.fill = overFillHorizontal;
           break;
 
         case 'pressed':
           button.fill = downFill;
-          overlayForHorizGradient.stroke = options.stroke;
+          overlayForHorizGradient.stroke = options.stroke || null;
           overlayForHorizGradient.fill = overFillHorizontal;
           break;
 
