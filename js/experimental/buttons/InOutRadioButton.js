@@ -11,6 +11,7 @@ define( function( require ) {
   // modules
   var inherit = require( 'PHET_CORE/inherit' );
   var InOutRadioButtonView = require( 'SUN/buttons/InOutRadioButtonView' );
+  var DerivedProperty = require( 'AXON/DerivedProperty' );
 
   /**
    * @param property
@@ -23,7 +24,10 @@ define( function( require ) {
     options = _.extend( {
       cursor: 'pointer'
     }, options );
-    InOutRadioButtonView.call( this, content, property.valueEquals( value ), options );
+    var valueEqualsProperty = new DerivedProperty( [property], function( propertyValue ) {
+      return propertyValue === value;
+    } );
+    InOutRadioButtonView.call( this, content, valueEqualsProperty, options );
 
 //    this.buttonModel = new PushButtonModel( { } );
 //    this.addInputListener( this.buttonModel );
