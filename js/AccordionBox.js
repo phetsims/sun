@@ -42,7 +42,7 @@ define( function( require ) {
 
       // title
       titleNode: new Text( '' ), // a {Node} with well-defined bounds
-      titleAlign: 'center', // {string} horizontal alignment of the title, 'left'|'center'|'right'
+      titleAlignX: 'center', // {string} horizontal alignment of the title, 'left'|'center'|'right'
       titleXMargin: 10, // horizontal space between title and left|right edge of box
       titleYMargin: 2, // vertical space between title and top of box
       titleXSpacing: 5, // horizontal space between title and expand/collapse button
@@ -73,7 +73,7 @@ define( function( require ) {
     // verify string options
     assert && assert( options.buttonAlign === 'left' || options.buttonAlign === 'right' );
     assert && assert( options.contentAlign === 'left' || options.contentAlign === 'right' || options.contentAlign === 'center' );
-    assert && assert( options.titleAlign === 'left' || options.titleAlign === 'right' || options.titleAlign === 'center' );
+    assert && assert( options.titleAlignX === 'left' || options.titleAlignX === 'right' || options.titleAlignX === 'center' );
 
     Node.call( this );
 
@@ -202,10 +202,10 @@ define( function( require ) {
       this.expandCollapseButton.right = expandedBox.right - options.buttonXMargin;
       titleRightSpan = this.expandCollapseButton.left - options.titleXSpacing;
     }
-    if ( options.titleAlign === 'left' ) {
+    if ( options.titleAlignX === 'left' ) {
       options.titleNode.left = titleLeftSpan;
     }
-    else if ( options.titleAlign === 'right' ) {
+    else if ( options.titleAlignX === 'right' ) {
       options.titleNode.right = titleRightSpan;
     }
     else { // center
