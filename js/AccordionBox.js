@@ -42,17 +42,17 @@ define( function( require ) {
 
       // title
       titleNode: new Text( '' ), // a {Node} with well-defined bounds
-      titleAlign: 'center', // horizontal alignment of the title, 'left'|'center'|'right'
+      titleAlign: 'center', // {string} horizontal alignment of the title, 'left'|'center'|'right'
       titleXMargin: 10, // horizontal space between title and left|right edge of box
       titleYMargin: 2, // vertical space between title and top of box
       titleXSpacing: 5, // horizontal space between title and expand/collapse button
       showTitleWhenExpanded: true, // true = title is visible when expanded, false = title is hidden when expanded
-      titleBarFill: null, // {Color|String} title bar fill
-      titleBarStroke: null, // {Color|String} title bar stroke, used only for the expanded title bar
+      titleBarFill: null, // {Color|string} title bar fill
+      titleBarStroke: null, // {Color|string} title bar stroke, used only for the expanded title bar
 
       // expand/collapse button
       buttonLength: 16, // button is a square, this is the length of one side
-      buttonAlign: 'left',  // button alignment, 'left'|'right'
+      buttonAlign: 'left',  // {string} button alignment, 'left'|'right'
       buttonXMargin: 4, // horizontal space between button and left|right edge of box
       buttonYMargin: 2, // vertical space between button and top edge of box
       expandedProperty: new Property( true ),
@@ -62,7 +62,7 @@ define( function( require ) {
       buttonMouseAreaDilatedY: 0,
 
       // content
-      contentAlign: 'center', // horizontal alignment of the content, 'left'|'center'|'right'
+      contentAlign: 'center', // {string} horizontal alignment of the content, 'left'|'center'|'right'
       contentXMargin: 15, // horizontal space between content and left/right edges of box
       contentYMargin: 8,  // horizontal space between content and bottom edge of box
       contentXSpacing: 5, // horizontal space between content and button, ignored if showTitleWhenExpanded is true
