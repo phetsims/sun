@@ -43,6 +43,7 @@ define( function( require ) {
       // title
       titleNode: new Text( '' ), // a {Node} with well-defined bounds
       titleAlignX: 'center', // {string} horizontal alignment of the title, 'left'|'center'|'right'
+      titleAlignY: 'center', // {string} vertical alignment of the title, relative to expand/collapse button 'top'|'center'
       titleXMargin: 10, // horizontal space between title and left|right edge of box
       titleYMargin: 2, // vertical space between title and top of box
       titleXSpacing: 5, // horizontal space between title and expand/collapse button
@@ -74,6 +75,7 @@ define( function( require ) {
     assert && assert( options.buttonAlign === 'left' || options.buttonAlign === 'right' );
     assert && assert( options.contentAlign === 'left' || options.contentAlign === 'right' || options.contentAlign === 'center' );
     assert && assert( options.titleAlignX === 'left' || options.titleAlignX === 'right' || options.titleAlignX === 'center' );
+    assert && assert( options.titleAlignY === 'top' || options.titleAlignX === 'center' );
 
     Node.call( this );
 
@@ -190,8 +192,7 @@ define( function( require ) {
       contentNode.centerX = ( contentSpanLeft + contentSpanRight ) / 2;
     }
 
-    // button & title layout
-    this.expandCollapseButton.centerY = options.titleNode.centerY = collapsedBox.centerY;
+    // button horizontal layout
     var titleLeftSpan = expandedBox.left + options.titleXMargin;
     var titleRightSpan = expandedBox.right - options.titleXMargin;
     if ( options.buttonAlign === 'left' ) {
@@ -202,6 +203,8 @@ define( function( require ) {
       this.expandCollapseButton.right = expandedBox.right - options.buttonXMargin;
       titleRightSpan = this.expandCollapseButton.left - options.titleXSpacing;
     }
+
+    // title horizontal layout
     if ( options.titleAlignX === 'left' ) {
       options.titleNode.left = titleLeftSpan;
     }
@@ -210,6 +213,16 @@ define( function( require ) {
     }
     else { // center
       options.titleNode.centerX = expandedBox.centerX;
+    }
+
+    // button & title vertical layout
+    if ( options.titleAlignY === 'top' ) {
+      this.expandCollapseButton.top = collapsedBox.top + Math.max( options.buttonYMargin, options.titleYMargin );
+      options.titleNode.top = this.expandCollapseButton.top;
+    }
+    else { // center
+      this.expandCollapseButton.centerY = collapsedBox.centerY;
+      options.titleNode.centerY = this.expandCollapseButton.centerY;
     }
 
     // @private expand/collapse the box
