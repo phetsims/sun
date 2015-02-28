@@ -75,7 +75,7 @@ define( function( require ) {
     assert && assert( options.buttonAlign === 'left' || options.buttonAlign === 'right' );
     assert && assert( options.contentAlign === 'left' || options.contentAlign === 'right' || options.contentAlign === 'center' );
     assert && assert( options.titleAlignX === 'left' || options.titleAlignX === 'right' || options.titleAlignX === 'center' );
-    assert && assert( options.titleAlignY === 'top' || options.titleAlignX === 'center' );
+    assert && assert( options.titleAlignY === 'top' || options.titleAlignY === 'center' );
 
     Node.call( this );
 
