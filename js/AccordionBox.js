@@ -138,11 +138,13 @@ define( function( require ) {
         expandedTitleBarOptions );
     }
     expandedBox.addChild( expandedTitleBar );
-    expandedTitleBar.addInputListener( {
-      down: function() {
-        options.expandedProperty.value = false;
-      }
-    } );
+    if ( options.showTitleWhenExpanded ) {
+      expandedTitleBar.addInputListener( {
+        down: function() {
+          options.expandedProperty.value = false;
+        }
+      } );
+    }
 
     // Collapsed title bar has corners that match the box. Clicking it operates like expand/collapse button.
     var collapsedTitleBar = new Rectangle( 0, 0, boxWidth, collapsedBoxHeight, options.cornerRadius, options.cornerRadius, {
