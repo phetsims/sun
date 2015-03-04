@@ -42,7 +42,7 @@ define( function( require ) {
 
   function ButtonsDemoView() {
 
-    ScreenView.call( this, { renderer: 'svg', layoutBounds: new Bounds2( 0, 0, 768, 504 ) } );
+    ScreenView.call( this, { layoutBounds: new Bounds2( 0, 0, 768, 504 ) } );
 
     // Message area, for outputting test message
     var messagePrefix = 'Message: ';
