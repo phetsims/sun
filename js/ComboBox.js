@@ -185,18 +185,32 @@ define( function( require ) {
         event.abort(); // prevent click-to-dismiss on the list
       },
       up: function( event ) {
+
+        var archID = arch && arch.start( 'user', event.currentTarget.componentID, event.currentTarget.componentType, 'pressed' );
+        
         unhighlightItem( event.currentTarget );
         listNode.visible = false; // close the list, do this before changing property value, in case it's expensive
         self.getUniqueTrail().rootNode().removeInputListener( clickToDismissListener ); // remove the click-to-dismiss listener
         event.abort(); // prevent nodes (eg, controls) behind the list from receiving the event
         property.value = event.currentTarget.item.value; // set the property
+
+        arch && arch.end( archID );
       }
     };
+
+    // Keep track of the items so they can be looked up through API
+    this.itemNodeList = {};
 
     // populate list with items
     for ( var j = 0; j < items.length; j++ ) {
       // add item to list
       var itemNode = new ItemNode( items[ j ], itemWidth, itemHeight, options.itemXMargin );
+
+      // TODO: A better way to make the item nodes available for lookup, please?
+      if ( items[ j ].value.apiName ) {
+        this.itemNodeList[ items[ j ].value.apiName ] = itemNode;
+      }
+
       listNode.addChild( itemNode );
       itemNode.left = options.buttonXMargin;
       itemNode.top = options.listYMargin + ( j * itemHeight );
