@@ -111,7 +111,7 @@ define( function( require ) {
 
     // Make the thumb focusable for keyboard accessibility 
     thumb.focusable = true;
-    
+
     thisSlider.thumb = thumb; // must be disposed of
     thumb.centerY = thisSlider.track.centerY;
     thisSlider.addChild( thumb );
@@ -134,25 +134,41 @@ define( function( require ) {
 
     // update value when thumb is dragged
     var thumbHandler = new SimpleDragHandler( {
-      clickXOffset: 0, // x-offset between initial click and thumb's origin
+
+      // x-offset between initial click and thumb's origin
+      clickXOffset: 0,
+
       allowTouchSnag: true,
+
       start: function( event, trail ) {
         if ( options.enabledProperty.get() ) {
+          var archID = arch && arch.start( 'user', thisSlider.componentID, thisSlider.componentType, 'dragStart', { value: valueProperty.get() } );
           options.startDrag();
+
+          var transform = trail.subtrailTo( thisSlider ).getTransform();
+          this.clickXOffset = transform.inversePosition2( event.pointer.point ).x - thumb.x;
+
+          arch && arch.end( archID );
         }
-        var transform = trail.subtrailTo( thisSlider ).getTransform();
-        this.clickXOffset = transform.inversePosition2( event.pointer.point ).x - thumb.x;
       },
+
       drag: function( event, trail ) {
         if ( options.enabledProperty.get() ) {
           var transform = trail.subtrailTo( thisSlider ).getTransform(); // we only want the transform to our parent
           var x = transform.inversePosition2( event.pointer.point ).x - this.clickXOffset;
-          valueProperty.set( thisSlider.valueToPosition.inverse( x ) );
+          var newValue = thisSlider.valueToPosition.inverse( x );
+
+          var archID = arch && arch.start( 'user', thisSlider.componentID, thisSlider.componentType, 'drag', { value: newValue } );
+          valueProperty.set( newValue );
+          arch && arch.end( archID );
         }
       },
+
       end: function() {
         if ( options.enabledProperty.get() ) {
+          var archID = arch && arch.start( 'user', thisSlider.componentID, thisSlider.componentType, 'dragEnd', { value: valueProperty.get() } );
           options.endDrag();
+          arch && arch.end( archID );
         }
       }
     } );
