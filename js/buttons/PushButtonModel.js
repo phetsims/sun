@@ -22,8 +22,11 @@ define( function( require ) {
 
     options = _.extend( {
       fireOnDown: false, // true: fire on pointer down; false: fire on pointer up if pointer is over button
-      listener: null
+      listener: null,
+      componentID: null
     }, options );
+
+    this.componentID = options.componentID;
 
     ButtonModel.call( this );
 
@@ -67,7 +70,7 @@ define( function( require ) {
     // Fires all listeners.
     // @private with the possible exception of hooking up for accessibility.
     fire: function() {
-      var archID = arch && arch.start( 'user', this.componentID, 'button', 'fire' );
+      var archID = arch && arch.start( 'user', this.componentID, this.componentType, 'fire' );
       var copy = this.listeners.slice( 0 );
       copy.forEach( function( listener ) {
         listener();
