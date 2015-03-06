@@ -18,29 +18,41 @@ define( function( require ) {
    */
   function MomentaryButtonModel( onProperty ) {
 
-    var thisModel = this;
-    ButtonModel.call( thisModel );
+    // To be set by together.js
+    this.componentID = null;
+    this.componentType = null;
+
+    var self = this;
+    ButtonModel.call( self );
 
     // @private sync with the property, do this before wiring up to supertype properties
     this.onObserver = function( on ) {
-      thisModel.down = on;
+      self.down = on;
     };
     this.onProperty = onProperty; // @private
     this.onProperty.link( this.onObserver );
 
     // turn on when pressed (if enabled)
     this.property( 'down' ).onValue( true, function() {
-      if ( thisModel.enabled ) { onProperty.set( true ); }
+      if ( self.enabled ) {
+        var archID = arch && arch.start( 'user', self.componentID, self.componentType, 'pressed' );
+        onProperty.set( true );
+        arch && arch.end( archID );
+      }
     } );
 
     // turn off when released
     this.property( 'down' ).onValue( false, function() {
+      var archID = arch && arch.start( 'user', self.componentID, self.componentType, 'released' );
       onProperty.set( false );
+      arch && arch.end( archID );
     } );
 
     // turn off when disabled
     this.property( 'enabled' ).onValue( false, function() {
+      var archID = arch && arch.start( 'model', self.componentID, self.componentType, 'releasedDisabled' );
       onProperty.set( false );
+      arch && arch.end( archID );
     } );
   }
 

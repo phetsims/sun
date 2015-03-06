@@ -21,9 +21,16 @@ define( function( require ) {
    * @constructor
    */
   function RoundMomentaryButton( onProperty, options ) {
-    var buttonModel = new MomentaryButtonModel( onProperty );
-    RoundButtonView.call( this, buttonModel, new MomentaryButtonInteractionStateProperty( buttonModel ), options );
+    this.buttonModel = new MomentaryButtonModel( onProperty );
+    RoundButtonView.call( this, this.buttonModel, new MomentaryButtonInteractionStateProperty( this.buttonModel ), options );
   }
 
-  return inherit( RoundButtonView, RoundMomentaryButton );
+  return inherit( RoundButtonView, RoundMomentaryButton, {
+
+    // Pass through componentID and componentType to the buttonModel, where the arch messages are reported.
+    set componentID( id ) {this.buttonModel.componentID = id;},
+    get componentID() {return this.buttonModel.componentID;},
+    set componentType( type ) {this.buttonModel.componentType = type;},
+    get componentType() {return this.buttonModel.componentType;}
+  } );
 } );
