@@ -28,7 +28,7 @@ define( function( require ) {
    * @constructor
    */
   function ButtonNode( itemNode, options ) {
-    var thisNode = this;
+    var self = this;
     Node.call( this );
 
     // up or down arrow
@@ -55,18 +55,18 @@ define( function( require ) {
     var itemNodeParent = new Node();
 
     // rendering order
-    thisNode.addChild( background );
-    thisNode.addChild( arrow );
-    thisNode.addChild( separator );
-    thisNode.addChild( itemNodeParent );
+    self.addChild( background );
+    self.addChild( arrow );
+    self.addChild( separator );
+    self.addChild( itemNodeParent );
 
-    thisNode.setItemNode = function( itemNode ) {
+    self.setItemNode = function( itemNode ) {
       itemNodeParent.removeAllChildren();
       itemNodeParent.addChild( itemNode );
       itemNode.left = options.buttonXMargin;
       itemNode.top = options.buttonYMargin;
     };
-    thisNode.setItemNode( itemNode );
+    self.setItemNode( itemNode );
 
     // layout
     separator.left = itemNode.right + options.buttonXMargin;
