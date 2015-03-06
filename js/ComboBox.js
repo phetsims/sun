@@ -28,7 +28,6 @@ define( function( require ) {
    * @constructor
    */
   function ButtonNode( itemNode, options ) {
-    var self = this;
     Node.call( this );
 
     // up or down arrow
@@ -55,18 +54,18 @@ define( function( require ) {
     var itemNodeParent = new Node();
 
     // rendering order
-    self.addChild( background );
-    self.addChild( arrow );
-    self.addChild( separator );
-    self.addChild( itemNodeParent );
+    this.addChild( background );
+    this.addChild( arrow );
+    this.addChild( separator );
+    this.addChild( itemNodeParent );
 
-    self.setItemNode = function( itemNode ) {
+    this.setItemNode = function( itemNode ) {
       itemNodeParent.removeAllChildren();
       itemNodeParent.addChild( itemNode );
       itemNode.left = options.buttonXMargin;
       itemNode.top = options.buttonYMargin;
     };
-    self.setItemNode( itemNode );
+    this.setItemNode( itemNode );
 
     // layout
     separator.left = itemNode.right + options.buttonXMargin;
