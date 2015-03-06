@@ -29,6 +29,8 @@ define( function( require ) {
    */
   function ButtonNode( itemNode, options ) {
     Node.call( this );
+    this.componentID = null;
+    this.componentType = null;
 
     // up or down arrow
     var arrow = new Path( null, { fill: 'black' } );
@@ -104,7 +106,7 @@ define( function( require ) {
    */
   function ComboBox( items, property, listParent, options ) {
 
-    var thisNode = this;
+    var self = this;
 
     options = _.extend( {
         labelNode: null, // optional label, placed to the left of the combo box
@@ -132,11 +134,11 @@ define( function( require ) {
       },
       options );
 
-    Node.call( thisNode );
+    Node.call( self );
 
     // optional label
     if ( options.labelNode !== null ) {
-      thisNode.addChild( options.labelNode );
+      self.addChild( options.labelNode );
     }
 
     // determine uniform dimensions for button and list items
@@ -150,8 +152,8 @@ define( function( require ) {
     itemHeight += ( 2 * options.itemYMargin );
 
     // button, will be set to correct value when property observer is registered
-    var buttonNode = new ButtonNode( new ItemNode( items[ 0 ], itemWidth, itemHeight, options.itemXMargin ), options );
-    thisNode.addChild( buttonNode );
+    this.buttonNode = new ButtonNode( new ItemNode( items[ 0 ], itemWidth, itemHeight, options.itemXMargin ), options );
+    self.addChild( this.buttonNode );
 
     // list
     var listWidth = itemWidth + ( 2 * options.buttonXMargin );
@@ -185,7 +187,7 @@ define( function( require ) {
       up: function( event ) {
         unhighlightItem( event.currentTarget );
         listNode.visible = false; // close the list, do this before changing property value, in case it's expensive
-        thisNode.getUniqueTrail().rootNode().removeInputListener( clickToDismissListener ); // remove the click-to-dismiss listener
+        self.getUniqueTrail().rootNode().removeInputListener( clickToDismissListener ); // remove the click-to-dismiss listener
         event.abort(); // prevent nodes (eg, controls) behind the list from receiving the event
         property.value = event.currentTarget.item.value; // set the property
       }
@@ -209,13 +211,13 @@ define( function( require ) {
     var moveList = function() {
       var pButtonGlobal, pButtonLocal;
       if ( options.listPosition === 'above' ) {
-        pButtonGlobal = thisNode.localToGlobalPoint( new Vector2( buttonNode.left, buttonNode.top ) );
+        pButtonGlobal = self.localToGlobalPoint( new Vector2( self.buttonNode.left, self.buttonNode.top ) );
         pButtonLocal = listParent.globalToLocalPoint( pButtonGlobal );
         listNode.left = pButtonLocal.x;
         listNode.bottom = pButtonLocal.y;
       }
       else {
-        pButtonGlobal = thisNode.localToGlobalPoint( new Vector2( buttonNode.left, buttonNode.bottom ) );
+        pButtonGlobal = self.localToGlobalPoint( new Vector2( self.buttonNode.left, self.buttonNode.bottom ) );
         pButtonLocal = listParent.globalToLocalPoint( pButtonGlobal );
         listNode.left = pButtonLocal.x;
         listNode.top = pButtonLocal.y;
@@ -237,8 +239,13 @@ define( function( require ) {
     var clickToDismissListener = {
       down: function() {
         if ( enableClickToDismissListener ) {
+
+          var archID = arch && arch.start( 'user', 'scene', 'scene', 'pressed', { comboBoxPopup: 'hidden' } );
+
           sceneNode.removeInputListener( clickToDismissListener );
           listNode.visible = false;
+
+          arch && arch.end( archID );
         }
         else {
           enableClickToDismissListener = true;
@@ -247,24 +254,28 @@ define( function( require ) {
     };
 
     // button interactivity
-    buttonNode.cursor = 'pointer';
-    buttonNode.addInputListener(
+    this.buttonNode.cursor = 'pointer';
+    this.buttonNode.addInputListener(
       {
         down: function() {
           if ( !listNode.visible ) {
+            var archID = arch && arch.start( 'user', self.buttonNode.componentID, self.buttonNode.componentType, 'pressed' );
+
             moveList();
             listNode.visible = true;
             enableClickToDismissListener = false;
-            sceneNode = thisNode.getUniqueTrail().rootNode();
+            sceneNode = self.getUniqueTrail().rootNode();
             sceneNode.addInputListener( clickToDismissListener );
+
+            arch && arch.end( archID );
           }
         }
       } );
 
     // layout
     if ( options.labelNode ) {
-      buttonNode.left = options.labelNode.right + options.labelXSpacing;
-      buttonNode.centerY = options.labelNode.centerY;
+      this.buttonNode.left = options.labelNode.right + options.labelXSpacing;
+      this.buttonNode.centerY = options.labelNode.centerY;
     }
 
     // when property changes, update button
@@ -277,7 +288,7 @@ define( function( require ) {
         }
       }
       assert && assert( item !== null );
-      buttonNode.setItemNode( new ItemNode( item, itemWidth, itemHeight, options.itemXMargin ) );
+      self.buttonNode.setItemNode( new ItemNode( item, itemWidth, itemHeight, options.itemXMargin ) );
     } );
 
     this.mutate( options );
