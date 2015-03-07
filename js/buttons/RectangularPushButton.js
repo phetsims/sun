@@ -46,9 +46,10 @@ define( function( require ) {
    * @constructor
    */
   function RectangularPushButton( options ) {
+    
     // Safe to pass through options to the PushButtonModel like "fireOnDown".  Other scenery options will be safely ignored.
-    var buttonModel = new PushButtonModel( options );
-    RectangularButtonView.call( this, buttonModel, new PushButtonInteractionStateProperty( buttonModel ), options );
+    this.buttonModel = new PushButtonModel( options );
+    RectangularButtonView.call( this, this.buttonModel, new PushButtonInteractionStateProperty( this.buttonModel ), options );
   }
 
   return inherit( RectangularButtonView, RectangularPushButton, {
@@ -58,6 +59,12 @@ define( function( require ) {
 
     removeListener: function( listener ) {
       this.buttonModel.removeListener( listener );
-    }
+    },
+
+    // Pass through componentID and componentType to the buttonModel, where the arch messages are reported.
+    set componentID( id ) {this.buttonModel.componentID = id;},
+    get componentID() {return this.buttonModel.componentID;},
+    set componentType( type ) {this.buttonModel.componentType = type;},
+    get componentType() {return this.buttonModel.componentType;}
   } );
 } );
