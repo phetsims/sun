@@ -76,7 +76,7 @@ define( function( require ) {
     thisNode.addInputListener( new ButtonListener( {
       fire: function() {
         if ( thisNode._enabled ) {
-          var archID = arch && arch.start( 'user', options.componentID, 'CheckBox', 'toggled' );
+          var archID = arch && arch.start( 'user', checkBox.componentID, checkBox.componentType, 'toggled' );
           property.value = !property.value;
           arch && arch.end( archID );
         }
