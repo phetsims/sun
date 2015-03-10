@@ -216,13 +216,13 @@ define( function( require ) {
     var moveList = function() {
       var pButtonGlobal, pButtonLocal;
       if ( options.listPosition === 'above' ) {
-        pButtonGlobal = self.localToGlobalPoint( new Vector2( self.buttonNode.left, self.buttonNode.top ) );
+        pButtonGlobal = self.localToGlobalPoint( new Vector2( buttonNode.left, buttonNode.top ) );
         pButtonLocal = listParent.globalToLocalPoint( pButtonGlobal );
         listNode.left = pButtonLocal.x;
         listNode.bottom = pButtonLocal.y;
       }
       else {
-        pButtonGlobal = self.localToGlobalPoint( new Vector2( self.buttonNode.left, self.buttonNode.bottom ) );
+        pButtonGlobal = self.localToGlobalPoint( new Vector2( buttonNode.left, buttonNode.bottom ) );
         pButtonLocal = listParent.globalToLocalPoint( pButtonGlobal );
         listNode.left = pButtonLocal.x;
         listNode.top = pButtonLocal.y;
