@@ -130,7 +130,9 @@ define( function( require ) {
         itemYMargin: 6,
         itemHighlightFill: 'rgb(245,245,245)',
         itemHighlightStroke: null,
-        itemHighlightLineWidth: 1
+        itemHighlightLineWidth: 1,
+        //together
+        buttonNodeComponentID: null // Must be specified if using together
       },
       options );
 
@@ -187,7 +189,7 @@ define( function( require ) {
       up: function( event ) {
 
         var archID = arch && arch.start( 'user', event.currentTarget.componentID, event.currentTarget.componentType, 'pressed' );
-        
+
         unhighlightItem( event.currentTarget );
         listNode.visible = false; // close the list, do this before changing property value, in case it's expensive
         self.getUniqueTrail().rootNode().removeInputListener( clickToDismissListener ); // remove the click-to-dismiss listener
@@ -297,6 +299,8 @@ define( function( require ) {
     } );
 
     this.mutate( options );
+
+    together && together.addComponent( options.buttonNodeComponentID, buttonNode );
   }
 
   inherit( Node, ComboBox );
