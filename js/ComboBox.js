@@ -152,8 +152,8 @@ define( function( require ) {
     itemHeight += ( 2 * options.itemYMargin );
 
     // button, will be set to correct value when property observer is registered
-    this.buttonNode = new ButtonNode( new ItemNode( items[ 0 ], itemWidth, itemHeight, options.itemXMargin ), options );
-    self.addChild( this.buttonNode );
+    var buttonNode = new ButtonNode( new ItemNode( items[ 0 ], itemWidth, itemHeight, options.itemXMargin ), options );
+    self.addChild( buttonNode );
 
     // list
     var listWidth = itemWidth + ( 2 * options.buttonXMargin );
@@ -198,19 +198,10 @@ define( function( require ) {
       }
     };
 
-    // Keep track of the items so they can be looked up through API
-    this.itemNodeList = {};
-
     // populate list with items
     for ( var j = 0; j < items.length; j++ ) {
       // add item to list
       var itemNode = new ItemNode( items[ j ], itemWidth, itemHeight, options.itemXMargin );
-
-      // TODO: A better way to make the item nodes available for lookup, please?
-      if ( items[ j ].value.apiName ) {
-        this.itemNodeList[ items[ j ].value.apiName ] = itemNode;
-      }
-
       listNode.addChild( itemNode );
       itemNode.left = options.buttonXMargin;
       itemNode.top = options.listYMargin + ( j * itemHeight );
@@ -268,12 +259,12 @@ define( function( require ) {
     };
 
     // button interactivity
-    this.buttonNode.cursor = 'pointer';
-    this.buttonNode.addInputListener(
+    buttonNode.cursor = 'pointer';
+    buttonNode.addInputListener(
       {
         down: function() {
           if ( !listNode.visible ) {
-            var archID = arch && arch.start( 'user', self.buttonNode.componentID, self.buttonNode.componentType, 'pressed' );
+            var archID = arch && arch.start( 'user', buttonNode.componentID, buttonNode.componentType, 'pressed' );
 
             moveList();
             listNode.visible = true;
@@ -288,8 +279,8 @@ define( function( require ) {
 
     // layout
     if ( options.labelNode ) {
-      this.buttonNode.left = options.labelNode.right + options.labelXSpacing;
-      this.buttonNode.centerY = options.labelNode.centerY;
+      buttonNode.left = options.labelNode.right + options.labelXSpacing;
+      buttonNode.centerY = options.labelNode.centerY;
     }
 
     // when property changes, update button
@@ -302,7 +293,7 @@ define( function( require ) {
         }
       }
       assert && assert( item !== null );
-      self.buttonNode.setItemNode( new ItemNode( item, itemWidth, itemHeight, options.itemXMargin ) );
+      buttonNode.setItemNode( new ItemNode( item, itemWidth, itemHeight, options.itemXMargin ) );
     } );
 
     this.mutate( options );
