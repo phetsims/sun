@@ -20,7 +20,6 @@ define( function( require ) {
 
     // To be set by together.js
     this.componentID = null;
-    this.componentType = null;
 
     var self = this;
     ButtonModel.call( self );

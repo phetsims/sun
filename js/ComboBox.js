@@ -30,7 +30,6 @@ define( function( require ) {
   function ButtonNode( itemNode, options ) {
     Node.call( this );
     this.componentID = null;
-    this.componentType = null;
 
     // up or down arrow
     var arrow = new Path( null, { fill: 'black' } );

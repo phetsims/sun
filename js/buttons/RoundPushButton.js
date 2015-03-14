@@ -68,14 +68,6 @@ define( function( require ) {
       return this.buttonModel.componentID;
     },
     
-    set componentType( c ) {
-      this.buttonModel.componentType = c;
-    },
-
-    get componentType() {
-      return this.buttonModel.componentType;
-    },
-
     addListener: function( listener ) {
       this.buttonModel.addListener( listener );
     },
