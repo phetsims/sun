@@ -196,8 +196,6 @@ define( function( require ) {
     thisSlider.valueProperty.link( thisSlider.valueObserver ); // must be unlinked in dispose
 
     thisSlider.mutate( options );
-
-    together && together.addComponent( this.componentID, this );
   }
 
   inherit( Node, HSlider, {

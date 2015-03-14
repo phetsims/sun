@@ -49,13 +49,18 @@ define( function( require ) {
     options = _.extend( {
 
       // Should be filled in by the sim
-      componentID: 'RoundPushButton'
+      componentID: null
     }, options );
     // Safe to pass through options to the PushButtonModel like "fireOnDown".  Other scenery options will be safely ignored.
     this.buttonModel = new PushButtonModel( options );
     RoundButtonView.call( this, this.buttonModel, new PushButtonInteractionStateProperty( this.buttonModel, {
       propertyID: options.componentID + 'InteractionStateProperty'
     } ), options );
+
+    this.componentID = options.componentID;
+    if ( this.componentID ) {
+      together && together.addComponent( this );
+    }
   }
 
   return inherit( RoundButtonView, RoundPushButton, {
@@ -67,7 +72,7 @@ define( function( require ) {
     get componentID() {
       return this.buttonModel.componentID;
     },
-    
+
     addListener: function( listener ) {
       this.buttonModel.addListener( listener );
     },

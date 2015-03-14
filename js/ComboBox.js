@@ -298,8 +298,6 @@ define( function( require ) {
     } );
 
     this.mutate( options );
-
-    together && together.addComponent( options.buttonNodeComponentID, buttonNode );
   }
 
   inherit( Node, ComboBox );
