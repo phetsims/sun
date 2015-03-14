@@ -32,20 +32,24 @@ define( function( require ) {
     this.onProperty = onProperty; // @private
     this.onProperty.link( this.onObserver );
 
-    // turn on when pressed (if enabled)
-    this.property( 'down' ).onValue( true, function() {
-      if ( self.enabled ) {
-        var archID = arch && arch.start( 'user', self.componentID, self.componentType, 'pressed' );
-        onProperty.set( true );
+    this.downProperty.lazyLink( function( down ) {
+      var archID = null;
+
+      // turn on when pressed (if enabled)
+      if ( down ) {
+        if ( self.enabled ) {
+          archID = arch && arch.start( 'user', self.componentID, self.componentType, 'pressed' );
+          onProperty.set( true );
+          arch && arch.end( archID );
+        }
+      }
+      else {
+
+        // turn off when released
+        archID = arch && arch.start( 'user', self.componentID, self.componentType, 'released' );
+        onProperty.set( false );
         arch && arch.end( archID );
       }
-    } );
-
-    // turn off when released
-    this.property( 'down' ).onValue( false, function() {
-      var archID = arch && arch.start( 'user', self.componentID, self.componentType, 'released' );
-      onProperty.set( false );
-      arch && arch.end( archID );
     } );
 
     // turn off when disabled
