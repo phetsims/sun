@@ -64,9 +64,12 @@ define( function( require ) {
       cursor: 'pointer',
       enabledProperty: new Property( true ),
       startDrag: function() {}, // called when a drag sequence starts
-      endDrag: function() {} // called when a drag sequence ends
+      endDrag: function() {}, // called when a drag sequence ends
+      //together
+      componentID: null
     }, options );
     this.options = options; // @private TODO save only the options that are needed by prototype functions
+    this.componentID = options.componentID;
 
     // @private ticks are added to this parent, so they are behind knob
     thisSlider.ticksParent = new Node();
@@ -193,6 +196,8 @@ define( function( require ) {
     thisSlider.valueProperty.link( thisSlider.valueObserver ); // must be unlinked in dispose
 
     thisSlider.mutate( options );
+
+    together && together.addComponent( this.componentID, this );
   }
 
   inherit( Node, HSlider, {
