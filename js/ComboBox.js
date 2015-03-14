@@ -188,7 +188,7 @@ define( function( require ) {
       },
       up: function( event ) {
 
-        var archID = arch && arch.start( 'user', event.currentTarget.componentID, event.currentTarget.componentType, 'pressed' );
+        var archID = arch && arch.start( 'user', event.currentTarget.componentID, 'pressed' );
 
         unhighlightItem( event.currentTarget );
         listNode.visible = false; // close the list, do this before changing property value, in case it's expensive
@@ -247,7 +247,7 @@ define( function( require ) {
       down: function() {
         if ( enableClickToDismissListener ) {
 
-          var archID = arch && arch.start( 'user', 'scene', 'scene', 'pressed', { comboBoxPopup: 'hidden' } );
+          var archID = arch && arch.start( 'user', 'scene', 'pressed', { comboBoxPopup: 'hidden' } );
 
           sceneNode.removeInputListener( clickToDismissListener );
           listNode.visible = false;
@@ -266,7 +266,7 @@ define( function( require ) {
       {
         down: function() {
           if ( !listNode.visible ) {
-            var archID = arch && arch.start( 'user', buttonNode.componentID, buttonNode.componentType, 'pressed' );
+            var archID = arch && arch.start( 'user', buttonNode.componentID, 'pressed' );
 
             moveList();
             listNode.visible = true;

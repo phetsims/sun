@@ -38,7 +38,7 @@ define( function( require ) {
       // turn on when pressed (if enabled)
       if ( down ) {
         if ( self.enabled ) {
-          archID = arch && arch.start( 'user', self.componentID, self.componentType, 'pressed' );
+          archID = arch && arch.start( 'user', self.componentID, 'pressed' );
           onProperty.set( true );
           arch && arch.end( archID );
         }
@@ -46,7 +46,7 @@ define( function( require ) {
       else {
 
         // turn off when released
-        archID = arch && arch.start( 'user', self.componentID, self.componentType, 'released' );
+        archID = arch && arch.start( 'user', self.componentID, 'released' );
         onProperty.set( false );
         arch && arch.end( archID );
       }
@@ -54,7 +54,7 @@ define( function( require ) {
 
     // turn off when disabled
     this.property( 'enabled' ).onValue( false, function() {
-      var archID = arch && arch.start( 'model', self.componentID, self.componentType, 'releasedDisabled' );
+      var archID = arch && arch.start( 'model', self.componentID, 'releasedDisabled' );
       onProperty.set( false );
       arch && arch.end( archID );
     } );
