@@ -29,7 +29,7 @@ define( function( require ) {
    */
   function ButtonNode( itemNode, options ) {
     Node.call( this );
-    this.componentID = null;
+    this.componentID = options.buttonNodeComponentID;
 
     // up or down arrow
     var arrow = new Path( null, { fill: 'black' } );
@@ -83,10 +83,12 @@ define( function( require ) {
    * @param {number} width
    * @param {number} height
    * @param {number} xMargin
+   * @param {object} [options]
    * @constructor
    */
-  function ItemNode( item, width, height, xMargin ) {
+  function ItemNode( item, width, height, xMargin, options ) {
     var thisNode = this;
+    this.componentID = options && options.componentID;
     Rectangle.call( this, 0, 0, width, height );
     this.item = item;
     thisNode.addChild( item.node );
@@ -202,7 +204,7 @@ define( function( require ) {
     // populate list with items
     for ( var j = 0; j < items.length; j++ ) {
       // add item to list
-      var itemNode = new ItemNode( items[ j ], itemWidth, itemHeight, options.itemXMargin );
+      var itemNode = new ItemNode( items[ j ], itemWidth, itemHeight, options.itemXMargin, { componentID: items[ j ].value.listItemComponentID } );
       listNode.addChild( itemNode );
       itemNode.left = options.buttonXMargin;
       itemNode.top = options.listYMargin + ( j * itemHeight );
