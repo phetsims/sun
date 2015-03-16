@@ -33,12 +33,14 @@ define( function( require ) {
       checkBoxColorDisabled: 'gray',
       checkBoxColorBackground: 'white',
       tabIndex: 0,
-      componentID: 'componentID',
+      componentID: null,
       focusable: true
     }, options );
 
     var thisNode = this;
     Node.call( this );
+
+    thisNode.componentID = options.componentID;
 
     thisNode._checkBoxColor = options.checkBoxColor; // @private
     thisNode._checkBoxColorDisabled = options.checkBoxColorDisabled; // @private
@@ -76,7 +78,7 @@ define( function( require ) {
     thisNode.addInputListener( new ButtonListener( {
       fire: function() {
         if ( thisNode._enabled ) {
-          var archID = arch && arch.start( 'user', checkBox.componentID, 'toggled' );
+          var archID = arch && arch.start( 'user', thisNode.componentID, 'toggled' );
           property.value = !property.value;
           arch && arch.end( archID );
         }
