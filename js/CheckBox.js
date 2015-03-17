@@ -106,6 +106,8 @@ define( function( require ) {
 
     // Apply additional options
     thisNode.mutate( options );
+
+    together && together.addComponent( this );
   }
 
   return inherit( Node, CheckBox, {

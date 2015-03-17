@@ -114,6 +114,8 @@ define( function( require ) {
     // Mutate with the options after the layout is complete so that width-
     // dependent fields like centerX will work.
     thisButton.mutate( options );
+
+    together && together.addComponent( this );
   }
 
   /**
