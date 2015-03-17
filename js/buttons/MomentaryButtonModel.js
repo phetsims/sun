@@ -16,10 +16,12 @@ define( function( require ) {
    * @param {Property.<boolean>} onProperty - is the momentary button on or off?
    * @constructor
    */
-  function MomentaryButtonModel( onProperty ) {
+  function MomentaryButtonModel( onProperty, options ) {
+
+    options = _.extend( { componentID: null }, options );
 
     // To be set by together.js
-    this.componentID = null;
+    this.componentID = options.componentID;
 
     var self = this;
     ButtonModel.call( self );

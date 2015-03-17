@@ -21,17 +21,14 @@ define( function( require ) {
    * @constructor
    */
   function RoundMomentaryButton( onProperty, options ) {
-    this.buttonModel = new MomentaryButtonModel( onProperty );
-    RoundButtonView.call( this, this.buttonModel, new MomentaryButtonInteractionStateProperty( this.buttonModel ), options );
+    options = _.extend( { componentID: null }, options );
     this.componentID = options.componentID;
 
-    this.componentID && together && together.addComponent( this );
+    this.buttonModel = new MomentaryButtonModel( onProperty, { componentID: this.componentID } );
+    RoundButtonView.call( this, this.buttonModel, new MomentaryButtonInteractionStateProperty( this.buttonModel ), options );
+
+    together && together.addComponent( this );
   }
 
-  return inherit( RoundButtonView, RoundMomentaryButton, {
-
-    // Pass through componentID to the buttonModel, where the arch messages are reported.
-    set componentID( id ) {this.buttonModel.componentID = id;},
-    get componentID() {return this.buttonModel.componentID;}
-  } );
+  return inherit( RoundButtonView, RoundMomentaryButton );
 } );
