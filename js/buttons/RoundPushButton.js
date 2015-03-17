@@ -65,14 +65,6 @@ define( function( require ) {
 
   return inherit( RoundButtonView, RoundPushButton, {
 
-    set componentID( c ) {
-      this.buttonModel.componentID = c;
-    },
-
-    get componentID() {
-      return this.buttonModel.componentID;
-    },
-
     addListener: function( listener ) {
       this.buttonModel.addListener( listener );
     },
