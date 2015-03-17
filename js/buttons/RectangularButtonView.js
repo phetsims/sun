@@ -71,6 +71,8 @@ define( function( require ) {
 
     Node.call( thisButton );
 
+    this.componentID = options.componentID;
+
     // Hook up the input listener
     this.addInputListener( new ButtonListener( buttonModel ) );
 

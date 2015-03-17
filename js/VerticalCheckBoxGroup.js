@@ -53,7 +53,7 @@ define( function( require ) {
           checkBoxColor: options.checkBoxColor,
           boxWidth: options.boxWidth,
           tabIndex: options.tabIndex,
-          componentID:     items[ i ].componentID || '???'
+          componentID: items[ i ].componentID || null
         } );
         checkBox.mouseArea = checkBox.touchArea = Shape.bounds( checkBox.bounds.dilatedXY( 5, options.spacing / 2 ) );
         if ( items[ i ].indent ) {
