@@ -18,10 +18,18 @@ define( function( require ) {
    * @param {Object} valueB the other value for the toggle
    * @param {Property} valueProperty axon property that can be either valueA or valueB.
    *        (Would have preferred to call this `property` but it would clash with the property function name.)
+   * @param {object} [options]
    * @constructor
    */
-  function ToggleButtonModel( valueA, valueB, valueProperty ) {
+  function ToggleButtonModel( valueA, valueB, valueProperty, options ) {
+
+    options = _.extend( {
+      componentID: null
+    }, options );
+
     var thisModel = this;
+
+    this.componentID = options.componentID;
 
     this.valueA = valueA;
     this.valueB = valueB;
@@ -42,12 +50,14 @@ define( function( require ) {
   return inherit( ButtonModel, ToggleButtonModel, {
     toggle: function() {
       assert && assert( this.valueProperty.value === this.valueA || this.valueProperty.value === this.valueB );
+      var archID = arch && arch.start( 'user', this.componentID, 'fire' );
       if ( this.valueProperty.value === this.valueA ) {
         this.valueProperty.value = this.valueB;
       }
       else {
         this.valueProperty.value = this.valueA;
       }
+      arch && arch.end( archID );
     }
   } );
 } );

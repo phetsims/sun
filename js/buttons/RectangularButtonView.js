@@ -64,7 +64,9 @@ define( function( require ) {
       // on the button's state.  This can be a stock strategy from this file,
       // or custom.  To create a custom one, model it off of the stock
       // version(s) defined in this file.
-      contentAppearanceStrategy: RectangularButtonView.fadeContentWhenDisabled
+      contentAppearanceStrategy: RectangularButtonView.fadeContentWhenDisabled,
+
+      componentID: null
     }, options );
 
     Node.call( thisButton );

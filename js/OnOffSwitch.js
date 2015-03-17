@@ -48,7 +48,8 @@ define( function( require ) {
                                  //      NOTE: this is also the iOS behavior
                                  // false: only trigger model changes until release
       dragThreshold: 3, // number of view-space units the drag needs to cover to be considered a "drag" instead of a "click/tap"
-      toggleThreshold: 1 // number of thumb-widths outside the normal range past where the model value will change
+      toggleThreshold: 1, // number of thumb-widths outside the normal range past where the model value will change
+      componentID: null
     }, options );
 
     var thisNode = this;
@@ -105,6 +106,7 @@ define( function( require ) {
       },
 
       end: function( evt, trail ) {
+        var archID = arch && arch.start( 'user', options.componentID, 'toggled' );
         if ( passedDragThreshold ) {
           // snap to whichever end the thumb is closest to
           onProperty.set( thisNode.thumbPositionToValue() );
@@ -116,6 +118,7 @@ define( function( require ) {
 
         // update the thumb location (sanity check that it's here, only needs to be run if passedDragThreshold===true)
         updateThumb( onProperty.get() );
+        arch && arch.end( archID );
       },
 
       drag: function( evt, trail ) {
@@ -135,7 +138,9 @@ define( function( require ) {
         trackNode.fill = value ? options.trackOnFill : options.trackOffFill;
 
         if ( options.toggleWhileDragging === true || ( isDraggedOutside && options.toggleWhileDragging === null ) ) {
+          var archID = arch && arch.start( 'user', options.componentID, 'toggled' );
           onProperty.set( value );
+          arch && arch.end( archID );
         }
       },
 

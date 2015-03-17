@@ -141,7 +141,12 @@ define( function( require ) {
       var yMargin = ( ( maxHeight - contentArray[ i ].node.height ) / 2 ) + options.buttonContentYMargin;
 
       var radioButton = new RadioButtonGroupMember( property, contentArray[ i ].value,
-        _.extend( { content: contentArray[ i ].node, xMargin: xMargin, yMargin: yMargin }, buttonOptions ) );
+        _.extend( {
+          content: contentArray[ i ].node,
+          xMargin: xMargin,
+          yMargin: yMargin,
+          componentID: contentArray[ i ].componentID
+        }, buttonOptions ) );
 
       // ensure the buttons don't resize when selected vs unselected by adding a rectangle with the max size
       var maxLineWidth = Math.max( options.selectedLineWidth, options.deselectedLineWidth );
@@ -159,7 +164,11 @@ define( function( require ) {
         var label = contentArray[ i ].label;
         var labelOrientation = ( options.labelAlign === 'bottom' || options.labelAlign === 'top' ) ? 'vertical' : 'horizontal';
         var labelChildren = ( options.labelAlign === 'left' || options.labelAlign === 'top' ) ? [ label, radioButton ] : [ radioButton, label ];
-        button = new LayoutBox( { children: labelChildren, spacing: options.labelSpacing, orientation: labelOrientation } );
+        button = new LayoutBox( {
+          children: labelChildren,
+          spacing: options.labelSpacing,
+          orientation: labelOrientation
+        } );
 
         var xExpand = options.xTouchExpansion;
         var yExpand = options.yTouchExpansion;

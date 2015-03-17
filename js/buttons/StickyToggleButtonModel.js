@@ -19,10 +19,14 @@ define( function( require ) {
    * @param {Object} valueUp value when the toggle is in the 'up' position
    * @param {Object} valueDown value when the toggle is in the 'down' position
    * @param {Property} valueProperty axon property that can be either valueUp or valueDown.  Would have preferred to call this `property` but it would clash with the property function name.
+   * @param {object} [options]
    * @constructor
    */
-  function StickyToggleButtonModel( valueUp, valueDown, valueProperty ) {
+  function StickyToggleButtonModel( valueUp, valueDown, valueProperty, options ) {
     var thisModel = this;
+
+    options = _.extend( { componentID: null }, options );
+    this.componentID = options.componentID;
 
     this.valueUp = valueUp;
     this.valueDown = valueDown;
@@ -75,12 +79,14 @@ define( function( require ) {
   return inherit( ButtonModel, StickyToggleButtonModel, {
     toggle: function() {
       assert && assert( this.valueProperty.value === this.valueUp || this.valueProperty.value === this.valueDown );
+      var archID = arch && arch.start( 'user', this.componentID, 'fire' );
       if ( this.valueProperty.value === this.valueUp ) {
         this.valueProperty.value = this.valueDown;
       }
       else {
         this.valueProperty.value = this.valueUp;
       }
+      arch && arch.end( archID );
     }
   } );
 } );

@@ -53,10 +53,12 @@ define( function( require ) {
       // The default appearances use the color values specified above, but other appearances could be specified for more
       // customized behavior.  Generally setting the color values above should be enough to specify the desired look.
       buttonAppearanceStrategy: RadioButtonGroupAppearance.defaultRadioButtonsAppearance,
-      contentAppearanceStrategy: RadioButtonGroupAppearance.contentAppearanceStrategy
+      contentAppearanceStrategy: RadioButtonGroupAppearance.contentAppearanceStrategy,
+
+      componentID: null
     }, options );
 
-    var buttonModel = new RadioButtonGroupMemberModel( property, value );
+    var buttonModel = new RadioButtonGroupMemberModel( property, value, { componentID: options.componentID } );
 
     // keep a reference to this property to be used in RadioButtonGroup for managing the labels
     this.interactionStateProperty = new RadioButtonInteractionStateProperty( buttonModel );
