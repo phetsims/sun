@@ -131,9 +131,11 @@ define( function( require ) {
     } );
 
     // thumb touch area
-    var dx = 0.5 * thumb.width;
-    var dy = 0.25 * thumb.height;
-    thumb.touchArea = Shape.rectangle( ( -thumb.width / 2 ) - dx, ( -thumb.height / 2 ) - dy, thumb.width + dx + dx, thumb.height + dy + dy );
+    if ( !options.thumbNode ) {
+      var dx = 0.5 * thumb.width;
+      var dy = 0.25 * thumb.height;
+      thumb.touchArea = Shape.rectangle( ( -thumb.width / 2 ) - dx, ( -thumb.height / 2 ) - dy, thumb.width + dx + dx, thumb.height + dy + dy );
+    }
 
     // update value when thumb is dragged
     var thumbHandler = new SimpleDragHandler( {
