@@ -59,6 +59,8 @@ define( function( require ) {
     } ) );
 
     this.mutate( options );
+
+    together && together.addComponent( this );
   }
 
   return inherit( Node, RadioButton );
