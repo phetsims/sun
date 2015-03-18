@@ -79,6 +79,11 @@ define( function( require ) {
     var content = options.content; // convenience variable
     var upCenter = new Vector2( options.xContentOffset, options.yContentOffset );
 
+    // For performance reasons, the content should be unpickable.
+    if ( content ) {
+      content.pickable = false;
+    }
+
     // Make the base color into a property so that the appearance strategy can update itself if changes occur.
     this.baseColorProperty = new Property( Color.toColor( options.baseColor ) ); // @private
 
@@ -143,7 +148,7 @@ define( function( require ) {
     var gradientOffset = HIGHLIGHT_GRADIENT_LENGTH / 2;
 
     // Create and add the overlay that is used to add shading.
-    var overlayForShadowGradient = new Circle( buttonRadius, { lineWidth: options.lineWidth } );
+    var overlayForShadowGradient = new Circle( buttonRadius, { lineWidth: options.lineWidth, pickable: false } );
     button.addChild( overlayForShadowGradient );
 
     // various fills used to alter the appearance of the button, values set below

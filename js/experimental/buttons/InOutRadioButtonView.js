@@ -23,6 +23,9 @@ define( function( require ) {
       shadowOffsetY: 4
     }, options );
 
+    // For performance reasons, the content should be non-pickable.
+    contentNode.pickable = false;
+
     var buttonPanel = new Panel( contentNode, {
       xMargin: options.xMargin,
       yMargin: options.yMargin

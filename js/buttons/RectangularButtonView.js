@@ -72,6 +72,12 @@ define( function( require ) {
     Node.call( thisButton );
 
     this.componentID = options.componentID;
+    var content = options.content; // convenience variable
+
+    // For performance reasons, the content should be unpickable.
+    if ( content ) {
+      content.pickable = false;
+    }
 
     // Hook up the input listener
     this.addInputListener( new ButtonListener( buttonModel ) );
@@ -80,7 +86,6 @@ define( function( require ) {
     this.baseColorProperty = new Property( Color.toColor( options.baseColor ) ); // @private
 
     // Figure out the size of the button.
-    var content = options.content;
     var buttonWidth = Math.max( content ? content.width + options.xMargin * 2 : 0, options.minWidth );
     var buttonHeight = Math.max( content ? content.height + options.yMargin * 2 : 0, options.minHeight );
 
@@ -148,9 +153,9 @@ define( function( require ) {
     var transparentWhite = new Color( 256, 256, 256, 0.7 );
 
     // Create the overlay that is used to add shading to left and right edges of the button.
-    var overlayForHorizGradient = new Rectangle( 0, 0, buttonWidth, buttonHeight, options.cornerRadius, options.cornerRadius,
-      {
-        lineWidth: options.lineWidth
+    var overlayForHorizGradient = new Rectangle( 0, 0, buttonWidth, buttonHeight, options.cornerRadius, options.cornerRadius, {
+      lineWidth: options.lineWidth,
+      pickable: false
       } );
     button.addChild( overlayForHorizGradient );
 
