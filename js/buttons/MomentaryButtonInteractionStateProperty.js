@@ -27,9 +27,6 @@ define( function( require ) {
                down ? 'pressed' :  // remain pressed regardless of whether 'over' is true
                'idle';
       } );
-
-    // Turn off data logging for this property, since it isn't that useful.
-    this.setSendPhetEvents( false );
   }
 
   return inherit( DerivedProperty, MomentaryButtonInteractionStateProperty );
