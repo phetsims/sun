@@ -53,9 +53,7 @@ define( function( require ) {
     }, options );
     // Safe to pass through options to the PushButtonModel like "fireOnDown".  Other scenery options will be safely ignored.
     this.buttonModel = new PushButtonModel( options );
-    RoundButtonView.call( this, this.buttonModel, new PushButtonInteractionStateProperty( this.buttonModel, {
-      propertyID: options.componentID + 'InteractionStateProperty'
-    } ), options );
+    RoundButtonView.call( this, this.buttonModel, new PushButtonInteractionStateProperty( this.buttonModel ), options );
 
     this.componentID = options.componentID;
     if ( this.componentID ) {
