@@ -106,18 +106,21 @@ define( function( require ) {
       },
 
       end: function( evt, trail ) {
-        var messageIndex = arch && arch.start( 'user', options.componentID, 'toggled' );
-        if ( passedDragThreshold ) {
-          // snap to whichever end the thumb is closest to
-          onProperty.set( thisNode.thumbPositionToValue() );
-        }
-        else {
-          // toggle
-          onProperty.set( !onProperty.get() );
-        }
+        var oldValue = onProperty.get();
+
+        // if moved past the threshold, choos value based on the side, otherwise just toggle
+        var newValue = passedDragThreshold ? thisNode.thumbPositionToValue() : !onProperty.get();
+
+        var messageIndex = arch && arch.start( 'user', options.componentID, 'toggled', {
+            oldValue: oldValue,
+            newValue: newValue
+          } );
+
+        onProperty.set( newValue );
 
         // update the thumb location (sanity check that it's here, only needs to be run if passedDragThreshold===true)
         updateThumb( onProperty.get() );
+        
         arch && arch.end( messageIndex );
       },
 
