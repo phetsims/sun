@@ -79,7 +79,7 @@ define( function( require ) {
   return inherit( ButtonModel, StickyToggleButtonModel, {
     toggle: function() {
       assert && assert( this.valueProperty.value === this.valueUp || this.valueProperty.value === this.valueDown );
-      var messageIndex = arch && arch.start( 'user', this.componentID, 'fired' );
+      var messageIndex = arch && arch.start( 'user', this.componentID, 'toggled' );
       if ( this.valueProperty.value === this.valueUp ) {
         this.valueProperty.value = this.valueDown;
       }

@@ -33,7 +33,7 @@ define( function( require ) {
     // fire on up
     this.property( 'down' ).onValue( false, function() {
       if ( thisModel.over && thisModel.enabled ) {
-        var messageIndex = arch && arch.start( 'user', options && options.componentID, 'pressed' );
+        var messageIndex = arch && arch.start( 'user', options && options.componentID, 'fired' );
         selectorProperty.set( selectedValue );
         arch && arch.end( messageIndex );
       }
