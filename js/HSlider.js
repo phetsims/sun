@@ -147,7 +147,7 @@ define( function( require ) {
 
       start: function( event, trail ) {
         if ( options.enabledProperty.get() ) {
-          var messageIndex = arch && arch.start( 'user', thisSlider.componentID, 'dragStart', { value: valueProperty.get() } );
+          var messageIndex = arch && arch.start( 'user', thisSlider.componentID, 'dragStarted', { value: valueProperty.get() } );
           options.startDrag();
 
           var transform = trail.subtrailTo( thisSlider ).getTransform();
@@ -163,7 +163,7 @@ define( function( require ) {
           var x = transform.inversePosition2( event.pointer.point ).x - this.clickXOffset;
           var newValue = thisSlider.valueToPosition.inverse( x );
 
-          var messageIndex = arch && arch.start( 'user', thisSlider.componentID, 'drag', { value: newValue } );
+          var messageIndex = arch && arch.start( 'user', thisSlider.componentID, 'dragged', { value: newValue } );
           valueProperty.set( newValue );
           arch && arch.end( messageIndex );
         }
@@ -171,7 +171,7 @@ define( function( require ) {
 
       end: function() {
         if ( options.enabledProperty.get() ) {
-          var messageIndex = arch && arch.start( 'user', thisSlider.componentID, 'dragEnd', { value: valueProperty.get() } );
+          var messageIndex = arch && arch.start( 'user', thisSlider.componentID, 'dragEnded', { value: valueProperty.get() } );
           options.endDrag();
           arch && arch.end( messageIndex );
         }

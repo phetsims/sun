@@ -50,7 +50,7 @@ define( function( require ) {
   return inherit( ButtonModel, ToggleButtonModel, {
     toggle: function() {
       assert && assert( this.valueProperty.value === this.valueA || this.valueProperty.value === this.valueB );
-      var messageIndex = arch && arch.start( 'user', this.componentID, 'fire' );
+      var messageIndex = arch && arch.start( 'user', this.componentID, 'fired' );
       if ( this.valueProperty.value === this.valueA ) {
         this.valueProperty.value = this.valueB;
       }
