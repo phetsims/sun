@@ -106,7 +106,7 @@ define( function( require ) {
       },
 
       end: function( evt, trail ) {
-        var archID = arch && arch.start( 'user', options.componentID, 'toggled' );
+        var messageIndex = arch && arch.start( 'user', options.componentID, 'toggled' );
         if ( passedDragThreshold ) {
           // snap to whichever end the thumb is closest to
           onProperty.set( thisNode.thumbPositionToValue() );
@@ -118,7 +118,7 @@ define( function( require ) {
 
         // update the thumb location (sanity check that it's here, only needs to be run if passedDragThreshold===true)
         updateThumb( onProperty.get() );
-        arch && arch.end( archID );
+        arch && arch.end( messageIndex );
       },
 
       drag: function( evt, trail ) {
@@ -138,9 +138,9 @@ define( function( require ) {
         trackNode.fill = value ? options.trackOnFill : options.trackOffFill;
 
         if ( options.toggleWhileDragging === true || ( isDraggedOutside && options.toggleWhileDragging === null ) ) {
-          var archID = arch && arch.start( 'user', options.componentID, 'toggled' );
+          var messageIndex = arch && arch.start( 'user', options.componentID, 'toggled' );
           onProperty.set( value );
-          arch && arch.end( archID );
+          arch && arch.end( messageIndex );
         }
       },
 

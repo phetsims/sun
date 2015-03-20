@@ -79,14 +79,14 @@ define( function( require ) {
   return inherit( ButtonModel, StickyToggleButtonModel, {
     toggle: function() {
       assert && assert( this.valueProperty.value === this.valueUp || this.valueProperty.value === this.valueDown );
-      var archID = arch && arch.start( 'user', this.componentID, 'fire' );
+      var messageIndex = arch && arch.start( 'user', this.componentID, 'fire' );
       if ( this.valueProperty.value === this.valueUp ) {
         this.valueProperty.value = this.valueDown;
       }
       else {
         this.valueProperty.value = this.valueUp;
       }
-      arch && arch.end( archID );
+      arch && arch.end( messageIndex );
     }
   } );
 } );

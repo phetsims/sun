@@ -147,13 +147,13 @@ define( function( require ) {
 
       start: function( event, trail ) {
         if ( options.enabledProperty.get() ) {
-          var archID = arch && arch.start( 'user', thisSlider.componentID, 'dragStart', { value: valueProperty.get() } );
+          var messageIndex = arch && arch.start( 'user', thisSlider.componentID, 'dragStart', { value: valueProperty.get() } );
           options.startDrag();
 
           var transform = trail.subtrailTo( thisSlider ).getTransform();
           this.clickXOffset = transform.inversePosition2( event.pointer.point ).x - thumb.x;
 
-          arch && arch.end( archID );
+          arch && arch.end( messageIndex );
         }
       },
 
@@ -163,17 +163,17 @@ define( function( require ) {
           var x = transform.inversePosition2( event.pointer.point ).x - this.clickXOffset;
           var newValue = thisSlider.valueToPosition.inverse( x );
 
-          var archID = arch && arch.start( 'user', thisSlider.componentID, 'drag', { value: newValue } );
+          var messageIndex = arch && arch.start( 'user', thisSlider.componentID, 'drag', { value: newValue } );
           valueProperty.set( newValue );
-          arch && arch.end( archID );
+          arch && arch.end( messageIndex );
         }
       },
 
       end: function() {
         if ( options.enabledProperty.get() ) {
-          var archID = arch && arch.start( 'user', thisSlider.componentID, 'dragEnd', { value: valueProperty.get() } );
+          var messageIndex = arch && arch.start( 'user', thisSlider.componentID, 'dragEnd', { value: valueProperty.get() } );
           options.endDrag();
-          arch && arch.end( archID );
+          arch && arch.end( messageIndex );
         }
       }
     } );

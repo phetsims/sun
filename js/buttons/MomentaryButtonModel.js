@@ -34,30 +34,30 @@ define( function( require ) {
     this.onProperty.link( this.onObserver );
 
     this.downProperty.lazyLink( function( down ) {
-      var archID = null;
+      var messageIndex = null;
 
       // turn on when pressed (if enabled)
       if ( down ) {
         if ( self.enabled ) {
-          archID = arch && arch.start( 'user', self.componentID, 'pressed' );
+          messageIndex = arch && arch.start( 'user', self.componentID, 'pressed' );
           onProperty.set( true );
-          arch && arch.end( archID );
+          arch && arch.end( messageIndex );
         }
       }
       else {
 
         // turn off when released
-        archID = arch && arch.start( 'user', self.componentID, 'released' );
+        messageIndex = arch && arch.start( 'user', self.componentID, 'released' );
         onProperty.set( false );
-        arch && arch.end( archID );
+        arch && arch.end( messageIndex );
       }
     } );
 
     // turn off when disabled
     this.property( 'enabled' ).onValue( false, function() {
-      var archID = arch && arch.start( 'model', self.componentID, 'releasedDisabled' );
+      var messageIndex = arch && arch.start( 'model', self.componentID, 'releasedDisabled' );
       onProperty.set( false );
-      arch && arch.end( archID );
+      arch && arch.end( messageIndex );
     } );
   }
 

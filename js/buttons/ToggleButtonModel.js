@@ -50,14 +50,14 @@ define( function( require ) {
   return inherit( ButtonModel, ToggleButtonModel, {
     toggle: function() {
       assert && assert( this.valueProperty.value === this.valueA || this.valueProperty.value === this.valueB );
-      var archID = arch && arch.start( 'user', this.componentID, 'fire' );
+      var messageIndex = arch && arch.start( 'user', this.componentID, 'fire' );
       if ( this.valueProperty.value === this.valueA ) {
         this.valueProperty.value = this.valueB;
       }
       else {
         this.valueProperty.value = this.valueA;
       }
-      arch && arch.end( archID );
+      arch && arch.end( messageIndex );
     }
   } );
 } );

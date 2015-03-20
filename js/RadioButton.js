@@ -52,9 +52,9 @@ define( function( require ) {
     // set property value on fire
     thisNode.addInputListener( new ButtonListener( {
       fire: function() {
-        var archID = arch && arch.start( 'user', thisNode.componentID, 'fire', { value: value } );
+        var messageIndex = arch && arch.start( 'user', thisNode.componentID, 'fire', { value: value } );
         property.set( value );
-        arch && arch.end( archID );
+        arch && arch.end( messageIndex );
       }
     } ) );
 

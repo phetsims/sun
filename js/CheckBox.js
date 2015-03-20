@@ -78,9 +78,9 @@ define( function( require ) {
     thisNode.addInputListener( new ButtonListener( {
       fire: function() {
         if ( thisNode._enabled ) {
-          var archID = arch && arch.start( 'user', thisNode.componentID, 'toggled' );
+          var messageIndex = arch && arch.start( 'user', thisNode.componentID, 'toggled' );
           property.value = !property.value;
-          arch && arch.end( archID );
+          arch && arch.end( messageIndex );
         }
       }
     } ) );

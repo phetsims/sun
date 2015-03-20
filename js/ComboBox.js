@@ -189,7 +189,7 @@ define( function( require ) {
       },
       up: function( event ) {
 
-        var archID = arch && arch.start( 'user', event.currentTarget.componentID, 'pressed' );
+        var messageIndex = arch && arch.start( 'user', event.currentTarget.componentID, 'pressed' );
 
         unhighlightItem( event.currentTarget );
         listNode.visible = false; // close the list, do this before changing property value, in case it's expensive
@@ -197,7 +197,7 @@ define( function( require ) {
         event.abort(); // prevent nodes (eg, controls) behind the list from receiving the event
         property.value = event.currentTarget.item.value; // set the property
 
-        arch && arch.end( archID );
+        arch && arch.end( messageIndex );
       }
     };
 
@@ -248,12 +248,12 @@ define( function( require ) {
       down: function() {
         if ( enableClickToDismissListener ) {
 
-          var archID = arch && arch.start( 'user', 'scene', 'pressed', { comboBoxPopup: 'hidden' } );
+          var messageIndex = arch && arch.start( 'user', 'scene', 'pressed', { comboBoxPopup: 'hidden' } );
 
           sceneNode.removeInputListener( clickToDismissListener );
           listNode.visible = false;
 
-          arch && arch.end( archID );
+          arch && arch.end( messageIndex );
         }
         else {
           enableClickToDismissListener = true;
@@ -267,7 +267,7 @@ define( function( require ) {
       {
         down: function() {
           if ( !listNode.visible ) {
-            var archID = arch && arch.start( 'user', buttonNode.componentID, 'pressed' );
+            var messageIndex = arch && arch.start( 'user', buttonNode.componentID, 'pressed' );
 
             moveList();
             listNode.visible = true;
@@ -275,7 +275,7 @@ define( function( require ) {
             sceneNode = self.getUniqueTrail().rootNode();
             sceneNode.addInputListener( clickToDismissListener );
 
-            arch && arch.end( archID );
+            arch && arch.end( messageIndex );
           }
         }
       } );
