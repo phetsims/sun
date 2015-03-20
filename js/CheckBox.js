@@ -78,7 +78,10 @@ define( function( require ) {
     thisNode.addInputListener( new ButtonListener( {
       fire: function() {
         if ( thisNode._enabled ) {
-          var messageIndex = arch && arch.start( 'user', thisNode.componentID, 'toggled' );
+          var messageIndex = arch && arch.start( 'user', thisNode.componentID, 'toggled', {
+              oldValue: property.value,
+              newValue: !property.value
+            } );
           property.value = !property.value;
           arch && arch.end( messageIndex );
         }
