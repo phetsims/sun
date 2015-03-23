@@ -24,7 +24,9 @@ define( function( require ) {
    * @param {Object} [options]
    */
   function CheckBox( content, property, options ) {
+
     var checkBox = this;
+
     options = _.extend( {
       spacing: 5,
       boxWidth: 21,
