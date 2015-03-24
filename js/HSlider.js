@@ -256,7 +256,7 @@ define( function( require ) {
 
   /**
    * Default thumb, a rectangle with a vertical white line down the center
-   * @param {Object} options see HSlider constructor
+   * @param {Object} [options] see HSlider constructor
    * @constructor
    */
   function ThumbNode( options ) {
