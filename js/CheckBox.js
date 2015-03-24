@@ -25,8 +25,6 @@ define( function( require ) {
    */
   function CheckBox( content, property, options ) {
 
-    var checkBox = this;
-
     options = _.extend( {
       spacing: 5,
       boxWidth: 21,
@@ -98,7 +96,7 @@ define( function( require ) {
     } );
 
     property.link( function( value ) {
-      _.each( checkBox.instances, function( instance ) {
+      _.each( thisNode.instances, function( instance ) {
 
         //Make sure accessibility is enabled, then apply the change to the peer
         _.each( instance.peers, function( peer ) {
