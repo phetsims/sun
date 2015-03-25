@@ -108,7 +108,7 @@ define( function( require ) {
       end: function( evt, trail ) {
         var oldValue = onProperty.get();
 
-        // if moved past the threshold, choos value based on the side, otherwise just toggle
+        // if moved past the threshold, choose value based on the side, otherwise just toggle
         var newValue = passedDragThreshold ? thisNode.thumbPositionToValue() : !onProperty.get();
 
         var messageIndex = arch && arch.start( 'user', options.componentID, 'toggled', {
