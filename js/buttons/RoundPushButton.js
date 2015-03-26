@@ -56,9 +56,7 @@ define( function( require ) {
     RoundButtonView.call( this, this.buttonModel, new PushButtonInteractionStateProperty( this.buttonModel ), options );
 
     this.componentID = options.componentID;
-    if ( this.componentID ) {
-      together && together.addComponent( this );
-    }
+    together && together.addComponent( this );
   }
 
   return inherit( RoundButtonView, RoundPushButton, {
