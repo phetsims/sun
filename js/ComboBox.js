@@ -203,8 +203,14 @@ define( function( require ) {
 
     // populate list with items
     for ( var j = 0; j < items.length; j++ ) {
+
+      // map through componentIDs for the list items
+      var itemNodeOptions = _.extend( { componentID: null }, items[ j ].options );
+
+      // Create the list item node itself
+      var itemNode = new ItemNode( items[ j ], itemWidth, itemHeight, options.itemXMargin, itemNodeOptions );
+
       // add item to list
-      var itemNode = new ItemNode( items[ j ], itemWidth, itemHeight, options.itemXMargin, { componentID: items[ j ].value.listItemComponentID } );
       listNode.addChild( itemNode );
       itemNode.left = options.buttonXMargin;
       itemNode.top = options.listYMargin + ( j * itemHeight );
@@ -309,10 +315,11 @@ define( function( require ) {
    * This exists primarily to document the structure of an item.
    * @param {Node} node
    * @param {*} value
+   * @param {object} [options]
    * @returns {{node: *, value: *}}
    */
-  ComboBox.createItem = function( node, value ) {
-    return { node: node, value: value };
+  ComboBox.createItem = function( node, value, options ) {
+    return { node: node, value: value, options: options };
   };
 
   return ComboBox;
