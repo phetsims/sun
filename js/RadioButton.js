@@ -63,5 +63,9 @@ define( function( require ) {
     together && together.addComponent( this );
   }
 
-  return inherit( Node, RadioButton );
+  return inherit( Node, RadioButton, {
+    dispose: function() {
+      together && together.removeComponent( this );
+    }
+  } );
 } );

@@ -52,6 +52,11 @@ define( function( require ) {
 
   return inherit( ButtonModel, PushButtonModel, {
 
+    dispose: function() {
+      this.listeners.length = 0;
+      ButtonModel.prototype.dispose.call( this );
+    },
+
     // Adds a listener. If already a listener, this is a no-op.
     addListener: function( listener ) {
       if ( this.listeners.indexOf( listener ) === -1 ) {

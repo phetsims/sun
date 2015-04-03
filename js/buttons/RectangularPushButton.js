@@ -53,6 +53,11 @@ define( function( require ) {
   }
 
   return inherit( RectangularButtonView, RectangularPushButton, {
+    dispose: function() {
+      this.buttonModel.dispose();
+      RectangularButtonView.prototype.dispose.call( this );
+    },
+
     addListener: function( listener ) {
       this.buttonModel.addListener( listener );
     },

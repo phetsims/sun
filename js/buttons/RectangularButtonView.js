@@ -40,7 +40,7 @@ define( function( require ) {
       // Default values.
       focusable: true,
       content: null,
-      minWidth:  HORIZONTAL_HIGHLIGHT_GRADIENT_LENGTH + SHADE_GRADIENT_LENGTH,
+      minWidth: HORIZONTAL_HIGHLIGHT_GRADIENT_LENGTH + SHADE_GRADIENT_LENGTH,
       minHeight: VERTICAL_HIGHLIGHT_GRADIENT_LENGTH + SHADE_GRADIENT_LENGTH,
       cursor: 'pointer',
       cornerRadius: 4,
@@ -156,7 +156,7 @@ define( function( require ) {
     var overlayForHorizGradient = new Rectangle( 0, 0, buttonWidth, buttonHeight, options.cornerRadius, options.cornerRadius, {
       lineWidth: options.lineWidth,
       pickable: false
-      } );
+    } );
     button.addChild( overlayForHorizGradient );
 
     // Various fills used in the button's appearance, updated below.
@@ -401,15 +401,17 @@ define( function( require ) {
     }
   };
 
-  return inherit( Node, RectangularButtonView,
-    {
-      set enabled( value ) {
-        assert && assert( typeof value === 'boolean', 'RectangularButtonView.enabled must be a boolean value' );
-        this.buttonModel.enabled = value;
-      },
-      get enabled() { return this.buttonModel.enabled; },
+  return inherit( Node, RectangularButtonView, {
+    dispose: function() {
+      together && together.removeComponent( this );
+    },
+    set enabled( value ) {
+      assert && assert( typeof value === 'boolean', 'RectangularButtonView.enabled must be a boolean value' );
+      this.buttonModel.enabled = value;
+    },
+    get enabled() { return this.buttonModel.enabled; },
 
-      set baseColor( baseColor ) { this.baseColorProperty.value = Color.toColor( baseColor ); },
-      get baseColor() { return this.baseColorProperty.value; }
-    } );
+    set baseColor( baseColor ) { this.baseColorProperty.value = Color.toColor( baseColor ); },
+    get baseColor() { return this.baseColorProperty.value; }
+  } );
 } );

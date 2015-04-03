@@ -26,5 +26,9 @@ define( function( require ) {
     }, 'buttonModel' );
   }
 
-  return inherit( PropertySet, ButtonModel );
+  return inherit( PropertySet, ButtonModel, {
+    dispose: function() {
+      PropertySet.prototype.dispose.call( this );
+    }
+  } );
 } );
