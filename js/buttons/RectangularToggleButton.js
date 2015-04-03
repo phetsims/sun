@@ -23,7 +23,7 @@ define( function( require ) {
    * @constructor
    */
   function RectangularToggleButton( valueA, valueB, property, options ) {
-    var buttonModel = new ToggleButtonModel( valueA, valueB, property );
+    var buttonModel = new ToggleButtonModel( valueA, valueB, property, options );
     RectangularButtonView.call( this, buttonModel, new ToggleButtonInteractionState( buttonModel ), options );
   }
 
