@@ -29,7 +29,7 @@ define( function( require ) {
    */
   function ButtonNode( itemNode, options ) {
     Node.call( this );
-    this.togetherID = options.buttonNodeComponentID;
+    this.togetherID = options.buttonNodeTogetherID;
 
     // up or down arrow
     var arrow = new Path( null, { fill: 'black' } );
@@ -133,7 +133,7 @@ define( function( require ) {
         itemHighlightStroke: null,
         itemHighlightLineWidth: 1,
         //together
-        buttonNodeComponentID: null // Must be specified if using together
+        buttonNodeTogetherID: null // Must be specified if using together
       },
       options );
 
@@ -204,7 +204,7 @@ define( function( require ) {
     // populate list with items
     for ( var j = 0; j < items.length; j++ ) {
 
-      // map through componentIDs for the list items
+      // map through togetherIDs for the list items
       var itemNodeOptions = _.extend( { togetherID: null }, items[ j ].options );
 
       // Create the list item node itself
