@@ -21,10 +21,10 @@ define( function( require ) {
    * @constructor
    */
   function RoundMomentaryButton( onProperty, options ) {
-    options = _.extend( { componentID: null }, options );
-    this.componentID = options.componentID;
+    options = _.extend( { togetherID: null }, options );
+    this.togetherID = options.togetherID;
 
-    this.buttonModel = new MomentaryButtonModel( onProperty, { componentID: this.componentID } );
+    this.buttonModel = new MomentaryButtonModel( onProperty, { togetherID: this.togetherID } );
     RoundButtonView.call( this, this.buttonModel, new MomentaryButtonInteractionStateProperty( this.buttonModel ), options );
 
     together && together.addComponent( this );

@@ -49,7 +49,7 @@ define( function( require ) {
                                  // false: only trigger model changes until release
       dragThreshold: 3, // number of view-space units the drag needs to cover to be considered a "drag" instead of a "click/tap"
       toggleThreshold: 1, // number of thumb-widths outside the normal range past where the model value will change
-      componentID: null
+      togetherID: null
     }, options );
 
     var thisNode = this;
@@ -111,7 +111,7 @@ define( function( require ) {
         // if moved past the threshold, choose value based on the side, otherwise just toggle
         var newValue = passedDragThreshold ? thisNode.thumbPositionToValue() : !onProperty.get();
 
-        var messageIndex = arch && arch.start( 'user', options.componentID, 'toggled', {
+        var messageIndex = arch && arch.start( 'user', options.togetherID, 'toggled', {
             oldValue: oldValue,
             newValue: newValue
           } );
@@ -141,7 +141,7 @@ define( function( require ) {
         trackNode.fill = value ? options.trackOnFill : options.trackOffFill;
 
         if ( options.toggleWhileDragging === true || ( isDraggedOutside && options.toggleWhileDragging === null ) ) {
-          var messageIndex = arch && arch.start( 'user', options.componentID, 'toggled' );
+          var messageIndex = arch && arch.start( 'user', options.togetherID, 'toggled' );
           onProperty.set( value );
           arch && arch.end( messageIndex );
         }

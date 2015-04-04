@@ -29,7 +29,7 @@ define( function( require ) {
    */
   function ButtonNode( itemNode, options ) {
     Node.call( this );
-    this.componentID = options.buttonNodeComponentID;
+    this.togetherID = options.buttonNodeComponentID;
 
     // up or down arrow
     var arrow = new Path( null, { fill: 'black' } );
@@ -88,7 +88,7 @@ define( function( require ) {
    */
   function ItemNode( item, width, height, xMargin, options ) {
     var thisNode = this;
-    this.componentID = options && options.componentID;
+    this.togetherID = options && options.togetherID;
     Rectangle.call( this, 0, 0, width, height );
     this.item = item;
     thisNode.addChild( item.node );
@@ -189,7 +189,7 @@ define( function( require ) {
       },
       up: function( event ) {
 
-        var messageIndex = arch && arch.start( 'user', event.currentTarget.componentID, 'fired' );
+        var messageIndex = arch && arch.start( 'user', event.currentTarget.togetherID, 'fired' );
 
         unhighlightItem( event.currentTarget );
         listNode.visible = false; // close the list, do this before changing property value, in case it's expensive
@@ -205,7 +205,7 @@ define( function( require ) {
     for ( var j = 0; j < items.length; j++ ) {
 
       // map through componentIDs for the list items
-      var itemNodeOptions = _.extend( { componentID: null }, items[ j ].options );
+      var itemNodeOptions = _.extend( { togetherID: null }, items[ j ].options );
 
       // Create the list item node itself
       var itemNode = new ItemNode( items[ j ], itemWidth, itemHeight, options.itemXMargin, itemNodeOptions );
@@ -273,7 +273,7 @@ define( function( require ) {
       {
         down: function() {
           if ( !listNode.visible ) {
-            var messageIndex = arch && arch.start( 'user', buttonNode.componentID, 'fired' );
+            var messageIndex = arch && arch.start( 'user', buttonNode.togetherID, 'fired' );
 
             moveList();
             listNode.visible = true;

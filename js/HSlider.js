@@ -66,10 +66,10 @@ define( function( require ) {
       startDrag: function() {}, // called when a drag sequence starts
       endDrag: function() {}, // called when a drag sequence ends
       //together
-      componentID: null
+      togetherID: null
     }, options );
     this.options = options; // @private TODO save only the options that are needed by prototype functions
-    this.componentID = options.componentID;
+    this.togetherID = options.togetherID;
 
     // @private ticks are added to this parent, so they are behind knob
     thisSlider.ticksParent = new Node();
@@ -147,7 +147,7 @@ define( function( require ) {
 
       start: function( event, trail ) {
         if ( options.enabledProperty.get() ) {
-          var messageIndex = arch && arch.start( 'user', thisSlider.componentID, 'dragStarted', { value: valueProperty.get() } );
+          var messageIndex = arch && arch.start( 'user', thisSlider.togetherID, 'dragStarted', { value: valueProperty.get() } );
           options.startDrag();
 
           var transform = trail.subtrailTo( thisSlider ).getTransform();
@@ -163,7 +163,7 @@ define( function( require ) {
           var x = transform.inversePosition2( event.pointer.point ).x - this.clickXOffset;
           var newValue = thisSlider.valueToPosition.inverse( x );
 
-          var messageIndex = arch && arch.start( 'user', thisSlider.componentID, 'dragged', { value: newValue } );
+          var messageIndex = arch && arch.start( 'user', thisSlider.togetherID, 'dragged', { value: newValue } );
           valueProperty.set( newValue );
           arch && arch.end( messageIndex );
         }
@@ -171,7 +171,7 @@ define( function( require ) {
 
       end: function() {
         if ( options.enabledProperty.get() ) {
-          var messageIndex = arch && arch.start( 'user', thisSlider.componentID, 'dragEnded', { value: valueProperty.get() } );
+          var messageIndex = arch && arch.start( 'user', thisSlider.togetherID, 'dragEnded', { value: valueProperty.get() } );
           options.endDrag();
           arch && arch.end( messageIndex );
         }

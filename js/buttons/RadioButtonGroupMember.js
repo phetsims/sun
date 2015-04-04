@@ -55,10 +55,10 @@ define( function( require ) {
       buttonAppearanceStrategy: RadioButtonGroupAppearance.defaultRadioButtonsAppearance,
       contentAppearanceStrategy: RadioButtonGroupAppearance.contentAppearanceStrategy,
 
-      componentID: null
+      togetherID: null
     }, options );
 
-    var buttonModel = new RadioButtonGroupMemberModel( property, value, { componentID: options.componentID } );
+    var buttonModel = new RadioButtonGroupMemberModel( property, value, { togetherID: options.togetherID } );
 
     // keep a reference to this property to be used in RadioButtonGroup for managing the labels
     this.interactionStateProperty = new RadioButtonInteractionStateProperty( buttonModel );

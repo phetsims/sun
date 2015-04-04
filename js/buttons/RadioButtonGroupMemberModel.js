@@ -23,7 +23,7 @@ define( function( require ) {
     ButtonModel.call( this );
 
     options = _.extend( {
-      componentID: null
+      togetherID: null
     }, options );
     var thisModel = this;
 
@@ -33,7 +33,7 @@ define( function( require ) {
     // fire on up
     this.property( 'down' ).onValue( false, function() {
       if ( thisModel.over && thisModel.enabled ) {
-        var messageIndex = arch && arch.start( 'user', options && options.componentID, 'fired' );
+        var messageIndex = arch && arch.start( 'user', options && options.togetherID, 'fired' );
         selectorProperty.set( selectedValue );
         arch && arch.end( messageIndex );
       }

@@ -18,10 +18,10 @@ define( function( require ) {
    */
   function MomentaryButtonModel( onProperty, options ) {
 
-    options = _.extend( { componentID: null }, options );
+    options = _.extend( { togetherID: null }, options );
 
     // To be set by together.js
-    this.componentID = options.componentID;
+    this.togetherID = options.togetherID;
 
     var self = this;
     ButtonModel.call( self );
@@ -39,7 +39,7 @@ define( function( require ) {
       // turn on when pressed (if enabled)
       if ( down ) {
         if ( self.enabled ) {
-          messageIndex = arch && arch.start( 'user', self.componentID, 'pressed' );
+          messageIndex = arch && arch.start( 'user', self.togetherID, 'pressed' );
           onProperty.set( true );
           arch && arch.end( messageIndex );
         }
@@ -47,7 +47,7 @@ define( function( require ) {
       else {
 
         // turn off when released
-        messageIndex = arch && arch.start( 'user', self.componentID, 'released' );
+        messageIndex = arch && arch.start( 'user', self.togetherID, 'released' );
         onProperty.set( false );
         arch && arch.end( messageIndex );
       }
@@ -55,7 +55,7 @@ define( function( require ) {
 
     // turn off when disabled
     this.property( 'enabled' ).onValue( false, function() {
-      var messageIndex = arch && arch.start( 'model', self.componentID, 'releasedDisabled' );
+      var messageIndex = arch && arch.start( 'model', self.togetherID, 'releasedDisabled' );
       onProperty.set( false );
       arch && arch.end( messageIndex );
     } );

@@ -66,12 +66,12 @@ define( function( require ) {
       // version(s) defined in this file.
       contentAppearanceStrategy: RectangularButtonView.fadeContentWhenDisabled,
 
-      componentID: null
+      togetherID: null
     }, options );
 
     Node.call( thisButton );
 
-    this.componentID = options.componentID;
+    this.togetherID = options.togetherID;
     var content = options.content; // convenience variable
 
     // For performance reasons, the content should be unpickable.

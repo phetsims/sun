@@ -27,10 +27,10 @@ define( function( require ) {
     options = _.extend( {
       cursor: 'pointer',
       focusable: true,
-      componentID: null
+      togetherID: null
     }, options );
 
-    this.componentID = options.componentID;
+    this.togetherID = options.togetherID;
 
     var thisNode = this;
     Node.call( thisNode );
@@ -52,7 +52,7 @@ define( function( require ) {
     // set property value on fire
     thisNode.addInputListener( new ButtonListener( {
       fire: function() {
-        var messageIndex = arch && arch.start( 'user', thisNode.componentID, 'fired', { value: value } );
+        var messageIndex = arch && arch.start( 'user', thisNode.togetherID, 'fired', { value: value } );
         property.set( value );
         arch && arch.end( messageIndex );
       }

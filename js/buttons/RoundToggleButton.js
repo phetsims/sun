@@ -24,9 +24,9 @@ define( function( require ) {
    */
   function RoundToggleButton( valueA, valueB, property, options ) {
     options = _.extend( {
-      componentID: null
+      togetherID: null
     }, options );
-    var buttonModel = new ToggleButtonModel( valueA, valueB, property, { componentID: options.componentID } );
+    var buttonModel = new ToggleButtonModel( valueA, valueB, property, { togetherID: options.togetherID } );
     RoundButtonView.call( this, buttonModel, new ToggleButtonInteractionState( buttonModel ), options );
   }
 

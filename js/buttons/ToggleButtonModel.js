@@ -24,12 +24,12 @@ define( function( require ) {
   function ToggleButtonModel( valueA, valueB, valueProperty, options ) {
 
     options = _.extend( {
-      componentID: null
+      togetherID: null
     }, options );
 
     var thisModel = this;
 
-    this.componentID = options.componentID;
+    this.togetherID = options.togetherID;
 
     this.valueA = valueA;
     this.valueB = valueB;
@@ -50,7 +50,7 @@ define( function( require ) {
   return inherit( ButtonModel, ToggleButtonModel, {
     toggle: function() {
       assert && assert( this.valueProperty.value === this.valueA || this.valueProperty.value === this.valueB );
-      var messageIndex = arch && arch.start( 'user', this.componentID, 'toggled' );
+      var messageIndex = arch && arch.start( 'user', this.togetherID, 'toggled' );
       if ( this.valueProperty.value === this.valueA ) {
         this.valueProperty.value = this.valueB;
       }
