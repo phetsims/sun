@@ -215,7 +215,7 @@ define( function( require ) {
     /**
      * Adds a major tick mark.
      * @param {number} value
-     * @param {Node} label optional
+     * @param {Node} [label] optional
      */
     addMajorTick: function( value, label ) {
       this.addTick( value, label, this.options.majorTickLength, this.options.majorTickStroke, this.options.majorTickLineWidth );
@@ -224,7 +224,7 @@ define( function( require ) {
     /**
      * Adds a minor tick mark.
      * @param {number} value
-     * @param {Node} label optional
+     * @param {Node} [label] optional
      */
     addMinorTick: function( value, label ) {
       this.addTick( value, label, this.options.minorTickLength, this.options.minorTickStroke, this.options.minorTickLineWidth );
@@ -233,7 +233,7 @@ define( function( require ) {
     /*
      * Adds a tick mark above the track.
      * @param {number} value
-     * @param {Node} label optional
+     * @param {Node} [label] optional
      * @param {number} length
      * @param {number} stroke
      * @param {number} lineWidth
