@@ -1,4 +1,4 @@
- // Copyright 2002-2013, University of Colorado Boulder
+// Copyright 2002-2013, University of Colorado Boulder
 
 /**
  * Control panel around a content node.
@@ -25,7 +25,8 @@ define( function( require ) {
     resize: true, // dynamically resize when content bounds change
     backgroundPickable: false,
     align: 'right', // {string} horizontal of content in the pane, left|center|right
-    minWidth: 0 // minimum width of the panel
+    minWidth: 0, // minimum width of the panel
+    togetherID: null
   };
 
   /**
@@ -41,6 +42,7 @@ define( function( require ) {
     options = _.extend( {}, defaultOptions, options );
     assert && assert( options.align === 'left' || options.align === 'center' || options.align === 'right' );
 
+    this.togetherID = options.togetherID;
     Node.call( thisNode );
 
     // correct size will be set by updateBackground
@@ -87,6 +89,8 @@ define( function( require ) {
 
     // Apply options after the layout is done, so that options that use the bounds will work properly.
     this.mutate( options );
+
+    together && this.togetherID && together.addComponent( this );
   }
 
   inherit( Node, Panel, {
