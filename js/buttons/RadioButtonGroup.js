@@ -144,8 +144,7 @@ define( function( require ) {
         _.extend( {
           content: contentArray[ i ].node,
           xMargin: xMargin,
-          yMargin: yMargin,
-          togetherID: contentArray[ i ].togetherID
+          yMargin: yMargin
         }, buttonOptions ) );
 
       // ensure the buttons don't resize when selected vs unselected by adding a rectangle with the max size

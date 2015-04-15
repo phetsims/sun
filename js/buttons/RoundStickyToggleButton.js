@@ -25,12 +25,7 @@ define( function( require ) {
    * @constructor
    */
   function RoundStickyToggleButton( valueUp, valueDown, property, options ) {
-    options = _.extend( {
-      togetherID: null
-    }, options );
-    var buttonModel = new StickyToggleButtonModel( valueUp, valueDown, property, {
-      togetherID: options.togetherID
-    } );
+    var buttonModel = new StickyToggleButtonModel( valueUp, valueDown, property );
     RoundButtonView.call( this, buttonModel, new StickyToggleButtonInteractionStateProperty( buttonModel ), options );
   }
 

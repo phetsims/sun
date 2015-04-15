@@ -16,12 +16,7 @@ define( function( require ) {
    * @param {Property.<boolean>} onProperty - is the momentary button on or off?
    * @constructor
    */
-  function MomentaryButtonModel( onProperty, options ) {
-
-    options = _.extend( { togetherID: null }, options );
-
-    // To be set by together.js
-    this.togetherID = options.togetherID;
+  function MomentaryButtonModel( onProperty ) {
 
     var self = this;
     ButtonModel.call( self );
@@ -34,30 +29,29 @@ define( function( require ) {
     this.onProperty.link( this.onObserver );
 
     this.downProperty.lazyLink( function( down ) {
-      var messageIndex = null;
 
       // turn on when pressed (if enabled)
       if ( down ) {
         if ( self.enabled ) {
-          messageIndex = arch && arch.start( 'user', self.togetherID, 'pressed' );
+          self.trigger0( 'startedCallbacksForPressed' );
           onProperty.set( true );
-          arch && arch.end( messageIndex );
+          self.trigger0( 'endedCallbacksForPressed' );
         }
       }
       else {
 
         // turn off when released
-        messageIndex = arch && arch.start( 'user', self.togetherID, 'released' );
+        self.trigger0( 'startedCallbacksForReleased' );
         onProperty.set( false );
-        arch && arch.end( messageIndex );
+        self.trigger0( 'endedCallbacksForReleased' );
       }
     } );
 
     // turn off when disabled
     this.property( 'enabled' ).onValue( false, function() {
-      var messageIndex = arch && arch.start( 'model', self.togetherID, 'releasedDisabled' );
+      self.trigger0( 'startedCallbacksForReleasedDisabled' );
       onProperty.set( false );
-      arch && arch.end( messageIndex );
+      self.trigger0( 'endedCallbacksForReleasedDisabled' );
     } );
   }
 

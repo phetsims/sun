@@ -26,11 +26,8 @@ define( function( require ) {
 
     options = _.extend( {
       cursor: 'pointer',
-      focusable: true,
-      togetherID: null
+      focusable: true
     }, options );
-
-    this.togetherID = options.togetherID;
 
     var thisNode = this;
     Node.call( thisNode );
@@ -52,20 +49,14 @@ define( function( require ) {
     // set property value on fire
     thisNode.addInputListener( new ButtonListener( {
       fire: function() {
-        var messageIndex = arch && arch.start( 'user', thisNode.togetherID, 'fired', { value: value } );
+        thisNode.trigger0( 'fireStarted' );
         property.set( value );
-        arch && arch.end( messageIndex );
+        thisNode.trigger0( 'fireEnded' );
       }
     } ) );
 
     this.mutate( options );
-
-    together && together.addComponent( this );
   }
 
-  return inherit( Node, RadioButton, {
-    dispose: function() {
-      together && together.removeComponent( this );
-    }
-  } );
+  return inherit( Node, RadioButton );
 } );

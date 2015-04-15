@@ -22,9 +22,6 @@ define( function( require ) {
   function RadioButtonGroupMemberModel( selectorProperty, selectedValue, options ) {
     ButtonModel.call( this );
 
-    options = _.extend( {
-      togetherID: null
-    }, options );
     var thisModel = this;
 
     this.selectedValue = selectedValue;

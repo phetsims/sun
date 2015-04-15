@@ -33,14 +33,11 @@ define( function( require ) {
       checkBoxColorDisabled: 'gray',
       checkBoxColorBackground: 'white',
       tabIndex: 0,
-      togetherID: null,
       focusable: true
     }, options );
 
     var thisNode = this;
     Node.call( this );
-
-    thisNode.togetherID = options.togetherID;
 
     thisNode._checkBoxColor = options.checkBoxColor; // @private
     thisNode._checkBoxColorDisabled = options.checkBoxColorDisabled; // @private
@@ -78,12 +75,9 @@ define( function( require ) {
     thisNode.addInputListener( new ButtonListener( {
       fire: function() {
         if ( thisNode._enabled ) {
-          var messageIndex = arch && arch.start( 'user', thisNode.togetherID, 'toggled', {
-              oldValue: property.value,
-              newValue: !property.value
-            } );
+          thisNode.trigger0( 'fireStarted' );
           property.value = !property.value;
-          arch && arch.end( messageIndex );
+          thisNode.trigger0( 'fireEnded' );
         }
       }
     } ) );
@@ -109,8 +103,6 @@ define( function( require ) {
 
     // Apply additional options
     thisNode.mutate( options );
-
-    together && together.addComponent( this );
   }
 
   return inherit( Node, CheckBox, {

@@ -23,13 +23,7 @@ define( function( require ) {
    */
   function ToggleButtonModel( valueA, valueB, valueProperty, options ) {
 
-    options = _.extend( {
-      togetherID: null
-    }, options );
-
     var thisModel = this;
-
-    this.togetherID = options.togetherID;
 
     this.valueA = valueA;
     this.valueB = valueB;

@@ -25,9 +25,6 @@ define( function( require ) {
   function StickyToggleButtonModel( valueUp, valueDown, valueProperty, options ) {
     var thisModel = this;
 
-    options = _.extend( { togetherID: null }, options );
-    this.togetherID = options.togetherID;
-
     this.valueUp = valueUp;
     this.valueDown = valueDown;
     this.valueProperty = valueProperty;

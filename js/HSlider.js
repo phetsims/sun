@@ -65,11 +65,8 @@ define( function( require ) {
       enabledProperty: new Property( true ),
       startDrag: function() {}, // called when a drag sequence starts
       endDrag: function() {}, // called when a drag sequence ends
-      //together
-      togetherID: null
     }, options );
     this.options = options; // @private TODO save only the options that are needed by prototype functions
-    this.togetherID = options.togetherID;
 
     // @private ticks are added to this parent, so they are behind knob
     thisSlider.ticksParent = new Node();
@@ -147,33 +144,34 @@ define( function( require ) {
 
       start: function( event, trail ) {
         if ( options.enabledProperty.get() ) {
-          var messageIndex = arch && arch.start( 'user', thisSlider.togetherID, 'dragStarted', { value: valueProperty.get() } );
+          thisSlider.trigger1( 'startedCallbacksForDragStarted', valueProperty.get() );
           options.startDrag();
 
           var transform = trail.subtrailTo( thisSlider ).getTransform();
           this.clickXOffset = transform.inversePosition2( event.pointer.point ).x - thumb.x;
 
-          arch && arch.end( messageIndex );
+          thisSlider.trigger1( 'endedCallbacksForDragStarted', valueProperty.get() );
         }
       },
 
       drag: function( event, trail ) {
         if ( options.enabledProperty.get() ) {
+          thisSlider.trigger1( 'startedCallbacksForDragged', valueProperty.get() );
           var transform = trail.subtrailTo( thisSlider ).getTransform(); // we only want the transform to our parent
           var x = transform.inversePosition2( event.pointer.point ).x - this.clickXOffset;
           var newValue = thisSlider.valueToPosition.inverse( x );
 
-          var messageIndex = arch && arch.start( 'user', thisSlider.togetherID, 'dragged', { value: newValue } );
           valueProperty.set( newValue );
-          arch && arch.end( messageIndex );
+
+          thisSlider.trigger1( 'endedCallbacksForDragged', valueProperty.get() );
         }
       },
 
       end: function() {
         if ( options.enabledProperty.get() ) {
-          var messageIndex = arch && arch.start( 'user', thisSlider.togetherID, 'dragEnded', { value: valueProperty.get() } );
+          thisSlider.trigger1( 'startedCallbacksForDragEnded', valueProperty.get() );
           options.endDrag();
-          arch && arch.end( messageIndex );
+          thisSlider.trigger1( 'endedCallbacksForDragEnded', valueProperty.get() );
         }
       }
     } );
@@ -198,8 +196,6 @@ define( function( require ) {
     thisSlider.valueProperty.link( thisSlider.valueObserver ); // must be unlinked in dispose
 
     thisSlider.mutate( options );
-
-    together && together.addComponent( this );
   }
 
   inherit( Node, HSlider, {
