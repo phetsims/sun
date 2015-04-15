@@ -23,8 +23,10 @@ define( function( require ) {
    * @constructor
    */
   function RectangularToggleButton( valueA, valueB, property, options ) {
-    var buttonModel = new ToggleButtonModel( valueA, valueB, property, options );
-    RectangularButtonView.call( this, buttonModel, new ToggleButtonInteractionState( buttonModel ), options );
+
+    //@public, so it can be listened to by together
+    this.toggleButtonModel = new ToggleButtonModel( valueA, valueB, property, options );
+    RectangularButtonView.call( this, this.toggleButtonModel, new ToggleButtonInteractionState( this.toggleButtonModel ), options );
   }
 
   return inherit( RectangularButtonView, RectangularToggleButton );

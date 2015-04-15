@@ -23,8 +23,8 @@ define( function( require ) {
    * @constructor
    */
   function RoundToggleButton( valueA, valueB, property, options ) {
-    var buttonModel = new ToggleButtonModel( valueA, valueB, property );
-    RoundButtonView.call( this, buttonModel, new ToggleButtonInteractionState( buttonModel ), options );
+    this.toggleButtonModel = new ToggleButtonModel( valueA, valueB, property );
+    RoundButtonView.call( this, this.toggleButtonModel, new ToggleButtonInteractionState( this.toggleButtonModel ), options );
   }
 
   return inherit( RoundButtonView, RoundToggleButton );
