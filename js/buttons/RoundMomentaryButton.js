@@ -23,8 +23,6 @@ define( function( require ) {
   function RoundMomentaryButton( onProperty, options ) {
     this.buttonModel = new MomentaryButtonModel( onProperty );
     RoundButtonView.call( this, this.buttonModel, new MomentaryButtonInteractionStateProperty( this.buttonModel ), options );
-
-    together && together.addComponent( this );
   }
 
   return inherit( RoundButtonView, RoundMomentaryButton );

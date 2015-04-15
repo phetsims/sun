@@ -118,8 +118,6 @@ define( function( require ) {
     // Mutate with the options after the layout is complete so that width-
     // dependent fields like centerX will work.
     thisButton.mutate( options );
-
-    together && together.addComponent( this );
   }
 
   /**
@@ -399,9 +397,6 @@ define( function( require ) {
   };
 
   return inherit( Node, RectangularButtonView, {
-    dispose: function() {
-      together && together.removeComponent( this );
-    },
     set enabled( value ) {
       assert && assert( typeof value === 'boolean', 'RectangularButtonView.enabled must be a boolean value' );
       this.buttonModel.enabled = value;
