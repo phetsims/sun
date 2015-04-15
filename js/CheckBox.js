@@ -75,9 +75,11 @@ define( function( require ) {
     thisNode.addInputListener( new ButtonListener( {
       fire: function() {
         if ( thisNode._enabled ) {
-          thisNode.trigger0( 'fireStarted' );
-          property.value = !property.value;
-          thisNode.trigger0( 'fireEnded' );
+          var oldValue = property.value;
+          var newValue = !property.value;
+          thisNode.trigger2( 'startedCallbacksForToggled', oldValue, newValue );
+          property.value = newValue;
+          thisNode.trigger2( 'endedCallbacksForToggled', oldValue, newValue );
         }
       }
     } ) );
