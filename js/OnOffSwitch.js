@@ -28,7 +28,7 @@ define( function( require ) {
   var SimpleDragHandler = require( 'SCENERY/input/SimpleDragHandler' );
 
   /**
-   * @param {Property.<string>} onProperty
+   * @param {Property.<boolean>} onProperty
    * @param {Object} [options]
    * @constructor
    */
