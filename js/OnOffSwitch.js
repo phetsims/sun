@@ -110,17 +110,14 @@ define( function( require ) {
         // if moved past the threshold, choose value based on the side, otherwise just toggle
         var newValue = passedDragThreshold ? thisNode.thumbPositionToValue() : !onProperty.get();
 
-        var messageIndex = arch && arch.start( 'user', options.togetherID, 'toggled', {
-            oldValue: oldValue,
-            newValue: newValue
-          } );
+        thisNode.trigger2( 'startedCallbacksForToggled', oldValue, newValue );
 
         onProperty.set( newValue );
 
         // update the thumb location (sanity check that it's here, only needs to be run if passedDragThreshold===true)
         updateThumb( onProperty.get() );
-        
-        arch && arch.end( messageIndex );
+
+        thisNode.trigger2( 'endedCallbacksForToggled', oldValue, newValue );
       },
 
       drag: function( evt, trail ) {
@@ -140,9 +137,11 @@ define( function( require ) {
         trackNode.fill = value ? options.trackOnFill : options.trackOffFill;
 
         if ( options.toggleWhileDragging === true || ( isDraggedOutside && options.toggleWhileDragging === null ) ) {
-          var messageIndex = arch && arch.start( 'user', options.togetherID, 'toggled' );
+
+          // TODO: A way to distinguish between drag-to-toggle vs click-to-toggle
+          thisNode.trigger2( 'startedCallbacksForToggled', !value, value );
           onProperty.set( value );
-          arch && arch.end( messageIndex );
+          thisNode.trigger2( 'endedCallbacksForToggled', !value, value );
         }
       },
 
