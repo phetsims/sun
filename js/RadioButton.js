@@ -49,9 +49,9 @@ define( function( require ) {
     // set property value on fire
     thisNode.addInputListener( new ButtonListener( {
       fire: function() {
-        thisNode.trigger0( 'fireStarted' );
+        thisNode.trigger1( 'startedCallbacksForFired', value );
         property.set( value );
-        thisNode.trigger0( 'fireEnded' );
+        thisNode.trigger1( 'endedCallbacksForFired', value );
       }
     } ) );
 
