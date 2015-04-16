@@ -232,16 +232,36 @@ define( function( require ) {
         }
       }
     } );
+
+    // @private, solely for getRadioButtonGroupMember
+    this.buttons = buttons;
   }
 
   return inherit( LayoutBox, RadioButtonGroup, {
+
+    /**
+     * Find a button corresponding to a specific value.  Used for together interoperability.
+     * @param {Object} value - the value for the button
+     * @returns {RadioButtonGroupMember}
+     */
+    getRadioButtonGroupMember: function( value ) {
+      for ( var i = 0; i < this.buttons.length; i++ ) {
+        var button = this.buttons[ i ];
+        if ( button.selectionValue === value ) {
+          return button;
+        }
+      }
+      assert && assert( false, 'radio button group member not found for ' + value );
+      return null;
+    },
 
     set enabled( value ) {
       assert && assert( typeof value === 'boolean', 'RadioButtonGroup.enabled must be a boolean value' );
       this.enabledProperty.set( value );
     },
 
-    get enabled() { return this.enabledProperty.get(); }
-
+    get enabled() {
+      return this.enabledProperty.get();
+    }
   } );
 } );

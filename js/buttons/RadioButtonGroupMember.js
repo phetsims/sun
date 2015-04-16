@@ -26,6 +26,10 @@ define( function( require ) {
    */
   function RadioButtonGroupMember( property, value, options ) {
 
+    // The value that corresponds to this button
+    // @public for together
+    this.selectionValue = value;
+
     options = _.extend( {
       // The fill for the rectangle behind the radio buttons.  Default color is bluish color, as in the other button library.
       baseColor: ColorConstants.LIGHT_BLUE,
@@ -56,12 +60,13 @@ define( function( require ) {
       contentAppearanceStrategy: RadioButtonGroupAppearance.contentAppearanceStrategy
     }, options );
 
-    var buttonModel = new RadioButtonGroupMemberModel( property, value );
+    // @public for access like together
+    this.radioButtonGroupMemberModel = new RadioButtonGroupMemberModel( property, value );
 
     // keep a reference to this property to be used in RadioButtonGroup for managing the labels
-    this.interactionStateProperty = new RadioButtonInteractionStateProperty( buttonModel );
+    this.interactionStateProperty = new RadioButtonInteractionStateProperty( this.radioButtonGroupMemberModel );
 
-    RectangularButtonView.call( this, buttonModel, this.interactionStateProperty, options );
+    RectangularButtonView.call( this, this.radioButtonGroupMemberModel, this.interactionStateProperty, options );
   }
 
   return inherit( RectangularButtonView, RadioButtonGroupMember );

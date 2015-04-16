@@ -16,10 +16,9 @@ define( function( require ) {
   /**
    * @param {Property} selectorProperty - the property for the RadioButtonGroup that determines which button is selected
    * @param {object} selectedValue - the value that selectorProperty takes when this particular SingleRadioButton is selected
-   * @param {object} [options] - options
    * @constructor
    */
-  function RadioButtonGroupMemberModel( selectorProperty, selectedValue, options ) {
+  function RadioButtonGroupMemberModel( selectorProperty, selectedValue ) {
     ButtonModel.call( this );
 
     var thisModel = this;
@@ -30,9 +29,9 @@ define( function( require ) {
     // fire on up
     this.property( 'down' ).onValue( false, function() {
       if ( thisModel.over && thisModel.enabled ) {
-        var messageIndex = arch && arch.start( 'user', options && options.togetherID, 'fired' );
+        thisModel.trigger1( 'startedCallbacksForFired', selectedValue );
         selectorProperty.set( selectedValue );
-        arch && arch.end( messageIndex );
+        thisModel.trigger1( 'endedCallbacksForFired', selectedValue );
       }
     } );
   }
