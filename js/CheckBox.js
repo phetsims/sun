@@ -36,8 +36,22 @@ define( function( require ) {
       checkBoxColorBackground: 'white',
       tabIndex: 0,
       focusable: true,
-      checkBoxAppearanceStrategy: CheckBox.fadeCheckBoxWhenDisabled, // {function( {Node} checkBox, {boolean} enabled )}
-      contentAppearanceStrategy: CheckBox.fadeContentWhenDisabled // {function( {Node} content, {boolean} enabled )}
+
+      /*
+       * {function( {Node} checkBox, {boolean} enabled ) }
+       * Strategy for controlling the check box's appearance, excluding any content.
+       * This can be a stock strategy from this file or custom.
+       * To create a custom one, model it off of the stock strategies defined in this file.
+       */
+      checkBoxAppearanceStrategy: CheckBox.fadeCheckBoxWhenDisabled,
+
+      /*
+       * {function( {Node} content, {boolean} enabled )}
+       * Strategy for controlling the appearance of the content based on the check box's state.
+       * This can be a stock strategy from this file, or custom.
+       * To create a custom one, model it off of the stock version(s) defined in this file.
+       */
+      contentAppearanceStrategy: CheckBox.fadeContentWhenDisabled
     }, options );
 
     var thisNode = this;
@@ -152,8 +166,8 @@ define( function( require ) {
   }, {
 
     /**
-     * Default check box appearance strategy, fades the check box by changing opacity.
-     * @param {Node} checkBox the check box
+     * Default for options.checkBoxAppearanceStrategy, fades the check box by changing opacity.
+     * @param {Node} checkBoxNode the check box
      * @param {boolean} enabled
      * @static
      */
@@ -162,7 +176,7 @@ define( function( require ) {
     },
 
     /**
-     * Default check box appearance strategy, fades the check box by changing opacity.
+     * Default for options.contentAppearanceStrategy, fades the content by changing opacity.
      * @param {Node} content the content that appears next to the check box
      * @param {boolean} enabled
      * @static
@@ -174,9 +188,9 @@ define( function( require ) {
     /**
      * Factory method, creates a check box with a text label and optional icon.
      * @param {string} text
-     * @param {Object} textOptions options that apply to the text, same as scenery.Text
+     * @param {Object} textOptions options passed to scenery.Text constructor
      * @param {Property.<boolean>} property
-     * @param {Object} [checkBoxOptions]
+     * @param {Object} [checkBoxOptions] options passed to CheckBox constructor
      * @returns {CheckBox}
      * @static
      */
