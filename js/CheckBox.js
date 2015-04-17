@@ -142,9 +142,20 @@ define( function( require ) {
       this.uncheckedNode.fill = this.checkedNode.fill;
     },
 
-    get enabled() { return this._enabled; },
+    /**
+     * Is the check box enabled?
+     * @returns {boolean}
+     */
+    getEnabled: function() {
+      return this._enabled;
+    },
+    get enabled() { return this.getEnabled(); },
 
-    set enabled( value ) {
+    /**
+     * Sets whether the check box is enabled.
+     * @param {boolean} value
+     */
+    setEnabled: function( value ) {
 
       this._enabled = value;
       this.pickable = value;
@@ -156,7 +167,8 @@ define( function( require ) {
       if ( this.content.setEnabled ) {
         this.content.setEnabled( value );
       }
-    }
+    },
+    set enabled( value ) { this.setEnabled( value ); }
 
   }, {
 
@@ -168,6 +180,7 @@ define( function( require ) {
      * @param {*} textOptions options that apply to the text, same as scenery.Text
      * @param {Property.<boolean>} property
      * @returns {CheckBox}
+     * @static
      */
     createTextCheckBox: function( text, textOptions, property, checkBoxOptions ) {
 
