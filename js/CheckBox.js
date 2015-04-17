@@ -17,6 +17,9 @@ define( function( require ) {
   var Text = require( 'SCENERY/nodes/Text' );
   var AriaSpeech = require( 'SCENERY/accessibility/AriaSpeech' );
 
+  // constants
+  var DISABLED_OPACITY = 0.3;
+
   /**
    * @param {Node} content
    * @param {Property.<boolean>} property
@@ -30,37 +33,46 @@ define( function( require ) {
       boxWidth: 21,
       cursor: 'pointer',
       checkBoxColor: 'black',
-      checkBoxColorDisabled: 'gray',
       checkBoxColorBackground: 'white',
       tabIndex: 0,
-      focusable: true
+      focusable: true,
+      checkBoxAppearanceStrategy: CheckBox.fadeCheckBoxWhenDisabled, // {function( {Node} checkBox, {boolean} enabled )}
+      contentAppearanceStrategy: CheckBox.fadeContentWhenDisabled // {function( {Node} content, {boolean} enabled )}
     }, options );
 
     var thisNode = this;
     Node.call( this );
 
-    thisNode._checkBoxColor = options.checkBoxColor; // @private
-    thisNode._checkBoxColorDisabled = options.checkBoxColorDisabled; // @private
-    thisNode._checkBoxColorBackground = options.checkBoxColorBackground; // @private
-
-    // save this stuff for use in prototype functions
-    thisNode.options = options; // @private
     thisNode.content = content; // @private
+    thisNode.checkBoxAppearanceStrategy = options.checkBoxAppearanceStrategy; // @private
+    thisNode.contentAppearanceStrategy = options.contentAppearanceStrategy; // @private
+
     thisNode._enabled = true; // @private
 
     // Make the background.  Until we are creating our own shapes, just
     // put a rectangle behind the font awesome check box icons.
     thisNode.backgroundNode = new Rectangle( 0, -options.boxWidth, options.boxWidth * 0.95, options.boxWidth * 0.95,
-      options.boxWidth * 0.2, options.boxWidth * 0.2 );
+      options.boxWidth * 0.2, options.boxWidth * 0.2, {
+        fill: options.checkBoxColorBackground
+      } );
 
-    thisNode.uncheckedNode = new FontAwesomeNode( 'check_empty' ); // @private
+    // @private
+    thisNode.uncheckedNode = new FontAwesomeNode( 'check_empty', {
+      fill: options.checkBoxColor
+    } );
     var iconScale = options.boxWidth / thisNode.uncheckedNode.width;
     thisNode.uncheckedNode.scale( iconScale );
-    thisNode.checkedNode = new FontAwesomeNode( 'check', { scale: iconScale } ); // @private
 
-    thisNode.addChild( thisNode.backgroundNode );
-    thisNode.addChild( thisNode.checkedNode );
-    thisNode.addChild( thisNode.uncheckedNode );
+    // @private
+    thisNode.checkedNode = new FontAwesomeNode( 'check', {
+      scale: iconScale,
+      fill: options.checkBoxColor
+    } );
+
+    // @private
+    this.checkBoxNode = new Node( { children: [ thisNode.backgroundNode, thisNode.checkedNode, thisNode.uncheckedNode ] } );
+
+    thisNode.addChild( this.checkBoxNode );
     thisNode.addChild( content );
 
     content.left = thisNode.checkedNode.right + options.spacing;
@@ -101,45 +113,20 @@ define( function( require ) {
       } );
     } );
 
-    this.updateColors();
-
     // Apply additional options
     thisNode.mutate( options );
   }
 
   return inherit( Node, CheckBox, {
 
-    // prototype properties
-
-    get checkBoxColorBackground() { return this._checkBoxColorBackground; },
+    get checkBoxColorBackground() { return this.backgroundNode.fill; },
     set checkBoxColorBackground( value ) {
-      if ( this._checkBoxColorBackground !== value ) {
-        this._checkBoxColorBackground = value;
-        this.updateColors();
-      }
+      this.backgroundNode.fill = value;
     },
 
-    get checkBoxColor() { return this._checkBoxColor; },
+    get checkBoxColor() { return this.checkedNode.fill; },
     set checkBoxColor( value ) {
-      if ( this._checkBoxColor !== value ) {
-        this._checkBoxColor = value;
-        this.updateColors();
-      }
-    },
-
-    get checkBoxColorDisabled() { return this._checkBoxColorDisabled; },
-    set checkBoxColorDisabled( value ) {
-      if ( this._checkBoxColorDisabled !== value ) {
-        this._checkBoxColorDisabled = value;
-        this.updateColors();
-      }
-    },
-
-    // @private
-    updateColors: function() {
-      this.backgroundNode.fill = this._checkBoxColorBackground;
-      this.checkedNode.fill = this._enabled ? this._checkBoxColor : this._checkBoxColorDisabled;
-      this.uncheckedNode.fill = this.checkedNode.fill;
+      this.checkedNode.fill = this.uncheckedNode.fill = value;
     },
 
     /**
@@ -156,38 +143,46 @@ define( function( require ) {
      * @param {boolean} value
      */
     setEnabled: function( value ) {
-
-      this._enabled = value;
-      this.pickable = value;
-
-      // set the color of the check box icons
-      this.updateColors();
-
-      // enable/disable the content, if it supports it
-      if ( this.content.setEnabled ) {
-        this.content.setEnabled( value );
-      }
+      this._enabled = this.pickable = value;
+      this.checkBoxAppearanceStrategy( this.checkBoxNode, value );
+      this.contentAppearanceStrategy( this.content, value );
     },
     set enabled( value ) { this.setEnabled( value ); }
 
   }, {
 
-    // static properties
+    /**
+     * Default check box appearance strategy, fades the check box by changing opacity.
+     * @param {Node} checkBox the check box
+     * @param {boolean} enabled
+     * @static
+     */
+    fadeCheckBoxWhenDisabled: function( checkBoxNode, enabled ) {
+      checkBoxNode.opacity = enabled ? 1 : DISABLED_OPACITY;
+    },
+
+    /**
+     * Default check box appearance strategy, fades the check box by changing opacity.
+     * @param {Node} content the content that appears next to the check box
+     * @param {boolean} enabled
+     * @static
+     */
+    fadeContentWhenDisabled: function( content, enabled ) {
+      content.opacity = enabled ? 1 : DISABLED_OPACITY;
+    },
 
     /**
      * Factory method, creates a check box with a text label and optional icon.
      * @param {string} text
-     * @param {*} textOptions options that apply to the text, same as scenery.Text
+     * @param {Object} textOptions options that apply to the text, same as scenery.Text
      * @param {Property.<boolean>} property
+     * @param {Object} [checkBoxOptions]
      * @returns {CheckBox}
      * @static
      */
     createTextCheckBox: function( text, textOptions, property, checkBoxOptions ) {
 
-      textOptions = _.extend( {
-        fill: 'black',
-        fillDisabled: 'rgb(220,220,220)'
-      }, textOptions );
+      textOptions = textOptions || {};
 
       checkBoxOptions = _.extend( {
         icon: null,  // an optional node, added to the right of the text
@@ -200,29 +195,13 @@ define( function( require ) {
       var textNode = new Text( text, textOptions );
       content.addChild( textNode );
 
-      // options icon
+      // optional icon
       if ( checkBoxOptions.icon ) {
         content.addChild( checkBoxOptions.icon );
         //TODO support different layouts of text and image?
         checkBoxOptions.icon.left = textNode.right + checkBoxOptions.iconSpacing;
         checkBoxOptions.icon.centerY = textNode.centerY;
       }
-
-      content.setEnabled = function( enabled ) {
-        textNode.fill = enabled ? textOptions.fill : textOptions.fillDisabled;
-
-        // if the check box has an icon...
-        if ( checkBoxOptions.icon ) {
-          if ( checkBoxOptions.icon.setEnabled ) {
-            // use setEnabled if provided by icon
-            checkBoxOptions.icon.setEnabled( enabled );
-          }
-          else {
-            // fallback to using opacity
-            checkBoxOptions.icon.opacity = enabled ? 1 : 0.3;
-          }
-        }
-      };
 
       return new CheckBox( content, property, checkBoxOptions );
     }
