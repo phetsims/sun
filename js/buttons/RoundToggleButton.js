@@ -12,7 +12,7 @@ define( function( require ) {
   // modules
   var inherit = require( 'PHET_CORE/inherit' );
   var RoundButtonView = require( 'SUN/buttons/RoundButtonView' );
-  var ToggleButtonInteractionState = require( 'SUN/buttons/ToggleButtonInteractionState' );
+  var ToggleButtonInteractionStateProperty = require( 'SUN/buttons/ToggleButtonInteractionStateProperty' );
   var ToggleButtonModel = require( 'SUN/buttons/ToggleButtonModel' );
 
   /**
@@ -24,7 +24,7 @@ define( function( require ) {
    */
   function RoundToggleButton( valueA, valueB, property, options ) {
     this.toggleButtonModel = new ToggleButtonModel( valueA, valueB, property );
-    RoundButtonView.call( this, this.toggleButtonModel, new ToggleButtonInteractionState( this.toggleButtonModel ), options );
+    RoundButtonView.call( this, this.toggleButtonModel, new ToggleButtonInteractionStateProperty( this.toggleButtonModel ), options );
   }
 
   return inherit( RoundButtonView, RoundToggleButton );
