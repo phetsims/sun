@@ -43,14 +43,11 @@ define( function( require ) {
   return inherit( ButtonModel, ToggleButtonModel, {
     toggle: function() {
       assert && assert( this.valueProperty.value === this.valueA || this.valueProperty.value === this.valueB );
-      this.trigger0( 'startedCallbacksForToggled' );
-      if ( this.valueProperty.value === this.valueA ) {
-        this.valueProperty.value = this.valueB;
-      }
-      else {
-        this.valueProperty.value = this.valueA;
-      }
-      this.trigger0( 'endedCallbacksForToggled' );
+      var oldValue = this.valueProperty.value;
+      var newValue = this.valueProperty.value === this.valueA ? this.valueB : this.valueA;
+      this.trigger2( 'startedCallbacksForToggled', oldValue, newValue );
+      this.valueProperty.value = newValue;
+      this.trigger2( 'endedCallbacksForToggled', oldValue, newValue );
     }
   } );
 } );
