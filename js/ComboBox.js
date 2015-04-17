@@ -129,9 +129,7 @@ define( function( require ) {
         itemYMargin: 6,
         itemHighlightFill: 'rgb(245,245,245)',
         itemHighlightStroke: null,
-        itemHighlightLineWidth: 1,
-        //together
-        buttonNodeTogetherID: null // Must be specified if using together
+        itemHighlightLineWidth: 1
       },
       options );
 
@@ -202,7 +200,6 @@ define( function( require ) {
     // populate list with items
     for ( var j = 0; j < items.length; j++ ) {
 
-      // map through togetherIDs for the list items
       var itemNodeOptions = items[ j ].options;
 
       // Create the list item node itself
