@@ -64,7 +64,7 @@ define( function( require ) {
       cursor: 'pointer',
       enabledProperty: new Property( true ),
       startDrag: function() {}, // called when a drag sequence starts
-      endDrag: function() {}, // called when a drag sequence ends
+      endDrag: function() {} // called when a drag sequence ends
     }, options );
     this.options = options; // @private TODO save only the options that are needed by prototype functions
 
