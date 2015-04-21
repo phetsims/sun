@@ -249,7 +249,13 @@ define( function( require ) {
         label.centerX = tick.centerX;
         label.bottom = tick.top - this.options.tickLabelSpacing;
       }
-    }
+    },
+
+    set enabled( value ) {
+      this.enabledProperty.value = value;
+    },
+
+    get enabled() { return this.enabledProperty.value }
   } );
 
   /**
