@@ -255,7 +255,7 @@ define( function( require ) {
       this.enabledProperty.value = value;
     },
 
-    get enabled() { return this.enabledProperty.value }
+    get enabled() { return this.enabledProperty.value; }
   } );
 
   /**
