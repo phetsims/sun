@@ -28,6 +28,9 @@ define( function( require ) {
    */
   function CheckBox( content, property, options ) {
 
+    // Store for dispose();  Use a unique name to reduce the risk of collisions with parent/child classes
+    this.checkBoxValueProperty = property;
+
     options = _.extend( {
       spacing: 5,
       boxWidth: 21,
@@ -36,6 +39,7 @@ define( function( require ) {
       checkBoxColorBackground: 'white',
       tabIndex: 0,
       focusable: true,
+      tandem: null,
 
       /*
        * {function( {Node} checkBox, {boolean} enabled ) }
@@ -98,7 +102,7 @@ define( function( require ) {
     content.pickable = false; // since there's a pickable rectangle on top of content
 
     // interactivity
-    thisNode.addInputListener( new ButtonListener( {
+    this.checkBoxButtonListener = new ButtonListener( {
       fire: function() {
         if ( thisNode._enabled ) {
           var oldValue = property.value;
@@ -108,30 +112,40 @@ define( function( require ) {
           thisNode.trigger2( 'endedCallbacksForToggled', oldValue, newValue );
         }
       }
-    } ) );
+    } );
+    thisNode.addInputListener( this.checkBoxButtonListener );
 
     // sync with property
-    property.link( function( checked ) {
+    this.checkBoxCheckedListener = function( checked ) {
       thisNode.checkedNode.visible = checked;
       thisNode.uncheckedNode.visible = !checked;
       AriaSpeech.setText( property.value ? 'checked' : 'unchecked' );
-    } );
 
-    property.link( function( value ) {
       _.each( thisNode.instances, function( instance ) {
 
         //Make sure accessibility is enabled, then apply the change to the peer
         _.each( instance.peers, function( peer ) {
-          peer.element.setAttribute( 'checked', value );
+          peer.element.setAttribute( 'checked', checked );
         } );
       } );
-    } );
+    };
+    property.link( this.checkBoxCheckedListener );
 
     // Apply additional options
     thisNode.mutate( options );
+
+    // Tandem support
+    // Give it a novel name to reduce the risk of parent or child collisions
+    this.checkBoxTandem = options.tandem;
+    this.checkBoxTandem && this.checkBoxTandem.addInstance( this );
   }
 
   return inherit( Node, CheckBox, {
+    dispose: function() {
+      this.checkBoxTandem && this.checkBoxTandem.removeInstance( this );
+      this.checkBoxValueProperty.unlink( this.checkBoxCheckedListener );
+      this.removeInputListener( this.checkBoxButtonListener );
+    },
 
     get checkBoxColorBackground() { return this.backgroundNode.fill; },
     set checkBoxColorBackground( value ) {
