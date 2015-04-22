@@ -67,7 +67,16 @@ define( function( require ) {
     this.interactionStateProperty = new RadioButtonInteractionStateProperty( this.radioButtonGroupMemberModel );
 
     RectangularButtonView.call( this, this.radioButtonGroupMemberModel, this.interactionStateProperty, options );
+
+    // Tandem support
+    // Give it a novel name to reduce the risk of parent or child collisions
+    this.radioButtonGroupMemberTandem = options.tandem;
+    this.radioButtonGroupMemberTandem && this.radioButtonGroupMemberTandem.addInstance( this );
   }
 
-  return inherit( RectangularButtonView, RadioButtonGroupMember );
+  return inherit( RectangularButtonView, RadioButtonGroupMember, {
+    dispose: function() {
+      this.radioButtonGroupMemberTandem && this.radioButtonGroupMemberTandem.removeInstance( this );
+    }
+  } );
 } );
