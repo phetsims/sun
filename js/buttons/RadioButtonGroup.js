@@ -136,6 +136,7 @@ define( function( require ) {
     var buttons = [];
     var button;
     for ( i = 0; i < contentArray.length; i++ ) {
+
       // each individual radio button will have a different margin to make sure they are all the same size
       var xMargin = ( ( maxWidth - contentArray[ i ].node.width ) / 2 ) + options.buttonContentXMargin;
       var yMargin = ( ( maxHeight - contentArray[ i ].node.height ) / 2 ) + options.buttonContentYMargin;
@@ -144,18 +145,18 @@ define( function( require ) {
         _.extend( {
           content: contentArray[ i ].node,
           xMargin: xMargin,
-          yMargin: yMargin
+          yMargin: yMargin,
+          tandem: contentArray[ i ].tandem
         }, buttonOptions ) );
 
       // ensure the buttons don't resize when selected vs unselected by adding a rectangle with the max size
       var maxLineWidth = Math.max( options.selectedLineWidth, options.deselectedLineWidth );
       var maxButtonWidth = maxLineWidth + contentArray[ i ].node.width + xMargin * 2;
       var maxButtonHeight = maxLineWidth + contentArray[ i ].node.height + yMargin * 2;
-      var boundingRect = new Rectangle( 0, 0, maxButtonWidth, maxButtonHeight,
-        {
-          fill: 'rgba(0,0,0,0)',
-          center: radioButton.center
-        } );
+      var boundingRect = new Rectangle( 0, 0, maxButtonWidth, maxButtonHeight, {
+        fill: 'rgba(0,0,0,0)',
+        center: radioButton.center
+      } );
       radioButton.addChild( boundingRect );
 
       // if a label is given, the button becomes a LayoutBox with the label and button
