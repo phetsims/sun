@@ -64,7 +64,9 @@ define( function( require ) {
       cursor: 'pointer',
       enabledProperty: new Property( true ),
       startDrag: function() {}, // called when a drag sequence starts
-      endDrag: function() {} // called when a drag sequence ends
+      endDrag: function() {}, // called when a drag sequence ends
+      // tandem
+      tandem: null
     }, options );
     this.options = options; // @private TODO save only the options that are needed by prototype functions
 
@@ -196,6 +198,9 @@ define( function( require ) {
     thisSlider.valueProperty.link( thisSlider.valueObserver ); // must be unlinked in dispose
 
     thisSlider.mutate( options );
+
+    this.sliderTandem = options.tandem;
+    this.sliderTandem && this.sliderTandem.addInstance( this );
   }
 
   inherit( Node, HSlider, {
@@ -206,6 +211,7 @@ define( function( require ) {
       this.thumb = null;
       this.valueProperty.unlink( this.valueObserver );
       this.enabledProperty.unlink( this.enabledObserver );
+      this.sliderTandem && this.sliderTandem.removeInstance( this );
     },
 
     /**

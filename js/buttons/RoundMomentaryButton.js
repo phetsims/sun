@@ -21,9 +21,24 @@ define( function( require ) {
    * @constructor
    */
   function RoundMomentaryButton( onProperty, options ) {
+
+    var self = this;
+    options = _.extend( { tandem: null }, options );
     this.buttonModel = new MomentaryButtonModel( onProperty );
     RoundButtonView.call( this, this.buttonModel, new MomentaryButtonInteractionStateProperty( this.buttonModel ), options );
+
+    options.tandem && options.tandem.addInstance( this );
+
+    // @private
+    this.disposeRoundMomentaryButton = function() {
+      self.buttonModel.dispose();
+      options.tandem && options.tandem.removeInstance( this );
+    };
   }
 
-  return inherit( RoundButtonView, RoundMomentaryButton );
+  return inherit( RoundButtonView, RoundMomentaryButton, {
+    dispose: function() {
+      this.disposeRoundMomentaryButton();
+    }
+  } );
 } );

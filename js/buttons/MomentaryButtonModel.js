@@ -22,13 +22,12 @@ define( function( require ) {
     ButtonModel.call( self );
 
     // @private sync with the property, do this before wiring up to supertype properties
-    this.onObserver = function( on ) {
+    var onObserver = function( on ) {
       self.down = on;
     };
-    this.onProperty = onProperty; // @private
-    this.onProperty.link( this.onObserver );
+    onProperty.link( onObserver );
 
-    this.downProperty.lazyLink( function( down ) {
+    var downListener = function( down ) {
 
       // turn on when pressed (if enabled)
       if ( down ) {
@@ -45,21 +44,30 @@ define( function( require ) {
         onProperty.set( false );
         self.trigger0( 'endedCallbacksForReleased' );
       }
-    } );
+    };
+    this.downProperty.lazyLink( downListener );
 
     // turn off when disabled
-    this.property( 'enabled' ).onValue( false, function() {
+    var enabledListener = function() {
       self.trigger0( 'startedCallbacksForReleasedDisabled' );
       onProperty.set( false );
       self.trigger0( 'endedCallbacksForReleasedDisabled' );
-    } );
+    };
+    this.property( 'enabled' ).onValue( false, enabledListener );
+
+    // @private: just for dispose.  Named based on the class name so it won't have a name collision with parent/child ones
+    this.disposeMomentaryButtonModel = function() {
+      self.property( 'enabled' ).off( enabledListener );
+      self.downProperty.unlink( downListener );
+      onProperty.unlink( onObserver );
+    };
   }
 
   return inherit( ButtonModel, MomentaryButtonModel, {
 
     // Ensures that this model is eligible for GC.
     dispose: function() {
-      this.onProperty.unlink( this.onObserver );
+      this.disposeMomentaryButtonModel();
     }
   } );
 } );

@@ -129,7 +129,9 @@ define( function( require ) {
         itemYMargin: 6,
         itemHighlightFill: 'rgb(245,245,245)',
         itemHighlightStroke: null,
-        itemHighlightLineWidth: 1
+        itemHighlightLineWidth: 1,
+        // tandem
+        tandem: null
       },
       options );
 
@@ -301,9 +303,20 @@ define( function( require ) {
     } );
 
     this.mutate( options );
+
+    options.tandem && options.tandem.addInstance( this );
+    this.disposeComboBox = function() {
+      options.tandem && options.tandem.removeInstance( this );
+    };
   }
 
-  inherit( Node, ComboBox );
+  inherit( Node, ComboBox, {
+
+    // Provide dispose() on the prototype for ease of subclassing.
+    dispose: function() {
+      this.disposeComboBox();
+    }
+  } );
 
   /**
    * Creates a combo box item.
