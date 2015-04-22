@@ -47,15 +47,23 @@ define( function( require ) {
    */
   function RectangularPushButton( options ) {
 
+    options = _.extend( { tandem: null }, options );
+
     // Safe to pass through options to the PushButtonModel like "fireOnDown".  Other scenery options will be safely ignored.
     this.buttonModel = new PushButtonModel( options );
     RectangularButtonView.call( this, this.buttonModel, new PushButtonInteractionStateProperty( this.buttonModel ), options );
+
+    // Tandem support
+    // Give it a novel name to reduce the risk of parent or child collisions
+    this.rectangularPushButtonTandem = options.tandem;
+    this.rectangularPushButtonTandem && this.rectangularPushButtonTandem.addInstance( this );
   }
 
   return inherit( RectangularButtonView, RectangularPushButton, {
     dispose: function() {
       this.buttonModel.dispose();
       RectangularButtonView.prototype.dispose.call( this );
+      this.rectangularPushButtonTandem && this.rectangularPushButtonTandem.removeInstance( this );
     },
 
     addListener: function( listener ) {
