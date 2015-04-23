@@ -48,9 +48,9 @@ define( function( require ) {
 
     // turn off when disabled
     var enabledListener = function() {
-      self.trigger0( 'startedCallbacksForReleasedDisabled' );
+      self.trigger0( 'startedCallbacksForReleasedByDisable' );
       onProperty.set( false );
-      self.trigger0( 'endedCallbacksForReleasedDisabled' );
+      self.trigger0( 'endedCallbacksForReleasedByDisable' );
     };
     this.property( 'enabled' ).onValue( false, enabledListener );
 
