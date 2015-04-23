@@ -38,7 +38,6 @@ define( function( require ) {
         }
       }
       else {
-
         // turn off when released
         self.trigger0( 'startedCallbacksForReleased' );
         onProperty.set( false );
