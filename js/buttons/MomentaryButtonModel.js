@@ -66,6 +66,7 @@ define( function( require ) {
 
     // Ensures that this model is eligible for GC.
     dispose: function() {
+      ButtonModel.prototype.dispose.call( this );
       this.disposeMomentaryButtonModel();
     }
   } );
