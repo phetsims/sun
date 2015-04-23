@@ -55,7 +55,7 @@ define( function( require ) {
     };
     this.property( 'enabled' ).onValue( false, enabledListener );
 
-    // @private: just for dispose.  Named based on the class name so it won't have a name collision with parent/child ones
+    // @private: just for dispose.  Named based on the type name so it won't have a name collision with parent/child ones
     this.disposeMomentaryButtonModel = function() {
       self.property( 'enabled' ).off( enabledListener );
       self.downProperty.unlink( downListener );
