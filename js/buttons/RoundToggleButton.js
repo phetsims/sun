@@ -23,9 +23,28 @@ define( function( require ) {
    * @constructor
    */
   function RoundToggleButton( valueA, valueB, property, options ) {
+
+    var thisRoundToggleButton = this;
+
+    // Tandem support
+    options = _.extend( { tandem: null }, options );
+
     this.toggleButtonModel = new ToggleButtonModel( valueA, valueB, property );
     RoundButtonView.call( this, this.toggleButtonModel, new ToggleButtonInteractionStateProperty( this.toggleButtonModel ), options );
+
+    // Tandem support
+    options.tandem && options.tandem.addInstance( this );
+
+    // Disposal for listener above
+    this.disposeRoundToggleButton = function() {
+      options.tandem && options.tandem.removeInstance( this );
+      thisRoundToggleButton.toggleButtonModel.dispose();
+    };
   }
 
-  return inherit( RoundButtonView, RoundToggleButton );
+  return inherit( RoundButtonView, RoundToggleButton, {
+    dispose: function() {
+      this.disposeRoundToggleButton();
+    }
+  } );
 } );

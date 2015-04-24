@@ -31,16 +31,26 @@ define( function( require ) {
     ButtonModel.call( this );
 
     // Behaves like a push button (with fireOnDown:false), but toggles its state when the button is released.
-    this.property( 'down' ).link( function( down ) {
+    var downListener = function( down ) {
       if ( thisModel.enabled && thisModel.over ) {
         if ( !down ) {
           thisModel.toggle();
         }
       }
-    } );
+    };
+    this.property( 'down' ).link( downListener );
+
+    // Dispose items specific to this instance
+    this.disposeToggleButtonModel = function() {
+      thisModel.property( 'down' ).unlink( downListener );
+    };
   }
 
   return inherit( ButtonModel, ToggleButtonModel, {
+    dispose: function() {
+      ButtonModel.prototype.dispose.call( this );
+      this.disposeToggleButtonModel();
+    },
     toggle: function() {
       assert && assert( this.valueProperty.value === this.valueA || this.valueProperty.value === this.valueB );
       var oldValue = this.valueProperty.value;
