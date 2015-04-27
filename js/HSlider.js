@@ -65,6 +65,7 @@ define( function( require ) {
       enabledProperty: new Property( true ),
       startDrag: function() {}, // called when a drag sequence starts
       endDrag: function() {}, // called when a drag sequence ends
+      constrainValue: function( value ) { return value; }, // called before valueProperty is set
       // tandem
       tandem: null
     }, options );
@@ -88,7 +89,8 @@ define( function( require ) {
         if ( options.enabledProperty.get() ) {
           var transform = trail.subtrailTo( thisSlider ).getTransform();
           var x = transform.inversePosition2( event.pointer.point ).x;
-          valueProperty.set( thisSlider.valueToPosition.inverse( x ) );
+          var value = thisSlider.valueToPosition.inverse( x );
+          valueProperty.set( options.constrainValue( value ) );
         }
       },
       start: function( event, trail ) {
@@ -125,7 +127,8 @@ define( function( require ) {
         var delta = keyCode === Input.KEY_LEFT_ARROW || keyCode === Input.KEY_DOWN_ARROW ? -1 :
                     keyCode === Input.KEY_RIGHT_ARROW || keyCode === Input.KEY_UP_ARROW ? +1 :
                     0;
-        valueProperty.set( Util.clamp( valueProperty.get() + (range.max - range.min) * 0.1 * delta, range.min, range.max ) );
+        var clampedValue = Util.clamp( valueProperty.get() + (range.max - range.min) * 0.1 * delta, range.min, range.max );
+        valueProperty.set( options.constrainValue( clampedValue ) );
       }
     } );
 
@@ -163,7 +166,7 @@ define( function( require ) {
           var x = transform.inversePosition2( event.pointer.point ).x - this.clickXOffset;
           var newValue = thisSlider.valueToPosition.inverse( x );
 
-          valueProperty.set( newValue );
+          valueProperty.set( options.constrainValue( newValue ) );
 
           thisSlider.trigger1( 'endedCallbacksForDragged', valueProperty.get() );
         }
