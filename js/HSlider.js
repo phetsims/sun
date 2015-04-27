@@ -254,11 +254,11 @@ define( function( require ) {
       }
     },
 
-    set enabled( value ) {
-      this.enabledProperty.value = value;
-    },
+    setEnabled: function( enabled ) { this.enabledProperty.value = enabled; },
+    set enabled( value ) { this. setEnabled( value ); },
 
-    get enabled() { return this.enabledProperty.value; }
+    getEnabled: function() { return this.enabledProperty.value; },
+    get enabled() { return this. getEnabled(); }
   } );
 
   /**
