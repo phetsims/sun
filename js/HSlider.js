@@ -319,8 +319,8 @@ define( function( require ) {
 
     // @private Called by dispose
     this.disposeThumbNode = function() {
-      enabledProperty.link( enabledObserver )
-    }
+      enabledProperty.link( enabledObserver );
+    };
   }
 
   inherit( Rectangle, ThumbNode, {
