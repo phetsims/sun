@@ -43,15 +43,8 @@ define( function( require ) {
       trackStroke: 'black',
       trackLineWidth: 1,
       // {Node} optional thumb, replaces the default. Client is responsible for highlighting and disabling. Centered in the track.
+      // If you are using the default thumb, see ThumbNode constructor for additional pass-through options.
       thumbNode: null,
-      // default thumb (ignored if thumbNode is provided)
-      thumbSize: new Dimension2( 22, 45 ),
-      thumbFillEnabled: 'rgb(50,145,184)',
-      thumbFillHighlighted: 'rgb(71,207,255)',
-      thumbFillDisabled: '#F0F0F0',
-      thumbStroke: 'black',
-      thumbLineWidth: 1,
-      thumbCenterLineStroke: 'white',
       // ticks
       tickLabelSpacing: 6,
       majorTickLength: 25,
@@ -70,6 +63,7 @@ define( function( require ) {
       tandem: null
     }, options );
     this.options = options; // @private TODO save only the options that are needed by prototype functions
+    this.enabledProperty = options.enabledProperty;
 
     // @private ticks are added to this parent, so they are behind knob
     thisSlider.ticksParent = new Node();
@@ -86,7 +80,7 @@ define( function( require ) {
     // click in the track to change the value, continue dragging if desired
     var trackHandler = new SimpleDragHandler( {
       handleTrackEvent: function( event, trail ) {
-        if ( options.enabledProperty.get() ) {
+        if ( thisSlider.enabledProperty.get() ) {
           var transform = trail.subtrailTo( thisSlider ).getTransform();
           var x = transform.inversePosition2( event.pointer.point ).x;
           var value = thisSlider.valueToPosition.inverse( x );
@@ -94,7 +88,7 @@ define( function( require ) {
         }
       },
       start: function( event, trail ) {
-        if ( options.enabledProperty.get() ) {
+        if ( thisSlider.enabledProperty.get() ) {
           options.startDrag();
         }
         this.handleTrackEvent( event, trail );
@@ -103,7 +97,7 @@ define( function( require ) {
         this.handleTrackEvent( event, trail );
       },
       end: function() {
-        if ( options.enabledProperty.get() ) {
+        if ( thisSlider.enabledProperty.get() ) {
           options.endDrag();
         }
       }
@@ -111,7 +105,7 @@ define( function( require ) {
     thisSlider.track.addInputListener( trackHandler );
 
     // thumb
-    var thumb = options.thumbNode || new ThumbNode( options );
+    var thumb = options.thumbNode || new ThumbNode( this.enabledProperty, options );
 
     // Make the thumb focusable for keyboard accessibility 
     thumb.focusable = true;
@@ -147,7 +141,7 @@ define( function( require ) {
       allowTouchSnag: true,
 
       start: function( event, trail ) {
-        if ( options.enabledProperty.get() ) {
+        if ( thisSlider.enabledProperty.get() ) {
           thisSlider.trigger1( 'startedCallbacksForDragStarted', valueProperty.get() );
           options.startDrag();
 
@@ -159,7 +153,7 @@ define( function( require ) {
       },
 
       drag: function( event, trail ) {
-        if ( options.enabledProperty.get() ) {
+        if ( thisSlider.enabledProperty.get() ) {
           thisSlider.trigger1( 'startedCallbacksForDragged', valueProperty.get() );
           var transform = trail.subtrailTo( thisSlider ).getTransform(); // we only want the transform to our parent
           var x = transform.inversePosition2( event.pointer.point ).x - this.clickXOffset;
@@ -172,7 +166,7 @@ define( function( require ) {
       },
 
       end: function() {
-        if ( options.enabledProperty.get() ) {
+        if ( thisSlider.enabledProperty.get() ) {
           thisSlider.trigger1( 'startedCallbacksForDragEnded', valueProperty.get() );
           options.endDrag();
           thisSlider.trigger1( 'endedCallbacksForDragEnded', valueProperty.get() );
@@ -183,13 +177,13 @@ define( function( require ) {
 
     // @private enable/disable
     var enabledObserver = function( enabled ) {
-      thisSlider.cursor = options.enabledProperty.get() ? options.cursor : 'default';
+      thisSlider.cursor = thisSlider.enabledProperty.get() ? options.cursor : 'default';
       if ( !enabled ) {
         if ( thumbHandler.dragging ) { thumbHandler.endDrag(); }
         if ( trackHandler.dragging ) { trackHandler.endDrag(); }
       }
     };
-    options.enabledProperty.link( enabledObserver ); // must be unlinked in disposeHSlider
+    thisSlider.enabledProperty.link( enabledObserver ); // must be unlinked in disposeHSlider
 
     // @private update thumb location when value changes
     var valueObserver = function( value ) {
@@ -201,7 +195,7 @@ define( function( require ) {
     this.disposeHSlider = function() {
       thumb.dispose && thumb.dispose(); // in case a custom thumb is provided via options.thumbNode that doesn't implement dispose
       valueProperty.unlink( valueObserver );
-      enabledProperty.unlink( enabledObserver );
+      thisSlider.enabledProperty.unlink( enabledObserver );
       options.tandem && options.tandem.removeInstance( thisSlider );
     };
 
@@ -269,12 +263,22 @@ define( function( require ) {
 
   /**
    * Default thumb, a rectangle with a vertical white line down the center
+   * @param {Property.<boolean>} enabledProperty
    * @param {Object} [options] see HSlider constructor
    * @constructor
    */
-  function ThumbNode( options ) {
+  function ThumbNode( enabledProperty, options ) {
 
-    assert && assert( options ); // these are options provided to HSlider, not optional for this inner type
+    options = _.extend( {
+      // default thumb (ignored if thumbNode is provided)
+      thumbSize: new Dimension2( 22, 45 ),
+      thumbFillEnabled: 'rgb(50,145,184)',
+      thumbFillHighlighted: 'rgb(71,207,255)',
+      thumbFillDisabled: '#F0F0F0',
+      thumbStroke: 'black',
+      thumbLineWidth: 1,
+      thumbCenterLineStroke: 'white'
+    }, options );
 
     var thisNode = this;
 
@@ -285,7 +289,7 @@ define( function( require ) {
       options.thumbSize.width, options.thumbSize.height,
       arcWidth, arcWidth,
       {
-        fill: options.enabledProperty.get() ? options.thumbFillEnabled : options.thumbFillDisabled,
+        fill: enabledProperty.get() ? options.thumbFillEnabled : options.thumbFillDisabled,
         stroke: options.thumbStroke,
         lineWidth: options.thumbLineWidth
       } );
@@ -300,10 +304,10 @@ define( function( require ) {
     // highlight thumb on pointer over
     thisNode.addInputListener( new ButtonListener( {
       over: function( event ) {
-        if ( options.enabledProperty.get() ) { thisNode.fill = options.thumbFillHighlighted; }
+        if ( enabledProperty.get() ) { thisNode.fill = options.thumbFillHighlighted; }
       },
       up: function( event ) {
-        if ( options.enabledProperty.get() ) { thisNode.fill = options.thumbFillEnabled; }
+        if ( enabledProperty.get() ) { thisNode.fill = options.thumbFillEnabled; }
       }
     } ) );
 
@@ -311,11 +315,11 @@ define( function( require ) {
     var enabledObserver = function( enabled ) {
       thisNode.fill = enabled ? options.thumbFillEnabled : options.thumbFillDisabled;
     };
-    options.enabledProperty.link( enabledObserver ); // must be unlinked in disposeThumbNode
+    enabledProperty.link( enabledObserver ); // must be unlinked in disposeThumbNode
 
     // @private Called by dispose
     this.disposeThumbNode = function() {
-      options.enabledProperty.link( enabledObserver )
+      enabledProperty.link( enabledObserver )
     }
   }
 
