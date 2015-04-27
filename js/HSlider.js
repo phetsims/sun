@@ -105,16 +105,16 @@ define( function( require ) {
     thisSlider.track.addInputListener( trackHandler );
 
     // thumb
-    var thumb = options.thumbNode || new ThumbNode( this.enabledProperty, options );
+    var thumbNode = options.thumbNode || new ThumbNode( this.enabledProperty, options );
 
     // Make the thumb focusable for keyboard accessibility 
-    thumb.focusable = true;
+    thumbNode.focusable = true;
 
-    thumb.centerY = thisSlider.track.centerY;
-    thisSlider.addChild( thumb );
+    thumbNode.centerY = thisSlider.track.centerY;
+    thisSlider.addChild( thumbNode );
 
     // Keyboard accessibility
-    thumb.addInputListener( {
+    thumbNode.addInputListener( {
       keydown: function( event, trail ) {
         var keyCode = event.domEvent.keyCode;
         var delta = keyCode === Input.KEY_LEFT_ARROW || keyCode === Input.KEY_DOWN_ARROW ? -1 :
@@ -127,9 +127,9 @@ define( function( require ) {
 
     // thumb touch area
     if ( !options.thumbNode ) {
-      var dx = 0.5 * thumb.width;
-      var dy = 0.25 * thumb.height;
-      thumb.touchArea = Shape.rectangle( ( -thumb.width / 2 ) - dx, ( -thumb.height / 2 ) - dy, thumb.width + dx + dx, thumb.height + dy + dy );
+      var dx = 0.5 * thumbNode.width;
+      var dy = 0.25 * thumbNode.height;
+      thumbNode.touchArea = Shape.rectangle( ( -thumbNode.width / 2 ) - dx, ( -thumbNode.height / 2 ) - dy, thumbNode.width + dx + dx, thumbNode.height + dy + dy );
     }
 
     // update value when thumb is dragged
@@ -146,7 +146,7 @@ define( function( require ) {
           options.startDrag();
 
           var transform = trail.subtrailTo( thisSlider ).getTransform();
-          this.clickXOffset = transform.inversePosition2( event.pointer.point ).x - thumb.x;
+          this.clickXOffset = transform.inversePosition2( event.pointer.point ).x - thumbNode.x;
 
           thisSlider.trigger1( 'endedCallbacksForDragStarted', valueProperty.get() );
         }
@@ -173,7 +173,7 @@ define( function( require ) {
         }
       }
     } );
-    thumb.addInputListener( thumbHandler );
+    thumbNode.addInputListener( thumbHandler );
 
     // @private enable/disable
     var enabledObserver = function( enabled ) {
@@ -187,13 +187,13 @@ define( function( require ) {
 
     // @private update thumb location when value changes
     var valueObserver = function( value ) {
-      thumb.centerX = thisSlider.valueToPosition( value );
+      thumbNode.centerX = thisSlider.valueToPosition( value );
     };
     valueProperty.link( valueObserver ); // must be unlinked in disposeHSlider
 
     // @private Called by dispose
     this.disposeHSlider = function() {
-      thumb.dispose && thumb.dispose(); // in case a custom thumb is provided via options.thumbNode that doesn't implement dispose
+      thumbNode.dispose && thumbNode.dispose(); // in case a custom thumb is provided via options.thumbNode that doesn't implement dispose
       valueProperty.unlink( valueObserver );
       thisSlider.enabledProperty.unlink( enabledObserver );
       options.tandem && options.tandem.removeInstance( thisSlider );
