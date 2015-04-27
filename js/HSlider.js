@@ -116,7 +116,6 @@ define( function( require ) {
     // Make the thumb focusable for keyboard accessibility 
     thumb.focusable = true;
 
-    thisSlider.thumb = thumb; // must be disposed of
     thumb.centerY = thisSlider.track.centerY;
     thisSlider.addChild( thumb );
 
@@ -183,38 +182,39 @@ define( function( require ) {
     thumb.addInputListener( thumbHandler );
 
     // @private enable/disable
-    thisSlider.enabledObserver = function( enabled ) {
+    var enabledObserver = function( enabled ) {
       thisSlider.cursor = options.enabledProperty.get() ? options.cursor : 'default';
       if ( !enabled ) {
         if ( thumbHandler.dragging ) { thumbHandler.endDrag(); }
         if ( trackHandler.dragging ) { trackHandler.endDrag(); }
       }
     };
-    thisSlider.enabledProperty = options.enabledProperty; // @private
-    thisSlider.enabledProperty.link( thisSlider.enabledObserver ); // must be unlinked in dispose
+    options.enabledProperty.link( enabledObserver ); // must be unlinked in disposeHSlider
 
     // @private update thumb location when value changes
-    thisSlider.valueObserver = function( value ) {
+    var valueObserver = function( value ) {
       thumb.centerX = thisSlider.valueToPosition( value );
     };
-    thisSlider.valueProperty = valueProperty; // @private
-    thisSlider.valueProperty.link( thisSlider.valueObserver ); // must be unlinked in dispose
+    valueProperty.link( valueObserver ); // must be unlinked in disposeHSlider
+
+    // @private Called by dispose
+    this.disposeHSlider = function() {
+      thumb.dispose && thumb.dispose(); // in case a custom thumb is provided via options.thumbNode that doesn't implement dispose
+      valueProperty.unlink( valueObserver );
+      enabledProperty.unlink( enabledObserver );
+      options.tandem && options.tandem.removeInstance( thisSlider );
+    };
 
     thisSlider.mutate( options );
 
-    this.sliderTandem = options.tandem;
-    this.sliderTandem && this.sliderTandem.addInstance( this );
+    options.tandem && options.tandem.addInstance( this );
   }
 
   inherit( Node, HSlider, {
 
     // Ensures that this object is eligible for GC.
     dispose: function() {
-      this.thumb.dispose();
-      this.thumb = null;
-      this.valueProperty.unlink( this.valueObserver );
-      this.enabledProperty.unlink( this.enabledObserver );
-      this.sliderTandem && this.sliderTandem.removeInstance( this );
+      this.disposeHSlider();
     },
 
     /**
@@ -308,18 +308,22 @@ define( function( require ) {
     } ) );
 
     // @private enable/disable the look of the thumb
-    this.enabledObserver = function( enabled ) {
+    var enabledObserver = function( enabled ) {
       thisNode.fill = enabled ? options.thumbFillEnabled : options.thumbFillDisabled;
     };
-    this.enabledProperty = options.enabledProperty; // @private
-    this.enabledProperty.link( this.enabledObserver ); // must be unlinked in dispose
+    enabledProperty.link( enabledObserver ); // must be unlinked in disposeThumbNode
+
+    // @private Called by dispose
+    this.disposeThumbNode = function() {
+      enabledProperty.link( enabledObserver )
+    }
   }
 
   inherit( Rectangle, ThumbNode, {
 
     // Ensures that this object is eligible for GC.
     dispose: function() {
-      this.enabledProperty.unlink( this.enabledObserver );
+      this.disposeThumbNode();
     }
   } );
 
