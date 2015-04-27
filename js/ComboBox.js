@@ -99,7 +99,7 @@ define( function( require ) {
 
   /**
    * @param {Array} items
-   * @param {*} property
+   * @param {Property} property
    * @param {Node} listParent node that will be used as the list's parent, use this to ensuring that the list is in front of everything else
    * @param {Object} [options] object with optional properties
    */
@@ -290,7 +290,7 @@ define( function( require ) {
     }
 
     // when property changes, update button
-    property.link( function( value ) {
+    var propertyObserver = function( value ) {
       // TODO brute force search, better way?
       var item = null;
       for ( var i = 0; i < items.length; i++ ) {
@@ -300,13 +300,17 @@ define( function( require ) {
       }
       assert && assert( item !== null );
       buttonNode.setItemNode( new ItemNode( item, itemWidth, itemHeight, options.itemXMargin ) );
-    } );
+    };
+    property.link( propertyObserver );
 
     this.mutate( options );
 
     options.tandem && options.tandem.addInstance( this );
+
+    // @private called by dispose
     this.disposeComboBox = function() {
       options.tandem && options.tandem.removeInstance( this );
+      property.unlink( propertyObserver );
     };
   }
 
