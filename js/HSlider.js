@@ -311,11 +311,11 @@ define( function( require ) {
     var enabledObserver = function( enabled ) {
       thisNode.fill = enabled ? options.thumbFillEnabled : options.thumbFillDisabled;
     };
-    enabledProperty.link( enabledObserver ); // must be unlinked in disposeThumbNode
+    options.enabledProperty.link( enabledObserver ); // must be unlinked in disposeThumbNode
 
     // @private Called by dispose
     this.disposeThumbNode = function() {
-      enabledProperty.link( enabledObserver )
+      options.enabledProperty.link( enabledObserver )
     }
   }
 
