@@ -65,7 +65,7 @@ define( function( require ) {
     this.options = options; // @private TODO save only the options that are needed by prototype functions
     this.enabledProperty = options.enabledProperty;
 
-    // @private ticks are added to this parent, so they are behind knob
+    // @private ticks are added to this parent, so they are behind the knob
     thisSlider.ticksParent = new Node();
     thisSlider.addChild( thisSlider.ticksParent );
 
@@ -319,7 +319,7 @@ define( function( require ) {
 
     // @private Called by dispose
     this.disposeThumbNode = function() {
-      enabledProperty.link( enabledObserver );
+      enabledProperty.unlink( enabledObserver );
     };
   }
 
