@@ -48,7 +48,8 @@ define( function( require ) {
                                  //      NOTE: this is also the iOS behavior
                                  // false: only trigger model changes until release
       dragThreshold: 3, // number of view-space units the drag needs to cover to be considered a "drag" instead of a "click/tap"
-      toggleThreshold: 1 // number of thumb-widths outside the normal range past where the model value will change
+      toggleThreshold: 1, // number of thumb-widths outside the normal range past where the model value will change
+      tandem: null
     }, options );
 
     var thisNode = this;
@@ -150,6 +151,10 @@ define( function( require ) {
         passedDragThreshold = passedDragThreshold || ( accumulatedDelta.magnitudeSquared() > dragThresholdSquared );
       }
     } ) );
+
+    // Tandem support - Give it a novel name to reduce the risk of parent or child collisions.
+    this.onOffSwitchTandem = options.tandem;
+    this.onOffSwitchTandem && this.onOffSwitchTandem.addInstance( this );
 
     thisNode.mutate( options );
   }
