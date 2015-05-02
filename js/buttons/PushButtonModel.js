@@ -72,12 +72,12 @@ define( function( require ) {
     // Fires all listeners.
     // @private with the possible exception of hooking up for accessibility.
     fire: function() {
-      this.trigger0( 'fireStarted' );
+      this.trigger0( 'startedCallbacksForFired' );
       var copy = this.listeners.slice( 0 );
       copy.forEach( function( listener ) {
         listener();
       } );
-      this.trigger0( 'fireEnded' );
+      this.trigger0( 'endedCallbacksForFired' );
     }
   } );
 } );
