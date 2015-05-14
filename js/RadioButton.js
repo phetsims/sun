@@ -82,6 +82,7 @@ define( function( require ) {
     setEnabled: function( enabled ) {
       this._enabled = enabled;
       this.opacity = enabled ? 1 : 0.3;
+      this.pickable = enabled; // NOTE: This is a side-effect. If you set pickable independently, it will be changed when you set enabled.
     },
     set enabled( value ) { this.setEnabled( value ); },
 
