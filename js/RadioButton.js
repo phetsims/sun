@@ -71,10 +71,9 @@ define( function( require ) {
 
   return inherit( Node, RadioButton, {
 
-      // Provide dispose() on the prototype for ease of subclassing.
-      dispose: function() {
-        this.disposeRadioButton();
-      }
+    // Provide dispose() on the prototype for ease of subclassing.
+    dispose: function() {
+      this.disposeRadioButton();
     }
-  );
+  } );
 } );
