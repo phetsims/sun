@@ -27,11 +27,14 @@ define( function( require ) {
     options = _.extend( {
       cursor: 'pointer',
       focusable: true,
-      tandem: null
+      tandem: null,
+      enabled: true
     }, options );
 
     var thisNode = this;
     Node.call( thisNode );
+
+    this._enabled = options.enabled;
 
     //Add an invisible node to make sure the layout for selected vs deselected is the same
     var background = new Rectangle( selectedNode.bounds.union( deselectedNode.bounds ) );
@@ -74,6 +77,17 @@ define( function( require ) {
     // Provide dispose() on the prototype for ease of subclassing.
     dispose: function() {
       this.disposeRadioButton();
-    }
+    },
+
+    setEnabled: function( enabled ) {
+      this._enabled = enabled;
+      this.opacity = enabled ? 1 : 0.3;
+    },
+    set enabled( value ) { this.setEnabled( value ); },
+
+    getEnabled: function() {
+      return this._enabled;
+    },
+    get enabled() { return this.getEnabled(); }
   } );
 } );
