@@ -3,20 +3,7 @@
   "version": "1.0.0-dev.10",
   "license": "MIT",
   "phetLibs": [
-    "sun",
-    "assert",
-    "axon",
-    "babel",
-    "brand",
-    "chipper",
-    "dot",
-    "joist",
-    "kite",
-    "phet-core",
-    "phetcommon",
-    "scenery",
-    "scenery-phet",
-    "sherpa"
+    "sun"
   ],
   "repository": {
     "type": "git",
