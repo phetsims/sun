@@ -89,16 +89,22 @@ define( function( require ) {
       },
       start: function( event, trail ) {
         if ( thisSlider.enabledProperty.get() ) {
+          thisSlider.trigger1( 'startedCallbacksForTrackDragStarted', valueProperty.get() );
           options.startDrag();
+          thisSlider.trigger1( 'endedCallbacksForTrackDragStarted', valueProperty.get() );
         }
         this.handleTrackEvent( event, trail );
       },
       drag: function( event, trail ) {
+        thisSlider.trigger1( 'startedCallbacksForTrackDrag', valueProperty.get() );
         this.handleTrackEvent( event, trail );
+        thisSlider.trigger1( 'endedCallbacksForTrackDrag', valueProperty.get() );
       },
       end: function() {
         if ( thisSlider.enabledProperty.get() ) {
+          thisSlider.trigger1( 'startedCallbacksForTrackDragEnded', valueProperty.get() );
           options.endDrag();
+          thisSlider.trigger1( 'endedCallbacksForTrackDragEnded', valueProperty.get() );
         }
       }
     } );
