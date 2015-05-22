@@ -135,6 +135,16 @@ define( function( require ) {
       } );
     button.addChild( overlayForHorizGradient );
 
+    button.cachedPaints = [
+      upFillVertical, overFillVertical, downFill, disabledFillVertical, disabledPressedFillVertical,
+      disabledStroke
+    ];
+
+    overlayForHorizGradient.cachedPaints = [
+      upFillHorizontal, overFillHorizontal, disabledFillHorizontal
+      ( options.stroke || null ), disabledStroke
+    ];
+
     interactionStateProperty.link( function( state ) {
       switch( state ) {
 

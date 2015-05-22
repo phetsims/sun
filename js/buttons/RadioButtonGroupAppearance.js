@@ -42,9 +42,14 @@ define( function( require ) {
 
     // Create the fills and strokes used for various button states
     var disabledStroke = disabledBaseColor.colorUtilsDarker( 0.4 );
-    var overStroke = deselectedStroke.colorUtilsDarker( 0.4 );
-    var overFill = baseColor.colorUtilsBrighter( 0.4 );
+    var overStroke = options.overStroke ? options.overStroke : deselectedStroke.colorUtilsDarker( 0.4 );
+    var overFill = options.overFill ? options.overFill : baseColor.colorUtilsBrighter( 0.4 );
     var pressedFill = baseColor.colorUtilsDarker( 0.4 );
+
+    button.cachedPaints = [
+      baseColor, overFill, disabledBaseColor, pressedFill,
+      options.deselectedStroke, overStroke, options.selectedStroke, disabledStroke
+    ];
 
     interactionStateProperty.link( function( state ) {
       switch( state ) {
@@ -58,8 +63,8 @@ define( function( require ) {
 
         // mouseover for deselected buttons
         case 'over':
-          button.fill = ( options.overFill ) ? options.overFill : overFill;
-          button.stroke = ( options.overStroke ) ? options.overStroke : overStroke;
+          button.fill = overFill;
+          button.stroke = overStroke;
           button.lineWidth = ( options.overLineWidth ) ? options.overLineWidth : options.deselectedLineWidth;
           button.opacity = options.overButtonOpacity;
           break;

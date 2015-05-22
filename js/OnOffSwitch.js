@@ -59,7 +59,8 @@ define( function( require ) {
     var cornerRadius = options.size.height / 2;
     var trackNode = this.trackNode = new Rectangle( 0, 0, options.size.width, options.size.height, cornerRadius, cornerRadius, {
       fill: options.trackOffFill,
-      stroke: options.trackStroke
+      stroke: options.trackStroke,
+      cachedPaints: [ options.trackOnFill, options.trackOffFill ]
     } );
     thisNode.addChild( trackNode );
 

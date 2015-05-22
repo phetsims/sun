@@ -235,6 +235,16 @@ define( function( require ) {
         enabledStroke = Color.toColor( options.stroke );
         disabledStroke = disabledBaseColor.colorUtilsDarker( 0.4 );
       }
+
+      button.cachedPaints = [
+        upFillVertical, overFillVertical, downFill, disabledFillVertical, disabledPressedFillVertical,
+        disabledStroke
+      ];
+
+      overlayForHorizGradient.cachedPaints = [
+        upFillHorizontal, overFillHorizontal, disabledFillHorizontal, disabledFillHorizontal,
+        enabledStroke, disabledStroke
+      ];
     }
 
     // Function for updating the button's appearance based on the current interaction state.
@@ -337,6 +347,11 @@ define( function( require ) {
         enabledStroke = Color.toColor( options.stroke );
         disabledStroke = disabledBaseColor.colorUtilsDarker( 0.4 );
       }
+
+      button.cachedPaints = [
+        upFill, overFill, downFill, disabledFill, disabledPressedFillVertical,
+        enabledStroke, disabledStroke
+      ];
     }
 
     function updateAppearance( interactionState ) {

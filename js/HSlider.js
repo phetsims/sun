@@ -297,7 +297,10 @@ define( function( require ) {
       {
         fill: enabledProperty.get() ? options.thumbFillEnabled : options.thumbFillDisabled,
         stroke: options.thumbStroke,
-        lineWidth: options.thumbLineWidth
+        lineWidth: options.thumbLineWidth,
+        cachedPaints: [
+          options.thumbFillHighlighted, options.thumbFillEnabled, options.thumbFillDisabled
+        ]
       } );
 
     // vertical line down the center
