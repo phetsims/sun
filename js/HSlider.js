@@ -93,9 +93,9 @@ define( function( require ) {
         if ( thisSlider.enabledProperty.get() ) {
           thisSlider.trigger1( 'startedCallbacksForTrackDragStarted', valueProperty.get() );
           options.startDrag();
+          this.handleTrackEvent( event, trail );
           thisSlider.trigger1( 'endedCallbacksForTrackDragStarted', valueProperty.get() );
         }
-        this.handleTrackEvent( event, trail );
       },
 
       drag: function( event, trail ) {
