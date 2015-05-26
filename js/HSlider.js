@@ -317,11 +317,9 @@ define( function( require ) {
     // highlight thumb on pointer over
     thisNode.addInputListener( new ButtonListener( {
       over: function( event ) {
-        console.log( 'ThumbNode.over' );//XXX
         if ( enabledProperty.get() ) { thisNode.fill = options.thumbFillHighlighted; }
       },
       up: function( event ) {
-        console.log( 'ThumbNode.up' );//XXX
         if ( enabledProperty.get() ) { thisNode.fill = options.thumbFillEnabled; }
       }
     } ) );
