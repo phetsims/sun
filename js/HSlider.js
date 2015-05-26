@@ -79,6 +79,7 @@ define( function( require ) {
 
     // click in the track to change the value, continue dragging if desired
     var trackHandler = new SimpleDragHandler( {
+
       handleTrackEvent: function( event, trail ) {
         if ( thisSlider.enabledProperty.get() ) {
           var transform = trail.subtrailTo( thisSlider ).getTransform();
@@ -87,6 +88,7 @@ define( function( require ) {
           valueProperty.set( options.constrainValue( value ) );
         }
       },
+
       start: function( event, trail ) {
         if ( thisSlider.enabledProperty.get() ) {
           thisSlider.trigger1( 'startedCallbacksForTrackDragStarted', valueProperty.get() );
@@ -95,11 +97,13 @@ define( function( require ) {
         }
         this.handleTrackEvent( event, trail );
       },
+
       drag: function( event, trail ) {
         thisSlider.trigger1( 'startedCallbacksForTrackDrag', valueProperty.get() );
         this.handleTrackEvent( event, trail );
         thisSlider.trigger1( 'endedCallbacksForTrackDrag', valueProperty.get() );
       },
+
       end: function() {
         if ( thisSlider.enabledProperty.get() ) {
           thisSlider.trigger1( 'startedCallbacksForTrackDragEnded', valueProperty.get() );
@@ -313,9 +317,11 @@ define( function( require ) {
     // highlight thumb on pointer over
     thisNode.addInputListener( new ButtonListener( {
       over: function( event ) {
+        console.log( 'ThumbNode.over' );//XXX
         if ( enabledProperty.get() ) { thisNode.fill = options.thumbFillHighlighted; }
       },
       up: function( event ) {
+        console.log( 'ThumbNode.up' );//XXX
         if ( enabledProperty.get() ) { thisNode.fill = options.thumbFillEnabled; }
       }
     } ) );
