@@ -99,9 +99,9 @@ define( function( require ) {
       },
 
       drag: function( event, trail ) {
-        thisSlider.trigger1( 'startedCallbacksForTrackDrag', valueProperty.get() );
+        thisSlider.trigger1( 'startedCallbacksForTrackDragged', valueProperty.get() );
         this.handleTrackEvent( event, trail );
-        thisSlider.trigger1( 'endedCallbacksForTrackDrag', valueProperty.get() );
+        thisSlider.trigger1( 'endedCallbacksForTrackDragged', valueProperty.get() );
       },
 
       end: function() {
