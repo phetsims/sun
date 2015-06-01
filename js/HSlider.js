@@ -126,12 +126,14 @@ define( function( require ) {
     // Keyboard accessibility
     thumbNode.addInputListener( {
       keydown: function( event, trail ) {
-        var keyCode = event.domEvent.keyCode;
-        var delta = keyCode === Input.KEY_LEFT_ARROW || keyCode === Input.KEY_DOWN_ARROW ? -1 :
-                    keyCode === Input.KEY_RIGHT_ARROW || keyCode === Input.KEY_UP_ARROW ? +1 :
-                    0;
-        var clampedValue = Util.clamp( valueProperty.get() + (range.max - range.min) * 0.1 * delta, range.min, range.max );
-        valueProperty.set( options.constrainValue( clampedValue ) );
+        if ( thisSlider.enabledProperty.get() ) {
+          var keyCode = event.domEvent.keyCode;
+          var delta = keyCode === Input.KEY_LEFT_ARROW || keyCode === Input.KEY_DOWN_ARROW ? -1 :
+                      keyCode === Input.KEY_RIGHT_ARROW || keyCode === Input.KEY_UP_ARROW ? +1 :
+                      0;
+          var clampedValue = Util.clamp( valueProperty.get() + (range.max - range.min) * 0.1 * delta, range.min, range.max );
+          valueProperty.set( options.constrainValue( clampedValue ) );
+        }
       }
     } );
 
