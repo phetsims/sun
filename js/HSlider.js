@@ -91,24 +91,24 @@ define( function( require ) {
 
       start: function( event, trail ) {
         if ( thisSlider.enabledProperty.get() ) {
-          thisSlider.trigger1( 'startedCallbacksForTrackDragStarted', valueProperty.get() );
+          thisSlider.trigger2( 'startedCallbacksForDragStarted', valueProperty.get(), 'track' );
           options.startDrag();
           this.handleTrackEvent( event, trail );
-          thisSlider.trigger1( 'endedCallbacksForTrackDragStarted', valueProperty.get() );
+          thisSlider.trigger0( 'endedCallbacksForDragStarted' );
         }
       },
 
       drag: function( event, trail ) {
-        thisSlider.trigger1( 'startedCallbacksForTrackDragged', valueProperty.get() );
+        thisSlider.trigger1( 'startedCallbacksForDragged', valueProperty.get() );
         this.handleTrackEvent( event, trail );
-        thisSlider.trigger1( 'endedCallbacksForTrackDragged', valueProperty.get() );
+        thisSlider.trigger0( 'endedCallbacksForDragged' );
       },
 
       end: function() {
         if ( thisSlider.enabledProperty.get() ) {
-          thisSlider.trigger1( 'startedCallbacksForTrackDragEnded', valueProperty.get() );
+          thisSlider.trigger1( 'startedCallbacksForDragEnded', valueProperty.get() );
           options.endDrag();
-          thisSlider.trigger1( 'endedCallbacksForTrackDragEnded', valueProperty.get() );
+          thisSlider.trigger0( 'endedCallbacksForDragEnded' );
         }
       }
     } );
@@ -140,13 +140,13 @@ define( function( require ) {
 
       start: function( event, trail ) {
         if ( thisSlider.enabledProperty.get() ) {
-          thisSlider.trigger1( 'startedCallbacksForDragStarted', valueProperty.get() );
+          thisSlider.trigger2( 'startedCallbacksForDragStarted', valueProperty.get(), 'thumb' );
           options.startDrag();
 
           var transform = trail.subtrailTo( thisSlider ).getTransform();
           this.clickXOffset = transform.inversePosition2( event.pointer.point ).x - thumbNode.x;
 
-          thisSlider.trigger1( 'endedCallbacksForDragStarted', valueProperty.get() );
+          thisSlider.trigger0( 'endedCallbacksForDragStarted' );
         }
       },
 
@@ -159,7 +159,7 @@ define( function( require ) {
 
           valueProperty.set( options.constrainValue( newValue ) );
 
-          thisSlider.trigger1( 'endedCallbacksForDragged', valueProperty.get() );
+          thisSlider.trigger0( 'endedCallbacksForDragged' );
         }
       },
 
@@ -167,7 +167,7 @@ define( function( require ) {
         if ( thisSlider.enabledProperty.get() ) {
           thisSlider.trigger1( 'startedCallbacksForDragEnded', valueProperty.get() );
           options.endDrag();
-          thisSlider.trigger1( 'endedCallbacksForDragEnded', valueProperty.get() );
+          thisSlider.trigger0( 'endedCallbacksForDragEnded' );
         }
       }
     } );
