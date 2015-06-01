@@ -123,20 +123,6 @@ define( function( require ) {
     thumbNode.centerY = thisSlider.track.centerY;
     thisSlider.addChild( thumbNode );
 
-    // Keyboard accessibility
-    thumbNode.addInputListener( {
-      keydown: function( event, trail ) {
-        if ( thisSlider.enabledProperty.get() ) {
-          var keyCode = event.domEvent.keyCode;
-          var delta = keyCode === Input.KEY_LEFT_ARROW || keyCode === Input.KEY_DOWN_ARROW ? -1 :
-                      keyCode === Input.KEY_RIGHT_ARROW || keyCode === Input.KEY_UP_ARROW ? +1 :
-                      0;
-          var clampedValue = Util.clamp( valueProperty.get() + (range.max - range.min) * 0.1 * delta, range.min, range.max );
-          valueProperty.set( options.constrainValue( clampedValue ) );
-        }
-      }
-    } );
-
     // thumb touch area
     if ( !options.thumbNode ) {
       var dx = 0.5 * thumbNode.width;
@@ -186,6 +172,21 @@ define( function( require ) {
       }
     } );
     thumbNode.addInputListener( thumbHandler );
+
+    //TODO This is experimental code. Decide how this affects data collection.
+    // Keyboard accessibility
+    thumbNode.addInputListener( {
+      keydown: function( event, trail ) {
+        if ( thisSlider.enabledProperty.get() ) {
+          var keyCode = event.domEvent.keyCode;
+          var delta = keyCode === Input.KEY_LEFT_ARROW || keyCode === Input.KEY_DOWN_ARROW ? -1 :
+                      keyCode === Input.KEY_RIGHT_ARROW || keyCode === Input.KEY_UP_ARROW ? +1 :
+                      0;
+          var clampedValue = Util.clamp( valueProperty.get() + (range.max - range.min) * 0.1 * delta, range.min, range.max );
+          valueProperty.set( options.constrainValue( clampedValue ) );
+        }
+      }
+    } );
 
     // @private enable/disable
     var enabledObserver = function( enabled ) {
