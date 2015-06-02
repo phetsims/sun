@@ -195,7 +195,7 @@ define( function( require ) {
         event.abort(); // prevent nodes (eg, controls) behind the list from receiving the event
         property.value = event.currentTarget.item.value; // set the property
 
-        self.trigger1( 'endedCallbacksForItemFired', event.currentTarget.item.value );
+        self.trigger0( 'endedCallbacksForItemFired' );
       }
     };
 
