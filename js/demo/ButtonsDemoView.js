@@ -396,9 +396,12 @@ define( function( require ) {
       transparentButton.enabled = enabled;
       roundStickyToggleButton.enabled = enabled;
       booleanRectangularStickyToggleButton.enabled = enabled;
-      knob1.enabled = enabled; //TODO enabled should be a property of slider, not knob
-      knob2.enabled = enabled;
-      knob3.enabled = enabled;
+
+      //TODO this is broken, see sun#185
+      //knob1.enabled = enabled; //TODO enabled should be a property of slider, not knob
+      //knob2.enabled = enabled;
+      //knob3.enabled = enabled;
+
       rectangularMomentaryButton.enabled = enabled;
       roundMomentaryButton.enabled = enabled;
     } );
