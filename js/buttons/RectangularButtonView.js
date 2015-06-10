@@ -242,8 +242,7 @@ define( function( require ) {
       ];
 
       overlayForHorizGradient.cachedPaints = [
-        upFillHorizontal, overFillHorizontal, disabledFillHorizontal, disabledFillHorizontal,
-        enabledStroke, disabledStroke
+        upFillHorizontal, overFillHorizontal, disabledFillHorizontal, enabledStroke, disabledStroke
       ];
     }
 
