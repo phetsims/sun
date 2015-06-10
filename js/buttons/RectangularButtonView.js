@@ -159,7 +159,7 @@ define( function( require ) {
     var upFillHorizontal;
     var overFillVertical;
     var overFillHorizontal;
-    var downFill;
+    var downFillVertical;
     var disabledFillVertical;
     var disabledFillHorizontal;
     var disabledPressedFillVertical;
@@ -196,7 +196,7 @@ define( function( require ) {
         .addColorStop( horizontalShadowStop, transparentBaseColor )
         .addColorStop( 1, baseColor.colorUtilsDarker( 0.3 ) );
 
-      downFill = new LinearGradient( 0, 0, 0, buttonHeight )
+      downFillVertical = new LinearGradient( 0, 0, 0, buttonHeight )
         .addColorStop( 0, baseColor.colorUtilsBrighter( 0.7 ) )
         .addColorStop( verticalHighlightStop * 0.67, baseColor.colorUtilsDarker( 0.3 ) )
         .addColorStop( verticalShadowStop, baseColor.colorUtilsBrighter( 0.2 ) )
@@ -237,7 +237,7 @@ define( function( require ) {
       }
 
       button.cachedPaints = [
-        upFillVertical, overFillVertical, downFill, disabledFillVertical, disabledPressedFillVertical,
+        upFillVertical, overFillVertical, downFillVertical, disabledFillVertical, disabledPressedFillVertical,
         disabledStroke
       ];
 
@@ -264,7 +264,7 @@ define( function( require ) {
           break;
 
         case 'pressed':
-          button.fill = downFill;
+          button.fill = downFillVertical;
           overlayForHorizGradient.stroke = enabledStroke;
           overlayForHorizGradient.fill = overFillHorizontal;
           break;
