@@ -119,7 +119,7 @@ define( function( require ) {
         // update the thumb location (sanity check that it's here, only needs to be run if passedDragThreshold===true)
         updateThumb( onProperty.get() );
 
-        thisNode.trigger2( 'endedCallbacksForToggled', oldValue, newValue );
+        thisNode.trigger0( 'endedCallbacksForToggled' );
       },
 
       drag: function( evt, trail ) {
@@ -143,7 +143,7 @@ define( function( require ) {
           // TODO: A way to distinguish between drag-to-toggle vs click-to-toggle
           thisNode.trigger2( 'startedCallbacksForToggled', !value, value );
           onProperty.set( value );
-          thisNode.trigger2( 'endedCallbacksForToggled', !value, value );
+          thisNode.trigger0( 'endedCallbacksForToggled' );
         }
       },
 

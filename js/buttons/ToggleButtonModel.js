@@ -57,7 +57,7 @@ define( function( require ) {
       var newValue = this.valueProperty.value === this.valueA ? this.valueB : this.valueA;
       this.trigger2( 'startedCallbacksForToggled', oldValue, newValue );
       this.valueProperty.value = newValue;
-      this.trigger2( 'endedCallbacksForToggled', oldValue, newValue );
+      this.trigger0( 'endedCallbacksForToggled' );
     }
   } );
 } );

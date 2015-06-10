@@ -78,7 +78,7 @@ define( function( require ) {
       var newValue = this.valueProperty.value === this.valueUp ? this.valueDown : this.valueUp;
       this.trigger1( 'startedCallbacksForToggled', newValue );
       this.valueProperty.value = newValue;
-      this.trigger1( 'endedCallbacksForToggled', newValue );
+      this.trigger0( 'endedCallbacksForToggled' );
     }
   } );
 } );

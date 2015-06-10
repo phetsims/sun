@@ -109,7 +109,7 @@ define( function( require ) {
           var newValue = !property.value;
           thisNode.trigger2( 'startedCallbacksForToggled', oldValue, newValue );
           property.value = newValue;
-          thisNode.trigger2( 'endedCallbacksForToggled', oldValue, newValue );
+          thisNode.trigger0( 'endedCallbacksForToggled' );
         }
       }
     } );

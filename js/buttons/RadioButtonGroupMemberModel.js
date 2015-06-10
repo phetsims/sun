@@ -31,7 +31,7 @@ define( function( require ) {
       if ( thisModel.over && thisModel.enabled ) {
         thisModel.trigger1( 'startedCallbacksForFired', selectedValue );
         selectorProperty.set( selectedValue );
-        thisModel.trigger1( 'endedCallbacksForFired', selectedValue );
+        thisModel.trigger0( 'endedCallbacksForFired' );
       }
     } );
   }

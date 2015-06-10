@@ -56,7 +56,7 @@ define( function( require ) {
       fire: function() {
         thisNode.trigger1( 'startedCallbacksForFired', value );
         property.set( value );
-        thisNode.trigger1( 'endedCallbacksForFired', value );
+        thisNode.trigger0( 'endedCallbacksForFired' );
       }
     } );
     thisNode.addInputListener( buttonListener );
