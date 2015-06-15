@@ -60,8 +60,8 @@ define( function( require ) {
     // Adjust the background size to match the content.
     var updateBackground = function() {
 
-      var contentWidth = Math.max( options.minWidth, content.width );
-      background.setRect( 0, 0, contentWidth + ( 2 * options.xMargin ), content.height + ( 2 * options.yMargin ), options.cornerRadius, options.cornerRadius );
+      var backgroundWidth = Math.max( options.minWidth, content.width + ( 2 * options.xMargin ) );
+      background.setRect( 0, 0, backgroundWidth, content.height + ( 2 * options.yMargin ), options.cornerRadius, options.cornerRadius );
 
       // Prevent oscillation and stack overflow due to numerical imprecision, see https://github.com/phetsims/sun/issues/110
       if ( background.center.distanceSquared( content.center ) > 1E-6 ) {
