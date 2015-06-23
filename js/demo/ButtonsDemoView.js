@@ -221,6 +221,43 @@ define( function( require ) {
     this.addChild( rectangularMomentaryButton );
 
     //===================================================================================
+    // Buttons with fire-on-hold turned on
+    //===================================================================================
+
+    var fireOnHeldCount = 0;
+    var fireQuicklyWhenHeldButton = new RectangularPushButton( {
+      content: new Text( 'Press and hold to test (fast fire)', { font: BUTTON_CAPTION_FONT } ),
+      listener: function() { message( 'Fast held button fired ' + ( ++fireOnHeldCount ) + 'x' ); },
+      baseColor: new Color( 114, 132, 62 ),
+      fireOnHold: true,
+      fireOnHoldDelay: 100,
+      fireOnHoldInterval: 50,
+      left: buttonE.left,
+      top: buttonE.bottom + 10
+    } );
+
+    var fireSlowlyOnHoldCount = 0;
+    var fireSlowlyWhenHeldButton = new RectangularPushButton( {
+      content: new Text( 'Press and hold to test (slow fire)', { font: BUTTON_CAPTION_FONT } ),
+      listener: function() { message( 'Slow held button fired ' + ( ++fireSlowlyOnHoldCount ) + 'x' ); },
+      baseColor: new Color( 147, 92, 120 ),
+      fireOnHold: true,
+      fireOnHoldDelay: 600,
+      fireOnHoldInterval: 300,
+      left: fireQuicklyWhenHeldButton.left,
+      top: fireQuicklyWhenHeldButton.bottom + 10
+    } );
+
+    var heldButtonsBox = new VBox( {
+      children: [ fireQuicklyWhenHeldButton, fireSlowlyWhenHeldButton ],
+      spacing: 10,
+      left: flatButtonsBox.right + 20,
+      top:  flatButtonsBox.top
+    } );
+
+    this.addChild( heldButtonsBox );
+
+    //===================================================================================
     // Miscellaneous other button examples
     //===================================================================================
 
@@ -393,12 +430,8 @@ define( function( require ) {
       transparentButton.enabled = enabled;
       roundStickyToggleButton.enabled = enabled;
       booleanRectangularStickyToggleButton.enabled = enabled;
-
-      //TODO this is broken, see sun#185
-      //knob1.enabled = enabled; //TODO enabled should be a property of slider, not knob
-      //knob2.enabled = enabled;
-      //knob3.enabled = enabled;
-
+      fireQuicklyWhenHeldButton.enabled = enabled;
+      fireSlowlyWhenHeldButton.enabled = enabled;
       rectangularMomentaryButton.enabled = enabled;
       roundMomentaryButton.enabled = enabled;
     } );
