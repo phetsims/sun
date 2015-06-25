@@ -15,7 +15,6 @@ define( function( require ) {
   var Node = require( 'SCENERY/nodes/Node' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var Text = require( 'SCENERY/nodes/Text' );
-  var AriaSpeech = require( 'SCENERY/accessibility/AriaSpeech' );
 
   // constants
   var DISABLED_OPACITY = 0.3;
@@ -119,7 +118,6 @@ define( function( require ) {
     this.checkBoxCheckedListener = function( checked ) {
       thisNode.checkedNode.visible = checked;
       thisNode.uncheckedNode.visible = !checked;
-      AriaSpeech.setText( property.value ? 'checked' : 'unchecked' );
 
       _.each( thisNode.instances, function( instance ) {
 
