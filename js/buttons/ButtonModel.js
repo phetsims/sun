@@ -27,8 +27,8 @@ define( function( require ) {
     var thisModel = this;
 
     PropertySet.call( this, {
-      over: false,  // Is pointer over the button?
-      down: false, // Is pointer down?
+      over: false,  // Is the pointer over the button?
+      down: false, // Is the pointer down?
       enabled: true  // Is the button enabled?
     }, options );
 
