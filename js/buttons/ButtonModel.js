@@ -32,11 +32,14 @@ define( function( require ) {
       enabled: true  // Is the button enabled?
     }, options );
 
-    // Call startCallback on pointer down.
-    this.property( 'down' ).onValue( true, function() { options.startCallback(); } );
-
-    // Call endCallback on pointer up.
-    this.property( 'down' ).onValue( false, function() { options.endCallback( thisModel.over ); } );
+    this.property( 'down' ).lazyLink( function( down ) {
+      if ( down ) {
+        options.startCallback();
+      }
+      else {
+        options.endCallback( thisModel.over );
+      }
+    } );
   }
 
   return inherit( PropertySet, ButtonModel, {
