@@ -33,7 +33,7 @@ define( function( require ) {
     }, options );
 
     var pushButtonModel = this;
-    ButtonModel.call( this );
+    ButtonModel.call( this, options );
 
     this.listeners = []; // @private
     if ( options.listener !== null ) {

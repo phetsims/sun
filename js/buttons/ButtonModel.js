@@ -11,19 +11,32 @@ define( function( require ) {
   var inherit = require( 'PHET_CORE/inherit' );
   var PropertySet = require( 'AXON/PropertySet' );
 
-  function ButtonModel() {
+  /**
+   * @param {Object} [options]
+   * @constructor
+   */
+  function ButtonModel( options ) {
+
+    options = _.extend( {
+      // {function} called on pointer down
+      startCallback: function() {},
+      // {function} called on pointer up, @param {boolean} over - indicates whether the pointer was released over the button
+      endCallback: function( over ) {}
+    }, options );
+
+    var thisModel = this;
 
     PropertySet.call( this, {
+      over: false,  // Is pointer over the button?
+      down: false, // Is pointer down?
+      enabled: true  // Is the button enabled?
+    }, options );
 
-      // Property that tracks whether or not a pointer that could interact with the button is currently over the button.
-      over: false,
+    // Call startCallback on pointer down.
+    this.property( 'down' ).onValue( true, function() { options.startCallback(); } );
 
-      // Property that tracks whether a pointer is currently down on, a.k.a. pressing, the button.
-      down: false,
-
-      // Property that tracks whether or not the button is enabled.
-      enabled: true
-    }, 'buttonModel' );
+    // Call endCallback on pointer up.
+    this.property( 'down' ).onValue( false, function() { options.endCallback( thisModel.over ); } );
   }
 
   return inherit( PropertySet, ButtonModel, {
