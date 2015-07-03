@@ -104,7 +104,6 @@ define( function( require ) {
      * @public
      */
     fire: function() {
-      assert && assert( !this.isRunning() );
       var callbacksCopy = this.callbacks.slice( 0 );
       for ( var i = 0; i < callbacksCopy.length; i++ ) {
         callbacksCopy[ i ]();
