@@ -13,7 +13,7 @@ define( function( require ) {
   var ButtonsDemoView = require( 'SUN/demo/ButtonsDemoView' );
 
   // Strings
-  var simTitle = 'Sun demo';
+  var title = require( 'string!SUN/sun.name' );
 
   var simOptions = {
     credits: {
@@ -26,8 +26,8 @@ define( function( require ) {
   SimLauncher.launch( function() {
     // Create and start the sim
     //Create and start the sim
-    new Sim( simTitle, [
-      new Screen( simTitle, null,
+    new Sim( title, [
+      new Screen( title, null,
         function() {return {};},
         function( model ) {return new ButtonsDemoView();},
         { backgroundColor: backgroundColor }
