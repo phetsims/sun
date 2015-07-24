@@ -6,6 +6,7 @@
  *
  * @author Sam Reid
  * @author Chris Malley (PixelZoom, Inc.)
+ * @author John Blanco
  */
 define( function( require ) {
   'use strict';
@@ -57,14 +58,22 @@ define( function( require ) {
     this.addChild( background );
     this.addChild( content );
 
+    // flag for preventing recursion
+    var backgroundUpdateInProgress = false;
+
     // Adjust the background size to match the content.
     var updateBackground = function() {
 
-      var backgroundWidth = Math.max( options.minWidth, content.width + ( 2 * options.xMargin ) );
-      background.setRect( 0, 0, backgroundWidth, content.height + ( 2 * options.yMargin ), options.cornerRadius, options.cornerRadius );
+      // Check that an update isn't already in progress, lest we end up with some nasty recursion.  See
+      // https://github.com/phetsims/sun/issues/110 and https://github.com/phetsims/molecule-shapes/issues/130.
+      if ( !backgroundUpdateInProgress ) {
+        backgroundUpdateInProgress = true;
 
-      // Prevent oscillation and stack overflow due to numerical imprecision, see https://github.com/phetsims/sun/issues/110
-      if ( background.center.distanceSquared( content.center ) > 1E-6 ) {
+        // size the background to fit the content
+        var backgroundWidth = Math.max( options.minWidth, content.width + ( 2 * options.xMargin ) );
+        background.setRect( 0, 0, backgroundWidth, content.height + ( 2 * options.yMargin ), options.cornerRadius, options.cornerRadius );
+
+        // align the content within the background
         if ( options.align === 'center' ) {
           content.center = background.center;
         }
@@ -76,8 +85,10 @@ define( function( require ) {
           content.right = background.right - options.xMargin;
           content.centerY = background.centerY;
         }
+        backgroundUpdateInProgress = false;
       }
     };
+
     if ( options.resize ) {
       content.addEventListener( 'bounds', function() {
         updateBackground();
