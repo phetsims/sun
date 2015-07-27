@@ -64,29 +64,33 @@ define( function( require ) {
     // Adjust the background size to match the content.
     var updateBackground = function() {
 
-      // Check that an update isn't already in progress, lest we end up with some nasty recursion.  See
-      // https://github.com/phetsims/sun/issues/110 and https://github.com/phetsims/molecule-shapes/issues/130.
-      if ( !backgroundUpdateInProgress ) {
-        backgroundUpdateInProgress = true;
-
-        // size the background to fit the content
-        var backgroundWidth = Math.max( options.minWidth, content.width + ( 2 * options.xMargin ) );
-        background.setRect( 0, 0, backgroundWidth, content.height + ( 2 * options.yMargin ), options.cornerRadius, options.cornerRadius );
-
-        // align the content within the background
-        if ( options.align === 'center' ) {
-          content.center = background.center;
-        }
-        else if ( options.align === 'left' ) {
-          content.left = background.left + options.xMargin;
-          content.centerY = background.centerY;
-        }
-        else { /* right */
-          content.right = background.right - options.xMargin;
-          content.centerY = background.centerY;
-        }
-        backgroundUpdateInProgress = false;
+      // Check that an update isn't already in progress, lest we end up with some nasty recursion.  For details, please
+      // see https://github.com/phetsims/sun/issues/110 and https://github.com/phetsims/molecule-shapes/issues/130.
+      if ( backgroundUpdateInProgress ) {
+        return;
       }
+
+      backgroundUpdateInProgress = true;
+
+      // size the background to fit the content
+      var backgroundWidth = Math.max( options.minWidth, content.width + ( 2 * options.xMargin ) );
+      background.setRect( 0, 0, backgroundWidth, content.height + ( 2 * options.yMargin ), options.cornerRadius, options.cornerRadius );
+
+      // align the content within the background
+      if ( options.align === 'center' ) {
+        content.center = background.center;
+      }
+      else if ( options.align === 'left' ) {
+        content.left = background.left + options.xMargin;
+        content.centerY = background.centerY;
+      }
+      else { /* right */
+        content.right = background.right - options.xMargin;
+        content.centerY = background.centerY;
+      }
+
+      // clear the recursion-prevention flag
+      backgroundUpdateInProgress = false;
     };
 
     if ( options.resize ) {
