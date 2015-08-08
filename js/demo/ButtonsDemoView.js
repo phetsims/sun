@@ -11,7 +11,7 @@ define( function( require ) {
   // modules
   var Bounds2 = require( 'DOT/Bounds2' );
   var BooleanRectangularStickyToggleButton = require( 'SUN/buttons/BooleanRectangularStickyToggleButton' );
-  var BooleanRectangularToggleButtonWithContent = require( 'SUN/buttons/BooleanRectangularToggleButton' );
+  var BooleanRectangularToggleButton = require( 'SUN/buttons/BooleanRectangularToggleButton' );
   var Color = require( 'SCENERY/util/Color' );
   var HTMLPushButton = require( 'SUN/buttons/HTMLPushButton' );
   var inherit = require( 'PHET_CORE/inherit' );
@@ -361,7 +361,7 @@ define( function( require ) {
       rectangularMomentaryButton.enabled = enabled;
       roundMomentaryButton.enabled = enabled;
     } );
-    var disableEnableButton = new BooleanRectangularToggleButtonWithContent(
+    var disableEnableButton = new BooleanRectangularToggleButton(
       new Text( 'Disable Buttons', { font: BUTTON_CAPTION_FONT } ),
       new Text( 'Enable Buttons', { font: BUTTON_CAPTION_FONT } ),
       buttonsEnabledProperty, {
