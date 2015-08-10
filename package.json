@@ -2,6 +2,7 @@
   "name": "sun",
   "version": "1.0.0-dev.10",
   "license": "MIT",
+  "requirejsNamespace": "SUN",
   "simTitleStringKey": "SUN/sun.name",
   "phetLibs": [
     "sun"
