@@ -15,7 +15,7 @@ define( function( require ) {
 
   /**
    * @param {Property} selectorProperty - the property for the RadioButtonGroup that determines which button is selected
-   * @param {object} selectedValue - the value that selectorProperty takes when this particular SingleRadioButton is selected
+   * @param {Object} selectedValue - the value that selectorProperty takes when this particular SingleRadioButton is selected
    * @constructor
    */
   function RadioButtonGroupMemberModel( selectorProperty, selectedValue ) {

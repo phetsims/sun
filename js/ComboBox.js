@@ -82,7 +82,7 @@ define( function( require ) {
    * @param {number} width
    * @param {number} height
    * @param {number} xMargin
-   * @param {object} [options]
+   * @param {Object} [options]
    * @constructor
    */
   function ItemNode( item, width, height, xMargin, options ) {
@@ -327,7 +327,7 @@ define( function( require ) {
    * This exists primarily to document the structure of an item.
    * @param {Node} node
    * @param {*} value
-   * @param {object} [options]
+   * @param {Object} [options]
    * @returns {{node: *, value: *}}
    */
   ComboBox.createItem = function( node, value, options ) {
