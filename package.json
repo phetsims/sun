@@ -2,11 +2,6 @@
   "name": "sun",
   "version": "1.0.0-dev.10",
   "license": "MIT",
-  "requirejsNamespace": "SUN",
-  "simTitleStringKey": "SUN/sun.name",
-  "phetLibs": [
-    "sun"
-  ],
   "repository": {
     "type": "git",
     "url": "https://github.com/phetsims/sun.git"
@@ -17,5 +12,12 @@
     "grunt-contrib-jshint": "~0.6.4",
     "uglify-js": "~2.4.0",
     "requirejs": "~2.1.8"
+  },
+  "phet": {
+    "requirejsNamespace": "SUN",
+    "simTitleStringKey": "SUN/sun.name",
+    "phetLibs": [
+      "sun"
+    ]
   }
 }
