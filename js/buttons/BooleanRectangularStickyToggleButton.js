@@ -1,9 +1,8 @@
 // Copyright 2002-2014, University of Colorado Boulder
 
 /**
- * A rectangular toggle button that switches the value of a boolean property.  It
- * sticks in the down position when pressed, popping back up when pressed
- * again.
+ * A rectangular toggle button that switches the value of a boolean property.  It sticks in the down position when
+ * pressed, popping back up when pressed again.
  *
  * This class inherits from the more general RectangularStickyToggleButton, which can take any values.
  *
@@ -17,6 +16,11 @@ define( function( require ) {
   var inherit = require( 'PHET_CORE/inherit' );
   var RectangularStickyToggleButton = require( 'SUN/buttons/RectangularStickyToggleButton' );
 
+  /**
+   * @param booleanProperty
+   * @param options
+   * @constructor
+   */
   function BooleanRectangularStickyToggleButton( booleanProperty, options ) {
     RectangularStickyToggleButton.call( this, false, true, booleanProperty, options );
   }
