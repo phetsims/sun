@@ -5,7 +5,7 @@
  * sticks in the down position when pressed, popping back up when pressed
  * again.
  *
- * This class inherits from the more general RoundStickyToggleButton, which can take any values.
+ * This class inherits from the more general RectangularStickyToggleButton, which can take any values.
  *
  * @author John Blanco
  * @author Sam Reid
