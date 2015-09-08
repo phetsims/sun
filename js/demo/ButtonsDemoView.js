@@ -34,17 +34,17 @@ define( function( require ) {
   var RectangularMomentaryButton = require( 'SUN/buttons/RectangularMomentaryButton' );
 
   // constants
-  var BUTTON_FONT = new Font( { size: 20 } );
-  var BUTTON_CAPTION_FONT = new Font( { size: 16 } );
+  var BUTTON_FONT = new Font( { size: 24 } );
+  var BUTTON_CAPTION_FONT = new Font( { size: 20 } );
 
   function ButtonsDemoView() {
 
-    ScreenView.call( this, { layoutBounds: new Bounds2( 0, 0, 768, 504 ) } );
+    ScreenView.call( this );
 
     // Message area, for outputting test message
     var messagePrefix = 'Message: ';
     var messageText = new Text( messagePrefix, {
-      font: new Font( { size: 16 } ),
+      font: new Font( { size: 20 } ),
       bottom: this.layoutBounds.height - 5,
       left:   this.layoutBounds.minX + 10
     } );
@@ -196,31 +196,6 @@ define( function( require ) {
     this.addChild( actionButtonsBox );
 
     //===================================================================================
-    // Momentary buttons
-    //===================================================================================
-
-    // round
-    var roundOnProperty = new Property( false );
-    roundOnProperty.lazyLink( function( on ) { message( 'RoundMomentaryButton on=' + on ); } );
-    var roundMomentaryButton = new RoundMomentaryButton( roundOnProperty, {
-      baseColor: 'orange',
-      right: this.layoutBounds.right - 10,
-      centerY: this.layoutBounds.centerY
-    } );
-    this.addChild( roundMomentaryButton );
-
-    // rectangular
-    var rectangularOnProperty = new Property( false );
-    rectangularOnProperty.lazyLink( function( on ) { message( 'RectangularMomentaryButton on=' + on ); } );
-    var rectangularMomentaryButton = new RectangularMomentaryButton( rectangularOnProperty, {
-      minWidth: 50,
-      minHeight: 40,
-      right: roundMomentaryButton.right,
-      top: roundMomentaryButton.bottom + 10
-    } );
-    this.addChild( rectangularMomentaryButton );
-
-    //===================================================================================
     // Buttons with fire-on-hold turned on
     //===================================================================================
 
@@ -305,9 +280,7 @@ define( function( require ) {
       message( 'Round sticky toggle button state changed to: ' + value );
     } );
     var roundStickyToggleButton = new RoundStickyToggleButton( '"off"', '"on"', roundToggleButtonProperty, {
-      baseColor: new Color( 255, 0, 0 ),
-      left: helpButton.right + 5,
-      centerY: goButton.centerY
+      baseColor: new Color( 255, 0, 0 )
     } );
 
     var rectangularToggleButtonProperty = new Property( false );
@@ -316,8 +289,8 @@ define( function( require ) {
     } );
     var booleanRectangularStickyToggleButton = new BooleanRectangularStickyToggleButton( rectangularToggleButtonProperty, {
       baseColor: new Color( 0, 200, 200 ),
-      left: roundStickyToggleButton.right + 10,
-      centerY: goButton.centerY,
+      centerX: roundStickyToggleButton.centerX,
+      top: roundStickyToggleButton.bottom + 10,
       minWidth: 50,
       minHeight: 35
     } );
@@ -329,6 +302,38 @@ define( function( require ) {
       top: miscButtonsBox.top
     } );
     this.addChild( toggleButtonsBox );
+
+    //===================================================================================
+    // Momentary buttons
+    //===================================================================================
+
+    // round
+    var roundOnProperty = new Property( false );
+    roundOnProperty.lazyLink( function( on ) { message( 'RoundMomentaryButton on=' + on ); } );
+    var roundMomentaryButton = new RoundMomentaryButton( roundOnProperty, {
+      baseColor: '#D76958',
+      left: roundStickyToggleButton.right+ 10,
+      centerY: roundStickyToggleButton.centerY
+    } );
+
+    // rectangular
+    var rectangularOnProperty = new Property( false );
+    rectangularOnProperty.lazyLink( function( on ) { message( 'RectangularMomentaryButton on=' + on ); } );
+    var rectangularMomentaryButton = new RectangularMomentaryButton( rectangularOnProperty, {
+      baseColor: '#724C35',
+      minWidth: 50,
+      minHeight: 40,
+      centerX: roundMomentaryButton.centerX,
+      top: roundMomentaryButton.bottom + 10
+    } );
+
+    var momentaryButtonsBox = new VBox( {
+      children: [ roundMomentaryButton, rectangularMomentaryButton ],
+      spacing: 15,
+      left: toggleButtonsBox.right + 25,
+      top: toggleButtonsBox.top
+    } );
+    this.addChild( momentaryButtonsBox );
 
     //===================================================================================
     // Enable/Disable buttons
@@ -366,8 +371,8 @@ define( function( require ) {
       new Text( 'Enable Buttons', { font: BUTTON_CAPTION_FONT } ),
       buttonsEnabledProperty, {
         baseColor: new Color( 204, 255, 51 ),
-        right: this.layoutBounds.right - 15,
-        bottom: this.layoutBounds.bottom - 15
+        right: this.layoutBounds.right - 40,
+        bottom: this.layoutBounds.bottom - 40
       }
     );
     this.addChild( disableEnableButton );
@@ -383,7 +388,7 @@ define( function( require ) {
           message( 'Button colors changed' );
         },
         right: disableEnableButton.right,
-        bottom: disableEnableButton.top - 5
+        bottom: disableEnableButton.top - 15
       }
     );
     this.addChild( changeButtonColorsButton );
