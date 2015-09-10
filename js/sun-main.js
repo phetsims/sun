@@ -13,7 +13,7 @@ define( function( require ) {
   var ButtonsDemoView = require( 'SUN/demo/ButtonsDemoView' );
 
   // Strings
-  var title = require( 'string!SUN/sun.name' );
+  var title = require( 'string!SUN/sun.title' );
 
   var simOptions = {
     credits: {
