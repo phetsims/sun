@@ -13,6 +13,7 @@ define( function( require ) {
 
   // modules
   var Carousel = require( 'SUN/Carousel' );
+  var Circle = require( 'SCENERY/nodes/Circle' );
   var DemosView = require( 'SUN/demo/DemosView' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Node = require( 'SCENERY/nodes/Node' );
@@ -27,7 +28,7 @@ define( function( require ) {
     var hItems = [];
     colors.forEach( function( color ) {
       vItems.push( new Rectangle( 0, 0, 60, 60, { fill: color, stroke: 'black' } ) );
-      hItems.push( new Rectangle( 0, 0, 60, 60, { fill: color, stroke: 'black' } ) );
+      hItems.push( new Circle( 30, { fill: color, stroke: 'black' } ) );
     } );
 
     var vCarousel = new Carousel( vItems, {
