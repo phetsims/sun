@@ -7,10 +7,12 @@ define( function( require ) {
   'use strict';
 
   // Imports
+  var ButtonsDemoView = require( 'SUN/demo/ButtonsDemoView' );
+  var ComponentsView = require( 'SUN/demo/ComponentsView' );
+  var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var Screen = require( 'JOIST/Screen' );
   var Sim = require( 'JOIST/Sim' );
   var SimLauncher = require( 'JOIST/SimLauncher' );
-  var ButtonsDemoView = require( 'SUN/demo/ButtonsDemoView' );
 
   // Strings
   var title = require( 'string!SUN/sun.title' );
@@ -21,15 +23,22 @@ define( function( require ) {
     }
   };
 
+  var createScreenIcon = function( color ) { return new Rectangle( 0, 0, 147, 100, { fill: color } ); };
+
   var backgroundColor = phet.chipper.getQueryParameter( 'backgroundColor' ) || 'white';
 
   SimLauncher.launch( function() {
-    // Create and start the sim
-    //Create and start the sim
     new Sim( title, [
-      new Screen( title, null,
+      new Screen( 'Buttons',
+        createScreenIcon( 'red' ),
         function() {return {};},
         function( model ) {return new ButtonsDemoView();},
+        { backgroundColor: backgroundColor }
+      ),
+      new Screen( 'Components',
+        createScreenIcon( 'yellow' ),
+        function() {return {};},
+        function( model ) {return new ComponentsView();},
         { backgroundColor: backgroundColor }
       )
     ], simOptions ).start();
