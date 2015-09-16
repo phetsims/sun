@@ -345,7 +345,15 @@ define( function( require ) {
 
   return inherit( Node, Carousel, {
 
-    dispose: function() { this.disposeCarousel(); }
+    // Ensures that the carousel is eligibile for GC
+    dispose: function() {
+      this.disposeCarousel();
+    },
+
+    // Resets the carousel to its initial state
+    reset: function() {
+      this.pageNumberProperty.reset();
+    }
   }, {
 
     // @static @public (read-only)
