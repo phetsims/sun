@@ -53,7 +53,7 @@ define( function( require ) {
     // iOS-style page control
     pageControlVisible: false, // {boolean} whether to show an iOS-style page control
     pageControlLocation: 'bottom', // {string} where to place the page control, 'top'|'bottom'|'left'|'right'
-    pageControlSpacing: 6, // {number} spacing between page control and carousel background
+    pageControlSpacing: 8, // {number} spacing between page control and carousel background
     dotRadius: 3, // {number} radius of the dots in the page control
     dotSpacing: 10, // {number} space between dots
     pageVisibleColor: 'black', // {Color|string} dot color for the page that is visible
