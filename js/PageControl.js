@@ -24,12 +24,22 @@ define( function( require ) {
   function PageControl( numberOfPages, pageNumberProperty, options ) {
 
     options = _.extend( {
+
+      // all dots
       orientation: 'horizontal',
       dotRadius: 3, // {number} radius of the dots
-      pageVisibleColor: 'black', // {Color|string} dot color for the page that is visible
-      pageNotVisibleColor: 'rgb( 200, 200, 200 )', // {Color|string} dot color for pages that are not visible
+      lineWidth: 1,
       dotSpacing: 10, // {number} spacing between dots
-      interactive: true // {boolean} whether the control is interactive
+      interactive: true, // {boolean} whether the control is interactive
+
+      // dots representing the current page
+      currentPageColor: 'black', // {Color|string} dot color for the page that is visible
+      currentPageStroke: null,
+
+      // dots representing all pages except the current page
+      pageColor: 'rgb( 200, 200, 200 )', // {Color|string} dot color for pages that are not visible
+      pageStroke: null
+
     }, options );
 
     // validate options
@@ -56,7 +66,9 @@ define( function( require ) {
       // dot
       var dotCenter = ( pageNumber * ( 2 * options.dotRadius + options.dotSpacing ) );
       var dotNode = new DotNode( pageNumber, options.dotRadius, {
-        fill: options.pageNotVisibleColor,
+        fill: options.pageColor,
+        stroke: options.pageStroke,
+        lineWidth: options.lineWidth,
         x: isHorizontal ? dotCenter : 0,
         y: isHorizontal ? 0 : dotCenter
       } );
@@ -71,10 +83,16 @@ define( function( require ) {
 
     // Indicate which page is selected
     var pageNumberObserver = function( pageNumber, oldPageNumber ) {
+
+      // previous dot
       if ( oldPageNumber || oldPageNumber === 0 ) {
-        dotsParent.getChildAt( oldPageNumber ).fill = options.pageNotVisibleColor;
+        dotsParent.getChildAt( oldPageNumber ).fill = options.pageColor;
+        dotsParent.getChildAt( oldPageNumber ).stroke = options.pageStroke;
       }
-      dotsParent.getChildAt( pageNumber ).fill = options.pageVisibleColor;
+
+      // current dot
+      dotsParent.getChildAt( pageNumber ).fill = options.currentPageColor;
+      dotsParent.getChildAt( pageNumber ).stroke = options.currentPageStroke;
     };
     pageNumberProperty.link( pageNumberObserver );
 
