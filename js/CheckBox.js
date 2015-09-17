@@ -15,6 +15,7 @@ define( function( require ) {
   var Node = require( 'SCENERY/nodes/Node' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var Text = require( 'SCENERY/nodes/Text' );
+  var AccessiblePeer = require( 'SCENERY/accessibility/AccessiblePeer' );
 
   // constants
   var DISABLED_OPACITY = 0.3;
@@ -101,16 +102,17 @@ define( function( require ) {
     content.pickable = false; // since there's a pickable rectangle on top of content
 
     // interactivity
-    this.checkBoxButtonListener = new ButtonListener( {
-      fire: function() {
-        if ( thisNode._enabled ) {
-          var oldValue = property.value;
-          var newValue = !property.value;
-          thisNode.trigger2( 'startedCallbacksForToggled', oldValue, newValue );
-          property.value = newValue;
-          thisNode.trigger0( 'endedCallbacksForToggled' );
-        }
+    this.fire = function() {
+      if ( thisNode._enabled ) {
+        var oldValue = property.value;
+        var newValue = !property.value;
+        thisNode.trigger2( 'startedCallbacksForToggled', oldValue, newValue );
+        property.value = newValue;
+        thisNode.trigger0( 'endedCallbacksForToggled' );
       }
+    };
+    this.checkBoxButtonListener = new ButtonListener( {
+      fire: this.fire
     } );
     thisNode.addInputListener( this.checkBoxButtonListener );
 
@@ -136,9 +138,16 @@ define( function( require ) {
     // Give it a novel name to reduce the risk of parent or child collisions
     this.checkBoxTandem = options.tandem;
     this.checkBoxTandem && this.checkBoxTandem.addInstance( this );
+
+    // Accessibility support
+    this.setAccessibleContent( {
+      createPeer: function( accessibleInstance ) {
+        return new CheckBoxAccessiblePeer( accessibleInstance, thisNode.fire, options.accessibleLabel );
+      }
+    } );
   }
 
-  return inherit( Node, CheckBox, {
+  inherit( Node, CheckBox, {
     dispose: function() {
       this.checkBoxTandem && this.checkBoxTandem.removeInstance( this );
       this.checkBoxValueProperty.unlink( this.checkBoxCheckedListener );
@@ -232,4 +241,53 @@ define( function( require ) {
       return new CheckBox( content, property, checkBoxOptions );
     }
   } );
+
+  /**
+   * An accessible peer for creating a check box element in the Parallel DOM.
+   * See https://github.com/phetsims/scenery/issues/461
+   */
+  function CheckBoxAccessiblePeer( accessibleInstance, fire, accessibleLabel ) {
+    this.initialize( accessibleInstance, fire, accessibleLabel );
+  }
+
+  inherit( AccessiblePeer, CheckBoxAccessiblePeer, {
+    initialize: function( accessibleInstance, fire, accessibleLabel ) {
+      var trail = accessibleInstance.trail;
+
+      // will look like <input id="checkBoxId" value="check box value" type="checkbox">Check Box Name<br>
+      this.domElement = document.createElement( 'input' );
+      this.initializeAccessiblePeer( accessibleInstance, this.domElement );
+      this.domElement.type = 'checkbox';
+
+      // if an accessible label has been passed in, add it as a label to the dom element
+      if( accessibleLabel ) {
+        var uniqueId = trail.getUniqueId();
+        this.domElement.id = 'checkBox-' + uniqueId;
+
+        var checkBoxLabel = document.createElement( 'label' );
+        checkBoxLabel.setAttribute( 'for', this.domElement.id );
+        checkBoxLabel.innerText = accessibleLabel;
+        this.domElement.appendChild( checkBoxLabel );
+      }
+
+      this.domElement.tabIndex = '0';
+      this.domElement.addEventListener( 'click', function() {
+        fire();
+      } );
+
+      // temporary event listener that will fire when over the button.  This is in place of the highlight for now.
+      this.domElement.addEventListener( 'focus', function() {
+        console.log( 'focus is over a checkbox: ' + this.id );
+      } );
+
+    },
+
+    /**
+     * Dispose function for the accessible check box.
+     */
+    dispose: function() {
+      // TODO
+    }
+  } );
+  return CheckBox;
 } );
