@@ -17,6 +17,7 @@ define( function( require ) {
   var DemosView = require( 'SUN/demo/DemosView' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Node = require( 'SCENERY/nodes/Node' );
+  var PageControl = require( 'SUN/PageControl' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
 
   // Creates a demo for Carousel
@@ -38,7 +39,6 @@ define( function( require ) {
 
     var hCarousel = new Carousel( hItems, {
       orientation: 'horizontal',
-      pageControlVisible: true,
       centerX: vCarousel.centerX,
       top: vCarousel.bottom + 50
     } );
@@ -49,13 +49,48 @@ define( function( require ) {
     } );
   };
 
+  // Creates a demo for PageControl
+  var demoPageControl = function( layoutBounds ) {
+
+    // create items
+    var colors = [ 'red', 'blue', 'green', 'yellow', 'pink', 'white', 'orange', 'magenta', 'purple', 'pink' ];
+    var items = [];
+    colors.forEach( function( color ) {
+      items.push( new Rectangle( 0, 0, 100, 100, { fill: color, stroke: 'black' } ) );
+    } );
+
+    // carousel
+    var carousel = new Carousel( items, {
+      orientation: 'horizontal',
+      itemsPerPage: 3
+    } );
+
+    // page control
+    var pageControl = new PageControl( carousel.numberOfPages, carousel.pageNumberProperty, {
+      orientation: 'horizontal',
+      interactive: true,
+      dotRadius: 10,
+      dotSpacing: 18,
+      currentPageFill: 'white',
+      currentPageStroke: 'black',
+      centerX: carousel.centerX,
+      top: carousel.bottom + 10
+    } );
+
+    return new Node( {
+      children: [ carousel, pageControl ],
+      center: layoutBounds.center
+    } );
+  };
+
   function ComponentsView() {
     DemosView.call( this, 'component', [
 
       // To add a demo, create an entry here.
       // label is a {string} that will appear in the combo box.
       // getNode is a {function} that takes a {Bounds2} layoutBounds and returns a {Node}.
-      { label: 'Carousel', getNode: demoCarousel }
+      { label: 'Carousel', getNode: demoCarousel },
+      { label: 'PageControl', getNode: demoPageControl }
     ] );
   }
 
