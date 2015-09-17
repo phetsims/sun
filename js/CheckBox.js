@@ -101,7 +101,7 @@ define( function( require ) {
 
     content.pickable = false; // since there's a pickable rectangle on top of content
 
-    // interactivity
+    // @private interactivity
     this.fire = function() {
       if ( thisNode._enabled ) {
         var oldValue = property.value;
@@ -245,17 +245,29 @@ define( function( require ) {
   /**
    * An accessible peer for creating a check box element in the Parallel DOM.
    * See https://github.com/phetsims/scenery/issues/461
+   *
+   * @param {AccessibleInstance} accessibleInstance
+   * @param {function} fire - listener function fired by this checkbox
+   * @param {string} accessibleLabel - invisible string description for accessible technologies
    */
   function CheckBoxAccessiblePeer( accessibleInstance, fire, accessibleLabel ) {
     this.initialize( accessibleInstance, fire, accessibleLabel );
   }
 
   inherit( AccessiblePeer, CheckBoxAccessiblePeer, {
+
+    /**
+     * Initialize dom element and its attributes for the accessible check box peer of the parallel DOM.
+     *
+     * @param {AccessibleInstance} accessibleInstance
+     * @param {function} fire
+     * @param {string} accessibleLabel
+     */
     initialize: function( accessibleInstance, fire, accessibleLabel ) {
       var trail = accessibleInstance.trail;
 
       // will look like <input id="checkBoxId" value="check box value" type="checkbox">Check Box Name<br>
-      this.domElement = document.createElement( 'input' );
+      this.domElement = document.createElement( 'input' ); // @private
       this.initializeAccessiblePeer( accessibleInstance, this.domElement );
       this.domElement.type = 'checkbox';
 
@@ -279,7 +291,6 @@ define( function( require ) {
       this.domElement.addEventListener( 'focus', function() {
         console.log( 'focus is over a checkbox: ' + this.id );
       } );
-
     },
 
     /**
