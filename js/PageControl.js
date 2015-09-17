@@ -30,14 +30,14 @@ define( function( require ) {
       dotRadius: 3, // {number} radius of the dots
       lineWidth: 1,
       dotSpacing: 10, // {number} spacing between dots
-      interactive: true, // {boolean} whether the control is interactive
+      interactive: false, // {boolean} whether the control is interactive
 
       // dots representing the current page
-      currentPageColor: 'black', // {Color|string} dot color for the page that is visible
+      currentPageFill: 'black', // {Color|string} dot color for the page that is visible
       currentPageStroke: null,
 
       // dots representing all pages except the current page
-      pageColor: 'rgb( 200, 200, 200 )', // {Color|string} dot color for pages that are not visible
+      pageFill: 'rgb( 200, 200, 200 )', // {Color|string} dot color for pages that are not visible
       pageStroke: null
 
     }, options );
@@ -66,7 +66,7 @@ define( function( require ) {
       // dot
       var dotCenter = ( pageNumber * ( 2 * options.dotRadius + options.dotSpacing ) );
       var dotNode = new DotNode( pageNumber, options.dotRadius, {
-        fill: options.pageColor,
+        fill: options.pageFill,
         stroke: options.pageStroke,
         lineWidth: options.lineWidth,
         x: isHorizontal ? dotCenter : 0,
@@ -86,12 +86,12 @@ define( function( require ) {
 
       // previous dot
       if ( oldPageNumber || oldPageNumber === 0 ) {
-        dotsParent.getChildAt( oldPageNumber ).fill = options.pageColor;
+        dotsParent.getChildAt( oldPageNumber ).fill = options.pageFill;
         dotsParent.getChildAt( oldPageNumber ).stroke = options.pageStroke;
       }
 
       // current dot
-      dotsParent.getChildAt( pageNumber ).fill = options.currentPageColor;
+      dotsParent.getChildAt( pageNumber ).fill = options.currentPageFill;
       dotsParent.getChildAt( pageNumber ).stroke = options.currentPageStroke;
     };
     pageNumberProperty.link( pageNumberObserver );
