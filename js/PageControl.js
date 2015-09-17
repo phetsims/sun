@@ -29,7 +29,7 @@ define( function( require ) {
       pageVisibleColor: 'black', // {Color|string} dot color for the page that is visible
       pageNotVisibleColor: 'rgb( 200, 200, 200 )', // {Color|string} dot color for pages that are not visible
       dotSpacing: 10, // {number} spacing between dots
-      interactive: true // {boolean} whether the control is interactive
+      interactive: false // {boolean} whether the control is interactive
     }, options );
 
     // validate options
