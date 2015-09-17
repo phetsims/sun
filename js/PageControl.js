@@ -29,7 +29,7 @@ define( function( require ) {
       pageVisibleColor: 'black', // {Color|string} dot color for the page that is visible
       pageNotVisibleColor: 'rgb( 200, 200, 200 )', // {Color|string} dot color for pages that are not visible
       dotSpacing: 10, // {number} spacing between dots
-      interactive: false // {boolean} whether the control is interactive
+      interactive: true // {boolean} whether the control is interactive
     }, options );
 
     // validate options
@@ -38,11 +38,11 @@ define( function( require ) {
     // To improve readability
     var isHorizontal = ( options.orientation === 'horizontal' );
 
-    var dotsParent = new Node();
-
+    // Clicking on a dot goes to that page
     var dotListener = new DownUpListener( {
       down: function( event ) {
-        pageNumberProperty.set( dotsParent.indexOfChild( event.currentTarget ) );
+        assert && assert( event.currentTarget.hasOwnProperty( 'pageNumber' ) );
+        pageNumberProperty.set( event.currentTarget.pageNumber );
       }
     } );
 
@@ -50,12 +50,12 @@ define( function( require ) {
     // Add them to an intermediate parent node, so that additional children can't be inadvertently added.
     // For horizontal orientation, pages are ordered left-to-right.
     // For vertical orientation, pages are ordered top-to-bottom.
-
-    for ( var i = 0; i < numberOfPages; i++ ) {
+    var dotsParent = new Node();
+    for ( var pageNumber = 0; pageNumber < numberOfPages; pageNumber++ ) {
 
       // dot
-      var dotCenter = ( i * ( 2 * options.dotRadius + options.dotSpacing ) );
-      var dotNode = new Circle( options.dotRadius, {
+      var dotCenter = ( pageNumber * ( 2 * options.dotRadius + options.dotSpacing ) );
+      var dotNode = new DotNode( pageNumber, options.dotRadius, {
         fill: options.pageNotVisibleColor,
         x: isHorizontal ? dotCenter : 0,
         y: isHorizontal ? 0 : dotCenter
@@ -86,6 +86,19 @@ define( function( require ) {
     options.children = [ dotsParent ];
     Node.call( this, options );
   }
+
+  /**
+   * @param {number} pageNumber - page number that the dot is associated with
+   * @param {number} radius
+   * @param {Object} [options]
+   * @constructor
+   */
+  function DotNode( pageNumber, radius, options ) {
+    this.pageNumber = pageNumber; // @public (read-only)
+    Circle.call( this, radius, options );
+  }
+
+  inherit( Circle, DotNode );
 
   return inherit( Node, PageControl, {
 
