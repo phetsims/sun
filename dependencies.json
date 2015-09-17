@@ -1,0 +1,55 @@
+{
+  "comment": "# sun 1.0.0-dev.11 Thu Sep 17 2015 11:05:32 GMT-0600 (MDT)",
+  "assert": {
+    "sha": "858e65ac477bf1861883ce06eed56d9fdefa5027",
+    "branch": "master"
+  },
+  "axon": {
+    "sha": "1591786f5c5aef0c57bf5a3efa905dc1f2c9f4e0",
+    "branch": "master"
+  },
+  "brand": {
+    "sha": "f2c42d7b920e24dab53d747201598260a5f74128",
+    "branch": "master"
+  },
+  "chipper": {
+    "sha": "330853ba86a33dee1fa587a2d9cdd71a567cbde7",
+    "branch": "master"
+  },
+  "dot": {
+    "sha": "c67d2a58648e5fa8ffdf58a2d9c312d190423cb5",
+    "branch": "master"
+  },
+  "joist": {
+    "sha": "dc0a0a3ca18462d06950c943089f793135d1b374",
+    "branch": "master"
+  },
+  "kite": {
+    "sha": "3a1a5d34d7d4e45e9af7c2fc43652e8a4a182b86",
+    "branch": "master"
+  },
+  "phet-core": {
+    "sha": "8e31808c67a23066b43fbbd2080784daa44433c2",
+    "branch": "master"
+  },
+  "phetcommon": {
+    "sha": "acbbf59bfc34f60422ed5dd5972447226152c457",
+    "branch": "master"
+  },
+  "scenery": {
+    "sha": "909dfb54fe51a91a1b4783425c098ae60db61b4a",
+    "branch": "master"
+  },
+  "scenery-phet": {
+    "sha": "ea96eb50a61d9d857c52e07c58ad193e4556eb11",
+    "branch": "master"
+  },
+  "sherpa": {
+    "sha": "1759eadefb4f6d680f85aef394ea7727df1928e6",
+    "branch": "master"
+  },
+  "sun": {
+    "sha": "4900161ae746a160215edbdb90fd8dfdfb80dbb6",
+    "branch": "master"
+  }
+}
