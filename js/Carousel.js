@@ -16,7 +16,6 @@ define( function( require ) {
   var HSeparator = require( 'SUN/HSeparator' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Node = require( 'SCENERY/nodes/Node' );
-  var PageControl = require( 'SUN/PageControl' );
   var Property = require( 'AXON/Property' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var Shape = require( 'KITE/Shape' );
@@ -48,16 +47,7 @@ define( function( require ) {
     // item separators
     separatorsVisible: false, // {boolean} whether to put separators between items
     separatorColor: 'rgb( 180, 180, 180 )', // {Color|string} color for separators
-    separatorLineWidth: 0.5, // {number} lineWidth for separators
-
-    // iOS-style page control
-    pageControlVisible: false, // {boolean} whether to show an iOS-style page control
-    pageControlLocation: 'bottom', // {string} where to place the page control, 'top'|'bottom'|'left'|'right'
-    pageControlSpacing: 8, // {number} spacing between page control and carousel background
-    dotRadius: 3, // {number} radius of the dots in the page control
-    dotSpacing: 10, // {number} space between dots
-    pageVisibleColor: 'black', // {Color|string} dot color for the page that is visible
-    pageNotVisibleColor: 'rgb( 200, 200, 200 )' // {Color|string} dot color for pages that are not visible
+    separatorLineWidth: 0.5 // {number} lineWidth for separators
   };
 
   /**
@@ -67,20 +57,11 @@ define( function( require ) {
    */
   function Carousel( items, options ) {
 
-    // Make a copy of default options, so we can modify it
-    var defaultOptions = _.clone( DEFAULT_OPTIONS );
-
-    // If options doesn't specify a location for page control, set a valid default
-    if ( options.orientation && !options.pageControlLocation ) {
-      defaultOptions.pageControlLocation = ( options.orientation === 'horizontal' ) ? 'bottom' : 'left';
-    }
-
     // Override defaults with specified options
-    options = _.extend( defaultOptions, options );
+    options = _.extend( _.clone( DEFAULT_OPTIONS ), options );
 
     // Validate options
     assert && assert( _.contains( [ 'horizontal', 'vertical' ], options.orientation ), 'invalid orientation=' + options.orientation );
-    assert && assert( _.contains( [ 'bottom', 'top', 'left', 'right' ], options.pageControlLocation ), 'invalid pageControlLocation=' + options.pageControlLocation );
 
     // To improve readability
     var isHorizontal = ( options.orientation === 'horizontal' );
@@ -233,45 +214,6 @@ define( function( require ) {
     // Number of the page that is visible in the carousel.
     var pageNumberProperty = new Property( options.defaultPageNumber );
 
-    // iOS-style page control
-    var pageControl = null;
-    if ( options.pageControlVisible ) {
-
-      pageControl = new PageControl( numberOfPages, pageNumberProperty, {
-        orientation: options.orientation,
-        pageVisibleColor: options.pageVisibleColor,
-        pageNotVisibleColor: options.pageNotVisibleColor,
-        dotRadius: options.dotRadius,
-        dotSpacing: options.dotSpacing
-      } );
-
-      // Layout
-      if ( isHorizontal ) {
-        pageControl.centerX = backgroundNode.centerX;
-        if ( options.pageControlLocation === 'top' ) {
-          pageControl.bottom = backgroundNode.top - options.pageControlSpacing;
-        }
-        else if ( options.pageControlLocation === 'bottom' ) {
-          pageControl.top = backgroundNode.bottom + options.pageControlSpacing;
-        }
-        else {
-          throw new Error( 'incompatible pageControlLocation=' + options.pageControlLocation + ' for orientation=' + options.orientation );
-        }
-      }
-      else {
-        pageControl.centerY = backgroundNode.centerY;
-        if ( options.pageControlLocation === 'left' ) {
-          pageControl.right = backgroundNode.left - options.pageControlSpacing;
-        }
-        else if ( options.pageControlLocation === 'right' ) {
-          pageControl.left = backgroundNode.right + options.pageControlSpacing;
-        }
-        else {
-          throw new Error( 'incompatible pageControlLocation=' + options.pageControlLocation + ' for orientation=' + options.orientation );
-        }
-      }
-    }
-
     // Scroll when the buttons are pressed
     var scrollTween;
     pageNumberProperty.link( function( pageNumber ) {
@@ -328,27 +270,12 @@ define( function( require ) {
     this.numberOfPages = numberOfPages; // @public (read-only) {number} number of pages in the carousel
     this.pageNumberProperty = pageNumberProperty; // @public {Property<number>} page number that is currently visible
 
-    // @private
-    this.disposeCarousel = function() {
-      if ( pageControl ) {
-        pageControl.dispose();
-      }
-    };
-
     options.children = [ backgroundNode, windowNode, nextButton, previousButton, foregroundNode ];
-    if ( pageControl ) {
-      options.children.push( pageControl );
-    }
 
     Node.call( this, options );
   }
 
   return inherit( Node, Carousel, {
-
-    // Ensures that the carousel is eligibile for GC
-    dispose: function() {
-      this.disposeCarousel();
-    },
 
     // Resets the carousel to its initial state
     reset: function() {
