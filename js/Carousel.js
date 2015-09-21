@@ -113,6 +113,7 @@ define( function( require ) {
     var scrollingNode = new Rectangle( 0, 0, scrollingWidth, scrollingHeight );
     items.forEach( function( item, index ) {
 
+      //TODO should we put a wrapper node around each item, in case the item appears elsewhere in the scenegraph?
       // add the item
       if ( isHorizontal ) {
         item.centerX = itemCenter;
