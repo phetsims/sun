@@ -286,11 +286,6 @@ define( function( require ) {
       this.domElement.addEventListener( 'click', function() {
         fire();
       } );
-
-      // temporary event listener that will fire when over the button.  This is in place of the highlight for now.
-      this.domElement.addEventListener( 'focus', function() {
-        console.log( 'focus is over a checkbox: ' + this.id );
-      } );
     },
 
     /**
