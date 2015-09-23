@@ -115,7 +115,7 @@ define( function( require ) {
     // Horizontal carousel arrange items left-to-right, vertical is top-to-bottom.
     // Translation of this node will be animated to give the effect of scrolling through the items.
     var scrollingNode = new Rectangle( 0, 0, scrollingWidth, scrollingHeight );
-    items.forEach( function( item, index ) {
+    items.forEach( function( item ) {
 
       // add the item
       if ( isHorizontal ) {
