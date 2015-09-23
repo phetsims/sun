@@ -7,7 +7,7 @@ define( function( require ) {
   'use strict';
 
   // Imports
-  var ButtonsDemoView = require( 'SUN/demo/ButtonsDemoView' );
+  var ButtonsView = require( 'SUN/demo/ButtonsView' );
   var ComponentsView = require( 'SUN/demo/ComponentsView' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var Screen = require( 'JOIST/Screen' );
@@ -32,7 +32,7 @@ define( function( require ) {
       new Screen( 'Buttons',
         createScreenIcon( 'red' ),
         function() {return {};},
-        function( model ) {return new ButtonsDemoView();},
+        function( model ) {return new ButtonsView();},
         { backgroundColor: backgroundColor }
       ),
       new Screen( 'Components',

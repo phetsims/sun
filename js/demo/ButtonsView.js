@@ -36,7 +36,7 @@ define( function( require ) {
   var BUTTON_FONT = new Font( { size: 24 } );
   var BUTTON_CAPTION_FONT = new Font( { size: 20 } );
 
-  function ButtonsDemoView() {
+  function ButtonsView() {
 
     ScreenView.call( this );
 
@@ -393,5 +393,5 @@ define( function( require ) {
     this.addChild( changeButtonColorsButton );
   }
 
-  return inherit( ScreenView, ButtonsDemoView );
+  return inherit( ScreenView, ButtonsView );
 } );
