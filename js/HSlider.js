@@ -65,9 +65,11 @@ define( function( require ) {
     this.options = options; // @private TODO save only the options that are needed by prototype functions
     this.enabledProperty = options.enabledProperty;
 
-    // @private ticks are added to this parent, so they are behind the knob
-    thisSlider.ticksParent = new Node();
-    thisSlider.addChild( thisSlider.ticksParent );
+    // @private ticks are added to these parents, so they are behind the knob
+    thisSlider.majorTicksParent = new Node();
+    thisSlider.minorTicksParent = new Node();
+    thisSlider.addChild( thisSlider.majorTicksParent );
+    thisSlider.addChild( thisSlider.minorTicksParent );
 
     // @private mapping between value and track position
     thisSlider.valueToPosition = new LinearFunction( range.min, range.max, 0, options.trackSize.width, true /* clamp */ );
@@ -230,7 +232,7 @@ define( function( require ) {
      * @param {Node} [label] optional
      */
     addMajorTick: function( value, label ) {
-      this.addTick( value, label, this.options.majorTickLength, this.options.majorTickStroke, this.options.majorTickLineWidth );
+      this.addTick( this.majorTicksParent, value, label, this.options.majorTickLength, this.options.majorTickStroke, this.options.majorTickLineWidth );
     },
 
     /**
@@ -239,11 +241,12 @@ define( function( require ) {
      * @param {Node} [label] optional
      */
     addMinorTick: function( value, label ) {
-      this.addTick( value, label, this.options.minorTickLength, this.options.minorTickStroke, this.options.minorTickLineWidth );
+      this.addTick( this.minorTicksParent, value, label, this.options.minorTickLength, this.options.minorTickStroke, this.options.minorTickLineWidth );
     },
 
     /*
      * Adds a tick mark above the track.
+     * @param {Node} parent
      * @param {number} value
      * @param {Node} [label] optional
      * @param {number} length
@@ -251,17 +254,17 @@ define( function( require ) {
      * @param {number} lineWidth
      * @private
      */
-    addTick: function( value, label, length, stroke, lineWidth ) {
+    addTick: function( parent, value, label, length, stroke, lineWidth ) {
       var labelX = this.valueToPosition( value );
       // ticks
       var tick = new Path( new Shape()
           .moveTo( labelX, this.track.top )
           .lineTo( labelX, this.track.top - length ),
         { stroke: stroke, lineWidth: lineWidth } );
-      this.ticksParent.addChild( tick );
+      parent.addChild( tick );
       // label
       if ( label ) {
-        this.ticksParent.addChild( label );
+        parent.addChild( label );
         label.centerX = tick.centerX;
         label.bottom = tick.top - this.options.tickLabelSpacing;
       }
@@ -271,7 +274,31 @@ define( function( require ) {
     set enabled( value ) { this. setEnabled( value ); },
 
     getEnabled: function() { return this.enabledProperty.value; },
-    get enabled() { return this. getEnabled(); }
+    get enabled() { return this.getEnabled(); },
+
+    // Sets visibility of major ticks.
+    setMajorTicksVisible: function( visible ) {
+      this.majorTicksParent.visible = visible;
+    },
+    set majorTicksVisible( value ) { this.setMajorTicksVisible( value ); },
+
+    // Gets visibility of major ticks.
+    getMajorTicksVisible: function() {
+      return this.majorTicksParent.visible;
+    },
+    get majorTicksVisible() { return this.getMajorTicksVisible(); },
+
+    // Sets visibility of minor ticks.
+    setMinorTicksVisible: function( visible ) {
+      this.minorTicksParent.visible = visible;
+    },
+    set minorTicksVisible( value ) { this.setMinorTicksVisible( value ); },
+
+    // Gets visibility of minor ticks.
+    getMinorTicksVisible: function() {
+      return this.minorTicksParent.visible;
+    },
+    get minorTicksVisible() { return this.getMinorTicksVisible(); }
   } );
 
   /**
