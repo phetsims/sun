@@ -25,7 +25,7 @@ define( function( require ) {
   var Shape = require( 'KITE/Shape' );
   var Vector2 = require( 'DOT/Vector2' );
 
-  // Constants
+  // constants
   var HIGHLIGHT_GRADIENT_LENGTH = 5; // In screen coords, which are roughly pixels.
   var DEFAULT_COLOR = ColorConstants.LIGHT_BLUE;
 
