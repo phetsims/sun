@@ -25,12 +25,14 @@ define( function( require ) {
 
     options = _.extend( {
 
+      //TODO support multiple types of interactivity? see https://github.com/phetsims/sun/issues/199
+      interactive: false, // {boolean} whether the control is interactive
+
       // all dots
       orientation: 'horizontal',
       dotRadius: 3, // {number} radius of the dots
       lineWidth: 1,
       dotSpacing: 10, // {number} spacing between dots
-      interactive: false, // {boolean} whether the control is interactive
 
       // dots representing the current page
       currentPageFill: 'black', // {Color|string} dot color for the page that is visible
