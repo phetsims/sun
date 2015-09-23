@@ -6,7 +6,7 @@
 define( function( require ) {
   'use strict';
 
-  // Imports
+  // modules
   var ButtonsView = require( 'SUN/demo/ButtonsView' );
   var ComponentsView = require( 'SUN/demo/ComponentsView' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
@@ -14,7 +14,7 @@ define( function( require ) {
   var Sim = require( 'JOIST/Sim' );
   var SimLauncher = require( 'JOIST/SimLauncher' );
 
-  // Strings
+  // strings
   var title = require( 'string!SUN/sun.title' );
 
   var simOptions = {
