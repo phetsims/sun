@@ -32,7 +32,7 @@ define( function( require ) {
 
     // container
     orientation: 'horizontal', // {string} 'horizontal'|'vertical'
-    fill: 'white', // {Color|string|null} background color of the carousel
+    fill: 'white', // {Color|string} background color of the carousel
     stroke: 'black', // {Color|string|null} color used to stroke the border of the carousel
     lineWidth: 1, // {number} width of the border around the carousel
     cornerRadius: 4, // {number} radius applied to the carousel and next/previous buttons
