@@ -17,6 +17,7 @@ define( function( require ) {
 
   // modules
   var CarouselButton = require( 'SUN/buttons/CarouselButton' );
+  var Dimension2 = require( 'DOT/Dimension2' );
   var HSeparator = require( 'SUN/HSeparator' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Node = require( 'SCENERY/nodes/Node' );
@@ -46,6 +47,9 @@ define( function( require ) {
     buttonColor: 'rgba( 200, 200, 200, 0.5 )', // {Color|string} base color for the buttons
     buttonStroke: undefined, // {Color|string|null|undefined} stroke around the buttons (null is no stroke, undefined derives color from buttonColor)
     buttonLineWidth: 1, // {number} lineWidth of borders on buttons
+    arrowSize: new Dimension2( 20, 7 ), // {Dimension2} size of the arrow, in 'up' directions
+    arrowStroke: 'black', // {Color|string} color used for the arrow icons
+    arrowLineWidth: 3, // {number} line width used to stroke the arrow icons
     hideDisabledButtons: false, // {boolean} whether to hide buttons when they are disabled
 
     // item separators
@@ -87,7 +91,10 @@ define( function( require ) {
       lineWidth: options.buttonLineWidth,
       cornerRadius: options.cornerRadius, // same as carousel background
       minWidth: isHorizontal ? 0 : maxItemWidth + ( 2 * options.margin ), // fill the width of a vertical carousel
-      minHeight: isHorizontal ? maxItemHeight + ( 2 * options.margin ) : 0 // fill the height of a horizontal carousel
+      minHeight: isHorizontal ? maxItemHeight + ( 2 * options.margin ) : 0, // fill the height of a horizontal carousel
+      arrowSize: options.arrowSize,
+      arrowStroke: options.arrowStroke,
+      arrowLineWidth: options.arrowLineWidth,
     };
 
     // Next/previous buttons
