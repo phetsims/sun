@@ -16,7 +16,7 @@ define( function( require ) {
   var Node = require( 'SCENERY/nodes/Node' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
 
-  var defaultOptions = {
+  var DEFAULT_OPTIONS = {
     fill: 'white',
     stroke: 'black',
     lineWidth: 1, // width of the background border
@@ -38,8 +38,7 @@ define( function( require ) {
 
     var thisNode = this;
 
-    // default options
-    options = _.extend( {}, defaultOptions, options );
+    options = _.extend( {}, DEFAULT_OPTIONS, options );
     assert && assert( options.align === 'left' || options.align === 'center' || options.align === 'right' );
 
     Node.call( thisNode );
@@ -135,7 +134,9 @@ define( function( require ) {
     set fill( value ) { this.setFill( value ); },
     get fill() { return this.getFill(); }
   }, {
-    defaultOptions: defaultOptions
+
+    // @static @public (read-only)
+    DEFAULT_OPTIONS: DEFAULT_OPTIONS
   } );
 
   return Panel;
