@@ -28,6 +28,7 @@ define( function( require ) {
     align: 'right', // {string} horizontal of content in the pane, left|center|right
     minWidth: 0 // minimum width of the panel
   };
+  assert && Object.freeze( DEFAULT_OPTIONS );
 
   /**
    * @param {Node} content
