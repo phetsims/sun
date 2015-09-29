@@ -57,6 +57,7 @@ define( function( require ) {
     separatorColor: 'rgb( 180, 180, 180 )', // {Color|string} color for separators
     separatorLineWidth: 0.5 // {number} lineWidth for separators
   };
+  assert && Object.freeze( DEFAULT_OPTIONS );
 
   /**
    * @param {Node[]} items - items in the carousel
@@ -66,7 +67,7 @@ define( function( require ) {
   function Carousel( items, options ) {
 
     // Override defaults with specified options
-    options = _.extend( _.clone( DEFAULT_OPTIONS ), options );
+    options = _.extend( {}, DEFAULT_OPTIONS, options );
 
     // Validate options
     assert && assert( _.contains( [ 'horizontal', 'vertical' ], options.orientation ), 'invalid orientation=' + options.orientation );
