@@ -35,9 +35,13 @@ define( function( require ) {
    *    cornerRadius:               Just like the usual option for a rectangular shape
    *    disabledBaseColor:          The color for the main portion of the button when disabled, other colors for highlights and shadows will be based of of this
    *    fireOnDown:                 Boolean that controls whether the listener function(s) are fired when the button is pressed down instead of when released
+   *    leftBottomCornerRadius:     Radius of bottom left corner, overrides cornerRadius
+   *    leftTopCornerRadius:        Radius of top left corner, overrides cornerRadius
    *    listener:                   Function that is called when this button is fired
    *    minHeight:                  Minimum height for the button, not needed unless a fixed height beyond that of the content is desired
    *    minWidth:                   Minimum width for the button, not needed unless a fixed width beyond that of the content is desired
+   *    rightBottomCornerRadius:    Radius of bottom right corner, overrides cornerRadius
+   *    rightTopCornerRadius:       Radius of top right corner, overrides cornerRadius
    *    xMargin:                    Margin between the content and the edge in the x (i.e. horizontal) direction
    *    yMargin:                    Margin between the content and the edge in the y (i.e. vertical) direction
    *    xTouchExpansion:            Amount of space beyond the left and right edges where the button will sense touch events

@@ -90,20 +90,27 @@ define( function( require ) {
       disabledBaseColor: options.fill, // same as carousel background
       stroke: options.buttonStroke,
       lineWidth: options.buttonLineWidth,
-      cornerRadius: options.cornerRadius, // same as carousel background
       minWidth: isHorizontal ? 0 : maxItemWidth + ( 2 * options.margin ), // fill the width of a vertical carousel
       minHeight: isHorizontal ? maxItemHeight + ( 2 * options.margin ) : 0, // fill the height of a horizontal carousel
       arrowSize: options.arrowSize,
       arrowStroke: options.arrowStroke,
-      arrowLineWidth: options.arrowLineWidth,
+      arrowLineWidth: options.arrowLineWidth
     };
 
     // Next/previous buttons
     var nextButton = new CarouselButton( _.extend( {
-      arrowDirection: isHorizontal ? 'right' : 'down'
+      arrowDirection: isHorizontal ? 'right' : 'down',
+      leftTopCornerRadius: 0,
+      rightTopCornerRadius: isHorizontal ? options.cornerRadius : 0,
+      leftBottomCornerRadius: isHorizontal ? 0 : options.cornerRadius,
+      rightBottomCornerRadius: options.cornerRadius
     }, buttonOptions ) );
     var previousButton = new CarouselButton( _.extend( {
-      arrowDirection: isHorizontal ? 'left' : 'up'
+      arrowDirection: isHorizontal ? 'left' : 'up',
+      leftTopCornerRadius: options.cornerRadius,
+      rightTopCornerRadius: isHorizontal ? 0 : options.cornerRadius,
+      leftBottomCornerRadius: isHorizontal ? options.cornerRadius : 0,
+      rightBottomCornerRadius: 0
     }, buttonOptions ) );
 
     // Computations related to layout of items
