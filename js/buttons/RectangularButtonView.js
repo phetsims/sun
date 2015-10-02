@@ -12,19 +12,29 @@ define( function( require ) {
   // modules
   var ButtonListener = require( 'SUN/buttons/ButtonListener' );
   var Color = require( 'SCENERY/util/Color' );
+  var ColorConstants = require( 'SUN/ColorConstants' );
   var inherit = require( 'PHET_CORE/inherit' );
   var LinearGradient = require( 'SCENERY/util/LinearGradient' );
   var Node = require( 'SCENERY/nodes/Node' );
+  var Path = require( 'SCENERY/nodes/Path' );
   var Property = require( 'AXON/Property' );
-  var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var Shape = require( 'KITE/Shape' );
-  var ColorConstants = require( 'SUN/ColorConstants' );
 
   // constants
   var VERTICAL_HIGHLIGHT_GRADIENT_LENGTH = 7; // In screen coords, which are roughly pixels.
   var HORIZONTAL_HIGHLIGHT_GRADIENT_LENGTH = 7; // In screen coords, which are roughly pixels.
   var SHADE_GRADIENT_LENGTH = 3; // In screen coords, which are roughly pixels.
   var DEFAULT_COLOR = ColorConstants.LIGHT_BLUE;
+
+  // convenience function for creating the shape of the button, done to avoid code duplication
+  function createButtonShape( width, height, options ) {
+    return Shape.roundedRectangleWithRadii( 0, 0, width, height, {
+      topLeft: typeof( options.leftTopCornerRadius ) === 'number' ? options.leftTopCornerRadius : options.cornerRadius,
+      topRight: typeof( options.rightTopCornerRadius ) === 'number' ? options.rightTopCornerRadius : options.cornerRadius,
+      bottomLeft: typeof( options.leftBottomCornerRadius ) === 'number' ? options.leftBottomCornerRadius : options.cornerRadius,
+      bottomRight: typeof( options.rightBottomCornerRadius ) === 'number' ? options.rightBottomCornerRadius : options.cornerRadius
+    } );
+  }
 
   /**
    * @param {ButtonModel} buttonModel - Model that defines the button's behavior.
@@ -86,12 +96,11 @@ define( function( require ) {
     var buttonWidth = Math.max( content ? content.width + options.xMargin * 2 : 0, options.minWidth );
     var buttonHeight = Math.max( content ? content.height + options.yMargin * 2 : 0, options.minHeight );
 
-    // Create the basic button shape.
-    var button = new Rectangle( 0, 0, buttonWidth, buttonHeight, options.cornerRadius, options.cornerRadius,
-      {
-        fill: options.baseColor,
-        lineWidth: options.lineWidth
-      } );
+    // create and add the button node
+    var button = new Path( createButtonShape( buttonWidth, buttonHeight, options ), {
+      fill: options.baseColor,
+      lineWidth: options.lineWidth
+    } );
     this.addChild( button );
 
     // Hook up the strategy that will control the basic button appearance.
@@ -148,7 +157,7 @@ define( function( require ) {
     var transparentWhite = new Color( 256, 256, 256, 0.7 );
 
     // Create the overlay that is used to add shading to left and right edges of the button.
-    var overlayForHorizGradient = new Rectangle( 0, 0, buttonWidth, buttonHeight, options.cornerRadius, options.cornerRadius, {
+    var overlayForHorizGradient = new Path( createButtonShape( buttonWidth, buttonHeight, options ), {
       lineWidth: options.lineWidth,
       pickable: false
     } );
