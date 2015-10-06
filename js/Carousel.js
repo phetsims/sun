@@ -86,6 +86,7 @@ define( function( require ) {
     var buttonOptions = {
       xMargin: 5,
       yMargin: 5,
+      cornerRadius: options.cornerRadius,
       baseColor: options.buttonColor,
       disabledBaseColor: options.fill, // same as carousel background
       stroke: options.buttonStroke,
@@ -98,20 +99,8 @@ define( function( require ) {
     };
 
     // Next/previous buttons
-    var nextButton = new CarouselButton( _.extend( {
-      arrowDirection: isHorizontal ? 'right' : 'down',
-      leftTopCornerRadius: 0,
-      rightTopCornerRadius: isHorizontal ? options.cornerRadius : 0,
-      leftBottomCornerRadius: isHorizontal ? 0 : options.cornerRadius,
-      rightBottomCornerRadius: options.cornerRadius
-    }, buttonOptions ) );
-    var previousButton = new CarouselButton( _.extend( {
-      arrowDirection: isHorizontal ? 'left' : 'up',
-      leftTopCornerRadius: options.cornerRadius,
-      rightTopCornerRadius: isHorizontal ? 0 : options.cornerRadius,
-      leftBottomCornerRadius: isHorizontal ? options.cornerRadius : 0,
-      rightBottomCornerRadius: 0
-    }, buttonOptions ) );
+    var nextButton = new CarouselButton( _.extend( { arrowDirection: isHorizontal ? 'right' : 'down' }, buttonOptions ) );
+    var previousButton = new CarouselButton( _.extend( { arrowDirection: isHorizontal ? 'left' : 'up' }, buttonOptions ) );
 
     // Computations related to layout of items
     var numberOfSeparators = ( options.separatorsVisible ) ? ( items.length - 1 ) : 0;

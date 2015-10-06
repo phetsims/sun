@@ -39,6 +39,7 @@ define( function( require ) {
       baseColor: 'rgba( 200, 200, 200, 0.5 )', // {Color|string} button fill color
       stroke: 'black', // {Color|string|null} button stroke
       buttonAppearanceStrategy: RectangularButtonView.flatAppearanceStrategy,
+      cornerRadius: 4, // {number} radius for the two potentially rounded corners
 
       // arrow
       arrowDirection: 'up', // {string} direction that the arrow points, 'up'|'down'|'left'|'right'
@@ -67,6 +68,14 @@ define( function( require ) {
       lineWidth: options.arrowLineWidth,
       lineCap: options.arrowLineCap
     } );
+
+    // set up the options such that the inner corners are square and outer ones are rounded
+    var arrowDirection = options.arrowDirection; // convenience var
+    var cornerRadius = options.cornerRadius; // convenience var
+    options.leftTopCornerRadius = arrowDirection === 'up' || arrowDirection === 'left' ? cornerRadius : 0;
+    options.rightTopCornerRadius = arrowDirection === 'up' || arrowDirection === 'right' ? cornerRadius : 0;
+    options.leftBottomCornerRadius = arrowDirection === 'down' || arrowDirection === 'left' ? cornerRadius : 0;
+    options.rightBottomCornerRadius = arrowDirection === 'down' || arrowDirection === 'right' ? cornerRadius : 0;
 
     RectangularPushButton.call( this, options );
   }
