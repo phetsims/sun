@@ -162,7 +162,8 @@ define( function( require ) {
     this.addChild( this.expandCollapseButton );
 
     // box outline, on top of everything else
-    var expandedBoxOutline, collapsedBoxOutline;
+    var expandedBoxOutline;
+    var collapsedBoxOutline;
     if ( options.stroke ) {
       var outlineOptions = { stroke: options.stroke, lineWidth: options.lineWidth };
       expandedBoxOutline = new Rectangle( 0, 0, boxWidth, expandedBoxHeight, options.cornerRadius, options.cornerRadius, outlineOptions );

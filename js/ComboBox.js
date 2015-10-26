@@ -143,7 +143,8 @@ define( function( require ) {
     }
 
     // determine uniform dimensions for button and list items
-    var itemWidth = 0, itemHeight = 0;
+    var itemWidth = 0;
+    var itemHeight = 0;
     for ( var i = 0; i < items.length; i++ ) {
       var item = items[ i ];
       if ( item.node.width > itemWidth ) { itemWidth = item.node.width; }
@@ -220,7 +221,8 @@ define( function( require ) {
     //TODO handle scale and rotation
     // Handles the coordinate transform required to make the list pop up near the button.
     var moveList = function() {
-      var pButtonGlobal, pButtonLocal;
+      var pButtonGlobal;
+      var pButtonLocal;
       if ( options.listPosition === 'above' ) {
         pButtonGlobal = self.localToGlobalPoint( new Vector2( buttonNode.left, buttonNode.top ) );
         pButtonLocal = listParent.globalToLocalPoint( pButtonGlobal );
