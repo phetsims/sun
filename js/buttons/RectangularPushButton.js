@@ -18,6 +18,7 @@ define( function( require ) {
   var RectangularButtonView = require( 'SUN/buttons/RectangularButtonView' );
   var PushButtonInteractionStateProperty = require( 'SUN/buttons/PushButtonInteractionStateProperty' );
   var PushButtonModel = require( 'SUN/buttons/PushButtonModel' );
+  var AccessiblePeer = require( 'SCENERY/accessibility/AccessiblePeer' );
 
   /**
    * @param {Object} [options] - All of the general Scenery node options can be
@@ -51,7 +52,15 @@ define( function( require ) {
    */
   function RectangularPushButton( options ) {
 
-    options = _.extend( { tandem: null }, options );
+    options = _.extend( {
+      buttonValue: '', // invisible description representing this button for accessibility
+      tandem: null,
+      accessibleContent: {
+        createPeer: function( accessibleInstance ) {
+          return new RectangularPushButtonAccessiblePeer( accessibleInstance, options.buttonValue, options.listener );
+        }
+      }
+    }, options );
 
     // Safe to pass through options to the PushButtonModel like "fireOnDown".  Other scenery options will be safely ignored.
     this.buttonModel = new PushButtonModel( options );
@@ -61,9 +70,10 @@ define( function( require ) {
     // Give it a novel name to reduce the risk of parent or child collisions
     this.rectangularPushButtonTandem = options.tandem;
     this.rectangularPushButtonTandem && this.rectangularPushButtonTandem.addInstance( this );
+
   }
 
-  return inherit( RectangularButtonView, RectangularPushButton, {
+  inherit( RectangularButtonView, RectangularPushButton, {
     dispose: function() {
       this.buttonModel.dispose();
       RectangularButtonView.prototype.dispose.call( this );
@@ -78,4 +88,46 @@ define( function( require ) {
       this.buttonModel.removeListener( listener );
     }
   } );
+
+  /**
+   * Create the accessible peer which represents the RectangularPushButton in the parallel DOM.
+   *
+   * @param {AccessibleInstance} accessibleInstance
+   * @param {string} buttonValue - invisible auditory description for the button
+   * @param {function} listener - the listener function called on press for this RectangularPushButton
+   * @constructor
+   */
+  function RectangularPushButtonAccessiblePeer( accessibleInstance, buttonValue, listener ) {
+    this.initialize( accessibleInstance, buttonValue, listener );
+  }
+
+  inherit( AccessiblePeer, RectangularPushButtonAccessiblePeer, {
+    /**
+     * Initialized dom elements and its attributes for the screen view in the parallel DOM.
+     *
+     * @param {AccessibleInstance} accessibleInstance
+     * @param {string} buttonValue - invisible auditory description for the button
+     * @param {function} listener - the listener function called on press for this RectangularPushButton
+     */
+    initialize: function( accessibleInstance, buttonValue, listener ) {
+      /*
+       * The content should look like the following in the parallel DOM:
+       * <input value="buttonValue" type="reset" tabindex="0">
+       */
+      var domElement = document.createElement( 'input' );
+      domElement.type = 'reset';
+      domElement.tabIndex = '0';
+      domElement.className = 'ControlPanel';
+      domElement.value = buttonValue;
+
+      // fire on click event
+      domElement.addEventListener( 'click', function() {
+        listener();
+      } );
+
+      this.initializeAccessiblePeer( accessibleInstance, domElement );
+
+    }
+  } );
+  return RectangularPushButton;
 } );
