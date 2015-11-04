@@ -15,7 +15,7 @@ define( function( require ) {
   var SimLauncher = require( 'JOIST/SimLauncher' );
 
   // strings
-  var title = require( 'string!SUN/sun.title' );
+  var sunTitleString = require( 'string!SUN/sun.title' );
 
   var simOptions = {
     credits: {
@@ -28,7 +28,7 @@ define( function( require ) {
   var backgroundColor = phet.chipper.getQueryParameter( 'backgroundColor' ) || 'white';
 
   SimLauncher.launch( function() {
-    new Sim( title, [
+    new Sim( sunTitleString, [
       new Screen( 'Buttons',
         createScreenIcon( 'red' ),
         function() {return {};},
