@@ -17,6 +17,7 @@ define( function( require ) {
   var RadioButtonGroupMemberModel = require( 'SUN/buttons/RadioButtonGroupMemberModel' );
   var ColorConstants = require( 'SUN/ColorConstants' );
   var Color = require( 'SCENERY/util/Color' );
+  var AccessiblePeer = require( 'SCENERY/accessibility/AccessiblePeer' );
 
   /**
    * @param {Property} property axon property that can take on a set of values, one for each radio button in the group
@@ -25,6 +26,8 @@ define( function( require ) {
    * @constructor
    */
   function RadioButtonGroupMember( property, value, options ) {
+
+    var self = this;
 
     // The value that corresponds to this button
     // @public for together
@@ -57,7 +60,10 @@ define( function( require ) {
       // The default appearances use the color values specified above, but other appearances could be specified for more
       // customized behavior.  Generally setting the color values above should be enough to specify the desired look.
       buttonAppearanceStrategy: RadioButtonGroupAppearance.defaultRadioButtonsAppearance,
-      contentAppearanceStrategy: RadioButtonGroupAppearance.contentAppearanceStrategy
+      contentAppearanceStrategy: RadioButtonGroupAppearance.contentAppearanceStrategy,
+
+      // invisible label for the radio button group member for accessibility
+      accessibleDescription: ''
     }, options );
 
     // @public for access like together
@@ -72,6 +78,41 @@ define( function( require ) {
     // Give it a novel name to reduce the risk of parent or child collisions
     this.radioButtonGroupMemberTandem = options.tandem;
     this.radioButtonGroupMemberTandem && this.radioButtonGroupMemberTandem.addInstance( this );
+
+    // outfit with accessible content
+    this.accessibleContent = {
+      createPeer: function( accessibleInstance ) {
+
+        /*
+         Elements in the parallel DOM should look like:
+         <input type="radio" value="value" id="radioButtonGroupMember-trailID">
+         <label for="radioButtonGroupMember-trailID">Some invisible accessibility description</label>
+         */
+
+        var trail = accessibleInstance.trail;
+
+        // create an input element for the content
+        var inputElement = document.createElement( 'input' );
+        inputElement.setAttribute( 'type', 'radio' );
+        inputElement.setAttribute( 'value', value );
+        inputElement.id = 'radioButtonGroupMember-' + trail.getUniqueId();
+
+        // create a label element for the input
+        var labelElement = document.createElement( 'label' );
+        labelElement.setAttribute( 'for', inputElement.id );
+        labelElement.innerHTML = options.accessibleDescription;
+
+        // structure the input and its label
+        inputElement.appendChild( labelElement );
+
+        // listen for keyboard events and fire model
+        inputElement.addEventListener( 'click', function() {
+          self.radioButtonGroupMemberModel.fire();
+        } );
+
+        return new AccessiblePeer( accessibleInstance, inputElement );
+      }
+    };
   }
 
   return inherit( RectangularButtonView, RadioButtonGroupMember, {

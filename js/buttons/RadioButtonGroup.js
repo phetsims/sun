@@ -22,6 +22,7 @@ define( function( require ) {
   var LayoutBox = require( 'SCENERY/nodes/LayoutBox' );
   var Shape = require( 'KITE/Shape' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
+  var AccessiblePeer = require( 'SCENERY/accessibility/AccessiblePeer' );
 
   /**
    * RadioButtonGroup constructor.
@@ -121,7 +122,10 @@ define( function( require ) {
       // The default appearances use the color values specified above, but other appearances could be specified for more
       // customized behavior.  Generally setting the color values above should be enough to specify the desired look.
       buttonAppearanceStrategy: RadioButtonGroupAppearance.defaultRadioButtonsAppearance,
-      contentAppearanceStrategy: RadioButtonGroupAppearance.contentAppearanceStrategy
+      contentAppearanceStrategy: RadioButtonGroupAppearance.contentAppearanceStrategy,
+
+      // optional accessibility description, which applies to the entire group of buttons
+      accessibleLegendDescription: ''
     };
 
     options = _.extend( _.clone( defaultOptions ), options );
@@ -147,7 +151,8 @@ define( function( require ) {
           content: contentArray[ i ].node,
           xMargin: xMargin,
           yMargin: yMargin,
-          tandem: contentArray[ i ].tandem
+          tandem: contentArray[ i ].tandem,
+          accessibleDescription: contentArray[ i ].accessibleDescription
         }, buttonOptions ) );
 
       // ensure the buttons don't resize when selected vs unselected by adding a rectangle with the max size
@@ -237,6 +242,30 @@ define( function( require ) {
 
     // @private, solely for getRadioButtonGroupMember
     this.buttons = buttons;
+
+    // generate accessible peer for the parallel DOM
+    this.accessibleContent = {
+      createPeer: function( accessibleInstance ) {
+
+        /*
+         We want the element of the parallel DOM to look like
+         <fieldset>
+         <legend>Descriptor of the overall group of radio buttons</legend>
+         ... (radio inputs defined in RadioButtonGroupMember)
+         </fieldset>
+         */
+
+        // create the fieldset holding all radio buttons
+        var domElement = document.createElement( 'fieldset' );
+        var legendElement = document.createElement( 'legend' );
+        legendElement.innerHTML = options.accessibleLegendDescription;
+
+        domElement.appendChild( legendElement );
+
+        return new AccessiblePeer( accessibleInstance, domElement );
+
+      }
+    };
   }
 
   return inherit( LayoutBox, RadioButtonGroup, {

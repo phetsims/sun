@@ -26,12 +26,17 @@ define( function( require ) {
     this.selectedValue = selectedValue;
     this.selectorProperty = selectorProperty;
 
-    // fire on up
-    this.property( 'down' ).onValue( false, function() {
-      if ( thisModel.over && thisModel.enabled ) {
+    // @public (read only) - fire on up if the button is enabled, public for use in the accessibility tree
+    this.fire = function() {
+      if ( thisModel.enabled ) {
         thisModel.trigger1( 'startedCallbacksForFired', selectedValue );
         selectorProperty.set( selectedValue );
         thisModel.trigger0( 'endedCallbacksForFired' );
+      }
+    };
+    this.property( 'down' ).onValue( false, function() {
+      if ( thisModel.over ) {
+        thisModel.fire();
       }
     } );
   }
