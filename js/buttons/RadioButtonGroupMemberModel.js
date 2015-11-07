@@ -1,4 +1,4 @@
-// Copyright 2002-2014, University of Colorado Boulder
+// Copyright 2014-2015, University of Colorado Boulder
 
 /**
  * Model for a RadioButtonGroupMember in RadioButtonGroup. This model is designed to be used inside

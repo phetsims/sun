@@ -1,4 +1,4 @@
-// Copyright 2002-2013, University of Colorado Boulder
+// Copyright 2014, University of Colorado Boulder
 
 /**
  * Push button with HTML text on a rectangular push button.

@@ -1,4 +1,4 @@
-// Copyright 2002-2014, University of Colorado Boulder
+// Copyright 2014-2015, University of Colorado Boulder
 
 /**
  * A push button whose appearance is based on a set of scenery Nodes, one node for each button 'interaction state'.

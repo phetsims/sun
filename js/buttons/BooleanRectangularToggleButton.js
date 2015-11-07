@@ -1,4 +1,4 @@
-// Copyright 2002-2014, University of Colorado Boulder
+// Copyright 2013-2014, University of Colorado Boulder
 
 /**
  * This toggle button uses a boolean property and a trueNode and falseNode to display its content.

@@ -1,4 +1,4 @@
-// Copyright 2002-2015, University of Colorado Boulder
+// Copyright 2015, University of Colorado Boulder
 
 //TODO sun#197 ideally, only 2 corners of the button should be rounded (the corners in the direction of the arrow)
 /**
