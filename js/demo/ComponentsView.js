@@ -27,6 +27,18 @@ define( function( require ) {
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var Text = require( 'SCENERY/nodes/Text' );
 
+  function ComponentsView() {
+    DemosView.call( this, 'component', [
+
+      // To add a demo, create an entry here.
+      // label is a {string} that will appear in the combo box.
+      // getNode is a {function} that takes a {Bounds2} layoutBounds and returns a {Node}.
+      { label: 'Carousel', getNode: demoCarousel },
+      { label: 'HSlider', getNode: demoHSlider },
+      { label: 'PageControl', getNode: demoPageControl }
+    ] );
+  }
+
   // Creates a demo for Carousel
   var demoCarousel = function( layoutBounds ) {
 
@@ -132,18 +144,6 @@ define( function( require ) {
       center: layoutBounds.center
     } );
   };
-
-  function ComponentsView() {
-    DemosView.call( this, 'component', [
-
-      // To add a demo, create an entry here.
-      // label is a {string} that will appear in the combo box.
-      // getNode is a {function} that takes a {Bounds2} layoutBounds and returns a {Node}.
-      { label: 'Carousel', getNode: demoCarousel },
-      { label: 'HSlider', getNode: demoHSlider },
-      { label: 'PageControl', getNode: demoPageControl }
-    ] );
-  }
 
   return inherit( DemosView, ComponentsView );
 } );
