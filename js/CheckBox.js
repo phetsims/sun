@@ -37,7 +37,7 @@ define( function( require ) {
       cursor: 'pointer',
       checkBoxColor: 'black',
       checkBoxColorBackground: 'white',
-      tabIndex: 0,
+      tabIndex: '0', // '0' to be in accessible navigation order, '-1' for out of navigation
       focusable: true,
       tandem: null,
 
@@ -142,7 +142,9 @@ define( function( require ) {
     // Accessibility support
     this.setAccessibleContent( {
       createPeer: function( accessibleInstance ) {
-        return new CheckBoxAccessiblePeer( accessibleInstance, thisNode.fire, options.accessibleLabel );
+        var peer = new CheckBoxAccessiblePeer( accessibleInstance, property, thisNode.fire, options.accessibleLabel, options.tabIndex );
+        thisNode.accessibleId = peer.id; // @public (read-only), id for quick identification in the Parallel DOM
+        return peer;
       }
     } );
   }
@@ -247,11 +249,13 @@ define( function( require ) {
    * See https://github.com/phetsims/scenery/issues/461
    *
    * @param {AccessibleInstance} accessibleInstance
+   * @param {Property} property
    * @param {function} fire - listener function fired by this checkbox
    * @param {string} accessibleLabel - invisible string description for accessible technologies
+   * @param {string} tabIndex
    */
-  function CheckBoxAccessiblePeer( accessibleInstance, fire, accessibleLabel ) {
-    this.initialize( accessibleInstance, fire, accessibleLabel );
+  function CheckBoxAccessiblePeer( accessibleInstance, property, fire, accessibleLabel, tabIndex ) {
+    this.initialize( accessibleInstance, property, fire, accessibleLabel, tabIndex );
   }
 
   inherit( AccessiblePeer, CheckBoxAccessiblePeer, {
@@ -260,10 +264,12 @@ define( function( require ) {
      * Initialize dom element and its attributes for the accessible check box peer of the parallel DOM.
      *
      * @param {AccessibleInstance} accessibleInstance
-     * @param {function} fire
-     * @param {string} accessibleLabel
+     * @param {Property} property
+     * @param {function} fire - listener function fired by this checkbox
+     * @param {string} accessibleLabel - invisible string description for accessible technologies
+     * @param {string} tabIndex
      */
-    initialize: function( accessibleInstance, fire, accessibleLabel ) {
+    initialize: function( accessibleInstance, property, fire, accessibleLabel, tabIndex ) {
       var trail = accessibleInstance.trail;
 
       // will look like <input id="checkBoxId" value="check box value" type="checkbox">Check Box Name<br>
@@ -271,10 +277,16 @@ define( function( require ) {
       this.initializeAccessiblePeer( accessibleInstance, this.domElement );
       this.domElement.type = 'checkbox';
 
+      // TODO: Unsure why this is needed.
+      if ( property.value ) {
+        this.domElement.checked = true;
+      }
+
       // if an accessible label has been passed in, add it as a label to the dom element
-      if( accessibleLabel ) {
+      if ( accessibleLabel ) {
         var uniqueId = trail.getUniqueId();
         this.domElement.id = 'checkBox-' + uniqueId;
+        this.accessibleId = this.domElement.id;
 
         var checkBoxLabel = document.createElement( 'label' );
         checkBoxLabel.setAttribute( 'for', this.domElement.id );
@@ -282,7 +294,7 @@ define( function( require ) {
         this.domElement.appendChild( checkBoxLabel );
       }
 
-      this.domElement.tabIndex = '0';
+      this.domElement.tabIndex = tabIndex;
       this.domElement.addEventListener( 'click', function() {
         fire();
       } );

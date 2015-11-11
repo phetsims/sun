@@ -52,7 +52,8 @@ define( function( require ) {
           textDescription: items[ i ].label + ': Checkbox (' + 'unchecked' + ')',
           checkBoxColor: options.checkBoxColor,
           boxWidth: options.boxWidth,
-          tabIndex: options.tabIndex
+          tabIndex: options.tabIndex,
+          accessibleLabel: items[ i ].label
         } );
         checkBox.mouseArea = checkBox.touchArea = Shape.bounds( checkBox.bounds.dilatedXY( 5, options.spacing / 2 ) );
         if ( items[ i ].indent ) {
