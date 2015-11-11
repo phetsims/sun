@@ -31,7 +31,7 @@ define( function( require ) {
       checkBoxColor: 'black',
       align: 'left',
       boxWidth: 21,
-      tabIndex: 0
+      tabIndex: '0' // '0' places the item in the default accessible navigation order, '-1' removes it from navigation
     }, options );
 
     // compute max width of the items
