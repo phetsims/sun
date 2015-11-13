@@ -28,7 +28,8 @@ define( function( require ) {
    */
   function CheckBox( content, property, options ) {
 
-    // Store for dispose();  Use a unique name to reduce the risk of collisions with parent/child classes
+    // @public (together) Store for dispose();  Use a unique name to reduce the risk of collisions with parent/child classes
+    // Made public for together so that clients can access the checkbox value and change it through the together API
     this.checkBoxValueProperty = property;
 
     options = _.extend( {
@@ -272,7 +273,7 @@ define( function( require ) {
       this.domElement.type = 'checkbox';
 
       // if an accessible label has been passed in, add it as a label to the dom element
-      if( accessibleLabel ) {
+      if ( accessibleLabel ) {
         var uniqueId = trail.getUniqueId();
         this.domElement.id = 'checkBox-' + uniqueId;
 
