@@ -50,7 +50,7 @@ define( function( require ) {
 
     // Set the initial demo based on the (optional) query parameter, whose value is a demo 'label' field value.
     var component = phet.chipper.getQueryParameter( queryParameterName );
-    var selectedDemo = demos.find( function( demo ) {
+    var selectedDemo = _.find( demos, function( demo ) {
       return ( demo.label === component );
     } );
     selectedDemo = selectedDemo || demos[ 0 ];
