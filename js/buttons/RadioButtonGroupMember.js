@@ -69,13 +69,12 @@ define( function( require ) {
     // @public for access like together
     this.radioButtonGroupMemberModel = new RadioButtonGroupMemberModel( property, value );
 
-    // keep a reference to this property to be used in RadioButtonGroup for managing the labels
+    // @public for use in RadioButtonGroup for managing the labels
     this.interactionStateProperty = new RadioButtonInteractionStateProperty( this.radioButtonGroupMemberModel );
 
     RectangularButtonView.call( this, this.radioButtonGroupMemberModel, this.interactionStateProperty, options );
 
-    // Tandem support
-    // Give it a novel name to reduce the risk of parent or child collisions
+    // @public for Tandem support, should a novel name to reduce the risk of parent or child collisions
     this.radioButtonGroupMemberTandem = options.tandem;
     this.radioButtonGroupMemberTandem && this.radioButtonGroupMemberTandem.addInstance( this );
 
@@ -116,6 +115,8 @@ define( function( require ) {
   }
 
   return inherit( RectangularButtonView, RadioButtonGroupMember, {
+
+    // @public
     dispose: function() {
       this.radioButtonGroupMemberTandem && this.radioButtonGroupMemberTandem.removeInstance( this );
     }

@@ -27,9 +27,9 @@ define( function( require ) {
     var thisModel = this;
 
     PropertySet.call( this, {
-      over: false,  // Is the pointer over the button?
-      down: false, // Is the pointer down?
-      enabled: true  // Is the button enabled?
+      over: false,  // @public - Is the pointer over the button?
+      down: false, // @public - Is the pointer down?
+      enabled: true  // @public - Is the button enabled?
     }, options );
 
     // startCallback on pointer down, endCallback on pointer up. lazyLink so they aren't called immediately.

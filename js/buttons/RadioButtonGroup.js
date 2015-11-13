@@ -2,6 +2,7 @@
 
 /**
  * Radio buttons. See ButtonsDemoView for example usage.
+ *
  * This type creates a group of radio buttons in either a horizontal or vertical formation.
  * Each button inherits from RectangularButtonView, and can take a Scenery Node as its content.
  * A typical use case is when you want to have different modes of a view to select from. Typically,
@@ -28,11 +29,10 @@ define( function( require ) {
    * RadioButtonGroup constructor.
    *
    * @param {Property} property
-   * @param {Array} contentArray an array of objects that have two keys each: value and node
-   * the node key holds a scenery Node that is the content for a given radio button.
-   * the value key should hold the value that the property takes on for the corresponding
-   * node to be selected. Optionally, these objects can have an attribute 'label', which is
-   * a {Node} used to label the button.
+   * @param {Array} contentArray an array of objects that have two keys each: value and node the node key holds a
+   * scenery Node that is the content for a given radio button. the value key should hold the value that the property
+   * takes on for the corresponding node to be selected. Optionally, these objects can have an attribute 'label', which
+   * is a {Node} used to label the button.
    * @param {Object} [options]
    * @constructor
    */

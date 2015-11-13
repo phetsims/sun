@@ -17,8 +17,8 @@ define( function( require ) {
   var RectangularStickyToggleButton = require( 'SUN/buttons/RectangularStickyToggleButton' );
 
   /**
-   * @param booleanProperty
-   * @param options
+   * @param {Property.<boolean>} booleanProperty
+   * @param {Object} options
    * @constructor
    */
   function BooleanRectangularStickyToggleButton( booleanProperty, options ) {

@@ -14,6 +14,11 @@ define( function( require ) {
   var RectangularPushButton = require( 'SUN/buttons/RectangularPushButton' );
   var HTMLText = require( 'SCENERY/nodes/HTMLText' );
 
+  /**
+   * @param {string} html
+   * @param {options} options
+   * @constructor
+   */
   function HTMLPushButton( html, options ) {
     options = _.extend( {
       textFill: 'black'

@@ -1,8 +1,8 @@
 // Copyright 2014-2015, University of Colorado Boulder
 
 /**
- * Defines the appearance of the radio buttons, see RadioButtonGroup.js. This file is designed to be used
- * by RadioButtonGroup and RadioButtonGroupMember internally, so you should not need use it outside of these files.
+ * Defines the appearance of the radio buttons, see RadioButtonGroup.js. This file is designed to be used by
+ * RadioButtonGroup and RadioButtonGroupMember internally, so you should not need use it outside of these files.
  *
  * @author Sam Reid (PhET Interactive Simulations)
  * @author Aaron Davis (PhET Interactive Simulations)
@@ -104,7 +104,7 @@ define( function( require ) {
    * Strategy for changing the button content opacity for each of the different states:
    * mouseover, selected, deselected, and disabled
    *
-   * @param {Node} button
+   * @param {Node} content
    * @param {Property} interactionStateProperty
    * @param {Object} [options]
    * @constructor

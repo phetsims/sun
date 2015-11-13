@@ -93,16 +93,16 @@ define( function( require ) {
 
   return inherit( Node, NodesPushButton, {
 
-    // Adds a {function} listener.
+    // @public - Adds a {function} listener.
     addListener: function( listener ) { this.buttonModel.addListener( listener ); },
 
-    // Removes a {function} listener.
+    // @public - Removes a {function} listener.
     removeListener: function( listener ) { this.buttonModel.removeListener( listener ); },
 
-    // Enables or disables the button.
+    // @public - Enables or disables the button.
     set enabled( value ) { this.buttonModel.enabled = !!value; },
 
-    // Is the button enabled?
+    // @public - Is the button enabled?
     get enabled() { return this.buttonModel.enabled; }
   }, {
 
@@ -115,6 +115,7 @@ define( function( require ) {
      * @param {Object} [options]
      * @returns {NodesPushButton}
      * @static
+     * @public
      */
     createImageButton: function( upImage, overImage, downImage, disabledImage, options ) {
       return new NodesPushButton( new Image( upImage ), new Image( overImage ), new Image( downImage ), new Image( disabledImage ), options );

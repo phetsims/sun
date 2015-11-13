@@ -12,8 +12,8 @@ define( function( require ) {
   var ToggleNode = require( 'SUN/ToggleNode' );
 
   /**
-   * @param trueNode
-   * @param falseNode
+   * @param {Node} trueNode
+   * @param {Node} falseNode
    * @param booleanProperty
    * @param {Object} [options]
    * @constructor

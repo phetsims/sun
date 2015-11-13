@@ -64,7 +64,7 @@ define( function( require ) {
 
   return inherit( ButtonModel, MomentaryButtonModel, {
 
-    // Ensures that this model is eligible for GC.
+    // @public - Ensures that this model is eligible for GC.
     dispose: function() {
       ButtonModel.prototype.dispose.call( this );
       this.disposeMomentaryButtonModel();

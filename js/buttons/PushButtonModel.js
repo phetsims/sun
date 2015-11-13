@@ -83,6 +83,7 @@ define( function( require ) {
 
   return inherit( ButtonModel, PushButtonModel, {
 
+    // @public
     dispose: function() {
       ButtonModel.prototype.dispose.call( this );
       this.listeners.length = 0;
