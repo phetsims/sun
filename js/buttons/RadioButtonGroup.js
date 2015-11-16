@@ -102,8 +102,8 @@ define( function( require ) {
       buttonContentYMargin: 5,
 
       // TouchArea expansion
-      xTouchExpansion: 5,
-      yTouchExpansion: 5,
+      xTouchExpansion: 0,
+      yTouchExpansion: 0,
 
       // MouseArea expansion
       xMouseExpansion: 0,
