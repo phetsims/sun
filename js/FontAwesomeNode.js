@@ -38,6 +38,10 @@ define( function( require ) {
   // constants
   var SHAPE_MATRIX = Matrix3.createFromPool( 0.025, 0, 0, 0, -0.025, 0, 0, 0, 1 ); // to create a unity-scale icon
 
+  // Since there is a non-trivial cost to parse the SVG strings multiple times (and do the coordinate transform), we
+  // cache the created Shapes so they can be re-used for the same icons.
+  var shapeCache = {};
+
   function FontAwesomeNode( iconName, options ) {
 
     // default values
@@ -47,13 +51,19 @@ define( function( require ) {
       pickable: false
     }, options );
 
-    // create the shape for what we'll consider 'unity' scale
-    var shape = new Shape( icons[ iconName ] ).transformed( SHAPE_MATRIX );
-
-    Path.call( this, shape, options );
+    Path.call( this, FontAwesomeNode.getShapeByName( iconName ), options );
   }
 
-  inherit( Path, FontAwesomeNode );
+  inherit( Path, FontAwesomeNode, {}, {
+    getShapeByName: function( iconName ) {
+      var shape = shapeCache[ iconName ];
+      if ( !shape ) {
+        // create the shape for what we'll consider 'unity' scale
+        shape = shapeCache[ iconName ] = new Shape( icons[ iconName ] ).transformed( SHAPE_MATRIX );
+      }
+      return shape;
+    }
+  } );
 
   return FontAwesomeNode;
 } );
