@@ -70,6 +70,12 @@ define( function( require ) {
         return;
       }
 
+      // Bail out (and make the background invisible) if our bounds are invalid
+      background.visible = content.bounds.isValid();
+      if ( !background.visible ) {
+        return;
+      }
+
       backgroundUpdateInProgress = true;
 
       // size the background to fit the content
