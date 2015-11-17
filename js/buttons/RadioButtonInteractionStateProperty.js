@@ -11,6 +11,10 @@ define( function( require ) {
   var inherit = require( 'PHET_CORE/inherit' );
   var DerivedProperty = require( 'AXON/DerivedProperty' );
 
+  /**
+   * @param {ButtonModel} buttonModel
+   * @constructor
+   */
   function RadioButtonInteractionStateProperty( buttonModel ) {
     DerivedProperty.call(
       this,

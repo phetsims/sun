@@ -37,6 +37,8 @@ define( function( require ) {
   }
 
   return inherit( RoundButtonView, RoundMomentaryButton, {
+
+    // @public
     dispose: function() {
       this.disposeRoundMomentaryButton();
     }

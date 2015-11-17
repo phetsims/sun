@@ -89,7 +89,7 @@ define( function( require ) {
     // Hook up the input listener
     this.addInputListener( new ButtonListener( buttonModel ) );
 
-    // Make the base color into a property so that the appearance strategy can update itself if changes occur.
+    // @private - make the base color into a property so that the appearance strategy can update itself if changes occur.
     this.baseColorProperty = new Property( Color.toColor( options.baseColor ) ); // @private
 
     // Figure out the size of the button.
@@ -138,6 +138,7 @@ define( function( require ) {
    * @param {Property.<Color>} baseColorProperty
    * @param {Object} [options]
    * @constructor
+   * @public
    */
   RectangularButtonView.threeDAppearanceStrategy = function( button, interactionStateProperty, baseColorProperty, options ) {
 
@@ -319,6 +320,7 @@ define( function( require ) {
    * @param {Property.<Color>} baseColorProperty
    * @param {Object} [options]
    * @constructor
+   * @public
    */
   RectangularButtonView.flatAppearanceStrategy = function( button, interactionStateProperty, baseColorProperty, options ) {
 
@@ -404,12 +406,12 @@ define( function( require ) {
   };
 
   /**
-   * Basic strategy for controlling content appearance, fades the content by
-   * making it transparent when disabled.
+   * Basic strategy for controlling content appearance, fades the content by making it transparent when disabled.
    *
    * @param {Node} content
    * @param {Property} interactionStateProperty
    * @constructor
+   * @public
    */
   RectangularButtonView.fadeContentWhenDisabled = function( content, interactionStateProperty ) {
     if ( content ) {
@@ -420,13 +422,40 @@ define( function( require ) {
   };
 
   return inherit( Node, RectangularButtonView, {
-    set enabled( value ) {
+
+    /**
+     * Sets the enabled state.
+     * @param {boolean} value
+     * @public
+     */
+    setEnabled: function( value ) {
       assert && assert( typeof value === 'boolean', 'RectangularButtonView.enabled must be a boolean value' );
       this.buttonModel.enabled = value;
     },
-    get enabled() { return this.buttonModel.enabled; },
+    set enabled( value ) { this.setEnabled( value ); },
 
-    set baseColor( baseColor ) { this.baseColorProperty.value = Color.toColor( baseColor ); },
-    get baseColor() { return this.baseColorProperty.value; }
+    /**
+     * Gets the enabled state.
+     * @returns {boolean}
+     * @public
+     */
+    getEnabled: function() {return this.buttonModel.enabled; },
+    get enabled() { return this.getEnabled(); },
+
+    /**
+     * Sets the base color, which is the main background fill color used for the button.
+     * @param {Color|String} baseColor
+     * @public
+     */
+    setBaseColor: function( baseColor ) { this.baseColorProperty.value = Color.toColor( baseColor ); },
+    set baseColor( baseColor ) { this.setBaseColor( baseColor ); },
+
+    /**
+     * Gets the base color for this button.
+     * @returns {Color}
+     * @public
+     */
+    getBaseColor: function() { return this.baseColorProperty.value; },
+    get baseColor() { return this.getBaseColor(); }
   } );
 } );

@@ -24,6 +24,7 @@ define( function( require ) {
 
     var thisModel = this;
 
+    // @private
     this.valueA = valueA;
     this.valueB = valueB;
     this.valueProperty = valueProperty;
@@ -38,19 +39,23 @@ define( function( require ) {
         }
       }
     };
-    this.property( 'down' ).link( downListener );
+    this.property( 'down' ).link( downListener ); // @private
 
-    // Dispose items specific to this instance
+    // @private - dispose items specific to this instance
     this.disposeToggleButtonModel = function() {
       thisModel.property( 'down' ).unlink( downListener );
     };
   }
 
   return inherit( ButtonModel, ToggleButtonModel, {
+
+    // @public
     dispose: function() {
       ButtonModel.prototype.dispose.call( this );
       this.disposeToggleButtonModel();
     },
+
+    // @public
     toggle: function() {
       assert && assert( this.valueProperty.value === this.valueA || this.valueProperty.value === this.valueB );
       var oldValue = this.valueProperty.value;

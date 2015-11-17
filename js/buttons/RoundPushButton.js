@@ -49,7 +49,7 @@ define( function( require ) {
     options = _.extend( { tandem: null }, options );
 
     // Safe to pass through options to the PushButtonModel like "fireOnDown".  Other scenery options will be safely ignored.
-    this.buttonModel = new PushButtonModel( options );
+    this.buttonModel = new PushButtonModel( options ); // @public, listen only
     RoundButtonView.call( this, this.buttonModel, new PushButtonInteractionStateProperty( this.buttonModel ), options );
 
     // Tandem support
@@ -59,15 +59,18 @@ define( function( require ) {
   }
 
   return inherit( RoundButtonView, RoundPushButton, {
-    
+
+    // @public
     dispose: function() {
       this.roundPushButtonTandem && this.roundPushButtonTandem.removeInstance( this );
     },
-    
+
+    // @public
     addListener: function( listener ) {
       this.buttonModel.addListener( listener );
     },
 
+    // @public
     removeListener: function( listener ) {
       this.buttonModel.removeListener( listener );
     }

@@ -29,13 +29,13 @@ define( function( require ) {
     // Tandem support
     options = _.extend( { tandem: null }, options );
 
-    this.toggleButtonModel = new ToggleButtonModel( valueA, valueB, property );
+    this.toggleButtonModel = new ToggleButtonModel( valueA, valueB, property ); // @public, listen only
     RoundButtonView.call( this, this.toggleButtonModel, new ToggleButtonInteractionStateProperty( this.toggleButtonModel ), options );
 
     // Tandem support
     options.tandem && options.tandem.addInstance( this );
 
-    // Disposal for listener above
+    // @private - disposal for listener above
     this.disposeRoundToggleButton = function() {
       options.tandem && options.tandem.removeInstance( this );
       thisRoundToggleButton.toggleButtonModel.dispose();
@@ -43,6 +43,8 @@ define( function( require ) {
   }
 
   return inherit( RoundButtonView, RoundToggleButton, {
+
+    // @public
     dispose: function() {
       this.disposeRoundToggleButton();
     }

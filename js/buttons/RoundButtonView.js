@@ -392,13 +392,40 @@ define( function( require ) {
   };
 
   return inherit( Node, RoundButtonView, {
-    set enabled( value ) {
+
+    /**
+     * Sets the enabled state.
+     * @param {boolean} value
+     * @public
+     */
+    setEnabled: function( value ) {
       assert && assert( typeof value === 'boolean', 'RoundButtonView.enabled must be a boolean value' );
       this.buttonModel.enabled = value;
     },
-    get enabled() { return this.buttonModel.enabled; },
+    set enabled( value ) { this.setEnabled( value ); },
 
-    set baseColor( baseColor ) { this.baseColorProperty.value = Color.toColor( baseColor ); },
-    get baseColor() { return this.baseColorProperty.value; }
+    /**
+     * Gets the enabled state.
+     * @returns {boolean}
+     * @public
+     */
+    getEnabled: function() {return this.buttonModel.enabled; },
+    get enabled() { return this.getEnabled(); },
+
+    /**
+     * Sets the base color, which is the main background fill color used for the button.
+     * @param {Color|String} baseColor
+     * @public
+     */
+    setBaseColor: function( baseColor ) { this.baseColorProperty.value = Color.toColor( baseColor ); },
+    set baseColor( baseColor ) { this.setBaseColor( baseColor ); },
+
+    /**
+     * Gets the base color for this button.
+     * @returns {Color}
+     * @public
+     */
+    getBaseColor: function() { return this.baseColorProperty.value; },
+    get baseColor() { return this.getBaseColor(); }
   } );
 } );

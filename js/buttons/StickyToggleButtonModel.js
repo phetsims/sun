@@ -24,26 +24,24 @@ define( function( require ) {
   function StickyToggleButtonModel( valueUp, valueDown, valueProperty ) {
     var thisModel = this;
 
+    // @private
     this.valueUp = valueUp;
     this.valueDown = valueDown;
     this.valueProperty = valueProperty;
 
     ButtonModel.call( this );
 
-    // When the user releases the toggle button, it should only fire an event
-    // if it is not during the same action in which they
-    // pressed the button.  Track the state to see if they have already
-    // pushed the button.
-    // Note: Does this need to be reset when the simulation does "reset
-    // all"?  I (Sam Reid) can't find any negative consequences in the user
-    // interface of not resetting it, but maybe I missed something. Or maybe
-    // it would be safe to reset it anyway.
-    this.addProperty( 'pressedWhileDown', false );
+    // When the user releases the toggle button, it should only fire an event if it is not during the same action in
+    // which they pressed the button.  Track the state to see if they have already pushed the button.
+    //
+    // Note: Does this need to be reset when the simulation does "reset all"?  I (Sam Reid) can't find any negative
+    // consequences in the user interface of not resetting it, but maybe I missed something. Or maybe it would be safe
+    // to reset it anyway.
+    this.addProperty( 'pressedWhileDown', false ); // @private
 
-    // If the button is up and the user presses it, show it pressed and
-    // toggle the state right away.  When the button is released, pop up the button
-    // (unless it was part of the same action that pressed the button
-    // down in the first place).
+    // If the button is up and the user presses it, show it pressed and toggle the state right away.  When the button is
+    // released, pop up the button (unless it was part of the same action that pressed the button down in the first
+    // place).
     this.property( 'down' ).link( function( down ) {
       if ( thisModel.enabled && thisModel.over ) {
         if ( down && valueProperty.value === valueUp ) {
@@ -73,6 +71,8 @@ define( function( require ) {
   }
 
   return inherit( ButtonModel, StickyToggleButtonModel, {
+
+    // @public
     toggle: function() {
       assert && assert( this.valueProperty.value === this.valueUp || this.valueProperty.value === this.valueDown );
       var newValue = this.valueProperty.value === this.valueUp ? this.valueDown : this.valueUp;

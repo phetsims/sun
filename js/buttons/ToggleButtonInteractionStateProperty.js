@@ -1,8 +1,7 @@
 // Copyright 2014-2015, University of Colorado Boulder
 
 /**
- * A derived property the maps sticky toggle button model states to the values
- * needed by the button view.
+ * A derived property that maps sticky toggle button model states to the values needed by the button view.
  */
 define( function( require ) {
   'use strict';
@@ -11,6 +10,10 @@ define( function( require ) {
   var inherit = require( 'PHET_CORE/inherit' );
   var DerivedProperty = require( 'AXON/DerivedProperty' );
 
+  /**
+   * @param {ButtonModel} buttonModel
+   * @constructor
+   */
   function ToggleButtonInteractionStateProperty( buttonModel ) {
     DerivedProperty.call(
       this,

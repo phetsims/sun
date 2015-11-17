@@ -63,27 +63,30 @@ define( function( require ) {
     }, options );
 
     // Safe to pass through options to the PushButtonModel like "fireOnDown".  Other scenery options will be safely ignored.
-    this.buttonModel = new PushButtonModel( options );
+    this.buttonModel = new PushButtonModel( options ); // @public, listen only
     RectangularButtonView.call( this, this.buttonModel, new PushButtonInteractionStateProperty( this.buttonModel ), options );
 
     // Tandem support
     // Give it a novel name to reduce the risk of parent or child collisions
     this.rectangularPushButtonTandem = options.tandem;
     this.rectangularPushButtonTandem && this.rectangularPushButtonTandem.addInstance( this );
-
   }
 
   inherit( RectangularButtonView, RectangularPushButton, {
+
+    // @public
     dispose: function() {
       this.buttonModel.dispose();
       RectangularButtonView.prototype.dispose.call( this );
       this.rectangularPushButtonTandem && this.rectangularPushButtonTandem.removeInstance( this );
     },
 
+    // @public
     addListener: function( listener ) {
       this.buttonModel.addListener( listener );
     },
 
+    // @public
     removeListener: function( listener ) {
       this.buttonModel.removeListener( listener );
     }
@@ -96,18 +99,21 @@ define( function( require ) {
    * @param {string} buttonValue - invisible auditory description for the button
    * @param {function} listener - the listener function called on press for this RectangularPushButton
    * @constructor
+   * @private
    */
   function RectangularPushButtonAccessiblePeer( accessibleInstance, buttonValue, listener ) {
     this.initialize( accessibleInstance, buttonValue, listener );
   }
 
   inherit( AccessiblePeer, RectangularPushButtonAccessiblePeer, {
+
     /**
      * Initialized dom elements and its attributes for the screen view in the parallel DOM.
      *
      * @param {AccessibleInstance} accessibleInstance
      * @param {string} buttonValue - invisible auditory description for the button
      * @param {function} listener - the listener function called on press for this RectangularPushButton
+     * @public
      */
     initialize: function( accessibleInstance, buttonValue, listener ) {
       /*
