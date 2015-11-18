@@ -24,7 +24,7 @@ define( function( require ) {
     options = _.extend( {
 
       fireOnDown: false, // true: fire on pointer down; false: fire on pointer up if pointer is over button
-      listener: null, // {function} convenience for adding 1 listener
+      listener: null, // {function} convenience for adding 1 listener, no args
 
       // fire-on-hold feature
       fireOnHold: false, // is the fire-on-hold feature enabled?
@@ -95,7 +95,7 @@ define( function( require ) {
 
     /**
      * Adds a listener. If already a listener, this is a no-op.
-     * @param {function} listener
+     * @param {function} listener - function called when the button is pressed, no args
      * @public
      */
     addListener: function( listener ) {
