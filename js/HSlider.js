@@ -221,7 +221,7 @@ define( function( require ) {
 
   inherit( Node, HSlider, {
 
-    // Ensures that this object is eligible for GC.
+    // @public - ensures that this object is eligible for GC
     dispose: function() {
       this.disposeHSlider();
     },
@@ -230,6 +230,7 @@ define( function( require ) {
      * Adds a major tick mark.
      * @param {number} value
      * @param {Node} [label] optional
+     * @public
      */
     addMajorTick: function( value, label ) {
       this.addTick( this.majorTicksParent, value, label, this.options.majorTickLength, this.options.majorTickStroke, this.options.majorTickLineWidth );
@@ -239,6 +240,7 @@ define( function( require ) {
      * Adds a minor tick mark.
      * @param {number} value
      * @param {Node} [label] optional
+     * @public
      */
     addMinorTick: function( value, label ) {
       this.addTick( this.minorTicksParent, value, label, this.options.minorTickLength, this.options.minorTickStroke, this.options.minorTickLineWidth );
@@ -270,31 +272,33 @@ define( function( require ) {
       }
     },
 
+    // @public
     setEnabled: function( enabled ) { this.enabledProperty.value = enabled; },
     set enabled( value ) { this. setEnabled( value ); },
 
+    // @public
     getEnabled: function() { return this.enabledProperty.value; },
     get enabled() { return this.getEnabled(); },
 
-    // Sets visibility of major ticks.
+    // @public - Sets visibility of major ticks.
     setMajorTicksVisible: function( visible ) {
       this.majorTicksParent.visible = visible;
     },
     set majorTicksVisible( value ) { this.setMajorTicksVisible( value ); },
 
-    // Gets visibility of major ticks.
+    // @public - Gets visibility of major ticks.
     getMajorTicksVisible: function() {
       return this.majorTicksParent.visible;
     },
     get majorTicksVisible() { return this.getMajorTicksVisible(); },
 
-    // Sets visibility of minor ticks.
+    // @public - Sets visibility of minor ticks.
     setMinorTicksVisible: function( visible ) {
       this.minorTicksParent.visible = visible;
     },
     set minorTicksVisible( value ) { this.setMinorTicksVisible( value ); },
 
-    // Gets visibility of minor ticks.
+    // @public - Gets visibility of minor ticks.
     getMinorTicksVisible: function() {
       return this.minorTicksParent.visible;
     },
@@ -306,6 +310,7 @@ define( function( require ) {
    * @param {Property.<boolean>} enabledProperty
    * @param {Object} [options] see HSlider constructor
    * @constructor
+   * @private
    */
   function ThumbNode( enabledProperty, options ) {
 
@@ -368,7 +373,7 @@ define( function( require ) {
 
   inherit( Rectangle, ThumbNode, {
 
-    // Ensures that this object is eligible for GC.
+    // @public - Ensures that this object is eligible for GC.
     dispose: function() {
       this.disposeThumbNode();
     }

@@ -47,7 +47,8 @@ define( function( require ) {
     // default values
     options = _.extend( {
       fill: '#000',
-      //Font awesome nodes are expensive to pick (and have a lot of holes in them which you may wish to pick anyways, such as the door of the 'home' icon, so don't pick by default
+      // Font awesome nodes are expensive to pick (and have a lot of holes in them which you may wish to pick anyways,
+      // such as the door of the 'home' icon, so don't pick by default.
       pickable: false
     }, options );
 
@@ -55,6 +56,8 @@ define( function( require ) {
   }
 
   inherit( Path, FontAwesomeNode, {}, {
+
+    // @public
     getShapeByName: function( iconName ) {
       var shape = shapeCache[ iconName ];
       if ( !shape ) {

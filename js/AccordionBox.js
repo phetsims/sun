@@ -79,7 +79,7 @@ define( function( require ) {
 
     Node.call( this );
 
-    // @private Expand/collapse button, links to expandedProperty, must be disposed of
+    // @private - expand/collapse button, links to expandedProperty, must be disposed of
     this.expandCollapseButton = new ExpandCollapseButton( options.expandedProperty, {
       sideLength: options.buttonLength,
       cursor: options.cursor
@@ -242,7 +242,7 @@ define( function( require ) {
 
   return inherit( Node, AccordionBox, {
 
-    // Ensures that this node is eligible for GC.
+    // @public - ensures that this node is eligible for GC
     dispose: function() {
       this.expandCollapseButton.dispose();
       this.expandCollapseButton = null;

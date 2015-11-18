@@ -50,7 +50,7 @@ define( function( require ) {
       pickable: options.backgroundPickable,
       lineDash: options.lineDash
     } );
-    this.background = background;
+    this.background = background; // @private
     // update the fill and stroke
     this.setStroke( options.stroke );
     this.setFill( options.fill );
@@ -112,32 +112,31 @@ define( function( require ) {
 
   inherit( Node, Panel, {
 
-    // Change the background rectangle's stroke (can be overridden)
+    // @public - Change the background rectangle's stroke (can be overridden)
     setStroke: function( stroke ) {
       this.background.stroke = stroke;
     },
 
-    // Get the background rectangle's stroke (can be overridden)
+    // @public - Get the background rectangle's stroke (can be overridden)
     getStroke: function() {
       return this.background.stroke;
     },
 
-    // Getter/setter for background stroke
+    // @public - Getter/setter for background stroke
     set stroke( value ) { this.setStroke( value ); },
     get stroke() { return this.getStroke(); },
 
-
-    // Change the background rectangle's fill (can be overridden)
+    // @public - Change the background rectangle's fill (can be overridden)
     setFill: function( fill ) {
       this.background.fill = fill;
     },
 
-    // Get the background rectangle's fill (can be overridden)
+    // @public - Get the background rectangle's fill (can be overridden)
     getFill: function() {
       return this.background.fill;
     },
 
-    // Getter/setter for background fill
+    // @public - Getter/setter for background fill
     set fill( value ) { this.setFill( value ); },
     get fill() { return this.getFill(); }
   }, {

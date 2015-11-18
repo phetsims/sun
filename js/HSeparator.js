@@ -12,6 +12,11 @@ define( function( require ) {
   var inherit = require( 'PHET_CORE/inherit' );
   var Line = require( 'SCENERY/nodes/Line' );
 
+  /**
+   * @param {number} width
+   * @param {Object} options
+   * @constructor
+   */
   function HSeparator( width, options ) {
     options = _.extend( {
       stroke: 'rgb(100,100,100)'
@@ -21,4 +26,3 @@ define( function( require ) {
 
   return inherit( Line, HSeparator );
 } );
-

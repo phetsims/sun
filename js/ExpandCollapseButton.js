@@ -85,7 +85,7 @@ define( function( require ) {
 
   return inherit( Node, ExpandCollapseButton, {
 
-    // Ensures that this node is eligible for GC.
+    // @public - Ensures that this node is eligible for GC.
     dispose: function() {
       this.expandedProperty.unlink( this.expandedPropertyObserver );
     }

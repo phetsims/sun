@@ -59,6 +59,7 @@ define( function( require ) {
     this.addChild( separator );
     this.addChild( itemNodeParent );
 
+    // @private
     this.setItemNode = function( itemNode ) {
       itemNodeParent.removeAllChildren();
       itemNodeParent.addChild( itemNode );
@@ -84,6 +85,7 @@ define( function( require ) {
    * @param {number} xMargin
    * @param {Object} [options]
    * @constructor
+   * @private
    */
   function ItemNode( item, width, height, xMargin, options ) {
     var thisNode = this;
@@ -102,6 +104,7 @@ define( function( require ) {
    * @param {Property} property
    * @param {Node} listParent node that will be used as the list's parent, use this to ensuring that the list is in front of everything else
    * @param {Object} [options] object with optional properties
+   * @constructor
    */
   function ComboBox( items, property, listParent, options ) {
 
@@ -318,7 +321,7 @@ define( function( require ) {
 
   inherit( Node, ComboBox, {
 
-    // Provide dispose() on the prototype for ease of subclassing.
+    // @public - Provide dispose() on the prototype for ease of subclassing.
     dispose: function() {
       this.disposeComboBox();
     }
@@ -331,6 +334,7 @@ define( function( require ) {
    * @param {*} value
    * @param {Object} [options]
    * @returns {{node: *, value: *}}
+   * @public
    */
   ComboBox.createItem = function( node, value, options ) {
     return { node: node, value: value, options: options };

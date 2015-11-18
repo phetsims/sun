@@ -285,7 +285,7 @@ define( function( require ) {
 
   return inherit( Node, Carousel, {
 
-    // Resets the carousel to its initial state
+    // @public - resets the carousel to its initial state
     reset: function() {
       this.pageNumberProperty.reset();
     }

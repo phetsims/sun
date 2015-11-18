@@ -34,7 +34,7 @@ define( function( require ) {
     var thisNode = this;
     Node.call( thisNode );
 
-    this._enabled = options.enabled;
+    this._enabled = options.enabled; // @private
 
     //Add an invisible node to make sure the layout for selected vs deselected is the same
     var background = new Rectangle( selectedNode.bounds.union( deselectedNode.bounds ) );
@@ -74,11 +74,16 @@ define( function( require ) {
 
   return inherit( Node, RadioButton, {
 
-    // Provide dispose() on the prototype for ease of subclassing.
+    // @public - Provide dispose() on the prototype for ease of subclassing.
     dispose: function() {
       this.disposeRadioButton();
     },
 
+    /**
+     * Sets the enabled state
+     * @param {boolean} enabled
+     * @public
+     */
     setEnabled: function( enabled ) {
       this._enabled = enabled;
       this.opacity = enabled ? 1 : 0.3;
@@ -86,6 +91,11 @@ define( function( require ) {
     },
     set enabled( value ) { this.setEnabled( value ); },
 
+    /**
+     * Gets the enabled state
+     * @returns {boolean}
+     * @public
+     */
     getEnabled: function() {
       return this._enabled;
     },

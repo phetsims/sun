@@ -1,7 +1,7 @@
 // Copyright 2014-2015, University of Colorado Boulder
 
 /**
- * Main ScreenView container for Buttons portion of the UI component demo.
+ * Main ScreenView container for demonstrating and testing the various buttons.
  *
  * @author John Blanco
  */
@@ -40,7 +40,7 @@ define( function( require ) {
 
     ScreenView.call( this );
 
-    // Message area, for outputting test message
+    // Message area, for outputting test messages
     var messagePrefix = 'Message: ';
     var messageText = new Text( messagePrefix, {
       font: new Font( { size: 20 } ),

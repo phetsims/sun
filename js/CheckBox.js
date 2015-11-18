@@ -68,8 +68,8 @@ define( function( require ) {
 
     thisNode._enabled = true; // @private
 
-    // Make the background.  Until we are creating our own shapes, just
-    // put a rectangle behind the font awesome check box icons.
+    // @private - Create the background.  Until we are creating our own shapes, just put a rectangle behind the font
+    // awesome check box icons.
     thisNode.backgroundNode = new Rectangle( 0, -options.boxWidth, options.boxWidth * 0.95, options.boxWidth * 0.95,
       options.boxWidth * 0.2, options.boxWidth * 0.2, {
         fill: options.checkBoxColorBackground
@@ -112,12 +112,14 @@ define( function( require ) {
         thisNode.trigger0( 'endedCallbacksForToggled' );
       }
     };
+
+    // @private
     this.checkBoxButtonListener = new ButtonListener( {
       fire: this.fire
     } );
     thisNode.addInputListener( this.checkBoxButtonListener );
 
-    // sync with property
+    // @private - sync with property
     this.checkBoxCheckedListener = function( checked ) {
       thisNode.checkedNode.visible = checked;
       thisNode.uncheckedNode.visible = !checked;
@@ -151,41 +153,65 @@ define( function( require ) {
   }
 
   inherit( Node, CheckBox, {
+
+    // @public
     dispose: function() {
       this.checkBoxTandem && this.checkBoxTandem.removeInstance( this );
       this.checkBoxValueProperty.unlink( this.checkBoxCheckedListener );
       this.removeInputListener( this.checkBoxButtonListener );
     },
 
-    get checkBoxColorBackground() { return this.backgroundNode.fill; },
-    set checkBoxColorBackground( value ) {
-      this.backgroundNode.fill = value;
-    },
-
-    get checkBoxColor() { return this.checkedNode.fill; },
-    set checkBoxColor( value ) {
-      this.checkedNode.fill = this.uncheckedNode.fill = value;
-    },
+    /**
+     *  Sets the background color of the check box.
+     *  @param {Color|String} checkBoxColorBackground
+     *  @public
+     */
+    setCheckBoxColorBackground: function( value ) { this.backgroundNode.fill = value; },
+    set checkBoxColorBackground( value ) { this.setCheckBoxColorBackground( value ); },
 
     /**
-     * Is the check box enabled?
-     * @returns {boolean}
+     * Gets the background color of the check box.
+     * @returns {Color|String}
+     * @public
      */
-    getEnabled: function() {
-      return this._enabled;
-    },
-    get enabled() { return this.getEnabled(); },
+    getCheckboxColorBackground: function() { return this.backgroundNode.fill; },
+    get checkBoxColorBackground() { return this.getCheckboxColorBackground(); },
+    
+    /**
+     *  Sets the color of the check box.
+     *  @param {Color|String} checkBoxColor
+     *  @public
+     */
+    setCheckBoxColor: function( value ) { this.checkedNode.fill = this.uncheckedNode.fill = value; },
+    set checkBoxColor( value ) { this.setCheckBoxColor( value ); },
+
+    /**
+     * Gets the color of the check box.
+     * @returns {Color|String}
+     * @public
+     */
+    getCheckboxColor: function() { this.checkedNode.fill; },
+    get checkBoxColor() { return this.getCheckboxColor(); },
 
     /**
      * Sets whether the check box is enabled.
      * @param {boolean} value
+     * @public
      */
     setEnabled: function( value ) {
       this._enabled = this.pickable = value;
       this.checkBoxAppearanceStrategy( this.checkBoxNode, value );
       this.contentAppearanceStrategy( this.content, value );
     },
-    set enabled( value ) { this.setEnabled( value ); }
+    set enabled( value ) { this.setEnabled( value ); },
+
+    /**
+     * Is the check box enabled?
+     * @returns {boolean}
+     * @public
+     */
+    getEnabled: function() { return this._enabled; },
+    get enabled() { return this.getEnabled(); }
 
   }, {
 
@@ -194,6 +220,7 @@ define( function( require ) {
      * @param {Node} checkBoxNode the check box
      * @param {boolean} enabled
      * @static
+     * @public
      */
     fadeCheckBoxWhenDisabled: function( checkBoxNode, enabled ) {
       checkBoxNode.opacity = enabled ? 1 : DISABLED_OPACITY;
@@ -204,6 +231,7 @@ define( function( require ) {
      * @param {Node} content the content that appears next to the check box
      * @param {boolean} enabled
      * @static
+     * @public
      */
     fadeContentWhenDisabled: function( content, enabled ) {
       content.opacity = enabled ? 1 : DISABLED_OPACITY;
@@ -217,6 +245,7 @@ define( function( require ) {
      * @param {Object} [checkBoxOptions] options passed to CheckBox constructor
      * @returns {CheckBox}
      * @static
+     * @public
      */
     createTextCheckBox: function( text, textOptions, property, checkBoxOptions ) {
 

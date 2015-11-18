@@ -20,15 +20,14 @@ define( function( require ) {
    * @constructor
    */
   function VerticalAquaRadioButtonGroup( items, options ) {
-    options = _.extend(
-      {
-        spacing: 3,
-        padding: 8,
-        radius: 12,
-        radioButtonOptions: {}, // will be passed to the AquaRadioButtons
-        touchXPadding: 5,
-        mouseXPadding: 0
-      }, options );
+    options = _.extend( {
+      spacing: 3,
+      padding: 8,
+      radius: 12,
+      radioButtonOptions: {}, // will be passed to the AquaRadioButtons
+      touchXPadding: 5,
+      mouseXPadding: 0
+    }, options );
 
     var width = 0;
     for ( var i = 0; i < items.length; i++ ) {
