@@ -68,6 +68,7 @@ define( function( require ) {
 
     // Tandem support
     // Give it a novel name to reduce the risk of parent or child collisions
+    // @public (tandem)
     this.rectangularPushButtonTandem = options.tandem;
     this.rectangularPushButtonTandem && this.rectangularPushButtonTandem.addInstance( this );
   }
@@ -113,7 +114,7 @@ define( function( require ) {
      * @param {AccessibleInstance} accessibleInstance
      * @param {string} buttonValue - invisible auditory description for the button
      * @param {function} listener - the listener function called on press for this RectangularPushButton
-     * @public
+     * @public (accessibility)
      */
     initialize: function( accessibleInstance, buttonValue, listener ) {
       /*
