@@ -74,7 +74,7 @@ define( function( require ) {
 
     RectangularButtonView.call( this, this.radioButtonGroupMemberModel, this.interactionStateProperty, options );
 
-    // @public for Tandem support, should a novel name to reduce the risk of parent or child collisions
+    // @public (tandem) - for Tandem support, should be a novel name to reduce the risk of parent or child collisions
     this.radioButtonGroupMemberTandem = options.tandem;
     this.radioButtonGroupMemberTandem && this.radioButtonGroupMemberTandem.addInstance( this );
 

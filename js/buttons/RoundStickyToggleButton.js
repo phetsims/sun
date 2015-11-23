@@ -28,8 +28,7 @@ define( function( require ) {
     var buttonModel = new StickyToggleButtonModel( valueUp, valueDown, property );
     RoundButtonView.call( this, buttonModel, new StickyToggleButtonInteractionStateProperty( buttonModel ), options );
 
-    // Tandem support
-    // Give it a novel name to reduce the risk of parent or child collisions
+    // @public (tandem) Tandem support, should be a novel name to reduce the risk of parent or child collisions
     this.roundStickyToggleButtonTandem = options.tandem;
     this.roundStickyToggleButtonTandem && this.roundStickyToggleButtonTandem.addInstance( this );
   }

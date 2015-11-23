@@ -274,6 +274,7 @@ define( function( require ) {
      * Find a button corresponding to a specific value.  Used for together interoperability.
      * @param {Object} value - the value for the button
      * @returns {RadioButtonGroupMember}
+     * @public
      */
     getRadioButtonGroupMember: function( value ) {
       for ( var i = 0; i < this.buttons.length; i++ ) {
@@ -286,11 +287,13 @@ define( function( require ) {
       return null;
     },
 
+    // @public
     set enabled( value ) {
       assert && assert( typeof value === 'boolean', 'RadioButtonGroup.enabled must be a boolean value' );
       this.enabledProperty.set( value );
     },
 
+    // @public
     get enabled() {
       return this.enabledProperty.get();
     }

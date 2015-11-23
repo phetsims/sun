@@ -137,8 +137,7 @@ define( function( require ) {
     // Apply additional options
     thisNode.mutate( options );
 
-    // Tandem support
-    // Give it a novel name to reduce the risk of parent or child collisions
+    // @public (tandem) - Tandem support, use a novel name to reduce the risk of parent or child collisions
     this.checkBoxTandem = options.tandem;
     this.checkBoxTandem && this.checkBoxTandem.addInstance( this );
 
@@ -298,6 +297,7 @@ define( function( require ) {
      * @param {function} fire - listener function fired by this checkbox
      * @param {string} accessibleLabel - invisible string description for accessible technologies
      * @param {string} tabIndex
+     * @public (accessibility)
      */
     initialize: function( accessibleInstance, property, fire, accessibleLabel, tabIndex ) {
       var trail = accessibleInstance.trail;

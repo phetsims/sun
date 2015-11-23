@@ -153,7 +153,7 @@ define( function( require ) {
       }
     } ) );
 
-    // Tandem support - Give it a novel name to reduce the risk of parent or child collisions.
+    // @public (tandem) - Tandem support, use a novel name to reduce the risk of parent or child collisions.
     this.onOffSwitchTandem = options.tandem;
     this.onOffSwitchTandem && this.onOffSwitchTandem.addInstance( this );
 
