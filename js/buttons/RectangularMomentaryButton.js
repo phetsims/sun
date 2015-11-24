@@ -14,6 +14,7 @@ define( function( require ) {
   var MomentaryButtonInteractionStateProperty = require( 'SUN/buttons/MomentaryButtonInteractionStateProperty' );
   var MomentaryButtonModel = require( 'SUN/buttons/MomentaryButtonModel' );
   var RectangularButtonView = require( 'SUN/buttons/RectangularButtonView' );
+  var sun = require( 'SUN/sun' );
 
   /**
    * @param {Property.<boolean>} onProperty - whether the button is on or off
@@ -24,6 +25,8 @@ define( function( require ) {
     var buttonModel = new MomentaryButtonModel( onProperty );
     RectangularButtonView.call( this, buttonModel, new MomentaryButtonInteractionStateProperty( buttonModel ), options );
   }
+
+  sun.register( 'RectangularMomentaryButton', RectangularMomentaryButton );
 
   return inherit( RectangularButtonView, RectangularMomentaryButton );
 } );

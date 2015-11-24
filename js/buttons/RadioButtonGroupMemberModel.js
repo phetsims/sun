@@ -10,8 +10,9 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var inherit = require( 'PHET_CORE/inherit' );
   var ButtonModel = require( 'SUN/buttons/ButtonModel' );
+  var inherit = require( 'PHET_CORE/inherit' );
+  var sun = require( 'SUN/sun' );
 
   /**
    * @param {Property} selectorProperty - the property for the RadioButtonGroup that determines which button is selected
@@ -40,6 +41,8 @@ define( function( require ) {
       }
     } );
   }
+
+  sun.register( 'RadioButtonGroupMemberModel', RadioButtonGroupMemberModel );
 
   return inherit( ButtonModel, RadioButtonGroupMemberModel );
 } );

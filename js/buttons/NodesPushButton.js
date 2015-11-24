@@ -17,6 +17,7 @@ define( function( require ) {
   var Node = require( 'SCENERY/nodes/Node' );
   var PushButtonInteractionStateProperty = require( 'SUN/buttons/PushButtonInteractionStateProperty' );
   var PushButtonModel = require( 'SUN/buttons/PushButtonModel' );
+  var sun = require( 'SUN/sun' );
 
   /**
    * @param {Node} idleNode
@@ -90,6 +91,8 @@ define( function( require ) {
 
     this.mutate( options );
   }
+
+  sun.register( 'NodesPushButton', NodesPushButton );
 
   return inherit( Node, NodesPushButton, {
 

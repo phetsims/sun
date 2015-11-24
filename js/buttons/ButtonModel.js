@@ -10,6 +10,7 @@ define( function( require ) {
   // modules
   var inherit = require( 'PHET_CORE/inherit' );
   var PropertySet = require( 'AXON/PropertySet' );
+  var sun = require( 'SUN/sun' );
 
   /**
    * @param {Object} [options]
@@ -42,6 +43,8 @@ define( function( require ) {
       }
     } );
   }
+
+  sun.register( 'ButtonModel', ButtonModel );
 
   return inherit( PropertySet, ButtonModel );
 } );

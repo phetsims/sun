@@ -16,9 +16,10 @@ define( function( require ) {
 
   // modules
   var inherit = require( 'PHET_CORE/inherit' );
+  var PushButtonInteractionStateProperty = require( 'SUN/buttons/PushButtonInteractionStateProperty' );
   var PushButtonModel = require( 'SUN/buttons/PushButtonModel' );
   var RoundButtonView = require( 'SUN/buttons/RoundButtonView' );
-  var PushButtonInteractionStateProperty = require( 'SUN/buttons/PushButtonInteractionStateProperty' );
+  var sun = require( 'SUN/sun' );
 
   /**
    * @param {Object} [options] - All of the general Scenery node options can be
@@ -57,6 +58,8 @@ define( function( require ) {
     this.roundPushButtonTandem = options.tandem;
     this.roundPushButtonTandem && this.roundPushButtonTandem.addInstance( this );
   }
+
+  sun.register( 'RoundPushButton', RoundPushButton );
 
   return inherit( RoundButtonView, RoundPushButton, {
 

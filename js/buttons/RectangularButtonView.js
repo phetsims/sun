@@ -19,6 +19,7 @@ define( function( require ) {
   var Path = require( 'SCENERY/nodes/Path' );
   var Property = require( 'AXON/Property' );
   var Shape = require( 'KITE/Shape' );
+  var sun = require( 'SUN/sun' );
 
   // constants
   var VERTICAL_HIGHLIGHT_GRADIENT_LENGTH = 7; // In screen coords, which are roughly pixels.
@@ -128,6 +129,8 @@ define( function( require ) {
     // dependent fields like centerX will work.
     thisButton.mutate( options );
   }
+
+  sun.register( 'RectangularButtonView', RectangularButtonView );
 
   /**
    * Strategy for making a button look 3D-ish by using gradients that create the appearance of highlighted and shaded

@@ -12,6 +12,7 @@ define( function( require ) {
 
   // modules
   var Color = require( 'SCENERY/util/Color' );
+  var sun = require( 'SUN/sun' );
 
   // constants
   var DISABLED_OPACITY = 0.3;
@@ -100,6 +101,8 @@ define( function( require ) {
     } );
   };
 
+  sun.register( 'defaultRadioButtonsAppearance', defaultRadioButtonsAppearance );
+
   /**
    * Strategy for changing the button content opacity for each of the different states:
    * mouseover, selected, deselected, and disabled
@@ -145,6 +148,8 @@ define( function( require ) {
       }
     } );
   };
+
+  sun.register( 'contentAppearanceStrategy', contentAppearanceStrategy );
 
   return {
     defaultRadioButtonsAppearance: defaultRadioButtonsAppearance,

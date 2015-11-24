@@ -13,6 +13,7 @@ define( function( require ) {
   var inherit = require( 'PHET_CORE/inherit' );
   var RectangularPushButton = require( 'SUN/buttons/RectangularPushButton' );
   var HTMLText = require( 'SCENERY/nodes/HTMLText' );
+  var sun = require( 'SUN/sun' );
 
   /**
    * @param {string} html
@@ -27,6 +28,8 @@ define( function( require ) {
     var htmlTextNode = new HTMLText( html, options );
     RectangularPushButton.call( this, _.extend( { content: htmlTextNode }, options ) );
   }
+
+  sun.register( 'HTMLPushButton', HTMLPushButton );
 
   return inherit( RectangularPushButton, HTMLPushButton );
 } );

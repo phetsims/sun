@@ -2,7 +2,8 @@
 
 /**
  * A single radio button. This class is designed to be part of a RadioButtonGroup and there should be no need to use it
- * outside of RadioButtonGroup. It is called RadioButtonGroupMember to differentiate from RadioButton, which already exists.
+ * outside of RadioButtonGroup. It is called RadioButtonGroupMember to differentiate from RadioButton, which already
+ * exists.
  *
  * @author Aaron Davis
  */
@@ -10,14 +11,15 @@ define( function( require ) {
   'use strict';
 
   // modules
+  var AccessiblePeer = require( 'SCENERY/accessibility/AccessiblePeer' );
+  var Color = require( 'SCENERY/util/Color' );
+  var ColorConstants = require( 'SUN/ColorConstants' );
   var inherit = require( 'PHET_CORE/inherit' );
   var RectangularButtonView = require( 'SUN/buttons/RectangularButtonView' );
-  var RadioButtonInteractionStateProperty = require( 'SUN/buttons/RadioButtonInteractionStateProperty' );
   var RadioButtonGroupAppearance = require( 'SUN/buttons/RadioButtonGroupAppearance' );
   var RadioButtonGroupMemberModel = require( 'SUN/buttons/RadioButtonGroupMemberModel' );
-  var ColorConstants = require( 'SUN/ColorConstants' );
-  var Color = require( 'SCENERY/util/Color' );
-  var AccessiblePeer = require( 'SCENERY/accessibility/AccessiblePeer' );
+  var RadioButtonInteractionStateProperty = require( 'SUN/buttons/RadioButtonInteractionStateProperty' );
+  var sun = require( 'SUN/sun' );
 
   /**
    * @param {Property} property axon property that can take on a set of values, one for each radio button in the group
@@ -113,6 +115,8 @@ define( function( require ) {
       }
     };
   }
+
+  sun.register( 'RadioButtonGroupMember', RadioButtonGroupMember );
 
   return inherit( RectangularButtonView, RadioButtonGroupMember, {
 

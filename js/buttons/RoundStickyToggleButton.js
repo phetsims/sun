@@ -16,6 +16,7 @@ define( function( require ) {
   var RoundButtonView = require( 'SUN/buttons/RoundButtonView' );
   var StickyToggleButtonInteractionStateProperty = require( 'SUN/buttons/StickyToggleButtonInteractionStateProperty' );
   var StickyToggleButtonModel = require( 'SUN/buttons/StickyToggleButtonModel' );
+  var sun = require( 'SUN/sun' );
 
   /**
    * @param {Object} valueUp value when the toggle is in the 'up' position
@@ -32,6 +33,8 @@ define( function( require ) {
     this.roundStickyToggleButtonTandem = options.tandem;
     this.roundStickyToggleButtonTandem && this.roundStickyToggleButtonTandem.addInstance( this );
   }
+
+  sun.register( 'RoundStickyToggleButton', RoundStickyToggleButton );
 
   return inherit( RoundButtonView, RoundStickyToggleButton );
 } );

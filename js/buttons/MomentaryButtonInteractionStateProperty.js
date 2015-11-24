@@ -11,6 +11,7 @@ define( function( require ) {
   // modules
   var inherit = require( 'PHET_CORE/inherit' );
   var DerivedProperty = require( 'AXON/DerivedProperty' );
+  var sun = require( 'SUN/sun' );
 
   /**
    * @param {ButtonModel} buttonModel
@@ -28,6 +29,8 @@ define( function( require ) {
                'idle';
       } );
   }
+
+  sun.register( 'MomentaryButtonInteractionStateProperty', MomentaryButtonInteractionStateProperty );
 
   return inherit( DerivedProperty, MomentaryButtonInteractionStateProperty );
 } );

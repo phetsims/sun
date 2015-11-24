@@ -14,6 +14,7 @@ define( function( require ) {
   var ButtonModel = require( 'SUN/buttons/ButtonModel' );
   var CallbackTimer = require( 'SUN/CallbackTimer' );
   var inherit = require( 'PHET_CORE/inherit' );
+  var sun = require( 'SUN/sun' );
 
   /**
    * @param {Object} [options]
@@ -80,6 +81,8 @@ define( function( require ) {
       }
     } );
   }
+
+  sun.register( 'PushButtonModel', PushButtonModel );
 
   return inherit( ButtonModel, PushButtonModel, {
 

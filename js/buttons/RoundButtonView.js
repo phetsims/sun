@@ -23,6 +23,7 @@ define( function( require ) {
   var Property = require( 'AXON/Property' );
   var RadialGradient = require( 'SCENERY/util/RadialGradient' );
   var Shape = require( 'KITE/Shape' );
+  var sun = require( 'SUN/sun' );
   var Vector2 = require( 'DOT/Vector2' );
 
   // constants
@@ -125,6 +126,8 @@ define( function( require ) {
     // width-dependent fields like centerX will work.
     thisButton.mutate( options );
   }
+
+  sun.register( 'RoundButtonView', RoundButtonView );
 
   /**
    * Strategy for making a button look 3D-ish by using gradients that create

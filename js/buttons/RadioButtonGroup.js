@@ -14,16 +14,17 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var inherit = require( 'PHET_CORE/inherit' );
-  var RadioButtonGroupMember = require( 'SUN/buttons/RadioButtonGroupMember' );
-  var Color = require( 'SCENERY/util/Color' );
-  var RadioButtonGroupAppearance = require( 'SUN/buttons/RadioButtonGroupAppearance' );
-  var Property = require( 'AXON/Property' );
-  var ColorConstants = require( 'SUN/ColorConstants' );
-  var LayoutBox = require( 'SCENERY/nodes/LayoutBox' );
-  var Shape = require( 'KITE/Shape' );
-  var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var AccessiblePeer = require( 'SCENERY/accessibility/AccessiblePeer' );
+  var Color = require( 'SCENERY/util/Color' );
+  var ColorConstants = require( 'SUN/ColorConstants' );
+  var inherit = require( 'PHET_CORE/inherit' );
+  var LayoutBox = require( 'SCENERY/nodes/LayoutBox' );
+  var Property = require( 'AXON/Property' );
+  var RadioButtonGroupAppearance = require( 'SUN/buttons/RadioButtonGroupAppearance' );
+  var RadioButtonGroupMember = require( 'SUN/buttons/RadioButtonGroupMember' );
+  var Rectangle = require( 'SCENERY/nodes/Rectangle' );
+  var Shape = require( 'KITE/Shape' );
+  var sun = require( 'SUN/sun' );
 
   /**
    * RadioButtonGroup constructor.
@@ -267,6 +268,8 @@ define( function( require ) {
       }
     };
   }
+
+  sun.register( 'RadioButtonGroup', RadioButtonGroup );
 
   return inherit( LayoutBox, RadioButtonGroup, {
 

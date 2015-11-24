@@ -17,6 +17,7 @@ define( function( require ) {
   var RectangularButtonView = require( 'SUN/buttons/RectangularButtonView' );
   var RectangularPushButton = require( 'SUN/buttons/RectangularPushButton' );
   var Shape = require( 'KITE/Shape' );
+  var sun = require( 'SUN/sun' );
 
   // maps arrow directions to rotation angles, in radians
   var ANGLES = {
@@ -79,6 +80,8 @@ define( function( require ) {
 
     RectangularPushButton.call( this, options );
   }
+
+  sun.register( 'CarouselButton', CarouselButton );
 
   return inherit( RectangularPushButton, CarouselButton );
 } );

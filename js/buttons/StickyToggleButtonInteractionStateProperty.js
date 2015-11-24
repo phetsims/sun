@@ -8,9 +8,14 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var inherit = require( 'PHET_CORE/inherit' );
   var DerivedProperty = require( 'AXON/DerivedProperty' );
+  var inherit = require( 'PHET_CORE/inherit' );
+  var sun = require( 'SUN/sun' );
 
+  /**
+   * @param {ButtonModel} buttonModel
+   * @constructor
+   */
   function StickyToggleButtonInteractionStateProperty( buttonModel ) {
     DerivedProperty.call(
       this,
@@ -25,6 +30,8 @@ define( function( require ) {
                'idle';
       } );
   }
+
+  sun.register( 'StickyToggleButtonInteractionStateProperty', StickyToggleButtonInteractionStateProperty );
 
   return inherit( DerivedProperty, StickyToggleButtonInteractionStateProperty );
 } );

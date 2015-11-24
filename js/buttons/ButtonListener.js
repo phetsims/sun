@@ -18,6 +18,7 @@ define( function( require ) {
   var DownUpListener = require( 'SCENERY/input/DownUpListener' );
   var Input = require( 'SCENERY/input/Input' );
   var inherit = require( 'PHET_CORE/inherit' );
+  var sun = require( 'SUN/sun' );
 
   /**
    * @param {*} buttonModel any object with 'down' and 'over' boolean properties
@@ -50,6 +51,8 @@ define( function( require ) {
       }
     );
   }
+
+  sun.register( 'ButtonListener', ButtonListener );
 
   return inherit( DownUpListener, ButtonListener, {
 

@@ -11,6 +11,7 @@ define( function( require ) {
   // modules
   var inherit = require( 'PHET_CORE/inherit' );
   var ButtonModel = require( 'SUN/buttons/ButtonModel' );
+  var sun = require( 'SUN/sun' );
 
   /**
    * @param {Property.<boolean>} onProperty - is the momentary button on or off?
@@ -61,6 +62,8 @@ define( function( require ) {
       onProperty.unlink( onObserver );
     };
   }
+
+  sun.register( 'MomentaryButtonModel', MomentaryButtonModel );
 
   return inherit( ButtonModel, MomentaryButtonModel, {
 

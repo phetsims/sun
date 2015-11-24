@@ -9,6 +9,7 @@ define( function( require ) {
   // modules
   var inherit = require( 'PHET_CORE/inherit' );
   var RoundToggleButton = require( 'SUN/buttons/RoundToggleButton' );
+  var sun = require( 'SUN/sun' );
   var ToggleNode = require( 'SUN/ToggleNode' );
 
   /**
@@ -21,6 +22,8 @@ define( function( require ) {
   function BooleanRoundToggleButton( trueNode, falseNode, booleanProperty, options ) {
     RoundToggleButton.call( this, false, true, booleanProperty, _.extend( { content: new ToggleNode( trueNode, falseNode, booleanProperty ) }, options ) );
   }
+
+  sun.register( 'BooleanRoundToggleButton', BooleanRoundToggleButton );
 
   return inherit( RoundToggleButton, BooleanRoundToggleButton );
 } );

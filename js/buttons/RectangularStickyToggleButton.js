@@ -15,6 +15,7 @@ define( function( require ) {
   var RectangularButtonView = require( 'SUN/buttons/RectangularButtonView' );
   var StickyToggleButtonInteractionStateProperty = require( 'SUN/buttons/StickyToggleButtonInteractionStateProperty' );
   var StickyToggleButtonModel = require( 'SUN/buttons/StickyToggleButtonModel' );
+  var sun = require( 'SUN/sun' );
 
   /**
    * @param {Object} valueUp value when the toggle is in the 'up' position
@@ -27,6 +28,8 @@ define( function( require ) {
     var buttonModel = new StickyToggleButtonModel( valueUp, valueDown, property );
     RectangularButtonView.call( this, buttonModel, new StickyToggleButtonInteractionStateProperty( buttonModel ), options );
   }
+
+  sun.register( 'RectangularStickyToggleButton', RectangularStickyToggleButton );
 
   return inherit( RectangularButtonView, RectangularStickyToggleButton );
 } );

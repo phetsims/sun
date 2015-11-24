@@ -12,8 +12,9 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var inherit = require( 'PHET_CORE/inherit' );
   var ButtonModel = require( 'SUN/buttons/ButtonModel' );
+  var inherit = require( 'PHET_CORE/inherit' );
+  var sun = require( 'SUN/sun' );
 
   /**
    * @param {Object} valueUp value when the toggle is in the 'up' position
@@ -64,11 +65,13 @@ define( function( require ) {
       }
     } );
 
-    //Make the button ready to toggle when enabled
+    // make the button ready to toggle when enabled
     this.property( 'enabled' ).onValue( true, function() {
       thisModel.pressedWhileDown = true;
     } );
   }
+
+  sun.register( 'StickyToggleButtonModel', StickyToggleButtonModel );
 
   return inherit( ButtonModel, StickyToggleButtonModel, {
 

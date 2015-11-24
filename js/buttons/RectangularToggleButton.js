@@ -12,6 +12,7 @@ define( function( require ) {
   // modules
   var inherit = require( 'PHET_CORE/inherit' );
   var RectangularButtonView = require( 'SUN/buttons/RectangularButtonView' );
+  var sun = require( 'SUN/sun' );
   var ToggleButtonInteractionStateProperty = require( 'SUN/buttons/ToggleButtonInteractionStateProperty' );
   var ToggleButtonModel = require( 'SUN/buttons/ToggleButtonModel' );
 
@@ -28,6 +29,8 @@ define( function( require ) {
     this.toggleButtonModel = new ToggleButtonModel( valueA, valueB, property, options );
     RectangularButtonView.call( this, this.toggleButtonModel, new ToggleButtonInteractionStateProperty( this.toggleButtonModel ), options );
   }
+
+  sun.register( 'RectangularToggleButton', RectangularToggleButton );
 
   return inherit( RectangularButtonView, RectangularToggleButton );
 } );

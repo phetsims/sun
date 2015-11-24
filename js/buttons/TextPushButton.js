@@ -10,10 +10,16 @@ define( function( require ) {
 
   // modules
   var inherit = require( 'PHET_CORE/inherit' );
-  var RectangularPushButton = require( 'SUN/buttons/RectangularPushButton' );
-  var Text = require( 'SCENERY/nodes/Text' );
   var Font = require( 'SCENERY/util/Font' );
+  var RectangularPushButton = require( 'SUN/buttons/RectangularPushButton' );
+  var sun = require( 'SUN/sun' );
+  var Text = require( 'SCENERY/nodes/Text' );
 
+  /**
+   * @param {String} text
+   * @param {Object} options
+   * @constructor
+   */
   function TextPushButton( text, options ) {
 
     options = _.extend( {
@@ -24,6 +30,8 @@ define( function( require ) {
     var textNode = new Text( text, { font: options.font, fill: options.textFill } );
     RectangularPushButton.call( this, _.extend( { content: textNode }, options ) );
   }
+
+  sun.register( 'TextPushButton', TextPushButton );
 
   return inherit( RectangularPushButton, TextPushButton );
 } );

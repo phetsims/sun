@@ -14,6 +14,7 @@ define( function( require ) {
   var MomentaryButtonInteractionStateProperty = require( 'SUN/buttons/MomentaryButtonInteractionStateProperty' );
   var MomentaryButtonModel = require( 'SUN/buttons/MomentaryButtonModel' );
   var RoundButtonView = require( 'SUN/buttons/RoundButtonView' );
+  var sun = require( 'SUN/sun' );
 
   /**
    * @param {Property.<boolean>} onProperty - whether the button is on or off
@@ -35,6 +36,8 @@ define( function( require ) {
       options.tandem && options.tandem.removeInstance( this );
     };
   }
+
+  sun.register( 'RoundMomentaryButton', RoundMomentaryButton );
 
   return inherit( RoundButtonView, RoundMomentaryButton, {
 

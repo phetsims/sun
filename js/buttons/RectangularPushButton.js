@@ -14,11 +14,12 @@ define( function( require ) {
   'use strict';
 
   // modules
+  var AccessiblePeer = require( 'SCENERY/accessibility/AccessiblePeer' );
   var inherit = require( 'PHET_CORE/inherit' );
-  var RectangularButtonView = require( 'SUN/buttons/RectangularButtonView' );
   var PushButtonInteractionStateProperty = require( 'SUN/buttons/PushButtonInteractionStateProperty' );
   var PushButtonModel = require( 'SUN/buttons/PushButtonModel' );
-  var AccessiblePeer = require( 'SCENERY/accessibility/AccessiblePeer' );
+  var RectangularButtonView = require( 'SUN/buttons/RectangularButtonView' );
+  var sun = require( 'SUN/sun' );
 
   /**
    * @param {Object} [options] - All of the general Scenery node options can be
@@ -92,6 +93,8 @@ define( function( require ) {
       this.buttonModel.removeListener( listener );
     }
   } );
+
+  sun.register( 'RectangularPushButton', RectangularPushButton );
 
   /**
    * Create the accessible peer which represents the RectangularPushButton in the parallel DOM.

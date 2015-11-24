@@ -7,8 +7,9 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var inherit = require( 'PHET_CORE/inherit' );
   var DerivedProperty = require( 'AXON/DerivedProperty' );
+  var inherit = require( 'PHET_CORE/inherit' );
+  var sun = require( 'SUN/sun' );
 
   /**
    * @param {ButtonModel} buttonModel
@@ -26,6 +27,8 @@ define( function( require ) {
       }
     );
   }
+
+  sun.register( 'ToggleButtonInteractionStateProperty', ToggleButtonInteractionStateProperty );
 
   return inherit( DerivedProperty, ToggleButtonInteractionStateProperty );
 } );

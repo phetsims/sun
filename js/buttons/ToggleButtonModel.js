@@ -10,8 +10,9 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var inherit = require( 'PHET_CORE/inherit' );
   var ButtonModel = require( 'SUN/buttons/ButtonModel' );
+  var inherit = require( 'PHET_CORE/inherit' );
+  var sun = require( 'SUN/sun' );
 
   /**
    * @param {Object} valueA one possible value for the toggle
@@ -46,6 +47,8 @@ define( function( require ) {
       thisModel.property( 'down' ).unlink( downListener );
     };
   }
+
+  sun.register( 'ToggleButtonModel', ToggleButtonModel );
 
   return inherit( ButtonModel, ToggleButtonModel, {
 

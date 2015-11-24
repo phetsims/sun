@@ -9,7 +9,13 @@ define( function( require ) {
   // modules
   var inherit = require( 'PHET_CORE/inherit' );
   var DerivedProperty = require( 'AXON/DerivedProperty' );
+  var sun = require( 'SUN/sun' );
 
+  /**
+   * @param {ButtonModel} buttonModel
+   * @param {Object} options
+   * @constructor
+   */
   function PushButtonInteractionStateProperty( buttonModel, options ) {
     DerivedProperty.call(
       this,
@@ -21,6 +27,8 @@ define( function( require ) {
                'idle';
       }, options );
   }
+
+  sun.register( 'PushButtonInteractionStateProperty', PushButtonInteractionStateProperty );
 
   return inherit( DerivedProperty, PushButtonInteractionStateProperty );
 } );
