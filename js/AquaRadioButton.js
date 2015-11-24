@@ -13,6 +13,7 @@ define( function( require ) {
   var inherit = require( 'PHET_CORE/inherit' );
   var Node = require( 'SCENERY/nodes/Node' );
   var RadioButton = require( 'SUN/RadioButton' );
+  var sun = require( 'SUN/sun' );
 
   /**
    * @param property
@@ -53,6 +54,8 @@ define( function( require ) {
 
     RadioButton.call( this, property, value, selectedNode, deselectedNode, options );
   }
+
+  sun.register( 'AquaRadioButton', AquaRadioButton );
 
   return inherit( RadioButton, AquaRadioButton );
 } );

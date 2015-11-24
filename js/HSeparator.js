@@ -11,6 +11,7 @@ define( function( require ) {
   // modules
   var inherit = require( 'PHET_CORE/inherit' );
   var Line = require( 'SCENERY/nodes/Line' );
+  var sun = require( 'SUN/sun' );
 
   /**
    * @param {number} width
@@ -23,6 +24,8 @@ define( function( require ) {
     }, options );
     Line.call( this, 0, 0, width, 0, options );
   }
+
+  sun.register( 'HSeparator', HSeparator );
 
   return inherit( Line, HSeparator );
 } );

@@ -12,6 +12,7 @@ define( function( require ) {
   // modules
   var inherit = require( 'PHET_CORE/inherit' );
   var Timer = require( 'JOIST/Timer' );
+  var sun = require( 'SUN/sun' );
 
   /**
    * @param {Object} [options]
@@ -39,6 +40,8 @@ define( function( require ) {
     this.intervalID = null; // @private identifier for timer associates with the continuous interval
     this.fired = false;  // @private has the timer fired since it was started?
   }
+
+  sun.register( 'CallbackTimer', CallbackTimer );
 
   return inherit( Object, CallbackTimer, {
 

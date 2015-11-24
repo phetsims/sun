@@ -8,10 +8,11 @@
 define( function( require ) {
   'use strict';
 
+  var inherit = require( 'PHET_CORE/inherit' );
+  var Matrix3 = require( 'DOT/Matrix3' );
   var Path = require( 'SCENERY/nodes/Path' );
   var Shape = require( 'KITE/Shape' );
-  var Matrix3 = require( 'DOT/Matrix3' );
-  var inherit = require( 'PHET_CORE/inherit' );
+  var sun = require( 'SUN/sun' );
 
   // Generated using chipper.FontAwesomeToScenery
   var icons = {
@@ -54,6 +55,8 @@ define( function( require ) {
 
     Path.call( this, FontAwesomeNode.getShapeByName( iconName ), options );
   }
+
+  sun.register( 'FontAwesomeNode', FontAwesomeNode );
 
   inherit( Path, FontAwesomeNode, {}, {
 

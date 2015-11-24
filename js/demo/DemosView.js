@@ -16,6 +16,7 @@ define( function( require ) {
   var Property = require( 'AXON/Property' );
   var ScreenView = require( 'JOIST/ScreenView' );
   var Text = require( 'SCENERY/nodes/Text' );
+  var sun = require( 'SUN/sun' );
 
   /**
    * @param {string} queryParameterName - name of the query parameter uses to set initial selection of the combo box
@@ -85,6 +86,8 @@ define( function( require ) {
       }
     } );
   }
+
+  sun.register( 'DemosView', DemosView );
 
   return inherit( ScreenView, DemosView );
 } );

@@ -19,6 +19,7 @@ define( function( require ) {
   var Node = require( 'SCENERY/nodes/Node' );
   var OnOffSwitch = require( 'SUN/OnOffSwitch' );
   var Property = require( 'AXON/Property' );
+  var sun = require( 'SUN/sun' );
 
   /**
    * @param {Property.<*>} property stores the value of the current choice
@@ -108,6 +109,8 @@ define( function( require ) {
 
     thisNode.mutate( options );
   }
+
+  sun.register( 'ABSwitch', ABSwitch );
 
   return inherit( Node, ABSwitch );
 } );

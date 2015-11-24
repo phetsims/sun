@@ -12,8 +12,10 @@ define( function( require ) {
   'use strict';
 
   // modules
+  var ButtonListener = require( 'SCENERY/input/ButtonListener' );
   var Dimension2 = require( 'DOT/Dimension2' );
   var inherit = require( 'PHET_CORE/inherit' );
+  var Input = require( 'SCENERY/input/Input' );
   var LinearFunction = require( 'DOT/LinearFunction' );
   var Node = require( 'SCENERY/nodes/Node' );
   var Path = require( 'SCENERY/nodes/Path' );
@@ -21,8 +23,7 @@ define( function( require ) {
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var Shape = require( 'KITE/Shape' );
   var SimpleDragHandler = require( 'SCENERY/input/SimpleDragHandler' );
-  var ButtonListener = require( 'SCENERY/input/ButtonListener' );
-  var Input = require( 'SCENERY/input/Input' );
+  var sun = require( 'SUN/sun' );
   var Util = require( 'DOT/Util' );
 
   /**
@@ -218,6 +219,8 @@ define( function( require ) {
 
     options.tandem && options.tandem.addInstance( this );
   }
+
+  sun.register( 'HSlider', HSlider );
 
   inherit( Node, HSlider, {
 

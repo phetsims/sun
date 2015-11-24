@@ -31,11 +31,15 @@ define( function( require ) {
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var RoundMomentaryButton = require( 'SUN/buttons/RoundMomentaryButton' );
   var RectangularMomentaryButton = require( 'SUN/buttons/RectangularMomentaryButton' );
+  var sun = require( 'SUN/sun' );
 
   // constants
   var BUTTON_FONT = new Font( { size: 24 } );
   var BUTTON_CAPTION_FONT = new Font( { size: 20 } );
 
+  /**
+   * @constructor
+   */
   function ButtonsView() {
 
     ScreenView.call( this );
@@ -392,6 +396,8 @@ define( function( require ) {
     );
     this.addChild( changeButtonColorsButton );
   }
+
+  sun.register( 'ButtonsView', ButtonsView );
 
   return inherit( ScreenView, ButtonsView );
 } );

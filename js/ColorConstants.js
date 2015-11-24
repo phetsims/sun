@@ -9,8 +9,9 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var inherit = require( 'PHET_CORE/inherit' );
   var Color = require( 'SCENERY/util/Color' );
+  var inherit = require( 'PHET_CORE/inherit' );
+  var sun = require( 'SUN/sun' );
 
   /**
    *
@@ -18,6 +19,8 @@ define( function( require ) {
    */
   function ColorConstants() {
   }
+
+  sun.register( 'ColorConstants', ColorConstants );
 
   return inherit( Object, ColorConstants, {}, {
 

@@ -24,6 +24,7 @@ define( function( require ) {
   var Property = require( 'AXON/Property' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var Shape = require( 'KITE/Shape' );
+  var sun = require( 'SUN/sun' );
   var Util = require( 'DOT/Util' );
   var VSeparator = require( 'SUN/VSeparator' );
 
@@ -282,6 +283,8 @@ define( function( require ) {
 
     Node.call( this, options );
   }
+
+  sun.register( 'Carousel', Carousel );
 
   return inherit( Node, Carousel, {
 

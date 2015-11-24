@@ -9,13 +9,14 @@ define( function( require ) {
   'use strict';
 
   // modules
+  var AccessiblePeer = require( 'SCENERY/accessibility/AccessiblePeer' );
   var ButtonListener = require( 'SCENERY/input/ButtonListener' );
   var FontAwesomeNode = require( 'SUN/FontAwesomeNode' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Node = require( 'SCENERY/nodes/Node' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
+  var sun = require( 'SUN/sun' );
   var Text = require( 'SCENERY/nodes/Text' );
-  var AccessiblePeer = require( 'SCENERY/accessibility/AccessiblePeer' );
 
   // constants
   var DISABLED_OPACITY = 0.3;
@@ -150,6 +151,8 @@ define( function( require ) {
       }
     } );
   }
+
+  sun.register( 'CheckBox', CheckBox );
 
   inherit( Node, CheckBox, {
 

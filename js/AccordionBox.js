@@ -18,6 +18,7 @@ define( function( require ) {
   var Path = require( 'SCENERY/nodes/Path' );
   var Text = require( 'SCENERY/nodes/Text' );
   var Property = require( 'AXON/Property' );
+  var sun = require( 'SUN/sun' );
 
   /**
    * @param {Node} contentNode that will be shown or hidden as the accordion box is expanded/collapsed.
@@ -239,6 +240,8 @@ define( function( require ) {
 
     this.mutate( _.omit( options, 'cursor' ) );
   }
+
+  sun.register( 'AccordionBox', AccordionBox );
 
   return inherit( Node, AccordionBox, {
 

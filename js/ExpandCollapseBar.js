@@ -14,6 +14,7 @@ define( function( require ) {
   var Node = require( 'SCENERY/nodes/Node' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var Shape = require( 'KITE/Shape' );
+  var sun = require( 'SUN/sun' );
 
   /**
    * @param {Node} titleNode
@@ -63,6 +64,8 @@ define( function( require ) {
     button.right = barNode.right - options.xMargin;
     button.centerY = barNode.centerY;
   }
+
+  sun.register( 'ExpandCollapseBar', ExpandCollapseBar );
 
   return inherit( Node, ExpandCollapseBar );
 } );

@@ -15,6 +15,7 @@ define( function( require ) {
   var Node = require( 'SCENERY/nodes/Node' );
   var Path = require( 'SCENERY/nodes/Path' );
   var Shape = require( 'KITE/Shape' );
+  var sun = require( 'SUN/sun' );
 
   /**
    * @param {Property.<boolean>} expandedProperty
@@ -82,6 +83,8 @@ define( function( require ) {
 
     thisButton.mutate( options );
   }
+
+  sun.register( 'ExpandCollapseButton', ExpandCollapseButton );
 
   return inherit( Node, ExpandCollapseButton, {
 

@@ -26,6 +26,7 @@ define( function( require ) {
   var Range = require( 'DOT/Range' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var Text = require( 'SCENERY/nodes/Text' );
+  var sun = require( 'SUN/sun' );
 
   function ComponentsView() {
     DemosView.call( this, 'component', [
@@ -38,6 +39,8 @@ define( function( require ) {
       { label: 'PageControl', getNode: demoPageControl }
     ] );
   }
+
+  sun.register( 'ComponentsView', ComponentsView );
 
   // Creates a demo for Carousel
   var demoCarousel = function( layoutBounds ) {
