@@ -28,6 +28,7 @@ define( function( require ) {
   var RectangularPushButton = require( 'SUN/buttons/RectangularPushButton' );
   var Text = require( 'SCENERY/nodes/Text' );
   var sun = require( 'SUN/sun' );
+  var VBox = require( 'SCENERY/nodes/VBox' );
 
   function ComponentsView() {
     DemosView.call( this, 'component', [
@@ -70,17 +71,33 @@ define( function( require ) {
 
     // button that scrolls the horizontal carousel to a specific item
     var itemIndex = 4;
-    var hScrollToButton = new RectangularPushButton( {
+    var hScrollToItemButton = new RectangularPushButton( {
       content: new Text( 'scroll to item ' + itemIndex, { font: new PhetFont( 20 ) } ),
       listener: function() {
         hCarousel.scrollToItem( hItems[ itemIndex ] );
-      },
+      }
+    } );
+
+    // button that sets the horizontal carousel to a specific page number
+    var pageNumber = 0;
+    var hScrollToPageButton = new RectangularPushButton( {
+      content: new Text( 'scroll to page ' + pageNumber, { font: new PhetFont( 20 ) } ),
+      listener: function() {
+        hCarousel.pageNumberProperty.set( pageNumber );
+      }
+    } );
+
+    // group the buttons
+    var buttonGroup = new VBox( {
+      children: [ hScrollToItemButton, hScrollToPageButton ],
+      align: 'left',
+      spacing: 7,
       left: hCarousel.right + 30,
       centerY: hCarousel.centerY
     } );
 
     return new Node( {
-      children: [ vCarousel, hCarousel, hScrollToButton ],
+      children: [ vCarousel, hCarousel, buttonGroup ],
       center: layoutBounds.center
     } );
   };
