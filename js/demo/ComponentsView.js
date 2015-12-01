@@ -25,6 +25,7 @@ define( function( require ) {
   var Property = require( 'AXON/Property' );
   var Range = require( 'DOT/Range' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
+  var RectangularPushButton = require( 'SUN/buttons/RectangularPushButton' );
   var Text = require( 'SCENERY/nodes/Text' );
   var sun = require( 'SUN/sun' );
 
@@ -54,19 +55,32 @@ define( function( require ) {
       hItems.push( new Circle( 30, { fill: color, stroke: 'black' } ) );
     } );
 
+    // vertical carousel
     var vCarousel = new Carousel( vItems, {
       orientation: 'vertical',
       separatorsVisible: true
     } );
 
+    // horizontal carousel
     var hCarousel = new Carousel( hItems, {
       orientation: 'horizontal',
       centerX: vCarousel.centerX,
       top: vCarousel.bottom + 50
     } );
 
+    // button that scrolls the horizontal carousel to a specific item
+    var itemIndex = 4;
+    var hScrollToButton = new RectangularPushButton( {
+      content: new Text( 'scroll to item ' + itemIndex, { font: new PhetFont( 20 ) } ),
+      listener: function() {
+        hCarousel.scrollToItem( hItems[ itemIndex ] );
+      },
+      left: hCarousel.right + 30,
+      centerY: hCarousel.centerY
+    } );
+
     return new Node( {
-      children: [ vCarousel, hCarousel ],
+      children: [ vCarousel, hCarousel, hScrollToButton ],
       center: layoutBounds.center
     } );
   };
