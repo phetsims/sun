@@ -117,7 +117,7 @@ define( function( require ) {
      * @param {AccessibleInstance} accessibleInstance
      * @param {string} buttonValue - invisible auditory description for the button
      * @param {function} listener - the listener function called on press for this RectangularPushButton
-     * @public (accessibility)
+     * @public (a11y)
      */
     initialize: function( accessibleInstance, buttonValue, listener ) {
       /*

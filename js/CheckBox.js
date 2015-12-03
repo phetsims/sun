@@ -300,7 +300,7 @@ define( function( require ) {
      * @param {function} fire - listener function fired by this checkbox
      * @param {string} accessibleLabel - invisible string description for accessible technologies
      * @param {string} tabIndex
-     * @public (accessibility)
+     * @public (a11y)
      */
     initialize: function( accessibleInstance, property, fire, accessibleLabel, tabIndex ) {
       var trail = accessibleInstance.trail;
