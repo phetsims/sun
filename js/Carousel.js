@@ -291,15 +291,21 @@ define( function( require ) {
   return inherit( Node, Carousel, {
 
     /**
-     * Scrolls the carousel to the page that contains the specified item.
+     * Given an item's index, scroll the carousel to the page that contains that item.
+     * @param {number} itemIndex
+     */
+    scrollToItemIndex: function( itemIndex ) {
+      assert && assert( itemIndex > 0 && itemIndex < this.items.length, 'itemIndex out of range: ' + itemIndex );
+      this.pageNumberProperty.set( Math.floor( itemIndex / this.itemsPerPage ) );
+    },
+
+    /**
+     * Given an item, scroll the carousel to the page that contains that item.
      * @param {Node} item
-     * @throws an error if the item is not in the Carousel
      * @public
      */
     scrollToItem: function( item ) {
-      var itemIndex = this.items.indexOf( item );
-      assert && assert( itemIndex !== -1, 'item not in carousel' );
-      this.pageNumberProperty.set( Math.floor( itemIndex / this.itemsPerPage ) );
+      this.scrollToItemIndex( this.items.indexOf( item ) );
     },
 
     // @public - resets the carousel to its initial state
