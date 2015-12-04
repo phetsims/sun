@@ -31,10 +31,6 @@ define( function( require ) {
 
     var self = this;
 
-    // The value that corresponds to this button
-    // @public (together)
-    this.selectionValue = value;
-
     options = _.extend( {
       // The fill for the rectangle behind the radio buttons.  Default color is bluish color, as in the other button library.
       baseColor: ColorConstants.LIGHT_BLUE,
