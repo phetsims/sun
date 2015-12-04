@@ -32,7 +32,7 @@ define( function( require ) {
     var self = this;
 
     // The value that corresponds to this button
-    // @public for together
+    // @public (together)
     this.selectionValue = value;
 
     options = _.extend( {
@@ -68,7 +68,7 @@ define( function( require ) {
       accessibleDescription: ''
     }, options );
 
-    // @public for access like together
+    // @public (together)
     this.radioButtonGroupMemberModel = new RadioButtonGroupMemberModel( property, value );
 
     // @public for use in RadioButtonGroup for managing the labels

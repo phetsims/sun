@@ -25,7 +25,7 @@ define( function( require ) {
    */
   function RectangularToggleButton( valueA, valueB, property, options ) {
 
-    //@public, so it can be listened to by together
+    // @public (together)
     this.toggleButtonModel = new ToggleButtonModel( valueA, valueB, property, options );
     RectangularButtonView.call( this, this.toggleButtonModel, new ToggleButtonInteractionStateProperty( this.toggleButtonModel ), options );
   }
