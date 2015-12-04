@@ -241,9 +241,6 @@ define( function( require ) {
       }
     } );
 
-    // @private, solely for getRadioButtonGroupMember
-    this.buttons = buttons;
-
     // generate accessible peer for the parallel DOM
     this.accessibleContent = {
       createPeer: function( accessibleInstance ) {
@@ -272,23 +269,6 @@ define( function( require ) {
   sun.register( 'RadioButtonGroup', RadioButtonGroup );
 
   return inherit( LayoutBox, RadioButtonGroup, {
-
-    /**
-     * Find a button corresponding to a specific value.  Used for together interoperability.
-     * @param {Object} value - the value for the button
-     * @returns {RadioButtonGroupMember}
-     * @public
-     */
-    getRadioButtonGroupMember: function( value ) {
-      for ( var i = 0; i < this.buttons.length; i++ ) {
-        var button = this.buttons[ i ];
-        if ( button.selectionValue === value ) {
-          return button;
-        }
-      }
-      assert && assert( false, 'radio button group member not found for ' + value );
-      return null;
-    },
 
     // @public
     set enabled( value ) {
