@@ -275,7 +275,9 @@ define( function( require ) {
       pageNumberProperty.set( pageNumberProperty.get() - 1 );
     } );
 
-    // public fields
+    // fields
+    this.items = items; // @private
+    this.itemsPerPage = options.itemsPerPage; // @private
     this.numberOfPages = numberOfPages; // @public (read-only) {number} number of pages in the carousel
     this.pageNumberProperty = pageNumberProperty; // @public {Property<number>} page number that is currently visible
 
@@ -287,6 +289,24 @@ define( function( require ) {
   sun.register( 'Carousel', Carousel );
 
   return inherit( Node, Carousel, {
+
+    /**
+     * Given an item's index, scroll the carousel to the page that contains that item.
+     * @param {number} itemIndex
+     */
+    scrollToItemIndex: function( itemIndex ) {
+      assert && assert( itemIndex > 0 && itemIndex < this.items.length, 'itemIndex out of range: ' + itemIndex );
+      this.pageNumberProperty.set( Math.floor( itemIndex / this.itemsPerPage ) );
+    },
+
+    /**
+     * Given an item, scroll the carousel to the page that contains that item.
+     * @param {Node} item
+     * @public
+     */
+    scrollToItem: function( item ) {
+      this.scrollToItemIndex( this.items.indexOf( item ) );
+    },
 
     // @public - resets the carousel to its initial state
     reset: function() {
