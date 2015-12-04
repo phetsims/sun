@@ -1,12 +1,10 @@
 // Copyright 2014-2015, University of Colorado Boulder
 
 /**
- * A rectangular push button.  This is the file in which the appearance and
- * behavior are brought together.
+ * A rectangular push button.  This is the file in which the appearance and behavior are brought together.
  *
- * This class inherits from RectangularButtonView, which contains all of the
- * code that defines the button's appearance, and adds the button's behavior
- * by hooking up a button model.
+ * This class inherits from RectangularButtonView, which contains all of the code that defines the button's appearance,
+ * and adds the button's behavior by hooking up a button model.
  *
  * @author John Blanco
  */
