@@ -101,8 +101,6 @@ define( function( require ) {
     } );
   };
 
-  sun.register( 'defaultRadioButtonsAppearance', defaultRadioButtonsAppearance );
-
   /**
    * Strategy for changing the button content opacity for each of the different states:
    * mouseover, selected, deselected, and disabled
@@ -149,11 +147,13 @@ define( function( require ) {
     } );
   };
 
-  sun.register( 'contentAppearanceStrategy', contentAppearanceStrategy );
-
-  return {
+  var RadioButtonGroupAppearance = {
     defaultRadioButtonsAppearance: defaultRadioButtonsAppearance,
     contentAppearanceStrategy: contentAppearanceStrategy
   };
+
+  sun.register( 'RadioButtonGroupAppearance', RadioButtonGroupAppearance );
+
+  return RadioButtonGroupAppearance;
 
 } );
