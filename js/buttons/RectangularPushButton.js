@@ -52,11 +52,12 @@ define( function( require ) {
   function RectangularPushButton( options ) {
 
     options = _.extend( {
-      buttonValue: '', // invisible description representing this button for accessibility
+      accessibleDescription: '', // invisible description for a11y
+      accessibleLabel: '', // invisible label for a11y
       tandem: null,
       accessibleContent: {
         createPeer: function( accessibleInstance ) {
-          return new RectangularPushButtonAccessiblePeer( accessibleInstance, options.buttonValue, options.listener );
+          return new RectangularPushButtonAccessiblePeer( accessibleInstance, options.accessibleDescription, options.accessibleLabel, options.listener );
         }
       }
     }, options );
@@ -90,6 +91,25 @@ define( function( require ) {
     removeListener: function( listener ) {
       this.buttonModel.removeListener( listener );
     }
+  },
+
+  // statics 
+  {
+
+      /**
+       * Extend the accessible peer of RectangularPushButton to add custom accessibility attributes in subtypes.
+       * 
+       * @param {AccessibleInstance} accessibleInstance
+       * @param {string} buttonDescription
+       * @param {string} buttonLabel
+       * @param {function} listener
+       * @returns {ScreenViewAccessiblePeer}
+       * @constructor
+       * @public
+       */
+      RectangularPushButtonAccessiblePeer: function( accessibleInstance, buttonDescription, buttonLabel, listener ) {
+        return new RectangularPushButtonAccessiblePeer( accessibleInstance, buttonDescription, buttonLabel, listener );
+      }
   } );
 
   sun.register( 'RectangularPushButton', RectangularPushButton );
@@ -98,13 +118,14 @@ define( function( require ) {
    * Create the accessible peer which represents the RectangularPushButton in the parallel DOM.
    *
    * @param {AccessibleInstance} accessibleInstance
-   * @param {string} buttonValue - invisible auditory description for the button
+   * @param {string} buttonDescription - invisible auditory description for a11y
+   * @param {string} buttonLabel - invisible label for a11y
    * @param {function} listener - the listener function called on press for this RectangularPushButton
    * @constructor
    * @private
    */
-  function RectangularPushButtonAccessiblePeer( accessibleInstance, buttonValue, listener ) {
-    this.initialize( accessibleInstance, buttonValue, listener );
+  function RectangularPushButtonAccessiblePeer( accessibleInstance, buttonDescription, buttonLabel, listener ) {
+    this.initialize( accessibleInstance, buttonDescription, buttonLabel, listener );
   }
 
   sun.register( 'RectangularPushButton.RectangularPushButtonAccessiblePeer', RectangularPushButtonAccessiblePeer );
@@ -115,27 +136,39 @@ define( function( require ) {
      * Initialized dom elements and its attributes for the screen view in the parallel DOM.
      *
      * @param {AccessibleInstance} accessibleInstance
-     * @param {string} buttonValue - invisible auditory description for the button
+     * @param {string} buttonDescription - invisible auditory description for a11y
+     * @param {string} buttonLabel - invisible label for a11y
      * @param {function} listener - the listener function called on press for this RectangularPushButton
      * @public (a11y)
      */
-    initialize: function( accessibleInstance, buttonValue, listener ) {
+    initialize: function( accessibleInstance, buttonDescription, buttonLabel, listener ) {
+      var trail = accessibleInstance.trail;
+      var uniqueId = trail.getUniqueId();
+                    
       /*
        * The content should look like the following in the parallel DOM:
-       * <input value="buttonValue" type="reset" tabindex="0">
+       *  <button tabindex="0" aria-describedby="rectangular-button-description">buttonLabel</button>
+       *  <p id="rectangular-button-description">buttonDescription.</p>
        */
-      var domElement = document.createElement( 'input' );
-      domElement.type = 'reset';
-      domElement.tabIndex = '0';
-      domElement.className = 'ControlPanel';
-      domElement.value = buttonValue;
+      this.domElement = document.createElement( 'button' ); // @protected
+      this.domElement.innerText = buttonLabel;
+      this.domElement.tabIndex = '0';
+
+      // create the description element
+      var descriptionElement = document.createElement( 'p' );
+      descriptionElement.innerText = buttonDescription;
+      descriptionElement.id = 'rectangular-button-description-' + uniqueId;
+      this.domElement.setAttribute( 'aria-describedby', descriptionElement.id );
+
+      // structure the elements
+      this.domElement.appendChild( descriptionElement );
 
       // fire on click event
-      domElement.addEventListener( 'click', function() {
+      this.domElement.addEventListener( 'click', function() {
         listener();
       } );
 
-      this.initializeAccessiblePeer( accessibleInstance, domElement );
+      this.initializeAccessiblePeer( accessibleInstance, this.domElement );
 
     }
   } );
