@@ -23,88 +23,6 @@ define( function( require ) {
   var Vector2 = require( 'DOT/Vector2' );
 
   /**
-   * The button that is clicked to show the list of items.
-   * @param {Node} itemNode
-   * @param {Object} [options] object with optional properties
-   * @constructor
-   */
-  function ButtonNode( itemNode, options ) {
-    Node.call( this );
-
-    // up or down arrow
-    var arrow = new Path( null, { fill: 'black' } );
-    var arrowWidth = 0.5 * itemNode.height;
-    var arrowHeight = arrowWidth * Math.sqrt( 3 ) / 2; // height of equilateral triangle
-    if ( options.listPosition === 'above' ) {
-      arrow.shape = new Shape().moveTo( 0, arrowHeight ).lineTo( arrowWidth / 2, 0 ).lineTo( arrowWidth, arrowHeight ).close(); // up arrow
-    }
-    else {
-      arrow.shape = new Shape().moveTo( 0, 0 ).lineTo( arrowWidth, 0 ).lineTo( arrowWidth / 2, arrowHeight ).close(); // down arrow
-    }
-
-    // button background
-    var width = itemNode.width + ( 4 * options.buttonXMargin ) + arrow.width;
-    var height = itemNode.height + ( 2 * options.buttonYMargin );
-    var background = new Rectangle( 0, 0, width, height, options.buttonCornerRadius, options.buttonCornerRadius,
-      { fill: options.buttonFill, stroke: options.buttonStroke, lineWidth: options.buttonLineWidth } );
-
-    // vertical separator to left of arrow
-    var separator = new Line( 0, 0, 0, height, { stroke: 'black', lineWidth: options.buttonLineWidth } );
-
-    // itemNode's parent
-    var itemNodeParent = new Node();
-
-    // rendering order
-    this.addChild( background );
-    this.addChild( arrow );
-    this.addChild( separator );
-    this.addChild( itemNodeParent );
-
-    // @private
-    this.setItemNode = function( itemNode ) {
-      itemNodeParent.removeAllChildren();
-      itemNodeParent.addChild( itemNode );
-      itemNode.left = options.buttonXMargin;
-      itemNode.top = options.buttonYMargin;
-    };
-    this.setItemNode( itemNode );
-
-    // layout
-    separator.left = itemNode.right + options.buttonXMargin;
-    separator.top = background.top;
-    arrow.left = separator.right + options.buttonXMargin;
-    arrow.centerY = background.centerY;
-  }
-
-  sun.register( 'ComboBox.ButtonNode', ButtonNode );
-
-  inherit( Node, ButtonNode );
-
-  /**
-   * A wrapper around the combo box item, adds margins, etc.
-   * @param item
-   * @param {number} width
-   * @param {number} height
-   * @param {number} xMargin
-   * @param {Object} [options]
-   * @constructor
-   * @private
-   */
-  function ItemNode( item, width, height, xMargin, options ) {
-    var thisNode = this;
-    Rectangle.call( this, 0, 0, width, height );
-    this.item = item;
-    thisNode.addChild( item.node );
-    item.node.pickable = false; // hits will occur on the rectangle
-    item.node.x = xMargin;
-    item.node.centerY = height / 2;
-  }
-
-  sun.register( 'ComboBox.ItemNode', ItemNode );
-
-  inherit( Rectangle, ItemNode );
-
-  /**
    * @param {Array} items
    * @param {Property} property
    * @param {Node} listParent node that will be used as the list's parent, use this to ensuring that the list is in front of everything else
@@ -346,6 +264,88 @@ define( function( require ) {
   ComboBox.createItem = function( node, value, options ) {
     return { node: node, value: value, options: options };
   };
+
+  /**
+   * The button that is clicked to show the list of items.
+   * @param {Node} itemNode
+   * @param {Object} [options] object with optional properties
+   * @constructor
+   */
+  function ButtonNode( itemNode, options ) {
+    Node.call( this );
+
+    // up or down arrow
+    var arrow = new Path( null, { fill: 'black' } );
+    var arrowWidth = 0.5 * itemNode.height;
+    var arrowHeight = arrowWidth * Math.sqrt( 3 ) / 2; // height of equilateral triangle
+    if ( options.listPosition === 'above' ) {
+      arrow.shape = new Shape().moveTo( 0, arrowHeight ).lineTo( arrowWidth / 2, 0 ).lineTo( arrowWidth, arrowHeight ).close(); // up arrow
+    }
+    else {
+      arrow.shape = new Shape().moveTo( 0, 0 ).lineTo( arrowWidth, 0 ).lineTo( arrowWidth / 2, arrowHeight ).close(); // down arrow
+    }
+
+    // button background
+    var width = itemNode.width + ( 4 * options.buttonXMargin ) + arrow.width;
+    var height = itemNode.height + ( 2 * options.buttonYMargin );
+    var background = new Rectangle( 0, 0, width, height, options.buttonCornerRadius, options.buttonCornerRadius,
+      { fill: options.buttonFill, stroke: options.buttonStroke, lineWidth: options.buttonLineWidth } );
+
+    // vertical separator to left of arrow
+    var separator = new Line( 0, 0, 0, height, { stroke: 'black', lineWidth: options.buttonLineWidth } );
+
+    // itemNode's parent
+    var itemNodeParent = new Node();
+
+    // rendering order
+    this.addChild( background );
+    this.addChild( arrow );
+    this.addChild( separator );
+    this.addChild( itemNodeParent );
+
+    // @private
+    this.setItemNode = function( itemNode ) {
+      itemNodeParent.removeAllChildren();
+      itemNodeParent.addChild( itemNode );
+      itemNode.left = options.buttonXMargin;
+      itemNode.top = options.buttonYMargin;
+    };
+    this.setItemNode( itemNode );
+
+    // layout
+    separator.left = itemNode.right + options.buttonXMargin;
+    separator.top = background.top;
+    arrow.left = separator.right + options.buttonXMargin;
+    arrow.centerY = background.centerY;
+  }
+
+  sun.register( 'ComboBox.ButtonNode', ButtonNode );
+
+  inherit( Node, ButtonNode );
+
+  /**
+   * A wrapper around the combo box item, adds margins, etc.
+   * @param item
+   * @param {number} width
+   * @param {number} height
+   * @param {number} xMargin
+   * @param {Object} [options]
+   * @constructor
+   * @private
+   */
+  function ItemNode( item, width, height, xMargin, options ) {
+    var thisNode = this;
+    Rectangle.call( this, 0, 0, width, height );
+    this.item = item;
+    thisNode.addChild( item.node );
+    item.node.pickable = false; // hits will occur on the rectangle
+    item.node.x = xMargin;
+    item.node.centerY = height / 2;
+  }
+
+  sun.register( 'ComboBox.ItemNode', ItemNode );
+
+  inherit( Rectangle, ItemNode );
 
   return ComboBox;
 } );
