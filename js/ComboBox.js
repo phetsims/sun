@@ -324,6 +324,8 @@ define( function( require ) {
     };
   }
 
+  sun.register( 'ComboBox', ComboBox );
+
   inherit( Node, ComboBox, {
 
     // @public - Provide dispose() on the prototype for ease of subclassing.
