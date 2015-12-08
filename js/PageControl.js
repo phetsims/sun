@@ -14,6 +14,7 @@ define( function( require ) {
   var DownUpListener = require( 'SCENERY/input/DownUpListener' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Node = require( 'SCENERY/nodes/Node' );
+  var sun = require( 'SUN/sun' );
 
   /**
    * @param {number} numberOfPages - number of pages
@@ -107,6 +108,8 @@ define( function( require ) {
     Node.call( this, options );
   }
 
+  sun.register( 'PageControl', PageControl );
+
   /**
    * @param {number} pageNumber - page number that the dot is associated with
    * @param {number} radius
@@ -117,6 +120,8 @@ define( function( require ) {
     this.pageNumber = pageNumber; // @public (read-only)
     Circle.call( this, radius, options );
   }
+
+  sun.register( 'DotNode', DotNode );
 
   inherit( Circle, DotNode );
 

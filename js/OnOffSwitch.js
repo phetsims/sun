@@ -26,6 +26,7 @@ define( function( require ) {
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var Shape = require( 'KITE/Shape' );
   var SimpleDragHandler = require( 'SCENERY/input/SimpleDragHandler' );
+  var sun = require( 'SUN/sun' );
 
   /**
    * @param {Property.<boolean>} onProperty
@@ -159,6 +160,8 @@ define( function( require ) {
 
     thisNode.mutate( options );
   }
+
+  sun.register( 'OnOffSwitch', OnOffSwitch );
 
   return inherit( Node, OnOffSwitch, {
     /*

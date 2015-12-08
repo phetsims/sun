@@ -13,11 +13,13 @@ define( function( require ) {
   var Node = require( 'SCENERY/nodes/Node' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var inherit = require( 'PHET_CORE/inherit' );
+  var sun = require( 'SUN/sun' );
 
   /**
    * @param {Node} trueNode
    * @param {Node} falseNode
    * @param {Property} booleanProperty
+   * @param {Object} options
    * @constructor
    */
   function ToggleNode( trueNode, falseNode, booleanProperty, options ) {
@@ -48,6 +50,8 @@ define( function( require ) {
       this.mutate( options );
     }
   }
+
+  sun.register( 'ToggleNode', ToggleNode );
 
   return inherit( Node, ToggleNode );
 } );

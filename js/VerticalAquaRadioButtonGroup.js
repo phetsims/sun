@@ -6,11 +6,12 @@
 define( function( require ) {
   'use strict';
 
-  var Path = require( 'SCENERY/nodes/Path' );
   var AquaRadioButton = require( 'SUN/AquaRadioButton' );
-  var VBox = require( 'SCENERY/nodes/VBox' );
-  var Shape = require( 'KITE/Shape' );
   var inherit = require( 'PHET_CORE/inherit' );
+  var Path = require( 'SCENERY/nodes/Path' );
+  var Shape = require( 'KITE/Shape' );
+  var sun = require( 'SUN/sun' );
+  var VBox = require( 'SCENERY/nodes/VBox' );
 
   /**
    * Main constructor.
@@ -49,6 +50,8 @@ define( function( require ) {
     options.children = children;
     VBox.call( this, options );
   }
+
+  sun.register( 'VerticalAquaRadioButtonGroup', VerticalAquaRadioButtonGroup );
 
   inherit( VBox, VerticalAquaRadioButtonGroup );
 

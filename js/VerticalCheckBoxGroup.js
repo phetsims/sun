@@ -8,13 +8,14 @@
 define( function( require ) {
   'use strict';
 
-  var Path = require( 'SCENERY/nodes/Path' );
   var CheckBox = require( 'SUN/CheckBox' );
-  var VBox = require( 'SCENERY/nodes/VBox' );
   var HBox = require( 'SCENERY/nodes/HBox' );
+  var inherit = require( 'PHET_CORE/inherit' );
+  var Path = require( 'SCENERY/nodes/Path' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var Shape = require( 'KITE/Shape' );
-  var inherit = require( 'PHET_CORE/inherit' );
+  var sun = require( 'SUN/sun' );
+  var VBox = require( 'SCENERY/nodes/VBox' );
 
   /**
    * Main constructor.
@@ -72,6 +73,8 @@ define( function( require ) {
     options.children = children; //TODO bad form, if options.children was already set, then this will blow it away
     VBox.call( this, options );
   }
+
+  sun.register( 'VerticalCheckBoxGroup', VerticalCheckBoxGroup );
 
   return inherit( VBox, VerticalCheckBoxGroup );
 } );

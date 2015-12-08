@@ -15,6 +15,7 @@ define( function( require ) {
   var inherit = require( 'PHET_CORE/inherit' );
   var Node = require( 'SCENERY/nodes/Node' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
+  var sun = require( 'SUN/sun' );
 
   var DEFAULT_OPTIONS = {
     fill: 'white',
@@ -109,6 +110,8 @@ define( function( require ) {
     // Apply options after the layout is done, so that options that use the bounds will work properly.
     this.mutate( options );
   }
+
+  sun.register( 'Panel', Panel );
 
   inherit( Node, Panel, {
 

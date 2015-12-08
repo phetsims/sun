@@ -13,6 +13,7 @@ define( function( require ) {
   var inherit = require( 'PHET_CORE/inherit' );
   var Node = require( 'SCENERY/nodes/Node' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
+  var sun = require( 'SUN/sun' );
 
   /**
    * @param {Property} property
@@ -71,6 +72,8 @@ define( function( require ) {
       property.unlink( syncWithModel );
     };
   }
+
+  sun.register( 'RadioButton', RadioButton );
 
   return inherit( Node, RadioButton, {
 
