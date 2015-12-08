@@ -19,6 +19,7 @@ define( function( require ) {
   var Path = require( 'SCENERY/nodes/Path' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var Shape = require( 'KITE/Shape' );
+  var sun = require( 'SUN/sun' );
   var Vector2 = require( 'DOT/Vector2' );
 
   /**
