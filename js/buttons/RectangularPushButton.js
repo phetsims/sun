@@ -107,6 +107,8 @@ define( function( require ) {
     this.initialize( accessibleInstance, buttonValue, listener );
   }
 
+  sun.register( 'RectangularPushButton.RectangularPushButtonAccessiblePeer', RectangularPushButtonAccessiblePeer );
+
   inherit( AccessiblePeer, RectangularPushButtonAccessiblePeer, {
 
     /**

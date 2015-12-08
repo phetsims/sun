@@ -137,7 +137,6 @@ define( function( require ) {
    * @param {Property.<boolean>} interactionStateProperty
    * @param {Property.<Color>} baseColorProperty
    * @param {Object} [options]
-   * @constructor
    */
   RoundButtonView.threeDAppearanceStrategy = function( button, interactionStateProperty, baseColorProperty, options ) {
 
@@ -294,7 +293,6 @@ define( function( require ) {
    * @param {Property.<boolean>} interactionStateProperty
    * @param {Property.<Color>} baseColorProperty
    * @param {Object} [options]
-   * @constructor
    */
   RoundButtonView.flatAppearanceStrategy = function( button, interactionStateProperty, baseColorProperty, options ) {
 
@@ -384,7 +382,6 @@ define( function( require ) {
    *
    * @param {Node} content
    * @param {Property} interactionStateProperty
-   * @constructor
    */
   RoundButtonView.fadeContentWhenDisabled = function( content, interactionStateProperty ) {
     if ( content ) {

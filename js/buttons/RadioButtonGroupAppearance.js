@@ -25,7 +25,6 @@ define( function( require ) {
    * @param {Property} interactionStateProperty
    * @param {Property} baseColorProperty
    * @param {Object} [options]
-   * @constructor
    */
   var defaultRadioButtonsAppearance = function( button, interactionStateProperty, baseColorProperty, options ) {
 
@@ -108,7 +107,6 @@ define( function( require ) {
    * @param {Node} content
    * @param {Property} interactionStateProperty
    * @param {Object} [options]
-   * @constructor
    */
   var contentAppearanceStrategy = function( content, interactionStateProperty, options ) {
 

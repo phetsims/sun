@@ -140,7 +140,6 @@ define( function( require ) {
    * @param {Property.<Boolean>} interactionStateProperty
    * @param {Property.<Color>} baseColorProperty
    * @param {Object} [options]
-   * @constructor
    * @public
    */
   RectangularButtonView.threeDAppearanceStrategy = function( button, interactionStateProperty, baseColorProperty, options ) {
@@ -323,7 +322,6 @@ define( function( require ) {
    * @param {Property.<Color>} baseColorProperty
    * @param {Object} [options]
    * @constructor
-   * @public
    */
   RectangularButtonView.flatAppearanceStrategy = function( button, interactionStateProperty, baseColorProperty, options ) {
 
@@ -413,7 +411,6 @@ define( function( require ) {
    *
    * @param {Node} content
    * @param {Property} interactionStateProperty
-   * @constructor
    * @public
    */
   RectangularButtonView.fadeContentWhenDisabled = function( content, interactionStateProperty ) {

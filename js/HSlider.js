@@ -374,6 +374,8 @@ define( function( require ) {
     };
   }
 
+  sun.register( 'HSlider.ThumbNode', ThumbNode );
+
   inherit( Rectangle, ThumbNode, {
 
     // @public - Ensures that this object is eligible for GC.

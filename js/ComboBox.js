@@ -75,6 +75,8 @@ define( function( require ) {
     arrow.centerY = background.centerY;
   }
 
+  sun.register( 'ComboBox.ButtonNode', ButtonNode );
+
   inherit( Node, ButtonNode );
 
   /**
@@ -96,6 +98,8 @@ define( function( require ) {
     item.node.x = xMargin;
     item.node.centerY = height / 2;
   }
+
+  sun.register( 'ComboBox.ItemNode', ItemNode );
 
   inherit( Rectangle, ItemNode );
 
