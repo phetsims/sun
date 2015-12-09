@@ -95,22 +95,22 @@ define( function( require ) {
 
   // statics 
   {
-
-      /**
-       * Extend the accessible peer of RectangularPushButton to add custom accessibility attributes in subtypes.
-       * 
-       * @param {AccessibleInstance} accessibleInstance
-       * @param {string} buttonDescription
-       * @param {string} buttonLabel
-       * @param {function} listener
-       * @returns {ScreenViewAccessiblePeer}
-       * @constructor
-       * @public
-       */
-      RectangularPushButtonAccessiblePeer: function( accessibleInstance, buttonDescription, buttonLabel, listener ) {
-        return new RectangularPushButtonAccessiblePeer( accessibleInstance, buttonDescription, buttonLabel, listener );
-      }
-  } );
+    /**
+     * Extend the accessible peer of RectangularPushButton to add custom accessibility attributes in subtypes.
+     * 
+     * @param {AccessibleInstance} accessibleInstance
+     * @param {string} buttonDescription
+     * @param {string} buttonLabel
+     * @param {function} listener
+     * @returns {ScreenViewAccessiblePeer}
+     * @constructor
+     * @public
+     */
+    RectangularPushButtonAccessiblePeer: function( accessibleInstance, buttonDescription, buttonLabel, listener ) {
+      return new RectangularPushButtonAccessiblePeer( accessibleInstance, buttonDescription, buttonLabel, listener );
+    }
+  } 
+  );
 
   sun.register( 'RectangularPushButton', RectangularPushButton );
 
@@ -127,8 +127,6 @@ define( function( require ) {
   function RectangularPushButtonAccessiblePeer( accessibleInstance, buttonDescription, buttonLabel, listener ) {
     this.initialize( accessibleInstance, buttonDescription, buttonLabel, listener );
   }
-
-  sun.register( 'RectangularPushButton.RectangularPushButtonAccessiblePeer', RectangularPushButtonAccessiblePeer );
 
   inherit( AccessiblePeer, RectangularPushButtonAccessiblePeer, {
 
