@@ -121,7 +121,7 @@ define( function( require ) {
     Circle.call( this, radius, options );
   }
 
-  sun.register( 'DotNode', DotNode );
+  sun.register( 'PageControl.DotNode', DotNode );
 
   inherit( Circle, DotNode );
 
