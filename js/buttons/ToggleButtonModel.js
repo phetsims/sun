@@ -15,19 +15,19 @@ define( function( require ) {
   var sun = require( 'SUN/sun' );
 
   /**
-   * @param {Object} valueA one possible value for the toggle
-   * @param {Object} valueB the other value for the toggle
-   * @param {Property} valueProperty axon property that can be either valueA or valueB.
-   *        (Would have preferred to call this `property` but it would clash with the property function name.)
+   * @param {Object} valueOff - value when the button is in the off state
+   * @param {Object} valueOn - value when the button is in the on state
+   * @param {Property} valueProperty - axon Property that can be either valueOff or valueOn.
+   *        (Would have preferred to call this `property` but it would clash with PropertySet.property function.)
    * @constructor
    */
-  function ToggleButtonModel( valueA, valueB, valueProperty ) {
+  function ToggleButtonModel( valueOff, valueOn, valueProperty ) {
 
     var thisModel = this;
 
     // @private
-    this.valueA = valueA;
-    this.valueB = valueB;
+    this.valueOff = valueOff;
+    this.valueOn = valueOn;
     this.valueProperty = valueProperty;
 
     ButtonModel.call( this );
@@ -60,9 +60,9 @@ define( function( require ) {
 
     // @public
     toggle: function() {
-      assert && assert( this.valueProperty.value === this.valueA || this.valueProperty.value === this.valueB );
+      assert && assert( this.valueProperty.value === this.valueOff || this.valueProperty.value === this.valueOn );
       var oldValue = this.valueProperty.value;
-      var newValue = this.valueProperty.value === this.valueA ? this.valueB : this.valueA;
+      var newValue = this.valueProperty.value === this.valueOff ? this.valueOn : this.valueOff;
       this.trigger2( 'startedCallbacksForToggled', oldValue, newValue );
       this.valueProperty.value = newValue;
       this.trigger0( 'endedCallbacksForToggled' );

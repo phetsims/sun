@@ -1,7 +1,7 @@
 // Copyright 2014-2015, University of Colorado Boulder
 
 /**
- * A rectangular toggle button that switches the value of a property that can take on valueA or valueB.
+ * A rectangular toggle button that switches the value of a property between 2 values.
  *
  * @author John Blanco
  * @author Sam Reid
@@ -17,16 +17,16 @@ define( function( require ) {
   var ToggleButtonModel = require( 'SUN/buttons/ToggleButtonModel' );
 
   /**
-   * @param {Object} valueA one possible value for the toggle
-   * @param {Object} valueB the other value for the toggle
-   * @param {Property} property axon property that can be either valueA or valueB.
+   * @param {Object} valueOff - value when the button is in the off state
+   * @param {Object} valueOn - value when the button is in the on state
+   * @param {Property} property - axon Property that can be either valueOff or valueOn
    * @param {Object} [options]
    * @constructor
    */
-  function RectangularToggleButton( valueA, valueB, property, options ) {
+  function RectangularToggleButton( valueOff, valueOn, property, options ) {
 
     // @public (together)
-    this.toggleButtonModel = new ToggleButtonModel( valueA, valueB, property, options );
+    this.toggleButtonModel = new ToggleButtonModel( valueOff, valueOn, property, options );
     RectangularButtonView.call( this, this.toggleButtonModel, new ToggleButtonInteractionStateProperty( this.toggleButtonModel ), options );
   }
 
