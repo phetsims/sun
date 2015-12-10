@@ -17,17 +17,17 @@ define( function( require ) {
   var sun = require( 'SUN/sun' );
 
   /**
-   * @param {Object} upValue - value when the button is up
-   * @param {Object} downValue - value when the button is down
+   * @param {Object} valueOff - value when the button is in the off state
+   * @param {Object} valueOn - value when the button is in the on state
    * @param {Property} property
    * @param {Object} [options] - see sun.MomentaryButtonModel, sun.RoundButtonView, scenery.Node
    * @constructor
    */
-  function RoundMomentaryButton( upValue, downValue, property, options ) {
+  function RoundMomentaryButton( valueOff, valueOn, property, options ) {
 
     var self = this;
     options = _.extend( { tandem: null }, options );
-    this.buttonModel = new MomentaryButtonModel( upValue, downValue, property );
+    this.buttonModel = new MomentaryButtonModel( valueOff, valueOn, property );
     RoundButtonView.call( this, this.buttonModel, new MomentaryButtonInteractionStateProperty( this.buttonModel ), options );
 
     options.tandem && options.tandem.addInstance( this );
