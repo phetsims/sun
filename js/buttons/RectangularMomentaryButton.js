@@ -20,7 +20,7 @@ define( function( require ) {
    * @param {Object} valueOff - value when the button is in the off state
    * @param {Object} valueOn - value when the button is in the on state
    * @param {Property} property
-   * @param {Object} [options] - see sun.MomentaryButtonModel, sun.RoundButtonView, scenery.Node
+   * @param {Object} [options]
    * @constructor
    */
   function RectangularMomentaryButton( valueOff, valueOn, property, options ) {
