@@ -16,19 +16,19 @@ define( function( require ) {
   /**
    * @param {Object} valueOff - value when the button is in the off state
    * @param {Object} valueOn - value when the button is in the on state
-   * @param {Property} property
+   * @param {Property} valueProperty
    * @constructor
    */
-  function MomentaryButtonModel( valueOff, valueOn, property ) {
+  function MomentaryButtonModel( valueOff, valueOn, valueProperty ) {
 
     var self = this;
     ButtonModel.call( self );
 
     // sync with the property, do this before wiring up to supertype properties
-    var onObserver = function( on ) {
-      self.down = on;
+    var onObserver = function( value ) {
+      self.down = ( value === valueOn );
     };
-    property.link( onObserver );
+    valueProperty.link( onObserver );
 
     var downListener = function( down ) {
 
@@ -36,14 +36,14 @@ define( function( require ) {
       if ( down ) {
         if ( self.enabled ) {
           self.trigger0( 'startedCallbacksForPressed' );
-          property.set( valueOn );
+          valueProperty.set( valueOn );
           self.trigger0( 'endedCallbacksForPressed' );
         }
       }
       else {
         // turn off when released
         self.trigger0( 'startedCallbacksForReleased' );
-        property.set( valueOff );
+        valueProperty.set( valueOff );
         self.trigger0( 'endedCallbacksForReleased' );
       }
     };
@@ -52,7 +52,7 @@ define( function( require ) {
     // turn off when disabled
     var enabledListener = function() {
       self.trigger0( 'startedCallbacksForReleasedByDisable' );
-      property.set( valueOff );
+      valueProperty.set( valueOff );
       self.trigger0( 'endedCallbacksForReleasedByDisable' );
     };
     this.property( 'enabled' ).onValue( false, enabledListener );
@@ -61,7 +61,7 @@ define( function( require ) {
     this.disposeMomentaryButtonModel = function() {
       self.property( 'enabled' ).off( enabledListener );
       self.downProperty.unlink( downListener );
-      property.unlink( onObserver );
+      valueProperty.unlink( onObserver );
     };
   }
 
