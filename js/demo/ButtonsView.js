@@ -313,7 +313,7 @@ define( function( require ) {
     // round
     var roundOnProperty = new Property( false );
     roundOnProperty.lazyLink( function( on ) { message( 'RoundMomentaryButton on=' + on ); } );
-    var roundMomentaryButton = new RoundMomentaryButton( roundOnProperty, {
+    var roundMomentaryButton = new RoundMomentaryButton( false, true, roundOnProperty, {
       baseColor: '#D76958',
       left: roundStickyToggleButton.right+ 10,
       centerY: roundStickyToggleButton.centerY
@@ -322,7 +322,7 @@ define( function( require ) {
     // rectangular
     var rectangularOnProperty = new Property( false );
     rectangularOnProperty.lazyLink( function( on ) { message( 'RectangularMomentaryButton on=' + on ); } );
-    var rectangularMomentaryButton = new RectangularMomentaryButton( rectangularOnProperty, {
+    var rectangularMomentaryButton = new RectangularMomentaryButton( false, true, rectangularOnProperty, {
       baseColor: '#724C35',
       minWidth: 50,
       minHeight: 40,

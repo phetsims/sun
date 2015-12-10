@@ -17,12 +17,14 @@ define( function( require ) {
   var sun = require( 'SUN/sun' );
 
   /**
-   * @param {Property.<boolean>} onProperty - whether the button is on or off
-   * @param {Object} [options] - see sun.MomentaryButtonModel, sun.RectangularButtonView, scenery.Node
+   * @param {Object} upValue - value when the button is up
+   * @param {Object} downValue - value when the button is down
+   * @param {Property} property
+   * @param {Object} [options] - see sun.MomentaryButtonModel, sun.RoundButtonView, scenery.Node
    * @constructor
    */
-  function RectangularMomentaryButton( onProperty, options ) {
-    var buttonModel = new MomentaryButtonModel( onProperty );
+  function RectangularMomentaryButton( upValue, downValue, property, options ) {
+    var buttonModel = new MomentaryButtonModel( upValue, downValue, property );
     RectangularButtonView.call( this, buttonModel, new MomentaryButtonInteractionStateProperty( buttonModel ), options );
   }
 

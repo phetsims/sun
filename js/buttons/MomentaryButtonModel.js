@@ -14,10 +14,12 @@ define( function( require ) {
   var sun = require( 'SUN/sun' );
 
   /**
-   * @param {Property.<boolean>} onProperty - is the momentary button on or off?
+   * @param {Object} upValue - value when the button is up
+   * @param {Object} downValue - value when the button is down
+   * @param {Property} property
    * @constructor
    */
-  function MomentaryButtonModel( onProperty ) {
+  function MomentaryButtonModel( upValue, downValue, property ) {
 
     var self = this;
     ButtonModel.call( self );
@@ -26,7 +28,7 @@ define( function( require ) {
     var onObserver = function( on ) {
       self.down = on;
     };
-    onProperty.link( onObserver );
+    property.link( onObserver );
 
     var downListener = function( down ) {
 
@@ -34,14 +36,14 @@ define( function( require ) {
       if ( down ) {
         if ( self.enabled ) {
           self.trigger0( 'startedCallbacksForPressed' );
-          onProperty.set( true );
+          property.set( downValue );
           self.trigger0( 'endedCallbacksForPressed' );
         }
       }
       else {
         // turn off when released
         self.trigger0( 'startedCallbacksForReleased' );
-        onProperty.set( false );
+        property.set( upValue );
         self.trigger0( 'endedCallbacksForReleased' );
       }
     };
@@ -50,7 +52,7 @@ define( function( require ) {
     // turn off when disabled
     var enabledListener = function() {
       self.trigger0( 'startedCallbacksForReleasedByDisable' );
-      onProperty.set( false );
+      property.set( upValue );
       self.trigger0( 'endedCallbacksForReleasedByDisable' );
     };
     this.property( 'enabled' ).onValue( false, enabledListener );
@@ -59,7 +61,7 @@ define( function( require ) {
     this.disposeMomentaryButtonModel = function() {
       self.property( 'enabled' ).off( enabledListener );
       self.downProperty.unlink( downListener );
-      onProperty.unlink( onObserver );
+      property.unlink( onObserver );
     };
   }
 
