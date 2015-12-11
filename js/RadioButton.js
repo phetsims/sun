@@ -14,6 +14,7 @@ define( function( require ) {
   var Node = require( 'SCENERY/nodes/Node' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var sun = require( 'SUN/sun' );
+  var AccessiblePeer = require( 'SCENERY/accessibility/AccessiblePeer' );
 
   /**
    * @param {Property} property
@@ -29,7 +30,8 @@ define( function( require ) {
       cursor: 'pointer',
       focusable: true,
       tandem: null,
-      enabled: true
+      enabled: true,
+      accessibleLabel: '' // invisible label for the radio button, for a11y
     }, options );
 
     var thisNode = this;
@@ -53,12 +55,13 @@ define( function( require ) {
     property.link( syncWithModel );
 
     // set property value on fire
+    var fire = function() {
+      thisNode.trigger1( 'startedCallbacksForFired', value );
+      property.set( value );
+      thisNode.trigger0( 'endedCallbacksForFired' );
+    };
     var buttonListener = new ButtonListener( {
-      fire: function() {
-        thisNode.trigger1( 'startedCallbacksForFired', value );
-        property.set( value );
-        thisNode.trigger0( 'endedCallbacksForFired' );
-      }
+      fire: fire
     } );
     thisNode.addInputListener( buttonListener );
 
@@ -70,6 +73,38 @@ define( function( require ) {
       options.tandem && options.tandem.removeInstance( this );
       thisNode.removeInputListener( buttonListener );
       property.unlink( syncWithModel );
+    };
+
+    // outfit a11y
+    this.accessibleContent = {
+      createPeer: function( accessibleInstance ) {
+        var trail = accessibleInstance.trail;
+        var uniqueId = trail.getUniqueId();
+        var parentId = accessibleInstance.parent.id;
+
+        // The element in the parallel DOM needs to look like this:
+        // <input type="radio" role="radio" name="parentId" id="radio-button-id" aria-label="accessibleLabel">
+
+        // create the dom element as an input of type radio
+        var domElement = document.createElement( 'input' );
+        domElement.id = 'radio-button-' + uniqueId;
+        domElement.setAttribute( 'type', 'radio' );
+        domElement.setAttribute( 'role', 'radio' );
+        domElement.setAttribute( 'name', parentId ); // required to distinguish from other groups
+        domElement.setAttribute( 'aria-label', options.accessibleLabel );
+
+        // listen for keyboard events and fire model
+        domElement.addEventListener( 'click', function() {
+          fire();
+        } );
+      
+        // link the 'aria-checked' attribute to the property value       
+        property.link( function( newValue ) {
+          domElement.setAttribute( 'aria-checked', newValue === value );
+        } );
+
+        return new AccessiblePeer( accessibleInstance, domElement );
+      }
     };
   }
 

@@ -61,7 +61,7 @@ define( function( require ) {
       contentAppearanceStrategy: RadioButtonGroupAppearance.contentAppearanceStrategy,
 
       // invisible label for the radio button group member for accessibility
-      accessibleDescription: ''
+      accessibleLabel: ''
     }, options );
 
     // @public (together)
@@ -76,38 +76,35 @@ define( function( require ) {
     this.radioButtonGroupMemberTandem = options.tandem;
     this.radioButtonGroupMemberTandem && this.radioButtonGroupMemberTandem.addInstance( this );
 
-    // outfit with accessible content
+    // outfit a11y
     this.accessibleContent = {
       createPeer: function( accessibleInstance ) {
-
-        /*
-         Elements in the parallel DOM should look like:
-         <input type="radio" value="value" id="radioButtonGroupMember-trailID">
-         <label for="radioButtonGroupMember-trailID">Some invisible accessibility description</label>
-         */
-
         var trail = accessibleInstance.trail;
+        var uniqueId = trail.getUniqueId();
+        var parentId = accessibleInstance.parent.id;
 
-        // create an input element for the content
-        var inputElement = document.createElement( 'input' );
-        inputElement.setAttribute( 'type', 'radio' );
-        inputElement.setAttribute( 'value', value );
-        inputElement.id = 'radioButtonGroupMember-' + trail.getUniqueId();
+        // The element in the parallel DOM needs to look like this:
+        //   <input type="radio" role="radio" name="parentId" id="radio-button-id" aria-label="accessibleLabel">
 
-        // create a label element for the input
-        var labelElement = document.createElement( 'label' );
-        labelElement.setAttribute( 'for', inputElement.id );
-        labelElement.innerHTML = options.accessibleDescription;
-
-        // structure the input and its label
-        inputElement.appendChild( labelElement );
+        // the focusable DOM element needs to be the input
+        var domElement = document.createElement( 'input' );
+        domElement.id = 'radio-button-' + uniqueId;
+        domElement.setAttribute( 'type', 'radio' );
+        domElement.setAttribute( 'role', 'radio' );
+        domElement.setAttribute( 'name', parentId );
+        domElement.setAttribute( 'aria-label', options.accessibleLabel );
 
         // listen for keyboard events and fire model
-        inputElement.addEventListener( 'click', function() {
+        domElement.addEventListener( 'click', function() {
           self.radioButtonGroupMemberModel.fire();
         } );
 
-        return new AccessiblePeer( accessibleInstance, inputElement );
+        // link the aria-checked attribute to the property value
+        property.link( function( newValue ) {
+          domElement.setAttribute( 'aria-checked', newValue === value );
+        } );
+
+        return new AccessiblePeer( accessibleInstance, domElement );
       }
     };
   }

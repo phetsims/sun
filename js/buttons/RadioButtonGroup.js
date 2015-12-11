@@ -153,7 +153,7 @@ define( function( require ) {
           xMargin: xMargin,
           yMargin: yMargin,
           tandem: contentArray[ i ].tandem,
-          accessibleDescription: contentArray[ i ].accessibleDescription
+          accessibleLabel: contentArray[ i ].accessibleLabel
         }, buttonOptions ) );
 
       // ensure the buttons don't resize when selected vs unselected by adding a rectangle with the max size
@@ -244,17 +244,23 @@ define( function( require ) {
     // generate accessible peer for the parallel DOM
     this.accessibleContent = {
       createPeer: function( accessibleInstance ) {
+        var trail = accessibleInstance.trail;
+        var uniqueId = trail.getUniqueId();
 
         /*
          We want the element of the parallel DOM to look like
-         <fieldset>
-         <legend>Descriptor of the overall group of radio buttons</legend>
+         <fieldset id="radio-button-group" role="radiogroup" aria-describedby="legend-id group-description">
+           <legend>Translatable legend text</legend>
          ... (radio inputs defined in RadioButtonGroupMember)
+         <p id="group-description">Translatable description of the entire group.</p>
          </fieldset>
          */
 
         // create the fieldset holding all radio buttons
         var domElement = document.createElement( 'fieldset' );
+        domElement.id = 'radio-button-group-' + uniqueId;
+        domElement.setAttribute( 'role', 'radiogroup' );
+
         var legendElement = document.createElement( 'legend' );
         legendElement.innerHTML = options.accessibleLegendDescription;
 
