@@ -80,7 +80,7 @@ define( function( require ) {
         // create the description element
         var descriptionElement = document.createElement( 'p' );
         descriptionElement.id = 'group-description-' + uniqueId;
-        descriptionElement.innerText = options.accessibleDescription;
+        descriptionElement.textContent = options.accessibleDescription;
 
         // aria-describedby can have two id's
         var descriptionId = legendElement.id + ' ' + descriptionElement.id;

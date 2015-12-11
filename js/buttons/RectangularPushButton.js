@@ -150,7 +150,6 @@ define( function( require ) {
        */
       this.domElement = document.createElement( 'button' ); // @protected
       this.domElement.innerText = buttonLabel;
-      this.domElement.tabIndex = '0';
 
       // create the description element
       var descriptionElement = document.createElement( 'p' );
