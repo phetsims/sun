@@ -143,29 +143,24 @@ define( function( require ) {
       var trail = accessibleInstance.trail;
       var uniqueId = trail.getUniqueId();
                     
-      /*
-       * The content should look like the following in the parallel DOM:
-       *  <button tabindex="0" aria-describedby="rectangular-button-description">buttonLabel</button>
-       *  <p id="rectangular-button-description">buttonDescription.</p>
-       */
-      this.domElement = document.createElement( 'button' ); // @protected
-      this.domElement.innerText = buttonLabel;
+      // will look like <input value="Reset All" type="reset" tabindex="0">
+      var domElement = document.createElement( 'input' );
+      domElement.setAttribute( 'type', 'button' );
+      domElement.value = buttonLabel;
 
-      // create the description element
+      // create an element that describes the button with aria-describedby
       var descriptionElement = document.createElement( 'p' );
-      descriptionElement.innerText = buttonDescription;
-      descriptionElement.id = 'rectangular-button-description-' + uniqueId;
-      this.domElement.setAttribute( 'aria-describedby', descriptionElement.id );
-
-      // structure the elements
-      this.domElement.appendChild( descriptionElement );
+      descriptionElement.textContent = buttonDescription;
+      descriptionElement.id = 'reset-all-description-' + uniqueId;
+      domElement.appendChild( descriptionElement );
+      domElement.setAttribute( 'aria-describedby', descriptionElement.id );
 
       // fire on click event
-      this.domElement.addEventListener( 'click', function() {
+      domElement.addEventListener( 'click', function() {
         listener();
       } );
 
-      this.initializeAccessiblePeer( accessibleInstance, this.domElement );
+      this.initializeAccessiblePeer( accessibleInstance, domElement );
 
     }
   } );
