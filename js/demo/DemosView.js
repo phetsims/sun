@@ -17,16 +17,22 @@ define( function( require ) {
   var ScreenView = require( 'JOIST/ScreenView' );
   var Text = require( 'SCENERY/nodes/Text' );
   var sun = require( 'SUN/sun' );
+  var Vector2 = require( 'DOT/Vector2' );
 
   /**
    * @param {string} queryParameterName - name of the query parameter uses to set initial selection of the combo box
    * @param {Object[]} demos - each demo has a {string} label that appears in the combo box, and {function} getNode field,
    *                           where getNode takes a {Bounds2} layoutBounds argument and returns a {Node}
+   * @param {Object} [options]
    * @constructor
    */
-  function DemosView( queryParameterName, demos ) {
+  function DemosView( queryParameterName, demos, options ) {
 
-    ScreenView.call( this );
+    options = _.extend( {
+      comboBoxLocation: new Vector2( 20, 20 ) // {Vector2} location of ComboBox used to select a demo
+    }, options );
+
+    ScreenView.call( this, options );
 
     var layoutBounds = this.layoutBounds;
 
@@ -60,8 +66,8 @@ define( function( require ) {
     var selectedDemoProperty = new Property( selectedDemo );
     var comboBox = new ComboBox( comboBoxItems, selectedDemoProperty, listParent, {
       buttonFill: 'rgb( 218, 236, 255 )',
-      top: 20,
-      left: 20
+      top: options.comboBoxLocation.x,
+      left: options.comboBoxLocation.y
     } );
     this.addChild( comboBox );
 
