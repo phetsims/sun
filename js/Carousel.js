@@ -295,7 +295,7 @@ define( function( require ) {
      * @param {number} itemIndex
      */
     scrollToItemIndex: function( itemIndex ) {
-      assert && assert( itemIndex > 0 && itemIndex < this.items.length, 'itemIndex out of range: ' + itemIndex );
+      assert && assert( itemIndex >= 0 && itemIndex < this.items.length, 'itemIndex out of range: ' + itemIndex );
       this.pageNumberProperty.set( Math.floor( itemIndex / this.itemsPerPage ) );
     },
 
