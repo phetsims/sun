@@ -79,7 +79,7 @@ define( function( require ) {
     toggle: function() {
       assert && assert( this.valueProperty.value === this.valueUp || this.valueProperty.value === this.valueDown );
       var newValue = this.valueProperty.value === this.valueUp ? this.valueDown : this.valueUp;
-      this.trigger1( 'startedCallbacksForToggled', newValue );
+      this.trigger2( 'startedCallbacksForToggled', this.valueProperty.value, newValue );
       this.valueProperty.value = newValue;
       this.trigger0( 'endedCallbacksForToggled' );
     }
