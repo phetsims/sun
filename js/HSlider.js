@@ -83,35 +83,46 @@ define( function( require ) {
     // click in the track to change the value, continue dragging if desired
     var trackHandler = new SimpleDragHandler( {
 
-      handleTrackEvent: function( event, trail ) {
+      /**
+       *
+       * @param event
+       * @param trail
+       * @param function [callback] - optional callback with the new value, for togetherEvents
+       */
+      handleTrackEvent: function( event, trail, callback ) {
         if ( thisSlider.enabledProperty.get() ) {
           var transform = trail.subtrailTo( thisSlider ).getTransform();
           var x = transform.inversePosition2( event.pointer.point ).x;
           var value = thisSlider.valueToPosition.inverse( x );
-          valueProperty.set( options.constrainValue( value ) );
+          var newValue = options.constrainValue( value );
+          callback && callback( newValue );
+          valueProperty.set( newValue );
         }
       },
 
       start: function( event, trail ) {
         if ( thisSlider.enabledProperty.get() ) {
-          thisSlider.trigger2( 'startedCallbacksForDragStarted', valueProperty.get(), 'track' );
+          thisSlider.trigger1( 'startedCallbacksForTrackDragStarted', valueProperty.get() );
           options.startDrag();
           this.handleTrackEvent( event, trail );
-          thisSlider.trigger0( 'endedCallbacksForDragStarted' );
+          thisSlider.trigger0( 'endedCallbacksForTrackDragStarted' );
         }
       },
 
       drag: function( event, trail ) {
-        thisSlider.trigger1( 'startedCallbacksForDragged', valueProperty.get() );
-        this.handleTrackEvent( event, trail );
-        thisSlider.trigger0( 'endedCallbacksForDragged' );
+
+        // Reuse the same handleTrackEvent but make sure the startedCallbacks call is made before the value changes
+        this.handleTrackEvent( event, trail, function( newValue ) {
+          thisSlider.trigger1( 'startedCallbacksForTrackDragged', newValue );
+        } );
+        thisSlider.trigger0( 'endedCallbacksForTrackDragged' );
       },
 
       end: function() {
         if ( thisSlider.enabledProperty.get() ) {
-          thisSlider.trigger1( 'startedCallbacksForDragEnded', valueProperty.get() );
+          thisSlider.trigger1( 'startedCallbacksForTrackDragEnded', valueProperty.get() );
           options.endDrag();
-          thisSlider.trigger0( 'endedCallbacksForDragEnded' );
+          thisSlider.trigger0( 'endedCallbacksForTrackDragEnded' );
         }
       }
     } );
@@ -263,8 +274,8 @@ define( function( require ) {
       var labelX = this.valueToPosition( value );
       // ticks
       var tick = new Path( new Shape()
-          .moveTo( labelX, this.track.top )
-          .lineTo( labelX, this.track.top - length ),
+        .moveTo( labelX, this.track.top )
+        .lineTo( labelX, this.track.top - length ),
         { stroke: stroke, lineWidth: lineWidth } );
       parent.addChild( tick );
       // label
@@ -348,8 +359,8 @@ define( function( require ) {
     // vertical line down the center
     var centerLineYMargin = 3;
     thisNode.addChild( new Path( Shape.lineSegment(
-        0, -( options.thumbSize.height / 2 ) + centerLineYMargin,
-        0, ( options.thumbSize.height / 2 ) - centerLineYMargin ),
+      0, -( options.thumbSize.height / 2 ) + centerLineYMargin,
+      0, ( options.thumbSize.height / 2 ) - centerLineYMargin ),
       { stroke: options.thumbCenterLineStroke } ) );
 
     // highlight thumb on pointer over
