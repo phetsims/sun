@@ -278,11 +278,11 @@ define( function( require ) {
 
     // Demonstrate using arbitrary values for toggle button.  Wrap in extra
     // quotes so it is clear that it is a string in the debugging UI.
-    var roundToggleButtonProperty = new Property( '"off"' );
+    var roundToggleButtonProperty = new Property( 'off' );
     roundToggleButtonProperty.lazyLink( function( value ) {
       message( 'Round sticky toggle button state changed to: ' + value );
     } );
-    var roundStickyToggleButton = new RoundStickyToggleButton( '"off"', '"on"', roundToggleButtonProperty, {
+    var roundStickyToggleButton = new RoundStickyToggleButton( 'off', 'on', roundToggleButtonProperty, {
       baseColor: new Color( 255, 0, 0 )
     } );
 
