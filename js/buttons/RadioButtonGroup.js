@@ -277,6 +277,11 @@ define( function( require ) {
   return inherit( LayoutBox, RadioButtonGroup, {
 
     // @public
+    dispose: function() {
+      //TODO implement this, see sun#212
+    },
+
+    // @public
     set enabled( value ) {
       assert && assert( typeof value === 'boolean', 'RadioButtonGroup.enabled must be a boolean value' );
       this.enabledProperty.set( value );

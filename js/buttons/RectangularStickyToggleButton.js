@@ -31,5 +31,11 @@ define( function( require ) {
 
   sun.register( 'RectangularStickyToggleButton', RectangularStickyToggleButton );
 
-  return inherit( RectangularButtonView, RectangularStickyToggleButton );
+  return inherit( RectangularButtonView, RectangularStickyToggleButton, {
+
+    // @public
+    dispose: function() {
+      //TODO implement this, see sun#212
+    }
+  } );
 } );

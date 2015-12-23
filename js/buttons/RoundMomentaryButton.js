@@ -34,7 +34,7 @@ define( function( require ) {
 
     // @private
     this.disposeRoundMomentaryButton = function() {
-      self.buttonModel.dispose();
+      self.buttonModel.dispose(); //TODO fails with assertions enable, see sun#212
       options.tandem && options.tandem.removeInstance( this );
     };
   }

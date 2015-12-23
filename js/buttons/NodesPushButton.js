@@ -96,6 +96,11 @@ define( function( require ) {
 
   return inherit( Node, NodesPushButton, {
 
+    // @public
+    dispose: function() {
+      //TODO implement this, see sun#212
+    },
+
     // @public - Adds a {function} listener.
     addListener: function( listener ) { this.buttonModel.addListener( listener ); },
 

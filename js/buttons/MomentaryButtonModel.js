@@ -71,7 +71,7 @@ define( function( require ) {
 
     // @public - Ensures that this model is eligible for GC.
     dispose: function() {
-      ButtonModel.prototype.dispose.call( this );
+      ButtonModel.prototype.dispose.call( this ); //TODO fails with assertions enabled, see sun#212
       this.disposeMomentaryButtonModel();
     }
   } );

@@ -34,7 +34,13 @@ define( function( require ) {
     this.roundStickyToggleButtonTandem && this.roundStickyToggleButtonTandem.addInstance( this );
   }
 
-  sun.register( 'RoundStickyToggleButton', RoundStickyToggleButton );
+  sun.register( 'RoundStickyToggleButton', RoundStickyToggleButton, {
+
+    // @public
+    dispose: function() {
+      //TODO implement this, see sun#212
+    }
+  } );
 
   return inherit( RoundButtonView, RoundStickyToggleButton );
 } );

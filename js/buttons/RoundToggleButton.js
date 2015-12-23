@@ -49,7 +49,7 @@ define( function( require ) {
 
     // @public
     dispose: function() {
-      this.disposeRoundToggleButton();
+      this.disposeRoundToggleButton(); //TODO this fails with assertions enabled, see sun#212
     }
   } );
 } );

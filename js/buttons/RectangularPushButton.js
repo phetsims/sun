@@ -77,7 +77,7 @@ define( function( require ) {
 
     // @public
     dispose: function() {
-      this.buttonModel.dispose();
+      this.buttonModel.dispose(); //TODO this fails when assertions are enabled, see sun#212
       RectangularButtonView.prototype.dispose.call( this );
       this.rectangularPushButtonTandem && this.rectangularPushButtonTandem.removeInstance( this );
     },
