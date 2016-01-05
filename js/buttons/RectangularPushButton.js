@@ -148,12 +148,12 @@ define( function( require ) {
       domElement.setAttribute( 'type', 'button' );
       domElement.value = buttonLabel;
 
-      // create an element that describes the button with aria-describedby
-      var descriptionElement = document.createElement( 'p' );
-      descriptionElement.textContent = buttonDescription;
-      descriptionElement.id = 'reset-all-description-' + uniqueId;
-      domElement.appendChild( descriptionElement );
-      domElement.setAttribute( 'aria-describedby', descriptionElement.id );
+      // @private - create an element that describes the button with aria-describedby
+      this.descriptionElement = document.createElement( 'p' );
+      this.descriptionElement.textContent = buttonDescription;
+      this.descriptionElement.id = 'reset-all-description-' + uniqueId;
+      domElement.appendChild( this.descriptionElement );
+      domElement.setAttribute( 'aria-describedby', this.descriptionElement.id );
 
       // fire on click event
       domElement.addEventListener( 'click', function() {
@@ -162,6 +162,16 @@ define( function( require ) {
 
       this.initializeAccessiblePeer( accessibleInstance, domElement );
 
+    },
+
+    /**
+     * Update the accessible description for the push button.
+     * 
+     * @param {string} newDescription
+     * @public (a11y)
+     */
+    updateDescription: function( newDescription ) {
+      this.descriptionElement.textContent = newDescription;
     }
   } );
   return RectangularPushButton;
