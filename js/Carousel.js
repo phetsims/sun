@@ -5,7 +5,7 @@
  * A set of N items is divided into M 'pages', based on how many items are visible in the carousel.
  * Pressing the next and previous buttons moves through the pages.
  * Movement through the pages is animated, so that items appear to scroll by.
- * <p>
+ *
  * Note that Carousel performs layout directly on the items (Nodes) that it is provided.
  * If those Nodes appear in multiple places in the scenegraph, then it's the client's
  * responsibility to provide the Carousel with wrapped Nodes.
