@@ -99,9 +99,11 @@ define( function( require ) {
           self.radioButtonGroupMemberModel.fire();
         } );
 
-        // link the aria-checked attribute to the property value
+        // link the 'checked' and 'aria-checked' attribute to the property value
         property.link( function( newValue ) {
-          domElement.setAttribute( 'aria-checked', newValue === value );
+          var checked = newValue === value;
+          domElement.setAttribute( 'aria-checked', checked );
+          domElement.checked = checked;
         } );
 
         return new AccessiblePeer( accessibleInstance, domElement );
