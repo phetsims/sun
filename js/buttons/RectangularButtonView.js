@@ -439,7 +439,7 @@ define( function( require ) {
      * @returns {boolean}
      * @public
      */
-    getEnabled: function() {return this.buttonModel.enabled; },
+    getEnabled: function() { return this.buttonModel.enabled; },
     get enabled() { return this.getEnabled(); },
 
     /**
