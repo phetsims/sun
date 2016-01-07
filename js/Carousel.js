@@ -53,6 +53,12 @@ define( function( require ) {
     arrowLineWidth: 3, // {number} line width used to stroke the arrow icons
     hideDisabledButtons: false, // {boolean} whether to hide buttons when they are disabled
 
+    // for dilating pointer areas of next/previous buttons such that they do not overlap with Carousel content
+    buttonTouchAreaXDilation: 0, // {number} horizontal touchArea dilation
+    buttonTouchAreaYDilation: 0, // {number} vertical touchArea dilation
+    buttonMouseAreaXDilation: 0, // {number} horiztonal mouseArea dilation
+    buttonMouseAreaYDilation: 0, // {number} vertical mouseArea dialation
+
     // item separators
     separatorsVisible: false, // {boolean} whether to put separators between items
     separatorColor: 'rgb( 180, 180, 180 )', // {Color|string} color for separators
@@ -96,7 +102,11 @@ define( function( require ) {
       minHeight: isHorizontal ? maxItemHeight + ( 2 * options.margin ) : 0, // fill the height of a horizontal carousel
       arrowSize: options.arrowSize,
       arrowStroke: options.arrowStroke,
-      arrowLineWidth: options.arrowLineWidth
+      arrowLineWidth: options.arrowLineWidth,
+      touchAreaXDilation: options.buttonTouchAreaXDilation,
+      touchAreaYDilation: options.buttonTouchAreaYDilation,
+      mouseAreaXDilation: options.buttonMouseAreaXDilation,
+      mouseAreaYDilation: options.buttonMouseAreaYDilation
     };
 
     // Next/previous buttons

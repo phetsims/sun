@@ -47,7 +47,14 @@ define( function( require ) {
       arrowSize: new Dimension2( 20, 7 ), // {Dimension2} size of the arrow, in 'up' directions
       arrowStroke: 'black', // {Color|string} color used for the arrow icons
       arrowLineWidth: 3, // {number} line width used to stroke the arrow icons
-      arrowLineCap: 'round' // {string} 'butt'|'round'|'square'
+      arrowLineCap: 'round', // {string} 'butt'|'round'|'square'
+
+      // Convenience options for dilating pointer areas such that they do not overlap with Carousel content.
+      // See computePointerArea.
+      touchAreaXDilation: 0,
+      touchAreaYDilation: 0,
+      mouseAreaXDilation: 0,
+      mouseAreaYDilation: 0
 
     }, options );
 
@@ -79,9 +86,47 @@ define( function( require ) {
     options.rightBottomCornerRadius = arrowDirection === 'down' || arrowDirection === 'right' ? cornerRadius : 0;
 
     RectangularPushButton.call( this, options );
+
+    // pointer areas
+    this.touchArea = computePointerArea( this, arrowDirection, options.touchAreaXDilation, options.touchAreaYDilation );
+    this.mouseArea = computePointerArea( this, arrowDirection, options.mouseAreaXDilation, options.mouseAreaYDilation );
   }
 
   sun.register( 'CarouselButton', CarouselButton );
+
+  /**
+   * Computes a pointer area based on dilation of a CarouselButton's local bounds.
+   * The button is not dilated in the direction that is opposite to the arrow's direction.
+   * This ensures that the pointer area will not overlap with the contents of a Carousel.
+   *
+   * @param {CarouselButton} button
+   * @param {string} arrowDirection - direction that the arrow points, 'up'|'down'|'left'|'right'
+   * @param {number} x - horizontal dilation
+   * @param {number} y - vertical dilation
+   * @returns {Bounds2} - null if no dilation is necessary, i.e. x === 0 && y === 0
+   */
+  var computePointerArea = function( button, arrowDirection, x, y ) {
+    var pointerArea = null;
+    if ( x || y ) {
+      switch( arrowDirection ) {
+        case 'up':
+          pointerArea = button.localBounds.dilatedXY( x, y / 2 ).shiftedY( -y / 2 );
+          break;
+        case 'down':
+          pointerArea = button.localBounds.dilatedXY( x, y / 2 ).shiftedY( y / 2 );
+          break;
+        case 'left':
+          pointerArea = button.localBounds.dilatedXY( x / 2, y ).shiftedX( -x / 2 );
+          break;
+        case 'right' :
+          pointerArea = button.localBounds.dilatedXY( x / 2, y ).shiftedX( x / 2 );
+          break;
+        default:
+          throw new Error( 'unsupported arrowDirection: ' + arrowDirection );
+      }
+    }
+    return pointerArea;
+  };
 
   return inherit( RectangularPushButton, CarouselButton );
 } );

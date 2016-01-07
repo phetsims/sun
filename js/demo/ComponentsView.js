@@ -59,12 +59,20 @@ define( function( require ) {
     // vertical carousel
     var vCarousel = new Carousel( vItems, {
       orientation: 'vertical',
-      separatorsVisible: true
+      separatorsVisible: true,
+      buttonTouchAreaXDilation: 5,
+      buttonTouchAreaYDilation: 15,
+      buttonMouseAreaXDilation: 2,
+      buttonMouseAreaYDilation: 7
     } );
 
     // horizontal carousel
     var hCarousel = new Carousel( hItems, {
       orientation: 'horizontal',
+      buttonTouchAreaXDilation: 15,
+      buttonTouchAreaYDilation: 5,
+      buttonMouseAreaXDilation: 7,
+      buttonMouseAreaYDilation: 2,
       centerX: vCarousel.centerX,
       top: vCarousel.bottom + 50
     } );
