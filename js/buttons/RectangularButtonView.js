@@ -60,8 +60,8 @@ define( function( require ) {
       xMargin: 8, // should be visibly greater than yMargin, see issue #109
       yMargin: 5,
       fireOnDown: false,
-      xTouchExpansion: 5,
-      yTouchExpansion: 5,
+      xTouchExpansion: 0,
+      yTouchExpansion: 0,
       stroke: undefined, // undefined by default, which will cause a stroke to be derived from the base color
       lineWidth: 0.5, // Only meaningful if stroke is non-null
 

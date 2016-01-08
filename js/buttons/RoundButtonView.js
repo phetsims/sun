@@ -53,7 +53,7 @@ define( function( require ) {
       minXMargin: 5, // Minimum margin in x direction, i.e. on left and right
       minYMargin: 5, // Minimum margin in y direction, i.e. on top and bottom
       fireOnDown: false,
-      touchExpansion: 5, // Radius expansion for touch area, in screen units (roughly pixels)
+      touchExpansion: 0, // Radius expansion for touch area, in screen units (roughly pixels)
       stroke: undefined, // undefined by default, which will cause a stroke to be derived from the base color
       lineWidth: 0.5, // Only meaningful if stroke is non-null
 
