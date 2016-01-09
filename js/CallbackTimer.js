@@ -60,7 +60,7 @@ define( function( require ) {
           self.intervalID = Timer.setInterval( function() {
             self.fire();
           }, self.interval );
-          self.fire(); // fire after scheduling the intervalID, so that isRunning will be true for callbacks
+          self.fire(); // fire after scheduling the intervalID, so that isRunning will be true for callbacks, see sun#216
         }, self.delay );
       }
     },
