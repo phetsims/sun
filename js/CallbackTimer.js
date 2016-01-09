@@ -57,10 +57,10 @@ define( function( require ) {
         self.fired = false;
         self.delayID = Timer.setTimeout( function() {
           self.delayID = null;
-          self.fire();
           self.intervalID = Timer.setInterval( function() {
             self.fire();
           }, self.interval );
+          self.fire(); // fire after scheduling the intervalID, so that isRunning will be true for callbacks
         }, self.delay );
       }
     },
