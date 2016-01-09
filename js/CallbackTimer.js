@@ -53,11 +53,16 @@ define( function( require ) {
       if ( !self.isRunning() ) {
         self.fired = false;
         self.delayID = Timer.setTimeout( function() {
+
           self.delayID = null;
-          self.fire();
+
           self.intervalID = Timer.setInterval( function() {
             self.fire();
           }, self.interval );
+
+          // fire after scheduling the intervalID, so that isRunning will be true for callbacks, see sun#216
+          self.fire();
+
         }, self.delay );
       }
     },
