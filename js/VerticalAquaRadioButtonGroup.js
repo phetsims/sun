@@ -27,7 +27,7 @@ define( function( require ) {
       padding: 8,
       radius: 12,
       radioButtonOptions: {}, // will be passed to the AquaRadioButtons
-      touchXPadding: 5,
+      touchXPadding: 0,
       mouseXPadding: 0,
       accessibleLabel: '', // label for the entire radio button group, invisible for a11y
       accessibleDescription: '' // description for the radio buttongroup, invisible for a11y
