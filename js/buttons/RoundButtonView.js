@@ -130,8 +130,8 @@ define( function( require ) {
   sun.register( 'RoundButtonView', RoundButtonView );
 
   /**
-   * Strategy for making a button look 3D-ish by using gradients that create
-   * the appearance of highlighted and shaded edges.
+   * Strategy for making a button look 3D-ish by using gradients that create the appearance of highlighted and shaded
+   * edges.  The gradients are intended to make the light source appear to be above and to the left of the button.
    *
    * @param {Node} button
    * @param {Property.<boolean>} interactionStateProperty
