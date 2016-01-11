@@ -58,8 +58,8 @@ define( function( require ) {
       buttonXMargin: 4, // horizontal space between button and left|right edge of box
       buttonYMargin: 2, // vertical space between button and top edge of box
       expandedProperty: new Property( true ),
-      buttonTouchAreaDilatedX: 16,
-      buttonTouchAreaDilatedY: 16,
+      buttonTouchAreaDilatedX: 0,
+      buttonTouchAreaDilatedY: 0,
       buttonMouseAreaDilatedX: 0,
       buttonMouseAreaDilatedY: 0,
 
