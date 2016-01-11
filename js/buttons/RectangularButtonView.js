@@ -134,8 +134,7 @@ define( function( require ) {
 
   /**
    * Strategy for making a button look 3D-ish by using gradients that create the appearance of highlighted and shaded
-   * edges.
-   *
+   * edges.  The gradients are set up to make the light source appear to be in the upper left.
    * @param {Node} button
    * @param {Property.<Boolean>} interactionStateProperty
    * @param {Property.<Color>} baseColorProperty
