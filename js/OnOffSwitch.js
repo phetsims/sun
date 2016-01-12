@@ -71,8 +71,8 @@ define( function( require ) {
       stroke: options.thumbStroke
     } );
     thisNode.addChild( thumbNode );
-    var touchDelta = 0.25 * options.size.height;
-    thumbNode.touchArea = Shape.roundRect( -touchDelta, -touchDelta, (0.5 * options.size.width) + (2 * touchDelta), options.size.height + (2 * touchDelta), cornerRadius, cornerRadius );
+    var touchAreaDilation = 0.25 * options.size.height;
+    thumbNode.touchArea = Shape.roundRect( -touchAreaDilation, -touchAreaDilation, (0.5 * options.size.width) + (2 * touchAreaDilation), options.size.height + (2 * touchAreaDilation), cornerRadius, cornerRadius );
 
     // move thumb to on or off position
     var updateThumb = function( on ) {
