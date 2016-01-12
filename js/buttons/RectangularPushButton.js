@@ -26,9 +26,9 @@ define( function( require ) {
   function RectangularPushButton( options ) {
 
     options = _.extend( {
-      accessibleDescription: '', // invisible description for a11y
-      accessibleLabel: '', // invisible label for a11y
-      tandem: null,
+      accessibleDescription: '', // {string} invisible description for a11y
+      accessibleLabel: '', // {string} invisible label for a11y
+      tandem: null, // {Tandem|null}
       accessibleContent: {
         createPeer: function( accessibleInstance ) {
           return new RectangularPushButtonAccessiblePeer( accessibleInstance, options.accessibleDescription, options.accessibleLabel, options.listener );

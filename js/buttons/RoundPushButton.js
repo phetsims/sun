@@ -26,7 +26,9 @@ define( function( require ) {
    */
   function RoundPushButton( options ) {
 
-    options = _.extend( { tandem: null }, options );
+    options = _.extend( {
+      tandem: null // {Tandem|null}
+    }, options );
 
     // Safe to pass through options to the PushButtonModel like "fireOnDown".  Other scenery options will be safely ignored.
     this.buttonModel = new PushButtonModel( options ); // @public, listen only
