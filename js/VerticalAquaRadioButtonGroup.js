@@ -27,8 +27,8 @@ define( function( require ) {
       padding: 8,
       radius: 12,
       radioButtonOptions: {}, // will be passed to the AquaRadioButtons
-      touchXPadding: 0,
-      mouseXPadding: 0,
+      touchAreaXDilation: 0,
+      mouseAreaXDilation: 0,
       accessibleLabel: '', // label for the entire radio button group, invisible for a11y
       accessibleDescription: '' // description for the radio buttongroup, invisible for a11y
     }, options );
@@ -47,8 +47,8 @@ define( function( require ) {
         radius: options.radius,
         accessibleLabel: items[i].accessibleLabel 
       } ) );
-      radioButton.mouseArea = Shape.bounds( radioButton.bounds.dilatedXY( options.mouseXPadding, options.spacing / 2 ) );
-      radioButton.touchArea = Shape.bounds( radioButton.bounds.dilatedXY( options.touchXPadding, options.spacing / 2 ) );
+      radioButton.mouseArea = Shape.bounds( radioButton.bounds.dilatedXY( options.mouseAreaXDilation, options.spacing / 2 ) );
+      radioButton.touchArea = Shape.bounds( radioButton.bounds.dilatedXY( options.touchAreaXDilation, options.spacing / 2 ) );
       children.push( radioButton );
     }
 
