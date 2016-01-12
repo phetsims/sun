@@ -116,7 +116,7 @@ define( function( require ) {
       thisButton.cursor = state === 'disabled' || state === 'disabled-pressed' ? null : 'pointer';
     } );
 
-    // Expand the touch area.
+    // Dilate the touch area.
     this.touchArea = Shape.circle( 0, 0, buttonRadius + options.touchAreaDilation );
 
     // Set pickable such that sub-nodes are pruned from hit testing.
