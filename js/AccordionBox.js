@@ -58,10 +58,10 @@ define( function( require ) {
       buttonXMargin: 4, // horizontal space between button and left|right edge of box
       buttonYMargin: 2, // vertical space between button and top edge of box
       expandedProperty: new Property( true ),
-      buttonTouchAreaDilatedX: 0,
-      buttonTouchAreaDilatedY: 0,
-      buttonMouseAreaDilatedX: 0,
-      buttonMouseAreaDilatedY: 0,
+      buttonTouchAreaXDilation: 0,
+      buttonTouchAreaYDilation: 0,
+      buttonMouseAreaXDilation: 0,
+      buttonMouseAreaYDilation: 0,
 
       // content
       contentAlign: 'center', // {string} horizontal alignment of the content, 'left'|'center'|'right'
@@ -85,8 +85,8 @@ define( function( require ) {
       sideLength: options.buttonLength,
       cursor: options.cursor
     } );
-    this.expandCollapseButton.touchArea = this.expandCollapseButton.localBounds.dilatedXY( options.buttonTouchAreaDilatedX, options.buttonTouchAreaDilatedY );
-    this.expandCollapseButton.mouseArea = this.expandCollapseButton.localBounds.dilatedXY( options.buttonMouseAreaDilatedX, options.buttonMouseAreaDilatedY );
+    this.expandCollapseButton.touchArea = this.expandCollapseButton.localBounds.dilatedXY( options.buttonTouchAreaXDilation, options.buttonTouchAreaYDilation );
+    this.expandCollapseButton.mouseArea = this.expandCollapseButton.localBounds.dilatedXY( options.buttonMouseAreaXDilation, options.buttonMouseAreaYDilation );
 
     // Compute box dimensions
     var collapsedBoxHeight = Math.max( this.expandCollapseButton.height + ( 2 * options.buttonYMargin ), options.titleNode.height + ( 2 * options.titleYMargin ) );
