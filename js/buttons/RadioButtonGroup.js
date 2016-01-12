@@ -103,12 +103,12 @@ define( function( require ) {
       buttonContentYMargin: 5,
 
       // TouchArea expansion
-      xTouchExpansion: 0,
-      yTouchExpansion: 0,
+      touchAreaXDilation: 0,
+      touchAreaYDilation: 0,
 
       // MouseArea expansion
-      xMouseExpansion: 0,
-      yMouseExpansion: 0,
+      mouseAreaXDilation: 0,
+      mouseAreaYDilation: 0,
 
       //The radius for each button
       cornerRadius: 4,
@@ -177,17 +177,17 @@ define( function( require ) {
           orientation: labelOrientation
         } );
 
-        var xExpand = options.xTouchExpansion;
-        var yExpand = options.yTouchExpansion;
+        var xDilation = options.touchAreaXDilation;
+        var yDilation = options.touchAreaYDilation;
 
         // override the touch and mouse areas defined in RectangularButtonView
         // extra width is added to the SingleRadioButtons so they don't change size if the line width changes,
         // that is why lineWidth is subtracted from the width and height when calculating these new areas
-        radioButton.touchArea = Shape.rectangle( -xExpand, -yExpand, button.width + 2 * xExpand - maxLineWidth, button.height + 2 * yExpand - maxLineWidth );
+        radioButton.touchArea = Shape.rectangle( -xDilation, -yDilation, button.width + 2 * xDilation - maxLineWidth, button.height + 2 * yDilation - maxLineWidth );
 
-        xExpand = options.xMouseExpansion;
-        yExpand = options.yMouseExpansion;
-        radioButton.mouseArea = Shape.rectangle( -xExpand, -yExpand, button.width + 2 * xExpand - maxLineWidth, button.height + 2 * yExpand - maxLineWidth );
+        xDilation = options.mouseAreaXDilation;
+        yDilation = options.mouseAreaYDilation;
+        radioButton.mouseArea = Shape.rectangle( -xDilation, -yDilation, button.width + 2 * xDilation - maxLineWidth, button.height + 2 * yDilation - maxLineWidth );
 
         // make sure the label mouse and touch areas don't block the expanded button touch and mouse areas
         label.pickable = false;

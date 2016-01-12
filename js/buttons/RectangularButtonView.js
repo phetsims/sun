@@ -60,8 +60,8 @@ define( function( require ) {
       xMargin: 8, // should be visibly greater than yMargin, see issue #109
       yMargin: 5,
       fireOnDown: false,
-      xTouchExpansion: 0,
-      yTouchExpansion: 0,
+      touchAreaXDilation: 0,
+      touchAreaYDilation: 0,
       stroke: undefined, // undefined by default, which will cause a stroke to be derived from the base color
       lineWidth: 0.5, // Only meaningful if stroke is non-null
 
@@ -123,7 +123,8 @@ define( function( require ) {
 
     // Add explicit mouse and touch areas so that the child nodes can all be non-pickable.
     this.mouseArea = Shape.rectangle( 0, 0, buttonWidth, buttonHeight );
-    this.touchArea = Shape.rectangle( -options.xTouchExpansion, -options.yTouchExpansion, buttonWidth + options.xTouchExpansion * 2, buttonHeight + options.yTouchExpansion * 2 );
+    this.touchArea = Shape.rectangle( -options.touchAreaXDilation, -options.touchAreaYDilation,
+      buttonWidth + options.touchAreaXDilation * 2, buttonHeight + options.touchAreaYDilation * 2 );
 
     // Mutate with the options after the layout is complete so that width-
     // dependent fields like centerX will work.
