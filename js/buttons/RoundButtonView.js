@@ -44,7 +44,6 @@ define( function( require ) {
 
       focusable: true, // accessibility
 
-      // Default values.
       radius: ( options && options.content ) ? undefined : 30,
       content: null,
       cursor: 'pointer',
@@ -53,7 +52,8 @@ define( function( require ) {
       minXMargin: 5, // Minimum margin in x direction, i.e. on left and right
       minYMargin: 5, // Minimum margin in y direction, i.e. on top and bottom
       fireOnDown: false,
-      touchAreaDilation: 0, // Radius expansion for touch area, in screen units (roughly pixels)
+      touchAreaDilation: 0, // radius dilation for touch area
+      mouseAreaDilation: 0, // radius dilation for mouse area
       stroke: undefined, // undefined by default, which will cause a stroke to be derived from the base color
       lineWidth: 0.5, // Only meaningful if stroke is non-null
 
@@ -116,8 +116,9 @@ define( function( require ) {
       thisButton.cursor = state === 'disabled' || state === 'disabled-pressed' ? null : 'pointer';
     } );
 
-    // Dilate the touch area.
+    // Dilate the pointer areas.
     this.touchArea = Shape.circle( 0, 0, buttonRadius + options.touchAreaDilation );
+    this.mouseArea = Shape.circle( 0, 0, buttonRadius + options.mouseAreaDilation );
 
     // Set pickable such that sub-nodes are pruned from hit testing.
     this.pickable = null;
