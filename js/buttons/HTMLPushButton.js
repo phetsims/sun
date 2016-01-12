@@ -17,7 +17,7 @@ define( function( require ) {
 
   /**
    * @param {string} html
-   * @param {options} options
+   * @param {Object} [options]
    * @constructor
    */
   function HTMLPushButton( html, options ) {

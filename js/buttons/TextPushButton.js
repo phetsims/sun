@@ -17,7 +17,7 @@ define( function( require ) {
 
   /**
    * @param {String} text
-   * @param {Object} options
+   * @param {Object} [options]
    * @constructor
    */
   function TextPushButton( text, options ) {

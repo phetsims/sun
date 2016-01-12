@@ -19,7 +19,7 @@ define( function( require ) {
 
   /**
    * @param {Property.<boolean>} booleanProperty
-   * @param {object} options
+   * @param {Object} [options]
    * @constructor
    */
   function BooleanRoundStickyToggleButton( booleanProperty, options ) {

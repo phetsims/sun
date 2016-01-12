@@ -13,7 +13,7 @@ define( function( require ) {
 
   /**
    * @param {ButtonModel} buttonModel
-   * @param {Object} options
+   * @param {Object} [options]
    * @constructor
    */
   function PushButtonInteractionStateProperty( buttonModel, options ) {
