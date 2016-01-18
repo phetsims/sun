@@ -21,8 +21,9 @@ define( function( require ) {
 
   /**
    * @param {string} queryParameterName - name of the query parameter uses to set initial selection of the combo box
-   * @param {Object[]} demos - each demo has a {string} label that appears in the combo box, and {function} getNode field,
-   *                           where getNode takes a {Bounds2} layoutBounds argument and returns a {Node}
+   * @param {Object[]} demos - each demo has:
+   *   {string} label - label in the combo box
+   *   {function(Bounds2): Node} getNode - creates the scene graph for the demo
    * @param {Object} [options]
    * @constructor
    */
