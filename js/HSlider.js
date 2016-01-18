@@ -22,7 +22,7 @@ define( function( require ) {
   var Property = require( 'AXON/Property' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var Shape = require( 'KITE/Shape' );
-  var SimpleDragHandler = require( 'SCENERY/input/SimpleDragHandler' );
+  var TandemDragHandler = require( 'SUN/TandemDragHandler' );
   var sun = require( 'SUN/sun' );
   var Util = require( 'DOT/Util' );
 
@@ -81,7 +81,8 @@ define( function( require ) {
     thisSlider.addChild( thisSlider.track );
 
     // click in the track to change the value, continue dragging if desired
-    var trackHandler = new SimpleDragHandler( {
+    var trackInputListener = new TandemDragHandler( {
+      tandem: options.tandem ? options.tandem.createTandem( 'trackInputListener' ) : null,
 
       /**
        *
@@ -126,7 +127,7 @@ define( function( require ) {
         }
       }
     } );
-    thisSlider.track.addInputListener( trackHandler );
+    thisSlider.track.addInputListener( trackInputListener );
 
     // thumb
     var thumbNode = options.thumbNode || new ThumbNode( this.enabledProperty, options );
@@ -145,7 +146,9 @@ define( function( require ) {
     }
 
     // update value when thumb is dragged
-    var thumbHandler = new SimpleDragHandler( {
+    var thumbInputListener = new TandemDragHandler( {
+
+      tandem: options.tandem ? options.tandem.createTandem( 'thumbInputListener' ) : null,
 
       // x-offset between initial click and thumb's origin
       clickXOffset: 0,
@@ -185,7 +188,7 @@ define( function( require ) {
         }
       }
     } );
-    thumbNode.addInputListener( thumbHandler );
+    thumbNode.addInputListener( thumbInputListener );
 
     //TODO This is experimental code. Decide how this affects data collection.
     // Keyboard accessibility
@@ -206,8 +209,8 @@ define( function( require ) {
     var enabledObserver = function( enabled ) {
       thisSlider.cursor = thisSlider.enabledProperty.get() ? options.cursor : 'default';
       if ( !enabled ) {
-        if ( thumbHandler.dragging ) { thumbHandler.endDrag(); }
-        if ( trackHandler.dragging ) { trackHandler.endDrag(); }
+        if ( thumbInputListener.dragging ) { thumbInputListener.endDrag(); }
+        if ( trackInputListener.dragging ) { trackInputListener.endDrag(); }
       }
     };
     thisSlider.enabledProperty.link( enabledObserver ); // must be unlinked in disposeHSlider
