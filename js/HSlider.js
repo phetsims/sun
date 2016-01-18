@@ -88,42 +88,33 @@ define( function( require ) {
        *
        * @param event
        * @param trail
-       * @param function [callback] - optional callback with the new value, for togetherEvents
        */
-      handleTrackEvent: function( event, trail, callback ) {
+      handleTrackEvent: function( event, trail ) {
         if ( thisSlider.enabledProperty.get() ) {
           var transform = trail.subtrailTo( thisSlider ).getTransform();
           var x = transform.inversePosition2( event.pointer.point ).x;
           var value = thisSlider.valueToPosition.inverse( x );
           var newValue = options.constrainValue( value );
-          callback && callback( newValue );
           valueProperty.set( newValue );
         }
       },
 
       start: function( event, trail ) {
         if ( thisSlider.enabledProperty.get() ) {
-          thisSlider.trigger1( 'startedCallbacksForTrackDragStarted', valueProperty.get() );
           options.startDrag();
           this.handleTrackEvent( event, trail );
-          thisSlider.trigger0( 'endedCallbacksForTrackDragStarted' );
         }
       },
 
       drag: function( event, trail ) {
 
         // Reuse the same handleTrackEvent but make sure the startedCallbacks call is made before the value changes
-        this.handleTrackEvent( event, trail, function( newValue ) {
-          thisSlider.trigger1( 'startedCallbacksForTrackDragged', newValue );
-        } );
-        thisSlider.trigger0( 'endedCallbacksForTrackDragged' );
+        this.handleTrackEvent( event, trail );
       },
 
       end: function() {
         if ( thisSlider.enabledProperty.get() ) {
-          thisSlider.trigger1( 'startedCallbacksForTrackDragEnded', valueProperty.get() );
           options.endDrag();
-          thisSlider.trigger0( 'endedCallbacksForTrackDragEnded' );
         }
       }
     } );
@@ -157,34 +148,26 @@ define( function( require ) {
 
       start: function( event, trail ) {
         if ( thisSlider.enabledProperty.get() ) {
-          thisSlider.trigger2( 'startedCallbacksForDragStarted', valueProperty.get(), 'thumb' );
           options.startDrag();
 
           var transform = trail.subtrailTo( thisSlider ).getTransform();
           this.clickXOffset = transform.inversePosition2( event.pointer.point ).x - thumbNode.x;
-
-          thisSlider.trigger0( 'endedCallbacksForDragStarted' );
         }
       },
 
       drag: function( event, trail ) {
         if ( thisSlider.enabledProperty.get() ) {
-          thisSlider.trigger1( 'startedCallbacksForDragged', valueProperty.get() );
           var transform = trail.subtrailTo( thisSlider ).getTransform(); // we only want the transform to our parent
           var x = transform.inversePosition2( event.pointer.point ).x - this.clickXOffset;
           var newValue = thisSlider.valueToPosition.inverse( x );
 
           valueProperty.set( options.constrainValue( newValue ) );
-
-          thisSlider.trigger0( 'endedCallbacksForDragged' );
         }
       },
 
       end: function() {
         if ( thisSlider.enabledProperty.get() ) {
-          thisSlider.trigger1( 'startedCallbacksForDragEnded', valueProperty.get() );
           options.endDrag();
-          thisSlider.trigger0( 'endedCallbacksForDragEnded' );
         }
       }
     } );
