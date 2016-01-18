@@ -8,11 +8,11 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var inherit = require( 'PHET_CORE/inherit' );
+  var Brand = require( 'BRAND/Brand' );
   var Emitter = require( 'AXON/Emitter' );
+  var inherit = require( 'PHET_CORE/inherit' );
   var SimpleDragHandler = require( 'SCENERY/input/SimpleDragHandler' );
   var sun = require( 'SUN/sun' );
-  var Brand = require( 'BRAND/Brand' );
 
   /**
    * @param {Object} [options]
@@ -20,10 +20,9 @@ define( function( require ) {
    */
   function TandemDragHandler( options ) {
 
+    // NOTE: supertype options start/end/drag will be wrapped to provide PhET-iO instrumentation.
     options = _.extend( {
       tandem: null
-
-      /* Please see additional options described in the super type*/
     }, options );
 
     // Generate all emitters in every case to minimize the number of hidden classes,
@@ -43,7 +42,7 @@ define( function( require ) {
     if ( Brand.id === 'phet-io' ) {
       var tandemDragHandler = this;
 
-      // Replace start/end/drag even if they did not exist, to get the tracking.
+      // Wrap start/end/drag options (even if they did not exist) to get the PhET-iO instrumentation.
       optionsCopy.start = function( event, trail ) {
         tandemDragHandler.startedCallbacksForDragStartedEmitter.emit2( event.pointer.point.x, event.pointer.point.y );
         options.start && options.start( event, trail );
