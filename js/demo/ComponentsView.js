@@ -178,6 +178,8 @@ define( function( require ) {
       interactive: true,
       dotRadius: 10,
       dotSpacing: 18,
+      dotTouchAreaDilation: 8,
+      dotMouseAreaDilation: 4,
       currentPageFill: 'white',
       currentPageStroke: 'black',
       centerX: carousel.centerX,
