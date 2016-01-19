@@ -14,6 +14,7 @@ define( function( require ) {
   var DownUpListener = require( 'SCENERY/input/DownUpListener' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Node = require( 'SCENERY/nodes/Node' );
+  var Shape = require( 'KITE/Shape' );
   var sun = require( 'SUN/sun' );
 
   /**
@@ -34,6 +35,8 @@ define( function( require ) {
       dotRadius: 3, // {number} radius of the dots
       lineWidth: 1,
       dotSpacing: 10, // {number} spacing between dots
+      dotTouchAreaDilation: 0, // {number} how much to dilate the touchArea beyond the radius of a dot
+      dotMouseAreaDilation: 0, // {number} how much to dilate the mouseArea beyond the radius of a dot
 
       // dots representing the current page
       currentPageFill: 'black', // {Color|string} dot color for the page that is visible
@@ -76,6 +79,10 @@ define( function( require ) {
         y: isHorizontal ? 0 : dotCenter
       } );
       dotsParent.addChild( dotNode );
+
+      // pointer areas
+      dotNode.touchArea = ( options.dotTouchAreaDilation === 0 ) ? null : Shape.circle( 0, 0, options.dotRadius + options.dotTouchAreaDilation );
+      dotNode.mouseArea = ( options.dotMouseAreaDilation === 0 ) ? null : Shape.circle( 0, 0, options.dotRadius + options.dotMouseAreaDilation );
 
       // optional interactivity
       if ( options.interactive ) {
