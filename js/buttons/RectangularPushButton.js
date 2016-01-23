@@ -31,7 +31,7 @@ define( function( require ) {
       tandem: null, // {Tandem|null}
       accessibleContent: {
         createPeer: function( accessibleInstance ) {
-          return new RectangularPushButtonAccessiblePeer( accessibleInstance, options.accessibleDescription, options.accessibleLabel, options.listener );
+          return new RectangularPushButtonAccessiblePeer( accessibleInstance, options.listener, options.accessibleDescription, options.accessibleLabel );
         }
       }
     }, options );
@@ -108,12 +108,12 @@ define( function( require ) {
      * Initialized dom elements and its attributes for the screen view in the parallel DOM.
      *
      * @param {AccessibleInstance} accessibleInstance
-     * @param {string} buttonDescription - invisible auditory description for a11y
-     * @param {string} buttonLabel - invisible label for a11y
      * @param {function} listener - the listener function called on press for this RectangularPushButton
+     * @param {string} [buttonDescription] - invisible auditory description for a11y
+     * @param {string} [buttonLabel] - invisible label for a11y
      * @public (a11y)
      */
-    initialize: function( accessibleInstance, buttonDescription, buttonLabel, listener ) {
+    initialize: function( accessibleInstance, listener, buttonDescription, buttonLabel ) {
       var trail = accessibleInstance.trail;
       var uniqueId = trail.getUniqueId();
                     
@@ -123,11 +123,13 @@ define( function( require ) {
       domElement.value = buttonLabel;
 
       // @private - create an element that describes the button with aria-describedby
-      this.descriptionElement = document.createElement( 'p' );
-      this.descriptionElement.textContent = buttonDescription;
-      this.descriptionElement.id = 'reset-all-description-' + uniqueId;
-      domElement.appendChild( this.descriptionElement );
-      domElement.setAttribute( 'aria-describedby', this.descriptionElement.id );
+      if( buttonDescription ) {
+        this.descriptionElement = document.createElement( 'p' );
+        this.descriptionElement.textContent = buttonDescription;
+        this.descriptionElement.id = 'reset-all-description-' + uniqueId;
+        domElement.appendChild( this.descriptionElement );
+        domElement.setAttribute( 'aria-describedby', this.descriptionElement.id );
+      }
 
       // fire on click event
       domElement.addEventListener( 'click', function() {
