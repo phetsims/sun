@@ -62,7 +62,10 @@ define( function( require ) {
     // item separators
     separatorsVisible: false, // {boolean} whether to put separators between items
     separatorColor: 'rgb( 180, 180, 180 )', // {Color|string} color for separators
-    separatorLineWidth: 0.5 // {number} lineWidth for separators
+    separatorLineWidth: 0.5, // {number} lineWidth for separators
+
+    // animation
+    animationEnabled: true // {boolean} is animation enabled when scrolling between pages?
   };
   assert && Object.freeze( DEFAULT_OPTIONS );
 
@@ -125,6 +128,9 @@ define( function( require ) {
       stroke: options.separatorColor,
       lineWidth: options.separatorLineWidth
     };
+
+    // @private enables animation when scrolling between pages
+    this._animationEnabled = options.animationEnabled;
 
     // All items, arranged in the proper orientation, with margins and spacing.
     // Horizontal carousel arrange items left-to-right, vertical is top-to-bottom.
@@ -233,14 +239,12 @@ define( function( require ) {
     // Number of the page that is visible in the carousel.
     var pageNumberProperty = new Property( options.defaultPageNumber );
 
-    // Scroll when the buttons are pressed
+    // Change pages
+    var thisCarousel = this;
     var scrollTween;
     pageNumberProperty.link( function( pageNumber ) {
 
       assert && assert( pageNumber >= 0 && pageNumber <= numberOfPages - 1, 'pageNumber out of range: ' + pageNumber );
-
-      // stop any animation that's in progress
-      scrollTween && scrollTween.stop();
 
       // button state
       nextButton.enabled = pageNumber < ( numberOfPages - 1 );
@@ -250,30 +254,41 @@ define( function( require ) {
         previousButton.visible = previousButton.enabled;
       }
 
-      //TODO replace calls to Tween with a wrapper, see https://github.com/phetsims/tasks/issues/360
-      // Set up the animation to scroll the items in the carousel.
-      var parameters;
-      var animationDuration = 400; // ms
-      var easing = TWEEN.Easing.Cubic.InOut;
-      if ( isHorizontal ) {
-        parameters = { left: scrollingNode.left };
-        scrollTween = new TWEEN.Tween( parameters )
-          .easing( easing )
-          .to( { left: -pageNumber * scrollingDelta }, animationDuration )
-          .onUpdate( function() {
-            scrollingNode.left = parameters.left;
-          } )
-          .start();
+      if ( thisCarousel._animationEnabled ) {
+
+        // stop any animation that's in progress
+        scrollTween && scrollTween.stop();
+
+        //TODO replace calls to Tween with a wrapper, see https://github.com/phetsims/tasks/issues/360
+        // Set up the animation to scroll the items in the carousel.
+        var parameters;
+        var animationDuration = 400; // ms
+        var easing = TWEEN.Easing.Cubic.InOut;
+        if ( isHorizontal ) {
+          parameters = { left: scrollingNode.left };
+          scrollTween = new TWEEN.Tween( parameters )
+            .easing( easing )
+            .to( { left: -pageNumber * scrollingDelta }, animationDuration )
+            .onUpdate( function() {
+              scrollingNode.left = parameters.left;
+            } )
+            .start();
+        }
+        else {
+          parameters = { top: scrollingNode.top };
+          scrollTween = new TWEEN.Tween( parameters )
+            .easing( easing )
+            .to( { top: -pageNumber * scrollingDelta }, animationDuration )
+            .onUpdate( function() {
+              scrollingNode.top = parameters.top;
+            } )
+            .start();
+        }
       }
       else {
-        parameters = { top: scrollingNode.top };
-        scrollTween = new TWEEN.Tween( parameters )
-          .easing( easing )
-          .to( { top: -pageNumber * scrollingDelta }, animationDuration )
-          .onUpdate( function() {
-            scrollingNode.top = parameters.top;
-          } )
-          .start();
+
+        // animation disabled, move immediate to new page
+        scrollingNode.left = -pageNumber * scrollingDelta;
       }
     } );
 
@@ -299,6 +314,26 @@ define( function( require ) {
   sun.register( 'Carousel', Carousel );
 
   return inherit( Node, Carousel, {
+
+    /**
+     * Determines whether animation is enabled for scrolling between pages.
+     * @param {boolean} animationEnabled
+     * @public
+     */
+    setAnimationEnabled: function( animationEnabled ) {
+      this._animationEnabled = animationEnabled;
+    },
+    set animationEnabled( value ) { this.setAnimationEnabled( value ); },
+
+    /**
+     * Is animation enabled for scrolling between pages?
+     * @returns {boolean}
+     * @public
+     */
+    getAnimationEnabled: function() {
+      return this._animationEnabled;
+    },
+    get animationEnabled() { return this.getAnimationEnabled(); },
 
     /**
      * Given an item's index, scroll the carousel to the page that contains that item.
