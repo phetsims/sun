@@ -254,10 +254,10 @@ define( function( require ) {
         previousButton.visible = previousButton.enabled;
       }
 
-      if ( thisCarousel._animationEnabled ) {
+      // stop any animation that's in progress
+      scrollTween && scrollTween.stop();
 
-        // stop any animation that's in progress
-        scrollTween && scrollTween.stop();
+      if ( thisCarousel._animationEnabled ) {
 
         //TODO replace calls to Tween with a wrapper, see https://github.com/phetsims/tasks/issues/360
         // Set up the animation to scroll the items in the carousel.
