@@ -64,7 +64,7 @@ define( function( require ) {
       accessibleLabel: ''
     }, options );
 
-    // @public (together)
+    // @public (phet-io)
     this.radioButtonGroupMemberModel = new RadioButtonGroupMemberModel( property, value );
 
     // @public for use in RadioButtonGroup for managing the labels

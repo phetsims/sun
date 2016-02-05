@@ -25,7 +25,7 @@ define( function( require ) {
    */
   function RectangularToggleButton( valueOff, valueOn, property, options ) {
 
-    // @public (together)
+    // @public (phet-io)
     this.toggleButtonModel = new ToggleButtonModel( valueOff, valueOn, property, options );
     RectangularButtonView.call( this, this.toggleButtonModel, new ToggleButtonInteractionStateProperty( this.toggleButtonModel ), options );
 

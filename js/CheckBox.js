@@ -29,7 +29,7 @@ define( function( require ) {
    */
   function CheckBox( content, property, options ) {
 
-    // @public (together) Store for dispose();  Use a unique name to reduce the risk of collisions with parent/child classes
+    // @public (phet-io) Store for dispose();  Use a unique name to reduce the risk of collisions with parent/child classes
     // Made public for together so that clients can access the checkbox value and change it through the together API
     this.checkBoxValueProperty = property;
 
