@@ -1,7 +1,7 @@
 // Copyright 2015, University of Colorado Boulder
 
 /**
- * SimpleDragHandler subclass that adds tandem registration and together event emission.
+ * SimpleDragHandler subclass that adds tandem registration and PhET-iO event emission.
  * @author Sam Reid (PhET Interactive Simulations)
  */
 define( function( require ) {
