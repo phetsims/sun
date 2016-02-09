@@ -210,6 +210,8 @@ define( function( require ) {
       valueProperty.unlink( valueObserver );
       thisSlider.enabledProperty.unlink( enabledObserver );
       options.tandem && options.tandem.removeInstance( thisSlider );
+      trackInputListener.dispose();
+      thumbInputListener.dispose();
     };
 
     thisSlider.mutate( options );
