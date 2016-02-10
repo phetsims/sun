@@ -288,7 +288,12 @@ define( function( require ) {
       else {
 
         // animation disabled, move immediate to new page
-        scrollingNode.left = -pageNumber * scrollingDelta;
+        if ( isHorizontal ) {
+          scrollingNode.left = -pageNumber * scrollingDelta;
+        }
+        else {
+          scrollingNode.top = -pageNumber * scrollingDelta;
+        }
       }
     } );
 
