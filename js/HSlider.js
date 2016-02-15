@@ -123,9 +123,6 @@ define( function( require ) {
     // thumb
     var thumbNode = options.thumbNode || new ThumbNode( this.enabledProperty, options );
 
-    // Make the thumb focusable for keyboard accessibility 
-    thumbNode.focusable = true;
-
     thumbNode.centerY = thisSlider.track.centerY;
     thisSlider.addChild( thumbNode );
 

@@ -28,7 +28,6 @@ define( function( require ) {
 
     options = _.extend( {
       cursor: 'pointer',
-      focusable: true,
       tandem: null,
       enabled: true,
       accessibleLabel: '' // invisible label for the radio button, for a11y

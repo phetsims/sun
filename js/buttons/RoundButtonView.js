@@ -42,8 +42,6 @@ define( function( require ) {
 
     options = _.extend( {
 
-      focusable: true, // accessibility
-
       radius: ( options && options.content ) ? undefined : 30,
       content: null,
       cursor: 'pointer',

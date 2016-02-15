@@ -40,7 +40,6 @@ define( function( require ) {
       checkBoxColor: 'black',
       checkBoxColorBackground: 'white',
       tabIndex: '0', // '0' to be in accessible navigation order, '-1' for out of navigation
-      focusable: true,
       tandem: null,
 
       /*

@@ -49,7 +49,6 @@ define( function( require ) {
 
     options = _.extend( {
       // Default values.
-      focusable: true,
       content: null,
       minWidth: HORIZONTAL_HIGHLIGHT_GRADIENT_LENGTH + SHADE_GRADIENT_LENGTH,
       minHeight: VERTICAL_HIGHLIGHT_GRADIENT_LENGTH + SHADE_GRADIENT_LENGTH,
