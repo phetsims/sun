@@ -26,12 +26,11 @@ define( function( require ) {
   function RectangularPushButton( options ) {
 
     options = _.extend( {
-      accessibleDescription: '', // {string} invisible description for a11y
       accessibleLabel: '', // {string} invisible label for a11y
       tandem: null, // {Tandem|null}
       accessibleContent: {
         createPeer: function( accessibleInstance ) {
-          return new RectangularPushButtonAccessiblePeer( accessibleInstance, options.listener, options.accessibleDescription, options.accessibleLabel );
+          return new RectangularPushButtonAccessiblePeer( accessibleInstance, options.accessibleLabel, options.listener );
         }
       }
     }, options );
@@ -73,15 +72,14 @@ define( function( require ) {
      * Extend the accessible peer of RectangularPushButton to add custom accessibility attributes in subtypes.
      * 
      * @param {AccessibleInstance} accessibleInstance
-     * @param {string} buttonDescription
      * @param {string} buttonLabel
      * @param {function} listener
      * @returns {ScreenViewAccessiblePeer}
      * @constructor
      * @public
      */
-    RectangularPushButtonAccessiblePeer: function( accessibleInstance, buttonDescription, buttonLabel, listener ) {
-      return new RectangularPushButtonAccessiblePeer( accessibleInstance, buttonDescription, buttonLabel, listener );
+    RectangularPushButtonAccessiblePeer: function( accessibleInstance, buttonLabel, listener ) {
+      return new RectangularPushButtonAccessiblePeer( accessibleInstance, buttonLabel, listener );
     }
   } 
   );
@@ -92,14 +90,13 @@ define( function( require ) {
    * Create the accessible peer which represents the RectangularPushButton in the parallel DOM.
    *
    * @param {AccessibleInstance} accessibleInstance
-   * @param {string} buttonDescription - invisible auditory description for a11y
    * @param {string} buttonLabel - invisible label for a11y
    * @param {function} listener - the listener function called on press for this RectangularPushButton
    * @constructor
    * @private
    */
-  function RectangularPushButtonAccessiblePeer( accessibleInstance, buttonDescription, buttonLabel, listener ) {
-    this.initialize( accessibleInstance, buttonDescription, buttonLabel, listener );
+  function RectangularPushButtonAccessiblePeer( accessibleInstance, buttonLabel, listener ) {
+    this.initialize( accessibleInstance, buttonLabel, listener );
   }
 
   inherit( AccessiblePeer, RectangularPushButtonAccessiblePeer, {
@@ -108,28 +105,16 @@ define( function( require ) {
      * Initialized dom elements and its attributes for the screen view in the parallel DOM.
      *
      * @param {AccessibleInstance} accessibleInstance
-     * @param {function} listener - the listener function called on press for this RectangularPushButton
-     * @param {string} [buttonDescription] - invisible auditory description for a11y
      * @param {string} [buttonLabel] - invisible label for a11y
+     * @param {function} listener - the listener function called on press for this RectangularPushButton
      * @public (a11y)
      */
-    initialize: function( accessibleInstance, listener, buttonDescription, buttonLabel ) {
-      var trail = accessibleInstance.trail;
-      var uniqueId = trail.getUniqueId();
+    initialize: function( accessibleInstance, buttonLabel, listener ) {
                     
-      // will look like <input value="Reset All" type="reset" tabindex="0">
+      // will look like <input aria-label="Button Label" type="button">
       var domElement = document.createElement( 'input' );
       domElement.setAttribute( 'type', 'button' );
-      domElement.value = buttonLabel;
-
-      // @private - create an element that describes the button with aria-describedby
-      if( buttonDescription ) {
-        this.descriptionElement = document.createElement( 'p' );
-        this.descriptionElement.textContent = buttonDescription;
-        this.descriptionElement.id = 'reset-all-description-' + uniqueId;
-        domElement.appendChild( this.descriptionElement );
-        domElement.setAttribute( 'aria-describedby', this.descriptionElement.id );
-      }
+      domElement.setAttribute( 'aria-label', buttonLabel );
 
       // fire on click event
       domElement.addEventListener( 'click', function() {
@@ -138,17 +123,8 @@ define( function( require ) {
 
       this.initializeAccessiblePeer( accessibleInstance, domElement );
 
-    },
-
-    /**
-     * Update the accessible description for the push button.
-     * 
-     * @param {string} newDescription
-     * @public (a11y)
-     */
-    updateDescription: function( newDescription ) {
-      this.descriptionElement.textContent = newDescription;
     }
+
   } );
   return RectangularPushButton;
 } );
