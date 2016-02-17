@@ -302,29 +302,18 @@ define( function( require ) {
      * @public (a11y)
      */
     initialize: function( accessibleInstance, property, fire, accessibleLabel, tabIndex ) {
-      var trail = accessibleInstance.trail;
 
-      // will look like <input id="checkBoxId" value="check box value" type="checkbox">Check Box Name<br>
+      // will look like <input id="check-box-id" aria-label="Checkbox Label">
       this.domElement = document.createElement( 'input' ); // @private
       this.initializeAccessiblePeer( accessibleInstance, this.domElement );
       this.domElement.type = 'checkbox';
 
-      // TODO: Unsure why this is needed.
       if ( property.value ) {
         this.domElement.checked = true;
       }
 
-      // if an accessible label has been passed in, add it as a label to the dom element
-      if ( accessibleLabel ) {
-        var uniqueId = trail.getUniqueId();
-        this.domElement.id = 'checkBox-' + uniqueId;
-        this.accessibleId = this.domElement.id;
-
-        var checkBoxLabel = document.createElement( 'label' );
-        checkBoxLabel.setAttribute( 'for', this.domElement.id );
-        checkBoxLabel.innerText = accessibleLabel;
-        this.domElement.appendChild( checkBoxLabel );
-      }
+      // add the label as an aria-label
+      this.domElement.setAttribute( 'aria-label', accessibleLabel );
 
       this.domElement.tabIndex = tabIndex;
       this.domElement.addEventListener( 'click', function() {
