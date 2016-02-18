@@ -81,35 +81,29 @@ define( function( require ) {
     thisSlider.addChild( thisSlider.track );
 
     // click in the track to change the value, continue dragging if desired
+    var handleTrackEvent = function( event, trail ) {
+      if ( thisSlider.enabledProperty.get() ) {
+        var transform = trail.subtrailTo( thisSlider ).getTransform();
+        var x = transform.inversePosition2( event.pointer.point ).x;
+        var value = thisSlider.valueToPosition.inverse( x );
+        var newValue = options.constrainValue( value );
+        valueProperty.set( newValue );
+      }
+    };
     var trackInputListener = new TandemDragHandler( {
       tandem: options.tandem ? options.tandem.createTandem( 'trackInputListener' ) : null,
-
-      /**
-       *
-       * @param event
-       * @param trail
-       */
-      handleTrackEvent: function( event, trail ) {
-        if ( thisSlider.enabledProperty.get() ) {
-          var transform = trail.subtrailTo( thisSlider ).getTransform();
-          var x = transform.inversePosition2( event.pointer.point ).x;
-          var value = thisSlider.valueToPosition.inverse( x );
-          var newValue = options.constrainValue( value );
-          valueProperty.set( newValue );
-        }
-      },
 
       start: function( event, trail ) {
         if ( thisSlider.enabledProperty.get() ) {
           options.startDrag();
-          this.handleTrackEvent( event, trail );
+          handleTrackEvent( event, trail );
         }
       },
 
       drag: function( event, trail ) {
 
         // Reuse the same handleTrackEvent but make sure the startedCallbacks call is made before the value changes
-        this.handleTrackEvent( event, trail );
+        handleTrackEvent( event, trail );
       },
 
       end: function() {
@@ -134,12 +128,10 @@ define( function( require ) {
     }
 
     // update value when thumb is dragged
+    var clickXOffset = 0; // x-offset between initial click and thumb's origin
     var thumbInputListener = new TandemDragHandler( {
 
       tandem: options.tandem ? options.tandem.createTandem( 'thumbInputListener' ) : null,
-
-      // x-offset between initial click and thumb's origin
-      clickXOffset: 0,
 
       allowTouchSnag: true,
 
@@ -148,14 +140,14 @@ define( function( require ) {
           options.startDrag();
 
           var transform = trail.subtrailTo( thisSlider ).getTransform();
-          this.clickXOffset = transform.inversePosition2( event.pointer.point ).x - thumbNode.x;
+          clickXOffset = transform.inversePosition2( event.pointer.point ).x - thumbNode.x;
         }
       },
 
       drag: function( event, trail ) {
         if ( thisSlider.enabledProperty.get() ) {
           var transform = trail.subtrailTo( thisSlider ).getTransform(); // we only want the transform to our parent
-          var x = transform.inversePosition2( event.pointer.point ).x - this.clickXOffset;
+          var x = transform.inversePosition2( event.pointer.point ).x - clickXOffset;
           var newValue = thisSlider.valueToPosition.inverse( x );
 
           valueProperty.set( options.constrainValue( newValue ) );
