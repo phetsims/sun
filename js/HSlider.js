@@ -184,6 +184,7 @@ define( function( require ) {
         if ( thumbInputListener.dragging ) { thumbInputListener.endDrag(); }
         if ( trackInputListener.dragging ) { trackInputListener.endDrag(); }
       }
+      thisSlider.pickable = enabled;
     };
     thisSlider.enabledProperty.link( enabledObserver ); // must be unlinked in disposeHSlider
 
