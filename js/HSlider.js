@@ -57,6 +57,7 @@ define( function( require ) {
       // other
       cursor: 'pointer',
       enabledProperty: new Property( true ),
+      snapValue: null,
       startDrag: function() {}, // called when a drag sequence starts
       endDrag: function() {}, // called when a drag sequence ends
       constrainValue: function( value ) { return value; }, // called before valueProperty is set
@@ -79,6 +80,16 @@ define( function( require ) {
     thisSlider.track = new Rectangle( 0, 0, options.trackSize.width, options.trackSize.height,
       { fill: options.trackFill, stroke: options.trackStroke, lineWidth: options.trackLineWidth } );
     thisSlider.addChild( thisSlider.track );
+
+    // snap to a value if value is within range
+    var snapToValue = function( value ) {
+      if( value <= range.max && value >= range.min ) {
+        valueProperty.set( value );
+      }
+      else {
+        throw new Error( 'snapValue must be within slider range' );
+      }
+    }; 
 
     // click in the track to change the value, continue dragging if desired
     var handleTrackEvent = function( event, trail ) {
@@ -108,6 +119,9 @@ define( function( require ) {
 
       end: function() {
         if ( thisSlider.enabledProperty.get() ) {
+          if( typeof options.snapValue === 'number' ) {
+            snapToValue( options.snapValue );
+          }
           options.endDrag();
         }
       }
@@ -156,6 +170,9 @@ define( function( require ) {
 
       end: function() {
         if ( thisSlider.enabledProperty.get() ) {
+          if( typeof options.snapValue === 'number' ) {
+            snapToValue( options.snapValue );
+          }
           options.endDrag();
         }
       }
