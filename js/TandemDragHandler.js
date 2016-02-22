@@ -56,7 +56,9 @@ define( function( require ) {
       };
 
       optionsCopy.end = function( event, trail ) {
-        tandemDragHandler.startedCallbacksForDragEndedEmitter.emit2( event.pointer.point.x, event.pointer.point.y );
+
+        // drag end may be triggered programatically and hence event and trail may be undefined
+        tandemDragHandler.startedCallbacksForDragEndedEmitter.emit();
         options.end && options.end( event, trail );
         tandemDragHandler.endedCallbacksForDragEndedEmitter.emit();
       };
