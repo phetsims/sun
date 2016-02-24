@@ -121,7 +121,8 @@ define( function( require ) {
     var tickLabelOptions = { font: new PhetFont( 16 ) };
     var slider = new HSlider( property, range, {
       trackSize: new Dimension2( 300, 5 ),
-      center: layoutBounds.center
+      center: layoutBounds.center,
+      enabledProperty: new Property( true )
     } );
 
     // major ticks
@@ -153,7 +154,30 @@ define( function( require ) {
       top: majorTicksCheckBox.bottom + 40
     } );
 
-    return new Node( { children: [ slider, majorTicksCheckBox, minorTicksCheckBox ] } );
+    // enable/disable slider
+    var enabledProperty = new Property( true );
+    enabledProperty.link( function( enabled ) {
+      slider.enabled = enabled;
+    } );
+    var enabledCheckBox = CheckBox.createTextCheckBox( 'Enable slider', { font: new PhetFont( 20 ) }, enabledProperty, {
+      left: slider.left,
+      top: minorTicksCheckBox.bottom + 40
+    } );
+
+    // restrict enabled range of slider
+    var restrictedRangeProperty = new Property( false );
+    var enabledRangeProperty = new Property( { min: 0, max: 100 } );
+    restrictedRangeProperty.link( function( restrictedRange ) {
+      enabledRangeProperty.value = restrictedRange ? { min: 25, max: 75 } : { min: 0, max: 100 };
+    } );
+    enabledRangeProperty.link( function( enabledRange ) {
+      slider.enabledRange = enabledRange; 
+    } );
+    var enabledRangeCheckBox = CheckBox.createTextCheckBox( 'Enable Range [25, 75]', { font: new PhetFont( 20 ) }, restrictedRangeProperty, {
+      left: slider.left,
+      top: enabledCheckBox.bottom + 40
+    } );
+    return new Node( { children: [ slider, majorTicksCheckBox, minorTicksCheckBox, enabledCheckBox, enabledRangeCheckBox ] } );
   };
 
   // Creates a demo for PageControl

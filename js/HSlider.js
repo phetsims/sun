@@ -16,6 +16,7 @@ define( function( require ) {
   var Dimension2 = require( 'DOT/Dimension2' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Input = require( 'SCENERY/input/Input' );
+  var SliderTrack = require( 'SUN/SliderTrack' );
   var LinearFunction = require( 'DOT/LinearFunction' );
   var Node = require( 'SCENERY/nodes/Node' );
   var Path = require( 'SCENERY/nodes/Path' );
@@ -38,11 +39,9 @@ define( function( require ) {
     Node.call( thisSlider );
 
     options = _.extend( {
-      // track
+      // track - see SliderTrack.js constructor for additional pass-through options
       trackSize: new Dimension2( 100, 5 ),
-      trackFill: 'white',
-      trackStroke: 'black',
-      trackLineWidth: 1,
+      enabledRangeProperty: new Property( range ),
       // {Node} optional thumb, replaces the default. Client is responsible for highlighting and disabling. Centered in the track.
       // If you are using the default thumb, see ThumbNode constructor for additional pass-through options.
       thumbNode: null,
@@ -66,6 +65,7 @@ define( function( require ) {
     }, options );
     this.options = options; // @private TODO save only the options that are needed by prototype functions
     this.enabledProperty = options.enabledProperty;
+    this.enabledRangeProperty = options.enabledRangeProperty;
 
     // @private ticks are added to these parents, so they are behind the knob
     thisSlider.majorTicksParent = new Node();
@@ -77,8 +77,8 @@ define( function( require ) {
     thisSlider.valueToPosition = new LinearFunction( range.min, range.max, 0, options.trackSize.width, true /* clamp */ );
 
     // @private track
-    thisSlider.track = new Rectangle( 0, 0, options.trackSize.width, options.trackSize.height,
-      { fill: options.trackFill, stroke: options.trackStroke, lineWidth: options.trackLineWidth } );
+    thisSlider.track = new SliderTrack( valueProperty, range, thisSlider.valueToPosition, options );
+    thisSlider.track.centerX = thisSlider.valueToPosition( ( range.max + range.min ) / 2 );
     thisSlider.addChild( thisSlider.track );
 
     // snap to a value if value is within range
@@ -91,46 +91,8 @@ define( function( require ) {
       }
     }; 
 
-    // click in the track to change the value, continue dragging if desired
-    var handleTrackEvent = function( event, trail ) {
-      if ( thisSlider.enabledProperty.get() ) {
-        var transform = trail.subtrailTo( thisSlider ).getTransform();
-        var x = transform.inversePosition2( event.pointer.point ).x;
-        var value = thisSlider.valueToPosition.inverse( x );
-        var newValue = options.constrainValue( value );
-        valueProperty.set( newValue );
-      }
-    };
-    var trackInputListener = new TandemDragHandler( {
-      tandem: options.tandem ? options.tandem.createTandem( 'trackInputListener' ) : null,
-
-      start: function( event, trail ) {
-        if ( thisSlider.enabledProperty.get() ) {
-          options.startDrag();
-          handleTrackEvent( event, trail );
-        }
-      },
-
-      drag: function( event, trail ) {
-
-        // Reuse the same handleTrackEvent but make sure the startedCallbacks call is made before the value changes
-        handleTrackEvent( event, trail );
-      },
-
-      end: function() {
-        if ( thisSlider.enabledProperty.get() ) {
-          if( typeof options.snapValue === 'number' ) {
-            snapToValue( options.snapValue );
-          }
-          options.endDrag();
-        }
-      }
-    } );
-    thisSlider.track.addInputListener( trackInputListener );
-
     // thumb
     var thumbNode = options.thumbNode || new ThumbNode( this.enabledProperty, options );
-
     thumbNode.centerY = thisSlider.track.centerY;
     thisSlider.addChild( thumbNode );
 
@@ -199,7 +161,6 @@ define( function( require ) {
       thisSlider.cursor = thisSlider.enabledProperty.get() ? options.cursor : 'default';
       if ( !enabled ) {
         if ( thumbInputListener.dragging ) { thumbInputListener.endDrag(); }
-        if ( trackInputListener.dragging ) { trackInputListener.endDrag(); }
       }
       thisSlider.pickable = enabled;
     };
@@ -211,13 +172,25 @@ define( function( require ) {
     };
     valueProperty.link( valueObserver ); // must be unlinked in disposeHSlider
 
+    // when the enabled range changes, the value to position linear function must change as well
+    var enabledRangeObserver = function( enabledRange ) {
+      var initialValueToPosition = new LinearFunction( range.min, range.max, 0, options.trackSize.width, true /* clamp */ );
+      var min = initialValueToPosition( enabledRange.min );
+      var max = initialValueToPosition( enabledRange.max );
+      thisSlider.valueToPosition = new LinearFunction( enabledRange.min, enabledRange.max, min, max, true /* clamp */ );
+
+      // clamp the value to the enabled range if it changes
+      valueProperty.set( Util.clamp( valueProperty.value, enabledRange.min, enabledRange.max ) );
+    };
+    this.enabledRangeProperty.link( enabledRangeObserver ); // needs to be unlinked in dispose function
+
     // @private Called by dispose
     this.disposeHSlider = function() {
       thumbNode.dispose && thumbNode.dispose(); // in case a custom thumb is provided via options.thumbNode that doesn't implement dispose
       valueProperty.unlink( valueObserver );
+      thisSlider.enabledRangeProperty.unlink( enabledRangeObserver );
       thisSlider.enabledProperty.unlink( enabledObserver );
       options.tandem && options.tandem.removeInstance( thisSlider );
-      trackInputListener.dispose();
       thumbInputListener.dispose();
     };
 
@@ -288,6 +261,14 @@ define( function( require ) {
     // @public
     getEnabled: function() { return this.enabledProperty.value; },
     get enabled() { return this.getEnabled(); },
+
+    // @public
+    setEnabledRange: function( enabledRange ) { this.enabledRangeProperty.value = enabledRange; },
+    set enabledRange( range ) { this.setEnabledRange( range ); },
+
+    // @public
+    getEnabledRange: function() { return this.enabledRangeProperty.value; },
+    get enabledRange() { return this.getEnabledRange(); },
 
     // @public - Sets visibility of major ticks.
     setMajorTicksVisible: function( visible ) {
