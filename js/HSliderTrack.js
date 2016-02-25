@@ -1,7 +1,7 @@
 // Copyright 2013-2015, University of Colorado Boulder
 
 /**
- * Track for a Horizontal Slider.  The SliderTrack is composed of two rectangles, one for the enabled section of the
+ * Track for a Horizontal Slider.  The HSliderTrack is composed of two rectangles, one for the enabled section of the
  * track and one for the disabled section.  The enabled track rectangle sits on top of the disabled track so that
  * the enabled range can be any desired sub range of the full slider range.
  *
@@ -27,7 +27,7 @@ define( function( require ) {
    * @param {Object} [options]
    * @constructor
    */
-  function SliderTrack( valueProperty, range, valueToPosition, snapToValue, options ) {
+  function HSliderTrack( valueProperty, range, valueToPosition, snapToValue, options ) {
 
     var thisTrack = this;
     Node.call( thisTrack );
@@ -106,7 +106,7 @@ define( function( require ) {
         if ( trackInputListener.dragging ) { trackInputListener.endDrag(); }
       }
     };
-    thisTrack.enabledProperty.link( enabledObserver ); // must be unlinked in disposeSliderTrack
+    thisTrack.enabledProperty.link( enabledObserver ); // must be unlinked in disposeHSliderTrack
 
     // when the range changes, update the geometry of the 'enabled' rectangle
     var enabledRangeObserver = function( enabledRange ) {
@@ -115,10 +115,10 @@ define( function( require ) {
       var enabledWidth = maxPosition - minPosition;
       thisTrack.enabledTrack.setRect( minPosition, 0, enabledWidth, thisTrack.options.trackSize.height );
     };
-    this.enabledRangeProperty.link( enabledRangeObserver ); // must be unlinked in disposeSliderTrack  
+    this.enabledRangeProperty.link( enabledRangeObserver ); // must be unlinked in disposeHSliderTrack  
 
     // @private Called by dispose
-    this.disposeSliderTrack = function() {
+    this.disposeHSliderTrack = function() {
       thisTrack.enabledProperty.unlink( enabledObserver );
       thisTrack.enabledRangeProperty.unlink( enabledRangeObserver );
       options.tandem && options.tandem.removeInstance( thisTrack );
@@ -130,13 +130,13 @@ define( function( require ) {
     options.tandem && options.tandem.addInstance( this );
   }
 
-  sun.register( 'SliderTrack', SliderTrack );
+  sun.register( 'HSliderTrack', HSliderTrack );
 
-  inherit( Node, SliderTrack, {
+  inherit( Node, HSliderTrack, {
 
     // @public - ensures that this object is eligible for GC
     dispose: function() {
-      this.disposeSliderTrack();
+      this.disposeHSliderTrack();
     },
 
     // @public
@@ -157,5 +157,5 @@ define( function( require ) {
 
   } );
 
-  return SliderTrack;
+  return HSliderTrack;
 } );

@@ -16,7 +16,7 @@ define( function( require ) {
   var Dimension2 = require( 'DOT/Dimension2' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Input = require( 'SCENERY/input/Input' );
-  var SliderTrack = require( 'SUN/SliderTrack' );
+  var HSliderTrack = require( 'SUN/HSliderTrack' );
   var LinearFunction = require( 'DOT/LinearFunction' );
   var Node = require( 'SCENERY/nodes/Node' );
   var Path = require( 'SCENERY/nodes/Path' );
@@ -39,7 +39,7 @@ define( function( require ) {
     Node.call( thisSlider );
 
     options = _.extend( {
-      // track - see SliderTrack.js constructor for additional pass-through options
+      // track - see HSliderTrack.js constructor for additional pass-through options
       trackSize: new Dimension2( 100, 5 ),
       enabledRangeProperty: new Property( range ),
       // {Node} optional thumb, replaces the default. Client is responsible for highlighting and disabling. Centered in the track.
@@ -76,7 +76,7 @@ define( function( require ) {
     // @private mapping between value and track position
     thisSlider.valueToPosition = new LinearFunction( range.min, range.max, 0, options.trackSize.width, true /* clamp */ );
 
-    // snap to a value if value is within range, used by HSlider and SliderTrack
+    // snap to a value if value is within range, used by HSlider and HSliderTrack
     var snapToValue = function( value ) {
       if( value <= range.max && value >= range.min ) {
         valueProperty.set( value );
@@ -87,7 +87,7 @@ define( function( require ) {
     }; 
 
     // @private track
-    thisSlider.track = new SliderTrack( valueProperty, range, thisSlider.valueToPosition, snapToValue, options );
+    thisSlider.track = new HSliderTrack( valueProperty, range, thisSlider.valueToPosition, snapToValue, options );
     thisSlider.track.centerX = thisSlider.valueToPosition( ( range.max + range.min ) / 2 );
     thisSlider.addChild( thisSlider.track );
 
