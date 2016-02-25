@@ -13,10 +13,8 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var Dimension2 = require( 'DOT/Dimension2' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Node = require( 'SCENERY/nodes/Node' );
-  var Property = require( 'AXON/Property' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var TandemDragHandler = require( 'SUN/TandemDragHandler' );
   var sun = require( 'SUN/sun' );
@@ -36,19 +34,10 @@ define( function( require ) {
 
     options = _.extend( {
       // track
-      trackSize: new Dimension2( 100, 5 ),
       trackFillEnabled: 'white',
       trackFillDisabled: 'gray',
       trackStroke: 'black',
       trackLineWidth: 1,
-      enabledRangeProperty: new Property( range ),
-      // other
-      cursor: 'pointer',
-      enabledProperty: new Property( true ),
-      snapValue: null,
-      startDrag: function() {}, // called when a drag sequence starts
-      endDrag: function() {}, // called when a drag sequence ends
-      constrainValue: function( value ) { return value; }, // called before valueProperty is set
       // tandem
       tandem: null
     }, options );
