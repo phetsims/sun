@@ -25,10 +25,11 @@ define( function( require ) {
    * @param {Property.<number>} valueProperty
    * @param { {min:number, max:number} } range
    * @param {function} valueToPosition
+   * @param {function} snapToValue - function to snap to a value if slider should snap to a vavlue on drag end
    * @param {Object} [options]
    * @constructor
    */
-  function SliderTrack( valueProperty, range, valueToPosition, options ) {
+  function SliderTrack( valueProperty, range, valueToPosition, snapToValue, options ) {
 
     var thisTrack = this;
     Node.call( thisTrack );
@@ -70,16 +71,6 @@ define( function( require ) {
       ineWidth: options.trackLineWidth
     } );
     thisTrack.addChild( thisTrack.enabledTrack );
-
-    // snap to a value on drag end if value is within range
-    var snapToValue = function( value ) {
-      if( value <= range.max && value >= range.min ) {
-        valueProperty.set( value );
-      }
-      else {
-        throw new Error( 'snapValue must be within slider range' );
-      }
-    }; 
 
     // click in the track to change the value, continue dragging if desired
     var handleTrackEvent = function( event, trail ) {

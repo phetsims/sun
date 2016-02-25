@@ -76,12 +76,7 @@ define( function( require ) {
     // @private mapping between value and track position
     thisSlider.valueToPosition = new LinearFunction( range.min, range.max, 0, options.trackSize.width, true /* clamp */ );
 
-    // @private track
-    thisSlider.track = new SliderTrack( valueProperty, range, thisSlider.valueToPosition, options );
-    thisSlider.track.centerX = thisSlider.valueToPosition( ( range.max + range.min ) / 2 );
-    thisSlider.addChild( thisSlider.track );
-
-    // snap to a value if value is within range
+    // snap to a value if value is within range, used by HSlider and SliderTrack
     var snapToValue = function( value ) {
       if( value <= range.max && value >= range.min ) {
         valueProperty.set( value );
@@ -90,6 +85,11 @@ define( function( require ) {
         throw new Error( 'snapValue must be within slider range' );
       }
     }; 
+
+    // @private track
+    thisSlider.track = new SliderTrack( valueProperty, range, thisSlider.valueToPosition, snapToValue, options );
+    thisSlider.track.centerX = thisSlider.valueToPosition( ( range.max + range.min ) / 2 );
+    thisSlider.addChild( thisSlider.track );
 
     // thumb
     var thumbNode = options.thumbNode || new ThumbNode( this.enabledProperty, options );
