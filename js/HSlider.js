@@ -56,7 +56,7 @@ define( function( require ) {
       // other
       cursor: 'pointer',
       enabledProperty: new Property( true ),
-      snapValue: null,
+      snapValue: null, // if specified, slider will snap to this value on end drag
       startDrag: function() {}, // called when a drag sequence starts
       endDrag: function() {}, // called when a drag sequence ends
       constrainValue: function( value ) { return value; }, // called before valueProperty is set
