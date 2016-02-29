@@ -111,10 +111,9 @@ define( function( require ) {
      */
     initialize: function( accessibleInstance, buttonLabel, listener ) {
                     
-      // will look like <input aria-label="Button Label" type="button">
-      var domElement = document.createElement( 'input' );
-      domElement.setAttribute( 'type', 'button' );
-      domElement.setAttribute( 'aria-label', buttonLabel );
+      // will look like <button aria-label="Button Label" type="button">
+      var domElement = document.createElement( 'button' );
+      domElement.textContent = buttonLabel;
 
       // fire on click event
       domElement.addEventListener( 'click', function() {
