@@ -125,8 +125,6 @@ define( function( require ) {
       trackInputListener.dispose();
     };
 
-    thisTrack.mutate( options );
-
     options.tandem && options.tandem.addInstance( this );
   }
 
