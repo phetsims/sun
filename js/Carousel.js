@@ -320,6 +320,11 @@ define( function( require ) {
 
   return inherit( Node, Carousel, {
 
+    // @public - resets the carousel to its initial state
+    reset: function() {
+      this.pageNumberProperty.reset();
+    },
+
     /**
      * Determines whether animation is enabled for scrolling between pages.
      * @param {boolean} animationEnabled
@@ -356,11 +361,6 @@ define( function( require ) {
      */
     scrollToItem: function( item ) {
       this.scrollToItemIndex( this.items.indexOf( item ) );
-    },
-
-    // @public - resets the carousel to its initial state
-    reset: function() {
-      this.pageNumberProperty.reset();
     }
   }, {
 
