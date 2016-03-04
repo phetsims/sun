@@ -378,6 +378,7 @@ define( function( require ) {
      * Converts an item index to a page number.
      * @param {number} itemIndex
      * @returns {number}
+     * @public
      */
     itemIndexToPageNumber: function( itemIndex ) {
       assert && assert( itemIndex >= 0 && itemIndex < this.items.length, 'itemIndex out of range: ' + itemIndex );
