@@ -350,8 +350,7 @@ define( function( require ) {
      * @param {number} itemIndex
      */
     scrollToItemIndex: function( itemIndex ) {
-      assert && assert( itemIndex >= 0 && itemIndex < this.items.length, 'itemIndex out of range: ' + itemIndex );
-      this.pageNumberProperty.set( Math.floor( itemIndex / this.itemsPerPage ) );
+      this.pageNumberProperty.set( this.itemIndexToPageNumber( itemIndex ) );
     },
 
     /**
@@ -361,6 +360,28 @@ define( function( require ) {
      */
     scrollToItem: function( item ) {
       this.scrollToItemIndex( this.items.indexOf( item ) );
+    },
+
+    /**
+     * Is the specified item currently visible in the carousel?
+     * @param {Node} item
+     * @returns {boolean}
+     * @public
+     */
+    isItemVisible: function( item ) {
+      var itemIndex = this.items.indexOf( item );
+      assert && assert( itemIndex !== -1, 'item not found' );
+      return ( this.pageNumberProperty.get() === this.itemIndexToPageNumber( itemIndex ) );
+    },
+
+    /**
+     * Converts an item index to a page number.
+     * @param {number} itemIndex
+     * @returns {number}
+     */
+    itemIndexToPageNumber: function( itemIndex ) {
+      assert && assert( itemIndex >= 0 && itemIndex < this.items.length, 'itemIndex out of range: ' + itemIndex );
+      return Math.floor( itemIndex / this.itemsPerPage );
     }
   }, {
 
