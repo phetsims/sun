@@ -49,7 +49,8 @@ define( function( require ) {
     thisTrack.disabledTrack = new Rectangle( 0, 0, options.trackSize.width, options.trackSize.height, {
       fill: options.trackFillDisabled,
       stroke: options.trackStroke,
-      lineWidth: options.trackLineWidth
+      lineWidth: options.trackLineWidth,
+      cursor: 'default'
     } );
     thisTrack.addChild( thisTrack.disabledTrack );
 
