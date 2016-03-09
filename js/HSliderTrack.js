@@ -44,6 +44,7 @@ define( function( require ) {
     this.options = options; // @private TODO save only the options that are needed by prototype functions
     this.enabledProperty = options.enabledProperty;
     this.enabledRangeProperty = options.enabledRangeProperty;
+    this._snapValue = options.snapValue;
 
     // @private
     thisTrack.disabledTrack = new Rectangle( 0, 0, options.trackSize.width, options.trackSize.height, {
@@ -90,8 +91,8 @@ define( function( require ) {
 
       end: function() {
         if ( thisTrack.enabledProperty.get() ) {
-          if( typeof options.snapValue === 'number' ) {
-            snapToValue( options.snapValue );
+          if( typeof thisTrack._snapValue === 'number' ) {
+            snapToValue( thisTrack._snapValue );
           }
           options.endDrag();
         }
@@ -146,13 +147,25 @@ define( function( require ) {
     getEnabled: function() { return this.enabledProperty.value; },
     get enabled() { return this.getEnabled(); },
 
+    // @public
     setEnabledRange: function( enabledRange ) {
       this.enabledRangeProperty.value = enabledRange;
     },
     set enabledRange( enabledRange ) { this.setEnabledRange( enabledRange ); },
 
+    // @public
     getEnabledRange: function() { return this.enabledRangeProperty.value; },
-    get enabledRange() { return this.getEnabledRange(); }
+    get enabledRange() { return this.getEnabledRange(); },
+
+    // @public
+    setSnapValue: function( snapValue ) { 
+      this._snapValue = snapValue;
+    },
+    set snapValue( snapValue ) { this.setSnapValue( snapValue ); },
+
+    // @public
+    getSnapValue: function() { return this._snapValue; },
+    get snapValue() { return this.getSnapValue(); }
 
   } );
 

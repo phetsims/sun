@@ -66,6 +66,7 @@ define( function( require ) {
     this.options = options; // @private TODO save only the options that are needed by prototype functions
     this.enabledProperty = options.enabledProperty;
     this.enabledRangeProperty = options.enabledRangeProperty;
+    this._snapValue = options.snapValue;
 
     // @private ticks are added to these parents, so they are behind the knob
     thisSlider.majorTicksParent = new Node();
@@ -136,8 +137,8 @@ define( function( require ) {
 
       end: function() {
         if ( thisSlider.enabledProperty.get() ) {
-          if( typeof options.snapValue === 'number' ) {
-            snapToValue( options.snapValue );
+          if( typeof thisSlider._snapValue === 'number' ) {
+            snapToValue( thisSlider._snapValue );
           }
           options.endDrag();
         }
@@ -273,6 +274,17 @@ define( function( require ) {
     // @public
     getEnabledRange: function() { return this.enabledRangeProperty.value; },
     get enabledRange() { return this.getEnabledRange(); },
+
+    // @public
+    setSnapValue: function( snapValue ) { 
+      this._snapValue = snapValue;
+      this.track.snapValue = snapValue;
+    },
+    set snapValue( snapValue ) { this.setSnapValue( snapValue ); },
+
+    // @public
+    getSnapValue: function() { return this._snapValue; },
+    get snapValue() { return this.getSnapValue(); },
 
     // @public - Sets visibility of major ticks.
     setMajorTicksVisible: function( visible ) {
