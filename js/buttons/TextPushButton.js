@@ -24,10 +24,11 @@ define( function( require ) {
 
     options = _.extend( {
       font: new Font( 20 ),
-      textFill: 'black'
+      textFill: 'black',
+      maxTextWidth: null
     }, options );
 
-    var textNode = new Text( text, { font: options.font, fill: options.textFill } );
+    var textNode = new Text( text, { font: options.font, fill: options.textFill, maxWidth: options.maxTextWidth } );
     RectangularPushButton.call( this, _.extend( { content: textNode }, options ) );
   }
 
