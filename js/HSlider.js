@@ -66,6 +66,8 @@ define( function( require ) {
     this.options = options; // @private TODO save only the options that are needed by prototype functions
     this.enabledProperty = options.enabledProperty;
     this.enabledRangeProperty = options.enabledRangeProperty;
+
+    // @private
     this._snapValue = options.snapValue;
 
     // @private ticks are added to these parents, so they are behind the knob
