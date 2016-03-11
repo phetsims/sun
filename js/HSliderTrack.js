@@ -23,7 +23,7 @@ define( function( require ) {
    * @param {Property.<number>} valueProperty
    * @param { {min:number, max:number} } range
    * @param {function} valueToPosition
-   * @param {function} snapToValue - function to snap to a value if slider should snap to a vavlue on drag end
+   * @param {function} snapToValue - function to snap to a value if slider should snap to a value on drag end
    * @param {Object} [options]
    * @constructor
    */
