@@ -237,6 +237,8 @@ define( function( require ) {
     }
 
     // Number of the page that is visible in the carousel.
+    assert && assert( options.defaultPageNumber >= 0 && options.defaultPageNumber <= numberOfPages - 1,
+      'defaultPageNumber is out of range: ' + options.defaultPageNumber );
     var pageNumberProperty = new Property( options.defaultPageNumber );
 
     // Change pages
