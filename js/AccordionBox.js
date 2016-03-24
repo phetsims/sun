@@ -114,30 +114,18 @@ define( function( require ) {
     var collapsedBox = new Rectangle( 0, 0, boxWidth, collapsedBoxHeight, options.cornerRadius, options.cornerRadius, boxOptions );
     this.addChild( collapsedBox );
 
-    // Expanded title bar has rounded top corners, square bottom corners. Clicking it operates like expand/collapse button.
-    var expandedTitleBar = null;
+    // Expanded title bar has (optional) rounded top corners, square bottom corners. Clicking it operates like expand/collapse button.
     var expandedTitleBarOptions = {
       fill: options.titleBarFill,
       stroke: options.titleBarStroke,
       lineWidth: options.lineWidth, // use same lineWidth as box, for consistent look
       cursor: options.cursor
     };
-    if ( options.cornerRadius === 0 || !options.titleBarFill ) {
-      // no rounded corners or no title bar visible, so use a Rectangle
-      expandedTitleBar = new Rectangle( 0, 0, boxWidth, collapsedBoxHeight, expandedTitleBarOptions );
-    }
-    else {
-      // rounded top corners, square bottom corners (start at bottom left and move clockwise)
-      expandedTitleBar = new Path( new Shape()
-          .moveTo( 0, collapsedBoxHeight )
-          .lineTo( 0, options.cornerRadius )
-          .arc( options.cornerRadius, options.cornerRadius, options.cornerRadius, Math.PI, 1.5 * Math.PI )
-          .lineTo( boxWidth - options.cornerRadius, 0 )
-          .arc( boxWidth - options.cornerRadius, options.cornerRadius, options.cornerRadius, 1.5 * Math.PI, 0 )
-          .lineTo( boxWidth, collapsedBoxHeight )
-          .close(),
-        expandedTitleBarOptions );
-    }
+    var expandedTitleBarShape = Shape.roundedRectangleWithRadii( 0, 0, boxWidth, collapsedBoxHeight, {
+      topLeft: options.cornerRadius,
+      topRight: options.cornerRadius
+    } );
+    var expandedTitleBar = new Path( expandedTitleBarShape, expandedTitleBarOptions );
     expandedBox.addChild( expandedTitleBar );
     if ( options.showTitleWhenExpanded ) {
       expandedTitleBar.addInputListener( {
