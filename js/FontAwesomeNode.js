@@ -43,6 +43,15 @@ define( function( require ) {
   // cache the created Shapes so they can be re-used for the same icons.
   var shapeCache = {};
 
+  var getShapeByName = function( iconName ) {
+    if ( !shapeCache[ iconName ] ) {
+
+      // create the shape for what we'll consider 'unity' scale
+      shapeCache[ iconName ] = new Shape( icons[ iconName ] ).transformed( SHAPE_MATRIX );
+    }
+    return shapeCache[ iconName ];
+  };
+
   function FontAwesomeNode( iconName, options ) {
 
     // default values
@@ -53,23 +62,10 @@ define( function( require ) {
       pickable: false
     }, options );
 
-    Path.call( this, FontAwesomeNode.getShapeByName( iconName ), options );
+    Path.call( this, getShapeByName( iconName ), options );
   }
 
   sun.register( 'FontAwesomeNode', FontAwesomeNode );
 
-  inherit( Path, FontAwesomeNode, {}, {
-
-    // @public
-    getShapeByName: function( iconName ) {
-      var shape = shapeCache[ iconName ];
-      if ( !shape ) {
-        // create the shape for what we'll consider 'unity' scale
-        shape = shapeCache[ iconName ] = new Shape( icons[ iconName ] ).transformed( SHAPE_MATRIX );
-      }
-      return shape;
-    }
-  } );
-
-  return FontAwesomeNode;
+  return inherit( Path, FontAwesomeNode );
 } );
