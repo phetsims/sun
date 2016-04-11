@@ -42,7 +42,8 @@ define( function( require ) {
       lineWidth: symbolLineWidth,
       stroke: 'white',
       centerX: options.sideLength / 2,
-      centerY: options.sideLength / 2
+      centerY: options.sideLength / 2,
+      pickable: false
     };
 
     // Expand '+' button
