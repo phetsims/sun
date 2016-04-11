@@ -322,9 +322,22 @@ define( function( require ) {
 
   return inherit( Node, Carousel, {
 
-    // @public - resets the carousel to its initial state
-    reset: function() {
+    /**
+     * Resets the carousel to its initial state.
+     *
+     * @param {Object} [options]
+     * @public
+     */
+    reset: function( options ) {
+
+      options = _.extend( {
+        animationEnabled: this.animationEnabled // {boolean} whether to enable animation during reset
+      }, options );
+
+      var saveAnimationEnabled = this.animationEnabled;
+      this.animationEnabled = options.animationEnabled;
       this.pageNumberProperty.reset();
+      this.animationEnabled = saveAnimationEnabled;
     },
 
     /**
