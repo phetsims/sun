@@ -41,15 +41,20 @@ define( function( require ) {
 
   // Since there is a non-trivial cost to parse the SVG strings multiple times (and do the coordinate transform), we
   // cache the created Shapes so they can be re-used for the same icons.
-  var shapeCache = {};
+  // TODO: As of mid-April 2016, shape caching was disabled because it was causing memory leaks, see
+  // https://github.com/phetsims/joist/issues/329.  The code will be left here, but commented out so that it can be
+  // easily restored if needed.  If it's still commented out after a year (April 2017), it's probably is safe to remove
+  // it permanently.
+  //var shapeCache = {};
 
   var getShapeByName = function( iconName ) {
-    if ( !shapeCache[ iconName ] ) {
-
-      // create the shape for what we'll consider 'unity' scale
-      shapeCache[ iconName ] = new Shape( icons[ iconName ] ).transformed( SHAPE_MATRIX );
-    }
-    return shapeCache[ iconName ];
+    //if ( !shapeCache[ iconName ] ) {
+    //
+    //  // create the shape for what we'll consider 'unity' scale
+    //  shapeCache[ iconName ] = new Shape( icons[ iconName ] ).transformed( SHAPE_MATRIX );
+    //}
+    //return shapeCache[ iconName ];
+    return new Shape( icons[ iconName ] ).transformed( SHAPE_MATRIX );
   };
 
   function FontAwesomeNode( iconName, options ) {
