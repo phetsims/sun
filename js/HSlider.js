@@ -94,7 +94,7 @@ define( function( require ) {
     trackOptions.tandem = trackOptions.tandem ? trackOptions.tandem.createTandem( 'sliderTrack' ) : null;
 
     // @private track
-    thisSlider.track = new HSliderTrack( valueProperty, range, thisSlider.valueToPosition, snapToValue, trackOptions );
+    thisSlider.track = new HSliderTrack( valueProperty, thisSlider.valueToPosition, snapToValue, trackOptions );
     thisSlider.track.centerX = thisSlider.valueToPosition( ( range.max + range.min ) / 2 );
     thisSlider.addChild( thisSlider.track );
 
@@ -184,7 +184,13 @@ define( function( require ) {
       var initialValueToPosition = new LinearFunction( range.min, range.max, 0, options.trackSize.width, true /* clamp */ );
       var min = initialValueToPosition( enabledRange.min );
       var max = initialValueToPosition( enabledRange.max );
+
+      // update the geometry of the enabled track
+      thisSlider.track.updateEnabledTrackWidth( min, max );
+
+      // update the function that maps value to position for the track and the slider
       thisSlider.valueToPosition = new LinearFunction( enabledRange.min, enabledRange.max, min, max, true /* clamp */ );
+      thisSlider.track.valueToPosition = thisSlider.valueToPosition;
 
       // clamp the value to the enabled range if it changes
       valueProperty.set( Util.clamp( valueProperty.value, enabledRange.min, enabledRange.max ) );
@@ -194,6 +200,7 @@ define( function( require ) {
     // @private Called by dispose
     this.disposeHSlider = function() {
       thumbNode.dispose && thumbNode.dispose(); // in case a custom thumb is provided via options.thumbNode that doesn't implement dispose
+      thisSlider.track.dispose();
       valueProperty.unlink( valueObserver );
       thisSlider.enabledRangeProperty.unlink( enabledRangeObserver );
       thisSlider.enabledProperty.unlink( enabledObserver );

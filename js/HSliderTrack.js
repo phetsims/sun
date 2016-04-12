@@ -21,13 +21,12 @@ define( function( require ) {
 
   /**
    * @param {Property.<number>} valueProperty
-   * @param { {min:number, max:number} } range
-   * @param {function} valueToPosition
+   * @param {function} valueToPosition - linear function that maps property value to position along the track
    * @param {function} snapToValue - function to snap to a value if slider should snap to a value on drag end
    * @param {Object} [options]
    * @constructor
    */
-  function HSliderTrack( valueProperty, range, valueToPosition, snapToValue, options ) {
+  function HSliderTrack( valueProperty, valueToPosition, snapToValue, options ) {
 
     var thisTrack = this;
     Node.call( thisTrack );
@@ -41,13 +40,17 @@ define( function( require ) {
       // tandem
       tandem: null
     }, options );
-    this.options = options; // @private TODO save only the options that are needed by prototype functions
-    this.enabledProperty = options.enabledProperty;
-    this.enabledRangeProperty = options.enabledRangeProperty;
-    this._snapValue = options.snapValue;
 
     // @private
-    thisTrack.disabledTrack = new Rectangle( 0, 0, options.trackSize.width, options.trackSize.height, {
+    this.trackSize = options.trackSize;
+    this.enabledProperty = options.enabledProperty;
+
+    // @public
+    this.valueToPosition = valueToPosition;
+    this.snapValue = options.snapValue;
+
+    // @private
+    thisTrack.disabledTrack = new Rectangle( 0, 0, this.trackSize.width, this.trackSize.height, {
       fill: options.trackFillDisabled,
       stroke: options.trackStroke,
       lineWidth: options.trackLineWidth,
@@ -56,7 +59,7 @@ define( function( require ) {
     thisTrack.addChild( thisTrack.disabledTrack );
 
     // @private
-    thisTrack.enabledTrack = new Rectangle( 0, 0, options.trackSize.width, options.trackSize.height, { 
+    thisTrack.enabledTrack = new Rectangle( 0, 0, this.trackSize.width, this.trackSize.height, { 
       fill: options.trackFillEnabled,
       stroke: options.trackStroke,
       ineWidth: options.trackLineWidth
@@ -68,7 +71,7 @@ define( function( require ) {
       if ( thisTrack.enabledProperty.get() ) {
         var transform = trail.subtrailTo( thisTrack ).getTransform();
         var x = transform.inversePosition2( event.pointer.point ).x;
-        var value = valueToPosition.inverse( x );
+        var value = thisTrack.valueToPosition.inverse( x );
         var newValue = options.constrainValue( value );
         valueProperty.set( newValue );
       }
@@ -91,8 +94,8 @@ define( function( require ) {
 
       end: function() {
         if ( thisTrack.enabledProperty.get() ) {
-          if( typeof thisTrack._snapValue === 'number' ) {
-            snapToValue( thisTrack._snapValue );
+          if( typeof thisTrack.snapValue === 'number' ) {
+            snapToValue( thisTrack.snapValue );
           }
           options.endDrag();
         }
@@ -100,9 +103,8 @@ define( function( require ) {
     } );
     thisTrack.enabledTrack.addInputListener( trackInputListener );
 
-    // @private enable/disable
+    // enable/disable
     var enabledObserver = function( enabled ) {
-      thisTrack.cursor = thisTrack.enabledProperty.get() ? options.cursor : 'default';
       thisTrack.enabledTrack.visible = enabled;
       if ( !enabled ) {
         if ( trackInputListener.dragging ) { trackInputListener.endDrag(); }
@@ -110,19 +112,9 @@ define( function( require ) {
     };
     thisTrack.enabledProperty.link( enabledObserver ); // must be unlinked in disposeHSliderTrack
 
-    // when the range changes, update the geometry of the 'enabled' rectangle
-    var enabledRangeObserver = function( enabledRange ) {
-      var minPosition = valueToPosition( enabledRange.min );
-      var maxPosition = valueToPosition( enabledRange.max );
-      var enabledWidth = maxPosition - minPosition;
-      thisTrack.enabledTrack.setRect( minPosition, 0, enabledWidth, thisTrack.options.trackSize.height );
-    };
-    this.enabledRangeProperty.link( enabledRangeObserver ); // must be unlinked in disposeHSliderTrack  
-
     // @private Called by dispose
     this.disposeHSliderTrack = function() {
       thisTrack.enabledProperty.unlink( enabledObserver );
-      thisTrack.enabledRangeProperty.unlink( enabledRangeObserver );
       options.tandem && options.tandem.removeInstance( thisTrack );
       trackInputListener.dispose();
     };
@@ -139,33 +131,16 @@ define( function( require ) {
       this.disposeHSliderTrack();
     },
 
-    // @public
-    setEnabled: function( enabled ) { this.enabledProperty.value = enabled; },
-    set enabled( value ) { this.setEnabled( value ); },
-
-    // @public
-    getEnabled: function() { return this.enabledProperty.value; },
-    get enabled() { return this.getEnabled(); },
-
-    // @public
-    setEnabledRange: function( enabledRange ) {
-      this.enabledRangeProperty.value = enabledRange;
-    },
-    set enabledRange( enabledRange ) { this.setEnabledRange( enabledRange ); },
-
-    // @public
-    getEnabledRange: function() { return this.enabledRangeProperty.value; },
-    get enabledRange() { return this.getEnabledRange(); },
-
-    // @public
-    setSnapValue: function( snapValue ) { 
-      this._snapValue = snapValue;
-    },
-    set snapValue( snapValue ) { this.setSnapValue( snapValue ); },
-
-    // @public
-    getSnapValue: function() { return this._snapValue; },
-    get snapValue() { return this.getSnapValue(); }
+    /**
+     * Update the dimensions of the enabled track.
+     * 
+     * @param  {number} minX - x value for the min position of the enabled range of the track
+     * @param  {number} maxX - x value for the max position of the enabled range of the track
+     */
+    updateEnabledTrackWidth: function( minX, maxX ) {
+      var enabledWidth = maxX - minX;
+      this.enabledTrack.setRect( minX, 0, enabledWidth, this.trackSize.height );
+    }
 
   } );
 
