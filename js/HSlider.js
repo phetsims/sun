@@ -23,7 +23,7 @@ define( function( require ) {
   var Property = require( 'AXON/Property' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var Shape = require( 'KITE/Shape' );
-  var TandemDragHandler = require( 'SUN/TandemDragHandler' );
+  var TandemDragHandler = require( 'TANDEM/scenery/input/TandemDragHandler' );
   var sun = require( 'SUN/sun' );
   var Util = require( 'DOT/Util' );
 

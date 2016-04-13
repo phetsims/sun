@@ -16,7 +16,7 @@ define( function( require ) {
   var inherit = require( 'PHET_CORE/inherit' );
   var Node = require( 'SCENERY/nodes/Node' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
-  var TandemDragHandler = require( 'SUN/TandemDragHandler' );
+  var TandemDragHandler = require( 'TANDEM/scenery/input/TandemDragHandler' );
   var sun = require( 'SUN/sun' );
 
   /**
