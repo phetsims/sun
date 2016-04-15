@@ -9,6 +9,7 @@ define( function( require ) {
   // modules
   var ButtonsView = require( 'SUN/demo/ButtonsView' );
   var ComponentsView = require( 'SUN/demo/ComponentsView' );
+  var MemoryTestsView = require( 'SUN/demo/MemoryTestsView' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var Screen = require( 'JOIST/Screen' );
   var Sim = require( 'JOIST/Sim' );
@@ -39,6 +40,12 @@ define( function( require ) {
         createScreenIcon( 'yellow' ),
         function() {return {};},
         function( model ) {return new ComponentsView();},
+        { backgroundColor: backgroundColor }
+      ),
+      new Screen( 'Memory Tests',
+        createScreenIcon( 'blue' ),
+        function() {return {};},
+        function( model ) {return new MemoryTestsView();},
         { backgroundColor: backgroundColor }
       )
     ], simOptions ).start();
