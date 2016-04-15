@@ -50,6 +50,8 @@ define( function( require ) {
 
       for ( var i = 0; i < components.length; i++ ) {
         var holder = components[ i ];
+
+        // dispose first, then remove so they will be visible on the screen during animation.
         holder.instance && this.removeChild( holder.instance );
         holder.instance && holder.dispose();
 
