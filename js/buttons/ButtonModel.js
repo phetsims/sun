@@ -22,7 +22,9 @@ define( function( require ) {
       // {function} called on pointer down
       startCallback: function() {},
       // {function} called on pointer up, @param {boolean} over - indicates whether the pointer was released over the button
-      endCallback: function( over ) {}
+      endCallback: function( over ) {},
+      // {boolean} is the button enabled?
+      enabled: true
     }, options );
 
     var thisModel = this;
@@ -30,7 +32,7 @@ define( function( require ) {
     PropertySet.call( this, {
       over: false,  // @public - Is the pointer over the button?
       down: false, // @public - Is the pointer down?
-      enabled: true  // @public - Is the button enabled?
+      enabled: options.enabled  // @public - Is the button enabled?
     }, options );
 
     // startCallback on pointer down, endCallback on pointer up. lazyLink so they aren't called immediately.
