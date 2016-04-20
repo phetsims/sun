@@ -201,6 +201,7 @@ define( function( require ) {
             self.trigger0( 'startedCallbacksForComboBoxPopupShown' );
 
             moveList();
+            listNode.moveToFront();
             listNode.visible = true;
             enableClickToDismissListener = false;
             sceneNode = self.getUniqueTrail().rootNode();
