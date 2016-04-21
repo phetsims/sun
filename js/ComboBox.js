@@ -5,7 +5,7 @@
  * The list of items is displayed when the button is pressed, and dismissed an item is selected
  * or the user clicks outside the list.  The list can be displayed either above or below the button.
  *
- * An item in the combo box had 2 properties: {Node} node, {*} value.
+ * An item in the combo box has 2 properties: {Node} node, {*} value.
  *
  * @author Chris Malley (PixelZoom, Inc.)
  */
