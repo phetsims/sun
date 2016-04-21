@@ -4,7 +4,7 @@
  * Scenery-based combo box. Composed of a button and a list of items.
  * The list of items is displayed when the button is pressed, and dismissed an item is selected
  * or the user clicks outside the list.  The list can be displayed either above or below the button.
- * <p>
+ *
  * An item in the combo box had 2 properties: {Node} node, {*} value.
  *
  * @author Chris Malley (PixelZoom, Inc.)
