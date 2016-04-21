@@ -34,32 +34,31 @@ define( function( require ) {
     var self = this;
 
     options = _.extend( {
-        labelNode: null, // optional label, placed to the left of the combo box
-        labelXSpacing: 10, // horizontal space between label and combo box
-        // button
-        buttonFill: 'white',
-        buttonStroke: 'black',
-        buttonLineWidth: 1,
-        buttonCornerRadius: 8,
-        buttonXMargin: 10,
-        buttonYMargin: 4,
-        // list
-        listPosition: 'below', // where the list is positioned relative to the button, either 'below' or 'above'
-        listYMargin: 4,
-        listFill: 'white',
-        listStroke: 'black',
-        listLineWidth: 1,
-        listCornerRadius: 5,
-        // items
-        itemXMargin: 6,
-        itemYMargin: 6,
-        itemHighlightFill: 'rgb(245,245,245)',
-        itemHighlightStroke: null,
-        itemHighlightLineWidth: 1,
-        // tandem
-        tandem: null
-      },
-      options );
+      labelNode: null, // optional label, placed to the left of the combo box
+      labelXSpacing: 10, // horizontal space between label and combo box
+      // button
+      buttonFill: 'white',
+      buttonStroke: 'black',
+      buttonLineWidth: 1,
+      buttonCornerRadius: 8,
+      buttonXMargin: 10,
+      buttonYMargin: 4,
+      // list
+      listPosition: 'below', // where the list is positioned relative to the button, either 'below' or 'above'
+      listYMargin: 4,
+      listFill: 'white',
+      listStroke: 'black',
+      listLineWidth: 1,
+      listCornerRadius: 5,
+      // items
+      itemXMargin: 6,
+      itemYMargin: 6,
+      itemHighlightFill: 'rgb(245,245,245)',
+      itemHighlightStroke: null,
+      itemHighlightLineWidth: 1,
+      // tandem
+      tandem: null
+    }, options );
 
     Node.call( self );
 
