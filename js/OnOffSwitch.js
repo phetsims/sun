@@ -3,7 +3,7 @@
 /**
  * On/off switch, similar to iOS' UISwitch, used in iOS `'Settings' app.
  * Off (false) is to the left, on (true) is to the right.
- * <p>
+ *
  * Interaction behavior is as follows:
  * Drag the thumb to change the value, or click anywhere to toggle the value.
  * If you click without dragging, it's a toggle.
