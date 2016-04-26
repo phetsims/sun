@@ -20,7 +20,7 @@ define( function( require ) {
   // modules
   var Dimension2 = require( 'DOT/Dimension2' );
   var Vector2 = require( 'DOT/Vector2' );
-  var clamp = require( 'DOT/Util' ).clamp;
+  var Util = require( 'DOT/Util' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Node = require( 'SCENERY/nodes/Node' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
@@ -127,7 +127,7 @@ define( function( require ) {
         // center the thumb on the pointer's x-coordinate if possible (but clamp to left and right ends)
         var viewPoint = evt.currentTarget.globalToLocalPoint( evt.pointer.point );
         var halfThumbWidth = thumbNode.width / 2;
-        thumbNode.centerX = clamp( viewPoint.x, halfThumbWidth, options.size.width - halfThumbWidth );
+        thumbNode.centerX = Util.clamp( viewPoint.x, halfThumbWidth, options.size.width - halfThumbWidth );
 
         // whether the thumb is dragged outside of the possible range far enough beyond our threshold to potentially
         // trigger an immediate model change
