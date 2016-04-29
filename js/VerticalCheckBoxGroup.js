@@ -32,7 +32,8 @@ define( function( require ) {
       checkBoxColor: 'black',
       align: 'left',
       boxWidth: 21,
-      tabIndex: '0' // '0' places the item in the default accessible navigation order, '-1' removes it from navigation
+      tabIndex: '0', // '0' places the item in the default accessible navigation order, '-1' removes it from navigation
+      tandem: null
     }, options );
 
     // compute max width of the items
@@ -54,7 +55,8 @@ define( function( require ) {
           checkBoxColor: options.checkBoxColor,
           boxWidth: options.boxWidth,
           tabIndex: options.tabIndex,
-          accessibleLabel: items[ i ].label
+          accessibleLabel: items[ i ].label,
+          // tandem: options.tandem && options.tandem.createTandem( 'checkBox' + i )
         } );
         checkBox.mouseArea = checkBox.touchArea = Shape.bounds( checkBox.bounds.dilatedXY( 5, options.spacing / 2 ) );
         if ( items[ i ].indent ) {
@@ -72,6 +74,8 @@ define( function( require ) {
 
     options.children = children; //TODO bad form, if options.children was already set, then this will blow it away
     VBox.call( this, options );
+
+    options.tandem && options.tandem.addInstance( this );
   }
 
   sun.register( 'VerticalCheckBoxGroup', VerticalCheckBoxGroup );
