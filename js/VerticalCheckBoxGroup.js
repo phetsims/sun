@@ -20,7 +20,7 @@ define( function( require ) {
   /**
    * Main constructor.
    *
-   * @param items  an array of {content, property, indent}
+   * @param items  an array of {content, property, indent, [tandemName]}
    * @param {Object} [options]
    * @constructor
    */
@@ -56,7 +56,7 @@ define( function( require ) {
           boxWidth: options.boxWidth,
           tabIndex: options.tabIndex,
           accessibleLabel: items[ i ].label,
-          // tandem: options.tandem && options.tandem.createTandem( 'checkBox' + i )
+          tandem: options.tandem && options.tandem.createTandem( items[ i ].tandemName )
         } );
         checkBox.mouseArea = checkBox.touchArea = Shape.bounds( checkBox.bounds.dilatedXY( 5, options.spacing / 2 ) );
         if ( items[ i ].indent ) {
