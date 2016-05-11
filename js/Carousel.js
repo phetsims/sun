@@ -56,8 +56,8 @@ define( function( require ) {
     // for dilating pointer areas of next/previous buttons such that they do not overlap with Carousel content
     buttonTouchAreaXDilation: 0, // {number} horizontal touchArea dilation
     buttonTouchAreaYDilation: 0, // {number} vertical touchArea dilation
-    buttonMouseAreaXDilation: 0, // {number} horiztonal mouseArea dilation
-    buttonMouseAreaYDilation: 0, // {number} vertical mouseArea dialation
+    buttonMouseAreaXDilation: 0, // {number} horizontal mouseArea dilation
+    buttonMouseAreaYDilation: 0, // {number} vertical mouseArea dilation
 
     // item separators
     separatorsVisible: false, // {boolean} whether to put separators between items
