@@ -45,6 +45,8 @@ define( function( require ) {
   var SHAPE_MATRIX = Matrix3.createFromPool( 0.025, 0, 0, 0, -0.025, 0, 0, 0, 1 ); // to create a unity-scale icon
 
   var getShapeByName = function( iconName ) {
+    assert && assert( icons[ iconName ], 'Icon not found: ' + iconName );
+
     // At one point, shapes were cached to reduce the overhead of having to reinterpret the SVG each time the shape was
     // loaded, but this led to memory leaks (see https://github.com/phetsims/joist/issues/329).  As a result, the icons
     // are loaded anew each time.
