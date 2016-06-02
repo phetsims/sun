@@ -137,6 +137,9 @@ define( function( require ) {
     // Apply additional options
     thisNode.mutate( options );
 
+    if ( phet.chipper.brand === 'phet-io' ) {
+      assert && assert( options.tandem, 'For PhET-iO, tandems must be specified for each user interface component.' );
+    }
     // @public (tandem) - Tandem support, use a novel name to reduce the risk of parent or child collisions
     this.checkBoxTandem = options.tandem;
     this.checkBoxTandem && this.checkBoxTandem.addInstance( this );
@@ -177,7 +180,7 @@ define( function( require ) {
      */
     getCheckboxColorBackground: function() { return this.backgroundNode.fill; },
     get checkBoxColorBackground() { return this.getCheckboxColorBackground(); },
-    
+
     /**
      *  Sets the color of the check box.
      *  @param {Color|String} checkBoxColor
