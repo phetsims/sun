@@ -16,6 +16,7 @@ define( function( require ) {
   var Shape = require( 'KITE/Shape' );
   var sun = require( 'SUN/sun' );
   var VBox = require( 'SCENERY/nodes/VBox' );
+  var Tandem = require( 'TANDEM/Tandem' );
 
   /**
    * Main constructor.
@@ -35,6 +36,8 @@ define( function( require ) {
       tabIndex: '0', // '0' places the item in the default accessible navigation order, '-1' removes it from navigation
       tandem: null
     }, options );
+
+    Tandem.validateOptions( options ); // The tandem is required when brand==='phet-io'
 
     // compute max width of the items
     var maxWidth = 0;

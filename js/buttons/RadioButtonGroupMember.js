@@ -20,6 +20,7 @@ define( function( require ) {
   var RadioButtonGroupMemberModel = require( 'SUN/buttons/RadioButtonGroupMemberModel' );
   var RadioButtonInteractionStateProperty = require( 'SUN/buttons/RadioButtonInteractionStateProperty' );
   var sun = require( 'SUN/sun' );
+  var Tandem = require( 'TANDEM/Tandem' );
 
   /**
    * @param {Property} property axon property that can take on a set of values, one for each radio button in the group
@@ -63,6 +64,8 @@ define( function( require ) {
       // invisible label for the radio button group member for accessibility
       accessibleLabel: ''
     }, options );
+
+    Tandem.validateOptions( options ); // The tandem is required when brand==='phet-io'
 
     // @public (phet-io)
     this.radioButtonGroupMemberModel = new RadioButtonGroupMemberModel( property, value );

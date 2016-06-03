@@ -17,6 +17,7 @@ define( function( require ) {
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var sun = require( 'SUN/sun' );
   var Text = require( 'SCENERY/nodes/Text' );
+  var Tandem = require( 'TANDEM/Tandem' );
 
   // constants
   var DISABLED_OPACITY = 0.3;
@@ -58,6 +59,8 @@ define( function( require ) {
        */
       contentAppearanceStrategy: CheckBox.fadeContentWhenDisabled
     }, options );
+
+    Tandem.validateOptions( options ); // The tandem is required when brand==='phet-io'
 
     var thisNode = this;
     Node.call( this );
@@ -137,9 +140,6 @@ define( function( require ) {
     // Apply additional options
     thisNode.mutate( options );
 
-    if ( phet.chipper.brand === 'phet-io' ) {
-      assert && assert( options.tandem, 'For PhET-iO, tandems must be specified for each user interface component.' );
-    }
     // @public (tandem) - Tandem support, use a novel name to reduce the risk of parent or child collisions
     this.checkBoxTandem = options.tandem;
     this.checkBoxTandem && this.checkBoxTandem.addInstance( this );

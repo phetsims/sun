@@ -15,6 +15,7 @@ define( function( require ) {
   var sun = require( 'SUN/sun' );
   var ToggleButtonInteractionStateProperty = require( 'SUN/buttons/ToggleButtonInteractionStateProperty' );
   var ToggleButtonModel = require( 'SUN/buttons/ToggleButtonModel' );
+  var Tandem = require( 'TANDEM/Tandem' );
 
   /**
    * @param {Object} valueOff - value when the button is in the off state
@@ -25,6 +26,8 @@ define( function( require ) {
    */
   function RectangularToggleButton( valueOff, valueOn, property, options ) {
 
+    Tandem.validateOptions( options ); // The tandem is required when brand==='phet-io'
+    
     // @public (phet-io)
     this.toggleButtonModel = new ToggleButtonModel( valueOff, valueOn, property, options );
     RectangularButtonView.call( this, this.toggleButtonModel, new ToggleButtonInteractionStateProperty( this.toggleButtonModel ), options );

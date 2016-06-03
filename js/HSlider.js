@@ -26,6 +26,7 @@ define( function( require ) {
   var TandemDragHandler = require( 'TANDEM/scenery/input/TandemDragHandler' );
   var sun = require( 'SUN/sun' );
   var Util = require( 'DOT/Util' );
+  var Tandem = require( 'TANDEM/Tandem' );
 
   /**
    * @param {Property.<number>} valueProperty
@@ -63,6 +64,9 @@ define( function( require ) {
       // tandem
       tandem: null
     }, options );
+
+    Tandem.validateOptions( options ); // The tandem is required when brand==='phet-io'
+    
     this.options = options; // @private TODO save only the options that are needed by prototype functions
     this.enabledProperty = options.enabledProperty;
     this.enabledRangeProperty = options.enabledRangeProperty;

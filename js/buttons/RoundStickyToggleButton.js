@@ -17,6 +17,7 @@ define( function( require ) {
   var StickyToggleButtonInteractionStateProperty = require( 'SUN/buttons/StickyToggleButtonInteractionStateProperty' );
   var StickyToggleButtonModel = require( 'SUN/buttons/StickyToggleButtonModel' );
   var sun = require( 'SUN/sun' );
+  var Tandem = require( 'TANDEM/Tandem' );
 
   /**
    * @param {Object} valueUp value when the toggle is in the 'up' position
@@ -26,6 +27,9 @@ define( function( require ) {
    * @constructor
    */
   function RoundStickyToggleButton( valueUp, valueDown, property, options ) {
+
+    Tandem.validateOptions( options ); // The tandem is required when brand==='phet-io'
+    
     var buttonModel = new StickyToggleButtonModel( valueUp, valueDown, property );
     RoundButtonView.call( this, buttonModel, new StickyToggleButtonInteractionStateProperty( buttonModel ), options );
 

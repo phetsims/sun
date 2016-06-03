@@ -27,6 +27,7 @@ define( function( require ) {
   var Shape = require( 'KITE/Shape' );
   var SimpleDragHandler = require( 'SCENERY/input/SimpleDragHandler' );
   var sun = require( 'SUN/sun' );
+  var Tandem = require( 'TANDEM/Tandem' );
 
   /**
    * @param {Property.<boolean>} onProperty
@@ -52,6 +53,8 @@ define( function( require ) {
       toggleThreshold: 1, // number of thumb-widths outside the normal range past where the model value will change
       tandem: null
     }, options );
+
+    Tandem.validateOptions( options ); // The tandem is required when brand==='phet-io'
 
     var thisNode = this;
     Node.call( thisNode );

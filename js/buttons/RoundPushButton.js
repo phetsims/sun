@@ -19,6 +19,7 @@ define( function( require ) {
   var PushButtonModel = require( 'SUN/buttons/PushButtonModel' );
   var RoundButtonView = require( 'SUN/buttons/RoundButtonView' );
   var sun = require( 'SUN/sun' );
+  var Tandem = require( 'TANDEM/Tandem' );
 
   /**
    * @param {Object} [options]
@@ -29,6 +30,7 @@ define( function( require ) {
     options = _.extend( {
       tandem: null // {Tandem|null}
     }, options );
+    Tandem.validateOptions( options ); // The tandem is required when brand==='phet-io'
 
     // Safe to pass through options to the PushButtonModel like "fireOnDown".  Other scenery options will be safely ignored.
     this.buttonModel = new PushButtonModel( options ); // @public, listen only

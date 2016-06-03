@@ -15,6 +15,7 @@ define( function( require ) {
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var sun = require( 'SUN/sun' );
   var AccessiblePeer = require( 'SCENERY/accessibility/AccessiblePeer' );
+  var Tandem = require( 'TANDEM/Tandem' );
 
   /**
    * @param {Property} property
@@ -32,6 +33,8 @@ define( function( require ) {
       enabled: true,
       accessibleLabel: '' // invisible label for the radio button, for a11y
     }, options );
+
+    Tandem.validateOptions( options ); // The tandem is required when brand==='phet-io'
 
     var thisNode = this;
     Node.call( thisNode );
