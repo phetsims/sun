@@ -12,7 +12,7 @@ define( function( require ) {
   var assertInstanceOf = require( 'PHET_IO/assertions/assertInstanceOf' );
   var phetioInherit = require( 'PHET_IO/phetioInherit' );
   var phetioNamespace = require( 'PHET_IO/phetioNamespace' );
-  var TNode = require( 'PHET_IO/api/scenery/nodes/TNode' );
+  var TNode = require( 'PHET_IO/types/scenery/nodes/TNode' );
   var toEventOnStatic = require( 'PHET_IO/events/toEventOnStatic' );
 
   var TComboBox = function TComboBox( valueType ) {

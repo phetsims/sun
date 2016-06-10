@@ -12,7 +12,7 @@ define( function( require ) {
   var assertInstanceOf = require( 'PHET_IO/assertions/assertInstanceOf' );
   var phetioNamespace = require( 'PHET_IO/phetioNamespace' );
   var phetioInherit = require( 'PHET_IO/phetioInherit' );
-  var TNode = require( 'PHET_IO/api/scenery/nodes/TNode' );
+  var TNode = require( 'PHET_IO/types/scenery/nodes/TNode' );
   var toEventOnStatic = require( 'PHET_IO/events/toEventOnStatic' );
 
   var TOnOffSwitch = phetioInherit( TNode, 'TOnOffSwitch', function( onOffSwitch, phetioID ) {

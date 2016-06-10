@@ -12,9 +12,9 @@ define( function( require ) {
   var assertInstanceOfTypes = require( 'PHET_IO/assertions/assertInstanceOfTypes' );
   var phetioInherit = require( 'PHET_IO/phetioInherit' );
   var phetioNamespace = require( 'PHET_IO/phetioNamespace' );
-  var TNode = require( 'PHET_IO/api/scenery/nodes/TNode' );
+  var TNode = require( 'PHET_IO/types/scenery/nodes/TNode' );
   var toEventOnStatic = require( 'PHET_IO/events/toEventOnStatic' );
-  var TVoid = require( 'PHET_IO/api/TVoid' );
+  var TVoid = require( 'PHET_IO/types/TVoid' );
 
   var TButton = phetioInherit( TNode, 'TButton', function( button, phetioID ) {
     TNode.call( this, button, phetioID );
@@ -30,7 +30,8 @@ define( function( require ) {
     // TODO: This logic belongs elsewhere
     if ( button.buttonModel ) {
       toEventOnStatic( button.buttonModel, 'CallbacksForFired', 'user', phetioID, 'fired' );
-    } else {
+    }
+    else {
       toEventOnStatic( button, 'CallbacksForFired', 'user', phetioID, 'fired' );
     }
   }, {

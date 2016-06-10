@@ -12,11 +12,11 @@ define( function( require ) {
   var assertInstanceOf = require( 'PHET_IO/assertions/assertInstanceOf' );
   var phetioInherit = require( 'PHET_IO/phetioInherit' );
   var phetioNamespace = require( 'PHET_IO/phetioNamespace' );
-  var TBoolean = require( 'PHET_IO/api/TBoolean' );
-  var TFunctionWrapper = require( 'PHET_IO/api/TFunctionWrapper' );
-  var TNode = require( 'PHET_IO/api/scenery/nodes/TNode' );
+  var TBoolean = require( 'PHET_IO/types/TBoolean' );
+  var TFunctionWrapper = require( 'PHET_IO/types/TFunctionWrapper' );
+  var TNode = require( 'PHET_IO/types/scenery/nodes/TNode' );
   var toEventOnStatic = require( 'PHET_IO/events/toEventOnStatic' );
-  var TVoid = require( 'PHET_IO/api/TVoid' );
+  var TVoid = require( 'PHET_IO/types/TVoid' );
 
   var TCheckBox = phetioInherit( TNode, 'TCheckBox', function( checkBox, phetioID ) {
     assertInstanceOf( checkBox, phet.sun.CheckBox );

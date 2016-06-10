@@ -12,7 +12,7 @@ define( function( require ) {
   var assertInstanceOf = require( 'PHET_IO/assertions/assertInstanceOf' );
   var phetioNamespace = require( 'PHET_IO/phetioNamespace' );
   var phetioInherit = require( 'PHET_IO/phetioInherit' );
-  var TButton = require( 'PHET_IO/api/sun/buttons/TButton' );
+  var TButton = require( 'PHET_IO/types/sun/buttons/TButton' );
 
   var TResetAllButton = phetioInherit( TButton, 'TResetAllButton', function( instance, phetioID ) {
     assertInstanceOf( instance, phet.sceneryPhet.ResetAllButton );
