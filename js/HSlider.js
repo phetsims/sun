@@ -46,6 +46,8 @@ define( function( require ) {
       // {Node} optional thumb, replaces the default. Client is responsible for highlighting and disabling. Centered in the track.
       // If you are using the default thumb, see ThumbNode constructor for additional pass-through options.
       thumbNode: null,
+      thumbTouchAreaXDilation: null, // {number|null} horizontal dilation of thumb touchArea
+      thumbTouchAreaYDilation: null, // {number|null} vertical dilation of thumb touchArea
       // ticks
       tickLabelSpacing: 6,
       majorTickLength: 25,
@@ -66,7 +68,7 @@ define( function( require ) {
     }, options );
 
     Tandem.validateOptions( options ); // The tandem is required when brand==='phet-io'
-    
+
     this.options = options; // @private TODO save only the options that are needed by prototype functions
     this.enabledProperty = options.enabledProperty;
     this.enabledRangeProperty = options.enabledRangeProperty;
@@ -85,13 +87,13 @@ define( function( require ) {
 
     // snap to a value if value is within range, used by HSlider and HSliderTrack
     var snapToValue = function( value ) {
-      if( value <= range.max && value >= range.min ) {
+      if ( value <= range.max && value >= range.min ) {
         valueProperty.set( value );
       }
       else {
         throw new Error( 'snapValue must be within slider range' );
       }
-    }; 
+    };
 
     // make a copy of the options to pass to the slider track so that the track can have a unique tandem
     var trackOptions = _.clone( options );
@@ -107,11 +109,17 @@ define( function( require ) {
     thumbNode.centerY = thisSlider.track.centerY;
     thisSlider.addChild( thumbNode );
 
+
     // thumb touch area
     if ( !options.thumbNode ) {
-      var dx = 0.5 * thumbNode.width;
-      var dy = 0.25 * thumbNode.height;
-      thumbNode.touchArea = Shape.rectangle( ( -thumbNode.width / 2 ) - dx, ( -thumbNode.height / 2 ) - dy, thumbNode.width + dx + dx, thumbNode.height + dy + dy );
+      if ( !options.thumbTouchAreaXDilation ) {
+        options.thumbTouchAreaXDilation = 0.5 * thumbNode.width;
+      }
+      if ( !options.thumbTouchAreaYDilation ) {
+        options.thumbTouchAreaYDilation = 0.25 * thumbNode.height;
+      }
+      // touch area dilated along X and Y directions
+      thumbNode.touchArea = thumbNode.bounds.dilatedXY( options.thumbTouchAreaXDilation, options.thumbTouchAreaYDilation );
     }
 
     // update value when thumb is dragged
@@ -143,7 +151,7 @@ define( function( require ) {
 
       end: function() {
         if ( thisSlider.enabledProperty.get() ) {
-          if( typeof thisSlider._snapValue === 'number' ) {
+          if ( typeof thisSlider._snapValue === 'number' ) {
             snapToValue( thisSlider._snapValue );
           }
           options.endDrag();
@@ -260,8 +268,8 @@ define( function( require ) {
       var labelX = this.valueToPosition( value );
       // ticks
       var tick = new Path( new Shape()
-        .moveTo( labelX, this.track.top )
-        .lineTo( labelX, this.track.top - length ),
+          .moveTo( labelX, this.track.top )
+          .lineTo( labelX, this.track.top - length ),
         { stroke: stroke, lineWidth: lineWidth } );
       parent.addChild( tick );
       // label
@@ -274,7 +282,7 @@ define( function( require ) {
 
     // @public
     setEnabled: function( enabled ) { this.enabledProperty.value = enabled; },
-    set enabled( value ) { this. setEnabled( value ); },
+    set enabled( value ) { this.setEnabled( value ); },
 
     // @public
     getEnabled: function() { return this.enabledProperty.value; },
@@ -289,7 +297,7 @@ define( function( require ) {
     get enabledRange() { return this.getEnabledRange(); },
 
     // @public
-    setSnapValue: function( snapValue ) { 
+    setSnapValue: function( snapValue ) {
       this._snapValue = snapValue;
       this.track.snapValue = snapValue;
     },
