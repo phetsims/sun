@@ -129,9 +129,15 @@ define( function( require ) {
         if ( options.toggleWhileDragging === true || ( isDraggedOutside && options.toggleWhileDragging === null ) ) {
 
           // TODO: A way to distinguish between drag-to-toggle vs click-to-toggle
-          thisNode.trigger2( 'startedCallbacksForToggled', !value, value );
-          onProperty.set( value );
-          thisNode.trigger0( 'endedCallbacksForToggled' );
+
+          // Only signify a change if the value actually changed to avoid duplicate messages in the PhET-iO Event
+          // stream, see https://github.com/phetsims/phet-io/issues/369
+          var changed = onProperty.get() !== value;
+          if ( changed ) {
+            thisNode.trigger2( 'startedCallbacksForToggled', !value, value );
+            onProperty.set( value );
+            thisNode.trigger0( 'endedCallbacksForToggled' );
+          }
         }
       },
 
