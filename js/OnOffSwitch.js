@@ -110,22 +110,6 @@ define( function( require ) {
         passedDragThreshold = false;
       },
 
-      end: function( evt, trail ) {
-        var oldValue = onProperty.get();
-
-        // if moved past the threshold, choose value based on the side, otherwise just toggle
-        var newValue = passedDragThreshold ? thisNode.thumbPositionToValue() : !onProperty.get();
-
-        thisNode.trigger2( 'startedCallbacksForToggled', oldValue, newValue );
-
-        onProperty.set( newValue );
-
-        // update the thumb location (sanity check that it's here, only needs to be run if passedDragThreshold===true)
-        updateThumb( onProperty.get() );
-
-        thisNode.trigger0( 'endedCallbacksForToggled' );
-      },
-
       drag: function( evt, trail ) {
         // center the thumb on the pointer's x-coordinate if possible (but clamp to left and right ends)
         var viewPoint = evt.currentTarget.globalToLocalPoint( evt.pointer.point );
@@ -149,6 +133,22 @@ define( function( require ) {
           onProperty.set( value );
           thisNode.trigger0( 'endedCallbacksForToggled' );
         }
+      },
+
+      end: function( evt, trail ) {
+        var oldValue = onProperty.get();
+
+        // if moved past the threshold, choose value based on the side, otherwise just toggle
+        var newValue = passedDragThreshold ? thisNode.thumbPositionToValue() : !onProperty.get();
+
+        thisNode.trigger2( 'startedCallbacksForToggled', oldValue, newValue );
+
+        onProperty.set( newValue );
+
+        // update the thumb location (sanity check that it's here, only needs to be run if passedDragThreshold===true)
+        updateThumb( onProperty.get() );
+
+        thisNode.trigger0( 'endedCallbacksForToggled' );
       },
 
       translate: function( params ) {
