@@ -27,7 +27,8 @@ define( function( require ) {
       ] );
 
       var emitter = toggleButton.toggleButtonModel || toggleButton.buttonModel;  // Handle BooleanRoundStickyToggleButton too
-      // TODO: is this really oldValue, newValue??? That seems unconventional and may be incorrect.
+
+      // Both StickyToggleButtonModel and ToggleButtonModel send the args in this order: oldValue, newValue
       toEventOnStatic( emitter, 'CallbacksForToggled', 'user', phetioID, 'toggled', function( oldValue, newValue ) {
         return {
           oldValue: valueType.toStateObject( oldValue ),
