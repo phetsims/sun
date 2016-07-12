@@ -43,48 +43,49 @@ define( function( require ) {
     RectangularButtonView.call( this, this.buttonModel, new PushButtonInteractionStateProperty( this.buttonModel ), options );
 
     // Tandem support
-    // Give it a novel name to reduce the risk of parent or child collisions
-    // @public (tandem)
-    this.rectangularPushButtonTandem = options.tandem;
-    this.rectangularPushButtonTandem && this.rectangularPushButtonTandem.addInstance( this );
+    options.tandem && options.tandem.addInstance( this );
+
+    this.disposeRectangularPushButton = function() {
+      options.tandem && options.tandem.removeInstance( this );
+    };
   }
 
   inherit( RectangularButtonView, RectangularPushButton, {
 
-    // @public
-    dispose: function() {
-      this.buttonModel.dispose(); //TODO this fails when assertions are enabled, see sun#212
-      RectangularButtonView.prototype.dispose.call( this );
-      this.rectangularPushButtonTandem && this.rectangularPushButtonTandem.removeInstance( this );
+      // @public
+      dispose: function() {
+        this.buttonModel.dispose(); //TODO this fails when assertions are enabled, see sun#212
+        RectangularButtonView.prototype.dispose.call( this );
+        this.disposeRectangularPushButton();
+      },
+
+      // @public
+      addListener: function( listener ) {
+        this.buttonModel.addListener( listener );
+      },
+
+      // @public
+      removeListener: function( listener ) {
+        this.buttonModel.removeListener( listener );
+      }
     },
 
-    // @public
-    addListener: function( listener ) {
-      this.buttonModel.addListener( listener );
-    },
-
-    // @public
-    removeListener: function( listener ) {
-      this.buttonModel.removeListener( listener );
+    // statics
+    {
+      /**
+       * Extend the accessible peer of RectangularPushButton to add custom accessibility attributes in subtypes.
+       *
+       * @param {AccessibleInstance} accessibleInstance
+       * @param {string} buttonLabel
+       * @param {function} listener
+       * @returns {ScreenViewAccessiblePeer}
+       * @constructor
+       * @public
+       */
+      RectangularPushButtonAccessiblePeer: function( accessibleInstance, buttonLabel, listener ) {
+        return new RectangularPushButtonAccessiblePeer( accessibleInstance, buttonLabel, listener );
+      }
     }
-  },
-
-  // statics 
-  {
-    /**
-     * Extend the accessible peer of RectangularPushButton to add custom accessibility attributes in subtypes.
-     * 
-     * @param {AccessibleInstance} accessibleInstance
-     * @param {string} buttonLabel
-     * @param {function} listener
-     * @returns {ScreenViewAccessiblePeer}
-     * @constructor
-     * @public
-     */
-    RectangularPushButtonAccessiblePeer: function( accessibleInstance, buttonLabel, listener ) {
-      return new RectangularPushButtonAccessiblePeer( accessibleInstance, buttonLabel, listener );
-    }
-  } 
   );
 
   sun.register( 'RectangularPushButton', RectangularPushButton );
@@ -113,7 +114,7 @@ define( function( require ) {
      * @public (a11y)
      */
     initialize: function( accessibleInstance, buttonLabel, listener ) {
-                    
+
       // will look like <button aria-label="Button Label" type="button">
       var domElement = document.createElement( 'button' );
       domElement.textContent = buttonLabel;
