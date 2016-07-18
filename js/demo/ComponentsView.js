@@ -23,7 +23,7 @@ define( function( require ) {
   var PageControl = require( 'SUN/PageControl' );
   var PhetFont = require( 'SCENERY_PHET/PhetFont' );
   var Property = require( 'AXON/Property' );
-  var Range = require( 'DOT/Range' );
+  var RangeWithValue = require( 'DOT/RangeWithValue' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var RectangularPushButton = require( 'SUN/buttons/RectangularPushButton' );
   var Text = require( 'SCENERY/nodes/Text' );
@@ -117,7 +117,7 @@ define( function( require ) {
   var demoHSlider = function( layoutBounds ) {
 
     var property = new Property( 0 );
-    var range = new Range( 0, 100 );
+    var range = new RangeWithValue( 0, 100 );
     var tickLabelOptions = { font: new PhetFont( 16 ) };
     var slider = new HSlider( property, range, {
       trackSize: new Dimension2( 300, 5 ),
@@ -171,7 +171,7 @@ define( function( require ) {
       enabledRangeProperty.value = restrictedRange ? { min: 25, max: 75 } : { min: 0, max: 100 };
     } );
     enabledRangeProperty.link( function( enabledRange ) {
-      slider.enabledRange = enabledRange; 
+      slider.enabledRange = enabledRange;
     } );
     var enabledRangeCheckBox = CheckBox.createTextCheckBox( 'Enable Range [25, 75]', { font: new PhetFont( 20 ) }, restrictedRangeProperty, {
       left: slider.left,
