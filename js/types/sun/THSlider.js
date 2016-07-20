@@ -12,19 +12,10 @@ define( function( require ) {
   var phetioInherit = require( 'PHET_IO/phetioInherit' );
   var phetioNamespace = require( 'PHET_IO/phetioNamespace' );
   var TBoolean = require( 'PHET_IO/types/TBoolean' );
+  var THSliderTrack = require( 'PHET_IO/types/tandem/sun/THSliderTrack' );
   var TNode = require( 'PHET_IO/types/scenery/nodes/TNode' );
   var TTandemDragHandler = require( 'PHET_IO/types/tandem/scenery/input/TTandemDragHandler' );
   var TVoid = require( 'PHET_IO/types/TVoid' );
-
-  var THSliderTrack = phetioInherit( TNode, 'THSliderTrack', function( sliderTrack, phetioID ) {
-    TNode.call( this, sliderTrack, phetioID );
-    assertInstanceOf( sliderTrack, phet.sun.HSliderTrack );
-  }, {}, {
-    api: {
-      trackInputListener: TTandemDragHandler
-    },
-    documentation: 'The track for a knob of a traditional slider'
-  } );
 
   var THSlider = phetioInherit( TNode, 'THSlider', function( slider, phetioID ) {
     TNode.call( this, slider, phetioID );
