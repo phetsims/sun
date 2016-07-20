@@ -19,7 +19,7 @@ define( function( require ) {
   var TandemDragHandler = require( 'TANDEM/scenery/input/TandemDragHandler' );
   var sun = require( 'SUN/sun' );
   var Tandem = require( 'TANDEM/Tandem' );
-  var THSliderTrack = require( 'PHET_IO/types/sun/THSliderTrack' );
+  var THSliderTrack = require( 'ifphetio!PHET_IO/types/sun/THSliderTrack' );
 
   /**
    * @param {Property.<number>} valueProperty

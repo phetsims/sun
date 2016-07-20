@@ -25,7 +25,7 @@ define( function( require ) {
   var Shape = require( 'KITE/Shape' );
   var Tandem = require( 'TANDEM/Tandem' );
   var TandemDragHandler = require( 'TANDEM/scenery/input/TandemDragHandler' );
-  var THSlider = require( 'PHET_IO/types/sun/THSlider' );
+  var THSlider = require( 'ifphetio!PHET_IO/types/sun/THSlider' );
   var sun = require( 'SUN/sun' );
   var Util = require( 'DOT/Util' );
 
