@@ -19,6 +19,7 @@ define( function( require ) {
   var TandemDragHandler = require( 'TANDEM/scenery/input/TandemDragHandler' );
   var sun = require( 'SUN/sun' );
   var Tandem = require( 'TANDEM/Tandem' );
+  var THSliderTrack = require( 'PHET_IO/types/sun/THSliderTrack' );
 
   /**
    * @param {Property.<number>} valueProperty
@@ -62,7 +63,7 @@ define( function( require ) {
     thisTrack.addChild( thisTrack.disabledTrack );
 
     // @private
-    thisTrack.enabledTrack = new Rectangle( 0, 0, this.trackSize.width, this.trackSize.height, { 
+    thisTrack.enabledTrack = new Rectangle( 0, 0, this.trackSize.width, this.trackSize.height, {
       fill: options.trackFillEnabled,
       stroke: options.trackStroke,
       ineWidth: options.trackLineWidth
@@ -122,7 +123,7 @@ define( function( require ) {
       trackInputListener.dispose();
     };
 
-    options.tandem && options.tandem.addInstance( this );
+    options.tandem && options.tandem.addInstance( this, THSliderTrack );
   }
 
   sun.register( 'HSliderTrack', HSliderTrack );
@@ -136,7 +137,7 @@ define( function( require ) {
 
     /**
      * Update the dimensions of the enabled track.
-     * 
+     *
      * @param  {number} minX - x value for the min position of the enabled range of the track
      * @param  {number} maxX - x value for the max position of the enabled range of the track
      */
