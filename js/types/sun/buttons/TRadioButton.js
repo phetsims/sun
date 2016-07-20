@@ -16,6 +16,7 @@ define( function( require ) {
   var toEventOnStatic = require( 'PHET_IO/events/toEventOnStatic' );
 
   var TRadioButton = function( valueType ) {
+    assert && assert( !!valueType, 'valueType must be defined' );
     return phetioInherit( TNode, 'TRadioButton', function( radioButton, phetioID ) {
       assertInstanceOfTypes( radioButton, [
         phet.sun.RadioButton,
