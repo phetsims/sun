@@ -17,6 +17,9 @@ define( function( require ) {
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var sun = require( 'SUN/sun' );
 
+  // phet-io modules
+  var TPanel = require( 'ifphetio!PHET_IO/types/sun/TPanel' );
+
   var DEFAULT_OPTIONS = {
     fill: 'white',
     stroke: 'black',
@@ -27,7 +30,8 @@ define( function( require ) {
     resize: true, // dynamically resize when content bounds change
     backgroundPickable: false,
     align: 'right', // {string} horizontal of content in the pane, left|center|right
-    minWidth: 0 // minimum width of the panel
+    minWidth: 0, // minimum width of the panel
+    tandem: null
   };
   assert && Object.freeze( DEFAULT_OPTIONS );
 
@@ -109,6 +113,8 @@ define( function( require ) {
 
     // Apply options after the layout is done, so that options that use the bounds will work properly.
     this.mutate( options );
+
+    options.tandem && options.tandem.addInstance( this, TPanel );
   }
 
   sun.register( 'Panel', Panel );

@@ -23,6 +23,9 @@ define( function( require ) {
   var Vector2 = require( 'DOT/Vector2' );
   var Tandem = require( 'TANDEM/Tandem' );
 
+  // phet-io modules
+  var TComboBox = require( 'ifphetio!PHET_IO/types/sun/TComboBox' );
+
   /**
    * @param {Array} items
    * @param {Property} property
@@ -58,7 +61,8 @@ define( function( require ) {
       itemHighlightStroke: null,
       itemHighlightLineWidth: 1,
       // tandem
-      tandem: null
+      tandem: null,
+      type: null // the phet-io type function for the combo box element type, such as TString
     }, options );
 
     Tandem.validateOptions( options ); // The tandem is required when brand==='phet-io'
@@ -236,7 +240,7 @@ define( function( require ) {
 
     this.mutate( options );
 
-    options.tandem && options.tandem.addInstance( this );
+    options.tandem && options.tandem.addInstance( this, TComboBox( options.type ) );
 
     // @private called by dispose
     this.disposeComboBox = function() {

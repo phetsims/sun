@@ -17,6 +17,9 @@ define( function( require ) {
   var AccessiblePeer = require( 'SCENERY/accessibility/AccessiblePeer' );
   var Tandem = require( 'TANDEM/Tandem' );
 
+  // phet-io types
+  var TRadioButton = require( 'ifphetio!PHET_IO/types/sun/buttons/TRadioButton' );
+
   /**
    * @param {Property} property
    * @param {*} value the value that corresponds to this button, same type as property
@@ -30,6 +33,7 @@ define( function( require ) {
     options = _.extend( {
       cursor: 'pointer',
       tandem: null,
+      type: null, // for phet-io, the function wrapper for the wrapped type, such as TString or TBoolean
       enabled: true,
       accessibleLabel: '' // invisible label for the radio button, for a11y
     }, options );
@@ -69,7 +73,7 @@ define( function( require ) {
 
     this.mutate( options );
 
-    options.tandem && options.tandem.addInstance( this );
+    options.tandem && options.tandem.addInstance( this, TRadioButton && TRadioButton( options.type ) );
 
     this.disposeRadioButton = function() {
       options.tandem && options.tandem.removeInstance( this );
@@ -99,7 +103,7 @@ define( function( require ) {
         domElement.addEventListener( 'click', function() {
           fire();
         } );
-      
+
         // link the 'checked' 'aria-checked' attribute to the property value       
         property.link( function( newValue ) {
           var checked = newValue === value;
