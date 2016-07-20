@@ -40,7 +40,7 @@ define( function( require ) {
     // Tandem support
     // Give it a novel name to reduce the risk of parent or child collisions
     this.roundPushButtonTandem = options.tandem;
-    this.roundPushButtonTandem && this.roundPushButtonTandem.addInstance( this, TButton );
+    TButton && this.roundPushButtonTandem && this.roundPushButtonTandem.addInstance( this, TButton );
   }
 
   sun.register( 'RoundPushButton', RoundPushButton );
