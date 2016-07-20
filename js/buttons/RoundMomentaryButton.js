@@ -17,6 +17,9 @@ define( function( require ) {
   var sun = require( 'SUN/sun' );
   var Tandem = require( 'TANDEM/Tandem' );
 
+  // phet-io modules
+  var TMomentaryButton = require( 'ifphetio!PHET_IO/types/sun/buttons/TMomentaryButton' );
+
   /**
    * @param {Object} valueOff - value when the button is in the off state
    * @param {Object} valueOn - value when the button is in the on state
@@ -29,11 +32,11 @@ define( function( require ) {
     var self = this;
     options = _.extend( { tandem: null }, options );
     Tandem.validateOptions( options ); // The tandem is required when brand==='phet-io'
-    
+
     this.buttonModel = new MomentaryButtonModel( valueOff, valueOn, property );
     RoundButtonView.call( this, this.buttonModel, new MomentaryButtonInteractionStateProperty( this.buttonModel ), options );
 
-    options.tandem && options.tandem.addInstance( this );
+    options.tandem && options.tandem.addInstance( this, TMomentaryButton );
 
     // @private
     this.disposeRoundMomentaryButton = function() {
