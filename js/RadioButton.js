@@ -73,7 +73,7 @@ define( function( require ) {
 
     this.mutate( options );
 
-    options.tandem && options.tandem.addInstance( this, TRadioButton && TRadioButton( options.type ) );
+    TRadioButton && options.tandem && options.tandem.addInstance( this, TRadioButton( options.type ) );
 
     this.disposeRadioButton = function() {
       options.tandem && options.tandem.removeInstance( this );

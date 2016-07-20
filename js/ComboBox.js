@@ -240,7 +240,7 @@ define( function( require ) {
 
     this.mutate( options );
 
-    options.tandem && options.tandem.addInstance( this, TComboBox( options.type ) );
+    TComboBox && options.tandem && options.tandem.addInstance( this, TComboBox( options.type ) );
 
     // @private called by dispose
     this.disposeComboBox = function() {
