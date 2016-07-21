@@ -21,6 +21,8 @@ define( function( require ) {
   var RadioButtonInteractionStateProperty = require( 'SUN/buttons/RadioButtonInteractionStateProperty' );
   var sun = require( 'SUN/sun' );
   var Tandem = require( 'TANDEM/Tandem' );
+  var TRadioButton = require('ifphetio!PHET_IO/types/sun/buttons/TRadioButton');
+  var TBoolean = require('ifphetio!PHET_IO/types/TBoolean');
 
   /**
    * @param {Property} property axon property that can take on a set of values, one for each radio button in the group
@@ -77,7 +79,7 @@ define( function( require ) {
 
     // @public (tandem) - for Tandem support, should be a novel name to reduce the risk of parent or child collisions
     this.radioButtonGroupMemberTandem = options.tandem;
-    this.radioButtonGroupMemberTandem && this.radioButtonGroupMemberTandem.addInstance( this );
+    TRadioButton && this.radioButtonGroupMemberTandem && this.radioButtonGroupMemberTandem.addInstance( this, TRadioButton( TBoolean ) );
 
     // outfit a11y
     this.accessibleContent = {

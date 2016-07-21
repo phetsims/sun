@@ -18,6 +18,7 @@ define( function( require ) {
   var sun = require( 'SUN/sun' );
   var Text = require( 'SCENERY/nodes/Text' );
   var Tandem = require( 'TANDEM/Tandem' );
+  var TCheckBox = require( 'ifphetio!PHET_IO/types/sun/TCheckBox' );
 
   // constants
   var DISABLED_OPACITY = 0.3;
@@ -142,7 +143,7 @@ define( function( require ) {
 
     // @public (tandem) - Tandem support, use a novel name to reduce the risk of parent or child collisions
     this.checkBoxTandem = options.tandem;
-    this.checkBoxTandem && this.checkBoxTandem.addInstance( this );
+    TCheckBox && this.checkBoxTandem && this.checkBoxTandem.addInstance( this, TCheckBox );
 
     // Accessibility support
     this.setAccessibleContent( {

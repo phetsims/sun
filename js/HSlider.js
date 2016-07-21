@@ -23,10 +23,11 @@ define( function( require ) {
   var Property = require( 'AXON/Property' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var Shape = require( 'KITE/Shape' );
+  var Tandem = require( 'TANDEM/Tandem' );
   var TandemDragHandler = require( 'TANDEM/scenery/input/TandemDragHandler' );
+  var THSlider = require( 'ifphetio!PHET_IO/types/sun/THSlider' );
   var sun = require( 'SUN/sun' );
   var Util = require( 'DOT/Util' );
-  var Tandem = require( 'TANDEM/Tandem' );
 
   /**
    * @param {Property.<number>} valueProperty
@@ -222,7 +223,7 @@ define( function( require ) {
 
     thisSlider.mutate( options );
 
-    options.tandem && options.tandem.addInstance( this );
+    THSlider && options.tandem && options.tandem.addInstance( this, THSlider );
   }
 
   sun.register( 'HSlider', HSlider );
