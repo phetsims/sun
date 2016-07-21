@@ -19,6 +19,9 @@ define( function( require ) {
   var sun = require( 'SUN/sun' );
   var Tandem = require( 'TANDEM/Tandem' );
 
+  // phet-io types
+  var TToggleButton = require( 'PHET_IO/types/sun/buttons/TToggleButton' );
+
   /**
    * @param {Object} valueUp value when the toggle is in the 'up' position
    * @param {Object} valueDown value when the toggle is in the 'down' position
@@ -35,7 +38,7 @@ define( function( require ) {
 
     // @public (tandem) Tandem support, should be a novel name to reduce the risk of parent or child collisions
     this.roundStickyToggleButtonTandem = options.tandem;
-    this.roundStickyToggleButtonTandem && this.roundStickyToggleButtonTandem.addInstance( this );
+    TToggleButton && this.roundStickyToggleButtonTandem && this.roundStickyToggleButtonTandem.addInstance( this, TToggleButton );
   }
 
   sun.register( 'RoundStickyToggleButton', RoundStickyToggleButton, {
