@@ -16,6 +16,7 @@ define( function( require ) {
   var toEventOnStatic = require( 'PHET_IO/events/toEventOnStatic' );
 
   var TToggleButton = function( valueType ) {
+    assert && assert( !!valueType, 'valueType must be specified' );
     return phetioInherit( TNode, 'TToggleButton', function( toggleButton, phetioID ) {
       TNode.call( this, toggleButton, phetioID );
       assertInstanceOfTypes( toggleButton, [
