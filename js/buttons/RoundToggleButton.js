@@ -17,6 +17,9 @@ define( function( require ) {
   var ToggleButtonModel = require( 'SUN/buttons/ToggleButtonModel' );
   var Tandem = require( 'TANDEM/Tandem' );
 
+  // phet-io modules
+  var TToggleButton = require( 'ifphetio!PHET_IO/types/sun/buttons/TToggleButton' );
+
   /**
    * @param {Object} valueOff - value when the button is in the off state
    * @param {Object} valueOn - value when the button is in the on state
@@ -36,7 +39,7 @@ define( function( require ) {
     RoundButtonView.call( this, this.toggleButtonModel, new ToggleButtonInteractionStateProperty( this.toggleButtonModel ), options );
 
     // Tandem support
-    options.tandem && options.tandem.addInstance( this );
+    TToggleButton && options.tandem && options.tandem.addInstance( this, TToggleButton( property.elementType ) );
 
     // @private - disposal for listener above
     this.disposeRoundToggleButton = function() {
