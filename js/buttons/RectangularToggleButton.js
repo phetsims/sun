@@ -17,6 +17,9 @@ define( function( require ) {
   var ToggleButtonModel = require( 'SUN/buttons/ToggleButtonModel' );
   var Tandem = require( 'TANDEM/Tandem' );
 
+  // phet-io modules
+  var TToggleButton = require( 'ifphetio!PHET_IO/types/sun/buttons/TToggleButton' );
+
   /**
    * @param {Object} valueOff - value when the button is in the off state
    * @param {Object} valueOn - value when the button is in the on state
@@ -27,12 +30,12 @@ define( function( require ) {
   function RectangularToggleButton( valueOff, valueOn, property, options ) {
 
     Tandem.validateOptions( options ); // The tandem is required when brand==='phet-io'
-    
+
     // @public (phet-io)
     this.toggleButtonModel = new ToggleButtonModel( valueOff, valueOn, property, options );
     RectangularButtonView.call( this, this.toggleButtonModel, new ToggleButtonInteractionStateProperty( this.toggleButtonModel ), options );
 
-    options && options.tandem && options.tandem.addInstance( this );
+    TToggleButton && options && options.tandem && options.tandem.addInstance( this, TToggleButton( property.elementType ) );
   }
 
   sun.register( 'RectangularToggleButton', RectangularToggleButton );

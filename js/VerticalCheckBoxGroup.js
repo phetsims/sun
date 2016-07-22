@@ -18,6 +18,9 @@ define( function( require ) {
   var VBox = require( 'SCENERY/nodes/VBox' );
   var Tandem = require( 'TANDEM/Tandem' );
 
+  // phet-io modules
+  var TVerticalCheckBoxGroup = require( 'ifphetio!PHET_IO/types/sun/TVerticalCheckBoxGroup' );
+
   /**
    * Main constructor.
    *
@@ -78,7 +81,7 @@ define( function( require ) {
     options.children = children; //TODO bad form, if options.children was already set, then this will blow it away
     VBox.call( this, options );
 
-    options.tandem && options.tandem.addInstance( this );
+    TVerticalCheckBoxGroup && options.tandem && options.tandem.addInstance( this, TVerticalCheckBoxGroup );
   }
 
   sun.register( 'VerticalCheckBoxGroup', VerticalCheckBoxGroup );
