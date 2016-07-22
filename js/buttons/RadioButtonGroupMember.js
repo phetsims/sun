@@ -21,8 +21,9 @@ define( function( require ) {
   var RadioButtonInteractionStateProperty = require( 'SUN/buttons/RadioButtonInteractionStateProperty' );
   var sun = require( 'SUN/sun' );
   var Tandem = require( 'TANDEM/Tandem' );
-  var TRadioButton = require('ifphetio!PHET_IO/types/sun/buttons/TRadioButton');
-  var TBoolean = require('ifphetio!PHET_IO/types/TBoolean');
+
+  // phet-io types
+  var TRadioButton = require( 'ifphetio!PHET_IO/types/sun/buttons/TRadioButton' );
 
   /**
    * @param {Property} property axon property that can take on a set of values, one for each radio button in the group
@@ -64,7 +65,8 @@ define( function( require ) {
       contentAppearanceStrategy: RadioButtonGroupAppearance.contentAppearanceStrategy,
 
       // invisible label for the radio button group member for accessibility
-      accessibleLabel: ''
+      accessibleLabel: '',
+      type: null // {function} phet-io type wrapper type
     }, options );
 
     Tandem.validateOptions( options ); // The tandem is required when brand==='phet-io'
@@ -79,7 +81,7 @@ define( function( require ) {
 
     // @public (tandem) - for Tandem support, should be a novel name to reduce the risk of parent or child collisions
     this.radioButtonGroupMemberTandem = options.tandem;
-    TRadioButton && this.radioButtonGroupMemberTandem && this.radioButtonGroupMemberTandem.addInstance( this, TRadioButton( TBoolean ) );
+    TRadioButton && this.radioButtonGroupMemberTandem && this.radioButtonGroupMemberTandem.addInstance( this, TRadioButton( options.type ) );
 
     // outfit a11y
     this.accessibleContent = {

@@ -153,7 +153,8 @@ define( function( require ) {
           xMargin: xMargin,
           yMargin: yMargin,
           tandem: contentArray[ i ].tandem,
-          accessibleLabel: contentArray[ i ].accessibleLabel
+          type: contentArray[ i ].type,
+          accessibleLabel: contentArray[ i ].accessibleLabel,
         }, buttonOptions ) );
 
       // ensure the buttons don't resize when selected vs unselected by adding a rectangle with the max size
@@ -250,7 +251,7 @@ define( function( require ) {
         /*
          We want the element of the parallel DOM to look like
          <fieldset id="radio-button-group" role="radiogroup" aria-describedby="legend-id group-description">
-           <legend>Translatable legend text</legend>
+         <legend>Translatable legend text</legend>
          ... (radio inputs defined in RadioButtonGroupMember)
          <p id="group-description">Translatable description of the entire group.</p>
          </fieldset>
