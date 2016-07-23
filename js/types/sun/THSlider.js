@@ -38,10 +38,6 @@ define( function( require ) {
       documentation: 'Set whether the minor tick marks should be shown'
     }
   }, {
-    api: {
-      sliderTrack: THSliderTrack,
-      thumbInputListener: TTandemDragHandler
-    },
     documentation: 'A traditional slider component, with a knob and possibly tick marks'
   } );
 

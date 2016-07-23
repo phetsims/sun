@@ -19,9 +19,6 @@ define( function( require ) {
     TNode.call( this, sliderTrack, phetioID );
     assertInstanceOf( sliderTrack, phet.sun.HSliderTrack );
   }, {}, {
-    api: {
-      trackInputListener: TTandemDragHandler
-    },
     documentation: 'The track for a knob of a traditional slider'
   } );
 
