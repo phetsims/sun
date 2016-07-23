@@ -21,9 +21,9 @@ define( function( require ) {
       phet.sun.RoundMomentaryButton
     ] );
     TNode.call( this, momentaryButton, phetioID );
-    toEventOnStatic( momentaryButton.buttonModel, 'CallbacksForPressed', 'user', phetioID, 'pressed' );
-    toEventOnStatic( momentaryButton.buttonModel, 'CallbacksForReleased', 'user', phetioID, 'released' );
-    toEventOnStatic( momentaryButton.buttonModel, 'CallbacksForReleasedByDisable', 'user', phetioID, 'releasedDisabled' );
+    toEventOnStatic( momentaryButton.buttonModel, 'CallbacksForPressed', 'user', phetioID, TMomentaryButton, 'pressed' );
+    toEventOnStatic( momentaryButton.buttonModel, 'CallbacksForReleased', 'user', phetioID, TMomentaryButton, 'released' );
+    toEventOnStatic( momentaryButton.buttonModel, 'CallbacksForReleasedByDisable', 'user', phetioID, TMomentaryButton, 'releasedDisabled' );
   }, {}, {
     documentation: 'Button that performs an action while it is being pressed, and stops the action when released',
     events: [ 'pressed', 'released', 'releasedDisabled' ]

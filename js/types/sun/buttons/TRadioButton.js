@@ -25,7 +25,7 @@ define( function( require ) {
       TNode.call( this, radioButton, phetioID );
 
       var emitter = radioButton.radioButtonGroupMemberModel || radioButton; //Handle RadioButtonGroupMemberModel or AquaRadioButton
-      toEventOnStatic( emitter, 'CallbacksForFired', 'user', phetioID, 'fired', function( value ) {
+      toEventOnStatic( emitter, 'CallbacksForFired', 'user', phetioID, TRadioButton( valueType ), 'fired', function( value ) {
         return { value: valueType.toStateObject( value ) };
       } );
     }, {}, {

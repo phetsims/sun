@@ -22,7 +22,7 @@ define( function( require ) {
     assertInstanceOf( checkBox, phet.sun.CheckBox );
     TNode.call( this, checkBox, phetioID );
 
-    toEventOnStatic( checkBox, 'CallbacksForToggled', 'user', phetioID, 'toggled', function( oldValue, newValue ) {
+    toEventOnStatic( checkBox, 'CallbacksForToggled', 'user', phetioID, TCheckBox, 'toggled', function( oldValue, newValue ) {
       return {
         oldValue: oldValue,
         newValue: newValue

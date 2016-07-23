@@ -29,10 +29,10 @@ define( function( require ) {
 
     // TODO: This logic belongs elsewhere
     if ( button.buttonModel ) {
-      toEventOnStatic( button.buttonModel, 'CallbacksForFired', 'user', phetioID, 'fired' );
+      toEventOnStatic( button.buttonModel, 'CallbacksForFired', 'user', phetioID, TButton, 'fired' );
     }
     else {
-      toEventOnStatic( button, 'CallbacksForFired', 'user', phetioID, 'fired' );
+      toEventOnStatic( button, 'CallbacksForFired', 'user', phetioID, TButton, 'fired' );
     }
   }, {
     fire: {

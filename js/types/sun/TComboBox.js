@@ -20,11 +20,11 @@ define( function( require ) {
       assertInstanceOf( comboBox, phet.sun.ComboBox );
       TNode.call( this, comboBox, phetioID );
 
-      toEventOnStatic( comboBox, 'CallbacksForItemFired', 'user', phetioID, 'fired', function( selection ) {
+      toEventOnStatic( comboBox, 'CallbacksForItemFired', 'user', phetioID, TComboBox( valueType ), 'fired', function( selection ) {
         return { value: valueType.toStateObject( selection ) };
       } );
-      toEventOnStatic( comboBox, 'CallbacksForComboBoxDismissed', 'user', phetioID, 'popupHidden' );
-      toEventOnStatic( comboBox, 'CallbacksForComboBoxPopupShown', 'user', phetioID, 'popupShown' );
+      toEventOnStatic( comboBox, 'CallbacksForComboBoxDismissed', 'user', phetioID, TComboBox( valueType ), 'popupHidden' );
+      toEventOnStatic( comboBox, 'CallbacksForComboBoxPopupShown', 'user', phetioID, TComboBox( valueType ), 'popupShown' );
     }, {}, {
       documentation: 'A traditional combo box',
       events: [ 'fired', 'popupShown', 'popupHidden' ]

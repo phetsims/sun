@@ -19,7 +19,7 @@ define( function( require ) {
     TNode.call( this, onOffSwitch, phetioID );
     assertInstanceOf( onOffSwitch, phet.sun.OnOffSwitch );
 
-    toEventOnStatic( onOffSwitch, 'CallbacksForToggled', 'user', phetioID, 'toggled', function( oldValue, newValue ) {
+    toEventOnStatic( onOffSwitch, 'CallbacksForToggled', 'user', phetioID, TOnOffSwitch, 'toggled', function( oldValue, newValue ) {
       return {
         oldValue: oldValue,
         newValue: newValue
