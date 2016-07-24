@@ -30,7 +30,7 @@ define( function( require ) {
       var emitter = toggleButton.toggleButtonModel || toggleButton.buttonModel;  // Handle BooleanRoundStickyToggleButton too
 
       // Both StickyToggleButtonModel and ToggleButtonModel send the args in this order: oldValue, newValue
-      toEventOnStatic( emitter, 'CallbacksForToggled', 'user', phetioID, TToggleButton, 'toggled', function( oldValue, newValue ) {
+      toEventOnStatic( emitter, 'CallbacksForToggled', 'user', phetioID, TToggleButton( valueType ), 'toggled', function( oldValue, newValue ) {
         return {
           oldValue: valueType.toStateObject( oldValue ),
           newValue: valueType.toStateObject( newValue )
