@@ -19,8 +19,8 @@ define( function( require ) {
   var sun = require( 'SUN/sun' );
   var Tandem = require( 'TANDEM/Tandem' );
 
-  // phet-io types
-  var TToggleButton = require( 'PHET_IO/types/sun/buttons/TToggleButton' );
+  // phet-io modules
+  var TToggleButton = require( 'ifphetio!PHET_IO/types/sun/buttons/TToggleButton' );
 
   /**
    * @param {Object} valueUp value when the toggle is in the 'up' position
