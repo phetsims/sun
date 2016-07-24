@@ -22,7 +22,7 @@ define( function( require ) {
   var sun = require( 'SUN/sun' );
   var Tandem = require( 'TANDEM/Tandem' );
 
-  // phet-io types
+  // phet-io modules
   var TRadioButton = require( 'ifphetio!PHET_IO/types/sun/buttons/TRadioButton' );
 
   /**

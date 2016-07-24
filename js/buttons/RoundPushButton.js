@@ -20,6 +20,8 @@ define( function( require ) {
   var RoundButtonView = require( 'SUN/buttons/RoundButtonView' );
   var sun = require( 'SUN/sun' );
   var Tandem = require( 'TANDEM/Tandem' );
+
+  // phet-io modules
   var TButton = require( 'ifphetio!PHET_IO/types/sun/buttons/TButton' );
 
   /**

@@ -17,7 +17,7 @@ define( function( require ) {
   var AccessiblePeer = require( 'SCENERY/accessibility/AccessiblePeer' );
   var Tandem = require( 'TANDEM/Tandem' );
 
-  // phet-io types
+  // phet-io modules
   var TRadioButton = require( 'ifphetio!PHET_IO/types/sun/buttons/TRadioButton' );
 
   /**

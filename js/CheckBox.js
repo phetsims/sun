@@ -18,6 +18,8 @@ define( function( require ) {
   var sun = require( 'SUN/sun' );
   var Text = require( 'SCENERY/nodes/Text' );
   var Tandem = require( 'TANDEM/Tandem' );
+
+  // phet-io modules
   var TCheckBox = require( 'ifphetio!PHET_IO/types/sun/TCheckBox' );
 
   // constants
