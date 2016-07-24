@@ -154,7 +154,7 @@ define( function( require ) {
           yMargin: yMargin,
           tandem: contentArray[ i ].tandem,
           type: contentArray[ i ].type,
-          accessibleLabel: contentArray[ i ].accessibleLabel,
+          accessibleLabel: contentArray[ i ].accessibleLabel
         }, buttonOptions ) );
 
       // ensure the buttons don't resize when selected vs unselected by adding a rectangle with the max size
