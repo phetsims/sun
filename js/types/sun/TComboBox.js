@@ -16,6 +16,7 @@ define( function( require ) {
   var toEventOnStatic = require( 'PHET_IO/events/toEventOnStatic' );
 
   var TComboBox = function TComboBox( valueType ) {
+    assert && assert( !!valueType, 'valueType should be defined' );
     return phetioInherit( TNode, 'TComboBox', function( comboBox, phetioID ) {
       assertInstanceOf( comboBox, phet.sun.ComboBox );
       TNode.call( this, comboBox, phetioID );
