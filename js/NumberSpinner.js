@@ -1,5 +1,6 @@
 // Copyright 2014-2015, University of Colorado Boulder
 
+//TODO Further generalization of this component is in progress, see https://github.com/phetsims/sun/issues/85
 /**
  * Spinner for numbers.
  *
