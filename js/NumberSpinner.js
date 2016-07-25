@@ -45,8 +45,8 @@ define( function( require ) {
       xSpacing: 5,
       ySpacing: 3,
       cornerRadius: 5,
-      touchXDilated: 20,
-      touchYDilated: 10
+      touchXDilated: 0,
+      touchYDilated: 0
     }, options );
 
     var valueOptions = {
