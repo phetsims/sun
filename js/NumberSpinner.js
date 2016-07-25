@@ -35,7 +35,7 @@ define( function( require ) {
       // {string} where to place the arrow buttons, 'leftRight'|'topBottom'|'bothRight'|'bothBottom'
       arrowsPosition: 'bothRight',
 
-      // {number|null} arrows are by default scaled to fit dimensions of value background. This scales relative to that scale.
+      // {number|null} By default, arrows are scaled to fit dimensions of value background. This is an additional scale factor.
       arrowsScale: null,
 
       decimalPlaces: 0,
