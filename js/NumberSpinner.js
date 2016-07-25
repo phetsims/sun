@@ -11,7 +11,6 @@ define( function( require ) {
   // modules
   var ArrowButton = require( 'SUN/buttons/ArrowButton' );
   var inherit = require( 'PHET_CORE/inherit' );
-  var LayoutBox = require( 'SCENERY/nodes/LayoutBox' );
   var Node = require( 'SCENERY/nodes/Node' );
   var PhetFont = require( 'SCENERY_PHET/PhetFont' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
@@ -30,11 +29,19 @@ define( function( require ) {
     assert && assert( range.contains( numberProperty.get() ), 'value ' + numberProperty.get() + ' is out of range ' + range.toString() );
 
     options = _.extend( {
+
+      // {string} where to place the arrow buttons, 'leftRight'|'topBottom'|'bothRight'|'bothBottom'
+      arrowsPosition: 'bothRight',
+
+      // {number|null} arrows are by default scaled to fit dimensions of value background. This scales relative to that scale.
+      arrowsScale: null,
+
       decimalPlaces: 0,
       font: new PhetFont( 28 ),
       xMargin: 5,
       yMargin: 3,
-      ySpacing: 5,
+      xSpacing: 5,
+      ySpacing: 3,
       cornerRadius: 5,
       touchXDilated: 20,
       touchYDilated: 10
@@ -59,29 +66,77 @@ define( function( require ) {
         stroke: 'black',
         lineWidth: 0.5
       } );
+    numberNode.center = backgroundNode.center;
     var valueParent = new Node( { children: [ backgroundNode, numberNode ] } );
 
     // buttons
-    var upButton = new ArrowButton( 'up', function() { numberProperty.set( numberProperty.get() + 1 ); } );
-    var downButton = new ArrowButton( 'down', function() { numberProperty.set( numberProperty.get() - 1 ); } );
-    var buttonsParent = new LayoutBox( {
-      children: [ upButton, downButton ],
-      orientation: 'vertical',
-      spacing: options.ySpacing
-    } );
-    buttonsParent.setScaleMagnitude( backgroundNode.height / buttonsParent.height );
-    upButton.touchArea = upButton.localBounds
+    var incrementDirection = ( options.arrowsPosition === 'topBottom' || options.arrowsPosition === 'bothRight' ) ? 'up' : 'right';
+    var incrementButton = new ArrowButton( incrementDirection, function() { numberProperty.set( numberProperty.get() + 1 ); } );
+    var decrementDirection = ( options.arrowsPosition === 'topBottom' || options.arrowsPosition === 'bothRight' ) ? 'down' : 'left';
+    var decrementButton = new ArrowButton( decrementDirection, function() { numberProperty.set( numberProperty.get() - 1 ); } );
+
+    // pointer area
+    incrementButton.touchArea = incrementButton.localBounds
       .dilatedXY( options.touchXDilated, options.touchYDilated )
       .shiftedY( -options.touchYDilated );
-    downButton.touchArea = downButton.localBounds
+    decrementButton.touchArea = decrementButton.localBounds
       .dilatedXY( options.touchXDilated, options.touchYDilated )
       .shiftedY( options.touchYDilated );
 
-    // buttons to right of value
-    options.children = [ valueParent, buttonsParent ];
-    options.spacing = options.ySpacing;
-    options.orientation = 'horizontal';
-    LayoutBox.call( this, options );
+    // arrow button scaling
+    var arrowsScale;
+    if ( !arrowsScale ) {
+      if ( options.arrowsPosition === 'leftRight' ) {
+        arrowsScale = valueParent.height / incrementButton.height;
+      }
+      else if ( options.arrowsPosition === 'topBottom' ) {
+        arrowsScale = valueParent.width / incrementButton.width;
+      }
+      else if ( options.arrowsPosition === 'bothRight' ) {
+        arrowsScale = ( ( valueParent.height / 2 ) - ( options.ySpacing / 2 ) ) / incrementButton.height;
+      }
+      else if ( options.arrowsPosition === 'bothBottom' ) {
+        arrowsScale = ( ( valueParent.width / 2 ) - ( options.xSpacing / 2 ) ) / incrementButton.width;
+      }
+      else {
+        throw new Error( 'invalid options.arrowsPosition: ' + options.arrowsPosition );
+      }
+    }
+    if ( options.arrowsScale ) {
+      arrowsScale = arrowsScale * options.arrowsScale;
+    }
+    incrementButton.setScaleMagnitude( arrowsScale );
+    decrementButton.setScaleMagnitude( arrowsScale );
+
+    // layout
+    if ( options.arrowsPosition === 'leftRight' ) {
+      incrementButton.left = valueParent.right + options.xSpacing;
+      decrementButton.right = valueParent.left - options.xSpacing;
+      incrementButton.centerY = decrementButton.centerY = valueParent.centerY;
+    }
+    else if ( options.arrowsPosition === 'topBottom' ) {
+      incrementButton.centerX = decrementButton.centerX = valueParent.centerX;
+      incrementButton.bottom = valueParent.top - options.ySpacing;
+      decrementButton.top = valueParent.bottom + options.ySpacing;
+    }
+    else if ( options.arrowsPosition === 'bothRight' ) {
+      incrementButton.left = decrementButton.left = valueParent.right + options.xSpacing;
+      incrementButton.bottom = valueParent.centerY - ( options.ySpacing / 2 );
+      decrementButton.top = valueParent.centerY + ( options.ySpacing / 2 );
+    }
+    else if ( options.arrowsPosition === 'bothBottom' ) {
+      incrementButton.left = valueParent.centerX + ( options.xSpacing / 2 );
+      decrementButton.right = valueParent.centerX - ( options.xSpacing / 2 );
+      incrementButton.top = decrementButton.top = valueParent.bottom + options.ySpacing;
+    }
+    else {
+      throw new Error( 'invalid options.arrowsPosition: ' + options.arrowsPosition );
+    }
+
+    assert && assert( !this.children, 'decoration not supported' );
+    options.children = [ valueParent, incrementButton, decrementButton ];
+
+    Node.call( this, options );
 
     // @private When the value changes ...
     this.numberPropertyObserver = function( value ) {
@@ -92,8 +147,8 @@ define( function( require ) {
       numberNode.center = backgroundNode.center;
 
       // enable/disable arrow buttons
-      upButton.enabled = ( value < range.max );
-      downButton.enabled = ( value > range.min );
+      incrementButton.enabled = ( value < range.max );
+      decrementButton.enabled = ( value > range.min );
     };
     this.numberProperty = numberProperty; // @private
     this.numberProperty.link( this.numberPropertyObserver ); // must be unlinked in dispose
@@ -101,7 +156,7 @@ define( function( require ) {
 
   sun.register( 'NumberSpinner', NumberSpinner );
 
-  return inherit( LayoutBox, NumberSpinner, {
+  return inherit( Node, NumberSpinner, {
 
     // @public Ensures that this node is eligible for GC.
     dispose: function() {

@@ -35,12 +35,12 @@ define( function( require ) {
   function ComponentsView() {
     DemosView.call( this, 'component', [
 
-    /**
-     * To add a demo, add an object literal here. Each object has these properties:
-     *
-     * {string} label - label in the combo box
-     * {function(Bounds2): Node} getNode - creates the scene graph for the demo
-     */
+      /**
+       * To add a demo, add an object literal here. Each object has these properties:
+       *
+       * {string} label - label in the combo box
+       * {function(Bounds2): Node} getNode - creates the scene graph for the demo
+       */
       { label: 'Carousel', getNode: demoCarousel },
       { label: 'HSlider', getNode: demoHSlider },
       { label: 'PageControl', getNode: demoPageControl },
@@ -224,11 +224,30 @@ define( function( require ) {
 
     var valueProperty = new Property( 0 );
     var valueRange = new Range( -10, 10 );
-    var spinner = new NumberSpinner( valueProperty, valueRange, {
-      center: layoutBounds.center
+
+    // One button for each arrowPosition option value: 'leftRight'|'topBottom'|'bothRight'|'bothBottom'
+    var spinnerLeftRight = new NumberSpinner( valueProperty, valueRange, {
+      arrowsPosition: 'leftRight',
+      font: new PhetFont( 24 ),
+      xSpacing: 8
+    } );
+    var spinnerTopBottom = new NumberSpinner( valueProperty, valueRange, {
+      arrowsPosition: 'topBottom',
+      arrowsScale: 0.65
+    } );
+    var spinnerBothRight = new NumberSpinner( valueProperty, valueRange, {
+      arrowsPosition: 'bothRight',
+      yMargin: 10
+    } );
+    var spinnerBothBottom = new NumberSpinner( valueProperty, valueRange, {
+      arrowsPosition: 'bothBottom'
     } );
 
-    return spinner;
+    return new VBox( {
+      children: [ spinnerLeftRight, spinnerTopBottom, spinnerBothRight, spinnerBothBottom ],
+      spacing: 25,
+      center: layoutBounds.center
+    } );
   };
 
   return inherit( DemosView, ComponentsView );
