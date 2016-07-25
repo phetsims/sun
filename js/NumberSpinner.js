@@ -20,6 +20,14 @@ define( function( require ) {
   var Text = require( 'SCENERY/nodes/Text' );
   var Util = require( 'DOT/Util' );
 
+  // possible values for options.arrowsPosition
+  var ARROWS_POSITION_VALUES = [
+    'leftRight', // arrow buttons on left and right of value
+    'topBottom', // arrow buttons on top and bottom of value
+    'bothRight', // both arrow buttons to the right of the value
+    'bothBottom' // both arrow buttons below the value
+  ];
+
   /**
    * @param {Property.<number>} numberProperty value, must be an integer
    * @param {Range} range range of values, min and max must be integers
@@ -32,7 +40,7 @@ define( function( require ) {
 
     options = _.extend( {
 
-      // {string} where to place the arrow buttons, 'leftRight'|'topBottom'|'bothRight'|'bothBottom'
+      // {string} where to place the arrow buttons, see ARROWS_POSITION_VALUES
       arrowsPosition: 'bothRight',
 
       // {number|null} By default, arrows are scaled to fit dimensions of value background. This is an additional scale factor.
@@ -53,6 +61,8 @@ define( function( require ) {
       mouseAreaYDilation: 0
 
     }, options );
+
+    assert && assert( _.contains( ARROWS_POSITION_VALUES, options.arrowsPosition ), 'invalid arrowsPosition: ' + options.arrowsPosition );
 
     var valueOptions = {
       font: options.font,
@@ -94,11 +104,8 @@ define( function( require ) {
       else if ( options.arrowsPosition === 'bothRight' ) {
         arrowsScale = ( ( valueParent.height / 2 ) - ( options.ySpacing / 2 ) ) / incrementButton.height;
       }
-      else if ( options.arrowsPosition === 'bothBottom' ) {
+      else { // 'bothBottom'
         arrowsScale = ( ( valueParent.width / 2 ) - ( options.xSpacing / 2 ) ) / incrementButton.width;
-      }
-      else {
-        throw new Error( 'invalid options.arrowsPosition: ' + options.arrowsPosition );
       }
     }
     if ( options.arrowsScale ) {
@@ -123,13 +130,10 @@ define( function( require ) {
       incrementButton.bottom = valueParent.centerY - ( options.ySpacing / 2 );
       decrementButton.top = valueParent.centerY + ( options.ySpacing / 2 );
     }
-    else if ( options.arrowsPosition === 'bothBottom' ) {
+    else { // 'bothBottom'
       incrementButton.left = valueParent.centerX + ( options.xSpacing / 2 );
       decrementButton.right = valueParent.centerX - ( options.xSpacing / 2 );
       incrementButton.top = decrementButton.top = valueParent.bottom + options.ySpacing;
-    }
-    else {
-      throw new Error( 'invalid options.arrowsPosition: ' + options.arrowsPosition );
     }
 
     // touch areas
@@ -166,7 +170,7 @@ define( function( require ) {
       }
     }
 
-    assert && assert( !this.children, 'decoration not supported' );
+    assert && assert( !options.children, 'decoration not supported' );
     options.children = [ valueParent, incrementButton, decrementButton ];
 
     Node.call( this, options );
