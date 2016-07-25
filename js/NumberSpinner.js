@@ -77,14 +77,6 @@ define( function( require ) {
     var decrementDirection = ( options.arrowsPosition === 'topBottom' || options.arrowsPosition === 'bothRight' ) ? 'down' : 'left';
     var decrementButton = new ArrowButton( decrementDirection, function() { numberProperty.set( numberProperty.get() - 1 ); } );
 
-    // pointer area
-    incrementButton.touchArea = incrementButton.localBounds
-      .dilatedXY( options.touchXDilated, options.touchYDilated )
-      .shiftedY( -options.touchYDilated );
-    decrementButton.touchArea = decrementButton.localBounds
-      .dilatedXY( options.touchXDilated, options.touchYDilated )
-      .shiftedY( options.touchYDilated );
-
     // arrow button scaling
     var arrowsScale;
     if ( !arrowsScale ) {
@@ -134,6 +126,16 @@ define( function( require ) {
     else {
       throw new Error( 'invalid options.arrowsPosition: ' + options.arrowsPosition );
     }
+
+    //TODO this must be handled differently based on options.arrowsPosition
+    //TODO add support for mouseArea
+    // pointer areas
+    incrementButton.touchArea = incrementButton.localBounds
+      .dilatedXY( options.touchXDilated, options.touchYDilated )
+      .shiftedY( -options.touchYDilated );
+    decrementButton.touchArea = decrementButton.localBounds
+      .dilatedXY( options.touchXDilated, options.touchYDilated )
+      .shiftedY( options.touchYDilated );
 
     assert && assert( !this.children, 'decoration not supported' );
     options.children = [ valueParent, incrementButton, decrementButton ];
