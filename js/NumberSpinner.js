@@ -5,6 +5,7 @@
  * Spinner for numbers.
  *
  * @author Chris Malley (PixelZoom, Inc.)
+ * @author Andrea Lin
  */
 define( function( require ) {
   'use strict';
