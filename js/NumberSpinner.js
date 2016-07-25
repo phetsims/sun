@@ -138,6 +138,7 @@ define( function( require ) {
       incrementButton.touchArea = incrementButton.localBounds.dilatedXY( options.touchAreaXDilation, options.touchAreaYDilation );
       decrementButton.touchArea = decrementButton.localBounds.dilatedXY( options.touchAreaXDilation, options.touchAreaYDilation );
 
+      // shift touch areas for these options, to prevent overlap
       if ( options.arrowsPosition === 'bothRight' ) {
         incrementButton.touchArea = incrementButton.touchArea.shiftedY( -options.touchAreaYDilation );
         decrementButton.touchArea = decrementButton.touchArea.shiftedY( options.touchAreaYDilation );
@@ -154,6 +155,7 @@ define( function( require ) {
       incrementButton.mouseArea = incrementButton.localBounds.dilatedXY( options.mouseAreaXDilation, options.mouseAreaYDilation );
       decrementButton.mouseArea = decrementButton.localBounds.dilatedXY( options.mouseAreaXDilation, options.mouseAreaYDilation );
 
+      // shift touch areas for these options, to prevent overlap
       if ( options.arrowsPosition === 'bothRight' ) {
         incrementButton.mouseArea = incrementButton.mouseArea.shiftedY( -options.mouseAreaYDilation );
         decrementButton.mouseArea = decrementButton.mouseArea.shiftedY( options.mouseAreaYDilation );
