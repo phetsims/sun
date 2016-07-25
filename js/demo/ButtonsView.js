@@ -9,6 +9,7 @@ define( function( require ) {
   'use strict';
 
   // modules
+  var ArrowButton = require( 'SUN/buttons/ArrowButton' );
   var BooleanRectangularStickyToggleButton = require( 'SUN/buttons/BooleanRectangularStickyToggleButton' );
   var BooleanRectangularToggleButton = require( 'SUN/buttons/BooleanRectangularToggleButton' );
   var Color = require( 'SCENERY/util/Color' );
@@ -264,8 +265,10 @@ define( function( require ) {
     } );
     var transparentParent = new Node( { children: [ rectangleNode, transparentButton ] } );
 
+    var arrowButton = new ArrowButton( 'left', function() { console.log( 'ArrowButton pressed' ); } );
+
     var miscButtonsBox = new VBox( {
-      children: [ fireOnDownButton, htmlButton, transparentParent ],
+      children: [ fireOnDownButton, htmlButton, transparentParent, arrowButton ],
       spacing: 15,
       left: actionButtonsBox.left,
       top: actionButtonsBox.bottom + 25
