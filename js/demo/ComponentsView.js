@@ -20,9 +20,11 @@ define( function( require ) {
   var HSlider = require( 'SUN/HSlider' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Node = require( 'SCENERY/nodes/Node' );
+  var NumberSpinner = require( 'SUN/NumberSpinner' );
   var PageControl = require( 'SUN/PageControl' );
   var PhetFont = require( 'SCENERY_PHET/PhetFont' );
   var Property = require( 'AXON/Property' );
+  var Range = require( 'DOT/Range' );
   var RangeWithValue = require( 'DOT/RangeWithValue' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var RectangularPushButton = require( 'SUN/buttons/RectangularPushButton' );
@@ -41,7 +43,8 @@ define( function( require ) {
      */
       { label: 'Carousel', getNode: demoCarousel },
       { label: 'HSlider', getNode: demoHSlider },
-      { label: 'PageControl', getNode: demoPageControl }
+      { label: 'PageControl', getNode: demoPageControl },
+      { label: 'NumberSpinner', getNode: demoNumberSpinner }
     ] );
   }
 
@@ -214,6 +217,18 @@ define( function( require ) {
       children: [ carousel, pageControl ],
       center: layoutBounds.center
     } );
+  };
+
+  // Creates a demo for NumberSpinner
+  var demoNumberSpinner = function( layoutBounds ) {
+
+    var valueProperty = new Property( 0 );
+    var valueRange = new Range( -10, 10 );
+    var spinner = new NumberSpinner( valueProperty, valueRange, {
+      center: layoutBounds.center
+    } );
+
+    return spinner;
   };
 
   return inherit( DemosView, ComponentsView );
