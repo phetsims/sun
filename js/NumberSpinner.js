@@ -53,6 +53,7 @@ define( function( require ) {
       xSpacing: 5,
       ySpacing: 3,
       cornerRadius: 5,
+      deltaValue: 1,
 
       // arrow button pointer areas
       touchAreaXDilation: 0,
@@ -88,9 +89,13 @@ define( function( require ) {
 
     // buttons
     var incrementDirection = ( options.arrowsPosition === 'topBottom' || options.arrowsPosition === 'bothRight' ) ? 'up' : 'right';
-    var incrementButton = new ArrowButton( incrementDirection, function() { numberProperty.set( numberProperty.get() + 1 ); } );
+    var incrementButton = new ArrowButton( incrementDirection, function() {
+      numberProperty.set( numberProperty.get() + options.deltaValue );
+    } );
     var decrementDirection = ( options.arrowsPosition === 'topBottom' || options.arrowsPosition === 'bothRight' ) ? 'down' : 'left';
-    var decrementButton = new ArrowButton( decrementDirection, function() { numberProperty.set( numberProperty.get() - 1 ); } );
+    var decrementButton = new ArrowButton( decrementDirection, function() {
+      numberProperty.set( numberProperty.get() - options.deltaValue );
+    } );
 
     // arrow button scaling
     var arrowsScale;
@@ -177,15 +182,15 @@ define( function( require ) {
 
     // @private When the value changes ...
     this.numberPropertyObserver = function( value ) {
-      assert && assert( range.contains( value ) );
+      assert && assert( range.contains( value ), 'value out of range: ' + value );
 
       // update the number and center it
       numberNode.text = Util.toFixed( value, options.decimalPlaces );
       numberNode.center = backgroundNode.center;
 
       // enable/disable arrow buttons
-      incrementButton.enabled = ( value < range.max );
-      decrementButton.enabled = ( value > range.min );
+      incrementButton.enabled = ( ( value + options.deltaValue ) <= range.max );
+      decrementButton.enabled = ( ( value - options.deltaValue ) >= range.min );
     };
     this.numberProperty = numberProperty; // @private
     this.numberProperty.link( this.numberPropertyObserver ); // must be unlinked in dispose

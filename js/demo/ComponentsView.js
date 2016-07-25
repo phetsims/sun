@@ -223,17 +223,19 @@ define( function( require ) {
   var demoNumberSpinner = function( layoutBounds ) {
 
     var valueProperty = new Property( 0 );
-    var valueRange = new Range( -10, 10 );
+    var valueRange = new Range( -5, 5 );
 
     // options for all spinners
     var spinnerOptions = {
       touchAreaXDilation: 20,
       touchAreaYDilation: 10,
       mouseAreaXDilation: 10,
-      mouseAreaYDilation: 5
+      mouseAreaYDilation: 5,
+      decimalPlaces: 1,
+      deltaValue: 0.1
     };
 
-    // One button for each arrowPosition option value: 'leftRight'|'topBottom'|'bothRight'|'bothBottom'
+    // Demonstrate each value of options.arrowsPosition
     var spinnerLeftRight = new NumberSpinner( valueProperty, valueRange, _.extend( {}, spinnerOptions, {
       arrowsPosition: 'leftRight'
     } ) );
