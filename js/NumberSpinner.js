@@ -45,8 +45,13 @@ define( function( require ) {
       xSpacing: 5,
       ySpacing: 3,
       cornerRadius: 5,
-      touchXDilated: 0,
-      touchYDilated: 0
+
+      // arrow button pointer areas
+      touchAreaXDilation: 0,
+      touchAreaYDilation: 0,
+      mouseAreaXDilation: 0,
+      mouseAreaYDilation: 0
+
     }, options );
 
     var valueOptions = {
@@ -127,15 +132,37 @@ define( function( require ) {
       throw new Error( 'invalid options.arrowsPosition: ' + options.arrowsPosition );
     }
 
-    //TODO this must be handled differently based on options.arrowsPosition
-    //TODO add support for mouseArea
-    // pointer areas
-    incrementButton.touchArea = incrementButton.localBounds
-      .dilatedXY( options.touchXDilated, options.touchYDilated )
-      .shiftedY( -options.touchYDilated );
-    decrementButton.touchArea = decrementButton.localBounds
-      .dilatedXY( options.touchXDilated, options.touchYDilated )
-      .shiftedY( options.touchYDilated );
+    // touch areas
+    if ( options.touchAreaXDilation || options.touchAreaYDilation ) {
+
+      incrementButton.touchArea = incrementButton.localBounds.dilatedXY( options.touchAreaXDilation, options.touchAreaYDilation );
+      decrementButton.touchArea = decrementButton.localBounds.dilatedXY( options.touchAreaXDilation, options.touchAreaYDilation );
+
+      if ( options.arrowsPosition === 'bothRight' ) {
+        incrementButton.touchArea = incrementButton.touchArea.shiftedY( -options.touchAreaYDilation );
+        decrementButton.touchArea = decrementButton.touchArea.shiftedY( options.touchAreaYDilation );
+      }
+      else if ( options.arrowsPosition === 'bothBottom' ){
+        incrementButton.touchArea = incrementButton.touchArea.shiftedX( options.touchAreaXDilation );
+        decrementButton.touchArea = decrementButton.touchArea.shiftedX( -options.touchAreaXDilation );
+      }
+    }
+
+    // mouse areas
+    if ( options.mouseAreaXDilation || options.mouseAreaYDilation ) {
+
+      incrementButton.mouseArea = incrementButton.localBounds.dilatedXY( options.mouseAreaXDilation, options.mouseAreaYDilation );
+      decrementButton.mouseArea = decrementButton.localBounds.dilatedXY( options.mouseAreaXDilation, options.mouseAreaYDilation );
+
+      if ( options.arrowsPosition === 'bothRight' ) {
+        incrementButton.mouseArea = incrementButton.mouseArea.shiftedY( -options.mouseAreaYDilation );
+        decrementButton.mouseArea = decrementButton.mouseArea.shiftedY( options.mouseAreaYDilation );
+      }
+      else if ( options.arrowsPosition === 'bothBottom' ) {
+        incrementButton.mouseArea = incrementButton.mouseArea.shiftedX( options.mouseAreaXDilation );
+        decrementButton.mouseArea = decrementButton.mouseArea.shiftedX( -options.mouseAreaXDilation );
+      }
+    }
 
     assert && assert( !this.children, 'decoration not supported' );
     options.children = [ valueParent, incrementButton, decrementButton ];

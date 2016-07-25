@@ -225,27 +225,33 @@ define( function( require ) {
     var valueProperty = new Property( 0 );
     var valueRange = new Range( -10, 10 );
 
+    // options for all spinners
+    var spinnerOptions = {
+      touchAreaXDilation: 20,
+      touchAreaYDilation: 10,
+      mouseAreaXDilation: 10,
+      mouseAreaYDilation: 5
+    };
+
     // One button for each arrowPosition option value: 'leftRight'|'topBottom'|'bothRight'|'bothBottom'
-    var spinnerLeftRight = new NumberSpinner( valueProperty, valueRange, {
-      arrowsPosition: 'leftRight',
-      font: new PhetFont( 24 ),
-      xSpacing: 8
-    } );
-    var spinnerTopBottom = new NumberSpinner( valueProperty, valueRange, {
+    var spinnerLeftRight = new NumberSpinner( valueProperty, valueRange, _.extend( {}, spinnerOptions, {
+      arrowsPosition: 'leftRight'
+    } ) );
+    var spinnerTopBottom = new NumberSpinner( valueProperty, valueRange, _.extend( {}, spinnerOptions, {
       arrowsPosition: 'topBottom',
       arrowsScale: 0.65
-    } );
-    var spinnerBothRight = new NumberSpinner( valueProperty, valueRange, {
+    } ) );
+    var spinnerBothRight = new NumberSpinner( valueProperty, valueRange, _.extend( {}, spinnerOptions, {
       arrowsPosition: 'bothRight',
       yMargin: 10
-    } );
-    var spinnerBothBottom = new NumberSpinner( valueProperty, valueRange, {
+    } ) );
+    var spinnerBothBottom = new NumberSpinner( valueProperty, valueRange, _.extend( {}, spinnerOptions, {
       arrowsPosition: 'bothBottom'
-    } );
+    } ) );
 
     return new VBox( {
       children: [ spinnerLeftRight, spinnerTopBottom, spinnerBothRight, spinnerBothBottom ],
-      spacing: 25,
+      spacing: 40,
       center: layoutBounds.center
     } );
   };
