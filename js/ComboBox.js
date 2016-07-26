@@ -27,7 +27,7 @@ define( function( require ) {
   var TComboBox = require( 'ifphetio!PHET_IO/types/sun/TComboBox' );
 
   /**
-   * @param {Array} items
+   * @param {*[]} items - see ComboBox.createItem
    * @param {Property} property
    * @param {Node} listParent node that will be used as the list's parent, use this to ensuring that the list is in front of everything else
    * @param {Object} [options] object with optional properties
@@ -265,7 +265,7 @@ define( function( require ) {
    * @param {Node} node
    * @param {*} value
    * @param {Object} [options]
-   * @returns {{node: *, value: *}}
+   * @returns {{node:Node, value:*}}
    * @public
    */
   ComboBox.createItem = function( node, value, options ) {
@@ -332,7 +332,7 @@ define( function( require ) {
 
   /**
    * A wrapper around the combo box item, adds margins, etc.
-   * @param item
+   * @param {*} item - see ComboBox.createItem
    * @param {number} width
    * @param {number} height
    * @param {number} xMargin
