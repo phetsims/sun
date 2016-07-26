@@ -19,6 +19,7 @@ define( function( require ) {
     TNode.call( this, slider, phetioID );
     assertInstanceOf( slider, phet.sun.HSlider );
   }, {
+
     setMajorTicksVisible: {
       returnType: TVoid,
       parameterTypes: [ TBoolean ],
@@ -27,6 +28,7 @@ define( function( require ) {
       },
       documentation: 'Set whether the major tick marks should be shown'
     },
+
     setMinorTicksVisible: {
       returnType: TVoid,
       parameterTypes: [ TBoolean ],

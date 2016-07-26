@@ -29,6 +29,7 @@ define( function( require ) {
       };
     } );
   }, {
+
     link: {
       returnType: TVoid,
       parameterTypes: [ TFunctionWrapper( TVoid, [ TBoolean ] ) ],
@@ -38,6 +39,7 @@ define( function( require ) {
       documentation: 'Link a listener to the underlying checked TProperty.  The listener receives an immediate callback ' +
                      'with the current value (true/false)'
     },
+
     setChecked: {
       returnType: TVoid,
       parameterTypes: [ TBoolean ],
@@ -46,6 +48,7 @@ define( function( require ) {
       },
       documentation: 'Sets whether the checkbox is checked or not'
     },
+
     isChecked: {
       returnType: TBoolean,
       parameterTypes: [],
