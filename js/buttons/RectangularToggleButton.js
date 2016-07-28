@@ -35,7 +35,7 @@ define( function( require ) {
     this.toggleButtonModel = new ToggleButtonModel( valueOff, valueOn, property, options );
     RectangularButtonView.call( this, this.toggleButtonModel, new ToggleButtonInteractionStateProperty( this.toggleButtonModel ), options );
 
-    TToggleButton && options && options.tandem && options.tandem.addInstance( this, TToggleButton( property.elementType ) );
+    options && options.tandem && options.tandem.addInstance( this, TToggleButton( property.elementType ) );
   }
 
   sun.register( 'RectangularToggleButton', RectangularToggleButton );

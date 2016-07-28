@@ -125,7 +125,7 @@ define( function( require ) {
       trackInputListener.dispose();
     };
 
-    THSliderTrack && options.tandem && options.tandem.addInstance( this, THSliderTrack );
+    options.tandem && options.tandem.addInstance( this, THSliderTrack );
   }
 
   sun.register( 'HSliderTrack', HSliderTrack );

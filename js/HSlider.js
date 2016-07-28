@@ -225,7 +225,7 @@ define( function( require ) {
 
     thisSlider.mutate( options );
 
-    THSlider && options.tandem && options.tandem.addInstance( this, THSlider );
+    options.tandem && options.tandem.addInstance( this, THSlider );
   }
 
   sun.register( 'HSlider', HSlider );

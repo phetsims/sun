@@ -36,7 +36,7 @@ define( function( require ) {
     this.buttonModel = new MomentaryButtonModel( valueOff, valueOn, property );
     RoundButtonView.call( this, this.buttonModel, new MomentaryButtonInteractionStateProperty( this.buttonModel ), options );
 
-    TMomentaryButton && options.tandem && options.tandem.addInstance( this, TMomentaryButton );
+    options.tandem && options.tandem.addInstance( this, TMomentaryButton );
 
     // @private
     this.disposeRoundMomentaryButton = function() {

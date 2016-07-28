@@ -145,7 +145,7 @@ define( function( require ) {
 
     // @public (tandem) - Tandem support, use a novel name to reduce the risk of parent or child collisions
     this.checkBoxTandem = options.tandem;
-    TCheckBox && this.checkBoxTandem && this.checkBoxTandem.addInstance( this, TCheckBox );
+    this.checkBoxTandem && this.checkBoxTandem.addInstance( this, TCheckBox );
 
     // Accessibility support
     this.setAccessibleContent( {
