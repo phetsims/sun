@@ -153,7 +153,7 @@ define( function( require ) {
           xMargin: xMargin,
           yMargin: yMargin,
           tandem: contentArray[ i ].tandem,
-          type: contentArray[ i ].type,
+          phetioValueType: contentArray[ i ].phetioValueType,
           accessibleLabel: contentArray[ i ].accessibleLabel
         }, buttonOptions ) );
 

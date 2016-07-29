@@ -73,7 +73,7 @@ define( function( require ) {
 
     this.mutate( options );
 
-    options.tandem && options.tandem.addInstance( this, TRadioButton( options.type ) );
+    options.tandem && options.tandem.addInstance( this, TRadioButton( options.phetioValueType ) );
 
     this.disposeRadioButton = function() {
       options.tandem && options.tandem.removeInstance( this );
@@ -104,7 +104,7 @@ define( function( require ) {
           fire();
         } );
 
-        // link the 'checked' 'aria-checked' attribute to the property value       
+        // link the 'checked' 'aria-checked' attribute to the property value
         property.link( function( newValue ) {
           var checked = newValue === value;
           domElement.setAttribute( 'aria-checked', checked );

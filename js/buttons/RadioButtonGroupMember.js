@@ -81,7 +81,7 @@ define( function( require ) {
 
     // @public (tandem) - for Tandem support, should be a novel name to reduce the risk of parent or child collisions
     this.radioButtonGroupMemberTandem = options.tandem;
-    this.radioButtonGroupMemberTandem && this.radioButtonGroupMemberTandem.addInstance( this, TRadioButton( options.type ) );
+    this.radioButtonGroupMemberTandem && this.radioButtonGroupMemberTandem.addInstance( this, TRadioButton( options.phetioValueType ) );
 
     // outfit a11y
     this.accessibleContent = {
