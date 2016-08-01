@@ -33,7 +33,7 @@ define( function( require ) {
     options = _.extend( {
       cursor: 'pointer',
       tandem: null,
-      type: null, // for phet-io, the function wrapper for the wrapped type, such as TString or TBoolean
+      phetioValueType: null, // for phet-io, the function wrapper for the wrapped type, such as TString or TBoolean
       enabled: true,
       accessibleLabel: '' // invisible label for the radio button, for a11y
     }, options );
