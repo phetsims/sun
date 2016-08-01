@@ -62,7 +62,7 @@ define( function( require ) {
       itemHighlightLineWidth: 1,
       // tandem
       tandem: null,
-      type: null // the phet-io type function for the combo box element type, such as TString
+      phetioValueType: null // the phet-io type function for the combo box element type, such as TString
     }, options );
 
     Tandem.validateOptions( options ); // The tandem is required when brand==='phet-io'
