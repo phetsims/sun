@@ -19,6 +19,7 @@ define( function( require ) {
   var sun = require( 'SUN/sun' );
   var Text = require( 'SCENERY/nodes/Text' );
   var Util = require( 'DOT/Util' );
+  var StringUtils = require( 'PHETCOMMON/util/StringUtils' );
 
   // possible values for options.arrowsPosition
   var ARROWS_POSITION_VALUES = [
@@ -49,6 +50,7 @@ define( function( require ) {
       arrowButtonStroke: 'black',
       arrowButtonLineWidth: 1,
 
+      valuePattern: '{0}',
       decimalPlaces: 0,
       deltaValue: 1,
       font: new PhetFont( 28 ),
@@ -80,9 +82,11 @@ define( function( require ) {
     };
 
     // compute max width of the value that's going to be displayed
+    var minString = StringUtils.format( options.valuePattern, Util.toFixed( range.min, options.decimalPlaces ) );
+    var maxString = StringUtils.format( options.valuePattern, Util.toFixed( range.max, options.decimalPlaces ) );
     var maxWidth = Math.max(
-      new Text( Util.toFixed( range.max, options.decimalPlaces ), valueOptions ).width,
-      new Text( Util.toFixed( range.min, options.decimalPlaces ), valueOptions ).width
+      new Text( minString, valueOptions ).width,
+      new Text( maxString, valueOptions ).width
     );
 
     // number
@@ -205,7 +209,7 @@ define( function( require ) {
       assert && assert( range.contains( value ), 'value out of range: ' + value );
 
       // update the number and center it
-      numberNode.text = Util.toFixed( value, options.decimalPlaces );
+      numberNode.text = StringUtils.format( options.valuePattern, Util.toFixed( value, options.decimalPlaces ) );
       numberNode.center = backgroundNode.center;
 
       // enable/disable arrow buttons

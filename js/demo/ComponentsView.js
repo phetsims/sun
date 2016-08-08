@@ -237,7 +237,8 @@ define( function( require ) {
 
     // Demonstrate each value of options.arrowsPosition
     var spinnerLeftRight = new NumberSpinner( valueProperty, valueRange, _.extend( {}, spinnerOptions, {
-      arrowsPosition: 'leftRight'
+      arrowsPosition: 'leftRight',
+      valuePattern: '{0} bottles of beer on the wall'
     } ) );
     var spinnerTopBottom = new NumberSpinner( valueProperty, valueRange, _.extend( {}, spinnerOptions, {
       arrowsPosition: 'topBottom',
