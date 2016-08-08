@@ -248,7 +248,13 @@ define( function( require ) {
       yMargin: 10
     } ) );
     var spinnerBothBottom = new NumberSpinner( valueProperty, valueRange, _.extend( {}, spinnerOptions, {
-      arrowsPosition: 'bothBottom'
+      arrowsPosition: 'bothBottom',
+      backgroundFill: 'pink',
+      backgroundStroke: 'red',
+      backgroundLineWidth: 3,
+      arrowButtonFill: 'lightblue',
+      arrowButtonStroke: 'blue',
+      arrowButtonLineWidth: 0.2
     } ) );
 
     return new VBox( {

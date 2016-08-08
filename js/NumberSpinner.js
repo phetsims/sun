@@ -45,6 +45,9 @@ define( function( require ) {
 
       // {number|null} By default, arrows are scaled to fit dimensions of value background. This is an additional scale factor.
       arrowsScale: null,
+      arrowButtonFill: 'white',
+      arrowButtonStroke: 'black',
+      arrowButtonLineWidth: 1,
 
       decimalPlaces: 0,
       deltaValue: 1,
@@ -100,14 +103,19 @@ define( function( require ) {
     var valueParent = new Node( { children: [ backgroundNode, numberNode ] } );
 
     // buttons
+    var arrowButtonOptions = { 
+      baseColor: options.arrowButtonFill,
+      stroke: options.arrowButtonStroke,
+      lineWidth: options.arrowButtonLineWidth
+    };
     var incrementDirection = ( options.arrowsPosition === 'topBottom' || options.arrowsPosition === 'bothRight' ) ? 'up' : 'right';
     var incrementButton = new ArrowButton( incrementDirection, function() {
       numberProperty.set( numberProperty.get() + options.deltaValue );
-    } );
+    }, arrowButtonOptions );
     var decrementDirection = ( options.arrowsPosition === 'topBottom' || options.arrowsPosition === 'bothRight' ) ? 'down' : 'left';
     var decrementButton = new ArrowButton( decrementDirection, function() {
       numberProperty.set( numberProperty.get() - options.deltaValue );
-    } );
+    }, arrowButtonOptions );
 
     // arrow button scaling
     var arrowsScale;
