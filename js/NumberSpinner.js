@@ -30,6 +30,8 @@ define( function( require ) {
     'bothBottom' // both arrow buttons below the value
   ];
 
+  var VALUE_ALIGN_VALUES = [ 'center', 'left', 'right' ];
+
   /**
    * @param {Property.<number>} numberProperty value, must be an integer
    * @param {Range} range range of values, min and max must be integers
@@ -56,6 +58,7 @@ define( function( require ) {
       decimalPlaces: 0,
       deltaValue: 1,
       font: new PhetFont( 28 ),
+      valueAlign: 'center',
       xSpacing: 5,
       ySpacing: 3,
       
@@ -76,7 +79,9 @@ define( function( require ) {
 
     }, options );
 
+    // validate options
     assert && assert( _.contains( ARROWS_POSITION_VALUES, options.arrowsPosition ), 'invalid arrowsPosition: ' + options.arrowsPosition );
+    assert && assert( _.contains( VALUE_ALIGN_VALUES, options.valueAlign ), 'invalid valueAlign: ' + options.valueAlign );
 
     var thisNode = this;
 
@@ -212,9 +217,21 @@ define( function( require ) {
     var numberPropertyObserver = function( value ) {
       assert && assert( range.contains( value ), 'value out of range: ' + value );
 
-      // update the number and center it
+      // update the number and align it
       numberNode.text = StringUtils.format( options.valuePattern, Util.toFixed( value, options.decimalPlaces ) );
-      numberNode.center = backgroundNode.center;
+      switch (options.valueAlign ) {
+        case 'center':
+          numberNode.center = backgroundNode.center;
+          break;
+        case 'left':
+          numberNode.left = backgroundNode.left + options.xMargin;
+          break;
+        case 'right':
+          numberNode.right = backgroundNode.right - options.xMargin;
+          break;
+        default:
+          throw new Error( 'invalid valueAlign: ' + options.valueAlign );
+      }
 
       // enable/disable arrow buttons
       incrementButton.enabled = ( ( value + options.deltaValue ) <= range.max );

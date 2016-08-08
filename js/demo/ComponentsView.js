@@ -234,7 +234,9 @@ define( function( require ) {
       mouseAreaXDilation: 10,
       mouseAreaYDilation: 5,
       decimalPlaces: 1,
-      deltaValue: 0.1
+      deltaValue: 0.1,
+      backgroundMinWidth: 100,
+      xMargin: 10
     };
 
     // Demonstrate each value of options.arrowsPosition
@@ -248,7 +250,8 @@ define( function( require ) {
     } ) );
     var spinnerBothRight = new NumberSpinner( valueProperty, valueRange, _.extend( {}, spinnerOptions, {
       arrowsPosition: 'bothRight',
-      yMargin: 10
+      yMargin: 10,
+      valueAlign: 'right'
     } ) );
     var spinnerBothBottom = new NumberSpinner( valueProperty, valueRange, _.extend( {}, spinnerOptions, {
       arrowsPosition: 'bothBottom',
@@ -257,7 +260,8 @@ define( function( require ) {
       backgroundLineWidth: 3,
       arrowButtonFill: 'lightblue',
       arrowButtonStroke: 'blue',
-      arrowButtonLineWidth: 0.2
+      arrowButtonLineWidth: 0.2,
+      valueAlign: 'left'
     } ) );
 
     var enabledCheckBox = new CheckBox( new Text( 'enabled', new PhetFont( 20 ) ), enabledProperty );
