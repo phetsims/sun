@@ -30,6 +30,7 @@ define( function( require ) {
     'bothBottom' // both arrow buttons below the value
   ];
 
+  // possible values for options.valueAlign
   var VALUE_ALIGN_VALUES = [ 'center', 'left', 'right' ];
 
   /**
@@ -58,6 +59,8 @@ define( function( require ) {
       decimalPlaces: 0,
       deltaValue: 1,
       font: new PhetFont( 28 ),
+      
+      // {string} alignment for value, see VALUE_ALIGN_VALUES
       valueAlign: 'center',
       xSpacing: 5,
       ySpacing: 3,
