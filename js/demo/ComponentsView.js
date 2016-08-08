@@ -224,9 +224,11 @@ define( function( require ) {
 
     var valueProperty = new Property( 0 );
     var valueRange = new Range( -5, 5 );
+    var enabledProperty = new Property( true );
 
     // options for all spinners
     var spinnerOptions = {
+      enabledProperty: enabledProperty,
       touchAreaXDilation: 20,
       touchAreaYDilation: 10,
       mouseAreaXDilation: 10,
@@ -258,8 +260,10 @@ define( function( require ) {
       arrowButtonLineWidth: 0.2
     } ) );
 
+    var enabledCheckBox = new CheckBox( new Text( 'enabled', new PhetFont( 20 ) ), enabledProperty );
+
     return new VBox( {
-      children: [ spinnerLeftRight, spinnerTopBottom, spinnerBothRight, spinnerBothBottom ],
+      children: [ spinnerLeftRight, spinnerTopBottom, spinnerBothRight, spinnerBothBottom, enabledCheckBox ],
       spacing: 40,
       center: layoutBounds.center
     } );

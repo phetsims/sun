@@ -15,6 +15,7 @@ define( function( require ) {
   var inherit = require( 'PHET_CORE/inherit' );
   var Node = require( 'SCENERY/nodes/Node' );
   var PhetFont = require( 'SCENERY_PHET/PhetFont' );
+  var Property = require( 'AXON/Property' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var sun = require( 'SUN/sun' );
   var Text = require( 'SCENERY/nodes/Text' );
@@ -40,6 +41,7 @@ define( function( require ) {
     assert && assert( range.contains( numberProperty.get() ), 'value ' + numberProperty.get() + ' is out of range ' + range.toString() );
 
     options = _.extend( {
+      enabledProperty: new Property( true ),
 
       // {string} where to place the arrow buttons, see ARROWS_POSITION_VALUES
       arrowsPosition: 'bothRight',
@@ -75,6 +77,8 @@ define( function( require ) {
     }, options );
 
     assert && assert( _.contains( ARROWS_POSITION_VALUES, options.arrowsPosition ), 'invalid arrowsPosition: ' + options.arrowsPosition );
+
+    var thisNode = this;
 
     var valueOptions = {
       font: options.font,
@@ -204,8 +208,8 @@ define( function( require ) {
 
     Node.call( this, options );
 
-    // @private When the value changes ...
-    this.numberPropertyObserver = function( value ) {
+    // synchronize with number value
+    var numberPropertyObserver = function( value ) {
       assert && assert( range.contains( value ), 'value out of range: ' + value );
 
       // update the number and center it
@@ -216,8 +220,21 @@ define( function( require ) {
       incrementButton.enabled = ( ( value + options.deltaValue ) <= range.max );
       decrementButton.enabled = ( ( value - options.deltaValue ) >= range.min );
     };
-    this.numberProperty = numberProperty; // @private
-    this.numberProperty.link( this.numberPropertyObserver ); // must be unlinked in dispose
+    numberProperty.link( numberPropertyObserver ); // must be unlinked in dispose
+
+    // enable or disable this component
+    this.enabledProperty = options.enabledProperty; // @public
+    var enabledPropertyObserver = function( enabled ) {
+      thisNode.pickable = enabled;
+      thisNode.opacity = enabled ? 1 : 0.5;
+    };
+    this.enabledProperty.link( enabledPropertyObserver );
+
+    // @private
+    this.disposeNumberSpinner = function() {
+      numberProperty.unlink( numberPropertyObserver );
+      thisNode.enabledProperty.unlink( enabledPropertyObserver );
+    };
   }
 
   sun.register( 'NumberSpinner', NumberSpinner );
@@ -226,7 +243,15 @@ define( function( require ) {
 
     // @public Ensures that this node is eligible for GC.
     dispose: function() {
-      this.numberProperty.unlink( this.numberPropertyObserver );
-    }
+      this.disposeNumberSpinner();
+    },
+
+    // @public
+    setEnabled: function( enabled ) { this.enabledProperty.set( enabled ); },
+    set enabled( value ) { this.setEnabled( value ); },
+
+    // @public
+    getEnabled: function() { return this.enabledProperty.get(); },
+    get enabled() { return this.getEnabled(); } 
   } );
 } );
