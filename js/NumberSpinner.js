@@ -53,6 +53,7 @@ define( function( require ) {
       xSpacing: 5,
       ySpacing: 3,
       cornerRadius: 5,
+      backgroundMinWidth: 0,
       deltaValue: 1,
 
       // arrow button pointer areas
@@ -70,7 +71,7 @@ define( function( require ) {
       fill: 'black'
     };
 
-    // compute max width
+    // compute max width of the value that's going to be displayed
     var maxWidth = Math.max(
       new Text( Util.toFixed( range.max, options.decimalPlaces ), valueOptions ).width,
       new Text( Util.toFixed( range.min, options.decimalPlaces ), valueOptions ).width
@@ -78,7 +79,13 @@ define( function( require ) {
 
     // number
     var numberNode = new Text( numberProperty.get(), valueOptions );
-    var backgroundNode = new Rectangle( 0, 0, maxWidth + ( 2 * options.xMargin ), numberNode.height + ( 2 * options.yMargin ),
+
+    // compute the size of the background
+    var backgroundWidth = Math.max( maxWidth, options.backgroundMinWidth ) + ( 2 * options.xMargin );
+    var backgroundHeight = numberNode.height + ( 2 * options.yMargin );
+
+    // background for displaying the value
+    var backgroundNode = new Rectangle( 0, 0, backgroundWidth, backgroundHeight,
       options.cornerRadius, options.cornerRadius, {
         fill: 'white',
         stroke: 'black',
