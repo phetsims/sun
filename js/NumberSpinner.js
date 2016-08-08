@@ -246,6 +246,7 @@ define( function( require ) {
     var enabledPropertyObserver = function( enabled ) {
       thisNode.pickable = enabled;
       thisNode.opacity = enabled ? 1 : 0.5;
+      //TODO if !enabled, cancel any interaction that is in progress, see scenery#218
     };
     this.enabledProperty.link( enabledPropertyObserver );
 
