@@ -105,7 +105,7 @@ define( function( require ) {
     var numberNode = new Text( numberProperty.get(), valueOptions );
 
     // compute the size of the background
-    var backgroundWidth = Math.max( maxWidth, options.backgroundMinWidth ) + ( 2 * options.xMargin );
+    var backgroundWidth = Math.max( maxWidth + 2 * options.xMargin, options.backgroundMinWidth );
     var backgroundHeight = numberNode.height + ( 2 * options.yMargin );
 
     // background for displaying the value
