@@ -47,14 +47,19 @@ define( function( require ) {
       arrowsScale: null,
 
       decimalPlaces: 0,
+      deltaValue: 1,
       font: new PhetFont( 28 ),
-      xMargin: 5,
-      yMargin: 3,
       xSpacing: 5,
       ySpacing: 3,
+      
+      // background node
+      xMargin: 5,
+      yMargin: 3,
       cornerRadius: 5,
       backgroundMinWidth: 0,
-      deltaValue: 1,
+      backgroundFill: 'white',
+      backgroundStroke: 'black',
+      backgroundLineWidth: 1,
 
       // arrow button pointer areas
       touchAreaXDilation: 0,
@@ -87,9 +92,9 @@ define( function( require ) {
     // background for displaying the value
     var backgroundNode = new Rectangle( 0, 0, backgroundWidth, backgroundHeight,
       options.cornerRadius, options.cornerRadius, {
-        fill: 'white',
-        stroke: 'black',
-        lineWidth: 0.5
+        fill: options.backgroundFill,
+        stroke: options.backgroundStroke,
+        lineWidth: options.backgroundLineWidth
       } );
     numberNode.center = backgroundNode.center;
     var valueParent = new Node( { children: [ backgroundNode, numberNode ] } );
