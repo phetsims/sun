@@ -1,6 +1,5 @@
 // Copyright 2014-2016, University of Colorado Boulder
 
-//TODO Further generalization of this component is in progress, see https://github.com/phetsims/sun/issues/85
 /**
  * Spinner for numbers.
  *
@@ -17,10 +16,10 @@ define( function( require ) {
   var PhetFont = require( 'SCENERY_PHET/PhetFont' );
   var Property = require( 'AXON/Property' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
+  var StringUtils = require( 'PHETCOMMON/util/StringUtils' );
   var sun = require( 'SUN/sun' );
   var Text = require( 'SCENERY/nodes/Text' );
   var Util = require( 'DOT/Util' );
-  var StringUtils = require( 'PHETCOMMON/util/StringUtils' );
 
   // possible values for options.arrowsPosition
   var ARROWS_POSITION_VALUES = [
