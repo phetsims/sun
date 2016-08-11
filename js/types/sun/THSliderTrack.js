@@ -14,10 +14,12 @@ define( function( require ) {
   var phetioNamespace = require( 'PHET_IO/phetioNamespace' );
   var TNode = require( 'PHET_IO/types/scenery/nodes/TNode' );
 
-  var THSliderTrack = phetioInherit( TNode, 'THSliderTrack', function( sliderTrack, phetioID ) {
+  var THSliderTrack = function( sliderTrack, phetioID ) {
     TNode.call( this, sliderTrack, phetioID );
     assertInstanceOf( sliderTrack, phet.sun.HSliderTrack );
-  }, {}, {
+  };
+
+  phetioInherit( TNode, 'THSliderTrack', THSliderTrack, {}, {
     documentation: 'The track for a knob of a traditional slider'
   } );
 

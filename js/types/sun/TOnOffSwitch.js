@@ -15,7 +15,7 @@ define( function( require ) {
   var TNode = require( 'PHET_IO/types/scenery/nodes/TNode' );
   var toEventOnStatic = require( 'PHET_IO/events/toEventOnStatic' );
 
-  var TOnOffSwitch = phetioInherit( TNode, 'TOnOffSwitch', function( onOffSwitch, phetioID ) {
+  var TOnOffSwitch = function( onOffSwitch, phetioID ) {
     TNode.call( this, onOffSwitch, phetioID );
     assertInstanceOf( onOffSwitch, phet.sun.OnOffSwitch );
 
@@ -25,7 +25,9 @@ define( function( require ) {
         newValue: newValue
       };
     } );
-  }, {}, {
+  };
+
+  phetioInherit( TNode, 'TOnOffSwitch', TOnOffSwitch, {}, {
     documentation: 'A traditional switch component',
     events: [ 'toggled' ]
   } );

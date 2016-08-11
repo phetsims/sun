@@ -14,10 +14,12 @@ define( function( require ) {
   var phetioInherit = require( 'PHET_IO/phetioInherit' );
   var TNode = require( 'PHET_IO/types/scenery/nodes/TNode' );
 
-  var TPanel = phetioInherit( TNode, 'TPanel', function( panel, phetioID ) {
+  var TPanel = function( panel, phetioID ) {
     TNode.call( this, panel, phetioID );
     assertInstanceOf( panel, phet.sun.Panel );
-  }, {}, {
+  };
+
+  phetioInherit( TNode, 'TPanel', TPanel, {}, {
     documentation: 'A container for other TNodes'
   } );
 

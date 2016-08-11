@@ -17,7 +17,7 @@ define( function( require ) {
 
   var TToggleButton = function( valueType ) {
     assert && assert( !!valueType, 'valueType must be specified' );
-    return phetioInherit( TNode, 'TToggleButton', function( toggleButton, phetioID ) {
+    return phetioInherit( TNode, 'TToggleButton', function TToggleButtonImpl( toggleButton, phetioID ) {
       TNode.call( this, toggleButton, phetioID );
       assertInstanceOfTypes( toggleButton, [
         phet.sun.ToggleButton,

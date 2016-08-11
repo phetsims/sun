@@ -18,7 +18,7 @@ define( function( require ) {
   var toEventOnStatic = require( 'PHET_IO/events/toEventOnStatic' );
   var TVoid = require( 'PHET_IO/types/TVoid' );
 
-  var TCheckBox = phetioInherit( TNode, 'TCheckBox', function( checkBox, phetioID ) {
+  var TCheckBox = function( checkBox, phetioID ) {
     assertInstanceOf( checkBox, phet.sun.CheckBox );
     TNode.call( this, checkBox, phetioID );
 
@@ -28,7 +28,9 @@ define( function( require ) {
         newValue: newValue
       };
     } );
-  }, {
+  };
+
+  phetioInherit( TNode, 'TCheckBox', TCheckBox, {
 
     link: {
       returnType: TVoid,

@@ -15,10 +15,12 @@ define( function( require ) {
   var TNode = require( 'PHET_IO/types/scenery/nodes/TNode' );
   var TVoid = require( 'PHET_IO/types/TVoid' );
 
-  var THSlider = phetioInherit( TNode, 'THSlider', function( slider, phetioID ) {
+  var THSlider = function( slider, phetioID ) {
     TNode.call( this, slider, phetioID );
     assertInstanceOf( slider, phet.sun.HSlider );
-  }, {
+  };
+
+  phetioInherit( TNode, 'THSlider', THSlider, {
 
     setMajorTicksVisible: {
       returnType: TVoid,

@@ -14,10 +14,12 @@ define( function( require ) {
   var phetioInherit = require( 'PHET_IO/phetioInherit' );
   var TButton = require( 'PHET_IO/types/sun/buttons/TButton' );
 
-  var TResetAllButton = phetioInherit( TButton, 'TResetAllButton', function( instance, phetioID ) {
+  var TResetAllButton = function( instance, phetioID ) {
     assertInstanceOf( instance, phet.sceneryPhet.ResetAllButton );
     TButton.call( this, instance, phetioID );
-  }, {}, {
+  };
+
+  phetioInherit( TButton, 'TResetAllButton', TResetAllButton, {}, {
     documentation: 'The round (typically orange) button that restores the simulation screen to its initial state',
     events: TButton.events
   } );

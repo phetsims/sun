@@ -17,7 +17,7 @@ define( function( require ) {
 
   var TRadioButton = function( valueType ) {
     assert && assert( !!valueType, 'valueType must be defined' );
-    return phetioInherit( TNode, 'TRadioButton', function( radioButton, phetioID ) {
+    return phetioInherit( TNode, 'TRadioButton', function TRadioButtonImpl( radioButton, phetioID ) {
       assertInstanceOfTypes( radioButton, [
         phet.sun.RadioButton,
         phet.sun.RadioButtonGroupMember

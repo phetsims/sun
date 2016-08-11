@@ -15,7 +15,7 @@ define( function( require ) {
   var TNode = require( 'PHET_IO/types/scenery/nodes/TNode' );
   var toEventOnStatic = require( 'PHET_IO/events/toEventOnStatic' );
 
-  var TMomentaryButton = phetioInherit( TNode, 'TMomentaryButton', function( momentaryButton, phetioID ) {
+  var TMomentaryButton = function( momentaryButton, phetioID ) {
     assertInstanceOfTypes( momentaryButton, [
       phet.sun.RectangularMomentaryButton,
       phet.sun.RoundMomentaryButton
@@ -24,7 +24,9 @@ define( function( require ) {
     toEventOnStatic( momentaryButton.buttonModel, 'CallbacksForPressed', 'user', phetioID, TMomentaryButton, 'pressed' );
     toEventOnStatic( momentaryButton.buttonModel, 'CallbacksForReleased', 'user', phetioID, TMomentaryButton, 'released' );
     toEventOnStatic( momentaryButton.buttonModel, 'CallbacksForReleasedByDisable', 'user', phetioID, TMomentaryButton, 'releasedDisabled' );
-  }, {}, {
+  };
+
+  phetioInherit( TNode, 'TMomentaryButton', TMomentaryButton, {}, {
     documentation: 'Button that performs an action while it is being pressed, and stops the action when released',
     events: [ 'pressed', 'released', 'releasedDisabled' ]
   } );

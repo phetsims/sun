@@ -17,7 +17,7 @@ define( function( require ) {
 
   var TComboBox = function TComboBox( valueType ) {
     assert && assert( !!valueType, 'valueType should be defined' );
-    return phetioInherit( TNode, 'TComboBox', function( comboBox, phetioID ) {
+    return phetioInherit( TNode, 'TComboBox', function TComboBoxImpl( comboBox, phetioID ) {
       assertInstanceOf( comboBox, phet.sun.ComboBox );
       TNode.call( this, comboBox, phetioID );
 
