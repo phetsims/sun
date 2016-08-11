@@ -16,8 +16,10 @@ define( function( require ) {
   var toEventOnStatic = require( 'PHET_IO/events/toEventOnStatic' );
   var TVoid = require( 'PHET_IO/types/TVoid' );
 
-  var TButton = phetioInherit( TNode, 'TButton', function( button, phetioID ) {
+  var TButton = function( button, phetioID ) {
     TNode.call( this, button, phetioID );
+
+    // TODO: Separate wrappers for each implementation
     assertInstanceOfTypes( button, [
       phet.joist.PhetButton,
       phet.joist.HomeButton,
@@ -33,7 +35,9 @@ define( function( require ) {
     else {
       toEventOnStatic( button, 'CallbacksForFired', 'user', phetioID, TButton, 'fired' );
     }
-  }, {
+  };
+
+  phetioInherit( TNode, 'TButton', TButton, {
     fire: {
       returnType: TVoid,
       parameterTypes: [],
@@ -51,4 +55,3 @@ define( function( require ) {
 
   return TButton;
 } );
-
