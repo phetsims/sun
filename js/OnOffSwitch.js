@@ -29,6 +29,9 @@ define( function( require ) {
   var sun = require( 'SUN/sun' );
   var Tandem = require( 'TANDEM/Tandem' );
 
+  // phet-io modules
+  var TNode = require( 'ifphetio!PHET_IO/types/scenery/nodes/TNode' );
+
   /**
    * @param {Property.<boolean>} onProperty
    * @param {Object} [options]
@@ -165,7 +168,7 @@ define( function( require ) {
 
     // @public (tandem) - Tandem support, use a novel name to reduce the risk of parent or child collisions.
     this.onOffSwitchTandem = options.tandem;
-    this.onOffSwitchTandem && this.onOffSwitchTandem.addInstance( this );
+    this.onOffSwitchTandem && this.onOffSwitchTandem.addInstance( this, TNode );
 
     thisNode.mutate( options );
   }
