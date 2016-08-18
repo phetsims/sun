@@ -43,14 +43,17 @@ define( function( require ) {
     Node.call( thisSlider );
 
     options = _.extend( {
+
       // track - see HSliderTrack.js constructor for additional pass-through options
       trackSize: new Dimension2( 100, 5 ),
       enabledRangeProperty: new Property( range ),
+
       // {Node} optional thumb, replaces the default. Client is responsible for highlighting and disabling. Centered in the track.
       // If you are using the default thumb, see ThumbNode constructor for additional pass-through options.
       thumbNode: null,
       thumbTouchAreaXDilation: null, // {number|null} horizontal dilation of thumb touchArea
       thumbTouchAreaYDilation: null, // {number|null} vertical dilation of thumb touchArea
+
       // ticks
       tickLabelSpacing: 6,
       majorTickLength: 25,
@@ -59,6 +62,7 @@ define( function( require ) {
       minorTickLength: 10,
       minorTickStroke: 'black',
       minorTickLineWidth: 1,
+
       // other
       cursor: 'pointer',
       enabledProperty: new Property( true ),
@@ -66,8 +70,10 @@ define( function( require ) {
       startDrag: function() {}, // called when a drag sequence starts
       endDrag: function() {}, // called when a drag sequence ends
       constrainValue: function( value ) { return value; }, // called before valueProperty is set
+
       // tandem
       tandem: null
+
     }, options );
 
     Tandem.validateOptions( options ); // The tandem is required when brand==='phet-io'
