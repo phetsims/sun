@@ -48,11 +48,16 @@ define( function( require ) {
       trackSize: new Dimension2( 100, 5 ),
       enabledRangeProperty: new Property( range ),
 
-      // {Node} optional thumb, replaces the default. Client is responsible for highlighting and disabling. Centered in the track.
+      // {Node} optional thumb, replaces the default.
+      // Client is responsible for highlighting, disabling and pointer areas.
+      // The thumb will be centered in the track.
       // If you are using the default thumb, see ThumbNode constructor for additional pass-through options.
       thumbNode: null,
-      thumbTouchAreaXDilation: null, // {number|null} horizontal dilation of thumb touchArea
-      thumbTouchAreaYDilation: null, // {number|null} vertical dilation of thumb touchArea
+
+      // Dilation of touchArea for default thumb, ignored for custom thumb.
+      // A value of null results in a default dilation that is based on the size of the thumb.
+      thumbTouchAreaXDilation: null, // {number|null}
+      thumbTouchAreaYDilation: null, // {number|null}
 
       // ticks
       tickLabelSpacing: 6,
@@ -118,15 +123,17 @@ define( function( require ) {
     thumbNode.centerY = thisSlider.track.centerY;
     thisSlider.addChild( thumbNode );
 
-
-    // thumb touch area
+    // Touch area for the default thumb. If a custom thumb is provided, the client is responsible for its touchArea.
     if ( !options.thumbNode ) {
-      if ( !options.thumbTouchAreaXDilation ) {
+
+      if ( options.thumbTouchAreaXDilation === null ) {
         options.thumbTouchAreaXDilation = 0.5 * thumbNode.width;
       }
-      if ( !options.thumbTouchAreaYDilation ) {
+
+      if ( options.thumbTouchAreaYDilation === null ) {
         options.thumbTouchAreaYDilation = 0.25 * thumbNode.height;
       }
+
       // touch area dilated along X and Y directions
       thumbNode.touchArea = thumbNode.bounds.dilatedXY( options.thumbTouchAreaXDilation, options.thumbTouchAreaYDilation );
     }
