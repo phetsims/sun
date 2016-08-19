@@ -92,6 +92,7 @@ define( function( require ) {
 
     Tandem.validateOptions( options ); // The tandem is required when brand==='phet-io'
 
+    // @public
     this.enabledProperty = options.enabledProperty;
     this.enabledRangeProperty = options.enabledRangeProperty;
 
