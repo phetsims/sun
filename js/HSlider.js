@@ -226,7 +226,7 @@ define( function( require ) {
       }
     } );
 
-    // @private enable/disable
+    // enable/disable
     var enabledObserver = function( enabled ) {
       thisSlider.cursor = thisSlider.enabledProperty.get() ? options.cursor : 'default';
       if ( !enabled ) {
@@ -236,7 +236,7 @@ define( function( require ) {
     };
     thisSlider.enabledProperty.link( enabledObserver ); // must be unlinked in disposeHSlider
 
-    // @private update thumb location when value changes
+    // update thumb location when value changes
     var valueObserver = function( value ) {
       thumbNode.centerX = thisSlider.valueToPosition( value );
     };
