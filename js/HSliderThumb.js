@@ -1,7 +1,7 @@
 // Copyright 2013-2016, University of Colorado Boulder
 
 /**
- * The default thumb for an HSlider.
+ * A default slider thumb, currently intended for use only in HSlider.
  * It's a rectangle with a vertical white line down the center
  *
  * @author Chris Malley (PixelZoom, Inc.)

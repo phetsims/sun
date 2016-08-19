@@ -1,7 +1,9 @@
 // Copyright 2013-2015, University of Colorado Boulder
 
 /**
- * Track for HSlider.  The HSliderTrack is composed of two rectangles, one for the enabled section of the
+ * A default slider track, currently intended for use only in HSlider.
+ *
+ * HSliderTrack is composed of two rectangles, one for the enabled section of the
  * track and one for the disabled section.  The enabled track rectangle sits on top of the disabled track so that
  * the enabled range can be any desired sub range of the full slider range.
  *
