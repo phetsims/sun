@@ -84,6 +84,7 @@ define( function( require ) {
         valueProperty.set( newValue );
       }
     };
+
     var trackInputListener = new TandemDragHandler( {
       tandem: options.tandem ? options.tandem.createTandem( 'trackInputListener' ) : null,
 
@@ -149,7 +150,6 @@ define( function( require ) {
       var enabledWidth = maxX - minX;
       this.enabledTrack.setRect( minX, 0, enabledWidth, this.trackSize.height );
     }
-
   } );
 
   return HSliderTrack;
