@@ -114,7 +114,7 @@ define( function( require ) {
         valueProperty.set( value );
       }
       else {
-        throw new Error( 'snapValue must be within slider range' );
+        throw new Error( 'value is out of range: ' + value );
       }
     };
 
