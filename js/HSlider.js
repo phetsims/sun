@@ -245,6 +245,9 @@ define( function( require ) {
 
     // when the enabled range changes, the value to position linear function must change as well
     var enabledRangeObserver = function( enabledRange ) {
+
+      assert && assert( enabledRange.min >= range.min && enabledRange.max <= range.max, 'enabledRange is out of range' );
+
       var initialValueToPosition = new LinearFunction( range.min, range.max, 0, options.trackSize.width, true /* clamp */ );
       var min = initialValueToPosition( enabledRange.min );
       var max = initialValueToPosition( enabledRange.max );
