@@ -36,11 +36,13 @@ define( function( require ) {
     Node.call( thisTrack );
 
     options = _.extend( {
+
       // track
       trackFillEnabled: 'white',
       trackFillDisabled: 'gray',
       trackStroke: 'black',
       trackLineWidth: 1,
+
       // tandem
       tandem: null
     }, options );
