@@ -122,10 +122,6 @@ define( function( require ) {
       }
     };
 
-    // make a copy of the options to pass to the slider track so that the track can have a unique tandem
-    var trackOptions = _.clone( options );
-    trackOptions.tandem = trackOptions.tandem ? trackOptions.tandem.createTandem( 'sliderTrack' ) : null;
-
     // @private track
     thisSlider.track = new HSliderTrack( valueProperty, thisSlider.valueToPosition, snapToValue, {
 
@@ -142,7 +138,7 @@ define( function( require ) {
       constrainValue: options.constrainValue,
 
       // phet-io
-      tandem: options.tandem ? options.tandem.createTandem( 'sliderTrack' ) : null
+      tandem: options.tandem && options.tandem.createTandem( 'sliderTrack' )
     } );
     thisSlider.track.centerX = thisSlider.valueToPosition( ( range.max + range.min ) / 2 );
     thisSlider.addChild( thisSlider.track );
