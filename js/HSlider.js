@@ -92,9 +92,13 @@ define( function( require ) {
 
     Tandem.validateOptions( options ); // The tandem is required when brand==='phet-io'
 
-    this.options = options; // @private TODO save only the options that are needed by prototype functions
     this.enabledProperty = options.enabledProperty;
     this.enabledRangeProperty = options.enabledRangeProperty;
+
+    // @private options needed by prototype functions that add ticks
+    this.tickOptions = _.pick( options, 'tickLabelSpacing',
+      'majorTickLength', 'majorTickStroke', 'majorTickLineWidth',
+      'minorTickLength', 'minorTickStroke', 'minorTickLineWidth' );
 
     // @private
     this._snapValue = options.snapValue;
@@ -292,7 +296,8 @@ define( function( require ) {
      * @public
      */
     addMajorTick: function( value, label ) {
-      this.addTick( this.majorTicksParent, value, label, this.options.majorTickLength, this.options.majorTickStroke, this.options.majorTickLineWidth );
+      this.addTick( this.majorTicksParent, value, label,
+        this.tickOptions.majorTickLength, this.tickOptions.majorTickStroke, this.tickOptions.majorTickLineWidth );
     },
 
     /**
@@ -302,7 +307,8 @@ define( function( require ) {
      * @public
      */
     addMinorTick: function( value, label ) {
-      this.addTick( this.minorTicksParent, value, label, this.options.minorTickLength, this.options.minorTickStroke, this.options.minorTickLineWidth );
+      this.addTick( this.minorTicksParent, value, label,
+        this.tickOptions.minorTickLength, this.tickOptions.minorTickStroke, this.tickOptions.minorTickLineWidth );
     },
 
     /*
@@ -327,7 +333,7 @@ define( function( require ) {
       if ( label ) {
         parent.addChild( label );
         label.centerX = tick.centerX;
-        label.bottom = tick.top - this.options.tickLabelSpacing;
+        label.bottom = tick.top - this.tickOptions.tickLabelSpacing;
       }
     },
 
