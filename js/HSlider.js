@@ -85,8 +85,8 @@ define( function( require ) {
       endDrag: function() {}, // called when a drag sequence ends
       constrainValue: function( value ) { return value; }, // called before valueProperty is set
 
-      // tandem
-      tandem: null
+      // phet-io
+      tandem: null // {Tandem|null}
 
     }, options );
 

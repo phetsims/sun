@@ -52,7 +52,7 @@ define( function( require ) {
       constrainValue: function( value ) { return value; }, // called before valueProperty is set
 
       // phet-io
-      tandem: null
+      tandem: null // {Tandem|null}
 
     }, options );
 
