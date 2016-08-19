@@ -3,29 +3,25 @@
 /**
  * Horizontal slider.
  *
- * Moved from beers-law-lab/EvaporationSlider on 9/15/2013
- * see https://github.com/phetsims/sun/issues/9
- *
  * @author Chris Malley (PixelZoom, Inc.)
  */
 define( function( require ) {
   'use strict';
 
   // modules
-  var ButtonListener = require( 'SCENERY/input/ButtonListener' );
   var Dimension2 = require( 'DOT/Dimension2' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Input = require( 'SCENERY/input/Input' );
   var HSliderTrack = require( 'SUN/HSliderTrack' );
+  var HSliderThumb = require( 'SUN/HSliderThumb' );
   var LinearFunction = require( 'DOT/LinearFunction' );
   var Node = require( 'SCENERY/nodes/Node' );
   var Path = require( 'SCENERY/nodes/Path' );
   var Property = require( 'AXON/Property' );
-  var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var Shape = require( 'KITE/Shape' );
+  var sun = require( 'SUN/sun' );
   var Tandem = require( 'TANDEM/Tandem' );
   var TandemDragHandler = require( 'TANDEM/scenery/input/TandemDragHandler' );
-  var sun = require( 'SUN/sun' );
   var Util = require( 'DOT/Util' );
 
   // phet-io modules
@@ -51,7 +47,7 @@ define( function( require ) {
       // {Node} optional thumb, replaces the default.
       // Client is responsible for highlighting, disabling and pointer areas.
       // The thumb will be centered in the track.
-      // If you are using the default thumb, see ThumbNode constructor for additional pass-through options.
+      // If you are using the default thumb, see HSliderThumb constructor for additional pass-through options.
       thumbNode: null,
 
       // Dilation of touchArea for default thumb, ignored for custom thumb.
@@ -119,7 +115,7 @@ define( function( require ) {
     thisSlider.addChild( thisSlider.track );
 
     // thumb
-    var thumbNode = options.thumbNode || new ThumbNode( this.enabledProperty, options );
+    var thumbNode = options.thumbNode || new HSliderThumb( this.enabledProperty, options );
     thumbNode.centerY = thisSlider.track.centerY;
     thisSlider.addChild( thumbNode );
 
@@ -346,82 +342,6 @@ define( function( require ) {
       return this.minorTicksParent.visible;
     },
     get minorTicksVisible() { return this.getMinorTicksVisible(); }
-  } );
-
-  /**
-   * Default thumb, a rectangle with a vertical white line down the center
-   * @param {Property.<boolean>} enabledProperty
-   * @param {Object} [options] see HSlider constructor
-   * @constructor
-   * @private
-   */
-  function ThumbNode( enabledProperty, options ) {
-
-    options = _.extend( {
-      // default thumb (ignored if thumbNode is provided)
-      thumbSize: new Dimension2( 22, 45 ),
-      thumbFillEnabled: 'rgb(50,145,184)',
-      thumbFillHighlighted: 'rgb(71,207,255)',
-      thumbFillDisabled: '#F0F0F0',
-      thumbStroke: 'black',
-      thumbLineWidth: 1,
-      thumbCenterLineStroke: 'white'
-    }, options );
-
-    var thisNode = this;
-
-    // rectangle
-    var arcWidth = 0.25 * options.thumbSize.width;
-    Rectangle.call( thisNode,
-      -options.thumbSize.width / 2, -options.thumbSize.height / 2,
-      options.thumbSize.width, options.thumbSize.height,
-      arcWidth, arcWidth,
-      {
-        fill: enabledProperty.get() ? options.thumbFillEnabled : options.thumbFillDisabled,
-        stroke: options.thumbStroke,
-        lineWidth: options.thumbLineWidth,
-        cachedPaints: [
-          options.thumbFillHighlighted, options.thumbFillEnabled, options.thumbFillDisabled
-        ]
-      } );
-
-    // vertical line down the center
-    var centerLineYMargin = 3;
-    thisNode.addChild( new Path( Shape.lineSegment(
-      0, -( options.thumbSize.height / 2 ) + centerLineYMargin,
-      0, ( options.thumbSize.height / 2 ) - centerLineYMargin ),
-      { stroke: options.thumbCenterLineStroke } ) );
-
-    // highlight thumb on pointer over
-    thisNode.addInputListener( new ButtonListener( {
-      over: function( event ) {
-        if ( enabledProperty.get() ) { thisNode.fill = options.thumbFillHighlighted; }
-      },
-      up: function( event ) {
-        if ( enabledProperty.get() ) { thisNode.fill = options.thumbFillEnabled; }
-      }
-    } ) );
-
-    // @private enable/disable the look of the thumb
-    var enabledObserver = function( enabled ) {
-      thisNode.fill = enabled ? options.thumbFillEnabled : options.thumbFillDisabled;
-    };
-    enabledProperty.link( enabledObserver ); // must be unlinked in disposeThumbNode
-
-    // @private Called by dispose
-    this.disposeThumbNode = function() {
-      enabledProperty.unlink( enabledObserver );
-    };
-  }
-
-  sun.register( 'HSlider.ThumbNode', ThumbNode );
-
-  inherit( Rectangle, ThumbNode, {
-
-    // @public - Ensures that this object is eligible for GC.
-    dispose: function() {
-      this.disposeThumbNode();
-    }
   } );
 
   return HSlider;
