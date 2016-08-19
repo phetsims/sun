@@ -13,12 +13,14 @@ define( function( require ) {
   'use strict';
 
   // modules
+  var Dimension2 = require( 'DOT/Dimension2' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Node = require( 'SCENERY/nodes/Node' );
+  var Property = require( 'AXON/Property' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
-  var TandemDragHandler = require( 'TANDEM/scenery/input/TandemDragHandler' );
   var sun = require( 'SUN/sun' );
   var Tandem = require( 'TANDEM/Tandem' );
+  var TandemDragHandler = require( 'TANDEM/scenery/input/TandemDragHandler' );
 
   // phet-io modules
   var THSliderTrack = require( 'ifphetio!PHET_IO/types/sun/THSliderTrack' );
@@ -37,14 +39,21 @@ define( function( require ) {
 
     options = _.extend( {
 
-      // track
+      enabledProperty: new Property( true ), // is the track enabled?
+      startDrag: function() {}, // called when a drag sequence starts
+      endDrag: function() {}, // called when a drag sequence ends
+      snapValue: null, // if specified, slider will snap to this value on end drag
+      constrainValue: function( value ) { return value; }, // called before valueProperty is set
+
+      trackSize: new Dimension2( 100, 5 ),
       trackFillEnabled: 'white',
       trackFillDisabled: 'gray',
       trackStroke: 'black',
       trackLineWidth: 1,
 
-      // tandem
+      // phet-io
       tandem: null
+
     }, options );
 
     Tandem.validateOptions( options ); // The tandem is required when brand==='phet-io'
