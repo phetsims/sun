@@ -10,8 +10,8 @@ define( function( require ) {
 
   // modules
   var Dimension2 = require( 'DOT/Dimension2' );
-  var HSliderTrack = require( 'SUN/HSliderTrack' );
   var HSliderThumb = require( 'SUN/HSliderThumb' );
+  var HSliderTrack = require( 'SUN/HSliderTrack' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Input = require( 'SCENERY/input/Input' );
   var LinearFunction = require( 'DOT/LinearFunction' );
