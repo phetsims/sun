@@ -40,9 +40,12 @@ define( function( require ) {
 
     options = _.extend( {
 
-      // track - see HSliderTrack.js constructor for additional pass-through options
+      // track
       trackSize: new Dimension2( 100, 5 ),
-      enabledRangeProperty: new Property( range ),
+      trackFillEnabled: 'white',
+      trackFillDisabled: 'gray',
+      trackStroke: 'black',
+      trackLineWidth: 1,
 
       // {Node} optional thumb, replaces the default.
       // Client is responsible for highlighting, disabling and pointer areas.
@@ -54,6 +57,15 @@ define( function( require ) {
       // A value of null results in a default dilation that is based on the size of the thumb.
       thumbTouchAreaXDilation: null, // {number|null}
       thumbTouchAreaYDilation: null, // {number|null}
+
+      // Options for the default thumb, ignored if thumbNode is set
+      thumbSize: new Dimension2( 22, 45 ),
+      thumbFillEnabled: 'rgb(50,145,184)',
+      thumbFillHighlighted: 'rgb(71,207,255)',
+      thumbFillDisabled: '#F0F0F0',
+      thumbStroke: 'black',
+      thumbLineWidth: 1,
+      thumbCenterLineStroke: 'white',
 
       // ticks
       tickLabelSpacing: 6,
@@ -67,6 +79,7 @@ define( function( require ) {
       // other
       cursor: 'pointer',
       enabledProperty: new Property( true ),
+      enabledRangeProperty: new Property( range ), // controls the portion of the slider that is enabled
       snapValue: null, // if specified, slider will snap to this value on end drag
       startDrag: function() {}, // called when a drag sequence starts
       endDrag: function() {}, // called when a drag sequence ends
@@ -110,12 +123,38 @@ define( function( require ) {
     trackOptions.tandem = trackOptions.tandem ? trackOptions.tandem.createTandem( 'sliderTrack' ) : null;
 
     // @private track
-    thisSlider.track = new HSliderTrack( valueProperty, thisSlider.valueToPosition, snapToValue, trackOptions );
+    thisSlider.track = new HSliderTrack( valueProperty, thisSlider.valueToPosition, snapToValue, {
+
+      // propagate options that are specific to HSliderTrack
+      size: options.trackSize,
+      fillEnabled: options.trackFillEnabled,
+      fillDisabled: options.trackFillDisabled,
+      stroke: options.trackStroke,
+      lineWidth: options.trackLineWidth,
+      enabledProperty: options.enabledProperty,
+      startDrag: options.startDrag,
+      endDrag: options.endDrag,
+      snapValue: options.snapValue,
+      constrainValue: options.constrainValue,
+
+      // phet-io
+      tandem: options.tandem ? options.tandem.createTandem( 'sliderTrack' ) : null
+    } );
     thisSlider.track.centerX = thisSlider.valueToPosition( ( range.max + range.min ) / 2 );
     thisSlider.addChild( thisSlider.track );
 
     // thumb
-    var thumbNode = options.thumbNode || new HSliderThumb( this.enabledProperty, options );
+    var thumbNode = options.thumbNode || new HSliderThumb( this.enabledProperty, {
+
+        // propagate options that are specific to HSliderThumb
+        size: options.thumbSize,
+        fillEnabled: options.thumbFillEnabled,
+        fillHighlighted: options.thumbFillHighlighted,
+        fillDisabled: options.thumbFillDisabled,
+        stroke: options.thumbStroke,
+        lineWidth: options.thumbLineWidth,
+        centerLineStroke: options.thumbCenterLineStroke
+      } );
     thumbNode.centerY = thisSlider.track.centerY;
     thisSlider.addChild( thumbNode );
 

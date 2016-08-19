@@ -38,18 +38,16 @@ define( function( require ) {
     Node.call( thisTrack );
 
     options = _.extend( {
-
+      size: new Dimension2( 100, 5 ),
+      fillEnabled: 'white',
+      fillDisabled: 'gray',
+      stroke: 'black',
+      lineWidth: 1,
       enabledProperty: new Property( true ), // is the track enabled?
       startDrag: function() {}, // called when a drag sequence starts
       endDrag: function() {}, // called when a drag sequence ends
       snapValue: null, // if specified, slider will snap to this value on end drag
       constrainValue: function( value ) { return value; }, // called before valueProperty is set
-
-      trackSize: new Dimension2( 100, 5 ),
-      trackFillEnabled: 'white',
-      trackFillDisabled: 'gray',
-      trackStroke: 'black',
-      trackLineWidth: 1,
 
       // phet-io
       tandem: null
@@ -59,7 +57,7 @@ define( function( require ) {
     Tandem.validateOptions( options ); // The tandem is required when brand==='phet-io'
 
     // @private
-    this.trackSize = options.trackSize;
+    this.size = options.size;
     this.enabledProperty = options.enabledProperty;
 
     // @public
@@ -67,19 +65,19 @@ define( function( require ) {
     this.snapValue = options.snapValue;
 
     // @private
-    thisTrack.disabledTrack = new Rectangle( 0, 0, this.trackSize.width, this.trackSize.height, {
-      fill: options.trackFillDisabled,
-      stroke: options.trackStroke,
-      lineWidth: options.trackLineWidth,
+    thisTrack.disabledTrack = new Rectangle( 0, 0, this.size.width, this.size.height, {
+      fill: options.fillDisabled,
+      stroke: options.stroke,
+      lineWidth: options.lineWidth,
       cursor: 'default'
     } );
     thisTrack.addChild( thisTrack.disabledTrack );
 
     // @private
-    thisTrack.enabledTrack = new Rectangle( 0, 0, this.trackSize.width, this.trackSize.height, {
-      fill: options.trackFillEnabled,
-      stroke: options.trackStroke,
-      ineWidth: options.trackLineWidth
+    thisTrack.enabledTrack = new Rectangle( 0, 0, this.size.width, this.size.height, {
+      fill: options.fillEnabled,
+      stroke: options.stroke,
+      ineWidth: options.lineWidth
     } );
     thisTrack.addChild( thisTrack.enabledTrack );
 
@@ -157,7 +155,7 @@ define( function( require ) {
      */
     updateEnabledTrackWidth: function( minX, maxX ) {
       var enabledWidth = maxX - minX;
-      this.enabledTrack.setRect( minX, 0, enabledWidth, this.trackSize.height );
+      this.enabledTrack.setRect( minX, 0, enabledWidth, this.size.height );
     }
   } );
 

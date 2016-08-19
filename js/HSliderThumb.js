@@ -27,52 +27,52 @@ define( function( require ) {
   function HSliderThumb( enabledProperty, options ) {
 
     options = _.extend( {
-      thumbSize: new Dimension2( 22, 45 ),
-      thumbFillEnabled: 'rgb(50,145,184)',
-      thumbFillHighlighted: 'rgb(71,207,255)',
-      thumbFillDisabled: '#F0F0F0',
-      thumbStroke: 'black',
-      thumbLineWidth: 1,
-      thumbCenterLineStroke: 'white'
+      size: new Dimension2( 22, 45 ),
+      fillEnabled: 'rgb(50,145,184)',
+      fillHighlighted: 'rgb(71,207,255)',
+      fillDisabled: '#F0F0F0',
+      stroke: 'black',
+      lineWidth: 1,
+      centerLineStroke: 'white'
     }, options );
 
     var thisNode = this;
 
     // rectangle
-    var arcWidth = 0.25 * options.thumbSize.width;
+    var arcWidth = 0.25 * options.size.width;
     Rectangle.call( thisNode,
-      -options.thumbSize.width / 2, -options.thumbSize.height / 2,
-      options.thumbSize.width, options.thumbSize.height,
+      -options.size.width / 2, -options.size.height / 2,
+      options.size.width, options.size.height,
       arcWidth, arcWidth,
       {
-        fill: enabledProperty.get() ? options.thumbFillEnabled : options.thumbFillDisabled,
-        stroke: options.thumbStroke,
-        lineWidth: options.thumbLineWidth,
+        fill: enabledProperty.get() ? options.fillEnabled : options.fillDisabled,
+        stroke: options.stroke,
+        lineWidth: options.lineWidth,
         cachedPaints: [
-          options.thumbFillHighlighted, options.thumbFillEnabled, options.thumbFillDisabled
+          options.fillHighlighted, options.fillEnabled, options.fillDisabled
         ]
       } );
 
     // vertical line down the center
     var centerLineYMargin = 3;
     thisNode.addChild( new Path( Shape.lineSegment(
-      0, -( options.thumbSize.height / 2 ) + centerLineYMargin,
-      0, ( options.thumbSize.height / 2 ) - centerLineYMargin ),
-      { stroke: options.thumbCenterLineStroke } ) );
+      0, -( options.size.height / 2 ) + centerLineYMargin,
+      0, ( options.size.height / 2 ) - centerLineYMargin ),
+      { stroke: options.centerLineStroke } ) );
 
     // highlight thumb on pointer over
     thisNode.addInputListener( new ButtonListener( {
       over: function( event ) {
-        if ( enabledProperty.get() ) { thisNode.fill = options.thumbFillHighlighted; }
+        if ( enabledProperty.get() ) { thisNode.fill = options.fillHighlighted; }
       },
       up: function( event ) {
-        if ( enabledProperty.get() ) { thisNode.fill = options.thumbFillEnabled; }
+        if ( enabledProperty.get() ) { thisNode.fill = options.fillEnabled; }
       }
     } ) );
 
     // @private enable/disable the look of the thumb
     var enabledObserver = function( enabled ) {
-      thisNode.fill = enabled ? options.thumbFillEnabled : options.thumbFillDisabled;
+      thisNode.fill = enabled ? options.fillEnabled : options.fillDisabled;
     };
     enabledProperty.link( enabledObserver ); // must be unlinked in disposeHSliderThumb
 
