@@ -154,7 +154,8 @@ define( function( require ) {
         fillDisabled: options.thumbFillDisabled,
         stroke: options.thumbStroke,
         lineWidth: options.thumbLineWidth,
-        centerLineStroke: options.thumbCenterLineStroke
+        centerLineStroke: options.thumbCenterLineStroke,
+        tandem: options.tandem && options.tandem.createTandem( 'thumbNode' )
       } );
     thumbNode.centerY = thisSlider.track.centerY;
     thisSlider.addChild( thumbNode );

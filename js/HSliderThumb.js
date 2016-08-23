@@ -18,6 +18,9 @@ define( function( require ) {
   var Shape = require( 'KITE/Shape' );
   var sun = require( 'SUN/sun' );
 
+  // phet-io modules
+  var TNode = require( 'ifphetio!PHET_IO/types/scenery/nodes/TNode' );
+
   /**
    * @param {Property.<boolean>} enabledProperty
    * @param {Object} [options] see HSlider constructor
@@ -33,7 +36,8 @@ define( function( require ) {
       fillDisabled: '#F0F0F0',
       stroke: 'black',
       lineWidth: 1,
-      centerLineStroke: 'white'
+      centerLineStroke: 'white',
+      tandem: null
     }, options );
 
     var thisNode = this;
@@ -76,9 +80,12 @@ define( function( require ) {
     };
     enabledProperty.link( enabledObserver ); // must be unlinked in disposeHSliderThumb
 
+    options.tandem && options.tandem.addInstance( this, TNode );
+
     // @private Called by dispose
     this.disposeHSliderThumb = function() {
       enabledProperty.unlink( enabledObserver );
+      options.tandem && options.tandem.removeInstance( this );
     };
   }
 
