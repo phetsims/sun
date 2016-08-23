@@ -22,7 +22,7 @@ define( function( require ) {
   var Tandem = require( 'TANDEM/Tandem' );
 
   // phet-io modules
-  var TButton = require( 'ifphetio!PHET_IO/types/sun/buttons/TButton' );
+  var TPushButton = require( 'ifphetio!PHET_IO/types/sun/buttons/TPushButton' );
 
   /**
    * @param {Object} [options]
@@ -42,7 +42,7 @@ define( function( require ) {
     // Tandem support
     // Give it a novel name to reduce the risk of parent or child collisions
     this.roundPushButtonTandem = options.tandem;
-    this.roundPushButtonTandem && this.roundPushButtonTandem.addInstance( this, TButton );
+    this.roundPushButtonTandem && this.roundPushButtonTandem.addInstance( this, TPushButton );
   }
 
   sun.register( 'RoundPushButton', RoundPushButton );

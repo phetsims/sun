@@ -21,7 +21,7 @@ define( function( require ) {
   var Tandem = require( 'TANDEM/Tandem' );
 
   // phet-io modules
-  var TButton = require( 'ifphetio!PHET_IO/types/sun/buttons/TButton' );
+  var TPushButton = require( 'ifphetio!PHET_IO/types/sun/buttons/TPushButton' );
 
   /**
    * @param {Object} [options]
@@ -46,7 +46,7 @@ define( function( require ) {
     RectangularButtonView.call( this, this.buttonModel, new PushButtonInteractionStateProperty( this.buttonModel ), options );
 
     // Tandem support
-    options.tandem && options.tandem.addInstance( this, TButton );
+    options.tandem && options.tandem.addInstance( this, TPushButton );
 
     this.disposeRectangularPushButton = function() {
       options.tandem && options.tandem.removeInstance( this );
