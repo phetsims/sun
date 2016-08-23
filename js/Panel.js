@@ -29,7 +29,7 @@ define( function( require ) {
     cornerRadius: 10, // radius of the rounded corners on the background
     resize: true, // dynamically resize when content bounds change
     backgroundPickable: false,
-    align: 'right', // {string} horizontal of content in the pane, left|center|right
+    align: 'right', // {string} horizontal alignment of content in the pane, 'left'|'center'|'right'
     minWidth: 0, // minimum width of the panel
     tandem: null
   };
