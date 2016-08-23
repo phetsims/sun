@@ -16,7 +16,7 @@ define( function( require ) {
   var toEventOnStatic = require( 'PHET_IO/events/toEventOnStatic' );
   var TVoid = require( 'PHET_IO/types/TVoid' );
 
-  var TButton = function( button, phetioID ) {
+  var TPushButton = function( button, phetioID ) {
     TNode.call( this, button, phetioID );
 
     // TODO: Separate wrappers for each implementation
@@ -30,14 +30,14 @@ define( function( require ) {
     ] );
 
     if ( button.buttonModel ) {
-      toEventOnStatic( button.buttonModel, 'CallbacksForFired', 'user', phetioID, TButton, 'fired' );
+      toEventOnStatic( button.buttonModel, 'CallbacksForFired', 'user', phetioID, TPushButton, 'fired' );
     }
     else {
-      toEventOnStatic( button, 'CallbacksForFired', 'user', phetioID, TButton, 'fired' );
+      toEventOnStatic( button, 'CallbacksForFired', 'user', phetioID, TPushButton, 'fired' );
     }
   };
 
-  phetioInherit( TNode, 'TButton', TButton, {
+  phetioInherit( TNode, 'TPushButton', TPushButton, {
     fire: {
       returnType: TVoid,
       parameterTypes: [],
@@ -51,7 +51,7 @@ define( function( require ) {
     events: [ 'fired' ]
   } );
 
-  phetioNamespace.register( 'TButton', TButton );
+  phetioNamespace.register( 'TPushButton', TPushButton );
 
-  return TButton;
+  return TPushButton;
 } );
