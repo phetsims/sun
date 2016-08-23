@@ -50,7 +50,6 @@ define( function( require ) {
       // {Node} optional thumb, replaces the default.
       // Client is responsible for highlighting, disabling and pointer areas.
       // The thumb will be centered in the track.
-      // If you are using the default thumb, see HSliderThumb constructor for additional pass-through options.
       thumbNode: null,
 
       // Dilation of touchArea for default thumb, ignored for custom thumb.
