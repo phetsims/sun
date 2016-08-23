@@ -44,7 +44,7 @@ define( function( require ) {
       implementation: function() {
         this.instance.buttonModel.fire();
       },
-      documentation: 'Fire the button\'s action, as if the button has been pressed and released'
+      documentation: 'Performs the action associated with the button'
     }
   }, {
     documentation: 'A pressable button in the simulation',
