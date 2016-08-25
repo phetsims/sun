@@ -20,6 +20,9 @@ define( function( require ) {
   // phet-io modules
   var TPanel = require( 'ifphetio!PHET_IO/types/sun/TPanel' );
 
+  // valid values for options.align
+  var ALIGN_VALUES = [ 'left', 'center', 'right' ];
+
   var DEFAULT_OPTIONS = {
     fill: 'white',
     stroke: 'black',
@@ -29,7 +32,7 @@ define( function( require ) {
     cornerRadius: 10, // radius of the rounded corners on the background
     resize: true, // dynamically resize when content bounds change
     backgroundPickable: false,
-    align: 'right', // {string} horizontal alignment of content in the pane, 'left'|'center'|'right'
+    align: 'left', // {string} horizontal alignment of content in the pane, see ALIGN_VALUES
     minWidth: 0, // minimum width of the panel
     tandem: null
   };
@@ -45,7 +48,7 @@ define( function( require ) {
     var thisNode = this;
 
     options = _.extend( {}, DEFAULT_OPTIONS, options );
-    assert && assert( options.align === 'left' || options.align === 'center' || options.align === 'right' );
+    assert && assert( _.contains( ALIGN_VALUES, options.align ), 'invalid align: ' + options.align );
 
     Node.call( thisNode );
 
