@@ -138,13 +138,13 @@ define( function( require ) {
       constrainValue: options.constrainValue,
 
       // phet-io
-      tandem: options.tandem && options.tandem.createTandem( 'sliderTrack' )
+      tandem: options.tandem && options.tandem.createTandem( 'track' )
     } );
     thisSlider.track.centerX = thisSlider.valueToPosition( ( range.max + range.min ) / 2 );
     thisSlider.addChild( thisSlider.track );
 
     // thumb
-    var thumbNode = options.thumbNode || new HSliderThumb( this.enabledProperty, {
+    var thumb = options.thumbNode || new HSliderThumb( this.enabledProperty, {
 
         // propagate options that are specific to HSliderThumb
         size: options.thumbSize,
@@ -154,24 +154,24 @@ define( function( require ) {
         stroke: options.thumbStroke,
         lineWidth: options.thumbLineWidth,
         centerLineStroke: options.thumbCenterLineStroke,
-        tandem: options.tandem && options.tandem.createTandem( 'thumbNode' )
+        tandem: options.tandem && options.tandem.createTandem( 'thumb' )
       } );
-    thumbNode.centerY = thisSlider.track.centerY;
-    thisSlider.addChild( thumbNode );
+    thumb.centerY = thisSlider.track.centerY;
+    thisSlider.addChild( thumb );
 
     // Touch area for the default thumb. If a custom thumb is provided, the client is responsible for its touchArea.
-    if ( !options.thumbNode ) {
+    if ( !options.thumb ) {
 
       if ( options.thumbTouchAreaXDilation === null ) {
-        options.thumbTouchAreaXDilation = 0.5 * thumbNode.width;
+        options.thumbTouchAreaXDilation = 0.5 * thumb.width;
       }
 
       if ( options.thumbTouchAreaYDilation === null ) {
-        options.thumbTouchAreaYDilation = 0.25 * thumbNode.height;
+        options.thumbTouchAreaYDilation = 0.25 * thumb.height;
       }
 
       // touch area dilated along X and Y directions
-      thumbNode.touchArea = thumbNode.bounds.dilatedXY( options.thumbTouchAreaXDilation, options.thumbTouchAreaYDilation );
+      thumb.touchArea = thumb.bounds.dilatedXY( options.thumbTouchAreaXDilation, options.thumbTouchAreaYDilation );
     }
 
     // update value when thumb is dragged
@@ -187,7 +187,7 @@ define( function( require ) {
           options.startDrag();
 
           var transform = trail.subtrailTo( thisSlider ).getTransform();
-          clickXOffset = transform.inversePosition2( event.pointer.point ).x - thumbNode.x;
+          clickXOffset = transform.inversePosition2( event.pointer.point ).x - thumb.x;
         }
       },
 
@@ -210,11 +210,11 @@ define( function( require ) {
         }
       }
     } );
-    thumbNode.addInputListener( thumbInputListener );
+    thumb.addInputListener( thumbInputListener );
 
     //TODO This is experimental code. Decide how this affects data collection.
     // Keyboard accessibility
-    thumbNode.addInputListener( {
+    thumb.addInputListener( {
       keydown: function( event, trail ) {
         if ( thisSlider.enabledProperty.get() ) {
           var keyCode = event.domEvent.keyCode;
@@ -239,7 +239,7 @@ define( function( require ) {
 
     // update thumb location when value changes
     var valueObserver = function( value ) {
-      thumbNode.centerX = thisSlider.valueToPosition( value );
+      thumb.centerX = thisSlider.valueToPosition( value );
     };
     valueProperty.link( valueObserver ); // must be unlinked in disposeHSlider
 
@@ -266,7 +266,7 @@ define( function( require ) {
 
     // @private Called by dispose
     this.disposeHSlider = function() {
-      thumbNode.dispose && thumbNode.dispose(); // in case a custom thumb is provided via options.thumbNode that doesn't implement dispose
+      thumb.dispose && thumb.dispose(); // in case a custom thumb is provided via options.thumbNode that doesn't implement dispose
       thisSlider.track.dispose();
       valueProperty.unlink( valueObserver );
       thisSlider.enabledRangeProperty.unlink( enabledRangeObserver );
