@@ -90,7 +90,7 @@ define( function( require ) {
       var backgroundWidth = Math.max( options.minWidth, content.width + ( 2 * options.xMargin ) );
       background.setRect( 0, 0, backgroundWidth, content.height + ( 2 * options.yMargin ), options.cornerRadius, options.cornerRadius );
 
-      // Align the content within the background. If the content width < minWidth, then all alignments are equivalent.
+      // Align the content within the background. If the content width >= minWidth, then all alignments are equivalent.
       if ( options.align === 'center' ) {
         content.center = background.center;
       }
