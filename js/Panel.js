@@ -90,16 +90,20 @@ define( function( require ) {
       var backgroundWidth = Math.max( options.minWidth, content.width + ( 2 * options.xMargin ) );
       background.setRect( 0, 0, backgroundWidth, content.height + ( 2 * options.yMargin ), options.cornerRadius, options.cornerRadius );
 
-      // align the content within the background
+      // Align the content within the background. If the content width < minWidth, then all alignments are equivalent.
       if ( options.align === 'center' ) {
         content.center = background.center;
       }
       else if ( options.align === 'left' ) {
-        content.left = background.left + options.xMargin;
+
+        // Use backgroundWidth instead of background.width because they differ by the background lineWidth
+        content.left = background.centerX - backgroundWidth / 2 + options.xMargin;
         content.centerY = background.centerY;
       }
       else { /* right */
-        content.right = background.right - options.xMargin;
+
+        // Use backgroundWidth instead of background.width because they differ by the background lineWidth
+        content.right = background.centerX + backgroundWidth / 2 - options.xMargin;
         content.centerY = background.centerY;
       }
 
