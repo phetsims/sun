@@ -32,7 +32,12 @@ define( function( require ) {
     cornerRadius: 10, // radius of the rounded corners on the background
     resize: true, // dynamically resize when content bounds change
     backgroundPickable: false,
-    align: 'left', // {string} horizontal alignment of content in the pane, see ALIGN_VALUES
+
+    // {string} horizontal alignment of content in the pane, see ALIGN_VALUES
+    // All alignments are equal when the content width >= minWidth
+    // Left is the default alignment so when there are multiple panels, their content will left align, see #252
+    align: 'left',
+
     minWidth: 0, // minimum width of the panel
     tandem: null
   };
