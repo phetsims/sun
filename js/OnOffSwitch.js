@@ -40,20 +40,31 @@ define( function( require ) {
   function OnOffSwitch( onProperty, options ) {
 
     options = _.extend( {
+
       size: new Dimension2( 60, 30 ), // if you want the thumb to be a circle, use width that is 2x height
       cursor: 'pointer',
+
+      // controls the behavior of when model value changes occur during dragging (if any)
+      // null (default: triggers model changes when thumb is dragged far enough to the side, similar to iOS)
+      // true: triggers model changes whenever the thumb crosses sides
+      // false: only trigger model changes until release
+      toggleWhileDragging: null,
+
+      // number of view-space units the drag needs to cover to be considered a "drag" instead of a "click/tap"
+      dragThreshold: 3,
+
+      // number of thumb-widths outside the normal range past where the model value will change
+      toggleThreshold: 1,
+
+      // thumb
       thumbFill: 'white',
       thumbStroke: 'black',
+
+      // track
       trackOffFill: 'white', // track fill when onProperty is false
       trackOnFill: 'rgb(0,200,0)', // track fill when onProperty is true
       trackStroke: 'black',
-      toggleWhileDragging: null, // controls the behavior of when model value changes occur during dragging (if any)
-                                 // true: triggers model changes whenever the thumb crosses sides
-                                 // null (default: triggers model changes when thumb is dragged far enough to the side
-                                 //      NOTE: this is also the iOS behavior
-                                 // false: only trigger model changes until release
-      dragThreshold: 3, // number of view-space units the drag needs to cover to be considered a "drag" instead of a "click/tap"
-      toggleThreshold: 1, // number of thumb-widths outside the normal range past where the model value will change
+
       tandem: null
     }, options );
 
