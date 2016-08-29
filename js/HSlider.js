@@ -161,12 +161,12 @@ define( function( require ) {
 
     // touchArea for the default thumb. If a custom thumb is provided, the client is responsible for its touchArea.
     if ( !options.thumbNode && ( options.thumbTouchAreaXDilation || options.thumbTouchAreaYDilation ) ) {
-      thumb.touchArea = thumb.bounds.dilatedXY( options.thumbTouchAreaXDilation, options.thumbTouchAreaYDilation );
+      thumb.touchArea = thumb.localBounds.dilatedXY( options.thumbTouchAreaXDilation, options.thumbTouchAreaYDilation );
     }
 
     // mouseArea for the default thumb. If a custom thumb is provided, the client is responsible for its mouseArea.
     if ( !options.thumbNode && ( options.thumbMouseAreaXDilation || options.thumbMouseAreaYDilation ) ) {
-      thumb.mouseArea = thumb.bounds.dilatedXY( options.thumbMouseAreaXDilation, options.thumbMouseAreaYDilation );
+      thumb.mouseArea = thumb.localBounds.dilatedXY( options.thumbMouseAreaXDilation, options.thumbMouseAreaYDilation );
     }
 
     // update value when thumb is dragged
