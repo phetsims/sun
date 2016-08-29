@@ -59,6 +59,10 @@ define( function( require ) {
       // thumb
       thumbFill: 'white',
       thumbStroke: 'black',
+      thumbTouchAreaXDilation: 0,
+      thumbTouchAreaYDilation: 0,
+      thumbMouseAreaXDilation: 0,
+      thumbMouseAreaYDilation: 0,
 
       // track
       trackOffFill: 'white', // track fill when onProperty is false
@@ -88,8 +92,22 @@ define( function( require ) {
       stroke: options.thumbStroke
     } );
     thisNode.addChild( thumbNode );
-    var touchAreaDilation = 0.25 * options.size.height;
-    thumbNode.touchArea = Shape.roundRect( -touchAreaDilation, -touchAreaDilation, (0.5 * options.size.width) + (2 * touchAreaDilation), options.size.height + (2 * touchAreaDilation), cornerRadius, cornerRadius );
+
+    // thumb touchArea
+    if ( options.thumbTouchAreaXDilation || options.thumbTouchAreaYDilation ) {
+      thumbNode.touchArea = Shape.roundRect(
+        -options.thumbTouchAreaXDilation, -options.thumbTouchAreaYDilation,
+        (0.5 * options.size.width) + (2 * options.thumbTouchAreaXDilation),
+        options.size.height + (2 * options.thumbTouchAreaYDilation), cornerRadius, cornerRadius );
+    }
+
+    // thumb mouseArea
+    if ( options.thumbMouseAreaXDilation || options.thumbMouseAreaYDilation ) {
+      thumbNode.mouseArea = Shape.roundRect(
+        -options.thumbMouseAreaXDilation, -options.thumbMouseAreaYDilation,
+        (0.5 * options.size.width) + (2 * options.thumbMouseAreaXDilation),
+        options.size.height + (2 * options.thumbMouseAreaYDilation), cornerRadius, cornerRadius );
+    }
 
     // move thumb to on or off position
     var updateThumb = function( on ) {
