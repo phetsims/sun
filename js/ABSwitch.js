@@ -38,8 +38,15 @@ define( function( require ) {
       xSpacing: 8,
       cursor: 'pointer',
       centerOnButton: false,
+
       // uses opacity as the default method of indicating whether a {Node} label is {boolean} enabled
-      setEnabled: function( label, enabled ) { label.opacity = enabled ? 1.0 : 0.5; }
+      setEnabled: function( label, enabled ) { label.opacity = enabled ? 1.0 : 0.5; },
+
+      // pointer areas for thumb
+      thumbTouchAreaXDilation: 8,
+      thumbTouchAreaYDilation: 8,
+      thumbMouseAreaXDilation: 0,
+      thumbMouseAreaYDilation: 0
     }, options );
 
     var defaultTrackFill = new LinearGradient( 0, 0, 0, options.switchSize.height ).addColorStop( 0, 'rgb(40,40,40)' ).addColorStop( 1, 'rgb(200,200,200)' );
@@ -59,7 +66,11 @@ define( function( require ) {
       cursor: options.cursor,
       thumbFill: options.thumbFill,
       trackOnFill: options.trackFillB,
-      trackOffFill: options.trackFillA
+      trackOffFill: options.trackFillA,
+      thumbTouchAreaXDilation: options.thumbTouchAreaXDilation,
+      thumbTouchAreaYDilation: options.thumbTouchAreaYDilation,
+      thumbMouseAreaXDilation: options.thumbMouseAreaXDilation,
+      thumbMouseAreaYDilation: options.thumbMouseAreaYDilation
     } );
 
     // rendering order
