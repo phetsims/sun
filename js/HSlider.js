@@ -145,8 +145,6 @@ define( function( require ) {
     // thumb
     var thumb = options.thumbNode || new HSliderThumb( this.enabledProperty, {
 
-        centerY: thisSlider.track.centerY,
-
         // propagate options that are specific to HSliderThumb
         size: options.thumbSize,
         fillEnabled: options.thumbFillEnabled,
@@ -157,6 +155,9 @@ define( function( require ) {
         centerLineStroke: options.thumbCenterLineStroke,
         tandem: options.tandem && options.tandem.createTandem( 'thumb' )
       } );
+
+    // do this outside of options hash, so that it applied to both default and custom thumbs
+    thumb.centerY = thisSlider.track.centerY;
     thisSlider.addChild( thumb );
 
     // touchArea for the default thumb. If a custom thumb is provided, the client is responsible for its touchArea.
