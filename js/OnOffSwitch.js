@@ -59,8 +59,8 @@ define( function( require ) {
       // thumb
       thumbFill: 'white',
       thumbStroke: 'black',
-      thumbTouchAreaXDilation: 0,
-      thumbTouchAreaYDilation: 0,
+      thumbTouchAreaXDilation: 8,
+      thumbTouchAreaYDilation: 8,
       thumbMouseAreaXDilation: 0,
       thumbMouseAreaYDilation: 0,
 
