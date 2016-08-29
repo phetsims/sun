@@ -52,11 +52,6 @@ define( function( require ) {
       // The thumb will be centered in the track.
       thumbNode: null,
 
-      // Dilation of touchArea for default thumb, ignored for custom thumb.
-      // A value of null results in a default dilation that is based on the size of the thumb.
-      thumbTouchAreaXDilation: null, // {number|null}
-      thumbTouchAreaYDilation: null, // {number|null}
-
       // Options for the default thumb, ignored if thumbNode is set
       thumbSize: new Dimension2( 22, 45 ),
       thumbFillEnabled: 'rgb(50,145,184)',
@@ -65,6 +60,10 @@ define( function( require ) {
       thumbStroke: 'black',
       thumbLineWidth: 1,
       thumbCenterLineStroke: 'white',
+      thumbTouchAreaXDilation: 11,
+      thumbTouchAreaYDilation: 11,
+      thumbMouseAreaXDilation: 0,
+      thumbMouseAreaYDilation: 0,
 
       // ticks
       tickLabelSpacing: 6,
@@ -146,6 +145,8 @@ define( function( require ) {
     // thumb
     var thumb = options.thumbNode || new HSliderThumb( this.enabledProperty, {
 
+        centerY: thisSlider.track.centerY,
+
         // propagate options that are specific to HSliderThumb
         size: options.thumbSize,
         fillEnabled: options.thumbFillEnabled,
@@ -156,22 +157,16 @@ define( function( require ) {
         centerLineStroke: options.thumbCenterLineStroke,
         tandem: options.tandem && options.tandem.createTandem( 'thumb' )
       } );
-    thumb.centerY = thisSlider.track.centerY;
     thisSlider.addChild( thumb );
 
-    // Touch area for the default thumb. If a custom thumb is provided, the client is responsible for its touchArea.
-    if ( !options.thumb ) {
-
-      if ( options.thumbTouchAreaXDilation === null ) {
-        options.thumbTouchAreaXDilation = 0.5 * thumb.width;
-      }
-
-      if ( options.thumbTouchAreaYDilation === null ) {
-        options.thumbTouchAreaYDilation = 0.25 * thumb.height;
-      }
-
-      // touch area dilated along X and Y directions
+    // touchArea for the default thumb. If a custom thumb is provided, the client is responsible for its touchArea.
+    if ( !options.thumbNode && ( options.thumbTouchAreaXDilation || options.thumbTouchAreaYDilation ) ) {
       thumb.touchArea = thumb.bounds.dilatedXY( options.thumbTouchAreaXDilation, options.thumbTouchAreaYDilation );
+    }
+
+    // mouseArea for the default thumb. If a custom thumb is provided, the client is responsible for its mouseArea.
+    if ( !options.thumbNode && ( options.thumbMouseAreaXDilation || options.thumbMouseAreaYDilation ) ) {
+      thumb.mouseArea = thumb.bounds.dilatedXY( options.thumbMouseAreaXDilation, options.thumbMouseAreaYDilation );
     }
 
     // update value when thumb is dragged

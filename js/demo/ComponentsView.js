@@ -126,6 +126,10 @@ define( function( require ) {
     var tickLabelOptions = { font: new PhetFont( 16 ) };
     var slider = new HSlider( property, range, {
       trackSize: new Dimension2( 300, 5 ),
+      thumbTouchAreaXDilation: 15,
+      thumbTouchAreaYDilation: 15,
+      thumbMouseAreaXDilation: 5,
+      thumbMouseAreaYDilation: 5,
       center: layoutBounds.center,
       enabledProperty: new Property( true )
     } );
