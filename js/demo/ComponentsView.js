@@ -188,6 +188,11 @@ define( function( require ) {
   // Creates a demo for OnOffSwitch
   var demoOnOffSwitch = function( layoutBounds ) {
     return new OnOffSwitch( new Property( true ), {
+      size: new Dimension2( 80, 30 ),
+      thumbTouchAreaXDilation: 10,
+      thumbTouchAreaYDilation: 10,
+      thumbMouseAreaXDilation: 5,
+      thumbMouseAreaYDilation: 5,
       center: layoutBounds.center
     } );
   };
