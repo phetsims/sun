@@ -21,6 +21,7 @@ define( function( require ) {
   var inherit = require( 'PHET_CORE/inherit' );
   var Node = require( 'SCENERY/nodes/Node' );
   var NumberSpinner = require( 'SUN/NumberSpinner' );
+  var OnOffSwitch = require( 'SUN/OnOffSwitch' );
   var PageControl = require( 'SUN/PageControl' );
   var PhetFont = require( 'SCENERY_PHET/PhetFont' );
   var Property = require( 'AXON/Property' );
@@ -43,6 +44,7 @@ define( function( require ) {
        */
       { label: 'Carousel', getNode: demoCarousel },
       { label: 'HSlider', getNode: demoHSlider },
+      { label: 'OnOffSwitch', getNode: demoOnOffSwitch },
       { label: 'PageControl', getNode: demoPageControl },
       { label: 'NumberSpinner', getNode: demoNumberSpinner }
     ] );
@@ -181,6 +183,13 @@ define( function( require ) {
       top: enabledCheckBox.bottom + 40
     } );
     return new Node( { children: [ slider, majorTicksCheckBox, minorTicksCheckBox, enabledCheckBox, enabledRangeCheckBox ] } );
+  };
+
+  // Creates a demo for OnOffSwitch
+  var demoOnOffSwitch = function( layoutBounds ) {
+    return new OnOffSwitch( new Property( true ), {
+      center: layoutBounds.center
+    } );
   };
 
   // Creates a demo for PageControl
