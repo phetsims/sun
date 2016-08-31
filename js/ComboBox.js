@@ -38,8 +38,10 @@ define( function( require ) {
     var self = this;
 
     options = _.extend( {
+
       labelNode: null, // optional label, placed to the left of the combo box
       labelXSpacing: 10, // horizontal space between label and combo box
+
       // button
       buttonFill: 'white',
       buttonStroke: 'black',
@@ -47,6 +49,7 @@ define( function( require ) {
       buttonCornerRadius: 8,
       buttonXMargin: 10,
       buttonYMargin: 4,
+
       // list
       listPosition: 'below', // where the list is positioned relative to the button, either 'below' or 'above'
       listYMargin: 4,
@@ -54,15 +57,18 @@ define( function( require ) {
       listStroke: 'black',
       listLineWidth: 1,
       listCornerRadius: 5,
+
       // items
       itemXMargin: 6,
       itemYMargin: 6,
       itemHighlightFill: 'rgb(245,245,245)',
       itemHighlightStroke: null,
       itemHighlightLineWidth: 1,
+
       // tandem
       tandem: null,
       phetioValueType: null // the phet-io type function for the combo box element type, such as TString
+
     }, options );
 
     Tandem.validateOptions( options ); // The tandem is required when brand==='phet-io'
