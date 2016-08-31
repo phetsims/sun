@@ -17,6 +17,7 @@ define( function( require ) {
   var Line = require( 'SCENERY/nodes/Line' );
   var Node = require( 'SCENERY/nodes/Node' );
   var Path = require( 'SCENERY/nodes/Path' );
+  var Property = require( 'AXON/Property' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var Shape = require( 'KITE/Shape' );
   var sun = require( 'SUN/sun' );
@@ -41,6 +42,8 @@ define( function( require ) {
 
       labelNode: null, // optional label, placed to the left of the combo box
       labelXSpacing: 10, // horizontal space between label and combo box
+      enabledProperty: new Property( true ),
+      disabledOpacity: 0.5, // {number} opacity used to make the control look disabled
 
       // button
       buttonFill: 'white',
@@ -71,9 +74,13 @@ define( function( require ) {
 
     }, options );
 
+    // validate option values
     Tandem.validateOptions( options ); // The tandem is required when brand==='phet-io'
+    assert && assert( options.disabledOpacity > 0 && options.disabledOpacity < 1, 'invalid disabledOpacity: ' + options.disabledOpacity );
 
     Node.call( self );
+    
+    this.enabledProperty = options.enabledProperty; // @public
 
     // optional label
     if ( options.labelNode !== null ) {
@@ -248,8 +255,16 @@ define( function( require ) {
 
     options.tandem && options.tandem.addInstance( this, TComboBox( options.phetioValueType ) );
 
+    // enable/disable the combo box
+    var enabledObserver = function( enabled ) {
+      self.pickable = enabled;
+      self.opacity = enabled ? 1.0 : options.disabledOpacity;
+    };
+    this.enabledProperty.link( enabledObserver );
+      
     // @private called by dispose
     this.disposeComboBox = function() {
+      self.enabledProperty.unlink( enabledObserver );
       options.tandem && options.tandem.removeInstance( this );
       property.unlink( propertyObserver );
     };
@@ -262,7 +277,15 @@ define( function( require ) {
     // @public - Provide dispose() on the prototype for ease of subclassing.
     dispose: function() {
       this.disposeComboBox();
-    }
+    },
+
+    // @public
+    setEnabled: function( enabled ) { this.enabledProperty.value = enabled; },
+    set enabled( value ) { this.setEnabled( value ); },
+
+    // @public
+    getEnabled: function() { return this.enabledProperty.value; },
+    get enabled() { return this.getEnabled(); }
   } );
 
   /**
@@ -347,10 +370,9 @@ define( function( require ) {
    * @private
    */
   function ItemNode( item, width, height, xMargin, options ) {
-    var thisNode = this;
     Rectangle.call( this, 0, 0, width, height );
     this.item = item;
-    thisNode.addChild( item.node );
+    this.addChild( item.node );
     item.node.pickable = false; // hits will occur on the rectangle
     item.node.x = xMargin;
     item.node.centerY = height / 2;
