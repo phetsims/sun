@@ -15,6 +15,7 @@ define( function( require ) {
   var Carousel = require( 'SUN/Carousel' );
   var CheckBox = require( 'SUN/CheckBox' );
   var Circle = require( 'SCENERY/nodes/Circle' );
+  var ComboBox = require( 'SUN/ComboBox' );
   var DemosView = require( 'SUN/demo/DemosView' );
   var Dimension2 = require( 'DOT/Dimension2' );
   var HSlider = require( 'SUN/HSlider' );
@@ -43,6 +44,7 @@ define( function( require ) {
        * {function(Bounds2): Node} getNode - creates the scene graph for the demo
        */
       { label: 'Carousel', getNode: demoCarousel },
+      { label: 'ComboBox', getNode: demoComboBox },
       { label: 'HSlider', getNode: demoHSlider },
       { label: 'OnOffSwitch', getNode: demoOnOffSwitch },
       { label: 'PageControl', getNode: demoPageControl },
@@ -116,6 +118,34 @@ define( function( require ) {
       children: [ vCarousel, hCarousel, buttonGroup ],
       center: layoutBounds.center
     } );
+  };
+
+  // Creates a demo of ComboBox
+  var demoComboBox = function( layoutBounds ) {
+
+    var labels = [ 'one', 'two', 'three', 'four', 'five', 'six' ];
+    var items = [];
+    labels.forEach( function( label ) {
+      items.push( ComboBox.createItem( new Text( label, { font: new PhetFont( { size: 20 } ) } ), label ) );
+    } );
+
+    var selectedItemProperty = new Property( labels[ 0 ] );
+
+    var listParent = new Node();
+
+    var comboBox = new ComboBox( items, selectedItemProperty, listParent, {
+      listPosition: 'above'
+    } );
+
+    var enabledCheckBox = new CheckBox( new Text( 'enabled', new PhetFont( 20 ) ), comboBox.enabledProperty );
+
+    var uiComponents = new VBox( {
+      children: [ comboBox, enabledCheckBox ],
+      spacing: 40,
+      center: layoutBounds.center
+    } );
+
+    return new Node( { children: [ uiComponents, listParent ] } );
   };
 
   // Creates a demo for HSlider
