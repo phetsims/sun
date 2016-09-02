@@ -16,7 +16,7 @@ define( function( require ) {
   var sun = require( 'SUN/sun' );
 
   // phet-io modules
-  var TNode = require( 'ifphetio!PHET_IO/types/scenery/nodes/TNode' );
+  var TAquaRadioButton = require( 'ifphetio!PHET_IO/types/sun/TAquaRadioButton' );
 
   /**
    * @param property
@@ -42,27 +42,47 @@ define( function( require ) {
     var selectedNode = new Node();
     var innerCircle = new Circle( options.radius / 3, { fill: options.centerColor } );
     var outerCircleSelected = new Circle( options.radius, { fill: options.selectedColor, stroke: options.stroke } );
-    selectedNode.addChild( outerCircleSelected );
-    selectedNode.addChild( innerCircle );
+
+    // @private
+    this.selectedCircleButton = new Node( {
+      children: [ outerCircleSelected, innerCircle ]
+    } );
+    selectedNode.addChild( this.selectedCircleButton );
     selectedNode.addChild( node );
     node.left = outerCircleSelected.right + options.xSpacing;
     node.centerY = outerCircleSelected.centerY;
-    options.tandem && options.tandem.createTandem( 'outerCircleSelected' ).addInstance( outerCircleSelected, TNode );
-    options.tandem && options.tandem.createTandem( 'innerCircle' ).addInstance( innerCircle, TNode );
 
     // deselected node
     var deselectedNode = new Node();
-    var outerCircleDeselected = new Circle( options.radius, { fill: options.deselectedColor, stroke: options.stroke } );
-    deselectedNode.addChild( outerCircleDeselected );
-    deselectedNode.addChild( node );
-    node.left = outerCircleDeselected.right + options.xSpacing;
-    node.centerY = outerCircleDeselected.centerY;
-    options.tandem && options.tandem.createTandem( 'outerCircleDeselected' ).addInstance( outerCircleDeselected, TNode );
 
-    RadioButton.call( this, property, value, selectedNode, deselectedNode, options );
+    // @private
+    this.deselectedCircleButton = new Circle( options.radius, {
+      fill: options.deselectedColor,
+      stroke: options.stroke
+    } );
+    deselectedNode.addChild( this.deselectedCircleButton );
+    deselectedNode.addChild( node );
+    node.left = this.deselectedCircleButton.right + options.xSpacing;
+    node.centerY = this.deselectedCircleButton.centerY;
+
+    RadioButton.call( this, property, value, selectedNode, deselectedNode, _.extend( {}, options, {
+      tandem: options.tandem && options.tandem.createSupertypeTandem()
+    } ) );
+    options.tandem && options.tandem.addInstance( this, TAquaRadioButton( options.phetioValueType ) );
   }
 
   sun.register( 'AquaRadioButton', AquaRadioButton );
 
-  return inherit( RadioButton, AquaRadioButton );
+  return inherit( RadioButton, AquaRadioButton, {
+
+    /**
+     * Sets whether the circular part of the radio button will be displayed.
+     * @param {boolean} circleButtonVisible
+     * @public
+     */
+    setCircleButtonVisible: function( circleButtonVisible ) {
+      this.deselectedCircleButton.visible = circleButtonVisible;
+      this.selectedCircleButton.visible = circleButtonVisible;
+    }
+  } );
 } );
