@@ -15,6 +15,9 @@ define( function( require ) {
   var RadioButton = require( 'SUN/RadioButton' );
   var sun = require( 'SUN/sun' );
 
+  // phet-io modules
+  var TNode = require( 'ifphetio!PHET_IO/types/scenery/nodes/TNode' );
+
   /**
    * @param property
    * @param value the value that corresponds to this button, same type as property
@@ -31,7 +34,8 @@ define( function( require ) {
       centerColor: 'black', // color used to fill the center of teh button when it's selected
       radius: 16, // radius of the button
       xSpacing: 8, // horizontal space between the button and the node
-      stroke: 'black' // color used to stroke the outer edge of the button
+      stroke: 'black', // color used to stroke the outer edge of the button
+      tandem: null
     }, options );
 
     // selected node
@@ -43,6 +47,8 @@ define( function( require ) {
     selectedNode.addChild( node );
     node.left = outerCircleSelected.right + options.xSpacing;
     node.centerY = outerCircleSelected.centerY;
+    options.tandem && options.tandem.createTandem( 'outerCircleSelected' ).addInstance( outerCircleSelected, TNode );
+    options.tandem && options.tandem.createTandem( 'innerCircle' ).addInstance( innerCircle, TNode );
 
     // deselected node
     var deselectedNode = new Node();
@@ -51,6 +57,7 @@ define( function( require ) {
     deselectedNode.addChild( node );
     node.left = outerCircleDeselected.right + options.xSpacing;
     node.centerY = outerCircleDeselected.centerY;
+    options.tandem && options.tandem.createTandem( 'outerCircleDeselected' ).addInstance( outerCircleDeselected, TNode );
 
     RadioButton.call( this, property, value, selectedNode, deselectedNode, options );
   }
