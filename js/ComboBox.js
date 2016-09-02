@@ -23,9 +23,11 @@ define( function( require ) {
   var sun = require( 'SUN/sun' );
   var Vector2 = require( 'DOT/Vector2' );
   var Tandem = require( 'TANDEM/Tandem' );
+  var TandemPath = require( 'TANDEM/scenery/nodes/TandemPath' );
 
   // phet-io modules
   var TComboBox = require( 'ifphetio!PHET_IO/types/sun/TComboBox' );
+  var TNode = require( 'ifphetio!PHET_IO/types/scenery/nodes/TNode' );
 
   /**
    * @param {*[]} items - see ComboBox.createItem
@@ -79,7 +81,7 @@ define( function( require ) {
     assert && assert( options.disabledOpacity > 0 && options.disabledOpacity < 1, 'invalid disabledOpacity: ' + options.disabledOpacity );
 
     Node.call( self );
-    
+
     this.enabledProperty = options.enabledProperty; // @public
 
     // optional label
@@ -259,7 +261,7 @@ define( function( require ) {
       self.opacity = enabled ? 1.0 : options.disabledOpacity;
     };
     this.enabledProperty.link( enabledObserver );
-      
+
     // @private called by dispose
     this.disposeComboBox = function() {
       self.enabledProperty.unlink( enabledObserver );
@@ -311,7 +313,10 @@ define( function( require ) {
     Node.call( this );
 
     // up or down arrow
-    var arrow = new Path( null, { fill: 'black' } );
+    var arrow = new TandemPath( null, {
+      fill: 'black',
+      tandem: options.tandem && options.tandem.createTandem( 'arrow' )
+    } );
     var arrowWidth = 0.5 * itemNode.height;
     var arrowHeight = arrowWidth * Math.sqrt( 3 ) / 2; // height of equilateral triangle
     if ( options.listPosition === 'above' ) {
@@ -329,6 +334,7 @@ define( function( require ) {
 
     // vertical separator to left of arrow
     var separator = new Line( 0, 0, 0, height, { stroke: 'black', lineWidth: options.buttonLineWidth } );
+    options.tandem && options.tandem.createTandem( 'separator' ).addInstance( separator, TNode );
 
     // itemNode's parent
     var itemNodeParent = new Node();
