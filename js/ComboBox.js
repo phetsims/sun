@@ -253,8 +253,6 @@ define( function( require ) {
 
     this.mutate( options );
 
-    options.tandem && options.tandem.addInstance( this, TComboBox( options.phetioValueType ) );
-
     // enable/disable the combo box
     var enabledObserver = function( enabled ) {
       self.pickable = enabled;
@@ -268,6 +266,8 @@ define( function( require ) {
       options.tandem && options.tandem.removeInstance( this );
       property.unlink( propertyObserver );
     };
+
+    options.tandem && options.tandem.addInstance( this, TComboBox( options.phetioValueType ) );
   }
 
   sun.register( 'ComboBox', ComboBox );
