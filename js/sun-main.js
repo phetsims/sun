@@ -24,7 +24,9 @@ define( function( require ) {
     }
   };
 
-  var createScreenIcon = function( color ) { return new Rectangle( 0, 0, 147, 100, { fill: color } ); };
+  var createScreenIcon = function( color ) {
+    return new Rectangle( 0, 0, Screen.HOME_SCREEN_ICON_SIZE.width, Screen.HOME_SCREEN_ICON_SIZE.height, { fill: color } );
+  };
 
   var backgroundColor = phet.chipper.getQueryParameter( 'backgroundColor' ) || 'white';
 
