@@ -18,6 +18,9 @@ define( function( require ) {
   // strings
   var sunTitleString = require( 'string!SUN/sun.title' );
 
+  // constants
+  var BACKGROUND_COLOR = phet.chipper.getQueryParameter( 'backgroundColor' ) || 'white';
+
   var simOptions = {
     credits: {
       leadDesign: 'PhET'
@@ -28,27 +31,40 @@ define( function( require ) {
     return new Rectangle( 0, 0, Screen.HOME_SCREEN_ICON_SIZE.width, Screen.HOME_SCREEN_ICON_SIZE.height, { fill: color } );
   };
 
-  var backgroundColor = phet.chipper.getQueryParameter( 'backgroundColor' ) || 'white';
-
   SimLauncher.launch( function() {
     new Sim( sunTitleString, [
-      new Screen( 'Buttons',
-        createScreenIcon( 'red' ),
+
+      // Buttons screen
+      new Screen(
         function() {return {};},
         function( model ) {return new ButtonsView();},
-        { backgroundColor: backgroundColor }
+        {
+          name: 'Buttons',
+          backgroundColor: BACKGROUND_COLOR,
+          homeScreenIcon: createScreenIcon( 'red' )
+        }
       ),
-      new Screen( 'Components',
-        createScreenIcon( 'yellow' ),
+
+      // Components screen
+      new Screen(
         function() {return {};},
         function( model ) {return new ComponentsView();},
-        { backgroundColor: backgroundColor }
+        {
+          name: 'Components',
+          backgroundColor: BACKGROUND_COLOR,
+          homeScreenIcon: createScreenIcon( 'yellow' )
+        }
       ),
-      new Screen( 'Memory Tests',
-        createScreenIcon( 'blue' ),
+
+      // Memory Test screen
+      new Screen(
         function() {return {};},
         function( model ) {return new MemoryTestsView();},
-        { backgroundColor: backgroundColor }
+        {
+          name: 'Memory Tests',
+          backgroundColor: BACKGROUND_COLOR,
+          homeScreenIcon: createScreenIcon( 'blue' )
+        }
       )
     ], simOptions ).start();
   } );
