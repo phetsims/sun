@@ -274,7 +274,7 @@ define( function( require ) {
             .onUpdate( function() {
               scrollingNode.left = parameters.left;
             } )
-            .start();
+            .start( phet.joist.elapsedTime );
         }
         else {
           parameters = { top: scrollingNode.top };
@@ -284,7 +284,7 @@ define( function( require ) {
             .onUpdate( function() {
               scrollingNode.top = parameters.top;
             } )
-            .start();
+            .start( phet.joist.elapsedTime );
         }
       }
       else {
