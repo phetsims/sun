@@ -17,7 +17,7 @@ define( function( require ) {
 
   var TComboBox = function TComboBox( valueType ) {
     assert && assert( !!valueType, 'valueType should be defined' );
-    return phetioInherit( TNode, 'TComboBox', function TComboBoxImpl( comboBox, phetioID ) {
+    var TComboBoxImpl = function TComboBoxImpl( comboBox, phetioID ) {
       assertInstanceOf( comboBox, phet.sun.ComboBox );
       TNode.call( this, comboBox, phetioID );
 
@@ -26,7 +26,8 @@ define( function( require ) {
       } );
       toEventOnStatic( comboBox, 'CallbacksForComboBoxDismissed', 'user', phetioID, TComboBox( valueType ), 'popupHidden' );
       toEventOnStatic( comboBox, 'CallbacksForComboBoxPopupShown', 'user', phetioID, TComboBox( valueType ), 'popupShown' );
-    }, {}, {
+    };
+    return phetioInherit( TNode, 'TComboBox', TComboBoxImpl, {}, {
       documentation: 'A traditional combo box',
       events: [ 'fired', 'popupShown', 'popupHidden' ]
     } );

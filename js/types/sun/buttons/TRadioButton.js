@@ -17,7 +17,7 @@ define( function( require ) {
 
   var TRadioButton = function( valueType ) {
     assert && assert( !!valueType, 'valueType must be defined' );
-    return phetioInherit( TNode, 'TRadioButton', function TRadioButtonImpl( radioButton, phetioID ) {
+    var TRadioButtonImpl = function TRadioButtonImpl( radioButton, phetioID ) {
       assertInstanceOfTypes( radioButton, [
         phet.sun.RadioButton,
         phet.sun.RadioButtonGroupMember
@@ -28,7 +28,8 @@ define( function( require ) {
       toEventOnStatic( emitter, 'CallbacksForFired', 'user', phetioID, TRadioButton( valueType ), 'fired', function( value ) {
         return { value: valueType.toStateObject( value ) };
       } );
-    }, {}, {
+    };
+    return phetioInherit( TNode, 'TRadioButton', TRadioButtonImpl, {}, {
       documentation: 'A traditional radio button',
       events: [ 'fired' ]
     } );

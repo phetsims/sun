@@ -19,10 +19,11 @@ define( function( require ) {
 
   var TAquaRadioButton = function( valueType ) {
     assert && assert( !!valueType, 'valueType must be defined' );
-    return phetioInherit( TRadioButton( valueType ), 'TAquaRadioButton', function TAquaRadioButtonImpl( radioButton, phetioID ) {
+    var TAquaRadioButton = function TAquaRadioButtonImpl( radioButton, phetioID ) {
       assertInstanceOfTypes( radioButton, [ phet.sun.AquaRadioButton ] );
       TRadioButton( valueType ).call( this, radioButton, phetioID );
-    }, {
+    };
+    return phetioInherit( TRadioButton( valueType ), 'TAquaRadioButton', TAquaRadioButton, {
       setCircleButtonVisible: {
         returnType: TVoid,
         parameterTypes: [ TBoolean ],
