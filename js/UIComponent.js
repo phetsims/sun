@@ -1,6 +1,7 @@
 // Copyright 2016, University of Colorado Boulder
 
 //TODO Not ready for production use. See https://github.com/phetsims/sun/issues/257
+//TODO Is it reasonable to think that we can add other common behavior here, or should this be just enabled/disabled?
 /**
  * Base type for UI components, contains behavior/implementation that they have in common, including:
  *
