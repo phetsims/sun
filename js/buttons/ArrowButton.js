@@ -1,7 +1,7 @@
 // Copyright 2013-2015, University of Colorado Boulder
 
 /**
- * Button with an arrow that points up, down, left or right.
+ * Button with one or more arrows that point up, down, left or right.
  * Press and release immediately and the button fires on 'up'.
  * Press and hold for M milliseconds and the button will fire repeatedly every N milliseconds until released.
  *
@@ -15,6 +15,7 @@ define( function( require ) {
   var Path = require( 'SCENERY/nodes/Path' );
   var RectangularPushButton = require( 'SUN/buttons/RectangularPushButton' );
   var Shape = require( 'KITE/Shape' );
+  var HBox = require( 'SCENERY/nodes/HBox' );
   var sun = require( 'SUN/sun' );
 
   // constants
@@ -43,7 +44,9 @@ define( function( require ) {
       touchAreaXDilation: 7,
       touchAreaYDilation: 7,
 
-      // options for the arrow
+      // options for the arrows
+      numberOfArrows: 1, // each arrow will have the same shape and styling
+      arrowSpacing: 2, // spacing for each arrow in the button
       arrowHeight: DEFAULT_ARROW_HEIGHT, // from tip to base
       arrowWidth: DEFAULT_ARROW_HEIGHT * Math.sqrt( 3 ) / 2, // width of base
       arrowFill: 'black',
@@ -62,7 +65,7 @@ define( function( require ) {
     }, options );
     options.listener = callback;
 
-    // arrow node
+    // arrow shape
     var arrowShape;
     if ( direction === 'up' ) {
       arrowShape = new Shape().moveTo( options.arrowHeight / 2, 0 ).lineTo( options.arrowHeight, options.arrowWidth ).lineTo( 0, options.arrowWidth ).close();
@@ -79,11 +82,21 @@ define( function( require ) {
     else {
       throw new Error( 'unsupported direction: ' + direction );
     }
-    options.content = new Path( arrowShape, {
-      fill: options.arrowFill,
-      stroke: options.arrowStroke,
-      lineWidth: options.arrowLineWidth,
-      pickable: false
+
+    // create each arrow node
+    var arrows = [];
+    for ( var i = 0; i < options.numberOfArrows; i++ ) {
+      arrows.push( new Path( arrowShape, {
+        fill: options.arrowFill,
+        stroke: options.arrowStroke,
+        lineWidth: options.arrowLineWidth,
+        pickable: false
+      } ) );
+    }
+
+    options.content = new HBox( {
+      children: arrows,
+      spacing: options.arrowSpacing
     } );
 
     RectangularPushButton.call( thisButton, options );
