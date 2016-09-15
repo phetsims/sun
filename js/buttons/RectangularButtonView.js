@@ -293,6 +293,9 @@ define( function( require ) {
           overlayForHorizGradient.stroke = disabledStroke;
           overlayForHorizGradient.fill = disabledFillHorizontal;
           break;
+
+        default:
+          throw new Error( 'upsupported interactionState: ' + interactionState );
       }
     }
 
@@ -391,6 +394,9 @@ define( function( require ) {
           button.fill = disabledPressedFillVertical;
           button.stroke = disabledStroke;
           break;
+
+        default:
+          throw new Error( 'upsupported interactionState: ' + interactionState );
       }
     }
 

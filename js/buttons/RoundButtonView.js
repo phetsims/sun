@@ -265,6 +265,9 @@ define( function( require ) {
           overlayForShadowGradient.stroke = disabledStroke;
           overlayForShadowGradient.fill = disabledFillShadow;
           break;
+
+        default:
+          throw new Error( 'upsupported interactionState: ' + interactionState );
       }
     }
 
@@ -361,6 +364,9 @@ define( function( require ) {
           button.fill = disabledPressedFillVertical;
           button.stroke = disabledStroke;
           break;
+
+        default:
+          throw new Error( 'upsupported interactionState: ' + interactionState );
       }
     }
 

@@ -96,6 +96,9 @@ define( function( require ) {
           button.lineWidth = options.deselectedLineWidth;
           button.opacity = options.selectedButtonOpacity;
           break;
+
+        default:
+          throw new Error( 'unsupported state: ' + state );
       }
     } );
   };
@@ -140,6 +143,9 @@ define( function( require ) {
           case 'pressed':
             content.opacity = options.deselectedContentOpacity;
             break;
+
+          default:
+            throw new Error( 'unsupported state: ' + state );
         }
       }
     } );
