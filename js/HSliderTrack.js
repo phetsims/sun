@@ -36,8 +36,8 @@ define( function( require ) {
    */
   function HSliderTrack( valueProperty, valueToPosition, snapToValue, options ) {
 
-    var thisTrack = this;
-    Node.call( thisTrack );
+    var self = this;
+    Node.call( this );
 
     options = _.extend( {
       size: new Dimension2( 100, 5 ),
@@ -67,28 +67,28 @@ define( function( require ) {
     this.snapValue = options.snapValue;
 
     // @private
-    thisTrack.disabledTrack = new Rectangle( 0, 0, this.size.width, this.size.height, {
+    this.disabledTrack = new Rectangle( 0, 0, this.size.width, this.size.height, {
       fill: options.fillDisabled,
       stroke: options.stroke,
       lineWidth: options.lineWidth,
       cursor: 'default'
     } );
-    thisTrack.addChild( thisTrack.disabledTrack );
+    this.addChild( this.disabledTrack );
 
     // @private
-    thisTrack.enabledTrack = new Rectangle( 0, 0, this.size.width, this.size.height, {
+    this.enabledTrack = new Rectangle( 0, 0, this.size.width, this.size.height, {
       fill: options.fillEnabled,
       stroke: options.stroke,
       ineWidth: options.lineWidth
     } );
-    thisTrack.addChild( thisTrack.enabledTrack );
+    this.addChild( this.enabledTrack );
 
     // click in the track to change the value, continue dragging if desired
     var handleTrackEvent = function( event, trail ) {
-      if ( thisTrack.enabledProperty.get() ) {
-        var transform = trail.subtrailTo( thisTrack ).getTransform();
+      if ( self.enabledProperty.get() ) {
+        var transform = trail.subtrailTo( self ).getTransform();
         var x = transform.inversePosition2( event.pointer.point ).x;
-        var value = thisTrack.valueToPosition.inverse( x );
+        var value = self.valueToPosition.inverse( x );
         var newValue = options.constrainValue( value );
         valueProperty.set( newValue );
       }
@@ -98,7 +98,7 @@ define( function( require ) {
       tandem: options.tandem ? options.tandem.createTandem( 'trackInputListener' ) : null,
 
       start: function( event, trail ) {
-        if ( thisTrack.enabledProperty.get() ) {
+        if ( self.enabledProperty.get() ) {
           options.startDrag();
           handleTrackEvent( event, trail );
         }
@@ -111,29 +111,29 @@ define( function( require ) {
       },
 
       end: function() {
-        if ( thisTrack.enabledProperty.get() ) {
-          if( typeof thisTrack.snapValue === 'number' ) {
-            snapToValue( thisTrack.snapValue );
+        if ( self.enabledProperty.get() ) {
+          if( typeof self.snapValue === 'number' ) {
+            snapToValue( self.snapValue );
           }
           options.endDrag();
         }
       }
     } );
-    thisTrack.enabledTrack.addInputListener( trackInputListener );
+    this.enabledTrack.addInputListener( trackInputListener );
 
     // enable/disable
     var enabledObserver = function( enabled ) {
-      thisTrack.enabledTrack.visible = enabled;
+      self.enabledTrack.visible = enabled;
       if ( !enabled ) {
         if ( trackInputListener.dragging ) { trackInputListener.endDrag(); }
       }
     };
-    thisTrack.enabledProperty.link( enabledObserver ); // must be unlinked in disposeHSliderTrack
+    this.enabledProperty.link( enabledObserver ); // must be unlinked in disposeHSliderTrack
 
     // @private Called by dispose
     this.disposeHSliderTrack = function() {
-      thisTrack.enabledProperty.unlink( enabledObserver );
-      options.tandem && options.tandem.removeInstance( thisTrack );
+      self.enabledProperty.unlink( enabledObserver );
+      options.tandem && options.tandem.removeInstance( self );
       trackInputListener.dispose();
     };
 

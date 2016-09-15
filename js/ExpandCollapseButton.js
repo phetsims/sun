@@ -28,8 +28,7 @@ define( function( require ) {
       sideLength: 25  // length of one side of the square button
     }, options );
 
-    var thisButton = this;
-    Node.call( thisButton );
+    Node.call( this );
 
     // configure the button shape
     var cornerRadius = 0.1 * options.sideLength;
@@ -63,26 +62,26 @@ define( function( require ) {
     collapseButton.addChild( new Path( minusSymbolShape, symbolOptions ) );
 
     // rendering order
-    thisButton.addChild( expandButton );
-    thisButton.addChild( collapseButton );
+    this.addChild( expandButton );
+    this.addChild( collapseButton );
 
     // click to toggle
-    thisButton.cursor = 'pointer';
-    thisButton.addInputListener( new ButtonListener( {
+    this.cursor = 'pointer';
+    this.addInputListener( new ButtonListener( {
       fire: function() {
         expandedProperty.set( !expandedProperty.get() );
       }
     } ) );
 
     // @private
-    thisButton.expandedPropertyObserver = function( expanded ) {
+    this.expandedPropertyObserver = function( expanded ) {
       expandButton.visible = !expanded;
       collapseButton.visible = expanded;
     };
-    thisButton.expandedProperty = expandedProperty; // @private
-    thisButton.expandedProperty.link( thisButton.expandedPropertyObserver ); // must be unlinked in dispose
+    this.expandedProperty = expandedProperty; // @private
+    this.expandedProperty.link( this.expandedPropertyObserver ); // must be unlinked in dispose
 
-    thisButton.mutate( options );
+    this.mutate( options );
   }
 
   sun.register( 'ExpandCollapseButton', ExpandCollapseButton );

@@ -242,7 +242,7 @@ define( function( require ) {
     var pageNumberProperty = new Property( options.defaultPageNumber );
 
     // Change pages
-    var thisCarousel = this;
+    var self = this;
     var scrollTween;
     pageNumberProperty.link( function( pageNumber ) {
 
@@ -259,7 +259,7 @@ define( function( require ) {
       // stop any animation that's in progress
       scrollTween && scrollTween.stop();
 
-      if ( thisCarousel._animationEnabled ) {
+      if ( self._animationEnabled ) {
 
         //TODO replace calls to Tween with a wrapper, see https://github.com/phetsims/tasks/issues/360
         // Set up the animation to scroll the items in the carousel.

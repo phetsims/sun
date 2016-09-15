@@ -45,7 +45,6 @@ define( function( require ) {
    */
   function RectangularButtonView( buttonModel, interactionStateProperty, options ) {
     this.buttonModel = buttonModel; // @protected
-    var thisButton = this;
 
     options = _.extend( {
       // Default values.
@@ -77,7 +76,7 @@ define( function( require ) {
       contentAppearanceStrategy: RectangularButtonView.fadeContentWhenDisabled
     }, options );
 
-    Node.call( thisButton );
+    Node.call( this );
 
     var content = options.content; // convenience variable
 
@@ -109,15 +108,16 @@ define( function( require ) {
     // Add the content to the button.
     if ( content ) {
       content.center = button.center;
-      thisButton.addChild( content );
+      this.addChild( content );
     }
 
     // Hook up the strategy that will control the content appearance.
     options.contentAppearanceStrategy( content, interactionStateProperty, options );
 
     // Control the pointer state based on the interaction state.
+    var self = this;
     interactionStateProperty.link( function( state ) {
-      thisButton.cursor = state === 'disabled' || state === 'disabled-pressed' ? null : 'pointer';
+      self.cursor = state === 'disabled' || state === 'disabled-pressed' ? null : 'pointer';
     } );
 
     // Add explicit mouse and touch areas so that the child nodes can all be non-pickable.
@@ -127,7 +127,7 @@ define( function( require ) {
 
     // Mutate with the options after the layout is complete so that width-
     // dependent fields like centerX will work.
-    thisButton.mutate( options );
+    this.mutate( options );
   }
 
   sun.register( 'RectangularButtonView', RectangularButtonView );

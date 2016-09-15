@@ -65,57 +65,57 @@ define( function( require ) {
 
     Tandem.validateOptions( options ); // The tandem is required when brand==='phet-io'
 
-    var thisNode = this;
+    var self = this;
     Node.call( this );
 
-    thisNode.content = content; // @private
-    thisNode.checkBoxAppearanceStrategy = options.checkBoxAppearanceStrategy; // @private
-    thisNode.contentAppearanceStrategy = options.contentAppearanceStrategy; // @private
+    this.content = content; // @private
+    this.checkBoxAppearanceStrategy = options.checkBoxAppearanceStrategy; // @private
+    this.contentAppearanceStrategy = options.contentAppearanceStrategy; // @private
 
-    thisNode._enabled = true; // @private
+    this._enabled = true; // @private
 
     // @private - Create the background.  Until we are creating our own shapes, just put a rectangle behind the font
     // awesome check box icons.
-    thisNode.backgroundNode = new Rectangle( 0, -options.boxWidth, options.boxWidth * 0.95, options.boxWidth * 0.95,
+    this.backgroundNode = new Rectangle( 0, -options.boxWidth, options.boxWidth * 0.95, options.boxWidth * 0.95,
       options.boxWidth * 0.2, options.boxWidth * 0.2, {
         fill: options.checkBoxColorBackground
       } );
 
     // @private
-    thisNode.uncheckedNode = new FontAwesomeNode( 'check_empty', {
+    this.uncheckedNode = new FontAwesomeNode( 'check_empty', {
       fill: options.checkBoxColor
     } );
-    var iconScale = options.boxWidth / thisNode.uncheckedNode.width;
-    thisNode.uncheckedNode.scale( iconScale );
+    var iconScale = options.boxWidth / this.uncheckedNode.width;
+    this.uncheckedNode.scale( iconScale );
 
     // @private
-    thisNode.checkedNode = new FontAwesomeNode( 'check', {
+    this.checkedNode = new FontAwesomeNode( 'check', {
       scale: iconScale,
       fill: options.checkBoxColor
     } );
 
     // @private
-    this.checkBoxNode = new Node( { children: [ thisNode.backgroundNode, thisNode.checkedNode, thisNode.uncheckedNode ] } );
+    this.checkBoxNode = new Node( { children: [ this.backgroundNode, this.checkedNode, this.uncheckedNode ] } );
 
-    thisNode.addChild( this.checkBoxNode );
-    thisNode.addChild( content );
+    this.addChild( this.checkBoxNode );
+    this.addChild( content );
 
-    content.left = thisNode.checkedNode.right + options.spacing;
-    content.centerY = thisNode.checkedNode.centerY;
+    content.left = this.checkedNode.right + options.spacing;
+    content.centerY = this.checkedNode.centerY;
 
     // put a rectangle on top of everything to prevent dead zones when clicking
-    thisNode.addChild( new Rectangle( thisNode.left, thisNode.top, thisNode.width, thisNode.height ) );
+    this.addChild( new Rectangle( this.left, this.top, this.width, this.height ) );
 
     content.pickable = false; // since there's a pickable rectangle on top of content
 
     // @private interactivity
     this.fire = function() {
-      if ( thisNode._enabled ) {
+      if ( self._enabled ) {
         var oldValue = property.value;
         var newValue = !property.value;
-        thisNode.trigger2( 'startedCallbacksForToggled', oldValue, newValue );
+        self.trigger2( 'startedCallbacksForToggled', oldValue, newValue );
         property.value = newValue;
-        thisNode.trigger0( 'endedCallbacksForToggled' );
+        self.trigger0( 'endedCallbacksForToggled' );
       }
     };
 
@@ -123,14 +123,14 @@ define( function( require ) {
     this.checkBoxButtonListener = new ButtonListener( {
       fire: this.fire
     } );
-    thisNode.addInputListener( this.checkBoxButtonListener );
+    this.addInputListener( this.checkBoxButtonListener );
 
     // @private - sync with property
     this.checkBoxCheckedListener = function( checked ) {
-      thisNode.checkedNode.visible = checked;
-      thisNode.uncheckedNode.visible = !checked;
+      self.checkedNode.visible = checked;
+      self.uncheckedNode.visible = !checked;
 
-      _.each( thisNode.instances, function( instance ) {
+      _.each( self.instances, function( instance ) {
 
         //Make sure accessibility is enabled, then apply the change to the peer
         _.each( instance.peers, function( peer ) {
@@ -141,7 +141,7 @@ define( function( require ) {
     property.link( this.checkBoxCheckedListener );
 
     // Apply additional options
-    thisNode.mutate( options );
+    this.mutate( options );
 
     // @public (tandem) - Tandem support, use a novel name to reduce the risk of parent or child collisions
     this.checkBoxTandem = options.tandem;
@@ -150,8 +150,8 @@ define( function( require ) {
     // Accessibility support
     this.setAccessibleContent( {
       createPeer: function( accessibleInstance ) {
-        var peer = new CheckBoxAccessiblePeer( accessibleInstance, property, thisNode.fire, options.accessibleLabel, options.tabIndex );
-        thisNode.accessibleId = peer.id; // @public (read-only), id for quick identification in the Parallel DOM
+        var peer = new CheckBoxAccessiblePeer( accessibleInstance, property, self.fire, options.accessibleLabel, options.tabIndex );
+        self.accessibleId = peer.id; // @public (read-only), id for quick identification in the Parallel DOM
         return peer;
       }
     } );

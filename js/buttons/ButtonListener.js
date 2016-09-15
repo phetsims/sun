@@ -26,7 +26,7 @@ define( function( require ) {
    */
   function ButtonListener( buttonModel ) {
     this.buttonModel = buttonModel; // @private
-    var buttonListener = this;
+    var self = this;
 
     // Track the pointer that is currently interacting with this button, ignore others.
     this.overPointer = null; // @private
@@ -34,17 +34,17 @@ define( function( require ) {
 
     DownUpListener.call( this, {
         down: function( event, trail ) {
-          if ( buttonListener.downPointer === null ) {
-            buttonListener.downPointer = event.pointer;
+          if ( self.downPointer === null ) {
+            self.downPointer = event.pointer;
           }
-          if ( event.pointer === buttonListener.downPointer ) {
+          if ( event.pointer === self.downPointer ) {
             buttonModel.down = true;
           }
         },
 
         up: function( event, trail ) {
-          if ( event.pointer === buttonListener.downPointer ) {
-            buttonListener.downPointer = null;
+          if ( event.pointer === self.downPointer ) {
+            self.downPointer = null;
             buttonModel.down = false;
           }
         }

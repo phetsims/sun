@@ -35,8 +35,8 @@ define( function( require ) {
    */
   function HSlider( valueProperty, range, options ) {
 
-    var thisSlider = this;
-    Node.call( thisSlider );
+    var self = this;
+    Node.call( this );
 
     options = _.extend( {
 
@@ -103,13 +103,13 @@ define( function( require ) {
     this._snapValue = options.snapValue;
 
     // @private ticks are added to these parents, so they are behind the knob
-    thisSlider.majorTicksParent = new Node();
-    thisSlider.minorTicksParent = new Node();
-    thisSlider.addChild( thisSlider.majorTicksParent );
-    thisSlider.addChild( thisSlider.minorTicksParent );
+    this.majorTicksParent = new Node();
+    this.minorTicksParent = new Node();
+    this.addChild( this.majorTicksParent );
+    this.addChild( this.minorTicksParent );
 
     // @private mapping between value and track position
-    thisSlider.valueToPosition = new LinearFunction( range.min, range.max, 0, options.trackSize.width, true /* clamp */ );
+    this.valueToPosition = new LinearFunction( range.min, range.max, 0, options.trackSize.width, true /* clamp */ );
 
     // snap to a value if value is within range, used by HSlider and HSliderTrack
     var snapToValue = function( value ) {
@@ -122,7 +122,7 @@ define( function( require ) {
     };
 
     // @private track
-    thisSlider.track = new HSliderTrack( valueProperty, thisSlider.valueToPosition, snapToValue, {
+    this.track = new HSliderTrack( valueProperty, this.valueToPosition, snapToValue, {
 
       // propagate options that are specific to HSliderTrack
       size: options.trackSize,
@@ -139,8 +139,8 @@ define( function( require ) {
       // phet-io
       tandem: options.tandem && options.tandem.createTandem( 'track' )
     } );
-    thisSlider.track.centerX = thisSlider.valueToPosition( ( range.max + range.min ) / 2 );
-    thisSlider.addChild( thisSlider.track );
+    this.track.centerX = this.valueToPosition( ( range.max + range.min ) / 2 );
+    this.addChild( this.track );
 
     // thumb
     var thumb = options.thumbNode || new HSliderThumb( this.enabledProperty, {
@@ -157,8 +157,8 @@ define( function( require ) {
       } );
 
     // do this outside of options hash, so that it applied to both default and custom thumbs
-    thumb.centerY = thisSlider.track.centerY;
-    thisSlider.addChild( thumb );
+    thumb.centerY = this.track.centerY;
+    this.addChild( thumb );
 
     // touchArea for the default thumb. If a custom thumb is provided, the client is responsible for its touchArea.
     if ( !options.thumbNode && ( options.thumbTouchAreaXDilation || options.thumbTouchAreaYDilation ) ) {
@@ -179,28 +179,28 @@ define( function( require ) {
       allowTouchSnag: true,
 
       start: function( event, trail ) {
-        if ( thisSlider.enabledProperty.get() ) {
+        if ( self.enabledProperty.get() ) {
           options.startDrag();
 
-          var transform = trail.subtrailTo( thisSlider ).getTransform();
+          var transform = trail.subtrailTo( self ).getTransform();
           clickXOffset = transform.inversePosition2( event.pointer.point ).x - thumb.x;
         }
       },
 
       drag: function( event, trail ) {
-        if ( thisSlider.enabledProperty.get() ) {
-          var transform = trail.subtrailTo( thisSlider ).getTransform(); // we only want the transform to our parent
+        if ( self.enabledProperty.get() ) {
+          var transform = trail.subtrailTo( self ).getTransform(); // we only want the transform to our parent
           var x = transform.inversePosition2( event.pointer.point ).x - clickXOffset;
-          var newValue = thisSlider.valueToPosition.inverse( x );
+          var newValue = self.valueToPosition.inverse( x );
 
           valueProperty.set( options.constrainValue( newValue ) );
         }
       },
 
       end: function() {
-        if ( thisSlider.enabledProperty.get() ) {
-          if ( typeof thisSlider._snapValue === 'number' ) {
-            snapToValue( thisSlider._snapValue );
+        if ( self.enabledProperty.get() ) {
+          if ( typeof self._snapValue === 'number' ) {
+            snapToValue( self._snapValue );
           }
           options.endDrag();
         }
@@ -212,7 +212,7 @@ define( function( require ) {
     // Keyboard accessibility
     thumb.addInputListener( {
       keydown: function( event, trail ) {
-        if ( thisSlider.enabledProperty.get() ) {
+        if ( self.enabledProperty.get() ) {
           var keyCode = event.domEvent.keyCode;
           var delta = keyCode === Input.KEY_LEFT_ARROW || keyCode === Input.KEY_DOWN_ARROW ? -1 :
                       keyCode === Input.KEY_RIGHT_ARROW || keyCode === Input.KEY_UP_ARROW ? +1 :
@@ -225,17 +225,17 @@ define( function( require ) {
 
     // enable/disable
     var enabledObserver = function( enabled ) {
-      thisSlider.cursor = thisSlider.enabledProperty.get() ? options.cursor : 'default';
+      self.cursor = self.enabledProperty.get() ? options.cursor : 'default';
       if ( !enabled ) {
         if ( thumbInputListener.dragging ) { thumbInputListener.endDrag(); }
       }
-      thisSlider.pickable = enabled;
+      self.pickable = enabled;
     };
-    thisSlider.enabledProperty.link( enabledObserver ); // must be unlinked in disposeHSlider
+    this.enabledProperty.link( enabledObserver ); // must be unlinked in disposeHSlider
 
     // update thumb location when value changes
     var valueObserver = function( value ) {
-      thumb.centerX = thisSlider.valueToPosition( value );
+      thumb.centerX = self.valueToPosition( value );
     };
     valueProperty.link( valueObserver ); // must be unlinked in disposeHSlider
 
@@ -249,11 +249,11 @@ define( function( require ) {
       var max = initialValueToPosition( enabledRange.max );
 
       // update the geometry of the enabled track
-      thisSlider.track.updateEnabledTrackWidth( min, max );
+      self.track.updateEnabledTrackWidth( min, max );
 
       // update the function that maps value to position for the track and the slider
-      thisSlider.valueToPosition = new LinearFunction( enabledRange.min, enabledRange.max, min, max, true /* clamp */ );
-      thisSlider.track.valueToPosition = thisSlider.valueToPosition;
+      self.valueToPosition = new LinearFunction( enabledRange.min, enabledRange.max, min, max, true /* clamp */ );
+      self.track.valueToPosition = self.valueToPosition;
 
       // clamp the value to the enabled range if it changes
       valueProperty.set( Util.clamp( valueProperty.value, enabledRange.min, enabledRange.max ) );
@@ -263,15 +263,15 @@ define( function( require ) {
     // @private Called by dispose
     this.disposeHSlider = function() {
       thumb.dispose && thumb.dispose(); // in case a custom thumb is provided via options.thumbNode that doesn't implement dispose
-      thisSlider.track.dispose();
+      self.track.dispose();
       valueProperty.unlink( valueObserver );
-      thisSlider.enabledRangeProperty.unlink( enabledRangeObserver );
-      thisSlider.enabledProperty.unlink( enabledObserver );
-      options.tandem && options.tandem.removeInstance( thisSlider );
+      self.enabledRangeProperty.unlink( enabledRangeObserver );
+      self.enabledProperty.unlink( enabledObserver );
+      options.tandem && options.tandem.removeInstance( self );
       thumbInputListener.dispose();
     };
 
-    thisSlider.mutate( options );
+    this.mutate( options );
 
     options.tandem && options.tandem.addInstance( this, THSlider );
   }

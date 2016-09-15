@@ -33,7 +33,7 @@ define( function( require ) {
       fireOnHoldInterval: 100 // fire continuously at this interval (milliseconds)
     }, options );
 
-    var pushButtonModel = this;
+    var self = this;
     ButtonModel.call( this, options );
 
     this.listeners = []; // @private
@@ -53,31 +53,31 @@ define( function( require ) {
 
     // Point down
     this.property( 'down' ).onValue( true, function() {
-      if ( pushButtonModel.enabled ) {
+      if ( self.enabled ) {
         if ( options.fireOnDown ) {
-          pushButtonModel.fire();
+          self.fire();
         }
-        if ( pushButtonModel.timer ) {
-          pushButtonModel.timer.start();
+        if ( self.timer ) {
+          self.timer.start();
         }
       }
     } );
 
     // Pointer up
     this.property( 'down' ).onValue( false, function() {
-      var fire = ( !options.fireOnDown && pushButtonModel.over && pushButtonModel.enabled ); // should the button fire?
-      if ( pushButtonModel.timer ) {
-        pushButtonModel.timer.stop( fire );
+      var fire = ( !options.fireOnDown && self.over && self.enabled ); // should the button fire?
+      if ( self.timer ) {
+        self.timer.stop( fire );
       }
       else if ( fire ) {
-        pushButtonModel.fire();
+        self.fire();
       }
     } );
 
     // Stop the timer when the button is disabled.
     this.property( 'enabled' ).link( function( enabled ) {
-      if ( !enabled && pushButtonModel.timer ) {
-        pushButtonModel.timer.stop( false ); // Stop the timer, don't fire if we haven't already
+      if ( !enabled && self.timer ) {
+        self.timer.stop( false ); // Stop the timer, don't fire if we haven't already
       }
     } );
   }

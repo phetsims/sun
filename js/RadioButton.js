@@ -40,8 +40,8 @@ define( function( require ) {
 
     Tandem.validateOptions( options ); // The tandem is required when brand==='phet-io'
 
-    var thisNode = this;
-    Node.call( thisNode );
+    var self = this;
+    Node.call( this );
 
     this._enabled = options.enabled; // @private
 
@@ -49,9 +49,9 @@ define( function( require ) {
     var background = new Rectangle( selectedNode.bounds.union( deselectedNode.bounds ) );
     selectedNode.pickable = deselectedNode.pickable = false; // the background rectangle suffices
 
-    thisNode.addChild( background );
-    thisNode.addChild( selectedNode );
-    thisNode.addChild( deselectedNode );
+    this.addChild( background );
+    this.addChild( selectedNode );
+    this.addChild( deselectedNode );
 
     // sync control with model
     var syncWithModel = function( newValue ) {
@@ -62,14 +62,14 @@ define( function( require ) {
 
     // set property value on fire
     var fire = function() {
-      thisNode.trigger1( 'startedCallbacksForFired', value );
+      self.trigger1( 'startedCallbacksForFired', value );
       property.set( value );
-      thisNode.trigger0( 'endedCallbacksForFired' );
+      self.trigger0( 'endedCallbacksForFired' );
     };
     var buttonListener = new ButtonListener( {
       fire: fire
     } );
-    thisNode.addInputListener( buttonListener );
+    this.addInputListener( buttonListener );
 
     this.mutate( options );
 
@@ -77,7 +77,7 @@ define( function( require ) {
 
     this.disposeRadioButton = function() {
       options.tandem && options.tandem.removeInstance( this );
-      thisNode.removeInputListener( buttonListener );
+      self.removeInputListener( buttonListener );
       property.unlink( syncWithModel );
     };
 

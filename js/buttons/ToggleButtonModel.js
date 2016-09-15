@@ -23,7 +23,7 @@ define( function( require ) {
    */
   function ToggleButtonModel( valueOff, valueOn, valueProperty ) {
 
-    var thisModel = this;
+    var self = this;
 
     // @private
     this.valueOff = valueOff;
@@ -34,9 +34,9 @@ define( function( require ) {
 
     // Behaves like a push button (with fireOnDown:false), but toggles its state when the button is released.
     var downListener = function( down ) {
-      if ( thisModel.enabled && thisModel.over ) {
+      if ( self.enabled && self.over ) {
         if ( !down ) {
-          thisModel.toggle();
+          self.toggle();
         }
       }
     };
@@ -44,7 +44,7 @@ define( function( require ) {
 
     // @private - dispose items specific to this instance
     this.disposeToggleButtonModel = function() {
-      thisModel.property( 'down' ).unlink( downListener );
+      self.property( 'down' ).unlink( downListener );
     };
   }
 

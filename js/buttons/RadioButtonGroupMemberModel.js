@@ -22,22 +22,22 @@ define( function( require ) {
   function RadioButtonGroupMemberModel( selectorProperty, selectedValue ) {
     ButtonModel.call( this );
 
-    var thisModel = this;
+    var self = this;
 
     this.selectedValue = selectedValue;
     this.selectorProperty = selectorProperty;
 
     // @public (read only) - fire on up if the button is enabled, public for use in the accessibility tree
     this.fire = function() {
-      if ( thisModel.enabled ) {
-        thisModel.trigger1( 'startedCallbacksForFired', selectedValue );
+      if ( self.enabled ) {
+        self.trigger1( 'startedCallbacksForFired', selectedValue );
         selectorProperty.set( selectedValue );
-        thisModel.trigger0( 'endedCallbacksForFired' );
+        self.trigger0( 'endedCallbacksForFired' );
       }
     };
     this.property( 'down' ).onValue( false, function() {
-      if ( thisModel.over ) {
-        thisModel.fire();
+      if ( self.over ) {
+        self.fire();
       }
     } );
   }

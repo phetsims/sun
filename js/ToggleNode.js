@@ -31,8 +31,7 @@ define( function( require ) {
       wrapChildren: true
     }, options );
 
-    var thisNode = this;
-    Node.call( thisNode );
+    Node.call( this );
     var background = Rectangle.bounds( trueNode.bounds.union( falseNode.bounds ), { visible: false } );
     this.addChild( background );
 

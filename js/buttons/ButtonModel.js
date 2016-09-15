@@ -27,7 +27,7 @@ define( function( require ) {
       enabled: true
     }, options );
 
-    var thisModel = this;
+    var self = this;
 
     PropertySet.call( this, {
       over: false,  // @public - Is the pointer over the button?
@@ -41,7 +41,7 @@ define( function( require ) {
         options.startCallback();
       }
       else {
-        options.endCallback( thisModel.over );
+        options.endCallback( self.over );
       }
     } );
   }

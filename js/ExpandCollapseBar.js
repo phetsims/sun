@@ -37,8 +37,7 @@ define( function( require ) {
       barLineWidth: 1
     }, options );
 
-    var thisNode = this;
-    Node.call( thisNode );
+    Node.call( this );
 
     // expand/collapse button
     var button = new ExpandCollapseButton( expandedProperty, { sideLength: options.buttonLength } );
@@ -54,9 +53,9 @@ define( function( require ) {
     } );
 
     // rendering order
-    thisNode.addChild( barNode );
-    thisNode.addChild( titleNode );
-    thisNode.addChild( button );
+    this.addChild( barNode );
+    this.addChild( titleNode );
+    this.addChild( button );
 
     // layout
     titleNode.left = barNode.left + options.xMargin;

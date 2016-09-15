@@ -23,7 +23,7 @@ define( function( require ) {
    * @constructor
    */
   function StickyToggleButtonModel( valueUp, valueDown, valueProperty ) {
-    var thisModel = this;
+    var self = this;
 
     // @private
     this.valueUp = valueUp;
@@ -44,30 +44,30 @@ define( function( require ) {
     // released, pop up the button (unless it was part of the same action that pressed the button down in the first
     // place).
     this.property( 'down' ).link( function( down ) {
-      if ( thisModel.enabled && thisModel.over ) {
+      if ( self.enabled && self.over ) {
         if ( down && valueProperty.value === valueUp ) {
-          thisModel.toggle();
-          thisModel.pressedWhileDown = false;
+          self.toggle();
+          self.pressedWhileDown = false;
         }
         if ( !down && valueProperty.value === valueDown ) {
-          if ( thisModel.pressedWhileDown ) {
-            thisModel.toggle();
+          if ( self.pressedWhileDown ) {
+            self.toggle();
           }
           else {
-            thisModel.pressedWhileDown = true;
+            self.pressedWhileDown = true;
           }
         }
       }
 
       //Handle the case where the pointer moved out then up over a toggle button, so it will respond to the next press
-      if ( !down && !thisModel.over ) {
-        thisModel.pressedWhileDown = true;
+      if ( !down && !self.over ) {
+        self.pressedWhileDown = true;
       }
     } );
 
     // make the button ready to toggle when enabled
     this.property( 'enabled' ).onValue( true, function() {
-      thisModel.pressedWhileDown = true;
+      self.pressedWhileDown = true;
     } );
   }
 

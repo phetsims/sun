@@ -55,8 +55,7 @@ define( function( require ) {
     options.thumbFill = options.thumbFill ||
                         new LinearGradient( 0, 0, 0, options.switchSize.height ).addColorStop( 0, 'white' ).addColorStop( 1, 'rgb(200,200,200)' );
 
-    var thisNode = this;
-    Node.call( thisNode );
+    Node.call( this );
 
     // property for adapting to OnOffSwitch. 'true' is 'B', the object on the 'on' end of the OnOffSwitch.
     var onProperty = new Property( valueB === property.get() );
@@ -74,9 +73,9 @@ define( function( require ) {
     } );
 
     // rendering order
-    thisNode.addChild( onOffSwitch );
-    thisNode.addChild( labelA );
-    thisNode.addChild( labelB );
+    this.addChild( onOffSwitch );
+    this.addChild( labelA );
+    this.addChild( labelB );
 
     // layout: 'A' on the left, 'B' on the right
     labelA.right = onOffSwitch.left - options.xSpacing;
@@ -87,8 +86,8 @@ define( function( require ) {
     // add a horizontal strut that will cause the 'centerX' of this node to be at the center of the button
     if ( options.centerOnButton ) {
       var additionalWidth = Math.abs( labelA.width - labelB.width );
-      var strut = new Line( 0, 0, thisNode.width + additionalWidth, 0 );
-      thisNode.addChild( strut );
+      var strut = new Line( 0, 0, this.width + additionalWidth, 0 );
+      this.addChild( strut );
       strut.moveToBack();
       if ( labelA.width < labelB.width ) {
         strut.left = labelA.left - ( additionalWidth / 2 );
@@ -118,7 +117,7 @@ define( function( require ) {
       fire: function() { onProperty.set( true ); }
     } ) );
 
-    thisNode.mutate( options );
+    this.mutate( options );
   }
 
   sun.register( 'ABSwitch', ABSwitch );

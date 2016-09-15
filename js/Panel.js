@@ -50,12 +50,10 @@ define( function( require ) {
    */
   function Panel( content, options ) {
 
-    var thisNode = this;
-
     options = _.extend( {}, DEFAULT_OPTIONS, options );
     assert && assert( _.contains( ALIGN_VALUES, options.align ), 'invalid align: ' + options.align );
 
-    Node.call( thisNode );
+    Node.call( this );
 
     // correct size will be set by updateBackground
     var background = new Rectangle( 0, 0, 1, 1, {

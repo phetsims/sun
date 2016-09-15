@@ -85,7 +85,7 @@ define( function( require ) {
     assert && assert( _.contains( ARROWS_POSITION_VALUES, options.arrowsPosition ), 'invalid arrowsPosition: ' + options.arrowsPosition );
     assert && assert( _.contains( VALUE_ALIGN_VALUES, options.valueAlign ), 'invalid valueAlign: ' + options.valueAlign );
 
-    var thisNode = this;
+    var self = this;
 
     var valueOptions = {
       font: options.font,
@@ -244,8 +244,8 @@ define( function( require ) {
     // enable or disable this component
     this.enabledProperty = options.enabledProperty; // @public
     var enabledPropertyObserver = function( enabled ) {
-      thisNode.pickable = enabled;
-      thisNode.opacity = enabled ? 1 : 0.5;
+      self.pickable = enabled;
+      self.opacity = enabled ? 1 : 0.5;
       //TODO if !enabled, cancel any interaction that is in progress, see scenery#218
     };
     this.enabledProperty.link( enabledPropertyObserver );
@@ -253,7 +253,7 @@ define( function( require ) {
     // @private
     this.disposeNumberSpinner = function() {
       numberProperty.unlink( numberPropertyObserver );
-      thisNode.enabledProperty.unlink( enabledPropertyObserver );
+      self.enabledProperty.unlink( enabledPropertyObserver );
     };
   }
 

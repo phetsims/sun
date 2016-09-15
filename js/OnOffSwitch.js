@@ -74,8 +74,8 @@ define( function( require ) {
 
     Tandem.validateOptions( options ); // The tandem is required when brand==='phet-io'
 
-    var thisNode = this;
-    Node.call( thisNode );
+    var self = this;
+    Node.call( this );
 
     // track that the thumb slides in
     var cornerRadius = options.size.height / 2;
@@ -84,14 +84,14 @@ define( function( require ) {
       stroke: options.trackStroke,
       cachedPaints: [ options.trackOnFill, options.trackOffFill ]
     } );
-    thisNode.addChild( trackNode );
+    this.addChild( trackNode );
 
     // thumb (aka knob)
     var thumbNode = this.thumbNode = new Rectangle( 0, 0, 0.5 * options.size.width, options.size.height, cornerRadius, cornerRadius, {
       fill: options.thumbFill,
       stroke: options.thumbStroke
     } );
-    thisNode.addChild( thumbNode );
+    this.addChild( thumbNode );
 
     // thumb touchArea
     if ( options.thumbTouchAreaXDilation || options.thumbTouchAreaYDilation ) {
@@ -122,14 +122,14 @@ define( function( require ) {
     };
 
     // sync with onProperty
-    onProperty.link( updateThumb.bind( thisNode ) );
+    onProperty.link( updateThumb.bind( this ) );
 
     // thumb interactivity
     var dragThresholdSquared = options.dragThreshold * options.dragThreshold; // comparing squared magnitudes is a bit faster
     var accumulatedDelta = new Vector2(); // stores how far we are from where our drag started, in our local coordinate frame
     var passedDragThreshold = false; // whether we have dragged far enough to be considered for "drag" behavior (pick closest side), or "tap" behavior (toggle)
 
-    thisNode.addInputListener( new SimpleDragHandler( {
+    this.addInputListener( new SimpleDragHandler( {
 
       // only touch to snag when over the thumb (don't snag on the track itself)
       allowTouchSnag: function( evt ) {
@@ -153,7 +153,7 @@ define( function( require ) {
         var isDraggedOutside = viewPoint.x < ( 1 - 2 * options.toggleThreshold ) * halfThumbWidth ||
                                viewPoint.x > ( -1 + 2 * options.toggleThreshold ) * halfThumbWidth + options.size.width;
 
-        var value = thisNode.thumbPositionToValue(); // value represented by the current thumb position
+        var value = self.thumbPositionToValue(); // value represented by the current thumb position
 
         // track fill changes based on the thumb positions
         trackNode.fill = value ? options.trackOnFill : options.trackOffFill;
@@ -166,9 +166,9 @@ define( function( require ) {
           // stream, see https://github.com/phetsims/phet-io/issues/369
           var changed = onProperty.get() !== value;
           if ( changed ) {
-            thisNode.trigger2( 'startedCallbacksForToggled', !value, value );
+            self.trigger2( 'startedCallbacksForToggled', !value, value );
             onProperty.set( value );
-            thisNode.trigger0( 'endedCallbacksForToggled' );
+            self.trigger0( 'endedCallbacksForToggled' );
           }
         }
       },
@@ -177,16 +177,16 @@ define( function( require ) {
         var oldValue = onProperty.get();
 
         // if moved past the threshold, choose value based on the side, otherwise just toggle
-        var newValue = passedDragThreshold ? thisNode.thumbPositionToValue() : !onProperty.get();
+        var newValue = passedDragThreshold ? self.thumbPositionToValue() : !onProperty.get();
 
-        thisNode.trigger2( 'startedCallbacksForToggled', oldValue, newValue );
+        self.trigger2( 'startedCallbacksForToggled', oldValue, newValue );
 
         onProperty.set( newValue );
 
         // update the thumb location (sanity check that it's here, only needs to be run if passedDragThreshold===true)
         updateThumb( onProperty.get() );
 
-        thisNode.trigger0( 'endedCallbacksForToggled' );
+        self.trigger0( 'endedCallbacksForToggled' );
       },
 
       translate: function( params ) {
@@ -199,7 +199,7 @@ define( function( require ) {
     this.onOffSwitchTandem = options.tandem;
     this.onOffSwitchTandem && this.onOffSwitchTandem.addInstance( this, TNode );
 
-    thisNode.mutate( options );
+    this.mutate( options );
   }
 
   sun.register( 'OnOffSwitch', OnOffSwitch );

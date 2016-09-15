@@ -29,8 +29,6 @@ define( function( require ) {
    */
   function ArrowButton( direction, callback, options ) {
 
-    var thisButton = this;
-
     options = _.extend( {
 
       // options for the button
@@ -99,7 +97,7 @@ define( function( require ) {
       spacing: options.arrowSpacing
     } );
 
-    RectangularPushButton.call( thisButton, options );
+    RectangularPushButton.call( this, options );
   }
 
   sun.register( 'ArrowButton', ArrowButton );

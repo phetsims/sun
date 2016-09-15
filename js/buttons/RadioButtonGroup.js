@@ -208,11 +208,11 @@ define( function( require ) {
     // super call
     options.children = buttons;
     LayoutBox.call( this, options );
-    var thisNode = this;
+    var self = this;
 
     // When the entire RadioButtonGroup gets disabled, gray them out and make them unpickable (and vice versa)
     this.enabledProperty.link( function( isEnabled ) {
-      thisNode.pickable = isEnabled;
+      self.pickable = isEnabled;
 
       for ( i = 0; i < contentArray.length; i++ ) {
         if ( buttons[ i ] instanceof LayoutBox ) {
@@ -228,7 +228,7 @@ define( function( require ) {
 
     // make the unselected buttons pickable and have a pointer cursor
     property.link( function( value ) {
-      if ( thisNode.enabledProperty.get() ) {
+      if ( self.enabledProperty.get() ) {
         for ( i = 0; i < contentArray.length; i++ ) {
           if ( contentArray[ i ].value === value ) {
             buttons[ i ].pickable = false;

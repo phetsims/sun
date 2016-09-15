@@ -18,12 +18,12 @@ define( function( require ) {
   var sun = require( 'SUN/sun' );
 
   function ComponentHolder( createFunction ) {
-    var componentHolder = this;
+    var self = this;
     this.dispose = function() {
-      componentHolder.instance.dispose();
+      self.instance.dispose();
     };
     this.create = function() {
-      componentHolder.instance = createFunction();
+      self.instance = createFunction();
     };
   }
 

@@ -29,7 +29,7 @@ define( function( require ) {
    */
   function RoundToggleButton( valueOff, valueOn, property, options ) {
 
-    var thisRoundToggleButton = this;
+    var self = this;
 
     // Tandem support
     options = _.extend( { tandem: null }, options );
@@ -44,7 +44,7 @@ define( function( require ) {
     // @private - disposal for listener above
     this.disposeRoundToggleButton = function() {
       options.tandem && options.tandem.removeInstance( this );
-      thisRoundToggleButton.toggleButtonModel.dispose();
+      self.toggleButtonModel.dispose();
     };
   }
 
