@@ -15,7 +15,7 @@ define( function( require ) {
   var TVoid = require( 'PHET_IO/types/TVoid' );
   var TBoolean = require( 'PHET_IO/types/TBoolean' );
   var phetioNamespace = require( 'PHET_IO/phetioNamespace' );
-  var TRadioButton = require( 'PHET_IO/types/sun/buttons/TRadioButton' );
+  var TRadioButton = require( 'PHET_IO/types/sun/TRadioButton' );
 
   var TAquaRadioButton = function( valueType ) {
     assert && assert( !!valueType, 'valueType must be defined' );
