@@ -4,7 +4,7 @@
 /**
  * Base type for UI components, contains behavior/implementation that they have in common, including:
  *
- * - enabled/disabled
+ * - enable/disable
  *
  * @author Chris Malley (PixelZoom, Inc.)
  */
