@@ -28,7 +28,7 @@ define( function( require ) {
   };
 
   var createScreenIcon = function( color ) {
-    return new Rectangle( 0, 0, Screen.HOME_SCREEN_ICON_SIZE.width, Screen.HOME_SCREEN_ICON_SIZE.height, { fill: color } );
+    return new Rectangle( 0, 0, Screen.MINIMUM_HOME_SCREEN_ICON_SIZE.width, Screen.MINIMUM_HOME_SCREEN_ICON_SIZE.height, { fill: color } );
   };
 
   SimLauncher.launch( function() {
