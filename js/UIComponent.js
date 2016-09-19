@@ -1,7 +1,6 @@
 // Copyright 2016, University of Colorado Boulder
 
 //TODO Not ready for production use. See https://github.com/phetsims/sun/issues/257
-//TODO Is it reasonable to think that we can add other common behavior here, or should this be just enabled/disabled?
 /**
  * Base type for UI components, contains behavior/implementation that they have in common, including:
  *
@@ -24,33 +23,44 @@ define( function( require ) {
    */
   function UIComponent( options ) {
 
+    var self = this;
+
     options = _.extend( {
+
+      // {Property.<boolean>} client can either provide their own Property, or use this.enabledProperty
       enabledProperty: new Property( true ),
 
-      // {number} opacity used by the default implementation of updateEnabled to make the component look disabled
-      disabledOpacity: 0.5
+      // {number} opacity used by the default implementation of enabledObserver to make the component look disabled
+      disabledOpacity: 0.5,
+
+      // {function} default strategy for enabling/disabling a UI component
+      enabledObserver: function( enabled ) {
+
+        //TODO using pickable is problematic, what are the alternatives?
+        self.pickable = enabled;
+        self.opacity = enabled ? 1.0 : self.disabledOpacity;
+      }
+
     }, options );
 
     // validate options
     assert && assert( options.disabledOpacity >= 0 && options.disabledOpacity <= 1,
       'invalid disabledOpacity: ' + options.disabledOpacity );
 
-    var self = this;
-
     Node.call( this );
 
     // @public (read-only)
     this.enabledProperty = options.enabledProperty;
 
+    // @private
+    this.disabledOpacity = options.disabledOpacity;
+
     // enable/disable the UI component
-    var enabledObserver = function( enabled ) {
-      self.updateEnabled( enabled, options );
-    };
-    this.enabledProperty.link( enabledObserver );
+    this.enabledProperty.link( options.enabledObserver );
 
     // @private called by dispose
     this.disposeMyComponent = function() {
-      self.enabledProperty.unlink( enabledObserver );
+      self.enabledProperty.unlink( options.enabledObserver );
     };
 
     this.mutate( options );
@@ -69,22 +79,6 @@ define( function( require ) {
 
     // @public
     getEnabled: function() { return this.enabledProperty.value; },
-    get enabled() { return this.getEnabled(); },
-
-    //TODO Since this is a base type (not intended by for direct instantiation) is subtype override preferable to providing this function via options?
-    //TODO Does passing in constructor options provide useful flexibility or create problems?
-    /**
-     * Default strategy for enabling/disabling a UI component. Override this to change the behavior.
-     *
-     * @param {boolean} enabled
-     * @param {Object} options - options that were passed to the constructor
-     * @protected
-     */
-    updateEnabled: function( enabled, options ) {
-
-      //TODO using pickable is problematic, what are the alternatives?
-      this.pickable = enabled;
-      this.opacity = enabled ? 1.0 : options.disabledOpacity;
-    }
+    get enabled() { return this.getEnabled(); }
   } );
 } );
