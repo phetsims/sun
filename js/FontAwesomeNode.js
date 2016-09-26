@@ -4,6 +4,7 @@
  * Provides access to font-awesome glyphs as scenery nodes.
  *
  * @author Sam Reid
+ * @author Chris Malley (PixelZoom, Inc.)
  */
 define( function( require ) {
   'use strict';
@@ -14,6 +15,7 @@ define( function( require ) {
   var Shape = require( 'KITE/Shape' );
   var sun = require( 'SUN/sun' );
 
+  // keys are fontawesome icon names, values are {string} SVG data
   // To add a new icon:
   // (1) Look up the unicode for the icon you want. For instance: http://fortawesome.github.io/Font-Awesome/icon/camera/
   // says Unicode: f030
@@ -45,6 +47,9 @@ define( function( require ) {
   // constants
   var SHAPE_MATRIX = Matrix3.createFromPool( 0.025, 0, 0, 0, -0.025, 0, 0, 0, 1 ); // to create a unity-scale icon
 
+  // keys are fontawesome icon names, values are Shape instances
+  var shapeCache = {};
+
   /**
    * @param iconName - the fontawesome icon name
    * @param {Object} [options]
@@ -57,10 +62,28 @@ define( function( require ) {
       fill: '#000',
       // Font awesome nodes are expensive to pick (and have a lot of holes in them which you may wish to pick anyways,
       // such as the door of the 'home' icon, so don't pick by default.
-      pickable: false
+      pickable: false,
+      enableCache: true // {boolean} use Shape caching for this instance?
     }, options );
 
-    Path.call( this, FontAwesomeNode.createShape( iconName ), options );
+    var shape;
+    if ( options.enableCache ) {
+
+      // cache the shape
+      if ( !shapeCache[ iconName ] ) {
+        shapeCache[ iconName ] = FontAwesomeNode.createShape( iconName );
+      }
+
+      // get the shape from the cache
+      shape = shapeCache[ iconName ];
+    }
+    else {
+
+      // don't use the cache
+      shape = FontAwesomeNode.createShape( iconName );
+    }
+    
+    Path.call( this, shape, options );
   }
 
   sun.register( 'FontAwesomeNode', FontAwesomeNode );
@@ -68,17 +91,14 @@ define( function( require ) {
   return inherit( Path, FontAwesomeNode, {}, {
 
     /**
-     * Creates the Shape for a specified fontawesome icon.
+     * Creates an immutable Shape for a specified fontawesome icon.
+     * 
      * @param {string} iconName - the fontawesome icon name
      * @returns {Shape}
      */
     createShape: function( iconName ) {
-      assert && assert( ICONS[ iconName ], 'Icon not found: ' + iconName );
-
-      // At one point, shapes were cached to reduce the overhead of having to reinterpret the SVG each time the shape was
-      // loaded, but this led to memory leaks (see https://github.com/phetsims/joist/issues/329).  As a result, the icons
-      // are loaded anew each time.
-      return new Shape( ICONS[ iconName ] ).transformed( SHAPE_MATRIX );
+      assert && assert( ICONS[ iconName ], 'unsupported iconName: ' + iconName );
+      return new Shape( ICONS[ iconName ] ).transformed( SHAPE_MATRIX ); //TODO call makeImmutable, see sun#270
     }
   } );
 } );
