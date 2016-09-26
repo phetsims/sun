@@ -1,4 +1,4 @@
-// Copyright 2013-2015, University of Colorado Boulder
+// Copyright 2013-2016, University of Colorado Boulder
 
 /**
  * Provides access to font-awesome glyphs as scenery nodes.
@@ -45,15 +45,11 @@ define( function( require ) {
   // constants
   var SHAPE_MATRIX = Matrix3.createFromPool( 0.025, 0, 0, 0, -0.025, 0, 0, 0, 1 ); // to create a unity-scale icon
 
-  var getShapeByName = function( iconName ) {
-    assert && assert( ICONS[ iconName ], 'Icon not found: ' + iconName );
-
-    // At one point, shapes were cached to reduce the overhead of having to reinterpret the SVG each time the shape was
-    // loaded, but this led to memory leaks (see https://github.com/phetsims/joist/issues/329).  As a result, the icons
-    // are loaded anew each time.
-    return new Shape( ICONS[ iconName ] ).transformed( SHAPE_MATRIX );
-  };
-
+  /**
+   * @param iconName - the fontawesome icon name
+   * @param {Object} [options]
+   * @constructor
+   */
   function FontAwesomeNode( iconName, options ) {
 
     // default values
@@ -64,10 +60,25 @@ define( function( require ) {
       pickable: false
     }, options );
 
-    Path.call( this, getShapeByName( iconName ), options );
+    Path.call( this, FontAwesomeNode.createShape( iconName ), options );
   }
 
   sun.register( 'FontAwesomeNode', FontAwesomeNode );
 
-  return inherit( Path, FontAwesomeNode );
+  return inherit( Path, FontAwesomeNode, {}, {
+
+    /**
+     * Creates the Shape for a specified fontawesome icon.
+     * @param {string} iconName - the fontawesome icon name
+     * @returns {Shape}
+     */
+    createShape: function( iconName ) {
+      assert && assert( ICONS[ iconName ], 'Icon not found: ' + iconName );
+
+      // At one point, shapes were cached to reduce the overhead of having to reinterpret the SVG each time the shape was
+      // loaded, but this led to memory leaks (see https://github.com/phetsims/joist/issues/329).  As a result, the icons
+      // are loaded anew each time.
+      return new Shape( ICONS[ iconName ] ).transformed( SHAPE_MATRIX );
+    }
+  } );
 } );
