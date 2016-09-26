@@ -83,7 +83,7 @@ define( function( require ) {
       // don't use the cache
       shape = FontAwesomeNode.createShape( iconName );
     }
-    
+
     Path.call( this, shape, options );
   }
 
@@ -93,13 +93,13 @@ define( function( require ) {
 
     /**
      * Creates an immutable Shape for a specified fontawesome icon.
-     * 
+     *
      * @param {string} iconName - the fontawesome icon name
      * @returns {Shape}
      */
     createShape: function( iconName ) {
       assert && assert( ICONS[ iconName ], 'unsupported iconName: ' + iconName );
-      return new Shape( ICONS[ iconName ] ).transformed( SHAPE_MATRIX ); //TODO call makeImmutable, see sun#270
+      return new Shape( ICONS[ iconName ] ).transformed( SHAPE_MATRIX ).makeImmutable();
     }
   } );
 } );
