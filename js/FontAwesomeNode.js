@@ -47,7 +47,8 @@ define( function( require ) {
   // constants
   var SHAPE_MATRIX = Matrix3.createFromPool( 0.025, 0, 0, 0, -0.025, 0, 0, 0, 1 ); // to create a unity-scale icon
 
-  // keys are fontawesome icon names, values are Shape instances
+  // keys are fontawesome icon names, values are Shape instances.
+  // Shapes are immutable so that Path doesn't add a listener, which creates a memory leak.
   var shapeCache = {};
 
   /**
