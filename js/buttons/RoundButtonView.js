@@ -8,7 +8,7 @@
  * input listeners so that it can be reused in multiple contexts.
  *
  * @author John Blanco
- * @author Sam Reid
+ * @author Sam Reid (PhET Interactive Simulations)
  */
 define( function( require ) {
   'use strict';

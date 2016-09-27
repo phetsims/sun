@@ -3,7 +3,7 @@
 /**
  * A vertical group of check boxes.
  *
- * @author Sam Reid
+ * @author Sam Reid (PhET Interactive Simulations)
  */
 define( function( require ) {
   'use strict';

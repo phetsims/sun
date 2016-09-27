@@ -4,7 +4,7 @@
  * Shows one node if the property is true or another node if the property is false.
  * Used to indicate boolean state.
  *
- * @author Sam Reid
+ * @author Sam Reid (PhET Interactive Simulations)
  * @author Chris Malley (PixelZoom, Inc.)
  */
 define( function( require ) {

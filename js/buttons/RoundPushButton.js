@@ -8,7 +8,7 @@
  * by hooking up a button model.
  *
  * @author John Blanco
- * @author Sam Reid
+ * @author Sam Reid (PhET Interactive Simulations)
  */
 define( function( require ) {
   'use strict';

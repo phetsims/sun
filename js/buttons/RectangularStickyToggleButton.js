@@ -5,7 +5,7 @@
  * It sticks in the down position when pressed, popping back up when pressed again.
  *
  * @author John Blanco
- * @author Sam Reid
+ * @author Sam Reid (PhET Interactive Simulations)
  */
 define( function( require ) {
   'use strict';

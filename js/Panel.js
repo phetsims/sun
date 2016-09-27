@@ -4,7 +4,7 @@
  * Control panel around a content node.
  * Dynamically adjusts its size to fit its contents.
  *
- * @author Sam Reid
+ * @author Sam Reid (PhET Interactive Simulations)
  * @author Chris Malley (PixelZoom, Inc.)
  * @author John Blanco
  */

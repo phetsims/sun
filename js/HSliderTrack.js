@@ -8,7 +8,7 @@
  * the enabled range can be any desired sub range of the full slider range.
  *
  * @author Chris Malley (PixelZoom, Inc.)
- * @author Sam Reid
+ * @author Sam Reid (PhET Interactive Simulations)
  * @author Jesse Greenberg
  */
 define( function( require ) {

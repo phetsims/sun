@@ -3,7 +3,7 @@
 /**
  * Basic model for a push button, including over/down/enabled properties.
  *
- * @author Sam Reid
+ * @author Sam Reid (PhET Interactive Simulations)
  * @author John Blanco
  * @author Chris Malley (PixelZoom, Inc.)
  */

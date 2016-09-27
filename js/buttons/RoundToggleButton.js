@@ -4,7 +4,7 @@
  * A round toggle button that switches the value of a property between 2 values.
  *
  * @author John Blanco
- * @author Sam Reid
+ * @author Sam Reid (PhET Interactive Simulations)
  */
 define( function( require ) {
   'use strict';
