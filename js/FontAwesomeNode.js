@@ -65,7 +65,10 @@ define( function( require ) {
       // Font awesome nodes are expensive to pick (and have a lot of holes in them which you may wish to pick anyways,
       // such as the door of the 'home' icon, so don't pick by default.
       pickable: false,
-      enableCache: true // {boolean} use Shape caching for this instance?
+
+      // {boolean} use Shape caching for this instance? Note that there is no way to remove an entry from the cache
+      // so only cache a shape if it will persist for the lifetime of the simulation.
+      enableCache: true
     }, options );
 
     var shape;
