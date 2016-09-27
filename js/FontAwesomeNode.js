@@ -52,7 +52,7 @@ define( function( require ) {
   var shapeCache = {};
 
   /**
-   * @param iconName - the fontawesome icon name
+   * @param {string} iconName - the fontawesome icon name
    * @param {Object} [options]
    * @constructor
    */
