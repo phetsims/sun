@@ -97,16 +97,16 @@ define( function( require ) {
     if ( options.thumbTouchAreaXDilation || options.thumbTouchAreaYDilation ) {
       thumbNode.touchArea = Shape.roundRect(
         -options.thumbTouchAreaXDilation, -options.thumbTouchAreaYDilation,
-        (0.5 * options.size.width) + (2 * options.thumbTouchAreaXDilation),
-        options.size.height + (2 * options.thumbTouchAreaYDilation), cornerRadius, cornerRadius );
+        ( 0.5 * options.size.width ) + ( 2 * options.thumbTouchAreaXDilation ),
+        options.size.height + ( 2 * options.thumbTouchAreaYDilation), cornerRadius, cornerRadius );
     }
 
     // thumb mouseArea
     if ( options.thumbMouseAreaXDilation || options.thumbMouseAreaYDilation ) {
       thumbNode.mouseArea = Shape.roundRect(
         -options.thumbMouseAreaXDilation, -options.thumbMouseAreaYDilation,
-        (0.5 * options.size.width) + (2 * options.thumbMouseAreaXDilation),
-        options.size.height + (2 * options.thumbMouseAreaYDilation), cornerRadius, cornerRadius );
+        ( 0.5 * options.size.width ) + ( 2 * options.thumbMouseAreaXDilation ),
+        options.size.height + ( 2 * options.thumbMouseAreaYDilation ), cornerRadius, cornerRadius );
     }
 
     // move thumb to on or off position
