@@ -15,7 +15,6 @@ define( function( require ) {
   var Path = require( 'SCENERY/nodes/Path' );
   var RectangularPushButton = require( 'SUN/buttons/RectangularPushButton' );
   var Shape = require( 'KITE/Shape' );
-  var HBox = require( 'SCENERY/nodes/HBox' );
   var sun = require( 'SUN/sun' );
 
   // constants
@@ -43,13 +42,13 @@ define( function( require ) {
       touchAreaYDilation: 7,
 
       // options for the arrows
-      numberOfArrows: 1, // each arrow will have the same shape and styling
-      arrowSpacing: 2, // spacing for each arrow in the button
       arrowHeight: DEFAULT_ARROW_HEIGHT, // from tip to base
       arrowWidth: DEFAULT_ARROW_HEIGHT * Math.sqrt( 3 ) / 2, // width of base
       arrowFill: 'black',
       arrowStroke: null,
       arrowLineWidth: 1,
+      numberOfArrows: 1, // each arrow will have the same shape and styling
+      arrowSpacing: -DEFAULT_ARROW_HEIGHT * ( 1 / 2 ), // spacing for each arrow such that they overlap slightly
 
       // options related to fire-on-hold feature
       fireOnHold: true,
@@ -63,38 +62,34 @@ define( function( require ) {
     }, options );
     options.listener = callback;
 
-    // arrow shape
-    var arrowShape;
-    if ( direction === 'up' ) {
-      arrowShape = new Shape().moveTo( options.arrowHeight / 2, 0 ).lineTo( options.arrowHeight, options.arrowWidth ).lineTo( 0, options.arrowWidth ).close();
-    }
-    else if ( direction === 'down' ) {
-      arrowShape = new Shape().moveTo( 0, 0 ).lineTo( options.arrowHeight, 0 ).lineTo( options.arrowHeight / 2, options.arrowWidth ).close();
-    }
-    else if ( direction === 'left' ) {
-      arrowShape = new Shape().moveTo( 0, options.arrowHeight / 2 ).lineTo( options.arrowWidth, 0 ).lineTo( options.arrowWidth, options.arrowHeight ).close();
-    }
-    else if ( direction === 'right' ) {
-      arrowShape = new Shape().moveTo( 0, 0 ).lineTo( options.arrowWidth, options.arrowHeight / 2 ).lineTo( 0, options.arrowHeight ).close();
-    }
-    else {
-      throw new Error( 'unsupported direction: ' + direction );
-    }
-
-    // create each arrow node
-    var arrows = [];
+    // arrow node
+    var arrowShape = new Shape();
     for ( var i = 0; i < options.numberOfArrows; i++ ) {
-      arrows.push( new Path( arrowShape, {
-        fill: options.arrowFill,
-        stroke: options.arrowStroke,
-        lineWidth: options.arrowLineWidth,
-        pickable: false
-      } ) );
+
+      // offset for the base of the arrow, shifting the shape of the arrow when there are more than one
+      var arrowOffset = i * ( options.arrowHeight + options.arrowSpacing );
+      if ( direction === 'up' ) {
+        arrowShape.moveTo( options.arrowHeight / 2, arrowOffset ).lineTo( options.arrowHeight, options.arrowWidth + arrowOffset ).lineTo( 0, options.arrowWidth + arrowOffset ).close();
+      }
+      else if ( direction === 'down' ) {
+        arrowShape.moveTo( 0, arrowOffset ).lineTo( options.arrowHeight, arrowOffset ).lineTo( options.arrowHeight / 2, options.arrowWidth + arrowOffset ).close();
+      }
+      else if ( direction === 'left' ) {
+        arrowShape.moveTo( arrowOffset, options.arrowHeight / 2 ).lineTo( options.arrowWidth + arrowOffset, 0 ).lineTo( options.arrowWidth + arrowOffset, options.arrowHeight ).close();
+      }
+      else if ( direction === 'right' ) {
+        arrowShape.moveTo( arrowOffset, 0 ).lineTo( options.arrowWidth + arrowOffset, options.arrowHeight / 2 ).lineTo( arrowOffset, options.arrowHeight ).close();
+      }
+      else {
+        throw new Error( 'unsupported direction: ' + direction );
+      }
     }
 
-    options.content = new HBox( {
-      children: arrows,
-      spacing: options.arrowSpacing
+    options.content = new Path( arrowShape, {
+      fill: options.arrowFill,
+      stroke: options.arrowStroke,
+      lineWidth: options.arrowLineWidth,
+      pickable: false
     } );
 
     RectangularPushButton.call( this, options );
