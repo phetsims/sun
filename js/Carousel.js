@@ -244,7 +244,8 @@ define( function( require ) {
     // Change pages
     var self = this;
     var scrollTween;
-    pageNumberProperty.link( function( pageNumber ) {
+
+    function pageNumberListener( pageNumber ) {
 
       assert && assert( pageNumber >= 0 && pageNumber <= numberOfPages - 1, 'pageNumber out of range: ' + pageNumber );
 
@@ -297,7 +298,9 @@ define( function( require ) {
           scrollingNode.top = -pageNumber * scrollingDelta;
         }
       }
-    } );
+    }
+
+    pageNumberProperty.link( pageNumberListener );
 
     // Buttons modify the page number
     nextButton.addListener( function() {
@@ -315,12 +318,20 @@ define( function( require ) {
 
     options.children = [ backgroundNode, windowNode, nextButton, previousButton, foregroundNode ];
 
+    this.disposeCarousel = function() {
+      pageNumberProperty.unlink( pageNumberListener );
+    };
+
     Node.call( this, options );
   }
 
   sun.register( 'Carousel', Carousel );
 
   return inherit( Node, Carousel, {
+
+    dispose: function() {
+      this.disposeCarousel();
+    },
 
     /**
      * Resets the carousel to its initial state.
