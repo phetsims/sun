@@ -15,7 +15,7 @@ define( function( require ) {
   var TNode = require( 'PHET_IO/types/scenery/nodes/TNode' );
   var toEventOnStatic = require( 'PHET_IO/events/toEventOnStatic' );
 
-  var TComboBox = function TComboBox( valueType ) {
+  function TComboBox( valueType ) {
     assert && assert( !!valueType, 'valueType should be defined' );
     var TComboBoxImpl = function TComboBoxImpl( comboBox, phetioID ) {
       assertInstanceOf( comboBox, phet.sun.ComboBox );
@@ -31,7 +31,7 @@ define( function( require ) {
       documentation: 'A traditional combo box',
       events: [ 'fired', 'popupShown', 'popupHidden' ]
     } );
-  };
+  }
 
   phetioNamespace.register( 'TComboBox', TComboBox );
 

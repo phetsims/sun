@@ -15,7 +15,7 @@ define( function( require ) {
   var TNode = require( 'PHET_IO/types/scenery/nodes/TNode' );
   var toEventOnStatic = require( 'PHET_IO/events/toEventOnStatic' );
 
-  var TRadioButton = function( valueType ) {
+  function TRadioButton( valueType ) {
     assert && assert( !!valueType, 'valueType must be defined' );
     var TRadioButtonImpl = function TRadioButtonImpl( radioButton, phetioID ) {
       assertInstanceOfTypes( radioButton, [
@@ -33,7 +33,7 @@ define( function( require ) {
       documentation: 'A traditional radio button',
       events: [ 'fired' ]
     } );
-  };
+  }
 
 
   phetioNamespace.register( 'TRadioButton', TRadioButton );

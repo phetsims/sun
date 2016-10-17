@@ -15,7 +15,7 @@ define( function( require ) {
   var TNode = require( 'PHET_IO/types/scenery/nodes/TNode' );
   var toEventOnStatic = require( 'PHET_IO/events/toEventOnStatic' );
 
-  var TToggleButton = function( valueType ) {
+  function TToggleButton( valueType ) {
     assert && assert( !!valueType, 'valueType must be specified' );
     var TToggleButtonImpl = function TToggleButtonImpl( toggleButton, phetioID ) {
       TNode.call( this, toggleButton, phetioID );
@@ -41,7 +41,7 @@ define( function( require ) {
       documentation: 'A button that toggles state (in/out) when pressed',
       events: [ 'toggled' ]
     } );
-  };
+  }
 
   phetioNamespace.register( 'TToggleButton', TToggleButton );
 

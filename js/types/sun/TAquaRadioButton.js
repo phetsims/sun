@@ -17,7 +17,7 @@ define( function( require ) {
   var phetioNamespace = require( 'PHET_IO/phetioNamespace' );
   var TRadioButton = require( 'PHET_IO/types/sun/TRadioButton' );
 
-  var TAquaRadioButton = function( valueType ) {
+  function TAquaRadioButton( valueType ) {
     assert && assert( !!valueType, 'valueType must be defined' );
     var TAquaRadioButton = function TAquaRadioButtonImpl( radioButton, phetioID ) {
       assertInstanceOfTypes( radioButton, [ phet.sun.AquaRadioButton ] );
@@ -36,7 +36,7 @@ define( function( require ) {
       documentation: 'A radio button which looks like the Mac "Aqua" radio buttons',
       events: TRadioButton( valueType ).events // TODO: Is this automatically inherited from the parent?
     } );
-  };
+  }
 
   phetioNamespace.register( 'TAquaRadioButton', TAquaRadioButton );
 

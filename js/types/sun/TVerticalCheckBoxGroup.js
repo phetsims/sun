@@ -14,10 +14,10 @@ define( function( require ) {
   var phetioInherit = require( 'PHET_IO/phetioInherit' );
   var TNode = require( 'PHET_IO/types/scenery/nodes/TNode' );
 
-  var TVerticalCheckBoxGroup = function( verticalCheckBoxGroup, phetioID ) {
+  function TVerticalCheckBoxGroup( verticalCheckBoxGroup, phetioID ) {
     TNode.call( this, verticalCheckBoxGroup, phetioID );
     assertInstanceOf( verticalCheckBoxGroup, phet.sun.VerticalCheckBoxGroup );
-  };
+  }
 
   phetioInherit( TNode, 'TVerticalCheckBoxGroup', TVerticalCheckBoxGroup, {}, {
     documentation: 'A vertical group of checkboxes'
