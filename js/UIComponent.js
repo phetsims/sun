@@ -35,9 +35,7 @@ define( function( require ) {
 
       // {function} default strategy for enabling/disabling a UI component
       enabledObserver: function( enabled ) {
-
-        //TODO using pickable is problematic, what are the alternatives?
-        self.pickable = enabled;
+        self.inputEnabled = enabled;
         self.opacity = enabled ? 1.0 : self.disabledOpacity;
       }
 
