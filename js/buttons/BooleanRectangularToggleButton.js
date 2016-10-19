@@ -20,7 +20,14 @@ define( function( require ) {
    * @constructor
    */
   function BooleanRectangularToggleButton( trueNode, falseNode, booleanProperty, options ) {
-    RectangularToggleButton.call( this, false, true, booleanProperty, _.extend( { content: new ToggleNode( trueNode, falseNode, booleanProperty ) }, options ) );
+
+    options = options || {};
+
+    //TODO ToggleNode links to booleanProperty, must be cleaned up in dispose
+    assert && assert( !options.content, 'options.content cannot be set' );
+    options.content = new ToggleNode( trueNode, falseNode, booleanProperty );
+
+    RectangularToggleButton.call( this, false, true, booleanProperty, options );
   }
 
   sun.register( 'BooleanRectangularToggleButton', BooleanRectangularToggleButton );
