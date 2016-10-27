@@ -19,8 +19,8 @@ define( function( require ) {
   // To add a new icon:
   // (1) Look up the unicode for the icon you want. For instance: http://fortawesome.github.io/Font-Awesome/icon/camera/
   // says Unicode: f030
-  // (2) Navigate to sherpa/lib/fontawesome-webfont-3.0.2.svg and copy the text from the d="" declaration from
-  // the corresponding element.
+  // (2) Navigate to sherpa/lib/font-awesome-*/fonts/fontawesome-webfont.svg and copy the text from the d="" declaration
+  // for the corresponding icon.
   var ICONS = {
     ban_circle: 'M1280 640q0 139 -71 260l-701 -701q121 -71 260 -71q104 0 198.5 40.5t163.5 109.5t109.5 163.5t40.5 198.5zM327 380l701 701q-121 71 -260 71q-104 0 -198.5 -40.5t-163.5 -109.5t-109.5 -163.5t-40.5 -198.5q0 -139 71 -260zM1536 640q0 -209 -103 -385.5 t-279.5 -279.5t-385.5 -103t-385.5 103t-279.5 279.5t-103 385.5t103 385.5t279.5 279.5t385.5 103t385.5 -103t279.5 -279.5t103 -385.5z',
     camera: 'M960 864q119 0 203.5 -84.5t84.5 -203.5t-84.5 -203.5t-203.5 -84.5t-203.5 84.5t-84.5 203.5t84.5 203.5t203.5 84.5zM1664 1280q106 0 181 -75t75 -181v-896q0 -106 -75 -181t-181 -75h-1408q-106 0 -181 75t-75 181v896q0 106 75 181t181 75h224l51 136 q19 49 69.5 84.5t103.5 35.5h512q53 0 103.5 -35.5t69.5 -84.5l51 -136h224zM960 128q185 0 316.5 131.5t131.5 316.5t-131.5 316.5t-316.5 131.5t-316.5 -131.5t-131.5 -316.5t131.5 -316.5t316.5 -131.5z',
