@@ -33,7 +33,7 @@ define( function( require ) {
       over: false,  // @public - Is the pointer over the button?
       down: false, // @public - Is the pointer down?
       enabled: options.enabled  // @public - Is the button enabled?
-    }, options );
+    } );
 
     // startCallback on pointer down, endCallback on pointer up. lazyLink so they aren't called immediately.
     this.property( 'down' ).lazyLink( function( down ) {
