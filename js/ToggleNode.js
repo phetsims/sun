@@ -10,9 +10,8 @@
 define( function( require ) {
   'use strict';
 
-  var Node = require( 'SCENERY/nodes/Node' );
-  var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var inherit = require( 'PHET_CORE/inherit' );
+  var Node = require( 'SCENERY/nodes/Node' );
   var sun = require( 'SUN/sun' );
 
   /**
@@ -26,8 +25,8 @@ define( function( require ) {
 
     Node.call( this );
 
-    var background = Rectangle.bounds( trueNode.bounds.union( falseNode.bounds ), { visible: false } );
-    this.addChild( background );
+    // align centers of the nodes, see https://github.com/phetsims/sun/issues/272
+    falseNode.center = trueNode.center;
 
     this.addChild( falseNode );
     this.addChild( trueNode );
