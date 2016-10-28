@@ -18,36 +18,26 @@ define( function( require ) {
   /**
    * @param {Node} trueNode
    * @param {Node} falseNode
-   * @param {Property} booleanProperty
-   * @param {Object} options
+   * @param {Property.<boolean>} booleanProperty
+   * @param {Object} [options]
    * @constructor
    */
   function ToggleNode( trueNode, falseNode, booleanProperty, options ) {
 
-    options = _.extend( { // defaults
-
-      //Wrap the nodes so that visibility flags won't be toggled on the passed-in nodes directly (in case they appear elsewhere in the DAG)
-      //Or opt-out if you know the nodes don't appear elsewhere and want to opt out of the increased tree depth and associated performance costs
-      wrapChildren: true
-    }, options );
-
     Node.call( this );
+
     var background = Rectangle.bounds( trueNode.bounds.union( falseNode.bounds ), { visible: false } );
     this.addChild( background );
 
-    var targetTrueNode = options.wrapChildren ? new Node( { children: [ trueNode ] } ) : trueNode;
-    var targetFalseNode = options.wrapChildren ? new Node( { children: [ falseNode ] } ) : falseNode;
-
-    this.addChild( targetFalseNode );
-    this.addChild( targetTrueNode );
+    this.addChild( falseNode );
+    this.addChild( trueNode );
 
     booleanProperty.link( function( value ) {
-      targetTrueNode.setVisible( value );
-      targetFalseNode.setVisible( !value );
+      trueNode.setVisible( value );
+      falseNode.setVisible( !value );
     } );
-    if ( options ) {
-      this.mutate( options );
-    }
+
+    this.mutate( options );
   }
 
   sun.register( 'ToggleNode', ToggleNode );
