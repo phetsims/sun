@@ -65,9 +65,11 @@ define( function( require ) {
       contentAppearanceStrategy: RadioButtonGroupAppearance.contentAppearanceStrategy,
 
       // invisible label for the radio button group member for accessibility
-      accessibleLabel: '',
-      type: null // {function} phet-io type wrapper type
+      accessibleLabel: ''
     }, options );
+
+    assert && assert( !options.hasOwnProperty( 'phetioValueType' ),
+                     'phetioValueType should be provided by the property and not through options.' );
 
     Tandem.validateOptions( options ); // The tandem is required when brand==='phet-io'
 
@@ -81,7 +83,7 @@ define( function( require ) {
 
     // @public (tandem) - for Tandem support, should be a novel name to reduce the risk of parent or child collisions
     this.radioButtonGroupMemberTandem = options.tandem;
-    this.radioButtonGroupMemberTandem && this.radioButtonGroupMemberTandem.addInstance( this, TRadioButton( options.phetioValueType ) );
+    this.radioButtonGroupMemberTandem && this.radioButtonGroupMemberTandem.addInstance( this, TRadioButton( property.elementType ) );
 
     // outfit a11y
     this.accessibleContent = {
