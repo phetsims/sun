@@ -147,13 +147,15 @@ define( function( require ) {
       var xMargin = ( ( maxWidth - contentArray[ i ].node.width ) / 2 ) + options.buttonContentXMargin;
       var yMargin = ( ( maxHeight - contentArray[ i ].node.height ) / 2 ) + options.buttonContentYMargin;
 
+      assert && assert( !contentArray[ i ].hasOwnProperty( 'phetioValueType' ),
+        'phetioValueType should be provided by the property passed to the RadioButtonGroup constructor' );
+
       var radioButton = new RadioButtonGroupMember( property, contentArray[ i ].value,
         _.extend( {
           content: contentArray[ i ].node,
           xMargin: xMargin,
           yMargin: yMargin,
           tandem: contentArray[ i ].tandem,
-          phetioValueType: contentArray[ i ].phetioValueType,
           accessibleLabel: contentArray[ i ].accessibleLabel
         }, buttonOptions ) );
 
