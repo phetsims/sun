@@ -115,14 +115,19 @@ define( function( require ) {
     };
 
     if ( options.resize ) {
-      content.addEventListener( 'bounds', function() {
-        updateBackground();
-      } );
+      content.addEventListener( 'bounds', updateBackground );
     }
     updateBackground();
 
     // Apply options after the layout is done, so that options that use the bounds will work properly.
     this.mutate( options );
+
+    this.disposePanel = function() {
+      options.tandem && options.tandem.removeInstance( this );
+      if ( options.resize ) {
+        content.removeEventListener( 'bounds', updateBackground );
+      }
+    };
 
     options.tandem && options.tandem.addInstance( this, TPanel );
   }
@@ -130,6 +135,11 @@ define( function( require ) {
   sun.register( 'Panel', Panel );
 
   inherit( Node, Panel, {
+
+    // @public
+    dispose: function() {
+      this.disposePanel();
+    },
 
     // @public - Change the background rectangle's stroke (can be overridden)
     setStroke: function( stroke ) {
