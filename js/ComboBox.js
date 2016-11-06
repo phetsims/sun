@@ -70,9 +70,7 @@ define( function( require ) {
       itemHighlightLineWidth: 1,
 
       // tandem
-      tandem: null,
-      phetioValueType: null // the phet-io type function for the combo box element type, such as TString
-
+      tandem: null
     }, options );
 
     // validate option values
@@ -268,7 +266,7 @@ define( function( require ) {
       property.unlink( propertyObserver );
     };
 
-    options.tandem && options.tandem.addInstance( this, TComboBox( options.phetioValueType ) );
+    options.tandem && options.tandem.addInstance( this, TComboBox( property.elementType ) );
   }
 
   sun.register( 'ComboBox', ComboBox );
