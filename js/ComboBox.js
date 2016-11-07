@@ -29,7 +29,7 @@ define( function( require ) {
   var TNode = require( 'ifphetio!PHET_IO/types/scenery/nodes/TNode' );
 
   /**
-   * @param {*[]} items - see ComboBox.createItem
+   * @param {*[]} items - see ComboBox.createItem.  The item types should be homogeneous.
    * @param {Property} property
    * @param {Node} listParent node that will be used as the list's parent, use this to ensuring that the list is in front of everything else
    * @param {Object} [options] object with optional properties
