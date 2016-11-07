@@ -115,7 +115,7 @@ define( function( require ) {
     };
 
     if ( options.resize ) {
-      content.addEventListener( 'bounds', updateBackground );
+      content.on( 'bounds', updateBackground );
     }
     updateBackground();
 
@@ -125,7 +125,7 @@ define( function( require ) {
     this.disposePanel = function() {
       options.tandem && options.tandem.removeInstance( this );
       if ( options.resize ) {
-        content.removeEventListener( 'bounds', updateBackground );
+        content.off( 'bounds', updateBackground );
       }
     };
 
