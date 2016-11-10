@@ -36,7 +36,7 @@ define( function( require ) {
     } );
 
     // startCallback on pointer down, endCallback on pointer up. lazyLink so they aren't called immediately.
-    this.property( 'down' ).lazyLink( function( down ) {
+    this.downProperty.lazyLink( function( down ) {
       if ( down ) {
         options.startCallback();
       }
