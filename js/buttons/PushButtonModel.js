@@ -52,30 +52,30 @@ define( function( require ) {
     }
 
     // Point down
-    this.property( 'down' ).onValue( true, function() {
-      if ( self.enabled ) {
-        if ( options.fireOnDown ) {
+    this.downProperty.link( function( down ) {
+      if ( down ) {
+        if ( self.enabled ) {
+          if ( options.fireOnDown ) {
+            self.fire();
+          }
+          if ( self.timer ) {
+            self.timer.start();
+          }
+        }
+      }
+      else {
+        var fire = ( !options.fireOnDown && self.over && self.enabled ); // should the button fire?
+        if ( self.timer ) {
+          self.timer.stop( fire );
+        }
+        else if ( fire ) {
           self.fire();
         }
-        if ( self.timer ) {
-          self.timer.start();
-        }
-      }
-    } );
-
-    // Pointer up
-    this.property( 'down' ).onValue( false, function() {
-      var fire = ( !options.fireOnDown && self.over && self.enabled ); // should the button fire?
-      if ( self.timer ) {
-        self.timer.stop( fire );
-      }
-      else if ( fire ) {
-        self.fire();
       }
     } );
 
     // Stop the timer when the button is disabled.
-    this.property( 'enabled' ).link( function( enabled ) {
+    this.enabledProperty.link( function( enabled ) {
       if ( !enabled && self.timer ) {
         self.timer.stop( false ); // Stop the timer, don't fire if we haven't already
       }
