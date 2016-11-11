@@ -59,7 +59,8 @@ define( function( require ) {
     var background = new Rectangle( 0, 0, 1, 1, {
       lineWidth: options.lineWidth,
       pickable: options.backgroundPickable,
-      lineDash: options.lineDash
+      lineDash: options.lineDash,
+      cornerRadius: options.cornerRadius
     } );
     this.background = background; // @private
     // update the fill and stroke
@@ -91,7 +92,7 @@ define( function( require ) {
 
       // size the background to fit the content
       var backgroundWidth = Math.max( options.minWidth, content.width + ( 2 * options.xMargin ) );
-      background.setRect( 0, 0, backgroundWidth, content.height + ( 2 * options.yMargin ), options.cornerRadius, options.cornerRadius );
+      background.setRect( 0, 0, backgroundWidth, content.height + ( 2 * options.yMargin ) );
 
       // Align the content within the background. If the content width >= minWidth, then all alignments are equivalent.
       if ( options.align === 'center' ) {
