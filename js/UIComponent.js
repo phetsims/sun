@@ -57,7 +57,7 @@ define( function( require ) {
     this.enabledProperty.link( options.enabledObserver );
 
     // @private called by dispose
-    this.disposeMyComponent = function() {
+    this.disposeUIComponent = function() {
       self.enabledProperty.unlink( options.enabledObserver );
     };
 
@@ -69,7 +69,7 @@ define( function( require ) {
   return inherit( Node, UIComponent, {
 
     // @public
-    dispose: function() { this.disposeMyComponent(); },
+    dispose: function() { this.disposeUIComponent(); },
 
     // @public
     setEnabled: function( enabled ) { this.enabledProperty.value = enabled; },
