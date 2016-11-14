@@ -23,13 +23,14 @@ define( function( require ) {
   var Vector2 = require( 'DOT/Vector2' );
   var Tandem = require( 'TANDEM/Tandem' );
   var TandemPath = require( 'TANDEM/scenery/nodes/TandemPath' );
+  var TandemRectangle = require( 'TANDEM/scenery/nodes/TandemRectangle' );
 
   // phet-io modules
   var TComboBox = require( 'ifphetio!PHET_IO/types/sun/TComboBox' );
   var TNode = require( 'ifphetio!PHET_IO/types/scenery/nodes/TNode' );
 
   /**
-   * @param {*[]} items - see ComboBox.createItem.  The item types should be homogeneous.
+   * @param {*[]} items - see ComboBox.createItem
    * @param {Property} property
    * @param {Node} listParent node that will be used as the list's parent, use this to ensuring that the list is in front of everything else
    * @param {Object} [options] object with optional properties
@@ -70,7 +71,7 @@ define( function( require ) {
       itemHighlightLineWidth: 1,
 
       // tandem
-      tandem: null
+      tandem: Tandem.createDefaultTandem( 'comboBox' )
     }, options );
 
     // validate option values
@@ -98,7 +99,9 @@ define( function( require ) {
     itemHeight += ( 2 * options.itemYMargin );
 
     // button, will be set to correct value when property observer is registered
-    var buttonNode = new ButtonNode( new ItemNode( items[ 0 ], itemWidth, itemHeight, options.itemXMargin ), options );
+    var buttonNode = new ButtonNode( new ItemNode( items[ 0 ], itemWidth, itemHeight, options.itemXMargin, {
+      tandem: options.tandem.createTandem( 'buttonNode' ).createTandem( 'itemNode' )
+    } ), options );
     self.addChild( buttonNode );
 
     // list
@@ -147,7 +150,16 @@ define( function( require ) {
     // populate list with items
     for ( var j = 0; j < items.length; j++ ) {
 
-      var itemNodeOptions = items[ j ].options;
+      var itemNodeOptions = items[ j ].options || {};
+
+      // Create tandems for each ItemNode
+      var itemNodeTandem = null;
+      // We don't want assert if running in phet brand, same if as Tandem.validateOptions
+      if (phet.chipper.brand === 'phet-io' && phet.chipper.queryParameters[ 'phet-io.validateTandems' ]){
+        assert && assert( itemNodeOptions.tandemName, 'For instrumented ComboBoxes, ItemNodes must have a tandemName' );
+        itemNodeTandem = options.tandem.createTandem( itemNodeOptions.tandemName );
+        itemNodeOptions.tandem = itemNodeTandem;
+      }
 
       // Create the list item node itself
       var itemNode = new ItemNode( items[ j ], itemWidth, itemHeight, options.itemXMargin, itemNodeOptions );
@@ -246,7 +258,9 @@ define( function( require ) {
         }
       }
       assert && assert( item !== null );
-      buttonNode.setItemNode( new ItemNode( item, itemWidth, itemHeight, options.itemXMargin ) );
+      buttonNode.setItemNode( new ItemNode( item, itemWidth, itemHeight, options.itemXMargin, {
+        tandem: options.tandem.createTandem( 'buttonNode', { enabled: false } )
+      } ) );
     };
     property.link( propertyObserver );
 
@@ -292,7 +306,7 @@ define( function( require ) {
    * This exists primarily to document the structure of an item.
    * @param {Node} node
    * @param {*} value
-   * @param {Object} [options]
+   * @param {Object} [options] Includes but not limited to {tandemName:{string}}, the suffix applied to button tandems
    * @returns {{node:Node, value:*}}
    * @public
    */
@@ -373,7 +387,8 @@ define( function( require ) {
    * @private
    */
   function ItemNode( item, width, height, xMargin, options ) {
-    Rectangle.call( this, 0, 0, width, height );
+    options = _.extend( {}, options );
+    TandemRectangle.call( this, 0, 0, width, height, { tandem: options.tandem } );
     this.item = item;
     this.addChild( item.node );
     item.node.pickable = false; // hits will occur on the rectangle
@@ -383,7 +398,7 @@ define( function( require ) {
 
   sun.register( 'ComboBox.ItemNode', ItemNode );
 
-  inherit( Rectangle, ItemNode );
+  inherit( TandemRectangle, ItemNode );
 
   return ComboBox;
 } );
