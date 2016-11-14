@@ -14,6 +14,12 @@ define( function( require ) {
   var phetioInherit = require( 'PHET_IO/phetioInherit' );
   var TNode = require( 'PHET_IO/types/scenery/nodes/TNode' );
 
+  /**
+   * Wrapper type for phet/sun's Panel class.
+   * @param panel
+   * @param phetioID
+   * @constructor
+   */
   function TPanel( panel, phetioID ) {
     TNode.call( this, panel, phetioID );
     assertInstanceOf( panel, phet.sun.Panel );

@@ -15,6 +15,12 @@ define( function( require ) {
   var TNode = require( 'PHET_IO/types/scenery/nodes/TNode' );
   var toEventOnStatic = require( 'PHET_IO/events/toEventOnStatic' );
 
+  /**
+   * Wrapper type for phet/sun's MomentaryButton class.
+   * @param momentaryButton
+   * @param phetioID
+   * @constructor
+   */
   function TMomentaryButton( momentaryButton, phetioID ) {
     assertInstanceOfTypes( momentaryButton, [
       phet.sun.RectangularMomentaryButton,

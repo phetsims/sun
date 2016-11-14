@@ -14,6 +14,12 @@ define( function( require ) {
   var phetioInherit = require( 'PHET_IO/phetioInherit' );
   var TPushButton = require( 'PHET_IO/types/sun/buttons/TPushButton' );
 
+  /**
+   * Wrapper type for phet/sun's ResetAllButton class.
+   * @param instance
+   * @param phetioID
+   * @constructor
+   */
   function TResetAllButton( instance, phetioID ) {
     assertInstanceOf( instance, phet.sceneryPhet.ResetAllButton );
     TPushButton.call( this, instance, phetioID );

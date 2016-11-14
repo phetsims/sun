@@ -18,6 +18,12 @@ define( function( require ) {
   var toEventOnStatic = require( 'PHET_IO/events/toEventOnStatic' );
   var TVoid = require( 'PHET_IO/types/TVoid' );
 
+  /**
+   * Wrapper type for phet/sun's CheckBox class.
+   * @param checkBox
+   * @param phetioID
+   * @constructor
+   */
   function TCheckBox( checkBox, phetioID ) {
     assertInstanceOf( checkBox, phet.sun.CheckBox );
     TNode.call( this, checkBox, phetioID );

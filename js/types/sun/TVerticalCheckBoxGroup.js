@@ -14,6 +14,12 @@ define( function( require ) {
   var phetioInherit = require( 'PHET_IO/phetioInherit' );
   var TNode = require( 'PHET_IO/types/scenery/nodes/TNode' );
 
+  /**
+   * Wrapper type for phet/sun's VerticalCheckBoxGroup class.
+   * @param verticalCheckBoxGroup
+   * @param phetioID
+   * @constructor
+   */
   function TVerticalCheckBoxGroup( verticalCheckBoxGroup, phetioID ) {
     TNode.call( this, verticalCheckBoxGroup, phetioID );
     assertInstanceOf( verticalCheckBoxGroup, phet.sun.VerticalCheckBoxGroup );

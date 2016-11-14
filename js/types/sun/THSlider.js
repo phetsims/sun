@@ -15,6 +15,12 @@ define( function( require ) {
   var TNode = require( 'PHET_IO/types/scenery/nodes/TNode' );
   var TVoid = require( 'PHET_IO/types/TVoid' );
 
+  /**
+   * Wrapper type for phet/sun's HSlider class.
+   * @param slider
+   * @param phetioID
+   * @constructor
+   */
   function THSlider( slider, phetioID ) {
     TNode.call( this, slider, phetioID );
     assertInstanceOf( slider, phet.sun.HSlider );

@@ -15,6 +15,12 @@ define( function( require ) {
   var TNode = require( 'PHET_IO/types/scenery/nodes/TNode' );
   var toEventOnStatic = require( 'PHET_IO/events/toEventOnStatic' );
 
+  /**
+   * Wrapper type for phet/sun's OnOffSwitch class.
+   * @param onOffSwitch
+   * @param phetioID
+   * @constructor
+   */
   function TOnOffSwitch( onOffSwitch, phetioID ) {
     TNode.call( this, onOffSwitch, phetioID );
     assertInstanceOf( onOffSwitch, phet.sun.OnOffSwitch );

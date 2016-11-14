@@ -15,6 +15,12 @@ define( function( require ) {
   var TNode = require( 'PHET_IO/types/scenery/nodes/TNode' );
   var toEventOnStatic = require( 'PHET_IO/events/toEventOnStatic' );
 
+  /**
+   * Wrapper type for phet/sun's RadioButton class.
+   * @param valueType
+   * @returns {*}
+   * @constructor
+   */
   function TRadioButton( valueType ) {
     assert && assert( !!valueType, 'valueType must be defined' );
     var TRadioButtonImpl = function TRadioButtonImpl( radioButton, phetioID ) {

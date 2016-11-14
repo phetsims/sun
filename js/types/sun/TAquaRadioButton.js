@@ -17,6 +17,12 @@ define( function( require ) {
   var phetioNamespace = require( 'PHET_IO/phetioNamespace' );
   var TRadioButton = require( 'PHET_IO/types/sun/TRadioButton' );
 
+  /**
+   * Wrapper type for phet/sun's AquaRadioButton class.
+   * @param valueType
+   * @returns {*}
+   * @constructor
+   */
   function TAquaRadioButton( valueType ) {
     assert && assert( !!valueType, 'valueType must be defined' );
     var TAquaRadioButton = function TAquaRadioButtonImpl( radioButton, phetioID ) {

@@ -15,6 +15,12 @@ define( function( require ) {
   var TNode = require( 'PHET_IO/types/scenery/nodes/TNode' );
   var toEventOnStatic = require( 'PHET_IO/events/toEventOnStatic' );
 
+  /**
+   * Wrapper type for phet/sun's ToggleButton class.
+   * @param valueType
+   * @returns {*}
+   * @constructor
+   */
   function TToggleButton( valueType ) {
     assert && assert( !!valueType, 'valueType must be specified' );
     var TToggleButtonImpl = function TToggleButtonImpl( toggleButton, phetioID ) {
@@ -30,12 +36,13 @@ define( function( require ) {
       var emitter = toggleButton.toggleButtonModel || toggleButton.buttonModel;  // Handle BooleanRoundStickyToggleButton too
 
       // Both StickyToggleButtonModel and ToggleButtonModel send the args in this order: oldValue, newValue
-      toEventOnStatic( emitter, 'CallbacksForToggled', 'user', phetioID, TToggleButton( valueType ), 'toggled', function( oldValue, newValue ) {
-        return {
-          oldValue: valueType.toStateObject( oldValue ),
-          newValue: valueType.toStateObject( newValue )
-        };
-      } );
+      toEventOnStatic( emitter, 'CallbacksForToggled', 'user', phetioID, TToggleButton( valueType ), 'toggled',
+        function( oldValue, newValue ) {
+          return {
+            oldValue: valueType.toStateObject( oldValue ),
+            newValue: valueType.toStateObject( newValue )
+          };
+        } );
     };
     return phetioInherit( TNode, 'TToggleButton', TToggleButtonImpl, {}, {
       documentation: 'A button that toggles state (in/out) when pressed',

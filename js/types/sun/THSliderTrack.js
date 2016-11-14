@@ -14,6 +14,12 @@ define( function( require ) {
   var phetioNamespace = require( 'PHET_IO/phetioNamespace' );
   var TNode = require( 'PHET_IO/types/scenery/nodes/TNode' );
 
+  /**
+   * Wrapper type for phet/sun's HSliderTrack class.
+   * @param sliderTrack
+   * @param phetioID
+   * @constructor
+   */
   function THSliderTrack( sliderTrack, phetioID ) {
     TNode.call( this, sliderTrack, phetioID );
     assertInstanceOf( sliderTrack, phet.sun.HSliderTrack );

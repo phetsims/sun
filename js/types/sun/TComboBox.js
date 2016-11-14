@@ -15,6 +15,12 @@ define( function( require ) {
   var TNode = require( 'PHET_IO/types/scenery/nodes/TNode' );
   var toEventOnStatic = require( 'PHET_IO/events/toEventOnStatic' );
 
+  /**
+   * Wrapper type for phet/sun's ComboBox class.
+   * @param valueType
+   * @returns {*}
+   * @constructor
+   */
   function TComboBox( valueType ) {
     assert && assert( !!valueType, 'valueType should be defined' );
     var TComboBoxImpl = function TComboBoxImpl( comboBox, phetioID ) {

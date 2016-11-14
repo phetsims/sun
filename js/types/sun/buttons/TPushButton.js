@@ -16,6 +16,12 @@ define( function( require ) {
   var toEventOnStatic = require( 'PHET_IO/events/toEventOnStatic' );
   var TVoid = require( 'PHET_IO/types/TVoid' );
 
+  /**
+   * Wrapper type for phet/sun's PushButton class.
+   * @param button
+   * @param phetioID
+   * @constructor
+   */
   function TPushButton( button, phetioID ) {
     TNode.call( this, button, phetioID );
 
