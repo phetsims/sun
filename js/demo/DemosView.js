@@ -20,17 +20,17 @@ define( function( require ) {
   var Vector2 = require( 'DOT/Vector2' );
 
   /**
-   * @param {string} queryParameterName - name of the query parameter uses to set initial selection of the combo box
    * @param {Object[]} demos - each demo has:
    *   {string} label - label in the combo box
    *   {function(Bounds2): Node} getNode - creates the scene graph for the demo
    * @param {Object} [options]
    * @constructor
    */
-  function DemosView( queryParameterName, demos, options ) {
+  function DemosView( demos, options ) {
 
     options = _.extend( {
-      comboBoxLocation: new Vector2( 20, 20 ) // {Vector2} location of ComboBox used to select a demo
+      comboBoxLocation: new Vector2( 20, 20 ), // {Vector2} location of ComboBox used to select a demo
+      selectedDemoLabel: null // {string|null} label field of the demo to be selected initially
     }, options );
 
     ScreenView.call( this, options );
@@ -56,12 +56,16 @@ define( function( require ) {
     var listParent = new Node();
     this.addChild( listParent );
 
-    // Set the initial demo based on the (optional) query parameter, whose value is a demo 'label' field value.
-    var component = phet.chipper.getQueryParameter( queryParameterName );
-    var selectedDemo = _.find( demos, function( demo ) {
-      return ( demo.label === component );
-    } );
-    selectedDemo = selectedDemo || demos[ 0 ];
+    // Set the initial demo
+    var selectedDemo = demos[ 0 ];
+    if ( options.selectedDemoLabel ) {
+      selectedDemo = _.find( demos, function( demo ) {
+        return ( demo.label === options.selectedDemoLabel );
+      } );
+      if ( !selectedDemo ) {
+        throw new Error( 'demo not found: ' + options.selectedDemoLabel );
+      }
+    }
 
     // Combo box for selecting which component to view
     var selectedDemoProperty = new Property( selectedDemo );

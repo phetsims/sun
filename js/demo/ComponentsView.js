@@ -35,7 +35,7 @@ define( function( require ) {
   var VBox = require( 'SCENERY/nodes/VBox' );
 
   function ComponentsView() {
-    DemosView.call( this, 'component', [
+    DemosView.call( this, [
 
       /**
        * To add a demo, add an object literal here. Each object has these properties:
@@ -49,7 +49,9 @@ define( function( require ) {
       { label: 'OnOffSwitch', getNode: demoOnOffSwitch },
       { label: 'PageControl', getNode: demoPageControl },
       { label: 'NumberSpinner', getNode: demoNumberSpinner }
-    ] );
+    ], {
+      selectedDemoLabel: QueryStringMachine.get( 'component', { type: 'string', defaultValue: null } )
+    } );
   }
 
   sun.register( 'ComponentsView', ComponentsView );
