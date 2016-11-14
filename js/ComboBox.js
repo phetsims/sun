@@ -155,7 +155,7 @@ define( function( require ) {
       // Create tandems for each ItemNode
       var itemNodeTandem = null;
       // We don't want assert if running in phet brand, same if as Tandem.validateOptions
-      if (phet.chipper.brand === 'phet-io' && phet.chipper.queryParameters[ 'phet-io.validateTandems' ]){
+      if ( phet.chipper.brand === 'phet-io' && phet.chipper.queryParameters[ 'phet-io.validateTandems' ] ) {
         assert && assert( itemNodeOptions.tandemName, 'For instrumented ComboBoxes, ItemNodes must have a tandemName' );
         itemNodeTandem = options.tandem.createTandem( itemNodeOptions.tandemName );
         itemNodeOptions.tandem = itemNodeTandem;
@@ -276,11 +276,17 @@ define( function( require ) {
     // @private called by dispose
     this.disposeComboBox = function() {
       self.enabledProperty.unlink( enabledObserver );
-      options.tandem && options.tandem.removeInstance( this );
+      options.tandem.removeInstance( this );
+
+      // Unregister itemNode tandems as well
+      for ( var i = 0; i < listNode.children.length; i++ ) {
+        listNode.children[ i ].dispose();
+      }
+      buttonNode.dispose();
       property.unlink( propertyObserver );
     };
 
-    options.tandem && options.tandem.addInstance( this, TComboBox( property.elementType ) );
+    options.tandem.addInstance( this, TComboBox( property.elementType ) );
   }
 
   sun.register( 'ComboBox', ComboBox );
@@ -326,7 +332,7 @@ define( function( require ) {
     // up or down arrow
     var arrow = new TandemPath( null, {
       fill: 'black',
-      tandem: options.tandem && options.tandem.createTandem( 'arrow' )
+      tandem: options.tandem.createTandem( 'arrow' )
     } );
     var arrowWidth = 0.5 * itemNode.height;
     var arrowHeight = arrowWidth * Math.sqrt( 3 ) / 2; // height of equilateral triangle
@@ -345,7 +351,7 @@ define( function( require ) {
 
     // vertical separator to left of arrow
     var separator = new Line( 0, 0, 0, height, { stroke: 'black', lineWidth: options.buttonLineWidth } );
-    options.tandem && options.tandem.createTandem( 'separator' ).addInstance( separator, TNode );
+    options.tandem.createTandem( 'separator' ).addInstance( separator, TNode );
 
     // itemNode's parent
     var itemNodeParent = new Node();
@@ -370,15 +376,26 @@ define( function( require ) {
     separator.top = background.top;
     arrow.left = separator.right + options.buttonXMargin;
     arrow.centerY = background.centerY;
+
+    this.disposeButtonNode = function() {
+      options.tandem.createTandem( 'separator' ).removeInstance( separator );
+      options.tandem.createTandem( 'arrow' ).removeInstance( arrow );
+      itemNode.dispose();
+    };
   }
 
   sun.register( 'ComboBox.ButtonNode', ButtonNode );
 
-  inherit( Node, ButtonNode );
+  inherit( Node, ButtonNode, {
+    dispose: function() {
+      this.disposeButtonNode();
+
+    }
+  } );
 
   /**
    * A wrapper around the combo box item, adds margins, etc.
-   * @param {*} item - see ComboBox.createItem
+   * @param {Object} item - see ComboBox.createItem
    * @param {number} width
    * @param {number} height
    * @param {number} xMargin
