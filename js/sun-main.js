@@ -14,15 +14,10 @@ define( function( require ) {
   var Screen = require( 'JOIST/Screen' );
   var Sim = require( 'JOIST/Sim' );
   var SimLauncher = require( 'JOIST/SimLauncher' );
+  var sunQueryParameters = require( 'SUN/sunQueryParameters' );
 
   // strings
   var sunTitleString = require( 'string!SUN/sun.title' );
-
-  // constants
-  var BACKGROUND_COLOR = QueryStringMachine.get( 'backgroundColor', {
-    type: 'string', // CSS color format, e.g. 'green', 'ff8c00', 'rgb(255,0,255)'
-    defaultValue: 'white'
-  } );
 
   var simOptions = {
     credits: {
@@ -43,7 +38,7 @@ define( function( require ) {
         function( model ) {return new ButtonsView();},
         {
           name: 'Buttons',
-          backgroundColor: BACKGROUND_COLOR,
+          backgroundColor: sunQueryParameters.backgroundColor,
           homeScreenIcon: createScreenIcon( 'red' )
         }
       ),
@@ -54,7 +49,7 @@ define( function( require ) {
         function( model ) {return new ComponentsView();},
         {
           name: 'Components',
-          backgroundColor: BACKGROUND_COLOR,
+          backgroundColor: sunQueryParameters.backgroundColor,
           homeScreenIcon: createScreenIcon( 'yellow' )
         }
       ),
@@ -65,7 +60,7 @@ define( function( require ) {
         function( model ) {return new MemoryTestsView();},
         {
           name: 'Memory Tests',
-          backgroundColor: BACKGROUND_COLOR,
+          backgroundColor: sunQueryParameters.backgroundColor,
           homeScreenIcon: createScreenIcon( 'blue' )
         }
       )

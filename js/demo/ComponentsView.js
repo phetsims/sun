@@ -32,6 +32,7 @@ define( function( require ) {
   var RectangularPushButton = require( 'SUN/buttons/RectangularPushButton' );
   var Text = require( 'SCENERY/nodes/Text' );
   var sun = require( 'SUN/sun' );
+  var sunQueryParameters = require( 'SUN/sunQueryParameters' );
   var VBox = require( 'SCENERY/nodes/VBox' );
 
   function ComponentsView() {
@@ -50,7 +51,7 @@ define( function( require ) {
       { label: 'PageControl', getNode: demoPageControl },
       { label: 'NumberSpinner', getNode: demoNumberSpinner }
     ], {
-      selectedDemoLabel: QueryStringMachine.get( 'component', { type: 'string', defaultValue: null } )
+      selectedDemoLabel: sunQueryParameters.component
     } );
   }
 
