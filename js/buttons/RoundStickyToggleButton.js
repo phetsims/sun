@@ -38,7 +38,7 @@ define( function( require ) {
 
     // @public (tandem) Tandem support, should be a novel name to reduce the risk of parent or child collisions
     this.roundStickyToggleButtonTandem = options.tandem;
-    this.roundStickyToggleButtonTandem && this.roundStickyToggleButtonTandem.addInstance( this, TToggleButton( property.elementType ) );
+    this.roundStickyToggleButtonTandem && this.roundStickyToggleButtonTandem.addInstance( this, TToggleButton( property.phetioValueType ) );
   }
 
   sun.register( 'RoundStickyToggleButton', RoundStickyToggleButton, {

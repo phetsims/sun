@@ -286,7 +286,7 @@ define( function( require ) {
       property.unlink( propertyObserver );
     };
 
-    options.tandem.addInstance( this, TComboBox( property.elementType ) );
+    options.tandem.addInstance( this, TComboBox( property.phetioValueType ) );
   }
 
   sun.register( 'ComboBox', ComboBox );

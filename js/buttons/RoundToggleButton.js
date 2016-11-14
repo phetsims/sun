@@ -39,7 +39,7 @@ define( function( require ) {
     RoundButtonView.call( this, this.toggleButtonModel, new ToggleButtonInteractionStateProperty( this.toggleButtonModel ), options );
 
     // Tandem support
-    options.tandem && options.tandem.addInstance( this, TToggleButton( property.elementType ) );
+    options.tandem && options.tandem.addInstance( this, TToggleButton( property.phetioValueType ) );
 
     // @private - disposal for listener above
     this.disposeRoundToggleButton = function() {
