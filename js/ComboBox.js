@@ -405,14 +405,9 @@ define( function( require ) {
    */
   function ItemNode( item, width, height, xMargin, options ) {
 
-    var defaultOptions = {
-      cornerXRadius: 5,
-      cornerYRadius: 5
-    };
+    options = _.extend( {}, options );
 
-    options = _.extend( {}, defaultOptions, options );
-
-    TandemRectangle.call( this, 0, 0, width, height, options.cornerXRadius, options.cornerYRadius, {
+    TandemRectangle.call( this, 0, 0, width, height, {
       tandem: options.tandem
     } );
 
