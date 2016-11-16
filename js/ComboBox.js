@@ -27,6 +27,7 @@ define( function( require ) {
 
   // phet-io modules
   var TComboBox = require( 'ifphetio!PHET_IO/types/sun/TComboBox' );
+  var TObject = require( 'ifphetio!PHET_IO/types/TObject' );
   var TNode = require( 'ifphetio!PHET_IO/types/scenery/nodes/TNode' );
 
   /**
@@ -286,7 +287,13 @@ define( function( require ) {
       property.unlink( propertyObserver );
     };
 
-    options.tandem.addInstance( this, TComboBox( property.phetioValueType ) );
+    // Register for tandem if possible.
+    // Allow running with phet-io.validateTandems=false though
+    var type = property.phetioValueType;
+    if ( !phet.chipper.queryParameters[ 'phet-io.validateTandems' ] && !type ) {
+      type = TObject;
+    }
+    options.tandem.addInstance( this, TComboBox( type ) );
   }
 
   sun.register( 'ComboBox', ComboBox );
