@@ -404,8 +404,18 @@ define( function( require ) {
    * @private
    */
   function ItemNode( item, width, height, xMargin, options ) {
-    options = _.extend( {}, options );
-    TandemRectangle.call( this, 0, 0, width, height, { tandem: options.tandem } );
+
+    var defaultOptions = {
+      cornerXRadius: 5,
+      cornerYRadius: 5
+    };
+
+    options = _.extend( {}, defaultOptions, options );
+
+    TandemRectangle.call( this, 0, 0, width, height, options.cornerXRadius, options.cornerYRadius, {
+      tandem: options.tandem
+    } );
+
     this.item = item;
     this.addChild( item.node );
     item.node.pickable = false; // hits will occur on the rectangle
