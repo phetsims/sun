@@ -156,7 +156,7 @@ define( function( require ) {
       // Create tandems for each ItemNode
       var itemNodeTandem = null;
       // We don't want assert if running in phet brand, same if as Tandem.validateOptions
-      if ( phet.chipper.brand === 'phet-io' && phet.chipper.queryParameters[ 'phet-io.validateTandems' ] ) {
+      if ( phet.chipper.brand === 'phet-io' && phet.chipper.queryParameters.phetioValidateTandems ) {
         assert && assert( itemNodeOptions.tandemName, 'For instrumented ComboBoxes, ItemNodes must have a tandemName' );
         itemNodeTandem = options.tandem.createTandem( itemNodeOptions.tandemName );
         itemNodeOptions.tandem = itemNodeTandem;
@@ -288,9 +288,9 @@ define( function( require ) {
     };
 
     // Register for tandem if possible.
-    // Allow running with phet-io.validateTandems=false though
+    // Allow running with phetioValidateTandems=false though
     var type = property.phetioValueType;
-    if ( !phet.chipper.queryParameters[ 'phet-io.validateTandems' ] && !type ) {
+    if ( !phet.chipper.queryParameters.phetioValidateTandems && !type ) {
       type = TObject;
     }
     options.tandem.addInstance( this, TComboBox( type ) );
