@@ -20,7 +20,7 @@ define( function( require ) {
   /**
    * Wrapper type for phet/sun's AquaRadioButton class.
    * @param valueType
-   * @returns {*}
+   * @returns {TAquaRadioButtonImpl}
    * @constructor
    */
   function TAquaRadioButton( valueType ) {

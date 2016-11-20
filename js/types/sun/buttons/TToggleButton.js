@@ -18,7 +18,7 @@ define( function( require ) {
   /**
    * Wrapper type for phet/sun's ToggleButton class.
    * @param valueType
-   * @returns {*}
+   * @returns {TToggleButtonImpl}
    * @constructor
    */
   function TToggleButton( valueType ) {

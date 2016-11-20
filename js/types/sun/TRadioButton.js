@@ -18,7 +18,7 @@ define( function( require ) {
   /**
    * Wrapper type for phet/sun's RadioButton class.
    * @param valueType
-   * @returns {*}
+   * @returns {TRadioButtonImpl}
    * @constructor
    */
   function TRadioButton( valueType ) {

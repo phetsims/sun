@@ -18,7 +18,7 @@ define( function( require ) {
   /**
    * Wrapper type for phet/sun's ComboBox class.
    * @param valueType
-   * @returns {*}
+   * @returns {TComboBoxImpl}
    * @constructor
    */
   function TComboBox( valueType ) {
