@@ -9,7 +9,7 @@ define( function( require ) {
 
   // modules
   var inherit = require( 'PHET_CORE/inherit' );
-  var PropertySet = require( 'AXON/PropertySet' );
+  var Property = require( 'AXON/Property' );
   var sun = require( 'SUN/sun' );
 
   /**
@@ -29,11 +29,10 @@ define( function( require ) {
 
     var self = this;
 
-    PropertySet.call( this, {
-      over: false,  // @public - Is the pointer over the button?
-      down: false, // @public - Is the pointer down?
-      enabled: options.enabled  // @public - Is the button enabled?
-    } );
+    // model properties
+    this.overProperty = new Property( false ); // @public - Is the pointer over the button?
+    this.downProperty = new Property( false ); // @public - Is the pointer down?
+    this.enabledProperty = new Property( options.enabled ); // @public - Is the button enabled?
 
     // startCallback on pointer down, endCallback on pointer up. lazyLink so they aren't called immediately.
     this.downProperty.lazyLink( function( down ) {
@@ -41,12 +40,12 @@ define( function( require ) {
         options.startCallback();
       }
       else {
-        options.endCallback( self.over );
+        options.endCallback( self.overProperty.get() );
       }
     } );
   }
 
   sun.register( 'ButtonModel', ButtonModel );
 
-  return inherit( PropertySet, ButtonModel );
+  return inherit( Object, ButtonModel );
 } );

@@ -265,7 +265,7 @@ define( function( require ) {
     } );
     var transparentParent = new Node( { children: [ rectangleNode, transparentButton ] } );
 
-    var arrowButton = new ArrowButton( 'left', function() { console.log( 'ArrowButton pressed' ); } );
+    var arrowButton = new ArrowButton( 'left', function() { message( 'ArrowButton pressed' ); } );
 
     var miscButtonsBox = new VBox( {
       children: [ fireOnDownButton, htmlButton, transparentParent, arrowButton ],

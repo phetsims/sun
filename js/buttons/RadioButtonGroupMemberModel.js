@@ -11,6 +11,7 @@ define( function( require ) {
 
   // modules
   var ButtonModel = require( 'SUN/buttons/ButtonModel' );
+  var Emitter = require( 'AXON/Emitter' );
   var inherit = require( 'PHET_CORE/inherit' );
   var sun = require( 'SUN/sun' );
 
@@ -26,17 +27,19 @@ define( function( require ) {
 
     this.selectedValue = selectedValue;
     this.selectorProperty = selectorProperty;
+    this.startedCallbacksForFiredEmitter = new Emitter();
+    this.endedCallbacksForFiredEmitter = new Emitter();
 
     // @public (read only) - fire on up if the button is enabled, public for use in the accessibility tree
     this.fire = function() {
-      if ( self.enabled ) {
-        self.trigger1( 'startedCallbacksForFired', selectedValue );
+      if ( self.enabledProperty.get() ) {
+        self.startedCallbacksForFiredEmitter.emit1( selectedValue );
         selectorProperty.set( selectedValue );
-        self.trigger0( 'endedCallbacksForFired' );
+        self.endedCallbacksForFiredEmitter.emit();
       }
     };
-    this.property( 'down' ).onValue( false, function() {
-      if ( self.over ) {
+    this.downProperty.onValue( false, function() {
+      if ( self.overProperty.get() ) {
         self.fire();
       }
     } );

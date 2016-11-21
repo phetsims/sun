@@ -23,7 +23,7 @@ define( function( require ) {
   var Tandem = require( 'TANDEM/Tandem' );
 
   // phet-io modules
-  var TRadioButton = require( 'ifphetio!PHET_IO/types/sun/TRadioButton' );
+  var TRadioButtonGroupMember = require( 'ifphetio!PHET_IO/types/sun/TRadioButtonGroupMember' );
 
   /**
    * @param {Property} property axon property that can take on a set of values, one for each radio button in the group
@@ -83,7 +83,7 @@ define( function( require ) {
 
     // @public (tandem) - for Tandem support, should be a novel name to reduce the risk of parent or child collisions
     this.radioButtonGroupMemberTandem = options.tandem;
-    this.radioButtonGroupMemberTandem && this.radioButtonGroupMemberTandem.addInstance( this, TRadioButton( property.phetioValueType ) );
+    this.radioButtonGroupMemberTandem && this.radioButtonGroupMemberTandem.addInstance( this, TRadioButtonGroupMember( property.phetioValueType ) );
 
     // outfit a11y
     this.accessibleContent = {

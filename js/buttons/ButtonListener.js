@@ -21,7 +21,7 @@ define( function( require ) {
   var sun = require( 'SUN/sun' );
 
   /**
-   * @param {*} buttonModel any object with 'down' and 'over' boolean properties
+   * @param {*} buttonModel any object with 'downProperty' and 'overProperty' boolean attributes
    * @constructor
    */
   function ButtonListener( buttonModel ) {
@@ -38,14 +38,14 @@ define( function( require ) {
             self.downPointer = event.pointer;
           }
           if ( event.pointer === self.downPointer ) {
-            buttonModel.down = true;
+            buttonModel.downProperty.set( true );
           }
         },
 
         up: function( event, trail ) {
           if ( event.pointer === self.downPointer ) {
             self.downPointer = null;
-            buttonModel.down = false;
+            buttonModel.downProperty.set( false );
           }
         }
       }
@@ -66,7 +66,7 @@ define( function( require ) {
     keydown: function( event, trail ) {
       if ( event.domEvent.keyCode === Input.KEY_ENTER || event.domEvent.keyCode === Input.KEY_SPACE ) {
         this.enter( event, trail );
-        this.buttonModel.down = true;
+        this.buttonModel.downProperty.set( true );
       }
     },
 
@@ -79,7 +79,7 @@ define( function( require ) {
      */
     keyup: function( event, trail ) {
       if ( event.domEvent.keyCode === Input.KEY_ENTER || event.domEvent.keyCode === Input.KEY_SPACE ) {
-        this.buttonModel.down = false;
+        this.buttonModel.downProperty.set( false );
         this.exit( event, trail );
       }
     },
@@ -88,7 +88,7 @@ define( function( require ) {
     enter: function( event, trail ) {
       if ( this.overPointer === null ) {
         this.overPointer = event.pointer;
-        this.buttonModel.over = true;
+        this.buttonModel.overProperty.set( true );
       }
     },
 
@@ -96,7 +96,7 @@ define( function( require ) {
     exit: function( event, trail ) {
       if ( event.pointer === this.overPointer ) {
         this.overPointer = null;
-        this.buttonModel.over = false;
+        this.buttonModel.overProperty.set( false );
       }
     }
   } );

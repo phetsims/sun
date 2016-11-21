@@ -13,6 +13,7 @@ define( function( require ) {
   // modules
   var ButtonModel = require( 'SUN/buttons/ButtonModel' );
   var CallbackTimer = require( 'SUN/CallbackTimer' );
+  var Emitter = require( 'AXON/Emitter' );
   var inherit = require( 'PHET_CORE/inherit' );
   var sun = require( 'SUN/sun' );
 
@@ -36,6 +37,10 @@ define( function( require ) {
     var self = this;
     ButtonModel.call( this, options );
 
+    // phet-io support
+    this.startedCallbacksForFiredEmitter = new Emitter();
+    this.endedCallbacksForFiredEmitter = new Emitter();
+
     this.listeners = []; // @private
     if ( options.listener !== null ) {
       this.listeners.push( options.listener );
@@ -54,7 +59,7 @@ define( function( require ) {
     // Point down
     this.downProperty.link( function( down ) {
       if ( down ) {
-        if ( self.enabled ) {
+        if ( self.enabledProperty.get() ) {
           if ( options.fireOnDown ) {
             self.fire();
           }
@@ -64,7 +69,7 @@ define( function( require ) {
         }
       }
       else {
-        var fire = ( !options.fireOnDown && self.over && self.enabled ); // should the button fire?
+        var fire = ( !options.fireOnDown && self.overProperty.get() && self.enabledProperty.get() ); // should the button fire?
         if ( self.timer ) {
           self.timer.stop( fire );
         }
@@ -124,12 +129,12 @@ define( function( require ) {
      * @private with the possible exception of hooking up for accessibility
      */
     fire: function() {
-      this.trigger0( 'startedCallbacksForFired' );
+      this.startedCallbacksForFiredEmitter.emit();
       var copy = this.listeners.slice( 0 );
       copy.forEach( function( listener ) {
         listener();
       } );
-      this.trigger0( 'endedCallbacksForFired' );
+      this.endedCallbacksForFiredEmitter.emit();
     }
   } );
 } );

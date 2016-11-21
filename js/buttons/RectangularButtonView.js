@@ -435,7 +435,7 @@ define( function( require ) {
      */
     setEnabled: function( value ) {
       assert && assert( typeof value === 'boolean', 'RectangularButtonView.enabled must be a boolean value' );
-      this.buttonModel.enabled = value;
+      this.buttonModel.enabledProperty.set( value );
     },
     set enabled( value ) { this.setEnabled( value ); },
 
@@ -444,7 +444,7 @@ define( function( require ) {
      * @returns {boolean}
      * @public
      */
-    getEnabled: function() { return this.buttonModel.enabled; },
+    getEnabled: function() { return this.buttonModel.enabledProperty.get(); },
     get enabled() { return this.getEnabled(); },
 
     /**

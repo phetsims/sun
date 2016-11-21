@@ -11,6 +11,7 @@ define( function( require ) {
   // modules
   var inherit = require( 'PHET_CORE/inherit' );
   var ButtonModel = require( 'SUN/buttons/ButtonModel' );
+  var Emitter = require( 'AXON/Emitter' );
   var sun = require( 'SUN/sun' );
 
   /**
@@ -24,9 +25,17 @@ define( function( require ) {
     var self = this;
     ButtonModel.call( self );
 
+    // phet-io support
+    this.startedCallbacksForPressedEmitter = new Emitter();
+    this.endedCallbacksForPressedEmitter = new Emitter();
+    this.startedCallbacksForReleasedEmitter = new Emitter();
+    this.endedCallbacksForReleasedEmitter = new Emitter();
+    this.startedCallbacksForReleasedByDisableEmitter = new Emitter();
+    this.endedCallbacksForReleasedByDisableEmitter = new Emitter();
+
     // sync with the property, do this before wiring up to supertype properties
     var onObserver = function( value ) {
-      self.down = ( value === valueOn );
+      self.downProperty.set( value === valueOn );
     };
     valueProperty.link( onObserver );
 
@@ -34,32 +43,34 @@ define( function( require ) {
 
       // turn on when pressed (if enabled)
       if ( down ) {
-        if ( self.enabled ) {
-          self.trigger0( 'startedCallbacksForPressed' );
+        if ( self.enabledProperty.get() ) {
+          self.startedCallbacksForPressedEmitter.emit();
           valueProperty.set( valueOn );
-          self.trigger0( 'endedCallbacksForPressed' );
+          self.endedCallbacksForPressedEmitter.emit();
         }
       }
       else {
         // turn off when released
-        self.trigger0( 'startedCallbacksForReleased' );
+        self.startedCallbacksForReleasedEmitter.emit();
         valueProperty.set( valueOff );
-        self.trigger0( 'endedCallbacksForReleased' );
+        self.endedCallbacksForReleasedEmitter.emit();
       }
     };
     this.downProperty.lazyLink( downListener );
 
     // turn off when disabled
-    var enabledListener = function() {
-      self.trigger0( 'startedCallbacksForReleasedByDisable' );
-      valueProperty.set( valueOff );
-      self.trigger0( 'endedCallbacksForReleasedByDisable' );
+    var enabledListener = function( enabled ) {
+      if ( !enabled ){
+        self.startedCallbacksForReleasedByDisableEmitter.emit();
+        valueProperty.set( valueOff );
+        self.endedCallbacksForReleasedByDisableEmitter.emit();
+      }
     };
-    this.property( 'enabled' ).onValue( false, enabledListener );
+    this.enabledProperty.link( enabledListener );
 
     // @private: just for dispose.  Named based on the type name so it won't have a name collision with parent/child ones
     this.disposeMomentaryButtonModel = function() {
-      self.property( 'enabled' ).off( enabledListener );
+      self.enabledProperty.unlink( enabledListener );
       self.downProperty.unlink( downListener );
       valueProperty.unlink( onObserver );
     };
