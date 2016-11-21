@@ -13,7 +13,7 @@ define( function( require ) {
   var phetioInherit = require( 'PHET_IO/phetioInherit' );
   var phetioNamespace = require( 'PHET_IO/phetioNamespace' );
   var TNode = require( 'PHET_IO/types/scenery/nodes/TNode' );
-  var toEventOnStatic = require( 'PHET_IO/events/toEventOnStatic' );
+  var toEventOnEmit = require( 'PHET_IO/events/toEventOnEmit' );
 
   /**
    * Wrapper type for phet/sun's ToggleButton class.
@@ -33,10 +33,10 @@ define( function( require ) {
         phet.sun.RoundMomentaryButton
       ] );
 
-      var emitter = toggleButton.toggleButtonModel || toggleButton.buttonModel;  // Handle BooleanRoundStickyToggleButton too
+      var model = toggleButton.toggleButtonModel || toggleButton.buttonModel;  // Handle BooleanRoundStickyToggleButton too
 
       // Both StickyToggleButtonModel and ToggleButtonModel send the args in this order: oldValue, newValue
-      toEventOnStatic( emitter, 'CallbacksForToggled', 'user', phetioID, TToggleButton( phetioValueType ), 'toggled',
+      toEventOnEmit( model, 'CallbacksForToggledEmitter', 'user', phetioID, TToggleButton( phetioValueType ), 'toggled',
         function( oldValue, newValue ) {
           return {
             oldValue: phetioValueType.toStateObject( oldValue ),

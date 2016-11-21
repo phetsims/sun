@@ -13,7 +13,7 @@ define( function( require ) {
   var phetioInherit = require( 'PHET_IO/phetioInherit' );
   var phetioNamespace = require( 'PHET_IO/phetioNamespace' );
   var TNode = require( 'PHET_IO/types/scenery/nodes/TNode' );
-  var toEventOnStatic = require( 'PHET_IO/events/toEventOnStatic' );
+  var toEventOnEmit = require( 'PHET_IO/events/toEventOnEmit' );
 
   /**
    * Wrapper type for phet/sun's RadioButton class.
@@ -29,10 +29,17 @@ define( function( require ) {
       ] );
       TNode.call( this, radioButton, phetioID );
 
-      var emitter = radioButton.radioButtonGroupMemberModel;
-      toEventOnStatic( emitter, 'CallbacksForFired', 'user', phetioID, TRadioButtonGroupMember( valueType ), 'fired', function( value ) {
-        return { value: valueType.toStateObject( value ) };
-      } );
+      toEventOnEmit(
+        radioButton.radioButtonGroupMemberModel,
+        'CallbacksForFiredEmitter',
+        'user',
+        phetioID,
+        TRadioButtonGroupMember( valueType ),
+        'fired',
+        function( value ) {
+          return { value: valueType.toStateObject( value ) };
+        }
+      );
     };
     return phetioInherit( TNode, 'TRadioButtonGroupMember', TRadioButtonGroupMemberImpl, {}, {
       documentation: 'A traditional radio button',

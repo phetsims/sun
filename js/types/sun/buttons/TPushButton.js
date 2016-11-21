@@ -13,6 +13,7 @@ define( function( require ) {
   var phetioInherit = require( 'PHET_IO/phetioInherit' );
   var phetioNamespace = require( 'PHET_IO/phetioNamespace' );
   var TNode = require( 'PHET_IO/types/scenery/nodes/TNode' );
+  var toEventOnEmit = require( 'PHET_IO/events/toEventOnEmit' );
   var toEventOnStatic = require( 'PHET_IO/events/toEventOnStatic' );
   var TVoid = require( 'PHET_IO/types/TVoid' );
 
@@ -36,7 +37,8 @@ define( function( require ) {
     ] );
 
     if ( button.buttonModel ) {
-      toEventOnStatic( button.buttonModel, 'CallbacksForFired', 'user', phetioID, TPushButton, 'fired' );
+      assert && assert( button.buttonModel.startedCallbacksForFiredEmitter, 'button models should use emitters' );
+      toEventOnEmit( button.buttonModel, 'CallbacksForFiredEmitter', 'user', phetioID, TPushButton, 'fired' );
     }
     else {
       toEventOnStatic( button, 'CallbacksForFired', 'user', phetioID, TPushButton, 'fired' );

@@ -24,10 +24,7 @@ define( function( require ) {
   function TRadioButton( phetioValueType ) {
     assert && assert( !!phetioValueType, 'phetioValueType must be defined' );
     var TRadioButtonImpl = function TRadioButtonImpl( radioButton, phetioID ) {
-      assertInstanceOfTypes( radioButton, [
-        phet.sun.RadioButton,
-        phet.sun.RadioButtonGroupMember
-      ] );
+      assertInstanceOfTypes( radioButton, [ phet.sun.RadioButton ] );
       TNode.call( this, radioButton, phetioID );
 
       var emitter = radioButton.radioButtonGroupMemberModel || radioButton; //Handle RadioButtonGroupMemberModel or AquaRadioButton
