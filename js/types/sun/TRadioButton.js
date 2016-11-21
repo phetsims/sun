@@ -17,12 +17,12 @@ define( function( require ) {
 
   /**
    * Wrapper type for phet/sun's RadioButton class.
-   * @param valueType
-   * @returns {TRadioButtonImpl}
+   * @param {function} phetioValueType - phet-io type wrapper like TString, TNumber, etc.
+   * @returns {*}
    * @constructor
    */
-  function TRadioButton( valueType ) {
-    assert && assert( !!valueType, 'valueType must be defined' );
+  function TRadioButton( phetioValueType ) {
+    assert && assert( !!phetioValueType, 'phetioValueType must be defined' );
     var TRadioButtonImpl = function TRadioButtonImpl( radioButton, phetioID ) {
       assertInstanceOfTypes( radioButton, [
         phet.sun.RadioButton,
@@ -31,8 +31,8 @@ define( function( require ) {
       TNode.call( this, radioButton, phetioID );
 
       var emitter = radioButton.radioButtonGroupMemberModel || radioButton; //Handle RadioButtonGroupMemberModel or AquaRadioButton
-      toEventOnStatic( emitter, 'CallbacksForFired', 'user', phetioID, TRadioButton( valueType ), 'fired', function( value ) {
-        return { value: valueType.toStateObject( value ) };
+      toEventOnStatic( emitter, 'CallbacksForFired', 'user', phetioID, TRadioButton( phetioValueType ), 'fired', function( value ) {
+        return { value: phetioValueType.toStateObject( value ) };
       } );
     };
     return phetioInherit( TNode, 'TRadioButton', TRadioButtonImpl, {}, {

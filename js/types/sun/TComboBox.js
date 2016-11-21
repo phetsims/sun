@@ -17,21 +17,21 @@ define( function( require ) {
 
   /**
    * Wrapper type for phet/sun's ComboBox class.
-   * @param valueType
-   * @returns {TComboBoxImpl}
+   * @param {function} phetioValueType - phet-io type wrapper like TString, TNumber, etc.
+   * @returns {*}
    * @constructor
    */
-  function TComboBox( valueType ) {
-    assert && assert( !!valueType, 'valueType should be defined' );
+  function TComboBox( phetioValueType ) {
+    assert && assert( !!phetioValueType, 'phetioValueType should be defined' );
     var TComboBoxImpl = function TComboBoxImpl( comboBox, phetioID ) {
       assertInstanceOf( comboBox, phet.sun.ComboBox );
       TNode.call( this, comboBox, phetioID );
 
-      toEventOnStatic( comboBox, 'CallbacksForItemFired', 'user', phetioID, TComboBox( valueType ), 'fired', function( selection ) {
-        return { value: valueType.toStateObject( selection ) };
+      toEventOnStatic( comboBox, 'CallbacksForItemFired', 'user', phetioID, TComboBox( phetioValueType ), 'fired', function( selection ) {
+        return { value: phetioValueType.toStateObject( selection ) };
       } );
-      toEventOnStatic( comboBox, 'CallbacksForComboBoxDismissed', 'user', phetioID, TComboBox( valueType ), 'popupHidden' );
-      toEventOnStatic( comboBox, 'CallbacksForComboBoxPopupShown', 'user', phetioID, TComboBox( valueType ), 'popupShown' );
+      toEventOnStatic( comboBox, 'CallbacksForComboBoxDismissed', 'user', phetioID, TComboBox( phetioValueType ), 'popupHidden' );
+      toEventOnStatic( comboBox, 'CallbacksForComboBoxPopupShown', 'user', phetioID, TComboBox( phetioValueType ), 'popupShown' );
     };
     return phetioInherit( TNode, 'TComboBox', TComboBoxImpl, {}, {
       documentation: 'A traditional combo box',

@@ -17,12 +17,12 @@ define( function( require ) {
 
   /**
    * Wrapper type for phet/sun's ToggleButton class.
-   * @param valueType
-   * @returns {TToggleButtonImpl}
+   * @param {function} phetioValueType - phet-io type wrapper like TString, TNumber, etc.
+   * @returns {*}
    * @constructor
    */
-  function TToggleButton( valueType ) {
-    assert && assert( !!valueType, 'valueType must be specified' );
+  function TToggleButton( phetioValueType ) {
+    assert && assert( !!phetioValueType, 'phetioValueType must be specified' );
     var TToggleButtonImpl = function TToggleButtonImpl( toggleButton, phetioID ) {
       TNode.call( this, toggleButton, phetioID );
       assertInstanceOfTypes( toggleButton, [
@@ -36,11 +36,11 @@ define( function( require ) {
       var emitter = toggleButton.toggleButtonModel || toggleButton.buttonModel;  // Handle BooleanRoundStickyToggleButton too
 
       // Both StickyToggleButtonModel and ToggleButtonModel send the args in this order: oldValue, newValue
-      toEventOnStatic( emitter, 'CallbacksForToggled', 'user', phetioID, TToggleButton( valueType ), 'toggled',
+      toEventOnStatic( emitter, 'CallbacksForToggled', 'user', phetioID, TToggleButton( phetioValueType ), 'toggled',
         function( oldValue, newValue ) {
           return {
-            oldValue: valueType.toStateObject( oldValue ),
-            newValue: valueType.toStateObject( newValue )
+            oldValue: phetioValueType.toStateObject( oldValue ),
+            newValue: phetioValueType.toStateObject( newValue )
           };
         } );
     };

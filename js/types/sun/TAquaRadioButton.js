@@ -19,17 +19,18 @@ define( function( require ) {
 
   /**
    * Wrapper type for phet/sun's AquaRadioButton class.
-   * @param valueType
-   * @returns {TAquaRadioButtonImpl}
+
+   * @param {function} phetioValueType - phet-io type wrapper like TString, TNumber, etc.
+   * @returns {*}
    * @constructor
    */
-  function TAquaRadioButton( valueType ) {
-    assert && assert( !!valueType, 'valueType must be defined' );
+  function TAquaRadioButton( phetioValueType ) {
+    assert && assert( !!phetioValueType, 'phetioValueType must be defined' );
     var TAquaRadioButton = function TAquaRadioButtonImpl( radioButton, phetioID ) {
       assertInstanceOfTypes( radioButton, [ phet.sun.AquaRadioButton ] );
-      TRadioButton( valueType ).call( this, radioButton, phetioID );
+      TRadioButton( phetioValueType ).call( this, radioButton, phetioID );
     };
-    return phetioInherit( TRadioButton( valueType ), 'TAquaRadioButton', TAquaRadioButton, {
+    return phetioInherit( TRadioButton( phetioValueType ), 'TAquaRadioButton', TAquaRadioButton, {
       setCircleButtonVisible: {
         returnType: TVoid,
         parameterTypes: [ TBoolean ],
@@ -40,7 +41,7 @@ define( function( require ) {
       }
     }, {
       documentation: 'A radio button which looks like the Mac "Aqua" radio buttons',
-      events: TRadioButton( valueType ).events // TODO: Is this automatically inherited from the parent?
+      events: TRadioButton( phetioValueType ).events // TODO: Is this automatically inherited from the parent?
     } );
   }
 
