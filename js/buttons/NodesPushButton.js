@@ -108,7 +108,7 @@ define( function( require ) {
     removeListener: function( listener ) { this.buttonModel.removeListener( listener ); },
 
     // @public - Enables or disables the button.
-    set enabled( value ) { this.buttonModel.enabledProperty.set( !!value ) },
+    set enabled( value ) { this.buttonModel.enabledProperty.set( !!value ); },
 
     // @public - Is the button enabled?
     get enabled() { return this.buttonModel.enabledProperty.get(); }
