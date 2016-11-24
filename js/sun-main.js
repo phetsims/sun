@@ -15,6 +15,8 @@ define( function( require ) {
   var Sim = require( 'JOIST/Sim' );
   var SimLauncher = require( 'JOIST/SimLauncher' );
   var sunQueryParameters = require( 'SUN/sunQueryParameters' );
+  var Property = require( 'AXON/Property' );
+  var Color = require( 'SCENERY/util/Color' );
 
   // strings
   var sunTitleString = require( 'string!SUN/sun.title' );
@@ -38,7 +40,7 @@ define( function( require ) {
         function( model ) {return new ButtonsView();},
         {
           name: 'Buttons',
-          backgroundColor: sunQueryParameters.backgroundColor,
+          backgroundColorProperty: new Property( Color.toColor( sunQueryParameters.backgroundColor ) ),
           homeScreenIcon: createScreenIcon( 'red' )
         }
       ),
@@ -49,7 +51,7 @@ define( function( require ) {
         function( model ) {return new ComponentsView();},
         {
           name: 'Components',
-          backgroundColor: sunQueryParameters.backgroundColor,
+          backgroundColorProperty: new Property( Color.toColor( sunQueryParameters.backgroundColor ) ),
           homeScreenIcon: createScreenIcon( 'yellow' )
         }
       ),
@@ -60,7 +62,7 @@ define( function( require ) {
         function( model ) {return new MemoryTestsView();},
         {
           name: 'Memory Tests',
-          backgroundColor: sunQueryParameters.backgroundColor,
+          backgroundColorProperty: new Property( Color.toColor( sunQueryParameters.backgroundColor ) ),
           homeScreenIcon: createScreenIcon( 'blue' )
         }
       )
