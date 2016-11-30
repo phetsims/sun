@@ -47,5 +47,18 @@ define( function( require ) {
 
   sun.register( 'ButtonModel', ButtonModel );
 
-  return inherit( Object, ButtonModel );
+  return inherit( Object, ButtonModel, {
+
+    // @public
+    reset: function() {
+      this.overProperty.reset();
+      this.downProperty.reset();
+      this.enabledProperty.reset();
+    },
+
+    // @public
+    dispose: function() {
+      //TODO because this is called by subtypes, see https://github.com/phetsims/sun/issues/274#issuecomment-263750638
+    }
+  } );
 } );
