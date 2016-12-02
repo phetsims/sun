@@ -51,9 +51,9 @@ define( function( require ) {
 
     // @public
     reset: function() {
-      this.overProperty.dispose();
-      this.downProperty.dispose();
-      this.enabledProperty.dispose();
+      this.overProperty.reset();
+      this.downProperty.reset();
+      this.enabledProperty.reset();
     },
 
     // @public
