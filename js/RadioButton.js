@@ -33,10 +33,11 @@ define( function( require ) {
     options = _.extend( {
       cursor: 'pointer',
       tandem: null,
-      phetioValueType: null, // for phet-io, the function wrapper for the wrapped type, such as TString or TBoolean
       enabled: true,
       accessibleLabel: '' // invisible label for the radio button, for a11y
     }, options );
+
+    assert && assert( !options.phetioValueType, 'phetioValueType should be specified in the property, not RadioButton options' );
 
     Tandem.validateOptions( options ); // The tandem is required when brand==='phet-io'
 
@@ -73,7 +74,7 @@ define( function( require ) {
 
     this.mutate( options );
 
-    options.tandem && options.tandem.addInstance( this, TRadioButton( options.phetioValueType ) );
+    options.tandem && options.tandem.addInstance( this, TRadioButton( property.phetioValueType ) );
 
     this.disposeRadioButton = function() {
       options.tandem && options.tandem.removeInstance( this );

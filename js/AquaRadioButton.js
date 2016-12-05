@@ -68,7 +68,7 @@ define( function( require ) {
     RadioButton.call( this, property, value, selectedNode, deselectedNode, _.extend( {}, options, {
       tandem: options.tandem && options.tandem.createSupertypeTandem()
     } ) );
-    options.tandem && options.tandem.addInstance( this, TAquaRadioButton( options.phetioValueType ) );
+    options.tandem && options.tandem.addInstance( this, TAquaRadioButton( property.phetioValueType ) );
   }
 
   sun.register( 'AquaRadioButton', AquaRadioButton );
