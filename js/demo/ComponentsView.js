@@ -24,6 +24,7 @@ define( function( require ) {
   var NumberSpinner = require( 'SUN/NumberSpinner' );
   var OnOffSwitch = require( 'SUN/OnOffSwitch' );
   var PageControl = require( 'SUN/PageControl' );
+  var Panel = require( 'SUN/Panel' );
   var PhetFont = require( 'SCENERY_PHET/PhetFont' );
   var Property = require( 'AXON/Property' );
   var Range = require( 'DOT/Range' );
@@ -31,9 +32,13 @@ define( function( require ) {
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var RectangularPushButton = require( 'SUN/buttons/RectangularPushButton' );
   var Text = require( 'SCENERY/nodes/Text' );
+  var Timer = require( 'PHET_CORE/Timer' );
   var sun = require( 'SUN/sun' );
   var sunQueryParameters = require( 'SUN/sunQueryParameters' );
+  var HBox = require( 'SCENERY/nodes/HBox' );
   var VBox = require( 'SCENERY/nodes/VBox' );
+  var AlignBox = require( 'SCENERY/nodes/AlignBox' );
+  var AlignGroup = require( 'SCENERY/nodes/AlignGroup' );
 
   function ComponentsView() {
     DemosView.call( this, [
@@ -49,7 +54,8 @@ define( function( require ) {
       { label: 'HSlider', getNode: demoHSlider },
       { label: 'OnOffSwitch', getNode: demoOnOffSwitch },
       { label: 'PageControl', getNode: demoPageControl },
-      { label: 'NumberSpinner', getNode: demoNumberSpinner }
+      { label: 'NumberSpinner', getNode: demoNumberSpinner },
+      { label: 'AlignGroup', getNode: demoAlignGroup }
     ], {
       selectedDemoLabel: sunQueryParameters.component
     } );
@@ -320,6 +326,75 @@ define( function( require ) {
     return new VBox( {
       children: [ spinnerLeftRight, spinnerTopBottom, spinnerBothRight, spinnerBothBottom, enabledCheckBox ],
       spacing: 40,
+      center: layoutBounds.center
+    } );
+  };
+
+  var demoAlignGroup = function( layoutBounds ) {
+    function highlightWrap( node ) {
+      var rect = Rectangle.bounds( node.bounds, { fill: 'rgba(0,0,0,0.25)' } );
+      node.on( 'bounds', function() {
+        rect.setRectBounds( node.bounds );
+      } );
+      return new Node( {
+        children: [
+          rect,
+          node
+        ]
+      } );
+    }
+
+    var iconGroup = new AlignGroup();
+    var iconRow = new HBox( {
+      spacing: 10,
+      children: _.range( 1, 10 ).map( function() {
+        var randomRect = new Rectangle( 0, 0, Math.random() * 60 + 10, Math.random() * 60 + 10, {
+          fill: 'black'
+        } );
+        Timer.addStepListener( function() {
+          if ( Math.random() < 0.02 ) {
+            randomRect.rectWidth = Math.random() * 60 + 10;
+            randomRect.rectHeight = Math.random() * 60 + 10;
+          }
+        } );
+        return new AlignBox( randomRect, {
+          group: iconGroup,
+          margin: 5
+        } );
+      } ).map( highlightWrap )
+    } );
+
+    var panelGroup = new AlignGroup( { matchVertical: false } );
+    function randomText() {
+      var text = new Text( 'Test', { fontSize: 20 } );
+      Timer.addStepListener( function() {
+        if ( Math.random() < 0.03 ) {
+          var string = '';
+          while ( Math.random() < 0.94 && string.length < 20 ) {
+            string += ( Math.random() + '' ).slice( -1 );
+          }
+          text.text = string;
+        }
+      } );
+      return text;
+    }
+    var panelRow = new VBox( {
+      spacing: 10,
+      children: [
+        new Panel( new AlignBox( randomText(), { group: panelGroup } ) ),
+        new Panel( new AlignBox( new VBox( {
+          spacing: 3,
+          children: [
+            randomText(),
+            randomText()
+          ]
+        } ), { group: panelGroup } ) )
+      ]
+    } );
+
+    return new VBox( {
+      spacing: 20,
+      children: [ iconRow, panelRow ],
       center: layoutBounds.center
     } );
   };
