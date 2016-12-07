@@ -13,6 +13,7 @@ define( function( require ) {
   var Font = require( 'SCENERY/util/Font' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Node = require( 'SCENERY/nodes/Node' );
+  var PhetFont = require( 'SCENERY_PHET/PhetFont' );
   var Property = require( 'AXON/Property' );
   var ScreenView = require( 'JOIST/ScreenView' );
   var Text = require( 'SCENERY/nodes/Text' );
@@ -30,6 +31,8 @@ define( function( require ) {
 
     options = _.extend( {
       comboBoxLocation: new Vector2( 20, 20 ), // {Vector2} location of ComboBox used to select a demo
+      comboBoxItemFont: new PhetFont( 20 ), // {Font} font used for ComboBox items
+      comboBoxItemYMargin: 6, // {number} y margin around ComboBox items
       selectedDemoLabel: null // {string|null} label field of the demo to be selected initially
     }, options );
 
@@ -49,7 +52,7 @@ define( function( require ) {
     // add each demo to the combo box
     var comboBoxItems = [];
     demos.forEach( function( demo ) {
-      comboBoxItems.push( ComboBox.createItem( new Text( demo.label, { font: new Font( { size: 20 } ) } ), demo ) );
+      comboBoxItems.push( ComboBox.createItem( new Text( demo.label, { font: options.comboBoxItemFont } ), demo ) );
     } );
 
     // Parent for the combo box popup list
@@ -71,6 +74,7 @@ define( function( require ) {
     var selectedDemoProperty = new Property( selectedDemo );
     var comboBox = new ComboBox( comboBoxItems, selectedDemoProperty, listParent, {
       buttonFill: 'rgb( 218, 236, 255 )',
+      itemYMargin: options.comboBoxItemYMargin,
       top: options.comboBoxLocation.x,
       left: options.comboBoxLocation.y
     } );
