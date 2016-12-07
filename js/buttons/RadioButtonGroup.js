@@ -150,12 +150,15 @@ define( function( require ) {
       assert && assert( !contentArray[ i ].hasOwnProperty( 'phetioValueType' ),
         'phetioValueType should be provided by the property passed to the RadioButtonGroup constructor' );
 
+      assert && assert( !contentArray[ i ].tandem, 'content arrays should not have tandem instances, they should use ' +
+                                                   'tandemName instead' );
+
       var radioButton = new RadioButtonGroupMember( property, contentArray[ i ].value,
         _.extend( {
           content: contentArray[ i ].node,
           xMargin: xMargin,
           yMargin: yMargin,
-          tandem: contentArray[ i ].tandem,
+          tandem: options.tandem.createTandem( contentArray[ i ].tandemName ),
           accessibleLabel: contentArray[ i ].accessibleLabel
         }, buttonOptions ) );
 
@@ -273,6 +276,8 @@ define( function( require ) {
 
       }
     };
+
+    options.tandem.addInstance( this, TNode );
   }
 
   sun.register( 'RadioButtonGroup', RadioButtonGroup );
