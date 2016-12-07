@@ -10,7 +10,6 @@ define( function( require ) {
 
   // modules
   var ComboBox = require( 'SUN/ComboBox' );
-  var Font = require( 'SCENERY/util/Font' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Node = require( 'SCENERY/nodes/Node' );
   var PhetFont = require( 'SCENERY_PHET/PhetFont' );
