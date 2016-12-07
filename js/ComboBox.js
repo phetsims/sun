@@ -14,6 +14,7 @@ define( function( require ) {
 
   // modules
   var inherit = require( 'PHET_CORE/inherit' );
+  var Emitter = require( 'AXON/Emitter' );
   var Line = require( 'SCENERY/nodes/Line' );
   var Node = require( 'SCENERY/nodes/Node' );
   var Property = require( 'AXON/Property' );
@@ -27,6 +28,7 @@ define( function( require ) {
 
   // phet-io modules
   var TComboBox = require( 'ifphetio!PHET_IO/types/sun/TComboBox' );
+  var TComboBoxItemNode = require( 'ifphetio!PHET_IO/types/sun/TComboBoxItemNode' );
   var TObject = require( 'ifphetio!PHET_IO/types/TObject' );
   var TNode = require( 'ifphetio!PHET_IO/types/scenery/nodes/TNode' );
 
@@ -100,8 +102,9 @@ define( function( require ) {
     itemHeight += ( 2 * options.itemYMargin );
 
     // button, will be set to correct value when property observer is registered
-    var buttonNode = new ButtonNode( new ItemNode( items[ 0 ], itemWidth, itemHeight, options.itemXMargin, {
-      tandem: options.tandem.createTandem( 'buttonNode' ).createTandem( 'itemNode' )
+    var buttonNode = new ButtonNode( new ComboBoxItemNode( items[ 0 ], itemWidth, itemHeight, options.itemXMargin, {
+      tandem: options.tandem.createTandem( 'buttonNode' ).createTandem( 'itemNode' ),
+      phetioValueType: property.phetioValueType
     } ), options );
     self.addChild( buttonNode );
 
@@ -112,7 +115,7 @@ define( function( require ) {
       { fill: options.listFill, stroke: options.listStroke, lineWidth: options.listLineWidth, visible: false } );
     listParent.addChild( listNode );
 
-    //TODO move these to ItemNode
+    //TODO move these to ComboBoxItemNode
     // how to highlight an item in the list
     var highlightItem = function( itemNode ) {
       itemNode.fill = options.itemHighlightFill;
@@ -136,7 +139,7 @@ define( function( require ) {
       },
       up: function( event ) {
 
-        self.trigger1( 'startedCallbacksForItemFired', event.currentTarget.item.value );
+        event.currentTarget.startedCallbacksForItemFiredEmitter.emit1( event.currentTarget.item.value );
 
         unhighlightItem( event.currentTarget );
         listNode.visible = false; // close the list, do this before changing property value, in case it's expensive
@@ -144,7 +147,8 @@ define( function( require ) {
         event.abort(); // prevent nodes (eg, controls) behind the list from receiving the event
         property.value = event.currentTarget.item.value; // set the property
 
-        self.trigger0( 'endedCallbacksForItemFired' );
+        event.currentTarget.endedCallbacksForItemFiredEmitter.emit1( event.currentTarget.item.value );
+
       }
     };
 
@@ -153,17 +157,18 @@ define( function( require ) {
 
       var itemNodeOptions = items[ j ].options || {};
 
-      // Create tandems for each ItemNode
+      // Create tandems for each ComboBoxItemNode
       var itemNodeTandem = null;
       // We don't want assert if running in phet brand, same if as Tandem.validateOptions
       if ( phet.chipper.brand === 'phet-io' && phet.chipper.queryParameters.phetioValidateTandems ) {
         assert && assert( itemNodeOptions.tandemName, 'For instrumented ComboBoxes, ItemNodes must have a tandemName' );
-        itemNodeTandem = options.tandem.createTandem( itemNodeOptions.tandemName );
+        itemNodeTandem = options.tandem.createTandem( itemNodeOptions.tandemName + 'ItemNode' );
         itemNodeOptions.tandem = itemNodeTandem;
+        itemNodeOptions.phetioValueType = property.phetioValueType;
       }
 
       // Create the list item node itself
-      var itemNode = new ItemNode( items[ j ], itemWidth, itemHeight, options.itemXMargin, itemNodeOptions );
+      var itemNode = new ComboBoxItemNode( items[ j ], itemWidth, itemHeight, options.itemXMargin, itemNodeOptions );
 
       // add item to list
       listNode.addChild( itemNode );
@@ -259,8 +264,9 @@ define( function( require ) {
         }
       }
       assert && assert( item !== null );
-      buttonNode.setItemNode( new ItemNode( item, itemWidth, itemHeight, options.itemXMargin, {
-        tandem: options.tandem.createTandem( 'buttonNode', { enabled: false } )
+      buttonNode.setItemNode( new ComboBoxItemNode( item, itemWidth, itemHeight, options.itemXMargin, {
+        tandem: options.tandem.createTandem( 'buttonNode', { enabled: false } ),
+        phetioValueType: property.phetioValueType
       } ) );
     };
     property.link( propertyObserver );
@@ -410,12 +416,12 @@ define( function( require ) {
    * @constructor
    * @private
    */
-  function ItemNode( item, width, height, xMargin, options ) {
+  function ComboBoxItemNode( item, width, height, xMargin, options ) {
 
     options = _.extend( {}, options );
 
     TandemRectangle.call( this, 0, 0, width, height, {
-      tandem: options.tandem
+      tandem: options.tandem.createSupertypeTandem()
     } );
 
     this.item = item;
@@ -423,11 +429,16 @@ define( function( require ) {
     item.node.pickable = false; // hits will occur on the rectangle
     item.node.x = xMargin;
     item.node.centerY = height / 2;
+
+    this.startedCallbacksForItemFiredEmitter = new Emitter();
+    this.endedCallbacksForItemFiredEmitter = new Emitter();
+
+    options.tandem.addInstance(this, TComboBoxItemNode( options.phetioValueType));
   }
 
-  sun.register( 'ComboBox.ItemNode', ItemNode );
+  sun.register( 'ComboBox.ItemNode', ComboBoxItemNode );
 
-  inherit( TandemRectangle, ItemNode );
+  inherit( TandemRectangle, ComboBoxItemNode );
 
   return ComboBox;
 } );
