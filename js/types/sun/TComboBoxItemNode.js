@@ -32,7 +32,7 @@ define( function( require ) {
      * @constructor
      */
     var TComboBoxItemNodeImpl = function TComboBoxImpl( comboBoxItemNode, phetioID ) {
-      assertInstanceOf( comboBoxItemNode, phet.sun['ComboBox.ItemNode'] );
+      assertInstanceOf( comboBoxItemNode, phet.sun.ComboBox.ItemNode );
       TNode.call( this, comboBoxItemNode, phetioID );
 
 
