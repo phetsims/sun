@@ -28,9 +28,9 @@ define( function( require ) {
     ] );
     TNode.call( this, momentaryButton, phetioID );
     var model = momentaryButton.buttonModel;
-    toEventOnEmit( model, 'CallbacksForPressedEmitter', 'user', phetioID, TMomentaryButton, 'pressed' );
-    toEventOnEmit( model, 'CallbacksForReleasedEmitter', 'user', phetioID, TMomentaryButton, 'released' );
-    toEventOnEmit( model, 'CallbacksForReleasedByDisableEmitter', 'user', phetioID, TMomentaryButton, 'releasedDisabled' );
+    toEventOnEmit( model.startedCallbacksForPressedEmitter, model.endedCallbacksForPressedEmitter, 'user', phetioID, TMomentaryButton, 'pressed' );
+    toEventOnEmit( model.startedCallbacksForReleasedEmitter, model.endedCallbacksForReleasedEmitter, 'user', phetioID, TMomentaryButton, 'released' );
+    toEventOnEmit( model.startedCallbacksForReleasedByDisableEmitter, model.endedCallbacksForReleasedByDisableEmitter, 'user', phetioID, TMomentaryButton, 'releasedDisabled' );
   }
 
   phetioInherit( TNode, 'TMomentaryButton', TMomentaryButton, {}, {

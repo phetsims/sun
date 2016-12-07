@@ -13,7 +13,7 @@ define( function( require ) {
   var phetioInherit = require( 'PHET_IO/phetioInherit' );
   var phetioNamespace = require( 'PHET_IO/phetioNamespace' );
   var TNode = require( 'PHET_IO/types/scenery/nodes/TNode' );
-  var toEventOnEmit= require( 'PHET_IO/events/toEventOnEmit' );
+  var toEventOnEmit = require( 'PHET_IO/events/toEventOnEmit' );
 
 
   /**
@@ -35,8 +35,7 @@ define( function( require ) {
       assertInstanceOf( comboBoxItemNode, phet.sun.ComboBox.ItemNode );
       TNode.call( this, comboBoxItemNode, phetioID );
 
-
-      toEventOnEmit( comboBoxItemNode, 'CallbacksForItemFiredEmitter', 'user', phetioID, TComboBoxItemNode( phetioValueType ), 'fired', function( selection ) {
+      toEventOnEmit( comboBoxItemNode.startedCallbacksForItemFiredEmitter, comboBoxItemNode.endedCallbacksForItemFiredEmitter, 'user', phetioID, TComboBoxItemNode( phetioValueType ), 'fired', function( selection ) {
         return { value: phetioValueType.toStateObject( selection ) };
       } );
     };
@@ -50,4 +49,4 @@ define( function( require ) {
 
   return TComboBoxItemNode;
 
-});
+} );

@@ -30,8 +30,8 @@ define( function( require ) {
       TNode.call( this, radioButton, phetioID );
 
       toEventOnEmit(
-        radioButton.radioButtonGroupMemberModel,
-        'CallbacksForFiredEmitter',
+        radioButton.radioButtonGroupMemberModel.startedCallbacksForFiredEmitter,
+        radioButton.radioButtonGroupMemberModel.endedCallbacksForFiredEmitter,
         'user',
         phetioID,
         TRadioButtonGroupMember( valueType ),

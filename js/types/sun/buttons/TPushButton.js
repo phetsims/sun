@@ -38,7 +38,7 @@ define( function( require ) {
 
     if ( button.buttonModel ) {
       assert && assert( button.buttonModel.startedCallbacksForFiredEmitter, 'button models should use emitters' );
-      toEventOnEmit( button.buttonModel, 'CallbacksForFiredEmitter', 'user', phetioID, TPushButton, 'fired' );
+      toEventOnEmit( button.buttonModel.startedCallbacksForFiredEmitter, button.buttonModel.endedCallbacksForFiredEmitter, 'user', phetioID, TPushButton, 'fired' );
     }
     else {
       toEventOnStatic( button, 'CallbacksForFired', 'user', phetioID, TPushButton, 'fired' );
