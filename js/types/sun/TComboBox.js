@@ -42,5 +42,9 @@ define( function( require ) {
   phetioNamespace.register( 'TComboBox', TComboBox );
 
   return TComboBox;
+
+
+
+
 } );
 
