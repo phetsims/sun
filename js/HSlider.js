@@ -21,7 +21,7 @@ define( function( require ) {
   var Shape = require( 'KITE/Shape' );
   var sun = require( 'SUN/sun' );
   var Tandem = require( 'TANDEM/Tandem' );
-  var TandemDragHandler = require( 'TANDEM/scenery/input/TandemDragHandler' );
+  var TandemSimpleDragHandler = require( 'TANDEM/scenery/input/TandemSimpleDragHandler' );
   var Util = require( 'DOT/Util' );
 
   // phet-io modules
@@ -172,7 +172,7 @@ define( function( require ) {
 
     // update value when thumb is dragged
     var clickXOffset = 0; // x-offset between initial click and thumb's origin
-    var thumbInputListener = new TandemDragHandler( {
+    var thumbInputListener = new TandemSimpleDragHandler( {
 
       tandem: options.tandem ? options.tandem.createTandem( 'thumbInputListener' ) : null,
 

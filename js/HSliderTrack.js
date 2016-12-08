@@ -22,7 +22,7 @@ define( function( require ) {
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var sun = require( 'SUN/sun' );
   var Tandem = require( 'TANDEM/Tandem' );
-  var TandemDragHandler = require( 'TANDEM/scenery/input/TandemDragHandler' );
+  var TandemSimpleDragHandler = require( 'TANDEM/scenery/input/TandemSimpleDragHandler' );
 
   // phet-io modules
   var THSliderTrack = require( 'ifphetio!PHET_IO/types/sun/THSliderTrack' );
@@ -94,7 +94,7 @@ define( function( require ) {
       }
     };
 
-    var trackInputListener = new TandemDragHandler( {
+    var trackInputListener = new TandemSimpleDragHandler( {
       tandem: options.tandem ? options.tandem.createTandem( 'trackInputListener' ) : null,
 
       start: function( event, trail ) {
