@@ -25,9 +25,11 @@ define( function( require ) {
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var Shape = require( 'KITE/Shape' );
   var sun = require( 'SUN/sun' );
+  var Tandem = require( 'TANDEM/Tandem' );
 
   // phet-io modules
   var TNode = require( 'ifphetio!PHET_IO/types/scenery/nodes/TNode' );
+
   /**
    * RadioButtonGroup constructor.
    *
@@ -40,9 +42,13 @@ define( function( require ) {
    * @constructor
    */
   function RadioButtonGroup( property, contentArray, options ) {
-    options = options || {};
+    options = _.extend( {
+      tandem: Tandem.createDefaultTandem( 'radioButtonGroup' )
+    }, options );
     assert && assert( !options.hasOwnProperty( 'children' ), 'Cannot pass in children to a RadioButtonGroup, ' +
                                                              'create siblings in the parent node instead' );
+
+    Tandem.validateOptions( options );
 
     // make sure every object in the content array has properties 'node' and 'value'
     assert && assert( _.every( contentArray, function( obj ) {
