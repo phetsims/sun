@@ -7,6 +7,7 @@ define( function( require ) {
   'use strict';
 
   var AquaRadioButton = require( 'SUN/AquaRadioButton' );
+  var Tandem = require( 'TANDEM/Tandem' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Path = require( 'SCENERY/nodes/Path' );
   var Shape = require( 'KITE/Shape' );
@@ -30,8 +31,11 @@ define( function( require ) {
       touchAreaXDilation: 0,
       mouseAreaXDilation: 0,
       accessibleLabel: '', // label for the entire radio button group, invisible for a11y
-      accessibleDescription: '' // description for the radio buttongroup, invisible for a11y
+      accessibleDescription: '', // description for the radio buttongroup, invisible for a11y
+      tandem: Tandem.createDefaultTandem( 'verticalAquaRadioButtonGroup' )
     }, options );
+
+    Tandem.validateOptions( options );
 
     var width = 0;
     for ( var i = 0; i < items.length; i++ ) {
@@ -43,9 +47,10 @@ define( function( require ) {
 
       //Add an invisible strut to each content to make the widths match
       var content = new Path( Shape.rect( 0, 0, width + options.padding, 0 ), { children: [ items[ i ].node ] } );
-      var radioButton = new AquaRadioButton( items[ i ].property, items[ i ].value, content, _.extend( {}, options.radioButtonOptions, { 
+      var radioButton = new AquaRadioButton( items[ i ].property, items[ i ].value, content, _.extend( {}, options.radioButtonOptions, {
         radius: options.radius,
-        accessibleLabel: items[i].accessibleLabel 
+        accessibleLabel: items[ i ].accessibleLabel,
+        tandem: items[ i ].tandemName ? options.tandem.createTandem( items[ i ].tandemName ) : Tandem.createDefaultTandem( 'radioButton' )
       } ) );
       radioButton.mouseArea = Shape.bounds( radioButton.bounds.dilatedXY( options.mouseAreaXDilation, options.spacing / 2 ) );
       radioButton.touchArea = Shape.bounds( radioButton.bounds.dilatedXY( options.touchAreaXDilation, options.spacing / 2 ) );
@@ -70,7 +75,7 @@ define( function( require ) {
          * <p id="group-description">Translatable description of the entire group.</p>
          * </fieldset>
          **/
-        // create the fieldset holding all radio buttons
+          // create the fieldset holding all radio buttons
         var domElement = document.createElement( 'fieldset' );
         domElement.id = 'radio-button-group-' + uniqueId;
         domElement.setAttribute( 'role', 'radioGroup' );

@@ -69,7 +69,8 @@ define( function( require ) {
       thumbTouchAreaXDilation: options.thumbTouchAreaXDilation,
       thumbTouchAreaYDilation: options.thumbTouchAreaYDilation,
       thumbMouseAreaXDilation: options.thumbMouseAreaXDilation,
-      thumbMouseAreaYDilation: options.thumbMouseAreaYDilation
+      thumbMouseAreaYDilation: options.thumbMouseAreaYDilation,
+      tandem: options.tandem.createTandem( 'onOffSwitch' )
     } );
 
     // rendering order
