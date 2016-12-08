@@ -159,13 +159,14 @@ define( function( require ) {
 
       // Create tandems for each ComboBoxItemNode
       var itemNodeTandem = null;
+
       // We don't want assert if running in phet brand, same if as Tandem.validateOptions
       if ( phet.chipper.brand === 'phet-io' && phet.chipper.queryParameters.phetioValidateTandems ) {
         assert && assert( itemNodeOptions.tandemName, 'For instrumented ComboBoxes, ItemNodes must have a tandemName' );
-        itemNodeTandem = options.tandem.createTandem( itemNodeOptions.tandemName + 'ItemNode' );
-        itemNodeOptions.tandem = itemNodeTandem;
-        itemNodeOptions.phetioValueType = property.phetioValueType;
       }
+      itemNodeTandem = options.tandem.createTandem( itemNodeOptions.tandemName + 'ItemNode' );
+      itemNodeOptions.tandem = itemNodeTandem;
+      itemNodeOptions.phetioValueType = property.phetioValueType;
 
       // Create the list item node itself
       var itemNode = new ComboBoxItemNode( items[ j ], itemWidth, itemHeight, options.itemXMargin, itemNodeOptions );
@@ -433,7 +434,7 @@ define( function( require ) {
     this.startedCallbacksForItemFiredEmitter = new Emitter();
     this.endedCallbacksForItemFiredEmitter = new Emitter();
 
-    options.tandem.addInstance(this, TComboBoxItemNode( options.phetioValueType));
+    options.tandem.addInstance( this, TComboBoxItemNode( options.phetioValueType ) );
   }
 
   sun.register( 'ComboBox.ItemNode', ComboBoxItemNode );
