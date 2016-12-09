@@ -30,8 +30,8 @@ define( function( require ) {
       phet.sun.RectangularPushButton
     ] );
 
-      assert && assert( button.buttonModel.startedCallbacksForFiredEmitter, 'button models should use emitters' );
-      toEventOnEmit( button.buttonModel.startedCallbacksForFiredEmitter, button.buttonModel.endedCallbacksForFiredEmitter, 'user', phetioID, TPushButton, 'fired' );
+    assert && assert( button.buttonModel.startedCallbacksForFiredEmitter, 'button models should use emitters' );
+    toEventOnEmit( button.buttonModel.startedCallbacksForFiredEmitter, button.buttonModel.endedCallbacksForFiredEmitter, 'user', phetioID, TPushButton, 'fired' );
 
   }
 
