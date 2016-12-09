@@ -28,14 +28,21 @@ define( function( require ) {
 
     // TODO: Separate wrappers for each implementation
     assertInstanceOfTypes( button, [
-      phet.joist.PhetButton,
-      phet.joist.HomeButton,
-      phet.joist.NavigationBarScreenButton,
+      // 2. Take out TJoistButton types
+      // 3. Take care of the remaining types here.
+      // phet.joist.PhetButton,
+      // phet.joist.HomeButton,
+
+      // Have it's own type
+      // phet.joist.NavigationBarScreenButton,
       phet.sun.RoundPushButton,
-      phet.sun.RectangularPushButton,
-      phet.scenery.Node // Menu item from Joist
+      phet.sun.RectangularPushButton
+
+      //
+      // phet.scenery.Node // Menu item from Joist
     ] );
 
+    // Sketchy logic
     if ( button.buttonModel ) {
       assert && assert( button.buttonModel.startedCallbacksForFiredEmitter, 'button models should use emitters' );
       toEventOnEmit( button.buttonModel.startedCallbacksForFiredEmitter, button.buttonModel.endedCallbacksForFiredEmitter, 'user', phetioID, TPushButton, 'fired' );
