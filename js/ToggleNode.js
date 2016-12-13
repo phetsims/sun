@@ -17,7 +17,7 @@ define( function( require ) {
   var sun = require( 'SUN/sun' );
 
   // phet-io modules
-  var TNode = require( 'ifphetio!PHET_IO/types/TNode' );
+  var TNode = require( 'ifphetio!PHET_IO/types/scenery/nodes/TNode' );
 
   /**
    * @param {Node} trueNode
