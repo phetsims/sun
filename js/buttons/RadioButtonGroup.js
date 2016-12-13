@@ -162,14 +162,13 @@ define( function( require ) {
       assert && assert( !contentArray[ i ].tandem, 'content arrays should not have tandem instances, they should use ' +
                                                    'tandemName instead' );
 
-      var radioButton = new RadioButtonGroupMember( property, contentArray[ i ].value,
-        _.extend( {
-          content: contentArray[ i ].node,
-          xMargin: xMargin,
-          yMargin: yMargin,
-          tandem: options.tandem.createTandem( contentArray[ i ].tandemName ),
-          accessibleLabel: contentArray[ i ].accessibleLabel
-        }, buttonOptions ) );
+      var radioButton = new RadioButtonGroupMember( property, contentArray[ i ].value, _.extend( {
+        content: contentArray[ i ].node,
+        xMargin: xMargin,
+        yMargin: yMargin,
+        tandem: options.tandem.createTandem( contentArray[ i ].tandemName ),
+        accessibleLabel: contentArray[ i ].accessibleLabel
+      }, buttonOptions ) );
 
       // ensure the buttons don't resize when selected vs unselected by adding a rectangle with the max size
       var maxLineWidth = Math.max( options.selectedLineWidth, options.deselectedLineWidth );
