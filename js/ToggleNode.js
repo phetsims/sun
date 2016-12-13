@@ -10,9 +10,14 @@
 define( function( require ) {
   'use strict';
 
+  // modules
   var inherit = require( 'PHET_CORE/inherit' );
-  var Node = require( 'SCENERY/nodes/Node' );
+  var Tandem = require( 'TANDEM/Tandem' );
+  var TandemNode = require( 'TANDEM/scenery/nodes/TandemNode' );
   var sun = require( 'SUN/sun' );
+
+  // phet-io modules
+  var TNode = require( 'ifphetio!PHET_IO/types/TNode' );
 
   /**
    * @param {Node} trueNode
@@ -23,7 +28,11 @@ define( function( require ) {
    */
   function ToggleNode( trueNode, falseNode, booleanProperty, options ) {
 
-    Node.call( this );
+    options = _.extend( {
+      tandem: Tandem.createDefaultTandem( 'toggleNode' )
+    }, options );
+    TandemNode.call( this, { tandem: options.tandem.createSupertypeTandem() } );
+    Tandem.validateOptions( options );
 
     // align centers of the nodes, see https://github.com/phetsims/sun/issues/272
     falseNode.center = trueNode.center;
@@ -37,9 +46,11 @@ define( function( require ) {
     } );
 
     this.mutate( options );
+
+    options.tandem.addInstance( this, TNode );
   }
 
   sun.register( 'ToggleNode', ToggleNode );
 
-  return inherit( Node, ToggleNode );
+  return inherit( TandemNode, ToggleNode );
 } );
