@@ -11,6 +11,7 @@ define( function( require ) {
   var RectangularToggleButton = require( 'SUN/buttons/RectangularToggleButton' );
   var sun = require( 'SUN/sun' );
   var ToggleNode = require( 'SUN/ToggleNode' );
+  var Tandem = require( 'TANDEM/Tandem' );
 
   /**
    * @param {Node} trueNode
@@ -21,11 +22,13 @@ define( function( require ) {
    */
   function BooleanRectangularToggleButton( trueNode, falseNode, booleanProperty, options ) {
 
-    options = options || {};
+    options = _.extend( { tandem: Tandem.createDefaultTandem( 'booleanRectangularToggleButton' ) }, options );
 
     //TODO ToggleNode links to booleanProperty, must be cleaned up in dispose
     assert && assert( !options.content, 'options.content cannot be set' );
-    options.content = new ToggleNode( trueNode, falseNode, booleanProperty );
+    options.content = new ToggleNode( trueNode, falseNode, booleanProperty, {
+      tandem: options.tandem.createTandem( 'toggleNode' )
+    } );
 
     RectangularToggleButton.call( this, false, true, booleanProperty, options );
   }
