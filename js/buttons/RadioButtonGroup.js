@@ -162,11 +162,17 @@ define( function( require ) {
       assert && assert( !contentArray[ i ].tandem, 'content arrays should not have tandem instances, they should use ' +
                                                    'tandemName instead' );
 
+      if ( window.phet && window.phet.chipper && phet.chipper.brand === 'phet-io' && phet.chipper.queryParameters.phetioValidateTandems ) {
+        assert && assert( contentArray[ i ].tandemName, 'In PhET-iO mode, radio button group members must have a provided tandem' );
+      }
+
       var radioButton = new RadioButtonGroupMember( property, contentArray[ i ].value, _.extend( {
         content: contentArray[ i ].node,
         xMargin: xMargin,
         yMargin: yMargin,
-        tandem: options.tandem.createTandem( contentArray[ i ].tandemName ),
+
+        // Pass through the tandem given the tandemName, but also support uninstrumented simulations
+        tandem: options.tandem.createTandem( contentArray[ i ].tandemName || ('radioButtonGroupMember' + i) ),
         accessibleLabel: contentArray[ i ].accessibleLabel
       }, buttonOptions ) );
 
