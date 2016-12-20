@@ -344,6 +344,10 @@ define( function( require ) {
    * @constructor
    */
   function ButtonNode( itemNode, options ) {
+
+    options = _.extend( {
+      tandem: Tandem.createDefaultTandem( 'buttonNode' ) // For PhET-iO instrumented simulations, this must be supplied
+    }, options );
     Node.call( this );
 
     // up or down arrow
