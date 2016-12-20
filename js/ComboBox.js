@@ -340,14 +340,25 @@ define( function( require ) {
   /**
    * The button that is clicked to show the list of items.
    * @param {Node} itemNode
-   * @param {Object} [options] object with optional properties
+   * @param {Object} [options]
    * @constructor
    */
   function ButtonNode( itemNode, options ) {
 
     options = _.extend( {
-      tandem: Tandem.createDefaultTandem( 'buttonNode' ) // For PhET-iO instrumented simulations, this must be supplied
+      tandem: Tandem.createDefaultTandem( 'buttonNode' ), // For PhET-iO instrumented simulations, this must be supplied
+
+      // these options are passed in from ComboBox options
+      listPosition: 'below',
+      buttonFill: 'white',
+      buttonStroke: 'black',
+      buttonLineWidth: 1,
+      buttonCornerRadius: 8,
+      buttonXMargin: 10,
+      buttonYMargin: 4
+
     }, options );
+
     Node.call( this );
 
     // up or down arrow
