@@ -164,7 +164,7 @@ define( function( require ) {
       if ( phet.chipper.brand === 'phet-io' && phet.chipper.queryParameters.phetioValidateTandems ) {
         assert && assert( itemNodeOptions.tandemName, 'For instrumented ComboBoxes, ItemNodes must have a tandemName' );
       }
-      itemNodeTandem = options.tandem.createTandem( itemNodeOptions.tandemName );
+      itemNodeTandem = options.tandem.createTandem( itemNodeOptions.tandemName || ('comboBoxItemNode' + j) );
       itemNodeOptions.tandem = itemNodeTandem;
       itemNodeOptions.phetioValueType = property.phetioValueType;
 
