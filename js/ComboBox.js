@@ -326,8 +326,11 @@ define( function( require ) {
    * This exists primarily to document the structure of an item.
    * @param {Node} node
    * @param {*} value
-   * @param {Object} [options] Includes but not limited to {tandemName:{string}}, the suffix applied to button tandems
-   * @returns {{node:Node, value:*}}
+   * @param {Object} [options] For PhET-iO instrumented simulations, the following must be supplied:
+   *                             tandemName: {string} - the suffix applied to button tandems
+   *                             phetioValueType: {function} - the wrapper type, such as TSolute
+   *                           No other options are supported.
+   * @returns {object}
    * @public
    */
   ComboBox.createItem = function( node, value, options ) {
@@ -419,7 +422,10 @@ define( function( require ) {
    */
   function ComboBoxItemNode( item, width, height, xMargin, options ) {
 
-    options = _.extend( {}, options );
+    options = _.extend( {
+      tandem: Tandem.createDefaultTandem( 'comboBoxItemNode' ),
+      phetioValueType: null // Must be supplied for PhET-iO instrumented simulations
+    }, options );
 
     TandemRectangle.call( this, 0, 0, width, height, {
       tandem: options.tandem.createSupertypeTandem()
