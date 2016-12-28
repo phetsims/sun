@@ -9,7 +9,6 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var AccessiblePeer = require( 'SCENERY/accessibility/AccessiblePeer' );
   var ButtonListener = require( 'SCENERY/input/ButtonListener' );
   var FontAwesomeNode = require( 'SUN/FontAwesomeNode' );
   var inherit = require( 'PHET_CORE/inherit' );
@@ -43,7 +42,6 @@ define( function( require ) {
       cursor: 'pointer',
       checkBoxColor: 'black',
       checkBoxColorBackground: 'white',
-      tabIndex: '0', // '0' to be in accessible navigation order, '-1' for out of navigation
       tandem: null,
 
       /*
@@ -129,14 +127,6 @@ define( function( require ) {
     this.checkBoxCheckedListener = function( checked ) {
       self.checkedNode.visible = checked;
       self.uncheckedNode.visible = !checked;
-
-      _.each( self.instances, function( instance ) {
-
-        //Make sure accessibility is enabled, then apply the change to the peer
-        _.each( instance.peers, function( peer ) {
-          peer.element.setAttribute( 'checked', checked );
-        } );
-      } );
     };
     property.link( this.checkBoxCheckedListener );
 
@@ -147,14 +137,6 @@ define( function( require ) {
     this.checkBoxTandem = options.tandem;
     this.checkBoxTandem && this.checkBoxTandem.addInstance( this, TCheckBox );
 
-    // Accessibility support
-    this.setAccessibleContent( {
-      createPeer: function( accessibleInstance ) {
-        var peer = new CheckBoxAccessiblePeer( accessibleInstance, property, self.fire, options.accessibleLabel, options.tabIndex );
-        self.accessibleId = peer.id; // @public (read-only), id for quick identification in the Parallel DOM
-        return peer;
-      }
-    } );
   }
 
   sun.register( 'CheckBox', CheckBox );
@@ -280,59 +262,6 @@ define( function( require ) {
       return new CheckBox( content, property, checkBoxOptions );
     }
   } );
-
-  /**
-   * An accessible peer for creating a check box element in the Parallel DOM.
-   * See https://github.com/phetsims/scenery/issues/461
-   *
-   * @param {AccessibleInstance} accessibleInstance
-   * @param {Property} property
-   * @param {function} fire - listener function fired by this checkbox
-   * @param {string} accessibleLabel - invisible string description for accessible technologies
-   * @param {string} tabIndex
-   */
-  function CheckBoxAccessiblePeer( accessibleInstance, property, fire, accessibleLabel, tabIndex ) {
-    this.initialize( accessibleInstance, property, fire, accessibleLabel, tabIndex );
-  }
-
-  inherit( AccessiblePeer, CheckBoxAccessiblePeer, {
-
-    /**
-     * Initialize dom element and its attributes for the accessible check box peer of the parallel DOM.
-     *
-     * @param {AccessibleInstance} accessibleInstance
-     * @param {Property} property
-     * @param {function} fire - listener function fired by this checkbox
-     * @param {string} accessibleLabel - invisible string description for accessible technologies
-     * @param {string} tabIndex
-     * @public (a11y)
-     */
-    initialize: function( accessibleInstance, property, fire, accessibleLabel, tabIndex ) {
-
-      // will look like <input id="check-box-id" aria-label="Checkbox Label">
-      this.domElement = document.createElement( 'input' ); // @private
-      this.initializeAccessiblePeer( accessibleInstance, this.domElement );
-      this.domElement.type = 'checkbox';
-
-      if ( property.value ) {
-        this.domElement.checked = true;
-      }
-
-      // add the label as an aria-label
-      this.domElement.setAttribute( 'aria-label', accessibleLabel );
-
-      this.domElement.tabIndex = tabIndex;
-      this.domElement.addEventListener( 'click', function() {
-        fire();
-      } );
-    },
-
-    /**
-     * Dispose function for the accessible check box.
-     */
-    dispose: function() {
-      // TODO
-    }
-  } );
+  
   return CheckBox;
 } );
