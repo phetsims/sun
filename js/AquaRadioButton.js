@@ -14,6 +14,7 @@ define( function( require ) {
   var Node = require( 'SCENERY/nodes/Node' );
   var RadioButton = require( 'SUN/RadioButton' );
   var sun = require( 'SUN/sun' );
+  var Tandem = require( 'TANDEM/Tandem' );
 
   // phet-io modules
   var TAquaRadioButton = require( 'ifphetio!PHET_IO/types/sun/TAquaRadioButton' );
@@ -35,8 +36,10 @@ define( function( require ) {
       radius: 16, // radius of the button
       xSpacing: 8, // horizontal space between the button and the node
       stroke: 'black', // color used to stroke the outer edge of the button
-      tandem: null
+      tandem: Tandem.createDefaultTandem( 'aquaRadioButton' )
     }, options );
+
+    Tandem.validateOptions( options );
 
     // selected node
     var selectedNode = new Node();
@@ -66,9 +69,9 @@ define( function( require ) {
     node.centerY = this.deselectedCircleButton.centerY;
 
     RadioButton.call( this, property, value, selectedNode, deselectedNode, _.extend( {}, options, {
-      tandem: options.tandem && options.tandem.createSupertypeTandem()
+      tandem: options.tandem.createSupertypeTandem()
     } ) );
-    options.tandem && options.tandem.addInstance( this, TAquaRadioButton( property.phetioValueType ) );
+    options.tandem.addInstance( this, TAquaRadioButton( property.phetioValueType ) );
   }
 
   sun.register( 'AquaRadioButton', AquaRadioButton );

@@ -37,7 +37,7 @@ define( function( require ) {
       align: 'left',
       boxWidth: 21,
       tabIndex: '0', // '0' places the item in the default accessible navigation order, '-1' removes it from navigation
-      tandem: null
+      tandem: Tandem.createDefaultTandem( 'verticalCheckBoxGroup' )
     }, options );
 
     Tandem.validateOptions( options ); // The tandem is required when brand==='phet-io'
@@ -62,7 +62,7 @@ define( function( require ) {
           boxWidth: options.boxWidth,
           tabIndex: options.tabIndex,
           accessibleLabel: items[ i ].label,
-          tandem: options.tandem && options.tandem.createTandem( items[ i ].tandemName )
+          tandem: options.tandem.createTandem( items[ i ].tandemName )
         } );
         checkBox.mouseArea = checkBox.touchArea = Shape.bounds( checkBox.bounds.dilatedXY( 5, options.spacing / 2 ) );
         if ( items[ i ].indent ) {
@@ -81,7 +81,7 @@ define( function( require ) {
     options.children = children; //TODO bad form, if options.children was already set, then this will blow it away
     VBox.call( this, options );
 
-    options.tandem && options.tandem.addInstance( this, TVerticalCheckBoxGroup );
+    options.tandem.addInstance( this, TVerticalCheckBoxGroup );
   }
 
   sun.register( 'VerticalCheckBoxGroup', VerticalCheckBoxGroup );

@@ -17,6 +17,8 @@ define( function( require ) {
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var Shape = require( 'KITE/Shape' );
   var sun = require( 'SUN/sun' );
+  var Tandem = require( 'TANDEM/Tandem' );
+
 
   // phet-io modules
   var TNode = require( 'ifphetio!PHET_IO/types/scenery/nodes/TNode' );
@@ -37,8 +39,10 @@ define( function( require ) {
       stroke: 'black',
       lineWidth: 1,
       centerLineStroke: 'white',
-      tandem: null
+      tandem: Tandem.createDefaultTandem( 'hSliderThumb' )
     }, options );
+
+    Tandem.validateOptions( options ); // The tandem is required when brand==='phet-io'
 
     var self = this;
 
@@ -80,12 +84,12 @@ define( function( require ) {
     };
     enabledProperty.link( enabledObserver ); // must be unlinked in disposeHSliderThumb
 
-    options.tandem && options.tandem.addInstance( this, TNode );
+    options.tandem.addInstance( this, TNode );
 
     // @private Called by dispose
     this.disposeHSliderThumb = function() {
       enabledProperty.unlink( enabledObserver );
-      options.tandem && options.tandem.removeInstance( this );
+      options.tandem.removeInstance( this );
     };
   }
 

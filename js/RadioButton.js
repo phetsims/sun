@@ -32,7 +32,7 @@ define( function( require ) {
 
     options = _.extend( {
       cursor: 'pointer',
-      tandem: null,
+      tandem: Tandem.createDefaultTandem( 'radioButton' ),
       enabled: true,
       accessibleLabel: '' // invisible label for the radio button, for a11y
     }, options );
@@ -74,10 +74,10 @@ define( function( require ) {
 
     this.mutate( options );
 
-    options.tandem && options.tandem.addInstance( this, TRadioButton( property.phetioValueType ) );
+    options.tandem.addInstance( this, TRadioButton( property.phetioValueType ) );
 
     this.disposeRadioButton = function() {
-      options.tandem && options.tandem.removeInstance( this );
+      options.tandem.removeInstance( this );
       self.removeInputListener( buttonListener );
       property.unlink( syncWithModel );
     };

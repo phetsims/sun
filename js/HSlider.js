@@ -84,7 +84,7 @@ define( function( require ) {
       constrainValue: function( value ) { return value; }, // called before valueProperty is set
 
       // phet-io
-      tandem: null // {Tandem|null}
+      tandem: Tandem.createDefaultTandem( 'hSlider' )
 
     }, options );
 
@@ -137,7 +137,7 @@ define( function( require ) {
       constrainValue: options.constrainValue,
 
       // phet-io
-      tandem: options.tandem && options.tandem.createTandem( 'track' )
+      tandem: options.tandem.createTandem( 'track' )
     } );
     this.track.centerX = this.valueToPosition( ( range.max + range.min ) / 2 );
     this.addChild( this.track );
@@ -153,7 +153,7 @@ define( function( require ) {
         stroke: options.thumbStroke,
         lineWidth: options.thumbLineWidth,
         centerLineStroke: options.thumbCenterLineStroke,
-        tandem: options.tandem && options.tandem.createTandem( 'thumb' )
+        tandem: options.tandem.createTandem( 'thumb' )
       } );
 
     // do this outside of options hash, so that it applied to both default and custom thumbs
@@ -174,7 +174,7 @@ define( function( require ) {
     var clickXOffset = 0; // x-offset between initial click and thumb's origin
     var thumbInputListener = new TandemSimpleDragHandler( {
 
-      tandem: options.tandem ? options.tandem.createTandem( 'thumbInputListener' ) : null,
+      tandem: options.tandem.createTandem( 'thumbInputListener' ),
 
       allowTouchSnag: true,
 
@@ -267,13 +267,14 @@ define( function( require ) {
       valueProperty.unlink( valueObserver );
       self.enabledRangeProperty.unlink( enabledRangeObserver );
       self.enabledProperty.unlink( enabledObserver );
-      options.tandem && options.tandem.removeInstance( self );
+
+      options.tandem.removeInstance( self );
       thumbInputListener.dispose();
     };
 
     this.mutate( options );
 
-    options.tandem && options.tandem.addInstance( this, THSlider );
+    options.tandem.addInstance( this, THSlider );
   }
 
   sun.register( 'HSlider', HSlider );

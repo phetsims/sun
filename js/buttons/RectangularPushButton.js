@@ -31,7 +31,7 @@ define( function( require ) {
 
     options = _.extend( {
       accessibleLabel: '', // {string} invisible label for a11y
-      tandem: null, // {Tandem|null}
+      tandem: Tandem.createDefaultTandem( 'rectangularPushButton' ), // {Tandem|null}
       accessibleContent: {
         createPeer: function( accessibleInstance ) {
           return new RectangularPushButtonAccessiblePeer( accessibleInstance, options.accessibleLabel, options.listener );
@@ -46,10 +46,10 @@ define( function( require ) {
     RectangularButtonView.call( this, this.buttonModel, new PushButtonInteractionStateProperty( this.buttonModel ), options );
 
     // Tandem support
-    options.tandem && options.tandem.addInstance( this, TPushButton );
+    options.tandem.addInstance( this, TPushButton );
 
     this.disposeRectangularPushButton = function() {
-      options.tandem && options.tandem.removeInstance( this );
+      options.tandem.removeInstance( this );
     };
   }
 

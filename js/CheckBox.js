@@ -42,7 +42,7 @@ define( function( require ) {
       cursor: 'pointer',
       checkBoxColor: 'black',
       checkBoxColorBackground: 'white',
-      tandem: null,
+      tandem: Tandem.createDefaultTandem( 'checkBox' ),
 
       /*
        * {function( {Node} checkBox, {boolean} enabled ) }
@@ -135,7 +135,7 @@ define( function( require ) {
 
     // @public (tandem) - Tandem support, use a novel name to reduce the risk of parent or child collisions
     this.checkBoxTandem = options.tandem;
-    this.checkBoxTandem && this.checkBoxTandem.addInstance( this, TCheckBox );
+    this.checkBoxTandem.addInstance( this, TCheckBox );
 
   }
 
@@ -262,6 +262,6 @@ define( function( require ) {
       return new CheckBox( content, property, checkBoxOptions );
     }
   } );
-  
+
   return CheckBox;
 } );

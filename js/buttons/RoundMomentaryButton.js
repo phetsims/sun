@@ -30,18 +30,18 @@ define( function( require ) {
   function RoundMomentaryButton( valueOff, valueOn, property, options ) {
 
     var self = this;
-    options = _.extend( { tandem: null }, options );
+    options = _.extend( { tandem: Tandem.createDefaultTandem( 'roundMomentaryButton' ) }, options );
     Tandem.validateOptions( options ); // The tandem is required when brand==='phet-io'
 
     this.buttonModel = new MomentaryButtonModel( valueOff, valueOn, property );
     RoundButtonView.call( this, this.buttonModel, new MomentaryButtonInteractionStateProperty( this.buttonModel ), options );
 
-    options.tandem && options.tandem.addInstance( this, TMomentaryButton );
+    options.tandem.addInstance( this, TMomentaryButton );
 
     // @private
     this.disposeRoundMomentaryButton = function() {
       self.buttonModel.dispose(); //TODO fails with assertions enable, see sun#212
-      options.tandem && options.tandem.removeInstance( this );
+      options.tandem.removeInstance( this );
     };
   }
 

@@ -32,18 +32,18 @@ define( function( require ) {
     var self = this;
 
     // Tandem support
-    options = _.extend( { tandem: null }, options );
+    options = _.extend( { tandem: Tandem.createDefaultTandem( 'roundToggleButton' ) }, options );
     Tandem.validateOptions( options ); // The tandem is required when brand==='phet-io'
 
     this.toggleButtonModel = new ToggleButtonModel( valueOff, valueOn, property ); // @public, listen only
     RoundButtonView.call( this, this.toggleButtonModel, new ToggleButtonInteractionStateProperty( this.toggleButtonModel ), options );
 
     // Tandem support
-    options.tandem && options.tandem.addInstance( this, TToggleButton( property.phetioValueType ) );
+    options.tandem.addInstance( this, TToggleButton( property.phetioValueType ) );
 
     // @private - disposal for listener above
     this.disposeRoundToggleButton = function() {
-      options.tandem && options.tandem.removeInstance( this );
+      options.tandem.removeInstance( this );
       self.toggleButtonModel.dispose();
     };
   }

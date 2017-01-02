@@ -52,7 +52,7 @@ define( function( require ) {
       constrainValue: function( value ) { return value; }, // called before valueProperty is set
 
       // phet-io
-      tandem: null // {Tandem|null}
+      tandem: Tandem.createDefaultTandem( 'hSliderTrack' )
 
     }, options );
 
@@ -95,7 +95,7 @@ define( function( require ) {
     };
 
     var trackInputListener = new TandemSimpleDragHandler( {
-      tandem: options.tandem ? options.tandem.createTandem( 'trackInputListener' ) : null,
+      tandem: options.tandem.createTandem( 'trackInputListener' ),
 
       start: function( event, trail ) {
         if ( self.enabledProperty.get() ) {
@@ -112,7 +112,7 @@ define( function( require ) {
 
       end: function() {
         if ( self.enabledProperty.get() ) {
-          if( typeof self.snapValue === 'number' ) {
+          if ( typeof self.snapValue === 'number' ) {
             snapToValue( self.snapValue );
           }
           options.endDrag();
@@ -133,11 +133,11 @@ define( function( require ) {
     // @private Called by dispose
     this.disposeHSliderTrack = function() {
       self.enabledProperty.unlink( enabledObserver );
-      options.tandem && options.tandem.removeInstance( self );
+      options.tandem.removeInstance( self );
       trackInputListener.dispose();
     };
 
-    options.tandem && options.tandem.addInstance( this, THSliderTrack );
+    options.tandem.addInstance( this, THSliderTrack );
   }
 
   sun.register( 'HSliderTrack', HSliderTrack );

@@ -16,6 +16,7 @@ define( function( require ) {
   var Node = require( 'SCENERY/nodes/Node' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var sun = require( 'SUN/sun' );
+  var Tandem = require( 'TANDEM/Tandem' );
 
   // phet-io modules
   var TPanel = require( 'ifphetio!PHET_IO/types/sun/TPanel' );
@@ -39,9 +40,10 @@ define( function( require ) {
     align: 'left',
 
     minWidth: 0, // minimum width of the panel
-    tandem: null
+    tandem: Tandem.createDefaultTandem( 'panel' )
   };
   assert && Object.freeze( DEFAULT_OPTIONS );
+
 
   /**
    * @param {Node} content
@@ -51,6 +53,9 @@ define( function( require ) {
   function Panel( content, options ) {
 
     options = _.extend( {}, DEFAULT_OPTIONS, options );
+
+    Tandem.validateOptions( options ); // The tandem is required when brand==='phet-io'
+
     assert && assert( _.contains( ALIGN_VALUES, options.align ), 'invalid align: ' + options.align );
 
     Node.call( this );
@@ -124,13 +129,13 @@ define( function( require ) {
     this.mutate( options );
 
     this.disposePanel = function() {
-      options.tandem && options.tandem.removeInstance( this );
+      options.tandem.removeInstance( this );
       if ( options.resize ) {
         content.off( 'bounds', updateBackground );
       }
     };
 
-    options.tandem && options.tandem.addInstance( this, TPanel );
+    options.tandem.addInstance( this, TPanel );
   }
 
   sun.register( 'Panel', Panel );

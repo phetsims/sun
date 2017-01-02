@@ -31,7 +31,7 @@ define( function( require ) {
   function RoundPushButton( options ) {
 
     options = _.extend( {
-      tandem: null // {Tandem|null}
+      tandem: Tandem.createDefaultTandem( 'roundPushButton' )
     }, options );
     Tandem.validateOptions( options ); // The tandem is required when brand==='phet-io'
 
@@ -42,7 +42,7 @@ define( function( require ) {
     // Tandem support
     // Give it a novel name to reduce the risk of parent or child collisions
     this.roundPushButtonTandem = options.tandem;
-    this.roundPushButtonTandem && this.roundPushButtonTandem.addInstance( this, TPushButton );
+    this.roundPushButtonTandem.addInstance( this, TPushButton );
   }
 
   sun.register( 'RoundPushButton', RoundPushButton );
@@ -51,7 +51,7 @@ define( function( require ) {
 
     // @public
     dispose: function() {
-      this.roundPushButtonTandem && this.roundPushButtonTandem.removeInstance( this );
+      this.roundPushButtonTandem.removeInstance( this );
     },
 
     // @public
