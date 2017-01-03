@@ -11,6 +11,7 @@ define( function( require ) {
   // modules
   var ButtonListener = require( 'SCENERY/input/ButtonListener' );
   var FontAwesomeNode = require( 'SUN/FontAwesomeNode' );
+  var Emitter = require( 'AXON/Emitter' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Node = require( 'SCENERY/nodes/Node' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
@@ -72,6 +73,10 @@ define( function( require ) {
 
     this._enabled = true; // @private
 
+    // Emitters for the PhET-iO data stream
+    this.startedCallbacksForToggledEmitter = new Emitter();
+    this.endedCallbacksForToggledEmitter = new Emitter();
+
     // @private - Create the background.  Until we are creating our own shapes, just put a rectangle behind the font
     // awesome check box icons.
     this.backgroundNode = new Rectangle( 0, -options.boxWidth, options.boxWidth * 0.95, options.boxWidth * 0.95,
@@ -111,9 +116,9 @@ define( function( require ) {
       if ( self._enabled ) {
         var oldValue = property.value;
         var newValue = !property.value;
-        self.trigger2( 'startedCallbacksForToggled', oldValue, newValue );
+        self.startedCallbacksForToggledEmitter.emit2( oldValue, newValue );
         property.value = newValue;
-        self.trigger0( 'endedCallbacksForToggled' );
+        self.endedCallbacksForToggledEmitter.emit();
       }
     };
 
