@@ -56,13 +56,16 @@ define( function( require ) {
 
         //Attach each item to an invisible strut to make the widths match.
         var content = new Path( Shape.rect( 0, 0, maxWidth + options.padding - offset, 0 ), { children: [ items[ i ].content ] } );
+        if ( window.phet && window.phet.chipper && phet.chipper.brand === 'phet-io' && phet.chipper.queryParameters.phetioValidateTandems ) {
+          assert && assert( items[ i ].tandemName, 'Tandem name must be supplied for phet-io' );
+        }
         var checkBox = new CheckBox( content, items[ i ].property, {
           textDescription: items[ i ].label + ': Checkbox (' + 'unchecked' + ')',
           checkBoxColor: options.checkBoxColor,
           boxWidth: options.boxWidth,
           tabIndex: options.tabIndex,
           accessibleLabel: items[ i ].label,
-          tandem: options.tandem.createTandem( items[ i ].tandemName )
+          tandem: options.tandem.createTandem( items[ i ].tandemName || 'checkBox' )
         } );
         checkBox.mouseArea = checkBox.touchArea = Shape.bounds( checkBox.bounds.dilatedXY( 5, options.spacing / 2 ) );
         if ( items[ i ].indent ) {
