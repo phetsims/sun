@@ -15,7 +15,7 @@ define( function( require ) {
   var TBoolean = require( 'PHET_IO/types/TBoolean' );
   var TFunctionWrapper = require( 'PHET_IO/types/TFunctionWrapper' );
   var TNode = require( 'PHET_IO/types/scenery/nodes/TNode' );
-  var toEventOnStatic = require( 'PHET_IO/events/toEventOnStatic' );
+  var toEventOnEmit = require( 'PHET_IO/events/toEventOnEmit' );
   var TVoid = require( 'PHET_IO/types/TVoid' );
 
   /**
@@ -28,12 +28,19 @@ define( function( require ) {
     assertInstanceOf( checkBox, phet.sun.CheckBox );
     TNode.call( this, checkBox, phetioID );
 
-    toEventOnStatic( checkBox, 'CallbacksForToggled', 'user', phetioID, TCheckBox, 'toggled', function( oldValue, newValue ) {
-      return {
-        oldValue: oldValue,
-        newValue: newValue
-      };
-    } );
+    toEventOnEmit(
+      checkBox.startedCallbacksForToggledEmitter,
+      checkBox.endedCallbacksForToggledEmitter,
+      'user',
+      phetioID,
+      TCheckBox,
+      'toggled',
+      function( oldValue, newValue ) {
+        return {
+          oldValue: oldValue,
+          newValue: newValue
+        };
+      } );
   }
 
   phetioInherit( TNode, 'TCheckBox', TCheckBox, {
