@@ -10,6 +10,7 @@ define( function( require ) {
 
   // modules
   var ButtonListener = require( 'SCENERY/input/ButtonListener' );
+  var Emitter = require( 'AXON/Emitter' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Node = require( 'SCENERY/nodes/Node' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
@@ -46,6 +47,10 @@ define( function( require ) {
 
     this._enabled = options.enabled; // @private
 
+    // Emitters for the PhET-iO data stream
+    this.startedCallbacksForFiredEmitter = new Emitter();
+    this.endedCallbacksForFiredEmitter = new Emitter();
+
     //Add an invisible node to make sure the layout for selected vs deselected is the same
     var background = new Rectangle( selectedNode.bounds.union( deselectedNode.bounds ) );
     selectedNode.pickable = deselectedNode.pickable = false; // the background rectangle suffices
@@ -63,9 +68,9 @@ define( function( require ) {
 
     // set property value on fire
     var fire = function() {
-      self.trigger1( 'startedCallbacksForFired', value );
+      self.startedCallbacksForFiredEmitter.emit1( value );
       property.set( value );
-      self.trigger0( 'endedCallbacksForFired' );
+      self.endedCallbacksForFiredEmitter.emit();
     };
     var buttonListener = new ButtonListener( {
       fire: fire

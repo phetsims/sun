@@ -85,6 +85,12 @@ define( function( require ) {
 
     this.enabledProperty = options.enabledProperty; // @public
 
+    this.startedCallbacksForComboBoxDismissedEmitter = new Emitter();
+    this.endedCallbacksForComboBoxDismissedEmitter = new Emitter();
+    this.startedCallbacksForComboBoxPopupShownEmitter = new Emitter();
+    this.endedCallbacksForComboBoxPopupShownEmitter = new Emitter();
+
+
     // optional label
     if ( options.labelNode !== null ) {
       self.addChild( options.labelNode );
@@ -216,12 +222,12 @@ define( function( require ) {
       down: function() {
         if ( enableClickToDismissListener ) {
 
-          self.trigger0( 'startedCallbacksForComboBoxDismissed' );
+          self.startedCallbacksForComboBoxDismissedEmitter.emit();
 
           sceneNode.removeInputListener( clickToDismissListener );
           listNode.visible = false;
 
-          self.trigger0( 'endedCallbacksForComboBoxDismissed' );
+          self.endedCallbacksForComboBoxDismissedEmitter.emit();
         }
         else {
           enableClickToDismissListener = true;
@@ -235,7 +241,7 @@ define( function( require ) {
       {
         down: function() {
           if ( !listNode.visible ) {
-            self.trigger0( 'startedCallbacksForComboBoxPopupShown' );
+            self.startedCallbacksForComboBoxPopupShownEmitter.emit();
 
             moveList();
             listNode.moveToFront();
@@ -244,7 +250,7 @@ define( function( require ) {
             sceneNode = self.getUniqueTrail().rootNode();
             sceneNode.addInputListener( clickToDismissListener );
 
-            self.trigger0( 'endedCallbacksForComboBoxPopupShown' );
+            self.endedCallbacksForComboBoxPopupShownEmitter.emit();
           }
         }
       } );

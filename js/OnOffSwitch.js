@@ -28,6 +28,7 @@ define( function( require ) {
   var SimpleDragHandler = require( 'SCENERY/input/SimpleDragHandler' );
   var sun = require( 'SUN/sun' );
   var Tandem = require( 'TANDEM/Tandem' );
+  var Emitter = require( 'AXON/Emitter' );
 
   // phet-io modules
   var TNode = require( 'ifphetio!PHET_IO/types/scenery/nodes/TNode' );
@@ -129,6 +130,8 @@ define( function( require ) {
     var accumulatedDelta = new Vector2(); // stores how far we are from where our drag started, in our local coordinate frame
     var passedDragThreshold = false; // whether we have dragged far enough to be considered for "drag" behavior (pick closest side), or "tap" behavior (toggle)
 
+    this.startedCallbacksForToggled = new Emitter();
+    this.endedCallbacksForToggled = new Emitter();
     this.addInputListener( new SimpleDragHandler( {
 
       // only touch to snag when over the thumb (don't snag on the track itself)
@@ -166,9 +169,9 @@ define( function( require ) {
           // stream, see https://github.com/phetsims/phet-io/issues/369
           var changed = onProperty.get() !== value;
           if ( changed ) {
-            self.trigger2( 'startedCallbacksForToggled', !value, value );
+            self.startedCallbacksForToggled.emit2( !value, value );
             onProperty.set( value );
-            self.trigger0( 'endedCallbacksForToggled' );
+            self.endedCallbacksForToggled.emit();
           }
         }
       },
@@ -179,14 +182,14 @@ define( function( require ) {
         // if moved past the threshold, choose value based on the side, otherwise just toggle
         var newValue = passedDragThreshold ? self.thumbPositionToValue() : !onProperty.get();
 
-        self.trigger2( 'startedCallbacksForToggled', oldValue, newValue );
+        self.startedCallbacksForToggled.emit2( oldValue, newValue );
 
         onProperty.set( newValue );
 
         // update the thumb location (sanity check that it's here, only needs to be run if passedDragThreshold===true)
         updateThumb( onProperty.get() );
 
-        self.trigger0( 'endedCallbacksForToggled' );
+        self.startedCallbacksForToggled.emit();
       },
 
       translate: function( params ) {
