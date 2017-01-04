@@ -13,7 +13,7 @@ define( function( require ) {
   var phetioInherit = require( 'PHET_IO/phetioInherit' );
   var phetioNamespace = require( 'PHET_IO/phetioNamespace' );
   var TNode = require( 'PHET_IO/types/scenery/nodes/TNode' );
-  var toEventOnStatic = require( 'PHET_IO/events/toEventOnStatic' );
+  var toEventOnEmit = require( 'PHET_IO/events/toEventOnEmit' );
 
   /**
    * Wrapper type for phet/sun's ComboBox class.
@@ -27,11 +27,21 @@ define( function( require ) {
       assertInstanceOf( comboBox, phet.sun.ComboBox );
       TNode.call( this, comboBox, phetioID );
 
-      toEventOnStatic( comboBox, 'CallbacksForItemFired', 'user', phetioID, TComboBox( phetioValueType ), 'fired', function( selection ) {
-        return { value: phetioValueType.toStateObject( selection ) };
-      } );
-      toEventOnStatic( comboBox, 'CallbacksForComboBoxDismissed', 'user', phetioID, TComboBox( phetioValueType ), 'popupHidden' );
-      toEventOnStatic( comboBox, 'CallbacksForComboBoxPopupShown', 'user', phetioID, TComboBox( phetioValueType ), 'popupShown' );
+      toEventOnEmit(
+        comboBox.startedCallbacksForComboBoxDismissedEmitter,
+        comboBox.endedCallbacksForComboBoxDismissedEmitter,
+        'user',
+        phetioID,
+        TComboBox( phetioValueType ),
+        'popupHidden' );
+
+      toEventOnEmit(
+        comboBox.startedCallbacksForComboBoxPopupShownEmitter,
+        comboBox.endedCallbacksForComboBoxPopupShownEmitter,
+        'user',
+        phetioID,
+        TComboBox( phetioValueType ),
+        'popupShown' );
     };
     return phetioInherit( TNode, 'TComboBox', TComboBoxImpl, {}, {
       documentation: 'A traditional combo box',
@@ -42,8 +52,6 @@ define( function( require ) {
   phetioNamespace.register( 'TComboBox', TComboBox );
 
   return TComboBox;
-
-
 
 
 } );
