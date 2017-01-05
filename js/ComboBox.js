@@ -15,7 +15,6 @@ define( function( require ) {
   // modules
   var inherit = require( 'PHET_CORE/inherit' );
   var Emitter = require( 'AXON/Emitter' );
-  var Line = require( 'SCENERY/nodes/Line' );
   var Node = require( 'SCENERY/nodes/Node' );
   var Property = require( 'AXON/Property' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
@@ -23,6 +22,7 @@ define( function( require ) {
   var sun = require( 'SUN/sun' );
   var Vector2 = require( 'DOT/Vector2' );
   var Tandem = require( 'TANDEM/Tandem' );
+  var TandemLine = require( 'TANDEM/scenery/nodes/TandemLine' );
   var TandemPath = require( 'TANDEM/scenery/nodes/TandemPath' );
   var TandemRectangle = require( 'TANDEM/scenery/nodes/TandemRectangle' );
 
@@ -30,7 +30,6 @@ define( function( require ) {
   var TComboBox = require( 'ifphetio!PHET_IO/types/sun/TComboBox' );
   var TComboBoxItemNode = require( 'ifphetio!PHET_IO/types/sun/TComboBoxItemNode' );
   var TObject = require( 'ifphetio!PHET_IO/types/TObject' );
-  var TNode = require( 'ifphetio!PHET_IO/types/scenery/nodes/TNode' );
 
   /**
    * @param {*[]} items - see ComboBox.createItem
@@ -388,8 +387,11 @@ define( function( require ) {
       { fill: options.buttonFill, stroke: options.buttonStroke, lineWidth: options.buttonLineWidth } );
 
     // vertical separator to left of arrow
-    var separator = new Line( 0, 0, 0, height, { stroke: 'black', lineWidth: options.buttonLineWidth } );
-    options.tandem.createTandem( 'separator' ).addInstance( separator, TNode );
+    var separator = new TandemLine( 0, 0, 0, height, {
+      stroke: 'black',
+      lineWidth: options.buttonLineWidth,
+      tandem:  options.tandem.createTandem( 'separator' )
+    } );
 
     // itemNode's parent
     var itemNodeParent = new Node();
