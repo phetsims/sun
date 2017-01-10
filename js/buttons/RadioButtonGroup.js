@@ -162,7 +162,8 @@ define( function( require ) {
       assert && assert( !contentArray[ i ].tandem, 'content arrays should not have tandem instances, they should use ' +
                                                    'tandemName instead' );
 
-      if ( window.phet && window.phet.chipper && phet.chipper.brand === 'phet-io' && phet.chipper.queryParameters.phetioValidateTandems ) {
+      if ( window.phet && window.phet.chipper && phet.chipper.brand === 'phet-io' &&
+           window.phetio && window.phetio.queryParameters && window.phetio.queryParameters.phetioValidateTandems ) {
         assert && assert( contentArray[ i ].tandemName, 'In PhET-iO mode, radio button group members must have a provided tandem' );
       }
 

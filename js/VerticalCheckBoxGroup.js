@@ -56,7 +56,8 @@ define( function( require ) {
 
         //Attach each item to an invisible strut to make the widths match.
         var content = new Path( Shape.rect( 0, 0, maxWidth + options.padding - offset, 0 ), { children: [ items[ i ].content ] } );
-        if ( window.phet && window.phet.chipper && phet.chipper.brand === 'phet-io' && phet.chipper.queryParameters.phetioValidateTandems ) {
+        if ( window.phet && window.phet.chipper && phet.chipper.brand === 'phet-io' &&
+             window.phetio && window.phetio.queryParameters && window.phetio.queryParameters.phetioValidateTandems ) {
           assert && assert( items[ i ].tandemName, 'Tandem name must be supplied for phet-io' );
         }
         var checkBox = new CheckBox( content, items[ i ].property, {
