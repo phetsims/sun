@@ -107,7 +107,6 @@ define( function( require ) {
     // Expanded box
     var boxOptions = { fill: options.fill };
     var expandedBox = new Rectangle( 0, 0, boxWidth, expandedBoxHeight, options.cornerRadius, options.cornerRadius, boxOptions );
-    expandedBox.addChild( contentNode );
     this.addChild( expandedBox );
 
     // Collapsed box
@@ -183,6 +182,7 @@ define( function( require ) {
     else { // center
       contentNode.centerX = ( contentSpanLeft + contentSpanRight ) / 2;
     }
+    expandedBox.addChild( contentNode ); // do this after layout computations, see sun#280
 
     // button horizontal layout
     var titleLeftSpan = expandedBox.left + options.titleXMargin;
