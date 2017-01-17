@@ -166,8 +166,8 @@ define( function( require ) {
       var itemNodeTandem = null;
 
       // We don't want assert if running in phet brand, same if as Tandem.validateOptions
-      if ( phet.chipper.brand === 'phet-io' && window.phetio && window.phetio.queryParameters
-           && window.phetio.queryParameters.phetioValidateTandems ) {
+      if ( phet.chipper.brand === 'phet-io' && phet.phetio && phet.phetio.queryParameters
+           && phet.phetio.queryParameters.phetioValidateTandems ) {
         assert && assert( itemNodeOptions.tandemName, 'For instrumented ComboBoxes, ItemNodes must have a tandemName' );
       }
       itemNodeTandem = options.tandem.createTandem( itemNodeOptions.tandemName || ('comboBoxItemNode' + j) );
@@ -303,7 +303,7 @@ define( function( require ) {
     // Register for tandem if possible.
     // Allow running with phetioValidateTandems=false though
     var type = property.phetioValueType;
-    if ( window.phetio && window.phetio.queryParameters && !window.phetio.queryParameters.phetioValidateTandems && !type ) {
+    if ( phet.phetio && phet.phetio.queryParameters && !phet.phetio.queryParameters.phetioValidateTandems && !type ) {
       type = TObject;
     }
     options.tandem.addInstance( this, TComboBox( type ) );
