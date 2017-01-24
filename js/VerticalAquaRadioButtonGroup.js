@@ -32,7 +32,7 @@ define( function( require ) {
       mouseAreaXDilation: 0,
       accessibleLabel: '', // label for the entire radio button group, invisible for a11y
       accessibleDescription: '', // description for the radio buttongroup, invisible for a11y
-      tandem: Tandem.createDefaultTandem( 'verticalAquaRadioButtonGroup' )
+      tandem: Tandem.tandemRequired()
     }, options );
 
     Tandem.validateOptions( options );
@@ -50,7 +50,7 @@ define( function( require ) {
       var radioButton = new AquaRadioButton( items[ i ].property, items[ i ].value, content, _.extend( {}, options.radioButtonOptions, {
         radius: options.radius,
         accessibleLabel: items[ i ].accessibleLabel,
-        tandem: items[ i ].tandemName ? options.tandem.createTandem( items[ i ].tandemName ) : Tandem.createDefaultTandem( 'radioButton' )
+        tandem: items[ i ].tandemName ? options.tandem.createTandem( items[ i ].tandemName ) : Tandem.tandemRequired()
       } ) );
       radioButton.mouseArea = Shape.bounds( radioButton.bounds.dilatedXY( options.mouseAreaXDilation, options.spacing / 2 ) );
       radioButton.touchArea = Shape.bounds( radioButton.bounds.dilatedXY( options.touchAreaXDilation, options.spacing / 2 ) );

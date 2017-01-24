@@ -40,7 +40,7 @@ define( function( require ) {
     align: 'left',
 
     minWidth: 0, // minimum width of the panel
-    tandem: Tandem.createDefaultTandem( 'panel' )
+    tandem: Tandem.tandemRequired()
   };
   assert && Object.freeze( DEFAULT_OPTIONS );
 

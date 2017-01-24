@@ -43,7 +43,7 @@ define( function( require ) {
    */
   function RadioButtonGroup( property, contentArray, options ) {
     options = _.extend( {
-      tandem: Tandem.createDefaultTandem( 'radioButtonGroup' )
+      tandem: Tandem.tandemRequired()
     }, options );
     assert && assert( !options.hasOwnProperty( 'children' ), 'Cannot pass in children to a RadioButtonGroup, ' +
                                                              'create siblings in the parent node instead' );

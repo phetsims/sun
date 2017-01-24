@@ -30,7 +30,7 @@ define( function( require ) {
   function RoundMomentaryButton( valueOff, valueOn, property, options ) {
 
     var self = this;
-    options = _.extend( { tandem: Tandem.createDefaultTandem( 'roundMomentaryButton' ) }, options );
+    options = _.extend( { tandem: Tandem.tandemRequired() }, options );
     Tandem.validateOptions( options ); // The tandem is required when brand==='phet-io'
 
     this.buttonModel = new MomentaryButtonModel( valueOff, valueOn, property );

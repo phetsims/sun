@@ -29,7 +29,7 @@ define( function( require ) {
   function ToggleNode( trueNode, falseNode, booleanProperty, options ) {
 
     options = _.extend( {
-      tandem: Tandem.createDefaultTandem( 'toggleNode' )
+      tandem: Tandem.tandemRequired()
     }, options );
     TandemNode.call( this, { tandem: options.tandem.createSupertypeTandem() } );
     Tandem.validateOptions( options );

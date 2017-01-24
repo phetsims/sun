@@ -23,7 +23,7 @@ define( function( require ) {
   function BooleanRoundToggleButton( trueNode, falseNode, booleanProperty, options ) {
 
     options = _.extend( {
-      tandem: Tandem.createDefaultTandem( 'booleanRoundToggleButton' )
+      tandem: Tandem.tandemRequired()
     }, options );
 
     // TODO: Tandem.validateOptions(options);

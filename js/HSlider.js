@@ -84,7 +84,7 @@ define( function( require ) {
       constrainValue: function( value ) { return value; }, // called before valueProperty is set
 
       // phet-io
-      tandem: Tandem.createDefaultTandem( 'hSlider' )
+      tandem: Tandem.tandemRequired()
 
     }, options );
 

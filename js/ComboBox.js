@@ -73,7 +73,7 @@ define( function( require ) {
       itemHighlightLineWidth: 1,
 
       // tandem
-      tandem: Tandem.createDefaultTandem( 'comboBox' )
+      tandem: Tandem.tandemRequired()
     }, options );
 
     // validate option values
@@ -352,7 +352,7 @@ define( function( require ) {
   function ButtonNode( itemNode, options ) {
 
     options = _.extend( {
-      tandem: Tandem.createDefaultTandem( 'buttonNode' ), // For PhET-iO instrumented simulations, this must be supplied
+      tandem: Tandem.tandemRequired(), // For PhET-iO instrumented simulations, this must be supplied
 
       // these options are passed in from ComboBox options
       listPosition: 'below',
@@ -447,7 +447,7 @@ define( function( require ) {
   function ComboBoxItemNode( item, width, height, xMargin, options ) {
 
     options = _.extend( {
-      tandem: Tandem.createDefaultTandem( 'comboBoxItemNode' ),
+      tandem: Tandem.tandemRequired(),
       phetioValueType: null // Must be supplied for PhET-iO instrumented simulations
     }, options );
 

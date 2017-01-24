@@ -37,7 +37,7 @@ define( function( require ) {
       align: 'left',
       boxWidth: 21,
       tabIndex: '0', // '0' places the item in the default accessible navigation order, '-1' removes it from navigation
-      tandem: Tandem.createDefaultTandem( 'verticalCheckBoxGroup' )
+      tandem: Tandem.tandemRequired()
     }, options );
 
     Tandem.validateOptions( options ); // The tandem is required when brand==='phet-io'

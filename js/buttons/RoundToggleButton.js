@@ -32,7 +32,7 @@ define( function( require ) {
     var self = this;
 
     // Tandem support
-    options = _.extend( { tandem: Tandem.createDefaultTandem( 'roundToggleButton' ) }, options );
+    options = _.extend( { tandem: Tandem.tandemRequired() }, options );
     Tandem.validateOptions( options ); // The tandem is required when brand==='phet-io'
 
     this.toggleButtonModel = new ToggleButtonModel( valueOff, valueOn, property ); // @public, listen only

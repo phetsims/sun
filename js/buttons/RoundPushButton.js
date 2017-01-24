@@ -31,7 +31,7 @@ define( function( require ) {
   function RoundPushButton( options ) {
 
     options = _.extend( {
-      tandem: Tandem.createDefaultTandem( 'roundPushButton' )
+      tandem: Tandem.tandemRequired()
     }, options );
     Tandem.validateOptions( options ); // The tandem is required when brand==='phet-io'
 

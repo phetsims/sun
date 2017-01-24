@@ -43,7 +43,7 @@ define( function( require ) {
       cursor: 'pointer',
       checkBoxColor: 'black',
       checkBoxColorBackground: 'white',
-      tandem: Tandem.createDefaultTandem( 'checkBox' ),
+      tandem: Tandem.tandemRequired(),
 
       /*
        * {function( {Node} checkBox, {boolean} enabled ) }

@@ -31,7 +31,7 @@ define( function( require ) {
 
     options = _.extend( {
       accessibleLabel: '', // {string} invisible label for a11y
-      tandem: Tandem.createDefaultTandem( 'rectangularPushButton' ), // {Tandem|null}
+      tandem: Tandem.tandemRequired(), // {Tandem|null}
       accessibleContent: {
         createPeer: function( accessibleInstance ) {
           return new RectangularPushButtonAccessiblePeer( accessibleInstance, options.accessibleLabel, options.listener );

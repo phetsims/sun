@@ -39,7 +39,7 @@ define( function( require ) {
       stroke: 'black',
       lineWidth: 1,
       centerLineStroke: 'white',
-      tandem: Tandem.createDefaultTandem( 'hSliderThumb' )
+      tandem: Tandem.tandemRequired()
     }, options );
 
     Tandem.validateOptions( options ); // The tandem is required when brand==='phet-io'

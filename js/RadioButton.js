@@ -33,7 +33,7 @@ define( function( require ) {
 
     options = _.extend( {
       cursor: 'pointer',
-      tandem: Tandem.createDefaultTandem( 'radioButton' ),
+      tandem: Tandem.tandemRequired(),
       enabled: true,
       accessibleLabel: '' // invisible label for the radio button, for a11y
     }, options );
