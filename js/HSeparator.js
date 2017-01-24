@@ -12,6 +12,7 @@ define( function( require ) {
   var inherit = require( 'PHET_CORE/inherit' );
   var Line = require( 'SCENERY/nodes/Line' );
   var sun = require( 'SUN/sun' );
+  var Tandem = require( 'TANDEM/Tandem' );
 
   /**
    * @param {number} width
@@ -22,6 +23,8 @@ define( function( require ) {
     options = _.extend( {
       stroke: 'rgb(100,100,100)'
     }, options );
+    Tandem.indicateUninstrumentedCode();
+
     Line.call( this, 0, 0, width, 0, options );
   }
 

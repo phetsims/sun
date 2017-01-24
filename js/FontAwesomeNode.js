@@ -14,6 +14,7 @@ define( function( require ) {
   var Path = require( 'SCENERY/nodes/Path' );
   var Shape = require( 'KITE/Shape' );
   var sun = require( 'SUN/sun' );
+  var Tandem = require( 'TANDEM/Tandem' );
 
   // keys are fontawesome icon names, values are {string} SVG data
   // To add a new icon:
@@ -73,6 +74,8 @@ define( function( require ) {
       // so only cache a shape if it will persist for the lifetime of the simulation.
       enableCache: true
     }, options );
+
+    Tandem.indicateUninstrumentedCode();
 
     var shape;
     if ( options.enableCache ) {

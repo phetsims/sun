@@ -15,6 +15,7 @@ define( function( require ) {
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var Shape = require( 'KITE/Shape' );
   var sun = require( 'SUN/sun' );
+  var Tandem = require( 'TANDEM/Tandem' );
 
   /**
    * @param {Node} titleNode
@@ -36,6 +37,8 @@ define( function( require ) {
       barStroke: 'black',
       barLineWidth: 1
     }, options );
+
+    Tandem.indicateUninstrumentedCode();
 
     Node.call( this );
 

@@ -20,6 +20,7 @@ define( function( require ) {
   var sun = require( 'SUN/sun' );
   var Text = require( 'SCENERY/nodes/Text' );
   var Util = require( 'DOT/Util' );
+  var Tandem = require( 'TANDEM/Tandem' );
 
   // possible values for options.arrowsPosition
   var ARROWS_POSITION_VALUES = [
@@ -84,6 +85,7 @@ define( function( require ) {
     // validate options
     assert && assert( _.contains( ARROWS_POSITION_VALUES, options.arrowsPosition ), 'invalid arrowsPosition: ' + options.arrowsPosition );
     assert && assert( _.contains( VALUE_ALIGN_VALUES, options.valueAlign ), 'invalid valueAlign: ' + options.valueAlign );
+    Tandem.indicateUninstrumentedCode();
 
     var self = this;
 

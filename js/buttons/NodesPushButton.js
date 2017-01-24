@@ -18,6 +18,7 @@ define( function( require ) {
   var PushButtonInteractionStateProperty = require( 'SUN/buttons/PushButtonInteractionStateProperty' );
   var PushButtonModel = require( 'SUN/buttons/PushButtonModel' );
   var sun = require( 'SUN/sun' );
+  var Tandem = require( 'TANDEM/Tandem' );
 
   /**
    * @param {Node} idleNode
@@ -36,6 +37,8 @@ define( function( require ) {
       yAlign: 'center' // {string} how the nodes are vertically aligned: center, top, bottom
     }, options );
     options.children = [ idleNode, overNode, pressedNode, disabledNode ];
+
+    Tandem.indicateUninstrumentedCode();
 
     Node.call( this );
 

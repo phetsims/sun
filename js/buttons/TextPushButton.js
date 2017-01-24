@@ -13,6 +13,7 @@ define( function( require ) {
   var RectangularPushButton = require( 'SUN/buttons/RectangularPushButton' );
   var sun = require( 'SUN/sun' );
   var Text = require( 'SCENERY/nodes/Text' );
+  var Tandem = require( 'TANDEM/Tandem' );
 
   /**
    * @param {string} text
@@ -25,6 +26,8 @@ define( function( require ) {
       textFill: 'black',
       maxTextWidth: null
     }, options );
+
+    Tandem.indicateUninstrumentedCode();
 
     var textNode = new Text( text, { font: options.font, fill: options.textFill, maxWidth: options.maxTextWidth } );
     RectangularPushButton.call( this, _.extend( { content: textNode }, options ) );

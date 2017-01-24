@@ -11,12 +11,15 @@ define( function( require ) {
   var DerivedProperty = require( 'AXON/DerivedProperty' );
   var inherit = require( 'PHET_CORE/inherit' );
   var sun = require( 'SUN/sun' );
+  var Tandem = require( 'TANDEM/Tandem' );
 
   /**
    * @param {ButtonModel} buttonModel
    * @constructor
    */
   function StickyToggleButtonInteractionStateProperty( buttonModel ) {
+    Tandem.indicateUninstrumentedCode();
+
     DerivedProperty.call(
       this,
       [ buttonModel.overProperty, buttonModel.downProperty, buttonModel.enabledProperty, buttonModel.valueProperty ],

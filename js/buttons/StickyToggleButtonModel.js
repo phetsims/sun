@@ -17,6 +17,7 @@ define( function( require ) {
   var inherit = require( 'PHET_CORE/inherit' );
   var Property = require( 'AXON/Property' );
   var sun = require( 'SUN/sun' );
+  var Tandem = require( 'TANDEM/Tandem' );
 
   /**
    * @param {Object} valueUp value when the toggle is in the 'up' position
@@ -31,6 +32,8 @@ define( function( require ) {
     this.valueUp = valueUp;
     this.valueDown = valueDown;
     this.valueProperty = valueProperty;
+
+    Tandem.indicateUninstrumentedCode();
 
     ButtonModel.call( this );
 

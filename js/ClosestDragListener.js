@@ -18,6 +18,7 @@ define( function( require ) {
   // modules
   var inherit = require( 'PHET_CORE/inherit' );
   var sun = require( 'SUN/sun' );
+  var Tandem = require( 'TANDEM/Tandem' );
 
   /**
    * @constructor
@@ -31,6 +32,8 @@ define( function( require ) {
 
     // @private
     this.items = [];
+
+    Tandem.indicateUninstrumentedCode();
   }
 
   sun.register( 'ClosestDragListener', ClosestDragListener );

@@ -19,6 +19,8 @@ define( function( require ) {
   var Input = require( 'SCENERY/input/Input' );
   var inherit = require( 'PHET_CORE/inherit' );
   var sun = require( 'SUN/sun' );
+  var Tandem = require( 'TANDEM/Tandem' );
+  Tandem.indicateUninstrumentedCode();
 
   /**
    * @param {*} buttonModel any object with 'downProperty' and 'overProperty' boolean attributes

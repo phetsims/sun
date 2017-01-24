@@ -16,6 +16,8 @@ define( function( require ) {
   var inherit = require( 'PHET_CORE/inherit' );
   var RectangularStickyToggleButton = require( 'SUN/buttons/RectangularStickyToggleButton' );
   var sun = require( 'SUN/sun' );
+  var Tandem = require( 'TANDEM/Tandem' );
+  Tandem.indicateUninstrumentedCode();
 
   /**
    * @param {Property.<boolean>} booleanProperty

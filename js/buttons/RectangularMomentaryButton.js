@@ -15,6 +15,7 @@ define( function( require ) {
   var MomentaryButtonModel = require( 'SUN/buttons/MomentaryButtonModel' );
   var RectangularButtonView = require( 'SUN/buttons/RectangularButtonView' );
   var sun = require( 'SUN/sun' );
+  var Tandem = require( 'TANDEM/Tandem' );
 
   /**
    * @param {Object} valueOff - value when the button is in the off state
@@ -24,6 +25,8 @@ define( function( require ) {
    * @constructor
    */
   function RectangularMomentaryButton( valueOff, valueOn, property, options ) {
+    Tandem.indicateUninstrumentedCode();
+
     var buttonModel = new MomentaryButtonModel( valueOff, valueOn, property );
     RectangularButtonView.call( this, buttonModel, new MomentaryButtonInteractionStateProperty( buttonModel ), options );
   }

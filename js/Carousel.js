@@ -27,6 +27,7 @@ define( function( require ) {
   var sun = require( 'SUN/sun' );
   var Util = require( 'DOT/Util' );
   var VSeparator = require( 'SUN/VSeparator' );
+  var Tandem = require( 'TANDEM/Tandem' );
 
   // constants
   var DEFAULT_OPTIONS = {
@@ -81,6 +82,7 @@ define( function( require ) {
 
     // Validate options
     assert && assert( _.contains( [ 'horizontal', 'vertical' ], options.orientation ), 'invalid orientation=' + options.orientation );
+    Tandem.indicateUninstrumentedCode();
 
     // To improve readability
     var isHorizontal = ( options.orientation === 'horizontal' );
