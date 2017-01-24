@@ -54,8 +54,6 @@ define( function( require ) {
 
     options = _.extend( {}, DEFAULT_OPTIONS, options );
 
-    Tandem.validateOptions( options ); // The tandem is required when brand==='phet-io'
-
     assert && assert( _.contains( ALIGN_VALUES, options.align ), 'invalid align: ' + options.align );
 
     Node.call( this );

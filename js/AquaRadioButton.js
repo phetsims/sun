@@ -39,8 +39,6 @@ define( function( require ) {
       tandem: Tandem.tandemRequired()
     }, options );
 
-    Tandem.validateOptions( options );
-
     // selected node
     var selectedNode = new Node();
     var innerCircle = new Circle( options.radius / 3, { fill: options.centerColor } );

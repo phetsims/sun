@@ -40,8 +40,6 @@ define( function( require ) {
 
     assert && assert( !options.phetioValueType, 'phetioValueType should be specified in the property, not RadioButton options' );
 
-    Tandem.validateOptions( options ); // The tandem is required when brand==='phet-io'
-
     var self = this;
     Node.call( this );
 

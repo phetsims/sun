@@ -48,8 +48,6 @@ define( function( require ) {
     assert && assert( !options.hasOwnProperty( 'children' ), 'Cannot pass in children to a RadioButtonGroup, ' +
                                                              'create siblings in the parent node instead' );
 
-    Tandem.validateOptions( options );
-
     // make sure every object in the content array has properties 'node' and 'value'
     assert && assert( _.every( contentArray, function( obj ) {
       return obj.hasOwnProperty( 'node' ) && obj.hasOwnProperty( 'value' );

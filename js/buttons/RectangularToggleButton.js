@@ -29,7 +29,9 @@ define( function( require ) {
    */
   function RectangularToggleButton( valueOff, valueOn, property, options ) {
 
-    Tandem.validateOptions( options ); // The tandem is required when brand==='phet-io'
+    options = _.extend( {
+      tandem: Tandem.tandemRequired()
+    }, options );
 
     // @public (phet-io)
     this.toggleButtonModel = new ToggleButtonModel( valueOff, valueOn, property, options );

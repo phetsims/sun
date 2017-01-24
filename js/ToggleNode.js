@@ -32,7 +32,6 @@ define( function( require ) {
       tandem: Tandem.tandemRequired()
     }, options );
     TandemNode.call( this, { tandem: options.tandem.createSupertypeTandem() } );
-    Tandem.validateOptions( options );
 
     // align centers of the nodes, see https://github.com/phetsims/sun/issues/272
     falseNode.center = trueNode.center;

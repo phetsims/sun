@@ -29,7 +29,6 @@ define( function( require ) {
     options.content = new ToggleNode( trueNode, falseNode, booleanProperty, {
       tandem: options.tandem.createTandem( 'toggleNode' )
     } );
-    Tandem.validateOptions( options );
 
     RectangularToggleButton.call( this, false, true, booleanProperty, options );
   }

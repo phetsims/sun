@@ -31,8 +31,8 @@ define( function( require ) {
    */
   function RoundStickyToggleButton( valueUp, valueDown, property, options ) {
 
-    Tandem.validateOptions( options ); // The tandem is required when brand==='phet-io'
-    
+    options = _.extend( { tandem: Tandem.tandemRequired() }, options );
+
     var buttonModel = new StickyToggleButtonModel( valueUp, valueDown, property );
     RoundButtonView.call( this, buttonModel, new StickyToggleButtonInteractionStateProperty( buttonModel ), options );
 

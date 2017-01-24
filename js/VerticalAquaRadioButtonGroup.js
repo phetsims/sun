@@ -35,8 +35,6 @@ define( function( require ) {
       tandem: Tandem.tandemRequired()
     }, options );
 
-    Tandem.validateOptions( options );
-
     var width = 0;
     for ( var i = 0; i < items.length; i++ ) {
       width = Math.max( width, items[ i ].node.width );

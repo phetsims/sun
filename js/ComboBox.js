@@ -77,7 +77,6 @@ define( function( require ) {
     }, options );
 
     // validate option values
-    Tandem.validateOptions( options ); // The tandem is required when brand==='phet-io'
     assert && assert( options.disabledOpacity > 0 && options.disabledOpacity < 1, 'invalid disabledOpacity: ' + options.disabledOpacity );
 
     Node.call( self );
@@ -165,7 +164,7 @@ define( function( require ) {
       // Create tandems for each ComboBoxItemNode
       var itemNodeTandem = null;
 
-      // We don't want assert if running in phet brand, same if as Tandem.validateOptions
+      // We don't want assert if running in phet brand
       if ( phet.chipper.brand === 'phet-io' && phet.phetio && phet.phetio.queryParameters
            && phet.phetio.queryParameters.phetioValidateTandems ) {
         assert && assert( itemNodeOptions.tandemName, 'For instrumented ComboBoxes, ItemNodes must have a tandemName' );

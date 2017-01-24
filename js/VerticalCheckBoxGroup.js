@@ -40,8 +40,6 @@ define( function( require ) {
       tandem: Tandem.tandemRequired()
     }, options );
 
-    Tandem.validateOptions( options ); // The tandem is required when brand==='phet-io'
-
     // compute max width of the items
     var maxWidth = 0;
     for ( var i = 0; i < items.length; i++ ) {

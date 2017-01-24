@@ -31,7 +31,6 @@ define( function( require ) {
 
     var self = this;
     options = _.extend( { tandem: Tandem.tandemRequired() }, options );
-    Tandem.validateOptions( options ); // The tandem is required when brand==='phet-io'
 
     this.buttonModel = new MomentaryButtonModel( valueOff, valueOn, property );
     RoundButtonView.call( this, this.buttonModel, new MomentaryButtonInteractionStateProperty( this.buttonModel ), options );

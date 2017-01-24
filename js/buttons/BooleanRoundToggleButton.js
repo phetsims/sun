@@ -26,8 +26,6 @@ define( function( require ) {
       tandem: Tandem.tandemRequired()
     }, options );
 
-    // TODO: Tandem.validateOptions(options);
-
     //TODO ToggleNode links to booleanProperty, must be cleaned up in dispose
     assert && assert( !options.content, 'options.content cannot be set' );
     options.content = new ToggleNode( trueNode, falseNode, booleanProperty, {

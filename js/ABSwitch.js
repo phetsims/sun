@@ -57,7 +57,6 @@ define( function( require ) {
     options.thumbFill = options.thumbFill ||
                         new LinearGradient( 0, 0, 0, options.switchSize.height ).addColorStop( 0, 'white' ).addColorStop( 1, 'rgb(200,200,200)' );
 
-    Tandem.validateOptions( options );
     Node.call( this );
 
     // property for adapting to OnOffSwitch. 'true' is 'B', the object on the 'on' end of the OnOffSwitch.
