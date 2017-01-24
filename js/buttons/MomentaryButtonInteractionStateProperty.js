@@ -13,13 +13,13 @@ define( function( require ) {
   var DerivedProperty = require( 'AXON/DerivedProperty' );
   var sun = require( 'SUN/sun' );
   var Tandem = require( 'TANDEM/Tandem' );
-  Tandem.indicateUninstrumentedCode();
 
   /**
    * @param {ButtonModel} buttonModel
    * @constructor
    */
   function MomentaryButtonInteractionStateProperty( buttonModel ) {
+    Tandem.indicateUninstrumentedCode();
 
     DerivedProperty.call(
       this,

@@ -20,7 +20,6 @@ define( function( require ) {
   var Property = require( 'AXON/Property' );
   var sun = require( 'SUN/sun' );
   var Tandem = require( 'TANDEM/Tandem' );
-  Tandem.indicateUninstrumentedCode();
 
   /**
    * @param {Node} contentNode that will be shown or hidden as the accordion box is expanded/collapsed.
@@ -73,6 +72,7 @@ define( function( require ) {
       contentYSpacing: 8 // vertical space between content and title+button, ignored if showTitleWhenExpanded is false
 
     }, options );
+    Tandem.indicateUninstrumentedCode();
 
     // verify string options
     assert && assert( options.buttonAlign === 'left' || options.buttonAlign === 'right' );

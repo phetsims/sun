@@ -14,7 +14,6 @@ define( function( require ) {
   var Emitter = require( 'AXON/Emitter' );
   var sun = require( 'SUN/sun' );
   var Tandem = require( 'TANDEM/Tandem' );
-  Tandem.indicateUninstrumentedCode();
 
   /**
    * @param {Object} valueOff - value when the button is in the off state
@@ -23,6 +22,7 @@ define( function( require ) {
    * @constructor
    */
   function MomentaryButtonModel( valueOff, valueOn, valueProperty ) {
+    Tandem.indicateUninstrumentedCode();
 
     var self = this;
     ButtonModel.call( self );

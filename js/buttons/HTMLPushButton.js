@@ -15,7 +15,6 @@ define( function( require ) {
   var HTMLText = require( 'SCENERY/nodes/HTMLText' );
   var sun = require( 'SUN/sun' );
   var Tandem = require( 'TANDEM/Tandem' );
-  Tandem.indicateUninstrumentedCode();
 
   /**
    * @param {string} html
@@ -23,6 +22,8 @@ define( function( require ) {
    * @constructor
    */
   function HTMLPushButton( html, options ) {
+    Tandem.indicateUninstrumentedCode();
+
     options = _.extend( {
       textFill: 'black'
     }, options );

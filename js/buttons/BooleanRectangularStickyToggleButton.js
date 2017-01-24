@@ -17,7 +17,6 @@ define( function( require ) {
   var RectangularStickyToggleButton = require( 'SUN/buttons/RectangularStickyToggleButton' );
   var sun = require( 'SUN/sun' );
   var Tandem = require( 'TANDEM/Tandem' );
-  Tandem.indicateUninstrumentedCode();
 
   /**
    * @param {Property.<boolean>} booleanProperty
@@ -25,6 +24,8 @@ define( function( require ) {
    * @constructor
    */
   function BooleanRectangularStickyToggleButton( booleanProperty, options ) {
+    Tandem.indicateUninstrumentedCode();
+
     RectangularStickyToggleButton.call( this, false, true, booleanProperty, options );
   }
 

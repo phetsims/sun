@@ -12,13 +12,13 @@ define( function( require ) {
   var Property = require( 'AXON/Property' );
   var sun = require( 'SUN/sun' );
   var Tandem = require( 'TANDEM/Tandem' );
-  Tandem.indicateUninstrumentedCode();
 
   /**
    * @param {Object} [options]
    * @constructor
    */
   function ButtonModel( options ) {
+    Tandem.indicateUninstrumentedCode();
 
     options = _.extend( {
       // {function} called on pointer down

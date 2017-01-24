@@ -17,7 +17,6 @@ define( function( require ) {
   var Shape = require( 'KITE/Shape' );
   var sun = require( 'SUN/sun' );
   var Tandem = require( 'TANDEM/Tandem' );
-  Tandem.indicateUninstrumentedCode();
 
   // constants
   var DEFAULT_ARROW_HEIGHT = 20;
@@ -29,6 +28,7 @@ define( function( require ) {
    * @constructor
    */
   function ArrowButton( direction, callback, options ) {
+    Tandem.indicateUninstrumentedCode();
 
     options = _.extend( {
 
