@@ -19,14 +19,14 @@ define( function( require ) {
   var Input = require( 'SCENERY/input/Input' );
   var inherit = require( 'PHET_CORE/inherit' );
   var sun = require( 'SUN/sun' );
-  var Tandem = require( 'TANDEM/Tandem' );
+  // var Tandem = require( 'TANDEM/Tandem' );
 
   /**
    * @param {*} buttonModel any object with 'downProperty' and 'overProperty' boolean attributes
    * @constructor
    */
   function ButtonListener( buttonModel ) {
-    Tandem.indicateUninstrumentedCode();
+    // Tandem.indicateUninstrumentedCode();
 
     this.buttonModel = buttonModel; // @private
     var self = this;

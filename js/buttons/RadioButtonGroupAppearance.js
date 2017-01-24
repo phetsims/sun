@@ -13,12 +13,12 @@ define( function( require ) {
   // modules
   var Color = require( 'SCENERY/util/Color' );
   var sun = require( 'SUN/sun' );
-  var Tandem = require( 'TANDEM/Tandem' );
+  // var Tandem = require( 'TANDEM/Tandem' );
 
   // constants
   var DISABLED_OPACITY = 0.3;
 
-  Tandem.indicateUninstrumentedCode();
+  // Tandem.indicateUninstrumentedCode();
 
   /**
    * Strategy for buttons that look flat, i.e. no shading or highlighting, but

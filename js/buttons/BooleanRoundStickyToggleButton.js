@@ -16,7 +16,7 @@ define( function( require ) {
   var inherit = require( 'PHET_CORE/inherit' );
   var RoundStickyToggleButton = require( 'SUN/buttons/RoundStickyToggleButton' );
   var sun = require( 'SUN/sun' );
-  var Tandem = require( 'TANDEM/Tandem' );
+  // var Tandem = require( 'TANDEM/Tandem' );
 
   /**
    * @param {Property.<boolean>} booleanProperty
@@ -24,7 +24,7 @@ define( function( require ) {
    * @constructor
    */
   function BooleanRoundStickyToggleButton( booleanProperty, options ) {
-    Tandem.indicateUninstrumentedCode();
+    // Tandem.indicateUninstrumentedCode();
     RoundStickyToggleButton.call( this, false, true, booleanProperty, options );
   }
 

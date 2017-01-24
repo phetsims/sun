@@ -25,7 +25,7 @@ define( function( require ) {
   var Shape = require( 'KITE/Shape' );
   var sun = require( 'SUN/sun' );
   var Vector2 = require( 'DOT/Vector2' );
-  var Tandem = require( 'TANDEM/Tandem' );
+  // var Tandem = require( 'TANDEM/Tandem' );
 
   // constants
   var HIGHLIGHT_GRADIENT_LENGTH = 5; // In screen coords, which are roughly pixels.
@@ -74,7 +74,7 @@ define( function( require ) {
       contentAppearanceStrategy: RoundButtonView.fadeContentWhenDisabled
     }, options );
 
-    Tandem.indicateUninstrumentedCode();
+    // Tandem.indicateUninstrumentedCode();
 
     Node.call( this );
     var content = options.content; // convenience variable

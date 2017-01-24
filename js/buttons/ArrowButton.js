@@ -16,7 +16,7 @@ define( function( require ) {
   var RectangularPushButton = require( 'SUN/buttons/RectangularPushButton' );
   var Shape = require( 'KITE/Shape' );
   var sun = require( 'SUN/sun' );
-  var Tandem = require( 'TANDEM/Tandem' );
+  // var Tandem = require( 'TANDEM/Tandem' );
 
   // constants
   var DEFAULT_ARROW_HEIGHT = 20;
@@ -28,7 +28,7 @@ define( function( require ) {
    * @constructor
    */
   function ArrowButton( direction, callback, options ) {
-    Tandem.indicateUninstrumentedCode();
+    // Tandem.indicateUninstrumentedCode();
 
     options = _.extend( {
 
