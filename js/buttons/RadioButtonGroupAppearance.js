@@ -18,8 +18,6 @@ define( function( require ) {
   // constants
   var DISABLED_OPACITY = 0.3;
 
-  // Tandem.indicateUninstrumentedCode();
-
   /**
    * Strategy for buttons that look flat, i.e. no shading or highlighting, but
    * that change color on mouseover, press, etc.

@@ -12,14 +12,12 @@ define( function( require ) {
   var inherit = require( 'PHET_CORE/inherit' );
   var DerivedProperty = require( 'AXON/DerivedProperty' );
   var sun = require( 'SUN/sun' );
-  // var Tandem = require( 'TANDEM/Tandem' );
 
   /**
    * @param {ButtonModel} buttonModel
    * @constructor
    */
   function MomentaryButtonInteractionStateProperty( buttonModel ) {
-    // Tandem.indicateUninstrumentedCode();
 
     DerivedProperty.call(
       this,
