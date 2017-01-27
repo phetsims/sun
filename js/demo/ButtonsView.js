@@ -235,7 +235,7 @@ define( function( require ) {
     } );
     this.addChild( heldButtonsBox );
 
-    var upperLeftAlignTextNode = new Text( 'upper left align test', { font: BUTTON_CAPTION_FONT } )
+    var upperLeftAlignTextNode = new Text( 'upper left align test', { font: BUTTON_CAPTION_FONT } );
     var upperLeftContentButton = new RectangularPushButton( {
       content: upperLeftAlignTextNode,
       listener: function() { message( 'Upper left alignment button fired ' ); },
@@ -246,7 +246,7 @@ define( function( require ) {
       minHeight: upperLeftAlignTextNode.height * 2
     } );
 
-    var lowerRightAlignTextNode = new Text( 'lower right align test', { font: BUTTON_CAPTION_FONT } )
+    var lowerRightAlignTextNode = new Text( 'lower right align test', { font: BUTTON_CAPTION_FONT } );
     var lowerRightContentButton = new RectangularPushButton( {
       content: lowerRightAlignTextNode,
       listener: function() { message( 'Lower right alignment button fired ' ); },
