@@ -1,7 +1,7 @@
 // Copyright 2014-2015, University of Colorado Boulder
 
 /**
- * Radio buttons. See ButtonsDemoView for example usage.
+ * Radio buttons. See ButtonsView for example usage.
  *
  * This type creates a group of radio buttons in either a horizontal or vertical formation.
  * Each button inherits from RectangularButtonView, and can take a Scenery Node as its content.

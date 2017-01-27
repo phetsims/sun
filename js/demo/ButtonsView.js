@@ -233,8 +233,40 @@ define( function( require ) {
       left: flatButtonsBox.right + 20,
       top:  flatButtonsBox.top
     } );
-
     this.addChild( heldButtonsBox );
+
+    var upperLeftAlignTextNode = new Text( 'upper left align test', { font: BUTTON_CAPTION_FONT } )
+    var upperLeftContentButton = new RectangularPushButton( {
+      content: upperLeftAlignTextNode,
+      listener: function() { message( 'Upper left alignment button fired ' ); },
+      baseColor: new Color( 0, 179, 179 ),
+      xAlign: 'left',
+      yAlign: 'top',
+      minWidth: upperLeftAlignTextNode.width * 1.5,
+      minHeight: upperLeftAlignTextNode.height * 2
+    } );
+
+    var lowerRightAlignTextNode = new Text( 'lower right align test', { font: BUTTON_CAPTION_FONT } )
+    var lowerRightContentButton = new RectangularPushButton( {
+      content: lowerRightAlignTextNode,
+      listener: function() { message( 'Lower right alignment button fired ' ); },
+      baseColor: new Color( 0, 179, 179 ),
+      xAlign: 'right',
+      yAlign: 'bottom',
+      minWidth: lowerRightAlignTextNode.width * 1.5,
+      minHeight: lowerRightAlignTextNode.height * 2,
+      top: upperLeftContentButton.height + 10
+    } );
+
+    var alignTextButtonsBox = new VBox( {
+      children: [ upperLeftContentButton, lowerRightContentButton ],
+      spacing: 10,
+      left: heldButtonsBox.left,
+      top: heldButtonsBox.bottom + 10,
+      align: 'left'
+    } );
+    this.addChild( alignTextButtonsBox );
+
 
     //===================================================================================
     // Miscellaneous other button examples
@@ -305,7 +337,7 @@ define( function( require ) {
       children: [ roundStickyToggleButton, booleanRectangularStickyToggleButton ],
       spacing: 15,
       left: miscButtonsBox.right + 25,
-      top: miscButtonsBox.top
+      top: alignTextButtonsBox.bottom + 10
     } );
     this.addChild( toggleButtonsBox );
 
@@ -369,6 +401,7 @@ define( function( require ) {
       booleanRectangularStickyToggleButton.enabled = enabled;
       fireQuicklyWhenHeldButton.enabled = enabled;
       fireSlowlyWhenHeldButton.enabled = enabled;
+      upperLeftContentButton.enabled = enabled;
       rectangularMomentaryButton.enabled = enabled;
       roundMomentaryButton.enabled = enabled;
     } );

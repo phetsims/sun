@@ -10,6 +10,8 @@ define( function( require ) {
   'use strict';
 
   // modules
+  var AlignBox = require( 'SCENERY/nodes/AlignBox' );
+  var Bounds2 = require( 'DOT/Bounds2' );
   var ButtonListener = require( 'SUN/buttons/ButtonListener' );
   var Color = require( 'SCENERY/util/Color' );
   var ColorConstants = require( 'SUN/ColorConstants' );
@@ -63,6 +65,8 @@ define( function( require ) {
       touchAreaYDilation: 0,
       stroke: undefined, // undefined by default, which will cause a stroke to be derived from the base color
       lineWidth: 0.5, // Only meaningful if stroke is non-null
+      xAlign: 'center',
+      yAlign: 'center',
 
       // Strategy for controlling the button's appearance, excluding any
       // content.  This can be a stock strategy from this file or custom.  To
@@ -110,8 +114,16 @@ define( function( require ) {
 
     // Add the content to the button.
     if ( content ) {
-      content.center = button.center;
-      this.addChild( content );
+      this.addChild( new AlignBox( content, {
+        alignBounds: new Bounds2(
+          options.xMargin,
+          options.yMargin,
+          button.width - options.xMargin,
+          buttonHeight - options.yMargin
+        ),
+        xAlign: options.xAlign,
+        yAlign: options.yAlign
+      } ) );
     }
 
     // Hook up the strategy that will control the content appearance.
