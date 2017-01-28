@@ -87,11 +87,6 @@ define( function( require ) {
 
     var content = options.content; // convenience variable
 
-    // For performance reasons, the content should be unpickable.
-    if ( content ) {
-      content.pickable = false;
-    }
-
     // Hook up the input listener
     this.addInputListener( new ButtonListener( buttonModel ) );
 
@@ -109,11 +104,14 @@ define( function( require ) {
     } );
     this.addChild( button );
 
-    // Hook up the strategy that will control the basic button appearance.
-    options.buttonAppearanceStrategy( button, interactionStateProperty, this.baseColorProperty, options );
-
     // Add the content to the button.
     if ( content ) {
+
+      // For performance reasons, the content should be unpickable.
+      if ( content ) {
+        content.pickable = false;
+      }
+
       this.addChild( new AlignBox( content, {
         alignBounds: new Bounds2(
           options.xMargin,
@@ -125,6 +123,9 @@ define( function( require ) {
         yAlign: options.yAlign
       } ) );
     }
+
+    // Hook up the strategy that will control the basic button appearance.
+    options.buttonAppearanceStrategy( button, interactionStateProperty, this.baseColorProperty, options );
 
     // Hook up the strategy that will control the content appearance.
     options.contentAppearanceStrategy( content, interactionStateProperty, options );

@@ -69,11 +69,12 @@ define( function( require ) {
       { value: 'ONE', node: new Text( 'ONE', { font: BUTTON_FONT } ) },
       { value: 'TWO', node: new Text( 'TWO', { font: BUTTON_FONT } ) },
       { value: 'THREE', node: new Text( 'THREE', { font: BUTTON_FONT } ) },
-      { value: 'FOUR', node: new Text( 'FOUR', { font: BUTTON_FONT } ) }
+      { value: '4', node: new Text( '4', { font: BUTTON_FONT } ) }
     ];
     var radioButtonGroup = new RadioButtonGroup( radioButtonProperty, radioButtonContent, {
       orientation: 'vertical',
-      selectedLineWidth: 4
+      selectedLineWidth: 4,
+      buttonContentXAlign: 'left'
     } );
     var radioButtonPanel = new Panel( radioButtonGroup, {
       stroke: 'black',
@@ -210,9 +211,7 @@ define( function( require ) {
       baseColor: new Color( 114, 132, 62 ),
       fireOnHold: true,
       fireOnHoldDelay: 100,
-      fireOnHoldInterval: 50,
-      left: buttonE.left,
-      top: buttonE.bottom + 10
+      fireOnHoldInterval: 50
     } );
 
     var fireSlowlyOnHoldCount = 0;
@@ -223,13 +222,13 @@ define( function( require ) {
       fireOnHold: true,
       fireOnHoldDelay: 600,
       fireOnHoldInterval: 300,
-      left: fireQuicklyWhenHeldButton.left,
       top: fireQuicklyWhenHeldButton.bottom + 10
     } );
 
     var heldButtonsBox = new VBox( {
       children: [ fireQuicklyWhenHeldButton, fireSlowlyWhenHeldButton ],
       spacing: 10,
+      align: 'left',
       left: flatButtonsBox.right + 20,
       top:  flatButtonsBox.top
     } );
@@ -402,6 +401,7 @@ define( function( require ) {
       fireQuicklyWhenHeldButton.enabled = enabled;
       fireSlowlyWhenHeldButton.enabled = enabled;
       upperLeftContentButton.enabled = enabled;
+      lowerRightContentButton.enabled = enabled;
       rectangularMomentaryButton.enabled = enabled;
       roundMomentaryButton.enabled = enabled;
     } );

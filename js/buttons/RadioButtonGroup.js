@@ -108,6 +108,10 @@ define( function( require ) {
       buttonContentXMargin: 5,
       buttonContentYMargin: 5,
 
+      // alignment of the content nodes *within* each button
+      buttonContentXAlign: 'center',
+      buttonContentYAlign: 'center',
+
       // TouchArea expansion
       touchAreaXDilation: 0,
       touchAreaYDilation: 0,
@@ -141,17 +145,13 @@ define( function( require ) {
     var buttonOptions = _.pick( options, _.keys( defaultOptions ) );
 
     // calculate the maximum width and height of the content so we can make all radio buttons the same size
-    var maxWidth = _.max( contentArray, function( content ) { return content.node.width; } ).node.width;
-    var maxHeight = _.max( contentArray, function( content ) { return content.node.height; } ).node.height;
+    var widestContentWidth = _.max( contentArray, function( content ) { return content.node.width; } ).node.width;
+    var tallestContentHeight = _.max( contentArray, function( content ) { return content.node.height; } ).node.height;
 
     // make sure all radio buttons are the same size and create the RadioButtons
     var buttons = [];
     var button;
     for ( i = 0; i < contentArray.length; i++ ) {
-
-      // each individual radio button will have a different margin to make sure they are all the same size
-      var xMargin = ( ( maxWidth - contentArray[ i ].node.width ) / 2 ) + options.buttonContentXMargin;
-      var yMargin = ( ( maxHeight - contentArray[ i ].node.height ) / 2 ) + options.buttonContentYMargin;
 
       assert && assert( !contentArray[ i ].hasOwnProperty( 'phetioValueType' ), 'phetioValueType should be provided by ' +
                                                                                 'the property passed to the ' +
@@ -167,8 +167,12 @@ define( function( require ) {
 
       var radioButton = new RadioButtonGroupMember( property, contentArray[ i ].value, _.extend( {
         content: contentArray[ i ].node,
-        xMargin: xMargin,
-        yMargin: yMargin,
+        xMargin: options.buttonContentXMargin,
+        yMargin: options.buttonContentYMargin,
+        xAlign: options.buttonContentXAlign,
+        yAlign: options.buttonContentYAlign,
+        minWidth: widestContentWidth + 2 * options.buttonContentXMargin,
+        minHeight: tallestContentHeight + 2 * options.buttonContentYMargin,
 
         // Pass through the tandem given the tandemName, but also support uninstrumented simulations
         tandem: options.tandem.createTandem( contentArray[ i ].tandemName || ('radioButtonGroupMember' + i) ),
@@ -177,8 +181,8 @@ define( function( require ) {
 
       // ensure the buttons don't resize when selected vs unselected by adding a rectangle with the max size
       var maxLineWidth = Math.max( options.selectedLineWidth, options.deselectedLineWidth );
-      var maxButtonWidth = maxLineWidth + contentArray[ i ].node.width + xMargin * 2;
-      var maxButtonHeight = maxLineWidth + contentArray[ i ].node.height + yMargin * 2;
+      var maxButtonWidth = maxLineWidth + widestContentWidth + options.buttonContentXMargin * 2;
+      var maxButtonHeight = maxLineWidth + tallestContentHeight + options.buttonContentYMargin * 2;
       var boundingRect = new Rectangle( 0, 0, maxButtonWidth, maxButtonHeight, {
         fill: 'rgba(0,0,0,0)',
         center: radioButton.center
@@ -202,11 +206,21 @@ define( function( require ) {
         // override the touch and mouse areas defined in RectangularButtonView
         // extra width is added to the SingleRadioButtons so they don't change size if the line width changes,
         // that is why lineWidth is subtracted from the width and height when calculating these new areas
-        radioButton.touchArea = Shape.rectangle( -xDilation, -yDilation, button.width + 2 * xDilation - maxLineWidth, button.height + 2 * yDilation - maxLineWidth );
+        radioButton.touchArea = Shape.rectangle(
+          -xDilation,
+          -yDilation,
+          button.width + 2 * xDilation - maxLineWidth,
+          button.height + 2 * yDilation - maxLineWidth
+        );
 
         xDilation = options.mouseAreaXDilation;
         yDilation = options.mouseAreaYDilation;
-        radioButton.mouseArea = Shape.rectangle( -xDilation, -yDilation, button.width + 2 * xDilation - maxLineWidth, button.height + 2 * yDilation - maxLineWidth );
+        radioButton.mouseArea = Shape.rectangle(
+          -xDilation,
+          -yDilation,
+          button.width + 2 * xDilation - maxLineWidth,
+          button.height + 2 * yDilation - maxLineWidth
+        );
 
         // make sure the label mouse and touch areas don't block the expanded button touch and mouse areas
         label.pickable = false;
