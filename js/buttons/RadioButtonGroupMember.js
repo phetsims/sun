@@ -11,7 +11,6 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var AccessiblePeer = require( 'SCENERY/accessibility/AccessiblePeer' );
   var Color = require( 'SCENERY/util/Color' );
   var ColorConstants = require( 'SUN/ColorConstants' );
   var inherit = require( 'PHET_CORE/inherit' );
@@ -32,8 +31,6 @@ define( function( require ) {
    * @constructor
    */
   function RadioButtonGroupMember( property, value, options ) {
-
-    var self = this;
 
     options = _.extend( {
       // The fill for the rectangle behind the radio buttons.  Default color is bluish color, as in the other button library.
@@ -64,9 +61,6 @@ define( function( require ) {
       buttonAppearanceStrategy: RadioButtonGroupAppearance.defaultRadioButtonsAppearance,
       contentAppearanceStrategy: RadioButtonGroupAppearance.contentAppearanceStrategy,
 
-      // invisible label for the radio button group member for accessibility
-      accessibleLabel: '',
-
       tandem: Tandem.tandemRequired()
     }, options );
 
@@ -85,39 +79,6 @@ define( function( require ) {
     this.radioButtonGroupMemberTandem = options.tandem;
     this.radioButtonGroupMemberTandem && this.radioButtonGroupMemberTandem.addInstance( this, TRadioButtonGroupMember( property.phetioValueType ) );
 
-    // outfit a11y
-    this.accessibleContent = {
-      createPeer: function( accessibleInstance ) {
-        var trail = accessibleInstance.trail;
-        var uniqueId = trail.getUniqueId();
-        var parentId = accessibleInstance.parent.id;
-
-        // The element in the parallel DOM needs to look like this:
-        //   <input type="radio" role="radio" name="parentId" id="radio-button-id" aria-label="accessibleLabel">
-
-        // the focusable DOM element needs to be the input
-        var domElement = document.createElement( 'input' );
-        domElement.id = 'radio-button-' + uniqueId;
-        domElement.setAttribute( 'type', 'radio' );
-        domElement.setAttribute( 'role', 'radio' );
-        domElement.setAttribute( 'name', parentId );
-        domElement.setAttribute( 'aria-label', options.accessibleLabel );
-
-        // listen for keyboard events and fire model
-        domElement.addEventListener( 'click', function() {
-          self.radioButtonGroupMemberModel.fire();
-        } );
-
-        // link the 'checked' and 'aria-checked' attribute to the property value
-        property.link( function( newValue ) {
-          var checked = newValue === value;
-          domElement.setAttribute( 'aria-checked', checked );
-          domElement.checked = checked;
-        } );
-
-        return new AccessiblePeer( accessibleInstance, domElement );
-      }
-    };
   }
 
   sun.register( 'RadioButtonGroupMember', RadioButtonGroupMember );
