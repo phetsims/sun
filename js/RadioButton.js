@@ -15,7 +15,6 @@ define( function( require ) {
   var Node = require( 'SCENERY/nodes/Node' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var sun = require( 'SUN/sun' );
-  var AccessiblePeer = require( 'SCENERY/accessibility/AccessiblePeer' );
   var Tandem = require( 'TANDEM/Tandem' );
 
   // phet-io modules
@@ -34,8 +33,7 @@ define( function( require ) {
     options = _.extend( {
       cursor: 'pointer',
       tandem: Tandem.tandemRequired(),
-      enabled: true,
-      accessibleLabel: '' // invisible label for the radio button, for a11y
+      enabled: true
     }, options );
 
     assert && assert( !options.phetioValueType, 'phetioValueType should be specified in the property, not RadioButton options' );
@@ -85,39 +83,6 @@ define( function( require ) {
       property.unlink( syncWithModel );
     };
 
-    // outfit a11y
-    this.accessibleContent = {
-      createPeer: function( accessibleInstance ) {
-        var trail = accessibleInstance.trail;
-        var uniqueId = trail.getUniqueId();
-        var parentId = accessibleInstance.parent.id;
-
-        // The element in the parallel DOM needs to look like this:
-        // <input type="radio" role="radio" name="parentId" id="radio-button-id" aria-label="accessibleLabel">
-
-        // create the dom element as an input of type radio
-        var domElement = document.createElement( 'input' );
-        domElement.id = 'radio-button-' + uniqueId;
-        domElement.setAttribute( 'type', 'radio' );
-        domElement.setAttribute( 'role', 'radio' );
-        domElement.setAttribute( 'name', parentId ); // required to distinguish from other groups
-        domElement.setAttribute( 'aria-label', options.accessibleLabel );
-
-        // listen for keyboard events and fire model
-        domElement.addEventListener( 'click', function() {
-          fire();
-        } );
-
-        // link the 'checked' 'aria-checked' attribute to the property value
-        property.link( function( newValue ) {
-          var checked = newValue === value;
-          domElement.setAttribute( 'aria-checked', checked );
-          domElement.checked = checked;
-        } );
-
-        return new AccessiblePeer( accessibleInstance, domElement );
-      }
-    };
   }
 
   sun.register( 'RadioButton', RadioButton );
