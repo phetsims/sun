@@ -36,7 +36,6 @@ define( function( require ) {
       checkBoxColor: 'black',
       align: 'left',
       boxWidth: 21,
-      tabIndex: '0', // '0' places the item in the default accessible navigation order, '-1' removes it from navigation
       tandem: Tandem.tandemRequired()
     }, options );
 
@@ -62,8 +61,6 @@ define( function( require ) {
           textDescription: items[ i ].label + ': Checkbox (' + 'unchecked' + ')',
           checkBoxColor: options.checkBoxColor,
           boxWidth: options.boxWidth,
-          tabIndex: options.tabIndex,
-          accessibleLabel: items[ i ].label,
           tandem: options.tandem.createTandem( items[ i ].tandemName || 'checkBox' )
         } );
         checkBox.mouseArea = checkBox.touchArea = Shape.bounds( checkBox.bounds.dilatedXY( 5, options.spacing / 2 ) );
