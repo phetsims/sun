@@ -10,13 +10,12 @@ define( function( require ) {
   var ButtonsView = require( 'SUN/demo/ButtonsView' );
   var ComponentsView = require( 'SUN/demo/ComponentsView' );
   var MemoryTestsView = require( 'SUN/demo/MemoryTestsView' );
+  var Property = require( 'AXON/Property' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var Screen = require( 'JOIST/Screen' );
   var Sim = require( 'JOIST/Sim' );
   var SimLauncher = require( 'JOIST/SimLauncher' );
   var sunQueryParameters = require( 'SUN/sunQueryParameters' );
-  var Property = require( 'AXON/Property' );
-  var Color = require( 'SCENERY/util/Color' );
 
   // strings
   var sunTitleString = require( 'string!SUN/sun.title' );
@@ -40,7 +39,7 @@ define( function( require ) {
         function( model ) {return new ButtonsView();},
         {
           name: 'Buttons',
-          backgroundColorProperty: new Property( Color.toColor( sunQueryParameters.backgroundColor ) ),
+          backgroundColorProperty: new Property( sunQueryParameters.backgroundColor ),
           homeScreenIcon: createScreenIcon( 'red' )
         }
       ),
@@ -51,7 +50,7 @@ define( function( require ) {
         function( model ) {return new ComponentsView();},
         {
           name: 'Components',
-          backgroundColorProperty: new Property( Color.toColor( sunQueryParameters.backgroundColor ) ),
+          backgroundColorProperty: new Property( sunQueryParameters.backgroundColor ),
           homeScreenIcon: createScreenIcon( 'yellow' )
         }
       ),
@@ -62,7 +61,7 @@ define( function( require ) {
         function( model ) {return new MemoryTestsView();},
         {
           name: 'Memory Tests',
-          backgroundColorProperty: new Property( Color.toColor( sunQueryParameters.backgroundColor ) ),
+          backgroundColorProperty: new Property( sunQueryParameters.backgroundColor ),
           homeScreenIcon: createScreenIcon( 'blue' )
         }
       )
