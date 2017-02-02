@@ -29,6 +29,10 @@ define( function( require ) {
   // phet-io modules
   var TNode = require( 'ifphetio!PHET_IO/types/scenery/nodes/TNode' );
 
+  // constants
+  var BUTTON_CONTENT_X_ALIGN_VALUES = [ 'center', 'left', 'right' ];
+  var BUTTON_CONTENT_Y_ALIGN_VALUES = [ 'center', 'top', 'bottom' ];
+
   /**
    * RadioButtonGroup constructor.
    *
@@ -76,7 +80,6 @@ define( function( require ) {
       // LayoutBox options (super class of RadioButtonGroup)
       spacing: 10,
       orientation: 'vertical',
-      align: 'center',
 
       enabledProperty: new Property( true ), // whether or not the set of radio buttons as a whole is enabled
 
@@ -108,8 +111,8 @@ define( function( require ) {
       buttonContentYMargin: 5,
 
       // alignment of the content nodes *within* each button
-      buttonContentXAlign: 'center',
-      buttonContentYAlign: 'center',
+      buttonContentXAlign: 'center', // {string} see BUTTON_CONTENT_X_ALIGN_VALUES
+      buttonContentYAlign: 'center', // {string} see BUTTON_CONTENT_Y_ALIGN_VALUES
 
       // TouchArea expansion
       touchAreaXDilation: 0,
@@ -136,6 +139,11 @@ define( function( require ) {
     };
 
     options = _.extend( _.clone( defaultOptions ), options );
+
+    assert && assert( _.contains( BUTTON_CONTENT_X_ALIGN_VALUES, options.buttonContentXAlign ),
+      'invalid buttonContentXAlign: ' + options.buttonContentXAlign );
+    assert && assert( _.contains( BUTTON_CONTENT_Y_ALIGN_VALUES, options.buttonContentYAlign ),
+      'invalid buttonContentYAlign: ' + options.buttonContentYAlign );
 
     // make a copy of the options to pass to individual buttons that includes all default options but not scenery options
     var buttonOptions = _.pick( options, _.keys( defaultOptions ) );

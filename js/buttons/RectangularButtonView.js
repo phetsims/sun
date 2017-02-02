@@ -29,6 +29,8 @@ define( function( require ) {
   var HORIZONTAL_HIGHLIGHT_GRADIENT_LENGTH = 7; // In screen coords, which are roughly pixels.
   var SHADE_GRADIENT_LENGTH = 3; // In screen coords, which are roughly pixels.
   var DEFAULT_COLOR = ColorConstants.LIGHT_BLUE;
+  var X_ALIGN_VALUES = [ 'center', 'left', 'right' ];
+  var Y_ALIGN_VALUES = [ 'center', 'top', 'bottom' ];
 
   // convenience function for creating the shape of the button, done to avoid code duplication
   function createButtonShape( width, height, options ) {
@@ -65,8 +67,8 @@ define( function( require ) {
       touchAreaYDilation: 0,
       stroke: undefined, // undefined by default, which will cause a stroke to be derived from the base color
       lineWidth: 0.5, // Only meaningful if stroke is non-null
-      xAlign: 'center',
-      yAlign: 'center',
+      xAlign: 'center', // {string} see X_ALIGN_VALUES
+      yAlign: 'center', // {string} see Y_ALIGN_VALUES
 
       // Strategy for controlling the button's appearance, excluding any
       // content.  This can be a stock strategy from this file or custom.  To
@@ -80,6 +82,10 @@ define( function( require ) {
       // version(s) defined in this file.
       contentAppearanceStrategy: RectangularButtonView.fadeContentWhenDisabled
     }, options );
+
+    // validate options
+    assert && assert( _.contains( X_ALIGN_VALUES, options.xAlign ), 'invalid xAlign: ' + options.xAlign );
+    assert && assert( _.contains( Y_ALIGN_VALUES, options.yAlign ), 'invalid yAlign: ' + options.yAlign );
 
     // Tandem.indicateUninstrumentedCode();
 
