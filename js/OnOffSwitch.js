@@ -134,7 +134,7 @@ define( function( require ) {
 
       // only touch to snag when over the thumb (don't snag on the track itself)
       allowTouchSnag: function( evt ) {
-        return _.contains( evt.trail.nodes, thumbNode );
+        return _.includes( evt.trail.nodes, thumbNode );
       },
 
       start: function( evt, trail ) {

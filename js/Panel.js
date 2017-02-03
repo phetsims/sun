@@ -54,7 +54,7 @@ define( function( require ) {
 
     options = _.extend( {}, DEFAULT_OPTIONS, options );
 
-    assert && assert( _.contains( ALIGN_VALUES, options.align ), 'invalid align: ' + options.align );
+    assert && assert( _.includes( ALIGN_VALUES, options.align ), 'invalid align: ' + options.align );
 
     Node.call( this );
 

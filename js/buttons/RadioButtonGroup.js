@@ -140,17 +140,17 @@ define( function( require ) {
 
     options = _.extend( _.clone( defaultOptions ), options );
 
-    assert && assert( _.contains( BUTTON_CONTENT_X_ALIGN_VALUES, options.buttonContentXAlign ),
+    assert && assert( _.includes( BUTTON_CONTENT_X_ALIGN_VALUES, options.buttonContentXAlign ),
       'invalid buttonContentXAlign: ' + options.buttonContentXAlign );
-    assert && assert( _.contains( BUTTON_CONTENT_Y_ALIGN_VALUES, options.buttonContentYAlign ),
+    assert && assert( _.includes( BUTTON_CONTENT_Y_ALIGN_VALUES, options.buttonContentYAlign ),
       'invalid buttonContentYAlign: ' + options.buttonContentYAlign );
 
     // make a copy of the options to pass to individual buttons that includes all default options but not scenery options
     var buttonOptions = _.pick( options, _.keys( defaultOptions ) );
 
     // calculate the maximum width and height of the content so we can make all radio buttons the same size
-    var widestContentWidth = _.max( contentArray, function( content ) { return content.node.width; } ).node.width;
-    var tallestContentHeight = _.max( contentArray, function( content ) { return content.node.height; } ).node.height;
+    var widestContentWidth = _.maxBy( contentArray, function( content ) { return content.node.width; } ).node.width;
+    var tallestContentHeight = _.maxBy( contentArray, function( content ) { return content.node.height; } ).node.height;
 
     // make sure all radio buttons are the same size and create the RadioButtons
     var buttons = [];

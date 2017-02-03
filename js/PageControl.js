@@ -50,7 +50,7 @@ define( function( require ) {
     }, options );
 
     // validate options
-    assert && assert( _.contains( [ 'horizontal', 'vertical' ], options.orientation ), 'invalid orientation=' + options.orientation );
+    assert && assert( _.includes( [ 'horizontal', 'vertical' ], options.orientation ), 'invalid orientation=' + options.orientation );
     Tandem.indicateUninstrumentedCode();
 
     // To improve readability

@@ -83,8 +83,8 @@ define( function( require ) {
     }, options );
 
     // validate options
-    assert && assert( _.contains( ARROWS_POSITION_VALUES, options.arrowsPosition ), 'invalid arrowsPosition: ' + options.arrowsPosition );
-    assert && assert( _.contains( VALUE_ALIGN_VALUES, options.valueAlign ), 'invalid valueAlign: ' + options.valueAlign );
+    assert && assert( _.includes( ARROWS_POSITION_VALUES, options.arrowsPosition ), 'invalid arrowsPosition: ' + options.arrowsPosition );
+    assert && assert( _.includes( VALUE_ALIGN_VALUES, options.valueAlign ), 'invalid valueAlign: ' + options.valueAlign );
     Tandem.indicateUninstrumentedCode();
 
     var self = this;

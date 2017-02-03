@@ -81,15 +81,15 @@ define( function( require ) {
     options = _.extend( {}, DEFAULT_OPTIONS, options );
 
     // Validate options
-    assert && assert( _.contains( [ 'horizontal', 'vertical' ], options.orientation ), 'invalid orientation=' + options.orientation );
+    assert && assert( _.includes( [ 'horizontal', 'vertical' ], options.orientation ), 'invalid orientation=' + options.orientation );
     Tandem.indicateUninstrumentedCode();
 
     // To improve readability
     var isHorizontal = ( options.orientation === 'horizontal' );
 
     // Dimensions of largest item
-    var maxItemWidth = _.max( items, function( item ) { return item.width; } ).width;
-    var maxItemHeight = _.max( items, function( item ) { return item.height; } ).height;
+    var maxItemWidth = _.maxBy( items, function( item ) { return item.width; } ).width;
+    var maxItemHeight = _.maxBy( items, function( item ) { return item.height; } ).height;
 
     // This quantity is used make some other computations independent of orientation.
     var maxItemLength = isHorizontal ? maxItemWidth : maxItemHeight;
