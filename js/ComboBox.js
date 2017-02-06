@@ -24,7 +24,6 @@ define( function( require ) {
   var Tandem = require( 'TANDEM/Tandem' );
   var Line = require( 'SCENERY/nodes/Line' );
   var Path = require( 'SCENERY/nodes/Path' );
-  var Rectangle = require( 'SCENERY/nodes/Rectangle' );
 
   // phet-io modules
   var TComboBox = require( 'ifphetio!PHET_IO/types/sun/TComboBox' );

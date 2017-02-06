@@ -34,13 +34,21 @@ define( function( require ) {
 
     // Safe to pass through options to the PushButtonModel like "fireOnDown".  Other scenery options will be safely ignored.
     this.buttonModel = new PushButtonModel( options ); // @public, listen only
+
+    // Store a reference to the true tandem which will be used to register the instance
+    var tandem = options.tandem;
+
+    // Supply a supertype tandem before Node is called, since we register our own instance
+    options.tandem = options.tandem.createSupertypeTandem();
+
+    // Call the parent type
     RectangularButtonView.call( this, this.buttonModel, new PushButtonInteractionStateProperty( this.buttonModel ), options );
 
     // Tandem support
-    options.tandem.addInstance( this, TPushButton );
+    tandem.addInstance( this, TPushButton );
 
     this.disposeRectangularPushButton = function() {
-      options.tandem.removeInstance( this );
+      tandem.removeInstance( this );
     };
   }
 
