@@ -13,7 +13,7 @@ define( function( require ) {
   // modules
   var inherit = require( 'PHET_CORE/inherit' );
   var Tandem = require( 'TANDEM/Tandem' );
-  var TandemNode = require( 'TANDEM/scenery/nodes/TandemNode' );
+  var Node = require( 'SCENERY/nodes/Node' );
   var sun = require( 'SUN/sun' );
 
   // phet-io modules
@@ -31,7 +31,7 @@ define( function( require ) {
     options = _.extend( {
       tandem: Tandem.tandemRequired()
     }, options );
-    TandemNode.call( this, { tandem: options.tandem.createSupertypeTandem() } );
+    Node.call( this, { tandem: options.tandem.createSupertypeTandem() } );
 
     // align centers of the nodes, see https://github.com/phetsims/sun/issues/272
     falseNode.center = trueNode.center;
@@ -51,5 +51,5 @@ define( function( require ) {
 
   sun.register( 'ToggleNode', ToggleNode );
 
-  return inherit( TandemNode, ToggleNode );
+  return inherit( Node, ToggleNode );
 } );
