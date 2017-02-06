@@ -26,7 +26,7 @@ define( function( require ) {
       maxTextWidth: null
     }, options );
 
-    // Tandem.indicateUninstrumentedCode();
+    // Tandem.indicateUninstrumentedCode();  // see https://github.com/phetsims/phet-io/issues/986
 
     var textNode = new Text( text, { font: options.font, fill: options.textFill, maxWidth: options.maxTextWidth } );
     RectangularPushButton.call( this, _.extend( { content: textNode }, options ) );

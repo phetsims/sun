@@ -22,7 +22,7 @@ define( function( require ) {
     options = _.extend( {
       stroke: 'rgb(100,100,100)'
     }, options );
-    // Tandem.indicateUninstrumentedCode();
+    // Tandem.indicateUninstrumentedCode();  // see https://github.com/phetsims/phet-io/issues/986
 
     Line.call( this, 0, 0, width, 0, options );
   }

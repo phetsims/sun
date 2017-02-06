@@ -17,7 +17,7 @@ define( function( require ) {
    * @constructor
    */
   function PushButtonInteractionStateProperty( buttonModel, options ) {
-    // Tandem.indicateUninstrumentedCode();
+    // Tandem.indicateUninstrumentedCode();  // see https://github.com/phetsims/phet-io/issues/986
 
     DerivedProperty.call(
       this,

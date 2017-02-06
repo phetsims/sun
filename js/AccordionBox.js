@@ -71,7 +71,7 @@ define( function( require ) {
       contentYSpacing: 8 // vertical space between content and title+button, ignored if showTitleWhenExpanded is false
 
     }, options );
-    // Tandem.indicateUninstrumentedCode();
+    // Tandem.indicateUninstrumentedCode();  // see https://github.com/phetsims/phet-io/issues/986
 
     // verify string options
     assert && assert( options.buttonAlign === 'left' || options.buttonAlign === 'right' );

@@ -23,7 +23,7 @@ define( function( require ) {
    * @constructor
    */
   function BooleanRoundStickyToggleButton( booleanProperty, options ) {
-    // Tandem.indicateUninstrumentedCode();
+    // Tandem.indicateUninstrumentedCode();  // see https://github.com/phetsims/phet-io/issues/986
     RoundStickyToggleButton.call( this, false, true, booleanProperty, options );
   }
 

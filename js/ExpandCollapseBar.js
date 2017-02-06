@@ -37,7 +37,7 @@ define( function( require ) {
       barLineWidth: 1
     }, options );
 
-    // Tandem.indicateUninstrumentedCode();
+    // Tandem.indicateUninstrumentedCode();  // see https://github.com/phetsims/phet-io/issues/986
 
     Node.call( this );
 

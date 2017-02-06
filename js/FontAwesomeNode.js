@@ -74,7 +74,7 @@ define( function( require ) {
       enableCache: true
     }, options );
 
-    // Tandem.indicateUninstrumentedCode();
+    // Tandem.indicateUninstrumentedCode();  // see https://github.com/phetsims/phet-io/issues/986
 
     var shape;
     if ( options.enableCache ) {

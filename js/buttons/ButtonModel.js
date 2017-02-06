@@ -17,7 +17,7 @@ define( function( require ) {
    * @constructor
    */
   function ButtonModel( options ) {
-    // Tandem.indicateUninstrumentedCode();
+    // Tandem.indicateUninstrumentedCode();  // see https://github.com/phetsims/phet-io/issues/986
 
     options = _.extend( {
       // {function} called on pointer down

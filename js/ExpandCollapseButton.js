@@ -27,7 +27,7 @@ define( function( require ) {
     options = _.extend( {
       sideLength: 25  // length of one side of the square button
     }, options );
-    // Tandem.indicateUninstrumentedCode();
+    // Tandem.indicateUninstrumentedCode();  // see https://github.com/phetsims/phet-io/issues/986
 
     Node.call( this );
 

@@ -36,7 +36,7 @@ define( function( require ) {
 
     var self = this;
 
-    // Tandem.indicateUninstrumentedCode();
+    // Tandem.indicateUninstrumentedCode();  // see https://github.com/phetsims/phet-io/issues/986
 
     ButtonModel.call( this, options );
 

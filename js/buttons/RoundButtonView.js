@@ -73,7 +73,7 @@ define( function( require ) {
       contentAppearanceStrategy: RoundButtonView.fadeContentWhenDisabled
     }, options );
 
-    // Tandem.indicateUninstrumentedCode();
+    // Tandem.indicateUninstrumentedCode();  // see https://github.com/phetsims/phet-io/issues/986
 
     Node.call( this );
     var content = options.content; // convenience variable
