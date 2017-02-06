@@ -22,7 +22,7 @@ define( function( require ) {
   var sun = require( 'SUN/sun' );
   var Vector2 = require( 'DOT/Vector2' );
   var Tandem = require( 'TANDEM/Tandem' );
-  var TandemLine = require( 'TANDEM/scenery/nodes/TandemLine' );
+  var Line = require( 'SCENERY/nodes/Line' );
   var TandemPath = require( 'TANDEM/scenery/nodes/TandemPath' );
   var TandemRectangle = require( 'TANDEM/scenery/nodes/TandemRectangle' );
 
@@ -387,7 +387,7 @@ define( function( require ) {
       { fill: options.buttonFill, stroke: options.buttonStroke, lineWidth: options.buttonLineWidth } );
 
     // vertical separator to left of arrow
-    var separator = new TandemLine( 0, 0, 0, height, {
+    var separator = new Line( 0, 0, 0, height, {
       stroke: 'black',
       lineWidth: options.buttonLineWidth,
       tandem: options.tandem.createTandem( 'separator' )
