@@ -34,10 +34,12 @@ define( function( require ) {
     }, options );
 
     // @public (phet-io)
+    var tandem = options.tandem;
+    options.tandem = options.tandem.createSupertypeTandem();
     this.toggleButtonModel = new ToggleButtonModel( valueOff, valueOn, property, options );
     RectangularButtonView.call( this, this.toggleButtonModel, new ToggleButtonInteractionStateProperty( this.toggleButtonModel ), options );
 
-    options && options.tandem && options.tandem.addInstance( this, TToggleButton( property.phetioValueType ) );
+    tandem.addInstance( this, TToggleButton( property.phetioValueType ) );
   }
 
   sun.register( 'RectangularToggleButton', RectangularToggleButton );

@@ -34,14 +34,20 @@ define( function( require ) {
       tandem: Tandem.tandemRequired()
     }, options );
 
+    var tandem = options.tandem;
+    options.tandem = tandem.createSupertypeTandem();
+
     // Safe to pass through options to the PushButtonModel like "fireOnDown".  Other scenery options will be safely ignored.
     this.buttonModel = new PushButtonModel( options ); // @public, listen only
     RoundButtonView.call( this, this.buttonModel, new PushButtonInteractionStateProperty( this.buttonModel ), options );
 
     // Tandem support
     // Give it a novel name to reduce the risk of parent or child collisions
-    this.roundPushButtonTandem = options.tandem;
-    this.roundPushButtonTandem.addInstance( this, TPushButton );
+    tandem.addInstance( this, TPushButton );
+
+    this.disposeRoundPushButton = function() {
+      tandem.removeInstance( this );
+    };
   }
 
   sun.register( 'RoundPushButton', RoundPushButton );
@@ -50,7 +56,7 @@ define( function( require ) {
 
     // @public
     dispose: function() {
-      this.roundPushButtonTandem.removeInstance( this );
+      this.disposeRoundPushButton();
     },
 
     // @public
