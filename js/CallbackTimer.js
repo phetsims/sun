@@ -13,7 +13,6 @@ define( function( require ) {
   var inherit = require( 'PHET_CORE/inherit' );
   var Timer = require( 'PHET_CORE/Timer' );
   var sun = require( 'SUN/sun' );
-  // var Tandem = require( 'TANDEM/Tandem' );
 
   /**
    * @param {Object} [options]

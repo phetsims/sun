@@ -22,7 +22,6 @@ define( function( require ) {
   var Property = require( 'AXON/Property' );
   var Shape = require( 'KITE/Shape' );
   var sun = require( 'SUN/sun' );
-  // var Tandem = require( 'TANDEM/Tandem' );
 
   // constants
   var VERTICAL_HIGHLIGHT_GRADIENT_LENGTH = 7; // In screen coords, which are roughly pixels.

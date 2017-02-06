@@ -12,7 +12,6 @@ define( function( require ) {
   var inherit = require( 'PHET_CORE/inherit' );
   var Line = require( 'SCENERY/nodes/Line' );
   var sun = require( 'SUN/sun' );
-  // var Tandem = require( 'TANDEM/Tandem' );
 
   /**
    * @param {number} width

@@ -16,7 +16,6 @@ define( function( require ) {
   var RectangularPushButton = require( 'SUN/buttons/RectangularPushButton' );
   var Shape = require( 'KITE/Shape' );
   var sun = require( 'SUN/sun' );
-  // var Tandem = require( 'TANDEM/Tandem' );
 
   // constants
   var DEFAULT_ARROW_HEIGHT = 20;

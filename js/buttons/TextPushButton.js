@@ -13,7 +13,6 @@ define( function( require ) {
   var RectangularPushButton = require( 'SUN/buttons/RectangularPushButton' );
   var sun = require( 'SUN/sun' );
   var Text = require( 'SCENERY/nodes/Text' );
-  // var Tandem = require( 'TANDEM/Tandem' );
 
   /**
    * @param {string} text

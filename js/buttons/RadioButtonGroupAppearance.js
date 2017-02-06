@@ -13,7 +13,6 @@ define( function( require ) {
   // modules
   var Color = require( 'SCENERY/util/Color' );
   var sun = require( 'SUN/sun' );
-  // var Tandem = require( 'TANDEM/Tandem' );
 
   // constants
   var DISABLED_OPACITY = 0.3;
