@@ -24,7 +24,7 @@ define( function( require ) {
   var Tandem = require( 'TANDEM/Tandem' );
   var Line = require( 'SCENERY/nodes/Line' );
   var Path = require( 'SCENERY/nodes/Path' );
-  var TandemRectangle = require( 'TANDEM/scenery/nodes/TandemRectangle' );
+  var Rectangle = require( 'SCENERY/nodes/Rectangle' );
 
   // phet-io modules
   var TComboBox = require( 'ifphetio!PHET_IO/types/sun/TComboBox' );
@@ -450,7 +450,7 @@ define( function( require ) {
       phetioValueType: null // Must be supplied for PhET-iO instrumented simulations
     }, options );
 
-    TandemRectangle.call( this, 0, 0, width, height, {
+    Rectangle.call( this, 0, 0, width, height, {
       tandem: options.tandem.createSupertypeTandem()
     } );
 
@@ -468,7 +468,7 @@ define( function( require ) {
 
   sun.register( 'ComboBox.ItemNode', ComboBoxItemNode );
 
-  inherit( TandemRectangle, ComboBoxItemNode );
+  inherit( Rectangle, ComboBoxItemNode );
 
   return ComboBox;
 } );
