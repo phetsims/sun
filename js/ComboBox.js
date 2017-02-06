@@ -23,7 +23,7 @@ define( function( require ) {
   var Vector2 = require( 'DOT/Vector2' );
   var Tandem = require( 'TANDEM/Tandem' );
   var Line = require( 'SCENERY/nodes/Line' );
-  var TandemPath = require( 'TANDEM/scenery/nodes/TandemPath' );
+  var Path = require( 'SCENERY/nodes/Path' );
   var TandemRectangle = require( 'TANDEM/scenery/nodes/TandemRectangle' );
 
   // phet-io modules
@@ -367,7 +367,7 @@ define( function( require ) {
     Node.call( this );
 
     // up or down arrow
-    var arrow = new TandemPath( null, {
+    var arrow = new Path( null, {
       fill: 'black',
       tandem: options.tandem.createTandem( 'arrow' )
     } );
