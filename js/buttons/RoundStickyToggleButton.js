@@ -33,12 +33,13 @@ define( function( require ) {
 
     options = _.extend( { tandem: Tandem.tandemRequired() }, options );
 
+    var tandem = options.tandem;
+    options.tandem = options.tandem.createSupertypeTandem();
+
     var buttonModel = new StickyToggleButtonModel( valueUp, valueDown, property );
     RoundButtonView.call( this, buttonModel, new StickyToggleButtonInteractionStateProperty( buttonModel ), options );
 
-    // @public (tandem) Tandem support, should be a novel name to reduce the risk of parent or child collisions
-    this.roundStickyToggleButtonTandem = options.tandem;
-    this.roundStickyToggleButtonTandem && this.roundStickyToggleButtonTandem.addInstance( this, TToggleButton( property.phetioValueType ) );
+    tandem.addInstance( this, TToggleButton( property.phetioValueType ) );
   }
 
   sun.register( 'RoundStickyToggleButton', RoundStickyToggleButton, {

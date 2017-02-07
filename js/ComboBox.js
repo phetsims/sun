@@ -75,6 +75,9 @@ define( function( require ) {
       tandem: Tandem.tandemRequired()
     }, options );
 
+    var tandem = options.tandem;
+    options.tandem = options.tandem.createSupertypeTandem();
+
     // validate option values
     assert && assert( options.disabledOpacity > 0 && options.disabledOpacity < 1, 'invalid disabledOpacity: ' + options.disabledOpacity );
 
@@ -86,7 +89,6 @@ define( function( require ) {
     this.endedCallbacksForComboBoxDismissedEmitter = new Emitter();
     this.startedCallbacksForComboBoxPopupShownEmitter = new Emitter();
     this.endedCallbacksForComboBoxPopupShownEmitter = new Emitter();
-
 
     // optional label
     if ( options.labelNode !== null ) {
@@ -288,7 +290,7 @@ define( function( require ) {
     // @private called by dispose
     this.disposeComboBox = function() {
       self.enabledProperty.unlink( enabledObserver );
-      options.tandem.removeInstance( this );
+      tandem.removeInstance( this );
 
       // Unregister itemNode tandems as well
       for ( var i = 0; i < listNode.children.length; i++ ) {
@@ -304,7 +306,7 @@ define( function( require ) {
     if ( phet.phetio && phet.phetio.queryParameters && !phet.phetio.queryParameters.phetioValidateTandems && !type ) {
       type = TObject;
     }
-    options.tandem.addInstance( this, TComboBox( type ) );
+    tandem.addInstance( this, TComboBox( type ) );
   }
 
   sun.register( 'ComboBox', ComboBox );

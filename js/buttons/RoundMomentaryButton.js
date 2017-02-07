@@ -32,15 +32,18 @@ define( function( require ) {
     var self = this;
     options = _.extend( { tandem: Tandem.tandemRequired() }, options );
 
+    var tandem = options.tandem;
+    options.tandem = options.tandem.createSupertypeTandem();
+
     this.buttonModel = new MomentaryButtonModel( valueOff, valueOn, property );
     RoundButtonView.call( this, this.buttonModel, new MomentaryButtonInteractionStateProperty( this.buttonModel ), options );
 
-    options.tandem.addInstance( this, TMomentaryButton );
+    tandem.addInstance( this, TMomentaryButton );
 
     // @private
     this.disposeRoundMomentaryButton = function() {
       self.buttonModel.dispose(); //TODO fails with assertions enable, see sun#212
-      options.tandem.removeInstance( this );
+      tandem.removeInstance( this );
     };
   }
 
@@ -50,6 +53,7 @@ define( function( require ) {
 
     // @public
     dispose: function() {
+      RoundButtonView.prototype.dispose.call( this );
       this.disposeRoundMomentaryButton();
     }
   } );
