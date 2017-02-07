@@ -63,6 +63,10 @@ define( function( require ) {
     }, options );
 
     var self = this;
+
+    var tandem = options.tandem;
+    options.tandem = options.tandem.createSupertypeTandem();
+
     Node.call( this );
 
     this.content = content; // @private
@@ -136,10 +140,10 @@ define( function( require ) {
     // Apply additional options
     this.mutate( options );
 
-    // @public (tandem) - Tandem support, use a novel name to reduce the risk of parent or child collisions
-    this.checkBoxTandem = options.tandem;
-    this.checkBoxTandem.addInstance( this, TCheckBox );
-
+    this.disposeCheckBox = function() {
+      tandem.removeInstance( this );
+    };
+    tandem.addInstance( this, TCheckBox );
   }
 
   sun.register( 'CheckBox', CheckBox );
@@ -148,9 +152,10 @@ define( function( require ) {
 
     // @public
     dispose: function() {
-      this.checkBoxTandem && this.checkBoxTandem.removeInstance( this );
+      Node.prototype.dispose.call( this );
       this.checkBoxValueProperty.unlink( this.checkBoxCheckedListener );
       this.removeInputListener( this.checkBoxButtonListener );
+      this.disposeCheckBox();
     },
 
     /**

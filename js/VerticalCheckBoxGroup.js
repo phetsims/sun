@@ -39,6 +39,9 @@ define( function( require ) {
       tandem: Tandem.tandemRequired()
     }, options );
 
+    var tandem = options.tandem;
+    options.tandem = options.tandem.createSupertypeTandem();
+
     // compute max width of the items
     var maxWidth = 0;
     for ( var i = 0; i < items.length; i++ ) {
@@ -80,7 +83,7 @@ define( function( require ) {
     options.children = children; //TODO bad form, if options.children was already set, then this will blow it away
     VBox.call( this, options );
 
-    options.tandem.addInstance( this, TVerticalCheckBoxGroup );
+    tandem.addInstance( this, TVerticalCheckBoxGroup );
   }
 
   sun.register( 'VerticalCheckBoxGroup', VerticalCheckBoxGroup );
