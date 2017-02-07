@@ -34,15 +34,18 @@ define( function( require ) {
     // Tandem support
     options = _.extend( { tandem: Tandem.tandemRequired() }, options );
 
+    var tandem = options.tandem;
+    options.tandem = options.tandem.createSupertypeTandem();
+
     this.toggleButtonModel = new ToggleButtonModel( valueOff, valueOn, property ); // @public, listen only
     RoundButtonView.call( this, this.toggleButtonModel, new ToggleButtonInteractionStateProperty( this.toggleButtonModel ), options );
 
     // Tandem support
-    options.tandem.addInstance( this, TToggleButton( property.phetioValueType ) );
+    tandem.addInstance( this, TToggleButton( property.phetioValueType ) );
 
     // @private - disposal for listener above
     this.disposeRoundToggleButton = function() {
-      options.tandem.removeInstance( this );
+      tandem.removeInstance( this );
       self.toggleButtonModel.dispose();
     };
   }

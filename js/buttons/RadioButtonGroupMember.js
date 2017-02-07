@@ -65,7 +65,10 @@ define( function( require ) {
     }, options );
 
     assert && assert( !options.hasOwnProperty( 'phetioValueType' ),
-                     'phetioValueType should be provided by the property and not through options.' );
+      'phetioValueType should be provided by the property and not through options.' );
+
+    var tandem = options.tandem;
+    options.tandem = options.tandem.createSupertypeTandem();
 
     // @public (phet-io)
     this.radioButtonGroupMemberModel = new RadioButtonGroupMemberModel( property, value );
@@ -75,10 +78,10 @@ define( function( require ) {
 
     RectangularButtonView.call( this, this.radioButtonGroupMemberModel, this.interactionStateProperty, options );
 
-    // @public (tandem) - for Tandem support, should be a novel name to reduce the risk of parent or child collisions
-    this.radioButtonGroupMemberTandem = options.tandem;
-    this.radioButtonGroupMemberTandem && this.radioButtonGroupMemberTandem.addInstance( this, TRadioButtonGroupMember( property.phetioValueType ) );
-
+    this.disposeRadioButtonGroupMember = function() {
+      tandem.removeInstance( this );
+    };
+    tandem.addInstance( this, TRadioButtonGroupMember( property.phetioValueType ) );
   }
 
   sun.register( 'RadioButtonGroupMember', RadioButtonGroupMember );
@@ -87,7 +90,8 @@ define( function( require ) {
 
     // @public
     dispose: function() {
-      this.radioButtonGroupMemberTandem && this.radioButtonGroupMemberTandem.removeInstance( this );
+      RectangularButtonView.prototype.dispose.call( this );
+      this.disposeRadioButtonGroupMember();
     }
   } );
 } );

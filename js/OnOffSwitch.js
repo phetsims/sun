@@ -30,9 +30,6 @@ define( function( require ) {
   var Tandem = require( 'TANDEM/Tandem' );
   var Emitter = require( 'AXON/Emitter' );
 
-  // phet-io modules
-  var TNode = require( 'ifphetio!PHET_IO/types/scenery/nodes/TNode' );
-
   /**
    * @param {Property.<boolean>} onProperty
    * @param {Object} [options]
@@ -195,10 +192,6 @@ define( function( require ) {
         passedDragThreshold = passedDragThreshold || ( accumulatedDelta.magnitudeSquared() > dragThresholdSquared );
       }
     } ) );
-
-    // @public (tandem) - Tandem support, use a novel name to reduce the risk of parent or child collisions.
-    this.onOffSwitchTandem = options.tandem;
-    this.onOffSwitchTandem && this.onOffSwitchTandem.addInstance( this, TNode );
 
     this.mutate( options );
   }

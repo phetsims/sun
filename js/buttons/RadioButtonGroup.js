@@ -26,9 +26,6 @@ define( function( require ) {
   var sun = require( 'SUN/sun' );
   var Tandem = require( 'TANDEM/Tandem' );
 
-  // phet-io modules
-  var TNode = require( 'ifphetio!PHET_IO/types/scenery/nodes/TNode' );
-
   // constants
   var BUTTON_CONTENT_X_ALIGN_VALUES = [ 'center', 'left', 'right' ];
   var BUTTON_CONTENT_Y_ALIGN_VALUES = [ 'center', 'top', 'bottom' ];
@@ -276,8 +273,6 @@ define( function( require ) {
         }
       }
     } );
-
-    options.tandem.addInstance( this, TNode );
   }
 
   sun.register( 'RadioButtonGroup', RadioButtonGroup );
@@ -287,6 +282,7 @@ define( function( require ) {
     // @public
     dispose: function() {
       //TODO implement this, see sun#212
+      LayoutBox.prototype.dispose.call( this );
     },
 
     // @public
