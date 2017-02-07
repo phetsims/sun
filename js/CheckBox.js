@@ -44,6 +44,7 @@ define( function( require ) {
       checkBoxColor: 'black',
       checkBoxColorBackground: 'white',
       tandem: Tandem.tandemRequired(),
+      phetioType: TCheckBox,
 
       /*
        * {function( {Node} checkBox, {boolean} enabled ) }
@@ -63,9 +64,6 @@ define( function( require ) {
     }, options );
 
     var self = this;
-
-    var tandem = options.tandem;
-    options.tandem = options.tandem.createSupertypeTandem();
 
     Node.call( this );
 
@@ -139,11 +137,6 @@ define( function( require ) {
 
     // Apply additional options
     this.mutate( options );
-
-    this.disposeCheckBox = function() {
-      tandem.removeInstance( self );
-    };
-    tandem.addInstance( this, TCheckBox );
   }
 
   sun.register( 'CheckBox', CheckBox );
@@ -155,7 +148,6 @@ define( function( require ) {
       Node.prototype.dispose.call( this );
       this.checkBoxValueProperty.unlink( this.checkBoxCheckedListener );
       this.removeInputListener( this.checkBoxButtonListener );
-      this.disposeCheckBox();
     },
 
     /**
