@@ -31,7 +31,7 @@ define( function( require ) {
     options = _.extend( {
       tandem: Tandem.tandemRequired()
     }, options );
-    Node.call( this, { tandem: options.tandem.createSupertypeTandem() } );
+    Node.call( this );
 
     // align centers of the nodes, see https://github.com/phetsims/sun/issues/272
     falseNode.center = trueNode.center;
@@ -45,8 +45,6 @@ define( function( require ) {
     } );
 
     this.mutate( options );
-
-    options.tandem.addInstance( this, TNode );
   }
 
   sun.register( 'ToggleNode', ToggleNode );

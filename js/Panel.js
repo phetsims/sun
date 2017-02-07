@@ -54,6 +54,10 @@ define( function( require ) {
 
     options = _.extend( {}, DEFAULT_OPTIONS, options );
 
+    // substitute supertype tandem because Panel provides TPanel instrumentation
+    var tandem = options.tandem;
+    options.tandem = options.tandem.createSupertypeTandem();
+
     assert && assert( _.includes( ALIGN_VALUES, options.align ), 'invalid align: ' + options.align );
 
     Node.call( this );
@@ -127,13 +131,13 @@ define( function( require ) {
     this.mutate( options );
 
     this.disposePanel = function() {
-      options.tandem.removeInstance( this );
+      tandem.removeInstance( this );
       if ( options.resize ) {
         content.off( 'bounds', updateBackground );
       }
     };
 
-    options.tandem.addInstance( this, TPanel );
+    tandem.addInstance( this, TPanel );
   }
 
   sun.register( 'Panel', Panel );
