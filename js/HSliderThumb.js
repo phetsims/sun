@@ -82,13 +82,13 @@ define( function( require ) {
     };
     enabledProperty.link( enabledObserver ); // must be unlinked in disposeHSliderThumb
 
-    options.tandem.addInstance( this, TNode );
-
     // @private Called by dispose
     this.disposeHSliderThumb = function() {
       enabledProperty.unlink( enabledObserver );
-      options.tandem.removeInstance( this );
+      options.tandem.removeInstance( self );
     };
+
+    options.tandem.addInstance( this, TNode );
   }
 
   sun.register( 'HSliderThumb', HSliderThumb );

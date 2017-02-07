@@ -64,6 +64,8 @@ define( function( require ) {
       tandem: Tandem.tandemRequired()
     }, options );
 
+    var self = this;
+
     assert && assert( !options.hasOwnProperty( 'phetioValueType' ),
       'phetioValueType should be provided by the property and not through options.' );
 
@@ -79,7 +81,7 @@ define( function( require ) {
     RectangularButtonView.call( this, this.radioButtonGroupMemberModel, this.interactionStateProperty, options );
 
     this.disposeRadioButtonGroupMember = function() {
-      tandem.removeInstance( this );
+      tandem.removeInstance( self );
     };
     tandem.addInstance( this, TRadioButtonGroupMember( property.phetioValueType ) );
   }

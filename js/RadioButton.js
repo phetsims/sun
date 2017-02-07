@@ -75,14 +75,13 @@ define( function( require ) {
 
     this.mutate( options );
 
-    options.tandem.addInstance( this, TRadioButton( property.phetioValueType ) );
-
     this.disposeRadioButton = function() {
-      options.tandem.removeInstance( this );
+      options.tandem.removeInstance( self );
       self.removeInputListener( buttonListener );
       property.unlink( syncWithModel );
     };
 
+    options.tandem.addInstance( this, TRadioButton( property.phetioValueType ) );
   }
 
   sun.register( 'RadioButton', RadioButton );

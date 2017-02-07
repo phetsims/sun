@@ -34,6 +34,8 @@ define( function( require ) {
       tandem: Tandem.tandemRequired()
     }, options );
 
+    var self = this;
+
     var tandem = options.tandem;
     options.tandem = tandem.createSupertypeTandem();
 
@@ -41,13 +43,12 @@ define( function( require ) {
     this.buttonModel = new PushButtonModel( options ); // @public, listen only
     RoundButtonView.call( this, this.buttonModel, new PushButtonInteractionStateProperty( this.buttonModel ), options );
 
-    // Tandem support
-    // Give it a novel name to reduce the risk of parent or child collisions
-    tandem.addInstance( this, TPushButton );
-
     this.disposeRoundPushButton = function() {
-      tandem.removeInstance( this );
+      tandem.removeInstance( self );
     };
+
+    // Tandem support
+    tandem.addInstance( this, TPushButton );
   }
 
   sun.register( 'RoundPushButton', RoundPushButton );

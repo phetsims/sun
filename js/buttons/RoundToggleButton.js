@@ -45,7 +45,7 @@ define( function( require ) {
 
     // @private - disposal for listener above
     this.disposeRoundToggleButton = function() {
-      tandem.removeInstance( this );
+      tandem.removeInstance( self );
       self.toggleButtonModel.dispose();
     };
   }

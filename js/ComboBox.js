@@ -290,7 +290,7 @@ define( function( require ) {
     // @private called by dispose
     this.disposeComboBox = function() {
       self.enabledProperty.unlink( enabledObserver );
-      tandem.removeInstance( this );
+      tandem.removeInstance( self );
 
       // Unregister itemNode tandems as well
       for ( var i = 0; i < listNode.children.length; i++ ) {

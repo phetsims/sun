@@ -38,13 +38,13 @@ define( function( require ) {
     this.buttonModel = new MomentaryButtonModel( valueOff, valueOn, property );
     RoundButtonView.call( this, this.buttonModel, new MomentaryButtonInteractionStateProperty( this.buttonModel ), options );
 
-    tandem.addInstance( this, TMomentaryButton );
-
     // @private
     this.disposeRoundMomentaryButton = function() {
       self.buttonModel.dispose(); //TODO fails with assertions enable, see sun#212
-      tandem.removeInstance( this );
+      tandem.removeInstance( self );
     };
+
+    tandem.addInstance( this, TMomentaryButton );
   }
 
   sun.register( 'RoundMomentaryButton', RoundMomentaryButton );

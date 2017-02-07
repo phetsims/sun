@@ -32,6 +32,8 @@ define( function( require ) {
       tandem: Tandem.tandemRequired() // {Tandem|null}
     }, options );
 
+    var self = this;
+
     // Safe to pass through options to the PushButtonModel like "fireOnDown".  Other scenery options will be safely ignored.
     this.buttonModel = new PushButtonModel( options ); // @public, listen only
 
@@ -44,12 +46,12 @@ define( function( require ) {
     // Call the parent type
     RectangularButtonView.call( this, this.buttonModel, new PushButtonInteractionStateProperty( this.buttonModel ), options );
 
+    this.disposeRectangularPushButton = function() {
+      tandem.removeInstance( self );
+    };
+
     // Tandem support
     tandem.addInstance( this, TPushButton );
-
-    this.disposeRectangularPushButton = function() {
-      tandem.removeInstance( this );
-    };
   }
 
   sun.register( 'RectangularPushButton', RectangularPushButton );

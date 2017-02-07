@@ -141,7 +141,7 @@ define( function( require ) {
     this.mutate( options );
 
     this.disposeCheckBox = function() {
-      tandem.removeInstance( this );
+      tandem.removeInstance( self );
     };
     tandem.addInstance( this, TCheckBox );
   }
