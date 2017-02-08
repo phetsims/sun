@@ -279,6 +279,7 @@ define( function( require ) {
     // @public - ensures that this object is eligible for GC
     dispose: function() {
       this.disposeHSlider();
+      Node.prototype.dispose.call( this );
     },
 
     /**
