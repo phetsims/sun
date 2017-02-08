@@ -28,23 +28,13 @@ define( function( require ) {
    * @constructor
    */
   function RoundMomentaryButton( valueOff, valueOn, property, options ) {
-
-    var self = this;
-    options = _.extend( { tandem: Tandem.tandemRequired() }, options );
-
-    var tandem = options.tandem;
-    options.tandem = options.tandem.createSupertypeTandem();
+    options = _.extend( {
+      tandem: Tandem.tandemRequired(),
+      phetioType: TMomentaryButton
+    }, options );
 
     this.buttonModel = new MomentaryButtonModel( valueOff, valueOn, property );
     RoundButtonView.call( this, this.buttonModel, new MomentaryButtonInteractionStateProperty( this.buttonModel ), options );
-
-    // @private
-    this.disposeRoundMomentaryButton = function() {
-      self.buttonModel.dispose(); //TODO fails with assertions enable, see sun#212
-      tandem.removeInstance( self );
-    };
-
-    tandem.addInstance( this, TMomentaryButton );
   }
 
   sun.register( 'RoundMomentaryButton', RoundMomentaryButton );
@@ -53,8 +43,8 @@ define( function( require ) {
 
     // @public
     dispose: function() {
+      this.buttonModel.dispose(); //TODO fails with assertions enable, see sun#212
       RoundButtonView.prototype.dispose.call( this );
-      this.disposeRoundMomentaryButton();
     }
   } );
 } );

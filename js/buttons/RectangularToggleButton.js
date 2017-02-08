@@ -30,25 +30,16 @@ define( function( require ) {
   function RectangularToggleButton( valueOff, valueOn, property, options ) {
 
     options = _.extend( {
-      tandem: Tandem.tandemRequired()
+      tandem: Tandem.tandemRequired(),
+      phetioType: TToggleButton( property.phetioValueType )
     }, options );
 
     // @public (phet-io)
-    var tandem = options.tandem;
-    options.tandem = options.tandem.createSupertypeTandem();
     this.toggleButtonModel = new ToggleButtonModel( valueOff, valueOn, property, options );
     RectangularButtonView.call( this, this.toggleButtonModel, new ToggleButtonInteractionStateProperty( this.toggleButtonModel ), options );
-
-    tandem.addInstance( this, TToggleButton( property.phetioValueType ) );
   }
 
   sun.register( 'RectangularToggleButton', RectangularToggleButton );
 
-  return inherit( RectangularButtonView, RectangularToggleButton, {
-
-    // @public
-    dispose: function() {
-      //TODO implement this, see sun#212
-    }
-  } );
+  return inherit( RectangularButtonView, RectangularToggleButton );
 } );

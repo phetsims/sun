@@ -29,25 +29,14 @@ define( function( require ) {
    */
   function RoundToggleButton( valueOff, valueOn, property, options ) {
 
-    var self = this;
-
     // Tandem support
-    options = _.extend( { tandem: Tandem.tandemRequired() }, options );
-
-    var tandem = options.tandem;
-    options.tandem = options.tandem.createSupertypeTandem();
+    options = _.extend( {
+      tandem: Tandem.tandemRequired(),
+      phetioType: TToggleButton( property.phetioValueType )
+    }, options );
 
     this.toggleButtonModel = new ToggleButtonModel( valueOff, valueOn, property ); // @public, listen only
     RoundButtonView.call( this, this.toggleButtonModel, new ToggleButtonInteractionStateProperty( this.toggleButtonModel ), options );
-
-    // Tandem support
-    tandem.addInstance( this, TToggleButton( property.phetioValueType ) );
-
-    // @private - disposal for listener above
-    this.disposeRoundToggleButton = function() {
-      tandem.removeInstance( self );
-      self.toggleButtonModel.dispose();
-    };
   }
 
   sun.register( 'RoundToggleButton', RoundToggleButton );
@@ -56,7 +45,7 @@ define( function( require ) {
 
     // @public
     dispose: function() {
-      this.disposeRoundToggleButton(); //TODO this fails with assertions enabled, see sun#212
+      this.toggleButtonModel.dispose(); //TODO this fails with assertions enabled, see sun#212
     }
   } );
 } );

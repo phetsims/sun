@@ -40,7 +40,8 @@ define( function( require ) {
     align: 'left',
 
     minWidth: 0, // minimum width of the panel
-    tandem: Tandem.tandemRequired()
+    tandem: Tandem.tandemRequired(),
+    phetioType: TPanel
   };
   assert && Object.freeze( DEFAULT_OPTIONS );
 
@@ -55,10 +56,6 @@ define( function( require ) {
     options = _.extend( {}, DEFAULT_OPTIONS, options );
 
     var self = this;
-
-    // substitute supertype tandem because Panel provides TPanel instrumentation
-    var tandem = options.tandem;
-    options.tandem = options.tandem.createSupertypeTandem();
 
     assert && assert( _.includes( ALIGN_VALUES, options.align ), 'invalid align: ' + options.align );
 
@@ -129,17 +126,14 @@ define( function( require ) {
     }
     updateBackground();
 
-    // Apply options after the layout is done, so that options that use the bounds will work properly.
-    this.mutate( options );
-
     this.disposePanel = function() {
-      tandem.removeInstance( self );
       if ( options.resize ) {
         content.off( 'bounds', updateBackground );
       }
     };
 
-    tandem.addInstance( this, TPanel );
+    // Apply options after the layout is done, so that options that use the bounds will work properly.
+    this.mutate( options );
   }
 
   sun.register( 'Panel', Panel );

@@ -41,6 +41,13 @@ define( function( require ) {
 
     var self = this;
 
+    // Register for tandem if possible.
+    // Allow running with phetioValidateTandems=false though
+    var type = property.phetioValueType;
+    if ( phet.phetio && phet.phetio.queryParameters && !phet.phetio.queryParameters.phetioValidateTandems && !type ) {
+      type = TObject;
+    }
+
     options = _.extend( {
 
       labelNode: null, // optional label, placed to the left of the combo box
@@ -72,11 +79,9 @@ define( function( require ) {
       itemHighlightLineWidth: 1,
 
       // tandem
-      tandem: Tandem.tandemRequired()
+      tandem: Tandem.tandemRequired(),
+      phetioType: TComboBox( type )
     }, options );
-
-    var tandem = options.tandem;
-    options.tandem = options.tandem.createSupertypeTandem();
 
     // validate option values
     assert && assert( options.disabledOpacity > 0 && options.disabledOpacity < 1, 'invalid disabledOpacity: ' + options.disabledOpacity );
@@ -290,7 +295,6 @@ define( function( require ) {
     // @private called by dispose
     this.disposeComboBox = function() {
       self.enabledProperty.unlink( enabledObserver );
-      tandem.removeInstance( self );
 
       // Unregister itemNode tandems as well
       for ( var i = 0; i < listNode.children.length; i++ ) {
@@ -299,14 +303,6 @@ define( function( require ) {
       buttonNode.dispose();
       property.unlink( propertyObserver );
     };
-
-    // Register for tandem if possible.
-    // Allow running with phetioValidateTandems=false though
-    var type = property.phetioValueType;
-    if ( phet.phetio && phet.phetio.queryParameters && !phet.phetio.queryParameters.phetioValidateTandems && !type ) {
-      type = TObject;
-    }
-    tandem.addInstance( this, TComboBox( type ) );
   }
 
   sun.register( 'ComboBox', ComboBox );

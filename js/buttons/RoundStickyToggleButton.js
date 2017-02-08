@@ -31,24 +31,16 @@ define( function( require ) {
    */
   function RoundStickyToggleButton( valueUp, valueDown, property, options ) {
 
-    options = _.extend( { tandem: Tandem.tandemRequired() }, options );
-
-    var tandem = options.tandem;
-    options.tandem = options.tandem.createSupertypeTandem();
+    options = _.extend( {
+      tandem: Tandem.tandemRequired(),
+      phetioType: TToggleButton( property.phetioValueType )
+    }, options );
 
     var buttonModel = new StickyToggleButtonModel( valueUp, valueDown, property );
     RoundButtonView.call( this, buttonModel, new StickyToggleButtonInteractionStateProperty( buttonModel ), options );
-
-    tandem.addInstance( this, TToggleButton( property.phetioValueType ) );
   }
 
-  sun.register( 'RoundStickyToggleButton', RoundStickyToggleButton, {
-
-    // @public
-    dispose: function() {
-      //TODO implement this, see sun#212
-    }
-  } );
+  sun.register( 'RoundStickyToggleButton', RoundStickyToggleButton );
 
   return inherit( RoundButtonView, RoundStickyToggleButton );
 } );

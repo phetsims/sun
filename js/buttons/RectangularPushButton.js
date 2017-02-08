@@ -29,29 +29,15 @@ define( function( require ) {
   function RectangularPushButton( options ) {
 
     options = _.extend( {
-      tandem: Tandem.tandemRequired() // {Tandem|null}
+      tandem: Tandem.tandemRequired(), // {Tandem|null}
+      phetioType: TPushButton
     }, options );
-
-    var self = this;
 
     // Safe to pass through options to the PushButtonModel like "fireOnDown".  Other scenery options will be safely ignored.
     this.buttonModel = new PushButtonModel( options ); // @public, listen only
 
-    // Store a reference to the true tandem which will be used to register the instance
-    var tandem = options.tandem;
-
-    // Supply a supertype tandem before Node is called, since we register our own instance
-    options.tandem = options.tandem.createSupertypeTandem();
-
     // Call the parent type
     RectangularButtonView.call( this, this.buttonModel, new PushButtonInteractionStateProperty( this.buttonModel ), options );
-
-    this.disposeRectangularPushButton = function() {
-      tandem.removeInstance( self );
-    };
-
-    // Tandem support
-    tandem.addInstance( this, TPushButton );
   }
 
   sun.register( 'RectangularPushButton', RectangularPushButton );
@@ -62,7 +48,6 @@ define( function( require ) {
       dispose: function() {
         this.buttonModel.dispose(); //TODO this fails when assertions are enabled, see sun#212
         RectangularButtonView.prototype.dispose.call( this );
-        this.disposeRectangularPushButton();
       },
 
       // @public

@@ -61,16 +61,11 @@ define( function( require ) {
       buttonAppearanceStrategy: RadioButtonGroupAppearance.defaultRadioButtonsAppearance,
       contentAppearanceStrategy: RadioButtonGroupAppearance.contentAppearanceStrategy,
 
-      tandem: Tandem.tandemRequired()
+      tandem: Tandem.tandemRequired(),
+      phetioType: TRadioButtonGroupMember( property.phetioValueType )
     }, options );
 
-    var self = this;
-
-    assert && assert( !options.hasOwnProperty( 'phetioValueType' ),
-      'phetioValueType should be provided by the property and not through options.' );
-
-    var tandem = options.tandem;
-    options.tandem = options.tandem.createSupertypeTandem();
+    assert && assert( !options.hasOwnProperty( 'phetioValueType' ), 'phetioValueType should be provided by the property and not through options.' );
 
     // @public (phet-io)
     this.radioButtonGroupMemberModel = new RadioButtonGroupMemberModel( property, value );
@@ -79,21 +74,9 @@ define( function( require ) {
     this.interactionStateProperty = new RadioButtonInteractionStateProperty( this.radioButtonGroupMemberModel );
 
     RectangularButtonView.call( this, this.radioButtonGroupMemberModel, this.interactionStateProperty, options );
-
-    this.disposeRadioButtonGroupMember = function() {
-      tandem.removeInstance( self );
-    };
-    tandem.addInstance( this, TRadioButtonGroupMember( property.phetioValueType ) );
   }
 
   sun.register( 'RadioButtonGroupMember', RadioButtonGroupMember );
 
-  return inherit( RectangularButtonView, RadioButtonGroupMember, {
-
-    // @public
-    dispose: function() {
-      RectangularButtonView.prototype.dispose.call( this );
-      this.disposeRadioButtonGroupMember();
-    }
-  } );
+  return inherit( RectangularButtonView, RadioButtonGroupMember );
 } );
