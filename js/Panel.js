@@ -143,6 +143,7 @@ define( function( require ) {
     // @public
     dispose: function() {
       this.disposePanel();
+      Node.prototype.dispose.call( this );
     },
 
     // @public - Change the background rectangle's stroke (can be overridden)
