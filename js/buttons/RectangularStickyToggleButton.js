@@ -39,6 +39,7 @@ define( function( require ) {
     // @public
     dispose: function() {
       //TODO implement this, see sun#212
+      RectangularButtonView.prototype.dispose.call( this );
     }
   } );
 } );

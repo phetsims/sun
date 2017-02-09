@@ -96,12 +96,12 @@ define( function( require ) {
 
     // @public
     dispose: function() {
-      ButtonModel.prototype.dispose.call( this );
       this.listeners.length = 0;
       if ( this.timer ) {
         this.timer.dispose();
         this.timer = null;
       }
+      ButtonModel.prototype.dispose.call( this );
     },
 
     /**

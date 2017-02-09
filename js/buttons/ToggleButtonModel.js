@@ -58,8 +58,8 @@ define( function( require ) {
 
     // @public
     dispose: function() {
-      ButtonModel.prototype.dispose.call( this );
       this.disposeToggleButtonModel();
+      ButtonModel.prototype.dispose.call( this );
     },
 
     // @public

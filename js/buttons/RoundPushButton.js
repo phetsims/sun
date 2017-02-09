@@ -58,6 +58,7 @@ define( function( require ) {
     // @public
     dispose: function() {
       this.disposeRoundPushButton();
+      RoundButtonView.prototype.dispose.call( this );
     },
 
     // @public

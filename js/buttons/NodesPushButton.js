@@ -102,6 +102,7 @@ define( function( require ) {
     // @public
     dispose: function() {
       //TODO implement this, see sun#212
+      Node.prototype.dispose.call( this );
     },
 
     // @public - Adds a {function} listener.
