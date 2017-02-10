@@ -118,6 +118,7 @@ define( function( require ) {
     dispose: function() {
       this.disposeCopy( this.nodeProperty.value );
       this.nodeProperty.dispose();
+      Node.prototype.dispose.call( this );
     }
   } );
 } );

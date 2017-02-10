@@ -71,7 +71,10 @@ define( function( require ) {
   return inherit( Node, UIComponent, {
 
     // @public
-    dispose: function() { this.disposeUIComponent(); },
+    dispose: function() {
+      this.disposeUIComponent();
+      Node.prototype.dispose.call( this );
+    },
 
     // @public
     setEnabled: function( enabled ) { this.enabledProperty.value = enabled; },

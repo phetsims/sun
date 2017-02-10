@@ -239,6 +239,7 @@ define( function( require ) {
       this.expandCollapseButton.dispose();
       this.expandCollapseButton = null;
       this.expandedProperty.unlink( this.expandedPropertyObserver );
+      Node.prototype.dispose.call( this );
     }
   } );
 } );

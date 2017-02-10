@@ -91,6 +91,7 @@ define( function( require ) {
     // @public - Provide dispose() on the prototype for ease of subclassing.
     dispose: function() {
       this.disposeRadioButton();
+      Node.prototype.dispose.call( this );
     },
 
     /**

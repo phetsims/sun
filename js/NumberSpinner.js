@@ -266,6 +266,7 @@ define( function( require ) {
     // @public Ensures that this node is eligible for GC.
     dispose: function() {
       this.disposeNumberSpinner();
+      Node.prototype.dispose.call( this );
     },
 
     // @public

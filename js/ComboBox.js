@@ -312,6 +312,7 @@ define( function( require ) {
     // @public - Provide dispose() on the prototype for ease of subclassing.
     dispose: function() {
       this.disposeComboBox();
+      Node.prototype.dispose.call( this );
     },
 
     // @public
@@ -426,7 +427,7 @@ define( function( require ) {
   inherit( Node, ButtonNode, {
     dispose: function() {
       this.disposeButtonNode();
-
+      Node.prototype.dispose.call( this );
     }
   } );
 

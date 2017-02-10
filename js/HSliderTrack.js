@@ -145,6 +145,7 @@ define( function( require ) {
     // @public - ensures that this object is eligible for GC
     dispose: function() {
       this.disposeHSliderTrack();
+      Node.prototype.dispose.call( this );
     },
 
     /**

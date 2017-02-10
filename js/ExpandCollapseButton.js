@@ -92,6 +92,7 @@ define( function( require ) {
     // @public - Ensures that this node is eligible for GC.
     dispose: function() {
       this.expandedProperty.unlink( this.expandedPropertyObserver );
+      Node.prototype.dispose.call( this );
     }
   } );
 } );

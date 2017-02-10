@@ -98,6 +98,7 @@ define( function( require ) {
     // @public - Ensures that this object is eligible for GC.
     dispose: function() {
       this.disposeHSliderThumb();
+      Rectangle.prototype.dispose.call( this );
     }
   } );
 } );

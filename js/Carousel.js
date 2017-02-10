@@ -333,6 +333,7 @@ define( function( require ) {
 
     dispose: function() {
       this.disposeCarousel();
+      Node.prototype.dispose.call( this );
     },
 
     /**

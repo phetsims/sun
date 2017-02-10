@@ -137,6 +137,9 @@ define( function( require ) {
   return inherit( Node, PageControl, {
 
     // @public
-    dispose: function() { this.disposePageControl(); }
+    dispose: function() {
+      this.disposePageControl();
+      Node.prototype.dispose.call( this );
+    }
   } );
 } );

@@ -145,9 +145,9 @@ define( function( require ) {
 
     // @public
     dispose: function() {
-      Node.prototype.dispose.call( this );
       this.checkBoxValueProperty.unlink( this.checkBoxCheckedListener );
       this.removeInputListener( this.checkBoxButtonListener );
+      Node.prototype.dispose.call( this );
     },
 
     /**
