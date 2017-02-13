@@ -30,6 +30,7 @@ define( function( require ) {
     assert && assert( options.delay >= 0, 'bad value for delay: ' + options.delay );
     assert && assert( options.interval > 0, 'bad value for interval: ' + options.interval );
     // Tandem.indicateUninstrumentedCode();  // see https://github.com/phetsims/phet-io/issues/986
+    // Instrumentation probably not necessary
 
     this.delay = options.delay; // @private
     this.interval = options.interval; // @private

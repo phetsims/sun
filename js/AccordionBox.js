@@ -72,6 +72,7 @@ define( function( require ) {
 
     }, options );
     // Tandem.indicateUninstrumentedCode();  // see https://github.com/phetsims/phet-io/issues/986
+    // Further instrumentation required: data stream, change or hide title
 
     // verify string options
     assert && assert( options.buttonAlign === 'left' || options.buttonAlign === 'right' );

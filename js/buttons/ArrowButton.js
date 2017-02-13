@@ -28,6 +28,7 @@ define( function( require ) {
    */
   function ArrowButton( direction, callback, options ) {
     // Tandem.indicateUninstrumentedCode();  // see https://github.com/phetsims/phet-io/issues/986
+    // Tandem required by the parent class, further customization is probably not necessary
 
     options = _.extend( {
 

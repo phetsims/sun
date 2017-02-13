@@ -38,6 +38,7 @@ define( function( require ) {
     }, options );
 
     // Tandem.indicateUninstrumentedCode();  // see https://github.com/phetsims/phet-io/issues/986
+    // Further instrumentation required: require tandem and pass it to ExpandCollapseButton
 
     Node.call( this );
 

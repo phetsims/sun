@@ -28,6 +28,7 @@ define( function( require ) {
       sideLength: 25  // length of one side of the square button
     }, options );
     // Tandem.indicateUninstrumentedCode();  // see https://github.com/phetsims/phet-io/issues/986
+    // Instrumentation required: data stream
 
     Node.call( this );
 

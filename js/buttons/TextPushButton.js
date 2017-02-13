@@ -27,6 +27,7 @@ define( function( require ) {
     }, options );
 
     // Tandem.indicateUninstrumentedCode();  // see https://github.com/phetsims/phet-io/issues/986
+    // Tandem should be required and passed to the Text instance
 
     var textNode = new Text( text, { font: options.font, fill: options.textFill, maxWidth: options.maxTextWidth } );
     RectangularPushButton.call( this, _.extend( { content: textNode }, options ) );
