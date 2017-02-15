@@ -131,7 +131,7 @@ define( function( require ) {
 
     /**
      * Fires all listeners.
-     * @private with the possible exception of hooking up for accessibility
+     * @public (phet-io, a11y)
      */
     fire: function() {
       this.startedCallbacksForFiredEmitter.emit();
