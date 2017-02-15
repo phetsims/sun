@@ -152,7 +152,12 @@ define( function( require ) {
         centerLineStroke: options.thumbCenterLineStroke,
         tandem: options.tandem.createTandem( 'thumb' )
       } );
+
+    // Dilate the local bounds horizontally so that it extends beyond where the thumb can reach.  This prevents layout
+    // asymmetry when the slider thumb is off the edges of the track.  See https://github.com/phetsims/sun/issues/282
     this.track.localBounds = this.track.localBounds.dilatedX( thumb.width / 2 );
+
+    // Add the track
     this.addChild( this.track );
 
     // do this outside of options hash, so that it applied to both default and custom thumbs
