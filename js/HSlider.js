@@ -138,7 +138,6 @@ define( function( require ) {
       tandem: options.tandem.createTandem( 'track' )
     } );
     this.track.centerX = this.valueToPosition( ( range.max + range.min ) / 2 );
-    this.addChild( this.track );
 
     // thumb
     var thumb = options.thumbNode || new HSliderThumb( this.enabledProperty, {
@@ -153,6 +152,8 @@ define( function( require ) {
         centerLineStroke: options.thumbCenterLineStroke,
         tandem: options.tandem.createTandem( 'thumb' )
       } );
+    this.track.localBounds = this.track.localBounds.dilatedX( thumb.width / 2 );
+    this.addChild( this.track );
 
     // do this outside of options hash, so that it applied to both default and custom thumbs
     thumb.centerY = this.track.centerY;
