@@ -42,8 +42,10 @@ define( function( require ) {
 
     ButtonModel.call( this, options );
 
-    // phet-io support
+    // @public (phet-io) support for the phet-io data stream
     this.startedCallbacksForFiredEmitter = new Emitter();
+
+    // @public (phet-io) support for the phet-io data stream
     this.endedCallbacksForFiredEmitter = new Emitter();
 
     this.listeners = []; // @private
