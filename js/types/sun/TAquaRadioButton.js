@@ -10,7 +10,7 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var assertInstanceOfTypes = require( 'PHET_IO/assertions/assertInstanceOfTypes' );
+  var assertInstanceOf = require( 'PHET_IO/assertions/assertInstanceOf' );
   var phetioInherit = require( 'PHET_IO/phetioInherit' );
   var TVoid = require( 'PHET_IO/types/TVoid' );
   var TBoolean = require( 'PHET_IO/types/TBoolean' );
@@ -27,7 +27,7 @@ define( function( require ) {
   function TAquaRadioButton( phetioValueType ) {
     assert && assert( !!phetioValueType, 'phetioValueType must be defined' );
     var TAquaRadioButton = function TAquaRadioButtonImpl( radioButton, phetioID ) {
-      assertInstanceOfTypes( radioButton, [ phet.sun.AquaRadioButton ] );
+      assertInstanceOf( radioButton, phet.sun.AquaRadioButton );
       TRadioButton( phetioValueType ).call( this, radioButton, phetioID );
     };
     return phetioInherit( TRadioButton( phetioValueType ), 'TAquaRadioButton', TAquaRadioButton, {

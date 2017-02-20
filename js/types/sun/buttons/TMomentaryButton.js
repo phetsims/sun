@@ -22,6 +22,8 @@ define( function( require ) {
    * @constructor
    */
   function TMomentaryButton( momentaryButton, phetioID ) {
+
+    // TODO: separate wrappers
     assertInstanceOfTypes( momentaryButton, [
       phet.sun.RectangularMomentaryButton,
       phet.sun.RoundMomentaryButton

@@ -9,7 +9,7 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var assertInstanceOfTypes = require( 'PHET_IO/assertions/assertInstanceOfTypes' );
+  var assertInstanceOf = require( 'PHET_IO/assertions/assertInstanceOf' );
   var phetioInherit = require( 'PHET_IO/phetioInherit' );
   var phetioNamespace = require( 'PHET_IO/phetioNamespace' );
   var TNode = require( 'PHET_IO/types/scenery/nodes/TNode' );
@@ -24,9 +24,7 @@ define( function( require ) {
   function TRadioButtonGroupMember( valueType ) {
     assert && assert( !!valueType, 'valueType must be defined' );
     var TRadioButtonGroupMemberImpl = function TRadioButtonGroupMemberImpl( radioButton, phetioID ) {
-      assertInstanceOfTypes( radioButton, [
-        phet.sun.RadioButtonGroupMember
-      ] );
+      assertInstanceOf( radioButton, phet.sun.RadioButtonGroupMember );
       TNode.call( this, radioButton, phetioID );
 
       toEventOnEmit(
