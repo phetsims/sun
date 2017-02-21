@@ -15,6 +15,7 @@ define( function( require ) {
   var TNode = require( 'PHET_IO/types/scenery/nodes/TNode' );
   var toEventOnEmit = require( 'PHET_IO/events/toEventOnEmit' );
   var TVoid = require( 'PHET_IO/types/TVoid' );
+  var TFunctionWrapper = require( 'PHET_IO/types/TFunctionWrapper' );
 
   /**
    * Wrapper type for phet/sun's PushButton class.
@@ -36,6 +37,14 @@ define( function( require ) {
   }
 
   phetioInherit( TNode, 'TPushButton', TPushButton, {
+    addListener: {
+      returnType: TVoid,
+      parameterTypes: [ TFunctionWrapper( TVoid, [] ) ],
+      implementation: function( listener ) {
+        this.instance.addListener( listener );
+      },
+      documentation: 'Adds a listener that is called back when the button is pressed.'
+    },
     fire: {
       returnType: TVoid,
       parameterTypes: [],
