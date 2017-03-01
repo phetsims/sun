@@ -30,7 +30,7 @@ define( function( require ) {
       'user',
       phetioID,
       TAccordionBox,
-      'opened'
+      'collapsed'
     );
 
     toEventOnEmit(
@@ -39,13 +39,13 @@ define( function( require ) {
       'user',
       phetioID,
       TAccordionBox,
-      'closed'
+      'expanded'
     );
   }
 
   phetioInherit( TNode, 'TAccordionBox', TAccordionBox, {}, {
     documentation: 'A traditional accordionBox',
-    events: [ 'opened', 'closed' ]
+    events: [ 'expanded', 'collapsed' ]
   } );
 
   phetioNamespace.register( 'TAccordionBox', TAccordionBox );
