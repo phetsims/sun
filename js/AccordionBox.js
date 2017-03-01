@@ -176,9 +176,9 @@ define( function( require ) {
     if ( options.showTitleWhenExpanded && options.titleBarExpandCollapse ) {
       expandedTitleBar.addInputListener( {
         down: function() {
-          self.startedCallbacksForExpandedTitleBarDownEmitter.emit();
+          self.startedCallbacksForCollapsedTitleBarDownEmitter.emit();
           options.expandedProperty.value = false;
-          self.endedCallbacksForExpandedTitleBarDownEmitter.emit();
+          self.endedCallbacksForCollapsedTitleBarDownEmitter.emit();
         }
       } );
     }
@@ -193,9 +193,9 @@ define( function( require ) {
     if ( options.titleBarExpandCollapse ) {
       collapsedTitleBar.addInputListener( {
         down: function() {
-          self.startedCallbacksForCollapsedTitleBarDownEmitter.emit();
+          self.startedCallbacksForExpandedTitleBarDownEmitter.emit();
           options.expandedProperty.value = true;
-          self.endedCallbacksForCollapsedTitleBarDownEmitter.emit();
+          self.endedCallbacksForExpandedTitleBarDownEmitter.emit();
         }
       } );
     }
