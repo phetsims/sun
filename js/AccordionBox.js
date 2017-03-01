@@ -10,15 +10,21 @@ define( function( require ) {
   'use strict';
 
   // modules
+  var Emitter = require( 'AXON/Emitter' );
   var ExpandCollapseButton = require( 'SUN/ExpandCollapseButton' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Node = require( 'SCENERY/nodes/Node' );
+  var Path = require( 'SCENERY/nodes/Path' );
+  var Property = require( 'AXON/Property' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var Shape = require( 'KITE/Shape' );
-  var Path = require( 'SCENERY/nodes/Path' );
-  var Text = require( 'SCENERY/nodes/Text' );
-  var Property = require( 'AXON/Property' );
   var sun = require( 'SUN/sun' );
+  var Tandem = require( 'TANDEM/Tandem' );
+  var Text = require( 'SCENERY/nodes/Text' );
+
+  // phet-io modules
+  var TBoolean = require( 'ifphetio!PHET_IO/types/TBoolean' );
+  var TAccordionBox = require( 'ifphetio!PHET_IO/types/sun/TAccordionBox' );
 
   /**
    * @param {Node} contentNode that will be shown or hidden as the accordion box is expanded/collapsed.
@@ -28,6 +34,11 @@ define( function( require ) {
    * @constructor
    */
   function AccordionBox( contentNode, options ) {
+
+    var self = this;
+
+    // set up tandem first so it can be used for other default options just below
+    options.tandem = options.tandem || Tandem.tandemRequired();
 
     options = _.extend( {
 
@@ -42,7 +53,7 @@ define( function( require ) {
       minWidth: 0,
 
       // title
-      titleNode: new Text( '' ), // a {Node} with well-defined bounds
+      titleNode: new Text( '', { tandem: options.tandem.createTandem( 'titleNode' ) } ), // a {Node} with well-defined bounds
       titleAlignX: 'center', // {string} horizontal alignment of the title, 'left'|'center'|'right'
       titleAlignY: 'center', // {string} vertical alignment of the title, relative to expand/collapse button 'top'|'center'
       titleXMargin: 10, // horizontal space between title and left|right edge of box
@@ -58,7 +69,10 @@ define( function( require ) {
       buttonAlign: 'left',  // {string} button alignment, 'left'|'right'
       buttonXMargin: 4, // horizontal space between button and left|right edge of box
       buttonYMargin: 2, // vertical space between button and top edge of box
-      expandedProperty: new Property( true ),
+      expandedProperty: new Property( true, {
+        tandem: options.tandem.createTandem( 'expandedProperty' ),
+        phetioValueType: TBoolean
+      } ),
       buttonTouchAreaXDilation: 0,
       buttonTouchAreaYDilation: 0,
       buttonMouseAreaXDilation: 0,
@@ -69,11 +83,12 @@ define( function( require ) {
       contentXMargin: 15, // horizontal space between content and left/right edges of box
       contentYMargin: 8,  // horizontal space between content and bottom edge of box
       contentXSpacing: 5, // horizontal space between content and button, ignored if showTitleWhenExpanded is true
-      contentYSpacing: 8 // vertical space between content and title+button, ignored if showTitleWhenExpanded is false
+      contentYSpacing: 8, // vertical space between content and title+button, ignored if showTitleWhenExpanded is false
+
+      // phet-io support
+      phetioType: TAccordionBox
 
     }, options );
-    // Tandem.indicateUninstrumentedCode();  // see https://github.com/phetsims/phet-io/issues/986
-    // Further instrumentation required: data stream, change or hide title
 
     // verify string options
     assert && assert( options.buttonAlign === 'left' || options.buttonAlign === 'right' );
@@ -81,15 +96,28 @@ define( function( require ) {
     assert && assert( options.titleAlignX === 'left' || options.titleAlignX === 'right' || options.titleAlignX === 'center' );
     assert && assert( options.titleAlignY === 'top' || options.titleAlignY === 'center' );
 
+    // emitters for the PhET-iO data stream
+    this.startedCallbacksForExpandedTitleBarDownEmitter = new Emitter();
+    this.endedCallbacksForExpandedTitleBarDownEmitter = new Emitter();
+    this.startedCallbacksForCollapsedTitleBarDownEmitter = new Emitter();
+    this.endedCallbacksForCollapsedTitleBarDownEmitter = new Emitter();
+
     Node.call( this );
 
     // @private - expand/collapse button, links to expandedProperty, must be disposed of
     this.expandCollapseButton = new ExpandCollapseButton( options.expandedProperty, {
       sideLength: options.buttonLength,
-      cursor: options.cursor
+      cursor: options.cursor,
+      tandem: options.tandem.createTandem( 'expandCollapseButton' )
     } );
-    this.expandCollapseButton.touchArea = this.expandCollapseButton.localBounds.dilatedXY( options.buttonTouchAreaXDilation, options.buttonTouchAreaYDilation );
-    this.expandCollapseButton.mouseArea = this.expandCollapseButton.localBounds.dilatedXY( options.buttonMouseAreaXDilation, options.buttonMouseAreaYDilation );
+    this.expandCollapseButton.touchArea = this.expandCollapseButton.localBounds.dilatedXY(
+      options.buttonTouchAreaXDilation,
+      options.buttonTouchAreaYDilation
+    );
+    this.expandCollapseButton.mouseArea = this.expandCollapseButton.localBounds.dilatedXY(
+      options.buttonMouseAreaXDilation,
+      options.buttonMouseAreaYDilation
+    );
 
     // Compute box dimensions
     var collapsedBoxHeight = Math.max( this.expandCollapseButton.height + ( 2 * options.buttonYMargin ), options.titleNode.height + ( 2 * options.titleYMargin ) );
@@ -109,30 +137,48 @@ define( function( require ) {
 
     // Expanded box
     var boxOptions = { fill: options.fill };
-    var expandedBox = new Rectangle( 0, 0, boxWidth, expandedBoxHeight, options.cornerRadius, options.cornerRadius, boxOptions );
+    var expandedBox = new Rectangle(
+      0,
+      0,
+      boxWidth,
+      expandedBoxHeight,
+      options.cornerRadius,
+      options.cornerRadius,
+      _.extend( { tandem: options.tandem.createTandem( 'expandedBox' ) }, boxOptions )
+    );
     this.addChild( expandedBox );
 
     // Collapsed box
-    var collapsedBox = new Rectangle( 0, 0, boxWidth, collapsedBoxHeight, options.cornerRadius, options.cornerRadius, boxOptions );
+    var collapsedBox = new Rectangle(
+      0,
+      0,
+      boxWidth,
+      collapsedBoxHeight,
+      options.cornerRadius,
+      options.cornerRadius,
+      _.extend( { tandem: options.tandem.createTandem( 'collapsedBox' ) }, boxOptions )
+    );
     this.addChild( collapsedBox );
 
     // Expanded title bar has (optional) rounded top corners, square bottom corners. Clicking it operates like expand/collapse button.
-    var expandedTitleBarOptions = {
-      fill: options.titleBarFill,
-      stroke: options.titleBarStroke,
-      lineWidth: options.lineWidth, // use same lineWidth as box, for consistent look
-      cursor: options.cursor
-    };
     var expandedTitleBarShape = Shape.roundedRectangleWithRadii( 0, 0, boxWidth, collapsedBoxHeight, {
       topLeft: options.cornerRadius,
       topRight: options.cornerRadius
     } );
-    var expandedTitleBar = new Path( expandedTitleBarShape, expandedTitleBarOptions );
+    var expandedTitleBar = new Path( expandedTitleBarShape, {
+      fill: options.titleBarFill,
+      stroke: options.titleBarStroke,
+      lineWidth: options.lineWidth, // use same lineWidth as box, for consistent look
+      cursor: options.cursor,
+      tandem: options.tandem.createTandem( 'expandedTitleBar' )
+    } );
     expandedBox.addChild( expandedTitleBar );
     if ( options.showTitleWhenExpanded && options.titleBarExpandCollapse ) {
       expandedTitleBar.addInputListener( {
         down: function() {
+          self.startedCallbacksForExpandedTitleBarDownEmitter.emit();
           options.expandedProperty.value = false;
+          self.endedCallbacksForExpandedTitleBarDownEmitter.emit();
         }
       } );
     }
@@ -140,13 +186,16 @@ define( function( require ) {
     // Collapsed title bar has corners that match the box. Clicking it operates like expand/collapse button.
     var collapsedTitleBar = new Rectangle( 0, 0, boxWidth, collapsedBoxHeight, options.cornerRadius, options.cornerRadius, {
       fill: options.titleBarFill,
-      cursor: options.cursor
+      cursor: options.cursor,
+      tandem: options.tandem.createTandem( 'collapsedTitleBar' )
     } );
     collapsedBox.addChild( collapsedTitleBar );
     if ( options.titleBarExpandCollapse ) {
       collapsedTitleBar.addInputListener( {
         down: function() {
+          self.startedCallbacksForCollapsedTitleBarDownEmitter.emit();
           options.expandedProperty.value = true;
+          self.endedCallbacksForCollapsedTitleBarDownEmitter.emit();
         }
       } );
     }
@@ -159,8 +208,24 @@ define( function( require ) {
     var collapsedBoxOutline;
     if ( options.stroke ) {
       var outlineOptions = { stroke: options.stroke, lineWidth: options.lineWidth };
-      expandedBoxOutline = new Rectangle( 0, 0, boxWidth, expandedBoxHeight, options.cornerRadius, options.cornerRadius, outlineOptions );
-      collapsedBoxOutline = new Rectangle( 0, 0, boxWidth, collapsedBoxHeight, options.cornerRadius, options.cornerRadius, outlineOptions );
+      expandedBoxOutline = new Rectangle(
+        0,
+        0,
+        boxWidth,
+        expandedBoxHeight,
+        options.cornerRadius,
+        options.cornerRadius,
+        _.extend( { tandem: options.tandem.createTandem( 'expandedBoxOutline' ) }, outlineOptions )
+      );
+      collapsedBoxOutline = new Rectangle(
+        0,
+        0,
+        boxWidth,
+        collapsedBoxHeight,
+        options.cornerRadius,
+        options.cornerRadius,
+        _.extend( { tandem: options.tandem.createTandem( 'collapsedBoxOutline' ) }, outlineOptions )
+      );
       expandedBox.addChild( expandedBoxOutline );
       collapsedBox.addChild( collapsedBoxOutline );
     }

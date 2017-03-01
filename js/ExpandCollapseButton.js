@@ -16,6 +16,7 @@ define( function( require ) {
   var Path = require( 'SCENERY/nodes/Path' );
   var Shape = require( 'KITE/Shape' );
   var sun = require( 'SUN/sun' );
+  var Tandem = require( 'TANDEM/Tandem' );
 
   /**
    * @param {Property.<boolean>} expandedProperty
@@ -25,10 +26,9 @@ define( function( require ) {
   function ExpandCollapseButton( expandedProperty, options ) {
 
     options = _.extend( {
-      sideLength: 25  // length of one side of the square button
+      sideLength: 25,  // length of one side of the square button
+      tandem: Tandem.tandemRequired()
     }, options );
-    // Tandem.indicateUninstrumentedCode();  // see https://github.com/phetsims/phet-io/issues/986
-    // Instrumentation required: data stream
 
     Node.call( this );
 
@@ -48,20 +48,36 @@ define( function( require ) {
     };
 
     // Expand '+' button
-    var expandButton = new Path( buttonShape, { fill: 'rgb(0, 179, 0 )', stroke: 'black', lineWidth: 0.5 } );
+    var expandButton = new Path( buttonShape, {
+      fill: 'rgb(0, 179, 0 )',
+      stroke: 'black',
+      lineWidth: 0.5,
+      tandem: options.tandem.createTandem( 'expandButton' )
+    } );
     var plusSymbolShape = new Shape()
       .moveTo( symbolLength / 2, 0 )
       .lineTo( symbolLength / 2, symbolLength )
       .moveTo( 0, symbolLength / 2 )
       .lineTo( symbolLength, symbolLength / 2 );
-    expandButton.addChild( new Path( plusSymbolShape, symbolOptions ) );
+    expandButton.addChild( new Path(
+      plusSymbolShape,
+      _.extend( { tandem: options.tandem.createTandem( 'plusSymbol' ) }, symbolOptions )
+    ) );
 
     // Collapse '-' button
-    var collapseButton = new Path( buttonShape, { fill: 'rgb( 255, 85, 0 )', stroke: 'black', lineWidth: 0.5 } );
+    var collapseButton = new Path( buttonShape, {
+      fill: 'rgb( 255, 85, 0 )',
+      stroke: 'black',
+      lineWidth: 0.5,
+      tandem: options.tandem.createTandem( 'collapseButton' )
+    } );
     var minusSymbolShape = new Shape()
       .moveTo( -symbolLength / 2, 0 )
       .lineTo( symbolLength / 2, 0 );
-    collapseButton.addChild( new Path( minusSymbolShape, symbolOptions ) );
+    collapseButton.addChild( new Path(
+      minusSymbolShape,
+      _.extend( { tandem: options.tandem.createTandem( 'minusSymbol' ) }, symbolOptions )
+    ) );
 
     // rendering order
     this.addChild( expandButton );
@@ -72,7 +88,8 @@ define( function( require ) {
     this.addInputListener( new ButtonListener( {
       fire: function() {
         expandedProperty.set( !expandedProperty.get() );
-      }
+      },
+      tandem: options.tandem.createTandem( 'buttonListener' )
     } ) );
 
     // @private
