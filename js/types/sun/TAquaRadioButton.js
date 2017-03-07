@@ -41,7 +41,7 @@ define( function( require ) {
       }
     }, {
       documentation: 'A radio button which looks like the Mac "Aqua" radio buttons',
-      events: TRadioButton( phetioValueType ).events // TODO: Is this automatically inherited from the parent?
+      events: TRadioButton( phetioValueType ).events
     } );
   }
 
