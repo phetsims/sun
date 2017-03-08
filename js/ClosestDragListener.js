@@ -10,7 +10,7 @@
  *   computeDistance: function( globalPoint ) : number
  * }
  *
- * @author Jonathan Olson <jonathan.olson@colorado.edu>
+ * @author Jonathan Olson (PhET Interactive Simulations)
  */
 define( function( require ) {
   'use strict';

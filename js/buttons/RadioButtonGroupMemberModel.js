@@ -4,7 +4,7 @@
  * Model for a RadioButtonGroupMember in RadioButtonGroup. This model is designed to be used inside
  * RadioButtonGroupMember only, so there should be no need to use it outside of RadioButtonGroupMember.
  *
- * @author Aaron Davis
+ * @author Aaron Davis (PhET Interactive Simulations)
  */
 define( function( require ) {
   'use strict';

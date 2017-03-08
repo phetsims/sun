@@ -4,7 +4,7 @@
  * Spinner for numbers.
  *
  * @author Chris Malley (PixelZoom, Inc.)
- * @author Andrea Lin
+ * @author Andrea Lin (PhET Interactive Simulations)
  */
 define( function( require ) {
   'use strict';

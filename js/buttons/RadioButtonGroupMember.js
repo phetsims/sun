@@ -5,7 +5,7 @@
  * outside of RadioButtonGroup. It is called RadioButtonGroupMember to differentiate from RadioButton, which already
  * exists.
  *
- * @author Aaron Davis
+ * @author Aaron Davis (PhET Interactive Simulations)
  */
 define( function( require ) {
   'use strict';

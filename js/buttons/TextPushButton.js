@@ -3,7 +3,7 @@
 /**
  * Push button with text on a rectangle.
  *
- * @author John Blanco
+ * @author John Blanco (PhET Interactive Simulations)
  */
 define( function( require ) {
   'use strict';

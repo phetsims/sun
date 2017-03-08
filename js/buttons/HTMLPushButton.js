@@ -4,7 +4,7 @@
  * Push button with HTML text on a rectangular push button.
  *
  * @author Chris Malley (PixelZoom, Inc.)
- * @author John Blanco
+ * @author John Blanco (PhET Interactive Simulations)
  */
 define( function( require ) {
   'use strict';

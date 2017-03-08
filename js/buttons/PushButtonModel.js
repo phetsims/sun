@@ -4,7 +4,7 @@
  * Basic model for a push button, including over/down/enabled properties.
  *
  * @author Sam Reid (PhET Interactive Simulations)
- * @author John Blanco
+ * @author John Blanco (PhET Interactive Simulations)
  * @author Chris Malley (PixelZoom, Inc.)
  */
 define( function( require ) {

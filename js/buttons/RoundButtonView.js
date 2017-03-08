@@ -7,7 +7,7 @@
  * Note: this is only the visual representation and does not have associated
  * input listeners so that it can be reused in multiple contexts.
  *
- * @author John Blanco
+ * @author John Blanco (PhET Interactive Simulations)
  * @author Sam Reid (PhET Interactive Simulations)
  */
 define( function( require ) {

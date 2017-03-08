@@ -3,7 +3,7 @@
 /**
  * Model for a momentary button: on when pressed, off when released.
  *
- * @author Chris Malley
+ * @author Chris Malley (PixelZoom, Inc.)
  */
 define( function( require ) {
   'use strict';

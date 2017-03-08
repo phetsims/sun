@@ -8,7 +8,7 @@
  * One assumption of this ButtonListener is that only one pointer can interact with the button at a time, and the other
  * pointers are effectively "locked out" while another pointer is using the button.
  *
- * @author John Blanco
+ * @author John Blanco (PhET Interactive Simulations)
  * @author Sam Reid (PhET Interactive Simulations)
  */
 define( function( require ) {

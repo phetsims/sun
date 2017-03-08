@@ -6,7 +6,7 @@
  *
  * This class inherits from the more general RoundStickyToggleButton, which can take any values.
  *
- * @author John Blanco
+ * @author John Blanco (PhET Interactive Simulations)
  * @author Sam Reid (PhET Interactive Simulations)
  */
 define( function( require ) {

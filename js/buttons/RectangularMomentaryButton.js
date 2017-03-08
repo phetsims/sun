@@ -4,7 +4,7 @@
  * A rectangular momentary button: on when pressed, off when released.
  * This is the file in which the view (appearance) and model (behavior) are brought together.
  *
- * @author Chris Malley
+ * @author Chris Malley (PixelZoom, Inc.)
  */
 define( function( require ) {
   'use strict';

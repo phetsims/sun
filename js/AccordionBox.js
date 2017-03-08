@@ -3,7 +3,7 @@
 /**
  * Box that can be expanded/collapsed to show/hide contents.
  *
- * @author John Blanco
+ * @author John Blanco (PhET Interactive Simulations)
  * @author Chris Malley (PixelZoom, Inc.)
  */
 define( function( require ) {

@@ -6,7 +6,7 @@
  * This class inherits from RectangularButtonView, which contains all of the code that defines the button's appearance,
  * and adds the button's behavior by hooking up a button model.
  *
- * @author John Blanco
+ * @author John Blanco (PhET Interactive Simulations)
  */
 define( function( require ) {
   'use strict';

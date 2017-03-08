@@ -4,7 +4,7 @@
  * Model for a toggle button that changes value on each "up" event when the button is released.
  *
  * @author Sam Reid (PhET Interactive Simulations)
- * @author John Blanco
+ * @author John Blanco (PhET Interactive Simulations)
  */
 define( function( require ) {
   'use strict';

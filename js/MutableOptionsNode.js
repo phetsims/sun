@@ -4,7 +4,7 @@
  * Assists "changing" options for types of nodes where the node does not support modifying the option.
  * This will create a new copy of the node whenever the options change, and will swap it into place.
  *
- * @author Jonathan Olson <jonathan.olson@colorado.edu>
+ * @author Jonathan Olson (PhET Interactive Simulations)
  */
 define( function( require ) {
   'use strict';

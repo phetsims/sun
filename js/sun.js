@@ -3,7 +3,7 @@
 /**
  * Creates the namespace for this repository.
  *
- * @author John Blanco
+ * @author John Blanco (PhET Interactive Simulations)
  */
 define( function( require ) {
   'use strict';

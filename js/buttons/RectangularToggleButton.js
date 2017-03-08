@@ -3,7 +3,7 @@
 /**
  * A rectangular toggle button that switches the value of a property between 2 values.
  *
- * @author John Blanco
+ * @author John Blanco (PhET Interactive Simulations)
  * @author Sam Reid (PhET Interactive Simulations)
  */
 define( function( require ) {

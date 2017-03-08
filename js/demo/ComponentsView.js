@@ -6,7 +6,7 @@
  * Use the 'component' query parameter to set the initial selection of the combo box.
  *
  * @author Sam Reid (PhET Interactive Simulations)
- * @author Chris Malley
+ * @author Chris Malley (PixelZoom, Inc.)
  */
 define( function( require ) {
   'use strict';

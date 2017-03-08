@@ -3,7 +3,7 @@
 /**
  * A derived property that maps momentary button model states to the values needed by the button view.
  *
- * @author Chris Malley
+ * @author Chris Malley (PixelZoom, Inc.)
  */
 define( function( require ) {
   'use strict';

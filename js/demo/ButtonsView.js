@@ -3,7 +3,7 @@
 /**
  * Main ScreenView container for demonstrating and testing the various buttons.
  *
- * @author John Blanco
+ * @author John Blanco (PhET Interactive Simulations)
  */
 define( function( require ) {
   'use strict';

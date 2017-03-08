@@ -4,7 +4,7 @@
  * A rectangular toggle button that switches the value of a property that can take on valueUp or valueDown.
  * It sticks in the down position when pressed, popping back up when pressed again.
  *
- * @author John Blanco
+ * @author John Blanco (PhET Interactive Simulations)
  * @author Sam Reid (PhET Interactive Simulations)
  */
 define( function( require ) {

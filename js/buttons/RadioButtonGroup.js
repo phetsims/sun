@@ -8,7 +8,7 @@
  * A typical use case is when you want to have different modes of a view to select from. Typically,
  * RadioButtonGroup radio buttons display some kind of icon or image, but that is not mandatory.
  *
- * @author Aaron Davis
+ * @author Aaron Davis (PhET Interactive Simulations)
  */
 define( function( require ) {
   'use strict';

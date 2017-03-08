@@ -3,7 +3,7 @@
 /**
  * Visual representation of a rectangular button.
  *
- * @author John Blanco
+ * @author John Blanco (PhET Interactive Simulations)
  * @author Sam Reid (PhET Interactive Simulations)
  */
 define( function( require ) {

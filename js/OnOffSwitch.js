@@ -12,7 +12,7 @@
  * If you drag the thumb far enough to the side (outside of the switch), it will immediately toggle the model behavior.
  *
  * @author Chris Malley (PixelZoom, Inc.)
- * @author Jonathan Olson (jonathan.olson@colorado.edu)
+ * @author Jonathan Olson (PhET Interactive Simulations)
  */
 define( function( require ) {
   'use strict';
