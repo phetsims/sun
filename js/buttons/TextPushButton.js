@@ -13,6 +13,7 @@ define( function( require ) {
   var RectangularPushButton = require( 'SUN/buttons/RectangularPushButton' );
   var sun = require( 'SUN/sun' );
   var Text = require( 'SCENERY/nodes/Text' );
+  var Tandem = require( 'TANDEM/Tandem' );
 
   /**
    * @param {string} text
@@ -23,13 +24,17 @@ define( function( require ) {
 
     options = _.extend( {
       textFill: 'black',
-      maxTextWidth: null
+      maxTextWidth: null,
+      tandem: Tandem.tandemRequired()
     }, options );
 
-    // Tandem.indicateUninstrumentedCode();  // see https://github.com/phetsims/phet-io/issues/986
-    // Tandem should be required and passed to the Text instance
+    var textNode = new Text( text, {
+      font: options.font,
+      fill: options.textFill,
+      maxWidth: options.maxTextWidth,
+      tandem: options.tandem.createTandem('textNode')
+    } );
 
-    var textNode = new Text( text, { font: options.font, fill: options.textFill, maxWidth: options.maxTextWidth } );
     RectangularPushButton.call( this, _.extend( { content: textNode }, options ) );
   }
 
