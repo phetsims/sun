@@ -32,7 +32,7 @@ define( function( require ) {
       font: options.font,
       fill: options.textFill,
       maxWidth: options.maxTextWidth,
-      tandem: options.tandem.createTandem('textNode')
+      tandem: options.tandem.createTandem( 'textNode' )
     } );
 
     RectangularPushButton.call( this, _.extend( { content: textNode }, options ) );
