@@ -161,9 +161,7 @@ define( function( require ) {
       phetioType: TMenuItem
     } );
 
-    /**
-     * @private - dispose the menu item
-     */
+    // @private - dispose the menu item
     this.disposeMenuItem = function() {
       if ( options.checkedProperty ) {
         options.checkedProperty.unlink( checkListener );
@@ -175,9 +173,7 @@ define( function( require ) {
 
   return inherit( Node, MenuItem, {
 
-    /**
-     * @public - dispose the menu item when it will no longer be used.
-     */
+    // @public - dispose the menu item when it will no longer be used.
     dispose: function() {
       this.disposeMenuItem();
       Node.prototype.dispose.call( this );
