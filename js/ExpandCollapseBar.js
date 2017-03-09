@@ -15,6 +15,7 @@ define( function( require ) {
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var Shape = require( 'KITE/Shape' );
   var sun = require( 'SUN/sun' );
+  var Tandem = require( 'TANDEM/Tandem' );
 
   /**
    * @param {Node} titleNode
@@ -34,16 +35,17 @@ define( function( require ) {
       xSpacing: 10,
       barFill: 'white',
       barStroke: 'black',
-      barLineWidth: 1
+      barLineWidth: 1,
+      tandem: Tandem.tandemRequired()
     }, options );
-
-    // Tandem.indicateUninstrumentedCode();  // see https://github.com/phetsims/phet-io/issues/986
-    // Further instrumentation required: require tandem and pass it to ExpandCollapseButton
 
     Node.call( this );
 
     // expand/collapse button
-    var button = new ExpandCollapseButton( expandedProperty, { sideLength: options.buttonLength } );
+    var button = new ExpandCollapseButton( expandedProperty, {
+      sideLength: options.buttonLength,
+      tandem: options.tandem.createTandem( 'button' )
+    } );
     button.touchArea = Shape.bounds( button.localBounds.dilatedXY( 10, 10 ) );
 
     // bar
@@ -65,6 +67,8 @@ define( function( require ) {
     titleNode.centerY = barNode.centerY;
     button.right = barNode.right - options.xMargin;
     button.centerY = barNode.centerY;
+
+    this.mutate( { tandem: options.tandem } );
   }
 
   sun.register( 'ExpandCollapseBar', ExpandCollapseBar );
