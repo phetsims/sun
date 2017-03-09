@@ -43,12 +43,12 @@ define( function( require ) {
   var CORNER_RADIUS = 5;
 
   /**
-   * @param width {number} - the width of the menu item
-   * @param height {number} - the height of the menu item
-   * @param closeCallback {function} - called when closing the dialog that the menu item opened
-   * @param text {String}
-   * @param callback {function}
-   * @param options {Object}
+   * @param {Number} width - the width of the menu item
+   * @param {Number} height - the height of the menu item
+   * @param {Function} closeCallback - called when closing the dialog that the menu item opened
+   * @param {String} text
+   * @param {Function} callback
+   * @param {Object} [options]
    * @constructor
    */
   function MenuItem( width, height, closeCallback, text, callback, options ) {
