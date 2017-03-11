@@ -104,16 +104,16 @@ define( function( require ) {
     // if there is a check-mark property, add the check mark and hook up visibility changes
     var checkListener;
     if ( options.checkedProperty ) {
-      var CHECK_MARK_NODEHolder = new Node( {
+      var checkMarkWrapper = new Node( {
         children: [ CHECK_MARK_NODE ],
         right: textNode.left - CHECK_PADDING,
         centerY: textNode.centerY
       } );
       checkListener = function( isChecked ) {
-        CHECK_MARK_NODEHolder.visible = isChecked;
+        checkMarkWrapper.visible = isChecked;
       };
       options.checkedProperty.link( checkListener );
-      this.addChild( CHECK_MARK_NODEHolder );
+      this.addChild( checkMarkWrapper );
     }
 
     // @public (a11y)
