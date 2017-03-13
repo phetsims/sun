@@ -24,6 +24,11 @@ define( function( require ) {
    * @constructor
    */
   function TComboBoxItemNode( phetioValueType ) {
+
+    // Only active for PhET-iO, prevent false positive errors when running in other brands
+    if ( phet.chipper.brand !== 'phet-io' ) {
+      return;
+    }
     assert && assert( !!phetioValueType, 'phetioValueType should be defined' );
 
     /**
