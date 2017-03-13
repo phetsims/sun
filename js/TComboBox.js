@@ -10,11 +10,11 @@ define( function( require ) {
 
   // modules
   var TNode = require( 'SCENERY/nodes/TNode' );
+  var sun = require( 'SUN/sun' );
 
   // phet-io modules
   var assertInstanceOf = require( 'ifphetio!PHET_IO/assertions/assertInstanceOf' );
   var phetioInherit = require( 'ifphetio!PHET_IO/phetioInherit' );
-  var sun = require( 'SUN/sun' );
   var toEventOnEmit = require( 'ifphetio!PHET_IO/events/toEventOnEmit' );
 
   /**
@@ -24,6 +24,11 @@ define( function( require ) {
    * @constructor
    */
   function TComboBox( phetioValueType ) {
+
+    // Only active for PhET-iO, prevent false positive errors when running in other brands
+    if ( phet.chipper.brand !== 'phet-io' ) {
+      return;
+    }
     assert && assert( !!phetioValueType, 'phetioValueType should be defined' );
     var TComboBoxImpl = function TComboBoxImpl( comboBox, phetioID ) {
       assertInstanceOf( comboBox, phet.sun.ComboBox );
