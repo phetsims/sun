@@ -23,7 +23,7 @@ define( function( require ) {
   var Tandem = require( 'TANDEM/Tandem' );
 
   // phet-io modules
-  var TMenuItem = require( 'ifphetio!PHET_IO/types/sun/TMenuItem' );
+  var TMenuItem = require( 'SUN/TMenuItem' );
 
   // the check mark used for toggle-able menu items
   var CHECK_MARK_NODE = new FontAwesomeNode( 'check_without_box', {

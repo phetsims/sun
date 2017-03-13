@@ -19,7 +19,7 @@ define( function( require ) {
   var Tandem = require( 'TANDEM/Tandem' );
 
   // phet-io modules
-  var TVerticalCheckBoxGroup = require( 'ifphetio!PHET_IO/types/sun/TVerticalCheckBoxGroup' );
+  var TVerticalCheckBoxGroup = require( 'SUN/TVerticalCheckBoxGroup' );
 
   /**
    * Main constructor.

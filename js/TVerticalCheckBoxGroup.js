@@ -10,7 +10,7 @@ define( function( require ) {
 
   // modules
   var assertInstanceOf = require( 'ifphetio!PHET_IO/assertions/assertInstanceOf' );
-  var phetioNamespace = require( 'ifphetio!PHET_IO/phetioNamespace' );
+  var sun = require( 'SUN/sun' );
   var phetioInherit = require( 'ifphetio!PHET_IO/phetioInherit' );
   var TNode = require( 'SCENERY/nodes/TNode' );
 
@@ -29,7 +29,7 @@ define( function( require ) {
     documentation: 'A vertical group of checkboxes'
   } );
 
-  phetioNamespace.register( 'TVerticalCheckBoxGroup', TVerticalCheckBoxGroup );
+  sun.register( 'TVerticalCheckBoxGroup', TVerticalCheckBoxGroup );
 
   return TVerticalCheckBoxGroup;
 } );

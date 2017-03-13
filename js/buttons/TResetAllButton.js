@@ -10,9 +10,9 @@ define( function( require ) {
 
   // modules
   var assertInstanceOf = require( 'ifphetio!PHET_IO/assertions/assertInstanceOf' );
-  var phetioNamespace = require( 'ifphetio!PHET_IO/phetioNamespace' );
+  var sun = require( 'SUN/sun' );
   var phetioInherit = require( 'ifphetio!PHET_IO/phetioInherit' );
-  var TPushButton = require( 'ifphetio!PHET_IO/types/sun/buttons/TPushButton' );
+  var TPushButton = require( 'SUN/buttons/TPushButton' );
 
   /**
    * Wrapper type for phet/sun's ResetAllButton class.
@@ -30,7 +30,7 @@ define( function( require ) {
     events: TPushButton.events
   } );
 
-  phetioNamespace.register( 'TResetAllButton', TResetAllButton );
+  sun.register( 'TResetAllButton', TResetAllButton );
 
   return TResetAllButton;
 } );

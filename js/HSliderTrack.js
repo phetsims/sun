@@ -25,7 +25,7 @@ define( function( require ) {
   var TandemSimpleDragHandler = require( 'TANDEM/scenery/input/TandemSimpleDragHandler' );
 
   // phet-io modules
-  var THSliderTrack = require( 'ifphetio!PHET_IO/types/sun/THSliderTrack' );
+  var THSliderTrack = require( 'SUN/THSliderTrack' );
 
   /**
    * @param {Property.<number>} valueProperty

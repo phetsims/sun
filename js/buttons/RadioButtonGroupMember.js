@@ -22,7 +22,7 @@ define( function( require ) {
   var Tandem = require( 'TANDEM/Tandem' );
 
   // phet-io modules
-  var TRadioButtonGroupMember = require( 'ifphetio!PHET_IO/types/sun/TRadioButtonGroupMember' );
+  var TRadioButtonGroupMember = require( 'SUN/TRadioButtonGroupMember' );
 
   /**
    * @param {Property} property axon property that can take on a set of values, one for each radio button in the group

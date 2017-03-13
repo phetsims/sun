@@ -11,7 +11,7 @@ define( function( require ) {
   // modules
   var assertInstanceOf = require( 'ifphetio!PHET_IO/assertions/assertInstanceOf' );
   var phetioInherit = require( 'ifphetio!PHET_IO/phetioInherit' );
-  var phetioNamespace = require( 'ifphetio!PHET_IO/phetioNamespace' );
+  var sun = require( 'SUN/sun' );
   var TNode = require( 'SCENERY/nodes/TNode' );
 
   /**
@@ -29,7 +29,7 @@ define( function( require ) {
     documentation: 'The track for a knob of a traditional slider'
   } );
 
-  phetioNamespace.register( 'THSliderTrack', THSliderTrack );
+  sun.register( 'THSliderTrack', THSliderTrack );
 
   return THSliderTrack;
 } );

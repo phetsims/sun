@@ -24,7 +24,7 @@ define( function( require ) {
 
   // phet-io modules
   var TBoolean = require( 'ifphetio!PHET_IO/types/TBoolean' );
-  var TAccordionBox = require( 'ifphetio!PHET_IO/types/sun/TAccordionBox' );
+  var TAccordionBox = require( 'SUN/TAccordionBox' );
 
   /**
    * @param {Node} contentNode that will be shown or hidden as the accordion box is expanded/collapsed.

@@ -16,9 +16,7 @@ define( function( require ) {
   var RoundButtonView = require( 'SUN/buttons/RoundButtonView' );
   var sun = require( 'SUN/sun' );
   var Tandem = require( 'TANDEM/Tandem' );
-
-  // phet-io modules
-  var TRoundMomentaryButton = require( 'ifphetio!PHET_IO/types/sun/buttons/TRoundMomentaryButton' );
+  var TRoundMomentaryButton = require( 'SUN/buttons/TRoundMomentaryButton' );
 
   /**
    * @param {Object} valueOff - value when the button is in the off state

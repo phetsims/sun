@@ -18,9 +18,7 @@ define( function( require ) {
   var StickyToggleButtonModel = require( 'SUN/buttons/StickyToggleButtonModel' );
   var sun = require( 'SUN/sun' );
   var Tandem = require( 'TANDEM/Tandem' );
-
-  // phet-io modules
-  var TToggleButton = require( 'ifphetio!PHET_IO/types/sun/buttons/TToggleButton' );
+  var TToggleButton = require( 'SUN/buttons/TToggleButton' );
 
   /**
    * @param {Object} valueUp value when the toggle is in the 'up' position

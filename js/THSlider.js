@@ -13,7 +13,7 @@ define( function( require ) {
   // phet-io modules
   var assertInstanceOf = require( 'ifphetio!PHET_IO/assertions/assertInstanceOf' );
   var phetioInherit = require( 'ifphetio!PHET_IO/phetioInherit' );
-  var phetioNamespace = require( 'ifphetio!PHET_IO/phetioNamespace' );
+  var sun = require( 'SUN/sun' );
   var TBoolean = require( 'ifphetio!PHET_IO/types/TBoolean' );
   var TVoid = require( 'ifphetio!PHET_IO/types/TVoid' );
 
@@ -51,7 +51,7 @@ define( function( require ) {
     documentation: 'A traditional slider component, with a knob and possibly tick marks'
   } );
 
-  phetioNamespace.register( 'THSlider', THSlider );
+  sun.register( 'THSlider', THSlider );
 
   return THSlider;
 } );

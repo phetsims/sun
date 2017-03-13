@@ -18,7 +18,7 @@ define( function( require ) {
   var Tandem = require( 'TANDEM/Tandem' );
 
   // phet-io modules
-  var TRadioButton = require( 'ifphetio!PHET_IO/types/sun/TRadioButton' );
+  var TRadioButton = require( 'SUN/TRadioButton' );
 
   /**
    * @param {Property} property

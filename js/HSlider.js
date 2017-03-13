@@ -25,7 +25,7 @@ define( function( require ) {
   var Util = require( 'DOT/Util' );
 
   // phet-io modules
-  var THSlider = require( 'ifphetio!PHET_IO/types/sun/THSlider' );
+  var THSlider = require( 'SUN/THSlider' );
 
   /**
    * @param {Property.<number>} valueProperty

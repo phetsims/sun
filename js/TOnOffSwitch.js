@@ -10,7 +10,7 @@ define( function( require ) {
 
   // modules
   var assertInstanceOf = require( 'ifphetio!PHET_IO/assertions/assertInstanceOf' );
-  var phetioNamespace = require( 'ifphetio!PHET_IO/phetioNamespace' );
+  var sun = require( 'SUN/sun' );
   var phetioInherit = require( 'ifphetio!PHET_IO/phetioInherit' );
   var TNode = require( 'SCENERY/nodes/TNode' );
   var toEventOnEmit = require( 'ifphetio!PHET_IO/events/toEventOnEmit' );
@@ -45,7 +45,7 @@ define( function( require ) {
     events: [ 'toggled' ]
   } );
 
-  phetioNamespace.register( 'TOnOffSwitch', TOnOffSwitch );
+  sun.register( 'TOnOffSwitch', TOnOffSwitch );
 
   return TOnOffSwitch;
 } );

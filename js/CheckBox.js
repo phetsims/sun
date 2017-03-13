@@ -20,7 +20,7 @@ define( function( require ) {
   var Tandem = require( 'TANDEM/Tandem' );
 
   // phet-io modules
-  var TCheckBox = require( 'ifphetio!PHET_IO/types/sun/TCheckBox' );
+  var TCheckBox = require( 'SUN/TCheckBox' );
 
   // constants
   var DISABLED_OPACITY = 0.3;

@@ -11,7 +11,7 @@ define( function( require ) {
   // modules
   var assertInstanceOfTypes = require( 'ifphetio!PHET_IO/assertions/assertInstanceOfTypes' );
   var phetioInherit = require( 'ifphetio!PHET_IO/phetioInherit' );
-  var phetioNamespace = require( 'ifphetio!PHET_IO/phetioNamespace' );
+  var sun = require( 'SUN/sun' );
   var TNode = require( 'SCENERY/nodes/TNode' );
   var toEventOnEmit = require( 'ifphetio!PHET_IO/events/toEventOnEmit' );
 
@@ -51,7 +51,7 @@ define( function( require ) {
     } );
   }
 
-  phetioNamespace.register( 'TToggleButton', TToggleButton );
+  sun.register( 'TToggleButton', TToggleButton );
 
   return TToggleButton;
 } );

@@ -19,7 +19,7 @@ define( function( require ) {
   var Tandem = require( 'TANDEM/Tandem' );
 
   // phet-io modules
-  var TPanel = require( 'ifphetio!PHET_IO/types/sun/TPanel' );
+  var TPanel = require( 'SUN/TPanel' );
 
   // valid values for options.align
   var ALIGN_VALUES = [ 'left', 'center', 'right' ];

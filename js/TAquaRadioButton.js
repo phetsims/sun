@@ -14,8 +14,8 @@ define( function( require ) {
   var phetioInherit = require( 'ifphetio!PHET_IO/phetioInherit' );
   var TVoid = require( 'ifphetio!PHET_IO/types/TVoid' );
   var TBoolean = require( 'ifphetio!PHET_IO/types/TBoolean' );
-  var phetioNamespace = require( 'ifphetio!PHET_IO/phetioNamespace' );
-  var TRadioButton = require( 'ifphetio!PHET_IO/types/sun/TRadioButton' );
+  var sun = require( 'SUN/sun' );
+  var TRadioButton = require( 'SUN/TRadioButton' );
 
   /**
    * Wrapper type for phet/sun's AquaRadioButton class.
@@ -25,6 +25,11 @@ define( function( require ) {
    * @constructor
    */
   function TAquaRadioButton( phetioValueType ) {
+
+    // Only active for PhET-iO, prevent false positive errors when running in other brands
+    if ( phet.chipper.brand !== 'phet-io' ) {
+      return;
+    }
     assert && assert( !!phetioValueType, 'phetioValueType must be defined' );
     var TAquaRadioButton = function TAquaRadioButtonImpl( radioButton, phetioID ) {
       assertInstanceOf( radioButton, phet.sun.AquaRadioButton );
@@ -45,7 +50,7 @@ define( function( require ) {
     } );
   }
 
-  phetioNamespace.register( 'TAquaRadioButton', TAquaRadioButton );
+  sun.register( 'TAquaRadioButton', TAquaRadioButton );
 
   return TAquaRadioButton;
 } );

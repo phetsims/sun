@@ -10,7 +10,7 @@ define( function( require ) {
 
   // modules
   var assertInstanceOf = require( 'ifphetio!PHET_IO/assertions/assertInstanceOf' );
-  var phetioNamespace = require( 'ifphetio!PHET_IO/phetioNamespace' );
+  var sun = require( 'SUN/sun' );
   var phetioInherit = require( 'ifphetio!PHET_IO/phetioInherit' );
   var TNode = require( 'SCENERY/nodes/TNode' );
 
@@ -29,7 +29,7 @@ define( function( require ) {
     documentation: 'A container for other TNodes'
   } );
 
-  phetioNamespace.register( 'TPanel', TPanel );
+  sun.register( 'TPanel', TPanel );
 
   return TPanel;
 } );

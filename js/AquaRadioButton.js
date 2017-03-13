@@ -15,9 +15,7 @@ define( function( require ) {
   var RadioButton = require( 'SUN/RadioButton' );
   var sun = require( 'SUN/sun' );
   var Tandem = require( 'TANDEM/Tandem' );
-
-  // phet-io modules
-  var TAquaRadioButton = require( 'ifphetio!PHET_IO/types/sun/TAquaRadioButton' );
+  var TAquaRadioButton = require( 'SUN/TAquaRadioButton' );
 
   /**
    * @param property

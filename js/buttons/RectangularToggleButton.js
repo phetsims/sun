@@ -16,9 +16,7 @@ define( function( require ) {
   var ToggleButtonInteractionStateProperty = require( 'SUN/buttons/ToggleButtonInteractionStateProperty' );
   var ToggleButtonModel = require( 'SUN/buttons/ToggleButtonModel' );
   var Tandem = require( 'TANDEM/Tandem' );
-
-  // phet-io modules
-  var TToggleButton = require( 'ifphetio!PHET_IO/types/sun/buttons/TToggleButton' );
+  var TToggleButton = require( 'SUN/buttons/TToggleButton' );
 
   /**
    * @param {Object} valueOff - value when the button is in the off state

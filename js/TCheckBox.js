@@ -14,7 +14,7 @@ define( function( require ) {
   // phet-io modules
   var assertInstanceOf = require( 'ifphetio!PHET_IO/assertions/assertInstanceOf' );
   var phetioInherit = require( 'ifphetio!PHET_IO/phetioInherit' );
-  var phetioNamespace = require( 'ifphetio!PHET_IO/phetioNamespace' );
+  var sun = require( 'SUN/sun' );
   var TBoolean = require( 'ifphetio!PHET_IO/types/TBoolean' );
   var TFunctionWrapper = require( 'ifphetio!PHET_IO/types/TFunctionWrapper' );
   var toEventOnEmit = require( 'ifphetio!PHET_IO/events/toEventOnEmit' );
@@ -79,7 +79,7 @@ define( function( require ) {
     events: [ 'toggled' ]
   } );
 
-  phetioNamespace.register( 'TCheckBox', TCheckBox );
+  sun.register( 'TCheckBox', TCheckBox );
 
   return TCheckBox;
 } );

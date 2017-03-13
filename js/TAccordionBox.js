@@ -13,7 +13,7 @@ define( function( require ) {
   // phet-io modules
   var assertInstanceOf = require( 'ifphetio!PHET_IO/assertions/assertInstanceOf' );
   var phetioInherit = require( 'ifphetio!PHET_IO/phetioInherit' );
-  var phetioNamespace = require( 'ifphetio!PHET_IO/phetioNamespace' );
+  var sun = require( 'SUN/sun' );
   var toEventOnEmit = require( 'ifphetio!PHET_IO/events/toEventOnEmit' );
 
   /**
@@ -50,7 +50,7 @@ define( function( require ) {
     events: [ 'expanded', 'collapsed' ]
   } );
 
-  phetioNamespace.register( 'TAccordionBox', TAccordionBox );
+  sun.register( 'TAccordionBox', TAccordionBox );
 
   return TAccordionBox;
 } );

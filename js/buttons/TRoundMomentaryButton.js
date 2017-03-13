@@ -11,7 +11,7 @@ define( function( require ) {
   // modules
   var assertInstanceOf = require( 'ifphetio!PHET_IO/assertions/assertInstanceOf' );
   var phetioInherit = require( 'ifphetio!PHET_IO/phetioInherit' );
-  var phetioNamespace = require( 'ifphetio!PHET_IO/phetioNamespace' );
+  var sun = require( 'SUN/sun' );
   var TNode = require( 'SCENERY/nodes/TNode' );
   var toEventOnEmit = require( 'ifphetio!PHET_IO/events/toEventOnEmit' );
 
@@ -36,7 +36,7 @@ define( function( require ) {
   } );
 
 
-  phetioNamespace.register( 'TRoundMomentaryButton', TRoundMomentaryButton );
+  sun.register( 'TRoundMomentaryButton', TRoundMomentaryButton );
 
   return TRoundMomentaryButton;
 } );

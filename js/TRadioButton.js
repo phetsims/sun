@@ -11,7 +11,7 @@ define( function( require ) {
   // modules
   var assertInstanceOf = require( 'ifphetio!PHET_IO/assertions/assertInstanceOf' );
   var phetioInherit = require( 'ifphetio!PHET_IO/phetioInherit' );
-  var phetioNamespace = require( 'ifphetio!PHET_IO/phetioNamespace' );
+  var sun = require( 'SUN/sun' );
   var TNode = require( 'SCENERY/nodes/TNode' );
   var toEventOnEmit = require( 'ifphetio!PHET_IO/events/toEventOnEmit' );
 
@@ -22,6 +22,11 @@ define( function( require ) {
    * @constructor
    */
   function TRadioButton( phetioValueType ) {
+
+    // Only active for PhET-iO, prevent false positive errors when running in other brands
+    if ( phet.chipper.brand !== 'phet-io' ) {
+      return;
+    }
     assert && assert( !!phetioValueType, 'phetioValueType must be defined' );
     var TRadioButtonImpl = function TRadioButtonImpl( radioButton, phetioID ) {
       assertInstanceOf( radioButton, phet.sun.RadioButton );
@@ -46,7 +51,7 @@ define( function( require ) {
   }
 
 
-  phetioNamespace.register( 'TRadioButton', TRadioButton );
+  sun.register( 'TRadioButton', TRadioButton );
 
   return TRadioButton;
 } );
