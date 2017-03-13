@@ -9,11 +9,11 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var assertInstanceOfTypes = require( 'PHET_IO/assertions/assertInstanceOfTypes' );
-  var phetioInherit = require( 'PHET_IO/phetioInherit' );
-  var phetioNamespace = require( 'PHET_IO/phetioNamespace' );
-  var TNode = require( 'PHET_IO/types/scenery/nodes/TNode' );
-  var toEventOnEmit = require( 'PHET_IO/events/toEventOnEmit' );
+  var assertInstanceOfTypes = require( 'ifphetio!PHET_IO/assertions/assertInstanceOfTypes' );
+  var phetioInherit = require( 'ifphetio!PHET_IO/phetioInherit' );
+  var phetioNamespace = require( 'ifphetio!PHET_IO/phetioNamespace' );
+  var TNode = require( 'SCENERY/nodes/TNode' );
+  var toEventOnEmit = require( 'ifphetio!PHET_IO/events/toEventOnEmit' );
 
   /**
    * Wrapper type for phet/sun's ToggleButton class.
