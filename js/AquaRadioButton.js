@@ -15,7 +15,7 @@ define( function( require ) {
   var RadioButton = require( 'SUN/RadioButton' );
   var sun = require( 'SUN/sun' );
   var Tandem = require( 'TANDEM/Tandem' );
-  var TAquaRadioButton = require( 'SUN/TAquaRadioButton' );
+  var TAquaRadioButton = require( 'ifphetio!SUN/TAquaRadioButton' );
 
   /**
    * @param property

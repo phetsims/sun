@@ -26,8 +26,8 @@ define( function( require ) {
   var Path = require( 'SCENERY/nodes/Path' );
 
   // phet-io modules
-  var TComboBox = require( 'SUN/TComboBox' );
-  var TComboBoxItemNode = require( 'SUN/TComboBoxItemNode' );
+  var TComboBox = require( 'ifphetio!SUN/TComboBox' );
+  var TComboBoxItemNode = require( 'ifphetio!SUN/TComboBoxItemNode' );
   var TObject = require( 'ifphetio!PHET_IO/types/TObject' );
 
   /**
