@@ -19,7 +19,6 @@ define( function( require ) {
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var Node = require( 'SCENERY/nodes/Node' );
   var Text = require( 'SCENERY/nodes/Text' );
-  var AccessiblePeer = require( 'SCENERY/accessibility/AccessiblePeer' );
   var Tandem = require( 'TANDEM/Tandem' );
 
   // phet-io modules
@@ -115,44 +114,6 @@ define( function( require ) {
       options.checkedProperty.link( checkListener );
       this.addChild( checkMarkWrapper );
     }
-
-    // @public (a11y)
-    this.accessibleContent = {
-      id: text,
-      createPeer: function( accessibleInstance ) {
-        // will look like <input id="menuItemId" value="Phet Button" type="button" tabIndex="0">
-        var domElement = document.createElement( 'input' );
-        domElement.type = 'button';
-        domElement.value = text;
-        domElement.tabIndex = '0';
-        domElement.className = 'phetMenuItem';
-
-        domElement.addEventListener( 'click', function() {
-          // fire the listener
-          fire();
-
-          // if a modal dialog has opened, focus it immediately
-          var openDialog = document.getElementsByClassName( 'Dialog' )[ 0 ];
-          if ( openDialog ) {
-            openDialog.focus();
-          }
-          // otherwise, we have been redirected to a new page so make sure screen view elements and PhET Button are back
-          // in tab order.
-          else {
-            // all screen view elements are injected back into the navigation order.
-            var screenViewElements = document.getElementsByClassName( 'ScreenView' );
-            _.each( screenViewElements, function( element ) {
-              element.hidden = false;
-            } );
-
-            // make sure that the phet button is also in the tab order
-            document.getElementsByClassName( 'PhetButton' )[ 0 ].hidden = false;
-          }
-        } );
-
-        return new AccessiblePeer( accessibleInstance, domElement );
-      }
-    };
 
     this.mutate( {
       cursor: 'pointer',
