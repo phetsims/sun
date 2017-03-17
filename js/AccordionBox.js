@@ -86,7 +86,12 @@ define( function( require ) {
       contentYSpacing: 8, // vertical space between content and title+button, ignored if showTitleWhenExpanded is false
 
       // phet-io support
-      phetioType: TAccordionBox
+      phetioType: TAccordionBox,
+
+      // a11y options
+      tagName: 'div',
+      accessibleAccordionTitle: 'No Title Given',
+
 
     }, options );
 
@@ -144,7 +149,12 @@ define( function( require ) {
       expandedBoxHeight,
       options.cornerRadius,
       options.cornerRadius,
-      _.extend( { tandem: options.tandem.createTandem( 'expandedBox' ) }, boxOptions )
+      _.extend( {
+        tandem: options.tandem.createTandem( 'expandedBox' ),
+
+        // a11y
+        tagName: 'div'
+      }, boxOptions )
     );
     this.addChild( expandedBox );
 
@@ -170,24 +180,26 @@ define( function( require ) {
       stroke: options.titleBarStroke,
       lineWidth: options.lineWidth, // use same lineWidth as box, for consistent look
       cursor: options.cursor,
-      tandem: options.tandem.createTandem( 'expandedTitleBar' )
+      tandem: options.tandem.createTandem( 'expandedTitleBar' ),
+
+      // a11y
+      tagName: 'button',
+      accessibleLabel: options.accessibleAccordionTitle,
+      labelTagName: 'p'
     } );
     expandedBox.addChild( expandedTitleBar );
-    if ( options.showTitleWhenExpanded && options.titleBarExpandCollapse ) {
-      expandedTitleBar.addInputListener( {
-        down: function() {
-          self.startedCallbacksForCollapsedTitleBarDownEmitter.emit();
-          options.expandedProperty.value = false;
-          self.endedCallbacksForCollapsedTitleBarDownEmitter.emit();
-        }
-      } );
-    }
+
 
     // Collapsed title bar has corners that match the box. Clicking it operates like expand/collapse button.
     var collapsedTitleBar = new Rectangle( 0, 0, boxWidth, collapsedBoxHeight, options.cornerRadius, options.cornerRadius, {
       fill: options.titleBarFill,
       cursor: options.cursor,
-      tandem: options.tandem.createTandem( 'collapsedTitleBar' )
+      tandem: options.tandem.createTandem( 'collapsedTitleBar' ),
+
+      // a11y
+      tagName: 'button',
+      accessibleLabel: options.accessibleAccordionTitle,
+      labelTagName: 'p'
     } );
     collapsedBox.addChild( collapsedTitleBar );
     if ( options.titleBarExpandCollapse ) {
@@ -200,6 +212,45 @@ define( function( require ) {
       } );
     }
 
+    // a11y we always want accessible tab focus on the title, even when titleBarExpandeCollapse === false
+    collapsedTitleBar.addAccessibleInputListener( {
+      click: function() {
+        self.startedCallbacksForExpandedTitleBarDownEmitter.emit();
+        options.expandedProperty.value = true;
+        self.endedCallbacksForExpandedTitleBarDownEmitter.emit();
+
+        // a11y Set focus to expanded title bar
+        expandedTitleBar.focus();
+      }
+    } );
+
+    // Set the input listeners for the expandedTitleBar
+    // a11y we need to focus on the collapsedTitleBar when the expandedTitleBar is clicked
+    if ( options.showTitleWhenExpanded ) {
+      if ( options.titleBarExpandCollapse ) {
+        expandedTitleBar.addInputListener( {
+          down: function() {
+            self.startedCallbacksForCollapsedTitleBarDownEmitter.emit();
+            options.expandedProperty.value = false;
+            self.endedCallbacksForCollapsedTitleBarDownEmitter.emit();
+          }
+        } );
+      }
+
+      // a11y we always want accessible tab focus on the title
+      expandedTitleBar.addAccessibleInputListener( {
+        click: function() {
+          self.startedCallbacksForCollapsedTitleBarDownEmitter.emit();
+          options.expandedProperty.value = false;
+          self.endedCallbacksForCollapsedTitleBarDownEmitter.emit();
+
+          // a11y Set focus to expanded title bar
+          collapsedTitleBar.focus();
+        }
+      } );
+    }
+
+    // TODO: a11y
     this.addChild( options.titleNode );
     this.addChild( this.expandCollapseButton );
 
@@ -291,6 +342,11 @@ define( function( require ) {
     this.expandedPropertyObserver = function( expanded ) {
       expandedBox.visible = expanded;
       collapsedBox.visible = !expanded;
+
+      // a11y Toggle the visibility of the buttons in the PDOM
+      expandedTitleBar.accessibleHidden = !expanded;
+      collapsedTitleBar.accessibleHidden = expanded;
+
       options.titleNode.visible = ( expanded && options.showTitleWhenExpanded ) || !expanded;
     };
     this.expandedProperty = options.expandedProperty; // @private
