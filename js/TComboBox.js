@@ -19,18 +19,15 @@ define( function( require ) {
 
   /**
    * Wrapper type for phet/sun's ComboBox class.
-   * @param {function} phetioValueType - phet-io type wrapper like TString, TNumber, etc.
+   * @param {function} phetioValueType - phet-io type wrapper like TString, TNumber, etc. If loaded by phet (not phet-io)
+   *                                    it will be the function returned by the 'ifphetio!' plugin.
    * @returns {*}
    * @constructor
    */
   function TComboBox( phetioValueType ) {
 
-    // Only active for PhET-iO, prevent false positive errors when running in other brands
-    if ( phet.chipper.brand !== 'phet-io' ) {
-      return;
-    }
-    assert && assert( !!phetioValueType, 'phetioValueType should be defined' );
     var TComboBoxImpl = function TComboBoxImpl( comboBox, phetioID ) {
+      assert && assert( !!phetioValueType, 'phetioValueType should be defined' );
       assertInstanceOf( comboBox, phet.sun.ComboBox );
       TNode.call( this, comboBox, phetioID );
 

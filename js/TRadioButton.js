@@ -17,18 +17,15 @@ define( function( require ) {
 
   /**
    * Wrapper type for phet/sun's RadioButton class.
-   * @param {function} phetioValueType - phet-io type wrapper like TString, TNumber, etc.
+   * @param {function} phetioValueType - phet-io type wrapper like TString, TNumber, etc. If loaded by phet (not phet-io)
+   *                                    it will be the function returned by the 'ifphetio!' plugin.
    * @returns {*}
    * @constructor
    */
   function TRadioButton( phetioValueType ) {
 
-    // Only active for PhET-iO, prevent false positive errors when running in other brands
-    if ( phet.chipper.brand !== 'phet-io' ) {
-      return;
-    }
-    assert && assert( !!phetioValueType, 'phetioValueType must be defined' );
     var TRadioButtonImpl = function TRadioButtonImpl( radioButton, phetioID ) {
+      assert && assert( !!phetioValueType, 'phetioValueType must be defined' );
       assertInstanceOf( radioButton, phet.sun.RadioButton );
       TNode.call( this, radioButton, phetioID );
 

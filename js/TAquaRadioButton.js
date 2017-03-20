@@ -20,22 +20,19 @@ define( function( require ) {
   /**
    * Wrapper type for phet/sun's AquaRadioButton class.
 
-   * @param {function} phetioValueType - phet-io type wrapper like TString, TNumber, etc.
+   * @param {function} phetioValueType - phet-io type wrapper like TString, TNumber, etc. If loaded by phet (not phet-io)
+   *                                    it will be the function returned by the 'ifphetio!' plugin.
    * @returns {*}
    * @constructor
    */
   function TAquaRadioButton( phetioValueType ) {
 
-    // Only active for PhET-iO, prevent false positive errors when running in other brands
-    if ( phet.chipper.brand !== 'phet-io' ) {
-      return;
-    }
-    assert && assert( !!phetioValueType, 'phetioValueType must be defined' );
-    var TAquaRadioButton = function TAquaRadioButtonImpl( radioButton, phetioID ) {
+    var TAquaRadioButtonImpl = function TAquaRadioButtonImpl( radioButton, phetioID ) {
+      assert && assert( !!phetioValueType, 'phetioValueType must be defined' );
       assertInstanceOf( radioButton, phet.sun.AquaRadioButton );
       TRadioButton( phetioValueType ).call( this, radioButton, phetioID );
     };
-    return phetioInherit( TRadioButton( phetioValueType ), 'TAquaRadioButton', TAquaRadioButton, {
+    return phetioInherit( TRadioButton( phetioValueType ), 'TAquaRadioButton', TAquaRadioButtonImpl, {
       setCircleButtonVisible: {
         returnType: TVoid,
         parameterTypes: [ TBoolean ],

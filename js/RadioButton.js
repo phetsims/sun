@@ -16,9 +16,7 @@ define( function( require ) {
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var sun = require( 'SUN/sun' );
   var Tandem = require( 'TANDEM/Tandem' );
-
-  // phet-io modules
-  var TRadioButton = require( 'ifphetio!SUN/TRadioButton' );
+  var TRadioButton = require( 'SUN/TRadioButton' );
 
   /**
    * @param {Property} property

@@ -17,18 +17,15 @@ define( function( require ) {
 
   /**
    * Wrapper type for phet/sun's RadioButton class.
-   * @param valueType
+   * @param {function} phetioValueType - If loaded by phet (not phet-io) it will be the function returned by the
+   *                                    'ifphetio!' plugin.
    * @returns {TRadioButtonGroupMemberImpl}
    * @constructor
    */
-  function TRadioButtonGroupMember( valueType ) {
+  function TRadioButtonGroupMember( phetioValueType ) {
 
-    // Only active for PhET-iO, prevent false positive errors when running in other brands
-    if ( phet.chipper.brand !== 'phet-io' ) {
-      return;
-    }
-    assert && assert( !!valueType, 'valueType must be defined' );
     var TRadioButtonGroupMemberImpl = function TRadioButtonGroupMemberImpl( radioButton, phetioID ) {
+      assert && assert( !!phetioValueType, 'phetioValueType must be defined' );
       assertInstanceOf( radioButton, phet.sun.RadioButtonGroupMember );
       TNode.call( this, radioButton, phetioID );
 
@@ -37,10 +34,10 @@ define( function( require ) {
         radioButton.radioButtonGroupMemberModel.endedCallbacksForFiredEmitter,
         'user',
         phetioID,
-        TRadioButtonGroupMember( valueType ),
+        TRadioButtonGroupMember( phetioValueType ),
         'fired',
         function( value ) {
-          return { value: valueType.toStateObject( value ) };
+          return { value: phetioValueType.toStateObject( value ) };
         }
       );
     };

@@ -17,14 +17,15 @@ define( function( require ) {
 
   /**
    * Wrapper type for phet/sun's ToggleButton class.
-   * @param {function} phetioValueType - phet-io type wrapper like TString, TNumber, etc.
+   * @param {function} phetioValueType - phet-io type wrapper like TString, TNumber, etc. If loaded by phet (not phet-io)
+   *                                    it will be the function returned by the 'ifphetio!' plugin.
    * @returns {*}
    * @constructor
    */
   function TToggleButton( phetioValueType ) {
     var validateTandems = phet.phetio && phet.phetio.queryParameters && phet.phetio.queryParameters.phetioValidateTandems;
-    assert && assert( !!phetioValueType || !validateTandems, 'phetioValueType must be specified' );
     var TToggleButtonImpl = function TToggleButtonImpl( toggleButton, phetioID ) {
+      assert && assert( !!phetioValueType || !validateTandems, 'phetioValueType must be specified' );
       TNode.call( this, toggleButton, phetioID );
       assertInstanceOfTypes( toggleButton, [
         phet.sun.ToggleButton,
