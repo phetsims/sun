@@ -137,6 +137,10 @@ define( function( require ) {
       focusable: true
     } );
 
+    if ( options.ariaRole ) {
+      this.ariaRole = options.ariaRole;
+    }
+
     // @private - dispose the menu item
     this.disposeMenuItem = function() {
       if ( options.checkedProperty ) {
