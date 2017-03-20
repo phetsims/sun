@@ -24,10 +24,10 @@ define( function( require ) {
   var Tandem = require( 'TANDEM/Tandem' );
   var Line = require( 'SCENERY/nodes/Line' );
   var Path = require( 'SCENERY/nodes/Path' );
+  var TComboBox = require( 'SUN/TComboBox' );
+  var TComboBoxItemNode = require( 'SUN/TComboBoxItemNode' );
 
   // phet-io modules
-  var TComboBox = require( 'ifphetio!SUN/TComboBox' );
-  var TComboBoxItemNode = require( 'ifphetio!SUN/TComboBoxItemNode' );
   var TObject = require( 'ifphetio!PHET_IO/types/TObject' );
 
   /**

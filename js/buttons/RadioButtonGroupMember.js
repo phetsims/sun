@@ -20,9 +20,7 @@ define( function( require ) {
   var RadioButtonInteractionStateProperty = require( 'SUN/buttons/RadioButtonInteractionStateProperty' );
   var sun = require( 'SUN/sun' );
   var Tandem = require( 'TANDEM/Tandem' );
-
-  // phet-io modules
-  var TRadioButtonGroupMember = require( 'ifphetio!SUN/TRadioButtonGroupMember' );
+  var TRadioButtonGroupMember = require( 'SUN/TRadioButtonGroupMember' );
 
   /**
    * @param {Property} property axon property that can take on a set of values, one for each radio button in the group
