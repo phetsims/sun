@@ -56,7 +56,9 @@ define( function( require ) {
     // Extend the object with defaults.
     options = _.extend( {
       tandem: Tandem.tandemRequired(),
-      textFill: 'black'
+      textFill: 'black',
+
+      tagName: 'a'
     }, options );
 
     Node.call( this );
@@ -115,11 +117,24 @@ define( function( require ) {
       this.addChild( checkMarkWrapper );
     }
 
+    var clickListener = this.addAccessibleInputListener( {
+      click: function( event ) {
+        fire();
+      }
+    } );
+
     this.mutate( {
       cursor: 'pointer',
       textDescription: text + ' Button',
       tandem: options.tandem,
-      phetioType: TMenuItem
+      phetioType: TMenuItem,
+
+      // a11y
+      parentContainerTagName: 'li',
+      parentContainerAriaRole: 'menuitem',
+      tagName: options.tagName,
+      accessibleLabel: text,
+      focusable: true
     } );
 
     // @private - dispose the menu item
@@ -127,6 +142,8 @@ define( function( require ) {
       if ( options.checkedProperty ) {
         options.checkedProperty.unlink( checkListener );
       }
+
+      self.removeAccessibleInputListener( clickListener );
     };
   }
 
