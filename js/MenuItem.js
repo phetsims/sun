@@ -125,16 +125,13 @@ define( function( require ) {
 
     this.mutate( {
       cursor: 'pointer',
-      textDescription: text + ' Button',
       tandem: options.tandem,
       phetioType: TMenuItem,
 
       // a11y
       parentContainerTagName: 'li',
       parentContainerAriaRole: 'menuitem',
-      tagName: options.tagName,
-      accessibleLabel: text,
-      focusable: true
+      tagName: options.tagName
     } );
 
     if ( options.ariaRole ) {
