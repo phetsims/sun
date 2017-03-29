@@ -46,6 +46,10 @@ define( function( require ) {
       tandem: Tandem.tandemRequired(),
       phetioType: TCheckBox,
 
+      // a11y
+      tagName: 'input',
+      inputType: 'checkbox',
+
       /*
        * {function( {Node} checkBox, {boolean} enabled ) }
        * Strategy for controlling the check box's appearance, excluding any content.
@@ -127,6 +131,11 @@ define( function( require ) {
       fire: this.fire
     } );
     this.addInputListener( this.checkBoxButtonListener );
+
+    // a11y - input listener for the pDOM
+    this.addAccessibleInputListener( {
+      change: this.fire
+    });
 
     // @private - sync with property
     this.checkBoxCheckedListener = function( checked ) {

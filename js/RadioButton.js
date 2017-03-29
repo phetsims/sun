@@ -31,7 +31,11 @@ define( function( require ) {
     options = _.extend( {
       cursor: 'pointer',
       tandem: Tandem.tandemRequired(),
-      enabled: true
+      enabled: true,
+
+      // a11y
+      tagName: 'input',
+      inputType: 'radio'
     }, options );
 
     assert && assert( !options.phetioValueType, 'phetioValueType should be specified in the property, not RadioButton options' );
@@ -70,6 +74,15 @@ define( function( require ) {
       fire: fire
     } );
     this.addInputListener( buttonListener );
+
+    // a11y - input listener for the pDOM
+    this.addAccessibleInputListener( {
+      change: function( ) {
+        if ( self.domElement.value === 'on' ) {
+          fire();
+        }
+      }
+    } );
 
     this.mutate( options );
 
