@@ -25,7 +25,10 @@ define( function( require ) {
     options = _.extend( {
       textFill: 'black',
       maxTextWidth: null,
-      tandem: Tandem.tandemRequired()
+      tandem: Tandem.tandemRequired(),
+
+      // a11y
+      accessibleLabel: text
     }, options );
 
     var textNode = new Text( text, {

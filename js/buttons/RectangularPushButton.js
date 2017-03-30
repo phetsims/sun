@@ -36,6 +36,14 @@ define( function( require ) {
 
     // Call the parent type
     RectangularButtonView.call( this, this.buttonModel, new PushButtonInteractionStateProperty( this.buttonModel ), options );
+
+    // a11y - press the button when 'enter' or 'spacebar' are pressed
+    var self = this;
+    this.clickListener = this.addAccessibleInputListener( { 
+      click: function() {
+        self.buttonModel.fire();
+      }
+    } );
   }
 
   sun.register( 'RectangularPushButton', RectangularPushButton );
@@ -45,6 +53,7 @@ define( function( require ) {
       // @public
       dispose: function() {
         this.buttonModel.dispose(); //TODO this fails when assertions are enabled, see sun#212
+        this.removeAccessibleInputListener( this.clickListener );
         RectangularButtonView.prototype.dispose.call( this );
       },
 
