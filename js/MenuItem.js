@@ -20,6 +20,7 @@ define( function( require ) {
   var Node = require( 'SCENERY/nodes/Node' );
   var Text = require( 'SCENERY/nodes/Text' );
   var Tandem = require( 'TANDEM/Tandem' );
+  var AccessibilityUtil = require( 'SCENERY/accessibility/AccessibilityUtil' );
 
   // phet-io modules
   var TMenuItem = require( 'SUN/TMenuItem' );
@@ -58,7 +59,9 @@ define( function( require ) {
       tandem: Tandem.tandemRequired(),
       textFill: 'black',
 
-      tagName: 'a'
+      // a11y
+      tagName: 'a',
+      focusAfterCallback: false // whether or not next focusable element should receive focus after the callback
     }, options );
 
     Node.call( this );
@@ -117,9 +120,11 @@ define( function( require ) {
       this.addChild( checkMarkWrapper );
     }
 
+    // a11y - activate the item when selected with the keyboard
     var clickListener = this.addAccessibleInputListener( {
       click: function( event ) {
         fire();
+        options.focusAfterCallback && AccessibilityUtil.getNextFocusable().focus();
       }
     } );
 
@@ -131,6 +136,7 @@ define( function( require ) {
       // a11y
       parentContainerTagName: 'li',
       parentContainerAriaRole: 'menuitem',
+      accessibleLabel: text,
       tagName: options.tagName
     } );
 
