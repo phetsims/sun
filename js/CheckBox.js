@@ -132,10 +132,10 @@ define( function( require ) {
     } );
     this.addInputListener( this.checkBoxButtonListener );
 
-    // a11y - input listener for the pDOM
+    // a11y - fire the listener when checkbox is clicked with keyboard or assistive technology
     this.addAccessibleInputListener( {
       change: this.fire
-    });
+    } );
 
     // @private - sync with property
     this.checkBoxCheckedListener = function( checked ) {
