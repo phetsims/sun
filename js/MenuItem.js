@@ -124,7 +124,10 @@ define( function( require ) {
     var clickListener = this.addAccessibleInputListener( {
       click: function( event ) {
         fire();
-        options.focusAfterCallback && AccessibilityUtil.getNextFocusable().focus();
+
+        // limit search of next focusable to root accessible HTML element
+        var rootElement = phet.joist.display.accessibleDOMElement;
+        options.focusAfterCallback && AccessibilityUtil.getNextFocusable( rootElement ).focus();
       }
     } );
 
