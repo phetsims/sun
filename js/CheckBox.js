@@ -132,8 +132,8 @@ define( function( require ) {
     } );
     this.addInputListener( this.checkBoxButtonListener );
 
-    // a11y - fire the listener when checkbox is clicked with keyboard or assistive technology
-    this.addAccessibleInputListener( {
+    // @private (a11y) - fire the listener when checkbox is clicked with keyboard or assistive technology
+    this.changeListener = this.addAccessibleInputListener( {
       change: this.fire
     } );
 
@@ -156,6 +156,7 @@ define( function( require ) {
     dispose: function() {
       this.checkBoxValueProperty.unlink( this.checkBoxCheckedListener );
       this.removeInputListener( this.checkBoxButtonListener );
+      this.removeAccessibleInputListener( this.changeListener );
       Node.prototype.dispose.call( this );
     },
 

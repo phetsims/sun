@@ -75,8 +75,8 @@ define( function( require ) {
     } );
     this.addInputListener( buttonListener );
 
-    // a11y - input listener for the pDOM
-    this.addAccessibleInputListener( {
+    // a11y - input listener so that updates the state of the radio button with keyboard interaction
+    var changeListener = this.addAccessibleInputListener( {
       change: function( ) {
         if ( self.domElement.value === 'on' ) {
           fire();
@@ -89,6 +89,7 @@ define( function( require ) {
     this.disposeRadioButton = function() {
       options.tandem.removeInstance( self );
       self.removeInputListener( buttonListener );
+      self.removeAccessibleInputListener( changeListener );
       property.unlink( syncWithModel );
     };
 
