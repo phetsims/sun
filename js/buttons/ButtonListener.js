@@ -34,23 +34,22 @@ define( function( require ) {
     this.downPointer = null; // @private
 
     DownUpListener.call( this, {
-        down: function( event, trail ) {
-          if ( self.downPointer === null ) {
-            self.downPointer = event.pointer;
-          }
-          if ( event.pointer === self.downPointer ) {
-            buttonModel.downProperty.set( true );
-          }
-        },
+      down: function( event, trail ) {
+        if ( self.downPointer === null ) {
+          self.downPointer = event.pointer;
+        }
+        if ( event.pointer === self.downPointer ) {
+          buttonModel.downProperty.set( true );
+        }
+      },
 
-        up: function( event, trail ) {
-          if ( event.pointer === self.downPointer ) {
-            self.downPointer = null;
-            buttonModel.downProperty.set( false );
-          }
+      up: function( event, trail ) {
+        if ( event.pointer === self.downPointer ) {
+          self.downPointer = null;
+          buttonModel.downProperty.set( false );
         }
       }
-    );
+    } );
   }
 
   sun.register( 'ButtonListener', ButtonListener );
