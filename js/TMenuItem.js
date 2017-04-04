@@ -33,7 +33,7 @@ define( function( require ) {
       menuItem.endedCallbacksForFiredEmitter,
       'user',
       phetioID,
-      TMenuItem,
+      this.constructor,
       'fired' );
   }
 

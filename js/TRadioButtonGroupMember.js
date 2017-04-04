@@ -34,7 +34,7 @@ define( function( require ) {
         radioButton.radioButtonGroupMemberModel.endedCallbacksForFiredEmitter,
         'user',
         phetioID,
-        TRadioButtonGroupMember( phetioValueType ),
+        this.constructor,
         'fired',
         function( value ) {
           return { value: phetioValueType.toStateObject( value ) };

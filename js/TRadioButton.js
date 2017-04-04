@@ -35,7 +35,7 @@ define( function( require ) {
         emitter.startedCallbacksForFiredEmitter,
         'user',
         phetioID,
-        TRadioButton( phetioValueType ),
+        this.constructor,
         'fired',
         function( value ) {
           return { value: phetioValueType.toStateObject( value ) };

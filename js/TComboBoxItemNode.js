@@ -37,7 +37,7 @@ define( function( require ) {
       assertInstanceOf( comboBoxItemNode, phet.sun.ComboBox.ItemNode );
       TNode.call( this, comboBoxItemNode, phetioID );
 
-      toEventOnEmit( comboBoxItemNode.startedCallbacksForItemFiredEmitter, comboBoxItemNode.endedCallbacksForItemFiredEmitter, 'user', phetioID, TComboBoxItemNode( phetioValueType ), 'fired', function( selection ) {
+      toEventOnEmit( comboBoxItemNode.startedCallbacksForItemFiredEmitter, comboBoxItemNode.endedCallbacksForItemFiredEmitter, 'user', phetioID, this.constructor, 'fired', function( selection ) {
         return { value: phetioValueType.toStateObject( selection ) };
       } );
     };

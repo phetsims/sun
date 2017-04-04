@@ -35,7 +35,7 @@ define( function( require ) {
       checkBox.endedCallbacksForToggledEmitter,
       'user',
       phetioID,
-      TCheckBox,
+      this.constructor,
       'toggled',
       function( oldValue, newValue ) {
         return {

@@ -38,7 +38,7 @@ define( function( require ) {
       var model = toggleButton.toggleButtonModel || toggleButton.buttonModel;  // Handle BooleanRoundStickyToggleButton too
 
       // Both StickyToggleButtonModel and ToggleButtonModel send the args in this order: oldValue, newValue
-      toEventOnEmit( model.startedCallbacksForToggledEmitter, model.endedCallbacksForToggledEmitter, 'user', phetioID, TToggleButton( phetioValueType ), 'toggled',
+      toEventOnEmit( model.startedCallbacksForToggledEmitter, model.endedCallbacksForToggledEmitter, 'user', phetioID, this.constructor, 'toggled',
         function( oldValue, newValue ) {
           return {
             oldValue: phetioValueType.toStateObject( oldValue ),

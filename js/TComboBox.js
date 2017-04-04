@@ -36,7 +36,7 @@ define( function( require ) {
         comboBox.endedCallbacksForComboBoxDismissedEmitter,
         'user',
         phetioID,
-        TComboBox( phetioValueType ),
+       this.constructor,
         'popupHidden' );
 
       toEventOnEmit(
@@ -44,7 +44,7 @@ define( function( require ) {
         comboBox.endedCallbacksForComboBoxPopupShownEmitter,
         'user',
         phetioID,
-        TComboBox( phetioValueType ),
+       this.constructor,
         'popupShown' );
     };
     return phetioInherit( TNode, 'TComboBox', TComboBoxImpl, {}, {

@@ -25,9 +25,9 @@ define( function( require ) {
     assertInstanceOf( momentaryButton, phet.sun.RoundMomentaryButton );
     TNode.call( this, momentaryButton, phetioID );
     var model = momentaryButton.buttonModel;
-    toEventOnEmit( model.startedCallbacksForPressedEmitter, model.endedCallbacksForPressedEmitter, 'user', phetioID, TRoundMomentaryButton, 'pressed' );
-    toEventOnEmit( model.startedCallbacksForReleasedEmitter, model.endedCallbacksForReleasedEmitter, 'user', phetioID, TRoundMomentaryButton, 'released' );
-    toEventOnEmit( model.startedCallbacksForReleasedByDisableEmitter, model.endedCallbacksForReleasedByDisableEmitter, 'user', phetioID, TRoundMomentaryButton, 'releasedDisabled' );
+    toEventOnEmit( model.startedCallbacksForPressedEmitter, model.endedCallbacksForPressedEmitter, 'user', phetioID, this.constructor, 'pressed' );
+    toEventOnEmit( model.startedCallbacksForReleasedEmitter, model.endedCallbacksForReleasedEmitter, 'user', phetioID, this.constructor, 'released' );
+    toEventOnEmit( model.startedCallbacksForReleasedByDisableEmitter, model.endedCallbacksForReleasedByDisableEmitter, 'user', phetioID, this.constructor, 'releasedDisabled' );
   }
 
   phetioInherit( TNode, 'TRoundMomentaryButton', TRoundMomentaryButton, {}, {

@@ -30,7 +30,7 @@ define( function( require ) {
       onOffSwitch.startedCallbacksForToggledEmitter,
       'user',
       phetioID,
-      TOnOffSwitch,
+      this.constructor,
       'toggled',
       function( oldValue, newValue ) {
         return {

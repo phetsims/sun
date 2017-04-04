@@ -31,7 +31,7 @@ define( function( require ) {
       accordionBox.endedCallbacksForCollapsedTitleBarDownEmitter,
       'user',
       phetioID,
-      TAccordionBox,
+      this.constructor,
       'collapsed'
     );
 
@@ -40,7 +40,7 @@ define( function( require ) {
       accordionBox.endedCallbacksForExpandedTitleBarDownEmitter,
       'user',
       phetioID,
-      TAccordionBox,
+      this.constructor,
       'expanded'
     );
   }
