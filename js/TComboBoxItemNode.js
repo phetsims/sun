@@ -33,7 +33,10 @@ define( function( require ) {
      * @constructor
      */
     var TComboBoxItemNodeImpl = function TComboBoxItemNodeImpl( comboBoxItemNode, phetioID ) {
-      assert && assert( !!phetioValueType, 'phetioValueType should be defined' );
+      if ( window.phet && phet.chipper && phet.chipper.brand === 'phet-io' &&
+           phet.phetio && phet.phetio.queryParameters && phet.phetio.queryParameters.phetioValidateTandems ) {
+        assert && assert( !!phetioValueType, 'phetioValueType should be defined' );
+      }
       assertInstanceOf( comboBoxItemNode, phet.sun.ComboBox.ItemNode );
       TNode.call( this, comboBoxItemNode, phetioID );
 

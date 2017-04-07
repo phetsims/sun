@@ -32,7 +32,8 @@ define( function( require ) {
         phet.sceneryPhet.PlayPauseButton,
         phet.sun.RoundStickyToggleButton,
         phet.sun.RectangularToggleButton,
-        phet.sun.RoundMomentaryButton
+        phet.sun.RoundMomentaryButton,
+        phet.sun.BooleanRoundToggleButton
       ] );
 
       var model = toggleButton.toggleButtonModel || toggleButton.buttonModel;  // Handle BooleanRoundStickyToggleButton too
