@@ -331,7 +331,6 @@ define( function( require ) {
    * @param {*} value
    * @param {Object} [options] For PhET-iO instrumented simulations, the following must be supplied:
    *                             tandemName: {string} - the suffix applied to button tandems
-   *                             phetioValueType: {function} - the wrapper type, such as TSolute
    *                           No other options are supported.
    * @returns {object}
    * @public
