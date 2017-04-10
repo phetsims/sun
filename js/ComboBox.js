@@ -112,17 +112,23 @@ define( function( require ) {
     itemHeight += ( 2 * options.itemYMargin );
 
     // button, will be set to correct value when property observer is registered
-    var buttonNode = new ButtonNode( new ComboBoxItemNode( items[ 0 ], itemWidth, itemHeight, options.itemXMargin, {
+    var dummyItemNode = new ComboBoxItemNode( items[ 0 ], itemWidth, itemHeight, options.itemXMargin, {
       tandem: options.tandem.createTandem( 'dummyItemNode' ),
       phetioValueType: property.phetioValueType
-    } ), options );
+    } );
+    var buttonNode = new ButtonNode( dummyItemNode, options );
     self.addChild( buttonNode );
 
     // list
     var listWidth = itemWidth + ( 2 * options.buttonXMargin );
     var listHeight = ( items.length * itemHeight ) + ( 2 * options.listYMargin );
-    var listNode = new Rectangle( 0, 0, listWidth, listHeight, options.listCornerRadius, options.listCornerRadius,
-      { fill: options.listFill, stroke: options.listStroke, lineWidth: options.listLineWidth, visible: false } );
+    var listNode = new Rectangle( 0, 0, listWidth, listHeight, {
+      cornerRadius: options.listCornerRadius,
+      fill: options.listFill,
+      stroke: options.listStroke,
+      lineWidth: options.listLineWidth, 
+      visible: false
+    } );
     listParent.addChild( listNode );
 
     //TODO move these to ComboBoxItemNode
@@ -242,23 +248,22 @@ define( function( require ) {
 
     // button interactivity
     buttonNode.cursor = 'pointer';
-    buttonNode.addInputListener(
-      {
-        down: function() {
-          if ( !listNode.visible ) {
-            self.startedCallbacksForComboBoxPopupShownEmitter.emit();
+    buttonNode.addInputListener( {
+      down: function() {
+        if ( !listNode.visible ) {
+          self.startedCallbacksForComboBoxPopupShownEmitter.emit();
 
-            moveList();
-            listNode.moveToFront();
-            listNode.visible = true;
-            enableClickToDismissListener = false;
-            sceneNode = self.getUniqueTrail().rootNode();
-            sceneNode.addInputListener( clickToDismissListener );
+          moveList();
+          listNode.moveToFront();
+          listNode.visible = true;
+          enableClickToDismissListener = false;
+          sceneNode = self.getUniqueTrail().rootNode();
+          sceneNode.addInputListener( clickToDismissListener );
 
-            self.endedCallbacksForComboBoxPopupShownEmitter.emit();
-          }
+          self.endedCallbacksForComboBoxPopupShownEmitter.emit();
         }
-      } );
+      }
+    } );
 
     // layout
     if ( options.labelNode ) {
@@ -380,8 +385,12 @@ define( function( require ) {
     // button background
     var width = itemNode.width + ( 4 * options.buttonXMargin ) + arrow.width;
     var height = itemNode.height + ( 2 * options.buttonYMargin );
-    var background = new Rectangle( 0, 0, width, height, options.buttonCornerRadius, options.buttonCornerRadius,
-      { fill: options.buttonFill, stroke: options.buttonStroke, lineWidth: options.buttonLineWidth } );
+    var background = new Rectangle( 0, 0, width, height, {
+      cornerRadius: options.buttonCornerRadius,
+      fill: options.buttonFill,
+      stroke: options.buttonStroke,
+      lineWidth: options.buttonLineWidth 
+    } );
 
     // vertical separator to left of arrow
     var separator = new Line( 0, 0, 0, height, {
