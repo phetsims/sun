@@ -113,7 +113,7 @@ define( function( require ) {
 
     // button, will be set to correct value when property observer is registered
     var buttonNode = new ButtonNode( new ComboBoxItemNode( items[ 0 ], itemWidth, itemHeight, options.itemXMargin, {
-      tandem: options.tandem.createTandem( 'buttonNode' ).createTandem( 'itemNode' ),
+      tandem: options.tandem.createTandem( 'dummyItemNode' ),
       phetioValueType: property.phetioValueType
     } ), options );
     self.addChild( buttonNode );
@@ -390,19 +390,21 @@ define( function( require ) {
       tandem: options.tandem.createTandem( 'separator' )
     } );
 
-    // itemNode's parent
-    var itemNodeParent = new Node();
+    // parent for the selected item node
+    var selectedItemParent = new Node( {
+      tandem: options.tandem.createTandem( 'selectedItemParent' )
+    } );
 
     // rendering order
     this.addChild( background );
     this.addChild( arrow );
     this.addChild( separator );
-    this.addChild( itemNodeParent );
+    this.addChild( selectedItemParent );
 
     // @private
     this.setItemNode = function( itemNode ) {
-      itemNodeParent.removeAllChildren();
-      itemNodeParent.addChild( itemNode );
+      selectedItemParent.removeAllChildren();
+      selectedItemParent.addChild( itemNode );
       itemNode.left = options.buttonXMargin;
       itemNode.top = options.buttonYMargin;
     };
