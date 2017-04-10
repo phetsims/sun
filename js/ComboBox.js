@@ -419,6 +419,7 @@ define( function( require ) {
     this.disposeButtonNode = function() {
       options.tandem.createTandem( 'separator' ).removeInstance( separator );
       options.tandem.createTandem( 'arrow' ).removeInstance( arrow );
+      options.tandem.createTandem( 'selectedItemParent' ).removeInstance( selectedItemParent );
       itemNode.dispose();
     };
   }
