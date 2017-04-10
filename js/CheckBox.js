@@ -162,7 +162,7 @@ define( function( require ) {
 
     /**
      *  Sets the background color of the check box.
-     *  @param {Color|String} checkBoxColorBackground
+     *  @param {Color|String} value
      *  @public
      */
     setCheckBoxColorBackground: function( value ) { this.backgroundNode.fill = value; },
@@ -178,7 +178,7 @@ define( function( require ) {
 
     /**
      *  Sets the color of the check box.
-     *  @param {Color|String} checkBoxColor
+     *  @param {Color|String} value
      *  @public
      */
     setCheckBoxColor: function( value ) { this.checkedNode.fill = this.uncheckedNode.fill = value; },
@@ -189,7 +189,7 @@ define( function( require ) {
      * @returns {Color|String}
      * @public
      */
-    getCheckboxColor: function() { this.checkedNode.fill; },
+    getCheckboxColor: function() { return this.checkedNode.fill; },
     get checkBoxColor() { return this.getCheckboxColor(); },
 
     /**
