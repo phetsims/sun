@@ -111,14 +111,6 @@ define( function( require ) {
     itemWidth += ( 2 * options.itemXMargin );
     itemHeight += ( 2 * options.itemYMargin );
 
-    // button, will be set to correct value when property observer is registered
-    var dummyItemNode = new ComboBoxItemNode( items[ 0 ], itemWidth, itemHeight, options.itemXMargin, {
-      tandem: options.tandem.createTandem( 'dummyItemNode' ),
-      phetioValueType: property.phetioValueType
-    } );
-    var buttonNode = new ButtonNode( dummyItemNode, options );
-    self.addChild( buttonNode );
-
     // list
     var listWidth = itemWidth + ( 2 * options.buttonXMargin );
     var listHeight = ( items.length * itemHeight ) + ( 2 * options.listYMargin );
@@ -199,6 +191,10 @@ define( function( require ) {
       itemNode.cursor = 'pointer';
       itemNode.addInputListener( itemListener );
     }
+
+    // button, will be set to correct value when property observer is registered
+    var buttonNode = new ButtonNode( listNode.children[ 0 ], options );
+    self.addChild( buttonNode );
 
     //TODO handle scale and rotation
     // Handles the coordinate transform required to make the list pop up near the button.
