@@ -128,6 +128,8 @@ define( function( require ) {
       stroke: options.listStroke,
       lineWidth: options.listLineWidth, 
       visible: false
+      // Not instrumented for PhET-iO because the list's location isn't valid until it has been popped up.
+      // See https://github.com/phetsims/phet-io/issues/1102
     } );
     listParent.addChild( listNode );
 
