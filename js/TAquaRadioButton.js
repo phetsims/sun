@@ -22,7 +22,6 @@ define( function( require ) {
 
    * @param {function} phetioValueType - phet-io type wrapper like TString, TNumber, etc. If loaded by phet (not phet-io)
    *                                    it will be the function returned by the 'ifphetio!' plugin.
-   * @returns {*}
    * @constructor
    */
   function TAquaRadioButton( phetioValueType ) {
