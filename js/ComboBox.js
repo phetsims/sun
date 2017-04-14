@@ -118,7 +118,7 @@ define( function( require ) {
       cornerRadius: options.listCornerRadius,
       fill: options.listFill,
       stroke: options.listStroke,
-      lineWidth: options.listLineWidth, 
+      lineWidth: options.listLineWidth,
       visible: false
       // Not instrumented for PhET-iO because the list's location isn't valid until it has been popped up.
       // See https://github.com/phetsims/phet-io/issues/1102
@@ -170,12 +170,13 @@ define( function( require ) {
       // Create tandems for each ComboBoxItemNode
       var itemNodeTandem = null;
 
-      // We don't want assert if running in phet brand
+      // For 'phet-io' brand, the tandems for items must be provided.  For other brands, the tandems are not required
+      // and are filled in with substitutes so the tandems are still defined.
       if ( phet.chipper.brand === 'phet-io' && phet.phetio && phet.phetio.queryParameters
            && phet.phetio.queryParameters.phetioValidateTandems ) {
         assert && assert( itemNodeOptions.tandemName, 'For instrumented ComboBoxes, ItemNodes must have a tandemName' );
       }
-      itemNodeTandem = options.tandem.createTandem( itemNodeOptions.tandemName || ('comboBoxItemNode' + j) );
+      itemNodeTandem = options.tandem.createTandem( itemNodeOptions.tandemName || 'comboBoxItemNode' );
       itemNodeOptions.tandem = itemNodeTandem;
       itemNodeOptions.phetioValueType = property.phetioValueType;
 
@@ -387,7 +388,7 @@ define( function( require ) {
       cornerRadius: options.buttonCornerRadius,
       fill: options.buttonFill,
       stroke: options.buttonStroke,
-      lineWidth: options.buttonLineWidth 
+      lineWidth: options.buttonLineWidth
     } );
 
     // vertical separator to left of arrow
