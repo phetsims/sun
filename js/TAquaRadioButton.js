@@ -28,7 +28,12 @@ define( function( require ) {
   function TAquaRadioButton( phetioValueType ) {
 
     var TAquaRadioButtonImpl = function TAquaRadioButtonImpl( radioButton, phetioID ) {
-      assert && assert( !!phetioValueType, 'phetioValueType must be defined' );
+
+      if ( window.phet && phet.chipper && phet.chipper.brand === 'phet-io' &&
+           phet.phetio && phet.phetio.queryParameters && phet.phetio.queryParameters.phetioValidateTandems ) {
+        assert && assert( !!phetioValueType, 'phetioValueType must be defined' );
+      }
+
       assertInstanceOf( radioButton, phet.sun.AquaRadioButton );
       TRadioButton( phetioValueType ).call( this, radioButton, phetioID );
     };

@@ -25,7 +25,11 @@ define( function( require ) {
   function TRadioButton( phetioValueType ) {
 
     var TRadioButtonImpl = function TRadioButtonImpl( radioButton, phetioID ) {
-      assert && assert( !!phetioValueType, 'phetioValueType must be defined' );
+
+      if ( window.phet && phet.chipper && phet.chipper.brand === 'phet-io' &&
+           phet.phetio && phet.phetio.queryParameters && phet.phetio.queryParameters.phetioValidateTandems ) {
+        assert && assert( !!phetioValueType, 'phetioValueType must be defined' );
+      }
       assertInstanceOf( radioButton, phet.sun.RadioButton );
       TNode.call( this, radioButton, phetioID );
 
