@@ -12,7 +12,7 @@ define( function( require ) {
   // modules
   var inherit = require( 'PHET_CORE/inherit' );
   var RectangularPushButton = require( 'SUN/buttons/RectangularPushButton' );
-  var HTMLText = require( 'SCENERY/nodes/HTMLText' );
+  var RichText = require( 'SCENERY_PHET/RichText' );
   var sun = require( 'SUN/sun' );
   var Tandem = require( 'TANDEM/Tandem' );
 
@@ -28,7 +28,7 @@ define( function( require ) {
       textFill: 'black'
     }, options );
 
-    var htmlTextNode = new HTMLText( html, options );
+    var htmlTextNode = new RichText( html, options );
     RectangularPushButton.call( this, _.extend( { content: htmlTextNode }, options ) );
   }
 
