@@ -60,7 +60,7 @@ define( function( require ) {
       textFill: 'black',
 
       // a11y
-      tagName: 'a',
+      tagName: 'button',
       focusAfterCallback: false // whether or not next focusable element should receive focus after the callback
     }, options );
 
@@ -138,14 +138,11 @@ define( function( require ) {
 
       // a11y
       parentContainerTagName: 'li',
-      parentContainerAriaRole: 'menuitem',
+      parentContainerAriaRole: 'none', // this is required for JAWS to handle focus correctly, see https://github.com/phetsims/john-travoltage/issues/225
       accessibleLabel: text,
+      ariaRole: 'menuitem',
       tagName: options.tagName
     } );
-
-    if ( options.ariaRole ) {
-      this.ariaRole = options.ariaRole;
-    }
 
     // @private - dispose the menu item
     this.disposeMenuItem = function() {
