@@ -383,6 +383,7 @@ define( function( require ) {
     // Set up a property for testing button enable/disable.
     var buttonsEnabledProperty = new Property( true );
     buttonsEnabledProperty.link( function( enabled ) {
+      arrowButton.enabled = enabled;
       radioButtonGroup.enabled = enabled;
       buttonA.enabled = enabled;
       buttonB.enabled = enabled;
