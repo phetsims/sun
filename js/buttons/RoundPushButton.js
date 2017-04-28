@@ -37,9 +37,18 @@ define( function( require ) {
     var tandem = options.tandem;
     options.tandem = tandem.createSupertypeTandem();
 
+    // If a listener was passed in, save it and add it after creating the button model.  This is done so that
+    // the same code path is always used for adding listener, thus guaranteeing a consistent code path if addListener is
+    // overridden, see https://github.com/phetsims/sun/issues/284.
+    var listener = options.listener;
+    options = _.omit( options, [ 'listener' ] );
+
     // Safe to pass through options to the PushButtonModel like "fireOnDown".  Other scenery options will be safely ignored.
     this.buttonModel = new PushButtonModel( options ); // @public, listen only
     RoundButtonView.call( this, this.buttonModel, new PushButtonInteractionStateProperty( this.buttonModel ), options );
+
+    // add the listener that was potentially saved above
+    listener && this.addListener( listener );
 
     this.disposeRoundPushButton = function() {
       tandem.removeInstance( self );
