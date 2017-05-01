@@ -28,7 +28,10 @@ define( function( require ) {
 
     options = _.extend( {
       tandem: Tandem.tandemRequired(), // {Tandem|null}
-      phetioType: TPushButton
+      phetioType: TPushButton,
+
+      // a11y - listener that will only be called when using the keyboard to interact with the push button
+      accessibleFire: function() {}
     }, options );
 
     // If a listener was passed in, save it and add it after creating the button model.  This is done so that
@@ -51,6 +54,7 @@ define( function( require ) {
     this.clickListener = this.addAccessibleInputListener( { 
       click: function() {
         self.buttonModel.fire();
+        options.accessibleFire();
       }
     } );
   }
