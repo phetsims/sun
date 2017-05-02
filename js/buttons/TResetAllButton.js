@@ -13,21 +13,30 @@ define( function( require ) {
   var sun = require( 'SUN/sun' );
   var phetioInherit = require( 'ifphetio!PHET_IO/phetioInherit' );
   var TPushButton = require( 'SUN/buttons/TPushButton' );
+  var toEventOnEmit = require( 'ifphetio!PHET_IO/events/toEventOnEmit' );
 
   /**
    * Wrapper type for phet/sun's ResetAllButton class.
-   * @param instance
+   * @param resetAllButton
    * @param phetioID
    * @constructor
    */
-  function TResetAllButton( instance, phetioID ) {
-    assertInstanceOf( instance, phet.sceneryPhet.ResetAllButton );
-    TPushButton.call( this, instance, phetioID );
+  function TResetAllButton( resetAllButton, phetioID ) {
+    assertInstanceOf( resetAllButton, phet.sceneryPhet.ResetAllButton );
+    TPushButton.call( this, resetAllButton, phetioID );
+
+    toEventOnEmit(
+      resetAllButton.startedCallbacksForResetEmitter,
+      resetAllButton.endedCallbacksForResetEmitter,
+      'user',
+      phetioID,
+      this.constructor,
+      'reset' );
   }
 
   phetioInherit( TPushButton, 'TResetAllButton', TResetAllButton, {}, {
     documentation: 'The round (typically orange) button that restores the simulation screen to its initial state',
-    events: TPushButton.events
+    events: TPushButton.events.concat( [ 'reset' ] )
   } );
 
   sun.register( 'TResetAllButton', TResetAllButton );
