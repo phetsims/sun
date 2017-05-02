@@ -36,7 +36,7 @@ define( function( require ) {
 
   phetioInherit( TPushButton, 'TResetAllButton', TResetAllButton, {}, {
     documentation: 'The round (typically orange) button that restores the simulation screen to its initial state',
-    events: TPushButton.events.concat( [ 'reset' ] )
+    events: [ 'reset' ]
   } );
 
   sun.register( 'TResetAllButton', TResetAllButton );
