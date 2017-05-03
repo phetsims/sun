@@ -2,7 +2,8 @@
 
 /**
  * A default slider thumb, currently intended for use only in HSlider.
- * It's a rectangle with a vertical white line down the center
+ * It's a rectangle with a vertical white line down the center.
+ * The HSlider doesn't need this thumb to have it's center based on the coordinate (0,0)
  *
  * @author Chris Malley (PixelZoom, Inc.)
  */
@@ -43,8 +44,7 @@ define( function( require ) {
 
     // rectangle
     var arcWidth = 0.25 * options.size.width;
-    Rectangle.call( this,
-      -options.size.width / 2, -options.size.height / 2,
+    Rectangle.call( this, 0, 0,
       options.size.width, options.size.height,
       arcWidth, arcWidth,
       {
@@ -59,8 +59,8 @@ define( function( require ) {
     // vertical line down the center
     var centerLineYMargin = 3;
     this.addChild( new Path( Shape.lineSegment(
-      0, -( options.size.height / 2 ) + centerLineYMargin,
-      0, ( options.size.height / 2 ) - centerLineYMargin ),
+        options.size.width / 2, centerLineYMargin,
+        options.size.width / 2, options.size.height - centerLineYMargin ),
       { stroke: options.centerLineStroke } ) );
 
     // highlight thumb on pointer over

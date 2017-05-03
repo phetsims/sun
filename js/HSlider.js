@@ -49,7 +49,7 @@ define( function( require ) {
 
       // {Node} optional thumb, replaces the default.
       // Client is responsible for highlighting, disabling and pointer areas.
-      // The thumb will be centered in the track.
+      // The thumb will be centered in the track, and does not need to have its 0,0 coordinate centered to the node.
       thumbNode: null,
 
       // Options for the default thumb, ignored if thumbNode is set
@@ -139,7 +139,7 @@ define( function( require ) {
     } );
     this.track.centerX = this.valueToPosition( ( range.max + range.min ) / 2 );
 
-    // thumb
+    // The thumb of the slider
     var thumb = options.thumbNode || new HSliderThumb( this.enabledProperty, {
 
         // propagate options that are specific to HSliderThumb
@@ -185,9 +185,10 @@ define( function( require ) {
       start: function( event, trail ) {
         if ( self.enabledProperty.get() ) {
           options.startDrag();
-
           var transform = trail.subtrailTo( self ).getTransform();
-          clickXOffset = transform.inversePosition2( event.pointer.point ).x - thumb.x;
+
+          // Use centerX so that the thumb does not have to be centered.
+          clickXOffset = transform.inversePosition2( event.pointer.point ).x - thumb.centerX;
         }
       },
 
