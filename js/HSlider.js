@@ -49,7 +49,7 @@ define( function( require ) {
 
       // {Node} optional thumb, replaces the default.
       // Client is responsible for highlighting, disabling and pointer areas.
-      // The thumb will be centered in the track, and does not need to have its 0,0 coordinate centered to the node.
+      // The thumb is positioned based on its center and hence can have its origin anywhere
       thumbNode: null,
 
       // Options for the default thumb, ignored if thumbNode is set
@@ -187,7 +187,7 @@ define( function( require ) {
           options.startDrag();
           var transform = trail.subtrailTo( self ).getTransform();
 
-          // Use centerX so that the thumb does not have to be centered.
+          // Determine the offset relative to the center of the thumb
           clickXOffset = transform.inversePosition2( event.pointer.point ).x - thumb.centerX;
         }
       },

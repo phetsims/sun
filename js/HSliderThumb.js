@@ -1,9 +1,8 @@
 // Copyright 2013-2016, University of Colorado Boulder
 
 /**
- * A default slider thumb, currently intended for use only in HSlider.
- * It's a rectangle with a vertical white line down the center.
- * The HSlider doesn't need this thumb to have it's center based on the coordinate (0,0)
+ * A default slider thumb, currently intended for use only in HSlider. It's a rectangle with a vertical white line down
+ * the center.  The origin is at the top left (HSlider uses the thumb center for positioning).
  *
  * @author Chris Malley (PixelZoom, Inc.)
  */
