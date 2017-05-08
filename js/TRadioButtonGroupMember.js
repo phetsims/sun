@@ -14,6 +14,7 @@ define( function( require ) {
   var sun = require( 'SUN/sun' );
   var TNode = require( 'SCENERY/nodes/TNode' );
   var toEventOnEmit = require( 'ifphetio!PHET_IO/events/toEventOnEmit' );
+  var Brand = require( 'BRAND/Brand' );
 
   /**
    * Wrapper type for phet/sun's RadioButton class.
@@ -25,8 +26,7 @@ define( function( require ) {
   function TRadioButtonGroupMember( phetioValueType ) {
 
     var TRadioButtonGroupMemberImpl = function TRadioButtonGroupMemberImpl( radioButton, phetioID ) {
-      if ( window.phet && phet.chipper && phet.chipper.brand === 'phet-io' &&
-           phet.phetio && phet.phetio.queryParameters && phet.phetio.queryParameters.phetioValidateTandems ) {
+      if ( Brand.phetioEnabled && phet.phetio.queryParameters.phetioValidateTandems ) {
         assert && assert( !!phetioValueType, 'phetioValueType must be defined' );
       }
       assertInstanceOf( radioButton, phet.sun.RadioButtonGroupMember );

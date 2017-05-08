@@ -16,6 +16,7 @@ define( function( require ) {
   var TBoolean = require( 'ifphetio!PHET_IO/types/TBoolean' );
   var sun = require( 'SUN/sun' );
   var TRadioButton = require( 'SUN/TRadioButton' );
+  var Brand = require( 'BRAND/Brand' );
 
   /**
    * Wrapper type for phet/sun's AquaRadioButton class.
@@ -28,8 +29,7 @@ define( function( require ) {
 
     var TAquaRadioButtonImpl = function TAquaRadioButtonImpl( radioButton, phetioID ) {
 
-      if ( window.phet && phet.chipper && phet.chipper.brand === 'phet-io' &&
-           phet.phetio && phet.phetio.queryParameters && phet.phetio.queryParameters.phetioValidateTandems ) {
+      if ( Brand.phetioEnabled && phet.phetio.queryParameters.phetioValidateTandems ) {
         assert && assert( !!phetioValueType, 'phetioValueType must be defined' );
       }
 

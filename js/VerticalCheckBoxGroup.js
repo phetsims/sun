@@ -17,6 +17,7 @@ define( function( require ) {
   var sun = require( 'SUN/sun' );
   var VBox = require( 'SCENERY/nodes/VBox' );
   var Tandem = require( 'TANDEM/Tandem' );
+  var Brand = require( 'BRAND/Brand' );
 
   // phet-io modules
   var TVerticalCheckBoxGroup = require( 'SUN/TVerticalCheckBoxGroup' );
@@ -54,8 +55,7 @@ define( function( require ) {
 
         //Attach each item to an invisible strut to make the widths match.
         var content = new Path( Shape.rect( 0, 0, maxWidth + options.padding - offset, 0 ), { children: [ items[ i ].content ] } );
-        if ( window.phet && phet.chipper && phet.chipper.brand === 'phet-io' &&
-             phet.phetio && phet.phetio.queryParameters && phet.phetio.queryParameters.phetioValidateTandems ) {
+        if ( Brand.phetioEnabled && phet.phetio.queryParameters.phetioValidateTandems ) {
           assert && assert( items[ i ].tandemName, 'Tandem name must be supplied for phet-io' );
         }
         var checkBox = new CheckBox( content, items[ i ].property, {

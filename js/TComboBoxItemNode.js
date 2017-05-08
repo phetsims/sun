@@ -10,11 +10,12 @@ define( function( require ) {
 
   // modules
   var TNode = require( 'SCENERY/nodes/TNode' );
+  var sun = require( 'SUN/sun' );
+  var Brand = require( 'BRAND/Brand' );
 
   // phet-io modules
   var assertInstanceOf = require( 'ifphetio!PHET_IO/assertions/assertInstanceOf' );
   var phetioInherit = require( 'ifphetio!PHET_IO/phetioInherit' );
-  var sun = require( 'SUN/sun' );
   var toEventOnEmit = require( 'ifphetio!PHET_IO/events/toEventOnEmit' );
 
   /**
@@ -32,8 +33,7 @@ define( function( require ) {
      * @constructor
      */
     var TComboBoxItemNodeImpl = function TComboBoxItemNodeImpl( comboBoxItemNode, phetioID ) {
-      if ( window.phet && phet.chipper && phet.chipper.brand === 'phet-io' &&
-           phet.phetio && phet.phetio.queryParameters && phet.phetio.queryParameters.phetioValidateTandems ) {
+      if ( Brand.phetioEnabled && phet.phetio.queryParameters.phetioValidateTandems ) {
         assert && assert( !!phetioValueType, 'phetioValueType should be defined' );
       }
       assertInstanceOf( comboBoxItemNode, phet.sun.ComboBox.ItemNode );
