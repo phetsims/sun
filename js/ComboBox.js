@@ -26,7 +26,6 @@ define( function( require ) {
   var Path = require( 'SCENERY/nodes/Path' );
   var TComboBox = require( 'SUN/TComboBox' );
   var TComboBoxItemNode = require( 'SUN/TComboBoxItemNode' );
-  var Brand = require( 'BRAND/Brand' );
 
   // phet-io modules
   var TObject = require( 'ifphetio!PHET_IO/types/TObject' );
@@ -173,7 +172,7 @@ define( function( require ) {
 
       // For 'phet-io' brand, the tandems for items must be provided.  For other brands, the tandems are not required
       // and are filled in with substitutes so the tandems are still defined.
-      if ( Brand.phetioEnabled && phet.phetio.queryParameters.phetioValidateTandems ) {
+      if ( Tandem.validationEnabled() ) {
         assert && assert( itemNodeOptions.tandemName, 'For instrumented ComboBoxes, ItemNodes must have a tandemName' );
       }
       itemNodeTandem = options.tandem.createTandem( itemNodeOptions.tandemName || 'comboBoxItemNode' );

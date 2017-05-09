@@ -25,7 +25,6 @@ define( function( require ) {
   var Shape = require( 'KITE/Shape' );
   var sun = require( 'SUN/sun' );
   var Tandem = require( 'TANDEM/Tandem' );
-  var Brand = require( 'BRAND/Brand' );
 
   // constants
   var BUTTON_CONTENT_X_ALIGN_VALUES = [ 'center', 'left', 'right' ];
@@ -162,7 +161,7 @@ define( function( require ) {
       assert && assert( !contentArray[ i ].tandem, 'content arrays should not have tandem instances, they should use ' +
                                                    'tandemName instead' );
 
-      if ( Brand.phetioEnabled && phet.phetio.queryParameters.phetioValidateTandems ) {
+      if ( Tandem.validationEnabled() ) {
         assert && assert( contentArray[ i ].tandemName, 'In PhET-iO mode, radio button group members must have a provided tandem' );
       }
 

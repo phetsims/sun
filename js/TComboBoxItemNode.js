@@ -11,7 +11,7 @@ define( function( require ) {
   // modules
   var TNode = require( 'SCENERY/nodes/TNode' );
   var sun = require( 'SUN/sun' );
-  var Brand = require( 'BRAND/Brand' );
+  var Tandem = require( 'TANDEM/Tandem' );
 
   // phet-io modules
   var assertInstanceOf = require( 'ifphetio!PHET_IO/assertions/assertInstanceOf' );
@@ -33,7 +33,7 @@ define( function( require ) {
      * @constructor
      */
     var TComboBoxItemNodeImpl = function TComboBoxItemNodeImpl( comboBoxItemNode, phetioID ) {
-      if ( Brand.phetioEnabled && phet.phetio.queryParameters.phetioValidateTandems ) {
+      if ( Tandem.validationEnabled() ) {
         assert && assert( !!phetioValueType, 'phetioValueType should be defined' );
       }
       assertInstanceOf( comboBoxItemNode, phet.sun.ComboBox.ItemNode );
