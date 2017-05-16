@@ -16,7 +16,7 @@ define( function( require ) {
   var CheckBox = require( 'SUN/CheckBox' );
   var Circle = require( 'SCENERY/nodes/Circle' );
   var ComboBox = require( 'SUN/ComboBox' );
-  var DemosView = require( 'SUN/demo/DemosView' );
+  var DemosScreenView = require( 'SUN/demo/DemosScreenView' );
   var Dimension2 = require( 'DOT/Dimension2' );
   var HSlider = require( 'SUN/HSlider' );
   var inherit = require( 'PHET_CORE/inherit' );
@@ -40,8 +40,11 @@ define( function( require ) {
   var AlignBox = require( 'SCENERY/nodes/AlignBox' );
   var AlignGroup = require( 'SCENERY/nodes/AlignGroup' );
 
-  function ComponentsView() {
-    DemosView.call( this, [
+  /**
+   * @constructor
+   */
+  function ComponentsScreenView() {
+    DemosScreenView.call( this, [
 
       /**
        * To add a demo, add an object literal here. Each object has these properties:
@@ -61,7 +64,7 @@ define( function( require ) {
     } );
   }
 
-  sun.register( 'ComponentsView', ComponentsView );
+  sun.register( 'ComponentsScreenView', ComponentsScreenView );
 
   // Creates a demo for Carousel
   var demoCarousel = function( layoutBounds ) {
@@ -399,5 +402,5 @@ define( function( require ) {
     } );
   };
 
-  return inherit( DemosView, ComponentsView );
+  return inherit( DemosScreenView, ComponentsScreenView );
 } );

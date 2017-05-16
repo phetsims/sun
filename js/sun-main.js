@@ -7,9 +7,9 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var ButtonsView = require( 'SUN/demo/ButtonsView' );
-  var ComponentsView = require( 'SUN/demo/ComponentsView' );
-  var MemoryTestsView = require( 'SUN/demo/MemoryTestsView' );
+  var ButtonsScreenView = require( 'SUN/demo/ButtonsScreenView' );
+  var ComponentsScreenView = require( 'SUN/demo/ComponentsScreenView' );
+  var MemoryTestsScreenView = require( 'SUN/demo/MemoryTestsScreenView' );
   var Property = require( 'AXON/Property' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var Screen = require( 'JOIST/Screen' );
@@ -36,7 +36,7 @@ define( function( require ) {
       // Buttons screen
       new Screen(
         function() {return {};},
-        function( model ) {return new ButtonsView();},
+        function( model ) {return new ButtonsScreenView();},
         {
           name: 'Buttons',
           backgroundColorProperty: new Property( sunQueryParameters.backgroundColor ),
@@ -47,7 +47,7 @@ define( function( require ) {
       // Components screen
       new Screen(
         function() {return {};},
-        function( model ) {return new ComponentsView();},
+        function( model ) {return new ComponentsScreenView();},
         {
           name: 'Components',
           backgroundColorProperty: new Property( sunQueryParameters.backgroundColor ),
@@ -58,7 +58,7 @@ define( function( require ) {
       // Memory Test screen
       new Screen(
         function() {return {};},
-        function( model ) {return new MemoryTestsView();},
+        function( model ) {return new MemoryTestsScreenView();},
         {
           name: 'Memory Tests',
           backgroundColorProperty: new Property( sunQueryParameters.backgroundColor ),

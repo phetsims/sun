@@ -39,13 +39,16 @@ define( function( require ) {
     } )
   ];
 
-  function MemoryTestsView() {
+  /**
+   * @constructor
+   */
+  function MemoryTestsScreenView() {
     ScreenView.call( this );
   }
 
-  sun.register( 'MemoryTestsView', MemoryTestsView );
+  sun.register( 'MemoryTestsScreenView', MemoryTestsScreenView );
 
-  return inherit( ScreenView, MemoryTestsView, {
+  return inherit( ScreenView, MemoryTestsScreenView, {
     step: function() {
 
       for ( var i = 0; i < components.length; i++ ) {

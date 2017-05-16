@@ -41,7 +41,7 @@ define( function( require ) {
   /**
    * @constructor
    */
-  function ButtonsView() {
+  function ButtonsScreenView() {
 
     ScreenView.call( this );
 
@@ -437,7 +437,7 @@ define( function( require ) {
     this.addChild( changeButtonColorsButton );
   }
 
-  sun.register( 'ButtonsView', ButtonsView );
+  sun.register( 'ButtonsScreenView', ButtonsScreenView );
 
-  return inherit( ScreenView, ButtonsView );
+  return inherit( ScreenView, ButtonsScreenView );
 } );

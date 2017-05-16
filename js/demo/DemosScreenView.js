@@ -26,7 +26,7 @@ define( function( require ) {
    * @param {Object} [options]
    * @constructor
    */
-  function DemosView( demos, options ) {
+  function DemosScreenView( demos, options ) {
 
     options = _.extend( {
       comboBoxLocation: new Vector2( 20, 20 ), // {Vector2} location of ComboBox used to select a demo
@@ -101,7 +101,7 @@ define( function( require ) {
     } );
   }
 
-  sun.register( 'DemosView', DemosView );
+  sun.register( 'DemosScreenView', DemosScreenView );
 
-  return inherit( ScreenView, DemosView );
+  return inherit( ScreenView, DemosScreenView );
 } );
