@@ -25,6 +25,7 @@ define( function( require ) {
    * @constructor
    */
   function RectangularPushButton( options ) {
+    var self = this;
 
     options = _.extend( {
       tandem: Tandem.tandemRequired(), // {Tandem|null}
@@ -50,13 +51,18 @@ define( function( require ) {
     RectangularButtonView.call( this, this.buttonModel, new PushButtonInteractionStateProperty( this.buttonModel ), options );
 
     // a11y - press the button when 'enter' or 'spacebar' are pressed
-    var self = this;
-    this.clickListener = this.addAccessibleInputListener( { 
+    this.clickListener = this.addAccessibleInputListener( {
       click: function() {
         self.buttonModel.fire();
         options.accessibleFire();
       }
     } );
+
+    this.disposeRectangularPushButton = function() {
+      this.buttonModel.dispose(); //TODO this fails when assertions are enabled, see sun#212
+      this.removeAccessibleInputListener( this.clickListener );
+      options.tandem.removeInstance( this );
+    };
   }
 
   sun.register( 'RectangularPushButton', RectangularPushButton );
@@ -65,8 +71,7 @@ define( function( require ) {
 
       // @public
       dispose: function() {
-        this.buttonModel.dispose(); //TODO this fails when assertions are enabled, see sun#212
-        this.removeAccessibleInputListener( this.clickListener );
+        this.disposeRectangularPushButton();
         RectangularButtonView.prototype.dispose.call( this );
       },
 
