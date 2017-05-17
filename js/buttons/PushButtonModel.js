@@ -13,9 +13,11 @@ define( function( require ) {
   // modules
   var ButtonModel = require( 'SUN/buttons/ButtonModel' );
   var CallbackTimer = require( 'SUN/CallbackTimer' );
-  var Emitter = require( 'AXON/Emitter' );
   var inherit = require( 'PHET_CORE/inherit' );
   var sun = require( 'SUN/sun' );
+  var Emitter = require( 'AXON/Emitter' );
+  var TandemEmitter = require( 'TANDEM/axon/TandemEmitter' );
+  var Tandem = require( 'TANDEM/Tandem' );
 
   /**
    * @param {Object} [options]
@@ -31,7 +33,8 @@ define( function( require ) {
       // fire-on-hold feature
       fireOnHold: false, // is the fire-on-hold feature enabled?
       fireOnHoldDelay: 400, // start to fire continuously after pressing for this long (milliseconds)
-      fireOnHoldInterval: 100 // fire continuously at this interval (milliseconds)
+      fireOnHoldInterval: 100, // fire continuously at this interval (milliseconds),
+      tandem: Tandem.tandemOptional()
     }, options );
 
     var self = this;
@@ -42,11 +45,26 @@ define( function( require ) {
 
     ButtonModel.call( this, options );
 
-    // @public (phet-io) support for the phet-io data stream
-    this.startedCallbacksForFiredEmitter = new Emitter();
+    if ( options.tandem.supplied ) {
+      this.startedCallbacksForFiredEmitter = new TandemEmitter( {
+        tandem: options.tandem.createTandem( 'startedFiredEmitted' ),
+        phetioArgumentTypes: [],
+        phetioEmitData: false
+      } );
+      this.endedCallbacksForFiredEmitter = new TandemEmitter( {
+        tandem: options.tandem.createTandem( 'endedFiredEmitted' ),
+        phetioArgumentTypes: [],
+        phetioEmitData: false
+      } );
+    }
+    else {
 
-    // @public (phet-io) support for the phet-io data stream
-    this.endedCallbacksForFiredEmitter = new Emitter();
+      // @public (phet-io) support for the phet-io data stream
+      this.startedCallbacksForFiredEmitter = new Emitter();
+
+      // @public (phet-io) support for the phet-io data stream
+      this.endedCallbacksForFiredEmitter = new Emitter();
+    }
 
     this.listeners = []; // @private
     if ( options.listener !== null ) {
@@ -92,6 +110,18 @@ define( function( require ) {
         self.timer.stop( false ); // Stop the timer, don't fire if we haven't already
       }
     } );
+
+
+    this.disposePushButtonModel = function() {
+      this.listeners.length = 0;
+      if ( this.timer ) {
+        this.timer.dispose();
+        this.timer = null;
+      }
+
+      this.startedCallbacksForFiredEmitter.dispose();
+      this.endedCallbacksForFiredEmitter.dispose();
+    };
   }
 
   sun.register( 'PushButtonModel', PushButtonModel );
@@ -100,11 +130,7 @@ define( function( require ) {
 
     // @public
     dispose: function() {
-      this.listeners.length = 0;
-      if ( this.timer ) {
-        this.timer.dispose();
-        this.timer = null;
-      }
+      this.disposePushButtonModel();
       ButtonModel.prototype.dispose.call( this );
     },
 

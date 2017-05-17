@@ -52,6 +52,7 @@ define( function( require ) {
 
     this.disposeRoundPushButton = function() {
       tandem.removeInstance( self );
+      this.buttonModel.dispose();
     };
 
     // Tandem support
