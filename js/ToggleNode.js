@@ -39,6 +39,10 @@ define( function( require ) {
     booleanProperty.link( function( value ) {
       trueNode.setVisible( value );
       falseNode.setVisible( !value );
+
+      // a11y - toggle visibility of accessible content for assistive technologies
+      trueNode.setAccessibleContentDisplayed( value );
+      falseNode.setAccessibleContentDisplayed( !value );
     } );
 
     this.mutate( options );
