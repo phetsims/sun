@@ -14,6 +14,10 @@ define( function( require ) {
   var sun = require( 'SUN/sun' );
   var VBox = require( 'SCENERY/nodes/VBox' );
 
+  // a11y - an id for each instance of VerticalAquaRadioButtonGroup, used to group buttons for browsers and assistive
+  // technology
+  var instanceCount = 0;
+
   /**
    * Main constructor.
    *
@@ -22,6 +26,8 @@ define( function( require ) {
    * @constructor
    */
   function VerticalAquaRadioButtonGroup( items, options ) {
+    instanceCount++;
+
     options = _.extend( {
       spacing: 3,
       padding: 8,
@@ -49,6 +55,9 @@ define( function( require ) {
       radioButton.mouseArea = Shape.bounds( radioButton.bounds.dilatedXY( options.mouseAreaXDilation, options.spacing / 2 ) );
       radioButton.touchArea = Shape.bounds( radioButton.bounds.dilatedXY( options.touchAreaXDilation, options.spacing / 2 ) );
       children.push( radioButton );
+
+      // a11y - radio button groups require a 'name' for the browser to group them correctly for keyboard nav
+      radioButton.setAccessibleAttribute( 'name', instanceCount );
     }
 
     //TODO these options should be added using _.extend(options, {children:..., renderer:....})
