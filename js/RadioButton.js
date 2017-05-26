@@ -35,7 +35,10 @@ define( function( require ) {
 
       // a11y
       tagName: 'input',
-      inputType: 'radio'
+      inputType: 'radio',
+      parentContainerTagName: 'li',
+      labelTagName: 'label',
+      prependLabels: true
     }, options );
 
     assert && assert( !options.phetioValueType, 'phetioValueType should be specified in the property, not RadioButton options' );

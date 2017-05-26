@@ -35,7 +35,9 @@ define( function( require ) {
       radioButtonOptions: {}, // will be passed to the AquaRadioButtons
       touchAreaXDilation: 0,
       mouseAreaXDilation: 0,
-      tandem: Tandem.tandemRequired()
+      tandem: Tandem.tandemRequired(),
+
+      tagName: 'ul'
     }, options );
 
     var width = 0;
