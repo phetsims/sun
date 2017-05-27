@@ -21,7 +21,7 @@ define( function( require ) {
   /**
    * Main constructor.
    *
-   * @param items  an array of {content, property}
+   * @param items  an array of {content, property, [tandemName], [accessibleLabel] }
    * @param {Object} [options]
    * @constructor
    */
@@ -52,7 +52,8 @@ define( function( require ) {
       var content = new Path( Shape.rect( 0, 0, width + options.padding, 0 ), { children: [ items[ i ].node ] } );
       var radioButton = new AquaRadioButton( items[ i ].property, items[ i ].value, content, _.extend( {}, options.radioButtonOptions, {
         radius: options.radius,
-        tandem: items[ i ].tandemName ? options.tandem.createTandem( items[ i ].tandemName ) : Tandem.tandemRequired()
+        tandem: items[ i ].tandemName ? options.tandem.createTandem( items[ i ].tandemName ) : Tandem.tandemRequired(),
+        accessibleLabel: items[ i ].accessibleLabel || null
       } ) );
       radioButton.mouseArea = Shape.bounds( radioButton.bounds.dilatedXY( options.mouseAreaXDilation, options.spacing / 2 ) );
       radioButton.touchArea = Shape.bounds( radioButton.bounds.dilatedXY( options.touchAreaXDilation, options.spacing / 2 ) );
