@@ -83,6 +83,12 @@ define( function( require ) {
       endDrag: function() {}, // called when a drag sequence ends
       constrainValue: function( value ) { return value; }, // called before valueProperty is set
 
+      // a11y
+      tagName: 'input',
+      inputType: 'range',
+      numberDecimalPlaces: 0,  // for string to number conversion
+      keyboardStep: 1,
+
       // phet-io
       tandem: Tandem.tandemRequired(),
       phetioType: THSlider
@@ -265,6 +271,26 @@ define( function( require ) {
     };
     this.enabledRangeProperty.link( enabledRangeObserver ); // needs to be unlinked in dispose function
 
+    this.mutate( options );
+
+    // a11y
+    var accessibleInputListener = this.addAccessibleInputListener( {
+      input: function( event ) {
+        valueProperty.set( Util.toFixedNumber( self.inputValue, options.numberDecimalPlaces ) );
+        console.log(self.inputValue);
+      }
+    } );
+
+    this.setAccessibleAttribute( 'min', range.min );
+    this.setAccessibleAttribute( 'max', range.max );
+    this.setAccessibleAttribute( 'step', options.keyboardStep );
+
+    var accessiblePropertyListener = function( value ) {
+      self.inputValue = value;
+    };
+
+    valueProperty.link( accessiblePropertyListener );
+
     // @private Called by dispose
     this.disposeHSlider = function() {
       thumb.dispose && thumb.dispose(); // in case a custom thumb is provided via options.thumbNode that doesn't implement dispose
@@ -272,11 +298,11 @@ define( function( require ) {
       valueProperty.unlink( valueObserver );
       self.enabledRangeProperty.unlink( enabledRangeObserver );
       self.enabledProperty.unlink( enabledObserver );
+      self.removeAccessibleInputListener( accessibleInputListener );
+      valueProperty.unlink( accessiblePropertyListener );
 
       thumbInputListener.dispose();
     };
-
-    this.mutate( options );
   }
 
   sun.register( 'HSlider', HSlider );
