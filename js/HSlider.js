@@ -277,7 +277,6 @@ define( function( require ) {
     var accessibleInputListener = this.addAccessibleInputListener( {
       input: function( event ) {
         valueProperty.set( Util.toFixedNumber( self.inputValue, options.numberDecimalPlaces ) );
-        console.log(self.inputValue);
       }
     } );
 
