@@ -35,13 +35,14 @@ define( function( require ) {
 
   /**
    * @param {Property.<number>} numberProperty value, must be an integer
-   * @param {Range} range range of values, min and max must be integers
+   * @param {Property.<Range>} rangeProperty - Dynamic range of values, min and max must be integers
    * @param {Object} [options]
    * @constructor
    */
-  function NumberSpinner( numberProperty, range, options ) {
+  function NumberSpinner( numberProperty, rangeProperty, options ) {
 
-    assert && assert( range.contains( numberProperty.get() ), 'value ' + numberProperty.get() + ' is out of range ' + range.toString() );
+    assert && assert( rangeProperty.value.contains( numberProperty.get() ),
+      'value ' + numberProperty.get() + ' is out of range ' + rangeProperty.value.toString() );
 
     options = _.extend( {
       enabledProperty: new Property( true ),
@@ -59,12 +60,12 @@ define( function( require ) {
       decimalPlaces: 0,
       deltaValue: 1,
       font: new PhetFont( 28 ),
-      
+
       // {string} alignment for value, see VALUE_ALIGN_VALUES
       valueAlign: 'center',
       xSpacing: 5,
       ySpacing: 3,
-      
+
       // background node
       xMargin: 5,
       yMargin: 3,
@@ -95,8 +96,8 @@ define( function( require ) {
     };
 
     // compute max width of the value that's going to be displayed
-    var minString = StringUtils.format( options.valuePattern, Util.toFixed( range.min, options.decimalPlaces ) );
-    var maxString = StringUtils.format( options.valuePattern, Util.toFixed( range.max, options.decimalPlaces ) );
+    var minString = StringUtils.format( options.valuePattern, Util.toFixed( rangeProperty.value.min, options.decimalPlaces ) );
+    var maxString = StringUtils.format( options.valuePattern, Util.toFixed( rangeProperty.value.max, options.decimalPlaces ) );
     var maxWidth = Math.max(
       new Text( minString, valueOptions ).width,
       new Text( maxString, valueOptions ).width
@@ -120,7 +121,7 @@ define( function( require ) {
     var valueParent = new Node( { children: [ backgroundNode, numberNode ] } );
 
     // buttons
-    var arrowButtonOptions = { 
+    var arrowButtonOptions = {
       baseColor: options.arrowButtonFill,
       stroke: options.arrowButtonStroke,
       lineWidth: options.arrowButtonLineWidth
@@ -217,13 +218,19 @@ define( function( require ) {
 
     Node.call( this, options );
 
+    var updateEnabled = function() {
+      // enable/disable arrow buttons
+      incrementButton.enabled = ( ( numberProperty.value + options.deltaValue ) <= rangeProperty.value.max );
+      decrementButton.enabled = ( ( numberProperty.value - options.deltaValue ) >= rangeProperty.value.min );
+    };
+
     // synchronize with number value
     var numberPropertyObserver = function( value ) {
-      assert && assert( range.contains( value ), 'value out of range: ' + value );
+      assert && assert( rangeProperty.value.contains( value ), 'value out of range: ' + value );
 
       // update the number and align it
       numberNode.text = StringUtils.format( options.valuePattern, Util.toFixed( value, options.decimalPlaces ) );
-      switch (options.valueAlign ) {
+      switch ( options.valueAlign ) {
         case 'center':
           numberNode.center = backgroundNode.center;
           break;
@@ -237,11 +244,19 @@ define( function( require ) {
           throw new Error( 'invalid valueAlign: ' + options.valueAlign );
       }
 
-      // enable/disable arrow buttons
-      incrementButton.enabled = ( ( value + options.deltaValue ) <= range.max );
-      decrementButton.enabled = ( ( value - options.deltaValue ) >= range.min );
+      updateEnabled();
     };
     numberProperty.link( numberPropertyObserver ); // must be unlinked in dispose
+
+    // Dynamic range changes, see https://github.com/phetsims/scenery-phet/issues/305
+    var rangeObserver = function( range ) {
+      // If our value is outside our new range, adjust it to be within the range.
+      numberProperty.value = range.constrainValue( numberProperty.value );
+
+      // Range changes may change whether the buttons are enabled
+      updateEnabled();
+    };
+    rangeProperty.link( rangeObserver );
 
     // enable or disable this component
     this.enabledProperty = options.enabledProperty; // @public
@@ -255,6 +270,7 @@ define( function( require ) {
     // @private
     this.disposeNumberSpinner = function() {
       numberProperty.unlink( numberPropertyObserver );
+      rangeProperty.unlink( rangeObserver );
       self.enabledProperty.unlink( enabledPropertyObserver );
     };
   }
@@ -275,6 +291,6 @@ define( function( require ) {
 
     // @public
     getEnabled: function() { return this.enabledProperty.get(); },
-    get enabled() { return this.getEnabled(); } 
+    get enabled() { return this.getEnabled(); }
   } );
 } );

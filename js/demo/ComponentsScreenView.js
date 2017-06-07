@@ -283,7 +283,7 @@ define( function( require ) {
   var demoNumberSpinner = function( layoutBounds ) {
 
     var valueProperty = new Property( 0 );
-    var valueRange = new Range( -5, 5 );
+    var valueRangeProperty = new Property( new Range( -5, 5 ) );
     var enabledProperty = new Property( true );
 
     // options for all spinners
@@ -300,20 +300,20 @@ define( function( require ) {
     };
 
     // Demonstrate each value of options.arrowsPosition
-    var spinnerLeftRight = new NumberSpinner( valueProperty, valueRange, _.extend( {}, spinnerOptions, {
+    var spinnerLeftRight = new NumberSpinner( valueProperty, valueRangeProperty, _.extend( {}, spinnerOptions, {
       arrowsPosition: 'leftRight',
       valuePattern: '{0} bottles of beer on the wall'
     } ) );
-    var spinnerTopBottom = new NumberSpinner( valueProperty, valueRange, _.extend( {}, spinnerOptions, {
+    var spinnerTopBottom = new NumberSpinner( valueProperty, valueRangeProperty, _.extend( {}, spinnerOptions, {
       arrowsPosition: 'topBottom',
       arrowsScale: 0.65
     } ) );
-    var spinnerBothRight = new NumberSpinner( valueProperty, valueRange, _.extend( {}, spinnerOptions, {
+    var spinnerBothRight = new NumberSpinner( valueProperty, valueRangeProperty, _.extend( {}, spinnerOptions, {
       arrowsPosition: 'bothRight',
       yMargin: 10,
       valueAlign: 'right'
     } ) );
-    var spinnerBothBottom = new NumberSpinner( valueProperty, valueRange, _.extend( {}, spinnerOptions, {
+    var spinnerBothBottom = new NumberSpinner( valueProperty, valueRangeProperty, _.extend( {}, spinnerOptions, {
       arrowsPosition: 'bothBottom',
       backgroundFill: 'pink',
       backgroundStroke: 'red',
