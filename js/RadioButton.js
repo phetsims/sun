@@ -81,7 +81,7 @@ define( function( require ) {
     // a11y - input listener so that updates the state of the radio button with keyboard interaction
     var changeListener = this.addAccessibleInputListener( {
       change: function( ) {
-        if ( self.domElement.value === 'on' ) {
+        if ( self.inputValue === 'on' ) {
           fire();
         }
       }
