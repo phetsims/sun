@@ -50,9 +50,17 @@ define( function( require ) {
     // add the listener that was potentially saved above
     listener && this.addListener( listener );
 
+    // a11y - when the button is clicked with assistive technology, fire
+    var accessibleClickListener = this.addAccessibleInputListener( {
+      click: function() {
+        self.buttonModel.fire();
+      }
+    } );
+
     this.disposeRoundPushButton = function() {
       tandem.removeInstance( self );
-      this.buttonModel.dispose();
+      self.removeAccessibleInputListener( accessibleClickListener );
+      self.buttonModel.dispose();
     };
 
     // Tandem support
