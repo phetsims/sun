@@ -47,12 +47,12 @@ define( function( require ) {
 
     if ( options.tandem.supplied ) {
       this.startedCallbacksForFiredEmitter = new TandemEmitter( {
-        tandem: options.tandem.createTandem( 'startedFiredEmitted' ),
+        tandem: options.tandem.createTandem( 'startedFiredEmitter' ),
         phetioArgumentTypes: [],
         phetioEmitData: false
       } );
       this.endedCallbacksForFiredEmitter = new TandemEmitter( {
-        tandem: options.tandem.createTandem( 'endedFiredEmitted' ),
+        tandem: options.tandem.createTandem( 'endedFiredEmitter' ),
         phetioArgumentTypes: [],
         phetioEmitData: false
       } );
