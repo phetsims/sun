@@ -19,6 +19,8 @@ define( function( require ) {
   var Path = require( 'SCENERY/nodes/Path' );
   var Property = require( 'AXON/Property' );
   var Shape = require( 'KITE/Shape' );
+  var Rectangle = require( 'SCENERY/nodes/Rectangle' );
+  var FocusOverlay = require( 'SCENERY/overlays/FocusOverlay' );
   var sun = require( 'SUN/sun' );
   var Tandem = require( 'TANDEM/Tandem' );
   var TandemSimpleDragHandler = require( 'TANDEM/scenery/input/TandemSimpleDragHandler' );
@@ -88,6 +90,7 @@ define( function( require ) {
       inputType: 'range',
       numberDecimalPlaces: 0,  // for string to number conversion
       keyboardStep: 1,
+      focusHighlightLineWidth: 4,
 
       // phet-io
       tandem: Tandem.tandemRequired(),
@@ -244,9 +247,16 @@ define( function( require ) {
     };
     this.enabledProperty.link( enabledObserver ); // must be unlinked in disposeHSlider
 
+    // a11y - custom focus highlight that surrounds and moves with the thumb
+    this.focusHighlight = Rectangle.bounds( thumb.bounds.dilated( 5 ), {
+      stroke: FocusOverlay.innerFocusColor,
+      lineWidth: options.focusHighlightLineWidth
+    } );
+
     // update thumb location when value changes
     var valueObserver = function( value ) {
       thumb.centerX = self.valueToPosition( value );
+      self.focusHighlight.centerX = thumb.centerX;
     };
     valueProperty.link( valueObserver ); // must be unlinked in disposeHSlider
 
