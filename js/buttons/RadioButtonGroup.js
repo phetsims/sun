@@ -30,6 +30,10 @@ define( function( require ) {
   var BUTTON_CONTENT_X_ALIGN_VALUES = [ 'center', 'left', 'right' ];
   var BUTTON_CONTENT_Y_ALIGN_VALUES = [ 'center', 'top', 'bottom' ];
 
+  // a11y
+  // integer to allow distinct name attributes for each set of RadioButtonGroupMembers
+  // increments with each instantiation of 
+  var GROUP_INSTANCE_COUNT = 0;
   /**
    * RadioButtonGroup constructor.
    *
@@ -43,8 +47,15 @@ define( function( require ) {
    */
   function RadioButtonGroup( property, contentArray, options ) {
     options = _.extend( {
-      tandem: Tandem.tandemRequired()
+      tandem: Tandem.tandemRequired(),
+
+      // a11y
+      tagName: 'fieldset'
     }, options );
+
+    // increment instance count
+    GROUP_INSTANCE_COUNT++;
+
     assert && assert( !options.hasOwnProperty( 'children' ), 'Cannot pass in children to a RadioButtonGroup, ' +
                                                              'create siblings in the parent node instead' );
 
@@ -174,9 +185,15 @@ define( function( require ) {
         minWidth: widestContentWidth + 2 * options.buttonContentXMargin,
         minHeight: tallestContentHeight + 2 * options.buttonContentYMargin,
 
+        // a11y
+        inputNameAttribute: 'buttonGroupMember' + GROUP_INSTANCE_COUNT,
+
         // Pass through the tandem given the tandemName, but also support uninstrumented simulations
         tandem: options.tandem.createTandem( contentArray[ i ].tandemName || ('radioButtonGroupMember' + i) )
       }, buttonOptions ) );
+
+      // a11y
+      radioButton.setAccessibleAttribute( 'name', 'radioButtonGroup' + GROUP_INSTANCE_COUNT + 'Member' );
 
       // ensure the buttons don't resize when selected vs unselected by adding a rectangle with the max size
       var maxLineWidth = Math.max( options.selectedLineWidth, options.deselectedLineWidth );
@@ -272,6 +289,16 @@ define( function( require ) {
         }
       }
     } );
+
+    // a11y
+    this.setAccessibleAttribute( 'name', 'radioButtonGroup' + GROUP_INSTANCE_COUNT );
+
+    // var accessiblePropertyListener = function ( value ) {
+    //   console.log( property );
+    //   console.log( contentArray );
+    // }
+
+    // property.link( accessiblePropertyListener );
   }
 
   sun.register( 'RadioButtonGroup', RadioButtonGroup );

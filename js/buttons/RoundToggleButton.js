@@ -27,14 +27,27 @@ define( function( require ) {
    */
   function RoundToggleButton( valueOff, valueOn, property, options ) {
 
+    var self = this;
+
     // Tandem support
     options = _.extend( {
       tandem: Tandem.tandemRequired(),
-      phetioType: TToggleButton( property.phetioValueType )
+      phetioType: TToggleButton( property.phetioValueType ),
+
+      // a11y
+      tagName: 'input',
+      inputType: 'button'
     }, options );
 
     this.toggleButtonModel = new ToggleButtonModel( valueOff, valueOn, property ); // @public, listen only
     RoundButtonView.call( this, this.toggleButtonModel, new ToggleButtonInteractionStateProperty( this.toggleButtonModel ), options );
+
+    // a11y
+    this.addAccessibleInputListener( {
+      click: function ( event ) {
+        self.toggleButtonModel.toggle();
+      }
+    } );
   }
 
   sun.register( 'RoundToggleButton', RoundToggleButton );

@@ -30,6 +30,8 @@ define( function( require ) {
    */
   function RadioButtonGroupMember( property, value, options ) {
 
+    // var self = this;
+
     options = _.extend( {
       // The fill for the rectangle behind the radio buttons.  Default color is bluish color, as in the other button library.
       baseColor: ColorConstants.LIGHT_BLUE,
@@ -59,6 +61,10 @@ define( function( require ) {
       buttonAppearanceStrategy: RadioButtonGroupAppearance.defaultRadioButtonsAppearance,
       contentAppearanceStrategy: RadioButtonGroupAppearance.contentAppearanceStrategy,
 
+      // a11y
+      tagName: 'input',
+      inputType: 'radio',
+
       tandem: Tandem.tandemRequired(),
       phetioType: TRadioButtonGroupMember( property.phetioValueType )
     }, options );
@@ -72,6 +78,23 @@ define( function( require ) {
     this.interactionStateProperty = new RadioButtonInteractionStateProperty( this.radioButtonGroupMemberModel );
 
     RectangularButtonView.call( this, this.radioButtonGroupMemberModel, this.interactionStateProperty, options );
+
+    // a11y
+    this.addAccessibleInputListener( {
+      change: function( event ) {
+        property.set( value );
+        console.log( property );
+      }
+    } );
+
+    // var accessiblePropertyListener = function ( value ) {
+    //   debugger;
+    //   if ( self.buttonModel.selectedValue == value && !self.isFocussed() ) {
+    //     self.focus();
+    //   }
+    // };
+
+    // property.link( accessiblePropertyListener );
   }
 
   sun.register( 'RadioButtonGroupMember', RadioButtonGroupMember );
