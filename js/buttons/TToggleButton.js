@@ -22,7 +22,7 @@ define( function( require ) {
    * @constructor
    */
   function TToggleButton( phetioValueType ) {
-    var validateTandems = phet.phetio && phet.phetio.queryParameters && phet.phetio.queryParameters.phetioValidateTandems;
+    var validateTandems = phet.phetio && phet.phetio.queryParameters.phetioValidateTandems;
     var TToggleButtonImpl = function TToggleButtonImpl( toggleButton, phetioID ) {
       assert && assert( !!phetioValueType || !validateTandems, 'phetioValueType must be specified' );
       TNode.call( this, toggleButton, phetioID );

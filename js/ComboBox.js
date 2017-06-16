@@ -44,7 +44,7 @@ define( function( require ) {
     // Register for tandem if possible.
     // Allow running with phetioValidateTandems=false though
     var type = property.phetioValueType;
-    if ( phet.phetio && phet.phetio.queryParameters && !phet.phetio.queryParameters.phetioValidateTandems && !type ) {
+    if ( phet.phetio && !phet.phetio.queryParameters.phetioValidateTandems && !type ) {
       type = TObject;
     }
 
