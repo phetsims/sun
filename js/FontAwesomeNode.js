@@ -1,7 +1,7 @@
 // Copyright 2013-2017, University of Colorado Boulder
 
 /**
- * Provides access to font-awesome glyphs as scenery nodes.
+ * Provides access to Font Awesome glyphs as scenery nodes.
  *
  * @author Sam Reid (PhET Interactive Simulations)
  * @author Chris Malley (PixelZoom, Inc.)
