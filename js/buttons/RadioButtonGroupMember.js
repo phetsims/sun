@@ -30,7 +30,7 @@ define( function( require ) {
    */
   function RadioButtonGroupMember( property, value, options ) {
 
-    // var self = this;
+    var self = this;
 
     options = _.extend( {
       // The fill for the rectangle behind the radio buttons.  Default color is bluish color, as in the other button library.
@@ -79,25 +79,46 @@ define( function( require ) {
 
     RectangularButtonView.call( this, this.radioButtonGroupMemberModel, this.interactionStateProperty, options );
 
-    // a11y
-    this.addAccessibleInputListener( {
+    // a11y - on reception of a change event, update the Property value
+    var accessibleChangeListener = this.addAccessibleInputListener( {
       change: function( event ) {
         property.set( value );
-        console.log( property );
       }
     } );
 
-    // var accessiblePropertyListener = function ( value ) {
-    //   debugger;
-    //   if ( self.buttonModel.selectedValue == value && !self.isFocussed() ) {
-    //     self.focus();
-    //   }
-    // };
+    // a11y - Specify the default value for assistive technology, this attribute is needed in addition to 
+    // the 'checked' property to mark this element as the default selection since 'checked' may be set before
+    // we are finished adding RadioButtonGroupMembers to the RadioButtonGroup.
+    if ( property.value === value ) {
+      this.setAccessibleAttribute( 'checked', 'checked' );
+    }
 
-    // property.link( accessiblePropertyListener );
+    // a11y - when the property changes, make sure the correct radio button is marked as 'checked' so that this button
+    // receives focus on 'tab'
+    var accessibleCheckedListener = function( newValue ) {
+      self.accessibleChecked = newValue === value;
+    };
+    property.link( accessibleCheckedListener );
+
+    // @private
+    this.disposeRadioButtonGroupMember = function() {
+      self.removeAccessibleInputListener( accessibleChangeListener );
+      property.unlink( accessibleChangeListener );
+    };
   }
 
   sun.register( 'RadioButtonGroupMember', RadioButtonGroupMember );
 
-  return inherit( RectangularButtonView, RadioButtonGroupMember );
+  return inherit( RectangularButtonView, RadioButtonGroupMember, {
+
+    /**
+     * Ensure eligibility for garbage collection.
+     * 
+     * @public
+     */
+    dispose: function() {
+      this.disposeRadioButtonGroupMember();
+      RectangularButtonView.prototype.dispose && RectangularButtonView.prototype.dispose.call( this );
+    }
+  } );
 } );

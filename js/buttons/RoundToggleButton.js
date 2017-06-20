@@ -42,8 +42,8 @@ define( function( require ) {
     this.toggleButtonModel = new ToggleButtonModel( valueOff, valueOn, property ); // @public, listen only
     RoundButtonView.call( this, this.toggleButtonModel, new ToggleButtonInteractionStateProperty( this.toggleButtonModel ), options );
 
-    // a11y
-    this.addAccessibleInputListener( {
+    // @private (a11y) - toggle the button when we receive the accessible click event
+    this.accessibleClickListener = this.addAccessibleInputListener( {
       click: function ( event ) {
         self.toggleButtonModel.toggle();
       }
@@ -56,6 +56,7 @@ define( function( require ) {
 
     // @public
     dispose: function() {
+      this.removeAccessibleInputListener( this.accessibleClickListener );
       this.toggleButtonModel.dispose(); //TODO this fails with assertions enabled, see sun#212
       RoundButtonView.prototype.dispose.call( this );
     }
