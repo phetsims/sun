@@ -29,7 +29,11 @@ define( function( require ) {
   function RoundPushButton( options ) {
 
     options = _.extend( {
-      tandem: Tandem.tandemRequired()
+      tandem: Tandem.tandemRequired(),
+
+      // a11y
+      tagName: 'input',
+      inputType: 'button'
     }, options );
 
     var self = this;
