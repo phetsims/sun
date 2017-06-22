@@ -13,7 +13,6 @@ define( function( require ) {
   var HSliderThumb = require( 'SUN/HSliderThumb' );
   var HSliderTrack = require( 'SUN/HSliderTrack' );
   var inherit = require( 'PHET_CORE/inherit' );
-  var Input = require( 'SCENERY/input/Input' );
   var LinearFunction = require( 'DOT/LinearFunction' );
   var Node = require( 'SCENERY/nodes/Node' );
   var Path = require( 'SCENERY/nodes/Path' );
@@ -221,21 +220,6 @@ define( function( require ) {
       }
     } );
     thumb.addInputListener( thumbInputListener );
-
-    //TODO This is experimental code. Decide how this affects data collection.
-    // Keyboard accessibility
-    thumb.addInputListener( {
-      keydown: function( event, trail ) {
-        if ( self.enabledProperty.get() ) {
-          var keyCode = event.domEvent.keyCode;
-          var delta = keyCode === Input.KEY_LEFT_ARROW || keyCode === Input.KEY_DOWN_ARROW ? -1 :
-                      keyCode === Input.KEY_RIGHT_ARROW || keyCode === Input.KEY_UP_ARROW ? +1 :
-                      0;
-          var clampedValue = Util.clamp( valueProperty.get() + (range.max - range.min) * 0.1 * delta, range.min, range.max );
-          valueProperty.set( options.constrainValue( clampedValue ) );
-        }
-      }
-    } );
 
     // enable/disable
     var enabledObserver = function( enabled ) {
