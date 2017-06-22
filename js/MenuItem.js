@@ -26,7 +26,7 @@ define( function( require ) {
   var TMenuItem = require( 'SUN/TMenuItem' );
 
   // the check mark used for toggle-able menu items
-  var CHECK_MARK_NODE = new FontAwesomeNode( 'check_without_box', {
+  var CHECK_MARK_NODE = new FontAwesomeNode( 'check', {
     fill: 'rgba(0,0,0,0.7)',
     scale: 0.4
   } );

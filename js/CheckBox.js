@@ -96,7 +96,7 @@ define( function( require ) {
     this.uncheckedNode.scale( iconScale );
 
     // @private
-    this.checkedNode = new FontAwesomeNode( 'check', {
+    this.checkedNode = new FontAwesomeNode( 'check_square_o', {
       scale: iconScale,
       fill: options.checkBoxColor
     } );
