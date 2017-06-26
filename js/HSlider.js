@@ -273,7 +273,7 @@ define( function( require ) {
         var newStep = event.shiftKey ? options.modifiedKeyboardStep : options.keyboardStep;
         self.setAccessibleAttribute( 'step', newStep );  
       }
-    }
+    };
 
     // a11y
     var accessibleInputListener = this.addAccessibleInputListener( {
