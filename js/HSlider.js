@@ -90,6 +90,7 @@ define( function( require ) {
       numberDecimalPlaces: 0,  // for string to number conversion
       keyboardStep: 1,
       focusHighlightLineWidth: 4,
+      modifiedKeyboardStep: null,
 
       // phet-io
       tandem: Tandem.tandemRequired(),
@@ -267,11 +268,22 @@ define( function( require ) {
 
     this.mutate( options );
 
+    var toggleKeyboardStep = function ( event ) {
+      if ( options.modifiedKeyboardStep ) {
+        var newStep = event.shiftKey ? options.modifiedKeyboardStep : options.keyboardStep;
+        self.setAccessibleAttribute( 'step', newStep );  
+      }
+    }
+
     // a11y
     var accessibleInputListener = this.addAccessibleInputListener( {
       input: function( event ) {
         valueProperty.set( Util.toFixedNumber( self.inputValue, options.numberDecimalPlaces ) );
-      }
+      },
+      keydown: function( event ) {
+        toggleKeyboardStep( event );
+      },
+      keyup: toggleKeyboardStep.bind( self )
     } );
 
     this.setAccessibleAttribute( 'min', range.min );
