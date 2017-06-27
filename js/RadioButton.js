@@ -81,18 +81,33 @@ define( function( require ) {
     // a11y - input listener so that updates the state of the radio button with keyboard interaction
     var changeListener = this.addAccessibleInputListener( {
       change: function( ) {
-        if ( self.inputValue === 'on' ) {
-          fire();
-        }
+        fire();
       }
     } );
 
     this.mutate( options );
 
+    // a11y - Specify the default value for assistive technology. This attribute is needed in addition to 
+    // the 'checked' property to mark this element as the default selection since 'checked' may be set before
+    // we are finished adding RadioButtons to the containing group, and the browser will remove the boolean
+    // 'checked' flag when new buttons are added.
+    if ( property.value === value ) {
+      this.setAccessibleAttribute( 'checked', 'checked' );
+    }
+
+    // a11y - when the property changes, make sure the correct radio button is marked as 'checked' so that this button
+    // receives focus on 'tab'
+    var accessibleCheckedListener = function( newValue ) {
+      self.accessibleChecked = newValue === value;
+    };
+    property.link( accessibleCheckedListener );
+
+    // @private
     this.disposeRadioButton = function() {
       options.tandem.removeInstance( self );
       self.removeInputListener( buttonListener );
       self.removeAccessibleInputListener( changeListener );
+      property.unlink( accessibleCheckedListener );
       property.unlink( syncWithModel );
     };
 
