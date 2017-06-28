@@ -56,7 +56,7 @@ define( function( require ) {
     listener && this.addListener( listener );
 
     // a11y
-    this.focusHighlight = new Shape.circle( 0, 0, options.radius + 5 );
+    this.focusHighlight = new Shape().circle( 0, 0, options.radius + 5 );
 
     // a11y - when the button is clicked with assistive technology, fire
     var accessibleClickListener = this.addAccessibleInputListener( {

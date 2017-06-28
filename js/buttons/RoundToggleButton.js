@@ -44,7 +44,7 @@ define( function( require ) {
     RoundButtonView.call( this, this.toggleButtonModel, new ToggleButtonInteractionStateProperty( this.toggleButtonModel ), options );
 
     // a11y
-    this.focusHighlight = new Shape.circle( 0, 0, options.radius + 5);
+    this.focusHighlight = new Shape().circle( 0, 0, options.radius + 5);
 
     // @private (a11y) - toggle the button when we receive the accessible click event
     this.accessibleClickListener = this.addAccessibleInputListener( {
