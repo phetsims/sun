@@ -18,6 +18,7 @@ define( function( require ) {
   var PushButtonInteractionStateProperty = require( 'SUN/buttons/PushButtonInteractionStateProperty' );
   var PushButtonModel = require( 'SUN/buttons/PushButtonModel' );
   var RoundButtonView = require( 'SUN/buttons/RoundButtonView' );
+  var Shape = require( 'KITE/Shape' );
   var sun = require( 'SUN/sun' );
   var Tandem = require( 'TANDEM/Tandem' );
   var TPushButton = require( 'SUN/buttons/TPushButton' );
@@ -53,6 +54,9 @@ define( function( require ) {
 
     // add the listener that was potentially saved above
     listener && this.addListener( listener );
+
+    // a11y
+    this.focusHighlight = new Shape.circle( 0, 0, options.radius + 5 );
 
     // a11y - when the button is clicked with assistive technology, fire
     var accessibleClickListener = this.addAccessibleInputListener( {

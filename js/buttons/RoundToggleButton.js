@@ -13,6 +13,7 @@ define( function( require ) {
   var inherit = require( 'PHET_CORE/inherit' );
   var RoundButtonView = require( 'SUN/buttons/RoundButtonView' );
   var sun = require( 'SUN/sun' );
+  var Shape = require( 'KITE/Shape' );
   var ToggleButtonInteractionStateProperty = require( 'SUN/buttons/ToggleButtonInteractionStateProperty' );
   var ToggleButtonModel = require( 'SUN/buttons/ToggleButtonModel' );
   var Tandem = require( 'TANDEM/Tandem' );
@@ -41,6 +42,9 @@ define( function( require ) {
 
     this.toggleButtonModel = new ToggleButtonModel( valueOff, valueOn, property ); // @public, listen only
     RoundButtonView.call( this, this.toggleButtonModel, new ToggleButtonInteractionStateProperty( this.toggleButtonModel ), options );
+
+    // a11y
+    this.focusHighlight = new Shape.circle( 0, 0, options.radius + 5);
 
     // @private (a11y) - toggle the button when we receive the accessible click event
     this.accessibleClickListener = this.addAccessibleInputListener( {
