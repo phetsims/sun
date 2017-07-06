@@ -88,8 +88,8 @@ define( function( require ) {
       // a11y
       tagName: 'input',
       inputType: 'range',
-      keyboardStep: range.getLength() / 20,
-      shiftKeyboardStep: range.getLength() / 100,
+      keyboardStep: ( range.max - range.min ) / 20,
+      shiftKeyboardStep: ( range.max - range.min ) / 100,
       focusHighlightLineWidth: 4,
 
       // phet-io
