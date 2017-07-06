@@ -18,7 +18,6 @@ define( function( require ) {
   var Shape = require( 'KITE/Shape' );
   var sun = require( 'SUN/sun' );
   var Tandem = require( 'TANDEM/Tandem' );
-  var TNode = require( 'SCENERY/nodes/TNode' );
 
   /**
    * @param {Property.<boolean>} enabledProperty
@@ -81,10 +80,12 @@ define( function( require ) {
     // @private Called by dispose
     this.disposeHSliderThumb = function() {
       enabledProperty.unlink( enabledObserver );
-      options.tandem.removeInstance( self );
     };
 
-    options.tandem.addInstance( this, TNode );
+    // tandem support
+    this.mutate( {
+      tandem: options.tandem
+    } );
   }
 
   sun.register( 'HSliderThumb', HSliderThumb );
