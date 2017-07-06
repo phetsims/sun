@@ -73,7 +73,7 @@ define( function( require ) {
 
       // items
       itemXMargin: 6,
-      itemYMargin: 6,
+      itemYMargin: 6, // Vertical margin applied to the top and bottom of each item in the popup list.
       itemHighlightFill: 'rgb(245,245,245)',
       itemHighlightStroke: null,
       itemHighlightLineWidth: 1,
@@ -100,16 +100,9 @@ define( function( require ) {
       self.addChild( options.labelNode );
     }
 
-    // determine uniform dimensions for button and list items
-    var itemWidth = 0;
-    var itemHeight = 0;
-    for ( var i = 0; i < items.length; i++ ) {
-      var item = items[ i ];
-      if ( item.node.width > itemWidth ) { itemWidth = item.node.width; }
-      if ( item.node.height > itemHeight ) { itemHeight = item.node.height; }
-    }
-    itemWidth += ( 2 * options.itemXMargin );
-    itemHeight += ( 2 * options.itemYMargin );
+    // determine uniform dimensions for button and list items (including margins)
+    var itemWidth = Math.max.apply( Math, _.map( items, 'node.width' ) ) + 2 * options.itemXMargin;
+    var itemHeight = Math.max.apply( Math, _.map( items, 'node.height' ) ) + 2 * options.itemYMargin;
 
     // list
     var listWidth = itemWidth + ( 2 * options.buttonXMargin );
@@ -148,24 +141,30 @@ define( function( require ) {
         event.abort(); // prevent click-to-dismiss on the list
       },
       up: function( event ) {
+        // {ComboBoxItemNode}
+        var selectedItemNode = event.currentTarget;
 
-        event.currentTarget.startedCallbacksForItemFiredEmitter.emit1( event.currentTarget.item.value );
+        selectedItemNode.startedCallbacksForItemFiredEmitter.emit1( selectedItemNode.item.value );
 
-        unhighlightItem( event.currentTarget );
+        unhighlightItem( selectedItemNode );
         listNode.visible = false; // close the list, do this before changing property value, in case it's expensive
         self.getUniqueTrail().rootNode().removeInputListener( clickToDismissListener ); // remove the click-to-dismiss listener
         event.abort(); // prevent nodes (eg, controls) behind the list from receiving the event
-        property.value = event.currentTarget.item.value; // set the property
+        property.value = selectedItemNode.item.value; // set the property
 
-        event.currentTarget.endedCallbacksForItemFiredEmitter.emit1( event.currentTarget.item.value );
+        selectedItemNode.endedCallbacksForItemFiredEmitter.emit1( selectedItemNode.item.value );
 
       }
     };
 
     // populate list with items
-    for ( var j = 0; j < items.length; j++ ) {
-
-      var itemNodeOptions = items[ j ].options || {};
+    items.forEach( function( item, index ) {
+      var itemNodeOptions = _.extend( {
+        left: options.buttonXMargin,
+        top: options.listYMargin + ( index * itemHeight ),
+        cursor: 'pointer',
+        inputListeners: [ itemListener ]
+      }, item.options );
 
       // Create tandems for each ComboBoxItemNode
       var itemNodeTandem = null;
@@ -180,20 +179,14 @@ define( function( require ) {
       itemNodeOptions.phetioValueType = property.phetioValueType;
 
       // Create the list item node itself
-      var itemNode = new ComboBoxItemNode( items[ j ], itemWidth, itemHeight, options.itemXMargin, itemNodeOptions );
-
-      // add item to list
-      listNode.addChild( itemNode );
-      itemNode.left = options.buttonXMargin;
-      itemNode.top = options.listYMargin + ( j * itemHeight );
-
-      // item interactivity
-      itemNode.cursor = 'pointer';
-      itemNode.addInputListener( itemListener );
-    }
+      listNode.addChild( new ComboBoxItemNode( item, itemWidth, itemHeight, options.itemXMargin, itemNodeOptions ) );
+    } );
 
     // button, will be set to correct value when property observer is registered
-    var buttonNode = new ButtonNode( listNode.children[ 0 ], options );
+    var buttonNode = new ButtonNode( new ComboBoxItemNode( items[ 0 ], itemWidth, itemHeight, options.itemXMargin, {
+      tandem: options.tandem.createTandem( 'buttonNode', { enabled: false } ),
+      phetioValueType: property.phetioValueType
+    } ), options );
     self.addChild( buttonNode );
 
     //TODO handle scale and rotation
@@ -271,14 +264,9 @@ define( function( require ) {
 
     // when property changes, update button
     var propertyObserver = function( value ) {
-      // TODO brute force search, better way?
-      var item = null;
-      for ( var i = 0; i < items.length; i++ ) {
-        if ( items[ i ].value === value ) {
-          item = items[ i ];
-        }
-      }
-      assert && assert( item !== null );
+      var item = _.find( items, function( item ) {
+        return item.value === value;
+      } );
       buttonNode.setItemNode( new ComboBoxItemNode( item, itemWidth, itemHeight, options.itemXMargin, {
         tandem: options.tandem.createTandem( 'buttonNode', { enabled: false } ),
         phetioValueType: property.phetioValueType
@@ -410,7 +398,12 @@ define( function( require ) {
 
     // @private
     this.setItemNode = function( itemNode ) {
-      selectedItemParent.removeAllChildren();
+      // Dispose any existing item, see https://github.com/phetsims/sun/issues/299
+      while ( selectedItemParent.children.length ) {
+        var lastNode = selectedItemParent.children[ 0 ];
+        selectedItemParent.removeChild( lastNode );
+        lastNode.dispose();
+      }
       selectedItemParent.addChild( itemNode );
       itemNode.left = options.buttonXMargin;
       itemNode.top = options.buttonYMargin;
@@ -451,31 +444,42 @@ define( function( require ) {
    * @private
    */
   function ComboBoxItemNode( item, width, height, xMargin, options ) {
+    // @private {Node} - Holds our item.node, and positions it in the correct location. We don't want to mutate the
+    //                   item's node itself.
+    this.itemWrapper = new Node( {
+      children: [ item.node ],
+      pickable: false,
+      x: xMargin,
+      centerY: height / 2
+    } );
 
     options = _.extend( {
       tandem: Tandem.tandemRequired(),
-      phetioValueType: null // Must be supplied for PhET-iO instrumented simulations
+      phetioValueType: TComboBoxItemNode( options.phetioValueType ),
+      children: [ this.itemWrapper ]
     }, options );
 
-    Rectangle.call( this, 0, 0, width, height, {
-      tandem: options.tandem.createSupertypeTandem()
-    } );
+    Rectangle.call( this, 0, 0, width, height, options );
 
     this.item = item;
-    this.addChild( item.node );
-    item.node.pickable = false; // hits will occur on the rectangle
-    item.node.x = xMargin;
-    item.node.centerY = height / 2;
 
     this.startedCallbacksForItemFiredEmitter = new Emitter();
     this.endedCallbacksForItemFiredEmitter = new Emitter();
-
-    options.tandem.addInstance( this, TComboBoxItemNode( options.phetioValueType ) );
   }
 
   sun.register( 'ComboBox.ItemNode', ComboBoxItemNode );
 
-  inherit( Rectangle, ComboBoxItemNode );
+  inherit( Rectangle, ComboBoxItemNode, {
+    /**
+     * Disposes the item.
+     * @public
+     */
+    dispose: function() {
+      this.itemWrapper.dispose();
+
+      Rectangle.prototype.dispose.call( this );
+    }
+  } );
 
   return ComboBox;
 } );
