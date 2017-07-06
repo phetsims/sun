@@ -23,6 +23,7 @@ define( function( require ) {
   var sun = require( 'SUN/sun' );
   var Tandem = require( 'TANDEM/Tandem' );
   var TandemSimpleDragHandler = require( 'TANDEM/scenery/input/TandemSimpleDragHandler' );
+  var Input = require( 'SCENERY/input/Input' );
   var Util = require( 'DOT/Util' );
 
   // phet-io modules
@@ -87,10 +88,9 @@ define( function( require ) {
       // a11y
       tagName: 'input',
       inputType: 'range',
-      numberDecimalPlaces: 0,  // for string to number conversion
-      keyboardStep: 1,
+      keyboardStep: range.getLength() / 20,
+      shiftKeyboardStep: range.getLength() / 100,
       focusHighlightLineWidth: 4,
-      modifiedKeyboardStep: null,
 
       // phet-io
       tandem: Tandem.tandemRequired(),
@@ -108,6 +108,13 @@ define( function( require ) {
 
     // @private
     this._snapValue = options.snapValue;
+
+    // @private (a11y) - delta for the valueProperty when using keyboard to interact with slider
+    this._keyboardStep = options.keyboardStep;
+
+    // @private (a11y) - delta or the valueProperty when holding shift and using the keyboard to interact with
+    // the slider
+    this._shiftKeyboardStep = options.shiftKeyboardStep;
 
     // @private ticks are added to these parents, so they are behind the knob
     this.majorTicksParent = new Node();
@@ -268,28 +275,80 @@ define( function( require ) {
 
     this.mutate( options );
 
-    var toggleKeyboardStep = function ( event ) {
-      if ( options.modifiedKeyboardStep ) {
-        var newStep = event.shiftKey ? options.modifiedKeyboardStep : options.keyboardStep;
-        self.setAccessibleAttribute( 'step', newStep );  
-      }
-    };
-
-    // a11y
+    // a11y - Implements the keyboard interaction for a typical HTML range slider - browsers place limitations
+    // on the interaction when the slider range is not evently divisible by the step size.  Rather
+    // than allow the browser to natively change the valueProperty with an input event, we decided to roll our
+    // own implementation, but keep the general behavior the same.
     var accessibleInputListener = this.addAccessibleInputListener( {
-      input: function( event ) {
-        valueProperty.set( Util.toFixedNumber( self.inputValue, options.numberDecimalPlaces ) );
-      },
       keydown: function( event ) {
-        toggleKeyboardStep( event );
-      },
-      keyup: toggleKeyboardStep.bind( self )
+        var code = event.keyCode;
+
+        if ( self.enabledProperty.get() ) {
+
+          // Prevent default so browser doesn't change input value automatically
+          if ( Input.isRangeKey( code ) ) {
+            event.preventDefault();
+          }
+
+          var newValue = valueProperty.get();
+          if ( code === Input.KEY_END || code === Input.KEY_HOME ) {
+
+            // on 'end' and 'home' snap to max and min of enabled range respectively (this is typical browser
+            // behavior for sliders)
+            if ( code === Input.KEY_END ) {
+              newValue = self.enabledRange.max;
+            }
+            else if ( code === Input.KEY_HOME ) {
+              newValue = self.enabledRange.min;
+            }
+          }
+          else {
+            var stepSize;
+            if ( code === Input.KEY_PAGE_UP || code === Input.KEY_PAGE_DOWN ) {
+
+              // on page up and page down, the step size is 1/10 of the range (this is typical browser behavior)
+              stepSize = range.getLength() / 10;
+              if ( code === Input.KEY_PAGE_UP ) {
+                newValue = valueProperty.get() + stepSize;
+              }
+              else if ( code === Input.KEY_PAGE_DOWN ) {
+                newValue = valueProperty.get() - stepSize;
+              }
+            }
+            else if ( Input.isArrowKey( code ) ) {
+
+              // if the shift key is pressed down, modify the step size (this is atypical browser behavior for sliders)
+              stepSize = event.shiftKey ? self.shiftKeyboardStep : self.keyboardStep;
+
+              if ( code === Input.KEY_RIGHT_ARROW || code === Input.KEY_UP_ARROW ) {
+                newValue = valueProperty.get() + stepSize;
+              }
+              else if ( code === Input.KEY_LEFT_ARROW || code === Input.KEY_DOWN_ARROW ) {
+                newValue = valueProperty.get() - stepSize;
+              }
+
+              // round the value to the nearest keyboard step
+              newValue = Util.roundSymmetric( newValue / stepSize ) * stepSize;
+
+              // it is possible to pass a value on the way up due to rounding, go back a step if we have gone too far
+              if ( Util.toFixedNumber( newValue - valueProperty.get(), 5 ) > stepSize ) {
+                newValue = newValue - stepSize;
+              }
+            }
+
+            // limit the value to the enabled range
+            newValue = self.enabledRange.constrainValue( newValue );
+          }
+
+          // optionally constrain the value further
+          valueProperty.set( options.constrainValue( newValue ) );
+        }
+      }
     } );
 
-    this.setAccessibleAttribute( 'min', range.min );
-    this.setAccessibleAttribute( 'max', range.max );
-    this.setAccessibleAttribute( 'step', options.keyboardStep );
 
+    // a11y - when the property changes, be sure to update the accessible input value for assistive
+    // technology
     var accessiblePropertyListener = function( value ) {
       self.inputValue = value;
     };
@@ -394,6 +453,30 @@ define( function( require ) {
     // @public
     getSnapValue: function() { return this._snapValue; },
     get snapValue() { return this.getSnapValue(); },
+
+    // @public
+    setKeyboardStep: function( keyboardStep ) {
+      this._keyboardStep = keyboardStep;
+    },
+    set keyboardStep( keyboardStep ) { this.setKeyboardStep( keyboardStep ); },
+
+    // @public
+    getKeyboardStep: function() {
+      return this._keyboardStep;
+    },
+    get keyboardStep() { return this.getKeyboardStep(); },
+
+    // @public
+    setShiftKeyboardStep: function( shiftKeyboardStep ) {
+      this._shiftKeyboardStep = shiftKeyboardStep;
+    },
+    set shiftKeyboardStep( shiftKeyboardStep ) { this.setShiftKeyboardStep( shiftKeyboardStep ); },
+
+    // @public
+    getShiftKeyboardStep: function() {
+      return this._shiftKeyboardStep;
+    },
+    get shiftKeyboardStep() { return this.getShiftKeyboardStep(); },
 
     // @public - Sets visibility of major ticks.
     setMajorTicksVisible: function( visible ) {
