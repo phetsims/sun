@@ -307,7 +307,7 @@ define( function( require ) {
             if ( code === Input.KEY_PAGE_UP || code === Input.KEY_PAGE_DOWN ) {
 
               // on page up and page down, the step size is 1/10 of the range (this is typical browser behavior)
-              stepSize = range.getLength() / 10;
+              stepSize = ( range.max - range.min ) / 10;
               if ( code === Input.KEY_PAGE_UP ) {
                 newValue = valueProperty.get() + stepSize;
               }
