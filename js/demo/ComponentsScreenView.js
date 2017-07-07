@@ -324,7 +324,7 @@ define( function( require ) {
       valueAlign: 'left'
     } ) );
 
-    var enabledCheckBox = new CheckBox( new Text( 'enabled', new PhetFont( 20 ) ), enabledProperty );
+    var enabledCheckBox = new CheckBox( new Text( 'enabled', { font: new PhetFont( 20 ) } ), enabledProperty );
 
     return new VBox( {
       children: [ spinnerLeftRight, spinnerTopBottom, spinnerBothRight, spinnerBothBottom, enabledCheckBox ],
