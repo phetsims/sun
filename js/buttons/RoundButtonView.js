@@ -64,13 +64,13 @@ define( function( require ) {
       // content.  This can be a stock strategy from this file or custom.  To
       // create a custom one, model it off of the stock strategies defined in
       // this file.
-      buttonAppearanceStrategy: RoundButtonView.threeDAppearanceStrategy,
+      buttonAppearanceStrategy: RoundButtonView.ThreeDAppearanceStrategy,
 
       // Strategy for controlling the appearance of the button's content based
       // on the button's state.  This can be a stock strategy from this file,
       // or custom.  To create a custom one, model it off of the stock
       // version(s) defined in this file.
-      contentAppearanceStrategy: RoundButtonView.fadeContentWhenDisabled
+      contentAppearanceStrategy: RoundButtonView.FadeContentWhenDisabled
     }, options );
 
     // Tandem.indicateUninstrumentedCode();  // see https://github.com/phetsims/phet-io/issues/986
@@ -100,7 +100,12 @@ define( function( require ) {
     this.addChild( button );
 
     // Hook up the strategy that will control the basic button appearance.
-    options.buttonAppearanceStrategy( button, interactionStateProperty, this.baseColorProperty, options );
+    var buttonAppearanceStrategy = new options.buttonAppearanceStrategy(
+      button,
+      interactionStateProperty,
+      this.baseColorProperty,
+      options
+    );
 
     // Add the content to the button.
     if ( content ) {
@@ -109,15 +114,13 @@ define( function( require ) {
     }
 
     // Hook up the strategy that will control the content appearance.
-    options.contentAppearanceStrategy( content, interactionStateProperty );
+    var contentAppearanceStrategy = new options.contentAppearanceStrategy( content, interactionStateProperty );
 
     // Control the pointer state based on the interaction state.
     var self = this;
-
     function handleInteractionStateChanged( state ) {
       self.cursor = state === 'disabled' || state === 'disabled-pressed' ? null : 'pointer';
     }
-
     interactionStateProperty.link( handleInteractionStateChanged );
 
     // Dilate the pointer areas.
@@ -136,6 +139,8 @@ define( function( require ) {
 
     // define a dispose function
     this.disposeRoundButtonView = function() {
+      buttonAppearanceStrategy.dispose();
+      contentAppearanceStrategy.dispose();
       interactionStateProperty.unlink( handleInteractionStateChanged );
     };
   }
@@ -150,13 +155,20 @@ define( function( require ) {
    * @param {Property.<boolean>} interactionStateProperty
    * @param {Property.<Color>} baseColorProperty
    * @param {Object} [options]
+   * @constructor
+   * @public
    */
-  RoundButtonView.threeDAppearanceStrategy = function( button, interactionStateProperty, baseColorProperty, options ) {
+  RoundButtonView.ThreeDAppearanceStrategy = function( button, interactionStateProperty, baseColorProperty, options ) {
 
     // Set up variables needed to create the various gradient fills and otherwise mod the appearance
     var buttonRadius = button.width / 2;
     var disabledBaseColor = Color.toColor( options.disabledBaseColor );
-    var transparentDisabledBaseColor = new Color( disabledBaseColor.getRed(), disabledBaseColor.getGreen(), disabledBaseColor.getBlue(), 0 );
+    var transparentDisabledBaseColor = new Color(
+      disabledBaseColor.getRed(),
+      disabledBaseColor.getGreen(),
+      disabledBaseColor.getBlue(),
+      0
+    );
     var disabledStroke = options.stroke ? disabledBaseColor.colorUtilsDarker( 0.4 ) : null;
     var innerGradientRadius = buttonRadius - HIGHLIGHT_GRADIENT_LENGTH / 2;
     var outerGradientRadius = buttonRadius + HIGHLIGHT_GRADIENT_LENGTH / 2;
@@ -184,6 +196,46 @@ define( function( require ) {
         .addColorStop( 0.6, color.colorUtilsDarker( 0.2 ) )
         .addColorStop( 0.8, color )
         .addColorStop( 1, color.colorUtilsBrighter( 0.8 ) );
+    }
+
+    // Function for updating the button's appearance based on the current interaction state.
+    function updateAppearance( interactionState ) {
+
+      switch( interactionState ) {
+
+        case 'idle':
+          button.fill = upFillHighlight;
+          overlayForShadowGradient.stroke = enabledStroke;
+          overlayForShadowGradient.fill = upFillShadow;
+          break;
+
+        case 'over':
+          button.fill = overFillHighlight;
+          overlayForShadowGradient.stroke = enabledStroke;
+          overlayForShadowGradient.fill = overFillShadow;
+          break;
+
+        case 'pressed':
+          button.fill = pressedFill;
+          overlayForShadowGradient.stroke = enabledStroke;
+          overlayForShadowGradient.fill = overFillShadow;
+          break;
+
+        case 'disabled':
+          button.fill = disabledFillHighlight;
+          overlayForShadowGradient.stroke = disabledStroke;
+          overlayForShadowGradient.fill = disabledFillShadow;
+          break;
+
+        case 'disabled-pressed':
+          button.fill = disabledPressedFillHighlight;
+          overlayForShadowGradient.stroke = disabledStroke;
+          overlayForShadowGradient.fill = disabledFillShadow;
+          break;
+
+        default:
+          throw new Error( 'upsupported interactionState: ' + interactionState );
+      }
     }
 
     // Function for creating the fills and strokes used to control the button's appearance.
@@ -243,46 +295,8 @@ define( function( require ) {
         upFillShadow, overFillShadow, disabledFillShadow,
         enabledStroke, disabledStroke
       ];
-    }
 
-    // Function for updating the button's appearance based on the current interaction state.
-    function updateAppearance( interactionState ) {
-
-      switch( interactionState ) {
-
-        case 'idle':
-          button.fill = upFillHighlight;
-          overlayForShadowGradient.stroke = enabledStroke;
-          overlayForShadowGradient.fill = upFillShadow;
-          break;
-
-        case 'over':
-          button.fill = overFillHighlight;
-          overlayForShadowGradient.stroke = enabledStroke;
-          overlayForShadowGradient.fill = overFillShadow;
-          break;
-
-        case 'pressed':
-          button.fill = pressedFill;
-          overlayForShadowGradient.stroke = enabledStroke;
-          overlayForShadowGradient.fill = overFillShadow;
-          break;
-
-        case 'disabled':
-          button.fill = disabledFillHighlight;
-          overlayForShadowGradient.stroke = disabledStroke;
-          overlayForShadowGradient.fill = disabledFillShadow;
-          break;
-
-        case 'disabled-pressed':
-          button.fill = disabledPressedFillHighlight;
-          overlayForShadowGradient.stroke = disabledStroke;
-          overlayForShadowGradient.fill = disabledFillShadow;
-          break;
-
-        default:
-          throw new Error( 'upsupported interactionState: ' + interactionState );
-      }
+      updateAppearance( interactionStateProperty.value );
     }
 
     // Do the initial update explicitly, then lazy link to the properties.  This keeps the number of initial updates to
@@ -290,27 +304,27 @@ define( function( require ) {
     updateFillsAndStrokes( baseColorProperty.value );
     updateAppearance( interactionStateProperty.value );
 
-    baseColorProperty.lazyLink( function( baseColor ) {
-      // Do the appearance updates.
-      updateFillsAndStrokes( baseColor );
-      updateAppearance( interactionStateProperty.value );
-    } );
+    baseColorProperty.lazyLink( updateFillsAndStrokes );
+    interactionStateProperty.lazyLink( updateAppearance );
 
-    interactionStateProperty.lazyLink( function( interactionState ) {
-      updateAppearance( interactionState );
-    } );
+    // add a dispose function
+    this.dispose = function() {
+      baseColorProperty.unlink( updateFillsAndStrokes );
+      interactionStateProperty.unlink( updateAppearance );
+    };
   };
 
   /**
    * Strategy for buttons that look flat, i.e. no shading or highlighting, but
    * that change color on mouseover, press, etc.
-   *
    * @param {Node} button
    * @param {Property.<boolean>} interactionStateProperty
    * @param {Property.<Color>} baseColorProperty
    * @param {Object} [options]
+   * @constructor
+   * @public
    */
-  RoundButtonView.flatAppearanceStrategy = function( button, interactionStateProperty, baseColorProperty, options ) {
+  RoundButtonView.FlatAppearanceStrategy = function( button, interactionStateProperty, baseColorProperty, options ) {
 
     // Set up variables needed to create the various gradient fills
     var disabledBaseColor = Color.toColor( options.disabledBaseColor );
@@ -323,34 +337,6 @@ define( function( require ) {
     var disabledPressedFillVertical;
     var enabledStroke = null;
     var disabledStroke = null;
-
-    function updateFillsAndStrokes( baseColor ) {
-      upFill = baseColor;
-      overFill = baseColor.colorUtilsBrighter( 0.4 );
-      downFill = baseColor.colorUtilsDarker( 0.4 );
-      disabledFill = disabledBaseColor;
-      disabledPressedFillVertical = disabledFill;
-      if ( options.stroke === null ) {
-        // The stroke was explicitly set to null, so the button should have no stroke.
-        enabledStroke = null;
-        disabledStroke = null;
-      }
-      else if ( typeof( options.stroke ) === 'undefined' ) {
-        // No stroke was defined, but it wasn't set to null, so default to a stroke based on the base color of the
-        // button.  This behavior is a bit unconventional for Scenery nodes, but it makes the buttons look much better.
-        enabledStroke = baseColor.colorUtilsDarker( 0.4 );
-        disabledStroke = disabledBaseColor.colorUtilsDarker( 0.4 );
-      }
-      else {
-        enabledStroke = Color.toColor( options.stroke );
-        disabledStroke = disabledBaseColor.colorUtilsDarker( 0.4 );
-      }
-
-      button.cachedPaints = [
-        upFill, overFill, downFill, disabledFill, disabledPressedFillVertical,
-        enabledStroke, disabledStroke
-      ];
-    }
 
     function updateAppearance( interactionState ) {
       switch( interactionState ) {
@@ -384,30 +370,71 @@ define( function( require ) {
       }
     }
 
-    baseColorProperty.link( function( baseColor ) {
-      updateFillsAndStrokes( baseColor );
-      updateAppearance( interactionStateProperty.value );
-    } );
+    function updateFillsAndStrokes( baseColor ) {
+      upFill = baseColor;
+      overFill = baseColor.colorUtilsBrighter( 0.4 );
+      downFill = baseColor.colorUtilsDarker( 0.4 );
+      disabledFill = disabledBaseColor;
+      disabledPressedFillVertical = disabledFill;
+      if ( options.stroke === null ) {
+        // The stroke was explicitly set to null, so the button should have no stroke.
+        enabledStroke = null;
+        disabledStroke = null;
+      }
+      else if ( typeof( options.stroke ) === 'undefined' ) {
+        // No stroke was defined, but it wasn't set to null, so default to a stroke based on the base color of the
+        // button.  This behavior is a bit unconventional for Scenery nodes, but it makes the buttons look much better.
+        enabledStroke = baseColor.colorUtilsDarker( 0.4 );
+        disabledStroke = disabledBaseColor.colorUtilsDarker( 0.4 );
+      }
+      else {
+        enabledStroke = Color.toColor( options.stroke );
+        disabledStroke = disabledBaseColor.colorUtilsDarker( 0.4 );
+      }
 
-    // Lazy link to interaction state to avoid two updates at init.
-    interactionStateProperty.lazyLink( function( interactionState ) {
-      updateAppearance( interactionState );
-    } );
+      button.cachedPaints = [
+        upFill, overFill, downFill, disabledFill, disabledPressedFillVertical,
+        enabledStroke, disabledStroke
+      ];
+
+      updateAppearance( interactionStateProperty.value );
+    }
+
+    // Do the initial update explicitly, then lazy link to the properties.  This keeps the number of initial updates to
+    // a minimum and allows us to update some optimization flags the first time the base color is actually changed.
+    updateFillsAndStrokes( baseColorProperty.value );
+    updateAppearance( interactionStateProperty.value );
+
+    baseColorProperty.lazyLink( updateFillsAndStrokes );
+    interactionStateProperty.lazyLink( updateAppearance );
+
+    // add a dispose function
+    this.dispose = function() {
+      baseColorProperty.unlink( updateFillsAndStrokes );
+      interactionStateProperty.unlink( updateAppearance );
+    };
   };
 
   /**
-   * Basic strategy for controlling content appearance, fades the content by
-   * making it transparent when disabled.
-   *
+   * Basic strategy for controlling content appearance, fades the content by making it transparent when disabled.
    * @param {Node} content
    * @param {Property} interactionStateProperty
    */
-  RoundButtonView.fadeContentWhenDisabled = function( content, interactionStateProperty ) {
-    if ( content ) {
-      interactionStateProperty.link( function( state ) {
+  RoundButtonView.FadeContentWhenDisabled = function( content, interactionStateProperty ) {
+
+    // update the opacity when the state changes
+    function updateOpacity( state ) {
+      if ( content ) {
         content.opacity = state === 'disabled' || state === 'disabled-pressed' ? 0.3 : 1;
-      } );
+      }
     }
+
+    interactionStateProperty.link( updateOpacity );
+
+    // add dispose function to unlink listener
+    this.dispose = function() {
+      interactionStateProperty.unlink( updateOpacity );
+    };
   };
 
   return inherit( Node, RoundButtonView, {

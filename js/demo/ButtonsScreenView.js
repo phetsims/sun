@@ -136,14 +136,14 @@ define( function( require ) {
       content: new Text( '-- 1 --', { font: BUTTON_FONT } ),
       listener: function() { message( 'Button 1 pressed' ); },
       baseColor: 'rgb( 204, 102, 204 )',
-      buttonAppearanceStrategy: RectangularButtonView.flatAppearanceStrategy
+      buttonAppearanceStrategy: RectangularButtonView.FlatAppearanceStrategy
     } );
 
     var button2 = new RectangularPushButton( {
       content: new Text( '-- 2 --', { font: BUTTON_FONT } ),
       listener: function() { message( 'Button 2 pressed' ); },
       baseColor: '#A0D022',
-      buttonAppearanceStrategy: RectangularButtonView.flatAppearanceStrategy,
+      buttonAppearanceStrategy: RectangularButtonView.FlatAppearanceStrategy,
       lineWidth: 1,
       stroke: '#202020'
     } );
@@ -151,14 +151,14 @@ define( function( require ) {
     var button3 = new RoundPushButton( {
       content: new Text( '- 3 -', { font: BUTTON_FONT } ),
       listener: function() { message( 'Button 3 pressed ' ); },
-      buttonAppearanceStrategy: RoundButtonView.flatAppearanceStrategy
+      buttonAppearanceStrategy: RoundButtonView.FlatAppearanceStrategy
     } );
 
     var button4 = new RoundPushButton( {
       content: new Text( '-- 4 --', { font: BUTTON_FONT, fill: 'white' } ),
       listener: function() { message( 'Button 4 pressed ' ); },
       baseColor: '#CC3300',
-      buttonAppearanceStrategy: RoundButtonView.flatAppearanceStrategy
+      buttonAppearanceStrategy: RoundButtonView.FlatAppearanceStrategy
     } );
 
     var flatButtonsBox = new HBox( {

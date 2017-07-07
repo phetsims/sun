@@ -25,15 +25,18 @@ define( function( require ) {
    * @param {Property} interactionStateProperty
    * @param {Property} baseColorProperty
    * @param {Object} [options]
+   * @constructor
    */
-  var defaultRadioButtonsAppearance = function( button, interactionStateProperty, baseColorProperty, options ) {
+  var DefaultRadioButtonsAppearance = function( button, interactionStateProperty, baseColorProperty, options ) {
 
     // TODO: Changes were made to the appearance strategies to support dynamic changes of the base color, see
     // https://github.com/phetsims/sun/issues/138.  This feature has not yet been implemented in this appearance
     // strategy, please add it if you need it.
-    baseColorProperty.lazyLink( function() {
+    function handleBaseColorChanged() {
       assert && assert( false, 'Dynamic base color not yet implemented in this appearance strategy.' );
-    } );
+    }
+
+    baseColorProperty.lazyLink( handleBaseColorChanged );
 
     // Set up variables needed to create the various fills and strokes
     var baseColor = Color.toColor( baseColorProperty.value );
@@ -51,7 +54,7 @@ define( function( require ) {
       options.deselectedStroke, overStroke, options.selectedStroke, disabledStroke
     ];
 
-    interactionStateProperty.link( function( state ) {
+    function handleInteractionStateChanged( state ) {
       switch( state ) {
 
         case 'deselected':
@@ -100,7 +103,15 @@ define( function( require ) {
         default:
           throw new Error( 'unsupported state: ' + state );
       }
-    } );
+    }
+
+    interactionStateProperty.link( handleInteractionStateChanged );
+
+    // add dispose function
+    this.dispose = function() {
+      baseColorProperty.unlink( handleBaseColorChanged );
+      interactionStateProperty.unlink( handleInteractionStateChanged );
+    };
   };
 
   /**
@@ -110,12 +121,13 @@ define( function( require ) {
    * @param {Node} content
    * @param {Property} interactionStateProperty
    * @param {Object} [options]
+   * @constructor
+   * @public
    */
-  var contentAppearanceStrategy = function( content, interactionStateProperty, options ) {
+  var ContentAppearanceStrategy = function( content, interactionStateProperty, options ) {
 
-    // The button is not the parent of the content, therefore it is necessary to set the opacity on
-    // the content separately
-    interactionStateProperty.link( function( state ) {
+    // The button is not the parent of the content, therefore it is necessary to set the opacity on the content separately
+    function handleInteractionStateChanged( state ) {
       if ( content !== null ) {
         switch( state ) {
 
@@ -148,12 +160,19 @@ define( function( require ) {
             throw new Error( 'unsupported state: ' + state );
         }
       }
-    } );
+    }
+
+    interactionStateProperty.link( handleInteractionStateChanged );
+
+    // add a disposal function
+    this.dispose = function() {
+      interactionStateProperty.unlink( handleInteractionStateChanged );
+    };
   };
 
   var RadioButtonGroupAppearance = {
-    defaultRadioButtonsAppearance: defaultRadioButtonsAppearance,
-    contentAppearanceStrategy: contentAppearanceStrategy
+    defaultRadioButtonsAppearance: DefaultRadioButtonsAppearance,
+    contentAppearanceStrategy: ContentAppearanceStrategy
   };
 
   sun.register( 'RadioButtonGroupAppearance', RadioButtonGroupAppearance );

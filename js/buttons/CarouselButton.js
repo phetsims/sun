@@ -41,7 +41,7 @@ define( function( require ) {
       // button
       baseColor: 'rgba( 200, 200, 200, 0.5 )', // {Color|string} button fill color
       stroke: 'black', // {Color|string|null} button stroke
-      buttonAppearanceStrategy: RectangularButtonView.flatAppearanceStrategy,
+      buttonAppearanceStrategy: RectangularButtonView.FlatAppearanceStrategy,
       cornerRadius: 4, // {number} radius for the two potentially rounded corners
 
       // arrow
