@@ -149,7 +149,7 @@ define( function( require ) {
       listPosition: 'above'
     } );
 
-    var enabledCheckBox = new CheckBox( new Text( 'enabled', new PhetFont( 20 ) ), comboBox.enabledProperty );
+    var enabledCheckBox = new CheckBox( new Text( 'enabled', { font: new PhetFont( 20 ) } ), comboBox.enabledProperty );
 
     var uiComponents = new VBox( {
       children: [ comboBox, enabledCheckBox ],
