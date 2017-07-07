@@ -330,9 +330,10 @@ define( function( require ) {
               // round the value to the nearest keyboard step
               newValue = Util.roundSymmetric( newValue / stepSize ) * stepSize;
 
-              // it is possible to pass a value on the way up due to rounding, go back a step if we have gone too far
-              if ( Util.toFixedNumber( newValue - valueProperty.get(), 5 ) > stepSize ) {
-                newValue = newValue - stepSize;
+              // it is possible to pass a value in either direction due to rounding, go up or down a step if we have
+              // passed the nearest step
+              if ( Util.toFixedNumber( Math.abs( newValue - valueProperty.get() ), 5 ) > stepSize ) {
+                newValue += ( newValue > valueProperty.get() ) ? ( -1 * stepSize ) : stepSize;
               }
             }
 
