@@ -113,9 +113,12 @@ define( function( require ) {
 
     // Control the pointer state based on the interaction state.
     var self = this;
-    interactionStateProperty.link( function( state ) {
+
+    function handleInteractionStateChanged( state ) {
       self.cursor = state === 'disabled' || state === 'disabled-pressed' ? null : 'pointer';
-    } );
+    }
+
+    interactionStateProperty.link( handleInteractionStateChanged );
 
     // Dilate the pointer areas.
     this.touchArea = Shape.circle( 0, 0, buttonRadius + options.touchAreaDilation );
@@ -130,6 +133,11 @@ define( function( require ) {
     // Mutate with the options after the layout is complete so that
     // width-dependent fields like centerX will work.
     this.mutate( options );
+
+    // define a dispose function
+    this.disposeRoundButtonView = function() {
+      interactionStateProperty.unlink( handleInteractionStateChanged );
+    };
   }
 
   sun.register( 'RoundButtonView', RoundButtonView );
@@ -437,6 +445,15 @@ define( function( require ) {
      * @public
      */
     getBaseColor: function() { return this.baseColorProperty.value; },
-    get baseColor() { return this.getBaseColor(); }
+    get baseColor() { return this.getBaseColor(); },
+
+    /**
+     * dispose function
+     * @public
+     */
+    dispose: function() {
+      this.disposeRoundButtonView();
+      Node.prototype.dispose.call( this );
+    }
   } );
 } );
