@@ -32,10 +32,10 @@ define( function( require ) {
       assertInstanceOf( radioButton, phet.sun.RadioButton );
       TNode.call( this, radioButton, phetioID );
 
-      var emitter = radioButton.radioButtonGroupMemberModel || radioButton; //Handle RadioButtonGroupMemberModel or AquaRadioButton
+      var emitter = radioButton.radioButtonGroupMemberModel || radioButton; // Handle RadioButtonGroupMemberModel or AquaRadioButton
       toEventOnEmit(
         emitter.startedCallbacksForFiredEmitter,
-        emitter.startedCallbacksForFiredEmitter,
+        emitter.endedCallbacksForFiredEmitter,
         'user',
         phetioID,
         this.constructor,
