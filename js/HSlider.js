@@ -338,7 +338,7 @@ define( function( require ) {
             }
 
             // limit the value to the enabled range
-            newValue = self.enabledRange.constrainValue( newValue );
+            newValue = Util.clamp( newValue, self.enabledRange.min, self.enabledRange.max );
           }
 
           // optionally constrain the value further
