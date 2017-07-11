@@ -61,7 +61,7 @@ define( function( require ) {
       thumbFillDisabled: '#F0F0F0',
       thumbStroke: 'black',
       thumbLineWidth: 1,
-      thumbYOffset: 0, // slider is vertically centered on track, shift it by this amount
+      thumbYOffset: 0, // center of the thumb is vertically offset by this amount from the center of the track
       thumbCenterLineStroke: 'white',
       thumbTouchAreaXDilation: 11,
       thumbTouchAreaYDilation: 11,
