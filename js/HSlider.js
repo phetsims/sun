@@ -61,6 +61,7 @@ define( function( require ) {
       thumbFillDisabled: '#F0F0F0',
       thumbStroke: 'black',
       thumbLineWidth: 1,
+      thumbYOffset: 0, // slider is vertically centered on track, shift it by this amount
       thumbCenterLineStroke: 'white',
       thumbTouchAreaXDilation: 11,
       thumbTouchAreaYDilation: 11,
@@ -177,7 +178,7 @@ define( function( require ) {
     this.addChild( this.track );
 
     // do this outside of options hash, so that it applied to both default and custom thumbs
-    thumb.centerY = this.track.centerY;
+    thumb.centerY = this.track.centerY + options.thumbYOffset;
     this.addChild( thumb );
 
     // touchArea for the default thumb. If a custom thumb is provided, the client is responsible for its touchArea.
