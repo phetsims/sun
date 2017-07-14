@@ -45,6 +45,7 @@ define( function( require ) {
       fillDisabled: 'gray',
       stroke: 'black',
       lineWidth: 1,
+      cornerRadius: 0,
       enabledProperty: new Property( true ), // is the track enabled?
       startDrag: function() {}, // called when a drag sequence starts
       endDrag: function() {}, // called when a drag sequence ends
@@ -69,6 +70,7 @@ define( function( require ) {
       fill: options.fillDisabled,
       stroke: options.stroke,
       lineWidth: options.lineWidth,
+      cornerRadius: options.cornerRadius,
       cursor: 'default'
     } );
     this.addChild( this.disabledTrack );
@@ -77,7 +79,8 @@ define( function( require ) {
     this.enabledTrack = new Rectangle( 0, 0, this.size.width, this.size.height, {
       fill: options.fillEnabled,
       stroke: options.stroke,
-      ineWidth: options.lineWidth
+      ineWidth: options.lineWidth,
+      cornerRadius: options.cornerRadius
     } );
     this.addChild( this.enabledTrack );
 
