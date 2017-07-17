@@ -95,6 +95,32 @@ define( function( require ) {
 
     }, options );
 
+    // verify string options
+    assert && assert( options.buttonAlign === 'left' || options.buttonAlign === 'right' );
+    assert && assert( options.contentAlign === 'left' || options.contentAlign === 'right' || options.contentAlign === 'center' );
+    assert && assert( options.titleAlignX === 'left' || options.titleAlignX === 'right' || options.titleAlignX === 'center' );
+    assert && assert( options.titleAlignY === 'top' || options.titleAlignY === 'center' );
+
+    // @private
+    this._contentNode = contentNode;
+    this._buttonXMargin = options.buttonXMargin;
+    this._buttonYMargin = options.buttonYMargin;
+    this._contentXMargin = options.contentXMargin;
+    this._contentYMargin = options.contentYMargin;
+    this._contentXSpacing = options.contentXSpacing;
+    this._contentYSpacing = options.contentYSpacing;
+    this._titleXMargin = options.titleXMargin;
+    this._titleYMargin = options.titleYMargin;
+    this._titleXSpacing = options.titleXSpacing;
+    this._minWidth = options.minWidth;
+    this._showTitleWhenExpanded = options.showTitleWhenExpanded;
+
+    // emitters for the PhET-iO data stream
+    this.startedCallbacksForExpandedTitleBarDownEmitter = new Emitter();
+    this.endedCallbacksForExpandedTitleBarDownEmitter = new Emitter();
+    this.startedCallbacksForCollapsedTitleBarDownEmitter = new Emitter();
+    this.endedCallbacksForCollapsedTitleBarDownEmitter = new Emitter();
+
     // @private {Array.<function>} - Actions to take when this AccordionBox is disposed. Will be called with a proper
     //                               'this' reference to the AccordionBox.
     this.disposalActions = [];
@@ -122,18 +148,6 @@ define( function( require ) {
       } );
     }
 
-    // verify string options
-    assert && assert( options.buttonAlign === 'left' || options.buttonAlign === 'right' );
-    assert && assert( options.contentAlign === 'left' || options.contentAlign === 'right' || options.contentAlign === 'center' );
-    assert && assert( options.titleAlignX === 'left' || options.titleAlignX === 'right' || options.titleAlignX === 'center' );
-    assert && assert( options.titleAlignY === 'top' || options.titleAlignY === 'center' );
-
-    // emitters for the PhET-iO data stream
-    this.startedCallbacksForExpandedTitleBarDownEmitter = new Emitter();
-    this.endedCallbacksForExpandedTitleBarDownEmitter = new Emitter();
-    this.startedCallbacksForCollapsedTitleBarDownEmitter = new Emitter();
-    this.endedCallbacksForCollapsedTitleBarDownEmitter = new Emitter();
-
     Node.call( this );
 
     // @private - expand/collapse button, links to expandedProperty, must be disposed of
@@ -152,20 +166,9 @@ define( function( require ) {
     );
 
     // Compute box dimensions
-    var collapsedBoxHeight = Math.max( this.expandCollapseButton.height + ( 2 * options.buttonYMargin ), this.titleNode.height + ( 2 * options.titleYMargin ) );
-    assert && assert( options.cornerRadius < collapsedBoxHeight / 2 );
-    var boxWidth = Math.max( options.minWidth, this.expandCollapseButton.width + this.titleNode.width + options.buttonXMargin + options.titleXMargin + options.titleXSpacing );
-    var expandedBoxHeight;
-    if ( options.showTitleWhenExpanded ) {
-      // content is below button+title
-      boxWidth = Math.max( boxWidth, contentNode.width + ( 2 * options.contentXMargin ) );
-      expandedBoxHeight = collapsedBoxHeight + contentNode.height + options.contentYMargin + options.contentYSpacing;
-    }
-    else {
-      // content is next to button
-      boxWidth = Math.max( boxWidth, this.expandCollapseButton.width + contentNode.width + options.buttonXMargin + options.contentXMargin + options.contentXSpacing );
-      expandedBoxHeight = Math.max( this.expandCollapseButton.height + ( 2 * options.buttonYMargin ), contentNode.height + ( 2 * options.contentYMargin ) );
-    }
+    var collapsedBoxHeight = this.getCollapsedBoxHeight();
+    var boxWidth = this.getBoxWidth();
+    var expandedBoxHeight = this.getExpandedBoxHeight();
 
     // Expanded box
     var boxOptions = { fill: options.fill };
@@ -384,6 +387,52 @@ define( function( require ) {
   sun.register( 'AccordionBox', AccordionBox );
 
   return inherit( Node, AccordionBox, {
+    /**
+     * Returns the computed width of the box (ignoring things like stroke width)
+     * @private
+     *
+     * @returns {number}
+     */
+    getBoxWidth: function() {
+      var width = Math.max( this._minWidth, this.expandCollapseButton.width + this.titleNode.width + this._buttonXMargin + this._titleXMargin + this._titleXSpacing );
+
+      // content is below button+title
+      if ( this._showTitleWhenExpanded ) {
+        return Math.max( width, this._contentNode.width + ( 2 * this._contentXMargin ) );
+      }
+      // content is next to button
+      else {
+        return Math.max( width, this.expandCollapseButton.width + this._contentNode.width + this._buttonXMargin + this._contentXMargin + this._contentXSpacing );
+      }
+    },
+
+    /**
+     * Returns the ideal height of the collapsed box (ignoring things like stroke width)
+     * @private
+     *
+     * @returns {number}
+     */
+    getCollapsedBoxHeight: function() {
+      return Math.max( this.expandCollapseButton.height + ( 2 * this._buttonYMargin ), this.titleNode.height + ( 2 * this._titleYMargin ) );
+    },
+
+    /**
+     * Returns the ideal height of the expanded box (ignoring things like stroke width)
+     * @private
+     *
+     * @returns {number}
+     */
+    getExpandedBoxHeight: function() {
+      // content is below button+title
+      if ( this._showTitleWhenExpanded ) {
+        return this.getCollapsedBoxHeight() + this._contentNode.height + this._contentYMargin + this._contentYSpacing;
+      }
+      // content is next to button
+      else {
+        return Math.max( this.expandCollapseButton.height + ( 2 * this._buttonYMargin ), this._contentNode.height + ( 2 * this._contentYMargin ) );
+      }
+    },
+
     /**
      * Ensures this node is eligible for GC.
      * @public
