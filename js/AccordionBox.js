@@ -48,6 +48,10 @@ define( function( require ) {
       // {Property.<boolean>} - If not provided, a BooleanProperty will be created, defaulting to true.
       expandedProperty: null,
 
+      // {boolean} - If true, the AccordionBox will resize itself as needed when the title/content resizes.
+      //             See https://github.com/phetsims/sun/issues/304
+      resize: false,
+
       // applied to multiple parts of this UI component
       cursor: 'pointer', // {string} default cursor
       lineWidth: 1,
@@ -102,18 +106,25 @@ define( function( require ) {
     assert && assert( options.titleAlignY === 'top' || options.titleAlignY === 'center' );
 
     // @private
+    this._titleBarFill = options.titleBarFill;
+    this._titleBarStroke = options.titleBarStroke;
+    this._contentAlign = options.contentAlign;
     this._contentNode = contentNode;
+    this._cornerRadius = options.cornerRadius;
     this._buttonXMargin = options.buttonXMargin;
     this._buttonYMargin = options.buttonYMargin;
     this._contentXMargin = options.contentXMargin;
     this._contentYMargin = options.contentYMargin;
     this._contentXSpacing = options.contentXSpacing;
     this._contentYSpacing = options.contentYSpacing;
+    this._titleAlignX = options.titleAlignX;
+    this._titleAlignY = options.titleAlignY;
     this._titleXMargin = options.titleXMargin;
     this._titleYMargin = options.titleYMargin;
     this._titleXSpacing = options.titleXSpacing;
     this._minWidth = options.minWidth;
     this._showTitleWhenExpanded = options.showTitleWhenExpanded;
+    this._buttonAlign = options.buttonAlign;
 
     // emitters for the PhET-iO data stream
     this.startedCallbacksForExpandedTitleBarDownEmitter = new Emitter();
@@ -156,6 +167,9 @@ define( function( require ) {
       cursor: options.cursor,
       tandem: options.tandem.createTandem( 'expandCollapseButton' )
     } );
+    this.disposalActions.push( function() {
+      this.expandCollapseButton.dispose();
+    } );
     this.expandCollapseButton.touchArea = this.expandCollapseButton.localBounds.dilatedXY(
       options.buttonTouchAreaXDilation,
       options.buttonTouchAreaYDilation
@@ -165,47 +179,32 @@ define( function( require ) {
       options.buttonMouseAreaYDilation
     );
 
-    // Compute box dimensions
-    var collapsedBoxHeight = this.getCollapsedBoxHeight();
-    var boxWidth = this.getBoxWidth();
-    var expandedBoxHeight = this.getExpandedBoxHeight();
-
     // Expanded box
     var boxOptions = { fill: options.fill };
-    var expandedBox = new Rectangle(
-      0,
-      0,
-      boxWidth,
-      expandedBoxHeight,
-      options.cornerRadius,
-      options.cornerRadius,
-      _.extend( {
-        tandem: options.tandem.createTandem( 'expandedBox' ),
 
-        // a11y
-        tagName: 'div'
-      }, boxOptions )
-    );
-    this.addChild( expandedBox );
-
-    // Collapsed box
-    var collapsedBox = new Rectangle(
-      0,
-      0,
-      boxWidth,
-      collapsedBoxHeight,
-      options.cornerRadius,
-      options.cornerRadius,
-      _.extend( { tandem: options.tandem.createTandem( 'collapsedBox' ) }, boxOptions )
-    );
-    this.addChild( collapsedBox );
-
-    // Expanded title bar has (optional) rounded top corners, square bottom corners. Clicking it operates like expand/collapse button.
-    var expandedTitleBarShape = Shape.roundedRectangleWithRadii( 0, 0, boxWidth, collapsedBoxHeight, {
-      topLeft: options.cornerRadius,
-      topRight: options.cornerRadius
+    // @private {Rectangle} - Expanded box
+    this.expandedBox = new Rectangle( _.extend( {
+      cornerRadius: options.cornerRadius,
+      tandem: options.tandem.createTandem( 'expandedBox' ),
+      tagName: 'div' // a11y
+    }, boxOptions ) );
+    this.disposalActions.push( function() {
+      this.expandedBox.dispose();
     } );
-    var expandedTitleBar = new Path( expandedTitleBarShape, {
+    this.addChild( this.expandedBox );
+
+    // @private {Rectangle} - Collapsed box
+    this.collapsedBox = new Rectangle( _.extend( {
+      cornerRadius: options.cornerRadius,
+      tandem: options.tandem.createTandem( 'collapsedBox' )
+    }, boxOptions ) );
+    this.disposalActions.push( function() {
+      this.collapsedBox.dispose();
+    } );
+    this.addChild( this.collapsedBox );
+
+    // @private {Path}
+    this.expandedTitleBar = new Path( null, {
       fill: options.titleBarFill,
       stroke: options.titleBarStroke,
       lineWidth: options.lineWidth, // use same lineWidth as box, for consistent look
@@ -217,11 +216,15 @@ define( function( require ) {
       accessibleLabel: options.accessibleAccordionTitle,
       labelTagName: 'p'
     } );
-    expandedBox.addChild( expandedTitleBar );
+    this.disposalActions.push( function() {
+      this.expandedTitleBar.dispose();
+    } );
+    this.expandedBox.addChild( this.expandedTitleBar );
 
-
-    // Collapsed title bar has corners that match the box. Clicking it operates like expand/collapse button.
-    var collapsedTitleBar = new Rectangle( 0, 0, boxWidth, collapsedBoxHeight, options.cornerRadius, options.cornerRadius, {
+    // @private {Rectangle} - Collapsed title bar has corners that match the box. Clicking it operates like
+    //                        expand/collapse button.
+    this.collapsedTitleBar = new Rectangle( {
+      cornerRadius: options.cornerRadius,
       fill: options.titleBarFill,
       cursor: options.cursor,
       tandem: options.tandem.createTandem( 'collapsedTitleBar' ),
@@ -231,9 +234,13 @@ define( function( require ) {
       accessibleLabel: options.accessibleAccordionTitle,
       labelTagName: 'p'
     } );
-    collapsedBox.addChild( collapsedTitleBar );
+    this.disposalActions.push( function() {
+      this.collapsedTitleBar.dispose();
+    } );
+    this.collapsedBox.addChild( this.collapsedTitleBar );
+
     if ( options.titleBarExpandCollapse ) {
-      collapsedTitleBar.addInputListener( {
+      this.collapsedTitleBar.addInputListener( {
         down: function() {
           self.startedCallbacksForExpandedTitleBarDownEmitter.emit();
           self.expandedProperty.value = true;
@@ -243,14 +250,14 @@ define( function( require ) {
     }
 
     // a11y we always want accessible tab focus on the title, even when titleBarExpandeCollapse === false
-    collapsedTitleBar.addAccessibleInputListener( {
+    this.collapsedTitleBar.addAccessibleInputListener( {
       click: function() {
         self.startedCallbacksForExpandedTitleBarDownEmitter.emit();
         self.expandedProperty.value = true;
         self.endedCallbacksForExpandedTitleBarDownEmitter.emit();
 
         // a11y Set focus to expanded title bar
-        expandedTitleBar.focus();
+        self.expandedTitleBar.focus();
       }
     } );
 
@@ -258,7 +265,7 @@ define( function( require ) {
     // a11y we need to focus on the collapsedTitleBar when the expandedTitleBar is clicked
     if ( options.showTitleWhenExpanded ) {
       if ( options.titleBarExpandCollapse ) {
-        expandedTitleBar.addInputListener( {
+        this.expandedTitleBar.addInputListener( {
           down: function() {
             self.startedCallbacksForCollapsedTitleBarDownEmitter.emit();
             self.expandedProperty.value = false;
@@ -268,14 +275,14 @@ define( function( require ) {
       }
 
       // a11y we always want accessible tab focus on the title
-      expandedTitleBar.addAccessibleInputListener( {
+      this.expandedTitleBar.addAccessibleInputListener( {
         click: function() {
           self.startedCallbacksForCollapsedTitleBarDownEmitter.emit();
           self.expandedProperty.value = false;
           self.endedCallbacksForCollapsedTitleBarDownEmitter.emit();
 
           // a11y Set focus to expanded title bar
-          collapsedTitleBar.focus();
+          self.collapsedTitleBar.focus();
         }
       } );
     }
@@ -285,101 +292,62 @@ define( function( require ) {
     this.addChild( this.expandCollapseButton );
 
     // box outline, on top of everything else
-    var expandedBoxOutline;
-    var collapsedBoxOutline;
     if ( options.stroke ) {
       var outlineOptions = { stroke: options.stroke, lineWidth: options.lineWidth };
-      expandedBoxOutline = new Rectangle(
-        0,
-        0,
-        boxWidth,
-        expandedBoxHeight,
-        options.cornerRadius,
-        options.cornerRadius,
-        _.extend( { tandem: options.tandem.createTandem( 'expandedBoxOutline' ) }, outlineOptions )
-      );
-      collapsedBoxOutline = new Rectangle(
-        0,
-        0,
-        boxWidth,
-        collapsedBoxHeight,
-        options.cornerRadius,
-        options.cornerRadius,
-        _.extend( { tandem: options.tandem.createTandem( 'collapsedBoxOutline' ) }, outlineOptions )
-      );
-      expandedBox.addChild( expandedBoxOutline );
-      collapsedBox.addChild( collapsedBoxOutline );
+
+      // @private {Rectangle} - May not be set
+      this.expandedBoxOutline = new Rectangle( _.extend( {
+        cornerRadius: options.cornerRadius,
+        tandem: options.tandem.createTandem( 'expandedBoxOutline' )
+      }, outlineOptions ) );
+      this.disposalActions.push( function() {
+        this.expandedBoxOutline.dispose();
+      } );
+      this.expandedBox.addChild( this.expandedBoxOutline );
+
+      // @private {Rectangle} - May not be set
+      this.collapsedBoxOutline = new Rectangle( _.extend( {
+        cornerRadius: options.cornerRadius,
+        tandem: options.tandem.createTandem( 'collapsedBoxOutline' )
+      }, outlineOptions ) );
+      this.collapsedBox.addChild( this.collapsedBoxOutline );
+      this.disposalActions.push( function() {
+        this.collapsedBoxOutline.dispose();
+      } );
     }
 
-    // content layout
-    contentNode.bottom = expandedBox.bottom - options.contentYMargin;
-    var contentSpanLeft = expandedBox.left + options.contentXMargin;
-    var contentSpanRight = expandedBox.right - options.contentXMargin;
-    if ( !options.showTitleWhenExpanded ) {
-      // content will be placed next to button
-      if ( options.buttonAlign === 'left' ) {
-        contentSpanLeft += this.expandCollapseButton.width + options.contentXSpacing;
-      }
-      else { // right on right
-        contentSpanRight -= this.expandCollapseButton.width + options.contentXSpacing;
-      }
-    }
-    if ( options.contentAlign === 'left' ) {
-      contentNode.left = contentSpanLeft;
-    }
-    else if ( options.contentAlign === 'right' ) {
-      contentNode.right = contentSpanRight;
-    }
-    else { // center
-      contentNode.centerX = ( contentSpanLeft + contentSpanRight ) / 2;
-    }
-    expandedBox.addChild( contentNode ); // do this after layout computations, see sun#280
+    // Reverted some of sun#280 changes, doing this BEFORE layout now, since it can happen multiple times
+    this.expandedBox.addChild( this._contentNode );
 
-    // button horizontal layout
-    var titleLeftSpan = expandedBox.left + options.titleXMargin;
-    var titleRightSpan = expandedBox.right - options.titleXMargin;
-    if ( options.buttonAlign === 'left' ) {
-      this.expandCollapseButton.left = expandedBox.left + options.buttonXMargin;
-      titleLeftSpan = this.expandCollapseButton.right + options.titleXSpacing;
-    }
-    else {
-      this.expandCollapseButton.right = expandedBox.right - options.buttonXMargin;
-      titleRightSpan = this.expandCollapseButton.left - options.titleXSpacing;
+    this.layout();
+
+    // Watch future changes for re-layout (don't want to trigger on our first layout and queue useless ones)
+    if ( options.resize ) {
+      var layoutListener = this.layout.bind( this );
+      contentNode.on( 'bounds', layoutListener );
+      this.titleNode.on( 'bounds', layoutListener );
+      this.disposalActions.push( function() {
+        contentNode.off( 'bounds', layoutListener );
+        this.titleNode.off( 'bounds', layoutListener );
+      } );
     }
 
-    // title horizontal layout
-    if ( options.titleAlignX === 'left' ) {
-      this.titleNode.left = titleLeftSpan;
-    }
-    else if ( options.titleAlignX === 'right' ) {
-      this.titleNode.right = titleRightSpan;
-    }
-    else { // center
-      this.titleNode.centerX = expandedBox.centerX;
-    }
-
-    // button & title vertical layout
-    if ( options.titleAlignY === 'top' ) {
-      this.expandCollapseButton.top = collapsedBox.top + Math.max( options.buttonYMargin, options.titleYMargin );
-      this.titleNode.top = this.expandCollapseButton.top;
-    }
-    else { // center
-      this.expandCollapseButton.centerY = collapsedBox.centerY;
-      this.titleNode.centerY = this.expandCollapseButton.centerY;
-    }
-
-    // @private expand/collapse the box
-    this.expandedPropertyObserver = function( expanded ) {
-      expandedBox.visible = expanded;
-      collapsedBox.visible = !expanded;
+    // expand/collapse the box
+    var expandedPropertyObserver = function( expanded ) {
+      self.expandedBox.visible = expanded;
+      self.collapsedBox.visible = !expanded;
 
       // a11y Toggle the visibility of the buttons in the PDOM
-      expandedTitleBar.accessibleHidden = !expanded;
-      collapsedTitleBar.accessibleHidden = expanded;
+      self.expandedTitleBar.accessibleHidden = !expanded;
+      self.collapsedTitleBar.accessibleHidden = expanded;
 
       self.titleNode.visible = ( expanded && options.showTitleWhenExpanded ) || !expanded;
     };
-    this.expandedProperty.link( this.expandedPropertyObserver ); // must be unlinked in dispose
+    this.expandedProperty.link( expandedPropertyObserver );
+    this.disposalActions.push( function() {
+      this.expandedProperty.unlink( expandedPropertyObserver );
+    } );
+
 
     this.mutate( _.omit( options, 'cursor' ) );
   }
@@ -387,6 +355,105 @@ define( function( require ) {
   sun.register( 'AccordionBox', AccordionBox );
 
   return inherit( Node, AccordionBox, {
+    /**
+     * Performs layout that positions everything that can change.
+     * @private
+     */
+    layout: function() {
+      var collapsedBoxHeight = this.getCollapsedBoxHeight();
+      var boxWidth = this.getBoxWidth();
+      var expandedBoxHeight = this.getExpandedBoxHeight();
+
+      this.expandedBox.rectWidth = boxWidth;
+      this.expandedBox.rectHeight = expandedBoxHeight;
+
+      this.expandedBoxOutline.rectWidth = boxWidth;
+      this.expandedBoxOutline.rectHeight = expandedBoxHeight;
+
+      this.expandedTitleBar.shape = this.getTitleBarShape();
+
+      this.collapsedBox.rectWidth = boxWidth;
+      this.collapsedBox.rectHeight = collapsedBoxHeight;
+
+      this.collapsedTitleBar.rectWidth = boxWidth;
+      this.collapsedTitleBar.rectHeight = collapsedBoxHeight;
+
+      this.collapsedBoxOutline.rectWidth = boxWidth;
+      this.collapsedBoxOutline.rectHeight = collapsedBoxHeight;
+
+      // content layout
+      this._contentNode.bottom = this.expandedBox.bottom - this._contentYMargin;
+      var contentSpanLeft = this.expandedBox.left + this._contentXMargin;
+      var contentSpanRight = this.expandedBox.right - this._contentXMargin;
+      if ( !this._showTitleWhenExpanded ) {
+        // content will be placed next to button
+        if ( this._buttonAlign === 'left' ) {
+          contentSpanLeft += this.expandCollapseButton.width + this._contentXSpacing;
+        }
+        else { // right on right
+          contentSpanRight -= this.expandCollapseButton.width + this._contentXSpacing;
+        }
+      }
+      if ( this._contentAlign === 'left' ) {
+        this._contentNode.left = contentSpanLeft;
+      }
+      else if ( this._contentAlign === 'right' ) {
+        this._contentNode.right = contentSpanRight;
+      }
+      else { // center
+        this._contentNode.centerX = ( contentSpanLeft + contentSpanRight ) / 2;
+      }
+
+      // button horizontal layout
+      var titleLeftSpan = this.expandedBox.left + this._titleXMargin;
+      var titleRightSpan = this.expandedBox.right - this._titleXMargin;
+      if ( this._buttonAlign === 'left' ) {
+        this.expandCollapseButton.left = this.expandedBox.left + this._buttonXMargin;
+        titleLeftSpan = this.expandCollapseButton.right + this._titleXSpacing;
+      }
+      else {
+        this.expandCollapseButton.right = this.expandedBox.right - this._buttonXMargin;
+        titleRightSpan = this.expandCollapseButton.left - this._titleXSpacing;
+      }
+
+      // title horizontal layout
+      if ( this._titleAlignX === 'left' ) {
+        this.titleNode.left = titleLeftSpan;
+      }
+      else if ( this._titleAlignX === 'right' ) {
+        this.titleNode.right = titleRightSpan;
+      }
+      else { // center
+        this.titleNode.centerX = this.expandedBox.centerX;
+      }
+
+      // button & title vertical layout
+      if ( this._titleAlignY === 'top' ) {
+        this.expandCollapseButton.top = this.collapsedBox.top + Math.max( this._buttonYMargin, this._titleYMargin );
+        this.titleNode.top = this.expandCollapseButton.top;
+      }
+      else { // center
+        this.expandCollapseButton.centerY = this.collapsedBox.centerY;
+        this.titleNode.centerY = this.expandCollapseButton.centerY;
+      }
+    },
+
+    /**
+     * Returns the Shape of the title bar.
+     * @private
+     *
+     * Expanded title bar has (optional) rounded top corners, square bottom corners. Clicking it operates like
+     * expand/collapse button.
+     *
+     * @returns {Shape}
+     */
+    getTitleBarShape: function() {
+      return Shape.roundedRectangleWithRadii( 0, 0, this.getBoxWidth(), this.getCollapsedBoxHeight(), {
+        topLeft: this._cornerRadius,
+        topRight: this._cornerRadius
+      } );
+    },
+
     /**
      * Returns the computed width of the box (ignoring things like stroke width)
      * @private
@@ -441,10 +508,6 @@ define( function( require ) {
       while ( this.disposalActions.length ) {
         this.disposalActions.pop().call( this );
       }
-
-      this.expandCollapseButton.dispose();
-      this.expandCollapseButton = null;
-      this.expandedProperty.unlink( this.expandedPropertyObserver );
       Node.prototype.dispose.call( this );
     }
   } );
