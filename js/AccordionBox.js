@@ -10,12 +10,12 @@ define( function( require ) {
   'use strict';
 
   // modules
+  var BooleanProperty = require( 'AXON/BooleanProperty' );
   var Emitter = require( 'AXON/Emitter' );
   var ExpandCollapseButton = require( 'SUN/ExpandCollapseButton' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Node = require( 'SCENERY/nodes/Node' );
   var Path = require( 'SCENERY/nodes/Path' );
-  var Property = require( 'AXON/Property' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var Shape = require( 'KITE/Shape' );
   var sun = require( 'SUN/sun' );
@@ -23,24 +23,30 @@ define( function( require ) {
   var Text = require( 'SCENERY/nodes/Text' );
 
   // phet-io modules
-  var TBoolean = require( 'ifphetio!PHET_IO/types/TBoolean' );
   var TAccordionBox = require( 'SUN/TAccordionBox' );
 
   /**
-   * @param {Node} contentNode that will be shown or hidden as the accordion box is expanded/collapsed.
-   * @param {Object} [options] Various key-value pairs that control the appearance and behavior.  Some options are
-   * specific to this class while some are passed to the superclass.  See the code where the options are set in the
-   * early portion of the constructor for details.
    * @constructor
+   *
+   * @param {Node} contentNode - Content that will be shown or hidden as the accordion box is expanded/collapsed.
+   * @param {Object} [options] - Various key-value pairs that control the appearance and behavior.  Some options are
+   *                             specific to this class while some are passed to the superclass.  See the code where
+   *                             the options are set in the early portion of the constructor for details.
    */
   function AccordionBox( contentNode, options ) {
 
     var self = this;
 
-    // set up tandem first so it can be used for other default options just below
-    options.tandem = options.tandem || Tandem.tandemRequired();
-
     options = _.extend( {
+      // {Tandem}
+      tandem: Tandem.tandemRequired(),
+
+      // {Node} - If not provided, a Text node will be supplied. Should have and maintain well-defined bounds if passed
+      //          in.
+      titleNode: null,
+
+      // {Property.<boolean>} - If not provided, a BooleanProperty will be created, defaulting to true.
+      expandedProperty: null,
 
       // applied to multiple parts of this UI component
       cursor: 'pointer', // {string} default cursor
@@ -52,8 +58,6 @@ define( function( require ) {
       fill: 'rgb( 238, 238, 238 )',
       minWidth: 0,
 
-      // title
-      titleNode: new Text( '', { tandem: options.tandem.createTandem( 'titleNode' ) } ), // a {Node} with well-defined bounds
       titleAlignX: 'center', // {string} horizontal alignment of the title, 'left'|'center'|'right'
       titleAlignY: 'center', // {string} vertical alignment of the title, relative to expand/collapse button 'top'|'center'
       titleXMargin: 10, // horizontal space between title and left|right edge of box
@@ -69,10 +73,6 @@ define( function( require ) {
       buttonAlign: 'left',  // {string} button alignment, 'left'|'right'
       buttonXMargin: 4, // horizontal space between button and left|right edge of box
       buttonYMargin: 2, // vertical space between button and top edge of box
-      expandedProperty: new Property( true, {
-        tandem: options.tandem.createTandem( 'expandedProperty' ),
-        phetioValueType: TBoolean
-      } ),
       buttonTouchAreaXDilation: 0,
       buttonTouchAreaYDilation: 0,
       buttonMouseAreaXDilation: 0,
@@ -95,6 +95,33 @@ define( function( require ) {
 
     }, options );
 
+    // @private {Array.<function>} - Actions to take when this AccordionBox is disposed. Will be called with a proper
+    //                               'this' reference to the AccordionBox.
+    this.disposalActions = [];
+
+    // @private {Node}
+    this.titleNode = options.titleNode;
+
+    // If there is no titleNode specified, we'll provide our own, and handle disposal.
+    if ( !this.titleNode ) {
+      this.titleNode = new Text( '', { tandem: options.tandem.createTandem( 'titleNode' ) } );
+      this.disposalActions.push( function() {
+        this.titleNode.dispose();
+      } );
+    }
+
+    // @private {Property.<boolean>}
+    this.expandedProperty = options.expandedProperty;
+
+    if ( !this.expandedProperty ) {
+      this.expandedProperty = new BooleanProperty( true, {
+        tandem: options.tandem.createTandem( 'expandedProperty' )
+      } );
+      this.disposalActions.push( function() {
+        this.expandedProperty.dispose();
+      } );
+    }
+
     // verify string options
     assert && assert( options.buttonAlign === 'left' || options.buttonAlign === 'right' );
     assert && assert( options.contentAlign === 'left' || options.contentAlign === 'right' || options.contentAlign === 'center' );
@@ -110,7 +137,7 @@ define( function( require ) {
     Node.call( this );
 
     // @private - expand/collapse button, links to expandedProperty, must be disposed of
-    this.expandCollapseButton = new ExpandCollapseButton( options.expandedProperty, {
+    this.expandCollapseButton = new ExpandCollapseButton( this.expandedProperty, {
       sideLength: options.buttonLength,
       cursor: options.cursor,
       tandem: options.tandem.createTandem( 'expandCollapseButton' )
@@ -125,9 +152,9 @@ define( function( require ) {
     );
 
     // Compute box dimensions
-    var collapsedBoxHeight = Math.max( this.expandCollapseButton.height + ( 2 * options.buttonYMargin ), options.titleNode.height + ( 2 * options.titleYMargin ) );
+    var collapsedBoxHeight = Math.max( this.expandCollapseButton.height + ( 2 * options.buttonYMargin ), this.titleNode.height + ( 2 * options.titleYMargin ) );
     assert && assert( options.cornerRadius < collapsedBoxHeight / 2 );
-    var boxWidth = Math.max( options.minWidth, this.expandCollapseButton.width + options.titleNode.width + options.buttonXMargin + options.titleXMargin + options.titleXSpacing );
+    var boxWidth = Math.max( options.minWidth, this.expandCollapseButton.width + this.titleNode.width + options.buttonXMargin + options.titleXMargin + options.titleXSpacing );
     var expandedBoxHeight;
     if ( options.showTitleWhenExpanded ) {
       // content is below button+title
@@ -206,7 +233,7 @@ define( function( require ) {
       collapsedTitleBar.addInputListener( {
         down: function() {
           self.startedCallbacksForExpandedTitleBarDownEmitter.emit();
-          options.expandedProperty.value = true;
+          self.expandedProperty.value = true;
           self.endedCallbacksForExpandedTitleBarDownEmitter.emit();
         }
       } );
@@ -216,7 +243,7 @@ define( function( require ) {
     collapsedTitleBar.addAccessibleInputListener( {
       click: function() {
         self.startedCallbacksForExpandedTitleBarDownEmitter.emit();
-        options.expandedProperty.value = true;
+        self.expandedProperty.value = true;
         self.endedCallbacksForExpandedTitleBarDownEmitter.emit();
 
         // a11y Set focus to expanded title bar
@@ -231,7 +258,7 @@ define( function( require ) {
         expandedTitleBar.addInputListener( {
           down: function() {
             self.startedCallbacksForCollapsedTitleBarDownEmitter.emit();
-            options.expandedProperty.value = false;
+            self.expandedProperty.value = false;
             self.endedCallbacksForCollapsedTitleBarDownEmitter.emit();
           }
         } );
@@ -241,7 +268,7 @@ define( function( require ) {
       expandedTitleBar.addAccessibleInputListener( {
         click: function() {
           self.startedCallbacksForCollapsedTitleBarDownEmitter.emit();
-          options.expandedProperty.value = false;
+          self.expandedProperty.value = false;
           self.endedCallbacksForCollapsedTitleBarDownEmitter.emit();
 
           // a11y Set focus to expanded title bar
@@ -251,7 +278,7 @@ define( function( require ) {
     }
 
     // TODO: a11y
-    this.addChild( options.titleNode );
+    this.addChild( this.titleNode );
     this.addChild( this.expandCollapseButton );
 
     // box outline, on top of everything else
@@ -319,23 +346,23 @@ define( function( require ) {
 
     // title horizontal layout
     if ( options.titleAlignX === 'left' ) {
-      options.titleNode.left = titleLeftSpan;
+      this.titleNode.left = titleLeftSpan;
     }
     else if ( options.titleAlignX === 'right' ) {
-      options.titleNode.right = titleRightSpan;
+      this.titleNode.right = titleRightSpan;
     }
     else { // center
-      options.titleNode.centerX = expandedBox.centerX;
+      this.titleNode.centerX = expandedBox.centerX;
     }
 
     // button & title vertical layout
     if ( options.titleAlignY === 'top' ) {
       this.expandCollapseButton.top = collapsedBox.top + Math.max( options.buttonYMargin, options.titleYMargin );
-      options.titleNode.top = this.expandCollapseButton.top;
+      this.titleNode.top = this.expandCollapseButton.top;
     }
     else { // center
       this.expandCollapseButton.centerY = collapsedBox.centerY;
-      options.titleNode.centerY = this.expandCollapseButton.centerY;
+      this.titleNode.centerY = this.expandCollapseButton.centerY;
     }
 
     // @private expand/collapse the box
@@ -347,9 +374,8 @@ define( function( require ) {
       expandedTitleBar.accessibleHidden = !expanded;
       collapsedTitleBar.accessibleHidden = expanded;
 
-      options.titleNode.visible = ( expanded && options.showTitleWhenExpanded ) || !expanded;
+      self.titleNode.visible = ( expanded && options.showTitleWhenExpanded ) || !expanded;
     };
-    this.expandedProperty = options.expandedProperty; // @private
     this.expandedProperty.link( this.expandedPropertyObserver ); // must be unlinked in dispose
 
     this.mutate( _.omit( options, 'cursor' ) );
@@ -358,9 +384,15 @@ define( function( require ) {
   sun.register( 'AccordionBox', AccordionBox );
 
   return inherit( Node, AccordionBox, {
-
-    // @public - ensures that this node is eligible for GC
+    /**
+     * Ensures this node is eligible for GC.
+     * @public
+     */
     dispose: function() {
+      while ( this.disposalActions.length ) {
+        this.disposalActions.pop().call( this );
+      }
+
       this.expandCollapseButton.dispose();
       this.expandCollapseButton = null;
       this.expandedProperty.unlink( this.expandedPropertyObserver );
