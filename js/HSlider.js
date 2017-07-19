@@ -92,6 +92,7 @@ define( function( require ) {
       inputType: 'range',
       keyboardStep: ( range.max - range.min ) / 20,
       shiftKeyboardStep: ( range.max - range.min ) / 100,
+      pageKeyboardStep: ( range.max - range.min ) / 10,
       focusHighlightLineWidth: 4,
 
       // phet-io
@@ -117,6 +118,7 @@ define( function( require ) {
     // @private (a11y) - delta or the valueProperty when holding shift and using the keyboard to interact with
     // the slider
     this._shiftKeyboardStep = options.shiftKeyboardStep;
+    this._pageKeyboardStep = options.pageKeyboardStep;
 
     // @private ticks are added to these parents, so they are behind the knob
     this.majorTicksParent = new Node();
@@ -309,8 +311,9 @@ define( function( require ) {
             var stepSize;
             if ( code === Input.KEY_PAGE_UP || code === Input.KEY_PAGE_DOWN ) {
 
-              // on page up and page down, the step size is 1/10 of the range (this is typical browser behavior)
-              stepSize = ( range.max - range.min ) / 10;
+              // on page up and page down, the default step size is 1/10 of the range (this is typical browser behavior)
+              stepSize = options.pageKeyboardStep;
+
               if ( code === Input.KEY_PAGE_UP ) {
                 newValue = valueProperty.get() + stepSize;
               }
@@ -322,6 +325,7 @@ define( function( require ) {
 
               // if the shift key is pressed down, modify the step size (this is atypical browser behavior for sliders)
               stepSize = event.shiftKey ? self.shiftKeyboardStep : self.keyboardStep;
+              // 
 
               if ( code === Input.KEY_RIGHT_ARROW || code === Input.KEY_UP_ARROW ) {
                 newValue = valueProperty.get() + stepSize;
@@ -481,6 +485,18 @@ define( function( require ) {
       return this._shiftKeyboardStep;
     },
     get shiftKeyboardStep() { return this.getShiftKeyboardStep(); },
+
+    // @public
+    getPageKeyboardStep: function() {
+      return this._pageKeyboardStep;
+    },
+    get pageKeyboardStep() { return this.getPageKeyboardStep(); },
+
+    // @public
+    setPageKeyboardStep: function( pageKeyboardStep ) {
+      this._pageKeyboardStep = pageKeyboardStep;
+    },
+    set pageKeyboardStep( pageKeyboardStep ) { this.setPageKeyboardStep( pageKeyboardStep ); },
 
     // @public - Sets visibility of major ticks.
     setMajorTicksVisible: function( visible ) {
