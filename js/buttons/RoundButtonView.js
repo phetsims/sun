@@ -73,9 +73,6 @@ define( function( require ) {
       contentAppearanceStrategy: RoundButtonView.FadeContentWhenDisabled
     }, options );
 
-    // Tandem.indicateUninstrumentedCode();  // see https://github.com/phetsims/phet-io/issues/986
-    // Buttons are already instrumented, I don't know whether the button views also need to be.  Maybe not?
-
     Node.call( this );
     var content = options.content; // convenience variable
     var upCenter = new Vector2( options.xContentOffset, options.yContentOffset );

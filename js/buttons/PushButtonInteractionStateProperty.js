@@ -17,9 +17,6 @@ define( function( require ) {
    * @constructor
    */
   function PushButtonInteractionStateProperty( buttonModel, options ) {
-    // Tandem.indicateUninstrumentedCode();  // see https://github.com/phetsims/phet-io/issues/986
-    // Buttons are already instrumented, I don't know whether the button models also need to be.  Maybe not?  But
-    // if we want to see in the data stream when the user mouses over a button, this would be valuable
 
     DerivedProperty.call(
       this,
