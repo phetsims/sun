@@ -30,6 +30,7 @@ define( function( require ) {
 
     options = _.extend( {
       tandem: Tandem.tandemRequired(),
+      phetioType: TPushButton,
 
       // a11y
       tagName: 'input',
@@ -61,14 +62,17 @@ define( function( require ) {
       }
     } );
 
+    this.mutate( {
+      tandem: tandem,
+      phetioType: options.phetioType
+    } );
+
     this.disposeRoundPushButton = function() {
       tandem.removeInstance( self );
       self.removeAccessibleInputListener( accessibleClickListener );
       self.buttonModel.dispose();
     };
 
-    // Tandem support
-    tandem.addInstance( this, TPushButton );
   }
 
   sun.register( 'RoundPushButton', RoundPushButton );
