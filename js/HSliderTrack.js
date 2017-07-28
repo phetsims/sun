@@ -134,11 +134,13 @@ define( function( require ) {
     // @private Called by dispose
     this.disposeHSliderTrack = function() {
       self.enabledProperty.unlink( enabledObserver );
-      options.tandem.removeInstance( self );
       trackInputListener.dispose();
     };
 
-    options.tandem.addInstance( this, THSliderTrack );
+    this.mutate( {
+      phetioType: THSliderTrack,
+      tandem: options.tandem
+    } );
   }
 
   sun.register( 'HSliderTrack', HSliderTrack );
