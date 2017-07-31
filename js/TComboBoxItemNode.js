@@ -28,6 +28,8 @@ define( function( require ) {
     assertInstanceOf( comboBoxItemNode, phet.sun.ComboBox.ItemNode );
     TNode.call( this, comboBoxItemNode, phetioID );
 
+    assert && assert( comboBoxItemNode.phetioValueType, 'Each item node must have a phetioValueType.' );
+
     toEventOnEmit( comboBoxItemNode.startedCallbacksForItemFiredEmitter, comboBoxItemNode.endedCallbacksForItemFiredEmitter, 'user', phetioID, this.constructor, 'fired', function( selection ) {
       return { value: comboBoxItemNode.phetioValueType.toStateObject( selection ) };
     } );
