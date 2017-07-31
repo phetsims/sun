@@ -80,7 +80,7 @@ define( function( require ) {
 
       // tandem
       tandem: Tandem.tandemRequired(),
-      phetioType: TComboBox( type )
+      phetioType: TComboBox
     }, options );
 
     // validate option values
@@ -455,16 +455,18 @@ define( function( require ) {
 
     options = _.extend( {
       tandem: Tandem.tandemRequired(),
-      phetioValueType: TComboBoxItemNode( options.phetioValueType ),
+      phetioType: TComboBoxItemNode,
       children: [ this.itemWrapper ]
     }, options );
 
-    Rectangle.call( this, 0, 0, width, height, options );
 
     this.item = item;
+    this.phetioValueType = options.phetioValueType;
 
     this.startedCallbacksForItemFiredEmitter = new Emitter();
     this.endedCallbacksForItemFiredEmitter = new Emitter();
+
+    Rectangle.call( this, 0, 0, width, height, options );
   }
 
   sun.register( 'ComboBox.ItemNode', ComboBoxItemNode );

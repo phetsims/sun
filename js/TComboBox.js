@@ -19,38 +19,37 @@ define( function( require ) {
 
   /**
    * Wrapper type for phet/sun's ComboBox class.
-   * @param {function} phetioValueType - phet-io type wrapper like TString, TNumber, etc. If loaded by phet (not phet-io)
-   *                                    it will be the function returned by the 'ifphetio!' plugin.
+   * @param comboBox
+   * @param phetioID
    * @constructor
    */
-  function TComboBox( phetioValueType ) {
+  function TComboBox( comboBox, phetioID ) {
 
-    var TComboBoxImpl = function TComboBoxImpl( comboBox, phetioID ) {
-      assert && assert( !!phetioValueType, 'phetioValueType should be defined' );
-      assertInstanceOf( comboBox, phet.sun.ComboBox );
-      TNode.call( this, comboBox, phetioID );
+    // assert && assert( !!phetioValueType, 'phetioValueType should be defined' );
+    assertInstanceOf( comboBox, phet.sun.ComboBox );
+    TNode.call( this, comboBox, phetioID );
 
-      toEventOnEmit(
-        comboBox.startedCallbacksForComboBoxDismissedEmitter,
-        comboBox.endedCallbacksForComboBoxDismissedEmitter,
-        'user',
-        phetioID,
-        this.constructor,
-        'popupHidden' );
+    toEventOnEmit(
+      comboBox.startedCallbacksForComboBoxDismissedEmitter,
+      comboBox.endedCallbacksForComboBoxDismissedEmitter,
+      'user',
+      phetioID,
+      this.constructor,
+      'popupHidden' );
 
-      toEventOnEmit(
-        comboBox.startedCallbacksForComboBoxPopupShownEmitter,
-        comboBox.endedCallbacksForComboBoxPopupShownEmitter,
-        'user',
-        phetioID,
-        this.constructor,
-        'popupShown' );
-    };
-    return phetioInherit( TNode, 'TComboBox', TComboBoxImpl, {}, {
-      documentation: 'A traditional combo box',
-      events: [ 'fired', 'popupShown', 'popupHidden' ]
-    } );
+    toEventOnEmit(
+      comboBox.startedCallbacksForComboBoxPopupShownEmitter,
+      comboBox.endedCallbacksForComboBoxPopupShownEmitter,
+      'user',
+      phetioID,
+      this.constructor,
+      'popupShown' );
   }
+
+  phetioInherit( TNode, 'TComboBox', TComboBox, {}, {
+    documentation: 'A traditional combo box',
+    events: [ 'fired', 'popupShown', 'popupHidden' ]
+  } );
 
   sun.register( 'TComboBox', TComboBox );
 

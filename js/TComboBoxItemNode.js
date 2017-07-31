@@ -11,7 +11,6 @@ define( function( require ) {
   // modules
   var TNode = require( 'SCENERY/nodes/TNode' );
   var sun = require( 'SUN/sun' );
-  var Tandem = require( 'TANDEM/Tandem' );
 
   // phet-io modules
   var assertInstanceOf = require( 'ifphetio!PHET_IO/assertions/assertInstanceOf' );
@@ -20,34 +19,24 @@ define( function( require ) {
 
   /**
    * Wrapper type for phet/sun's ComboBox class.
-   * @param {function} phetioValueType - phet-io type wrapper like TString, TNumber, etc. If loaded by phet (not phet-io)
-   *                                    it will be the function returned by the 'ifphetio!' plugin.
+   * @param comboBoxItemNode
+   * @param phetioID
    * @constructor
    */
-  function TComboBoxItemNode( phetioValueType ) {
+  function TComboBoxItemNode( comboBoxItemNode, phetioID ) {
 
-    /**
-     *
-     * @param comboBoxItemNode
-     * @param phetioID
-     * @constructor
-     */
-    var TComboBoxItemNodeImpl = function TComboBoxItemNodeImpl( comboBoxItemNode, phetioID ) {
-      if ( Tandem.validationEnabled() ) {
-        assert && assert( !!phetioValueType, 'phetioValueType should be defined' );
-      }
-      assertInstanceOf( comboBoxItemNode, phet.sun.ComboBox.ItemNode );
-      TNode.call( this, comboBoxItemNode, phetioID );
+    assertInstanceOf( comboBoxItemNode, phet.sun.ComboBox.ItemNode );
+    TNode.call( this, comboBoxItemNode, phetioID );
 
-      toEventOnEmit( comboBoxItemNode.startedCallbacksForItemFiredEmitter, comboBoxItemNode.endedCallbacksForItemFiredEmitter, 'user', phetioID, this.constructor, 'fired', function( selection ) {
-        return { value: phetioValueType.toStateObject( selection ) };
-      } );
-    };
-    return phetioInherit( TNode, 'TComboBoxItemNode', TComboBoxItemNodeImpl, {}, {
-      documentation: 'A traditional item node for a combo box',
-      events: [ 'fired' ]
+    toEventOnEmit( comboBoxItemNode.startedCallbacksForItemFiredEmitter, comboBoxItemNode.endedCallbacksForItemFiredEmitter, 'user', phetioID, this.constructor, 'fired', function( selection ) {
+      return { value: comboBoxItemNode.phetioValueType.toStateObject( selection ) };
     } );
   }
+
+  phetioInherit( TNode, 'TComboBoxItemNode', TComboBoxItemNode, {}, {
+    documentation: 'A traditional item node for a combo box',
+    events: [ 'fired' ]
+  } );
 
   sun.register( 'TComboBoxItemNode', TComboBoxItemNode );
 
