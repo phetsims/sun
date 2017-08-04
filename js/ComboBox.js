@@ -27,9 +27,6 @@ define( function( require ) {
   var TComboBox = require( 'SUN/TComboBox' );
   var TComboBoxItemNode = require( 'SUN/TComboBoxItemNode' );
 
-  // phet-io modules
-  var TObject = require( 'ifphetio!PHET_IO/types/TObject' );
-
   /**
    * @param {*[]} items - see ComboBox.createItem
    * @param {Property} property
@@ -40,13 +37,6 @@ define( function( require ) {
   function ComboBox( items, property, listParent, options ) {
 
     var self = this;
-
-    // Register for tandem if possible.
-    // Allow running with phetioValidateTandems=false though
-    var type = property.phetioValueType;
-    if ( phet.phetio && !phet.phetio.queryParameters.phetioValidateTandems && !type ) {
-      type = TObject;
-    }
 
     options = _.extend( {
 
