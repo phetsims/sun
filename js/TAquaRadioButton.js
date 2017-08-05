@@ -20,38 +20,36 @@ define( function( require ) {
 
   /**
    * Wrapper type for phet/sun's AquaRadioButton class.
-
-   * @param {function} phetioValueType - phet-io type wrapper like TString, TNumber, etc. If loaded by phet (not phet-io)
-   *                                    it will be the function returned by the 'ifphetio!' plugin.
+   * @param {AquaRadioButton} radioButton
+   * @param {string} phetioID
    * @constructor
    */
-  function TAquaRadioButton( phetioValueType ) {
+  function TAquaRadioButton( radioButton, phetioID ) {
 
-    var TAquaRadioButtonImpl = function TAquaRadioButtonImpl( radioButton, phetioID ) {
+    if ( Tandem.validationEnabled() ) {
+      assert && assert( !!radioButton.phetioValueType, 'phetioValueType must be defined' );
+    }
 
-      if ( Tandem.validationEnabled() ) {
-        assert && assert( !!phetioValueType, 'phetioValueType must be defined' );
-      }
-
-      assertInstanceOf( radioButton, phet.sun.AquaRadioButton );
-      TRadioButton( phetioValueType ).call( this, radioButton, phetioID );
-    };
-    return phetioInherit( TRadioButton( phetioValueType ), 'TAquaRadioButton', TAquaRadioButtonImpl, {
-      setCircleButtonVisible: {
-        returnType: TVoid,
-        parameterTypes: [ TBoolean ],
-        implementation: function( visible ) {
-          this.instance.setCircleButtonVisible( visible );
-        },
-        documentation: 'Sets whether the circular part of the radio button will be displayed.'
-      }
-    }, {
-      documentation: 'A radio button which looks like the Mac "Aqua" radio buttons',
-      events: TRadioButton( phetioValueType ).events
-    } );
+    assertInstanceOf( radioButton, phet.sun.AquaRadioButton );
+    TRadioButton.call( this, radioButton, phetioID );
   }
+
+  phetioInherit( TRadioButton, 'TAquaRadioButton', TAquaRadioButton, {
+    setCircleButtonVisible: {
+      returnType: TVoid,
+      parameterTypes: [ TBoolean ],
+      implementation: function( visible ) {
+        this.instance.setCircleButtonVisible( visible );
+      },
+      documentation: 'Sets whether the circular part of the radio button will be displayed.'
+    }
+  }, {
+    documentation: 'A radio button which looks like the Mac "Aqua" radio buttons',
+    events: [ 'fired' ] // TODO: should be fixed in https://github.com/phetsims/phet-io/issues/1069
+  } );
 
   sun.register( 'TAquaRadioButton', TAquaRadioButton );
 
   return TAquaRadioButton;
-} );
+} )
+;
