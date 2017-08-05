@@ -16,7 +16,6 @@ define( function( require ) {
   var inherit = require( 'PHET_CORE/inherit' );
   var sun = require( 'SUN/sun' );
   var Emitter = require( 'AXON/Emitter' );
-  var TandemEmitter = require( 'TANDEM/axon/TandemEmitter' );
   var Tandem = require( 'TANDEM/Tandem' );
 
   /**
@@ -42,12 +41,12 @@ define( function( require ) {
     ButtonModel.call( this, options );
 
     if ( options.tandem.supplied ) {
-      this.startedCallbacksForFiredEmitter = new TandemEmitter( {
+      this.startedCallbacksForFiredEmitter = new Emitter( {
         tandem: options.tandem.createTandem( 'startedFiredEmitter' ),
         phetioArgumentTypes: [],
         phetioEmitData: false
       } );
-      this.endedCallbacksForFiredEmitter = new TandemEmitter( {
+      this.endedCallbacksForFiredEmitter = new Emitter( {
         tandem: options.tandem.createTandem( 'endedFiredEmitter' ),
         phetioArgumentTypes: [],
         phetioEmitData: false
