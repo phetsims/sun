@@ -16,41 +16,36 @@ define( function( require ) {
   var toEventOnEmit = require( 'ifphetio!PHET_IO/events/toEventOnEmit' );
   var Tandem = require( 'TANDEM/Tandem' );
 
-
   /**
    * Wrapper type for phet/sun's RadioButton class.
-   * @param {function} phetioValueType - If loaded by phet (not phet-io) it will be the function returned by the
-   *                                    'ifphetio!' plugin.
-   * @returns {TRadioButtonGroupMemberImpl}
+   * @param {RadioButtonGroupMember} radioButton
+   * @param {String} phetioID
    * @constructor
    */
-  function TRadioButtonGroupMember( phetioValueType ) {
+  function TRadioButtonGroupMember( radioButton, phetioID ) {
+    if ( Tandem.validationEnabled() ) {
+      assert && assert( !!radioButton.phetioValueType, 'phetioValueType must be defined' );
+    }
+    assertInstanceOf( radioButton, phet.sun.RadioButtonGroupMember );
+    TNode.call( this, radioButton, phetioID );
 
-    var TRadioButtonGroupMemberImpl = function TRadioButtonGroupMemberImpl( radioButton, phetioID ) {
-      if ( Tandem.validationEnabled() ) {
-        assert && assert( !!phetioValueType, 'phetioValueType must be defined' );
+    toEventOnEmit(
+      radioButton.radioButtonGroupMemberModel.startedCallbacksForFiredEmitter,
+      radioButton.radioButtonGroupMemberModel.endedCallbacksForFiredEmitter,
+      'user',
+      phetioID,
+      this.constructor,
+      'fired',
+      function( value ) {
+        return { value: radioButton.phetioValueType.toStateObject( value ) };
       }
-      assertInstanceOf( radioButton, phet.sun.RadioButtonGroupMember );
-      TNode.call( this, radioButton, phetioID );
-
-      toEventOnEmit(
-        radioButton.radioButtonGroupMemberModel.startedCallbacksForFiredEmitter,
-        radioButton.radioButtonGroupMemberModel.endedCallbacksForFiredEmitter,
-        'user',
-        phetioID,
-        this.constructor,
-        'fired',
-        function( value ) {
-          return { value: phetioValueType.toStateObject( value ) };
-        }
-      );
-    };
-    return phetioInherit( TNode, 'TRadioButtonGroupMember', TRadioButtonGroupMemberImpl, {}, {
-      documentation: 'A traditional radio button',
-      events: [ 'fired' ]
-    } );
+    );
   }
 
+  phetioInherit( TNode, 'TRadioButtonGroupMember', TRadioButtonGroupMember, {}, {
+    documentation: 'A traditional radio button',
+    events: [ 'fired' ]
+  } );
 
   sun.register( 'TRadioButtonGroupMember', TRadioButtonGroupMember );
 

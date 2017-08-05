@@ -18,38 +18,35 @@ define( function( require ) {
 
   /**
    * Wrapper type for phet/sun's RadioButton class.
-   * @param {function} phetioValueType - phet-io type wrapper like TString, TNumber, etc. If loaded by phet (not phet-io)
-   *                                    it will be the function returned by the 'ifphetio!' plugin.
+   * @param {RadioButton} radioButton
+   * @param {String} phetioID
    * @constructor
    */
-  function TRadioButton( phetioValueType ) {
+  function TRadioButton( radioButton, phetioID ) {
 
-    var TRadioButtonImpl = function TRadioButtonImpl( radioButton, phetioID ) {
+    if ( Tandem.validationEnabled() ) {
+      assert && assert( !!radioButton.phetioValueType, 'phetioValueType must be defined' );
+    }
+    assertInstanceOf( radioButton, phet.sun.RadioButton );
+    TNode.call( this, radioButton, phetioID );
 
-      if ( Tandem.validationEnabled() ) {
-        assert && assert( !!phetioValueType, 'phetioValueType must be defined' );
-      }
-      assertInstanceOf( radioButton, phet.sun.RadioButton );
-      TNode.call( this, radioButton, phetioID );
-
-      var emitter = radioButton.radioButtonGroupMemberModel || radioButton; // Handle RadioButtonGroupMemberModel or AquaRadioButton
-      toEventOnEmit(
-        emitter.startedCallbacksForFiredEmitter,
-        emitter.endedCallbacksForFiredEmitter,
-        'user',
-        phetioID,
-        this.constructor,
-        'fired',
-        function( value ) {
-          return { value: phetioValueType.toStateObject( value ) };
-        } );
-    };
-    return phetioInherit( TNode, 'TRadioButton', TRadioButtonImpl, {}, {
-      documentation: 'A traditional radio button',
-      events: [ 'fired' ]
-    } );
+    var emittee = radioButton.radioButtonGroupMemberModel || radioButton; // Handle RadioButtonGroupMemberModel or AquaRadioButton
+    toEventOnEmit(
+      emittee.startedCallbacksForFiredEmitter,
+      emittee.endedCallbacksForFiredEmitter,
+      'user',
+      phetioID,
+      this.constructor,
+      'fired',
+      function( value ) {
+        return { value: radioButton.phetioValueType.toStateObject( value ) };
+      } );
   }
 
+  phetioInherit( TNode, 'TRadioButton', TRadioButton, {}, {
+    documentation: 'A traditional radio button',
+    events: [ 'fired' ]
+  } );
 
   sun.register( 'TRadioButton', TRadioButton );
 

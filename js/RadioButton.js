@@ -31,6 +31,7 @@ define( function( require ) {
     options = _.extend( {
       cursor: 'pointer',
       tandem: Tandem.tandemRequired(),
+      phetioType: TRadioButton,
       enabled: true,
 
       // a11y
@@ -46,7 +47,11 @@ define( function( require ) {
     var self = this;
     Node.call( this );
 
-    this._enabled = options.enabled; // @private
+    // @private
+    this._enabled = options.enabled;
+
+    // @public (phet-io)
+    this.phetioValueType = property.phetioValueType;
 
     // Emitters for the PhET-iO data stream
     this.startedCallbacksForFiredEmitter = new Emitter();
@@ -85,8 +90,6 @@ define( function( require ) {
       }
     } );
 
-    this.mutate( options );
-
     // a11y - Specify the default value for assistive technology. This attribute is needed in addition to 
     // the 'checked' property to mark this element as the default selection since 'checked' may be set before
     // we are finished adding RadioButtons to the containing group, and the browser will remove the boolean
@@ -104,14 +107,13 @@ define( function( require ) {
 
     // @private
     this.disposeRadioButton = function() {
-      options.tandem.removeInstance( self );
       self.removeInputListener( buttonListener );
       self.removeAccessibleInputListener( changeListener );
       property.unlink( accessibleCheckedListener );
       property.unlink( syncWithModel );
     };
 
-    options.tandem.addInstance( this, TRadioButton( property.phetioValueType ) );
+    this.mutate( options );
   }
 
   sun.register( 'RadioButton', RadioButton );
