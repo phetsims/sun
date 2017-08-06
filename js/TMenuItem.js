@@ -13,7 +13,7 @@ define( function( require ) {
   var phetioInherit = require( 'ifphetio!PHET_IO/phetioInherit' );
   var sun = require( 'SUN/sun' );
   var TNode = require( 'SCENERY/nodes/TNode' );
-  var toEventOnEmit = require( 'ifphetio!PHET_IO/events/toEventOnEmit' );
+  var toEventOnEmit = require( 'ifphetio!PHET_IO/toEventOnEmit' );
 
 
   /**

@@ -13,7 +13,7 @@ define( function( require ) {
   var sun = require( 'SUN/sun' );
   var phetioInherit = require( 'ifphetio!PHET_IO/phetioInherit' );
   var TNode = require( 'SCENERY/nodes/TNode' );
-  var toEventOnEmit = require( 'ifphetio!PHET_IO/events/toEventOnEmit' );
+  var toEventOnEmit = require( 'ifphetio!PHET_IO/toEventOnEmit' );
 
   /**
    * Wrapper type for phet/sun's OnOffSwitch class.
