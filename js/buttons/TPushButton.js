@@ -40,7 +40,6 @@ define( function( require ) {
       this.constructor,
       'fired'
     );
-
   }
 
   phetioInherit( TNode, 'TPushButton', TPushButton, {
