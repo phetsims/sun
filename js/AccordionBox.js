@@ -314,7 +314,6 @@ define( function( require ) {
       } );
     }
 
-    // Reverted some of sun#280 changes, doing this BEFORE layout now, since it can happen multiple times
     this.expandedBox.addChild( this._contentNode );
 
     this.layout();
