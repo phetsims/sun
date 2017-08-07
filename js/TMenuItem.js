@@ -13,7 +13,7 @@ define( function( require ) {
   var phetioInherit = require( 'ifphetio!PHET_IO/phetioInherit' );
   var sun = require( 'SUN/sun' );
   var TNode = require( 'SCENERY/nodes/TNode' );
-  var toEventOnEmit = require( 'ifphetio!PHET_IO/events/toEventOnEmit' );
+  var toEventOnEmit = require( 'ifphetio!PHET_IO/toEventOnEmit' );
 
 
   /**
@@ -23,7 +23,7 @@ define( function( require ) {
    * @constructor
    */
   function TMenuItem( menuItem, phetioID ) {
-    assertInstanceOf( menuItem, phet.scenery.Node );
+    assertInstanceOf( menuItem, phet.sun.MenuItem );
     TNode.call( this, menuItem, phetioID );
 
     // MenuItem from Sun, it is defined in PhetMenu.js and does not have its own type
