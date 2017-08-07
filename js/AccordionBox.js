@@ -106,8 +106,6 @@ define( function( require ) {
     assert && assert( options.titleAlignY === 'top' || options.titleAlignY === 'center' );
 
     // @private
-    this._titleBarFill = options.titleBarFill;
-    this._titleBarStroke = options.titleBarStroke;
     this._contentAlign = options.contentAlign;
     this._contentNode = contentNode;
     this._cornerRadius = options.cornerRadius;
