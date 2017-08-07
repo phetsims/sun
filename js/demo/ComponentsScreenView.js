@@ -12,6 +12,7 @@ define( function( require ) {
   'use strict';
 
   // modules
+  var AccordionBox = require( 'SUN/AccordionBox' );
   var Carousel = require( 'SUN/Carousel' );
   var CheckBox = require( 'SUN/CheckBox' );
   var Circle = require( 'SCENERY/nodes/Circle' );
@@ -58,7 +59,8 @@ define( function( require ) {
       { label: 'OnOffSwitch', getNode: demoOnOffSwitch },
       { label: 'PageControl', getNode: demoPageControl },
       { label: 'NumberSpinner', getNode: demoNumberSpinner },
-      { label: 'AlignGroup', getNode: demoAlignGroup }
+      { label: 'AlignGroup', getNode: demoAlignGroup },
+      { label: 'AccordionBox', getNode: demoAccordionBox }
     ], {
       selectedDemoLabel: sunQueryParameters.component
     } );
@@ -400,6 +402,32 @@ define( function( require ) {
       children: [ iconRow, panelRow ],
       center: layoutBounds.center
     } );
+  };
+
+  var demoAccordionBox = function( layoutBounds ) {
+    var randomRect = new Rectangle( 0, 0, 100, 50, { fill: 'red' } );
+
+    var resizeButton = new RectangularPushButton( {
+      content: new Text( 'Resize', { font: new PhetFont( 20 ) } ),
+      listener: function() {
+        randomRect.rectWidth = 50 + phet.joist.random.nextDouble() * 150;
+        randomRect.rectHeight = 50 + phet.joist.random.nextDouble() * 150;
+        box.center = layoutBounds.center;
+      }
+    } );
+
+    var box = new AccordionBox( new VBox( {
+      spacing: 10,
+      children: [
+        resizeButton,
+        randomRect
+      ]
+    } ), {
+      resize: true,
+      center: layoutBounds.center
+    } );
+
+    return box;
   };
 
   return inherit( DemosScreenView, ComponentsScreenView );
