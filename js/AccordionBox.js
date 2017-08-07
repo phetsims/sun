@@ -141,7 +141,7 @@ define( function( require ) {
     if ( !this.titleNode ) {
       this.titleNode = new Text( '', { tandem: options.tandem.createTandem( 'titleNode' ) } );
       this.disposalActions.push( function() {
-        this.titleNode.dispose();
+        self.titleNode.dispose();
       } );
     }
 
@@ -153,7 +153,7 @@ define( function( require ) {
         tandem: options.tandem.createTandem( 'expandedProperty' )
       } );
       this.disposalActions.push( function() {
-        this.expandedProperty.dispose();
+        self.expandedProperty.dispose();
       } );
     }
 
@@ -166,7 +166,7 @@ define( function( require ) {
       tandem: options.tandem.createTandem( 'expandCollapseButton' )
     } );
     this.disposalActions.push( function() {
-      this.expandCollapseButton.dispose();
+      self.expandCollapseButton.dispose();
     } );
     this.expandCollapseButton.touchArea = this.expandCollapseButton.localBounds.dilatedXY(
       options.buttonTouchAreaXDilation,
@@ -187,7 +187,7 @@ define( function( require ) {
       tagName: 'div' // a11y
     }, boxOptions ) );
     this.disposalActions.push( function() {
-      this.expandedBox.dispose();
+      self.expandedBox.dispose();
     } );
     this.addChild( this.expandedBox );
 
@@ -197,7 +197,7 @@ define( function( require ) {
       tandem: options.tandem.createTandem( 'collapsedBox' )
     }, boxOptions ) );
     this.disposalActions.push( function() {
-      this.collapsedBox.dispose();
+      self.collapsedBox.dispose();
     } );
     this.addChild( this.collapsedBox );
 
@@ -215,7 +215,7 @@ define( function( require ) {
       labelTagName: 'p'
     } );
     this.disposalActions.push( function() {
-      this.expandedTitleBar.dispose();
+      self.expandedTitleBar.dispose();
     } );
     this.expandedBox.addChild( this.expandedTitleBar );
 
@@ -233,7 +233,7 @@ define( function( require ) {
       labelTagName: 'p'
     } );
     this.disposalActions.push( function() {
-      this.collapsedTitleBar.dispose();
+      self.collapsedTitleBar.dispose();
     } );
     this.collapsedBox.addChild( this.collapsedTitleBar );
 
@@ -299,7 +299,7 @@ define( function( require ) {
         tandem: options.tandem.createTandem( 'expandedBoxOutline' )
       }, outlineOptions ) );
       this.disposalActions.push( function() {
-        this.expandedBoxOutline.dispose();
+        self.expandedBoxOutline.dispose();
       } );
       this.expandedBox.addChild( this.expandedBoxOutline );
 
@@ -310,7 +310,7 @@ define( function( require ) {
       }, outlineOptions ) );
       this.collapsedBox.addChild( this.collapsedBoxOutline );
       this.disposalActions.push( function() {
-        this.collapsedBoxOutline.dispose();
+        self.collapsedBoxOutline.dispose();
       } );
     }
 
@@ -326,7 +326,7 @@ define( function( require ) {
       this.titleNode.on( 'bounds', layoutListener );
       this.disposalActions.push( function() {
         contentNode.off( 'bounds', layoutListener );
-        this.titleNode.off( 'bounds', layoutListener );
+        self.titleNode.off( 'bounds', layoutListener );
       } );
     }
 
@@ -343,7 +343,7 @@ define( function( require ) {
     };
     this.expandedProperty.link( expandedPropertyObserver );
     this.disposalActions.push( function() {
-      this.expandedProperty.unlink( expandedPropertyObserver );
+      self.expandedProperty.unlink( expandedPropertyObserver );
     } );
 
 
