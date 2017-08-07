@@ -20,6 +20,7 @@ define( function( require ) {
   var Shape = require( 'KITE/Shape' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var FocusOverlay = require( 'SCENERY/overlays/FocusOverlay' );
+  var StringUtils = require( 'PHETCOMMON/util/StringUtils' );
   var sun = require( 'SUN/sun' );
   var Tandem = require( 'TANDEM/Tandem' );
   var TandemSimpleDragHandler = require( 'TANDEM/scenery/input/TandemSimpleDragHandler' );
@@ -90,6 +91,8 @@ define( function( require ) {
       // a11y
       tagName: 'input',
       inputType: 'range',
+      accessibleValuePattern: '{{value}}', // {string} if you want units or additional content, add to pattern
+      accessibleDecimalPlaces: 0, // number of decimal places for the value read by assistive technology
       keyboardStep: ( range.max - range.min ) / 20,
       shiftKeyboardStep: ( range.max - range.min ) / 100,
       pageKeyboardStep: ( range.max - range.min ) / 10,
@@ -355,10 +358,17 @@ define( function( require ) {
     } );
 
 
-    // a11y - when the property changes, be sure to update the accessible input value for assistive
-    // technology
+    // a11y - when the property changes, be sure to update the accessible input value and
+    // aria-valuetext for assistive, which is read by assistive technology when the value changes
     var accessiblePropertyListener = function( value ) {
       self.inputValue = value;
+
+      // format the value text for reading
+      var formattedValue = Util.toFixed( value, options.accessibleDecimalPlaces );
+      var valueText = StringUtils.fillIn( options.accessibleValuePattern, {
+        value: formattedValue
+      } );
+      self.setAccessibleAttribute( 'aria-valuetext', valueText );
     };
 
     valueProperty.link( accessiblePropertyListener );
