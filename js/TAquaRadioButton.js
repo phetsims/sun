@@ -44,8 +44,7 @@ define( function( require ) {
       documentation: 'Sets whether the circular part of the radio button will be displayed.'
     }
   }, {
-    documentation: 'A radio button which looks like the Mac "Aqua" radio buttons',
-    events: [ 'fired' ] // TODO: should be fixed in https://github.com/phetsims/phet-io/issues/1069
+    documentation: 'A radio button which looks like the Mac "Aqua" radio buttons'
   } );
 
   sun.register( 'TAquaRadioButton', TAquaRadioButton );
