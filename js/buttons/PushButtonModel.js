@@ -40,26 +40,15 @@ define( function( require ) {
 
     ButtonModel.call( this, options );
 
-    if ( options.tandem.supplied ) {
-      this.startedCallbacksForFiredEmitter = new Emitter( {
-        tandem: options.tandem.createTandem( 'startedFiredEmitter' ),
-        phetioArgumentTypes: [],
-        phetioEmitData: false
-      } );
-      this.endedCallbacksForFiredEmitter = new Emitter( {
-        tandem: options.tandem.createTandem( 'endedFiredEmitter' ),
-        phetioArgumentTypes: [],
-        phetioEmitData: false
-      } );
-    }
-    else {
-
-      // @public (phet-io) support for the phet-io data stream
-      this.startedCallbacksForFiredEmitter = new Emitter();
-
-      // @public (phet-io) support for the phet-io data stream
-      this.endedCallbacksForFiredEmitter = new Emitter();
-    }
+    // @public (phet-io) support for the phet-io data stream
+    this.startedCallbacksForFiredEmitter = new Emitter( {
+      tandem: options.tandem.createTandem( 'startedFiredEmitter' ),
+      phetioEmitData: false
+    } );
+    this.endedCallbacksForFiredEmitter = new Emitter( {
+      tandem: options.tandem.createTandem( 'endedFiredEmitter' ),
+      phetioEmitData: false
+    } );
 
     this.listeners = []; // @private
     if ( options.listener !== null ) {
