@@ -33,8 +33,8 @@ define( function( require ) {
     ButtonModel.call( this );
 
     // phet-io support
-    this.startedCallbacksForToggledEmitter = new Emitter();
-    this.endedCallbacksForToggledEmitter = new Emitter();
+    this.startedCallbacksForToggledEmitter = new Emitter( { indicateCallbacks: false } );
+    this.endedCallbacksForToggledEmitter = new Emitter( { indicateCallbacks: false } );
 
     // Behaves like a push button (with fireOnDown:false), but toggles its state when the button is released.
     var downListener = function( down ) {

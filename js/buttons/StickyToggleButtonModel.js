@@ -35,8 +35,8 @@ define( function( require ) {
     ButtonModel.call( this );
 
     // phet-io support
-    this.startedCallbacksForToggledEmitter = new Emitter();
-    this.endedCallbacksForToggledEmitter = new Emitter();
+    this.startedCallbacksForToggledEmitter = new Emitter( { indicateCallbacks: false } );
+    this.endedCallbacksForToggledEmitter = new Emitter( { indicateCallbacks: false } );
 
     // When the user releases the toggle button, it should only fire an event if it is not during the same action in
     // which they pressed the button.  Track the state to see if they have already pushed the button.

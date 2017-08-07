@@ -83,8 +83,8 @@ define( function( require ) {
     textNode.centerY = highlight.centerY;
 
     // @public (phet-io)
-    this.startedCallbacksForFiredEmitter = new Emitter();
-    this.endedCallbacksForFiredEmitter = new Emitter();
+    this.startedCallbacksForFiredEmitter = new Emitter( { indicateCallbacks: false } );
+    this.endedCallbacksForFiredEmitter = new Emitter( { indicateCallbacks: false } );
 
     this.addInputListener( {
       enter: function() { highlight.fill = HIGHLIGHT_COLOR; },

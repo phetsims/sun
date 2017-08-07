@@ -78,8 +78,8 @@ define( function( require ) {
     this._enabled = true; // @private
 
     // Emitters for the PhET-iO data stream
-    this.startedCallbacksForToggledEmitter = new Emitter();
-    this.endedCallbacksForToggledEmitter = new Emitter();
+    this.startedCallbacksForToggledEmitter = new Emitter( { indicateCallbacks: false } );
+    this.endedCallbacksForToggledEmitter = new Emitter( { indicateCallbacks: false } );
 
     // @private - Create the background.  Until we are creating our own shapes, just put a rectangle behind the font
     // awesome check box icons.

@@ -42,10 +42,12 @@ define( function( require ) {
 
     // @public (phet-io) support for the phet-io data stream
     this.startedCallbacksForFiredEmitter = new Emitter( {
+      indicateCallbacks: false,
       tandem: options.tandem.createTandem( 'startedFiredEmitter' ),
       phetioEmitData: false
     } );
     this.endedCallbacksForFiredEmitter = new Emitter( {
+      indicateCallbacks: false,
       tandem: options.tandem.createTandem( 'endedFiredEmitter' ),
       phetioEmitData: false
     } );

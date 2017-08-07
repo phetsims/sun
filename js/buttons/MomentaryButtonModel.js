@@ -26,12 +26,12 @@ define( function( require ) {
     ButtonModel.call( self );
 
     // phet-io support
-    this.startedCallbacksForPressedEmitter = new Emitter();
-    this.endedCallbacksForPressedEmitter = new Emitter();
-    this.startedCallbacksForReleasedEmitter = new Emitter();
-    this.endedCallbacksForReleasedEmitter = new Emitter();
-    this.startedCallbacksForReleasedByDisableEmitter = new Emitter();
-    this.endedCallbacksForReleasedByDisableEmitter = new Emitter();
+    this.startedCallbacksForPressedEmitter = new Emitter( { indicateCallbacks: false } );
+    this.endedCallbacksForPressedEmitter = new Emitter( { indicateCallbacks: false } );
+    this.startedCallbacksForReleasedEmitter = new Emitter( { indicateCallbacks: false } );
+    this.endedCallbacksForReleasedEmitter = new Emitter( { indicateCallbacks: false } );
+    this.startedCallbacksForReleasedByDisableEmitter = new Emitter( { indicateCallbacks: false } );
+    this.endedCallbacksForReleasedByDisableEmitter = new Emitter( { indicateCallbacks: false } );
 
     // sync with the property, do this before wiring up to supertype properties
     var onObserver = function( value ) {

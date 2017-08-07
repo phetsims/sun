@@ -54,8 +54,8 @@ define( function( require ) {
     this.phetioValueType = property.phetioValueType;
 
     // Emitters for the PhET-iO data stream
-    this.startedCallbacksForFiredEmitter = new Emitter();
-    this.endedCallbacksForFiredEmitter = new Emitter();
+    this.startedCallbacksForFiredEmitter = new Emitter( { indicateCallbacks: false } );
+    this.endedCallbacksForFiredEmitter = new Emitter( { indicateCallbacks: false } );
 
     //Add an invisible node to make sure the layout for selected vs deselected is the same
     var background = new Rectangle( selectedNode.bounds.union( deselectedNode.bounds ) );

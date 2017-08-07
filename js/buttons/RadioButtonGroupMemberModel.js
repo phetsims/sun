@@ -28,8 +28,8 @@ define( function( require ) {
 
     this.selectedValue = selectedValue;
     this.selectorProperty = selectorProperty;
-    this.startedCallbacksForFiredEmitter = new Emitter();
-    this.endedCallbacksForFiredEmitter = new Emitter();
+    this.startedCallbacksForFiredEmitter = new Emitter( { indicateCallbacks: false } );
+    this.endedCallbacksForFiredEmitter = new Emitter( { indicateCallbacks: false } );
 
     // @public (read only) - fire on up if the button is enabled, public for use in the accessibility tree
     this.fire = function() {

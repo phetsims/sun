@@ -80,10 +80,10 @@ define( function( require ) {
 
     this.enabledProperty = options.enabledProperty; // @public
 
-    this.startedCallbacksForComboBoxDismissedEmitter = new Emitter();
-    this.endedCallbacksForComboBoxDismissedEmitter = new Emitter();
-    this.startedCallbacksForComboBoxPopupShownEmitter = new Emitter();
-    this.endedCallbacksForComboBoxPopupShownEmitter = new Emitter();
+    this.startedCallbacksForComboBoxDismissedEmitter = new Emitter( { indicateCallbacks: false } );
+    this.endedCallbacksForComboBoxDismissedEmitter = new Emitter( { indicateCallbacks: false } );
+    this.startedCallbacksForComboBoxPopupShownEmitter = new Emitter( { indicateCallbacks: false } );
+    this.endedCallbacksForComboBoxPopupShownEmitter = new Emitter( { indicateCallbacks: false } );
 
     // optional label
     if ( options.labelNode !== null ) {
@@ -453,8 +453,8 @@ define( function( require ) {
     this.item = item;
     this.phetioValueType = options.phetioValueType;
 
-    this.startedCallbacksForItemFiredEmitter = new Emitter();
-    this.endedCallbacksForItemFiredEmitter = new Emitter();
+    this.startedCallbacksForItemFiredEmitter = new Emitter( { indicateCallbacks: false } );
+    this.endedCallbacksForItemFiredEmitter = new Emitter( { indicateCallbacks: false } );
 
     Rectangle.call( this, 0, 0, width, height, options );
   }

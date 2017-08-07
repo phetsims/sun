@@ -125,10 +125,10 @@ define( function( require ) {
     this._buttonAlign = options.buttonAlign;
 
     // emitters for the PhET-iO data stream
-    this.startedCallbacksForExpandedTitleBarDownEmitter = new Emitter();
-    this.endedCallbacksForExpandedTitleBarDownEmitter = new Emitter();
-    this.startedCallbacksForCollapsedTitleBarDownEmitter = new Emitter();
-    this.endedCallbacksForCollapsedTitleBarDownEmitter = new Emitter();
+    this.startedCallbacksForExpandedTitleBarDownEmitter = new Emitter( { indicateCallbacks: false } );
+    this.endedCallbacksForExpandedTitleBarDownEmitter = new Emitter( { indicateCallbacks: false } );
+    this.startedCallbacksForCollapsedTitleBarDownEmitter = new Emitter( { indicateCallbacks: false } );
+    this.endedCallbacksForCollapsedTitleBarDownEmitter = new Emitter( { indicateCallbacks: false } );
 
     // @private {Array.<function>} - Actions to take when this AccordionBox is disposed. Will be called with a proper
     //                               'this' reference to the AccordionBox.
