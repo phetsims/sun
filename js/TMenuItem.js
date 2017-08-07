@@ -23,7 +23,7 @@ define( function( require ) {
    * @constructor
    */
   function TMenuItem( menuItem, phetioID ) {
-    assertInstanceOf( menuItem, phet.scenery.Node );
+    assertInstanceOf( menuItem, phet.sun.MenuItem );
     TNode.call( this, menuItem, phetioID );
 
     // MenuItem from Sun, it is defined in PhetMenu.js and does not have its own type
