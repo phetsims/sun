@@ -23,7 +23,7 @@ define( function( require ) {
   var StringUtils = require( 'PHETCOMMON/util/StringUtils' );
   var sun = require( 'SUN/sun' );
   var Tandem = require( 'TANDEM/Tandem' );
-  var TandemSimpleDragHandler = require( 'TANDEM/scenery/input/TandemSimpleDragHandler' );
+  var SimpleDragHandler = require( 'SCENERY/input/SimpleDragHandler' );
   var Input = require( 'SCENERY/input/Input' );
   var Util = require( 'DOT/Util' );
 
@@ -200,7 +200,7 @@ define( function( require ) {
 
     // update value when thumb is dragged
     var clickXOffset = 0; // x-offset between initial click and thumb's origin
-    var thumbInputListener = new TandemSimpleDragHandler( {
+    var thumbInputListener = new SimpleDragHandler( {
 
       tandem: options.tandem.createTandem( 'thumbInputListener' ),
 

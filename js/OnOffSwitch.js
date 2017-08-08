@@ -128,6 +128,7 @@ define( function( require ) {
     this.startedCallbacksForToggled = new Emitter();
     this.endedCallbacksForToggled = new Emitter();
     this.addInputListener( new SimpleDragHandler( {
+      tandem: options.tandem.createTandem( 'simpleDragHandler' ),
 
       // only touch to snag when over the thumb (don't snag on the track itself)
       allowTouchSnag: function( evt ) {
