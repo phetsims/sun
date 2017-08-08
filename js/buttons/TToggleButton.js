@@ -27,12 +27,9 @@ define( function( require ) {
       assert && assert( !!phetioValueType || !validateTandems, 'phetioValueType must be specified' );
       TNode.call( this, toggleButton, phetioID );
       assertInstanceOfTypes( toggleButton, [
-        phet.sun.ToggleButton,
-        phet.sceneryPhet.PlayPauseButton,
-        phet.sun.RoundStickyToggleButton,
         phet.sun.RectangularToggleButton,
-        phet.sun.RoundMomentaryButton,
-        phet.sun.BooleanRoundToggleButton
+        phet.sun.RoundStickyToggleButton,
+        phet.sun.RoundToggleButton
       ] );
 
       var model = toggleButton.toggleButtonModel || toggleButton.buttonModel;  // Handle BooleanRoundStickyToggleButton too
