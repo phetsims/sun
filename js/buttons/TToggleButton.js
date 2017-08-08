@@ -53,4 +53,3 @@ define( function( require ) {
 
   return TToggleButton;
 } );
-
