@@ -34,8 +34,9 @@ define( function( require ) {
       phetioType: TToggleButton( property.phetioValueType )
     }, options );
 
-    var buttonModel = new StickyToggleButtonModel( valueUp, valueDown, property );
-    RoundButtonView.call( this, buttonModel, new StickyToggleButtonInteractionStateProperty( buttonModel ), options );
+    // @public (phet-io)
+    this.toggleButtonModel = new StickyToggleButtonModel( valueUp, valueDown, property );
+    RoundButtonView.call( this, this.toggleButtonModel, new StickyToggleButtonInteractionStateProperty( this.toggleButtonModel ), options );
   }
 
   sun.register( 'RoundStickyToggleButton', RoundStickyToggleButton );
