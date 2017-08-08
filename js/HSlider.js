@@ -91,6 +91,7 @@ define( function( require ) {
       // a11y
       tagName: 'input',
       inputType: 'range',
+      ariaRole: 'slider', // required for NVDA to read the value text correctly, see https://github.com/phetsims/a11y-research/issues/51
       accessibleValuePattern: '{{value}}', // {string} if you want units or additional content, add to pattern
       accessibleDecimalPlaces: 0, // number of decimal places for the value read by assistive technology
       keyboardStep: ( range.max - range.min ) / 20,
