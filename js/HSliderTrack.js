@@ -79,7 +79,6 @@ define( function( require ) {
     this.enabledTrack = new Rectangle( 0, 0, this.size.width, this.size.height, {
       fill: options.fillEnabled,
       stroke: options.stroke,
-      lineWidth: options.lineWidth,
       cornerRadius: options.cornerRadius
     } );
     this.addChild( this.enabledTrack );
