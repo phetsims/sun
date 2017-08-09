@@ -3,9 +3,9 @@
 /**
  * A default slider track, currently intended for use only in HSlider.
  *
- * HSliderTrack is composed of two rectangles, one for the enabled section of the
- * track and one for the disabled section.  The enabled track rectangle sits on top of the disabled track so that
- * the enabled range can be any desired sub range of the full slider range.
+ * HSliderTrack is composed of two rectangles, one for the enabled section of the track and one for the disabled
+ * section.  The enabled track rectangle sits on top of the disabled track so that the enabled range can be any
+ * desired sub range of the full slider range.
  *
  * @author Chris Malley (PixelZoom, Inc.)
  * @author Sam Reid (PhET Interactive Simulations)
@@ -65,7 +65,9 @@ define( function( require ) {
     this.valueToPosition = valueToPosition;
     this.snapValue = options.snapValue;
 
-    // @private
+    // @private - Represents the disabled range of the slider, always visible and always the full range
+    // of the slider so that when the enabled range changes we see the enabled sub-range on top of the
+    // full range of the slider.
     this.disabledTrack = new Rectangle( 0, 0, this.size.width, this.size.height, {
       fill: options.fillDisabled,
       stroke: options.stroke,
@@ -75,7 +77,8 @@ define( function( require ) {
     } );
     this.addChild( this.disabledTrack );
 
-    // @private
+    // @private - Will change size depending on the enabled range of the slider.  On top so that we can see
+    // the enabled sub-range of the slider.
     this.enabledTrack = new Rectangle( 0, 0, this.size.width, this.size.height, {
       fill: options.fillEnabled,
       stroke: options.stroke,
