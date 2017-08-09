@@ -345,6 +345,9 @@ define( function( require ) {
       self.expandedProperty.unlink( expandedPropertyObserver );
     } );
 
+    if ( this.constructor.name === 'DoubleNumberLineAccordionBox' ) {
+      this.inspect();
+    }
 
     this.mutate( _.omit( options, 'cursor' ) );
   }
@@ -364,6 +367,8 @@ define( function( require ) {
       this.expandedBox.rectWidth = boxWidth;
       this.expandedBox.rectHeight = expandedBoxHeight;
 
+      var expandedBounds = this.expandedBox.selfBounds;
+
       this.expandedBoxOutline.rectWidth = boxWidth;
       this.expandedBoxOutline.rectHeight = expandedBoxHeight;
 
@@ -379,9 +384,9 @@ define( function( require ) {
       this.collapsedBoxOutline.rectHeight = collapsedBoxHeight;
 
       // content layout
-      this._contentNode.bottom = this.expandedBox.bottom - this._contentYMargin;
-      var contentSpanLeft = this.expandedBox.left + this._contentXMargin;
-      var contentSpanRight = this.expandedBox.right - this._contentXMargin;
+      this._contentNode.bottom = expandedBounds.bottom - this._contentYMargin;
+      var contentSpanLeft = expandedBounds.left + this._contentXMargin;
+      var contentSpanRight = expandedBounds.right - this._contentXMargin;
       if ( !this._showTitleWhenExpanded ) {
         // content will be placed next to button
         if ( this._buttonAlign === 'left' ) {
@@ -402,14 +407,14 @@ define( function( require ) {
       }
 
       // button horizontal layout
-      var titleLeftSpan = this.expandedBox.left + this._titleXMargin;
-      var titleRightSpan = this.expandedBox.right - this._titleXMargin;
+      var titleLeftSpan = expandedBounds.left + this._titleXMargin;
+      var titleRightSpan = expandedBounds.right - this._titleXMargin;
       if ( this._buttonAlign === 'left' ) {
-        this.expandCollapseButton.left = this.expandedBox.left + this._buttonXMargin;
+        this.expandCollapseButton.left = expandedBounds.left + this._buttonXMargin;
         titleLeftSpan = this.expandCollapseButton.right + this._titleXSpacing;
       }
       else {
-        this.expandCollapseButton.right = this.expandedBox.right - this._buttonXMargin;
+        this.expandCollapseButton.right = expandedBounds.right - this._buttonXMargin;
         titleRightSpan = this.expandCollapseButton.left - this._titleXSpacing;
       }
 
@@ -421,7 +426,7 @@ define( function( require ) {
         this.titleNode.right = titleRightSpan;
       }
       else { // center
-        this.titleNode.centerX = this.expandedBox.centerX;
+        this.titleNode.centerX = expandedBounds.centerX;
       }
 
       // button & title vertical layout
