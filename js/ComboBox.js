@@ -138,7 +138,7 @@ define( function( require ) {
 
         unhighlightItem( selectedItemNode );
         listNode.visible = false; // close the list, do this before changing property value, in case it's expensive
-        self.getUniqueTrail().rootNode().removeInputListener( clickToDismissListener ); // remove the click-to-dismiss listener
+        display.removeInputListener( clickToDismissListener ); // remove the click-to-dismiss listener
         event.abort(); // prevent nodes (eg, controls) behind the list from receiving the event
         property.value = selectedItemNode.item.value; // set the property
 
@@ -207,7 +207,7 @@ define( function( require ) {
      * This behavior is may change, and is being discussed in scenery#58.
      */
     var enableClickToDismissListener;
-    var sceneNode; // store the node that clickToDismissListener is added to, because the scene may change, see sun#14
+    var display; // store the display that clickToDismissListener is added to, because the scene may change, see sun#14
 
     // listener for 'click outside to dismiss'
     var clickToDismissListener = {
@@ -216,7 +216,7 @@ define( function( require ) {
 
           self.startedCallbacksForComboBoxDismissedEmitter.emit();
 
-          sceneNode.removeInputListener( clickToDismissListener );
+          display.removeInputListener( clickToDismissListener );
           listNode.visible = false;
 
           self.endedCallbacksForComboBoxDismissedEmitter.emit();
@@ -238,8 +238,8 @@ define( function( require ) {
           listNode.moveToFront();
           listNode.visible = true;
           enableClickToDismissListener = false;
-          sceneNode = self.getUniqueTrail().rootNode();
-          sceneNode.addInputListener( clickToDismissListener );
+          display = self.getUniqueTrail().rootNode().getRootedDisplays()[ 0 ];
+          display.addInputListener( clickToDismissListener );
 
           self.endedCallbacksForComboBoxPopupShownEmitter.emit();
         }
