@@ -32,14 +32,17 @@ define( function( require ) {
     // Tandem support
     options = _.extend( {
       tandem: Tandem.tandemRequired(),
-      phetioType: TToggleButton( property.phetioValueType ),
+      phetioType: TToggleButton,
 
       // a11y
       tagName: 'input',
       inputType: 'button'
     }, options );
 
-    this.toggleButtonModel = new ToggleButtonModel( valueOff, valueOn, property ); // @public, listen only
+    // @public, (read-only) (phet-io)
+    this.toggleButtonModel = new ToggleButtonModel( valueOff, valueOn, property );
+    this.phetioValueType = property.phetioValueType;
+
     RoundButtonView.call( this, this.toggleButtonModel, new ToggleButtonInteractionStateProperty( this.toggleButtonModel ), options );
 
     // @private (a11y) - toggle the button when we receive the accessible click event

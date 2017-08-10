@@ -17,38 +17,39 @@ define( function( require ) {
 
   /**
    * Wrapper type for phet/sun's ToggleButton class.
-   * @param {function} phetioValueType - phet-io type wrapper like TString, TNumber, etc. If loaded by phet (not phet-io)
-   *                                    it will be the function returned by the 'ifphetio!' plugin.
+   * @param {ToggleButton} toggleButton
+   * @param {string} phetioID
    * @constructor
    */
-  function TToggleButton( phetioValueType ) {
+  function TToggleButton( toggleButton, phetioID ) {
     var validateTandems = phet.phetio && phet.phetio.queryParameters.phetioValidateTandems;
-    var TToggleButtonImpl = function TToggleButtonImpl( toggleButton, phetioID ) {
-      assert && assert( !!phetioValueType || !validateTandems, 'phetioValueType must be specified' );
-      TNode.call( this, toggleButton, phetioID );
-      assertInstanceOfTypes( toggleButton, [
-        phet.sun.RectangularToggleButton,
-        phet.sun.RoundStickyToggleButton,
-        phet.sun.RoundToggleButton
-      ] );
+    assert && assert( !!toggleButton.phetioValueType || !validateTandems, 'toggleButton.phetioValueType must be specified' );
+    TNode.call( this, toggleButton, phetioID );
+    assertInstanceOfTypes( toggleButton, [
+      phet.sun.RectangularToggleButton,
+      phet.sun.RoundStickyToggleButton,
+      phet.sun.RoundToggleButton
+    ] );
 
-      // Both StickyToggleButtonModel and ToggleButtonModel send the args in this order: oldValue, newValue
-      toEventOnEmit(
-        toggleButton.toggleButtonModel.startedCallbacksForToggledEmitter,
-        toggleButton.toggleButtonModel.endedCallbacksForToggledEmitter,
-        'user', phetioID, this.constructor, 'toggled',
-        function( oldValue, newValue ) {
-          return {
-            oldValue: phetioValueType.toStateObject( oldValue ),
-            newValue: phetioValueType.toStateObject( newValue )
-          };
-        } );
-    };
-    return phetioInherit( TNode, 'TToggleButton', TToggleButtonImpl, {}, {
-      documentation: 'A button that toggles state (in/out) when pressed',
-      events: [ 'toggled' ]
-    } );
+    // Both StickyToggleButtonModel and ToggleButtonModel send the args in this order: oldValue, newValue
+    toEventOnEmit(
+      toggleButton.toggleButtonModel.startedCallbacksForToggledEmitter,
+      toggleButton.toggleButtonModel.endedCallbacksForToggledEmitter,
+      'user', phetioID, this.constructor, 'toggled',
+      function( oldValue, newValue ) {
+        return {
+          oldValue: toggleButton.phetioValueType.toStateObject( oldValue ),
+          newValue: toggleButton.phetioValueType.toStateObject( newValue )
+        };
+      }
+    );
   }
+
+  phetioInherit( TNode, 'TToggleButton', TToggleButton, {}, {
+    documentation: 'A button that toggles state (in/out) when pressed',
+    events: [ 'toggled' ]
+  } );
+
 
   sun.register( 'TToggleButton', TToggleButton );
 

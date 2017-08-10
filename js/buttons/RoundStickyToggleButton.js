@@ -31,11 +31,12 @@ define( function( require ) {
 
     options = _.extend( {
       tandem: Tandem.tandemRequired(),
-      phetioType: TToggleButton( property.phetioValueType )
+      phetioType: TToggleButton
     }, options );
 
     // @public (phet-io)
     this.toggleButtonModel = new StickyToggleButtonModel( valueUp, valueDown, property );
+    this.phetioValueType = property.phetioValueType;
     RoundButtonView.call( this, this.toggleButtonModel, new StickyToggleButtonInteractionStateProperty( this.toggleButtonModel ), options );
   }
 
