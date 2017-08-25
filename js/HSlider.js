@@ -29,6 +29,9 @@ define( function( require ) {
 
   // phet-io modules
   var THSlider = require( 'SUN/THSlider' );
+  var TBoolean = require( 'ifphetio!PHET_IO/types/TBoolean' );
+  var TObject = require( 'ifphetio!PHET_IO/types/TObject' );
+
 
   /**
    * @param {Property.<number>} valueProperty
@@ -40,6 +43,20 @@ define( function( require ) {
 
     var self = this;
     Node.call( this );
+
+    // Add tandems to default Properties, but only if we know they will be needed
+    if ( !options.enabledProperty && options.tandem ) {
+      options.enabledProperty = new Property( true, {
+        tandem: options.tandem.createTandem( 'enabledProperty' ),
+        phetioValueType: TBoolean
+      } );
+    }
+    if ( !options.enabledRangeProperty && options.tandem ) {
+      options.enabledRangeProperty = new Property( range, {
+        tandem: options.tandem.createTandem( 'enabledRangeProperty' ),
+        phetioValueType: TObject
+      } );
+    }
 
     options = _.extend( {
 
