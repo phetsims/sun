@@ -26,6 +26,7 @@ define( function( require ) {
   var SimpleDragHandler = require( 'SCENERY/input/SimpleDragHandler' );
   var Input = require( 'SCENERY/input/Input' );
   var Util = require( 'DOT/Util' );
+  var TRange = require( 'DOT/TRange' );
 
   // phet-io modules
   var THSlider = require( 'SUN/THSlider' );
@@ -54,7 +55,7 @@ define( function( require ) {
     if ( !options.enabledRangeProperty && options.tandem ) {
       options.enabledRangeProperty = new Property( range, {
         tandem: options.tandem.createTandem( 'enabledRangeProperty' ),
-        phetioValueType: TObject
+        phetioValueType: TRange
       } );
     }
 
@@ -184,16 +185,16 @@ define( function( require ) {
     // The thumb of the slider
     var thumb = options.thumbNode || new HSliderThumb( this.enabledProperty, {
 
-        // propagate options that are specific to HSliderThumb
-        size: options.thumbSize,
-        fillEnabled: options.thumbFillEnabled,
-        fillHighlighted: options.thumbFillHighlighted,
-        fillDisabled: options.thumbFillDisabled,
-        stroke: options.thumbStroke,
-        lineWidth: options.thumbLineWidth,
-        centerLineStroke: options.thumbCenterLineStroke,
-        tandem: options.tandem.createTandem( 'thumb' )
-      } );
+      // propagate options that are specific to HSliderThumb
+      size: options.thumbSize,
+      fillEnabled: options.thumbFillEnabled,
+      fillHighlighted: options.thumbFillHighlighted,
+      fillDisabled: options.thumbFillDisabled,
+      stroke: options.thumbStroke,
+      lineWidth: options.thumbLineWidth,
+      centerLineStroke: options.thumbCenterLineStroke,
+      tandem: options.tandem.createTandem( 'thumb' )
+    } );
 
     // Dilate the local bounds horizontally so that it extends beyond where the thumb can reach.  This prevents layout
     // asymmetry when the slider thumb is off the edges of the track.  See https://github.com/phetsims/sun/issues/282
