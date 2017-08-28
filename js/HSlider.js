@@ -31,8 +31,6 @@ define( function( require ) {
   // phet-io modules
   var THSlider = require( 'SUN/THSlider' );
   var TBoolean = require( 'ifphetio!PHET_IO/types/TBoolean' );
-  var TObject = require( 'ifphetio!PHET_IO/types/TObject' );
-
 
   /**
    * @param {Property.<number>} valueProperty
@@ -347,7 +345,7 @@ define( function( require ) {
 
               // if the shift key is pressed down, modify the step size (this is atypical browser behavior for sliders)
               stepSize = event.shiftKey ? self.shiftKeyboardStep : self.keyboardStep;
-              // 
+              //
 
               if ( code === Input.KEY_RIGHT_ARROW || code === Input.KEY_UP_ARROW ) {
                 newValue = valueProperty.get() + stepSize;
