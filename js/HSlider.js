@@ -44,13 +44,13 @@ define( function( require ) {
     Node.call( this );
 
     // Add tandems to default Properties, but only if we know they will be needed
-    if ( !options.enabledProperty && options.tandem ) {
+    if ( options && !options.enabledProperty && options.tandem ) {
       options.enabledProperty = new Property( true, {
         tandem: options.tandem.createTandem( 'enabledProperty' ),
         phetioValueType: TBoolean
       } );
     }
-    if ( !options.enabledRangeProperty && options.tandem ) {
+    if ( options && !options.enabledRangeProperty && options.tandem ) {
       options.enabledRangeProperty = new Property( range, {
         tandem: options.tandem.createTandem( 'enabledRangeProperty' ),
         phetioValueType: TRange
