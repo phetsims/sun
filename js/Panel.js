@@ -25,8 +25,8 @@ define( function( require ) {
   var ALIGN_VALUES = [ 'left', 'center', 'right' ];
 
   var DEFAULT_OPTIONS = {
-    fill: 'white',
-    stroke: 'black',
+    fill: 'white', // TODO: Should these be color constants?
+    stroke: 'black', // TODO: Should these be color constants?
     lineWidth: 1, // width of the background border
     xMargin: 5,
     yMargin: 5,
@@ -37,7 +37,7 @@ define( function( require ) {
     // {string} horizontal alignment of content in the pane, see ALIGN_VALUES
     // All alignments are equal when the content width >= minWidth
     // Left is the default alignment so when there are multiple panels, their content will left align, see #252
-    align: 'left',
+    align: 'left', // TODO: should this be an enum?
 
     minWidth: 0, // minimum width of the panel
     tandem: Tandem.tandemRequired(),
