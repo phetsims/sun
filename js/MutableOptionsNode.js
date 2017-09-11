@@ -10,11 +10,11 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var sun = require( 'SUN/sun' );
   var inherit = require( 'PHET_CORE/inherit' );
-  var Property = require( 'AXON/Property' );
-  var Tandem = require( 'TANDEM/Tandem' );
   var Node = require( 'SCENERY/nodes/Node' );
+  var Property = require( 'AXON/Property' );
+  var sun = require( 'SUN/sun' );
+  var Tandem = require( 'TANDEM/Tandem' );
 
   /**
    * @constructor

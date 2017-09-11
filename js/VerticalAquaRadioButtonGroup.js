@@ -7,11 +7,11 @@ define( function( require ) {
   'use strict';
 
   var AquaRadioButton = require( 'SUN/AquaRadioButton' );
-  var Tandem = require( 'TANDEM/Tandem' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Path = require( 'SCENERY/nodes/Path' );
   var Shape = require( 'KITE/Shape' );
   var sun = require( 'SUN/sun' );
+  var Tandem = require( 'TANDEM/Tandem' );
   var VBox = require( 'SCENERY/nodes/VBox' );
 
   // a11y - an id for each instance of VerticalAquaRadioButtonGroup, used to group buttons for browsers and assistive

@@ -16,8 +16,8 @@ define( function( require ) {
 
   // modules
   var DownUpListener = require( 'SCENERY/input/DownUpListener' );
-  var Input = require( 'SCENERY/input/Input' );
   var inherit = require( 'PHET_CORE/inherit' );
+  var Input = require( 'SCENERY/input/Input' );
   var sun = require( 'SUN/sun' );
 
   /**

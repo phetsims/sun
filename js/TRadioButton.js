@@ -12,9 +12,9 @@ define( function( require ) {
   var assertInstanceOf = require( 'ifphetio!PHET_IO/assertions/assertInstanceOf' );
   var phetioInherit = require( 'ifphetio!PHET_IO/phetioInherit' );
   var sun = require( 'SUN/sun' );
+  var Tandem = require( 'TANDEM/Tandem' );
   var TNode = require( 'SCENERY/nodes/TNode' );
   var toEventOnEmit = require( 'ifphetio!PHET_IO/toEventOnEmit' );
-  var Tandem = require( 'TANDEM/Tandem' );
 
   /**
    * Wrapper type for phet/sun's RadioButton class.

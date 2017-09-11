@@ -20,9 +20,9 @@ define( function( require ) {
   var Node = require( 'SCENERY/nodes/Node' );
   var Property = require( 'AXON/Property' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
+  var SimpleDragHandler = require( 'SCENERY/input/SimpleDragHandler' );
   var sun = require( 'SUN/sun' );
   var Tandem = require( 'TANDEM/Tandem' );
-  var SimpleDragHandler = require( 'SCENERY/input/SimpleDragHandler' );
 
   // phet-io modules
   var THSliderTrack = require( 'SUN/THSliderTrack' );

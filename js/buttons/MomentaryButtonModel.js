@@ -9,9 +9,9 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var inherit = require( 'PHET_CORE/inherit' );
   var ButtonModel = require( 'SUN/buttons/ButtonModel' );
   var Emitter = require( 'AXON/Emitter' );
+  var inherit = require( 'PHET_CORE/inherit' );
   var sun = require( 'SUN/sun' );
 
   /**

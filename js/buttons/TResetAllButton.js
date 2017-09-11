@@ -10,8 +10,8 @@ define( function( require ) {
 
   // modules
   var assertInstanceOf = require( 'ifphetio!PHET_IO/assertions/assertInstanceOf' );
-  var sun = require( 'SUN/sun' );
   var phetioInherit = require( 'ifphetio!PHET_IO/phetioInherit' );
+  var sun = require( 'SUN/sun' );
   var TPushButton = require( 'SUN/buttons/TPushButton' );
 
   /**

@@ -13,26 +13,26 @@ define( function( require ) {
   var BooleanRectangularStickyToggleButton = require( 'SUN/buttons/BooleanRectangularStickyToggleButton' );
   var BooleanRectangularToggleButton = require( 'SUN/buttons/BooleanRectangularToggleButton' );
   var Color = require( 'SCENERY/util/Color' );
+  var Font = require( 'SCENERY/util/Font' );
+  var HBox = require( 'SCENERY/nodes/HBox' );
   var HTMLPushButton = require( 'SUN/buttons/HTMLPushButton' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Node = require( 'SCENERY/nodes/Node' );
-  var Font = require( 'SCENERY/util/Font' );
+  var Panel = require( 'SUN/Panel' );
   var Property = require( 'AXON/Property' );
+  var RadioButtonGroup = require( 'SUN/buttons/RadioButtonGroup' );
+  var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var RectangularButtonView = require( 'SUN/buttons/RectangularButtonView' );
-  var RoundButtonView = require( 'SUN/buttons/RoundButtonView' );
+  var RectangularMomentaryButton = require( 'SUN/buttons/RectangularMomentaryButton' );
   var RectangularPushButton = require( 'SUN/buttons/RectangularPushButton' );
+  var RoundButtonView = require( 'SUN/buttons/RoundButtonView' );
+  var RoundMomentaryButton = require( 'SUN/buttons/RoundMomentaryButton' );
   var RoundPushButton = require( 'SUN/buttons/RoundPushButton' );
   var RoundStickyToggleButton = require( 'SUN/buttons/RoundStickyToggleButton' );
   var ScreenView = require( 'JOIST/ScreenView' );
-  var Text = require( 'SCENERY/nodes/Text' );
-  var RadioButtonGroup = require( 'SUN/buttons/RadioButtonGroup' );
-  var Panel = require( 'SUN/Panel' );
-  var HBox = require( 'SCENERY/nodes/HBox' );
-  var VBox = require( 'SCENERY/nodes/VBox' );
-  var Rectangle = require( 'SCENERY/nodes/Rectangle' );
-  var RoundMomentaryButton = require( 'SUN/buttons/RoundMomentaryButton' );
-  var RectangularMomentaryButton = require( 'SUN/buttons/RectangularMomentaryButton' );
   var sun = require( 'SUN/sun' );
+  var Text = require( 'SCENERY/nodes/Text' );
+  var VBox = require( 'SCENERY/nodes/VBox' );
 
   // constants
   var BUTTON_FONT = new Font( { size: 24 } );

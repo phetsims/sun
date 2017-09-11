@@ -13,9 +13,9 @@ define( function( require ) {
   var inherit = require( 'PHET_CORE/inherit' );
   var RectangularButtonView = require( 'SUN/buttons/RectangularButtonView' );
   var sun = require( 'SUN/sun' );
+  var Tandem = require( 'TANDEM/Tandem' );
   var ToggleButtonInteractionStateProperty = require( 'SUN/buttons/ToggleButtonInteractionStateProperty' );
   var ToggleButtonModel = require( 'SUN/buttons/ToggleButtonModel' );
-  var Tandem = require( 'TANDEM/Tandem' );
   var TToggleButton = require( 'SUN/buttons/TToggleButton' );
 
   /**

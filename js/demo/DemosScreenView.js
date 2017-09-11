@@ -15,8 +15,8 @@ define( function( require ) {
   var PhetFont = require( 'SCENERY_PHET/PhetFont' );
   var Property = require( 'AXON/Property' );
   var ScreenView = require( 'JOIST/ScreenView' );
-  var Text = require( 'SCENERY/nodes/Text' );
   var sun = require( 'SUN/sun' );
+  var Text = require( 'SCENERY/nodes/Text' );
   var Vector2 = require( 'DOT/Vector2' );
 
   /**

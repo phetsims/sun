@@ -10,8 +10,8 @@ define( function( require ) {
   var inherit = require( 'PHET_CORE/inherit' );
   var RoundToggleButton = require( 'SUN/buttons/RoundToggleButton' );
   var sun = require( 'SUN/sun' );
-  var ToggleNode = require( 'SUN/ToggleNode' );
   var Tandem = require( 'TANDEM/Tandem' );
+  var ToggleNode = require( 'SUN/ToggleNode' );
 
   /**
    * @param {Node} trueNode

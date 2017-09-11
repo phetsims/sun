@@ -15,8 +15,8 @@ define( function( require ) {
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var Shape = require( 'KITE/Shape' );
   var sun = require( 'SUN/sun' );
-  var VBox = require( 'SCENERY/nodes/VBox' );
   var Tandem = require( 'TANDEM/Tandem' );
+  var VBox = require( 'SCENERY/nodes/VBox' );
 
   // phet-io modules
   var TVerticalCheckBoxGroup = require( 'SUN/TVerticalCheckBoxGroup' );

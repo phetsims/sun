@@ -12,11 +12,11 @@ define( function( require ) {
   // modules
   var assertInstanceOf = require( 'ifphetio!PHET_IO/assertions/assertInstanceOf' );
   var phetioInherit = require( 'ifphetio!PHET_IO/phetioInherit' );
-  var TVoid = require( 'ifphetio!PHET_IO/types/TVoid' );
-  var TBoolean = require( 'ifphetio!PHET_IO/types/TBoolean' );
   var sun = require( 'SUN/sun' );
-  var TRadioButton = require( 'SUN/TRadioButton' );
   var Tandem = require( 'TANDEM/Tandem' );
+  var TBoolean = require( 'ifphetio!PHET_IO/types/TBoolean' );
+  var TRadioButton = require( 'SUN/TRadioButton' );
+  var TVoid = require( 'ifphetio!PHET_IO/types/TVoid' );
 
   /**
    * Wrapper type for phet/sun's AquaRadioButton class.

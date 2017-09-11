@@ -18,9 +18,9 @@ define( function( require ) {
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var StringUtils = require( 'PHETCOMMON/util/StringUtils' );
   var sun = require( 'SUN/sun' );
+  var Tandem = require( 'TANDEM/Tandem' );
   var Text = require( 'SCENERY/nodes/Text' );
   var Util = require( 'DOT/Util' );
-  var Tandem = require( 'TANDEM/Tandem' );
 
   // possible values for options.arrowsPosition
   var ARROWS_POSITION_VALUES = [

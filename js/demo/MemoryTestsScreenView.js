@@ -8,11 +8,11 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var inherit = require( 'PHET_CORE/inherit' );
-  var ScreenView = require( 'JOIST/ScreenView' );
-  var Property = require( 'AXON/Property' );
-  var HSlider = require( 'SUN/HSlider' );
   var ABSwitch = require( 'SUN/ABSwitch' );
+  var HSlider = require( 'SUN/HSlider' );
+  var inherit = require( 'PHET_CORE/inherit' );
+  var Property = require( 'AXON/Property' );
+  var ScreenView = require( 'JOIST/ScreenView' );
   var Text = require( 'SCENERY/nodes/Text' );
 
   var sun = require( 'SUN/sun' );

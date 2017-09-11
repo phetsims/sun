@@ -12,9 +12,9 @@ define( function( require ) {
 
   // modules
   var inherit = require( 'PHET_CORE/inherit' );
-  var Tandem = require( 'TANDEM/Tandem' );
   var Node = require( 'SCENERY/nodes/Node' );
   var sun = require( 'SUN/sun' );
+  var Tandem = require( 'TANDEM/Tandem' );
 
   /**
    * @param {Node} trueNode

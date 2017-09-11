@@ -12,8 +12,8 @@ define( function( require ) {
   var inherit = require( 'PHET_CORE/inherit' );
   var RectangularPushButton = require( 'SUN/buttons/RectangularPushButton' );
   var sun = require( 'SUN/sun' );
-  var Text = require( 'SCENERY/nodes/Text' );
   var Tandem = require( 'TANDEM/Tandem' );
+  var Text = require( 'SCENERY/nodes/Text' );
 
   /**
    * @param {string} text

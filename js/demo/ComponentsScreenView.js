@@ -13,12 +13,15 @@ define( function( require ) {
 
   // modules
   var AccordionBox = require( 'SUN/AccordionBox' );
+  var AlignBox = require( 'SCENERY/nodes/AlignBox' );
+  var AlignGroup = require( 'SCENERY/nodes/AlignGroup' );
   var Carousel = require( 'SUN/Carousel' );
   var CheckBox = require( 'SUN/CheckBox' );
   var Circle = require( 'SCENERY/nodes/Circle' );
   var ComboBox = require( 'SUN/ComboBox' );
   var DemosScreenView = require( 'SUN/demo/DemosScreenView' );
   var Dimension2 = require( 'DOT/Dimension2' );
+  var HBox = require( 'SCENERY/nodes/HBox' );
   var HSlider = require( 'SUN/HSlider' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Node = require( 'SCENERY/nodes/Node' );
@@ -32,14 +35,11 @@ define( function( require ) {
   var RangeWithValue = require( 'DOT/RangeWithValue' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var RectangularPushButton = require( 'SUN/buttons/RectangularPushButton' );
-  var Text = require( 'SCENERY/nodes/Text' );
-  var Timer = require( 'PHET_CORE/Timer' );
   var sun = require( 'SUN/sun' );
   var sunQueryParameters = require( 'SUN/sunQueryParameters' );
-  var HBox = require( 'SCENERY/nodes/HBox' );
+  var Text = require( 'SCENERY/nodes/Text' );
+  var Timer = require( 'PHET_CORE/Timer' );
   var VBox = require( 'SCENERY/nodes/VBox' );
-  var AlignBox = require( 'SCENERY/nodes/AlignBox' );
-  var AlignGroup = require( 'SCENERY/nodes/AlignGroup' );
 
   /**
    * @constructor

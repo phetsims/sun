@@ -13,9 +13,9 @@ define( function( require ) {
   // modules
   var ButtonModel = require( 'SUN/buttons/ButtonModel' );
   var CallbackTimer = require( 'SUN/CallbackTimer' );
+  var Emitter = require( 'AXON/Emitter' );
   var inherit = require( 'PHET_CORE/inherit' );
   var sun = require( 'SUN/sun' );
-  var Emitter = require( 'AXON/Emitter' );
   var Tandem = require( 'TANDEM/Tandem' );
 
   /**

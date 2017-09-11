@@ -11,8 +11,8 @@ define( function( require ) {
 
   // modules
   var inherit = require( 'PHET_CORE/inherit' );
-  var Timer = require( 'PHET_CORE/Timer' );
   var sun = require( 'SUN/sun' );
+  var Timer = require( 'PHET_CORE/Timer' );
 
   /**
    * @param {Object} [options]

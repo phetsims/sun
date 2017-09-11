@@ -14,10 +14,10 @@ define( function( require ) {
   var Color = require( 'SCENERY/util/Color' );
   var ColorConstants = require( 'SUN/ColorConstants' );
   var inherit = require( 'PHET_CORE/inherit' );
-  var RectangularButtonView = require( 'SUN/buttons/RectangularButtonView' );
   var RadioButtonGroupAppearance = require( 'SUN/buttons/RadioButtonGroupAppearance' );
   var RadioButtonGroupMemberModel = require( 'SUN/buttons/RadioButtonGroupMemberModel' );
   var RadioButtonInteractionStateProperty = require( 'SUN/buttons/RadioButtonInteractionStateProperty' );
+  var RectangularButtonView = require( 'SUN/buttons/RectangularButtonView' );
   var sun = require( 'SUN/sun' );
   var Tandem = require( 'TANDEM/Tandem' );
   var TRadioButtonGroupMember = require( 'SUN/TRadioButtonGroupMember' );

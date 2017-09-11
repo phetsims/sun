@@ -19,8 +19,7 @@ define( function( require ) {
 
   // modules
   var Dimension2 = require( 'DOT/Dimension2' );
-  var Vector2 = require( 'DOT/Vector2' );
-  var Util = require( 'DOT/Util' );
+  var Emitter = require( 'AXON/Emitter' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Node = require( 'SCENERY/nodes/Node' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
@@ -28,7 +27,8 @@ define( function( require ) {
   var SimpleDragHandler = require( 'SCENERY/input/SimpleDragHandler' );
   var sun = require( 'SUN/sun' );
   var Tandem = require( 'TANDEM/Tandem' );
-  var Emitter = require( 'AXON/Emitter' );
+  var Util = require( 'DOT/Util' );
+  var Vector2 = require( 'DOT/Vector2' );
 
   /**
    * @param {Property.<boolean>} onProperty

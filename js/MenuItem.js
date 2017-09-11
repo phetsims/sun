@@ -10,17 +10,17 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var inherit = require( 'PHET_CORE/inherit' );
-  var sun = require( 'SUN/sun' );
-  var FontAwesomeNode = require( 'SUN/FontAwesomeNode' );
-  var Emitter = require( 'AXON/Emitter' );
-  var PhetFont = require( 'SCENERY_PHET/PhetFont' );
-  var ButtonListener = require( 'SCENERY/input/ButtonListener' );
-  var Rectangle = require( 'SCENERY/nodes/Rectangle' );
-  var Node = require( 'SCENERY/nodes/Node' );
-  var Text = require( 'SCENERY/nodes/Text' );
-  var Tandem = require( 'TANDEM/Tandem' );
   var AccessibilityUtil = require( 'SCENERY/accessibility/AccessibilityUtil' );
+  var ButtonListener = require( 'SCENERY/input/ButtonListener' );
+  var Emitter = require( 'AXON/Emitter' );
+  var FontAwesomeNode = require( 'SUN/FontAwesomeNode' );
+  var inherit = require( 'PHET_CORE/inherit' );
+  var Node = require( 'SCENERY/nodes/Node' );
+  var PhetFont = require( 'SCENERY_PHET/PhetFont' );
+  var Rectangle = require( 'SCENERY/nodes/Rectangle' );
+  var sun = require( 'SUN/sun' );
+  var Tandem = require( 'TANDEM/Tandem' );
+  var Text = require( 'SCENERY/nodes/Text' );
 
   // phet-io modules
   var TMenuItem = require( 'SUN/TMenuItem' );

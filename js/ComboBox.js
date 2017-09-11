@@ -13,19 +13,19 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var inherit = require( 'PHET_CORE/inherit' );
   var Emitter = require( 'AXON/Emitter' );
+  var inherit = require( 'PHET_CORE/inherit' );
+  var Line = require( 'SCENERY/nodes/Line' );
   var Node = require( 'SCENERY/nodes/Node' );
+  var Path = require( 'SCENERY/nodes/Path' );
   var Property = require( 'AXON/Property' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var Shape = require( 'KITE/Shape' );
   var sun = require( 'SUN/sun' );
-  var Vector2 = require( 'DOT/Vector2' );
   var Tandem = require( 'TANDEM/Tandem' );
-  var Line = require( 'SCENERY/nodes/Line' );
-  var Path = require( 'SCENERY/nodes/Path' );
   var TComboBox = require( 'SUN/TComboBox' );
   var TComboBoxItemNode = require( 'SUN/TComboBoxItemNode' );
+  var Vector2 = require( 'DOT/Vector2' );
 
   /**
    * @param {*[]} items - see ComboBox.createItem

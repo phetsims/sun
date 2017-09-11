@@ -7,8 +7,8 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var inherit = require( 'PHET_CORE/inherit' );
   var DerivedProperty = require( 'AXON/DerivedProperty' );
+  var inherit = require( 'PHET_CORE/inherit' );
   var sun = require( 'SUN/sun' );
 
   /**

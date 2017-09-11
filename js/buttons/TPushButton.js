@@ -12,10 +12,10 @@ define( function( require ) {
   var assertInstanceOfTypes = require( 'ifphetio!PHET_IO/assertions/assertInstanceOfTypes' );
   var phetioInherit = require( 'ifphetio!PHET_IO/phetioInherit' );
   var sun = require( 'SUN/sun' );
+  var TFunctionWrapper = require( 'ifphetio!PHET_IO/types/TFunctionWrapper' );
   var TNode = require( 'SCENERY/nodes/TNode' );
   var toEventOnEmit = require( 'ifphetio!PHET_IO/toEventOnEmit' );
   var TVoid = require( 'ifphetio!PHET_IO/types/TVoid' );
-  var TFunctionWrapper = require( 'ifphetio!PHET_IO/types/TFunctionWrapper' );
 
   /**
    * Wrapper type for phet/sun's PushButton class.

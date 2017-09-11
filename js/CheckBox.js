@@ -10,14 +10,14 @@ define( function( require ) {
 
   // modules
   var ButtonListener = require( 'SCENERY/input/ButtonListener' );
-  var FontAwesomeNode = require( 'SUN/FontAwesomeNode' );
   var Emitter = require( 'AXON/Emitter' );
+  var FontAwesomeNode = require( 'SUN/FontAwesomeNode' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Node = require( 'SCENERY/nodes/Node' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var sun = require( 'SUN/sun' );
-  var Text = require( 'SCENERY/nodes/Text' );
   var Tandem = require( 'TANDEM/Tandem' );
+  var Text = require( 'SCENERY/nodes/Text' );
 
   // phet-io modules
   var TCheckBox = require( 'SUN/TCheckBox' );
