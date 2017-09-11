@@ -43,20 +43,6 @@ define( function( require ) {
     var self = this;
     Node.call( this );
 
-    // Add tandems to default Properties, but only if we know they will be needed
-    if ( options && !options.enabledProperty && options.tandem ) {
-      options.enabledProperty = new Property( true, {
-        tandem: options.tandem.createTandem( 'enabledProperty' ),
-        phetioValueType: TBoolean
-      } );
-    }
-    if ( options && !options.enabledRangeProperty && options.tandem ) {
-      options.enabledRangeProperty = new Property( range, {
-        tandem: options.tandem.createTandem( 'enabledRangeProperty' ),
-        phetioValueType: TRange
-      } );
-    }
-
     options = _.extend( {
 
       // track
@@ -97,8 +83,6 @@ define( function( require ) {
 
       // other
       cursor: 'pointer',
-      enabledProperty: new Property( true ),
-      enabledRangeProperty: new Property( range ), // controls the portion of the slider that is enabled
       snapValue: null, // if specified, slider will snap to this value on end drag
       startDrag: function() {}, // called when a drag sequence starts
       endDrag: function() {}, // called when a drag sequence ends
@@ -119,6 +103,22 @@ define( function( require ) {
       tandem: Tandem.tandemRequired(),
       phetioType: THSlider
     }, options );
+
+    // phet-io, Assign default options that need tandems.
+    if ( options && !options.enabledProperty && options.tandem ) {
+      options.enabledProperty = new Property( true, {
+        tandem: options.tandem.createTandem( 'enabledProperty' ),
+        phetioValueType: TBoolean
+      } );
+    }
+
+    // controls the portion of the slider that is enabled
+    if ( options && !options.enabledRangeProperty && options.tandem ) {
+      options.enabledRangeProperty = new Property( range, {
+        tandem: options.tandem.createTandem( 'enabledRangeProperty' ),
+        phetioValueType: TRange
+      } );
+    }
 
     // @public
     this.enabledProperty = options.enabledProperty;
