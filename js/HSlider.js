@@ -98,6 +98,8 @@ define( function( require ) {
       shiftKeyboardStep: ( range.max - range.min ) / 100,
       pageKeyboardStep: ( range.max - range.min ) / 10,
       focusHighlightLineWidth: 4,
+      enabledProperty: null, // see below
+      enabledRangeProperty: null, // see below
 
       // phet-io
       tandem: Tandem.tandemRequired(),
@@ -105,20 +107,16 @@ define( function( require ) {
     }, options );
 
     // phet-io, Assign default options that need tandems.
-    if ( options && !options.enabledProperty && options.tandem ) {
-      options.enabledProperty = new Property( true, {
-        tandem: options.tandem.createTandem( 'enabledProperty' ),
-        phetioValueType: TBoolean
-      } );
-    }
+    options.enabledProperty = options.enabledProperty || new Property( true, {
+      tandem: options.tandem.createTandem( 'enabledProperty' ),
+      phetioValueType: TBoolean
+    } );
 
     // controls the portion of the slider that is enabled
-    if ( options && !options.enabledRangeProperty && options.tandem ) {
-      options.enabledRangeProperty = new Property( range, {
-        tandem: options.tandem.createTandem( 'enabledRangeProperty' ),
-        phetioValueType: TRange
-      } );
-    }
+    options.enabledRangeProperty = options.enabledRangeProperty || new Property( range, {
+      tandem: options.tandem.createTandem( 'enabledRangeProperty' ),
+      phetioValueType: TRange
+    } );
 
     // @public
     this.enabledProperty = options.enabledProperty;
