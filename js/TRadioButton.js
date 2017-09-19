@@ -44,7 +44,10 @@ define( function( require ) {
 
   phetioInherit( TNode, 'TRadioButton', TRadioButton, {}, {
     documentation: 'A traditional radio button',
-    events: [ 'fired' ]
+    events: [ 'fired' ],
+    toStateObject: function( node ) { return TNode.toStateObject( node ); },
+    fromStateObject: function( stateObject ) { return TNode.fromStateObject( stateObject ); },
+    setValue: function( instance, stateObject ) {TNode.setValue( instance, stateObject );}
   } );
 
   sun.register( 'TRadioButton', TRadioButton );
