@@ -53,8 +53,10 @@ define( function( require ) {
     // a11y - press the button when 'enter' or 'spacebar' are pressed
     this.clickListener = this.addAccessibleInputListener( {
       click: function() {
-        self.buttonModel.fire();
-        options.accessibleFire();
+        if ( self.enabled ) {
+          self.buttonModel.fire();
+          options.accessibleFire();
+        }
       }
     } );
 
