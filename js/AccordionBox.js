@@ -335,8 +335,8 @@ define( function( require ) {
       self.collapsedBox.visible = !expanded;
 
       // a11y Toggle the visibility of the buttons in the PDOM
-      self.expandedTitleBar.accessibleHidden = !expanded;
-      self.collapsedTitleBar.accessibleHidden = expanded;
+      self.expandedTitleBar.accessibleVisible = expanded;
+      self.collapsedTitleBar.accessibleVisible = !expanded;
 
       self.titleNode.visible = ( expanded && options.showTitleWhenExpanded ) || !expanded;
     };
