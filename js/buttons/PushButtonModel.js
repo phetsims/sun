@@ -80,7 +80,7 @@ define( function( require ) {
         }
       }
       else {
-        var fire = ( !options.fireOnDown && self.overProperty.get() && self.enabledProperty.get() ); // should the button fire?
+        var fire = (!options.fireOnDown && self.overProperty.get() && self.enabledProperty.get()); // should the button fire?
         if ( self.timer ) {
           self.timer.stop( fire );
         }
@@ -97,6 +97,8 @@ define( function( require ) {
       }
     } );
 
+    // @private {boolean} flag to indicate whether the button is firing
+    this.isFiring = false;
 
     this.disposePushButtonModel = function() {
       this.listeners.length = 0;
@@ -116,6 +118,10 @@ define( function( require ) {
 
     // @public
     dispose: function() {
+
+      // Make sure the button is not already firing, see https://github.com/phetsims/energy-skate-park-basics/issues/380
+      // That would cause a start message but no end message in the PhET-iO event stream and cause it to fail.
+      assert && assert( !this.isFiring, 'Cannot dispose a button while firing' );
       this.disposePushButtonModel();
       ButtonModel.prototype.dispose.call( this );
     },
@@ -148,12 +154,17 @@ define( function( require ) {
      * @public (phet-io, a11y)
      */
     fire: function() {
+
+      // Make sure the button is not already firing, see https://github.com/phetsims/energy-skate-park-basics/issues/380
+      assert && assert( !this.isFiring, 'Cannot fire when already firing' );
+      this.isFiring = true;
       this.startedCallbacksForFiredEmitter.emit();
       var copy = this.listeners.slice( 0 );
       copy.forEach( function( listener ) {
         listener();
       } );
       this.endedCallbacksForFiredEmitter.emit();
+      this.isFiring = false;
     }
   } );
 } );
