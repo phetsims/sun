@@ -119,9 +119,12 @@ define( function( require ) {
     // @public
     dispose: function() {
 
-      // Make sure the button is not already firing, see https://github.com/phetsims/energy-skate-park-basics/issues/380
-      // That would cause a start message but no end message in the PhET-iO event stream and cause it to fail.
-      assert && assert( !this.isFiring, 'Cannot dispose a button while firing' );
+      // If the button was firing, we must complete the PhET-iO transaction before disposing of those emitters
+      // see https://github.com/phetsims/energy-skate-park-basics/issues/380
+      if ( this.isFiring ) {
+        this.endedCallbacksForFiredEmitter.emit();
+      }
+
       this.disposePushButtonModel();
       ButtonModel.prototype.dispose.call( this );
     },
