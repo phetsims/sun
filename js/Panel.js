@@ -18,9 +18,6 @@ define( function( require ) {
   var sun = require( 'SUN/sun' );
   var Tandem = require( 'TANDEM/Tandem' );
 
-  // phet-io modules
-  var TPanel = require( 'SUN/TPanel' );
-
   // valid values for options.align
   var ALIGN_VALUES = [ 'left', 'center', 'right' ];
 
@@ -40,8 +37,7 @@ define( function( require ) {
     align: 'left', // TODO: should this be an enum?
 
     minWidth: 0, // minimum width of the panel
-    tandem: Tandem.tandemRequired(),
-    phetioType: TPanel
+    tandem: Tandem.tandemRequired()
   };
   assert && Object.freeze( DEFAULT_OPTIONS );
 
