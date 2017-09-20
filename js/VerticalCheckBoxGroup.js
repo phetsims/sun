@@ -18,9 +18,6 @@ define( function( require ) {
   var Tandem = require( 'TANDEM/Tandem' );
   var VBox = require( 'SCENERY/nodes/VBox' );
 
-  // phet-io modules
-  var TVerticalCheckBoxGroup = require( 'SUN/TVerticalCheckBoxGroup' );
-
   /**
    * Main constructor.
    *
@@ -36,8 +33,7 @@ define( function( require ) {
       checkBoxColor: 'black',
       align: 'left',
       boxWidth: 21,
-      tandem: Tandem.tandemRequired(),
-      phetioType: TVerticalCheckBoxGroup
+      tandem: Tandem.tandemRequired()
     }, options );
 
     // compute max width of the items
