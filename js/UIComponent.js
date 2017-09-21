@@ -1,4 +1,4 @@
-// Copyright 2016, University of Colorado Boulder
+// Copyright 2016-2017, University of Colorado Boulder
 
 //TODO Not ready for production use. See https://github.com/phetsims/sun/issues/257
 /**

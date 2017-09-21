@@ -1,4 +1,4 @@
-// Copyright 2013-2015, University of Colorado Boulder
+// Copyright 2013-2017, University of Colorado Boulder
 
 //TODO see sun#29, reimplement as a subtype of something from sun.buttons
 /**

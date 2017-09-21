@@ -1,4 +1,4 @@
-// Copyright 2013-2016, University of Colorado Boulder
+// Copyright 2016-2017, University of Colorado Boulder
 
 /**
  * A default slider thumb, currently intended for use only in HSlider. It's a rectangle with a vertical white line down

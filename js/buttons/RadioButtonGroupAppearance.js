@@ -1,4 +1,4 @@
-// Copyright 2014-2015, University of Colorado Boulder
+// Copyright 2014-2017, University of Colorado Boulder
 
 /**
  * Defines the appearance of the radio buttons, see RadioButtonGroup.js. This file is designed to be used by

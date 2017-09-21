@@ -1,4 +1,4 @@
-// Copyright 2014-2015, University of Colorado Boulder
+// Copyright 2014-2017, University of Colorado Boulder
 
 /**
  * A single radio button. This class is designed to be part of a RadioButtonGroup and there should be no need to use it
