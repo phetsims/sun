@@ -245,11 +245,6 @@ define( function( require ) {
         button = radioButton;
       }
 
-      // a11y
-      // set a dilated focus highlight around the button group member
-      // if a label has been added, the highlight will surround both the label and button
-      radioButton.setFocusHighlight( Shape.bounds( radioButton.mouseArea.bounds.dilated( 5 ) ) );
-
       buttons.push( button );
     }
 
