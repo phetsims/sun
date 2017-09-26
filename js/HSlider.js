@@ -263,7 +263,7 @@ define( function( require ) {
     this.enabledProperty.link( enabledObserver ); // must be unlinked in disposeHSlider
 
     // a11y - custom focus highlight that surrounds and moves with the thumb
-    this.focusHighlight = Rectangle.bounds( thumb.bounds.dilated( 5 ), {
+    this.focusHighlight = Rectangle.bounds( thumb.localToParentBounds( FocusOverlay.getLocalFocusHighlightBounds( thumb ) ), {
       stroke: FocusOverlay.innerFocusColor,
       lineWidth: options.focusHighlightLineWidth
     } );
