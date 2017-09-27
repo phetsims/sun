@@ -116,13 +116,13 @@ define( function( require ) {
       if ( self._enabled ) {
         var newValue = !property.value;
 
-        var id = phetioEvents.start && phetioEvents.start( 'user', options.tandem.id, TCheckBox, 'toggled', {
+        var id = phetioEvents.start( 'user', options.tandem.id, TCheckBox, 'toggled', {
           oldValue: property.value,
           newValue: newValue
         } );
 
         property.value = newValue;
-        phetioEvents.end && phetioEvents.end( id );
+        phetioEvents.end( id );
       }
     };
 

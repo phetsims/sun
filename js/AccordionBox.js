@@ -234,9 +234,9 @@ define( function( require ) {
     if ( options.titleBarExpandCollapse ) {
       this.collapsedTitleBar.addInputListener( {
         down: function() {
-          var id = phetioEvents.start && phetioEvents.start( 'user', options.tandem.id, TAccordionBox, 'expanded' );
+          var id = phetioEvents.start( 'user', options.tandem.id, TAccordionBox, 'expanded' );
           self.expandedProperty.value = true;
-          phetioEvents.end && phetioEvents.end( id );
+          phetioEvents.end( id );
         }
       } );
     }
@@ -244,13 +244,13 @@ define( function( require ) {
     // a11y we always want accessible tab focus on the title, even when titleBarExpandeCollapse === false
     this.collapsedTitleBar.addAccessibleInputListener( {
       click: function() {
-        var id = phetioEvents.start && phetioEvents.start( 'user', options.tandem.id, TAccordionBox, 'expanded' );
+        var id = phetioEvents.start( 'user', options.tandem.id, TAccordionBox, 'expanded' );
         self.expandedProperty.value = true;
 
         // a11y Set focus to expanded title bar
         self.expandedTitleBar.focus();
 
-        phetioEvents.end && phetioEvents.end( id );
+        phetioEvents.end( id );
       }
     } );
 
@@ -260,9 +260,9 @@ define( function( require ) {
       if ( options.titleBarExpandCollapse ) {
         this.expandedTitleBar.addInputListener( {
           down: function() {
-            var id = phetioEvents.start && phetioEvents.start( 'user', options.tandem.id, TAccordionBox, 'collapsed' );
+            var id = phetioEvents.start( 'user', options.tandem.id, TAccordionBox, 'collapsed' );
             self.expandedProperty.value = false;
-            phetioEvents.end && phetioEvents.end( id );
+            phetioEvents.end( id );
           }
         } );
       }
@@ -270,12 +270,12 @@ define( function( require ) {
       // a11y we always want accessible tab focus on the title
       this.expandedTitleBar.addAccessibleInputListener( {
         click: function() {
-          var id = phetioEvents.start && phetioEvents.start( 'user', options.tandem.id, TAccordionBox, 'collapsed' );
+          var id = phetioEvents.start( 'user', options.tandem.id, TAccordionBox, 'collapsed' );
           self.expandedProperty.value = false;
 
           // a11y Set focus to expanded title bar
           self.collapsedTitleBar.focus();
-          phetioEvents.end && phetioEvents.end( id );
+          phetioEvents.end( id );
         }
       } );
     }
