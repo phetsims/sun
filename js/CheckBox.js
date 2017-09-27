@@ -10,7 +10,6 @@ define( function( require ) {
 
   // modules
   var ButtonListener = require( 'SCENERY/input/ButtonListener' );
-  var Emitter = require( 'AXON/Emitter' );
   var FontAwesomeNode = require( 'SUN/FontAwesomeNode' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Node = require( 'SCENERY/nodes/Node' );
@@ -21,6 +20,7 @@ define( function( require ) {
 
   // phet-io modules
   var TCheckBox = require( 'SUN/TCheckBox' );
+  var phetioEvents = require( 'ifphetio!PHET_IO/phetioEvents' );
 
   // constants
   var DISABLED_OPACITY = 0.3;
@@ -77,10 +77,6 @@ define( function( require ) {
 
     this._enabled = true; // @private
 
-    // Emitters for the PhET-iO data stream
-    this.startedCallbacksForToggledEmitter = new Emitter( { indicateCallbacks: false } );
-    this.endedCallbacksForToggledEmitter = new Emitter( { indicateCallbacks: false } );
-
     // @private - Create the background.  Until we are creating our own shapes, just put a rectangle behind the font
     // awesome check box icons.
     this.backgroundNode = new Rectangle( 0, -options.boxWidth, options.boxWidth * 0.95, options.boxWidth * 0.95,
@@ -118,11 +114,15 @@ define( function( require ) {
     // @private interactivity
     this.fire = function() {
       if ( self._enabled ) {
-        var oldValue = property.value;
         var newValue = !property.value;
-        self.startedCallbacksForToggledEmitter.emit2( oldValue, newValue );
+
+        var id = phetioEvents.start && phetioEvents.start( 'user', options.tandem.id, TCheckBox, 'toggled', {
+          oldValue: property.value,
+          newValue: newValue
+        } );
+
         property.value = newValue;
-        self.endedCallbacksForToggledEmitter.emit();
+        phetioEvents.end && phetioEvents.end( id );
       }
     };
 
