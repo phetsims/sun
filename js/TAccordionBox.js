@@ -14,7 +14,6 @@ define( function( require ) {
   var assertInstanceOf = require( 'ifphetio!PHET_IO/assertions/assertInstanceOf' );
   var phetioInherit = require( 'ifphetio!PHET_IO/phetioInherit' );
   var sun = require( 'SUN/sun' );
-  var toEventOnEmit = require( 'ifphetio!PHET_IO/toEventOnEmit' );
 
   /**
    * Wrapper type for phet/sun's AccordionBox class.
@@ -25,24 +24,6 @@ define( function( require ) {
   function TAccordionBox( accordionBox, phetioID ) {
     assertInstanceOf( accordionBox, phet.sun.AccordionBox );
     TNode.call( this, accordionBox, phetioID );
-
-    toEventOnEmit(
-      accordionBox.startedCallbacksForCollapsedTitleBarDownEmitter,
-      accordionBox.endedCallbacksForCollapsedTitleBarDownEmitter,
-      'user',
-      phetioID,
-      this.constructor,
-      'collapsed'
-    );
-
-    toEventOnEmit(
-      accordionBox.startedCallbacksForExpandedTitleBarDownEmitter,
-      accordionBox.endedCallbacksForExpandedTitleBarDownEmitter,
-      'user',
-      phetioID,
-      this.constructor,
-      'expanded'
-    );
   }
 
   phetioInherit( TNode, 'TAccordionBox', TAccordionBox, {}, {

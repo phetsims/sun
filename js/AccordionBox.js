@@ -11,7 +11,6 @@ define( function( require ) {
 
   // modules
   var BooleanProperty = require( 'AXON/BooleanProperty' );
-  var Emitter = require( 'AXON/Emitter' );
   var ExpandCollapseButton = require( 'SUN/ExpandCollapseButton' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Node = require( 'SCENERY/nodes/Node' );
@@ -24,6 +23,7 @@ define( function( require ) {
 
   // phet-io modules
   var TAccordionBox = require( 'SUN/TAccordionBox' );
+  var phetioEvents = require( 'ifphetio!PHET_IO/phetioEvents' );
 
   /**
    * @constructor
@@ -123,12 +123,6 @@ define( function( require ) {
     this._minWidth = options.minWidth;
     this._showTitleWhenExpanded = options.showTitleWhenExpanded;
     this._buttonAlign = options.buttonAlign;
-
-    // emitters for the PhET-iO data stream
-    this.startedCallbacksForExpandedTitleBarDownEmitter = new Emitter( { indicateCallbacks: false } );
-    this.endedCallbacksForExpandedTitleBarDownEmitter = new Emitter( { indicateCallbacks: false } );
-    this.startedCallbacksForCollapsedTitleBarDownEmitter = new Emitter( { indicateCallbacks: false } );
-    this.endedCallbacksForCollapsedTitleBarDownEmitter = new Emitter( { indicateCallbacks: false } );
 
     // @private {Array.<function>} - Actions to take when this AccordionBox is disposed. Will be called with a proper
     //                               'this' reference to the AccordionBox.
@@ -240,9 +234,9 @@ define( function( require ) {
     if ( options.titleBarExpandCollapse ) {
       this.collapsedTitleBar.addInputListener( {
         down: function() {
-          self.startedCallbacksForExpandedTitleBarDownEmitter.emit();
+          var id = phetioEvents.start && phetioEvents.start( 'user', options.tandem.id, TAccordionBox, 'expanded' );
           self.expandedProperty.value = true;
-          self.endedCallbacksForExpandedTitleBarDownEmitter.emit();
+          phetioEvents.end && phetioEvents.end( id );
         }
       } );
     }
@@ -250,12 +244,13 @@ define( function( require ) {
     // a11y we always want accessible tab focus on the title, even when titleBarExpandeCollapse === false
     this.collapsedTitleBar.addAccessibleInputListener( {
       click: function() {
-        self.startedCallbacksForExpandedTitleBarDownEmitter.emit();
+        var id = phetioEvents.start && phetioEvents.start( 'user', options.tandem.id, TAccordionBox, 'expanded' );
         self.expandedProperty.value = true;
-        self.endedCallbacksForExpandedTitleBarDownEmitter.emit();
 
         // a11y Set focus to expanded title bar
         self.expandedTitleBar.focus();
+
+        phetioEvents.end && phetioEvents.end( id );
       }
     } );
 
@@ -265,9 +260,9 @@ define( function( require ) {
       if ( options.titleBarExpandCollapse ) {
         this.expandedTitleBar.addInputListener( {
           down: function() {
-            self.startedCallbacksForCollapsedTitleBarDownEmitter.emit();
+            var id = phetioEvents.start && phetioEvents.start( 'user', options.tandem.id, TAccordionBox, 'collapsed' );
             self.expandedProperty.value = false;
-            self.endedCallbacksForCollapsedTitleBarDownEmitter.emit();
+            phetioEvents.end && phetioEvents.end( id );
           }
         } );
       }
@@ -275,12 +270,12 @@ define( function( require ) {
       // a11y we always want accessible tab focus on the title
       this.expandedTitleBar.addAccessibleInputListener( {
         click: function() {
-          self.startedCallbacksForCollapsedTitleBarDownEmitter.emit();
+          var id = phetioEvents.start && phetioEvents.start( 'user', options.tandem.id, TAccordionBox, 'collapsed' );
           self.expandedProperty.value = false;
-          self.endedCallbacksForCollapsedTitleBarDownEmitter.emit();
 
           // a11y Set focus to expanded title bar
           self.collapsedTitleBar.focus();
+          phetioEvents.end && phetioEvents.end( id );
         }
       } );
     }
@@ -334,7 +329,7 @@ define( function( require ) {
       self.expandedBox.visible = expanded;
       self.collapsedBox.visible = !expanded;
 
-      self.titleNode.visible = ( expanded && options.showTitleWhenExpanded ) || !expanded;
+      self.titleNode.visible = (expanded && options.showTitleWhenExpanded) || !expanded;
     };
     this.expandedProperty.link( expandedPropertyObserver );
     this.disposalActions.push( function() {
@@ -399,7 +394,7 @@ define( function( require ) {
         this._contentNode.right = contentSpanRight;
       }
       else { // center
-        this._contentNode.centerX = ( contentSpanLeft + contentSpanRight ) / 2;
+        this._contentNode.centerX = (contentSpanLeft + contentSpanRight) / 2;
       }
 
       // button horizontal layout
@@ -463,7 +458,7 @@ define( function( require ) {
 
       // content is below button+title
       if ( this._showTitleWhenExpanded ) {
-        return Math.max( width, this._contentNode.width + ( 2 * this._contentXMargin ) );
+        return Math.max( width, this._contentNode.width + (2 * this._contentXMargin) );
       }
       // content is next to button
       else {
@@ -478,7 +473,7 @@ define( function( require ) {
      * @returns {number}
      */
     getCollapsedBoxHeight: function() {
-      return Math.max( this.expandCollapseButton.height + ( 2 * this._buttonYMargin ), this.titleNode.height + ( 2 * this._titleYMargin ) );
+      return Math.max( this.expandCollapseButton.height + (2 * this._buttonYMargin), this.titleNode.height + (2 * this._titleYMargin) );
     },
 
     /**
@@ -494,7 +489,7 @@ define( function( require ) {
       }
       // content is next to button
       else {
-        return Math.max( this.expandCollapseButton.height + ( 2 * this._buttonYMargin ), this._contentNode.height + ( 2 * this._contentYMargin ) );
+        return Math.max( this.expandCollapseButton.height + (2 * this._buttonYMargin), this._contentNode.height + (2 * this._contentYMargin) );
       }
     },
 
