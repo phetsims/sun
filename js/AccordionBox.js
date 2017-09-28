@@ -20,9 +20,9 @@ define( function( require ) {
   var sun = require( 'SUN/sun' );
   var Tandem = require( 'TANDEM/Tandem' );
   var Text = require( 'SCENERY/nodes/Text' );
+  var TAccordionBox = require( 'SUN/TAccordionBox' );
 
   // phet-io modules
-  var TAccordionBox = require( 'SUN/TAccordionBox' );
   var phetioEvents = require( 'ifphetio!PHET_IO/phetioEvents' );
 
   /**
