@@ -19,7 +19,6 @@ define( function( require ) {
 
   // modules
   var Dimension2 = require( 'DOT/Dimension2' );
-  var Emitter = require( 'AXON/Emitter' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Node = require( 'SCENERY/nodes/Node' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
@@ -27,8 +26,12 @@ define( function( require ) {
   var SimpleDragHandler = require( 'SCENERY/input/SimpleDragHandler' );
   var sun = require( 'SUN/sun' );
   var Tandem = require( 'TANDEM/Tandem' );
+  var TOnOffSwitch = require( 'SUN/TOnOffSwitch' );
   var Util = require( 'DOT/Util' );
   var Vector2 = require( 'DOT/Vector2' );
+
+  // phet-io modules
+  var phetioEvents = require( 'ifphetio!PHET_IO/phetioEvents' );
 
   /**
    * @param {Property.<boolean>} onProperty
@@ -93,16 +96,16 @@ define( function( require ) {
     if ( options.thumbTouchAreaXDilation || options.thumbTouchAreaYDilation ) {
       thumbNode.touchArea = Shape.roundRect(
         -options.thumbTouchAreaXDilation, -options.thumbTouchAreaYDilation,
-        ( 0.5 * options.size.width ) + ( 2 * options.thumbTouchAreaXDilation ),
-        options.size.height + ( 2 * options.thumbTouchAreaYDilation), cornerRadius, cornerRadius );
+        (0.5 * options.size.width) + (2 * options.thumbTouchAreaXDilation),
+        options.size.height + (2 * options.thumbTouchAreaYDilation), cornerRadius, cornerRadius );
     }
 
     // thumb mouseArea
     if ( options.thumbMouseAreaXDilation || options.thumbMouseAreaYDilation ) {
       thumbNode.mouseArea = Shape.roundRect(
         -options.thumbMouseAreaXDilation, -options.thumbMouseAreaYDilation,
-        ( 0.5 * options.size.width ) + ( 2 * options.thumbMouseAreaXDilation ),
-        options.size.height + ( 2 * options.thumbMouseAreaYDilation ), cornerRadius, cornerRadius );
+        (0.5 * options.size.width) + (2 * options.thumbMouseAreaXDilation),
+        options.size.height + (2 * options.thumbMouseAreaYDilation), cornerRadius, cornerRadius );
     }
 
     // move thumb to on or off position
@@ -125,8 +128,6 @@ define( function( require ) {
     var accumulatedDelta = new Vector2(); // stores how far we are from where our drag started, in our local coordinate frame
     var passedDragThreshold = false; // whether we have dragged far enough to be considered for "drag" behavior (pick closest side), or "tap" behavior (toggle)
 
-    this.startedCallbacksForToggled = new Emitter();
-    this.endedCallbacksForToggled = new Emitter();
     this.addInputListener( new SimpleDragHandler( {
       tandem: options.tandem.createTandem( 'simpleDragHandler' ),
 
@@ -149,15 +150,15 @@ define( function( require ) {
 
         // whether the thumb is dragged outside of the possible range far enough beyond our threshold to potentially
         // trigger an immediate model change
-        var isDraggedOutside = viewPoint.x < ( 1 - 2 * options.toggleThreshold ) * halfThumbWidth ||
-                               viewPoint.x > ( -1 + 2 * options.toggleThreshold ) * halfThumbWidth + options.size.width;
+        var isDraggedOutside = viewPoint.x < (1 - 2 * options.toggleThreshold) * halfThumbWidth ||
+                               viewPoint.x > (-1 + 2 * options.toggleThreshold) * halfThumbWidth + options.size.width;
 
         var value = self.thumbPositionToValue(); // value represented by the current thumb position
 
         // track fill changes based on the thumb positions
         trackNode.fill = value ? options.trackOnFill : options.trackOffFill;
 
-        if ( options.toggleWhileDragging === true || ( isDraggedOutside && options.toggleWhileDragging === null ) ) {
+        if ( options.toggleWhileDragging === true || (isDraggedOutside && options.toggleWhileDragging === null) ) {
 
           // TODO: A way to distinguish between drag-to-toggle vs click-to-toggle
 
@@ -165,9 +166,12 @@ define( function( require ) {
           // stream, see https://github.com/phetsims/phet-io/issues/369
           var changed = onProperty.get() !== value;
           if ( changed ) {
-            self.startedCallbacksForToggled.emit2( !value, value );
+            var id = phetioEvents.start( 'user', options.tandem.id, TOnOffSwitch, 'toggled', {
+              oldValue: !value,
+              newValue: value
+            } );
             onProperty.set( value );
-            self.endedCallbacksForToggled.emit();
+            phetioEvents.end( id );
           }
         }
       },
@@ -190,7 +194,7 @@ define( function( require ) {
 
       translate: function( params ) {
         accumulatedDelta.add( params.delta );
-        passedDragThreshold = passedDragThreshold || ( accumulatedDelta.magnitudeSquared() > dragThresholdSquared );
+        passedDragThreshold = passedDragThreshold || (accumulatedDelta.magnitudeSquared() > dragThresholdSquared);
       }
     } ) );
 

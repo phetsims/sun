@@ -13,7 +13,6 @@ define( function( require ) {
   var phetioInherit = require( 'ifphetio!PHET_IO/phetioInherit' );
   var sun = require( 'SUN/sun' );
   var TNode = require( 'SCENERY/nodes/TNode' );
-  var toEventOnEmit = require( 'ifphetio!PHET_IO/toEventOnEmit' );
 
   /**
    * Wrapper type for phet/sun's OnOffSwitch class.
@@ -24,20 +23,6 @@ define( function( require ) {
   function TOnOffSwitch( onOffSwitch, phetioID ) {
     TNode.call( this, onOffSwitch, phetioID );
     assertInstanceOf( onOffSwitch, phet.sun.OnOffSwitch );
-
-    toEventOnEmit(
-      onOffSwitch.startedCallbacksForToggledEmitter,
-      onOffSwitch.startedCallbacksForToggledEmitter,
-      'user',
-      phetioID,
-      this.constructor,
-      'toggled',
-      function( oldValue, newValue ) {
-        return {
-          oldValue: oldValue,
-          newValue: newValue
-        };
-      } );
   }
 
   phetioInherit( TNode, 'TOnOffSwitch', TOnOffSwitch, {}, {
