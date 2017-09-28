@@ -38,6 +38,7 @@ define( function( require ) {
     var self = this;
 
     options = _.extend( {
+
       // {Tandem}
       tandem: Tandem.tandemRequired(),
 
