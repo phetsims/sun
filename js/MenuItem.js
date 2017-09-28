@@ -12,7 +12,6 @@ define( function( require ) {
   // modules
   var AccessibilityUtil = require( 'SCENERY/accessibility/AccessibilityUtil' );
   var ButtonListener = require( 'SCENERY/input/ButtonListener' );
-  var Emitter = require( 'AXON/Emitter' );
   var FontAwesomeNode = require( 'SUN/FontAwesomeNode' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Node = require( 'SCENERY/nodes/Node' );
@@ -24,6 +23,7 @@ define( function( require ) {
 
   // phet-io modules
   var TMenuItem = require( 'SUN/TMenuItem' );
+  var phetioEvents = require( 'ifphetio!PHET_IO/phetioEvents' );
 
   // the check mark used for toggle-able menu items
   var CHECK_MARK_NODE = new FontAwesomeNode( 'check', {
@@ -82,20 +82,16 @@ define( function( require ) {
     textNode.left = highlight.left + LEFT_X_MARGIN + CHECK_OFFSET; // text is left aligned
     textNode.centerY = highlight.centerY;
 
-    // @public (phet-io)
-    this.startedCallbacksForFiredEmitter = new Emitter( { indicateCallbacks: false } );
-    this.endedCallbacksForFiredEmitter = new Emitter( { indicateCallbacks: false } );
-
     this.addInputListener( {
       enter: function() { highlight.fill = HIGHLIGHT_COLOR; },
       exit: function() { highlight.fill = null; }
     } );
 
     var fire = function( event ) {
-      self.startedCallbacksForFiredEmitter.emit();
+      var id = phetioEvents.start( 'user', options.tandem.id, TMenuItem, 'fired' );
       closeCallback( event );
       callback( event );
-      self.endedCallbacksForFiredEmitter.emit();
+      phetioEvents.end( id );
     };
 
     this.addInputListener( new ButtonListener( {
