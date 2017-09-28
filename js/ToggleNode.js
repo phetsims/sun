@@ -26,12 +26,18 @@ define( function( require ) {
   function ToggleNode( trueNode, falseNode, booleanProperty, options ) {
 
     options = _.extend( {
+
+      // align centers of the nodes, see https://github.com/phetsims/sun/issues/2
+      alignIcons: function( trueNode, falseNode ) {
+        falseNode.center = trueNode.center;
+      },
+
       tandem: Tandem.tandemRequired()
     }, options );
-    Node.call( this );
 
-    // align centers of the nodes, see https://github.com/phetsims/sun/issues/272
-    falseNode.center = trueNode.center;
+    options.alignIcons( trueNode, falseNode );
+
+    Node.call( this );
 
     this.addChild( falseNode );
     this.addChild( trueNode );
