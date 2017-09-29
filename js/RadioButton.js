@@ -71,7 +71,7 @@ define( function( require ) {
     // set property value on fire
     var fire = function() {
       var id = phetioEvents.start( 'user', options.tandem.id, TRadioButton, 'fired', {
-        value: self.phetioValueType.toStateObject( value )
+        value: self.phetioValueType && self.phetioValueType.toStateObject && self.phetioValueType.toStateObject( value )
       } );
       property.set( value );
       phetioEvents.end( id );
