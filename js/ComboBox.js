@@ -27,6 +27,9 @@ define( function( require ) {
   var TComboBoxItemNode = require( 'SUN/TComboBoxItemNode' );
   var Vector2 = require( 'DOT/Vector2' );
 
+  // phet-io modules
+  var phetioEvents = require( 'ifphetio!PHET_IO/phetioEvents' );
+
   /**
    * @param {*[]} items - see ComboBox.createItem
    * @param {Property} property
@@ -80,11 +83,6 @@ define( function( require ) {
 
     this.enabledProperty = options.enabledProperty; // @public
 
-    this.startedCallbacksForComboBoxDismissedEmitter = new Emitter( { indicateCallbacks: false } );
-    this.endedCallbacksForComboBoxDismissedEmitter = new Emitter( { indicateCallbacks: false } );
-    this.startedCallbacksForComboBoxPopupShownEmitter = new Emitter( { indicateCallbacks: false } );
-    this.endedCallbacksForComboBoxPopupShownEmitter = new Emitter( { indicateCallbacks: false } );
-
     // optional label
     if ( options.labelNode !== null ) {
       self.addChild( options.labelNode );
@@ -95,8 +93,8 @@ define( function( require ) {
     var itemHeight = Math.max.apply( Math, _.map( items, 'node.height' ) ) + 2 * options.itemYMargin;
 
     // list
-    var listWidth = itemWidth + ( 2 * options.buttonXMargin );
-    var listHeight = ( items.length * itemHeight ) + ( 2 * options.listYMargin );
+    var listWidth = itemWidth + (2 * options.buttonXMargin);
+    var listHeight = (items.length * itemHeight) + (2 * options.listYMargin);
     var listNode = new Rectangle( 0, 0, listWidth, listHeight, {
       cornerRadius: options.listCornerRadius,
       fill: options.listFill,
@@ -151,7 +149,7 @@ define( function( require ) {
     items.forEach( function( item, index ) {
       var itemNodeOptions = _.extend( {
         left: options.buttonXMargin,
-        top: options.listYMargin + ( index * itemHeight ),
+        top: options.listYMargin + (index * itemHeight),
         cursor: 'pointer',
         inputListeners: [ itemListener ]
       }, item.options );
@@ -214,12 +212,12 @@ define( function( require ) {
       down: function() {
         if ( enableClickToDismissListener ) {
 
-          self.startedCallbacksForComboBoxDismissedEmitter.emit();
+          var id = phetioEvents.start( 'user', options.tandem.id, TComboBox, 'popupHidden' );
 
           display.removeInputListener( clickToDismissListener );
           listNode.visible = false;
 
-          self.endedCallbacksForComboBoxDismissedEmitter.emit();
+          phetioEvents.end( id );
         }
         else {
           enableClickToDismissListener = true;
@@ -232,7 +230,7 @@ define( function( require ) {
     buttonNode.addInputListener( {
       down: function() {
         if ( !listNode.visible ) {
-          self.startedCallbacksForComboBoxPopupShownEmitter.emit();
+          var id = phetioEvents.start( 'user', options.tandem.id, TComboBox, 'popupShown' );
 
           moveList();
           listNode.moveToFront();
@@ -241,7 +239,7 @@ define( function( require ) {
           display = self.getUniqueTrail().rootNode().getRootedDisplays()[ 0 ];
           display.addInputListener( clickToDismissListener );
 
-          self.endedCallbacksForComboBoxPopupShownEmitter.emit();
+          phetioEvents.end( id );
         }
       }
     } );
@@ -359,8 +357,8 @@ define( function( require ) {
     }
 
     // button background
-    var width = itemNode.width + ( 4 * options.buttonXMargin ) + arrow.width;
-    var height = itemNode.height + ( 2 * options.buttonYMargin );
+    var width = itemNode.width + (4 * options.buttonXMargin) + arrow.width;
+    var height = itemNode.height + (2 * options.buttonYMargin);
     var background = new Rectangle( 0, 0, width, height, {
       cornerRadius: options.buttonCornerRadius,
       fill: options.buttonFill,
