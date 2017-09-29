@@ -172,11 +172,7 @@ define( function( require ) {
       assert && assert( !contentArray[ i ].tandem, 'content arrays should not have tandem instances, they should use ' +
                                                    'tandemName instead' );
 
-      if ( Tandem.validationEnabled() ) {
-        assert && assert( contentArray[ i ].tandemName, 'In PhET-iO mode, radio button group members must have a provided tandem' );
-      }
-
-      var radioButton = new RadioButtonGroupMember( property, contentArray[ i ].value, _.extend( {
+      var opts = _.extend( {
         content: contentArray[ i ].node,
         xMargin: options.buttonContentXMargin,
         yMargin: options.buttonContentYMargin,
@@ -184,10 +180,13 @@ define( function( require ) {
         yAlign: options.buttonContentYAlign,
         minWidth: widestContentWidth + 2 * options.buttonContentXMargin,
         minHeight: tallestContentHeight + 2 * options.buttonContentYMargin,
+      }, buttonOptions );
 
-        // Pass through the tandem given the tandemName, but also support uninstrumented simulations
-        tandem: options.tandem.createTandem( contentArray[ i ].tandemName || ('radioButtonGroupMember' + i) )
-      }, buttonOptions ) );
+      // Pass through the tandem given the tandemName, but also support uninstrumented simulations
+      if ( contentArray[ i ].tandemName ) {
+        opts.tandem = options.tandem.createTandem( contentArray[ i ] );
+      }
+      var radioButton = new RadioButtonGroupMember( property, contentArray[ i ].value, opts );
 
       // a11y - so the browser and assistive technology recognizes that these buttons are in the same group
       radioButton.setAccessibleAttribute( 'name', 'radioButtonGroup' + instanceCount + 'Member' );
@@ -205,8 +204,8 @@ define( function( require ) {
       // if a label is given, the button becomes a LayoutBox with the label and button
       if ( contentArray[ i ].label ) {
         var label = contentArray[ i ].label;
-        var labelOrientation = ( options.labelAlign === 'bottom' || options.labelAlign === 'top' ) ? 'vertical' : 'horizontal';
-        var labelChildren = ( options.labelAlign === 'left' || options.labelAlign === 'top' ) ? [ label, radioButton ] : [ radioButton, label ];
+        var labelOrientation = (options.labelAlign === 'bottom' || options.labelAlign === 'top') ? 'vertical' : 'horizontal';
+        var labelChildren = (options.labelAlign === 'left' || options.labelAlign === 'top') ? [ label, radioButton ] : [ radioButton, label ];
         button = new LayoutBox( {
           children: labelChildren,
           spacing: options.labelSpacing,
