@@ -182,14 +182,17 @@ define( function( require ) {
         // if moved past the threshold, choose value based on the side, otherwise just toggle
         var newValue = passedDragThreshold ? self.thumbPositionToValue() : !onProperty.get();
 
-        self.startedCallbacksForToggled.emit2( oldValue, newValue );
+        var id = phetioEvents.start( 'user', options.tandem.id, TOnOffSwitch, 'toggled', {
+          oldValue: oldValue,
+          newValue: newValue
+        } );
 
         onProperty.set( newValue );
 
         // update the thumb location (sanity check that it's here, only needs to be run if passedDragThreshold===true)
         updateThumb( onProperty.get() );
 
-        self.startedCallbacksForToggled.emit();
+        phetioEvents.end( id );
       },
 
       translate: function( params ) {
