@@ -10,9 +10,9 @@ define( function( require ) {
 
   // modules
   var ButtonListener = require( 'SCENERY/input/ButtonListener' );
-  var Emitter = require( 'AXON/Emitter' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Node = require( 'SCENERY/nodes/Node' );
+  var phetioEvents = require( 'ifphetio!PHET_IO/phetioEvents' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var sun = require( 'SUN/sun' );
   var Tandem = require( 'TANDEM/Tandem' );
@@ -53,10 +53,6 @@ define( function( require ) {
     // @public (phet-io)
     this.phetioValueType = property.phetioValueType;
 
-    // Emitters for the PhET-iO data stream
-    this.startedCallbacksForFiredEmitter = new Emitter( { indicateCallbacks: false } );
-    this.endedCallbacksForFiredEmitter = new Emitter( { indicateCallbacks: false } );
-
     //Add an invisible node to make sure the layout for selected vs deselected is the same
     var background = new Rectangle( selectedNode.bounds.union( deselectedNode.bounds ) );
     selectedNode.pickable = deselectedNode.pickable = false; // the background rectangle suffices
@@ -67,25 +63,25 @@ define( function( require ) {
 
     // sync control with model
     var syncWithModel = function( newValue ) {
-      selectedNode.visible = ( newValue === value );
+      selectedNode.visible = (newValue === value);
       deselectedNode.visible = !selectedNode.visible;
     };
     property.link( syncWithModel );
 
     // set property value on fire
     var fire = function() {
-      self.startedCallbacksForFiredEmitter.emit1( value );
+      var id = phetioEvents.start( 'user', options.tandem.id, TRadioButton, 'fired', {
+        value: self.phetioValueType.toStateObject( value )
+      } );
       property.set( value );
-      self.endedCallbacksForFiredEmitter.emit();
+      phetioEvents.end( id );
     };
-    var buttonListener = new ButtonListener( {
-      fire: fire
-    } );
+    var buttonListener = new ButtonListener( { fire: fire } );
     this.addInputListener( buttonListener );
 
     // a11y - input listener so that updates the state of the radio button with keyboard interaction
     var changeListener = this.addAccessibleInputListener( {
-      change: function( ) {
+      change: function() {
         fire();
       }
     } );

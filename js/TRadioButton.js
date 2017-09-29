@@ -14,7 +14,6 @@ define( function( require ) {
   var sun = require( 'SUN/sun' );
   var Tandem = require( 'TANDEM/Tandem' );
   var TNode = require( 'SCENERY/nodes/TNode' );
-  var toEventOnEmit = require( 'ifphetio!PHET_IO/toEventOnEmit' );
 
   /**
    * Wrapper type for phet/sun's RadioButton class.
@@ -29,17 +28,6 @@ define( function( require ) {
     }
     assertInstanceOf( radioButton, phet.sun.RadioButton );
     TNode.call( this, radioButton, phetioID );
-
-    toEventOnEmit(
-      radioButton.startedCallbacksForFiredEmitter,
-      radioButton.endedCallbacksForFiredEmitter,
-      'user',
-      phetioID,
-      this.constructor,
-      'fired',
-      function( value ) {
-        return { value: radioButton.phetioValueType.toStateObject( value ) };
-      } );
   }
 
   phetioInherit( TNode, 'TRadioButton', TRadioButton, {}, {
