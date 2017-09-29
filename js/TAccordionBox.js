@@ -9,11 +9,11 @@ define( function( require ) {
 
   // modules
   var TNode = require( 'SCENERY/nodes/TNode' );
+  var sun = require( 'SUN/sun' );
 
   // phet-io modules
   var assertInstanceOf = require( 'ifphetio!PHET_IO/assertions/assertInstanceOf' );
   var phetioInherit = require( 'ifphetio!PHET_IO/phetioInherit' );
-  var sun = require( 'SUN/sun' );
 
   /**
    * Wrapper type for phet/sun's AccordionBox class.
