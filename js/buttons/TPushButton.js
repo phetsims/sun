@@ -14,7 +14,6 @@ define( function( require ) {
   var sun = require( 'SUN/sun' );
   var TFunctionWrapper = require( 'ifphetio!PHET_IO/types/TFunctionWrapper' );
   var TNode = require( 'SCENERY/nodes/TNode' );
-  var toEventOnEmit = require( 'ifphetio!PHET_IO/toEventOnEmit' );
   var TVoid = require( 'ifphetio!PHET_IO/types/TVoid' );
 
   /**
@@ -30,16 +29,6 @@ define( function( require ) {
       phet.sun.RoundPushButton,
       phet.sun.RectangularPushButton
     ] );
-
-    assert && assert( button.buttonModel.startedCallbacksForFiredEmitter, 'button models should use emitters' );
-    toEventOnEmit(
-      button.buttonModel.startedCallbacksForFiredEmitter,
-      button.buttonModel.endedCallbacksForFiredEmitter,
-      'user',
-      phetioID,
-      this.constructor,
-      'fired'
-    );
   }
 
   phetioInherit( TNode, 'TPushButton', TPushButton, {

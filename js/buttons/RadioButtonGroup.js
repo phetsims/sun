@@ -184,7 +184,7 @@ define( function( require ) {
 
       // Pass through the tandem given the tandemName, but also support uninstrumented simulations
       if ( contentArray[ i ].tandemName ) {
-        opts.tandem = options.tandem.createTandem( contentArray[ i ] );
+        opts.tandem = options.tandem.createTandem( contentArray[ i ].tandemName );
       }
       var radioButton = new RadioButtonGroupMember( property, contentArray[ i ].value, opts );
 

@@ -15,8 +15,10 @@ define( function( require ) {
   var CallbackTimer = require( 'SUN/CallbackTimer' );
   var Emitter = require( 'AXON/Emitter' );
   var inherit = require( 'PHET_CORE/inherit' );
+  var phetioEvents = require( 'ifphetio!PHET_IO/phetioEvents' );
   var sun = require( 'SUN/sun' );
   var Tandem = require( 'TANDEM/Tandem' );
+  var TPushButtonModel = require( 'SUN/buttons/TPushButtonModel' );
 
   /**
    * @param {Object} [options]
@@ -38,19 +40,13 @@ define( function( require ) {
 
     var self = this;
 
+    this.tandem = options.tandem;
+
     ButtonModel.call( this, options );
 
-    // @public (phet-io) support for the phet-io data stream
-    this.startedCallbacksForFiredEmitter = new Emitter( {
-      indicateCallbacks: false,
-      tandem: options.tandem.createTandem( 'startedCallbacksForFiredEmitter' ),
-      phetioEmitData: false
-    } );
-    this.endedCallbacksForFiredEmitter = new Emitter( {
-      indicateCallbacks: false,
-      tandem: options.tandem.createTandem( 'endedCallbacksForFiredEmitter' ),
-      phetioEmitData: false
-    } );
+    // @public used by a11y to disable utterances during reset
+    this.startedFireEmitter = new Emitter();
+    this.endedFireEmitter = new Emitter();
 
     this.listeners = []; // @private
     if ( options.listener !== null ) {
@@ -106,9 +102,6 @@ define( function( require ) {
         this.timer.dispose();
         this.timer = null;
       }
-
-      this.startedCallbacksForFiredEmitter.dispose();
-      this.endedCallbacksForFiredEmitter.dispose();
     };
   }
 
@@ -161,13 +154,13 @@ define( function( require ) {
       // Make sure the button is not already firing, see https://github.com/phetsims/energy-skate-park-basics/issues/380
       assert && assert( !this.isFiring, 'Cannot fire when already firing' );
       this.isFiring = true;
-      this.startedCallbacksForFiredEmitter.emit();
+      var id = phetioEvents.start( 'user', this.tandem.id, TPushButtonModel, 'fired' );
       var copy = this.listeners.slice( 0 );
       copy.forEach( function( listener ) {
         listener();
       } );
-      this.endedCallbacksForFiredEmitter.emit();
       this.isFiring = false;
+      phetioEvents.end( id );
     }
   } );
 } );
