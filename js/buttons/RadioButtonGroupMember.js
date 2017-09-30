@@ -65,14 +65,14 @@ define( function( require ) {
       tagName: 'input',
       inputType: 'radio',
 
-      tandem: Tandem.tandemOptional(),
+      tandem: Tandem.tandemRequired(),
       phetioType: TRadioButtonGroupMember
     }, options );
 
     assert && assert( !options.hasOwnProperty( 'phetioValueType' ), 'phetioValueType should be provided by the property and not through options.' );
 
     // @public (phet-io)
-    this.radioButtonGroupMemberModel = new RadioButtonGroupMemberModel( property, value );
+    this.radioButtonGroupMemberModel = new RadioButtonGroupMemberModel( property, value, options.tandem );
     this.phetioValueType = property.phetioValueType;
 
     // @public for use in RadioButtonGroup for managing the labels
@@ -114,7 +114,7 @@ define( function( require ) {
 
     /**
      * Ensure eligibility for garbage collection.
-     * 
+     *
      * @public
      */
     dispose: function() {

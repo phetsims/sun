@@ -11,16 +11,18 @@ define( function( require ) {
 
   // modules
   var ButtonModel = require( 'SUN/buttons/ButtonModel' );
-  var Emitter = require( 'AXON/Emitter' );
   var inherit = require( 'PHET_CORE/inherit' );
+  var phetioEvents = require( 'ifphetio!PHET_IO/phetioEvents' );
   var sun = require( 'SUN/sun' );
+  var TRadioButtonGroupMember = require( 'SUN/TRadioButtonGroupMember' );
 
   /**
    * @param {Property} selectorProperty - the property for the RadioButtonGroup that determines which button is selected
    * @param {Object} selectedValue - the value that selectorProperty takes when this particular SingleRadioButton is selected
+   * @param {Tandem} tandem
    * @constructor
    */
-  function RadioButtonGroupMemberModel( selectorProperty, selectedValue ) {
+  function RadioButtonGroupMemberModel( selectorProperty, selectedValue, tandem ) {
 
     ButtonModel.call( this );
 
@@ -28,15 +30,15 @@ define( function( require ) {
 
     this.selectedValue = selectedValue;
     this.selectorProperty = selectorProperty;
-    this.startedCallbacksForFiredEmitter = new Emitter( { indicateCallbacks: false } );
-    this.endedCallbacksForFiredEmitter = new Emitter( { indicateCallbacks: false } );
 
     // @public (read only) - fire on up if the button is enabled, public for use in the accessibility tree
     this.fire = function() {
       if ( self.enabledProperty.get() ) {
-        self.startedCallbacksForFiredEmitter.emit1( selectedValue );
+        var id = phetioEvents.start( 'user', tandem.id, TRadioButtonGroupMember, 'fired', {
+          value: selectorProperty.phetioValueType && selectorProperty.phetioValueType.toStateObject && selectorProperty.phetioValueType.toStateObject( selectedValue )
+        } );
         selectorProperty.set( selectedValue );
-        self.endedCallbacksForFiredEmitter.emit();
+        phetioEvents.end( id );
       }
     };
     this.downProperty.onValue( false, function() {

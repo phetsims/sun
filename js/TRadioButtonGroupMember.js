@@ -28,18 +28,6 @@ define( function( require ) {
     }
     assertInstanceOf( radioButton, phet.sun.RadioButtonGroupMember );
     TNode.call( this, radioButton, phetioID );
-
-    toEventOnEmit(
-      radioButton.radioButtonGroupMemberModel.startedCallbacksForFiredEmitter,
-      radioButton.radioButtonGroupMemberModel.endedCallbacksForFiredEmitter,
-      'user',
-      phetioID,
-      this.constructor,
-      'fired',
-      function( value ) {
-        return { value: radioButton.phetioValueType.toStateObject( value ) };
-      }
-    );
   }
 
   phetioInherit( TNode, 'TRadioButtonGroupMember', TRadioButtonGroupMember, {}, {
