@@ -13,7 +13,6 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var Emitter = require( 'AXON/Emitter' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Line = require( 'SCENERY/nodes/Line' );
   var Node = require( 'SCENERY/nodes/Node' );
@@ -132,7 +131,9 @@ define( function( require ) {
         // {ComboBoxItemNode}
         var selectedItemNode = event.currentTarget;
 
-        selectedItemNode.startedCallbacksForItemFiredEmitter.emit1( selectedItemNode.item.value );
+        var id = phetioEvents.start( 'user', options.tandem.id, TComboBoxItemNode, 'fired', {
+          value: selectedItemNode.phetioValueType.toStateObject( selectedItemNode.item.value )
+        } );
 
         unhighlightItem( selectedItemNode );
         listNode.visible = false; // close the list, do this before changing property value, in case it's expensive
@@ -140,8 +141,7 @@ define( function( require ) {
         event.abort(); // prevent nodes (eg, controls) behind the list from receiving the event
         property.value = selectedItemNode.item.value; // set the property
 
-        selectedItemNode.endedCallbacksForItemFiredEmitter.emit1( selectedItemNode.item.value );
-
+        phetioEvents.end( id );
       }
     };
 
@@ -450,9 +450,6 @@ define( function( require ) {
 
     this.item = item;
     this.phetioValueType = options.phetioValueType;
-
-    this.startedCallbacksForItemFiredEmitter = new Emitter( { indicateCallbacks: false } );
-    this.endedCallbacksForItemFiredEmitter = new Emitter( { indicateCallbacks: false } );
 
     Rectangle.call( this, 0, 0, width, height, options );
   }

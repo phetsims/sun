@@ -15,7 +15,6 @@ define( function( require ) {
   // phet-io modules
   var assertInstanceOf = require( 'ifphetio!PHET_IO/assertions/assertInstanceOf' );
   var phetioInherit = require( 'ifphetio!PHET_IO/phetioInherit' );
-  var toEventOnEmit = require( 'ifphetio!PHET_IO/toEventOnEmit' );
 
   /**
    * Wrapper type for phet/sun's ComboBox class.
@@ -24,15 +23,9 @@ define( function( require ) {
    * @constructor
    */
   function TComboBoxItemNode( comboBoxItemNode, phetioID ) {
-
     assertInstanceOf( comboBoxItemNode, phet.sun.ComboBox.ItemNode );
     TNode.call( this, comboBoxItemNode, phetioID );
-
     assert && assert( comboBoxItemNode.phetioValueType, 'Each item node must have a phetioValueType.' );
-
-    toEventOnEmit( comboBoxItemNode.startedCallbacksForItemFiredEmitter, comboBoxItemNode.endedCallbacksForItemFiredEmitter, 'user', phetioID, this.constructor, 'fired', function( selection ) {
-      return { value: comboBoxItemNode.phetioValueType.toStateObject( selection ) };
-    } );
   }
 
   phetioInherit( TNode, 'TComboBoxItemNode', TComboBoxItemNode, {}, {
@@ -43,5 +36,4 @@ define( function( require ) {
   sun.register( 'TComboBoxItemNode', TComboBoxItemNode );
 
   return TComboBoxItemNode;
-
 } );
