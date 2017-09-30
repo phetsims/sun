@@ -155,12 +155,14 @@ define( function( require ) {
       assert && assert( !this.isFiring, 'Cannot fire when already firing' );
       this.isFiring = true;
       var id = phetioEvents.start( 'user', this.tandem.id, TPushButtonModel, 'fired' );
+      this.startedFireEmitter.emit(); // So that a11y can disable utterancequeue
       var copy = this.listeners.slice( 0 );
       copy.forEach( function( listener ) {
         listener();
       } );
       this.isFiring = false;
       phetioEvents.end( id );
+      this.endedFireEmitter.emit(); // So that a11y can enable utterancequeue
     }
   } );
 } );
