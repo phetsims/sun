@@ -115,7 +115,7 @@ define( function( require ) {
       // If the button was firing, we must complete the PhET-iO transaction before disposing of those emitters
       // see https://github.com/phetsims/energy-skate-park-basics/issues/380
       if ( this.isFiring ) {
-        this.endedCallbacksForFiredEmitter.emit();
+        this.endedFireEmitter.emit();
       }
 
       this.disposePushButtonModel();

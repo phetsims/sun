@@ -132,7 +132,11 @@ define( function( require ) {
         var selectedItemNode = event.currentTarget;
 
         var id = phetioEvents.start( 'user', options.tandem.id, TComboBoxItemNode, 'fired', {
-          value: selectedItemNode.phetioValueType.toStateObject( selectedItemNode.item.value )
+
+          // support uninstrumented sims
+          value: selectedItemNode.phetioValueType &&
+                 selectedItemNode.phetioValueType.toStateObject &&
+                 selectedItemNode.phetioValueType.toStateObject( selectedItemNode.item.value )
         } );
 
         unhighlightItem( selectedItemNode );
