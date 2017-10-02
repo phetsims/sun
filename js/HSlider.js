@@ -393,8 +393,9 @@ define( function( require ) {
       thumb.dispose && thumb.dispose(); // in case a custom thumb is provided via options.thumbNode that doesn't implement dispose
       self.track.dispose();
       valueProperty.unlink( valueObserver );
-      self.enabledRangeProperty.unlink( enabledRangeObserver );
-      self.enabledProperty.unlink( enabledObserver );
+      self.enabledRangeProperty.dispose();
+      self.enabledProperty.dispose();
+
       self.removeAccessibleInputListener( accessibleInputListener );
       valueProperty.unlink( accessiblePropertyListener );
 
