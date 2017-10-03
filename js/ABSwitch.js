@@ -100,30 +100,53 @@ define( function( require ) {
       }
     }
 
-    // sync properties
-    property.link( function( object ) {
+    // sync properties, listeners must be disposed
+    var propertyListener = function( object ) {
       onProperty.set( valueB === object );
-    } );
-    onProperty.link( function( on ) {
+    };
+    property.link( propertyListener );
+
+    var onPropertyListener = function( on ) {
       property.set( on ? valueB : valueA );
       if ( options.setEnabled ) {
         options.setEnabled( labelA, !on );
         options.setEnabled( labelB, on );
       }
-    } );
+    };
+    onProperty.link( onPropertyListener );
 
-    // click on labels to select
-    labelA.addInputListener( new ButtonListener( {
+    // click on labels to select, must be disposed
+    var aInputListener = new ButtonListener( {
       fire: function() { onProperty.set( false ); }
-    } ) );
-    labelB.addInputListener( new ButtonListener( {
+    } );
+    var bInputListener = new ButtonListener( {
       fire: function() { onProperty.set( true ); }
-    } ) );
+    } );
+    labelA.addInputListener( aInputListener );
+    labelB.addInputListener( bInputListener );
+
+    // @private - for dispose
+    this.disposeABSwitch = function() {
+      property.unlink( propertyListener );
+      onProperty.unlink( onPropertyListener );
+      labelA.removeInputListener( aInputListener );
+      labelB.removeInputListener( bInputListener );
+    };
 
     this.mutate( options );
   }
 
   sun.register( 'ABSwitch', ABSwitch );
 
-  return inherit( Node, ABSwitch );
+  return inherit( Node, ABSwitch, {
+
+    /**
+     * Make eligible for garbage collection.
+     * @public
+     */
+    dispose: function() {
+      this.disposeABSwitch();
+      Node.prototype.dispose.call( this );
+    }
+  } );
 } );
