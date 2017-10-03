@@ -324,6 +324,9 @@ define( function( require ) {
           // Prevent default so browser doesn't change input value automatically
           if ( Input.isRangeKey( code ) ) {
             event.preventDefault();
+
+            // keydown is the start of the drag
+            options.startDrag();
           }
 
           var newValue = valueProperty.get();
@@ -385,6 +388,11 @@ define( function( require ) {
         if ( event.keyCode === Input.KEY_SHIFT ) {
           self._shiftKey = false;    
         }
+
+        // when range key is released, we are done dragging
+        if ( Input.isRangeKey( event.keyCode ) ) {
+          options.endDrag();
+        }
       },
       change: function( event ) {
 
@@ -392,6 +400,9 @@ define( function( require ) {
         // going through keydown. In that case, handle the change depending on which direction the user tried to go
         var inputValue = event.target.value;
         var stepSize = self._shiftKey ? self.shiftKeyboardStep : self.keyboardStep;
+
+        // start of change event is start of drag
+        options.startDrag();
 
         var newValue = valueProperty.get();
         if ( inputValue > valueProperty.get() ) {
@@ -412,6 +423,9 @@ define( function( require ) {
 
         // optionally constrain value
         valueProperty.set( options.constrainValue( newValue ) );
+
+        // end of change is the end of a drag
+        options.endDrag();
       },
       blur: function( event ) {
 
