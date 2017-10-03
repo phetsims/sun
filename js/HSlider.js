@@ -138,6 +138,9 @@ define( function( require ) {
     this._shiftKeyboardStep = options.shiftKeyboardStep;
     this._pageKeyboardStep = options.pageKeyboardStep;
 
+    // @private (a11y) - whether or not 'shift' key is currently held down
+    this._shiftKey = false;
+
     // @private ticks are added to these parents, so they are behind the knob
     this.majorTicksParent = new Node();
     this.minorTicksParent = new Node();
@@ -268,6 +271,9 @@ define( function( require ) {
       lineWidth: options.focusHighlightLineWidth
     } );
 
+    // a11y - arbitrary value, but required for screen readers to manage change events correctly
+    this.setAccessibleAttribute( 'step', 0.1 );
+
     // update thumb location when value changes
     var valueObserver = function( value ) {
       thumb.centerX = self.valueToPosition( value );
@@ -293,18 +299,25 @@ define( function( require ) {
 
       // clamp the value to the enabled range if it changes
       valueProperty.set( Util.clamp( valueProperty.value, enabledRange.min, enabledRange.max ) );
+
+      // a11y - update enabled slider range for AT, required for screen reader events to behave correctly
+      self.setAccessibleAttribute( 'min', enabledRange.min );
+      self.setAccessibleAttribute( 'max', enabledRange.max );
     };
     this.enabledRangeProperty.link( enabledRangeObserver ); // needs to be unlinked in dispose function
 
     this.mutate( options );
 
     // a11y - Implements the keyboard interaction for a typical HTML range slider - browsers place limitations
-    // on the interaction when the slider range is not evently divisible by the step size.  Rather
+    // on the interaction when the slider range is not evenly divisible by the step size.  Rather
     // than allow the browser to natively change the valueProperty with an input event, we decided to roll our
-    // own implementation, but keep the general behavior the same.
+    // own implementation, but keep the general behavior the same. It is possible that some screen readers
+    // will try to change the value without triggering a keydown event, so we must handle the change event
+    // as well.
     var accessibleInputListener = this.addAccessibleInputListener( {
       keydown: function( event ) {
         var code = event.keyCode;
+        self._shiftKey = event.shiftKey;
 
         if ( self.enabledProperty.get() ) {
 
@@ -343,7 +356,6 @@ define( function( require ) {
 
               // if the shift key is pressed down, modify the step size (this is atypical browser behavior for sliders)
               stepSize = event.shiftKey ? self.shiftKeyboardStep : self.keyboardStep;
-              //
 
               if ( code === Input.KEY_RIGHT_ARROW || code === Input.KEY_UP_ARROW ) {
                 newValue = valueProperty.get() + stepSize;
@@ -355,11 +367,8 @@ define( function( require ) {
               // round the value to the nearest keyboard step
               newValue = Util.roundSymmetric( newValue / stepSize ) * stepSize;
 
-              // it is possible to pass a value in either direction due to rounding, go up or down a step if we have
-              // passed the nearest step
-              if ( Util.toFixedNumber( Math.abs( newValue - valueProperty.get() ), 5 ) > stepSize ) {
-                newValue += ( newValue > valueProperty.get() ) ? ( -1 * stepSize ) : stepSize;
-              }
+              // go back a step if we went too far due to rounding
+              newValue = correctRounding( newValue, stepSize );
             }
 
             // limit the value to the enabled range
@@ -369,9 +378,57 @@ define( function( require ) {
           // optionally constrain the value further
           valueProperty.set( options.constrainValue( newValue ) );
         }
+      },
+      keyup: function( event ) {
+
+        // reset shift key flag when we release it
+        if ( event.keyCode === Input.KEY_SHIFT ) {
+          self._shiftKey = false;    
+        }
+      },
+      change: function( event ) {
+
+        // it is possible that the user agent (particularly VoiceOver) will initiate a change event directly without
+        // going through keydown. In that case, handle the change depending on which direction the user tried to go
+        var inputValue = event.target.value;
+        var stepSize = self._shiftKey ? self.shiftKeyboardStep : self.keyboardStep;
+
+        var newValue = valueProperty.get();
+        if ( inputValue > valueProperty.get() ) {
+          newValue = valueProperty.get() + stepSize;
+        }
+        else if ( inputValue < valueProperty.get() ) {
+          newValue = valueProperty.get() - stepSize;
+        }
+
+        // round to nearest step size
+        newValue = Util.roundSymmetric( newValue / stepSize ) * stepSize;
+
+        // go back a step if we went too far due to rounding
+        newValue = correctRounding( newValue, stepSize );
+
+        // limit to enabled range
+        newValue = Util.clamp( newValue, self.enabledRange.min, self.enabledRange.max );
+
+        // optionally constrain value
+        valueProperty.set( options.constrainValue( newValue ) );
+      },
+      blur: function( event ) {
+
+        // reset flag in case we shift-tabbed away from slider
+        self._shiftKey = false;
       }
     } );
 
+    // a11y - it is possible due to rounding to go up or down a step if we have passed the nearest step during keyboard
+    // interaction
+    var correctRounding = function( value, stepSize ) {
+      var correctedValue = value;
+      if ( Util.toFixedNumber( Math.abs( value - valueProperty.get() ), 5 ) > stepSize ) {
+        correctedValue += ( value > valueProperty.get() ) ? ( -1 * stepSize ) : stepSize;
+      }
+      return correctedValue;
+    };
 
     // a11y - when the property changes, be sure to update the accessible input value and
     // aria-valuetext for assistive, which is read by assistive technology when the value changes
