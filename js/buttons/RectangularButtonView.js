@@ -118,7 +118,8 @@ define( function( require ) {
         content.pickable = false;
       }
 
-      this.addChild( new AlignBox( content, {
+      // align content in the button, this AlignBox must be disposed since it adds listener to content bounds
+      var alignBox = new AlignBox( content, {
         alignBounds: new Bounds2(
           options.xMargin,
           options.yMargin,
@@ -127,7 +128,8 @@ define( function( require ) {
         ),
         xAlign: options.xAlign,
         yAlign: options.yAlign
-      } ) );
+      } );
+      this.addChild( alignBox );
     }
 
     // Hook up the strategy that will control the basic button appearance.
@@ -169,6 +171,10 @@ define( function( require ) {
       buttonAppearanceStrategy.dispose();
       contentAppearanceStrategy.dispose();
       interactionStateProperty.unlink( handleInteractionStateChanged );
+
+      if ( content ) {
+        alignBox.dispose();
+      }
     };
   }
 
