@@ -256,7 +256,7 @@ define( function( require ) {
     var self = this;
 
     // When the entire RadioButtonGroup gets disabled, gray them out and make them unpickable (and vice versa)
-    this.enabledProperty.link( function( isEnabled ) {
+    var enabledListener = function( isEnabled ) {
       self.pickable = isEnabled;
 
       for ( i = 0; i < contentArray.length; i++ ) {
@@ -269,10 +269,11 @@ define( function( require ) {
           buttons[ i ].enabled = isEnabled;
         }
       }
-    } );
+    };
+    this.enabledProperty.link( enabledListener );
 
     // make the unselected buttons pickable and have a pointer cursor
-    property.link( function( value ) {
+    var propertyListener = function( value ) {
       if ( self.enabledProperty.get() ) {
         for ( i = 0; i < contentArray.length; i++ ) {
           if ( contentArray[ i ].value === value ) {
@@ -285,7 +286,19 @@ define( function( require ) {
           }
         }
       }
-    } );
+    };
+    property.link( propertyListener );
+
+    // @private - remove listeners from buttons and make eligible for garbage collection
+    this.disposeRadioButtonGroup = function() {
+      self.enabledProperty.unlink( enabledListener );
+      property.unlink( propertyListener );
+
+      // dispose all buttons
+      for ( i = 0; i < contentArray.length; i++ ) {
+        buttons[ i ].dispose();
+      }
+    };
   }
 
   sun.register( 'RadioButtonGroup', RadioButtonGroup );
@@ -294,7 +307,7 @@ define( function( require ) {
 
     // @public
     dispose: function() {
-      //TODO implement this, see sun#212
+      this.disposeRadioButtonGroup();
       LayoutBox.prototype.dispose.call( this );
     },
 
