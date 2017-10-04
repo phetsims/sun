@@ -29,18 +29,37 @@ define( function( require ) {
    */
   function RoundStickyToggleButton( valueUp, valueDown, property, options ) {
 
+    var self = this;
+    
     options = _.extend( {
       tandem: Tandem.tandemRequired(),
-      phetioType: TToggleButton
+      phetioType: TToggleButton,
+
+      // a11y
+      tagName: 'input',
+      inputType: 'button'
     }, options );
 
     // @public (phet-io)
     this.toggleButtonModel = new StickyToggleButtonModel( valueUp, valueDown, property );
     this.phetioValueType = property.phetioValueType;
     RoundButtonView.call( this, this.toggleButtonModel, new StickyToggleButtonInteractionStateProperty( this.toggleButtonModel ), options );
+
+    // @private (a11y) - toggle the button when we receive the accessible click event
+    this.accessibleClickListener = this.addAccessibleInputListener( {
+      click: function ( event ) {
+        self.toggleButtonModel.toggle();
+      }
+    } );
   }
 
   sun.register( 'RoundStickyToggleButton', RoundStickyToggleButton );
 
-  return inherit( RoundButtonView, RoundStickyToggleButton );
+  return inherit( RoundButtonView, RoundStickyToggleButton, {
+    dispose: function() {
+      this.removeAccessibleInputListener( this.accessibleClickListener );
+      this.toggleButtonModel.dispose(); //TODO this fails with assertions enabled, see sun#212
+      RoundButtonView.prototype.dispose.call( this );
+    }
+  } );
 } );
