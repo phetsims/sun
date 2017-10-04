@@ -49,7 +49,7 @@ define( function( require ) {
     // If the button is up and the user presses it, show it pressed and toggle the state right away.  When the button is
     // released, pop up the button (unless it was part of the same action that pressed the button down in the first
     // place).
-    this.downProperty.link( function( down ) {
+    var downListener = function( down ) {
       if ( self.enabledProperty.get() && self.overProperty.get() ) {
         if ( down && valueProperty.value === valueUp ) {
           self.toggle();
@@ -69,17 +69,31 @@ define( function( require ) {
       if ( !down && !self.overProperty.get() ) {
         self.pressedWhileDownProperty.set( true );
       }
-    } );
+    };
+
+    this.downProperty.link( downListener );
 
     // make the button ready to toggle when enabled
-    this.enabledProperty.onValue( true, function() {
+    var enabledPropertyOnListener = this.enabledProperty.onValue( true, function() {
       self.pressedWhileDownProperty.set( true );
     } );
+
+    // @private - dispose items specific to this instance
+    this.disposeToggleButtonModel = function() {
+      self.downProperty.unlink( downListener );
+      self.enabledProperty.unlink( enabledPropertyOnListener );
+    };
   }
 
   sun.register( 'StickyToggleButtonModel', StickyToggleButtonModel );
 
   return inherit( ButtonModel, StickyToggleButtonModel, {
+
+    // @public
+    dispose: function() {
+      this.disposeToggleButtonModel();
+      ButtonModel.prototype.dispose.call( this );
+    },
 
     // @public
     toggle: function() {
