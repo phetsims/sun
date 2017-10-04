@@ -10,7 +10,7 @@ define( function( require ) {
 
   // modules
   var Dimension2 = require( 'DOT/Dimension2' );
-  var FocusOverlay = require( 'SCENERY/overlays/FocusOverlay' );
+  var FocusHighlightFromNode = require( 'SCENERY/accessibility/FocusHighlightFromNode' );
   var HSliderThumb = require( 'SUN/HSliderThumb' );
   var HSliderTrack = require( 'SUN/HSliderTrack' );
   var inherit = require( 'PHET_CORE/inherit' );
@@ -19,7 +19,6 @@ define( function( require ) {
   var Node = require( 'SCENERY/nodes/Node' );
   var Path = require( 'SCENERY/nodes/Path' );
   var Property = require( 'AXON/Property' );
-  var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var Shape = require( 'KITE/Shape' );
   var SimpleDragHandler = require( 'SCENERY/input/SimpleDragHandler' );
   var StringUtils = require( 'PHETCOMMON/util/StringUtils' );
@@ -266,10 +265,7 @@ define( function( require ) {
     this.enabledProperty.link( enabledObserver ); // must be unlinked in disposeHSlider
 
     // a11y - custom focus highlight that surrounds and moves with the thumb
-    this.focusHighlight = Rectangle.bounds( thumb.localToParentBounds( FocusOverlay.getLocalFocusHighlightBounds( thumb ) ), {
-      stroke: FocusOverlay.innerFocusColor,
-      lineWidth: options.focusHighlightLineWidth
-    } );
+    this.focusHighlight = new FocusHighlightFromNode( thumb );
 
     // a11y - arbitrary value, but required for screen readers to manage change events correctly
     this.setAccessibleAttribute( 'step', 0.1 );
@@ -386,7 +382,7 @@ define( function( require ) {
 
         // reset shift key flag when we release it
         if ( event.keyCode === Input.KEY_SHIFT ) {
-          self._shiftKey = false;    
+          self._shiftKey = false;
         }
 
         // when range key is released, we are done dragging
