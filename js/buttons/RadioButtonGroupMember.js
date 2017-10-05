@@ -104,7 +104,7 @@ define( function( require ) {
     // @private
     this.disposeRadioButtonGroupMember = function() {
       self.removeAccessibleInputListener( accessibleChangeListener );
-      property.unlink( accessibleChangeListener );
+      property.unlink( accessibleCheckedListener );
     };
   }
 
