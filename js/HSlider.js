@@ -105,6 +105,9 @@ define( function( require ) {
       phetioType: THSlider
     }, options );
 
+    var ownsEnabledProperty = !options.enabledProperty;
+    var ownsEnabledRangeProperty = !options.enabledRangeProperty;
+
     // phet-io, Assign default options that need tandems.
     options.enabledProperty = options.enabledProperty || new Property( true, {
       tandem: options.tandem.createTandem( 'enabledProperty' ),
@@ -460,8 +463,8 @@ define( function( require ) {
       thumb.dispose && thumb.dispose(); // in case a custom thumb is provided via options.thumbNode that doesn't implement dispose
       self.track.dispose();
       valueProperty.unlink( valueObserver );
-      self.enabledRangeProperty.dispose();
-      self.enabledProperty.dispose();
+      ownsEnabledRangeProperty && self.enabledRangeProperty.dispose();
+      ownsEnabledProperty && self.enabledProperty.dispose();
 
       self.removeAccessibleInputListener( accessibleInputListener );
       valueProperty.unlink( accessiblePropertyListener );
