@@ -11,19 +11,29 @@ define( function( require ) {
 
   // modules
   var ButtonModel = require( 'SUN/buttons/ButtonModel' );
-  var Emitter = require( 'AXON/Emitter' );
   var inherit = require( 'PHET_CORE/inherit' );
+  var phetioEvents = require( 'ifphetio!PHET_IO/phetioEvents' );
   var sun = require( 'SUN/sun' );
+  var Tandem = require( 'TANDEM/Tandem' );
+  var TToggleButton = require( 'SUN/buttons/TToggleButton' );
 
   /**
    * @param {Object} valueOff - value when the button is in the off state
    * @param {Object} valueOn - value when the button is in the on state
    * @param {Property} property - axon Property that can be either valueOff or valueOn.
+   * @param {Object} [options]
    * @constructor
    */
-  function ToggleButtonModel( valueOff, valueOn, property ) {
+  function ToggleButtonModel( valueOff, valueOn, property, options ) {
 
     var self = this;
+
+    options = _.extend( {
+      tandem: Tandem.tandemRequired()
+    }, options );
+
+    // @private
+    this.tandem = options.tandem;
 
     // @private
     this.valueOff = valueOff;
@@ -31,10 +41,6 @@ define( function( require ) {
     this.valueProperty = property;
 
     ButtonModel.call( this );
-
-    // phet-io support
-    this.startedCallbacksForToggledEmitter = new Emitter( { indicateCallbacks: false } );
-    this.endedCallbacksForToggledEmitter = new Emitter( { indicateCallbacks: false } );
 
     // Behaves like a push button (with fireOnDown:false), but toggles its state when the button is released.
     var downListener = function( down ) {
@@ -67,9 +73,13 @@ define( function( require ) {
       assert && assert( this.valueProperty.value === this.valueOff || this.valueProperty.value === this.valueOn );
       var oldValue = this.valueProperty.value;
       var newValue = this.valueProperty.value === this.valueOff ? this.valueOn : this.valueOff;
-      this.startedCallbacksForToggledEmitter.emit2( oldValue, newValue );
+      var hasToStateObject = this.valueProperty.phetioValueType && this.valueProperty.phetioValueType.toStateObject;
+      var id = phetioEvents.start( 'user', this.tandem.id, TToggleButton, 'toggled', {
+        oldValue: hasToStateObject && this.valueProperty.phetioValueType.toStateObject( oldValue ),
+        newValue: hasToStateObject && this.valueProperty.phetioValueType.toStateObject( newValue )
+      } );
       this.valueProperty.value = newValue;
-      this.endedCallbacksForToggledEmitter.emit();
+      phetioEvents.end( id );
     }
   } );
 } );

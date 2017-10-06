@@ -30,7 +30,7 @@ define( function( require ) {
   function RoundStickyToggleButton( valueUp, valueDown, property, options ) {
 
     var self = this;
-    
+
     options = _.extend( {
       tandem: Tandem.tandemRequired(),
       phetioType: TToggleButton,
@@ -41,13 +41,13 @@ define( function( require ) {
     }, options );
 
     // @public (phet-io)
-    this.toggleButtonModel = new StickyToggleButtonModel( valueUp, valueDown, property );
+    this.toggleButtonModel = new StickyToggleButtonModel( valueUp, valueDown, property, options );
     this.phetioValueType = property.phetioValueType;
     RoundButtonView.call( this, this.toggleButtonModel, new StickyToggleButtonInteractionStateProperty( this.toggleButtonModel ), options );
 
     // @private (a11y) - toggle the button when we receive the accessible click event
     this.accessibleClickListener = this.addAccessibleInputListener( {
-      click: function ( event ) {
+      click: function( event ) {
         self.toggleButtonModel.toggle();
       }
     } );

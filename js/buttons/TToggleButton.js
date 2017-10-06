@@ -13,7 +13,6 @@ define( function( require ) {
   var phetioInherit = require( 'ifphetio!PHET_IO/phetioInherit' );
   var sun = require( 'SUN/sun' );
   var TNode = require( 'SCENERY/nodes/TNode' );
-  var toEventOnEmit = require( 'ifphetio!PHET_IO/toEventOnEmit' );
 
   /**
    * Wrapper type for phet/sun's ToggleButton class.
@@ -30,19 +29,6 @@ define( function( require ) {
       phet.sun.RoundStickyToggleButton,
       phet.sun.RoundToggleButton
     ] );
-
-    // Both StickyToggleButtonModel and ToggleButtonModel send the args in this order: oldValue, newValue
-    toEventOnEmit(
-      toggleButton.toggleButtonModel.startedCallbacksForToggledEmitter,
-      toggleButton.toggleButtonModel.endedCallbacksForToggledEmitter,
-      'user', phetioID, this.constructor, 'toggled',
-      function( oldValue, newValue ) {
-        return {
-          oldValue: toggleButton.phetioValueType.toStateObject( oldValue ),
-          newValue: toggleButton.phetioValueType.toStateObject( newValue )
-        };
-      }
-    );
   }
 
   phetioInherit( TNode, 'TToggleButton', TToggleButton, {}, {

@@ -40,14 +40,14 @@ define( function( require ) {
     }, options );
 
     // @public, (read-only) (phet-io)
-    this.toggleButtonModel = new ToggleButtonModel( valueOff, valueOn, property );
+    this.toggleButtonModel = new ToggleButtonModel( valueOff, valueOn, property, options );
     this.phetioValueType = property.phetioValueType;
 
     RoundButtonView.call( this, this.toggleButtonModel, new ToggleButtonInteractionStateProperty( this.toggleButtonModel ), options );
 
     // @private (a11y) - toggle the button when we receive the accessible click event
     this.accessibleClickListener = this.addAccessibleInputListener( {
-      click: function ( event ) {
+      click: function( event ) {
         self.toggleButtonModel.toggle();
       }
     } );
