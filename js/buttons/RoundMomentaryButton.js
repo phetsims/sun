@@ -31,7 +31,7 @@ define( function( require ) {
       phetioType: TRoundMomentaryButton
     }, options );
 
-    this.buttonModel = new MomentaryButtonModel( valueOff, valueOn, property );
+    this.buttonModel = new MomentaryButtonModel( valueOff, valueOn, property, options );
     RoundButtonView.call( this, this.buttonModel, new MomentaryButtonInteractionStateProperty( this.buttonModel ), options );
   }
 

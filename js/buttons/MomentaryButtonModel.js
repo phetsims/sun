@@ -10,28 +10,22 @@ define( function( require ) {
 
   // modules
   var ButtonModel = require( 'SUN/buttons/ButtonModel' );
-  var Emitter = require( 'AXON/Emitter' );
   var inherit = require( 'PHET_CORE/inherit' );
+  var phetioEvents = require( 'ifphetio!PHET_IO/phetioEvents' );
   var sun = require( 'SUN/sun' );
+  var TRoundMomentaryButton = require( 'SUN/buttons/TRoundMomentaryButton' );
 
   /**
    * @param {Object} valueOff - value when the button is in the off state
    * @param {Object} valueOn - value when the button is in the on state
    * @param {Property} valueProperty
+   * @param {Object} options
    * @constructor
    */
-  function MomentaryButtonModel( valueOff, valueOn, valueProperty ) {
+  function MomentaryButtonModel( valueOff, valueOn, valueProperty, options ) {
 
     var self = this;
     ButtonModel.call( self );
-
-    // phet-io support
-    this.startedCallbacksForPressedEmitter = new Emitter( { indicateCallbacks: false } );
-    this.endedCallbacksForPressedEmitter = new Emitter( { indicateCallbacks: false } );
-    this.startedCallbacksForReleasedEmitter = new Emitter( { indicateCallbacks: false } );
-    this.endedCallbacksForReleasedEmitter = new Emitter( { indicateCallbacks: false } );
-    this.startedCallbacksForReleasedByDisableEmitter = new Emitter( { indicateCallbacks: false } );
-    this.endedCallbacksForReleasedByDisableEmitter = new Emitter( { indicateCallbacks: false } );
 
     // sync with the property, do this before wiring up to supertype properties
     var onObserver = function( value ) {
@@ -44,26 +38,26 @@ define( function( require ) {
       // turn on when pressed (if enabled)
       if ( down ) {
         if ( self.enabledProperty.get() ) {
-          self.startedCallbacksForPressedEmitter.emit();
+          var pressedID = phetioEvents.start( 'user', options.tandem.id, TRoundMomentaryButton, 'pressed' );
           valueProperty.set( valueOn );
-          self.endedCallbacksForPressedEmitter.emit();
+          phetioEvents.end( pressedID );
         }
       }
       else {
         // turn off when released
-        self.startedCallbacksForReleasedEmitter.emit();
+        var releasedID = phetioEvents.start( 'user', options.tandem.id, TRoundMomentaryButton, 'released' );
         valueProperty.set( valueOff );
-        self.endedCallbacksForReleasedEmitter.emit();
+        phetioEvents.end( releasedID );
       }
     };
     this.downProperty.lazyLink( downListener );
 
     // turn off when disabled
     var enabledListener = function( enabled ) {
-      if ( !enabled ){
-        self.startedCallbacksForReleasedByDisableEmitter.emit();
+      if ( !enabled ) {
+        var releasedDisabledID = phetioEvents.start( 'user', options.tandem.id, TRoundMomentaryButton, 'releasedDisabled' );
         valueProperty.set( valueOff );
-        self.endedCallbacksForReleasedByDisableEmitter.emit();
+        phetioEvents.end( releasedDisabledID );
       }
     };
     this.enabledProperty.link( enabledListener );
