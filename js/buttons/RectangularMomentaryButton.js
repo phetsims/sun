@@ -25,9 +25,12 @@ define( function( require ) {
    * @constructor
    */
   function RectangularMomentaryButton( valueOff, valueOn, property, options ) {
-    Tandem.indicateUninstrumentedCode();
 
-    var buttonModel = new MomentaryButtonModel( valueOff, valueOn, property );
+    options = _.extend( {
+      tandem: Tandem.tandemRequired()
+    }, options );
+
+    var buttonModel = new MomentaryButtonModel( valueOff, valueOn, property, options );
     RectangularButtonView.call( this, buttonModel, new MomentaryButtonInteractionStateProperty( buttonModel ), options );
   }
 
