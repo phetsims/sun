@@ -11,9 +11,9 @@ define( function( require ) {
   'use strict';
 
   // modules
+  var BooleanProperty = require( 'AXON/BooleanProperty' );
   var ButtonModel = require( 'SUN/buttons/ButtonModel' );
   var CallbackTimer = require( 'SUN/CallbackTimer' );
-  var Emitter = require( 'AXON/Emitter' );
   var inherit = require( 'PHET_CORE/inherit' );
   var phetioEvents = require( 'ifphetio!PHET_IO/phetioEvents' );
   var sun = require( 'SUN/sun' );
@@ -44,9 +44,8 @@ define( function( require ) {
 
     ButtonModel.call( this, options );
 
-    // @public used by a11y to disable utterances during reset
-    this.startedFireEmitter = new Emitter();
-    this.endedFireEmitter = new Emitter();
+    // @public - used by a11y to disable utterances during reset, and sonification
+    this.isFiringProperty = new BooleanProperty( false, { tandem: options.tandem.createTandem( 'isFiringProperty' ) } );
 
     this.listeners = []; // @private
     if ( options.listener !== null ) {
@@ -93,10 +92,8 @@ define( function( require ) {
       }
     } );
 
-    // @private {boolean} flag to indicate whether the button is firing
-    this.isFiring = false;
-
     this.disposePushButtonModel = function() {
+      this.isFiringProperty.dispose();
       this.listeners.length = 0;
       if ( this.timer ) {
         this.timer.dispose();
@@ -112,12 +109,7 @@ define( function( require ) {
     // @public
     dispose: function() {
 
-      // If the button was firing, we must complete the PhET-iO transaction before disposing of those emitters
-      // see https://github.com/phetsims/energy-skate-park-basics/issues/380
-      if ( this.isFiring ) {
-        this.endedFireEmitter.emit();
-      }
-
+      this.isFiringProperty.value = false;
       this.disposePushButtonModel();
       ButtonModel.prototype.dispose.call( this );
     },
@@ -153,16 +145,16 @@ define( function( require ) {
 
       // Make sure the button is not already firing, see https://github.com/phetsims/energy-skate-park-basics/issues/380
       assert && assert( !this.isFiring, 'Cannot fire when already firing' );
-      this.isFiring = true;
+      this.isFiringProperty.value = true;
       var id = phetioEvents.start( 'user', this.tandem.id, TPushButtonModel, 'fired' );
-      this.startedFireEmitter.emit(); // So that a11y can disable utterancequeue
+
       var copy = this.listeners.slice( 0 );
       copy.forEach( function( listener ) {
         listener();
       } );
-      this.isFiring = false;
+
       phetioEvents.end( id );
-      this.endedFireEmitter.emit(); // So that a11y can enable utterancequeue
+      this.isFiringProperty.value = false;
     }
   } );
 } );
