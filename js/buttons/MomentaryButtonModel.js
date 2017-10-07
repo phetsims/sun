@@ -38,14 +38,14 @@ define( function( require ) {
       // turn on when pressed (if enabled)
       if ( down ) {
         if ( self.enabledProperty.get() ) {
-          var pressedID = phetioEvents.start( 'user', options.tandem.id, TRoundMomentaryButton, 'pressed' );
+          var pressedID = options.tandem && options.tandem.isLegalAndUsable() && phetioEvents.start( 'user', options.tandem.id, TRoundMomentaryButton, 'pressed' );
           valueProperty.set( valueOn );
           phetioEvents.end( pressedID );
         }
       }
       else {
         // turn off when released
-        var releasedID = phetioEvents.start( 'user', options.tandem.id, TRoundMomentaryButton, 'released' );
+        var releasedID = options.tandem && options.tandem.isLegalAndUsable() && phetioEvents.start( 'user', options.tandem.id, TRoundMomentaryButton, 'released' );
         valueProperty.set( valueOff );
         phetioEvents.end( releasedID );
       }
@@ -55,7 +55,7 @@ define( function( require ) {
     // turn off when disabled
     var enabledListener = function( enabled ) {
       if ( !enabled ) {
-        var releasedDisabledID = phetioEvents.start( 'user', options.tandem.id, TRoundMomentaryButton, 'releasedDisabled' );
+        var releasedDisabledID = options.tandem && options.tandem.isLegalAndUsable() && phetioEvents.start( 'user', options.tandem.id, TRoundMomentaryButton, 'releasedDisabled' );
         valueProperty.set( valueOff );
         phetioEvents.end( releasedDisabledID );
       }
