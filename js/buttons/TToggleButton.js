@@ -23,12 +23,12 @@ define( function( require ) {
   function TToggleButton( toggleButton, phetioID ) {
     var validateTandems = phet.phetio && phet.phetio.queryParameters.phetioValidateTandems;
     assert && assert( !!toggleButton.phetioValueType || !validateTandems, 'toggleButton.phetioValueType must be specified' );
-    TNode.call( this, toggleButton, phetioID );
     assertInstanceOfTypes( toggleButton, [
       phet.sun.RectangularToggleButton,
       phet.sun.RoundStickyToggleButton,
       phet.sun.RoundToggleButton
     ] );
+    TNode.call( this, toggleButton, phetioID );
   }
 
   phetioInherit( TNode, 'TToggleButton', TToggleButton, {}, {
