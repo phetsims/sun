@@ -109,6 +109,8 @@ define( function( require ) {
     // @public
     dispose: function() {
 
+      // If the button was firing, we must complete the PhET-iO transaction before disposing.
+      // see https://github.com/phetsims/energy-skate-park-basics/issues/380
       this.isFiringProperty.value = false;
       this.disposePushButtonModel();
       ButtonModel.prototype.dispose.call( this );
@@ -144,7 +146,7 @@ define( function( require ) {
     fire: function() {
 
       // Make sure the button is not already firing, see https://github.com/phetsims/energy-skate-park-basics/issues/380
-      assert && assert( !this.isFiring, 'Cannot fire when already firing' );
+      assert && assert( !this.isFiringProperty.value, 'Cannot fire when already firing' );
       this.isFiringProperty.value = true;
       var id = phetioEvents.start( 'user', this.tandem.id, TPushButtonModel, 'fired' );
 
