@@ -388,43 +388,48 @@ define( function( require ) {
           self._shiftKey = false;
         }
 
-        // when range key is released, we are done dragging
-        if ( Input.isRangeKey( event.keyCode ) ) {
-          options.endDrag();
+        if ( self.enabledProperty.get() ) {
+          // when range key is released, we are done dragging
+          if ( Input.isRangeKey( event.keyCode ) ) {
+            options.endDrag();
+          }          
         }
       },
       change: function( event ) {
 
-        // it is possible that the user agent (particularly VoiceOver) will initiate a change event directly without
-        // going through keydown. In that case, handle the change depending on which direction the user tried to go
-        var inputValue = event.target.value;
-        var stepSize = self._shiftKey ? self.shiftKeyboardStep : self.keyboardStep;
+        if ( self.enabledProperty.get() ) {
+          
+          // it is possible that the user agent (particularly VoiceOver) will initiate a change event directly without
+          // going through keydown. In that case, handle the change depending on which direction the user tried to go
+          var inputValue = event.target.value;
+          var stepSize = self._shiftKey ? self.shiftKeyboardStep : self.keyboardStep;
 
-        // start of change event is start of drag
-        options.startDrag();
+          // start of change event is start of drag
+          options.startDrag();
 
-        var newValue = valueProperty.get();
-        if ( inputValue > valueProperty.get() ) {
-          newValue = valueProperty.get() + stepSize;
+          var newValue = valueProperty.get();
+          if ( inputValue > valueProperty.get() ) {
+            newValue = valueProperty.get() + stepSize;
+          }
+          else if ( inputValue < valueProperty.get() ) {
+            newValue = valueProperty.get() - stepSize;
+          }
+
+          // round to nearest step size
+          newValue = Util.roundSymmetric( newValue / stepSize ) * stepSize;
+
+          // go back a step if we went too far due to rounding
+          newValue = correctRounding( newValue, stepSize );
+
+          // limit to enabled range
+          newValue = Util.clamp( newValue, self.enabledRange.min, self.enabledRange.max );
+
+          // optionally constrain value
+          valueProperty.set( options.constrainValue( newValue ) );
+
+          // end of change is the end of a drag
+          options.endDrag();
         }
-        else if ( inputValue < valueProperty.get() ) {
-          newValue = valueProperty.get() - stepSize;
-        }
-
-        // round to nearest step size
-        newValue = Util.roundSymmetric( newValue / stepSize ) * stepSize;
-
-        // go back a step if we went too far due to rounding
-        newValue = correctRounding( newValue, stepSize );
-
-        // limit to enabled range
-        newValue = Util.clamp( newValue, self.enabledRange.min, self.enabledRange.max );
-
-        // optionally constrain value
-        valueProperty.set( options.constrainValue( newValue ) );
-
-        // end of change is the end of a drag
-        options.endDrag();
       },
       blur: function( event ) {
 
