@@ -39,9 +39,23 @@ define( function( require ) {
     } );
 
     RectangularPushButton.call( this, _.extend( { content: textNode }, options ) );
+
+    // @private
+    this.disposeTextPushButton = function() {
+      textNode.dispose();
+    };
   }
 
   sun.register( 'TextPushButton', TextPushButton );
 
-  return inherit( RectangularPushButton, TextPushButton );
+  return inherit( RectangularPushButton, TextPushButton, {
+
+    /**
+     * @public
+     */
+    dispose: function() {
+      this.disposeTextPushButton();
+      RectangularPushButton.prototype.dispose.call( this );
+    }
+  } );
 } );
