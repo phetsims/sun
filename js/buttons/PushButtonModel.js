@@ -35,7 +35,9 @@ define( function( require ) {
       fireOnHold: false, // is the fire-on-hold feature enabled?
       fireOnHoldDelay: 400, // start to fire continuously after pressing for this long (milliseconds)
       fireOnHoldInterval: 100, // fire continuously at this interval (milliseconds),
-      tandem: Tandem.tandemOptional()
+      tandem: Tandem.tandemOptional(),
+      phetioState: false,
+      phetioMethods: false
     }, options );
 
     var self = this;
@@ -45,7 +47,11 @@ define( function( require ) {
     ButtonModel.call( this, options );
 
     // @public - used by a11y to disable utterances during reset, and sonification
-    this.isFiringProperty = new BooleanProperty( false, { tandem: options.tandem.createTandem( 'isFiringProperty' ) } );
+    this.isFiringProperty = new BooleanProperty( false, {
+      tandem: options.tandem.createTandem( 'isFiringProperty' ),
+      phetioState: options.phetioState,
+      phetioMethods: options.phetioMethods
+    } );
 
     this.listeners = []; // @private
     if ( options.listener !== null ) {
