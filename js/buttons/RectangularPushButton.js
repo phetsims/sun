@@ -54,8 +54,10 @@ define( function( require ) {
     this.clickListener = this.addAccessibleInputListener( {
       click: function() {
         if ( self.enabled ) {
+          self.buttonModel.downProperty.set( true ); // to trigger optional startCallback
           self.buttonModel.fire();
           options.accessibleFire();
+          self.buttonModel.downProperty.set( false ); // to trigger optional endCallback
         }
       }
     } );
