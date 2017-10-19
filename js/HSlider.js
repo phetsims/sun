@@ -313,6 +313,7 @@ define( function( require ) {
     // own implementation, but keep the general behavior the same. It is possible that some screen readers
     // will try to change the value without triggering a keydown event, so we must handle the change event
     // as well.
+    var firstKeyDown = true; // drag is only 'started' on the first keydown event
     var accessibleInputListener = this.addAccessibleInputListener( {
       keydown: function( event ) {
         var code = event.keyCode;
@@ -325,7 +326,8 @@ define( function( require ) {
             event.preventDefault();
 
             // keydown is the start of the drag
-            options.startDrag();
+            firstKeyDown && options.startDrag();
+            firstKeyDown = false;
           }
 
           var newValue = valueProperty.get();
@@ -392,6 +394,7 @@ define( function( require ) {
           // when range key is released, we are done dragging
           if ( Input.isRangeKey( event.keyCode ) ) {
             options.endDrag();
+            firstKeyDown = true;
           }          
         }
       },
