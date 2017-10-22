@@ -41,8 +41,8 @@ define( function( require ) {
         phetioEvents.end( id );
       }
     };
-    this.downProperty.onValue( false, function() {
-      if ( self.overProperty.get() ) {
+    this.downProperty.link( function( down ) {
+      if ( !down && self.overProperty.get() ) {
         self.fire();
       }
     } );

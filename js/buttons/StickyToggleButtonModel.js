@@ -78,9 +78,12 @@ define( function( require ) {
     this.downProperty.link( downListener );
 
     // make the button ready to toggle when enabled
-    var enabledPropertyOnListener = this.enabledProperty.onValue( true, function() {
-      self.pressedWhileDownProperty.set( true );
-    } );
+    var enabledPropertyOnListener = function( enabled ) {
+      if ( enabled ) {
+        self.pressedWhileDownProperty.set( true );
+      }
+    };
+    this.enabledProperty.link( enabledPropertyOnListener );
 
     // @private - dispose items specific to this instance
     this.disposeToggleButtonModel = function() {
