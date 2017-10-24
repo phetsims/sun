@@ -42,13 +42,15 @@ define( function( require ) {
     this.addChild( falseNode );
     this.addChild( trueNode );
 
-    booleanProperty.link( function( value ) {
-      trueNode.setVisible( value );
-      falseNode.setVisible( !value );
+    // initial visibility of nodes
+    trueNode.setVisible( booleanProperty.get() );
+    falseNode.setVisible( !booleanProperty.get() );
 
-      // a11y - toggle visibility of accessible content for assistive technologies
-      trueNode.setAccessibleContentDisplayed( value );
-      falseNode.setAccessibleContentDisplayed( !value );
+    var self = this;
+    booleanProperty.lazyLink( function( value ) {
+      var visibleNode = value ? falseNode : trueNode;
+      var invisibleNode = value ? trueNode : falseNode;
+      self.swapVisibility( visibleNode, invisibleNode );
     } );
 
     this.mutate( options );
