@@ -12,6 +12,7 @@ define( function( require ) {
   // modules
   var ArrowButton = require( 'SUN/buttons/ArrowButton' );
   var inherit = require( 'PHET_CORE/inherit' );
+  var Input = require( 'SCENERY/input/Input' );
   var Node = require( 'SCENERY/nodes/Node' );
   var PhetFont = require( 'SCENERY_PHET/PhetFont' );
   var Property = require( 'AXON/Property' );
@@ -79,8 +80,12 @@ define( function( require ) {
       touchAreaXDilation: 0,
       touchAreaYDilation: 0,
       mouseAreaXDilation: 0,
-      mouseAreaYDilation: 0
+      mouseAreaYDilation: 0,
 
+      // a11y
+      tagName: 'input',
+      inputType: 'number',
+      inputValue: numberProperty.get()
     }, options );
 
     // validate options
@@ -126,14 +131,22 @@ define( function( require ) {
       stroke: options.arrowButtonStroke,
       lineWidth: options.arrowButtonLineWidth
     };
-    var incrementDirection = ( options.arrowsPosition === 'topBottom' || options.arrowsPosition === 'bothRight' ) ? 'up' : 'right';
-    var incrementButton = new ArrowButton( incrementDirection, function() {
+
+    // increment button
+    var incrementFunction = function() {
       numberProperty.set( numberProperty.get() + options.deltaValue );
-    }, arrowButtonOptions );
-    var decrementDirection = ( options.arrowsPosition === 'topBottom' || options.arrowsPosition === 'bothRight' ) ? 'down' : 'left';
-    var decrementButton = new ArrowButton( decrementDirection, function() {
+    };
+    var incrementDirection = ( options.arrowsPosition === 'topBottom' || options.arrowsPosition === 'bothRight' ) ? 'up' : 'right';
+    var incrementButton = new ArrowButton( incrementDirection, incrementFunction, arrowButtonOptions );
+    incrementButton.focusable = false;
+
+    // decrement button
+    var decrementFunction = function() {
       numberProperty.set( numberProperty.get() - options.deltaValue );
-    }, arrowButtonOptions );
+    };
+    var decrementDirection = ( options.arrowsPosition === 'topBottom' || options.arrowsPosition === 'bothRight' ) ? 'down' : 'left';
+    var decrementButton = new ArrowButton( decrementDirection, decrementFunction, arrowButtonOptions );
+    decrementButton.focusable = false;
 
     // arrow button scaling
     var arrowsScale;
@@ -190,7 +203,7 @@ define( function( require ) {
         incrementButton.touchArea = incrementButton.touchArea.shiftedY( -options.touchAreaYDilation );
         decrementButton.touchArea = decrementButton.touchArea.shiftedY( options.touchAreaYDilation );
       }
-      else if ( options.arrowsPosition === 'bothBottom' ){
+      else if ( options.arrowsPosition === 'bothBottom' ) {
         incrementButton.touchArea = incrementButton.touchArea.shiftedX( options.touchAreaXDilation );
         decrementButton.touchArea = decrementButton.touchArea.shiftedX( -options.touchAreaXDilation );
       }
@@ -230,7 +243,7 @@ define( function( require ) {
 
       // update the number and align it
       numberNode.text = StringUtils.format( options.valuePattern, Util.toFixed( value, options.decimalPlaces ) );
-      switch ( options.valueAlign ) {
+      switch( options.valueAlign ) {
         case 'center':
           numberNode.center = backgroundNode.center;
           break;
@@ -266,6 +279,34 @@ define( function( require ) {
       //TODO if !enabled, cancel any interaction that is in progress, see scenery#218
     };
     this.enabledProperty.link( enabledPropertyObserver );
+
+    // a11y input listener for keyboard nav
+    this.addAccessibleInputListener( {
+      keydown: function( event ) {
+
+        // prevent user from changing value with number or the space keys
+        if ( Input.isNumberKey( event.keyCode ) || event.keyCode === Input.KEY_SPACE ) {
+          event.preventDefault();
+        }
+      },
+      input: function( event ) {
+
+        // if input value is empty, inputValue was cleared by the browser after focus, don't update the Property value
+        if ( self.inputValue && self.enabledProperty.get() ) {
+          if ( self.inputValue > numberProperty.get() && self.inputValue <= rangeProperty.get().max ) {
+
+            // user intended to increment
+            incrementFunction();
+          }
+          else if ( self.inputValue < numberProperty.get() && self.inputValue >= rangeProperty.get().min ) {
+
+            // user intended to decrement
+            decrementFunction();
+          }
+        }
+        self.inputValue = numberProperty.get();
+      }
+    } );
 
     // @private
     this.disposeNumberSpinner = function() {
