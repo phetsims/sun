@@ -96,9 +96,9 @@ define( function( require ) {
       keyboardStep: ( range.max - range.min ) / 20,
       shiftKeyboardStep: ( range.max - range.min ) / 100,
       pageKeyboardStep: ( range.max - range.min ) / 10,
+      focusHighlightLineWidth: 4,
       enabledProperty: null, // see below
       enabledRangeProperty: null, // see below
-      focusHighlightLayerable: true,
 
       // phet-io
       tandem: Tandem.tandemRequired(),
@@ -269,7 +269,6 @@ define( function( require ) {
 
     // a11y - custom focus highlight that surrounds and moves with the thumb
     this.focusHighlight = new FocusHighlightFromNode( thumb );
-    this.addChild( this.focusHighlight );
 
     // a11y - arbitrary value, but required for screen readers to manage change events correctly
     this.setAccessibleAttribute( 'step', 0.1 );
@@ -396,13 +395,13 @@ define( function( require ) {
           if ( Input.isRangeKey( event.keyCode ) ) {
             options.endDrag();
             firstKeyDown = true;
-          }
+          }          
         }
       },
       change: function( event ) {
 
         if ( self.enabledProperty.get() ) {
-
+          
           // it is possible that the user agent (particularly VoiceOver) will initiate a change event directly without
           // going through keydown. In that case, handle the change depending on which direction the user tried to go
           var inputValue = event.target.value;
