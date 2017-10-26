@@ -96,7 +96,6 @@ define( function( require ) {
       keyboardStep: ( range.max - range.min ) / 20,
       shiftKeyboardStep: ( range.max - range.min ) / 100,
       pageKeyboardStep: ( range.max - range.min ) / 10,
-      focusHighlightLineWidth: 4,
       enabledProperty: null, // see below
       enabledRangeProperty: null, // see below
 
