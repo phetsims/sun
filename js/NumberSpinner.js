@@ -129,7 +129,8 @@ define( function( require ) {
     var arrowButtonOptions = {
       baseColor: options.arrowButtonFill,
       stroke: options.arrowButtonStroke,
-      lineWidth: options.arrowButtonLineWidth
+      lineWidth: options.arrowButtonLineWidth,
+      focusable: false
     };
 
     // increment button
@@ -138,7 +139,6 @@ define( function( require ) {
     };
     var incrementDirection = ( options.arrowsPosition === 'topBottom' || options.arrowsPosition === 'bothRight' ) ? 'up' : 'right';
     var incrementButton = new ArrowButton( incrementDirection, incrementFunction, arrowButtonOptions );
-    incrementButton.focusable = false;
 
     // decrement button
     var decrementFunction = function() {
@@ -146,7 +146,6 @@ define( function( require ) {
     };
     var decrementDirection = ( options.arrowsPosition === 'topBottom' || options.arrowsPosition === 'bothRight' ) ? 'down' : 'left';
     var decrementButton = new ArrowButton( decrementDirection, decrementFunction, arrowButtonOptions );
-    decrementButton.focusable = false;
 
     // arrow button scaling
     var arrowsScale;
