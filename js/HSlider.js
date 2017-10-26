@@ -268,7 +268,8 @@ define( function( require ) {
     this.enabledProperty.link( enabledObserver ); // must be unlinked in disposeHSlider
 
     // a11y - custom focus highlight that surrounds and moves with the thumb
-    this.focusHighlight = new FocusHighlightFromNode( thumb );
+    var myFocusHighlight = new FocusHighlightFromNode( thumb );
+    this.focusHighlight = myFocusHighlight;
 
     // a11y - arbitrary value, but required for screen readers to manage change events correctly
     this.setAccessibleAttribute( 'step', 0.1 );
@@ -276,7 +277,7 @@ define( function( require ) {
     // update thumb location when value changes
     var valueObserver = function( value ) {
       thumb.centerX = self.valueToPosition( value );
-      self.focusHighlight.centerX = thumb.centerX;
+      myFocusHighlight.centerX = thumb.centerX;
     };
     valueProperty.link( valueObserver ); // must be unlinked in disposeHSlider
 
@@ -395,13 +396,13 @@ define( function( require ) {
           if ( Input.isRangeKey( event.keyCode ) ) {
             options.endDrag();
             firstKeyDown = true;
-          }          
+          }
         }
       },
       change: function( event ) {
 
         if ( self.enabledProperty.get() ) {
-          
+
           // it is possible that the user agent (particularly VoiceOver) will initiate a change event directly without
           // going through keydown. In that case, handle the change depending on which direction the user tried to go
           var inputValue = event.target.value;
