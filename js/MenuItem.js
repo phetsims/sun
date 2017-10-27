@@ -56,7 +56,7 @@ define( function( require ) {
 
     // Extend the object with defaults.
     options = _.extend( {
-      tandem: Tandem.tandemRequired(),
+      tandem: Tandem.tandemOptional(),
       textFill: 'black',
 
       // a11y
@@ -69,8 +69,7 @@ define( function( require ) {
     var textNode = new Text( text, {
       font: new PhetFont( FONT_SIZE ),
       fill: options.textFill,
-      maxWidth: MAX_ITEM_WIDTH,
-      tandem: options.tandem.createTandem( 'textNode' )
+      maxWidth: MAX_ITEM_WIDTH
     } );
 
     var highlight = new Rectangle( 0, 0, width + LEFT_X_MARGIN + RIGHT_X_MARGIN + CHECK_OFFSET,
@@ -88,10 +87,10 @@ define( function( require ) {
     } );
 
     var fire = function( event ) {
-      var id = phetioEvents.start( 'user', options.tandem.id, TMenuItem, 'fired' );
+      var id = options.tandem.supplied && phetioEvents.start( 'user', options.tandem.id, TMenuItem, 'fired' );
       closeCallback( event );
       callback( event );
-      phetioEvents.end( id );
+      options.tandem.supplied && phetioEvents.end( id );
     };
 
     this.addInputListener( new ButtonListener( {
