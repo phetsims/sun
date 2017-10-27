@@ -96,7 +96,6 @@ define( function( require ) {
       keyboardStep: ( range.max - range.min ) / 20,
       shiftKeyboardStep: ( range.max - range.min ) / 100,
       pageKeyboardStep: ( range.max - range.min ) / 10,
-      focusHighlightLineWidth: 4,
       enabledProperty: null, // see below
       enabledRangeProperty: null, // see below
 
@@ -135,7 +134,7 @@ define( function( require ) {
     // @private (a11y) - delta for the valueProperty when using keyboard to interact with slider
     this._keyboardStep = options.keyboardStep;
 
-    // @private (a11y) - delta or the valueProperty when holding shift and using the keyboard to interact with
+    // @private (a11y) - delta for the valueProperty when holding shift and using the keyboard to interact with
     // the slider
     this._shiftKeyboardStep = options.shiftKeyboardStep;
     this._pageKeyboardStep = options.pageKeyboardStep;
