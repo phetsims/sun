@@ -46,11 +46,8 @@ define( function( require ) {
     trueNode.setVisible( booleanProperty.get() );
     falseNode.setVisible( !booleanProperty.get() );
 
-    var self = this;
     booleanProperty.lazyLink( function( value ) {
-      var visibleNode = value ? falseNode : trueNode;
-      var invisibleNode = value ? trueNode : falseNode;
-      self.swapVisibility( visibleNode, invisibleNode );
+      trueNode.swapVisibility( falseNode );
     } );
 
     this.mutate( options );
