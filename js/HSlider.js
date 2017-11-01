@@ -267,8 +267,7 @@ define( function( require ) {
     this.enabledProperty.link( enabledObserver ); // must be unlinked in disposeHSlider
 
     // a11y - custom focus highlight that surrounds and moves with the thumb
-    var myFocusHighlight = new FocusHighlightFromNode( thumb );
-    this.focusHighlight = myFocusHighlight;
+    this.focusHighlight = new FocusHighlightFromNode( thumb );
 
     // a11y - arbitrary value, but required for screen readers to manage change events correctly
     this.setAccessibleAttribute( 'step', 0.1 );
@@ -276,7 +275,7 @@ define( function( require ) {
     // update thumb location when value changes
     var valueObserver = function( value ) {
       thumb.centerX = self.valueToPosition( value );
-      myFocusHighlight.centerX = thumb.centerX;
+      self.focusHighlight.centerX = thumb.centerX;
     };
     valueProperty.link( valueObserver ); // must be unlinked in disposeHSlider
 
@@ -314,7 +313,10 @@ define( function( require ) {
     // will try to change the value without triggering a keydown event, so we must handle the change event
     // as well.
     var firstKeyDown = true; // drag is only 'started' on the first keydown event
-    var accessibleInputListener = this.addAccessibleInputListener( {
+
+    // @public (a11y) - TODO: Refactor this, remove from constructor and do NOT make the whole listener
+    // publicly available in this way, see https://github.com/phetsims/sun/issues/326
+    this.accessibleInputListener = this.addAccessibleInputListener( {
       keydown: function( event ) {
         var code = event.keyCode;
         self._shiftKey = event.shiftKey;
@@ -474,7 +476,7 @@ define( function( require ) {
       ownsEnabledRangeProperty && self.enabledRangeProperty.dispose();
       ownsEnabledProperty && self.enabledProperty.dispose();
 
-      self.removeAccessibleInputListener( accessibleInputListener );
+      self.removeAccessibleInputListener( self.accessibleInputListener );
       valueProperty.unlink( accessiblePropertyListener );
 
       thumbInputListener.dispose();
