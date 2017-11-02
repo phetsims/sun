@@ -74,7 +74,7 @@ define( function( require ) {
         value: self.phetioValueType.toStateObject( value )
       } );
       property.set( value );
-      phetioEvents.end( id );
+      options.tandem.isLegalAndUsable() && phetioEvents.end( id );
     };
     var buttonListener = new ButtonListener( { fire: fire } );
     this.addInputListener( buttonListener );
