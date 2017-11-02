@@ -287,6 +287,21 @@ define( function( require ) {
         if ( Input.isNumberKey( event.keyCode ) || event.keyCode === Input.KEY_SPACE ) {
           event.preventDefault();
         }
+
+        // If no enabled, then don't update the numberProperty based on arrows
+        if ( !self.enabledProperty.get() ) {
+          return;
+        }
+
+        // Left arrow decrements
+        if ( event.keyCode === Input.KEY_LEFT_ARROW ) {
+          numberProperty.get() > rangeProperty.get().min && decrementFunction();
+        }
+
+        // Right arrow increments
+        else if ( event.keyCode === Input.KEY_RIGHT_ARROW ) {
+          numberProperty.get() < rangeProperty.get().max && incrementFunction();
+        }
       },
       input: function( event ) {
 
