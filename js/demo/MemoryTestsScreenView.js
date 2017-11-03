@@ -14,6 +14,7 @@ define( function( require ) {
   var Property = require( 'AXON/Property' );
   var ScreenView = require( 'JOIST/ScreenView' );
   var Text = require( 'SCENERY/nodes/Text' );
+  var ToggleNode = require( 'SUN/ToggleNode' );
 
   var sun = require( 'SUN/sun' );
 
@@ -36,6 +37,9 @@ define( function( require ) {
     } ),
     new ComponentHolder( function() {
       return new ABSwitch( booleanProperty, true, new Text( 'true' ), false, new Text( 'false' ) );
+    } ),
+    new ComponentHolder( function() {
+      return new ToggleNode( new Text( 'true' ), new Text( 'false' ), booleanProperty );
     } )
   ];
 
