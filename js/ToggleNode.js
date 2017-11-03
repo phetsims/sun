@@ -46,7 +46,7 @@ define( function( require ) {
     trueNode.setVisible( booleanProperty.get() );
     falseNode.setVisible( !booleanProperty.get() );
 
-    booleanProperty.lazyLink( function( value ) {
+    booleanProperty.lazyLink( function() {
       trueNode.swapVisibility( falseNode );
     } );
 
