@@ -46,14 +46,31 @@ define( function( require ) {
     trueNode.setVisible( booleanProperty.get() );
     falseNode.setVisible( !booleanProperty.get() );
 
-    booleanProperty.lazyLink( function() {
+    // swap visibility of trueNode and falseNode when booleanProperty changes, must be removed in dispose
+    var visibilityListener = function() {
       trueNode.swapVisibility( falseNode );
-    } );
+    };
+    booleanProperty.lazyLink( visibilityListener );
+
+    // @private - called by dispose
+    this.disposeToggleNode = function() {
+      booleanProperty.unlink( visibilityListener );
+    };
 
     this.mutate( options );
   }
 
   sun.register( 'ToggleNode', ToggleNode );
 
-  return inherit( Node, ToggleNode );
+  return inherit( Node, ToggleNode, {
+
+    /**
+     * Make eligible for garbage collection.
+     * @public
+     */
+    dispose: function() {
+      this.disposeToggleNode();
+      Node.prototype.dispose.call( this );
+    }
+  } );
 } );
