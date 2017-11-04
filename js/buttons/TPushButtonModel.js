@@ -24,7 +24,7 @@ define( function( require ) {
    */
   function TPushButtonModel( button, phetioID ) {
     TObject.call( this, button, phetioID );
-    assertInstanceOf( button, phet.sun.PushButtonModel );
+    assert && assertInstanceOf( button, phet.sun.PushButtonModel );
   }
 
   phetioInherit( TNode, 'TPushButtonModel', TPushButtonModel, {}, {

@@ -22,7 +22,7 @@ define( function( require ) {
    * @constructor
    */
   function TRadioButton( radioButton, phetioID ) {
-    assertInstanceOf( radioButton, phet.sun.RadioButton );
+    assert && assertInstanceOf( radioButton, phet.sun.RadioButton );
     if ( Tandem.validationEnabled() ) {
       assert && assert( !!radioButton.phetioValueType, 'phetioValueType must be defined' );
     }

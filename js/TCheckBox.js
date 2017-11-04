@@ -26,7 +26,7 @@ define( function( require ) {
    * @constructor
    */
   function TCheckBox( checkBox, phetioID ) {
-    assertInstanceOf( checkBox, phet.sun.CheckBox );
+    assert && assertInstanceOf( checkBox, phet.sun.CheckBox );
     TNode.call( this, checkBox, phetioID );
   }
 

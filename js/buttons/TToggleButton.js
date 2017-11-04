@@ -9,7 +9,7 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var assertInstanceOfTypes = require( 'ifphetio!PHET_IO/assertions/assertInstanceOfTypes' );
+  var assertInstanceOf = require( 'ifphetio!PHET_IO/assertions/assertInstanceOf' );
   var phetioInherit = require( 'ifphetio!PHET_IO/phetioInherit' );
   var sun = require( 'SUN/sun' );
   var TNode = require( 'SCENERY/nodes/TNode' );
@@ -23,7 +23,7 @@ define( function( require ) {
   function TToggleButton( toggleButton, phetioID ) {
     var validateTandems = phet.phetio && phet.phetio.queryParameters.phetioValidateTandems;
     assert && assert( !!toggleButton.phetioValueType || !validateTandems, 'toggleButton.phetioValueType must be specified' );
-    assertInstanceOfTypes( toggleButton, [
+    assert && assertInstanceOf( toggleButton, [
       phet.sun.RectangularToggleButton,
       phet.sun.RoundStickyToggleButton,
       phet.sun.RoundToggleButton

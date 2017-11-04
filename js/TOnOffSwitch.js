@@ -21,7 +21,7 @@ define( function( require ) {
    * @constructor
    */
   function TOnOffSwitch( onOffSwitch, phetioID ) {
-    assertInstanceOf( onOffSwitch, phet.sun.OnOffSwitch );
+    assert && assertInstanceOf( onOffSwitch, phet.sun.OnOffSwitch );
     TNode.call( this, onOffSwitch, phetioID );
   }
 

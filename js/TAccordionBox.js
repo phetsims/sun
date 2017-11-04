@@ -22,7 +22,7 @@ define( function( require ) {
    * @constructor
    */
   function TAccordionBox( accordionBox, phetioID ) {
-    assertInstanceOf( accordionBox, phet.sun.AccordionBox );
+    assert && assertInstanceOf( accordionBox, phet.sun.AccordionBox );
     TNode.call( this, accordionBox, phetioID );
   }
 

@@ -21,7 +21,7 @@ define( function( require ) {
    * @constructor
    */
   function TRoundMomentaryButton( momentaryButton, phetioID ) {
-    assertInstanceOf( momentaryButton, phet.sun.RoundMomentaryButton );
+    assert && assertInstanceOf( momentaryButton, phet.sun.RoundMomentaryButton );
     TNode.call( this, momentaryButton, phetioID );
   }
 

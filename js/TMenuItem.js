@@ -21,7 +21,7 @@ define( function( require ) {
    * @constructor
    */
   function TMenuItem( menuItem, phetioID ) {
-    assertInstanceOf( menuItem, phet.sun.MenuItem );
+    assert && assertInstanceOf( menuItem, phet.sun.MenuItem );
     TNode.call( this, menuItem, phetioID );
   }
 

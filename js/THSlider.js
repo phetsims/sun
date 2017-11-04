@@ -24,7 +24,7 @@ define( function( require ) {
    * @constructor
    */
   function THSlider( slider, phetioID ) {
-    assertInstanceOf( slider, phet.sun.HSlider );
+    assert && assertInstanceOf( slider, phet.sun.HSlider );
     TNode.call( this, slider, phetioID );
   }
 

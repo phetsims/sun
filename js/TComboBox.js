@@ -23,7 +23,7 @@ define( function( require ) {
    * @constructor
    */
   function TComboBox( comboBox, phetioID ) {
-    assertInstanceOf( comboBox, phet.sun.ComboBox );
+    assert && assertInstanceOf( comboBox, phet.sun.ComboBox );
     TNode.call( this, comboBox, phetioID );
   }
 
