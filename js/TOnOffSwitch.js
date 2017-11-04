@@ -21,8 +21,8 @@ define( function( require ) {
    * @constructor
    */
   function TOnOffSwitch( onOffSwitch, phetioID ) {
-    TNode.call( this, onOffSwitch, phetioID );
     assertInstanceOf( onOffSwitch, phet.sun.OnOffSwitch );
+    TNode.call( this, onOffSwitch, phetioID );
   }
 
   phetioInherit( TNode, 'TOnOffSwitch', TOnOffSwitch, {}, {

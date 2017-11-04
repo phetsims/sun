@@ -22,10 +22,10 @@ define( function( require ) {
    * @constructor
    */
   function TRadioButtonGroupMember( radioButton, phetioID ) {
+    assertInstanceOf( radioButton, phet.sun.RadioButtonGroupMember );
     if ( Tandem.validationEnabled() ) {
       assert && assert( !!radioButton.phetioValueType, 'phetioValueType must be defined' );
     }
-    assertInstanceOf( radioButton, phet.sun.RadioButtonGroupMember );
     TNode.call( this, radioButton, phetioID );
   }
 

@@ -23,8 +23,6 @@ define( function( require ) {
    * @constructor
    */
   function TComboBox( comboBox, phetioID ) {
-
-    // assert && assert( !!phetioValueType, 'phetioValueType should be defined' );
     assertInstanceOf( comboBox, phet.sun.ComboBox );
     TNode.call( this, comboBox, phetioID );
   }

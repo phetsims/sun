@@ -21,8 +21,8 @@ define( function( require ) {
    * @constructor
    */
   function THSliderTrack( sliderTrack, phetioID ) {
-    TNode.call( this, sliderTrack, phetioID );
     assertInstanceOf( sliderTrack, phet.sun.HSliderTrack );
+    TNode.call( this, sliderTrack, phetioID );
   }
 
   phetioInherit( TNode, 'THSliderTrack', THSliderTrack, {}, {
