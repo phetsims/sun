@@ -10,7 +10,7 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var assertInstanceOfTypes = require( 'ifphetio!PHET_IO/assertions/assertInstanceOfTypes' );
+  var assertInstanceOf = require( 'ifphetio!PHET_IO/assertions/assertInstanceOf' );
   var phetioInherit = require( 'ifphetio!PHET_IO/phetioInherit' );
   var sun = require( 'SUN/sun' );
   var TNode = require( 'SCENERY/nodes/TNode' );
@@ -24,10 +24,7 @@ define( function( require ) {
    */
   function TPushButtonModel( button, phetioID ) {
     TObject.call( this, button, phetioID );
-
-    assertInstanceOfTypes( button, [
-      phet.sun.PushButtonModel
-    ] );
+    assertInstanceOf( button, phet.sun.PushButtonModel );
   }
 
   phetioInherit( TNode, 'TPushButtonModel', TPushButtonModel, {}, {
