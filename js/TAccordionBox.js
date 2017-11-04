@@ -12,7 +12,7 @@ define( function( require ) {
   var sun = require( 'SUN/sun' );
 
   // phet-io modules
-  var assertInstanceOf = require( 'ifphetio!PHET_IO/assertions/assertInstanceOf' );
+  var assertInstanceOf = require( 'ifphetio!PHET_IO/assertInstanceOf' );
   var phetioInherit = require( 'ifphetio!PHET_IO/phetioInherit' );
 
   /**
