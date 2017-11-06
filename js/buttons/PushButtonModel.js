@@ -46,12 +46,8 @@ define( function( require ) {
 
     ButtonModel.call( this, options );
 
-    // @public - used by a11y to disable utterances during reset, and sonification
-    this.isFiringProperty = new BooleanProperty( false, {
-      tandem: options.tandem.createTandem( 'isFiringProperty' ),
-      phetioState: options.phetioState,
-      phetioMethods: options.phetioMethods
-    } );
+    // @public - used by ResetAllButton to call functions during reset start/end
+    this.isFiringProperty = new BooleanProperty( false );
 
     this.listeners = []; // @private
     if ( options.listener !== null ) {
