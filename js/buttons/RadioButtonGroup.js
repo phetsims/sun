@@ -244,6 +244,9 @@ define( function( require ) {
         button = radioButton;
       }
 
+      // a11y - focus highlight for the button group member, highlight surrounds label if one is added
+      radioButton.setFocusHighlight( Shape.bounds( radioButton.mouseArea.bounds.dilate( 5 ) ) );
+
       buttons.push( button );
     }
 
