@@ -35,7 +35,7 @@ define( function( require ) {
     }, options );
 
     // @private
-    this.tandem = options.tandem;
+    this.stickyToggleButtonModelTandem = options.tandem;
     this.valueUp = valueUp;
     this.valueDown = valueDown;
     this.valueProperty = valueProperty;
@@ -109,7 +109,7 @@ define( function( require ) {
       var oldValue = this.valueProperty.value;
 
       var hasToStateObject = this.valueProperty.phetioValueType && this.valueProperty.phetioValueType.toStateObject;
-      var id = phetioEvents.start( 'user', this.tandem.id, TToggleButton, 'toggled', {
+      var id = phetioEvents.start( 'user', this.stickyToggleButtonModelTandem.id, TToggleButton, 'toggled', {
         oldValue: hasToStateObject && this.valueProperty.phetioValueType.toStateObject( oldValue ),
         newValue: hasToStateObject && this.valueProperty.phetioValueType.toStateObject( newValue )
       } );
