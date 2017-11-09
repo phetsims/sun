@@ -42,7 +42,8 @@ define( function( require ) {
 
     var self = this;
 
-    this.tandem = options.tandem;
+    // @private
+    this.pushButtonModelTandem = options.tandem;
 
     ButtonModel.call( this, options );
 
@@ -150,7 +151,7 @@ define( function( require ) {
       // Make sure the button is not already firing, see https://github.com/phetsims/energy-skate-park-basics/issues/380
       assert && assert( !this.isFiringProperty.value, 'Cannot fire when already firing' );
       this.isFiringProperty.value = true;
-      var id = phetioEvents.start( 'user', this.tandem.id, TPushButtonModel, 'fired' );
+      var id = phetioEvents.start( 'user', this.pushButtonModelTandem.id, TPushButtonModel, 'fired' );
 
       var copy = this.listeners.slice( 0 );
       copy.forEach( function( listener ) {
