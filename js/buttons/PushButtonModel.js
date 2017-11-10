@@ -37,7 +37,7 @@ define( function( require ) {
       fireOnHoldInterval: 100, // fire continuously at this interval (milliseconds),
       tandem: Tandem.tandemOptional(),
       phetioState: false,
-      phetioMethods: false
+      phetioReadOnly: true
     }, options );
 
     var self = this;
