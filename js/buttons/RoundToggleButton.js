@@ -41,7 +41,6 @@ define( function( require ) {
 
     // @public, (read-only) (phet-io)
     this.toggleButtonModel = new ToggleButtonModel( valueOff, valueOn, property, options );
-    this.phetioValueType = property.phetioValueType;
 
     RoundButtonView.call( this, this.toggleButtonModel, new ToggleButtonInteractionStateProperty( this.toggleButtonModel ), options );
 

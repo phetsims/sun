@@ -50,9 +50,6 @@ define( function( require ) {
     // @private
     this._enabled = options.enabled;
 
-    // @public (phet-io)
-    this.phetioValueType = property.phetioValueType;
-
     //Add an invisible node to make sure the layout for selected vs deselected is the same
     var background = new Rectangle( selectedNode.bounds.union( deselectedNode.bounds ) );
     selectedNode.pickable = deselectedNode.pickable = false; // the background rectangle suffices
@@ -71,7 +68,7 @@ define( function( require ) {
     // set property value on fire
     var fire = function() {
       var id = options.tandem.isLegalAndUsable() && phetioEvents.start( 'user', options.tandem.id, TRadioButton, 'fired', {
-        value: self.phetioValueType.toStateObject( value )
+        value: property.phetioValueType.toStateObject( value )
       } );
       property.set( value );
       options.tandem.isLegalAndUsable() && phetioEvents.end( id );

@@ -38,9 +38,6 @@ define( function( require ) {
       phetioType: TAquaRadioButton
     }, options );
 
-    // @public (phet-io)
-    this.phetioValueType = property.phetioValueType;
-
     // selected node
     var selectedNode = new Node();
     var innerCircle = new Circle( options.radius / 3, { fill: options.centerColor } );

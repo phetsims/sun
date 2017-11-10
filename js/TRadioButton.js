@@ -12,7 +12,6 @@ define( function( require ) {
   var assertInstanceOf = require( 'ifphetio!PHET_IO/assertInstanceOf' );
   var phetioInherit = require( 'ifphetio!PHET_IO/phetioInherit' );
   var sun = require( 'SUN/sun' );
-  var Tandem = require( 'TANDEM/Tandem' );
   var TNode = require( 'SCENERY/nodes/TNode' );
 
   /**
@@ -23,9 +22,6 @@ define( function( require ) {
    */
   function TRadioButton( radioButton, phetioID ) {
     assert && assertInstanceOf( radioButton, phet.sun.RadioButton );
-    if ( Tandem.validationEnabled() ) {
-      assert && assert( !!radioButton.phetioValueType, 'phetioValueType must be defined' );
-    }
     TNode.call( this, radioButton, phetioID );
   }
 

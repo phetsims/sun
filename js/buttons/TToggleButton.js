@@ -21,8 +21,6 @@ define( function( require ) {
    * @constructor
    */
   function TToggleButton( toggleButton, phetioID ) {
-    var validateTandems = phet.phetio && phet.phetio.queryParameters.phetioValidateTandems;
-    assert && assert( !!toggleButton.phetioValueType || !validateTandems, 'toggleButton.phetioValueType must be specified' );
     assert && assertInstanceOf( toggleButton, [
       phet.sun.RectangularToggleButton,
       phet.sun.RoundStickyToggleButton,

@@ -24,7 +24,6 @@ define( function( require ) {
    */
   function TComboBoxItemNode( comboBoxItemNode, phetioID ) {
     assert && assertInstanceOf( comboBoxItemNode, phet.sun.ComboBox.ItemNode );
-    assert && assert( comboBoxItemNode.phetioValueType, 'Each item node must have a phetioValueType.' );
     TNode.call( this, comboBoxItemNode, phetioID );
   }
 

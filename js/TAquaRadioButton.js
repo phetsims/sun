@@ -13,7 +13,6 @@ define( function( require ) {
   var assertInstanceOf = require( 'ifphetio!PHET_IO/assertInstanceOf' );
   var phetioInherit = require( 'ifphetio!PHET_IO/phetioInherit' );
   var sun = require( 'SUN/sun' );
-  var Tandem = require( 'TANDEM/Tandem' );
   var TBoolean = require( 'ifphetio!PHET_IO/types/TBoolean' );
   var TRadioButton = require( 'SUN/TRadioButton' );
   var TVoid = require( 'ifphetio!PHET_IO/types/TVoid' );
@@ -26,9 +25,9 @@ define( function( require ) {
    */
   function TAquaRadioButton( radioButton, phetioID ) {
     assert && assertInstanceOf( radioButton, phet.sun.AquaRadioButton );
-    if ( Tandem.validationEnabled() ) {
-      assert && assert( !!radioButton.phetioValueType, 'phetioValueType must be defined' );
-    }
+    // if ( Tandem.validationEnabled() ) {
+    //   assert && assert( !!radioButton.phetioValueType, 'phetioValueType must be defined' );
+    // }
 
     TRadioButton.call( this, radioButton, phetioID );
   }

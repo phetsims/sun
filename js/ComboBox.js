@@ -453,7 +453,6 @@ define( function( require ) {
 
 
     this.item = item;
-    this.phetioValueType = options.phetioValueType;
 
     Rectangle.call( this, 0, 0, width, height, options );
   }

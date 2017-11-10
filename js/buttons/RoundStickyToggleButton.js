@@ -42,7 +42,6 @@ define( function( require ) {
 
     // @public (phet-io)
     this.toggleButtonModel = new StickyToggleButtonModel( valueUp, valueDown, property, options );
-    this.phetioValueType = property.phetioValueType;
     RoundButtonView.call( this, this.toggleButtonModel, new StickyToggleButtonInteractionStateProperty( this.toggleButtonModel ), options );
 
     // @private (a11y) - toggle the button when we receive the accessible click event

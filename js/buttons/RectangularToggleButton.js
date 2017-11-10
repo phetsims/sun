@@ -35,7 +35,6 @@ define( function( require ) {
 
     // @public (phet-io)
     this.toggleButtonModel = new ToggleButtonModel( valueOff, valueOn, property, options );
-    this.phetioValueType = property.phetioValueType;
     RectangularButtonView.call( this, this.toggleButtonModel, new ToggleButtonInteractionStateProperty( this.toggleButtonModel ), options );
   }
 
