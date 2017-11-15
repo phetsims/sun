@@ -38,7 +38,7 @@ define( function( require ) {
       implementation: function( listener ) {
         this.instance.checkBoxValueProperty.link( listener );
       },
-      documentation: 'Link a listener to the underlying checked TProperty.  The listener receives an immediate callback ' +
+      documentation: 'Link a listener to the underlying checked PropertyIO.  The listener receives an immediate callback ' +
                      'with the current value (true/false)'
     },
 

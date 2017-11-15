@@ -24,7 +24,7 @@ define( function( require ) {
   var StringUtils = require( 'PHETCOMMON/util/StringUtils' );
   var sun = require( 'SUN/sun' );
   var Tandem = require( 'TANDEM/Tandem' );
-  var TProperty = require( 'AXON/TProperty' );
+  var PropertyIO = require( 'AXON/PropertyIO' );
   var TRange = require( 'DOT/TRange' );
   var Util = require( 'DOT/Util' );
 
@@ -111,13 +111,13 @@ define( function( require ) {
     // phet-io, Assign default options that need tandems.
     options.enabledProperty = options.enabledProperty || new Property( true, {
       tandem: options.tandem.createTandem( 'enabledProperty' ),
-      phetioType: TProperty( TBoolean )
+      phetioType: PropertyIO( TBoolean )
     } );
 
     // controls the portion of the slider that is enabled
     options.enabledRangeProperty = options.enabledRangeProperty || new Property( range, {
       tandem: options.tandem.createTandem( 'enabledRangeProperty' ),
-      phetioType: TProperty( TRange )
+      phetioType: PropertyIO( TRange )
     } );
 
     // @public
