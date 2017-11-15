@@ -18,7 +18,7 @@ define( function( require ) {
   var Property = require( 'AXON/Property' );
   var sun = require( 'SUN/sun' );
   var Tandem = require( 'TANDEM/Tandem' );
-  var TToggleButton = require( 'SUN/buttons/TToggleButton' );
+  var ToggleButtonIO = require( 'SUN/buttons/ToggleButtonIO' );
 
   /**
    * @param {Object} valueUp value when the toggle is in the 'up' position
@@ -109,7 +109,7 @@ define( function( require ) {
       var oldValue = this.valueProperty.value;
 
       var hasToStateObject = this.valueProperty.phetioType && this.valueProperty.phetioType.elementType && this.valueProperty.phetioType.elementType.toStateObject;
-      var id = phetioEvents.start( 'user', this.stickyToggleButtonModelTandem.id, TToggleButton, 'toggled', {
+      var id = phetioEvents.start( 'user', this.stickyToggleButtonModelTandem.id, ToggleButtonIO, 'toggled', {
         oldValue: hasToStateObject && this.valueProperty.phetioType.elementType.toStateObject( oldValue ),
         newValue: hasToStateObject && this.valueProperty.phetioType.elementType.toStateObject( newValue )
       } );

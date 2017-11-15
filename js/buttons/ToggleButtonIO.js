@@ -20,7 +20,7 @@ define( function( require ) {
    * @param {string} phetioID
    * @constructor
    */
-  function TToggleButton( toggleButton, phetioID ) {
+  function ToggleButtonIO( toggleButton, phetioID ) {
     assert && assertInstanceOf( toggleButton, [
       phet.sun.RectangularToggleButton,
       phet.sun.RoundStickyToggleButton,
@@ -29,13 +29,13 @@ define( function( require ) {
     NodeIO.call( this, toggleButton, phetioID );
   }
 
-  phetioInherit( NodeIO, 'TToggleButton', TToggleButton, {}, {
+  phetioInherit( NodeIO, 'ToggleButtonIO', ToggleButtonIO, {}, {
     documentation: 'A button that toggles state (in/out) when pressed',
     events: [ 'toggled' ]
   } );
 
 
-  sun.register( 'TToggleButton', TToggleButton );
+  sun.register( 'ToggleButtonIO', ToggleButtonIO );
 
-  return TToggleButton;
+  return ToggleButtonIO;
 } );

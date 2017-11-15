@@ -13,7 +13,7 @@ define( function( require ) {
   var inherit = require( 'PHET_CORE/inherit' );
   var phetioEvents = require( 'ifphetio!PHET_IO/phetioEvents' );
   var sun = require( 'SUN/sun' );
-  var TRoundMomentaryButton = require( 'SUN/buttons/TRoundMomentaryButton' );
+  var RoundMomentaryButtonIO = require( 'SUN/buttons/RoundMomentaryButtonIO' );
 
   /**
    * @param {Object} valueOff - value when the button is in the off state
@@ -38,14 +38,14 @@ define( function( require ) {
       // turn on when pressed (if enabled)
       if ( down ) {
         if ( self.enabledProperty.get() ) {
-          var pressedID = options.tandem && options.tandem.isLegalAndUsable() && phetioEvents.start( 'user', options.tandem.id, TRoundMomentaryButton, 'pressed' );
+          var pressedID = options.tandem && options.tandem.isLegalAndUsable() && phetioEvents.start( 'user', options.tandem.id, RoundMomentaryButtonIO, 'pressed' );
           valueProperty.set( valueOn );
           phetioEvents.end( pressedID );
         }
       }
       else {
         // turn off when released
-        var releasedID = options.tandem && options.tandem.isLegalAndUsable() && phetioEvents.start( 'user', options.tandem.id, TRoundMomentaryButton, 'released' );
+        var releasedID = options.tandem && options.tandem.isLegalAndUsable() && phetioEvents.start( 'user', options.tandem.id, RoundMomentaryButtonIO, 'released' );
         valueProperty.set( valueOff );
         phetioEvents.end( releasedID );
       }
@@ -55,7 +55,7 @@ define( function( require ) {
     // turn off when disabled
     var enabledListener = function( enabled ) {
       if ( !enabled ) {
-        var releasedDisabledID = options.tandem && options.tandem.isLegalAndUsable() && phetioEvents.start( 'user', options.tandem.id, TRoundMomentaryButton, 'releasedDisabled' );
+        var releasedDisabledID = options.tandem && options.tandem.isLegalAndUsable() && phetioEvents.start( 'user', options.tandem.id, RoundMomentaryButtonIO, 'releasedDisabled' );
         valueProperty.set( valueOff );
         phetioEvents.end( releasedDisabledID );
       }

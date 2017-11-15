@@ -20,17 +20,17 @@ define( function( require ) {
    * @param phetioID
    * @constructor
    */
-  function TRoundMomentaryButton( momentaryButton, phetioID ) {
+  function RoundMomentaryButtonIO( momentaryButton, phetioID ) {
     assert && assertInstanceOf( momentaryButton, phet.sun.RoundMomentaryButton );
     NodeIO.call( this, momentaryButton, phetioID );
   }
 
-  phetioInherit( NodeIO, 'TRoundMomentaryButton', TRoundMomentaryButton, {}, {
+  phetioInherit( NodeIO, 'RoundMomentaryButtonIO', RoundMomentaryButtonIO, {}, {
     documentation: 'Button that performs an action while it is being pressed, and stops the action when released',
     events: [ 'pressed', 'released', 'releasedDisabled' ]
   } );
 
-  sun.register( 'TRoundMomentaryButton', TRoundMomentaryButton );
+  sun.register( 'RoundMomentaryButtonIO', RoundMomentaryButtonIO );
 
-  return TRoundMomentaryButton;
+  return RoundMomentaryButtonIO;
 } );

@@ -18,7 +18,7 @@ define( function( require ) {
   var RectangularButtonView = require( 'SUN/buttons/RectangularButtonView' );
   var sun = require( 'SUN/sun' );
   var Tandem = require( 'TANDEM/Tandem' );
-  var TPushButton = require( 'SUN/buttons/TPushButton' );
+  var PushButtonIO = require( 'SUN/buttons/PushButtonIO' );
 
   /**
    * @param {Object} [options]
@@ -29,7 +29,7 @@ define( function( require ) {
 
     options = _.extend( {
       tandem: Tandem.tandemRequired(), // {Tandem|null}
-      phetioType: TPushButton,
+      phetioType: PushButtonIO,
 
       // a11y - listener that will only be called when using the keyboard to interact with the push button
       accessibleFire: function() {}

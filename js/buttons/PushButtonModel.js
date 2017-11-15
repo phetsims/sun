@@ -18,7 +18,7 @@ define( function( require ) {
   var phetioEvents = require( 'ifphetio!PHET_IO/phetioEvents' );
   var sun = require( 'SUN/sun' );
   var Tandem = require( 'TANDEM/Tandem' );
-  var TPushButtonModel = require( 'SUN/buttons/TPushButtonModel' );
+  var PushButtonModelIO = require( 'SUN/buttons/PushButtonModelIO' );
 
   /**
    * @param {Object} [options]
@@ -151,7 +151,7 @@ define( function( require ) {
       // Make sure the button is not already firing, see https://github.com/phetsims/energy-skate-park-basics/issues/380
       assert && assert( !this.isFiringProperty.value, 'Cannot fire when already firing' );
       this.isFiringProperty.value = true;
-      var id = phetioEvents.start( 'user', this.pushButtonModelTandem.id, TPushButtonModel, 'fired' );
+      var id = phetioEvents.start( 'user', this.pushButtonModelTandem.id, PushButtonModelIO, 'fired' );
 
       var copy = this.listeners.slice( 0 );
       copy.forEach( function( listener ) {

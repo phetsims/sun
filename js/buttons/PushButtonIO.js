@@ -22,7 +22,7 @@ define( function( require ) {
    * @param phetioID
    * @constructor
    */
-  function TPushButton( button, phetioID ) {
+  function PushButtonIO( button, phetioID ) {
     NodeIO.call( this, button, phetioID );
 
     assert && assertInstanceOf( button, [
@@ -31,7 +31,7 @@ define( function( require ) {
     ] );
   }
 
-  phetioInherit( NodeIO, 'TPushButton', TPushButton, {
+  phetioInherit( NodeIO, 'PushButtonIO', PushButtonIO, {
     addListener: {
       returnType: VoidIO,
       parameterTypes: [ FunctionIO( VoidIO, [] ) ],
@@ -53,7 +53,7 @@ define( function( require ) {
     events: [ 'fired' ]
   } );
 
-  sun.register( 'TPushButton', TPushButton );
+  sun.register( 'PushButtonIO', PushButtonIO );
 
-  return TPushButton;
+  return PushButtonIO;
 } );

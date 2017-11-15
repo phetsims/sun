@@ -18,7 +18,7 @@ define( function( require ) {
   var StickyToggleButtonModel = require( 'SUN/buttons/StickyToggleButtonModel' );
   var sun = require( 'SUN/sun' );
   var Tandem = require( 'TANDEM/Tandem' );
-  var TToggleButton = require( 'SUN/buttons/TToggleButton' );
+  var ToggleButtonIO = require( 'SUN/buttons/ToggleButtonIO' );
 
   /**
    * @param {Object} valueUp value when the toggle is in the 'up' position
@@ -33,7 +33,7 @@ define( function( require ) {
 
     options = _.extend( {
       tandem: Tandem.tandemRequired(),
-      phetioType: TToggleButton,
+      phetioType: ToggleButtonIO,
 
       // a11y
       tagName: 'input',

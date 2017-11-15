@@ -16,7 +16,7 @@ define( function( require ) {
   var RoundButtonView = require( 'SUN/buttons/RoundButtonView' );
   var sun = require( 'SUN/sun' );
   var Tandem = require( 'TANDEM/Tandem' );
-  var TRoundMomentaryButton = require( 'SUN/buttons/TRoundMomentaryButton' );
+  var RoundMomentaryButtonIO = require( 'SUN/buttons/RoundMomentaryButtonIO' );
 
   /**
    * @param {Object} valueOff - value when the button is in the off state
@@ -28,7 +28,7 @@ define( function( require ) {
   function RoundMomentaryButton( valueOff, valueOn, property, options ) {
     options = _.extend( {
       tandem: Tandem.tandemRequired(),
-      phetioType: TRoundMomentaryButton
+      phetioType: RoundMomentaryButtonIO
     }, options );
 
     this.buttonModel = new MomentaryButtonModel( valueOff, valueOn, property, options );

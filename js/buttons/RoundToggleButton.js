@@ -16,7 +16,7 @@ define( function( require ) {
   var Tandem = require( 'TANDEM/Tandem' );
   var ToggleButtonInteractionStateProperty = require( 'SUN/buttons/ToggleButtonInteractionStateProperty' );
   var ToggleButtonModel = require( 'SUN/buttons/ToggleButtonModel' );
-  var TToggleButton = require( 'SUN/buttons/TToggleButton' );
+  var ToggleButtonIO = require( 'SUN/buttons/ToggleButtonIO' );
 
   /**
    * @param {Object} valueOff - value when the button is in the off state
@@ -32,7 +32,7 @@ define( function( require ) {
     // Tandem support
     options = _.extend( {
       tandem: Tandem.tandemRequired(),
-      phetioType: TToggleButton,
+      phetioType: ToggleButtonIO,
 
       // a11y
       tagName: 'input',

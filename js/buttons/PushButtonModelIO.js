@@ -22,17 +22,17 @@ define( function( require ) {
    * @param phetioID
    * @constructor
    */
-  function TPushButtonModel( button, phetioID ) {
+  function PushButtonModelIO( button, phetioID ) {
     ObjectIO.call( this, button, phetioID );
     assert && assertInstanceOf( button, phet.sun.PushButtonModel );
   }
 
-  phetioInherit( NodeIO, 'TPushButtonModel', TPushButtonModel, {}, {
+  phetioInherit( NodeIO, 'PushButtonModelIO', PushButtonModelIO, {}, {
     documentation: 'Sends events for buttons',
     events: [ 'fired' ]
   } );
 
-  sun.register( 'TPushButtonModel', TPushButtonModel );
+  sun.register( 'PushButtonModelIO', PushButtonModelIO );
 
-  return TPushButtonModel;
+  return PushButtonModelIO;
 } );

@@ -20,7 +20,7 @@ define( function( require ) {
   var RoundButtonView = require( 'SUN/buttons/RoundButtonView' );
   var sun = require( 'SUN/sun' );
   var Tandem = require( 'TANDEM/Tandem' );
-  var TPushButton = require( 'SUN/buttons/TPushButton' );
+  var PushButtonIO = require( 'SUN/buttons/PushButtonIO' );
 
   /**
    * @param {Object} [options]
@@ -30,7 +30,7 @@ define( function( require ) {
 
     options = _.extend( {
       tandem: Tandem.tandemRequired(),
-      phetioType: TPushButton,
+      phetioType: PushButtonIO,
 
       // a11y
       tagName: 'input',
