@@ -20,7 +20,7 @@ define( function( require ) {
   var RectangularButtonView = require( 'SUN/buttons/RectangularButtonView' );
   var sun = require( 'SUN/sun' );
   var Tandem = require( 'TANDEM/Tandem' );
-  var TRadioButtonGroupMember = require( 'SUN/TRadioButtonGroupMember' );
+  var RadioButtonGroupMemberIO = require( 'SUN/RadioButtonGroupMemberIO' );
 
   /**
    * @param {Property} property axon property that can take on a set of values, one for each radio button in the group
@@ -66,7 +66,7 @@ define( function( require ) {
       inputType: 'radio',
 
       tandem: Tandem.tandemRequired(),
-      phetioType: TRadioButtonGroupMember
+      phetioType: RadioButtonGroupMemberIO
     }, options );
 
     // @public (phet-io)

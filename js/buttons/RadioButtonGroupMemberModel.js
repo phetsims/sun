@@ -14,7 +14,7 @@ define( function( require ) {
   var inherit = require( 'PHET_CORE/inherit' );
   var phetioEvents = require( 'ifphetio!PHET_IO/phetioEvents' );
   var sun = require( 'SUN/sun' );
-  var TRadioButtonGroupMember = require( 'SUN/TRadioButtonGroupMember' );
+  var RadioButtonGroupMemberIO = require( 'SUN/RadioButtonGroupMemberIO' );
 
   /**
    * @param {Property} selectorProperty - the property for the RadioButtonGroup that determines which button is selected
@@ -34,7 +34,7 @@ define( function( require ) {
     // @public (read only) - fire on up if the button is enabled, public for use in the accessibility tree
     this.fire = function() {
       if ( self.enabledProperty.get() ) {
-        var id = phetioEvents.start( 'user', tandem.id, TRadioButtonGroupMember, 'fired', {
+        var id = phetioEvents.start( 'user', tandem.id, RadioButtonGroupMemberIO, 'fired', {
           value: selectorProperty.phetioType && selectorProperty.phetioType.elementType && selectorProperty.phetioType.elementType.toStateObject && selectorProperty.phetioType.elementType.toStateObject( selectedValue )
         } );
         selectorProperty.set( selectedValue );
