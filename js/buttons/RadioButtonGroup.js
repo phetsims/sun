@@ -165,9 +165,9 @@ define( function( require ) {
     var button;
     for ( i = 0; i < contentArray.length; i++ ) {
 
-      assert && assert( !contentArray[ i ].hasOwnProperty( 'phetioValueType' ), 'phetioValueType should be provided by ' +
-                                                                                'the property passed to the ' +
-                                                                                'RadioButtonGroup constructor' );
+      assert && assert( !contentArray[ i ].hasOwnProperty( 'phetioType' ), 'phetioType should be provided by ' +
+                                                                           'the property passed to the ' +
+                                                                           'RadioButtonGroup constructor' );
 
       assert && assert( !contentArray[ i ].tandem, 'content arrays should not have tandem instances, they should use ' +
                                                    'tandemName instead' );

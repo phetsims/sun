@@ -39,9 +39,6 @@ define( function( require ) {
 
     var self = this;
 
-    var tandem = options.tandem;
-    options.tandem = tandem.createSupertypeTandem();
-
     // If a listener was passed in, save it and add it after creating the button model.  This is done so that
     // the same code path is always used for adding listener, thus guaranteeing a consistent code path if addListener is
     // overridden, see https://github.com/phetsims/sun/issues/284.
@@ -62,17 +59,10 @@ define( function( require ) {
       }
     } );
 
-    this.mutate( {
-      tandem: tandem,
-      phetioType: options.phetioType
-    } );
-
     this.disposeRoundPushButton = function() {
-      tandem.removeInstance( self );
       self.removeAccessibleInputListener( accessibleClickListener );
       self.buttonModel.dispose();
     };
-
   }
 
   sun.register( 'RoundPushButton', RoundPushButton );

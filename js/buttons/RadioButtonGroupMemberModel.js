@@ -35,7 +35,7 @@ define( function( require ) {
     this.fire = function() {
       if ( self.enabledProperty.get() ) {
         var id = phetioEvents.start( 'user', tandem.id, TRadioButtonGroupMember, 'fired', {
-          value: selectorProperty.phetioValueType && selectorProperty.phetioValueType.toStateObject && selectorProperty.phetioValueType.toStateObject( selectedValue )
+          value: selectorProperty.phetioType && selectorProperty.phetioType.elementType && selectorProperty.phetioType.elementType.toStateObject && selectorProperty.phetioType.elementType.toStateObject( selectedValue )
         } );
         selectorProperty.set( selectedValue );
         phetioEvents.end( id );

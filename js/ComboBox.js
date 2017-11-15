@@ -134,9 +134,10 @@ define( function( require ) {
         var id = phetioEvents.start( 'user', options.tandem.id, TComboBoxItemNode, 'fired', {
 
           // support uninstrumented sims
-          value: selectedItemNode.phetioValueType &&
-                 selectedItemNode.phetioValueType.toStateObject &&
-                 selectedItemNode.phetioValueType.toStateObject( selectedItemNode.item.value )
+          value: selectedItemNode.phetioType &&
+                 selectedItemNode.phetioType.elementType &&
+                 selectedItemNode.phetioType.elementType.toStateObject &&
+                 selectedItemNode.phetioType.elementType.toStateObject( selectedItemNode.item.value )
         } );
 
         unhighlightItem( selectedItemNode );
@@ -158,17 +159,12 @@ define( function( require ) {
         inputListeners: [ itemListener ]
       }, item.options );
 
-      // Create tandems for each ComboBoxItemNode
-      var itemNodeTandem = null;
-
       // For 'phet-io' brand, the tandems for items must be provided.  For other brands, the tandems are not required
       // and are filled in with substitutes so the tandems are still defined.
       if ( Tandem.validationEnabled() ) {
         assert && assert( itemNodeOptions.tandemName, 'For instrumented ComboBoxes, ItemNodes must have a tandemName' );
       }
-      itemNodeTandem = options.tandem.createTandem( itemNodeOptions.tandemName || 'comboBoxItemNode' );
-      itemNodeOptions.tandem = itemNodeTandem;
-      itemNodeOptions.phetioValueType = property.phetioValueType;
+      itemNodeOptions.tandem = options.tandem.createTandem( itemNodeOptions.tandemName || 'comboBoxItemNode' );
 
       // Create the list item node itself
       listNode.addChild( new ComboBoxItemNode( item, itemWidth, itemHeight, options.itemXMargin, itemNodeOptions ) );
@@ -176,8 +172,7 @@ define( function( require ) {
 
     // button, will be set to correct value when property observer is registered
     var buttonNode = new ButtonNode( new ComboBoxItemNode( items[ 0 ], itemWidth, itemHeight, options.itemXMargin, {
-      tandem: options.tandem.createTandem( 'buttonNode', { enabled: false } ),
-      phetioValueType: property.phetioValueType
+      tandem: options.tandem.createTandem( 'buttonNode', { enabled: false } )
     } ), options );
     self.addChild( buttonNode );
 
@@ -260,8 +255,7 @@ define( function( require ) {
         return item.value === value;
       } );
       buttonNode.setItemNode( new ComboBoxItemNode( item, itemWidth, itemHeight, options.itemXMargin, {
-        tandem: options.tandem.createTandem( 'buttonNode', { enabled: false } ),
-        phetioValueType: property.phetioValueType
+        tandem: options.tandem.createTandem( 'buttonNode', { enabled: false } )
       } ) );
     };
     property.link( propertyObserver );
@@ -450,7 +444,6 @@ define( function( require ) {
       phetioType: TComboBoxItemNode,
       children: [ this.itemWrapper ]
     }, options );
-
 
     this.item = item;
 

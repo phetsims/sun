@@ -69,8 +69,6 @@ define( function( require ) {
       phetioType: TRadioButtonGroupMember
     }, options );
 
-    assert && assert( !options.hasOwnProperty( 'phetioValueType' ), 'phetioValueType should be provided by the property and not through options.' );
-
     // @public (phet-io)
     this.radioButtonGroupMemberModel = new RadioButtonGroupMemberModel( property, value, options.tandem );
 

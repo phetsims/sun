@@ -73,10 +73,10 @@ define( function( require ) {
       assert && assert( this.valueProperty.value === this.valueOff || this.valueProperty.value === this.valueOn );
       var oldValue = this.valueProperty.value;
       var newValue = this.valueProperty.value === this.valueOff ? this.valueOn : this.valueOff;
-      var hasToStateObject = this.valueProperty.phetioValueType && this.valueProperty.phetioValueType.toStateObject;
+      var hasToStateObject = this.valueProperty.phetioType && this.valueProperty.phetioType.elementType && this.valueProperty.phetioType.elementType.toStateObject;
       var id = phetioEvents.start( 'user', this.toggleButtonModelTandem.id, TToggleButton, 'toggled', {
-        oldValue: hasToStateObject && this.valueProperty.phetioValueType.toStateObject( oldValue ),
-        newValue: hasToStateObject && this.valueProperty.phetioValueType.toStateObject( newValue )
+        oldValue: hasToStateObject && this.valueProperty.phetioType.elementType.toStateObject( oldValue ),
+        newValue: hasToStateObject && this.valueProperty.phetioType.elementType.toStateObject( newValue )
       } );
       this.valueProperty.value = newValue;
       phetioEvents.end( id );

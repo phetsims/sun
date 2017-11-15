@@ -25,10 +25,6 @@ define( function( require ) {
    */
   function TAquaRadioButton( radioButton, phetioID ) {
     assert && assertInstanceOf( radioButton, phet.sun.AquaRadioButton );
-    // if ( Tandem.validationEnabled() ) {
-    //   assert && assert( !!radioButton.phetioValueType, 'phetioValueType must be defined' );
-    // }
-
     TRadioButton.call( this, radioButton, phetioID );
   }
 

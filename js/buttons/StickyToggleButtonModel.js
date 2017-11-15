@@ -108,10 +108,10 @@ define( function( require ) {
       var newValue = this.valueProperty.value === this.valueUp ? this.valueDown : this.valueUp;
       var oldValue = this.valueProperty.value;
 
-      var hasToStateObject = this.valueProperty.phetioValueType && this.valueProperty.phetioValueType.toStateObject;
+      var hasToStateObject = this.valueProperty.phetioType && this.valueProperty.phetioType.elementType && this.valueProperty.phetioType.elementType.toStateObject;
       var id = phetioEvents.start( 'user', this.stickyToggleButtonModelTandem.id, TToggleButton, 'toggled', {
-        oldValue: hasToStateObject && this.valueProperty.phetioValueType.toStateObject( oldValue ),
-        newValue: hasToStateObject && this.valueProperty.phetioValueType.toStateObject( newValue )
+        oldValue: hasToStateObject && this.valueProperty.phetioType.elementType.toStateObject( oldValue ),
+        newValue: hasToStateObject && this.valueProperty.phetioType.elementType.toStateObject( newValue )
       } );
       this.valueProperty.value = newValue;
       phetioEvents.end( id );

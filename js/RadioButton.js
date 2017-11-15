@@ -42,8 +42,6 @@ define( function( require ) {
       prependLabels: true
     }, options );
 
-    assert && assert( !options.phetioValueType, 'phetioValueType should be specified in the property, not RadioButton options' );
-
     var self = this;
     Node.call( this );
 
@@ -68,7 +66,7 @@ define( function( require ) {
     // set property value on fire
     var fire = function() {
       var id = options.tandem.isLegalAndUsable() && phetioEvents.start( 'user', options.tandem.id, TRadioButton, 'fired', {
-        value: property.phetioValueType.toStateObject( value )
+        value: property.phetioType.elementType.toStateObject( value )
       } );
       property.set( value );
       options.tandem.isLegalAndUsable() && phetioEvents.end( id );
