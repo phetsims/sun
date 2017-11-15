@@ -14,7 +14,7 @@ define( function( require ) {
   var sun = require( 'SUN/sun' );
   var FunctionIO = require( 'ifphetio!PHET_IO/types/FunctionIO' );
   var TNode = require( 'SCENERY/nodes/TNode' );
-  var TVoid = require( 'ifphetio!PHET_IO/types/TVoid' );
+  var VoidIO = require( 'ifphetio!PHET_IO/types/VoidIO' );
 
   /**
    * Wrapper type for phet/sun's PushButton class.
@@ -33,15 +33,15 @@ define( function( require ) {
 
   phetioInherit( TNode, 'TPushButton', TPushButton, {
     addListener: {
-      returnType: TVoid,
-      parameterTypes: [ FunctionIO( TVoid, [] ) ],
+      returnType: VoidIO,
+      parameterTypes: [ FunctionIO( VoidIO, [] ) ],
       implementation: function( listener ) {
         this.instance.addListener( listener );
       },
       documentation: 'Adds a listener that is called back when the button is pressed.'
     },
     fire: {
-      returnType: TVoid,
+      returnType: VoidIO,
       parameterTypes: [],
       implementation: function() {
         this.instance.buttonModel.fire();

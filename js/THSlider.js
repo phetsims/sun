@@ -15,7 +15,7 @@ define( function( require ) {
   var phetioInherit = require( 'ifphetio!PHET_IO/phetioInherit' );
   var sun = require( 'SUN/sun' );
   var BooleanIO = require( 'ifphetio!PHET_IO/types/BooleanIO' );
-  var TVoid = require( 'ifphetio!PHET_IO/types/TVoid' );
+  var VoidIO = require( 'ifphetio!PHET_IO/types/VoidIO' );
 
   /**
    * Wrapper type for phet/sun's HSlider class.
@@ -31,7 +31,7 @@ define( function( require ) {
   phetioInherit( TNode, 'THSlider', THSlider, {
 
     setMajorTicksVisible: {
-      returnType: TVoid,
+      returnType: VoidIO,
       parameterTypes: [ BooleanIO ],
       implementation: function( visible ) {
         this.instance.setMajorTicksVisible( visible );
@@ -40,7 +40,7 @@ define( function( require ) {
     },
 
     setMinorTicksVisible: {
-      returnType: TVoid,
+      returnType: VoidIO,
       parameterTypes: [ BooleanIO ],
       implementation: function( visible ) {
         this.instance.setMinorTicksVisible( visible );

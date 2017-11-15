@@ -17,7 +17,7 @@ define( function( require ) {
   var sun = require( 'SUN/sun' );
   var BooleanIO = require( 'ifphetio!PHET_IO/types/BooleanIO' );
   var FunctionIO = require( 'ifphetio!PHET_IO/types/FunctionIO' );
-  var TVoid = require( 'ifphetio!PHET_IO/types/TVoid' );
+  var VoidIO = require( 'ifphetio!PHET_IO/types/VoidIO' );
 
   /**
    * Wrapper type for phet/sun's CheckBox class.
@@ -33,8 +33,8 @@ define( function( require ) {
   phetioInherit( TNode, 'TCheckBox', TCheckBox, {
 
     link: {
-      returnType: TVoid,
-      parameterTypes: [ FunctionIO( TVoid, [ BooleanIO ] ) ],
+      returnType: VoidIO,
+      parameterTypes: [ FunctionIO( VoidIO, [ BooleanIO ] ) ],
       implementation: function( listener ) {
         this.instance.checkBoxValueProperty.link( listener );
       },
@@ -43,7 +43,7 @@ define( function( require ) {
     },
 
     setChecked: {
-      returnType: TVoid,
+      returnType: VoidIO,
       parameterTypes: [ BooleanIO ],
       implementation: function( checked ) {
         this.instance.checkBoxValueProperty.set( checked );

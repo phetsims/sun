@@ -15,7 +15,7 @@ define( function( require ) {
   var sun = require( 'SUN/sun' );
   var BooleanIO = require( 'ifphetio!PHET_IO/types/BooleanIO' );
   var TRadioButton = require( 'SUN/TRadioButton' );
-  var TVoid = require( 'ifphetio!PHET_IO/types/TVoid' );
+  var VoidIO = require( 'ifphetio!PHET_IO/types/VoidIO' );
 
   /**
    * Wrapper type for phet/sun's AquaRadioButton class.
@@ -30,7 +30,7 @@ define( function( require ) {
 
   phetioInherit( TRadioButton, 'TAquaRadioButton', TAquaRadioButton, {
     setCircleButtonVisible: {
-      returnType: TVoid,
+      returnType: VoidIO,
       parameterTypes: [ BooleanIO ],
       implementation: function( visible ) {
         this.instance.setCircleButtonVisible( visible );

@@ -14,7 +14,7 @@ define( function( require ) {
   var phetioInherit = require( 'ifphetio!PHET_IO/phetioInherit' );
   var sun = require( 'SUN/sun' );
   var TNode = require( 'SCENERY/nodes/TNode' );
-  var TObject = require( 'ifphetio!PHET_IO/types/TObject' );
+  var ObjectIO = require( 'ifphetio!PHET_IO/types/ObjectIO' );
 
   /**
    * Wrapper type for phet/sun's PushButton class.
@@ -23,7 +23,7 @@ define( function( require ) {
    * @constructor
    */
   function TPushButtonModel( button, phetioID ) {
-    TObject.call( this, button, phetioID );
+    ObjectIO.call( this, button, phetioID );
     assert && assertInstanceOf( button, phet.sun.PushButtonModel );
   }
 
