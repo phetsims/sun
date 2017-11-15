@@ -12,7 +12,7 @@ define( function( require ) {
   var assertInstanceOf = require( 'ifphetio!PHET_IO/assertInstanceOf' );
   var phetioInherit = require( 'ifphetio!PHET_IO/phetioInherit' );
   var sun = require( 'SUN/sun' );
-  var TNode = require( 'SCENERY/nodes/TNode' );
+  var NodeIO = require( 'SCENERY/nodes/NodeIO' );
 
   /**
    * Wrapper type for phet/sun's HSliderTrack class.
@@ -22,10 +22,10 @@ define( function( require ) {
    */
   function THSliderTrack( sliderTrack, phetioID ) {
     assert && assertInstanceOf( sliderTrack, phet.sun.HSliderTrack );
-    TNode.call( this, sliderTrack, phetioID );
+    NodeIO.call( this, sliderTrack, phetioID );
   }
 
-  phetioInherit( TNode, 'THSliderTrack', THSliderTrack, {}, {
+  phetioInherit( NodeIO, 'THSliderTrack', THSliderTrack, {}, {
     documentation: 'The track for a knob of a traditional slider'
   } );
 

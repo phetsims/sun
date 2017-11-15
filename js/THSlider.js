@@ -8,7 +8,7 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var TNode = require( 'SCENERY/nodes/TNode' );
+  var NodeIO = require( 'SCENERY/nodes/NodeIO' );
 
   // phet-io modules
   var assertInstanceOf = require( 'ifphetio!PHET_IO/assertInstanceOf' );
@@ -25,10 +25,10 @@ define( function( require ) {
    */
   function THSlider( slider, phetioID ) {
     assert && assertInstanceOf( slider, phet.sun.HSlider );
-    TNode.call( this, slider, phetioID );
+    NodeIO.call( this, slider, phetioID );
   }
 
-  phetioInherit( TNode, 'THSlider', THSlider, {
+  phetioInherit( NodeIO, 'THSlider', THSlider, {
 
     setMajorTicksVisible: {
       returnType: VoidIO,

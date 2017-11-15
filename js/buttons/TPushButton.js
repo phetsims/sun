@@ -13,7 +13,7 @@ define( function( require ) {
   var phetioInherit = require( 'ifphetio!PHET_IO/phetioInherit' );
   var sun = require( 'SUN/sun' );
   var FunctionIO = require( 'ifphetio!PHET_IO/types/FunctionIO' );
-  var TNode = require( 'SCENERY/nodes/TNode' );
+  var NodeIO = require( 'SCENERY/nodes/NodeIO' );
   var VoidIO = require( 'ifphetio!PHET_IO/types/VoidIO' );
 
   /**
@@ -23,7 +23,7 @@ define( function( require ) {
    * @constructor
    */
   function TPushButton( button, phetioID ) {
-    TNode.call( this, button, phetioID );
+    NodeIO.call( this, button, phetioID );
 
     assert && assertInstanceOf( button, [
       phet.sun.RoundPushButton,
@@ -31,7 +31,7 @@ define( function( require ) {
     ] );
   }
 
-  phetioInherit( TNode, 'TPushButton', TPushButton, {
+  phetioInherit( NodeIO, 'TPushButton', TPushButton, {
     addListener: {
       returnType: VoidIO,
       parameterTypes: [ FunctionIO( VoidIO, [] ) ],

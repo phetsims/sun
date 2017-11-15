@@ -12,7 +12,7 @@ define( function( require ) {
   var assertInstanceOf = require( 'ifphetio!PHET_IO/assertInstanceOf' );
   var phetioInherit = require( 'ifphetio!PHET_IO/phetioInherit' );
   var sun = require( 'SUN/sun' );
-  var TNode = require( 'SCENERY/nodes/TNode' );
+  var NodeIO = require( 'SCENERY/nodes/NodeIO' );
 
   /**
    * Wrapper type for phet/sun's RadioButton class.
@@ -22,15 +22,15 @@ define( function( require ) {
    */
   function TRadioButton( radioButton, phetioID ) {
     assert && assertInstanceOf( radioButton, phet.sun.RadioButton );
-    TNode.call( this, radioButton, phetioID );
+    NodeIO.call( this, radioButton, phetioID );
   }
 
-  phetioInherit( TNode, 'TRadioButton', TRadioButton, {}, {
+  phetioInherit( NodeIO, 'TRadioButton', TRadioButton, {}, {
     documentation: 'A traditional radio button',
     events: [ 'fired' ],
-    toStateObject: function( node ) { return TNode.toStateObject( node ); },
-    fromStateObject: function( stateObject ) { return TNode.fromStateObject( stateObject ); },
-    setValue: function( instance, stateObject ) {TNode.setValue( instance, stateObject );}
+    toStateObject: function( node ) { return NodeIO.toStateObject( node ); },
+    fromStateObject: function( stateObject ) { return NodeIO.fromStateObject( stateObject ); },
+    setValue: function( instance, stateObject ) {NodeIO.setValue( instance, stateObject );}
   } );
 
   sun.register( 'TRadioButton', TRadioButton );

@@ -8,7 +8,7 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var TNode = require( 'SCENERY/nodes/TNode' );
+  var NodeIO = require( 'SCENERY/nodes/NodeIO' );
   var sun = require( 'SUN/sun' );
 
   // phet-io modules
@@ -23,10 +23,10 @@ define( function( require ) {
    */
   function TAccordionBox( accordionBox, phetioID ) {
     assert && assertInstanceOf( accordionBox, phet.sun.AccordionBox );
-    TNode.call( this, accordionBox, phetioID );
+    NodeIO.call( this, accordionBox, phetioID );
   }
 
-  phetioInherit( TNode, 'TAccordionBox', TAccordionBox, {}, {
+  phetioInherit( NodeIO, 'TAccordionBox', TAccordionBox, {}, {
     documentation: 'A traditional accordionBox',
     events: [ 'expanded', 'collapsed' ]
   } );

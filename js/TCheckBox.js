@@ -9,7 +9,7 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var TNode = require( 'SCENERY/nodes/TNode' );
+  var NodeIO = require( 'SCENERY/nodes/NodeIO' );
 
   // phet-io modules
   var assertInstanceOf = require( 'ifphetio!PHET_IO/assertInstanceOf' );
@@ -27,10 +27,10 @@ define( function( require ) {
    */
   function TCheckBox( checkBox, phetioID ) {
     assert && assertInstanceOf( checkBox, phet.sun.CheckBox );
-    TNode.call( this, checkBox, phetioID );
+    NodeIO.call( this, checkBox, phetioID );
   }
 
-  phetioInherit( TNode, 'TCheckBox', TCheckBox, {
+  phetioInherit( NodeIO, 'TCheckBox', TCheckBox, {
 
     link: {
       returnType: VoidIO,

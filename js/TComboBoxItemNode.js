@@ -10,7 +10,7 @@ define( function( require ) {
 
   // modules
   var sun = require( 'SUN/sun' );
-  var TNode = require( 'SCENERY/nodes/TNode' );
+  var NodeIO = require( 'SCENERY/nodes/NodeIO' );
 
   // phet-io modules
   var assertInstanceOf = require( 'ifphetio!PHET_IO/assertInstanceOf' );
@@ -24,10 +24,10 @@ define( function( require ) {
    */
   function TComboBoxItemNode( comboBoxItemNode, phetioID ) {
     assert && assertInstanceOf( comboBoxItemNode, phet.sun.ComboBox.ItemNode );
-    TNode.call( this, comboBoxItemNode, phetioID );
+    NodeIO.call( this, comboBoxItemNode, phetioID );
   }
 
-  phetioInherit( TNode, 'TComboBoxItemNode', TComboBoxItemNode, {}, {
+  phetioInherit( NodeIO, 'TComboBoxItemNode', TComboBoxItemNode, {}, {
     documentation: 'A traditional item node for a combo box',
     events: [ 'fired' ]
   } );

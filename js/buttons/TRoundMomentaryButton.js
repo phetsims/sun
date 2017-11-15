@@ -12,7 +12,7 @@ define( function( require ) {
   var assertInstanceOf = require( 'ifphetio!PHET_IO/assertInstanceOf' );
   var phetioInherit = require( 'ifphetio!PHET_IO/phetioInherit' );
   var sun = require( 'SUN/sun' );
-  var TNode = require( 'SCENERY/nodes/TNode' );
+  var NodeIO = require( 'SCENERY/nodes/NodeIO' );
 
   /**
    * Wrapper type for phet/sun's RoundMomentaryButton class.
@@ -22,10 +22,10 @@ define( function( require ) {
    */
   function TRoundMomentaryButton( momentaryButton, phetioID ) {
     assert && assertInstanceOf( momentaryButton, phet.sun.RoundMomentaryButton );
-    TNode.call( this, momentaryButton, phetioID );
+    NodeIO.call( this, momentaryButton, phetioID );
   }
 
-  phetioInherit( TNode, 'TRoundMomentaryButton', TRoundMomentaryButton, {}, {
+  phetioInherit( NodeIO, 'TRoundMomentaryButton', TRoundMomentaryButton, {}, {
     documentation: 'Button that performs an action while it is being pressed, and stops the action when released',
     events: [ 'pressed', 'released', 'releasedDisabled' ]
   } );

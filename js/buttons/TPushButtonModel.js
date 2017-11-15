@@ -13,7 +13,7 @@ define( function( require ) {
   var assertInstanceOf = require( 'ifphetio!PHET_IO/assertInstanceOf' );
   var phetioInherit = require( 'ifphetio!PHET_IO/phetioInherit' );
   var sun = require( 'SUN/sun' );
-  var TNode = require( 'SCENERY/nodes/TNode' );
+  var NodeIO = require( 'SCENERY/nodes/NodeIO' );
   var ObjectIO = require( 'ifphetio!PHET_IO/types/ObjectIO' );
 
   /**
@@ -27,7 +27,7 @@ define( function( require ) {
     assert && assertInstanceOf( button, phet.sun.PushButtonModel );
   }
 
-  phetioInherit( TNode, 'TPushButtonModel', TPushButtonModel, {}, {
+  phetioInherit( NodeIO, 'TPushButtonModel', TPushButtonModel, {}, {
     documentation: 'Sends events for buttons',
     events: [ 'fired' ]
   } );

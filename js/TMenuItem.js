@@ -12,7 +12,7 @@ define( function( require ) {
   var assertInstanceOf = require( 'ifphetio!PHET_IO/assertInstanceOf' );
   var phetioInherit = require( 'ifphetio!PHET_IO/phetioInherit' );
   var sun = require( 'SUN/sun' );
-  var TNode = require( 'SCENERY/nodes/TNode' );
+  var NodeIO = require( 'SCENERY/nodes/NodeIO' );
 
   /**
    * Wrapper type for phet/sun's MenuItem
@@ -22,10 +22,10 @@ define( function( require ) {
    */
   function TMenuItem( menuItem, phetioID ) {
     assert && assertInstanceOf( menuItem, phet.sun.MenuItem );
-    TNode.call( this, menuItem, phetioID );
+    NodeIO.call( this, menuItem, phetioID );
   }
 
-  phetioInherit( TNode, 'TMenuItem', TMenuItem, {}, {
+  phetioInherit( NodeIO, 'TMenuItem', TMenuItem, {}, {
     documentation: 'The item buttons shown in a popup menu',
     events: [ 'fired' ]
   } );

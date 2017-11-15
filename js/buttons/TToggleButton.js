@@ -12,7 +12,7 @@ define( function( require ) {
   var assertInstanceOf = require( 'ifphetio!PHET_IO/assertInstanceOf' );
   var phetioInherit = require( 'ifphetio!PHET_IO/phetioInherit' );
   var sun = require( 'SUN/sun' );
-  var TNode = require( 'SCENERY/nodes/TNode' );
+  var NodeIO = require( 'SCENERY/nodes/NodeIO' );
 
   /**
    * Wrapper type for phet/sun's ToggleButton class.
@@ -26,10 +26,10 @@ define( function( require ) {
       phet.sun.RoundStickyToggleButton,
       phet.sun.RoundToggleButton
     ] );
-    TNode.call( this, toggleButton, phetioID );
+    NodeIO.call( this, toggleButton, phetioID );
   }
 
-  phetioInherit( TNode, 'TToggleButton', TToggleButton, {}, {
+  phetioInherit( NodeIO, 'TToggleButton', TToggleButton, {}, {
     documentation: 'A button that toggles state (in/out) when pressed',
     events: [ 'toggled' ]
   } );
