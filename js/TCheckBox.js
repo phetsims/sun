@@ -15,8 +15,8 @@ define( function( require ) {
   var assertInstanceOf = require( 'ifphetio!PHET_IO/assertInstanceOf' );
   var phetioInherit = require( 'ifphetio!PHET_IO/phetioInherit' );
   var sun = require( 'SUN/sun' );
-  var TBoolean = require( 'ifphetio!PHET_IO/types/TBoolean' );
-  var TFunctionWrapper = require( 'ifphetio!PHET_IO/types/TFunctionWrapper' );
+  var BooleanIO = require( 'ifphetio!PHET_IO/types/BooleanIO' );
+  var FunctionIO = require( 'ifphetio!PHET_IO/types/FunctionIO' );
   var TVoid = require( 'ifphetio!PHET_IO/types/TVoid' );
 
   /**
@@ -34,7 +34,7 @@ define( function( require ) {
 
     link: {
       returnType: TVoid,
-      parameterTypes: [ TFunctionWrapper( TVoid, [ TBoolean ] ) ],
+      parameterTypes: [ FunctionIO( TVoid, [ BooleanIO ] ) ],
       implementation: function( listener ) {
         this.instance.checkBoxValueProperty.link( listener );
       },
@@ -44,7 +44,7 @@ define( function( require ) {
 
     setChecked: {
       returnType: TVoid,
-      parameterTypes: [ TBoolean ],
+      parameterTypes: [ BooleanIO ],
       implementation: function( checked ) {
         this.instance.checkBoxValueProperty.set( checked );
       },
@@ -52,7 +52,7 @@ define( function( require ) {
     },
 
     isChecked: {
-      returnType: TBoolean,
+      returnType: BooleanIO,
       parameterTypes: [],
       implementation: function() {
         return this.instance.checkBoxValueProperty.get();

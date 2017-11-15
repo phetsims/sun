@@ -14,7 +14,7 @@ define( function( require ) {
   var assertInstanceOf = require( 'ifphetio!PHET_IO/assertInstanceOf' );
   var phetioInherit = require( 'ifphetio!PHET_IO/phetioInherit' );
   var sun = require( 'SUN/sun' );
-  var TBoolean = require( 'ifphetio!PHET_IO/types/TBoolean' );
+  var BooleanIO = require( 'ifphetio!PHET_IO/types/BooleanIO' );
   var TVoid = require( 'ifphetio!PHET_IO/types/TVoid' );
 
   /**
@@ -32,7 +32,7 @@ define( function( require ) {
 
     setMajorTicksVisible: {
       returnType: TVoid,
-      parameterTypes: [ TBoolean ],
+      parameterTypes: [ BooleanIO ],
       implementation: function( visible ) {
         this.instance.setMajorTicksVisible( visible );
       },
@@ -41,7 +41,7 @@ define( function( require ) {
 
     setMinorTicksVisible: {
       returnType: TVoid,
-      parameterTypes: [ TBoolean ],
+      parameterTypes: [ BooleanIO ],
       implementation: function( visible ) {
         this.instance.setMinorTicksVisible( visible );
       },

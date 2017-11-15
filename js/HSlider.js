@@ -29,7 +29,7 @@ define( function( require ) {
   var Util = require( 'DOT/Util' );
 
   // phet-io modules
-  var TBoolean = require( 'ifphetio!PHET_IO/types/TBoolean' );
+  var BooleanIO = require( 'ifphetio!PHET_IO/types/BooleanIO' );
   var THSlider = require( 'SUN/THSlider' );
 
   /**
@@ -111,7 +111,7 @@ define( function( require ) {
     // phet-io, Assign default options that need tandems.
     options.enabledProperty = options.enabledProperty || new Property( true, {
       tandem: options.tandem.createTandem( 'enabledProperty' ),
-      phetioType: PropertyIO( TBoolean )
+      phetioType: PropertyIO( BooleanIO )
     } );
 
     // controls the portion of the slider that is enabled

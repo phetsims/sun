@@ -12,7 +12,7 @@ define( function( require ) {
   var assertInstanceOf = require( 'ifphetio!PHET_IO/assertInstanceOf' );
   var phetioInherit = require( 'ifphetio!PHET_IO/phetioInherit' );
   var sun = require( 'SUN/sun' );
-  var TFunctionWrapper = require( 'ifphetio!PHET_IO/types/TFunctionWrapper' );
+  var FunctionIO = require( 'ifphetio!PHET_IO/types/FunctionIO' );
   var TNode = require( 'SCENERY/nodes/TNode' );
   var TVoid = require( 'ifphetio!PHET_IO/types/TVoid' );
 
@@ -34,7 +34,7 @@ define( function( require ) {
   phetioInherit( TNode, 'TPushButton', TPushButton, {
     addListener: {
       returnType: TVoid,
-      parameterTypes: [ TFunctionWrapper( TVoid, [] ) ],
+      parameterTypes: [ FunctionIO( TVoid, [] ) ],
       implementation: function( listener ) {
         this.instance.addListener( listener );
       },
