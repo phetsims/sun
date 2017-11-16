@@ -25,7 +25,7 @@ define( function( require ) {
   var sun = require( 'SUN/sun' );
   var Tandem = require( 'TANDEM/Tandem' );
   var PropertyIO = require( 'AXON/PropertyIO' );
-  var TRange = require( 'DOT/TRange' );
+  var RangeIO = require( 'DOT/RangeIO' );
   var Util = require( 'DOT/Util' );
 
   // phet-io modules
@@ -117,7 +117,7 @@ define( function( require ) {
     // controls the portion of the slider that is enabled
     options.enabledRangeProperty = options.enabledRangeProperty || new Property( range, {
       tandem: options.tandem.createTandem( 'enabledRangeProperty' ),
-      phetioType: PropertyIO( TRange )
+      phetioType: PropertyIO( RangeIO )
     } );
 
     // @public
