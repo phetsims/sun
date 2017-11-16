@@ -16,9 +16,9 @@ define( function( require ) {
   var CallbackTimer = require( 'SUN/CallbackTimer' );
   var inherit = require( 'PHET_CORE/inherit' );
   var phetioEvents = require( 'ifphetio!PHET_IO/phetioEvents' );
+  var PushButtonModelIO = require( 'SUN/buttons/PushButtonModelIO' );
   var sun = require( 'SUN/sun' );
   var Tandem = require( 'TANDEM/Tandem' );
-  var PushButtonModelIO = require( 'SUN/buttons/PushButtonModelIO' );
 
   /**
    * @param {Object} [options]

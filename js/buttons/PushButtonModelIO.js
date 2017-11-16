@@ -11,10 +11,10 @@ define( function( require ) {
 
   // modules
   var assertInstanceOf = require( 'ifphetio!PHET_IO/assertInstanceOf' );
-  var phetioInherit = require( 'ifphetio!PHET_IO/phetioInherit' );
-  var sun = require( 'SUN/sun' );
   var NodeIO = require( 'SCENERY/nodes/NodeIO' );
   var ObjectIO = require( 'ifphetio!PHET_IO/types/ObjectIO' );
+  var phetioInherit = require( 'ifphetio!PHET_IO/phetioInherit' );
+  var sun = require( 'SUN/sun' );
 
   /**
    * Wrapper type for phet/sun's PushButton class.

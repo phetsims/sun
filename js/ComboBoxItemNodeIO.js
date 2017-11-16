@@ -9,8 +9,8 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var sun = require( 'SUN/sun' );
   var NodeIO = require( 'SCENERY/nodes/NodeIO' );
+  var sun = require( 'SUN/sun' );
 
   // phet-io modules
   var assertInstanceOf = require( 'ifphetio!PHET_IO/assertInstanceOf' );

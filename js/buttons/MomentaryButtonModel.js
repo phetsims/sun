@@ -12,8 +12,8 @@ define( function( require ) {
   var ButtonModel = require( 'SUN/buttons/ButtonModel' );
   var inherit = require( 'PHET_CORE/inherit' );
   var phetioEvents = require( 'ifphetio!PHET_IO/phetioEvents' );
-  var sun = require( 'SUN/sun' );
   var RoundMomentaryButtonIO = require( 'SUN/buttons/RoundMomentaryButtonIO' );
+  var sun = require( 'SUN/sun' );
 
   /**
    * @param {Object} valueOff - value when the button is in the off state

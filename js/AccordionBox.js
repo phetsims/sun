@@ -10,6 +10,7 @@ define( function( require ) {
   'use strict';
 
   // modules
+  var AccordionBoxIO = require( 'SUN/AccordionBoxIO' );
   var BooleanProperty = require( 'AXON/BooleanProperty' );
   var ExpandCollapseButton = require( 'SUN/ExpandCollapseButton' );
   var inherit = require( 'PHET_CORE/inherit' );
@@ -20,7 +21,6 @@ define( function( require ) {
   var sun = require( 'SUN/sun' );
   var Tandem = require( 'TANDEM/Tandem' );
   var Text = require( 'SCENERY/nodes/Text' );
-  var AccordionBoxIO = require( 'SUN/AccordionBoxIO' );
 
   // phet-io modules
   var phetioEvents = require( 'ifphetio!PHET_IO/phetioEvents' );

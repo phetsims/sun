@@ -14,11 +14,11 @@ define( function( require ) {
   // modules
   var inherit = require( 'PHET_CORE/inherit' );
   var PushButtonInteractionStateProperty = require( 'SUN/buttons/PushButtonInteractionStateProperty' );
+  var PushButtonIO = require( 'SUN/buttons/PushButtonIO' );
   var PushButtonModel = require( 'SUN/buttons/PushButtonModel' );
   var RectangularButtonView = require( 'SUN/buttons/RectangularButtonView' );
   var sun = require( 'SUN/sun' );
   var Tandem = require( 'TANDEM/Tandem' );
-  var PushButtonIO = require( 'SUN/buttons/PushButtonIO' );
 
   /**
    * @param {Object} [options]

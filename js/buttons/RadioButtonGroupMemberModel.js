@@ -13,8 +13,8 @@ define( function( require ) {
   var ButtonModel = require( 'SUN/buttons/ButtonModel' );
   var inherit = require( 'PHET_CORE/inherit' );
   var phetioEvents = require( 'ifphetio!PHET_IO/phetioEvents' );
-  var sun = require( 'SUN/sun' );
   var RadioButtonGroupMemberIO = require( 'SUN/RadioButtonGroupMemberIO' );
+  var sun = require( 'SUN/sun' );
 
   /**
    * @param {Property} selectorProperty - the property for the RadioButtonGroup that determines which button is selected

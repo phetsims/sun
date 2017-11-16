@@ -11,10 +11,10 @@ define( function( require ) {
 
   // modules
   var assertInstanceOf = require( 'ifphetio!PHET_IO/assertInstanceOf' );
-  var phetioInherit = require( 'ifphetio!PHET_IO/phetioInherit' );
-  var sun = require( 'SUN/sun' );
   var BooleanIO = require( 'ifphetio!PHET_IO/types/BooleanIO' );
+  var phetioInherit = require( 'ifphetio!PHET_IO/phetioInherit' );
   var RadioButtonIO = require( 'SUN/RadioButtonIO' );
+  var sun = require( 'SUN/sun' );
   var VoidIO = require( 'ifphetio!PHET_IO/types/VoidIO' );
 
   /**

@@ -9,13 +9,13 @@ define( function( require ) {
   'use strict';
 
   // modules
+  var AquaRadioButtonIO = require( 'SUN/AquaRadioButtonIO' );
   var Circle = require( 'SCENERY/nodes/Circle' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Node = require( 'SCENERY/nodes/Node' );
   var RadioButton = require( 'SUN/RadioButton' );
   var sun = require( 'SUN/sun' );
   var Tandem = require( 'TANDEM/Tandem' );
-  var AquaRadioButtonIO = require( 'SUN/AquaRadioButtonIO' );
 
   /**
    * @param property

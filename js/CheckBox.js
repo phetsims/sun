@@ -19,8 +19,8 @@ define( function( require ) {
   var Text = require( 'SCENERY/nodes/Text' );
 
   // phet-io modules
-  var phetioEvents = require( 'ifphetio!PHET_IO/phetioEvents' );
   var CheckBoxIO = require( 'SUN/CheckBoxIO' );
+  var phetioEvents = require( 'ifphetio!PHET_IO/phetioEvents' );
 
   // constants
   var DISABLED_OPACITY = 0.3;

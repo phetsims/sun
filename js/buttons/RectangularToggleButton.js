@@ -15,8 +15,8 @@ define( function( require ) {
   var sun = require( 'SUN/sun' );
   var Tandem = require( 'TANDEM/Tandem' );
   var ToggleButtonInteractionStateProperty = require( 'SUN/buttons/ToggleButtonInteractionStateProperty' );
-  var ToggleButtonModel = require( 'SUN/buttons/ToggleButtonModel' );
   var ToggleButtonIO = require( 'SUN/buttons/ToggleButtonIO' );
+  var ToggleButtonModel = require( 'SUN/buttons/ToggleButtonModel' );
 
   /**
    * @param {Object} valueOff - value when the button is in the off state

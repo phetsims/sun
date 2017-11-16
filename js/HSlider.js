@@ -19,13 +19,13 @@ define( function( require ) {
   var Node = require( 'SCENERY/nodes/Node' );
   var Path = require( 'SCENERY/nodes/Path' );
   var Property = require( 'AXON/Property' );
+  var PropertyIO = require( 'AXON/PropertyIO' );
+  var RangeIO = require( 'DOT/RangeIO' );
   var Shape = require( 'KITE/Shape' );
   var SimpleDragHandler = require( 'SCENERY/input/SimpleDragHandler' );
   var StringUtils = require( 'PHETCOMMON/util/StringUtils' );
   var sun = require( 'SUN/sun' );
   var Tandem = require( 'TANDEM/Tandem' );
-  var PropertyIO = require( 'AXON/PropertyIO' );
-  var RangeIO = require( 'DOT/RangeIO' );
   var Util = require( 'DOT/Util' );
 
   // phet-io modules

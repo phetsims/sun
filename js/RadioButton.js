@@ -13,10 +13,10 @@ define( function( require ) {
   var inherit = require( 'PHET_CORE/inherit' );
   var Node = require( 'SCENERY/nodes/Node' );
   var phetioEvents = require( 'ifphetio!PHET_IO/phetioEvents' );
+  var RadioButtonIO = require( 'SUN/RadioButtonIO' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var sun = require( 'SUN/sun' );
   var Tandem = require( 'TANDEM/Tandem' );
-  var RadioButtonIO = require( 'SUN/RadioButtonIO' );
 
   /**
    * @param {Property} property

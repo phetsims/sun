@@ -14,9 +14,9 @@ define( function( require ) {
   var MomentaryButtonInteractionStateProperty = require( 'SUN/buttons/MomentaryButtonInteractionStateProperty' );
   var MomentaryButtonModel = require( 'SUN/buttons/MomentaryButtonModel' );
   var RoundButtonView = require( 'SUN/buttons/RoundButtonView' );
+  var RoundMomentaryButtonIO = require( 'SUN/buttons/RoundMomentaryButtonIO' );
   var sun = require( 'SUN/sun' );
   var Tandem = require( 'TANDEM/Tandem' );
-  var RoundMomentaryButtonIO = require( 'SUN/buttons/RoundMomentaryButtonIO' );
 
   /**
    * @param {Object} valueOff - value when the button is in the off state

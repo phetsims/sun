@@ -15,12 +15,12 @@ define( function( require ) {
   var ColorConstants = require( 'SUN/ColorConstants' );
   var inherit = require( 'PHET_CORE/inherit' );
   var RadioButtonGroupAppearance = require( 'SUN/buttons/RadioButtonGroupAppearance' );
+  var RadioButtonGroupMemberIO = require( 'SUN/RadioButtonGroupMemberIO' );
   var RadioButtonGroupMemberModel = require( 'SUN/buttons/RadioButtonGroupMemberModel' );
   var RadioButtonInteractionStateProperty = require( 'SUN/buttons/RadioButtonInteractionStateProperty' );
   var RectangularButtonView = require( 'SUN/buttons/RectangularButtonView' );
   var sun = require( 'SUN/sun' );
   var Tandem = require( 'TANDEM/Tandem' );
-  var RadioButtonGroupMemberIO = require( 'SUN/RadioButtonGroupMemberIO' );
 
   /**
    * @param {Property} property axon property that can take on a set of values, one for each radio button in the group

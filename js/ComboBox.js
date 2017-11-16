@@ -13,6 +13,8 @@ define( function( require ) {
   'use strict';
 
   // modules
+  var ComboBoxIO = require( 'SUN/ComboBoxIO' );
+  var ComboBoxItemNodeIO = require( 'SUN/ComboBoxItemNodeIO' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Line = require( 'SCENERY/nodes/Line' );
   var Node = require( 'SCENERY/nodes/Node' );
@@ -22,8 +24,6 @@ define( function( require ) {
   var Shape = require( 'KITE/Shape' );
   var sun = require( 'SUN/sun' );
   var Tandem = require( 'TANDEM/Tandem' );
-  var ComboBoxIO = require( 'SUN/ComboBoxIO' );
-  var ComboBoxItemNodeIO = require( 'SUN/ComboBoxItemNodeIO' );
   var Vector2 = require( 'DOT/Vector2' );
 
   // phet-io modules
