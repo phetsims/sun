@@ -15,23 +15,22 @@ define( function( require ) {
   var NodeIO = require( 'SCENERY/nodes/NodeIO' );
 
   /**
-   * Wrapper type for phet/sun's OnOffSwitch class.
-   * @param onOffSwitch
+   * Wrapper type for phet/sun's MenuItem
+   * @param menuItem
    * @param phetioID
    * @constructor
    */
-  function TOnOffSwitch( onOffSwitch, phetioID ) {
-    assert && assertInstanceOf( onOffSwitch, phet.sun.OnOffSwitch );
-    NodeIO.call( this, onOffSwitch, phetioID );
+  function MenuItemIO( menuItem, phetioID ) {
+    assert && assertInstanceOf( menuItem, phet.sun.MenuItem );
+    NodeIO.call( this, menuItem, phetioID );
   }
 
-  phetioInherit( NodeIO, 'TOnOffSwitch', TOnOffSwitch, {}, {
-    documentation: 'A traditional switch component',
-    events: [ 'toggled' ]
+  phetioInherit( NodeIO, 'MenuItemIO', MenuItemIO, {}, {
+    documentation: 'The item buttons shown in a popup menu',
+    events: [ 'fired' ]
   } );
 
-  sun.register( 'TOnOffSwitch', TOnOffSwitch );
+  sun.register( 'MenuItemIO', MenuItemIO );
 
-  return TOnOffSwitch;
+  return MenuItemIO;
 } );
-

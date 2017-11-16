@@ -26,7 +26,7 @@ define( function( require ) {
   var SimpleDragHandler = require( 'SCENERY/input/SimpleDragHandler' );
   var sun = require( 'SUN/sun' );
   var Tandem = require( 'TANDEM/Tandem' );
-  var TOnOffSwitch = require( 'SUN/TOnOffSwitch' );
+  var OnOffSwitchIO = require( 'SUN/OnOffSwitchIO' );
   var Util = require( 'DOT/Util' );
   var Vector2 = require( 'DOT/Vector2' );
 
@@ -166,7 +166,7 @@ define( function( require ) {
           // stream, see https://github.com/phetsims/phet-io/issues/369
           var changed = onProperty.get() !== value;
           if ( changed ) {
-            var id = phetioEvents.start( 'user', options.tandem.id, TOnOffSwitch, 'toggled', {
+            var id = phetioEvents.start( 'user', options.tandem.id, OnOffSwitchIO, 'toggled', {
               oldValue: !value,
               newValue: value
             } );
@@ -182,7 +182,7 @@ define( function( require ) {
         // if moved past the threshold, choose value based on the side, otherwise just toggle
         var newValue = passedDragThreshold ? self.thumbPositionToValue() : !onProperty.get();
 
-        var id = phetioEvents.start( 'user', options.tandem.id, TOnOffSwitch, 'toggled', {
+        var id = phetioEvents.start( 'user', options.tandem.id, OnOffSwitchIO, 'toggled', {
           oldValue: oldValue,
           newValue: newValue
         } );

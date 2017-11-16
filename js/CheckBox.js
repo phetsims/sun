@@ -20,7 +20,7 @@ define( function( require ) {
 
   // phet-io modules
   var phetioEvents = require( 'ifphetio!PHET_IO/phetioEvents' );
-  var TCheckBox = require( 'SUN/TCheckBox' );
+  var CheckBoxIO = require( 'SUN/CheckBoxIO' );
 
   // constants
   var DISABLED_OPACITY = 0.3;
@@ -44,7 +44,7 @@ define( function( require ) {
       checkBoxColor: 'black',
       checkBoxColorBackground: 'white',
       tandem: Tandem.tandemRequired(),
-      phetioType: TCheckBox,
+      phetioType: CheckBoxIO,
 
       // a11y
       tagName: 'input',
@@ -116,7 +116,7 @@ define( function( require ) {
       if ( self._enabled ) {
         var newValue = !property.value;
 
-        var id = phetioEvents.start( 'user', options.tandem.id, TCheckBox, 'toggled', {
+        var id = phetioEvents.start( 'user', options.tandem.id, CheckBoxIO, 'toggled', {
           oldValue: property.value,
           newValue: newValue
         } );

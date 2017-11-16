@@ -14,7 +14,7 @@ define( function( require ) {
   var phetioInherit = require( 'ifphetio!PHET_IO/phetioInherit' );
   var sun = require( 'SUN/sun' );
   var BooleanIO = require( 'ifphetio!PHET_IO/types/BooleanIO' );
-  var TRadioButton = require( 'SUN/TRadioButton' );
+  var RadioButtonIO = require( 'SUN/RadioButtonIO' );
   var VoidIO = require( 'ifphetio!PHET_IO/types/VoidIO' );
 
   /**
@@ -23,12 +23,12 @@ define( function( require ) {
    * @param {string} phetioID
    * @constructor
    */
-  function TAquaRadioButton( radioButton, phetioID ) {
+  function AquaRadioButtonIO( radioButton, phetioID ) {
     assert && assertInstanceOf( radioButton, phet.sun.AquaRadioButton );
-    TRadioButton.call( this, radioButton, phetioID );
+    RadioButtonIO.call( this, radioButton, phetioID );
   }
 
-  phetioInherit( TRadioButton, 'TAquaRadioButton', TAquaRadioButton, {
+  phetioInherit( RadioButtonIO, 'AquaRadioButtonIO', AquaRadioButtonIO, {
     setCircleButtonVisible: {
       returnType: VoidIO,
       parameterTypes: [ BooleanIO ],
@@ -41,8 +41,8 @@ define( function( require ) {
     documentation: 'A radio button which looks like the Mac "Aqua" radio buttons'
   } );
 
-  sun.register( 'TAquaRadioButton', TAquaRadioButton );
+  sun.register( 'AquaRadioButtonIO', AquaRadioButtonIO );
 
-  return TAquaRadioButton;
+  return AquaRadioButtonIO;
 } )
 ;

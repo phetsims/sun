@@ -22,17 +22,17 @@ define( function( require ) {
    * @param phetioID
    * @constructor
    */
-  function TComboBoxItemNode( comboBoxItemNode, phetioID ) {
+  function ComboBoxItemNodeIO( comboBoxItemNode, phetioID ) {
     assert && assertInstanceOf( comboBoxItemNode, phet.sun.ComboBox.ItemNode );
     NodeIO.call( this, comboBoxItemNode, phetioID );
   }
 
-  phetioInherit( NodeIO, 'TComboBoxItemNode', TComboBoxItemNode, {}, {
+  phetioInherit( NodeIO, 'ComboBoxItemNodeIO', ComboBoxItemNodeIO, {}, {
     documentation: 'A traditional item node for a combo box',
     events: [ 'fired' ]
   } );
 
-  sun.register( 'TComboBoxItemNode', TComboBoxItemNode );
+  sun.register( 'ComboBoxItemNodeIO', ComboBoxItemNodeIO );
 
-  return TComboBoxItemNode;
+  return ComboBoxItemNodeIO;
 } );

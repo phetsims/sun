@@ -23,12 +23,12 @@ define( function( require ) {
    * @param phetioID
    * @constructor
    */
-  function THSlider( slider, phetioID ) {
+  function HSliderIO( slider, phetioID ) {
     assert && assertInstanceOf( slider, phet.sun.HSlider );
     NodeIO.call( this, slider, phetioID );
   }
 
-  phetioInherit( NodeIO, 'THSlider', THSlider, {
+  phetioInherit( NodeIO, 'HSliderIO', HSliderIO, {
 
     setMajorTicksVisible: {
       returnType: VoidIO,
@@ -51,7 +51,7 @@ define( function( require ) {
     documentation: 'A traditional slider component, with a knob and possibly tick marks'
   } );
 
-  sun.register( 'THSlider', THSlider );
+  sun.register( 'HSliderIO', HSliderIO );
 
-  return THSlider;
+  return HSliderIO;
 } );

@@ -25,7 +25,7 @@ define( function( require ) {
   var Tandem = require( 'TANDEM/Tandem' );
 
   // phet-io modules
-  var THSliderTrack = require( 'SUN/THSliderTrack' );
+  var HSliderTrackIO = require( 'SUN/HSliderTrackIO' );
 
   /**
    * @param {Property.<number>} valueProperty
@@ -141,7 +141,7 @@ define( function( require ) {
     };
 
     this.mutate( {
-      phetioType: THSliderTrack,
+      phetioType: HSliderTrackIO,
       tandem: options.tandem
     } );
   }

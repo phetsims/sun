@@ -15,22 +15,21 @@ define( function( require ) {
   var NodeIO = require( 'SCENERY/nodes/NodeIO' );
 
   /**
-   * Wrapper type for phet/sun's MenuItem
-   * @param menuItem
+   * Wrapper type for phet/sun's HSliderTrack class.
+   * @param sliderTrack
    * @param phetioID
    * @constructor
    */
-  function TMenuItem( menuItem, phetioID ) {
-    assert && assertInstanceOf( menuItem, phet.sun.MenuItem );
-    NodeIO.call( this, menuItem, phetioID );
+  function HSliderTrackIO( sliderTrack, phetioID ) {
+    assert && assertInstanceOf( sliderTrack, phet.sun.HSliderTrack );
+    NodeIO.call( this, sliderTrack, phetioID );
   }
 
-  phetioInherit( NodeIO, 'TMenuItem', TMenuItem, {}, {
-    documentation: 'The item buttons shown in a popup menu',
-    events: [ 'fired' ]
+  phetioInherit( NodeIO, 'HSliderTrackIO', HSliderTrackIO, {}, {
+    documentation: 'The track for a knob of a traditional slider'
   } );
 
-  sun.register( 'TMenuItem', TMenuItem );
+  sun.register( 'HSliderTrackIO', HSliderTrackIO );
 
-  return TMenuItem;
+  return HSliderTrackIO;
 } );

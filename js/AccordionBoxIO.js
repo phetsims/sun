@@ -21,18 +21,18 @@ define( function( require ) {
    * @param phetioID
    * @constructor
    */
-  function TAccordionBox( accordionBox, phetioID ) {
+  function AccordionBoxIO( accordionBox, phetioID ) {
     assert && assertInstanceOf( accordionBox, phet.sun.AccordionBox );
     NodeIO.call( this, accordionBox, phetioID );
   }
 
-  phetioInherit( NodeIO, 'TAccordionBox', TAccordionBox, {}, {
+  phetioInherit( NodeIO, 'AccordionBoxIO', AccordionBoxIO, {}, {
     documentation: 'A traditional accordionBox',
     events: [ 'expanded', 'collapsed' ]
   } );
 
-  sun.register( 'TAccordionBox', TAccordionBox );
+  sun.register( 'AccordionBoxIO', AccordionBoxIO );
 
-  return TAccordionBox;
+  return AccordionBoxIO;
 } );
 

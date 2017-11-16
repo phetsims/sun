@@ -15,7 +15,7 @@ define( function( require ) {
   var RadioButton = require( 'SUN/RadioButton' );
   var sun = require( 'SUN/sun' );
   var Tandem = require( 'TANDEM/Tandem' );
-  var TAquaRadioButton = require( 'SUN/TAquaRadioButton' );
+  var AquaRadioButtonIO = require( 'SUN/AquaRadioButtonIO' );
 
   /**
    * @param property
@@ -35,7 +35,7 @@ define( function( require ) {
       xSpacing: 8, // horizontal space between the button and the node
       stroke: 'black', // color used to stroke the outer edge of the button
       tandem: Tandem.tandemRequired(),
-      phetioType: TAquaRadioButton
+      phetioType: AquaRadioButtonIO
     }, options );
 
     // selected node

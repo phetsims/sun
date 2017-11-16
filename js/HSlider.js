@@ -30,7 +30,7 @@ define( function( require ) {
 
   // phet-io modules
   var BooleanIO = require( 'ifphetio!PHET_IO/types/BooleanIO' );
-  var THSlider = require( 'SUN/THSlider' );
+  var HSliderIO = require( 'SUN/HSliderIO' );
 
   /**
    * @param {Property.<number>} valueProperty
@@ -102,7 +102,7 @@ define( function( require ) {
 
       // phet-io
       tandem: Tandem.tandemRequired(),
-      phetioType: THSlider
+      phetioType: HSliderIO
     }, options );
 
     var ownsEnabledProperty = !options.enabledProperty;

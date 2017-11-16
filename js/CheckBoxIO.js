@@ -25,12 +25,12 @@ define( function( require ) {
    * @param phetioID
    * @constructor
    */
-  function TCheckBox( checkBox, phetioID ) {
+  function CheckBoxIO( checkBox, phetioID ) {
     assert && assertInstanceOf( checkBox, phet.sun.CheckBox );
     NodeIO.call( this, checkBox, phetioID );
   }
 
-  phetioInherit( NodeIO, 'TCheckBox', TCheckBox, {
+  phetioInherit( NodeIO, 'CheckBoxIO', CheckBoxIO, {
 
     link: {
       returnType: VoidIO,
@@ -64,8 +64,8 @@ define( function( require ) {
     events: [ 'toggled' ]
   } );
 
-  sun.register( 'TCheckBox', TCheckBox );
+  sun.register( 'CheckBoxIO', CheckBoxIO );
 
-  return TCheckBox;
+  return CheckBoxIO;
 } );
 

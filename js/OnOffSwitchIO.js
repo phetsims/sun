@@ -15,21 +15,23 @@ define( function( require ) {
   var NodeIO = require( 'SCENERY/nodes/NodeIO' );
 
   /**
-   * Wrapper type for phet/sun's HSliderTrack class.
-   * @param sliderTrack
+   * Wrapper type for phet/sun's OnOffSwitch class.
+   * @param onOffSwitch
    * @param phetioID
    * @constructor
    */
-  function THSliderTrack( sliderTrack, phetioID ) {
-    assert && assertInstanceOf( sliderTrack, phet.sun.HSliderTrack );
-    NodeIO.call( this, sliderTrack, phetioID );
+  function OnOffSwitchIO( onOffSwitch, phetioID ) {
+    assert && assertInstanceOf( onOffSwitch, phet.sun.OnOffSwitch );
+    NodeIO.call( this, onOffSwitch, phetioID );
   }
 
-  phetioInherit( NodeIO, 'THSliderTrack', THSliderTrack, {}, {
-    documentation: 'The track for a knob of a traditional slider'
+  phetioInherit( NodeIO, 'OnOffSwitchIO', OnOffSwitchIO, {}, {
+    documentation: 'A traditional switch component',
+    events: [ 'toggled' ]
   } );
 
-  sun.register( 'THSliderTrack', THSliderTrack );
+  sun.register( 'OnOffSwitchIO', OnOffSwitchIO );
 
-  return THSliderTrack;
+  return OnOffSwitchIO;
 } );
+

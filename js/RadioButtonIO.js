@@ -20,12 +20,12 @@ define( function( require ) {
    * @param {String} phetioID
    * @constructor
    */
-  function TRadioButton( radioButton, phetioID ) {
+  function RadioButtonIO( radioButton, phetioID ) {
     assert && assertInstanceOf( radioButton, phet.sun.RadioButton );
     NodeIO.call( this, radioButton, phetioID );
   }
 
-  phetioInherit( NodeIO, 'TRadioButton', TRadioButton, {}, {
+  phetioInherit( NodeIO, 'RadioButtonIO', RadioButtonIO, {}, {
     documentation: 'A traditional radio button',
     events: [ 'fired' ],
     toStateObject: function( node ) { return NodeIO.toStateObject( node ); },
@@ -33,8 +33,8 @@ define( function( require ) {
     setValue: function( instance, stateObject ) {NodeIO.setValue( instance, stateObject );}
   } );
 
-  sun.register( 'TRadioButton', TRadioButton );
+  sun.register( 'RadioButtonIO', RadioButtonIO );
 
-  return TRadioButton;
+  return RadioButtonIO;
 } );
 

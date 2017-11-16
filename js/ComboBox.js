@@ -22,8 +22,8 @@ define( function( require ) {
   var Shape = require( 'KITE/Shape' );
   var sun = require( 'SUN/sun' );
   var Tandem = require( 'TANDEM/Tandem' );
-  var TComboBox = require( 'SUN/TComboBox' );
-  var TComboBoxItemNode = require( 'SUN/TComboBoxItemNode' );
+  var ComboBoxIO = require( 'SUN/ComboBoxIO' );
+  var ComboBoxItemNodeIO = require( 'SUN/ComboBoxItemNodeIO' );
   var Vector2 = require( 'DOT/Vector2' );
 
   // phet-io modules
@@ -72,7 +72,7 @@ define( function( require ) {
 
       // tandem
       tandem: Tandem.tandemRequired(),
-      phetioType: TComboBox
+      phetioType: ComboBoxIO
     }, options );
 
     // validate option values
@@ -131,7 +131,7 @@ define( function( require ) {
         // {ComboBoxItemNode}
         var selectedItemNode = event.currentTarget;
 
-        var id = phetioEvents.start( 'user', options.tandem.id, TComboBoxItemNode, 'fired', {
+        var id = phetioEvents.start( 'user', options.tandem.id, ComboBoxItemNodeIO, 'fired', {
 
           // support uninstrumented sims
           value: selectedItemNode.phetioType &&
@@ -211,7 +211,7 @@ define( function( require ) {
       down: function() {
         if ( enableClickToDismissListener ) {
 
-          var id = phetioEvents.start( 'user', options.tandem.id, TComboBox, 'popupHidden' );
+          var id = phetioEvents.start( 'user', options.tandem.id, ComboBoxIO, 'popupHidden' );
 
           display.removeInputListener( clickToDismissListener );
           listNode.visible = false;
@@ -229,7 +229,7 @@ define( function( require ) {
     buttonNode.addInputListener( {
       down: function() {
         if ( !listNode.visible ) {
-          var id = phetioEvents.start( 'user', options.tandem.id, TComboBox, 'popupShown' );
+          var id = phetioEvents.start( 'user', options.tandem.id, ComboBoxIO, 'popupShown' );
 
           moveList();
           listNode.moveToFront();
@@ -441,7 +441,7 @@ define( function( require ) {
 
     options = _.extend( {
       tandem: Tandem.tandemRequired(),
-      phetioType: TComboBoxItemNode,
+      phetioType: ComboBoxItemNodeIO,
       children: [ this.itemWrapper ]
     }, options );
 

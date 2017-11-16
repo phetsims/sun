@@ -16,7 +16,7 @@ define( function( require ) {
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var sun = require( 'SUN/sun' );
   var Tandem = require( 'TANDEM/Tandem' );
-  var TRadioButton = require( 'SUN/TRadioButton' );
+  var RadioButtonIO = require( 'SUN/RadioButtonIO' );
 
   /**
    * @param {Property} property
@@ -31,7 +31,7 @@ define( function( require ) {
     options = _.extend( {
       cursor: 'pointer',
       tandem: Tandem.tandemRequired(),
-      phetioType: TRadioButton,
+      phetioType: RadioButtonIO,
       enabled: true,
 
       // a11y
@@ -65,7 +65,7 @@ define( function( require ) {
 
     // set property value on fire
     var fire = function() {
-      var id = options.tandem.isLegalAndUsable() && phetioEvents.start( 'user', options.tandem.id, TRadioButton, 'fired', {
+      var id = options.tandem.isLegalAndUsable() && phetioEvents.start( 'user', options.tandem.id, RadioButtonIO, 'fired', {
         value: property.phetioType.elementType.toStateObject( value )
       } );
       property.set( value );

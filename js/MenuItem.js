@@ -22,7 +22,7 @@ define( function( require ) {
   var Text = require( 'SCENERY/nodes/Text' );
 
   // phet-io modules
-  var TMenuItem = require( 'SUN/TMenuItem' );
+  var MenuItemIO = require( 'SUN/MenuItemIO' );
   var phetioEvents = require( 'ifphetio!PHET_IO/phetioEvents' );
 
   // the check mark used for toggle-able menu items
@@ -87,7 +87,7 @@ define( function( require ) {
     } );
 
     var fire = function( event ) {
-      var id = options.tandem.supplied && phetioEvents.start( 'user', options.tandem.id, TMenuItem, 'fired' );
+      var id = options.tandem.supplied && phetioEvents.start( 'user', options.tandem.id, MenuItemIO, 'fired' );
       closeCallback( event );
       callback( event );
       options.tandem.supplied && phetioEvents.end( id );
@@ -129,7 +129,7 @@ define( function( require ) {
     this.mutate( {
       cursor: 'pointer',
       tandem: options.tandem,
-      phetioType: TMenuItem,
+      phetioType: MenuItemIO,
 
       // a11y
       parentContainerTagName: 'li',
