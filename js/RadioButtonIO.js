@@ -29,12 +29,12 @@ define( function( require ) {
     documentation: 'A traditional radio button',
     events: [ 'fired' ],
     toStateObject: function( node ) {
-      assert && assertInstanceOf( radioButton, phet.sun.RadioButton );
+      // assert && assertInstanceOf( radioButton, phet.sun.RadioButton );
       return NodeIO.toStateObject( node );
     },
     fromStateObject: function( stateObject ) { return NodeIO.fromStateObject( stateObject ); },
     setValue: function( instance, stateObject ) {
-      assert && assertInstanceOf( radioButton, phet.sun.RadioButton );
+      // assert && assertInstanceOf( radioButton, phet.sun.RadioButton );
       NodeIO.setValue( instance, stateObject );
     }
   } );
