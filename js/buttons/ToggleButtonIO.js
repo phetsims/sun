@@ -34,7 +34,6 @@ define( function( require ) {
     events: [ 'toggled' ]
   } );
 
-
   sun.register( 'ToggleButtonIO', ToggleButtonIO );
 
   return ToggleButtonIO;

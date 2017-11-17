@@ -16,13 +16,13 @@ define( function( require ) {
 
   /**
    * Wrapper type for phet/sun's RoundMomentaryButton class.
-   * @param momentaryButton
+   * @param roundMomentaryButton
    * @param phetioID
    * @constructor
    */
-  function RoundMomentaryButtonIO( momentaryButton, phetioID ) {
-    assert && assertInstanceOf( momentaryButton, phet.sun.RoundMomentaryButton );
-    NodeIO.call( this, momentaryButton, phetioID );
+  function RoundMomentaryButtonIO( roundMomentaryButton, phetioID ) {
+    assert && assertInstanceOf( roundMomentaryButton, phet.sun.RoundMomentaryButton );
+    NodeIO.call( this, roundMomentaryButton, phetioID );
   }
 
   phetioInherit( NodeIO, 'RoundMomentaryButtonIO', RoundMomentaryButtonIO, {}, {

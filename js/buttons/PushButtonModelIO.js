@@ -18,13 +18,13 @@ define( function( require ) {
 
   /**
    * Wrapper type for phet/sun's PushButton class.
-   * @param button
+   * @param pushButtonModel
    * @param phetioID
    * @constructor
    */
-  function PushButtonModelIO( button, phetioID ) {
-    ObjectIO.call( this, button, phetioID );
-    assert && assertInstanceOf( button, phet.sun.PushButtonModel );
+  function PushButtonModelIO( pushButtonModel, phetioID ) {
+    ObjectIO.call( this, pushButtonModel, phetioID );
+    assert && assertInstanceOf( pushButtonModel, phet.sun.PushButtonModel );
   }
 
   phetioInherit( NodeIO, 'PushButtonModelIO', PushButtonModelIO, {}, {

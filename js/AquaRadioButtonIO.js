@@ -19,13 +19,13 @@ define( function( require ) {
 
   /**
    * Wrapper type for phet/sun's AquaRadioButton class.
-   * @param {AquaRadioButton} radioButton
+   * @param {AquaRadioButton} aquaRadioButton
    * @param {string} phetioID
    * @constructor
    */
-  function AquaRadioButtonIO( radioButton, phetioID ) {
-    assert && assertInstanceOf( radioButton, phet.sun.AquaRadioButton );
-    RadioButtonIO.call( this, radioButton, phetioID );
+  function AquaRadioButtonIO( aquaRadioButton, phetioID ) {
+    assert && assertInstanceOf( aquaRadioButton, phet.sun.AquaRadioButton );
+    RadioButtonIO.call( this, aquaRadioButton, phetioID );
   }
 
   phetioInherit( RadioButtonIO, 'AquaRadioButtonIO', AquaRadioButtonIO, {

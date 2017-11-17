@@ -28,9 +28,15 @@ define( function( require ) {
   phetioInherit( NodeIO, 'RadioButtonGroupMemberIO', RadioButtonGroupMemberIO, {}, {
     documentation: 'A traditional radio button',
     events: [ 'fired' ],
-    toStateObject: function( node ) { return NodeIO.toStateObject( node ); },
+    toStateObject: function( radioButton ) {
+      assert && assertInstanceOf( radioButton, phet.sun.RadioButtonGroupMember );
+      return NodeIO.toStateObject( radioButton );
+    },
     fromStateObject: function( stateObject ) { return NodeIO.fromStateObject( stateObject ); },
-    setValue: function( instance, stateObject ) {NodeIO.setValue( instance, stateObject );}
+    setValue: function( radioButton, stateObject ) {
+      assert && assertInstanceOf( radioButton, phet.sun.RadioButtonGroupMember );
+      NodeIO.setValue( radioButton, stateObject );
+    }
   } );
 
   sun.register( 'RadioButtonGroupMemberIO', RadioButtonGroupMemberIO );

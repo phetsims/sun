@@ -16,13 +16,13 @@ define( function( require ) {
 
   /**
    * Wrapper type for phet/sun's HSliderTrack class.
-   * @param sliderTrack
+   * @param hSliderTrack
    * @param phetioID
    * @constructor
    */
-  function HSliderTrackIO( sliderTrack, phetioID ) {
-    assert && assertInstanceOf( sliderTrack, phet.sun.HSliderTrack );
-    NodeIO.call( this, sliderTrack, phetioID );
+  function HSliderTrackIO( hSliderTrack, phetioID ) {
+    assert && assertInstanceOf( hSliderTrack, phet.sun.HSliderTrack );
+    NodeIO.call( this, hSliderTrack, phetioID );
   }
 
   phetioInherit( NodeIO, 'HSliderTrackIO', HSliderTrackIO, {}, {

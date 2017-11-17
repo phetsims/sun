@@ -19,13 +19,13 @@ define( function( require ) {
 
   /**
    * Wrapper type for phet/sun's HSlider class.
-   * @param slider
+   * @param hslider
    * @param phetioID
    * @constructor
    */
-  function HSliderIO( slider, phetioID ) {
-    assert && assertInstanceOf( slider, phet.sun.HSlider );
-    NodeIO.call( this, slider, phetioID );
+  function HSliderIO( hslider, phetioID ) {
+    assert && assertInstanceOf( hslider, phet.sun.HSlider );
+    NodeIO.call( this, hslider, phetioID );
   }
 
   phetioInherit( NodeIO, 'HSliderIO', HSliderIO, {
