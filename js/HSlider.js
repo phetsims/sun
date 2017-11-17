@@ -34,7 +34,7 @@ define( function( require ) {
 
   /**
    * @param {Property.<number>} valueProperty
-   * @param { {min:number, max:number} } range
+   * @param {{min:number, max:number}|Range} range
    * @param {Object} [options]
    * @constructor
    */
