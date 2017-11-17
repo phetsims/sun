@@ -403,6 +403,9 @@ define( function( require ) {
     arrow.centerY = background.centerY;
 
     this.disposeButtonNode = function() {
+      separator.dispose();
+      arrow.dispose();
+      selectedItemParent.dispose();
       options.tandem.createTandem( 'separator' ).removeInstance( separator );
       options.tandem.createTandem( 'arrow' ).removeInstance( arrow );
       options.tandem.createTandem( 'selectedItemParent' ).removeInstance( selectedItemParent );

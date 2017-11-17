@@ -65,7 +65,6 @@ define( function( require ) {
     this.disposeRectangularPushButton = function() {
       this.buttonModel.dispose(); //TODO this fails when assertions are enabled, see sun#212
       this.removeAccessibleInputListener( this.clickListener );
-      options.tandem.removeInstance( this );
     };
   }
 
