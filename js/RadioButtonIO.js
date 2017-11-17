@@ -28,9 +28,9 @@ define( function( require ) {
   phetioInherit( NodeIO, 'RadioButtonIO', RadioButtonIO, {}, {
     documentation: 'A traditional radio button',
     events: [ 'fired' ],
-    toStateObject: function( node ) {
-      // assert && assertInstanceOf( radioButton, phet.sun.RadioButton );
-      return NodeIO.toStateObject( node );
+    toStateObject: function( radioButton ) {
+      assert && assertInstanceOf( radioButton, phet.sun.RadioButton );
+      return NodeIO.toStateObject( radioButton );
     },
     fromStateObject: function( stateObject ) { return NodeIO.fromStateObject( stateObject ); },
     setValue: function( instance, stateObject ) {
