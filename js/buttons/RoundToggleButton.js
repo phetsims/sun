@@ -31,7 +31,7 @@ define( function( require ) {
 
     // Tandem support
     options = _.extend( {
-      tandem: Tandem.tandemRequired(),
+      tandem: Tandem.required,
       phetioType: ToggleButtonIO,
 
       // a11y

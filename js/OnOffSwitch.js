@@ -70,7 +70,7 @@ define( function( require ) {
       trackOnFill: 'rgb(0,200,0)', // track fill when onProperty is true
       trackStroke: 'black',
 
-      tandem: Tandem.tandemRequired()
+      tandem: Tandem.required
     }, options );
 
     var self = this;

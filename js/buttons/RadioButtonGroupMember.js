@@ -65,7 +65,7 @@ define( function( require ) {
       tagName: 'input',
       inputType: 'radio',
 
-      tandem: Tandem.tandemRequired(),
+      tandem: Tandem.required,
       phetioType: RadioButtonGroupMemberIO
     }, options );
 

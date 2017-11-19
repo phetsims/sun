@@ -28,7 +28,7 @@ define( function( require ) {
   function RectangularToggleButton( valueOff, valueOn, property, options ) {
 
     options = _.extend( {
-      tandem: Tandem.tandemRequired(),
+      tandem: Tandem.required,
       phetioType: ToggleButtonIO
     }, options );
 

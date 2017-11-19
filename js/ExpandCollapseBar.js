@@ -36,7 +36,7 @@ define( function( require ) {
       barFill: 'white',
       barStroke: 'black',
       barLineWidth: 1,
-      tandem: Tandem.tandemRequired()
+      tandem: Tandem.required
     }, options );
 
     Node.call( this );

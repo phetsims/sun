@@ -35,7 +35,7 @@ define( function( require ) {
       stroke: 'black',
       lineWidth: 1,
       centerLineStroke: 'white',
-      tandem: Tandem.tandemRequired()
+      tandem: Tandem.required
     }, options );
 
     var self = this;

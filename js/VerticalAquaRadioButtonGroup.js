@@ -35,7 +35,7 @@ define( function( require ) {
       radioButtonOptions: {}, // will be passed to the AquaRadioButtons
       touchAreaXDilation: 0,
       mouseAreaXDilation: 0,
-      tandem: Tandem.tandemRequired(),
+      tandem: Tandem.required,
 
       tagName: 'ul'
     }, options );
@@ -52,7 +52,7 @@ define( function( require ) {
       var content = new Path( Shape.rect( 0, 0, width + options.padding, 0 ), { children: [ items[ i ].node ] } );
       var radioButton = new AquaRadioButton( items[ i ].property, items[ i ].value, content, _.extend( {}, options.radioButtonOptions, {
         radius: options.radius,
-        tandem: items[ i ].tandemName ? options.tandem.createTandem( items[ i ].tandemName ) : Tandem.tandemRequired(),
+        tandem: items[ i ].tandemName ? options.tandem.createTandem( items[ i ].tandemName ) : Tandem.required,
         accessibleLabel: items[ i ].accessibleLabel || null
       } ) );
       radioButton.mouseArea = Shape.bounds( radioButton.bounds.dilatedXY( options.mouseAreaXDilation, options.spacing / 2 ) );

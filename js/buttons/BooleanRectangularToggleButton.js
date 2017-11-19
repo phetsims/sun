@@ -22,7 +22,7 @@ define( function( require ) {
    */
   function BooleanRectangularToggleButton( trueNode, falseNode, booleanProperty, options ) {
 
-    options = _.extend( { tandem: Tandem.tandemRequired() }, options );
+    options = _.extend( { tandem: Tandem.required }, options );
 
     //TODO ToggleNode links to booleanProperty, must be cleaned up in dispose
     assert && assert( !options.content, 'options.content cannot be set' );

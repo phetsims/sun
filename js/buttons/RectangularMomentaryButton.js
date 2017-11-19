@@ -27,7 +27,7 @@ define( function( require ) {
   function RectangularMomentaryButton( valueOff, valueOn, property, options ) {
 
     options = _.extend( {
-      tandem: Tandem.tandemRequired()
+      tandem: Tandem.required
     }, options );
 
     var buttonModel = new MomentaryButtonModel( valueOff, valueOn, property, options );

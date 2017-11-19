@@ -31,7 +31,7 @@ define( function( require ) {
     var self = this;
 
     options = _.extend( {
-      tandem: Tandem.tandemRequired()
+      tandem: Tandem.required
     }, options );
 
     // @private

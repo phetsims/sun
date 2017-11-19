@@ -29,7 +29,7 @@ define( function( require ) {
   function RoundPushButton( options ) {
 
     options = _.extend( {
-      tandem: Tandem.tandemRequired(),
+      tandem: Tandem.required,
       phetioType: PushButtonIO,
 
       // a11y

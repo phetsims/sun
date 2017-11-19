@@ -32,7 +32,7 @@ define( function( require ) {
         falseNode.center = trueNode.center;
       },
 
-      tandem: Tandem.tandemRequired()
+      tandem: Tandem.required
     }, options );
 
     options.alignIcons( trueNode, falseNode );

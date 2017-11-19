@@ -56,7 +56,7 @@ define( function( require ) {
 
     // Extend the object with defaults.
     options = _.extend( {
-      tandem: Tandem.tandemOptional(),
+      tandem: Tandem.optional,
       textFill: 'black',
 
       // a11y

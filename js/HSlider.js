@@ -101,7 +101,7 @@ define( function( require ) {
       enabledRangeProperty: null, // see below
 
       // phet-io
-      tandem: Tandem.tandemRequired(),
+      tandem: Tandem.required,
       phetioType: HSliderIO
     }, options );
 

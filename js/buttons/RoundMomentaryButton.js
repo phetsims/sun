@@ -27,7 +27,7 @@ define( function( require ) {
    */
   function RoundMomentaryButton( valueOff, valueOn, property, options ) {
     options = _.extend( {
-      tandem: Tandem.tandemRequired(),
+      tandem: Tandem.required,
       phetioType: RoundMomentaryButtonIO
     }, options );
 

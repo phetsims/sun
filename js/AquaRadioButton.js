@@ -34,7 +34,7 @@ define( function( require ) {
       radius: 16, // radius of the button
       xSpacing: 8, // horizontal space between the button and the node
       stroke: 'black', // color used to stroke the outer edge of the button
-      tandem: Tandem.tandemRequired(),
+      tandem: Tandem.required,
       phetioType: AquaRadioButtonIO
     }, options );
 

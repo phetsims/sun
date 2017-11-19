@@ -47,7 +47,7 @@ define( function( require ) {
    */
   function RadioButtonGroup( property, contentArray, options ) {
     options = _.extend( {
-      tandem: Tandem.tandemRequired(),
+      tandem: Tandem.required,
 
       // a11y
       tagName: 'fieldset'

@@ -27,7 +27,7 @@ define( function( require ) {
 
     options = _.extend( {
       sideLength: 25,  // length of one side of the square button
-      tandem: Tandem.tandemRequired()
+      tandem: Tandem.required
     }, options );
 
     Node.call( this );

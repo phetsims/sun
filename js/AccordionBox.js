@@ -40,7 +40,7 @@ define( function( require ) {
     options = _.extend( {
 
       // {Tandem}
-      tandem: Tandem.tandemRequired(),
+      tandem: Tandem.required,
 
       // {Node} - If not provided, a Text node will be supplied. Should have and maintain well-defined bounds if passed
       //          in.

@@ -35,7 +35,7 @@ define( function( require ) {
       fireOnHold: false, // is the fire-on-hold feature enabled?
       fireOnHoldDelay: 400, // start to fire continuously after pressing for this long (milliseconds)
       fireOnHoldInterval: 100, // fire continuously at this interval (milliseconds),
-      tandem: Tandem.tandemOptional(),
+      tandem: Tandem.optional,
       phetioState: false,
       phetioReadOnly: true
     }, options );

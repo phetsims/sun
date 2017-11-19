@@ -30,7 +30,7 @@ define( function( require ) {
 
     options = _.extend( {
       cursor: 'pointer',
-      tandem: Tandem.tandemRequired(),
+      tandem: Tandem.required,
       phetioType: RadioButtonIO,
       enabled: true,
 

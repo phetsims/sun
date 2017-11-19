@@ -25,7 +25,7 @@ define( function( require ) {
     options = _.extend( {
       textFill: 'black',
       maxTextWidth: null,
-      tandem: Tandem.tandemRequired(),
+      tandem: Tandem.required,
 
       // a11y
       accessibleLabel: text

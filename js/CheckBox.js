@@ -43,7 +43,7 @@ define( function( require ) {
       cursor: 'pointer',
       checkBoxColor: 'black',
       checkBoxColorBackground: 'white',
-      tandem: Tandem.tandemRequired(),
+      tandem: Tandem.required,
       phetioType: CheckBoxIO,
 
       // a11y

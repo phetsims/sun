@@ -23,7 +23,7 @@ define( function( require ) {
   function BooleanRoundToggleButton( trueNode, falseNode, booleanProperty, options ) {
 
     options = _.extend( {
-      tandem: Tandem.tandemRequired()
+      tandem: Tandem.required
     }, options );
 
     //TODO ToggleNode links to booleanProperty, must be cleaned up in dispose

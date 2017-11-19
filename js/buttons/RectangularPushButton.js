@@ -28,7 +28,7 @@ define( function( require ) {
     var self = this;
 
     options = _.extend( {
-      tandem: Tandem.tandemRequired(), // {Tandem|null}
+      tandem: Tandem.required, // {Tandem|null}
       phetioType: PushButtonIO,
 
       // a11y - listener that will only be called when using the keyboard to interact with the push button
