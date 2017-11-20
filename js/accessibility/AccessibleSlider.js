@@ -386,8 +386,16 @@ define( function( require ) {
 
   sun.register( 'AccessibleSlider', AccessibleSlider );
 
-  // help function, it is possible due to rounding to go up or down a step if we have passed the nearest step during
-  // keyboard interaction
+  /**
+   * Helper function, it is possible due to rounding to go up or down a step if we have passed the nearest step during
+   * keyboard interaction. This function corrects that.
+   *
+   * @param {number} newValue - potential value of the Property associated with this slider
+   * @param {number} currentValue - current value of the Property associated with this slider
+   * @param {number} stepSize - the delta for this manipulation
+   *
+   * @return {number}
+   */
   var correctRounding = function( newValue, currentValue, stepSize ) {
     var correctedValue = newValue;
     if ( Util.toFixedNumber( Math.abs( newValue - currentValue ), 5 ) > stepSize ) {
