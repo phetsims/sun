@@ -9,12 +9,12 @@ define( function( require ) {
   'use strict';
 
   // modules
+  var AccessibleSlider = require( 'SUN/accessibility/AccessibleSlider' );
   var Dimension2 = require( 'DOT/Dimension2' );
   var FocusHighlightFromNode = require( 'SCENERY/accessibility/FocusHighlightFromNode' );
   var HSliderThumb = require( 'SUN/HSliderThumb' );
   var HSliderTrack = require( 'SUN/HSliderTrack' );
   var inherit = require( 'PHET_CORE/inherit' );
-  var Input = require( 'SCENERY/input/Input' );
   var LinearFunction = require( 'DOT/LinearFunction' );
   var Node = require( 'SCENERY/nodes/Node' );
   var Path = require( 'SCENERY/nodes/Path' );
@@ -23,7 +23,6 @@ define( function( require ) {
   var RangeIO = require( 'DOT/RangeIO' );
   var Shape = require( 'KITE/Shape' );
   var SimpleDragHandler = require( 'SCENERY/input/SimpleDragHandler' );
-  var StringUtils = require( 'PHETCOMMON/util/StringUtils' );
   var sun = require( 'SUN/sun' );
   var Tandem = require( 'TANDEM/Tandem' );
   var Util = require( 'DOT/Util' );
@@ -87,16 +86,7 @@ define( function( require ) {
       startDrag: function() {}, // called when a drag sequence starts
       endDrag: function() {}, // called when a drag sequence ends
       constrainValue: function( value ) { return value; }, // called before valueProperty is set
-
-      // a11y
-      tagName: 'input',
-      inputType: 'range',
-      ariaRole: 'slider', // required for NVDA to read the value text correctly, see https://github.com/phetsims/a11y-research/issues/51
-      accessibleValuePattern: '{{value}}', // {string} if you want units or additional content, add to pattern
-      accessibleDecimalPlaces: 0, // number of decimal places for the value read by assistive technology
-      keyboardStep: ( range.max - range.min ) / 20,
-      shiftKeyboardStep: ( range.max - range.min ) / 100,
-      pageKeyboardStep: ( range.max - range.min ) / 10,
+      
       enabledProperty: null, // see below
       enabledRangeProperty: null, // see below
 
@@ -131,17 +121,6 @@ define( function( require ) {
 
     // @private
     this._snapValue = options.snapValue;
-
-    // @private (a11y) - delta for the valueProperty when using keyboard to interact with slider
-    this._keyboardStep = options.keyboardStep;
-
-    // @private (a11y) - delta for the valueProperty when holding shift and using the keyboard to interact with
-    // the slider
-    this._shiftKeyboardStep = options.shiftKeyboardStep;
-    this._pageKeyboardStep = options.pageKeyboardStep;
-
-    // @private (a11y) - whether or not 'shift' key is currently held down
-    this._shiftKey = false;
 
     // @private ticks are added to these parents, so they are behind the knob
     this.majorTicksParent = new Node();
@@ -270,9 +249,6 @@ define( function( require ) {
     // a11y - custom focus highlight that surrounds and moves with the thumb
     this.focusHighlight = new FocusHighlightFromNode( thumb );
 
-    // a11y - arbitrary value, but required for screen readers to manage change events correctly
-    this.setAccessibleAttribute( 'step', 0.1 );
-
     // update thumb location when value changes
     var valueObserver = function( value ) {
       thumb.centerX = self.valueToPosition( value );
@@ -298,190 +274,25 @@ define( function( require ) {
 
       // clamp the value to the enabled range if it changes
       valueProperty.set( Util.clamp( valueProperty.value, enabledRange.min, enabledRange.max ) );
-
-      // a11y - update enabled slider range for AT, required for screen reader events to behave correctly
-      self.setAccessibleAttribute( 'min', enabledRange.min );
-      self.setAccessibleAttribute( 'max', enabledRange.max );
     };
     this.enabledRangeProperty.link( enabledRangeObserver ); // needs to be unlinked in dispose function
 
     this.mutate( options );
 
-    // a11y - Implements the keyboard interaction for a typical HTML range slider - browsers place limitations
-    // on the interaction when the slider range is not evenly divisible by the step size.  Rather
-    // than allow the browser to natively change the valueProperty with an input event, we decided to roll our
-    // own implementation, but keep the general behavior the same. It is possible that some screen readers
-    // will try to change the value without triggering a keydown event, so we must handle the change event
-    // as well.
-    var firstKeyDown = true; // drag is only 'started' on the first keydown event
-
-    // @public (a11y) - TODO: Refactor this, remove from constructor and do NOT make the whole listener
-    // publicly available in this way, see https://github.com/phetsims/sun/issues/326
-    this.accessibleInputListener = this.addAccessibleInputListener( {
-      keydown: function( event ) {
-        var code = event.keyCode;
-        self._shiftKey = event.shiftKey;
-
-        if ( self.enabledProperty.get() ) {
-
-          // Prevent default so browser doesn't change input value automatically
-          if ( Input.isRangeKey( code ) ) {
-            event.preventDefault();
-
-            // keydown is the start of the drag
-            firstKeyDown && options.startDrag();
-            firstKeyDown = false;
-          }
-
-          var newValue = valueProperty.get();
-          if ( code === Input.KEY_END || code === Input.KEY_HOME ) {
-
-            // on 'end' and 'home' snap to max and min of enabled range respectively (this is typical browser
-            // behavior for sliders)
-            if ( code === Input.KEY_END ) {
-              newValue = self.enabledRange.max;
-            }
-            else if ( code === Input.KEY_HOME ) {
-              newValue = self.enabledRange.min;
-            }
-          }
-          else {
-            var stepSize;
-            if ( code === Input.KEY_PAGE_UP || code === Input.KEY_PAGE_DOWN ) {
-
-              // on page up and page down, the default step size is 1/10 of the range (this is typical browser behavior)
-              stepSize = options.pageKeyboardStep;
-
-              if ( code === Input.KEY_PAGE_UP ) {
-                newValue = valueProperty.get() + stepSize;
-              }
-              else if ( code === Input.KEY_PAGE_DOWN ) {
-                newValue = valueProperty.get() - stepSize;
-              }
-            }
-            else if ( Input.isArrowKey( code ) ) {
-
-              // if the shift key is pressed down, modify the step size (this is atypical browser behavior for sliders)
-              stepSize = event.shiftKey ? self.shiftKeyboardStep : self.keyboardStep;
-
-              if ( code === Input.KEY_RIGHT_ARROW || code === Input.KEY_UP_ARROW ) {
-                newValue = valueProperty.get() + stepSize;
-              }
-              else if ( code === Input.KEY_LEFT_ARROW || code === Input.KEY_DOWN_ARROW ) {
-                newValue = valueProperty.get() - stepSize;
-              }
-
-              // round the value to the nearest keyboard step
-              newValue = Util.roundSymmetric( newValue / stepSize ) * stepSize;
-
-              // go back a step if we went too far due to rounding
-              newValue = correctRounding( newValue, stepSize );
-            }
-
-            // limit the value to the enabled range
-            newValue = Util.clamp( newValue, self.enabledRange.min, self.enabledRange.max );
-          }
-
-          // optionally constrain the value further
-          valueProperty.set( options.constrainValue( newValue ) );
-        }
-      },
-      keyup: function( event ) {
-
-        // reset shift key flag when we release it
-        if ( event.keyCode === Input.KEY_SHIFT ) {
-          self._shiftKey = false;
-        }
-
-        if ( self.enabledProperty.get() ) {
-          // when range key is released, we are done dragging
-          if ( Input.isRangeKey( event.keyCode ) ) {
-            options.endDrag();
-            firstKeyDown = true;
-          }
-        }
-      },
-      change: function( event ) {
-
-        if ( self.enabledProperty.get() ) {
-
-          // it is possible that the user agent (particularly VoiceOver) will initiate a change event directly without
-          // going through keydown. In that case, handle the change depending on which direction the user tried to go
-          var inputValue = event.target.value;
-          var stepSize = self._shiftKey ? self.shiftKeyboardStep : self.keyboardStep;
-
-          // start of change event is start of drag
-          options.startDrag();
-
-          var newValue = valueProperty.get();
-          if ( inputValue > valueProperty.get() ) {
-            newValue = valueProperty.get() + stepSize;
-          }
-          else if ( inputValue < valueProperty.get() ) {
-            newValue = valueProperty.get() - stepSize;
-          }
-
-          // round to nearest step size
-          newValue = Util.roundSymmetric( newValue / stepSize ) * stepSize;
-
-          // go back a step if we went too far due to rounding
-          newValue = correctRounding( newValue, stepSize );
-
-          // limit to enabled range
-          newValue = Util.clamp( newValue, self.enabledRange.min, self.enabledRange.max );
-
-          // optionally constrain value
-          valueProperty.set( options.constrainValue( newValue ) );
-
-          // end of change is the end of a drag
-          options.endDrag();
-        }
-      },
-      blur: function( event ) {
-
-        // reset flag in case we shift-tabbed away from slider
-        self._shiftKey = false;
-      }
-    } );
-
-    // a11y - it is possible due to rounding to go up or down a step if we have passed the nearest step during keyboard
-    // interaction
-    var correctRounding = function( value, stepSize ) {
-      var correctedValue = value;
-      if ( Util.toFixedNumber( Math.abs( value - valueProperty.get() ), 5 ) > stepSize ) {
-        correctedValue += ( value > valueProperty.get() ) ? ( -1 * stepSize ) : stepSize;
-      }
-      return correctedValue;
-    };
-
-    // a11y - when the property changes, be sure to update the accessible input value and
-    // aria-valuetext for assistive, which is read by assistive technology when the value changes
-    var accessiblePropertyListener = function( value ) {
-      self.inputValue = value;
-
-      // format the value text for reading
-      var formattedValue = Util.toFixed( value, options.accessibleDecimalPlaces );
-      var valueText = StringUtils.fillIn( options.accessibleValuePattern, {
-        value: formattedValue
-      } );
-      self.setAccessibleAttribute( 'aria-valuetext', valueText );
-    };
-
-    valueProperty.link( accessiblePropertyListener );
-
     // @private Called by dispose
     this.disposeHSlider = function() {
       thumb.dispose && thumb.dispose(); // in case a custom thumb is provided via options.thumbNode that doesn't implement dispose
       self.track.dispose();
+      self.disposeAccessibleSlider(); // dispose accessibility
       valueProperty.unlink( valueObserver );
       ownsEnabledRangeProperty && self.enabledRangeProperty.dispose();
       ownsEnabledProperty && self.enabledProperty.dispose();
 
-      self.removeAccessibleInputListener( self.accessibleInputListener );
-      valueProperty.unlink( accessiblePropertyListener );
-
       thumbInputListener.dispose();
     };
+
+    // mix accessible slider functionality into HSlider
+    this.initializeAccessibleSlider( valueProperty, this.enabledRangeProperty, this.enabledProperty, options );
   }
 
   sun.register( 'HSlider', HSlider );
@@ -569,42 +380,6 @@ define( function( require ) {
     getSnapValue: function() { return this._snapValue; },
     get snapValue() { return this.getSnapValue(); },
 
-    // @public
-    setKeyboardStep: function( keyboardStep ) {
-      this._keyboardStep = keyboardStep;
-    },
-    set keyboardStep( keyboardStep ) { this.setKeyboardStep( keyboardStep ); },
-
-    // @public
-    getKeyboardStep: function() {
-      return this._keyboardStep;
-    },
-    get keyboardStep() { return this.getKeyboardStep(); },
-
-    // @public
-    setShiftKeyboardStep: function( shiftKeyboardStep ) {
-      this._shiftKeyboardStep = shiftKeyboardStep;
-    },
-    set shiftKeyboardStep( shiftKeyboardStep ) { this.setShiftKeyboardStep( shiftKeyboardStep ); },
-
-    // @public
-    getShiftKeyboardStep: function() {
-      return this._shiftKeyboardStep;
-    },
-    get shiftKeyboardStep() { return this.getShiftKeyboardStep(); },
-
-    // @public
-    getPageKeyboardStep: function() {
-      return this._pageKeyboardStep;
-    },
-    get pageKeyboardStep() { return this.getPageKeyboardStep(); },
-
-    // @public
-    setPageKeyboardStep: function( pageKeyboardStep ) {
-      this._pageKeyboardStep = pageKeyboardStep;
-    },
-    set pageKeyboardStep( pageKeyboardStep ) { this.setPageKeyboardStep( pageKeyboardStep ); },
-
     // @public - Sets visibility of major ticks.
     setMajorTicksVisible: function( visible ) {
       this.majorTicksParent.visible = visible;
@@ -629,6 +404,9 @@ define( function( require ) {
     },
     get minorTicksVisible() { return this.getMinorTicksVisible(); }
   } );
+
+  // mix accessibility into HSlider
+  AccessibleSlider.mixInto( HSlider );
 
   return HSlider;
 } );
