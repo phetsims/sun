@@ -37,7 +37,7 @@ define( function( require ) {
     align: 'left', // TODO: should this be an enum?
 
     minWidth: 0, // minimum width of the panel
-    tandem: Tandem.required
+    tandem: Tandem.optional
   };
   assert && Object.freeze( DEFAULT_OPTIONS );
 
