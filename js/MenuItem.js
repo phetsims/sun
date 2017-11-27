@@ -58,6 +58,7 @@ define( function( require ) {
     options = _.extend( {
       tandem: Tandem.optional,
       textFill: 'black',
+      phetioReadOnly: false,
 
       // a11y
       tagName: 'button',
@@ -130,6 +131,7 @@ define( function( require ) {
       cursor: 'pointer',
       tandem: options.tandem,
       phetioType: MenuItemIO,
+      phetioReadOnly: options.phetioReadOnly,
 
       // a11y
       parentContainerTagName: 'li',
