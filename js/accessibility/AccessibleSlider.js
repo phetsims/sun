@@ -188,8 +188,6 @@ define( function( require ) {
         /**
          * Get the delta for value Property when using arrow keys with shift to interact with the Node.
          * @public
-         *
-         * @param {number} shiftKeyboardStep
          */
         getShiftKeyboardStep: function() {
           return this._shiftKeyboardStep;
@@ -210,8 +208,6 @@ define( function( require ) {
         /**
          * Get the delta for value Property when using page up/page down to interact with the Node.
          * @public
-         *
-         * @param {number} shiftKeyboardStep
          */
         getPageKeyboardStep: function() {
           return this._pageKeyboardStep;
