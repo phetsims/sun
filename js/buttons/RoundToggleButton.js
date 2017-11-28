@@ -35,8 +35,7 @@ define( function( require ) {
       phetioType: ToggleButtonIO,
 
       // a11y
-      tagName: 'input',
-      inputType: 'button'
+      tagName: 'button'
     }, options );
 
     // @public, (read-only) (phet-io)
@@ -59,7 +58,7 @@ define( function( require ) {
     // @public
     dispose: function() {
       this.removeAccessibleInputListener( this.accessibleClickListener );
-      this.toggleButtonModel.dispose(); //TODO this fails with assertions enabled, see sun#212
+      this.toggleButtonModel.dispose(); // TODO this fails with assertions enabled, see sun#212
       RoundButtonView.prototype.dispose.call( this );
     }
   } );
