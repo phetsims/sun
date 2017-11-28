@@ -33,8 +33,7 @@ define( function( require ) {
       phetioType: PushButtonIO,
 
       // a11y
-      tagName: 'input',
-      inputType: 'button'
+      tagName: 'button'
     }, options );
 
     var self = this;
