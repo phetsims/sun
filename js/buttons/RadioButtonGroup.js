@@ -164,29 +164,37 @@ define( function( require ) {
     var buttons = [];
     var button;
     for ( i = 0; i < contentArray.length; i++ ) {
+      var currentContent = contentArray[ i ];
 
-      assert && assert( !contentArray[ i ].hasOwnProperty( 'phetioType' ), 'phetioType should be provided by ' +
-                                                                           'the property passed to the ' +
-                                                                           'RadioButtonGroup constructor' );
+      assert && assert( !currentContent.hasOwnProperty( 'phetioType' ), 'phetioType should be provided by ' +
+                                                                        'the property passed to the ' +
+                                                                        'RadioButtonGroup constructor' );
 
-      assert && assert( !contentArray[ i ].tandem, 'content arrays should not have tandem instances, they should use ' +
-                                                   'tandemName instead' );
+      assert && assert( !currentContent.tandem, 'content arrays should not have tandem instances, they should use ' +
+                                                'tandemName instead' );
 
       var opts = _.extend( {
-        content: contentArray[ i ].node,
+        content: currentContent.node,
         xMargin: options.buttonContentXMargin,
         yMargin: options.buttonContentYMargin,
         xAlign: options.buttonContentXAlign,
         yAlign: options.buttonContentYAlign,
         minWidth: widestContentWidth + 2 * options.buttonContentXMargin,
-        minHeight: tallestContentHeight + 2 * options.buttonContentYMargin,
+        minHeight: tallestContentHeight + 2 * options.buttonContentYMargin
       }, buttonOptions );
 
       // Pass through the tandem given the tandemName, but also support uninstrumented simulations
-      if ( contentArray[ i ].tandemName ) {
-        opts.tandem = options.tandem.createTandem( contentArray[ i ].tandemName );
+      if ( currentContent.tandemName ) {
+        opts.tandem = options.tandem.createTandem( currentContent.tandemName );
       }
-      var radioButton = new RadioButtonGroupMember( property, contentArray[ i ].value, opts );
+
+      // a11y create the label for the radio button
+      if ( currentContent.accessibleLabel ) {
+        opts.accessibleLabel = currentContent.accessibleLabel;
+        opts.labelTagName = 'label';
+        opts.parentContainerTagName = 'div';
+      }
+      var radioButton = new RadioButtonGroupMember( property, currentContent.value, opts );
 
       // a11y - so the browser and assistive technology recognizes that these buttons are in the same group
       radioButton.setAccessibleAttribute( 'name', 'radioButtonGroup' + instanceCount + 'Member' );
@@ -202,8 +210,8 @@ define( function( require ) {
       radioButton.addChild( boundingRect );
 
       // if a label is given, the button becomes a LayoutBox with the label and button
-      if ( contentArray[ i ].label ) {
-        var label = contentArray[ i ].label;
+      if ( currentContent.label ) {
+        var label = currentContent.label;
         var labelOrientation = (options.labelAlign === 'bottom' || options.labelAlign === 'top') ? 'vertical' : 'horizontal';
         var labelChildren = (options.labelAlign === 'left' || options.labelAlign === 'top') ? [ label, radioButton ] : [ radioButton, label ];
         button = new LayoutBox( {
