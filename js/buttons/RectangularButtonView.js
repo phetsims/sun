@@ -43,7 +43,7 @@ define( function( require ) {
 
   /**
    * @param {ButtonModel} buttonModel - Model that defines the button's behavior.
-   * @param {Property} interactionStateProperty - A property that is used to drive the visual appearance of the button.
+   * @param {Property.<String>} interactionStateProperty - A property that is used to drive the visual appearance of the button.
    * @param {Object} [options]
    * @constructor
    */
@@ -184,7 +184,7 @@ define( function( require ) {
    * Strategy for making a button look 3D-ish by using gradients that create the appearance of highlighted and shaded
    * edges.  The gradients are set up to make the light source appear to be in the upper left.
    * @param {Node} button
-   * @param {Property.<Boolean>} interactionStateProperty
+   * @param {Property.<String>} interactionStateProperty
    * @param {Property.<Color>} baseColorProperty
    * @param {Object} [options]
    * @constructor
