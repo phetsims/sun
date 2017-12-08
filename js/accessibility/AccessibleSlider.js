@@ -3,7 +3,7 @@
 /**
  * A trait for subtypes of Node, used to make the node behave like a 'slider' with assistive technology. This could be
  * used by anything that moves along a 1-D line. An accessible slider behaves like:
- * 
+ *
  * - Arrow keys increment/decrement the slider by a specified step size.
  * - Holding shift with arrow keys will increment/decrement by alternative step size, usually smaller than default.
  * - Page Up and Page Down increments/decrements value by an alternative step size, usually larger than default.
@@ -13,13 +13,14 @@
  * Browsers have limitations for the interaction of a slider when the range is not evenly divisible by the step size.
  * Rather than allow the browser to natively change the valueProperty with an input event, this trait implements a
  * totally custom interaction keeping the general slider behavior the same.
- * 
+ *
  * @author Jesse Greenberg (PhET Interactive Simulations)
  */
 
 define( function( require ) {
   'use strict';
 
+  var Emitter = require( 'AXON/Emitter' );
   var extend = require( 'PHET_CORE/extend' );
   var inheritance = require( 'PHET_CORE/inheritance' );
   var Input = require( 'SCENERY/input/Input' );
@@ -90,7 +91,7 @@ define( function( require ) {
           this._startDrag = options.startDrag;
 
           // @private {function} - called when dragging is finished
-          this._endDrag = options.endDrag; 
+          this._endDrag = options.endDrag;
 
           // @private {function} - called before valueProperty is set
           this._constrainValue = options.constrainValue;
@@ -106,6 +107,10 @@ define( function( require ) {
 
           // @private (a11y) - whether or not 'shift' key is currently held down
           this._shiftKey = false;
+
+          // @public - emitted whenever the slider changes in the specific direction
+          this.increasedEmitter = new Emitter();
+          this.decreasedEmitter = new Emitter();
 
           // a11y - arbitrary value, but attribute is required for assistive technology to send change event
           this.setAccessibleAttribute( 'step', 0.1 );
@@ -242,9 +247,11 @@ define( function( require ) {
               // behavior for sliders)
               if ( code === Input.KEY_END ) {
                 newValue = this._enabledRangeProperty.get().max;
+                this.increasedEmitter.emit();
               }
               else if ( code === Input.KEY_HOME ) {
                 newValue = this._enabledRangeProperty.get().min;
+                this.decreasedEmitter.emit();
               }
             }
             else {
@@ -256,9 +263,11 @@ define( function( require ) {
 
                 if ( code === Input.KEY_PAGE_UP ) {
                   newValue = this._valueProperty.get() + stepSize;
+                  this.increasedEmitter.emit();
                 }
                 else if ( code === Input.KEY_PAGE_DOWN ) {
                   newValue = this._valueProperty.get() - stepSize;
+                  this.decreasedEmitter.emit();
                 }
               }
               else if ( Input.isArrowKey( code ) ) {
@@ -268,9 +277,11 @@ define( function( require ) {
 
                 if ( code === Input.KEY_RIGHT_ARROW || code === Input.KEY_UP_ARROW ) {
                   newValue = this._valueProperty.get() + stepSize;
+                  this.increasedEmitter.emit();
                 }
                 else if ( code === Input.KEY_LEFT_ARROW || code === Input.KEY_DOWN_ARROW ) {
                   newValue = this._valueProperty.get() - stepSize;
+                  this.decreasedEmitter.emit();
                 }
 
                 // round the value to the nearest keyboard step
@@ -287,7 +298,7 @@ define( function( require ) {
             // optionally constrain the value further
             this._valueProperty.set( this._constrainValue( newValue ) );
           }
-            
+
         },
 
         /**
@@ -334,9 +345,11 @@ define( function( require ) {
             var newValue = this._valueProperty.get();
             if ( inputValue > this._valueProperty.get() ) {
               newValue = this._valueProperty.get() + stepSize;
+              this.increasedEmitter.emit();
             }
             else if ( inputValue < this._valueProperty.get() ) {
               newValue = this._valueProperty.get() - stepSize;
+              this.decreasedEmitter.emit();
             }
 
             // round to nearest step size
