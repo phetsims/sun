@@ -17,7 +17,7 @@ define( function( require ) {
   // modules
   var DownUpListener = require( 'SCENERY/input/DownUpListener' );
   var inherit = require( 'PHET_CORE/inherit' );
-  var Input = require( 'SCENERY/input/Input' );
+  var KeyboardUtil = require( 'SCENERY/accessibility/KeyboardUtil' );
   var sun = require( 'SUN/sun' );
 
   /**
@@ -64,7 +64,7 @@ define( function( require ) {
      * @public
      */
     keydown: function( event, trail ) {
-      if ( event.domEvent.keyCode === Input.KEY_ENTER || event.domEvent.keyCode === Input.KEY_SPACE ) {
+      if ( event.domEvent.keyCode === KeyboardUtil.KEY_ENTER || event.domEvent.keyCode === KeyboardUtil.KEY_SPACE ) {
         this.enter( event, trail );
         this.buttonModel.downProperty.set( true );
       }
@@ -78,7 +78,7 @@ define( function( require ) {
      * @public
      */
     keyup: function( event, trail ) {
-      if ( event.domEvent.keyCode === Input.KEY_ENTER || event.domEvent.keyCode === Input.KEY_SPACE ) {
+      if ( event.domEvent.keyCode === KeyboardUtil.KEY_ENTER || event.domEvent.keyCode === KeyboardUtil.KEY_SPACE ) {
         this.buttonModel.downProperty.set( false );
         this.exit( event, trail );
       }

@@ -12,7 +12,7 @@ define( function( require ) {
   // modules
   var ArrowButton = require( 'SUN/buttons/ArrowButton' );
   var inherit = require( 'PHET_CORE/inherit' );
-  var Input = require( 'SCENERY/input/Input' );
+  var KeyboardUtil = require( 'SCENERY/accessibility/KeyboardUtil' );
   var Node = require( 'SCENERY/nodes/Node' );
   var PhetFont = require( 'SCENERY_PHET/PhetFont' );
   var Property = require( 'AXON/Property' );
@@ -284,7 +284,7 @@ define( function( require ) {
       keydown: function( event ) {
 
         // prevent user from changing value with number or the space keys
-        if ( Input.isNumberKey( event.keyCode ) || event.keyCode === Input.KEY_SPACE ) {
+        if ( KeyboardUtil.isNumberKey( event.keyCode ) || event.keyCode === KeyboardUtil.KEY_SPACE ) {
           event.preventDefault();
         }
 
@@ -294,12 +294,12 @@ define( function( require ) {
         }
 
         // Left arrow decrements
-        if ( event.keyCode === Input.KEY_LEFT_ARROW ) {
+        if ( event.keyCode === KeyboardUtil.KEY_LEFT_ARROW ) {
           numberProperty.get() > rangeProperty.get().min && decrementFunction();
         }
 
         // Right arrow increments
-        else if ( event.keyCode === Input.KEY_RIGHT_ARROW ) {
+        else if ( event.keyCode === KeyboardUtil.KEY_RIGHT_ARROW ) {
           numberProperty.get() < rangeProperty.get().max && incrementFunction();
         }
       },
