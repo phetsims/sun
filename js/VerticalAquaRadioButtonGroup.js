@@ -37,7 +37,9 @@ define( function( require ) {
       mouseAreaXDilation: 0,
       tandem: Tandem.required,
 
-      tagName: 'ul'
+      // a11y
+      tagName: 'ul',
+      groupFocusHighlight: true
     }, options );
 
     var width = 0;

@@ -50,7 +50,8 @@ define( function( require ) {
       tandem: Tandem.required,
 
       // a11y
-      tagName: 'fieldset'
+      tagName: 'fieldset',
+      groupFocusHighlight: true
     }, options );
 
     // increment instance count
