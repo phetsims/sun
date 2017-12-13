@@ -12,6 +12,7 @@ define( function( require ) {
 
   // modules
   var inherit = require( 'PHET_CORE/inherit' );
+  var IOObject = require( 'TANDEM/IOObject' );
   var Node = require( 'SCENERY/nodes/Node' );
   var sun = require( 'SUN/sun' );
   var Tandem = require( 'TANDEM/Tandem' );
@@ -37,7 +38,7 @@ define( function( require ) {
 
     options.alignIcons( trueNode, falseNode );
 
-    Node.call( this );
+    Node.call( this, IOObject.getOptions( options ) );
 
     this.addChild( falseNode );
     this.addChild( trueNode );

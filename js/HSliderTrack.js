@@ -53,7 +53,8 @@ define( function( require ) {
       constrainValue: function( value ) { return value; }, // called before valueProperty is set
 
       // phet-io
-      tandem: Tandem.required
+      tandem: Tandem.required,
+      phetioType: HSliderTrackIO
 
     }, options );
 
@@ -139,11 +140,6 @@ define( function( require ) {
       self.enabledProperty.unlink( enabledObserver );
       trackInputListener.dispose();
     };
-
-    this.mutate( {
-      phetioType: HSliderTrackIO,
-      tandem: options.tandem
-    } );
   }
 
   sun.register( 'HSliderTrack', HSliderTrack );

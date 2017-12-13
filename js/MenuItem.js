@@ -14,6 +14,7 @@ define( function( require ) {
   var ButtonListener = require( 'SCENERY/input/ButtonListener' );
   var FontAwesomeNode = require( 'SUN/FontAwesomeNode' );
   var inherit = require( 'PHET_CORE/inherit' );
+  var IOObject = require( 'TANDEM/IOObject' );
   var Node = require( 'SCENERY/nodes/Node' );
   var PhetFont = require( 'SCENERY_PHET/PhetFont' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
@@ -59,13 +60,14 @@ define( function( require ) {
       tandem: Tandem.optional,
       textFill: 'black',
       phetioReadOnly: false,
+      phetioType: MenuItemIO,
 
       // a11y
       tagName: 'button',
       focusAfterCallback: false // whether or not next focusable element should receive focus after the callback
     }, options );
 
-    Node.call( this );
+    Node.call( this, IOObject.getOptions( options ) );
 
     var textNode = new Text( text, {
       font: new PhetFont( FONT_SIZE ),
@@ -129,9 +131,6 @@ define( function( require ) {
 
     this.mutate( {
       cursor: 'pointer',
-      tandem: options.tandem,
-      phetioType: MenuItemIO,
-      phetioReadOnly: options.phetioReadOnly,
 
       // a11y
       parentContainerTagName: 'li',

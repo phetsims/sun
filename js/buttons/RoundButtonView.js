@@ -19,6 +19,7 @@ define( function( require ) {
   var Color = require( 'SCENERY/util/Color' );
   var ColorConstants = require( 'SUN/ColorConstants' );
   var inherit = require( 'PHET_CORE/inherit' );
+  var IOObject = require( 'TANDEM/IOObject' );
   var Node = require( 'SCENERY/nodes/Node' );
   var Property = require( 'AXON/Property' );
   var RadialGradient = require( 'SCENERY/util/RadialGradient' );
@@ -73,7 +74,7 @@ define( function( require ) {
       contentAppearanceStrategy: RoundButtonView.FadeContentWhenDisabled
     }, options );
 
-    Node.call( this );
+    Node.call( this, IOObject.getOptions( options ) );
     var content = options.content; // convenience variable
     var upCenter = new Vector2( options.xContentOffset, options.yContentOffset );
 
@@ -115,9 +116,11 @@ define( function( require ) {
 
     // Control the pointer state based on the interaction state.
     var self = this;
+
     function handleInteractionStateChanged( state ) {
       self.cursor = state === 'disabled' || state === 'disabled-pressed' ? null : 'pointer';
     }
+
     interactionStateProperty.link( handleInteractionStateChanged );
 
     // Dilate the pointer areas.

@@ -12,6 +12,7 @@ define( function( require ) {
   var ButtonListener = require( 'SCENERY/input/ButtonListener' );
   var FontAwesomeNode = require( 'SUN/FontAwesomeNode' );
   var inherit = require( 'PHET_CORE/inherit' );
+  var IOObject = require( 'TANDEM/IOObject' );
   var Node = require( 'SCENERY/nodes/Node' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var sun = require( 'SUN/sun' );
@@ -69,7 +70,7 @@ define( function( require ) {
 
     var self = this;
 
-    Node.call( this );
+    Node.call( this, IOObject.getOptions( options ) );
 
     this.content = content; // @private
     this.checkBoxAppearanceStrategy = options.checkBoxAppearanceStrategy; // @private

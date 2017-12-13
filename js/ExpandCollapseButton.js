@@ -12,6 +12,7 @@ define( function( require ) {
   // modules
   var ButtonListener = require( 'SCENERY/input/ButtonListener' );
   var inherit = require( 'PHET_CORE/inherit' );
+  var IOObject = require( 'TANDEM/IOObject' );
   var Node = require( 'SCENERY/nodes/Node' );
   var Path = require( 'SCENERY/nodes/Path' );
   var Shape = require( 'KITE/Shape' );
@@ -30,7 +31,7 @@ define( function( require ) {
       tandem: Tandem.required
     }, options );
 
-    Node.call( this );
+    Node.call( this, IOObject.getOptions( options ) );
 
     // configure the button shape
     var cornerRadius = 0.1 * options.sideLength;

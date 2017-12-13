@@ -13,6 +13,7 @@ define( function( require ) {
   var ButtonListener = require( 'SCENERY/input/ButtonListener' );
   var Dimension2 = require( 'DOT/Dimension2' );
   var inherit = require( 'PHET_CORE/inherit' );
+  var IOObject = require( 'TANDEM/IOObject' );
   var Path = require( 'SCENERY/nodes/Path' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var Shape = require( 'KITE/Shape' );
@@ -44,22 +45,23 @@ define( function( require ) {
     var arcWidth = 0.25 * options.size.width;
     Rectangle.call( this, 0, 0,
       options.size.width, options.size.height,
-      arcWidth, arcWidth,
-      {
+      arcWidth, arcWidth, _.extend( IOObject.getOptions( options ), {
         fill: enabledProperty.get() ? options.fillEnabled : options.fillDisabled,
         stroke: options.stroke,
         lineWidth: options.lineWidth,
         cachedPaints: [
           options.fillHighlighted, options.fillEnabled, options.fillDisabled
         ]
-      } );
+      } )
+    );
 
     // vertical line down the center
     var centerLineYMargin = 3;
     this.addChild( new Path( Shape.lineSegment(
-        options.size.width / 2, centerLineYMargin,
-        options.size.width / 2, options.size.height - centerLineYMargin ),
-      { stroke: options.centerLineStroke } ) );
+      options.size.width / 2, centerLineYMargin,
+      options.size.width / 2, options.size.height - centerLineYMargin ), {
+      stroke: options.centerLineStroke
+    } ) );
 
     // highlight thumb on pointer over
     this.addInputListener( new ButtonListener( {
@@ -81,11 +83,6 @@ define( function( require ) {
     this.disposeHSliderThumb = function() {
       enabledProperty.unlink( enabledObserver );
     };
-
-    // tandem support
-    this.mutate( {
-      tandem: options.tandem
-    } );
   }
 
   sun.register( 'HSliderThumb', HSliderThumb );

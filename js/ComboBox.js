@@ -16,6 +16,7 @@ define( function( require ) {
   var ComboBoxIO = require( 'SUN/ComboBoxIO' );
   var ComboBoxItemNodeIO = require( 'SUN/ComboBoxItemNodeIO' );
   var inherit = require( 'PHET_CORE/inherit' );
+  var IOObject = require( 'TANDEM/IOObject' );
   var Line = require( 'SCENERY/nodes/Line' );
   var Node = require( 'SCENERY/nodes/Node' );
   var Path = require( 'SCENERY/nodes/Path' );
@@ -78,7 +79,7 @@ define( function( require ) {
     // validate option values
     assert && assert( options.disabledOpacity > 0 && options.disabledOpacity < 1, 'invalid disabledOpacity: ' + options.disabledOpacity );
 
-    Node.call( self );
+    Node.call( this, IOObject.getOptions( options ) );
 
     this.enabledProperty = options.enabledProperty; // @public
 
@@ -92,8 +93,8 @@ define( function( require ) {
     var itemHeight = Math.max.apply( Math, _.map( items, 'node.height' ) ) + 2 * options.itemYMargin;
 
     // list
-    var listWidth = itemWidth + (2 * options.buttonXMargin);
-    var listHeight = (items.length * itemHeight) + (2 * options.listYMargin);
+    var listWidth = itemWidth + ( 2 * options.buttonXMargin );
+    var listHeight = ( items.length * itemHeight ) + ( 2 * options.listYMargin );
     var listNode = new Rectangle( 0, 0, listWidth, listHeight, {
       cornerRadius: options.listCornerRadius,
       fill: options.listFill,
@@ -154,7 +155,7 @@ define( function( require ) {
     items.forEach( function( item, index ) {
       var itemNodeOptions = _.extend( {
         left: options.buttonXMargin,
-        top: options.listYMargin + (index * itemHeight),
+        top: options.listYMargin + ( index * itemHeight ),
         cursor: 'pointer',
         inputListeners: [ itemListener ]
       }, item.options );
@@ -355,8 +356,8 @@ define( function( require ) {
     }
 
     // button background
-    var width = itemNode.width + (4 * options.buttonXMargin) + arrow.width;
-    var height = itemNode.height + (2 * options.buttonYMargin);
+    var width = itemNode.width + ( 4 * options.buttonXMargin ) + arrow.width;
+    var height = itemNode.height + ( 2 * options.buttonYMargin );
     var background = new Rectangle( 0, 0, width, height, {
       cornerRadius: options.buttonCornerRadius,
       fill: options.buttonFill,

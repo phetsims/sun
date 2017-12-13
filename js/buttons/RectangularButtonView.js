@@ -10,6 +10,7 @@ define( function( require ) {
   'use strict';
 
   // modules
+  var IOObject = require( 'TANDEM/IOObject' );
   var AlignBox = require( 'SCENERY/nodes/AlignBox' );
   var Bounds2 = require( 'DOT/Bounds2' );
   var ButtonListener = require( 'SUN/buttons/ButtonListener' );
@@ -89,7 +90,7 @@ define( function( require ) {
     assert && assert( _.includes( X_ALIGN_VALUES, options.xAlign ), 'invalid xAlign: ' + options.xAlign );
     assert && assert( _.includes( Y_ALIGN_VALUES, options.yAlign ), 'invalid yAlign: ' + options.yAlign );
 
-    Node.call( this );
+    Node.call( this, IOObject.getOptions( options ) );
 
     var content = options.content; // convenience variable
 
