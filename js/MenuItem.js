@@ -14,7 +14,6 @@ define( function( require ) {
   var ButtonListener = require( 'SCENERY/input/ButtonListener' );
   var FontAwesomeNode = require( 'SUN/FontAwesomeNode' );
   var inherit = require( 'PHET_CORE/inherit' );
-  var IOObject = require( 'TANDEM/IOObject' );
   var Node = require( 'SCENERY/nodes/Node' );
   var PhetFont = require( 'SCENERY_PHET/PhetFont' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
@@ -67,7 +66,7 @@ define( function( require ) {
       focusAfterCallback: false // whether or not next focusable element should receive focus after the callback
     }, options );
 
-    Node.call( this, IOObject.getOptions( options ) );
+    Node.call( this );
 
     var textNode = new Text( text, {
       font: new PhetFont( FONT_SIZE ),

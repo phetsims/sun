@@ -14,7 +14,6 @@ define( function( require ) {
   var BooleanProperty = require( 'AXON/BooleanProperty' );
   var ExpandCollapseButton = require( 'SUN/ExpandCollapseButton' );
   var inherit = require( 'PHET_CORE/inherit' );
-  var IOObject = require( 'TANDEM/IOObject' );
   var Node = require( 'SCENERY/nodes/Node' );
   var Path = require( 'SCENERY/nodes/Path' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
@@ -153,7 +152,7 @@ define( function( require ) {
       } );
     }
 
-    Node.call( this, IOObject.getOptions( options ) );
+    Node.call( this );
 
     // @private - expand/collapse button, links to expandedProperty, must be disposed of
     this.expandCollapseButton = new ExpandCollapseButton( this.expandedProperty, {

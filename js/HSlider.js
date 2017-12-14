@@ -15,7 +15,6 @@ define( function( require ) {
   var HSliderThumb = require( 'SUN/HSliderThumb' );
   var HSliderTrack = require( 'SUN/HSliderTrack' );
   var inherit = require( 'PHET_CORE/inherit' );
-  var IOObject = require( 'TANDEM/IOObject' );
   var LinearFunction = require( 'DOT/LinearFunction' );
   var Node = require( 'SCENERY/nodes/Node' );
   var Path = require( 'SCENERY/nodes/Path' );
@@ -95,7 +94,7 @@ define( function( require ) {
       phetioType: HSliderIO
     }, options );
 
-    Node.call( this, IOObject.getOptions( options ) );
+    Node.call( this );
 
     var ownsEnabledProperty = !options.enabledProperty;
     var ownsEnabledRangeProperty = !options.enabledRangeProperty;

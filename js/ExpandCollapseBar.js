@@ -11,7 +11,6 @@ define( function( require ) {
   // modules
   var ExpandCollapseButton = require( 'SUN/ExpandCollapseButton' );
   var inherit = require( 'PHET_CORE/inherit' );
-  var IOObject = require( 'TANDEM/IOObject' );
   var Node = require( 'SCENERY/nodes/Node' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var Shape = require( 'KITE/Shape' );
@@ -40,7 +39,7 @@ define( function( require ) {
       tandem: Tandem.required
     }, options );
 
-    Node.call( this, IOObject.getOptions( options ) );
+    Node.call( this );
 
     // expand/collapse button
     var button = new ExpandCollapseButton( expandedProperty, {

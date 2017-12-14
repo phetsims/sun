@@ -9,7 +9,6 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var IOObject = require( 'TANDEM/IOObject' );
   var ButtonListener = require( 'SCENERY/input/ButtonListener' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Node = require( 'SCENERY/nodes/Node' );
@@ -44,7 +43,7 @@ define( function( require ) {
     }, options );
 
     var self = this;
-    Node.call( this, IOObject.getOptions( options ) );
+    Node.call( this );
 
     // @private
     this._enabled = options.enabled;

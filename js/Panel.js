@@ -13,7 +13,6 @@ define( function( require ) {
 
   // modules
   var inherit = require( 'PHET_CORE/inherit' );
-  var IOObject = require( 'TANDEM/IOObject' );
   var Node = require( 'SCENERY/nodes/Node' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var sun = require( 'SUN/sun' );
@@ -54,7 +53,7 @@ define( function( require ) {
 
     assert && assert( _.includes( ALIGN_VALUES, options.align ), 'invalid align: ' + options.align );
 
-    Node.call( this, IOObject.getOptions( options ) );
+    Node.call( this );
 
     // correct size will be set by updateBackground
     var background = new Rectangle( 0, 0, 1, 1, {

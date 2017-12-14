@@ -16,7 +16,6 @@ define( function( require ) {
   var ComboBoxIO = require( 'SUN/ComboBoxIO' );
   var ComboBoxItemNodeIO = require( 'SUN/ComboBoxItemNodeIO' );
   var inherit = require( 'PHET_CORE/inherit' );
-  var IOObject = require( 'TANDEM/IOObject' );
   var Line = require( 'SCENERY/nodes/Line' );
   var Node = require( 'SCENERY/nodes/Node' );
   var Path = require( 'SCENERY/nodes/Path' );
@@ -79,7 +78,7 @@ define( function( require ) {
     // validate option values
     assert && assert( options.disabledOpacity > 0 && options.disabledOpacity < 1, 'invalid disabledOpacity: ' + options.disabledOpacity );
 
-    Node.call( this, IOObject.getOptions( options ) );
+    Node.call( this );
 
     this.enabledProperty = options.enabledProperty; // @public
 

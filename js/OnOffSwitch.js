@@ -20,7 +20,6 @@ define( function( require ) {
   // modules
   var Dimension2 = require( 'DOT/Dimension2' );
   var inherit = require( 'PHET_CORE/inherit' );
-  var IOObject = require( 'TANDEM/IOObject' );
   var Node = require( 'SCENERY/nodes/Node' );
   var OnOffSwitchIO = require( 'SUN/OnOffSwitchIO' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
@@ -75,7 +74,7 @@ define( function( require ) {
     }, options );
 
     var self = this;
-    Node.call( this, IOObject.getOptions( options ) );
+    Node.call( this );
 
     // track that the thumb slides in
     var cornerRadius = options.size.height / 2;
