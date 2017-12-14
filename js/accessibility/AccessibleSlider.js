@@ -58,7 +58,7 @@ define( function( require ) {
         initializeAccessibleSlider: function( valueProperty, enabledRangeProperty, enabledProperty, options ) {
           var self = this;
 
-          options = _.extend( {
+          var defaults = {
 
             // other
             startDrag: function() {}, // called when a drag sequence starts
@@ -74,9 +74,13 @@ define( function( require ) {
             keyboardStep: ( enabledRangeProperty.get().max - enabledRangeProperty.get().min ) / 20,
             shiftKeyboardStep: ( enabledRangeProperty.get().max - enabledRangeProperty.get().min ) / 100,
             pageKeyboardStep: ( enabledRangeProperty.get().max - enabledRangeProperty.get().min ) / 10
-          }, options );
+          };
+          options = _.extend( {}, defaults, options );
 
-          this.mutate( options );
+          // Some options were already mutated in the constructor, only apply the accessibility-specific options here
+          // so options are not doubled up, see https://github.com/phetsims/sun/issues/330
+          var optionsToMutate = _.pick( options, _.keys( defaults ) );
+          this.mutate( optionsToMutate );
 
           // @private {Property.<number>}
           this._valueProperty = valueProperty;
