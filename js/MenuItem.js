@@ -56,6 +56,7 @@ define( function( require ) {
 
     // Extend the object with defaults.
     options = _.extend( {
+      cursor: 'pointer',
       tandem: Tandem.optional,
       textFill: 'black',
       phetioReadOnly: false,
@@ -63,7 +64,11 @@ define( function( require ) {
 
       // a11y
       tagName: 'button',
-      focusAfterCallback: false // whether or not next focusable element should receive focus after the callback
+      focusAfterCallback: false, // whether or not next focusable element should receive focus after the callback
+      parentContainerTagName: 'li',
+      parentContainerAriaRole: 'none', // this is required for JAWS to handle focus correctly, see https://github.com/phetsims/john-travoltage/issues/225
+      accessibleLabel: text,
+      ariaRole: 'menuitem'
     }, options );
 
     Node.call( this );
@@ -128,16 +133,7 @@ define( function( require ) {
       }
     } );
 
-    this.mutate( {
-      cursor: 'pointer',
-
-      // a11y
-      parentContainerTagName: 'li',
-      parentContainerAriaRole: 'none', // this is required for JAWS to handle focus correctly, see https://github.com/phetsims/john-travoltage/issues/225
-      accessibleLabel: text,
-      ariaRole: 'menuitem',
-      tagName: options.tagName
-    } );
+    this.mutate( options );
 
     // @private - dispose the menu item
     this.disposeMenuItem = function() {
