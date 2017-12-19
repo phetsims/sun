@@ -30,9 +30,6 @@ define( function( require ) {
   var Util = require( 'DOT/Util' );
   var Vector2 = require( 'DOT/Vector2' );
 
-  // phet-io modules
-  var phetioEvents = require( 'ifphetio!PHET_IO/phetioEvents' );
-
   /**
    * @param {Property.<boolean>} onProperty
    * @param {Object} [options]
@@ -70,7 +67,8 @@ define( function( require ) {
       trackOnFill: 'rgb(0,200,0)', // track fill when onProperty is true
       trackStroke: 'black',
 
-      tandem: Tandem.required
+      tandem: Tandem.required,
+      phetioType: OnOffSwitchIO
     }, options );
 
     var self = this;
@@ -96,16 +94,16 @@ define( function( require ) {
     if ( options.thumbTouchAreaXDilation || options.thumbTouchAreaYDilation ) {
       thumbNode.touchArea = Shape.roundRect(
         -options.thumbTouchAreaXDilation, -options.thumbTouchAreaYDilation,
-        (0.5 * options.size.width) + (2 * options.thumbTouchAreaXDilation),
-        options.size.height + (2 * options.thumbTouchAreaYDilation), cornerRadius, cornerRadius );
+        ( 0.5 * options.size.width ) + ( 2 * options.thumbTouchAreaXDilation ),
+        options.size.height + ( 2 * options.thumbTouchAreaYDilation ), cornerRadius, cornerRadius );
     }
 
     // thumb mouseArea
     if ( options.thumbMouseAreaXDilation || options.thumbMouseAreaYDilation ) {
       thumbNode.mouseArea = Shape.roundRect(
         -options.thumbMouseAreaXDilation, -options.thumbMouseAreaYDilation,
-        (0.5 * options.size.width) + (2 * options.thumbMouseAreaXDilation),
-        options.size.height + (2 * options.thumbMouseAreaYDilation), cornerRadius, cornerRadius );
+        ( 0.5 * options.size.width ) + ( 2 * options.thumbMouseAreaXDilation ),
+        options.size.height + ( 2 * options.thumbMouseAreaYDilation ), cornerRadius, cornerRadius );
     }
 
     // move thumb to on or off position
@@ -150,15 +148,15 @@ define( function( require ) {
 
         // whether the thumb is dragged outside of the possible range far enough beyond our threshold to potentially
         // trigger an immediate model change
-        var isDraggedOutside = viewPoint.x < (1 - 2 * options.toggleThreshold) * halfThumbWidth ||
-                               viewPoint.x > (-1 + 2 * options.toggleThreshold) * halfThumbWidth + options.size.width;
+        var isDraggedOutside = viewPoint.x < ( 1 - 2 * options.toggleThreshold ) * halfThumbWidth ||
+                               viewPoint.x > ( -1 + 2 * options.toggleThreshold ) * halfThumbWidth + options.size.width;
 
         var value = self.thumbPositionToValue(); // value represented by the current thumb position
 
         // track fill changes based on the thumb positions
         trackNode.fill = value ? options.trackOnFill : options.trackOffFill;
 
-        if ( options.toggleWhileDragging === true || (isDraggedOutside && options.toggleWhileDragging === null) ) {
+        if ( options.toggleWhileDragging === true || ( isDraggedOutside && options.toggleWhileDragging === null ) ) {
 
           // TODO: A way to distinguish between drag-to-toggle vs click-to-toggle
 
@@ -166,12 +164,12 @@ define( function( require ) {
           // stream, see https://github.com/phetsims/phet-io/issues/369
           var changed = onProperty.get() !== value;
           if ( changed ) {
-            var id = phetioEvents.start( 'user', options.tandem.id, OnOffSwitchIO, 'toggled', {
+            var id = self.startEvent( 'user', 'toggled', {
               oldValue: !value,
               newValue: value
             } );
             onProperty.set( value );
-            phetioEvents.end( id );
+            self.endEvent( id );
           }
         }
       },
@@ -182,7 +180,7 @@ define( function( require ) {
         // if moved past the threshold, choose value based on the side, otherwise just toggle
         var newValue = passedDragThreshold ? self.thumbPositionToValue() : !onProperty.get();
 
-        var id = phetioEvents.start( 'user', options.tandem.id, OnOffSwitchIO, 'toggled', {
+        var id = self.startEvent( 'user', 'toggled', {
           oldValue: oldValue,
           newValue: newValue
         } );
@@ -192,12 +190,12 @@ define( function( require ) {
         // update the thumb location (sanity check that it's here, only needs to be run if passedDragThreshold===true)
         updateThumb( onProperty.get() );
 
-        phetioEvents.end( id );
+        self.endEvent( id );
       },
 
       translate: function( params ) {
         accumulatedDelta.add( params.delta );
-        passedDragThreshold = passedDragThreshold || (accumulatedDelta.magnitudeSquared() > dragThresholdSquared);
+        passedDragThreshold = passedDragThreshold || ( accumulatedDelta.magnitudeSquared() > dragThresholdSquared );
       }
     } ) );
 

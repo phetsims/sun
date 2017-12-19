@@ -15,7 +15,6 @@ define( function( require ) {
   var ButtonModel = require( 'SUN/buttons/ButtonModel' );
   var CallbackTimer = require( 'SUN/CallbackTimer' );
   var inherit = require( 'PHET_CORE/inherit' );
-  var phetioEvents = require( 'ifphetio!PHET_IO/phetioEvents' );
   var PushButtonModelIO = require( 'SUN/buttons/PushButtonModelIO' );
   var sun = require( 'SUN/sun' );
   var Tandem = require( 'TANDEM/Tandem' );
@@ -36,6 +35,7 @@ define( function( require ) {
       fireOnHoldDelay: 400, // start to fire continuously after pressing for this long (milliseconds)
       fireOnHoldInterval: 100, // fire continuously at this interval (milliseconds),
       tandem: Tandem.optional,
+      phetioType: PushButtonModelIO,
       phetioState: false,
       phetioReadOnly: true
     }, options );
@@ -151,15 +151,15 @@ define( function( require ) {
       // Make sure the button is not already firing, see https://github.com/phetsims/energy-skate-park-basics/issues/380
       assert && assert( !this.isFiringProperty.value, 'Cannot fire when already firing' );
       this.isFiringProperty.value = true;
-      var id = phetioEvents.start( 'user', this.pushButtonModelTandem.id, PushButtonModelIO, 'fired' );
+      var id = this.startEvent( 'user', 'fired' );
 
       var copy = this.listeners.slice( 0 );
       copy.forEach( function( listener ) {
         listener();
       } );
 
-      phetioEvents.end( id );
       this.isFiringProperty.value = false;
+      this.endEvent( id );
     }
   } );
 } );

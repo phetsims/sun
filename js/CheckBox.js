@@ -20,7 +20,6 @@ define( function( require ) {
 
   // phet-io modules
   var CheckBoxIO = require( 'SUN/CheckBoxIO' );
-  var phetioEvents = require( 'ifphetio!PHET_IO/phetioEvents' );
 
   // constants
   var DISABLED_OPACITY = 0.3;
@@ -116,13 +115,13 @@ define( function( require ) {
       if ( self._enabled ) {
         var newValue = !property.value;
 
-        var id = phetioEvents.start( 'user', options.tandem.id, CheckBoxIO, 'toggled', {
+        var id = self.startEvent( 'user', 'toggled', {
           oldValue: property.value,
           newValue: newValue
         } );
 
         property.value = newValue;
-        phetioEvents.end( id );
+        self.endEvent( id );
       }
     };
 

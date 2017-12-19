@@ -26,9 +26,6 @@ define( function( require ) {
   var Tandem = require( 'TANDEM/Tandem' );
   var Vector2 = require( 'DOT/Vector2' );
 
-  // phet-io modules
-  var phetioEvents = require( 'ifphetio!PHET_IO/phetioEvents' );
-
   /**
    * @param {*[]} items - see ComboBox.createItem
    * @param {Property} property
@@ -131,7 +128,7 @@ define( function( require ) {
         // {ComboBoxItemNode}
         var selectedItemNode = event.currentTarget;
 
-        var id = phetioEvents.start( 'user', options.tandem.id, ComboBoxItemNodeIO, 'fired', {
+        var id = self.startEvent( 'user', 'fired', {
 
           // support uninstrumented sims
           value: selectedItemNode.phetioType &&
@@ -146,7 +143,7 @@ define( function( require ) {
         event.abort(); // prevent nodes (eg, controls) behind the list from receiving the event
         property.value = selectedItemNode.item.value; // set the property
 
-        phetioEvents.end( id );
+        self.endEvent( id );
       }
     };
 
@@ -211,12 +208,12 @@ define( function( require ) {
       down: function() {
         if ( enableClickToDismissListener ) {
 
-          var id = phetioEvents.start( 'user', options.tandem.id, ComboBoxIO, 'popupHidden' );
+          var id = self.startEvent( 'user', 'popupHidden' );
 
           display.removeInputListener( clickToDismissListener );
           listNode.visible = false;
 
-          phetioEvents.end( id );
+          self.endEvent( id );
         }
         else {
           enableClickToDismissListener = true;
@@ -229,7 +226,7 @@ define( function( require ) {
     buttonNode.addInputListener( {
       down: function() {
         if ( !listNode.visible ) {
-          var id = phetioEvents.start( 'user', options.tandem.id, ComboBoxIO, 'popupShown' );
+          var id = self.startEvent( 'user', 'popupShown' );
 
           moveList();
           listNode.moveToFront();
@@ -238,7 +235,7 @@ define( function( require ) {
           display = self.getUniqueTrail().rootNode().getRootedDisplays()[ 0 ];
           display.addInputListener( clickToDismissListener );
 
-          phetioEvents.end( id );
+          self.endEvent( id );
         }
       }
     } );

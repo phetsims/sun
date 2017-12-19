@@ -12,7 +12,6 @@ define( function( require ) {
   // modules
   var ButtonModel = require( 'SUN/buttons/ButtonModel' );
   var inherit = require( 'PHET_CORE/inherit' );
-  var phetioEvents = require( 'ifphetio!PHET_IO/phetioEvents' );
   var RadioButtonGroupMemberIO = require( 'SUN/RadioButtonGroupMemberIO' );
   var sun = require( 'SUN/sun' );
 
@@ -24,7 +23,10 @@ define( function( require ) {
    */
   function RadioButtonGroupMemberModel( selectorProperty, selectedValue, tandem ) {
 
-    ButtonModel.call( this );
+    ButtonModel.call( this, {
+      tandem: tandem,
+      phetioType: RadioButtonGroupMemberIO
+    } );
 
     var self = this;
 
@@ -34,11 +36,11 @@ define( function( require ) {
     // @public (read only) - fire on up if the button is enabled, public for use in the accessibility tree
     this.fire = function() {
       if ( self.enabledProperty.get() ) {
-        var id = phetioEvents.start( 'user', tandem.id, RadioButtonGroupMemberIO, 'fired', {
+        var id = self.startEvent( 'user', 'fired', {
           value: selectorProperty.phetioType && selectorProperty.phetioType.elementType && selectorProperty.phetioType.elementType.toStateObject && selectorProperty.phetioType.elementType.toStateObject( selectedValue )
         } );
         selectorProperty.set( selectedValue );
-        phetioEvents.end( id );
+        self.endEvent( id );
       }
     };
     this.downProperty.link( function( down ) {

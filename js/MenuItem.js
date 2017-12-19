@@ -23,7 +23,6 @@ define( function( require ) {
 
   // phet-io modules
   var MenuItemIO = require( 'SUN/MenuItemIO' );
-  var phetioEvents = require( 'ifphetio!PHET_IO/phetioEvents' );
 
   // the check mark used for toggle-able menu items
   var CHECK_MARK_NODE = new FontAwesomeNode( 'check', {
@@ -94,10 +93,10 @@ define( function( require ) {
     } );
 
     var fire = function( event ) {
-      var id = options.tandem.supplied && phetioEvents.start( 'user', options.tandem.id, MenuItemIO, 'fired' );
+      var id = self.startEvent( 'user', 'fired' );
       closeCallback( event );
       callback( event );
-      options.tandem.supplied && phetioEvents.end( id );
+      self.endEvent( id );
     };
 
     this.addInputListener( new ButtonListener( {

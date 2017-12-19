@@ -12,7 +12,6 @@ define( function( require ) {
   var ButtonListener = require( 'SCENERY/input/ButtonListener' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Node = require( 'SCENERY/nodes/Node' );
-  var phetioEvents = require( 'ifphetio!PHET_IO/phetioEvents' );
   var RadioButtonIO = require( 'SUN/RadioButtonIO' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var sun = require( 'SUN/sun' );
@@ -65,11 +64,11 @@ define( function( require ) {
 
     // set property value on fire
     var fire = function() {
-      var id = options.tandem.isLegalAndUsable() && phetioEvents.start( 'user', options.tandem.id, RadioButtonIO, 'fired', {
+      var id = options.tandem.isLegalAndUsable() && self.startEvent( 'user', 'fired', {
         value: property.phetioType.elementType.toStateObject( value )
       } );
       property.set( value );
-      options.tandem.isLegalAndUsable() && phetioEvents.end( id );
+      options.tandem.isLegalAndUsable() && self.endEvent( id );
     };
     var buttonListener = new ButtonListener( { fire: fire } );
     this.addInputListener( buttonListener );

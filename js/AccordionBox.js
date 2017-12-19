@@ -22,9 +22,6 @@ define( function( require ) {
   var Tandem = require( 'TANDEM/Tandem' );
   var Text = require( 'SCENERY/nodes/Text' );
 
-  // phet-io modules
-  var phetioEvents = require( 'ifphetio!PHET_IO/phetioEvents' );
-
   /**
    * @constructor
    *
@@ -235,9 +232,9 @@ define( function( require ) {
     if ( options.titleBarExpandCollapse ) {
       this.collapsedTitleBar.addInputListener( {
         down: function() {
-          var id = phetioEvents.start( 'user', options.tandem.id, AccordionBoxIO, 'expanded' );
+          var id = self.startEvent( 'user', 'expanded' );
           self.expandedProperty.value = true;
-          phetioEvents.end( id );
+          self.endEvent( id );
         }
       } );
     }
@@ -245,13 +242,13 @@ define( function( require ) {
     // a11y we always want accessible tab focus on the title, even when titleBarExpandeCollapse === false
     this.collapsedTitleBar.addAccessibleInputListener( {
       click: function() {
-        var id = phetioEvents.start( 'user', options.tandem.id, AccordionBoxIO, 'expanded' );
+        var id = self.startEvent( 'user', 'expanded' );
         self.expandedProperty.value = true;
 
         // a11y Set focus to expanded title bar
         self.expandedTitleBar.focus();
 
-        phetioEvents.end( id );
+        self.endEvent( id );
       }
     } );
 
@@ -261,9 +258,9 @@ define( function( require ) {
       if ( options.titleBarExpandCollapse ) {
         this.expandedTitleBar.addInputListener( {
           down: function() {
-            var id = phetioEvents.start( 'user', options.tandem.id, AccordionBoxIO, 'collapsed' );
+            var id = self.startEvent( 'user', 'collapsed' );
             self.expandedProperty.value = false;
-            phetioEvents.end( id );
+            self.endEvent( id );
           }
         } );
       }
@@ -271,12 +268,12 @@ define( function( require ) {
       // a11y we always want accessible tab focus on the title
       this.expandedTitleBar.addAccessibleInputListener( {
         click: function() {
-          var id = phetioEvents.start( 'user', options.tandem.id, AccordionBoxIO, 'collapsed' );
+          var id = self.startEvent( 'user', 'collapsed' );
           self.expandedProperty.value = false;
 
           // a11y Set focus to expanded title bar
           self.collapsedTitleBar.focus();
-          phetioEvents.end( id );
+          self.endEvent( id );
         }
       } );
     }
@@ -330,7 +327,7 @@ define( function( require ) {
       self.expandedBox.visible = expanded;
       self.collapsedBox.visible = !expanded;
 
-      self.titleNode.visible = (expanded && options.showTitleWhenExpanded) || !expanded;
+      self.titleNode.visible = ( expanded && options.showTitleWhenExpanded ) || !expanded;
     };
     this.expandedProperty.link( expandedPropertyObserver );
     this.disposalActions.push( function() {
@@ -395,7 +392,7 @@ define( function( require ) {
         this._contentNode.right = contentSpanRight;
       }
       else { // center
-        this._contentNode.centerX = (contentSpanLeft + contentSpanRight) / 2;
+        this._contentNode.centerX = ( contentSpanLeft + contentSpanRight ) / 2;
       }
 
       // button horizontal layout
@@ -459,7 +456,7 @@ define( function( require ) {
 
       // content is below button+title
       if ( this._showTitleWhenExpanded ) {
-        return Math.max( width, this._contentNode.width + (2 * this._contentXMargin) );
+        return Math.max( width, this._contentNode.width + ( 2 * this._contentXMargin ) );
       }
       // content is next to button
       else {
@@ -474,7 +471,7 @@ define( function( require ) {
      * @returns {number}
      */
     getCollapsedBoxHeight: function() {
-      return Math.max( this.expandCollapseButton.height + (2 * this._buttonYMargin), this.titleNode.height + (2 * this._titleYMargin) );
+      return Math.max( this.expandCollapseButton.height + ( 2 * this._buttonYMargin ), this.titleNode.height + ( 2 * this._titleYMargin ) );
     },
 
     /**
@@ -490,7 +487,7 @@ define( function( require ) {
       }
       // content is next to button
       else {
-        return Math.max( this.expandCollapseButton.height + (2 * this._buttonYMargin), this._contentNode.height + (2 * this._contentYMargin) );
+        return Math.max( this.expandCollapseButton.height + ( 2 * this._buttonYMargin ), this._contentNode.height + ( 2 * this._contentYMargin ) );
       }
     },
 
