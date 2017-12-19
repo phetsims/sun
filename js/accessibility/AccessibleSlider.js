@@ -25,8 +25,8 @@ define( function( require ) {
   var inheritance = require( 'PHET_CORE/inheritance' );
   var KeyboardUtil = require( 'SCENERY/accessibility/KeyboardUtil' );
   var Node = require( 'SCENERY/nodes/Node' );
-  var sun = require( 'SUN/sun' );
   var StringUtils = require( 'PHETCOMMON/util/StringUtils' );
+  var sun = require( 'SUN/sun' );
   var Util = require( 'DOT/Util' );
 
   var AccessibleSlider = {
