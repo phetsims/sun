@@ -125,10 +125,9 @@ define( function( require ) {
         event.abort(); // prevent click-to-dismiss on the list
       },
       up: function( event ) {
-        // {ComboBoxItemNode}
-        var selectedItemNode = event.currentTarget;
+        var selectedItemNode = event.currentTarget; // {ComboBoxItemNode}
 
-        var id = self.startEvent( 'user', 'fired', {
+        var id = selectedItemNode.startEvent( 'user', 'fired', {
 
           // support uninstrumented sims
           value: selectedItemNode.phetioType &&
@@ -143,7 +142,7 @@ define( function( require ) {
         event.abort(); // prevent nodes (eg, controls) behind the list from receiving the event
         property.value = selectedItemNode.item.value; // set the property
 
-        self.endEvent( id );
+        selectedItemNode.endEvent( id );
       }
     };
 
