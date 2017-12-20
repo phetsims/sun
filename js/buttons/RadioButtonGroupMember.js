@@ -70,7 +70,7 @@ define( function( require ) {
     }, options );
 
     // @public (phet-io)
-    this.radioButtonGroupMemberModel = new RadioButtonGroupMemberModel( property, value, options.tandem );
+    this.radioButtonGroupMemberModel = new RadioButtonGroupMemberModel( property, value, options.tandem, this );
 
     // @public for use in RadioButtonGroup for managing the labels
     this.interactionStateProperty = new RadioButtonInteractionStateProperty( this.radioButtonGroupMemberModel );

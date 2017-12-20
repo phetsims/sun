@@ -15,9 +15,8 @@ define( function( require ) {
   var ButtonModel = require( 'SUN/buttons/ButtonModel' );
   var CallbackTimer = require( 'SUN/CallbackTimer' );
   var inherit = require( 'PHET_CORE/inherit' );
-  var PushButtonModelIO = require( 'SUN/buttons/PushButtonModelIO' );
+  var PhetioObject = require( 'TANDEM/PhetioObject' );
   var sun = require( 'SUN/sun' );
-  var Tandem = require( 'TANDEM/Tandem' );
 
   /**
    * @param {Object} [options]
@@ -34,18 +33,15 @@ define( function( require ) {
       fireOnHold: false, // is the fire-on-hold feature enabled?
       fireOnHoldDelay: 400, // start to fire continuously after pressing for this long (milliseconds)
       fireOnHoldInterval: 100, // fire continuously at this interval (milliseconds),
-      tandem: Tandem.optional,
-      phetioType: PushButtonModelIO,
-      phetioState: false,
-      phetioReadOnly: true
+
+      eventSource: new PhetioObject() // sends events to the PhET-iO data stream
     }, options );
 
     var self = this;
 
-    // @private
-    this.pushButtonModelTandem = options.tandem;
-
     ButtonModel.call( this, options );
+
+    this.eventSource = options.eventSource;
 
     // @public - used by ResetAllButton to call functions during reset start/end
     this.isFiringProperty = new BooleanProperty( false );
@@ -78,7 +74,7 @@ define( function( require ) {
         }
       }
       else {
-        var fire = (!options.fireOnDown && self.overProperty.get() && self.enabledProperty.get()); // should the button fire?
+        var fire = ( !options.fireOnDown && self.overProperty.get() && self.enabledProperty.get() ); // should the button fire?
         if ( self.timer ) {
           self.timer.stop( fire );
         }
@@ -151,7 +147,7 @@ define( function( require ) {
       // Make sure the button is not already firing, see https://github.com/phetsims/energy-skate-park-basics/issues/380
       assert && assert( !this.isFiringProperty.value, 'Cannot fire when already firing' );
       this.isFiringProperty.value = true;
-      var id = this.startEvent( 'user', 'fired' );
+      var id = this.eventSource.startEvent( 'user', 'fired' );
 
       var copy = this.listeners.slice( 0 );
       copy.forEach( function( listener ) {
@@ -159,7 +155,7 @@ define( function( require ) {
       } );
 
       this.isFiringProperty.value = false;
-      this.endEvent( id );
+      this.eventSource.endEvent( id );
     }
   } );
 } );

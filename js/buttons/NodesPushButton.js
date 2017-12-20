@@ -34,7 +34,8 @@ define( function( require ) {
       cursor: 'pointer', // {string}
       listener: null, // {function}
       xAlign: 'center', // {string} how the nodes are horizontally aligned: center, left, right
-      yAlign: 'center' // {string} how the nodes are vertically aligned: center, top, bottom
+      yAlign: 'center', // {string} how the nodes are vertically aligned: center, top, bottom
+      eventSource: this
     }, options );
     options.children = [ idleNode, overNode, pressedNode, disabledNode ];
 
@@ -43,7 +44,7 @@ define( function( require ) {
     Node.call( this );
 
     // Button model
-    this.buttonModel = new PushButtonModel( _.omit( options, 'tandem', 'phetioType' ) ); // @private
+    this.buttonModel = new PushButtonModel( options ); // @private
     this.addInputListener( new ButtonListener( this.buttonModel ) );
 
     // Button interactions

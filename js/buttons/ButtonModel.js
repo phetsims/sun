@@ -9,7 +9,6 @@ define( function( require ) {
 
   // modules
   var inherit = require( 'PHET_CORE/inherit' );
-  var PhetioObject = require( 'TANDEM/PhetioObject' );
   var Property = require( 'AXON/Property' );
   var sun = require( 'SUN/sun' );
 
@@ -30,8 +29,6 @@ define( function( require ) {
 
     var self = this;
 
-    PhetioObject.call( this, options );
-
     // model properties
     this.overProperty = new Property( false ); // @public - Is the pointer over the button?
     this.downProperty = new Property( false ); // @public - Is the pointer down?
@@ -50,5 +47,5 @@ define( function( require ) {
 
   sun.register( 'ButtonModel', ButtonModel );
 
-  return inherit( PhetioObject, ButtonModel );
+  return inherit( Object, ButtonModel );
 } );
