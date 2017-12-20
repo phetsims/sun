@@ -112,7 +112,6 @@ define( function( require ) {
       // see https://github.com/phetsims/energy-skate-park-basics/issues/380
       this.isFiringProperty.value = false;
       this.disposePushButtonModel();
-      ButtonModel.prototype.dispose.call( this );
     },
 
     /**
