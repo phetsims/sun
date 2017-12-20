@@ -42,7 +42,7 @@ define( function( require ) {
     options = _.omit( options, [ 'listener' ] );
 
     // Safe to pass through options to the PushButtonModel like "fireOnDown".  Other scenery options will be safely ignored.
-    this.buttonModel = new PushButtonModel( options ); // @public, listen only
+    this.buttonModel = new PushButtonModel( _.omit( options, 'tandem', 'phetioType' ) ); // @public, listen only
 
     // add the listener that was potentially saved above
     listener && this.addListener( listener );

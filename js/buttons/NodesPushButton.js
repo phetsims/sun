@@ -43,7 +43,7 @@ define( function( require ) {
     Node.call( this );
 
     // Button model
-    this.buttonModel = new PushButtonModel( options ); // @private
+    this.buttonModel = new PushButtonModel( _.omit( options, 'tandem', 'phetioType' ) ); // @private
     this.addInputListener( new ButtonListener( this.buttonModel ) );
 
     // Button interactions
