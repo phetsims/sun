@@ -28,7 +28,8 @@ define( function( require ) {
   function RoundMomentaryButton( valueOff, valueOn, property, options ) {
     options = _.extend( {
       tandem: Tandem.required,
-      phetioType: RoundMomentaryButtonIO
+      phetioType: RoundMomentaryButtonIO,
+      eventSource: this
     }, options );
 
     this.buttonModel = new MomentaryButtonModel( valueOff, valueOn, property, options );
