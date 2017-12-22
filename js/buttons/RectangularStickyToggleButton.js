@@ -26,9 +26,10 @@ define( function( require ) {
    * @constructor
    */
   function RectangularStickyToggleButton( valueUp, valueDown, property, options ) {
+    options = _.extend( { eventSource: this }, options );
     Tandem.indicateUninstrumentedCode();
 
-    var buttonModel = new StickyToggleButtonModel( valueUp, valueDown, property );
+    var buttonModel = new StickyToggleButtonModel( valueUp, valueDown, property, options );
     RectangularButtonView.call( this, buttonModel, new StickyToggleButtonInteractionStateProperty( buttonModel ), options );
   }
 

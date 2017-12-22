@@ -25,7 +25,7 @@ define( function( require ) {
   function MomentaryButtonModel( valueOff, valueOn, valueProperty, options ) {
     options = _.extend( {
       tandem: Tandem.optional,
-      eventSource: new PhetioObject()
+      eventSource: new PhetioObject( { tandem: Tandem.optional } )
     }, options );
     var self = this;
     ButtonModel.call( self );

@@ -17,6 +17,7 @@ define( function( require ) {
   var inherit = require( 'PHET_CORE/inherit' );
   var PhetioObject = require( 'TANDEM/PhetioObject' );
   var sun = require( 'SUN/sun' );
+  var Tandem = require( 'TANDEM/Tandem' );
 
   /**
    * @param {Object} [options]
@@ -34,7 +35,7 @@ define( function( require ) {
       fireOnHoldDelay: 400, // start to fire continuously after pressing for this long (milliseconds)
       fireOnHoldInterval: 100, // fire continuously at this interval (milliseconds),
 
-      eventSource: new PhetioObject() // sends events to the PhET-iO data stream
+      eventSource: new PhetioObject( { tandem: Tandem.optional } ) // sends events to the PhET-iO data stream
     }, options );
 
     var self = this;

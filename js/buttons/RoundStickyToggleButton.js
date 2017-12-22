@@ -34,6 +34,7 @@ define( function( require ) {
     options = _.extend( {
       tandem: Tandem.required,
       phetioType: ToggleButtonIO,
+      eventSource: this,
 
       // a11y
       tagName: 'input',
