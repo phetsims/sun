@@ -12,10 +12,9 @@ define( function( require ) {
   // modules
   var ButtonModel = require( 'SUN/buttons/ButtonModel' );
   var inherit = require( 'PHET_CORE/inherit' );
-  var phetioEvents = require( 'ifphetio!PHET_IO/phetioEvents' );
+  var PhetioObject = require( 'TANDEM/PhetioObject' );
   var sun = require( 'SUN/sun' );
   var Tandem = require( 'TANDEM/Tandem' );
-  var ToggleButtonIO = require( 'SUN/buttons/ToggleButtonIO' );
 
   /**
    * @param {Object} valueOff - value when the button is in the off state
@@ -29,11 +28,12 @@ define( function( require ) {
     var self = this;
 
     options = _.extend( {
-      tandem: Tandem.required
+      tandem: Tandem.required,
+      eventSource: new PhetioObject( { tandem: Tandem.optional } )
     }, options );
 
     // @private
-    this.toggleButtonModelTandem = options.tandem;
+    this.toggleButtonModelEventSource = options.eventSource;
 
     // @private
     this.valueOff = valueOff;
@@ -74,12 +74,12 @@ define( function( require ) {
       var oldValue = this.valueProperty.value;
       var newValue = this.valueProperty.value === this.valueOff ? this.valueOn : this.valueOff;
       var hasToStateObject = this.valueProperty.phetioType && this.valueProperty.phetioType.elementType && this.valueProperty.phetioType.elementType.toStateObject;
-      var id = phetioEvents.start( 'user', this.toggleButtonModelTandem.id, ToggleButtonIO, 'toggled', {
+      this.toggleButtonModelEventSource.startEvent( 'user', 'toggled', {
         oldValue: hasToStateObject && this.valueProperty.phetioType.elementType.toStateObject( oldValue ),
         newValue: hasToStateObject && this.valueProperty.phetioType.elementType.toStateObject( newValue )
       } );
       this.valueProperty.value = newValue;
-      phetioEvents.end( id );
+      this.toggleButtonModelEventSource.endEvent();
     }
   } );
 } );

@@ -29,9 +29,9 @@ define( function( require ) {
 
     options = _.extend( {
       tandem: Tandem.required,
-      phetioType: ToggleButtonIO
+      phetioType: ToggleButtonIO,
+      eventSource: this
     }, options );
-
 
     // @public (phet-io)
     this.toggleButtonModel = new ToggleButtonModel( valueOff, valueOn, property, options );
