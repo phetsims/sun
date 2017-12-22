@@ -38,14 +38,14 @@ define( function( require ) {
       // turn on when pressed (if enabled)
       if ( down ) {
         if ( self.enabledProperty.get() ) {
-          var pressedID = options.tandem && options.tandem.isLegalAndUsable() && phetioEvents.start( 'user', options.tandem.id, RoundMomentaryButtonIO, 'pressed' );
+          var pressedID = options.tandem && options.tandem.isSuppliedAndEnabled() && phetioEvents.start( 'user', options.tandem.id, RoundMomentaryButtonIO, 'pressed' );
           valueProperty.set( valueOn );
           phetioEvents.end( pressedID );
         }
       }
       else {
         // turn off when released
-        var releasedID = options.tandem && options.tandem.isLegalAndUsable() && phetioEvents.start( 'user', options.tandem.id, RoundMomentaryButtonIO, 'released' );
+        var releasedID = options.tandem && options.tandem.isSuppliedAndEnabled() && phetioEvents.start( 'user', options.tandem.id, RoundMomentaryButtonIO, 'released' );
         valueProperty.set( valueOff );
         phetioEvents.end( releasedID );
       }
@@ -55,7 +55,7 @@ define( function( require ) {
     // turn off when disabled
     var enabledListener = function( enabled ) {
       if ( !enabled ) {
-        var releasedDisabledID = options.tandem && options.tandem.isLegalAndUsable() && phetioEvents.start( 'user', options.tandem.id, RoundMomentaryButtonIO, 'releasedDisabled' );
+        var releasedDisabledID = options.tandem && options.tandem.isSuppliedAndEnabled() && phetioEvents.start( 'user', options.tandem.id, RoundMomentaryButtonIO, 'releasedDisabled' );
         valueProperty.set( valueOff );
         phetioEvents.end( releasedDisabledID );
       }

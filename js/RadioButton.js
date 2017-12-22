@@ -64,11 +64,11 @@ define( function( require ) {
 
     // set property value on fire
     var fire = function() {
-      var id = options.tandem.isLegalAndUsable() && self.startEvent( 'user', 'fired', {
+      var id = options.tandem.isSuppliedAndEnabled() && self.startEvent( 'user', 'fired', {
         value: property.phetioType.elementType.toStateObject( value )
       } );
       property.set( value );
-      options.tandem.isLegalAndUsable() && self.endEvent( id );
+      options.tandem.isSuppliedAndEnabled() && self.endEvent( id );
     };
     var buttonListener = new ButtonListener( { fire: fire } );
     this.addInputListener( buttonListener );
