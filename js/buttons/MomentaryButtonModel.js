@@ -14,6 +14,7 @@ define( function( require ) {
   var phetioEvents = require( 'ifphetio!PHET_IO/phetioEvents' );
   var RoundMomentaryButtonIO = require( 'SUN/buttons/RoundMomentaryButtonIO' );
   var sun = require( 'SUN/sun' );
+  var Tandem = require( 'TANDEM/Tandem' );
 
   /**
    * @param {Object} valueOff - value when the button is in the off state
@@ -23,7 +24,7 @@ define( function( require ) {
    * @constructor
    */
   function MomentaryButtonModel( valueOff, valueOn, valueProperty, options ) {
-
+    options = _.extend( { tandem: Tandem.optional }, options );
     var self = this;
     ButtonModel.call( self );
 
@@ -38,14 +39,15 @@ define( function( require ) {
       // turn on when pressed (if enabled)
       if ( down ) {
         if ( self.enabledProperty.get() ) {
-          var pressedID = options.tandem && options.tandem.isSuppliedAndEnabled() && phetioEvents.start( 'user', options.tandem.id, RoundMomentaryButtonIO, 'pressed' );
+          var pressedID = options.tandem.isSuppliedAndEnabled() && phetioEvents.start( 'user', options.tandem.id, RoundMomentaryButtonIO, 'pressed' );
           valueProperty.set( valueOn );
           phetioEvents.end( pressedID );
         }
       }
       else {
+
         // turn off when released
-        var releasedID = options.tandem && options.tandem.isSuppliedAndEnabled() && phetioEvents.start( 'user', options.tandem.id, RoundMomentaryButtonIO, 'released' );
+        var releasedID = options.tandem.isSuppliedAndEnabled() && phetioEvents.start( 'user', options.tandem.id, RoundMomentaryButtonIO, 'released' );
         valueProperty.set( valueOff );
         phetioEvents.end( releasedID );
       }
