@@ -16,7 +16,7 @@ define( function( require ) {
 
   /**
    * Wrapper type for phet/sun's ToggleButton class.
-   * @param {ToggleButton} toggleButton
+   * @param {RectangularToggleButton|RoundStickyToggleButton|RoundToggleButton} toggleButton
    * @param {string} phetioID
    * @constructor
    */

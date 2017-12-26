@@ -17,8 +17,8 @@ define( function( require ) {
 
   /**
    * Wrapper type for phet/sun's AccordionBox class.
-   * @param accordionBox
-   * @param phetioID
+   * @param {AccordionBox} accordionBox
+   * @param {string} phetioID
    * @constructor
    */
   function AccordionBoxIO( accordionBox, phetioID ) {

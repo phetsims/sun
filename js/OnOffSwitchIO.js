@@ -16,8 +16,8 @@ define( function( require ) {
 
   /**
    * Wrapper type for phet/sun's OnOffSwitch class.
-   * @param onOffSwitch
-   * @param phetioID
+   * @param {OnOffSwitch} onOffSwitch
+   * @param {string} phetioID
    * @constructor
    */
   function OnOffSwitchIO( onOffSwitch, phetioID ) {

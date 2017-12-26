@@ -16,8 +16,8 @@ define( function( require ) {
 
   /**
    * Wrapper type for phet/sun's HSliderTrack class.
-   * @param hSliderTrack
-   * @param phetioID
+   * @param {HSliderTrack} hSliderTrack
+   * @param {string} phetioID
    * @constructor
    */
   function HSliderTrackIO( hSliderTrack, phetioID ) {

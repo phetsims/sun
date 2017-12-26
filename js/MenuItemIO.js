@@ -16,8 +16,8 @@ define( function( require ) {
 
   /**
    * Wrapper type for phet/sun's MenuItem
-   * @param menuItem
-   * @param phetioID
+   * @param {MenuItem} menuItem
+   * @param {string} phetioID
    * @constructor
    */
   function MenuItemIO( menuItem, phetioID ) {

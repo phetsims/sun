@@ -18,8 +18,8 @@ define( function( require ) {
 
   /**
    * Wrapper type for phet/sun's PushButton class.
-   * @param button
-   * @param phetioID
+   * @param {RoundPushButton|RectangularPushButton} button
+   * @param {string} phetioID
    * @constructor
    */
   function PushButtonIO( button, phetioID ) {

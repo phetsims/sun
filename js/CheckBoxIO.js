@@ -21,8 +21,8 @@ define( function( require ) {
 
   /**
    * Wrapper type for phet/sun's CheckBox class.
-   * @param checkBox
-   * @param phetioID
+   * @param {CheckBox} checkBox
+   * @param {string} phetioID
    * @constructor
    */
   function CheckBoxIO( checkBox, phetioID ) {

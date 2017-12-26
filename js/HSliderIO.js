@@ -19,8 +19,8 @@ define( function( require ) {
 
   /**
    * Wrapper type for phet/sun's HSlider class.
-   * @param hslider
-   * @param phetioID
+   * @param {HSlider} hslider
+   * @param {string} phetioID
    * @constructor
    */
   function HSliderIO( hslider, phetioID ) {
