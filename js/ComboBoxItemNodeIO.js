@@ -18,8 +18,8 @@ define( function( require ) {
 
   /**
    * Wrapper type for phet/sun's ComboBox class.
-   * @param comboBoxItemNode
-   * @param phetioID
+   * @param {ItemNode} comboBoxItemNode
+   * @param {string} phetioID
    * @constructor
    */
   function ComboBoxItemNodeIO( comboBoxItemNode, phetioID ) {

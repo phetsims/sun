@@ -16,8 +16,8 @@ define( function( require ) {
 
   /**
    * Wrapper type for phet/sun's RoundMomentaryButton class.
-   * @param roundMomentaryButton
-   * @param phetioID
+   * @param {RoundMomentaryButton} roundMomentaryButton
+   * @param {string} phetioID
    * @constructor
    */
   function RoundMomentaryButtonIO( roundMomentaryButton, phetioID ) {
