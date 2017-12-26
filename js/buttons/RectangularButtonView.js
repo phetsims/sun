@@ -22,6 +22,7 @@ define( function( require ) {
   var Property = require( 'AXON/Property' );
   var Shape = require( 'KITE/Shape' );
   var sun = require( 'SUN/sun' );
+  var Tandem = require( 'TANDEM/Tandem' );
 
   // constants
   var VERTICAL_HIGHLIGHT_GRADIENT_LENGTH = 7; // In screen coords, which are roughly pixels.
@@ -68,6 +69,7 @@ define( function( require ) {
       lineWidth: 0.5, // Only meaningful if stroke is non-null
       xAlign: 'center', // {string} see X_ALIGN_VALUES
       yAlign: 'center', // {string} see Y_ALIGN_VALUES
+      tandem: Tandem.optional, // This duplicates the parent option and works around https://github.com/phetsims/tandem/issues/50
 
       // Strategy for controlling the button's appearance, excluding any
       // content.  This can be a stock strategy from this file or custom.  To

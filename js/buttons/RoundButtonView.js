@@ -24,6 +24,7 @@ define( function( require ) {
   var RadialGradient = require( 'SCENERY/util/RadialGradient' );
   var Shape = require( 'KITE/Shape' );
   var sun = require( 'SUN/sun' );
+  var Tandem = require( 'TANDEM/Tandem' );
   var Vector2 = require( 'DOT/Vector2' );
 
   // constants
@@ -53,6 +54,7 @@ define( function( require ) {
       mouseAreaDilation: 0, // radius dilation for mouse area
       stroke: undefined, // undefined by default, which will cause a stroke to be derived from the base color
       lineWidth: 0.5, // Only meaningful if stroke is non-null
+      tandem: Tandem.optional, // This duplicates the parent option and works around https://github.com/phetsims/tandem/issues/50
 
       // By default, icons are centered in the button, but icons with odd
       // shapes that are not wrapped in a normalizing parent node may need to
