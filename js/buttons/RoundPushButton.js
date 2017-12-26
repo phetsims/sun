@@ -35,7 +35,7 @@ define( function( require ) {
       // a11y
       tagName: 'button',
 
-      eventSource: this
+      phetioEventSource: this
     }, options );
 
     var self = this;

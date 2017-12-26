@@ -25,7 +25,7 @@ define( function( require ) {
   function MomentaryButtonModel( valueOff, valueOn, valueProperty, options ) {
     options = _.extend( {
       tandem: Tandem.optional,
-      eventSource: new PhetioObject( { tandem: Tandem.optional } )
+      phetioEventSource: new PhetioObject( { tandem: Tandem.optional } )
     }, options );
     var self = this;
     ButtonModel.call( self );
@@ -41,17 +41,17 @@ define( function( require ) {
       // turn on when pressed (if enabled)
       if ( down ) {
         if ( self.enabledProperty.get() ) {
-          options.eventSource.startEvent( 'user', 'pressed' );
+          options.phetioEventSource.startEvent( 'user', 'pressed' );
           valueProperty.set( valueOn );
-          options.eventSource.endEvent();
+          options.phetioEventSource.endEvent();
         }
       }
       else {
 
         // turn off when released
-        options.eventSource.startEvent( 'user', 'released' );
+        options.phetioEventSource.startEvent( 'user', 'released' );
         valueProperty.set( valueOff );
-        options.eventSource.endEvent();
+        options.phetioEventSource.endEvent();
       }
     };
     this.downProperty.lazyLink( downListener );
@@ -59,9 +59,9 @@ define( function( require ) {
     // turn off when disabled
     var enabledListener = function( enabled ) {
       if ( !enabled ) {
-        options.eventSource.startEvent( 'user', 'releasedDisabled' );
+        options.phetioEventSource.startEvent( 'user', 'releasedDisabled' );
         valueProperty.set( valueOff );
-        options.eventSource.endEvent();
+        options.phetioEventSource.endEvent();
       }
     };
     this.enabledProperty.link( enabledListener );

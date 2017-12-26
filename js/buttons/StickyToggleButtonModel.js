@@ -31,14 +31,14 @@ define( function( require ) {
 
     options = _.extend( {
       tandem: Tandem.required,
-      eventSource: new PhetioObject( { tandem: Tandem.optional } ) // TODO: may not be necessary if all clients are passing this in
+      phetioEventSource: new PhetioObject( { tandem: Tandem.optional } ) // TODO: may not be necessary if all clients are passing this in
     }, options );
 
     // @private
     this.valueUp = valueUp;
     this.valueDown = valueDown;
     this.valueProperty = valueProperty;
-    this.stickyToggleButtonModelEventSource = options.eventSource;
+    this.stickyToggleButtonModelEventSource = options.phetioEventSource;
 
     ButtonModel.call( this );
 

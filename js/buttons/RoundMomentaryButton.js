@@ -29,7 +29,7 @@ define( function( require ) {
     options = _.extend( {
       tandem: Tandem.required,
       phetioType: RoundMomentaryButtonIO,
-      eventSource: this
+      phetioEventSource: this
     }, options );
 
     this.buttonModel = new MomentaryButtonModel( valueOff, valueOn, property, options );

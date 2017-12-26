@@ -33,7 +33,7 @@ define( function( require ) {
     options = _.extend( {
       tandem: Tandem.required,
       phetioType: ToggleButtonIO,
-      eventSource: this,
+      phetioEventSource: this,
 
       // a11y
       tagName: 'button'

@@ -29,11 +29,11 @@ define( function( require ) {
 
     options = _.extend( {
       tandem: Tandem.required,
-      eventSource: new PhetioObject( { tandem: Tandem.optional } )
+      phetioEventSource: new PhetioObject( { tandem: Tandem.optional } )
     }, options );
 
     // @private
-    this.toggleButtonModelEventSource = options.eventSource;
+    this.toggleButtonModelEventSource = options.phetioEventSource;
 
     // @private
     this.valueOff = valueOff;

@@ -19,10 +19,10 @@ define( function( require ) {
    * @param {Property} selectorProperty - the property for the RadioButtonGroup that determines which button is selected
    * @param {Object} selectedValue - the value that selectorProperty takes when this particular SingleRadioButton is selected
    * @param {Tandem} tandem
-   * @param {PhetioObject} eventSource
+   * @param {PhetioObject} phetioEventSource
    * @constructor
    */
-  function RadioButtonGroupMemberModel( selectorProperty, selectedValue, tandem, eventSource ) {
+  function RadioButtonGroupMemberModel( selectorProperty, selectedValue, tandem, phetioEventSource ) {
 
     ButtonModel.call( this, {
       tandem: tandem,
@@ -37,11 +37,11 @@ define( function( require ) {
     // @public (read only) - fire on up if the button is enabled, public for use in the accessibility tree
     this.fire = function() {
       if ( self.enabledProperty.get() ) {
-        var id = eventSource.startEvent( 'user', 'fired', {
+        var id = phetioEventSource.startEvent( 'user', 'fired', {
           value: selectorProperty.phetioType && selectorProperty.phetioType.elementType && selectorProperty.phetioType.elementType.toStateObject && selectorProperty.phetioType.elementType.toStateObject( selectedValue )
         } );
         selectorProperty.set( selectedValue );
-        eventSource.endEvent( id );
+        phetioEventSource.endEvent( id );
       }
     };
     this.downProperty.link( function( down ) {

@@ -26,7 +26,7 @@ define( function( require ) {
    * @constructor
    */
   function RectangularStickyToggleButton( valueUp, valueDown, property, options ) {
-    options = _.extend( { eventSource: this }, options );
+    options = _.extend( { phetioEventSource: this }, options );
     Tandem.indicateUninstrumentedCode();
 
     var buttonModel = new StickyToggleButtonModel( valueUp, valueDown, property, options );

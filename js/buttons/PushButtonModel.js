@@ -35,14 +35,14 @@ define( function( require ) {
       fireOnHoldDelay: 400, // start to fire continuously after pressing for this long (milliseconds)
       fireOnHoldInterval: 100, // fire continuously at this interval (milliseconds),
 
-      eventSource: new PhetioObject( { tandem: Tandem.optional } ) // sends events to the PhET-iO data stream
+      phetioEventSource: new PhetioObject( { tandem: Tandem.optional } ) // sends events to the PhET-iO data stream
     }, options );
 
     var self = this;
 
     ButtonModel.call( this, options );
 
-    this.eventSource = options.eventSource;
+    this.phetioEventSource = options.phetioEventSource;
 
     // @public - used by ResetAllButton to call functions during reset start/end
     this.isFiringProperty = new BooleanProperty( false );
@@ -147,7 +147,7 @@ define( function( require ) {
       // Make sure the button is not already firing, see https://github.com/phetsims/energy-skate-park-basics/issues/380
       assert && assert( !this.isFiringProperty.value, 'Cannot fire when already firing' );
       this.isFiringProperty.value = true;
-      var id = this.eventSource.startEvent( 'user', 'fired' );
+      var id = this.phetioEventSource.startEvent( 'user', 'fired' );
 
       var copy = this.listeners.slice( 0 );
       copy.forEach( function( listener ) {
@@ -155,7 +155,7 @@ define( function( require ) {
       } );
 
       this.isFiringProperty.value = false;
-      this.eventSource.endEvent( id );
+      this.phetioEventSource.endEvent( id );
     }
   } );
 } );
