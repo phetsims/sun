@@ -36,6 +36,8 @@ define( function( require ) {
     };
     valueProperty.link( onObserver );
 
+    var processingRelease = false;
+
     var downListener = function( down ) {
 
       // turn on when pressed (if enabled)
@@ -50,15 +52,20 @@ define( function( require ) {
 
         // turn off when released
         options.phetioEventSource.startEvent( 'user', 'released' );
+        processingRelease = true;
         valueProperty.set( valueOff );
         options.phetioEventSource.endEvent();
+        processingRelease = false;
       }
     };
     this.downProperty.lazyLink( downListener );
 
     // turn off when disabled
     var enabledListener = function( enabled ) {
-      if ( !enabled && !valueProperty.equalsValue( valueOff ) ) {
+
+      // If the button became disabled (and not as a result of pressing the button itself), trigger an event
+      // and change the value
+      if ( !enabled && !processingRelease ) {
         options.phetioEventSource.startEvent( 'user', 'releasedDisabled' );
         valueProperty.set( valueOff );
         options.phetioEventSource.endEvent();
