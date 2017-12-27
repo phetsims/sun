@@ -147,7 +147,7 @@ define( function( require ) {
       // Make sure the button is not already firing, see https://github.com/phetsims/energy-skate-park-basics/issues/380
       assert && assert( !this.isFiringProperty.value, 'Cannot fire when already firing' );
       this.isFiringProperty.value = true;
-      var id = this.phetioEventSource.startEvent( 'user', 'fired' );
+      this.phetioEventSource.startEvent( 'user', 'fired' );
 
       var copy = this.listeners.slice( 0 );
       copy.forEach( function( listener ) {
@@ -155,7 +155,7 @@ define( function( require ) {
       } );
 
       this.isFiringProperty.value = false;
-      this.phetioEventSource.endEvent( id );
+      this.phetioEventSource.endEvent();
     }
   } );
 } );

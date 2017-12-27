@@ -93,10 +93,10 @@ define( function( require ) {
     } );
 
     var fire = function( event ) {
-      var id = self.startEvent( 'user', 'fired' );
+      self.startEvent( 'user', 'fired' );
       closeCallback( event );
       callback( event );
-      self.endEvent( id );
+      self.endEvent();
     };
 
     this.addInputListener( new ButtonListener( {

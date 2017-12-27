@@ -127,7 +127,7 @@ define( function( require ) {
       up: function( event ) {
         var selectedItemNode = event.currentTarget; // {ComboBoxItemNode}
 
-        var id = selectedItemNode.startEvent( 'user', 'fired', {
+        selectedItemNode.startEvent( 'user', 'fired', {
 
           // support uninstrumented sims
           value: selectedItemNode.phetioType &&
@@ -142,7 +142,7 @@ define( function( require ) {
         event.abort(); // prevent nodes (eg, controls) behind the list from receiving the event
         property.value = selectedItemNode.item.value; // set the property
 
-        selectedItemNode.endEvent( id );
+        selectedItemNode.endEvent();
       }
     };
 
@@ -207,12 +207,12 @@ define( function( require ) {
       down: function() {
         if ( enableClickToDismissListener ) {
 
-          var id = self.startEvent( 'user', 'popupHidden' );
+          self.startEvent( 'user', 'popupHidden' );
 
           display.removeInputListener( clickToDismissListener );
           listNode.visible = false;
 
-          self.endEvent( id );
+          self.endEvent();
         }
         else {
           enableClickToDismissListener = true;
@@ -225,7 +225,7 @@ define( function( require ) {
     buttonNode.addInputListener( {
       down: function() {
         if ( !listNode.visible ) {
-          var id = self.startEvent( 'user', 'popupShown' );
+          self.startEvent( 'user', 'popupShown' );
 
           moveList();
           listNode.moveToFront();
@@ -234,7 +234,7 @@ define( function( require ) {
           display = self.getUniqueTrail().rootNode().getRootedDisplays()[ 0 ];
           display.addInputListener( clickToDismissListener );
 
-          self.endEvent( id );
+          self.endEvent();
         }
       }
     } );

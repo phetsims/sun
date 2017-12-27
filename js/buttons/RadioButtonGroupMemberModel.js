@@ -37,11 +37,11 @@ define( function( require ) {
     // @public (read only) - fire on up if the button is enabled, public for use in the accessibility tree
     this.fire = function() {
       if ( self.enabledProperty.get() ) {
-        var id = phetioEventSource.startEvent( 'user', 'fired', {
+        phetioEventSource.startEvent( 'user', 'fired', {
           value: selectorProperty.phetioType && selectorProperty.phetioType.elementType && selectorProperty.phetioType.elementType.toStateObject && selectorProperty.phetioType.elementType.toStateObject( selectedValue )
         } );
         selectorProperty.set( selectedValue );
-        phetioEventSource.endEvent( id );
+        phetioEventSource.endEvent();
       }
     };
     this.downProperty.link( function( down ) {

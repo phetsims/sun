@@ -114,14 +114,12 @@ define( function( require ) {
     this.fire = function() {
       if ( self._enabled ) {
         var newValue = !property.value;
-
-        var id = self.startEvent( 'user', 'toggled', {
+        self.startEvent( 'user', 'toggled', {
           oldValue: property.value,
           newValue: newValue
         } );
-
         property.value = newValue;
-        self.endEvent( id );
+        self.endEvent();
       }
     };
 
