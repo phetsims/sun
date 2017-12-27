@@ -58,7 +58,7 @@ define( function( require ) {
 
     // turn off when disabled
     var enabledListener = function( enabled ) {
-      if ( !enabled ) {
+      if ( !enabled && !valueProperty.equalsValue( valueOff ) ) {
         options.phetioEventSource.startEvent( 'user', 'releasedDisabled' );
         valueProperty.set( valueOff );
         options.phetioEventSource.endEvent();
