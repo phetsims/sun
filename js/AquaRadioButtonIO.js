@@ -18,7 +18,7 @@ define( function( require ) {
   var VoidIO = require( 'ifphetio!PHET_IO/types/VoidIO' );
 
   /**
-   * Wrapper type for phet/sun's AquaRadioButton class.
+   * IO type for phet/sun's AquaRadioButton class.
    * @param {AquaRadioButton} aquaRadioButton
    * @param {string} phetioID
    * @constructor

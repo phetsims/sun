@@ -17,7 +17,7 @@ define( function( require ) {
   var phetioInherit = require( 'ifphetio!PHET_IO/phetioInherit' );
 
   /**
-   * Wrapper type for phet/sun's ComboBox class.
+   * IO type for phet/sun's ComboBox class.
    * @param {ComboBox} comboBox
    * @param {string} phetioID
    * @constructor

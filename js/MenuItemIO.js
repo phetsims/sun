@@ -15,7 +15,7 @@ define( function( require ) {
   var sun = require( 'SUN/sun' );
 
   /**
-   * Wrapper type for phet/sun's MenuItem
+   * IO type for phet/sun's MenuItem
    * @param {MenuItem} menuItem
    * @param {string} phetioID
    * @constructor

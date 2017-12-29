@@ -15,7 +15,7 @@ define( function( require ) {
   var sun = require( 'SUN/sun' );
 
   /**
-   * Wrapper type for phet/sun's ToggleButton class.
+   * IO type for phet/sun's ToggleButton class.
    * @param {RectangularToggleButton|RoundStickyToggleButton|RoundToggleButton} toggleButton
    * @param {string} phetioID
    * @constructor

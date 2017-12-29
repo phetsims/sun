@@ -15,7 +15,7 @@ define( function( require ) {
   var sun = require( 'SUN/sun' );
 
   /**
-   * Wrapper type for phet/sun's HSliderTrack class.
+   * IO type for phet/sun's HSliderTrack class.
    * @param {HSliderTrack} hSliderTrack
    * @param {string} phetioID
    * @constructor

@@ -17,7 +17,7 @@ define( function( require ) {
   var VoidIO = require( 'ifphetio!PHET_IO/types/VoidIO' );
 
   /**
-   * Wrapper type for phet/sun's PushButton class.
+   * IO type for phet/sun's PushButton class.
    * @param {RoundPushButton|RectangularPushButton} button
    * @param {string} phetioID
    * @constructor

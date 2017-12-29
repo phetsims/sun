@@ -18,7 +18,7 @@ define( function( require ) {
   var VoidIO = require( 'ifphetio!PHET_IO/types/VoidIO' );
 
   /**
-   * Wrapper type for phet/sun's HSlider class.
+   * IO type for phet/sun's HSlider class.
    * @param {HSlider} hslider
    * @param {string} phetioID
    * @constructor

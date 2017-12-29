@@ -20,7 +20,7 @@ define( function( require ) {
   var VoidIO = require( 'ifphetio!PHET_IO/types/VoidIO' );
 
   /**
-   * Wrapper type for phet/sun's CheckBox class.
+   * IO type for phet/sun's CheckBox class.
    * @param {CheckBox} checkBox
    * @param {string} phetioID
    * @constructor

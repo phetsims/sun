@@ -15,7 +15,7 @@ define( function( require ) {
   var sun = require( 'SUN/sun' );
 
   /**
-   * Wrapper type for phet/sun's RoundMomentaryButton class.
+   * IO type for phet/sun's RoundMomentaryButton class.
    * @param {RoundMomentaryButton} roundMomentaryButton
    * @param {string} phetioID
    * @constructor

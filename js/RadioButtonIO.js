@@ -15,7 +15,7 @@ define( function( require ) {
   var sun = require( 'SUN/sun' );
 
   /**
-   * Wrapper type for phet/sun's RadioButton class.
+   * IO type for phet/sun's RadioButton class.
    * @param {RadioButton} radioButton
    * @param {String} phetioID
    * @constructor

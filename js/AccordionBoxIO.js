@@ -1,7 +1,7 @@
 // Copyright 2017, University of Colorado Boulder
 
 /**
- * wrapper type for AccordionBox
+ * IO type for AccordionBox
  * @author John Blanco
  */
 define( function( require ) {
@@ -16,7 +16,7 @@ define( function( require ) {
   var phetioInherit = require( 'ifphetio!PHET_IO/phetioInherit' );
 
   /**
-   * Wrapper type for phet/sun's AccordionBox class.
+   * IO type for phet/sun's AccordionBox class.
    * @param {AccordionBox} accordionBox
    * @param {string} phetioID
    * @constructor
