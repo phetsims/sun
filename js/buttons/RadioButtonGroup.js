@@ -16,6 +16,7 @@ define( function( require ) {
   // modules
   var Color = require( 'SCENERY/util/Color' );
   var ColorConstants = require( 'SUN/ColorConstants' );
+  var FocusHighlightPath = require( 'SCENERY/accessibility/FocusHighlightPath' );
   var inherit = require( 'PHET_CORE/inherit' );
   var LayoutBox = require( 'SCENERY/nodes/LayoutBox' );
   var Property = require( 'AXON/Property' );
@@ -144,7 +145,11 @@ define( function( require ) {
       // The default appearances use the color values specified above, but other appearances could be specified for more
       // customized behavior.  Generally setting the color values above should be enough to specify the desired look.
       buttonAppearanceStrategy: RadioButtonGroupAppearance.defaultRadioButtonsAppearance,
-      contentAppearanceStrategy: RadioButtonGroupAppearance.contentAppearanceStrategy
+      contentAppearanceStrategy: RadioButtonGroupAppearance.contentAppearanceStrategy,
+
+      // a11y - focus highlight expansion
+      a11yHighlightXDilation: 0,
+      a11yHighlightYDilation: 0
     };
 
     options = _.extend( _.clone( defaultOptions ), options );
@@ -210,6 +215,9 @@ define( function( require ) {
       } );
       radioButton.addChild( boundingRect );
 
+      // default bounds for focus highlight, will include label if one exists
+      var defaultHighlightBounds = null;
+
       // if a label is given, the button becomes a LayoutBox with the label and button
       if ( currentContent.label ) {
         var label = currentContent.label;
@@ -248,13 +256,18 @@ define( function( require ) {
 
         // use the same content appearance strategy for the labels that is used for the button content
         options.contentAppearanceStrategy( label, radioButton.interactionStateProperty, options );
+
+        // a11y - include label in focus highlight
+        defaultHighlightBounds = radioButton.mouseArea.bounds.dilated( 5 );
       }
       else {
         button = radioButton;
+        defaultHighlightBounds = button.bounds.dilated( FocusHighlightPath.getDilationCoefficient( button ) );
       }
 
-      // a11y - focus highlight for the button group member, highlight surrounds label if one is added
-      radioButton.setFocusHighlight( Shape.bounds( radioButton.mouseArea.bounds.dilate( 5 ) ) );
+      // a11y - set the focus highlight, dilated by the optional expansion values
+      var highlightBounds = defaultHighlightBounds.dilatedX( opts.a11yHighlightXDilation ).dilatedY( opts.a11yHighlightYDilation );
+      radioButton.setFocusHighlight( Shape.bounds( highlightBounds ) );
 
       buttons.push( button );
     }
