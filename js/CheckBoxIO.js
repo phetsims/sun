@@ -1,6 +1,7 @@
 // Copyright 2017, University of Colorado Boulder
 
 /**
+ * IO type for CheckBox
  *
  * @author Sam Reid (PhET Interactive Simulations)
  * @author Andrew Adare (PhET Interactive Simulations)
@@ -20,7 +21,6 @@ define( function( require ) {
   var VoidIO = require( 'ifphetio!PHET_IO/types/VoidIO' );
 
   /**
-   * IO type for phet/sun's CheckBox class.
    * @param {CheckBox} checkBox
    * @param {string} phetioID
    * @constructor

@@ -2,6 +2,7 @@
 
 /**
  * IO type for AccordionBox
+ *
  * @author John Blanco
  */
 define( function( require ) {

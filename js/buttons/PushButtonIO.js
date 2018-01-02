@@ -1,6 +1,7 @@
 // Copyright 2017, University of Colorado Boulder
 
 /**
+ * IO type for RoundPushButton|RectangularPushButton
  *
  * @author Sam Reid (PhET Interactive Simulations)
  * @author Andrew Adare (PhET Interactive Simulations)
@@ -17,7 +18,6 @@ define( function( require ) {
   var VoidIO = require( 'ifphetio!PHET_IO/types/VoidIO' );
 
   /**
-   * IO type for phet/sun's PushButton class.
    * @param {RoundPushButton|RectangularPushButton} button
    * @param {string} phetioID
    * @constructor

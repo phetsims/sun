@@ -1,6 +1,7 @@
 // Copyright 2017, University of Colorado Boulder
 
 /**
+ * IO type for OnOffSwitch
  *
  * @author Sam Reid (PhET Interactive Simulations)
  * @author Andrew Adare (PhET Interactive Simulations)
@@ -15,7 +16,6 @@ define( function( require ) {
   var sun = require( 'SUN/sun' );
 
   /**
-   * IO type for phet/sun's OnOffSwitch class.
    * @param {OnOffSwitch} onOffSwitch
    * @param {string} phetioID
    * @constructor
