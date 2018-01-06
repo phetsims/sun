@@ -33,7 +33,7 @@ define( function( require ) {
       checkBoxColor: 'black',
       align: 'left',
       boxWidth: 21,
-      tandem: Tandem.required
+      tandem: Tandem.optional
     }, options );
 
     // compute max width of the items
