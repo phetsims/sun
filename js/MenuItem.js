@@ -4,7 +4,7 @@
  * Class for an item that is listed in the PhetMenu
  * See PhetMenu.js for more information
  *
- * @author - Michael Kauzmann (PhET Interactive Simulations)
+ * @author Michael Kauzmann (PhET Interactive Simulations)
  */
 define( function( require ) {
   'use strict';
