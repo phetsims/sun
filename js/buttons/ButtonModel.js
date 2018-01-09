@@ -11,6 +11,7 @@ define( function( require ) {
   var inherit = require( 'PHET_CORE/inherit' );
   var Property = require( 'AXON/Property' );
   var sun = require( 'SUN/sun' );
+  var Timer = require( 'PHET_CORE/Timer' );
 
   /**
    * @param {Object} [options]
@@ -24,7 +25,10 @@ define( function( require ) {
       // {function} called on pointer up, @param {boolean} over - indicates whether the pointer was released over the button
       endCallback: function( over ) {},
       // {boolean} is the button enabled?
-      enabled: true
+      enabled: true,
+
+      // a11y
+      fireOnHoldInterval: 100 // fire continuously at this interval in ms when holding down button with keyboard
     }, options );
 
     var self = this;
@@ -33,6 +37,9 @@ define( function( require ) {
     this.overProperty = new Property( false ); // @public - Is the pointer over the button?
     this.downProperty = new Property( false ); // @public - Is the pointer down?
     this.enabledProperty = new Property( options.enabled ); // @public - Is the button enabled?
+
+    // @private {number}
+    this._fireOnHoldInterval = options.fireOnHoldInterval;
 
     // startCallback on pointer down, endCallback on pointer up. lazyLink so they aren't called immediately.
     this.downProperty.lazyLink( function( down ) {
@@ -47,5 +54,30 @@ define( function( require ) {
 
   sun.register( 'ButtonModel', ButtonModel );
 
-  return inherit( Object, ButtonModel );
+  return inherit( Object, ButtonModel, {
+
+    /**
+     * Click the button by pressing the button down and then releasing after a timeout. When assistive technology is
+     * used, the browser does not receive 'down' or 'up' events on buttons - only a single 'click' event. For a11y we
+     * need to toggle the pressed state every 'click' event.
+     * @public
+     *
+     * @param {function} [endListener] - optional function to be called once the button has been released after 
+     *                                accessibility related interaction.
+     */
+    a11yClick: function( endListener ) {
+      if ( !this.downProperty.get() && this.enabledProperty.get() ) {
+        this.overProperty.set( true );
+        this.downProperty.set( true );
+
+        var self = this;
+        Timer.setTimeout( function() {
+          self.downProperty.set( false );
+          self.overProperty.set( false );
+
+          endListener && endListener();
+        }, self._fireOnHoldInterval );
+      }
+    }
+  } );
 } );

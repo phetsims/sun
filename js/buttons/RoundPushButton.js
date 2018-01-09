@@ -56,7 +56,7 @@ define( function( require ) {
     // a11y - when the button is clicked with assistive technology, fire
     var accessibleClickListener = this.addAccessibleInputListener( {
       click: function() {
-        self.buttonModel.fire();
+        self.buttonModel.a11yClick();
       }
     } );
 
