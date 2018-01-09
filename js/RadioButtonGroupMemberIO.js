@@ -33,9 +33,9 @@ define( function( require ) {
       return NodeIO.toStateObject( radioButton );
     },
     fromStateObject: function( stateObject ) { return NodeIO.fromStateObject( stateObject ); },
-    setValue: function( radioButton, stateObject ) {
+    setValue: function( radioButton, fromStateObject ) {
       assert && assertInstanceOf( radioButton, phet.sun.RadioButtonGroupMember );
-      NodeIO.setValue( radioButton, stateObject );
+      NodeIO.setValue( radioButton, fromStateObject );
     }
   } );
 
