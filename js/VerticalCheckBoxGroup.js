@@ -21,7 +21,7 @@ define( function( require ) {
   /**
    * Main constructor.
    *
-   * @param items  an array of {content, property, indent, [tandemName]}
+   * @param items  an array of {content, property, indent, [tandem]}
    * @param {Object} [options]
    * @constructor
    */
@@ -45,19 +45,16 @@ define( function( require ) {
     // process each item
     var children = [];
     for ( i = 0; i < items.length; i++ ) {
-      (function( i ) {
+      ( function( i ) {
         var offset = items[ i ].indent || 0;
 
         //Attach each item to an invisible strut to make the widths match.
         var content = new Path( Shape.rect( 0, 0, maxWidth + options.padding - offset, 0 ), { children: [ items[ i ].content ] } );
-        if ( Tandem.validationEnabled() ) {
-          assert && assert( items[ i ].tandemName, 'Tandem name must be supplied for phet-io' );
-        }
         var checkBox = new CheckBox( content, items[ i ].property, {
           textDescription: items[ i ].label + ': Checkbox (' + 'unchecked' + ')',
           checkBoxColor: options.checkBoxColor,
           boxWidth: options.boxWidth,
-          tandem: options.tandem.createTandem( items[ i ].tandemName || 'checkBox' )
+          tandem: items[ i ].tandem || Tandem.optional
         } );
         checkBox.mouseArea = checkBox.touchArea = Shape.bounds( checkBox.bounds.dilatedXY( 5, options.spacing / 2 ) );
         if ( items[ i ].indent ) {
@@ -70,7 +67,7 @@ define( function( require ) {
           var simpleBox = new HBox( { children: [ checkBox ] } );
           children.push( simpleBox );
         }
-      })( i );
+      } )( i );
     }
 
     options.children = children; //TODO bad form, if options.children was already set, then this will blow it away
