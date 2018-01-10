@@ -43,32 +43,27 @@ define( function( require ) {
     }
 
     // process each item
-    var children = [];
-    for ( i = 0; i < items.length; i++ ) {
-      ( function( i ) {
-        var offset = items[ i ].indent || 0;
+    var children = items.map( function( item ) {
+      var offset = item.indent || 0;
 
-        //Attach each item to an invisible strut to make the widths match.
-        var content = new Path( Shape.rect( 0, 0, maxWidth + options.padding - offset, 0 ), { children: [ items[ i ].content ] } );
-        var checkBox = new CheckBox( content, items[ i ].property, {
-          textDescription: items[ i ].label + ': Checkbox (' + 'unchecked' + ')',
-          checkBoxColor: options.checkBoxColor,
-          boxWidth: options.boxWidth,
-          tandem: items[ i ].tandem || Tandem.optional
+      //Attach each item to an invisible strut to make the widths match.
+      var content = new Path( Shape.rect( 0, 0, maxWidth + options.padding - offset, 0 ), { children: [ item.content ] } );
+      var checkBox = new CheckBox( content, item.property, {
+        textDescription: item.label + ': Checkbox (' + 'unchecked' + ')',
+        checkBoxColor: options.checkBoxColor,
+        boxWidth: options.boxWidth,
+        tandem: item.tandem || Tandem.optional
+      } );
+      checkBox.mouseArea = checkBox.touchArea = Shape.bounds( checkBox.bounds.dilatedXY( 5, options.spacing / 2 ) );
+      if ( item.indent ) {
+        return new HBox( {
+          children: [ new Rectangle( 0, 0, item.indent, 1 ), checkBox ]
         } );
-        checkBox.mouseArea = checkBox.touchArea = Shape.bounds( checkBox.bounds.dilatedXY( 5, options.spacing / 2 ) );
-        if ( items[ i ].indent ) {
-          var hBox = new HBox( {
-            children: [ new Rectangle( 0, 0, items[ i ].indent, 1 ), checkBox ]
-          } );
-          children.push( hBox );
-        }
-        else {
-          var simpleBox = new HBox( { children: [ checkBox ] } );
-          children.push( simpleBox );
-        }
-      } )( i );
-    }
+      }
+      else {
+        return new HBox( { children: [ checkBox ] } );
+      }
+    } );
 
     options.children = children; //TODO bad form, if options.children was already set, then this will blow it away
     VBox.call( this, options );
