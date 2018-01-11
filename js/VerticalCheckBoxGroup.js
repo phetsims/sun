@@ -49,7 +49,6 @@ define( function( require ) {
       //Attach each item to an invisible strut to make the widths match.
       var content = new Path( Shape.rect( 0, 0, maxWidth + options.padding - offset, 0 ), { children: [ item.content ] } );
       var checkBox = new CheckBox( content, item.property, {
-        textDescription: item.label + ': Checkbox (' + 'unchecked' + ')',
         checkBoxColor: options.checkBoxColor,
         boxWidth: options.boxWidth,
         tandem: item.tandem || Tandem.optional
