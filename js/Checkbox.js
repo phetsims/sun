@@ -1,7 +1,7 @@
 // Copyright 2013-2017, University of Colorado Boulder
 
 /**
- * Check box.
+ * Checkbox.
  *
  * @author Chris Malley (PixelZoom, Inc.)
  */
@@ -51,7 +51,7 @@ define( function( require ) {
 
       /*
        * {function( {Node} checkbox, {boolean} enabled ) }
-       * Strategy for controlling the check box's appearance, excluding any content.
+       * Strategy for controlling the checkbox's appearance, excluding any content.
        * This can be a stock strategy from this file or custom.
        * To create a custom one, model it off of the stock strategies defined in this file.
        */
@@ -59,7 +59,7 @@ define( function( require ) {
 
       /*
        * {function( {Node} content, {boolean} enabled )}
-       * Strategy for controlling the appearance of the content based on the check box's state.
+       * Strategy for controlling the appearance of the content based on the checkbox's state.
        * This can be a stock strategy from this file, or custom.
        * To create a custom one, model it off of the stock version(s) defined in this file.
        */
@@ -77,7 +77,7 @@ define( function( require ) {
     this._enabled = true; // @private
 
     // @private - Create the background.  Until we are creating our own shapes, just put a rectangle behind the font
-    // awesome check box icons.
+    // awesome checkbox icons.
     this.backgroundNode = new Rectangle( 0, -options.boxWidth, options.boxWidth * 0.95, options.boxWidth * 0.95,
       options.boxWidth * 0.2, options.boxWidth * 0.2, {
         fill: options.checkboxColorBackground
@@ -158,7 +158,7 @@ define( function( require ) {
     },
 
     /**
-     *  Sets the background color of the check box.
+     *  Sets the background color of the checkbox.
      *  @param {Color|String} value
      *  @public
      */
@@ -166,7 +166,7 @@ define( function( require ) {
     set checkboxColorBackground( value ) { this.setCheckboxColorBackground( value ); },
 
     /**
-     * Gets the background color of the check box.
+     * Gets the background color of the checkbox.
      * @returns {Color|String}
      * @public
      */
@@ -174,7 +174,7 @@ define( function( require ) {
     get checkboxColorBackground() { return this.getCheckboxColorBackground(); },
 
     /**
-     *  Sets the color of the check box.
+     *  Sets the color of the checkbox.
      *  @param {Color|String} value
      *  @public
      */
@@ -182,7 +182,7 @@ define( function( require ) {
     set checkboxColor( value ) { this.setCheckboxColor( value ); },
 
     /**
-     * Gets the color of the check box.
+     * Gets the color of the checkbox.
      * @returns {Color|String}
      * @public
      */
@@ -190,7 +190,7 @@ define( function( require ) {
     get checkboxColor() { return this.getCheckboxColor(); },
 
     /**
-     * Sets whether the check box is enabled.
+     * Sets whether the checkbox is enabled.
      * @param {boolean} value
      * @public
      */
@@ -202,7 +202,7 @@ define( function( require ) {
     set enabled( value ) { this.setEnabled( value ); },
 
     /**
-     * Is the check box enabled?
+     * Is the checkbox enabled?
      * @returns {boolean}
      * @public
      */
@@ -212,8 +212,8 @@ define( function( require ) {
   }, {
 
     /**
-     * Default for options.checkboxAppearanceStrategy, fades the check box by changing opacity.
-     * @param {Node} checkboxNode the check box
+     * Default for options.checkboxAppearanceStrategy, fades the checkbox by changing opacity.
+     * @param {Node} checkboxNode the checkbox
      * @param {boolean} enabled
      * @static
      * @public
@@ -224,7 +224,7 @@ define( function( require ) {
 
     /**
      * Default for options.contentAppearanceStrategy, fades the content by changing opacity.
-     * @param {Node} content the content that appears next to the check box
+     * @param {Node} content the content that appears next to the checkbox
      * @param {boolean} enabled
      * @static
      * @public
@@ -234,7 +234,7 @@ define( function( require ) {
     },
 
     /**
-     * Factory method, creates a check box with a text label and optional icon.
+     * Factory method, creates a checkbox with a text label and optional icon.
      * @param {string} text
      * @param {Object} textOptions options passed to scenery.Text constructor
      * @param {Property.<boolean>} property

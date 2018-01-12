@@ -1,7 +1,7 @@
 // Copyright 2013-2018, University of Colorado Boulder
 
 /**
- * A vertical group of check boxes.
+ * A vertical group of checkboxes.
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */
@@ -29,7 +29,7 @@ define( function( require ) {
 
     options = _.extend( {
       spacing: 10, // vertical spacing
-      padding: 8, //TODO what is this? It looks like it's added to the right of the check box. Shouldn't this be an x-margin, added to left and right?
+      padding: 8, //TODO what is this? It looks like it's added to the right of the checkbox. Shouldn't this be an x-margin, added to left and right?
       checkboxColor: 'black',
       align: 'left',
       boxWidth: 21,

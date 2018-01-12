@@ -1,6 +1,6 @@
 // Copyright 2013-2017, University of Colorado Boulder
 
-//Render a simple vertical check box group, where the buttons all have the same sizes
+//Render a simple vertical checkbox group, where the buttons all have the same sizes
 //TODO: not ready for use in simulations, it will need further development & discussion first.
 //TODO: Abstract out common functionality between this and VerticalCheckboxGroup
 define( function( require ) {
