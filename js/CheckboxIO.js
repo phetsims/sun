@@ -1,7 +1,7 @@
 // Copyright 2017-2018, University of Colorado Boulder
 
 /**
- * IO type for CheckBox
+ * IO type for Checkbox
  *
  * @author Sam Reid (PhET Interactive Simulations)
  * @author Andrew Adare (PhET Interactive Simulations)
@@ -21,22 +21,22 @@ define( function( require ) {
   var VoidIO = require( 'ifphetio!PHET_IO/types/VoidIO' );
 
   /**
-   * @param {CheckBox} checkBox
+   * @param {Checkbox} checkbox
    * @param {string} phetioID
    * @constructor
    */
-  function CheckBoxIO( checkBox, phetioID ) {
-    assert && assertInstanceOf( checkBox, phet.sun.CheckBox );
-    NodeIO.call( this, checkBox, phetioID );
+  function CheckboxIO( checkbox, phetioID ) {
+    assert && assertInstanceOf( checkbox, phet.sun.Checkbox );
+    NodeIO.call( this, checkbox, phetioID );
   }
 
-  phetioInherit( NodeIO, 'CheckBoxIO', CheckBoxIO, {
+  phetioInherit( NodeIO, 'CheckboxIO', CheckboxIO, {
 
     link: {
       returnType: VoidIO,
       parameterTypes: [ FunctionIO( VoidIO, [ BooleanIO ] ) ],
       implementation: function( listener ) {
-        this.instance.checkBoxValueProperty.link( listener );
+        this.instance.checkboxValueProperty.link( listener );
       },
       documentation: 'Link a listener to the underlying checked PropertyIO.  The listener receives an immediate callback ' +
                      'with the current value (true/false)'
@@ -46,7 +46,7 @@ define( function( require ) {
       returnType: VoidIO,
       parameterTypes: [ BooleanIO ],
       implementation: function( checked ) {
-        this.instance.checkBoxValueProperty.set( checked );
+        this.instance.checkboxValueProperty.set( checked );
       },
       documentation: 'Sets whether the checkbox is checked or not'
     },
@@ -55,7 +55,7 @@ define( function( require ) {
       returnType: BooleanIO,
       parameterTypes: [],
       implementation: function() {
-        return this.instance.checkBoxValueProperty.get();
+        return this.instance.checkboxValueProperty.get();
       },
       documentation: 'Returns true if the checkbox is checked, false otherwise'
     }
@@ -64,8 +64,8 @@ define( function( require ) {
     events: [ 'toggled' ]
   } );
 
-  sun.register( 'CheckBoxIO', CheckBoxIO );
+  sun.register( 'CheckboxIO', CheckboxIO );
 
-  return CheckBoxIO;
+  return CheckboxIO;
 } );
 

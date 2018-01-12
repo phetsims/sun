@@ -16,7 +16,7 @@ define( function( require ) {
   var AlignBox = require( 'SCENERY/nodes/AlignBox' );
   var AlignGroup = require( 'SCENERY/nodes/AlignGroup' );
   var Carousel = require( 'SUN/Carousel' );
-  var CheckBox = require( 'SUN/CheckBox' );
+  var Checkbox = require( 'SUN/Checkbox' );
   var Circle = require( 'SCENERY/nodes/Circle' );
   var ComboBox = require( 'SUN/ComboBox' );
   var DemosScreenView = require( 'SUN/demo/DemosScreenView' );
@@ -151,10 +151,10 @@ define( function( require ) {
       listPosition: 'above'
     } );
 
-    var enabledCheckBox = new CheckBox( new Text( 'enabled', { font: new PhetFont( 20 ) } ), comboBox.enabledProperty );
+    var enabledCheckbox = new Checkbox( new Text( 'enabled', { font: new PhetFont( 20 ) } ), comboBox.enabledProperty );
 
     var uiComponents = new VBox( {
-      children: [ comboBox, enabledCheckBox ],
+      children: [ comboBox, enabledCheckbox ],
       spacing: 40,
       center: layoutBounds.center
     } );
@@ -192,7 +192,7 @@ define( function( require ) {
     majorTicksVisibleProperty.link( function( visible ) {
       slider.majorTicksVisible = visible;
     } );
-    var majorTicksCheckBox = CheckBox.createTextCheckBox( 'Major ticks visible', { font: new PhetFont( 20 ) }, majorTicksVisibleProperty, {
+    var majorTicksCheckbox = Checkbox.createTextCheckbox( 'Major ticks visible', { font: new PhetFont( 20 ) }, majorTicksVisibleProperty, {
       left: slider.left,
       top: slider.bottom + 40
     } );
@@ -202,9 +202,9 @@ define( function( require ) {
     minorTicksVisibleProperty.link( function( visible ) {
       slider.minorTicksVisible = visible;
     } );
-    var minorTicksCheckBox = CheckBox.createTextCheckBox( 'Minor ticks visible', { font: new PhetFont( 20 ) }, minorTicksVisibleProperty, {
+    var minorTicksCheckbox = Checkbox.createTextCheckbox( 'Minor ticks visible', { font: new PhetFont( 20 ) }, minorTicksVisibleProperty, {
       left: slider.left,
-      top: majorTicksCheckBox.bottom + 40
+      top: majorTicksCheckbox.bottom + 40
     } );
 
     // enable/disable slider
@@ -212,9 +212,9 @@ define( function( require ) {
     enabledProperty.link( function( enabled ) {
       slider.enabled = enabled;
     } );
-    var enabledCheckBox = CheckBox.createTextCheckBox( 'Enable slider', { font: new PhetFont( 20 ) }, enabledProperty, {
+    var enabledCheckbox = Checkbox.createTextCheckbox( 'Enable slider', { font: new PhetFont( 20 ) }, enabledProperty, {
       left: slider.left,
-      top: minorTicksCheckBox.bottom + 40
+      top: minorTicksCheckbox.bottom + 40
     } );
 
     // restrict enabled range of slider
@@ -226,11 +226,11 @@ define( function( require ) {
     enabledRangeProperty.link( function( enabledRange ) {
       slider.enabledRange = enabledRange;
     } );
-    var enabledRangeCheckBox = CheckBox.createTextCheckBox( 'Enable Range [25, 75]', { font: new PhetFont( 20 ) }, restrictedRangeProperty, {
+    var enabledRangeCheckbox = Checkbox.createTextCheckbox( 'Enable Range [25, 75]', { font: new PhetFont( 20 ) }, restrictedRangeProperty, {
       left: slider.left,
-      top: enabledCheckBox.bottom + 40
+      top: enabledCheckbox.bottom + 40
     } );
-    return new Node( { children: [ slider, majorTicksCheckBox, minorTicksCheckBox, enabledCheckBox, enabledRangeCheckBox ] } );
+    return new Node( { children: [ slider, majorTicksCheckbox, minorTicksCheckbox, enabledCheckbox, enabledRangeCheckbox ] } );
   };
 
   // Creates a demo for OnOffSwitch
@@ -326,10 +326,10 @@ define( function( require ) {
       valueAlign: 'left'
     } ) );
 
-    var enabledCheckBox = new CheckBox( new Text( 'enabled', { font: new PhetFont( 20 ) } ), enabledProperty );
+    var enabledCheckbox = new Checkbox( new Text( 'enabled', { font: new PhetFont( 20 ) } ), enabledProperty );
 
     return new VBox( {
-      children: [ spinnerLeftRight, spinnerTopBottom, spinnerBothRight, spinnerBothBottom, enabledCheckBox ],
+      children: [ spinnerLeftRight, spinnerTopBottom, spinnerBothRight, spinnerBothBottom, enabledCheckbox ],
       spacing: 40,
       center: layoutBounds.center
     } );
