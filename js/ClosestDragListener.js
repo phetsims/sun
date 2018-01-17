@@ -17,8 +17,10 @@ define( function( require ) {
 
   // modules
   var inherit = require( 'PHET_CORE/inherit' );
+  var Mouse = require( 'SCENERY/input/Mouse' );
   var sun = require( 'SUN/sun' );
   var Tandem = require( 'TANDEM/Tandem' );
+  var Touch = require( 'SCENERY/input/Touch' );
 
   /**
    * @constructor
@@ -66,10 +68,10 @@ define( function( require ) {
       // If there was nothing else in the way
       if ( event.target === event.currentTarget ) {
         var threshold = 0;
-        if ( event.pointer.isTouch ) {
+        if ( event.pointer instanceof Touch ) {
           threshold = this.touchThreshold;
         }
-        if ( event.pointer.isMouse ) {
+        if ( event.pointer instanceof Mouse ) {
           threshold = this.mouseThreshold;
         }
         if ( threshold ) {
