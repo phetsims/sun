@@ -204,6 +204,17 @@ define( function( require ) {
         get shiftKeyboardStep() { return this.getShiftKeyboardStep(); },
 
         /**
+         * Returns whether or not the shift key is currently held down on this slider, changing the size of step.
+         * @public
+         * 
+         * @return {boolean}
+         */
+        getShiftKeyDown: function() {
+          return this._shiftKey;
+        },
+        get shiftKeyDown() { return this.getShiftKeyDown(); },
+
+        /**
          * Set the delta for value Property when using page up/page down to interact with the Node.
          * @public
          *
@@ -288,11 +299,7 @@ define( function( require ) {
                   this.decreasedEmitter.emit();
                 }
 
-                // round the value to the nearest keyboard step
-                newValue = Util.roundSymmetric( newValue / stepSize ) * stepSize;
-
-                // go back a step if we went too far due to rounding
-                newValue = correctRounding( newValue, this._valueProperty.get(), stepSize );
+                newValue = roundValue( newValue, this._valueProperty.get(), stepSize );
               }
 
               // limit the value to the enabled range
@@ -356,11 +363,7 @@ define( function( require ) {
               this.decreasedEmitter.emit();
             }
 
-            // round to nearest step size
-            newValue = Util.roundSymmetric( newValue / stepSize ) * stepSize;
-
-            // go back a step if we went too far due to rounding
-            newValue = correctRounding( newValue, this._valueProperty.get(), stepSize );
+            newValue = roundValue( newValue, this._valueProperty.get(), stepSize );
 
             // limit to enabled range
             newValue = Util.clamp( newValue, this._enabledRangeProperty.get().min, this._enabledRangeProperty.get().max );
@@ -398,6 +401,28 @@ define( function( require ) {
   };
 
   sun.register( 'AccessibleSlider', AccessibleSlider );
+
+  /**
+   * Round the value to the nearest step size.
+   *
+   * @param {number} newValue - value to be rounded
+   * @param {number} currentValue - current value of the Property associated with this slider
+   * @param {number} stepSize - the delta for this manipulation
+   *
+   * @return {number}
+   */
+  var roundValue = function( newValue, currentValue, stepSize ) {
+    var roundValue = newValue;
+    if ( stepSize !== 0 ) {
+
+      // round the value to the nearest keyboard step
+      roundValue = Util.roundSymmetric( roundValue / stepSize ) * stepSize;
+
+      // go back a step if we went too far due to rounding
+      roundValue = correctRounding( roundValue, currentValue, stepSize );
+    }
+    return roundValue;
+  };
 
   /**
    * Helper function, it is possible due to rounding to go up or down a step if we have passed the nearest step during
