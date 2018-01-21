@@ -60,7 +60,7 @@ define( function( require ) {
       documentation: 'Returns true if the checkbox is checked, false otherwise'
     }
   }, {
-    documentation: 'A traditional checkbox',
+    documentation: 'A user interface component that shows if something is selected (checked) or unselected (unchecked)',
     events: [ 'toggled' ]
   } );
 
@@ -68,4 +68,3 @@ define( function( require ) {
 
   return CheckboxIO;
 } );
-
