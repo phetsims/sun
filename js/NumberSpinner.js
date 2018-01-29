@@ -10,9 +10,9 @@ define( function( require ) {
   'use strict';
 
   // modules
+  var AccessibleNumberTweaker = require( 'SUN/accessibility/AccessibleNumberTweaker' );
   var ArrowButton = require( 'SUN/buttons/ArrowButton' );
   var inherit = require( 'PHET_CORE/inherit' );
-  var KeyboardUtil = require( 'SCENERY/accessibility/KeyboardUtil' );
   var Node = require( 'SCENERY/nodes/Node' );
   var PhetFont = require( 'SCENERY_PHET/PhetFont' );
   var Property = require( 'AXON/Property' );
@@ -80,12 +80,7 @@ define( function( require ) {
       touchAreaXDilation: 0,
       touchAreaYDilation: 0,
       mouseAreaXDilation: 0,
-      mouseAreaYDilation: 0,
-
-      // a11y
-      tagName: 'input',
-      inputType: 'number',
-      inputValue: numberProperty.get()
+      mouseAreaYDilation: 0
     }, options );
 
     // validate options
@@ -279,51 +274,27 @@ define( function( require ) {
     };
     this.enabledProperty.link( enabledPropertyObserver );
 
-    // a11y input listener for keyboard nav
-    this.addAccessibleInputListener( {
-      keydown: function( event ) {
+    // a11y - initialize accessibility features
+    assert && assert( !options.a11yValueDelta, 'a11yValueDelta supported by arrow buttons, do not pass value to NumberSpinner' );
+    assert && assert( !options.a11yUseTimer, 'interval handled by arrow buttons, do not use callback timer' );
+    options.a11yValueDelta = 0;
+    options.a11yUseTimer = false;
+    this.initializeAccessibleNumberTweaker( numberProperty, rangeProperty, this.enabledProperty, options );
 
-        // prevent user from changing value with number or the space keys
-        if ( KeyboardUtil.isNumberKey( event.keyCode ) || event.keyCode === KeyboardUtil.KEY_SPACE ) {
-          event.preventDefault();
-        }
-
-        // If no enabled, then don't update the numberProperty based on arrows
-        if ( !self.enabledProperty.get() ) {
-          return;
-        }
-
-        // Left arrow decrements
-        if ( event.keyCode === KeyboardUtil.KEY_LEFT_ARROW ) {
-          numberProperty.get() > rangeProperty.get().min && decrementFunction();
-        }
-
-        // Right arrow increments
-        else if ( event.keyCode === KeyboardUtil.KEY_RIGHT_ARROW ) {
-          numberProperty.get() < rangeProperty.get().max && incrementFunction();
-        }
-      },
-      input: function( event ) {
-
-        // if input value is empty, inputValue was cleared by the browser after focus, don't update the Property value
-        if ( self.inputValue && self.enabledProperty.get() ) {
-          if ( self.inputValue > numberProperty.get() && self.inputValue <= rangeProperty.get().max ) {
-
-            // user intended to increment
-            incrementFunction();
-          }
-          else if ( self.inputValue < numberProperty.get() && self.inputValue >= rangeProperty.get().min ) {
-
-            // user intended to decrement
-            decrementFunction();
-          }
-        }
-        self.inputValue = numberProperty.get();
-      }
-    } );
+    // a11y - click arrow buttons on increment/decrement, must be disposed
+    var increasedListener = function() { incrementButton.buttonModel.a11yClick(); };
+    var decreasedListener = function() { decrementButton.buttonModel.a11yClick(); };
+    this.valueIncrementEmitter.addListener( increasedListener );
+    this.valueDecrementEmitter.addListener( decreasedListener );
 
     // @private
     this.disposeNumberSpinner = function() {
+
+      // dispose a11y features
+      self.valueIncrementEmitter.removeListener( increasedListener );
+      self.valueDecrementEmitter.removeListener( decreasedListener );
+      self.disposeAccessibleNumberTweaker();
+
       numberProperty.unlink( numberPropertyObserver );
       rangeProperty.unlink( rangeObserver );
       self.enabledProperty.unlink( enabledPropertyObserver );
@@ -332,7 +303,7 @@ define( function( require ) {
 
   sun.register( 'NumberSpinner', NumberSpinner );
 
-  return inherit( Node, NumberSpinner, {
+  inherit( Node, NumberSpinner, {
 
     // @public Ensures that this node is eligible for GC.
     dispose: function() {
@@ -348,4 +319,8 @@ define( function( require ) {
     getEnabled: function() { return this.enabledProperty.get(); },
     get enabled() { return this.getEnabled(); }
   } );
+
+  AccessibleNumberTweaker.mixInto( NumberSpinner );
+
+  return NumberSpinner;
 } );
