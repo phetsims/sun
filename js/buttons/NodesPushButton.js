@@ -35,7 +35,8 @@ define( function( require ) {
       listener: null, // {function}
       xAlign: 'center', // {string} how the nodes are horizontally aligned: center, left, right
       yAlign: 'center', // {string} how the nodes are vertically aligned: center, top, bottom
-      phetioEventSource: this
+      phetioEventSource: this,
+      tandem: Tandem.optional
     }, options );
     options.children = [ idleNode, overNode, pressedNode, disabledNode ];
 
