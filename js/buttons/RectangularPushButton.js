@@ -28,12 +28,11 @@ define( function( require ) {
     var self = this;
 
     options = _.extend( {
-      tandem: Tandem.required, // {Tandem|null}
+      tandem: Tandem.required,
       phetioType: PushButtonIO,
 
       // a11y - listener that will only be called when using the keyboard to interact with the push button
-      accessibleFire: function() {},
-      phetioEventSource: this
+      accessibleFire: function() {}
     }, options );
 
     // If a listener was passed in, save it and add it after creating the button model.  This is done so that
@@ -43,7 +42,7 @@ define( function( require ) {
     options = _.omit( options, [ 'listener' ] );
 
     // Safe to pass through options to the PushButtonModel like "fireOnDown".  Other scenery options will be safely ignored.
-    this.buttonModel = new PushButtonModel( options ); // @public, listen only
+    this.buttonModel = new PushButtonModel( _.extend( { phetioEventSource: this }, options ) ); // @public, listen only
 
     // add the listener that was potentially saved above
     listener && this.addListener( listener );

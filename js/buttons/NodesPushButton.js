@@ -35,17 +35,14 @@ define( function( require ) {
       listener: null, // {function}
       xAlign: 'center', // {string} how the nodes are horizontally aligned: center, left, right
       yAlign: 'center', // {string} how the nodes are vertically aligned: center, top, bottom
-      phetioEventSource: this,
-      tandem: Tandem.optional
+      tandem: Tandem.required
     }, options );
     options.children = [ idleNode, overNode, pressedNode, disabledNode ];
-
-    Tandem.indicateUninstrumentedCode();
 
     Node.call( this );
 
     // Button model
-    this.buttonModel = new PushButtonModel( options ); // @private
+    this.buttonModel = new PushButtonModel( _.extend( { phetioEventSource: this }, options ) ); // @private
     this.addInputListener( new ButtonListener( this.buttonModel ) );
 
     // Button interactions
