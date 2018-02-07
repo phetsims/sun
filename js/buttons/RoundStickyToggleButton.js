@@ -34,7 +34,6 @@ define( function( require ) {
     options = _.extend( {
       tandem: Tandem.required,
       phetioType: ToggleButtonIO,
-      phetioEventSource: this,
 
       // a11y
       tagName: 'input',
@@ -42,7 +41,8 @@ define( function( require ) {
     }, options );
 
     // @public (phet-io)
-    this.toggleButtonModel = new StickyToggleButtonModel( valueUp, valueDown, property, options );
+    assert && assert( !options.phetioEventSource, 'phetioEventSource cannot be supplied in options' );
+    this.toggleButtonModel = new StickyToggleButtonModel( valueUp, valueDown, property, _.extend( { phetioEventSource: this }, options ) );
     RoundButtonView.call( this, this.toggleButtonModel, new StickyToggleButtonInteractionStateProperty( this.toggleButtonModel ), options );
 
     // @private (a11y) - toggle the button when we receive the accessible click event

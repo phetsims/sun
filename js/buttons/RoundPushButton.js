@@ -33,9 +33,7 @@ define( function( require ) {
       phetioType: PushButtonIO,
 
       // a11y
-      tagName: 'button',
-
-      phetioEventSource: this
+      tagName: 'button'
     }, options );
 
     var self = this;
@@ -47,7 +45,8 @@ define( function( require ) {
     options = _.omit( options, [ 'listener' ] );
 
     // Safe to pass through options to the PushButtonModel like "fireOnDown".  Other scenery options will be safely ignored.
-    this.buttonModel = new PushButtonModel( options ); // @public, listen only
+    assert && assert( !options.phetioEventSource, 'phetioEventSource cannot be supplied in options' );
+    this.buttonModel = new PushButtonModel( _.extend( { phetioEventSource: this }, options ) ); // @public, listen only
     RoundButtonView.call( this, this.buttonModel, new PushButtonInteractionStateProperty( this.buttonModel ), options );
 
     // add the listener that was potentially saved above

@@ -33,14 +33,14 @@ define( function( require ) {
     options = _.extend( {
       tandem: Tandem.required,
       phetioType: ToggleButtonIO,
-      phetioEventSource: this,
 
       // a11y
       tagName: 'button'
     }, options );
 
     // @public, (read-only) (phet-io)
-    this.toggleButtonModel = new ToggleButtonModel( valueOff, valueOn, property, options );
+    assert && assert( !options.phetioEventSource, 'phetioEventSource cannot be supplied in options' );
+    this.toggleButtonModel = new ToggleButtonModel( valueOff, valueOn, property, _.extend( { phetioEventSource: this }, options ) );
 
     RoundButtonView.call( this, this.toggleButtonModel, new ToggleButtonInteractionStateProperty( this.toggleButtonModel ), options );
 
