@@ -14,7 +14,6 @@ define( function( require ) {
   // modules
   var ButtonModel = require( 'SUN/buttons/ButtonModel' );
   var inherit = require( 'PHET_CORE/inherit' );
-  var PhetioObject = require( 'TANDEM/PhetioObject' );
   var Property = require( 'AXON/Property' );
   var sun = require( 'SUN/sun' );
   var Tandem = require( 'TANDEM/Tandem' );
@@ -31,7 +30,7 @@ define( function( require ) {
 
     options = _.extend( {
       tandem: Tandem.required,
-      phetioEventSource: new PhetioObject( { tandem: Tandem.optional } ) // TODO: may not be necessary if all clients are passing this in
+      phetioEventSource: null // {PhetioObject|null} sends events to the PhET-iO data stream
     }, options );
 
     // @private
@@ -109,12 +108,12 @@ define( function( require ) {
       var oldValue = this.valueProperty.value;
 
       var hasToStateObject = this.valueProperty.phetioType && this.valueProperty.phetioType.elementType && this.valueProperty.phetioType.elementType.toStateObject;
-      this.stickyToggleButtonModelEventSource.startEvent( 'user', 'toggled', {
+      this.stickyToggleButtonModelEventSource && this.stickyToggleButtonModelEventSource.startEvent( 'user', 'toggled', {
         oldValue: hasToStateObject && this.valueProperty.phetioType.elementType.toStateObject( oldValue ),
         newValue: hasToStateObject && this.valueProperty.phetioType.elementType.toStateObject( newValue )
       } );
       this.valueProperty.value = newValue;
-      this.stickyToggleButtonModelEventSource.endEvent();
+      this.stickyToggleButtonModelEventSource && this.stickyToggleButtonModelEventSource.endEvent();
     }
   } );
 } );

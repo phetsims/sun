@@ -11,7 +11,6 @@ define( function( require ) {
   // modules
   var ButtonModel = require( 'SUN/buttons/ButtonModel' );
   var inherit = require( 'PHET_CORE/inherit' );
-  var PhetioObject = require( 'TANDEM/PhetioObject' );
   var sun = require( 'SUN/sun' );
   var Tandem = require( 'TANDEM/Tandem' );
 
@@ -25,7 +24,7 @@ define( function( require ) {
   function MomentaryButtonModel( valueOff, valueOn, valueProperty, options ) {
     options = _.extend( {
       tandem: Tandem.optional,
-      phetioEventSource: new PhetioObject( { tandem: Tandem.optional } )
+      phetioEventSource: null // {PhetioObject|null} sends events to the PhET-iO data stream
     }, options );
     var self = this;
     ButtonModel.call( self );
@@ -43,18 +42,18 @@ define( function( require ) {
       // turn on when pressed (if enabled)
       if ( down ) {
         if ( self.enabledProperty.get() ) {
-          options.phetioEventSource.startEvent( 'user', 'pressed' );
+          options.phetioEventSource && options.phetioEventSource.startEvent( 'user', 'pressed' );
           valueProperty.set( valueOn );
-          options.phetioEventSource.endEvent();
+          options.phetioEventSource && options.phetioEventSource.endEvent();
         }
       }
       else {
 
         // turn off when released
-        options.phetioEventSource.startEvent( 'user', 'released' );
+        options.phetioEventSource && options.phetioEventSource.startEvent( 'user', 'released' );
         processingRelease = true;
         valueProperty.set( valueOff );
-        options.phetioEventSource.endEvent();
+        options.phetioEventSource && options.phetioEventSource.endEvent();
         processingRelease = false;
       }
     };
@@ -66,9 +65,9 @@ define( function( require ) {
       // If the button became disabled (and not as a result of pressing the button itself), trigger an event
       // and change the value
       if ( !enabled && !processingRelease ) {
-        options.phetioEventSource.startEvent( 'user', 'releasedDisabled' );
+        options.phetioEventSource && options.phetioEventSource.startEvent( 'user', 'releasedDisabled' );
         valueProperty.set( valueOff );
-        options.phetioEventSource.endEvent();
+        options.phetioEventSource && options.phetioEventSource.endEvent();
       }
     };
     this.enabledProperty.link( enabledListener );
