@@ -264,19 +264,19 @@ define( function( require ) {
           }
         } );
       }
-
-      // a11y we always want accessible tab focus on the title
-      this.expandedTitleBar.addAccessibleInputListener( {
-        click: function() {
-          self.startEvent( 'user', 'collapsed' );
-          self.expandedProperty.value = false;
-
-          // a11y Set focus to expanded title bar
-          self.collapsedTitleBar.focus();
-          self.endEvent();
-        }
-      } );
     }
+
+    // a11y we always want accessible tab focus on the title
+    this.expandedTitleBar.addAccessibleInputListener( {
+      click: function() {
+        self.startEvent( 'user', 'collapsed' );
+        self.expandedProperty.value = false;
+
+        // a11y Set focus to expanded title bar
+        self.collapsedTitleBar.focus();
+        self.endEvent();
+      }
+    } );
 
     // TODO: a11y
     this.addChild( this.titleNode );
@@ -362,6 +362,10 @@ define( function( require ) {
       this.expandedBoxOutline.rectHeight = expandedBoxHeight;
 
       this.expandedTitleBar.shape = this.getTitleBarShape();
+
+      if ( !this._showTitleWhenExpanded ) {
+        this.expandedTitleBar.focusHighlight = Shape.bounds( this.expandCollapseButton.bounds.dilatedXY( this._buttonXMargin, this._buttonYMargin ) );
+      }
 
       this.collapsedBox.rectWidth = boxWidth;
       this.collapsedBox.rectHeight = collapsedBoxHeight;
