@@ -38,7 +38,8 @@ define( function( require ) {
       inputType: 'radio',
       parentContainerTagName: 'li',
       labelTagName: 'label',
-      prependLabels: true
+      prependLabels: true,
+      a11yNameAttribute: 'radioButton'
     }, options );
 
     var self = this;
@@ -102,6 +103,9 @@ define( function( require ) {
       property.unlink( accessibleCheckedListener );
       property.unlink( syncWithModel );
     };
+
+    // a11y - allow consistent a11y naming for radio button types
+    this.setAccessibleAttribute( 'name', options.a11yNameAttribute );
 
     this.mutate( options );
   }
