@@ -12,6 +12,7 @@ define( function( require ) {
   var AccessibleSlider = require( 'SUN/accessibility/AccessibleSlider' );
   var Dimension2 = require( 'DOT/Dimension2' );
   var FocusHighlightFromNode = require( 'SCENERY/accessibility/FocusHighlightFromNode' );
+  var HSliderIO = require( 'SUN/HSliderIO' );
   var HSliderThumb = require( 'SUN/HSliderThumb' );
   var HSliderTrack = require( 'SUN/HSliderTrack' );
   var inherit = require( 'PHET_CORE/inherit' );
@@ -29,7 +30,6 @@ define( function( require ) {
 
   // phet-io modules
   var BooleanIO = require( 'ifphetio!PHET_IO/types/BooleanIO' );
-  var HSliderIO = require( 'SUN/HSliderIO' );
 
   /**
    * @param {Property.<number>} valueProperty

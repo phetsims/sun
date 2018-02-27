@@ -10,10 +10,12 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var assertInstanceOf = require( 'ifphetio!PHET_IO/assertInstanceOf' );
   var NodeIO = require( 'SCENERY/nodes/NodeIO' );
-  var phetioInherit = require( 'ifphetio!PHET_IO/phetioInherit' );
   var sun = require( 'SUN/sun' );
+
+  // phet-io modules
+  var assertInstanceOf = require( 'ifphetio!PHET_IO/assertInstanceOf' );
+  var phetioInherit = require( 'ifphetio!PHET_IO/phetioInherit' );
 
   /**
    * IO type for phet/sun's RoundMomentaryButton class.

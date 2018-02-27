@@ -10,13 +10,15 @@ define( function( require ) {
   'use strict';
 
   // modules
+  var NodeIO = require( 'SCENERY/nodes/NodeIO' );
+  var sun = require( 'SUN/sun' );
+  
+  // phet-io modules
   var assertInstanceOf = require( 'ifphetio!PHET_IO/assertInstanceOf' );
   var FunctionIO = require( 'ifphetio!PHET_IO/types/FunctionIO' );
-  var NodeIO = require( 'SCENERY/nodes/NodeIO' );
   var phetioInherit = require( 'ifphetio!PHET_IO/phetioInherit' );
-  var sun = require( 'SUN/sun' );
   var VoidIO = require( 'ifphetio!PHET_IO/types/VoidIO' );
-
+  
   /**
    * @param {RoundPushButton|RectangularPushButton} button
    * @param {string} phetioID

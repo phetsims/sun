@@ -10,13 +10,15 @@ define( function( require ) {
   'use strict';
 
   // modules
+  var RadioButtonIO = require( 'SUN/RadioButtonIO' );
+  var sun = require( 'SUN/sun' );
+  
+  // phet-io modules
   var assertInstanceOf = require( 'ifphetio!PHET_IO/assertInstanceOf' );
   var BooleanIO = require( 'ifphetio!PHET_IO/types/BooleanIO' );
   var phetioInherit = require( 'ifphetio!PHET_IO/phetioInherit' );
-  var RadioButtonIO = require( 'SUN/RadioButtonIO' );
-  var sun = require( 'SUN/sun' );
   var VoidIO = require( 'ifphetio!PHET_IO/types/VoidIO' );
-
+  
   /**
    * IO type for phet/sun's AquaRadioButton class.
    * @param {AquaRadioButton} aquaRadioButton
