@@ -39,7 +39,7 @@ define( function( require ) {
       parentContainerTagName: 'li',
       labelTagName: 'label',
       prependLabels: true,
-      // a11yNameAttribute: 'radioButton'
+      a11yNameAttribute: 'radioButton'
     }, options );
 
     var self = this;
@@ -105,7 +105,7 @@ define( function( require ) {
     };
 
     // a11y - allow consistent a11y naming for radio button types
-    // this.setAccessibleAttribute( 'name', options.a11yNameAttribute );
+    this.setAccessibleAttribute( 'name', options.a11yNameAttribute );
 
     this.mutate( options );
   }

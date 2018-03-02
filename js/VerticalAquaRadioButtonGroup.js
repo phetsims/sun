@@ -55,14 +55,12 @@ define( function( require ) {
       var radioButton = new AquaRadioButton( items[ i ].property, items[ i ].value, content, _.extend( {}, options.radioButtonOptions, {
         radius: options.radius,
         tandem: items[ i ].tandemName ? options.tandem.createTandem( items[ i ].tandemName ) : Tandem.required,
-        accessibleLabel: items[ i ].accessibleLabel || null
+        accessibleLabel: items[ i ].accessibleLabel || null,
+        a11yNameAttribute: 'verticalAquaButtonGroup' + instanceCount + 'Member'
       } ) );
       radioButton.mouseArea = Shape.bounds( radioButton.bounds.dilatedXY( options.mouseAreaXDilation, options.spacing / 2 ) );
       radioButton.touchArea = Shape.bounds( radioButton.bounds.dilatedXY( options.touchAreaXDilation, options.spacing / 2 ) );
       children.push( radioButton );
-
-      // a11y - radio button groups require a 'name' for the browser to group them correctly for keyboard nav
-      radioButton.setAccessibleAttribute( 'name', instanceCount );
     }
 
     //TODO these options should be added using _.extend(options, {children:..., renderer:....})
