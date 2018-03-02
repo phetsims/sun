@@ -21,7 +21,7 @@ define( function( require ) {
   /**
    * Main constructor.
    *
-   * @param items  an array of {content, property, [tandemName], [accessibleLabel] }
+   * @param items  an array of {node, value, property, [tandemName], [accessibleLabel] }
    * @param {Object} [options]
    * @constructor
    */
@@ -68,7 +68,6 @@ define( function( require ) {
     //TODO these options should be added using _.extend(options, {children:..., renderer:....})
     options.children = children;
     VBox.call( this, options );
-    
   }
 
   sun.register( 'VerticalAquaRadioButtonGroup', VerticalAquaRadioButtonGroup );
