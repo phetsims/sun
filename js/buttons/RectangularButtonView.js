@@ -96,11 +96,12 @@ define( function( require ) {
     var content = options.content; // convenience variable
 
     // Hook up the input listener
-    this.addInputListener( new PressListener( {
+    var pressListener = new PressListener( {
       tandem: options.tandem.createTandem( 'pressListener' ),
       isPressedProperty: buttonModel.downProperty,
       isOverProperty: buttonModel.overProperty
-    } ) );
+    } );
+    this.addInputListener( pressListener );
 
     // @private - make the base color into a property so that the appearance strategy can update itself if changes occur.
     this.baseColorProperty = new Property( Color.toColor( options.baseColor ) ); // @private
@@ -176,6 +177,7 @@ define( function( require ) {
     this.disposeRectangularButtonView = function() {
       buttonAppearanceStrategy.dispose();
       contentAppearanceStrategy.dispose();
+      pressListener.dispose();
       interactionStateProperty.unlink( handleInteractionStateChanged );
 
       if ( content ) {

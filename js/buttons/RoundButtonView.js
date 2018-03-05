@@ -87,12 +87,13 @@ define( function( require ) {
     // Make the base color into a property so that the appearance strategy can update itself if changes occur.
     this.baseColorProperty = new Property( Color.toColor( options.baseColor ) ); // @private
 
-    // Hook up the input listener
-    this.addInputListener( new PressListener( {
+    // @private {PressListener}
+    var pressListener = new PressListener( {
       tandem: options.tandem.createTandem( 'pressListener' ),
       isPressedProperty: buttonModel.downProperty,
       isOverProperty: buttonModel.overProperty
-    } ) );
+    } );
+    this.addInputListener( pressListener );
 
     // Use the user-specified radius if present, otherwise calculate the
     // radius based on the content and the margin.
@@ -146,6 +147,7 @@ define( function( require ) {
     this.disposeRoundButtonView = function() {
       buttonAppearanceStrategy.dispose();
       contentAppearanceStrategy.dispose();
+      pressListener.dispose();
       interactionStateProperty.unlink( handleInteractionStateChanged );
     };
   }

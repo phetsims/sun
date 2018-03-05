@@ -44,12 +44,13 @@ define( function( require ) {
     // Button model
     this.buttonModel = new PushButtonModel( _.extend( { phetioEventSource: this }, options ) ); // @private
 
-    // Hook up the input listener
-    this.addInputListener( new PressListener( {
+    // @private {PressListener}
+    this.pressListener = new PressListener( {
       tandem: options.tandem.createTandem( 'pressListener' ),
       isPressedProperty: this.buttonModel.downProperty,
       isOverProperty: this.buttonModel.overProperty
-    } ) );
+    } );
+    this.addInputListener( this.pressListener );
 
     // Button interactions
     var interactionStateProperty = new PushButtonInteractionStateProperty( this.buttonModel );
@@ -107,6 +108,7 @@ define( function( require ) {
     // @public
     dispose: function() {
       //TODO implement this, see sun#212
+      this.pressListener.dispose();
       Node.prototype.dispose.call( this );
     },
 
