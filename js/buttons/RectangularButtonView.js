@@ -12,13 +12,13 @@ define( function( require ) {
   // modules
   var AlignBox = require( 'SCENERY/nodes/AlignBox' );
   var Bounds2 = require( 'DOT/Bounds2' );
-  var ButtonListener = require( 'SUN/buttons/ButtonListener' );
   var Color = require( 'SCENERY/util/Color' );
   var ColorConstants = require( 'SUN/ColorConstants' );
   var inherit = require( 'PHET_CORE/inherit' );
   var LinearGradient = require( 'SCENERY/util/LinearGradient' );
   var Node = require( 'SCENERY/nodes/Node' );
   var Path = require( 'SCENERY/nodes/Path' );
+  var PressListener = require( 'SCENERY/listeners/PressListener' );
   var Property = require( 'AXON/Property' );
   var Shape = require( 'KITE/Shape' );
   var sun = require( 'SUN/sun' );
@@ -96,7 +96,11 @@ define( function( require ) {
     var content = options.content; // convenience variable
 
     // Hook up the input listener
-    this.addInputListener( new ButtonListener( buttonModel ) );
+    this.addInputListener( new PressListener( {
+      tandem: options.tandem.createTandem( 'pressListener' ),
+      isPressedProperty: buttonModel.downProperty,
+      isOverProperty: buttonModel.overProperty
+    } ) );
 
     // @private - make the base color into a property so that the appearance strategy can update itself if changes occur.
     this.baseColorProperty = new Property( Color.toColor( options.baseColor ) ); // @private

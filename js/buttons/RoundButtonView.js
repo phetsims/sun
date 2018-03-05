@@ -14,12 +14,12 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var ButtonListener = require( 'SUN/buttons/ButtonListener' );
   var Circle = require( 'SCENERY/nodes/Circle' );
   var Color = require( 'SCENERY/util/Color' );
   var ColorConstants = require( 'SUN/ColorConstants' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Node = require( 'SCENERY/nodes/Node' );
+  var PressListener = require( 'SCENERY/listeners/PressListener' );
   var Property = require( 'AXON/Property' );
   var RadialGradient = require( 'SCENERY/util/RadialGradient' );
   var Shape = require( 'KITE/Shape' );
@@ -88,7 +88,11 @@ define( function( require ) {
     this.baseColorProperty = new Property( Color.toColor( options.baseColor ) ); // @private
 
     // Hook up the input listener
-    this.addInputListener( new ButtonListener( buttonModel ) );
+    this.addInputListener( new PressListener( {
+      tandem: options.tandem.createTandem( 'pressListener' ),
+      isPressedProperty: buttonModel.downProperty,
+      isOverProperty: buttonModel.overProperty
+    } ) );
 
     // Use the user-specified radius if present, otherwise calculate the
     // radius based on the content and the margin.
