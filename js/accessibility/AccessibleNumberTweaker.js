@@ -151,7 +151,7 @@ define( function( require ) {
           var accessiblePropertyListener = function( value ) {
             self.inputValue = value;
           };
-          self._valueProperty.link( accessiblePropertyListener );
+          this._valueProperty.link( accessiblePropertyListener );
 
           // @private - called by disposeAccessibleNumberTweaker to prevent memory leaks
           this._disposeAccessibleNumberTweaker = function() {

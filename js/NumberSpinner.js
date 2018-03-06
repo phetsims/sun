@@ -281,7 +281,7 @@ define( function( require ) {
     options.a11yUseTimer = false;
     this.initializeAccessibleNumberTweaker( numberProperty, rangeProperty, this.enabledProperty, options );
 
-    // a11y - click arrow buttons on increment/decrement, must be disposed
+    // a11y - click arrow buttons on keyboard increment/decrement; must be disposed
     var increasedListener = function() { incrementButton.buttonModel.a11yClick(); };
     var decreasedListener = function() { decrementButton.buttonModel.a11yClick(); };
     this.valueIncrementEmitter.addListener( increasedListener );
