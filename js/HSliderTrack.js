@@ -30,11 +30,10 @@ define( function( require ) {
   /**
    * @param {Property.<number>} valueProperty
    * @param {function} valueToPosition - linear function that maps property value to position along the track
-   * @param {function} snapToValue - function to snap to a value if slider should snap to a value on drag end
    * @param {Object} [options]
    * @constructor
    */
-  function HSliderTrack( valueProperty, valueToPosition, snapToValue, options ) {
+  function HSliderTrack( valueProperty, valueToPosition, options ) {
 
     var self = this;
     Node.call( this );
@@ -49,7 +48,6 @@ define( function( require ) {
       enabledProperty: new Property( true ), // is the track enabled?
       startDrag: function() {}, // called when a drag sequence starts
       endDrag: function() {}, // called when a drag sequence ends
-      snapValue: null, // if specified, slider will snap to this value on end drag
       constrainValue: function( value ) { return value; }, // called before valueProperty is set
 
       // phet-io
@@ -64,7 +62,6 @@ define( function( require ) {
 
     // @public
     this.valueToPosition = valueToPosition;
-    this.snapValue = options.snapValue;
 
     // @private - Represents the disabled range of the slider, always visible and always the full range
     // of the slider so that when the enabled range changes we see the enabled sub-range on top of the
@@ -117,9 +114,6 @@ define( function( require ) {
 
       end: function() {
         if ( self.enabledProperty.get() ) {
-          if ( typeof self.snapValue === 'number' ) {
-            snapToValue( self.snapValue );
-          }
           options.endDrag();
         }
       }

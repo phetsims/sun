@@ -81,7 +81,6 @@ define( function( require ) {
 
       // other
       cursor: 'pointer',
-      snapValue: null, // if specified, slider will snap to this value on end drag
       startDrag: function() {}, // called when a drag sequence starts
       endDrag: function() {}, // called when a drag sequence ends
       constrainValue: function( value ) { return value; }, // called before valueProperty is set
@@ -120,9 +119,6 @@ define( function( require ) {
       'majorTickLength', 'majorTickStroke', 'majorTickLineWidth',
       'minorTickLength', 'minorTickStroke', 'minorTickLineWidth' );
 
-    // @private
-    this._snapValue = options.snapValue;
-
     // @private ticks are added to these parents, so they are behind the knob
     this.majorTicksParent = new Node();
     this.minorTicksParent = new Node();
@@ -132,18 +128,8 @@ define( function( require ) {
     // @private mapping between value and track position
     this.valueToPosition = new LinearFunction( range.min, range.max, 0, options.trackSize.width, true /* clamp */ );
 
-    // snap to a value if value is within range, used by HSlider and HSliderTrack
-    var snapToValue = function( value ) {
-      if ( value <= range.max && value >= range.min ) {
-        valueProperty.set( value );
-      }
-      else {
-        throw new Error( 'value is out of range: ' + value );
-      }
-    };
-
     // @private track
-    this.track = new HSliderTrack( valueProperty, this.valueToPosition, snapToValue, {
+    this.track = new HSliderTrack( valueProperty, this.valueToPosition, {
 
       // propagate options that are specific to HSliderTrack
       size: options.trackSize,
@@ -155,7 +141,6 @@ define( function( require ) {
       enabledProperty: options.enabledProperty,
       startDrag: options.startDrag,
       endDrag: options.endDrag,
-      snapValue: options.snapValue,
       constrainValue: options.constrainValue,
 
       // phet-io
@@ -228,9 +213,6 @@ define( function( require ) {
 
       end: function() {
         if ( self.enabledProperty.get() ) {
-          if ( typeof self._snapValue === 'number' ) {
-            snapToValue( self._snapValue );
-          }
           options.endDrag();
         }
       }
@@ -369,17 +351,6 @@ define( function( require ) {
     // @public
     getEnabledRange: function() { return this.enabledRangeProperty.value; },
     get enabledRange() { return this.getEnabledRange(); },
-
-    // @public
-    setSnapValue: function( snapValue ) {
-      this._snapValue = snapValue;
-      this.track.snapValue = snapValue;
-    },
-    set snapValue( snapValue ) { this.setSnapValue( snapValue ); },
-
-    // @public
-    getSnapValue: function() { return this._snapValue; },
-    get snapValue() { return this.getSnapValue(); },
 
     // @public - Sets visibility of major ticks.
     setMajorTicksVisible: function( visible ) {
