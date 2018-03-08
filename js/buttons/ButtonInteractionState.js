@@ -10,11 +10,21 @@ define( function( require ) {
   var sun = require( 'SUN/sun' );
 
   var ButtonInteractionState = {
-    DISABLED: 'DISABLED',
-    DISABLED_PRESSED: 'DISABLED_PRESSED',
+
+    // button is just sitting there, doing nothing
     IDLE: 'IDLE',
+
+    // a pointer is over the button, but not pressing it
     OVER: 'OVER',
-    PRESSED: 'PRESSED'
+
+    // the button is pressed, generally because the user has clicked on it or touched it
+    PRESSED: 'PRESSED',
+
+    // the button is disabled
+    DISABLED: 'DISABLED',
+
+    // the button is disabled, but was already pressed when that happened, so it is also pressed
+    DISABLED_PRESSED: 'DISABLED_PRESSED'
   };
 
   // verify that enum is immutable, without the runtime penalty in production code
