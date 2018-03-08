@@ -71,6 +71,7 @@ define( function( require ) {
             ariaRole: 'slider', // required for NVDA to read the value text correctly, see https://github.com/phetsims/a11y-research/issues/51
             accessibleValuePattern: '{{value}}', // {string} if you want units or additional content, add to pattern
             accessibleDecimalPlaces: 0, // number of decimal places for the value read by assistive technology
+            ariaOrientation: 'horizontal', // specify orientation, read by assistive technology
             keyboardStep: ( enabledRangeProperty.get().max - enabledRangeProperty.get().min ) / 20,
             shiftKeyboardStep: ( enabledRangeProperty.get().max - enabledRangeProperty.get().min ) / 100,
             pageKeyboardStep: ( enabledRangeProperty.get().max - enabledRangeProperty.get().min ) / 10
@@ -109,8 +110,14 @@ define( function( require ) {
           // @private (a11y) - delta for valueProperty when pressing page up/page down
           this._pageKeyboardStep = options.pageKeyboardStep;
 
+          // @private (a11y) - orientation as specified by https://www.w3.org/TR/wai-aria-1.1/#aria-orientation
+          this._ariaOrientation = options.ariaOrientation;
+
           // @private (a11y) - whether or not 'shift' key is currently held down
           this._shiftKey = false;
+
+          // initialize slider attributes
+          this.ariaOrientation = options.ariaOrientation;
 
           // @public - emitted whenever the slider changes in the specific direction
           this.increasedEmitter = new Emitter();
@@ -233,6 +240,32 @@ define( function( require ) {
           return this._pageKeyboardStep;
         },
         get pageKeyboardStep() { return this.getPageKeyboardStep(); },
+
+        /**
+         * Set the orientation for the slider as specified by https://www.w3.org/TR/wai-aria-1.1/#aria-orientation.
+         * Depending on the value of this attribute, a screen reader will give different indications about which
+         * arrow keys should be used
+         *
+         * @param {string} orientation - one of "horizontal" or "vertical"
+         */
+        setAriaOrientation: function( orientation ) {
+          assert &&  assert( orientation === 'horizontal' || orientation === 'vertical' );
+
+          this._ariaOrientation = orientation;
+          this.setAccessibleAttribute( 'aria-orientation', orientation );
+        },
+        set ariaOrientation( orientation ) { this.setAriaOrientation( orientation ); },
+
+        /**
+         * Get the orientation of the accessible slider, see setAriaOrientation for information on the behavior of this
+         * attribute.
+         *
+         * @return {string}
+         */
+        getAriaOrientation: function() {
+          return this._ariaOrientation;
+        },
+        get ariaOrientation() { return this._ariaOrientation; },
 
         /**
          * Handle the keydown event so that this node behaves like a traditional HTML slider (input of type range).
