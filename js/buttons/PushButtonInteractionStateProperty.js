@@ -7,6 +7,7 @@ define( function( require ) {
   'use strict';
 
   // modules
+  var ButtonInteractionState = require( 'SUN/buttons/ButtonInteractionState' );
   var DerivedProperty = require( 'AXON/DerivedProperty' );
   var inherit = require( 'PHET_CORE/inherit' );
   var sun = require( 'SUN/sun' );
@@ -22,10 +23,10 @@ define( function( require ) {
       this,
       [ buttonModel.overProperty, buttonModel.downProperty, buttonModel.enabledProperty ],
       function( over, down, enabled ) {
-        return !enabled ? 'disabled' :
-               over && !down ? 'over' :
-               over && down ? 'pressed' :
-               'idle';
+        return !enabled ? ButtonInteractionState.DISABLED :
+               over && !down ? ButtonInteractionState.OVER :
+               over && down ? ButtonInteractionState.PRESSED :
+               ButtonInteractionState.IDLE;
       }, options );
   }
 

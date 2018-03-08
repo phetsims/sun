@@ -12,6 +12,7 @@ define( function( require ) {
   // modules
   var AlignBox = require( 'SCENERY/nodes/AlignBox' );
   var Bounds2 = require( 'DOT/Bounds2' );
+  var ButtonInteractionState = require( 'SUN/buttons/ButtonInteractionState' );
   var Color = require( 'SCENERY/util/Color' );
   var ColorConstants = require( 'SUN/ColorConstants' );
   var inherit = require( 'PHET_CORE/inherit' );
@@ -155,7 +156,8 @@ define( function( require ) {
     var self = this;
 
     function handleInteractionStateChanged( state ) {
-      self.cursor = state === 'disabled' || state === 'disabled-pressed' ? null : 'pointer';
+      self.cursor = state === ButtonInteractionState.DISABLED ||
+                    state === ButtonInteractionState.DISABLED_PRESSED ? null : 'pointer';
     }
 
     interactionStateProperty.link( handleInteractionStateChanged );
@@ -198,7 +200,10 @@ define( function( require ) {
    * @constructor
    * @public
    */
-  RectangularButtonView.ThreeDAppearanceStrategy = function( button, interactionStateProperty, baseColorProperty, options ) {
+  RectangularButtonView.ThreeDAppearanceStrategy = function( button,
+                                                             interactionStateProperty,
+                                                             baseColorProperty,
+                                                             options ) {
 
     var buttonWidth = button.width;
     var buttonHeight = button.height;
@@ -212,7 +217,12 @@ define( function( require ) {
     var horizontalShadowStop = Math.max( 1 - SHADE_GRADIENT_LENGTH / buttonWidth, 0 );
 
     var disabledBaseColor = Color.toColor( options.disabledBaseColor );
-    var transparentDisabledBaseColor = new Color( disabledBaseColor.getRed(), disabledBaseColor.getGreen(), disabledBaseColor.getBlue(), 0 );
+    var transparentDisabledBaseColor = new Color(
+      disabledBaseColor.getRed(),
+      disabledBaseColor.getGreen(),
+      disabledBaseColor.getBlue(),
+      0
+    );
     var transparentWhite = new Color( 256, 256, 256, 0.7 );
 
     // Create the overlay that is used to add shading to left and right edges of the button.
@@ -239,32 +249,32 @@ define( function( require ) {
 
       switch( interactionState ) {
 
-        case 'idle':
+        case ButtonInteractionState.IDLE:
           button.fill = upFillVertical;
           overlayForHorizGradient.stroke = enabledStroke;
           overlayForHorizGradient.fill = upFillHorizontal;
           break;
 
-        case 'over':
+        case ButtonInteractionState.OVER:
           button.fill = overFillVertical;
           overlayForHorizGradient.stroke = enabledStroke;
           overlayForHorizGradient.fill = overFillHorizontal;
           break;
 
-        case 'pressed':
+        case ButtonInteractionState.PRESSED:
           button.fill = downFillVertical;
           overlayForHorizGradient.stroke = enabledStroke;
           overlayForHorizGradient.fill = overFillHorizontal;
           break;
 
-        case 'disabled':
+        case ButtonInteractionState.DISABLED:
           button.fill = disabledFillVertical;
           button.stroke = disabledStroke;
           overlayForHorizGradient.stroke = disabledStroke;
           overlayForHorizGradient.fill = disabledFillHorizontal;
           break;
 
-        case 'disabled-pressed':
+        case ButtonInteractionState.DISABLED_PRESSED:
           button.fill = disabledPressedFillVertical;
           button.stroke = disabledStroke;
           overlayForHorizGradient.stroke = disabledStroke;
@@ -401,33 +411,33 @@ define( function( require ) {
     function updateAppearance( interactionState ) {
       switch( interactionState ) {
 
-        case 'idle':
+        case ButtonInteractionState.IDLE:
           button.fill = upFill;
           button.stroke = enabledStroke;
           break;
 
-        case 'over':
+        case ButtonInteractionState.OVER:
           button.fill = overFill;
           button.stroke = enabledStroke;
           break;
 
-        case 'pressed':
+        case ButtonInteractionState.PRESSED:
           button.fill = downFill;
           button.stroke = enabledStroke;
           break;
 
-        case 'disabled':
+        case ButtonInteractionState.DISABLED:
           button.fill = disabledFill;
           button.stroke = disabledStroke;
           break;
 
-        case 'disabled-pressed':
+        case ButtonInteractionState.DISABLED_PRESSED:
           button.fill = disabledPressedFillVertical;
           button.stroke = disabledStroke;
           break;
 
         default:
-          throw new Error( 'upsupported interactionState: ' + interactionState );
+          throw new Error( 'unsupported interactionState: ' + interactionState );
       }
     }
 
@@ -484,7 +494,8 @@ define( function( require ) {
     // update the opacity when the state changes
     function updateOpacity( state ) {
       if ( content ) {
-        content.opacity = state === 'disabled' || state === 'disabled-pressed' ? 0.3 : 1;
+        content.opacity = state === ButtonInteractionState.DISABLED ||
+                          state === ButtonInteractionState.DISABLED_PRESSED ? 0.3 : 1;
       }
     }
 

@@ -14,6 +14,7 @@ define( function( require ) {
   'use strict';
 
   // modules
+  var ButtonInteractionState = require( 'SUN/buttons/ButtonInteractionState' );
   var Circle = require( 'SCENERY/nodes/Circle' );
   var Color = require( 'SCENERY/util/Color' );
   var ColorConstants = require( 'SUN/ColorConstants' );
@@ -97,7 +98,8 @@ define( function( require ) {
 
     // Use the user-specified radius if present, otherwise calculate the
     // radius based on the content and the margin.
-    var buttonRadius = options.radius || Math.max( content.width + options.minXMargin * 2, content.height + options.minYMargin * 2 ) / 2;
+    var buttonRadius = options.radius ||
+                       Math.max( content.width + options.minXMargin * 2, content.height + options.minYMargin * 2 ) / 2;
 
     // Create the basic button shape.
     var button = new Circle( buttonRadius, { fill: options.baseColor, lineWidth: options.lineWidth } );
@@ -124,7 +126,8 @@ define( function( require ) {
     var self = this;
 
     function handleInteractionStateChanged( state ) {
-      self.cursor = state === 'disabled' || state === 'disabled-pressed' ? null : 'pointer';
+      self.cursor = state === ButtonInteractionState.DISABLED ||
+                    state === ButtonInteractionState.DISABLED_PRESSED ? null : 'pointer';
     }
 
     interactionStateProperty.link( handleInteractionStateChanged );
@@ -210,31 +213,31 @@ define( function( require ) {
 
       switch( interactionState ) {
 
-        case 'idle':
+        case ButtonInteractionState.IDLE:
           button.fill = upFillHighlight;
           overlayForShadowGradient.stroke = enabledStroke;
           overlayForShadowGradient.fill = upFillShadow;
           break;
 
-        case 'over':
+        case ButtonInteractionState.OVER:
           button.fill = overFillHighlight;
           overlayForShadowGradient.stroke = enabledStroke;
           overlayForShadowGradient.fill = overFillShadow;
           break;
 
-        case 'pressed':
+        case ButtonInteractionState.PRESSED:
           button.fill = pressedFill;
           overlayForShadowGradient.stroke = enabledStroke;
           overlayForShadowGradient.fill = overFillShadow;
           break;
 
-        case 'disabled':
+        case ButtonInteractionState.DISABLED:
           button.fill = disabledFillHighlight;
           overlayForShadowGradient.stroke = disabledStroke;
           overlayForShadowGradient.fill = disabledFillShadow;
           break;
 
-        case 'disabled-pressed':
+        case ButtonInteractionState.DISABLED_PRESSED:
           button.fill = disabledPressedFillHighlight;
           overlayForShadowGradient.stroke = disabledStroke;
           overlayForShadowGradient.fill = disabledFillShadow;
@@ -347,27 +350,27 @@ define( function( require ) {
 
     function updateAppearance( interactionState ) {
       switch( interactionState ) {
-        case 'idle':
+        case ButtonInteractionState.IDLE:
           button.fill = upFill;
           button.stroke = enabledStroke;
           break;
 
-        case 'over':
+        case ButtonInteractionState.OVER:
           button.fill = overFill;
           button.stroke = enabledStroke;
           break;
 
-        case 'pressed':
+        case ButtonInteractionState.PRESSED:
           button.fill = downFill;
           button.stroke = enabledStroke;
           break;
 
-        case 'disabled':
+        case ButtonInteractionState.DISABLED:
           button.fill = disabledFill;
           button.stroke = disabledStroke;
           break;
 
-        case 'disabled-pressed':
+        case ButtonInteractionState.DISABLED_PRESSED:
           button.fill = disabledPressedFillVertical;
           button.stroke = disabledStroke;
           break;
@@ -432,7 +435,8 @@ define( function( require ) {
     // update the opacity when the state changes
     function updateOpacity( state ) {
       if ( content ) {
-        content.opacity = state === 'disabled' || state === 'disabled-pressed' ? 0.3 : 1;
+        content.opacity = state === ButtonInteractionState.DISABLED ||
+                          state === ButtonInteractionState.DISABLED_PRESSED ? 0.3 : 1;
       }
     }
 

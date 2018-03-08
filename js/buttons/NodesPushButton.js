@@ -11,6 +11,7 @@ define( function( require ) {
   'use strict';
 
   // import
+  var ButtonInteractionState = require( 'SUN/buttons/ButtonInteractionState' );
   var Image = require( 'SCENERY/nodes/Image' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Node = require( 'SCENERY/nodes/Node' );
@@ -55,10 +56,10 @@ define( function( require ) {
     // Button interactions
     var interactionStateProperty = new PushButtonInteractionStateProperty( this.buttonModel );
     interactionStateProperty.link( function( interactionState ) {
-      idleNode.visible = ( interactionState === 'idle' );
-      overNode.visible = ( interactionState === 'over' );
-      pressedNode.visible = ( interactionState === 'pressed' );
-      disabledNode.visible = ( interactionState === 'disabled' );
+      idleNode.visible = ( interactionState === ButtonInteractionState.IDLE );
+      overNode.visible = ( interactionState === ButtonInteractionState.OVER );
+      pressedNode.visible = ( interactionState === ButtonInteractionState.PRESSED );
+      disabledNode.visible = ( interactionState === ButtonInteractionState.DISABLED );
     } );
 
     //TODO this alignment feature would be useful to extract into a general layout node
