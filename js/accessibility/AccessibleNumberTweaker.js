@@ -26,7 +26,9 @@ define( function( require ) {
   var inheritance = require( 'PHET_CORE/inheritance' );
   var KeyboardUtil = require( 'SCENERY/accessibility/KeyboardUtil' );
   var Node = require( 'SCENERY/nodes/Node' );
+  var StringUtils = require( 'PHETCOMMON/util/StringUtils' );
   var sun = require( 'SUN/sun' );
+  var Util = require( 'DOT/Util' );
 
   var AccessibleNumberTweaker = {
 
@@ -67,7 +69,11 @@ define( function( require ) {
 
             tagName: 'input',
             inputType: 'number',
-            inputValue: valueProperty.get()
+            ariaRole: 'spinbutton',
+            useAriaLabel: true, // the label should be inline with aria-label attribute
+            inputValue: valueProperty.get(),
+            a11yValuePattern: '{{value}}', // {string} if you want units or additional content, add to pattern
+            a11yDecimalPlaces: 0, // number of decimal places for the value read by assistive technology
           };
           options = _.extend( {}, defaults, options );
 
@@ -150,6 +156,13 @@ define( function( require ) {
           // when the property changes, be sure to update the accessible input value
           var accessiblePropertyListener = function( value ) {
             self.inputValue = value;
+
+            // format the value text for reading by screen reader
+            var formattedValue = Util.toFixed( value, options.a11yDecimalPlaces );
+            var valueText = StringUtils.fillIn( options.a11yValuePattern, {
+              value: formattedValue
+            } );
+            self.setAccessibleAttribute( 'aria-valuetext', valueText );
           };
           this._valueProperty.link( accessiblePropertyListener );
 
