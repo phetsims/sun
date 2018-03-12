@@ -33,13 +33,13 @@ define( function( require ) {
   var DEFAULT_COLOR = ColorConstants.LIGHT_BLUE;
 
   /**
-   * @param {ButtonModel} buttonModel
+   * @param {PushButtonModel} pushButtonModel
    * @param {Property} interactionStateProperty - A property that is used to drive the visual appearance of the button.
    * @param {Object} [options]
    * @constructor
    */
-  function RoundButtonView( buttonModel, interactionStateProperty, options ) {
-    this.buttonModel = buttonModel; // @protected
+  function RoundButtonView( pushButtonModel, interactionStateProperty, options ) {
+    this.buttonModel = pushButtonModel; // @protected // TODO: rename to pushButtonModel
 
     options = _.extend( {
 
@@ -91,8 +91,8 @@ define( function( require ) {
     // @private {PressListener}
     var pressListener = new PressListener( {
       tandem: options.tandem.createTandem( 'pressListener' ),
-      isPressedProperty: buttonModel.downProperty,
-      isOverProperty: buttonModel.overProperty
+      isPressedProperty: pushButtonModel.downProperty,
+      isOverProperty: pushButtonModel.overProperty
     } );
     this.addInputListener( pressListener );
 
