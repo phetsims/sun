@@ -14,6 +14,7 @@ define( function( require ) {
   var BooleanProperty = require( 'AXON/BooleanProperty' );
   var ButtonModel = require( 'SUN/buttons/ButtonModel' );
   var CallbackTimer = require( 'SUN/CallbackTimer' );
+  var Emitter = require( 'AXON/Emitter' );
   var inherit = require( 'PHET_CORE/inherit' );
   var sun = require( 'SUN/sun' );
 
@@ -45,9 +46,10 @@ define( function( require ) {
     // @public - used by ResetAllButton to call functions during reset start/end
     this.isFiringProperty = new BooleanProperty( false );
 
-    this.listeners = []; // @private
+    // @private
+    this.emitter = new Emitter();
     if ( options.listener !== null ) {
-      this.listeners.push( options.listener );
+      this.emitter.addListener( options.listener );
     }
 
     // Create a timer to handle the optional fire-on-hold feature.
@@ -92,7 +94,7 @@ define( function( require ) {
 
     this.disposePushButtonModel = function() {
       this.isFiringProperty.dispose();
-      this.listeners.length = 0;
+      this.emitter.dispose();
       if ( this.timer ) {
         this.timer.dispose();
         this.timer = null;
@@ -119,9 +121,7 @@ define( function( require ) {
      * @public
      */
     addListener: function( listener ) {
-      if ( this.listeners.indexOf( listener ) === -1 ) {
-        this.listeners.push( listener );
-      }
+      this.emitter.addListener( listener );
     },
 
     /**
@@ -130,10 +130,7 @@ define( function( require ) {
      * @public
      */
     removeListener: function( listener ) {
-      var i = this.listeners.indexOf( listener );
-      if ( i !== -1 ) {
-        this.listeners.splice( i, 1 );
-      }
+      this.emitter.removeListener( listener );
     },
 
     /**
@@ -145,13 +142,8 @@ define( function( require ) {
       // Make sure the button is not already firing, see https://github.com/phetsims/energy-skate-park-basics/issues/380
       assert && assert( !this.isFiringProperty.value, 'Cannot fire when already firing' );
       this.isFiringProperty.value = true;
-      this.phetioEventSource && this.phetioEventSource.startEvent( 'user', 'fired' );
-
-      var copy = this.listeners.slice( 0 );
-      copy.forEach( function( listener ) {
-        listener();
-      } );
-
+      this.phetioEventSource && this.phetioEventSource.startEvent( 'user', 'fired' );  // TODO: move this into the emitter?
+      this.emitter.emit();
       this.isFiringProperty.value = false;
       this.phetioEventSource && this.phetioEventSource.endEvent();
     }
