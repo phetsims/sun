@@ -23,11 +23,7 @@ define( function( require ) {
    * @constructor
    */
   function ToggleButtonIO( toggleButton, phetioID ) {
-    assert && assertInstanceOf( toggleButton, [
-      phet.sun.RectangularToggleButton,
-      phet.sun.RoundStickyToggleButton,
-      phet.sun.RoundToggleButton
-    ] );
+    assert && assertInstanceOf( toggleButton, phet.sun.RectangularToggleButton, phet.sun.RoundStickyToggleButton, phet.sun.RoundToggleButton );
     NodeIO.call( this, toggleButton, phetioID );
   }
 

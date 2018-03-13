@@ -12,13 +12,13 @@ define( function( require ) {
   // modules
   var NodeIO = require( 'SCENERY/nodes/NodeIO' );
   var sun = require( 'SUN/sun' );
-  
+
   // phet-io modules
   var assertInstanceOf = require( 'ifphetio!PHET_IO/assertInstanceOf' );
   var FunctionIO = require( 'ifphetio!PHET_IO/types/FunctionIO' );
   var phetioInherit = require( 'ifphetio!PHET_IO/phetioInherit' );
   var VoidIO = require( 'ifphetio!PHET_IO/types/VoidIO' );
-  
+
   /**
    * @param {RoundPushButton|RectangularPushButton} button
    * @param {string} phetioID
@@ -27,10 +27,7 @@ define( function( require ) {
   function PushButtonIO( button, phetioID ) {
     NodeIO.call( this, button, phetioID );
 
-    assert && assertInstanceOf( button, [
-      phet.sun.RoundPushButton,
-      phet.sun.RectangularPushButton
-    ] );
+    assert && assertInstanceOf( button, phet.sun.RoundPushButton, phet.sun.RectangularPushButton );
   }
 
   phetioInherit( NodeIO, 'PushButtonIO', PushButtonIO, {
