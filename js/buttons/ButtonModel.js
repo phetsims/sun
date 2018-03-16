@@ -9,6 +9,7 @@ define( function( require ) {
 
   // modules
   var inherit = require( 'PHET_CORE/inherit' );
+  var PressListener = require( 'SCENERY/listeners/PressListener' );
   var Property = require( 'AXON/Property' );
   var sun = require( 'SUN/sun' );
   var Timer = require( 'PHET_CORE/Timer' );
@@ -78,6 +79,26 @@ define( function( require ) {
           endListener && endListener();
         }, self._fireOnHoldInterval );
       }
+    },
+
+    /**
+     * Creates a standard button listener that can be added to a node (and will trigger the changes to this model).
+     * @public
+     *
+     * @param {Tandem} tandem
+     * @returns {PressListener}
+     */
+    createListener: function( tandem ) {
+      var self = this;
+
+      return new PressListener( {
+        tandem: tandem,
+        isPressedProperty: this.downProperty,
+        isOverProperty: this.overProperty,
+        canStartPress: function() {
+          return self.enabledProperty.value;
+        }
+      } );
     }
   } );
 } );

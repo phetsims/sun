@@ -20,7 +20,6 @@ define( function( require ) {
   var ColorConstants = require( 'SUN/ColorConstants' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Node = require( 'SCENERY/nodes/Node' );
-  var PressListener = require( 'SCENERY/listeners/PressListener' );
   var Property = require( 'AXON/Property' );
   var RadialGradient = require( 'SCENERY/util/RadialGradient' );
   var Shape = require( 'KITE/Shape' );
@@ -89,11 +88,7 @@ define( function( require ) {
     this.baseColorProperty = new Property( Color.toColor( options.baseColor ) ); // @private
 
     // @private {PressListener}
-    var pressListener = new PressListener( {
-      tandem: options.tandem.createTandem( 'pressListener' ),
-      isPressedProperty: pushButtonModel.downProperty,
-      isOverProperty: pushButtonModel.overProperty
-    } );
+    var pressListener = pushButtonModel.createListener( options.tandem.createTandem( 'pressListener' ) );
     this.addInputListener( pressListener );
 
     // Use the user-specified radius if present, otherwise calculate the

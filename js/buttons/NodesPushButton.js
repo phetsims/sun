@@ -15,7 +15,6 @@ define( function( require ) {
   var Image = require( 'SCENERY/nodes/Image' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Node = require( 'SCENERY/nodes/Node' );
-  var PressListener = require( 'SCENERY/listeners/PressListener' );
   var PushButtonInteractionStateProperty = require( 'SUN/buttons/PushButtonInteractionStateProperty' );
   var PushButtonModel = require( 'SUN/buttons/PushButtonModel' );
   var sun = require( 'SUN/sun' );
@@ -46,11 +45,7 @@ define( function( require ) {
     this.buttonModel = new PushButtonModel( _.extend( { phetioEventSource: this }, options ) ); // @private
 
     // @private {PressListener}
-    this.pressListener = new PressListener( {
-      tandem: options.tandem.createTandem( 'pressListener' ),
-      isPressedProperty: this.buttonModel.downProperty,
-      isOverProperty: this.buttonModel.overProperty
-    } );
+    this.pressListener = this.buttonModel.createListener( options.tandem.createTandem( 'pressListener' ) );
     this.addInputListener( this.pressListener );
 
     // Button interactions

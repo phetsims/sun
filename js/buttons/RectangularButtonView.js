@@ -19,7 +19,6 @@ define( function( require ) {
   var LinearGradient = require( 'SCENERY/util/LinearGradient' );
   var Node = require( 'SCENERY/nodes/Node' );
   var Path = require( 'SCENERY/nodes/Path' );
-  var PressListener = require( 'SCENERY/listeners/PressListener' );
   var Property = require( 'AXON/Property' );
   var Shape = require( 'KITE/Shape' );
   var sun = require( 'SUN/sun' );
@@ -97,11 +96,7 @@ define( function( require ) {
     var content = options.content; // convenience variable
 
     // Hook up the input listener
-    var pressListener = new PressListener( {
-      tandem: options.tandem.createTandem( 'pressListener' ),
-      isPressedProperty: buttonModel.downProperty,
-      isOverProperty: buttonModel.overProperty
-    } );
+    var pressListener = buttonModel.createListener( options.tandem.createTandem( 'pressListener' ) );
     this.addInputListener( pressListener );
 
     // @private - make the base color into a property so that the appearance strategy can update itself if changes occur.
