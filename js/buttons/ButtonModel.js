@@ -61,10 +61,9 @@ define( function( require ) {
      * Click the button by pressing the button down and then releasing after a timeout. When assistive technology is
      * used, the browser does not receive 'down' or 'up' events on buttons - only a single 'click' event. For a11y we
      * need to toggle the pressed state every 'click' event.
+     * @param {function} [endListener] - optional function to be called once the button has been released after
+     *                                   accessibility related interaction.
      * @public
-     *
-     * @param {function} [endListener] - optional function to be called once the button has been released after 
-     *                                accessibility related interaction.
      */
     a11yClick: function( endListener ) {
       if ( !this.downProperty.get() && this.enabledProperty.get() ) {
@@ -82,11 +81,10 @@ define( function( require ) {
     },
 
     /**
-     * Creates a standard button listener that can be added to a node (and will trigger the changes to this model).
-     * @public
-     *
+     * Creates a standard button listener that can be added to a node and that will trigger the changes to this model.
      * @param {Tandem} tandem
      * @returns {PressListener}
+     * @public
      */
     createListener: function( tandem ) {
       var self = this;
