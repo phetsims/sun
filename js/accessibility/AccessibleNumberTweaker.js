@@ -71,9 +71,13 @@ define( function( require ) {
             inputType: 'number',
             ariaRole: 'spinbutton',
             useAriaLabel: true, // the label should be inline with aria-label attribute
-            inputValue: valueProperty.get(),
             a11yValuePattern: '{{value}}', // {string} if you want units or additional content, add to pattern
             a11yDecimalPlaces: 0, // number of decimal places for the value read by assistive technology
+
+            // Converts a value to a string, for extra formatting for the value read by the screen reader
+            a11yFormatValue: function( value ) {
+              return Util.toFixed( value, options.a11yDecimalPlaces );
+            }
           };
           options = _.extend( {}, defaults, options );
 
@@ -158,7 +162,7 @@ define( function( require ) {
             self.inputValue = value;
 
             // format the value text for reading by screen reader
-            var formattedValue = Util.toFixed( value, options.a11yDecimalPlaces );
+            var formattedValue = options.a11yFormatValue( value );
             var valueText = StringUtils.fillIn( options.a11yValuePattern, {
               value: formattedValue
             } );
