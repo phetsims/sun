@@ -17,6 +17,9 @@ define( function( require ) {
   var sun = require( 'SUN/sun' );
   var Tandem = require( 'TANDEM/Tandem' );
 
+  // constants
+  var DEFAULT_RADIUS = 7;
+
   /**
    * @param property
    * @param value the value that corresponds to this button, same type as property
@@ -31,7 +34,7 @@ define( function( require ) {
       selectedColor: 'rgb( 143, 197, 250 )', // color used to fill the button when it's selected
       deselectedColor: 'white', // color used to fill the button when it's deselected
       centerColor: 'black', // color used to fill the center of teh button when it's selected
-      radius: 16, // radius of the button
+      radius: DEFAULT_RADIUS, // radius of the button
       xSpacing: 8, // horizontal space between the button and the node
       stroke: 'black', // color used to stroke the outer edge of the button
       tandem: Tandem.required,
@@ -82,5 +85,8 @@ define( function( require ) {
       this.deselectedCircleButton.visible = circleButtonVisible;
       this.selectedCircleButton.visible = circleButtonVisible;
     }
+  }, {
+
+    DEFAULT_RADIUS: 7
   } );
 } );

@@ -31,7 +31,7 @@ define( function( require ) {
     options = _.extend( {
       spacing: 3,
       padding: 8,
-      radius: 12,
+      radius: AquaRadioButton.DEFAULT_RADIUS,
       radioButtonOptions: {}, // will be passed to the AquaRadioButtons
       touchAreaXDilation: 0,
       mouseAreaXDilation: 0,
