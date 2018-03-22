@@ -11,6 +11,10 @@
  *
  * This number tweaker is different than typical 'number' inputs because it does not support number key control. All
  * changes go through the arrow, page up, page down, home, and end keys.
+ *
+ * Screen reader support for aria-valuetext on spin buttons is too poor to use. Until there is better support, we
+ * are using alerts to read the value with units at the right time, see
+ * https://github.com/phetsims/gravity-force-lab-basics/issues/62
  * 
  * @author Jesse Greenberg (PhET Interactive Simulations)
  * @author Michael Barlow (PhET Interactive Simulations)
@@ -28,6 +32,7 @@ define( function( require ) {
   var Node = require( 'SCENERY/nodes/Node' );
   var StringUtils = require( 'PHETCOMMON/util/StringUtils' );
   var sun = require( 'SUN/sun' );
+  var utteranceQueue = require( 'SCENERY_PHET/accessibility/utteranceQueue' );
   var Util = require( 'DOT/Util' );
 
   var AccessibleNumberTweaker = {
@@ -67,10 +72,12 @@ define( function( require ) {
             timerDelay: 400, // start to fire continuously after pressing for this long (milliseconds)
             timerInterval: 100, // fire continuously at this frequency (milliseconds),
 
-            tagName: 'input',
-            inputType: 'number',
+            tagName: 'button',
+            parentContainerTagName: 'div',
             ariaRole: 'spinbutton',
-            useAriaLabel: true, // the label should be inline with aria-label attribute
+            prependLabels: true,
+            focusable: true,
+            labelTagName: 'p',
             a11yValuePattern: '{{value}}', // {string} if you want units or additional content, add to pattern
             a11yDecimalPlaces: 0, // number of decimal places for the value read by assistive technology
 
@@ -85,6 +92,12 @@ define( function( require ) {
           // so options are not doubled up, see https://github.com/phetsims/sun/issues/330
           var optionsToMutate = _.pick( options, _.keys( defaults ) );
           this.mutate( optionsToMutate );
+
+          // this number tweaker is "aria-labelledby" its own label, meaning that the label element content will be
+          // read on focus
+          this.setAriaLabelledByNode( this );
+          this.setAriaLabelContent( 'LABEL' );
+          this.setAccessibleAttribute( 'aria-roledescription', 'spinbutton' );
 
           // @private {Property.<number>}
           this._valueProperty = valueProperty;
@@ -154,19 +167,19 @@ define( function( require ) {
                 self._callbackTimer.stop( false );
                 self._callbackTimer.removeCallback( downCallback );
               }
+            },
+            focus: function( event ) {
+
+              // on focus, read the current value of the input
+              var formattedValue = options.a11yFormatValue( self._valueProperty.get() );
+              readValue( formattedValue, options.a11yValuePattern );
             }
           } );
 
           // when the property changes, be sure to update the accessible input value
           var accessiblePropertyListener = function( value ) {
-            self.inputValue = value;
-
-            // format the value text for reading by screen reader
             var formattedValue = options.a11yFormatValue( value );
-            var valueText = StringUtils.fillIn( options.a11yValuePattern, {
-              value: formattedValue
-            } );
-            self.setAccessibleAttribute( 'aria-valuetext', valueText );
+            readValue( formattedValue, options.a11yValuePattern );
           };
           this._valueProperty.link( accessiblePropertyListener );
 
@@ -254,6 +267,21 @@ define( function( require ) {
       } );
     }
   };
+
+  /**
+   * Read the value, surrounding the readout with optional text that can give the value context. By default, the text
+   * will be "{{value}}", but it could be changed to something like "{{value}} billion kg", for instance.
+   *
+   * @param {string} formattedValue
+   * @param {string} pattern
+   * @return {string}
+   */
+  function readValue( formattedValue, pattern ) {
+    var valueText = StringUtils.fillIn( pattern, {
+      value: formattedValue
+    } );
+    utteranceQueue.addToBack( valueText );
+  }
 
   sun.register( 'AccessibleNumberTweaker', AccessibleNumberTweaker );
 
