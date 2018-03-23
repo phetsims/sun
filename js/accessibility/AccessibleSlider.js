@@ -286,61 +286,62 @@ define( function( require ) {
               // keydown is the start of the drag
               this._firstKeyDown && this._startDrag();
               this._firstKeyDown = false;
-            }
+            
 
-            var newValue = this._valueProperty.get();
-            if ( code === KeyboardUtil.KEY_END || code === KeyboardUtil.KEY_HOME ) {
+              var newValue = this._valueProperty.get();
+              if ( code === KeyboardUtil.KEY_END || code === KeyboardUtil.KEY_HOME ) {
 
-              // on 'end' and 'home' snap to max and min of enabled range respectively (this is typical browser
-              // behavior for sliders)
-              if ( code === KeyboardUtil.KEY_END ) {
-                newValue = this._enabledRangeProperty.get().max;
-                this.increasedEmitter.emit();
-              }
-              else if ( code === KeyboardUtil.KEY_HOME ) {
-                newValue = this._enabledRangeProperty.get().min;
-                this.decreasedEmitter.emit();
-              }
-            }
-            else {
-              var stepSize;
-              if ( code === KeyboardUtil.KEY_PAGE_UP || code === KeyboardUtil.KEY_PAGE_DOWN ) {
-
-                // on page up and page down, the default step size is 1/10 of the range (this is typical browser behavior)
-                stepSize = this.pageKeyboardStep;
-
-                if ( code === KeyboardUtil.KEY_PAGE_UP ) {
-                  newValue = this._valueProperty.get() + stepSize;
+                // on 'end' and 'home' snap to max and min of enabled range respectively (this is typical browser
+                // behavior for sliders)
+                if ( code === KeyboardUtil.KEY_END ) {
+                  newValue = this._enabledRangeProperty.get().max;
                   this.increasedEmitter.emit();
                 }
-                else if ( code === KeyboardUtil.KEY_PAGE_DOWN ) {
-                  newValue = this._valueProperty.get() - stepSize;
+                else if ( code === KeyboardUtil.KEY_HOME ) {
+                  newValue = this._enabledRangeProperty.get().min;
                   this.decreasedEmitter.emit();
                 }
               }
-              else if ( KeyboardUtil.isArrowKey( code ) ) {
+              else {
+                var stepSize;
+                if ( code === KeyboardUtil.KEY_PAGE_UP || code === KeyboardUtil.KEY_PAGE_DOWN ) {
 
-                // if the shift key is pressed down, modify the step size (this is atypical browser behavior for sliders)
-                stepSize = event.shiftKey ? this.shiftKeyboardStep : this.keyboardStep;
+                  // on page up and page down, the default step size is 1/10 of the range (this is typical browser behavior)
+                  stepSize = this.pageKeyboardStep;
 
-                if ( code === KeyboardUtil.KEY_RIGHT_ARROW || code === KeyboardUtil.KEY_UP_ARROW ) {
-                  newValue = this._valueProperty.get() + stepSize;
-                  this.increasedEmitter.emit();
+                  if ( code === KeyboardUtil.KEY_PAGE_UP ) {
+                    newValue = this._valueProperty.get() + stepSize;
+                    this.increasedEmitter.emit();
+                  }
+                  else if ( code === KeyboardUtil.KEY_PAGE_DOWN ) {
+                    newValue = this._valueProperty.get() - stepSize;
+                    this.decreasedEmitter.emit();
+                  }
                 }
-                else if ( code === KeyboardUtil.KEY_LEFT_ARROW || code === KeyboardUtil.KEY_DOWN_ARROW ) {
-                  newValue = this._valueProperty.get() - stepSize;
-                  this.decreasedEmitter.emit();
+                else if ( KeyboardUtil.isArrowKey( code ) ) {
+
+                  // if the shift key is pressed down, modify the step size (this is atypical browser behavior for sliders)
+                  stepSize = event.shiftKey ? this.shiftKeyboardStep : this.keyboardStep;
+
+                  if ( code === KeyboardUtil.KEY_RIGHT_ARROW || code === KeyboardUtil.KEY_UP_ARROW ) {
+                    newValue = this._valueProperty.get() + stepSize;
+                    this.increasedEmitter.emit();
+                  }
+                  else if ( code === KeyboardUtil.KEY_LEFT_ARROW || code === KeyboardUtil.KEY_DOWN_ARROW ) {
+                    newValue = this._valueProperty.get() - stepSize;
+                    this.decreasedEmitter.emit();
+                  }
+
+                  newValue = roundValue( newValue, this._valueProperty.get(), stepSize );
                 }
 
-                newValue = roundValue( newValue, this._valueProperty.get(), stepSize );
+                // limit the value to the enabled range
+                newValue = Util.clamp( newValue, this._enabledRangeProperty.get().min, this._enabledRangeProperty.get().max );
               }
 
-              // limit the value to the enabled range
-              newValue = Util.clamp( newValue, this._enabledRangeProperty.get().min, this._enabledRangeProperty.get().max );
+              // optionally constrain the value further
+              this._valueProperty.set( this._constrainValue( newValue ) );
             }
-
-            // optionally constrain the value further
-            this._valueProperty.set( this._constrainValue( newValue ) );
           }
 
         },
