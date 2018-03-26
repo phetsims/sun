@@ -201,6 +201,13 @@ define( function( require ) {
         opts.labelTagName = 'label';
         opts.parentContainerTagName = 'div';
       }
+
+      // a11y create description for radio button
+      // use if block to prevent empty 'p' tag being added when no option is present
+      if ( currentContent.accessibleDescription ) {
+        opts.accessibleDescription = currentContent.accessibleDescription;
+      }
+
       var radioButton = new RadioButtonGroupMember( property, currentContent.value, opts );
 
       // a11y - so the browser and assistive technology recognizes that these buttons are in the same group
