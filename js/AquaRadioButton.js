@@ -45,7 +45,7 @@ define( function( require ) {
       // a11y
       tagName: 'input',
       inputType: 'radio',
-      parentContainerTagName: 'li',
+      containerTagName: 'li',
       labelTagName: 'label',
       prependLabels: true,
       a11yNameAttribute: 'aquaRadioButton'
