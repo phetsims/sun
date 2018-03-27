@@ -10,7 +10,7 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var RadioButtonIO = require( 'SUN/RadioButtonIO' );
+  var NodeIO = require( 'SCENERY/nodes/NodeIO' );
   var sun = require( 'SUN/sun' );
   
   // phet-io modules
@@ -27,10 +27,10 @@ define( function( require ) {
    */
   function AquaRadioButtonIO( aquaRadioButton, phetioID ) {
     assert && assertInstanceOf( aquaRadioButton, phet.sun.AquaRadioButton );
-    RadioButtonIO.call( this, aquaRadioButton, phetioID );
+    NodeIO.call( this, aquaRadioButton, phetioID );
   }
 
-  phetioInherit( RadioButtonIO, 'AquaRadioButtonIO', AquaRadioButtonIO, {
+  phetioInherit( NodeIO, 'AquaRadioButtonIO', AquaRadioButtonIO, {
     setCircleButtonVisible: {
       returnType: VoidIO,
       parameterTypes: [ BooleanIO ],
@@ -40,7 +40,17 @@ define( function( require ) {
       documentation: 'Sets whether the circular part of the radio button will be displayed.'
     }
   }, {
-    documentation: 'A radio button which looks like the Mac "Aqua" radio buttons'
+    documentation: 'A radio button which looks like the Mac "Aqua" radio buttons',
+    events: [ 'fired' ],
+    toStateObject: function( radioButton ) {
+      assert && assertInstanceOf( radioButton, phet.sun.AquaRadioButton );
+      return NodeIO.toStateObject( radioButton );
+    },
+    fromStateObject: function( stateObject ) { return NodeIO.fromStateObject( stateObject ); },
+    setValue: function( radioButton, fromStateObject ) {
+      assert && assertInstanceOf( radioButton, phet.sun.AquaRadioButton );
+      NodeIO.setValue( radioButton, fromStateObject );
+    }
   } );
 
   sun.register( 'AquaRadioButtonIO', AquaRadioButtonIO );
