@@ -278,7 +278,6 @@ define( function( require ) {
       }
     } );
 
-    // TODO: a11y
     this.addChild( this.titleNode );
     this.addChild( this.expandCollapseButton );
 
