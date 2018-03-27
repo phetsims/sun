@@ -74,8 +74,8 @@ define( function( require ) {
     // Have our copies inherit directly (for now, use Reflect.construct when IE11 support is dropped?)
     inherit( nodeSubtype, this._type );
 
-    // Make a copy, and replace it when one of our dyanmic options changes.
-    Property.multilink( _.values( dynamicOptions ), this.replaceCopy.bind( this ) );
+    // @private {Multilink} - Make a copy, and replace it when one of our dyanmic options changes.
+    this.multilink = Property.multilink( _.values( dynamicOptions ), this.replaceCopy.bind( this ) );
 
     // Apply any options that make more sense on the wrapper (typically like positioning)
     this.mutate( wrapperOptions );
@@ -116,6 +116,7 @@ define( function( require ) {
      * Handles disposal.
      */
     dispose: function() {
+      this.multilink.dispose();
       this.disposeCopy( this.nodeProperty.value );
       this.nodeProperty.dispose();
       Node.prototype.dispose.call( this );
