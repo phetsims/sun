@@ -73,7 +73,7 @@ define( function( require ) {
             timerInterval: 100, // fire continuously at this frequency (milliseconds),
 
             tagName: 'button',
-            parentContainerTagName: 'div',
+            containerTagName: 'div',
             ariaRole: 'spinbutton',
             prependLabels: true,
             focusable: true,

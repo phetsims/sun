@@ -200,7 +200,7 @@ define( function( require ) {
       if ( currentContent.accessibleLabel ) {
         opts.accessibleLabel = currentContent.accessibleLabel;
         opts.labelTagName = 'label';
-        opts.parentContainerTagName = 'div';
+        opts.containerTagName = 'div';
       }
 
       // a11y create description for radio button
