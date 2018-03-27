@@ -10,10 +10,11 @@ define( function( require ) {
 
   // modules
   var AquaRadioButtonIO = require( 'SUN/AquaRadioButtonIO' );
+  var ButtonListener = require( 'SCENERY/input/ButtonListener' );
   var Circle = require( 'SCENERY/nodes/Circle' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Node = require( 'SCENERY/nodes/Node' );
-  var RadioButton = require( 'SUN/RadioButton' );
+  var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var sun = require( 'SUN/sun' );
   var Tandem = require( 'TANDEM/Tandem' );
 
@@ -31,6 +32,7 @@ define( function( require ) {
 
     options = _.extend( {
       cursor: 'pointer',
+      enabled: true,
       selectedColor: 'rgb( 143, 197, 250 )', // color used to fill the button when it's selected
       deselectedColor: 'white', // color used to fill the button when it's deselected
       centerColor: 'black', // color used to fill the center of teh button when it's selected
@@ -38,11 +40,23 @@ define( function( require ) {
       xSpacing: 8, // horizontal space between the button and the node
       stroke: 'black', // color used to stroke the outer edge of the button
       tandem: Tandem.required,
-      a11yNameAttribute: 'aquaRadioButton',
-      phetioType: AquaRadioButtonIO
+      phetioType: AquaRadioButtonIO,
+
+      // a11y
+      tagName: 'input',
+      inputType: 'radio',
+      parentContainerTagName: 'li',
+      labelTagName: 'label',
+      prependLabels: true,
+      a11yNameAttribute: 'aquaRadioButton'
     }, options );
 
-    // selected node
+    var self = this;
+
+    // @private
+    this._enabled = options.enabled;
+
+    // selected node creation
     var selectedNode = new Node();
     var innerCircle = new Circle( options.radius / 3, { fill: options.centerColor } );
     var outerCircleSelected = new Circle( options.radius, { fill: options.selectedColor, stroke: options.stroke } );
@@ -69,12 +83,73 @@ define( function( require ) {
     node.left = this.deselectedCircleButton.right + options.xSpacing;
     node.centerY = this.deselectedCircleButton.centerY;
 
-    RadioButton.call( this, property, value, selectedNode, deselectedNode, options );
+    Node.call( this );
+
+    //Add an invisible node to make sure the layout for selected vs deselected is the same
+    var background = new Rectangle( selectedNode.bounds.union( deselectedNode.bounds ) );
+    selectedNode.pickable = deselectedNode.pickable = false; // the background rectangle suffices
+
+    this.addChild( background );
+    this.addChild( selectedNode );
+    this.addChild( deselectedNode );
+
+    // sync control with model
+    var syncWithModel = function( newValue ) {
+      selectedNode.visible = ( newValue === value );
+      deselectedNode.visible = !selectedNode.visible;
+    };
+    property.link( syncWithModel );
+
+    // set property value on fire
+    var fire = function() {
+      options.tandem.isSuppliedAndEnabled() && self.startEvent( 'user', 'fired', {
+        value: property.phetioType.elementType.toStateObject( value )
+      } );
+      property.set( value );
+      options.tandem.isSuppliedAndEnabled() && self.endEvent();
+    };
+    var buttonListener = new ButtonListener( { fire: fire } );
+    this.addInputListener( buttonListener );
+
+    // a11y - input listener so that updates the state of the radio button with keyboard interaction
+    var changeListener = this.addAccessibleInputListener( {
+      change: function() {
+        fire();
+      }
+    } );
+
+    // a11y - Specify the default value for assistive technology. This attribute is needed in addition to 
+    // the 'checked' property to mark this element as the default selection since 'checked' may be set before
+    // we are finished adding RadioButtons to the containing group, and the browser will remove the boolean
+    // 'checked' flag when new buttons are added.
+    if ( property.value === value ) {
+      this.setAccessibleAttribute( 'checked', 'checked' );
+    }
+
+    // a11y - when the property changes, make sure the correct radio button is marked as 'checked' so that this button
+    // receives focus on 'tab'
+    var accessibleCheckedListener = function( newValue ) {
+      self.accessibleChecked = newValue === value;
+    };
+    property.link( accessibleCheckedListener );
+
+    // @private
+    this.disposeRadioButton = function() {
+      self.removeInputListener( buttonListener );
+      self.removeAccessibleInputListener( changeListener );
+      property.unlink( accessibleCheckedListener );
+      property.unlink( syncWithModel );
+    };
+
+    // a11y - allow consistent a11y naming for radio button types
+    this.setAccessibleAttribute( 'name', options.a11yNameAttribute );
+
+    this.mutate( options );
   }
 
   sun.register( 'AquaRadioButton', AquaRadioButton );
 
-  return inherit( RadioButton, AquaRadioButton, {
+  return inherit( Node, AquaRadioButton, {
 
     /**
      * Sets whether the circular part of the radio button will be displayed.
@@ -84,9 +159,38 @@ define( function( require ) {
     setCircleButtonVisible: function( circleButtonVisible ) {
       this.deselectedCircleButton.visible = circleButtonVisible;
       this.selectedCircleButton.visible = circleButtonVisible;
-    }
+    },
+
+    // @public - Provide dispose() on the prototype for ease of subclassing.
+    dispose: function() {
+      this.disposeRadioButton();
+      Node.prototype.dispose.call( this );
+    },
+
+    /**
+     * Sets the enabled state
+     * @param {boolean} enabled
+     * @public
+     */
+    setEnabled: function( enabled ) {
+      this._enabled = enabled;
+      this.opacity = enabled ? 1 : 0.3;
+      this.pickable = enabled; // NOTE: This is a side-effect. If you set pickable independently, it will be changed when you set enabled.
+    },
+    set enabled( value ) { this.setEnabled( value ); },
+
+    /**
+     * Gets the enabled state
+     * @returns {boolean}
+     * @public
+     */
+    getEnabled: function() {
+      return this._enabled;
+    },
+    get enabled() { return this.getEnabled(); }
+  
   }, {
 
-    DEFAULT_RADIUS: 7
+    DEFAULT_RADIUS: DEFAULT_RADIUS
   } );
 } );
