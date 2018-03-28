@@ -59,6 +59,12 @@ define( function( require ) {
         if ( self.enabled ) {
           self.buttonModel.a11yClick( options.accessibleFire );
         }
+      },
+      focus: function() {
+        self.buttonModel.overProperty.value = true;
+      },
+      blur: function() {
+        self.buttonModel.overProperty.value = false;
       }
     } );
 
