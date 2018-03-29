@@ -63,8 +63,7 @@ define( function( require ) {
       children.push( radioButton );
     }
 
-    //TODO these options should be added using _.extend(options, {children:..., renderer:....})
-    options.children = children;
+    options.children = children; //TODO bad form, if options.children was already set, then this will blow it away
     VBox.call( this, options );
   }
 
