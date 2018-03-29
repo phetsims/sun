@@ -25,14 +25,12 @@ define( function( require ) {
   /**
    * Main constructor.
    *
-   * @param {Object[]} items - elements describe the radio buttons. Each element is of the form:
-   *  {
+   * @param {Object[]} items - Each item describes a radio button, and is an object with these properties:
    *    node: Node, // label for the button
    *    value: *, // value associated with the button
    *    property: Property.<*>, // Property associated with the button
    *    [tandemName: Tandem], // optional tandem for PhET-iO
    *    [accessibleLabel: string] // optional label for a11y
-   *  }
    * @param {Object} [options]
    * @constructor
    */
@@ -52,9 +50,11 @@ define( function( require ) {
       // options passed to constructor of the AquaRadioButtons
       radioButtonOptions: {},
 
+      //TODO this is the total of left and right margins, replace with xMargin?
+      padding: 8,
+
       // supertype options
       spacing: 3, // vertical space between each button
-      padding: 8, // padding (aka margin) on left and right side of each button
       tandem: Tandem.required,
 
       // supertype a11y options
@@ -77,6 +77,7 @@ define( function( require ) {
     // Uniform button width
     var buttonWidth = maxWidth + options.padding;
 
+    // Create a radio button for each item
     options.children = [];
     for ( i = 0; i < items.length; i++ ) {
 
