@@ -1,70 +1,104 @@
 // Copyright 2013-2018, University of Colorado Boulder
 
 /**
- * A vertical group of checkboxes.
+ * Convenience type for creating a group of AquaRadioButtons with vertical orientation.
  *
  * @author Sam Reid (PhET Interactive Simulations)
+ * @author Chris Malley (PixelZoom, Inc.)
  */
 define( function( require ) {
   'use strict';
 
+  // modules
   var Checkbox = require( 'SUN/Checkbox' );
   var HBox = require( 'SCENERY/nodes/HBox' );
+  var HStrut = require( 'SCENERY/nodes/HStrut' );
   var inherit = require( 'PHET_CORE/inherit' );
-  var Path = require( 'SCENERY/nodes/Path' );
-  var Rectangle = require( 'SCENERY/nodes/Rectangle' );
-  var Shape = require( 'KITE/Shape' );
+  var Node = require( 'SCENERY/nodes/Node' );
   var sun = require( 'SUN/sun' );
   var Tandem = require( 'TANDEM/Tandem' );
   var VBox = require( 'SCENERY/nodes/VBox' );
 
   /**
-   * Main constructor.
-   *
-   * @param items  an array of {content, property, indent, [tandem]}
+   * @param {Object[]} items - Each item describes a checkbox, and is an object with these properties:
+   *    node: Node, // label for the button
+   *    property: Property.<boolean>, // Property associated with the button
+   *    indent: number, // how much to indent each check box from the left edge
+   *    [tandemName: Tandem] // optional tandem for PhET-iO
    * @param {Object} [options]
    * @constructor
    */
   function VerticalCheckboxGroup( items, options ) {
 
     options = _.extend( {
-      spacing: 10, // vertical spacing
-      padding: 8, //TODO what is this? It looks like it's added to the right of the checkbox. Shouldn't this be an x-margin, added to left and right?
-      checkboxColor: 'black',
-      align: 'left',
+
+      // dilation of pointer areas, y dimension is computed
+      touchAreaXDilation: 5,
+      mouseAreaXDilation: 5,
+
+      //TODO #344 this is the total of left and right margins, replace with xMargin?
+      padding: 8,
+
+      //TODO #344 these are passed to CheckBox, replace with checkboxOptions: {...}
       boxWidth: 21,
+      checkboxColor: 'black',
+
+      // supertype options
+      spacing: 10, // vertical spacing
+      align: 'left',
       tandem: Tandem.optional
     }, options );
 
-    // compute max width of the items
+    // Verify that the client hasn't set options that we will be overwriting.
+    assert && assert( !options.children, 'VerticalCheckboxGroup sets children' );
+
+    //TODO #344 there's a bug here, indent for each item is not considered
+    // Determine the max item width
     var maxWidth = 0;
     for ( var i = 0; i < items.length; i++ ) {
       maxWidth = Math.max( maxWidth, items[ i ].content.width );
     }
 
-    // process each item
-    var children = items.map( function( item ) {
-      var offset = item.indent || 0;
+    //TODO #344 this for loop looks very much like VerticalAquaRadioButtonGroup, something to factor out?
+    // Create a checkbox for each item
+    options.children = [];
+    for ( i = 0; i < items.length; i++ ) {
 
-      //Attach each item to an invisible strut to make the widths match.
-      var content = new Path( Shape.rect( 0, 0, maxWidth + options.padding - offset, 0 ), { children: [ item.content ] } );
+      var item = items[ i ];
+      var indent = item.indent || 0;
+
+      //TODO #344 item.content is item.node in VerticalAquaRadioButtonGroup
+      // Content for the checkbox. Add an invisible strut, so that buttons have uniform width.
+      var content = new Node( {
+        children: [ new HStrut( maxWidth + options.padding - indent ), item.content ]
+      } );
+
       var checkbox = new Checkbox( content, item.property, {
         checkboxColor: options.checkboxColor,
         boxWidth: options.boxWidth,
         tandem: item.tandem || Tandem.optional
+        //TODO #344 VerticalAquaRadioButtonGroup has accessibleLabel, why not here?
+        //TODO #344 VerticalAquaRadioButtonGroup has a11yNameAttribute, why not here?
       } );
-      checkbox.mouseArea = checkbox.touchArea = Shape.bounds( checkbox.bounds.dilatedXY( 5, options.spacing / 2 ) );
+
+      // set pointer areas, y dimensions are computed
+      var yDilation = options.spacing / 2;
+      checkbox.mouseArea = checkbox.localBounds.dilatedXY( options.mouseAreaXDilation, yDilation );
+      checkbox.touchArea = checkbox.localBounds.dilatedXY( options.touchAreaXDilation, yDilation );
+
+      //TODO #344 indent feature is missing from VerticalAquaRadioButtonGroup, should it be added?
       if ( item.indent ) {
-        return new HBox( {
-          children: [ new Rectangle( 0, 0, item.indent, 1 ), checkbox ]
-        } );
+
+        // indent the checkbox from the left edge using a strut
+        options.children.push( new HBox( {
+          children: [ new HStrut( item.indent ), checkbox ]
+        } ) );
       }
       else {
-        return new HBox( { children: [ checkbox ] } );
+        options.children.push( checkbox );
       }
-    } );
+    }
 
-    options.children = children; //TODO bad form, if options.children was already set, then this will blow it away
     VBox.call( this, options );
   }
 
