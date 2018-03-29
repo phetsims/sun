@@ -87,6 +87,7 @@ define( function( require ) {
       checkbox.touchArea = checkbox.localBounds.dilatedXY( options.touchAreaXDilation, yDilation );
 
       //TODO #344 indent feature is missing from VerticalAquaRadioButtonGroup, should it be added?
+      //TODO #344 I can think of other ways to indent that don't involve 2 additional nodes
       if ( item.indent ) {
 
         // indent the checkbox from the left edge using a strut
