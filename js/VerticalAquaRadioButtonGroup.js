@@ -1,75 +1,112 @@
-// Copyright 2013-2017, University of Colorado Boulder
+// Copyright 2013-2018, University of Colorado Boulder
 
-//Render a simple vertical checkbox group, where the buttons all have the same sizes
-//TODO: not ready for use in simulations, it will need further development & discussion first.
-//TODO: Abstract out common functionality between this and VerticalCheckboxGroup
+/**
+ * Convenience type for creating a group of AquaRadioButtons with vertical orientation.
+ *
+ * @author Sam Reid (PhET Interactive Simulations)
+ * @author Chris Malley (PixelZoom, Inc.)
+ */
 define( function( require ) {
   'use strict';
 
+  // modules
   var AquaRadioButton = require( 'SUN/AquaRadioButton' );
+  var HStrut = require( 'SCENERY/nodes/HStrut' );
   var inherit = require( 'PHET_CORE/inherit' );
-  var Path = require( 'SCENERY/nodes/Path' );
-  var Shape = require( 'KITE/Shape' );
+  var Node = require( 'SCENERY/nodes/Node' );
   var sun = require( 'SUN/sun' );
   var Tandem = require( 'TANDEM/Tandem' );
   var VBox = require( 'SCENERY/nodes/VBox' );
 
-  // a11y - an id for each instance of VerticalAquaRadioButtonGroup, used to group buttons for browsers and assistive
-  // technology
+  // a11y - an id for each instance of VerticalAquaRadioButtonGroup,
+  // used to group buttons for browsers and assistive technology
   var instanceCount = 0;
 
   /**
    * Main constructor.
    *
-   * @param items  an array of {node, value, property, [tandemName], [accessibleLabel] }
+   * @param {Object[]} items - elements describe the radio buttons. Each element is of the form:
+   *  {
+   *    node: Node, // label for the button
+   *    value: *, // value associated with the button
+   *    property: Property.<*>, // Property associated with the button
+   *    [tandemName: Tandem], // optional tandem for PhET-iO
+   *    [accessibleLabel: string] // optional label for a11y
+   *  }
    * @param {Object} [options]
    * @constructor
    */
   function VerticalAquaRadioButtonGroup( items, options ) {
+
     instanceCount++;
 
     options = _.extend( {
-      spacing: 3,
-      padding: 8,
-      radius: AquaRadioButton.DEFAULT_RADIUS,
-      radioButtonOptions: {}, // will be passed to the AquaRadioButtons
+
+      // dilation of pointer areas, y dimension is computed
       touchAreaXDilation: 0,
       mouseAreaXDilation: 0,
+
+      // uniform radius of all buttons
+      radius: AquaRadioButton.DEFAULT_RADIUS,
+
+      // options passed to constructor of the AquaRadioButtons
+      radioButtonOptions: {},
+
+      // supertype options
+      spacing: 3, // vertical space between each button
+      padding: 8, // padding (aka margin) on left and right side of each button
       tandem: Tandem.required,
 
-      // a11y
+      // supertype a11y options
       tagName: 'ul',
       groupFocusHighlight: true
+
     }, options );
 
-    var width = 0;
+    // Verify that the client hasn't set options that we will be overwriting.
+    assert && assert( options.radioButtonOptions.radius === undefined,
+      'VerticalAquaRadioButtonGroup sets radioButtonOptions.radius' );
+    assert && assert( !options.children, 'VerticalAquaRadioButtonGroup sets children' );
+
+    // Determine the max item width
+    var maxWidth = 0;
     for ( var i = 0; i < items.length; i++ ) {
-      width = Math.max( width, items[ i ].node.width );
+      maxWidth = Math.max( maxWidth, items[ i ].node.width );
     }
 
-    var children = [];
+    // Uniform button width
+    var buttonWidth = maxWidth + options.padding;
+
+    options.children = [];
     for ( i = 0; i < items.length; i++ ) {
 
-      //Add an invisible strut to each content to make the widths match
-      var content = new Path( Shape.rect( 0, 0, width + options.padding, 0 ), { children: [ items[ i ].node ] } );
-      var radioButton = new AquaRadioButton( items[ i ].property, items[ i ].value, content, _.extend( {}, options.radioButtonOptions, {
-        radius: options.radius,
-        tandem: items[ i ].tandemName ? options.tandem.createTandem( items[ i ].tandemName ) : Tandem.required,
-        accessibleLabel: items[ i ].accessibleLabel || null,
-        a11yNameAttribute: 'verticalAquaButtonGroup' + instanceCount + 'Member'
-      } ) );
-      radioButton.mouseArea = Shape.bounds( radioButton.bounds.dilatedXY( options.mouseAreaXDilation, options.spacing / 2 ) );
-      radioButton.touchArea = Shape.bounds( radioButton.bounds.dilatedXY( options.touchAreaXDilation, options.spacing / 2 ) );
-      children.push( radioButton );
+      var item = items[ i ];
+
+      // Content for the radio button. Add an invisible strut, so that buttons have uniform width.
+      var content = new Node( {
+        children: [ new HStrut( buttonWidth + options.padding ), item.node ]
+      } );
+
+      var radioButton = new AquaRadioButton( item.property, item.value, content,
+        _.extend( {}, options.radioButtonOptions, {
+          radius: options.radius,
+          tandem: item.tandemName ? options.tandem.createTandem( item.tandemName ) : Tandem.required,
+          accessibleLabel: item.accessibleLabel || null,
+          a11yNameAttribute: 'verticalAquaButtonGroup' + instanceCount + 'Member'
+        } ) );
+
+      // set pointer areas, y dimensions are computed
+      var yDilation = options.spacing / 2;
+      radioButton.mouseArea = radioButton.localBounds.dilatedXY( options.mouseAreaXDilation, yDilation );
+      radioButton.touchArea = radioButton.localBounds.dilatedXY( options.touchAreaXDilation, yDilation );
+
+      options.children.push( radioButton );
     }
 
-    options.children = children; //TODO bad form, if options.children was already set, then this will blow it away
     VBox.call( this, options );
   }
 
   sun.register( 'VerticalAquaRadioButtonGroup', VerticalAquaRadioButtonGroup );
 
-  inherit( VBox, VerticalAquaRadioButtonGroup );
-
-  return VerticalAquaRadioButtonGroup;
+  return inherit( VBox, VerticalAquaRadioButtonGroup );
 } );
