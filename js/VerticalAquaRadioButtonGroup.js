@@ -50,7 +50,7 @@ define( function( require ) {
       // options passed to constructor of the AquaRadioButtons
       radioButtonOptions: {},
 
-      //TODO this is the total of left and right margins, replace with xMargin?
+      //TODO #344 this is the total of left and right margins, replace with xMargin?
       padding: 8,
 
       // supertype options
