@@ -77,8 +77,6 @@ define( function( require ) {
         checkboxColor: options.checkboxColor,
         boxWidth: options.boxWidth,
         tandem: item.tandem || Tandem.optional
-        //TODO #344 VerticalAquaRadioButtonGroup has accessibleLabel, why not here?
-        //TODO #344 VerticalAquaRadioButtonGroup has a11yNameAttribute, why not here?
       } );
 
       // set pointer areas, y dimensions are computed
