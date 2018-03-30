@@ -28,7 +28,7 @@ define( function( require ) {
       tandem: Tandem.required,
 
       // a11y
-      accessibleLabel: text
+      innerContent: text
     }, options );
 
     var textNode = new Text( text, {
