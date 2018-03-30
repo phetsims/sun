@@ -203,7 +203,7 @@ define( function( require ) {
 
       // a11y
       tagName: 'button',
-      accessibleLabel: options.accessibleAccordionTitle,
+      labelContent: options.accessibleAccordionTitle,
       labelTagName: 'p'
     } );
     this.disposalActions.push( function() {
@@ -221,7 +221,7 @@ define( function( require ) {
 
       // a11y
       tagName: 'button',
-      accessibleLabel: options.accessibleAccordionTitle,
+      labelContent: options.accessibleAccordionTitle,
       labelTagName: 'p'
     } );
     this.disposalActions.push( function() {

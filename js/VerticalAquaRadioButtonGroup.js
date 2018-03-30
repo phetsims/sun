@@ -30,7 +30,7 @@ define( function( require ) {
    *    value: *, // value associated with the button
    *    property: Property.<*>, // Property associated with the button
    *    [tandemName: Tandem], // optional tandem for PhET-iO
-   *    [accessibleLabel: string] // optional label for a11y
+   *    [labelContent: string] // optional label for a11y
    * @param {Object} [options]
    * @constructor
    */
@@ -92,7 +92,7 @@ define( function( require ) {
         _.extend( {}, options.radioButtonOptions, {
           radius: options.radius,
           tandem: item.tandemName ? options.tandem.createTandem( item.tandemName ) : Tandem.required,
-          accessibleLabel: item.accessibleLabel || null,
+          labelContent: item.accessibleLabel || null,
           a11yNameAttribute: 'verticalAquaButtonGroup' + instanceCount + 'Member'
         } ) );
 
