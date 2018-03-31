@@ -197,8 +197,8 @@ define( function( require ) {
       }
 
       // a11y create the label for the radio button
-      if ( currentContent.accessibleLabel ) {
-        opts.accessibleLabel = currentContent.accessibleLabel;
+      if ( currentContent.labelContent ) {
+        opts.labelContent = currentContent.labelContent;
       }
 
       // a11y create description for radio button

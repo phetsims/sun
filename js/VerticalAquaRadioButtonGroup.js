@@ -92,7 +92,7 @@ define( function( require ) {
         _.extend( {}, options.radioButtonOptions, {
           radius: options.radius,
           tandem: item.tandemName ? options.tandem.createTandem( item.tandemName ) : Tandem.required,
-          labelContent: item.accessibleLabel || null,
+          labelContent: item.labelContent || null,
           a11yNameAttribute: 'verticalAquaButtonGroup' + instanceCount + 'Member'
         } ) );
 
