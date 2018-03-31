@@ -203,8 +203,8 @@ define( function( require ) {
 
       // a11y create description for radio button
       // use if block to prevent empty 'p' tag being added when no option is present
-      if ( currentContent.accessibleDescription ) {
-        opts.accessibleDescription = currentContent.accessibleDescription;
+      if ( currentContent.descriptionContent ) {
+        opts.descriptionContent = currentContent.descriptionContent;
       }
 
       var radioButton = new RadioButtonGroupMember( property, currentContent.value, opts );
