@@ -65,7 +65,7 @@ define( function( require ) {
       tagName: 'button',
       focusAfterCallback: false, // whether or not next focusable element should receive focus after the callback
       containerTagName: 'li',
-      parentContainerAriaRole: 'none', // this is required for JAWS to handle focus correctly, see https://github.com/phetsims/john-travoltage/issues/225
+      containerAriaRole: 'none', // this is required for JAWS to handle focus correctly, see https://github.com/phetsims/john-travoltage/issues/225
       innerContent: text,
       ariaRole: 'menuitem'
     }, options );
