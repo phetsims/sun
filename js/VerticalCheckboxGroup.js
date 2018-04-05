@@ -39,7 +39,7 @@ define( function( require ) {
       //TODO #344 this is the total of left and right margins, replace with xMargin?
       padding: 8,
 
-      //TODO #344 these are passed to CheckBox, replace with checkboxOptions: {...}
+      //TODO #344 these are passed to Checkbox, replace with checkboxOptions: {...}
       boxWidth: 21,
       checkboxColor: 'black',
 
