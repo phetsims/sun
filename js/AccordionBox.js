@@ -92,7 +92,7 @@ define( function( require ) {
 
       // a11y options
       tagName: 'div',
-      accessibleAccordionTitle: 'No Title Given',
+      accessibleAccordionTitle: 'Accordion Box',
 
 
     }, options );
