@@ -64,6 +64,8 @@ define( function( require ) {
       // a11y
       tagName: 'input',
       inputType: 'radio',
+      appendDescription: true,
+      appendLabel: true,
 
       tandem: Tandem.required,
       phetioType: RadioButtonGroupMemberIO

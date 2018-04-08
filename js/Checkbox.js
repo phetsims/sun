@@ -48,6 +48,8 @@ define( function( require ) {
       // a11y
       tagName: 'input',
       inputType: 'checkbox',
+      appendLabel: true,
+      appendDescription: true,
 
       /*
        * {function( {Node} checkbox, {boolean} enabled ) }

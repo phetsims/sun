@@ -47,6 +47,8 @@ define( function( require ) {
       inputType: 'radio',
       containerTagName: 'li',
       labelTagName: 'label',
+      appendLabel: true,
+      appendDescription: true,
       a11yNameAttribute: 'aquaRadioButton'
     }, options );
 
@@ -187,7 +189,7 @@ define( function( require ) {
       return this._enabled;
     },
     get enabled() { return this.getEnabled(); }
-  
+
   }, {
 
     DEFAULT_RADIUS: DEFAULT_RADIUS
