@@ -47,7 +47,6 @@ define( function( require ) {
       inputType: 'radio',
       containerTagName: 'li',
       labelTagName: 'label',
-      prependLabels: true,
       a11yNameAttribute: 'aquaRadioButton'
     }, options );
 

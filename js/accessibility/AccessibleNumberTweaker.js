@@ -72,10 +72,10 @@ define( function( require ) {
             timerDelay: 400, // start to fire continuously after pressing for this long (milliseconds)
             timerInterval: 100, // fire continuously at this frequency (milliseconds),
 
+            // a11y
             tagName: 'button',
             containerTagName: 'div',
             ariaRole: 'spinbutton',
-            prependLabels: true,
             focusable: true,
             labelTagName: 'p',
             a11yValuePattern: '{{value}}', // {string} if you want units or additional content, add to pattern
