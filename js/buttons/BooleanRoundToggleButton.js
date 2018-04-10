@@ -26,7 +26,7 @@ define( function( require ) {
       tandem: Tandem.required
     }, options );
 
-    //TODO ToggleNode links to booleanProperty, must be cleaned up in dispose
+    //TODO ToggleNode links to booleanProperty, must be cleaned up in dispose, https://github.com/phetsims/sun/issues/121
     assert && assert( !options.content, 'options.content cannot be set' );
     options.content = new ToggleNode( trueNode, falseNode, booleanProperty, {
       tandem: options.tandem.createTandem( 'toggleNode' )
