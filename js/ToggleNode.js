@@ -54,7 +54,9 @@ define( function( require ) {
 
     // @private - called by dispose
     this.disposeToggleNode = function() {
-      booleanProperty.unlink( visibilityListener );
+      if ( booleanProperty.hasListener( visibilityListener ) ) {
+        booleanProperty.unlink( visibilityListener );
+      }
     };
 
     this.mutate( options );

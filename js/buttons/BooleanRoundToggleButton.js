@@ -26,16 +26,30 @@ define( function( require ) {
       tandem: Tandem.required
     }, options );
 
-    //TODO ToggleNode links to booleanProperty, must be cleaned up in dispose, https://github.com/phetsims/sun/issues/121
-    assert && assert( !options.content, 'options.content cannot be set' );
+    assert && assert( !options.content, 'BooleanRoundToggleButton sets content' );
     options.content = new ToggleNode( trueNode, falseNode, booleanProperty, {
       tandem: options.tandem.createTandem( 'toggleNode' )
     } );
 
     RoundToggleButton.call( this, false, true, booleanProperty, options );
+
+    // @private
+    this.disposeBooleanRoundToggleButton = function() {
+      options.content.dispose();
+    };
   }
 
   sun.register( 'BooleanRoundToggleButton', BooleanRoundToggleButton );
 
-  return inherit( RoundToggleButton, BooleanRoundToggleButton );
+  return inherit( RoundToggleButton, BooleanRoundToggleButton, {
+
+    /**
+     * @public
+     * @override
+     */
+    dispose: function() {
+      this.disposeBooleanRoundToggleButton();
+      RoundToggleButton.prototype.dispose.call( this );
+    }
+  } );
 } );
