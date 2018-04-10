@@ -495,14 +495,6 @@ define( function( require ) {
     },
 
     /**
-     * Sets the visibility of the expand/collapse button.
-     * @param {boolean} visible
-     */
-    setButtonVisible: function( visible ) {
-      this.expandCollapseButton.visible = visible;
-    },
-
-    /**
      * Ensures this node is eligible for GC.
      * @public
      */
