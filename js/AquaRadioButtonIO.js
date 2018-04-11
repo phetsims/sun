@@ -53,6 +53,7 @@ define( function( require ) {
     setValue: function( radioButton, fromStateObject ) {
       assert && assertInstanceOf( radioButton, phet.sun.AquaRadioButton );
       NodeIO.setValue( radioButton, fromStateObject );
+      radioButton.setEnabled( fromStateObject.enabled );
     }
   } );
 
