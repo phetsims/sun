@@ -12,13 +12,13 @@ define( function( require ) {
   // modules
   var NodeIO = require( 'SCENERY/nodes/NodeIO' );
   var sun = require( 'SUN/sun' );
-  
+
   // phet-io modules
   var assertInstanceOf = require( 'ifphetio!PHET_IO/assertInstanceOf' );
   var BooleanIO = require( 'ifphetio!PHET_IO/types/BooleanIO' );
   var phetioInherit = require( 'ifphetio!PHET_IO/phetioInherit' );
   var VoidIO = require( 'ifphetio!PHET_IO/types/VoidIO' );
-  
+
   /**
    * IO type for phet/sun's AquaRadioButton class.
    * @param {AquaRadioButton} aquaRadioButton
@@ -44,7 +44,10 @@ define( function( require ) {
     events: [ 'fired' ],
     toStateObject: function( radioButton ) {
       assert && assertInstanceOf( radioButton, phet.sun.AquaRadioButton );
-      return NodeIO.toStateObject( radioButton );
+      var nodeState = NodeIO.toStateObject( radioButton );
+      return _.extend( {
+        enabled: radioButton.getEnabled()
+      }, nodeState );
     },
     fromStateObject: function( stateObject ) { return NodeIO.fromStateObject( stateObject ); },
     setValue: function( radioButton, fromStateObject ) {
