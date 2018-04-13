@@ -275,7 +275,6 @@ define( function( require ) {
       ownsEnabledRangeProperty && self.enabledRangeProperty.dispose();
       ownsEnabledProperty && self.enabledProperty.dispose();
       thumbInputListener.isDraggedProperty.unlinkAttribute( thumbDraggingListener );
-      debugger;
 
       thumbInputListener.dispose();
     };
