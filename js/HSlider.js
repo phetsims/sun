@@ -221,7 +221,7 @@ define( function( require ) {
 
     // @public (read-only) {Boolean} - flag that indicates whether the thumb is currently being dragged
     this.thumbDragging = false;
-    thumbInputListener.isDraggedProperty.linkAttribute( this, 'thumbDragging' );
+    var thumbDraggingListener = thumbInputListener.isDraggedProperty.linkAttribute( this, 'thumbDragging' );
 
     // enable/disable
     var enabledObserver = function( enabled ) {
@@ -274,6 +274,8 @@ define( function( require ) {
       valueProperty.unlink( valueObserver );
       ownsEnabledRangeProperty && self.enabledRangeProperty.dispose();
       ownsEnabledProperty && self.enabledProperty.dispose();
+      thumbInputListener.isDraggedProperty.unlinkAttribute( thumbDraggingListener );
+      debugger;
 
       thumbInputListener.dispose();
     };
