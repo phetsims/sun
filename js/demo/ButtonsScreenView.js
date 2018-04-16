@@ -324,6 +324,7 @@ define( function( require ) {
     } );
 
     // transparent button with something behind it
+    // TODO: this isn't transparent when disabled.
     var rectangleNode = new Rectangle( 0, 0, 25, 50, { fill: 'red' } );
     var transparentButton = new RectangularPushButton( {
       content: new Text( 'Transparent Button', { font: BUTTON_FONT } ),
