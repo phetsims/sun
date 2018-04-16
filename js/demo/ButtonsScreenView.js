@@ -33,6 +33,7 @@ define( function( require ) {
   var sun = require( 'SUN/sun' );
   var Text = require( 'SCENERY/nodes/Text' );
   var VBox = require( 'SCENERY/nodes/VBox' );
+  var VerticalAquaRadioButtonGroup = require( 'SUN/VerticalAquaRadioButtonGroup' );
 
   // constants
   var BUTTON_FONT = new Font( { size: 24 } );
@@ -50,7 +51,7 @@ define( function( require ) {
     var messageText = new Text( messagePrefix, {
       font: new Font( { size: 20 } ),
       bottom: this.layoutBounds.height - 5,
-      left:   this.layoutBounds.minX + 10
+      left: this.layoutBounds.minX + 10
     } );
     this.addChild( messageText );
     var message = function( text ) {
@@ -82,9 +83,42 @@ define( function( require ) {
     var radioButtonPanel = new Panel( radioButtonGroup, {
       stroke: 'black',
       left: this.layoutBounds.left + 15,
-      top:  this.layoutBounds.top + 15
+      top: this.layoutBounds.top + 15
     } );
     this.addChild( radioButtonPanel );
+
+
+    //===================================================================================
+    // Aqua Radio buttons
+    //===================================================================================
+
+    var firstOption = 'A';
+    var verticalAquaProperty = new Property( firstOption );
+    verticalAquaProperty.lazyLink( function( value ) {
+      message( 'Aqua Radio Button ' + value + ' pressed' );
+    } );
+    var verticalAquaRadioButtons = new VerticalAquaRadioButtonGroup( [
+      {
+        property: verticalAquaProperty,
+        value: firstOption,
+        node: new Text( firstOption )
+      }, {
+        property: verticalAquaProperty,
+        value: 'B',
+        node: new Text( 'B' )
+      }, {
+        property: verticalAquaProperty,
+        value: 'C',
+        node: new Text( 'C' )
+      }
+    ] );
+
+    this.addChild( new Panel( verticalAquaRadioButtons, {
+      stroke: 'black',
+      scale: 2,
+      x: 900,
+      y: 10
+    } ) );
 
     //===================================================================================
     // Pseudo-3D buttons A, B, C, D, E
@@ -123,7 +157,7 @@ define( function( require ) {
       children: [ buttonA, buttonB, buttonC, buttonD, buttonE ],
       spacing: 10,
       left: radioButtonPanel.right + 25,
-      top:  this.layoutBounds.top + 15
+      top: this.layoutBounds.top + 15
     } );
 
     this.addChild( pseudo3DButtonsBox );
@@ -233,7 +267,7 @@ define( function( require ) {
       spacing: 10,
       align: 'left',
       left: flatButtonsBox.right + 20,
-      top:  flatButtonsBox.top
+      top: flatButtonsBox.top
     } );
     this.addChild( heldButtonsBox );
 
@@ -290,6 +324,7 @@ define( function( require ) {
     } );
 
     // transparent button with something behind it
+    // TODO: this isn't transparent when disabled.
     var rectangleNode = new Rectangle( 0, 0, 25, 50, { fill: 'red' } );
     var transparentButton = new RectangularPushButton( {
       content: new Text( 'Transparent Button', { font: BUTTON_FONT } ),
@@ -352,7 +387,7 @@ define( function( require ) {
     roundOnProperty.lazyLink( function( on ) { message( 'RoundMomentaryButton on=' + on ); } );
     var roundMomentaryButton = new RoundMomentaryButton( false, true, roundOnProperty, {
       baseColor: '#D76958',
-      left: roundStickyToggleButton.right+ 10,
+      left: roundStickyToggleButton.right + 10,
       centerY: roundStickyToggleButton.centerY
     } );
 
@@ -385,6 +420,7 @@ define( function( require ) {
     buttonsEnabledProperty.link( function( enabled ) {
       arrowButton.enabled = enabled;
       radioButtonGroup.enabled = enabled;
+      verticalAquaRadioButtons.children.forEach( function( radioButton ) {radioButton.enabled = enabled;} );
       buttonA.enabled = enabled;
       buttonB.enabled = enabled;
       buttonC.enabled = enabled;
