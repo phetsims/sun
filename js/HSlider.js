@@ -219,6 +219,10 @@ define( function( require ) {
     } );
     thumb.addInputListener( thumbInputListener );
 
+    // @public (read-only) {Boolean} - flag that indicates whether the thumb is currently being dragged
+    this.thumbDragging = false;
+    var thumbDraggingListener = thumbInputListener.isDraggedProperty.linkAttribute( this, 'thumbDragging' );
+
     // enable/disable
     var enabledObserver = function( enabled ) {
       self.cursor = self.enabledProperty.get() ? options.cursor : 'default';
@@ -270,6 +274,7 @@ define( function( require ) {
       valueProperty.unlink( valueObserver );
       ownsEnabledRangeProperty && self.enabledRangeProperty.dispose();
       ownsEnabledProperty && self.enabledProperty.dispose();
+      thumbInputListener.isDraggedProperty.unlinkAttribute( thumbDraggingListener );
 
       thumbInputListener.dispose();
     };
