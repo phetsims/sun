@@ -135,7 +135,7 @@ define( function( require ) {
     property.link( accessibleCheckedListener );
 
     // @private
-    this.disposeRadioButton = function() {
+    this.disposeAquaRadioButton = function() {
       self.removeInputListener( buttonListener );
       self.removeAccessibleInputListener( changeListener );
       property.unlink( accessibleCheckedListener );
@@ -164,7 +164,7 @@ define( function( require ) {
 
     // @public - Provide dispose() on the prototype for ease of subclassing.
     dispose: function() {
-      this.disposeRadioButton();
+      this.disposeAquaRadioButton();
       Node.prototype.dispose.call( this );
     },
 

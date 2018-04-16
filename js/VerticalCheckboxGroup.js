@@ -1,7 +1,7 @@
 // Copyright 2013-2018, University of Colorado Boulder
 
 /**
- * Convenience type for creating a group of AquaRadioButtons with vertical orientation.
+ * Convenience type for creating a group of CheckBoxes with vertical orientation.
  *
  * @author Sam Reid (PhET Interactive Simulations)
  * @author Chris Malley (PixelZoom, Inc.)
