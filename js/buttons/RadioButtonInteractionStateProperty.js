@@ -1,8 +1,7 @@
 // Copyright 2014-2017, University of Colorado Boulder
 
 /**
- * A derived property that maps radio button group member model states to the values
- * needed by the button view.
+ * a derived property that maps radio button group member model states to the values needed by the button view
  */
 define( function( require ) {
   'use strict';
@@ -10,6 +9,7 @@ define( function( require ) {
   // modules
   var DerivedProperty = require( 'AXON/DerivedProperty' );
   var inherit = require( 'PHET_CORE/inherit' );
+  var RadioButtonInteractionState = require( 'SUN/buttons/RadioButtonInteractionState' );
   var sun = require( 'SUN/sun' );
 
   /**
@@ -23,12 +23,12 @@ define( function( require ) {
       [ buttonModel.overProperty, buttonModel.downProperty, buttonModel.enabledProperty, buttonModel.selectorProperty ],
       function( over, down, enabled, propertyValue ) {
         var isSelected = ( propertyValue === buttonModel.selectedValue );
-        return !enabled && isSelected ? 'disabled-selected' :
-               !enabled ? 'disabled-deselected' :
-               over && !(down || isSelected) ? 'over' :
-               over && down ? 'pressed' :
-               isSelected ? 'selected' :
-               'deselected';
+        return !enabled && isSelected ? RadioButtonInteractionState.DISABLED_SELECTED :
+               !enabled ? RadioButtonInteractionState.DISABLED_DESELECTED :
+               over && !(down || isSelected) ? RadioButtonInteractionState.OVER :
+               over && down ? RadioButtonInteractionState.PRESSED :
+               isSelected ? RadioButtonInteractionState.SELECTED :
+               RadioButtonInteractionState.DESELECTED;
       } );
   }
 

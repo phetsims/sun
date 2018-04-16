@@ -13,6 +13,7 @@ define( function( require ) {
   // modules
   var Color = require( 'SCENERY/util/Color' );
   var sun = require( 'SUN/sun' );
+  var RadioButtonInteractionState = require( 'SUN/buttons/RadioButtonInteractionState' );
 
   // constants
   var DISABLED_OPACITY = 0.3;
@@ -57,7 +58,7 @@ define( function( require ) {
     function handleInteractionStateChanged( state ) {
       switch( state ) {
 
-        case 'deselected':
+        case RadioButtonInteractionState.DESELECTED:
           button.fill = baseColor;
           button.stroke = options.deselectedStroke;
           button.lineWidth = options.deselectedLineWidth;
@@ -65,35 +66,35 @@ define( function( require ) {
           break;
 
         // mouseover for deselected buttons
-        case 'over':
+        case RadioButtonInteractionState.OVER:
           button.fill = overFill;
           button.stroke = overStroke;
           button.lineWidth = ( options.overLineWidth ) ? options.overLineWidth : options.deselectedLineWidth;
           button.opacity = options.overButtonOpacity;
           break;
 
-        case 'selected':
+        case RadioButtonInteractionState.SELECTED:
           button.fill = baseColor;
           button.stroke = options.selectedStroke;
           button.lineWidth = options.selectedLineWidth;
           button.opacity = options.selectedButtonOpacity;
           break;
 
-        case 'disabled-deselected':
+        case RadioButtonInteractionState.DISABLED_DESELECTED:
           button.fill = disabledBaseColor;
           button.stroke = disabledStroke;
           button.lineWidth = options.deselectedLineWidth;
           button.opacity = options.deselectedButtonOpacity;
           break;
 
-        case 'disabled-selected':
+        case RadioButtonInteractionState.DISABLED_SELECTED:
           button.fill = disabledBaseColor;
           button.stroke = disabledStroke;
           button.lineWidth = options.selectedLineWidth;
           button.opacity = options.selectedButtonOpacity;
           break;
 
-        case 'pressed':
+        case RadioButtonInteractionState.PRESSED:
           button.fill = pressedFill;
           button.stroke = options.deselectedStroke;
           button.lineWidth = options.deselectedLineWidth;
@@ -131,28 +132,28 @@ define( function( require ) {
       if ( content !== null ) {
         switch( state ) {
 
-          case 'deselected':
+          case RadioButtonInteractionState.DESELECTED:
             content.opacity = options.deselectedContentOpacity;
             break;
 
           // mouseover for deselected buttons
-          case 'over':
+          case RadioButtonInteractionState.OVER:
             content.opacity = options.overContentOpacity;
             break;
 
-          case 'selected':
+          case RadioButtonInteractionState.SELECTED:
             content.opacity = options.selectedContentOpacity;
             break;
 
-          case 'disabled-deselected':
+          case RadioButtonInteractionState.DISABLED_DESELECTED:
             content.opacity = DISABLED_OPACITY;
             break;
 
-          case 'disabled-selected':
+          case RadioButtonInteractionState.DISABLED_SELECTED:
             content.opacity = DISABLED_OPACITY;
             break;
 
-          case 'pressed':
+          case RadioButtonInteractionState.PRESSED:
             content.opacity = options.deselectedContentOpacity;
             break;
 
