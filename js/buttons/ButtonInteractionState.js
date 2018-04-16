@@ -12,19 +12,19 @@ define( function( require ) {
   var ButtonInteractionState = {
 
     // button is just sitting there, doing nothing
-    IDLE: 'idle',
+    IDLE: 'IDLE',
 
     // a pointer is over the button, but not pressing it
-    OVER: 'over',
+    OVER: 'OVER',
 
     // the button is pressed, generally because the user has clicked on it or touched it
-    PRESSED: 'pressed',
+    PRESSED: 'PRESSED',
 
     // the button is disabled
-    DISABLED: 'disabled',
+    DISABLED: 'DISABLED',
 
     // the button is disabled, but was already pressed when that happened, so it is also pressed
-    DISABLED_PRESSED: 'disabled-pressed'
+    DISABLED_PRESSED: 'DISABLED_PRESSED'
   };
 
   // verify that enum is immutable, without the runtime penalty in production code
