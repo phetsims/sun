@@ -122,7 +122,7 @@ define( function( require ) {
     }
 
     // a11y - activate the item when selected with the keyboard
-    var clickListener = this.addAccessibleInputListener( {
+    var clickListener = {
       click: function( event ) {
         fire();
 
@@ -130,7 +130,8 @@ define( function( require ) {
         var rootElement = phet.joist.display.accessibleDOMElement;
         options.focusAfterCallback && AccessibilityUtil.getNextFocusable( rootElement ).focus();
       }
-    } );
+    };
+    this.addAccessibleInputListener( clickListener );
 
     this.mutate( options );
 
