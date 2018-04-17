@@ -199,7 +199,7 @@ define( function( require ) {
     this.activeElement = options.focusOnCloseNode || null;
 
     // a11y - close the dialog when pressing "escape"
-    var escapeListener = this.addAccessibleInputListener( {
+    var escapeListener = {
       keydown: function( event ) {
         if ( event.keyCode === KeyboardUtil.KEY_ESCAPE ) {
           event.preventDefault();
@@ -220,7 +220,8 @@ define( function( require ) {
           }
         }
       }
-    } );
+    };
+    this.addAccessibleInputListener( escapeListener );
 
     // @private - to be called on dispose()
     this.disposeDialog = function() {
