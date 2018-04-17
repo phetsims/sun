@@ -207,6 +207,7 @@ define( function( require ) {
       labelTagName: 'p'
     } );
     this.disposalActions.push( function() {
+      self.expandedTitleBar.removeAccessibleInputListener( a11yCollapseListener );
       self.expandedTitleBar.dispose();
     } );
     this.expandedBox.addChild( this.expandedTitleBar );
@@ -225,6 +226,7 @@ define( function( require ) {
       labelTagName: 'p'
     } );
     this.disposalActions.push( function() {
+      self.collapsedTitleBar.removeAccessibleInputListener( a11yExpandListener );
       self.collapsedTitleBar.dispose();
     } );
     this.collapsedBox.addChild( this.collapsedTitleBar );
@@ -240,7 +242,7 @@ define( function( require ) {
     }
 
     // a11y we always want accessible tab focus on the title, even when titleBarExpandeCollapse === false
-    this.collapsedTitleBar.addAccessibleInputListener( {
+    var a11yExpandListener = {
       click: function() {
         self.startEvent( 'user', 'expanded' );
         self.expandedProperty.value = true;
@@ -250,7 +252,8 @@ define( function( require ) {
 
         self.endEvent();
       }
-    } );
+    };
+    this.collapsedTitleBar.addAccessibleInputListener( a11yExpandListener )
 
     // Set the input listeners for the expandedTitleBar
     // a11y we need to focus on the collapsedTitleBar when the expandedTitleBar is clicked
@@ -267,7 +270,7 @@ define( function( require ) {
     }
 
     // a11y we always want accessible tab focus on the title
-    this.expandedTitleBar.addAccessibleInputListener( {
+    var a11yCollapseListener = {
       click: function() {
         self.startEvent( 'user', 'collapsed' );
         self.expandedProperty.value = false;
@@ -276,7 +279,8 @@ define( function( require ) {
         self.collapsedTitleBar.focus();
         self.endEvent();
       }
-    } );
+    };
+    this.expandedTitleBar.addAccessibleInputListener( a11yCollapseListener );
 
     this.addChild( this.titleNode );
     this.addChild( this.expandCollapseButton );
