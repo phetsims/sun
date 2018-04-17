@@ -80,11 +80,12 @@ define( function( require ) {
     RectangularButtonView.call( this, this.radioButtonGroupMemberModel, this.interactionStateProperty, options );
 
     // a11y - on reception of a change event, update the Property value
-    var accessibleChangeListener = this.addAccessibleInputListener( {
+    var accessibleChangeListener = {
       change: function( event ) {
         property.set( value );
       }
-    } );
+    };
+    this.addAccessibleInputListener( accessibleChangeListener );
 
     // a11y - Specify the default value for assistive technology, this attribute is needed in addition to 
     // the 'checked' property to mark this element as the default selection since 'checked' may be set before
