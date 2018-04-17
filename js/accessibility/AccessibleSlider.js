@@ -138,13 +138,14 @@ define( function( require ) {
           // @private {boolean} - is this the first key down event before keyup? drag is only started on first keydown
           this._firstKeyDown = true;
 
-          // @public (a11y) - handle all accessible event input
-          var accessibleInputListener = this.addAccessibleInputListener( {
+          // handle all accessible event input
+          var accessibleInputListener = {
             keydown: this.handleKeyDown.bind( this ),
             keyup: this.handleKeyUp.bind( this ),
             change: this.handleChange.bind( this ),
             blur: this.handleBlur.bind( this )
-          } );
+          };
+          this.addAccessibleInputListener( accessibleInputListener );
 
           // when the property changes, be sure to update the accessible input value and aria-valuetext which is read
           // by assistive technology when the value changes
