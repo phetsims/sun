@@ -141,8 +141,8 @@ define( function( require ) {
           // a callback that is added and removed from the timer depending on keystate
           var downCallback = null;
 
-          // @public (a11y) - handle all accessible event input
-          var accessibleInputListener = this.addAccessibleInputListener( {
+          // handle all accessible event input
+          var accessibleInputListener = {
             keydown: function( event ) {
               self.emitKeyState( event, true );
 
@@ -174,7 +174,8 @@ define( function( require ) {
               var formattedValue = options.a11yFormatValue( self._valueProperty.get() );
               readValue( formattedValue, options.a11yValuePattern );
             }
-          } );
+          };
+          this.addAccessibleInputListener( accessibleInputListener );
 
           // when the property changes, be sure to update the accessible input value
           var accessiblePropertyListener = function( value ) {
