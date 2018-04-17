@@ -54,7 +54,7 @@ define( function( require ) {
     listener && this.addListener( listener );
 
     // a11y - when the button is clicked with assistive technology, fire
-    this.clickListener = this.addAccessibleInputListener( {
+    var clickListener = {
       click: function() {
         if ( self.enabled ) {
           self.buttonModel.a11yClick( options.accessibleFire );
@@ -66,10 +66,11 @@ define( function( require ) {
       blur: function() {
         self.buttonModel.overProperty.value = false;
       }
-    } );
+    };
+    this.addAccessibleInputListener( clickListener );
 
     this.disposeRoundPushButton = function() {
-      self.removeAccessibleInputListener( this.clickListener );
+      self.removeAccessibleInputListener( clickListener );
       self.buttonModel.dispose();
     };
   }
