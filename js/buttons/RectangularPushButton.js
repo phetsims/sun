@@ -51,7 +51,7 @@ define( function( require ) {
     RectangularButtonView.call( this, this.buttonModel, new PushButtonInteractionStateProperty( this.buttonModel ), options );
 
     // a11y - press the button when 'enter' or 'spacebar' are pressed
-    this.clickListener = this.addAccessibleInputListener( {
+    var clickListener = {
       click: function() {
         if ( self.enabled ) {
           self.buttonModel.a11yClick( options.accessibleFire );
@@ -63,11 +63,12 @@ define( function( require ) {
       blur: function() {
         self.buttonModel.overProperty.value = false;
       }
-    } );
+    };
+    this.addAccessibleInputListener( clickListener );
 
     this.disposeRectangularPushButton = function() {
       this.buttonModel.dispose(); //TODO this fails when assertions are enabled, see sun#212
-      this.removeAccessibleInputListener( this.clickListener );
+      this.removeAccessibleInputListener( clickListener );
     };
   }
 
