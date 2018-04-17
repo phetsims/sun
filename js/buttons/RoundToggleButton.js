@@ -45,11 +45,12 @@ define( function( require ) {
     RoundButtonView.call( this, this.toggleButtonModel, new ToggleButtonInteractionStateProperty( this.toggleButtonModel ), options );
 
     // @private (a11y) - toggle the button when we receive the accessible click event
-    this.accessibleClickListener = this.addAccessibleInputListener( {
+    this.accessibleClickListener = {
       click: function( event ) {
         self.toggleButtonModel.toggle();
       }
-    } );
+    };
+    this.addAccessibleInputListener( this.accessibleClickListener );
   }
 
   sun.register( 'RoundToggleButton', RoundToggleButton );
