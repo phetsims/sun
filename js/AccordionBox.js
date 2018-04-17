@@ -253,7 +253,7 @@ define( function( require ) {
         self.endEvent();
       }
     };
-    this.collapsedTitleBar.addAccessibleInputListener( a11yExpandListener )
+    this.collapsedTitleBar.addAccessibleInputListener( a11yExpandListener );
 
     // Set the input listeners for the expandedTitleBar
     // a11y we need to focus on the collapsedTitleBar when the expandedTitleBar is clicked
