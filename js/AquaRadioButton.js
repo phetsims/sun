@@ -113,11 +113,12 @@ define( function( require ) {
     this.addInputListener( buttonListener );
 
     // a11y - input listener so that updates the state of the radio button with keyboard interaction
-    var changeListener = this.addAccessibleInputListener( {
+    var changeListener = {
       change: function() {
         fire();
       }
-    } );
+    };
+    this.addAccessibleInputListener( changeListener );
 
     // a11y - Specify the default value for assistive technology. This attribute is needed in addition to 
     // the 'checked' property to mark this element as the default selection since 'checked' may be set before
