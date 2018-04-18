@@ -185,9 +185,7 @@ define( function( require ) {
     // a11y - set the order of content for accessibility, title before content
     this.accessibleOrder = [ titleNode, dialogContent ];
 
-    // a11y - set the aria labelledby and describedby relations so that whenever focus enters the dialog, the title
-    // and description content are read in full
-    content.tagName && this.setAriaDescribedByNode( content );
+    // a11y - set the aria labelledby relation so that whenever focus enters the dialog the title is read
     if ( options.title ) {
       options.title.tagName && this.setAriaLabelledByNode( options.title );
     }
