@@ -64,6 +64,7 @@ define( function( require ) {
       // a11y
       tagName: 'input',
       inputType: 'radio',
+      labelTagName: 'label',
       appendDescription: true,
       appendLabel: true,
 
