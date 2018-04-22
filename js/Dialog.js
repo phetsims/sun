@@ -47,7 +47,6 @@ define( function( require ) {
       title: null, // {Node} title to be displayed at top
       titleAlign: 'center', // horizontal alignment of the title: {string} left, right or center
       titleSpacing: 20, // {number} how far the title is placed above the content
-      hasCloseButton: true, // whether to put a close 'X' button is upper-right corner TODO: delete
 
       // {function} which sets the dialog's position in global coordinates. called as
       // layoutStrategy( dialog, simBounds, screenBounds, scale )
@@ -135,53 +134,51 @@ define( function( require ) {
 
     Panel.call( this, dialogContent, options );
 
-    if ( options.hasCloseButton ) {
-      // shape and path for a custom close button
-      var closeButtonShape = new Shape();
-      closeButtonShape.moveTo( -CLOSE_BUTTON_WIDTH, -CLOSE_BUTTON_WIDTH ).lineTo( CLOSE_BUTTON_WIDTH, CLOSE_BUTTON_WIDTH );
-      closeButtonShape.moveTo( CLOSE_BUTTON_WIDTH, -CLOSE_BUTTON_WIDTH ).lineTo( -CLOSE_BUTTON_WIDTH, CLOSE_BUTTON_WIDTH );
+    // shape and path for a custom close button
+    var closeButtonShape = new Shape();
+    closeButtonShape.moveTo( -CLOSE_BUTTON_WIDTH, -CLOSE_BUTTON_WIDTH ).lineTo( CLOSE_BUTTON_WIDTH, CLOSE_BUTTON_WIDTH );
+    closeButtonShape.moveTo( CLOSE_BUTTON_WIDTH, -CLOSE_BUTTON_WIDTH ).lineTo( -CLOSE_BUTTON_WIDTH, CLOSE_BUTTON_WIDTH );
 
-      var closeButton = new Path( closeButtonShape, {
-        stroke: 'black',
-        lineCap: 'round',
-        lineWidth: 2,
-        cursor: 'pointer',
-        tandem: options.tandem.createTandem( 'closeButton' ),
-        phetioReadOnly: options.phetioReadOnly, // match the readOnly of the Dialog
-        phetioState: options.phetioState, // match the state transfer of the Dialog
+    var closeButton = new Path( closeButtonShape, {
+      stroke: 'black',
+      lineCap: 'round',
+      lineWidth: 2,
+      cursor: 'pointer',
+      tandem: options.tandem.createTandem( 'closeButton' ),
+      phetioReadOnly: options.phetioReadOnly, // match the readOnly of the Dialog
+      phetioState: options.phetioState, // match the state transfer of the Dialog
 
-        // a11y
-        tagName: 'button',
-        innerContent: closeString
-      } );
+      // a11y
+      tagName: 'button',
+      innerContent: closeString
+    } );
 
-      closeButton.addAccessibleInputListener( options.closeButtonListener );
+    closeButton.addAccessibleInputListener( options.closeButtonListener );
 
-      // touch/mouse areas for the close button
-      closeButton.touchArea = closeButton.bounds.dilatedXY(
-        options.closeButtonTouchAreaXDilation,
-        options.closeButtonTouchAreaYDilation
-      );
-      closeButton.mouseArea = closeButton.bounds.dilatedXY(
-        options.closeButtonMouseAreaXDilation,
-        options.closeButtonMouseAreaYDilation
-      );
+    // touch/mouse areas for the close button
+    closeButton.touchArea = closeButton.bounds.dilatedXY(
+      options.closeButtonTouchAreaXDilation,
+      options.closeButtonTouchAreaYDilation
+    );
+    closeButton.mouseArea = closeButton.bounds.dilatedXY(
+      options.closeButtonMouseAreaXDilation,
+      options.closeButtonMouseAreaYDilation
+    );
 
-      this.addChild( closeButton );
+    this.addChild( closeButton );
 
-      var updateClosePosition = function() {
-        closeButton.right = dialogContent.right + options.xMargin - options.closeButtonMargin;
-        closeButton.top = dialogContent.top - options.yMargin + options.closeButtonMargin;
-      };
+    var updateClosePosition = function() {
+      closeButton.right = dialogContent.right + options.xMargin - options.closeButtonMargin;
+      closeButton.top = dialogContent.top - options.yMargin + options.closeButtonMargin;
+    };
 
-      if ( options.resize ) {
-        dialogContent.on( 'bounds', updateClosePosition );
-        if ( options.title ) {
-          options.title.on( 'bounds', updateClosePosition );
-        }
+    if ( options.resize ) {
+      dialogContent.on( 'bounds', updateClosePosition );
+      if ( options.title ) {
+        options.title.on( 'bounds', updateClosePosition );
       }
-      updateClosePosition();
     }
+    updateClosePosition();
 
     var sim = window.phet.joist.sim;
 
@@ -239,16 +236,14 @@ define( function( require ) {
       self.sim.resizedEmitter.removeListener( self.updateLayout );
       self.removeAccessibleInputListener( escapeListener );
 
-      if ( options.hasCloseButton ) {
-        closeButton.dispose();
+      closeButton.dispose();
 
-        if ( options.resize ) {
-          dialogContent.off( 'bounds', updateClosePosition );
-          if ( options.title ) {
-            options.title.off( 'bounds', updateClosePosition );
-            titleNode.off( 'localBounds', updateTitlePosition );
-            content.off( 'bounds', updateTitlePosition );
-          }
+      if ( options.resize ) {
+        dialogContent.off( 'bounds', updateClosePosition );
+        if ( options.title ) {
+          options.title.off( 'bounds', updateClosePosition );
+          titleNode.off( 'localBounds', updateTitlePosition );
+          content.off( 'bounds', updateTitlePosition );
         }
       }
 
