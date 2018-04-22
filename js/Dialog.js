@@ -57,6 +57,10 @@ define( function( require ) {
       closeButtonBaseColor: '#d00', // TODO: delete
       closeButtonMargin: 10, // {number} how far away should the close button be from the panel border
       closeButtonListener: function() { self.hide(); },
+      closeButtonTouchAreaXDilation: 0,
+      closeButtonTouchAreaYDilation: 0,
+      closeButtonMouseAreaXDilation: 0,
+      closeButtonMouseAreaYDilation: 0,
 
       // {function|null} called after the dialog is shown, see https://github.com/phetsims/joist/issues/478
       showCallback: null,
@@ -153,13 +157,15 @@ define( function( require ) {
 
       closeButton.addAccessibleInputListener( options.closeButtonListener );
 
-      // mouse/touch areas for the close button
-      var areaX = closeButton.left - closeButton.width * 2;
-      var areaY = closeButton.top - options.closeButtonMargin / 2;
-      var width = closeButton.width * 4;
-      var height = closeButton.height + options.closeButtonMargin;
-      closeButton.mouseArea = Shape.rect( areaX, areaY, width, height );
-      closeButton.touchArea = closeButton.mouseArea;
+      // touch/mouse areas for the close button
+      closeButton.touchArea = closeButton.bounds.dilatedXY(
+        options.closeButtonTouchAreaXDilation,
+        options.closeButtonTouchAreaYDilation
+      );
+      closeButton.mouseArea = closeButton.bounds.dilatedXY(
+        options.closeButtonMouseAreaXDilation,
+        options.closeButtonMouseAreaYDilation
+      );
 
       this.addChild( closeButton );
 
