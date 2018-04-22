@@ -19,7 +19,6 @@ define( function( require ) {
   var Node = require( 'SCENERY/nodes/Node' );
   var Panel = require( 'SUN/Panel' );
   var Path = require( 'SCENERY/nodes/Path' );
-  var RectangularPushButton = require( 'SUN/buttons/RectangularPushButton' );
   var Shape = require( 'KITE/Shape' );
   var sun = require( 'SUN/sun' );
   var SunA11yStrings = require( 'SUN/SunA11yStrings' );
@@ -28,6 +27,9 @@ define( function( require ) {
 
   // strings
   var closeString = SunA11yStrings.close.value;
+
+  // constants
+  var CLOSE_BUTTON_WIDTH = 7;
 
   /**
    * @param {Node} content - The content to display inside the dialog (not including the title)
@@ -45,15 +47,15 @@ define( function( require ) {
       title: null, // {Node} title to be displayed at top
       titleAlign: 'center', // horizontal alignment of the title: {string} left, right or center
       titleSpacing: 20, // {number} how far the title is placed above the content
-      hasCloseButton: true, // whether to put a close 'X' button is upper-right corner
+      hasCloseButton: true, // whether to put a close 'X' button is upper-right corner TODO: delete
 
       // {function} which sets the dialog's position in global coordinates. called as
       // layoutStrategy( dialog, simBounds, screenBounds, scale )
       layoutStrategy: Dialog.DEFAULT_LAYOUT_STRATEGY,
 
       // close button options
-      closeButtonBaseColor: '#d00',
-      closeButtonMargin: 5, // {number} how far away should the close button be from the panel border
+      closeButtonBaseColor: '#d00', // TODO: delete
+      closeButtonMargin: 10, // {number} how far away should the close button be from the panel border
       closeButtonListener: function() { self.hide(); },
 
       // {function|null} called after the dialog is shown, see https://github.com/phetsims/joist/issues/478
@@ -130,30 +132,35 @@ define( function( require ) {
     Panel.call( this, dialogContent, options );
 
     if ( options.hasCloseButton ) {
+      // shape and path for a custom close button
+      var closeButtonShape = new Shape();
+      closeButtonShape.moveTo( -CLOSE_BUTTON_WIDTH, -CLOSE_BUTTON_WIDTH ).lineTo( CLOSE_BUTTON_WIDTH, CLOSE_BUTTON_WIDTH );
+      closeButtonShape.moveTo( CLOSE_BUTTON_WIDTH, -CLOSE_BUTTON_WIDTH ).lineTo( -CLOSE_BUTTON_WIDTH, CLOSE_BUTTON_WIDTH );
 
-      var crossSize = 10;
-      var crossNode = new Path( new Shape().moveTo( 0, 0 ).lineTo( crossSize, crossSize ).moveTo( 0, crossSize ).lineTo( crossSize, 0 ), {
-        stroke: '#fff',
-        lineWidth: 3
-      } );
-
-      var closeButton = new RectangularPushButton( {
-        content: crossNode,
-        baseColor: options.closeButtonBaseColor,
-        xMargin: 5,
-        yMargin: 5,
-        listener: options.closeButtonListener,
-        accessibleFire: function() {
-          self.focusActiveElement();
-        },
+      var closeButton = new Path( closeButtonShape, {
+        stroke: 'black',
+        lineCap: 'round',
+        lineWidth: 2,
+        cursor: 'pointer',
         tandem: options.tandem.createTandem( 'closeButton' ),
         phetioReadOnly: options.phetioReadOnly, // match the readOnly of the Dialog
         phetioState: options.phetioState, // match the state transfer of the Dialog
 
-        // a11y options
+        // a11y
         tagName: 'button',
         innerContent: closeString
       } );
+
+      closeButton.addAccessibleInputListener( options.closeButtonListener );
+
+      // mouse/touch areas for the close button
+      var areaX = closeButton.left - closeButton.width * 2;
+      var areaY = closeButton.top - options.closeButtonMargin / 2;
+      var width = closeButton.width * 4;
+      var height = closeButton.height + options.closeButtonMargin;
+      closeButton.mouseArea = Shape.rect( areaX, areaY, width, height );
+      closeButton.touchArea = closeButton.mouseArea;
+
       this.addChild( closeButton );
 
       var updateClosePosition = function() {
