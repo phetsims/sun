@@ -12,6 +12,7 @@ define( function( require ) {
 
   // modules
   var AccessibilityUtil = require( 'SCENERY/accessibility/AccessibilityUtil' );
+  var ButtonListener = require( 'SCENERY/input/ButtonListener' );
   var Display = require( 'SCENERY/display/Display' );
   var FullScreen = require( 'SCENERY/util/FullScreen' );
   var inherit = require( 'PHET_CORE/inherit' );
@@ -55,7 +56,7 @@ define( function( require ) {
       // close button options
       closeButtonBaseColor: '#d00', // TODO: delete
       closeButtonMargin: 10, // {number} how far away should the close button be from the panel border
-      closeButtonListener: function() { self.hide(); },
+      closeButtonListener: new ButtonListener( { down: function() { self.hide(); } } ),
       closeButtonTouchAreaXDilation: 0,
       closeButtonTouchAreaYDilation: 0,
       closeButtonMouseAreaXDilation: 0,
@@ -144,6 +145,7 @@ define( function( require ) {
       lineCap: 'round',
       lineWidth: 2,
       cursor: 'pointer',
+      pickable: true,
       tandem: options.tandem.createTandem( 'closeButton' ),
       phetioReadOnly: options.phetioReadOnly, // match the readOnly of the Dialog
       phetioState: options.phetioState, // match the state transfer of the Dialog
@@ -153,7 +155,7 @@ define( function( require ) {
       innerContent: closeString
     } );
 
-    closeButton.addAccessibleInputListener( options.closeButtonListener );
+    closeButton.addInputListener( options.closeButtonListener );
 
     // touch/mouse areas for the close button
     closeButton.touchArea = closeButton.bounds.dilatedXY(
