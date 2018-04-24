@@ -67,16 +67,30 @@ define( function( require ) {
      */
     a11yClick: function( endListener ) {
       if ( !this.downProperty.get() && this.enabledProperty.get() ) {
+
+        // ensure that button is 'over' so listener can be called while button is down
         this.overProperty.set( true );
         this.downProperty.set( true );
 
         var self = this;
         Timer.setTimeout( function() {
+
+          // no longer down, don't reset 'over' so button can be styled as long as it has focus
           self.downProperty.set( false );
-          self.overProperty.set( false );
 
           endListener && endListener();
         }, self._fireOnHoldInterval );
+      }
+    },
+
+    /**
+     * Button is no longer considered over on blur, unless blur was initiated by a 'down' event.
+     *
+     * @public
+     */
+    a11yBlur: function() {
+      if ( !this.downProperty.get() ) {
+        this.overProperty.value = false;
       }
     },
 

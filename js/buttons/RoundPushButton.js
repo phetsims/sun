@@ -64,7 +64,7 @@ define( function( require ) {
         self.buttonModel.overProperty.value = true;
       },
       blur: function() {
-        self.buttonModel.overProperty.value = false;
+        self.buttonModel.a11yBlur();
       }
     };
     this.addAccessibleInputListener( clickListener );
