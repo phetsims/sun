@@ -156,6 +156,9 @@ define( function( require ) {
     } );
 
     closeButton.addInputListener( options.closeButtonListener );
+    closeButton.addAccessibleInputListener( {
+      click: function() { self.hide(); }
+    } );
 
     // touch/mouse areas for the close button
     closeButton.touchArea = closeButton.bounds.dilatedXY(
