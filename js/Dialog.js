@@ -12,7 +12,6 @@ define( function( require ) {
 
   // modules
   var AccessibilityUtil = require( 'SCENERY/accessibility/AccessibilityUtil' );
-  var ButtonListener = require( 'SCENERY/input/ButtonListener' );
   var Display = require( 'SCENERY/display/Display' );
   var FullScreen = require( 'SCENERY/util/FullScreen' );
   var inherit = require( 'PHET_CORE/inherit' );
@@ -20,6 +19,8 @@ define( function( require ) {
   var Node = require( 'SCENERY/nodes/Node' );
   var Panel = require( 'SUN/Panel' );
   var Path = require( 'SCENERY/nodes/Path' );
+  var RectangularPushButton = require( 'SUN/buttons/RectangularPushButton' );
+  var RectangularButtonView = require( 'SUN/buttons/RectangularButtonView' );
   var Shape = require( 'KITE/Shape' );
   var sun = require( 'SUN/sun' );
   var SunA11yStrings = require( 'SUN/SunA11yStrings' );
@@ -54,9 +55,9 @@ define( function( require ) {
       layoutStrategy: Dialog.DEFAULT_LAYOUT_STRATEGY,
 
       // close button options
-      closeButtonBaseColor: '#d00', // TODO: delete
-      closeButtonMargin: 10, // {number} how far away should the close button be from the panel border
-      closeButtonListener: new ButtonListener( { down: function() { self.hide(); } } ),
+      closeButtonMargin: 10, // {number} margin between the close button and right edge of the dialog
+      closeButtonTopMargin: 10, // {number} margin between the close button and top edge of the dialog
+      closeButtonListener: function() { self.hide(); },
       closeButtonTouchAreaXDilation: 0,
       closeButtonTouchAreaYDilation: 0,
       closeButtonMouseAreaXDilation: 0,
@@ -135,29 +136,40 @@ define( function( require ) {
 
     Panel.call( this, dialogContent, options );
 
-    // shape and path for a custom close button
-    var closeButtonShape = new Shape();
-    closeButtonShape.moveTo( -CLOSE_BUTTON_WIDTH, -CLOSE_BUTTON_WIDTH ).lineTo( CLOSE_BUTTON_WIDTH, CLOSE_BUTTON_WIDTH );
-    closeButtonShape.moveTo( CLOSE_BUTTON_WIDTH, -CLOSE_BUTTON_WIDTH ).lineTo( -CLOSE_BUTTON_WIDTH, CLOSE_BUTTON_WIDTH );
+    // close button shape, an 'X'
+    var closeButtonShape = new Shape()
+      .moveTo( -CLOSE_BUTTON_WIDTH, -CLOSE_BUTTON_WIDTH )
+      .lineTo( CLOSE_BUTTON_WIDTH, CLOSE_BUTTON_WIDTH )
+      .moveTo( CLOSE_BUTTON_WIDTH, -CLOSE_BUTTON_WIDTH )
+      .lineTo( -CLOSE_BUTTON_WIDTH, CLOSE_BUTTON_WIDTH );
 
-    var closeButton = new Path( closeButtonShape, {
+    var closeButtonIcon = new Path( closeButtonShape, {
       stroke: 'black',
       lineCap: 'round',
-      lineWidth: 2,
-      cursor: 'pointer',
-      pickable: true,
+      lineWidth: 2
+    } );
+
+    var closeButton = new RectangularPushButton( {
+
+      // RectangularPushButton
+      content: closeButtonIcon,
+      baseColor: 'transparent',
+      buttonAppearanceStrategy: RectangularButtonView.FlatAppearanceStrategy,
+      xMargin: 0,
+      yMargin: 0,
+      listener: options.closeButtonListener,
+
+      // phet-io
       tandem: options.tandem.createTandem( 'closeButton' ),
       phetioReadOnly: options.phetioReadOnly, // match the readOnly of the Dialog
       phetioState: options.phetioState, // match the state transfer of the Dialog
 
       // a11y
       tagName: 'button',
-      innerContent: closeString
-    } );
-
-    closeButton.addInputListener( options.closeButtonListener );
-    closeButton.addAccessibleInputListener( {
-      click: function() { self.hide(); }
+      innerContent: closeString,
+      accessibleFire: function() {
+        self.focusActiveElement();
+      }
     } );
 
     // touch/mouse areas for the close button
@@ -200,7 +212,7 @@ define( function( require ) {
     // a11y - set the order of content for accessibility, title before content
     this.accessibleOrder = [ titleNode, dialogContent ];
 
-    // a11y - set the aria labelledby relation so that whenever focus enters the dialog the title is read
+    // a11y - set the aria-labelledby relation so that whenever focus enters the dialog the title is read
     if ( options.title ) {
       options.title.tagName && this.setAriaLabelledByNode( options.title );
     }
