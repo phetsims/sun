@@ -184,18 +184,18 @@ define( function( require ) {
 
     this.addChild( closeButton );
 
-    var updateClosePosition = function() {
+    var updateCloseButtonPosition = function() {
       closeButton.right = dialogContent.right + options.xMargin - options.closeButtonMargin;
       closeButton.top = dialogContent.top - options.yMargin + options.closeButtonMargin;
     };
 
     if ( options.resize ) {
-      dialogContent.on( 'bounds', updateClosePosition );
+      dialogContent.on( 'bounds', updateCloseButtonPosition );
       if ( options.title ) {
-        options.title.on( 'bounds', updateClosePosition );
+        options.title.on( 'bounds', updateCloseButtonPosition );
       }
     }
-    updateClosePosition();
+    updateCloseButtonPosition();
 
     var sim = window.phet.joist.sim;
 
@@ -256,9 +256,9 @@ define( function( require ) {
       closeButton.dispose();
 
       if ( options.resize ) {
-        dialogContent.off( 'bounds', updateClosePosition );
+        dialogContent.off( 'bounds', updateCloseButtonPosition );
         if ( options.title ) {
-          options.title.off( 'bounds', updateClosePosition );
+          options.title.off( 'bounds', updateCloseButtonPosition );
           titleNode.off( 'localBounds', updateTitlePosition );
           content.off( 'bounds', updateTitlePosition );
         }
