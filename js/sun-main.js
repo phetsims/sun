@@ -9,6 +9,7 @@ define( function( require ) {
   // modules
   var ButtonsScreenView = require( 'SUN/demo/ButtonsScreenView' );
   var ComponentsScreenView = require( 'SUN/demo/ComponentsScreenView' );
+  var DialogsScreenView = require( 'SUN/demo/DialogsScreenView' );
   var MemoryTestsScreenView = require( 'SUN/demo/MemoryTestsScreenView' );
   var Property = require( 'AXON/Property' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
@@ -54,6 +55,19 @@ define( function( require ) {
           homeScreenIcon: createScreenIcon( 'yellow' )
         }
       ),
+
+      // Components screen
+      new Screen(
+        function() {return {};},
+        function( model ) {return new DialogsScreenView();},
+        {
+          name: 'Dialogs',
+          backgroundColorProperty: new Property( sunQueryParameters.backgroundColor ),
+          homeScreenIcon: createScreenIcon( 'white' )
+        }
+      ),
+
+      // Dialogs screen
 
       // Memory Test screen
       new Screen(
