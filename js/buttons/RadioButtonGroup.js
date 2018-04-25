@@ -229,7 +229,6 @@ define( function( require ) {
       if ( currentContent.label ) {
         var label = currentContent.label;
         var labelOrientation = ( options.labelAlign === 'bottom' || options.labelAlign === 'top' ) ? 'vertical' : 'horizontal';
-        //TODO this expression looks buggy, see https://github.com/phetsims/sun/issues/353
         var labelChildren = ( options.labelAlign === 'left' || options.labelAlign === 'top' ) ? [ label, radioButton ] : [ radioButton, label ];
         button = new LayoutBox( {
           children: labelChildren,
