@@ -67,10 +67,10 @@ define( function( require ) {
       message( 'Radio button ' + value + ' pressed' );
     } );
     var radioButtonContent = [
-      { value: 'ONE', node: new Text( 'ONE', { font: new Font( { size: 32 } ) } ) }, // bigger than the others
-      { value: 'TWO', node: new Text( 'TWO', { font: BUTTON_FONT } ) },
-      { value: 'THREE', node: new Text( 'THREE', { font: BUTTON_FONT } ) },
-      { value: '4', node: new Text( '4', { font: BUTTON_FONT } ) }
+      { value: 'ONE', node: new Text( 'ONE', { font: new Font( { size: 32 } ) } ), label: new Text( 'one' ) }, // bigger than the others
+      { value: 'TWO', node: new Text( 'TWO', { font: BUTTON_FONT } ), label: new Text( 'two' ) },
+      { value: 'THREE', node: new Text( 'THREE', { font: BUTTON_FONT } ), label: new Text( 'three' ) },
+      { value: '4', node: new Text( '4', { font: BUTTON_FONT } ), label: new Text( 'four' ) }
     ];
     var radioButtonGroup = new RadioButtonGroup( radioButtonProperty, radioButtonContent, {
       selectedLineWidth: 4,
