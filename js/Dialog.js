@@ -184,6 +184,9 @@ define( function( require ) {
 
     this.addChild( closeButton );
 
+    // @protected (a11y)
+    this.closeButton = closeButton;
+
     var updateCloseButtonPosition = function() {
       closeButton.right = dialogContent.right + options.xMargin - options.closeButtonMargin;
       closeButton.top = dialogContent.top - options.yMargin + options.closeButtonMargin;
@@ -354,7 +357,7 @@ define( function( require ) {
     },
 
     /**
-     * If there is an active element, focus it.  Should almost always be closed after the Dialog has been closed.
+     * If there is an active element, focus it.  Should almost always be called after the Dialog has been closed.
      *
      * @public
      * @a11y
