@@ -6,6 +6,8 @@
  *
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  * @author Sam Reid (PhET Interactive Simulations)
+ * @author Andrea Lin
+ * @author Chris Malley (PixelZoom, Inc.)
  */
 define( function( require ) {
   'use strict';
