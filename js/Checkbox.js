@@ -141,6 +141,7 @@ define( function( require ) {
     this.checkboxCheckedListener = function( checked ) {
       self.checkedNode.visible = checked;
       self.uncheckedNode.visible = !checked;
+      self.accessibleChecked = checked;
     };
     property.link( this.checkboxCheckedListener );
 

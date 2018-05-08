@@ -15,7 +15,7 @@
  * Screen reader support for aria-valuetext on spin buttons is too poor to use. Until there is better support, we
  * are using alerts to read the value with units at the right time, see
  * https://github.com/phetsims/gravity-force-lab-basics/issues/62
- * 
+ *
  * @author Jesse Greenberg (PhET Interactive Simulations)
  * @author Michael Barlow (PhET Interactive Simulations)
  */
@@ -172,7 +172,7 @@ define( function( require ) {
 
               // on focus, read the current value of the input
               var formattedValue = options.a11yFormatValue( self._valueProperty.get() );
-              readValue( formattedValue, options.a11yValuePattern );
+              speakValue( formattedValue, options.a11yValuePattern );
             }
           };
           this.addAccessibleInputListener( accessibleInputListener );
@@ -180,7 +180,7 @@ define( function( require ) {
           // when the property changes, be sure to update the accessible input value
           var accessiblePropertyListener = function( value ) {
             var formattedValue = options.a11yFormatValue( value );
-            readValue( formattedValue, options.a11yValuePattern );
+            speakValue( formattedValue, options.a11yValuePattern );
           };
           this._valueProperty.link( accessiblePropertyListener );
 
@@ -277,7 +277,7 @@ define( function( require ) {
    * @param {string} pattern
    * @return {string}
    */
-  function readValue( formattedValue, pattern ) {
+  function speakValue( formattedValue, pattern ) {
     var valueText = StringUtils.fillIn( pattern, {
       value: formattedValue
     } );
