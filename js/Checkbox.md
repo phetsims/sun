@@ -14,7 +14,7 @@ Images from usage (linked to sims)
 <input id=”energy-symbols” type=”checkbox” notchecked>
 <label for=”energy-symbols”>Energy Symbols</label>
 ```
-![alt text](../../docs/images/checkbox-energy-symbols.png "Energy Symbols Checkbox")
+![alt text](../docs/images/checkbox-energy-symbols.png "Energy Symbols Checkbox")
 
 | Primary Element        | Label | Help Text/Content |
 | ------------- |:-------------:| -----:|
@@ -26,7 +26,7 @@ Images from usage (linked to sims)
 <input id=“counting-numbers” type=“checkbox” aria-label=“Counting numbers” notchecked>
 ```
 
-![alt text](../../docs/images/checkbox-123.png "Numeric Checkbox")
+![alt text](../docs/images/checkbox-123.png "Numeric Checkbox")
 
 | Primary Element        | Label | Help Text |
 | ------------- |:-------------:| -----:|
