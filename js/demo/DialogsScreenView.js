@@ -68,7 +68,8 @@ define( function( require ) {
     } );
     return new Dialog( contentNode, {
       modal: modal,
-      hasCloseButton: !modal
+      hasCloseButton: !modal,
+      title: new Text( 'title title title title title title', { font: new Font( { size: 32 } ) } ),
     } );
   };
 
