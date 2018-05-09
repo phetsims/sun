@@ -50,7 +50,7 @@ define( function( require ) {
       modal: true, // {boolean} modal dialogs prevent interaction with the rest of the sim while open
       title: null, // {Node} title to be displayed at top
       titleAlign: 'center', // horizontal alignment of the title: {string} left, right or center
-      titleSpacing: 20, // {number} how far the title is placed above the content
+      ySpacing: 20, // {number} how far the title is placed above the content
 
       // {function} which sets the dialog's position in global coordinates. called as
       // layoutStrategy( dialog, simBounds, screenBounds, scale )
@@ -126,7 +126,7 @@ define( function( require ) {
           default:
             throw new Error( 'unknown titleAlign for Dialog: ' + options.titleAlign );
         }
-        titleNode.bottom = content.top - options.titleSpacing;
+        titleNode.bottom = content.top - options.ySpacing;
       };
 
       if ( options.resize ) {
