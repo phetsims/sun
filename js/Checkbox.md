@@ -4,7 +4,7 @@ Used in the following simulations:
 
 Images from usage (linked to sims)
 
-[Options](Checkbox.js#L39-L69)
+[Options in Checkbox.js](Checkbox.js#L39-L69)
 
 * A11y role: checkbox
 * Design Pattern: Spacebar
