@@ -10,6 +10,7 @@ define( function( require ) {
 
   // modules
   var AccessibleSlider = require( 'SUN/accessibility/AccessibleSlider' );
+  var InstanceRegistry = require( 'PHET_CORE/documentation/InstanceRegistry' );
   var Dimension2 = require( 'DOT/Dimension2' );
   var FocusHighlightFromNode = require( 'SCENERY/accessibility/FocusHighlightFromNode' );
   var HSliderIO = require( 'SUN/HSliderIO' );
@@ -280,6 +281,9 @@ define( function( require ) {
 
     // mix accessible slider functionality into HSlider
     this.initializeAccessibleSlider( valueProperty, this.enabledRangeProperty, this.enabledProperty, options );
+
+    // support for binder documentation, stripped out in builds and only runs when ?binder is specified
+    assert && phet.chipper.queryParameters.binder && InstanceRegistry.registerDataURL( 'HSlider', this );
   }
 
   sun.register( 'HSlider', HSlider );

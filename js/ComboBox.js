@@ -15,6 +15,7 @@ define( function( require ) {
   // modules
   var ComboBoxIO = require( 'SUN/ComboBoxIO' );
   var ComboBoxItemNodeIO = require( 'SUN/ComboBoxItemNodeIO' );
+  var InstanceRegistry = require( 'PHET_CORE/documentation/InstanceRegistry' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Line = require( 'SCENERY/nodes/Line' );
   var Node = require( 'SCENERY/nodes/Node' );
@@ -276,6 +277,9 @@ define( function( require ) {
       buttonNode.dispose();
       property.unlink( propertyObserver );
     };
+
+    // support for binder documentation, stripped out in builds and only runs when ?binder is specified
+    assert && phet.chipper.queryParameters.binder && InstanceRegistry.registerDataURL( 'ComboBox', this );
   }
 
   sun.register( 'ComboBox', ComboBox );

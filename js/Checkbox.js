@@ -17,6 +17,7 @@ define( function( require ) {
   var sun = require( 'SUN/sun' );
   var Tandem = require( 'TANDEM/Tandem' );
   var Text = require( 'SCENERY/nodes/Text' );
+  var InstanceRegistry = require( 'PHET_CORE/documentation/InstanceRegistry' );
 
   // phet-io modules
   var CheckboxIO = require( 'SUN/CheckboxIO' );
@@ -147,6 +148,9 @@ define( function( require ) {
 
     // Apply additional options
     this.mutate( options );
+
+    // support for binder documentation, stripped out in builds and only runs when ?binder is specified
+    assert && phet.chipper.queryParameters.binder && InstanceRegistry.registerDataURL( 'Checkbox', this );
   }
 
   sun.register( 'Checkbox', Checkbox );
