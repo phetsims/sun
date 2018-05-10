@@ -221,7 +221,7 @@ define( function( require ) {
         /**
          * Returns whether or not the shift key is currently held down on this slider, changing the size of step.
          * @public
-         * 
+         *
          * @return {boolean}
          */
         getShiftKeyDown: function() {
@@ -294,7 +294,7 @@ define( function( require ) {
               // keydown is the start of the drag
               this._firstKeyDown && this._startDrag();
               this._firstKeyDown = false;
-            
+
 
               var newValue = this._valueProperty.get();
               if ( code === KeyboardUtil.KEY_END || code === KeyboardUtil.KEY_HOME ) {
