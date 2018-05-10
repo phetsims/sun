@@ -19,8 +19,13 @@ define( function( require ) {
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var Shape = require( 'KITE/Shape' );
   var sun = require( 'SUN/sun' );
+  var SunA11yStrings = require( 'SUN/SunA11yStrings' );
   var Tandem = require( 'TANDEM/Tandem' );
   var Text = require( 'SCENERY/nodes/Text' );
+
+  // a11y strings
+  var accordionBoxCollapseString = SunA11yStrings.accordionBoxCollapse.value;
+  var accordionBoxExpandString = SunA11yStrings.accordionBoxExpand.value;
 
   /**
    * @constructor
@@ -92,10 +97,15 @@ define( function( require ) {
 
       // a11y options
       tagName: 'div',
-      accessibleAccordionTitle: 'Accordion Box',
 
-
+      // Options will be provided to both title bar nodes
+      titleBarOptions: null
     }, options );
+
+    options.titleBarOptions = _.extend( {
+      // a11y
+      tagName: 'button'
+    }, options.titleBarOptions );
 
     // verify string options
     assert && assert( options.buttonAlign === 'left' || options.buttonAlign === 'right' );
@@ -175,8 +185,7 @@ define( function( require ) {
     // @private {Rectangle} - Expanded box
     this.expandedBox = new Rectangle( _.extend( {
       cornerRadius: options.cornerRadius,
-      tandem: options.tandem.createTandem( 'expandedBox' ),
-      tagName: 'div' // a11y
+      tandem: options.tandem.createTandem( 'expandedBox' )
     }, boxOptions ) );
     this.disposalActions.push( function() {
       self.expandedBox.dispose();
@@ -194,18 +203,14 @@ define( function( require ) {
     this.addChild( this.collapsedBox );
 
     // @private {Path}
-    this.expandedTitleBar = new Path( null, {
+    this.expandedTitleBar = new Path( null, _.extend( {
       fill: options.titleBarFill,
       stroke: options.titleBarStroke,
       lineWidth: options.lineWidth, // use same lineWidth as box, for consistent look
       cursor: options.cursor,
       tandem: options.tandem.createTandem( 'expandedTitleBar' ),
-
-      // a11y
-      tagName: 'button',
-      labelContent: options.accessibleAccordionTitle,
-      labelTagName: 'p'
-    } );
+      innerContent: accordionBoxCollapseString
+    }, options.titleBarOptions ) );
     this.disposalActions.push( function() {
       self.expandedTitleBar.removeAccessibleInputListener( a11yCollapseListener );
       self.expandedTitleBar.dispose();
@@ -214,17 +219,13 @@ define( function( require ) {
 
     // @private {Rectangle} - Collapsed title bar has corners that match the box. Clicking it operates like
     //                        expand/collapse button.
-    this.collapsedTitleBar = new Rectangle( {
+    this.collapsedTitleBar = new Rectangle( _.extend( {
       cornerRadius: options.cornerRadius,
       fill: options.titleBarFill,
       cursor: options.cursor,
       tandem: options.tandem.createTandem( 'collapsedTitleBar' ),
-
-      // a11y
-      tagName: 'button',
-      labelContent: options.accessibleAccordionTitle,
-      labelTagName: 'p'
-    } );
+      innerContent: accordionBoxExpandString
+    }, options.titleBarOptions ) );
     this.disposalActions.push( function() {
       self.collapsedTitleBar.removeAccessibleInputListener( a11yExpandListener );
       self.collapsedTitleBar.dispose();

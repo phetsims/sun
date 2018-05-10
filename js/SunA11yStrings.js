@@ -14,6 +14,12 @@ define( function( require ) {
   var sun = require( 'SUN/sun' );
 
   var SunA11yStrings = {
+    accordionBoxCollapse: {
+      value: 'Collapse'
+    },
+    accordionBoxExpand: {
+      value: 'Expand'
+    },
 
     // dialogs
     close: {

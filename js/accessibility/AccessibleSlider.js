@@ -74,7 +74,11 @@ define( function( require ) {
             ariaOrientation: 'horizontal', // specify orientation, read by assistive technology
             keyboardStep: ( enabledRangeProperty.get().max - enabledRangeProperty.get().min ) / 20,
             shiftKeyboardStep: ( enabledRangeProperty.get().max - enabledRangeProperty.get().min ) / 100,
-            pageKeyboardStep: ( enabledRangeProperty.get().max - enabledRangeProperty.get().min ) / 10
+            pageKeyboardStep: ( enabledRangeProperty.get().max - enabledRangeProperty.get().min ) / 10,
+
+            // map the valueProperty value to another that will be read by the assistive device valueProperty changes
+            // @param {number}
+            accessibleMapValue: function( value ) { return value; },
           };
           options = _.extend( {}, defaults, options );
 
@@ -152,8 +156,11 @@ define( function( require ) {
           var accessiblePropertyListener = function( value ) {
             self.inputValue = value;
 
+            // optionally map the output value for AT
+            var mappedValue = options.accessibleMapValue( value );
+
             // format the value text for reading
-            var formattedValue = Util.toFixed( value, options.accessibleDecimalPlaces );
+            var formattedValue = Util.toFixed( mappedValue, options.accessibleDecimalPlaces );
             var valueText = StringUtils.fillIn( options.accessibleValuePattern, {
               value: formattedValue
             } );
@@ -214,7 +221,7 @@ define( function( require ) {
         /**
          * Returns whether or not the shift key is currently held down on this slider, changing the size of step.
          * @public
-         * 
+         *
          * @return {boolean}
          */
         getShiftKeyDown: function() {
@@ -287,7 +294,7 @@ define( function( require ) {
               // keydown is the start of the drag
               this._firstKeyDown && this._startDrag();
               this._firstKeyDown = false;
-            
+
 
               var newValue = this._valueProperty.get();
               if ( code === KeyboardUtil.KEY_END || code === KeyboardUtil.KEY_HOME ) {

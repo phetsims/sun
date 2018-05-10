@@ -42,8 +42,8 @@ define( function( require ) {
    * @param {Array} contentArray an array of objects that have two keys each: value and node the node key holds a
    * scenery Node that is the content for a given radio button. the value key should hold the value that the property
    * takes on for the corresponding node to be selected. Optionally, these objects can have an attribute 'label', which
-   * is a {Node} used to label the button. You can also pass select a11y options through,
-   * see "new RadioButtonGroupMember" construction.
+   * is a {Node} used to label the button. You can also pass some specific a11y options
+   * (labelContent/descriptionContent) through, see "new RadioButtonGroupMember" construction.
    * @param {Object} [options]
    * @constructor
    */
