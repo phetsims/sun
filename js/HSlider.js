@@ -85,7 +85,7 @@ define( function( require ) {
       startDrag: function() {}, // called when a drag sequence starts
       endDrag: function() {}, // called when a drag sequence ends
       constrainValue: function( value ) { return value; }, // called before valueProperty is set
-      
+
       enabledProperty: null, // see below
       enabledRangeProperty: null, // see below
 
@@ -283,7 +283,7 @@ define( function( require ) {
     this.initializeAccessibleSlider( valueProperty, this.enabledRangeProperty, this.enabledProperty, options );
 
     // support for binder documentation, stripped out in builds and only runs when ?binder is specified
-    assert && phet.chipper.queryParameters.binder && InstanceRegistry.registerDataURL( 'HSlider', this );
+    assert && phet.chipper.queryParameters.binder && InstanceRegistry.registerDataURL( 'sun', 'HSlider', this );
   }
 
   sun.register( 'HSlider', HSlider );

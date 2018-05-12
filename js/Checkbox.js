@@ -150,7 +150,7 @@ define( function( require ) {
     this.mutate( options );
 
     // support for binder documentation, stripped out in builds and only runs when ?binder is specified
-    assert && phet.chipper.queryParameters.binder && InstanceRegistry.registerDataURL( 'Checkbox', this );
+    assert && phet.chipper.queryParameters.binder && InstanceRegistry.registerDataURL( 'sun', 'Checkbox', this );
   }
 
   sun.register( 'Checkbox', Checkbox );

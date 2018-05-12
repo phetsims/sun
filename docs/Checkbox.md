@@ -1,11 +1,3 @@
-# [Checkbox](Checkbox.js)
-
-Used in the following simulations:
-
-Images from usage (linked to sims)
-
-[Options in Checkbox.js](Checkbox.js#L39-L69)
-
 * A11y role: checkbox
 * Design Pattern: Spacebar
 
@@ -14,7 +6,7 @@ Images from usage (linked to sims)
 <input id=”energy-symbols” type=”checkbox” notchecked>
 <label for=”energy-symbols”>Energy Symbols</label>
 ```
-![alt text](../docs/images/checkbox-energy-symbols.png "Energy Symbols Checkbox")
+![alt text](images/checkbox-energy-symbols.png "Energy Symbols Checkbox")
 
 | Primary Element        | Label | Help Text/Content |
 | ------------- |:-------------:| -----:|
@@ -23,10 +15,10 @@ Images from usage (linked to sims)
 ## Checkbox without visual label/string (option with aria-label)
 
 ```html
-<input id=“counting-numbers” type=“checkbox” aria-label=“Counting numbers” notchecked>
+<input id="counting-numbers" type="checkbox" aria-label="Counting numbers" notchecked>
 ```
 
-![alt text](../docs/images/checkbox-123.png "Numeric Checkbox")
+![alt text](images/checkbox-123.png "Numeric Checkbox")
 
 | Primary Element        | Label | Help Text |
 | ------------- |:-------------:| -----:|
