@@ -1,11 +1,11 @@
-// Copyright 2013-2017, University of Colorado Boulder
+// Copyright 2018, University of Colorado Boulder
 
 /**
- * Shows one node if the property is true or another node if the property is false.
- * Used to indicate boolean state.
+ * Display one of N nodes based on a given Property.  Maintains the bounds of the union of children for layout.
+ * Supports null and undefined as possible values.  Will not work correctly if the children are changed externally
+ * after instantiation (manages its own children and their visibility).
  *
  * @author Sam Reid (PhET Interactive Simulations)
- * @author Chris Malley (PixelZoom, Inc.)
  */
 define( function( require ) {
   'use strict';
@@ -14,52 +14,52 @@ define( function( require ) {
   var inherit = require( 'PHET_CORE/inherit' );
   var Node = require( 'SCENERY/nodes/Node' );
   var sun = require( 'SUN/sun' );
-  var Tandem = require( 'TANDEM/Tandem' );
 
   /**
-   * @param {Node} trueNode
-   * @param {Node} falseNode
-   * @param {Property.<boolean>} booleanProperty
+   * @param {Object[]} elements - Array of {value:{Object}, node:{Node}}
+   * @param {Property.<Object>} valueProperty
    * @param {Object} [options]
    * @constructor
    */
-  function ToggleNode( trueNode, falseNode, booleanProperty, options ) {
-
+  function ToggleNode( elements, valueProperty, options ) {
+    assert && assert( Array.isArray( elements ), 'elements should be an array' );
+    if ( assert ) {
+      elements.forEach( function( element ) {
+        var keys = _.keys( element );
+        assert( keys.length === 2, 'each element should have two keys' );
+        assert( keys[ 0 ] === 'value' || keys[ 1 ] === 'value', 'element should have a value key' );
+        assert( element.node instanceof Node, 'element.node should be a node' );
+      } );
+    }
     options = _.extend( {
 
-      // align centers of the nodes, see https://github.com/phetsims/sun/issues/2
-      alignIcons: function( trueNode, falseNode ) {
-        falseNode.center = trueNode.center;
-      },
-
-      tandem: Tandem.required
+      // By default, line up the centers of all nodes with the center of the first node.  NOTE this is different than
+      // in ToggleNode
+      alignChildren: ToggleNode.CENTER
     }, options );
 
-    options.alignIcons( trueNode, falseNode );
-
-    Node.call( this );
-
-    this.addChild( falseNode );
-    this.addChild( trueNode );
-
-    // initial visibility of nodes
-    trueNode.setVisible( booleanProperty.get() );
-    falseNode.setVisible( !booleanProperty.get() );
-
-    // swap visibility of trueNode and falseNode when booleanProperty changes, must be removed in dispose
-    var visibilityListener = function() {
-      trueNode.swapVisibility( falseNode );
-    };
-    booleanProperty.lazyLink( visibilityListener );
-
-    // @private - called by dispose
-    this.disposeToggleNode = function() {
-      if ( booleanProperty.hasListener( visibilityListener ) ) {
-        booleanProperty.unlink( visibilityListener );
+    var valueChangeListener = function( value ) {
+      var matchCount = 0;
+      for ( var i = 0; i < elements.length; i++ ) {
+        var element = elements[ i ];
+        var visible = element.value === value;
+        element.node.visible = visible;
+        if ( visible ) {
+          matchCount++;
+        }
       }
+      assert && assert( matchCount === 1, 'Wrong number of matches: ' + matchCount );
     };
+    valueProperty.link( valueChangeListener );
 
-    this.mutate( options );
+    options.children = _.map( elements, 'node' );
+    options.alignChildren( options.children );
+    Node.call( this, options );
+
+    // @private
+    this.disposeToggleNode = function() {
+      valueProperty.unlink( valueChangeListener );
+    };
   }
 
   sun.register( 'ToggleNode', ToggleNode );
@@ -73,6 +73,40 @@ define( function( require ) {
     dispose: function() {
       this.disposeToggleNode();
       Node.prototype.dispose.call( this );
+    }
+  }, {
+
+    /**
+     * Center the latter nodes on the x center of the first node.
+     * @param {Node[]} children
+     * @public
+     */
+    HORIZONTAL: function( children ) {
+      for ( var i = 1; i < children.length; i++ ) {
+        children[ i ].centerX = children[ 0 ].centerX;
+      }
+    },
+
+    /**
+     * Center the latter nodes on the y center of the first node.
+     * @param {Node[]} children
+     * @public
+     */
+    VERTICAL: function( children ) {
+      for ( var i = 1; i < children.length; i++ ) {
+        children[ i ].centerY = children[ 0 ].centerY;
+      }
+    },
+
+    /**
+     * Center the latter nodes on the x,y center of the first node.
+     * @param {Node[]} children
+     * @public
+     */
+    CENTER: function( children ) {
+      for ( var i = 1; i < children.length; i++ ) {
+        children[ i ].center = children[ 0 ].center;
+      }
     }
   } );
 } );
