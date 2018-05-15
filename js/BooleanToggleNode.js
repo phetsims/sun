@@ -23,13 +23,6 @@ define( function( require ) {
    * @constructor
    */
   function BooleanToggleNode( trueNode, falseNode, booleanProperty, options ) {
-
-    options = _.extend( {
-
-      // For compatibility with prior usage, we align the x coordinate
-      alignChildren: ToggleNode.HORIZONTAL
-    }, options );
-
     ToggleNode.call( this, [
       { value: true, node: trueNode },
       { value: false, node: falseNode }

@@ -35,8 +35,7 @@ define( function( require ) {
 
     options = _.extend( {
 
-      // By default, line up the centers of all nodes with the center of the first node.
-      // NOTE this is different than in ToggleNode
+      // By default, line up the centers of all nodes with the center of the first node (horizontally and vertically)
       alignChildren: ToggleNode.CENTER
     }, options );
 
