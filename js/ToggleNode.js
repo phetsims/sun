@@ -82,6 +82,7 @@ define( function( require ) {
      * Center the latter nodes on the x center of the first node.
      * @param {Node[]} children
      * @public
+     * @static
      */
     HORIZONTAL: function( children ) {
       for ( var i = 1; i < children.length; i++ ) {
@@ -93,6 +94,7 @@ define( function( require ) {
      * Center the latter nodes on the y center of the first node.
      * @param {Node[]} children
      * @public
+     * @static
      */
     VERTICAL: function( children ) {
       for ( var i = 1; i < children.length; i++ ) {
@@ -104,6 +106,7 @@ define( function( require ) {
      * Center the latter nodes on the x,y center of the first node.
      * @param {Node[]} children
      * @public
+     * @static
      */
     CENTER: function( children ) {
       for ( var i = 1; i < children.length; i++ ) {
