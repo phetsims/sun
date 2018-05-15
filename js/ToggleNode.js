@@ -22,6 +22,7 @@ define( function( require ) {
    * @constructor
    */
   function ToggleNode( elements, valueProperty, options ) {
+
     assert && assert( Array.isArray( elements ), 'elements should be an array' );
     if ( assert ) {
       elements.forEach( function( element ) {
@@ -31,10 +32,11 @@ define( function( require ) {
         assert( element.node instanceof Node, 'element.node should be a node' );
       } );
     }
+
     options = _.extend( {
 
-      // By default, line up the centers of all nodes with the center of the first node.  NOTE this is different than
-      // in ToggleNode
+      // By default, line up the centers of all nodes with the center of the first node.
+      // NOTE this is different than in ToggleNode
       alignChildren: ToggleNode.CENTER
     }, options );
 
