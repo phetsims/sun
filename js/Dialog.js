@@ -215,7 +215,9 @@ define( function( require ) {
     this.sim = sim;
 
     // a11y - set the order of content for accessibility, title before content
-    this.accessibleOrder = [ titleNode, dialogContent ];
+    this.accessibleOrder = [ titleNode, dialogContent ].filter( function( node ) {
+      return node !== undefined;
+    } );
 
     // a11y - set the aria-labelledby relation so that whenever focus enters the dialog the title is read
     if ( options.title ) {

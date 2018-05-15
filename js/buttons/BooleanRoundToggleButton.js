@@ -11,7 +11,7 @@ define( function( require ) {
   var RoundToggleButton = require( 'SUN/buttons/RoundToggleButton' );
   var sun = require( 'SUN/sun' );
   var Tandem = require( 'TANDEM/Tandem' );
-  var ToggleNode = require( 'SUN/ToggleNode' );
+  var BooleanToggleNode = require( 'SUN/BooleanToggleNode' );
 
   /**
    * @param {Node} trueNode
@@ -27,7 +27,7 @@ define( function( require ) {
     }, options );
 
     assert && assert( !options.content, 'BooleanRoundToggleButton sets content' );
-    options.content = new ToggleNode( trueNode, falseNode, booleanProperty, {
+    options.content = new BooleanToggleNode( trueNode, falseNode, booleanProperty, {
       tandem: options.tandem.createTandem( 'toggleNode' )
     } );
 
