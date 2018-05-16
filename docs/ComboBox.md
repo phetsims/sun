@@ -82,9 +82,10 @@ ToDO.
 
 ### Design Doc Content Template Text
 **Combobox**
-Accessible Name: (e.g. Solute) 
-Button Label: {{Selected list item, e.g. Drink Mix}}
-Listbox list items:
+Accessible Name for listbox: (e.g. Solute) 
+Accessible name for pop-up button is dynamic: {{Selected list item, e.g. Drink Mix}}
+Listbox: ul with role="listbox"
+Listbox items: li's with role="combobox"
 List Item 1 (e.g., Drink Mix)
 List Item 2 (e.g., Cobalt (II) nitrate)
 List Item 3
