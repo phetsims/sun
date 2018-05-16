@@ -25,7 +25,8 @@ define( function( require ) {
   /**
    * @constructor
    *
-   * @param {number} touchThreshold - The distance
+   * @param {number} touchThreshold - The maximum distance from an item that will cause a touch to start a drag
+   * @param {number} mouseThreshold - The maximum distance from an item that will cause a mouse down event to start a drag
    */
   function ClosestDragListener( touchThreshold, mouseThreshold ) {
     // @private
