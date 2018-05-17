@@ -55,6 +55,7 @@ define( function( require ) {
       // a11y
       tagName: 'ul',
       labelTagName: 'h3',
+      ariaRole: 'radiogroup',
       groupFocusHighlight: true
     }, options );
 
