@@ -52,7 +52,7 @@ define( function( require ) {
       tandem: Tandem.required,
 
       // a11y
-      tagName: 'fieldset',
+      tagName: 'ul',
       groupFocusHighlight: true
     }, options );
 

@@ -65,6 +65,7 @@ define( function( require ) {
       tagName: 'input',
       inputType: 'radio',
       labelTagName: 'label',
+      containerTagName: 'li',
       appendDescription: true,
       appendLabel: true,
 
