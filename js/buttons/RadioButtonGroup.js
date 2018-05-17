@@ -14,6 +14,7 @@ define( function( require ) {
   'use strict';
 
   // modules
+  var AccessiblePeer = require( 'SCENERY/accessibility/AccessiblePeer' );
   var Color = require( 'SCENERY/util/Color' );
   var ColorConstants = require( 'SUN/ColorConstants' );
   var FocusHighlightPath = require( 'SCENERY/accessibility/FocusHighlightPath' );
@@ -53,6 +54,7 @@ define( function( require ) {
 
       // a11y
       tagName: 'ul',
+      labelTagName: 'h3',
       groupFocusHighlight: true
     }, options );
 
@@ -286,6 +288,12 @@ define( function( require ) {
     options.children = buttons;
     LayoutBox.call( this, options );
     var self = this;
+
+    // a11y - this node's primary sibling is aria-labelledby its own label so the label content is read whenever
+    // a member of the group receives focus
+    // TODO: This will need to be updated with changes from https://github.com/phetsims/scenery/issues/701
+    this.setAriaLabelledByNode( this );
+    this.ariaLabelContent = AccessiblePeer.LABEL_SIBLING;
 
     // When the entire RadioButtonGroup gets disabled, gray them out and make them unpickable (and vice versa)
     var enabledListener = function( isEnabled ) {
