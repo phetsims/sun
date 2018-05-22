@@ -40,6 +40,7 @@ ToDO.
 
 ### DRAFT: Sample HTML
 ```html
+<! -- expanded state -->
 	<h3>
 	   <button aria-expanded="true" aria-controls="collapsible-1">Factors</button>
 	</h3>
@@ -47,6 +48,7 @@ ToDO.
 	   <p>Box content.</p>
 	   <p>Content.</p>
 	</div>
+<! -- collapsed state -->
   <h3>
      <button aria-expanded="false" aria-controls="collapsible-2">Product</button>
   </h3>
