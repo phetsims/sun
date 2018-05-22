@@ -341,6 +341,7 @@ define( function( require ) {
         parent.addChild( label );
         label.centerX = tick.centerX;
         label.bottom = tick.top - this.tickOptions.tickLabelSpacing;
+        label.pickable = false;
       }
     },
 
