@@ -79,7 +79,8 @@ define( function( require ) {
             a11yValuePattern: '{{value}}', // {string} if you want units or additional content, add to pattern
             a11yDecimalPlaces: 0, // number of decimal places for the value read by assistive technology
 
-            // required so that the tweaker has an accessible name, see https://github.com/phetsims/gravity-force-lab-basics/issues/62
+            // set labelContent to give this AccessibleNumberTweaker an accessible name, required for spinbuttons
+            // see https://github.com/phetsims/gravity-force-lab-basics/issues/62
             labelTagName: 'p',
 
             // Converts a value to a string, for extra formatting for the value read by the screen reader
