@@ -1,8 +1,8 @@
 ## General Design Considerations
-Here’s when and why we use radiogroups:
+Here’s when and why we use radio button groups:
 * Used to group a set of checkable buttons, known as radio buttons, where only one button may be in a checked state (i.e., selected state).
-* Radiogroups, may look like a group of traditional radio buttons, or may look like a group of items that users switch between. In PhET simulations the radio button themselves may appear more like objects or buttons rather than a traditional radio button with a label and selectable circle input. 
-* Radiogroups in PhET Simulations start with a radio button selected (I have not found one that does not).
+* Radio button groups or radio groups, may look like a group of traditional radio buttons, or may look like a group of items that users switch between. In PhET simulations the radio button themselves may appear more like objects or buttons rather than a traditional radio button with a label and selectable circle input. 
+* Radio button groups in PhET Simulations start with a radio button selected (I have not found one that does not).
 
 ## Aesthetic Considerations
 * Label text - succinct and does the label sound good when read together with "selected / not selected" or "checked / not checked"? For example, "10 by 10, selected", "Show all charges, selected".
