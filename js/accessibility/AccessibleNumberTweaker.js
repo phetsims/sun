@@ -10,11 +10,11 @@
  * - End key sets value to its maximum.
  *
  * This number tweaker is different than typical 'number' inputs because it does not support number key control. All
- * changes go through the arrow, page up, page down, home, and end keys.
+ * changes go through the arrow, page up, page down, home, and end keys. For that reason, the HTML representation should
+ * ideally look like: (values removed for readability)
  *
- * Screen reader support for aria-valuetext on spin buttons is too poor to use. Until there is better support, we
- * are using alerts to read the value with units at the right time, see
- * https://github.com/phetsims/gravity-force-lab-basics/issues/62
+ * <p id="label-element">Accessible Name</p>
+ * <div role="spinbutton" min="" max="" aria-valuenow="" aria-valuetext="" aria-labelledby="label-element"></div>
  *
  * @author Jesse Greenberg (PhET Interactive Simulations)
  * @author Michael Barlow (PhET Interactive Simulations)
@@ -24,6 +24,7 @@ define( function( require ) {
   'use strict';
 
   // modules
+  var AccessiblePeer = require( 'SCENERY/accessibility/AccessiblePeer' );
   var CallbackTimer = require( 'SUN/CallbackTimer' );
   var Emitter = require( 'AXON/Emitter' );
   var extend = require( 'PHET_CORE/extend' );
@@ -32,7 +33,6 @@ define( function( require ) {
   var Node = require( 'SCENERY/nodes/Node' );
   var StringUtils = require( 'PHETCOMMON/util/StringUtils' );
   var sun = require( 'SUN/sun' );
-  var utteranceQueue = require( 'SCENERY_PHET/accessibility/utteranceQueue' );
   var Util = require( 'DOT/Util' );
 
   var AccessibleNumberTweaker = {
@@ -73,13 +73,15 @@ define( function( require ) {
             timerInterval: 100, // fire continuously at this frequency (milliseconds),
 
             // a11y
-            tagName: 'button',
-            containerTagName: 'div',
+            tagName: 'div',
             ariaRole: 'spinbutton',
             focusable: true,
-            labelTagName: 'p',
             a11yValuePattern: '{{value}}', // {string} if you want units or additional content, add to pattern
             a11yDecimalPlaces: 0, // number of decimal places for the value read by assistive technology
+
+            // set labelContent to give this AccessibleNumberTweaker an accessible name, required for spinbuttons
+            // see https://github.com/phetsims/gravity-force-lab-basics/issues/62
+            labelTagName: 'p',
 
             // Converts a value to a string, for extra formatting for the value read by the screen reader
             a11yFormatValue: function( value ) {
@@ -96,8 +98,7 @@ define( function( require ) {
           // this number tweaker is "aria-labelledby" its own label, meaning that the label element content will be
           // read on focus
           this.setAriaLabelledByNode( this );
-          this.setAriaLabelContent( 'LABEL' );
-          this.setAccessibleAttribute( 'aria-roledescription', 'spinbutton' );
+          this.setAriaLabelContent( AccessiblePeer.LABEL_SIBLING );
 
           // @private {Property.<number>}
           this._valueProperty = valueProperty;
@@ -167,20 +168,23 @@ define( function( require ) {
                 self._callbackTimer.stop( false );
                 self._callbackTimer.removeCallback( downCallback );
               }
-            },
-            focus: function( event ) {
-
-              // on focus, read the current value of the input
-              var formattedValue = options.a11yFormatValue( self._valueProperty.get() );
-              speakValue( formattedValue, options.a11yValuePattern );
             }
           };
           this.addAccessibleInputListener( accessibleInputListener );
 
           // when the property changes, be sure to update the accessible input value
           var accessiblePropertyListener = function( value ) {
+
+            // format the value to a certain number of decimal places
             var formattedValue = options.a11yFormatValue( value );
-            speakValue( formattedValue, options.a11yValuePattern );
+
+            // wrap the value with optional string pattern
+            formattedValue = StringUtils.fillIn( options.a11yValuePattern, {
+              value: formattedValue
+            } );
+            
+            self.setAccessibleAttribute( 'aria-valuetext', formattedValue );
+            self.setAccessibleAttribute( 'aria-valuenow', value );
           };
           this._valueProperty.link( accessiblePropertyListener );
 
@@ -268,21 +272,6 @@ define( function( require ) {
       } );
     }
   };
-
-  /**
-   * Read the value, surrounding the readout with optional text that can give the value context. By default, the text
-   * will be "{{value}}", but it could be changed to something like "{{value}} billion kg", for instance.
-   *
-   * @param {string} formattedValue
-   * @param {string} pattern
-   * @return {string}
-   */
-  function speakValue( formattedValue, pattern ) {
-    var valueText = StringUtils.fillIn( pattern, {
-      value: formattedValue
-    } );
-    utteranceQueue.addToBack( valueText );
-  }
 
   sun.register( 'AccessibleNumberTweaker', AccessibleNumberTweaker );
 

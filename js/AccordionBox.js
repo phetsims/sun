@@ -14,6 +14,7 @@ define( function( require ) {
   var BooleanProperty = require( 'AXON/BooleanProperty' );
   var ExpandCollapseButton = require( 'SUN/ExpandCollapseButton' );
   var inherit = require( 'PHET_CORE/inherit' );
+  var InstanceRegistry = require( 'PHET_CORE/documentation/InstanceRegistry' );
   var Node = require( 'SCENERY/nodes/Node' );
   var Path = require( 'SCENERY/nodes/Path' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
@@ -343,6 +344,9 @@ define( function( require ) {
     }
 
     this.mutate( _.omit( options, 'cursor' ) );
+
+    // a11y - support for binder documentation, stripped out in builds and only runs when ?binder is specified
+    assert && phet.chipper.queryParameters.binder && InstanceRegistry.registerDataURL( 'sun', 'AccordionBox', this );
   }
 
   sun.register( 'AccordionBox', AccordionBox );
