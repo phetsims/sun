@@ -1,4 +1,5 @@
 ## General Design Considerations
+PhET JS Files: ExpandCollapseBar.js, ExpandCOllpaseButton.js, AccordionBox.js:
 
 Here’s when and why we use accordion boxes:
 * Default state can be expanded or collapsed depending on how the designer wants to scaffold the user interaction. A closed panel can be used to keep the default opening condition of sim from being visually overwhelming, and suggesting a logical route for exploration, for example in Build an Atom and in GE:B.
@@ -80,18 +81,18 @@ Adapted from: ARIA Pracrices 1.1, [section 3.1 Accordion](https://www.w3.org/TR/
 * Adapted from [ARIA Practices]()
 
 ### Design Doc Content Template Text
-**Accordion Box**
-
-Accordion header:
+**ExpandCollapseBar** or **Expand Collpase Button**
+Accordion Header:
 Accessible Name: (Defaults to the same as the title)
 Accordion Title Hidden: Yes/No (defaults to No)
 If using a heading as the button wrapper, define heading level: (defaults is H3)
 Default open state: expanded/collapsed (Question: What is the best default?)
 
-**Start Accordion Panel**
+**Accordion Box**
+Accordion Panel:
 Parent container accordion box contents: defaults to a div
  - Use same convention as other objects and controls.
-**End Accodion Panel** 
+
 
 
 
