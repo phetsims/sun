@@ -70,7 +70,7 @@ define( function( require ) {
       titleAlign: 'right',
       modal: modal,
       hasCloseButton: !modal,
-      title: new Text( 'Title', { font: new Font( { size: 32 } ) } ),
+      title: new Text( 'Title', { font: new Font( { size: 32 } ) } )
     } );
   };
 
