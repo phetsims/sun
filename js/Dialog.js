@@ -19,6 +19,7 @@ define( function( require ) {
   var inherit = require( 'PHET_CORE/inherit' );
   var KeyboardUtil = require( 'SCENERY/accessibility/KeyboardUtil' );
   var Node = require( 'SCENERY/nodes/Node' );
+  var VStrut = require( 'SCENERY/nodes/VStrut' );
   var Panel = require( 'SUN/Panel' );
   var Path = require( 'SCENERY/nodes/Path' );
   var RectangularPushButton = require( 'SUN/buttons/RectangularPushButton' );
@@ -174,6 +175,12 @@ define( function( require ) {
         titleNode.on( 'localBounds', updateTitlePosition );
       }
       updateTitlePosition();
+    }
+
+    else { // no titleNode, use strut to create blank space
+      var strut = new VStrut( closeButton.height );
+      strut.bottom = content.top - options.ySpacing;
+      dialogContent.addChild( strut );
     }
 
     Panel.call( this, dialogContent, options );
