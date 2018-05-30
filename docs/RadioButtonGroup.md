@@ -42,7 +42,7 @@ Content adpated from: [Aria Practices, 3.16 Radio Group](https://www.w3.org/TR/w
 
 | Role | Attribute | Element | Usage |
 |:---- | :-------- | :------ | :---- |
-| radiogroup |  | fieldset | Identifies the `fieldset` element as a container for a group of `radio` buttons. Is not focusable because focus is managed using a roving tabindex strategy as described below. (??) |
+| radiogroup |  | fieldset | Identifies the `fieldset` element as a container for a group of `radio` buttons. Is not focusable because focus is managed using a roving tabindex strategy as described below. (**Question:** How are we managing focus?) |
 |  | `aria-labelledby="[IDREF"` | `h3` (heading with appropriate heading level) | Refers to the element that contains the label of the radio group. The `legend` element can be used instead of a heading, and provides the group's name implicitly without `aria-labelledby`. Note, however, the `legend` is not included in the heading outline for screen readers.|
 |  | `tabindex="0"` | `ul` | Includes the radio group in the page Tab sequence. Applied to the radio group because `aria--activedescendant` is used to manage focus as described below. (**Question:** How are we managing focus?) |
 |  | `aria-activedescendant="[IDREF]"` | `ul` | When a radio button in the radio group is visually indicated as having keyboard focus, refers to that radio button. When arrow keys are pressed, the JavaScript changes the value. Enables assistive technologies to know which element the application regards as focused while DOM focus remains on the radio group element. For more information about this focus management technique, see [Using aria-activedescendant to Manage Focus](https://www.w3.org/TR/wai-aria-practices/#kbd_focus_activedescendant).|
