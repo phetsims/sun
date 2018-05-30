@@ -67,9 +67,10 @@ define( function( require ) {
       font: new Font( { size: 20 } )
     } );
     return new Dialog( contentNode, {
+      titleAlign: 'right',
       modal: modal,
       hasCloseButton: !modal,
-      title: new Text( 'Title Title Title Title', { font: new Font( { size: 32 } ) } ),
+      title: new Text( 'Title', { font: new Font( { size: 32 } ) } ),
     } );
   };
 

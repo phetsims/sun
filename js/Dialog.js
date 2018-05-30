@@ -160,7 +160,7 @@ define( function( require ) {
             titleNode.setMaxWidth( content.width - closeButton.width - options.xSpacing );
             break;
           case 'right':
-            titleNode.right = content.right;
+            titleNode.right = content.right - closeButton.width - options.xSpacing;
             titleNode.setMaxWidth( content.width - closeButton.width - options.xSpacing );
             break;
           default:
