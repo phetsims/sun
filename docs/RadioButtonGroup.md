@@ -26,8 +26,8 @@ Here’s when and why we use radio button groups:
 
 ### Keyboard Support
 From: [Aria Practices, 3.16 Radio Group](https://www.w3.org/TR/wai-aria-practices/#radiobutton)
-| Key | Function |
-| --- | -------- |
+| Key   | Function |
+| :---- | :------- |
 | Tab | Moves focus to the radio group focus is set to the checked `radio` button. (PhET radio group's generally have a pre-selected radio button). If a radio button is not checked, focus moves to the first radio button in the group. PhET Focus Highlight: Keyboard focus highlight goes on the radio button, and a group focus highlight goes on the group. |
 | Space | If the `radio` button with focus is not checked, changes the state to `checked`. Otherwise, does nothing. **Note:** The state where a radio button is not checked only occurs on page load. (Unlikely, for PhET as radio button groups always have a radio button pre-selected.) |
 | Right arrow, Down arrow | Move focus to and check the next radio button in the group. If focus is on the last radio button, focus moves to the first radio button in the group. The state of the previously checked radio button is changed to unchecked.|
