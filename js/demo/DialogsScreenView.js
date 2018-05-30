@@ -63,13 +63,14 @@ define( function( require ) {
    * @returns {Dialog}
    */
   var createDialog = function( modal ) {
-    var contentNode = new Text( modal ? 'modal dialog' : 'non-modal dialog', {
+    var contentNode = new Text( modal ? 'modal dialog content' : 'non-modal dialog content', {
       font: new Font( { size: 20 } )
     } );
     return new Dialog( contentNode, {
+      titleAlign: 'right',
       modal: modal,
       hasCloseButton: !modal,
-      title: new Text( 'title title title title title title', { font: new Font( { size: 32 } ) } ),
+      title: new Text( 'Title', { font: new Font( { size: 32 } ) } ),
     } );
   };
 

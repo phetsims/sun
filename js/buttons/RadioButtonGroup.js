@@ -19,6 +19,7 @@ define( function( require ) {
   var ColorConstants = require( 'SUN/ColorConstants' );
   var FocusHighlightPath = require( 'SCENERY/accessibility/FocusHighlightPath' );
   var inherit = require( 'PHET_CORE/inherit' );
+  var InstanceRegistry = require( 'PHET_CORE/documentation/InstanceRegistry' );
   var LayoutBox = require( 'SCENERY/nodes/LayoutBox' );
   var Property = require( 'AXON/Property' );
   var RadioButtonGroupAppearance = require( 'SUN/buttons/RadioButtonGroupAppearance' );
@@ -340,6 +341,9 @@ define( function( require ) {
         buttons[ i ].dispose();
       }
     };
+
+    // a11y - register component for binder docs
+    assert && phet.chipper.queryParameters.binder && InstanceRegistry.registerDataURL( 'sun', 'RadioButtonGroup', this );
   }
 
   sun.register( 'RadioButtonGroup', RadioButtonGroup );
