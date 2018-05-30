@@ -37,23 +37,22 @@ ToDO.
 
 | Role | Attribute | Element | Usage |
 | ------------- |-------------| ------------- |-------------|
-|  -    | aria-haspopup="listbox" | button | Indicates that activating the button displays a listbox (i.e., a list of options) |
-|   -   | aria-expanded="true" |  button |  Set by the JavaScript when the listbox is displayed.  Otherwise, is not present. |
-|   -   | aria-labelledby="listbox-static-label listbox-option-dynamic-label" |  button |  Reads out a combined name for the interaction when focus is placed on the button, first the name for the "combobox interaction", then the name of the selected option. Javascript sets the inner content of the button to be the selected item. |
-| role="listbox" | - | ul | Identifies the focusable element that has listbox behaviors and contains the listbox options. |
-| - |aria-labelledby="listbox-static-label"| ul | Refers to the element containing the listbox label (i.e., the accessible name for the listbox). | 
-| - | tabindex="-1" | ul | * Makes the listbox focusable. 
-* The JavaScript sets focus on the listbox when the listbox is displayed. |
-| - | aria-activedescendent | - | * Set by the JavaScript when it displays and sets focus on the listbox; otherwise is not present.
-* Refers to the option in the listbox that is visually indicated as having keyboard focus.
-* When navigation keys, such as Down Arrow, are pressed, the JavaScript changes the value.
-* Enables assistive technologies to know which element the application regards as focused while DOM focus remains on the ul element. |
-| role="option" | -| li | Identifies each selectable element containing the name of an option. |
-| - | aria-selected="true"| li | * Indicates that the option is selected. 
-* Applied to the element with role option that is visually styled as selected.
-* Set by the Javascript when Enter is pressed on the option referenced by `aria-activedescendant`.  
-* Note that in an auto-select `listbox` where selection follows focus, the option with this attribute is always the same as the option that is referenced by `aria-activedescendant`.
-|
+|  -    | `aria-haspopup="listbox"` | `button` | Indicates that activating the button displays a listbox (i.e., a list of options) |
+|   -   | `aria-expanded="true"` |  `button` |  Set by the JavaScript when the listbox is displayed.  Otherwise, is not present. |
+|   -   | `aria-labelledby="listbox-static-label listbox-option-dynamic-label"` |  button |  Reads out a combined name for the interaction when focus is placed on the button, first the name for the "combobox interaction", then the name of the selected option. Javascript sets the inner content of the button to be the selected item. |
+| `role="listbox"` | - | `ul` | Identifies the focusable element that has listbox behaviors and contains the listbox options. |
+| - | `aria-labelledby="listbox-static-label"` | ul | Refers to the element containing the listbox label (i.e., the accessible name for the listbox). | 
+| - | `tabindex="-1"` | ul | - Makes the `listbox` focusable. 
+- The JavaScript sets focus on the `listbox` when the `listbox` is displayed. |
+| -    | `aria-activedescendent` | -   | - Set by the JavaScript when the listbox is displayed and sets focus on the listbox; otherwise is not present.
+- Refers to the option in the listbox that is visually indicated as having keyboard focus.
+- When navigation keys, such as Down Arrow, are pressed, the JavaScript changes the value.
+- Enables assistive technologies to know which element the application regards as focused while DOM focus remains on the ul element. |
+| `role="option"` | -| `li` | Identifies each selectable element containing the name of an option. |
+| - | `aria-selected="true"`| `li` | - Indicates that the option is selected. 
+- Applied to the element with role option that is visually styled as selected.
+- Set by the Javascript when Enter is pressed on the option referenced by `aria-activedescendant`.  
+- Note that in an auto-select `listbox` where selection follows focus, the option with this attribute is always the same as the option that is referenced by `aria-activedescendant`. |
 
 
 ### Sample HTML

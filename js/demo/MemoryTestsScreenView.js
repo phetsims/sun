@@ -15,7 +15,6 @@ define( function( require ) {
   var ScreenView = require( 'JOIST/ScreenView' );
   var Text = require( 'SCENERY/nodes/Text' );
   var BooleanToggleNode = require( 'SUN/BooleanToggleNode' );
-  var RectangularStickyToggleButton = require( 'SUN/buttons/RectangularStickyToggleButton' );
 
   var sun = require( 'SUN/sun' );
 
@@ -41,9 +40,6 @@ define( function( require ) {
     } ),
     new ComponentHolder( function() {
       return new BooleanToggleNode( new Text( 'true' ), new Text( 'false' ), booleanProperty );
-    } ),
-    new ComponentHolder( function() {
-      return new RectangularStickyToggleButton( false, true, booleanProperty );
     } )
   ];
 
@@ -74,4 +70,3 @@ define( function( require ) {
     }
   } );
 } );
-

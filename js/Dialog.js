@@ -19,6 +19,7 @@ define( function( require ) {
   var inherit = require( 'PHET_CORE/inherit' );
   var KeyboardUtil = require( 'SCENERY/accessibility/KeyboardUtil' );
   var Node = require( 'SCENERY/nodes/Node' );
+  var VStrut = require( 'SCENERY/nodes/VStrut' );
   var Panel = require( 'SUN/Panel' );
   var Path = require( 'SCENERY/nodes/Path' );
   var RectangularPushButton = require( 'SUN/buttons/RectangularPushButton' );
@@ -50,6 +51,7 @@ define( function( require ) {
       modal: true, // {boolean} modal dialogs prevent interaction with the rest of the sim while open
       title: null, // {Node} title to be displayed at top
       titleAlign: 'center', // horizontal alignment of the title: {string} left, right or center
+      xSpacing: 20, // {number} how far the title is placed to the left of the close button
       ySpacing: 20, // {number} how far the title is placed above the content
 
       // {function} which sets the dialog's position in global coordinates. called as
@@ -57,8 +59,6 @@ define( function( require ) {
       layoutStrategy: Dialog.DEFAULT_LAYOUT_STRATEGY,
 
       // close button options
-      closeButtonMargin: 10, // {number} margin between the close button and right edge of the dialog
-      closeButtonTopMargin: 10, // {number} margin between the close button and top edge of the dialog
       closeButtonListener: function() { self.hide(); },
       closeButtonTouchAreaXDilation: 0,
       closeButtonTouchAreaYDilation: 0,
@@ -103,40 +103,7 @@ define( function( require ) {
     // @private - whether the dialog is showing
     this.isShowing = false;
 
-    var dialogContent = new Node( {
-      children: [ content ]
-    } );
-
-    if ( options.title ) {
-
-      var titleNode = options.title;
-      dialogContent.addChild( titleNode );
-
-      var updateTitlePosition = function() {
-        switch( options.titleAlign ) {
-          case 'center':
-            titleNode.centerX = content.centerX;
-            break;
-          case 'left':
-            titleNode.left = content.left;
-            break;
-          case 'right':
-            titleNode.right = content.right;
-            break;
-          default:
-            throw new Error( 'unknown titleAlign for Dialog: ' + options.titleAlign );
-        }
-        titleNode.bottom = content.top - options.ySpacing;
-      };
-
-      if ( options.resize ) {
-        content.on( 'bounds', updateTitlePosition );
-        titleNode.on( 'localBounds', updateTitlePosition );
-      }
-      updateTitlePosition();
-    }
-
-    Panel.call( this, dialogContent, options );
+    // create close button first for layout purposes
 
     // close button shape, an 'X'
     var closeButtonShape = new Shape()
@@ -174,6 +141,50 @@ define( function( require ) {
       }
     } );
 
+    var dialogContent = new Node( {
+      children: [ content ]
+    } );
+
+    if ( options.title ) {
+
+      var titleNode = options.title;
+      dialogContent.addChild( titleNode );
+
+      var updateTitlePosition = function() {
+        switch( options.titleAlign ) {
+          case 'center':
+            titleNode.centerX = content.centerX;
+            titleNode.setMaxWidth( content.width - 2 * ( closeButton.width + options.xSpacing ) );
+            break;
+          case 'left':
+            titleNode.left = content.left;
+            titleNode.setMaxWidth( content.width - closeButton.width - options.xSpacing );
+            break;
+          case 'right':
+            titleNode.right = content.right - closeButton.width - options.xSpacing;
+            titleNode.setMaxWidth( content.width - closeButton.width - options.xSpacing );
+            break;
+          default:
+            throw new Error( 'unknown titleAlign for Dialog: ' + options.titleAlign );
+        }
+        titleNode.bottom = content.top - options.ySpacing;
+      };
+
+      if ( options.resize ) {
+        content.on( 'bounds', updateTitlePosition );
+        titleNode.on( 'localBounds', updateTitlePosition );
+      }
+      updateTitlePosition();
+    }
+
+    else { // no titleNode, use strut to create blank space
+      var strut = new VStrut( closeButton.height );
+      strut.bottom = content.top - options.ySpacing;
+      dialogContent.addChild( strut );
+    }
+
+    Panel.call( this, dialogContent, options );
+
     // touch/mouse areas for the close button
     closeButton.touchArea = closeButton.bounds.dilatedXY(
       options.closeButtonTouchAreaXDilation,
@@ -190,8 +201,8 @@ define( function( require ) {
     this.closeButton = closeButton;
 
     var updateCloseButtonPosition = function() {
-      closeButton.right = dialogContent.right + options.xMargin - options.closeButtonMargin;
-      closeButton.top = dialogContent.top - options.yMargin + options.closeButtonMargin;
+      closeButton.right = dialogContent.right;
+      closeButton.top = dialogContent.top;
     };
 
     if ( options.resize ) {

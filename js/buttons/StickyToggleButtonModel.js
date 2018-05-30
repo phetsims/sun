@@ -85,7 +85,7 @@ define( function( require ) {
     this.enabledProperty.link( enabledPropertyOnListener );
 
     // @private - dispose items specific to this instance
-    this.disposeStickyToggleButtonModel = function() {
+    this.disposeToggleButtonModel = function() {
       self.downProperty.unlink( downListener );
       self.enabledProperty.unlink( enabledPropertyOnListener );
     };
@@ -97,8 +97,8 @@ define( function( require ) {
 
     // @public
     dispose: function() {
-      this.disposeStickyToggleButtonModel();
-      ButtonModel.prototype.dispose && ButtonModel.prototype.dispose.call( this );
+      this.disposeToggleButtonModel();
+      ButtonModel.prototype.dispose.call( this );
     },
 
     // @public

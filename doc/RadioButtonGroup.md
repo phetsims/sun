@@ -5,7 +5,7 @@ Here’s when and why we use radio button groups:
 * Radio button groups in PhET Simulations start with a radio button selected (I have not found one that does not).
 
 ## Aesthetic Considerations
-* Label text - succinct and does the label sound good when read together with "selected / not selected" or "checked / not checked"? For example, "10 by 10, selected", "Show all charges, selected".
+* Label text - is succinct and hopefully sounds good when read together with "selected". For example, in Area Model, the first Area Grid Size radio button, might sound like, "10 by 10, selected". In Balloons and Static Electricity, user may hear, "Show all charges, selected".
 * Focus highlight - light focus around group, thicker pink focus around selected item.
 
 ## Accessibility Considerations
@@ -26,56 +26,30 @@ Here’s when and why we use radio button groups:
 
 ### Keyboard Support
 From: [Aria Practices, 3.16 Radio Group](https://www.w3.org/TR/wai-aria-practices/#radiobutton)
-| Key        | Function |
-| Tab |- Moves focus to the radio group focus is set to the checked `radio` button. (PhET radio group's generally have a pre-selected radio button.)
-   - If a radio button is not checked, focus moves to the first radio button in the group.
-   - PhET Focus Highlight: Keyboard focus highlight goes on the radio button, and a group focus highlight goes on the group.
-|
-| Space |
-    - If the `radio` button with focus is not checked, changes the state to `checked`.
-    - Otherwise, does nothing.
-    - Note: The state where a radio button is not checked only occurs on page load. (Unlikely, for PhET radio groups, as most have a radio button pre-selected.)
-|
-| Right arrow, Down arrow |
-    - Move focus to and check the next radio button in the group.
-    - If focus is on the last radio button, focus moves to the first radio button in the group.
-    - The state of the previously checked radio button is changed to unchecked.
-|
-| Left arrow, Up arrow |
-    - Move focus to and check the previous radio button in the group.
-    - If focus is on the first radio button, moves focus to and checks the last radio button.
-    - The state of the previously checked radio button is changed to unchecked.
-|
+
+| Key   | Function |
+| :---- | :------- |
+| Tab | Moves focus to the radio group focus is set to the checked `radio` button. (PhET radio group's generally have a pre-selected radio button). If a radio button is not checked, focus moves to the first radio button in the group. PhET Focus Highlight: Keyboard focus highlight goes on the radio button, and a group focus highlight goes on the group. |
+| Space | If the `radio` button with focus is not checked, changes the state to `checked`. Otherwise, does nothing. **Note:** The state where a radio button is not checked only occurs on page load. (Unlikely, for PhET as radio button groups always have a radio button pre-selected.) |
+| Right arrow, Down arrow | Move focus to and check the next radio button in the group. If focus is on the last radio button, focus moves to the first radio button in the group. The state of the previously checked radio button is changed to unchecked.|
+| Left arrow, Up arrow | Move focus to and check the previous radio button in the group. If focus is on the first radio button, moves focus to and checks the last radio button. The state of the previously checked radio button is changed to unchecked. |
 
 From: [Aria Practices, 3.16 Radio Group](https://www.w3.org/TR/wai-aria-practices/#radiobutton)
 
 ### Management of Roles, States, Properties, and Focus (DRAFT)
 Content adpated from: [Aria Practices, 3.16 Radio Group](https://www.w3.org/TR/wai-aria-practices/#radiobutton)
 
+
 | Role | Attribute | Element | Usage |
-| radiogroup |-------------| fieldset |
-    * Identifies the `fieldset` element as a container for a group of `radio` buttons.
-    * Is not focusable because focus is managed using a roving tabindex strategy as described below. (??)
-|
-| ------------- |aria-labelledby="[IDREF"| h3 (or heading) | Refers to the element that contains the label of the radio group. The `legend` element provides the group's name implicitly without `aria-labelledby`.|
-| ------------- |tabindex="0"| `ul` |
-    * Includes the radio group in the page Tab sequence.
-    * Applied to the radio group because `aria--activedescendant` is used to manage focus as described below. ??How are we managing focus??
-|
-| ------------- |aria-activedescendant="[IDREF]"| `ul` | * When a radio button in the radio group is visually indicated as having keyboard focus, refers to that radio button.
-* When arrow keys are pressed, the JavaScript changes the value.
-* Enables assistive technologies to know which element the application regards as focused while DOM focus remains on the radio group element.
-* For more information about this focus management technique, see [Using aria-activedescendant to Manage Focus](https://www.w3.org/TR/wai-aria-practices/#kbd_focus_activedescendant).|
-| ------------- | type="radio" | input  |
-    * Identifies the `input` element as an radio button.
-    * The accessible name is computed from the child text content of the `label` element.
-|
-| ------------- |for="[IDREF of input]"| label |* The accessible name for the `radio` is computed from the child text content of the `label` element.|
-| ------------- | aria-checked="true", or checked| ------------- |
-   * Identifies the radio button which is checked.
-   * CSS attribute selectors (e.g. [aria-checked="true"]) are used to synchronize the visual states with the value of the aria-checked attribute. (N/A in PhET's case)
-   * The CSS ::before pseudo-class is used to indicate visual state of checked radio buttons to support high contrast settings in operating systems and browsers. (N/A in PhET's case)
-|
+|:---- | :-------- | :------ | :---- |
+| radiogroup |  | fieldset | Identifies the `fieldset` element as a container for a group of `radio` buttons. Is not focusable because focus is managed using a roving tabindex strategy as described below. (**Question:** How are we managing focus?) |
+|  | `aria-labelledby="[IDREF"` | `h3` (heading with appropriate heading level) | Refers to the element that contains the label of the radio group. The `legend` element can be used instead of a heading, and provides the group's name implicitly without `aria-labelledby`. Note, however, the `legend` is not included in the heading outline for screen readers.|
+|  | `tabindex="0"` | `ul` | Includes the radio group in the page Tab sequence. Applied to the radio group because `aria--activedescendant` is used to manage focus as described below. (**Question:** How are we managing focus?) |
+|  | `aria-activedescendant="[IDREF]"` | `ul` | When a radio button in the radio group is visually indicated as having keyboard focus, refers to that radio button. When arrow keys are pressed, the JavaScript changes the value. Enables assistive technologies to know which element the application regards as focused while DOM focus remains on the radio group element. For more information about this focus management technique, see [Using aria-activedescendant to Manage Focus](https://www.w3.org/TR/wai-aria-practices/#kbd_focus_activedescendant).|
+|  | `type="radio"` | `input`  | Identifies the `input` element as an radio button. The accessible name is computed from the child text content of the `label` element. |
+|  | `for="[IDREF of input]"` | label | The accessible name for the `radio` is computed from the child text content of the `label` element.|
+|  | `aria-checked="true"`, or `checked` (**Question:** Do we use teh aria attribute or the HTML5 attribute currently?) |  | Identifies the radio button which is checked. CSS attribute selectors (e.g. [aria-checked="true"]) are used to synchronize the visual states with the value of the aria-checked attribute. (N/A in PhET's case) The CSS ::before pseudo-class is used to indicate visual state of checked radio buttons to support high contrast settings in operating systems and browsers. (N/A in PhET's case) |
+
 
 ### Sample 1 HTML when heading semantics are needed  
 #### From Balloons and Static Electricity

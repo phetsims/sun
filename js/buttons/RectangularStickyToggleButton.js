@@ -30,14 +30,7 @@ define( function( require ) {
 
     assert && assert( !options.phetioEventSource, 'phetioEventSource cannot be supplied in options' );
     var buttonModel = new StickyToggleButtonModel( valueUp, valueDown, property, _.extend( { phetioEventSource: this }, options ) );
-    var stickyToggleButtonInteractionStateProperty = new StickyToggleButtonInteractionStateProperty( buttonModel );
-    RectangularButtonView.call( this, buttonModel, stickyToggleButtonInteractionStateProperty, options );
-
-    // @private
-    this.disposeRectangularStickyToggleButton = function() {
-      stickyToggleButtonInteractionStateProperty.dispose();
-      buttonModel.dispose();
-    };
+    RectangularButtonView.call( this, buttonModel, new StickyToggleButtonInteractionStateProperty( buttonModel ), options );
   }
 
   sun.register( 'RectangularStickyToggleButton', RectangularStickyToggleButton );
@@ -46,7 +39,7 @@ define( function( require ) {
 
     // @public
     dispose: function() {
-      this.disposeRectangularStickyToggleButton();
+      //TODO implement this, see sun#212
       RectangularButtonView.prototype.dispose.call( this );
     }
   } );
