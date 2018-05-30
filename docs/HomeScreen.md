@@ -1,6 +1,8 @@
 ## General Design Considerations
 
 * Here’s the when and why we use {{Home Screen}} in simulation design
+* Home Screen View.md
+* Home screen is not very customizable in terms of its presentation.
 * a home screen is needed when the simulation has more than one screen.
 * acts as a landing very briefly introducing the simulation and each of its screens,
 * acts as a navigation page, providing the suggested exploration order visually and non-visually
