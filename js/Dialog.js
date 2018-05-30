@@ -176,7 +176,6 @@ define( function( require ) {
       }
       updateTitlePosition();
     }
-
     else { // no titleNode, use strut to create blank space
       var strut = new VStrut( closeButton.height );
       strut.bottom = content.top - options.ySpacing;
