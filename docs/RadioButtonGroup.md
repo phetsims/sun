@@ -5,7 +5,7 @@ Here’s when and why we use radio button groups:
 * Radio button groups in PhET Simulations start with a radio button selected (I have not found one that does not).
 
 ## Aesthetic Considerations
-* Label text - succinct and does the label sound good when read together with "selected / not selected" or "checked / not checked"? For example, "10 by 10, selected", "Show all charges, selected".
+* Label text - is succinct and hopefully sounds good when read together with "selected". For example, in Area Model, the first Area Grid Size radio button, might sound like, "10 by 10, selected". In Balloons and Static Electricity, user may hear, "Show all charges, selected".
 * Focus highlight - light focus around group, thicker pink focus around selected item.
 
 ## Accessibility Considerations
@@ -26,26 +26,24 @@ Here’s when and why we use radio button groups:
 
 ### Keyboard Support
 From: [Aria Practices, 3.16 Radio Group](https://www.w3.org/TR/wai-aria-practices/#radiobutton)
-| Key        | Function |
-| Tab |- Moves focus to the radio group focus is set to the checked `radio` button. (PhET radio group's generally have a pre-selected radio button.)
+| Key | Function |
+| --- | -------- |
+| Tab | 
+	- Moves focus to the radio group focus is set to the checked `radio` button. (PhET radio group's generally have a pre-selected radio button.)
    - If a radio button is not checked, focus moves to the first radio button in the group.
-   - PhET Focus Highlight: Keyboard focus highlight goes on the radio button, and a group focus highlight goes on the group.
-|
+   - PhET Focus Highlight: Keyboard focus highlight goes on the radio button, and a group focus highlight goes on the group. |
 | Space |
     - If the `radio` button with focus is not checked, changes the state to `checked`.
     - Otherwise, does nothing.
-    - Note: The state where a radio button is not checked only occurs on page load. (Unlikely, for PhET radio groups, as most have a radio button pre-selected.)
-|
+    - Note: The state where a radio button is not checked only occurs on page load. (Unlikely, for PhET radio groups, as most have a radio button pre-selected.) |
 | Right arrow, Down arrow |
     - Move focus to and check the next radio button in the group.
     - If focus is on the last radio button, focus moves to the first radio button in the group.
-    - The state of the previously checked radio button is changed to unchecked.
-|
+    - The state of the previously checked radio button is changed to unchecked. |
 | Left arrow, Up arrow |
     - Move focus to and check the previous radio button in the group.
     - If focus is on the first radio button, moves focus to and checks the last radio button.
-    - The state of the previously checked radio button is changed to unchecked.
-|
+    - The state of the previously checked radio button is changed to unchecked. |
 
 From: [Aria Practices, 3.16 Radio Group](https://www.w3.org/TR/wai-aria-practices/#radiobutton)
 
