@@ -73,7 +73,7 @@ define( function( require ) {
       phetioType: RadioButtonGroupMemberIO
     }, options );
 
-    // @public (phet-io)
+    // @private
     this.radioButtonGroupMemberModel = new RadioButtonGroupMemberModel( property, value, this );
 
     // @public for use in RadioButtonGroup for managing the labels
