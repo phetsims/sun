@@ -12,22 +12,17 @@ define( function( require ) {
   // modules
   var ButtonModel = require( 'SUN/buttons/ButtonModel' );
   var inherit = require( 'PHET_CORE/inherit' );
-  var RadioButtonGroupMemberIO = require( 'SUN/RadioButtonGroupMemberIO' );
   var sun = require( 'SUN/sun' );
 
   /**
    * @param {Property} selectorProperty - the property for the RadioButtonGroup that determines which button is selected
    * @param {Object} selectedValue - the value that selectorProperty takes when this particular SingleRadioButton is selected
-   * @param {Tandem} tandem
    * @param {PhetioObject} phetioEventSource
    * @constructor
    */
-  function RadioButtonGroupMemberModel( selectorProperty, selectedValue, tandem, phetioEventSource ) {
+  function RadioButtonGroupMemberModel( selectorProperty, selectedValue, phetioEventSource ) {
 
-    ButtonModel.call( this, {
-      tandem: tandem,
-      phetioType: RadioButtonGroupMemberIO
-    } );
+    ButtonModel.call( this );
 
     var self = this;
 
