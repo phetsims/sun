@@ -110,6 +110,15 @@ define( function( require ) {
       focusOnCloseNode: null // {Node} receives focus on close, if null focus returns to element that had focus on open
     }, options );
 
+    // if xMargin is specified actually store it in right margin
+    options.rightMargin = options.xMargin ? options.xMargin : options.rightMargin;
+    options.xMargin = 0;
+
+    // if yMargin is specified actually store it in top and bottom margin
+    options.topMargin = options.yMargin ? options.yMargin : options.topMargin;
+    options.bottomMargin = options.yMargin ? options.yMargin : options.bottomMargin;
+    options.yMargin = 0;
+
     // if left margin is specified in options, use it. otherwise, set it to make the left right gutters symmetrical
     options.leftMargin = options.leftMargin ?
       options.leftMargin :
