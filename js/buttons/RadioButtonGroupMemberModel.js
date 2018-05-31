@@ -47,7 +47,10 @@ define( function( require ) {
     fire: function() {
       if ( this.enabledProperty.get() ) {
         this.phetioEventSource.startEvent( 'user', 'fired', {
-          value: this.selectorProperty.phetioType && this.selectorProperty.phetioType.elementType && this.selectorProperty.phetioType.elementType.toStateObject && this.selectorProperty.phetioType.elementType.toStateObject( this.selectedValue )
+          value: this.selectorProperty.phetioType &&
+                 this.selectorProperty.phetioType.elementType &&
+                 this.selectorProperty.phetioType.elementType.toStateObject &&
+                 this.selectorProperty.phetioType.elementType.toStateObject( this.selectedValue )
         } );
         this.selectorProperty.set( this.selectedValue );
         this.phetioEventSource.endEvent();
