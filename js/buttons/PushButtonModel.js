@@ -17,6 +17,7 @@ define( function( require ) {
   var Emitter = require( 'AXON/Emitter' );
   var inherit = require( 'PHET_CORE/inherit' );
   var sun = require( 'SUN/sun' );
+  var Tandem = require( 'TANDEM/Tandem' );
 
   /**
    * @param {Object} [options]
@@ -34,20 +35,21 @@ define( function( require ) {
       fireOnHoldDelay: 400, // start to fire continuously after pressing for this long (milliseconds)
       fireOnHoldInterval: 100, // fire continuously at this interval (milliseconds),
 
-      phetioEventSource: null // {PhetioObject|null} sends events to the PhET-iO data stream
+      // phet-io
+      tandem: Tandem.optional // Note this should be for the parent button, not a child one for the PushButtonModel
     }, options );
 
     var self = this;
 
     ButtonModel.call( this, options );
 
-    this.phetioEventSource = options.phetioEventSource;
-
     // @public - used by ResetAllButton to call functions during reset start/end
     this.isFiringProperty = new BooleanProperty( false );
 
     // @private
-    this.emitter = new Emitter();
+    this.emitter = new Emitter( {
+      tandem: options.tandem.createTandem( 'emitter' )
+    } );
     if ( options.listener !== null ) {
       this.emitter.addListener( options.listener );
     }
@@ -142,10 +144,8 @@ define( function( require ) {
       // Make sure the button is not already firing, see https://github.com/phetsims/energy-skate-park-basics/issues/380
       assert && assert( !this.isFiringProperty.value, 'Cannot fire when already firing' );
       this.isFiringProperty.value = true;
-      this.phetioEventSource && this.phetioEventSource.startEvent( 'user', 'fired' );  // TODO: move this into the emitter?
       this.emitter.emit();
       this.isFiringProperty.value = false;
-      this.phetioEventSource && this.phetioEventSource.endEvent();
     }
   } );
 } );

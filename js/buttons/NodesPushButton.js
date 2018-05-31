@@ -41,8 +41,9 @@ define( function( require ) {
 
     Node.call( this );
 
-    // Button model
-    this.buttonModel = new PushButtonModel( _.extend( { phetioEventSource: this }, options ) ); // @private
+    // @private - Button model
+    // Note it shares a tandem with this, so the emitter will be instrumented as a child of the button
+    this.buttonModel = new PushButtonModel( options ); // @private
 
     // @private {PressListener}
     this.pressListener = this.buttonModel.createListener( options.tandem.createTandem( 'pressListener' ) );
