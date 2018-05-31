@@ -23,22 +23,13 @@ define( function( require ) {
   function RadioButtonGroupMemberModel( selectorProperty, selectedValue, phetioEventSource ) {
 
     ButtonModel.call( this );
-
     var self = this;
 
+    // @private
     this.selectedValue = selectedValue;
     this.selectorProperty = selectorProperty;
+    this.phetioEventSource = phetioEventSource;
 
-    // @public (read-only) - fire on up if the button is enabled, public for use in the accessibility tree
-    this.fire = function() {
-      if ( self.enabledProperty.get() ) {
-        phetioEventSource.startEvent( 'user', 'fired', {
-          value: selectorProperty.phetioType && selectorProperty.phetioType.elementType && selectorProperty.phetioType.elementType.toStateObject && selectorProperty.phetioType.elementType.toStateObject( selectedValue )
-        } );
-        selectorProperty.set( selectedValue );
-        phetioEventSource.endEvent();
-      }
-    };
     this.downProperty.link( function( down ) {
       if ( !down && self.overProperty.get() ) {
         self.fire();
@@ -48,5 +39,19 @@ define( function( require ) {
 
   sun.register( 'RadioButtonGroupMemberModel', RadioButtonGroupMemberModel );
 
-  return inherit( ButtonModel, RadioButtonGroupMemberModel );
+  return inherit( ButtonModel, RadioButtonGroupMemberModel, {
+
+    /**
+     * @public (read-only) - fire on up if the button is enabled, public for use in the accessibility tree
+     */
+    fire: function() {
+      if ( this.enabledProperty.get() ) {
+        this.phetioEventSource.startEvent( 'user', 'fired', {
+          value: this.selectorProperty.phetioType && this.selectorProperty.phetioType.elementType && this.selectorProperty.phetioType.elementType.toStateObject && this.selectorProperty.phetioType.elementType.toStateObject( this.selectedValue )
+        } );
+        this.selectorProperty.set( this.selectedValue );
+        this.phetioEventSource.endEvent();
+      }
+    }
+  } );
 } );
