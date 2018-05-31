@@ -14,11 +14,14 @@ define( function( require ) {
 
   // modules
   var AccessibilityUtil = require( 'SCENERY/accessibility/AccessibilityUtil' );
+  // var CloseButton2 = require( 'SCENERY_PHET/buttons/CloseButton2' );
   var Display = require( 'SCENERY/display/Display' );
   var FullScreen = require( 'SCENERY/util/FullScreen' );
+  var HBox = require( 'SCENERY/nodes/HBox' );
+  var HStrut = require( 'SCENERY/nodes/HStrut' );
   var inherit = require( 'PHET_CORE/inherit' );
   var KeyboardUtil = require( 'SCENERY/accessibility/KeyboardUtil' );
-  var Node = require( 'SCENERY/nodes/Node' );
+  var VBox = require( 'SCENERY/nodes/VBox' );
   var VStrut = require( 'SCENERY/nodes/VStrut' );
   var Panel = require( 'SUN/Panel' );
   var Path = require( 'SCENERY/nodes/Path' );
@@ -36,6 +39,19 @@ define( function( require ) {
   // constants
   var CLOSE_BUTTON_WIDTH = 7;
 
+  // close button shape, an 'X'
+  var CLOSE_BUTTON_SHAPE = new Shape()
+    .moveTo( -CLOSE_BUTTON_WIDTH, -CLOSE_BUTTON_WIDTH )
+    .lineTo( CLOSE_BUTTON_WIDTH, CLOSE_BUTTON_WIDTH )
+    .moveTo( CLOSE_BUTTON_WIDTH, -CLOSE_BUTTON_WIDTH )
+    .lineTo( -CLOSE_BUTTON_WIDTH, CLOSE_BUTTON_WIDTH );
+
+  var CLOSE_BUTTON_ICON = new Path( CLOSE_BUTTON_SHAPE, {
+    stroke: 'black',
+    lineCap: 'round',
+    lineWidth: 2
+  } );
+
   /**
    * @param {Node} content - The content to display inside the dialog (not including the title)
    * @param {Object} [options]
@@ -51,8 +67,14 @@ define( function( require ) {
       modal: true, // {boolean} modal dialogs prevent interaction with the rest of the sim while open
       title: null, // {Node} title to be displayed at top
       titleAlign: 'center', // horizontal alignment of the title: {string} left, right or center
-      xSpacing: 20, // {number} how far the title is placed to the left of the close button
-      ySpacing: 20, // {number} how far the title is placed above the content
+      xSpacing: 10, // {number} how far the title is placed to the left of the close button
+      ySpacing: 10, // {number} how far the title is placed above the content,
+      topMargin: 10,
+      bottomMargin: 10,
+      rightMargin: 10,
+      leftMargin: null, // will be default set to create symmetrical gutters
+      xMargin: 0, // this panel customizes its own margins
+      yMargin: 0, // this panel customizes its own margins
 
       // {function} which sets the dialog's position in global coordinates. called as
       // layoutStrategy( dialog, simBounds, screenBounds, scale )
@@ -77,8 +99,6 @@ define( function( require ) {
       fill: 'white', // {string|Color}
       stroke: 'black', // {string|Color}
       backgroundPickable: true,
-      xMargin: 20,
-      yMargin: 20,
       tandem: Tandem.optional,
       phetioType: DialogIO,
       phetioReadOnly: false, // default to false so it can pass it through to the close button
@@ -89,6 +109,11 @@ define( function( require ) {
       ariaRole: 'dialog',
       focusOnCloseNode: null // {Node} receives focus on close, if null focus returns to element that had focus on open
     }, options );
+
+    // if left margin is specified in options, use it. otherwise, set it to make the left right gutters symmetrical
+    options.leftMargin = options.leftMargin ?
+      options.leftMargin :
+      options.rightMargin + CLOSE_BUTTON_WIDTH + options.xSpacing;
 
     // @private (read-only)
     this.isModal = options.modal;
@@ -103,25 +128,17 @@ define( function( require ) {
     // @private - whether the dialog is showing
     this.isShowing = false;
 
-    // create close button first for layout purposes
-
-    // close button shape, an 'X'
-    var closeButtonShape = new Shape()
-      .moveTo( -CLOSE_BUTTON_WIDTH, -CLOSE_BUTTON_WIDTH )
-      .lineTo( CLOSE_BUTTON_WIDTH, CLOSE_BUTTON_WIDTH )
-      .moveTo( CLOSE_BUTTON_WIDTH, -CLOSE_BUTTON_WIDTH )
-      .lineTo( -CLOSE_BUTTON_WIDTH, CLOSE_BUTTON_WIDTH );
-
-    var closeButtonIcon = new Path( closeButtonShape, {
-      stroke: 'black',
-      lineCap: 'round',
-      lineWidth: 2
+    // align content and title if provided
+    var verticalContent = new VBox( {
+      children: options.title ? [ options.title, content ] : [ content ],
+      spacing: options.ySpacing,
+      align: options.titleAlign
     } );
 
     var closeButton = new RectangularPushButton( {
 
       // RectangularPushButton
-      content: closeButtonIcon,
+      content: CLOSE_BUTTON_ICON,
       baseColor: 'transparent',
       buttonAppearanceStrategy: RectangularButtonView.FlatAppearanceStrategy,
       xMargin: 0,
@@ -141,49 +158,6 @@ define( function( require ) {
       }
     } );
 
-    var dialogContent = new Node( {
-      children: [ content ]
-    } );
-
-    if ( options.title ) {
-
-      var titleNode = options.title;
-      dialogContent.addChild( titleNode );
-
-      var updateTitlePosition = function() {
-        switch( options.titleAlign ) {
-          case 'center':
-            titleNode.centerX = content.centerX;
-            titleNode.setMaxWidth( content.width - 2 * ( closeButton.width + options.xSpacing ) );
-            break;
-          case 'left':
-            titleNode.left = content.left;
-            titleNode.setMaxWidth( content.width - closeButton.width - options.xSpacing );
-            break;
-          case 'right':
-            titleNode.right = content.right - closeButton.width - options.xSpacing;
-            titleNode.setMaxWidth( content.width - closeButton.width - options.xSpacing );
-            break;
-          default:
-            throw new Error( 'unknown titleAlign for Dialog: ' + options.titleAlign );
-        }
-        titleNode.bottom = content.top - options.ySpacing;
-      };
-
-      if ( options.resize ) {
-        content.on( 'bounds', updateTitlePosition );
-        titleNode.on( 'localBounds', updateTitlePosition );
-      }
-      updateTitlePosition();
-    }
-    else { // no titleNode, use strut to create blank space
-      var strut = new VStrut( closeButton.height );
-      strut.bottom = content.top - options.ySpacing;
-      dialogContent.addChild( strut );
-    }
-
-    Panel.call( this, dialogContent, options );
-
     // touch/mouse areas for the close button
     closeButton.touchArea = closeButton.bounds.dilatedXY(
       options.closeButtonTouchAreaXDilation,
@@ -194,23 +168,27 @@ define( function( require ) {
       options.closeButtonMouseAreaYDilation
     );
 
-    this.addChild( closeButton );
-
     // @protected (a11y)
     this.closeButton = closeButton;
 
-    var updateCloseButtonPosition = function() {
-      closeButton.right = dialogContent.right;
-      closeButton.top = dialogContent.top;
-    };
+    // align content and close button, add left and right margins
+    var contentAndClosebutton = new HBox( {
+      children: [
+        new HStrut( options.leftMargin ),
+        verticalContent,
+        new HStrut ( options.xSpacing ),
+        closeButton,
+        new HStrut( options.rightMargin )
+      ],
+      align: 'top'
+    } );
 
-    if ( options.resize ) {
-      dialogContent.on( 'bounds', updateCloseButtonPosition );
-      if ( options.title ) {
-        options.title.on( 'bounds', updateCloseButtonPosition );
-      }
-    }
-    updateCloseButtonPosition();
+    // add top and bottom margins
+    var dialogContent = new VBox( {
+      children: [ new VStrut( options.topMargin ), contentAndClosebutton, new VStrut( options.bottomMargin ) ]
+    } );
+
+    Panel.call( this, dialogContent, options );
 
     var sim = window.phet.joist.sim;
 
@@ -225,7 +203,7 @@ define( function( require ) {
     this.sim = sim;
 
     // a11y - set the order of content for accessibility, title before content
-    this.accessibleOrder = [ titleNode, dialogContent ].filter( function( node ) {
+    this.accessibleOrder = [ options.title, content ].filter( function( node ) {
       return node !== undefined;
     } );
 
@@ -271,15 +249,6 @@ define( function( require ) {
       self.removeAccessibleInputListener( escapeListener );
 
       closeButton.dispose();
-
-      if ( options.resize ) {
-        dialogContent.off( 'bounds', updateCloseButtonPosition );
-        if ( options.title ) {
-          options.title.off( 'bounds', updateCloseButtonPosition );
-          titleNode.off( 'localBounds', updateTitlePosition );
-          content.off( 'bounds', updateTitlePosition );
-        }
-      }
 
       // remove dialog content from scene graph, but don't dispose because Panel
       // needs to remove listeners on the content in its dispose()
