@@ -34,7 +34,7 @@ define( function( require ) {
     this.selectedValue = selectedValue;
     this.selectorProperty = selectorProperty;
 
-    // @public (read only) - fire on up if the button is enabled, public for use in the accessibility tree
+    // @public (read-only) - fire on up if the button is enabled, public for use in the accessibility tree
     this.fire = function() {
       if ( self.enabledProperty.get() ) {
         phetioEventSource.startEvent( 'user', 'fired', {
