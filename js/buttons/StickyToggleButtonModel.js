@@ -16,28 +16,23 @@ define( function( require ) {
   var inherit = require( 'PHET_CORE/inherit' );
   var Property = require( 'AXON/Property' );
   var sun = require( 'SUN/sun' );
-  var Tandem = require( 'TANDEM/Tandem' );
 
   /**
    * @param {Object} valueUp value when the toggle is in the 'up' position
    * @param {Object} valueDown value when the toggle is in the 'down' position
    * @param {Property} valueProperty axon property that can be either valueUp or valueDown.  Would have preferred to call this `property` but it would clash with the property function name.
-   * @param {Object} [options]
+   * @param {PhetioObject} stickyToggleButton the parent button that sends messages to the data stream
    * @constructor
    */
-  function StickyToggleButtonModel( valueUp, valueDown, valueProperty, options ) {
+  function StickyToggleButtonModel( valueUp, valueDown, valueProperty, stickyToggleButton ) {
+    console.log( 'hello' );
     var self = this;
-
-    options = _.extend( {
-      tandem: Tandem.required,
-      phetioEventSource: null // {PhetioObject|null} sends events to the PhET-iO data stream
-    }, options );
 
     // @private
     this.valueUp = valueUp;
     this.valueDown = valueDown;
     this.valueProperty = valueProperty;
-    this.stickyToggleButtonModelEventSource = options.phetioEventSource;
+    this.stickyToggleButton = stickyToggleButton;
 
     ButtonModel.call( this );
 
@@ -108,12 +103,12 @@ define( function( require ) {
       var oldValue = this.valueProperty.value;
 
       var hasToStateObject = this.valueProperty.phetioType && this.valueProperty.phetioType.elementType && this.valueProperty.phetioType.elementType.toStateObject;
-      this.stickyToggleButtonModelEventSource && this.stickyToggleButtonModelEventSource.startEvent( 'user', 'toggled', {
+      this.stickyToggleButton.startEvent( 'user', 'toggled', {
         oldValue: hasToStateObject && this.valueProperty.phetioType.elementType.toStateObject( oldValue ),
         newValue: hasToStateObject && this.valueProperty.phetioType.elementType.toStateObject( newValue )
       } );
       this.valueProperty.value = newValue;
-      this.stickyToggleButtonModelEventSource && this.stickyToggleButtonModelEventSource.endEvent();
+      this.stickyToggleButton.endEvent();
     }
   } );
 } );

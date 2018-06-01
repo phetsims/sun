@@ -27,9 +27,7 @@ define( function( require ) {
    */
   function RectangularStickyToggleButton( valueUp, valueDown, property, options ) {
     Tandem.indicateUninstrumentedCode();
-
-    assert && assert( !options.phetioEventSource, 'phetioEventSource cannot be supplied in options' );
-    var buttonModel = new StickyToggleButtonModel( valueUp, valueDown, property, _.extend( { phetioEventSource: this }, options ) );
+    var buttonModel = new StickyToggleButtonModel( valueUp, valueDown, property, this );
     RectangularButtonView.call( this, buttonModel, new StickyToggleButtonInteractionStateProperty( buttonModel ), options );
   }
 

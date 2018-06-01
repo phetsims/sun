@@ -41,8 +41,7 @@ define( function( require ) {
     }, options );
 
     // @public (phet-io)
-    assert && assert( !options.phetioEventSource, 'phetioEventSource cannot be supplied in options' );
-    this.toggleButtonModel = new StickyToggleButtonModel( valueUp, valueDown, property, _.extend( { phetioEventSource: this }, options ) );
+    this.toggleButtonModel = new StickyToggleButtonModel( valueUp, valueDown, property, this );
     RoundButtonView.call( this, this.toggleButtonModel, new StickyToggleButtonInteractionStateProperty( this.toggleButtonModel ), options );
 
     // @private (a11y) - toggle the button when we receive the accessible click event
