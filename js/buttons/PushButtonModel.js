@@ -17,13 +17,13 @@ define( function( require ) {
   var Emitter = require( 'AXON/Emitter' );
   var inherit = require( 'PHET_CORE/inherit' );
   var sun = require( 'SUN/sun' );
-  var Tandem = require( 'TANDEM/Tandem' );
 
   /**
+   * @param {PhetioObject} pushButton - parent button that emits the PhET-iO event on the data stream
    * @param {Object} [options]
    * @constructor
    */
-  function PushButtonModel( options ) {
+  function PushButtonModel( pushButton, options ) {
 
     options = _.extend( {
 
@@ -33,13 +33,13 @@ define( function( require ) {
       // fire-on-hold feature
       fireOnHold: false, // is the fire-on-hold feature enabled?
       fireOnHoldDelay: 400, // start to fire continuously after pressing for this long (milliseconds)
-      fireOnHoldInterval: 100, // fire continuously at this interval (milliseconds),
-
-      // phet-io
-      tandem: Tandem.optional // Note this should be for the parent button, not a child one for the PushButtonModel
+      fireOnHoldInterval: 100 // fire continuously at this interval (milliseconds),
     }, options );
 
     var self = this;
+
+    // @private
+    this.pushButton = pushButton;
 
     ButtonModel.call( this, options );
 
@@ -47,9 +47,7 @@ define( function( require ) {
     this.isFiringProperty = new BooleanProperty( false );
 
     // @private
-    this.emitter = new Emitter( {
-      tandem: options.tandem.createTandem( 'emitter' )
-    } );
+    this.emitter = new Emitter();
     if ( options.listener !== null ) {
       this.emitter.addListener( options.listener );
     }
@@ -144,8 +142,10 @@ define( function( require ) {
       // Make sure the button is not already firing, see https://github.com/phetsims/energy-skate-park-basics/issues/380
       assert && assert( !this.isFiringProperty.value, 'Cannot fire when already firing' );
       this.isFiringProperty.value = true;
+      this.pushButton.startEvent( 'user', 'fired' );
       this.emitter.emit();
       this.isFiringProperty.value = false;
+      this.pushButton.endEvent();
     }
   } );
 } );

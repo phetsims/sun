@@ -42,8 +42,7 @@ define( function( require ) {
     Node.call( this );
 
     // @private - Button model
-    // Note it shares a tandem with this, so the emitter will be instrumented as a child of the button
-    this.buttonModel = new PushButtonModel( options ); // @private
+    this.buttonModel = new PushButtonModel( this, options ); // @private
 
     // @private {PressListener}
     this.pressListener = this.buttonModel.createListener( options.tandem.createTandem( 'pressListener' ) );

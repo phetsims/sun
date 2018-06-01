@@ -48,7 +48,8 @@ define( function( require ) {
       documentation: 'Performs the action associated with the button'
     }
   }, {
-    documentation: 'A pressable button in the simulation'
+    documentation: 'A pressable button in the simulation',
+    events: [ 'fired' ]
   } );
 
   sun.register( 'PushButtonIO', PushButtonIO );
