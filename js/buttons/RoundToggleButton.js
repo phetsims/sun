@@ -38,8 +38,7 @@ define( function( require ) {
       tagName: 'button'
     }, options );
 
-    // @public, (read-only) (phet-io)
-    assert && assert( !options.phetioEventSource, 'phetioEventSource cannot be supplied in options' );
+    // @private (read-only)
     this.toggleButtonModel = new ToggleButtonModel( valueOff, valueOn, property, this );
 
     RoundButtonView.call( this, this.toggleButtonModel, new ToggleButtonInteractionStateProperty( this.toggleButtonModel ), options );

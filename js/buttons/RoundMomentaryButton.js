@@ -31,8 +31,7 @@ define( function( require ) {
       phetioType: RoundMomentaryButtonIO
     }, options );
 
-    assert && assert( !options.phetioEventSource, 'phetioEventSource cannot be supplied in options' );
-    this.buttonModel = new MomentaryButtonModel( valueOff, valueOn, property, _.extend( { phetioEventSource: this }, options ) );
+    this.buttonModel = new MomentaryButtonModel( valueOff, valueOn, property, this );
     RoundButtonView.call( this, this.buttonModel, new MomentaryButtonInteractionStateProperty( this.buttonModel ), options );
   }
 

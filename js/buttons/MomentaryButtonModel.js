@@ -12,20 +12,15 @@ define( function( require ) {
   var ButtonModel = require( 'SUN/buttons/ButtonModel' );
   var inherit = require( 'PHET_CORE/inherit' );
   var sun = require( 'SUN/sun' );
-  var Tandem = require( 'TANDEM/Tandem' );
 
   /**
    * @param {Object} valueOff - value when the button is in the off state
    * @param {Object} valueOn - value when the button is in the on state
    * @param {Property} valueProperty
-   * @param {Object} options
+   * @param {PhetioObject} momentaryButton - button that emits the PhET-iO event to the data stream
    * @constructor
    */
-  function MomentaryButtonModel( valueOff, valueOn, valueProperty, options ) {
-    options = _.extend( {
-      tandem: Tandem.optional,
-      phetioEventSource: null // {PhetioObject|null} sends events to the PhET-iO data stream
-    }, options );
+  function MomentaryButtonModel( valueOff, valueOn, valueProperty, momentaryButton ) {
     var self = this;
     ButtonModel.call( self );
 
@@ -42,18 +37,18 @@ define( function( require ) {
       // turn on when pressed (if enabled)
       if ( down ) {
         if ( self.enabledProperty.get() ) {
-          options.phetioEventSource && options.phetioEventSource.startEvent( 'user', 'pressed' );
+          momentaryButton.startEvent( 'user', 'pressed' );
           valueProperty.set( valueOn );
-          options.phetioEventSource && options.phetioEventSource.endEvent();
+          momentaryButton.endEvent();
         }
       }
       else {
 
         // turn off when released
-        options.phetioEventSource && options.phetioEventSource.startEvent( 'user', 'released' );
+        momentaryButton.startEvent( 'user', 'released' );
         processingRelease = true;
         valueProperty.set( valueOff );
-        options.phetioEventSource && options.phetioEventSource.endEvent();
+        momentaryButton.endEvent();
         processingRelease = false;
       }
     };
@@ -65,9 +60,9 @@ define( function( require ) {
       // If the button became disabled (and not as a result of pressing the button itself), trigger an event
       // and change the value
       if ( !enabled && !processingRelease ) {
-        options.phetioEventSource && options.phetioEventSource.startEvent( 'user', 'releasedDisabled' );
+        momentaryButton.startEvent( 'user', 'releasedDisabled' );
         valueProperty.set( valueOff );
-        options.phetioEventSource && options.phetioEventSource.endEvent();
+        momentaryButton.endEvent();
       }
     };
     this.enabledProperty.link( enabledListener );

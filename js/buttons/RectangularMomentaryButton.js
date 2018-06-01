@@ -30,7 +30,7 @@ define( function( require ) {
       tandem: Tandem.required
     }, options );
 
-    var buttonModel = new MomentaryButtonModel( valueOff, valueOn, property, options );
+    var buttonModel = new MomentaryButtonModel( valueOff, valueOn, property, this );
     RectangularButtonView.call( this, buttonModel, new MomentaryButtonInteractionStateProperty( buttonModel ), options );
   }
 

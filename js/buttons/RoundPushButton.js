@@ -45,9 +45,6 @@ define( function( require ) {
     var listener = options.listener;
     options = _.omit( options, [ 'listener' ] );
 
-    // Safe to pass through options to the PushButtonModel like "fireOnDown".  Other scenery options will be safely ignored.
-    assert && assert( !options.phetioEventSource, 'phetioEventSource cannot be supplied in options' );
-
     // @public - listening only. Note it shares a tandem with this, so the emitter will be instrumented as a child of the button
     this.buttonModel = new PushButtonModel( options );
     RoundButtonView.call( this, this.buttonModel, new PushButtonInteractionStateProperty( this.buttonModel ), options );

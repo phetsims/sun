@@ -40,7 +40,7 @@ define( function( require ) {
       inputType: 'button'
     }, options );
 
-    // @public (phet-io)
+    // @private (read-only)
     this.toggleButtonModel = new StickyToggleButtonModel( valueUp, valueDown, property, this );
     RoundButtonView.call( this, this.toggleButtonModel, new StickyToggleButtonInteractionStateProperty( this.toggleButtonModel ), options );
 
