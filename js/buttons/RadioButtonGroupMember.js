@@ -11,12 +11,12 @@ define( function( require ) {
   'use strict';
 
   // modules
+  var ButtonModel = require( 'SUN/buttons/ButtonModel' );
   var Color = require( 'SCENERY/util/Color' );
   var ColorConstants = require( 'SUN/ColorConstants' );
   var inherit = require( 'PHET_CORE/inherit' );
   var RadioButtonGroupAppearance = require( 'SUN/buttons/RadioButtonGroupAppearance' );
   var RadioButtonGroupMemberIO = require( 'SUN/RadioButtonGroupMemberIO' );
-  var RadioButtonGroupMemberModel = require( 'SUN/buttons/RadioButtonGroupMemberModel' );
   var RadioButtonInteractionStateProperty = require( 'SUN/buttons/RadioButtonInteractionStateProperty' );
   var RectangularButtonView = require( 'SUN/buttons/RectangularButtonView' );
   var sun = require( 'SUN/sun' );
@@ -74,12 +74,19 @@ define( function( require ) {
     }, options );
 
     // @private
-    this.radioButtonGroupMemberModel = new RadioButtonGroupMemberModel( property, value, this );
+    this.buttonModel = new ButtonModel();
+
+    // When the button model triggers an event, fire from the radio button
+    this.buttonModel.downProperty.link( function( down ) {
+      if ( !down && self.buttonModel.overProperty.get() ) {
+        self.fire();
+      }
+    } );
 
     // @public for use in RadioButtonGroup for managing the labels
-    this.interactionStateProperty = new RadioButtonInteractionStateProperty( this.radioButtonGroupMemberModel );
+    this.interactionStateProperty = new RadioButtonInteractionStateProperty( this.buttonModel, property, value );
 
-    RectangularButtonView.call( this, this.radioButtonGroupMemberModel, this.interactionStateProperty, options );
+    RectangularButtonView.call( this, this.buttonModel, this.interactionStateProperty, options );
 
     // a11y - on reception of a change event, update the Property value
     var accessibleChangeListener = {
@@ -103,6 +110,12 @@ define( function( require ) {
     };
     property.link( accessibleCheckedListener );
 
+    // @private - the property this button changes
+    this.property = property;
+
+    // @private - the value that is set to the property when this button is pressed
+    this.value = value;
+
     // @private
     this.disposeRadioButtonGroupMember = function() {
       self.removeAccessibleInputListener( accessibleChangeListener );
@@ -113,6 +126,22 @@ define( function( require ) {
   sun.register( 'RadioButtonGroupMember', RadioButtonGroupMember );
 
   return inherit( RectangularButtonView, RadioButtonGroupMember, {
+
+    /**
+     * @public (read-only) - fire on up if the button is enabled, public for use in the accessibility tree
+     */
+    fire: function() {
+      if ( this.buttonModel.enabledProperty.get() ) {
+        this.startEvent( 'user', 'fired', {
+          value: this.property.phetioType &&
+                 this.property.phetioType.elementType &&
+                 this.property.phetioType.elementType.toStateObject &&
+                 this.property.phetioType.elementType.toStateObject( this.value )
+        } );
+        this.property.set( this.value );
+        this.endEvent();
+      }
+    },
 
     /**
      * Ensure eligibility for garbage collection.
