@@ -34,7 +34,7 @@ define( function( require ) {
 
     // @public (phet-io)
     assert && assert( !options.phetioEventSource, 'phetioEventSource cannot be supplied in options' );
-    this.toggleButtonModel = new ToggleButtonModel( valueOff, valueOn, property, _.extend( { phetioEventSource: this }, options ) );
+    this.toggleButtonModel = new ToggleButtonModel( valueOff, valueOn, property, this );
 
     RectangularButtonView.call( this, this.toggleButtonModel, new ToggleButtonInteractionStateProperty( this.toggleButtonModel ), options );
   }

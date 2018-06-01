@@ -13,26 +13,19 @@ define( function( require ) {
   var ButtonModel = require( 'SUN/buttons/ButtonModel' );
   var inherit = require( 'PHET_CORE/inherit' );
   var sun = require( 'SUN/sun' );
-  var Tandem = require( 'TANDEM/Tandem' );
 
   /**
    * @param {Object} valueOff - value when the button is in the off state
    * @param {Object} valueOn - value when the button is in the on state
    * @param {Property} property - axon Property that can be either valueOff or valueOn.
-   * @param {Object} [options]
+   * @param {PhetioObject} toggleButton - parent button that fires the PhET-iO event
    * @constructor
    */
-  function ToggleButtonModel( valueOff, valueOn, property, options ) {
-
+  function ToggleButtonModel( valueOff, valueOn, property, toggleButton ) {
     var self = this;
 
-    options = _.extend( {
-      tandem: Tandem.required,
-      phetioEventSource: null // {PhetioObject|null} sends events to the PhET-iO data stream
-    }, options );
-
     // @private
-    this.toggleButtonModelEventSource = options.phetioEventSource;
+    this.toggleButton = toggleButton;
 
     // @private
     this.valueOff = valueOff;
@@ -73,12 +66,12 @@ define( function( require ) {
       var oldValue = this.valueProperty.value;
       var newValue = this.valueProperty.value === this.valueOff ? this.valueOn : this.valueOff;
       var hasToStateObject = this.valueProperty.phetioType && this.valueProperty.phetioType.elementType && this.valueProperty.phetioType.elementType.toStateObject;
-      this.toggleButtonModelEventSource && this.toggleButtonModelEventSource.startEvent( 'user', 'toggled', {
+      this.toggleButton.startEvent( 'user', 'toggled', {
         oldValue: hasToStateObject && this.valueProperty.phetioType.elementType.toStateObject( oldValue ),
         newValue: hasToStateObject && this.valueProperty.phetioType.elementType.toStateObject( newValue )
       } );
       this.valueProperty.value = newValue;
-      this.toggleButtonModelEventSource && this.toggleButtonModelEventSource.endEvent();
+      this.toggleButton.endEvent();
     }
   } );
 } );
