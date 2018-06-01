@@ -25,7 +25,6 @@ define( function( require ) {
    * @constructor
    */
   function StickyToggleButtonModel( valueUp, valueDown, valueProperty, stickyToggleButton ) {
-    console.log( 'hello' );
     var self = this;
 
     // @private
