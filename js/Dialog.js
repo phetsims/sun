@@ -92,11 +92,13 @@ define( function( require ) {
       focusOnCloseNode: null // {Node} receives focus on close, if null focus returns to element that had focus on open
     }, options );
 
-    // if xMargin is specified actually store it in right margin
+    // if xMargin is specified, actually store it in right margin
+    // since the default is to have symettrical left right gutters
+    // the only way for client to set left margin is through optinos.leftMargin
     options.rightMargin = options.xMargin ? options.xMargin : options.rightMargin;
     options.xMargin = 0;
 
-    // if yMargin is specified actually store it in top and bottom margin
+    // if yMargin is specified actually store it in top and bottom margins
     options.topMargin = options.yMargin ? options.yMargin : options.topMargin;
     options.bottomMargin = options.yMargin ? options.yMargin : options.bottomMargin;
     options.yMargin = 0;
