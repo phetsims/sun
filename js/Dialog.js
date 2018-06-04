@@ -14,7 +14,6 @@ define( function( require ) {
 
   // modules
   var AccessibilityUtil = require( 'SCENERY/accessibility/AccessibilityUtil' );
-  // var CloseButton2 = require( 'SCENERY_PHET/buttons/CloseButton2' );
   var Display = require( 'SCENERY/display/Display' );
   var FullScreen = require( 'SCENERY/util/FullScreen' );
   var HBox = require( 'SCENERY/nodes/HBox' );
@@ -194,7 +193,11 @@ define( function( require ) {
 
     // add top and bottom margins
     var dialogContent = new VBox( {
-      children: [ new VStrut( options.topMargin ), contentAndClosebutton, new VStrut( options.bottomMargin ) ]
+      children: [
+      new VStrut( options.topMargin ),
+      contentAndClosebutton,
+      new VStrut( options.bottomMargin )
+      ]
     } );
 
     Panel.call( this, dialogContent, options );
