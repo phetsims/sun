@@ -14,6 +14,7 @@ define( function( require ) {
 
   // modules
   var AccessibilityUtil = require( 'SCENERY/accessibility/AccessibilityUtil' );
+  var CloseButton2 = require('SCENERY_PHET/buttons/CloseButton2' );
   var Display = require( 'SCENERY/display/Display' );
   var FullScreen = require( 'SCENERY/util/FullScreen' );
   var HBox = require( 'SCENERY/nodes/HBox' );
@@ -23,10 +24,6 @@ define( function( require ) {
   var VBox = require( 'SCENERY/nodes/VBox' );
   var VStrut = require( 'SCENERY/nodes/VStrut' );
   var Panel = require( 'SUN/Panel' );
-  var Path = require( 'SCENERY/nodes/Path' );
-  var RectangularPushButton = require( 'SUN/buttons/RectangularPushButton' );
-  var RectangularButtonView = require( 'SUN/buttons/RectangularButtonView' );
-  var Shape = require( 'KITE/Shape' );
   var sun = require( 'SUN/sun' );
   var SunA11yStrings = require( 'SUN/SunA11yStrings' );
   var Tandem = require( 'TANDEM/Tandem' );
@@ -37,19 +34,6 @@ define( function( require ) {
 
   // constants
   var CLOSE_BUTTON_WIDTH = 7;
-
-  // close button shape, an 'X'
-  var CLOSE_BUTTON_SHAPE = new Shape()
-    .moveTo( -CLOSE_BUTTON_WIDTH, -CLOSE_BUTTON_WIDTH )
-    .lineTo( CLOSE_BUTTON_WIDTH, CLOSE_BUTTON_WIDTH )
-    .moveTo( CLOSE_BUTTON_WIDTH, -CLOSE_BUTTON_WIDTH )
-    .lineTo( -CLOSE_BUTTON_WIDTH, CLOSE_BUTTON_WIDTH );
-
-  var CLOSE_BUTTON_ICON = new Path( CLOSE_BUTTON_SHAPE, {
-    stroke: 'black',
-    lineCap: 'round',
-    lineWidth: 2
-  } );
 
   /**
    * @param {Node} content - The content to display inside the dialog (not including the title)
@@ -143,14 +127,9 @@ define( function( require ) {
       align: options.titleAlign
     } );
 
-    var closeButton = new RectangularPushButton( {
+    var closeButton = new CloseButton2( {
 
-      // RectangularPushButton
-      content: CLOSE_BUTTON_ICON,
-      baseColor: 'transparent',
-      buttonAppearanceStrategy: RectangularButtonView.FlatAppearanceStrategy,
-      xMargin: 0,
-      yMargin: 0,
+      iconLength: CLOSE_BUTTON_WIDTH,
       listener: options.closeButtonListener,
 
       // phet-io
