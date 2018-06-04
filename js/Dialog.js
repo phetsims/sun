@@ -14,15 +14,14 @@ define( function( require ) {
 
   // modules
   var AccessibilityUtil = require( 'SCENERY/accessibility/AccessibilityUtil' );
+  var AlignBox = require( 'SCENERY/nodes/AlignBox' );
   var CloseButton2 = require('SCENERY_PHET/buttons/CloseButton2' );
   var Display = require( 'SCENERY/display/Display' );
   var FullScreen = require( 'SCENERY/util/FullScreen' );
   var HBox = require( 'SCENERY/nodes/HBox' );
-  var HStrut = require( 'SCENERY/nodes/HStrut' );
   var inherit = require( 'PHET_CORE/inherit' );
   var KeyboardUtil = require( 'SCENERY/accessibility/KeyboardUtil' );
   var VBox = require( 'SCENERY/nodes/VBox' );
-  var VStrut = require( 'SCENERY/nodes/VStrut' );
   var Panel = require( 'SUN/Panel' );
   var sun = require( 'SUN/sun' );
   var SunA11yStrings = require( 'SUN/SunA11yStrings' );
@@ -160,23 +159,17 @@ define( function( require ) {
 
     // align content and close button, add left and right margins
     var contentAndClosebutton = new HBox( {
-      children: [
-        new HStrut( options.leftMargin ),
-        verticalContent,
-        new HStrut ( options.xSpacing ),
-        closeButton,
-        new HStrut( options.rightMargin )
-      ],
+      children: [ verticalContent, closeButton ],
+      spacing: options.xSpacing,
       align: 'top'
     } );
 
     // add top and bottom margins
-    var dialogContent = new VBox( {
-      children: [
-      new VStrut( options.topMargin ),
-      contentAndClosebutton,
-      new VStrut( options.bottomMargin )
-      ]
+    var dialogContent = new AlignBox( contentAndClosebutton, {
+      leftMargin: options.leftMargin,
+      rightMargin: options.rightMargin,
+      topMargin: options.topMargin,
+      bottomMargin: options.bottomMargin,
     } );
 
     Panel.call( this, dialogContent, options );
