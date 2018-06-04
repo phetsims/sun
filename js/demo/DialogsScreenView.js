@@ -9,9 +9,11 @@ define( function( require ) {
   'use strict';
 
   // modules
+  var Node = require( 'SCENERY/nodes/Node' );
   var Dialog = require( 'SUN/Dialog' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Font = require( 'SCENERY/util/Font' );
+  var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var RectangularPushButton = require( 'SUN/buttons/RectangularPushButton' );
   var ScreenView = require( 'JOIST/ScreenView' );
   var sun = require( 'SUN/sun' );
@@ -63,11 +65,21 @@ define( function( require ) {
    * @returns {Dialog}
    */
   var createDialog = function( modal ) {
-    var contentNode = new Text( modal ? 'modal dialog content' : 'non-modal dialog content', {
-      font: new Font( { size: 20 } )
+    var randomRect = new Rectangle( 0, 0, 100, 50, { fill: 'red' } );
+
+    var resizeButton = new RectangularPushButton( {
+      content: new Text( 'Resize', { font: new Font( { size: 20 } ) } ),
+      listener: function() {
+        randomRect.rectWidth = 50 + phet.joist.random.nextDouble() * 150;
+        randomRect.rectHeight = 50 + phet.joist.random.nextDouble() * 150;
+      },
+      bottom: randomRect.top - 10,
     } );
+
+    var contentNode = new Node( { children: [ resizeButton, randomRect ] } );
+
     return new Dialog( contentNode, {
-      titleAlign: 'right',
+      titleAlign: 'center',
       modal: modal,
       hasCloseButton: !modal,
       title: new Text( 'Title', { font: new Font( { size: 32 } ) } )
