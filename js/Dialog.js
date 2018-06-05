@@ -15,7 +15,6 @@ define( function( require ) {
   // modules
   var AccessibilityUtil = require( 'SCENERY/accessibility/AccessibilityUtil' );
   var AlignBox = require( 'SCENERY/nodes/AlignBox' );
-  var CloseButton2 = require('SCENERY_PHET/buttons/CloseButton2' );
   var Display = require( 'SCENERY/display/Display' );
   var FullScreen = require( 'SCENERY/util/FullScreen' );
   var HBox = require( 'SCENERY/nodes/HBox' );
@@ -27,6 +26,10 @@ define( function( require ) {
   var SunA11yStrings = require( 'SUN/SunA11yStrings' );
   var Tandem = require( 'TANDEM/Tandem' );
   var DialogIO = require( 'SUN/DialogIO' );
+  var Path = require( 'SCENERY/nodes/Path' );
+  var RectangularButtonView = require( 'SUN/buttons/RectangularButtonView' );
+  var RectangularPushButton = require( 'SUN/buttons/RectangularPushButton' );
+  var Shape = require( 'KITE/Shape' );
 
   // strings
   var closeString = SunA11yStrings.close.value;
@@ -128,7 +131,7 @@ define( function( require ) {
       align: options.titleAlign
     } );
 
-    var closeButton = new CloseButton2( {
+    var closeButton = new CloseButton( {
 
       iconLength: CLOSE_BUTTON_WIDTH,
       listener: options.closeButtonListener,
@@ -252,7 +255,7 @@ define( function( require ) {
     dialog.center = simBounds.center.times( 1.0 / scale );
   };
 
-  return inherit( Panel, Dialog, {
+  inherit( Panel, Dialog, {
 
     // @public
     show: function() {
@@ -335,4 +338,41 @@ define( function( require ) {
       this.activeElement && this.activeElement.focus();
     }
   } );
+
+
+  /**
+   * @param {Object} [options] - see RectangularPushButton
+   * @constructor
+   */
+  function CloseButton( options ) {
+    options = _.extend( {
+      iconLength: 7,
+      baseColor: 'transparent',
+      buttonAppearanceStrategy: RectangularButtonView.FlatAppearanceStrategy,
+      xMargin: 0,
+      yMargin: 0,
+      listener: null // {function} called when the button is pressed
+    }, options );
+
+    // close button shape, an 'X'
+    var closeButtonShape = new Shape()
+      .moveTo( -options.iconLength, -options.iconLength )
+      .lineTo( options.iconLength, options.iconLength )
+      .moveTo( options.iconLength, -options.iconLength )
+      .lineTo( -options.iconLength, options.iconLength );
+
+    options.content = new Path( closeButtonShape, {
+      stroke: 'black',
+      lineCap: 'round',
+      lineWidth: 2
+    } );
+
+    RectangularPushButton.call( this, options );
+  }
+
+  sun.register( 'Dialog.CloseButton', CloseButton );
+
+  inherit( RectangularPushButton, CloseButton );
+
+  return Dialog;
 } );
