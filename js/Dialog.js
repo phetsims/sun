@@ -341,6 +341,9 @@ define( function( require ) {
 
 
   /**
+   * The close button for Dialog
+   * A flat x
+   * 
    * @param {Object} [options] - see RectangularPushButton
    * @constructor
    */
