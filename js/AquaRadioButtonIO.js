@@ -44,15 +44,19 @@ define( function( require ) {
     events: [ 'fired' ],
     toStateObject: function( radioButton ) {
       assert && assertInstanceOf( radioButton, phet.sun.AquaRadioButton );
-      var nodeState = NodeIO.toStateObject( radioButton );
-      return _.extend( {
+
+      // TODO: convert to sub-Property, see https://github.com/phetsims/phet-io/issues/1326
+      return {
         enabled: radioButton.getEnabled()
-      }, nodeState );
+      };
     },
-    fromStateObject: function( stateObject ) { return NodeIO.fromStateObject( stateObject ); },
+    fromStateObject: function( stateObject ) {
+      return NodeIO.fromStateObject( stateObject );
+    },
     setValue: function( radioButton, fromStateObject ) {
       assert && assertInstanceOf( radioButton, phet.sun.AquaRadioButton );
-      NodeIO.setValue( radioButton, fromStateObject );
+
+      // TODO: convert to sub-Property, see https://github.com/phetsims/phet-io/issues/1326
       radioButton.setEnabled( fromStateObject.enabled );
     }
   } );
@@ -60,5 +64,4 @@ define( function( require ) {
   sun.register( 'AquaRadioButtonIO', AquaRadioButtonIO );
 
   return AquaRadioButtonIO;
-} )
-;
+} );
