@@ -353,13 +353,13 @@ define( function( require ) {
     var iconRow = new HBox( {
       spacing: 10,
       children: _.range( 1, 10 ).map( function() {
-        var randomRect = new Rectangle( 0, 0, Math.random() * 60 + 10, Math.random() * 60 + 10, {
+        var randomRect = new Rectangle( 0, 0, phet.joist.random.nextDouble() * 60 + 10, phet.joist.random.nextDouble() * 60 + 10, {
           fill: 'black'
         } );
         Timer.addStepListener( function() {
-          if ( Math.random() < 0.02 ) {
-            randomRect.rectWidth = Math.random() * 60 + 10;
-            randomRect.rectHeight = Math.random() * 60 + 10;
+          if ( phet.joist.random.nextDouble() < 0.02 ) {
+            randomRect.rectWidth = phet.joist.random.nextDouble() * 60 + 10;
+            randomRect.rectHeight = phet.joist.random.nextDouble() * 60 + 10;
           }
         } );
         return new AlignBox( randomRect, {
@@ -373,10 +373,10 @@ define( function( require ) {
     function randomText() {
       var text = new Text( 'Test', { fontSize: 20 } );
       Timer.addStepListener( function() {
-        if ( Math.random() < 0.03 ) {
+        if ( phet.joist.random.nextDouble() < 0.03 ) {
           var string = '';
-          while ( Math.random() < 0.94 && string.length < 20 ) {
-            string += ( Math.random() + '' ).slice( -1 );
+          while ( phet.joist.random.nextDouble() < 0.94 && string.length < 20 ) {
+            string += ( phet.joist.random.nextDouble() + '' ).slice( -1 );
           }
           text.text = string;
         }
