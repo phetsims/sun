@@ -11,9 +11,9 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var Color = require( 'SCENERY/util/Color' );
-  var sun = require( 'SUN/sun' );
+  var PaintColorProperty = require( 'SCENERY/util/PaintColorProperty' );
   var RadioButtonInteractionState = require( 'SUN/buttons/RadioButtonInteractionState' );
+  var sun = require( 'SUN/sun' );
 
   // constants
   var DISABLED_OPACITY = 0.3;
@@ -30,28 +30,22 @@ define( function( require ) {
    */
   var DefaultRadioButtonsAppearance = function( button, interactionStateProperty, baseColorProperty, options ) {
 
-    // TODO: Changes were made to the appearance strategies to support dynamic changes of the base color, see
-    // https://github.com/phetsims/sun/issues/138.  This feature has not yet been implemented in this appearance
-    // strategy, please add it if you need it.
-    function handleBaseColorChanged() {
-      assert && assert( false, 'Dynamic base color not yet implemented in this appearance strategy.' );
-    }
-
-    baseColorProperty.lazyLink( handleBaseColorChanged );
-
-    // Set up variables needed to create the various fills and strokes
-    var baseColor = Color.toColor( baseColorProperty.value );
-    var disabledBaseColor = Color.toColor( options.disabledBaseColor );
-    var deselectedStroke = Color.toColor( options.deselectedStroke );
-
     // Create the fills and strokes used for various button states
-    var disabledStroke = disabledBaseColor.colorUtilsDarker( 0.4 );
-    var overStroke = options.overStroke ? options.overStroke : deselectedStroke.colorUtilsDarker( 0.4 );
-    var overFill = options.overFill ? options.overFill : baseColor.colorUtilsBrighter( 0.4 );
-    var pressedFill = baseColor.colorUtilsDarker( 0.4 );
+    var disabledStroke = new PaintColorProperty( options.disabledBaseColor, {
+      factor: -0.4
+    } );
+    var overStroke = new PaintColorProperty( options.overStroke || options.deselectedStroke, {
+      factor: options.overStroke ? 0 : -0.4
+    } );
+    var overFill = new PaintColorProperty( options.overFill || baseColorProperty, {
+      factor: options.overFill ? 0 : 0.4
+    } );
+    var pressedFill = new PaintColorProperty( baseColorProperty, {
+      factor: -0.4
+    } );
 
     button.cachedPaints = [
-      baseColor, overFill, disabledBaseColor, pressedFill,
+      baseColorProperty, overFill, options.disabledBaseColor, pressedFill,
       options.deselectedStroke, overStroke, options.selectedStroke, disabledStroke
     ];
 
@@ -59,7 +53,7 @@ define( function( require ) {
       switch( state ) {
 
         case RadioButtonInteractionState.DESELECTED:
-          button.fill = baseColor;
+          button.fill = baseColorProperty;
           button.stroke = options.deselectedStroke;
           button.lineWidth = options.deselectedLineWidth;
           button.opacity = options.deselectedButtonOpacity;
@@ -74,21 +68,21 @@ define( function( require ) {
           break;
 
         case RadioButtonInteractionState.SELECTED:
-          button.fill = baseColor;
+          button.fill = baseColorProperty;
           button.stroke = options.selectedStroke;
           button.lineWidth = options.selectedLineWidth;
           button.opacity = options.selectedButtonOpacity;
           break;
 
         case RadioButtonInteractionState.DISABLED_DESELECTED:
-          button.fill = disabledBaseColor;
+          button.fill = options.disabledBaseColor;
           button.stroke = disabledStroke;
           button.lineWidth = options.deselectedLineWidth;
           button.opacity = options.deselectedButtonOpacity;
           break;
 
         case RadioButtonInteractionState.DISABLED_SELECTED:
-          button.fill = disabledBaseColor;
+          button.fill = options.disabledBaseColor;
           button.stroke = disabledStroke;
           button.lineWidth = options.selectedLineWidth;
           button.opacity = options.selectedButtonOpacity;
@@ -110,8 +104,11 @@ define( function( require ) {
 
     // add dispose function
     this.dispose = function() {
-      baseColorProperty.unlink( handleBaseColorChanged );
       interactionStateProperty.unlink( handleInteractionStateChanged );
+      disabledStroke.dispose();
+      overStroke.dispose();
+      overFill.dispose();
+      pressedFill.dispose();
     };
   };
 
