@@ -19,8 +19,6 @@ define( function( require ) {
       stroke: 'rgb(100,100,100)'
     }, options );
 
-    Tandem.indicateUninstrumentedCode();
-
     Line.call( this, 0, 0, 0, height, options );
   }
 
