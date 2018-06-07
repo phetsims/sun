@@ -20,7 +20,7 @@ define( function( require ) {
   var ColorConstants = require( 'SUN/ColorConstants' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Node = require( 'SCENERY/nodes/Node' );
-  var Property = require( 'AXON/Property' );
+  var PaintColorProperty = require( 'SCENERY/util/PaintColorProperty' );
   var RadialGradient = require( 'SCENERY/util/RadialGradient' );
   var Shape = require( 'KITE/Shape' );
   var sun = require( 'SUN/sun' );
@@ -85,7 +85,7 @@ define( function( require ) {
     }
 
     // Make the base color into a property so that the appearance strategy can update itself if changes occur.
-    this.baseColorProperty = new Property( Color.toColor( options.baseColor ) ); // @private
+    this.baseColorProperty = new PaintColorProperty( options.baseColor ); // @private
 
     // @private {PressListener}
     var pressListener = pushButtonModel.createListener( options.tandem.createTandem( 'pressListener' ) );
@@ -469,7 +469,7 @@ define( function( require ) {
      * @param {Color|String} baseColor
      * @public
      */
-    setBaseColor: function( baseColor ) { this.baseColorProperty.value = Color.toColor( baseColor ); },
+    setBaseColor: function( baseColor ) { this.baseColorProperty.paint = baseColor; },
     set baseColor( baseColor ) { this.setBaseColor( baseColor ); },
 
     /**
@@ -477,7 +477,7 @@ define( function( require ) {
      * @returns {Color}
      * @public
      */
-    getBaseColor: function() { return this.baseColorProperty.value; },
+    getBaseColor: function() { return this.baseColorProperty.paint; },
     get baseColor() { return this.getBaseColor(); },
 
     /**
