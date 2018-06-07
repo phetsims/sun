@@ -19,7 +19,7 @@ define( function( require ) {
   var LinearGradient = require( 'SCENERY/util/LinearGradient' );
   var Node = require( 'SCENERY/nodes/Node' );
   var Path = require( 'SCENERY/nodes/Path' );
-  var Property = require( 'AXON/Property' );
+  var PaintColorProperty = require( 'SCENERY/util/PaintColorProperty' );
   var Shape = require( 'KITE/Shape' );
   var sun = require( 'SUN/sun' );
   var Tandem = require( 'TANDEM/Tandem' );
@@ -100,7 +100,7 @@ define( function( require ) {
     this.addInputListener( pressListener );
 
     // @private - make the base color into a property so that the appearance strategy can update itself if changes occur.
-    this.baseColorProperty = new Property( Color.toColor( options.baseColor ) ); // @private
+    this.baseColorProperty = new PaintColorProperty( options.baseColor ); // @private
 
     // Figure out the size of the button.
     var buttonWidth = Math.max( content ? content.width + options.xMargin * 2 : 0, options.minWidth );
@@ -525,10 +525,10 @@ define( function( require ) {
 
     /**
      * Sets the base color, which is the main background fill color used for the button.
-     * @param {Color|String} baseColor
+     * @param {null|string|Color|Property.<string|Color>} baseColor
      * @public
      */
-    setBaseColor: function( baseColor ) { this.baseColorProperty.value = Color.toColor( baseColor ); },
+    setBaseColor: function( baseColor ) { this.baseColorProperty.paint = baseColor; },
     set baseColor( baseColor ) { this.setBaseColor( baseColor ); },
 
     /**
