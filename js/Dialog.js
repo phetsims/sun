@@ -124,13 +124,14 @@ define( function( require ) {
     // @private - whether the dialog is showing
     this.isShowing = false;
 
-    // align content and title if provided
+    // align content and title (if provided) vertically
     var verticalContent = new VBox( {
       children: options.title ? [ options.title, content ] : [ content ],
       spacing: options.ySpacing,
       align: options.titleAlign
     } );
 
+    // create close button
     var closeButton = new CloseButton( {
 
       iconLength: CLOSE_BUTTON_WIDTH,
@@ -162,14 +163,14 @@ define( function( require ) {
     // @protected (a11y)
     this.closeButton = closeButton;
 
-    // align content and close button, add left and right margins
+    // align vertical content and close button
     var contentAndClosebutton = new HBox( {
       children: [ verticalContent, closeButton ],
       spacing: options.xSpacing,
       align: 'top'
     } );
 
-    // add top and bottom margins
+    // add custom margins
     var dialogContent = new AlignBox( contentAndClosebutton, {
       leftMargin: options.leftMargin,
       rightMargin: options.rightMargin,
