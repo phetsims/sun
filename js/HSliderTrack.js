@@ -24,7 +24,7 @@ define( function( require ) {
   var sun = require( 'SUN/sun' );
   var Tandem = require( 'TANDEM/Tandem' );
 
-  // phet-io modules
+  // ifphetio
   var HSliderTrackIO = require( 'SUN/HSliderTrackIO' );
 
   /**
