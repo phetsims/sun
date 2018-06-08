@@ -365,7 +365,7 @@ define( function( require ) {
       .moveTo( options.iconLength, -options.iconLength )
       .lineTo( -options.iconLength, options.iconLength );
 
-    assert && assert( !options.content, 'ScoreDisplayNumber sets content' );
+    assert && assert( !options.content, 'Dialog.CloseButton sets content' );
 
     options.content = new Path( closeButtonShape, {
       stroke: 'black',
