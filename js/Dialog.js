@@ -15,21 +15,21 @@ define( function( require ) {
   // modules
   var AccessibilityUtil = require( 'SCENERY/accessibility/AccessibilityUtil' );
   var AlignBox = require( 'SCENERY/nodes/AlignBox' );
+  var DialogIO = require( 'SUN/DialogIO' );
   var Display = require( 'SCENERY/display/Display' );
   var FullScreen = require( 'SCENERY/util/FullScreen' );
   var HBox = require( 'SCENERY/nodes/HBox' );
   var inherit = require( 'PHET_CORE/inherit' );
   var KeyboardUtil = require( 'SCENERY/accessibility/KeyboardUtil' );
-  var VBox = require( 'SCENERY/nodes/VBox' );
   var Panel = require( 'SUN/Panel' );
-  var sun = require( 'SUN/sun' );
-  var SunA11yStrings = require( 'SUN/SunA11yStrings' );
-  var Tandem = require( 'TANDEM/Tandem' );
-  var DialogIO = require( 'SUN/DialogIO' );
   var Path = require( 'SCENERY/nodes/Path' );
   var RectangularButtonView = require( 'SUN/buttons/RectangularButtonView' );
   var RectangularPushButton = require( 'SUN/buttons/RectangularPushButton' );
   var Shape = require( 'KITE/Shape' );
+  var sun = require( 'SUN/sun' );
+  var SunA11yStrings = require( 'SUN/SunA11yStrings' );
+  var Tandem = require( 'TANDEM/Tandem' );
+  var VBox = require( 'SCENERY/nodes/VBox' );
 
   // strings
   var closeString = SunA11yStrings.close.value;
