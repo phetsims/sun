@@ -11,8 +11,8 @@ define( function( require ) {
   // modules
   var NodeIO = require( 'SCENERY/nodes/NodeIO' );
   var sun = require( 'SUN/sun' );
-  
-  // phet-io modules
+
+  // ifphetio
   var assertInstanceOf = require( 'ifphetio!PHET_IO/assertInstanceOf' );
   var BooleanIO = require( 'ifphetio!PHET_IO/types/BooleanIO' );
   var phetioInherit = require( 'ifphetio!PHET_IO/phetioInherit' );

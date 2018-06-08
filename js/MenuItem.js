@@ -21,7 +21,7 @@ define( function( require ) {
   var Tandem = require( 'TANDEM/Tandem' );
   var Text = require( 'SCENERY/nodes/Text' );
 
-  // phet-io modules
+  // ifphetio
   var MenuItemIO = require( 'SUN/MenuItemIO' );
 
   // the check mark used for toggle-able menu items

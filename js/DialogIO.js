@@ -9,11 +9,11 @@
 define( function( require ) {
   'use strict';
 
-  // phet-io modules
+  // ifphetio
   var sun = require( 'SUN/sun' );
   var NodeIO = require( 'SCENERY/nodes/NodeIO' );
 
-  // phet-io modules
+  // ifphetio
   var assertInstanceOf = require( 'ifphetio!PHET_IO/assertInstanceOf' );
   var phetioInherit = require( 'ifphetio!PHET_IO/phetioInherit' );
 

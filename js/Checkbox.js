@@ -19,7 +19,7 @@ define( function( require ) {
   var Text = require( 'SCENERY/nodes/Text' );
   var InstanceRegistry = require( 'PHET_CORE/documentation/InstanceRegistry' );
 
-  // phet-io modules
+  // ifphetio
   var CheckboxIO = require( 'SUN/CheckboxIO' );
 
   // constants
