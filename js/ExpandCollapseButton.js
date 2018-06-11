@@ -101,6 +101,9 @@ define( function( require ) {
     this.expandedProperty.link( this.expandedPropertyObserver ); // must be unlinked in dispose
 
     this.mutate( options );
+
+    // a11y - support for binder documentation, stripped out in builds and only runs when ?binder is specified
+    assert && phet.chipper.queryParameters.binder && InstanceRegistry.registerDataURL( 'sun', 'ExpandCollapseButton', this );
   }
 
   sun.register( 'ExpandCollapseButton', ExpandCollapseButton );

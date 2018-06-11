@@ -11,6 +11,7 @@ define( function( require ) {
 
   // modules
   var inherit = require( 'PHET_CORE/inherit' );
+  var InstanceRegistry = require( 'PHET_CORE/documentation/InstanceRegistry' );
   var MomentaryButtonInteractionStateProperty = require( 'SUN/buttons/MomentaryButtonInteractionStateProperty' );
   var MomentaryButtonModel = require( 'SUN/buttons/MomentaryButtonModel' );
   var RectangularButtonView = require( 'SUN/buttons/RectangularButtonView' );
@@ -32,6 +33,9 @@ define( function( require ) {
 
     var buttonModel = new MomentaryButtonModel( valueOff, valueOn, property, this );
     RectangularButtonView.call( this, buttonModel, new MomentaryButtonInteractionStateProperty( buttonModel ), options );
+
+    // a11y - support for binder documentation, stripped out in builds and only runs when ?binder is specified
+    assert && phet.chipper.queryParameters.binder && InstanceRegistry.registerDataURL( 'sun', 'AccordionBox', this );
   }
 
   sun.register( 'RectangularMomentaryButton', RectangularMomentaryButton );

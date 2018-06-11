@@ -13,6 +13,7 @@ define( function( require ) {
 
   // modules
   var inherit = require( 'PHET_CORE/inherit' );
+  var InstanceRegistry = require( 'PHET_CORE/documentation/InstanceRegistry' );
   var PushButtonInteractionStateProperty = require( 'SUN/buttons/PushButtonInteractionStateProperty' );
   var PushButtonIO = require( 'SUN/buttons/PushButtonIO' );
   var PushButtonModel = require( 'SUN/buttons/PushButtonModel' );
@@ -70,6 +71,9 @@ define( function( require ) {
       this.buttonModel.dispose(); //TODO this fails when assertions are enabled, see sun#212
       this.removeAccessibleInputListener( clickListener );
     };
+
+    // a11y - support for binder documentation, stripped out in builds and only runs when ?binder is specified
+    assert && phet.chipper.queryParameters.binder && InstanceRegistry.registerDataURL( 'sun', 'AccordionBox', this );
   }
 
   sun.register( 'RectangularPushButton', RectangularPushButton );
