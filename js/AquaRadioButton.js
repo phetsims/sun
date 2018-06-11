@@ -10,6 +10,7 @@ define( function( require ) {
 
   // modules
   var AquaRadioButtonIO = require( 'SUN/AquaRadioButtonIO' );
+  var BooleanProperty = require( 'AXON/BooleanProperty' );
   var ButtonListener = require( 'SCENERY/input/ButtonListener' );
   var Circle = require( 'SCENERY/nodes/Circle' );
   var inherit = require( 'PHET_CORE/inherit' );
@@ -55,7 +56,10 @@ define( function( require ) {
     var self = this;
 
     // @private
-    this._enabled = options.enabled;
+    this.enabledProperty = new BooleanProperty( options.enabled, {
+      tandem: options.tandem.createTandem( 'enabledProperty' ),
+      phetioInstanceDocumentation: 'Determines whether the AquaRadioButton is enabled (pressable) or disabled (grayed-out).'
+    } );
 
     // selected node creation
     var selectedNode = new Node();
@@ -135,18 +139,22 @@ define( function( require ) {
     };
     property.link( accessibleCheckedListener );
 
+    // a11y - allow consistent a11y naming for radio button types
+    this.setAccessibleAttribute( 'name', options.a11yNameAttribute );
+
+    this.mutate( options );
+
+    var enabledPropertyListener = this.updateEnabled.bind( this );
+    this.enabledProperty.link( enabledPropertyListener );
+
     // @private
     this.disposeAquaRadioButton = function() {
       self.removeInputListener( buttonListener );
       self.removeAccessibleInputListener( changeListener );
       property.unlink( accessibleCheckedListener );
       property.unlink( syncWithModel );
+      self.enabledProperty.unlink( enabledPropertyListener );
     };
-
-    // a11y - allow consistent a11y naming for radio button types
-    this.setAccessibleAttribute( 'name', options.a11yNameAttribute );
-
-    this.mutate( options );
   }
 
   sun.register( 'AquaRadioButton', AquaRadioButton );
@@ -170,27 +178,30 @@ define( function( require ) {
     },
 
     /**
-     * Sets the enabled state
+     * Sets the enabled state.
      * @param {boolean} enabled
      * @public
      */
-    setEnabled: function( enabled ) {
-      this._enabled = enabled;
-      this.opacity = enabled ? 1 : 0.3;
-      this.pickable = enabled; // NOTE: This is a side-effect. If you set pickable independently, it will be changed when you set enabled.
-    },
+    setEnabled: function( enabled ) { this.enabledProperty.set( enabled ); },
     set enabled( value ) { this.setEnabled( value ); },
+
+    /**
+     * Update settings when the enabled status changes.  This method is overrideable, for when subclasses need to
+     * change the appearance of other components.
+     * @public
+     */
+    updateEnabled: function() {
+      this.opacity = this.enabled ? 1 : 0.3;
+      this.pickable = this.enabled; // NOTE: This is a side-effect. If you set pickable independently, it will be changed when you set enabled.
+    },
 
     /**
      * Gets the enabled state
      * @returns {boolean}
      * @public
      */
-    getEnabled: function() {
-      return this._enabled;
-    },
+    getEnabled: function() { return this.enabledProperty.get(); },
     get enabled() { return this.getEnabled(); }
-
   }, {
 
     DEFAULT_RADIUS: DEFAULT_RADIUS

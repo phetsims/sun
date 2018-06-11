@@ -41,24 +41,7 @@ define( function( require ) {
     }
   }, {
     documentation: 'A radio button which looks like the Mac "Aqua" radio buttons',
-    events: [ 'fired' ],
-    toStateObject: function( radioButton ) {
-      assert && assertInstanceOf( radioButton, phet.sun.AquaRadioButton );
-
-      // TODO: convert to sub-Property, see https://github.com/phetsims/phet-io/issues/1326
-      return {
-        enabled: radioButton.getEnabled()
-      };
-    },
-    fromStateObject: function( stateObject ) {
-      return NodeIO.fromStateObject( stateObject );
-    },
-    setValue: function( radioButton, fromStateObject ) {
-      assert && assertInstanceOf( radioButton, phet.sun.AquaRadioButton );
-
-      // TODO: convert to sub-Property, see https://github.com/phetsims/phet-io/issues/1326
-      radioButton.setEnabled( fromStateObject.enabled );
-    }
+    events: [ 'fired' ]
   } );
 
   sun.register( 'AquaRadioButtonIO', AquaRadioButtonIO );
