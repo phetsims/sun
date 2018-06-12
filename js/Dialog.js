@@ -58,8 +58,6 @@ define( function( require ) {
       bottomMargin: 10,
       rightMargin: 10,
       leftMargin: null, // will be default set to create symmetrical gutters
-      xMargin: 0, // this panel customizes its own margins
-      yMargin: 0, // this panel customizes its own margins
 
       // {function} which sets the dialog's position in global coordinates. called as
       // layoutStrategy( dialog, simBounds, screenBounds, scale )
@@ -95,21 +93,15 @@ define( function( require ) {
       focusOnCloseNode: null // {Node} receives focus on close, if null focus returns to element that had focus on open
     }, options );
 
-    // if xMargin is specified, actually store it in right margin
-    // since the default is to have symettrical left right gutters
-    // the only way for client to set left margin is through optinos.leftMargin
-    options.rightMargin = options.xMargin ? options.xMargin : options.rightMargin;
+    assert && assert( options.xMargin === undefined, 'Dialog sets xMargin' );
     options.xMargin = 0;
-
-    // if yMargin is specified actually store it in top and bottom margins
-    options.topMargin = options.yMargin ? options.yMargin : options.topMargin;
-    options.bottomMargin = options.yMargin ? options.yMargin : options.bottomMargin;
+    assert && assert( options.yMargin === undefined, 'Dialog sets yMargin' );
     options.yMargin = 0;
 
     // if left margin is specified in options, use it. otherwise, set it to make the left right gutters symmetrical
     options.leftMargin = options.leftMargin ?
-      options.leftMargin :
-      options.rightMargin + CLOSE_BUTTON_WIDTH + options.xSpacing;
+                         options.leftMargin :
+                         options.rightMargin + CLOSE_BUTTON_WIDTH + options.xSpacing;
 
     // @private (read-only)
     this.isModal = options.modal;
