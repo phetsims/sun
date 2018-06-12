@@ -1,12 +1,12 @@
 ## General Design Considerations
 Here’s when and why we use radio button groups:
-* Used to group a set of checkable buttons, known as radio buttons, where only one button may be in a selected state.
-* Radio button groups or radio groups, may look like a group of traditional radio buttons, or may look like a group of items that users switch between. In PhET simulations the radio button themselves may appear more like objects or buttons rather than a traditional radio button with a label and selectable circle input. 
-* Radio button groups in PhET Simulations start with a radio button selected (I have not found one that does not).
+* Used to group a set of mutually exclusive buttons, known as radio buttons, where only one button in the group may be in a selected state.
+* Radio button groups or radio groups, may look like a group of traditional radio buttons, or may look like a group of items that users switch between. In PhET simulations the radio button themselves may be rectangular buttons with images or symbols - we call these “scene selection” radio buttons.
 
 ## Aesthetic Considerations
-* Label text - is succinct and hopefully sounds good when read together with "selected". For example, in Area Model, the first Area Grid Size radio button, might sound like, "10 by 10, selected". In Balloons and Static Electricity, a user may hear, "Show all charges, selected".
-* Focus highlight - light focus around group, thicker pink focus around selected item.
+* Label text is succinct and ideally sounds good when read as "selected". For example, in Area Model, the first Area Grid Size radio button might sound like, "10 by 10, selected". In Balloons and Static Electricity, a user may hear, "Show all charges, selected". Occasionally a small icon follows the label text.
+* Scene selection style radio buttons generally show the selected button as fully opaque with a thick black stroke, and the unselected buttons have reduced opacity and a thin stroke.
+* Focus highlight has a light focus around the group, and a thicker pink focus around the selected item.
 
 ## Accessibility Considerations
 * The following information is useful for fully communicating the interaction in the non-visual experience.  
