@@ -78,7 +78,7 @@ define( function( require ) {
 
             // map the valueProperty value to another that will be read by the assistive device valueProperty changes
             // @param {number}
-            accessibleMapValue: function( value ) { return value; },
+            accessibleMapValue: function( value ) { return value; }
           };
           options = _.extend( {}, defaults, options );
 

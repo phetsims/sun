@@ -175,7 +175,7 @@ define( function( require ) {
       leftMargin: options.leftMargin,
       rightMargin: options.rightMargin,
       topMargin: options.topMargin,
-      bottomMargin: options.bottomMargin,
+      bottomMargin: options.bottomMargin
     } );
 
     Panel.call( this, dialogContent, options );

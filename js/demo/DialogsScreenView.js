@@ -73,7 +73,7 @@ define( function( require ) {
         randomRect.rectWidth = 50 + phet.joist.random.nextDouble() * 150;
         randomRect.rectHeight = 50 + phet.joist.random.nextDouble() * 150;
       },
-      bottom: randomRect.top - 10,
+      bottom: randomRect.top - 10
     } );
 
     var contentNode = new Node( { children: [ resizeButton, randomRect ] } );
