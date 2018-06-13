@@ -4,7 +4,8 @@ Here’s when and why we use radio button groups:
 * Radio button groups or radio groups, may look like a group of traditional radio buttons, or may look like a group of items that users switch between. In PhET simulations the radio button themselves may be rectangular buttons with images or symbols - we call these “scene selection” radio buttons.
 
 ## Aesthetic Considerations
-* Label text is succinct and ideally sounds good when read as "selected". For example, in Area Model, the first Area Grid Size radio button might sound like, "10 by 10, selected". In Balloons and Static Electricity, a user may hear, "Show all charges, selected". Occasionally a small icon follows the label text.
+* Label text is succinct and ideally sounds good when read as "selected". For example, in Area Model, the first Area Grid Size radio button might sound like, "10 by 10, selected". In Balloons and Static Electricity, a user may hear, "Show all charges, selected". 
+* Occasionally a small icon follows the label text.
 * Scene selection style radio buttons generally show the selected button as fully opaque with a thick black stroke, and the unselected buttons have reduced opacity and a thin stroke.
 * Focus highlight has a light focus around the group, and a thicker pink focus around the selected item.
 
@@ -92,9 +93,8 @@ Example is based on the _scene seletion_ radio buttons in Area Model Introductio
 ```
 
 ### PhET Components
-* AquaRadioButtons.js
-* VerticalAquaRadioButtons.js
-* RadioButtonGroup.js (**Note:** I don see this on sun.)
+* VerticalAquaRadioButtonGroup.js
+* RadioButtonGroup.js (**Note:** I don't see RadioButtonGroup.js on sun.)
 
 ### Supporting Accessibility Resources
 * [ARIA 1.1 radiogroup role](https://www.w3.org/TR/wai-aria-1.1/#radiogroup)
@@ -105,13 +105,12 @@ Example is based on the _scene seletion_ radio buttons in Area Model Introductio
 
 ### Design Doc Content Template Text 
 **Radio Button Group**
-Group Name via `h3` with `aria-labelledby`: (e.g. Sample 1) OR
-Group Name via `legend`: (e.g. Sample 2)  
-Radio button group: `fieldset` with `role="radiogroup"`
-Radio buttons contained in an `ul` with list items, `li`
-List names for radio buttons in the group
-- List Item 1 (e.g. 10 by 10)
-- List Item 2 (e.g. 12 by 12)
-Or as listed in simulation
-
-(Optional) Help Text: 
+- Group Name via `h3` with `aria-labelledby`: (e.g. Sample 1) **OR**
+- Group Name via `legend`: (e.g. Sample 2)  
+- Radio button group: `fieldset` with `role="radiogroup"`
+- Radio buttons contained in an `ul` with list items, `li`
+- List names for radio buttons in the group
+  - List Item 1 (e.g. 10 by 10)
+  - List Item 2 (e.g. 12 by 12)
+  - Or as listed in simulation
+- (Optional) Help Text: 
