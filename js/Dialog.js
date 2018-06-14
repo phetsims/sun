@@ -35,7 +35,7 @@ define( function( require ) {
   var closeString = SunA11yStrings.close.value;
 
   // constants
-  var CLOSE_BUTTON_WIDTH = 7;
+  var CLOSE_BUTTON_WIDTH = 14;
 
   /**
    * @param {Node} content - The content to display inside the dialog (not including the title)
@@ -102,6 +102,7 @@ define( function( require ) {
     options.leftMargin = options.leftMargin ?
                          options.leftMargin :
                          options.rightMargin + CLOSE_BUTTON_WIDTH + options.xSpacing;
+    console.log( options.leftMargin );
 
     // @private (read-only)
     this.isModal = options.modal;
@@ -352,10 +353,10 @@ define( function( require ) {
 
     // close button shape, an 'X'
     var closeButtonShape = new Shape()
-      .moveTo( -options.iconLength, -options.iconLength )
-      .lineTo( options.iconLength, options.iconLength )
-      .moveTo( options.iconLength, -options.iconLength )
-      .lineTo( -options.iconLength, options.iconLength );
+      .moveTo( -options.iconLength / 2, -options.iconLength / 2 )
+      .lineTo( options.iconLength / 2, options.iconLength / 2 )
+      .moveTo( options.iconLength / 2, -options.iconLength / 2 )
+      .lineTo( -options.iconLength / 2, options.iconLength / 2 );
 
     assert && assert( !options.content, 'Dialog.CloseButton sets content' );
 
