@@ -102,7 +102,6 @@ define( function( require ) {
     options.leftMargin = options.leftMargin ?
                          options.leftMargin :
                          options.rightMargin + CLOSE_BUTTON_WIDTH + options.xSpacing;
-    console.log( options.leftMargin );
 
     // @private (read-only)
     this.isModal = options.modal;
