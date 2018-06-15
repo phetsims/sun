@@ -65,24 +65,37 @@ define( function( require ) {
    * @returns {Dialog}
    */
   var createDialog = function( modal ) {
-    var randomRect = new Rectangle( 0, 0, 100, 50, { fill: 'red' } );
 
     var resizeButton = new RectangularPushButton( {
-      content: new Text( 'Resize', { font: new Font( { size: 20 } ) } ),
-      listener: function() {
-        randomRect.rectWidth = 50 + phet.joist.random.nextDouble() * 150;
-        randomRect.rectHeight = 50 + phet.joist.random.nextDouble() * 150;
-      },
-      bottom: randomRect.top - 10
+      content: new Text( 'Resize', { font: new Font( { size: 18 } ) } )
     } );
 
-    var contentNode = new Node( { children: [ resizeButton, randomRect ] } );
+    var minWidth = 1.5 * resizeButton.width;
+    var minHeight = 1.5 * resizeButton.height;
+
+    // This rectangle represents that bounds of the Dialog's content.
+    var randomRect = new Rectangle( 0, 0, minWidth, minHeight, { stroke: 'red' } );
+    resizeButton.center = randomRect.center;
+
+    resizeButton.addListener( function() {
+      randomRect.rectWidth = minWidth + phet.joist.random.nextDouble() * 200;
+      randomRect.rectHeight = minHeight + phet.joist.random.nextDouble() * 100;
+      resizeButton.center = randomRect.center;
+    } );
+
+    var contentNode = new Node( { children: [ randomRect, resizeButton ] } );
 
     return new Dialog( contentNode, {
       titleAlign: 'center',
       modal: modal,
       hasCloseButton: !modal,
-      title: new Text( 'Title', { font: new Font( { size: 32 } ) } )
+      title: new Text( 'Title', { font: new Font( { size: 32 } ) } ),
+      topMargin: 0,
+      bottomMargin: 0,
+      leftMargin: 0,
+      rightMargin: 0,
+      xSpacing: 0,
+      ySpacing: 0
     } );
   };
 
