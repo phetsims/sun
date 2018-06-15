@@ -57,7 +57,7 @@ define( function( require ) {
       topMargin: 10,
       bottomMargin: 10,
       rightMargin: 10,
-      leftMargin: undefined, // will be default set to create symmetrical gutters
+      leftMargin: null, // {number|null} if null, this is computed to create identical margins on left and right
 
       // {function} which sets the dialog's position in global coordinates. called as
       // layoutStrategy( dialog, simBounds, screenBounds, scale )

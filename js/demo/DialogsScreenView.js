@@ -89,13 +89,7 @@ define( function( require ) {
       titleAlign: 'center',
       modal: modal,
       hasCloseButton: !modal,
-      title: new Text( 'Title', { font: new Font( { size: 32 } ) } ),
-      topMargin: 0,
-      bottomMargin: 0,
-      leftMargin: 0,
-      rightMargin: 0,
-      xSpacing: 0,
-      ySpacing: 0
+      title: new Text( 'Title', { font: new Font( { size: 32 } ) } )
     } );
   };
 
