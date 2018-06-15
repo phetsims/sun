@@ -57,7 +57,7 @@ define( function( require ) {
       topMargin: 10,
       bottomMargin: 10,
       rightMargin: 10,
-      leftMargin: null, // will be default set to create symmetrical gutters
+      leftMargin: undefined, // will be default set to create symmetrical gutters
 
       // {function} which sets the dialog's position in global coordinates. called as
       // layoutStrategy( dialog, simBounds, screenBounds, scale )
@@ -99,9 +99,9 @@ define( function( require ) {
     options.yMargin = 0;
 
     // if left margin is specified in options, use it. otherwise, set it to make the left right gutters symmetrical
-    options.leftMargin = options.leftMargin ?
-                         options.leftMargin :
-                         options.rightMargin + CLOSE_BUTTON_WIDTH + options.xSpacing;
+    if ( options.leftMargin === null ) {
+      options.leftMargin = options.rightMargin + CLOSE_BUTTON_WIDTH + options.xSpacing;
+    }
 
     // @private (read-only)
     this.isModal = options.modal;
