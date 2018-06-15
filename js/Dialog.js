@@ -54,10 +54,16 @@ define( function( require ) {
       titleAlign: 'center', // horizontal alignment of the title: {string} left, right or center
       xSpacing: 10, // {number} how far the title is placed to the left of the close button
       ySpacing: 10, // {number} how far the title is placed above the content,
-      topMargin: 10,
-      bottomMargin: 10,
+      topMargin: 10, // {number} margin at the top of the dialog
+      bottomMargin: 10, // {number} margin at the bottom of the dialog
+
+      // {number|null} margin to the left of the content.  If null, this is computed so that we have
+      // the same margins on the left and right of the content.
+      leftMargin: null,
+
+      // {number} margin to the right of the close button. Don't confuse this with the margin to the right of
+      // the content.  That margin is the sum of rightMargin, xSpacing, and the width of the close button.
       rightMargin: 10,
-      leftMargin: null, // {number|null} if null, this is computed to create identical margins on left and right
 
       // {function} which sets the dialog's position in global coordinates. called as
       // layoutStrategy( dialog, simBounds, screenBounds, scale )
