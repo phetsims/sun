@@ -93,12 +93,6 @@ define( function( require ) {
       title: null, // {Node} title to be displayed at top
       titleAlign: 'center', // horizontal alignment of the title: {string} left, right or center
 
-      // {number|null} margin to the left of the content.  If null, this is computed so that we have
-      // the same margins on the left and right of the content.
-
-      // {number} margin to the right of the close button. Don't confuse this with the margin to the right of
-      // the content.  That margin is the sum of rightMargin, xSpacing, and the width of the close button.
-
       // {function} which sets the dialog's position in global coordinates. called as
       // layoutStrategy( dialog, simBounds, screenBounds, scale )
       layoutStrategy: Dialog.DEFAULT_LAYOUT_STRATEGY,
@@ -140,7 +134,7 @@ define( function( require ) {
 
     // if left margin is specified in options, use it. otherwise, set it to make the left right gutters symmetrical
     if ( options.leftMargin === null ) {
-      options.leftMargin = options.rightMargin + CLOSE_BUTTON_WIDTH + options.xSpacing;
+      options.leftMargin = options.xSpacing + CLOSE_BUTTON_WIDTH + options.closeButtonRightMargin;
     }
 
     // @private (read-only)
@@ -155,13 +149,6 @@ define( function( require ) {
 
     // @private - whether the dialog is showing
     this.isShowing = false;
-
-    // align content and title (if provided) vertically
-    var verticalContent = new VBox( {
-      children: options.title ? [ options.title, content ] : [ content ],
-      spacing: options.ySpacing,
-      align: options.titleAlign
-    } );
 
     // create close button
     var closeButton = new CloseButton( {
@@ -195,19 +182,33 @@ define( function( require ) {
     // @protected (a11y)
     this.closeButton = closeButton;
 
-    // align vertical content and close button
-    var contentAndClosebutton = new HBox( {
-      children: [ verticalContent, closeButton ],
-      spacing: options.xSpacing,
-      align: 'top'
+    // Align content, title, and close button using spacing and margin options
+
+    // align content and title (if provided) vertically
+    var contentAndTitle = new VBox( {
+      children: options.title ? [ options.title, content ] : [ content ],
+      spacing: options.ySpacing,
+      align: options.titleAlign
     } );
 
-    // add custom margins
-    var dialogContent = new AlignBox( contentAndClosebutton, {
-      leftMargin: options.leftMargin,
-      rightMargin: options.rightMargin,
+    // add topMargin, bottomMargin, and leftMargin
+    var contentAndTitleWithMargins = new AlignBox( contentAndTitle, {
       topMargin: options.topMargin,
-      bottomMargin: options.bottomMargin
+      bottomMargin: options.bottomMargin,
+      leftMargin: options.leftMargin
+    } );
+
+    // add closeButtonTopMargin and closeButtonRightMargin
+    var closeButtonWithMargins = new AlignBox( closeButton, {
+      topMargin: options.closeButtonTopMargin,
+      rightMargin: options.closeButtonRightMargin
+    } );
+
+    // create content for Panel
+    var dialogContent = new HBox( {
+      children: [ contentAndTitleWithMargins, closeButtonWithMargins ],
+      spacing: options.xSpacing,
+      align: 'top'
     } );
 
     Panel.call( this, dialogContent, options );
