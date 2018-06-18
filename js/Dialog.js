@@ -91,7 +91,6 @@ define( function( require ) {
       // more Dialog-specific options
       modal: true, // {boolean} modal dialogs prevent interaction with the rest of the sim while open
       title: null, // {Node} title to be displayed at top
-      titleAlign: 'center', // horizontal alignment of the title: {string} left, right or center
 
       // {function} which sets the dialog's position in global coordinates. called as
       // layoutStrategy( dialog, simBounds, screenBounds, scale )
