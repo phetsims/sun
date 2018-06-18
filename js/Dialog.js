@@ -52,7 +52,7 @@ define( function( require ) {
       modal: true, // {boolean} modal dialogs prevent interaction with the rest of the sim while open
       title: null, // {Node} title to be displayed at top
       titleAlign: 'center', // horizontal alignment of the title: {string} left, right or center
-      xSpacing: 10, // {number} how far the title is placed to the left of the close button
+      xSpacing: 10, // {number} how far the title and content is placed to the left of the close button
       ySpacing: 10, // {number} how far the title is placed above the content,
       topMargin: 10, // {number} margin at the top of the dialog
       bottomMargin: 10, // {number} margin at the bottom of the dialog
