@@ -48,53 +48,55 @@ define( function( require ) {
 
     options = _.extend( {
 
-      /* Margins and spacing diagram:
-       ______________________________________________________________
-      |                       |                          |           |
-      |                       |                          closeButton |
-      |                       topMargin                  TopMargin   |
-      |                       |                         _|___        |
-      |    ___________________|____________________    |     |       |
-      |-l-|                                        |-r-|  X  |---c---|
-      | e |   Title                                | i |_____|   l   |
-      | f |________________________________________| g           o   |
-      | t |                   |                    | h           s   |
-      | M |                   ySpacing             | t           e   |
-      | a |___________________|____________________| M           B   |
-      | r |                                        | a           u   |
-      | g |   Content                              | r           t   |
-      | i |                                        | g           t   |
-      | n |                                        | i           o   |
-      |   |                                        | n           n   |
-      |   |                                        |             R   |
-      |   |                                        |             i   |
-      |   |                                        |             g   |
-      |   |                                        |             h   |
-      |   |                                        |             M   |
-      |   |________________________________________|             a   |
-      |                       |                                  r   |
-      |                       |                                  g   |
-      |                       bottomMargin                       i   |
-      |                       |                                  n   |
-      |_______________________|______________________________________|
+      /* Margins and spacing:
+       ____________________________________________________________________________
+      |                                     |                          |           |
+      |                                     |                          closeButton |
+      |                                     topMargin                  TopMargin   |
+      |                                     |                         _|___        |
+      |                  ___________________|____________________    |     |       |
+      |--------l--------|                                        |-r-|  X  |---c---|
+      |        e        |   Title                                | i |_____|   l   |
+      |        f        |________________________________________| g           o   |
+      |        t        |   |                                    | h           s   |
+      |        M        |   ySpacing                             | t           e   |
+      |        a        |___|____________________________________| M           B   |
+      |        r        |                                        | a           u   |
+      |        g        |   Content                              | r           t   |
+      |        i        |                                        | g           t   |
+      |        n        |                                        | i           o   |
+      |                 |                                        | n           n   |
+      |                 |                                        |             R   |
+      |                 |                                        |             i   |
+      |                 |                                        |             g   |
+      |                 |                                        |             h   |
+      |                 |                                        |             M   |
+      |                 |________________________________________|             a   |
+      |                                     |                                  r   |
+      |                                     |                                  g   |
+      |                                     bottomMargin                       i   |
+      |                                     |                                  n   |
+      |_____________________________________|______________________________________|
        */
 
-      // Dialog-specific options
+      xSpacing: 10, // {number} how far the title is placed to the left of the close button // TODO: remove
+      ySpacing: 10, // {number}
+      topMargin: 10, // {number}
+      bottomMargin: 10, // {number}
+      rightMargin: 10, // {number}
+      leftMargin: null, // {number|null} If null, this is computed so that we have the same spacing on the left and
+      // right of the content.
+
+      // more Dialog-specific options
       modal: true, // {boolean} modal dialogs prevent interaction with the rest of the sim while open
       title: null, // {Node} title to be displayed at top
       titleAlign: 'center', // horizontal alignment of the title: {string} left, right or center
-      xSpacing: 10, // {number} how far the title is placed to the left of the close button
-      ySpacing: 10, // {number} how far the title is placed above the content,
-      topMargin: 10, // {number} margin at the top of the dialog
-      bottomMargin: 10, // {number} margin at the bottom of the dialog
 
       // {number|null} margin to the left of the content.  If null, this is computed so that we have
       // the same margins on the left and right of the content.
-      leftMargin: null,
 
       // {number} margin to the right of the close button. Don't confuse this with the margin to the right of
       // the content.  That margin is the sum of rightMargin, xSpacing, and the width of the close button.
-      rightMargin: 10,
 
       // {function} which sets the dialog's position in global coordinates. called as
       // layoutStrategy( dialog, simBounds, screenBounds, scale )
