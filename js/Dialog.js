@@ -79,13 +79,14 @@ define( function( require ) {
       |_____________________________________|______________________________________|
        */
 
-      xSpacing: 10, // {number} how far the title is placed to the left of the close button
-      ySpacing: 10, // {number}
-      topMargin: 10, // {number}
-      bottomMargin: 10, // {number}
-      rightMargin: 10, // {number} // TODO: remove
-      leftMargin: null, // {number|null} If null, this is computed so that we have the same spacing on the left and
-      // right of the content.
+      xSpacing: 10, // {number} how far the title and content is placed to the left of the close button
+      ySpacing: 10, // {number} vertical space between title and content
+      topMargin: 15, // {number} margin above content, or above title if provided
+      bottomMargin: 15, // {number} margin below content
+      leftMargin: null, // {number|null} margin to the left of the content.  If null, this is computed so that we have
+      // the same margins on the left and right of the content.
+      closeButtonTopMargin: 10, // {number} margin above the close button
+      closeButtonRightMargin: 10, // {number} margin to the right of the close button
 
       // more Dialog-specific options
       modal: true, // {boolean} modal dialogs prevent interaction with the rest of the sim while open
