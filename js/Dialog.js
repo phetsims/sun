@@ -48,6 +48,37 @@ define( function( require ) {
 
     options = _.extend( {
 
+      /* Margins and spacing diagram:
+       ______________________________________________________________
+      |                       |                          |           |
+      |                       |                          closeButton |
+      |                       topMargin                  TopMargin   |
+      |                       |                         _|___        |
+      |    ___________________|____________________    |     |       |
+      |-l-|                                        |-r-|  X  |---c---|
+      | e |   Title                                | i |_____|   l   |
+      | f |________________________________________| g           o   |
+      | t |                   |                    | h           s   |
+      | M |                   ySpacing             | t           e   |
+      | a |___________________|____________________| M           B   |
+      | r |                                        | a           u   |
+      | g |   Content                              | r           t   |
+      | i |                                        | g           t   |
+      | n |                                        | i           o   |
+      |   |                                        | n           n   |
+      |   |                                        |             R   |
+      |   |                                        |             i   |
+      |   |                                        |             g   |
+      |   |                                        |             h   |
+      |   |                                        |             M   |
+      |   |________________________________________|             a   |
+      |                       |                                  r   |
+      |                       |                                  g   |
+      |                       bottomMargin                       i   |
+      |                       |                                  n   |
+      |_______________________|______________________________________|
+       */
+
       // Dialog-specific options
       modal: true, // {boolean} modal dialogs prevent interaction with the rest of the sim while open
       title: null, // {Node} title to be displayed at top
