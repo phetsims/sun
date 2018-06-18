@@ -55,17 +55,17 @@ define( function( require ) {
       |                                     topMargin                  TopMargin   |
       |                                     |                         _|___        |
       |                  ___________________|____________________    |     |       |
-      |--------l--------|                                        |-r-|  X  |---c---|
-      |        e        |   Title                                | i |_____|   l   |
-      |        f        |________________________________________| g           o   |
-      |        t        |   |                                    | h           s   |
-      |        M        |   ySpacing                             | t           e   |
-      |        a        |___|____________________________________| M           B   |
-      |        r        |                                        | a           u   |
-      |        g        |   Content                              | r           t   |
-      |        i        |                                        | g           t   |
-      |        n        |                                        | i           o   |
-      |                 |                                        | n           n   |
+      |--------l--------|                                        |-x-|  X  |---c---|
+      |        e        |   Title                                | S |_____|   l   |
+      |        f        |________________________________________| P           o   |
+      |        t        |   |                                    | a           s   |
+      |        M        |   ySpacing                             | c           e   |
+      |        a        |___|____________________________________| i           B   |
+      |        r        |                                        | n           u   |
+      |        g        |   Content                              | g           t   |
+      |        i        |                                        |             t   |
+      |        n        |                                        |             o   |
+      |                 |                                        |             n   |
       |                 |                                        |             R   |
       |                 |                                        |             i   |
       |                 |                                        |             g   |
@@ -79,11 +79,11 @@ define( function( require ) {
       |_____________________________________|______________________________________|
        */
 
-      xSpacing: 10, // {number} how far the title is placed to the left of the close button // TODO: remove
+      xSpacing: 10, // {number} how far the title is placed to the left of the close button
       ySpacing: 10, // {number}
       topMargin: 10, // {number}
       bottomMargin: 10, // {number}
-      rightMargin: 10, // {number}
+      rightMargin: 10, // {number} // TODO: remove
       leftMargin: null, // {number|null} If null, this is computed so that we have the same spacing on the left and
       // right of the content.
 
