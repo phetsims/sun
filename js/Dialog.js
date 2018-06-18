@@ -48,22 +48,50 @@ define( function( require ) {
 
     options = _.extend( {
 
-      // Dialog-specific options
+      /* Margins and spacing:
+       ____________________________________________________________________________
+      |                                     |                          |           |
+      |                                     |                          closeButton |
+      |                                     topMargin                  TopMargin   |
+      |                                     |                         _|___        |
+      |                  ___________________|____________________    |     |       |
+      |--------l--------|                                        |-x-|  X  |---c---|
+      |        e        |   Title                                | S |_____|   l   |
+      |        f        |________________________________________| P           o   |
+      |        t        |   |                                    | a           s   |
+      |        M        |   ySpacing                             | c           e   |
+      |        a        |___|____________________________________| i           B   |
+      |        r        |                                        | n           u   |
+      |        g        |   Content                              | g           t   |
+      |        i        |                                        |             t   |
+      |        n        |                                        |             o   |
+      |                 |                                        |             n   |
+      |                 |                                        |             R   |
+      |                 |                                        |             i   |
+      |                 |                                        |             g   |
+      |                 |                                        |             h   |
+      |                 |                                        |             M   |
+      |                 |________________________________________|             a   |
+      |                                     |                                  r   |
+      |                                     |                                  g   |
+      |                                     bottomMargin                       i   |
+      |                                     |                                  n   |
+      |_____________________________________|______________________________________|
+       */
+
+      xSpacing: 10, // {number} how far the title and content is placed to the left of the close button
+      ySpacing: 10, // {number} vertical space between title and content
+      topMargin: 15, // {number} margin above content, or above title if provided
+      bottomMargin: 15, // {number} margin below content
+      leftMargin: null, // {number|null} margin to the left of the content.  If null, this is computed so that we have
+      // the same margins on the left and right of the content.
+      closeButtonTopMargin: 10, // {number} margin above the close button
+      closeButtonRightMargin: 10, // {number} margin to the right of the close button
+
+      // more Dialog-specific options
       modal: true, // {boolean} modal dialogs prevent interaction with the rest of the sim while open
       title: null, // {Node} title to be displayed at top
       titleAlign: 'center', // horizontal alignment of the title: {string} left, right or center
-      xSpacing: 10, // {number} how far the title and content is placed to the left of the close button
-      ySpacing: 10, // {number} how far the title is placed above the content,
-      topMargin: 10, // {number} margin at the top of the dialog
-      bottomMargin: 10, // {number} margin at the bottom of the dialog
-
-      // {number|null} margin to the left of the content.  If null, this is computed so that we have
-      // the same margins on the left and right of the content.
-      leftMargin: null,
-
-      // {number} margin to the right of the close button. Don't confuse this with the margin to the right of
-      // the content.  That margin is the sum of rightMargin, xSpacing, and the width of the close button.
-      rightMargin: 10,
 
       // {function} which sets the dialog's position in global coordinates. called as
       // layoutStrategy( dialog, simBounds, screenBounds, scale )
@@ -106,7 +134,7 @@ define( function( require ) {
 
     // if left margin is specified in options, use it. otherwise, set it to make the left right gutters symmetrical
     if ( options.leftMargin === null ) {
-      options.leftMargin = options.rightMargin + CLOSE_BUTTON_WIDTH + options.xSpacing;
+      options.leftMargin = options.xSpacing + CLOSE_BUTTON_WIDTH + options.closeButtonRightMargin;
     }
 
     // @private (read-only)
@@ -121,13 +149,6 @@ define( function( require ) {
 
     // @private - whether the dialog is showing
     this.isShowing = false;
-
-    // align content and title (if provided) vertically
-    var verticalContent = new VBox( {
-      children: options.title ? [ options.title, content ] : [ content ],
-      spacing: options.ySpacing,
-      align: options.titleAlign
-    } );
 
     // create close button
     var closeButton = new CloseButton( {
@@ -161,19 +182,33 @@ define( function( require ) {
     // @protected (a11y)
     this.closeButton = closeButton;
 
-    // align vertical content and close button
-    var contentAndClosebutton = new HBox( {
-      children: [ verticalContent, closeButton ],
-      spacing: options.xSpacing,
-      align: 'top'
+    // Align content, title, and close button using spacing and margin options
+
+    // align content and title (if provided) vertically
+    var contentAndTitle = new VBox( {
+      children: options.title ? [ options.title, content ] : [ content ],
+      spacing: options.ySpacing,
+      align: options.titleAlign
     } );
 
-    // add custom margins
-    var dialogContent = new AlignBox( contentAndClosebutton, {
-      leftMargin: options.leftMargin,
-      rightMargin: options.rightMargin,
+    // add topMargin, bottomMargin, and leftMargin
+    var contentAndTitleWithMargins = new AlignBox( contentAndTitle, {
       topMargin: options.topMargin,
-      bottomMargin: options.bottomMargin
+      bottomMargin: options.bottomMargin,
+      leftMargin: options.leftMargin
+    } );
+
+    // add closeButtonTopMargin and closeButtonRightMargin
+    var closeButtonWithMargins = new AlignBox( closeButton, {
+      topMargin: options.closeButtonTopMargin,
+      rightMargin: options.closeButtonRightMargin
+    } );
+
+    // create content for Panel
+    var dialogContent = new HBox( {
+      children: [ contentAndTitleWithMargins, closeButtonWithMargins ],
+      spacing: options.xSpacing,
+      align: 'top'
     } );
 
     Panel.call( this, dialogContent, options );
