@@ -1,10 +1,15 @@
+---
+components: VerticalAquaRadioButtonGroup, RadioButtonGroup
+title: Radio Button Groups
+---
+
 ## General Design Considerations
 Here’s when and why we use radio button groups:
 * Used to group a set of mutually exclusive buttons, known as radio buttons, where only one button in the group may be in a selected state.
 * Radio button groups or radio groups, may look like a group of traditional radio buttons, or may look like a group of items that users switch between. In PhET simulations the radio button themselves may be rectangular buttons with images or symbols - we call these “scene selection” radio buttons.
 
 ## Aesthetic Considerations
-* Label text is succinct and ideally sounds good when read as "selected". For example, in Area Model, the first Area Grid Size radio button might sound like, "10 by 10, selected". In Balloons and Static Electricity, a user may hear, "Show all charges, selected". 
+* Label text is succinct and ideally sounds good when read as "selected". For example, in Area Model, the first Area Grid Size radio button might sound like, "10 by 10, selected". In Balloons and Static Electricity, a user may hear, "Show all charges, selected".
 * Occasionally a small icon follows the label text.
 * Scene selection style radio buttons generally show the selected button as fully opaque with a thick black stroke, and the unselected buttons have reduced opacity and a thin stroke.
 * Focus highlight has a light focus around the group, and a thicker pink focus around the selected item.
@@ -15,10 +20,10 @@ Here’s when and why we use radio button groups:
   * the state (selected or not selected) of the radio button,
   * the fact that button is in a radiogroup, or in a radio button list,
   * the name of the group, and
-  * the number of buttons or options in the group, 
-* It is important for a designer to consider upfront if the group's name should be part of the heading outline of the simulation or not. Placing the group's name in the heading outline (Sample HTML 1) gives the group's name more visibility (e.g., findability) in the non-visual experience. If that visibility is not necessary, you could use a `legend` element (Sample HTML 2). 
+  * the number of buttons or options in the group,
+* It is important for a designer to consider upfront if the group's name should be part of the heading outline of the simulation or not. Placing the group's name in the heading outline (Sample HTML 1) gives the group's name more visibility (e.g., findability) in the non-visual experience. If that visibility is not necessary, you could use a `legend` element (Sample HTML 2).
 
-### Special Notes and Questions 
+### Special Notes and Questions
 * Using either a `div` or `fieldset` as the containing parent with the `role="radiogroup"` provides similar experiences. Note that we still need to test in NVDA and JAWS to confirm that `fieldset` is the best parent container.
 * **Note** the HTML is different from the ARIA Practices Examples because it uses more native HTML. The ARIA Examples, however, sound slightly better, consistently reading out radiogroup role and radio count without any duplicate list semantics. I'm not sure if the ARIA examples require heavier explicit handling of keyboard support because they do not use native form elements?
 ### Gesture Support
@@ -103,7 +108,7 @@ Example is based on the _scene seletion_ radio buttons in Area Model Introductio
 * ARIA Example 1 [Radio Group using Roving Tab Index](https://www.w3.org/TR/wai-aria-practices-1.1/examples/radio/radio-1/radio-1.html)
 * ARIA Example 2 [Radio Group Example Using aria-activedescendant](https://www.w3.org/TR/wai-aria-practices-1.1/examples/radio/radio-2/radio-2.html)
 
-### Design Doc Content Template Text 
+### Design Doc Content Template Text
 **Radio Button Group**
 - Group Name via `h3` with `aria-labelledby`: (e.g. Sample 1) **OR**
 - Group Name via `legend`: (e.g. Sample 2)  
@@ -113,4 +118,4 @@ Example is based on the _scene seletion_ radio buttons in Area Model Introductio
   - List Item 1 (e.g. 10 by 10)
   - List Item 2 (e.g. 12 by 12)
   - Or as listed in simulation
-- (Optional) Help Text: 
+- (Optional) Help Text:
