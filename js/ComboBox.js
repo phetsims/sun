@@ -202,42 +202,55 @@ define( function( require ) {
      */
     var enableClickToDismissListener;
     var display; // store the display that clickToDismissListener is added to, because the scene may change, see sun#14
+    var clickToDismissListener; // listener for 'click outside to dismiss'
 
-    // listener for 'click outside to dismiss'
-    var clickToDismissListener = {
-      down: function() {
-        if ( enableClickToDismissListener ) {
+    function hideListNode() {
+      if ( enableClickToDismissListener ) {
 
-          self.startEvent( 'user', 'popupHidden' );
+        self.startEvent( 'user', 'popupHidden' );
 
+        if ( display && display.hasInputListener( clickToDismissListener ) ) {
           display.removeInputListener( clickToDismissListener );
-          listNode.visible = false;
+        }
+        listNode.visible = false;
 
-          self.endEvent();
-        }
-        else {
-          enableClickToDismissListener = true;
-        }
+        self.endEvent();
       }
+      else {
+        enableClickToDismissListener = true;
+      }
+    }
+
+    // @private make visible to methods
+    this.hideListNode = hideListNode;
+
+    clickToDismissListener = {
+      down: hideListNode
     };
+
+    // function to make listNode visible
+    function showListNode() {
+      if ( !listNode.visible ) {
+        self.startEvent( 'user', 'popupShown' );
+
+        moveList();
+        listNode.moveToFront();
+        listNode.visible = true;
+        enableClickToDismissListener = false;
+        display = self.getUniqueTrail().rootNode().getRootedDisplays()[ 0 ];
+        display.addInputListener( clickToDismissListener );
+
+        self.endEvent();
+      }
+    }
+
+    // @private make visible to methods
+    this.showListNode = showListNode;
 
     // button interactivity
     buttonNode.cursor = 'pointer';
     buttonNode.addInputListener( {
-      down: function() {
-        if ( !listNode.visible ) {
-          self.startEvent( 'user', 'popupShown' );
-
-          moveList();
-          listNode.moveToFront();
-          listNode.visible = true;
-          enableClickToDismissListener = false;
-          display = self.getUniqueTrail().rootNode().getRootedDisplays()[ 0 ];
-          display.addInputListener( clickToDismissListener );
-
-          self.endEvent();
-        }
-      }
+      down: showListNode
     } );
 
     // layout
@@ -298,7 +311,19 @@ define( function( require ) {
 
     // @public
     getEnabled: function() { return this.enabledProperty.value; },
-    get enabled() { return this.getEnabled(); }
+    get enabled() { return this.getEnabled(); },
+
+    /**
+     * Makes combo box list visible
+     * @public
+     */
+    showList: function() { this.showListNode(); },
+
+    /**
+     * Hide the combo box list
+     * @public
+     */
+    hideList: function() { this.hideListNode(); }
   } );
 
   /**
