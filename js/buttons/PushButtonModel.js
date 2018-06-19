@@ -93,6 +93,10 @@ define( function( require ) {
     } );
 
     this.disposePushButtonModel = function() {
+
+      // If the button was firing, we must complete the PhET-iO transaction before disposing.
+      // see https://github.com/phetsims/energy-skate-park-basics/issues/380
+      this.isFiringProperty.value = false;
       this.isFiringProperty.dispose();
       this.emitter.dispose();
       if ( this.timer ) {
@@ -108,10 +112,6 @@ define( function( require ) {
 
     // @public
     dispose: function() {
-
-      // If the button was firing, we must complete the PhET-iO transaction before disposing.
-      // see https://github.com/phetsims/energy-skate-park-basics/issues/380
-      this.isFiringProperty.value = false;
       this.disposePushButtonModel();
     },
 
