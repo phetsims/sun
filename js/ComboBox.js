@@ -224,11 +224,11 @@ define( function( require ) {
     // @private make visible to methods
     this.hideListNode = hideListNode;
 
+    // if the listNode is shown, a mouse click anywhere hides it
     clickToDismissListener = {
       down: hideListNode
     };
 
-    // function to make listNode visible
     function showListNode() {
       if ( !listNode.visible ) {
         self.startEvent( 'user', 'popupShown' );
