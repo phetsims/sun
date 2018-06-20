@@ -154,7 +154,7 @@ define( function( require ) {
       self.removeAccessibleInputListener( changeListener );
       property.unlink( accessibleCheckedListener );
       property.unlink( syncWithModel );
-      self.enabledProperty.unlink( enabledPropertyListener );
+      self.enabledProperty.dispose();
     };
 
     // a11y - support for binder documentation, stripped out in builds and only runs when ?binder is specified
