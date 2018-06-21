@@ -402,14 +402,41 @@ define( function( require ) {
     // Set up variables needed to create the various gradient fills
     var disabledBaseColor = Color.toColor( options.disabledBaseColor );
 
+    // Color properties
+    var baseBrighter4 = new PaintColorProperty( baseColorProperty, { factor: 0.4 } );
+    var baseDarker4 = new PaintColorProperty( baseColorProperty, { factor: -0.4 } );
+    var disabledBaseDarker4 = new PaintColorProperty( options.disabledBaseColor, { factor: -0.4 } );
+
     // fills used for various button states
-    var upFill;
-    var overFill;
-    var downFill;
-    var disabledFill;
-    var disabledPressedFillVertical;
+    var upFill = baseColorProperty;
+    var overFill = baseBrighter4;
+    var downFill = baseDarker4;
+    var disabledFill = options.disabledBaseColor;
+    var disabledPressedFillVertical = disabledFill;
+
     var enabledStroke;
     var disabledStroke;
+
+    if ( options.stroke === null ) {
+      // The stroke was explicitly set to null, so the button should have no stroke.
+      enabledStroke = null;
+      disabledStroke = null;
+    }
+    else if ( typeof( options.stroke ) === 'undefined' ) {
+      // No stroke was defined, but it wasn't set to null, so default to a stroke based on the base color of the
+      // button.  This behavior is a bit unconventional for Scenery nodes, but it makes the buttons look much better.
+      enabledStroke = baseDarker4;
+      disabledStroke = disabledBaseDarker4;
+    }
+    else {
+      enabledStroke = options.stroke;
+      disabledStroke = disabledBaseDarker4;
+    }
+
+    button.cachedPaints = [
+      upFill, overFill, downFill, disabledFill, disabledPressedFillVertical,
+      enabledStroke, disabledStroke
+    ];
 
     function updateAppearance( interactionState ) {
       switch( interactionState ) {
@@ -444,43 +471,14 @@ define( function( require ) {
       }
     }
 
-    function updateFillsAndStrokes( baseColor ) {
-      upFill = baseColor;
-      overFill = baseColor.colorUtilsBrighter( 0.4 );
-      downFill = baseColor.colorUtilsDarker( 0.4 );
-      disabledFill = disabledBaseColor;
-      disabledPressedFillVertical = disabledFill;
-      if ( options.stroke === null ) {
-        // The stroke was explicitly set to null, so the button should have no stroke.
-        enabledStroke = null;
-        disabledStroke = null;
-      }
-      else if ( typeof( options.stroke ) === 'undefined' ) {
-        // No stroke was defined, but it wasn't set to null, so default to a stroke based on the base color of the
-        // button.  This behavior is a bit unconventional for Scenery nodes, but it makes the buttons look much better.
-        enabledStroke = baseColor.colorUtilsDarker( 0.4 );
-        disabledStroke = disabledBaseColor.colorUtilsDarker( 0.4 );
-      }
-      else {
-        enabledStroke = Color.toColor( options.stroke );
-        disabledStroke = disabledBaseColor.colorUtilsDarker( 0.4 );
-      }
-
-      button.cachedPaints = [
-        upFill, overFill, downFill, disabledFill, disabledPressedFillVertical,
-        enabledStroke, disabledStroke
-      ];
-      updateAppearance( interactionStateProperty.value );
-    }
-
-    baseColorProperty.link( updateFillsAndStrokes );
-
-    // Lazy link to interaction state to avoid two updates at init.
-    interactionStateProperty.lazyLink( updateAppearance );
+    interactionStateProperty.link( updateAppearance );
 
     this.dispose = function() {
-      baseColorProperty.unlink( updateFillsAndStrokes );
       interactionStateProperty.unlink( updateAppearance );
+
+      baseBrighter4.dispose();
+      baseDarker4.dispose();
+      disabledBaseDarker4.dispose();
     };
   };
 
