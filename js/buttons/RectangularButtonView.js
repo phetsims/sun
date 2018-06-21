@@ -399,9 +399,6 @@ define( function( require ) {
    */
   RectangularButtonView.FlatAppearanceStrategy = function( button, interactionStateProperty, baseColorProperty, options ) {
 
-    // Set up variables needed to create the various gradient fills
-    var disabledBaseColor = Color.toColor( options.disabledBaseColor );
-
     // Color properties
     var baseBrighter4 = new PaintColorProperty( baseColorProperty, { factor: 0.4 } );
     var baseDarker4 = new PaintColorProperty( baseColorProperty, { factor: -0.4 } );
