@@ -309,6 +309,9 @@ define( function( require ) {
     this.dispose = function() {
       interactionStateProperty.unlink( updateAppearance );
 
+      baseTransparent.dispose();
+      disabledBaseTransparent.dispose();
+      disabledBase.dispose();
       baseBrighter8.dispose();
       baseBrighter7.dispose();
       baseBrighter3.dispose();
@@ -316,15 +319,12 @@ define( function( require ) {
       baseDarker2.dispose();
       baseDarker4.dispose();
       baseDarker5.dispose();
-      disabledBase.dispose();
       disabledBaseBrighter8.dispose();
       disabledBaseBrighter5.dispose();
       disabledBaseDarker1.dispose();
       disabledBaseDarker2.dispose();
       disabledBaseDarker4.dispose();
       disabledBaseDarker5.dispose();
-      baseTransparent.dispose();
-      disabledBaseTransparent.dispose();
     };
   };
 
