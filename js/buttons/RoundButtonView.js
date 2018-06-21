@@ -16,7 +16,6 @@ define( function( require ) {
   // modules
   var ButtonInteractionState = require( 'SUN/buttons/ButtonInteractionState' );
   var Circle = require( 'SCENERY/nodes/Circle' );
-  var Color = require( 'SCENERY/util/Color' );
   var ColorConstants = require( 'SUN/ColorConstants' );
   var DerivedProperty = require( 'AXON/DerivedProperty' );
   var inherit = require( 'PHET_CORE/inherit' );
@@ -346,14 +345,11 @@ define( function( require ) {
     var baseDarker4 = new PaintColorProperty( baseColorProperty, { factor: -0.4 } );
     var disabledBaseDarker4 = new PaintColorProperty( options.disabledBaseColor, { factor: -0.4 } );
 
-    // Set up variables needed to create the various gradient fills
-    var disabledBaseColor = Color.toColor( options.disabledBaseColor );
-
     // various fills that are used to alter the button's appearance
     var upFill = baseColorProperty;
     var overFill = baseBrighter4;
     var downFill = baseDarker4;
-    var disabledFill = disabledBaseColor;
+    var disabledFill = options.disabledBaseColor;
     var disabledPressedFillVertical = disabledFill;
 
     var enabledStroke = null;
