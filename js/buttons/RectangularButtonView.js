@@ -15,11 +15,12 @@ define( function( require ) {
   var ButtonInteractionState = require( 'SUN/buttons/ButtonInteractionState' );
   var Color = require( 'SCENERY/util/Color' );
   var ColorConstants = require( 'SUN/ColorConstants' );
+  var DerivedProperty = require( 'AXON/DerivedProperty' );
   var inherit = require( 'PHET_CORE/inherit' );
   var LinearGradient = require( 'SCENERY/util/LinearGradient' );
   var Node = require( 'SCENERY/nodes/Node' );
-  var Path = require( 'SCENERY/nodes/Path' );
   var PaintColorProperty = require( 'SCENERY/util/PaintColorProperty' );
+  var Path = require( 'SCENERY/nodes/Path' );
   var Shape = require( 'KITE/Shape' );
   var sun = require( 'SUN/sun' );
   var Tandem = require( 'TANDEM/Tandem' );
@@ -211,14 +212,97 @@ define( function( require ) {
     var horizontalHighlightStop = Math.min( HORIZONTAL_HIGHLIGHT_GRADIENT_LENGTH / buttonWidth, 1 );
     var horizontalShadowStop = Math.max( 1 - SHADE_GRADIENT_LENGTH / buttonWidth, 0 );
 
-    var disabledBaseColor = Color.toColor( options.disabledBaseColor );
-    var transparentDisabledBaseColor = new Color(
-      disabledBaseColor.getRed(),
-      disabledBaseColor.getGreen(),
-      disabledBaseColor.getBlue(),
-      0
-    );
-    var transparentWhite = new Color( 256, 256, 256, 0.7 );
+    var transparentWhite = new Color( 255, 255, 255, 0.7 );
+
+    // Color properties
+    var baseBrighter7 = new PaintColorProperty( baseColorProperty, { factor: 0.7 } );
+    var baseBrighter5 = new PaintColorProperty( baseColorProperty, { factor: 0.5 } );
+    var baseBrighter2 = new PaintColorProperty( baseColorProperty, { factor: 0.2 } );
+    var baseDarker3 = new PaintColorProperty( baseColorProperty, { factor: -0.3 } );
+    var baseDarker4 = new PaintColorProperty( baseColorProperty, { factor: -0.4 } );
+    var baseDarker5 = new PaintColorProperty( baseColorProperty, { factor: -0.5 } );
+    var disabledBase = new PaintColorProperty( options.disabledBaseColor );
+    var disabledBaseBrighter7 = new PaintColorProperty( options.disabledBaseColor, { factor: 0.7 } );
+    var disabledBaseBrighter5 = new PaintColorProperty( options.disabledBaseColor, { factor: 0.5 } );
+    var disabledBaseBrighter2 = new PaintColorProperty( options.disabledBaseColor, { factor: 0.2 } );
+    var disabledBaseDarker3 = new PaintColorProperty( options.disabledBaseColor, { factor: -0.3 } );
+    var disabledBaseDarker4 = new PaintColorProperty( options.disabledBaseColor, { factor: -0.4 } );
+    var disabledBaseDarker5 = new PaintColorProperty( options.disabledBaseColor, { factor: -0.5 } );
+    var baseTransparent = new DerivedProperty( [ baseColorProperty ], function( color ) {
+      return color.withAlpha( 0 );
+    } );
+    var disabledBaseTransparent = new DerivedProperty( [ disabledBase ], function( color ) {
+      return color.withAlpha( 0 );
+    } );
+
+    // Create the gradient fills used for various button states
+    var upFillVertical = new LinearGradient( 0, 0, 0, buttonHeight )
+      .addColorStop( 0, baseBrighter7 )
+      .addColorStop( verticalHighlightStop, baseColorProperty )
+      .addColorStop( verticalShadowStop, baseColorProperty )
+      .addColorStop( 1, baseDarker5 );
+
+    var upFillHorizontal = new LinearGradient( 0, 0, buttonWidth, 0 )
+      .addColorStop( 0, transparentWhite )
+      .addColorStop( horizontalHighlightStop, baseTransparent )
+      .addColorStop( horizontalShadowStop, baseTransparent )
+      .addColorStop( 1, baseDarker5 );
+
+    var overFillVertical = new LinearGradient( 0, 0, 0, buttonHeight )
+      .addColorStop( 0, baseBrighter7 )
+      .addColorStop( verticalHighlightStop, baseBrighter5 )
+      .addColorStop( verticalShadowStop, baseBrighter5 )
+      .addColorStop( 1, baseDarker5 );
+
+    var overFillHorizontal = new LinearGradient( 0, 0, buttonWidth, 0 )
+      .addColorStop( 0, transparentWhite )
+      .addColorStop( horizontalHighlightStop / 2, new Color( 255, 255, 255, 0 ) )
+      .addColorStop( horizontalShadowStop, baseTransparent )
+      .addColorStop( 1, baseDarker3 );
+
+    var downFillVertical = new LinearGradient( 0, 0, 0, buttonHeight )
+      .addColorStop( 0, baseBrighter7 )
+      .addColorStop( verticalHighlightStop * 0.67, baseDarker3 )
+      .addColorStop( verticalShadowStop, baseBrighter2 )
+      .addColorStop( 1, baseDarker5 );
+
+    var disabledFillVertical = new LinearGradient( 0, 0, 0, buttonHeight )
+      .addColorStop( 0, disabledBaseBrighter7 )
+      .addColorStop( verticalHighlightStop, disabledBaseBrighter5 )
+      .addColorStop( verticalShadowStop, disabledBaseBrighter5 )
+      .addColorStop( 1, disabledBaseDarker5 );
+
+    var disabledFillHorizontal = new LinearGradient( 0, 0, buttonWidth, 0 )
+      .addColorStop( 0, disabledBaseBrighter7 )
+      .addColorStop( horizontalHighlightStop, disabledBaseTransparent )
+      .addColorStop( horizontalShadowStop, disabledBaseTransparent )
+      .addColorStop( 1, disabledBaseDarker5 );
+
+    var disabledPressedFillVertical = new LinearGradient( 0, 0, 0, buttonHeight )
+      .addColorStop( 0, disabledBaseBrighter7 )
+      .addColorStop( verticalHighlightStop * 0.67, disabledBaseDarker3 )
+      .addColorStop( verticalShadowStop, disabledBaseBrighter2 )
+      .addColorStop( 1, disabledBaseDarker5 );
+
+    // strokes filled in below
+    var enabledStroke;
+    var disabledStroke;
+
+    if ( options.stroke === null ) {
+      // The stroke was explicitly set to null, so the button should have no stroke.
+      enabledStroke = null;
+      disabledStroke = null;
+    }
+    else if ( typeof( options.stroke ) === 'undefined' ) {
+      // No stroke was defined, but it wasn't set to null, so default to a stroke based on the base color of the
+      // button.  This behavior is a bit unconventional for Scenery nodes, but it makes the buttons look much better.
+      enabledStroke = baseDarker4;
+      disabledStroke = disabledBaseDarker4;
+    }
+    else {
+      enabledStroke = options.stroke;
+      disabledStroke = disabledBaseDarker4;
+    }
 
     // Create the overlay that is used to add shading to left and right edges of the button.
     var overlayForHorizGradient = new Path( createButtonShape( buttonWidth, buttonHeight, options ), {
@@ -227,17 +311,14 @@ define( function( require ) {
     } );
     button.addChild( overlayForHorizGradient );
 
-    // Various fills used in the button's appearance, updated below.
-    var upFillVertical;
-    var upFillHorizontal;
-    var overFillVertical;
-    var overFillHorizontal;
-    var downFillVertical;
-    var disabledFillVertical;
-    var disabledFillHorizontal;
-    var disabledPressedFillVertical;
-    var enabledStroke;
-    var disabledStroke;
+    button.cachedPaints = [
+      upFillVertical, overFillVertical, downFillVertical, disabledFillVertical, disabledPressedFillVertical,
+      disabledStroke
+    ];
+
+    overlayForHorizGradient.cachedPaints = [
+      upFillHorizontal, overFillHorizontal, disabledFillHorizontal, enabledStroke, disabledStroke
+    ];
 
     // Function for updating the button's appearance based on the current interaction state.
     function updateAppearance( interactionState ) {
@@ -281,100 +362,27 @@ define( function( require ) {
       }
     }
 
-    // Function for creating the fills and strokes used to control the button's appearance.
-    function updateFillsAndStrokes( baseColor ) {
-
-      var transparentBaseColor = new Color( baseColor.getRed(), baseColor.getGreen(), baseColor.getBlue(), 0 );
-
-      // Create the gradient fills used for various button states
-      upFillVertical = new LinearGradient( 0, 0, 0, buttonHeight )
-        .addColorStop( 0, baseColor.colorUtilsBrighter( 0.7 ) )
-        .addColorStop( verticalHighlightStop, baseColor )
-        .addColorStop( verticalShadowStop, baseColor )
-        .addColorStop( 1, baseColor.colorUtilsDarker( 0.5 ) );
-
-      upFillHorizontal = new LinearGradient( 0, 0, buttonWidth, 0 )
-        .addColorStop( 0, transparentWhite )
-        .addColorStop( horizontalHighlightStop, transparentBaseColor )
-        .addColorStop( horizontalShadowStop, transparentBaseColor )
-        .addColorStop( 1, baseColor.colorUtilsDarker( 0.5 ) );
-
-      overFillVertical = new LinearGradient( 0, 0, 0, buttonHeight )
-        .addColorStop( 0, baseColor.colorUtilsBrighter( 0.7 ) )
-        .addColorStop( verticalHighlightStop, baseColor.colorUtilsBrighter( 0.5 ) )
-        .addColorStop( verticalShadowStop, baseColor.colorUtilsBrighter( 0.5 ) )
-        .addColorStop( 1, baseColor.colorUtilsDarker( 0.5 ) );
-
-      overFillHorizontal = new LinearGradient( 0, 0, buttonWidth, 0 )
-        .addColorStop( 0, transparentWhite )
-        .addColorStop( horizontalHighlightStop / 2, new Color( 256, 256, 256, 0 ) )
-        .addColorStop( horizontalShadowStop, transparentBaseColor )
-        .addColorStop( 1, baseColor.colorUtilsDarker( 0.3 ) );
-
-      downFillVertical = new LinearGradient( 0, 0, 0, buttonHeight )
-        .addColorStop( 0, baseColor.colorUtilsBrighter( 0.7 ) )
-        .addColorStop( verticalHighlightStop * 0.67, baseColor.colorUtilsDarker( 0.3 ) )
-        .addColorStop( verticalShadowStop, baseColor.colorUtilsBrighter( 0.2 ) )
-        .addColorStop( 1, baseColor.colorUtilsDarker( 0.5 ) );
-
-      disabledFillVertical = new LinearGradient( 0, 0, 0, buttonHeight )
-        .addColorStop( 0, disabledBaseColor.colorUtilsBrighter( 0.7 ) )
-        .addColorStop( verticalHighlightStop, disabledBaseColor.colorUtilsBrighter( 0.5 ) )
-        .addColorStop( verticalShadowStop, disabledBaseColor.colorUtilsBrighter( 0.5 ) )
-        .addColorStop( 1, disabledBaseColor.colorUtilsDarker( 0.5 ) );
-
-      disabledFillHorizontal = new LinearGradient( 0, 0, buttonWidth, 0 )
-        .addColorStop( 0, disabledBaseColor.colorUtilsBrighter( 0.7 ) )
-        .addColorStop( horizontalHighlightStop, transparentDisabledBaseColor )
-        .addColorStop( horizontalShadowStop, transparentDisabledBaseColor )
-        .addColorStop( 1, disabledBaseColor.colorUtilsDarker( 0.5 ) );
-
-      disabledPressedFillVertical = new LinearGradient( 0, 0, 0, buttonHeight )
-        .addColorStop( 0, disabledBaseColor.colorUtilsBrighter( 0.7 ) )
-        .addColorStop( verticalHighlightStop * 0.67, disabledBaseColor.colorUtilsDarker( 0.3 ) )
-        .addColorStop( verticalShadowStop, disabledBaseColor.colorUtilsBrighter( 0.2 ) )
-        .addColorStop( 1, disabledBaseColor.colorUtilsDarker( 0.5 ) );
-
-      if ( options.stroke === null ) {
-        // The stroke was explicitly set to null, so the button should have no stroke.
-        enabledStroke = null;
-        disabledStroke = null;
-      }
-      else if ( typeof( options.stroke ) === 'undefined' ) {
-        // No stroke was defined, but it wasn't set to null, so default to a stroke based on the base color of the
-        // button.  This behavior is a bit unconventional for Scenery nodes, but it makes the buttons look much better.
-        enabledStroke = baseColor.colorUtilsDarker( 0.4 );
-        disabledStroke = disabledBaseColor.colorUtilsDarker( 0.4 );
-      }
-      else {
-        enabledStroke = Color.toColor( options.stroke );
-        disabledStroke = disabledBaseColor.colorUtilsDarker( 0.4 );
-      }
-
-      button.cachedPaints = [
-        upFillVertical, overFillVertical, downFillVertical, disabledFillVertical, disabledPressedFillVertical,
-        disabledStroke
-      ];
-
-      overlayForHorizGradient.cachedPaints = [
-        upFillHorizontal, overFillHorizontal, disabledFillHorizontal, enabledStroke, disabledStroke
-      ];
-
-      updateAppearance( interactionStateProperty.value );
-    }
-
     // Do the initial update explicitly, then lazy link to the properties.  This keeps the number of initial updates to
     // a minimum and allows us to update some optimization flags the first time the base color is actually changed.
-    updateFillsAndStrokes( baseColorProperty.value );
-    updateAppearance( interactionStateProperty.value );
-
-    baseColorProperty.lazyLink( updateFillsAndStrokes );
-
-    interactionStateProperty.lazyLink( updateAppearance );
+    interactionStateProperty.link( updateAppearance );
 
     this.dispose = function() {
-      baseColorProperty.unlink( updateFillsAndStrokes );
       interactionStateProperty.unlink( updateAppearance );
+
+      baseBrighter7.dispose();
+      baseBrighter5.dispose();
+      baseBrighter2.dispose();
+      baseDarker3.dispose();
+      baseDarker4.dispose();
+      baseDarker5.dispose();
+      disabledBaseBrighter7.dispose();
+      disabledBaseBrighter5.dispose();
+      disabledBaseBrighter2.dispose();
+      disabledBaseDarker3.dispose();
+      disabledBaseDarker4.dispose();
+      disabledBaseDarker5.dispose();
+      baseTransparent.dispose();
+      disabledBaseTransparent.dispose();
     };
   };
 
