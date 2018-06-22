@@ -97,8 +97,11 @@ define( function( require ) {
 
           // this number tweaker is "aria-labelledby" its own label, meaning that the label element content will be
           // read on focus
-          this.setAriaLabelledByNode( this );
-          this.setAriaLabelContent( AccessiblePeer.LABEL_SIBLING );
+          this.addAriaLabelledbyAssociation( {
+            thisElementName: AccessiblePeer.PRIMARY_SIBLING,
+            otherNode: this,
+            otherElementName: AccessiblePeer.LABEL_SIBLING
+          } );
 
           // @private {Property.<number>}
           this._valueProperty = valueProperty;
@@ -182,7 +185,7 @@ define( function( require ) {
             formattedValue = StringUtils.fillIn( options.a11yValuePattern, {
               value: formattedValue
             } );
-            
+
             self.setAccessibleAttribute( 'aria-valuetext', formattedValue );
             self.setAccessibleAttribute( 'aria-valuenow', value );
           };

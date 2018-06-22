@@ -14,6 +14,7 @@ define( function( require ) {
 
   // modules
   var AccessibilityUtil = require( 'SCENERY/accessibility/AccessibilityUtil' );
+  var AccessiblePeer = require( 'SCENERY/accessibility/AccessiblePeer' );
   var AlignBox = require( 'SCENERY/nodes/AlignBox' );
   var DialogIO = require( 'SUN/DialogIO' );
   var Display = require( 'SCENERY/display/Display' );
@@ -231,8 +232,12 @@ define( function( require ) {
     } );
 
     // a11y - set the aria-labelledby relation so that whenever focus enters the dialog the title is read
-    if ( options.title ) {
-      options.title.tagName && this.setAriaLabelledByNode( options.title );
+    if ( options.title && options.title.tagName ) {
+      this.addAriaLabelledbyAssociation( {
+        thisElementName: AccessiblePeer.PRIMARY_SIBLING,
+        otherNode: options.title,
+        otherElementName: AccessiblePeer.PRIMARY_SIBLING
+      } );
     }
 
     // must be removed on dispose
@@ -377,7 +382,7 @@ define( function( require ) {
   /**
    * The close button for Dialog
    * A flat x
-   * 
+   *
    * @param {Object} [options] - see RectangularPushButton
    * @constructor
    */
