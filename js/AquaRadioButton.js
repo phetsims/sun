@@ -145,8 +145,7 @@ define( function( require ) {
 
     this.mutate( options );
 
-    var enabledPropertyListener = this.updateEnabled.bind( this );
-    this.enabledProperty.link( enabledPropertyListener );
+    this.enabledProperty.link( this.updateEnabled.bind( this ) );
 
     // @private
     this.disposeAquaRadioButton = function() {
