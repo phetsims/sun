@@ -1,12 +1,16 @@
 ## General Design Considerations
 Here’s when and why we use radio button groups:
 * Used to group a set of mutually exclusive buttons, known as radio buttons, where only one button in the group may be in a selected state.
-* Radio button groups or radio groups, may look like a group of traditional radio buttons, or may look like a group of items that users switch between. In PhET simulations the radio button themselves may be rectangular buttons with images or symbols - we call these “scene selection” radio buttons.
+* Radio button groups or radio groups, may look like a group of traditional radio buttons, or may look like a group of items that users switch between. In PhET simulations the radio button groups are generally made up of rectangular buttons with images or symbols. Their size, image style, and spacing are visually group the individual radio buttons.
+
+**Note this design pattern covers 2 PhET Components**
+* [VerticalAquaRadioButtonGroup.js](../js/VerticalAquaRadioButtonGroup.js)
+* RadioButtonGroup.js (**Note:** I don't see RadioButtonGroup.js on sun.)
 
 ## Aesthetic Considerations
 * Label text is succinct and ideally sounds good when read as "selected". For example, in Area Model, the first Area Grid Size radio button might sound like, "10 by 10, selected". In Balloons and Static Electricity, a user may hear, "Show all charges, selected". 
 * Occasionally a small icon follows the label text.
-* Scene selection style radio buttons generally show the selected button as fully opaque with a thick black stroke, and the unselected buttons have reduced opacity and a thin stroke.
+* Radio buttons generally show the selected button as fully opaque with a thick black stroke, and the unselected buttons have reduced opacity and a thin stroke.
 * Focus highlight has a light focus around the group, and a thicker pink focus around the selected item.
 
 ## Accessibility Considerations
@@ -51,7 +55,6 @@ Content adpated from: [Aria Practices, 3.16 Radio Group](https://www.w3.org/TR/w
 |  | `for="[IDREF of input]"` | label | The accessible name for the `radio` is computed from the child text content of the `label` element.|
 |  | `aria-checked="true"`, or `checked` (**Question:** Do we use the aria attribute or the HTML5 attribute currently?) |  | Identifies the radio button which is selected. CSS attribute selectors (e.g. [`aria-checked="true"`]) are used to synchronize the visual states with the value of the `aria-checked` attribute. (N/A in PhET's case) The CSS ::before pseudo-class is used to indicate visual state of selected radio buttons to support high contrast settings in operating systems and browsers. (N/A in PhET's case) |
 
-
 ### Sample 1 HTML when heading semantics are needed  
 #### From Balloons and Static Electricity
 Example is based on the charge radio buttons in Balloons and Static Electricity. The visual appearence of this groups looks like radio buttons. The paragraph containig help text is placed after the legend in the example.
@@ -91,10 +94,6 @@ Example is based on the _scene seletion_ radio buttons in Area Model Introductio
     </ul>
 </fieldset>
 ```
-
-### PhET Components
-* VerticalAquaRadioButtonGroup.js
-* RadioButtonGroup.js (**Note:** I don't see RadioButtonGroup.js on sun.)
 
 ### Supporting Accessibility Resources
 * [ARIA 1.1 radiogroup role](https://www.w3.org/TR/wai-aria-1.1/#radiogroup)
