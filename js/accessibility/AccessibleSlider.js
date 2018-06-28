@@ -70,6 +70,11 @@ define( function( require ) {
             inputType: 'range',
             ariaRole: 'slider', // required for NVDA to read the value text correctly, see https://github.com/phetsims/a11y-research/issues/51
             accessibleValuePattern: '{{value}}', // {string} if you want units or additional content, add to pattern
+            createAriaValueText: function ( pattern, formattedValue ) {
+              return StringUtils.fillIn( pattern, {
+                value: formattedValue
+              } );
+            },
             accessibleDecimalPlaces: 0, // number of decimal places for the value read by assistive technology
             ariaOrientation: 'horizontal', // specify orientation, read by assistive technology
             keyboardStep: ( enabledRangeProperty.get().max - enabledRangeProperty.get().min ) / 20,
@@ -153,17 +158,16 @@ define( function( require ) {
 
           // when the property changes, be sure to update the accessible input value and aria-valuetext which is read
           // by assistive technology when the value changes
-          var accessiblePropertyListener = function( value ) {
+          var accessiblePropertyListener = function( value, oldValue ) {
             self.inputValue = value;
 
             // optionally map the output value for AT
             var mappedValue = options.accessibleMapValue( value );
-
             // format the value text for reading
             var formattedValue = Util.toFixed( mappedValue, options.accessibleDecimalPlaces );
-            var valueText = StringUtils.fillIn( options.accessibleValuePattern, {
-              value: formattedValue
-            } );
+
+            var valueText = options.createAriaValueText( options.accessibleValuePattern, formattedValue );
+
             self.setAccessibleAttribute( 'aria-valuetext', valueText );
           };
           self._valueProperty.link( accessiblePropertyListener );
@@ -477,8 +481,9 @@ define( function( require ) {
    * @return {number}
    */
   var correctRounding = function( newValue, currentValue, stepSize ) {
+    var decimalPlaces = Util.numberOfDecimalPlaces( stepSize );
     var correctedValue = newValue;
-    if ( Util.toFixedNumber( Math.abs( newValue - currentValue ), 5 ) > stepSize ) {
+    if ( Util.toFixedNumber( Math.abs( newValue - currentValue ), decimalPlaces ) > stepSize ) {
       correctedValue += ( newValue > currentValue ) ? ( -1 * stepSize ) : stepSize;
     }
     return correctedValue;
