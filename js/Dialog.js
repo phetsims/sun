@@ -180,7 +180,7 @@ define( function( require ) {
       options.closeButtonMouseAreaYDilation
     );
 
-    // @protected (a11y)
+    // @private (a11y)
     this.closeButton = closeButton;
 
     // Align content, title, and close button using spacing and margin options
@@ -226,8 +226,9 @@ define( function( require ) {
     // @private
     this.sim = sim;
 
-    // a11y - set the order of content for accessibility, title before content
-    this.accessibleOrder = [ options.title, content ].filter( function( node ) {
+    // a11y - set the order of content, close button first so remaining content can be read from top to bottom
+    // with virtual cursor
+    this.accessibleOrder = [ closeButton, options.title, content ].filter( function( node ) {
       return node !== undefined;
     } );
 
@@ -375,6 +376,14 @@ define( function( require ) {
      */
     focusActiveElement: function() {
       this.activeElement && this.activeElement.focus();
+    },
+
+    /**
+     * Place keyboard focus on the close button, useful when opening the dialog with an accessibility interaction.
+     * @public
+     */
+    focusCloseButton: function() {
+      this.closeButton.focus();
     }
   } );
 
