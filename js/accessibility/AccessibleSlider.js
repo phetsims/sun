@@ -58,6 +58,28 @@ define( function( require ) {
         initializeAccessibleSlider: function( valueProperty, enabledRangeProperty, enabledProperty, options ) {
           var self = this;
 
+          // ensure that the client does not set both a custom text pattern and a text creation function
+          assert && assert(
+            !( options.accessibleValuePattern && options.createAriaValueText ),
+            'cannot set both accessibleValuePattern and createAriaValueText in slider options'
+          );
+
+          // ensure only 1 use of pattern template
+          assert &&
+          options.accessibleValuePattern &&
+          assert(
+            options.accessibleValuePattern.match( /\{\{[^\{\}]+\}\}/g ).length === 1,
+            'accessibleValuePattern only accepts a single \'value\' key'
+          );
+
+          // ensure 'value' key exists
+          assert &&
+          options.accessibleValuePattern &&
+          assert(
+            options.accessibleValuePattern.indexOf( '{{value}}' ) >= 0,
+            'accessibleValuePattern must contain a key of \'value\''
+          );
+
           var defaults = {
 
             // other
@@ -70,11 +92,6 @@ define( function( require ) {
             inputType: 'range',
             ariaRole: 'slider', // required for NVDA to read the value text correctly, see https://github.com/phetsims/a11y-research/issues/51
             accessibleValuePattern: '{{value}}', // {string} if you want units or additional content, add to pattern
-            createAriaValueText: function ( pattern, formattedValue ) {
-              return StringUtils.fillIn( pattern, {
-                value: formattedValue
-              } );
-            },
             accessibleDecimalPlaces: 0, // number of decimal places for the value read by assistive technology
             ariaOrientation: 'horizontal', // specify orientation, read by assistive technology
             keyboardStep: ( enabledRangeProperty.get().max - enabledRangeProperty.get().min ) / 20,
@@ -83,8 +100,13 @@ define( function( require ) {
 
             // map the valueProperty value to another that will be read by the assistive device valueProperty changes
             // @param {number}
-            accessibleMapValue: function( value ) { return value; }
+            accessibleMapValue: function( value ) { return value; },
+
+            // Function to customize the logic and formatting of the aria-valuetext attribute of the `input` element.
+            // @param {number}
+            createAriaValueText: function ( formattedValue ) { return formattedValue; }
           };
+
           options = _.extend( {}, defaults, options );
 
           // Some options were already mutated in the constructor, only apply the accessibility-specific options here
@@ -163,10 +185,15 @@ define( function( require ) {
 
             // optionally map the output value for AT
             var mappedValue = options.accessibleMapValue( value );
+
             // format the value text for reading
             var formattedValue = Util.toFixed( mappedValue, options.accessibleDecimalPlaces );
 
-            var valueText = options.createAriaValueText( options.accessibleValuePattern, formattedValue );
+            // create the final string from optional parameters
+            var valueText = StringUtils.fillIn(
+              options.accessibleValuePattern,
+              { value: options.createAriaValueText( formattedValue ) }
+            );
 
             self.setAccessibleAttribute( 'aria-valuetext', valueText );
           };
