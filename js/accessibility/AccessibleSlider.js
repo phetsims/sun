@@ -147,6 +147,9 @@ define( function( require ) {
           // @private (a11y) - whether or not 'shift' key is currently held down
           this._shiftKey = false;
 
+          // @public controls the mapping from valueProperty to accessible output
+          this.accessibleMapValue = options.accessibleMapValue;
+
           // initialize slider attributes
           this.ariaOrientation = options.ariaOrientation;
 
@@ -183,11 +186,8 @@ define( function( require ) {
           var accessiblePropertyListener = function( value, oldValue ) {
             self.inputValue = value;
 
-            // optionally map the output value for AT
-            var mappedValue = options.accessibleMapValue( value );
-
             // format the value text for reading
-            var formattedValue = Util.toFixed( mappedValue, options.accessibleDecimalPlaces );
+            var formattedValue = Util.toFixed( self.mappedValue, options.accessibleDecimalPlaces );
 
             // create the final string from optional parameters
             var valueText = StringUtils.fillIn(
@@ -206,6 +206,15 @@ define( function( require ) {
             self.removeAccessibleInputListener( accessibleInputListener );
           };
         },
+        /**
+         * Get the mapped value to be read by AT.
+         *
+         * @return {number}
+         */
+        getMappedValue: function() {
+          return this.accessibleMapValue( this._valueProperty.get() );
+        },
+        get mappedValue() { return this.getMappedValue(); },
 
         /**
          * Set the delta for the value Property when using arrow keys to interact with the Node.
