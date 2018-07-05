@@ -36,7 +36,7 @@ ToDO.
 Adapted from: ARIA Pracrices 1.1, [section 3.1 Accordion](https://www.w3.org/TR/wai-aria-practices/#accordion)
 
 | Key        | Function |
-| ------------- | ------------- |
+| ---------- | -------- |
 | Enter or Space | When focus is on the accordion header of a collapsed section, expands or collapses the accordion panel. |
 | Down Arrow (optional) | - If focus is on an accordion header, moves focus to the next accordion header. If focus is on the last accordion header, either does nothing or moves focus to the first accordion header. <br /> - If there is only one accordion, doing nothing with focus is likely appropirate. |
 | Up Arrow (Optional) | - If focus is on an accordion header, moves focus to the previous accordion header. If focus is on the first accordion header, either does nothing or moves focus to the last accordion header. <br ./> - If there is only one accordion, doing nothing with focus is likely appropirate.|
@@ -45,15 +45,16 @@ Adapted from: ARIA Pracrices 1.1, [section 3.1 Accordion](https://www.w3.org/TR/
 
 ### Management of Role, Property, State, and Tabindex Attributes
 Adapted from: ARIA Pracrices 1.1, [section 3.1 Accordion](https://www.w3.org/TR/wai-aria-practices/#accordion)
+
 | Role | Attribute | Element | Usage |
-| ---- | --------- | ------- | ----- |
-| - | - | button | The title content of each accordion header is contained in an element with role button.|
-| - | -| `h3` (or appropriate level) | * PhET Sims use native HTML, so we use native heading and button elements to create the accordion header.|
-* The button element is the only element inside the heading element. That is, if there are other visually persistent elements, they are not included inside the heading element.
-| - | `aria-expanded="true/false"`| div | Added to accordion panel dynamically with Javascript to indicate when the panel associated with the header is visible (`aria-expanded="true"`), or if the panel is not visible, `aria-expanded` is set to `false`.|
-| - | aria-controls="[ID REF of element contianing accordion panel]"| button | - |
-| - | aria-disabled="true"| - | If the accordion panel associated with an accordion header is visible, and if the accordion does not permit the panel to be collapsed, the header button element has `aria-disabled` set to true. (I think this is N/A for PhET sims?? ) |
-| region (optional) | aria-labelledby=[ID REF of button that controls the display of the panel] | `div` | - |
+| ----: | ---------: | -------: | -----: |
+| -- | -- | button | The title content of each accordion header is contained in an element with role button.|
+| -- | -- | `h3` (or appropriate level) | PhET Sims use native HTML, so we use native heading and button elements to create the accordion header. | The button element is the only element inside the heading element. That is, if there are other visually persistent elements, they are not included inside the heading element. | 
+| - | `aria-expanded="true/false"` | div | Added to accordion panel dynamically with Javascript to indicate when the panel associated with the header is visible (`aria-expanded="true"`), or if the panel is not visible, `aria-expanded` is set to `false`.|
+| - | aria-controls="[ID REF of element contianing accordion panel]"| 
+| button | - |
+| - | aria-disabled="true"| - | If the accordion panel associated with an accordion header is visible, and if the accordion does not permit the panel to be collapsed, the header button element has `aria-disabled` set to true. (I think this is NOT RELEVANT for PhET sims?) |
+| region (optional) | `aria-labelledby=[ID REF of button that controls the display of the panel]` | `div` | - |
 
 
 ### DRAFT: Sample HTML
