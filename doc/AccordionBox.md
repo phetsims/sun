@@ -47,7 +47,7 @@ Adapted from: ARIA Pracrices 1.1, [section 3.1 Accordion](https://www.w3.org/TR/
 Adapted from: ARIA Pracrices 1.1, [section 3.1 Accordion](https://www.w3.org/TR/wai-aria-practices/#accordion)
 
 | Role | Attribute | Element | Usage |
-| ----: | ---------: | -------: | -----: |
+| ---- | --------- | ------- | ----- |
 | -- | -- | button | The title content of each accordion header is contained in an element with role button.|
 | -- | -- | `h3` (or appropriate level) | PhET Sims use native HTML, so we use native heading and button elements to create the accordion header. | The button element is the only element inside the heading element. That is, if there are other visually persistent elements, they are not included inside the heading element. | 
 | - | `aria-expanded="true/false"` | div | Added to accordion panel dynamically with Javascript to indicate when the panel associated with the header is visible (`aria-expanded="true"`), or if the panel is not visible, `aria-expanded` is set to `false`.|
