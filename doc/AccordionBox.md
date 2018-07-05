@@ -80,13 +80,13 @@ Adapted from: ARIA Pracrices 1.1, [section 3.1 Accordion](https://www.w3.org/TR/
 
 ### Design Doc Content Template Text
 **ExpandCollapseBar** or **Expand Collpase Button**
-Accordion Header:
-Accessible Name: (Defaults to the same as the title)
-Accordion Title Hidden: Yes/No (defaults to No)
-If using a heading as the button wrapper, define heading level: (defaults is H3)
-Default open state: expanded/collapsed (Question: What is the best default?)
+- Accordion Header:
+- Accessible Name: (Defaults to the same as the title)
+- Accordion Title Hidden: Yes/No (defaults to No)
+- If using a heading as the button wrapper, define heading level: (defaults is H3)
+- Default open state: expanded/collapsed (Question: What is the best default?)
 
 **Accordion Box**
-Accordion Panel:
-Parent container accordion box contents: defaults to a div
- - Use same convention as other objects and controls.
+- Accordion Panel:
+- Parent container accordion box contents: defaults to a div
+- Use same convention as other objects and controls.
