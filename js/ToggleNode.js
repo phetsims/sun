@@ -114,6 +114,15 @@ define( function( require ) {
     },
 
     /**
+     * No alignment is performed
+     * @param {Node[]} children
+     * @public
+     * @static
+     */
+    NONE: function( children ) {
+    },
+
+    /**
      * Center the latter nodes on the x,y center of the first node.
      * @param {Node[]} children
      * @public
