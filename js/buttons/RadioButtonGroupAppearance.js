@@ -32,16 +32,16 @@ define( function( require ) {
 
     // Create the fills and strokes used for various button states
     var disabledStroke = new PaintColorProperty( options.disabledBaseColor, {
-      factor: -0.4
+      luminanceFactor: -0.4
     } );
     var overStroke = new PaintColorProperty( options.overStroke || options.deselectedStroke, {
-      factor: options.overStroke ? 0 : -0.4
+      luminanceFactor: options.overStroke ? 0 : -0.4
     } );
     var overFill = new PaintColorProperty( options.overFill || baseColorProperty, {
-      factor: options.overFill ? 0 : 0.4
+      luminanceFactor: options.overFill ? 0 : 0.4
     } );
     var pressedFill = new PaintColorProperty( baseColorProperty, {
-      factor: -0.4
+      luminanceFactor: -0.4
     } );
 
     button.cachedPaints = [

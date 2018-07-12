@@ -166,20 +166,20 @@ define( function( require ) {
   RoundButtonView.ThreeDAppearanceStrategy = function( button, interactionStateProperty, baseColorProperty, options ) {
 
     // Color properties
-    var baseBrighter8 = new PaintColorProperty( baseColorProperty, { factor: 0.8 } );
-    var baseBrighter7 = new PaintColorProperty( baseColorProperty, { factor: 0.7 } );
-    var baseBrighter3 = new PaintColorProperty( baseColorProperty, { factor: 0.3 } );
-    var baseDarker1 = new PaintColorProperty( baseColorProperty, { factor: -0.1 } );
-    var baseDarker2 = new PaintColorProperty( baseColorProperty, { factor: -0.2 } );
-    var baseDarker4 = new PaintColorProperty( baseColorProperty, { factor: -0.4 } );
-    var baseDarker5 = new PaintColorProperty( baseColorProperty, { factor: -0.5 } );
+    var baseBrighter8 = new PaintColorProperty( baseColorProperty, { luminanceFactor: 0.8 } );
+    var baseBrighter7 = new PaintColorProperty( baseColorProperty, { luminanceFactor: 0.7 } );
+    var baseBrighter3 = new PaintColorProperty( baseColorProperty, { luminanceFactor: 0.3 } );
+    var baseDarker1 = new PaintColorProperty( baseColorProperty, { luminanceFactor: -0.1 } );
+    var baseDarker2 = new PaintColorProperty( baseColorProperty, { luminanceFactor: -0.2 } );
+    var baseDarker4 = new PaintColorProperty( baseColorProperty, { luminanceFactor: -0.4 } );
+    var baseDarker5 = new PaintColorProperty( baseColorProperty, { luminanceFactor: -0.5 } );
     var disabledBase = new PaintColorProperty( options.disabledBaseColor );
-    var disabledBaseBrighter8 = new PaintColorProperty( options.disabledBaseColor, { factor: 0.8 } );
-    var disabledBaseBrighter5 = new PaintColorProperty( options.disabledBaseColor, { factor: 0.5 } );
-    var disabledBaseDarker1 = new PaintColorProperty( options.disabledBaseColor, { factor: -0.1 } );
-    var disabledBaseDarker2 = new PaintColorProperty( options.disabledBaseColor, { factor: -0.2 } );
-    var disabledBaseDarker4 = new PaintColorProperty( options.disabledBaseColor, { factor: -0.4 } );
-    var disabledBaseDarker5 = new PaintColorProperty( options.disabledBaseColor, { factor: -0.5 } );
+    var disabledBaseBrighter8 = new PaintColorProperty( options.disabledBaseColor, { luminanceFactor: 0.8 } );
+    var disabledBaseBrighter5 = new PaintColorProperty( options.disabledBaseColor, { luminanceFactor: 0.5 } );
+    var disabledBaseDarker1 = new PaintColorProperty( options.disabledBaseColor, { luminanceFactor: -0.1 } );
+    var disabledBaseDarker2 = new PaintColorProperty( options.disabledBaseColor, { luminanceFactor: -0.2 } );
+    var disabledBaseDarker4 = new PaintColorProperty( options.disabledBaseColor, { luminanceFactor: -0.4 } );
+    var disabledBaseDarker5 = new PaintColorProperty( options.disabledBaseColor, { luminanceFactor: -0.5 } );
     var baseTransparent = new DerivedProperty( [ baseColorProperty ], function( color ) {
       return color.withAlpha( 0 );
     } );
@@ -341,9 +341,9 @@ define( function( require ) {
   RoundButtonView.FlatAppearanceStrategy = function( button, interactionStateProperty, baseColorProperty, options ) {
 
     // Color properties
-    var baseBrighter4 = new PaintColorProperty( baseColorProperty, { factor: 0.4 } );
-    var baseDarker4 = new PaintColorProperty( baseColorProperty, { factor: -0.4 } );
-    var disabledBaseDarker4 = new PaintColorProperty( options.disabledBaseColor, { factor: -0.4 } );
+    var baseBrighter4 = new PaintColorProperty( baseColorProperty, { luminanceFactor: 0.4 } );
+    var baseDarker4 = new PaintColorProperty( baseColorProperty, { luminanceFactor: -0.4 } );
+    var disabledBaseDarker4 = new PaintColorProperty( options.disabledBaseColor, { luminanceFactor: -0.4 } );
 
     // various fills that are used to alter the button's appearance
     var upFill = baseColorProperty;
