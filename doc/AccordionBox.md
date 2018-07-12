@@ -2,26 +2,26 @@
 PhET JS Files: ExpandCollapseBar.js, ExpandCollpaseButton.js, AccordionBox.js:
 
 Here’s when and why we use accordion boxes:
-* Default state can be expanded or collapsed depending on how the designer wants to scaffold the user interaction. A closed panel can be used to keep the default opening condition of sim from being visually overwhelming, and suggesting a logical route for exploration, for example in Build an Atom and in GE:B.
+* Default state can be expanded or collapsed depending on how the designer wants to scaffold the user interaction. A closed panel can be used to keep the default opening condition of sim from being visually overwhelming, and suggesting a logical route for exploration, for example in Build an Atom and in GE:B (what's GE:B?).
 * Accordion boxes can also be useful for teachers to ask predictive questions.
 * Can contain non-interactive readouts, interactive controls, but not sprites (e.g., draggable toolbox items).
 
 ### Components of an Accordion Box
 Adapted from: ARIA Pracrices 1.1, [section 3.1 Accordion](https://www.w3.org/TR/wai-aria-practices/#accordion)
-* Accordion Header: Title or label for or thumbnail (usually a heading with a +/- icon) representing a section of content that also serves as a control for showing, and in some implementations, hiding the section of content.
+* Accordion Header: Title for the box (usually a heading with a +/- icon signalling expand/collapse behaviour). The accordion header could also be an icon representing a section of content that can be shown or hidden.
 * Accordion Panel: Section of content associated with an accordion header.
 
 ## Aesthetic Considerations
 * If space is a concern, the title can be hidden while the accordion box is expanded.
 * An expanded accordion box cannot overlap other elements when opened (unlike combo box, for instance).
-* Always includes a toggle button to expand/collapse, typically to the left of the title.  
+* Always includes an iconed button (+/-), typically to the left of the title.  
 * Other sim content does not fill the space when an accordion box is collapsed.
 * The accordion box content can be expanded or collapsed by default and a change of state for one accordion does not typically affect the state of other accordion boxes.
 
 
 ## Accessibility Considerations
 * Typically, has a visual title with an icon that indicates expanded and collapsed state.
-  * The title may may disappear when box is expanded.
+  * The title may disappear when box is expanded.
   * Focus highlight would go around title in both the expanded and collapsed states, if title remains visible.
   * If title visually disappears when expanded, the focus highlight would be limited to the open/close icon and the designer would need to consider extra padding to ensure a reasonable clickable area.
   * It is possible that the focus highlight can change size when toggling between expanded/collapsed states in the scenario when the expanded box does not have a title.
@@ -42,6 +42,8 @@ Adapted from: ARIA Pracrices 1.1, [section 3.1 Accordion](https://www.w3.org/TR/
 | Up Arrow (Optional) | - If focus is on an accordion header, moves focus to the previous accordion header. If focus is on the first accordion header, either does nothing or moves focus to the last accordion header. <br ./> - If there is only one accordion, doing nothing with focus is likely appropirate.|
 | Home and End (Optional) | Likely only relevant if there are several to many accordions (to discuss) |
 | Control + Page Down <br />and <br />Control + Page Up (Optional) | Behave the same way as Up and Down Arrows. (to discuss) |
+
+**QUESTION: It's not clear to me how users get inside a panel, if the panel has no focusable items.**
 
 ### Management of Role, Property, State, and Tabindex Attributes
 Adapted from: ARIA Pracrices 1.1, [section 3.1 Accordion](https://www.w3.org/TR/wai-aria-practices/#accordion)
@@ -77,14 +79,14 @@ Adapted from: ARIA Pracrices 1.1, [section 3.1 Accordion](https://www.w3.org/TR/
   </div>
 ```
 ### Supporting Accessibility Resources
-* Adapted from [ARIA Practices]()
+* Adapted from [ARIA Practices 3.1 Accordion (Sections With Show/Hide Functionality)](https://www.w3.org/TR/wai-aria-practices-1.1/#accordion)
 
 ### Design Doc Content Template Text
 **ExpandCollapseBar** or **Expand Collpase Button**
 - Accordion Header:
 - Accessible Name: (Defaults to the same as the title)
 - Accordion Title Hidden: Yes/No (defaults to No)
-- If using a heading as the button wrapper, define heading level: (defaults is H3)
+- If using a heading as the button wrapper, define heading level: (defaults to H3)
 - Default open state: expanded/collapsed (Question: What is the best default?)
 
 **Accordion Box**
