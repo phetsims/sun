@@ -186,10 +186,9 @@ define( function( require ) {
             var formattedValue = Util.toFixed( self.mappedValue, options.accessibleDecimalPlaces );
 
             // create the final string from optional parameters
-            var valueText = StringUtils.fillIn(
-              options.accessibleValuePattern,
-              { value: options.createAriaValueText( formattedValue ) }
-            );
+            var valueText = StringUtils.fillIn( options.accessibleValuePattern, {
+              value: options.createAriaValueText( formattedValue )
+            } );
 
             self.setAccessibleAttribute( 'aria-valuetext', valueText );
           };
