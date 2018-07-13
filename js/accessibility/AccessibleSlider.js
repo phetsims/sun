@@ -64,21 +64,17 @@ define( function( require ) {
             'cannot set both accessibleValuePattern and createAriaValueText in slider options'
           );
 
-          // ensure only 1 use of pattern template
-          assert &&
-          options.accessibleValuePattern &&
-          assert(
-            options.accessibleValuePattern.match( /\{\{[^\{\}]+\}\}/g ).length === 1,
-            'accessibleValuePattern only accepts a single \'value\' key'
-          );
-
-          // ensure 'value' key exists
-          assert &&
-          options.accessibleValuePattern &&
-          assert(
-            options.accessibleValuePattern.indexOf( '{{value}}' ) >= 0,
-            'accessibleValuePattern must contain a key of \'value\''
-          );
+          // verify that accessibleValuePattern includes '{{value}}', and that is the only key in the pattern
+          if ( assert && options.accessibleValuePattern ) {
+            assert(
+             options.accessibleValuePattern.match( /\{\{[^\{\}]+\}\}/g ).length === 1,
+              'accessibleValuePattern only accepts a single \'value\' key'
+            );
+            assert(
+              options.accessibleValuePattern.indexOf( '{{value}}' ) >= 0,
+              'accessibleValuePattern must contain a key of \'value\''
+            );
+          }
 
           var defaults = {
 
