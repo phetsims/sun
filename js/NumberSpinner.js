@@ -10,7 +10,7 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var AccessibleNumberTweaker = require( 'SUN/accessibility/AccessibleNumberTweaker' );
+  var AccessibleNumberSpinner = require( 'SUN/accessibility/AccessibleNumberSpinner' );
   var ArrowButton = require( 'SUN/buttons/ArrowButton' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Node = require( 'SCENERY/nodes/Node' );
@@ -279,7 +279,7 @@ define( function( require ) {
     assert && assert( !options.a11yUseTimer, 'interval handled by arrow buttons, do not use callback timer' );
     options.a11yValueDelta = 0;
     options.a11yUseTimer = false;
-    this.initializeAccessibleNumberTweaker( numberProperty, rangeProperty, this.enabledProperty, options );
+    this.initializeAccessibleNumberSpinner( numberProperty, rangeProperty, this.enabledProperty, options );
 
     // a11y - click arrow buttons on keyboard increment/decrement; must be disposed
     var increasedListener = function() { incrementButton.buttonModel.a11yClick(); };
@@ -293,7 +293,7 @@ define( function( require ) {
       // dispose a11y features
       self.valueIncrementEmitter.removeListener( increasedListener );
       self.valueDecrementEmitter.removeListener( decreasedListener );
-      self.disposeAccessibleNumberTweaker();
+      self.disposeAccessibleNumberSpinner();
 
       numberProperty.unlink( numberPropertyObserver );
       rangeProperty.unlink( rangeObserver );
@@ -320,7 +320,7 @@ define( function( require ) {
     get enabled() { return this.getEnabled(); }
   } );
 
-  AccessibleNumberTweaker.mixInto( NumberSpinner );
+  AccessibleNumberSpinner.mixInto( NumberSpinner );
 
   return NumberSpinner;
 } );

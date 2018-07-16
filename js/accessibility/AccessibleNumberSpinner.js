@@ -2,14 +2,14 @@
 
 /**
  * A trait for subtypes of Node, used to make the node behave like a 'number' input with assistive technology.
- * An accessible number tweaker behaves like:
+ * An accessible number spinner behaves like:
  *
  * - Arrow keys increment/decrement the value by a specified step size.
  * - Page Up and Page Down increments/decrements value by an alternative step size, usually larger than default.
  * - Home key sets value to its minimum.
  * - End key sets value to its maximum.
  *
- * This number tweaker is different than typical 'number' inputs because it does not support number key control. All
+ * This number spinner is different than typical 'number' inputs because it does not support number key control. All
  * changes go through the arrow, page up, page down, home, and end keys. For that reason, the HTML representation should
  * ideally look like: (values removed for readability)
  *
@@ -35,10 +35,10 @@ define( function( require ) {
   var sun = require( 'SUN/sun' );
   var Util = require( 'DOT/Util' );
 
-  var AccessibleNumberTweaker = {
+  var AccessibleNumberSpinner = {
 
     /**
-     * Implement functionality for a number tweaker.
+     * Implement functionality for a number spinner.
      * @public
      * @trait
      *
@@ -61,7 +61,7 @@ define( function( require ) {
          *
          * @protected
          */
-        initializeAccessibleNumberTweaker: function( valueProperty, enabledRangeProperty, enabledProperty, options ) {
+        initializeAccessibleNumberSpinner: function( valueProperty, enabledRangeProperty, enabledProperty, options ) {
           var self = this;
 
           var defaults = {
@@ -79,7 +79,7 @@ define( function( require ) {
             a11yValuePattern: '{{value}}', // {string} if you want units or additional content, add to pattern
             a11yDecimalPlaces: 0, // number of decimal places for the value read by assistive technology
 
-            // set labelContent to give this AccessibleNumberTweaker an accessible name, required for spinbuttons
+            // set labelContent to give this AccessibleNumberSpinner an accessible name, required for spinbuttons
             // see https://github.com/phetsims/gravity-force-lab-basics/issues/62
             labelTagName: 'p',
 
@@ -95,7 +95,7 @@ define( function( require ) {
           var optionsToMutate = _.pick( options, _.keys( defaults ) );
           this.mutate( optionsToMutate );
 
-          // this number tweaker is "aria-labelledby" its own label, meaning that the label element content will be
+          // this number spinner is "aria-labelledby" its own label, meaning that the label element content will be
           // read on focus
           this.addAriaLabelledbyAssociation( {
             thisElementName: AccessiblePeer.PRIMARY_SIBLING,
@@ -191,8 +191,8 @@ define( function( require ) {
           };
           this._valueProperty.link( accessiblePropertyListener );
 
-          // @private - called by disposeAccessibleNumberTweaker to prevent memory leaks
-          this._disposeAccessibleNumberTweaker = function() {
+          // @private - called by disposeAccessibleNumberSpinner to prevent memory leaks
+          this._disposeAccessibleNumberSpinner = function() {
             self._valueProperty.unlink( accessiblePropertyListener );
             self._enabledRangeProperty.unlink( enabledRangeObserver );
             self._callbackTimer.dispose();
@@ -208,7 +208,7 @@ define( function( require ) {
         },
 
         /**
-         * Emit events related to the keystate of the tweaker. Typically used to style the tweaker during keyboard
+         * Emit events related to the keystate of the spinner. Typically used to style the spinner during keyboard
          * interaction.
          * @private
          *
@@ -269,14 +269,14 @@ define( function( require ) {
          * the type that this trait is mixed into.
          * @public
          */
-        disposeAccessibleNumberTweaker: function() {
-          this._disposeAccessibleNumberTweaker();
+        disposeAccessibleNumberSpinner: function() {
+          this._disposeAccessibleNumberSpinner();
         }
       } );
     }
   };
 
-  sun.register( 'AccessibleNumberTweaker', AccessibleNumberTweaker );
+  sun.register( 'AccessibleNumberSpinner', AccessibleNumberSpinner );
 
-  return AccessibleNumberTweaker;
+  return AccessibleNumberSpinner;
 } );
