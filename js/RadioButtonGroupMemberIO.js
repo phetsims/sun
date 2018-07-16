@@ -28,7 +28,7 @@ define( function( require ) {
   }
 
   phetioInherit( NodeIO, 'RadioButtonGroupMemberIO', RadioButtonGroupMemberIO, {}, {
-    documentation: 'A traditional radio button',
+    documentation: 'A radio button UI element that can be used to select one of several options',
     events: [ 'fired' ]
   } );
 
