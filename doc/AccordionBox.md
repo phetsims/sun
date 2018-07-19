@@ -14,8 +14,7 @@ Here’s when and why we use accordion boxes:
 * An expanded accordion box cannot overlap other elements when opened (unlike combo box, for instance).
 * Always includes an iconed button (+/-), typically to the left of the title.  
 * Other sim content does not fill the space when an accordion box is collapsed.
-* The accordion box content can be expanded or collapsed by default and a change of state for one accordion does not typically affect the state of other accordion boxes.
-
+* The accordion box content can be expanded or collapsed by default and a change of state for one accordion does not affect the state of other accordion boxes.
 
 ## Accessibility Considerations
 * Typically, has a visual title with an icon that indicates expanded and collapsed state.
@@ -30,7 +29,7 @@ Here’s when and why we use accordion boxes:
 ### Accessible Components of an Accordion Box
 Adapted from: ARIA Pracrices 1.1, [section 3.1 Accordion](https://www.w3.org/TR/wai-aria-practices/#accordion)
 * Accordion Header: Title for the box (usually a heading with a +/- icon signalling expand/collapse behaviour). The accordion header could also be an icon representing a section of content that can be shown or hidden.
-* Accordion Panel: Section of content associated with an accordion header.
+* Accordion Panel: Section of content associated with an accordion header
 
 ### Gesture Support
 ToDO.
@@ -85,14 +84,14 @@ Adapted from: ARIA Pracrices 1.1, [section 3.1 Accordion](https://www.w3.org/TR/
 * Adapted from [ARIA Practices 3.1 Accordion (Sections With Show/Hide Functionality)](https://www.w3.org/TR/wai-aria-practices-1.1/#accordion)
 
 ### Design Doc Content Template Text
-**ExpandCollapseBar** or **Expand Collpase Button**
-- Accordion Header:
-- Accessible Name: (Defaults to the same as the title)
-- Accordion Title Hidden: Yes/No (defaults to No)
-- If using a heading as the button wrapper, define heading level: (defaults to H3)
-- Default open state: expanded/collapsed (Question: What is the best default?)
-
 **Accordion Box**
-- Accordion Panel:
-- Parent container accordion box contents: defaults to a div
-- Use same convention as other objects and controls.
+- Accordion Box Title (header):
+- Accessible Name: content for the accordon box title
+	 - Header contains a title? Yes/No, default Yes
+	 - Title is a heading? Yes/No, defaults to Yes
+	 - If title is heading, set heading level, defaults to H3 
+	 - Accordion Title Hidden: Yes/No (defaults to No)
+- Accordion Box Content (panel):
+	- Parent container accordion box contents: defaults to a div
+	- Use same convention as other objects and controls.
+	- Default open state: expanded/collapsed (Question: What is the best default?)
