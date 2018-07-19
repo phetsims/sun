@@ -6,10 +6,6 @@ Here’s when and why we use accordion boxes:
 * Accordion boxes can also be useful for teachers to ask predictive questions.
 * Can contain non-interactive readouts, interactive controls, but not sprites (e.g., draggable toolbox items).
 
-### Components of an Accordion Box
-Adapted from: ARIA Pracrices 1.1, [section 3.1 Accordion](https://www.w3.org/TR/wai-aria-practices/#accordion)
-* Accordion Header: Title for the box (usually a heading with a +/- icon signalling expand/collapse behaviour). The accordion header could also be an icon representing a section of content that can be shown or hidden.
-* Accordion Panel: Section of content associated with an accordion header.
 
 ## Aesthetic Considerations
 * If space is a concern, the title can be hidden while the accordion box is expanded.
@@ -28,6 +24,11 @@ Adapted from: ARIA Pracrices 1.1, [section 3.1 Accordion](https://www.w3.org/TR/
 * The typical structure is a `button` nested within the parent titling element, likely a heading.
 * Typically, the open/close icon does not need to be represented in the Parallel DOM.
 * For accessibility the expanded and collapsed states of the box are communicated through a combination of ARIA attributes, `aria-expanded`, `aria-controls`, `aria-hidden` that have to be managed through javascript.
+
+### Accessible Components of an Accordion Box
+Adapted from: ARIA Pracrices 1.1, [section 3.1 Accordion](https://www.w3.org/TR/wai-aria-practices/#accordion)
+* Accordion Header: Title for the box (usually a heading with a +/- icon signalling expand/collapse behaviour). The accordion header could also be an icon representing a section of content that can be shown or hidden.
+* Accordion Panel: Section of content associated with an accordion header.
 
 ### Gesture Support
 ToDO.
