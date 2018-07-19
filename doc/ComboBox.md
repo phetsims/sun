@@ -86,13 +86,13 @@ The PhET combobox interaction, visually looks and behaves as a combobox; however
 
 ### Design Doc Content Template Text
 **Solute Combobox**
-Accessible Name for lisbox (i.e., combobox interaction): (e.g. Solute) 
-Accessible name for pop-up button is dynamic: {{Selected list item, e.g. Drink Mix}}
-Listbox: ul with role="listbox"
-Listbox items: li's with role="option"
-List Item 1 (e.g., Drink Mix)
-List Item 2 (e.g., Cobalt (II) nitrate)
-List Item 3
-Or as listed in simulation
-(Optional) Help Text: 
+* Accessible Name for combobox interaction (i.e., lisbox label): (e.g. Solute) 
+* Accessible name for pop-up button is dynamic: {{Selected list item, e.g. Drink Mix}}
+* Listbox: ul with role="listbox"
+* Listbox items: li's with role="option"
+* List Item 1 (e.g., Drink Mix)
+* List Item 2 (e.g., Cobalt (II) nitrate)
+* List Item 3
+* Or as listed in simulation
+* (Optional) Help Text: 
 
