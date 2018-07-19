@@ -23,6 +23,8 @@ When:
 * Checkboxes that appear visually grouped (e.g., by proximity or with a visual box) for convenience or space-saving may not benefit from explicit group semantics in the PDOM
 * When a group is very important, consider using a heading, e.g., `h3` as headings are placed in the heading outline which can be navigated with screen reader software.
 
+**Note:** Known issue that some screen readers repeat the checkbox's label content when label is associated via the `for` attribute. The `aria-label` attribute does not have this repetition.
+
 
 ### Gesture Support
 ToDO.
@@ -74,7 +76,6 @@ Visual checkbox with different label
 <input id="counting-numbers" type="checkbox" aria-label="Counting numbers" notchecked>
 <p>Use area grid with or without counting numbers in grid cells.</p>
 ```
-
 
 ### Supporting Accessibility Resources
 * [Using ARIA, working draft](https://www.w3.org/TR/using-aria/)
