@@ -1,11 +1,13 @@
 ## General Design Considerations
-PhET JS Files: ExpandCollapseBar.js, ExpandCollpaseButton.js, AccordionBox.js:
-
 Here’s when and why we use accordion boxes:
 * Default state can be expanded or collapsed depending on how the designer wants to scaffold the user interaction. A closed panel can be used to keep the default opening condition of sim from being visually overwhelming, and suggesting a logical route for exploration, for example in Build an Atom and in GE:B (what's GE:B?).
 * Accordion boxes can also be useful for teachers to ask predictive questions.
 * Can contain non-interactive readouts, interactive controls, but not sprites (e.g., draggable toolbox items).
 
+**Note this design pattern may cover multiple PhET Components**
+* [AccordionBox.js](../js/AccordionBox.js)
+* [ExpandCollapseBar.js](../js/ExpandCollapseBar.js)
+* [ExpandCollpaseButton.js](../js/ExpandCollpaseButton.js)
 
 ## Aesthetic Considerations
 * If space is a concern, the title can be hidden while the accordion box is expanded.
