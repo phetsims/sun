@@ -8,7 +8,6 @@ Here’s when and why we use radio button groups:
 **Note this design pattern covers 2 PhET Components**
 * [VerticalAquaRadioButtonGroup.js](../js/VerticalAquaRadioButtonGroup.js) (traditional-looking radio buttons)
 * [RadioButtonGroup.js](https://github.com/phetsims/sun/blob/master/js/buttons/RadioButtonGroup.js) (non-traditional looking radio buttons)
-**Note** Maybe we can clarify
 
 ## Aesthetic Considerations
 * Label text is succinct and ideally sounds good when read as "selected". For example, in Area Model, the first Area Grid Size radio button might sound like, "10 by 10, selected". In Balloons and Static Electricity, a user may hear, "Show all charges, selected". 
