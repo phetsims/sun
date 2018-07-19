@@ -17,13 +17,16 @@
 ### Gesture Support
 ToDO.
 
-### Keyboard Support
+### Keyboard Interaction & Support
+Anything special as a preamble?
+
 | Key        | Function |
 |:-----------|:---------|
 |-- content --|-- content -- |
 
 
 ### Management of Role, Property, State, and Tabindex Attributes
+Anything special as a preamble?
 
 | Role | Attribute | Element | Usage |
 |:-----|:----------|:------- |:------|
