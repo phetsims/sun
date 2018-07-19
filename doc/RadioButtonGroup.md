@@ -1,11 +1,14 @@
 ## General Design Considerations
 Here’s when and why we use radio button groups:
 * Used to group a set of mutually exclusive buttons, known as radio buttons, where only one button in the group may be in a selected state.
-* Radio button groups or radio groups, may look like a group of traditional radio buttons, or may look like a group of items that users switch between. In PhET simulations the radio button groups are generally made up of rectangular buttons with images or symbols. Their size, image style, and spacing are visually group the individual radio buttons.
+* Radio button groups, may look like a group of traditional radio buttons, or may look like a group of items that users switch between.
+* In PhET sims, traditional-looking groups of radio buttons are refered to as "vertical aqua radio buttons", and have a corresponding look.
+* All other groups of radio buttons are generally made up of rectangular buttons with images or symbols. Their size, image style, and spacing are visually group the individual radio buttons.
 
 **Note this design pattern covers 2 PhET Components**
-* [VerticalAquaRadioButtonGroup.js](../js/VerticalAquaRadioButtonGroup.js)
-* RadioButtonGroup.js (**Note:** I don't see RadioButtonGroup.js on sun.)
+* [VerticalAquaRadioButtonGroup.js](../js/VerticalAquaRadioButtonGroup.js) (traditional-looking radio buttons)
+* [RadioButtonGroup.js](https://github.com/phetsims/sun/blob/master/js/buttons/RadioButtonGroup.js) (non-traditional looking radio buttons)
+**Note** Maybe we can clarify
 
 ## Aesthetic Considerations
 * Label text is succinct and ideally sounds good when read as "selected". For example, in Area Model, the first Area Grid Size radio button might sound like, "10 by 10, selected". In Balloons and Static Electricity, a user may hear, "Show all charges, selected". 
