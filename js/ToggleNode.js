@@ -90,6 +90,18 @@ define( function( require ) {
     },
 
     /**
+     * Center the latter nodes on the x center of the first node.
+     * @param {Node[]} children
+     * @public
+     * @static
+     */
+    LEFT: function( children ) {
+      for ( var i = 1; i < children.length; i++ ) {
+        children[ i ].left = children[ 0 ].left;
+      }
+    },
+
+    /**
      * Center the latter nodes on the y center of the first node.
      * @param {Node[]} children
      * @public
@@ -99,6 +111,15 @@ define( function( require ) {
       for ( var i = 1; i < children.length; i++ ) {
         children[ i ].centerY = children[ 0 ].centerY;
       }
+    },
+
+    /**
+     * No alignment is performed
+     * @param {Node[]} children
+     * @public
+     * @static
+     */
+    NONE: function( children ) {
     },
 
     /**

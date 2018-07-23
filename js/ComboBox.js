@@ -79,20 +79,42 @@ define( function( require ) {
     Node.call( this );
 
     this.enabledProperty = options.enabledProperty; // @public
+    this.listPosition = options.listPosition; // @private
 
     // optional label
     if ( options.labelNode !== null ) {
       self.addChild( options.labelNode );
     }
 
+    //TODO https://github.com/phetsims/scenery/issues/58
+    /**
+     * @private
+     * Because clickToDismissListener is added to the scene, it receives the 'down' event that
+     * buttonNode received to register the listener. This is because scenery propagates events
+     * up the event trail, and the scene is further up the trail than the button.  This flag
+     * is used to ignore the first 'down' event, which is the one that the button received.
+     * If we don't do this, then we never see the list because it is immediately popped down.
+     * This behavior may change, and is being discussed in scenery#58.
+     */
+    this.enableClickToDismissListener = false;
+
+    // @private the display that clickToDismissListener is added to, because the scene may change, see sun#14
+    this.display = null;
+
+    // @private listener for 'click outside to dismiss'
+    this.clickToDismissListener = {
+      down: this.hideList.bind( this )
+    };
+
     // determine uniform dimensions for button and list items (including margins)
     var itemWidth = Math.max.apply( Math, _.map( items, 'node.width' ) ) + 2 * options.itemXMargin;
     var itemHeight = Math.max.apply( Math, _.map( items, 'node.height' ) ) + 2 * options.itemYMargin;
 
-    // list
     var listWidth = itemWidth + ( 2 * options.buttonXMargin );
     var listHeight = ( items.length * itemHeight ) + ( 2 * options.listYMargin );
-    var listNode = new Rectangle( 0, 0, listWidth, listHeight, {
+
+    // @private the popup list
+    this.listNode = new Rectangle( 0, 0, listWidth, listHeight, {
       cornerRadius: options.listCornerRadius,
       fill: options.listFill,
       stroke: options.listStroke,
@@ -101,7 +123,8 @@ define( function( require ) {
       // Not instrumented for PhET-iO because the list's location isn't valid until it has been popped up.
       // See https://github.com/phetsims/phet-io/issues/1102
     } );
-    listParent.addChild( listNode );
+    listParent.addChild( this.listNode );
+    this.listParent = listParent; // @private
 
     //TODO move these to ComboBoxItemNode
     // how to highlight an item in the list
@@ -138,8 +161,8 @@ define( function( require ) {
         } );
 
         unhighlightItem( selectedItemNode );
-        listNode.visible = false; // close the list, do this before changing property value, in case it's expensive
-        display.removeInputListener( clickToDismissListener ); // remove the click-to-dismiss listener
+        self.listNode.visible = false; // close the list, do this before changing property value, in case it's expensive
+        self.display.removeInputListener( self.clickToDismissListener ); // remove the click-to-dismiss listener
         event.abort(); // prevent nodes (eg, controls) behind the list from receiving the event
         property.value = selectedItemNode.item.value; // set the property
 
@@ -164,99 +187,25 @@ define( function( require ) {
       itemNodeOptions.tandem = options.tandem.createTandem( itemNodeOptions.tandemName || 'comboBoxItemNode' );
 
       // Create the list item node itself
-      listNode.addChild( new ComboBoxItemNode( item, itemWidth, itemHeight, options.itemXMargin, itemNodeOptions ) );
+      self.listNode.addChild( new ComboBoxItemNode( item, itemWidth, itemHeight, options.itemXMargin, itemNodeOptions ) );
     } );
 
-    // button, will be set to correct value when property observer is registered
-    var buttonNode = new ButtonNode( new ComboBoxItemNode( items[ 0 ], itemWidth, itemHeight, options.itemXMargin, {
+    // @private button, will be set to correct value when property observer is registered
+    this.buttonNode = new ButtonNode( new ComboBoxItemNode( items[ 0 ], itemWidth, itemHeight, options.itemXMargin, {
       tandem: options.tandem.createTandem( 'buttonNode', { enabled: false } )
     } ), options );
-    self.addChild( buttonNode );
-
-    //TODO handle scale and rotation
-    // Handles the coordinate transform required to make the list pop up near the button.
-    var moveList = function() {
-      var pButtonGlobal;
-      var pButtonLocal;
-      if ( options.listPosition === 'above' ) {
-        pButtonGlobal = self.localToGlobalPoint( new Vector2( buttonNode.left, buttonNode.top ) );
-        pButtonLocal = listParent.globalToLocalPoint( pButtonGlobal );
-        listNode.left = pButtonLocal.x;
-        listNode.bottom = pButtonLocal.y;
-      }
-      else {
-        pButtonGlobal = self.localToGlobalPoint( new Vector2( buttonNode.left, buttonNode.bottom ) );
-        pButtonLocal = listParent.globalToLocalPoint( pButtonGlobal );
-        listNode.left = pButtonLocal.x;
-        listNode.top = pButtonLocal.y;
-      }
-    };
-
-    /**
-     * Because clickToDismissListener is added to the scene, it receives the 'down' event that
-     * buttonNode received to register the listener. This is because scenery propagates events
-     * up the event trail, and the scene is further up the trail than the button.  This flag
-     * is used to ignore the first 'down' event, which is the one that the button received.
-     * If we don't do this, then we never see the list because it is immediately popped down.
-     * This behavior is may change, and is being discussed in scenery#58.
-     */
-    var enableClickToDismissListener;
-    var display; // store the display that clickToDismissListener is added to, because the scene may change, see sun#14
-    var clickToDismissListener; // listener for 'click outside to dismiss'
-
-    function hideListNode() {
-      if ( enableClickToDismissListener ) {
-
-        self.startEvent( 'user', 'popupHidden' );
-
-        if ( display && display.hasInputListener( clickToDismissListener ) ) {
-          display.removeInputListener( clickToDismissListener );
-        }
-        listNode.visible = false;
-
-        self.endEvent();
-      }
-      else {
-        enableClickToDismissListener = true;
-      }
-    }
-
-    // @private make visible to methods
-    this.hideListNode = hideListNode;
-
-    clickToDismissListener = {
-      down: hideListNode
-    };
-
-    // function to make listNode visible
-    function showListNode() {
-      if ( !listNode.visible ) {
-        self.startEvent( 'user', 'popupShown' );
-
-        moveList();
-        listNode.moveToFront();
-        listNode.visible = true;
-        enableClickToDismissListener = false;
-        display = self.getUniqueTrail().rootNode().getRootedDisplays()[ 0 ];
-        display.addInputListener( clickToDismissListener );
-
-        self.endEvent();
-      }
-    }
-
-    // @private make visible to methods
-    this.showListNode = showListNode;
+    self.addChild( this.buttonNode );
 
     // button interactivity
-    buttonNode.cursor = 'pointer';
-    buttonNode.addInputListener( {
-      down: showListNode
+    this.buttonNode.cursor = 'pointer';
+    this.buttonNode.addInputListener( {
+      down: this.showList.bind( this )
     } );
 
     // layout
     if ( options.labelNode ) {
-      buttonNode.left = options.labelNode.right + options.labelXSpacing;
-      buttonNode.centerY = options.labelNode.centerY;
+      this.buttonNode.left = options.labelNode.right + options.labelXSpacing;
+      this.buttonNode.centerY = options.labelNode.centerY;
     }
 
     // when property changes, update button
@@ -264,7 +213,7 @@ define( function( require ) {
       var item = _.find( items, function( item ) {
         return item.value === value;
       } );
-      buttonNode.setItemNode( new ComboBoxItemNode( item, itemWidth, itemHeight, options.itemXMargin, {
+      self.buttonNode.setItemNode( new ComboBoxItemNode( item, itemWidth, itemHeight, options.itemXMargin, {
         tandem: options.tandem.createTandem( 'buttonNode', { enabled: false } )
       } ) );
     };
@@ -281,14 +230,20 @@ define( function( require ) {
 
     // @private called by dispose
     this.disposeComboBox = function() {
-      self.enabledProperty.unlink( enabledObserver );
+
+      if ( property.hasListener( propertyObserver ) ) {
+        property.unlink( propertyObserver );
+      }
+      if ( self.enabledProperty.hasListener( enabledObserver ) ) {
+        self.enabledProperty.unlink( enabledObserver );
+      }
 
       // Unregister itemNode tandems as well
-      for ( var i = 0; i < listNode.children.length; i++ ) {
-        listNode.children[ i ].dispose();
+      for ( var i = 0; i < self.listNode.children.length; i++ ) {
+        self.listNode.children[ i ].dispose();
       }
-      buttonNode.dispose();
-      property.unlink( propertyObserver );
+
+      self.buttonNode.dispose();
     };
 
     // support for binder documentation, stripped out in builds and only runs when ?binder is specified
@@ -314,16 +269,66 @@ define( function( require ) {
     get enabled() { return this.getEnabled(); },
 
     /**
-     * Makes combo box list visible
+     * Shows the combo box list
      * @public
      */
-    showList: function() { this.showListNode(); },
+    showList: function() {
+      if ( !this.listNode.visible ) {
+        this.startEvent( 'user', 'popupShown' );
+
+        this.moveList();
+        this.listNode.moveToFront();
+        this.listNode.visible = true;
+        this.enableClickToDismissListener = false;
+        this.display = this.getUniqueTrail().rootNode().getRootedDisplays()[ 0 ];
+        this.display.addInputListener( this.clickToDismissListener );
+
+        this.endEvent();
+      }
+    },
 
     /**
-     * Hide the combo box list
+     * Hides the combo box list
      * @public
      */
-    hideList: function() { this.hideListNode(); }
+    hideList: function() {
+      if ( this.enableClickToDismissListener ) {
+
+        this.startEvent( 'user', 'popupHidden' );
+
+        if ( this.display && this.display.hasInputListener( this.clickToDismissListener ) ) {
+          this.display.removeInputListener( this.clickToDismissListener );
+        }
+        this.listNode.visible = false;
+
+        this.endEvent();
+      }
+      else {
+        this.enableClickToDismissListener = true;
+      }
+    },
+
+    //TODO handle scale and rotation
+    /**
+     * Handles the coordinate transform required to make the list pop up near the button.
+     * @private
+     */
+    moveList: function() {
+      var pButtonGlobal;
+      var pButtonLocal;
+      if ( this.listPosition === 'above' ) {
+        pButtonGlobal = this.localToGlobalPoint( new Vector2( this.buttonNode.left, this.buttonNode.top ) );
+        pButtonLocal = this.listParent.globalToLocalPoint( pButtonGlobal );
+        this.listNode.left = pButtonLocal.x;
+        this.listNode.bottom = pButtonLocal.y;
+      }
+      else {
+        pButtonGlobal = this.localToGlobalPoint( new Vector2( this.buttonNode.left, this.buttonNode.bottom ) );
+        pButtonLocal = this.listParent.globalToLocalPoint( pButtonGlobal );
+        this.listNode.left = pButtonLocal.x;
+        this.listNode.top = pButtonLocal.y;
+      }
+    }
   } );
 
   /**

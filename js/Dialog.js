@@ -14,6 +14,7 @@ define( function( require ) {
 
   // modules
   var AccessibilityUtil = require( 'SCENERY/accessibility/AccessibilityUtil' );
+  var AccessiblePeer = require( 'SCENERY/accessibility/AccessiblePeer' );
   var AlignBox = require( 'SCENERY/nodes/AlignBox' );
   var DialogIO = require( 'SUN/DialogIO' );
   var Display = require( 'SCENERY/display/Display' );
@@ -90,7 +91,7 @@ define( function( require ) {
 
       // more Dialog-specific options
       modal: true, // {boolean} modal dialogs prevent interaction with the rest of the sim while open
-      title: null, // {Node} title to be displayed at top
+      title: null, // {Node|null} title to be displayed at top
       titleAlign: 'center', // horizontal alignment of the title: {string} left, right or center
 
       // {function} which sets the dialog's position in global coordinates. called as
@@ -179,7 +180,7 @@ define( function( require ) {
       options.closeButtonMouseAreaYDilation
     );
 
-    // @protected (a11y)
+    // @private (a11y)
     this.closeButton = closeButton;
 
     // Align content, title, and close button using spacing and margin options
@@ -225,14 +226,19 @@ define( function( require ) {
     // @private
     this.sim = sim;
 
-    // a11y - set the order of content for accessibility, title before content
-    this.accessibleOrder = [ options.title, content ].filter( function( node ) {
+    // a11y - set the order of content, close button first so remaining content can be read from top to bottom
+    // with virtual cursor
+    this.accessibleOrder = [ closeButton, options.title, content ].filter( function( node ) {
       return node !== undefined;
     } );
 
     // a11y - set the aria-labelledby relation so that whenever focus enters the dialog the title is read
-    if ( options.title ) {
-      options.title.tagName && this.setAriaLabelledByNode( options.title );
+    if ( options.title && options.title.tagName ) {
+      this.addAriaLabelledbyAssociation( {
+        thisElementName: AccessiblePeer.PRIMARY_SIBLING,
+        otherNode: options.title,
+        otherElementName: AccessiblePeer.PRIMARY_SIBLING
+      } );
     }
 
     // must be removed on dispose
@@ -370,6 +376,14 @@ define( function( require ) {
      */
     focusActiveElement: function() {
       this.activeElement && this.activeElement.focus();
+    },
+
+    /**
+     * Place keyboard focus on the close button, useful when opening the dialog with an accessibility interaction.
+     * @public
+     */
+    focusCloseButton: function() {
+      this.closeButton.focus();
     }
   } );
 
@@ -377,7 +391,7 @@ define( function( require ) {
   /**
    * The close button for Dialog
    * A flat x
-   * 
+   *
    * @param {Object} [options] - see RectangularPushButton
    * @constructor
    */

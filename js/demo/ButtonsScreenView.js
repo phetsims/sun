@@ -59,6 +59,14 @@ define( function( require ) {
     };
 
     //===================================================================================
+    // Common colors
+    //===================================================================================
+
+    var alignBaseColor = new Property( new Color( 'red' ) );
+    var roundBaseColor = new Property( new Color( 'blue' ) );
+    var radioGroupBaseColor = new Property( 'green' );
+
+    //===================================================================================
     // Radio buttons
     //===================================================================================
 
@@ -78,7 +86,9 @@ define( function( require ) {
       // change these to test various orientations and alignments
       orientation: 'vertical',
       buttonContentXAlign: 'left',
-      buttonContentYAlign: 'center'
+      buttonContentYAlign: 'center',
+
+      baseColor: radioGroupBaseColor
     } );
     var radioButtonPanel = new Panel( radioButtonGroup, {
       stroke: 'black',
@@ -144,13 +154,14 @@ define( function( require ) {
 
     var buttonD = new RoundPushButton( {
       content: new Text( '--- D ---', { font: BUTTON_FONT } ),
-      listener: function() { message( 'Button D pressed' ); }
+      listener: function() { message( 'Button D pressed' ); },
+      baseColor: roundBaseColor
     } );
 
     var buttonE = new RoundPushButton( {
       content: new Text( '--- E ---', { font: BUTTON_FONT } ),
       listener: function() { message( 'Button E pressed' ); },
-      baseColor: new Color( 245, 184, 0 )
+      baseColor: roundBaseColor
     } );
 
     var pseudo3DButtonsBox = new HBox( {
@@ -275,7 +286,7 @@ define( function( require ) {
     var upperLeftContentButton = new RectangularPushButton( {
       content: upperLeftAlignTextNode,
       listener: function() { message( 'Upper left alignment button fired ' ); },
-      baseColor: new Color( 0, 179, 179 ),
+      baseColor: alignBaseColor,
       xAlign: 'left',
       yAlign: 'top',
       minWidth: upperLeftAlignTextNode.width * 1.5,
@@ -286,7 +297,7 @@ define( function( require ) {
     var lowerRightContentButton = new RectangularPushButton( {
       content: lowerRightAlignTextNode,
       listener: function() { message( 'Lower right alignment button fired ' ); },
-      baseColor: new Color( 0, 179, 179 ),
+      baseColor: alignBaseColor,
       xAlign: 'right',
       yAlign: 'bottom',
       minWidth: lowerRightAlignTextNode.width * 1.5,
@@ -464,6 +475,13 @@ define( function( require ) {
           buttonD.baseColor = new Color( _.random( 0, 255 ), _.random( 0, 255 ), _.random( 0, 255 ) );
           button1.baseColor = new Color( _.random( 0, 255 ), _.random( 0, 255 ), _.random( 0, 255 ) );
           button3.baseColor = new Color( _.random( 0, 255 ), _.random( 0, 255 ), _.random( 0, 255 ) );
+
+          alignBaseColor.value = new Color( _.random( 0, 255 ), _.random( 0, 255 ), _.random( 0, 255 ) );
+          radioGroupBaseColor.value = new Color( _.random( 0, 255 ), _.random( 0, 255 ), _.random( 0, 255 ) );
+          roundBaseColor.value.red = _.random( 0, 255 );
+          roundBaseColor.value.green = _.random( 0, 255 );
+          roundBaseColor.value.blue = _.random( 0, 255 );
+
           message( 'Button colors changed' );
         },
         right: disableEnableButton.right,

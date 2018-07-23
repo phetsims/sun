@@ -6,12 +6,18 @@ title: Radio Button Groups
 ## General Design Considerations
 Here’s when and why we use radio button groups:
 * Used to group a set of mutually exclusive buttons, known as radio buttons, where only one button in the group may be in a selected state.
-* Radio button groups or radio groups, may look like a group of traditional radio buttons, or may look like a group of items that users switch between. In PhET simulations the radio button themselves may be rectangular buttons with images or symbols - we call these “scene selection” radio buttons.
+* Radio button groups, may look like a group of traditional radio buttons, or may look like a group of items that users switch between.
+* In PhET sims, traditional-looking groups of radio buttons are refered to as "vertical aqua radio buttons", and have a corresponding look.
+* All other groups of radio buttons are generally made up of rectangular buttons with images or symbols. Their size, image style, and spacing are visually group the individual radio buttons.
+
+**Note this design pattern covers 2 PhET Components**
+* [VerticalAquaRadioButtonGroup.js](../js/VerticalAquaRadioButtonGroup.js) (traditional-looking radio buttons)
+* [RadioButtonGroup.js](https://github.com/phetsims/sun/blob/master/js/buttons/RadioButtonGroup.js) (non-traditional looking radio buttons)
 
 ## Aesthetic Considerations
 * Label text is succinct and ideally sounds good when read as "selected". For example, in Area Model, the first Area Grid Size radio button might sound like, "10 by 10, selected". In Balloons and Static Electricity, a user may hear, "Show all charges, selected".
 * Occasionally a small icon follows the label text.
-* Scene selection style radio buttons generally show the selected button as fully opaque with a thick black stroke, and the unselected buttons have reduced opacity and a thin stroke.
+* Radio buttons generally show the selected button as fully opaque with a thick black stroke, and the unselected buttons have reduced opacity and a thin stroke.
 * Focus highlight has a light focus around the group, and a thicker pink focus around the selected item.
 
 ## Accessibility Considerations
@@ -56,37 +62,39 @@ Content adpated from: [Aria Practices, 3.16 Radio Group](https://www.w3.org/TR/w
 |  | `for="[IDREF of input]"` | label | The accessible name for the `radio` is computed from the child text content of the `label` element.|
 |  | `aria-checked="true"`, or `checked` (**Question:** Do we use the aria attribute or the HTML5 attribute currently?) |  | Identifies the radio button which is selected. CSS attribute selectors (e.g. [`aria-checked="true"`]) are used to synchronize the visual states with the value of the `aria-checked` attribute. (N/A in PhET's case) The CSS ::before pseudo-class is used to indicate visual state of selected radio buttons to support high contrast settings in operating systems and browsers. (N/A in PhET's case) |
 
-
-### Sample 1 HTML when heading semantics are needed  
-#### From Balloons and Static Electricity
-Example is based on the charge radio buttons in Balloons and Static Electricity. The visual appearence of this groups looks like radio buttons. The paragraph containig help text is placed after the legend in the example.
+### Sample 1 HTML with heading &amp; aria-labelledby (heading semantics required)
+#### Moleules and Light Example
+Example is based on the light sources radio buttons in _Moelcules and Light_. The visual appearence of these buttons are large square buttons with flashlight-like icons, rather than traditional radio buttons with text-based labels. The paragraph containig help text is placed after the h3 heading in this example.
 ``` html
 <fieldset role="radiogroup" aria-labelledby="rg16-heading">
-  <h3 id="rg16-heading">Charge Settings</h3>
-   <p>Choose how you see or hear charge information.</p>
+  <h3 id="rg16-heading">Light Sources</h3>
+   <p>Change light source in observation window.</p>
     <ul>
       <li><input id="r16-1" type="radio" tabindex="0" checked>
-		  <label for="r16-1">Show all charges</label>
+		  <label for="r16-1">Microwave</label>
       </li>
       <li><input id="r16-2" type="radio">
-		  <label for="r16-2">Show no charges</label>
+		  <label for="r16-2">Infared</label>
       </li>
      <li><input id="r16-3" type="radio">
-		 <label for="r16-3">Show charge differences</label>
+		 <label for="r16-3">Visible</label>
       </li>
+      <li><input id="r16-4" type="radio">
+ 		 <label for="r16-4">Ultraviolet</label>
+       </li>
     </ul>
 </fieldset>
 ```
 
-### Sample 2 HTML no heading semantics
-#### From Area Model Introduction
-Example is based on the _scene seletion_ radio buttons in Area Model Introduction. The visual appearence of PhET's scene selection buttons is more like small buttons than traditional radio buttons. There is no help text content for this example. By using a legend element instead of a heading element to name the group, the group's name will not be placed in the heading outline of the simulation.
-```html
+### Sample 2 HTML with legend (heading semantics not required)
+#### Area Model Introduction Example
+Example is based on the "scene selection" radio buttons in _Area Model Introduction_. The visual appearence of these buttons small square buttons, rather than traditional radio buttons. There is no help text content for this example. By using a legend element instead of a heading element to name the group, the group's name will not be placed in the heading outline of the simulation. The `aria-labelledby` attribute is not needed with the `legend` element.
+``` html
 <fieldset role="radiogroup">
   <legend>Area Grid Size</legend>
     <ul id="group-r18">
       <li>
-        <input id="r18-1" type="radio" checked tabindex="0">
+        <input id="r18-1" type="radio" tabindex="0" checked>
         <label for="r18-1">10 by 10</label>
       </li>
       <li id="container-r10-2">
@@ -96,10 +104,29 @@ Example is based on the _scene seletion_ radio buttons in Area Model Introductio
     </ul>
 </fieldset>
 ```
+### Sample 3 HTML early simple solution with no ARIA
+#### Balloons and Static Electricity Example
+Example is based on the charge radio buttons in Balloons and Static Electricity. The visual appearence of this group looks like radio buttons. The paragraph containig help text is placed after the h3 heading in this example.
 
-### PhET Components
-* VerticalAquaRadioButtonGroup.js
-* RadioButtonGroup.js (**Note:** I don't see RadioButtonGroup.js on sun.)
+**Note** This simple structure does not use any aria roles or attributes. Early usability testing (2015-2016) found simple was better. AT for `fieldset`, `role="radiogroup"`, and `aria-labelledby` has improved since early testing with this simulation, so we are moving forward with the `fieldset` examples above.
+
+``` html
+<div id-"rgroup-container-id">
+  <h3 id="rgroup-label-id">Charge Settings</h3>
+   <p>Choose how you see or hear charge information.</p>
+    <ul>
+      <li><input id="radiobutton-1" tabindex="0" type="radio" checked>
+		  <label for="radiobutton-1">Show all charges</label>
+      </li>
+      <li><input id="radiobutton-2" type="radio">
+		  <label for="radiobutton-2">Show no charges</label>
+      </li>
+     <li><input id="radiobutton-3" type="radio">
+		 <label for="radiobutton-3">Show charge differences</label>
+      </li>
+    </ul>
+</div>
+```
 
 ### Supporting Accessibility Resources
 * [ARIA 1.1 radiogroup role](https://www.w3.org/TR/wai-aria-1.1/#radiogroup)
@@ -109,13 +136,26 @@ Example is based on the _scene seletion_ radio buttons in Area Model Introductio
 * ARIA Example 2 [Radio Group Example Using aria-activedescendant](https://www.w3.org/TR/wai-aria-practices-1.1/examples/radio/radio-2/radio-2.html)
 
 ### Design Doc Content Template Text
-**Radio Button Group**
-- Group Name via `h3` with `aria-labelledby`: (e.g. Sample 1) **OR**
-- Group Name via `legend`: (e.g. Sample 2)  
+**Light Sources, Radio Button Group**
+- PhET Component: RadioButtonGroup.js
+- Group Name via `h3` with `aria-labelledby`: Light Sources (e.g. Sample 1)
+- Radio button group: `fieldset` with `role="radiogroup"`
+- Radio buttons contained in an `ul` with list items, `li`
+- Names for radio buttons in the group
+  - List Item 1: Name (e.g. Microwave)
+  - List Item 2: Name (e.g. Infared)
+  - List Item 3: Name (e.g. Visible)
+  - List Item 4: Name (e.g. Ultraviolet)
+  - Or as listed in simulation
+- (Optional) Help Text: (e.g. Change light source in observation window.)
+
+**Area Grid Size, Radio Button Group**
+- PhET Component: RadioButtonGroup.js
+- Group Name via `legend`: Area Grid Size (e.g. Sample 2)  
 - Radio button group: `fieldset` with `role="radiogroup"`
 - Radio buttons contained in an `ul` with list items, `li`
 - List names for radio buttons in the group
-  - List Item 1 (e.g. 10 by 10)
-  - List Item 2 (e.g. 12 by 12)
+  - List Item 1: Name (e.g. 10 by 10)
+  - List Item 2: Name (e.g. 12 by 12)
   - Or as listed in simulation
 - (Optional) Help Text:

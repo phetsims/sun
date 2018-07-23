@@ -56,7 +56,7 @@ define( function( require ) {
 
     var self = this;
 
-    // @private
+    // @private - converted to an AXON/Property from a property to support PhET-iO
     this.enabledProperty = new BooleanProperty( options.enabled, {
       tandem: options.tandem.createTandem( 'enabledProperty' ),
       phetioInstanceDocumentation: 'Determines whether the AquaRadioButton is enabled (pressable) or disabled (grayed-out).'
@@ -145,8 +145,7 @@ define( function( require ) {
 
     this.mutate( options );
 
-    var enabledPropertyListener = this.updateEnabled.bind( this );
-    this.enabledProperty.link( enabledPropertyListener );
+    this.enabledProperty.link( this.updateEnabled.bind( this ) );
 
     // @private
     this.disposeAquaRadioButton = function() {
@@ -154,7 +153,7 @@ define( function( require ) {
       self.removeAccessibleInputListener( changeListener );
       property.unlink( accessibleCheckedListener );
       property.unlink( syncWithModel );
-      self.enabledProperty.unlink( enabledPropertyListener );
+      self.enabledProperty.dispose();
     };
 
     // a11y - support for binder documentation, stripped out in builds and only runs when ?binder is specified

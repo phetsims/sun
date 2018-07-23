@@ -58,6 +58,24 @@ define( function( require ) {
         initializeAccessibleSlider: function( valueProperty, enabledRangeProperty, enabledProperty, options ) {
           var self = this;
 
+          // ensure that the client does not set both a custom text pattern and a text creation function
+          assert && assert(
+            !( options.accessibleValuePattern && options.createAriaValueText ),
+            'cannot set both accessibleValuePattern and createAriaValueText in slider options'
+          );
+
+          // verify that accessibleValuePattern includes '{{value}}', and that is the only key in the pattern
+          if ( assert && options.accessibleValuePattern ) {
+            assert(
+             options.accessibleValuePattern.match( /\{\{[^\{\}]+\}\}/g ).length === 1,
+              'accessibleValuePattern only accepts a single \'value\' key'
+            );
+            assert(
+              options.accessibleValuePattern.indexOf( '{{value}}' ) >= 0,
+              'accessibleValuePattern must contain a key of \'value\''
+            );
+          }
+
           var defaults = {
 
             // other
@@ -78,8 +96,13 @@ define( function( require ) {
 
             // map the valueProperty value to another that will be read by the assistive device valueProperty changes
             // @param {number}
-            accessibleMapValue: function( value ) { return value; }
+            accessibleMapValue: function( value ) { return value; },
+
+            // Function to customize the logic and formatting of the aria-valuetext attribute of the `input` element.
+            // @param {number}
+            createAriaValueText: function ( formattedValue ) { return formattedValue; }
           };
+
           options = _.extend( {}, defaults, options );
 
           // Some options were already mutated in the constructor, only apply the accessibility-specific options here
@@ -120,6 +143,9 @@ define( function( require ) {
           // @private (a11y) - whether or not 'shift' key is currently held down
           this._shiftKey = false;
 
+          // @public controls the mapping from valueProperty to accessible output
+          this.accessibleMapValue = options.accessibleMapValue;
+
           // initialize slider attributes
           this.ariaOrientation = options.ariaOrientation;
 
@@ -153,17 +179,17 @@ define( function( require ) {
 
           // when the property changes, be sure to update the accessible input value and aria-valuetext which is read
           // by assistive technology when the value changes
-          var accessiblePropertyListener = function( value ) {
+          var accessiblePropertyListener = function( value, oldValue ) {
             self.inputValue = value;
 
-            // optionally map the output value for AT
-            var mappedValue = options.accessibleMapValue( value );
-
             // format the value text for reading
-            var formattedValue = Util.toFixed( mappedValue, options.accessibleDecimalPlaces );
+            var formattedValue = Util.toFixed( self.mappedValue, options.accessibleDecimalPlaces );
+
+            // create the final string from optional parameters
             var valueText = StringUtils.fillIn( options.accessibleValuePattern, {
-              value: formattedValue
+              value: options.createAriaValueText( formattedValue )
             } );
+
             self.setAccessibleAttribute( 'aria-valuetext', valueText );
           };
           self._valueProperty.link( accessiblePropertyListener );
@@ -175,6 +201,15 @@ define( function( require ) {
             self.removeAccessibleInputListener( accessibleInputListener );
           };
         },
+        /**
+         * Get the mapped value to be read by AT.
+         *
+         * @return {number}
+         */
+        getMappedValue: function() {
+          return this.accessibleMapValue( this._valueProperty.get() );
+        },
+        get mappedValue() { return this.getMappedValue(); },
 
         /**
          * Set the delta for the value Property when using arrow keys to interact with the Node.
@@ -477,8 +512,9 @@ define( function( require ) {
    * @return {number}
    */
   var correctRounding = function( newValue, currentValue, stepSize ) {
+    var decimalPlaces = Util.numberOfDecimalPlaces( stepSize );
     var correctedValue = newValue;
-    if ( Util.toFixedNumber( Math.abs( newValue - currentValue ), 5 ) > stepSize ) {
+    if ( Util.toFixedNumber( Math.abs( newValue - currentValue ), decimalPlaces ) > stepSize ) {
       correctedValue += ( newValue > currentValue ) ? ( -1 * stepSize ) : stepSize;
     }
     return correctedValue;

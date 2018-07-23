@@ -192,7 +192,7 @@ define( function( require ) {
         yAlign: options.buttonContentYAlign,
         minWidth: widestContentWidth + 2 * options.buttonContentXMargin,
         minHeight: tallestContentHeight + 2 * options.buttonContentYMargin,
-        phetioInstanceDocumentation: currentContent.phetioInstanceDocumentation
+        phetioInstanceDocumentation: currentContent.phetioInstanceDocumentation || null // this null should be the default in PhetioObject
       }, buttonOptions );
 
       // Pass through the tandem given the tandemName, but also support uninstrumented simulations
@@ -293,9 +293,11 @@ define( function( require ) {
 
     // a11y - this node's primary sibling is aria-labelledby its own label so the label content is read whenever
     // a member of the group receives focus
-    // TODO: This will need to be updated with changes from https://github.com/phetsims/scenery/issues/701
-    this.setAriaLabelledByNode( this );
-    this.ariaLabelContent = AccessiblePeer.LABEL_SIBLING;
+    this.addAriaLabelledbyAssociation( {
+      thisElementName: AccessiblePeer.PRIMARY_SIBLING,
+      otherNode: this,
+      otherElementName: AccessiblePeer.LABEL_SIBLING
+    } );
 
     // When the entire RadioButtonGroup gets disabled, gray them out and make them unpickable (and vice versa)
     var enabledListener = function( isEnabled ) {

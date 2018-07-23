@@ -55,7 +55,12 @@ ToDO.
 - Note that in an auto-select `listbox` where selection follows focus, the option with this attribute is always the same as the option that is referenced by `aria-activedescendant`. |
 
 
-### Sample HTML
+### Sample HTML for Combobox
+The PhET combobox interaction, visually looks and behaves as a combobox; however, the ARIA role combobox is not yet well supported. Fo the accessible representation in the Parallel DOM we implement this widget as a dynamic button and a popped-up listbox. The HTML example is below.
+
+**Note:** The HTML for this interaction may change when the ARIA role `combobox` has better support accross assitive technologies.
+
+#### Molarity Example (10 options) 
 ```html
 	<div tabindex="-1" id="container-for-labels">
 	<span id="listbox-static-label">Solute</span>
@@ -73,21 +78,21 @@ ToDO.
 	  <li role="option" id="option-9">Potassium permanganate</li>
 	  <li role="option" id="option-10">Potassium dichromate</li>
 	</ul>
-	
+	<!-- help text for combobox -->
 	<p>Change a solute and observe differences.</p>
 ```
 ### Supporting Accessibility Resources
 * Adapted from [ARIA Practices Collapsible Listbox Example](https://www.w3.org/TR/wai-aria-practices-1.1/examples/listbox/listbox-collapsible.html)
 
 ### Design Doc Content Template Text
-**Combobox**
-Accessible Name for listbox: (e.g. Solute) 
-Accessible name for pop-up button is dynamic: {{Selected list item, e.g. Drink Mix}}
-Listbox: ul with role="listbox"
-Listbox items: li's with role="combobox"
-List Item 1 (e.g., Drink Mix)
-List Item 2 (e.g., Cobalt (II) nitrate)
-List Item 3
-Or as listed in simulation
-(Optional) Help Text: 
+**Solute Combobox**
+* Accessible Name for combobox interaction (i.e., lisbox label): (e.g. Solute) 
+* Accessible name for pop-up button is dynamic: {{Selected list item, e.g. Drink Mix}}
+* Listbox: ul with role="listbox"
+* Listbox items: li's with role="option"
+* List Item 1 (e.g., Drink Mix)
+* List Item 2 (e.g., Cobalt (II) nitrate)
+* List Item 3
+* Or as listed in simulation
+* (Optional) Help Text: 
 

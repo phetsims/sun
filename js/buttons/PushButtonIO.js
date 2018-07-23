@@ -10,14 +10,13 @@ define( function( require ) {
   'use strict';
 
   // modules
+  var Emitter = require( 'AXON/Emitter' );
   var NodeIO = require( 'SCENERY/nodes/NodeIO' );
   var sun = require( 'SUN/sun' );
 
   // ifphetio
   var assertInstanceOf = require( 'ifphetio!PHET_IO/assertInstanceOf' );
-  var FunctionIO = require( 'ifphetio!PHET_IO/types/FunctionIO' );
   var phetioInherit = require( 'ifphetio!PHET_IO/phetioInherit' );
-  var VoidIO = require( 'ifphetio!PHET_IO/types/VoidIO' );
 
   /**
    * @param {RoundPushButton|RectangularPushButton} button
@@ -26,26 +25,55 @@ define( function( require ) {
    */
   function PushButtonIO( button, phetioID ) {
     NodeIO.call( this, button, phetioID );
-
     assert && assertInstanceOf( button, phet.sun.RoundPushButton, phet.sun.RectangularPushButton );
+
+    var self = this;
+
+    // guard against reentrant emitting, see https://github.com/phetsims/axon/issues/180
+    var firing = false;
+
+    var fireEmitter = new Emitter( {
+      phetioReadOnly: button.phetioReadOnly,
+      phetioState: false,
+
+      tandem: button.tandem.createTandem( 'fireEmitter' ),
+      phetioInstanceDocumentation: 'Emits when the button is fired'
+    } );
+
+    var emitListener = function() {
+
+      if ( !firing ) {
+        firing = true;
+        fireEmitter.emit();
+        firing = false;
+      }
+    };
+    this.instance.addListener( emitListener );
+
+    fireEmitter.addListener( function() {
+
+      if ( !firing ) {
+        firing = true;
+        self.instance.buttonModel.fire();
+        firing = false;
+      }
+    } );
+
+    // @private
+    this.disposePushButtonIO = function() {
+      this.instance.removeListener( emitListener );
+      fireEmitter.dispose();
+    };
   }
 
   phetioInherit( NodeIO, 'PushButtonIO', PushButtonIO, {
-    addListener: {
-      returnType: VoidIO,
-      parameterTypes: [ FunctionIO( VoidIO, [] ) ],
-      implementation: function( listener ) {
-        this.instance.addListener( listener );
-      },
-      documentation: 'Adds a listener that is called back when the button is pressed.'
-    },
-    fire: {
-      returnType: VoidIO,
-      parameterTypes: [],
-      implementation: function() {
-        this.instance.buttonModel.fire();
-      },
-      documentation: 'Performs the action associated with the button'
+
+    /**
+     * @public
+     */
+    dispose: function() {
+      this.disposePushButtonIO();
+      NodeIO.prototype.dispose.call( this );
     }
   }, {
     documentation: 'A pressable button in the simulation',
