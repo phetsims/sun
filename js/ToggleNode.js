@@ -90,7 +90,7 @@ define( function( require ) {
     },
 
     /**
-     * Center the latter nodes on the x center of the first node.
+     * Left align nodes on the left of the first node.
      * @param {Node[]} children
      * @public
      * @static
@@ -98,6 +98,18 @@ define( function( require ) {
     LEFT: function( children ) {
       for ( var i = 1; i < children.length; i++ ) {
         children[ i ].left = children[ 0 ].left;
+      }
+    },
+
+    /**
+     * Right align nodes on the right of the first node.
+     * @param {Node[]} children
+     * @public
+     * @static
+     */
+    RIGHT: function( children ) {
+      for ( var i = 1; i < children.length; i++ ) {
+        children[ i ].right = children[ 0 ].right;
       }
     },
 
