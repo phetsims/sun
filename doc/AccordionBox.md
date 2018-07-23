@@ -17,6 +17,11 @@ Here’s when and why we use accordion boxes:
 * The accordion box content can be expanded or collapsed by default and a change of state for one accordion does not affect the state of other accordion boxes.
 
 ## Accessibility Considerations
+### Accessible Components of an Accordion Box
+Adapted from: ARIA Pracrices 1.1, [section 3.1 Accordion](https://www.w3.org/TR/wai-aria-practices/#accordion)
+* **Accordion Header**: Label (usually a heading with a +/- icon signalling expand/collapse behaviour) for a section of content (usually a collapsible box). The accordion header could also be an icon, alone. The accordion header serves as a control that can show or hide a section of content.
+* **Accordion Panel**: Section of content (e.g., the content box) associated with an accordion header
+
 * Typically, has a visual title with an icon that indicates expanded and collapsed state.
   * The title may disappear when box is expanded.
   * Focus highlight would go around title in both the expanded and collapsed states, if title remains visible.
@@ -25,11 +30,6 @@ Here’s when and why we use accordion boxes:
 * The typical structure is a `button` nested within the parent titling element, likely a heading.
 * Typically, the open/close icon does not need to be represented in the Parallel DOM.
 * For accessibility the expanded and collapsed states of the box are communicated through a combination of ARIA attributes, `aria-expanded`, `aria-controls`, `aria-hidden` that have to be managed through javascript.
-
-### Accessible Components of an Accordion Box
-Adapted from: ARIA Pracrices 1.1, [section 3.1 Accordion](https://www.w3.org/TR/wai-aria-practices/#accordion)
-* Accordion Header: Title for the box (usually a heading with a +/- icon signalling expand/collapse behaviour). The accordion header could also be an icon representing a section of content that can be shown or hidden.
-* Accordion Panel: Section of content associated with an accordion header
 
 ### Gesture Support
 ToDO.
