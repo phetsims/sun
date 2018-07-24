@@ -1,6 +1,7 @@
 ---
-title: Other UI Components
+title: General UI Components
 category: other-ui
+order: 99
 parent: true
 components: [ AccordionBox, Checkbox, ComboBox, RadioButtonGroup ]
 ---
