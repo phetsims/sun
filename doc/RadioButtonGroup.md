@@ -1,6 +1,7 @@
 ---
-components: VerticalAquaRadioButtonGroup, RadioButtonGroup
+components: [ VerticalAquaRadioButtonGroup, RadioButtonGroup ]
 title: Radio Button Groups
+category: other-ui
 ---
 
 ## General Design Considerations

@@ -1,3 +1,8 @@
+---
+title: ComboBox
+category: other-ui
+---
+
 ## General Design Considerations
 
 * Generally used with limited space and/or a long list of choices
@@ -41,15 +46,15 @@ ToDO.
 |   -   | `aria-expanded="true"` |  `button` |  Set by the JavaScript when the listbox is displayed.  Otherwise, is not present. |
 |   -   | `aria-labelledby="listbox-static-label listbox-option-dynamic-label"` |  button |  Reads out a combined name for the interaction when focus is placed on the button, first the name for the "combobox interaction", then the name of the selected option. Javascript sets the inner content of the button to be the selected item. |
 | `role="listbox"` | - | `ul` | Identifies the focusable element that has listbox behaviors and contains the listbox options. |
-| - | `aria-labelledby="listbox-static-label"` | ul | Refers to the element containing the listbox label (i.e., the accessible name for the listbox). | 
-| - | `tabindex="-1"` | ul | - Makes the `listbox` focusable. 
+| - | `aria-labelledby="listbox-static-label"` | ul | Refers to the element containing the listbox label (i.e., the accessible name for the listbox). |
+| - | `tabindex="-1"` | ul | - Makes the `listbox` focusable.
 - The JavaScript sets focus on the `listbox` when the `listbox` is displayed. |
 | -    | `aria-activedescendent` | -   | - Set by the JavaScript when the listbox is displayed and sets focus on the listbox; otherwise is not present.
 - Refers to the option in the listbox that is visually indicated as having keyboard focus.
 - When navigation keys, such as Down Arrow, are pressed, the JavaScript changes the value.
 - Enables assistive technologies to know which element the application regards as focused while DOM focus remains on the ul element. |
 | `role="option"` | -| `li` | Identifies each selectable element containing the name of an option. |
-| - | `aria-selected="true"`| `li` | - Indicates that the option is selected. 
+| - | `aria-selected="true"`| `li` | - Indicates that the option is selected.
 - Applied to the element with role option that is visually styled as selected.
 - Set by the Javascript when Enter is pressed on the option referenced by `aria-activedescendant`.  
 - Note that in an auto-select `listbox` where selection follows focus, the option with this attribute is always the same as the option that is referenced by `aria-activedescendant`. |
@@ -60,7 +65,7 @@ The PhET combobox interaction, visually looks and behaves as a combobox; however
 
 **Note:** The HTML for this interaction may change when the ARIA role `combobox` has better support accross assitive technologies.
 
-#### Molarity Example (10 options) 
+#### Molarity Example (10 options)
 ```html
 	<div tabindex="-1" id="container-for-labels">
 	<span id="listbox-static-label">Solute</span>
@@ -86,7 +91,7 @@ The PhET combobox interaction, visually looks and behaves as a combobox; however
 
 ### Design Doc Content Template Text
 **Solute Combobox**
-* Accessible Name for combobox interaction (i.e., lisbox label): (e.g. Solute) 
+* Accessible Name for combobox interaction (i.e., lisbox label): (e.g. Solute)
 * Accessible name for pop-up button is dynamic: {{Selected list item, e.g. Drink Mix}}
 * Listbox: ul with role="listbox"
 * Listbox items: li's with role="option"
@@ -94,5 +99,5 @@ The PhET combobox interaction, visually looks and behaves as a combobox; however
 * List Item 2 (e.g., Cobalt (II) nitrate)
 * List Item 3
 * Or as listed in simulation
-* (Optional) Help Text: 
+* (Optional) Help Text:
 
