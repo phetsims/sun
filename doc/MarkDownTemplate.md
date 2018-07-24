@@ -3,7 +3,7 @@
 * Here’s the when and why we use {{this interaction}} in simulation design
 * Potentially list out things like needs for scaffolding, non-essential interaction, or perhpas teacher's needs.
 
-**Note this design pattern covers multiple PhET Components**
+**Note this design pattern covers multiple PhET Component Types**
 * [COMPONENT_NAME.js](../js/COMPONENT_NAME.js) (note about component)
 
 ## Aesthetic Considerations
