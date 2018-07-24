@@ -5,7 +5,7 @@ Here’s when and why we use radio button groups:
 * In PhET sims, traditional-looking groups of radio buttons are refered to as "vertical aqua radio buttons", and have a corresponding look.
 * All other groups of radio buttons are generally made up of rectangular buttons with images or symbols. Their size, image style, and spacing are visually group the individual radio buttons.
 
-**Note this design pattern covers 2 PhET Components**
+**Note this design pattern covers multiple PhET Component Types**
 * [RadioButtonGroup.js](https://github.com/phetsims/sun/blob/master/js/buttons/RadioButtonGroup.js) (non-traditional looking radio buttons)
 * [VerticalAquaRadioButtonGroup.js](../js/VerticalAquaRadioButtonGroup.js) (a convenient type style to display traditional-looking radio groups)
 

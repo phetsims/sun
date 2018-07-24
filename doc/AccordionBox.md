@@ -4,7 +4,7 @@ Here’s when and why we use accordion boxes:
 * Accordion boxes can also be useful for teachers to ask predictive questions.
 * Can contain non-interactive readouts, interactive controls, but not sprites (e.g., draggable toolbox items).
 
-**Note this design pattern may cover multiple PhET Components**
+**Note this design pattern covers multiple PhET Component Types**
 * [AccordionBox.js](../js/AccordionBox.js)
 * [ExpandCollapseBar.js](../js/ExpandCollapseBar.js)
 * [ExpandCollpaseButton.js](../js/ExpandCollpaseButton.js)
