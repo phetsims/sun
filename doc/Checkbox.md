@@ -53,7 +53,7 @@ Respecting the first rule of ARIA, "use a native HTML element whenever possible"
 - When the presentation includes additional descriptive static text (i.e., help text) relevant to a checkbox or checkbox group, we generally do not use `aria-describedby`. We have found that on-demand help text is preferred in most cases in our interactive simulations.
 
 TO DO:
-**Question: Do we need a tri-state example?**
+**Question: Any sims with need for a tri-state checkbox?**
 
 ### Simplified HTML Examples for PDOM
 #### (Suggested) Options for Checkbox in the A11y API
@@ -92,4 +92,4 @@ Visual checkbox with different label
 - (Optional) Help Text: (e.g., Observe energy chunks move and change through system.)
 
 TO DO:
-- Group example
+- Group example, could use one from GFL series (no heading required)
