@@ -54,8 +54,7 @@ define( function( require ) {
       // instrumented for phet-io
       tandem: options.tandem.createTandem( 'fireEmitter' ),
       phetioInstanceDocumentation: 'Emits when the button is fired',
-      phetioReadOnly: options.phetioReadOnly,
-      phetioState: false
+      phetioReadOnly: options.phetioReadOnly
     } );
     if ( options.listener !== null ) {
       this.fireEmitter.addListener( options.listener );
