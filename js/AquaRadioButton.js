@@ -59,7 +59,7 @@ define( function( require ) {
     // @private - converted to an AXON/Property from a property to support PhET-iO
     this.enabledProperty = new BooleanProperty( options.enabled, {
       tandem: options.tandem.createTandem( 'enabledProperty' ),
-      phetioInstanceDocumentation: 'Determines whether the AquaRadioButton is enabled (pressable) or disabled (grayed-out).'
+      phetioInstanceDocumentation: 'Determines whether the AquaRadioButton is enabled (pressable) or disabled (grayed-out)'
     } );
 
     // selected node creation

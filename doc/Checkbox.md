@@ -10,6 +10,8 @@ When:
 * To toggle more than one option in a group of options
 * Others??
 
+**Note this design pattern covers multiple PhET Component Types**
+* Question: Are there any other types of visual checkboxes?
 
 ## Aesthetic Considerations
 * Checkbox appears checked or not checked on simulation load

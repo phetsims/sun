@@ -58,7 +58,6 @@ define( function( require ) {
       cursor: 'pointer',
       tandem: Tandem.optional,
       textFill: 'black',
-      phetioReadOnly: false,
       phetioType: MenuItemIO,
 
       // a11y

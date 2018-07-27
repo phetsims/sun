@@ -17,6 +17,7 @@ define( function( require ) {
   var Emitter = require( 'AXON/Emitter' );
   var inherit = require( 'PHET_CORE/inherit' );
   var sun = require( 'SUN/sun' );
+  var Tandem = require( 'TANDEM/Tandem' );
 
   /**
    * @param {PhetioObject} pushButton - parent button that emits the PhET-iO event on the data stream
@@ -33,7 +34,8 @@ define( function( require ) {
       // fire-on-hold feature
       fireOnHold: false, // is the fire-on-hold feature enabled?
       fireOnHoldDelay: 400, // start to fire continuously after pressing for this long (milliseconds)
-      fireOnHoldInterval: 100 // fire continuously at this interval (milliseconds),
+      fireOnHoldInterval: 100, // fire continuously at this interval (milliseconds),
+      tandem: Tandem.required
     }, options );
 
     var self = this;
@@ -47,9 +49,15 @@ define( function( require ) {
     this.isFiringProperty = new BooleanProperty( false );
 
     // @private
-    this.emitter = new Emitter();
+    this.fireEmitter = new Emitter( {
+
+      // instrumented for phet-io
+      tandem: options.tandem.createTandem( 'fireEmitter' ),
+      phetioInstanceDocumentation: 'Emits when the button is fired',
+      phetioReadOnly: options.phetioReadOnly
+    } );
     if ( options.listener !== null ) {
-      this.emitter.addListener( options.listener );
+      this.fireEmitter.addListener( options.listener );
     }
 
     // Create a timer to handle the optional fire-on-hold feature.
@@ -98,7 +106,7 @@ define( function( require ) {
       // see https://github.com/phetsims/energy-skate-park-basics/issues/380
       this.isFiringProperty.value = false;
       this.isFiringProperty.dispose();
-      this.emitter.dispose();
+      this.fireEmitter.dispose();
       if ( this.timer ) {
         this.timer.dispose();
         this.timer = null;
@@ -121,7 +129,7 @@ define( function( require ) {
      * @public
      */
     addListener: function( listener ) {
-      this.emitter.addListener( listener );
+      this.fireEmitter.addListener( listener );
     },
 
     /**
@@ -130,7 +138,7 @@ define( function( require ) {
      * @public
      */
     removeListener: function( listener ) {
-      this.emitter.removeListener( listener );
+      this.fireEmitter.removeListener( listener );
     },
 
     /**
@@ -143,7 +151,7 @@ define( function( require ) {
       assert && assert( !this.isFiringProperty.value, 'Cannot fire when already firing' );
       this.isFiringProperty.value = true;
       this.pushButton.startEvent( 'user', 'fired' );
-      this.emitter.emit();
+      this.fireEmitter.emit();
       this.isFiringProperty.value = false;
       this.pushButton.endEvent();
     }

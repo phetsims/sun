@@ -10,7 +10,6 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var Emitter = require( 'AXON/Emitter' );
   var NodeIO = require( 'SCENERY/nodes/NodeIO' );
   var sun = require( 'SUN/sun' );
 
@@ -26,56 +25,9 @@ define( function( require ) {
   function PushButtonIO( button, phetioID ) {
     NodeIO.call( this, button, phetioID );
     assert && assertInstanceOf( button, phet.sun.RoundPushButton, phet.sun.RectangularPushButton );
-
-    var self = this;
-
-    // guard against reentrant emitting, see https://github.com/phetsims/axon/issues/180
-    var firing = false;
-
-    var fireEmitter = new Emitter( {
-      phetioReadOnly: button.phetioReadOnly,
-      phetioState: false,
-
-      tandem: button.tandem.createTandem( 'fireEmitter' ),
-      phetioInstanceDocumentation: 'Emits when the button is fired'
-    } );
-
-    var emitListener = function() {
-
-      if ( !firing ) {
-        firing = true;
-        fireEmitter.emit();
-        firing = false;
-      }
-    };
-    this.instance.addListener( emitListener );
-
-    fireEmitter.addListener( function() {
-
-      if ( !firing ) {
-        firing = true;
-        self.instance.buttonModel.fire();
-        firing = false;
-      }
-    } );
-
-    // @private
-    this.disposePushButtonIO = function() {
-      this.instance.removeListener( emitListener );
-      fireEmitter.dispose();
-    };
   }
 
-  phetioInherit( NodeIO, 'PushButtonIO', PushButtonIO, {
-
-    /**
-     * @public
-     */
-    dispose: function() {
-      this.disposePushButtonIO();
-      NodeIO.prototype.dispose.call( this );
-    }
-  }, {
+  phetioInherit( NodeIO, 'PushButtonIO', PushButtonIO, {}, {
     documentation: 'A pressable button in the simulation',
     events: [ 'fired' ]
   } );
