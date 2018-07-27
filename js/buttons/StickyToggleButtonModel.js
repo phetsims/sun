@@ -102,12 +102,12 @@ define( function( require ) {
       var oldValue = this.valueProperty.value;
 
       var hasToStateObject = this.valueProperty.phetioType && this.valueProperty.phetioType.elementType && this.valueProperty.phetioType.elementType.toStateObject;
-      this.stickyToggleButton.startEvent( 'user', 'toggled', {
+      this.stickyToggleButton.phetioStartEvent( 'user', 'toggled', {
         oldValue: hasToStateObject && this.valueProperty.phetioType.elementType.toStateObject( oldValue ),
         newValue: hasToStateObject && this.valueProperty.phetioType.elementType.toStateObject( newValue )
       } );
       this.valueProperty.value = newValue;
-      this.stickyToggleButton.endEvent();
+      this.stickyToggleButton.phetioEndEvent();
     }
   } );
 } );

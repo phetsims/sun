@@ -66,12 +66,12 @@ define( function( require ) {
       var oldValue = this.valueProperty.value;
       var newValue = this.valueProperty.value === this.valueOff ? this.valueOn : this.valueOff;
       var hasToStateObject = this.valueProperty.phetioType && this.valueProperty.phetioType.elementType && this.valueProperty.phetioType.elementType.toStateObject;
-      this.toggleButton.startEvent( 'user', 'toggled', {
+      this.toggleButton.phetioStartEvent( 'user', 'toggled', {
         oldValue: hasToStateObject && this.valueProperty.phetioType.elementType.toStateObject( oldValue ),
         newValue: hasToStateObject && this.valueProperty.phetioType.elementType.toStateObject( newValue )
       } );
       this.valueProperty.value = newValue;
-      this.toggleButton.endEvent();
+      this.toggleButton.phetioEndEvent();
     }
   } );
 } );

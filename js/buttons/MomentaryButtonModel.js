@@ -37,18 +37,18 @@ define( function( require ) {
       // turn on when pressed (if enabled)
       if ( down ) {
         if ( self.enabledProperty.get() ) {
-          momentaryButton.startEvent( 'user', 'pressed' );
+          momentaryButton.phetioStartEvent( 'user', 'pressed' );
           valueProperty.set( valueOn );
-          momentaryButton.endEvent();
+          momentaryButton.phetioEndEvent();
         }
       }
       else {
 
         // turn off when released
-        momentaryButton.startEvent( 'user', 'released' );
+        momentaryButton.phetioStartEvent( 'user', 'released' );
         processingRelease = true;
         valueProperty.set( valueOff );
-        momentaryButton.endEvent();
+        momentaryButton.phetioEndEvent();
         processingRelease = false;
       }
     };
@@ -60,9 +60,9 @@ define( function( require ) {
       // If the button became disabled (and not as a result of pressing the button itself), trigger an event
       // and change the value
       if ( !enabled && !processingRelease ) {
-        momentaryButton.startEvent( 'user', 'releasedDisabled' );
+        momentaryButton.phetioStartEvent( 'user', 'releasedDisabled' );
         valueProperty.set( valueOff );
-        momentaryButton.endEvent();
+        momentaryButton.phetioEndEvent();
       }
     };
     this.enabledProperty.link( enabledListener );

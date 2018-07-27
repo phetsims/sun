@@ -164,12 +164,12 @@ define( function( require ) {
           // stream, see https://github.com/phetsims/phet-io/issues/369
           var changed = onProperty.get() !== value;
           if ( changed ) {
-            self.startEvent( 'user', 'toggled', {
+            self.phetioStartEvent( 'user', 'toggled', {
               oldValue: !value,
               newValue: value
             } );
             onProperty.set( value );
-            self.endEvent();
+            self.phetioEndEvent();
           }
         }
       },
@@ -180,7 +180,7 @@ define( function( require ) {
         // if moved past the threshold, choose value based on the side, otherwise just toggle
         var newValue = passedDragThreshold ? self.thumbPositionToValue() : !onProperty.get();
 
-        self.startEvent( 'user', 'toggled', {
+        self.phetioStartEvent( 'user', 'toggled', {
           oldValue: oldValue,
           newValue: newValue
         } );
@@ -190,7 +190,7 @@ define( function( require ) {
         // update the thumb location (sanity check that it's here, only needs to be run if passedDragThreshold===true)
         updateThumb( onProperty.get() );
 
-        self.endEvent();
+        self.phetioEndEvent();
       },
 
       translate: function( params ) {

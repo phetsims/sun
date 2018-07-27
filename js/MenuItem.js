@@ -92,10 +92,10 @@ define( function( require ) {
     } );
 
     var fire = function( event ) {
-      self.startEvent( 'user', 'fired' );
+      self.phetioStartEvent( 'user', 'fired' );
       closeCallback( event );
       callback( event );
-      self.endEvent();
+      self.phetioEndEvent();
     };
 
     this.addInputListener( new ButtonListener( {

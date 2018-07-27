@@ -151,7 +151,7 @@ define( function( require ) {
       up: function( event ) {
         var selectedItemNode = event.currentTarget; // {ComboBoxItemNode}
 
-        selectedItemNode.startEvent( 'user', 'fired', {
+        selectedItemNode.phetioStartEvent( 'user', 'fired', {
 
           // support uninstrumented sims
           value: selectedItemNode.phetioType &&
@@ -166,7 +166,7 @@ define( function( require ) {
         event.abort(); // prevent nodes (eg, controls) behind the list from receiving the event
         property.value = selectedItemNode.item.value; // set the property
 
-        selectedItemNode.endEvent();
+        selectedItemNode.phetioEndEvent();
       }
     };
 
@@ -274,7 +274,7 @@ define( function( require ) {
      */
     showList: function() {
       if ( !this.listNode.visible ) {
-        this.startEvent( 'user', 'popupShown' );
+        this.phetioStartEvent( 'user', 'popupShown' );
 
         this.moveList();
         this.listNode.moveToFront();
@@ -283,7 +283,7 @@ define( function( require ) {
         this.display = this.getUniqueTrail().rootNode().getRootedDisplays()[ 0 ];
         this.display.addInputListener( this.clickToDismissListener );
 
-        this.endEvent();
+        this.phetioEndEvent();
       }
     },
 
@@ -294,14 +294,14 @@ define( function( require ) {
     hideList: function() {
       if ( this.enableClickToDismissListener ) {
 
-        this.startEvent( 'user', 'popupHidden' );
+        this.phetioStartEvent( 'user', 'popupHidden' );
 
         if ( this.display && this.display.hasInputListener( this.clickToDismissListener ) ) {
           this.display.removeInputListener( this.clickToDismissListener );
         }
         this.listNode.visible = false;
 
-        this.endEvent();
+        this.phetioEndEvent();
       }
       else {
         this.enableClickToDismissListener = true;

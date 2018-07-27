@@ -236,9 +236,9 @@ define( function( require ) {
     if ( options.titleBarExpandCollapse ) {
       this.collapsedTitleBar.addInputListener( {
         down: function() {
-          self.startEvent( 'user', 'expanded' );
+          self.phetioStartEvent( 'user', 'expanded' );
           self.expandedProperty.value = true;
-          self.endEvent();
+          self.phetioEndEvent();
         }
       } );
     }
@@ -246,13 +246,13 @@ define( function( require ) {
     // a11y we always want accessible tab focus on the title, even when titleBarExpandeCollapse === false
     var a11yExpandListener = {
       click: function() {
-        self.startEvent( 'user', 'expanded' );
+        self.phetioStartEvent( 'user', 'expanded' );
         self.expandedProperty.value = true;
 
         // a11y Set focus to expanded title bar
         self.expandedTitleBar.focus();
 
-        self.endEvent();
+        self.phetioEndEvent();
       }
     };
     this.collapsedTitleBar.addAccessibleInputListener( a11yExpandListener );
@@ -263,9 +263,9 @@ define( function( require ) {
       if ( options.titleBarExpandCollapse ) {
         this.expandedTitleBar.addInputListener( {
           down: function() {
-            self.startEvent( 'user', 'collapsed' );
+            self.phetioStartEvent( 'user', 'collapsed' );
             self.expandedProperty.value = false;
-            self.endEvent();
+            self.phetioEndEvent();
           }
         } );
       }
@@ -274,12 +274,12 @@ define( function( require ) {
     // a11y we always want accessible tab focus on the title
     var a11yCollapseListener = {
       click: function() {
-        self.startEvent( 'user', 'collapsed' );
+        self.phetioStartEvent( 'user', 'collapsed' );
         self.expandedProperty.value = false;
 
         // a11y Set focus to expanded title bar
         self.collapsedTitleBar.focus();
-        self.endEvent();
+        self.phetioEndEvent();
       }
     };
     this.expandedTitleBar.addAccessibleInputListener( a11yCollapseListener );

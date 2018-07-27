@@ -108,11 +108,11 @@ define( function( require ) {
 
     // set property value on fire
     var fire = function() {
-      options.tandem.isSuppliedAndEnabled() && self.startEvent( 'user', 'fired', {
+      options.tandem.isSuppliedAndEnabled() && self.phetioStartEvent( 'user', 'fired', {
         value: property.phetioType.elementType.toStateObject( value )
       } );
       property.set( value );
-      options.tandem.isSuppliedAndEnabled() && self.endEvent();
+      options.tandem.isSuppliedAndEnabled() && self.phetioEndEvent();
     };
     var buttonListener = new ButtonListener( { fire: fire } );
     this.addInputListener( buttonListener );

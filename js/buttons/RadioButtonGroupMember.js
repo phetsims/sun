@@ -132,14 +132,14 @@ define( function( require ) {
      */
     fire: function() {
       if ( this.buttonModel.enabledProperty.get() ) {
-        this.startEvent( 'user', 'fired', {
+        this.phetioStartEvent( 'user', 'fired', {
           value: this.property.phetioType &&
                  this.property.phetioType.elementType &&
                  this.property.phetioType.elementType.toStateObject &&
                  this.property.phetioType.elementType.toStateObject( this.value )
         } );
         this.property.set( this.value );
-        this.endEvent();
+        this.phetioEndEvent();
       }
     },
 

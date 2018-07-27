@@ -117,12 +117,12 @@ define( function( require ) {
     this.fire = function() {
       if ( self._enabled ) {
         var newValue = !property.value;
-        self.startEvent( 'user', 'toggled', {
+        self.phetioStartEvent( 'user', 'toggled', {
           oldValue: property.value,
           newValue: newValue
         } );
         property.value = newValue;
-        self.endEvent();
+        self.phetioEndEvent();
       }
     };
 
