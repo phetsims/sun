@@ -1,4 +1,7 @@
-
+---
+title: Checkbox
+category: other-ui
+---
 ## General Design Considerations
 
 Here’s the when and why we use a checkbox (traditional looking user interface component) in simulation design.
