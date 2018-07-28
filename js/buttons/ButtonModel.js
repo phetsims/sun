@@ -12,7 +12,6 @@ define( function( require ) {
   var PressListener = require( 'SCENERY/listeners/PressListener' );
   var Property = require( 'AXON/Property' );
   var sun = require( 'SUN/sun' );
-  var Timer = require( 'PHET_CORE/Timer' );
 
   /**
    * @param {Object} [options]
