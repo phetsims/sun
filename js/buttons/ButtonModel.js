@@ -73,13 +73,13 @@ define( function( require ) {
         this.downProperty.set( true );
 
         var self = this;
-        Timer.setTimeout( function() {
+        // Timer.setTimeout( function() {
 
           // no longer down, don't reset 'over' so button can be styled as long as it has focus
           self.downProperty.set( false );
 
           endListener && endListener();
-        }, self._fireOnHoldInterval );
+        // }, self._fireOnHoldInterval );
       }
     },
 
