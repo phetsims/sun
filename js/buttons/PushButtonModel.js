@@ -48,16 +48,16 @@ define( function( require ) {
     // @public - used by ResetAllButton to call functions during reset start/end
     this.isFiringProperty = new BooleanProperty( false );
 
-    // @private
-    this.fireEmitter = new Emitter( {
+    // @private - sends out notifications when the button is released.
+    this.firedEmitter = new Emitter( {
 
       // instrumented for phet-io
-      tandem: options.tandem.createTandem( 'fireEmitter' ),
+      tandem: options.tandem.createTandem( 'firedEmitter' ),
       phetioInstanceDocumentation: 'Emits when the button is fired',
       phetioReadOnly: options.phetioReadOnly
     } );
     if ( options.listener !== null ) {
-      this.fireEmitter.addListener( options.listener );
+      this.firedEmitter.addListener( options.listener );
     }
 
     // Create a timer to handle the optional fire-on-hold feature.
@@ -106,7 +106,7 @@ define( function( require ) {
       // see https://github.com/phetsims/energy-skate-park-basics/issues/380
       this.isFiringProperty.value = false;
       this.isFiringProperty.dispose();
-      this.fireEmitter.dispose();
+      this.firedEmitter.dispose();
       if ( this.timer ) {
         this.timer.dispose();
         this.timer = null;
@@ -129,7 +129,7 @@ define( function( require ) {
      * @public
      */
     addListener: function( listener ) {
-      this.fireEmitter.addListener( listener );
+      this.firedEmitter.addListener( listener );
     },
 
     /**
@@ -138,7 +138,7 @@ define( function( require ) {
      * @public
      */
     removeListener: function( listener ) {
-      this.fireEmitter.removeListener( listener );
+      this.firedEmitter.removeListener( listener );
     },
 
     /**
@@ -151,7 +151,7 @@ define( function( require ) {
       assert && assert( !this.isFiringProperty.value, 'Cannot fire when already firing' );
       this.isFiringProperty.value = true;
       this.pushButton.phetioStartEvent( 'user', 'fired' );
-      this.fireEmitter.emit();
+      this.firedEmitter.emit();
       this.isFiringProperty.value = false;
       this.pushButton.phetioEndEvent();
     }
