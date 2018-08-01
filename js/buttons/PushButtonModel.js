@@ -20,11 +20,10 @@ define( function( require ) {
   var Tandem = require( 'TANDEM/Tandem' );
 
   /**
-   * @param {PhetioObject} pushButton - parent button that emits the PhET-iO event on the data stream
    * @param {Object} [options]
    * @constructor
    */
-  function PushButtonModel( pushButton, options ) {
+  function PushButtonModel( options ) {
 
     options = _.extend( {
 
@@ -39,9 +38,6 @@ define( function( require ) {
     }, options );
 
     var self = this;
-
-    // @private
-    this.pushButton = pushButton;
 
     ButtonModel.call( this, options );
 
@@ -150,10 +146,8 @@ define( function( require ) {
       // Make sure the button is not already firing, see https://github.com/phetsims/energy-skate-park-basics/issues/380
       assert && assert( !this.isFiringProperty.value, 'Cannot fire when already firing' );
       this.isFiringProperty.value = true;
-      this.pushButton.phetioStartEvent( 'user', 'fired' );
       this.firedEmitter.emit();
       this.isFiringProperty.value = false;
-      this.pushButton.phetioEndEvent();
     }
   } );
 } );
