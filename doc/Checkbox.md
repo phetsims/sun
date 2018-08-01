@@ -5,10 +5,10 @@ category: other-ui
 ## General Design Considerations
 
 Here’s the when and why we use a checkbox (traditional looking user interface component) in simulation design.
-When:
+
 * Generally, when a secondary or non-essential option needs to be toggled between on and off states
 * To toggle more than one option in a group of options
-* Others??
+* Checkboxes are often used to allow users to layer on more complex representations, or to view multiple, related represenations simultaneously. More complex options are generally off by default.
 
 **Note this design pattern covers multiple PhET Component Types**
 * Question: Are there any other types of visual checkboxes?
@@ -16,7 +16,7 @@ When:
 ## Aesthetic Considerations
 * Checkbox appears checked or not checked on simulation load
 * Appears with a text-based label, or an icon as the label, or a combination of both text and icon
-* Sentence case is used for text-based labels for checkboxes
+* Title case is used for text-based labels for checkboxes
 
 
 ## Accessibility Considerations
