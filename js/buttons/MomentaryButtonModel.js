@@ -50,14 +50,6 @@ define( function( require ) {
       }
     );
 
-    // @private
-    this.releasedDisabledEmitter = new Emitter( {
-        tandem: options.tandem.createTandem( 'releasedDisabledEmitter' ),
-        phetioInstanceDocumentation: 'Emits when the button is released from becoming disabled',
-        phetioReadOnly: options.phetioReadOnly
-      }
-    );
-
     // add listeners
     var setValueOn = function() {
       valueProperty.set( valueOn );
@@ -68,7 +60,6 @@ define( function( require ) {
       valueProperty.set( valueOff );
     };
     this.releasedEmitter.addListener( setValueOff );
-    this.releasedDisabledEmitter.addListener( setValueOff );
 
     var downListener = function( down ) {
 
@@ -89,7 +80,6 @@ define( function( require ) {
       self.downProperty.unlink( downListener );
       this.pressedEmitter.removeListener( setValueOn );
       this.releasedEmitter.removeListener( setValueOff );
-      this.releasedDisabledEmitter.removeListener( setValueOff );
     };
   }
 
