@@ -71,7 +71,11 @@ define( function( require ) {
         }
       }
     } );
+
+    // @private
     this.disposeButtonModel = function() {
+
+      // This will unlink all listeners, causing potential issues if listeners try to unlink properties afterwards
       this.overProperty.dispose();
       this.downProperty.dispose();
       this.enabledProperty.dispose();
