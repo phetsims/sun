@@ -35,7 +35,7 @@ define( function( require ) {
     this.valueOn = valueOn;
     this.valueProperty = property;
 
-    ButtonModel.call( this );
+    ButtonModel.call( this, options );
 
     // Behaves like a push button (with fireOnDown:false), but toggles its state when the button is released.
     var downListener = function( down ) {

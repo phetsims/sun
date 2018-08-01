@@ -117,6 +117,7 @@ define( function( require ) {
     // @public
     dispose: function() {
       this.disposePushButtonModel();
+      ButtonModel.prototype.dispose.call( this );
     },
 
     /**

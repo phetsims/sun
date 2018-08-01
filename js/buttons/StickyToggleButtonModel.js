@@ -50,7 +50,7 @@ define( function( require ) {
     };
     this.toggledEmitter.addListener( toggleListener );
 
-    ButtonModel.call( this );
+    ButtonModel.call( this, options );
 
     // When the user releases the toggle button, it should only fire an event if it is not during the same action in
     // which they pressed the button.  Track the state to see if they have already pushed the button.

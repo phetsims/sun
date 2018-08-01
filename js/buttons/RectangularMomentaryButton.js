@@ -31,6 +31,7 @@ define( function( require ) {
       tandem: Tandem.required
     }, options );
 
+    // Note it shares a tandem with this, so the emitter will be instrumented as a child of the button
     var buttonModel = new MomentaryButtonModel( valueOff, valueOn, property, options );
     RectangularButtonView.call( this, buttonModel, new MomentaryButtonInteractionStateProperty( buttonModel ), options );
 

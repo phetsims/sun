@@ -74,7 +74,10 @@ define( function( require ) {
     }, options );
 
     // @private
-    this.buttonModel = new ButtonModel();
+    // Note it shares a tandem with this, so the emitter will be instrumented as a child of the button
+    this.buttonModel = new ButtonModel( {
+      tandem: options.tandem
+    } );
 
     // When the button model triggers an event, fire from the radio button
     this.buttonModel.downProperty.link( function( down ) {
@@ -120,6 +123,7 @@ define( function( require ) {
     this.disposeRadioButtonGroupMember = function() {
       self.removeAccessibleInputListener( accessibleChangeListener );
       property.unlink( accessibleCheckedListener );
+      this.buttonModel.dispose();
     };
   }
 

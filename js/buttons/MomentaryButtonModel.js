@@ -32,7 +32,7 @@ define( function( require ) {
       phetioReadOnly: PhetioObject.DEFAULT_OPTIONS.phetioReadOnly // to support properly passing this to children, see https://github.com/phetsims/tandem/issues/60
     }, options );
 
-    ButtonModel.call( self );
+    ButtonModel.call( self, options );
 
     // @private
     this.pressedEmitter = new Emitter( {
@@ -70,14 +70,6 @@ define( function( require ) {
     this.releasedEmitter.addListener( setValueOff );
     this.releasedDisabledEmitter.addListener( setValueOff );
 
-    // sync with the property, do this before wiring up to supertype properties
-    var onObserver = function( value ) {
-      self.downProperty.set( value === valueOn );
-    };
-    valueProperty.link( onObserver );
-
-    var processingRelease = false;
-
     var downListener = function( down ) {
 
       // turn on when pressed (if enabled)
@@ -87,31 +79,14 @@ define( function( require ) {
         }
       }
       else {
-
-        // turn off when released
-        processingRelease = true;
         self.releasedEmitter.emit();
-        processingRelease = false;
       }
     };
     this.downProperty.lazyLink( downListener );
 
-    // turn off when disabled
-    var enabledListener = function( enabled ) {
-
-      // If the button became disabled (and not as a result of pressing the button itself), trigger an event
-      // and change the value
-      if ( !enabled && !processingRelease ) {
-        self.releasedDisabledEmitter.emit();
-      }
-    };
-    this.enabledProperty.link( enabledListener );
-
     // @private: just for dispose.  Named based on the type name so it won't have a name collision with parent/child ones
     this.disposeMomentaryButtonModel = function() {
-      self.enabledProperty.unlink( enabledListener );
       self.downProperty.unlink( downListener );
-      valueProperty.unlink( onObserver );
       this.pressedEmitter.removeListener( setValueOn );
       this.releasedEmitter.removeListener( setValueOff );
       this.releasedDisabledEmitter.removeListener( setValueOff );

@@ -8,10 +8,12 @@ define( function( require ) {
   'use strict';
 
   // modules
+  var BooleanProperty = require( 'AXON/BooleanProperty' );
   var inherit = require( 'PHET_CORE/inherit' );
   var PressListener = require( 'SCENERY/listeners/PressListener' );
   var Property = require( 'AXON/Property' );
   var sun = require( 'SUN/sun' );
+  var Tandem = require( 'TANDEM/Tandem' );
 
   /**
    * @param {Object} [options]
@@ -27,6 +29,8 @@ define( function( require ) {
       // {boolean} is the button enabled?
       enabled: true,
 
+      tandem: Tandem.required,
+
       // a11y
       fireOnHoldInterval: 100 // fire continuously at this interval in ms when holding down button with keyboard
     }, options );
@@ -36,7 +40,14 @@ define( function( require ) {
     // model properties
     this.overProperty = new Property( false ); // @public - Is the pointer over the button?
     this.downProperty = new Property( false ); // @public - Is the pointer down?
-    this.enabledProperty = new Property( options.enabled ); // @public - Is the button enabled?
+
+    // @public - Is the button enabled?
+    this.enabledProperty = new BooleanProperty( options.enabled, {
+      tandem: options.tandem.createTandem( 'enabledProperty' )
+    } );
+
+    // @private - keep track of and store all listeners this model creates
+    this.listeners = [];
 
     // @private {number}
     this._fireOnHoldInterval = options.fireOnHoldInterval;
@@ -50,11 +61,34 @@ define( function( require ) {
         options.endCallback( self.overProperty.get() );
       }
     } );
+
+    // interrupt listeners when enabled is set to false
+    this.enabledProperty.link( function( enabled ) {
+      if ( !enabled ) {
+        for ( var i = 0; i < self.listeners.length; i++ ) {
+          var listener = self.listeners[ i ];
+          listener.interrupt && listener.interrupt();
+        }
+      }
+    } );
+    this.disposeButtonModel = function() {
+      this.overProperty.dispose();
+      this.downProperty.dispose();
+      this.enabledProperty.dispose();
+      this.listeners = [];
+    };
   }
 
   sun.register( 'ButtonModel', ButtonModel );
 
   return inherit( Object, ButtonModel, {
+
+    /**
+     * @public
+     */
+    dispose: function() {
+      this.disposeButtonModel();
+    },
 
     /**
      * Click the button by pressing the button down and then releasing after a timeout. When assistive technology is
@@ -74,10 +108,10 @@ define( function( require ) {
         var self = this;
         // Timer.setTimeout( function() {
 
-          // no longer down, don't reset 'over' so button can be styled as long as it has focus
-          self.downProperty.set( false );
+        // no longer down, don't reset 'over' so button can be styled as long as it has focus
+        self.downProperty.set( false );
 
-          endListener && endListener();
+        endListener && endListener();
         // }, self._fireOnHoldInterval );
       }
     },
@@ -102,7 +136,7 @@ define( function( require ) {
     createListener: function( tandem ) {
       var self = this;
 
-      return new PressListener( {
+      var pressListener = new PressListener( {
         tandem: tandem,
         isPressedProperty: this.downProperty,
         isOverProperty: this.overProperty,
@@ -110,6 +144,8 @@ define( function( require ) {
           return self.enabledProperty.value;
         }
       } );
+      this.listeners.push( pressListener );
+      return pressListener;
     }
   } );
 } );
