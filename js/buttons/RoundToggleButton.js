@@ -39,7 +39,8 @@ define( function( require ) {
     }, options );
 
     // @private (read-only)
-    this.toggleButtonModel = new ToggleButtonModel( valueOff, valueOn, property, this );
+    // Note it shares a tandem with this, so the emitter will be instrumented as a child of the button
+    this.toggleButtonModel = new ToggleButtonModel( valueOff, valueOn, property, options );
 
     RoundButtonView.call( this, this.toggleButtonModel, new ToggleButtonInteractionStateProperty( this.toggleButtonModel ), options );
 

@@ -41,7 +41,8 @@ define( function( require ) {
     }, options );
 
     // @private (read-only)
-    this.toggleButtonModel = new StickyToggleButtonModel( valueUp, valueDown, property, this );
+    // Note it shares a tandem with this, so the emitter will be instrumented as a child of the button
+    this.toggleButtonModel = new StickyToggleButtonModel( valueUp, valueDown, property, options );
     RoundButtonView.call( this, this.toggleButtonModel, new StickyToggleButtonInteractionStateProperty( this.toggleButtonModel ), options );
 
     // @private (a11y) - toggle the button when we receive the accessible click event

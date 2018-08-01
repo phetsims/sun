@@ -27,7 +27,9 @@ define( function( require ) {
    */
   function RectangularStickyToggleButton( valueUp, valueDown, property, options ) {
     Tandem.indicateUninstrumentedCode();
-    var buttonModel = new StickyToggleButtonModel( valueUp, valueDown, property, this );
+
+    // Note it shares a tandem with this, so the emitter will be instrumented as a child of the button
+    var buttonModel = new StickyToggleButtonModel( valueUp, valueDown, property, options );
     RectangularButtonView.call( this, buttonModel, new StickyToggleButtonInteractionStateProperty( buttonModel ), options );
   }
 

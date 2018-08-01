@@ -10,7 +10,9 @@ define( function( require ) {
   'use strict';
 
   // modules
+  var Tandem = require( 'TANDEM/Tandem' );
   var ButtonModel = require( 'SUN/buttons/ButtonModel' );
+  var Emitter = require( 'AXON/Emitter' );
   var inherit = require( 'PHET_CORE/inherit' );
   var sun = require( 'SUN/sun' );
 
@@ -18,14 +20,15 @@ define( function( require ) {
    * @param {Object} valueOff - value when the button is in the off state
    * @param {Object} valueOn - value when the button is in the on state
    * @param {Property} property - axon Property that can be either valueOff or valueOn.
-   * @param {PhetioObject} toggleButton - parent button that fires the PhET-iO event
+   * @param {Object} [options]
    * @constructor
    */
-  function ToggleButtonModel( valueOff, valueOn, property, toggleButton ) {
+  function ToggleButtonModel( valueOff, valueOn, property, options ) {
     var self = this;
 
-    // @private
-    this.toggleButton = toggleButton;
+    options = _.extend( {
+      tandem: Tandem.required
+    }, options );
 
     // @private
     this.valueOff = valueOff;
@@ -44,9 +47,25 @@ define( function( require ) {
     };
     this.downProperty.link( downListener ); // @private
 
+    // @private
+    this.toggledEmitter = new Emitter( {
+        tandem: options.tandem.createTandem( 'toggledEmitter' ),
+        phetioInstanceDocumentation: 'Emits when the button is toggled'
+      }
+    );
+
+    var toggleListener = function() {
+      assert && assert( self.valueProperty.value === self.valueOff || self.valueProperty.value === self.valueOn,
+        'unrecognized value: ' + self.valueProperty.value );
+
+      self.valueProperty.value = self.valueProperty.value === self.valueOff ? self.valueOn : self.valueOff;
+    };
+    this.toggledEmitter.addListener( toggleListener );
+
     // @private - dispose items specific to this instance
     this.disposeToggleButtonModel = function() {
       self.downProperty.unlink( downListener );
+      self.toggledEmitter.removeListener( toggleListener );
     };
   }
 
@@ -62,16 +81,7 @@ define( function( require ) {
 
     // @public
     toggle: function() {
-      assert && assert( this.valueProperty.value === this.valueOff || this.valueProperty.value === this.valueOn );
-      var oldValue = this.valueProperty.value;
-      var newValue = this.valueProperty.value === this.valueOff ? this.valueOn : this.valueOff;
-      var hasToStateObject = this.valueProperty.phetioType && this.valueProperty.phetioType.elementType && this.valueProperty.phetioType.elementType.toStateObject;
-      this.toggleButton.phetioStartEvent( 'user', 'toggled', {
-        oldValue: hasToStateObject && this.valueProperty.phetioType.elementType.toStateObject( oldValue ),
-        newValue: hasToStateObject && this.valueProperty.phetioType.elementType.toStateObject( newValue )
-      } );
-      this.valueProperty.value = newValue;
-      this.toggleButton.phetioEndEvent();
+      this.toggledEmitter.emit();
     }
   } );
 } );

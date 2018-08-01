@@ -16,6 +16,7 @@ define( function( require ) {
   var CallbackTimer = require( 'SUN/CallbackTimer' );
   var Emitter = require( 'AXON/Emitter' );
   var inherit = require( 'PHET_CORE/inherit' );
+  var PhetioObject = require( 'TANDEM/PhetioObject' );
   var sun = require( 'SUN/sun' );
   var Tandem = require( 'TANDEM/Tandem' );
 
@@ -34,7 +35,8 @@ define( function( require ) {
       fireOnHold: false, // is the fire-on-hold feature enabled?
       fireOnHoldDelay: 400, // start to fire continuously after pressing for this long (milliseconds)
       fireOnHoldInterval: 100, // fire continuously at this interval (milliseconds),
-      tandem: Tandem.required
+      tandem: Tandem.required,
+      phetioReadOnly: PhetioObject.DEFAULT_OPTIONS.phetioReadOnly // to support properly passing this to children, see https://github.com/phetsims/tandem/issues/60
     }, options );
 
     var self = this;
@@ -46,8 +48,6 @@ define( function( require ) {
 
     // @private - sends out notifications when the button is released.
     this.firedEmitter = new Emitter( {
-
-      // instrumented for phet-io
       tandem: options.tandem.createTandem( 'firedEmitter' ),
       phetioInstanceDocumentation: 'Emits when the button is fired',
       phetioReadOnly: options.phetioReadOnly

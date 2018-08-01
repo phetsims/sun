@@ -10,19 +10,65 @@ define( function( require ) {
 
   // modules
   var ButtonModel = require( 'SUN/buttons/ButtonModel' );
+  var Emitter = require( 'AXON/Emitter' );
   var inherit = require( 'PHET_CORE/inherit' );
+  var PhetioObject = require( 'TANDEM/PhetioObject' );
   var sun = require( 'SUN/sun' );
+  var Tandem = require( 'TANDEM/Tandem' );
 
   /**
    * @param {Object} valueOff - value when the button is in the off state
    * @param {Object} valueOn - value when the button is in the on state
    * @param {Property} valueProperty
-   * @param {PhetioObject} momentaryButton - button that emits the PhET-iO event to the data stream
+   * @param {Object} [options]
    * @constructor
    */
-  function MomentaryButtonModel( valueOff, valueOn, valueProperty, momentaryButton ) {
+  function MomentaryButtonModel( valueOff, valueOn, valueProperty, options ) {
     var self = this;
+
+    // Tandem support
+    options = _.extend( {
+      tandem: Tandem.required,
+      phetioReadOnly: PhetioObject.DEFAULT_OPTIONS.phetioReadOnly // to support properly passing this to children, see https://github.com/phetsims/tandem/issues/60
+    }, options );
+
     ButtonModel.call( self );
+
+    // @private
+    this.pressedEmitter = new Emitter( {
+        tandem: options.tandem.createTandem( 'pressedEmitter' ),
+        phetioInstanceDocumentation: 'Emits when the button is pressed',
+        phetioReadOnly: options.phetioReadOnly
+      }
+    );
+
+    // @private
+    this.releasedEmitter = new Emitter( {
+        tandem: options.tandem.createTandem( 'releasedEmitter' ),
+        phetioInstanceDocumentation: 'Emits when the button is released',
+        phetioReadOnly: options.phetioReadOnly
+      }
+    );
+
+    // @private
+    this.releasedDisabledEmitter = new Emitter( {
+        tandem: options.tandem.createTandem( 'releasedDisabledEmitter' ),
+        phetioInstanceDocumentation: 'Emits when the button is released from becoming disabled',
+        phetioReadOnly: options.phetioReadOnly
+      }
+    );
+
+    // add listeners
+    var setValueOn = function() {
+      valueProperty.set( valueOn );
+    };
+    this.pressedEmitter.addListener( setValueOn );
+
+    var setValueOff = function() {
+      valueProperty.set( valueOff );
+    };
+    this.releasedEmitter.addListener( setValueOff );
+    this.releasedDisabledEmitter.addListener( setValueOff );
 
     // sync with the property, do this before wiring up to supertype properties
     var onObserver = function( value ) {
@@ -37,18 +83,14 @@ define( function( require ) {
       // turn on when pressed (if enabled)
       if ( down ) {
         if ( self.enabledProperty.get() ) {
-          momentaryButton.phetioStartEvent( 'user', 'pressed' );
-          valueProperty.set( valueOn );
-          momentaryButton.phetioEndEvent();
+          self.pressedEmitter.emit();
         }
       }
       else {
 
         // turn off when released
-        momentaryButton.phetioStartEvent( 'user', 'released' );
         processingRelease = true;
-        valueProperty.set( valueOff );
-        momentaryButton.phetioEndEvent();
+        self.releasedEmitter.emit();
         processingRelease = false;
       }
     };
@@ -60,9 +102,7 @@ define( function( require ) {
       // If the button became disabled (and not as a result of pressing the button itself), trigger an event
       // and change the value
       if ( !enabled && !processingRelease ) {
-        momentaryButton.phetioStartEvent( 'user', 'releasedDisabled' );
-        valueProperty.set( valueOff );
-        momentaryButton.phetioEndEvent();
+        self.releasedDisabledEmitter.emit();
       }
     };
     this.enabledProperty.link( enabledListener );
@@ -72,6 +112,9 @@ define( function( require ) {
       self.enabledProperty.unlink( enabledListener );
       self.downProperty.unlink( downListener );
       valueProperty.unlink( onObserver );
+      this.pressedEmitter.removeListener( setValueOn );
+      this.releasedEmitter.removeListener( setValueOff );
+      this.releasedDisabledEmitter.removeListener( setValueOff );
     };
   }
 

@@ -31,7 +31,8 @@ define( function( require ) {
       phetioType: RoundMomentaryButtonIO
     }, options );
 
-    this.buttonModel = new MomentaryButtonModel( valueOff, valueOn, property, this );
+    // Note it shares a tandem with this, so the emitter will be instrumented as a child of the button
+    this.buttonModel = new MomentaryButtonModel( valueOff, valueOn, property, options );
     RoundButtonView.call( this, this.buttonModel, new MomentaryButtonInteractionStateProperty( this.buttonModel ), options );
   }
 

@@ -46,7 +46,8 @@ define( function( require ) {
     options = _.omit( options, [ 'listener' ] );
 
     // @public - listening only
-    this.buttonModel = new PushButtonModel( this, options );
+    // Note it shares a tandem with this, so the emitter will be instrumented as a child of the button
+    this.buttonModel = new PushButtonModel( options );
     RoundButtonView.call( this, this.buttonModel, new PushButtonInteractionStateProperty( this.buttonModel ), options );
 
     // add the listener that was potentially saved above

@@ -13,25 +13,42 @@ define( function( require ) {
 
   // modules
   var ButtonModel = require( 'SUN/buttons/ButtonModel' );
+  var Emitter = require( 'AXON/Emitter' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Property = require( 'AXON/Property' );
   var sun = require( 'SUN/sun' );
+  var Tandem = require( 'TANDEM/Tandem' );
 
   /**
    * @param {Object} valueUp value when the toggle is in the 'up' position
    * @param {Object} valueDown value when the toggle is in the 'down' position
    * @param {Property} valueProperty axon property that can be either valueUp or valueDown.  Would have preferred to call this `property` but it would clash with the property function name.
-   * @param {PhetioObject} stickyToggleButton the parent button that sends messages to the data stream
+   * @param {Object} [options]
    * @constructor
    */
-  function StickyToggleButtonModel( valueUp, valueDown, valueProperty, stickyToggleButton ) {
+  function StickyToggleButtonModel( valueUp, valueDown, valueProperty, options ) {
     var self = this;
+
+    options = _.extend( {
+      tandem: Tandem.required
+    }, options );
 
     // @private
     this.valueUp = valueUp;
     this.valueDown = valueDown;
     this.valueProperty = valueProperty;
-    this.stickyToggleButton = stickyToggleButton;
+    this.toggledEmitter = new Emitter( {
+      tandem: options.tandem.createTandem( 'toggledEmitter' ),
+      phetioInstanceDocumentation: 'Emits when the button is toggled'
+    } );
+
+    var toggleListener = function() {
+      assert && assert( self.valueProperty.value === self.valueUp || self.valueProperty.value === self.valueDown,
+        'unrecognized value: ' + self.valueProperty.value );
+
+      self.valueProperty.value = self.valueProperty.value === self.valueUp ? self.valueDown : self.valueUp;
+    };
+    this.toggledEmitter.addListener( toggleListener );
 
     ButtonModel.call( this );
 
@@ -82,6 +99,7 @@ define( function( require ) {
     this.disposeToggleButtonModel = function() {
       self.downProperty.unlink( downListener );
       self.enabledProperty.unlink( enabledPropertyOnListener );
+      self.toggledEmitter.removeListener( toggleListener );
     };
   }
 
@@ -97,17 +115,7 @@ define( function( require ) {
 
     // @public
     toggle: function() {
-      assert && assert( this.valueProperty.value === this.valueUp || this.valueProperty.value === this.valueDown );
-      var newValue = this.valueProperty.value === this.valueUp ? this.valueDown : this.valueUp;
-      var oldValue = this.valueProperty.value;
-
-      var hasToStateObject = this.valueProperty.phetioType && this.valueProperty.phetioType.elementType && this.valueProperty.phetioType.elementType.toStateObject;
-      this.stickyToggleButton.phetioStartEvent( 'user', 'toggled', {
-        oldValue: hasToStateObject && this.valueProperty.phetioType.elementType.toStateObject( oldValue ),
-        newValue: hasToStateObject && this.valueProperty.phetioType.elementType.toStateObject( newValue )
-      } );
-      this.valueProperty.value = newValue;
-      this.stickyToggleButton.phetioEndEvent();
+      this.toggledEmitter.emit();
     }
   } );
 } );
