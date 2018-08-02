@@ -95,6 +95,7 @@ define( function( require ) {
 
       // phet-io support
       phetioType: AccordionBoxIO,
+      phetioEventType: 'user',
 
       // a11y options
       tagName: 'div',
@@ -236,7 +237,7 @@ define( function( require ) {
     if ( options.titleBarExpandCollapse ) {
       this.collapsedTitleBar.addInputListener( {
         down: function() {
-          self.phetioStartEvent( 'user', 'expanded' );
+          self.phetioStartEvent( 'expanded' );
           self.expandedProperty.value = true;
           self.phetioEndEvent();
         }
@@ -246,7 +247,7 @@ define( function( require ) {
     // a11y we always want accessible tab focus on the title, even when titleBarExpandeCollapse === false
     var a11yExpandListener = {
       click: function() {
-        self.phetioStartEvent( 'user', 'expanded' );
+        self.phetioStartEvent( 'expanded' );
         self.expandedProperty.value = true;
 
         // a11y Set focus to expanded title bar
@@ -263,7 +264,7 @@ define( function( require ) {
       if ( options.titleBarExpandCollapse ) {
         this.expandedTitleBar.addInputListener( {
           down: function() {
-            self.phetioStartEvent( 'user', 'collapsed' );
+            self.phetioStartEvent( 'collapsed' );
             self.expandedProperty.value = false;
             self.phetioEndEvent();
           }
@@ -274,7 +275,7 @@ define( function( require ) {
     // a11y we always want accessible tab focus on the title
     var a11yCollapseListener = {
       click: function() {
-        self.phetioStartEvent( 'user', 'collapsed' );
+        self.phetioStartEvent( 'collapsed' );
         self.expandedProperty.value = false;
 
         // a11y Set focus to expanded title bar

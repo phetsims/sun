@@ -67,8 +67,10 @@ define( function( require ) {
       trackOnFill: 'rgb(0,200,0)', // track fill when onProperty is true
       trackStroke: 'black',
 
+      // phet-io
       tandem: Tandem.required,
-      phetioType: OnOffSwitchIO
+      phetioType: OnOffSwitchIO,
+      phetioEventType: 'user'
     }, options );
 
     var self = this;
@@ -164,7 +166,7 @@ define( function( require ) {
           // stream, see https://github.com/phetsims/phet-io/issues/369
           var changed = onProperty.get() !== value;
           if ( changed ) {
-            self.phetioStartEvent( 'user', 'toggled', {
+            self.phetioStartEvent( 'toggled', {
               oldValue: !value,
               newValue: value
             } );
@@ -180,7 +182,7 @@ define( function( require ) {
         // if moved past the threshold, choose value based on the side, otherwise just toggle
         var newValue = passedDragThreshold ? self.thumbPositionToValue() : !onProperty.get();
 
-        self.phetioStartEvent( 'user', 'toggled', {
+        self.phetioStartEvent( 'toggled', {
           oldValue: oldValue,
           newValue: newValue
         } );

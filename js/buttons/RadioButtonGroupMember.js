@@ -69,8 +69,10 @@ define( function( require ) {
       appendDescription: true,
       appendLabel: true,
 
+      // phet-io
       tandem: Tandem.required,
-      phetioType: RadioButtonGroupMemberIO
+      phetioType: RadioButtonGroupMemberIO,
+      phetioEventType: 'user'
     }, options );
 
     // @private
@@ -136,7 +138,7 @@ define( function( require ) {
      */
     fire: function() {
       if ( this.buttonModel.enabledProperty.get() ) {
-        this.phetioStartEvent( 'user', 'fired', {
+        this.phetioStartEvent( 'fired', {
           value: this.property.phetioType &&
                  this.property.phetioType.elementType &&
                  this.property.phetioType.elementType.toStateObject &&

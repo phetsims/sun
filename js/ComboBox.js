@@ -68,9 +68,10 @@ define( function( require ) {
       itemHighlightStroke: null,
       itemHighlightLineWidth: 1,
 
-      // tandem
+      // phet-io
       tandem: Tandem.required,
-      phetioType: ComboBoxIO
+      phetioType: ComboBoxIO,
+      phetioEventType: 'user'
     }, options );
 
     // validate option values
@@ -151,7 +152,7 @@ define( function( require ) {
       up: function( event ) {
         var selectedItemNode = event.currentTarget; // {ComboBoxItemNode}
 
-        selectedItemNode.phetioStartEvent( 'user', 'fired', {
+        selectedItemNode.phetioStartEvent( 'fired', {
 
           // support uninstrumented sims
           value: selectedItemNode.phetioType &&
@@ -274,7 +275,7 @@ define( function( require ) {
      */
     showList: function() {
       if ( !this.listNode.visible ) {
-        this.phetioStartEvent( 'user', 'popupShown' );
+        this.phetioStartEvent( 'popupShown' );
 
         this.moveList();
         this.listNode.moveToFront();
@@ -294,7 +295,7 @@ define( function( require ) {
     hideList: function() {
       if ( this.enableClickToDismissListener ) {
 
-        this.phetioStartEvent( 'user', 'popupHidden' );
+        this.phetioStartEvent( 'popupHidden' );
 
         if ( this.display && this.display.hasInputListener( this.clickToDismissListener ) ) {
           this.display.removeInputListener( this.clickToDismissListener );

@@ -43,8 +43,11 @@ define( function( require ) {
       cursor: 'pointer',
       checkboxColor: 'black',
       checkboxColorBackground: 'white',
+
+      // phet-io
       tandem: Tandem.required,
       phetioType: CheckboxIO,
+      phetioEventType: 'user',
 
       // a11y
       tagName: 'input',
@@ -117,7 +120,7 @@ define( function( require ) {
     this.fire = function() {
       if ( self._enabled ) {
         var newValue = !property.value;
-        self.phetioStartEvent( 'user', 'toggled', {
+        self.phetioStartEvent( 'toggled', {
           oldValue: property.value,
           newValue: newValue
         } );

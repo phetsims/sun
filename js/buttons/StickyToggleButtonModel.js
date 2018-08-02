@@ -39,7 +39,8 @@ define( function( require ) {
     this.valueProperty = valueProperty;
     this.toggledEmitter = new Emitter( {
       tandem: options.tandem.createTandem( 'toggledEmitter' ),
-      phetioInstanceDocumentation: 'Emits when the button is toggled'
+      phetioInstanceDocumentation: 'Emits when the button is toggled',
+      phetioEventType: 'user'
     } );
 
     var toggleListener = function() {

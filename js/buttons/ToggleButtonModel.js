@@ -49,10 +49,10 @@ define( function( require ) {
 
     // @private
     this.toggledEmitter = new Emitter( {
-        tandem: options.tandem.createTandem( 'toggledEmitter' ),
-        phetioInstanceDocumentation: 'Emits when the button is toggled'
-      }
-    );
+      tandem: options.tandem.createTandem( 'toggledEmitter' ),
+      phetioInstanceDocumentation: 'Emits when the button is toggled',
+      phetioEventType: 'user'
+    } );
 
     var toggleListener = function() {
       assert && assert( self.valueProperty.value === self.valueOff || self.valueProperty.value === self.valueOn,

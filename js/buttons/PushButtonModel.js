@@ -50,7 +50,8 @@ define( function( require ) {
     this.firedEmitter = new Emitter( {
       tandem: options.tandem.createTandem( 'firedEmitter' ),
       phetioInstanceDocumentation: 'Emits when the button is fired',
-      phetioReadOnly: options.phetioReadOnly
+      phetioReadOnly: options.phetioReadOnly,
+      phetioEventType: 'user'
     } );
     if ( options.listener !== null ) {
       this.firedEmitter.addListener( options.listener );

@@ -58,7 +58,10 @@ define( function( require ) {
       cursor: 'pointer',
       tandem: Tandem.optional,
       textFill: 'black',
+
+      // phet-io
       phetioType: MenuItemIO,
+      phetioEventType: 'user',
 
       // a11y
       tagName: 'button',
@@ -92,7 +95,7 @@ define( function( require ) {
     } );
 
     var fire = function( event ) {
-      self.phetioStartEvent( 'user', 'fired' );
+      self.phetioStartEvent( 'fired' );
       closeCallback( event );
       callback( event );
       self.phetioEndEvent();

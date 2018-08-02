@@ -41,8 +41,11 @@ define( function( require ) {
       radius: DEFAULT_RADIUS, // radius of the button
       xSpacing: 8, // horizontal space between the button and the node
       stroke: 'black', // color used to stroke the outer edge of the button
+
+      // phet-io
       tandem: Tandem.required,
       phetioType: AquaRadioButtonIO,
+      phetioEventType: 'user',
 
       // a11y
       tagName: 'input',
@@ -108,7 +111,7 @@ define( function( require ) {
 
     // set property value on fire
     var fire = function() {
-      options.tandem.isSuppliedAndEnabled() && self.phetioStartEvent( 'user', 'fired', {
+      options.tandem.isSuppliedAndEnabled() && self.phetioStartEvent( 'fired', {
         value: property.phetioType.elementType.toStateObject( value )
       } );
       property.set( value );
