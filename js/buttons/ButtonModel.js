@@ -43,7 +43,8 @@ define( function( require ) {
 
     // @public - Is the button enabled?
     this.enabledProperty = new BooleanProperty( options.enabled, {
-      tandem: options.tandem.createTandem( 'enabledProperty' )
+      tandem: options.tandem.createTandem( 'enabledProperty' ),
+      phetioInstanceDocumentation: 'When disabled, the button is grayed out and cannot be pressed'
     } );
 
     // @private - keep track of and store all listeners this model creates
