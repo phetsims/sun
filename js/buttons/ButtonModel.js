@@ -134,22 +134,23 @@ define( function( require ) {
 
     /**
      * Creates a standard button listener that can be added to a node and that will trigger the changes to this model.
-     * @param {Tandem} tandem
+     * @param {Object} [options]
      * @returns {PressListener}
      * @public
      */
-    createListener: function( tandem ) {
+    createListener: function( options ) {
       var self = this;
 
-      var pressListener = new PressListener( {
-        tandem: tandem,
+      options = _.extend( {
         phetioInstanceDocumentation: 'Indicates when the button has been pressed or released',
         isPressedProperty: this.downProperty,
         isOverProperty: this.overProperty,
         canStartPress: function() {
           return self.enabledProperty.value;
         }
-      } );
+      }, options );
+
+      var pressListener = new PressListener( options );
       this.listeners.push( pressListener );
       return pressListener;
     }

@@ -88,7 +88,7 @@ define( function( require ) {
     this.baseColorProperty = new PaintColorProperty( options.baseColor ); // @private
 
     // @private {PressListener}
-    var pressListener = pushButtonModel.createListener( options.tandem.createTandem( 'pressListener' ) );
+    var pressListener = pushButtonModel.createListener( { tandem: options.tandem.createTandem( 'pressListener' ) } );
     this.addInputListener( pressListener );
 
     // Use the user-specified radius if present, otherwise calculate the
