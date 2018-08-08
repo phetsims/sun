@@ -143,6 +143,7 @@ define( function( require ) {
 
       var pressListener = new PressListener( {
         tandem: tandem,
+        phetioInstanceDocumentation: 'Indicates when the button has been pressed or released',
         isPressedProperty: this.downProperty,
         isOverProperty: this.overProperty,
         canStartPress: function() {
