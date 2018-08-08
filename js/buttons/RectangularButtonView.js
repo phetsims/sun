@@ -97,7 +97,7 @@ define( function( require ) {
     var content = options.content; // convenience variable
 
     // Hook up the input listener
-    var pressListener = buttonModel.createListener( options.tandem.createTandem( 'pressListener' ) );
+    var pressListener = buttonModel.createListener( { tandem: options.tandem.createTandem( 'pressListener' ) } );
     this.addInputListener( pressListener );
 
     // @private - make the base color into a property so that the appearance strategy can update itself if changes occur.
