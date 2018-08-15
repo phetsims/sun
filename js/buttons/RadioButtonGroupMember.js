@@ -11,12 +11,13 @@ define( function( require ) {
   'use strict';
 
   // modules
+  var Emitter = require( 'AXON/Emitter' );
   var ButtonModel = require( 'SUN/buttons/ButtonModel' );
   var Color = require( 'SCENERY/util/Color' );
   var ColorConstants = require( 'SUN/ColorConstants' );
   var inherit = require( 'PHET_CORE/inherit' );
+  var PhetioObject = require( 'TANDEM/PhetioObject' );
   var RadioButtonGroupAppearance = require( 'SUN/buttons/RadioButtonGroupAppearance' );
-  var RadioButtonGroupMemberIO = require( 'SUN/RadioButtonGroupMemberIO' );
   var RadioButtonInteractionStateProperty = require( 'SUN/buttons/RadioButtonInteractionStateProperty' );
   var RectangularButtonView = require( 'SUN/buttons/RectangularButtonView' );
   var sun = require( 'SUN/sun' );
@@ -71,8 +72,7 @@ define( function( require ) {
 
       // phet-io
       tandem: Tandem.required,
-      phetioType: RadioButtonGroupMemberIO,
-      phetioEventType: 'user'
+      phetioReadOnly: PhetioObject.DEFAULT_OPTIONS.phetioReadOnly // to support properly passing this to children, see https://github.com/phetsims/tandem/issues/60
     }, options );
 
     // @private
@@ -122,9 +122,22 @@ define( function( require ) {
     this.value = value;
 
     // @private
+    this.firedEmitter = new Emitter( {
+      tandem: options.tandem.createTandem( 'firedEmitter' ),
+      phetioInstanceDocumentation: 'Emits when the radio button is pressed',
+      phetioReadOnly: options.phetioReadOnly,
+      phetioEventType: 'user'
+    } );
+
+    this.firedEmitter.addListener( function() {
+      property.set( value );
+    } );
+
+    // @private
     this.disposeRadioButtonGroupMember = function() {
       self.removeAccessibleInputListener( accessibleChangeListener );
       property.unlink( accessibleCheckedListener );
+      this.firedEmitter.dispose();
       this.buttonModel.dispose();
     };
   }
@@ -138,14 +151,7 @@ define( function( require ) {
      */
     fire: function() {
       if ( this.buttonModel.enabledProperty.get() ) {
-        this.phetioStartEvent( 'fired', {
-          value: this.property.phetioType &&
-                 this.property.phetioType.elementType &&
-                 this.property.phetioType.elementType.toStateObject &&
-                 this.property.phetioType.elementType.toStateObject( this.value )
-        } );
-        this.property.set( this.value );
-        this.phetioEndEvent();
+        this.firedEmitter.emit();
       }
     },
 
