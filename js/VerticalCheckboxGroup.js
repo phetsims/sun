@@ -58,7 +58,6 @@ define( function( require ) {
       maxWidth = Math.max( maxWidth, items[ i ].node.width );
     }
 
-    //TODO #344 this for loop looks very much like VerticalAquaRadioButtonGroup, something to factor out?
     // Create a checkbox for each item
     options.children = [];
     for ( i = 0; i < items.length; i++ ) {
