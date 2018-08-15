@@ -41,15 +41,12 @@ define( function( require ) {
 
     options = _.extend( {
 
-      // dilation of pointer areas, y dimension is computed
-      touchAreaXDilation: 0,
-      mouseAreaXDilation: 0,
-
-      // uniform radius of all buttons
-      radius: AquaRadioButton.DEFAULT_RADIUS,
-
       // options passed to constructor of the AquaRadioButtons
       radioButtonOptions: {},
+
+      // dilation of pointer areas for each radio button, y dimension is computed
+      touchAreaXDilation: 0,
+      mouseAreaXDilation: 0,
 
       //TODO #344 this is the total of left and right margins, replace with xMargin?
       padding: 8,
@@ -65,8 +62,6 @@ define( function( require ) {
     }, options );
 
     // Verify that the client hasn't set options that we will be overwriting.
-    assert && assert( options.radioButtonOptions.radius === undefined,
-      'VerticalAquaRadioButtonGroup sets radioButtonOptions.radius' );
     assert && assert( !options.children, 'VerticalAquaRadioButtonGroup sets children' );
 
     // Determine the max item width
@@ -91,7 +86,6 @@ define( function( require ) {
 
       var radioButton = new AquaRadioButton( item.property, item.value, content,
         _.extend( {}, options.radioButtonOptions, {
-          radius: options.radius,
           tandem: item.tandemName ? options.tandem.createTandem( item.tandemName ) : Tandem.required,
           labelContent: item.labelContent || null,
           a11yNameAttribute: instanceCount
