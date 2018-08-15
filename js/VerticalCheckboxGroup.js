@@ -23,7 +23,7 @@ define( function( require ) {
    * @param {Object[]} items - Each item describes a checkbox, and is an object with these properties:
    *    node: Node, // label for the button
    *    property: Property.<boolean>, // Property associated with the button
-   *    indent: number, // how much to indent each check box from the left edge
+   *    indent: number|undefined, // how much to indent each check box from the left edge
    *    [tandemName: Tandem] // optional tandem for PhET-iO
    * @param {Object} [options]
    * @constructor
@@ -35,12 +35,9 @@ define( function( require ) {
       // {Object|null} options passed to constructor of the Checkbox
       checkboxOptions: null,
 
-      // dilation of pointer areas, y dimension is computed
+      // dilation of pointer areas for each checkbox, y dimension is computed
       touchAreaXDilation: 5,
       mouseAreaXDilation: 5,
-
-      //TODO #344 this is the total of left and right margins, replace with xMargin?
-      padding: 8,
 
       // supertype options
       spacing: 10, // vertical spacing
@@ -51,11 +48,10 @@ define( function( require ) {
     // Verify that the client hasn't set options that we will be overwriting.
     assert && assert( !options.children, 'VerticalCheckboxGroup sets children' );
 
-    //TODO #344 there's a bug here, indent for each item is not considered
     // Determine the max item width
-    var maxWidth = 0;
+    var maxItemWidth = 0;
     for ( var i = 0; i < items.length; i++ ) {
-      maxWidth = Math.max( maxWidth, items[ i ].node.width );
+      maxItemWidth = Math.max( maxItemWidth, items[ i ].node.width );
     }
 
     // Create a checkbox for each item
@@ -65,9 +61,9 @@ define( function( require ) {
       var item = items[ i ];
       var indent = item.indent || 0;
 
-      // Content for the checkbox. Add an invisible strut, so that buttons have uniform width.
+      // Content for the checkbox. Add an invisible strut, so that checkboxes have uniform width.
       var content = new Node( {
-        children: [ new HStrut( maxWidth + options.padding - indent ), item.node ]
+        children: [ new HStrut( maxItemWidth - indent ), item.node ]
       } );
 
       var checkbox = new Checkbox( content, item.property, _.extend( {}, options.checkboxOptions, {
@@ -79,8 +75,7 @@ define( function( require ) {
       checkbox.mouseArea = checkbox.localBounds.dilatedXY( options.mouseAreaXDilation, yDilation );
       checkbox.touchArea = checkbox.localBounds.dilatedXY( options.touchAreaXDilation, yDilation );
 
-      //TODO #344 indent feature is missing from VerticalAquaRadioButtonGroup, should it be added?
-      //TODO #344 I can think of other ways to indent that don't involve 2 additional nodes
+      //TODO #344 add indent feature to VerticalAquaRadioButtonGroup
       if ( item.indent ) {
 
         // indent the checkbox from the left edge using a strut

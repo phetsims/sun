@@ -48,9 +48,7 @@ define( function( require ) {
       touchAreaXDilation: 0,
       mouseAreaXDilation: 0,
 
-      //TODO #344 this is the total of left and right margins, replace with xMargin?
-      padding: 8,
-
+      // supertype options
       // supertype options
       spacing: 3, // vertical space between each button
       tandem: Tandem.required,
@@ -65,13 +63,10 @@ define( function( require ) {
     assert && assert( !options.children, 'VerticalAquaRadioButtonGroup sets children' );
 
     // Determine the max item width
-    var maxWidth = 0;
+    var maxItemWidth = 0;
     for ( var i = 0; i < items.length; i++ ) {
-      maxWidth = Math.max( maxWidth, items[ i ].node.width );
+      maxItemWidth = Math.max( maxItemWidth, items[ i ].node.width );
     }
-
-    // Uniform button width
-    var buttonWidth = maxWidth + options.padding;
 
     // Create a radio button for each item
     options.children = [];
@@ -81,7 +76,7 @@ define( function( require ) {
 
       // Content for the radio button. Add an invisible strut, so that buttons have uniform width.
       var content = new Node( {
-        children: [ new HStrut( buttonWidth + options.padding ), item.node ]
+        children: [ new HStrut( maxItemWidth ), item.node ]
       } );
 
       var radioButton = new AquaRadioButton( item.property, item.value, content,
