@@ -41,8 +41,8 @@ define( function( require ) {
 
     options = _.extend( {
 
-      // options passed to constructor of the AquaRadioButtons
-      radioButtonOptions: {},
+      // {Object|null} options passed to constructor of the AquaRadioButtons
+      radioButtonOptions: null,
 
       // dilation of pointer areas for each radio button, y dimension is computed
       touchAreaXDilation: 0,
