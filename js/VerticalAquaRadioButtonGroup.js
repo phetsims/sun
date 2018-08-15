@@ -18,8 +18,9 @@ define( function( require ) {
   var Tandem = require( 'TANDEM/Tandem' );
   var VBox = require( 'SCENERY/nodes/VBox' );
 
-  // a11y - an id for each instance of VerticalAquaRadioButtonGroup,
-  // used to group buttons for browsers and assistive technology
+  // a11y - An id for each instance of VerticalAquaRadioButtonGroup, passed to individual buttons in the group.
+  // Each button in a radio button group must have the same "name" attribute to be considered in a group, otherwise
+  // arrow keys will navigate all radio type inputs in the document.
   var instanceCount = 0;
 
   /**
@@ -93,7 +94,7 @@ define( function( require ) {
           radius: options.radius,
           tandem: item.tandemName ? options.tandem.createTandem( item.tandemName ) : Tandem.required,
           labelContent: item.labelContent || null,
-          a11yNameAttribute: 'verticalAquaButtonGroup' + instanceCount + 'Member'
+          a11yNameAttribute: instanceCount
         } ) );
 
       // set pointer areas, y dimensions are computed

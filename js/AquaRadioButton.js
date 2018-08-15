@@ -54,7 +54,10 @@ define( function( require ) {
       labelTagName: 'label',
       appendLabel: true,
       appendDescription: true,
-      a11yNameAttribute: 'aquaRadioButton'
+
+      // Each button in a group of radio buttons must have the same 'name' attribute to be considered a 'group' by the
+      // browser. Otherwise, arrow keys will navigate through all inputs of type radio in the document
+      a11yNameAttribute: null
     }, options );
 
     var self = this;
@@ -143,7 +146,7 @@ define( function( require ) {
     };
     property.link( accessibleCheckedListener );
 
-    // a11y - allow consistent a11y naming for radio button types
+    // a11y - every button in a group of radio buttons should have the same name, see options for more info
     this.setAccessibleAttribute( 'name', options.a11yNameAttribute );
 
     this.mutate( options );
