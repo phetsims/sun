@@ -32,6 +32,7 @@ define( function( require ) {
 
       tandem: Tandem.required,
       phetioState: PhetioObject.DEFAULT_OPTIONS.phetioState, // to support properly passing this to children, see https://github.com/phetsims/tandem/issues/60
+      phetioReadOnly: PhetioObject.DEFAULT_OPTIONS.phetioReadOnly, // to support properly passing this to children, see https://github.com/phetsims/tandem/issues/60
 
       // a11y
       fireOnHoldInterval: 100 // fire continuously at this interval in ms when holding down button with keyboard
@@ -46,6 +47,7 @@ define( function( require ) {
     // @public - Is the button enabled?
     this.enabledProperty = new BooleanProperty( options.enabled, {
       phetioState: options.phetioState,
+      phetioReadOnly: options.phetioReadOnly,
       tandem: options.tandem.createTandem( 'enabledProperty' ),
       phetioInstanceDocumentation: 'When disabled, the button is grayed out and cannot be pressed'
     } );
