@@ -32,16 +32,15 @@ define( function( require ) {
 
     options = _.extend( {
 
+      // {Object|null} options passed to constructor of the Checkbox
+      checkboxOptions: null,
+
       // dilation of pointer areas, y dimension is computed
       touchAreaXDilation: 5,
       mouseAreaXDilation: 5,
 
       //TODO #344 this is the total of left and right margins, replace with xMargin?
       padding: 8,
-
-      //TODO #344 these are passed to Checkbox, replace with checkboxOptions: {...}
-      boxWidth: 21,
-      checkboxColor: 'black',
 
       // supertype options
       spacing: 10, // vertical spacing
@@ -72,11 +71,9 @@ define( function( require ) {
         children: [ new HStrut( maxWidth + options.padding - indent ), item.node ]
       } );
 
-      var checkbox = new Checkbox( content, item.property, {
-        checkboxColor: options.checkboxColor,
-        boxWidth: options.boxWidth,
+      var checkbox = new Checkbox( content, item.property, _.extend( {}, options.checkboxOptions, {
         tandem: item.tandem || Tandem.optional
-      } );
+      } ) );
 
       // set pointer areas, y dimensions are computed
       var yDilation = options.spacing / 2;
