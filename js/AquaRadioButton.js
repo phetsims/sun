@@ -55,8 +55,9 @@ define( function( require ) {
       appendLabel: true,
       appendDescription: true,
 
-      // Each button in a group of radio buttons must have the same 'name' attribute to be considered a 'group' by the
-      // browser. Otherwise, arrow keys will navigate through all inputs of type radio in the document
+      // {string|number|null} - Each button in a group of radio buttons must have the same 'name' attribute to be
+      // considered a 'group' by the browser. Otherwise, arrow keys will navigate through all inputs of type radio in
+      // the document
       a11yNameAttribute: null
     }, options );
 
@@ -147,7 +148,7 @@ define( function( require ) {
     property.link( accessibleCheckedListener );
 
     // a11y - every button in a group of radio buttons should have the same name, see options for more info
-    this.setAccessibleAttribute( 'name', options.a11yNameAttribute );
+    options.a11yNameAttribute && this.setAccessibleAttribute( 'name', options.a11yNameAttribute );
 
     this.mutate( options );
 
