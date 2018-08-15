@@ -21,7 +21,7 @@ define( function( require ) {
 
   /**
    * @param {Object[]} items - Each item describes a checkbox, and is an object with these properties:
-   *    content: Node, // label for the button
+   *    node: Node, // label for the button
    *    property: Property.<boolean>, // Property associated with the button
    *    indent: number, // how much to indent each check box from the left edge
    *    [tandemName: Tandem] // optional tandem for PhET-iO
@@ -56,7 +56,7 @@ define( function( require ) {
     // Determine the max item width
     var maxWidth = 0;
     for ( var i = 0; i < items.length; i++ ) {
-      maxWidth = Math.max( maxWidth, items[ i ].content.width );
+      maxWidth = Math.max( maxWidth, items[ i ].node.width );
     }
 
     //TODO #344 this for loop looks very much like VerticalAquaRadioButtonGroup, something to factor out?
@@ -67,10 +67,9 @@ define( function( require ) {
       var item = items[ i ];
       var indent = item.indent || 0;
 
-      //TODO #344 item.content is item.node in VerticalAquaRadioButtonGroup
       // Content for the checkbox. Add an invisible strut, so that buttons have uniform width.
       var content = new Node( {
-        children: [ new HStrut( maxWidth + options.padding - indent ), item.content ]
+        children: [ new HStrut( maxWidth + options.padding - indent ), item.node ]
       } );
 
       var checkbox = new Checkbox( content, item.property, {
