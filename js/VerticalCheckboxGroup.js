@@ -11,7 +11,6 @@ define( function( require ) {
 
   // modules
   var Checkbox = require( 'SUN/Checkbox' );
-  var HBox = require( 'SCENERY/nodes/HBox' );
   var HStrut = require( 'SCENERY/nodes/HStrut' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Node = require( 'SCENERY/nodes/Node' );
@@ -23,7 +22,6 @@ define( function( require ) {
    * @param {Object[]} items - Each item describes a checkbox, and is an object with these properties:
    *    node: Node, // label for the button
    *    property: Property.<boolean>, // Property associated with the button
-   *    indent: number|undefined, // how much to indent each check box from the left edge
    *    [tandemName: Tandem] // optional tandem for PhET-iO
    * @param {Object} [options]
    * @constructor
@@ -59,11 +57,10 @@ define( function( require ) {
     for ( i = 0; i < items.length; i++ ) {
 
       var item = items[ i ];
-      var indent = item.indent || 0;
 
       // Content for the checkbox. Add an invisible strut, so that checkboxes have uniform width.
       var content = new Node( {
-        children: [ new HStrut( maxItemWidth - indent ), item.node ]
+        children: [ new HStrut( maxItemWidth ), item.node ]
       } );
 
       var checkbox = new Checkbox( content, item.property, _.extend( {}, options.checkboxOptions, {
@@ -75,17 +72,7 @@ define( function( require ) {
       checkbox.mouseArea = checkbox.localBounds.dilatedXY( options.mouseAreaXDilation, yDilation );
       checkbox.touchArea = checkbox.localBounds.dilatedXY( options.touchAreaXDilation, yDilation );
 
-      //TODO #344 add indent feature to VerticalAquaRadioButtonGroup
-      if ( item.indent ) {
-
-        // indent the checkbox from the left edge using a strut
-        options.children.push( new HBox( {
-          children: [ new HStrut( item.indent ), checkbox ]
-        } ) );
-      }
-      else {
-        options.children.push( checkbox );
-      }
+      options.children.push( checkbox );
     }
 
     VBox.call( this, options );
