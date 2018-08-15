@@ -148,7 +148,9 @@ define( function( require ) {
     property.link( accessibleCheckedListener );
 
     // a11y - every button in a group of radio buttons should have the same name, see options for more info
-    options.a11yNameAttribute && this.setAccessibleAttribute( 'name', options.a11yNameAttribute );
+    if ( options.a11yNameAttribute !== null ) {
+      this.setAccessibleAttribute( 'name', options.a11yNameAttribute );
+    }
 
     this.mutate( options );
 
