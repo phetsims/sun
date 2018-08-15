@@ -10,6 +10,7 @@ define( function( require ) {
   // modules
   var BooleanProperty = require( 'AXON/BooleanProperty' );
   var inherit = require( 'PHET_CORE/inherit' );
+  var PhetioObject = require( 'TANDEM/PhetioObject' );
   var PressListener = require( 'SCENERY/listeners/PressListener' );
   var Property = require( 'AXON/Property' );
   var sun = require( 'SUN/sun' );
@@ -30,6 +31,8 @@ define( function( require ) {
       enabled: true,
 
       tandem: Tandem.required,
+      phetioState: PhetioObject.DEFAULT_OPTIONS.phetioState, // to support properly passing this to children, see https://github.com/phetsims/tandem/issues/60
+      phetioReadOnly: PhetioObject.DEFAULT_OPTIONS.phetioReadOnly, // to support properly passing this to children, see https://github.com/phetsims/tandem/issues/60
 
       // a11y
       fireOnHoldInterval: 100 // fire continuously at this interval in ms when holding down button with keyboard
@@ -43,7 +46,10 @@ define( function( require ) {
 
     // @public - Is the button enabled?
     this.enabledProperty = new BooleanProperty( options.enabled, {
-      tandem: options.tandem.createTandem( 'enabledProperty' )
+      phetioState: options.phetioState,
+      phetioReadOnly: options.phetioReadOnly,
+      tandem: options.tandem.createTandem( 'enabledProperty' ),
+      phetioInstanceDocumentation: 'When disabled, the button is grayed out and cannot be pressed'
     } );
 
     // @private - keep track of and store all listeners this model creates
@@ -133,21 +139,23 @@ define( function( require ) {
 
     /**
      * Creates a standard button listener that can be added to a node and that will trigger the changes to this model.
-     * @param {Tandem} tandem
+     * @param {Object} [options]
      * @returns {PressListener}
      * @public
      */
-    createListener: function( tandem ) {
+    createListener: function( options ) {
       var self = this;
 
-      var pressListener = new PressListener( {
-        tandem: tandem,
+      options = _.extend( {
+        phetioInstanceDocumentation: 'Indicates when the button has been pressed or released',
         isPressedProperty: this.downProperty,
         isOverProperty: this.overProperty,
         canStartPress: function() {
           return self.enabledProperty.value;
         }
-      } );
+      }, options );
+
+      var pressListener = new PressListener( options );
       this.listeners.push( pressListener );
       return pressListener;
     }
