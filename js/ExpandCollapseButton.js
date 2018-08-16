@@ -105,6 +105,11 @@ define( function( require ) {
 
     // a11y - support for binder documentation, stripped out in builds and only runs when ?binder is specified
     assert && phet.chipper.queryParameters.binder && InstanceRegistry.registerDataURL( 'sun', 'ExpandCollapseButton', this );
+
+    // @private
+    this.disposeExpandCollapseButton = function() {
+      this.expandedProperty.unlink( this.expandedPropertyObserver );
+    };
   }
 
   sun.register( 'ExpandCollapseButton', ExpandCollapseButton );
@@ -113,7 +118,7 @@ define( function( require ) {
 
     // @public - Ensures that this node is eligible for GC.
     dispose: function() {
-      this.expandedProperty.unlink( this.expandedPropertyObserver );
+      this.disposeExpandCollapseButton();
       Node.prototype.dispose.call( this );
     }
   } );
