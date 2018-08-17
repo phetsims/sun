@@ -68,7 +68,7 @@ define( function( require ) {
     }
 
     // Point down
-    this.downProperty.link( function( down ) {
+    var downPropertyObserver = function( down ) {
       if ( down ) {
         if ( self.enabledProperty.get() ) {
           if ( options.fireOnDown ) {
@@ -88,14 +88,16 @@ define( function( require ) {
           self.fire();
         }
       }
-    } );
+    };
+    this.downProperty.link( downPropertyObserver );
 
     // Stop the timer when the button is disabled.
-    this.enabledProperty.link( function( enabled ) {
+    var enabledPropertyObserver = function( enabled ) {
       if ( !enabled && self.timer ) {
         self.timer.stop( false ); // Stop the timer, don't fire if we haven't already
       }
-    } );
+    };
+    this.enabledProperty.link( enabledPropertyObserver );
 
     this.disposePushButtonModel = function() {
 
@@ -104,6 +106,8 @@ define( function( require ) {
       this.isFiringProperty.value = false;
       this.isFiringProperty.dispose();
       this.firedEmitter.dispose();
+      this.downProperty.unlink( downPropertyObserver );
+      this.enabledProperty.unlink( enabledPropertyObserver );
       if ( this.timer ) {
         this.timer.dispose();
         this.timer = null;
