@@ -42,7 +42,7 @@ define( function( require ) {
 
     // model properties
     this.overProperty = new Property( false ); // @public - Is the pointer over the button?
-    this.downProperty = new Property( false ); // @public - Is the pointer down?
+    this.downProperty = new Property( false, { reentrant: true } ); // @public - Is the pointer down?
 
     // @public - Is the button enabled?
     this.enabledProperty = new BooleanProperty( options.enabled, {
