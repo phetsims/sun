@@ -10,17 +10,20 @@ define( function( require ) {
 
   // modules
   var ButtonListener = require( 'SCENERY/input/ButtonListener' );
+  var Emitter = require( 'AXON/Emitter' );
+  var EmitterIO = require( 'AXON/EmitterIO' );
   var FontAwesomeNode = require( 'SUN/FontAwesomeNode' );
   var inherit = require( 'PHET_CORE/inherit' );
+  var InstanceRegistry = require( 'PHET_CORE/documentation/InstanceRegistry' );
   var Node = require( 'SCENERY/nodes/Node' );
+  var PhetioObject = require( 'TANDEM/PhetioObject' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var sun = require( 'SUN/sun' );
   var Tandem = require( 'TANDEM/Tandem' );
   var Text = require( 'SCENERY/nodes/Text' );
-  var InstanceRegistry = require( 'PHET_CORE/documentation/InstanceRegistry' );
 
   // ifphetio
-  var CheckboxIO = require( 'SUN/CheckboxIO' );
+  var BooleanIO = require( 'ifphetio!PHET_IO/types/BooleanIO' );
 
   // constants
   var DISABLED_OPACITY = 0.3;
@@ -33,10 +36,6 @@ define( function( require ) {
    */
   function Checkbox( content, property, options ) {
 
-    // @public (phet-io) Store for dispose();  Use a unique name to reduce the risk of collisions with parent/child classes
-    // Made public for PhET-iO so that clients can access the checkbox value and change it through the PhET-iO API
-    this.checkboxValueProperty = property;
-
     options = _.extend( {
       spacing: 5,
       boxWidth: 21,
@@ -46,8 +45,9 @@ define( function( require ) {
 
       // phet-io
       tandem: Tandem.required,
-      phetioType: CheckboxIO,
       phetioEventType: 'user',
+      phetioReadOnly: PhetioObject.DEFAULT_OPTIONS.phetioReadOnly, // to support properly passing this to children, see https://github.com/phetsims/tandem/issues/60
+      phetioInstanceDocumentation: '', // different default than PhetioObject, see implementation below
 
       // a11y
       tagName: 'input',
@@ -72,6 +72,12 @@ define( function( require ) {
       contentAppearanceStrategy: Checkbox.fadeContentWhenDisabled
     }, options );
 
+    assert && options.tandem.supplied && assert( property.tandem && property.tandem.supplied,
+      'Property must be instrumented if controlling Checkbox is.' );
+
+    // (phet-io) document the instrumented Property that this Checkbox manipulates
+    options.phetioInstanceDocumentation += ' This checkbox controls the PropertyIO: ' + property.tandem.phetioID;
+
     var self = this;
 
     Node.call( this );
@@ -81,6 +87,18 @@ define( function( require ) {
     this.contentAppearanceStrategy = options.contentAppearanceStrategy; // @private
 
     this._enabled = true; // @private
+
+    // @private - sends out notifications when the checkbox is toggled.
+    var toggledEmitter = new Emitter( {
+      tandem: options.tandem.createTandem( 'toggledEmitter' ),
+      phetioInstanceDocumentation: 'Emits when the checkbox is toggled, emitting a single arg: the new boolean value of the checkbox state.',
+      phetioReadOnly: options.phetioReadOnly,
+      phetioEventType: 'user',
+      phetioType: EmitterIO( [ BooleanIO ] )
+    } );
+    toggledEmitter.addListener( function( newValue ) {
+      property.value = newValue;
+    } );
 
     // @private - Create the background.  Until we are creating our own shapes, just put a rectangle behind the font
     // awesome checkbox icons.
@@ -120,40 +138,41 @@ define( function( require ) {
     this.fire = function() {
       if ( self._enabled ) {
         var newValue = !property.value;
-        self.phetioStartEvent( 'toggled', {
-          oldValue: property.value,
-          newValue: newValue
-        } );
-        property.value = newValue;
-        self.phetioEndEvent();
+        toggledEmitter.emit1( newValue );
       }
     };
 
-    // @private
-    this.checkboxButtonListener = new ButtonListener( {
+    var checkboxButtonListener = new ButtonListener( {
       fire: this.fire
     } );
-    this.addInputListener( this.checkboxButtonListener );
+    this.addInputListener( checkboxButtonListener );
 
     // @private (a11y) - fire the listener when checkbox is clicked with keyboard or assistive technology
-    this.changeListener = {
+    var changeListener = {
       change: this.fire
     };
-    this.addAccessibleInputListener( this.changeListener );
+    this.addAccessibleInputListener( changeListener );
 
     // @private - sync with property
-    this.checkboxCheckedListener = function( checked ) {
+    var checkboxCheckedListener = function( checked ) {
       self.checkedNode.visible = checked;
       self.uncheckedNode.visible = !checked;
       self.accessibleChecked = checked;
     };
-    property.link( this.checkboxCheckedListener );
+    property.link( checkboxCheckedListener );
 
     // Apply additional options
     this.mutate( options );
 
     // support for binder documentation, stripped out in builds and only runs when ?binder is specified
     assert && phet.chipper.queryParameters.binder && InstanceRegistry.registerDataURL( 'sun', 'Checkbox', this );
+
+    this.disposeCheckbox = function() {
+      this.removeInputListener( checkboxButtonListener );
+      this.removeAccessibleInputListener( changeListener );
+      property.unlink( checkboxCheckedListener );
+      toggledEmitter.dispose();
+    };
   }
 
   sun.register( 'Checkbox', Checkbox );
@@ -162,9 +181,7 @@ define( function( require ) {
 
     // @public
     dispose: function() {
-      this.checkboxValueProperty.unlink( this.checkboxCheckedListener );
-      this.removeInputListener( this.checkboxButtonListener );
-      this.removeAccessibleInputListener( this.changeListener );
+      this.disposeCheckbox();
       Node.prototype.dispose.call( this );
     },
 
