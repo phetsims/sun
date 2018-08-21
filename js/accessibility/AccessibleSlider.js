@@ -146,6 +146,9 @@ define( function( require ) {
           // @public controls the mapping from valueProperty to accessible output
           this.accessibleMapValue = options.accessibleMapValue;
 
+          // @private (a11y) - precision for the output value to be read by an assistive device
+          this.accessibleDecimalPlaces = options.accessibleDecimalPlaces;
+
           // initialize slider attributes
           this.ariaOrientation = options.ariaOrientation;
 
@@ -153,8 +156,9 @@ define( function( require ) {
           this.increasedEmitter = new Emitter();
           this.decreasedEmitter = new Emitter();
 
-          // a11y - arbitrary value, but attribute is required for assistive technology to send change event
-          this.setAccessibleAttribute( 'step', 0.1 );
+          // value 'any' allows input to have values that are not evenly divisible by the step size, which is
+          // required for PhET sliders, see https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#attr-step
+          this.setAccessibleAttribute( 'step', 'any' );
 
           // listeners, must be unlinked in dispose
           var enabledRangeObserver = function( enabledRange ) {
@@ -424,32 +428,39 @@ define( function( require ) {
         handleChange: function( event ) {
           if ( this._enabledProperty.get() ) {
 
-            var inputValue = event.target.value;
-            var stepSize = this._shiftKey ? this.shiftKeyboardStep : this.keyboardStep;
+            // don't handle changes if the element does not have focus - the browser may be trying to 'commit' a new
+            // value on blur that is evenly divisible by the step size, but we don't want that for AccessibleSlider
+            // since we are managing the value ourselves
+            if ( this.focused ) {
 
-            // start of change event is start of drag
-            this._startDrag();
+              var newValue = this._valueProperty.get();
 
-            var newValue = this._valueProperty.get();
-            if ( inputValue > this._valueProperty.get() ) {
-              newValue = this._valueProperty.get() + stepSize;
-              this.increasedEmitter.emit();
+              var inputValue = event.target.value;
+              var stepSize = this._shiftKey ? this.shiftKeyboardStep : this.keyboardStep;
+
+              // start of change event is start of drag
+              this._startDrag();
+
+              if ( inputValue > this._valueProperty.get() ) {
+                newValue = this._valueProperty.get() + stepSize;
+                this.increasedEmitter.emit();
+              }
+              else if ( inputValue < this._valueProperty.get() ) {
+                newValue = this._valueProperty.get() - stepSize;
+                this.decreasedEmitter.emit();
+              }
+
+              newValue = roundValue( newValue, this._valueProperty.get(), stepSize );
+
+              // limit to enabled range
+              newValue = Util.clamp( newValue, this._enabledRangeProperty.get().min, this._enabledRangeProperty.get().max );
+
+              // optionally constrain value
+              this._valueProperty.set( this._constrainValue( newValue ) );
+
+              // end of change is the end of a drag
+              this._endDrag();
             }
-            else if ( inputValue < this._valueProperty.get() ) {
-              newValue = this._valueProperty.get() - stepSize;
-              this.decreasedEmitter.emit();
-            }
-
-            newValue = roundValue( newValue, this._valueProperty.get(), stepSize );
-
-            // limit to enabled range
-            newValue = Util.clamp( newValue, this._enabledRangeProperty.get().min, this._enabledRangeProperty.get().max );
-
-            // optionally constrain value
-            this._valueProperty.set( this._constrainValue( newValue ) );
-
-            // end of change is the end of a drag
-            this._endDrag();
           }
         },
 
