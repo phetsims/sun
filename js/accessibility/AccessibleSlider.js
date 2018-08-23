@@ -187,7 +187,7 @@ define( function( require ) {
             self.inputValue = value;
 
             // format the value text for reading
-            var formattedValue = Util.toFixed( self.mappedValue, options.accessibleDecimalPlaces );
+            var formattedValue = Util.toFixedNumber( self.mappedValue, options.accessibleDecimalPlaces );
 
             // create the final string from optional parameters
             var valueText = StringUtils.fillIn( options.accessibleValuePattern, {
