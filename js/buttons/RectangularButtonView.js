@@ -175,6 +175,7 @@ define( function( require ) {
     this.disposeRectangularButtonView = function() {
       buttonAppearanceStrategy.dispose();
       contentAppearanceStrategy.dispose();
+      this.baseColorProperty.dispose();
       pressListener.dispose();
       interactionStateProperty.unlink( handleInteractionStateChanged );
 
