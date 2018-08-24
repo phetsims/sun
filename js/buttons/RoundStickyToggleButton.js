@@ -29,8 +29,6 @@ define( function( require ) {
    */
   function RoundStickyToggleButton( valueUp, valueDown, property, options ) {
 
-    var self = this;
-
     options = _.extend( {
       tandem: Tandem.required,
       phetioType: ToggleButtonIO,
@@ -44,21 +42,12 @@ define( function( require ) {
     // Note it shares a tandem with this, so the emitter will be instrumented as a child of the button
     this.toggleButtonModel = new StickyToggleButtonModel( valueUp, valueDown, property, options );
     RoundButtonView.call( this, this.toggleButtonModel, new StickyToggleButtonInteractionStateProperty( this.toggleButtonModel ), options );
-
-    // @private (a11y) - toggle the button when we receive the accessible click event
-    this.accessibleClickListener = {
-      click: function( event ) {
-        self.toggleButtonModel.toggle();
-      }
-    };
-    this.addAccessibleInputListener( this.accessibleClickListener );
   }
 
   sun.register( 'RoundStickyToggleButton', RoundStickyToggleButton );
 
   return inherit( RoundButtonView, RoundStickyToggleButton, {
     dispose: function() {
-      this.removeAccessibleInputListener( this.accessibleClickListener );
       this.toggleButtonModel.dispose(); //TODO this fails with assertions enabled, see sun#212
       RoundButtonView.prototype.dispose.call( this );
     }

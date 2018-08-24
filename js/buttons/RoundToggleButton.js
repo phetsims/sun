@@ -27,8 +27,6 @@ define( function( require ) {
    */
   function RoundToggleButton( valueOff, valueOn, property, options ) {
 
-    var self = this;
-
     // Tandem support
     options = _.extend( {
       tandem: Tandem.required,
@@ -43,14 +41,6 @@ define( function( require ) {
     this.toggleButtonModel = new ToggleButtonModel( valueOff, valueOn, property, options );
 
     RoundButtonView.call( this, this.toggleButtonModel, new ToggleButtonInteractionStateProperty( this.toggleButtonModel ), options );
-
-    // @private (a11y) - toggle the button when we receive the accessible click event
-    this.accessibleClickListener = {
-      click: function( event ) {
-        self.toggleButtonModel.toggle();
-      }
-    };
-    this.addAccessibleInputListener( this.accessibleClickListener );
   }
 
   sun.register( 'RoundToggleButton', RoundToggleButton );
@@ -59,7 +49,6 @@ define( function( require ) {
 
     // @public
     dispose: function() {
-      this.removeAccessibleInputListener( this.accessibleClickListener );
       this.toggleButtonModel.dispose(); // TODO this fails with assertions enabled, see sun#212
       RoundButtonView.prototype.dispose.call( this );
     }
