@@ -156,6 +156,9 @@ define( function( require ) {
           this.increasedEmitter = new Emitter();
           this.decreasedEmitter = new Emitter();
 
+          // @private - entries like { {number}: {boolean} }, key is range key code, value is whether it is down
+          this.rangeKeysDown = {};
+
           // value 'any' allows input to have values that are not evenly divisible by the step size, which is
           // required for PhET sliders, see https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#attr-step
           this.setAccessibleAttribute( 'step', 'any' );
@@ -168,9 +171,6 @@ define( function( require ) {
             self.setAccessibleAttribute( 'max', enabledRange.max );
           };
           this._enabledRangeProperty.link( enabledRangeObserver );
-
-          // @private {boolean} - is this the first key down event before keyup? drag is only started on first keydown
-          this._firstKeyDown = true;
 
           // handle all accessible event input
           var accessibleInputListener = {
@@ -330,10 +330,13 @@ define( function( require ) {
             if ( KeyboardUtil.isRangeKey( code ) ) {
               event.preventDefault();
 
-              // keydown is the start of the drag
-              this._firstKeyDown && this._startDrag();
-              this._firstKeyDown = false;
+              // if this is the first keydown this is the start of the drag interaction
+              if ( !this.anyKeysDown() ) {
+                this._startDrag();
+              }
 
+              // track that a new key is being held down
+              this.rangeKeysDown[ code ] = true;
 
               var newValue = this._valueProperty.get();
               if ( code === KeyboardUtil.KEY_END || code === KeyboardUtil.KEY_HOME ) {
@@ -390,7 +393,6 @@ define( function( require ) {
               this._valueProperty.set( this._constrainValue( newValue ) );
             }
           }
-
         },
 
         /**
@@ -402,17 +404,24 @@ define( function( require ) {
          */
         handleKeyUp: function( event ) {
 
+          // handle case where user tabbed to this input while an arrow key might have been held down
+          if ( this.allKeysUp() ) {
+            return;
+          }
+
           // reset shift key flag when we release it
           if ( event.keyCode === KeyboardUtil.KEY_SHIFT ) {
             this._shiftKey = false;
           }
 
           if ( this._enabledProperty.get() ) {
-
-            // when range key is released, we are done dragging
             if ( KeyboardUtil.isRangeKey( event.keyCode ) ) {
-              this._endDrag();
-              this._firstKeyDown = true;
+              this.rangeKeysDown[ event.keyCode ] = false;
+
+              // when all range keys are released, we are done dragging
+              if ( this.allKeysUp() ) {
+                this._endDrag();
+              }
             }
           }
         },
@@ -465,15 +474,43 @@ define( function( require ) {
         },
 
         /**
-         * Fires when the accessible slider loses focus. Reset the flag tracking if the shift key is held down.
+         * Fires when the accessible slider loses focus.
          * @public
          *
          * @param {DOMEvent} event
          */
         handleBlur: function( event ) {
 
+          // if any range keys are currently down, call end drag because user has stopped dragging to do something else
+          if ( this.anyKeysDown() ) {
+            this._endDrag();
+          }
+
           // reset flag in case we shift-tabbed away from slider
           this._shiftKey = false;
+
+          // reset counter for range keys down
+          this.rangeKeysDown = {};
+        },
+
+        /**
+         * Returns true if all range keys are currently up (not held down).
+         * @return {boolean}
+         * @private
+         */
+        allKeysUp: function() {
+          return _.every( this.rangeKeysDown, function( entry ) { return !entry; } );
+        },
+
+        /**
+         * Returns true if any range keys are currently down on this slider. Useful for determining when to call
+         * startDrag or endDrag based on interaction.
+         * 
+         * @return {boolean}
+         * @private
+         */
+        anyKeysDown: function() {
+          return !!_.find( this.rangeKeysDown, function( entry ) { return entry; } );
         },
 
         /**
