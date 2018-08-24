@@ -98,9 +98,9 @@ define( function( require ) {
 
     // Hook up the input listener
     // @private (a11y) {PressListener}
-    this.pressListener = buttonModel.createListener( { tandem: options.tandem.createTandem( 'pressListener' ) } );
-    this.addInputListener( this.pressListener );
-    this.addAccessibleInputListener( this.pressListener.a11yListener );
+    this._pressListener = buttonModel.createListener( { tandem: options.tandem.createTandem( 'pressListener' ) } );
+    this.addInputListener( this._pressListener );
+    this.addAccessibleInputListener( this._pressListener.a11yListener );
 
     // @private - make the base color into a property so that the appearance strategy can update itself if changes occur.
     this.baseColorProperty = new PaintColorProperty( options.baseColor ); // @private
@@ -178,7 +178,7 @@ define( function( require ) {
       buttonAppearanceStrategy.dispose();
       contentAppearanceStrategy.dispose();
       this.baseColorProperty.dispose();
-      this.pressListener.dispose();
+      this._pressListener.dispose();
       interactionStateProperty.unlink( handleInteractionStateChanged );
 
       if ( content ) {
@@ -553,7 +553,7 @@ define( function( require ) {
      * @a11y
      */
     a11yClick: function() {
-      this.pressListener.click();
+      this._pressListener.click();
     },
 
     /**

@@ -34,8 +34,9 @@ define( function( require ) {
       phetioState: PhetioObject.DEFAULT_OPTIONS.phetioState, // to support properly passing this to children, see https://github.com/phetsims/tandem/issues/60
       phetioReadOnly: PhetioObject.DEFAULT_OPTIONS.phetioReadOnly, // to support properly passing this to children, see https://github.com/phetsims/tandem/issues/60
 
-      // a11y
-      fireOnHoldInterval: 100 // fire continuously at this interval in ms when holding down button with keyboard
+      // (a11y) fire continuously at this interval in ms when holding down button with keyboard (passed to PressListener)
+      // Note same default as in PushButtonModel.js
+      fireOnHoldInterval: 100
     }, options );
 
     var self = this;
@@ -115,7 +116,8 @@ define( function( require ) {
         isOverProperty: this.overProperty,
         canStartPress: function() {
           return self.enabledProperty.value;
-        }
+        },
+        fireOnHoldInterval: this._fireOnHoldInterval
       }, options );
 
       var pressListener = new PressListener( options );
