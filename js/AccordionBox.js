@@ -59,7 +59,7 @@ define( function( require ) {
       // applied to multiple parts of this UI component
       cursor: 'pointer', // {string} default cursor
       lineWidth: 1,
-      cornerRadius: 3,
+      cornerRadius: 10,
 
       // box
       stroke: 'black',
