@@ -39,7 +39,8 @@ require.config( {
     SCENERY_PHET: '../../scenery-phet/js',
     SUN: '.',
     TAMBO: '../../tambo/js',
-    TANDEM: '../../tandem/js'
+    TANDEM: '../../tandem/js',
+    TWIXT: '../../twixt/js'
   },
 
   // optional cache buster to make browser refresh load all included scripts, can be disabled with ?cacheBuster=false
