@@ -70,7 +70,7 @@ define( function( require ) {
     // animation, scrolling between pages
     animationEnabled: true, // {boolean} is animation enabled when scrolling between pages?,
     animationDuration: 0.4, // {number} seconds
-    stepper: 'manual' // {string} see Animaton options.stepper
+    stepper: 'manual' // {string} see Animation options.stepper
   };
   assert && Object.freeze( DEFAULT_OPTIONS );
 
