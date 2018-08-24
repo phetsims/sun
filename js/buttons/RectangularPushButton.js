@@ -26,7 +26,6 @@ define( function( require ) {
    * @constructor
    */
   function RectangularPushButton( options ) {
-    var self = this;
 
     options = _.extend( {
       tandem: Tandem.required,
@@ -52,25 +51,8 @@ define( function( require ) {
     // Call the parent type
     RectangularButtonView.call( this, this.buttonModel, new PushButtonInteractionStateProperty( this.buttonModel ), options );
 
-    // a11y - press the button when 'enter' or 'spacebar' are pressed
-    var clickListener = {
-      click: function() {
-        if ( self.enabled ) {
-          self.buttonModel.a11yClick( options.accessibleFire );
-        }
-      },
-      focus: function() {
-        self.buttonModel.overProperty.value = true;
-      },
-      blur: function() {
-        self.buttonModel.a11yBlur();
-      }
-    };
-    this.addAccessibleInputListener( clickListener );
-
     this.disposeRectangularPushButton = function() {
       this.buttonModel.dispose(); //TODO this fails when assertions are enabled, see sun#212
-      this.removeAccessibleInputListener( clickListener );
     };
 
     // a11y - support for binder documentation, stripped out in builds and only runs when ?binder is specified

@@ -93,14 +93,6 @@ define( function( require ) {
 
     RectangularButtonView.call( this, this.buttonModel, this.interactionStateProperty, options );
 
-    // a11y - on reception of a change event, update the Property value
-    var accessibleChangeListener = {
-      change: function( event ) {
-        property.set( value );
-      }
-    };
-    this.addAccessibleInputListener( accessibleChangeListener );
-
     // a11y - Specify the default value for assistive technology, this attribute is needed in addition to 
     // the 'checked' property to mark this element as the default selection since 'checked' may be set before
     // we are finished adding RadioButtonGroupMembers to the RadioButtonGroup.
@@ -135,7 +127,6 @@ define( function( require ) {
 
     // @private
     this.disposeRadioButtonGroupMember = function() {
-      self.removeAccessibleInputListener( accessibleChangeListener );
       property.unlink( accessibleCheckedListener );
       this.firedEmitter.dispose();
       this.buttonModel.dispose();

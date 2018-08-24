@@ -99,6 +99,7 @@ define( function( require ) {
     // Hook up the input listener
     var pressListener = buttonModel.createListener( { tandem: options.tandem.createTandem( 'pressListener' ) } );
     this.addInputListener( pressListener );
+    this.addAccessibleInputListener( pressListener.a11yListener );
 
     // @private - make the base color into a property so that the appearance strategy can update itself if changes occur.
     this.baseColorProperty = new PaintColorProperty( options.baseColor ); // @private
