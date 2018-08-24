@@ -101,43 +101,6 @@ define( function( require ) {
     },
 
     /**
-     * Click the button by pressing the button down and then releasing after a timeout. When assistive technology is
-     * used, the browser does not receive 'down' or 'up' events on buttons - only a single 'click' event. For a11y we
-     * need to toggle the pressed state every 'click' event.
-     * @param {function} [endListener] - optional function to be called once the button has been released after
-     *                                   accessibility related interaction.
-     * @public
-     */
-    a11yClick: function( endListener ) {
-      if ( !this.downProperty.get() && this.enabledProperty.get() ) {
-
-        // ensure that button is 'over' so listener can be called while button is down
-        this.overProperty.set( true );
-        this.downProperty.set( true );
-
-        var self = this;
-        // Timer.setTimeout( function() {
-
-        // no longer down, don't reset 'over' so button can be styled as long as it has focus
-        self.downProperty.set( false );
-
-        endListener && endListener();
-        // }, self._fireOnHoldInterval );
-      }
-    },
-
-    /**
-     * Button is no longer considered over on blur, unless blur was initiated by a 'down' event.
-     *
-     * @public
-     */
-    a11yBlur: function() {
-      if ( !this.downProperty.get() ) {
-        this.overProperty.value = false;
-      }
-    },
-
-    /**
      * Creates a standard button listener that can be added to a node and that will trigger the changes to this model.
      * @param {Object} [options]
      * @returns {PressListener}
