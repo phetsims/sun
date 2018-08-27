@@ -24,8 +24,6 @@ define( function( require ) {
   var instanceCount = 0;
 
   /**
-   * Main constructor.
-   *
    * @param {Object[]} items - Each item describes a radio button, and is an object with these properties:
    *    node: Node, // label for the button
    *    value: *, // value associated with the button
