@@ -183,7 +183,7 @@ define( function( require ) {
 
           // when the property changes, be sure to update the accessible input value and aria-valuetext which is read
           // by assistive technology when the value changes
-          var accessiblePropertyListener = function( value, oldValue ) {
+          var accessiblePropertyListener = function( value ) {
             self.inputValue = value;
 
             // format the value text for reading
