@@ -16,8 +16,10 @@ define( function( require ) {
   'use strict';
 
   // modules
+  var Animation = require( 'TWIXT/Animation' );
   var CarouselButton = require( 'SUN/buttons/CarouselButton' );
   var Dimension2 = require( 'DOT/Dimension2' );
+  var Easing = require( 'TWIXT/Easing' );
   var HSeparator = require( 'SUN/HSeparator' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Node = require( 'SCENERY/nodes/Node' );
@@ -65,8 +67,10 @@ define( function( require ) {
     separatorColor: 'rgb( 180, 180, 180 )', // {Color|string} color for separators
     separatorLineWidth: 0.5, // {number} lineWidth for separators
 
-    // animation
-    animationEnabled: true // {boolean} is animation enabled when scrolling between pages?
+    // animation, scrolling between pages
+    animationEnabled: true, // {boolean} is animation enabled when scrolling between pages?,
+    animationDuration: 0.4, // {number} seconds
+    stepper: 'manual' // {string} see Animation options.stepper
   };
   assert && Object.freeze( DEFAULT_OPTIONS );
 
@@ -76,6 +80,8 @@ define( function( require ) {
    * @constructor
    */
   function Carousel( items, options ) {
+
+    var self = this;
 
     // Override defaults with specified options
     options = _.extend( {}, DEFAULT_OPTIONS, options );
@@ -244,9 +250,7 @@ define( function( require ) {
     var pageNumberProperty = new Property( options.defaultPageNumber );
 
     // Change pages
-    var self = this;
-    var scrollTween;
-
+    var scrollAnimation = null;
     function pageNumberListener( pageNumber ) {
 
       assert && assert( pageNumber >= 0 && pageNumber <= numberOfPages - 1, 'pageNumber out of range: ' + pageNumber );
@@ -260,35 +264,36 @@ define( function( require ) {
       }
 
       // stop any animation that's in progress
-      scrollTween && scrollTween.stop();
+      scrollAnimation && scrollAnimation.stop();
 
       if ( self._animationEnabled ) {
 
-        //TODO replace calls to Tween with a wrapper, see https://github.com/phetsims/tasks/issues/360
-        // Set up the animation to scroll the items in the carousel.
-        var parameters;
-        var animationDuration = 400; // ms
-        var easing = TWEEN.Easing.Cubic.InOut;
+        // options that are independent of orientation
+        var animationOptions = {
+          duration: options.animationDuration,
+          stepper: options.stepper,
+          easing: Easing.CUBIC_IN_OUT
+        };
+
+        // options that are specific to orientation
         if ( isHorizontal ) {
-          parameters = { left: scrollingNode.left };
-          scrollTween = new TWEEN.Tween( parameters )
-            .easing( easing )
-            .to( { left: -pageNumber * scrollingDelta }, animationDuration )
-            .onUpdate( function() {
-              scrollingNode.left = parameters.left;
-            } )
-            .start( window.phet && window.phet.joist && window.phet.joist.elapsedTime );
+          animationOptions = _.extend( {
+            getValue: function() { return scrollingNode.left; },
+            setValue: function( value ) { scrollingNode.left = value; },
+            to: -pageNumber * scrollingDelta
+          }, animationOptions );
         }
         else {
-          parameters = { top: scrollingNode.top };
-          scrollTween = new TWEEN.Tween( parameters )
-            .easing( easing )
-            .to( { top: -pageNumber * scrollingDelta }, animationDuration )
-            .onUpdate( function() {
-              scrollingNode.top = parameters.top;
-            } )
-            .start( window.phet && window.phet.joist && window.phet.joist.elapsedTime );
+          animationOptions = _.extend( {
+            getValue: function() { return scrollingNode.top; },
+            setValue: function( value ) { scrollingNode.top = value; },
+            to: -pageNumber * scrollingDelta
+          }, animationOptions );
         }
+
+        // create and start the scroll animation
+        scrollAnimation = new Animation( animationOptions );
+        scrollAnimation.start();
       }
       else {
 

@@ -90,6 +90,7 @@ define( function( require ) {
     // @private {PressListener}
     var pressListener = pushButtonModel.createListener( { tandem: options.tandem.createTandem( 'pressListener' ) } );
     this.addInputListener( pressListener );
+    this.addAccessibleInputListener( pressListener.a11yListener );
 
     // Use the user-specified radius if present, otherwise calculate the
     // radius based on the content and the margin.

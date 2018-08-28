@@ -99,8 +99,10 @@ define( function( require ) {
             accessibleMapValue: function( value ) { return value; },
 
             // Function to customize the logic and formatting of the aria-valuetext attribute of the `input` element.
+            // This string is read every time the slider value changes.
             // @param {number}
-            createAriaValueText: function ( formattedValue ) { return formattedValue; }
+            // @param {number}
+            createAriaValueText: function ( formattedValue, previousValue ) { return formattedValue; }
           };
 
           options = _.extend( {}, defaults, options );
@@ -191,7 +193,7 @@ define( function( require ) {
 
             // create the final string from optional parameters
             var valueText = StringUtils.fillIn( options.accessibleValuePattern, {
-              value: options.createAriaValueText( formattedValue )
+              value: options.createAriaValueText( formattedValue, oldValue )
             } );
 
             self.setAccessibleAttribute( 'aria-valuetext', valueText );

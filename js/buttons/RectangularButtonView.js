@@ -97,8 +97,10 @@ define( function( require ) {
     var content = options.content; // convenience variable
 
     // Hook up the input listener
-    var pressListener = buttonModel.createListener( { tandem: options.tandem.createTandem( 'pressListener' ) } );
-    this.addInputListener( pressListener );
+    // @private (a11y) {PressListener}
+    this._pressListener = buttonModel.createListener( { tandem: options.tandem.createTandem( 'pressListener' ) } );
+    this.addInputListener( this._pressListener );
+    this.addAccessibleInputListener( this._pressListener.a11yListener );
 
     // @private - make the base color into a property so that the appearance strategy can update itself if changes occur.
     this.baseColorProperty = new PaintColorProperty( options.baseColor ); // @private
@@ -176,7 +178,7 @@ define( function( require ) {
       buttonAppearanceStrategy.dispose();
       contentAppearanceStrategy.dispose();
       this.baseColorProperty.dispose();
-      pressListener.dispose();
+      this._pressListener.dispose();
       interactionStateProperty.unlink( handleInteractionStateChanged );
 
       if ( content ) {
@@ -543,6 +545,16 @@ define( function( require ) {
      */
     getBaseColor: function() { return this.baseColorProperty.value; },
     get baseColor() { return this.getBaseColor(); },
+
+    /**
+     * Clicks the button. Recommended only for accessibility usages. For the most part, a11y button functionality should
+     * be managed by the PressListener.a11yListener. This is more for edge cases.
+     * @public
+     * @a11y
+     */
+    a11yClick: function() {
+      this._pressListener.click();
+    },
 
     /**
      * dispose function

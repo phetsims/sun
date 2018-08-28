@@ -33,8 +33,7 @@ define( function( require ) {
       phetioType: PushButtonIO,
 
       // a11y
-      tagName: 'button',
-      accessibleFire: function() {}
+      tagName: 'button'
     }, options );
 
     var self = this;
@@ -53,24 +52,7 @@ define( function( require ) {
     // add the listener that was potentially saved above
     listener && this.addListener( listener );
 
-    // a11y - when the button is clicked with assistive technology, fire
-    var clickListener = {
-      click: function() {
-        if ( self.enabled ) {
-          self.buttonModel.a11yClick( options.accessibleFire );
-        }
-      },
-      focus: function() {
-        self.buttonModel.overProperty.value = true;
-      },
-      blur: function() {
-        self.buttonModel.a11yBlur();
-      }
-    };
-    this.addAccessibleInputListener( clickListener );
-
     this.disposeRoundPushButton = function() {
-      self.removeAccessibleInputListener( clickListener );
       self.buttonModel.dispose();
     };
   }

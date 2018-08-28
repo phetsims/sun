@@ -282,8 +282,8 @@ define( function( require ) {
     this.initializeAccessibleNumberSpinner( numberProperty, rangeProperty, this.enabledProperty, options );
 
     // a11y - click arrow buttons on keyboard increment/decrement; must be disposed
-    var increasedListener = function() { incrementButton.buttonModel.a11yClick(); };
-    var decreasedListener = function() { decrementButton.buttonModel.a11yClick(); };
+    var increasedListener = function() { incrementButton.a11yClick(); };
+    var decreasedListener = function() { decrementButton.a11yClick(); };
     this.valueIncrementEmitter.addListener( increasedListener );
     this.valueDecrementEmitter.addListener( decreasedListener );
 
