@@ -76,7 +76,9 @@ define( function( require ) {
       'Property must be instrumented if controlling Checkbox is.' );
 
     // (phet-io) document the instrumented Property that this Checkbox manipulates
-    options.phetioInstanceDocumentation += ' This checkbox controls the PropertyIO: ' + property.tandem.phetioID;
+    options.phetioInstanceDocumentation +=
+      ' This checkbox controls the PropertyIO: ' +
+      '<a href="#' + phetio.PhetioIDUtils.getDOMElementID( property.tandem.phetioID ) + '">' + property.tandem.phetioID + '</a>';
 
     var self = this;
 
