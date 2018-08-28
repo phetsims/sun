@@ -165,7 +165,7 @@ define( function( require ) {
       // a11y
       tagName: 'button',
       innerContent: closeString,
-      a11yEndListener: function() {
+      onAccessibleClick: function() {
         self.focusActiveElement();
       }
     } );
