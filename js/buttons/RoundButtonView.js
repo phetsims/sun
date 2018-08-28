@@ -148,6 +148,7 @@ define( function( require ) {
       contentAppearanceStrategy.dispose();
       pressListener.dispose();
       interactionStateProperty.unlink( handleInteractionStateChanged );
+      this.baseColorProperty.dispose();
     };
   }
 
