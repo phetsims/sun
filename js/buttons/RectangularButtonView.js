@@ -85,7 +85,10 @@ define( function( require ) {
       contentAppearanceStrategy: RectangularButtonView.FadeContentWhenDisabled,
 
       // a11y
-      tagName: 'button'
+      tagName: 'button',
+
+      // a11y {function} - called at the end of a keyboard press, passed to PressListener through ButtonModel
+      a11yEndListener: null
     }, options );
 
     // validate options
@@ -98,7 +101,10 @@ define( function( require ) {
 
     // Hook up the input listener
     // @private (a11y) {PressListener}
-    this._pressListener = buttonModel.createListener( { tandem: options.tandem.createTandem( 'pressListener' ) } );
+    this._pressListener = buttonModel.createListener( {
+      tandem: options.tandem.createTandem( 'pressListener' ),
+      a11yEndListener: options.a11yEndListener
+    } );
     this.addInputListener( this._pressListener );
     this.addAccessibleInputListener( this._pressListener.a11yListener );
 
