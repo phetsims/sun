@@ -5,7 +5,7 @@
  * Press and release immediately and the button fires on 'up'.
  * Press and hold for M milliseconds and the button will fire repeatedly every N milliseconds until released.
  *
- * @author Chris Malley (PixelZoom, Inc)
+ * @author Chris Malley (PixelZoom, Inc.)
  */
 define( function( require ) {
   'use strict';
