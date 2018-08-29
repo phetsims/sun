@@ -36,7 +36,7 @@ define( function( require ) {
 
     // @private
     this.pressedEmitter = new Emitter( {
-        tandem: options.tandem.createTandem( 'pressedEmitter' ),
+      tandem: options.tandem.createTandem( 'momentaryPressedEmitter' ),
         phetioInstanceDocumentation: 'Emits when the button is pressed',
         phetioReadOnly: options.phetioReadOnly
       }
@@ -44,7 +44,7 @@ define( function( require ) {
 
     // @private
     this.releasedEmitter = new Emitter( {
-        tandem: options.tandem.createTandem( 'releasedEmitter' ),
+      tandem: options.tandem.createTandem( 'momentaryReleasedEmitter' ),
         phetioInstanceDocumentation: 'Emits when the button is released',
         phetioReadOnly: options.phetioReadOnly
       }
