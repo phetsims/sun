@@ -88,7 +88,7 @@ define( function( require ) {
     this.baseColorProperty = new PaintColorProperty( options.baseColor ); // @private
 
     // @private {PressListener}
-    var pressListener = pushButtonModel.createListener( { tandem: options.tandem.createTandem( 'pressListener' ) } );
+    var pressListener = pushButtonModel.createListener( { tandem: options.tandem } );
     this.addInputListener( pressListener );
     this.addAccessibleInputListener( pressListener.a11yListener );
 
