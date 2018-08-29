@@ -102,7 +102,7 @@ define( function( require ) {
     // Hook up the input listener
     // @private (a11y) {PressListener}
     this._pressListener = buttonModel.createListener( {
-      tandem: options.tandem,
+      tandem: options.tandem.createTandem( 'pressListener' ),
       onAccessibleClick: options.onAccessibleClick
     } );
     this.addInputListener( this._pressListener );

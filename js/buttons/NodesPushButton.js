@@ -46,7 +46,7 @@ define( function( require ) {
     this.buttonModel = new PushButtonModel( options ); // @private
 
     // @private {PressListener}
-    this.pressListener = this.buttonModel.createListener( { tandem: options.tandem } );
+    this.pressListener = this.buttonModel.createListener( { tandem: options.tandem.createTandem( 'pressListener' ) } );
     this.addInputListener( this.pressListener );
 
     // Button interactions
