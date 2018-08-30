@@ -20,9 +20,9 @@ define( function( require ) {
 
   /**
    * @param {Object[]} items - Each item describes a checkbox, and is an object with these properties:
-   *    node: Node, // label for the button
-   *    property: Property.<boolean>, // Property associated with the button
-   *    [tandemName: Tandem] // optional tandem for PhET-iO
+   *    node: {Node}, // label for the button
+   *    property: {Property.<boolean>}, // Property associated with the button
+   *    [tandem]: {Tandem} // optional tandem for PhET-iO
    * @param {Object} [options]
    * @constructor
    */
