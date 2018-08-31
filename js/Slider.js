@@ -107,7 +107,7 @@ define( function( require ) {
     this.orientation = options.orientation; // @private
 
     assert && assert( options.rotation === undefined,
-      'Slider specified rotation based on orientation' );
+      'Slider specifies rotation based on orientation' );
     if ( options.orientation === 'vertical' ) {
       options.rotation = VERTICAL_ROTATION;
     }
