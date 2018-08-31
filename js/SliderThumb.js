@@ -1,8 +1,11 @@
-// Copyright 2016-2017, University of Colorado Boulder
+// Copyright 2018, University of Colorado Boulder
 
 /**
- * A default slider thumb, currently intended for use only in HSlider. It's a rectangle with a vertical white line down
- * the center.  The origin is at the top left (HSlider uses the thumb center for positioning).
+ * A default slider thumb, drawn in horizontal orientation, intended for use by Slider. 
+ * It's a rectangle with a vertical white line down the center.  
+ * The origin is at the top left (Slider uses the thumb center for positioning).
+ *
+ * Note: This type was originally named HSliderThumb, renamed in https://github.com/phetsims/sun/issues/380.
  *
  * @author Chris Malley (PixelZoom, Inc.)
  */
@@ -21,11 +24,11 @@ define( function( require ) {
 
   /**
    * @param {Property.<boolean>} enabledProperty
-   * @param {Object} [options] see HSlider constructor
+   * @param {Object} [options] see Slider constructor
    * @constructor
    * @private
    */
-  function HSliderThumb( enabledProperty, options ) {
+  function SliderThumb( enabledProperty, options ) {
 
     options = _.extend( {
       size: new Dimension2( 22, 45 ),
@@ -76,21 +79,21 @@ define( function( require ) {
     var enabledObserver = function( enabled ) {
       self.fill = enabled ? options.fillEnabled : options.fillDisabled;
     };
-    enabledProperty.link( enabledObserver ); // must be unlinked in disposeHSliderThumb
+    enabledProperty.link( enabledObserver ); // must be unlinked in disposeSliderThumb
 
     // @private Called by dispose
-    this.disposeHSliderThumb = function() {
+    this.disposeSliderThumb = function() {
       enabledProperty.unlink( enabledObserver );
     };
   }
 
-  sun.register( 'HSliderThumb', HSliderThumb );
+  sun.register( 'SliderThumb', SliderThumb );
 
-  return inherit( Rectangle, HSliderThumb, {
+  return inherit( Rectangle, SliderThumb, {
 
     // @public - Ensures that this object is eligible for GC.
     dispose: function() {
-      this.disposeHSliderThumb();
+      this.disposeSliderThumb();
       Rectangle.prototype.dispose.call( this );
     }
   } );

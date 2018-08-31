@@ -1,4 +1,4 @@
-// Copyright 2015-2017, University of Colorado Boulder
+// Copyright 2018, University of Colorado Boulder
 
 /**
  * Demonstration of misc sun UI components.
@@ -40,6 +40,7 @@ define( function( require ) {
   var Text = require( 'SCENERY/nodes/Text' );
   var Timer = require( 'PHET_CORE/Timer' );
   var VBox = require( 'SCENERY/nodes/VBox' );
+  var VSlider = require( 'SUN/VSlider' );
 
   /**
    * @constructor
@@ -56,6 +57,7 @@ define( function( require ) {
       { label: 'Carousel', getNode: demoCarousel },
       { label: 'ComboBox', getNode: demoComboBox },
       { label: 'HSlider', getNode: demoHSlider },
+      { label: 'VSlider', getNode: demoVSlider },
       { label: 'OnOffSwitch', getNode: demoOnOffSwitch },
       { label: 'PageControl', getNode: demoPageControl },
       { label: 'NumberSpinner', getNode: demoNumberSpinner },
@@ -166,11 +168,26 @@ define( function( require ) {
 
   // Creates a demo for HSlider
   var demoHSlider = function( layoutBounds ) {
+    return demoSlider( layoutBounds, 'horizontal' );
+  };
+
+  // Creates a demo for VSlider
+  var demoVSlider = function( layoutBounds ) {
+    return demoSlider( layoutBounds, 'vertical' );
+  };
+
+  /**
+   * Used by demoHSlider and demoVSlider
+   * @param {Bounds2} layoutBounds
+   * @param {string} orientation - see Slider orientation option
+   * @returns {Node}
+   */
+  var demoSlider = function( layoutBounds, orientation ) {
 
     var property = new Property( 0 );
     var range = new RangeWithValue( 0, 100 );
     var tickLabelOptions = { font: new PhetFont( 16 ) };
-    var slider = new HSlider( property, range, {
+    var sliderOptions = {
       trackSize: new Dimension2( 300, 5 ),
       thumbTouchAreaXDilation: 15,
       thumbTouchAreaYDilation: 15,
@@ -178,7 +195,15 @@ define( function( require ) {
       thumbMouseAreaYDilation: 5,
       center: layoutBounds.center,
       enabledProperty: new Property( true )
-    } );
+    };
+
+    var slider = null;
+    if ( orientation === 'horizontal' ) {
+      slider = new HSlider( property, range, sliderOptions );
+    }
+    else {
+      slider = new VSlider( property, range, sliderOptions );
+    }
 
     // major ticks
     slider.addMajorTick( range.min, new Text( range.min, tickLabelOptions ) );
@@ -232,7 +257,29 @@ define( function( require ) {
       left: slider.left,
       top: enabledCheckbox.bottom + 40
     } );
-    return new Node( { children: [ slider, majorTicksCheckbox, minorTicksCheckbox, enabledCheckbox, enabledRangeCheckbox ] } );
+
+    // All of the controls related to the slider
+    var controls = new VBox( {
+      align: 'left',
+      spacing: 30,
+      children: [ majorTicksCheckbox, minorTicksCheckbox, enabledCheckbox, enabledRangeCheckbox ]
+    } );
+
+    // Position the control based on the orientation of the slider
+    var layoutBoxOptions = {
+      spacing: 60,
+      children: [ slider, controls ],
+      center: layoutBounds.center
+    };
+    var layoutBox = null;
+    if ( orientation === 'horizontal' ) {
+      layoutBox = new VBox( layoutBoxOptions );
+    }
+    else {
+      layoutBox = new HBox( layoutBoxOptions );
+    }
+
+    return layoutBox;
   };
 
   // Creates a demo for OnOffSwitch

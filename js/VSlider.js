@@ -1,7 +1,7 @@
 // Copyright 2018, University of Colorado Boulder
 
 /**
- * Convenience type for horizontal slider.
+ * Convenience type for vertical slider.
  * See https://github.com/phetsims/sun/issues/380
  *
  * @author Chris Malley (PixelZoom, Inc.)
@@ -20,17 +20,17 @@ define( function( require ) {
    * @param {Object} [options]
    * @constructor
    */
-  function HSlider( valueProperty, range, options ) {
+  function VSlider( valueProperty, range, options ) {
 
-    assert && assert( !options || options.orientation === undefined, 'HSlider sets orientation' );
+    assert && assert( !options || options.orientation === undefined, 'VSlider sets orientation' );
 
     Slider.call( this, valueProperty, range, _.extend( {
-      orientation: 'horizontal'
+      orientation: 'vertical'
     }, options ) );
   }
 
-  sun.register( 'HSlider', HSlider );
+  sun.register( 'VSlider', VSlider );
 
-  return inherit( Slider, HSlider );
+  return inherit( Slider, VSlider );
 } );
  
