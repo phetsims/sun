@@ -406,7 +406,7 @@ define( function( require ) {
         var randomRect = new Rectangle( 0, 0, phet.joist.random.nextDouble() * 60 + 10, phet.joist.random.nextDouble() * 60 + 10, {
           fill: 'black'
         } );
-        Timer.addStepListener( function() {
+        Timer.addListener( function() {
           if ( phet.joist.random.nextDouble() < 0.02 ) {
             randomRect.rectWidth = phet.joist.random.nextDouble() * 60 + 10;
             randomRect.rectHeight = phet.joist.random.nextDouble() * 60 + 10;
@@ -422,7 +422,7 @@ define( function( require ) {
     var panelGroup = new AlignGroup( { matchVertical: false } );
     function randomText() {
       var text = new Text( 'Test', { fontSize: 20 } );
-      Timer.addStepListener( function() {
+      Timer.addListener( function() {
         if ( phet.joist.random.nextDouble() < 0.03 ) {
           var string = '';
           while ( phet.joist.random.nextDouble() < 0.94 && string.length < 20 ) {
