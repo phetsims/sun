@@ -1,4 +1,4 @@
-// Copyright 2017, University of Colorado Boulder
+// Copyright 2017-2018, University of Colorado Boulder
 
 /**
  * A trait for subtypes of Node, used to make the node behave like a 'slider' with assistive technology. This could be
@@ -106,6 +106,9 @@ define( function( require ) {
           };
 
           options = _.extend( {}, defaults, options );
+
+          assert && assert( options.ariaOrientation === 'horizontal' || options.ariaOrientation === 'vertical',
+            'invalid ariaOrientation: ' + options.ariaOrientation );
 
           // Some options were already mutated in the constructor, only apply the accessibility-specific options here
           // so options are not doubled up, see https://github.com/phetsims/sun/issues/330

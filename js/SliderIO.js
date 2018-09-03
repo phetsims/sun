@@ -1,7 +1,7 @@
 // Copyright 2017-2018, University of Colorado Boulder
 
 /**
- * IO type for HSlider
+ * IO type for Slider
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */
@@ -19,16 +19,16 @@ define( function( require ) {
   var VoidIO = require( 'ifphetio!PHET_IO/types/VoidIO' );
 
   /**
-   * @param {HSlider} hslider
+   * @param {Slider} slider
    * @param {string} phetioID
    * @constructor
    */
-  function HSliderIO( hslider, phetioID ) {
-    assert && assertInstanceOf( hslider, phet.sun.HSlider );
-    NodeIO.call( this, hslider, phetioID );
+  function SliderIO( slider, phetioID ) {
+    assert && assertInstanceOf( slider, phet.sun.Slider );
+    NodeIO.call( this, slider, phetioID );
   }
 
-  phetioInherit( NodeIO, 'HSliderIO', HSliderIO, {
+  phetioInherit( NodeIO, 'SliderIO', SliderIO, {
 
     setMajorTicksVisible: {
       returnType: VoidIO,
@@ -51,7 +51,7 @@ define( function( require ) {
     documentation: 'A traditional slider component, with a knob and possibly tick marks'
   } );
 
-  sun.register( 'HSliderIO', HSliderIO );
+  sun.register( 'SliderIO', SliderIO );
 
-  return HSliderIO;
+  return SliderIO;
 } );

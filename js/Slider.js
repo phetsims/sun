@@ -1,7 +1,10 @@
-// Copyright 2018, University of Colorado Boulder
+// Copyright 2015-2018, University of Colorado Boulder
 
 /**
- * Horizontal slider.
+ * Slider, with support for horizontal and vertical orientations. By default, the slider is constructed in the
+ * horizontal orientation, then adjusted if the vertical orientation was specified.
+ *
+ * Note: This type was originally named HSlider, renamed in https://github.com/phetsims/sun/issues/380.
  *
  * @author Chris Malley (PixelZoom, Inc.)
  */
@@ -13,9 +16,6 @@ define( function( require ) {
   var InstanceRegistry = require( 'PHET_CORE/documentation/InstanceRegistry' );
   var Dimension2 = require( 'DOT/Dimension2' );
   var FocusHighlightFromNode = require( 'SCENERY/accessibility/FocusHighlightFromNode' );
-  var HSliderIO = require( 'SUN/HSliderIO' );
-  var HSliderThumb = require( 'SUN/HSliderThumb' );
-  var HSliderTrack = require( 'SUN/HSliderTrack' );
   var inherit = require( 'PHET_CORE/inherit' );
   var LinearFunction = require( 'DOT/LinearFunction' );
   var Node = require( 'SCENERY/nodes/Node' );
@@ -25,6 +25,9 @@ define( function( require ) {
   var RangeIO = require( 'DOT/RangeIO' );
   var Shape = require( 'KITE/Shape' );
   var SimpleDragHandler = require( 'SCENERY/input/SimpleDragHandler' );
+  var SliderIO = require( 'SUN/SliderIO' );
+  var SliderThumb = require( 'SUN/SliderThumb' );
+  var SliderTrack = require( 'SUN/SliderTrack' );
   var sun = require( 'SUN/sun' );
   var Tandem = require( 'TANDEM/Tandem' );
   var Util = require( 'DOT/Util' );
@@ -32,17 +35,22 @@ define( function( require ) {
   // ifphetio
   var BooleanIO = require( 'ifphetio!PHET_IO/types/BooleanIO' );
 
+  // constants
+  var VERTICAL_ROTATION = -Math.PI / 2;
+
   /**
    * @param {Property.<number>} valueProperty
    * @param {{min:number, max:number}|Range} range
    * @param {Object} [options]
    * @constructor
    */
-  function HSlider( valueProperty, range, options ) {
+  function Slider( valueProperty, range, options ) {
 
     var self = this;
 
     options = _.extend( {
+
+      orientation: 'horizontal', // 'horizontal'|'vertical'
 
       // track
       trackSize: new Dimension2( 100, 5 ),
@@ -91,8 +99,17 @@ define( function( require ) {
 
       // phet-io
       tandem: Tandem.required,
-      phetioType: HSliderIO
+      phetioType: SliderIO
     }, options );
+
+    assert && assert( options.orientation === 'horizontal' || options.orientation === 'vertical',
+      'invalid orientation: ' + options.orientation );
+    this.orientation = options.orientation; // @private
+
+    assert && assert( options.rotation === undefined, 'Slider sets rotation based on orientation' );
+    if ( options.orientation === 'vertical' ) {
+      options.rotation = VERTICAL_ROTATION;
+    }
 
     Node.call( this );
 
@@ -130,9 +147,9 @@ define( function( require ) {
     this.valueToPosition = new LinearFunction( range.min, range.max, 0, options.trackSize.width, true /* clamp */ );
 
     // @private track
-    this.track = new HSliderTrack( valueProperty, this.valueToPosition, {
+    this.track = new SliderTrack( valueProperty, this.valueToPosition, {
 
-      // propagate options that are specific to HSliderTrack
+      // propagate options that are specific to SliderTrack
       size: options.trackSize,
       fillEnabled: options.trackFillEnabled,
       fillDisabled: options.trackFillDisabled,
@@ -150,9 +167,9 @@ define( function( require ) {
     this.track.centerX = this.valueToPosition( ( range.max + range.min ) / 2 );
 
     // The thumb of the slider
-    var thumb = options.thumbNode || new HSliderThumb( this.enabledProperty, {
+    var thumb = options.thumbNode || new SliderThumb( this.enabledProperty, {
 
-      // propagate options that are specific to HSliderThumb
+      // propagate options that are specific to SliderThumb
       size: options.thumbSize,
       fillEnabled: options.thumbFillEnabled,
       fillHighlighted: options.thumbFillHighlighted,
@@ -232,7 +249,7 @@ define( function( require ) {
       }
       self.pickable = enabled;
     };
-    this.enabledProperty.link( enabledObserver ); // must be unlinked in disposeHSlider
+    this.enabledProperty.link( enabledObserver ); // must be unlinked in disposeSlider
 
     // a11y - custom focus highlight that surrounds and moves with the thumb
     this.focusHighlight = new FocusHighlightFromNode( thumb );
@@ -242,7 +259,7 @@ define( function( require ) {
       thumb.centerX = self.valueToPosition( value );
       self.focusHighlight.centerX = thumb.centerX;
     };
-    valueProperty.link( valueObserver ); // must be unlinked in disposeHSlider
+    valueProperty.link( valueObserver ); // must be unlinked in disposeSlider
 
     // when the enabled range changes, the value to position linear function must change as well
     var enabledRangeObserver = function( enabledRange ) {
@@ -268,7 +285,7 @@ define( function( require ) {
     this.mutate( options );
 
     // @private Called by dispose
-    this.disposeHSlider = function() {
+    this.disposeSlider = function() {
       thumb.dispose && thumb.dispose(); // in case a custom thumb is provided via options.thumbNode that doesn't implement dispose
       self.track.dispose();
       self.disposeAccessibleSlider(); // dispose accessibility
@@ -279,20 +296,23 @@ define( function( require ) {
       thumbInputListener.dispose();
     };
 
-    // mix accessible slider functionality into HSlider
-    this.initializeAccessibleSlider( valueProperty, this.enabledRangeProperty, this.enabledProperty, options );
+    // mix accessible slider functionality into Slider
+    this.initializeAccessibleSlider( valueProperty, this.enabledRangeProperty, this.enabledProperty,
+      _.extend( {}, options, {
+        ariaOrientation: options.orientation
+      } ) );
 
     // support for binder documentation, stripped out in builds and only runs when ?binder is specified
-    assert && phet.chipper.queryParameters.binder && InstanceRegistry.registerDataURL( 'sun', 'HSlider', this );
+    assert && phet.chipper.queryParameters.binder && InstanceRegistry.registerDataURL( 'sun', 'Slider', this );
   }
 
-  sun.register( 'HSlider', HSlider );
+  sun.register( 'Slider', Slider );
 
-  inherit( Node, HSlider, {
+  inherit( Node, Slider, {
 
     // @public - ensures that this object is eligible for GC
     dispose: function() {
-      this.disposeHSlider();
+      this.disposeSlider();
       Node.prototype.dispose.call( this );
     },
 
@@ -330,14 +350,21 @@ define( function( require ) {
      */
     addTick: function( parent, value, label, length, stroke, lineWidth ) {
       var labelX = this.valueToPosition( value );
+
       // ticks
       var tick = new Path( new Shape()
           .moveTo( labelX, this.track.top )
           .lineTo( labelX, this.track.top - length ),
         { stroke: stroke, lineWidth: lineWidth } );
       parent.addChild( tick );
+
       // label
       if ( label ) {
+
+        // For a vertical slider, rotate labels opposite the rotation of the slider, so that they appear as expected.
+        if ( this.orientation === 'vertical' ) {
+          label.rotation = -VERTICAL_ROTATION;
+        }
         parent.addChild( label );
         label.centerX = tick.centerX;
         label.bottom = tick.top - this.tickOptions.tickLabelSpacing;
@@ -386,8 +413,8 @@ define( function( require ) {
     get minorTicksVisible() { return this.getMinorTicksVisible(); }
   } );
 
-  // mix accessibility into HSlider
-  AccessibleSlider.mixInto( HSlider );
+  // mix accessibility into Slider
+  AccessibleSlider.mixInto( Slider );
 
-  return HSlider;
+  return Slider;
 } );

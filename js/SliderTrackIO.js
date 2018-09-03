@@ -1,7 +1,7 @@
 // Copyright 2018, University of Colorado Boulder
 
 /**
- * IO type for HSliderTrack
+ * IO type for SliderTrack
  *
  * @author Sam Reid (PhET Interactive Simulations)
  * @author Andrew Adare (PhET Interactive Simulations)
@@ -18,21 +18,21 @@ define( function( require ) {
   var phetioInherit = require( 'ifphetio!PHET_IO/phetioInherit' );
   
   /**
-   * IO type for phet/sun's HSliderTrack class.
-   * @param {HSliderTrack} hSliderTrack
+   * IO type for phet/sun's SliderTrack class.
+   * @param {SliderTrack} sliderTrack
    * @param {string} phetioID
    * @constructor
    */
-  function HSliderTrackIO( hSliderTrack, phetioID ) {
-    assert && assertInstanceOf( hSliderTrack, phet.sun.HSliderTrack );
-    NodeIO.call( this, hSliderTrack, phetioID );
+  function SliderTrackIO( sliderTrack, phetioID ) {
+    assert && assertInstanceOf( sliderTrack, phet.sun.SliderTrack );
+    NodeIO.call( this, sliderTrack, phetioID );
   }
 
-  phetioInherit( NodeIO, 'HSliderTrackIO', HSliderTrackIO, {}, {
+  phetioInherit( NodeIO, 'SliderTrackIO', SliderTrackIO, {}, {
     documentation: 'The track for a knob of a traditional slider'
   } );
 
-  sun.register( 'HSliderTrackIO', HSliderTrackIO );
+  sun.register( 'SliderTrackIO', SliderTrackIO );
 
-  return HSliderTrackIO;
+  return SliderTrackIO;
 } );

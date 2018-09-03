@@ -25,7 +25,7 @@ define( function( require ) {
    * @constructor
    * @private
    */
-  function HSliderThumb( enabledProperty, options ) {
+  function SliderThumb( enabledProperty, options ) {
 
     options = _.extend( {
       size: new Dimension2( 22, 45 ),
@@ -76,21 +76,21 @@ define( function( require ) {
     var enabledObserver = function( enabled ) {
       self.fill = enabled ? options.fillEnabled : options.fillDisabled;
     };
-    enabledProperty.link( enabledObserver ); // must be unlinked in disposeHSliderThumb
+    enabledProperty.link( enabledObserver ); // must be unlinked in disposeSliderThumb
 
     // @private Called by dispose
-    this.disposeHSliderThumb = function() {
+    this.disposeSliderThumb = function() {
       enabledProperty.unlink( enabledObserver );
     };
   }
 
-  sun.register( 'HSliderThumb', HSliderThumb );
+  sun.register( 'SliderThumb', SliderThumb );
 
-  return inherit( Rectangle, HSliderThumb, {
+  return inherit( Rectangle, SliderThumb, {
 
     // @public - Ensures that this object is eligible for GC.
     dispose: function() {
-      this.disposeHSliderThumb();
+      this.disposeSliderThumb();
       Rectangle.prototype.dispose.call( this );
     }
   } );
