@@ -1,13 +1,11 @@
-// Copyright 2018, University of Colorado Boulder
+// Copyright 2016-2017, University of Colorado Boulder
 
 /**
- * A default slider track, drawn in horizontal orientation, intended for use only in Slider.
+ * A default slider track, currently intended for use only in HSlider.
  *
- * SliderTrack is composed of two rectangles, one for the enabled section of the track and one for the disabled
+ * HSliderTrack is composed of two rectangles, one for the enabled section of the track and one for the disabled
  * section.  The enabled track rectangle sits on top of the disabled track so that the enabled range can be any
  * desired sub range of the full slider range.
- *
- * Note: This type was originally named HSliderTrack, renamed in https://github.com/phetsims/sun/issues/380.
  *
  * @author Chris Malley (PixelZoom, Inc.)
  * @author Sam Reid (PhET Interactive Simulations)
@@ -27,7 +25,7 @@ define( function( require ) {
   var Tandem = require( 'TANDEM/Tandem' );
 
   // ifphetio
-  var SliderTrackIO = require( 'SUN/SliderTrackIO' );
+  var HSliderTrackIO = require( 'SUN/HSliderTrackIO' );
 
   /**
    * @param {Property.<number>} valueProperty
@@ -35,7 +33,7 @@ define( function( require ) {
    * @param {Object} [options]
    * @constructor
    */
-  function SliderTrack( valueProperty, valueToPosition, options ) {
+  function HSliderTrack( valueProperty, valueToPosition, options ) {
 
     var self = this;
     Node.call( this );
@@ -54,7 +52,7 @@ define( function( require ) {
 
       // phet-io
       tandem: Tandem.required,
-      phetioType: SliderTrackIO
+      phetioType: HSliderTrackIO
 
     }, options );
 
@@ -129,22 +127,22 @@ define( function( require ) {
         if ( trackInputListener.dragging ) { trackInputListener.endDrag(); }
       }
     };
-    this.enabledProperty.link( enabledObserver ); // must be unlinked in disposeSliderTrack
+    this.enabledProperty.link( enabledObserver ); // must be unlinked in disposeHSliderTrack
 
     // @private Called by dispose
-    this.disposeSliderTrack = function() {
+    this.disposeHSliderTrack = function() {
       self.enabledProperty.unlink( enabledObserver );
       trackInputListener.dispose();
     };
   }
 
-  sun.register( 'SliderTrack', SliderTrack );
+  sun.register( 'HSliderTrack', HSliderTrack );
 
-  inherit( Node, SliderTrack, {
+  inherit( Node, HSliderTrack, {
 
     // @public - ensures that this object is eligible for GC
     dispose: function() {
-      this.disposeSliderTrack();
+      this.disposeHSliderTrack();
       Node.prototype.dispose.call( this );
     },
 
@@ -160,5 +158,5 @@ define( function( require ) {
     }
   } );
 
-  return SliderTrack;
+  return HSliderTrack;
 } );
