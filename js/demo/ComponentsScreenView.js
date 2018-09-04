@@ -38,7 +38,7 @@ define( function( require ) {
   var sun = require( 'SUN/sun' );
   var sunQueryParameters = require( 'SUN/sunQueryParameters' );
   var Text = require( 'SCENERY/nodes/Text' );
-  var Timer = require( 'PHET_CORE/Timer' );
+  var timer = require( 'PHET_CORE/timer' );
   var VBox = require( 'SCENERY/nodes/VBox' );
   var VSlider = require( 'SUN/VSlider' );
 
@@ -406,7 +406,7 @@ define( function( require ) {
         var randomRect = new Rectangle( 0, 0, phet.joist.random.nextDouble() * 60 + 10, phet.joist.random.nextDouble() * 60 + 10, {
           fill: 'black'
         } );
-        Timer.addListener( function() {
+        timer.addListener( function() {
           if ( phet.joist.random.nextDouble() < 0.02 ) {
             randomRect.rectWidth = phet.joist.random.nextDouble() * 60 + 10;
             randomRect.rectHeight = phet.joist.random.nextDouble() * 60 + 10;
@@ -423,7 +423,7 @@ define( function( require ) {
 
     function randomText() {
       var text = new Text( 'Test', { fontSize: 20 } );
-      Timer.addListener( function() {
+      timer.addListener( function() {
         if ( phet.joist.random.nextDouble() < 0.03 ) {
           var string = '';
           while ( phet.joist.random.nextDouble() < 0.94 && string.length < 20 ) {

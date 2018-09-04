@@ -1,8 +1,8 @@
 // Copyright 2015-2017, University of Colorado Boulder
 
 /**
- * Timer that calls a set of registered callbacks.
- * Utilizes joist.Timer, but provides a higher level of abstraction, hiding the details of managing the timer.
+ * timer that calls a set of registered callbacks.
+ * Utilizes PHET_CORE/timer, but provides a higher level of abstraction, hiding the details of managing the timer.
  *
  * @author Chris Malley (PixelZoom, Inc.)
  */
@@ -12,7 +12,7 @@ define( function( require ) {
   // modules
   var inherit = require( 'PHET_CORE/inherit' );
   var sun = require( 'SUN/sun' );
-  var Timer = require( 'PHET_CORE/Timer' );
+  var timer = require( 'PHET_CORE/timer' );
 
   /**
    * @param {Object} [options]
@@ -55,11 +55,11 @@ define( function( require ) {
       var self = this;
       if ( !self.isRunning() ) {
         self.fired = false;
-        self.delayID = Timer.setTimeout( function() {
+        self.delayID = timer.setTimeout( function() {
 
           self.delayID = null;
 
-          self.intervalID = Timer.setInterval( function() {
+          self.intervalID = timer.setInterval( function() {
             self.fire();
           }, self.interval );
 
@@ -78,11 +78,11 @@ define( function( require ) {
     stop: function( fire ) {
       if ( this.isRunning() ) {
         if ( this.delayID ) {
-          Timer.clearTimeout( this.delayID );
+          timer.clearTimeout( this.delayID );
           this.delayID = null;
         }
         if ( this.intervalID ) {
-          Timer.clearInterval( this.intervalID );
+          timer.clearInterval( this.intervalID );
           this.intervalID = null;
         }
         if ( fire && !this.fired ) {
