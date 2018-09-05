@@ -179,8 +179,8 @@ define( function( require ) {
 
     // @private
     this.disposeCheckbox = function() {
-      this.removeInputListener( checkboxButtonListener );
-      this.removeAccessibleInputListener( changeListener );
+      self.removeInputListener( checkboxButtonListener );
+      self.removeAccessibleInputListener( changeListener );
       property.unlink( checkboxCheckedListener );
       toggledEmitter.dispose();
       self.enabledProperty.unlink( enabledListener );
