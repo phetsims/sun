@@ -91,6 +91,9 @@ define( function( require ) {
 
     this.content = content; // @private
 
+    // @private {boolean} does this instance own enabledProperty?
+    this.ownsEnabledProperty = !options.enabledProperty;
+
     // @public
     this.enabledProperty = options.enabledProperty || new BooleanProperty( true, {
       tandem: options.tandem.createTandem( 'enabledProperty' )
@@ -183,12 +186,25 @@ define( function( require ) {
 
     // @private
     this.disposeCheckbox = function() {
+
+      // Client owns property, remove the listener that we added.
       if ( property.hasListener( checkboxCheckedListener ) ) {
         property.unlink( checkboxCheckedListener );
       }
-      if ( self.enabledProperty.hasListener( enabledListener ) ) {
+
+      if ( self.ownsEnabledProperty ) {
+
+        // Checkbox owns enabledProperty, so dispose to release tandem and remove all listeners.
+        self.enabledProperty.dispose();
+      }
+      else if ( self.enabledProperty.hasListener( enabledListener ) ) {
+
+        // Client owns enabledProperty, remove the listener that we added.
         self.enabledProperty.unlink( enabledListener );
       }
+
+      // Private to Checkbox, but we need to clean up tandem.
+      toggledEmitter.dispose();
     };
   }
 
