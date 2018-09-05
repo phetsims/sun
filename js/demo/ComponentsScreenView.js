@@ -219,30 +219,33 @@ define( function( require ) {
     majorTicksVisibleProperty.link( function( visible ) {
       slider.majorTicksVisible = visible;
     } );
-    var majorTicksCheckbox = Checkbox.createTextCheckbox( 'Major ticks visible', { font: new PhetFont( 20 ) }, majorTicksVisibleProperty, {
-      left: slider.left,
-      top: slider.bottom + 40
-    } );
+    var majorTicksCheckbox = new Checkbox( new Text( 'Major ticks visible', { font: new PhetFont( 20 ) } ),
+      majorTicksVisibleProperty, {
+        left: slider.left,
+        top: slider.bottom + 40
+      } );
 
     // show/hide minor ticks
     var minorTicksVisibleProperty = new Property( true );
     minorTicksVisibleProperty.link( function( visible ) {
       slider.minorTicksVisible = visible;
     } );
-    var minorTicksCheckbox = Checkbox.createTextCheckbox( 'Minor ticks visible', { font: new PhetFont( 20 ) }, minorTicksVisibleProperty, {
-      left: slider.left,
-      top: majorTicksCheckbox.bottom + 40
-    } );
+    var minorTicksCheckbox = new Checkbox( new Text( 'Minor ticks visible', { font: new PhetFont( 20 ) } ),
+      minorTicksVisibleProperty, {
+        left: slider.left,
+        top: majorTicksCheckbox.bottom + 40
+      } );
 
     // enable/disable slider
     var enabledProperty = new Property( true );
     enabledProperty.link( function( enabled ) {
       slider.enabled = enabled;
     } );
-    var enabledCheckbox = Checkbox.createTextCheckbox( 'Enable slider', { font: new PhetFont( 20 ) }, enabledProperty, {
-      left: slider.left,
-      top: minorTicksCheckbox.bottom + 40
-    } );
+    var enabledCheckbox = new Checkbox( new Text( 'Enable slider', { font: new PhetFont( 20 ) } ),
+      enabledProperty, {
+        left: slider.left,
+        top: minorTicksCheckbox.bottom + 40
+      } );
 
     // restrict enabled range of slider
     var restrictedRangeProperty = new Property( false );
@@ -253,10 +256,11 @@ define( function( require ) {
     enabledRangeProperty.link( function( enabledRange ) {
       slider.enabledRange = enabledRange;
     } );
-    var enabledRangeCheckbox = Checkbox.createTextCheckbox( 'Enable Range [25, 75]', { font: new PhetFont( 20 ) }, restrictedRangeProperty, {
-      left: slider.left,
-      top: enabledCheckbox.bottom + 40
-    } );
+    var enabledRangeCheckbox = new Checkbox( new Text( 'Enable Range [25, 75]', { font: new PhetFont( 20 ) } ),
+      restrictedRangeProperty, {
+        left: slider.left,
+        top: enabledCheckbox.bottom + 40
+      } );
 
     // All of the controls related to the slider
     var controls = new VBox( {
