@@ -9,6 +9,7 @@ define( function( require ) {
   'use strict';
 
   // modules
+  var BooleanProperty = require( 'AXON/BooleanProperty' );
   var ButtonListener = require( 'SCENERY/input/ButtonListener' );
   var Emitter = require( 'AXON/Emitter' );
   var EmitterIO = require( 'AXON/EmitterIO' );
@@ -17,7 +18,6 @@ define( function( require ) {
   var InstanceRegistry = require( 'PHET_CORE/documentation/InstanceRegistry' );
   var Node = require( 'SCENERY/nodes/Node' );
   var PhetioObject = require( 'TANDEM/PhetioObject' );
-  var Property = require( 'AXON/Property' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var sun = require( 'SUN/sun' );
   var Tandem = require( 'TANDEM/Tandem' );
@@ -42,7 +42,7 @@ define( function( require ) {
       cursor: 'pointer',
       checkboxColor: 'black',
       checkboxColorBackground: 'white',
-      enabledProperty: new Property( true ),
+      enabledProperty: null, // {BooleanProperty} initialized below if not provided
 
       // phet-io
       tandem: Tandem.required,
@@ -90,7 +90,11 @@ define( function( require ) {
     Node.call( this );
 
     this.content = content; // @private
-    this.enabledProperty = options.enabledProperty; // @public
+
+    // @public
+    this.enabledProperty = options.enabledProperty || new BooleanProperty( true, {
+      tandem: options.tandem.createTandem( 'enabledProperty' )
+    } );
 
     // @private - sends out notifications when the checkbox is toggled.
     var toggledEmitter = new Emitter( {
