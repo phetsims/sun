@@ -20,7 +20,6 @@ define( function( require ) {
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var sun = require( 'SUN/sun' );
   var Tandem = require( 'TANDEM/Tandem' );
-  var Text = require( 'SCENERY/nodes/Text' );
 
   // ifphetio
   var BooleanIO = require( 'ifphetio!PHET_IO/types/BooleanIO' );
@@ -263,41 +262,6 @@ define( function( require ) {
      */
     fadeContentWhenDisabled: function( content, enabled ) {
       content.opacity = enabled ? 1 : DISABLED_OPACITY;
-    },
-
-    /**
-     * Factory method, creates a checkbox with a text label and optional icon.
-     * @param {string} text
-     * @param {Object} textOptions options passed to scenery.Text constructor
-     * @param {Property.<boolean>} property
-     * @param {Object} [checkboxOptions] options passed to Checkbox constructor
-     * @returns {Checkbox}
-     * @static
-     * @public
-     */
-    createTextCheckbox: function( text, textOptions, property, checkboxOptions ) {
-
-      textOptions = textOptions || {};
-
-      checkboxOptions = _.extend( {
-        icon: null,  // an optional node, added to the right of the text
-        iconSpacing: 15
-      }, checkboxOptions );
-
-      var content = new Node();
-
-      // text
-      var textNode = new Text( text, textOptions );
-      content.addChild( textNode );
-
-      // optional icon
-      if ( checkboxOptions.icon ) {
-        content.addChild( checkboxOptions.icon );
-        checkboxOptions.icon.left = textNode.right + checkboxOptions.iconSpacing;
-        checkboxOptions.icon.centerY = textNode.centerY;
-      }
-
-      return new Checkbox( content, property, checkboxOptions );
     }
   } );
 
