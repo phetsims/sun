@@ -17,6 +17,7 @@ define( function( require ) {
   var InstanceRegistry = require( 'PHET_CORE/documentation/InstanceRegistry' );
   var Node = require( 'SCENERY/nodes/Node' );
   var PhetioObject = require( 'TANDEM/PhetioObject' );
+  var Property = require( 'AXON/Property' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var sun = require( 'SUN/sun' );
   var Tandem = require( 'TANDEM/Tandem' );
@@ -41,6 +42,7 @@ define( function( require ) {
       cursor: 'pointer',
       checkboxColor: 'black',
       checkboxColorBackground: 'white',
+      enabledProperty: new Property( true ),
 
       // phet-io
       tandem: Tandem.required,
@@ -88,10 +90,7 @@ define( function( require ) {
     Node.call( this );
 
     this.content = content; // @private
-    this.checkboxAppearanceStrategy = options.checkboxAppearanceStrategy; // @private
-    this.contentAppearanceStrategy = options.contentAppearanceStrategy; // @private
-
-    this._enabled = true; // @private
+    this.enabledProperty = options.enabledProperty; // @public
 
     // @private - sends out notifications when the checkbox is toggled.
     var toggledEmitter = new Emitter( {
@@ -141,7 +140,7 @@ define( function( require ) {
 
     // interactivity
     var fire = function() {
-      if ( self._enabled ) {
+      if ( self.enabledProperty.value ) {
         var newValue = !property.value;
         toggledEmitter.emit1( newValue );
       }
@@ -166,6 +165,12 @@ define( function( require ) {
     };
     property.link( checkboxCheckedListener );
 
+    var enabledListener = function( enabled ) {
+      options.checkboxAppearanceStrategy( self.checkboxNode, enabled );
+      options.contentAppearanceStrategy( self.content, enabled );
+    };
+    this.enabledProperty.link( enabledListener );
+
     // Apply additional options
     this.mutate( options );
 
@@ -178,6 +183,7 @@ define( function( require ) {
       this.removeAccessibleInputListener( changeListener );
       property.unlink( checkboxCheckedListener );
       toggledEmitter.dispose();
+      self.enabledProperty.unlink( enabledListener );
     };
   }
 
@@ -225,14 +231,10 @@ define( function( require ) {
 
     /**
      * Sets whether the checkbox is enabled.
-     * @param {boolean} value
+     * @param {boolean} enabled
      * @public
      */
-    setEnabled: function( value ) {
-      this._enabled = this.pickable = value;
-      this.checkboxAppearanceStrategy( this.checkboxNode, value );
-      this.contentAppearanceStrategy( this.content, value );
-    },
+    setEnabled: function( enabled ) { this.enabledProperty.value = enabled; },
     set enabled( value ) { this.setEnabled( value ); },
 
     /**
@@ -240,7 +242,7 @@ define( function( require ) {
      * @returns {boolean}
      * @public
      */
-    getEnabled: function() { return this._enabled; },
+    getEnabled: function() { return this.enabledProperty.value; },
     get enabled() { return this.getEnabled(); }
 
   } );
