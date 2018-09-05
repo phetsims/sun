@@ -81,7 +81,7 @@ define( function( require ) {
 
     // (phet-io) document the instrumented Property that this Checkbox manipulates
     options.phetioInstanceDocumentation +=
-      ' This checkbox controls the PropertyIO: ' +
+      ' This checkbox controls the PropertyIO.&lt;BooleanIO&gt;: ' +
       '<a href="#' + phetio.PhetioIDUtils.getDOMElementID( property.tandem.phetioID ) + '">' + property.tandem.phetioID + '</a>';
     options.phetioInstanceDocumentation = options.phetioInstanceDocumentation.trim(); // eliminate preceding whitespace, if any.
 
