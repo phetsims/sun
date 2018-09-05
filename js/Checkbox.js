@@ -79,6 +79,7 @@ define( function( require ) {
     options.phetioInstanceDocumentation +=
       ' This checkbox controls the PropertyIO: ' +
       '<a href="#' + phetio.PhetioIDUtils.getDOMElementID( property.tandem.phetioID ) + '">' + property.tandem.phetioID + '</a>';
+    options.phetioInstanceDocumentation = options.phetioInstanceDocumentation.trim(); // eliminate preceding whitespace, if any.
 
     var self = this;
 
@@ -98,8 +99,8 @@ define( function( require ) {
       phetioEventType: 'user',
       phetioType: EmitterIO( [ BooleanIO ] )
     } );
-    toggledEmitter.addListener( function( newValue ) {
-      property.value = newValue;
+    toggledEmitter.addListener( function( value ) {
+      property.value = value;
     } );
 
     // @private - Create the background.  Until we are creating our own shapes, just put a rectangle behind the font
@@ -136,8 +137,8 @@ define( function( require ) {
 
     content.pickable = false; // since there's a pickable rectangle on top of content
 
-    // @private interactivity
-    this.fire = function() {
+    // interactivity
+    var fire = function() {
       if ( self._enabled ) {
         var newValue = !property.value;
         toggledEmitter.emit1( newValue );
@@ -145,13 +146,13 @@ define( function( require ) {
     };
 
     var checkboxButtonListener = new ButtonListener( {
-      fire: this.fire
+      fire: fire
     } );
     this.addInputListener( checkboxButtonListener );
 
     // @private (a11y) - fire the listener when checkbox is clicked with keyboard or assistive technology
     var changeListener = {
-      change: this.fire
+      change: fire
     };
     this.addAccessibleInputListener( changeListener );
 
@@ -169,6 +170,7 @@ define( function( require ) {
     // support for binder documentation, stripped out in builds and only runs when ?binder is specified
     assert && phet.chipper.queryParameters.binder && InstanceRegistry.registerDataURL( 'sun', 'Checkbox', this );
 
+    // @private
     this.disposeCheckbox = function() {
       this.removeInputListener( checkboxButtonListener );
       this.removeAccessibleInputListener( changeListener );
