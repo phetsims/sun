@@ -158,13 +158,13 @@ define( function( require ) {
     } );
     this.addInputListener( checkboxButtonListener );
 
-    // @private (a11y) - fire the listener when checkbox is clicked with keyboard or assistive technology
+    // a11y - fire the listener when checkbox is clicked with keyboard or assistive technology
     var changeListener = {
       change: fire
     };
     this.addAccessibleInputListener( changeListener );
 
-    // @private - sync with property
+    // sync with property
     var checkboxCheckedListener = function( checked ) {
       self.checkedNode.visible = checked;
       self.uncheckedNode.visible = !checked;
