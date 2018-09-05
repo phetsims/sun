@@ -1,4 +1,4 @@
-// Copyright 2013-2017, University of Colorado Boulder
+// Copyright 2013-2018, University of Colorado Boulder
 
 /**
  * Checkbox.
@@ -30,8 +30,8 @@ define( function( require ) {
   /**
    * @param {Node} content
    * @param {Property.<boolean>} property
-   * @constructor
    * @param {Object} [options]
+   * @constructor
    */
   function Checkbox( content, property, options ) {
 
@@ -55,20 +55,23 @@ define( function( require ) {
       appendDescription: true,
 
       /*
-       * {function( {Node} checkbox, {boolean} enabled ) }
-       * Strategy for controlling the checkbox's appearance, excluding any content.
-       * This can be a stock strategy from this file or custom.
-       * To create a custom one, model it off of the stock strategies defined in this file.
+       * {function( {Checkbox} checkbox, {boolean} enabled ) }
+       * Controls how the checkbox's appearance (excluding content) changes based on whether it's enabled.
+       * The default is to use reduce opacity when disabled.
        */
-      checkboxAppearanceStrategy: Checkbox.fadeCheckboxWhenDisabled,
+      checkboxAppearanceStrategy: function( checkbox, enabled ) {
+        checkbox.opacity = enabled ? 1 : DISABLED_OPACITY;
+      },
 
       /*
        * {function( {Node} content, {boolean} enabled )}
-       * Strategy for controlling the appearance of the content based on the checkbox's state.
-       * This can be a stock strategy from this file, or custom.
-       * To create a custom one, model it off of the stock version(s) defined in this file.
+       * Controls how the content's appearance changes based on whether the checkbox is enabled.
+       * The default is to reduce opacity when disabled.
        */
-      contentAppearanceStrategy: Checkbox.fadeContentWhenDisabled
+      contentAppearanceStrategy: function( content, enabled ) {
+        content.opacity = enabled ? 1 : DISABLED_OPACITY;
+      }
+
     }, options );
 
     assert && options.tandem.supplied && assert( property.tandem && property.tandem.supplied,
@@ -240,29 +243,6 @@ define( function( require ) {
     getEnabled: function() { return this._enabled; },
     get enabled() { return this.getEnabled(); }
 
-  }, {
-
-    /**
-     * Default for options.checkboxAppearanceStrategy, fades the checkbox by changing opacity.
-     * @param {Node} checkboxNode the checkbox
-     * @param {boolean} enabled
-     * @static
-     * @public
-     */
-    fadeCheckboxWhenDisabled: function( checkboxNode, enabled ) {
-      checkboxNode.opacity = enabled ? 1 : DISABLED_OPACITY;
-    },
-
-    /**
-     * Default for options.contentAppearanceStrategy, fades the content by changing opacity.
-     * @param {Node} content the content that appears next to the checkbox
-     * @param {boolean} enabled
-     * @static
-     * @public
-     */
-    fadeContentWhenDisabled: function( content, enabled ) {
-      content.opacity = enabled ? 1 : DISABLED_OPACITY;
-    }
   } );
 
   return Checkbox;
