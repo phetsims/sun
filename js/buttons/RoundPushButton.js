@@ -15,6 +15,7 @@ define( function( require ) {
 
   // modules
   var inherit = require( 'PHET_CORE/inherit' );
+  var InstanceRegistry = require( 'PHET_CORE/documentation/InstanceRegistry' );
   var PushButtonInteractionStateProperty = require( 'SUN/buttons/PushButtonInteractionStateProperty' );
   var PushButtonModel = require( 'SUN/buttons/PushButtonModel' );
   var RoundButtonView = require( 'SUN/buttons/RoundButtonView' );
@@ -53,6 +54,9 @@ define( function( require ) {
     this.disposeRoundPushButton = function() {
       self.buttonModel.dispose();
     };
+
+    // a11y - support for binder documentation, stripped out in builds and only runs when ?binder is specified
+    assert && phet.chipper.queryParameters.binder && InstanceRegistry.registerDataURL( 'sun', 'RoundPushButton', this );
   }
 
   sun.register( 'RoundPushButton', RoundPushButton );

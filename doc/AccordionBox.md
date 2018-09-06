@@ -11,9 +11,9 @@ Here’s when and why we use accordion boxes:
 * Can contain non-interactive readouts, interactive controls, but not sprites (e.g., draggable toolbox items).
 
 **Note this design pattern covers multiple PhET Component Types**
-* [AccordionBox.js](../js/AccordionBox.js)
-* [ExpandCollapseBar.js](../js/ExpandCollapseBar.js)
-* [ExpandCollpaseButton.js](../js/ExpandCollpaseButton.js)
+* [AccordionBox.js](https://github.com/phetsims/sun/blob/master/js/AccordionBox.js)
+* [ExpandCollapseBar.js](https://github.com/phetsims/sun/blob/master/js/ExpandCollapseBar.js)
+* [ExpandCollpaseButton.js](https://github.com/phetsims/sun/blob/master/js/ExpandCollpaseButton.js)
 
 ## Aesthetic Considerations
 * If space is a concern, the title can be hidden while the accordion box is expanded.

@@ -1,6 +1,6 @@
 ---
 title: Sliders
-components: [ HSlider, FrequencySlider, WavelengthSlider ]
+components: [ Slider, FrequencySlider, WavelengthSlider ]
 accessible-patterns: AccessibleSlider
 parent: true
 category: sliders

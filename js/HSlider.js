@@ -11,6 +11,7 @@ define( function( require ) {
 
   // modules
   var inherit = require( 'PHET_CORE/inherit' );
+  var InstanceRegistry = require( 'PHET_CORE/documentation/InstanceRegistry' );
   var Slider = require( 'SUN/Slider' );
   var sun = require( 'SUN/sun' );
 
@@ -27,6 +28,9 @@ define( function( require ) {
     Slider.call( this, valueProperty, range, _.extend( {
       orientation: 'horizontal'
     }, options ) );
+
+    // support for binder documentation, stripped out in builds and only runs when ?binder is specified
+    assert && phet.chipper.queryParameters.binder && InstanceRegistry.registerDataURL( 'sun', 'HSlider', this );
   }
 
   sun.register( 'HSlider', HSlider );

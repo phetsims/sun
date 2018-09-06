@@ -100,7 +100,7 @@ Visual checkbox with different label
 
 ### Supporting Accessibility Resources
 * [Using ARIA, working draft](https://www.w3.org/TR/using-aria/)
-* [HTML5.1, Section 4.10.5.1.15. Checkbox state](type=checkbox)https://www.w3.org/TR/html51/sec-forms.html#checkbox-state-typecheckbox
+* [HTML5.1, Section 4.10.5.1.15. Checkbox state](https://www.w3.org/TR/html51/sec-forms.html#checkbox-state-typecheckbox)
 * [ARIA Practices 1.1 Section 3.6 Checkbox](https://www.w3.org/TR/wai-aria-practices/)
 
 ### Design Doc Content Template Text
