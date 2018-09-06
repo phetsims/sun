@@ -16,7 +16,6 @@ define( function( require ) {
   // modules
   var inherit = require( 'PHET_CORE/inherit' );
   var PushButtonInteractionStateProperty = require( 'SUN/buttons/PushButtonInteractionStateProperty' );
-  var PushButtonIO = require( 'SUN/buttons/PushButtonIO' );
   var PushButtonModel = require( 'SUN/buttons/PushButtonModel' );
   var RoundButtonView = require( 'SUN/buttons/RoundButtonView' );
   var sun = require( 'SUN/sun' );
@@ -30,7 +29,6 @@ define( function( require ) {
 
     options = _.extend( {
       tandem: Tandem.required,
-      phetioType: PushButtonIO,
 
       // a11y
       tagName: 'button'

@@ -15,7 +15,6 @@ define( function( require ) {
   var inherit = require( 'PHET_CORE/inherit' );
   var InstanceRegistry = require( 'PHET_CORE/documentation/InstanceRegistry' );
   var PushButtonInteractionStateProperty = require( 'SUN/buttons/PushButtonInteractionStateProperty' );
-  var PushButtonIO = require( 'SUN/buttons/PushButtonIO' );
   var PushButtonModel = require( 'SUN/buttons/PushButtonModel' );
   var RectangularButtonView = require( 'SUN/buttons/RectangularButtonView' );
   var sun = require( 'SUN/sun' );
@@ -28,8 +27,7 @@ define( function( require ) {
   function RectangularPushButton( options ) {
 
     options = _.extend( {
-      tandem: Tandem.required,
-      phetioType: PushButtonIO
+      tandem: Tandem.required
     }, options );
 
     // If a listener was passed in, save it and add it after creating the button model.  This is done so that
