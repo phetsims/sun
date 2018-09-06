@@ -35,6 +35,7 @@ define( function( require ) {
    * @constructor
    */
   function Checkbox( content, property, options ) {
+    var self = this;
 
     options = _.extend( {
       spacing: 5,
@@ -76,7 +77,7 @@ define( function( require ) {
 
     }, options );
 
-    assert && options.tandem.supplied && assert( property.tandem && property.tandem.supplied,
+    assert && options.tandem.supplied && assert( property.tandem.supplied,
       'Property must be instrumented if controlling Checkbox is.' );
 
     // (phet-io) document the instrumented Property that this Checkbox manipulates
@@ -84,8 +85,6 @@ define( function( require ) {
       ' This checkbox controls the PropertyIO.&lt;BooleanIO&gt;: ' +
       '<a href="#' + phetio.PhetioIDUtils.getDOMElementID( property.tandem.phetioID ) + '">' + property.tandem.phetioID + '</a>';
     options.phetioInstanceDocumentation = options.phetioInstanceDocumentation.trim(); // eliminate preceding whitespace, if any.
-
-    var self = this;
 
     Node.call( this );
 
@@ -96,8 +95,12 @@ define( function( require ) {
 
     // @public
     this.enabledProperty = options.enabledProperty || new BooleanProperty( true, {
-      tandem: options.tandem.createTandem( 'enabledProperty' )
+      tandem: options.tandem.createTandem( 'enabledProperty' ),
+      phetioReadOnly: options.phetioReadOnly,
+      phetioInstanceDocumentation: 'When disabled, the checkbox is grayed out and cannot be pressed.'
     } );
+
+    assert && options.tandem.supplied && assert( this.enabledProperty.tandem.supplied, 'provided enabled property must be instrumented for phet-io.' );
 
     // @private - sends out notifications when the checkbox is toggled.
     var toggledEmitter = new Emitter( {
