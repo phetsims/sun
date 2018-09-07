@@ -73,8 +73,6 @@ define( function( require ) {
             timerInterval: 100, // fire continuously at this frequency (milliseconds),
 
             // a11y
-            tagName: 'div',
-            ariaRole: 'spinbutton',
             focusable: true,
             a11yValuePattern: '{{value}}', // {string} if you want units or additional content, add to pattern
             a11yDecimalPlaces: 0, // number of decimal places for the value read by assistive technology
@@ -93,6 +91,14 @@ define( function( require ) {
           // Some options were already mutated in the constructor, only apply the accessibility-specific options here
           // so options are not doubled up, see https://github.com/phetsims/sun/issues/330
           var optionsToMutate = _.pick( options, _.keys( defaults ) );
+
+          // cannot be set by client
+          assert && assert( options.tagName === undefined, 'AccessibleNumberSpinner sets tagName' );
+          optionsToMutate.tagName = 'div';
+
+          assert && assert( options.ariaRole === undefined, 'AccessibleNumberSpinner sets ariaRole' );
+          optionsToMutate.ariaRole = 'spinbutton';
+
           this.mutate( optionsToMutate );
 
           // this number spinner is "aria-labelledby" its own label, meaning that the label element content will be
