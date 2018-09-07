@@ -84,9 +84,6 @@ define( function( require ) {
             constrainValue: function( value ) { return value; }, // called before valueProperty is set
 
             // a11y
-            tagName: 'input',
-            inputType: 'range',
-            ariaRole: 'slider', // required for NVDA to read the value text correctly, see https://github.com/phetsims/a11y-research/issues/51
             accessibleValuePattern: '{{value}}', // {string} if you want units or additional content, add to pattern
             accessibleDecimalPlaces: 0, // number of decimal places for the value read by assistive technology
             ariaOrientation: 'horizontal', // specify orientation, read by assistive technology
@@ -113,6 +110,18 @@ define( function( require ) {
           // Some options were already mutated in the constructor, only apply the accessibility-specific options here
           // so options are not doubled up, see https://github.com/phetsims/sun/issues/330
           var optionsToMutate = _.pick( options, _.keys( defaults ) );
+
+          // cannot be set by client
+          assert && assert( options.tagName === undefined, 'AccessibleSlider sets tagName' );
+          optionsToMutate.tagName = 'input';
+
+          assert && assert( options.inputType === undefined, 'AccessibleSlider sets inputType' );
+          optionsToMutate.inputType = 'range';
+
+          // required for NVDA to read the value text correctly, see https://github.com/phetsims/a11y-research/issues/51
+          assert && assert( options.ariaRole === undefined, 'AccessibleSlider sets ariaRole' );
+          optionsToMutate.ariaRole = 'slider';
+
           this.mutate( optionsToMutate );
 
           // @private {Property.<number>}
