@@ -20,9 +20,10 @@ define( function( require ) {
   var Vector2 = require( 'DOT/Vector2' );
 
   /**
-   * @param {Object[]} demos - each demo has:
+   * @param {Object[]} demos - each demo has these properties:
    *   {string} label - label in the combo box
-   *   {function(Bounds2): Node} getNode - creates the scene graph for the demo
+   *   {function(layoutBounds:Bounds2): Node} createNode - creates the Node for the demo
+   *   {Node|null} node - the Node for the demo, created by DemosScreenView
    * @param {Object} [options]
    * @constructor
    */
@@ -32,7 +33,12 @@ define( function( require ) {
       comboBoxLocation: new Vector2( 20, 20 ), // {Vector2} location of ComboBox used to select a demo
       comboBoxItemFont: new PhetFont( 20 ), // {Font} font used for ComboBox items
       comboBoxItemYMargin: 6, // {number} y margin around ComboBox items
-      selectedDemoLabel: null // {string|null} label field of the demo to be selected initially
+      selectedDemoLabel: null, // {string|null} label field of the demo to be selected initially
+
+      // {boolean} see https://github.com/phetsims/sun/issues/386
+      // true = caches Nodes for all demos that have been selected
+      // false = keeps only the Node for the selected demo in memory
+      cacheDemos: false
     }, options );
 
     ScreenView.call( this, options );
@@ -82,9 +88,20 @@ define( function( require ) {
     // Make the selected demo visible
     selectedDemoProperty.link( function( demo, oldDemo ) {
 
-      // make the previous selection invisible
+      // clean up the previously selected demo
       if ( oldDemo ) {
-        oldDemo.node.visible = false;
+        if ( options.cacheDemos ) {
+
+          // make the old demo invisible
+          oldDemo.node.visible = false;
+        }
+        else {
+          
+          // delete the old demo
+          demosParent.removeChild( oldDemo.node );
+          oldDemo.node.dispose();
+          oldDemo.node = null;
+        }
       }
 
       if ( demo.node ) {
@@ -95,7 +112,7 @@ define( function( require ) {
       else {
 
         // If the selected demo doesn't doesn't have an associated node, create it.
-        demo.node = demo.getNode( layoutBounds );
+        demo.node = demo.createNode( layoutBounds );
         demosParent.addChild( demo.node );
       }
     } );

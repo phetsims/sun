@@ -52,17 +52,17 @@ define( function( require ) {
        * To add a demo, add an object literal here. Each object has these properties:
        *
        * {string} label - label in the combo box
-       * {function(Bounds2): Node} getNode - creates the scene graph for the demo
+       * {function(Bounds2): Node} createNode - creates the scene graph for the demo
        */
-      { label: 'Carousel', getNode: demoCarousel },
-      { label: 'ComboBox', getNode: demoComboBox },
-      { label: 'HSlider', getNode: demoHSlider },
-      { label: 'VSlider', getNode: demoVSlider },
-      { label: 'OnOffSwitch', getNode: demoOnOffSwitch },
-      { label: 'PageControl', getNode: demoPageControl },
-      { label: 'NumberSpinner', getNode: demoNumberSpinner },
-      { label: 'AlignGroup', getNode: demoAlignGroup },
-      { label: 'AccordionBox', getNode: demoAccordionBox }
+      { label: 'Carousel', createNode: demoCarousel },
+      { label: 'ComboBox', createNode: demoComboBox },
+      { label: 'HSlider', createNode: demoHSlider },
+      { label: 'VSlider', createNode: demoVSlider },
+      { label: 'OnOffSwitch', createNode: demoOnOffSwitch },
+      { label: 'PageControl', createNode: demoPageControl },
+      { label: 'NumberSpinner', createNode: demoNumberSpinner },
+      { label: 'AlignGroup', createNode: demoAlignGroup },
+      { label: 'AccordionBox', createNode: demoAccordionBox }
     ], {
       selectedDemoLabel: sunQueryParameters.component
     } );
