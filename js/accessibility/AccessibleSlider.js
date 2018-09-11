@@ -173,16 +173,16 @@ define( function( require ) {
           // @private - entries like { {number}: {boolean} }, key is range key code, value is whether it is down
           this.rangeKeysDown = {};
 
-          // value 'any' allows input to have values that are not evenly divisible by the step size, which is
-          // required for PhET sliders, see https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#attr-step
-          this.setAccessibleAttribute( 'step', 'any' );
-
           // listeners, must be unlinked in dispose
           var enabledRangeObserver = function( enabledRange ) {
 
             // a11y - update enabled slider range for AT, required for screen reader events to behave correctly
             self.setAccessibleAttribute( 'min', enabledRange.min );
             self.setAccessibleAttribute( 'max', enabledRange.max );
+
+            // HTML requires that the value be evenly divisible by the step size to receive 'change' events, which
+            // is critical to work with mobile AT like VoiceOver
+            self.setAccessibleAttribute( 'step', ( enabledRange.max - enabledRange.min ) / 100 );
           };
           this._enabledRangeProperty.link( enabledRangeObserver );
 
