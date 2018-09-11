@@ -36,7 +36,8 @@ define( function( require ) {
       implementation: function( visible ) {
         this.instance.setMajorTicksVisible( visible );
       },
-      documentation: 'Set whether the major tick marks should be shown'
+      documentation: 'Set whether the major tick marks should be shown',
+      canBeInvokedForReadOnlyInstances: false
     },
 
     setMinorTicksVisible: {
@@ -45,7 +46,8 @@ define( function( require ) {
       implementation: function( visible ) {
         this.instance.setMinorTicksVisible( visible );
       },
-      documentation: 'Set whether the minor tick marks should be shown'
+      documentation: 'Set whether the minor tick marks should be shown',
+      canBeInvokedForReadOnlyInstances: false
     }
   }, {
     documentation: 'A traditional slider component, with a knob and possibly tick marks'

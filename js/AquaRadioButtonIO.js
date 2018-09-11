@@ -37,7 +37,8 @@ define( function( require ) {
       implementation: function( visible ) {
         this.instance.setCircleButtonVisible( visible );
       },
-      documentation: 'Sets whether the circular part of the radio button will be displayed.'
+      documentation: 'Sets whether the circular part of the radio button will be displayed.',
+      canBeInvokedForReadOnlyInstances: false
     }
   }, {
     documentation: 'A radio button which looks like the Mac "Aqua" radio buttons',
