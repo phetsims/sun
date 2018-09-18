@@ -30,9 +30,22 @@ define( function( require ) {
     } );
 
     RectangularToggleButton.call( this, false, true, booleanProperty, options );
+
+    // @private {function} - internally used disposal function
+    this.disposeBooleanRectangularToggleButton = function() {
+      options.content.dispose();
+    };
   }
 
   sun.register( 'BooleanRectangularToggleButton', BooleanRectangularToggleButton );
 
-  return inherit( RectangularToggleButton, BooleanRectangularToggleButton );
+  return inherit( RectangularToggleButton, BooleanRectangularToggleButton, {
+    /**
+     * @public
+     */
+    dispose: function() {
+      this.disposeBooleanRectangularToggleButton();
+      RectangularToggleButton.prototype.dispose.call( this );
+    }
+  } );
 } );
