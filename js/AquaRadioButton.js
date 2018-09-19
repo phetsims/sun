@@ -9,9 +9,8 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var AquaRadioButtonIO = require( 'SUN/AquaRadioButtonIO' );
   var BooleanProperty = require( 'AXON/BooleanProperty' );
-  var ButtonListener = require( 'SCENERY/input/ButtonListener' );
+  var FireListener = require( 'SCENERY/listeners/FireListener' );
   var Circle = require( 'SCENERY/nodes/Circle' );
   var inherit = require( 'PHET_CORE/inherit' );
   var InstanceRegistry = require( 'PHET_CORE/documentation/InstanceRegistry' );
@@ -44,8 +43,6 @@ define( function( require ) {
 
       // phet-io
       tandem: Tandem.required,
-      phetioType: AquaRadioButtonIO,
-      phetioEventType: 'user',
 
       // a11y
       tagName: 'input',
@@ -115,20 +112,17 @@ define( function( require ) {
 
     // set property value on fire
     var fire = function() {
-      options.tandem.isSuppliedAndEnabled() && self.phetioStartEvent( 'fired', {
-        value: property.phetioType.elementType.toStateObject( value )
-      } );
       property.set( value );
-      options.tandem.isSuppliedAndEnabled() && self.phetioEndEvent();
     };
-    var buttonListener = new ButtonListener( { fire: fire } );
-    this.addInputListener( buttonListener );
+    var inputListener = new FireListener( {
+      fire: fire,
+      tandem: options.tandem.createTandem( 'inputListener' )
+    } );
+    this.addInputListener( inputListener );
 
     // a11y - input listener so that updates the state of the radio button with keyboard interaction
     var changeListener = {
-      change: function() {
-        fire();
-      }
+      change: fire
     };
     this.addAccessibleInputListener( changeListener );
 
@@ -158,7 +152,7 @@ define( function( require ) {
 
     // @private
     this.disposeAquaRadioButton = function() {
-      self.removeInputListener( buttonListener );
+      self.removeInputListener( inputListener );
       self.removeAccessibleInputListener( changeListener );
       property.unlink( accessibleCheckedListener );
       property.unlink( syncWithModel );
@@ -172,16 +166,6 @@ define( function( require ) {
   sun.register( 'AquaRadioButton', AquaRadioButton );
 
   return inherit( Node, AquaRadioButton, {
-
-    /**
-     * Sets whether the circular part of the radio button will be displayed.
-     * @param {boolean} circleButtonVisible
-     * @public
-     */
-    setCircleButtonVisible: function( circleButtonVisible ) {
-      this.deselectedCircleButton.visible = circleButtonVisible;
-      this.selectedCircleButton.visible = circleButtonVisible;
-    },
 
     // @public - Provide dispose() on the prototype for ease of subclassing.
     dispose: function() {
