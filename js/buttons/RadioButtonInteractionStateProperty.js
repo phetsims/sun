@@ -24,13 +24,13 @@ define( function( require ) {
 
     DerivedProperty.call(
       this,
-      [ buttonModel.overProperty, buttonModel.downProperty, buttonModel.enabledProperty, property ],
-      function( over, down, enabled, propertyValue ) {
+      [ buttonModel.overProperty, buttonModel.looksPressedProperty, buttonModel.enabledProperty, property ],
+      function( over, looksPressed, enabled, propertyValue ) {
         var isSelected = ( propertyValue === value );
         return !enabled && isSelected ? RadioButtonInteractionState.DISABLED_SELECTED :
                !enabled ? RadioButtonInteractionState.DISABLED_DESELECTED :
-               over && !( down || isSelected ) ? RadioButtonInteractionState.OVER :
-               over && down ? RadioButtonInteractionState.PRESSED :
+               over && !( looksPressed || isSelected ) ? RadioButtonInteractionState.OVER :
+               over && looksPressed ? RadioButtonInteractionState.PRESSED :
                isSelected ? RadioButtonInteractionState.SELECTED :
                RadioButtonInteractionState.DESELECTED;
       } );

@@ -21,11 +21,11 @@ define( function( require ) {
 
     DerivedProperty.call(
       this,
-      [ buttonModel.overProperty, buttonModel.downProperty, buttonModel.enabledProperty ],
-      function( over, down, enabled ) {
+      [ buttonModel.overProperty, buttonModel.looksPressedProperty, buttonModel.enabledProperty ],
+      function( over, looksPressed, enabled ) {
         return !enabled ? ButtonInteractionState.DISABLED :
-               over && !down ? ButtonInteractionState.OVER :
-               over && down ? ButtonInteractionState.PRESSED :
+               over && !looksPressed ? ButtonInteractionState.OVER :
+               over && looksPressed ? ButtonInteractionState.PRESSED :
                ButtonInteractionState.IDLE;
       }, options );
   }

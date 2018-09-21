@@ -42,8 +42,14 @@ define( function( require ) {
     var self = this;
 
     // model properties
-    this.overProperty = new Property( false ); // @public - Is the pointer over the button?
-    this.downProperty = new Property( false, { reentrant: true } ); // @public - Is the pointer down?
+    this.overProperty = new BooleanProperty( false ); // @public - Is the pointer over the button?
+    this.downProperty = new BooleanProperty( false, { reentrant: true } ); // @public - Is the pointer down?
+
+    // @public - This Property was added for a11y. It tracks whether or not the button should "look" down. This
+    // will be true if downProperty is true or if an a11y click is in progress. For an a11y click, the listeners
+    // are fired right away but the button will look down for as long as fireOnHoldInterval. See PressListener.click
+    // for more details.
+    this.looksPressedProperty = new BooleanProperty( false );
 
     // @public - Is the button enabled?
     this.enabledProperty = new BooleanProperty( options.enabled, {
@@ -55,6 +61,9 @@ define( function( require ) {
 
     // @private - keep track of and store all listeners this model creates
     this.listeners = [];
+
+    // @private - listeners added when creating a PressListener, will be removed on dispose
+    this.listenersToRemoveOnDispose = [];
 
     // @private {number}
     this._fireOnHoldInterval = options.fireOnHoldInterval;
@@ -86,6 +95,15 @@ define( function( require ) {
       this.overProperty.dispose();
       this.downProperty.dispose();
       this.enabledProperty.dispose();
+
+      // remove all listeners added in createListener
+      // TODO: This breaks because this.listenersToRemoveOnDispose[ i ] dependencies have no listeners to remove.
+      // Why?
+      // for ( var i = 0; i < this.listenersToRemoveOnDispose.length; i++ ) {
+      //   this.listenersToRemoveOnDispose[ i ].dispose();
+      // }
+
+      this.listenersToRemoveOnDispose = [];
       this.listeners = [];
     };
   }
@@ -121,6 +139,13 @@ define( function( require ) {
       }, options );
 
       var pressListener = new PressListener( options );
+
+      this.listenersToRemoveOnDispose.push( Property.multilink(
+        [ pressListener.a11yClickingProperty, this.downProperty ],
+        function( a11yClicking, down ) {
+          self.looksPressedProperty.value = down || a11yClicking;
+        } ) );
+
       this.listeners.push( pressListener );
       return pressListener;
     }
