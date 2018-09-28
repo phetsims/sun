@@ -62,8 +62,10 @@ define( function( require ) {
     // @private - keep track of and store all listeners this model creates
     this.listeners = [];
 
-    // @private - listeners added when creating a PressListener, will be removed on dispose
-    this.listenersToRemoveOnDispose = [];
+    // @private {Multilink|null} - Links all of the looksPressedProperties from the listeners that were created
+    // by this ButtonModel, and updates the looksPressedProperty accordingly. First Multilink is added when the
+    // first listener is created. See this.createListener.
+    this.looksPressedMultilink = null;
 
     // @private {number}
     this._fireOnHoldInterval = options.fireOnHoldInterval;
@@ -96,14 +98,8 @@ define( function( require ) {
       this.downProperty.dispose();
       this.enabledProperty.dispose();
 
-      // remove all listeners added in createListener
-      // TODO: This breaks because this.listenersToRemoveOnDispose[ i ] dependencies have no listeners to remove.
-      // Why?
-      // for ( var i = 0; i < this.listenersToRemoveOnDispose.length; i++ ) {
-      //   this.listenersToRemoveOnDispose[ i ].dispose();
-      // }
+      this.looksPressedMultilink && this.looksPressedMultilink.dispose();
 
-      this.listenersToRemoveOnDispose = [];
       this.listeners = [];
     };
   }
@@ -139,14 +135,22 @@ define( function( require ) {
       }, options );
 
       var pressListener = new PressListener( options );
-
-      this.listenersToRemoveOnDispose.push( Property.multilink(
-        [ pressListener.a11yClickingProperty, this.downProperty ],
-        function( a11yClicking, down ) {
-          self.looksPressedProperty.value = down || a11yClicking;
-        } ) );
-
       this.listeners.push( pressListener );
+
+      // dispose the previous multilink in case we already created a PressListener with this model
+      this.looksPressedMultilink && this.looksPressedMultilink.dispose();
+
+      // assign a new Multilink (for disposal), and make sure that the button looks pressed when any of the
+      // PressListeners created by this ButtonModel look pressed
+      function orIteratee( sum, newValue ) {
+        return sum || newValue;
+      }
+      this.looksPressedMultilink = Property.multilink(
+        self.listeners.map( function( listener ) { return listener.looksPressedProperty; } ), function() {
+          self.looksPressedProperty.value = _.reduce( arguments, orIteratee );
+        }
+      );
+
       return pressListener;
     }
   } );
