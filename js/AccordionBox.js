@@ -207,7 +207,7 @@ define( function( require ) {
       fill: options.titleBarFill,
       stroke: options.titleBarStroke,
       lineWidth: options.lineWidth, // use same lineWidth as box, for consistent look
-      cursor: options.cursor
+      cursor: options.cursor,
       innerContent: accordionBoxCollapseString
     }, options.titleBarOptions ) );
     this.disposalActions.push( function() {
