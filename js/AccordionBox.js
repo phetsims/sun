@@ -186,8 +186,7 @@ define( function( require ) {
 
     // @private {Rectangle} - Expanded box
     this.expandedBox = new Rectangle( _.extend( {
-      cornerRadius: options.cornerRadius,
-      tandem: options.tandem.createTandem( 'expandedBox' )
+      cornerRadius: options.cornerRadius
     }, boxOptions ) );
     this.disposalActions.push( function() {
       self.expandedBox.dispose();
@@ -196,8 +195,7 @@ define( function( require ) {
 
     // @private {Rectangle} - Collapsed box
     this.collapsedBox = new Rectangle( _.extend( {
-      cornerRadius: options.cornerRadius,
-      tandem: options.tandem.createTandem( 'collapsedBox' )
+      cornerRadius: options.cornerRadius
     }, boxOptions ) );
     this.disposalActions.push( function() {
       self.collapsedBox.dispose();
@@ -209,8 +207,7 @@ define( function( require ) {
       fill: options.titleBarFill,
       stroke: options.titleBarStroke,
       lineWidth: options.lineWidth, // use same lineWidth as box, for consistent look
-      cursor: options.cursor,
-      tandem: options.tandem.createTandem( 'expandedTitleBar' ),
+      cursor: options.cursor
       innerContent: accordionBoxCollapseString
     }, options.titleBarOptions ) );
     this.disposalActions.push( function() {
@@ -225,7 +222,6 @@ define( function( require ) {
       cornerRadius: options.cornerRadius,
       fill: options.titleBarFill,
       cursor: options.cursor,
-      tandem: options.tandem.createTandem( 'collapsedTitleBar' ),
       innerContent: accordionBoxExpandString
     }, options.titleBarOptions ) );
     this.disposalActions.push( function() {
