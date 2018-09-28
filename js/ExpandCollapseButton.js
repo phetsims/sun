@@ -62,7 +62,7 @@ define( function( require ) {
       .lineTo( symbolLength, symbolLength / 2 );
     expandButton.addChild( new Path(
       plusSymbolShape,
-      _.extend( { tandem: options.tandem.createTandem( 'plusSymbol' ) }, symbolOptions )
+      symbolOptions
     ) );
 
     // Collapse '-' button
@@ -77,7 +77,7 @@ define( function( require ) {
       .lineTo( symbolLength / 2, 0 );
     collapseButton.addChild( new Path(
       minusSymbolShape,
-      _.extend( { tandem: options.tandem.createTandem( 'minusSymbol' ) }, symbolOptions )
+      symbolOptions
     ) );
 
     // rendering order

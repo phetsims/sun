@@ -294,8 +294,7 @@ define( function( require ) {
 
       // @private {Rectangle} - May not be set
       this.expandedBoxOutline = new Rectangle( _.extend( {
-        cornerRadius: options.cornerRadius,
-        tandem: options.tandem.createTandem( 'expandedBoxOutline' )
+        cornerRadius: options.cornerRadius
       }, outlineOptions ) );
       this.disposalActions.push( function() {
         self.expandedBoxOutline.dispose();
@@ -304,8 +303,7 @@ define( function( require ) {
 
       // @private {Rectangle} - May not be set
       this.collapsedBoxOutline = new Rectangle( _.extend( {
-        cornerRadius: options.cornerRadius,
-        tandem: options.tandem.createTandem( 'collapsedBoxOutline' )
+        cornerRadius: options.cornerRadius
       }, outlineOptions ) );
       this.collapsedBox.addChild( this.collapsedBoxOutline );
       this.disposalActions.push( function() {
