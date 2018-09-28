@@ -77,7 +77,7 @@ define( function( require ) {
 
     }, options );
 
-    assert && options.tandem.supplied && assert( property.tandem.supplied,
+    assert && Tandem.validationEnabled() && options.tandem.isSuppliedAndEnabled() && assert( property.tandem.supplied,
       'Property must be instrumented if controlling Checkbox is.' );
 
     // (phet-io) document the instrumented Property that this Checkbox manipulates
