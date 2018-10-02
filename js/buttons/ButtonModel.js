@@ -32,11 +32,7 @@ define( function( require ) {
 
       tandem: Tandem.required,
       phetioState: PhetioObject.DEFAULT_OPTIONS.phetioState, // to support properly passing this to children, see https://github.com/phetsims/tandem/issues/60
-      phetioReadOnly: PhetioObject.DEFAULT_OPTIONS.phetioReadOnly, // to support properly passing this to children, see https://github.com/phetsims/tandem/issues/60
-
-      // (a11y) fire continuously at this interval in ms when holding down button with keyboard (passed to PressListener)
-      // Note same default as in PushButtonModel.js
-      fireOnHoldInterval: 100
+      phetioReadOnly: PhetioObject.DEFAULT_OPTIONS.phetioReadOnly // to support properly passing this to children, see https://github.com/phetsims/tandem/issues/60
     }, options );
 
     var self = this;
@@ -47,8 +43,8 @@ define( function( require ) {
 
     // @public - This Property was added for a11y. It tracks whether or not the button should "look" down. This
     // will be true if downProperty is true or if an a11y click is in progress. For an a11y click, the listeners
-    // are fired right away but the button will look down for as long as fireOnHoldInterval. See PressListener.click
-    // for more details.
+    // are fired right away but the button will look down for as long as PressListener.a11yLooksPressedInterval.
+    // See PressListener.click for more details.
     this.looksPressedProperty = new BooleanProperty( false );
 
     // @public - Is the button enabled?
@@ -66,9 +62,6 @@ define( function( require ) {
     // by this ButtonModel, and updates the looksPressedProperty accordingly. First Multilink is added when the
     // first listener is created. See this.createListener.
     this.looksPressedMultilink = null;
-
-    // @private {number}
-    this._fireOnHoldInterval = options.fireOnHoldInterval;
 
     // startCallback on pointer down, endCallback on pointer up. lazyLink so they aren't called immediately.
     this.downProperty.lazyLink( function( down ) {
@@ -130,8 +123,7 @@ define( function( require ) {
         isOverProperty: this.overProperty,
         canStartPress: function() {
           return self.enabledProperty.value;
-        },
-        fireOnHoldInterval: this._fireOnHoldInterval
+        }
       }, options );
 
       var pressListener = new PressListener( options );
