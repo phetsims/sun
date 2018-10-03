@@ -574,13 +574,12 @@ define( function( require ) {
    * @return {number}
    */
   var correctRounding = function( newValue, currentValue, stepSize ) {
-    var decimalPlaces = Util.numberOfDecimalPlaces( stepSize );
     var correctedValue = newValue;
 
-    var proposedStep = Util.toFixedNumber( Math.abs( newValue - currentValue ), decimalPlaces );
+    var proposedStep = Math.abs( newValue - currentValue );
     var stepToFar = proposedStep > stepSize;
 
-    // it is possible that proposedStep will still be larger than the stepSize but only because of precision
+    // it is possible that proposedStep will be larger than the stepSize but only because of precision
     // constraints with floating point values, don't correct if that is the cases
     var stepsAboutEqual = Util.equalsEpsilon( proposedStep, stepSize, 1e-15 );
     if ( stepToFar && !stepsAboutEqual ) {
