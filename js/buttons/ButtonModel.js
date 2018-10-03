@@ -119,8 +119,6 @@ define( function( require ) {
 
       options = _.extend( {
         phetioInstanceDocumentation: 'Indicates when the button has been pressed or released',
-        isPressedProperty: this.downProperty,
-        isOverProperty: this.overProperty,
         canStartPress: function() {
           return self.enabledProperty.value;
         }
@@ -128,6 +126,9 @@ define( function( require ) {
 
       var pressListener = new PressListener( options );
       this.listeners.push( pressListener );
+
+      pressListener.isPressedProperty.link( this.downProperty.set.bind( this.downProperty ) );
+      pressListener.isOverProperty.link( this.overProperty.set.bind( this.overProperty ) );
 
       // dispose the previous multilink in case we already created a PressListener with this model
       this.looksPressedMultilink && this.looksPressedMultilink.dispose();
