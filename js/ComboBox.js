@@ -185,9 +185,7 @@ define( function( require ) {
     } );
 
     // @private button, will be set to correct value when property observer is registered
-    this.buttonNode = new ButtonNode( new ComboBoxItemNode( items[ 0 ], itemWidth, itemHeight, options.itemXMargin, {
-      tandem: options.tandem.createTandem( 'buttonNode', { enabled: false } )
-    } ), options );
+    this.buttonNode = new ButtonNode( new ComboBoxItemNode( items[ 0 ], itemWidth, itemHeight, options.itemXMargin ), options );
     self.addChild( this.buttonNode );
 
     // button interactivity
@@ -207,9 +205,7 @@ define( function( require ) {
       var item = _.find( items, function( item ) {
         return item.value === value;
       } );
-      self.buttonNode.setItemNode( new ComboBoxItemNode( item, itemWidth, itemHeight, options.itemXMargin, {
-        tandem: options.tandem.createTandem( 'buttonNode', { enabled: false } )
-      } ) );
+      self.buttonNode.setItemNode( new ComboBoxItemNode( item, itemWidth, itemHeight, options.itemXMargin ) );
     };
     property.link( propertyObserver );
 
