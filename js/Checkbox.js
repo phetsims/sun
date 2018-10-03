@@ -77,7 +77,8 @@ define( function( require ) {
 
     }, options );
 
-    assert && Tandem.validationEnabled() && options.tandem.isSuppliedAndEnabled() && assert( property.tandem.supplied,
+    // If either one is instrumented, then the other must be too.
+    assert && Tandem.validationEnabled() && assert( options.tandem.isSuppledAndEnabled() === property.tandem.isSuppledAndEnabled(),
       'Property must be instrumented if controlling Checkbox is.' );
 
     // (phet-io) document the instrumented Property that this Checkbox manipulates
@@ -100,7 +101,8 @@ define( function( require ) {
       phetioInstanceDocumentation: 'When disabled, the checkbox is grayed out and cannot be pressed.'
     } );
 
-    assert && options.tandem.supplied && assert( this.enabledProperty.tandem.supplied, 'provided enabled property must be instrumented for phet-io.' );
+    // If either one is instrumented, then the other must be too.
+    assert && assert( this.enabledProperty.tandem.isSuppliedAndEnabled() === options.tandem.isSuppliedAndEnabled(), 'provided enabled property must be instrumented for phet-io.' );
 
     // @private - sends out notifications when the checkbox is toggled.
     var toggledEmitter = new Emitter( {

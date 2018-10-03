@@ -152,14 +152,7 @@ define( function( require ) {
       up: function( event ) {
         var selectedItemNode = event.currentTarget; // {ComboBoxItemNode}
 
-        selectedItemNode.phetioStartEvent( 'fired', {
-
-          // support uninstrumented sims
-          value: selectedItemNode.phetioType &&
-                 selectedItemNode.phetioType.elementType &&
-                 selectedItemNode.phetioType.elementType.toStateObject &&
-                 selectedItemNode.phetioType.elementType.toStateObject( selectedItemNode.item.value )
-        } );
+        selectedItemNode.phetioStartEvent( 'fired' );
 
         unhighlightItem( selectedItemNode );
         self.listNode.visible = false; // close the list, do this before changing property value, in case it's expensive
