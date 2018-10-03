@@ -36,19 +36,17 @@ define( function( require ) {
 
     // @private
     this.pressedEmitter = new Emitter( {
-        tandem: options.tandem.createTandem( 'pressedEmitter' ),
-        phetioInstanceDocumentation: 'Emits when the button is pressed',
-        phetioReadOnly: options.phetioReadOnly
-      }
-    );
+      tandem: options.tandem.createTandem( 'pressedEmitter' ),
+      phetioInstanceDocumentation: 'Emits when the button is pressed',
+      phetioReadOnly: options.phetioReadOnly
+    } );
 
     // @private
     this.releasedEmitter = new Emitter( {
-        tandem: options.tandem.createTandem( 'releasedEmitter' ),
-        phetioInstanceDocumentation: 'Emits when the button is released',
-        phetioReadOnly: options.phetioReadOnly
-      }
-    );
+      tandem: options.tandem.createTandem( 'releasedEmitter' ),
+      phetioInstanceDocumentation: 'Emits when the button is released',
+      phetioReadOnly: options.phetioReadOnly
+    } );
 
     // add listeners
     var setValueOn = function() {
