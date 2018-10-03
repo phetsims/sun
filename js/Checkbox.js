@@ -77,16 +77,6 @@ define( function( require ) {
 
     }, options );
 
-    // If either one is instrumented, then the other must be too.
-    assert && Tandem.validationEnabled() && assert( options.tandem.isSuppledAndEnabled() === property.tandem.isSuppledAndEnabled(),
-      'Property must be instrumented if controlling Checkbox is.' );
-
-    // (phet-io) document the instrumented Property that this Checkbox manipulates
-    options.phetioInstanceDocumentation +=
-      ' This checkbox controls the PropertyIO.&lt;BooleanIO&gt;: ' +
-      '<a href="#' + phetio.PhetioIDUtils.getDOMElementID( property.tandem.phetioID ) + '">' + property.tandem.phetioID + '</a>';
-    options.phetioInstanceDocumentation = options.phetioInstanceDocumentation.trim(); // eliminate preceding whitespace, if any.
-
     Node.call( this );
 
     this.content = content; // @private
@@ -101,8 +91,12 @@ define( function( require ) {
       phetioInstanceDocumentation: 'When disabled, the checkbox is grayed out and cannot be pressed.'
     } );
 
-    // If either one is instrumented, then the other must be too.
-    assert && assert( this.enabledProperty.tandem.isSuppliedAndEnabled() === options.tandem.isSuppliedAndEnabled(), 'provided enabled property must be instrumented for phet-io.' );
+    // (phet-io) document the instrumented Property that this Checkbox manipulates
+    options.phetioInstanceDocumentation +=
+      ' This checkbox controls the PropertyIO.&lt;BooleanIO&gt;: ' +
+      '<a href="#' + phetio.PhetioIDUtils.getDOMElementID( property.tandem.phetioID ) + '">' + property.tandem.phetioID + '</a>';
+    options.phetioInstanceDocumentation = options.phetioInstanceDocumentation.trim(); // eliminate preceding whitespace, if any.
+
 
     // @private - sends out notifications when the checkbox is toggled.
     var toggledEmitter = new Emitter( {
@@ -185,6 +179,15 @@ define( function( require ) {
 
     // Apply additional options
     this.mutate( options );
+
+    // assert that phet-io is set up correctly after the PhetioObject has been properly initialized (after mutate)
+
+    // If either one is instrumented, then the other must be too.
+    assert && Tandem.validationEnabled() && assert( this.isPhetioInstrumented() === property.isPhetioInstrumented(),
+      'Property must be instrumented if controlling Checkbox is.' );
+
+    // If either one is instrumented, then the other must be too.
+    assert && assert( this.enabledProperty.isPhetioInstrumented() === this.isPhetioInstrumented(), 'provided enabled property must be instrumented for phet-io.' );
 
     // support for binder documentation, stripped out in builds and only runs when ?binder is specified
     assert && phet.chipper.queryParameters.binder && InstanceRegistry.registerDataURL( 'sun', 'Checkbox', this );
