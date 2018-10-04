@@ -88,7 +88,7 @@ define( function( require ) {
       tagName: 'button',
 
       // a11y {function} - called at the end of a keyboard press, passed to PressListener through ButtonModel
-      onAccessibleClick: null
+      accessibleClick: _.noop
     }, options );
 
     // validate options
@@ -103,7 +103,7 @@ define( function( require ) {
     // @private (a11y) {PressListener}
     this._pressListener = buttonModel.createListener( {
       tandem: options.tandem.createTandem( 'pressListener' ),
-      onAccessibleClick: options.onAccessibleClick
+      accessibleClick: options.accessibleClick
     } );
     this.addInputListener( this._pressListener );
     this.addAccessibleInputListener( this._pressListener.a11yListener );
