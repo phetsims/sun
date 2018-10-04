@@ -32,7 +32,6 @@ define( function( require ) {
   var PhetFont = require( 'SCENERY_PHET/PhetFont' );
   var Property = require( 'AXON/Property' );
   var Range = require( 'DOT/Range' );
-  var RangeWithValue = require( 'DOT/RangeWithValue' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var RectangularPushButton = require( 'SUN/buttons/RectangularPushButton' );
   var sun = require( 'SUN/sun' );
@@ -185,7 +184,7 @@ define( function( require ) {
   var demoSlider = function( layoutBounds, orientation ) {
 
     var property = new Property( 0 );
-    var range = new RangeWithValue( 0, 100 );
+    var range = new Range( 0, 100 );
     var tickLabelOptions = { font: new PhetFont( 16 ) };
     var sliderOptions = {
       trackSize: new Dimension2( 300, 5 ),
