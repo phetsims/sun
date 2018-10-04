@@ -52,7 +52,7 @@ define( function( require ) {
       phetioState: options.phetioState,
       phetioReadOnly: options.phetioReadOnly,
       tandem: options.tandem.createTandem( 'enabledProperty' ),
-      phetioInstanceDocumentation: 'When disabled, the button is grayed out and cannot be pressed'
+      phetioDocumentation: 'When disabled, the button is grayed out and cannot be pressed'
     } );
 
     // @private - keep track of and store all listeners this model creates
@@ -118,7 +118,7 @@ define( function( require ) {
       var self = this;
 
       options = _.extend( {
-        phetioInstanceDocumentation: 'Indicates when the button has been pressed or released',
+        phetioDocumentation: 'Indicates when the button has been pressed or released',
         canStartPress: function() {
           return self.enabledProperty.value;
         }

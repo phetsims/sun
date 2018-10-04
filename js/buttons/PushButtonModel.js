@@ -49,7 +49,7 @@ define( function( require ) {
     // @private - sends out notifications when the button is released.
     this.firedEmitter = new Emitter( {
       tandem: options.tandem.createTandem( 'firedEmitter' ),
-      phetioInstanceDocumentation: 'Emits when the button is fired',
+      phetioDocumentation: 'Emits when the button is fired',
       phetioReadOnly: options.phetioReadOnly,
       phetioEventType: 'user'
     } );

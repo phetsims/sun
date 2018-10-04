@@ -193,7 +193,7 @@ define( function( require ) {
         yAlign: options.buttonContentYAlign,
         minWidth: widestContentWidth + 2 * options.buttonContentXMargin,
         minHeight: tallestContentHeight + 2 * options.buttonContentYMargin,
-        phetioInstanceDocumentation: currentContent.phetioInstanceDocumentation || null // this null should be the default in PhetioObject
+        phetioDocumentation: currentContent.phetioDocumentation || null // this null should be the default in PhetioObject
       }, buttonOptions );
 
       // Pass through the tandem given the tandemName, but also support uninstrumented simulations

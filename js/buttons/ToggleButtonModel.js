@@ -50,7 +50,7 @@ define( function( require ) {
     // @private
     this.toggledEmitter = new Emitter( {
       tandem: options.tandem.createTandem( 'toggledEmitter' ),
-      phetioInstanceDocumentation: 'Emits when the button is toggled',
+      phetioDocumentation: 'Emits when the button is toggled',
       phetioEventType: 'user'
     } );
 

@@ -116,7 +116,7 @@ define( function( require ) {
     // @private
     this.firedEmitter = new Emitter( {
       tandem: options.tandem.createTandem( 'firedEmitter' ),
-      phetioInstanceDocumentation: 'Emits when the radio button is pressed',
+      phetioDocumentation: 'Emits when the radio button is pressed',
       phetioReadOnly: options.phetioReadOnly,
       phetioEventType: 'user'
     } );

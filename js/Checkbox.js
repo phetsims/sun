@@ -49,7 +49,7 @@ define( function( require ) {
       tandem: Tandem.required,
       phetioEventType: 'user',
       phetioReadOnly: PhetioObject.DEFAULT_OPTIONS.phetioReadOnly, // to support properly passing this to children, see https://github.com/phetsims/tandem/issues/60
-      phetioInstanceDocumentation: '', // different default than PhetioObject, see implementation below
+      phetioDocumentation: '', // different default than PhetioObject, see implementation below
 
       // a11y
       tagName: 'input',
@@ -88,20 +88,20 @@ define( function( require ) {
     this.enabledProperty = options.enabledProperty || new BooleanProperty( true, {
       tandem: options.tandem.createTandem( 'enabledProperty' ),
       phetioReadOnly: options.phetioReadOnly,
-      phetioInstanceDocumentation: 'When disabled, the checkbox is grayed out and cannot be pressed.'
+      phetioDocumentation: 'When disabled, the checkbox is grayed out and cannot be pressed.'
     } );
 
     // (phet-io) document the instrumented Property that this Checkbox manipulates
-    options.phetioInstanceDocumentation +=
+    options.phetioDocumentation +=
       ' This checkbox controls the PropertyIO.&lt;BooleanIO&gt;: ' +
       '<a href="#' + phetio.PhetioIDUtils.getDOMElementID( property.tandem.phetioID ) + '">' + property.tandem.phetioID + '</a>';
-    options.phetioInstanceDocumentation = options.phetioInstanceDocumentation.trim(); // eliminate preceding whitespace, if any.
+    options.phetioDocumentation = options.phetioDocumentation.trim(); // eliminate preceding whitespace, if any.
 
 
     // @private - sends out notifications when the checkbox is toggled.
     var toggledEmitter = new Emitter( {
       tandem: options.tandem.createTandem( 'toggledEmitter' ),
-      phetioInstanceDocumentation: 'Emits when user input causes the checkbox to toggle, emitting a single arg: the new boolean value of the checkbox state.',
+      phetioDocumentation: 'Emits when user input causes the checkbox to toggle, emitting a single arg: the new boolean value of the checkbox state.',
       phetioReadOnly: options.phetioReadOnly,
       phetioEventType: 'user',
       phetioType: EmitterIO( [ BooleanIO ] )
