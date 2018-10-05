@@ -85,10 +85,7 @@ define( function( require ) {
       contentAppearanceStrategy: RectangularButtonView.FadeContentWhenDisabled,
 
       // a11y
-      tagName: 'button',
-
-      // a11y {function} - called at the end of a keyboard press, passed to PressListener through ButtonModel
-      accessibleClick: _.noop
+      tagName: 'button'
     }, options );
 
     // validate options

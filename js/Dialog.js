@@ -155,7 +155,14 @@ define( function( require ) {
     var closeButton = new CloseButton( {
 
       iconLength: CLOSE_BUTTON_WIDTH,
-      listener: options.closeButtonListener,
+      listener: function() {
+        options.closeButtonListener();
+
+        // if listener was fired because of accessibility
+        if ( closeButton.buttonModel.isA11yClicking() ) {
+          self.focusActiveElement();
+        }
+      },
 
       // phet-io
       tandem: options.tandem.createTandem( 'closeButton' ),
@@ -164,10 +171,7 @@ define( function( require ) {
 
       // a11y
       tagName: 'button',
-      innerContent: closeString,
-      accessibleClick: function() {
-        self.focusActiveElement();
-      }
+      innerContent: closeString
     } );
 
     // touch/mouse areas for the close button

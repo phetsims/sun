@@ -41,6 +41,10 @@ define( function( require ) {
     this.overProperty = new BooleanProperty( false ); // @public - Is the pointer over the button?
     this.downProperty = new BooleanProperty( false, { reentrant: true } ); // @public - Is the pointer down?
 
+    // @protected (read-only) - Is the button being clicked because of accessibility (like keyboard)?
+    // See PressListener.a11yClickingProperty
+    this.a11yClickingProperty = new BooleanProperty( false );
+
     // @public - This Property was added for a11y. It tracks whether or not the button should "look" down. This
     // will be true if downProperty is true or if an a11y click is in progress. For an a11y click, the listeners
     // are fired right away but the button will look down for as long as PressListener.a11yLooksPressedInterval.
@@ -109,6 +113,15 @@ define( function( require ) {
     },
 
     /**
+     * is the button currently firing because of accessibility?
+     * @public (a11y)
+     * @returns {boolean}
+     */
+    isA11yClicking: function() {
+      return this.a11yClickingProperty.get();
+    },
+
+    /**
      * Creates a standard button listener that can be added to a node and that will trigger the changes to this model.
      * @param {Object} [options]
      * @returns {PressListener}
@@ -129,6 +142,7 @@ define( function( require ) {
 
       pressListener.isPressedProperty.link( this.downProperty.set.bind( this.downProperty ) );
       pressListener.isOverProperty.link( this.overProperty.set.bind( this.overProperty ) );
+      pressListener.a11yClickingProperty.link( this.a11yClickingProperty.set.bind( this.a11yClickingProperty ) );
 
       // dispose the previous multilink in case we already created a PressListener with this model
       this.looksPressedMultilink && this.looksPressedMultilink.dispose();
