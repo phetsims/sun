@@ -14,7 +14,8 @@ define( function( require ) {
 
   // modules
   var ComboBoxIO = require( 'SUN/ComboBoxIO' );
-  var ComboBoxItemNodeIO = require( 'SUN/ComboBoxItemNodeIO' );
+  var Emitter = require( 'AXON/Emitter' );
+  var EmitterIO = require( 'AXON/EmitterIO' );
   var InstanceRegistry = require( 'PHET_CORE/documentation/InstanceRegistry' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Line = require( 'SCENERY/nodes/Line' );
@@ -26,6 +27,9 @@ define( function( require ) {
   var sun = require( 'SUN/sun' );
   var Tandem = require( 'TANDEM/Tandem' );
   var Vector2 = require( 'DOT/Vector2' );
+
+  // ifphetio
+  var VoidIO = require( 'ifphetio!PHET_IO/types/VoidIO' );
 
   /**
    * @param {*[]} items - see ComboBox.createItem
@@ -138,6 +142,21 @@ define( function( require ) {
       itemNode.stroke = null;
     };
 
+    // TODO: It seems it would be better to use FireListener on each ComboBoxItemNode, see https://github.com/phetsims/sun/issues/405
+    var firedEmitter = new Emitter( {
+      tandem: options.tandem.createTandem( 'firedEmitter' ),
+      phetioType: EmitterIO( [ VoidIO ] )
+    } );
+    firedEmitter.addListener( function( event ) {
+      var selectedItemNode = event.currentTarget; // {ComboBoxItemNode}
+
+      unhighlightItem( selectedItemNode );
+      self.listNode.visible = false; // close the list, do this before changing property value, in case it's expensive
+      self.display.removeInputListener( self.clickToDismissListener ); // remove the click-to-dismiss listener
+      event.abort(); // prevent nodes (eg, controls) behind the list from receiving the event
+      property.value = selectedItemNode.item.value; // set the property
+    } );
+
     // listener that we'll attach to each item in the list
     var itemListener = {
       enter: function( event ) {
@@ -150,17 +169,7 @@ define( function( require ) {
         event.abort(); // prevent click-to-dismiss on the list
       },
       up: function( event ) {
-        var selectedItemNode = event.currentTarget; // {ComboBoxItemNode}
-
-        selectedItemNode.phetioStartEvent( 'fired' );
-
-        unhighlightItem( selectedItemNode );
-        self.listNode.visible = false; // close the list, do this before changing property value, in case it's expensive
-        self.display.removeInputListener( self.clickToDismissListener ); // remove the click-to-dismiss listener
-        event.abort(); // prevent nodes (eg, controls) behind the list from receiving the event
-        property.value = selectedItemNode.item.value; // set the property
-
-        selectedItemNode.phetioEndEvent();
+        firedEmitter.emit1( event );
       }
     };
 
@@ -464,7 +473,6 @@ define( function( require ) {
 
     options = _.extend( {
       tandem: Tandem.required,
-      phetioType: ComboBoxItemNodeIO,
       children: [ this.itemWrapper ]
     }, options );
 
