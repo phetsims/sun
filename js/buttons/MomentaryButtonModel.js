@@ -10,7 +10,6 @@ define( function( require ) {
 
   // modules
   var ButtonModel = require( 'SUN/buttons/ButtonModel' );
-  var Emitter = require( 'AXON/Emitter' );
   var inherit = require( 'PHET_CORE/inherit' );
   var PhetioObject = require( 'TANDEM/PhetioObject' );
   var sun = require( 'SUN/sun' );
@@ -34,41 +33,16 @@ define( function( require ) {
 
     ButtonModel.call( self, options );
 
-    // @private
-    this.pressedEmitter = new Emitter( {
-      tandem: options.tandem.createTandem( 'pressedEmitter' ),
-      phetioDocumentation: 'Emits when the button is pressed',
-      phetioReadOnly: options.phetioReadOnly
-    } );
-
-    // @private
-    this.releasedEmitter = new Emitter( {
-      tandem: options.tandem.createTandem( 'releasedEmitter' ),
-      phetioDocumentation: 'Emits when the button is released',
-      phetioReadOnly: options.phetioReadOnly
-    } );
-
-    // add listeners
-    var setValueOn = function() {
-      valueProperty.set( valueOn );
-    };
-    this.pressedEmitter.addListener( setValueOn );
-
-    var setValueOff = function() {
-      valueProperty.set( valueOff );
-    };
-    this.releasedEmitter.addListener( setValueOff );
-
     var downListener = function( down ) {
 
       // turn on when pressed (if enabled)
       if ( down ) {
         if ( self.enabledProperty.get() ) {
-          self.pressedEmitter.emit();
+          valueProperty.set( valueOn );
         }
       }
       else {
-        self.releasedEmitter.emit();
+        valueProperty.set( valueOff );
       }
     };
     this.downProperty.lazyLink( downListener );
@@ -76,8 +50,6 @@ define( function( require ) {
     // @private: just for dispose.  Named based on the type name so it won't have a name collision with parent/child ones
     this.disposeMomentaryButtonModel = function() {
       self.downProperty.unlink( downListener );
-      this.pressedEmitter.removeListener( setValueOn );
-      this.releasedEmitter.removeListener( setValueOff );
     };
   }
 
