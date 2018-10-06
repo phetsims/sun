@@ -11,7 +11,7 @@ define( function( require ) {
 
   // modules
   var AccessibilityUtil = require( 'SCENERY/accessibility/AccessibilityUtil' );
-  var ButtonListener = require( 'SCENERY/input/ButtonListener' );
+  var FireListener = require( 'SCENERY/listeners/FireListener' );
   var FontAwesomeNode = require( 'SUN/FontAwesomeNode' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Node = require( 'SCENERY/nodes/Node' );
@@ -20,9 +20,6 @@ define( function( require ) {
   var sun = require( 'SUN/sun' );
   var Tandem = require( 'TANDEM/Tandem' );
   var Text = require( 'SCENERY/nodes/Text' );
-
-  // ifphetio
-  var MenuItemIO = require( 'SUN/MenuItemIO' );
 
   // the check mark used for toggle-able menu items
   var CHECK_MARK_NODE = new FontAwesomeNode( 'check', {
@@ -60,7 +57,7 @@ define( function( require ) {
       textFill: 'black',
 
       // phet-io
-      phetioType: MenuItemIO,
+      phetioDocumentation: 'Item buttons shown in a popup menu',
       phetioEventType: 'user',
 
       // a11y
@@ -95,13 +92,12 @@ define( function( require ) {
     } );
 
     var fire = function( event ) {
-      self.phetioStartEvent( 'fired' );
       closeCallback( event );
       callback( event );
-      self.phetioEndEvent();
     };
 
-    this.addInputListener( new ButtonListener( {
+    this.addInputListener( new FireListener( {
+      tandem: options.tandem,
       fire: fire
     } ) );
 
