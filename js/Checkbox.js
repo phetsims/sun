@@ -104,10 +104,10 @@ define( function( require ) {
       phetioDocumentation: 'Emits when user input causes the checkbox to toggle, emitting a single arg: the new boolean value of the checkbox state.',
       phetioReadOnly: options.phetioReadOnly,
       phetioEventType: 'user',
-      phetioType: EmitterIO( [ BooleanIO ] )
-    } );
-    toggledEmitter.addListener( function( value ) {
-      property.value = value;
+      phetioType: EmitterIO( [ { name: 'isChecked', type: BooleanIO } ] ),
+      listener: function( value ) {
+        property.value = value;
+      }
     } );
 
     // @private - Create the background.  Until we are creating our own shapes, just put a rectangle behind the font
@@ -148,7 +148,7 @@ define( function( require ) {
     var fire = function() {
       if ( self.enabledProperty.value ) {
         var newValue = !property.value;
-        toggledEmitter.emit1( newValue );
+        toggledEmitter.emit( newValue );
       }
     };
 

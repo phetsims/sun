@@ -145,16 +145,16 @@ define( function( require ) {
     // TODO: It seems it would be better to use FireListener on each ComboBoxItemNode, see https://github.com/phetsims/sun/issues/405
     var firedEmitter = new Emitter( {
       tandem: options.tandem.createTandem( 'firedEmitter' ),
-      phetioType: EmitterIO( [ VoidIO ] )
-    } );
-    firedEmitter.addListener( function( event ) {
-      var selectedItemNode = event.currentTarget; // {ComboBoxItemNode}
+      phetioType: EmitterIO( [ { name: 'event', type: VoidIO } ] ), // TODO: Should this be EventIO or DOMEventIO?
+      listener: function( event ) {
+        var selectedItemNode = event.currentTarget; // {ComboBoxItemNode}
 
-      unhighlightItem( selectedItemNode );
-      self.listNode.visible = false; // close the list, do this before changing property value, in case it's expensive
-      self.display.removeInputListener( self.clickToDismissListener ); // remove the click-to-dismiss listener
-      event.abort(); // prevent nodes (eg, controls) behind the list from receiving the event
-      property.value = selectedItemNode.item.value; // set the property
+        unhighlightItem( selectedItemNode );
+        self.listNode.visible = false; // close the list, do this before changing property value, in case it's expensive
+        self.display.removeInputListener( self.clickToDismissListener ); // remove the click-to-dismiss listener
+        event.abort(); // prevent nodes (eg, controls) behind the list from receiving the event
+        property.value = selectedItemNode.item.value; // set the property
+      }
     } );
 
     // listener that we'll attach to each item in the list
