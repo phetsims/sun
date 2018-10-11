@@ -188,7 +188,7 @@ define( function( require ) {
       'Property must be instrumented if controlling Checkbox is.' );
 
     // If either one is instrumented, then the other must be too.
-    assert && assert( this.enabledProperty.isPhetioInstrumented() === this.isPhetioInstrumented(), 'provided enabled property must be instrumented for phet-io.' );
+    assert && Tandem.validationEnabled() && assert( this.enabledProperty.isPhetioInstrumented() === this.isPhetioInstrumented(), 'provided enabled property must be instrumented for phet-io.' );
 
     // support for binder documentation, stripped out in builds and only runs when ?binder is specified
     assert && phet.chipper.queryParameters.binder && InstanceRegistry.registerDataURL( 'sun', 'Checkbox', this );
