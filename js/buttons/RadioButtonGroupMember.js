@@ -78,7 +78,7 @@ define( function( require ) {
     // @private
     // Note it shares a tandem with this, so the emitter will be instrumented as a child of the button
     this.buttonModel = new ButtonModel( {
-      tandem: options.tandem
+      tandem: options.tandem.createTandem( 'buttonModel' )
     } );
 
     // When the button model triggers an event, fire from the radio button

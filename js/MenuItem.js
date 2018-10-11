@@ -97,7 +97,7 @@ define( function( require ) {
     };
 
     this.addInputListener( new FireListener( {
-      tandem: options.tandem,
+      tandem: options.tandem.createTandem( 'inputListener' ),
       fire: fire
     } ) );
 
