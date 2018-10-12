@@ -148,7 +148,7 @@ define( function( require ) {
     // see https://github.com/phetsims/joist/issues/293
     assert && assert( this.isModal, 'Non-modal dialogs not currently supported' );
 
-    // @private - whether the dialog is showing
+    // @protected - whether the dialog is showing
     this.isShowing = false;
 
     // create close button
