@@ -52,8 +52,7 @@ define( function( require ) {
     var expandButton = new Path( buttonShape, {
       fill: 'rgb(0, 179, 0 )',
       stroke: 'black',
-      lineWidth: 0.5,
-      tandem: options.tandem.createTandem( 'expandButton' )
+      lineWidth: 0.5
     } );
     var plusSymbolShape = new Shape()
       .moveTo( symbolLength / 2, 0 )
@@ -69,8 +68,7 @@ define( function( require ) {
     var collapseButton = new Path( buttonShape, {
       fill: 'rgb( 255, 85, 0 )',
       stroke: 'black',
-      lineWidth: 0.5,
-      tandem: options.tandem.createTandem( 'collapseButton' )
+      lineWidth: 0.5
     } );
     var minusSymbolShape = new Shape()
       .moveTo( -symbolLength / 2, 0 )
