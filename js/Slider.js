@@ -106,11 +106,6 @@ define( function( require ) {
       'invalid orientation: ' + options.orientation );
     this.orientation = options.orientation; // @private
 
-    assert && assert( options.rotation === undefined, 'Slider sets rotation based on orientation' );
-    if ( options.orientation === 'vertical' ) {
-      options.rotation = VERTICAL_ROTATION;
-    }
-
     Node.call( this );
 
     var ownsEnabledProperty = !options.enabledProperty;
@@ -137,11 +132,13 @@ define( function( require ) {
       'majorTickLength', 'majorTickStroke', 'majorTickLineWidth',
       'minorTickLength', 'minorTickStroke', 'minorTickLineWidth' );
 
+    var sliderParts = [];
+
     // @private ticks are added to these parents, so they are behind the knob
     this.majorTicksParent = new Node();
     this.minorTicksParent = new Node();
-    this.addChild( this.majorTicksParent );
-    this.addChild( this.minorTicksParent );
+    sliderParts.push( this.majorTicksParent );
+    sliderParts.push( this.minorTicksParent );
 
     // @private mapping between value and track position
     this.valueToPosition = new LinearFunction( range.min, range.max, 0, options.trackSize.width, true /* clamp */ );
@@ -185,11 +182,20 @@ define( function( require ) {
     this.track.localBounds = this.track.localBounds.dilatedX( thumb.width / 2 );
 
     // Add the track
-    this.addChild( this.track );
+    sliderParts.push( this.track );
 
     // do this outside of options hash, so that it applied to both default and custom thumbs
     thumb.centerY = this.track.centerY + options.thumbYOffset;
-    this.addChild( thumb );
+    sliderParts.push( thumb );
+
+    // Wrap all of the slider parts in a Node, and set the orientation of that Node.
+    // This allows us to still decorate the Slider with additional children.
+    // See https://github.com/phetsims/sun/issues/406
+    var sliderPartsNode = new Node( { children: sliderParts } );
+    if ( options.orientation === 'vertical' ) {
+      sliderPartsNode.rotation = VERTICAL_ROTATION;
+    }
+    this.addChild( sliderPartsNode );
 
     // touchArea for the default thumb. If a custom thumb is provided, the client is responsible for its touchArea.
     if ( !options.thumbNode && ( options.thumbTouchAreaXDilation || options.thumbTouchAreaYDilation ) ) {
@@ -212,7 +218,7 @@ define( function( require ) {
       start: function( event, trail ) {
         if ( self.enabledProperty.get() ) {
           options.startDrag();
-          var transform = trail.subtrailTo( self ).getTransform();
+          var transform = trail.subtrailTo( sliderPartsNode ).getTransform();
 
           // Determine the offset relative to the center of the thumb
           clickXOffset = transform.inversePosition2( event.pointer.point ).x - thumb.centerX;
@@ -221,7 +227,7 @@ define( function( require ) {
 
       drag: function( event, trail ) {
         if ( self.enabledProperty.get() ) {
-          var transform = trail.subtrailTo( self ).getTransform(); // we only want the transform to our parent
+          var transform = trail.subtrailTo( sliderPartsNode ).getTransform(); // we only want the transform to our parent
           var x = transform.inversePosition2( event.pointer.point ).x - clickXOffset;
           var newValue = self.valueToPosition.inverse( x );
 
