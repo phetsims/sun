@@ -257,7 +257,6 @@ define( function( require ) {
     // update thumb location when value changes
     var valueObserver = function( value ) {
       thumb.centerX = self.valueToPosition( value );
-      self.focusHighlight.centerX = thumb.centerX;
     };
     valueProperty.link( valueObserver ); // must be unlinked in disposeSlider
 
