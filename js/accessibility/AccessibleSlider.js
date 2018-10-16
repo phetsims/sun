@@ -99,7 +99,11 @@ define( function( require ) {
             // This string is read every time the slider value changes.
             // @param {number}
             // @param {number}
-            createAriaValueText: function ( formattedValue, previousValue ) { return formattedValue; }
+            createAriaValueText: function ( formattedValue, previousValue ) { return formattedValue; },
+
+            // control whether or not to round the value to a multiple of the given step size
+            // see https://github.com/phetsims/gravity-force-lab-basics/issues/72
+            roundToStepSize: false
           };
 
           options = _.extend( {}, defaults, options );
@@ -172,6 +176,9 @@ define( function( require ) {
 
           // @private - entries like { {number}: {boolean} }, key is range key code, value is whether it is down
           this.rangeKeysDown = {};
+
+          // @private - setting to enable/disable rounding to the step size
+          this.roundToStepSize = options.roundToStepSize;
 
           // listeners, must be unlinked in dispose
           var enabledRangeObserver = function( enabledRange ) {
@@ -396,7 +403,9 @@ define( function( require ) {
                     this.decreasedEmitter.emit();
                   }
 
-                  newValue = roundValue( newValue, this._valueProperty.get(), stepSize );
+                  if ( this.roundToStepSize ) {
+                    newValue = roundValue( newValue, this._valueProperty.get(), stepSize );
+                  }
                 }
 
                 // limit the value to the enabled range
@@ -473,7 +482,9 @@ define( function( require ) {
                 this.decreasedEmitter.emit();
               }
 
-              newValue = roundValue( newValue, this._valueProperty.get(), stepSize );
+              if ( this.roundToStepSize ) {
+                newValue = roundValue( newValue, this._valueProperty.get(), stepSize );
+              }
 
               // limit to enabled range
               newValue = Util.clamp( newValue, this._enabledRangeProperty.get().min, this._enabledRangeProperty.get().max );
@@ -519,7 +530,7 @@ define( function( require ) {
         /**
          * Returns true if any range keys are currently down on this slider. Useful for determining when to call
          * startDrag or endDrag based on interaction.
-         * 
+         *
          * @return {boolean}
          * @private
          */
