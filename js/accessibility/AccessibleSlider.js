@@ -170,9 +170,11 @@ define( function( require ) {
           // initialize slider attributes
           this.ariaOrientation = options.ariaOrientation;
 
-          // @public - emitted whenever the slider changes in the specific direction
-          this.increasedEmitter = new Emitter();
-          this.decreasedEmitter = new Emitter();
+          // @public - Emitted whenever there is an attempt to change the value in a particular direction. Note that
+          // these will emit whether or not the value will actually change (like when stepSize is 0). These may
+          // be used to change the valueProperty, changes from accessible input are handled after these are emitted.
+          this.attemptedIncreaseEmitter = new Emitter();
+          this.attemptedDecreaseEmitter = new Emitter();
 
           // @private - entries like { {number}: {boolean} }, key is range key code, value is whether it is down
           this.rangeKeysDown = {};
@@ -365,11 +367,11 @@ define( function( require ) {
                 // on 'end' and 'home' snap to max and min of enabled range respectively (this is typical browser
                 // behavior for sliders)
                 if ( code === KeyboardUtil.KEY_END ) {
-                  this.increasedEmitter.emit();
+                  this.attemptedIncreaseEmitter.emit();
                   newValue = this._enabledRangeProperty.get().max;
                 }
                 else if ( code === KeyboardUtil.KEY_HOME ) {
-                  this.decreasedEmitter.emit();
+                  this.attemptedDecreaseEmitter.emit();
                   newValue = this._enabledRangeProperty.get().min;
                 }
               }
@@ -381,11 +383,11 @@ define( function( require ) {
                   stepSize = this.pageKeyboardStep;
 
                   if ( code === KeyboardUtil.KEY_PAGE_UP ) {
-                    this.increasedEmitter.emit();
+                    this.attemptedIncreaseEmitter.emit();
                     newValue = this._valueProperty.get() + stepSize;
                   }
                   else if ( code === KeyboardUtil.KEY_PAGE_DOWN ) {
-                    this.decreasedEmitter.emit();
+                    this.attemptedDecreaseEmitter.emit();
                     newValue = this._valueProperty.get() - stepSize;
                   }
                 }
@@ -395,11 +397,11 @@ define( function( require ) {
                   stepSize = event.shiftKey ? this.shiftKeyboardStep : this.keyboardStep;
 
                   if ( code === KeyboardUtil.KEY_RIGHT_ARROW || code === KeyboardUtil.KEY_UP_ARROW ) {
-                    this.increasedEmitter.emit();
+                    this.attemptedIncreaseEmitter.emit();
                     newValue = this._valueProperty.get() + stepSize;
                   }
                   else if ( code === KeyboardUtil.KEY_LEFT_ARROW || code === KeyboardUtil.KEY_DOWN_ARROW ) {
-                    this.decreasedEmitter.emit();
+                    this.attemptedDecreaseEmitter.emit();
                     newValue = this._valueProperty.get() - stepSize;
                   }
 
@@ -474,11 +476,11 @@ define( function( require ) {
               this._startDrag();
 
               if ( inputValue > this._valueProperty.get() ) {
-                this.increasedEmitter.emit();
+                this.attemptedIncreaseEmitter.emit();
                 newValue = this._valueProperty.get() + stepSize;
               }
               else if ( inputValue < this._valueProperty.get() ) {
-                this.decreasedEmitter.emit();
+                this.attemptedDecreaseEmitter.emit();
                 newValue = this._valueProperty.get() - stepSize;
               }
 
