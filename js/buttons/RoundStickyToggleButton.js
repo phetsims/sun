@@ -40,15 +40,24 @@ define( function( require ) {
 
     // @private (read-only)
     // Note it shares a tandem with this, so the emitter will be instrumented as a child of the button
-    this.toggleButtonModel = new StickyToggleButtonModel( valueUp, valueDown, property, options );
-    RoundButtonView.call( this, this.toggleButtonModel, new StickyToggleButtonInteractionStateProperty( this.toggleButtonModel ), options );
+    var toggleButtonModel = new StickyToggleButtonModel( valueUp, valueDown, property, options );
+    var stickyToggleButtonInteractionStateProperty = new StickyToggleButtonInteractionStateProperty( toggleButtonModel );
+    RoundButtonView.call( this, toggleButtonModel, stickyToggleButtonInteractionStateProperty, options );
+
+    // @private - dispose items specific to this instance
+    this.disposeRoundStickyToggleButton = function() {
+      toggleButtonModel.dispose();
+      // TODO: the following commented out dispose() fixes a memory leak, but triggers the usual 'tried to
+      // removeListener on something that wasn't a listener' assertion
+      // stickyToggleButtonInteractionStateProperty.dispose();
+    };
   }
 
   sun.register( 'RoundStickyToggleButton', RoundStickyToggleButton );
 
   return inherit( RoundButtonView, RoundStickyToggleButton, {
     dispose: function() {
-      this.toggleButtonModel.dispose(); //TODO this fails with assertions enabled, see sun#212
+      this.disposeRoundStickyToggleButton();
       RoundButtonView.prototype.dispose.call( this );
     }
   } );
