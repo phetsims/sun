@@ -365,12 +365,12 @@ define( function( require ) {
                 // on 'end' and 'home' snap to max and min of enabled range respectively (this is typical browser
                 // behavior for sliders)
                 if ( code === KeyboardUtil.KEY_END ) {
-                  newValue = this._enabledRangeProperty.get().max;
                   this.increasedEmitter.emit();
+                  newValue = this._enabledRangeProperty.get().max;
                 }
                 else if ( code === KeyboardUtil.KEY_HOME ) {
-                  newValue = this._enabledRangeProperty.get().min;
                   this.decreasedEmitter.emit();
+                  newValue = this._enabledRangeProperty.get().min;
                 }
               }
               else {
@@ -381,12 +381,12 @@ define( function( require ) {
                   stepSize = this.pageKeyboardStep;
 
                   if ( code === KeyboardUtil.KEY_PAGE_UP ) {
-                    newValue = this._valueProperty.get() + stepSize;
                     this.increasedEmitter.emit();
+                    newValue = this._valueProperty.get() + stepSize;
                   }
                   else if ( code === KeyboardUtil.KEY_PAGE_DOWN ) {
-                    newValue = this._valueProperty.get() - stepSize;
                     this.decreasedEmitter.emit();
+                    newValue = this._valueProperty.get() - stepSize;
                   }
                 }
                 else if ( KeyboardUtil.isArrowKey( code ) ) {
@@ -395,12 +395,12 @@ define( function( require ) {
                   stepSize = event.shiftKey ? this.shiftKeyboardStep : this.keyboardStep;
 
                   if ( code === KeyboardUtil.KEY_RIGHT_ARROW || code === KeyboardUtil.KEY_UP_ARROW ) {
-                    newValue = this._valueProperty.get() + stepSize;
                     this.increasedEmitter.emit();
+                    newValue = this._valueProperty.get() + stepSize;
                   }
                   else if ( code === KeyboardUtil.KEY_LEFT_ARROW || code === KeyboardUtil.KEY_DOWN_ARROW ) {
-                    newValue = this._valueProperty.get() - stepSize;
                     this.decreasedEmitter.emit();
+                    newValue = this._valueProperty.get() - stepSize;
                   }
 
                   if ( this.roundToStepSize ) {
@@ -474,12 +474,12 @@ define( function( require ) {
               this._startDrag();
 
               if ( inputValue > this._valueProperty.get() ) {
-                newValue = this._valueProperty.get() + stepSize;
                 this.increasedEmitter.emit();
+                newValue = this._valueProperty.get() + stepSize;
               }
               else if ( inputValue < this._valueProperty.get() ) {
-                newValue = this._valueProperty.get() - stepSize;
                 this.decreasedEmitter.emit();
+                newValue = this._valueProperty.get() - stepSize;
               }
 
               if ( this.roundToStepSize ) {
