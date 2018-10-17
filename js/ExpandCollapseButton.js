@@ -10,7 +10,7 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var ButtonListener = require( 'SCENERY/input/ButtonListener' );
+  var FireListener = require( 'SCENERY/listeners/FireListener' );
   var inherit = require( 'PHET_CORE/inherit' );
   var InstanceRegistry = require( 'PHET_CORE/documentation/InstanceRegistry' );
   var Node = require( 'SCENERY/nodes/Node' );
@@ -84,11 +84,11 @@ define( function( require ) {
 
     // click to toggle
     this.cursor = 'pointer';
-    this.addInputListener( new ButtonListener( {
+    this.addInputListener( new FireListener( {
       fire: function() {
         expandedProperty.set( !expandedProperty.get() );
       },
-      tandem: options.tandem.createTandem( 'buttonListener' )
+      tandem: options.tandem.createTandem( 'inputListener' )
     } ) );
 
     // @private
