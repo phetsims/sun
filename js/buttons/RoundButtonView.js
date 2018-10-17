@@ -168,6 +168,7 @@ define( function( require ) {
   RoundButtonView.ThreeDAppearanceStrategy = function( button, interactionStateProperty, baseColorProperty, options ) {
 
     // Color properties
+    // TODO: Include "Property" in all of these PaintColorProperty names
     var baseBrighter8 = new PaintColorProperty( baseColorProperty, { luminanceFactor: 0.8 } );
     var baseBrighter7 = new PaintColorProperty( baseColorProperty, { luminanceFactor: 0.7 } );
     var baseBrighter3 = new PaintColorProperty( baseColorProperty, { luminanceFactor: 0.3 } );
