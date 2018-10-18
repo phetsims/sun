@@ -33,7 +33,7 @@ define( function( require ) {
   var Util = require( 'DOT/Util' );
 
   // ifphetio
-  var BooleanIO = require( 'ifphetio!PHET_IO/types/BooleanIO' );
+  var BooleanIO = require( 'TANDEM/types/BooleanIO' );
 
   // constants
   var VERTICAL_ROTATION = -Math.PI / 2;
