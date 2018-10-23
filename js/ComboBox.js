@@ -27,8 +27,6 @@ define( function( require ) {
   var sun = require( 'SUN/sun' );
   var Tandem = require( 'TANDEM/Tandem' );
   var Vector2 = require( 'DOT/Vector2' );
-
-  // ifphetio
   var VoidIO = require( 'TANDEM/types/VoidIO' );
 
   /**

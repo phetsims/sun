@@ -13,6 +13,7 @@ define( function( require ) {
 
   // modules
   var AccessibleSlider = require( 'SUN/accessibility/AccessibleSlider' );
+  var BooleanIO = require( 'TANDEM/types/BooleanIO' );
   var InstanceRegistry = require( 'PHET_CORE/documentation/InstanceRegistry' );
   var Dimension2 = require( 'DOT/Dimension2' );
   var FocusHighlightFromNode = require( 'SCENERY/accessibility/FocusHighlightFromNode' );
@@ -31,9 +32,6 @@ define( function( require ) {
   var sun = require( 'SUN/sun' );
   var Tandem = require( 'TANDEM/Tandem' );
   var Util = require( 'DOT/Util' );
-
-  // ifphetio
-  var BooleanIO = require( 'TANDEM/types/BooleanIO' );
 
   // constants
   var VERTICAL_ROTATION = -Math.PI / 2;

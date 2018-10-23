@@ -9,6 +9,7 @@ define( function( require ) {
   'use strict';
 
   // modules
+  var BooleanIO = require( 'TANDEM/types/BooleanIO' );
   var BooleanProperty = require( 'AXON/BooleanProperty' );
   var ButtonListener = require( 'SCENERY/input/ButtonListener' );
   var Emitter = require( 'AXON/Emitter' );
@@ -21,9 +22,6 @@ define( function( require ) {
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var sun = require( 'SUN/sun' );
   var Tandem = require( 'TANDEM/Tandem' );
-
-  // ifphetio
-  var BooleanIO = require( 'TANDEM/types/BooleanIO' );
 
   // constants
   var DISABLED_OPACITY = 0.3;

@@ -9,14 +9,14 @@ define( function( require ) {
   'use strict';
 
   // modules
+  var BooleanIO = require( 'TANDEM/types/BooleanIO' );
   var NodeIO = require( 'SCENERY/nodes/NodeIO' );
   var sun = require( 'SUN/sun' );
+  var VoidIO = require( 'TANDEM/types/VoidIO' );
 
   // ifphetio
   var assertInstanceOf = require( 'ifphetio!PHET_IO/assertInstanceOf' );
-  var BooleanIO = require( 'TANDEM/types/BooleanIO' );
   var phetioInherit = require( 'ifphetio!PHET_IO/phetioInherit' );
-  var VoidIO = require( 'TANDEM/types/VoidIO' );
 
   /**
    * @param {Slider} slider
