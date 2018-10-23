@@ -154,28 +154,33 @@ define( function( require ) {
           // handle all accessible event input
           var accessibleInputListener = {
             keydown: function( event ) {
-              self.emitKeyState( event, true );
+              // check for relevant keys here
+              if ( KeyboardUtil.isRangeKey( event.keyCode ) ) {
+                self.emitKeyState( event, true );
 
-              // if using the timer, handle update at interval
-              if ( self._a11yUseTimer ) {
-                if ( !self._callbackTimer.isRunning() ) {
-                  self.handleKeyDown( event );
+                // if using the timer, handle update at interval
+                if ( self._a11yUseTimer ) {
+                  if ( !self._callbackTimer.isRunning() ) {
+                    self.handleKeyDown( event );
 
-                  downCallback = self.handleKeyDown.bind( self, event );
-                  self._callbackTimer.addCallback( downCallback );
-                  self._callbackTimer.start();
+                    downCallback = self.handleKeyDown.bind( self, event );
+                    self._callbackTimer.addCallback( downCallback );
+                    self._callbackTimer.start();
+                  }
                 }
-              }
-              else {
-                self.handleKeyDown( event );
+                else {
+                  self.handleKeyDown( event );
+                }
               }
             },
             keyup: function( event ) {
-              self.emitKeyState( event, false );
+              if ( KeyboardUtil.isRangeKey( event.keyCode ) ) {
+                self.emitKeyState( event, false );
 
-              if ( self._a11yUseTimer ) {
-                self._callbackTimer.stop( false );
-                self._callbackTimer.removeCallback( downCallback );
+                if ( self._a11yUseTimer ) {
+                  self._callbackTimer.stop( false );
+                  self._callbackTimer.removeCallback( downCallback );
+                }
               }
             }
           };
