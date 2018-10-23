@@ -147,7 +147,9 @@ define( function( require ) {
       buttonAppearanceStrategy.dispose();
       contentAppearanceStrategy.dispose();
       pressListener.dispose();
-      interactionStateProperty.unlink( handleInteractionStateChanged );
+      if ( interactionStateProperty.hasListener( handleInteractionStateChanged ) ) {
+        interactionStateProperty.unlink( handleInteractionStateChanged );
+      }
       this.baseColorProperty.dispose();
     };
   }
@@ -310,7 +312,9 @@ define( function( require ) {
 
     // add a dispose function
     this.dispose = function() {
-      interactionStateProperty.unlink( updateAppearance );
+      if ( interactionStateProperty.hasListener( updateAppearance ) ) {
+        interactionStateProperty.unlink( updateAppearance );
+      }
 
       baseTransparent.dispose();
       disabledBaseTransparent.dispose();
@@ -417,8 +421,9 @@ define( function( require ) {
 
     // add a dispose function
     this.dispose = function() {
-      interactionStateProperty.unlink( updateAppearance );
-
+      if ( interactionStateProperty.hasListener( updateAppearance ) ) {
+        interactionStateProperty.unlink( updateAppearance );
+      }
       baseBrighter4.dispose();
       baseDarker4.dispose();
       disabledBaseDarker4.dispose();
@@ -444,7 +449,9 @@ define( function( require ) {
 
     // add dispose function to unlink listener
     this.dispose = function() {
-      interactionStateProperty.unlink( updateOpacity );
+      if ( interactionStateProperty.hasListener( updateOpacity ) ) {
+        interactionStateProperty.unlink( updateOpacity );
+      }
     };
   };
 

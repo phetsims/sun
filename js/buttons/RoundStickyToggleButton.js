@@ -47,9 +47,7 @@ define( function( require ) {
     // @private - dispose items specific to this instance
     this.disposeRoundStickyToggleButton = function() {
       toggleButtonModel.dispose();
-      // TODO: the following commented out dispose() fixes a memory leak, but triggers the usual 'tried to
-      // removeListener on something that wasn't a listener' assertion
-      // stickyToggleButtonInteractionStateProperty.dispose();
+      stickyToggleButtonInteractionStateProperty.dispose();
     };
   }
 
