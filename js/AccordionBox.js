@@ -459,8 +459,20 @@ define( function( require ) {
      * @returns {number}
      */
     getBoxWidth: function() {
-      var width = Math.max( this._minWidth, this.expandCollapseButton.width + this.titleNode.width + this._buttonXMargin + this._titleXMargin + this._titleXSpacing );
 
+      // Initial width is dependent on width of title section of the accordion box
+      var width = Math.max( this._minWidth, this._buttonXMargin + this.expandCollapseButton.width + this._titleXSpacing + this.titleNode.width + this._titleXMargin );
+
+      // Limit width by the necessary space for the title node
+      if ( this._titleAlignX === 'center' ) {
+        // Handles case where the spacing on the left side of the title is larger than the spacing on the right side.
+        width = Math.max( width, (this._buttonXMargin + this.expandCollapseButton.width + this._titleXSpacing) * 2 + this.titleNode.width );
+
+        // Handles case where the spacing on the right side of the title is larger than the spacing on the left side.
+        width = Math.max( width, (this._titleXMargin) * 2 + this.titleNode.width );
+      }
+
+      // Compare width of title section to content section of the accordion box
       // content is below button+title
       if ( this._showTitleWhenExpanded ) {
         return Math.max( width, this._contentNode.width + ( 2 * this._contentXMargin ) );
