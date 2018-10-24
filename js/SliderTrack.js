@@ -23,8 +23,6 @@ define( function( require ) {
   var SimpleDragHandler = require( 'SCENERY/input/SimpleDragHandler' );
   var sun = require( 'SUN/sun' );
   var Tandem = require( 'TANDEM/Tandem' );
-
-  // ifphetio
   var SliderTrackIO = require( 'SUN/SliderTrackIO' );
 
   /**

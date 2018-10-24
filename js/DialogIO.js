@@ -9,7 +9,6 @@
 define( function( require ) {
   'use strict';
 
-  // ifphetio
   var sun = require( 'SUN/sun' );
   var NodeIO = require( 'SCENERY/nodes/NodeIO' );
 
