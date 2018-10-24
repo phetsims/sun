@@ -150,32 +150,40 @@ define( function( require ) {
 
           // a callback that is added and removed from the timer depending on keystate
           var downCallback = null;
+          var runningTimerCallbackKeyCode = null;
 
           // handle all accessible event input
           var accessibleInputListener = {
             keydown: function( event ) {
-              self.emitKeyState( event, true );
+              // check for relevant keys here
+              if ( KeyboardUtil.isRangeKey( event.keyCode ) ) {
+                // self.emitKeyState( event, true );
 
-              // if using the timer, handle update at interval
-              if ( self._a11yUseTimer ) {
-                if ( !self._callbackTimer.isRunning() ) {
-                  self.handleKeyDown( event );
+                // if using the timer, handle update at interval
+                if ( self._a11yUseTimer ) {
+                  if ( !self._callbackTimer.isRunning() ) {
+                    self.handleKeyDown( event );
 
-                  downCallback = self.handleKeyDown.bind( self, event );
-                  self._callbackTimer.addCallback( downCallback );
-                  self._callbackTimer.start();
+                    downCallback = self.handleKeyDown.bind( self, event );
+                    runningTimerCallbackKeyCode = event.keyCode;
+                    self._callbackTimer.addCallback( downCallback );
+                    self._callbackTimer.start();
+                  }
                 }
-              }
-              else {
-                self.handleKeyDown( event );
+                else {
+                  self.handleKeyDown( event );
+                }
               }
             },
             keyup: function( event ) {
-              self.emitKeyState( event, false );
-
-              if ( self._a11yUseTimer ) {
-                self._callbackTimer.stop( false );
-                self._callbackTimer.removeCallback( downCallback );
+              if ( KeyboardUtil.isRangeKey( event.keyCode ) ) {
+                if ( self._a11yUseTimer ) {
+                  if ( event.keyCode === runningTimerCallbackKeyCode ) {
+                    self.emitKeyState( event, false );
+                    self._callbackTimer.stop( false );
+                    self._callbackTimer.removeCallback( downCallback );
+                  }
+                }
               }
             }
           };
@@ -240,7 +248,7 @@ define( function( require ) {
           var code = event.keyCode;
 
           if ( this._enabledProperty.get() ) {
-
+            this.emitKeyState( event, true );
             // prevent user from changing value with number or the space keys, handle arrow keys on our own
             if ( KeyboardUtil.isArrowKey( code ) || KeyboardUtil.isNumberKey( code ) || code === KeyboardUtil.KEY_SPACE ) {
               event.preventDefault();

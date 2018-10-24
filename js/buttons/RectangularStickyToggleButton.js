@@ -30,7 +30,14 @@ define( function( require ) {
 
     // Note it shares a tandem with this, so the emitter will be instrumented as a child of the button
     var buttonModel = new StickyToggleButtonModel( valueUp, valueDown, property, options );
-    RectangularButtonView.call( this, buttonModel, new StickyToggleButtonInteractionStateProperty( buttonModel ), options );
+    var stickyToggleButtonInteractionStateProperty = new StickyToggleButtonInteractionStateProperty( buttonModel );
+    RectangularButtonView.call( this, buttonModel, stickyToggleButtonInteractionStateProperty, options );
+
+    // @private - dispose items specific to this instance
+    this.disposeRectangularStickyToggleButton = function() {
+      buttonModel.dispose();
+      stickyToggleButtonInteractionStateProperty.dispose();
+    };
   }
 
   sun.register( 'RectangularStickyToggleButton', RectangularStickyToggleButton );
@@ -39,7 +46,7 @@ define( function( require ) {
 
     // @public
     dispose: function() {
-      //TODO implement this, see sun#212
+      this.disposeRectangularStickyToggleButton();
       RectangularButtonView.prototype.dispose.call( this );
     }
   } );

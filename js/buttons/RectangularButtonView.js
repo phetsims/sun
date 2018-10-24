@@ -182,7 +182,9 @@ define( function( require ) {
       contentAppearanceStrategy.dispose();
       this.baseColorProperty.dispose();
       this._pressListener.dispose();
-      interactionStateProperty.unlink( handleInteractionStateChanged );
+      if ( interactionStateProperty.hasListener( handleInteractionStateChanged ) ) {
+        interactionStateProperty.unlink( handleInteractionStateChanged );
+      }
 
       if ( content ) {
         alignBox.dispose();
@@ -373,7 +375,9 @@ define( function( require ) {
     interactionStateProperty.link( updateAppearance );
 
     this.dispose = function() {
-      interactionStateProperty.unlink( updateAppearance );
+      if ( interactionStateProperty.hasListener( updateAppearance ) ) {
+        interactionStateProperty.unlink( updateAppearance );
+      }
 
       baseTransparent.dispose();
       disabledBaseTransparent.dispose();
@@ -478,7 +482,9 @@ define( function( require ) {
     interactionStateProperty.link( updateAppearance );
 
     this.dispose = function() {
-      interactionStateProperty.unlink( updateAppearance );
+      if ( interactionStateProperty.hasListener( updateAppearance ) ) {
+        interactionStateProperty.unlink( updateAppearance );
+      }
 
       baseBrighter4.dispose();
       baseDarker4.dispose();
@@ -508,7 +514,9 @@ define( function( require ) {
 
     // add dispose function to unlink listener
     this.dispose = function() {
-      interactionStateProperty.unlink( updateOpacity );
+      if ( interactionStateProperty.hasListener( updateOpacity ) ) {
+        interactionStateProperty.unlink( updateOpacity );
+      }
     };
   };
 

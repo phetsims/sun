@@ -594,7 +594,7 @@ define( function( require ) {
 
     // it is possible that proposedStep will be larger than the stepSize but only because of precision
     // constraints with floating point values, don't correct if that is the cases
-    var stepsAboutEqual = Util.equalsEpsilon( proposedStep, stepSize, 1e-15 );
+    var stepsAboutEqual = Util.equalsEpsilon( proposedStep, stepSize, 1e-14 );
     if ( stepToFar && !stepsAboutEqual ) {
       correctedValue += ( newValue > currentValue ) ? ( -1 * stepSize ) : stepSize;
     }
