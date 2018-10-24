@@ -54,6 +54,15 @@ define( function( require ) {
       } )
     );
 
+    // Paint area that is slightly larger than the slider thumb so SVG updates a large enough paintable region.
+    // Related to https://github.com/phetsims/masses-and-springs/issues/334
+    var paintLayer = Rectangle.bounds( this.bounds.dilated( 5 ), {
+      fill: 'transparent',
+      localBounds: this.bounds,
+      pickable: false
+    } );
+    this.addChild( paintLayer );
+
     // vertical line down the center
     var centerLineYMargin = 3;
     this.addChild( new Path( Shape.lineSegment(
