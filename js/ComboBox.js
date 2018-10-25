@@ -16,8 +16,8 @@ define( function( require ) {
   var ComboBoxIO = require( 'SUN/ComboBoxIO' );
   var Emitter = require( 'AXON/Emitter' );
   var EmitterIO = require( 'AXON/EmitterIO' );
-  var InstanceRegistry = require( 'PHET_CORE/documentation/InstanceRegistry' );
   var inherit = require( 'PHET_CORE/inherit' );
+  var InstanceRegistry = require( 'PHET_CORE/documentation/InstanceRegistry' );
   var Line = require( 'SCENERY/nodes/Line' );
   var Node = require( 'SCENERY/nodes/Node' );
   var Path = require( 'SCENERY/nodes/Path' );

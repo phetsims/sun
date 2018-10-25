@@ -12,8 +12,8 @@ define( function( require ) {
 
   // modules
   var inherit = require( 'PHET_CORE/inherit' );
-  var ToggleNode = require( 'SUN/ToggleNode' );
   var sun = require( 'SUN/sun' );
+  var ToggleNode = require( 'SUN/ToggleNode' );
 
   /**
    * @param {Node} trueNode

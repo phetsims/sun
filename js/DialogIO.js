@@ -9,9 +9,9 @@
 define( function( require ) {
   'use strict';
 
-  var sun = require( 'SUN/sun' );
   var NodeIO = require( 'SCENERY/nodes/NodeIO' );
   var phetioInherit = require( 'TANDEM/phetioInherit' );
+  var sun = require( 'SUN/sun' );
 
   // ifphetio
   var assertInstanceOf = require( 'ifphetio!PHET_IO/assertInstanceOf' );

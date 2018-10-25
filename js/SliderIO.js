@@ -11,9 +11,9 @@ define( function( require ) {
   // modules
   var BooleanIO = require( 'TANDEM/types/BooleanIO' );
   var NodeIO = require( 'SCENERY/nodes/NodeIO' );
+  var phetioInherit = require( 'TANDEM/phetioInherit' );
   var sun = require( 'SUN/sun' );
   var VoidIO = require( 'TANDEM/types/VoidIO' );
-  var phetioInherit = require( 'TANDEM/phetioInherit' );
 
   // ifphetio
   var assertInstanceOf = require( 'ifphetio!PHET_IO/assertInstanceOf' );

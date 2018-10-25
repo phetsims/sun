@@ -11,8 +11,8 @@ define( function( require ) {
 
   // modules
   var NodeIO = require( 'SCENERY/nodes/NodeIO' );
-  var sun = require( 'SUN/sun' );
   var phetioInherit = require( 'TANDEM/phetioInherit' );
+  var sun = require( 'SUN/sun' );
 
   // ifphetio
   var assertInstanceOf = require( 'ifphetio!PHET_IO/assertInstanceOf' );

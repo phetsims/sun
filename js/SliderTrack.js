@@ -21,9 +21,9 @@ define( function( require ) {
   var Property = require( 'AXON/Property' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var SimpleDragHandler = require( 'SCENERY/input/SimpleDragHandler' );
+  var SliderTrackIO = require( 'SUN/SliderTrackIO' );
   var sun = require( 'SUN/sun' );
   var Tandem = require( 'TANDEM/Tandem' );
-  var SliderTrackIO = require( 'SUN/SliderTrackIO' );
 
   /**
    * @param {Property.<number>} valueProperty

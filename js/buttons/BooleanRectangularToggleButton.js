@@ -7,11 +7,11 @@ define( function( require ) {
   'use strict';
 
   // modules
+  var BooleanToggleNode = require( 'SUN/BooleanToggleNode' );
   var inherit = require( 'PHET_CORE/inherit' );
   var RectangularToggleButton = require( 'SUN/buttons/RectangularToggleButton' );
   var sun = require( 'SUN/sun' );
   var Tandem = require( 'TANDEM/Tandem' );
-  var BooleanToggleNode = require( 'SUN/BooleanToggleNode' );
 
   /**
    * @param {Node} trueNode
