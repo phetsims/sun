@@ -23,6 +23,7 @@ define( function( require ) {
   var Path = require( 'SCENERY/nodes/Path' );
   var Property = require( 'AXON/Property' );
   var PropertyIO = require( 'AXON/PropertyIO' );
+  var Range = require( 'DOT/Range' );
   var RangeIO = require( 'DOT/RangeIO' );
   var Shape = require( 'KITE/Shape' );
   var SimpleDragHandler = require( 'SCENERY/input/SimpleDragHandler' );
@@ -38,7 +39,7 @@ define( function( require ) {
 
   /**
    * @param {Property.<number>} valueProperty
-   * @param {{min:number, max:number}|Range} range
+   * @param {Range} range
    * @param {Object} [options]
    * @constructor
    */
@@ -100,6 +101,7 @@ define( function( require ) {
       phetioType: SliderIO
     }, options );
 
+    assert && assert( range instanceof Range, 'range must be of type Range:' + range );
     assert && assert( options.orientation === 'horizontal' || options.orientation === 'vertical',
       'invalid orientation: ' + options.orientation );
     this.orientation = options.orientation; // @private
