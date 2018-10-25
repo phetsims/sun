@@ -9,14 +9,14 @@ define( function( require ) {
 
   // modules
   var ABSwitch = require( 'SUN/ABSwitch' );
+  var BooleanToggleNode = require( 'SUN/BooleanToggleNode' );
   var HSlider = require( 'SUN/HSlider' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Property = require( 'AXON/Property' );
+  var Range = require( 'DOT/Range' );
   var ScreenView = require( 'JOIST/ScreenView' );
-  var Text = require( 'SCENERY/nodes/Text' );
-  var BooleanToggleNode = require( 'SUN/BooleanToggleNode' );
-
   var sun = require( 'SUN/sun' );
+  var Text = require( 'SCENERY/nodes/Text' );
 
   function ComponentHolder( createFunction ) {
     var self = this;
@@ -33,7 +33,7 @@ define( function( require ) {
 
   var components = [
     new ComponentHolder( function() {
-      return new HSlider( numberProperty, { min: 0, max: 10 } );
+      return new HSlider( numberProperty, new Range( 0, 10 ) );
     } ),
     new ComponentHolder( function() {
       return new ABSwitch( booleanProperty, true, new Text( 'true' ), false, new Text( 'false' ) );

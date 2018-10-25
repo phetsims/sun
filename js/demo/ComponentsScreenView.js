@@ -248,9 +248,9 @@ define( function( require ) {
 
     // restrict enabled range of slider
     var restrictedRangeProperty = new Property( false );
-    var enabledRangeProperty = new Property( { min: 0, max: 100 } );
+    var enabledRangeProperty = new Property( new Range( 0, 100 ) );
     restrictedRangeProperty.link( function( restrictedRange ) {
-      enabledRangeProperty.value = restrictedRange ? { min: 25, max: 75 } : { min: 0, max: 100 };
+      enabledRangeProperty.value = restrictedRange ? new Range( 25, 75 ) : new Range( 0, 100 );
     } );
     enabledRangeProperty.link( function( enabledRange ) {
       slider.enabledRange = enabledRange;
