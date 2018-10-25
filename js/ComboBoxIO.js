@@ -12,10 +12,10 @@ define( function( require ) {
   // modules
   var NodeIO = require( 'SCENERY/nodes/NodeIO' );
   var sun = require( 'SUN/sun' );
+  var phetioInherit = require( 'TANDEM/phetioInherit' );
 
   // ifphetio
   var assertInstanceOf = require( 'ifphetio!PHET_IO/assertInstanceOf' );
-  var phetioInherit = require( 'ifphetio!PHET_IO/phetioInherit' );
 
   /**
    * IO type for phet/sun's ComboBox class.
