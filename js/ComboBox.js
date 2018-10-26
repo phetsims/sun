@@ -9,25 +9,25 @@
  *
  * @author Chris Malley (PixelZoom, Inc.)
  */
-define( function( require ) {
+define( require => {
   'use strict';
 
   // modules
-  var ComboBoxIO = require( 'SUN/ComboBoxIO' );
-  var Emitter = require( 'AXON/Emitter' );
-  var EmitterIO = require( 'AXON/EmitterIO' );
-  var inherit = require( 'PHET_CORE/inherit' );
-  var InstanceRegistry = require( 'PHET_CORE/documentation/InstanceRegistry' );
-  var Line = require( 'SCENERY/nodes/Line' );
-  var Node = require( 'SCENERY/nodes/Node' );
-  var Path = require( 'SCENERY/nodes/Path' );
-  var Property = require( 'AXON/Property' );
-  var Rectangle = require( 'SCENERY/nodes/Rectangle' );
-  var Shape = require( 'KITE/Shape' );
-  var sun = require( 'SUN/sun' );
-  var Tandem = require( 'TANDEM/Tandem' );
-  var Vector2 = require( 'DOT/Vector2' );
-  var VoidIO = require( 'TANDEM/types/VoidIO' );
+  const ComboBoxIO = require( 'SUN/ComboBoxIO' );
+  const Emitter = require( 'AXON/Emitter' );
+  const EmitterIO = require( 'AXON/EmitterIO' );
+  const inherit = require( 'PHET_CORE/inherit' );
+  const InstanceRegistry = require( 'PHET_CORE/documentation/InstanceRegistry' );
+  const Line = require( 'SCENERY/nodes/Line' );
+  const Node = require( 'SCENERY/nodes/Node' );
+  const Path = require( 'SCENERY/nodes/Path' );
+  const Property = require( 'AXON/Property' );
+  const Rectangle = require( 'SCENERY/nodes/Rectangle' );
+  const Shape = require( 'KITE/Shape' );
+  const sun = require( 'SUN/sun' );
+  const Tandem = require( 'TANDEM/Tandem' );
+  const Vector2 = require( 'DOT/Vector2' );
+  const VoidIO = require( 'TANDEM/types/VoidIO' );
 
   /**
    * @param {*[]} items - see ComboBox.createItem
@@ -37,8 +37,6 @@ define( function( require ) {
    * @constructor
    */
   function ComboBox( items, property, listParent, options ) {
-
-    var self = this;
 
     options = _.extend( {
 
@@ -86,7 +84,7 @@ define( function( require ) {
 
     // optional label
     if ( options.labelNode !== null ) {
-      self.addChild( options.labelNode );
+      this.addChild( options.labelNode );
     }
 
     //TODO https://github.com/phetsims/scenery/issues/58
@@ -110,11 +108,11 @@ define( function( require ) {
     };
 
     // determine uniform dimensions for button and list items (including margins)
-    var itemWidth = Math.max.apply( Math, _.map( items, 'node.width' ) ) + 2 * options.itemXMargin;
-    var itemHeight = Math.max.apply( Math, _.map( items, 'node.height' ) ) + 2 * options.itemYMargin;
+    const itemWidth = Math.max.apply( Math, _.map( items, 'node.width' ) ) + 2 * options.itemXMargin;
+    const itemHeight = Math.max.apply( Math, _.map( items, 'node.height' ) ) + 2 * options.itemYMargin;
 
-    var listWidth = itemWidth + ( 2 * options.buttonXMargin );
-    var listHeight = ( items.length * itemHeight ) + ( 2 * options.listYMargin );
+    const listWidth = itemWidth + ( 2 * options.buttonXMargin );
+    const listHeight = ( items.length * itemHeight ) + ( 2 * options.listYMargin );
 
     // @private the popup list
     this.listNode = new Rectangle( 0, 0, listWidth, listHeight, {
@@ -131,49 +129,49 @@ define( function( require ) {
 
     //TODO move these to ComboBoxItemNode
     // how to highlight an item in the list
-    var highlightItem = function( itemNode ) {
+    const highlightItem = itemNode => {
       itemNode.fill = options.itemHighlightFill;
       itemNode.stroke = options.itemHighlightStroke;
     };
-    var unhighlightItem = function( itemNode ) {
+    const unhighlightItem = itemNode => {
       itemNode.fill = null;
       itemNode.stroke = null;
     };
 
     // TODO: It seems it would be better to use FireListener on each ComboBoxItemNode, see https://github.com/phetsims/sun/issues/405
-    var firedEmitter = new Emitter( {
+    const firedEmitter = new Emitter( {
       tandem: options.tandem.createTandem( 'firedEmitter' ),
       phetioType: EmitterIO( [ { name: 'event', type: VoidIO } ] ), // TODO: Should this be EventIO or DOMEventIO?
-      listener: function( event ) {
-        var selectedItemNode = event.currentTarget; // {ComboBoxItemNode}
+      listener: ( event ) => {
+        const selectedItemNode = event.currentTarget; // {ComboBoxItemNode}
 
         unhighlightItem( selectedItemNode );
-        self.listNode.visible = false; // close the list, do this before changing property value, in case it's expensive
-        self.display.removeInputListener( self.clickToDismissListener ); // remove the click-to-dismiss listener
+        this.listNode.visible = false; // close the list, do this before changing property value, in case it's expensive
+        this.display.removeInputListener( this.clickToDismissListener ); // remove the click-to-dismiss listener
         event.abort(); // prevent nodes (eg, controls) behind the list from receiving the event
         property.value = selectedItemNode.item.value; // set the property
       }
     } );
 
     // listener that we'll attach to each item in the list
-    var itemListener = {
-      enter: function( event ) {
+    const itemListener = {
+      enter( event ) {
         highlightItem( event.currentTarget );
       },
-      exit: function( event ) {
+      exit( event ) {
         unhighlightItem( event.currentTarget );
       },
-      down: function( event ) {
+      down( event ) {
         event.abort(); // prevent click-to-dismiss on the list
       },
-      up: function( event ) {
+      up( event ) {
         firedEmitter.emit1( event );
       }
     };
 
     // populate list with items
-    items.forEach( function( item, index ) {
-      var itemNodeOptions = _.extend( {
+    items.forEach( ( item, index ) => {
+      const itemNodeOptions = _.extend( {
         left: options.buttonXMargin,
         top: options.listYMargin + ( index * itemHeight ),
         cursor: 'pointer',
@@ -188,12 +186,12 @@ define( function( require ) {
       itemNodeOptions.tandem = options.tandem.createTandem( itemNodeOptions.tandemName || 'comboBoxItemNode' );
 
       // Create the list item node itself
-      self.listNode.addChild( new ComboBoxItemNode( item, itemWidth, itemHeight, options.itemXMargin, itemNodeOptions ) );
+      this.listNode.addChild( new ComboBoxItemNode( item, itemWidth, itemHeight, options.itemXMargin, itemNodeOptions ) );
     } );
 
     // @private button, will be set to correct value when property observer is registered
     this.buttonNode = new ButtonNode( new ComboBoxItemNode( items[ 0 ], itemWidth, itemHeight, options.itemXMargin ), options );
-    self.addChild( this.buttonNode );
+    this.addChild( this.buttonNode );
 
     // button interactivity
     this.buttonNode.cursor = 'pointer';
@@ -208,39 +206,39 @@ define( function( require ) {
     }
 
     // when property changes, update button
-    var propertyObserver = function( value ) {
-      var item = _.find( items, function( item ) {
+    const propertyObserver = value => {
+      const item = _.find( items, item => {
         return item.value === value;
       } );
-      self.buttonNode.setItemNode( new ComboBoxItemNode( item, itemWidth, itemHeight, options.itemXMargin ) );
+      this.buttonNode.setItemNode( new ComboBoxItemNode( item, itemWidth, itemHeight, options.itemXMargin ) );
     };
     property.link( propertyObserver );
 
     this.mutate( options );
 
     // enable/disable the combo box
-    var enabledObserver = function( enabled ) {
-      self.pickable = enabled;
-      self.opacity = enabled ? 1.0 : options.disabledOpacity;
+    const enabledObserver = enabled => {
+      this.pickable = enabled;
+      this.opacity = enabled ? 1.0 : options.disabledOpacity;
     };
     this.enabledProperty.link( enabledObserver );
 
     // @private called by dispose
-    this.disposeComboBox = function() {
+    this.disposeComboBox = () => {
 
       if ( property.hasListener( propertyObserver ) ) {
         property.unlink( propertyObserver );
       }
-      if ( self.enabledProperty.hasListener( enabledObserver ) ) {
-        self.enabledProperty.unlink( enabledObserver );
+      if ( this.enabledProperty.hasListener( enabledObserver ) ) {
+        this.enabledProperty.unlink( enabledObserver );
       }
 
       // Unregister itemNode tandems as well
-      for ( var i = 0; i < self.listNode.children.length; i++ ) {
-        self.listNode.children[ i ].dispose();
+      for ( let i = 0; i < this.listNode.children.length; i++ ) {
+        this.listNode.children[ i ].dispose();
       }
 
-      self.buttonNode.dispose();
+      this.buttonNode.dispose();
     };
 
     // support for binder documentation, stripped out in builds and only runs when ?binder is specified
@@ -252,24 +250,24 @@ define( function( require ) {
   inherit( Node, ComboBox, {
 
     // @public - Provide dispose() on the prototype for ease of subclassing.
-    dispose: function() {
+    dispose() {
       this.disposeComboBox();
       Node.prototype.dispose.call( this );
     },
 
     // @public
-    setEnabled: function( enabled ) { this.enabledProperty.value = enabled; },
+    setEnabled( enabled ) { this.enabledProperty.value = enabled; },
     set enabled( value ) { this.setEnabled( value ); },
 
     // @public
-    getEnabled: function() { return this.enabledProperty.value; },
+    getEnabled() { return this.enabledProperty.value; },
     get enabled() { return this.getEnabled(); },
 
     /**
      * Shows the combo box list
      * @public
      */
-    showList: function() {
+    showList() {
       if ( !this.listNode.visible ) {
         this.phetioStartEvent( 'popupShown' );
 
@@ -288,7 +286,7 @@ define( function( require ) {
      * Hides the combo box list
      * @public
      */
-    hideList: function() {
+    hideList() {
       if ( this.enableClickToDismissListener ) {
 
         this.phetioStartEvent( 'popupHidden' );
@@ -310,9 +308,9 @@ define( function( require ) {
      * Handles the coordinate transform required to make the list pop up near the button.
      * @private
      */
-    moveList: function() {
-      var pButtonGlobal;
-      var pButtonLocal;
+    moveList() {
+      let pButtonGlobal;
+      let pButtonLocal;
       if ( this.listPosition === 'above' ) {
         pButtonGlobal = this.localToGlobalPoint( new Vector2( this.buttonNode.left, this.buttonNode.top ) );
         pButtonLocal = this.listParent.globalToLocalPoint( pButtonGlobal );
@@ -339,7 +337,7 @@ define( function( require ) {
    * @returns {object}
    * @public
    */
-  ComboBox.createItem = function( node, value, options ) {
+  ComboBox.createItem = ( node, value, options ) => {
     return { node: node, value: value, options: options };
   };
 
@@ -347,107 +345,111 @@ define( function( require ) {
    * The button that is clicked to show the list of items.
    * @param {Node} itemNode
    * @param {Object} [options]
-   * @constructor
+   * @private
    */
-  function ButtonNode( itemNode, options ) {
+  class ButtonNode extends Node {
+    constructor( itemNode, options ) {
 
-    options = _.extend( {
-      tandem: Tandem.required, // For PhET-iO instrumented simulations, this must be supplied
+      options = _.extend( {
+        tandem: Tandem.required, // For PhET-iO instrumented simulations, this must be supplied
 
-      // these options are passed in from ComboBox options
-      listPosition: 'below',
-      buttonFill: 'white',
-      buttonStroke: 'black',
-      buttonLineWidth: 1,
-      buttonCornerRadius: 8,
-      buttonXMargin: 10,
-      buttonYMargin: 4
+        // these options are passed in from ComboBox options
+        listPosition: 'below',
+        buttonFill: 'white',
+        buttonStroke: 'black',
+        buttonLineWidth: 1,
+        buttonCornerRadius: 8,
+        buttonXMargin: 10,
+        buttonYMargin: 4
 
-    }, options );
+      }, options );
 
-    Node.call( this );
+      super();
 
-    // up or down arrow
-    var arrow = new Path( null, {
-      fill: 'black',
-      tandem: options.tandem.createTandem( 'arrow' )
-    } );
-    var arrowWidth = 0.5 * itemNode.height;
-    var arrowHeight = arrowWidth * Math.sqrt( 3 ) / 2; // height of equilateral triangle
-    if ( options.listPosition === 'above' ) {
-      arrow.shape = new Shape().moveTo( 0, arrowHeight ).lineTo( arrowWidth / 2, 0 ).lineTo( arrowWidth, arrowHeight ).close(); // up arrow
-    }
-    else {
-      arrow.shape = new Shape().moveTo( 0, 0 ).lineTo( arrowWidth, 0 ).lineTo( arrowWidth / 2, arrowHeight ).close(); // down arrow
-    }
-
-    // button background
-    var width = itemNode.width + ( 4 * options.buttonXMargin ) + arrow.width;
-    var height = itemNode.height + ( 2 * options.buttonYMargin );
-    var background = new Rectangle( 0, 0, width, height, {
-      cornerRadius: options.buttonCornerRadius,
-      fill: options.buttonFill,
-      stroke: options.buttonStroke,
-      lineWidth: options.buttonLineWidth
-    } );
-
-    // vertical separator to left of arrow
-    var separator = new Line( 0, 0, 0, height, {
-      stroke: 'black',
-      lineWidth: options.buttonLineWidth,
-      tandem: options.tandem.createTandem( 'separator' )
-    } );
-
-    // parent for the selected item node
-    var selectedItemParent = new Node( {
-      tandem: options.tandem.createTandem( 'selectedItemParent' )
-    } );
-
-    // rendering order
-    this.addChild( background );
-    this.addChild( arrow );
-    this.addChild( separator );
-    this.addChild( selectedItemParent );
-
-    // @private
-    this.setItemNode = function( itemNode ) {
-      // Dispose any existing item, see https://github.com/phetsims/sun/issues/299
-      while ( selectedItemParent.children.length ) {
-        var lastNode = selectedItemParent.children[ 0 ];
-        selectedItemParent.removeChild( lastNode );
-        lastNode.dispose();
+      // up or down arrow
+      const arrow = new Path( null, {
+        fill: 'black',
+        tandem: options.tandem.createTandem( 'arrow' )
+      } );
+      const arrowWidth = 0.5 * itemNode.height;
+      const arrowHeight = arrowWidth * Math.sqrt( 3 ) / 2; // height of equilateral triangle
+      if ( options.listPosition === 'above' ) {
+        arrow.shape = new Shape().moveTo( 0, arrowHeight ).lineTo( arrowWidth / 2, 0 ).lineTo( arrowWidth, arrowHeight ).close(); // up arrow
       }
-      selectedItemParent.addChild( itemNode );
-      itemNode.left = options.buttonXMargin;
-      itemNode.top = options.buttonYMargin;
-    };
-    this.setItemNode( itemNode );
+      else {
+        arrow.shape = new Shape().moveTo( 0, 0 ).lineTo( arrowWidth, 0 ).lineTo( arrowWidth / 2, arrowHeight ).close(); // down arrow
+      }
 
-    // layout
-    separator.left = itemNode.right + options.buttonXMargin;
-    separator.top = background.top;
-    arrow.left = separator.right + options.buttonXMargin;
-    arrow.centerY = background.centerY;
+      // button background
+      const width = itemNode.width + ( 4 * options.buttonXMargin ) + arrow.width;
+      const height = itemNode.height + ( 2 * options.buttonYMargin );
+      const background = new Rectangle( 0, 0, width, height, {
+        cornerRadius: options.buttonCornerRadius,
+        fill: options.buttonFill,
+        stroke: options.buttonStroke,
+        lineWidth: options.buttonLineWidth
+      } );
 
-    this.disposeButtonNode = function() {
-      separator.dispose();
-      arrow.dispose();
-      selectedItemParent.dispose();
-      options.tandem.createTandem( 'separator' ).removeInstance( separator );
-      options.tandem.createTandem( 'arrow' ).removeInstance( arrow );
-      options.tandem.createTandem( 'selectedItemParent' ).removeInstance( selectedItemParent );
-      itemNode.dispose();
-    };
+      // vertical separator to left of arrow
+      const separator = new Line( 0, 0, 0, height, {
+        stroke: 'black',
+        lineWidth: options.buttonLineWidth,
+        tandem: options.tandem.createTandem( 'separator' )
+      } );
+
+      // parent for the selected item node
+      const selectedItemParent = new Node( {
+        tandem: options.tandem.createTandem( 'selectedItemParent' )
+      } );
+
+      // rendering order
+      this.addChild( background );
+      this.addChild( arrow );
+      this.addChild( separator );
+      this.addChild( selectedItemParent );
+
+      // @private
+      this.setItemNode = ( itemNode ) => {
+        // Dispose any existing item, see https://github.com/phetsims/sun/issues/299
+        while ( selectedItemParent.children.length ) {
+          const lastNode = selectedItemParent.children[ 0 ];
+          selectedItemParent.removeChild( lastNode );
+          lastNode.dispose();
+        }
+        selectedItemParent.addChild( itemNode );
+        itemNode.left = options.buttonXMargin;
+        itemNode.top = options.buttonYMargin;
+      };
+      this.setItemNode( itemNode );
+
+      // layout
+      separator.left = itemNode.right + options.buttonXMargin;
+      separator.top = background.top;
+      arrow.left = separator.right + options.buttonXMargin;
+      arrow.centerY = background.centerY;
+
+      this.disposeButtonNode = () => {
+        separator.dispose();
+        arrow.dispose();
+        selectedItemParent.dispose();
+        options.tandem.createTandem( 'separator' ).removeInstance( separator );
+        options.tandem.createTandem( 'arrow' ).removeInstance( arrow );
+        options.tandem.createTandem( 'selectedItemParent' ).removeInstance( selectedItemParent );
+        itemNode.dispose();
+      };
+    }
+
+    /**
+     * @public
+     * @override
+     */
+    dispose() {
+      this.disposeButtonNode();
+      super.dispose();
+    }
   }
 
   sun.register( 'ComboBox.ButtonNode', ButtonNode );
-
-  inherit( Node, ButtonNode, {
-    dispose: function() {
-      this.disposeButtonNode();
-      Node.prototype.dispose.call( this );
-    }
-  } );
 
   /**
    * A wrapper around the combo box item, adds margins, etc.
@@ -456,42 +458,43 @@ define( function( require ) {
    * @param {number} height
    * @param {number} xMargin
    * @param {Object} [options]
-   * @constructor
    * @private
    */
-  function ComboBoxItemNode( item, width, height, xMargin, options ) {
-    // @private {Node} - Holds our item.node, and positions it in the correct location. We don't want to mutate the
-    //                   item's node itself.
-    this.itemWrapper = new Node( {
-      children: [ item.node ],
-      pickable: false,
-      x: xMargin,
-      centerY: height / 2
-    } );
+  class ComboBoxItemNode extends Rectangle {
+    constructor( item, width, height, xMargin, options ) {
 
-    options = _.extend( {
-      tandem: Tandem.required,
-      children: [ this.itemWrapper ]
-    }, options );
+      // @private {Node} - Holds our item.node, and positions it in the correct location. We don't want to mutate the
+      //                   item's node itself.
+      let itemWrapper = new Node( {
+        children: [ item.node ],
+        pickable: false,
+        x: xMargin,
+        centerY: height / 2
+      } );
 
-    this.item = item;
+      options = _.extend( {
+        tandem: Tandem.required,
+        children: [ itemWrapper ]
+      }, options );
 
-    Rectangle.call( this, 0, 0, width, height, options );
-  }
+      super( 0, 0, width, height, options );
 
-  sun.register( 'ComboBox.ItemNode', ComboBoxItemNode );
+      this.item = item;
+      this.itemWrapper = itemWrapper;
+    }
 
-  inherit( Rectangle, ComboBoxItemNode, {
     /**
      * Disposes the item.
      * @public
+     * @override
      */
-    dispose: function() {
+    dispose() {
       this.itemWrapper.dispose();
-
-      Rectangle.prototype.dispose.call( this );
+      super.dispose();
     }
-  } );
+  }
+
+  sun.register( 'ComboBox.ItemNode', ComboBoxItemNode );
 
   return ComboBox;
 } );
