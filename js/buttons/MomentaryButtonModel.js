@@ -47,9 +47,16 @@ define( function( require ) {
     };
     this.downProperty.lazyLink( downListener );
 
+    // if valueProperty set externally, signify to ButtonModel
+    var valuePropertyListener = function( value ) {
+      self.downProperty.set( value === valueOn );
+    };
+    valueProperty.link( valuePropertyListener );
+
     // @private: just for dispose.  Named based on the type name so it won't have a name collision with parent/child ones
     this.disposeMomentaryButtonModel = function() {
       self.downProperty.unlink( downListener );
+      self.valueProperty.unlink( valuePropertyListener );
     };
   }
 

@@ -140,8 +140,9 @@ define( function( require ) {
       var pressListener = new PressListener( options );
       this.listeners.push( pressListener );
 
-      pressListener.isPressedProperty.link( this.downProperty.set.bind( this.downProperty ) );
-      pressListener.isOverProperty.link( this.overProperty.set.bind( this.overProperty ) );
+      // link lazily in case client externally sets downProperty - don't update until the next press
+      pressListener.isPressedProperty.lazyLink( this.downProperty.set.bind( this.downProperty ) );
+      pressListener.isOverProperty.lazyLink( this.overProperty.set.bind( this.overProperty ) );
       pressListener.a11yClickingProperty.link( this.a11yClickingProperty.set.bind( this.a11yClickingProperty ) );
 
       // dispose the previous multilink in case we already created a PressListener with this model
@@ -152,8 +153,10 @@ define( function( require ) {
       function orIteratee( sum, newValue ) {
         return sum || newValue;
       }
-      this.looksPressedMultilink = Property.multilink(
-        self.listeners.map( function( listener ) { return listener.looksPressedProperty; } ), function() {
+
+      var looksPressedProperties = self.listeners.map( function( listener ) { return listener.looksPressedProperty; } );
+      looksPressedProperties.push( this.downProperty );
+      this.looksPressedMultilink = Property.multilink( looksPressedProperties, function() {
           self.looksPressedProperty.value = _.reduce( arguments, orIteratee );
         }
       );
