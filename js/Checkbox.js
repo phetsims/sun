@@ -98,7 +98,6 @@ define( function( require ) {
 
     // @private - sends out notifications when the checkbox is toggled.
     var toggledEmitter = new Emitter( {
-      valueTypes: [ 'boolean' ],
       tandem: options.tandem.createTandem( 'toggledEmitter' ),
       phetioDocumentation: 'Emits when user input causes the checkbox to toggle, emitting a single arg: the new boolean value of the checkbox state.',
       phetioReadOnly: options.phetioReadOnly,
