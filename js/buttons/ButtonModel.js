@@ -156,9 +156,7 @@ define( function( require ) {
 
       var looksPressedProperties = self.listeners.map( function( listener ) { return listener.looksPressedProperty; } );
 
-      // TODO: this needs to be included, but breaks disposal, see https://github.com/phetsims/axon/issues/192
-      // commenting out for Bayes CT until @jessegreenberg can take a look again on 10/26/18
-      // looksPressedProperties.push( this.downProperty );
+      looksPressedProperties.push( this.downProperty );
       this.looksPressedMultilink = Property.multilink( looksPressedProperties, function() {
           self.looksPressedProperty.value = _.reduce( arguments, orIteratee );
         }
