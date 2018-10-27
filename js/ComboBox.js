@@ -159,6 +159,9 @@ define( require => {
 
         unhighlightItem( selectedItemNode );
 
+        // a11y - keep this PDOM attribute in sync
+        this.updateActiveDescendant( selectedItemNode );
+
         this.hideList();
         event.abort(); // prevent nodes (eg, controls) behind the list from receiving the event
         property.value = selectedItemNode.item.value; // set the property
@@ -213,6 +216,9 @@ define( require => {
             property.value = item.value;
             this.hideList();
             this.buttonNode.focus();
+
+            // a11y - keep this PDOM attribute in sync
+            this.updateActiveDescendant( comboBoxItemNode );
           }
         }
       } );
@@ -240,6 +246,9 @@ define( require => {
             if ( this.focusedItem === this.listNode.children[ i ] ) {
               var nextItem = this.listNode.children[ i + direction ];
               if ( nextItem ) {
+
+                // a11y - keep this PDOM attribute in sync
+                this.updateActiveDescendant( nextItem );
 
                 // previous item should not be focusable
                 this.focusedItem.focusable = false;
@@ -326,7 +335,7 @@ define( require => {
       this.buttonNode.centerY = options.labelNode.centerY;
     }
 
-    // when property changes, update button
+    // when property changes, update button, and for a11y the list in the PDOM
     const propertyObserver = value => {
       const item = _.find( items, item => {
         return item.value === value;
@@ -386,6 +395,18 @@ define( require => {
     // @public
     getEnabled() { return this.enabledProperty.value; },
     get enabled() { return this.getEnabled(); },
+
+    // @private - update this attribute on the listNode. This changes as you interactive
+    // with the comboBox, as well as when an item is selected.
+    updateActiveDescendant( itemNode ) {
+
+      // overwrite purposefully
+      this.listNode.activeDescendantAssociations = [ {
+        otherNode: itemNode,
+        thisElementName: AccessiblePeer.PRIMARY_SIBLING,
+        otherElementName: AccessiblePeer.PRIMARY_SIBLING
+      } ];
+    },
 
     /**
      * Shows the combo box list
