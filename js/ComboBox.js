@@ -108,6 +108,7 @@ define( require => {
     this.display = null;
 
     // @private listener for 'click outside to dismiss'
+    // TODO: handle this logic for a11y too, perhaps on by monitoring the focusout event on the display's root PDOM element., see https://github.com/phetsims/sun/issues/314
     this.clickToDismissListener = {
       down: this.hideListFromClick.bind( this )
     };
@@ -131,13 +132,13 @@ define( require => {
 
       // a11y
       tagName: 'ul',
-      ariaRole: 'menu',
+      ariaRole: 'listbox',
       groupFocusHighlight: true
     } );
     listParent.addChild( this.listNode );
     this.listParent = listParent; // @private
 
-    //TODO move these to ComboBoxItemNode
+    //TODO move these to ComboBoxItemNode, see ?????? uh oh
     // how to highlight an item in the list
     const highlightItem = itemNode => {
       itemNode.fill = options.itemHighlightFill;
@@ -151,7 +152,7 @@ define( require => {
     // TODO: It seems it would be better to use FireListener on each ComboBoxItemNode, see https://github.com/phetsims/sun/issues/405
     const firedEmitter = new Emitter( {
       tandem: options.tandem.createTandem( 'firedEmitter' ),
-      phetioType: EmitterIO( [ { name: 'event', type: VoidIO } ] ), // TODO: Should this be EventIO or DOMEventIO?
+      phetioType: EmitterIO( [ { name: 'event', type: VoidIO } ] ), // TODO: Should this be EventIO or DOMEventIO? see https://github.com/phetsims/sun/issues/405
       listener: event => {
         const selectedItemNode = event.currentTarget; // {ComboBoxItemNode}
 
@@ -179,6 +180,10 @@ define( require => {
       }
     };
 
+    // guard against the enter key triggering a keydown on a selected item AND then a click event on the button once
+    // focus moves over there.
+    let fromA11yEnterKey = false;
+
     // populate list with items
     items.forEach( ( item, index ) => {
       const itemNodeOptions = _.extend( {
@@ -199,21 +204,27 @@ define( require => {
       const comboBoxItemNode = new ComboBoxItemNode( item, itemWidth, itemHeight, options.itemXMargin, itemNodeOptions );
 
       // a11y - select the property and close on a click event from assistive technology, must be removed in disposal
-      // of combobox item. Keey track of it on the itemNode for disposal.
-      comboBoxItemNode.a11yClickListener = comboBoxItemNode.itemWrapper.addAccessibleInputListener( {
-        click: () => {
-          property.value = item.value;
-          this.hideList();
-          this.buttonNode.focus();
+      // of combobox item. Keep track of it on the itemNode for disposal.
+      comboBoxItemNode.a11yClickListener = comboBoxItemNode.addAccessibleInputListener( {
+        keydown: event => {
+          if ( KeyboardUtil.KEY_ENTER === event.keyCode || KeyboardUtil.KEY_SPACE === event.keyCode ) {
+            fromA11yEnterKey = KeyboardUtil.KEY_ENTER === event.keyCode; // only for the enter key
+            property.value = item.value;
+            this.hideList();
+            this.buttonNode.focus();
+          }
         }
       } );
 
       this.listNode.addChild( comboBoxItemNode );
     } );
 
-    // @private {ComboboxItemNode} - tracks which item node has focus to make it easy to focus next/previous item
-    // after keydown
+
+    // @private {ComboboxItemNode} - a11y
+    // tracks which item node has focus to make it easy to focus next/previous item after keydown
     this.focusedItem = null;
+
+    // keey track of the input listener for removal
     var handleKeyDown = this.listNode.addAccessibleInputListener( {
       keydown: event => {
         if ( event.keyCode === KeyboardUtil.KEY_ESCAPE ) {
@@ -228,6 +239,9 @@ define( require => {
             if ( this.focusedItem === this.listNode.children[ i ] ) {
               var nextItem = this.listNode.children[ i + direction ];
               if ( nextItem ) {
+
+                // previous item should not be focusable
+                this.focusedItem.focusable = false;
                 this.focusedItem = nextItem;
                 this.focusedItem.a11yFocusButton();
                 break;
@@ -268,8 +282,9 @@ define( require => {
           this.buttonNode.focus();
         }
 
-        // Otherwise show the list and manage focus properly
-        else {
+        // Otherwise show the list and manage focus properly. But be tolerant of the "double enter" loop case, where
+        // this click event is coming from selecting an item with a11y, and then auto focusing the button.
+        else if ( !fromA11yEnterKey ) {
           this.showList();
 
           // focus the selected item
@@ -279,6 +294,11 @@ define( require => {
               this.focusedItem.a11yFocusButton();
             }
           }
+        }
+
+        // should only need to disable the event once if coming from the enter key on selecting the item node
+        else {
+          fromA11yEnterKey = false;
         }
       },
 
@@ -402,6 +422,12 @@ define( require => {
       if ( this.display && this.display.hasInputListener( this.clickToDismissListener ) ) {
         this.display.removeInputListener( this.clickToDismissListener );
       }
+
+      // a11y - make sure focused list item is no longer focusable
+      if ( this.focusedItem ) {
+        this.focusedItem.focusable = false;
+      }
+
       this.listNode.visible = false;
 
       this.phetioEndEvent();
@@ -486,7 +512,7 @@ define( require => {
       } );
 
       // signify to AT that this button opens a menu
-      this.setAccessibleAttribute( 'aria-haspopup', true );
+      this.setAccessibleAttribute( 'aria-haspopup', 'listbox' );
 
       // @public - if assigned, it will be removed on disposal.
       this.a11yListener = null;
@@ -600,11 +626,10 @@ define( require => {
         children: [ item.node ],
         pickable: false,
         x: xMargin,
-        centerY: height / 2,
-
-        tagName: 'button',
-        ariaRole: 'menuitem'
+        centerY: height / 2
       } );
+
+      // TODO: assert you may not be allowed to have accessibleContent on the item, since we set the innerContent on this LI
 
       options = _.extend( {
         tandem: Tandem.required,
@@ -612,9 +637,7 @@ define( require => {
 
         // a11y
         tagName: 'li',
-        // tagName: 'button',
-        // ariaRole: 'menuitem'
-        ariaRole: 'none',
+        ariaRole: 'option',
 
         // label for the button clickable item
         a11yLabel: ''
@@ -624,6 +647,7 @@ define( require => {
 
       // @public - to keep track of it
       this.a11yLabel = options.a11yLabel;
+      this.innerContent = options.a11yLabel;
 
       // @private {null|function} - listener called when button clicked with AT
       this.a11yClickListener = null;
@@ -633,7 +657,6 @@ define( require => {
 
       // the highlight wraps around the entire item rectangle
       this.itemWrapper.focusHighlight = Shape.bounds( this.itemWrapper.parentToLocalBounds( this.localBounds ) );
-      this.itemWrapper.innerContent = options.a11yLabel;
     }
 
     /**
@@ -650,7 +673,8 @@ define( require => {
      * @public
      */
     a11yFocusButton() {
-      this.itemWrapper.focus();
+      this.focusable = true;
+      this.focus();
     }
 
     /**
@@ -661,7 +685,7 @@ define( require => {
     dispose() {
 
       // the item in the button will not have a listener
-      this.a11yClickListener && this.itemWrapper.removeAccessibleInputListener( this.a11yClickListener );
+      this.a11yClickListener && this.removeAccessibleInputListener( this.a11yClickListener );
       this.itemWrapper.dispose();
       super.dispose();
     }
