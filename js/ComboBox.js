@@ -133,7 +133,8 @@ define( require => {
       // a11y
       tagName: 'ul',
       ariaRole: 'listbox',
-      groupFocusHighlight: true
+      groupFocusHighlight: true,
+      focusable: true
     } );
     listParent.addChild( this.listNode );
     this.listParent = listParent; // @private
@@ -257,12 +258,18 @@ define( require => {
 
     let tandem = options.tandem; // don't pass tandem to the ButtonNode
     delete options.tandem;
+
     // @private button, will be set to correct value when property observer is registered
-    this.buttonNode = new ButtonNode( new ComboBoxItemNode( items[ 0 ], itemWidth, itemHeight, options.itemXMargin ),
-      _.extend( {
-        labelContent: options.a11yButtonLabel
-      }, options ) );
+    // TODO: buttonNode should not get passed all the comboBox options. This seems like a codesmell, see https://github.com/phetsims/sun/issues/314
+    this.buttonNode = new ButtonNode( new ComboBoxItemNode( items[ 0 ], itemWidth, itemHeight, options.itemXMargin ), options );
     this.addChild( this.buttonNode );
+
+    // a11y - the list is labelledby the button's label
+    this.listNode.addAriaLabelledbyAssociation( {
+      otherNode: this.buttonNode,
+      otherElementName: AccessiblePeer.LABEL_SIBLING,
+      thisElementName: AccessiblePeer.PRIMARY_SIBLING
+    } );
 
     options.tandem = tandem; // restore the tandem after passing other options to the ButtonNode
 
@@ -463,6 +470,8 @@ define( require => {
    * @param {*} value
    * @param {Object} [options] For PhET-iO instrumented simulations, the following must be supplied:
    *                             tandemName: {string} - the suffix applied to button tandems
+   *                           For Accessibility support, the following must be supported:
+   *                             a11yLabel: {string} - the label for each item in the combo b6ox
    *                           No other options are supported.
    * @returns {object}
    * @public
@@ -496,20 +505,30 @@ define( require => {
         a11yButtonLabel: '', // {string} accessible label for the button
 
         tagName: 'button',
+        labelTagName: 'span',
         containerTagName: 'div'
 
       }, options );
 
       super();
 
-      this.innerContent = options.a11yButtonLabel;
+      this.labelContent = options.a11yButtonLabel;
 
-      // the button's description aria-describes this button, so it is read every time it receives focus
-      this.addAriaDescribedbyAssociation( {
-        otherNode: this,
-        otherElementName: AccessiblePeer.DESCRIPTION_SIBLING,
-        thisElementName: AccessiblePeer.PRIMARY_SIBLING
-      } );
+      assert && assert( !options.ariaLabelledbyAssociations, 'ButtonNode sets its own labelledby associations' );
+
+      // the button is labelledby its own label, and then (second) by itself. Order matters!
+      this.ariaLabelledbyAssociations = [
+        {
+          otherNode: this,
+          otherElementName: AccessiblePeer.LABEL_SIBLING,
+          thisElementName: AccessiblePeer.PRIMARY_SIBLING
+        },
+        {
+          otherNode: this,
+          otherElementName: AccessiblePeer.PRIMARY_SIBLING,
+          thisElementName: AccessiblePeer.PRIMARY_SIBLING
+        }
+      ];
 
       // signify to AT that this button opens a menu
       this.setAccessibleAttribute( 'aria-haspopup', 'listbox' );
@@ -570,7 +589,10 @@ define( require => {
         // TODO: is there a better way to do this? https://github.com/phetsims/sun/issues/314
         itemNode.a11yShowItem( false );
 
-        this.accessibleDescription = itemNode.a11yLabel + ', selected';
+        // Only set if defined, since it is an option, see ComboBox.createItem
+        if ( itemNode.a11yLabel ) {
+          this.innerContent = itemNode.a11yLabel;
+        }
       };
       this.setItemNode( itemNode );
 
@@ -629,7 +651,7 @@ define( require => {
         centerY: height / 2
       } );
 
-      // TODO: assert you may not be allowed to have accessibleContent on the item, since we set the innerContent on this LI
+      // TODO: assert you may not be allowed to have accessibleContent on the item.node, since we set the innerContent on this LI, see https://github.com/phetsims/sun/issues/314
 
       options = _.extend( {
         tandem: Tandem.required,
@@ -637,17 +659,19 @@ define( require => {
 
         // a11y
         tagName: 'li',
-        ariaRole: 'option',
-
-        // label for the button clickable item
-        a11yLabel: ''
+        ariaRole: 'option'
       }, options );
 
       super( 0, 0, width, height, options );
 
       // @public - to keep track of it
-      this.a11yLabel = options.a11yLabel;
-      this.innerContent = options.a11yLabel;
+      this.a11yLabel = null;
+
+      // Only set if defined, since it is an option, see ComboBox.createItem
+      if ( item.options && item.options.a11yLabel ) {
+        this.a11yLabel = item.options.a11yLabel;
+        this.innerContent = item.options.a11yLabel;
+      }
 
       // @private {null|function} - listener called when button clicked with AT
       this.a11yClickListener = null;
