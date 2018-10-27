@@ -13,11 +13,13 @@ define( require => {
   'use strict';
 
   // modules
+  const AccessiblePeer = require( 'SCENERY/accessibility/AccessiblePeer' );
   const ComboBoxIO = require( 'SUN/ComboBoxIO' );
   const Emitter = require( 'AXON/Emitter' );
   const EmitterIO = require( 'AXON/EmitterIO' );
   const inherit = require( 'PHET_CORE/inherit' );
   const InstanceRegistry = require( 'PHET_CORE/documentation/InstanceRegistry' );
+  const KeyboardUtil = require( 'SCENERY/accessibility/KeyboardUtil' );
   const Line = require( 'SCENERY/nodes/Line' );
   const Node = require( 'SCENERY/nodes/Node' );
   const Path = require( 'SCENERY/nodes/Path' );
@@ -71,7 +73,10 @@ define( require => {
       // phet-io
       tandem: Tandem.required,
       phetioType: ComboBoxIO,
-      phetioEventType: 'user'
+      phetioEventType: 'user',
+
+      // a11y
+      a11yButtonLabel: '' // {string} accessible label for the button that opens this combobox
     }, options );
 
     // validate option values
@@ -104,7 +109,7 @@ define( require => {
 
     // @private listener for 'click outside to dismiss'
     this.clickToDismissListener = {
-      down: this.hideList.bind( this )
+      down: this.hideListFromClick.bind( this )
     };
 
     // determine uniform dimensions for button and list items (including margins)
@@ -120,9 +125,14 @@ define( require => {
       fill: options.listFill,
       stroke: options.listStroke,
       lineWidth: options.listLineWidth,
-      visible: false
+      visible: false,
       // Not instrumented for PhET-iO because the list's location isn't valid until it has been popped up.
       // See https://github.com/phetsims/phet-io/issues/1102
+
+      // a11y
+      tagName: 'ul',
+      ariaRole: 'menu',
+      groupFocusHighlight: true
     } );
     listParent.addChild( this.listNode );
     this.listParent = listParent; // @private
@@ -142,12 +152,12 @@ define( require => {
     const firedEmitter = new Emitter( {
       tandem: options.tandem.createTandem( 'firedEmitter' ),
       phetioType: EmitterIO( [ { name: 'event', type: VoidIO } ] ), // TODO: Should this be EventIO or DOMEventIO?
-      listener: ( event ) => {
+      listener: event => {
         const selectedItemNode = event.currentTarget; // {ComboBoxItemNode}
 
         unhighlightItem( selectedItemNode );
-        this.listNode.visible = false; // close the list, do this before changing property value, in case it's expensive
-        this.display.removeInputListener( this.clickToDismissListener ); // remove the click-to-dismiss listener
+
+        this.hideList();
         event.abort(); // prevent nodes (eg, controls) behind the list from receiving the event
         property.value = selectedItemNode.item.value; // set the property
       }
@@ -186,18 +196,102 @@ define( require => {
       itemNodeOptions.tandem = options.tandem.createTandem( itemNodeOptions.tandemName || 'comboBoxItemNode' );
 
       // Create the list item node itself
-      this.listNode.addChild( new ComboBoxItemNode( item, itemWidth, itemHeight, options.itemXMargin, itemNodeOptions ) );
+      const comboBoxItemNode = new ComboBoxItemNode( item, itemWidth, itemHeight, options.itemXMargin, itemNodeOptions );
+
+      // a11y - select the property and close on a click event from assistive technology, must be removed in disposal
+      // of combobox item. Keey track of it on the itemNode for disposal.
+      comboBoxItemNode.a11yClickListener = comboBoxItemNode.itemWrapper.addAccessibleInputListener( {
+        click: () => {
+          property.value = item.value;
+          this.hideList();
+          this.buttonNode.focus();
+        }
+      } );
+
+      this.listNode.addChild( comboBoxItemNode );
     } );
 
+    // @private {ComboboxItemNode} - tracks which item node has focus to make it easy to focus next/previous item
+    // after keydown
+    this.focusedItem = null;
+    var handleKeyDown = this.listNode.addAccessibleInputListener( {
+      keydown: event => {
+        if ( event.keyCode === KeyboardUtil.KEY_ESCAPE ) {
+          this.hideList();
+          this.buttonNode.focus();
+        }
+        else if ( event.keyCode === KeyboardUtil.KEY_DOWN_ARROW || event.keyCode === KeyboardUtil.KEY_UP_ARROW ) {
+          var direction = event.keyCode === KeyboardUtil.KEY_DOWN_ARROW ? 1 : -1;
+
+          // Get the next/previous item in the list and focus it.
+          for ( var i = 0; i < this.listNode.children.length; i++ ) {
+            if ( this.focusedItem === this.listNode.children[ i ] ) {
+              var nextItem = this.listNode.children[ i + direction ];
+              if ( nextItem ) {
+                this.focusedItem = nextItem;
+                this.focusedItem.a11yFocusButton();
+                break;
+              }
+            }
+          }
+        }
+        else if ( event.keyCode === KeyboardUtil.KEY_TAB ) {
+          this.hideList();
+        }
+      }
+    } );
+
+    let tandem = options.tandem; // don't pass tandem to the ButtonNode
+    delete options.tandem;
     // @private button, will be set to correct value when property observer is registered
-    this.buttonNode = new ButtonNode( new ComboBoxItemNode( items[ 0 ], itemWidth, itemHeight, options.itemXMargin ), options );
+    this.buttonNode = new ButtonNode( new ComboBoxItemNode( items[ 0 ], itemWidth, itemHeight, options.itemXMargin ),
+      _.extend( {
+        labelContent: options.a11yButtonLabel
+      }, options ) );
     this.addChild( this.buttonNode );
+
+    options.tandem = tandem; // restore the tandem after passing other options to the ButtonNode
 
     // button interactivity
     this.buttonNode.cursor = 'pointer';
     this.buttonNode.addInputListener( {
       down: this.showList.bind( this )
     } );
+
+    // add the buttonNode accessibility listener
+    this.buttonNode.a11yListener = {
+      click: () => {
+
+        // if already visible, hide it
+        if ( this.listNode.visible ) {
+          this.hideList();
+          this.buttonNode.focus();
+        }
+
+        // Otherwise show the list and manage focus properly
+        else {
+          this.showList();
+
+          // focus the selected item
+          for ( var i = 0; i < this.listNode.children.length; i++ ) {
+            if ( property.value === this.listNode.children[ i ].item.value ) {
+              this.focusedItem = this.listNode.children[ i ];
+              this.focusedItem.a11yFocusButton();
+            }
+          }
+        }
+      },
+
+      // listen for escape to hide the list when focused on the button
+      keydown: event => {
+        if ( this.listNode.visible ) {
+          if ( event.keyCode === KeyboardUtil.KEY_ESCAPE ) {
+            this.hideList();
+          }
+        }
+      }
+    };
+    this.buttonNode.addAccessibleInputListener( this.buttonNode.a11yListener );
 
     // layout
     if ( options.labelNode ) {
@@ -238,6 +332,9 @@ define( require => {
         this.listNode.children[ i ].dispose();
       }
 
+      // remove a11y listeners
+      this.listNode.removeAccessibleInputListener( handleKeyDown );
+
       this.buttonNode.dispose();
     };
 
@@ -268,6 +365,7 @@ define( require => {
      * @public
      */
     showList() {
+
       if ( !this.listNode.visible ) {
         this.phetioStartEvent( 'popupShown' );
 
@@ -283,24 +381,30 @@ define( require => {
     },
 
     /**
-     * Hides the combo box list
      * @public
      */
-    hideList() {
+    hideListFromClick() {
       if ( this.enableClickToDismissListener ) {
-
-        this.phetioStartEvent( 'popupHidden' );
-
-        if ( this.display && this.display.hasInputListener( this.clickToDismissListener ) ) {
-          this.display.removeInputListener( this.clickToDismissListener );
-        }
-        this.listNode.visible = false;
-
-        this.phetioEndEvent();
+        this.hideList();
       }
       else {
         this.enableClickToDismissListener = true;
       }
+    },
+
+    /**
+     * Hides the combo box list. Most Often should be called from hideListFromClick
+     * @private
+     */
+    hideList() {
+      this.phetioStartEvent( 'popupHidden' );
+
+      if ( this.display && this.display.hasInputListener( this.clickToDismissListener ) ) {
+        this.display.removeInputListener( this.clickToDismissListener );
+      }
+      this.listNode.visible = false;
+
+      this.phetioEndEvent();
     },
 
     //TODO handle scale and rotation
@@ -351,7 +455,7 @@ define( require => {
     constructor( itemNode, options ) {
 
       options = _.extend( {
-        tandem: Tandem.required, // For PhET-iO instrumented simulations, this must be supplied
+        tandem: Tandem.optional, // For PhET-iO instrumented simulations, this must be supplied
 
         // these options are passed in from ComboBox options
         listPosition: 'below',
@@ -360,16 +464,36 @@ define( require => {
         buttonLineWidth: 1,
         buttonCornerRadius: 8,
         buttonXMargin: 10,
-        buttonYMargin: 4
+        buttonYMargin: 4,
+
+        // a11y
+        a11yButtonLabel: '', // {string} accessible label for the button
+
+        tagName: 'button',
+        containerTagName: 'div'
 
       }, options );
 
       super();
 
+      this.innerContent = options.a11yButtonLabel;
+
+      // the button's description aria-describes this button, so it is read every time it receives focus
+      this.addAriaDescribedbyAssociation( {
+        otherNode: this,
+        otherElementName: AccessiblePeer.DESCRIPTION_SIBLING,
+        thisElementName: AccessiblePeer.PRIMARY_SIBLING
+      } );
+
+      // signify to AT that this button opens a menu
+      this.setAccessibleAttribute( 'aria-haspopup', true );
+
+      // @public - if assigned, it will be removed on disposal.
+      this.a11yListener = null;
+
       // up or down arrow
       const arrow = new Path( null, {
-        fill: 'black',
-        tandem: options.tandem.createTandem( 'arrow' )
+        fill: 'black'
       } );
       const arrowWidth = 0.5 * itemNode.height;
       const arrowHeight = arrowWidth * Math.sqrt( 3 ) / 2; // height of equilateral triangle
@@ -393,14 +517,11 @@ define( require => {
       // vertical separator to left of arrow
       const separator = new Line( 0, 0, 0, height, {
         stroke: 'black',
-        lineWidth: options.buttonLineWidth,
-        tandem: options.tandem.createTandem( 'separator' )
+        lineWidth: options.buttonLineWidth
       } );
 
       // parent for the selected item node
-      const selectedItemParent = new Node( {
-        tandem: options.tandem.createTandem( 'selectedItemParent' )
-      } );
+      const selectedItemParent = new Node();
 
       // rendering order
       this.addChild( background );
@@ -409,7 +530,7 @@ define( require => {
       this.addChild( selectedItemParent );
 
       // @private
-      this.setItemNode = ( itemNode ) => {
+      this.setItemNode = itemNode => {
         // Dispose any existing item, see https://github.com/phetsims/sun/issues/299
         while ( selectedItemParent.children.length ) {
           const lastNode = selectedItemParent.children[ 0 ];
@@ -419,6 +540,11 @@ define( require => {
         selectedItemParent.addChild( itemNode );
         itemNode.left = options.buttonXMargin;
         itemNode.top = options.buttonYMargin;
+
+        // TODO: is there a better way to do this? https://github.com/phetsims/sun/issues/314
+        itemNode.a11yShowItem( false );
+
+        this.accessibleDescription = itemNode.a11yLabel + ', selected';
       };
       this.setItemNode( itemNode );
 
@@ -436,7 +562,12 @@ define( require => {
         options.tandem.createTandem( 'arrow' ).removeInstance( arrow );
         options.tandem.createTandem( 'selectedItemParent' ).removeInstance( selectedItemParent );
         itemNode.dispose();
+
+        // dispose a11y
+        this.a11yListener && this.removeAccessibleInputListener( this.a11yListener );
       };
+
+      this.mutate( options );
     }
 
     /**
@@ -469,18 +600,57 @@ define( require => {
         children: [ item.node ],
         pickable: false,
         x: xMargin,
-        centerY: height / 2
+        centerY: height / 2,
+
+        tagName: 'button',
+        ariaRole: 'menuitem'
       } );
 
       options = _.extend( {
         tandem: Tandem.required,
-        children: [ itemWrapper ]
+        children: [ itemWrapper ],
+
+        // a11y
+        tagName: 'li',
+        // tagName: 'button',
+        // ariaRole: 'menuitem'
+        ariaRole: 'none',
+
+        // label for the button clickable item
+        a11yLabel: ''
       }, options );
 
       super( 0, 0, width, height, options );
 
+      // @public - to keep track of it
+      this.a11yLabel = options.a11yLabel;
+
+      // @private {null|function} - listener called when button clicked with AT
+      this.a11yClickListener = null;
+
       this.item = item;
       this.itemWrapper = itemWrapper;
+
+      // the highlight wraps around the entire item rectangle
+      this.itemWrapper.focusHighlight = Shape.bounds( this.itemWrapper.parentToLocalBounds( this.localBounds ) );
+      this.itemWrapper.innerContent = options.a11yLabel;
+    }
+
+    /**
+     * // TODO: doc/rename to toggleVisibility, https://github.com/phetsims/sun/issues/314
+     * @param {boolean} visible
+     */
+    a11yShowItem( visible ) {
+      this.itemWrapper.tagName = visible ? 'button' : null;
+      this.tagName = visible ? 'li' : null;
+    }
+
+    /**
+     * Focus the item in the list
+     * @public
+     */
+    a11yFocusButton() {
+      this.itemWrapper.focus();
     }
 
     /**
@@ -489,6 +659,9 @@ define( require => {
      * @override
      */
     dispose() {
+
+      // the item in the button will not have a listener
+      this.a11yClickListener && this.itemWrapper.removeAccessibleInputListener( this.a11yClickListener );
       this.itemWrapper.dispose();
       super.dispose();
     }
