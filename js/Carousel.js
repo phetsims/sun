@@ -28,6 +28,7 @@ define( function( require ) {
   var Shape = require( 'KITE/Shape' );
   var sun = require( 'SUN/sun' );
   var Tandem = require( 'TANDEM/Tandem' );
+  var timer = require( 'PHET_CORE/timer' );
   var Util = require( 'DOT/Util' );
   var VSeparator = require( 'SUN/VSeparator' );
 
@@ -70,7 +71,7 @@ define( function( require ) {
     // animation, scrolling between pages
     animationEnabled: true, // {boolean} is animation enabled when scrolling between pages?,
     animationDuration: 0.4, // {number} seconds
-    stepper: 'manual' // {string} see Animation options.stepper
+    animationStepEmitter: timer // {string} see Animation options.animationStepEmitter
   };
   assert && Object.freeze( DEFAULT_OPTIONS );
 
@@ -271,7 +272,7 @@ define( function( require ) {
         // options that are independent of orientation
         var animationOptions = {
           duration: options.animationDuration,
-          stepper: options.stepper,
+          animationStepEmitter: options.animationStepEmitter,
           easing: Easing.CUBIC_IN_OUT
         };
 

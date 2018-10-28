@@ -85,7 +85,6 @@ define( function( require ) {
     var vCarousel = new Carousel( vItems, {
       orientation: 'vertical',
       separatorsVisible: true,
-      stepper: 'timer',
       buttonTouchAreaXDilation: 5,
       buttonTouchAreaYDilation: 15,
       buttonMouseAreaXDilation: 2,
@@ -95,7 +94,6 @@ define( function( require ) {
     // horizontal carousel
     var hCarousel = new Carousel( hItems, {
       orientation: 'horizontal',
-      stepper: 'timer',
       buttonTouchAreaXDilation: 15,
       buttonTouchAreaYDilation: 5,
       buttonMouseAreaXDilation: 7,
@@ -310,8 +308,7 @@ define( function( require ) {
     // carousel
     var carousel = new Carousel( items, {
       orientation: 'horizontal',
-      itemsPerPage: 3,
-      stepper: 'timer'
+      itemsPerPage: 3
     } );
 
     // page control
