@@ -319,7 +319,7 @@ define( function( require ) {
          * @param {string} orientation - one of "horizontal" or "vertical"
          */
         setAriaOrientation: function( orientation ) {
-          assert &&  assert( orientation === 'horizontal' || orientation === 'vertical' );
+          assert && assert( orientation === 'horizontal' || orientation === 'vertical' );
 
           this._ariaOrientation = orientation;
           this.setAccessibleAttribute( 'aria-orientation', orientation );
@@ -336,6 +336,18 @@ define( function( require ) {
           return this._ariaOrientation;
         },
         get ariaOrientation() { return this._ariaOrientation; },
+
+        /**
+         * Set the aria-valuetext of this input independently from the changing value, if necessary. Beware the order
+         * in which you call this function. The aria-valuetext is changed whenever the slider's Property changes,
+         * but you can use this function if you need to set the valueText outside of a Property listener.
+         * 
+         * @param {string|number} valueText
+         */
+        setAriaValueText: function( valueText ) {
+          this.setAccessibleAttribute( 'aria-valuetext', valueText );
+        },
+        set ariaValueText( valueText ) { this.setAriaValueText( valueText ); },
 
         /**
          * Handle the keydown event so that this node behaves like a traditional HTML slider (input of type range).
