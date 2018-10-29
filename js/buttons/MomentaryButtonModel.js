@@ -56,7 +56,7 @@ define( function( require ) {
     // @private: just for dispose.  Named based on the type name so it won't have a name collision with parent/child ones
     this.disposeMomentaryButtonModel = function() {
       self.downProperty.unlink( downListener );
-      self.valueProperty.unlink( valuePropertyListener );
+      valueProperty.unlink( valuePropertyListener );
     };
   }
 
