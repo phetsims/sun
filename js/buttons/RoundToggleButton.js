@@ -39,8 +39,15 @@ define( function( require ) {
     // @private (read-only)
     // Note it shares a tandem with this, so the emitter will be instrumented as a child of the button
     this.toggleButtonModel = new ToggleButtonModel( valueOff, valueOn, property, options );
+    var toggleButtonInteractionStateProperty = new ToggleButtonInteractionStateProperty( this.toggleButtonModel );
 
-    RoundButtonView.call( this, this.toggleButtonModel, new ToggleButtonInteractionStateProperty( this.toggleButtonModel ), options );
+    RoundButtonView.call( this, this.toggleButtonModel, toggleButtonInteractionStateProperty, options );
+
+    // @private
+    this.disposeRoundToggleButton = function() {
+      this.toggleButtonModel.dispose();
+      toggleButtonInteractionStateProperty.dispose();
+    };
   }
 
   sun.register( 'RoundToggleButton', RoundToggleButton );
@@ -49,7 +56,7 @@ define( function( require ) {
 
     // @public
     dispose: function() {
-      this.toggleButtonModel.dispose(); // TODO this fails with assertions enabled, see sun#212
+      this.disposeRoundToggleButton();
       RoundButtonView.prototype.dispose.call( this );
     }
   } );

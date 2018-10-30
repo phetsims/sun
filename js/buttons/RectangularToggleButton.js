@@ -35,7 +35,7 @@ define( function( require ) {
     // @public (phet-io)
     // Note it shares a tandem with this, so the emitter will be instrumented as a child of the button
     this.toggleButtonModel = new ToggleButtonModel( valueOff, valueOn, property, options );
-    var toggleButtonInteractionStateProperty = new ToggleButtonInteractionStateProperty( this.toggleButtonModel )
+    var toggleButtonInteractionStateProperty = new ToggleButtonInteractionStateProperty( this.toggleButtonModel );
     RectangularButtonView.call( this, this.toggleButtonModel, toggleButtonInteractionStateProperty, options );
 
     // @private
