@@ -35,11 +35,25 @@ define( function( require ) {
     // @public (phet-io)
     // Note it shares a tandem with this, so the emitter will be instrumented as a child of the button
     this.toggleButtonModel = new ToggleButtonModel( valueOff, valueOn, property, options );
+    var toggleButtonInteractionStateProperty = new ToggleButtonInteractionStateProperty( this.toggleButtonModel )
+    RectangularButtonView.call( this, this.toggleButtonModel, toggleButtonInteractionStateProperty, options );
 
-    RectangularButtonView.call( this, this.toggleButtonModel, new ToggleButtonInteractionStateProperty( this.toggleButtonModel ), options );
+    // @private
+    this.disposeRectangularToggleButton = function() {
+      toggleButtonInteractionStateProperty.dispose();
+    };
   }
 
   sun.register( 'RectangularToggleButton', RectangularToggleButton );
 
-  return inherit( RectangularButtonView, RectangularToggleButton );
+  return inherit( RectangularButtonView, RectangularToggleButton, {
+
+    /**
+     * @public
+     */
+    dispose: function() {
+      this.disposeRectangularToggleButton();
+      RectangularButtonView.prototype.dispose && RectangularButtonView.prototype.dispose.call( this );
+    }
+  } );
 } );
