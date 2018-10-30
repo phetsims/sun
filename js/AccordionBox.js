@@ -202,6 +202,14 @@ define( function( require ) {
     } );
     this.addChild( this.collapsedBox );
 
+    // @private {Rectangle} - Transparent rectangle for working around issues like
+    // https://github.com/phetsims/graphing-quadratics/issues/86
+    this.workaroundBox = new Rectangle( {
+      fill: 'transparent',
+      pickable: false
+    } );
+    this.addChild( this.workaroundBox );
+
     // @private {Path}
     this.expandedTitleBar = new Path( null, _.extend( {
       fill: options.titleBarFill,
@@ -327,6 +335,8 @@ define( function( require ) {
       self.expandedBox.visible = expanded;
       self.collapsedBox.visible = !expanded;
 
+      self.workaroundBox.rectBounds = ( expanded ? self.expandedBox : self.collapsedBox ).bounds.dilated( 10 );
+
       self.titleNode.visible = ( expanded && options.showTitleWhenExpanded ) || !expanded;
     };
     this.expandedProperty.link( expandedPropertyObserver );
@@ -372,6 +382,8 @@ define( function( require ) {
 
       this.collapsedBox.rectWidth = boxWidth;
       this.collapsedBox.rectHeight = collapsedBoxHeight;
+
+      this.workaroundBox.localBounds = this.collapsedBox.bounds;
 
       this.collapsedTitleBar.rectWidth = boxWidth;
       this.collapsedTitleBar.rectHeight = collapsedBoxHeight;
