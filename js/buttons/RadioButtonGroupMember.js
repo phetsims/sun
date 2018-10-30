@@ -130,6 +130,7 @@ define( function( require ) {
       property.unlink( accessibleCheckedListener );
       this.firedEmitter.dispose();
       this.buttonModel.dispose();
+      this.interactionStateProperty.dispose();
     };
   }
 

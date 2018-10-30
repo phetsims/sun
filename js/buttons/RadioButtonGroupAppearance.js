@@ -104,7 +104,9 @@ define( function( require ) {
 
     // add dispose function
     this.dispose = function() {
-      interactionStateProperty.unlink( handleInteractionStateChanged );
+      if ( interactionStateProperty.hasListener( handleInteractionStateChanged ) ) {
+        interactionStateProperty.unlink( handleInteractionStateChanged );
+      }
       disabledStroke.dispose();
       overStroke.dispose();
       overFill.dispose();
@@ -164,7 +166,9 @@ define( function( require ) {
 
     // add a disposal function
     this.dispose = function() {
-      interactionStateProperty.unlink( handleInteractionStateChanged );
+      if ( interactionStateProperty.hasListener( handleInteractionStateChanged ) ) {
+        interactionStateProperty.unlink( handleInteractionStateChanged );
+      }
     };
   };
 
