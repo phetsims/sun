@@ -42,9 +42,6 @@ define( function( require ) {
 
     options = _.extend( {
 
-      // {Tandem}
-      tandem: Tandem.required,
-
       // {Node} - If not provided, a Text node will be supplied. Should have and maintain well-defined bounds if passed
       //          in.
       titleNode: null,
@@ -93,15 +90,17 @@ define( function( require ) {
       contentXSpacing: 5, // horizontal space between content and button, ignored if showTitleWhenExpanded is true
       contentYSpacing: 8, // vertical space between content and title+button, ignored if showTitleWhenExpanded is false
 
-      // phet-io support
-      phetioType: AccordionBoxIO,
-      phetioEventType: 'user',
-
       // a11y options
       tagName: 'div',
 
       // Options will be provided to both title bar nodes
-      titleBarOptions: null
+      titleBarOptions: null,
+
+      // phet-io support
+      tandem: Tandem.required,
+      phetioType: AccordionBoxIO,
+      phetioEventType: 'user'
+
     }, options );
 
     options.titleBarOptions = _.extend( {
