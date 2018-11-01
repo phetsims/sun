@@ -202,7 +202,11 @@ define( function( require ) {
     this.addChild( this.collapsedBox );
 
     // @private {Rectangle} - Transparent rectangle for working around issues like
-    // https://github.com/phetsims/graphing-quadratics/issues/86
+    // https://github.com/phetsims/graphing-quadratics/issues/86. The current hypothesis is that browsers (in this case,
+    // IE11) sometimes don't compute the correct region of the screen that needs to get redrawn when something changes.
+    // This means that old content can be left in regions where it has since disappeared in the SVG.
+    // Adding transparent objects that are a bit larger seems to generally work (since browsers don't get the region
+    // wrong by more than a few pixels generally), and in the past has resolved the issues.
     this.workaroundBox = new Rectangle( {
       fill: 'transparent',
       pickable: false
@@ -334,6 +338,8 @@ define( function( require ) {
       self.expandedBox.visible = expanded;
       self.collapsedBox.visible = !expanded;
 
+      // NOTE: This does not increase the bounds of the AccordionBox, since the localBounds for the workaroundBox have
+      // been set elsewhere.
       self.workaroundBox.rectBounds = ( expanded ? self.expandedBox : self.collapsedBox ).bounds.dilated( 10 );
 
       self.titleNode.visible = ( expanded && options.showTitleWhenExpanded ) || !expanded;
