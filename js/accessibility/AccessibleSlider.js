@@ -417,7 +417,6 @@ define( function( require ) {
                 }
 
                 if ( this.roundToStepSize ) {
-                  debugger;
                   newValue = roundValue( newValue, this._valueProperty.get(), stepSize );
                 }
 
