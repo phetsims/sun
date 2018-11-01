@@ -341,7 +341,7 @@ define( function( require ) {
          * Set the aria-valuetext of this input independently from the changing value, if necessary. Beware the order
          * in which you call this function. The aria-valuetext is changed whenever the slider's Property changes,
          * but you can use this function if you need to set the valueText outside of a Property listener.
-         * 
+         *
          * @param {string|number} valueText
          */
         setAriaValueText: function( valueText ) {
@@ -358,7 +358,6 @@ define( function( require ) {
         handleKeyDown: function( event ) {
           var code = event.keyCode;
           this._shiftKey = event.shiftKey;
-
           if ( this._enabledProperty.get() ) {
 
             // Prevent default so browser doesn't change input value automatically
@@ -390,7 +389,6 @@ define( function( require ) {
               else {
                 var stepSize;
                 if ( code === KeyboardUtil.KEY_PAGE_UP || code === KeyboardUtil.KEY_PAGE_DOWN ) {
-
                   // on page up and page down, the default step size is 1/10 of the range (this is typical browser behavior)
                   stepSize = this.pageKeyboardStep;
 
@@ -416,10 +414,11 @@ define( function( require ) {
                     this.attemptedDecreaseEmitter.emit();
                     newValue = this._valueProperty.get() - stepSize;
                   }
+                }
 
-                  if ( this.roundToStepSize ) {
-                    newValue = roundValue( newValue, this._valueProperty.get(), stepSize );
-                  }
+                if ( this.roundToStepSize ) {
+                  debugger;
+                  newValue = roundValue( newValue, this._valueProperty.get(), stepSize );
                 }
 
                 // limit the value to the enabled range
