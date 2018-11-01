@@ -71,7 +71,7 @@ define( function( require ) {
     // animation, scrolling between pages
     animationEnabled: true, // {boolean} is animation enabled when scrolling between pages?,
     animationDuration: 0.4, // {number} seconds
-    animationStepEmitter: timer // {string} see Animation options.animationStepEmitter
+    stepEmitter: timer // {string} see Animation options.stepEmitter
   };
   assert && Object.freeze( DEFAULT_OPTIONS );
 
@@ -272,7 +272,7 @@ define( function( require ) {
         // options that are independent of orientation
         var animationOptions = {
           duration: options.animationDuration,
-          animationStepEmitter: options.animationStepEmitter,
+          stepEmitter: options.stepEmitter,
           easing: Easing.CUBIC_IN_OUT
         };
 
