@@ -176,6 +176,12 @@ define( function( require ) {
           this.attemptedIncreaseEmitter = new Emitter();
           this.attemptedDecreaseEmitter = new Emitter();
 
+          // @private (a11y) - whether or not an input event has been handled. If handled, we will not respond to the
+          // change event. An AT (particularly VoiceOver) may send a change event (and not an input event) to the
+          // browser in response to a user gesture. We need to handle that change event, whithout also handling the
+          // input event in case a device sends both events to the browser.
+          this.a11yInputHandled = false;
+
           // @private - entries like { {number}: {boolean} }, key is range key code, value is whether it is down
           this.rangeKeysDown = {};
 
@@ -189,7 +195,7 @@ define( function( require ) {
             self.setAccessibleAttribute( 'min', enabledRange.min );
             self.setAccessibleAttribute( 'max', enabledRange.max );
 
-            // HTML requires that the value be evenly divisible by the step size to receive 'change' events, which
+            // HTML requires that the value be evenly divisible by the step size to receive 'input' events, which
             // is critical to work with mobile AT like VoiceOver
             self.setAccessibleAttribute( 'step', ( enabledRange.max - enabledRange.min ) / 100 );
           };
@@ -199,6 +205,7 @@ define( function( require ) {
           var accessibleInputListener = {
             keydown: this.handleKeyDown.bind( this ),
             keyup: this.handleKeyUp.bind( this ),
+            input: this.handleInput.bind( this ),
             change: this.handleChange.bind( this ),
             blur: this.handleBlur.bind( this )
           };
@@ -462,51 +469,66 @@ define( function( require ) {
         },
 
         /**
-         * Handle a direct 'change' event that might come from assistive technology. It is possible that the user agent
-         * (particularly VoiceOver, or a switch device) will initiate a change event directly without going through
+         * VoiceOver sends a "change" event to the slider (NOT an input event), so we need to handle the case when
+         * a change event is sent but an input event ins't handled. Guarded against the case that BOTH change and
+         * input are sent to the browser by the AT.
+         * @param  {DOMEvent} events
+         */
+        handleChange: function ( event ) {
+          if ( !this.a11yInputHandled ) {
+            this.handleInput( event );
+          }
+
+          this.a11yInputHandled = false;
+        },
+
+        /**
+         * Handle a direct 'input' event that might come from assistive technology. It is possible that the user agent
+         * (particularly VoiceOver, or a switch device) will initiate an input event directly without going through
          * keydown. In that case, handle the change depending on which direction the user tried to go.
+         *
+         * Note that it is important to handle the "input" event, rather than the "change" event. The "input" will
+         * fire when the value changes from a gesture, while the "change" will only happen on submission, like as
+         * navigating away from the element.
          * @public
          *
          * @param {DOMEvent} event
          */
-        handleChange: function( event ) {
+        handleInput: function( event ) {
           if ( this._enabledProperty.get() ) {
 
-            // don't handle changes if the element does not have focus - the browser may be trying to 'commit' a new
-            // value on blur that is evenly divisible by the step size, but we don't want that for AccessibleSlider
-            // since we are managing the value ourselves
-            if ( this.focused ) {
+            // don't handle again on "change" event
+            this.a11yInputHandled = true;
 
-              var newValue = this._valueProperty.get();
+            var newValue = this._valueProperty.get();
 
-              var inputValue = event.target.value;
-              var stepSize = this._shiftKey ? this.shiftKeyboardStep : this.keyboardStep;
+            var inputValue = event.target.value;
+            var stepSize = this._shiftKey ? this.shiftKeyboardStep : this.keyboardStep;
 
-              // start of change event is start of drag
-              this._startDrag();
+            // start of change event is start of drag
+            this._startDrag();
 
-              if ( inputValue > this._valueProperty.get() ) {
-                this.attemptedIncreaseEmitter.emit();
-                newValue = this._valueProperty.get() + stepSize;
-              }
-              else if ( inputValue < this._valueProperty.get() ) {
-                this.attemptedDecreaseEmitter.emit();
-                newValue = this._valueProperty.get() - stepSize;
-              }
-
-              if ( this.roundToStepSize ) {
-                newValue = roundValue( newValue, this._valueProperty.get(), stepSize );
-              }
-
-              // limit to enabled range
-              newValue = Util.clamp( newValue, this._enabledRangeProperty.get().min, this._enabledRangeProperty.get().max );
-
-              // optionally constrain value
-              this._valueProperty.set( this._constrainValue( newValue ) );
-
-              // end of change is the end of a drag
-              this._endDrag();
+            if ( inputValue > this._valueProperty.get() ) {
+              this.attemptedIncreaseEmitter.emit();
+              newValue = this._valueProperty.get() + stepSize;
             }
+            else if ( inputValue < this._valueProperty.get() ) {
+              this.attemptedDecreaseEmitter.emit();
+              newValue = this._valueProperty.get() - stepSize;
+            }
+
+            if ( this.roundToStepSize ) {
+              newValue = roundValue( newValue, this._valueProperty.get(), stepSize );
+            }
+
+            // limit to enabled range
+            newValue = Util.clamp( newValue, this._enabledRangeProperty.get().min, this._enabledRangeProperty.get().max );
+
+            // optionally constrain value
+            this._valueProperty.set( this._constrainValue( newValue ) );
+
+            // end of change is the end of a drag
+            this._endDrag();
           }
         },
 
