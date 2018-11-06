@@ -101,7 +101,8 @@ define( function( require ) {
             // @param {number}
             createAriaValueText: function ( formattedValue, previousValue ) { return formattedValue; },
 
-            // control whether or not to round the value to a multiple of the given step size
+            // {boolean} - Whether or not to round the value to a multiple of the keyboardStep. This will only round
+            // the value on normal key presses, rounding will not occur on large jumps like page up/page down/home/end
             // see https://github.com/phetsims/gravity-force-lab-basics/issues/72
             roundToStepSize: false
           };
@@ -421,10 +422,10 @@ define( function( require ) {
                     this.attemptedDecreaseEmitter.emit();
                     newValue = this._valueProperty.get() - stepSize;
                   }
-                }
 
-                if ( this.roundToStepSize ) {
-                  newValue = roundValue( newValue, this._valueProperty.get(), stepSize );
+                  if ( this.roundToStepSize ) {
+                    newValue = roundValue( newValue, this._valueProperty.get(), stepSize );
+                  }
                 }
 
                 // limit the value to the enabled range
