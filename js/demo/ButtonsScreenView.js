@@ -478,9 +478,7 @@ define( function( require ) {
 
           alignBaseColor.value = new Color( _.random( 0, 255 ), _.random( 0, 255 ), _.random( 0, 255 ) );
           radioGroupBaseColor.value = new Color( _.random( 0, 255 ), _.random( 0, 255 ), _.random( 0, 255 ) );
-          roundBaseColor.value.red = _.random( 0, 255 );
-          roundBaseColor.value.green = _.random( 0, 255 );
-          roundBaseColor.value.blue = _.random( 0, 255 );
+          roundBaseColor.value = new Color( _.random( 0, 255 ), _.random( 0, 255 ), _.random( 0, 255 ) );
 
           message( 'Button colors changed' );
         },
