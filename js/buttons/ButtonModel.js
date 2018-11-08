@@ -158,9 +158,8 @@ define( function( require ) {
 
       looksPressedProperties.push( this.downProperty );
       this.looksPressedMultilink = Property.multilink( looksPressedProperties, function() {
-          self.looksPressedProperty.value = _.reduce( arguments, orIteratee );
-        }
-      );
+        self.looksPressedProperty.value = _.reduce( arguments, orIteratee );
+      } );
 
       return pressListener;
     }
