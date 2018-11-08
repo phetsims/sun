@@ -148,17 +148,15 @@ define( function( require ) {
       // dispose the previous multilink in case we already created a PressListener with this model
       this.looksPressedMultilink && this.looksPressedMultilink.dispose();
 
+      var looksPressedProperties = this.listeners.map( function( listener ) { return listener.looksPressedProperty; } );
+      looksPressedProperties.push( this.downProperty );
+
       // assign a new Multilink (for disposal), and make sure that the button looks pressed when any of the
       // PressListeners created by this ButtonModel look pressed
-      function orIteratee( sum, newValue ) {
-        return sum || newValue;
-      }
-
-      var looksPressedProperties = self.listeners.map( function( listener ) { return listener.looksPressedProperty; } );
-
-      looksPressedProperties.push( this.downProperty );
       this.looksPressedMultilink = Property.multilink( looksPressedProperties, function() {
-        self.looksPressedProperty.value = _.reduce( arguments, orIteratee );
+        self.looksPressedProperty.value = _.reduce( arguments, function( sum, newValue ) {
+          return sum || newValue;
+        }, false );
       } );
 
       return pressListener;
