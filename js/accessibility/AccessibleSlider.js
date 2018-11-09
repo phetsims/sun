@@ -79,9 +79,9 @@ define( function( require ) {
           var defaults = {
 
             // other
-            startDrag: function() {}, // called when a drag sequence starts
-            endDrag: function() {}, // called when a drag sequence ends
-            constrainValue: function( value ) { return value; }, // called before valueProperty is set
+            startDrag: _.noop, // called when a drag sequence starts
+            endDrag: _.noop, // called when a drag sequence ends
+            constrainValue: _.identity, // called before valueProperty is set
 
             // a11y
             accessibleValuePattern: '{{value}}', // {string} if you want units or additional content, add to pattern

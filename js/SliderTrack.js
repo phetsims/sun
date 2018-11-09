@@ -44,9 +44,9 @@ define( function( require ) {
       lineWidth: 1,
       cornerRadius: 0,
       enabledProperty: new Property( true ), // is the track enabled?
-      startDrag: function() {}, // called when a drag sequence starts
-      endDrag: function() {}, // called when a drag sequence ends
-      constrainValue: function( value ) { return value; }, // called before valueProperty is set
+      startDrag: _.noop, // called when a drag sequence starts
+      endDrag: _.noop, // called when a drag sequence ends
+      constrainValue: _.identity, // called before valueProperty is set
 
       // phet-io
       tandem: Tandem.required,

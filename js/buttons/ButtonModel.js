@@ -23,10 +23,10 @@ define( function( require ) {
   function ButtonModel( options ) {
 
     options = _.extend( {
-      // {function} called on pointer down
-      startCallback: function() {},
-      // {function} called on pointer up, @param {boolean} over - indicates whether the pointer was released over the button
-      endCallback: function( over ) {},
+      // {function()} called on pointer down
+      startCallback: _.noop,
+      // {function(over:boolean)} called on pointer up, @param {boolean} over - indicates whether the pointer was released over the button
+      endCallback: _.noop,
       // {boolean} is the button enabled?
       enabled: true,
 

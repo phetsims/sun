@@ -56,8 +56,8 @@ define( function( require ) {
       fireOnHoldInterval: 100, // fire continuously at this interval (milliseconds)
 
       // callbacks
-      startCallback: function() {}, // called when the pointer is pressed
-      endCallback: function( over ) {} // called when the pointer is released, {boolean} over indicates whether the pointer was over when released
+      startCallback: _.noop, // {function()} called when the pointer is pressed
+      endCallback: _.noop // {function(over:boolean)} called when the pointer is released, {boolean} over indicates whether the pointer was over when released
 
     }, options );
     options.listener = callback;
