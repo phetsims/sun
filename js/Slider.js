@@ -89,9 +89,9 @@ define( function( require ) {
 
       // other
       cursor: 'pointer',
-      startDrag: function() {}, // called when a drag sequence starts
-      endDrag: function() {}, // called when a drag sequence ends
-      constrainValue: function( value ) { return value; }, // called before valueProperty is set
+      startDrag: _.noop, // called when a drag sequence starts
+      endDrag: _.noop, // called when a drag sequence ends
+      constrainValue: _.identity, // called before valueProperty is set
 
       enabledProperty: null, // see below
       enabledRangeProperty: null, // see below
