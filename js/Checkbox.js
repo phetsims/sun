@@ -25,6 +25,7 @@ define( function( require ) {
 
   // constants
   var DISABLED_OPACITY = 0.3;
+  var CheckboxEmitterIO = EmitterIO( [ { name: 'isChecked', type: BooleanIO } ] );
 
   /**
    * @param {Node} content
@@ -102,7 +103,7 @@ define( function( require ) {
       phetioDocumentation: 'Emits when user input causes the checkbox to toggle, emitting a single arg: the new boolean value of the checkbox state.',
       phetioReadOnly: options.phetioReadOnly,
       phetioEventType: 'user',
-      phetioType: EmitterIO( [ { name: 'isChecked', type: BooleanIO } ] ),
+      phetioType: CheckboxEmitterIO,
       listener: function( value ) {
         property.value = value;
       }
