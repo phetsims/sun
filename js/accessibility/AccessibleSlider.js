@@ -195,10 +195,6 @@ define( function( require ) {
             // a11y - update enabled slider range for AT, required for screen reader events to behave correctly
             self.setAccessibleAttribute( 'min', enabledRange.min );
             self.setAccessibleAttribute( 'max', enabledRange.max );
-
-            // HTML requires that the value be evenly divisible by the step size to receive 'input' events, which
-            // is critical to work with mobile AT like VoiceOver
-            self.setAccessibleAttribute( 'step', ( enabledRange.max - enabledRange.min ) / 100 );
           };
           this._enabledRangeProperty.link( enabledRangeObserver );
 
@@ -215,6 +211,15 @@ define( function( require ) {
           // when the property changes, be sure to update the accessible input value and aria-valuetext which is read
           // by assistive technology when the value changes
           var accessiblePropertyListener = function( value, oldValue ) {
+
+            // Set the step attribute every time the value changes for our custom sliders so the attribute is always
+            // valid. The step attribute must be non zero for the accessible input to receive all accessibility events,
+            // and only values that step from min at intervals of step size are allowed. Must change because PhET
+            // allows values that do not adhere to W3C specification constraints.
+            var formattedStep = Util.toFixedNumber( value - self._enabledRangeProperty.get().min, options.accessibleDecimalPlaces );
+            if ( formattedStep === 0 ) { formattedStep = self._enabledRangeProperty.get().min; }
+            self.setAccessibleAttribute( 'step', formattedStep );
+
             self.inputValue = value;
 
             // format the value text for reading
