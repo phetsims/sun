@@ -16,7 +16,7 @@ define( function( require ) {
   var sun = require( 'SUN/sun' );
 
   /**
-   * @param {Object[]} elements - Array of {value:{Object}, node:{Node}}
+   * @param {{value:{*}, node:{Node}}[]} elements
    * @param {Property.<Object>} valueProperty
    * @param {Object} [options]
    * @constructor
@@ -35,11 +35,11 @@ define( function( require ) {
 
     options = _.extend( {
 
-      // By default, line up the centers of all nodes with the center of the first node (horizontally and vertically)
+      // {function} determines the relative layout of element Nodes. See below for pre-defined layout.
       alignChildren: ToggleNode.CENTER
     }, options );
 
-    var valueChangeListener = function( value ) {
+    var valueListener = function( value ) {
       var matchCount = 0;
       for ( var i = 0; i < elements.length; i++ ) {
         var element = elements[ i ];
@@ -51,7 +51,7 @@ define( function( require ) {
       }
       assert && assert( matchCount === 1, 'Wrong number of matches: ' + matchCount );
     };
-    valueProperty.link( valueChangeListener );
+    valueProperty.link( valueListener );
 
     options.children = _.map( elements, 'node' );
     options.alignChildren( options.children );
@@ -59,7 +59,7 @@ define( function( require ) {
 
     // @private
     this.disposeToggleNode = function() {
-      valueProperty.unlink( valueChangeListener );
+      valueProperty.unlink( valueListener );
     };
   }
 
@@ -78,6 +78,18 @@ define( function( require ) {
   }, {
 
     /**
+     * Center the latter nodes on the x,y center of the first node.
+     * @param {Node[]} children
+     * @public
+     * @static
+     */
+    CENTER: function( children ) {
+      for ( var i = 1; i < children.length; i++ ) {
+        children[ i ].center = children[ 0 ].center;
+      }
+    },
+
+    /**
      * Center the latter nodes on the x center of the first node.
      * @param {Node[]} children
      * @public
@@ -86,6 +98,18 @@ define( function( require ) {
     CENTER_X: function( children ) {
       for ( var i = 1; i < children.length; i++ ) {
         children[ i ].centerX = children[ 0 ].centerX;
+      }
+    },
+
+    /**
+     * Center the latter nodes on the y center of the first node.
+     * @param {Node[]} children
+     * @public
+     * @static
+     */
+    CENTER_Y: function( children ) {
+      for ( var i = 1; i < children.length; i++ ) {
+        children[ i ].centerY = children[ 0 ].centerY;
       }
     },
 
@@ -114,36 +138,12 @@ define( function( require ) {
     },
 
     /**
-     * Center the latter nodes on the y center of the first node.
-     * @param {Node[]} children
-     * @public
-     * @static
-     */
-    CENTER_Y: function( children ) {
-      for ( var i = 1; i < children.length; i++ ) {
-        children[ i ].centerY = children[ 0 ].centerY;
-      }
-    },
-
-    /**
      * No alignment is performed
      * @param {Node[]} children
      * @public
      * @static
      */
     NONE: function( children ) {
-    },
-
-    /**
-     * Center the latter nodes on the x,y center of the first node.
-     * @param {Node[]} children
-     * @public
-     * @static
-     */
-    CENTER: function( children ) {
-      for ( var i = 1; i < children.length; i++ ) {
-        children[ i ].center = children[ 0 ].center;
-      }
     }
   } );
 } );
