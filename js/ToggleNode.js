@@ -16,12 +16,12 @@ define( function( require ) {
   var sun = require( 'SUN/sun' );
 
   /**
-   * @param {{value:{*}, node:{Node}}[]} elements
    * @param {Property.<Object>} valueProperty
+   * @param {{value:{*}, node:{Node}}[]} elements
    * @param {Object} [options]
    * @constructor
    */
-  function ToggleNode( elements, valueProperty, options ) {
+  function ToggleNode( valueProperty, elements, options ) {
 
     assert && assert( Array.isArray( elements ), 'elements should be an array' );
     if ( assert ) {

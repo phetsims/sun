@@ -23,10 +23,10 @@ define( function( require ) {
    * @constructor
    */
   function BooleanToggleNode( trueNode, falseNode, booleanProperty, options ) {
-    ToggleNode.call( this, [
+    ToggleNode.call( this, booleanProperty, [
       { value: true, node: trueNode },
       { value: false, node: falseNode }
-    ], booleanProperty, options );
+    ], options );
   }
 
   sun.register( 'BooleanToggleNode', BooleanToggleNode );
