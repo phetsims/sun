@@ -265,9 +265,6 @@ define( require => {
       }
     } );
 
-    let tandem = options.tandem; // don't pass tandem to the ButtonNode
-    delete options.tandem;
-
     // @private button, will be set to correct value when property observer is registered
     // TODO: buttonNode should not get passed all the comboBox options. This seems like a codesmell, see https://github.com/phetsims/sun/issues/314
     this.buttonNode = new ButtonNode( new ComboBoxItemNode( items[ 0 ], itemWidth, itemHeight, options.itemXMargin ), options );
@@ -279,8 +276,6 @@ define( require => {
       otherElementName: AccessiblePeer.LABEL_SIBLING,
       thisElementName: AccessiblePeer.PRIMARY_SIBLING
     } );
-
-    options.tandem = tandem; // restore the tandem after passing other options to the ButtonNode
 
     // button interactivity
     this.buttonNode.cursor = 'pointer';
@@ -528,6 +523,9 @@ define( require => {
         containerTagName: 'div'
 
       }, options );
+
+      // The ButtonNode is not instrumented
+      delete options.tandem;
 
       super();
 
