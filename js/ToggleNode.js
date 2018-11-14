@@ -83,7 +83,7 @@ define( function( require ) {
      * @public
      * @static
      */
-    HORIZONTAL: function( children ) {
+    CENTER_X: function( children ) {
       for ( var i = 1; i < children.length; i++ ) {
         children[ i ].centerX = children[ 0 ].centerX;
       }
@@ -119,7 +119,7 @@ define( function( require ) {
      * @public
      * @static
      */
-    VERTICAL: function( children ) {
+    CENTER_Y: function( children ) {
       for ( var i = 1; i < children.length; i++ ) {
         children[ i ].centerY = children[ 0 ].centerY;
       }
