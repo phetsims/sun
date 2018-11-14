@@ -76,8 +76,10 @@ define( function( require ) {
             );
           }
 
+          // if rounding to keyboard step, keyboardStep must be defined so values aren't skipped and the slider
+          // doesn't get stuck while rounding to the nearest value, see https://github.com/phetsims/sun/issues/410
           if ( assert && options.roundToStepSize ) {
-            assert( options.keyboardStep, 'rounding to keyboardStep, define appropriate keyboardStep to avoid skipping values or getting stuck in rounding' );
+            assert( options.keyboardStep, 'rounding to keyboardStep, define appropriate keyboardStep to round to' );
           }
 
           var defaults = {
