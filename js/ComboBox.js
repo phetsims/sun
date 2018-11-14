@@ -467,17 +467,15 @@ define( require => {
      * @private
      */
     moveList() {
-      let pButtonGlobal;
-      let pButtonLocal;
       if ( this.listPosition === 'above' ) {
-        pButtonGlobal = this.localToGlobalPoint( new Vector2( this.buttonNode.left, this.buttonNode.top ) );
-        pButtonLocal = this.listParent.globalToLocalPoint( pButtonGlobal );
+        let pButtonGlobal = this.localToGlobalPoint( new Vector2( this.buttonNode.left, this.buttonNode.top ) );
+        let pButtonLocal = this.listParent.globalToLocalPoint( pButtonGlobal );
         this.listNode.left = pButtonLocal.x;
         this.listNode.bottom = pButtonLocal.y;
       }
       else {
-        pButtonGlobal = this.localToGlobalPoint( new Vector2( this.buttonNode.left, this.buttonNode.bottom ) );
-        pButtonLocal = this.listParent.globalToLocalPoint( pButtonGlobal );
+        let pButtonGlobal = this.localToGlobalPoint( new Vector2( this.buttonNode.left, this.buttonNode.bottom ) );
+        let pButtonLocal = this.listParent.globalToLocalPoint( pButtonGlobal );
         this.listNode.left = pButtonLocal.x;
         this.listNode.top = pButtonLocal.y;
       }
