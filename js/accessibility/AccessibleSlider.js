@@ -76,6 +76,12 @@ define( function( require ) {
             );
           }
 
+          // if rounding to keyboard step, keyboardStep must be defined so values aren't skipped and the slider
+          // doesn't get stuck while rounding to the nearest value, see https://github.com/phetsims/sun/issues/410
+          if ( assert && options.roundToStepSize ) {
+            assert( options.keyboardStep, 'rounding to keyboardStep, define appropriate keyboardStep to round to' );
+          }
+
           var defaults = {
 
             // other
@@ -102,7 +108,7 @@ define( function( require ) {
             createAriaValueText: function ( formattedValue, previousValue ) { return formattedValue; },
 
             // {boolean} - Whether or not to round the value to a multiple of the keyboardStep. This will only round
-            // the value on normal key presses, rounding will not occur on large jumps like page up/page down/home/end
+            // the value on normal key presses, rounding will not occur on large jumps like page up/page down/home/end.
             // see https://github.com/phetsims/gravity-force-lab-basics/issues/72
             roundToStepSize: false
           };

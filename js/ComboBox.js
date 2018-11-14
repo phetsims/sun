@@ -267,9 +267,6 @@ define( require => {
       }
     } );
 
-    let tandem = options.tandem; // don't pass tandem to the ButtonNode
-    delete options.tandem;
-
     // @private button, will be set to correct value when property observer is registered
     // TODO: buttonNode should not get passed all the comboBox options. This seems like a codesmell, see https://github.com/phetsims/sun/issues/314
     this.buttonNode = new ButtonNode( new ComboBoxItemNode( items[ 0 ], itemWidth, itemHeight, options.itemXMargin ), options );
@@ -281,8 +278,6 @@ define( require => {
       otherElementName: AccessiblePeer.LABEL_SIBLING,
       thisElementName: AccessiblePeer.PRIMARY_SIBLING
     } );
-
-    options.tandem = tandem; // restore the tandem after passing other options to the ButtonNode
 
     // button interactivity
     this.buttonNode.cursor = 'pointer';
@@ -469,17 +464,15 @@ define( require => {
      * @private
      */
     moveList() {
-      let pButtonGlobal;
-      let pButtonLocal;
       if ( this.listPosition === 'above' ) {
-        pButtonGlobal = this.localToGlobalPoint( new Vector2( this.buttonNode.left, this.buttonNode.top ) );
-        pButtonLocal = this.listParent.globalToLocalPoint( pButtonGlobal );
+        let pButtonGlobal = this.localToGlobalPoint( new Vector2( this.buttonNode.left, this.buttonNode.top ) );
+        let pButtonLocal = this.listParent.globalToLocalPoint( pButtonGlobal );
         this.listNode.left = pButtonLocal.x;
         this.listNode.bottom = pButtonLocal.y;
       }
       else {
-        pButtonGlobal = this.localToGlobalPoint( new Vector2( this.buttonNode.left, this.buttonNode.bottom ) );
-        pButtonLocal = this.listParent.globalToLocalPoint( pButtonGlobal );
+        let pButtonGlobal = this.localToGlobalPoint( new Vector2( this.buttonNode.left, this.buttonNode.bottom ) );
+        let pButtonLocal = this.listParent.globalToLocalPoint( pButtonGlobal );
         this.listNode.left = pButtonLocal.x;
         this.listNode.top = pButtonLocal.y;
       }
@@ -532,6 +525,9 @@ define( require => {
         containerTagName: 'div'
 
       }, options );
+
+      // The ButtonNode is not instrumented
+      delete options.tandem;
 
       super();
 
