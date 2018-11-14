@@ -84,6 +84,7 @@ define( require => {
     // validate option values
     assert && assert( options.disabledOpacity > 0 && options.disabledOpacity < 1, 'invalid disabledOpacity: ' + options.disabledOpacity );
 
+    // Note: ComboBox cannot use ES6 class until its subtypes do
     Node.call( this );
 
     this.enabledProperty = options.enabledProperty; // @public
@@ -377,6 +378,7 @@ define( require => {
 
   sun.register( 'ComboBox', ComboBox );
 
+  // Note: ComboBox cannot use ES6 class until its subtypes do
   inherit( Node, ComboBox, {
 
     // @public - Provide dispose() on the prototype for ease of subclassing.
