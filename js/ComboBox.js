@@ -235,19 +235,19 @@ define( require => {
     this.focusedItem = null;
 
     // keey track of the input listener for removal
-    var handleKeyDown = this.listNode.addAccessibleInputListener( {
+    const handleKeyDown = this.listNode.addAccessibleInputListener( {
       keydown: event => {
         if ( event.keyCode === KeyboardUtil.KEY_ESCAPE ) {
           this.hideList();
           this.buttonNode.focus();
         }
         else if ( event.keyCode === KeyboardUtil.KEY_DOWN_ARROW || event.keyCode === KeyboardUtil.KEY_UP_ARROW ) {
-          var direction = event.keyCode === KeyboardUtil.KEY_DOWN_ARROW ? 1 : -1;
+          const direction = event.keyCode === KeyboardUtil.KEY_DOWN_ARROW ? 1 : -1;
 
           // Get the next/previous item in the list and focus it.
-          for ( var i = 0; i < this.listNode.children.length; i++ ) {
+          for ( let i = 0; i < this.listNode.children.length; i++ ) {
             if ( this.focusedItem === this.listNode.children[ i ] ) {
-              var nextItem = this.listNode.children[ i + direction ];
+              const nextItem = this.listNode.children[ i + direction ];
               if ( nextItem ) {
 
                 // a11y - keep this PDOM attribute in sync
@@ -302,7 +302,7 @@ define( require => {
           this.showList();
 
           // focus the selected item
-          for ( var i = 0; i < this.listNode.children.length; i++ ) {
+          for ( let i = 0; i < this.listNode.children.length; i++ ) {
             if ( property.value === this.listNode.children[ i ].item.value ) {
               this.focusedItem = this.listNode.children[ i ];
               this.focusedItem.a11yFocusButton();
@@ -508,7 +508,6 @@ define( require => {
     constructor( itemNode, options ) {
 
       options = _.extend( {
-        tandem: Tandem.optional, // For PhET-iO instrumented simulations, this must be supplied
 
         // these options are passed in from ComboBox options
         listPosition: 'below',
@@ -529,7 +528,7 @@ define( require => {
       }, options );
 
       // The ButtonNode is not instrumented
-      delete options.tandem;
+      options.tandem = Tandem.optional;
 
       super();
 
