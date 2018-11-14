@@ -74,6 +74,8 @@ define( require => {
       tandem: Tandem.required,
       phetioType: ComboBoxIO,
       phetioEventType: 'user',
+      phetioDocumentation: '', // different default than PhetioObject, see implementation below
+      phetioControlledProperty: property,
 
       // a11y
       a11yButtonLabel: '' // {string} accessible label for the button that opens this combobox
@@ -273,7 +275,7 @@ define( require => {
     this.buttonNode = new ButtonNode( new ComboBoxItemNode( items[ 0 ], itemWidth, itemHeight, options.itemXMargin ), options );
     this.addChild( this.buttonNode );
 
-    // a11y - the list is labelledby the button's label
+    // a11y - the list is labeled by the button's label
     this.listNode.addAriaLabelledbyAssociation( {
       otherNode: this.buttonNode,
       otherElementName: AccessiblePeer.LABEL_SIBLING,

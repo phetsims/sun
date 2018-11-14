@@ -49,6 +49,7 @@ define( function( require ) {
       phetioEventType: 'user',
       phetioReadOnly: PhetioObject.DEFAULT_OPTIONS.phetioReadOnly, // to support properly passing this to children, see https://github.com/phetsims/tandem/issues/60
       phetioDocumentation: '', // different default than PhetioObject, see implementation below
+      phetioControlledProperty: property,
 
       // a11y
       tagName: 'input',
@@ -89,13 +90,6 @@ define( function( require ) {
       phetioReadOnly: options.phetioReadOnly,
       phetioDocumentation: 'When disabled, the checkbox is grayed out and cannot be pressed.'
     } );
-
-    // (phet-io) document the instrumented Property that this Checkbox manipulates
-    options.phetioDocumentation +=
-      ' This checkbox controls the PropertyIO.&lt;BooleanIO&gt;: ' +
-      '<a href="#' + phetio.PhetioIDUtils.getDOMElementID( property.tandem.phetioID ) + '">' + property.tandem.phetioID + '</a>';
-    options.phetioDocumentation = options.phetioDocumentation.trim(); // eliminate preceding whitespace, if any.
-
 
     // @private - sends out notifications when the checkbox is toggled.
     var toggledEmitter = new Emitter( {
@@ -180,10 +174,6 @@ define( function( require ) {
     this.mutate( options );
 
     // assert that phet-io is set up correctly after the PhetioObject has been properly initialized (after mutate)
-
-    // If either one is instrumented, then the other must be too.
-    assert && Tandem.validationEnabled() && assert( this.isPhetioInstrumented() === property.isPhetioInstrumented(),
-      'Property must be instrumented if controlling Checkbox is.' );
 
     // If either one is instrumented, then the other must be too.
     assert && Tandem.validationEnabled() && assert( this.enabledProperty.isPhetioInstrumented() === this.isPhetioInstrumented(), 'provided enabled property must be instrumented for phet-io.' );
