@@ -95,6 +95,7 @@ define( function( require ) {
 
       enabledProperty: null, // see below
       enabledRangeProperty: null, // see below
+      enabledPropertyOptions: null, // see below
 
       // phet-io
       tandem: Tandem.required,
@@ -112,10 +113,10 @@ define( function( require ) {
     var ownsEnabledRangeProperty = !options.enabledRangeProperty;
 
     // phet-io, Assign default options that need tandems.
-    options.enabledProperty = options.enabledProperty || new Property( true, {
+    options.enabledProperty = options.enabledProperty || new Property( true, _.extend( {
       tandem: options.tandem.createTandem( 'enabledProperty' ),
       phetioType: PropertyIO( BooleanIO )
-    } );
+    }, options.enabledPropertyOptions ) );
 
     // controls the portion of the slider that is enabled
     options.enabledRangeProperty = options.enabledRangeProperty || new Property( range, {
