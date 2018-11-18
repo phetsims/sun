@@ -13,7 +13,7 @@ define( function( require ) {
 
   // modules
   var AccessibleSlider = require( 'SUN/accessibility/AccessibleSlider' );
-  var BooleanIO = require( 'TANDEM/types/BooleanIO' );
+  var BooleanProperty = require( 'AXON/BooleanProperty' );
   var Dimension2 = require( 'DOT/Dimension2' );
   var FocusHighlightFromNode = require( 'SCENERY/accessibility/FocusHighlightFromNode' );
   var inherit = require( 'PHET_CORE/inherit' );
@@ -93,9 +93,9 @@ define( function( require ) {
       endDrag: _.noop, // called when a drag sequence ends
       constrainValue: _.identity, // called before valueProperty is set
 
-      enabledProperty: null, // see below
-      enabledRangeProperty: null, // see below
-      enabledPropertyOptions: null, // see below
+      enabledProperty: null, // {BooleanProperty|null} determines whether this Slider is enabled
+      enabledPropertyOptions: null, // {Object} options applied to the default enabledProperty
+      enabledRangeProperty: null, // {Property.<Range>|null} determine the portion of range that is enabled
 
       // phet-io
       tandem: Tandem.required,
@@ -105,6 +105,9 @@ define( function( require ) {
     assert && assert( range instanceof Range, 'range must be of type Range:' + range );
     assert && assert( options.orientation === 'horizontal' || options.orientation === 'vertical',
       'invalid orientation: ' + options.orientation );
+    assert && assert( !( options.enabledProperty && options.enabledPropertyOptions ),
+      'enabledProperty and enabledPropertyOptions are mutually exclusive' );
+
     this.orientation = options.orientation; // @private
 
     Node.call( this );
@@ -113,13 +116,14 @@ define( function( require ) {
     var ownsEnabledRangeProperty = !options.enabledRangeProperty;
 
     // phet-io, Assign default options that need tandems.
-    options.enabledProperty = options.enabledProperty || new Property( true, _.extend( {
-      tandem: options.tandem.createTandem( 'enabledProperty' ),
-      phetioType: PropertyIO( BooleanIO )
+    options.enabledProperty = options.enabledProperty || new BooleanProperty( true, _.extend( {
+      tandem: options.tandem.createTandem( 'enabledProperty' )
     }, options.enabledPropertyOptions ) );
 
     // controls the portion of the slider that is enabled
     options.enabledRangeProperty = options.enabledRangeProperty || new Property( range, {
+      valueType: Range,
+      isValidValue: value => ( value.min >= range.min && value.max <= range.max ),
       tandem: options.tandem.createTandem( 'enabledRangeProperty' ),
       phetioType: PropertyIO( RangeIO )
     } );
