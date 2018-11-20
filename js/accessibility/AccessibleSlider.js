@@ -153,14 +153,18 @@ define( function( require ) {
           // @private {function} - called before valueProperty is set
           this._constrainValue = options.constrainValue;
 
-          // @private (a11y) - delta for the valueProperty when using keyboard to interact with slider
-          this._keyboardStep = this.setKeyboardStep( options.keyboardStep );
-
+          // @private (a11y) - delta for the valueProperty when using keyboard to interact with slider,
+          // initialized with setKeyboardStep which does some validating
+          this._keyboardStep = null;
+          this.setKeyboardStep( options.keyboardStep );
+        
           // @private (a11y) - delta for valueProperty when holding shift and using the keyboard to interact with slider
-          this._shiftKeyboardStep = this.setShiftKeyboardStep( options.shiftKeyboardStep );
+          this._shiftKeyboardStep = null;
+          this.setShiftKeyboardStep( options.shiftKeyboardStep );
 
           // @private (a11y) - delta for valueProperty when pressing page up/page down
-          this._pageKeyboardStep = this.setPageKeyboardStep( options.pageKeyboardStep );
+          this._pageKeyboardStep = null;
+          this.setPageKeyboardStep( options.pageKeyboardStep );
 
           // @private (a11y) - orientation as specified by https://www.w3.org/TR/wai-aria-1.1/#aria-orientation
           this._ariaOrientation = options.ariaOrientation;
