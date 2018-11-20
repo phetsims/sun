@@ -154,13 +154,13 @@ define( function( require ) {
           this._constrainValue = options.constrainValue;
 
           // @private (a11y) - delta for the valueProperty when using keyboard to interact with slider
-          this._keyboardStep = options.keyboardStep;
+          this._keyboardStep = this.setKeyboardStep( options.keyboardStep );
 
           // @private (a11y) - delta for valueProperty when holding shift and using the keyboard to interact with slider
-          this._shiftKeyboardStep = options.shiftKeyboardStep;
+          this._shiftKeyboardStep = this.setShiftKeyboardStep( options.shiftKeyboardStep );
 
           // @private (a11y) - delta for valueProperty when pressing page up/page down
-          this._pageKeyboardStep = options.pageKeyboardStep;
+          this._pageKeyboardStep = this.setPageKeyboardStep( options.pageKeyboardStep );
 
           // @private (a11y) - orientation as specified by https://www.w3.org/TR/wai-aria-1.1/#aria-orientation
           this._ariaOrientation = options.ariaOrientation;
@@ -222,8 +222,9 @@ define( function( require ) {
             // valid. The step attribute must be non zero for the accessible input to receive all accessibility events,
             // and only values that step from min at intervals of step size are allowed. Must change because PhET
             // allows values that do not adhere to W3C specification constraints.
-            var formattedStep = Util.toFixedNumber( value - self._enabledRangeProperty.get().min, options.accessibleDecimalPlaces );
-            if ( formattedStep === 0 ) { formattedStep = self._enabledRangeProperty.get().min; }
+            var enabledRange = self._enabledRangeProperty.get();
+            var formattedStep = Util.toFixedNumber( value - enabledRange.min, options.accessibleDecimalPlaces );
+            if ( formattedStep <= 0 ) { formattedStep = enabledRange.max - enabledRange.min; }
             self.setAccessibleAttribute( 'step', formattedStep );
 
             self.inputValue = value;
@@ -264,6 +265,8 @@ define( function( require ) {
          * @param {number} keyboardStep
          */
         setKeyboardStep: function( keyboardStep ) {
+          assert && assert( keyboardStep >= 0, 'keyboard step must be non-negative' );
+
           this._keyboardStep = keyboardStep;
         },
         set keyboardStep( keyboardStep ) { this.setKeyboardStep( keyboardStep ); },
@@ -286,6 +289,8 @@ define( function( require ) {
          * @param {number} shiftKeyboardStep
          */
         setShiftKeyboardStep: function( shiftKeyboardStep ) {
+          assert && assert( shiftKeyboardStep >= 0, 'shift keyboard step must be non-negative' );
+
           this._shiftKeyboardStep = shiftKeyboardStep;
         },
         set shiftKeyboardStep( shiftKeyboardStep ) { this.setShiftKeyboardStep( shiftKeyboardStep ); },
@@ -317,6 +322,8 @@ define( function( require ) {
          * @param {number} pageKeyboardStep
          */
         setPageKeyboardStep: function( pageKeyboardStep ) {
+          assert && assert( pageKeyboardStep >= 0, 'page keyboard step must be non-negative' );
+
           this._pageKeyboardStep = pageKeyboardStep;
         },
         set pageKeyboardStep( pageKeyboardStep ) { this.setPageKeyboardStep( pageKeyboardStep ); },
