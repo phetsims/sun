@@ -129,10 +129,6 @@ define( function( require ) {
           assert && assert( options.inputType === undefined, 'AccessibleSlider sets inputType' );
           optionsToMutate.inputType = 'range';
 
-          // required for NVDA to read the value text correctly, see https://github.com/phetsims/a11y-research/issues/51
-          assert && assert( options.ariaRole === undefined, 'AccessibleSlider sets ariaRole' );
-          optionsToMutate.ariaRole = 'slider';
-
           this.mutate( optionsToMutate );
 
           // @private {Property.<number>}
