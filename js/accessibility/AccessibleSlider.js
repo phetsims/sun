@@ -195,13 +195,17 @@ define( function( require ) {
           // @private - setting to enable/disable rounding to the step size
           this.roundToStepSize = options.roundToStepSize;
 
+          // The step attribute must be non zero for the accessible input to receive all accessibility events, and
+          // only certain values are allowed depending on the step size, or else the AT will announce values as
+          // "Invalid". If the step size is equal to the precision of the slider readout, all values are allowed.
+          this.setAccessibleAttribute( 'step', Math.pow( 10, -options.accessibleDecimalPlaces ) );
+
           // listeners, must be unlinked in dispose
           var enabledRangeObserver = function( enabledRange ) {
 
             // a11y - update enabled slider range for AT, required for screen reader events to behave correctly
             self.setAccessibleAttribute( 'min', enabledRange.min );
             self.setAccessibleAttribute( 'max', enabledRange.max );
-            self.updateStepAttribute( self._valueProperty.get(), enabledRange );
           };
           this._enabledRangeProperty.link( enabledRangeObserver );
 
@@ -218,8 +222,6 @@ define( function( require ) {
           // when the property changes, be sure to update the accessible input value and aria-valuetext which is read
           // by assistive technology when the value changes
           var accessiblePropertyListener = function( value, oldValue ) {
-            self.updateStepAttribute( value, self._enabledRangeProperty.get() );
-
             self.inputValue = value;
 
             // format the value text for reading
@@ -582,23 +584,6 @@ define( function( require ) {
          */
         anyKeysDown: function() {
           return !!_.find( this.rangeKeysDown, function( entry ) { return entry; } );
-        },
-
-        /**
-         * Update the step attribute, should be called every time the value or enabled range changes. The step
-         * attribute must be non zero for the accessible input to receive all accessibility events, and only values
-         * that step from min at intervals of the step size are allowed by the browser and assistive device. PhET
-         * sliders can have arbitrary step sizes, so this just ensures that the combination of step/min/value
-         * combination is valid.
-         * @private
-         *
-         * @param {number} currentValue
-         * @param {Range} range
-         */
-        updateStepAttribute: function( currentValue, range ) {
-          var formattedStep = Util.toFixedNumber( currentValue - range.min, this.accessibleDecimalPlaces );
-          if ( formattedStep <= 0 ) { formattedStep = range.max - range.min; }
-          this.setAccessibleAttribute( 'step', formattedStep );
         },
 
         /**
