@@ -189,16 +189,17 @@ define( function( require ) {
           // @private - setting to enable/disable rounding to the step size
           this.roundToStepSize = options.roundToStepSize;
 
+          // The step attribute must be non zero for the accessible input to receive all accessibility events, and
+          // only certain values are allowed depending on the step size, or else the AT will announce values as
+          // "Invalid". If the step size is equal to the precision of the slider readout, all values are allowed.
+          this.setAccessibleAttribute( 'step', Math.pow( 10, -options.accessibleDecimalPlaces ) );
+
           // listeners, must be unlinked in dispose
           var enabledRangeObserver = function( enabledRange ) {
 
             // a11y - update enabled slider range for AT, required for screen reader events to behave correctly
             self.setAccessibleAttribute( 'min', enabledRange.min );
             self.setAccessibleAttribute( 'max', enabledRange.max );
-
-            // HTML requires that the value be evenly divisible by the step size to receive 'input' events, which
-            // is critical to work with mobile AT like VoiceOver
-            self.setAccessibleAttribute( 'step', ( enabledRange.max - enabledRange.min ) / 100 );
           };
           this._enabledRangeProperty.link( enabledRangeObserver );
 
