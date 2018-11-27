@@ -31,6 +31,9 @@ define( require => {
   const Vector2 = require( 'DOT/Vector2' );
   const VoidIO = require( 'TANDEM/types/VoidIO' );
 
+  // const
+  const ALIGN_VALUES = [ 'left', 'right', 'center' ];
+
   /**
    * @param {*[]} items - see ComboBox.createItem
    * @param {Property} property
@@ -69,6 +72,7 @@ define( require => {
       itemHighlightFill: 'rgb(245,245,245)',
       itemHighlightStroke: null,
       itemHighlightLineWidth: 1,
+      align: 'left', // {string} alignment of the items in the list and on the button, see ALIGN_VALUES
 
       // phet-io
       tandem: Tandem.required,
@@ -82,7 +86,9 @@ define( require => {
     }, options );
 
     // validate option values
-    assert && assert( options.disabledOpacity > 0 && options.disabledOpacity < 1, 'invalid disabledOpacity: ' + options.disabledOpacity );
+    assert && assert( options.disabledOpacity > 0 && options.disabledOpacity < 1,
+      'invalid disabledOpacity: ' + options.disabledOpacity );
+    assert && assert( ALIGN_VALUES.includes( options.align ), 'invalid align: ' + options.align );
 
     // Note: ComboBox cannot use ES6 class until its subtypes do
     Node.call( this );
@@ -193,7 +199,9 @@ define( require => {
 
     // populate list with items
     items.forEach( ( item, index ) => {
+
       const itemNodeOptions = _.extend( {
+        align: options.align,
         left: options.buttonXMargin,
         top: options.listYMargin + ( index * itemHeight ),
         cursor: 'pointer',
@@ -230,11 +238,11 @@ define( require => {
     } );
 
 
-    // @private {ComboboxItemNode} - a11y
+    // @private {ComboBoxItemNode} - a11y
     // tracks which item node has focus to make it easy to focus next/previous item after keydown
     this.focusedItem = null;
 
-    // keey track of the input listener for removal
+    // key track of the input listener for removal
     const handleKeyDown = this.listNode.addAccessibleInputListener( {
       keydown: event => {
         if ( event.keyCode === KeyboardUtil.KEY_ESCAPE ) {
@@ -270,7 +278,9 @@ define( require => {
 
     // @private button, will be set to correct value when property observer is registered
     // TODO: buttonNode should not get passed all the comboBox options. This seems like a codesmell, see https://github.com/phetsims/sun/issues/314
-    this.buttonNode = new ButtonNode( new ComboBoxItemNode( items[ 0 ], itemWidth, itemHeight, options.itemXMargin ), options );
+    this.buttonNode = new ButtonNode( new ComboBoxItemNode( items[ 0 ], itemWidth, itemHeight, options.itemXMargin, {
+      align: options.align
+    } ), options );
     this.addChild( this.buttonNode );
 
     // a11y - the list is labeled by the button's label
@@ -338,7 +348,9 @@ define( require => {
       const item = _.find( items, item => {
         return item.value === value;
       } );
-      this.buttonNode.setItemNode( new ComboBoxItemNode( item, itemWidth, itemHeight, options.itemXMargin ) );
+      this.buttonNode.setItemNode( new ComboBoxItemNode( item, itemWidth, itemHeight, options.itemXMargin, {
+        align: options.align
+      } ) );
     };
     property.link( propertyObserver );
 
@@ -517,10 +529,10 @@ define( require => {
         buttonCornerRadius: 8,
         buttonXMargin: 10,
         buttonYMargin: 4,
+        align: 'left',
 
         // a11y
         a11yButtonLabel: '', // {string} accessible label for the button
-
         tagName: 'button',
         labelTagName: 'span',
         containerTagName: 'div'
@@ -662,25 +674,38 @@ define( require => {
   class ComboBoxItemNode extends Rectangle {
     constructor( item, width, height, xMargin, options ) {
 
-      // @private {Node} - Holds our item.node, and positions it in the correct location. We don't want to mutate the
-      //                   item's node itself.
-      let itemWrapper = new Node( {
-        children: [ item.node ],
-        pickable: false,
-        x: xMargin,
-        centerY: height / 2
-      } );
-
       // TODO: assert you may not be allowed to have accessibleContent on the item.node, since we set the innerContent on this LI, see https://github.com/phetsims/sun/issues/314
 
       options = _.extend( {
+        align: 'left',
+
+        // phet-io
         tandem: Tandem.required,
-        children: [ itemWrapper ],
 
         // a11y
         tagName: 'li',
         ariaRole: 'option'
       }, options );
+
+      // Holds our item.node, and positions it in the correct location. We don't want to mutate the item's node itself.
+      let itemWrapper = new Node( {
+        children: [ item.node ],
+        pickable: false,
+        centerY: height / 2
+      } );
+      if ( options.align === 'left' ) {
+        itemWrapper.left = xMargin;
+      }
+      else if ( options.align === 'right' ) {
+        itemWrapper.right = width - xMargin;
+      }
+      else {
+        // center
+        itemWrapper.centerX = width / 2;
+      }
+
+      assert && assert( !options.children, 'ComboBoxItemNode sets children' );
+      options.children = [ itemWrapper ];
 
       super( 0, 0, width, height, options );
 
