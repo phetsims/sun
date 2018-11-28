@@ -189,6 +189,11 @@ define( function( require ) {
           // input event in case a device sends both events to the browser.
           this.a11yInputHandled = false;
 
+          // @private (a11y) - some browsers will receive `input` events when the user tabs away from the slider or
+          // on some key presses - if we receive a keydown event, we do not want the value to change twice, so we
+          // block input event after handling the keydown event
+          this.blockInput = false;
+
           // @private - entries like { {number}: {boolean} }, key is range key code, value is whether it is down
           this.rangeKeysDown = {};
 
@@ -379,6 +384,11 @@ define( function( require ) {
         handleKeyDown: function( event ) {
           var code = event.keyCode;
           this._shiftKey = event.shiftKey;
+
+          // if we receive a keydown event, we shouldn't handle any input events (which should only be provided
+          // directly by an assistive device)
+          this.blockInput = true;
+
           if ( this._enabledProperty.get() ) {
 
             // Prevent default so browser doesn't change input value automatically
@@ -509,7 +519,7 @@ define( function( require ) {
          * @param {DOMEvent} event
          */
         handleInput: function( event ) {
-          if ( this._enabledProperty.get() ) {
+          if ( this._enabledProperty.get() && !this.blockInput ) {
 
             // don't handle again on "change" event
             this.a11yInputHandled = true;
