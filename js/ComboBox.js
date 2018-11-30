@@ -242,7 +242,7 @@ define( require => {
     // tracks which item node has focus to make it easy to focus next/previous item after keydown
     this.focusedItem = null;
 
-    // key track of the input listener for removal
+    // keep track of the input listener for removal
     const handleKeyDown = this.listNode.addAccessibleInputListener( {
       keydown: event => {
         if ( event.keyCode === KeyboardUtil.KEY_ESCAPE ) {
