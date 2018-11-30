@@ -79,7 +79,6 @@ define( require => {
       phetioType: ComboBoxIO,
       phetioEventType: 'user',
       phetioDocumentation: '', // different default than PhetioObject, see implementation below
-      phetioControlledProperty: property,
 
       // a11y
       a11yButtonLabel: '' // {string} accessible label for the button that opens this combobox

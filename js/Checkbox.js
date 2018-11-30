@@ -17,7 +17,6 @@ define( function( require ) {
   var FontAwesomeNode = require( 'SUN/FontAwesomeNode' );
   var inherit = require( 'PHET_CORE/inherit' );
   var InstanceRegistry = require( 'PHET_CORE/documentation/InstanceRegistry' );
-  var LinkedElement = require( 'TANDEM/LinkedElement' );
   var Node = require( 'SCENERY/nodes/Node' );
   var PhetioObject = require( 'TANDEM/PhetioObject' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
@@ -50,7 +49,6 @@ define( function( require ) {
       phetioEventType: 'user',
       phetioReadOnly: PhetioObject.DEFAULT_OPTIONS.phetioReadOnly, // to support properly passing this to children, see https://github.com/phetsims/tandem/issues/60
       phetioDocumentation: '', // different default than PhetioObject, see implementation below
-      phetioControlledProperty: property,
 
       // a11y
       tagName: 'input',
@@ -85,19 +83,15 @@ define( function( require ) {
     // @private {boolean} does this instance own enabledProperty?
     this.ownsEnabledProperty = !options.enabledProperty;
 
-    // @private - support for Studio to show the linked property
-    this.propertyLinkedElement = new LinkedElement( property, {
+    this.addLinkedElement( property, {
       tandem: options.tandem.createTandem( 'property' )
     } );
 
     // If enabledProperty was passed in, Studio needs to know about that linkage
-    if ( options.enabledProperty ) {
+    options.enabledProperty && this.addLinkedElement( options.enabledProperty, {
+      tandem: options.tandem.createTandem( 'enabledProperty' )
+    } );
 
-      // @private - support for Studio to show the linked property
-      this.enabledPropertyLinkedElement = new LinkedElement( options.enabledProperty, {
-        tandem: options.tandem.createTandem( 'enabledProperty' )
-      } );
-    }
     this.enabledProperty = options.enabledProperty || new BooleanProperty( true, {
       tandem: options.tandem.createTandem( 'enabledProperty' ),
       phetioReadOnly: options.phetioReadOnly,
@@ -215,9 +209,6 @@ define( function( require ) {
 
       // Private to Checkbox, but we need to clean up tandem.
       toggledEmitter.dispose();
-
-      this.enabledPropertyLinkedElement && this.enabledPropertyLinkedElement.dispose();
-      this.propertyLinkedElement.dispose();
     };
   }
 
