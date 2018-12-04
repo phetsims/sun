@@ -48,7 +48,6 @@ define( function( require ) {
       tandem: Tandem.required,
       phetioEventType: 'user',
       phetioReadOnly: PhetioObject.DEFAULT_OPTIONS.phetioReadOnly, // to support properly passing this to children, see https://github.com/phetsims/tandem/issues/60
-      phetioDocumentation: '', // different default than PhetioObject, see implementation below
 
       // a11y
       tagName: 'input',

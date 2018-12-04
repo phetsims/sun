@@ -78,7 +78,6 @@ define( require => {
       tandem: Tandem.required,
       phetioType: ComboBoxIO,
       phetioEventType: 'user',
-      phetioDocumentation: '', // different default than PhetioObject, see implementation below
 
       // a11y
       a11yButtonLabel: '' // {string} accessible label for the button that opens this combobox
