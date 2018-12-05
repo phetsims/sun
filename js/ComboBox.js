@@ -220,8 +220,8 @@ define( require => {
       // of combobox item. Keep track of it on the itemNode for disposal.
       comboBoxItemNode.a11yClickListener = comboBoxItemNode.addInputListener( {
         keydown: event => {
-          if ( KeyboardUtil.KEY_ENTER === event.keyCode || KeyboardUtil.KEY_SPACE === event.keyCode ) {
-            fromA11yEnterKey = KeyboardUtil.KEY_ENTER === event.keyCode; // only for the enter key
+          if ( KeyboardUtil.KEY_ENTER === event.domEvent.keyCode || KeyboardUtil.KEY_SPACE === event.domEvent.keyCode ) {
+            fromA11yEnterKey = KeyboardUtil.KEY_ENTER === event.domEvent.keyCode; // only for the enter key
             property.value = item.value;
             this.hideList();
             this.buttonNode.focus();
@@ -243,12 +243,12 @@ define( require => {
     // keep track of the input listener for removal
     const handleKeyDown = this.listNode.addInputListener( {
       keydown: event => {
-        if ( event.keyCode === KeyboardUtil.KEY_ESCAPE ) {
+        if ( domEvent.keyCode === KeyboardUtil.KEY_ESCAPE ) {
           this.hideList();
           this.buttonNode.focus();
         }
-        else if ( event.keyCode === KeyboardUtil.KEY_DOWN_ARROW || event.keyCode === KeyboardUtil.KEY_UP_ARROW ) {
-          const direction = event.keyCode === KeyboardUtil.KEY_DOWN_ARROW ? 1 : -1;
+        else if ( domEvent.keyCode === KeyboardUtil.KEY_DOWN_ARROW || domEvent.keyCode === KeyboardUtil.KEY_UP_ARROW ) {
+          const direction = domEvent.keyCode === KeyboardUtil.KEY_DOWN_ARROW ? 1 : -1;
 
           // Get the next/previous item in the list and focus it.
           for ( let i = 0; i < this.listNode.children.length; i++ ) {
@@ -268,7 +268,7 @@ define( require => {
             }
           }
         }
-        else if ( event.keyCode === KeyboardUtil.KEY_TAB ) {
+        else if ( domEvent.keyCode === KeyboardUtil.KEY_TAB ) {
           this.hideList();
         }
       }
@@ -327,7 +327,7 @@ define( require => {
       // listen for escape to hide the list when focused on the button
       keydown: event => {
         if ( this.listNode.visible ) {
-          if ( event.keyCode === KeyboardUtil.KEY_ESCAPE ) {
+          if ( event.domEvent.keyCode === KeyboardUtil.KEY_ESCAPE ) {
             this.hideList();
           }
         }

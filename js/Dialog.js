@@ -254,12 +254,14 @@ define( function( require ) {
     // a11y - close the dialog when pressing "escape"
     var escapeListener = {
       keydown: function( event ) {
-        if ( event.keyCode === KeyboardUtil.KEY_ESCAPE ) {
-          event.preventDefault();
+        var domEvent = event.domEvent;
+
+        if ( domEvent.keyCode === KeyboardUtil.KEY_ESCAPE ) {
+          domEvent.preventDefault();
           self.hide();
           self.focusActiveElement();
         }
-        else if ( event.keyCode === KeyboardUtil.KEY_TAB && FullScreen.isFullScreen() ) {
+        else if ( domEvent.keyCode === KeyboardUtil.KEY_TAB && FullScreen.isFullScreen() ) {
 
           // prevent a particular bug in Windows 7/8.1 Firefox where focus gets trapped in the document
           // when the navigation bar is hidden and there is only one focusable element in the DOM
@@ -269,7 +271,7 @@ define( function( require ) {
           var noPreviousFocusable = AccessibilityUtil.getPreviousFocusable().id === activeId;
 
           if ( noNextFocusable && noPreviousFocusable ) {
-            event.preventDefault();
+            domEvent.preventDefault();
           }
         }
       }

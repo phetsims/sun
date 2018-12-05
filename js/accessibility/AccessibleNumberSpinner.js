@@ -157,21 +157,20 @@ define( function( require ) {
             keydown: function( event ) {
               // check for relevant keys here
               if ( KeyboardUtil.isRangeKey( event.domEvent.keyCode ) ) {
-                // self.emitKeyState( event.domEvent, true );
 
                 // if using the timer, handle update at interval
                 if ( self._a11yUseTimer ) {
                   if ( !self._callbackTimer.isRunning() ) {
-                    self.handleKeyDown( event.domEvent );
+                    self.handleKeyDown( event );
 
-                    downCallback = self.handleKeyDown.bind( self, event.domEvent );
+                    downCallback = self.handleKeyDown.bind( self, event );
                     runningTimerCallbackKeyCode = event.domEvent.keyCode;
                     self._callbackTimer.addCallback( downCallback );
                     self._callbackTimer.start();
                   }
                 }
                 else {
-                  self.handleKeyDown( event.domEvent );
+                  self.handleKeyDown( event );
                 }
               }
             },
@@ -179,7 +178,7 @@ define( function( require ) {
               if ( KeyboardUtil.isRangeKey( event.domEvent.keyCode ) ) {
                 if ( self._a11yUseTimer ) {
                   if ( event.domEvent.keyCode === runningTimerCallbackKeyCode ) {
-                    self.emitKeyState( event.domEvent, false );
+                    self.emitKeyState( event, false );
                     self._callbackTimer.stop( false );
                     self._callbackTimer.removeCallback( downCallback );
                   }
@@ -230,10 +229,11 @@ define( function( require ) {
          * @param {boolean} isDown - whether or not event was triggered from down or up keys
          */
         emitKeyState: function( event, isDown ) {
-          if ( event.keyCode === KeyboardUtil.KEY_UP_ARROW || event.keyCode === KeyboardUtil.KEY_RIGHT_ARROW ) {
+          var keyCode = event.domEvent.keyCode;
+          if ( keyCode === KeyboardUtil.KEY_UP_ARROW || keyCode === KeyboardUtil.KEY_RIGHT_ARROW ) {
             this.incrementDownEmitter.emit1( isDown );
           }
-          else if ( event.keyCode === KeyboardUtil.KEY_DOWN_ARROW || event.keyCode === KeyboardUtil.KEY_LEFT_ARROW ) {
+          else if ( keyCode === KeyboardUtil.KEY_DOWN_ARROW || keyCode === KeyboardUtil.KEY_LEFT_ARROW ) {
             this.decrementDownEmitter.emit1( isDown );
           }
         },
@@ -242,16 +242,17 @@ define( function( require ) {
          * Handle the keydown event so that this node behaves like an accessible number input.
          * @private
          *
-         * @param {DOMEvent} event
+         * @param {Event} event
          */
         handleKeyDown: function( event ) {
-          var code = event.keyCode;
+          var domEvent = event.domEvent;
+          var code = domEvent.keyCode;
 
           if ( this._enabledProperty.get() ) {
             this.emitKeyState( event, true );
             // prevent user from changing value with number or the space keys, handle arrow keys on our own
             if ( KeyboardUtil.isArrowKey( code ) || KeyboardUtil.isNumberKey( code ) || code === KeyboardUtil.KEY_SPACE ) {
-              event.preventDefault();
+              domEvent.preventDefault();
             }
 
             // handle the event
