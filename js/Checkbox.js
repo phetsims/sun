@@ -160,7 +160,7 @@ define( function( require ) {
     var changeListener = {
       change: fire
     };
-    this.addAccessibleInputListener( changeListener );
+    this.addInputListener( changeListener );
 
     // sync with property
     var checkboxCheckedListener = function( checked ) {

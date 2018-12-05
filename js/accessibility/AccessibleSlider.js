@@ -67,7 +67,7 @@ define( function( require ) {
           // verify that accessibleValuePattern includes '{{value}}', and that is the only key in the pattern
           if ( assert && options.accessibleValuePattern ) {
             assert(
-             options.accessibleValuePattern.match( /\{\{[^\{\}]+\}\}/g ).length === 1,
+              options.accessibleValuePattern.match( /\{\{[^\{\}]+\}\}/g ).length === 1,
               'accessibleValuePattern only accepts a single \'value\' key'
             );
             assert(
@@ -105,7 +105,7 @@ define( function( require ) {
             // This string is read every time the slider value changes.
             // @param {number}
             // @param {number}
-            createAriaValueText: function ( formattedValue, previousValue ) { return formattedValue; },
+            createAriaValueText: function( formattedValue, previousValue ) { return formattedValue; },
 
             // {boolean} - Whether or not to round the value to a multiple of the keyboardStep. This will only round
             // the value on normal key presses, rounding will not occur on large jumps like page up/page down/home/end.
@@ -153,7 +153,7 @@ define( function( require ) {
           // initialized with setKeyboardStep which does some validating
           this._keyboardStep = null;
           this.setKeyboardStep( options.keyboardStep );
-        
+
           // @private (a11y) - delta for valueProperty when holding shift and using the keyboard to interact with slider
           this._shiftKeyboardStep = null;
           this.setShiftKeyboardStep( options.shiftKeyboardStep );
@@ -222,7 +222,7 @@ define( function( require ) {
             change: this.handleChange.bind( this ),
             blur: this.handleBlur.bind( this )
           };
-          this.addAccessibleInputListener( accessibleInputListener );
+          this.addInputListener( accessibleInputListener );
 
           // when the property changes, be sure to update the accessible input value and aria-valuetext which is read
           // by assistive technology when the value changes
@@ -245,7 +245,7 @@ define( function( require ) {
           this._disposeAccessibleSlider = function() {
             self._valueProperty.unlink( accessiblePropertyListener );
             self._enabledRangeProperty.unlink( enabledRangeObserver );
-            self.removeAccessibleInputListener( accessibleInputListener );
+            self.removeInputListener( accessibleInputListener );
           };
         },
         /**
@@ -379,11 +379,13 @@ define( function( require ) {
          * Handle the keydown event so that this node behaves like a traditional HTML slider (input of type range).
          * @public
          *
-         * @param {DOMEvent} event
+         * @param {Event} event
          */
         handleKeyDown: function( event ) {
-          var code = event.keyCode;
-          this._shiftKey = event.shiftKey;
+
+          var domEvent = event.domEvent;
+          var code = domEvent.keyCode;
+          this._shiftKey = domEvent.shiftKey;
 
           // if we receive a keydown event, we shouldn't handle any input events (which should only be provided
           // directly by an assistive device)
@@ -393,7 +395,7 @@ define( function( require ) {
 
             // Prevent default so browser doesn't change input value automatically
             if ( KeyboardUtil.isRangeKey( code ) ) {
-              event.preventDefault();
+              domEvent.preventDefault();
 
               // if this is the first keydown this is the start of the drag interaction
               if ( !this.anyKeysDown() ) {
@@ -435,7 +437,7 @@ define( function( require ) {
                 else if ( KeyboardUtil.isArrowKey( code ) ) {
 
                   // if the shift key is pressed down, modify the step size (this is atypical browser behavior for sliders)
-                  stepSize = event.shiftKey ? this.shiftKeyboardStep : this.keyboardStep;
+                  stepSize = domEvent.shiftKey ? this.shiftKeyboardStep : this.keyboardStep;
 
                   if ( code === KeyboardUtil.KEY_RIGHT_ARROW || code === KeyboardUtil.KEY_UP_ARROW ) {
                     this.attemptedIncreaseEmitter.emit();
@@ -466,9 +468,11 @@ define( function( require ) {
          * function on release.
          * @public
          *
-         * @param {DOMEvent} event
+         * @param {Event} event
          */
         handleKeyUp: function( event ) {
+
+          var domEvent = event.domEvent;
 
           // handle case where user tabbed to this input while an arrow key might have been held down
           if ( this.allKeysUp() ) {
@@ -476,13 +480,13 @@ define( function( require ) {
           }
 
           // reset shift key flag when we release it
-          if ( event.keyCode === KeyboardUtil.KEY_SHIFT ) {
+          if ( domEvent.keyCode === KeyboardUtil.KEY_SHIFT ) {
             this._shiftKey = false;
           }
 
           if ( this._enabledProperty.get() ) {
-            if ( KeyboardUtil.isRangeKey( event.keyCode ) ) {
-              this.rangeKeysDown[ event.keyCode ] = false;
+            if ( KeyboardUtil.isRangeKey( domEvent.keyCode ) ) {
+              this.rangeKeysDown[ domEvent.keyCode ] = false;
 
               // when all range keys are released, we are done dragging
               if ( this.allKeysUp() ) {
@@ -496,9 +500,9 @@ define( function( require ) {
          * VoiceOver sends a "change" event to the slider (NOT an input event), so we need to handle the case when
          * a change event is sent but an input event ins't handled. Guarded against the case that BOTH change and
          * input are sent to the browser by the AT.
-         * @param  {DOMEvent} events
+         * @param  {Event} event
          */
-        handleChange: function ( event ) {
+        handleChange: function( event ) {
           if ( !this.a11yInputHandled ) {
             this.handleInput( event );
           }
@@ -516,7 +520,7 @@ define( function( require ) {
          * navigating away from the element.
          * @public
          *
-         * @param {DOMEvent} event
+         * @param {Event} event
          */
         handleInput: function( event ) {
           if ( this._enabledProperty.get() && !this.blockInput ) {
@@ -526,7 +530,7 @@ define( function( require ) {
 
             var newValue = this._valueProperty.get();
 
-            var inputValue = event.target.value;
+            var inputValue = event.domEvent.target.value;
             var stepSize = this._shiftKey ? this.shiftKeyboardStep : this.keyboardStep;
 
             // start of change event is start of drag
@@ -559,10 +563,8 @@ define( function( require ) {
         /**
          * Fires when the accessible slider loses focus.
          * @public
-         *
-         * @param {DOMEvent} event
          */
-        handleBlur: function( event ) {
+        handleBlur: function() {
 
           // if any range keys are currently down, call end drag because user has stopped dragging to do something else
           if ( this.anyKeysDown() ) {

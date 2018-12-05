@@ -274,12 +274,12 @@ define( function( require ) {
         }
       }
     };
-    this.addAccessibleInputListener( escapeListener );
+    this.addInputListener( escapeListener );
 
     // @private - to be called on dispose()
     this.disposeDialog = function() {
       self.sim.resizedEmitter.removeListener( self.updateLayout );
-      self.removeAccessibleInputListener( escapeListener );
+      self.removeInputListener( escapeListener );
 
       closeButton.dispose();
 

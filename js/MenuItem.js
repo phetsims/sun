@@ -129,7 +129,7 @@ define( function( require ) {
         options.focusAfterCallback && AccessibilityUtil.getNextFocusable( rootElement ).focus();
       }
     };
-    this.addAccessibleInputListener( clickListener );
+    this.addInputListener( clickListener );
 
     this.mutate( options );
 
@@ -139,7 +139,7 @@ define( function( require ) {
         options.checkedProperty.unlink( checkListener );
       }
 
-      self.removeAccessibleInputListener( clickListener );
+      self.removeInputListener( clickListener );
     };
   }
 

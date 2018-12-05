@@ -103,7 +103,7 @@ define( function( require ) {
       accessibleClick: options.accessibleClick
     } );
     this.addInputListener( this._pressListener );
-    this.addAccessibleInputListener( this._pressListener.a11yListener );
+    this.addInputListener( this._pressListener.a11yListener );
 
     // @private - make the base color into a property so that the appearance strategy can update itself if changes occur.
     this.baseColorProperty = new PaintColorProperty( options.baseColor ); // @private

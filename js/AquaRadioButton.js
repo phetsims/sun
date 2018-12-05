@@ -124,7 +124,7 @@ define( function( require ) {
     var changeListener = {
       change: fire
     };
-    this.addAccessibleInputListener( changeListener );
+    this.addInputListener( changeListener );
 
     // a11y - Specify the default value for assistive technology. This attribute is needed in addition to
     // the 'checked' property to mark this element as the default selection since 'checked' may be set before
@@ -153,7 +153,7 @@ define( function( require ) {
     // @private
     this.disposeAquaRadioButton = function() {
       self.removeInputListener( inputListener );
-      self.removeAccessibleInputListener( changeListener );
+      self.removeInputListener( changeListener );
       property.unlink( accessibleCheckedListener );
       property.unlink( syncWithModel );
       self.enabledProperty.dispose();

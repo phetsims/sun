@@ -218,7 +218,7 @@ define( require => {
 
       // a11y - select the property and close on a click event from assistive technology, must be removed in disposal
       // of combobox item. Keep track of it on the itemNode for disposal.
-      comboBoxItemNode.a11yClickListener = comboBoxItemNode.addAccessibleInputListener( {
+      comboBoxItemNode.a11yClickListener = comboBoxItemNode.addInputListener( {
         keydown: event => {
           if ( KeyboardUtil.KEY_ENTER === event.keyCode || KeyboardUtil.KEY_SPACE === event.keyCode ) {
             fromA11yEnterKey = KeyboardUtil.KEY_ENTER === event.keyCode; // only for the enter key
@@ -241,7 +241,7 @@ define( require => {
     this.focusedItem = null;
 
     // keep track of the input listener for removal
-    const handleKeyDown = this.listNode.addAccessibleInputListener( {
+    const handleKeyDown = this.listNode.addInputListener( {
       keydown: event => {
         if ( event.keyCode === KeyboardUtil.KEY_ESCAPE ) {
           this.hideList();
@@ -333,7 +333,7 @@ define( require => {
         }
       }
     };
-    this.buttonNode.addAccessibleInputListener( this.buttonNode.a11yListener );
+    this.buttonNode.addInputListener( this.buttonNode.a11yListener );
 
     // layout
     if ( options.labelNode ) {
@@ -377,7 +377,7 @@ define( require => {
       }
 
       // remove a11y listeners
-      this.listNode.removeAccessibleInputListener( handleKeyDown );
+      this.listNode.removeInputListener( handleKeyDown );
 
       this.buttonNode.dispose();
     };
@@ -642,7 +642,7 @@ define( require => {
         itemNode.dispose();
 
         // dispose a11y
-        this.a11yListener && this.removeAccessibleInputListener( this.a11yListener );
+        this.a11yListener && this.removeInputListener( this.a11yListener );
       };
 
       this.mutate( options );
@@ -752,7 +752,7 @@ define( require => {
     dispose() {
 
       // the item in the button will not have a listener
-      this.a11yClickListener && this.removeAccessibleInputListener( this.a11yClickListener );
+      this.a11yClickListener && this.removeInputListener( this.a11yClickListener );
       this.itemWrapper.dispose();
       super.dispose();
     }

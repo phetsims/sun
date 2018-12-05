@@ -222,7 +222,7 @@ define( function( require ) {
       innerContent: accordionBoxCollapseString
     }, options.titleBarOptions ) );
     this.disposalActions.push( function() {
-      self.expandedTitleBar.removeAccessibleInputListener( a11yCollapseListener );
+      self.expandedTitleBar.removeInputListener( a11yCollapseListener );
       self.expandedTitleBar.dispose();
     } );
     this.expandedBox.addChild( this.expandedTitleBar );
@@ -236,7 +236,7 @@ define( function( require ) {
       innerContent: accordionBoxExpandString
     }, options.titleBarOptions ) );
     this.disposalActions.push( function() {
-      self.collapsedTitleBar.removeAccessibleInputListener( a11yExpandListener );
+      self.collapsedTitleBar.removeInputListener( a11yExpandListener );
       self.collapsedTitleBar.dispose();
     } );
     this.collapsedBox.addChild( this.collapsedTitleBar );
@@ -263,7 +263,7 @@ define( function( require ) {
         self.phetioEndEvent();
       }
     };
-    this.collapsedTitleBar.addAccessibleInputListener( a11yExpandListener );
+    this.collapsedTitleBar.addInputListener( a11yExpandListener );
 
     // Set the input listeners for the expandedTitleBar
     // a11y we need to focus on the collapsedTitleBar when the expandedTitleBar is clicked
@@ -290,7 +290,7 @@ define( function( require ) {
         self.phetioEndEvent();
       }
     };
-    this.expandedTitleBar.addAccessibleInputListener( a11yCollapseListener );
+    this.expandedTitleBar.addInputListener( a11yCollapseListener );
 
     this.addChild( this.titleNode );
     this.addChild( this.expandCollapseButton );

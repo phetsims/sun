@@ -156,30 +156,30 @@ define( function( require ) {
           var accessibleInputListener = {
             keydown: function( event ) {
               // check for relevant keys here
-              if ( KeyboardUtil.isRangeKey( event.keyCode ) ) {
-                // self.emitKeyState( event, true );
+              if ( KeyboardUtil.isRangeKey( event.domEvent.keyCode ) ) {
+                // self.emitKeyState( event.domEvent, true );
 
                 // if using the timer, handle update at interval
                 if ( self._a11yUseTimer ) {
                   if ( !self._callbackTimer.isRunning() ) {
-                    self.handleKeyDown( event );
+                    self.handleKeyDown( event.domEvent );
 
-                    downCallback = self.handleKeyDown.bind( self, event );
-                    runningTimerCallbackKeyCode = event.keyCode;
+                    downCallback = self.handleKeyDown.bind( self, event.domEvent );
+                    runningTimerCallbackKeyCode = event.domEvent.keyCode;
                     self._callbackTimer.addCallback( downCallback );
                     self._callbackTimer.start();
                   }
                 }
                 else {
-                  self.handleKeyDown( event );
+                  self.handleKeyDown( event.domEvent );
                 }
               }
             },
             keyup: function( event ) {
-              if ( KeyboardUtil.isRangeKey( event.keyCode ) ) {
+              if ( KeyboardUtil.isRangeKey( event.domEvent.keyCode ) ) {
                 if ( self._a11yUseTimer ) {
-                  if ( event.keyCode === runningTimerCallbackKeyCode ) {
-                    self.emitKeyState( event, false );
+                  if ( event.domEvent.keyCode === runningTimerCallbackKeyCode ) {
+                    self.emitKeyState( event.domEvent, false );
                     self._callbackTimer.stop( false );
                     self._callbackTimer.removeCallback( downCallback );
                   }
@@ -187,7 +187,7 @@ define( function( require ) {
               }
             }
           };
-          this.addAccessibleInputListener( accessibleInputListener );
+          this.addInputListener( accessibleInputListener );
 
           // when the property changes, be sure to update the accessible input value
           var accessiblePropertyListener = function( value ) {
@@ -217,7 +217,7 @@ define( function( require ) {
             self.valueIncrementEmitter.dispose();
             self.valueDecrementEmitter.dispose();
 
-            self.removeAccessibleInputListener( accessibleInputListener );
+            self.removeInputListener( accessibleInputListener );
           };
         },
 
@@ -226,7 +226,7 @@ define( function( require ) {
          * interaction.
          * @private
          *
-         * @param {UIEvent} event - the DOM event that was triggered
+         * @param {DOMEvent} event - the DOM event that was triggered
          * @param {boolean} isDown - whether or not event was triggered from down or up keys
          */
         emitKeyState: function( event, isDown ) {
