@@ -243,6 +243,7 @@ define( require => {
     // keep track of the input listener for removal
     const handleKeyDown = this.listNode.addInputListener( {
       keydown: event => {
+        var domEvent = event.domEvent;
         if ( domEvent.keyCode === KeyboardUtil.KEY_ESCAPE ) {
           this.hideList();
           this.buttonNode.focus();
