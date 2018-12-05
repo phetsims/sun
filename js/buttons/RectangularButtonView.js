@@ -103,7 +103,6 @@ define( function( require ) {
       accessibleClick: options.accessibleClick
     } );
     this.addInputListener( this._pressListener );
-    this.addInputListener( this._pressListener.a11yListener );
 
     // @private - make the base color into a property so that the appearance strategy can update itself if changes occur.
     this.baseColorProperty = new PaintColorProperty( options.baseColor ); // @private
@@ -559,7 +558,7 @@ define( function( require ) {
 
     /**
      * Clicks the button. Recommended only for accessibility usages. For the most part, a11y button functionality should
-     * be managed by the PressListener.a11yListener. This is more for edge cases.
+     * be managed by the PressListener. This is more for edge cases.
      * @public
      * @a11y
      */
