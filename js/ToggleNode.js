@@ -126,6 +126,18 @@ define( function( require ) {
     },
 
     /**
+     * Align nodes on the bottom of the first node.
+     * @param {Node[]} children
+     * @public
+     * @static
+     */
+    BOTTOM: function( children ) {
+      for ( var i = 1; i < children.length; i++ ) {
+        children[ i ].bottom = children[ 0 ].bottom;
+      }
+    },
+
+    /**
      * Right align nodes on the right of the first node.
      * @param {Node[]} children
      * @public
