@@ -88,6 +88,13 @@ define( function( require ) {
 
     this.downProperty.link( downListener );
 
+    // if the valueProperty is set externally to user interaction, update the buttonModel
+    // downProperty so the model stays in sync
+    var valuePropertyListener = function( value ) {
+      self.downProperty.set( value === valueDown );
+    };
+    valueProperty.link( valuePropertyListener );
+
     // make the button ready to toggle when enabled
     var enabledPropertyOnListener = function( enabled ) {
       if ( enabled ) {
@@ -100,6 +107,7 @@ define( function( require ) {
     this.disposeToggleButtonModel = function() {
       self.downProperty.unlink( downListener );
       self.enabledProperty.unlink( enabledPropertyOnListener );
+      valueProperty.unlink( valuePropertyListener );
       self.toggledEmitter.removeListener( toggleListener );
     };
   }
