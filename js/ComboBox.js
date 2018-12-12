@@ -478,14 +478,14 @@ define( require => {
      */
     moveList() {
       if ( this.listPosition === 'above' ) {
-        let pButtonGlobal = this.localToGlobalPoint( new Vector2( this.buttonNode.left, this.buttonNode.top ) );
-        let pButtonLocal = this.listParent.globalToLocalPoint( pButtonGlobal );
+        const pButtonGlobal = this.localToGlobalPoint( new Vector2( this.buttonNode.left, this.buttonNode.top ) );
+        const pButtonLocal = this.listParent.globalToLocalPoint( pButtonGlobal );
         this.listNode.left = pButtonLocal.x;
         this.listNode.bottom = pButtonLocal.y;
       }
       else {
-        let pButtonGlobal = this.localToGlobalPoint( new Vector2( this.buttonNode.left, this.buttonNode.bottom ) );
-        let pButtonLocal = this.listParent.globalToLocalPoint( pButtonGlobal );
+        const pButtonGlobal = this.localToGlobalPoint( new Vector2( this.buttonNode.left, this.buttonNode.bottom ) );
+        const pButtonLocal = this.listParent.globalToLocalPoint( pButtonGlobal );
         this.listNode.left = pButtonLocal.x;
         this.listNode.top = pButtonLocal.y;
       }
@@ -687,7 +687,7 @@ define( require => {
       }, options );
 
       // Holds our item.node, and positions it in the correct location. We don't want to mutate the item's node itself.
-      let itemWrapper = new Node( {
+      const itemWrapper = new Node( {
         children: [ item.node ],
         pickable: false,
         centerY: height / 2
