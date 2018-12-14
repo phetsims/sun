@@ -540,9 +540,6 @@ define( require => {
 
       }, options );
 
-      // The ButtonNode is not instrumented
-      options.tandem = Tandem.optional;
-
       super();
 
       this.labelContent = options.a11yButtonLabel;
