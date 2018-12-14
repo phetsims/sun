@@ -25,9 +25,7 @@ define( function( require ) {
     options = _.extend( { tandem: Tandem.required }, options );
 
     assert && assert( !options.content, 'options.content cannot be set' );
-    options.content = new BooleanToggleNode( trueNode, falseNode, booleanProperty, {
-      tandem: options.tandem.createTandem( 'toggleNode' )
-    } );
+    options.content = new BooleanToggleNode( trueNode, falseNode, booleanProperty );
 
     RectangularToggleButton.call( this, false, true, booleanProperty, options );
 
