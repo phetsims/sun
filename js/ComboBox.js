@@ -278,8 +278,7 @@ define( require => {
     // @private button, will be set to correct value when property observer is registered
     // TODO: buttonNode should not get passed all the comboBox options. This seems like a codesmell, see https://github.com/phetsims/sun/issues/314
     this.buttonNode = new ButtonNode( new ComboBoxItemNode( items[ 0 ], itemWidth, itemHeight, options.itemXMargin, {
-      align: options.align,
-      tandem: options.tandem.createTandem( 'buttonNode' )
+      align: options.align
     } ), options );
     this.addChild( this.buttonNode );
 
@@ -349,8 +348,7 @@ define( require => {
         return item.value === value;
       } );
       this.buttonNode.setItemNode( new ComboBoxItemNode( item, itemWidth, itemHeight, options.itemXMargin, {
-        align: options.align,
-        tandem: options.tandem.createTandem( 'itemNodeForButton' + item.value.label )
+        align: options.align
       } ) );
     };
     property.link( propertyObserver );
@@ -539,6 +537,9 @@ define( require => {
         containerTagName: 'div'
 
       }, options );
+
+      // The ButtonNode is not instrumented
+      options.tandem = Tandem.optional;
 
       super();
 
