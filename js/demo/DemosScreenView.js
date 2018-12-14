@@ -18,6 +18,7 @@ define( function( require ) {
   var sun = require( 'SUN/sun' );
   var Text = require( 'SCENERY/nodes/Text' );
   var Vector2 = require( 'DOT/Vector2' );
+  var Tandem = require( 'TANDEM/Tandem' );
 
   /**
    * @param {Object[]} demos - each demo has these properties:
@@ -38,7 +39,9 @@ define( function( require ) {
       // {boolean} see https://github.com/phetsims/sun/issues/386
       // true = caches Nodes for all demos that have been selected
       // false = keeps only the Node for the selected demo in memory
-      cacheDemos: false
+      cacheDemos: false,
+
+      Tandem: Tandem.required
     }, options );
 
     ScreenView.call( this, options );
@@ -57,7 +60,11 @@ define( function( require ) {
     // add each demo to the combo box
     var comboBoxItems = [];
     demos.forEach( function( demo ) {
-      comboBoxItems.push( ComboBox.createItem( new Text( demo.label, { font: options.comboBoxItemFont } ), demo ) );
+      comboBoxItems.push( ComboBox.createItem( new Text( demo.label, { font: options.comboBoxItemFont } ), demo, {
+
+        // demo.label is like ArrowNode or TimerNode, decorate it for use as a tandem.
+        tandemName: 'demo' + demo.label + 'ComboBoxItem'
+      } ) );
     } );
 
     // Parent for the combo box popup list
@@ -81,7 +88,8 @@ define( function( require ) {
       buttonFill: 'rgb( 218, 236, 255 )',
       itemYMargin: options.comboBoxItemYMargin,
       top: options.comboBoxLocation.x,
-      left: options.comboBoxLocation.y
+      left: options.comboBoxLocation.y,
+      tandem: options.tandem.createTandem( 'comboBox' )
     } );
     this.addChild( comboBox );
 
@@ -96,7 +104,7 @@ define( function( require ) {
           oldDemo.node.visible = false;
         }
         else {
-          
+
           // delete the old demo
           demosParent.removeChild( oldDemo.node );
           oldDemo.node.dispose();
@@ -112,7 +120,9 @@ define( function( require ) {
       else {
 
         // If the selected demo doesn't doesn't have an associated node, create it.
-        demo.node = demo.createNode( layoutBounds );
+        demo.node = demo.createNode( layoutBounds, {
+          tandem: options.tandem.createTandem( 'demo' + demo.label )
+        } );
         demosParent.addChild( demo.node );
       }
     } );
