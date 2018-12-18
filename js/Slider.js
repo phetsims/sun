@@ -65,7 +65,7 @@ define( function( require ) {
       thumbNode: null,
 
       // Options for the default thumb, ignored if thumbNode is set
-      thumbSize: new Dimension2( 22, 45 ),
+      thumbSize: new Dimension2( 17, 34 ),
       thumbFillEnabled: 'rgb(50,145,184)',
       thumbFillHighlighted: 'rgb(71,207,255)',
       thumbFillDisabled: '#F0F0F0',
