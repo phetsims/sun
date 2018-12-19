@@ -178,11 +178,25 @@ define( function( require ) {
               if ( KeyboardUtil.isRangeKey( event.domEvent.keyCode ) ) {
                 if ( self._a11yUseTimer ) {
                   if ( event.domEvent.keyCode === runningTimerCallbackKeyCode ) {
-                    self.emitKeyState( event, false );
+                    self.emitKeyState( event.domEvent.keyCode, false );
                     self._callbackTimer.stop( false );
                     self._callbackTimer.removeCallback( downCallback );
+                    downCallback = null;
+                    runningTimerCallbackKeyCode = null;
                   }
                 }
+              }
+            },
+            blur: function() {
+
+              // if a key is currently down when focus leaves the spinner, stop callbacks and emit that the
+              // keycode is up
+              if ( self._a11yUseTimer && downCallback ) {
+                assert && assert( runningTimerCallbackKeyCode !== null, 'key should be down if running downCallback');
+
+                self.emitKeyState( runningTimerCallbackKeyCode, false );
+                self._callbackTimer.stop( false );
+                self._callbackTimer.removeCallback( downCallback );
               }
             }
           };
@@ -225,11 +239,10 @@ define( function( require ) {
          * interaction.
          * @private
          *
-         * @param {DOMEvent} event - the DOM event that was triggered
+         * @param {number} keyCode - the code of the key changing state
          * @param {boolean} isDown - whether or not event was triggered from down or up keys
          */
-        emitKeyState: function( event, isDown ) {
-          var keyCode = event.domEvent.keyCode;
+        emitKeyState: function( keyCode, isDown ) {
           if ( keyCode === KeyboardUtil.KEY_UP_ARROW || keyCode === KeyboardUtil.KEY_RIGHT_ARROW ) {
             this.incrementDownEmitter.emit1( isDown );
           }
@@ -249,7 +262,7 @@ define( function( require ) {
           var code = domEvent.keyCode;
 
           if ( this._enabledProperty.get() ) {
-            this.emitKeyState( event, true );
+            this.emitKeyState( code, true );
             // prevent user from changing value with number or the space keys, handle arrow keys on our own
             if ( KeyboardUtil.isArrowKey( code ) || KeyboardUtil.isNumberKey( code ) || code === KeyboardUtil.KEY_SPACE ) {
               domEvent.preventDefault();
