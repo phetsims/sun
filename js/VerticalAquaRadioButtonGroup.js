@@ -47,7 +47,6 @@ define( function( require ) {
       mouseAreaXDilation: 0,
 
       // supertype options
-      // supertype options
       spacing: 3, // vertical space between each button
       tandem: Tandem.required,
 
