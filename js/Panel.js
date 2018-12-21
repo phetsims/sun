@@ -122,7 +122,7 @@ define( function( require ) {
 
     this.disposePanel = function() {
       if ( options.resize ) {
-        content.hasListener( 'bounds', updateBackground ) && content.off( 'bounds', updateBackground );
+        content.off( 'bounds', updateBackground );
       }
     };
 
