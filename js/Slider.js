@@ -143,7 +143,7 @@ define( function( require ) {
     // @private mapping between value and track position
     this.valueToPosition = new LinearFunction( range.min, range.max, 0, options.trackSize.width, true /* clamp */ );
 
-    // @private track
+    // @public (read-only) {SliderTrack} - track upon which the thumb slides
     this.track = new SliderTrack( valueProperty, this.valueToPosition, {
 
       // propagate options that are specific to SliderTrack
@@ -243,7 +243,7 @@ define( function( require ) {
     } );
     thumb.addInputListener( thumbInputListener );
 
-    // @public (read-only) {Boolean} - flag that indicates whether the thumb is currently being dragged
+    // @public (read-only) {boolean} - flag that indicates whether the thumb is currently being dragged
     this.thumbDragging = false;
     var thumbDraggingListener = thumbInputListener.isDraggingProperty.linkAttribute( this, 'thumbDragging' );
 

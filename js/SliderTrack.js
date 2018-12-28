@@ -61,6 +61,9 @@ define( function( require ) {
     // @public
     this.valueToPosition = valueToPosition;
 
+    // @public (read-only) {boolean} - a flag that indicates if the track is being dragged by the user
+    this.trackDragging = false;
+
     // @private - Represents the disabled range of the slider, always visible and always the full range
     // of the slider so that when the enabled range changes we see the enabled sub-range on top of the
     // full range of the slider.
@@ -98,6 +101,7 @@ define( function( require ) {
       tandem: options.tandem.createTandem( 'trackInputListener' ),
 
       start: function( event, trail ) {
+        self.trackDragging = true;
         if ( self.enabledProperty.get() ) {
           options.startDrag();
           handleTrackEvent( event, trail );
@@ -114,6 +118,7 @@ define( function( require ) {
         if ( self.enabledProperty.get() ) {
           options.endDrag();
         }
+        self.trackDragging = false;
       }
     } );
     this.enabledTrack.addInputListener( trackInputListener );
