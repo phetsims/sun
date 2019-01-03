@@ -32,7 +32,26 @@ define( require => {
   const VoidIO = require( 'TANDEM/types/VoidIO' );
 
   // const
+  const LIST_POSITION_VALUES = [ 'above', 'below' ];
   const ALIGN_VALUES = [ 'left', 'right', 'center' ];
+  const BUTTON_NODE_DEFAULT_OPTIONS = {
+
+    // used by ComboBox and ButtonNode
+    listPosition: 'below', // {string} where the list is positioned relative to the button, see LIST_POSITION_VALUES
+    align: 'left', // {string} alignment of items on the button and in the list, see ALIGN_VALUES
+
+    // used exclusively by ButtonNode
+    buttonFill: 'white',
+    buttonStroke: 'black',
+    buttonLineWidth: 1,
+    buttonCornerRadius: 8,
+    buttonXMargin: 10,
+    buttonYMargin: 4,
+
+    // a11y - used exclusively by ButtonNode
+    a11yButtonLabel: '' // {string} accessible label for the button that opens this combobox
+  };
+  const BUTTON_NODE_KEYS = _.keys( BUTTON_NODE_DEFAULT_OPTIONS );
 
   /**
    * @param {*[]} items - see ComboBox.createItem
@@ -50,16 +69,7 @@ define( require => {
       enabledProperty: new Property( true ),
       disabledOpacity: 0.5, // {number} opacity used to make the control look disabled
 
-      // button
-      buttonFill: 'white',
-      buttonStroke: 'black',
-      buttonLineWidth: 1,
-      buttonCornerRadius: 8,
-      buttonXMargin: 10,
-      buttonYMargin: 4,
-
       // list
-      listPosition: 'below', // where the list is positioned relative to the button, either 'below' or 'above'
       listYMargin: 4,
       listFill: 'white',
       listStroke: 'black',
@@ -72,21 +82,21 @@ define( require => {
       itemHighlightFill: 'rgb(245,245,245)',
       itemHighlightStroke: null,
       itemHighlightLineWidth: 1,
-      align: 'left', // {string} alignment of the items in the list and on the button, see ALIGN_VALUES
 
       // phet-io
       tandem: Tandem.required,
       phetioType: ComboBoxIO,
-      phetioEventType: 'user',
+      phetioEventType: 'user'
 
-      // a11y
-      a11yButtonLabel: '' // {string} accessible label for the button that opens this combobox
-    }, options );
+    }, BUTTON_NODE_DEFAULT_OPTIONS, options );
 
     // validate option values
     assert && assert( options.disabledOpacity > 0 && options.disabledOpacity < 1,
       'invalid disabledOpacity: ' + options.disabledOpacity );
-    assert && assert( ALIGN_VALUES.includes( options.align ), 'invalid align: ' + options.align );
+    assert && assert( LIST_POSITION_VALUES.includes( options.listPosition ),
+      'invalid listPosition: ' + options.listPosition );
+    assert && assert( ALIGN_VALUES.includes( options.align ),
+      'invalid align: ' + options.align );
 
     // Note: ComboBox cannot use ES6 class until its subtypes do
     Node.call( this );
@@ -275,11 +285,12 @@ define( require => {
       }
     } );
 
-    // @private button, will be set to correct value when property observer is registered
-    // TODO: buttonNode should not get passed all the comboBox options. This seems like a codesmell, see https://github.com/phetsims/sun/issues/314
-    this.buttonNode = new ButtonNode( new ComboBoxItemNode( items[ 0 ], itemWidth, itemHeight, options.itemXMargin, {
+    const defaultItemNode = new ComboBoxItemNode( items[ 0 ], itemWidth, itemHeight, options.itemXMargin, {
       align: options.align
-    } ), options );
+    } );
+
+    // @private button, will be set to correct value when property observer is registered
+    this.buttonNode = new ButtonNode( defaultItemNode, _.pick( options, BUTTON_NODE_KEYS ) );
     this.addChild( this.buttonNode );
 
     // a11y - the list is labeled by the button's label
@@ -520,34 +531,22 @@ define( require => {
 
       options = _.extend( {
 
-        // these options are passed in from ComboBox options
-        listPosition: 'below',
-        buttonFill: 'white',
-        buttonStroke: 'black',
-        buttonLineWidth: 1,
-        buttonCornerRadius: 8,
-        buttonXMargin: 10,
-        buttonYMargin: 4,
-        align: 'left',
+        // phet-io
+        tandem: Tandem.optional, // ButtonNode is not currently instrumented
 
         // a11y
-        a11yButtonLabel: '', // {string} accessible label for the button
         tagName: 'button',
         labelTagName: 'span',
         containerTagName: 'div'
 
-      }, options );
-
-      // The ButtonNode is not instrumented
-      options.tandem = Tandem.optional;
+      }, BUTTON_NODE_DEFAULT_OPTIONS, options );
 
       super();
 
       this.labelContent = options.a11yButtonLabel;
 
-      assert && assert( !options.ariaLabelledbyAssociations, 'ButtonNode sets its own labelledby associations' );
-
       // the button is labelledby its own label, and then (second) by itself. Order matters!
+      assert && assert( !options.ariaLabelledbyAssociations, 'ButtonNode sets ariaLabelledbyAssociations' );
       this.ariaLabelledbyAssociations = [
         {
           otherNode: this,
