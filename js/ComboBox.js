@@ -524,7 +524,6 @@ define( require => {
       this.phetioEndEvent();
     },
 
-    //TODO handle scale and rotation
     /**
      * Handles the coordinate transform required to make the list pop up near the button.
      * @private
