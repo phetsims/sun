@@ -787,8 +787,8 @@ define( require => {
       this.itemWrapper.focusHighlight = Shape.bounds( this.itemWrapper.parentToLocalBounds( this.localBounds ) );
     }
 
+    //TODO sun#314 doc/rename to toggleVisibility
     /**
-     * // TODO: doc/rename to toggleVisibility, https://github.com/phetsims/sun/issues/314
      * @param {boolean} visible
      */
     a11yShowItem( visible ) {
