@@ -243,7 +243,7 @@ define( require => {
       } );
       this.listNode.addChild( itemNodeWrapper );
 
-      //TODO sun#314 a11yClickListener should not be assigned here, it should be passed to ItemNode constructor via options
+      //TODO sun#314 a11yClickListener should not be assigned here, it should be set via options or a setter method
       // a11y - select the property and close on a click event from assistive technology, must be removed in disposal
       // of combobox item. Keep track of it on the itemNode for disposal.
       itemNode.a11yClickListener = itemNode.addInputListener( {
@@ -317,7 +317,7 @@ define( require => {
       down: this.showList.bind( this )
     } );
 
-    //TODO sun#314 This should not be done by reaching into buttonNode. a11yListener should be passed into ButtonNode constructor via options.
+    //TODO sun#314 This should not be done by reaching into buttonNode. a11yListener should be set via options or a setter method
     // add the buttonNode accessibility listener
     this.buttonNode.a11yListener = {
       click: () => {
@@ -618,7 +618,7 @@ define( require => {
       // signify to AT that this button opens a menu
       this.setAccessibleAttribute( 'aria-haspopup', 'listbox' );
 
-      //TODO #314 this should be private, and its value should be passed through options
+      //TODO #314 this should be private, and its value should be passed set via options or a setter methods
       // @public - if assigned, it will be removed on disposal.
       this.a11yListener = null;
 
@@ -773,7 +773,7 @@ define( require => {
         this.innerContent = item.options.a11yLabel; //TODO #314 is this correct? if so, document why.
       }
 
-      //TODO #314 this is marked private, but is assigned above, it should be passed via options
+      //TODO #314 this is marked private, but is assigned above, it should be set via options or a setter method
       // @private {null|function} - listener called when button clicked with AT
       this.a11yClickListener = null;
 
