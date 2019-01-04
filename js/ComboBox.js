@@ -716,7 +716,10 @@ define( require => {
       // @private {null|function} - listener called when button clicked with AT
       this.a11yClickListener = null;
 
+      // @public (read-only)
       this.item = item;
+
+      // @private
       this.itemWrapper = itemWrapper;
 
       // the highlight wraps around the entire item rectangle
