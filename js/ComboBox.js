@@ -2,10 +2,10 @@
 
 /**
  * Scenery-based combo box. Composed of a button and a list of items.
- * The list of items is displayed when the button is pressed, and dismissed an item is selected
+ * The list of items is displayed when the button is pressed, and dismissed when an item is selected
  * or the user clicks outside the list.  The list can be displayed either above or below the button.
  *
- * An item in the combo box has 2 properties: {Node} node, {*} value.
+ * See createItem for information about items in a combo box.
  *
  * @author Chris Malley (PixelZoom, Inc.)
  */
@@ -101,6 +101,7 @@ define( require => {
     // Note: ComboBox cannot use ES6 class until its subtypes do
     Node.call( this );
 
+    this.items = items; // @private
     this.enabledProperty = options.enabledProperty; // @public
     this.listPosition = options.listPosition; // @private
 
@@ -125,7 +126,7 @@ define( require => {
     this.display = null;
 
     // @private listener for 'click outside to dismiss'
-    // TODO: handle this logic for a11y too, perhaps on by monitoring the focusout event on the display's root PDOM element., see https://github.com/phetsims/sun/issues/314
+    // TODO sun#314 handle this logic for a11y too, perhaps on by monitoring the focusout event on the display's root PDOM element
     this.clickToDismissListener = {
       down: this.hideListFromClick.bind( this )
     };
@@ -137,6 +138,7 @@ define( require => {
     const listWidth = itemWidth + ( 2 * options.buttonXMargin );
     const listHeight = ( items.length * itemHeight ) + ( 2 * options.listYMargin );
 
+    //TODO #430 factor out ListNode inner class, to handle all list responsibilities
     // @private the popup list
     this.listNode = new Rectangle( 0, 0, listWidth, listHeight, {
       cornerRadius: options.listCornerRadius,
@@ -156,32 +158,39 @@ define( require => {
     listParent.addChild( this.listNode );
     this.listParent = listParent; // @private
 
-    //TODO move these to ItemNode, see ?????? uh oh
-    // how to highlight an item in the list
-    const highlightItem = itemNode => {
-      itemNode.fill = options.itemHighlightFill;
-      itemNode.stroke = options.itemHighlightStroke;
-    };
-    const unhighlightItem = itemNode => {
-      itemNode.fill = null;
-      itemNode.stroke = null;
+    // Highlights an item in the list
+    const highlightItem = itemNodeWrapper => {
+      assert && assert( itemNodeWrapper instanceof Rectangle, 'invalid itemNodeWrapper: ' + itemNodeWrapper );
+      itemNodeWrapper.fill = options.itemHighlightFill;
+      itemNodeWrapper.stroke = options.itemHighlightStroke;
     };
 
-    // TODO: It seems it would be better to use FireListener on each ItemNode, see https://github.com/phetsims/sun/issues/405
+    // Un-highlights an item in the list
+    const unhighlightItem = itemNodeWrapper => {
+      assert && assert( itemNodeWrapper instanceof Rectangle, 'invalid itemNodeWrapper: ' + itemNodeWrapper );
+      itemNodeWrapper.fill = null;
+      itemNodeWrapper.stroke = null;
+    };
+
+    // TODO sun#405 It seems it would be better to use FireListener on each ItemNode
     const firedEmitter = new Emitter( {
       tandem: options.tandem.createTandem( 'firedEmitter' ),
-      phetioType: EmitterIO( [ { name: 'event', type: VoidIO } ] ), // TODO: Should this be EventIO or DOMEventIO? see https://github.com/phetsims/sun/issues/405
+      phetioType: EmitterIO( [ { name: 'event', type: VoidIO } ] ), // TODO sun#405 Should this be EventIO or DOMEventIO?
       listener: event => {
-        const selectedItemNode = event.currentTarget; // {ItemNode}
+        const itemNodeWrapper = event.currentTarget; // {Rectangle}
 
-        unhighlightItem( selectedItemNode );
+        unhighlightItem( itemNodeWrapper );
 
         // a11y - keep this PDOM attribute in sync
-        this.updateActiveDescendant( selectedItemNode );
+        this.updateActiveDescendant( itemNodeWrapper );
 
         this.hideList();
         event.abort(); // prevent nodes (eg, controls) behind the list from receiving the event
-        property.value = selectedItemNode.item.value; // set the property
+
+        //TODO #430 this is brittle, should be handled better when we factor out ListNode
+        const itemNode = itemNodeWrapper.children[ 0 ];
+        assert && assert( itemNode instanceof ItemNode, 'expected the wrapper child to be ItemNode' );
+        property.value = itemNode.item.value;
       }
     } );
 
@@ -197,7 +206,7 @@ define( require => {
         event.abort(); // prevent click-to-dismiss on the list
       },
       up( event ) {
-        firedEmitter.emit1( event );
+        firedEmitter.emit1( event ); //TODO #405 emit1 is deprecated
       }
     };
 
@@ -205,30 +214,43 @@ define( require => {
     // focus moves over there.
     let fromA11yEnterKey = false;
 
-    // populate list with items
+    // @private populate list with items
+    this.itemNodes = [];
     items.forEach( ( item, index ) => {
 
-      const itemNodeOptions = _.extend( {
-        align: options.align,
-        left: options.buttonXMargin,
-        top: options.listYMargin + ( index * itemHeight ),
-        cursor: 'pointer',
-        inputListeners: [ itemListener ]
-      }, item.options );
-
+      //TODO #405 this check belongs in ComboBox.createItem, not here
       // For 'phet-io' brand, the tandems for items must be provided.  For other brands, the tandems are not required
       // and are filled in with substitutes so the tandems are still defined.
       if ( Tandem.validationEnabled() ) {
-        assert && assert( itemNodeOptions.tandemName, 'For instrumented ComboBoxes, ItemNodes must have a tandemName' );
+        assert && assert( item.options && item.options.tandemName, 'For instrumented ComboBoxes, items must have a tandemName' );
       }
-      itemNodeOptions.tandem = options.tandem.createTandem( itemNodeOptions.tandemName || 'comboBoxItemNode' );
 
-      // Create the list item node itself
-      const comboBoxItemNode = new ItemNode( item, itemWidth, itemHeight, options.itemXMargin, itemNodeOptions );
+      //TODO #405 default for item.options.tandem should be filled in by ComboBox.createItem, not here.
+      const itemOptions = _.extend( {
+        tandemName: 'itemNode'
+      }, item.options );
 
+      // Create the list item node
+      const itemNode = new ItemNode( item, itemWidth, itemHeight, options.itemXMargin, {
+        tandem: options.tandem.createTandem( itemOptions.tandemName )
+      } );
+      this.itemNodes.push( itemNode );
+
+      // ItemNodes are shared between the list and button, so parent the itemNode with a Rectangle that we can highlight.
+      const itemNodeWrapper = new Rectangle( 0, 0, itemNode.width, itemNode.height, {
+        children: [ itemNode ],
+        inputListeners: [ itemListener ],
+        align: options.align,
+        left: options.buttonXMargin,
+        top: options.listYMargin + ( index * itemHeight ),
+        cursor: 'pointer'
+      } );
+      this.listNode.addChild( itemNodeWrapper );
+
+      //TODO sun#314 a11yClickListener should not be assigned here, it should be passed to ItemNode constructor via options
       // a11y - select the property and close on a click event from assistive technology, must be removed in disposal
       // of combobox item. Keep track of it on the itemNode for disposal.
-      comboBoxItemNode.a11yClickListener = comboBoxItemNode.addInputListener( {
+      itemNode.a11yClickListener = itemNode.addInputListener( {
         keydown: event => {
           if ( KeyboardUtil.KEY_ENTER === event.domEvent.keyCode || KeyboardUtil.KEY_SPACE === event.domEvent.keyCode ) {
             fromA11yEnterKey = KeyboardUtil.KEY_ENTER === event.domEvent.keyCode; // only for the enter key
@@ -237,12 +259,10 @@ define( require => {
             this.buttonNode.focus();
 
             // a11y - keep this PDOM attribute in sync
-            this.updateActiveDescendant( comboBoxItemNode );
+            this.updateActiveDescendant( itemNode );
           }
         }
       } );
-
-      this.listNode.addChild( comboBoxItemNode );
     } );
 
 
@@ -261,6 +281,7 @@ define( require => {
         else if ( domEvent.keyCode === KeyboardUtil.KEY_DOWN_ARROW || domEvent.keyCode === KeyboardUtil.KEY_UP_ARROW ) {
           const direction = domEvent.keyCode === KeyboardUtil.KEY_DOWN_ARROW ? 1 : -1;
 
+          //TODO sun#314 iterate over this.itemNodes, not this.listNode.children
           // Get the next/previous item in the list and focus it.
           for ( let i = 0; i < this.listNode.children.length; i++ ) {
             if ( this.focusedItem === this.listNode.children[ i ] ) {
@@ -285,12 +306,8 @@ define( require => {
       }
     } );
 
-    const defaultItemNode = new ItemNode( items[ 0 ], itemWidth, itemHeight, options.itemXMargin, {
-      align: options.align
-    } );
-
     // @private button, will be set to correct value when property observer is registered
-    this.buttonNode = new ButtonNode( defaultItemNode, _.pick( options, BUTTON_NODE_KEYS ) );
+    this.buttonNode = new ButtonNode( this.getItemNode( property.value ), _.pick( options, BUTTON_NODE_KEYS ) );
     this.addChild( this.buttonNode );
 
     // a11y - the list is labeled by the button's label
@@ -306,6 +323,7 @@ define( require => {
       down: this.showList.bind( this )
     } );
 
+    //TODO sun#314 This should not be done by reaching into buttonNode. a11yListener should be passed into ButtonNode constructor via options.
     // add the buttonNode accessibility listener
     this.buttonNode.a11yListener = {
       click: () => {
@@ -355,12 +373,7 @@ define( require => {
 
     // when property changes, update button, and for a11y the list in the PDOM
     const propertyObserver = value => {
-      const item = _.find( items, item => {
-        return item.value === value;
-      } );
-      this.buttonNode.setItemNode( new ItemNode( item, itemWidth, itemHeight, options.itemXMargin, {
-        align: options.align
-      } ) );
+      this.buttonNode.setItemNode( this.getItemNode( value ) );
     };
     property.link( propertyObserver );
 
@@ -384,8 +397,8 @@ define( require => {
       }
 
       // Unregister itemNode tandems as well
-      for ( let i = 0; i < this.listNode.children.length; i++ ) {
-        this.listNode.children[ i ].dispose();
+      for ( let i = 0; i < this.itemNodes; i++ ) {
+        this.itemNodes[ i ].dispose();
       }
 
       // remove a11y listeners
@@ -417,7 +430,34 @@ define( require => {
     getEnabled() { return this.enabledProperty.value; },
     get enabled() { return this.getEnabled(); },
 
-    // @private - update this attribute on the listNode. This changes as you interactive
+    /**
+     * Gets the combo box item that is associated with a specified value.
+     * @param {*} value
+     * @returns {Object}
+     * @private
+     */
+    getItem( value ) {
+      const item = _.find( this.items, item => { return item.value === value; } );
+      assert && assert( item, 'no Item has value: ' + value );
+      return item;
+    },
+
+    /**
+     * Gets the ItemNode associated with a specified value.
+     * @param {*} value
+     * @returns {ItemNode} itemNode
+     * @private
+     */
+    getItemNode( value ) {
+      const item = this.getItem( value );
+      const itemNode = _.find( this.itemNodes, child => {
+        return ( child instanceof ItemNode && child.item === item );
+      } );
+      assert && assert( itemNode, 'no ItemNode is associated with item: ' + item );
+      return itemNode;
+    },
+
+    // @private - update this attribute on the listNode. This changes as you interact
     // with the comboBox, as well as when an item is selected.
     updateActiveDescendant( itemNode ) {
 
@@ -449,6 +489,7 @@ define( require => {
       }
     },
 
+    //TODO sun#314 document
     /**
      * @public
      */
@@ -461,8 +502,9 @@ define( require => {
       }
     },
 
+    //TODO sun#314 if "Most often should be called from hideListFromClick" then why is this called 6 times from other places, which hideListFromClick is called once?
     /**
-     * Hides the combo box list. Most Often should be called from hideListFromClick
+     * Hides the combo box list. Most often should be called from hideListFromClick
      * @private
      */
     hideList() {
@@ -513,7 +555,7 @@ define( require => {
    *                           For Accessibility support, the following must be supported:
    *                             a11yLabel: {string} - the label for each item in the combo b6ox
    *                           No other options are supported.
-   * @returns {object}
+   * @returns {Object}
    * @public
    */
   ComboBox.createItem = ( node, value, options ) => {
@@ -521,12 +563,14 @@ define( require => {
   };
 
   /**
-   * The button that is clicked to show the list of items.
-   * @param {Node} itemNode
-   * @param {Object} [options]
-   * @private
+   * The button that shows the current selection. Clicking on it shows the list of items.
    */
   class ButtonNode extends Node {
+
+    /**
+     * @param {Node} itemNode
+     * @param {Object} [options]
+     */
     constructor( itemNode, options ) {
 
       options = _.extend( {
@@ -543,8 +587,14 @@ define( require => {
 
       super();
 
+      // @private
+      this.buttonXMargin = options.buttonXMargin;
+      this.buttonYMargin = options.buttonYMargin;
+
+      //TODO #314 missing visibility annotation
       this.labelContent = options.a11yButtonLabel;
 
+      //TODO #314 missing visibility annotation
       // the button is labelledby its own label, and then (second) by itself. Order matters!
       assert && assert( !options.ariaLabelledbyAssociations, 'ButtonNode sets ariaLabelledbyAssociations' );
       this.ariaLabelledbyAssociations = [
@@ -563,6 +613,7 @@ define( require => {
       // signify to AT that this button opens a menu
       this.setAccessibleAttribute( 'aria-haspopup', 'listbox' );
 
+      //TODO #314 this should be private, and its value should be passed through options
       // @public - if assigned, it will be removed on disposal.
       this.a11yListener = null;
 
@@ -580,9 +631,11 @@ define( require => {
       }
 
       // button background
-      const width = itemNode.width + ( 4 * options.buttonXMargin ) + arrow.width;
-      const height = itemNode.height + ( 2 * options.buttonYMargin );
-      const background = new Rectangle( 0, 0, width, height, {
+      const backgroundWidth = itemNode.width + ( 4 * this.buttonXMargin ) + arrow.width;
+      const backgroundHeight = itemNode.height + ( 2 * this.buttonYMargin );
+
+      // @private
+      this.background = new Rectangle( 0, 0, backgroundWidth, backgroundHeight, {
         cornerRadius: options.buttonCornerRadius,
         fill: options.buttonFill,
         stroke: options.buttonStroke,
@@ -590,62 +643,59 @@ define( require => {
       } );
 
       // vertical separator to left of arrow
-      const separator = new Line( 0, 0, 0, height, {
+      const separator = new Line( 0, 0, 0, backgroundHeight, {
         stroke: 'black',
         lineWidth: options.buttonLineWidth
       } );
 
-      // parent for the selected item node
-      const selectedItemParent = new Node();
+      // @private parent for the selected ItemNode
+      this.itemNodeParent = new Node();
 
       // rendering order
-      this.addChild( background );
+      this.addChild( this.background );
       this.addChild( arrow );
       this.addChild( separator );
-      this.addChild( selectedItemParent );
+      this.addChild( this.itemNodeParent );
 
-      // @private
-      this.setItemNode = itemNode => {
-        // Dispose any existing item, see https://github.com/phetsims/sun/issues/299
-        while ( selectedItemParent.children.length ) {
-          const lastNode = selectedItemParent.children[ 0 ];
-          selectedItemParent.removeChild( lastNode );
-          lastNode.dispose();
-        }
-        selectedItemParent.addChild( itemNode );
-        itemNode.left = options.buttonXMargin;
-        itemNode.top = options.buttonYMargin;
-
-        // TODO: is there a better way to do this? https://github.com/phetsims/sun/issues/314
-        itemNode.a11yShowItem( false );
-
-        // Only set if defined, since it is an option, see ComboBox.createItem
-        if ( itemNode.a11yLabel ) {
-          this.innerContent = itemNode.a11yLabel;
-        }
-      };
       this.setItemNode( itemNode );
 
       // layout
-      separator.left = itemNode.right + options.buttonXMargin;
-      separator.top = background.top;
-      arrow.left = separator.right + options.buttonXMargin;
-      arrow.centerY = background.centerY;
+      separator.left = this.itemNodeParent.right + this.buttonXMargin;
+      separator.top = this.background.top;
+      arrow.left = separator.right + this.buttonXMargin;
+      arrow.centerY = this.background.centerY;
 
+      // @private
       this.disposeButtonNode = () => {
-        separator.dispose();
-        arrow.dispose();
-        selectedItemParent.dispose();
-        options.tandem.createTandem( 'separator' ).removeInstance( separator );
-        options.tandem.createTandem( 'arrow' ).removeInstance( arrow );
-        options.tandem.createTandem( 'selectedItemParent' ).removeInstance( selectedItemParent );
-        itemNode.dispose();
-
-        // dispose a11y
         this.a11yListener && this.removeInputListener( this.a11yListener );
       };
 
       this.mutate( options );
+    }
+
+    /**
+     * Sets the item that is displayed on the button.
+     * @param {ItemNode} itemNode
+     */
+    setItemNode( itemNode ){
+
+      // Remove the previous itemNode
+      assert && assert( this.itemNodeParent.getChildrenCount() <= 1,
+        'itemNodeParent should never have more than 1 child' );
+      this.itemNodeParent.removeAllChildren();
+
+      // Add the new itemNode and adjust layout. Do not transform itemNode, because it's shared with the list.
+      this.itemNodeParent.addChild( itemNode );
+      this.itemNodeParent.left = this.background.left + this.buttonXMargin;
+      this.itemNodeParent.top = this.background.top + this.buttonYMargin;
+
+      // TODO sun#314 is there a better way to do this?
+      itemNode.a11yShowItem( false );
+
+      // Only set if defined, since it is an option, see ComboBox.createItem
+      if ( itemNode.a11yLabel ) {
+        this.innerContent = itemNode.a11yLabel;
+      }
     }
 
     /**
@@ -662,17 +712,19 @@ define( require => {
 
   /**
    * A wrapper around the combo box item, adds margins, etc.
-   * @param {Object} item - see ComboBox.createItem
-   * @param {number} width
-   * @param {number} height
-   * @param {number} xMargin
-   * @param {Object} [options]
-   * @private
    */
   class ItemNode extends Rectangle {
+
+    /**
+     * @param {Object} item - see ComboBox.createItem
+     * @param {number} width
+     * @param {number} height
+     * @param {number} xMargin
+     * @param {Object} [options]
+     */
     constructor( item, width, height, xMargin, options ) {
 
-      // TODO: assert you may not be allowed to have accessibleContent on the item.node, since we set the innerContent on this LI, see https://github.com/phetsims/sun/issues/314
+      // TODO sun#314 assert you may not be allowed to have accessibleContent on the item.node, since we set the innerContent on this LI
 
       options = _.extend( {
         align: 'left',
@@ -704,6 +756,7 @@ define( require => {
 
       super( 0, 0, width, height, options );
 
+      //TODO #314 this should be @public (read-only)
       // @public - to keep track of it
       this.a11yLabel = null;
 
@@ -713,6 +766,7 @@ define( require => {
         this.innerContent = item.options.a11yLabel;
       }
 
+      //TODO #314 this is marked private, but is assigned above, it should be passed via options
       // @private {null|function} - listener called when button clicked with AT
       this.a11yClickListener = null;
 
