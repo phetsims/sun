@@ -53,6 +53,12 @@ define( require => {
   };
   const BUTTON_NODE_KEYS = _.keys( BUTTON_NODE_DEFAULT_OPTIONS );
 
+  // Default options used when an item is created via ComboBox.createItem
+  const DEFAULT_ITEM_OPTIONS = {
+    tandemName: 'itemNode', // {string} the default tandem name for all ItemNodes
+    a11yLabel: null // {string} the label for each item in the combo box
+  };
+
   /**
    * @param {*[]} items - see ComboBox.createItem
    * @param {Property} property
@@ -218,21 +224,11 @@ define( require => {
     this.itemNodes = [];
     items.forEach( ( item, index ) => {
 
-      //TODO #405 this check belongs in ComboBox.createItem, not here
-      // For 'phet-io' brand, the tandems for items must be provided.  For other brands, the tandems are not required
-      // and are filled in with substitutes so the tandems are still defined.
-      if ( Tandem.validationEnabled() ) {
-        assert && assert( item.options && item.options.tandemName, 'For instrumented ComboBoxes, items must have a tandemName' );
-      }
-
-      //TODO #405 default for item.options.tandem should be filled in by ComboBox.createItem, not here.
-      const itemOptions = _.extend( {
-        tandemName: 'itemNode'
-      }, item.options );
+      assert && assert( item.options, 'expected item.options, set by ComboBox.createItem' );
 
       // Create the list item node
       const itemNode = new ItemNode( item, itemWidth, itemHeight, options.itemXMargin, {
-        tandem: options.tandem.createTandem( itemOptions.tandemName )
+        tandem: options.tandem.createTandem( item.options.tandemName )
       } );
       this.itemNodes.push( itemNode );
 
@@ -264,7 +260,6 @@ define( require => {
         }
       } );
     } );
-
 
     // @private {ItemNode} - a11y
     // tracks which item node has focus to make it easy to focus next/previous item after keydown
@@ -544,22 +539,26 @@ define( require => {
     }
   } );
 
-  //TODO sun#314, sun#405 default options should be set here
   /**
    * Creates a combo box item.
    * This exists primarily to document the structure of an item.
    * @param {Node} node
    * @param {*} value
-   * @param {Object} [options]
-   * For PhET-iO instrumented simulations, the following must be provided:
-   *   tandemName: {string} - the suffix applied to button tandems
-   * For Accessibility support, the following must be provided:
-   *   a11yLabel: {string} - the label for each item in the combo box
-   * No other options are supported.
+   * @param {Object} [options] - see DEFAULT_ITEM_OPTIONS
    * @returns {Object}
    * @public
    */
   ComboBox.createItem = ( node, value, options ) => {
+
+    // For 'phet-io' brand, the tandems for items must be provided.  For other brands, the tandems are not required
+    // and are filled in with substitutes so the tandems are still defined.
+    if ( Tandem.validationEnabled() ) {
+      assert && assert( options && options.tandemName,
+        'For instrumented ComboBoxes, items options.tandemName is required' );
+    }
+
+    options = _.extend( {}, DEFAULT_ITEM_OPTIONS, options );
+
     return { node: node, value: value, options: options };
   };
 
@@ -725,6 +724,8 @@ define( require => {
      */
     constructor( item, width, height, xMargin, options ) {
 
+      assert && assert( item.options, 'expected item.options, set by ComboBox.createItem' );
+
       // TODO sun#314 assert you may not be allowed to have accessibleContent on the item.node, since we set the innerContent on this LI
 
       options = _.extend( {
@@ -762,9 +763,9 @@ define( require => {
       this.a11yLabel = null;
 
       // Only set if defined, since it is an option, see ComboBox.createItem
-      if ( item.options && item.options.a11yLabel ) {
+      if ( item.options.a11yLabel ) {
         this.a11yLabel = item.options.a11yLabel;
-        this.innerContent = item.options.a11yLabel;
+        this.innerContent = item.options.a11yLabel; //TODO #314 is this correct? if so, document why.
       }
 
       //TODO #314 this is marked private, but is assigned above, it should be passed via options
