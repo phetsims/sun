@@ -156,7 +156,7 @@ define( require => {
     listParent.addChild( this.listNode );
     this.listParent = listParent; // @private
 
-    //TODO move these to ComboBoxItemNode, see ?????? uh oh
+    //TODO move these to ItemNode, see ?????? uh oh
     // how to highlight an item in the list
     const highlightItem = itemNode => {
       itemNode.fill = options.itemHighlightFill;
@@ -167,12 +167,12 @@ define( require => {
       itemNode.stroke = null;
     };
 
-    // TODO: It seems it would be better to use FireListener on each ComboBoxItemNode, see https://github.com/phetsims/sun/issues/405
+    // TODO: It seems it would be better to use FireListener on each ItemNode, see https://github.com/phetsims/sun/issues/405
     const firedEmitter = new Emitter( {
       tandem: options.tandem.createTandem( 'firedEmitter' ),
       phetioType: EmitterIO( [ { name: 'event', type: VoidIO } ] ), // TODO: Should this be EventIO or DOMEventIO? see https://github.com/phetsims/sun/issues/405
       listener: event => {
-        const selectedItemNode = event.currentTarget; // {ComboBoxItemNode}
+        const selectedItemNode = event.currentTarget; // {ItemNode}
 
         unhighlightItem( selectedItemNode );
 
@@ -224,7 +224,7 @@ define( require => {
       itemNodeOptions.tandem = options.tandem.createTandem( itemNodeOptions.tandemName || 'comboBoxItemNode' );
 
       // Create the list item node itself
-      const comboBoxItemNode = new ComboBoxItemNode( item, itemWidth, itemHeight, options.itemXMargin, itemNodeOptions );
+      const comboBoxItemNode = new ItemNode( item, itemWidth, itemHeight, options.itemXMargin, itemNodeOptions );
 
       // a11y - select the property and close on a click event from assistive technology, must be removed in disposal
       // of combobox item. Keep track of it on the itemNode for disposal.
@@ -246,7 +246,7 @@ define( require => {
     } );
 
 
-    // @private {ComboBoxItemNode} - a11y
+    // @private {ItemNode} - a11y
     // tracks which item node has focus to make it easy to focus next/previous item after keydown
     this.focusedItem = null;
 
@@ -285,7 +285,7 @@ define( require => {
       }
     } );
 
-    const defaultItemNode = new ComboBoxItemNode( items[ 0 ], itemWidth, itemHeight, options.itemXMargin, {
+    const defaultItemNode = new ItemNode( items[ 0 ], itemWidth, itemHeight, options.itemXMargin, {
       align: options.align
     } );
 
@@ -358,7 +358,7 @@ define( require => {
       const item = _.find( items, item => {
         return item.value === value;
       } );
-      this.buttonNode.setItemNode( new ComboBoxItemNode( item, itemWidth, itemHeight, options.itemXMargin, {
+      this.buttonNode.setItemNode( new ItemNode( item, itemWidth, itemHeight, options.itemXMargin, {
         align: options.align
       } ) );
     };
@@ -669,7 +669,7 @@ define( require => {
    * @param {Object} [options]
    * @private
    */
-  class ComboBoxItemNode extends Rectangle {
+  class ItemNode extends Rectangle {
     constructor( item, width, height, xMargin, options ) {
 
       // TODO: assert you may not be allowed to have accessibleContent on the item.node, since we set the innerContent on this LI, see https://github.com/phetsims/sun/issues/314
@@ -699,7 +699,7 @@ define( require => {
         itemWrapper.centerX = width / 2;
       }
 
-      assert && assert( !options.children, 'ComboBoxItemNode sets children' );
+      assert && assert( !options.children, 'ItemNode sets children' );
       options.children = [ itemWrapper ];
 
       super( 0, 0, width, height, options );
@@ -758,7 +758,7 @@ define( require => {
     }
   }
 
-  sun.register( 'ComboBox.ComboBoxItemNode', ComboBoxItemNode );
+  sun.register( 'ComboBox.ItemNode', ItemNode );
 
   return ComboBox;
 } );
