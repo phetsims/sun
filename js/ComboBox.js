@@ -544,16 +544,18 @@ define( require => {
     }
   } );
 
+  //TODO sun#314, sun#405 default options should be set here
   /**
    * Creates a combo box item.
    * This exists primarily to document the structure of an item.
    * @param {Node} node
    * @param {*} value
-   * @param {Object} [options] For PhET-iO instrumented simulations, the following must be supplied:
-   *                             tandemName: {string} - the suffix applied to button tandems
-   *                           For Accessibility support, the following must be supported:
-   *                             a11yLabel: {string} - the label for each item in the combo b6ox
-   *                           No other options are supported.
+   * @param {Object} [options]
+   * For PhET-iO instrumented simulations, the following must be provided:
+   *   tandemName: {string} - the suffix applied to button tandems
+   * For Accessibility support, the following must be provided:
+   *   a11yLabel: {string} - the label for each item in the combo box
+   * No other options are supported.
    * @returns {Object}
    * @public
    */
