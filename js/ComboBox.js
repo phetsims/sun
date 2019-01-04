@@ -276,7 +276,6 @@ define( require => {
         else if ( domEvent.keyCode === KeyboardUtil.KEY_DOWN_ARROW || domEvent.keyCode === KeyboardUtil.KEY_UP_ARROW ) {
           const direction = domEvent.keyCode === KeyboardUtil.KEY_DOWN_ARROW ? 1 : -1;
 
-          //TODO sun#314 iterate over this.itemNodes, not this.listNode.children
           // Get the next/previous item in the list and focus it.
           for ( let i = 0; i < this.listNode.children.length; i++ ) {
             if ( this.focusedItem === this.listNode.children[ i ] ) {
@@ -336,8 +335,14 @@ define( require => {
 
           // focus the selected item
           for ( let i = 0; i < this.listNode.children.length; i++ ) {
-            if ( property.value === this.listNode.children[ i ].item.value ) {
-              this.focusedItem = this.listNode.children[ i ];
+
+            //TODO #430 this is brittle, should be handled better when we factor out ListNode
+            const itemNodeWrapper = this.listNode.children[ i ];
+            const itemNode = itemNodeWrapper.children[ 0 ];
+            assert && assert( itemNode instanceof ItemNode, 'expected ItemNode' );
+
+            if ( property.value === itemNode.item.value ) {
+              this.focusedItem = itemNode;
               this.focusedItem.a11yFocusButton();
             }
           }
@@ -791,6 +796,7 @@ define( require => {
       this.tagName = visible ? 'li' : null;
     }
 
+    //TODO #314 ItemNode instances are now shared between the list and button. How does that affect focus? Should focus be set on the ItemNode's wrapper in the list?
     /**
      * Focus the item in the list
      * @public
