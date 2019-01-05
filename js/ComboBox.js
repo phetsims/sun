@@ -60,7 +60,7 @@ define( require => {
   };
 
   /**
-   * @param {*[]} items - see ComboBox.createItem
+   * @param {*[]} items - must be created using ComboBox.createItem
    * @param {Property} property
    * @param {Node} listParent node that will be used as the list's parent, use this to ensuring that the list is in front of everything else
    * @param {Object} [options] object with optional properties
@@ -224,7 +224,8 @@ define( require => {
     this.itemNodes = [];
     items.forEach( ( item, index ) => {
 
-      assert && assert( item.options, 'expected item.options, set by ComboBox.createItem' );
+      assert && assert( item.node instanceof Node && item.value !== undefined && item.options,
+        'malformed item - did you create items using ComboBox.createItem?' );
 
       // Create the list item node
       const itemNode = new ItemNode( item, itemWidth, itemHeight, options.itemXMargin, {
