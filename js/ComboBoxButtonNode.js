@@ -22,9 +22,9 @@ define( require => {
   // constants
   const DEFAULT_OPTIONS = {
 
+    //TODO sun#430 rename this to arrowDirection, 'up' or 'down'
     // used by ComboBox and ButtonNode
-    listPosition: 'below', // {string} where the list is positioned relative to the button, see LIST_POSITION_VALUES
-    align: 'left', // {string} alignment of items on the button and in the list, see ALIGN_VALUES
+    listPosition: 'below', // {string} where the list is positioned relative to the button
 
     // used exclusively by ButtonNode
     buttonFill: 'white',

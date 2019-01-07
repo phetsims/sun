@@ -46,6 +46,7 @@ define( require => {
 
     options = _.extend( {
 
+      align: 'left', // {string} alignment of items on the button and in the list, see ALIGN_VALUES
       labelNode: null, // optional label, placed to the left of the combo box
       labelXSpacing: 10, // horizontal space between label and combo box
       enabledProperty: new Property( true ),
