@@ -11,7 +11,6 @@ define( require => {
   // modules
   const Node = require( 'SCENERY/nodes/Node' );
   const sun = require( 'SUN/sun' );
-  const Tandem = require( 'TANDEM/Tandem' );
 
   class ComboBoxItem {
 
@@ -23,11 +22,6 @@ define( require => {
     constructor( node, value, options ) {
 
       assert && assert( node instanceof Node, 'invalid node: ' + node );
-
-      //TODO sun#430 Can this check be removed? Or should this check live somewhere else?
-      if ( Tandem.validationEnabled() ) {
-        assert && assert( options && options.tandemName, 'for instrumented sims, tandemName is required' );
-      }
 
       options = _.extend( {
 

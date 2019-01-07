@@ -37,7 +37,7 @@ define( require => {
         xMargin: 6,
 
         // phet-io
-        tandem: Tandem.optional,
+        tandem: Tandem.required,
 
         // a11y
         tagName: 'li',
@@ -76,7 +76,7 @@ define( require => {
         this.innerContent = item.a11yLabel; //TODO #314 is this correct? if so, document why.
       }
 
-      //TODO #314 this is marked private, but is assigned above, it should be set via options or a setter method
+      //TODO #314 This is marked private, but is assigned in ComboBox. It should be set via options or a setter method.
       // @private {null|function} - listener called when button clicked with AT
       this.a11yClickListener = null;
 
