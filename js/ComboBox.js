@@ -15,6 +15,7 @@ define( require => {
   // modules
   const AccessiblePeer = require( 'SCENERY/accessibility/AccessiblePeer' );
   const ComboBoxIO = require( 'SUN/ComboBoxIO' );
+  const ComboBoxItem = require( 'SUN/ComboBoxItem' );
   const Emitter = require( 'AXON/Emitter' );
   const EmitterIO = require( 'AXON/EmitterIO' );
   const inherit = require( 'PHET_CORE/inherit' );
@@ -52,12 +53,6 @@ define( require => {
     a11yButtonLabel: '' // {string} accessible label for the button that opens this combobox
   };
   const BUTTON_NODE_KEYS = _.keys( BUTTON_NODE_DEFAULT_OPTIONS );
-
-  // Default options used when an item is created via ComboBox.createItem
-  const DEFAULT_ITEM_OPTIONS = {
-    tandemName: 'itemNode', // {string} the default tandem name for all ItemNodes
-    a11yLabel: null // {string} the label for each item in the combo box
-  };
 
   /**
    * @param {*[]} items - must be created using ComboBox.createItem
@@ -224,12 +219,9 @@ define( require => {
     this.itemNodes = [];
     items.forEach( ( item, index ) => {
 
-      assert && assert( item.node instanceof Node && item.value !== undefined && item.options,
-        'malformed item - did you create items using ComboBox.createItem?' );
-
       // Create the list item node
       const itemNode = new ItemNode( item, itemWidth, itemHeight, options.itemXMargin, {
-        tandem: options.tandem.createTandem( item.options.tandemName )
+        tandem: item.tandemName ? options.tandem.createTandem( item.tandemName ) : Tandem.optional
       } );
       this.itemNodes.push( itemNode );
 
@@ -546,26 +538,15 @@ define( require => {
   } );
 
   /**
-   * Creates a combo box item.
-   * This exists primarily to document the structure of an item.
+   * Creates a combo box item. Provided for backward compatibility. Using new ComboBoxItem is preferred.
    * @param {Node} node
    * @param {*} value
-   * @param {Object} [options] - see DEFAULT_ITEM_OPTIONS
-   * @returns {Object}
+   * @param {Object} [options] see ComboBoxItem
+   * @returns {ComboBoxItem}
    * @public
    */
   ComboBox.createItem = ( node, value, options ) => {
-
-    // For 'phet-io' brand, the tandems for items must be provided.  For other brands, the tandems are not required
-    // and are filled in with substitutes so the tandems are still defined.
-    if ( Tandem.validationEnabled() ) {
-      assert && assert( options && options.tandemName,
-        'For instrumented ComboBoxes, items options.tandemName is required' );
-    }
-
-    options = _.extend( {}, DEFAULT_ITEM_OPTIONS, options );
-
-    return { node: node, value: value, options: options };
+    return new ComboBoxItem( node, value, options );
   };
 
   /**
@@ -722,7 +703,7 @@ define( require => {
   class ItemNode extends Rectangle {
 
     /**
-     * @param {Object} item - see ComboBox.createItem
+     * @param {ComboBoxItem} item
      * @param {number} width
      * @param {number} height
      * @param {number} xMargin
@@ -730,12 +711,15 @@ define( require => {
      */
     constructor( item, width, height, xMargin, options ) {
 
-      assert && assert( item.options, 'expected item.options, set by ComboBox.createItem' );
+      assert && assert( item instanceof ComboBoxItem );
 
       // TODO sun#314 assert you may not be allowed to have accessibleContent on the item.node, since we set the innerContent on this LI
 
       options = _.extend( {
         align: 'left',
+
+        // phet-io
+        tandem: Tandem.optional,
 
         // a11y
         tagName: 'li',
@@ -769,9 +753,9 @@ define( require => {
       this.a11yLabel = null;
 
       // Only set if defined, since it is an option, see ComboBox.createItem
-      if ( item.options.a11yLabel ) {
-        this.a11yLabel = item.options.a11yLabel;
-        this.innerContent = item.options.a11yLabel; //TODO #314 is this correct? if so, document why.
+      if ( item.a11yLabel ) {
+        this.a11yLabel = item.a11yLabel;
+        this.innerContent = item.a11yLabel; //TODO #314 is this correct? if so, document why.
       }
 
       //TODO #314 this is marked private, but is assigned above, it should be set via options or a setter method
