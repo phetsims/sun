@@ -16,6 +16,7 @@ define( require => {
   const AccessiblePeer = require( 'SCENERY/accessibility/AccessiblePeer' );
   const ComboBoxIO = require( 'SUN/ComboBoxIO' );
   const ComboBoxItem = require( 'SUN/ComboBoxItem' );
+  const ComboBoxItemNode = require( 'SUN/ComboBoxItemNode' );
   const Emitter = require( 'AXON/Emitter' );
   const EmitterIO = require( 'AXON/EmitterIO' );
   const inherit = require( 'PHET_CORE/inherit' );
@@ -173,7 +174,7 @@ define( require => {
       itemNodeWrapper.stroke = null;
     };
 
-    // TODO sun#405 It seems it would be better to use FireListener on each ItemNode
+    // TODO sun#405 It seems it would be better to use FireListener on each ComboBoxItemNode
     const firedEmitter = new Emitter( {
       tandem: options.tandem.createTandem( 'firedEmitter' ),
       phetioType: EmitterIO( [ { name: 'event', type: VoidIO } ] ), // TODO sun#405 Should this be EventIO or DOMEventIO?
@@ -190,7 +191,7 @@ define( require => {
 
         //TODO #430 this is brittle, should be handled better when we factor out ListNode
         const itemNode = itemNodeWrapper.children[ 0 ];
-        assert && assert( itemNode instanceof ItemNode, 'expected the wrapper child to be ItemNode' );
+        assert && assert( itemNode instanceof ComboBoxItemNode, 'expected the wrapper child to be ComboBoxItemNode' );
         property.value = itemNode.item.value;
       }
     } );
@@ -220,12 +221,13 @@ define( require => {
     items.forEach( ( item, index ) => {
 
       // Create the list item node
-      const itemNode = new ItemNode( item, itemWidth, itemHeight, options.itemXMargin, {
+      const itemNode = new ComboBoxItemNode( item, itemWidth, itemHeight, {
+        xMargin: options.itemXMargin,
         tandem: item.tandemName ? options.tandem.createTandem( item.tandemName ) : Tandem.optional
       } );
       this.itemNodes.push( itemNode );
 
-      // ItemNodes are shared between the list and button, so parent the itemNode with a Rectangle that we can highlight.
+      // ComboBoxItemNodes are shared between the list and button, so parent the itemNode with a Rectangle that we can highlight.
       const itemNodeWrapper = new Rectangle( 0, 0, itemNode.width, itemNode.height, {
         children: [ itemNode ],
         inputListeners: [ itemListener ],
@@ -254,7 +256,7 @@ define( require => {
       } );
     } );
 
-    // @private {ItemNode} - a11y
+    // @private {ComboBoxItemNode} - a11y
     // tracks which item node has focus to make it easy to focus next/previous item after keydown
     this.focusedItem = null;
 
@@ -332,7 +334,7 @@ define( require => {
             //TODO #430 this is brittle, should be handled better when we factor out ListNode
             const itemNodeWrapper = this.listNode.children[ i ];
             const itemNode = itemNodeWrapper.children[ 0 ];
-            assert && assert( itemNode instanceof ItemNode, 'expected ItemNode' );
+            assert && assert( itemNode instanceof ComboBoxItemNode, 'expected ComboBoxItemNode' );
 
             if ( property.value === itemNode.item.value ) {
               this.focusedItem = itemNode;
@@ -436,17 +438,17 @@ define( require => {
     },
 
     /**
-     * Gets the ItemNode associated with a specified value.
+     * Gets the ComboBoxItemNode associated with a specified value.
      * @param {*} value
-     * @returns {ItemNode} itemNode
+     * @returns {ComboBoxItemNode} itemNode
      * @private
      */
     getItemNode( value ) {
       const item = this.getItem( value );
       const itemNode = _.find( this.itemNodes, child => {
-        return ( child instanceof ItemNode && child.item === item );
+        return ( child instanceof ComboBoxItemNode && child.item === item );
       } );
-      assert && assert( itemNode, 'no ItemNode is associated with item: ' + item );
+      assert && assert( itemNode, 'no ComboBoxItemNode is associated with item: ' + item );
       return itemNode;
     },
 
@@ -635,7 +637,7 @@ define( require => {
         lineWidth: options.buttonLineWidth
       } );
 
-      // @private parent for the selected ItemNode
+      // @private parent for the selected ComboBoxItemNode
       this.itemNodeParent = new Node();
 
       // rendering order
@@ -662,7 +664,7 @@ define( require => {
 
     /**
      * Sets the item that is displayed on the button.
-     * @param {ItemNode} itemNode
+     * @param {ComboBoxItemNode} itemNode
      */
     setItemNode( itemNode ){
 
@@ -696,116 +698,6 @@ define( require => {
   }
 
   sun.register( 'ComboBox.ButtonNode', ButtonNode );
-
-  /**
-   * A wrapper around the combo box item, adds margins, etc.
-   */
-  class ItemNode extends Rectangle {
-
-    /**
-     * @param {ComboBoxItem} item
-     * @param {number} width
-     * @param {number} height
-     * @param {number} xMargin
-     * @param {Object} [options]
-     */
-    constructor( item, width, height, xMargin, options ) {
-
-      assert && assert( item instanceof ComboBoxItem );
-
-      // TODO sun#314 assert you may not be allowed to have accessibleContent on the item.node, since we set the innerContent on this LI
-
-      options = _.extend( {
-        align: 'left',
-
-        // phet-io
-        tandem: Tandem.optional,
-
-        // a11y
-        tagName: 'li',
-        ariaRole: 'option'
-      }, options );
-
-      // Holds our item.node, and positions it in the correct location. We don't want to mutate the item's node itself.
-      const itemWrapper = new Node( {
-        children: [ item.node ],
-        pickable: false,
-        centerY: height / 2
-      } );
-      if ( options.align === 'left' ) {
-        itemWrapper.left = xMargin;
-      }
-      else if ( options.align === 'right' ) {
-        itemWrapper.right = width - xMargin;
-      }
-      else {
-        // center
-        itemWrapper.centerX = width / 2;
-      }
-
-      assert && assert( !options.children, 'ItemNode sets children' );
-      options.children = [ itemWrapper ];
-
-      super( 0, 0, width, height, options );
-
-      //TODO #314 this should be @public (read-only)
-      // @public - to keep track of it
-      this.a11yLabel = null;
-
-      // Only set if defined, since it is an option, see ComboBox.createItem
-      if ( item.a11yLabel ) {
-        this.a11yLabel = item.a11yLabel;
-        this.innerContent = item.a11yLabel; //TODO #314 is this correct? if so, document why.
-      }
-
-      //TODO #314 this is marked private, but is assigned above, it should be set via options or a setter method
-      // @private {null|function} - listener called when button clicked with AT
-      this.a11yClickListener = null;
-
-      // @public (read-only)
-      this.item = item;
-
-      // @private
-      this.itemWrapper = itemWrapper;
-
-      // the highlight wraps around the entire item rectangle
-      this.itemWrapper.focusHighlight = Shape.bounds( this.itemWrapper.parentToLocalBounds( this.localBounds ) );
-    }
-
-    //TODO sun#314 doc/rename to toggleVisibility
-    /**
-     * @param {boolean} visible
-     */
-    a11yShowItem( visible ) {
-      this.itemWrapper.tagName = visible ? 'button' : null;
-      this.tagName = visible ? 'li' : null;
-    }
-
-    //TODO #314 ItemNode instances are now shared between the list and button. How does that affect focus? Should focus be set on the ItemNode's wrapper in the list?
-    /**
-     * Focus the item in the list
-     * @public
-     */
-    a11yFocusButton() {
-      this.focusable = true;
-      this.focus();
-    }
-
-    /**
-     * Disposes the item.
-     * @public
-     * @override
-     */
-    dispose() {
-
-      // the item in the button will not have a listener
-      this.a11yClickListener && this.removeInputListener( this.a11yClickListener );
-      this.itemWrapper.dispose();
-      super.dispose();
-    }
-  }
-
-  sun.register( 'ComboBox.ItemNode', ItemNode );
 
   return ComboBox;
 } );
