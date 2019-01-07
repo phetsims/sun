@@ -2,8 +2,8 @@
 
 /**
  * Node for an item in a combo box. Typically instantiated by ComboBox, not by client code. This was originally
- * an inner class of ComboBox, but was promoted to its own source file when it grew more complex due to
- * PhET-iO and a11y instrumentation.
+ * an inner class of ComboBox (ComboBox.ItemNode), but was promoted to its own source file when it grew more
+ * complex due to PhET-iO and a11y instrumentation.
  * 
  * @author Chris Malley (PixelZoom, Inc.)
  */
