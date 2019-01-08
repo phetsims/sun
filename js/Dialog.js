@@ -91,7 +91,9 @@ define( function( require ) {
 
       // more Dialog-specific options
       modal: true, // {boolean} modal dialogs prevent interaction with the rest of the sim while open
-      title: null, // {Node|null} title to be displayed at top
+
+      // {Node|null} Title to be displayed at top. For a11y, make sure that its primary sibling has an accessible name
+      title: null,
       titleAlign: 'center', // horizontal alignment of the title: {string} left, right or center
 
       // {function} which sets the dialog's position in global coordinates. called as
