@@ -20,11 +20,12 @@ define( require => {
   const Tandem = require( 'TANDEM/Tandem' );
 
   // constants
+  const ARROW_DIRECTION_VALUES = [ 'up', 'down' ];
   const DEFAULT_OPTIONS = {
 
     //TODO sun#430 rename this to arrowDirection, 'up' or 'down'
     // used by ComboBox and ButtonNode
-    listPosition: 'below', // {string} where the list is positioned relative to the button
+    arrowDirection: 'down', // {string} direction that the arrow points
 
     // used exclusively by ButtonNode
     buttonFill: 'white',
@@ -37,7 +38,6 @@ define( require => {
     // a11y - used exclusively by ButtonNode
     a11yButtonLabel: '' // {string} accessible label for the button that opens this combobox
   };
-  const DEFAULT_KEYS = _.keys( DEFAULT_OPTIONS );
 
   class ComboBoxButtonNode extends Node {
 
@@ -58,6 +58,9 @@ define( require => {
         containerTagName: 'div'
 
       }, options );
+
+      assert && assert( ARROW_DIRECTION_VALUES.includes( options.arrowDirection ),
+        'invalid arrowDirection: ' + options.arrowDirection );
 
       super();
 
@@ -97,7 +100,7 @@ define( require => {
       } );
       const arrowWidth = 0.5 * itemNode.height;
       const arrowHeight = arrowWidth * Math.sqrt( 3 ) / 2; // height of equilateral triangle
-      if ( options.listPosition === 'above' ) {
+      if ( options.arrowDirection === 'up' ) {
         arrow.shape = new Shape().moveTo( 0, arrowHeight ).lineTo( arrowWidth / 2, 0 ).lineTo( arrowWidth, arrowHeight ).close(); // up arrow
       }
       else {
@@ -182,9 +185,8 @@ define( require => {
     }
   }
 
-  //TODO sun#430 make these go away, use nested options.buttonOptions in ComboBox
+  //TODO sun#430 make this go away, use nested options.buttonOptions in ComboBox?
   ComboBoxButtonNode.DEFAULT_OPTIONS = DEFAULT_OPTIONS;
-  ComboBoxButtonNode.DEFAULT_KEYS = DEFAULT_KEYS;
 
   return sun.register( 'ComboBoxButtonNode', ComboBoxButtonNode );
 } );

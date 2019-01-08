@@ -122,7 +122,7 @@ define( function( require ) {
     var enabledObserver = function( enabled ) {
       self.enabledTrack.visible = enabled;
       if ( !enabled ) {
-        if ( trackInputListener.dragging ) { trackInputListener.endDrag(); }
+        if ( trackInputListener.dragging ) { trackInputListener.interrupt(); }
       }
     };
     this.enabledProperty.link( enabledObserver ); // must be unlinked in disposeSliderTrack

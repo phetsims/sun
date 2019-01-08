@@ -5,8 +5,6 @@
  * The list of items is displayed when the button is pressed, and dismissed when an item is selected
  * or the user clicks outside the list.  The list can be displayed either above or below the button.
  *
- * See createItem for information about items in a combo box.
- *
  * @author Chris Malley (PixelZoom, Inc.)
  */
 define( require => {
@@ -46,6 +44,7 @@ define( require => {
 
     options = _.extend( {
 
+      listPosition: 'below', // {string} where the list pops up relative to the button
       align: 'left', // {string} alignment of items on the button and in the list, see ALIGN_VALUES
       labelNode: null, // optional label, placed to the left of the combo box
       labelXSpacing: 10, // horizontal space between label and combo box
@@ -212,7 +211,7 @@ define( require => {
       const itemNodeWrapper = new Rectangle( 0, 0, itemNode.width, itemNode.height, {
         children: [ itemNode ],
         inputListeners: [ itemListener ],
-        align: options.align,
+        align: options.align, //TODO sun#430 options.align is currently broken
         left: options.buttonXMargin,
         top: options.listYMargin + ( index * itemHeight ),
         cursor: 'pointer'
@@ -276,9 +275,12 @@ define( require => {
       }
     } );
 
+    // Cherry pick button options
+    const buttonOptions = _.pick( options, _.keys( ComboBoxButtonNode.DEFAULT_OPTIONS ) );
+    buttonOptions.arrowDirection = ( options.listPosition === 'below' ) ? 'down' : 'up';
+
     // @private button, will be set to correct value when property observer is registered
-    this.buttonNode = new ComboBoxButtonNode( this.getItemNode( property.value ),
-      _.pick( options, ComboBoxButtonNode.DEFAULT_KEYS ) );
+    this.buttonNode = new ComboBoxButtonNode( this.getItemNode( property.value ), buttonOptions);
     this.addChild( this.buttonNode );
 
     // a11y - the list is labeled by the button's label

@@ -251,7 +251,7 @@ define( function( require ) {
         /**
          * Get the mapped value to be read by AT.
          *
-         * @return {number}
+         * @returns {number}
          */
         getMappedValue: function() {
           return this.accessibleMapValue( this._valueProperty.get() );
@@ -275,7 +275,7 @@ define( function( require ) {
          * Get the delta for value Property when using arrow keys.
          * @public
          *
-         * @return {number}
+         * @returns {number}
          */
         getKeyboardStep: function() {
           return this._keyboardStep;
@@ -308,7 +308,7 @@ define( function( require ) {
          * Returns whether or not the shift key is currently held down on this slider, changing the size of step.
          * @public
          *
-         * @return {boolean}
+         * @returns {boolean}
          */
         getShiftKeyDown: function() {
           return this._shiftKey;
@@ -356,7 +356,7 @@ define( function( require ) {
          * Get the orientation of the accessible slider, see setAriaOrientation for information on the behavior of this
          * attribute.
          *
-         * @return {string}
+         * @returns {string}
          */
         getAriaOrientation: function() {
           return this._ariaOrientation;
@@ -580,7 +580,7 @@ define( function( require ) {
 
         /**
          * Returns true if all range keys are currently up (not held down).
-         * @return {boolean}
+         * @returns {boolean}
          * @private
          */
         allKeysUp: function() {
@@ -591,7 +591,7 @@ define( function( require ) {
          * Returns true if any range keys are currently down on this slider. Useful for determining when to call
          * startDrag or endDrag based on interaction.
          *
-         * @return {boolean}
+         * @returns {boolean}
          * @private
          */
         anyKeysDown: function() {
@@ -619,7 +619,7 @@ define( function( require ) {
    * @param {number} currentValue - current value of the Property associated with this slider
    * @param {number} stepSize - the delta for this manipulation
    *
-   * @return {number}
+   * @returns {number}
    */
   var roundValue = function( newValue, currentValue, stepSize ) {
     var roundValue = newValue;
@@ -642,7 +642,7 @@ define( function( require ) {
    * @param {number} currentValue - current value of the Property associated with this slider
    * @param {number} stepSize - the delta for this manipulation
    *
-   * @return {number}
+   * @returns {number}
    */
   var correctRounding = function( newValue, currentValue, stepSize ) {
     var correctedValue = newValue;
