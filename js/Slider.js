@@ -256,7 +256,7 @@ define( function( require ) {
     var enabledObserver = function( enabled ) {
       self.cursor = self.enabledProperty.get() ? options.cursor : 'default';
       if ( !enabled ) {
-        if ( thumbInputListener.dragging ) { thumbInputListener.endDrag(); }
+        if ( thumbInputListener.dragging ) { thumbInputListener.interrupt(); }
       }
       self.pickable = enabled;
     };
