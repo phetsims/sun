@@ -5,8 +5,6 @@
  * The list of items is displayed when the button is pressed, and dismissed when an item is selected
  * or the user clicks outside the list.  The list can be displayed either above or below the button.
  *
- * See createItem for information about items in a combo box.
- *
  * @author Chris Malley (PixelZoom, Inc.)
  */
 define( require => {
