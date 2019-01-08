@@ -211,7 +211,7 @@ define( require => {
       const itemNodeWrapper = new Rectangle( 0, 0, itemNode.width, itemNode.height, {
         children: [ itemNode ],
         inputListeners: [ itemListener ],
-        align: options.align,
+        align: options.align, //TODO sun#430 options.align is currently broken
         left: options.buttonXMargin,
         top: options.listYMargin + ( index * itemHeight ),
         cursor: 'pointer'
