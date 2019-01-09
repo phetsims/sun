@@ -355,6 +355,7 @@ define( require => {
      * https://github.com/phetsims/john-travoltage/issues/247
      *
      * @param {boolean} visible
+     * @private
      */
     setAccessibleViewsVisible: function( visible ) {
       for ( let i = 0; i < this.sim.screens.length; i++ ) {
