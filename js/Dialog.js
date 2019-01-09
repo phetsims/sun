@@ -342,7 +342,7 @@ define( require => {
 
     // @public
     // @deprecated - use setVisible
-    show: function() {
+    show() {
       this.setVisible( true );
     },
 
@@ -352,7 +352,7 @@ define( require => {
      * @public
      * @deprecated - use setVisible
      */
-    hide: function() {
+    hide() {
       this.setVisible( false );
     },
 
@@ -360,7 +360,7 @@ define( require => {
      * Make eligible for garbage collection.
      * @public
      */
-    dispose: function() {
+    dispose() {
       this.hide();
       this.disposeDialog();
       Panel.prototype.dispose.call( this );
@@ -375,7 +375,7 @@ define( require => {
      * @param {boolean} visible
      * @private
      */
-    setAccessibleViewsVisible: function( visible ) {
+    setAccessibleViewsVisible( visible ) {
       for ( let i = 0; i < this.sim.screens.length; i++ ) {
         this.sim.screens[ i ].view.accessibleVisible = visible;
       }
@@ -395,7 +395,7 @@ define( require => {
      * @public
      * @a11y
      */
-    focusActiveElement: function() {
+    focusActiveElement() {
       this.activeElement && this.activeElement.focus();
     },
 
@@ -403,7 +403,7 @@ define( require => {
      * Place keyboard focus on the close button, useful when opening the dialog with an accessibility interaction.
      * @public
      */
-    focusCloseButton: function() {
+    focusCloseButton() {
       this.closeButton.focus();
     }
   } );
