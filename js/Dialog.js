@@ -299,43 +299,60 @@ define( require => {
 
   inherit( Panel, Dialog, {
 
-    // @public
-    show: function() {
-      if ( !this.isShowing ) {
-        window.phet.joist.sim.showPopup( this, this.isModal );
-        this.isShowing = true;
+    /**
+     * Show or hide the dialog
+     * @param {boolean} visible
+     * @public
+     */
+    setVisible( visible ) {
+      Panel.prototype.setVisible.call( this, visible );
+      if ( visible ) {
+        if ( !this.isShowing ) {
+          window.phet.joist.sim.showPopup( this, this.isModal );
+          this.isShowing = true;
 
-        // a11y - store the currently active element before hiding all other accessible content
-        // so that the active element isn't blurred
-        this.activeElement = this.activeElement || Display.focusedNode;
-        this.setAccessibleViewsVisible( false );
+          // a11y - store the currently active element before hiding all other accessible content
+          // so that the active element isn't blurred
+          this.activeElement = this.activeElement || Display.focusedNode;
+          this.setAccessibleViewsVisible( false );
 
-        // In case the window size has changed since the dialog was hidden, we should try layout out again.
-        // See https://github.com/phetsims/joist/issues/362
-        this.updateLayout();
+          // In case the window size has changed since the dialog was hidden, we should try layout out again.
+          // See https://github.com/phetsims/joist/issues/362
+          this.updateLayout();
 
-        // Do this last
-        this.showCallback && this.showCallback();
+          // Do this last
+          this.showCallback && this.showCallback();
+        }
       }
+      else {
+        if ( this.isShowing ) {
+
+          window.phet.joist.sim.hidePopup( this, this.isModal );
+          this.isShowing = false;
+
+          // a11y - when the dialog is hidden, make all ScreenView content visible to assistive technology
+          this.setAccessibleViewsVisible( true );
+
+          // Do this last
+          this.hideCallback && this.hideCallback();
+        }
+      }
+    },
+
+    // @public
+    // @deprecated - use setVisible
+    show: function() {
+      this.setVisible( true );
     },
 
     /**
      * Hide the dialog.  If you create a new dialog next time you show(), be sure to dispose this
      * dialog instead.
      * @public
+     * @deprecated - use setVisible
      */
     hide: function() {
-      if ( this.isShowing ) {
-
-        window.phet.joist.sim.hidePopup( this, this.isModal );
-        this.isShowing = false;
-
-        // a11y - when the dialog is hidden, make all ScreenView content visible to assistive technology
-        this.setAccessibleViewsVisible( true );
-
-        // Do this last
-        this.hideCallback && this.hideCallback();
-      }
+      this.setVisible( false );
     },
 
     /**
