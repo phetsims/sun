@@ -220,8 +220,9 @@ define( require => {
     const sim = window.phet.joist.sim;
 
     // @private
-    this.updateLayout = () =>
+    this.updateLayout = () => {
       options.layoutStrategy( this, sim.boundsProperty.value, sim.screenBoundsProperty.value, sim.scaleProperty.value );
+    };
 
     this.updateLayout();
 
