@@ -1,42 +1,41 @@
 // Copyright 2018, University of Colorado Boulder
 
 /**
- * General dialog type
- * Used to live at 'JOIST/Dialog'. Moved to 'SUN/Dialog' on 4/10/2018
+ * General dialog type. Migrated from Joist on 4/10/2018
  *
- * @author Jonathan Olson <jonathan.olson@colorado.edu>
+ * @author Jonathan Olson (PhET Interactive Simulations)
  * @author Sam Reid (PhET Interactive Simulations)
- * @author Andrea Lin
+ * @author Andrea Lin (PhET Interactive Simulations)
  * @author Chris Malley (PixelZoom, Inc.)
  */
-define( function( require ) {
+define( require => {
   'use strict';
 
   // modules
-  var AccessibilityUtil = require( 'SCENERY/accessibility/AccessibilityUtil' );
-  var AccessiblePeer = require( 'SCENERY/accessibility/AccessiblePeer' );
-  var AlignBox = require( 'SCENERY/nodes/AlignBox' );
-  var DialogIO = require( 'SUN/DialogIO' );
-  var Display = require( 'SCENERY/display/Display' );
-  var FullScreen = require( 'SCENERY/util/FullScreen' );
-  var HBox = require( 'SCENERY/nodes/HBox' );
-  var inherit = require( 'PHET_CORE/inherit' );
-  var KeyboardUtil = require( 'SCENERY/accessibility/KeyboardUtil' );
-  var Panel = require( 'SUN/Panel' );
-  var Path = require( 'SCENERY/nodes/Path' );
-  var RectangularButtonView = require( 'SUN/buttons/RectangularButtonView' );
-  var RectangularPushButton = require( 'SUN/buttons/RectangularPushButton' );
-  var Shape = require( 'KITE/Shape' );
-  var sun = require( 'SUN/sun' );
-  var SunA11yStrings = require( 'SUN/SunA11yStrings' );
-  var Tandem = require( 'TANDEM/Tandem' );
-  var VBox = require( 'SCENERY/nodes/VBox' );
+  const AccessibilityUtil = require( 'SCENERY/accessibility/AccessibilityUtil' );
+  const AccessiblePeer = require( 'SCENERY/accessibility/AccessiblePeer' );
+  const AlignBox = require( 'SCENERY/nodes/AlignBox' );
+  const DialogIO = require( 'SUN/DialogIO' );
+  const Display = require( 'SCENERY/display/Display' );
+  const FullScreen = require( 'SCENERY/util/FullScreen' );
+  const HBox = require( 'SCENERY/nodes/HBox' );
+  const inherit = require( 'PHET_CORE/inherit' );
+  const KeyboardUtil = require( 'SCENERY/accessibility/KeyboardUtil' );
+  const Panel = require( 'SUN/Panel' );
+  const Path = require( 'SCENERY/nodes/Path' );
+  const RectangularButtonView = require( 'SUN/buttons/RectangularButtonView' );
+  const RectangularPushButton = require( 'SUN/buttons/RectangularPushButton' );
+  const Shape = require( 'KITE/Shape' );
+  const sun = require( 'SUN/sun' );
+  const SunA11yStrings = require( 'SUN/SunA11yStrings' );
+  const Tandem = require( 'TANDEM/Tandem' );
+  const VBox = require( 'SCENERY/nodes/VBox' );
 
   // strings
-  var closeString = SunA11yStrings.close.value;
+  const closeString = SunA11yStrings.close.value;
 
   // constants
-  var CLOSE_BUTTON_WIDTH = 14;
+  const CLOSE_BUTTON_WIDTH = 14;
 
   /**
    * @param {Node} content - The content to display inside the dialog (not including the title)
@@ -44,8 +43,6 @@ define( function( require ) {
    * @constructor
    */
   function Dialog( content, options ) {
-
-    var self = this;
 
     options = _.extend( {
 
@@ -101,7 +98,7 @@ define( function( require ) {
       layoutStrategy: Dialog.DEFAULT_LAYOUT_STRATEGY,
 
       // close button options
-      closeButtonListener: function() { self.hide(); },
+      closeButtonListener: () => this.hide(),
       closeButtonTouchAreaXDilation: 0,
       closeButtonTouchAreaYDilation: 0,
       closeButtonMouseAreaXDilation: 0,
@@ -154,15 +151,15 @@ define( function( require ) {
     this.isShowing = false;
 
     // create close button
-    var closeButton = new CloseButton( {
+    const closeButton = new CloseButton( {
 
       iconLength: CLOSE_BUTTON_WIDTH,
-      listener: function() {
+      listener: () => {
         options.closeButtonListener();
 
         // if listener was fired because of accessibility
         if ( closeButton.buttonModel.isA11yClicking() ) {
-          self.focusActiveElement();
+          this.focusActiveElement();
         }
       },
 
@@ -192,27 +189,27 @@ define( function( require ) {
     // Align content, title, and close button using spacing and margin options
 
     // align content and title (if provided) vertically
-    var contentAndTitle = new VBox( {
+    const contentAndTitle = new VBox( {
       children: options.title ? [ options.title, content ] : [ content ],
       spacing: options.ySpacing,
       align: options.titleAlign
     } );
 
     // add topMargin, bottomMargin, and leftMargin
-    var contentAndTitleWithMargins = new AlignBox( contentAndTitle, {
+    const contentAndTitleWithMargins = new AlignBox( contentAndTitle, {
       topMargin: options.topMargin,
       bottomMargin: options.bottomMargin,
       leftMargin: options.leftMargin
     } );
 
     // add closeButtonTopMargin and closeButtonRightMargin
-    var closeButtonWithMargins = new AlignBox( closeButton, {
+    const closeButtonWithMargins = new AlignBox( closeButton, {
       topMargin: options.closeButtonTopMargin,
       rightMargin: options.closeButtonRightMargin
     } );
 
     // create content for Panel
-    var dialogContent = new HBox( {
+    const dialogContent = new HBox( {
       children: [ contentAndTitleWithMargins, closeButtonWithMargins ],
       spacing: options.xSpacing,
       align: 'top'
@@ -220,12 +217,11 @@ define( function( require ) {
 
     Panel.call( this, dialogContent, options );
 
-    var sim = window.phet.joist.sim;
+    const sim = window.phet.joist.sim;
 
     // @private
-    this.updateLayout = function() {
-      options.layoutStrategy( self, sim.boundsProperty.value, sim.screenBoundsProperty.value, sim.scaleProperty.value );
-    };
+    this.updateLayout = () =>
+      options.layoutStrategy( this, sim.boundsProperty.value, sim.screenBoundsProperty.value, sim.scaleProperty.value );
 
     this.updateLayout();
 
@@ -234,9 +230,7 @@ define( function( require ) {
 
     // a11y - set the order of content, close button first so remaining content can be read from top to bottom
     // with virtual cursor
-    this.accessibleOrder = [ closeButton, options.title, content ].filter( function( node ) {
-      return node !== undefined;
-    } );
+    this.accessibleOrder = [ closeButton, options.title, content ].filter( node => node !== undefined );
 
     // a11y - set the aria-labelledby relation so that whenever focus enters the dialog the title is read
     if ( options.title && options.title.tagName ) {
@@ -254,23 +248,23 @@ define( function( require ) {
     this.activeElement = options.focusOnCloseNode || null;
 
     // a11y - close the dialog when pressing "escape"
-    var escapeListener = {
-      keydown: function( event ) {
-        var domEvent = event.domEvent;
+    const escapeListener = {
+      keydown: event => {
+        const domEvent = event.domEvent;
 
         if ( domEvent.keyCode === KeyboardUtil.KEY_ESCAPE ) {
           domEvent.preventDefault();
-          self.hide();
-          self.focusActiveElement();
+          this.hide();
+          this.focusActiveElement();
         }
         else if ( domEvent.keyCode === KeyboardUtil.KEY_TAB && FullScreen.isFullScreen() ) {
 
           // prevent a particular bug in Windows 7/8.1 Firefox where focus gets trapped in the document
           // when the navigation bar is hidden and there is only one focusable element in the DOM
           // see https://bugzilla.mozilla.org/show_bug.cgi?id=910136
-          var activeId = Display.focus.trail.getUniqueId();
-          var noNextFocusable = AccessibilityUtil.getNextFocusable().id === activeId;
-          var noPreviousFocusable = AccessibilityUtil.getPreviousFocusable().id === activeId;
+          const activeId = Display.focus.trail.getUniqueId();
+          const noNextFocusable = AccessibilityUtil.getNextFocusable().id === activeId;
+          const noPreviousFocusable = AccessibilityUtil.getPreviousFocusable().id === activeId;
 
           if ( noNextFocusable && noPreviousFocusable ) {
             domEvent.preventDefault();
@@ -281,9 +275,9 @@ define( function( require ) {
     this.addInputListener( escapeListener );
 
     // @private - to be called on dispose()
-    this.disposeDialog = function() {
-      self.sim.resizedEmitter.removeListener( self.updateLayout );
-      self.removeInputListener( escapeListener );
+    this.disposeDialog = () => {
+      this.sim.resizedEmitter.removeListener( this.updateLayout );
+      this.removeInputListener( escapeListener );
 
       closeButton.dispose();
 
@@ -297,7 +291,7 @@ define( function( require ) {
   sun.register( 'Dialog', Dialog );
 
   // @private
-  Dialog.DEFAULT_LAYOUT_STRATEGY = function( dialog, simBounds, screenBounds, scale ) {
+  Dialog.DEFAULT_LAYOUT_STRATEGY = ( dialog, simBounds, screenBounds, scale ) => {
 
     // The size is set in the Sim.topLayer, but we need to update the location here
     dialog.center = simBounds.center.times( 1.0 / scale );
@@ -363,7 +357,7 @@ define( function( require ) {
      * @param {boolean} visible
      */
     setAccessibleViewsVisible: function( visible ) {
-      for ( var i = 0; i < this.sim.screens.length; i++ ) {
+      for ( let i = 0; i < this.sim.screens.length; i++ ) {
         this.sim.screens[ i ].view.accessibleVisible = visible;
       }
       this.sim.navigationBar.accessibleVisible = visible;
@@ -414,7 +408,7 @@ define( function( require ) {
     }, options );
 
     // close button shape, an 'X'
-    var closeButtonShape = new Shape()
+    const closeButtonShape = new Shape()
       .moveTo( -options.iconLength / 2, -options.iconLength / 2 )
       .lineTo( options.iconLength / 2, options.iconLength / 2 )
       .moveTo( options.iconLength / 2, -options.iconLength / 2 )
@@ -432,7 +426,6 @@ define( function( require ) {
   }
 
   sun.register( 'Dialog.CloseButton', CloseButton );
-
   inherit( RectangularPushButton, CloseButton );
 
   return Dialog;
