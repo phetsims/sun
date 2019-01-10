@@ -1,5 +1,6 @@
 // Copyright 2019, University of Colorado Boulder
 
+//TODO sun#430 this should extend RectangularPushButton
 /**
  * The button on a combo box box. This was originally an inner class of ComboBox (ComboBox.ButtonNode),
  * but was promoted to its own source file when it grew more complex due to PhET-iO and a11y instrumentation.
