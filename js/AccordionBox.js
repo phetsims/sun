@@ -278,6 +278,13 @@ define( function( require ) {
         } );
       }
     }
+    else {
+      // If we don't show the title when expanded, we won't want our title bar to be pickable. Ideally we wouldn't want
+      // it visible at all, however for the a11y implementation we'll want to keep it visible so it can be focused as
+      // the main accessible element while the accordion box is expanded.
+      // See https://github.com/phetsims/fractions-common/issues/19.
+      this.expandedTitleBar.pickable = false;
+    }
 
     // a11y we always want accessible tab focus on the title
     var a11yCollapseListener = {
