@@ -22,13 +22,14 @@ define( require => {
 
   // constants
   const ARROW_DIRECTION_VALUES = [ 'up', 'down' ];
+
+  //TODO sun#422 use nested options for ComboBoxButtonNode
   const DEFAULT_OPTIONS = {
 
-    //TODO sun#430 rename this to arrowDirection, 'up' or 'down'
-    // used by ComboBox and ButtonNode
+    // used by ComboBox and ComboBoxButtonNode
     arrowDirection: 'down', // {string} direction that the arrow points
 
-    // used exclusively by ButtonNode
+    // used exclusively by ComboBoxButtonNode
     buttonFill: 'white',
     buttonStroke: 'black',
     buttonLineWidth: 1,
@@ -36,7 +37,7 @@ define( require => {
     buttonXMargin: 10,
     buttonYMargin: 4,
 
-    // a11y - used exclusively by ButtonNode
+    // a11y - used exclusively by ComboBoxButtonNode
     a11yButtonLabel: '' // {string} accessible label for the button that opens this combobox
   };
 

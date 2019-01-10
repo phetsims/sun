@@ -70,6 +70,7 @@ define( require => {
       phetioType: ComboBoxIO,
       phetioEventType: 'user'
 
+      //TODO sun#422 use nested options for ComboBoxButtonNode
     }, ComboBoxButtonNode.DEFAULT_OPTIONS, options );
 
     // validate option values
