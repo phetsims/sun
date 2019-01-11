@@ -312,9 +312,12 @@ define( require => {
           window.phet.joist.sim.showPopup( this, this.isModal );
           this.isShowing = true;
 
-          // a11y - store the currently active element before hiding all other accessible content
-          // so that the active element isn't blurred
+          // a11y - focus is returned to this element if dialog closed from accessible input
           this.activeElement = this.activeElement || Display.focusedNode;
+
+          // a11y - modal dialogs should be the only readable content in the sim
+          // TODO: non-modal dialogs shouldn't hide other accessible content, and this should be dependant on other
+          // things in the sim modalNodeStack, see https://github.com/phetsims/joist/issues/293
           this.sim.setAccessibleViewsVisible( false );
 
           // In case the window size has changed since the dialog was hidden, we should try layout out again.
