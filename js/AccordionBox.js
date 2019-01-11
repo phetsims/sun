@@ -20,13 +20,8 @@ define( function( require ) {
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var Shape = require( 'KITE/Shape' );
   var sun = require( 'SUN/sun' );
-  var SunA11yStrings = require( 'SUN/SunA11yStrings' );
   var Tandem = require( 'TANDEM/Tandem' );
   var Text = require( 'SCENERY/nodes/Text' );
-
-  // a11y strings
-  var accordionBoxCollapseString = SunA11yStrings.accordionBoxCollapse.value;
-  var accordionBoxExpandString = SunA11yStrings.accordionBoxExpand.value;
 
   /**
    * @constructor
@@ -90,9 +85,6 @@ define( function( require ) {
       contentXSpacing: 5, // horizontal space between content and button, ignored if showTitleWhenExpanded is true
       contentYSpacing: 8, // vertical space between content and title+button, ignored if showTitleWhenExpanded is false
 
-      // a11y options
-      tagName: 'div',
-
       // Options will be provided to both title bar nodes
       titleBarOptions: null,
 
@@ -102,11 +94,6 @@ define( function( require ) {
       phetioEventType: 'user'
 
     }, options );
-
-    options.titleBarOptions = _.extend( {
-      // a11y
-      tagName: 'button'
-    }, options.titleBarOptions );
 
     // verify string options
     assert && assert( options.buttonAlign === 'left' || options.buttonAlign === 'right' );
@@ -218,11 +205,9 @@ define( function( require ) {
       fill: options.titleBarFill,
       stroke: options.titleBarStroke,
       lineWidth: options.lineWidth, // use same lineWidth as box, for consistent look
-      cursor: options.cursor,
-      innerContent: accordionBoxCollapseString
+      cursor: options.cursor
     }, options.titleBarOptions ) );
     this.disposalActions.push( function() {
-      self.expandedTitleBar.removeInputListener( a11yCollapseListener );
       self.expandedTitleBar.dispose();
     } );
     this.expandedBox.addChild( this.expandedTitleBar );
@@ -232,11 +217,9 @@ define( function( require ) {
     this.collapsedTitleBar = new Rectangle( _.extend( {
       cornerRadius: options.cornerRadius,
       fill: options.titleBarFill,
-      cursor: options.cursor,
-      innerContent: accordionBoxExpandString
+      cursor: options.cursor
     }, options.titleBarOptions ) );
     this.disposalActions.push( function() {
-      self.collapsedTitleBar.removeInputListener( a11yExpandListener );
       self.collapsedTitleBar.dispose();
     } );
     this.collapsedBox.addChild( this.collapsedTitleBar );
@@ -251,22 +234,7 @@ define( function( require ) {
       } );
     }
 
-    // a11y we always want accessible tab focus on the title, even when titleBarExpandeCollapse === false
-    var a11yExpandListener = {
-      click: function() {
-        self.phetioStartEvent( 'expanded' );
-        self.expandedProperty.value = true;
-
-        // a11y Set focus to expanded title bar
-        self.expandedTitleBar.focus();
-
-        self.phetioEndEvent();
-      }
-    };
-    this.collapsedTitleBar.addInputListener( a11yExpandListener );
-
     // Set the input listeners for the expandedTitleBar
-    // a11y we need to focus on the collapsedTitleBar when the expandedTitleBar is clicked
     if ( options.showTitleWhenExpanded ) {
       if ( options.titleBarExpandCollapse ) {
         this.expandedTitleBar.addInputListener( {
@@ -278,19 +246,6 @@ define( function( require ) {
         } );
       }
     }
-
-    // a11y we always want accessible tab focus on the title
-    var a11yCollapseListener = {
-      click: function() {
-        self.phetioStartEvent( 'collapsed' );
-        self.expandedProperty.value = false;
-
-        // a11y Set focus to expanded title bar
-        self.collapsedTitleBar.focus();
-        self.phetioEndEvent();
-      }
-    };
-    this.expandedTitleBar.addInputListener( a11yCollapseListener );
 
     this.addChild( this.titleNode );
     this.addChild( this.expandCollapseButton );
