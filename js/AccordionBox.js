@@ -20,13 +20,8 @@ define( function( require ) {
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var Shape = require( 'KITE/Shape' );
   var sun = require( 'SUN/sun' );
-  var SunA11yStrings = require( 'SUN/SunA11yStrings' );
   var Tandem = require( 'TANDEM/Tandem' );
   var Text = require( 'SCENERY/nodes/Text' );
-
-  // a11y strings
-  var accordionBoxCollapseString = SunA11yStrings.accordionBoxCollapse.value;
-  var accordionBoxExpandString = SunA11yStrings.accordionBoxExpand.value;
 
   /**
    * @constructor
@@ -210,8 +205,7 @@ define( function( require ) {
       fill: options.titleBarFill,
       stroke: options.titleBarStroke,
       lineWidth: options.lineWidth, // use same lineWidth as box, for consistent look
-      cursor: options.cursor,
-      innerContent: accordionBoxCollapseString
+      cursor: options.cursor
     }, options.titleBarOptions ) );
     this.disposalActions.push( function() {
       self.expandedTitleBar.dispose();
@@ -223,8 +217,7 @@ define( function( require ) {
     this.collapsedTitleBar = new Rectangle( _.extend( {
       cornerRadius: options.cornerRadius,
       fill: options.titleBarFill,
-      cursor: options.cursor,
-      innerContent: accordionBoxExpandString
+      cursor: options.cursor
     }, options.titleBarOptions ) );
     this.disposalActions.push( function() {
       self.collapsedTitleBar.dispose();
@@ -242,7 +235,6 @@ define( function( require ) {
     }
 
     // Set the input listeners for the expandedTitleBar
-    // a11y we need to focus on the collapsedTitleBar when the expandedTitleBar is clicked
     if ( options.showTitleWhenExpanded ) {
       if ( options.titleBarExpandCollapse ) {
         this.expandedTitleBar.addInputListener( {
