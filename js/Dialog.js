@@ -315,7 +315,7 @@ define( require => {
           // a11y - store the currently active element before hiding all other accessible content
           // so that the active element isn't blurred
           this.activeElement = this.activeElement || Display.focusedNode;
-          this.setAccessibleViewsVisible( false );
+          this.sim.setAccessibleViewsVisible( false );
 
           // In case the window size has changed since the dialog was hidden, we should try layout out again.
           // See https://github.com/phetsims/joist/issues/362
@@ -332,7 +332,7 @@ define( require => {
           this.isShowing = false;
 
           // a11y - when the dialog is hidden, make all ScreenView content visible to assistive technology
-          this.setAccessibleViewsVisible( true );
+          this.sim.setAccessibleViewsVisible( true );
 
           // Do this last
           this.hideCallback && this.hideCallback();
@@ -364,29 +364,6 @@ define( require => {
       this.hide();
       this.disposeDialog();
       Panel.prototype.dispose.call( this );
-    },
-
-    /**
-     * Hide or show all accessible content related to the sim ScreenViews, navigation bar, and alert content. Instead
-     * of using setVisible, we have to remove the subtree of accessible content from each view element in order to
-     * prevent an IE11 bug where content remains invisible in the accessibility tree, see
-     * https://github.com/phetsims/john-travoltage/issues/247
-     *
-     * @param {boolean} visible
-     * @private
-     */
-    setAccessibleViewsVisible( visible ) {
-      for ( let i = 0; i < this.sim.screens.length; i++ ) {
-        this.sim.screens[ i ].view.accessibleVisible = visible;
-      }
-      this.sim.navigationBar.accessibleVisible = visible;
-      this.sim.homeScreen && this.sim.homeScreen.view.setAccessibleVisible( visible );
-
-      // workaround for a strange Edge bug where this child of the navigation bar remains visible,
-      // see https://github.com/phetsims/a11y-research/issues/30
-      if ( this.sim.navigationBar.keyboardHelpButton ) {
-        this.sim.navigationBar.keyboardHelpButton.accessibleVisible = visible;
-      }
     },
 
     /**
