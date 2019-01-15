@@ -36,7 +36,7 @@ define( require => {
   /**
    * @param {ComboBoxItem[]} items
    * @param {Property} property
-   * @param {Node} listParent node that will be used as the list's parent, use this to ensuring that the list is in front of everything else
+   * @param {Node} listParent node that will be used as the list's parent, use this to ensure that the list is in front of everything else
    * @param {Object} [options] object with optional properties
    * @constructor
    */

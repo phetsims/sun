@@ -298,7 +298,11 @@ define( function( require ) {
     this.disposeSlider = function() {
       thumb.dispose && thumb.dispose(); // in case a custom thumb is provided via options.thumbNode that doesn't implement dispose
       self.track.dispose();
-      self.disposeAccessibleSlider(); // dispose accessibility
+
+      if ( options.isAccessible ) {
+        self.disposeAccessibleSlider();
+      }
+
       valueProperty.unlink( valueObserver );
       ownsEnabledRangeProperty && self.enabledRangeProperty.dispose();
       ownsEnabledProperty && self.enabledProperty.dispose();
