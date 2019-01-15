@@ -1,7 +1,7 @@
 // Copyright 2019, University of Colorado Boulder
 
 /**
- * Node for an item in a combo box list. 
+ * Node for an item in a combo box list.  Can be highlighted by calling setHighlightVisible.
  * Typically instantiated by ComboBox, not by client code.
  *
  * @author Chris Malley (PixelZoom, Inc.)
