@@ -96,25 +96,13 @@ define( require => {
       this.addChild( options.labelNode );
     }
 
-    //TODO https://github.com/phetsims/scenery/issues/58
-    /**
-     * @private
-     * Because clickToDismissListener is added to the scene, it receives the 'down' event that
-     * button received to register the listener. This is because scenery propagates events
-     * up the event trail, and the scene is further up the trail than the button.  This flag
-     * is used to ignore the first 'down' event, which is the one that the button received.
-     * If we don't do this, then we never see the list because it is immediately popped down.
-     * This behavior may change, and is being discussed in scenery#58.
-     */
-    this.enableClickToDismissListener = false;
-
     // @private the display that clickToDismissListener is added to, because the scene may change, see sun#14
     this.display = null;
 
     // @private listener for 'click outside to dismiss'
     // TODO sun#314 handle this logic for a11y too, perhaps on by monitoring the focusout event on the display's root PDOM element
     this.clickToDismissListener = {
-      down: this.hideListFromClick.bind( this )
+      down: () => { this.hideList(); }
     };
 
     // Compute max item dimensions
@@ -186,7 +174,8 @@ define( require => {
 
     // guard against the enter key triggering a keydown on a selected item AND then a click event on the button once
     // focus moves over there.
-    let fromA11yEnterKey = false;
+    //TODO address sun#447
+    // let fromA11yEnterKey = false;
 
     // @private populate list with items
     this.listItemNodes = [];
@@ -214,7 +203,9 @@ define( require => {
       listItemNode.a11yClickListener = {
         keydown: event => {
           if ( KeyboardUtil.KEY_ENTER === event.domEvent.keyCode || KeyboardUtil.KEY_SPACE === event.domEvent.keyCode ) {
-            fromA11yEnterKey = KeyboardUtil.KEY_ENTER === event.domEvent.keyCode; // only for the enter key
+
+            //TODO address sun#447
+            // fromA11yEnterKey = KeyboardUtil.KEY_ENTER === event.domEvent.keyCode; // only for the enter key
             property.value = item.value;
             this.hideList();
             this.button.focus();
@@ -274,9 +265,10 @@ define( require => {
       cornerRadius: options.cornerRadius,
       xMargin: options.xMargin,
       yMargin: options.yMargin,
-      fill: options.buttonFill,
+      baseColor: options.buttonFill,
       stroke: options.buttonStroke,
       lineWidth: options.buttonLineWidth
+      //TODO sun#314 need to pass a11yLabel?
     } );
     this.addChild( this.button );
 
@@ -288,27 +280,15 @@ define( require => {
     } );
 
     // button interactivity
-    this.button.addInputListener( {
-      down: this.showList.bind( this )
-    } );
+    this.button.addListener( () => { this.showList(); } );
 
-    //TODO sun#314 This should not be done by reaching into button. a11yListener should be set via options or a setter method
     // add the button accessibility listener
-    this.button.a11yListener = {
-      click: () => {
+    this.button.addInputListener( {
+      a11yclick: () => {
 
-        // if already visible, hide it
+        //TODO sun#314 order dependency, requires that showList was called first by button listener
         if ( this.listNode.visible ) {
-          this.hideList();
-          this.button.focus();
-        }
 
-        // Otherwise show the list and manage focus properly. But be tolerant of the "double enter" loop case, where
-        // this click event is coming from selecting an item with a11y, and then auto focusing the button.
-        else if ( !fromA11yEnterKey ) {
-          this.showList();
-
-          // focus the selected item
           for ( let i = 0; i < this.listNode.children.length; i++ ) {
 
             const listItemNode = this.listNode.children[ i ];
@@ -319,13 +299,9 @@ define( require => {
             }
           }
         }
-
-        // should only need to disable the event once if coming from the enter key on selecting the item node
-        else {
-          fromA11yEnterKey = false;
-        }
       },
 
+      //TODO sun#314 why is this on the button, shouldn't it be on the list?
       // listen for escape to hide the list when focused on the button
       keydown: event => {
         if ( this.listNode.visible ) {
@@ -334,8 +310,7 @@ define( require => {
           }
         }
       }
-    };
-    this.button.addInputListener( this.button.a11yListener );
+    } );
 
     // layout
     if ( options.labelNode ) {
@@ -429,24 +404,10 @@ define( require => {
         this.moveList();
         this.listNode.moveToFront();
         this.listNode.visible = true;
-        this.enableClickToDismissListener = false;
         this.display = this.getUniqueTrail().rootNode().getRootedDisplays()[ 0 ];
         this.display.addInputListener( this.clickToDismissListener );
 
         this.phetioEndEvent();
-      }
-    },
-
-    //TODO sun#314 document
-    /**
-     * @public
-     */
-    hideListFromClick() {
-      if ( this.enableClickToDismissListener ) {
-        this.hideList();
-      }
-      else {
-        this.enableClickToDismissListener = true;
       }
     },
 

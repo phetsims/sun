@@ -1,6 +1,5 @@
 // Copyright 2019, University of Colorado Boulder
 
-//TODO sun#446 extend RectangularPushButton
 /**
  * The button on a combo box box.  Displays the current selection on the button.
  * Typically instantiated by ComboBox, not by client code.
@@ -13,19 +12,20 @@ define( require => {
   // modules
   const AccessiblePeer = require( 'SCENERY/accessibility/AccessiblePeer' );
   const HStrut = require( 'SCENERY/nodes/HStrut' );
-  const Line = require( 'SCENERY/nodes/Line' );
   const Node = require( 'SCENERY/nodes/Node' );
   const Path = require( 'SCENERY/nodes/Path' );
-  const Rectangle = require( 'SCENERY/nodes/Rectangle' );
+  const RectangularButtonView = require( 'SUN/buttons/RectangularButtonView' );
+  const RectangularPushButton = require( 'SUN/buttons/RectangularPushButton' );
   const Shape = require( 'KITE/Shape' );
   const sun = require( 'SUN/sun' );
   const Tandem = require( 'TANDEM/Tandem' );
+  const VSeparator = require( 'SUN/VSeparator' );
 
   // constants
   const ALIGN_VALUES = [ 'left', 'center', 'right' ];
   const ARROW_DIRECTION_VALUES = [ 'up', 'down' ];
 
-  class ComboBoxButton extends Node {
+  class ComboBoxButton extends RectangularPushButton {
 
     /**
      * @param {Property} property
@@ -36,14 +36,17 @@ define( require => {
 
       options = _.extend( {
 
-        cursor: 'pointer',
         align: 'left', // see ALIGN_VALUES
         arrowHeight: null, // {number|null} if null, will be computed based on max item height
         arrowDirection: 'down', // see ARROW_DIRECTION_VALUES
         arrowFill: 'black',
+
+        // RectangularPushButton options
+        cursor: 'pointer',
+        baseColor: 'white',
+        buttonAppearanceStrategy: RectangularButtonView.FlatAppearanceStrategy,
         xMargin: 10, // margin on the left and right of the item
         yMargin: 10, // margin on the top and bottom of the item
-        fill: 'white',
         stroke: 'black',
         lineWidth: 1,
         cornerRadius: 8,
@@ -51,8 +54,8 @@ define( require => {
         // phet-io
         tandem: Tandem.optional,
 
+        //TODO sun#314 evaluate whether these are still needed now that ComboBoxButton extends RectangularPushButton
         // a11y
-        tagName: 'button',
         labelTagName: 'span',
         containerTagName: 'div',
         a11yLabel: null
@@ -72,29 +75,8 @@ define( require => {
       const arrowHeight = options.arrowHeight || ( 0.7 * maxItemHeight ); // height of equilateral triangle
       const arrowWidth = 2 * arrowHeight * Math.sqrt( 3 ) / 3; // side of equilateral triangle
 
-      // button background, behind the item and the arrow
-      const backgroundWidth = maxItemWidth + ( 4 * options.xMargin ) + arrowWidth;
-      const backgroundHeight = maxItemHeight + ( 2 * options.yMargin);
-      const background = new Rectangle( 0, 0, backgroundWidth, backgroundHeight, {
-        cornerRadius: options.cornerRadius,
-        fill: options.fill,
-        stroke: options.stroke,
-        lineWidth: options.lineWidth
-      } );
-
       // invisible horizontal strut behind item, to make alignment of item easier
-      const itemStrut = new HStrut( maxItemWidth, {
-        left: options.xMargin,
-        centerY: background.centerY
-      } );
-
-      // vertical separator between item and arrow
-      const separator = new Line( 0, 0, 0, backgroundHeight, {
-        stroke: 'black',
-        lineWidth: options.lineWidth,
-        centerX: itemStrut.right + options.xMargin,
-        centerY: background.centerY
-      } );
+      const itemStrut = new HStrut( maxItemWidth );
 
       // arrow that points up or down, to indicate which way the list pops up
       let arrowShape = null;
@@ -114,16 +96,29 @@ define( require => {
       }
       const arrow = new Path( arrowShape, {
         fill: options.arrowFill,
-        left: separator.centerX + options.xMargin,
-        centerY: background.centerY
+        left: itemStrut.right + ( 2 * options.xMargin ),
+        centerY: itemStrut.centerY
       } );
 
       // Wrapper for the selected item's Node. Do not transform ComboBoxItem.node because it is shared with list!
       const itemNodeWrapper = new Node();
 
-      assert && assert( !options.children, 'ComboBoxButton sets children' );
-      options.children = [ background, itemStrut, itemNodeWrapper, separator, arrow ];
+      assert && assert( !options.content, 'ComboBoxButton sets content' );
+      options.content = new Node( {
+        children: [ itemStrut, itemNodeWrapper, arrow ]
+      } );
+
       super( options );
+
+      // We want the vertical separator between the item and arrow to extend past the margins, for the full height
+      // of the button.  So instead of adding the separator as part of the content, we add it as a decoration.
+      const separator = new VSeparator( this.height, {
+        stroke: 'black',
+        lineWidth: options.lineWidth,
+        centerX: itemStrut.width + ( 2 * options.xMargin ),
+        centerY: this.centerY
+      } );
+      this.addChild( separator );
 
       // When property's value changes, show the corresponding item's Node on the button.
       const propertyObserver = value => {
@@ -142,7 +137,7 @@ define( require => {
         itemNodeWrapper.addChild( node );
 
         // adjust alignment
-        itemNodeWrapper.centerY = background.centerY;
+        itemNodeWrapper.centerY = itemStrut.centerY;
         if ( options.align === 'left' ) {
           itemNodeWrapper.left = itemStrut.left;
         }
@@ -155,10 +150,9 @@ define( require => {
       };
       property.link( propertyObserver );
 
-      //TODO #314 missing visibility annotation
       this.labelContent = options.a11yLabel;
 
-      //TODO #314 missing visibility annotation
+      //TODO sun#314 expand on this comment
       // the button is labelledby its own label, and then (second) by itself. Order matters!
       assert && assert( !options.ariaLabelledbyAssociations, 'ComboBoxButton sets ariaLabelledbyAssociations' );
       this.ariaLabelledbyAssociations = [
@@ -177,14 +171,9 @@ define( require => {
       // signify to AT that this button opens a menu
       this.setAccessibleAttribute( 'aria-haspopup', 'listbox' );
 
-      //TODO #314 this should be private, set via options or a setter methods
-      // @public - if assigned, it will be removed on disposal.
-      this.a11yListener = null;
-
       // @private
       this.disposeComboBoxButton = () => {
         property.unlink( propertyObserver );
-        this.a11yListener && this.removeInputListener( this.a11yListener );
       };
     }
 
