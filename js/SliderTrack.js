@@ -99,7 +99,7 @@ define( function( require ) {
 
       start: function( event, trail ) {
         if ( self.enabledProperty.get() ) {
-          options.startDrag();
+          options.startDrag( event );
           handleTrackEvent( event, trail );
         }
       },
@@ -110,9 +110,9 @@ define( function( require ) {
         handleTrackEvent( event, trail );
       },
 
-      end: function() {
+      end: function( event ) {
         if ( self.enabledProperty.get() ) {
-          options.endDrag();
+          options.endDrag( event );
         }
       }
     } );
