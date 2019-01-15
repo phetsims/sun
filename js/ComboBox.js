@@ -30,8 +30,8 @@ define( require => {
   const VoidIO = require( 'TANDEM/types/VoidIO' );
 
   // const
-  const LIST_POSITION_VALUES = [ 'above', 'below' ];
-  const ALIGN_VALUES = [ 'left', 'right', 'center' ];
+  const LIST_POSITION_VALUES = [ 'above', 'below' ]; // where the list pops up relative to the button
+  const ALIGN_VALUES = [ 'left', 'right', 'center' ]; // alignment of item on button and in list
 
   /**
    * @param {ComboBoxItem[]} items
@@ -45,7 +45,7 @@ define( require => {
     options = _.extend( {
 
       align: 'left', // see ALIGN_VALUES
-      listPosition: 'below', // {string} where the list pops up relative to the button
+      listPosition: 'below', // see LIST_POSITION_VALUES
       labelNode: null, // {Node|null} optional label, placed to the left of the combo box
       labelXSpacing: 10, // horizontal space between label and combo box
       enabledProperty: new Property( true ),
