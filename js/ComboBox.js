@@ -97,7 +97,7 @@ define( require => {
     /**
      * @private
      * Because clickToDismissListener is added to the scene, it receives the 'down' event that
-     * buttonNode received to register the listener. This is because scenery propagates events
+     * button received to register the listener. This is because scenery propagates events
      * up the event trail, and the scene is further up the trail than the button.  This flag
      * is used to ignore the first 'down' event, which is the one that the button received.
      * If we don't do this, then we never see the list because it is immediately popped down.
@@ -214,7 +214,7 @@ define( require => {
             fromA11yEnterKey = KeyboardUtil.KEY_ENTER === event.domEvent.keyCode; // only for the enter key
             property.value = item.value;
             this.hideList();
-            this.buttonNode.focus();
+            this.button.focus();
 
             // a11y - keep this PDOM attribute in sync
             this.updateActiveDescendant( listItemNode );
@@ -234,7 +234,7 @@ define( require => {
         var domEvent = event.domEvent;
         if ( domEvent.keyCode === KeyboardUtil.KEY_ESCAPE ) {
           this.hideList();
-          this.buttonNode.focus();
+          this.button.focus();
         }
         else if ( domEvent.keyCode === KeyboardUtil.KEY_DOWN_ARROW || domEvent.keyCode === KeyboardUtil.KEY_UP_ARROW ) {
           const direction = domEvent.keyCode === KeyboardUtil.KEY_DOWN_ARROW ? 1 : -1;
