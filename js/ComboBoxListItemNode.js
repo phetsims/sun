@@ -1,10 +1,9 @@
 // Copyright 2019, University of Colorado Boulder
 
 /**
- * Node for an item in a combo box. Typically instantiated by ComboBox, not by client code. This was originally
- * an inner class of ComboBox (ComboBox.ItemNode), but was promoted to its own source file when it grew more
- * complex due to PhET-iO and a11y instrumentation.
- * 
+ * Node for an item in a combo box list.  Can be highlighted by calling setHighlightVisible.
+ * Typically instantiated by ComboBox, not by client code.
+ *
  * @author Chris Malley (PixelZoom, Inc.)
  */
 define( require => {
@@ -18,7 +17,7 @@ define( require => {
   const sun = require( 'SUN/sun' );
   const Tandem = require( 'TANDEM/Tandem' );
 
-  class ComboBoxItemNode extends Rectangle {
+  class ComboBoxListItemNode extends Node {
 
     /**
      * @param {ComboBoxItem} item
@@ -33,47 +32,49 @@ define( require => {
       // TODO sun#314 assert you may not be allowed to have accessibleContent on the item.node, since we set the innerContent on this LI
 
       options = _.extend( {
+
+        cursor: 'pointer',
         align: 'left',
         xMargin: 6,
+        highlightFill: 'rgb( 245, 245, 245 )',
 
         // phet-io
         tandem: Tandem.required,
 
         // a11y
         tagName: 'li',
-        ariaRole: 'option'
+        ariaRole: 'option',
+        a11yLabel: null
+        
       }, options );
 
-      // Holds our item.node, and positions it in the correct location. We don't want to mutate the item's node itself.
-      const itemWrapper = new Node( {
+      // Highlight rectangle
+      const highlightRectangle = new Rectangle( 0, 0, width, height );
+
+      // Wrapper for the item's Node. Do not transform ComboBoxItem.node because it is shared with ComboBoxButton!
+      const itemNodeWrapper = new Node( {
         children: [ item.node ],
-        pickable: false,
         centerY: height / 2
       } );
       if ( options.align === 'left' ) {
-        itemWrapper.left = options.xMargin;
+        itemNodeWrapper.left = highlightRectangle.left + options.xMargin;
       }
       else if ( options.align === 'right' ) {
-        itemWrapper.right = width - options.xMargin;
+        itemNodeWrapper.right = highlightRectangle.right - options.xMargin;
       }
       else {
-        // center
-        itemWrapper.centerX = width / 2;
+        itemNodeWrapper.centerX = highlightRectangle.centerX;
       }
 
-      assert && assert( !options.children, 'ComboBoxItemNode sets children' );
-      options.children = [ itemWrapper ];
+      assert && assert( !options.children, 'ComboBoxListItemNode sets children' );
+      options.children = [ highlightRectangle, itemNodeWrapper ];
 
-      super( 0, 0, width, height, options );
-
-      //TODO #314 this should be @public (read-only)
-      // @public - to keep track of it
-      this.a11yLabel = null;
+      super( options );
 
       // Only set if defined, since it is an option, see ComboBox.createItem
-      if ( item.a11yLabel ) {
-        this.a11yLabel = item.a11yLabel;
-        this.innerContent = item.a11yLabel; //TODO #314 is this correct? if so, document why.
+      if ( options.a11yLabel ) {
+        this.a11yLabel = options.a11yLabel;
+        this.innerContent = options.a11yLabel; //TODO #314 is this correct? if so, document why.
       }
 
       //TODO #314 This is marked private, but is assigned in ComboBox. It should be set via options or a setter method.
@@ -84,10 +85,22 @@ define( require => {
       this.item = item;
 
       // @private
-      this.itemWrapper = itemWrapper;
+      this.itemNodeWrapper = itemNodeWrapper;
+      this.highlightRectangle = highlightRectangle;
+      this.highlightFill = options.highlightFill;
 
       // the highlight wraps around the entire item rectangle
-      this.itemWrapper.focusHighlight = Shape.bounds( this.itemWrapper.parentToLocalBounds( this.localBounds ) );
+      this.itemNodeWrapper.focusHighlight = Shape.bounds( this.itemNodeWrapper.parentToLocalBounds( this.localBounds ) );
+    }
+
+    /**
+     * @param {boolean} visible
+     * @public
+     */
+    setHighlightVisible( visible ) {
+
+      // Change fill instead of visibility so that we don't end up with vertical pointer gaps in the list
+      this.highlightRectangle.fill = visible ? this.highlightFill : null;
     }
 
     //TODO sun#314 doc/rename to toggleVisibility
@@ -95,11 +108,11 @@ define( require => {
      * @param {boolean} visible
      */
     a11yShowItem( visible ) {
-      this.itemWrapper.tagName = visible ? 'button' : null;
+      this.itemNodeWrapper.tagName = visible ? 'button' : null;
       this.tagName = visible ? 'li' : null;
     }
 
-    //TODO #314 ComboBoxItemNode instances are now shared between the list and button. How does that affect focus? Should focus be set on the ComboBoxItemNode's wrapper in the list?
+    //TODO #314 ComboBoxListItemNode instances are now shared between the list and button. How does that affect focus? Should focus be set on the ComboBoxListItemNode's wrapper in the list?
     /**
      * Focus the item in the list
      * @public
@@ -118,10 +131,10 @@ define( require => {
 
       // the item in the button will not have a listener
       this.a11yClickListener && this.removeInputListener( this.a11yClickListener );
-      this.itemWrapper.dispose();
+      this.itemNodeWrapper.dispose(); //TODO #314 why is this needed?
       super.dispose();
     }
   }
 
-  return sun.register( 'ComboBoxItemNode', ComboBoxItemNode );
+  return sun.register( 'ComboBoxListItemNode', ComboBoxListItemNode );
 } ); 

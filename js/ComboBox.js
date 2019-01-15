@@ -12,10 +12,10 @@ define( require => {
 
   // modules
   const AccessiblePeer = require( 'SCENERY/accessibility/AccessiblePeer' );
-  const ComboBoxButtonNode = require( 'SUN/ComboBoxButtonNode' );
+  const ComboBoxButton = require( 'SUN/ComboBoxButton' );
   const ComboBoxIO = require( 'SUN/ComboBoxIO' );
   const ComboBoxItem = require( 'SUN/ComboBoxItem' );
-  const ComboBoxItemNode = require( 'SUN/ComboBoxItemNode' );
+  const ComboBoxListItemNode = require( 'SUN/ComboBoxListItemNode' );
   const Emitter = require( 'AXON/Emitter' );
   const EmitterIO = require( 'AXON/EmitterIO' );
   const inherit = require( 'PHET_CORE/inherit' );
@@ -30,13 +30,13 @@ define( require => {
   const VoidIO = require( 'TANDEM/types/VoidIO' );
 
   // const
-  const LIST_POSITION_VALUES = [ 'above', 'below' ];
-  const ALIGN_VALUES = [ 'left', 'right', 'center' ];
+  const LIST_POSITION_VALUES = [ 'above', 'below' ]; // where the list pops up relative to the button
+  const ALIGN_VALUES = [ 'left', 'right', 'center' ]; // alignment of item on button and in list
 
   /**
-   * @param {*[]} items - must be created using ComboBox.createItem
+   * @param {ComboBoxItem[]} items
    * @param {Property} property
-   * @param {Node} listParent node that will be used as the list's parent, use this to ensuring that the list is in front of everything else
+   * @param {Node} listParent node that will be used as the list's parent, use this to ensure that the list is in front of everything else
    * @param {Object} [options] object with optional properties
    * @constructor
    */
@@ -44,34 +44,37 @@ define( require => {
 
     options = _.extend( {
 
-      listPosition: 'below', // {string} where the list pops up relative to the button
-      align: 'left', // {string} alignment of items on the button and in the list, see ALIGN_VALUES
-      labelNode: null, // optional label, placed to the left of the combo box
+      align: 'left', // see ALIGN_VALUES
+      listPosition: 'below', // see LIST_POSITION_VALUES
+      labelNode: null, // {Node|null} optional label, placed to the left of the combo box
       labelXSpacing: 10, // horizontal space between label and combo box
       enabledProperty: new Property( true ),
       disabledOpacity: 0.5, // {number} opacity used to make the control look disabled
+      cornerRadius: 8, // {number} applied to list and button
+      highlightFill: 'rgb( 245, 245, 245 )', // highlight behind items in the list
+
+      // Margins around the edges of the list when highlight is invisible.
+      // Highlight margins around the items in the list are set to 1/2 of these values.
+      xMargin: 12,
+      yMargin: 8,
+
+      // button
+      buttonFill: 'white',
+      buttonStroke: 'black',
+      buttonLineWidth: 1,
+      arrowHeight: null, // {number|null} if null, ComboBoxButton computes a default
 
       // list
-      listYMargin: 4,
       listFill: 'white',
       listStroke: 'black',
       listLineWidth: 1,
-      listCornerRadius: 5,
-
-      // items
-      itemXMargin: 6,
-      itemYMargin: 6, // Vertical margin applied to the top and bottom of each item in the popup list.
-      itemHighlightFill: 'rgb(245,245,245)',
-      itemHighlightStroke: null,
-      itemHighlightLineWidth: 1,
 
       // phet-io
       tandem: Tandem.required,
       phetioType: ComboBoxIO,
       phetioEventType: 'user'
 
-      //TODO sun#422 use nested options for ComboBoxButtonNode
-    }, ComboBoxButtonNode.DEFAULT_OPTIONS, options );
+    }, options );
 
     // validate option values
     assert && assert( options.disabledOpacity > 0 && options.disabledOpacity < 1,
@@ -93,38 +96,31 @@ define( require => {
       this.addChild( options.labelNode );
     }
 
-    //TODO https://github.com/phetsims/scenery/issues/58
-    /**
-     * @private
-     * Because clickToDismissListener is added to the scene, it receives the 'down' event that
-     * buttonNode received to register the listener. This is because scenery propagates events
-     * up the event trail, and the scene is further up the trail than the button.  This flag
-     * is used to ignore the first 'down' event, which is the one that the button received.
-     * If we don't do this, then we never see the list because it is immediately popped down.
-     * This behavior may change, and is being discussed in scenery#58.
-     */
-    this.enableClickToDismissListener = false;
-
     // @private the display that clickToDismissListener is added to, because the scene may change, see sun#14
     this.display = null;
 
     // @private listener for 'click outside to dismiss'
     // TODO sun#314 handle this logic for a11y too, perhaps on by monitoring the focusout event on the display's root PDOM element
     this.clickToDismissListener = {
-      down: this.hideListFromClick.bind( this )
+      down: () => { this.hideList(); }
     };
 
-    // determine uniform dimensions for button and list items (including margins)
-    const itemWidth = Math.max.apply( Math, _.map( items, 'node.width' ) ) + 2 * options.itemXMargin;
-    const itemHeight = Math.max.apply( Math, _.map( items, 'node.height' ) ) + 2 * options.itemYMargin;
+    // Compute max item dimensions
+    const maxItemWidth = _.maxBy( items, item => item.node.width ).node.width;
+    const maxItemHeight = _.maxBy( items, item => item.node.height ).node.height;
 
-    const listWidth = itemWidth + ( 2 * options.buttonXMargin );
-    const listHeight = ( items.length * itemHeight ) + ( 2 * options.listYMargin );
+    // Uniform dimensions for highlighted item in the list
+    const highlightWidth = maxItemWidth + options.xMargin;
+    const highlightHeight = maxItemHeight + options.yMargin;
 
-    //TODO #430 factor out ListNode inner class, to handle all list responsibilities
+    // List dimensions
+    const listWidth = highlightWidth + options.xMargin;
+    const listHeight = ( items.length * highlightHeight ) + options.yMargin;
+
+    //TODO #445 factor out ComboBoxListBox, to handle all list responsibilities
     // @private the popup list
     this.listNode = new Rectangle( 0, 0, listWidth, listHeight, {
-      cornerRadius: options.listCornerRadius,
+      cornerRadius: options.cornerRadius,
       fill: options.listFill,
       stroke: options.listStroke,
       lineWidth: options.listLineWidth,
@@ -141,49 +137,32 @@ define( require => {
     listParent.addChild( this.listNode );
     this.listParent = listParent; // @private
 
-    // Highlights an item in the list
-    const highlightItem = itemNodeWrapper => {
-      assert && assert( itemNodeWrapper instanceof Rectangle, 'invalid itemNodeWrapper: ' + itemNodeWrapper );
-      itemNodeWrapper.fill = options.itemHighlightFill;
-      itemNodeWrapper.stroke = options.itemHighlightStroke;
-    };
-
-    // Un-highlights an item in the list
-    const unhighlightItem = itemNodeWrapper => {
-      assert && assert( itemNodeWrapper instanceof Rectangle, 'invalid itemNodeWrapper: ' + itemNodeWrapper );
-      itemNodeWrapper.fill = null;
-      itemNodeWrapper.stroke = null;
-    };
-
-    // TODO sun#405 It seems it would be better to use FireListener on each ComboBoxItemNode
+    // TODO sun#405 It seems it would be better to use FireListener on each ComboBoxListItemNode
     const firedEmitter = new Emitter( {
       tandem: options.tandem.createTandem( 'firedEmitter' ),
       phetioType: EmitterIO( [ { name: 'event', type: VoidIO } ] ), // TODO sun#405 Should this be EventIO or DOMEventIO?
       listener: event => {
-        const itemNodeWrapper = event.currentTarget; // {Rectangle}
-
-        unhighlightItem( itemNodeWrapper );
+        const listItemNode = event.currentTarget; // {Rectangle}
+        assert && assert( listItemNode instanceof ComboBoxListItemNode, 'expected a ComboBoxListItemNode' );
 
         // a11y - keep this PDOM attribute in sync
-        this.updateActiveDescendant( itemNodeWrapper );
+        this.updateActiveDescendant( listItemNode );
 
         this.hideList();
+        listItemNode.setHighlightVisible( false );
         event.abort(); // prevent nodes (eg, controls) behind the list from receiving the event
 
-        //TODO #430 this is brittle, should be handled better when we factor out ListNode
-        const itemNode = itemNodeWrapper.children[ 0 ];
-        assert && assert( itemNode instanceof ComboBoxItemNode, 'expected the wrapper child to be ComboBoxItemNode' );
-        property.value = itemNode.item.value;
+        property.value = listItemNode.item.value;
       }
     } );
 
     // listener that we'll attach to each item in the list
     const itemListener = {
       enter( event ) {
-        highlightItem( event.currentTarget );
+        event.currentTarget.setHighlightVisible( true );
       },
       exit( event ) {
-        unhighlightItem( event.currentTarget );
+        event.currentTarget.setHighlightVisible( false );
       },
       down( event ) {
         event.abort(); // prevent click-to-dismiss on the list
@@ -195,59 +174,62 @@ define( require => {
 
     // guard against the enter key triggering a keydown on a selected item AND then a click event on the button once
     // focus moves over there.
-    let fromA11yEnterKey = false;
+    //TODO address sun#447
+    // let fromA11yEnterKey = false;
 
     // @private populate list with items
-    this.itemNodes = [];
+    this.listItemNodes = [];
     items.forEach( ( item, index ) => {
 
       // Create the list item node
-      const itemNode = new ComboBoxItemNode( item, itemWidth, itemHeight, {
-        xMargin: options.itemXMargin,
-        tandem: item.tandemName ? options.tandem.createTandem( item.tandemName ) : Tandem.optional
+      const listItemNode = new ComboBoxListItemNode( item, highlightWidth, highlightHeight, {
+        align: options.align,
+        highlightFill: options.highlightFill,
+        
+        // highlight overlaps half of margins
+        xMargin: 0.5 * options.xMargin,
+        left: 0.5 * options.xMargin,
+        top: ( 0.5 * options.yMargin ) + ( index * highlightHeight ),
+        tandem: item.tandemName ? options.tandem.createTandem( item.tandemName ) : Tandem.optional,
+        a11yLabel: item.a11yLabel
       } );
-      this.itemNodes.push( itemNode );
-
-      // ComboBoxItemNodes are shared between the list and button, so parent the itemNode with a Rectangle that we can highlight.
-      const itemNodeWrapper = new Rectangle( 0, 0, itemNode.width, itemNode.height, {
-        children: [ itemNode ],
-        inputListeners: [ itemListener ],
-        align: options.align, //TODO sun#430 options.align is currently broken
-        left: options.buttonXMargin,
-        top: options.listYMargin + ( index * itemHeight ),
-        cursor: 'pointer'
-      } );
-      this.listNode.addChild( itemNodeWrapper );
+      listItemNode.addInputListener( itemListener );
+      this.listItemNodes.push( listItemNode );
+      this.listNode.addChild( listItemNode );
 
       //TODO sun#314 a11yClickListener should not be assigned here, it should be set via options or a setter method
       // a11y - select the property and close on a click event from assistive technology, must be removed in disposal
-      // of combobox item. Keep track of it on the itemNode for disposal.
-      itemNode.a11yClickListener = itemNode.addInputListener( {
+      // of combobox item. Keep track of it on the listItemNode for disposal.
+      listItemNode.a11yClickListener = {
         keydown: event => {
           if ( KeyboardUtil.KEY_ENTER === event.domEvent.keyCode || KeyboardUtil.KEY_SPACE === event.domEvent.keyCode ) {
-            fromA11yEnterKey = KeyboardUtil.KEY_ENTER === event.domEvent.keyCode; // only for the enter key
+
+            //TODO address sun#447
+            // fromA11yEnterKey = KeyboardUtil.KEY_ENTER === event.domEvent.keyCode; // only for the enter key
             property.value = item.value;
             this.hideList();
-            this.buttonNode.focus();
+            this.button.focus();
 
             // a11y - keep this PDOM attribute in sync
-            this.updateActiveDescendant( itemNode );
+            this.updateActiveDescendant( listItemNode );
           }
         }
-      } );
+      };
+      listItemNode.addInputListener( listItemNode.a11yClickListener );
     } );
 
-    // @private {ComboBoxItemNode} - a11y
+    // @private {ComboBoxListItemNode} - a11y
     // tracks which item node has focus to make it easy to focus next/previous item after keydown
     this.focusedItem = null;
 
+    // TODO: sun#314 is this how you have a reference to a listener to remove?
     // keep track of the input listener for removal
     const handleKeyDown = this.listNode.addInputListener( {
       keydown: event => {
         var domEvent = event.domEvent;
         if ( domEvent.keyCode === KeyboardUtil.KEY_ESCAPE ) {
           this.hideList();
-          this.buttonNode.focus();
+          this.button.focus();
         }
         else if ( domEvent.keyCode === KeyboardUtil.KEY_DOWN_ARROW || domEvent.keyCode === KeyboardUtil.KEY_UP_ARROW ) {
           const direction = domEvent.keyCode === KeyboardUtil.KEY_DOWN_ARROW ? 1 : -1;
@@ -276,64 +258,51 @@ define( require => {
       }
     } );
 
-    // Cherry pick button options
-    const buttonOptions = _.pick( options, _.keys( ComboBoxButtonNode.DEFAULT_OPTIONS ) );
-    buttonOptions.arrowDirection = ( options.listPosition === 'below' ) ? 'down' : 'up';
-
-    // @private button, will be set to correct value when property observer is registered
-    this.buttonNode = new ComboBoxButtonNode( this.getItemNode( property.value ), buttonOptions);
-    this.addChild( this.buttonNode );
+    // @private button that shows the current selection
+    this.button = new ComboBoxButton( property, items, {
+      align: options.align,
+      arrowHeight: options.arrowHeight,
+      arrowDirection: ( options.listPosition === 'below' ) ? 'down' : 'up',
+      cornerRadius: options.cornerRadius,
+      xMargin: options.xMargin,
+      yMargin: options.yMargin,
+      baseColor: options.buttonFill,
+      stroke: options.buttonStroke,
+      lineWidth: options.buttonLineWidth
+      //TODO sun#314 need to pass a11yLabel?
+    } );
+    this.addChild( this.button );
 
     // a11y - the list is labeled by the button's label
     this.listNode.addAriaLabelledbyAssociation( {
-      otherNode: this.buttonNode,
+      otherNode: this.button,
       otherElementName: AccessiblePeer.LABEL_SIBLING,
       thisElementName: AccessiblePeer.PRIMARY_SIBLING
     } );
 
     // button interactivity
-    this.buttonNode.cursor = 'pointer';
-    this.buttonNode.addInputListener( {
-      down: this.showList.bind( this )
-    } );
+    this.button.addListener( () => { this.showList(); } );
 
-    //TODO sun#314 This should not be done by reaching into buttonNode. a11yListener should be set via options or a setter method
-    // add the buttonNode accessibility listener
-    this.buttonNode.a11yListener = {
-      click: () => {
+    // add the button accessibility listener
+    this.button.addInputListener( {
+      a11yclick: () => {
 
-        // if already visible, hide it
+        //TODO sun#314 order dependency, requires that showList was called first by button listener
         if ( this.listNode.visible ) {
-          this.hideList();
-          this.buttonNode.focus();
-        }
 
-        // Otherwise show the list and manage focus properly. But be tolerant of the "double enter" loop case, where
-        // this click event is coming from selecting an item with a11y, and then auto focusing the button.
-        else if ( !fromA11yEnterKey ) {
-          this.showList();
-
-          // focus the selected item
           for ( let i = 0; i < this.listNode.children.length; i++ ) {
 
-            //TODO #430 this is brittle, should be handled better when we factor out ListNode
-            const itemNodeWrapper = this.listNode.children[ i ];
-            const itemNode = itemNodeWrapper.children[ 0 ];
-            assert && assert( itemNode instanceof ComboBoxItemNode, 'expected ComboBoxItemNode' );
+            const listItemNode = this.listNode.children[ i ];
 
-            if ( property.value === itemNode.item.value ) {
-              this.focusedItem = itemNode;
+            if ( property.value === listItemNode.item.value ) {
+              this.focusedItem = listItemNode;
               this.focusedItem.a11yFocusButton();
             }
           }
         }
-
-        // should only need to disable the event once if coming from the enter key on selecting the item node
-        else {
-          fromA11yEnterKey = false;
-        }
       },
 
+      //TODO sun#314 why is this on the button, shouldn't it be on the list?
       // listen for escape to hide the list when focused on the button
       keydown: event => {
         if ( this.listNode.visible ) {
@@ -342,20 +311,13 @@ define( require => {
           }
         }
       }
-    };
-    this.buttonNode.addInputListener( this.buttonNode.a11yListener );
+    } );
 
     // layout
     if ( options.labelNode ) {
-      this.buttonNode.left = options.labelNode.right + options.labelXSpacing;
-      this.buttonNode.centerY = options.labelNode.centerY;
+      this.button.left = options.labelNode.right + options.labelXSpacing;
+      this.button.centerY = options.labelNode.centerY;
     }
-
-    // when property changes, update button, and for a11y the list in the PDOM
-    const propertyObserver = value => {
-      this.buttonNode.setItemNode( this.getItemNode( value ) );
-    };
-    property.link( propertyObserver );
 
     this.mutate( options );
 
@@ -369,22 +331,19 @@ define( require => {
     // @private called by dispose
     this.disposeComboBox = () => {
 
-      if ( property.hasListener( propertyObserver ) ) {
-        property.unlink( propertyObserver );
-      }
       if ( this.enabledProperty.hasListener( enabledObserver ) ) {
         this.enabledProperty.unlink( enabledObserver );
       }
 
-      // Unregister itemNode tandems as well
-      for ( let i = 0; i < this.itemNodes; i++ ) {
-        this.itemNodes[ i ].dispose();
+      // Unregister listItemNode tandems as well
+      for ( let i = 0; i < this.listItemNodes; i++ ) {
+        this.listItemNodes[ i ].dispose();
       }
 
       // remove a11y listeners
       this.listNode.removeInputListener( handleKeyDown );
 
-      this.buttonNode.dispose();
+      this.button.dispose();
     };
 
     // support for binder documentation, stripped out in builds and only runs when ?binder is specified
@@ -422,28 +381,14 @@ define( require => {
       return item;
     },
 
-    /**
-     * Gets the ComboBoxItemNode associated with a specified value.
-     * @param {*} value
-     * @returns {ComboBoxItemNode} itemNode
-     * @private
-     */
-    getItemNode( value ) {
-      const item = this.getItem( value );
-      const itemNode = _.find( this.itemNodes, child => {
-        return ( child instanceof ComboBoxItemNode && child.item === item );
-      } );
-      assert && assert( itemNode, 'no ComboBoxItemNode is associated with item: ' + item );
-      return itemNode;
-    },
-
+    // TODO: sun#314 we don't likely need this anymore
     // @private - update this attribute on the listNode. This changes as you interact
     // with the comboBox, as well as when an item is selected.
-    updateActiveDescendant( itemNode ) {
+    updateActiveDescendant( listItemNode ) {
 
       // overwrite purposefully
       this.listNode.activeDescendantAssociations = [ {
-        otherNode: itemNode,
+        otherNode: listItemNode,
         thisElementName: AccessiblePeer.PRIMARY_SIBLING,
         otherElementName: AccessiblePeer.PRIMARY_SIBLING
       } ];
@@ -461,24 +406,10 @@ define( require => {
         this.moveList();
         this.listNode.moveToFront();
         this.listNode.visible = true;
-        this.enableClickToDismissListener = false;
         this.display = this.getUniqueTrail().rootNode().getRootedDisplays()[ 0 ];
         this.display.addInputListener( this.clickToDismissListener );
 
         this.phetioEndEvent();
-      }
-    },
-
-    //TODO sun#314 document
-    /**
-     * @public
-     */
-    hideListFromClick() {
-      if ( this.enableClickToDismissListener ) {
-        this.hideList();
-      }
-      else {
-        this.enableClickToDismissListener = true;
       }
     },
 
@@ -510,13 +441,13 @@ define( require => {
      */
     moveList() {
       if ( this.listPosition === 'above' ) {
-        const pButtonGlobal = this.localToGlobalPoint( new Vector2( this.buttonNode.left, this.buttonNode.top ) );
+        const pButtonGlobal = this.localToGlobalPoint( new Vector2( this.button.left, this.button.top ) );
         const pButtonLocal = this.listParent.globalToLocalPoint( pButtonGlobal );
         this.listNode.left = pButtonLocal.x;
         this.listNode.bottom = pButtonLocal.y;
       }
       else {
-        const pButtonGlobal = this.localToGlobalPoint( new Vector2( this.buttonNode.left, this.buttonNode.bottom ) );
+        const pButtonGlobal = this.localToGlobalPoint( new Vector2( this.button.left, this.button.bottom ) );
         const pButtonLocal = this.listParent.globalToLocalPoint( pButtonGlobal );
         this.listNode.left = pButtonLocal.x;
         this.listNode.top = pButtonLocal.y;

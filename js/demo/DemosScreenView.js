@@ -33,7 +33,8 @@ define( function( require ) {
     options = _.extend( {
       comboBoxLocation: new Vector2( 20, 20 ), // {Vector2} location of ComboBox used to select a demo
       comboBoxItemFont: new PhetFont( 20 ), // {Font} font used for ComboBox items
-      comboBoxItemYMargin: 6, // {number} y margin around ComboBox items
+      comboBoxItemXMargin: 12, // {number} x margin around ComboBox items
+      comboBoxItemYMargin: 12, // {number} y margin around ComboBox items
       selectedDemoLabel: null, // {string|null} label field of the demo to be selected initially
 
       // {boolean} see https://github.com/phetsims/sun/issues/386
@@ -86,7 +87,8 @@ define( function( require ) {
     var selectedDemoProperty = new Property( selectedDemo );
     var comboBox = new ComboBox( comboBoxItems, selectedDemoProperty, listParent, {
       buttonFill: 'rgb( 218, 236, 255 )',
-      itemYMargin: options.comboBoxItemYMargin,
+      xMargin: options.comboBoxItemXMargin,
+      yMargin: options.comboBoxItemYMargin,
       top: options.comboBoxLocation.x,
       left: options.comboBoxLocation.y,
       tandem: options.tandem.createTandem( 'comboBox' )

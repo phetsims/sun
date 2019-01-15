@@ -97,6 +97,9 @@ define( function( require ) {
       enabledPropertyOptions: null, // {Object} options applied to the default enabledProperty
       enabledRangeProperty: null, // {Property.<Range>|null} determine the portion of range that is enabled
 
+      // a11y - if false, Slider will not be keyboard navigable and have no representation in the PDOM
+      isAccessible: true,
+
       // phet-io
       tandem: Tandem.required,
       phetioType: SliderIO
@@ -262,9 +265,6 @@ define( function( require ) {
     };
     this.enabledProperty.link( enabledObserver ); // must be unlinked in disposeSlider
 
-    // a11y - custom focus highlight that surrounds and moves with the thumb
-    this.focusHighlight = new FocusHighlightFromNode( thumb );
-
     // update thumb location when value changes
     var valueObserver = function( value ) {
       thumb.centerX = self.valueToPosition( value );
@@ -298,18 +298,29 @@ define( function( require ) {
     this.disposeSlider = function() {
       thumb.dispose && thumb.dispose(); // in case a custom thumb is provided via options.thumbNode that doesn't implement dispose
       self.track.dispose();
-      self.disposeAccessibleSlider(); // dispose accessibility
+
+      if ( options.isAccessible ) {
+        self.disposeAccessibleSlider();
+      }
+
       valueProperty.unlink( valueObserver );
       ownsEnabledRangeProperty && self.enabledRangeProperty.dispose();
       ownsEnabledProperty && self.enabledProperty.dispose();
       thumbInputListener.dispose();
     };
 
-    // mix accessible slider functionality into Slider
-    this.initializeAccessibleSlider( valueProperty, this.enabledRangeProperty, this.enabledProperty,
-      _.extend( {}, options, {
-        ariaOrientation: options.orientation
-      } ) );
+    // a11y - custom focus highlight that surrounds and moves with the thumb, set outside of options.isAccessible
+    // check because some composite types that include Slider may use the focus highlight, regardless of whether or
+    // not it is accessible
+    this.focusHighlight = new FocusHighlightFromNode( thumb );
+
+    if ( options.isAccessible ) {
+      this.initializeAccessibleSlider( valueProperty, this.enabledRangeProperty, this.enabledProperty,
+        _.extend( {}, options, {
+          ariaOrientation: options.orientation
+        }
+      ) ); 
+    }
 
     // support for binder documentation, stripped out in builds and only runs when ?binder is specified
     assert && phet.chipper.queryParameters.binder && InstanceRegistry.registerDataURL( 'sun', 'Slider', this );
