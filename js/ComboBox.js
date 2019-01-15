@@ -117,7 +117,7 @@ define( require => {
     const listWidth = highlightWidth + options.xMargin;
     const listHeight = ( items.length * highlightHeight ) + options.yMargin;
 
-    //TODO #430 factor out ComboBoxListBox, to handle all list responsibilities
+    //TODO #445 factor out ComboBoxListBox, to handle all list responsibilities
     // @private the popup list
     this.listNode = new Rectangle( 0, 0, listWidth, listHeight, {
       cornerRadius: options.cornerRadius,
