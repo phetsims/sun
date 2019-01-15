@@ -33,15 +33,6 @@ define( require => {
   const LIST_POSITION_VALUES = [ 'above', 'below' ];
   const ALIGN_VALUES = [ 'left', 'right', 'center' ];
 
-  //TODO fix renamed options in client code
-  // X listCornerRadius -> cornerRadius
-  // X itemHighlightFill -> highlightFill
-  // X itemHighlightStroke deleted
-  // X buttonCornerRadius: 8,
-  // buttonXMargin: 10,
-  // buttonYMargin: 4,
-
-  //TODO sun#430 change order of items and property
   /**
    * @param {*[]} items - must be created using ComboBox.createItem
    * @param {Property} property
