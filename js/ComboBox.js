@@ -62,7 +62,7 @@ define( require => {
       buttonFill: 'white',
       buttonStroke: 'black',
       buttonLineWidth: 1,
-      arrowHeight: null, // {number|null} defaults to max item height
+      arrowHeight: null, // {number|null} if null, ComboBoxButton computes a default
 
       // list
       listFill: 'white',
