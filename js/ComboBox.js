@@ -53,7 +53,7 @@ define( require => {
       cornerRadius: 8, // {number} applied to list and button
       highlightFill: 'rgb( 245, 245, 245 )', // highlight behind items in the list
 
-      // Margin around the edges of the list when highlight is invisible.
+      // Margins around the edges of the list when highlight is invisible.
       // Highlight margins around the items in the list are set to 1/2 of these values.
       xMargin: 12,
       yMargin: 8,
