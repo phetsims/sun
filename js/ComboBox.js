@@ -222,6 +222,7 @@ define( require => {
     // tracks which item node has focus to make it easy to focus next/previous item after keydown
     this.focusedItem = null;
 
+    // TODO: sun#314 is this how you have a reference to a listener to remove?
     // keep track of the input listener for removal
     const handleKeyDown = this.listNode.addInputListener( {
       keydown: event => {
@@ -380,6 +381,7 @@ define( require => {
       return item;
     },
 
+    // TODO: sun#314 we don't likely need this anymore
     // @private - update this attribute on the listNode. This changes as you interact
     // with the comboBox, as well as when an item is selected.
     updateActiveDescendant( listItemNode ) {
