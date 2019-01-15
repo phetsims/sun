@@ -248,6 +248,7 @@ define( function( require ) {
             self.removeInputListener( accessibleInputListener );
           };
         },
+        
         /**
          * Get the mapped value to be read by AT.
          *
@@ -377,7 +378,7 @@ define( function( require ) {
 
         /**
          * Handle the keydown event so that this node behaves like a traditional HTML slider (input of type range).
-         * @public
+         * @private
          *
          * @param {Event} event
          */
@@ -466,7 +467,7 @@ define( function( require ) {
         /**
          * Handle key up event on this accessible slider, managing the shift key, and calling an optional endDrag
          * function on release.
-         * @public
+         * @private
          *
          * @param {Event} event
          */
@@ -500,6 +501,8 @@ define( function( require ) {
          * VoiceOver sends a "change" event to the slider (NOT an input event), so we need to handle the case when
          * a change event is sent but an input event ins't handled. Guarded against the case that BOTH change and
          * input are sent to the browser by the AT.
+         * @private
+         * 
          * @param  {Event} event
          */
         handleChange: function( event ) {
@@ -518,7 +521,7 @@ define( function( require ) {
          * Note that it is important to handle the "input" event, rather than the "change" event. The "input" will
          * fire when the value changes from a gesture, while the "change" will only happen on submission, like as
          * navigating away from the element.
-         * @public
+         * @private
          *
          * @param {Event} event
          */
@@ -562,7 +565,7 @@ define( function( require ) {
 
         /**
          * Fires when the accessible slider loses focus.
-         * @public
+         * @private
          */
         handleBlur: function() {
 
