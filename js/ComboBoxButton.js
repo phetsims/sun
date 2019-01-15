@@ -3,7 +3,8 @@
 //TODO sun#430 extend RectangularPushButton
 /**
  * The button on a combo box box.  Displays the current selection on the button.
- *
+ * Typically instantiated by ComboBox, not by client code.
+ * 
  * @author Chris Malley (PixelZoom, Inc.)
  */
 define( require => {
