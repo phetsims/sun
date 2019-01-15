@@ -1,6 +1,6 @@
 // Copyright 2019, University of Colorado Boulder
 
-//TODO sun#430 extend RectangularPushButton
+//TODO sun#446 extend RectangularPushButton
 /**
  * The button on a combo box box.  Displays the current selection on the button.
  * Typically instantiated by ComboBox, not by client code.
