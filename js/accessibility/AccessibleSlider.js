@@ -399,7 +399,7 @@ define( function( require ) {
 
               // if this is the first keydown this is the start of the drag interaction
               if ( !this.anyKeysDown() ) {
-                this._startDrag();
+                this._startDrag( event );
               }
 
               // track that a new key is being held down
@@ -490,7 +490,7 @@ define( function( require ) {
 
               // when all range keys are released, we are done dragging
               if ( this.allKeysUp() ) {
-                this._endDrag();
+                this._endDrag( event );
               }
             }
           }

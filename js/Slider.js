@@ -222,7 +222,7 @@ define( function( require ) {
 
       start: function( event, trail ) {
         if ( self.enabledProperty.get() ) {
-          options.startDrag();
+          options.startDrag( event );
           var transform = trail.subtrailTo( sliderPartsNode ).getTransform();
 
           // Determine the offset relative to the center of the thumb
@@ -240,9 +240,9 @@ define( function( require ) {
         }
       },
 
-      end: function() {
+      end: function( event ) {
         if ( self.enabledProperty.get() ) {
-          options.endDrag();
+          options.endDrag( event );
         }
       }
     } );
