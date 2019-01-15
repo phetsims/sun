@@ -52,8 +52,11 @@ define( require => {
       disabledOpacity: 0.5, // {number} opacity used to make the control look disabled
       cornerRadius: 8, // {number} applied to list and button
       highlightFill: 'rgb( 245, 245, 245 )', // highlight behind items in the list
-      xMargin: 12, // margin on left and right of the list when highlight is invisible
-      yMargin: 8, // margin on top and bottom of the list when highlight is invisible
+
+      // Margin around the edges of the list when highlight is invisible.
+      // Highlight margins around the items in the list are set to 1/2 of these values.
+      xMargin: 12,
+      yMargin: 8,
 
       // button
       buttonFill: 'white',
