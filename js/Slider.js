@@ -251,10 +251,6 @@ define( function( require ) {
     } );
     thumb.addInputListener( thumbInputListener );
 
-    // @public (read-only( {BooleanProperty} - Make the property the indicates whether the thumb is being dragged
-    // available to clients of the slider.
-    this.isThumbDraggingProperty = thumbInputListener.isDraggingProperty;
-
     // enable/disable
     var enabledObserver = function( enabled ) {
       self.cursor = self.enabledProperty.get() ? options.cursor : 'default';
