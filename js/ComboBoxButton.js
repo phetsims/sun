@@ -45,11 +45,10 @@ define( require => {
         cursor: 'pointer',
         baseColor: 'white',
         buttonAppearanceStrategy: RectangularButtonView.FlatAppearanceStrategy,
-        xMargin: 10, // margin on the left and right of the item
-        yMargin: 10, // margin on the top and bottom of the item
+        xMargin: 12,
+        yMargin: 6,
         stroke: 'black',
         lineWidth: 1,
-        cornerRadius: 8,
 
         // phet-io
         tandem: Tandem.optional,
