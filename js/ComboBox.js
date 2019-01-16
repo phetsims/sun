@@ -222,9 +222,8 @@ define( require => {
     // tracks which item node has focus to make it easy to focus next/previous item after keydown
     this.focusedItem = null;
 
-    // TODO: sun#314 is this how you have a reference to a listener to remove?
     // keep track of the input listener for removal
-    const handleKeyDown = this.listNode.addInputListener( {
+    const keyDownListener = {
       keydown: event => {
         var domEvent = event.domEvent;
         if ( domEvent.keyCode === KeyboardUtil.KEY_ESCAPE ) {
@@ -256,7 +255,8 @@ define( require => {
           this.hideList();
         }
       }
-    } );
+    };
+    this.listNode.addInputListener( keyDownListener );
 
     // @private button that shows the current selection
     this.button = new ComboBoxButton( property, items, {
@@ -341,7 +341,7 @@ define( require => {
       }
 
       // remove a11y listeners
-      this.listNode.removeInputListener( handleKeyDown );
+      this.listNode.removeInputListener( keyDownListener );
 
       this.button.dispose();
     };
