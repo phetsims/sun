@@ -31,11 +31,15 @@ define( function( require ) {
   function DemosScreenView( demos, options ) {
 
     options = _.extend( {
+
+      selectedDemoLabel: null, // {string|null} label field of the demo to be selected initially
+
+      // options related to the ComboBox that selects the demo
+      comboBoxCornerRadius: 4,
       comboBoxLocation: new Vector2( 20, 20 ), // {Vector2} location of ComboBox used to select a demo
       comboBoxItemFont: new PhetFont( 20 ), // {Font} font used for ComboBox items
       comboBoxItemXMargin: 12, // {number} x margin around ComboBox items
       comboBoxItemYMargin: 12, // {number} y margin around ComboBox items
-      selectedDemoLabel: null, // {string|null} label field of the demo to be selected initially
 
       // {boolean} see https://github.com/phetsims/sun/issues/386
       // true = caches Nodes for all demos that have been selected
@@ -87,6 +91,7 @@ define( function( require ) {
     var selectedDemoProperty = new Property( selectedDemo );
     var comboBox = new ComboBox( comboBoxItems, selectedDemoProperty, listParent, {
       buttonFill: 'rgb( 218, 236, 255 )',
+      cornerRadius: options.comboBoxCornerRadius,
       xMargin: options.comboBoxItemXMargin,
       yMargin: options.comboBoxItemYMargin,
       top: options.comboBoxLocation.x,
