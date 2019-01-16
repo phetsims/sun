@@ -413,10 +413,9 @@ define( require => {
       }
     },
 
-    //TODO sun#314 if "Most often should be called from hideListFromClick" then why is this called 6 times from other places, which hideListFromClick is called once?
     /**
-     * Hides the combo box list. Most often should be called from hideListFromClick
-     * @private
+     * Hides the combo box list.
+     * @public
      */
     hideList() {
       this.phetioStartEvent( 'popupHidden' );
