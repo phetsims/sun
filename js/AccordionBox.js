@@ -438,10 +438,10 @@ define( function( require ) {
       // Limit width by the necessary space for the title node
       if ( this._titleAlignX === 'center' ) {
         // Handles case where the spacing on the left side of the title is larger than the spacing on the right side.
-        width = Math.max( width, (this._buttonXMargin + this.expandCollapseButton.width + this._titleXSpacing) * 2 + this.titleNode.width );
+        width = Math.max( width, ( this._buttonXMargin + this.expandCollapseButton.width + this._titleXSpacing ) * 2 + this.titleNode.width );
 
         // Handles case where the spacing on the right side of the title is larger than the spacing on the left side.
-        width = Math.max( width, (this._titleXMargin) * 2 + this.titleNode.width );
+        width = Math.max( width, ( this._titleXMargin ) * 2 + this.titleNode.width );
       }
 
       // Compare width of title section to content section of the accordion box

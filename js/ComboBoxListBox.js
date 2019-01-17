@@ -222,7 +222,7 @@ define( require => {
       this.disposeComboBoxListBox();
       super.dispose();
     }
-    
+
     /**
      * Updates the focus to match the currently selected value.
      * @public

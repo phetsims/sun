@@ -19,6 +19,7 @@ define( function( require ) {
   var Checkbox = require( 'SUN/Checkbox' );
   var Circle = require( 'SCENERY/nodes/Circle' );
   var ComboBox = require( 'SUN/ComboBox' );
+  var ComboBoxItem = require( 'SUN/ComboBoxItem' );
   var DemosScreenView = require( 'SUN/demo/DemosScreenView' );
   var Dimension2 = require( 'DOT/Dimension2' );
   var HBox = require( 'SCENERY/nodes/HBox' );
@@ -141,7 +142,7 @@ define( function( require ) {
     var labels = [ 'one', 'two', 'three', 'four', 'five', 'six' ];
     var items = [];
     labels.forEach( function( label ) {
-      items.push( ComboBox.createItem( new Text( label, { font: new PhetFont( { size: 20 } ) } ), label ) );
+      items.push( new ComboBoxItem( new Text( label, { font: new PhetFont( { size: 20 } ) } ), label ) );
     } );
 
     var selectedItemProperty = new Property( labels[ 0 ] );

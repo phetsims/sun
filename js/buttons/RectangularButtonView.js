@@ -36,10 +36,10 @@ define( function( require ) {
   // convenience function for creating the shape of the button, done to avoid code duplication
   function createButtonShape( width, height, options ) {
     return Shape.roundedRectangleWithRadii( 0, 0, width, height, {
-      topLeft: typeof( options.leftTopCornerRadius ) === 'number' ? options.leftTopCornerRadius : options.cornerRadius,
-      topRight: typeof( options.rightTopCornerRadius ) === 'number' ? options.rightTopCornerRadius : options.cornerRadius,
-      bottomLeft: typeof( options.leftBottomCornerRadius ) === 'number' ? options.leftBottomCornerRadius : options.cornerRadius,
-      bottomRight: typeof( options.rightBottomCornerRadius ) === 'number' ? options.rightBottomCornerRadius : options.cornerRadius
+      topLeft: typeof ( options.leftTopCornerRadius ) === 'number' ? options.leftTopCornerRadius : options.cornerRadius,
+      topRight: typeof ( options.rightTopCornerRadius ) === 'number' ? options.rightTopCornerRadius : options.cornerRadius,
+      bottomLeft: typeof ( options.leftBottomCornerRadius ) === 'number' ? options.leftBottomCornerRadius : options.cornerRadius,
+      bottomRight: typeof ( options.rightBottomCornerRadius ) === 'number' ? options.rightBottomCornerRadius : options.cornerRadius
     } );
   }
 
@@ -300,7 +300,7 @@ define( function( require ) {
       enabledStroke = null;
       disabledStroke = null;
     }
-    else if ( typeof( options.stroke ) === 'undefined' ) {
+    else if ( typeof ( options.stroke ) === 'undefined' ) {
       // No stroke was defined, but it wasn't set to null, so default to a stroke based on the base color of the
       // button.  This behavior is a bit unconventional for Scenery nodes, but it makes the buttons look much better.
       enabledStroke = baseDarker4;
@@ -429,7 +429,7 @@ define( function( require ) {
       enabledStroke = null;
       disabledStroke = null;
     }
-    else if ( typeof( options.stroke ) === 'undefined' ) {
+    else if ( typeof ( options.stroke ) === 'undefined' ) {
       // No stroke was defined, but it wasn't set to null, so default to a stroke based on the base color of the
       // button.  This behavior is a bit unconventional for Scenery nodes, but it makes the buttons look much better.
       enabledStroke = baseDarker4;

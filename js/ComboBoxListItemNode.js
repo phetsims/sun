@@ -45,7 +45,7 @@ define( require => {
         tagName: 'li',
         ariaRole: 'option',
         a11yLabel: null
-        
+
       }, options );
 
       // Highlight rectangle

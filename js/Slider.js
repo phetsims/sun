@@ -313,9 +313,9 @@ define( function( require ) {
     if ( options.isAccessible ) {
       this.initializeAccessibleSlider( valueProperty, this.enabledRangeProperty, this.enabledProperty,
         _.extend( {}, options, {
-          ariaOrientation: options.orientation
-        }
-      ) ); 
+            ariaOrientation: options.orientation
+          }
+        ) );
     }
 
     // support for binder documentation, stripped out in builds and only runs when ?binder is specified
