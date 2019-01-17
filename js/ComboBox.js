@@ -274,8 +274,15 @@ define( require => {
       thisElementName: AccessiblePeer.PRIMARY_SIBLING
     } );
 
-    // button interactivity
-    this.button.addListener( () => { this.showList(); } );
+    // Clicking on the button toggles visibility of the list
+    this.button.addListener( () => {
+      if ( !this.listBox.visible ) {
+        this.showList();
+      }
+      else {
+        this.hideList();
+      }
+    } );
 
     // add the button accessibility listener
     this.button.addInputListener( {
@@ -318,7 +325,14 @@ define( require => {
     // @private listener for 'click outside to dismiss'
     // TODO sun#314 handle this logic for a11y too, perhaps on by monitoring the focusout event on the display's root PDOM element
     this.clickToDismissListener = {
-      down: () => { this.hideList(); }
+      down: event => {
+
+        //TODO sun#430 is Trail.nodes public? Is there a better way to determine if we clicked over this.button?
+        // Ignore if we click over the button, since the button will handle hiding the list.
+        if ( event.trail.nodes.indexOf( this.button ) === -1 ) {
+          this.hideList();
+        }
+      }
     };
 
     // enable/disable the combo box
