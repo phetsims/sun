@@ -3,7 +3,7 @@
 /**
  * The button on a combo box box.  Displays the current selection on the button.
  * Typically instantiated by ComboBox, not by client code.
- * 
+ *
  * @author Chris Malley (PixelZoom, Inc.)
  */
 define( require => {
@@ -63,7 +63,7 @@ define( require => {
       }, options );
 
       assert && assert( ALIGN_VALUES.includes( options.align ),
-             'invalid align: ' + options.align );
+        'invalid align: ' + options.align );
       assert && assert( ARROW_DIRECTION_VALUES.includes( options.arrowDirection ),
         'invalid arrowDirection: ' + options.arrowDirection );
 
@@ -180,8 +180,8 @@ define( require => {
       // This is NOT reset when the Reset All button is pressed.
       this.displayOnlyProperty = new BooleanProperty( false, {
         tandem: options.tandem.createTandem( 'displayOnlyProperty' ),
-        phetioDocumentation: 'disables interaction with the ComboBox button ' +
-                             'and makes it appear like a display that shows the current selection'
+        phetioDocumentation: 'disables interaction with the ComboBox button and makes it appear like a display that ' +
+                             'shows the current selection'
       } );
       this.displayOnlyProperty.link( displayOnly => {
         arrow.visible = !displayOnly;
