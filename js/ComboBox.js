@@ -51,7 +51,7 @@ define( require => {
       // Margins around the edges of the button and listbox when highlight is invisible.
       // Highlight margins around the items in the list are set to 1/2 of these values.
       xMargin: 12,
-      yMargin: 6,
+      yMargin: 8,
 
       // button
       buttonFill: 'white',
