@@ -38,7 +38,6 @@ define( require => {
       options = _.extend( {
 
         align: 'left', // see ALIGN_VALUES
-        arrowHeight: null, // {number|null} if null, will be computed based on max item height
         arrowDirection: 'down', // see ARROW_DIRECTION_VALUES
         arrowFill: 'black',
 
@@ -67,16 +66,25 @@ define( require => {
       assert && assert( ARROW_DIRECTION_VALUES.includes( options.arrowDirection ),
         'invalid arrowDirection: ' + options.arrowDirection );
 
+      // To improve readability
+      const itemXMargin = options.xMargin;
+
       // Compute max item size
       const maxItemWidth = _.maxBy( items, item => item.node.width ).node.width;
       const maxItemHeight = _.maxBy( items, item => item.node.height ).node.height;
 
-      // Compute arrow size
-      const arrowHeight = options.arrowHeight || ( 0.7 * maxItemHeight ); // height of equilateral triangle
+      // We want the arrow area to be square, see https://github.com/phetsims/sun/issues/453
+      const arrowAreaSize = ( maxItemHeight + 2 * options.yMargin );
+
+      // The arrow is sized to fit in the arrow area, empirically determined to be visually pleasing.
+      const arrowHeight = 0.35 * arrowAreaSize; // height of equilateral triangle
       const arrowWidth = 2 * arrowHeight * Math.sqrt( 3 ) / 3; // side of equilateral triangle
 
-      // invisible horizontal strut behind item, to make alignment of item easier
-      const itemStrut = new HStrut( maxItemWidth );
+      // invisible horizontal struts behind item and arrow areas
+      const itemAreaStrut = new HStrut( maxItemWidth + 2 * itemXMargin );
+      const arrowAreaStrut = new HStrut( arrowAreaSize, {
+        left: itemAreaStrut.right
+      } );
 
       // arrow that points up or down, to indicate which way the list pops up
       let arrowShape = null;
@@ -96,29 +104,32 @@ define( require => {
       }
       const arrow = new Path( arrowShape, {
         fill: options.arrowFill,
-        left: itemStrut.right + ( 2 * options.xMargin ),
-        centerY: itemStrut.centerY
+        center: arrowAreaStrut.center
       } );
 
       // Wrapper for the selected item's Node. Do not transform ComboBoxItem.node because it is shared with list!
       const itemNodeWrapper = new Node();
 
+      // Vertical separator between the item and arrow that is the full height of the button.
+      const separator = new VSeparator( maxItemHeight + 2 * options.yMargin, {
+        stroke: 'black',
+        lineWidth: options.lineWidth,
+        centerX: itemAreaStrut.right,
+        centerY: itemAreaStrut.centerY
+      } );
+
+      // Margins are different in the item and button areas. And we want the vertical separator to extend
+      // beyond the margin.  We've handled those margins above, so the actual margins propagated to the button
+      // need to be zero.
+      options.xMargin = 0;
+      options.yMargin = 0;
+
       assert && assert( !options.content, 'ComboBoxButton sets content' );
       options.content = new Node( {
-        children: [ itemStrut, itemNodeWrapper, arrow ]
+        children: [ itemAreaStrut, arrowAreaStrut, itemNodeWrapper, separator, arrow ]
       } );
 
       super( options );
-
-      // We want the vertical separator between the item and arrow to extend past the margins, for the full height
-      // of the button.  So instead of adding the separator as part of the content, we add it as a decoration.
-      const separator = new VSeparator( this.height, {
-        stroke: 'black',
-        lineWidth: options.lineWidth,
-        centerX: itemStrut.width + ( 2 * options.xMargin ),
-        centerY: this.centerY
-      } );
-      this.addChild( separator );
 
       // When property's value changes, show the corresponding item's Node on the button.
       const propertyObserver = value => {
@@ -137,15 +148,15 @@ define( require => {
         itemNodeWrapper.addChild( node );
 
         // adjust alignment
-        itemNodeWrapper.centerY = itemStrut.centerY;
+        itemNodeWrapper.centerY = itemAreaStrut.centerY;
         if ( options.align === 'left' ) {
-          itemNodeWrapper.left = itemStrut.left;
+          itemNodeWrapper.left = itemAreaStrut.left + itemXMargin;
         }
         else if ( options.align === 'right' ) {
-          itemNodeWrapper.right = itemStrut.right;
+          itemNodeWrapper.right = itemAreaStrut.right - itemXMargin;
         }
         else {
-          itemNodeWrapper.centerX = itemStrut.centerX;
+          itemNodeWrapper.centerX = itemAreaStrut.centerX;
         }
       };
       property.link( propertyObserver );

@@ -56,7 +56,6 @@ define( require => {
       buttonFill: 'white',
       buttonStroke: 'black',
       buttonLineWidth: 1,
-      arrowHeight: null, // {number|null} if null, ComboBoxButton computes a default
 
       // list
       listFill: 'white',
@@ -96,7 +95,6 @@ define( require => {
     // @private button that shows the current selection
     this.button = new ComboBoxButton( property, items, {
       align: options.align,
-      arrowHeight: options.arrowHeight,
       arrowDirection: ( options.listPosition === 'below' ) ? 'down' : 'up',
       cornerRadius: options.cornerRadius,
       xMargin: options.xMargin,

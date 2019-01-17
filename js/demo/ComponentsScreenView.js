@@ -150,6 +150,7 @@ define( function( require ) {
     var listParent = new Node();
 
     var comboBox = new ComboBox( items, selectedItemProperty, listParent, {
+      highlightFill: 'yellow',
       listPosition: 'above'
     } );
 

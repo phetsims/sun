@@ -40,7 +40,7 @@ define( function( require ) {
       comboBoxLocation: new Vector2( 20, 20 ), // {Vector2} location of ComboBox used to select a demo
       comboBoxItemFont: new PhetFont( 20 ), // {Font} font used for ComboBox items
       comboBoxItemXMargin: 12, // {number} x margin around ComboBox items
-      comboBoxItemYMargin: 12, // {number} y margin around ComboBox items
+      comboBoxItemYMargin: 8, // {number} y margin around ComboBox items
 
       // {boolean} see https://github.com/phetsims/sun/issues/386
       // true = caches Nodes for all demos that have been selected
