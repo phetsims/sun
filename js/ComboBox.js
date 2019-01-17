@@ -193,7 +193,7 @@ define( require => {
 
       //TODO sun#314 a11yClickListener should not be assigned here, it should be set via options or a setter method
       // a11y - select the property and close on a click event from assistive technology, must be removed in disposal
-      // of combobox item. Keep track of it on the listItemNode for disposal.
+      // of combo box item. Keep track of it on the listItemNode for disposal.
       listItemNode.a11yClickListener = {
         keydown: event => {
           if ( KeyboardUtil.KEY_ENTER === event.domEvent.keyCode || KeyboardUtil.KEY_SPACE === event.domEvent.keyCode ) {
