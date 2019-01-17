@@ -10,6 +10,7 @@ define( function( require ) {
 
   // modules
   var ComboBox = require( 'SUN/ComboBox' );
+  var ComboBoxItem = require( 'SUN/ComboBoxItem' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Node = require( 'SCENERY/nodes/Node' );
   var PhetFont = require( 'SCENERY_PHET/PhetFont' );
@@ -65,7 +66,7 @@ define( function( require ) {
     // add each demo to the combo box
     var comboBoxItems = [];
     demos.forEach( function( demo ) {
-      comboBoxItems.push( ComboBox.createItem( new Text( demo.label, { font: options.comboBoxItemFont } ), demo, {
+      comboBoxItems.push( new ComboBoxItem( new Text( demo.label, { font: options.comboBoxItemFont } ), demo, {
 
         // demo.label is like ArrowNode or TimerNode, decorate it for use as a tandem.
         tandemName: 'demo' + demo.label + 'ComboBoxItem'
