@@ -26,8 +26,8 @@ define( function( require ) {
         var isValueDown = propertyValue === buttonModel.valueDown;
         return !enabled && isValueDown ? ButtonInteractionState.DISABLED_PRESSED :
                !enabled ? ButtonInteractionState.DISABLED :
-               over && !(looksPressed || isValueDown) ? ButtonInteractionState.OVER :
-               over && (looksPressed || isValueDown) ? ButtonInteractionState.PRESSED :
+               over && !( looksPressed || isValueDown ) ? ButtonInteractionState.OVER :
+               over && ( looksPressed || isValueDown ) ? ButtonInteractionState.PRESSED :
                isValueDown ? ButtonInteractionState.PRESSED :
                ButtonInteractionState.IDLE;
       } );

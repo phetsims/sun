@@ -23,7 +23,7 @@ define( function( require ) {
       [ buttonModel.overProperty, buttonModel.looksPressedProperty, buttonModel.enabledProperty ],
       function( over, looksPressed, enabled ) {
         return !enabled ? ButtonInteractionState.DISABLED :
-               over && !(looksPressed ) ? ButtonInteractionState.OVER :
+               over && !( looksPressed ) ? ButtonInteractionState.OVER :
                looksPressed ? ButtonInteractionState.PRESSED :
                ButtonInteractionState.IDLE;
       }

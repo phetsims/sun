@@ -192,7 +192,7 @@ define( function( require ) {
               // if a key is currently down when focus leaves the spinner, stop callbacks and emit that the
               // keycode is up
               if ( self._a11yUseTimer && downCallback ) {
-                assert && assert( runningTimerCallbackKeyCode !== null, 'key should be down if running downCallback');
+                assert && assert( runningTimerCallbackKeyCode !== null, 'key should be down if running downCallback' );
 
                 self.emitKeyState( runningTimerCallbackKeyCode, false );
                 self._callbackTimer.stop( false );

@@ -248,7 +248,7 @@ define( function( require ) {
             self.removeInputListener( accessibleInputListener );
           };
         },
-        
+
         /**
          * Get the mapped value to be read by AT.
          *
@@ -502,7 +502,7 @@ define( function( require ) {
          * a change event is sent but an input event ins't handled. Guarded against the case that BOTH change and
          * input are sent to the browser by the AT.
          * @private
-         * 
+         *
          * @param  {Event} event
          */
         handleChange: function( event ) {

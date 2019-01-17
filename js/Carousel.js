@@ -127,7 +127,7 @@ define( function( require ) {
 
     // Computations related to layout of items
     var numberOfSeparators = ( options.separatorsVisible ) ? ( items.length - 1 ) : 0;
-    var scrollingLength = ( items.length * ( maxItemLength + options.spacing ) + ( numberOfSeparators * options.spacing) + options.spacing );
+    var scrollingLength = ( items.length * ( maxItemLength + options.spacing ) + ( numberOfSeparators * options.spacing ) + options.spacing );
     var scrollingWidth = isHorizontal ? scrollingLength : ( maxItemWidth + 2 * options.margin );
     var scrollingHeight = isHorizontal ? ( maxItemHeight + 2 * options.margin ) : scrollingLength;
     var itemCenter = options.spacing + ( maxItemLength / 2 );
@@ -252,6 +252,7 @@ define( function( require ) {
 
     // Change pages
     var scrollAnimation = null;
+
     function pageNumberListener( pageNumber ) {
 
       assert && assert( pageNumber >= 0 && pageNumber <= numberOfPages - 1, 'pageNumber out of range: ' + pageNumber );

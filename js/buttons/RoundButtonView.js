@@ -241,7 +241,7 @@ define( function( require ) {
       enabledStroke = null;
       disabledStroke = null;
     }
-    else if ( typeof( options.stroke ) === 'undefined' ) {
+    else if ( typeof ( options.stroke ) === 'undefined' ) {
       // No stroke was defined, but it wasn't set to null, so default to a stroke based on the base color of the
       // button.  This behavior is a bit unconventional for Scenery nodes, but it makes the buttons look much better.
       enabledStroke = baseDarker4;
@@ -366,7 +366,7 @@ define( function( require ) {
       enabledStroke = null;
       disabledStroke = null;
     }
-    else if ( typeof( options.stroke ) === 'undefined' ) {
+    else if ( typeof ( options.stroke ) === 'undefined' ) {
       // No stroke was defined, but it wasn't set to null, so default to a stroke based on the base color of the
       // button.  This behavior is a bit unconventional for Scenery nodes, but it makes the buttons look much better.
       enabledStroke = baseDarker4;

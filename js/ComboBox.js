@@ -122,16 +122,16 @@ define( require => {
     // @private the popup listbox
     this.listBox = new ComboBoxListBox( property, items, this.button,
       this.hideList.bind( this ), options.tandem.createTandem( 'listBox' ), {
-      align: options.align,
-      highlightFill: options.highlightFill,
-      xMargin: options.xMargin,
-      yMargin: options.yMargin,
-      cornerRadius: options.cornerRadius,
-      fill: options.listFill,
-      stroke: options.listStroke,
-      lineWidth: options.listLineWidth,
-      visible: false
-    } );
+        align: options.align,
+        highlightFill: options.highlightFill,
+        xMargin: options.xMargin,
+        yMargin: options.yMargin,
+        cornerRadius: options.cornerRadius,
+        fill: options.listFill,
+        stroke: options.listStroke,
+        lineWidth: options.listLineWidth,
+        visible: false
+      } );
     listParent.addChild( this.listBox );
     this.listParent = listParent; // @private
 
