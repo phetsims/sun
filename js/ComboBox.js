@@ -113,7 +113,7 @@ define( require => {
 
     //TODO #445 factor out ComboBoxListBox, to handle all list responsibilities
     // @private the popup list
-    this.listNode = new Rectangle( 0, 0, listWidth, listHeight, {
+    this.listBox = new Rectangle( 0, 0, listWidth, listHeight, {
       cornerRadius: options.cornerRadius,
       fill: options.listFill,
       stroke: options.listStroke,
@@ -128,7 +128,7 @@ define( require => {
       groupFocusHighlight: true,
       focusable: true
     } );
-    listParent.addChild( this.listNode );
+    listParent.addChild( this.listBox );
     this.listParent = listParent; // @private
 
     // TODO sun#405 It seems it would be better to use FireListener on each ComboBoxListItemNode
@@ -189,7 +189,7 @@ define( require => {
       } );
       listItemNode.addInputListener( itemListener );
       this.listItemNodes.push( listItemNode );
-      this.listNode.addChild( listItemNode );
+      this.listBox.addChild( listItemNode );
 
       //TODO sun#314 a11yClickListener should not be assigned here, it should be set via options or a setter method
       // a11y - select the property and close on a click event from assistive technology, must be removed in disposal
@@ -228,9 +228,9 @@ define( require => {
           const direction = domEvent.keyCode === KeyboardUtil.KEY_DOWN_ARROW ? 1 : -1;
 
           // Get the next/previous item in the list and focus it.
-          for ( let i = 0; i < this.listNode.children.length; i++ ) {
-            if ( this.focusedItem === this.listNode.children[ i ] ) {
-              const nextItem = this.listNode.children[ i + direction ];
+          for ( let i = 0; i < this.listBox.children.length; i++ ) {
+            if ( this.focusedItem === this.listBox.children[ i ] ) {
+              const nextItem = this.listBox.children[ i + direction ];
               if ( nextItem ) {
 
                 // a11y - keep this PDOM attribute in sync
@@ -250,7 +250,7 @@ define( require => {
         }
       }
     };
-    this.listNode.addInputListener( keyDownListener );
+    this.listBox.addInputListener( keyDownListener );
 
     // @private button that shows the current selection
     this.button = new ComboBoxButton( property, items, {
@@ -268,7 +268,7 @@ define( require => {
     this.addChild( this.button );
 
     // a11y - the list is labeled by the button's label
-    this.listNode.addAriaLabelledbyAssociation( {
+    this.listBox.addAriaLabelledbyAssociation( {
       otherNode: this.button,
       otherElementName: AccessiblePeer.LABEL_SIBLING,
       thisElementName: AccessiblePeer.PRIMARY_SIBLING
@@ -282,11 +282,11 @@ define( require => {
       a11yclick: () => {
 
         //TODO sun#314 order dependency, requires that showList was called first by button listener
-        if ( this.listNode.visible ) {
+        if ( this.listBox.visible ) {
 
-          for ( let i = 0; i < this.listNode.children.length; i++ ) {
+          for ( let i = 0; i < this.listBox.children.length; i++ ) {
 
-            const listItemNode = this.listNode.children[ i ];
+            const listItemNode = this.listBox.children[ i ];
 
             if ( property.value === listItemNode.item.value ) {
               this.focusedItem = listItemNode;
@@ -299,7 +299,7 @@ define( require => {
       //TODO sun#314 why is this on the button, shouldn't it be on the list?
       // listen for escape to hide the list when focused on the button
       keydown: event => {
-        if ( this.listNode.visible ) {
+        if ( this.listBox.visible ) {
           if ( event.domEvent.keyCode === KeyboardUtil.KEY_ESCAPE ) {
             this.hideList();
           }
@@ -341,7 +341,7 @@ define( require => {
       }
 
       // remove a11y listeners
-      this.listNode.removeInputListener( keyDownListener );
+      this.listBox.removeInputListener( keyDownListener );
 
       this.button.dispose();
     };
@@ -382,12 +382,12 @@ define( require => {
     },
 
     // TODO: sun#314 we don't likely need this anymore
-    // @private - update this attribute on the listNode. This changes as you interact
+    // @private - update this attribute on the listBox. This changes as you interact
     // with the comboBox, as well as when an item is selected.
     updateActiveDescendant( listItemNode ) {
 
       // overwrite purposefully
-      this.listNode.activeDescendantAssociations = [ {
+      this.listBox.activeDescendantAssociations = [ {
         otherNode: listItemNode,
         thisElementName: AccessiblePeer.PRIMARY_SIBLING,
         otherElementName: AccessiblePeer.PRIMARY_SIBLING
@@ -400,12 +400,12 @@ define( require => {
      */
     showList() {
 
-      if ( !this.listNode.visible ) {
+      if ( !this.listBox.visible ) {
         this.phetioStartEvent( 'popupShown' );
 
         this.moveList();
-        this.listNode.moveToFront();
-        this.listNode.visible = true;
+        this.listBox.moveToFront();
+        this.listBox.visible = true;
         this.display = this.getUniqueTrail().rootNode().getRootedDisplays()[ 0 ];
         this.display.addInputListener( this.clickToDismissListener );
 
@@ -429,7 +429,7 @@ define( require => {
         this.focusedItem.focusable = false;
       }
 
-      this.listNode.visible = false;
+      this.listBox.visible = false;
 
       this.phetioEndEvent();
     },
@@ -442,14 +442,14 @@ define( require => {
       if ( this.listPosition === 'above' ) {
         const pButtonGlobal = this.localToGlobalPoint( new Vector2( this.button.left, this.button.top ) );
         const pButtonLocal = this.listParent.globalToLocalPoint( pButtonGlobal );
-        this.listNode.left = pButtonLocal.x;
-        this.listNode.bottom = pButtonLocal.y;
+        this.listBox.left = pButtonLocal.x;
+        this.listBox.bottom = pButtonLocal.y;
       }
       else {
         const pButtonGlobal = this.localToGlobalPoint( new Vector2( this.button.left, this.button.bottom ) );
         const pButtonLocal = this.listParent.globalToLocalPoint( pButtonGlobal );
-        this.listNode.left = pButtonLocal.x;
-        this.listNode.top = pButtonLocal.y;
+        this.listBox.left = pButtonLocal.x;
+        this.listBox.top = pButtonLocal.y;
       }
     }
   } );
