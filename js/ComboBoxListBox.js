@@ -39,8 +39,7 @@ define( require => {
 
         // Panel options
         xMargin: 12,
-        yMargin: 6,
-        cornerRadius: 4,
+        yMargin: 8,
 
         // a11y
         tagName: 'ul',
@@ -93,7 +92,7 @@ define( require => {
       const maxItemWidth = _.maxBy( items, item => item.node.width ).node.width;
       const maxItemHeight = _.maxBy( items, item => item.node.height ).node.height;
 
-      // Uniform dimensions for all highlighted items in the list
+      // Uniform dimensions for all highlighted items in the list, highlight overlaps margin by 50%
       const highlightWidth = maxItemWidth + options.xMargin;
       const highlightHeight = maxItemHeight + options.yMargin;
 

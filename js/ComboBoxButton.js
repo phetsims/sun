@@ -47,7 +47,7 @@ define( require => {
         baseColor: 'white',
         buttonAppearanceStrategy: RectangularButtonView.FlatAppearanceStrategy,
         xMargin: 12,
-        yMargin: 6,
+        yMargin: 8,
         stroke: 'black',
         lineWidth: 1,
 
