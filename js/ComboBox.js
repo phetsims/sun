@@ -104,8 +104,12 @@ define( require => {
       yMargin: options.yMargin,
       baseColor: options.buttonFill,
       stroke: options.buttonStroke,
-      lineWidth: options.buttonLineWidth
+      lineWidth: options.buttonLineWidth,
+
       //TODO sun#314 need to pass a11yLabel?
+
+      // phet-io
+      tandem: options.tandem.createTandem( 'button ' )
     } );
     this.addChild( this.button );
 
@@ -115,7 +119,6 @@ define( require => {
       this.button.centerY = options.labelNode.centerY;
     }
 
-    //TODO #445 factor out ComboBoxListBox, to handle all list responsibilities
     // @private the popup listbox
     this.listBox = new ComboBoxListBox( property, items, this.button,
       this.hideList.bind( this ), options.tandem.createTandem( 'listBox' ), {
