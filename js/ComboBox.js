@@ -99,12 +99,6 @@ define( require => {
     // @private the display that clickToDismissListener is added to, because the scene may change, see sun#14
     this.display = null;
 
-    // @private listener for 'click outside to dismiss'
-    // TODO sun#314 handle this logic for a11y too, perhaps on by monitoring the focusout event on the display's root PDOM element
-    this.clickToDismissListener = {
-      down: () => { this.hideList(); }
-    };
-
     // Compute max item dimensions
     const maxItemWidth = _.maxBy( items, item => item.node.width ).node.width;
     const maxItemHeight = _.maxBy( items, item => item.node.height ).node.height;
@@ -320,6 +314,12 @@ define( require => {
     }
 
     this.mutate( options );
+
+    // @private listener for 'click outside to dismiss'
+    // TODO sun#314 handle this logic for a11y too, perhaps on by monitoring the focusout event on the display's root PDOM element
+    this.clickToDismissListener = {
+      down: () => { this.hideList(); }
+    };
 
     // enable/disable the combo box
     const enabledObserver = enabled => {
