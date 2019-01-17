@@ -13,7 +13,6 @@ define( require => {
   // modules
   const ComboBoxButton = require( 'SUN/ComboBoxButton' );
   const ComboBoxIO = require( 'SUN/ComboBoxIO' );
-  const ComboBoxItem = require( 'SUN/ComboBoxItem' );
   const ComboBoxListBox = require( 'SUN/ComboBoxListBox' );
   const inherit = require( 'PHET_CORE/inherit' );
   const InstanceRegistry = require( 'PHET_CORE/documentation/InstanceRegistry' );
@@ -213,7 +212,7 @@ define( require => {
   sun.register( 'ComboBox', ComboBox );
 
   // Note: ComboBox cannot use ES6 class until its subtypes do
-  inherit( Node, ComboBox, {
+  return inherit( Node, ComboBox, {
 
     // @public - Provide dispose() on the prototype for ease of subclassing.
     dispose() {
@@ -295,18 +294,4 @@ define( require => {
       }
     }
   } );
-
-  /**
-   * Creates a combo box item. Provided for backward compatibility. Using new ComboBoxItem is preferred.
-   * @param {Node} node
-   * @param {*} value
-   * @param {Object} [options] see ComboBoxItem
-   * @returns {ComboBoxItem}
-   * @public
-   */
-  ComboBox.createItem = ( node, value, options ) => {
-    return new ComboBoxItem( node, value, options );
-  };
-
-  return ComboBox;
 } );
