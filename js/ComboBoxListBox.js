@@ -25,7 +25,7 @@ define( require => {
     /**
      * @param {Property} property
      * @param {ComboBoxItem[]} items
-     * @param {ComboBoxButton} button
+     * @param {ComboBoxButton} button  TODO sun#445 would be nice if listbox didn't need to know about button
      * @param {function} hideCallback
      * @param {Tandem} tandem
      * @param {Object} [options]
