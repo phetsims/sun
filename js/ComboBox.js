@@ -109,7 +109,7 @@ define( require => {
       //TODO sun#314 need to pass a11yLabel?
 
       // phet-io
-      tandem: options.tandem.createTandem( 'button ' )
+      tandem: options.tandem.createTandem( 'button' )
     } );
     this.addChild( this.button );
 
