@@ -71,7 +71,7 @@ define( require => {
 
       super( options );
 
-      // Only set if defined, since it is an option, see ComboBox.createItem
+      // Only set if defined, since it is an option, see ComboBoxItem
       if ( options.a11yLabel ) {
         this.a11yLabel = options.a11yLabel;
         this.innerContent = options.a11yLabel; //TODO #314 is this correct? if so, document why.
