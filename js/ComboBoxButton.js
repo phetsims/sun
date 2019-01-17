@@ -180,7 +180,8 @@ define( require => {
       // This is NOT reset when the Reset All button is pressed.
       this.displayOnlyProperty = new BooleanProperty( false, {
         tandem: options.tandem.createTandem( 'displayOnlyProperty' ),
-        phetioDocumentation: 'disables interaction with the ComboBox and makes it appear like value display'
+        phetioDocumentation:
+          'disables interaction with the ComboBox and makes it appear like a display that shows the current selection'
       } );
       this.displayOnlyProperty.link( displayOnly => {
         arrow.visible = !displayOnly;
