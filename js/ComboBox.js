@@ -250,6 +250,8 @@ define( require => {
         this.moveList();
         this.listBox.moveToFront();
         this.listBox.visible = true;
+
+        assert && assert( !this.display, 'unexpected display' );
         this.display = this.getUniqueTrail().rootNode().getRootedDisplays()[ 0 ];
         this.display.addInputListener( this.clickToDismissListener );
 
@@ -266,6 +268,7 @@ define( require => {
 
       if ( this.display && this.display.hasInputListener( this.clickToDismissListener ) ) {
         this.display.removeInputListener( this.clickToDismissListener );
+        this.display = null;
       }
 
       this.listBox.visible = false;
