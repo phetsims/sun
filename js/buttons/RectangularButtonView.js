@@ -33,16 +33,6 @@ define( function( require ) {
   var X_ALIGN_VALUES = [ 'center', 'left', 'right' ];
   var Y_ALIGN_VALUES = [ 'center', 'top', 'bottom' ];
 
-  // convenience function for creating the shape of the button, done to avoid code duplication
-  function createButtonShape( width, height, options ) {
-    return Shape.roundedRectangleWithRadii( 0, 0, width, height, {
-      topLeft: typeof ( options.leftTopCornerRadius ) === 'number' ? options.leftTopCornerRadius : options.cornerRadius,
-      topRight: typeof ( options.rightTopCornerRadius ) === 'number' ? options.rightTopCornerRadius : options.cornerRadius,
-      bottomLeft: typeof ( options.leftBottomCornerRadius ) === 'number' ? options.leftBottomCornerRadius : options.cornerRadius,
-      bottomRight: typeof ( options.rightBottomCornerRadius ) === 'number' ? options.rightBottomCornerRadius : options.cornerRadius
-    } );
-  }
-
   /**
    * @param {ButtonModel} buttonModel - Model that defines the button's behavior.
    * @param {Property.<String>} interactionStateProperty - A property that is used to drive the visual appearance of the button.
@@ -50,7 +40,6 @@ define( function( require ) {
    * @constructor
    */
   function RectangularButtonView( buttonModel, interactionStateProperty, options ) {
-    this.buttonModel = buttonModel; // @protected
 
     options = _.extend( {
 
@@ -58,7 +47,6 @@ define( function( require ) {
       minWidth: HORIZONTAL_HIGHLIGHT_GRADIENT_LENGTH + SHADE_GRADIENT_LENGTH,
       minHeight: VERTICAL_HIGHLIGHT_GRADIENT_LENGTH + SHADE_GRADIENT_LENGTH,
       cursor: 'pointer',
-      cornerRadius: 4,
       baseColor: DEFAULT_COLOR,
       disabledBaseColor: ColorConstants.LIGHT_GRAY,
       xMargin: 8, // should be visibly greater than yMargin, see issue #109
@@ -70,6 +58,17 @@ define( function( require ) {
       lineWidth: 0.5, // Only meaningful if stroke is non-null
       xAlign: 'center', // {string} see X_ALIGN_VALUES
       yAlign: 'center', // {string} see Y_ALIGN_VALUES
+
+      // radius applied to all corners unless a corner-specific value is provided
+      cornerRadius: 4,
+
+      // {number|null} corner-specific radii
+      // If null, the option is ignore.
+      // If non-null, it overrides cornerRadius for the associated corner of the button.
+      leftTopCornerRadius: null,
+      rightTopCornerRadius: null,
+      leftBottomCornerRadius: null,
+      rightBottomCornerRadius: null,
 
       // Strategy for controlling the button's appearance, excluding any
       // content.  This can be a stock strategy from this file or custom.  To
@@ -94,6 +93,8 @@ define( function( require ) {
     // validate options
     assert && assert( _.includes( X_ALIGN_VALUES, options.xAlign ), 'invalid xAlign: ' + options.xAlign );
     assert && assert( _.includes( Y_ALIGN_VALUES, options.yAlign ), 'invalid yAlign: ' + options.yAlign );
+
+    this.buttonModel = buttonModel; // @protected
 
     Node.call( this );
 
@@ -195,6 +196,23 @@ define( function( require ) {
   }
 
   sun.register( 'RectangularButtonView', RectangularButtonView );
+
+  /**
+   * Convenience function for creating the shape of the button, done to avoid code duplication
+   * @param {number} width
+   * @param {height} height
+   * @param {Object} options - RectangularButtonView options, containing values related to radii of button corners
+   * @returns {Shape}
+   */
+  function createButtonShape( width, height, options ) {
+    assert && assert( typeof options.cornerRadius === 'number', 'cornerRadius is required' );
+    return Shape.roundedRectangleWithRadii( 0, 0, width, height, {
+      topLeft: options.leftTopCornerRadius !== null ? options.leftTopCornerRadius : options.cornerRadius,
+      topRight: options.rightTopCornerRadius !== null ? options.rightTopCornerRadius : options.cornerRadius,
+      bottomLeft: options.leftBottomCornerRadius !== null ? options.leftBottomCornerRadius : options.cornerRadius,
+      bottomRight: options.rightBottomCornerRadius !== null ? options.rightBottomCornerRadius : options.cornerRadius
+    } );
+  }
 
   /**
    * Strategy for making a button look 3D-ish by using gradients that create the appearance of highlighted and shaded
