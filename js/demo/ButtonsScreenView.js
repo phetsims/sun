@@ -1,4 +1,5 @@
 // Copyright 2014-2018, University of Colorado Boulder
+/* eslint-disable bad-sim-text */
 
 /**
  * Main ScreenView container for demonstrating and testing the various buttons.
