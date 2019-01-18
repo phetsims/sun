@@ -172,6 +172,7 @@ define( require => {
     this.clickToDismissListener = {
       down: event => {
 
+        //TODO scenery#927 is trail.nodes public? should we add Trail.containsNode?
         // Ignore if we click over the button, since the button will handle hiding the list.
         if ( event.trail.nodes.indexOf( this.button ) === -1 ) {
           this.hideList();
