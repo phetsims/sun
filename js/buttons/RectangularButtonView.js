@@ -53,7 +53,7 @@ define( function( require ) {
     this.buttonModel = buttonModel; // @protected
 
     options = _.extend( {
-      // Default values.
+
       content: null,
       minWidth: HORIZONTAL_HIGHLIGHT_GRADIENT_LENGTH + SHADE_GRADIENT_LENGTH,
       minHeight: VERTICAL_HIGHLIGHT_GRADIENT_LENGTH + SHADE_GRADIENT_LENGTH,
@@ -70,7 +70,6 @@ define( function( require ) {
       lineWidth: 0.5, // Only meaningful if stroke is non-null
       xAlign: 'center', // {string} see X_ALIGN_VALUES
       yAlign: 'center', // {string} see Y_ALIGN_VALUES
-      tandem: Tandem.optional, // This duplicates the parent option and works around https://github.com/phetsims/tandem/issues/50
 
       // Strategy for controlling the button's appearance, excluding any
       // content.  This can be a stock strategy from this file or custom.  To
@@ -85,7 +84,11 @@ define( function( require ) {
       contentAppearanceStrategy: RectangularButtonView.FadeContentWhenDisabled,
 
       // a11y
-      tagName: 'button'
+      tagName: 'button',
+
+      // phet-io
+      tandem: Tandem.optional // This duplicates the parent option and works around https://github.com/phetsims/tandem/issues/50
+
     }, options );
 
     // validate options
