@@ -172,7 +172,6 @@ define( require => {
     this.clickToDismissListener = {
       down: event => {
 
-        //TODO sun#430 is Trail.nodes public? Is there a better way to determine if we clicked over this.button?
         // Ignore if we click over the button, since the button will handle hiding the list.
         if ( event.trail.nodes.indexOf( this.button ) === -1 ) {
           this.hideList();
