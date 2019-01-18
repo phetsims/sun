@@ -7,30 +7,26 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var ButtonInteractionState = require( 'SUN/buttons/ButtonInteractionState' );
-  var DerivedProperty = require( 'AXON/DerivedProperty' );
-  var inherit = require( 'PHET_CORE/inherit' );
-  var sun = require( 'SUN/sun' );
+  const ButtonInteractionState = require( 'SUN/buttons/ButtonInteractionState' );
+  const DerivedProperty = require( 'AXON/DerivedProperty' );
+  const sun = require( 'SUN/sun' );
 
-  /**
-   * @param {ButtonModel} buttonModel
-   * @param {Object} [options]
-   * @constructor
-   */
-  function PushButtonInteractionStateProperty( buttonModel, options ) {
+  class PushButtonInteractionStateProperty extends DerivedProperty {
 
-    DerivedProperty.call(
-      this,
-      [ buttonModel.overProperty, buttonModel.looksPressedProperty, buttonModel.enabledProperty ],
-      function( over, looksPressed, enabled ) {
-        return !enabled ? ButtonInteractionState.DISABLED :
-               over && !looksPressed ? ButtonInteractionState.OVER :
-               over && looksPressed ? ButtonInteractionState.PRESSED :
-               ButtonInteractionState.IDLE;
-      }, options );
+    /**
+     * @param {ButtonModel} buttonModel
+     * @param {Object} [options]
+     */
+    constructor( buttonModel, options ) {
+      super( [ buttonModel.overProperty, buttonModel.looksPressedProperty, buttonModel.enabledProperty ],
+        ( over, looksPressed, enabled ) => {
+          return !enabled ? ButtonInteractionState.DISABLED :
+                 over && !looksPressed ? ButtonInteractionState.OVER :
+                 over && looksPressed ? ButtonInteractionState.PRESSED :
+                 ButtonInteractionState.IDLE;
+        }, options );
+    }
   }
 
-  sun.register( 'PushButtonInteractionStateProperty', PushButtonInteractionStateProperty );
-
-  return inherit( DerivedProperty, PushButtonInteractionStateProperty );
+  return sun.register( 'PushButtonInteractionStateProperty', PushButtonInteractionStateProperty );
 } );

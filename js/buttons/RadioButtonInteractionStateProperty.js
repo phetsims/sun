@@ -5,38 +5,35 @@
  *
  * @author Aaron Davis (PhET Interactive Simulations)
  */
-define( function( require ) {
+define( require => {
   'use strict';
 
   // modules
-  var DerivedProperty = require( 'AXON/DerivedProperty' );
-  var inherit = require( 'PHET_CORE/inherit' );
-  var RadioButtonInteractionState = require( 'SUN/buttons/RadioButtonInteractionState' );
-  var sun = require( 'SUN/sun' );
+  const DerivedProperty = require( 'AXON/DerivedProperty' );
+  const RadioButtonInteractionState = require( 'SUN/buttons/RadioButtonInteractionState' );
+  const sun = require( 'SUN/sun' );
 
-  /**
-   * @param {ButtonModel} buttonModel
-   * @param {Property.<Object>} property - the axon Property set by the button
-   * @param {Object} value - the value set by the button
-   * @constructor
-   */
-  function RadioButtonInteractionStateProperty( buttonModel, property, value ) {
+  class RadioButtonInteractionStateProperty extends DerivedProperty {
 
-    DerivedProperty.call(
-      this,
-      [ buttonModel.overProperty, buttonModel.looksPressedProperty, buttonModel.enabledProperty, property ],
-      function( over, looksPressed, enabled, propertyValue ) {
-        var isSelected = ( propertyValue === value );
-        return !enabled && isSelected ? RadioButtonInteractionState.DISABLED_SELECTED :
-               !enabled ? RadioButtonInteractionState.DISABLED_DESELECTED :
-               over && !( looksPressed || isSelected ) ? RadioButtonInteractionState.OVER :
-               over && looksPressed ? RadioButtonInteractionState.PRESSED :
-               isSelected ? RadioButtonInteractionState.SELECTED :
-               RadioButtonInteractionState.DESELECTED;
-      } );
+    /**
+     * @param {ButtonModel} buttonModel
+     * @param {Property.<Object>} property - the axon Property set by the button
+     * @param {Object} value - the value set by the button
+     */
+    constructor( buttonModel, property, value ) {
+
+      super( [ buttonModel.overProperty, buttonModel.looksPressedProperty, buttonModel.enabledProperty, property ],
+        ( over, looksPressed, enabled, propertyValue ) => {
+          const isSelected = ( propertyValue === value );
+          return !enabled && isSelected ? RadioButtonInteractionState.DISABLED_SELECTED :
+                 !enabled ? RadioButtonInteractionState.DISABLED_DESELECTED :
+                 over && !( looksPressed || isSelected ) ? RadioButtonInteractionState.OVER :
+                 over && looksPressed ? RadioButtonInteractionState.PRESSED :
+                 isSelected ? RadioButtonInteractionState.SELECTED :
+                 RadioButtonInteractionState.DESELECTED;
+        } );
+    }
   }
 
-  sun.register( 'RadioButtonInteractionStateProperty', RadioButtonInteractionStateProperty );
-
-  return inherit( DerivedProperty, RadioButtonInteractionStateProperty );
+  return sun.register( 'RadioButtonInteractionStateProperty', RadioButtonInteractionStateProperty );
 } );
