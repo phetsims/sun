@@ -153,6 +153,17 @@ define( function( require ) {
       baseColor: 'rgb( 204, 102, 204 )'
     } );
 
+    // Test for a button with different radii for each corner
+    var radiiTestButton = new RectangularPushButton( {
+      baseColor: 'orange',
+      minWidth: 50,
+      minHeight: 50,
+      leftTopCornerRadius: 20,
+      rightTopCornerRadius: 10,
+      rightBottomCornerRadius: 5,
+      leftBottomCornerRadius: 0
+    } );
+
     var buttonD = new RoundPushButton( {
       content: new Text( '--- D ---', { font: BUTTON_FONT } ),
       listener: function() { message( 'Button D pressed' ); },
@@ -166,12 +177,11 @@ define( function( require ) {
     } );
 
     var pseudo3DButtonsBox = new HBox( {
-      children: [ buttonA, buttonB, buttonC, buttonD, buttonE ],
+      children: [ buttonA, buttonB, buttonC, radiiTestButton, buttonD, buttonE ],
       spacing: 10,
       left: radioButtonPanel.right + 25,
       top: this.layoutBounds.top + 15
     } );
-
     this.addChild( pseudo3DButtonsBox );
 
     //===================================================================================
