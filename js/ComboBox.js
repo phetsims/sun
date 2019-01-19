@@ -144,10 +144,10 @@ define( require => {
       }
     } );
 
+    //TODO sun#445 why is this listener on button? this entire listener appear to be related to the list.
     // add the button accessibility listener
     this.button.addInputListener( {
 
-      //TODO sun#445 handle this in ComboBoxListBox
       a11yclick: () => {
 
         //TODO sun#314 order dependency, requires that showList was called first by button listener
@@ -156,7 +156,6 @@ define( require => {
         }
       },
 
-      //TODO sun#314 why is this on the button, shouldn't it be on the list?
       // listen for escape to hide the list when focused on the button
       keydown: event => {
         if ( this.listBox.visible ) {
