@@ -226,18 +226,6 @@ define( require => {
     get enabled() { return this.getEnabled(); },
 
     /**
-     * Gets the combo box item that is associated with a specified value.
-     * @param {*} value
-     * @returns {Object}
-     * @private
-     */
-    getItem( value ) {
-      const item = _.find( this.items, item => { return item.value === value; } );
-      assert && assert( item, 'no Item has value: ' + value );
-      return item;
-    },
-
-    /**
      * Shows the combo box list
      * @public
      */
