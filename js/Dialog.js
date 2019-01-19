@@ -15,6 +15,7 @@ define( require => {
   const AccessibilityUtil = require( 'SCENERY/accessibility/AccessibilityUtil' );
   const AccessiblePeer = require( 'SCENERY/accessibility/AccessiblePeer' );
   const AlignBox = require( 'SCENERY/nodes/AlignBox' );
+  const BooleanProperty = require( 'AXON/BooleanProperty' );
   const DialogIO = require( 'SUN/DialogIO' );
   const Display = require( 'SCENERY/display/Display' );
   const FullScreen = require( 'SCENERY/util/FullScreen' );
@@ -147,8 +148,11 @@ define( require => {
     // see https://github.com/phetsims/joist/issues/293
     assert && assert( this.isModal, 'Non-modal dialogs not currently supported' );
 
-    // @protected - whether the dialog is showing
-    this.isShowing = false;
+    // @protected (read-only) - whether the dialog is showing
+    this.isShowingProperty = new BooleanProperty( false, {
+      tandem: options.tandem.createTandem( 'isShowingProperty' ),
+      phetioReadOnly: true
+    } );
 
     // create close button
     const closeButton = new CloseButton( {
@@ -302,9 +306,9 @@ define( require => {
 
     // @public
     show: function() {
-      if ( !this.isShowing ) {
+      if ( !this.isShowingProperty.value ) {
         window.phet.joist.sim.showPopup( this, this.isModal );
-        this.isShowing = true;
+        this.isShowingProperty.value = true;
 
         // a11y - focus is returned to this element if dialog closed from accessible input
         this.activeElement = this.activeElement || Display.focusedNode;
@@ -329,10 +333,10 @@ define( require => {
      * @public
      */
     hide: function() {
-      if ( this.isShowing ) {
+      if ( this.isShowingProperty.value ) {
 
         window.phet.joist.sim.hidePopup( this, this.isModal );
-        this.isShowing = false;
+        this.isShowingProperty.value = false;
 
         // a11y - when the dialog is hidden, make all ScreenView content visible to assistive technology
         this.sim.setAccessibleViewsVisible( true );
