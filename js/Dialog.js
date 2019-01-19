@@ -300,63 +300,46 @@ define( require => {
 
   inherit( Panel, Dialog, {
 
-    /**
-     * Show or hide the dialog
-     * @param {boolean} visible
-     * @public
-     */
-    setVisible( visible ) {
-      Panel.prototype.setVisible.call( this, visible );
-      if ( visible ) {
-        if ( !this.isShowing ) {
-          window.phet.joist.sim.showPopup( this, this.isModal );
-          this.isShowing = true;
-
-          // a11y - focus is returned to this element if dialog closed from accessible input
-          this.activeElement = this.activeElement || Display.focusedNode;
-
-          // a11y - modal dialogs should be the only readable content in the sim
-          // TODO: non-modal dialogs shouldn't hide other accessible content, and this should be dependant on other
-          // things in the sim modalNodeStack, see https://github.com/phetsims/joist/issues/293
-          this.sim.setAccessibleViewsVisible( false );
-
-          // In case the window size has changed since the dialog was hidden, we should try layout out again.
-          // See https://github.com/phetsims/joist/issues/362
-          this.updateLayout();
-
-          // Do this last
-          this.showCallback && this.showCallback();
-        }
-      }
-      else {
-        if ( this.isShowing ) {
-
-          window.phet.joist.sim.hidePopup( this, this.isModal );
-          this.isShowing = false;
-
-          // a11y - when the dialog is hidden, make all ScreenView content visible to assistive technology
-          this.sim.setAccessibleViewsVisible( true );
-
-          // Do this last
-          this.hideCallback && this.hideCallback();
-        }
-      }
-    },
-
     // @public
-    // @deprecated - use setVisible
-    show() {
-      this.setVisible( true );
+    show: function() {
+      if ( !this.isShowing ) {
+        window.phet.joist.sim.showPopup( this, this.isModal );
+        this.isShowing = true;
+
+        // a11y - focus is returned to this element if dialog closed from accessible input
+        this.activeElement = this.activeElement || Display.focusedNode;
+
+        // a11y - modal dialogs should be the only readable content in the sim
+        // TODO: non-modal dialogs shouldn't hide other accessible content, and this should be dependant on other
+        // things in the sim modalNodeStack, see https://github.com/phetsims/joist/issues/293
+        this.sim.setAccessibleViewsVisible( false );
+
+        // In case the window size has changed since the dialog was hidden, we should try layout out again.
+        // See https://github.com/phetsims/joist/issues/362
+        this.updateLayout();
+
+        // Do this last
+        this.showCallback && this.showCallback();
+      }
     },
 
     /**
      * Hide the dialog.  If you create a new dialog next time you show(), be sure to dispose this
      * dialog instead.
      * @public
-     * @deprecated - use setVisible
      */
-    hide() {
-      this.setVisible( false );
+    hide: function() {
+      if ( this.isShowing ) {
+
+        window.phet.joist.sim.hidePopup( this, this.isModal );
+        this.isShowing = false;
+
+        // a11y - when the dialog is hidden, make all ScreenView content visible to assistive technology
+        this.sim.setAccessibleViewsVisible( true );
+
+        // Do this last
+        this.hideCallback && this.hideCallback();
+      }
     },
 
     /**
