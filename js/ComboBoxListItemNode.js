@@ -73,7 +73,6 @@ define( require => {
       super( options );
 
       //TODO #314 why do we need to do this? isn't this handled by super(options) ?
-      // Only set if defined, since it is an option, see ComboBoxItem
       if ( options.a11yLabel ) {
         this.a11yLabel = options.a11yLabel;
         this.innerContent = options.a11yLabel;
