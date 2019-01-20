@@ -73,7 +73,7 @@ define( require => {
 
         // phet-io
         tandem: tandem.createTandem( 'firedEmitter' ),
-        phetioType: EmitterIO( [ { name: 'event', type: VoidIO } ] ) // TODO sun#405 Should this be EventIO or DOMEventIO?
+        phetioType: EmitterIO( [ { name: 'event', type: VoidIO } ] ) // TODO sun#405 Should type be EventIO or DOMEventIO?
       } );
 
       // listener that we'll attach to each item in the list
