@@ -226,8 +226,6 @@ define( require => {
      */
     updateFocus() {
       if ( this.visible ) {
-
-        // listbox is visible, focus on selected item
         for ( let i = 0; i < this.listItemNodes.length; i++ ) {
           const listItemNode = this.listItemNodes[ i ];
           if ( this.property.value === listItemNode.item.value ) {
