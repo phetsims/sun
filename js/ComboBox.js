@@ -11,12 +11,12 @@ define( require => {
   'use strict';
 
   // modules
+  const BooleanProperty = require( 'AXON/BooleanProperty' );
   const ComboBoxButton = require( 'SUN/ComboBoxButton' );
   const ComboBoxIO = require( 'SUN/ComboBoxIO' );
   const ComboBoxListBox = require( 'SUN/ComboBoxListBox' );
   const InstanceRegistry = require( 'PHET_CORE/documentation/InstanceRegistry' );
   const Node = require( 'SCENERY/nodes/Node' );
-  const Property = require( 'AXON/Property' );
   const sun = require( 'SUN/sun' );
   const Tandem = require( 'TANDEM/Tandem' );
   const Vector2 = require( 'DOT/Vector2' );
@@ -42,10 +42,10 @@ define( require => {
         listPosition: 'below', // see LIST_POSITION_VALUES
         labelNode: null, // {Node|null} optional label, placed to the left of the combo box
         labelXSpacing: 10, // horizontal space between label and combo box
-        enabledProperty: new Property( true ),
-        disabledOpacity: 0.5, // {number} opacity used to make the control look disabled
-        cornerRadius: 4, // {number} applied to list and button
-        highlightFill: 'rgb( 245, 245, 245 )', // highlight behind items in the list
+        enabledProperty: new BooleanProperty( true ),
+        disabledOpacity: 0.5, // {number} opacity used to make the control look disabled, 0-1
+        cornerRadius: 4, // applied to list and button
+        highlightFill: 'rgb( 245, 245, 245 )', // {Color|string} highlight behind items in the list
 
         // Margins around the edges of the button and listbox when highlight is invisible.
         // Highlight margins around the items in the list are set to 1/2 of these values.
@@ -53,13 +53,13 @@ define( require => {
         yMargin: 8,
 
         // button
-        buttonFill: 'white',
-        buttonStroke: 'black',
+        buttonFill: 'white', // {Color|string}
+        buttonStroke: 'black', // {Color|string}
         buttonLineWidth: 1,
 
         // list
-        listFill: 'white',
-        listStroke: 'black',
+        listFill: 'white', // {Color|string}
+        listStroke: 'black', // {Color|string}
         listLineWidth: 1,
 
         //TODO sun#314 need to add a11y options?
