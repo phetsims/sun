@@ -46,7 +46,7 @@ define( require => {
         tagName: 'ul',
         ariaRole: 'listbox',
         groupFocusHighlight: true,
-        focusable: true
+        focusable: true //TODO sun#314 why is this needed? ComboBoxListBox is never given focus
 
         // Not instrumented for PhET-iO because the list's location isn't valid until it has been popped up.
         // See https://github.com/phetsims/phet-io/issues/1102
