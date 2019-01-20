@@ -30,7 +30,7 @@ define( function( require ) {
 
   phetioInherit( NodeIO, 'ComboBoxIO', ComboBoxIO, {}, {
     documentation: 'A traditional combo box',
-    events: [ 'popupShown', 'popupHidden' ]
+    events: [ 'listboxShown', 'listboxHidden' ]
   } );
 
   sun.register( 'ComboBoxIO', ComboBoxIO );
