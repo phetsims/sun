@@ -248,6 +248,7 @@ define( require => {
       }
     }
 
+    //TODO sun#457 scale listbox to match button
     /**
      * Handles the coordinate transform required to make the listbox pop up near the button.
      * @private
