@@ -233,6 +233,7 @@ define( require => {
           if ( this.property.value === listItemNode.item.value ) {
             this.focusedItemNode = listItemNode;
             this.focusedItemNode.focus();
+            break;
           }
         }
       }
