@@ -35,7 +35,7 @@ define( require => {
 
       options = _.extend( {
 
-        // fill for the highlight behind items in the list
+        // {Color|string} fill for the highlight behind items in the list
         highlightFill: 'rgb( 245, 245, 245 )',
 
         // Panel options

@@ -36,7 +36,7 @@ define( require => {
         cursor: 'pointer',
         align: 'left',
         xMargin: 6,
-        highlightFill: 'rgb( 245, 245, 245 )',
+        highlightFill: 'rgb( 245, 245, 245 )', // {Color|string}
 
         // phet-io
         tandem: Tandem.required,
@@ -45,7 +45,7 @@ define( require => {
         tagName: 'li',
         focusable: true,
         ariaRole: 'option',
-        a11yLabel: null
+        a11yLabel: null // {string|null}
 
       }, options );
 

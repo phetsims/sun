@@ -57,7 +57,7 @@ define( require => {
         // a11y
         labelTagName: 'span',
         containerTagName: 'div',
-        a11yLabel: null
+        a11yLabel: null // {string|null}
 
       }, options );
 
@@ -161,6 +161,7 @@ define( require => {
       };
       property.link( propertyObserver );
 
+      //TODO sun#314 is this handled by super? why not?
       this.labelContent = options.a11yLabel;
 
       //TODO sun#314 expand on this comment
