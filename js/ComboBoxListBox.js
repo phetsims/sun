@@ -121,6 +121,8 @@ define( require => {
         // of combo box item. Keep track of it on the listItemNode for disposal.
         listItemNode.a11yClickListener = {
           keydown: event => {
+
+            //TODO sun#445 KEY_ENTER is not working
             if ( KeyboardUtil.KEY_ENTER === event.domEvent.keyCode || KeyboardUtil.KEY_SPACE === event.domEvent.keyCode ) {
 
               //TODO address sun#447
