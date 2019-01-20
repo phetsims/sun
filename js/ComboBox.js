@@ -226,7 +226,7 @@ define( require => {
     get enabled() { return this.getEnabled(); },
 
     /**
-     * Shows the combo box list
+     * Shows the combo box list.
      * @public
      */
     showList() {
