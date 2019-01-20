@@ -61,6 +61,8 @@ define( require => {
       listStroke: 'black',
       listLineWidth: 1,
 
+      //TODO sun#314 need to add a11y options?
+
       // phet-io
       tandem: Tandem.required,
       phetioType: ComboBoxIO,
