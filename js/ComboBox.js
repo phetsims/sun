@@ -102,7 +102,7 @@ define( require => {
       stroke: options.buttonStroke,
       lineWidth: options.buttonLineWidth,
 
-      //TODO sun#314 need to pass a11yLabel?
+      //TODO sun#314 need to add a11y options?
 
       // phet-io
       tandem: options.tandem.createTandem( 'button' )
@@ -128,7 +128,7 @@ define( require => {
         lineWidth: options.listLineWidth,
         visible: false
 
-        //TODO sun#314 need to any a11y options?
+        //TODO sun#314 need to add a11y options?
       } );
     listParent.addChild( this.listBox );
     this.listParent = listParent; // @private
