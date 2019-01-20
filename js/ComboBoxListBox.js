@@ -160,23 +160,27 @@ define( require => {
       // @public {ComboBoxListItemNode|null} the ComboBoxListItemNode that has focus
       this.focusedItemNode = null;
 
-      //TODO #314 document
-      const keyDownListener = {
+      // Handle keydown for a11y
+      this.addInputListener( {
         keydown: event => {
-          var domEvent = event.domEvent;
-          if ( domEvent.keyCode === KeyboardUtil.KEY_ESCAPE ) {
+          var keyCode = event.domEvent.keyCode;
+          if ( keyCode === KeyboardUtil.KEY_ESCAPE ) {
             hideCallback();
             button.focus();
           }
-          else if ( domEvent.keyCode === KeyboardUtil.KEY_DOWN_ARROW || domEvent.keyCode === KeyboardUtil.KEY_UP_ARROW ) {
-            const direction = domEvent.keyCode === KeyboardUtil.KEY_DOWN_ARROW ? 1 : -1;
+          else if ( keyCode === KeyboardUtil.KEY_TAB ) {
+            hideCallback();
+          }
+          else if ( keyCode === KeyboardUtil.KEY_DOWN_ARROW || keyCode === KeyboardUtil.KEY_UP_ARROW ) {
 
-            // Get the next/previous listItemNode in the list and focus it.
+            // Up/down arrow keys move the focus between items in the listbox
+            const direction = ( keyCode === KeyboardUtil.KEY_DOWN_ARROW ) ? 1 : -1;
             for ( let i = 0; i < listItemNodes.length; i++ ) {
               if ( this.focusedItemNode === listItemNodes[ i ] ) {
                 const nextListItemNode = listItemNodes[ i + direction ];
                 if ( nextListItemNode ) {
 
+                  //TODO sun#314 say more here
                   // a11y - keep this PDOM attribute in sync
                   this.updateActiveDescendant( nextListItemNode );
 
@@ -189,12 +193,8 @@ define( require => {
               }
             }
           }
-          else if ( domEvent.keyCode === KeyboardUtil.KEY_TAB ) {
-            hideCallback();
-          }
         }
-      };
-      this.addInputListener( keyDownListener );
+      } );
 
       // Update focus when the listbox's visibility changes.
       this.on( 'visibility', () => { this.updateFocus(); } );
