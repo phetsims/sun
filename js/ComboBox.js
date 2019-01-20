@@ -14,7 +14,6 @@ define( require => {
   const ComboBoxButton = require( 'SUN/ComboBoxButton' );
   const ComboBoxIO = require( 'SUN/ComboBoxIO' );
   const ComboBoxListBox = require( 'SUN/ComboBoxListBox' );
-  const inherit = require( 'PHET_CORE/inherit' );
   const InstanceRegistry = require( 'PHET_CORE/documentation/InstanceRegistry' );
   const Node = require( 'SCENERY/nodes/Node' );
   const Property = require( 'AXON/Property' );
@@ -26,184 +25,181 @@ define( require => {
   const LIST_POSITION_VALUES = [ 'above', 'below' ]; // where the list pops up relative to the button
   const ALIGN_VALUES = [ 'left', 'right', 'center' ]; // alignment of item on button and in list
 
-  /**
-   * @param {ComboBoxItem[]} items
-   * @param {Property} property
-   * @param {Node} listParent node that will be used as the list's parent, use this to ensure that the list is in front of everything else
-   * @param {Object} [options] object with optional properties
-   * @constructor
-   */
-  function ComboBox( items, property, listParent, options ) {
+  class ComboBox extends Node {
+    /**
+     * @param {ComboBoxItem[]} items
+     * @param {Property} property
+     * @param {Node} listParent node that will be used as the list's parent, use this to ensure that the list is in front of everything else
+     * @param {Object} [options] object with optional properties
+     * @constructor
+     */
+    constructor( items, property, listParent, options ) {
 
-    options = _.extend( {
+      options = _.extend( {
 
-      align: 'left', // see ALIGN_VALUES
-      listPosition: 'below', // see LIST_POSITION_VALUES
-      labelNode: null, // {Node|null} optional label, placed to the left of the combo box
-      labelXSpacing: 10, // horizontal space between label and combo box
-      enabledProperty: new Property( true ),
-      disabledOpacity: 0.5, // {number} opacity used to make the control look disabled
-      cornerRadius: 4, // {number} applied to list and button
-      highlightFill: 'rgb( 245, 245, 245 )', // highlight behind items in the list
+        align: 'left', // see ALIGN_VALUES
+        listPosition: 'below', // see LIST_POSITION_VALUES
+        labelNode: null, // {Node|null} optional label, placed to the left of the combo box
+        labelXSpacing: 10, // horizontal space between label and combo box
+        enabledProperty: new Property( true ),
+        disabledOpacity: 0.5, // {number} opacity used to make the control look disabled
+        cornerRadius: 4, // {number} applied to list and button
+        highlightFill: 'rgb( 245, 245, 245 )', // highlight behind items in the list
 
-      // Margins around the edges of the button and listbox when highlight is invisible.
-      // Highlight margins around the items in the list are set to 1/2 of these values.
-      xMargin: 12,
-      yMargin: 8,
+        // Margins around the edges of the button and listbox when highlight is invisible.
+        // Highlight margins around the items in the list are set to 1/2 of these values.
+        xMargin: 12,
+        yMargin: 8,
 
-      // button
-      buttonFill: 'white',
-      buttonStroke: 'black',
-      buttonLineWidth: 1,
+        // button
+        buttonFill: 'white',
+        buttonStroke: 'black',
+        buttonLineWidth: 1,
 
-      // list
-      listFill: 'white',
-      listStroke: 'black',
-      listLineWidth: 1,
-
-      //TODO sun#314 need to add a11y options?
-
-      // phet-io
-      tandem: Tandem.required,
-      phetioType: ComboBoxIO,
-      phetioEventType: 'user'
-
-    }, options );
-
-    // validate option values
-    assert && assert( options.disabledOpacity > 0 && options.disabledOpacity < 1,
-      'invalid disabledOpacity: ' + options.disabledOpacity );
-    assert && assert( LIST_POSITION_VALUES.includes( options.listPosition ),
-      'invalid listPosition: ' + options.listPosition );
-    assert && assert( ALIGN_VALUES.includes( options.align ),
-      'invalid align: ' + options.align );
-
-    //TODO sun#456 ComboBox cannot use ES6 class until its subtypes do
-    Node.call( this );
-
-    this.items = items; // @private
-    this.listPosition = options.listPosition; // @private
-    this.enabledProperty = options.enabledProperty; // @public
-
-    // optional label
-    if ( options.labelNode !== null ) {
-      this.addChild( options.labelNode );
-    }
-
-    // @private button that shows the current selection
-    this.button = new ComboBoxButton( property, items, {
-      align: options.align,
-      arrowDirection: ( options.listPosition === 'below' ) ? 'down' : 'up',
-      cornerRadius: options.cornerRadius,
-      xMargin: options.xMargin,
-      yMargin: options.yMargin,
-      baseColor: options.buttonFill,
-      stroke: options.buttonStroke,
-      lineWidth: options.buttonLineWidth,
-
-      //TODO sun#314 need to add a11y options?
-
-      // phet-io
-      tandem: options.tandem.createTandem( 'button' )
-    } );
-    this.addChild( this.button );
-
-    // put optional label to left of button
-    if ( options.labelNode ) {
-      this.button.left = options.labelNode.right + options.labelXSpacing;
-      this.button.centerY = options.labelNode.centerY;
-    }
-
-    // @private the popup listbox
-    this.listBox = new ComboBoxListBox( property, items, this.button,
-      this.hideListbox.bind( this ), options.tandem.createTandem( 'listBox' ), {
-        align: options.align,
-        highlightFill: options.highlightFill,
-        xMargin: options.xMargin,
-        yMargin: options.yMargin,
-        cornerRadius: options.cornerRadius,
-        fill: options.listFill,
-        stroke: options.listStroke,
-        lineWidth: options.listLineWidth,
-        visible: false
+        // list
+        listFill: 'white',
+        listStroke: 'black',
+        listLineWidth: 1,
 
         //TODO sun#314 need to add a11y options?
+
+        // phet-io
+        tandem: Tandem.required,
+        phetioType: ComboBoxIO,
+        phetioEventType: 'user'
+
+      }, options );
+
+      // validate option values
+      assert && assert( options.disabledOpacity > 0 && options.disabledOpacity < 1,
+        'invalid disabledOpacity: ' + options.disabledOpacity );
+      assert && assert( LIST_POSITION_VALUES.includes( options.listPosition ),
+        'invalid listPosition: ' + options.listPosition );
+      assert && assert( ALIGN_VALUES.includes( options.align ),
+        'invalid align: ' + options.align );
+
+      super();
+
+      this.items = items; // @private
+      this.listPosition = options.listPosition; // @private
+      this.enabledProperty = options.enabledProperty; // @public
+
+      // optional label
+      if ( options.labelNode !== null ) {
+        this.addChild( options.labelNode );
+      }
+
+      // @private button that shows the current selection
+      this.button = new ComboBoxButton( property, items, {
+        align: options.align,
+        arrowDirection: ( options.listPosition === 'below' ) ? 'down' : 'up',
+        cornerRadius: options.cornerRadius,
+        xMargin: options.xMargin,
+        yMargin: options.yMargin,
+        baseColor: options.buttonFill,
+        stroke: options.buttonStroke,
+        lineWidth: options.buttonLineWidth,
+
+        //TODO sun#314 need to add a11y options?
+
+        // phet-io
+        tandem: options.tandem.createTandem( 'button' )
       } );
-    listParent.addChild( this.listBox );
-    this.listParent = listParent; // @private
+      this.addChild( this.button );
 
-    this.mutate( options );
-
-    // Clicking on the button toggles visibility of the list
-    this.button.addListener( () => {
-      if ( !this.listBox.visible ) {
-        this.showListbox();
+      // put optional label to left of button
+      if ( options.labelNode ) {
+        this.button.left = options.labelNode.right + options.labelXSpacing;
+        this.button.centerY = options.labelNode.centerY;
       }
-      else {
-        this.hideListbox();
-      }
-    } );
 
-    // @private the display that clickToDismissListener is added to, because the scene may change, see sun#14
-    this.display = null;
+      // @private the popup listbox
+      this.listBox = new ComboBoxListBox( property, items, this.button,
+        this.hideListbox.bind( this ), options.tandem.createTandem( 'listBox' ), {
+          align: options.align,
+          highlightFill: options.highlightFill,
+          xMargin: options.xMargin,
+          yMargin: options.yMargin,
+          cornerRadius: options.cornerRadius,
+          fill: options.listFill,
+          stroke: options.listStroke,
+          lineWidth: options.listLineWidth,
+          visible: false
 
-    // @private listener for 'click outside to dismiss'
-    // TODO sun#314 handle this logic for a11y too, perhaps on by monitoring the focusout event on the display's root PDOM element
-    this.clickToDismissListener = {
-      down: event => {
-        //TODO scenery#927 is trail.nodes public? should we add Trail.containsNode?
-        // Ignore if we click over the button, since the button will handle hiding the list.
-        if ( event.trail.nodes.indexOf( this.button ) === -1 ) {
+          //TODO sun#314 need to add a11y options?
+        } );
+      listParent.addChild( this.listBox );
+      this.listParent = listParent; // @private
+
+      this.mutate( options );
+
+      // Clicking on the button toggles visibility of the list
+      this.button.addListener( () => {
+        if ( !this.listBox.visible ) {
+          this.showListbox();
+        }
+        else {
           this.hideListbox();
         }
-      }
-    };
+      } );
 
-    // enable/disable the combo box
-    const enabledObserver = enabled => {
-      this.pickable = enabled;
-      this.opacity = enabled ? 1.0 : options.disabledOpacity;
-    };
-    this.enabledProperty.link( enabledObserver );
+      // @private the display that clickToDismissListener is added to, because the scene may change, see sun#14
+      this.display = null;
 
-    // @private called by dispose
-    this.disposeComboBox = () => {
+      // @private listener for 'click outside to dismiss'
+      // TODO sun#314 handle this logic for a11y too, perhaps on by monitoring the focusout event on the display's root PDOM element
+      this.clickToDismissListener = {
+        down: event => {
+          //TODO scenery#927 is trail.nodes public? should we add Trail.containsNode?
+          // Ignore if we click over the button, since the button will handle hiding the list.
+          if ( event.trail.nodes.indexOf( this.button ) === -1 ) {
+            this.hideListbox();
+          }
+        }
+      };
 
-      if ( this.display && this.display.hasInputListener( this.clickToDismissListener ) ) {
-        this.display.removeInputListener( this.clickToDismissListener );
-      }
+      // enable/disable the combo box
+      const enabledObserver = enabled => {
+        this.pickable = enabled;
+        this.opacity = enabled ? 1.0 : options.disabledOpacity;
+      };
+      this.enabledProperty.link( enabledObserver );
 
-      if ( this.enabledProperty.hasListener( enabledObserver ) ) {
-        this.enabledProperty.unlink( enabledObserver );
-      }
+      // @private called by dispose
+      this.disposeComboBox = () => {
 
-      // dispose of subcomponents
-      this.listBox.dispose();
-      this.button.dispose();
-    };
+        if ( this.display && this.display.hasInputListener( this.clickToDismissListener ) ) {
+          this.display.removeInputListener( this.clickToDismissListener );
+        }
 
-    // support for binder documentation, stripped out in builds and only runs when ?binder is specified
-    assert && phet.chipper.queryParameters.binder && InstanceRegistry.registerDataURL( 'sun', 'ComboBox', this );
-  }
+        if ( this.enabledProperty.hasListener( enabledObserver ) ) {
+          this.enabledProperty.unlink( enabledObserver );
+        }
 
-  sun.register( 'ComboBox', ComboBox );
+        // dispose of subcomponents
+        this.listBox.dispose();
+        this.button.dispose();
+      };
 
-  //TODO sun#456 ComboBox cannot use ES6 class until its subtypes do
-  return inherit( Node, ComboBox, {
+      // support for binder documentation, stripped out in builds and only runs when ?binder is specified
+      assert && phet.chipper.queryParameters.binder && InstanceRegistry.registerDataURL( 'sun', 'ComboBox', this );
+    }
 
     // @public - Provide dispose() on the prototype for ease of subclassing.
     dispose() {
       this.disposeComboBox();
       Node.prototype.dispose.call( this );
-    },
+    }
 
     // @public
-    setEnabled( enabled ) { this.enabledProperty.value = enabled; },
-    set enabled( value ) { this.setEnabled( value ); },
+    setEnabled( enabled ) { this.enabledProperty.value = enabled; }
+
+    set enabled( value ) { this.setEnabled( value ); }
 
     // @public
-    getEnabled() { return this.enabledProperty.value; },
-    get enabled() { return this.getEnabled(); },
+    getEnabled() { return this.enabledProperty.value; }
+
+    get enabled() { return this.getEnabled(); }
 
     /**
      * Shows the listbox.
@@ -225,7 +221,7 @@ define( require => {
 
         this.phetioEndEvent();
       }
-    },
+    }
 
     /**
      * Hides the listbox.
@@ -249,7 +245,7 @@ define( require => {
 
         this.phetioEndEvent();
       }
-    },
+    }
 
     /**
      * Handles the coordinate transform required to make the listbox pop up near the button.
@@ -269,5 +265,7 @@ define( require => {
         this.listBox.top = pButtonLocal.y;
       }
     }
-  } );
+  }
+
+  return sun.register( 'ComboBox', ComboBox );
 } );
