@@ -2,8 +2,8 @@
 
 /**
  * Scenery-based combo box. Composed of a button and a popup listbox of items.
- * The listbox is displayed when the button is pressed, and dismissed when an item is selected
- * or the user clicks outside the list. The list can be displayed either above or below the button.
+ * The listbox is displayed when the button is pressed, and dismissed when an item is selected, the user clicks on
+ * the button, or the user clicks outside the list. The list can be displayed either above or below the button.
  *
  * @author Chris Malley (PixelZoom, Inc.)
  */
