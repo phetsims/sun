@@ -43,6 +43,7 @@ define( require => {
 
         // a11y
         tagName: 'li',
+        focusable: true,
         ariaRole: 'option',
         a11yLabel: null
 
