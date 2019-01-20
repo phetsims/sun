@@ -16,7 +16,6 @@ define( require => {
   const ComboBoxListBox = require( 'SUN/ComboBoxListBox' );
   const inherit = require( 'PHET_CORE/inherit' );
   const InstanceRegistry = require( 'PHET_CORE/documentation/InstanceRegistry' );
-  const KeyboardUtil = require( 'SCENERY/accessibility/KeyboardUtil' );
   const Node = require( 'SCENERY/nodes/Node' );
   const Property = require( 'AXON/Property' );
   const sun = require( 'SUN/sun' );
@@ -146,33 +145,10 @@ define( require => {
       }
     } );
 
-    //TODO sun#445 why is this listener on button? this entire listener appears to be related to the list.
-    // add the button accessibility listener
-    this.button.addInputListener( {
-
-      a11yclick: () => {
-
-        //TODO sun#314 order dependency, requires that showListbox was called first by button listener
-        if ( this.listBox.visible ) {
-          this.listBox.updateFocus();
-        }
-      },
-
-      // listen for escape to hide the list when focused on the button
-      keydown: event => {
-        if ( this.listBox.visible ) {
-          if ( event.domEvent.keyCode === KeyboardUtil.KEY_ESCAPE ) {
-            this.hideListbox();
-          }
-        }
-      }
-    } );
-
     // @private listener for 'click outside to dismiss'
     // TODO sun#314 handle this logic for a11y too, perhaps on by monitoring the focusout event on the display's root PDOM element
     this.clickToDismissListener = {
       down: event => {
-
         //TODO scenery#927 is trail.nodes public? should we add Trail.containsNode?
         // Ignore if we click over the button, since the button will handle hiding the list.
         if ( event.trail.nodes.indexOf( this.button ) === -1 ) {

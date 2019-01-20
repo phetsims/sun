@@ -196,13 +196,8 @@ define( require => {
       };
       this.addInputListener( keyDownListener );
 
-      // Clear focus when the listbox becomes invisible
-      this.on( 'visibility', () => {
-        if ( !this.visible && this.focusedItemNode ) {
-          this.focusedItemNode.focusable = false;
-          this.focusedItemNode = null;
-        }
-      } );
+      // Update focus when the listbox's visibility changes.
+      this.on( 'visibility', () => { this.updateFocus(); } );
 
       // @private
       this.disposeComboBoxListBox = () => {
@@ -227,15 +222,25 @@ define( require => {
 
     /**
      * Updates the focus to match the currently selected value.
-     * @public
+     * @private
      */
     updateFocus() {
-      for ( let i = 0; i < this.listItemNodes.length; i++ ) {
-        const listItemNode = this.listItemNodes[ i ];
-        if ( this.property.value === listItemNode.item.value ) {
-          this.focusedItemNode = listItemNode;
-          this.focusedItemNode.a11yFocusButton();
+      if ( this.visible ) {
+
+        // listbox is visible, focus on selected item
+        for ( let i = 0; i < this.listItemNodes.length; i++ ) {
+          const listItemNode = this.listItemNodes[ i ];
+          if ( this.property.value === listItemNode.item.value ) {
+            this.focusedItemNode = listItemNode;
+            this.focusedItemNode.a11yFocusButton();
+          }
         }
+      }
+      else if ( this.focusedItemNode ) {
+
+        // listbox is invisible, clear focus
+        this.focusedItemNode.focusable = false;
+        this.focusedItemNode = null;
       }
     }
 
