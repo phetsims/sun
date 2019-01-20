@@ -1,8 +1,8 @@
 // Copyright 2013-2019, University of Colorado Boulder
 
 /**
- * Scenery-based combo box. Composed of a button and a popup listbox of items.
- * The listbox is displayed when the button is pressed, and dismissed when an item is selected, the user clicks on
+ * Scenery-based combo box. Composed of a button and a popup 'list box' of items.
+ * The list box is displayed when the button is pressed, and dismissed when an item is selected, the user clicks on
  * the button, or the user clicks outside the list. The list can be displayed either above or below the button.
  *
  * @author Chris Malley (PixelZoom, Inc.)
@@ -114,9 +114,9 @@ define( require => {
         this.button.centerY = options.labelNode.centerY;
       }
 
-      // @private the popup listbox
+      // @private the popup list box
       this.listBox = new ComboBoxListBox( property, items, this.button,
-        this.hideListbox.bind( this ), options.tandem.createTandem( 'listBox' ), {
+        this.hideListBox.bind( this ), options.tandem.createTandem( 'listBox' ), {
           align: options.align,
           highlightFill: options.highlightFill,
           xMargin: options.xMargin,
@@ -137,10 +137,10 @@ define( require => {
       // Clicking on the button toggles visibility of the list
       this.button.addListener( () => {
         if ( !this.listBox.visible ) {
-          this.showListbox();
+          this.showListBox();
         }
         else {
-          this.hideListbox();
+          this.hideListBox();
         }
       } );
 
@@ -165,7 +165,7 @@ define( require => {
           //TODO scenery#927 is trail.nodes public? should we add Trail.containsNode?
           // Ignore if we click over the button, since the button will handle hiding the list.
           if ( event.trail.nodes.indexOf( this.button ) === -1 ) {
-            this.hideListbox();
+            this.hideListBox();
           }
         }
       };
@@ -214,15 +214,15 @@ define( require => {
     get enabled() { return this.getEnabled(); }
 
     /**
-     * Shows the listbox.
+     * Shows the list box.
      * @public
      */
-    showListbox() {
+    showListBox() {
       if ( !this.listBox.visible ) {
-        this.phetioStartEvent( 'listboxShown' );
+        this.phetioStartEvent( 'listBoxShown' );
 
-        // show the listbox
-        this.moveList();
+        // show the list box
+        this.moveListBox();
         this.listBox.moveToFront();
         this.listBox.visible = true;
 
@@ -236,12 +236,12 @@ define( require => {
     }
 
     /**
-     * Hides the listbox.
+     * Hides the list box.
      * @public
      */
-    hideListbox() {
+    hideListBox() {
       if ( this.listBox.visible ) {
-        this.phetioStartEvent( 'listboxHidden' );
+        this.phetioStartEvent( 'listBoxHidden' );
 
         // manage clickToDismissListener
         if ( this.display && this.display.hasInputListener( this.clickToDismissListener ) ) {
@@ -249,19 +249,19 @@ define( require => {
           this.display = null;
         }
 
-        // hide the listbox
+        // hide the list box
         this.listBox.visible = false;
 
         this.phetioEndEvent();
       }
     }
 
-    //TODO sun#457 scale listbox to match button
+    //TODO sun#457 scale list box to match button
     /**
-     * Handles the coordinate transform required to make the listbox pop up near the button.
+     * Handles the coordinate transform required to make the list box pop up near the button.
      * @private
      */
-    moveList() {
+    moveListBox() {
       if ( this.listPosition === 'above' ) {
         const pButtonGlobal = this.localToGlobalPoint( new Vector2( this.button.left, this.button.top ) );
         const pButtonLocal = this.listParent.globalToLocalPoint( pButtonGlobal );

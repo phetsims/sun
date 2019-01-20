@@ -1,7 +1,7 @@
 // Copyright 2019, University of Colorado Boulder
 
 /**
- * The popup listbox for a ComboBox.
+ * The popup list box for a ComboBox.
  *
  * @author Chris Malley (PixelZoom, Inc.)
  */
@@ -26,8 +26,8 @@ define( require => {
     /**
      * @param {Property} property
      * @param {ComboBoxItem[]} items
-     * @param {ComboBoxButton} button  TODO sun#445 would be nice if listbox didn't need to know about button
-     * @param {function} hideCallback  TODO sun#445 would be nice if listbox didn't need hideCallback
+     * @param {ComboBoxButton} button  TODO sun#445 would be nice if list box didn't need to know about button
+     * @param {function} hideCallback  TODO sun#445 would be nice if list box didn't need hideCallback
      * @param {Tandem} tandem
      * @param {Object} [options]
      */
@@ -95,7 +95,7 @@ define( require => {
           firedEmitter.emit( event );
         },
 
-        // Handle keydown on each item in the listbox, for a11y
+        // Handle keydown on each item in the list box, for a11y
         keydown: event => {
 
           if ( KeyboardUtil.KEY_ENTER === event.domEvent.keyCode || KeyboardUtil.KEY_SPACE === event.domEvent.keyCode ) {
@@ -166,7 +166,7 @@ define( require => {
       // @public {ComboBoxListItemNode|null} the ComboBoxListItemNode that has focus
       this.focusedItemNode = null;
 
-      // Handle keydown on the entire listbox, for a11y
+      // Handle keydown on the entire list box, for a11y
       this.addInputListener( {
         keydown: event => {
           var keyCode = event.domEvent.keyCode;
@@ -176,7 +176,7 @@ define( require => {
           }
           else if ( keyCode === KeyboardUtil.KEY_DOWN_ARROW || keyCode === KeyboardUtil.KEY_UP_ARROW ) {
 
-            // Up/down arrow keys move the focus between items in the listbox
+            // Up/down arrow keys move the focus between items in the list box
             const direction = ( keyCode === KeyboardUtil.KEY_DOWN_ARROW ) ? 1 : -1;
             for ( let i = 0; i < listItemNodes.length; i++ ) {
               if ( this.focusedItemNode === listItemNodes[ i ] ) {
@@ -238,7 +238,7 @@ define( require => {
 
     // TODO: sun#314 we don't likely need this anymore
     /**
-     * Updates this attribute on the listbox.
+     * Updates this attribute on the list box.
      * This changes as you interact with the comboBox, as well as when an item is selected.
      * @param {ComboBoxListItemNode} listItemNode
      * @private
