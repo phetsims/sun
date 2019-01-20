@@ -27,7 +27,7 @@ define( require => {
      * @param {Property} property
      * @param {ComboBoxItem[]} items
      * @param {ComboBoxButton} button  TODO sun#445 would be nice if listbox didn't need to know about button
-     * @param {function} hideCallback  TODO sun#445 would be nice if we didn't need hideCallback
+     * @param {function} hideCallback  TODO sun#445 would be nice if listbox didn't need hideCallback
      * @param {Tandem} tandem
      * @param {Object} [options]
      */
