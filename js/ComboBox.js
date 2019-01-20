@@ -128,6 +128,8 @@ define( require => {
         stroke: options.listStroke,
         lineWidth: options.listLineWidth,
         visible: false
+
+        //TODO sun#314 need to any a11y options?
       } );
     listParent.addChild( this.listBox );
     this.listParent = listParent; // @private
@@ -144,7 +146,7 @@ define( require => {
       }
     } );
 
-    //TODO sun#445 why is this listener on button? this entire listener appear to be related to the list.
+    //TODO sun#445 why is this listener on button? this entire listener appears to be related to the list.
     // add the button accessibility listener
     this.button.addInputListener( {
 
