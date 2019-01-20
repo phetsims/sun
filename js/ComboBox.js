@@ -144,6 +144,17 @@ define( require => {
         }
       } );
 
+      // Handle button clicks, for a11y
+      this.button.addInputListener( {
+        a11yclick: () => {
+
+          //TODO sun#314 order dependency, requires that button's listener has called showList
+          if ( this.listBox.visible ) {
+            this.listBox.updateFocus();
+          }
+        }
+      } );
+
       // @private the display that clickToDismissListener is added to, because the scene may change, see sun#14
       this.display = null;
 
@@ -240,9 +251,6 @@ define( require => {
 
         // hide the listbox
         this.listBox.visible = false;
-
-        // move focus to the button
-        this.button.focus();
 
         this.phetioEndEvent();
       }

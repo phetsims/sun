@@ -107,6 +107,7 @@ define( require => {
             // fromA11yEnterKey = KeyboardUtil.KEY_ENTER === event.domEvent.keyCode; // only for the enter key
             property.value = listItemNode.item.value;
             hideCallback();
+            button.focus();
 
             // a11y - keep this PDOM attribute in sync
             this.updateActiveDescendant( listItemNode );
@@ -171,6 +172,7 @@ define( require => {
           var keyCode = event.domEvent.keyCode;
           if ( keyCode === KeyboardUtil.KEY_ESCAPE || keyCode === KeyboardUtil.KEY_TAB ) {
             hideCallback();
+            button.focus();
           }
           else if ( keyCode === KeyboardUtil.KEY_DOWN_ARROW || keyCode === KeyboardUtil.KEY_UP_ARROW ) {
 
@@ -196,9 +198,6 @@ define( require => {
         }
       } );
 
-      // Update focus when the listbox's visibility changes.
-      this.on( 'visibility', () => { this.updateFocus(); } );
-
       // @private
       this.disposeComboBoxListBox = () => {
         for ( let i = 0; i < listItemNodes; i++ ) {
@@ -221,8 +220,8 @@ define( require => {
     }
 
     /**
-     * Updates the focus to match the currently selected value.
-     * @private
+     * Sets the focus to match the currently selected value.
+     * @public
      */
     updateFocus() {
       if ( this.visible ) {
