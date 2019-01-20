@@ -98,13 +98,12 @@ define( require => {
         // Handle keydown on each item in the listbox, for a11y
         keydown: event => {
 
-          //TODO sun#445 KEY_ENTER is not working
           if ( KeyboardUtil.KEY_ENTER === event.domEvent.keyCode || KeyboardUtil.KEY_SPACE === event.domEvent.keyCode ) {
 
             assert && assert( event.currentTarget instanceof ComboBoxListItemNode, 'currentTarget has wrong type' );
             const listItemNode = event.currentTarget;
 
-            //TODO address sun#447
+            //TODO address sun#447, KEY_ENTER hides list then immediately shows list
             // fromA11yEnterKey = KeyboardUtil.KEY_ENTER === event.domEvent.keyCode; // only for the enter key
             property.value = listItemNode.item.value;
             hideCallback();
