@@ -80,16 +80,13 @@ define( require => {
     Node.call( this );
 
     this.items = items; // @private
-    this.enabledProperty = options.enabledProperty; // @public
     this.listPosition = options.listPosition; // @private
+    this.enabledProperty = options.enabledProperty; // @public
 
     // optional label
     if ( options.labelNode !== null ) {
       this.addChild( options.labelNode );
     }
-
-    // @private the display that clickToDismissListener is added to, because the scene may change, see sun#14
-    this.display = null;
 
     // @private button that shows the current selection
     this.button = new ComboBoxButton( property, items, {
@@ -144,6 +141,9 @@ define( require => {
         this.hideListbox();
       }
     } );
+
+    // @private the display that clickToDismissListener is added to, because the scene may change, see sun#14
+    this.display = null;
 
     // @private listener for 'click outside to dismiss'
     // TODO sun#314 handle this logic for a11y too, perhaps on by monitoring the focusout event on the display's root PDOM element
@@ -211,10 +211,12 @@ define( require => {
       if ( !this.listBox.visible ) {
         this.phetioStartEvent( 'listboxShown' );
 
+        // show the listbox
         this.moveList();
         this.listBox.moveToFront();
         this.listBox.visible = true;
 
+        // manage clickToDismissListener
         assert && assert( !this.display, 'unexpected display' );
         this.display = this.getUniqueTrail().rootNode().getRootedDisplays()[ 0 ];
         this.display.addInputListener( this.clickToDismissListener );
@@ -231,12 +233,16 @@ define( require => {
       if ( this.listBox.visible ) {
         this.phetioStartEvent( 'listboxHidden' );
 
+        // manage clickToDismissListener
         if ( this.display && this.display.hasInputListener( this.clickToDismissListener ) ) {
           this.display.removeInputListener( this.clickToDismissListener );
           this.display = null;
         }
 
+        // hide the listbox
         this.listBox.visible = false;
+
+        // move focus to the button
         this.button.focus();
 
         this.phetioEndEvent();
