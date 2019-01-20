@@ -118,7 +118,7 @@ define( require => {
 
     // @private the popup listbox
     this.listBox = new ComboBoxListBox( property, items, this.button,
-      this.hideList.bind( this ), options.tandem.createTandem( 'listBox' ), {
+      this.hideListbox.bind( this ), options.tandem.createTandem( 'listBox' ), {
         align: options.align,
         highlightFill: options.highlightFill,
         xMargin: options.xMargin,
@@ -139,10 +139,10 @@ define( require => {
     // Clicking on the button toggles visibility of the list
     this.button.addListener( () => {
       if ( !this.listBox.visible ) {
-        this.showList();
+        this.showListbox();
       }
       else {
-        this.hideList();
+        this.hideListbox();
       }
     } );
 
@@ -152,7 +152,7 @@ define( require => {
 
       a11yclick: () => {
 
-        //TODO sun#314 order dependency, requires that showList was called first by button listener
+        //TODO sun#314 order dependency, requires that showListbox was called first by button listener
         if ( this.listBox.visible ) {
           this.listBox.updateFocus();
         }
@@ -162,7 +162,7 @@ define( require => {
       keydown: event => {
         if ( this.listBox.visible ) {
           if ( event.domEvent.keyCode === KeyboardUtil.KEY_ESCAPE ) {
-            this.hideList();
+            this.hideListbox();
           }
         }
       }
@@ -176,7 +176,7 @@ define( require => {
         //TODO scenery#927 is trail.nodes public? should we add Trail.containsNode?
         // Ignore if we click over the button, since the button will handle hiding the list.
         if ( event.trail.nodes.indexOf( this.button ) === -1 ) {
-          this.hideList();
+          this.hideListbox();
         }
       }
     };
@@ -228,12 +228,12 @@ define( require => {
     get enabled() { return this.getEnabled(); },
 
     /**
-     * Shows the combo box list.
+     * Shows the listbox.
      * @public
      */
-    showList() {
+    showListbox() {
       if ( !this.listBox.visible ) {
-        this.phetioStartEvent( 'popupShown' );
+        this.phetioStartEvent( 'listboxShown' );
 
         this.moveList();
         this.listBox.moveToFront();
@@ -248,12 +248,12 @@ define( require => {
     },
 
     /**
-     * Hides the combo box list.
+     * Hides the listbox.
      * @public
      */
-    hideList() {
+    hideListbox() {
       if ( this.listBox.visible ) {
-        this.phetioStartEvent( 'popupHidden' );
+        this.phetioStartEvent( 'listboxHidden' );
 
         if ( this.display && this.display.hasInputListener( this.clickToDismissListener ) ) {
           this.display.removeInputListener( this.clickToDismissListener );
@@ -267,7 +267,7 @@ define( require => {
     },
 
     /**
-     * Handles the coordinate transform required to make the list pop up near the button.
+     * Handles the coordinate transform required to make the listbox pop up near the button.
      * @private
      */
     moveList() {
