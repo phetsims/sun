@@ -13,6 +13,7 @@ define( require => {
   const ComboBoxListItemNode = require( 'SUN/ComboBoxListItemNode' );
   const Emitter = require( 'AXON/Emitter' );
   const EmitterIO = require( 'AXON/EmitterIO' );
+  const Event = require( 'SCENERY/input/Event' );
   const KeyboardUtil = require( 'SCENERY/accessibility/KeyboardUtil' );
   const Panel = require( 'SUN/Panel' );
   const sun = require( 'SUN/sun' );
@@ -54,8 +55,7 @@ define( require => {
 
       // TODO sun#405 It seems it would be better to use FireListener on each ComboBoxListItemNode
       const firedEmitter = new Emitter( {
-        tandem: tandem.createTandem( 'firedEmitter' ),
-        phetioType: EmitterIO( [ { name: 'event', type: VoidIO } ] ), // TODO sun#405 Should this be EventIO or DOMEventIO?
+        argumentTypes: [ { validValue: Event } ],
         listener: event => {
 
           const listItemNode = event.currentTarget;
@@ -69,7 +69,11 @@ define( require => {
           event.abort(); // prevent nodes (eg, controls) behind the list from receiving the event
 
           property.value = listItemNode.item.value;
-        }
+        },
+
+        // phet-io
+        tandem: tandem.createTandem( 'firedEmitter' ),
+        phetioType: EmitterIO( [ { name: 'event', type: VoidIO } ] ) // TODO sun#405 Should this be EventIO or DOMEventIO?
       } );
 
       // listener that we'll attach to each item in the list
@@ -84,7 +88,7 @@ define( require => {
           event.abort(); // prevent click-to-dismiss on the list
         },
         up( event ) {
-          firedEmitter.emit1( event ); //TODO #405 emit1 is deprecated
+          firedEmitter.emit( event );
         }
       };
 
