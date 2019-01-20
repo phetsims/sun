@@ -77,23 +77,19 @@ define( require => {
         this.innerContent = options.a11yLabel; //TODO #314 is this correct? if so, document why.
       }
 
-      //TODO #314 This is marked private, but is assigned in ComboBox. It should be set via options or a setter method.
-      // @private {null|function} - listener called when button clicked with AT
-      this.a11yClickListener = null;
-
       // @public (read-only)
       this.item = item;
 
       // @private
-      this.itemNodeWrapper = itemNodeWrapper;
       this.highlightRectangle = highlightRectangle;
       this.highlightFill = options.highlightFill;
 
-      // the highlight wraps around the entire item rectangle
-      this.itemNodeWrapper.focusHighlight = Shape.bounds( this.itemNodeWrapper.parentToLocalBounds( this.localBounds ) );
+      // the focus highlight wraps around the entire item rectangle
+      itemNodeWrapper.focusHighlight = Shape.bounds( itemNodeWrapper.parentToLocalBounds( this.localBounds ) );
     }
 
     /**
+     * Sets visibility of the highlight that appear's behind the item's node. (This is not the a11y focus highlight.)
      * @param {boolean} visible
      * @public
      */
@@ -101,38 +97,6 @@ define( require => {
 
       // Change fill instead of visibility so that we don't end up with vertical pointer gaps in the list
       this.highlightRectangle.fill = visible ? this.highlightFill : null;
-    }
-
-    //TODO sun#314 doc/rename to toggleVisibility
-    /**
-     * @param {boolean} visible
-     */
-    a11yShowItem( visible ) {
-      this.itemNodeWrapper.tagName = visible ? 'button' : null;
-      this.tagName = visible ? 'li' : null;
-    }
-
-    //TODO #314 ComboBoxListItemNode instances are now shared between the list and button. How does that affect focus? Should focus be set on the ComboBoxListItemNode's wrapper in the list?
-    /**
-     * Focus the item in the list
-     * @public
-     */
-    a11yFocusButton() {
-      this.focusable = true;
-      this.focus();
-    }
-
-    /**
-     * Disposes the item.
-     * @public
-     * @override
-     */
-    dispose() {
-
-      // the item in the button will not have a listener
-      this.a11yClickListener && this.removeInputListener( this.a11yClickListener );
-      this.itemNodeWrapper.dispose(); //TODO #314 why is this needed?
-      super.dispose();
     }
   }
 

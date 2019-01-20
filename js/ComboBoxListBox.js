@@ -185,10 +185,13 @@ define( require => {
                   // a11y - keep this PDOM attribute in sync
                   this.updateActiveDescendant( nextListItemNode );
 
-                  // previous item should not be focusable
+                  // clear focus for previous item
                   this.focusedItemNode.focusable = false;
+
+                  // set focus for next item
                   this.focusedItemNode = nextListItemNode;
-                  this.focusedItemNode.a11yFocusButton();
+                  this.focusedItemNode.focusable = true; //TODO sun#314 why do we need to set focusable=true?
+                  this.focusedItemNode.focus();
                   break;
                 }
               }
@@ -233,7 +236,8 @@ define( require => {
           const listItemNode = this.listItemNodes[ i ];
           if ( this.property.value === listItemNode.item.value ) {
             this.focusedItemNode = listItemNode;
-            this.focusedItemNode.a11yFocusButton();
+            this.focusedItemNode.focusable = true;
+            this.focusedItemNode.focus();
           }
         }
       }
