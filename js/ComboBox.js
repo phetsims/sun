@@ -78,7 +78,7 @@ define( require => {
     assert && assert( ALIGN_VALUES.includes( options.align ),
       'invalid align: ' + options.align );
 
-    // Note: ComboBox cannot use ES6 class until its subtypes do
+    //TODO sun#456 ComboBox cannot use ES6 class until its subtypes do
     Node.call( this );
 
     this.items = items; // @private
@@ -188,7 +188,7 @@ define( require => {
 
   sun.register( 'ComboBox', ComboBox );
 
-  // Note: ComboBox cannot use ES6 class until its subtypes do
+  //TODO sun#456 ComboBox cannot use ES6 class until its subtypes do
   return inherit( Node, ComboBox, {
 
     // @public - Provide dispose() on the prototype for ease of subclassing.
