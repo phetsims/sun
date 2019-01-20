@@ -230,7 +230,6 @@ define( require => {
      * @public
      */
     showList() {
-
       if ( !this.listBox.visible ) {
         this.phetioStartEvent( 'popupShown' );
 
@@ -251,16 +250,18 @@ define( require => {
      * @public
      */
     hideList() {
-      this.phetioStartEvent( 'popupHidden' );
+      if ( this.listBox.visible ) {
+        this.phetioStartEvent( 'popupHidden' );
 
-      if ( this.display && this.display.hasInputListener( this.clickToDismissListener ) ) {
-        this.display.removeInputListener( this.clickToDismissListener );
-        this.display = null;
+        if ( this.display && this.display.hasInputListener( this.clickToDismissListener ) ) {
+          this.display.removeInputListener( this.clickToDismissListener );
+          this.display = null;
+        }
+
+        this.listBox.visible = false;
+
+        this.phetioEndEvent();
       }
-
-      this.listBox.visible = false;
-
-      this.phetioEndEvent();
     },
 
     /**
