@@ -237,6 +237,7 @@ define( require => {
         }
 
         this.listBox.visible = false;
+        this.button.focus();
 
         this.phetioEndEvent();
       }

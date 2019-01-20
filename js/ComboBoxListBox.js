@@ -107,7 +107,6 @@ define( require => {
             // fromA11yEnterKey = KeyboardUtil.KEY_ENTER === event.domEvent.keyCode; // only for the enter key
             property.value = listItemNode.item.value;
             hideCallback();
-            button.focus();
 
             // a11y - keep this PDOM attribute in sync
             this.updateActiveDescendant( listItemNode );
@@ -170,11 +169,7 @@ define( require => {
       this.addInputListener( {
         keydown: event => {
           var keyCode = event.domEvent.keyCode;
-          if ( keyCode === KeyboardUtil.KEY_ESCAPE ) {
-            hideCallback();
-            button.focus();
-          }
-          else if ( keyCode === KeyboardUtil.KEY_TAB ) {
+          if ( keyCode === KeyboardUtil.KEY_ESCAPE || keyCode === KeyboardUtil.KEY_TAB ) {
             hideCallback();
           }
           else if ( keyCode === KeyboardUtil.KEY_DOWN_ARROW || keyCode === KeyboardUtil.KEY_UP_ARROW ) {
