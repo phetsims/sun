@@ -78,17 +78,41 @@ define( require => {
 
       // listener that we'll attach to each item in the list
       const itemListener = {
+
         enter( event ) {
           event.currentTarget.setHighlightVisible( true );
         },
+
         exit( event ) {
           event.currentTarget.setHighlightVisible( false );
         },
+
         down( event ) {
           event.abort(); // prevent click-to-dismiss on the list
         },
+        
         up( event ) {
           firedEmitter.emit( event );
+        },
+
+        // Handle keydown on each item in the listbox, for a11y
+        keydown: event => {
+
+          //TODO sun#445 KEY_ENTER is not working
+          if ( KeyboardUtil.KEY_ENTER === event.domEvent.keyCode || KeyboardUtil.KEY_SPACE === event.domEvent.keyCode ) {
+
+            assert && assert( event.currentTarget instanceof ComboBoxListItemNode, 'currentTarget has wrong type' );
+            const listItemNode = event.currentTarget;
+
+            //TODO address sun#447
+            // fromA11yEnterKey = KeyboardUtil.KEY_ENTER === event.domEvent.keyCode; // only for the enter key
+            property.value = listItemNode.item.value;
+            hideCallback();
+            button.focus();
+
+            // a11y - keep this PDOM attribute in sync
+            this.updateActiveDescendant( listItemNode );
+          }
         }
       };
 
@@ -100,8 +124,8 @@ define( require => {
       const highlightWidth = maxItemWidth + options.xMargin;
       const highlightHeight = maxItemHeight + options.yMargin;
 
-      // @private populate list with items
-      const listItemNodes = [];
+      // Create a node for each item in the list, and attach a listener.
+      const listItemNodes = []; // {ComboBoxListItemNode[]}
       items.forEach( ( item, index ) => {
 
         // Create the list item node
@@ -119,28 +143,6 @@ define( require => {
         listItemNodes.push( listItemNode );
 
         listItemNode.addInputListener( itemListener );
-
-        //TODO sun#314 a11yClickListener should not be assigned here, it should be set via options or a setter method
-        // a11y - select the property and close on a click event from assistive technology, must be removed in disposal
-        // of combo box item. Keep track of it on the listItemNode for disposal.
-        listItemNode.a11yClickListener = {
-          keydown: event => {
-
-            //TODO sun#445 KEY_ENTER is not working
-            if ( KeyboardUtil.KEY_ENTER === event.domEvent.keyCode || KeyboardUtil.KEY_SPACE === event.domEvent.keyCode ) {
-
-              //TODO address sun#447
-              // fromA11yEnterKey = KeyboardUtil.KEY_ENTER === event.domEvent.keyCode; // only for the enter key
-              property.value = item.value;
-              hideCallback();
-              button.focus();
-
-              // a11y - keep this PDOM attribute in sync
-              this.updateActiveDescendant( listItemNode );
-            }
-          }
-        };
-        listItemNode.addInputListener( listItemNode.a11yClickListener );
       } );
 
       const content = new VBox( {
@@ -154,6 +156,7 @@ define( require => {
 
       super( content, options );
 
+      //TODO sun#314 say more here
       // a11y - the list is labeled by the button's label
       this.addAriaLabelledbyAssociation( {
         otherNode: button,
@@ -164,7 +167,7 @@ define( require => {
       // @public {ComboBoxListItemNode|null} the ComboBoxListItemNode that has focus
       this.focusedItemNode = null;
 
-      // Handle keydown for a11y
+      // Handle keydown on the entire listbox, for a11y
       this.addInputListener( {
         keydown: event => {
           var keyCode = event.domEvent.keyCode;
