@@ -26,6 +26,7 @@ define( require => {
   const ALIGN_VALUES = [ 'left', 'right', 'center' ]; // alignment of item on button and in list
 
   class ComboBox extends Node {
+    
     /**
      * @param {ComboBoxItem[]} items
      * @param {Property} property
