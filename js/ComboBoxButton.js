@@ -11,7 +11,6 @@ define( require => {
 
   // modules
   const AccessiblePeer = require( 'SCENERY/accessibility/AccessiblePeer' );
-  const BooleanProperty = require( 'AXON/BooleanProperty' );
   const HStrut = require( 'SCENERY/nodes/HStrut' );
   const Node = require( 'SCENERY/nodes/Node' );
   const Path = require( 'SCENERY/nodes/Path' );
@@ -188,18 +187,20 @@ define( require => {
         property.unlink( propertyObserver );
       };
 
-      // @private for use via PhET-iO, see https://github.com/phetsims/sun/issues/451
-      // This is NOT reset when the Reset All button is pressed.
-      this.displayOnlyProperty = new BooleanProperty( false, {
-        tandem: options.tandem.createTandem( 'displayOnlyProperty' ),
-        phetioDocumentation: 'disables interaction with the ComboBox button and ' +
-                             'makes it appear like a display that shows the current selection'
-      } );
-      this.displayOnlyProperty.link( displayOnly => {
-        arrow.visible = !displayOnly;
-        separator.visible = !displayOnly;
-        this.pickable = !displayOnly;
-      } );
+      // @private needed by methods
+      this.arrow = arrow;
+      this.separator = separator;
+    }
+
+    /**
+     * Sets the button to look like a value display instead of a combo box button.
+     * See https://github.com/phetsims/sun/issues/451
+     * @param {boolean} displayOnly
+     * @public
+     */
+    setDisplayOnly( displayOnly ) {
+      this.arrow.visible = !displayOnly;
+      this.separator.visible = !displayOnly;
     }
 
     /**
