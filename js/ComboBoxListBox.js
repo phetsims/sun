@@ -75,7 +75,10 @@ define( require => {
 
         // phet-io
         tandem: tandem.createTandem( 'firedEmitter' ),
-        phetioType: EmitterIO( [ { name: 'event', type: VoidIO } ] ) // TODO sun#405 Should type be EventIO or DOMEventIO?
+
+        //TODO https://github.com/phetsims/phet-io/issues/1426, set type: EventIO, phetioDataStream: false
+        phetioType: EmitterIO( [ { name: 'event', type: VoidIO } ] ),
+        phetioEventType: 'user'
       } );
 
       // Highlights the item that the pointer is over.
