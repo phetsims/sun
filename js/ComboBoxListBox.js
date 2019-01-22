@@ -76,7 +76,7 @@ define( require => {
         // phet-io
         tandem: tandem.createTandem( 'firedEmitter' ),
 
-        //TODO https://github.com/phetsims/phet-io/issues/1426, set type: EventIO, phetioDataStream: false
+        //TODO https://github.com/phetsims/phet-io/issues/1426, use type:EventIO, phetioDataStream:false
         phetioType: EmitterIO( [ { name: 'event', type: VoidIO } ] ),
         phetioEventType: 'user'
       } );
