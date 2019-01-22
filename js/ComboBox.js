@@ -1,9 +1,19 @@
 // Copyright 2013-2019, University of Colorado Boulder
 
 /**
- * Scenery-based combo box. Composed of a button and a popup 'list box' of items.
- * The list box is displayed when the button is pressed, and dismissed when an item is selected, the user clicks on
- * the button, or the user clicks outside the list. The list can be displayed either above or below the button.
+ * Scenery-based combo box. Composed of a button and a popup 'list box' of items. ComboBox has no interaction of its
+ * own, all interaction is handled by its subcomponents. The list box is displayed when the button is pressed, and
+ * dismissed when an item is selected, the user clicks on the button, or the user clicks outside the list. The list
+ * can be displayed either above or below the button.
+ *
+ * The supporting classes are:
+ *
+ * ComboBoxItem - items provided to ComboBox constructor
+ * ComboBoxButton - the button
+ * ComboBoxListBox - the list box
+ * ComboBoxListItemNode - an item in the list box
+ *
+ * For info on ComboBox UI design, including a11y, see https://github.com/phetsims/sun/blob/master/doc/ComboBox.md
  *
  * @author Chris Malley (PixelZoom, Inc.)
  */
