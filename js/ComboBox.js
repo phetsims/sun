@@ -128,8 +128,10 @@ define( require => {
       }
 
       // @private the popup list box
-      this.listBox = new ComboBoxListBox( property, items, this.button,
-        this.hideListBox.bind( this ), options.tandem.createTandem( 'listBox' ), {
+      this.listBox = new ComboBoxListBox( property, items,
+        this.hideListBox.bind( this ), // callback to hide the list box
+        this.button.focus.bind( this.button ), // callback to transfer focus to button
+        options.tandem.createTandem( 'listBox' ), {
           align: options.align,
           highlightFill: options.highlightFill,
           xMargin: options.xMargin,

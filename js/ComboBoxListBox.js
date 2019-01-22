@@ -25,12 +25,12 @@ define( require => {
     /**
      * @param {Property} property
      * @param {ComboBoxItem[]} items
-     * @param {ComboBoxButton} button  TODO sun#445 would be nice if list box didn't need to know about button
-     * @param {function} hideCallback  TODO sun#445 would be nice if list box didn't need hideCallback
+     * @param {function} hideListBoxCallback - called to hide the list box
+     * @param {function} focusButtonCallback - called to transfer focus to the combo box's button
      * @param {Tandem} tandem
      * @param {Object} [options]
      */
-    constructor( property, items, button, hideCallback, tandem, options ) {
+    constructor( property, items, hideListBoxCallback, focusButtonCallback, tandem, options ) {
 
       options = _.extend( {
 
@@ -60,7 +60,7 @@ define( require => {
           const listItemNode = event.currentTarget;
           assert && assert( listItemNode instanceof ComboBoxListItemNode, 'expected a ComboBoxListItemNode' );
 
-          hideCallback();
+          hideListBoxCallback();
           listItemNode.setHighlightVisible( false );
           event.abort(); // prevent nodes (eg, controls) behind the list from receiving the event
 
@@ -101,8 +101,8 @@ define( require => {
             const listItemNode = event.currentTarget;
 
             property.value = listItemNode.item.value;
-            hideCallback();
-            button.focus();
+            hideListBoxCallback();
+            focusButtonCallback();
           }
         }
       };
@@ -169,8 +169,8 @@ define( require => {
         keydown: event => {
           var keyCode = event.domEvent.keyCode;
           if ( keyCode === KeyboardUtil.KEY_ESCAPE || keyCode === KeyboardUtil.KEY_TAB ) {
-            hideCallback();
-            button.focus();
+            hideListBoxCallback();
+            focusButtonCallback();
           }
           else if ( keyCode === KeyboardUtil.KEY_DOWN_ARROW || keyCode === KeyboardUtil.KEY_UP_ARROW ) {
 
