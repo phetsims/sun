@@ -52,6 +52,7 @@ define( require => {
 
       }, options );
 
+      //TODO sun#462 replace fireEmitter and selectionListener with a standard scenery listener in the future
       const firedEmitter = new Emitter( {
         argumentTypes: [ { validValue: Event } ],
 
@@ -77,8 +78,8 @@ define( require => {
         phetioType: EmitterIO( [ { name: 'event', type: VoidIO } ] ) // TODO sun#405 Should type be EventIO or DOMEventIO?
       } );
 
-      // listener that we'll attach to each ComboBoxListItemNode (each item in the list)
-      const listItemNodeListener = {
+      // Highlights the item that the pointer is over.
+      const highlightListener = {
 
         enter( event ) {
           event.currentTarget.setHighlightVisible( true );
@@ -86,7 +87,12 @@ define( require => {
 
         exit( event ) {
           event.currentTarget.setHighlightVisible( false );
-        },
+        }
+      };
+
+      //TODO sun#462 replace fireEmitter and selectionListener with a standard scenery listener in the future
+      // Handles selection from the list box.
+      const selectionListener = {
 
         down( event ) {
           event.abort(); // prevent click-to-dismiss on the list
@@ -131,7 +137,8 @@ define( require => {
         } );
         listItemNodes.push( listItemNode );
 
-        listItemNode.addInputListener( listItemNodeListener );
+        listItemNode.addInputListener( highlightListener );
+        listItemNode.addInputListener( selectionListener );
       } );
 
       const content = new VBox( {
