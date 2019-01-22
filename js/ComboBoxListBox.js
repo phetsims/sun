@@ -52,7 +52,7 @@ define( require => {
 
       }, options );
 
-      //TODO sun#462 replace fireEmitter and selectionListener with a standard scenery listener in the future
+      //TODO sun#462 replace fireEmitter and selectionListener with a standard scenery listener
       const firedEmitter = new Emitter( {
         argumentTypes: [ { validValue: Event } ],
 
@@ -93,7 +93,7 @@ define( require => {
         }
       };
 
-      //TODO sun#462 replace fireEmitter and selectionListener with a standard scenery listener in the future
+      //TODO sun#462 replace fireEmitter and selectionListener with a standard scenery listener
       // Handles selection from the list box.
       const selectionListener = {
 
