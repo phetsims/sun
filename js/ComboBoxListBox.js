@@ -52,9 +52,10 @@ define( require => {
 
       }, options );
 
-      // TODO sun#405 It seems it would be better to use FireListener on each ComboBoxListItemNode
       const firedEmitter = new Emitter( {
         argumentTypes: [ { validValue: Event } ],
+
+        // Pops down the list box and sets the property.value to match the chosen item.
         listener: event => {
 
           const listItemNode = event.currentTarget;
