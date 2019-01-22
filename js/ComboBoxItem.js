@@ -22,6 +22,7 @@ define( require => {
     constructor( node, value, options ) {
 
       assert && assert( node instanceof Node, 'invalid node: ' + node );
+      assert && assert( !node.accessibleContent, 'accessibleContent is set by ComboBox, use options.a11yLabel' );
 
       options = _.extend( {
 

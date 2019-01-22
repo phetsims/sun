@@ -29,8 +29,6 @@ define( require => {
 
       assert && assert( item instanceof ComboBoxItem );
 
-      // TODO sun#314 assert you may not be allowed to have accessibleContent on the item.node, since we set the innerContent on this LI
-
       options = _.extend( {
 
         cursor: 'pointer',
@@ -82,8 +80,8 @@ define( require => {
       this.highlightRectangle = highlightRectangle;
       this.highlightFill = options.highlightFill;
 
-      // the focus highlight wraps around the entire item rectangle
-      itemNodeWrapper.focusHighlight = Shape.bounds( itemNodeWrapper.parentToLocalBounds( this.localBounds ) );
+      // focus highlight is fitted to this Node's bounds, so that it doesn't overlap items above/below in the list box
+      this.focusHighlight = Shape.bounds( this.localBounds );
     }
 
     /**
