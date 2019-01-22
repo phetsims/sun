@@ -138,8 +138,6 @@ define( require => {
           stroke: options.listStroke,
           lineWidth: options.listLineWidth,
           visible: false
-
-          //TODO sun#314 need to add a11y options?
         } );
       listParent.addChild( this.listBox );
       this.listParent = listParent; // @private
@@ -171,7 +169,6 @@ define( require => {
       this.display = null;
 
       // @private listener for 'click outside to dismiss'
-      // TODO sun#314 handle this logic for a11y too, perhaps on by monitoring the focusout event on the display's root PDOM element
       this.clickToDismissListener = {
         down: event => {
           //TODO scenery#927 is trail.nodes public? should we add Trail.containsNode?

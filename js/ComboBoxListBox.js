@@ -153,8 +153,7 @@ define( require => {
 
       super( content, options );
 
-      //TODO sun#314 say more here
-      // a11y - the list is labeled by the button's label
+      // a11y - the list box is aria-labelledby its own label sibling
       this.addAriaLabelledbyAssociation( {
         otherNode: button,
         otherElementName: AccessiblePeer.LABEL_SIBLING,

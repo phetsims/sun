@@ -52,7 +52,6 @@ define( require => {
         // phet-io
         tandem: Tandem.optional,
 
-        //TODO sun#314 evaluate whether these are still needed now that ComboBoxButton extends RectangularPushButton
         // a11y
         labelTagName: 'span',
         containerTagName: 'div',
@@ -160,8 +159,9 @@ define( require => {
       };
       property.link( propertyObserver );
 
-      //TODO sun#314 expand on this comment
-      // the button is labelledby its own label, and then (second) by itself. Order matters!
+      // Add aria-labelledby attribute to the button.
+      // The button is aria-labelledby its own label sibling, and then (second) its primary sibling in the PDOM.
+      // Order matters!
       assert && assert( !options.ariaLabelledbyAssociations, 'ComboBoxButton sets ariaLabelledbyAssociations' );
       this.ariaLabelledbyAssociations = [
         {
