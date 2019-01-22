@@ -106,7 +106,7 @@ define( require => {
         },
 
         // Handle keyup on each item in the list box, for a11y.
-        //TODO sun#447, scenery#931 we're currently using keyup because of a general problem with keydown firing continuously
+        //TODO sun#447, scenery#931 we're using keyup because keydown fires continuously
         keyup: event => {
           if ( KeyboardUtil.KEY_ENTER === event.domEvent.keyCode || KeyboardUtil.KEY_SPACE === event.domEvent.keyCode ) {
             firedEmitter.emit( event );
