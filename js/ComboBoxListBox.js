@@ -45,7 +45,7 @@ define( require => {
         // a11y
         tagName: 'ul',
         ariaRole: 'listbox',
-        groupFocusHighlight: true,
+        groupFocusHighlight: true
 
         // Not instrumented for PhET-iO because the list's location isn't valid until it has been popped up.
         // See https://github.com/phetsims/phet-io/issues/1102
@@ -94,16 +94,15 @@ define( require => {
           firedEmitter.emit( event );
         },
 
-        // Handle keydown on each item in the list box, for a11y
-        keydown: event => {
+        // Handle keyup on each item in the list box, for a11y.
+        //TODO scenery#931 we're currently using keyup because of a general problem with keydown firing continuously
+        keyup: event => {
 
           if ( KeyboardUtil.KEY_ENTER === event.domEvent.keyCode || KeyboardUtil.KEY_SPACE === event.domEvent.keyCode ) {
 
             assert && assert( event.currentTarget instanceof ComboBoxListItemNode, 'currentTarget has wrong type' );
             const listItemNode = event.currentTarget;
 
-            //TODO address sun#447, KEY_ENTER hides list then immediately shows list
-            // fromA11yEnterKey = KeyboardUtil.KEY_ENTER === event.domEvent.keyCode; // only for the enter key
             property.value = listItemNode.item.value;
             hideCallback();
             button.focus();
