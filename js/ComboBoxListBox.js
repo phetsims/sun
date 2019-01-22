@@ -60,10 +60,14 @@ define( require => {
           const listItemNode = event.currentTarget;
           assert && assert( listItemNode instanceof ComboBoxListItemNode, 'expected a ComboBoxListItemNode' );
 
+          // hide the list
           hideListBoxCallback();
           listItemNode.setHighlightVisible( false );
-          event.abort(); // prevent nodes (eg, controls) behind the list from receiving the event
 
+          // prevent nodes (eg, controls) behind the list from receiving the event
+          event.abort();
+
+          // set value based on which item was chosen in the list box
           property.value = listItemNode.item.value;
         },
 
@@ -94,14 +98,8 @@ define( require => {
         // Handle keyup on each item in the list box, for a11y.
         //TODO scenery#931 we're currently using keyup because of a general problem with keydown firing continuously
         keyup: event => {
-
           if ( KeyboardUtil.KEY_ENTER === event.domEvent.keyCode || KeyboardUtil.KEY_SPACE === event.domEvent.keyCode ) {
-
-            assert && assert( event.currentTarget instanceof ComboBoxListItemNode, 'currentTarget has wrong type' );
-            const listItemNode = event.currentTarget;
-
-            property.value = listItemNode.item.value;
-            hideListBoxCallback();
+            firedEmitter.emit( event );
             focusButtonCallback();
           }
         }
