@@ -61,9 +61,6 @@ define( require => {
           const listItemNode = event.currentTarget;
           assert && assert( listItemNode instanceof ComboBoxListItemNode, 'expected a ComboBoxListItemNode' );
 
-          // a11y - keep this PDOM attribute in sync
-          this.updateActiveDescendant( listItemNode );
-
           hideCallback();
           listItemNode.setHighlightVisible( false );
           event.abort(); // prevent nodes (eg, controls) behind the list from receiving the event
@@ -107,9 +104,6 @@ define( require => {
             property.value = listItemNode.item.value;
             hideCallback();
             button.focus();
-
-            // a11y - keep this PDOM attribute in sync
-            this.updateActiveDescendant( listItemNode );
           }
         }
       };
@@ -195,10 +189,6 @@ define( require => {
                 const nextListItemNode = listItemNodes[ i + direction ];
                 if ( nextListItemNode ) {
 
-                  //TODO sun#314 say more here
-                  // a11y - keep this PDOM attribute in sync
-                  this.updateActiveDescendant( nextListItemNode );
-
                   // set focus for next item
                   this.focusedItemNode = nextListItemNode;
                   this.focusedItemNode.focus();
@@ -229,23 +219,6 @@ define( require => {
     dispose() {
       this.disposeComboBoxListBox();
       super.dispose();
-    }
-
-    // TODO: sun#314 we don't likely need this anymore
-    /**
-     * Updates this attribute on the list box.
-     * This changes as you interact with the comboBox, as well as when an item is selected.
-     * @param {ComboBoxListItemNode} listItemNode
-     * @private
-     */
-    updateActiveDescendant( listItemNode ) {
-
-      // overwrite purposefully
-      this.activeDescendantAssociations = [ {
-        otherNode: listItemNode,
-        thisElementName: AccessiblePeer.PRIMARY_SIBLING,
-        otherElementName: AccessiblePeer.PRIMARY_SIBLING
-      } ];
     }
   }
 
