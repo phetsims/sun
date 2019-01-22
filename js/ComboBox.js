@@ -146,7 +146,7 @@ define( require => {
 
       // Handle button clicks, for a11y
       this.button.addInputListener( {
-        a11yclick: () => {
+        click: () => {
 
           //TODO sun#314 order dependency, requires that button's listener has called showList
           if ( this.listBox.visible ) {
