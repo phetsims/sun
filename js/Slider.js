@@ -222,6 +222,7 @@ define( function( require ) {
       tandem: options.tandem.createTandem( 'thumbInputListener' ),
 
       allowTouchSnag: true,
+      attach: true,
 
       start: function( event, trail ) {
         if ( self.enabledProperty.get() ) {
