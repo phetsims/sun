@@ -9,7 +9,6 @@ define( require => {
   'use strict';
 
   // modules
-  const AccessiblePeer = require( 'SCENERY/accessibility/AccessiblePeer' );
   const ComboBoxListItemNode = require( 'SUN/ComboBoxListItemNode' );
   const Emitter = require( 'AXON/Emitter' );
   const EmitterIO = require( 'AXON/EmitterIO' );
@@ -146,13 +145,6 @@ define( require => {
       options.yMargin = options.yMargin / 2;
 
       super( content, options );
-
-      // a11y - the list box is aria-labelledby its own label sibling
-      this.addAriaLabelledbyAssociation( {
-        otherNode: button,
-        otherElementName: AccessiblePeer.LABEL_SIBLING,
-        thisElementName: AccessiblePeer.PRIMARY_SIBLING
-      } );
 
       // @public {ComboBoxListItemNode|null} the ComboBoxListItemNode that has focus
       this.focusedItemNode = null;

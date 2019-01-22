@@ -21,6 +21,7 @@ define( require => {
   'use strict';
 
   // modules
+  const AccessiblePeer = require( 'SCENERY/accessibility/AccessiblePeer' );
   const BooleanProperty = require( 'AXON/BooleanProperty' );
   const ComboBoxButton = require( 'SUN/ComboBoxButton' );
   const ComboBoxIO = require( 'SUN/ComboBoxIO' );
@@ -137,7 +138,15 @@ define( require => {
           fill: options.listFill,
           stroke: options.listStroke,
           lineWidth: options.listLineWidth,
-          visible: false
+          visible: false,
+
+          // a11y
+          // the list box is aria-labelledby its own label sibling
+          ariaLabelledbyAssociations: [ {
+            otherNode: this.button,
+            otherElementName: AccessiblePeer.LABEL_SIBLING,
+            thisElementName: AccessiblePeer.PRIMARY_SIBLING
+          } ]
         } );
       listParent.addChild( this.listBox );
       this.listParent = listParent; // @private
