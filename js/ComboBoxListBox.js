@@ -46,7 +46,6 @@ define( require => {
         tagName: 'ul',
         ariaRole: 'listbox',
         groupFocusHighlight: true,
-        focusable: true //TODO sun#314 why is this needed? ComboBoxListBox is never given focus
 
         // Not instrumented for PhET-iO because the list's location isn't valid until it has been popped up.
         // See https://github.com/phetsims/phet-io/issues/1102
@@ -76,8 +75,8 @@ define( require => {
         phetioType: EmitterIO( [ { name: 'event', type: VoidIO } ] ) // TODO sun#405 Should type be EventIO or DOMEventIO?
       } );
 
-      // listener that we'll attach to each item in the list
-      const itemListener = {
+      // listener that we'll attach to each ComboBoxListItemNode (each item in the list)
+      const listItemNodeListener = {
 
         enter( event ) {
           event.currentTarget.setHighlightVisible( true );
@@ -141,7 +140,7 @@ define( require => {
         } );
         listItemNodes.push( listItemNode );
 
-        listItemNode.addInputListener( itemListener );
+        listItemNode.addInputListener( listItemNodeListener );
       } );
 
       const content = new VBox( {
