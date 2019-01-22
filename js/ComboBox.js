@@ -155,7 +155,7 @@ define( require => {
 
       this.mutate( options );
 
-      // Clicking on the button toggles visibility of the list
+      // Clicking on the button toggles visibility of the list box
       this.button.addListener( () => {
         if ( !this.listBox.visible ) {
           this.showListBox();
@@ -165,11 +165,10 @@ define( require => {
         }
       } );
 
+      //TODO sun#462 integrate this with above button listener, to eliminate order dependency
       // Handle button clicks, for a11y
       this.button.addInputListener( {
         click: () => {
-
-          //TODO sun#314 order dependency, requires that button's listener has called showList
           if ( this.listBox.visible ) {
             this.listBox.focus();
           }
