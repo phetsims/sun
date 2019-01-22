@@ -45,7 +45,8 @@ define( require => {
         // a11y
         tagName: 'ul',
         ariaRole: 'listbox',
-        groupFocusHighlight: true
+        groupFocusHighlight: true,
+        focusable: true
 
         // Not instrumented for PhET-iO because the list's location isn't valid until it has been popped up.
         // See https://github.com/phetsims/phet-io/issues/1102
@@ -166,6 +167,21 @@ define( require => {
 
       // Handle keydown on the entire list box, for a11y
       this.addInputListener( {
+
+        // When we get focus, transfer focus to the ComboBoxListItemNode that matches property.value.
+        focus: event => {
+          if ( this.visible ) {
+            for ( let i = 0; i < this.listItemNodes.length; i++ ) {
+              const listItemNode = this.listItemNodes[ i ];
+              if ( this.property.value === listItemNode.item.value ) {
+                this.focusedItemNode = listItemNode;
+                this.focusedItemNode.focus();
+                break;
+              }
+            }
+          }
+        },
+
         keydown: event => {
           var keyCode = event.domEvent.keyCode;
           if ( keyCode === KeyboardUtil.KEY_ESCAPE || keyCode === KeyboardUtil.KEY_TAB ) {
@@ -215,23 +231,6 @@ define( require => {
     dispose() {
       this.disposeComboBoxListBox();
       super.dispose();
-    }
-
-    /**
-     * Sets the focus to match the currently selected value.
-     * @public
-     */
-    updateFocus() {
-      if ( this.visible ) {
-        for ( let i = 0; i < this.listItemNodes.length; i++ ) {
-          const listItemNode = this.listItemNodes[ i ];
-          if ( this.property.value === listItemNode.item.value ) {
-            this.focusedItemNode = listItemNode;
-            this.focusedItemNode.focus();
-            break;
-          }
-        }
-      }
     }
 
     // TODO: sun#314 we don't likely need this anymore

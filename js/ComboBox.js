@@ -150,7 +150,7 @@ define( require => {
 
           //TODO sun#314 order dependency, requires that button's listener has called showList
           if ( this.listBox.visible ) {
-            this.listBox.updateFocus();
+            this.listBox.focus();
           }
         }
       } );
