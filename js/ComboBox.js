@@ -62,7 +62,8 @@ define( require => {
         listStroke: 'black', // {Color|string}
         listLineWidth: 1,
 
-        //TODO sun#314 need to add a11y options?
+        // a11y
+        buttonLabelContent: null, // {string|null} propagated to ComboBoxButton via its options.labelContent
 
         // phet-io
         tandem: Tandem.required,
@@ -101,7 +102,8 @@ define( require => {
         stroke: options.buttonStroke,
         lineWidth: options.buttonLineWidth,
 
-        //TODO sun#314 need to add a11y options?
+        // a11y
+        labelContent: options.buttonLabelContent,
 
         // phet-io
         tandem: options.tandem.createTandem( 'button' )

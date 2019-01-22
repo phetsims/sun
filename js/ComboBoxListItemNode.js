@@ -44,10 +44,13 @@ define( require => {
         // a11y
         tagName: 'li',
         focusable: true,
-        ariaRole: 'option',
-        a11yLabel: null // {string|null}
+        ariaRole: 'option'
 
       }, options );
+
+      // a11y: get innerContent from the item
+      assert && assert( options.innerContent === undefined, 'ComboBoxListItemNode sets innerContent' );
+      options.innerContent = item.a11yLabel;
 
       // Highlight rectangle
       const highlightRectangle = new Rectangle( 0, 0, width, height );
@@ -71,12 +74,6 @@ define( require => {
       options.children = [ highlightRectangle, itemNodeWrapper ];
 
       super( options );
-
-      //TODO #314 why do we need to do this? isn't this handled by super(options) ?
-      if ( options.a11yLabel ) {
-        this.a11yLabel = options.a11yLabel;
-        this.innerContent = options.a11yLabel;
-      }
 
       // @public (read-only)
       this.item = item;

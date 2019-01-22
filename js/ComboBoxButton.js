@@ -56,7 +56,7 @@ define( require => {
         // a11y
         labelTagName: 'span',
         containerTagName: 'div',
-        a11yLabel: null // {string|null}
+        labelContent: null // {string|null}
 
       }, options );
 
@@ -136,15 +136,12 @@ define( require => {
         // remove the node for the previous item
         itemNodeWrapper.removeAllChildren();
 
-        // find and add the node for the new item
-        let node = null;
-        for ( var i = 0; i < items.length && !node; i++ ) {
-          if ( items[ i ].value === value ) {
-            node = items[ i ].node;
-          }
-        }
-        assert && assert( node, 'no item found for value: ' + value );
-        itemNodeWrapper.addChild( node );
+        // find the ComboBoxItem whose value matches the property's value
+        const item = _.find( items, item => item.value === value );
+        assert && assert( item, 'no item found for value: ' + value );
+
+        // add the associated node
+        itemNodeWrapper.addChild( item.node );
 
         // adjust alignment
         itemNodeWrapper.centerY = itemAreaStrut.centerY;
@@ -157,11 +154,11 @@ define( require => {
         else {
           itemNodeWrapper.centerX = itemAreaStrut.centerX;
         }
+
+        // a11y
+        this.innerContent = item.a11yLabel;
       };
       property.link( propertyObserver );
-
-      //TODO sun#314 is this handled by super? why not?
-      this.labelContent = options.a11yLabel;
 
       //TODO sun#314 expand on this comment
       // the button is labelledby its own label, and then (second) by itself. Order matters!
