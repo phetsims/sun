@@ -72,7 +72,10 @@ define( function( require ) {
       // on the button's state.  This can be a stock strategy from this file,
       // or custom.  To create a custom one, model it off of the stock
       // version(s) defined in this file.
-      contentAppearanceStrategy: RoundButtonView.FadeContentWhenDisabled
+      contentAppearanceStrategy: RoundButtonView.FadeContentWhenDisabled,
+
+      // a11y
+      tagName: 'button'
     }, options );
 
     Node.call( this );
