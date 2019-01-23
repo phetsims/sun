@@ -254,6 +254,7 @@ define( require => {
         this.phetioStartEvent( 'listBoxShown' );
 
         // show the list box
+        this.scaleListBox();
         this.moveListBox();
         this.listBox.moveToFront();
         this.listBox.visible = true;
@@ -288,7 +289,18 @@ define( require => {
       }
     }
 
-    //TODO sun#457 scale list box to match button
+    /**
+     * Because the button and list box have different parents (and therefore different coordinate frames)
+     * they may be scaled differently. This method scales the list box so that items on the button and in
+     * the list appear to be the same size.
+     * @private
+     */
+    scaleListBox() {
+      const buttonScale = this.button.localToGlobalBounds( this.button.localBounds ).width /  this.button.localBounds.width;
+      const listBoxScale = this.listBox.localToGlobalBounds( this.listBox.localBounds ).width /  this.listBox.localBounds.width;
+      this.listBox.scale( buttonScale / listBoxScale );
+    }
+
     /**
      * Handles the coordinate transform required to make the list box pop up near the button.
      * @private
