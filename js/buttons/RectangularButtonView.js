@@ -54,6 +54,8 @@ define( function( require ) {
       fireOnDown: false,
       touchAreaXDilation: 0,
       touchAreaYDilation: 0,
+      mouseAreaXDilation: 0,
+      mouseAreaYDilation: 0,
       stroke: undefined, // undefined by default, which will cause a stroke to be derived from the base color
       lineWidth: 0.5, // Only meaningful if stroke is non-null
       xAlign: 'center', // {string} see X_ALIGN_VALUES
@@ -166,14 +168,9 @@ define( function( require ) {
 
     interactionStateProperty.link( handleInteractionStateChanged );
 
-    // Add explicit mouse and touch areas so that the child nodes can all be non-pickable.
-    this.mouseArea = Shape.rectangle( 0, 0, buttonWidth, buttonHeight );
-    this.touchArea = Shape.rectangle(
-      -options.touchAreaXDilation,
-      -options.touchAreaYDilation,
-      buttonWidth + options.touchAreaXDilation * 2,
-      buttonHeight + options.touchAreaYDilation * 2
-    );
+    // set pointer areas
+    this.touchArea = button.localBounds.dilatedXY( options.touchAreaXDilation, options.touchAreaYDilation );
+    this.mouseArea = button.localBounds.dilatedXY( options.mouseAreaXDilation, options.mouseAreaYDilation );
 
     // Mutate with the options after the layout is complete so that width-
     // dependent fields like centerX will work.

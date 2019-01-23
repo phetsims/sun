@@ -138,7 +138,13 @@ define( function( require ) {
     var buttonAFireCount = 0;
     var buttonA = new RectangularPushButton( {
       content: new Text( '--- A ---', { font: BUTTON_FONT } ),
-      listener: function() { message( 'Button A pressed ' + ( ++buttonAFireCount ) + 'x' ); }
+      listener: function() { message( 'Button A pressed ' + ( ++buttonAFireCount ) + 'x' ); },
+      
+      // demonstrate pointer areas, see https://github.com/phetsims/sun/issues/464
+      touchAreaXDilation: 10,
+      touchAreaYDilation: 10,
+      mouseAreaXDilation: 5,
+      mouseAreaYDilation: 5
     } );
 
     var buttonB = new RectangularPushButton( {
