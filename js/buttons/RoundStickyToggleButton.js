@@ -34,8 +34,7 @@ define( function( require ) {
       phetioType: ToggleButtonIO,
 
       // a11y
-      tagName: 'input',
-      inputType: 'button'
+      tagName: 'button'
     }, options );
 
     // @private (read-only)
