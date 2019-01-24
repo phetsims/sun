@@ -78,7 +78,7 @@ define( require => {
       const arrowHeight = 0.35 * arrowAreaSize; // height of equilateral triangle
       const arrowWidth = 2 * arrowHeight * Math.sqrt( 3 ) / 3; // side of equilateral triangle
 
-      // invisible horizontal struts behind item and arrow areas
+      // Invisible horizontal struts that span the item area and arrow area. Makes layout more straightforward.
       const itemAreaStrut = new HStrut( maxItemWidth + 2 * itemXMargin );
       const arrowAreaStrut = new HStrut( arrowAreaSize, {
         left: itemAreaStrut.right
@@ -105,11 +105,12 @@ define( require => {
         center: arrowAreaStrut.center
       } );
 
-      // Wrapper for the selected item's Node. Do not transform ComboBoxItem.node because it is shared with list!
+      // Wrapper for the selected item's Node.
+      // Do not transform ComboBoxItem.node because it is shared with ComboBoxListItemNode.
       const itemNodeWrapper = new Node();
 
       // Vertical separator between the item and arrow that is the full height of the button.
-      const separator = new VSeparator( maxItemHeight + 2 * options.yMargin, {
+      const vSeparator = new VSeparator( maxItemHeight + 2 * options.yMargin, {
         stroke: 'black',
         lineWidth: options.lineWidth,
         centerX: itemAreaStrut.right,
@@ -124,7 +125,7 @@ define( require => {
 
       assert && assert( !options.content, 'ComboBoxButton sets content' );
       options.content = new Node( {
-        children: [ itemAreaStrut, arrowAreaStrut, itemNodeWrapper, separator, arrow ]
+        children: [ itemAreaStrut, arrowAreaStrut, itemNodeWrapper, vSeparator, arrow ]
       } );
 
       super( options );
@@ -186,7 +187,7 @@ define( require => {
 
       // @private needed by methods
       this.arrow = arrow;
-      this.separator = separator;
+      this.vSeparator = vSeparator;
     }
 
     /**
@@ -197,7 +198,7 @@ define( require => {
      */
     setDisplayOnly( displayOnly ) {
       this.arrow.visible = !displayOnly;
-      this.separator.visible = !displayOnly;
+      this.vSeparator.visible = !displayOnly;
     }
 
     /**
