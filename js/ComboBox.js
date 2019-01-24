@@ -181,10 +181,12 @@ define( require => {
       // @private the display that clickToDismissListener is added to, because the scene may change, see sun#14
       this.display = null;
 
-      // @private Clicking anywhere other than on the ComboBox will hide the list box.
+      // @private Clicking anywhere other than the button or list box will hide the list box.
       this.clickToDismissListener = {
         down: event => {
-          if ( !event.trail.containsNode( this ) ) {
+
+          // Ignore if we click over the button, since the button will handle hiding the list.
+          if ( !( event.trail.containsNode( this.button ) || event.trail.containsNode( this.listBox ) ) ) {
             this.hideListBox();
           }
         }
