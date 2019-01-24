@@ -87,10 +87,6 @@ define( require => {
       // Handles selection from the list box.
       const selectionListener = {
 
-        down( event ) {
-          event.abort(); // prevent click-to-dismiss on the list
-        },
-        
         up( event ) {
           firedEmitter.emit( event );
         },
