@@ -55,11 +55,12 @@ define( require => {
         labelXSpacing: 10, // horizontal space between label and combo box
         enabledProperty: new BooleanProperty( true ),
         disabledOpacity: 0.5, // {number} opacity used to make the control look disabled, 0-1
-        cornerRadius: 4, // applied to list and button
+        cornerRadius: 4, // applied to button, listBox, and item highlights
         highlightFill: 'rgb( 245, 245, 245 )', // {Color|string} highlight behind items in the list
 
         // Margins around the edges of the button and listbox when highlight is invisible.
         // Highlight margins around the items in the list are set to 1/2 of these values.
+        // These values must be > 0.
         xMargin: 12,
         yMargin: 8,
 
@@ -84,6 +85,8 @@ define( require => {
       }, options );
 
       // validate option values
+      assert && assert( options.xMargin > 0 && options.yMargin > 0,
+        'margins must be > 0, xMargin=' + options.xMargin + ', yMargin=' + options.yMargin );
       assert && assert( options.disabledOpacity > 0 && options.disabledOpacity < 1,
         'invalid disabledOpacity: ' + options.disabledOpacity );
       assert && assert( LIST_POSITION_VALUES.includes( options.listPosition ),

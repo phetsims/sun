@@ -64,7 +64,6 @@ define( require => {
 
           // hide the list
           hideListBoxCallback();
-          listItemNode.setHighlightVisible( false );
 
           // prevent nodes (eg, controls) behind the list from receiving the event
           event.abort();
@@ -80,18 +79,6 @@ define( require => {
         phetioType: EmitterIO( [ { name: 'event', type: VoidIO } ] ),
         phetioEventType: 'user'
       } );
-
-      // Highlights the item that the pointer is over.
-      const highlightListener = {
-
-        enter( event ) {
-          event.currentTarget.setHighlightVisible( true );
-        },
-
-        exit( event ) {
-          event.currentTarget.setHighlightVisible( false );
-        }
-      };
 
       //TODO sun#462 replace fireEmitter and selectionListener with a standard scenery listener
       // Handles selection from the list box.
@@ -131,6 +118,7 @@ define( require => {
         const listItemNode = new ComboBoxListItemNode( item, highlightWidth, highlightHeight, {
           align: options.align,
           highlightFill: options.highlightFill,
+          highlightCornerRadius: options.cornerRadius,
 
           // highlight overlaps half of margins
           xMargin: 0.5 * options.xMargin,
@@ -140,7 +128,6 @@ define( require => {
         } );
         listItemNodes.push( listItemNode );
 
-        listItemNode.addInputListener( highlightListener );
         listItemNode.addInputListener( selectionListener );
       } );
 
