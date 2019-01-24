@@ -22,11 +22,11 @@ define( require => {
 
     /**
      * @param {ComboBoxItem} item
-     * @param {number} width
-     * @param {number} height
+     * @param {number} highlightWidth
+     * @param {number} highlightHeight
      * @param {Object} [options]
      */
-    constructor( item, width, height, options ) {
+    constructor( item, highlightWidth, highlightHeight, options ) {
 
       assert && assert( item instanceof ComboBoxItem );
 
@@ -34,7 +34,7 @@ define( require => {
 
         cursor: 'pointer',
         align: 'left',
-        xMargin: 6,
+        xMargin: 6, // margin between the item and the highlight edge
         highlightFill: 'rgb( 245, 245, 245 )', // {Color|string} highlight behind the item
         highlightCornerRadius: 4, // {number} corner radius for the highlight
 
@@ -53,14 +53,14 @@ define( require => {
       options.innerContent = item.a11yLabel;
 
       // Highlight that is shown when the pointer is over this item. This is not the a11y focus rectangle.
-      const highlightRectangle = new Rectangle( 0, 0, width, height, {
+      const highlightRectangle = new Rectangle( 0, 0, highlightWidth, highlightHeight, {
         cornerRadius: options.highlightCornerRadius
       } );
 
       // Wrapper for the item's Node. Do not transform item.node because it is shared with ComboBoxButton!
       const itemNodeWrapper = new Node( {
         children: [ item.node ],
-        centerY: height / 2
+        centerY: highlightHeight / 2
       } );
       if ( options.align === 'left' ) {
         itemNodeWrapper.left = highlightRectangle.left + options.xMargin;
