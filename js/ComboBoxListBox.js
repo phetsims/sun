@@ -154,9 +154,9 @@ define( require => {
         // When the list box gets focus, transfer focus to the ComboBoxListItemNode that matches property.value.
         focus: event => {
           if ( this.visible ) {
-            for ( let i = 0; i < this.listItemNodes.length; i++ ) {
-              const listItemNode = this.listItemNodes[ i ];
-              if ( this.property.value === listItemNode.item.value ) {
+            for ( let i = 0; i < listItemNodes.length; i++ ) {
+              const listItemNode = listItemNodes[ i ];
+              if ( property.value === listItemNode.item.value ) {
                 this.focusedItemNode = listItemNode;
                 this.focusedItemNode.focus();
                 break;
@@ -200,10 +200,6 @@ define( require => {
           listItemNodes[ i ].dispose(); // to unregister tandem
         }
       };
-
-      // @private needed by methods
-      this.property = property;
-      this.listItemNodes = listItemNodes;
     }
 
     /**
