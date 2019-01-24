@@ -53,7 +53,7 @@ define( require => {
         listPosition: 'below', // see LIST_POSITION_VALUES
         labelNode: null, // {Node|null} optional label, placed to the left of the combo box
         labelXSpacing: 10, // horizontal space between label and combo box
-        enabledProperty: new BooleanProperty( true ),
+        enabledProperty: null, // {BooleanProperty|null} default will be provided if null
         disabledOpacity: 0.5, // {number} opacity used to make the control look disabled, 0-1
         cornerRadius: 4, // applied to button, listBox, and item highlights
         highlightFill: 'rgb( 245, 245, 245 )', // {Color|string} highlight behind items in the list
@@ -98,7 +98,6 @@ define( require => {
 
       this.items = items; // @private
       this.listPosition = options.listPosition; // @private
-      this.enabledProperty = options.enabledProperty; // @public
 
       // optional label
       if ( options.labelNode !== null ) {
@@ -192,6 +191,14 @@ define( require => {
         }
       };
 
+      // So we know whether we can dispose of the enabledProperty and its tandem
+       var ownsEnabledProperty = !options.enabledProperty;
+
+      // @public Provide a default if not specified
+      this.enabledProperty = options.enabledProperty || new BooleanProperty( true, {
+        tandem: options.tandem.createTandem( 'enabledProperty' )
+      } );
+
       // enable/disable the combo box
       const enabledObserver = enabled => {
         this.pickable = enabled;
@@ -219,7 +226,10 @@ define( require => {
           this.display.removeInputListener( this.clickToDismissListener );
         }
 
-        if ( this.enabledProperty.hasListener( enabledObserver ) ) {
+        if ( ownsEnabledProperty ) {
+          this.enabledProperty.dispose();
+        }
+        else {
           this.enabledProperty.unlink( enabledObserver );
         }
 
