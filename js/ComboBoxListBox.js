@@ -148,10 +148,10 @@ define( require => {
       // @public {ComboBoxListItemNode|null} the ComboBoxListItemNode that has focus
       this.focusedItemNode = null;
 
-      // Handle keydown on the entire list box, for a11y
+      // a11y listener for the entire list box
       this.addInputListener( {
 
-        // When we get focus, transfer focus to the ComboBoxListItemNode that matches property.value.
+        // When the list box gets focus, transfer focus to the ComboBoxListItemNode that matches property.value.
         focus: event => {
           if ( this.visible ) {
             for ( let i = 0; i < this.listItemNodes.length; i++ ) {
@@ -165,9 +165,12 @@ define( require => {
           }
         },
 
+        // Handle keydown
         keydown: event => {
           var keyCode = event.domEvent.keyCode;
           if ( keyCode === KeyboardUtil.KEY_ESCAPE || keyCode === KeyboardUtil.KEY_TAB ) {
+
+            // Escape and Tab hide the list box and return focus to the button
             hideListBoxCallback();
             focusButtonCallback();
           }
