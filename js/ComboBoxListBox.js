@@ -52,6 +52,9 @@ define( require => {
 
       }, options );
 
+      assert && assert( options.xMargin > 0 && options.yMargin > 0,
+        'margins must be > 0, xMargin=' + options.xMargin + ', yMargin=' + options.yMargin );
+
       //TODO sun#462 replace fireEmitter and selectionListener with a standard scenery listener
       const firedEmitter = new Emitter( {
         argumentTypes: [ { validValue: Event } ],
@@ -64,7 +67,6 @@ define( require => {
 
           // hide the list
           hideListBoxCallback();
-          listItemNode.setHighlightVisible( false );
 
           // prevent nodes (eg, controls) behind the list from receiving the event
           event.abort();
@@ -81,26 +83,10 @@ define( require => {
         phetioEventType: 'user'
       } );
 
-      // Highlights the item that the pointer is over.
-      const highlightListener = {
-
-        enter( event ) {
-          event.currentTarget.setHighlightVisible( true );
-        },
-
-        exit( event ) {
-          event.currentTarget.setHighlightVisible( false );
-        }
-      };
-
       //TODO sun#462 replace fireEmitter and selectionListener with a standard scenery listener
       // Handles selection from the list box.
       const selectionListener = {
 
-        down( event ) {
-          event.abort(); // prevent click-to-dismiss on the list
-        },
-        
         up( event ) {
           firedEmitter.emit( event );
         },
@@ -131,6 +117,7 @@ define( require => {
         const listItemNode = new ComboBoxListItemNode( item, highlightWidth, highlightHeight, {
           align: options.align,
           highlightFill: options.highlightFill,
+          highlightCornerRadius: options.cornerRadius,
 
           // highlight overlaps half of margins
           xMargin: 0.5 * options.xMargin,
@@ -140,7 +127,6 @@ define( require => {
         } );
         listItemNodes.push( listItemNode );
 
-        listItemNode.addInputListener( highlightListener );
         listItemNode.addInputListener( selectionListener );
       } );
 
@@ -158,15 +144,15 @@ define( require => {
       // @public {ComboBoxListItemNode|null} the ComboBoxListItemNode that has focus
       this.focusedItemNode = null;
 
-      // Handle keydown on the entire list box, for a11y
+      // a11y listener for the entire list box
       this.addInputListener( {
 
-        // When we get focus, transfer focus to the ComboBoxListItemNode that matches property.value.
+        // When the list box gets focus, transfer focus to the ComboBoxListItemNode that matches property.value.
         focus: event => {
           if ( this.visible ) {
-            for ( let i = 0; i < this.listItemNodes.length; i++ ) {
-              const listItemNode = this.listItemNodes[ i ];
-              if ( this.property.value === listItemNode.item.value ) {
+            for ( let i = 0; i < listItemNodes.length; i++ ) {
+              const listItemNode = listItemNodes[ i ];
+              if ( property.value === listItemNode.item.value ) {
                 this.focusedItemNode = listItemNode;
                 this.focusedItemNode.focus();
                 break;
@@ -175,9 +161,12 @@ define( require => {
           }
         },
 
+        // Handle keydown
         keydown: event => {
           var keyCode = event.domEvent.keyCode;
           if ( keyCode === KeyboardUtil.KEY_ESCAPE || keyCode === KeyboardUtil.KEY_TAB ) {
+
+            // Escape and Tab hide the list box and return focus to the button
             hideListBoxCallback();
             focusButtonCallback();
           }
@@ -207,10 +196,6 @@ define( require => {
           listItemNodes[ i ].dispose(); // to unregister tandem
         }
       };
-
-      // @private needed by methods
-      this.property = property;
-      this.listItemNodes = listItemNodes;
     }
 
     /**

@@ -32,10 +32,8 @@ ToDO.
 | Escape | If the listbox is displayed, collapses the listbox without changing the slection and moves focus to the button. |
 | Down Arrow | Moves focus to the next option. |
 | Up Arrow | Moves focus to the previous option. |
-| Home (Optional) | Moves focus to first option. (Recommended when there are more than 5 items)
-  |
-| End (Optional) | Moves focus to last option. (Recommended when there are more than 5 items)
-|
+| Home (Optional) | Moves focus to first option. (Recommended when there are more than 5 items) |
+| End (Optional) | Moves focus to last option. (Recommended when there are more than 5 items) |
 
 ### Role, Property, State, and Tabindex Attributes
 (adjusted content from W3C listbox collapsible example, see https://www.w3.org/TR/wai-aria-practices-1.1/examples/listbox/listbox-collapsible.html)

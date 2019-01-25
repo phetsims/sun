@@ -1,7 +1,8 @@
 // Copyright 2019, University of Colorado Boulder
 
 /**
- * Node for an item in a combo box list.  Can be highlighted by calling setHighlightVisible.
+ * Node for an item in a combo box list.
+ * Responsible for highlighting itself when the pointer is over it.
  * Typically instantiated by ComboBox, not by client code.
  *
  * @author Chris Malley (PixelZoom, Inc.)
@@ -21,11 +22,11 @@ define( require => {
 
     /**
      * @param {ComboBoxItem} item
-     * @param {number} width
-     * @param {number} height
+     * @param {number} highlightWidth
+     * @param {number} highlightHeight
      * @param {Object} [options]
      */
-    constructor( item, width, height, options ) {
+    constructor( item, highlightWidth, highlightHeight, options ) {
 
       assert && assert( item instanceof ComboBoxItem );
 
@@ -33,8 +34,9 @@ define( require => {
 
         cursor: 'pointer',
         align: 'left',
-        xMargin: 6,
-        highlightFill: 'rgb( 245, 245, 245 )', // {Color|string}
+        xMargin: 6, // margin between the item and the highlight edge
+        highlightFill: 'rgb( 245, 245, 245 )', // {Color|string} highlight behind the item
+        highlightCornerRadius: 4, // {number} corner radius for the highlight
 
         // phet-io
         tandem: Tandem.required,
@@ -50,13 +52,15 @@ define( require => {
       assert && assert( options.innerContent === undefined, 'ComboBoxListItemNode sets innerContent' );
       options.innerContent = item.a11yLabel;
 
-      // Highlight rectangle
-      const highlightRectangle = new Rectangle( 0, 0, width, height );
+      // Highlight that is shown when the pointer is over this item. This is not the a11y focus rectangle.
+      const highlightRectangle = new Rectangle( 0, 0, highlightWidth, highlightHeight, {
+        cornerRadius: options.highlightCornerRadius
+      } );
 
-      // Wrapper for the item's Node. Do not transform ComboBoxItem.node because it is shared with ComboBoxButton!
+      // Wrapper for the item's Node. Do not transform item.node because it is shared with ComboBoxButton!
       const itemNodeWrapper = new Node( {
         children: [ item.node ],
-        centerY: height / 2
+        centerY: highlightHeight / 2
       } );
       if ( options.align === 'left' ) {
         itemNodeWrapper.left = highlightRectangle.left + options.xMargin;
@@ -76,23 +80,16 @@ define( require => {
       // @public (read-only)
       this.item = item;
 
-      // @private
-      this.highlightRectangle = highlightRectangle;
-      this.highlightFill = options.highlightFill;
-
-      // focus highlight is fitted to this Node's bounds, so that it doesn't overlap items above/below in the list box
+      // a11y focus highlight is fitted to this Node's bounds, so that it doesn't overlap other items in the list box
       this.focusHighlight = Shape.bounds( this.localBounds );
-    }
 
-    /**
-     * Sets visibility of the highlight that appear's behind the item's node. (This is not the a11y focus highlight.)
-     * @param {boolean} visible
-     * @public
-     */
-    setHighlightVisible( visible ) {
-
+      // Show highlight when pointer is over this item.
       // Change fill instead of visibility so that we don't end up with vertical pointer gaps in the list
-      this.highlightRectangle.fill = visible ? this.highlightFill : null;
+      this.addInputListener( {
+        enter() { highlightRectangle.fill = options.highlightFill; },
+
+        exit() { highlightRectangle.fill = null; }
+      } );
     }
   }
 
