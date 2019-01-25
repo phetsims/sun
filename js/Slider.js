@@ -41,6 +41,7 @@ define( function( require ) {
    * @param {Property.<number>} valueProperty
    * @param {Range} range
    * @param {Object} [options]
+   * @mixes AccessibleSlider
    * @constructor
    */
   function Slider( valueProperty, range, options ) {
