@@ -29,7 +29,8 @@ define( function( require ) {
   }
 
   phetioInherit( NodeIO, 'ComboBoxIO', ComboBoxIO, {}, {
-    documentation: 'A traditional combo box',
+    documentation: 'User interface component that displays the current value and shows a popup for selection from a ' +
+                   'predetermined set of values.',
     events: [ 'listBoxShown', 'listBoxHidden' ]
   } );
 
