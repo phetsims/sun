@@ -15,6 +15,7 @@ define( require => {
   const Event = require( 'SCENERY/input/Event' );
   const KeyboardUtil = require( 'SCENERY/accessibility/KeyboardUtil' );
   const Panel = require( 'SUN/Panel' );
+  const PhetioObject = require( 'TANDEM/PhetioObject' );
   const sun = require( 'SUN/sun' );
   const Tandem = require( 'TANDEM/Tandem' );
   const VBox = require( 'SCENERY/nodes/VBox' );
@@ -80,7 +81,7 @@ define( require => {
 
         //TODO https://github.com/phetsims/phet-io/issues/1426, use type:EventIO, phetioDataStream:false
         phetioType: EmitterIO( [ { name: 'event', type: VoidIO } ] ),
-        phetioEventType: 'user'
+        phetioEventType: PhetioObject.EventType.USER
       } );
 
       //TODO sun#462 replace fireEmitter and selectionListener with a standard scenery listener

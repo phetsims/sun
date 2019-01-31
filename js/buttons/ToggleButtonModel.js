@@ -13,6 +13,7 @@ define( function( require ) {
   var ButtonModel = require( 'SUN/buttons/ButtonModel' );
   var Emitter = require( 'AXON/Emitter' );
   var inherit = require( 'PHET_CORE/inherit' );
+  var PhetioObject = require( 'TANDEM/PhetioObject' );
   var sun = require( 'SUN/sun' );
   var Tandem = require( 'TANDEM/Tandem' );
 
@@ -51,7 +52,7 @@ define( function( require ) {
     this.toggledEmitter = new Emitter( {
       tandem: options.tandem.createTandem( 'toggledEmitter' ),
       phetioDocumentation: 'Emits when the button is toggled',
-      phetioEventType: 'user'
+      phetioEventType: PhetioObject.EventType.USER
     } );
 
     var toggleListener = function() {

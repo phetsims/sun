@@ -16,6 +16,7 @@ define( function( require ) {
   var inherit = require( 'PHET_CORE/inherit' );
   var Node = require( 'SCENERY/nodes/Node' );
   var PhetFont = require( 'SCENERY_PHET/PhetFont' );
+  var PhetioObject = require( 'TANDEM/PhetioObject' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var sun = require( 'SUN/sun' );
   var Tandem = require( 'TANDEM/Tandem' );
@@ -58,7 +59,7 @@ define( function( require ) {
 
       // phet-io
       phetioDocumentation: 'Item buttons shown in a popup menu',
-      phetioEventType: 'user',
+      phetioEventType: PhetioObject.EventType.USER,
 
       // a11y
       tagName: 'button',

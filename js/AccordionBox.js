@@ -17,6 +17,7 @@ define( function( require ) {
   var InstanceRegistry = require( 'PHET_CORE/documentation/InstanceRegistry' );
   var Node = require( 'SCENERY/nodes/Node' );
   var Path = require( 'SCENERY/nodes/Path' );
+  var PhetioObject = require( 'TANDEM/PhetioObject' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var Shape = require( 'KITE/Shape' );
   var sun = require( 'SUN/sun' );
@@ -91,7 +92,7 @@ define( function( require ) {
       // phet-io support
       tandem: Tandem.required,
       phetioType: AccordionBoxIO,
-      phetioEventType: 'user'
+      phetioEventType: PhetioObject.EventType.USER
 
     }, options );
 

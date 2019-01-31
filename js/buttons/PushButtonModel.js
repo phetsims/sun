@@ -51,7 +51,7 @@ define( function( require ) {
       tandem: options.tandem.createTandem( 'firedEmitter' ),
       phetioDocumentation: 'Emits when the button is fired',
       phetioReadOnly: options.phetioReadOnly,
-      phetioEventType: 'user'
+      phetioEventType: PhetioObject.EventType.USER
     } );
     if ( options.listener !== null ) {
       this.firedEmitter.addListener( options.listener );

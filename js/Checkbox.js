@@ -46,7 +46,7 @@ define( function( require ) {
 
       // phet-io
       tandem: Tandem.required,
-      phetioEventType: 'user',
+      phetioEventType: PhetioObject.EventType.USER,
       phetioReadOnly: PhetioObject.DEFAULT_OPTIONS.phetioReadOnly, // to support properly passing this to children, see https://github.com/phetsims/tandem/issues/60
 
       // a11y
@@ -102,7 +102,7 @@ define( function( require ) {
       tandem: options.tandem.createTandem( 'toggledEmitter' ),
       phetioDocumentation: 'Emits when user input causes the checkbox to toggle, emitting a single arg: the new boolean value of the checkbox state.',
       phetioReadOnly: options.phetioReadOnly,
-      phetioEventType: 'user',
+      phetioEventType: PhetioObject.EventType.USER,
 
       // TODO: use of both of these is redundant, and should get fixed with https://github.com/phetsims/axon/issues/194
       argumentTypes: [ { validValue: 'boolean' } ],

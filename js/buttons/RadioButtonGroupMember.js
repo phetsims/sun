@@ -118,7 +118,7 @@ define( function( require ) {
       tandem: options.tandem.createTandem( 'firedEmitter' ),
       phetioDocumentation: 'Emits when the radio button is pressed',
       phetioReadOnly: options.phetioReadOnly,
-      phetioEventType: 'user'
+      phetioEventType: PhetioObject.EventType.USER
     } );
 
     this.firedEmitter.addListener( function() {
