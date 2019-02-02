@@ -160,6 +160,7 @@ define( require => {
 
       // Clicking on the button toggles visibility of the list box
       this.button.addListener( () => {
+        phet.log && phet.log( 'button.listener: fired' );
         if ( !this.listBox.visible ) {
           this.showListBox();
         }
@@ -172,9 +173,22 @@ define( require => {
       // Handle button clicks, for a11y
       this.button.addInputListener( {
         click: () => {
+          phet.log && phet.log( 'button.inputListener: click' );
           if ( this.listBox.visible ) {
             this.listBox.focus();
           }
+        },
+
+        keydown: event => {
+          phet.log && phet.log( 'button.inputListener: keydown ' + ComboBoxListBox.keyCodeToString( event.domEvent.keyCode ) );
+        },
+
+        keyup: event => {
+          phet.log && phet.log( 'button.inputListener: keyup ' + ComboBoxListBox.keyCodeToString( event.domEvent.keyCode ) );
+        },
+
+        focus: () => {
+          phet.log && phet.log( 'button.inputListener: focus' );
         }
       } );
 
@@ -187,6 +201,7 @@ define( require => {
 
           // Ignore if we click over the button, since the button will handle hiding the list.
           if ( !( event.trail.containsNode( this.button ) || event.trail.containsNode( this.listBox ) ) ) {
+            phet.log && phet.log( 'clickToDismissListener: down' );
             this.hideListBox();
           }
         }
@@ -265,6 +280,7 @@ define( require => {
      */
     showListBox() {
       if ( !this.listBox.visible ) {
+        phet.log && phet.log( 'ComboBox.showListBox' );
         this.phetioStartEvent( 'listBoxShown' );
 
         // show the list box
@@ -288,6 +304,7 @@ define( require => {
      */
     hideListBox() {
       if ( this.listBox.visible ) {
+        phet.log && phet.log( 'ComboBox.hideListBox' );
         this.phetioStartEvent( 'listBoxHidden' );
 
         // manage clickToDismissListener
