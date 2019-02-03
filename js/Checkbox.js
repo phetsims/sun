@@ -107,7 +107,7 @@ define( function( require ) {
       // TODO: use of both of these is redundant, and should get fixed with https://github.com/phetsims/axon/issues/194
       argumentTypes: [ { validValue: 'boolean' } ],
       phetioType: CheckboxEmitterIO,
-      listener: function( value ) {
+      before: function( value ) {
         property.value = value;
       }
     } );

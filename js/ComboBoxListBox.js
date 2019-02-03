@@ -61,7 +61,7 @@ define( require => {
         argumentTypes: [ { validValue: Event } ],
 
         // Pops down the list box and sets the property.value to match the chosen item.
-        listener: event => {
+        before: event => {
 
           const listItemNode = event.currentTarget;
           assert && assert( listItemNode instanceof ComboBoxListItemNode, 'expected a ComboBoxListItemNode' );
