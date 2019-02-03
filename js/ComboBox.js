@@ -1,5 +1,6 @@
 // Copyright 2013-2019, University of Colorado Boulder
 
+//TODO when sun#447 is resolved, remove phet.log statements
 /**
  * Scenery-based combo box. Composed of a button and a popup 'list box' of items. ComboBox has no interaction of its
  * own, all interaction is handled by its subcomponents. The list box is displayed when the button is pressed, and
