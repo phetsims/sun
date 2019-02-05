@@ -356,7 +356,7 @@ define( function( require ) {
     // Demonstrate each value of options.arrowsPosition
     var spinnerLeftRight = new NumberSpinner( valueProperty, valueRangeProperty, _.extend( {}, spinnerOptions, {
       arrowsPosition: 'leftRight',
-      valuePattern: '{0} bottles of beer on the wall'
+      valuePattern: '{{value}} bottles of beer on the wall'
     } ) );
     var spinnerTopBottom = new NumberSpinner( valueProperty, valueRangeProperty, _.extend( {}, spinnerOptions, {
       arrowsPosition: 'topBottom',
@@ -381,7 +381,7 @@ define( function( require ) {
     var enabledCheckbox = new Checkbox( new Text( 'enabled', { font: new PhetFont( 20 ) } ), enabledProperty );
 
     return new VBox( {
-      children: [ spinnerLeftRight, spinnerTopBottom, spinnerBothRight, spinnerBothBottom, enabledCheckbox ],
+      children: [ spinnerTopBottom, spinnerBothRight, spinnerBothBottom, spinnerLeftRight, enabledCheckbox ],
       spacing: 40,
       center: layoutBounds.center
     } );
