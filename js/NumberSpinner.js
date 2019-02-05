@@ -1,4 +1,4 @@
-// Copyright 2016-2018, University of Colorado Boulder
+// Copyright 2016-2019, University of Colorado Boulder
 
 /**
  * Spinner for numbers.
@@ -58,7 +58,7 @@ define( function( require ) {
       arrowButtonStroke: 'black',
       arrowButtonLineWidth: 1,
 
-      valuePattern: '{0}',
+      valuePattern: NumberSpinner.DEFAULT_VALUE_PATTERN, // {string} must contain '{{value}}'
       decimalPlaces: 0,
       deltaValue: 1,
       font: new PhetFont( 28 ),
@@ -97,8 +97,12 @@ define( function( require ) {
     };
 
     // compute max width of the value that's going to be displayed
-    var minString = StringUtils.format( options.valuePattern, Util.toFixed( rangeProperty.value.min, options.decimalPlaces ) );
-    var maxString = StringUtils.format( options.valuePattern, Util.toFixed( rangeProperty.value.max, options.decimalPlaces ) );
+    var minString = StringUtils.fillIn( options.valuePattern, {
+      value: Util.toFixed( rangeProperty.value.min, options.decimalPlaces )
+    } );
+    var maxString = StringUtils.format( options.valuePattern, {
+      value: Util.toFixed( rangeProperty.value.max, options.decimalPlaces )
+    } );
     var maxWidth = Math.max(
       new Text( minString, valueOptions ).width,
       new Text( maxString, valueOptions ).width
@@ -236,8 +240,12 @@ define( function( require ) {
     var numberPropertyObserver = function( value ) {
       assert && assert( rangeProperty.value.contains( value ), 'value out of range: ' + value );
 
-      // update the number and align it
-      numberNode.text = StringUtils.format( options.valuePattern, Util.toFixed( value, options.decimalPlaces ) );
+      // update the number
+      numberNode.text = StringUtils.fillIn( options.valuePattern, {
+        value: Util.toFixed( value, options.decimalPlaces )
+      } );
+
+      // update the alignment
       switch( options.valueAlign ) {
         case 'center':
           numberNode.center = backgroundNode.center;
@@ -320,6 +328,9 @@ define( function( require ) {
     getEnabled: function() { return this.enabledProperty.get(); },
     get enabled() { return this.getEnabled(); }
   } );
+
+  // @public @static
+  NumberSpinner.DEFAULT_VALUE_PATTERN = '{{value}}';
 
   AccessibleNumberSpinner.mixInto( NumberSpinner );
 
