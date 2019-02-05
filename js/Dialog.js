@@ -151,7 +151,8 @@ define( require => {
     // @protected (read-only) - whether the dialog is showing
     this.isShowingProperty = new BooleanProperty( false, {
       tandem: options.tandem.createTandem( 'isShowingProperty' ),
-      phetioReadOnly: true
+      phetioReadOnly: true,
+      phetioState: options.phetioState // match the state transfer of the Dialog
     } );
 
     // create close button
