@@ -2,7 +2,7 @@
 
 /**
  * timer that calls a set of registered callbacks.
- * Utilizes PHET_CORE/timer, but provides a higher level of abstraction, hiding the details of managing the timer.
+ * Utilizes AXON/timer, but provides a higher level of abstraction, hiding the details of managing the timer.
  *
  * @author Chris Malley (PixelZoom, Inc.)
  */
@@ -12,7 +12,7 @@ define( function( require ) {
   // modules
   var inherit = require( 'PHET_CORE/inherit' );
   var sun = require( 'SUN/sun' );
-  var timer = require( 'PHET_CORE/timer' );
+  var timer = require( 'AXON/timer' );
 
   /**
    * @param {Object} [options]

@@ -38,7 +38,7 @@ define( function( require ) {
   var sun = require( 'SUN/sun' );
   var sunQueryParameters = require( 'SUN/sunQueryParameters' );
   var Text = require( 'SCENERY/nodes/Text' );
-  var timer = require( 'PHET_CORE/timer' );
+  var timer = require( 'AXON/timer' );
   var VBox = require( 'SCENERY/nodes/VBox' );
   var VSlider = require( 'SUN/VSlider' );
 

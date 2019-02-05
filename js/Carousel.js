@@ -28,7 +28,7 @@ define( function( require ) {
   var Shape = require( 'KITE/Shape' );
   var sun = require( 'SUN/sun' );
   var Tandem = require( 'TANDEM/Tandem' );
-  var timer = require( 'PHET_CORE/timer' );
+  var timer = require( 'AXON/timer' );
   var Util = require( 'DOT/Util' );
   var VSeparator = require( 'SUN/VSeparator' );
 
