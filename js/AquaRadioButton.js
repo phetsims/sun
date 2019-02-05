@@ -157,6 +157,9 @@ define( function( require ) {
       property.unlink( accessibleCheckedListener );
       property.unlink( syncWithModel );
       self.enabledProperty.dispose();
+
+      // phet-io: Unregister Emitters
+      inputListener.dispose();
     };
 
     // a11y - support for binder documentation, stripped out in builds and only runs when ?binder is specified
