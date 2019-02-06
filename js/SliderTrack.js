@@ -69,7 +69,6 @@ define( function( require ) {
       stroke: options.stroke,
       lineWidth: options.lineWidth,
       cornerRadius: options.cornerRadius,
-      pickable: options.pickable,
       cursor: 'default'
     } );
     this.addChild( this.disabledTrack );
@@ -80,8 +79,7 @@ define( function( require ) {
       fill: options.fillEnabled,
       stroke: options.stroke,
       lineWidth: options.lineWidth,
-      cornerRadius: options.cornerRadius,
-      pickable: options.pickable
+      cornerRadius: options.cornerRadius
     } );
     this.addChild( this.enabledTrack );
 

@@ -59,7 +59,6 @@ define( function( require ) {
       trackStroke: 'black',
       trackLineWidth: 1,
       trackCornerRadius: 0,
-      trackPickable: true,
 
       // {Node} optional thumb, replaces the default.
       // Client is responsible for highlighting, disabling and pointer areas.
@@ -163,7 +162,6 @@ define( function( require ) {
       stroke: options.trackStroke,
       lineWidth: options.trackLineWidth,
       cornerRadius: options.trackCornerRadius,
-      pickable: options.trackPickable,
       enabledProperty: options.enabledProperty,
       startDrag: options.startDrag,
       endDrag: options.endDrag,
