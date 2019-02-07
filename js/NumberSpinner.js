@@ -19,6 +19,7 @@ define( function( require ) {
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var StringUtils = require( 'PHETCOMMON/util/StringUtils' );
   var sun = require( 'SUN/sun' );
+  var SunConstants = require( 'SUN/SunConstants' );
   var Tandem = require( 'TANDEM/Tandem' );
   var Text = require( 'SCENERY/nodes/Text' );
   var Util = require( 'DOT/Util' );
@@ -58,7 +59,7 @@ define( function( require ) {
       arrowButtonStroke: 'black',
       arrowButtonLineWidth: 1,
 
-      valuePattern: NumberSpinner.DEFAULT_VALUE_PATTERN, // {string} must contain '{{value}}'
+      valuePattern: SunConstants.VALUE_NAMED_PLACEHOLDER, // {string} must contain SunConstants.VALUE_NAMED_PLACEHOLDER
       decimalPlaces: 0,
       deltaValue: 1,
       font: new PhetFont( 28 ),
@@ -87,6 +88,9 @@ define( function( require ) {
     // validate options
     assert && assert( _.includes( ARROWS_POSITION_VALUES, options.arrowsPosition ), 'invalid arrowsPosition: ' + options.arrowsPosition );
     assert && assert( _.includes( VALUE_ALIGN_VALUES, options.valueAlign ), 'invalid valueAlign: ' + options.valueAlign );
+    assert && assert( options.valuePattern.indexOf( SunConstants.VALUE_NAMED_PLACEHOLDER ) !== -1,
+      'missing value placeholder in options.valuePattern: ' + options.valuePattern );
+
     Tandem.indicateUninstrumentedCode();
 
     var self = this;
@@ -328,9 +332,6 @@ define( function( require ) {
     getEnabled: function() { return this.enabledProperty.get(); },
     get enabled() { return this.getEnabled(); }
   } );
-
-  // @public @static
-  NumberSpinner.DEFAULT_VALUE_PATTERN = '{{value}}';
 
   AccessibleNumberSpinner.mixInto( NumberSpinner );
 
