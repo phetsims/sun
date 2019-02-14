@@ -73,7 +73,6 @@ define( require => {
           event.abort();
 
           // set value based on which item was chosen in the list box
-          phet.log && phet.log( 'setting property value' );
           property.value = listItemNode.item.value;
         },
 
@@ -90,7 +89,6 @@ define( require => {
       const selectionListener = {
 
         up( event ) {
-          phet.log && phet.log( 'listItemNode.inputListener: up' );
           firedEmitter.emit( event );
         },
 
@@ -98,14 +96,9 @@ define( require => {
         //TODO sun#447, scenery#931 we're using keyup because keydown fires continuously
         keyup: event => {
           if ( KeyboardUtil.KEY_ENTER === event.domEvent.keyCode || KeyboardUtil.KEY_SPACE === event.domEvent.keyCode ) {
-            phet.log && phet.log( 'listItemNode.inputListener: keyup ' + ComboBoxListBox.keyCodeToString( event.domEvent.keyCode ) );
             firedEmitter.emit( event );
             focusButtonCallback();
           }
-        },
-
-        focus: () => {
-          phet.log && phet.log( 'listItemNode.inputListener: focus' );
         }
       };
 
@@ -157,7 +150,6 @@ define( require => {
 
         // When the list box gets focus, transfer focus to the ComboBoxListItemNode that matches property.value.
         focus: event => {
-          phet.log && phet.log( 'listbox.inputListener: focus' );
           if ( this.visible ) {
             for ( let i = 0; i < listItemNodes.length; i++ ) {
               const listItemNode = listItemNodes[ i ];
@@ -173,7 +165,6 @@ define( require => {
         // Handle keydown
         keydown: event => {
           var keyCode = event.domEvent.keyCode;
-          phet.log && phet.log( 'listbox.inputListener: keydown ' + ComboBoxListBox.keyCodeToString( keyCode ) );
           if ( keyCode === KeyboardUtil.KEY_ESCAPE || keyCode === KeyboardUtil.KEY_TAB ) {
 
             // Escape and Tab hide the list box and return focus to the button
@@ -215,31 +206,6 @@ define( require => {
     dispose() {
       this.disposeComboBoxListBox();
       super.dispose();
-    }
-
-    //TODO when sun#447 is resolved, delete this function and all phet.log statements in ComboBox and ComboBoxListBox
-    /**
-     * Converts a keyCode to a string, for debugging.
-     * @param {number} keyCode
-     * @returns {string}
-     */
-    static keyCodeToString( keyCode ) {
-      switch( keyCode ) {
-        case 9:
-          return 'tab';
-        case 13:
-          return 'enter';
-        case 27:
-          return 'esc';
-        case 32:
-          return 'space';
-        case 38:
-          return 'up';
-        case 40:
-          return 'down';
-        default:
-          return '' + keyCode;
-      }
     }
   }
 
