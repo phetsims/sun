@@ -126,7 +126,7 @@ define( function( require ) {
 
     // thumb interactivity
     var dragThresholdSquared = options.dragThreshold * options.dragThreshold; // comparing squared magnitudes is a bit faster
-    var accumulatedDelta = new Vector2(); // stores how far we are from where our drag started, in our local coordinate frame
+    var accumulatedDelta = new Vector2( 0, 0 ); // stores how far we are from where our drag started, in our local coordinate frame
     var passedDragThreshold = false; // whether we have dragged far enough to be considered for "drag" behavior (pick closest side), or "tap" behavior (toggle)
 
     this.addInputListener( new SimpleDragHandler( {
