@@ -537,7 +537,7 @@ define( function( require ) {
             var stepSize = this._shiftKey ? this.shiftKeyboardStep : this.keyboardStep;
 
             // start of change event is start of drag
-            this._startDrag();
+            this._startDrag( event );
 
             if ( inputValue > this._valueProperty.get() ) {
               this.attemptedIncreaseEmitter.emit();
@@ -559,7 +559,7 @@ define( function( require ) {
             this._valueProperty.set( this._constrainValue( newValue ) );
 
             // end of change is the end of a drag
-            this._endDrag();
+            this._endDrag( event );
           }
         },
 
