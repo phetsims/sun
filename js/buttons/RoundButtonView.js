@@ -75,7 +75,8 @@ define( function( require ) {
       contentAppearanceStrategy: RoundButtonView.FadeContentWhenDisabled,
 
       // a11y
-      tagName: 'button'
+      tagName: 'button',
+      focusHighlightDilation: 5 // radius dilation for circular highlight
     }, options );
 
     Node.call( this );
@@ -138,7 +139,7 @@ define( function( require ) {
     this.pickable = null;
 
     // a11y
-    this.focusHighlight = new Shape.circle( 0, 0, buttonRadius + 5 );
+    this.focusHighlight = new Shape.circle( 0, 0, buttonRadius + options.focusHighlightDilation );
 
     // Mutate with the options after the layout is complete so that
     // width-dependent fields like centerX will work.
