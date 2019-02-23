@@ -58,7 +58,7 @@ define( require => {
 
       //TODO sun#462 replace fireEmitter and selectionListener with a standard scenery listener
       const firedEmitter = new Emitter( {
-        argumentTypes: [ { validValue: Event } ],
+        validators: [ { validValue: Event } ],
 
         // Pops down the list box and sets the property.value to match the chosen item.
         first: event => {
