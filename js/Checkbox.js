@@ -103,9 +103,6 @@ define( function( require ) {
       phetioDocumentation: 'Emits when user input causes the checkbox to toggle, emitting a single arg: the new boolean value of the checkbox state.',
       phetioReadOnly: options.phetioReadOnly,
       phetioEventType: PhetioObject.EventType.USER,
-
-      // TODO: use of both of these is redundant, and should get fixed with https://github.com/phetsims/axon/issues/194
-      validators: [ { validValue: 'boolean' } ],
       phetioType: CheckboxEmitterIO,
       first: function( value ) {
         property.value = value;

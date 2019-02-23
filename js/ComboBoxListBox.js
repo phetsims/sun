@@ -12,7 +12,6 @@ define( require => {
   const ComboBoxListItemNode = require( 'SUN/ComboBoxListItemNode' );
   const Emitter = require( 'AXON/Emitter' );
   const EmitterIO = require( 'AXON/EmitterIO' );
-  const Event = require( 'SCENERY/input/Event' );
   const KeyboardUtil = require( 'SCENERY/accessibility/KeyboardUtil' );
   const Panel = require( 'SUN/Panel' );
   const PhetioObject = require( 'TANDEM/PhetioObject' );
@@ -58,7 +57,6 @@ define( require => {
 
       //TODO sun#462 replace fireEmitter and selectionListener with a standard scenery listener
       const firedEmitter = new Emitter( {
-        validators: [ { validValue: Event } ],
 
         // Pops down the list box and sets the property.value to match the chosen item.
         first: event => {
@@ -80,7 +78,7 @@ define( require => {
         tandem: tandem.createTandem( 'firedEmitter' ),
 
         //TODO https://github.com/phetsims/phet-io/issues/1426, use type:EventIO, phetioDataStream:false
-        phetioType: EmitterIO( [ { name: 'event', type: VoidIO } ] ),
+        phetioType: EmitterIO( [ { name: 'event', type: VoidIO, validator: { valueType: Event } } ] ),
         phetioEventType: PhetioObject.EventType.USER
       } );
 
