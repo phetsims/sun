@@ -12,6 +12,7 @@ define( require => {
   const ComboBoxListItemNode = require( 'SUN/ComboBoxListItemNode' );
   const Emitter = require( 'AXON/Emitter' );
   const EmitterIO = require( 'AXON/EmitterIO' );
+  const Event = require( 'SCENERY/input/Event' );
   const KeyboardUtil = require( 'SCENERY/accessibility/KeyboardUtil' );
   const Panel = require( 'SUN/Panel' );
   const PhetioObject = require( 'TANDEM/PhetioObject' );
