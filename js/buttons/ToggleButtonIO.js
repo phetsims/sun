@@ -27,8 +27,6 @@ define( function( require ) {
     documentation: 'A button that toggles state (in/out) when pressed',
     events: [ 'toggled' ],
 
-    // TODO: https://github.com/phetsims/axon/issues/226
-    // TODO: we have to load these modules before IO modules so they are defined at static time
     validator: {
       isValidValue: instance => {
         const types = [ phet.sun.RectangularToggleButton, phet.sun.RoundStickyToggleButton, phet.sun.RoundToggleButton ];
