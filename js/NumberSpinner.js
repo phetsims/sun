@@ -104,7 +104,7 @@ define( function( require ) {
     var minString = StringUtils.fillIn( options.valuePattern, {
       value: Util.toFixed( rangeProperty.value.min, options.decimalPlaces )
     } );
-    var maxString = StringUtils.format( options.valuePattern, {
+    var maxString = StringUtils.fillIn( options.valuePattern, {
       value: Util.toFixed( rangeProperty.value.max, options.decimalPlaces )
     } );
     var maxWidth = Math.max(
