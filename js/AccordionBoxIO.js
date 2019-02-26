@@ -13,9 +13,6 @@ define( function( require ) {
   var phetioInherit = require( 'TANDEM/phetioInherit' );
   var sun = require( 'SUN/sun' );
 
-  // ifphetio
-  var assertInstanceOf = require( 'ifphetio!PHET_IO/assertInstanceOf' );
-
   /**
    * IO type for phet/sun's AccordionBox class.
    * @param {AccordionBox} accordionBox
@@ -23,13 +20,13 @@ define( function( require ) {
    * @constructor
    */
   function AccordionBoxIO( accordionBox, phetioID ) {
-    assert && assertInstanceOf( accordionBox, phet.sun.AccordionBox );
     NodeIO.call( this, accordionBox, phetioID );
   }
 
   phetioInherit( NodeIO, 'AccordionBoxIO', AccordionBoxIO, {}, {
     documentation: 'A traditional accordionBox',
-    events: [ 'expanded', 'collapsed' ]
+    events: [ 'expanded', 'collapsed' ],
+    validator: { isValidValue: v => v instanceof phet.sun.AccordionBox }
   } );
 
   sun.register( 'AccordionBoxIO', AccordionBoxIO );

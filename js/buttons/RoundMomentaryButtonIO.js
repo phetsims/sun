@@ -14,9 +14,6 @@ define( function( require ) {
   var phetioInherit = require( 'TANDEM/phetioInherit' );
   var sun = require( 'SUN/sun' );
 
-  // ifphetio
-  var assertInstanceOf = require( 'ifphetio!PHET_IO/assertInstanceOf' );
-
   /**
    * IO type for phet/sun's RoundMomentaryButton class.
    * @param {RoundMomentaryButton} roundMomentaryButton
@@ -24,13 +21,13 @@ define( function( require ) {
    * @constructor
    */
   function RoundMomentaryButtonIO( roundMomentaryButton, phetioID ) {
-    assert && assertInstanceOf( roundMomentaryButton, phet.sun.RoundMomentaryButton );
     NodeIO.call( this, roundMomentaryButton, phetioID );
   }
 
   phetioInherit( NodeIO, 'RoundMomentaryButtonIO', RoundMomentaryButtonIO, {}, {
     documentation: 'Button that performs an action while it is being pressed, and stops the action when released',
-    events: [ 'pressed', 'released', 'releasedDisabled' ]
+    events: [ 'pressed', 'released', 'releasedDisabled' ],
+    validator: { isValidValue: v => v instanceof phet.sun.RoundMomentaryButton }
   } );
 
   sun.register( 'RoundMomentaryButtonIO', RoundMomentaryButtonIO );

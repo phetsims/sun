@@ -15,16 +15,12 @@ define( function( require ) {
   var sun = require( 'SUN/sun' );
   var VoidIO = require( 'TANDEM/types/VoidIO' );
 
-  // ifphetio
-  var assertInstanceOf = require( 'ifphetio!PHET_IO/assertInstanceOf' );
-
   /**
    * @param {Slider} slider
    * @param {string} phetioID
    * @constructor
    */
   function SliderIO( slider, phetioID ) {
-    assert && assertInstanceOf( slider, phet.sun.Slider );
     NodeIO.call( this, slider, phetioID );
   }
 
@@ -50,7 +46,8 @@ define( function( require ) {
       invocableForReadOnlyInstances: false
     }
   }, {
-    documentation: 'A traditional slider component, with a knob and possibly tick marks'
+    documentation: 'A traditional slider component, with a knob and possibly tick marks',
+    validator: { isValidValue: v => v instanceof phet.sun.Slider }
   } );
 
   sun.register( 'SliderIO', SliderIO );

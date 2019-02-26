@@ -14,9 +14,6 @@ define( function( require ) {
   var phetioInherit = require( 'TANDEM/phetioInherit' );
   var sun = require( 'SUN/sun' );
 
-  // ifphetio
-  var assertInstanceOf = require( 'ifphetio!PHET_IO/assertInstanceOf' );
-
   /**
    * IO type for phet/sun's ComboBox class.
    * @param {ComboBox} comboBox
@@ -24,7 +21,6 @@ define( function( require ) {
    * @constructor
    */
   function ComboBoxIO( comboBox, phetioID ) {
-    assert && assertInstanceOf( comboBox, phet.sun.ComboBox );
     NodeIO.call( this, comboBox, phetioID );
   }
 
@@ -32,7 +28,8 @@ define( function( require ) {
     documentation: 'A combo box is composed of a push button and a listbox. The listbox contains items that represent ' +
                    'choices. Pressing the button pops up the listbox. Selecting from an item in the listbox sets the ' +
                    'value of an associated Property. The button shows the item that is currently selected.',
-    events: [ 'listBoxShown', 'listBoxHidden' ]
+    events: [ 'listBoxShown', 'listBoxHidden' ],
+    validator: { isValidValue: v => v instanceof phet.sun.ComboBox }
   } );
 
   sun.register( 'ComboBoxIO', ComboBoxIO );

@@ -14,9 +14,6 @@ define( function( require ) {
   var phetioInherit = require( 'TANDEM/phetioInherit' );
   var sun = require( 'SUN/sun' );
 
-  // ifphetio
-  var assertInstanceOf = require( 'ifphetio!PHET_IO/assertInstanceOf' );
-
   /**
    * IO type for phet/sun's SliderTrack class.
    * @param {SliderTrack} sliderTrack
@@ -24,12 +21,12 @@ define( function( require ) {
    * @constructor
    */
   function SliderTrackIO( sliderTrack, phetioID ) {
-    assert && assertInstanceOf( sliderTrack, phet.sun.SliderTrack );
     NodeIO.call( this, sliderTrack, phetioID );
   }
 
   phetioInherit( NodeIO, 'SliderTrackIO', SliderTrackIO, {}, {
-    documentation: 'The track for a knob of a traditional slider'
+    documentation: 'The track for a knob of a traditional slider',
+    validator: { isValidValue: v => v instanceof phet.sun.SliderTrack }
   } );
 
   sun.register( 'SliderTrackIO', SliderTrackIO );

@@ -14,22 +14,29 @@ define( function( require ) {
   var phetioInherit = require( 'TANDEM/phetioInherit' );
   var sun = require( 'SUN/sun' );
 
-  // ifphetio
-  var assertInstanceOf = require( 'ifphetio!PHET_IO/assertInstanceOf' );
-
   /**
    * @param {RectangularToggleButton|RoundStickyToggleButton|RoundToggleButton} toggleButton
    * @param {string} phetioID
    * @constructor
    */
   function ToggleButtonIO( toggleButton, phetioID ) {
-    assert && assertInstanceOf( toggleButton, phet.sun.RectangularToggleButton, phet.sun.RoundStickyToggleButton, phet.sun.RoundToggleButton );
     NodeIO.call( this, toggleButton, phetioID );
   }
 
   phetioInherit( NodeIO, 'ToggleButtonIO', ToggleButtonIO, {}, {
     documentation: 'A button that toggles state (in/out) when pressed',
-    events: [ 'toggled' ]
+    events: [ 'toggled' ],
+
+    // TODO: https://github.com/phetsims/axon/issues/226
+    // TODO: we have to load these modules before IO modules so they are defined at static time
+    validator: {
+      isValidValue: instance => {
+        const types = [ phet.sun.RectangularToggleButton, phet.sun.RoundStickyToggleButton, phet.sun.RoundToggleButton ];
+        const definedTypes = types.filter( v => !!v );
+        const matches = definedTypes.filter( v => instance instanceof v );
+        return matches.length > 0;
+      }
+    }
   } );
 
   sun.register( 'ToggleButtonIO', ToggleButtonIO );

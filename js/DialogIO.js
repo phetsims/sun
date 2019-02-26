@@ -13,9 +13,6 @@ define( function( require ) {
   var phetioInherit = require( 'TANDEM/phetioInherit' );
   var sun = require( 'SUN/sun' );
 
-  // ifphetio
-  var assertInstanceOf = require( 'ifphetio!PHET_IO/assertInstanceOf' );
-
   /**
    * IO type for phet/sun's Dialog
    * @param {Dialog} dialog - instance of Dialog
@@ -23,12 +20,12 @@ define( function( require ) {
    * @constructor
    */
   function DialogIO( dialog, phetioID ) {
-    assert && assertInstanceOf( dialog, phet.sun.Dialog );
     NodeIO.call( this, dialog, phetioID );
   }
 
   phetioInherit( NodeIO, 'DialogIO', DialogIO, {}, {
-    documentation: 'A dialog panel'
+    documentation: 'A dialog panel',
+    validator: { isValidValue: v => v instanceof phet.sun.Dialog }
   } );
 
   sun.register( 'DialogIO', DialogIO );

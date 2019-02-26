@@ -14,22 +14,19 @@ define( function( require ) {
   var phetioInherit = require( 'TANDEM/phetioInherit' );
   var sun = require( 'SUN/sun' );
 
-  // ifphetio
-  var assertInstanceOf = require( 'ifphetio!PHET_IO/assertInstanceOf' );
-
   /**
    * @param {OnOffSwitch} onOffSwitch
    * @param {string} phetioID
    * @constructor
    */
   function OnOffSwitchIO( onOffSwitch, phetioID ) {
-    assert && assertInstanceOf( onOffSwitch, phet.sun.OnOffSwitch );
     NodeIO.call( this, onOffSwitch, phetioID );
   }
 
   phetioInherit( NodeIO, 'OnOffSwitchIO', OnOffSwitchIO, {}, {
     documentation: 'A traditional switch component',
-    events: [ 'toggled' ]
+    events: [ 'toggled' ],
+    validator: { isValidValue: v => v instanceof phet.sun.OnOffSwitch }
   } );
 
   sun.register( 'OnOffSwitchIO', OnOffSwitchIO );
