@@ -134,8 +134,8 @@ define( function( require ) {
           } );
 
           // @private {Emitter} emit events when increment/decrement keys are pressed down/up
-          this.incrementDownEmitter = new Emitter();
-          this.decrementDownEmitter = new Emitter();
+          this.incrementDownEmitter = new Emitter( { validationEnabled: false } );
+          this.decrementDownEmitter = new Emitter( { validationEnabled: false } );
 
           // @private {Emitter} - emit events when value is incremented/decremented
           this.valueIncrementEmitter = new Emitter();
@@ -244,10 +244,10 @@ define( function( require ) {
          */
         emitKeyState: function( keyCode, isDown ) {
           if ( keyCode === KeyboardUtil.KEY_UP_ARROW || keyCode === KeyboardUtil.KEY_RIGHT_ARROW ) {
-            this.incrementDownEmitter.emit1( isDown );
+            this.incrementDownEmitter.emit( isDown );
           }
           else if ( keyCode === KeyboardUtil.KEY_DOWN_ARROW || keyCode === KeyboardUtil.KEY_LEFT_ARROW ) {
-            this.decrementDownEmitter.emit1( isDown );
+            this.decrementDownEmitter.emit( isDown );
           }
         },
 
