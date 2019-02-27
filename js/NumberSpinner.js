@@ -88,7 +88,8 @@ define( function( require ) {
     // validate options
     assert && assert( _.includes( ARROWS_POSITION_VALUES, options.arrowsPosition ), 'invalid arrowsPosition: ' + options.arrowsPosition );
     assert && assert( _.includes( VALUE_ALIGN_VALUES, options.valueAlign ), 'invalid valueAlign: ' + options.valueAlign );
-    assert && assert( options.valuePattern.indexOf( SunConstants.VALUE_NAMED_PLACEHOLDER ) !== -1,
+    assert && assert( !!phet.chipper.queryParameters.stringTest ||
+                      options.valuePattern.indexOf( SunConstants.VALUE_NAMED_PLACEHOLDER ) !== -1,
       'missing value placeholder in options.valuePattern: ' + options.valuePattern );
 
     Tandem.indicateUninstrumentedCode();
