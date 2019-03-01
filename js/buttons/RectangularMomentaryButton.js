@@ -35,7 +35,7 @@ define( function( require ) {
     var buttonModel = new MomentaryButtonModel( valueOff, valueOn, property, options );
     RectangularButtonView.call( this, buttonModel, new MomentaryButtonInteractionStateProperty( buttonModel ), options );
 
-    // a11y - support for binder documentation, stripped out in builds and only runs when ?binder is specified
+    // support for binder documentation, stripped out in builds and only runs when ?binder is specified
     assert && phet.chipper.queryParameters.binder && InstanceRegistry.registerDataURL( 'sun', 'AccordionBox', this );
   }
 
