@@ -29,6 +29,14 @@ define( function( require ) {
     options = _.extend( {
       sideLength: 25,  // length of one side of the square button
 
+      // TODO https://github.com/phetsims/sun/issues/483
+      // These pointer area options were added temporarily to support button-like behavior.
+      // They should be removed when this button is converted to a sun button.
+      touchAreaXDilation: 0,
+      touchAreaYDilation: 0,
+      mouseAreaXDilation: 0,
+      mouseAreaYDilation: 0,
+
       // phet-io
       tandem: Tandem.required
     }, options );
@@ -102,6 +110,9 @@ define( function( require ) {
     this.expandedProperty.link( this.expandedPropertyObserver ); // must be unlinked in dispose
 
     this.mutate( options );
+
+    this.touchArea = this.localBounds.dilatedXY( options.touchAreaXDilation, options.touchAreaYDilation );
+    this.mouseArea = this.localBounds.dilatedXY( options.mouseAreaXDilation, options.mouseAreaYDilation );
 
     // support for binder documentation, stripped out in builds and only runs when ?binder is specified
     assert && phet.chipper.queryParameters.binder && InstanceRegistry.registerDataURL( 'sun', 'ExpandCollapseButton', this );
