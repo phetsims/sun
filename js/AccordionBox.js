@@ -66,15 +66,13 @@ define( function( require ) {
       titleXSpacing: 5, // horizontal space between title and expand/collapse button
       showTitleWhenExpanded: true, // true = title is visible when expanded, false = title is hidden when expanded
 
-      // expand/collapse button
-      buttonLength: 16, // button is a square, this is the length of one side
+      // {*|null} options passed to ExpandCollapseButton constructor, defaults filled in below
+      expandCollapseButtonOptions: null,
+
+      // expand/collapse button layout
       buttonAlign: 'left',  // {string} button alignment, 'left'|'right'
       buttonXMargin: 4, // horizontal space between button and left|right edge of box
       buttonYMargin: 2, // vertical space between button and top edge of box
-      buttonTouchAreaXDilation: 0,
-      buttonTouchAreaYDilation: 0,
-      buttonMouseAreaXDilation: 0,
-      buttonMouseAreaYDilation: 0,
 
       // content
       contentAlign: 'center', // {string} horizontal alignment of the content, 'left'|'center'|'right'
@@ -98,6 +96,13 @@ define( function( require ) {
       fill: null, // {Color|string|null} title bar fill
       stroke: null // {Color|string|null} title bar stroke, used only for the expanded title bar
     }, options.titleBarOptions );
+
+    // expandCollapseButtonOptions defaults
+    options.expandCollapseButtonOptions = _.extend( {
+      sideLength: 16, // button is a square, this is the length of one side
+      cursor: options.cursor,
+      tandem: options.tandem.createTandem( 'expandCollapseButton' )
+    }, options.expandCollapseButtonOptions );
 
     // verify string options
     assert && assert( options.buttonAlign === 'left' || options.buttonAlign === 'right' );
@@ -154,22 +159,10 @@ define( function( require ) {
     Node.call( this );
 
     // @private - expand/collapse button, links to expandedProperty, must be disposed of
-    this.expandCollapseButton = new ExpandCollapseButton( this.expandedProperty, {
-      sideLength: options.buttonLength,
-      cursor: options.cursor,
-      tandem: options.tandem.createTandem( 'expandCollapseButton' )
-    } );
+    this.expandCollapseButton = new ExpandCollapseButton( this.expandedProperty, options.expandCollapseButtonOptions );
     this.disposalActions.push( function() {
       self.expandCollapseButton.dispose();
     } );
-    this.expandCollapseButton.touchArea = this.expandCollapseButton.localBounds.dilatedXY(
-      options.buttonTouchAreaXDilation,
-      options.buttonTouchAreaYDilation
-    );
-    this.expandCollapseButton.mouseArea = this.expandCollapseButton.localBounds.dilatedXY(
-      options.buttonMouseAreaXDilation,
-      options.buttonMouseAreaYDilation
-    );
 
     // Expanded box
     var boxOptions = { fill: options.fill };
