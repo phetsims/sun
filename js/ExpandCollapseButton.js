@@ -28,6 +28,8 @@ define( function( require ) {
 
     options = _.extend( {
       sideLength: 25,  // length of one side of the square button
+
+      // phet-io
       tandem: Tandem.required
     }, options );
 
