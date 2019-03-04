@@ -65,8 +65,6 @@ define( function( require ) {
       titleYMargin: 2, // vertical space between title and top of box
       titleXSpacing: 5, // horizontal space between title and expand/collapse button
       showTitleWhenExpanded: true, // true = title is visible when expanded, false = title is hidden when expanded
-      titleBarFill: null, // {Color|string} title bar fill
-      titleBarStroke: null, // {Color|string} title bar stroke, used only for the expanded title bar
 
       // expand/collapse button
       buttonLength: 16, // button is a square, this is the length of one side
@@ -85,7 +83,7 @@ define( function( require ) {
       contentXSpacing: 5, // horizontal space between content and button, ignored if showTitleWhenExpanded is true
       contentYSpacing: 8, // vertical space between content and title+button, ignored if showTitleWhenExpanded is false
 
-      // Options will be provided to both title bar nodes
+      // {*|null} options for the title bar, defaults filled in below
       titleBarOptions: null,
 
       // phet-io support
@@ -94,6 +92,12 @@ define( function( require ) {
       phetioEventType: PhetioObject.EventType.USER
 
     }, options );
+
+    // titleBarOptions defaults
+    options.titleBarOptions = _.extend( {
+      fill: null, // {Color|string|null} title bar fill
+      stroke: null // {Color|string|null} title bar stroke, used only for the expanded title bar
+    }, options.titleBarOptions );
 
     // verify string options
     assert && assert( options.buttonAlign === 'left' || options.buttonAlign === 'right' );
@@ -202,8 +206,6 @@ define( function( require ) {
 
     // @private {Path}
     this.expandedTitleBar = new Path( null, _.extend( {
-      fill: options.titleBarFill,
-      stroke: options.titleBarStroke,
       lineWidth: options.lineWidth, // use same lineWidth as box, for consistent look
       cursor: options.cursor
     }, options.titleBarOptions ) );
@@ -216,7 +218,6 @@ define( function( require ) {
     //                        expand/collapse button.
     this.collapsedTitleBar = new Rectangle( _.extend( {
       cornerRadius: options.cornerRadius,
-      fill: options.titleBarFill,
       cursor: options.cursor
     }, options.titleBarOptions ) );
     this.disposalActions.push( function() {
