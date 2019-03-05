@@ -13,13 +13,17 @@ define( require => {
 
   const SunConstants = {
 
-    // Named placeholder in string patterns where a value will be substituted.
-    // Typically appears in translated strings (e.g. "{{value}} nm") and used with StringUtils.fillIn.
+    /**
+     * Named placeholder in string patterns where a value will be substituted.
+     * Typically appears in translated strings (e.g. "{{value}} nm") and used with StringUtils.fillIn.
+     */
     VALUE_NAMED_PLACEHOLDER: '{{value}}',
 
-    // Numbered placeholder in string patterns where a value will be substituted.
-    // Typically appears in translated strings (e.g. "{0} nm") and used with StringUtils.format.
-    // @deprecated - Named placeholders are the new standard, and numbered placeholders should not be used in new code.
+    /**
+     * Numbered placeholder in string patterns where a value will be substituted.
+     * Typically appears in translated strings (e.g. "{0} nm") and used with StringUtils.format.
+     * @deprecated - Named placeholders are the new standard, and numbered placeholders should not be used in new code.
+     */
     VALUE_NUMBERED_PLACEHOLDER: '{0}',
 
     // Opacity that is typically applied to a UI component in its disabled state, to make it look grayed out.
