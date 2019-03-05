@@ -20,18 +20,16 @@ define( function( require ) {
   var Tandem = require( 'TANDEM/Tandem' );
 
   /**
-   * @param {Property.<boolean>} enabledProperty
    * @param {Object} [options] see HSlider constructor
    * @constructor
    * @private
    */
-  function SliderThumb( enabledProperty, options ) {
+  function SliderThumb( options ) {
 
     options = _.extend( {
       size: new Dimension2( 22, 45 ),
-      fillEnabled: 'rgb(50,145,184)',
+      fill: 'rgb(50,145,184)',
       fillHighlighted: 'rgb(71,207,255)',
-      fillDisabled: '#F0F0F0',
       stroke: 'black',
       lineWidth: 1,
       centerLineStroke: 'white',
@@ -45,12 +43,10 @@ define( function( require ) {
     Rectangle.call( this, 0, 0,
       options.size.width, options.size.height,
       arcWidth, arcWidth, _.extend( options, {
-        fill: enabledProperty.get() ? options.fillEnabled : options.fillDisabled,
+        fill: options.fill,
         stroke: options.stroke,
         lineWidth: options.lineWidth,
-        cachedPaints: [
-          options.fillHighlighted, options.fillEnabled, options.fillDisabled
-        ]
+        cachedPaints: [ options.fill, options.fillHighlighted ]
       } )
     );
 
@@ -74,33 +70,15 @@ define( function( require ) {
     // highlight thumb on pointer over
     this.addInputListener( new ButtonListener( {
       over: function( event ) {
-        if ( enabledProperty.get() ) { self.fill = options.fillHighlighted; }
+        self.fill = options.fillHighlighted;
       },
       up: function( event ) {
-        if ( enabledProperty.get() ) { self.fill = options.fillEnabled; }
+        self.fill = options.fill;
       }
     } ) );
-
-    // @private enable/disable the look of the thumb
-    var enabledObserver = function( enabled ) {
-      self.fill = enabled ? options.fillEnabled : options.fillDisabled;
-    };
-    enabledProperty.link( enabledObserver ); // must be unlinked in disposeSliderThumb
-
-    // @private Called by dispose
-    this.disposeSliderThumb = function() {
-      enabledProperty.unlink( enabledObserver );
-    };
   }
 
   sun.register( 'SliderThumb', SliderThumb );
 
-  return inherit( Rectangle, SliderThumb, {
-
-    // @public - Ensures that this object is eligible for GC.
-    dispose: function() {
-      this.disposeSliderThumb();
-      Rectangle.prototype.dispose.call( this );
-    }
-  } );
+  return inherit( Rectangle, SliderThumb );
 } );

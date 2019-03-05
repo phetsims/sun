@@ -20,7 +20,10 @@ define( require => {
     // Numbered placeholder in string patterns where a value will be substituted.
     // Typically appears in translated strings (e.g. "{0} nm") and used with StringUtils.format.
     // Named placeholders are the new standard, and numbered placeholders should not be used in new code.
-    VALUE_NUMBERED_PLACEHOLDER: '{0}'
+    VALUE_NUMBERED_PLACEHOLDER: '{0}',
+
+    // Opacity that is typically applied to a UI component in its disabled state, to make it look grayed out.
+    DISABLED_OPACITY: 0.3
   };
 
   return sun.register( 'SunConstants', SunConstants );

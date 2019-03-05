@@ -31,6 +31,7 @@ define( function( require ) {
   var SliderThumb = require( 'SUN/SliderThumb' );
   var SliderTrack = require( 'SUN/SliderTrack' );
   var sun = require( 'SUN/sun' );
+  var SunConstants = require( 'SUN/SunConstants' );
   var Tandem = require( 'TANDEM/Tandem' );
   var Util = require( 'DOT/Util' );
 
@@ -67,9 +68,8 @@ define( function( require ) {
 
       // Options for the default thumb, ignored if thumbNode is set
       thumbSize: new Dimension2( 17, 34 ),
-      thumbFillEnabled: 'rgb(50,145,184)',
+      thumbFill: 'rgb(50,145,184)',
       thumbFillHighlighted: 'rgb(71,207,255)',
-      thumbFillDisabled: '#F0F0F0',
       thumbStroke: 'black',
       thumbLineWidth: 1,
       thumbYOffset: 0, // center of the thumb is vertically offset by this amount from the center of the track
@@ -95,8 +95,9 @@ define( function( require ) {
       constrainValue: _.identity, // called before valueProperty is set
 
       enabledProperty: null, // {BooleanProperty|null} determines whether this Slider is enabled
-      enabledPropertyOptions: null, // {Object} options applied to the default enabledProperty
+      enabledPropertyOptions: null, // {Object|null} options applied to the default enabledProperty
       enabledRangeProperty: null, // {Property.<Range>|null} determine the portion of range that is enabled
+      disabledOpacity: SunConstants.DISABLED_OPACITY, // opacity applied to the entire Slider when disabled
 
       // a11y - if false, Slider will not be keyboard navigable and have no representation in the PDOM
       isAccessible: true,
@@ -162,7 +163,6 @@ define( function( require ) {
       stroke: options.trackStroke,
       lineWidth: options.trackLineWidth,
       cornerRadius: options.trackCornerRadius,
-      enabledProperty: options.enabledProperty,
       startDrag: options.startDrag,
       endDrag: options.endDrag,
       constrainValue: options.constrainValue,
@@ -173,13 +173,12 @@ define( function( require ) {
     this.track.centerX = this.valueToPosition( ( range.max + range.min ) / 2 );
 
     // The thumb of the slider
-    var thumb = options.thumbNode || new SliderThumb( this.enabledProperty, {
+    var thumb = options.thumbNode || new SliderThumb( {
 
       // propagate options that are specific to SliderThumb
       size: options.thumbSize,
-      fillEnabled: options.thumbFillEnabled,
+      fill: options.thumbFill,
       fillHighlighted: options.thumbFillHighlighted,
-      fillDisabled: options.thumbFillDisabled,
       stroke: options.thumbStroke,
       lineWidth: options.thumbLineWidth,
       centerLineStroke: options.thumbCenterLineStroke,
@@ -255,11 +254,10 @@ define( function( require ) {
 
     // enable/disable
     var enabledObserver = function( enabled ) {
-      self.cursor = self.enabledProperty.get() ? options.cursor : 'default';
-      if ( !enabled ) {
-        if ( thumbInputListener.dragging ) { thumbInputListener.interrupt(); }
-      }
+      self.interruptSubtreeInput();
       self.pickable = enabled;
+      self.cursor = enabled ? options.cursor : 'default';
+      self.opacity = enabled ? 1 : options.disabledOpacity;
     };
     this.enabledProperty.link( enabledObserver ); // must be unlinked in disposeSlider
 

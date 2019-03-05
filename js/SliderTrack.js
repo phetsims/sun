@@ -18,7 +18,6 @@ define( function( require ) {
   var Dimension2 = require( 'DOT/Dimension2' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Node = require( 'SCENERY/nodes/Node' );
-  var Property = require( 'AXON/Property' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var SimpleDragHandler = require( 'SCENERY/input/SimpleDragHandler' );
   var SliderTrackIO = require( 'SUN/SliderTrackIO' );
@@ -43,7 +42,6 @@ define( function( require ) {
       stroke: 'black',
       lineWidth: 1,
       cornerRadius: 0,
-      enabledProperty: new Property( true ), // is the track enabled?
       startDrag: _.noop, // called when a drag sequence starts
       endDrag: _.noop, // called when a drag sequence ends
       constrainValue: _.identity, // called before valueProperty is set
@@ -56,7 +54,6 @@ define( function( require ) {
 
     // @private
     this.size = options.size;
-    this.enabledProperty = options.enabledProperty;
 
     // @public
     this.valueToPosition = valueToPosition;
@@ -85,23 +82,19 @@ define( function( require ) {
 
     // click in the track to change the value, continue dragging if desired
     var handleTrackEvent = function( event, trail ) {
-      if ( self.enabledProperty.get() ) {
-        var transform = trail.subtrailTo( self ).getTransform();
-        var x = transform.inversePosition2( event.pointer.point ).x;
-        var value = self.valueToPosition.inverse( x );
-        var newValue = options.constrainValue( value );
-        valueProperty.set( newValue );
-      }
+      var transform = trail.subtrailTo( self ).getTransform();
+      var x = transform.inversePosition2( event.pointer.point ).x;
+      var value = self.valueToPosition.inverse( x );
+      var newValue = options.constrainValue( value );
+      valueProperty.set( newValue );
     };
 
     var trackInputListener = new SimpleDragHandler( {
       tandem: options.tandem.createTandem( 'trackInputListener' ),
 
       start: function( event, trail ) {
-        if ( self.enabledProperty.get() ) {
-          options.startDrag( event );
-          handleTrackEvent( event, trail );
-        }
+        options.startDrag( event );
+        handleTrackEvent( event, trail );
       },
 
       drag: function( event, trail ) {
@@ -111,25 +104,13 @@ define( function( require ) {
       },
 
       end: function( event ) {
-        if ( self.enabledProperty.get() ) {
-          options.endDrag( event );
-        }
+        options.endDrag( event );
       }
     } );
     this.enabledTrack.addInputListener( trackInputListener );
 
-    // enable/disable
-    var enabledObserver = function( enabled ) {
-      self.enabledTrack.visible = enabled;
-      if ( !enabled ) {
-        if ( trackInputListener.dragging ) { trackInputListener.interrupt(); }
-      }
-    };
-    this.enabledProperty.link( enabledObserver ); // must be unlinked in disposeSliderTrack
-
     // @private Called by dispose
     this.disposeSliderTrack = function() {
-      self.enabledProperty.unlink( enabledObserver );
       trackInputListener.dispose();
     };
   }
