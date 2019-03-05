@@ -1,6 +1,5 @@
-// Copyright 2013-2018, University of Colorado Boulder
+// Copyright 2013-2019, University of Colorado Boulder
 
-//TODO see sun#29, reimplement as a subtype of something from sun.buttons
 /**
  * Button for expanding/collapsing something.
  *
