@@ -10,14 +10,18 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var FireListener = require( 'SCENERY/listeners/FireListener' );
+  var BooleanRectangularToggleButton = require( 'SUN/buttons/BooleanRectangularToggleButton' );
   var inherit = require( 'PHET_CORE/inherit' );
   var InstanceRegistry = require( 'PHET_CORE/documentation/InstanceRegistry' );
-  var Node = require( 'SCENERY/nodes/Node' );
   var Path = require( 'SCENERY/nodes/Path' );
+  var RectangularButtonView = require( 'SUN/buttons/RectangularButtonView' );
   var Shape = require( 'KITE/Shape' );
   var sun = require( 'SUN/sun' );
   var Tandem = require( 'TANDEM/Tandem' );
+
+  // constants
+  var SYMBOL_RELATIVE_WIDTH = 0.6; // width of +/- symbols relative to button sideLength (see options)
+  var RELATIVE_X_MARGIN = ( 1 - SYMBOL_RELATIVE_WIDTH ) / 2; // margin to produce a button of specified sideLength
 
   /**
    * @param {Property.<boolean>} expandedProperty
@@ -27,28 +31,27 @@ define( function( require ) {
   function ExpandCollapseButton( expandedProperty, options ) {
 
     options = _.extend( {
+      stroke: 'black',
       sideLength: 25,  // length of one side of the square button
-
-      // TODO https://github.com/phetsims/sun/issues/483
-      // These pointer area options were added temporarily to support button-like behavior.
-      // They should be removed when this button is converted to a sun button.
-      touchAreaXDilation: 0,
-      touchAreaYDilation: 0,
-      mouseAreaXDilation: 0,
-      mouseAreaYDilation: 0,
 
       // phet-io
       tandem: Tandem.required
     }, options );
 
-    Node.call( this );
+    assert && assert( options.cornderRadius === undefined, 'ExpandCollapseButton sets cornerRadius' );
+    options.cornerRadius = 0.1 * options.sideLength;
 
-    // configure the button shape
-    var cornerRadius = 0.1 * options.sideLength;
-    var buttonShape = Shape.roundRectangle( 0, 0, options.sideLength, options.sideLength, cornerRadius, cornerRadius );
+    assert && assert( options.xMargin === undefined, 'ExpandCollapseButton sets xMargin' );
+    options.xMargin = RELATIVE_X_MARGIN * options.sideLength;
+
+    assert && assert( options.yMargin === undefined, 'ExpandCollapseButton sets yMargin' );
+    options.yMargin = options.xMargin;
+
+    assert && assert( options.buttonAppearanceStrategy === undefined, 'ExpandCollapseButton sets buttonAppearanceStrategy' );
+    options.buttonAppearanceStrategy = RectangularButtonView.FlatAppearanceStrategy;
 
     // configure the +/- symbol on the button
-    var symbolLength = 0.6 * options.sideLength;
+    var symbolLength = SYMBOL_RELATIVE_WIDTH * options.sideLength;
     var symbolLineWidth = 0.15 * options.sideLength;
     var symbolOptions = {
       lineWidth: symbolLineWidth,
@@ -58,79 +61,45 @@ define( function( require ) {
       pickable: false
     };
 
-    // Expand '+' button
-    var expandButton = new Path( buttonShape, {
-      fill: 'rgb(0, 179, 0 )',
-      stroke: 'black',
-      lineWidth: 0.5
-    } );
+    // Expand '+' content
     var plusSymbolShape = new Shape()
       .moveTo( symbolLength / 2, 0 )
       .lineTo( symbolLength / 2, symbolLength )
       .moveTo( 0, symbolLength / 2 )
       .lineTo( symbolLength, symbolLength / 2 );
-    expandButton.addChild( new Path(
-      plusSymbolShape,
-      symbolOptions
-    ) );
+    var expandeNode = new Path( plusSymbolShape, symbolOptions );
 
-    // Collapse '-' button
-    var collapseButton = new Path( buttonShape, {
-      fill: 'rgb( 255, 85, 0 )',
-      stroke: 'black',
-      lineWidth: 0.5
-    } );
+    // Collapse '-' content
     var minusSymbolShape = new Shape()
       .moveTo( -symbolLength / 2, 0 )
       .lineTo( symbolLength / 2, 0 );
-    collapseButton.addChild( new Path(
-      minusSymbolShape,
-      symbolOptions
-    ) );
+    var collapseNode = new Path( minusSymbolShape, symbolOptions );
 
-    // rendering order
-    this.addChild( expandButton );
-    this.addChild( collapseButton );
+    BooleanRectangularToggleButton.call( this, collapseNode, expandeNode, expandedProperty, options );
 
-    // click to toggle
-    this.cursor = 'pointer';
-    this.addInputListener( new FireListener( {
-      fire: function() {
-        expandedProperty.set( !expandedProperty.get() );
-      },
-      tandem: options.tandem.createTandem( 'inputListener' )
-    } ) );
-
-    // @private
-    this.expandedPropertyObserver = function( expanded ) {
-      expandButton.visible = !expanded;
-      collapseButton.visible = expanded;
+    // listeners must be removed in dispose
+    var expandedPropertyObserver = expanded => {
+      this.baseColor = expanded ? 'rgb( 255, 85, 0 )' : 'rgb( 0, 179, 0 )';
     };
-    this.expandedProperty = expandedProperty; // @private
-    this.expandedProperty.link( this.expandedPropertyObserver ); // must be unlinked in dispose
-
-    this.mutate( options );
-
-    this.touchArea = this.localBounds.dilatedXY( options.touchAreaXDilation, options.touchAreaYDilation );
-    this.mouseArea = this.localBounds.dilatedXY( options.mouseAreaXDilation, options.mouseAreaYDilation );
+    expandedProperty.link( expandedPropertyObserver );
 
     // support for binder documentation, stripped out in builds and only runs when ?binder is specified
     assert && phet.chipper.queryParameters.binder && InstanceRegistry.registerDataURL( 'sun', 'ExpandCollapseButton', this );
 
     // @private
-    this.disposeExpandCollapseButton = function() {
-      this.expandedProperty.unlink( this.expandedPropertyObserver );
+    this.disposeExpandCollapseButton = () => {
+      expandedProperty.unlink( expandedPropertyObserver );
     };
   }
 
   sun.register( 'ExpandCollapseButton', ExpandCollapseButton );
 
-  return inherit( Node, ExpandCollapseButton, {
+  return inherit( BooleanRectangularToggleButton, ExpandCollapseButton, {
 
     // @public - Ensures that this node is eligible for GC.
     dispose: function() {
       this.disposeExpandCollapseButton();
-      Node.prototype.dispose.call( this );
+      BooleanRectangularToggleButton.prototype.dispose.call( this );
     }
   } );
 } );
