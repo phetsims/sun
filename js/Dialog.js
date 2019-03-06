@@ -285,6 +285,7 @@ define( require => {
       this.sim.resizedEmitter.removeListener( this.updateLayout );
       this.removeInputListener( escapeListener );
 
+      this.isShowingProperty.dispose();
       closeButton.dispose();
 
       // remove dialog content from scene graph, but don't dispose because Panel
