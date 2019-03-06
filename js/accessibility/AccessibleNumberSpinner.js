@@ -1,7 +1,7 @@
 // Copyright 2018-2019, University of Colorado Boulder
 
 /**
- * A trait for subtypes of Node, used to make the node behave like a 'number' input with assistive technology.
+ * A trait for subtypes of Node, used to make the Node behave like a 'number' input with assistive technology.
  * An accessible number spinner behaves like:
  *
  * - Arrow keys increment/decrement the value by a specified step size.

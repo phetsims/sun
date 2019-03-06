@@ -1,7 +1,7 @@
 // Copyright 2017-2019, University of Colorado Boulder
 
 /**
- * A trait for subtypes of Node, used to make the node behave like a 'slider' with assistive technology. This could be
+ * A trait for subtypes of Node, used to make the Node behave like a 'slider' with assistive technology. This could be
  * used by anything that moves along a 1-D line. An accessible slider behaves like:
  *
  * - Arrow keys increment/decrement the slider by a specified step size.
@@ -105,6 +105,7 @@ define( function( require ) {
             // This string is read every time the slider value changes.
             // @param {number}
             // @param {number}
+            // @returns {string}
             createAriaValueText: function( formattedValue, previousValue ) { return formattedValue; },
 
             // {boolean} - Whether or not to round the value to a multiple of the keyboardStep. This will only round
@@ -363,18 +364,6 @@ define( function( require ) {
           return this._ariaOrientation;
         },
         get ariaOrientation() { return this._ariaOrientation; },
-
-        /**
-         * Set the aria-valuetext of this input independently from the changing value, if necessary. Beware the order
-         * in which you call this function. The aria-valuetext is changed whenever the slider's Property changes,
-         * but you can use this function if you need to set the valueText outside of a Property listener.
-         *
-         * @param {string|number} valueText
-         */
-        setAriaValueText: function( valueText ) {
-          this.setAccessibleAttribute( 'aria-valuetext', valueText );
-        },
-        set ariaValueText( valueText ) { this.setAriaValueText( valueText ); },
 
         /**
          * Handle the keydown event so that this node behaves like a traditional HTML slider (input of type range).
