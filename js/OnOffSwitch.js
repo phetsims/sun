@@ -198,7 +198,7 @@ define( function( require ) {
 
       translate: function( params ) {
         accumulatedDelta.add( params.delta );
-        passedDragThreshold = passedDragThreshold || ( accumulatedDelta.magnitudeSquared() > dragThresholdSquared );
+        passedDragThreshold = passedDragThreshold || ( accumulatedDelta.magnitudeSquared > dragThresholdSquared );
       }
     } ) );
 
