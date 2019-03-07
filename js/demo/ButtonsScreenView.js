@@ -167,7 +167,8 @@ define( function( require ) {
       leftTopCornerRadius: 20,
       rightTopCornerRadius: 10,
       rightBottomCornerRadius: 5,
-      leftBottomCornerRadius: 0
+      leftBottomCornerRadius: 0,
+      listener: function() { message( 'Custom corner button pressed' ); }
     } );
 
     var buttonD = new RoundPushButton( {

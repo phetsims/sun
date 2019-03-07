@@ -65,7 +65,7 @@ define( function( require ) {
       cornerRadius: 4,
 
       // {number|null} corner-specific radii
-      // If null, the option is ignore.
+      // If null, the option is ignored.
       // If non-null, it overrides cornerRadius for the associated corner of the button.
       leftTopCornerRadius: null,
       rightTopCornerRadius: null,
@@ -197,17 +197,17 @@ define( function( require ) {
   /**
    * Convenience function for creating the shape of the button, done to avoid code duplication
    * @param {number} width
-   * @param {height} height
-   * @param {Object} options - RectangularButtonView options, containing values related to radii of button corners
+   * @param {number} height
+   * @param {Object} config - RectangularButtonView config, containing values related to radii of button corners
    * @returns {Shape}
    */
-  function createButtonShape( width, height, options ) {
-    assert && assert( typeof options.cornerRadius === 'number', 'cornerRadius is required' );
+  function createButtonShape( width, height, config ) {
+    assert && assert( typeof config.cornerRadius === 'number', 'cornerRadius is required' );
     return Shape.roundedRectangleWithRadii( 0, 0, width, height, {
-      topLeft: options.leftTopCornerRadius !== null ? options.leftTopCornerRadius : options.cornerRadius,
-      topRight: options.rightTopCornerRadius !== null ? options.rightTopCornerRadius : options.cornerRadius,
-      bottomLeft: options.leftBottomCornerRadius !== null ? options.leftBottomCornerRadius : options.cornerRadius,
-      bottomRight: options.rightBottomCornerRadius !== null ? options.rightBottomCornerRadius : options.cornerRadius
+      topLeft: config.leftTopCornerRadius !== null ? config.leftTopCornerRadius : config.cornerRadius,
+      topRight: config.rightTopCornerRadius !== null ? config.rightTopCornerRadius : config.cornerRadius,
+      bottomLeft: config.leftBottomCornerRadius !== null ? config.leftBottomCornerRadius : config.cornerRadius,
+      bottomRight: config.rightBottomCornerRadius !== null ? config.rightBottomCornerRadius : config.cornerRadius
     } );
   }
 
