@@ -17,7 +17,7 @@ define( function( require ) {
 
   /**
    * @param {Property.<Object>} valueProperty
-   * @param {{value:{*}, node:{Node}}[]} elements
+   * @param {Object[]} elements - each element has {value:{*}, node:{Node}}
    * @param {Object} [options]
    * @constructor
    */
@@ -134,6 +134,18 @@ define( function( require ) {
     BOTTOM: function( children ) {
       for ( var i = 1; i < children.length; i++ ) {
         children[ i ].bottom = children[ 0 ].bottom;
+      }
+    },
+
+    /**
+     * Align nodes on the bottom of the first node.
+     * @param {Node[]} children
+     * @public
+     * @static
+     */
+    CENTER_BOTTOM: function( children ) {
+      for ( var i = 1; i < children.length; i++ ) {
+        children[ i ].centerBottom = children[ 0 ].centerBottom;
       }
     },
 
