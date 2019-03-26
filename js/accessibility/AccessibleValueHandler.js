@@ -46,8 +46,8 @@ define( require => {
 
           // ensure that the client does not set both a custom text pattern and a text creation function
           assert && assert(
-            !( options.a11yValuePattern && options.createAriaValueText ),
-            'cannot set both a11yValuePattern and createAriaValueText in options'
+            !( options.a11yValuePattern && options.a11yCreateAriaValueText ),
+            'cannot set both a11yValuePattern and a11yCreateAriaValueText in options'
           );
 
           // verify that a11yValuePattern includes '{{value}}', and that is the only key in the pattern
@@ -81,13 +81,13 @@ define( require => {
              * This string is read by AT every time the slider value changes.
              *
              * TODO: pass in value, old value as second/third args, https://github.com/phetsims/scenery/issues/951
-             * TODO: a11yCreateAriaValueText rename
              *
              * @param {string} formattedValue - mapped value fixed to the provided decimal places
+             * @param {number} newValue - the new value, unformatted
              * @param {number} previousValue - just the "oldValue" from the property listener
              * @returns {string} - aria-valuetext to be set to the primarySibling
              */
-            createAriaValueText: _.identity
+            a11yCreateAriaValueText: _.identity
           }, options );
 
           // @private {Property.<number>}
@@ -107,7 +107,7 @@ define( require => {
             // create the final string from optional parameters. This looks messy, but in reality you can only supply
             // the valuePattern OR the create function, so this works as an "either or" situation.
             this.ariaValueText = StringUtils.fillIn( options.a11yValuePattern, {
-              value: options.createAriaValueText( formattedValue, value, oldValue )
+              value: options.a11yCreateAriaValueText( formattedValue, value, oldValue )
             } );
 
             // only supply aria-valuenow if provided by option
