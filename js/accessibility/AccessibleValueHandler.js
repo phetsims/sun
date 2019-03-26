@@ -108,6 +108,8 @@ define( require => {
           // @public (read-only a11y) - precision for the output value to be read by an assistive device
           this.a11yDecimalPlaces = options.a11yDecimalPlaces;
 
+          // @private - {null|function} see options for doc
+          this.a11yCreateOnFocusAriaValueText = options.a11yCreateOnFocusAriaValueText;
 
           // when the property changes, be sure to update the accessible input value and aria-valuetext which is read
           // by assistive technology when the value changes
@@ -128,30 +130,33 @@ define( require => {
           };
           this._valueProperty.link( valuePropertyListener );
 
-          // if provided, set the aria-valuetext to the appropriate string for when focused.
-          const updateOnFocusValueText = () => {
-            if ( options.a11yCreateOnFocusAriaValueText ) {
-              this.ariaValueText = options.a11yCreateOnFocusAriaValueText();
-            }
-          };
-
           const valueHandlerListener = {
 
             // When not providing a timeout, we would often get this change for the previously focused element even
             // though it wasn't the active element of the screen. Perhaps this is just a bug/problem with how AT monitor
             // for aria-valuetext updating.
-            blur: () => { timer.setTimeout( updateOnFocusValueText, 0 );}
+            blur: () => { timer.setTimeout( ()=>this.updateOnFocusAriaValueText(), 0 );}
           };
           this.addInputListener( valueHandlerListener );
 
           // update for the first focus now
-          updateOnFocusValueText();
+          this.updateOnFocusAriaValueText();
 
           // @private - called by disposeAccessibleValueHandler to prevent memory leaks
           this._disposeAccessibleValueHandler = () => {
             this.removeInputListener( valueHandlerListener );
             this._valueProperty.unlink( valuePropertyListener );
           };
+        },
+
+        /**
+         * @public
+         * Update the aria-valuetext for the next time that this element is focused.
+         */
+        updateOnFocusAriaValueText() {
+          if ( this.a11yCreateOnFocusAriaValueText ) {
+            this.ariaValueText = this.a11yCreateOnFocusAriaValueText();
+          }
         },
 
         /**
