@@ -80,8 +80,6 @@ define( require => {
              * the simpler/easier option: a11yValuePattern.
              * This string is read by AT every time the slider value changes.
              *
-             * TODO: pass in value, old value as second/third args, https://github.com/phetsims/scenery/issues/951
-             *
              * @param {string} formattedValue - mapped value fixed to the provided decimal places
              * @param {number} newValue - the new value, unformatted
              * @param {number} previousValue - just the "oldValue" from the property listener
