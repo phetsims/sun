@@ -16,6 +16,7 @@ define( require => {
   const Node = require( 'SCENERY/nodes/Node' );
   const StringUtils = require( 'PHETCOMMON/util/StringUtils' );
   const sun = require( 'SUN/sun' );
+  const timer = require( 'AXON/timer' );
   const Util = require( 'DOT/Util' );
 
   const AccessibleValueHandler = {
@@ -46,8 +47,8 @@ define( require => {
 
           // ensure that the client does not set both a custom text pattern and a text creation function
           assert && assert(
-            !( options.a11yValuePattern && options.a11yCreateAriaValueText ),
-            'cannot set both a11yValuePattern and a11yCreateAriaValueText in options'
+            !( options.a11yValuePattern && options.a11yCreateValueChangeAriaValueText ),
+            'cannot set both a11yValuePattern and a11yCreateValueChangeAriaValueText in options'
           );
 
           // verify that a11yValuePattern includes '{{value}}', and that is the only key in the pattern
@@ -85,7 +86,20 @@ define( require => {
              * @param {number} previousValue - just the "oldValue" from the property listener
              * @returns {string} - aria-valuetext to be set to the primarySibling
              */
-            a11yCreateAriaValueText: _.identity
+            a11yCreateValueChangeAriaValueText: _.identity,
+
+            /**
+             * By default there will be nothing special provided on focus, just the previous value set on Property change.
+             * If a specific aria-valuetext is desired when the interactive DOM element is focused, then use this option
+             * to provide the proper "on focus" text. If provided, this will be called independently of the "on change"
+             * valuetext updates. As a result, you can use either a11yCreateValueChangeAriaValueText or a11yValuePattern
+             * with this.
+             *
+             * {null|function}
+             * There are no parameters to this function
+             * @returns {string} - aria-valuetext to be set to the primarySibling
+             */
+            a11yCreateOnFocusAriaValueText: null
           }, options );
 
           // @private {Property.<number>}
@@ -93,6 +107,7 @@ define( require => {
 
           // @public (read-only a11y) - precision for the output value to be read by an assistive device
           this.a11yDecimalPlaces = options.a11yDecimalPlaces;
+
 
           // when the property changes, be sure to update the accessible input value and aria-valuetext which is read
           // by assistive technology when the value changes
@@ -105,7 +120,7 @@ define( require => {
             // create the final string from optional parameters. This looks messy, but in reality you can only supply
             // the valuePattern OR the create function, so this works as an "either or" situation.
             this.ariaValueText = StringUtils.fillIn( options.a11yValuePattern, {
-              value: options.a11yCreateAriaValueText( formattedValue, value, oldValue )
+              value: options.a11yCreateValueChangeAriaValueText( formattedValue, value, oldValue )
             } );
 
             // only supply aria-valuenow if provided by option
@@ -113,8 +128,28 @@ define( require => {
           };
           this._valueProperty.link( valuePropertyListener );
 
+          // if provided, set the aria-valuetext to the appropriate string for when focused.
+          const updateOnFocusValueText = () => {
+            if ( options.a11yCreateOnFocusAriaValueText ) {
+              this.ariaValueText = options.a11yCreateOnFocusAriaValueText();
+            }
+          };
+
+          const valueHandlerListener = {
+
+            // When not providing a timeout, we would often get this change for the previously focused element even
+            // though it wasn't the active element of the screen. Perhaps this is just a bug/problem with how AT monitor
+            // for aria-valuetext updating.
+            blur: () => { timer.setTimeout( updateOnFocusValueText, 0 );}
+          };
+          this.addInputListener( valueHandlerListener );
+
+          // update for the first focus now
+          updateOnFocusValueText();
+
           // @private - called by disposeAccessibleValueHandler to prevent memory leaks
           this._disposeAccessibleValueHandler = () => {
+            this.removeInputListener( valueHandlerListener );
             this._valueProperty.unlink( valuePropertyListener );
           };
         },
