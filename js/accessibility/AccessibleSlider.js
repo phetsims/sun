@@ -20,12 +20,12 @@
 define( function( require ) {
   'use strict';
 
+  var AccessibleValueHandler = require( 'SUN/accessibility/AccessibleValueHandler' );
   var Emitter = require( 'AXON/Emitter' );
   var extend = require( 'PHET_CORE/extend' );
   var inheritance = require( 'PHET_CORE/inheritance' );
   var KeyboardUtil = require( 'SCENERY/accessibility/KeyboardUtil' );
   var Node = require( 'SCENERY/nodes/Node' );
-  var StringUtils = require( 'PHETCOMMON/util/StringUtils' );
   var sun = require( 'SUN/sun' );
   var Util = require( 'DOT/Util' );
 
@@ -35,6 +35,7 @@ define( function( require ) {
      * Implement functionality for a slider.
      * @public
      * @trait
+     * @mixes AccessibleValueHandler
      *
      * @param {function} type - The type (constructor) whose prototype we'll modify.
      */
@@ -42,6 +43,9 @@ define( function( require ) {
       assert && assert( _.includes( inheritance( type ), Node ) );
 
       var proto = type.prototype;
+
+      // mixin general value handling
+      AccessibleValueHandler.mixInto( type );
 
       extend( proto, {
 
@@ -58,24 +62,6 @@ define( function( require ) {
         initializeAccessibleSlider: function( valueProperty, enabledRangeProperty, enabledProperty, options ) {
           var self = this;
 
-          // ensure that the client does not set both a custom text pattern and a text creation function
-          assert && assert(
-            !( options.accessibleValuePattern && options.createAriaValueText ),
-            'cannot set both accessibleValuePattern and createAriaValueText in slider options'
-          );
-
-          // verify that accessibleValuePattern includes '{{value}}', and that is the only key in the pattern
-          if ( assert && options.accessibleValuePattern ) {
-            assert(
-              options.accessibleValuePattern.match( /\{\{[^\{\}]+\}\}/g ).length === 1,
-              'accessibleValuePattern only accepts a single \'value\' key'
-            );
-            assert(
-              options.accessibleValuePattern.indexOf( '{{value}}' ) >= 0,
-              'accessibleValuePattern must contain a key of \'value\''
-            );
-          }
-
           // if rounding to keyboard step, keyboardStep must be defined so values aren't skipped and the slider
           // doesn't get stuck while rounding to the nearest value, see https://github.com/phetsims/sun/issues/410
           if ( assert && options.roundToStepSize ) {
@@ -90,31 +76,24 @@ define( function( require ) {
             constrainValue: _.identity, // called before valueProperty is set
 
             // a11y
-            accessibleValuePattern: '{{value}}', // {string} if you want units or additional content, add to pattern
-            accessibleDecimalPlaces: 0, // number of decimal places for the value read by assistive technology
             ariaOrientation: 'horizontal', // specify orientation, read by assistive technology
             keyboardStep: ( enabledRangeProperty.get().max - enabledRangeProperty.get().min ) / 20,
             shiftKeyboardStep: ( enabledRangeProperty.get().max - enabledRangeProperty.get().min ) / 100,
             pageKeyboardStep: ( enabledRangeProperty.get().max - enabledRangeProperty.get().min ) / 10,
 
-            // map the valueProperty value to another that will be read by the assistive device valueProperty changes
-            // @param {number}
-            accessibleMapValue: function( value ) { return value; },
-
-            // Function to customize the logic and formatting of the aria-valuetext attribute of the `input` element.
-            // This string is read every time the slider value changes.
-            // @param {number}
-            // @param {number}
-            // @returns {string}
-            createAriaValueText: function( formattedValue, previousValue ) { return formattedValue; },
-
             // {boolean} - Whether or not to round the value to a multiple of the keyboardStep. This will only round
             // the value on normal key presses, rounding will not occur on large jumps like page up/page down/home/end.
             // see https://github.com/phetsims/gravity-force-lab-basics/issues/72
-            roundToStepSize: false
+            roundToStepSize: false,
+
+            // a11y options to pass to AccessibleValueHandler
+            a11yProvideValueNow: false // We use inputValue setter in AccessibleSlider instead of aria-valuenow
           };
 
           options = _.extend( {}, defaults, options );
+
+          // initialize "parent" mixin
+          this.initializeAccessibleValueHandler( valueProperty, options );
 
           assert && assert( options.ariaOrientation === 'horizontal' || options.ariaOrientation === 'vertical',
             'invalid ariaOrientation: ' + options.ariaOrientation );
@@ -169,12 +148,6 @@ define( function( require ) {
           // @private (a11y) - whether or not 'shift' key is currently held down
           this._shiftKey = false;
 
-          // @public controls the mapping from valueProperty to accessible output
-          this.accessibleMapValue = options.accessibleMapValue;
-
-          // @private (a11y) - precision for the output value to be read by an assistive device
-          this.accessibleDecimalPlaces = options.accessibleDecimalPlaces;
-
           // initialize slider attributes
           this.ariaOrientation = options.ariaOrientation;
 
@@ -204,7 +177,7 @@ define( function( require ) {
           // The step attribute must be non zero for the accessible input to receive all accessibility events, and
           // only certain values are allowed depending on the step size, or else the AT will announce values as
           // "Invalid". If the step size is equal to the precision of the slider readout, all values are allowed.
-          this.setAccessibleAttribute( 'step', Math.pow( 10, -options.accessibleDecimalPlaces ) );
+          this.setAccessibleAttribute( 'step', Math.pow( 10, -this.a11yDecimalPlaces ) );
 
           // listeners, must be unlinked in dispose
           var enabledRangeObserver = function( enabledRange ) {
@@ -225,20 +198,9 @@ define( function( require ) {
           };
           this.addInputListener( accessibleInputListener );
 
-          // when the property changes, be sure to update the accessible input value and aria-valuetext which is read
-          // by assistive technology when the value changes
-          var accessiblePropertyListener = function( value, oldValue ) {
+          // update the PDOM input value on Property change
+          var accessiblePropertyListener = function( value ) {
             self.inputValue = value;
-
-            // format the value text for reading
-            var formattedValue = Util.toFixedNumber( self.mappedValue, options.accessibleDecimalPlaces );
-
-            // create the final string from optional parameters
-            var valueText = StringUtils.fillIn( options.accessibleValuePattern, {
-              value: options.createAriaValueText( formattedValue, oldValue )
-            } );
-
-            self.setAccessibleAttribute( 'aria-valuetext', valueText );
           };
           self._valueProperty.link( accessiblePropertyListener );
 
@@ -247,18 +209,9 @@ define( function( require ) {
             self._valueProperty.unlink( accessiblePropertyListener );
             self._enabledRangeProperty.unlink( enabledRangeObserver );
             self.removeInputListener( accessibleInputListener );
+            self.disposeAccessibleValueHandler();
           };
         },
-
-        /**
-         * Get the mapped value to be read by AT.
-         *
-         * @returns {number}
-         */
-        getMappedValue: function() {
-          return this.accessibleMapValue( this._valueProperty.get() );
-        },
-        get mappedValue() { return this.getMappedValue(); },
 
         /**
          * Set the delta for the value Property when using arrow keys to interact with the Node.

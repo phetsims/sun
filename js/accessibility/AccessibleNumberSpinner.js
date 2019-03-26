@@ -16,6 +16,8 @@
  * <p id="label-element">Accessible Name</p>
  * <div role="spinbutton" min="" max="" aria-valuenow="" aria-valuetext="" aria-labelledby="label-element"></div>
  *
+ * This trait mixes in a "parent" mixin to handle general "value" formatting and aria-valuetext updating, see AccessibleValueHandler
+ *
  * @author Jesse Greenberg (PhET Interactive Simulations)
  * @author Michael Barlow (PhET Interactive Simulations)
  */
@@ -24,6 +26,7 @@ define( function( require ) {
   'use strict';
 
   // modules
+  var AccessibleValueHandler = require( 'SUN/accessibility/AccessibleValueHandler' );
   var AccessiblePeer = require( 'SCENERY/accessibility/AccessiblePeer' );
   var CallbackTimer = require( 'SUN/CallbackTimer' );
   var Emitter = require( 'AXON/Emitter' );
@@ -31,9 +34,7 @@ define( function( require ) {
   var inheritance = require( 'PHET_CORE/inheritance' );
   var KeyboardUtil = require( 'SCENERY/accessibility/KeyboardUtil' );
   var Node = require( 'SCENERY/nodes/Node' );
-  var StringUtils = require( 'PHETCOMMON/util/StringUtils' );
   var sun = require( 'SUN/sun' );
-  var Util = require( 'DOT/Util' );
 
   var AccessibleNumberSpinner = {
 
@@ -41,6 +42,7 @@ define( function( require ) {
      * Implement functionality for a number spinner.
      * @public
      * @trait
+     * @mixes AccessibleValueHandler
      *
      * @param {function} type - The type (constructor) whose prototype we'll modify.
      */
@@ -48,6 +50,9 @@ define( function( require ) {
       assert && assert( _.includes( inheritance( type ), Node ) );
 
       var proto = type.prototype;
+
+      // mixin general value handling
+      AccessibleValueHandler.mixInto( type );
 
       extend( proto, {
 
@@ -74,19 +79,15 @@ define( function( require ) {
 
             // a11y
             focusable: true,
-            a11yValuePattern: '{{value}}', // {string} if you want units or additional content, add to pattern
-            a11yDecimalPlaces: 0, // number of decimal places for the value read by assistive technology
 
             // set labelContent to give this AccessibleNumberSpinner an accessible name, required for spinbuttons
             // see https://github.com/phetsims/gravity-force-lab-basics/issues/62
-            labelTagName: 'p',
-
-            // Converts a value to a string, for extra formatting for the value read by the screen reader
-            a11yFormatValue: function( value ) {
-              return Util.toFixed( value, options.a11yDecimalPlaces );
-            }
+            labelTagName: 'p'
           };
           options = _.extend( {}, defaults, options );
+
+          // initialize "parent" mixin
+          this.initializeAccessibleValueHandler( valueProperty, options );
 
           // Some options were already mutated in the constructor, only apply the accessibility-specific options here
           // so options are not doubled up, see https://github.com/phetsims/sun/issues/330
@@ -202,25 +203,9 @@ define( function( require ) {
           };
           this.addInputListener( accessibleInputListener );
 
-          // when the property changes, be sure to update the accessible input value
-          var accessiblePropertyListener = function( value ) {
-
-            // format the value to a certain number of decimal places
-            var formattedValue = options.a11yFormatValue( value );
-
-            // wrap the value with optional string pattern
-            formattedValue = StringUtils.fillIn( options.a11yValuePattern, {
-              value: formattedValue
-            } );
-
-            self.setAccessibleAttribute( 'aria-valuetext', formattedValue );
-            self.setAccessibleAttribute( 'aria-valuenow', value );
-          };
-          this._valueProperty.link( accessiblePropertyListener );
 
           // @private - called by disposeAccessibleNumberSpinner to prevent memory leaks
           this._disposeAccessibleNumberSpinner = function() {
-            self._valueProperty.unlink( accessiblePropertyListener );
             self._enabledRangeProperty.unlink( enabledRangeObserver );
             self._callbackTimer.dispose();
 
@@ -231,6 +216,7 @@ define( function( require ) {
             self.valueDecrementEmitter.dispose();
 
             self.removeInputListener( accessibleInputListener );
+            self.disposeAccessibleValueHandler();
           };
         },
 
