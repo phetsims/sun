@@ -17,6 +17,7 @@ define( function( require ) {
   var Node = require( 'SCENERY/nodes/Node' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var sun = require( 'SUN/sun' );
+  var SunConstants = require( 'SUN/SunConstants' );
   var Tandem = require( 'TANDEM/Tandem' );
 
   // constants
@@ -190,7 +191,7 @@ define( function( require ) {
      * @public
      */
     updateEnabled: function() {
-      this.opacity = this.enabled ? 1 : 0.3;
+      this.opacity = this.enabled ? 1 : SunConstants.DISABLED_OPACITY;
       this.pickable = this.enabled; // NOTE: This is a side-effect. If you set pickable independently, it will be changed when you set enabled.
     },
 

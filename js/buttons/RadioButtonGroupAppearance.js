@@ -14,9 +14,7 @@ define( function( require ) {
   var PaintColorProperty = require( 'SCENERY/util/PaintColorProperty' );
   var RadioButtonInteractionState = require( 'SUN/buttons/RadioButtonInteractionState' );
   var sun = require( 'SUN/sun' );
-
-  // constants
-  var DISABLED_OPACITY = 0.3;
+  var SunConstants = require( 'SUN/SunConstants' );
 
   /**
    * Strategy for buttons that look flat, i.e. no shading or highlighting, but
@@ -145,11 +143,11 @@ define( function( require ) {
             break;
 
           case RadioButtonInteractionState.DISABLED_DESELECTED:
-            content.opacity = DISABLED_OPACITY;
+            content.opacity = SunConstants.DISABLED_OPACITY;
             break;
 
           case RadioButtonInteractionState.DISABLED_SELECTED:
-            content.opacity = DISABLED_OPACITY;
+            content.opacity = SunConstants.DISABLED_OPACITY;
             break;
 
           case RadioButtonInteractionState.PRESSED:
