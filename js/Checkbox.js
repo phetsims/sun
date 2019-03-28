@@ -89,6 +89,7 @@ define( function( require ) {
       tandem: options.tandem.createTandem( 'enabledProperty' )
     } );
 
+    // @public
     this.enabledProperty = options.enabledProperty || new BooleanProperty( true, {
       tandem: options.tandem.createTandem( 'enabledProperty' ),
       phetioReadOnly: options.phetioReadOnly,
