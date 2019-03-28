@@ -77,10 +77,8 @@ define( function( require ) {
 
     Node.call( this );
 
-    this.content = content; // @private
-
-    // @private {boolean} does this instance own enabledProperty?
-    this.ownsEnabledProperty = !options.enabledProperty;
+    // does this instance own enabledProperty?
+    var ownsEnabledProperty = !options.enabledProperty;
 
     this.addLinkedElement( property, {
       tandem: options.tandem.createTandem( 'property' )
@@ -172,7 +170,7 @@ define( function( require ) {
 
     var enabledListener = function( enabled ) {
       options.checkboxAppearanceStrategy( self.checkboxNode, enabled );
-      options.contentAppearanceStrategy( self.content, enabled );
+      options.contentAppearanceStrategy( content, enabled );
     };
     this.enabledProperty.link( enabledListener );
 
@@ -195,7 +193,7 @@ define( function( require ) {
         property.unlink( checkboxCheckedListener );
       }
 
-      if ( self.ownsEnabledProperty ) {
+      if ( ownsEnabledProperty ) {
 
         // Checkbox owns enabledProperty, so dispose to release tandem and remove all listeners.
         self.enabledProperty.dispose();
