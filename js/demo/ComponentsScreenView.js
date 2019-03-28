@@ -15,6 +15,7 @@ define( function( require ) {
   var AccordionBox = require( 'SUN/AccordionBox' );
   var AlignBox = require( 'SCENERY/nodes/AlignBox' );
   var AlignGroup = require( 'SCENERY/nodes/AlignGroup' );
+  var BooleanProperty = require( 'AXON/BooleanProperty' );
   var Carousel = require( 'SUN/Carousel' );
   var Checkbox = require( 'SUN/Checkbox' );
   var Circle = require( 'SCENERY/nodes/Circle' );
@@ -55,6 +56,7 @@ define( function( require ) {
        * {function(Bounds2): Node} createNode - creates the scene graph for the demo
        */
       { label: 'Carousel', createNode: demoCarousel },
+      { label: 'Checkbox', createNode: demoCheckbox },
       { label: 'ComboBox', createNode: demoComboBox },
       { label: 'HSlider', createNode: demoHSlider },
       { label: 'VSlider', createNode: demoVSlider },
@@ -132,6 +134,28 @@ define( function( require ) {
 
     return new Node( {
       children: [ vCarousel, hCarousel, buttonGroup ],
+      center: layoutBounds.center
+    } );
+  };
+
+  var demoCheckbox = function( layoutBounds ) {
+
+    const property = new BooleanProperty( true );
+    const enabledProperty = new BooleanProperty( true );
+
+    const checkbox = new Checkbox( new Text( 'My Awesome Checkbox', {
+      font: new PhetFont( 30 )
+    } ), property, {
+      enabledProperty: enabledProperty
+    } );
+
+    const enabledCheckbox = new Checkbox( new Text( 'enabled', {
+      font: new PhetFont( 20 )
+    } ), enabledProperty );
+
+    return new VBox( {
+      children: [ checkbox, enabledCheckbox ],
+      spacing: 30,
       center: layoutBounds.center
     } );
   };
