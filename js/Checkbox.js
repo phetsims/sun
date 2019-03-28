@@ -47,7 +47,8 @@ define( function( require ) {
       // phet-io
       tandem: Tandem.required,
       phetioEventType: PhetioObject.EventType.USER,
-      phetioReadOnly: PhetioObject.DEFAULT_OPTIONS.phetioReadOnly, // to support properly passing this to children, see https://github.com/phetsims/tandem/issues/60
+      // to support properly passing this to children, see https://github.com/phetsims/tandem/issues/60
+      phetioReadOnly: PhetioObject.DEFAULT_OPTIONS.phetioReadOnly,
 
       // a11y
       tagName: 'input',
@@ -99,7 +100,8 @@ define( function( require ) {
     // @private - sends out notifications when the checkbox is toggled.
     var toggledEmitter = new Emitter( {
       tandem: options.tandem.createTandem( 'toggledEmitter' ),
-      phetioDocumentation: 'Emits when user input causes the checkbox to toggle, emitting a single arg: the new boolean value of the checkbox state.',
+      phetioDocumentation: 'Emits when user input causes the checkbox to toggle, emitting a single arg: ' +
+                           'the new boolean value of the checkbox state.',
       phetioReadOnly: options.phetioReadOnly,
       phetioEventType: PhetioObject.EventType.USER,
       phetioType: CheckboxEmitterIO,
@@ -181,7 +183,8 @@ define( function( require ) {
     // assert that phet-io is set up correctly after the PhetioObject has been properly initialized (after mutate)
 
     // If either one is instrumented, then the other must be too.
-    assert && Tandem.validationEnabled() && assert( this.enabledProperty.isPhetioInstrumented() === this.isPhetioInstrumented(), 'provided enabled property must be instrumented for phet-io.' );
+    assert && Tandem.validationEnabled() && assert( this.enabledProperty.isPhetioInstrumented() === this.isPhetioInstrumented(),
+      'provided enabled property must be instrumented for phet-io.' );
 
     // support for binder documentation, stripped out in builds and only runs when ?binder is specified
     assert && phet.chipper.queryParameters.binder && InstanceRegistry.registerDataURL( 'sun', 'Checkbox', this );
