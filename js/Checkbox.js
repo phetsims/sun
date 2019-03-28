@@ -21,10 +21,10 @@ define( function( require ) {
   var PhetioObject = require( 'TANDEM/PhetioObject' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var sun = require( 'SUN/sun' );
+  var SunConstants = require( 'SUN/SunConstants' );
   var Tandem = require( 'TANDEM/Tandem' );
 
   // constants
-  var DISABLED_OPACITY = 0.3;
   var CheckboxEmitterIO = EmitterIO( [ { name: 'isChecked', type: BooleanIO } ] );
 
   /**
@@ -43,6 +43,7 @@ define( function( require ) {
       checkboxColor: 'black',
       checkboxColorBackground: 'white',
       enabledProperty: null, // {BooleanProperty} initialized below if not provided
+      disabledOpacity: SunConstants.DISABLED_OPACITY,
 
       // phet-io
       tandem: Tandem.required,
@@ -54,25 +55,7 @@ define( function( require ) {
       tagName: 'input',
       inputType: 'checkbox',
       appendLabel: true,
-      appendDescription: true,
-
-      /*
-       * {function( {Checkbox} checkbox, {boolean} enabled ) }
-       * Controls how the checkbox's appearance (excluding content) changes based on whether it's enabled.
-       * The default is to use reduce opacity when disabled.
-       */
-      checkboxAppearanceStrategy: function( checkbox, enabled ) {
-        checkbox.opacity = enabled ? 1 : DISABLED_OPACITY;
-      },
-
-      /*
-       * {function( {Node} content, {boolean} enabled )}
-       * Controls how the content's appearance changes based on whether the checkbox is enabled.
-       * The default is to reduce opacity when disabled.
-       */
-      contentAppearanceStrategy: function( content, enabled ) {
-        content.opacity = enabled ? 1 : DISABLED_OPACITY;
-      }
+      appendDescription: true
 
     }, options );
 
@@ -172,8 +155,9 @@ define( function( require ) {
     property.link( checkboxCheckedListener );
 
     var enabledListener = function( enabled ) {
-      options.checkboxAppearanceStrategy( self.checkboxNode, enabled );
-      options.contentAppearanceStrategy( content, enabled );
+      !enabled && self.interruptSubtreeInput(); // interrupt interaction
+      self.pickable = enabled;
+      self.opacity = enabled ? 1 : options.disabledOpacity;
     };
     this.enabledProperty.link( enabledListener );
 
