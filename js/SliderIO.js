@@ -33,7 +33,7 @@ define( function( require ) {
         this.instance.setMajorTicksVisible( visible );
       },
       documentation: 'Set whether the major tick marks should be shown',
-      invocableForReadOnlyInstances: false
+      invocableForReadOnlyElements: false
     },
 
     setMinorTicksVisible: {
@@ -43,7 +43,7 @@ define( function( require ) {
         this.instance.setMinorTicksVisible( visible );
       },
       documentation: 'Set whether the minor tick marks should be shown',
-      invocableForReadOnlyInstances: false
+      invocableForReadOnlyElements: false
     }
   }, {
     documentation: 'A traditional slider component, with a knob and possibly tick marks',
