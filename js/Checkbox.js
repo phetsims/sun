@@ -128,23 +128,15 @@ define( function( require ) {
     content.pickable = false; // since there's a pickable rectangle on top of content
 
     // interactivity
-    var fire = function() {
-      if ( self.enabledProperty.value ) {
-        var newValue = !property.value;
-        toggledEmitter.emit( newValue );
-      }
-    };
-
     var checkboxButtonListener = new ButtonListener( {
-      fire: fire
+      fire: function() {
+        if ( self.enabledProperty.value ) {
+          var newValue = !property.value;
+          toggledEmitter.emit( newValue );
+        }
+      }
     } );
     this.addInputListener( checkboxButtonListener );
-
-    // a11y - fire the listener when checkbox is clicked with keyboard or assistive technology
-    var changeListener = {
-      change: fire
-    };
-    this.addInputListener( changeListener );
 
     // sync with property
     var checkboxCheckedListener = function( checked ) {
