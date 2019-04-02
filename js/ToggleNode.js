@@ -11,6 +11,7 @@ define( function( require ) {
   'use strict';
 
   // modules
+  const Tandem = require( 'TANDEM/Tandem' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Node = require( 'SCENERY/nodes/Node' );
   var sun = require( 'SUN/sun' );
@@ -36,7 +37,8 @@ define( function( require ) {
     options = _.extend( {
 
       // {function} determines the relative layout of element Nodes. See below for pre-defined layout.
-      alignChildren: ToggleNode.CENTER
+      alignChildren: ToggleNode.CENTER,
+      tandem: Tandem.required
     }, options );
 
     var valueListener = function( value ) {
