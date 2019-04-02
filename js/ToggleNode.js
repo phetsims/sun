@@ -38,7 +38,7 @@ define( function( require ) {
 
       // {function} determines the relative layout of element Nodes. See below for pre-defined layout.
       alignChildren: ToggleNode.CENTER,
-      tandem: Tandem.required
+      tandem: Tandem.optional
     }, options );
 
     var valueListener = function( value ) {
