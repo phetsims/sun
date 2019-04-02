@@ -95,6 +95,10 @@ define( require => {
              * valuetext updates. As a result, you can use either a11yCreateValueChangeAriaValueText or a11yValuePattern
              * with this.
              *
+             * The string that this function returns is set as aria-valuetext when the component is constructed and when
+             * blurred (setting the right text for next focus). If you need it to change more often, you must manually
+             * keep the on focus value text up to date, see updateOnFocusAriaValueText).
+             *
              * {null|function}
              * There are no parameters to this function
              * @returns {string} - aria-valuetext to be set to the primarySibling
@@ -135,7 +139,7 @@ define( require => {
             // When not providing a timeout, we would often get this change for the previously focused element even
             // though it wasn't the active element of the screen. Perhaps this is just a bug/problem with how AT monitor
             // for aria-valuetext updating.
-            blur: () => { timer.setTimeout( ()=>this.updateOnFocusAriaValueText(), 0 );}
+            blur: () => { timer.setTimeout( () => this.updateOnFocusAriaValueText(), 0 );}
           };
           this.addInputListener( valueHandlerListener );
 
