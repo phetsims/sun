@@ -57,6 +57,10 @@ define( function( require ) {
     options.alignChildren( options.children );
     Node.call( this, options );
 
+    this.addLinkedElement( valueProperty, {
+      tandem: options.tandem.createTandem( 'valueProperty' )
+    } );
+
     // @private
     this.disposeToggleNode = function() {
       valueProperty.unlink( valueListener );
