@@ -38,7 +38,7 @@ define( require => {
   const ALIGN_VALUES = [ 'left', 'right', 'center' ]; // alignment of item on button and in list
 
   class ComboBox extends Node {
-    
+
     /**
      * @param {ComboBoxItem[]} items
      * @param {Property} property
@@ -193,7 +193,7 @@ define( require => {
       };
 
       // So we know whether we can dispose of the enabledProperty and its tandem
-       var ownsEnabledProperty = !options.enabledProperty;
+      var ownsEnabledProperty = !options.enabledProperty;
 
       // @public Provide a default if not specified
       this.enabledProperty = options.enabledProperty || new BooleanProperty( true, {
@@ -218,6 +218,10 @@ define( require => {
         this.hideListBox();
         this.button.setDisplayOnly( displayOnly );
         this.pickable = !displayOnly;
+      } );
+
+      this.addLinkedElement( property, {
+        tandem: options.tandem.createTandem( 'property' )
       } );
 
       // @private called by dispose
@@ -310,8 +314,8 @@ define( require => {
      * @private
      */
     scaleListBox() {
-      const buttonScale = this.button.localToGlobalBounds( this.button.localBounds ).width /  this.button.localBounds.width;
-      const listBoxScale = this.listBox.localToGlobalBounds( this.listBox.localBounds ).width /  this.listBox.localBounds.width;
+      const buttonScale = this.button.localToGlobalBounds( this.button.localBounds ).width / this.button.localBounds.width;
+      const listBoxScale = this.listBox.localToGlobalBounds( this.listBox.localBounds ).width / this.listBox.localBounds.width;
       this.listBox.scale( buttonScale / listBoxScale );
     }
 
