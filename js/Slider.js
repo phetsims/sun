@@ -318,6 +318,10 @@ define( function( require ) {
         ) );
     }
 
+    this.addLinkedElement( valueProperty, {
+      tandem: options.tandem.createTandem( 'valueProperty' )
+    } );
+
     // support for binder documentation, stripped out in builds and only runs when ?binder is specified
     assert && phet.chipper.queryParameters.binder && InstanceRegistry.registerDataURL( 'sun', 'Slider', this );
   }
