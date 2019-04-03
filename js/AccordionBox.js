@@ -146,7 +146,6 @@ define( function( require ) {
 
     // @public {Property.<boolean>}
     this.expandedProperty = options.expandedProperty;
-
     if ( !this.expandedProperty ) {
       this.expandedProperty = new BooleanProperty( true, {
         tandem: options.tandem.createTandem( 'expandedProperty' )
