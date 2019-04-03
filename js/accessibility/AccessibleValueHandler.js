@@ -139,7 +139,7 @@ define( require => {
             // When not providing a timeout, we would often get this change for the previously focused element even
             // though it wasn't the active element of the screen. Perhaps this is just a bug/problem with how AT monitor
             // for aria-valuetext updating.
-            blur: () => { timer.setTimeout( () => this.updateOnFocusAriaValueText(), 0 );}
+            focus: () => { timer.setTimeout( () => this.updateOnFocusAriaValueText(), 0 );}
           };
           this.addInputListener( valueHandlerListener );
 
