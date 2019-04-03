@@ -129,8 +129,7 @@ define( function( require ) {
     this._showTitleWhenExpanded = options.showTitleWhenExpanded;
     this._buttonAlign = options.buttonAlign;
 
-    // @private {Array.<function>}
-    // Actions to take when this AccordionBox is disposed. 
+    // @private {Array.<function>} Actions to take when this AccordionBox is disposed.
     // Will be called with a proper 'this' reference to this AccordionBox instance.
     this.disposeActions = [];
 
