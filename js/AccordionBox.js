@@ -129,9 +129,10 @@ define( function( require ) {
     this._showTitleWhenExpanded = options.showTitleWhenExpanded;
     this._buttonAlign = options.buttonAlign;
 
-    // @private {Array.<function>} - Actions to take when this AccordionBox is disposed. Will be called with a proper
-    //                               'this' reference to the AccordionBox.
-    this.disposalActions = [];
+    // @private {Array.<function>}
+    // Actions to take when this AccordionBox is disposed. 
+    // Will be called with a proper 'this' reference to this AccordionBox instance.
+    this.disposeActions = [];
 
     // @private {Node}
     this.titleNode = options.titleNode;
@@ -139,7 +140,7 @@ define( function( require ) {
     // If there is no titleNode specified, we'll provide our own, and handle disposal.
     if ( !this.titleNode ) {
       this.titleNode = new Text( '', { tandem: options.tandem.createTandem( 'titleNode' ) } );
-      this.disposalActions.push( function() {
+      this.disposeActions.push( function() {
         self.titleNode.dispose();
       } );
     }
@@ -151,7 +152,7 @@ define( function( require ) {
       this.expandedProperty = new BooleanProperty( true, {
         tandem: options.tandem.createTandem( 'expandedProperty' )
       } );
-      this.disposalActions.push( function() {
+      this.disposeActions.push( function() {
         self.expandedProperty.dispose();
       } );
     }
@@ -160,7 +161,7 @@ define( function( require ) {
 
     // @private - expand/collapse button, links to expandedProperty, must be disposed of
     this.expandCollapseButton = new ExpandCollapseButton( this.expandedProperty, options.expandCollapseButtonOptions );
-    this.disposalActions.push( function() {
+    this.disposeActions.push( function() {
       self.expandCollapseButton.dispose();
     } );
 
@@ -171,7 +172,7 @@ define( function( require ) {
     this.expandedBox = new Rectangle( _.extend( {
       cornerRadius: options.cornerRadius
     }, boxOptions ) );
-    this.disposalActions.push( function() {
+    this.disposeActions.push( function() {
       self.expandedBox.dispose();
     } );
     this.addChild( this.expandedBox );
@@ -180,7 +181,7 @@ define( function( require ) {
     this.collapsedBox = new Rectangle( _.extend( {
       cornerRadius: options.cornerRadius
     }, boxOptions ) );
-    this.disposalActions.push( function() {
+    this.disposeActions.push( function() {
       self.collapsedBox.dispose();
     } );
     this.addChild( this.collapsedBox );
@@ -202,7 +203,7 @@ define( function( require ) {
       lineWidth: options.lineWidth, // use same lineWidth as box, for consistent look
       cursor: options.cursor
     }, options.titleBarOptions ) );
-    this.disposalActions.push( function() {
+    this.disposeActions.push( function() {
       self.expandedTitleBar.dispose();
     } );
     this.expandedBox.addChild( this.expandedTitleBar );
@@ -213,7 +214,7 @@ define( function( require ) {
       cornerRadius: options.cornerRadius,
       cursor: options.cursor
     }, options.titleBarOptions ) );
-    this.disposalActions.push( function() {
+    this.disposeActions.push( function() {
       self.collapsedTitleBar.dispose();
     } );
     this.collapsedBox.addChild( this.collapsedTitleBar );
@@ -229,7 +230,7 @@ define( function( require ) {
       this.expandedBoxOutline = new Rectangle( _.extend( {
         cornerRadius: options.cornerRadius
       }, outlineOptions ) );
-      this.disposalActions.push( function() {
+      this.disposeActions.push( function() {
         self.expandedBoxOutline.dispose();
       } );
       this.expandedBox.addChild( this.expandedBoxOutline );
@@ -239,7 +240,7 @@ define( function( require ) {
         cornerRadius: options.cornerRadius
       }, outlineOptions ) );
       this.collapsedBox.addChild( this.collapsedBoxOutline );
-      this.disposalActions.push( function() {
+      this.disposeActions.push( function() {
         self.collapsedBoxOutline.dispose();
       } );
     }
@@ -253,7 +254,7 @@ define( function( require ) {
       var layoutListener = this.layout.bind( this );
       contentNode.on( 'bounds', layoutListener );
       this.titleNode.on( 'bounds', layoutListener );
-      this.disposalActions.push( function() {
+      this.disposeActions.push( function() {
         contentNode.off( 'bounds', layoutListener );
         self.titleNode.off( 'bounds', layoutListener );
       } );
@@ -271,7 +272,7 @@ define( function( require ) {
       self.titleNode.visible = ( expanded && options.showTitleWhenExpanded ) || !expanded;
     };
     this.expandedProperty.link( expandedPropertyObserver );
-    this.disposalActions.push( function() {
+    this.disposeActions.push( function() {
       self.expandedProperty.unlink( expandedPropertyObserver );
     } );
 
@@ -458,8 +459,8 @@ define( function( require ) {
      * @public
      */
     dispose: function() {
-      while ( this.disposalActions.length ) {
-        this.disposalActions.pop().call( this );
+      while ( this.disposeActions.length ) {
+        this.disposeActions.pop().call( this );
       }
       Node.prototype.dispose.call( this );
     }
