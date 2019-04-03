@@ -144,7 +144,7 @@ define( function( require ) {
       } );
     }
 
-    // @private {Property.<boolean>}
+    // @public {Property.<boolean>}
     this.expandedProperty = options.expandedProperty;
 
     if ( !this.expandedProperty ) {
