@@ -274,10 +274,6 @@ define( function( require ) {
       self.expandedProperty.unlink( expandedPropertyObserver );
     } );
 
-    if ( this.constructor.name === 'DoubleNumberLineAccordionBox' ) {
-      this.inspect();
-    }
-
     this.mutate( _.omit( options, 'cursor' ) );
 
     // support for binder documentation, stripped out in builds and only runs when ?binder is specified
