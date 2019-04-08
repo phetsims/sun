@@ -63,7 +63,9 @@ define( require => {
 
           options = _.extend( {
 
-            // {boolean} - if true, set the aria-valuenow attribute to the value
+            // {boolean} - If true, set the aria-valuenow attribute to the accessible element. aria-valuenow is
+            // exclusively a value, and required for certain elements. aria-valuetext can contain values and
+            // other descriptive text.
             a11yProvideValueNow: true,
             a11yValuePattern: '{{value}}', // {string} if you want units or additional content, add to pattern
             a11yDecimalPlaces: 0, // number of decimal places for the value when formatted and read by assistive technology
