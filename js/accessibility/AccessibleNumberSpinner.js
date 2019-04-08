@@ -134,11 +134,11 @@ define( function( require ) {
             interval: options.timerInterval
           } );
 
-          // @private {Emitter} emit events when increment/decrement keys are pressed down/up
+          // @protected {Emitter} emit events when increment/decrement keys are pressed down/up
           this.incrementDownEmitter = new Emitter( { validationEnabled: false } );
           this.decrementDownEmitter = new Emitter( { validationEnabled: false } );
 
-          // @private {Emitter} - emit events when value is incremented/decremented
+          // @protected {Emitter} - emit events when value is incremented/decremented
           this.valueIncrementEmitter = new Emitter();
           this.valueDecrementEmitter = new Emitter();
 
