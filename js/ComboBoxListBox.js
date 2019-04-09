@@ -46,11 +46,12 @@ define( require => {
         tagName: 'ul',
         ariaRole: 'listbox',
         groupFocusHighlight: true,
-        focusable: true
+        focusable: true,
 
         // Not instrumented for PhET-iO because the list's location isn't valid until it has been popped up.
         // See https://github.com/phetsims/phet-io/issues/1102
-
+        // TODO: we need this for accessibility in the sonification wrapper, see https://github.com/phetsims/sun/issues/496
+        tandem: tandem
       }, options );
 
       assert && assert( options.xMargin > 0 && options.yMargin > 0,
