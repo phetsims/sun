@@ -12,6 +12,7 @@ define( function( require ) {
   // modules
   var AccordionBoxIO = require( 'SUN/AccordionBoxIO' );
   var BooleanProperty = require( 'AXON/BooleanProperty' );
+  var Emitter = require( 'AXON/Emitter' );
   var ExpandCollapseButton = require( 'SUN/ExpandCollapseButton' );
   var inherit = require( 'PHET_CORE/inherit' );
   var InstanceRegistry = require( 'PHET_CORE/documentation/InstanceRegistry' );
@@ -129,9 +130,8 @@ define( function( require ) {
     this._showTitleWhenExpanded = options.showTitleWhenExpanded;
     this._buttonAlign = options.buttonAlign;
 
-    // @private {Array.<function>} Actions to take when this AccordionBox is disposed.
-    // Will be called with a proper 'this' reference to this AccordionBox instance.
-    this.disposeActions = [];
+    // @private Add listeners to handle dispose
+    this.disposeEmitterAccordionBox = new Emitter();
 
     // @private {Node}
     this.titleNode = options.titleNode;
@@ -139,7 +139,7 @@ define( function( require ) {
     // If there is no titleNode specified, we'll provide our own, and handle disposal.
     if ( !this.titleNode ) {
       this.titleNode = new Text( '', { tandem: options.tandem.createTandem( 'titleNode' ) } );
-      this.disposeActions.push( function() {
+      this.disposeEmitterAccordionBox.addListener( function() {
         self.titleNode.dispose();
       } );
     }
@@ -150,7 +150,7 @@ define( function( require ) {
       this.expandedProperty = new BooleanProperty( true, {
         tandem: options.tandem.createTandem( 'expandedProperty' )
       } );
-      this.disposeActions.push( function() {
+      this.disposeEmitterAccordionBox.addListener( function() {
         self.expandedProperty.dispose();
       } );
     }
@@ -159,7 +159,7 @@ define( function( require ) {
 
     // @private - expand/collapse button, links to expandedProperty, must be disposed of
     this.expandCollapseButton = new ExpandCollapseButton( this.expandedProperty, options.expandCollapseButtonOptions );
-    this.disposeActions.push( function() {
+    this.disposeEmitterAccordionBox.addListener( function() {
       self.expandCollapseButton.dispose();
     } );
 
@@ -170,7 +170,7 @@ define( function( require ) {
     this.expandedBox = new Rectangle( _.extend( {
       cornerRadius: options.cornerRadius
     }, boxOptions ) );
-    this.disposeActions.push( function() {
+    this.disposeEmitterAccordionBox.addListener( function() {
       self.expandedBox.dispose();
     } );
     this.addChild( this.expandedBox );
@@ -179,7 +179,7 @@ define( function( require ) {
     this.collapsedBox = new Rectangle( _.extend( {
       cornerRadius: options.cornerRadius
     }, boxOptions ) );
-    this.disposeActions.push( function() {
+    this.disposeEmitterAccordionBox.addListener( function() {
       self.collapsedBox.dispose();
     } );
     this.addChild( this.collapsedBox );
@@ -201,7 +201,7 @@ define( function( require ) {
       lineWidth: options.lineWidth, // use same lineWidth as box, for consistent look
       cursor: options.cursor
     }, options.titleBarOptions ) );
-    this.disposeActions.push( function() {
+    this.disposeEmitterAccordionBox.addListener( function() {
       self.expandedTitleBar.dispose();
     } );
     this.expandedBox.addChild( this.expandedTitleBar );
@@ -212,7 +212,7 @@ define( function( require ) {
       cornerRadius: options.cornerRadius,
       cursor: options.cursor
     }, options.titleBarOptions ) );
-    this.disposeActions.push( function() {
+    this.disposeEmitterAccordionBox.addListener( function() {
       self.collapsedTitleBar.dispose();
     } );
     this.collapsedBox.addChild( this.collapsedTitleBar );
@@ -228,7 +228,7 @@ define( function( require ) {
       this.expandedBoxOutline = new Rectangle( _.extend( {
         cornerRadius: options.cornerRadius
       }, outlineOptions ) );
-      this.disposeActions.push( function() {
+      this.disposeEmitterAccordionBox.addListener( function() {
         self.expandedBoxOutline.dispose();
       } );
       this.expandedBox.addChild( this.expandedBoxOutline );
@@ -238,7 +238,7 @@ define( function( require ) {
         cornerRadius: options.cornerRadius
       }, outlineOptions ) );
       this.collapsedBox.addChild( this.collapsedBoxOutline );
-      this.disposeActions.push( function() {
+      this.disposeEmitterAccordionBox.addListener( function() {
         self.collapsedBoxOutline.dispose();
       } );
     }
@@ -252,7 +252,7 @@ define( function( require ) {
       var layoutListener = this.layout.bind( this );
       contentNode.on( 'bounds', layoutListener );
       this.titleNode.on( 'bounds', layoutListener );
-      this.disposeActions.push( function() {
+      this.disposeEmitterAccordionBox.addListener( function() {
         contentNode.off( 'bounds', layoutListener );
         self.titleNode.off( 'bounds', layoutListener );
       } );
@@ -270,7 +270,7 @@ define( function( require ) {
       self.titleNode.visible = ( expanded && options.showTitleWhenExpanded ) || !expanded;
     };
     this.expandedProperty.link( expandedPropertyObserver );
-    this.disposeActions.push( function() {
+    this.disposeEmitterAccordionBox.addListener( function() {
       self.expandedProperty.unlink( expandedPropertyObserver );
     } );
 
@@ -453,9 +453,7 @@ define( function( require ) {
      * @public
      */
     dispose: function() {
-      while ( this.disposeActions.length ) {
-        this.disposeActions.pop().call( this );
-      }
+      this.disposeEmitterAccordionBox.emit();
       Node.prototype.dispose.call( this );
     }
   } );
