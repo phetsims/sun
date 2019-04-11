@@ -164,24 +164,17 @@ define( function( require ) {
     } );
 
     // Expanded box
-    var boxOptions = { fill: options.fill };
+    var boxOptions = {
+      fill: options.fill,
+      cornerRadius: options.cornerRadius
+    };
 
     // @private {Rectangle} - Expanded box
-    this.expandedBox = new Rectangle( _.extend( {
-      cornerRadius: options.cornerRadius
-    }, boxOptions ) );
-    this.disposeEmitterAccordionBox.addListener( function() {
-      self.expandedBox.dispose();
-    } );
+    this.expandedBox = new Rectangle( boxOptions );
     this.addChild( this.expandedBox );
 
     // @private {Rectangle} - Collapsed box
-    this.collapsedBox = new Rectangle( _.extend( {
-      cornerRadius: options.cornerRadius
-    }, boxOptions ) );
-    this.disposeEmitterAccordionBox.addListener( function() {
-      self.collapsedBox.dispose();
-    } );
+    this.collapsedBox = new Rectangle( boxOptions );
     this.addChild( this.collapsedBox );
 
     // @private {Rectangle} - Transparent rectangle for working around issues like
@@ -220,27 +213,22 @@ define( function( require ) {
     this.addChild( this.titleNode );
     this.addChild( this.expandCollapseButton );
 
-    // box outline, on top of everything else
+    // optional box outline, on top of everything else
     if ( options.stroke ) {
-      var outlineOptions = { stroke: options.stroke, lineWidth: options.lineWidth };
 
-      // @private {Rectangle} - May not be set
-      this.expandedBoxOutline = new Rectangle( _.extend( {
+      var outlineOptions = {
+        stroke: options.stroke,
+        lineWidth: options.lineWidth,
         cornerRadius: options.cornerRadius
-      }, outlineOptions ) );
-      this.disposeEmitterAccordionBox.addListener( function() {
-        self.expandedBoxOutline.dispose();
-      } );
+      };
+
+      // @private
+      this.expandedBoxOutline = new Rectangle( outlineOptions );
       this.expandedBox.addChild( this.expandedBoxOutline );
 
-      // @private {Rectangle} - May not be set
-      this.collapsedBoxOutline = new Rectangle( _.extend( {
-        cornerRadius: options.cornerRadius
-      }, outlineOptions ) );
+      // @private
+      this.collapsedBoxOutline = new Rectangle( outlineOptions );
       this.collapsedBox.addChild( this.collapsedBoxOutline );
-      this.disposeEmitterAccordionBox.addListener( function() {
-        self.collapsedBoxOutline.dispose();
-      } );
     }
 
     this.expandedBox.addChild( this._contentNode );
