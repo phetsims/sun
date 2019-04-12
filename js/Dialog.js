@@ -24,6 +24,7 @@ define( require => {
   const KeyboardUtil = require( 'SCENERY/accessibility/KeyboardUtil' );
   const Panel = require( 'SUN/Panel' );
   const Path = require( 'SCENERY/nodes/Path' );
+  const Property = require( 'AXON/Property' );
   const RectangularButtonView = require( 'SUN/buttons/RectangularButtonView' );
   const RectangularPushButton = require( 'SUN/buttons/RectangularPushButton' );
   const Shape = require( 'KITE/Shape' );
@@ -224,12 +225,11 @@ define( require => {
 
     const sim = window.phet.joist.sim;
 
-    // @private
-    this.updateLayout = () => {
-      options.layoutStrategy( this, sim.boundsProperty.value, sim.screenBoundsProperty.value, sim.scaleProperty.value );
-    };
-
-    this.updateLayout();
+    this.updateLayoutMultilink = Property.multilink( [ sim.boundsProperty, sim.screenBoundsProperty, sim.scaleProperty ], ( bounds, screenBounds, scale ) => {
+      if ( bounds && screenBounds && scale ) {
+        options.layoutStrategy( this, bounds, screenBounds, scale );
+      }
+    } );
 
     // @private
     this.sim = sim;
@@ -246,9 +246,6 @@ define( require => {
         otherElementName: AccessiblePeer.PRIMARY_SIBLING
       } );
     }
-
-    // must be removed on dispose
-    this.sim.resizedEmitter.addListener( this.updateLayout );
 
     // @private (a11y) - the active element when the dialog is shown, tracked so that focus can be restored on close
     this.activeElement = options.focusOnCloseNode || null;
@@ -282,7 +279,7 @@ define( require => {
 
     // @private - to be called on dispose()
     this.disposeDialog = () => {
-      this.sim.resizedEmitter.removeListener( this.updateLayout );
+      this.updateLayoutMultilink.dispose();
       this.removeInputListener( escapeListener );
 
       this.isShowingProperty.dispose();
@@ -319,10 +316,6 @@ define( require => {
         // TODO: non-modal dialogs shouldn't hide other accessible content, and this should be dependant on other
         // things in the sim modalNodeStack, see https://github.com/phetsims/joist/issues/293
         this.sim.setAccessibleViewsVisible( false );
-
-        // In case the window size has changed since the dialog was hidden, we should try layout out again.
-        // See https://github.com/phetsims/joist/issues/362
-        this.updateLayout();
 
         // Do this last
         this.showCallback && this.showCallback();

@@ -9,10 +9,10 @@ define( function( require ) {
   'use strict';
 
   // modules
+  var Action = require( 'AXON/Action' );
   var BooleanIO = require( 'TANDEM/types/BooleanIO' );
   var BooleanProperty = require( 'AXON/BooleanProperty' );
   var ButtonListener = require( 'SCENERY/input/ButtonListener' );
-  var Emitter = require( 'AXON/Emitter' );
   var EmitterIO = require( 'AXON/EmitterIO' );
   var FontAwesomeNode = require( 'SUN/FontAwesomeNode' );
   var inherit = require( 'PHET_CORE/inherit' );
@@ -81,16 +81,15 @@ define( function( require ) {
     } );
 
     // @private - sends out notifications when the checkbox is toggled.
-    var toggledEmitter = new Emitter( {
+    var toggledEmitter = new Action( function( value ) {
+      property.value = value;
+    }, {
       tandem: options.tandem.createTandem( 'toggledEmitter' ),
       phetioDocumentation: 'Emits when user input causes the checkbox to toggle, emitting a single arg: ' +
                            'the new boolean value of the checkbox state.',
       phetioReadOnly: options.phetioReadOnly,
       phetioEventType: PhetioObject.EventType.USER,
-      phetioType: CheckboxEmitterIO,
-      first: function( value ) {
-        property.value = value;
-      }
+      phetioType: CheckboxEmitterIO
     } );
 
     // @private - Create the background.  Until we are creating our own shapes, just put a rectangle behind the font

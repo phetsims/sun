@@ -9,8 +9,8 @@ define( require => {
   'use strict';
 
   // modules
+  const Action = require( 'AXON/Action' );
   const ComboBoxListItemNode = require( 'SUN/ComboBoxListItemNode' );
-  const Emitter = require( 'AXON/Emitter' );
   const EmitterIO = require( 'AXON/EmitterIO' );
   const Event = require( 'SCENERY/input/Event' );
   const KeyboardUtil = require( 'SCENERY/accessibility/KeyboardUtil' );
@@ -58,23 +58,21 @@ define( require => {
         'margins must be > 0, xMargin=' + options.xMargin + ', yMargin=' + options.yMargin );
 
       //TODO sun#462 replace fireEmitter and selectionListener with a standard scenery listener
-      const firedEmitter = new Emitter( {
+      // Pops down the list box and sets the property.value to match the chosen item.
+      const firedEmitter = new Action( event => {
 
-        // Pops down the list box and sets the property.value to match the chosen item.
-        first: event => {
+        const listItemNode = event.currentTarget;
+        assert && assert( listItemNode instanceof ComboBoxListItemNode, 'expected a ComboBoxListItemNode' );
 
-          const listItemNode = event.currentTarget;
-          assert && assert( listItemNode instanceof ComboBoxListItemNode, 'expected a ComboBoxListItemNode' );
+        // hide the list
+        hideListBoxCallback();
 
-          // hide the list
-          hideListBoxCallback();
+        // prevent nodes (eg, controls) behind the list from receiving the event
+        event.abort();
 
-          // prevent nodes (eg, controls) behind the list from receiving the event
-          event.abort();
-
-          // set value based on which item was chosen in the list box
-          property.value = listItemNode.item.value;
-        },
+        // set value based on which item was chosen in the list box
+        property.value = listItemNode.item.value;
+      }, {
 
         // phet-io
         tandem: tandem.createTandem( 'firedEmitter' ),
