@@ -10,10 +10,10 @@ define( function( require ) {
 
   // modules
   var Action = require( 'AXON/Action' );
+  var ActionIO = require( 'AXON/ActionIO' );
   var BooleanIO = require( 'TANDEM/types/BooleanIO' );
   var BooleanProperty = require( 'AXON/BooleanProperty' );
   var ButtonListener = require( 'SCENERY/input/ButtonListener' );
-  var EmitterIO = require( 'AXON/EmitterIO' );
   var FontAwesomeNode = require( 'SUN/FontAwesomeNode' );
   var inherit = require( 'PHET_CORE/inherit' );
   var InstanceRegistry = require( 'PHET_CORE/documentation/InstanceRegistry' );
@@ -25,7 +25,7 @@ define( function( require ) {
   var Tandem = require( 'TANDEM/Tandem' );
 
   // constants
-  var CheckboxEmitterIO = EmitterIO( [ { name: 'isChecked', type: BooleanIO } ] );
+  var CheckboxEmitterIO = ActionIO( [ { name: 'isChecked', type: BooleanIO } ] );
 
   /**
    * @param {Node} content

@@ -10,8 +10,8 @@ define( require => {
 
   // modules
   const Action = require( 'AXON/Action' );
+  const ActionIO = require( 'AXON/ActionIO' );
   const ComboBoxListItemNode = require( 'SUN/ComboBoxListItemNode' );
-  const EmitterIO = require( 'AXON/EmitterIO' );
   const Event = require( 'SCENERY/input/Event' );
   const KeyboardUtil = require( 'SCENERY/accessibility/KeyboardUtil' );
   const Panel = require( 'SUN/Panel' );
@@ -78,7 +78,7 @@ define( require => {
         tandem: tandem.createTandem( 'firedEmitter' ),
 
         //TODO https://github.com/phetsims/phet-io/issues/1426, use type:EventIO, phetioDataStream:false
-        phetioType: EmitterIO( [ { name: 'event', type: VoidIO, validator: { valueType: Event } } ] ),
+        phetioType: ActionIO( [ { name: 'event', type: VoidIO, validator: { valueType: Event } } ] ),
         phetioEventType: PhetioObject.EventType.USER
       } );
 
