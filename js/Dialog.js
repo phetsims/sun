@@ -406,7 +406,6 @@ define( require => {
     RectangularPushButton.call( this, options );
   }
 
-  sun.register( 'Dialog.CloseButton', CloseButton );
   inherit( RectangularPushButton, CloseButton );
 
   return Dialog;
