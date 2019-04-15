@@ -94,6 +94,9 @@ define( function( require ) {
           assert && assert( options.tagName === undefined, 'AccessibleNumberSpinner sets tagName' );
           optionsToMutate.tagName = 'input';
 
+          assert && assert( options.inputType === undefined, 'AccessibleNumberSpinner sets inputType' );
+          optionsToMutate.inputType = 'number';
+
           assert && assert( options.ariaRole === undefined, 'AccessibleNumberSpinner sets ariaRole' );
           optionsToMutate.ariaRole = 'spinbutton';
 
