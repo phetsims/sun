@@ -63,10 +63,6 @@ define( require => {
 
           options = _.extend( {
 
-            // {boolean} - If true, set the aria-valuenow attribute to the accessible element. aria-valuenow is
-            // exclusively a value, and required for certain elements. aria-valuetext can contain values and
-            // other descriptive text.
-            a11yProvideValueNow: true,
             a11yValuePattern: '{{value}}', // {string} if you want units or additional content, add to pattern
             a11yDecimalPlaces: 0, // number of decimal places for the value when formatted and read by assistive technology
 
@@ -121,6 +117,7 @@ define( require => {
           // by assistive technology when the value changes
           const valuePropertyListener = ( value, oldValue ) => {
             const mappedValue = options.a11yMapValue( value );
+            assert && assert( typeof mappedValue === 'number', 'a11yMapValue must return a number' );
 
             // format the value text for reading
             const formattedValue = Util.toFixedNumber( mappedValue, this.a11yDecimalPlaces );
@@ -131,8 +128,10 @@ define( require => {
               value: options.a11yCreateValueChangeAriaValueText( formattedValue, value, oldValue )
             } );
 
-            // only supply aria-valuenow if provided by option
-            options.a11yProvideValueNow && this.setAccessibleAttribute( 'aria-valuenow', value );
+            // set the aria-valuenow attribute in case the AT requires it to read the value correctly, some may
+            // fall back on this from aria-valuetext see
+            // https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/ARIA_Techniques/Using_the_aria-valuetext_attribute#Possible_effects_on_user_agents_and_assistive_technology
+            this.setAccessibleAttribute( 'aria-valuenow', formattedValue );
           };
           this._valueProperty.link( valuePropertyListener );
 
