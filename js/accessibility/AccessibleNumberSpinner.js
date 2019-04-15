@@ -13,9 +13,6 @@
  * changes go through the arrow, page up, page down, home, and end keys. For that reason, the HTML representation should
  * ideally look like: (values removed for readability)
  *
- * <p id="label-element">Accessible Name</p>
- * <div role="spinbutton" min="" max="" aria-valuenow="" aria-valuetext="" aria-labelledby="label-element"></div>
- *
  * This trait mixes in a "parent" mixin to handle general "value" formatting and aria-valuetext updating, see AccessibleValueHandler
  *
  * @author Jesse Greenberg (PhET Interactive Simulations)
@@ -95,7 +92,7 @@ define( function( require ) {
 
           // cannot be set by client
           assert && assert( options.tagName === undefined, 'AccessibleNumberSpinner sets tagName' );
-          optionsToMutate.tagName = 'div';
+          optionsToMutate.tagName = 'input';
 
           assert && assert( options.ariaRole === undefined, 'AccessibleNumberSpinner sets ariaRole' );
           optionsToMutate.ariaRole = 'spinbutton';
@@ -144,8 +141,8 @@ define( function( require ) {
 
           // update enabled number range for AT, required for screen reader events to behave correctly, must be disposed
           var enabledRangeObserver = function( enabledRange ) {
-            self.setAccessibleAttribute( 'min', enabledRange.min );
-            self.setAccessibleAttribute( 'max', enabledRange.max );
+            self.setAccessibleAttribute( 'aria-valuemin', enabledRange.min );
+            self.setAccessibleAttribute( 'aria-valuemax', enabledRange.max );
           };
           this._enabledRangeProperty.link( enabledRangeObserver );
 
@@ -156,6 +153,13 @@ define( function( require ) {
           // handle all accessible event input
           var accessibleInputListener = {
             keydown: function( event ) {
+
+              // allow user to tab navigate away from the element, but prevent typing of values into the number input -
+              // all value changes should go through custom interactions implemented in handleKeyDown
+              if ( event.domEvent.keyCode !== KeyboardUtil.KEY_TAB ) {
+                event.domEvent.preventDefault();
+              }
+
               // check for relevant keys here
               if ( KeyboardUtil.isRangeKey( event.domEvent.keyCode ) ) {
 

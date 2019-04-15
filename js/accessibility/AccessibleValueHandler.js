@@ -132,6 +132,9 @@ define( require => {
             // fall back on this from aria-valuetext see
             // https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/ARIA_Techniques/Using_the_aria-valuetext_attribute#Possible_effects_on_user_agents_and_assistive_technology
             this.setAccessibleAttribute( 'aria-valuenow', formattedValue );
+
+            // update the PDOM input value on Property change
+            this.inputValue = formattedValue;
           };
           this._valueProperty.link( valuePropertyListener );
 

@@ -198,15 +198,8 @@ define( function( require ) {
           };
           this.addInputListener( accessibleInputListener );
 
-          // update the PDOM input value on Property change
-          var accessiblePropertyListener = function( value ) {
-            self.inputValue = value;
-          };
-          self._valueProperty.link( accessiblePropertyListener );
-
           // @private - called by disposeAccessibleSlider to prevent memory leaks
           this._disposeAccessibleSlider = function() {
-            self._valueProperty.unlink( accessiblePropertyListener );
             self._enabledRangeProperty.unlink( enabledRangeObserver );
             self.removeInputListener( accessibleInputListener );
             self.disposeAccessibleValueHandler();
