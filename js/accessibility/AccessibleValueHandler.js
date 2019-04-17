@@ -16,6 +16,7 @@ define( require => {
   const Node = require( 'SCENERY/nodes/Node' );
   const StringUtils = require( 'PHETCOMMON/util/StringUtils' );
   const sun = require( 'SUN/sun' );
+  const SunConstants = require( 'SUN/SunConstants' );
   const timer = require( 'AXON/timer' );
   const Util = require( 'DOT/Util' );
 
@@ -51,19 +52,19 @@ define( require => {
             'cannot set both a11yValuePattern and a11yCreateValueChangeAriaValueText in options'
           );
 
-          // verify that a11yValuePattern includes '{{value}}', and that is the only key in the pattern
+          // verify that a11yValuePattern includes SunConstants.VALUE_NAMED_PLACEHOLDER, and that is the only key in the pattern
           if ( assert && options.a11yValuePattern ) {
             assert( options.a11yValuePattern.match( /\{\{[^\{\}]+\}\}/g ).length === 1,
               'a11yValuePattern only accepts a single \'value\' key'
             );
-            assert( options.a11yValuePattern.indexOf( '{{value}}' ) >= 0,
+            assert( options.a11yValuePattern.indexOf( SunConstants.VALUE_NAMED_PLACEHOLDER ) >= 0,
               'a11yValuePattern must contain a key of \'value\''
             );
           }
 
           options = _.extend( {
 
-            a11yValuePattern: '{{value}}', // {string} if you want units or additional content, add to pattern
+            a11yValuePattern: SunConstants.VALUE_NAMED_PLACEHOLDER, // {string} if you want units or additional content, add to pattern
             a11yDecimalPlaces: 0, // number of decimal places for the value when formatted and read by assistive technology
 
             /**
