@@ -129,6 +129,9 @@ define( require => {
       focusOnCloseNode: null // {Node} receives focus on close, if null focus returns to element that had focus on open
     }, options );
 
+    // TODO: This is a temporary uninstrumentation, see https://github.com/phetsims/phet-io/issues/1443
+    options.tandem = Tandem.optional;
+
     assert && assert( options.xMargin === undefined, 'Dialog sets xMargin' );
     options.xMargin = 0;
     assert && assert( options.yMargin === undefined, 'Dialog sets yMargin' );
