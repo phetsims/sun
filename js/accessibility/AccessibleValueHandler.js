@@ -79,8 +79,8 @@ define( require => {
              * Custom aria-valuetext creation function, called when the valueProperty changes. Used in replacement of
              * the simpler/easier option: a11yValuePattern.
              * This string is read by AT every time the slider value changes.
-             *
-             * @param {string} formattedValue - mapped value fixed to the provided decimal places
+             * @type {Function}
+             * @param {number} formattedValue - mapped value fixed to the provided decimal places
              * @param {number} newValue - the new value, unformatted
              * @param {number} previousValue - just the "oldValue" from the property listener
              * @returns {string} - aria-valuetext to be set to the primarySibling
@@ -94,12 +94,11 @@ define( require => {
              * valuetext updates. As a result, you can use either a11yCreateValueChangeAriaValueText or a11yValuePattern
              * with this.
              *
-             * The string that this function returns is set as aria-valuetext when the component is constructed and when
-             * blurred (setting the right text for next focus). If you need it to change more often, you must manually
-             * keep the on focus value text up to date, see updateOnFocusAriaValueText).
+             * The string that this function returns is set as aria-valuetext when the component is focused.
              *
-             * {null|function}
-             * There are no parameters to this function
+             * @type {null|Function}
+             * @param {number} formattedValue - mapped value fixed to the provided decimal places
+             * @param {number} value - the current value of the Property, unformatted
              * @returns {string} - aria-valuetext to be set to the primarySibling
              */
             a11yCreateOnFocusAriaValueText: null
@@ -108,8 +107,11 @@ define( require => {
           // @private {Property.<number>}
           this._valueProperty = valueProperty;
 
-          // @public (read-only a11y) - precision for the output value to be read by an assistive device
+          // @public (read-only) - precision for the output value to be read by an assistive device
           this.a11yDecimalPlaces = options.a11yDecimalPlaces;
+
+          // @private {function}
+          this.a11yMapValue = options.a11yMapValue;
 
           // @private - {null|function} see options for doc
           this.a11yCreateOnFocusAriaValueText = options.a11yCreateOnFocusAriaValueText;
@@ -117,11 +119,8 @@ define( require => {
           // when the property changes, be sure to update the accessible input value and aria-valuetext which is read
           // by assistive technology when the value changes
           const valuePropertyListener = ( value, oldValue ) => {
-            const mappedValue = options.a11yMapValue( value );
-            assert && assert( typeof mappedValue === 'number', 'a11yMapValue must return a number' );
 
-            // format the value text for reading
-            const formattedValue = Util.toFixedNumber( mappedValue, this.a11yDecimalPlaces );
+            const formattedValue = this.getA11yFormattedValue();
 
             // create the final string from optional parameters. This looks messy, but in reality you can only supply
             // the valuePattern OR the create function, so this works as an "either or" situation.
@@ -148,9 +147,6 @@ define( require => {
           };
           this.addInputListener( valueHandlerListener );
 
-          // update for the first focus now
-          this.updateOnFocusAriaValueText();
-
           // @private - called by disposeAccessibleValueHandler to prevent memory leaks
           this._disposeAccessibleValueHandler = () => {
             this.removeInputListener( valueHandlerListener );
@@ -164,8 +160,21 @@ define( require => {
          */
         updateOnFocusAriaValueText() {
           if ( this.a11yCreateOnFocusAriaValueText ) {
-            this.ariaValueText = this.a11yCreateOnFocusAriaValueText();
+            this.ariaValueText = this.a11yCreateOnFocusAriaValueText( this.getA11yFormattedValue(), this._valueProperty.value );
           }
+        },
+
+        /**
+         * @private
+         * get the formatted value based on the current value of the Property.
+         * @returns {number}
+         */
+        getA11yFormattedValue() {
+          const mappedValue = this.a11yMapValue( this._valueProperty.value );
+          assert && assert( typeof mappedValue === 'number', 'a11yMapValue must return a number' );
+
+          // format the value text for reading
+          return Util.toFixedNumber( mappedValue, this.a11yDecimalPlaces );
         },
 
         /**
