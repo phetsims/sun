@@ -50,6 +50,7 @@ define( function( require ) {
       phetioEventType: PhetioObject.EventType.USER,
       // to support properly passing this to children, see https://github.com/phetsims/tandem/issues/60
       phetioReadOnly: PhetioObject.DEFAULT_OPTIONS.phetioReadOnly,
+      phetioLinkProperty: true, // whether a link to the checkbox's Property is created
 
       // a11y
       tagName: 'input',
@@ -64,7 +65,7 @@ define( function( require ) {
     // does this instance own enabledProperty?
     var ownsEnabledProperty = !options.enabledProperty;
 
-    this.addLinkedElement( property, {
+    options.phetioLinkProperty && this.addLinkedElement( property, {
       tandem: options.tandem.createTandem( 'property' )
     } );
 
