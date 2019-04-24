@@ -95,7 +95,7 @@ define( function( require ) {
           optionsToMutate.tagName = 'input';
 
           assert && assert( options.inputType === undefined, 'AccessibleNumberSpinner sets inputType' );
-          optionsToMutate.inputType = 'number';
+          optionsToMutate.inputType = 'range';
 
           assert && assert( options.ariaRole === undefined, 'AccessibleNumberSpinner sets ariaRole' );
           optionsToMutate.ariaRole = 'spinbutton';
@@ -144,10 +144,16 @@ define( function( require ) {
 
           // update enabled number range for AT, required for screen reader events to behave correctly, must be disposed
           var enabledRangeObserver = function( enabledRange ) {
-            self.setAccessibleAttribute( 'aria-valuemin', enabledRange.min );
-            self.setAccessibleAttribute( 'aria-valuemax', enabledRange.max );
+            self.setAccessibleAttribute( 'min', enabledRange.min );
+            self.setAccessibleAttribute( 'max', enabledRange.max );
           };
           this._enabledRangeProperty.link( enabledRangeObserver );
+
+          // number spinners should only deal in integers
+          this.setAccessibleAttribute( 'step', 1 );
+
+          // TODO: we might use this instead of an actual role, see https://github.com/phetsims/sun/issues/497
+          // this.setAccessibleAttribute( 'aria-roledescription', 'spinbutton' );
 
           // a callback that is added and removed from the timer depending on keystate
           var downCallback = null;
