@@ -97,8 +97,9 @@ define( function( require ) {
           assert && assert( options.inputType === undefined, 'AccessibleNumberSpinner sets inputType' );
           optionsToMutate.inputType = 'range';
 
-          assert && assert( options.ariaRole === undefined, 'AccessibleNumberSpinner sets ariaRole' );
-          optionsToMutate.ariaRole = 'spinbutton';
+          // TODO: we might use this instead of a role description, see https://github.com/phetsims/sun/issues/497
+          // assert && assert( options.ariaRole === undefined, 'AccessibleNumberSpinner sets ariaRole' );
+          // optionsToMutate.ariaRole = 'spinbutton';
 
           this.mutate( optionsToMutate );
 
@@ -152,8 +153,7 @@ define( function( require ) {
           // number spinners should only deal in integers
           this.setAccessibleAttribute( 'step', 1 );
 
-          // TODO: we might use this instead of an actual role, see https://github.com/phetsims/sun/issues/497
-          // this.setAccessibleAttribute( 'aria-roledescription', 'spinbutton' );
+          this.setAccessibleAttribute( 'aria-roledescription', 'spinbutton' );
 
           // a callback that is added and removed from the timer depending on keystate
           var downCallback = null;
