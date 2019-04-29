@@ -58,21 +58,20 @@ define( function( require ) {
 
   return inherit( RectangularButtonView, RectangularPushButton, {
 
-      // @public
-      dispose: function() {
-        this.disposeRectangularPushButton();
-        RectangularButtonView.prototype.dispose.call( this );
-      },
+    // @public
+    dispose: function() {
+      this.disposeRectangularPushButton();
+      RectangularButtonView.prototype.dispose.call( this );
+    },
 
-      // @public
-      addListener: function( listener ) {
-        this.buttonModel.addListener( listener );
-      },
+    // @public
+    addListener: function( listener ) {
+      this.buttonModel.addListener( listener );
+    },
 
-      // @public
-      removeListener: function( listener ) {
-        this.buttonModel.removeListener( listener );
-      }
+    // @public
+    removeListener: function( listener ) {
+      this.buttonModel.removeListener( listener );
     }
-  );
+  } );
 } );
