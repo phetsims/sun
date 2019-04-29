@@ -76,7 +76,7 @@ define( require => {
         listLineWidth: 1,
 
         // a11y
-        buttonLabelContent: null, // {string|null} propagated to ComboBoxButton via its options.labelContent
+        buttonAccessibleName: null, // {string|null} propagated to ComboBoxButton via its options.labelContent
 
         // phet-io
         tandem: Tandem.required,
@@ -117,7 +117,7 @@ define( require => {
         lineWidth: options.buttonLineWidth,
 
         // a11y
-        labelContent: options.buttonLabelContent,
+        labelContent: options.buttonAccessibleName,
 
         // phet-io
         tandem: options.tandem.createTandem( 'button' )
