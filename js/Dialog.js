@@ -126,7 +126,12 @@ define( require => {
       // a11y options
       tagName: 'div',
       ariaRole: 'dialog',
-      focusOnCloseNode: null // {Node} receives focus on close, if null focus returns to element that had focus on open
+      focusOnCloseNode: null, // {Node} receives focus on close, if null focus returns to element that had focus on open
+
+      // By default set the accessible name of this dialog to be the content of the title. Some dialogs want to opt out
+      // of providing the default accessible name for the dialog, opting to instead manage the accessible name
+      // themselves, for example see KeyboardHelpDialog and https://github.com/phetsims/scenery-phet/issues/494
+      addAriaLabelledByFromTitle: true
     }, options );
 
     // TODO: Support instrumented element that is dynamic/lazily created, see https://github.com/phetsims/phet-io/issues/1454
@@ -242,7 +247,7 @@ define( require => {
     this.accessibleOrder = [ closeButton, options.title, content ].filter( node => node !== undefined );
 
     // a11y - set the aria-labelledby relation so that whenever focus enters the dialog the title is read
-    if ( options.title && options.title.tagName ) {
+    if ( options.title && options.title.tagName && options.addAriaLabelledByFromTitle ) {
       this.addAriaLabelledbyAssociation( {
         thisElementName: AccessiblePeer.PRIMARY_SIBLING,
         otherNode: options.title,
