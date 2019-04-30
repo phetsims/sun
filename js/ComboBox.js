@@ -76,7 +76,8 @@ define( require => {
         listLineWidth: 1,
 
         // a11y
-        buttonLabelContent: null, // {string|null} propagated to ComboBoxButton via its options.labelContent
+        accessibleName: null, // the a11y setter for this is overridden, see below
+        helpText: null, // the a11y setter for this is overridden, see below
 
         // phet-io
         tandem: Tandem.required,
@@ -116,8 +117,7 @@ define( require => {
         stroke: options.buttonStroke,
         lineWidth: options.buttonLineWidth,
 
-        // a11y
-        labelContent: options.buttonLabelContent,
+        // a11y - accessibleName and helpText are set via overridden functions on the prototype. See below.
 
         // phet-io
         tandem: options.tandem.createTandem( 'button' )
@@ -262,6 +262,24 @@ define( require => {
     getEnabled() { return this.enabledProperty.value; }
 
     get enabled() { return this.getEnabled(); }
+
+    /**
+     * Instead of setting accessibleName on ComboBox, forward accessibleName setter to the button
+     * @param {string} accessibleName
+     * @override
+     */
+    set accessibleName( accessibleName ) {
+
+      // set labelContent here instead of accessibleName because of ComboBoxButton implementation -- see that file for more details
+      this.button.labelContent = accessibleName;
+    }
+
+    /**
+     * Instead of setting accessibleName on ComboBox, forward helpText setter to the button
+     * @param {string} helpText
+     * @override
+     */
+    set helpText( helpText ) { this.button.helpText = helpText; }
 
     /**
      * Shows the list box.
