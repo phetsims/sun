@@ -90,9 +90,9 @@ define( require => {
         'margins must be > 0, xMargin=' + options.xMargin + ', yMargin=' + options.yMargin );
       assert && assert( options.disabledOpacity > 0 && options.disabledOpacity < 1,
         'invalid disabledOpacity: ' + options.disabledOpacity );
-      assert && assert( LIST_POSITION_VALUES.includes( options.listPosition ),
+      assert && assert( _.includes( LIST_POSITION_VALUES, options.listPosition ),
         'invalid listPosition: ' + options.listPosition );
-      assert && assert( ALIGN_VALUES.includes( options.align ),
+      assert && assert( _.includes( ALIGN_VALUES, options.align ),
         'invalid align: ' + options.align );
 
       super();
