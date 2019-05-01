@@ -59,7 +59,7 @@ define( require => {
 
       //TODO sun#462 replace fireEmitter and selectionListener with a standard scenery listener
       // Pops down the list box and sets the property.value to match the chosen item.
-      const firedEmitter = new Action( event => {
+      const firedAction = new Action( event => {
 
         const listItemNode = event.currentTarget;
         assert && assert( listItemNode instanceof ComboBoxListItemNode, 'expected a ComboBoxListItemNode' );
@@ -75,7 +75,7 @@ define( require => {
       }, {
 
         // phet-io
-        tandem: tandem.createTandem( 'firedEmitter' ),
+        tandem: tandem.createTandem( 'firedAction' ),
 
         //TODO https://github.com/phetsims/phet-io/issues/1426, use type:EventIO, phetioDataStream:false
         phetioType: ActionIO( [ { name: 'event', type: VoidIO, validator: { valueType: Event } } ] ),
@@ -87,14 +87,14 @@ define( require => {
       const selectionListener = {
 
         up( event ) {
-          firedEmitter.emit( event );
+          firedAction.execute( event );
         },
 
         // Handle keyup on each item in the list box, for a11y.
         //TODO sun#447, scenery#931 we're using keyup because keydown fires continuously
         keyup: event => {
           if ( KeyboardUtil.KEY_ENTER === event.domEvent.keyCode || KeyboardUtil.KEY_SPACE === event.domEvent.keyCode ) {
-            firedEmitter.emit( event );
+            firedAction.execute( event );
             focusButtonCallback();
           }
         }
