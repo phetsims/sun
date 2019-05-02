@@ -52,10 +52,19 @@ define( function( require ) {
       xMargin: 8, // should be visibly greater than yMargin, see issue #109
       yMargin: 5,
       fireOnDown: false,
+
+      // pointer area dilation
       touchAreaXDilation: 0,
       touchAreaYDilation: 0,
       mouseAreaXDilation: 0,
       mouseAreaYDilation: 0,
+
+      // pointer area shift, see https://github.com/phetsims/sun/issues/500
+      touchAreaXShift: 0,
+      touchAreaYShift: 0,
+      mouseAreaXShift: 0,
+      mouseAreaYShift: 0,
+
       stroke: undefined, // undefined by default, which will cause a stroke to be derived from the base color
       lineWidth: 0.5, // Only meaningful if stroke is non-null
       xAlign: 'center', // {string} see X_ALIGN_VALUES
@@ -169,8 +178,12 @@ define( function( require ) {
     interactionStateProperty.link( handleInteractionStateChanged );
 
     // set pointer areas
-    this.touchArea = button.localBounds.dilatedXY( options.touchAreaXDilation, options.touchAreaYDilation );
-    this.mouseArea = button.localBounds.dilatedXY( options.mouseAreaXDilation, options.mouseAreaYDilation );
+    this.touchArea = button.localBounds
+      .dilatedXY( options.touchAreaXDilation, options.touchAreaYDilation )
+      .shifted( options.touchAreaXShift,  options.touchAreaYShift );
+    this.mouseArea = button.localBounds
+      .dilatedXY( options.mouseAreaXDilation, options.mouseAreaYDilation )
+      .shifted( options.mouseAreaXShift,  options.mouseAreaYShift );
 
     // Mutate with the options after the layout is complete so that width-
     // dependent fields like centerX will work.

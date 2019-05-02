@@ -180,7 +180,13 @@ define( function( require ) {
     var buttonE = new RoundPushButton( {
       content: new Text( '--- E ---', { font: BUTTON_FONT } ),
       listener: function() { message( 'Button E pressed' ); },
-      baseColor: roundBaseColor
+      baseColor: 'yellow',
+
+      // Demonstrate shifted pointer areas, https://github.com/phetsims/sun/issues/500
+      touchAreaXShift: 20,
+      touchAreaYShift: 20,
+      mouseAreaXShift: 10,
+      mouseAreaYShift: 10
     } );
 
     var pseudo3DButtonsBox = new HBox( {
@@ -501,7 +507,13 @@ define( function( require ) {
           message( 'Button colors changed' );
         },
         right: disableEnableButton.right,
-        bottom: disableEnableButton.top - 15
+        bottom: disableEnableButton.top - 15,
+
+        // Demonstrate shifted pointer areas, https://github.com/phetsims/sun/issues/500
+        touchAreaXShift: -20,
+        touchAreaYShift: -20,
+        mouseAreaXShift: -10,
+        mouseAreaYShift: -10
       }
     );
     this.addChild( changeButtonColorsButton );

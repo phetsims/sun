@@ -50,8 +50,17 @@ define( function( require ) {
       minXMargin: 5, // Minimum margin in x direction, i.e. on left and right
       minYMargin: 5, // Minimum margin in y direction, i.e. on top and bottom
       fireOnDown: false,
+
+      // pointer area dilation
       touchAreaDilation: 0, // radius dilation for touch area
       mouseAreaDilation: 0, // radius dilation for mouse area
+
+      // pointer area shift
+      touchAreaXShift: 0,
+      touchAreaYShift: 0,
+      mouseAreaXShift: 0,
+      mouseAreaYShift: 0,
+
       stroke: undefined, // undefined by default, which will cause a stroke to be derived from the base color
       lineWidth: 0.5, // Only meaningful if stroke is non-null
       tandem: Tandem.optional, // This duplicates the parent option and works around https://github.com/phetsims/tandem/issues/50
@@ -132,8 +141,10 @@ define( function( require ) {
     interactionStateProperty.link( handleInteractionStateChanged );
 
     // Dilate the pointer areas.
-    this.touchArea = Shape.circle( 0, 0, buttonRadius + options.touchAreaDilation );
-    this.mouseArea = Shape.circle( 0, 0, buttonRadius + options.mouseAreaDilation );
+    this.touchArea = Shape.circle( options.touchAreaXShift, options.touchAreaYShift,
+      buttonRadius + options.touchAreaDilation );
+    this.mouseArea = Shape.circle( options.mouseAreaXShift, options.mouseAreaYShift,
+      buttonRadius + options.mouseAreaDilation );
 
     // Set pickable such that sub-nodes are pruned from hit testing.
     this.pickable = null;
