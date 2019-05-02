@@ -65,6 +65,7 @@ define( function( require ) {
       titleYMargin: 2, // vertical space between title and top of box
       titleXSpacing: 5, // horizontal space between title and expand/collapse button
       showTitleWhenExpanded: true, // true = title is visible when expanded, false = title is hidden when expanded
+      titleBarExpandCollapse: true, // {boolean} clicking on the title bar expands/collapses the accordion box
 
       // {*|null} options passed to ExpandCollapseButton constructor, defaults filled in below
       expandCollapseButtonOptions: null,
@@ -217,6 +218,29 @@ define( function( require ) {
       self.collapsedTitleBar.dispose();
     } );
     this.collapsedBox.addChild( this.collapsedTitleBar );
+
+    if ( options.titleBarExpandCollapse ) {
+      this.collapsedTitleBar.addInputListener( {
+        down: function() {
+          self.phetioStartEvent( 'expanded' );
+          self.expandedProperty.value = true;
+          self.phetioEndEvent();
+        }
+      } );
+    }
+
+    // Set the input listeners for the expandedTitleBar
+    if ( options.showTitleWhenExpanded ) {
+      if ( options.titleBarExpandCollapse ) {
+        this.expandedTitleBar.addInputListener( {
+          down: function() {
+            self.phetioStartEvent( 'collapsed' );
+            self.expandedProperty.value = false;
+            self.phetioEndEvent();
+          }
+        } );
+      }
+    }
 
     this.addChild( this.titleNode );
     this.addChild( this.expandCollapseButton );
