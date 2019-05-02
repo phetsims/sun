@@ -234,6 +234,12 @@ define( function( require ) {
       }
     }
 
+    // If we hide the button, disable interactivity of the title bar, see https://github.com/phetsims/sun/issues/477
+    this.expandCollapseButton.on( 'visibility', () => {
+      this.collapsedTitleBar.pickable = this.expandCollapseButton.visible;
+      this.expandedTitleBar.pickable = this.expandCollapseButton.visible;
+    } );
+
     this.addChild( this.titleNode );
     this.addChild( this.expandCollapseButton );
 
