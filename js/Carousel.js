@@ -384,6 +384,7 @@ define( function( require ) {
     /**
      * Given an item's index, scroll the carousel to the page that contains that item.
      * @param {number} itemIndex
+     * @public
      */
     scrollToItemIndex: function( itemIndex ) {
       this.pageNumberProperty.set( this.itemIndexToPageNumber( itemIndex ) );
