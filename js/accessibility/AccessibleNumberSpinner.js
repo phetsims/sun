@@ -67,15 +67,8 @@ define( function( require ) {
           var self = this;
 
           var defaults = {
-            a11yValueDelta: 1, // {number} - value changes by this quantity when using arrow keys
-            a11yPageValueDelta: 2, // {number} - value changes by this quantity when using page up/page down
-
-            a11yUseTimer: true, // if false value will change every native DOM keydown event, following options meaningless
             timerDelay: 400, // start to fire continuously after pressing for this long (milliseconds)
             timerInterval: 100, // fire continuously at this frequency (milliseconds),
-
-            // a11y
-            focusable: true,
 
             // set labelContent to give this AccessibleNumberSpinner an accessible name, required for spinbuttons
             // see https://github.com/phetsims/gravity-force-lab-basics/issues/62
@@ -84,20 +77,7 @@ define( function( require ) {
           options = _.extend( {}, defaults, options );
 
           // initialize "parent" mixin
-          this.initializeAccessibleValueHandler( valueProperty, options );
-
-          // Some options were already mutated in the constructor, only apply the accessibility-specific options here
-          // so options are not doubled up, see https://github.com/phetsims/sun/issues/330
-          var optionsToMutate = _.pick( options, _.keys( defaults ) );
-
-          // cannot be set by client
-          assert && assert( options.tagName === undefined, 'AccessibleNumberSpinner sets tagName' );
-          optionsToMutate.tagName = 'input';
-
-          assert && assert( options.inputType === undefined, 'AccessibleNumberSpinner sets inputType' );
-          optionsToMutate.inputType = 'range';
-
-          this.mutate( optionsToMutate );
+          this.initializeAccessibleValueHandler( valueProperty, enabledRangeProperty, enabledProperty, options );
 
           // this number spinner is "aria-labelledby" its own label, meaning that the label element content will be
           // read on focus
@@ -107,47 +87,16 @@ define( function( require ) {
             otherElementName: AccessiblePeer.LABEL_SIBLING
           } );
 
-          // @private {Property.<number>}
-          this._valueProperty = valueProperty;
-
-          // @private {Property.<Range>}
-          this._enabledRangeProperty = enabledRangeProperty;
-
-          // @private{Property.<boolean>}
-          this._enabledProperty = enabledProperty;
-
-          // @private {number}
-          this._a11yValueDelta = options.a11yValueDelta;
-
-          // @private {number}
-          this._a11yPageValueDelta = options.a11yPageValueDelta;
-
-          // @private {boolean}
-          this._a11yUseTimer = options.a11yUseTimer;
-
           // @private - manages timing must be disposed
           this._callbackTimer = new CallbackTimer( {
             delay: options.timerDelay,
             interval: options.timerInterval
           } );
 
-          // @protected {Emitter} emit events when increment/decrement keys are pressed down/up
+          // @protected {Emitter} emits events when increment and decrement actions occur, but only for changes
+          // of keyboardStep (not pageKeyboardStep or shiftKeyboardStep)
           this.incrementDownEmitter = new Emitter( { validationEnabled: false } );
           this.decrementDownEmitter = new Emitter( { validationEnabled: false } );
-
-          // @protected {Emitter} - emit events when value is incremented/decremented
-          this.valueIncrementEmitter = new Emitter();
-          this.valueDecrementEmitter = new Emitter();
-
-          // update enabled number range for AT, required for screen reader events to behave correctly, must be disposed
-          var enabledRangeObserver = function( enabledRange ) {
-            self.setAccessibleAttribute( 'min', enabledRange.min );
-            self.setAccessibleAttribute( 'max', enabledRange.max );
-          };
-          this._enabledRangeProperty.link( enabledRangeObserver );
-
-          // number spinners should only deal in integers
-          this.setAccessibleAttribute( 'step', 1 );
 
           this.setAccessibleAttribute( 'aria-roledescription', 'number spinner' );
 
@@ -158,75 +107,80 @@ define( function( require ) {
           // handle all accessible event input
           var accessibleInputListener = {
             keydown: function( event ) {
+              if ( enabledProperty.get() ) {
 
-              // allow user to tab navigate away from the element, but prevent typing of values into the number input -
-              // all value changes should go through custom interactions implemented in handleKeyDown
-              if ( event.domEvent.keyCode !== KeyboardUtil.KEY_TAB ) {
-                event.domEvent.preventDefault();
-              }
-
-              // check for relevant keys here
-              if ( KeyboardUtil.isRangeKey( event.domEvent.keyCode ) ) {
-
-                // if using the timer, handle update at interval
-                if ( self._a11yUseTimer ) {
+                // check for relevant keys here
+                if ( KeyboardUtil.isRangeKey( event.domEvent.keyCode ) ) {
                   if ( !self._callbackTimer.isRunning() ) {
-                    self.handleKeyDown( event );
+                    self.accessibleNumberSpinnerHandleKeyDown( event );
 
-                    downCallback = self.handleKeyDown.bind( self, event );
+                    downCallback = self.accessibleNumberSpinnerHandleKeyDown.bind( self, event );
                     runningTimerCallbackKeyCode = event.domEvent.keyCode;
                     self._callbackTimer.addCallback( downCallback );
                     self._callbackTimer.start();
                   }
                 }
-                else {
-                  self.handleKeyDown( event );
-                }
               }
             },
             keyup: function( event ) {
               if ( KeyboardUtil.isRangeKey( event.domEvent.keyCode ) ) {
-                if ( self._a11yUseTimer ) {
-                  if ( event.domEvent.keyCode === runningTimerCallbackKeyCode ) {
-                    self.emitKeyState( event.domEvent.keyCode, false );
-                    self._callbackTimer.stop( false );
-                    self._callbackTimer.removeCallback( downCallback );
-                    downCallback = null;
-                    runningTimerCallbackKeyCode = null;
-                  }
+                if ( event.domEvent.keyCode === runningTimerCallbackKeyCode ) {
+                  self.emitKeyState( event.domEvent.keyCode, false );
+                  self._callbackTimer.stop( false );
+                  self._callbackTimer.removeCallback( downCallback );
+                  downCallback = null;
+                  runningTimerCallbackKeyCode = null;
                 }
+
+                self.handleKeyUp( event );
               }
             },
             blur: function() {
 
               // if a key is currently down when focus leaves the spinner, stop callbacks and emit that the
               // keycode is up
-              if ( self._a11yUseTimer && downCallback ) {
+              if ( downCallback ) {
                 assert && assert( runningTimerCallbackKeyCode !== null, 'key should be down if running downCallback' );
 
                 self.emitKeyState( runningTimerCallbackKeyCode, false );
                 self._callbackTimer.stop( false );
                 self._callbackTimer.removeCallback( downCallback );
               }
-            }
+
+              self.handleBlur( event ); 
+            },
+            input: this.handleInput.bind( this ),
+            change: this.handleChange.bind( this )
           };
           this.addInputListener( accessibleInputListener );
 
-
           // @private - called by disposeAccessibleNumberSpinner to prevent memory leaks
           this._disposeAccessibleNumberSpinner = function() {
-            self._enabledRangeProperty.unlink( enabledRangeObserver );
             self._callbackTimer.dispose();
 
             // emitters owned by this instance, can be disposed here
             self.incrementDownEmitter.dispose();
             self.decrementDownEmitter.dispose();
-            self.valueIncrementEmitter.dispose();
-            self.valueDecrementEmitter.dispose();
 
             self.removeInputListener( accessibleInputListener );
             self.disposeAccessibleValueHandler();
           };
+        },
+
+        /**
+         * Handle the keydown event and emit events related to the user interaction. Ideally, this would
+         * override AccessibleValueHandler.handleKeyDown, but overriding is not supported with PhET Trait pattern.
+         * @private
+         * 
+         * @param   {DOMEvent} event
+         */
+        accessibleNumberSpinnerHandleKeyDown: function( event ) {
+          this.handleKeyDown( event );
+
+          // TODO: This will emit events that signify that interaction is taking place, but it is currently
+          // broken with axon/timer.js, see https://github.com/phetsims/axon/issues/248 Add back in as soon
+          // as that issue is resolved.
+          // this.emitKeyState( event.domEvent.keyCode, true );
         },
 
         /**
@@ -243,47 +197,6 @@ define( function( require ) {
           }
           else if ( keyCode === KeyboardUtil.KEY_DOWN_ARROW || keyCode === KeyboardUtil.KEY_LEFT_ARROW ) {
             this.decrementDownEmitter.emit( isDown );
-          }
-        },
-
-        /**
-         * Handle the keydown event so that this node behaves like an accessible number input.
-         * @private
-         *
-         * @param {Event} event
-         */
-        handleKeyDown: function( event ) {
-          var domEvent = event.domEvent;
-          var code = domEvent.keyCode;
-
-          if ( this._enabledProperty.get() ) {
-            this.emitKeyState( code, true );
-            // prevent user from changing value with number or the space keys, handle arrow keys on our own
-            if ( KeyboardUtil.isArrowKey( code ) || KeyboardUtil.isNumberKey( code ) || code === KeyboardUtil.KEY_SPACE ) {
-              domEvent.preventDefault();
-            }
-
-            // handle the event
-            if ( code === KeyboardUtil.KEY_RIGHT_ARROW || code === KeyboardUtil.KEY_UP_ARROW ) {
-              this.valueIncrementEmitter.emit();
-              this._valueProperty.set( Math.min( this._valueProperty.get() + this._a11yValueDelta, this._enabledRangeProperty.get().max ) );
-            }
-            else if ( code === KeyboardUtil.KEY_LEFT_ARROW || code === KeyboardUtil.KEY_DOWN_ARROW ) {
-              this.valueDecrementEmitter.emit();
-              this._valueProperty.set( Math.max( this._valueProperty.get() - this._a11yValueDelta, this._enabledRangeProperty.get().min ) );
-            }
-            else if ( code === KeyboardUtil.KEY_PAGE_UP ) {
-              this._valueProperty.set( Math.min( this._valueProperty.get() + this._a11yPageValueDelta, this._enabledRangeProperty.get().max ) );
-            }
-            else if ( code === KeyboardUtil.KEY_PAGE_DOWN ) {
-              this._valueProperty.set( Math.max( this._valueProperty.get() - this._a11yPageValueDelta, this._enabledRangeProperty.get().min ) );
-            }
-            else if ( code === KeyboardUtil.KEY_HOME ) {
-              this._valueProperty.set( this._enabledRangeProperty.get().min );
-            }
-            else if ( code === KeyboardUtil.KEY_END ) {
-              this._valueProperty.set( this._enabledRangeProperty.get().max );
-            }
           }
         },
 

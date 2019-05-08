@@ -289,24 +289,24 @@ define( function( require ) {
     this.enabledProperty.link( enabledPropertyObserver );
 
     // a11y - initialize accessibility features
-    assert && assert( !options.a11yValueDelta, 'a11yValueDelta supported by arrow buttons, do not pass value to NumberSpinner' );
-    assert && assert( !options.a11yUseTimer, 'interval handled by arrow buttons, do not use callback timer' );
-    options.a11yValueDelta = 0;
-    options.a11yUseTimer = false;
+    assert && assert( !options.keyboardStep, 'keyboardStep supported by arrow buttons, do not pass value to NumberSpinner' );
+    assert && assert( !options.shiftKeyboardStep, 'shiftKeyboardStep handled by arrow buttons' );
+    options.keyboardStep = 0;
+    options.shiftKeyboardStep = 0;
     this.initializeAccessibleNumberSpinner( numberProperty, rangeProperty, this.enabledProperty, options );
 
     // a11y - click arrow buttons on keyboard increment/decrement; must be disposed
-    var increasedListener = function() { incrementButton.a11yClick(); };
-    var decreasedListener = function() { decrementButton.a11yClick(); };
-    this.valueIncrementEmitter.addListener( increasedListener );
-    this.valueDecrementEmitter.addListener( decreasedListener );
+    var increasedListener = function( isDown ) { isDown && incrementButton.a11yClick(); };
+    var decreasedListener = function( isDown ) { isDown && decrementButton.a11yClick(); };
+    this.incrementDownEmitter.addListener( increasedListener );
+    this.decrementDownEmitter.addListener( decreasedListener );
 
     // @private
     this.disposeNumberSpinner = function() {
 
       // dispose a11y features
-      self.valueIncrementEmitter.removeListener( increasedListener );
-      self.valueDecrementEmitter.removeListener( decreasedListener );
+      self.incrementDownEmitter.removeListener( increasedListener );
+      self.decrementDownEmitter.removeListener( decreasedListener );
       self.disposeAccessibleNumberSpinner();
 
       numberProperty.unlink( numberPropertyObserver );
