@@ -9,11 +9,13 @@
  * - Home key sets value to its minimum.
  * - End key sets value to its maximum.
  *
- * This number spinner is different than typical 'number' inputs because it does not support number key control. All
- * changes go through the arrow, page up, page down, home, and end keys. For that reason, the HTML representation should
- * ideally look like: (values removed for readability)
+ * This number spinner is different than typical 'number' inputs because it does not support number key control. It
+ * was determined that an input of type range is the best match for a PhET Number Spinner, with a custom role
+ * description with aria-roledescription. See https://github.com/phetsims/sun/issues/497 for history on this
+ * decision.
  *
- * This trait mixes in a "parent" mixin to handle general "value" formatting and aria-valuetext updating, see AccessibleValueHandler
+ * This trait mixes in a "parent" mixin to handle general "value" formatting and aria-valuetext updating, see
+ * AccessibleValueHandler.
  *
  * @author Jesse Greenberg (PhET Interactive Simulations)
  * @author Michael Barlow (PhET Interactive Simulations)
