@@ -225,17 +225,17 @@ define( require => {
           // @private - {null|function} see options for doc
           this.a11yCreateOnFocusAriaValueText = options.a11yCreateOnFocusAriaValueText;
 
-          // The step attribute must be non zero for the accessible input to receive all accessibility events, and
-          // only certain values are allowed depending on the step size, or else the AT will announce values as
-          // "Invalid". If the step size is equal to the precision of the slider readout, all values are allowed.
-          this.setAccessibleAttribute( 'step', Math.pow( 10, -this.a11yDecimalPlaces ) );
-
           // listeners, must be unlinked in dispose
           var enabledRangeObserver = ( enabledRange ) => {
 
             // a11y - update enabled slider range for AT, required for screen reader events to behave correctly
             this.setAccessibleAttribute( 'min', enabledRange.min );
             this.setAccessibleAttribute( 'max', enabledRange.max );
+
+            // update the step attribute slider element - this attribute is only added because it is required to
+            // receive accessibility events on all browsers, and is totally separate from the step values above that
+            // will modify the valueProperty. See function for more information.
+            this.updateSiblingStepAttribute();
           };
           this._enabledRangeProperty.link( enabledRangeObserver );
 
@@ -650,6 +650,45 @@ define( require => {
          */
         anyKeysDown() {
           return !!_.find( this.rangeKeysDown, function( entry ) { return entry; } );
+        },
+
+        /**
+         * Set the `step` attribute on accessible siblings for this Node. The step attribute must be non zero
+         * for the accessible input to receive accessibility events and only certain slider input values are
+         * allowed depending on `step`, `min`, and `max` attributes. Only values which are equal to min value plus
+         * the basis of step are allowed. If the input value is set to anything else, the result is confusing
+         * keyboard behavior and the screen reader will say "Invalid" when the value changes.
+         * See https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/number#step
+         *
+         * This limitation is too restrictive for PhET as many sliders span physical ranges with keyboard steps that
+         * are design to be convenient or pedagogically useful. For example, a slider that spans 0.01 to 15 requires 
+         * a step of 1, but DOM specification would only allow values 0.01, 1.01, 2.01, ...
+         * This restriction is the main reason we decided to "roll our own" for accessible sliders.
+         *
+         * We tried to use the `any` attribute which is valid according to DOM specification but screen readers
+         * generally don't support it. See https://github.com/phetsims/sun/issues/413.
+         *
+         * Also, if the step attribute is too small relative to the entire range of the slider VoiceOver doesn't allow
+         * any input events because...VoiceOver is just interesting like that.
+         *
+         * Current workaround for all of this is to set the step size to support the precision of the value required
+         * by the client so that all values are allowed. If we encounter the VoiceOver case described above we fall
+         * back to setting the step size at 1/100th of the max value since the keyboard step generally evenly divides
+         * the max value rather than the full range.
+         * @private
+         */
+        updateSiblingStepAttribute() {
+          let stepValue = Math.pow( 10, -this.a11yDecimalPlaces );
+
+          const fullRange = this._enabledRangeProperty.get().getLength();
+
+          // step is too small relative to full range for VoiceOver to receive input, fall back to portion of
+          // full range
+          if ( stepValue / fullRange < 1e-5 ) {
+            stepValue = this._enabledRangeProperty.get().max / 100;
+          }
+
+          this.setAccessibleAttribute( 'step', stepValue );
         }
       } );
     }
