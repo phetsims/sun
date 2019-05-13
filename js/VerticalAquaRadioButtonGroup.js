@@ -1,4 +1,4 @@
-// Copyright 2013-2018, University of Colorado Boulder
+// Copyright 2013-2019, University of Colorado Boulder
 
 /**
  * Convenience type for creating a vertical list of AquaRadioButtons.
@@ -24,16 +24,16 @@ define( function( require ) {
   var instanceCount = 0;
 
   /**
+   * @param {Property} property
    * @param {Object[]} items - Each item describes a radio button, and is an object with these properties:
    *    node: Node, // label for the button
    *    value: *, // value associated with the button
-   *    property: Property.<*>, // Property associated with the button
    *    [tandemName: Tandem], // optional tandem for PhET-iO
    *    [labelContent: string] // optional label for a11y
    * @param {Object} [options]
    * @constructor
    */
-  function VerticalAquaRadioButtonGroup( items, options ) {
+  function VerticalAquaRadioButtonGroup( property, items, options ) {
 
     instanceCount++;
 
@@ -76,7 +76,7 @@ define( function( require ) {
         children: [ new HStrut( maxItemWidth ), item.node ]
       } );
 
-      var radioButton = new AquaRadioButton( item.property, item.value, content,
+      var radioButton = new AquaRadioButton( property, item.value, content,
         _.extend( {}, options.radioButtonOptions, {
           tandem: item.tandemName ? options.tandem.createTandem( item.tandemName ) : Tandem.required,
           labelContent: item.labelContent || null,

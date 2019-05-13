@@ -108,17 +108,14 @@ define( function( require ) {
     verticalAquaProperty.lazyLink( function( value ) {
       message( 'Aqua Radio Button ' + value + ' pressed' );
     } );
-    var verticalAquaRadioButtons = new VerticalAquaRadioButtonGroup( [
+    var verticalAquaRadioButtons = new VerticalAquaRadioButtonGroup( verticalAquaProperty, [
       {
-        property: verticalAquaProperty,
         value: firstOption,
         node: new Text( firstOption )
       }, {
-        property: verticalAquaProperty,
         value: 'B',
         node: new Text( 'B' )
       }, {
-        property: verticalAquaProperty,
         value: 'C',
         node: new Text( 'C' )
       }
