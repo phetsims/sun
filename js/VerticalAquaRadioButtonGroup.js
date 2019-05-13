@@ -1,7 +1,7 @@
 // Copyright 2013-2019, University of Colorado Boulder
 
 /**
- * Convenience type for creating a vertical list of AquaRadioButtons.
+ * Convenience type for creating a vertical group of AquaRadioButtons.
  *
  * @author Sam Reid (PhET Interactive Simulations)
  * @author Chris Malley (PixelZoom, Inc.)
