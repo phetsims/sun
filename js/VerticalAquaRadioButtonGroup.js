@@ -93,6 +93,22 @@ define( function( require ) {
       options.children = radioButtons;
 
       super( options );
+
+      // @private
+      this.disposeVerticalAquaRadioButtonGroup = () => {
+        for ( let i = 0; i < radioButtons.length; i++ ) {
+          radioButtons[ i ].dispose();
+        }
+      };
+    }
+
+    /**
+     * @public
+     * @override
+     */
+    dispose() {
+      this.disposeVerticalAquaRadioButtonGroup();
+      super.dispose();
     }
   }
 
