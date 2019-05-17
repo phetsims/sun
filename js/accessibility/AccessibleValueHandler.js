@@ -431,7 +431,7 @@ define( require => {
          * input are sent to the browser by the AT.
          *
          * Add this as a listener to the 'change' input event on the Node that is mixing in AccessibleValueHandler.
-         * 
+         *
          * @private
          *
          * @param  {Event} event
@@ -455,7 +455,7 @@ define( require => {
          * navigating away from the element.
          *
          * Add this as a listener to the `input` event on the Node that is mixing in AccessibleValueHandler.
-         * 
+         *
          * @private
          *
          * @param {Event} event
@@ -502,7 +502,7 @@ define( require => {
          * Fires when the accessible slider loses focus.
          *
          * Add this as a listener on the `blur` event to the Node that is mixing in AccessibleValueHandler.
-         * 
+         *
          * @private
          */
         handleBlur() {
@@ -661,7 +661,7 @@ define( require => {
          * See https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/number#step
          *
          * This limitation is too restrictive for PhET as many sliders span physical ranges with keyboard steps that
-         * are design to be convenient or pedagogically useful. For example, a slider that spans 0.01 to 15 requires 
+         * are design to be convenient or pedagogically useful. For example, a slider that spans 0.01 to 15 requires
          * a step of 1, but DOM specification would only allow values 0.01, 1.01, 2.01, ...
          * This restriction is the main reason we decided to "roll our own" for accessible sliders.
          *

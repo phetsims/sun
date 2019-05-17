@@ -21,21 +21,25 @@
  * @author Michael Barlow (PhET Interactive Simulations)
  */
 
-define( function( require ) {
+define( require => {
   'use strict';
 
   // modules
-  var AccessibleValueHandler = require( 'SUN/accessibility/AccessibleValueHandler' );
-  var AccessiblePeer = require( 'SCENERY/accessibility/AccessiblePeer' );
-  var CallbackTimer = require( 'SUN/CallbackTimer' );
-  var Emitter = require( 'AXON/Emitter' );
-  var extend = require( 'PHET_CORE/extend' );
-  var inheritance = require( 'PHET_CORE/inheritance' );
-  var KeyboardUtil = require( 'SCENERY/accessibility/KeyboardUtil' );
-  var Node = require( 'SCENERY/nodes/Node' );
-  var sun = require( 'SUN/sun' );
+  const SunA11yStrings = require( 'SUN/SunA11yStrings' );
+  const AccessiblePeer = require( 'SCENERY/accessibility/AccessiblePeer' );
+  const AccessibleValueHandler = require( 'SUN/accessibility/AccessibleValueHandler' );
+  const CallbackTimer = require( 'SUN/CallbackTimer' );
+  const Emitter = require( 'AXON/Emitter' );
+  const extend = require( 'PHET_CORE/extend' );
+  const inheritance = require( 'PHET_CORE/inheritance' );
+  const KeyboardUtil = require( 'SCENERY/accessibility/KeyboardUtil' );
+  const Node = require( 'SCENERY/nodes/Node' );
+  const sun = require( 'SUN/sun' );
 
-  var AccessibleNumberSpinner = {
+  // a11y strings
+  const numberSpinnerRoleDescriptionString = SunA11yStrings.numberSpinnerRoleDescription.value;
+
+  const AccessibleNumberSpinner = {
 
     /**
      * Implement functionality for a number spinner.
@@ -48,7 +52,7 @@ define( function( require ) {
     mixInto: function( type ) {
       assert && assert( _.includes( inheritance( type ), Node ) );
 
-      var proto = type.prototype;
+      const proto = type.prototype;
 
       // mixin general value handling
       AccessibleValueHandler.mixInto( type );
@@ -66,9 +70,9 @@ define( function( require ) {
          * @protected
          */
         initializeAccessibleNumberSpinner: function( valueProperty, enabledRangeProperty, enabledProperty, options ) {
-          var self = this;
+          const self = this;
 
-          var defaults = {
+          const defaults = {
             timerDelay: 400, // start to fire continuously after pressing for this long (milliseconds)
             timerInterval: 100, // fire continuously at this frequency (milliseconds),
 
@@ -102,14 +106,14 @@ define( function( require ) {
           this.incrementDownEmitter = new Emitter( { validationEnabled: false } );
           this.decrementDownEmitter = new Emitter( { validationEnabled: false } );
 
-          this.setAccessibleAttribute( 'aria-roledescription', 'number spinner' );
+          this.setAccessibleAttribute( 'aria-roledescription', numberSpinnerRoleDescriptionString );
 
           // a callback that is added and removed from the timer depending on keystate
-          var downCallback = null;
-          var runningTimerCallbackKeyCode = null;
+          let downCallback = null;
+          let runningTimerCallbackKeyCode = null;
 
           // handle all accessible event input
-          var accessibleInputListener = {
+          const accessibleInputListener = {
             keydown: function( event ) {
               if ( enabledProperty.get() ) {
 
@@ -151,7 +155,7 @@ define( function( require ) {
                 self._callbackTimer.removeCallback( downCallback );
               }
 
-              self.handleBlur( event ); 
+              self.handleBlur( event );
             },
             input: this.handleInput.bind( this ),
             change: this.handleChange.bind( this )
@@ -175,7 +179,7 @@ define( function( require ) {
          * Handle the keydown event and emit events related to the user interaction. Ideally, this would
          * override AccessibleValueHandler.handleKeyDown, but overriding is not supported with PhET Trait pattern.
          * @private
-         * 
+         *
          * @param   {DOMEvent} event
          */
         accessibleNumberSpinnerHandleKeyDown: function( event ) {

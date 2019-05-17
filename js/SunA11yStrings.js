@@ -21,6 +21,10 @@ define( function( require ) {
       value: 'Expand'
     },
 
+    numberSpinnerRoleDescription: {
+      value: 'number spinner'
+    },
+
     // dialogs
     close: {
       value: 'Close'
