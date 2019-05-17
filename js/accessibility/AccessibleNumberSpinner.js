@@ -72,6 +72,8 @@ define( function( require ) {
             timerDelay: 400, // start to fire continuously after pressing for this long (milliseconds)
             timerInterval: 100, // fire continuously at this frequency (milliseconds),
 
+            ariaOrientation: 'vertical', // by default, number spinners should be oriented vertically
+
             // set labelContent to give this AccessibleNumberSpinner an accessible name, required for spinbuttons
             // see https://github.com/phetsims/gravity-force-lab-basics/issues/62
             labelTagName: 'p'
