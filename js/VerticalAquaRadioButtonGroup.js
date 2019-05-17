@@ -22,6 +22,10 @@ define( function( require ) {
   // arrow keys will navigate all radio type inputs in the document.
   let instanceCount = 0;
 
+  // constants
+  // to prefix instanceCount in case there are different kinds of "groups"
+  const CLASS_NAME = 'VerticalAquaRadioButtonGroup';
+
   class VerticalAquaRadioButtonGroup extends VBox {
     /**
      * @param {Property} property
@@ -77,7 +81,7 @@ define( function( require ) {
           _.extend( {}, options.radioButtonOptions, {
             tandem: item.tandemName ? options.tandem.createTandem( item.tandemName ) : Tandem.required,
             labelContent: item.labelContent || null,
-            a11yNameAttribute: instanceCount
+            a11yNameAttribute: CLASS_NAME + instanceCount
           } ) );
 
         // set pointer areas, y dimensions are computed

@@ -32,6 +32,7 @@ define( function( require ) {
   // constants
   var BUTTON_CONTENT_X_ALIGN_VALUES = [ 'center', 'left', 'right' ];
   var BUTTON_CONTENT_Y_ALIGN_VALUES = [ 'center', 'top', 'bottom' ];
+  var CLASS_NAME = 'RadioButtonGroup'; // to prefix instanceCount in case there are different kinds of "groups"
 
   // a11y - Unique ID for each instance if RadioButtonGroup, passed to individual buttons in the group. All buttons in
   // the  radio button group must have the same name or else the browser will treat all inputs of type radio in the
@@ -215,7 +216,7 @@ define( function( require ) {
       var radioButton = new RadioButtonGroupMember( property, currentContent.value, opts );
 
       // a11y - so the browser recognizes these buttons are in the same group, see instanceCount for more info
-      radioButton.setAccessibleAttribute( 'name', instanceCount );
+      radioButton.setAccessibleAttribute( 'name', CLASS_NAME + instanceCount );
 
       // ensure the buttons don't resize when selected vs unselected by adding a rectangle with the max size
       var maxLineWidth = Math.max( options.selectedLineWidth, options.deselectedLineWidth );
