@@ -82,10 +82,10 @@ define( function( require ) {
     } );
 
     // @private - sends out notifications when the checkbox is toggled.
-    var toggledAction = new Action( function( value ) {
+    var toggleAction = new Action( function( value ) {
       property.value = value;
     }, {
-      tandem: options.tandem.createTandem( 'toggledAction' ),
+      tandem: options.tandem.createTandem( 'toggleAction' ),
       phetioDocumentation: 'Emits when user input causes the checkbox to toggle, emitting a single arg: ' +
                            'the new boolean value of the checkbox state.',
       phetioReadOnly: options.phetioReadOnly,
@@ -132,7 +132,7 @@ define( function( require ) {
       fire: function() {
         if ( self.enabledProperty.value ) {
           var newValue = !property.value;
-          toggledAction.execute( newValue );
+          toggleAction.execute( newValue );
         }
       }
     } );
@@ -185,7 +185,7 @@ define( function( require ) {
       }
 
       // Private to Checkbox, but we need to clean up tandem.
-      toggledAction.dispose();
+      toggleAction.dispose();
     };
   }
 
