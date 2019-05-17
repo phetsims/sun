@@ -51,6 +51,8 @@ define( require => {
          * This should be called in the constructor to initialize the accessible input features for the node.
          *
          * @param {Property.<number>} valueProperty
+         * @param {Property.<Range>} enabledRangeProperty - Property whose value constricts the range of ValueProperty
+         * @param {BooleanProperty} enabledProperty
          * @param {Object} [options] - note, does not mutate the Node
          *
          * @protected
