@@ -184,11 +184,7 @@ define( require => {
          */
         accessibleNumberSpinnerHandleKeyDown: function( event ) {
           this.handleKeyDown( event );
-
-          // TODO: This will emit events that signify that interaction is taking place, but it is currently
-          // broken with axon/timer.js, see https://github.com/phetsims/axon/issues/248 Add back in as soon
-          // as that issue is resolved.
-          // this.emitKeyState( event.domEvent.keyCode, true );
+          this.emitKeyState( event.domEvent.keyCode, true );
         },
 
         /**
