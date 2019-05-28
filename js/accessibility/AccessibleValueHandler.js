@@ -25,6 +25,7 @@ define( require => {
   const inheritance = require( 'PHET_CORE/inheritance' );
   const KeyboardUtil = require( 'SCENERY/accessibility/KeyboardUtil' );
   const Node = require( 'SCENERY/nodes/Node' );
+  const Property = require( 'AXON/Property' );
   const StringUtils = require( 'PHETCOMMON/util/StringUtils' );
   const sun = require( 'SUN/sun' );
   const SunConstants = require( 'SUN/SunConstants' );
@@ -122,6 +123,13 @@ define( require => {
              * @returns {string} - aria-valuetext to be set to the primarySibling
              */
             a11yCreateValueChangeAriaValueText: _.identity,
+
+            /**
+             * List the dependencies this Node's PDOM descriptions have. This should not include the valueProperty, but
+             * should list any Properties who's change should trigger description update for this Node.
+             * @type {Property[]}
+             */
+            a11yDependencies: [],
 
             /**
              * By default there will be nothing special provided on focus, just the previous value set on Property change.
@@ -224,8 +232,19 @@ define( require => {
           // @private {function}
           this.a11yMapValue = options.a11yMapValue;
 
+          // @private {function}
+          this.a11yValuePattern = options.a11yValuePattern;
+
+          // @private {function}
+          this.a11yCreateValueChangeAriaValueText = options.a11yCreateValueChangeAriaValueText;
+
+          // @private {Multilink}
+          this._dependenciesMultilink = null;
+
           // @private - {null|function} see options for doc
           this.a11yCreateOnFocusAriaValueText = options.a11yCreateOnFocusAriaValueText;
+
+          this.setA11yDependencies( options.a11yDependencies );
 
           // listeners, must be unlinked in dispose
           var enabledRangeObserver = ( enabledRange ) => {
@@ -243,15 +262,9 @@ define( require => {
 
           // when the property changes, be sure to update the accessible input value and aria-valuetext which is read
           // by assistive technology when the value changes
-          const valuePropertyListener = ( value, oldValue ) => {
+          const valuePropertyListener = () => {
 
             const formattedValue = this.getA11yFormattedValue();
-
-            // create the final string from optional parameters. This looks messy, but in reality you can only supply
-            // the valuePattern OR the create function, so this works as an "either or" situation.
-            this.ariaValueText = StringUtils.fillIn( options.a11yValuePattern, {
-              value: options.a11yCreateValueChangeAriaValueText( formattedValue, value, oldValue )
-            } );
 
             // set the aria-valuenow attribute in case the AT requires it to read the value correctly, some may
             // fall back on this from aria-valuetext see
@@ -277,7 +290,39 @@ define( require => {
             this._enabledRangeProperty.unlink( enabledRangeObserver );
             this.removeInputListener( valueHandlerListener );
             this._valueProperty.unlink( valuePropertyListener );
+            this._dependenciesMultilink && this._dependenciesMultilink.dispose();
           };
+        },
+
+        /**
+         * There are some features of AccessibleValueHandler that support updating when more than just the valueProperty
+         * changes. Use this method to set the dependency Properties for this value handler. This will blow away the
+         * previous list (like Node.children).
+         * @public
+         * @param {Property[]} dependencies
+         */
+        setA11yDependencies( dependencies ) {
+          assert && assert( Array.isArray( dependencies ) );
+          assert && assert( dependencies.indexOf( this._valueProperty ) === -1,
+            'The value Property is already a dependency, and does not need to be added to this list' );
+
+          // dispose the previous multilink, there is only one set of dependencies, though they can be overwritten.
+          this._dependenciesMultilink && this._dependenciesMultilink.dispose();
+
+          let oldValue = null;
+
+          this._dependenciesMultilink = Property.multilink( dependencies.concat( this._valueProperty ), () => {
+
+            const formattedValue = this.getA11yFormattedValue();
+
+            // create the final string from optional parameters. This looks messy, but in reality you can only supply
+            // the valuePattern OR the create function, so this works as an "either or" situation.
+            this.ariaValueText = StringUtils.fillIn( this.a11yValuePattern, {
+              value: this.a11yCreateValueChangeAriaValueText( formattedValue, this._valueProperty.value, oldValue )
+            } );
+
+            oldValue = this._valueProperty.value;
+          } );
         },
 
         /**
