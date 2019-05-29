@@ -97,8 +97,8 @@ define( function( require ) {
       tagName: 'button',
 
       // phet-io
-      tandem: Tandem.optional // This duplicates the parent option and works around https://github.com/phetsims/tandem/issues/50
-
+      tandem: Tandem.optional, // This duplicates the parent option and works around https://github.com/phetsims/tandem/issues/50
+      phetioComponentOptions: { visibleProperty: { phetioFeatured: true } }
     }, options );
 
     // validate options
@@ -180,10 +180,10 @@ define( function( require ) {
     // set pointer areas
     this.touchArea = button.localBounds
       .dilatedXY( options.touchAreaXDilation, options.touchAreaYDilation )
-      .shifted( options.touchAreaXShift,  options.touchAreaYShift );
+      .shifted( options.touchAreaXShift, options.touchAreaYShift );
     this.mouseArea = button.localBounds
       .dilatedXY( options.mouseAreaXDilation, options.mouseAreaYDilation )
-      .shifted( options.mouseAreaXShift,  options.mouseAreaYShift );
+      .shifted( options.mouseAreaXShift, options.mouseAreaYShift );
 
     // Mutate with the options after the layout is complete so that width-
     // dependent fields like centerX will work.
