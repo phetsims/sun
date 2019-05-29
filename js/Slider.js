@@ -21,6 +21,7 @@ define( function( require ) {
   var LinearFunction = require( 'DOT/LinearFunction' );
   var Node = require( 'SCENERY/nodes/Node' );
   var Path = require( 'SCENERY/nodes/Path' );
+  var PhetioObject = require( 'TANDEM/PhetioObject' );
   var Property = require( 'AXON/Property' );
   var PropertyIO = require( 'AXON/PropertyIO' );
   var Range = require( 'DOT/Range' );
@@ -104,7 +105,8 @@ define( function( require ) {
 
       // phet-io
       tandem: Tandem.required,
-      phetioType: SliderIO
+      phetioType: SliderIO,
+      phetioComponentOptions: null // filled in below with PhetioObject.mergePhetioComponentOptions
     }, options );
 
     assert && assert( range instanceof Range, 'range must be of type Range:' + range );
@@ -113,6 +115,10 @@ define( function( require ) {
     assert && assert( !( options.enabledProperty && options.enabledPropertyOptions ),
       'enabledProperty and enabledPropertyOptions are mutually exclusive' );
 
+    PhetioObject.mergePhetioComponentOptions( {
+      visibleProperty: { phetioFeatured: true }
+    }, options );
+
     this.orientation = options.orientation; // @private
 
     Node.call( this );
@@ -120,9 +126,19 @@ define( function( require ) {
     var ownsEnabledProperty = !options.enabledProperty;
     var ownsEnabledRangeProperty = !options.enabledRangeProperty;
 
+    if ( assert && options.enabledProperty ) {
+      options.tandem.supplied && assert( options.enabledProperty.isPhetioInstrumented(),
+        'enabledProperty must be instrumented if slider is' );
+
+      // This may be too strict long term, but for now, each enabledProperty should be phetioFeatured
+      assert( options.enabledProperty.phetioFeatured,
+        'provided enabledProperty must be phetioFeatured' );
+    }
+
     // phet-io, Assign default options that need tandems.
     options.enabledProperty = options.enabledProperty || new BooleanProperty( true, _.extend( {
-      tandem: options.tandem.createTandem( 'enabledProperty' )
+      tandem: options.tandem.createTandem( 'enabledProperty' ),
+      phetioFeatured: true
     }, options.enabledPropertyOptions ) );
 
     // controls the portion of the slider that is enabled
