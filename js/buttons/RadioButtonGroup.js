@@ -21,6 +21,7 @@ define( function( require ) {
   var inherit = require( 'PHET_CORE/inherit' );
   var InstanceRegistry = require( 'PHET_CORE/documentation/InstanceRegistry' );
   var LayoutBox = require( 'SCENERY/nodes/LayoutBox' );
+  var PhetioObject = require( 'TANDEM/PhetioObject' );
   var Property = require( 'AXON/Property' );
   var RadioButtonGroupAppearance = require( 'SUN/buttons/RadioButtonGroupAppearance' );
   var RadioButtonGroupMember = require( 'SUN/buttons/RadioButtonGroupMember' );
@@ -54,6 +55,7 @@ define( function( require ) {
   function RadioButtonGroup( property, contentArray, options ) {
     options = _.extend( {
       tandem: Tandem.required,
+      phetioComponentOptions: null, // filled in below with PhetioObject.mergePhetioComponentOptions()
 
       // a11y
       tagName: 'ul',
@@ -64,6 +66,8 @@ define( function( require ) {
 
     // increment instance count
     instanceCount++;
+
+    PhetioObject.mergePhetioComponentOptions( { visibleProperty: { phetioFeatured: true } }, options );
 
     assert && assert( !options.hasOwnProperty( 'children' ), 'Cannot pass in children to a RadioButtonGroup, ' +
                                                              'create siblings in the parent node instead' );

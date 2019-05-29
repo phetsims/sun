@@ -38,7 +38,7 @@ define( function( require ) {
 
   // constants
   var VERTICAL_ROTATION = -Math.PI / 2;
-   var PHET_IO_ENABLED = !!( window.phet && window.phet.phetio );
+  var PHET_IO_ENABLED = !!( window.phet && window.phet.phetio );
 
   /**
    * @param {Property.<number>} valueProperty
@@ -107,7 +107,7 @@ define( function( require ) {
       // phet-io
       tandem: Tandem.required,
       phetioType: SliderIO,
-      phetioComponentOptions: null // filled in below with PhetioObject.mergePhetioComponentOptions
+      phetioComponentOptions: null // filled in below with PhetioObject.mergePhetioComponentOptions()
     }, options );
 
     assert && assert( range instanceof Range, 'range must be of type Range:' + range );
@@ -127,7 +127,7 @@ define( function( require ) {
     var ownsEnabledProperty = !options.enabledProperty;
     var ownsEnabledRangeProperty = !options.enabledRangeProperty;
 
-    if ( assert && PHET_IO_ENABLED && options.enabledProperty ) {
+    if ( assert && PHET_IO_ENABLED && !ownsEnabledProperty ) {
       options.tandem.supplied && assert( options.enabledProperty.isPhetioInstrumented(),
         'enabledProperty must be instrumented if slider is' );
 

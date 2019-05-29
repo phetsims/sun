@@ -51,6 +51,7 @@ define( function( require ) {
       // to support properly passing this to children, see https://github.com/phetsims/tandem/issues/60
       phetioReadOnly: PhetioObject.DEFAULT_OPTIONS.phetioReadOnly,
       phetioLinkProperty: true, // whether a link to the checkbox's Property is created
+      phetioComponentOptions: null, // filled in below with PhetioObject.mergePhetioComponentOptions()
 
       // a11y
       tagName: 'input',
@@ -61,6 +62,8 @@ define( function( require ) {
     }, options );
 
     Node.call( this );
+
+    PhetioObject.mergePhetioComponentOptions( { visibleProperty: { phetioFeatured: true } }, options );
 
     // does this instance own enabledProperty?
     var ownsEnabledProperty = !options.enabledProperty;
@@ -78,7 +81,8 @@ define( function( require ) {
     this.enabledProperty = options.enabledProperty || new BooleanProperty( true, {
       tandem: options.tandem.createTandem( 'enabledProperty' ),
       phetioReadOnly: options.phetioReadOnly,
-      phetioDocumentation: 'When disabled, the checkbox is grayed out and cannot be pressed.'
+      phetioDocumentation: 'When disabled, the checkbox is grayed out and cannot be pressed.',
+      phetioFeatured: true
     } );
 
     // @private - sends out notifications when the checkbox is toggled.

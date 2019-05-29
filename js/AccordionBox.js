@@ -89,8 +89,8 @@ define( function( require ) {
       // phet-io support
       tandem: Tandem.required,
       phetioType: AccordionBoxIO,
-      phetioEventType: PhetioObject.EventType.USER
-
+      phetioEventType: PhetioObject.EventType.USER,
+      phetioComponentOptions: null // filled in below with PhetioObject.mergePhetioComponentOptions()
     }, options );
 
     // titleBarOptions defaults
@@ -105,6 +105,8 @@ define( function( require ) {
       cursor: options.cursor,
       tandem: options.tandem.createTandem( 'expandCollapseButton' )
     }, options.expandCollapseButtonOptions );
+
+    PhetioObject.mergePhetioComponentOptions( { visibleProperty: { phetioFeatured: true } }, options );
 
     // verify string options
     assert && assert( options.buttonAlign === 'left' || options.buttonAlign === 'right' );
