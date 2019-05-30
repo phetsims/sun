@@ -144,7 +144,6 @@ define( require => {
         itemNodeWrapper.addChild( item.node );
 
         // adjust alignment
-        itemNodeWrapper.centerY = itemAreaStrut.centerY;
         if ( options.align === 'left' ) {
           itemNodeWrapper.left = itemAreaStrut.left + itemXMargin;
         }
@@ -154,6 +153,7 @@ define( require => {
         else {
           itemNodeWrapper.centerX = itemAreaStrut.centerX;
         }
+        itemNodeWrapper.centerY = itemAreaStrut.centerY;
 
         // a11y
         this.innerContent = item.a11yLabel;
