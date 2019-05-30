@@ -140,6 +140,10 @@ define( require => {
 
       super( content, options );
 
+      // Prevent input events from going through the listbox to things behind it.
+      // See https://github.com/phetsims/ph-scale/issues/85
+      this.addInputListener( {} );
+
       // @public {ComboBoxListItemNode|null} the ComboBoxListItemNode that has focus
       this.focusedItemNode = null;
 
