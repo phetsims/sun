@@ -60,17 +60,26 @@ define( require => {
       // Wrapper for the item's Node. Do not transform item.node because it is shared with ComboBoxButton!
       const itemNodeWrapper = new Node( {
         children: [ item.node ],
-        centerY: highlightHeight / 2
+        maxWidth: highlightWidth,
+        maxHeight: highlightHeight
       } );
-      if ( options.align === 'left' ) {
-        itemNodeWrapper.left = highlightRectangle.left + options.xMargin;
-      }
-      else if ( options.align === 'right' ) {
-        itemNodeWrapper.right = highlightRectangle.right - options.xMargin;
-      }
-      else {
-        itemNodeWrapper.centerX = highlightRectangle.centerX;
-      }
+
+      // Assume that item.node may change (as in ComboBoxDisplay) and adjust layout dynamically.
+      // See https://github.com/phetsims/scenery-phet/issues/482
+      const updateItemLayout = () => {
+        if ( options.align === 'left' ) {
+          itemNodeWrapper.left = highlightRectangle.left + options.xMargin;
+        }
+        else if ( options.align === 'right' ) {
+          itemNodeWrapper.right = highlightRectangle.right - options.xMargin;
+        }
+        else {
+          itemNodeWrapper.centerX = highlightRectangle.centerX;
+        }
+        itemNodeWrapper.centerY = highlightRectangle.centerY;
+      };
+      itemNodeWrapper.on( 'bounds', updateItemLayout );
+      updateItemLayout();
 
       assert && assert( !options.children, 'ComboBoxListItemNode sets children' );
       options.children = [ highlightRectangle, itemNodeWrapper ];
