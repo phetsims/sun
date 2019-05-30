@@ -60,7 +60,6 @@ define( require => {
       // Wrapper for the item's Node. Do not transform item.node because it is shared with ComboBoxButton!
       const itemNodeWrapper = new Node( {
         children: [ item.node ],
-        centerY: highlightHeight / 2,
         maxWidth: highlightWidth,
         maxHeight: highlightHeight
       } );
