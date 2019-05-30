@@ -64,7 +64,7 @@ define( require => {
         maxHeight: highlightHeight
       } );
 
-      // Assume that itemNode may change (as in ComboBoxDisplay) and adjust layout dynamically.
+      // Assume that item.node may change (as in ComboBoxDisplay) and adjust layout dynamically.
       // See https://github.com/phetsims/scenery-phet/issues/482
       const updateItemLayout = () => {
         if ( options.align === 'left' ) {
@@ -78,7 +78,7 @@ define( require => {
         }
         itemNodeWrapper.centerY = highlightRectangle.centerY;
       };
-      itemNodeWrapper.on( 'bounds', () => { updateItemLayout(); } );
+      itemNodeWrapper.on( 'bounds', updateItemLayout );
       updateItemLayout();
 
       assert && assert( !options.children, 'ComboBoxListItemNode sets children' );
