@@ -66,7 +66,7 @@ define( require => {
 
       // Assume that itemNode may change (as in ComboBoxDisplay) and adjust layout dynamically.
       // See https://github.com/phetsims/scenery-phet/issues/482
-      function updateAlignment() {
+      const updateItemLayout = () => {
         if ( options.align === 'left' ) {
           itemNodeWrapper.left = highlightRectangle.left + options.xMargin;
         }
@@ -77,9 +77,9 @@ define( require => {
           itemNodeWrapper.centerX = highlightRectangle.centerX;
         }
         itemNodeWrapper.centerY = highlightRectangle.centerY;
-      }
-      itemNodeWrapper.on( 'bounds', () => { updateAlignment(); } );
-      updateAlignment();
+      };
+      itemNodeWrapper.on( 'bounds', () => { updateItemLayout(); } );
+      updateItemLayout();
 
       assert && assert( !options.children, 'ComboBoxListItemNode sets children' );
       options.children = [ highlightRectangle, itemNodeWrapper ];

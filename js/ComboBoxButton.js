@@ -130,20 +130,7 @@ define( require => {
 
       super( options );
 
-      // When property's value changes, show the corresponding item's Node on the button.
-      const propertyObserver = value => {
-
-        // remove the node for the previous item
-        itemNodeWrapper.removeAllChildren();
-
-        // find the ComboBoxItem whose value matches the property's value
-        const item = _.find( items, item => item.value === value );
-        assert && assert( item, 'no item found for value: ' + value );
-
-        // add the associated node
-        itemNodeWrapper.addChild( item.node );
-
-        // adjust alignment
+      const updateItemLayout = () => {
         if ( options.align === 'left' ) {
           itemNodeWrapper.left = itemAreaStrut.left + itemXMargin;
         }
@@ -154,6 +141,31 @@ define( require => {
           itemNodeWrapper.centerX = itemAreaStrut.centerX;
         }
         itemNodeWrapper.centerY = itemAreaStrut.centerY;
+      };
+
+      // When Property's value changes, show the corresponding item's Node on the button.
+      let item = null;
+      const propertyObserver = ( value ) => {
+        
+        // Remove bounds listener from previous item.node
+        if ( item && item.node.hasListener( 'bounds', updateItemLayout ) ) {
+          item.node.off( 'bounds', updateItemLayout );
+        }
+
+        // remove the node for the previous item
+        itemNodeWrapper.removeAllChildren();
+
+        // find the ComboBoxItem whose value matches the property's value
+        item = _.find( items, item => item.value === value );
+        assert && assert( item, 'no item found for value: ' + value );
+
+        // add the associated node
+        itemNodeWrapper.addChild( item.node );
+
+        // Update layout if bounds change 
+        item.node.on( 'bounds', updateItemLayout );
+
+        updateItemLayout();
 
         // a11y
         this.innerContent = item.a11yLabel;
