@@ -162,7 +162,7 @@ define( require => {
         // add the associated node
         itemNodeWrapper.addChild( item.node );
 
-        // Update layout if bounds change, see See https://github.com/phetsims/scenery-phet/issues/482
+        // Update layout if bounds change, see https://github.com/phetsims/scenery-phet/issues/482
         item.node.on( 'bounds', updateItemLayout );
 
         updateItemLayout();
