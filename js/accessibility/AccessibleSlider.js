@@ -97,6 +97,14 @@ define( function( require ) {
          */
         disposeAccessibleSlider: function() {
           this._disposeAccessibleSlider();
+        },
+
+        /**
+         * This should be called after the appropriate model dependencies have been reset.
+         * @public
+         */
+        resetAccessibleSlider: function() {
+          this.resetAccessibleValueHandler()
         }
       } );
     }

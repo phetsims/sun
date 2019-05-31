@@ -313,16 +313,33 @@ define( require => {
 
           this._dependenciesMultilink = Property.multilink( dependencies.concat( this._valueProperty ), () => {
 
-            const formattedValue = this.getA11yFormattedValue();
-
-            // create the final string from optional parameters. Only the valuePattern OR the create function can be
-            // specified (see above assertions).
-            this.ariaValueText = StringUtils.fillIn( this.a11yValuePattern, {
-              value: this.a11yCreateValueChangeAriaValueText( formattedValue, this._valueProperty.value, oldValue )
-            } );
-
+            this.updateAriaValueText( oldValue );
             oldValue = this._valueProperty.value;
           } );
+        },
+
+        /**
+         * @param {*} oldPropertyValue - the old value of the valueProperty, can be null
+         * @private
+         */
+        updateAriaValueText( oldPropertyValue ) {
+          const formattedValue = this.getA11yFormattedValue();
+
+          // create the final string from optional parameters. Only the valuePattern OR the create function can be
+          // specified (see above assertions).
+          this.ariaValueText = StringUtils.fillIn( this.a11yValuePattern, {
+            value: this.a11yCreateValueChangeAriaValueText( formattedValue, this._valueProperty.value, oldPropertyValue )
+          } );
+        },
+
+        /**
+         * Should be called after the model dependencies have been reset
+         * @public
+         */
+        reset() {
+
+          // on reset, make sure that the PDOM descriptions are completely up to date.
+          this.updateAriaValueText( null );
         },
 
         /**
