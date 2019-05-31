@@ -315,8 +315,8 @@ define( require => {
 
             const formattedValue = this.getA11yFormattedValue();
 
-            // create the final string from optional parameters. This looks messy, but in reality you can only supply
-            // the valuePattern OR the create function, so this works as an "either or" situation.
+            // create the final string from optional parameters. Only the valuePattern OR the create function can be
+            // specified (see above assertions).
             this.ariaValueText = StringUtils.fillIn( this.a11yValuePattern, {
               value: this.a11yCreateValueChangeAriaValueText( formattedValue, this._valueProperty.value, oldValue )
             } );
