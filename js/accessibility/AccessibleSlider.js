@@ -104,7 +104,7 @@ define( function( require ) {
          * @public
          */
         resetAccessibleSlider: function() {
-          this.resetAccessibleValueHandler()
+          this.resetAccessibleValueHandler();
         }
       } );
     }
