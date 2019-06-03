@@ -82,6 +82,9 @@ define( function( require ) {
       // version(s) defined in this file.
       contentAppearanceStrategy: RoundButtonView.FadeContentWhenDisabled,
 
+      // Options that will be passed through to the main input listener (PressListener)
+      listenerOptions: null,
+
       // phet-io
       tandem: Tandem.optional, // This duplicates the parent option and works around https://github.com/phetsims/tandem/issues/50
       phetioComponentOptions: { visibleProperty: { phetioFeatured: true } },
@@ -90,6 +93,10 @@ define( function( require ) {
       tagName: 'button',
       focusHighlightDilation: 5 // radius dilation for circular highlight
     }, options );
+
+    options.listenerOptions = _.extend( {
+      tandem: options.tandem.createTandem( 'pressListener' )
+    }, options.listenerOptions );
 
     Node.call( this );
     var content = options.content; // convenience variable
@@ -104,7 +111,7 @@ define( function( require ) {
     this.baseColorProperty = new PaintColorProperty( options.baseColor ); // @private
 
     // @private {PressListener}
-    var pressListener = pushButtonModel.createListener( { tandem: options.tandem.createTandem( 'pressListener' ) } );
+    var pressListener = pushButtonModel.createListener( options.listenerOptions );
     this.addInputListener( pressListener );
 
     // Use the user-specified radius if present, otherwise calculate the

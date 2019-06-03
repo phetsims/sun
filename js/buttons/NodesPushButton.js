@@ -35,8 +35,12 @@ define( function( require ) {
       listener: null, // {function}
       xAlign: 'center', // {string} how the nodes are horizontally aligned: center, left, right
       yAlign: 'center', // {string} how the nodes are vertically aligned: center, top, bottom
+      listenerOptions: null,
       tandem: Tandem.required
     }, options );
+    options.listenerOptions = _.extend( {
+      tandem: options.tandem.createTandem( 'pressListener' )
+    }, options.listenerOptions );
     options.children = [ idleNode, overNode, pressedNode, disabledNode ];
 
     Node.call( this );
@@ -46,7 +50,7 @@ define( function( require ) {
     this.buttonModel = new PushButtonModel( options ); // @private
 
     // @private {PressListener}
-    this.pressListener = this.buttonModel.createListener( { tandem: options.tandem.createTandem( 'pressListener' ) } );
+    this.pressListener = this.buttonModel.createListener( options.listenerOptions );
     this.addInputListener( this.pressListener );
 
     // Button interactions
