@@ -13,6 +13,7 @@ define( function( require ) {
 
   // modules
   var AccessibleSlider = require( 'SUN/accessibility/AccessibleSlider' );
+  var assertMutuallyExclusiveOptions = require( 'PHET_CORE/assertMutuallyExclusiveOptions' );
   var BooleanProperty = require( 'AXON/BooleanProperty' );
   var Dimension2 = require( 'DOT/Dimension2' );
   var FocusHighlightFromNode = require( 'SCENERY/accessibility/FocusHighlightFromNode' );
@@ -51,11 +52,26 @@ define( function( require ) {
 
     var self = this;
 
+    // Guard against mutually exclusive options before defaults are filled in.
+    if ( assert && options ) {
+      assertMutuallyExclusiveOptions( options, [ 'thumbNode' ], [
+        'thumbSize', 'thumbFill', 'thumbFillHighlighted', 'thumbStroke', 'thumbLineWidth', 'thumbCenterLineStroke',
+        'thumbTouchAreaXDilation', 'thumbTouchAreaYDilation', 'thumbMouseAreaXDilation', 'thumbMouseAreaYDilation'
+      ] );
+
+      assertMutuallyExclusiveOptions( options, [ 'trackNode' ], [
+        'trackSize', 'trackFillEnabled', 'trackFillDisabled', 'trackStroke', 'trackLineWidth', 'trackCornerRadius' ] );
+    }
+
     options = _.extend( {
 
       orientation: 'horizontal', // 'horizontal'|'vertical'
 
-      // track
+      // {SliderTrack} optional track, replaces the default.
+      // Client is responsible for highlighting, disable and pointer areas.
+      trackNode: null,
+
+      // track - options to create a SliderTrack if trackNode not supplied
       trackSize: new Dimension2( 100, 5 ),
       trackFillEnabled: 'white',
       trackFillDisabled: 'gray',
@@ -74,12 +90,14 @@ define( function( require ) {
       thumbFillHighlighted: 'rgb(71,207,255)',
       thumbStroke: 'black',
       thumbLineWidth: 1,
-      thumbYOffset: 0, // center of the thumb is vertically offset by this amount from the center of the track
       thumbCenterLineStroke: 'white',
       thumbTouchAreaXDilation: 11,
       thumbTouchAreaYDilation: 11,
       thumbMouseAreaXDilation: 0,
       thumbMouseAreaYDilation: 0,
+
+      // Applied to default or supplied thumb
+      thumbYOffset: 0, // center of the thumb is vertically offset by this amount from the center of the track
 
       // ticks
       tickLabelSpacing: 6,
@@ -167,11 +185,8 @@ define( function( require ) {
     sliderParts.push( this.majorTicksParent );
     sliderParts.push( this.minorTicksParent );
 
-    // @private mapping between value and track position
-    this.valueToPosition = new LinearFunction( range.min, range.max, 0, options.trackSize.width, true /* clamp */ );
-
     // @private track
-    this.track = new SliderTrack( valueProperty, this.valueToPosition, {
+    this.track = options.trackNode || new SliderTrack( valueProperty, {
 
       // propagate options that are specific to SliderTrack
       size: options.trackSize,
@@ -187,6 +202,14 @@ define( function( require ) {
       // phet-io
       tandem: options.tandem.createTandem( 'track' )
     } );
+
+    // @private mapping between value and track position
+    this.valueToPosition = new LinearFunction( range.min, range.max, 0, this.track.size.width, true /* clamp */ );
+
+    // Whether the track was created or passed in, set the valueToPosition function.
+    this.track.setValueToPositionFunction( this.valueToPosition );
+
+    // Position the track horizontally
     this.track.centerX = this.valueToPosition( ( range.max + range.min ) / 2 );
 
     // The thumb of the slider
@@ -209,8 +232,9 @@ define( function( require ) {
     // Add the track
     sliderParts.push( this.track );
 
-    // do this outside of options hash, so that it applied to both default and custom thumbs
-    thumb.centerY = this.track.centerY + options.thumbYOffset;
+    // Position the thumb vertically.
+    thumb.setCenterY( this.track.centerY + options.thumbYOffset );
+
     sliderParts.push( thumb );
 
     // Wrap all of the slider parts in a Node, and set the orientation of that Node.
@@ -289,7 +313,7 @@ define( function( require ) {
 
       assert && assert( enabledRange.min >= range.min && enabledRange.max <= range.max, 'enabledRange is out of range' );
 
-      var initialValueToPosition = new LinearFunction( range.min, range.max, 0, options.trackSize.width, true /* clamp */ );
+      var initialValueToPosition = new LinearFunction( range.min, range.max, 0, self.track.size.width, true /* clamp */ );
       var min = initialValueToPosition( enabledRange.min );
       var max = initialValueToPosition( enabledRange.max );
 
@@ -298,7 +322,7 @@ define( function( require ) {
 
       // update the function that maps value to position for the track and the slider
       self.valueToPosition = new LinearFunction( enabledRange.min, enabledRange.max, min, max, true /* clamp */ );
-      self.track.valueToPosition = self.valueToPosition;
+      self.track.setValueToPositionFunction( self.valueToPosition );
 
       // clamp the value to the enabled range if it changes
       valueProperty.set( Util.clamp( valueProperty.value, enabledRange.min, enabledRange.max ) );

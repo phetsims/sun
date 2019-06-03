@@ -1,7 +1,7 @@
 // Copyright 2016-2019, University of Colorado Boulder
 
 /**
- * A default slider track, currently intended for use only in HSlider.
+ * A default slider track, currently intended for use only in Slider.
  *
  * SliderTrack is composed of two rectangles, one for the enabled section of the track and one for the disabled
  * section.  The enabled track rectangle sits on top of the disabled track so that the enabled range can be any
@@ -26,11 +26,10 @@ define( function( require ) {
 
   /**
    * @param {Property.<number>} valueProperty
-   * @param {function} valueToPosition - linear function that maps property value to position along the track
    * @param {Object} [options]
    * @constructor
    */
-  function SliderTrack( valueProperty, valueToPosition, options ) {
+  function SliderTrack( valueProperty, options ) {
 
     var self = this;
     Node.call( this );
@@ -52,11 +51,12 @@ define( function( require ) {
 
     }, options );
 
-    // @private
+    // @public (read-only)
     this.size = options.size;
 
-    // @public
-    this.valueToPosition = valueToPosition;
+    // @private - linear function that maps property value to position along the track.  Set after construction and
+    // if/when the function changes.
+    this.valueToPosition = null;
 
     // @private - Represents the disabled range of the slider, always visible and always the full range
     // of the slider so that when the enabled range changes we see the enabled sub-range on top of the
@@ -82,6 +82,7 @@ define( function( require ) {
 
     // click in the track to change the value, continue dragging if desired
     var handleTrackEvent = function( event, trail ) {
+      assert && assert( self.valueToPosition, 'valueToPosition should be defined' );
       var transform = trail.subtrailTo( self ).getTransform();
       var x = transform.inversePosition2( event.pointer.point ).x;
       var value = self.valueToPosition.inverse( x );
@@ -118,6 +119,16 @@ define( function( require ) {
   sun.register( 'SliderTrack', SliderTrack );
 
   inherit( Node, SliderTrack, {
+
+    /**
+     * Sets the function that converts a model value to a slider and track position.
+     * @param {LinearFunction} valueToPosition
+     * @public
+     */
+    setValueToPositionFunction( valueToPosition ) {
+      assert && assert( valueToPosition, 'valueToPosition should be defined' );
+      this.valueToPosition = valueToPosition;
+    },
 
     // @public - ensures that this object is eligible for GC
     dispose: function() {
