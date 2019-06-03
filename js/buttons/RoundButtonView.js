@@ -63,7 +63,6 @@ define( function( require ) {
 
       stroke: undefined, // undefined by default, which will cause a stroke to be derived from the base color
       lineWidth: 0.5, // Only meaningful if stroke is non-null
-      tandem: Tandem.optional, // This duplicates the parent option and works around https://github.com/phetsims/tandem/issues/50
 
       // By default, icons are centered in the button, but icons with odd
       // shapes that are not wrapped in a normalizing parent node may need to
@@ -83,10 +82,21 @@ define( function( require ) {
       // version(s) defined in this file.
       contentAppearanceStrategy: RoundButtonView.FadeContentWhenDisabled,
 
+      // Options that will be passed through to the main input listener (PressListener)
+      listenerOptions: null,
+
+      // phet-io
+      tandem: Tandem.optional, // This duplicates the parent option and works around https://github.com/phetsims/tandem/issues/50
+      phetioComponentOptions: { visibleProperty: { phetioFeatured: true } },
+
       // a11y
       tagName: 'button',
       focusHighlightDilation: 5 // radius dilation for circular highlight
     }, options );
+
+    options.listenerOptions = _.extend( {
+      tandem: options.tandem.createTandem( 'pressListener' )
+    }, options.listenerOptions );
 
     Node.call( this );
     var content = options.content; // convenience variable
@@ -101,7 +111,7 @@ define( function( require ) {
     this.baseColorProperty = new PaintColorProperty( options.baseColor ); // @private
 
     // @private {PressListener}
-    var pressListener = pushButtonModel.createListener( { tandem: options.tandem.createTandem( 'pressListener' ) } );
+    var pressListener = pushButtonModel.createListener( options.listenerOptions );
     this.addInputListener( pressListener );
 
     // Use the user-specified radius if present, otherwise calculate the

@@ -93,6 +93,9 @@ define( function( require ) {
       // version(s) defined in this file.
       contentAppearanceStrategy: RectangularButtonView.FadeContentWhenDisabled,
 
+      // Options that will be passed through to the main input listener (PressListener)
+      listenerOptions: null,
+
       // a11y
       tagName: 'button',
 
@@ -105,6 +108,11 @@ define( function( require ) {
     assert && assert( _.includes( X_ALIGN_VALUES, options.xAlign ), 'invalid xAlign: ' + options.xAlign );
     assert && assert( _.includes( Y_ALIGN_VALUES, options.yAlign ), 'invalid yAlign: ' + options.yAlign );
 
+    options.listenerOptions = _.extend( {
+      tandem: options.tandem.createTandem( 'pressListener' ),
+      accessibleClick: options.accessibleClick
+    }, options.listenerOptions );
+
     this.buttonModel = buttonModel; // @protected
 
     Node.call( this );
@@ -113,10 +121,7 @@ define( function( require ) {
 
     // Hook up the input listener
     // @private (a11y) {PressListener}
-    this._pressListener = buttonModel.createListener( {
-      tandem: options.tandem.createTandem( 'pressListener' ),
-      accessibleClick: options.accessibleClick
-    } );
+    this._pressListener = buttonModel.createListener( options.listenerOptions );
     this.addInputListener( this._pressListener );
 
     // @private - make the base color into a property so that the appearance strategy can update itself if changes occur.
