@@ -20,7 +20,6 @@ define( function( require ) {
   var Node = require( 'SCENERY/nodes/Node' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var SimpleDragHandler = require( 'SCENERY/input/SimpleDragHandler' );
-  var SliderTrackIO = require( 'SUN/SliderTrackIO' );
   var sun = require( 'SUN/sun' );
   var Tandem = require( 'TANDEM/Tandem' );
 
@@ -46,9 +45,7 @@ define( function( require ) {
       constrainValue: _.identity, // called before valueProperty is set
 
       // phet-io
-      tandem: Tandem.required,
-      phetioType: SliderTrackIO
-
+      tandem: Tandem.required
     }, options );
 
     // @public (read-only)
