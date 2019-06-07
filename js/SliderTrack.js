@@ -76,7 +76,7 @@ define( require => {
       this.addChild( this.enabledTrack );
 
       // click in the track to change the value, continue dragging if desired
-      const handleTrackEvent = function( event, trail ) {
+      const handleTrackEvent = ( event, trail ) => {
         assert && assert( this.valueToPosition, 'valueToPosition should be defined' );
         const transform = trail.subtrailTo( this ).getTransform();
         const x = transform.inversePosition2( event.pointer.point ).x;
