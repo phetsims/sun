@@ -20,7 +20,6 @@ define( function( require ) {
   var StringUtils = require( 'PHETCOMMON/util/StringUtils' );
   var sun = require( 'SUN/sun' );
   var SunConstants = require( 'SUN/SunConstants' );
-  var Tandem = require( 'TANDEM/Tandem' );
   var Text = require( 'SCENERY/nodes/Text' );
   var Util = require( 'DOT/Util' );
 
@@ -91,8 +90,6 @@ define( function( require ) {
     assert && assert( !!phet.chipper.queryParameters.stringTest ||
                       options.valuePattern.indexOf( SunConstants.VALUE_NAMED_PLACEHOLDER ) !== -1,
       'missing value placeholder in options.valuePattern: ' + options.valuePattern );
-
-    Tandem.indicateUninstrumentedCode();
 
     var self = this;
 

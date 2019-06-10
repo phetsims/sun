@@ -27,7 +27,6 @@ define( function( require ) {
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var Shape = require( 'KITE/Shape' );
   var sun = require( 'SUN/sun' );
-  var Tandem = require( 'TANDEM/Tandem' );
   var timer = require( 'AXON/timer' );
   var Util = require( 'DOT/Util' );
   var VSeparator = require( 'SUN/VSeparator' );
@@ -89,7 +88,6 @@ define( function( require ) {
 
     // Validate options
     assert && assert( _.includes( [ 'horizontal', 'vertical' ], options.orientation ), 'invalid orientation=' + options.orientation );
-    Tandem.indicateUninstrumentedCode();
 
     // To improve readability
     var isHorizontal = ( options.orientation === 'horizontal' );

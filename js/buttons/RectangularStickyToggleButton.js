@@ -16,7 +16,6 @@ define( function( require ) {
   var StickyToggleButtonInteractionStateProperty = require( 'SUN/buttons/StickyToggleButtonInteractionStateProperty' );
   var StickyToggleButtonModel = require( 'SUN/buttons/StickyToggleButtonModel' );
   var sun = require( 'SUN/sun' );
-  var Tandem = require( 'TANDEM/Tandem' );
 
   /**
    * @param {Object} valueUp value when the toggle is in the 'up' position
@@ -26,7 +25,6 @@ define( function( require ) {
    * @constructor
    */
   function RectangularStickyToggleButton( valueUp, valueDown, property, options ) {
-    Tandem.indicateUninstrumentedCode();
 
     // Note it shares a tandem with this, so the emitter will be instrumented as a child of the button
     var buttonModel = new StickyToggleButtonModel( valueUp, valueDown, property, options );

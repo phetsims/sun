@@ -14,7 +14,6 @@ define( function( require ) {
   var RectangularPushButton = require( 'SUN/buttons/RectangularPushButton' );
   var RichText = require( 'SCENERY/nodes/RichText' );
   var sun = require( 'SUN/sun' );
-  var Tandem = require( 'TANDEM/Tandem' );
 
   /**
    * @param {string} html
@@ -22,8 +21,6 @@ define( function( require ) {
    * @constructor
    */
   function HTMLPushButton( html, options ) {
-    Tandem.indicateUninstrumentedCode();
-
     options = _.extend( {
       textFill: 'black'
     }, options );

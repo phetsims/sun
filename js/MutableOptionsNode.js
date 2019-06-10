@@ -14,7 +14,6 @@ define( function( require ) {
   var Node = require( 'SCENERY/nodes/Node' );
   var Property = require( 'AXON/Property' );
   var sun = require( 'SUN/sun' );
-  var Tandem = require( 'TANDEM/Tandem' );
 
   /**
    * @constructor
@@ -50,9 +49,6 @@ define( function( require ) {
    * @param {Object} [wrapperOptions] - Node options passed to MutableOptionsNode itself (the wrapper).
    */
   function MutableOptionsNode( nodeSubtype, parameters, staticOptions, dynamicOptions, wrapperOptions ) {
-    // Instrumentation will probably be more complicated?
-    Tandem.indicateUninstrumentedCode();
-
     Node.call( this );
 
     // @public {Property.<Node|null>} [read-only] - Holds our current copy of the node (or null, so we don't have a

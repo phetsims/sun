@@ -18,7 +18,6 @@ define( function( require ) {
   var RectangularPushButton = require( 'SUN/buttons/RectangularPushButton' );
   var Shape = require( 'KITE/Shape' );
   var sun = require( 'SUN/sun' );
-  var Tandem = require( 'TANDEM/Tandem' );
 
   // maps arrow directions to rotation angles, in radians
   var ANGLES = {
@@ -33,7 +32,6 @@ define( function( require ) {
    * @constructor
    */
   function CarouselButton( options ) {
-    Tandem.indicateUninstrumentedCode();
 
     // see supertype for additional options
     options = _.extend( {

@@ -19,7 +19,6 @@ define( function( require ) {
   var inherit = require( 'PHET_CORE/inherit' );
   var Mouse = require( 'SCENERY/input/Mouse' );
   var sun = require( 'SUN/sun' );
-  var Tandem = require( 'TANDEM/Tandem' );
   var Touch = require( 'SCENERY/input/Touch' );
 
   /**
@@ -35,8 +34,6 @@ define( function( require ) {
 
     // @private
     this.items = [];
-
-    Tandem.indicateUninstrumentedCode();
   }
 
   sun.register( 'ClosestDragListener', ClosestDragListener );

@@ -16,7 +16,6 @@ define( function( require ) {
   var Node = require( 'SCENERY/nodes/Node' );
   var Shape = require( 'KITE/Shape' );
   var sun = require( 'SUN/sun' );
-  var Tandem = require( 'TANDEM/Tandem' );
 
   /**
    * @param {number} numberOfPages - number of pages
@@ -51,7 +50,6 @@ define( function( require ) {
 
     // validate options
     assert && assert( _.includes( [ 'horizontal', 'vertical' ], options.orientation ), 'invalid orientation=' + options.orientation );
-    Tandem.indicateUninstrumentedCode();
 
     // To improve readability
     var isHorizontal = ( options.orientation === 'horizontal' );

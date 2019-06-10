@@ -16,7 +16,6 @@ define( function( require ) {
   var Node = require( 'SCENERY/nodes/Node' );
   var Property = require( 'AXON/Property' );
   var sun = require( 'SUN/sun' );
-  var Tandem = require( 'TANDEM/Tandem' );
 
   /**
    * @param {Object} [options]
@@ -45,7 +44,6 @@ define( function( require ) {
     // validate options
     assert && assert( options.disabledOpacity >= 0 && options.disabledOpacity <= 1,
       'invalid disabledOpacity: ' + options.disabledOpacity );
-    Tandem.indicateUninstrumentedCode();
 
     Node.call( this );
 
