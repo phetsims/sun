@@ -163,7 +163,7 @@ define( function( require ) {
     // assert that phet-io is set up correctly after the PhetioObject has been properly initialized (after mutate)
 
     // If either one is instrumented, then the other must be too.
-    assert && Tandem.validationEnabled() && assert( this.enabledProperty.isPhetioInstrumented() === this.isPhetioInstrumented(),
+    assert && Tandem.errorOnFailedValidation() && assert( this.enabledProperty.isPhetioInstrumented() === this.isPhetioInstrumented(),
       'provided enabled property must be instrumented for phet-io.' );
 
     // support for binder documentation, stripped out in builds and only runs when ?binder is specified
