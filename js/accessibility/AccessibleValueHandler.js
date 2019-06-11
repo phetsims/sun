@@ -94,6 +94,7 @@ define( require => {
             shiftKeyboardStep: ( enabledRangeProperty.get().max - enabledRangeProperty.get().min ) / 100,
             pageKeyboardStep: ( enabledRangeProperty.get().max - enabledRangeProperty.get().min ) / 10,
 
+            // TODO: this should be an enumeration, https://github.com/phetsims/gravity-force-lab-basics/issues/134
             ariaOrientation: 'horizontal', // specify orientation, read by assistive technology
 
             a11yValuePattern: SunConstants.VALUE_NAMED_PLACEHOLDER, // {string} if you want units or additional content, add to pattern
@@ -120,6 +121,8 @@ define( require => {
              * @param {number} formattedValue - mapped value fixed to the provided decimal places
              * @param {number} newValue - the new value, unformatted
              * @param {number} previousValue - just the "oldValue" from the property listener
+             * @property {function} reset - if this function needs resetting, include a `reset` field on this function
+             *                              to be called when the AccessibleValueHandler is reset.
              * @returns {string} - aria-valuetext to be set to the primarySibling
              */
             a11yCreateValueChangeAriaValueText: _.identity,
@@ -337,6 +340,9 @@ define( require => {
          * @public
          */
         reset() {
+
+          // reset the aria-valuetext creator if it supports that
+          this.a11yCreateValueChangeAriaValueText.reset && this.a11yCreateValueChangeAriaValueText.reset();
 
           // on reset, make sure that the PDOM descriptions are completely up to date.
           this.updateAriaValueText( null );
