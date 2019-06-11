@@ -83,14 +83,6 @@ define( require => {
           // initialize "parent" mixin
           this.initializeAccessibleValueHandler( valueProperty, enabledRangeProperty, enabledProperty, options );
 
-          // this number spinner is "aria-labelledby" its own label, meaning that the label element content will be
-          // read on focus
-          this.addAriaLabelledbyAssociation( {
-            thisElementName: AccessiblePeer.PRIMARY_SIBLING,
-            otherNode: this,
-            otherElementName: AccessiblePeer.LABEL_SIBLING
-          } );
-
           // @private - manages timing must be disposed
           this._callbackTimer = new CallbackTimer( {
             delay: options.timerDelay,
