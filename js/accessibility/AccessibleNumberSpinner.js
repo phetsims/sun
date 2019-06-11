@@ -26,7 +26,6 @@ define( require => {
 
   // modules
   const SunA11yStrings = require( 'SUN/SunA11yStrings' );
-  const AccessiblePeer = require( 'SCENERY/accessibility/AccessiblePeer' );
   const AccessibleValueHandler = require( 'SUN/accessibility/AccessibleValueHandler' );
   const CallbackTimer = require( 'SUN/CallbackTimer' );
   const Emitter = require( 'AXON/Emitter' );
