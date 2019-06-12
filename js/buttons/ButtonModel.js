@@ -56,8 +56,7 @@ define( function( require ) {
       phetioState: options.phetioState,
       phetioReadOnly: options.phetioReadOnly,
       tandem: options.tandem.createTandem( 'enabledProperty' ),
-      phetioDocumentation: 'When disabled, the button is grayed out and cannot be pressed',
-      phetioFeatured: true
+      phetioDocumentation: 'When disabled, the button is grayed out and cannot be pressed'
     } );
 
     // @private - keep track of and store all listeners this model creates
