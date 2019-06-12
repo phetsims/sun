@@ -39,7 +39,6 @@ define( function( require ) {
 
   // constants
   var VERTICAL_ROTATION = -Math.PI / 2;
-  var PHET_IO_ENABLED = !!( window.phet && window.phet.phetio );
 
   /**
    * @param {Property.<number>} valueProperty
@@ -145,7 +144,7 @@ define( function( require ) {
     var ownsEnabledProperty = !options.enabledProperty;
     var ownsEnabledRangeProperty = !options.enabledRangeProperty;
 
-    if ( assert && PHET_IO_ENABLED && !ownsEnabledProperty ) {
+    if ( assert && Tandem.PHET_IO_ENABLED && !ownsEnabledProperty ) {
       options.tandem.supplied && assert( options.enabledProperty.isPhetioInstrumented(),
         'enabledProperty must be instrumented if slider is' );
 
