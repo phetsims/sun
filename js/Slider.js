@@ -22,7 +22,6 @@ define( function( require ) {
   var LinearFunction = require( 'DOT/LinearFunction' );
   var Node = require( 'SCENERY/nodes/Node' );
   var Path = require( 'SCENERY/nodes/Path' );
-  var PhetioObject = require( 'TANDEM/PhetioObject' );
   var Property = require( 'AXON/Property' );
   var PropertyIO = require( 'AXON/PropertyIO' );
   var Range = require( 'DOT/Range' );
@@ -132,10 +131,6 @@ define( function( require ) {
       'invalid orientation: ' + options.orientation );
     assert && assert( !( options.enabledProperty && options.enabledPropertyOptions ),
       'enabledProperty and enabledPropertyOptions are mutually exclusive' );
-
-    PhetioObject.mergePhetioComponentOptions( {
-      visibleProperty: { phetioFeatured: true }
-    }, options );
 
     this.orientation = options.orientation; // @private
 
