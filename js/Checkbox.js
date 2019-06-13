@@ -81,8 +81,7 @@ define( function( require ) {
     this.enabledProperty = options.enabledProperty || new BooleanProperty( true, {
       tandem: options.tandem.createTandem( 'enabledProperty' ),
       phetioReadOnly: options.phetioReadOnly,
-      phetioDocumentation: 'When disabled, the checkbox is grayed out and cannot be pressed.',
-      phetioFeatured: true
+      phetioDocumentation: 'When disabled, the checkbox is grayed out and cannot be pressed.'
     } );
 
     // @private - sends out notifications when the checkbox is toggled.
