@@ -21,6 +21,7 @@ define( function( require ) {
    * @constructor
    */
   function ButtonModel( options ) {
+    var self = this;
 
     options = _.extend( {
       // {function()} called on pointer down
@@ -30,12 +31,28 @@ define( function( require ) {
       // {boolean} is the button enabled?
       enabled: true,
 
+      // nested options
+      enabledPropertyOptions: null,
+
+      // phet-io
       tandem: Tandem.required,
       phetioState: PhetioObject.DEFAULT_OPTIONS.phetioState, // to support properly passing this to children, see https://github.com/phetsims/tandem/issues/60
-      phetioReadOnly: PhetioObject.DEFAULT_OPTIONS.phetioReadOnly // to support properly passing this to children, see https://github.com/phetsims/tandem/issues/60
+      phetioReadOnly: PhetioObject.DEFAULT_OPTIONS.phetioReadOnly, // to support properly passing this to children, see https://github.com/phetsims/tandem/issues/60
+      phetioFeatured: PhetioObject.DEFAULT_OPTIONS.phetioFeatured // to support properly passing this to children, see https://github.com/phetsims/tandem/issues/60
     }, options );
 
-    var self = this;
+    options && options.enabledPropertyOptions && assert( options.enabledPropertyOptions.tandem === undefined,
+      'ButtonModel supplies its own tandem to its enabledProperty' );
+
+    options.enabledPropertyOptions = _.extend( {
+
+      // phet-io
+      tandem: options.tandem.createTandem( 'enabledProperty' ),
+      phetioState: options.phetioState,
+      phetioReadOnly: options.phetioReadOnly,
+      phetioDocumentation: 'When disabled, the button is grayed out and cannot be pressed',
+      phetioFeatured: options.phetioFeatured
+    }, options.enabledPropertyOptions );
 
     // model properties
     this.overProperty = new BooleanProperty( false ); // @public - Is the pointer over the button?
@@ -52,12 +69,7 @@ define( function( require ) {
     this.looksPressedProperty = new BooleanProperty( false );
 
     // @public - Is the button enabled?
-    this.enabledProperty = new BooleanProperty( options.enabled, {
-      phetioState: options.phetioState,
-      phetioReadOnly: options.phetioReadOnly,
-      tandem: options.tandem.createTandem( 'enabledProperty' ),
-      phetioDocumentation: 'When disabled, the button is grayed out and cannot be pressed'
-    } );
+    this.enabledProperty = new BooleanProperty( options.enabled, options.enabledPropertyOptions );
 
     // @private - keep track of and store all listeners this model creates
     this.listeners = [];
