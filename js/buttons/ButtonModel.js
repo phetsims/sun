@@ -41,7 +41,7 @@ define( function( require ) {
       phetioFeatured: PhetioObject.DEFAULT_OPTIONS.phetioFeatured // to support properly passing this to children, see https://github.com/phetsims/tandem/issues/60
     }, options );
 
-    options && options.enabledPropertyOptions && assert( options.enabledPropertyOptions.tandem === undefined,
+    options && options.enabledPropertyOptions && assert && assert( options.enabledPropertyOptions.tandem === undefined,
       'ButtonModel supplies its own tandem to its enabledProperty' );
 
     options.enabledPropertyOptions = _.extend( {
