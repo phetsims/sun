@@ -41,6 +41,7 @@ define( require => {
         // Panel options
         xMargin: 12,
         yMargin: 8,
+        backgroundPickable: true,
 
         // a11y
         tagName: 'ul',
