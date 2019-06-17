@@ -14,7 +14,6 @@ define( require => {
 
   // modules
   const Dimension2 = require( 'DOT/Dimension2' );
-  const LinearFunction = require( 'DOT/LinearFunction' );
   const Node = require( 'SCENERY/nodes/Node' );
   const Rectangle = require( 'SCENERY/nodes/Rectangle' );
   const SliderTrack = require( 'SUN/SliderTrack' );
