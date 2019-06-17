@@ -15,6 +15,7 @@ define( function( require ) {
   var AccessibleSlider = require( 'SUN/accessibility/AccessibleSlider' );
   var assertMutuallyExclusiveOptions = require( 'PHET_CORE/assertMutuallyExclusiveOptions' );
   var BooleanProperty = require( 'AXON/BooleanProperty' );
+  var DefaultSliderTrack = require( 'SUN/DefaultSliderTrack' );
   var Dimension2 = require( 'DOT/Dimension2' );
   var FocusHighlightFromNode = require( 'SCENERY/accessibility/FocusHighlightFromNode' );
   var inherit = require( 'PHET_CORE/inherit' );
@@ -30,7 +31,6 @@ define( function( require ) {
   var SimpleDragHandler = require( 'SCENERY/input/SimpleDragHandler' );
   var SliderIO = require( 'SUN/SliderIO' );
   var SliderThumb = require( 'SUN/SliderThumb' );
-  var SliderTrack = require( 'SUN/SliderTrack' );
   var sun = require( 'SUN/sun' );
   var SunConstants = require( 'SUN/SunConstants' );
   var Tandem = require( 'TANDEM/Tandem' );
@@ -180,7 +180,7 @@ define( function( require ) {
     sliderParts.push( this.minorTicksParent );
 
     // @private track
-    this.track = options.trackNode || new SliderTrack( valueProperty, {
+    this.track = options.trackNode || new DefaultSliderTrack( valueProperty, {
 
       // propagate options that are specific to SliderTrack
       size: options.trackSize,
