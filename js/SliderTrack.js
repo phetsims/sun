@@ -86,14 +86,14 @@ define( require => {
       } );
       trackNode.addInputListener( trackInputListener );
 
+      // @protected - maps the full range to the full width
+      this.fullRangeValueToPosition = new LinearFunction( range.min, range.max, 0, this.size.width, true /* clamp */ );
+
       // when the enabled range changes, the value to position linear function must change as well
       const enabledRangeObserver = enabledRange => {
-
-        assert && assert( enabledRange.min >= range.min && enabledRange.max <= range.max, 'enabledRange is out of range' );
-
-        const initialValueToPosition = new LinearFunction( range.min, range.max, 0, this.size.width, true /* clamp */ );
-        const min = initialValueToPosition( enabledRange.min );
-        const max = initialValueToPosition( enabledRange.max );
+        assert && assert( range.containsRange( enabledRange ), 'enabledRange is out of range' );
+        const min = this.fullRangeValueToPosition( enabledRange.min );
+        const max = this.fullRangeValueToPosition( enabledRange.max );
 
         // update the function that maps value to position for the track and the slider
         this.valueToPosition = new LinearFunction( enabledRange.min, enabledRange.max, min, max, true /* clamp */ );

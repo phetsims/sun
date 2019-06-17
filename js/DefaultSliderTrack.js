@@ -76,17 +76,12 @@ define( require => {
 
       // when the enabled range changes gray out the unusable parts of the slider
       const enabledRangeObserver = enabledRange => {
-
-        // TODO: duplicated with parent, see https://github.com/phetsims/scenery-phet/issues/506
-        assert && assert( enabledRange.min >= range.min && enabledRange.max <= range.max, 'enabledRange is out of range' );
-
-        const initialValueToPosition = new LinearFunction( range.min, range.max, 0, this.size.width, true /* clamp */ );
-        const min = initialValueToPosition( enabledRange.min );
-        const max = initialValueToPosition( enabledRange.max );
+        const minViewCoordinate = this.fullRangeValueToPosition( enabledRange.min );
+        const maxViewCoordinate = this.fullRangeValueToPosition( enabledRange.max );
 
         // update the geometry of the enabled track
-        const enabledWidth = max - min;
-        this.enabledTrack.setRect( min, 0, enabledWidth, this.size.height );
+        const enabledWidth = maxViewCoordinate - minViewCoordinate;
+        this.enabledTrack.setRect( minViewCoordinate, 0, enabledWidth, this.size.height );
       };
       options.enabledRangeProperty.link( enabledRangeObserver ); // needs to be unlinked in dispose function
 
