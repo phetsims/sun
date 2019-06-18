@@ -24,9 +24,10 @@ define( require => {
 
     /**
      * @param {Property.<number>} valueProperty
+     * @param {Range} range
      * @param {Object} [options]
      */
-    constructor( valueProperty, options ) {
+    constructor( valueProperty, range, options ) {
 
       options = _.extend( {
         size: new Dimension2( 100, 5 ),
@@ -38,6 +39,7 @@ define( require => {
         startDrag: _.noop, // called when a drag sequence starts
         endDrag: _.noop, // called when a drag sequence ends
         constrainValue: _.identity, // called before valueProperty is set
+        enabledRangeProperty: null,
 
         // phet-io
         tandem: Tandem.required
@@ -67,21 +69,27 @@ define( require => {
       const trackNode = new Node( {
         children: [ disabledTrack, enabledTrack ]
       } );
-      super( trackNode, valueProperty, options );
+      super( trackNode, valueProperty, range, options );
 
       this.enabledTrack = enabledTrack;
+
+      // when the enabled range changes gray out the unusable parts of the slider
+      const enabledRangeObserver = enabledRange => {
+        const minViewCoordinate = this.fullRangeValueToPosition( enabledRange.min );
+        const maxViewCoordinate = this.fullRangeValueToPosition( enabledRange.max );
+
+        // update the geometry of the enabled track
+        const enabledWidth = maxViewCoordinate - minViewCoordinate;
+        this.enabledTrack.setRect( minViewCoordinate, 0, enabledWidth, this.size.height );
+      };
+      options.enabledRangeProperty.link( enabledRangeObserver ); // needs to be unlinked in dispose function
+
+      this.disposeDefaultSliderTrack = () => options.enabledRangeProperty.unlink( enabledRangeObserver );
     }
 
-    /**
-     * Update the dimensions of the enabled track.
-     *
-     * @param {number} minX - x value for the min position of the enabled range of the track
-     * @param {number} maxX - x value for the max position of the enabled range of the track
-     * @public
-     */
-    updateEnabledTrackWidth( minX, maxX ) {
-      const enabledWidth = maxX - minX;
-      this.enabledTrack.setRect( minX, 0, enabledWidth, this.size.height );
+    dispose() {
+      this.disposeDefaultSliderTrack();
+      super.dispose();
     }
   }
 

@@ -12,7 +12,10 @@ define( require => {
 
   // modules
   const Dimension2 = require( 'DOT/Dimension2' );
+  const LinearFunction = require( 'DOT/LinearFunction' );
   const Node = require( 'SCENERY/nodes/Node' );
+  const Property = require( 'AXON/Property' );
+  const Range = require( 'DOT/Range' );
   const SimpleDragHandler = require( 'SCENERY/input/SimpleDragHandler' );
   const sun = require( 'SUN/sun' );
   const Tandem = require( 'TANDEM/Tandem' );
@@ -22,9 +25,10 @@ define( require => {
     /**
      * @param {Node} trackNode
      * @param {Property.<number>} valueProperty
+     * @param {Range} range
      * @param {Object} [options]
      */
-    constructor( trackNode, valueProperty, options ) {
+    constructor( trackNode, valueProperty, range, options ) {
       super();
 
       options = _.extend( {
@@ -37,6 +41,7 @@ define( require => {
         startDrag: _.noop, // called when a drag sequence starts
         endDrag: _.noop, // called when a drag sequence ends
         constrainValue: _.identity, // called before valueProperty is set
+        enabledRangeProperty: new Property( new Range( range.min, range.max ) ), // Defaults to a constant range
 
         // phet-io
         tandem: Tandem.required
@@ -47,7 +52,7 @@ define( require => {
 
       // @private - linear function that maps property value to position along the track.  Set after construction and
       // if/when the function changes.
-      this.valueToPosition = null;
+      this.valueToPosition = new LinearFunction( range.min, range.max, 0, this.size.width, true /* clamp */ );
 
       // click in the track to change the value, continue dragging if desired
       const handleTrackEvent = ( event, trail ) => {
@@ -81,8 +86,25 @@ define( require => {
       } );
       trackNode.addInputListener( trackInputListener );
 
+      // @protected - maps the full range to the full width
+      this.fullRangeValueToPosition = new LinearFunction( range.min, range.max, 0, this.size.width, true /* clamp */ );
+
+      // when the enabled range changes, the value to position linear function must change as well
+      const enabledRangeObserver = enabledRange => {
+        assert && assert( range.containsRange( enabledRange ), 'enabledRange is out of range' );
+        const min = this.fullRangeValueToPosition( enabledRange.min );
+        const max = this.fullRangeValueToPosition( enabledRange.max );
+
+        // update the function that maps value to position for the track and the slider
+        this.valueToPosition = new LinearFunction( enabledRange.min, enabledRange.max, min, max, true /* clamp */ );
+      };
+      options.enabledRangeProperty.link( enabledRangeObserver ); // needs to be unlinked in dispose function
+
       // @private Called by dispose
-      this.disposeSliderTrack = () => trackInputListener.dispose();
+      this.disposeSliderTrack = () => {
+        trackInputListener.dispose();
+        options.enabledRangeProperty.unlink( enabledRangeObserver );
+      };
     }
 
     /**
@@ -99,17 +121,6 @@ define( require => {
     dispose() {
       this.disposeSliderTrack();
       super.dispose();
-    }
-
-    /**
-     * Update the dimensions of the enabled track.  No-op here in the base class, but can be optionally supported
-     * in subclasses.
-     *
-     * @param  {number} minX - x value for the min position of the enabled range of the track
-     * @param  {number} maxX - x value for the max position of the enabled range of the track
-     * @public
-     */
-    updateEnabledTrackWidth( minX, maxX ) {
     }
   }
 

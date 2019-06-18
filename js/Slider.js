@@ -20,7 +20,6 @@ define( function( require ) {
   var FocusHighlightFromNode = require( 'SCENERY/accessibility/FocusHighlightFromNode' );
   var inherit = require( 'PHET_CORE/inherit' );
   var InstanceRegistry = require( 'PHET_CORE/documentation/InstanceRegistry' );
-  var LinearFunction = require( 'DOT/LinearFunction' );
   var Node = require( 'SCENERY/nodes/Node' );
   var Path = require( 'SCENERY/nodes/Path' );
   var Property = require( 'AXON/Property' );
@@ -180,7 +179,7 @@ define( function( require ) {
     sliderParts.push( this.minorTicksParent );
 
     // @private track
-    this.track = options.trackNode || new DefaultSliderTrack( valueProperty, {
+    this.track = options.trackNode || new DefaultSliderTrack( valueProperty, range, {
 
       // propagate options that are specific to SliderTrack
       size: options.trackSize,
@@ -192,19 +191,14 @@ define( function( require ) {
       startDrag: options.startDrag,
       endDrag: options.endDrag,
       constrainValue: options.constrainValue,
+      enabledRangeProperty: this.enabledRangeProperty,
 
       // phet-io
       tandem: options.tandem.createTandem( 'track' )
     } );
 
-    // @private mapping between value and track position
-    this.valueToPosition = new LinearFunction( range.min, range.max, 0, this.track.size.width, true /* clamp */ );
-
-    // Whether the track was created or passed in, set the valueToPosition function.
-    this.track.setValueToPositionFunction( this.valueToPosition );
-
     // Position the track horizontally
-    this.track.centerX = this.valueToPosition( ( range.max + range.min ) / 2 );
+    this.track.centerX = this.track.valueToPosition( ( range.max + range.min ) / 2 );
 
     // The thumb of the slider
     var thumb = options.thumbNode || new SliderThumb( {
@@ -273,7 +267,7 @@ define( function( require ) {
         if ( self.enabledProperty.get() ) {
           var transform = trail.subtrailTo( sliderPartsNode ).getTransform(); // we only want the transform to our parent
           var x = transform.inversePosition2( event.pointer.point ).x - clickXOffset;
-          var newValue = self.valueToPosition.inverse( x );
+          var newValue = self.track.valueToPosition.inverse( x );
 
           valueProperty.set( options.constrainValue( newValue ) );
         }
@@ -298,25 +292,12 @@ define( function( require ) {
 
     // update thumb location when value changes
     var valueObserver = function( value ) {
-      thumb.centerX = self.valueToPosition( value );
+      thumb.centerX = self.track.valueToPosition( value );
     };
     valueProperty.link( valueObserver ); // must be unlinked in disposeSlider
 
     // when the enabled range changes, the value to position linear function must change as well
     var enabledRangeObserver = function( enabledRange ) {
-
-      assert && assert( enabledRange.min >= range.min && enabledRange.max <= range.max, 'enabledRange is out of range' );
-
-      var initialValueToPosition = new LinearFunction( range.min, range.max, 0, self.track.size.width, true /* clamp */ );
-      var min = initialValueToPosition( enabledRange.min );
-      var max = initialValueToPosition( enabledRange.max );
-
-      // update the geometry of the enabled track
-      self.track.updateEnabledTrackWidth( min, max );
-
-      // update the function that maps value to position for the track and the slider
-      self.valueToPosition = new LinearFunction( enabledRange.min, enabledRange.max, min, max, true /* clamp */ );
-      self.track.setValueToPositionFunction( self.valueToPosition );
 
       // clamp the value to the enabled range if it changes
       valueProperty.set( Util.clamp( valueProperty.value, enabledRange.min, enabledRange.max ) );
@@ -404,7 +385,7 @@ define( function( require ) {
      * @private
      */
     addTick: function( parent, value, label, length, stroke, lineWidth ) {
-      var labelX = this.valueToPosition( value );
+      var labelX = this.track.valueToPosition( value );
 
       // ticks
       var tick = new Path( new Shape()
