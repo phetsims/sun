@@ -372,7 +372,7 @@ define( require => {
           if ( this.a11yCreateValueChangeAlert ) {
 
             this.utterance.resetTimingVariables();
-            
+
             const formattedValue = this.getA11yFormattedValue();
             this.utterance.alert = this.a11yCreateValueChangeAlert( formattedValue, this._valueProperty.value, this.oldValue );
 
@@ -432,7 +432,7 @@ define( require => {
          * Return the input listener that could be attached to mixed in types of AccessibleValueHandler to support
          * interaction.
          * @public
-         * 
+         *
          * @returns {Object}
          */
         getAccessibleValueHandlerInputListener() {
@@ -668,7 +668,7 @@ define( require => {
          * Interaction with this input has completed, generate an utterance describing changes if necessary and call
          * optional "end" function.
          * @private
-         * 
+         *
          * @param   {Event} event
          */
         onInteractionEnd( event ) {
