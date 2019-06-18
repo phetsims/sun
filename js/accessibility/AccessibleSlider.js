@@ -74,13 +74,7 @@ define( function( require ) {
           this.initializeAccessibleValueHandler( valueProperty, enabledRangeProperty, enabledProperty, options );
 
           // handle all accessible event input
-          var accessibleInputListener = {
-            keydown: this.handleKeyDown.bind( this ),
-            keyup: this.handleKeyUp.bind( this ),
-            input: this.handleInput.bind( this ),
-            change: this.handleChange.bind( this ),
-            blur: this.handleBlur.bind( this )
-          };
+          var accessibleInputListener = this.getAccessibleValueHandlerInputListener();
           this.addInputListener( accessibleInputListener );
 
           // @private - called by disposeAccessibleSlider to prevent memory leaks
