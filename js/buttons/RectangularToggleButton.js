@@ -38,6 +38,10 @@ define( function( require ) {
     var toggleButtonInteractionStateProperty = new ToggleButtonInteractionStateProperty( this.toggleButtonModel );
     RectangularButtonView.call( this, this.toggleButtonModel, toggleButtonInteractionStateProperty, options );
 
+    this.addLinkedElement( property, {
+      tandem: options.tandem.createTandem( 'property' )
+    } );
+
     // @private
     this.disposeRectangularToggleButton = function() {
       toggleButtonInteractionStateProperty.dispose();

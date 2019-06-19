@@ -122,7 +122,13 @@ define( function( require ) {
       // phet-io
       tandem: Tandem.required,
       phetioType: SliderIO,
-      phetioComponentOptions: null // filled in below with PhetioObject.mergePhetioComponentOptions()
+      phetioComponentOptions: null, // filled in below with PhetioObject.mergePhetioComponentOptions()
+
+      // {Property.<number>|null} - if provided, create a LinkedElement for this PhET-iO instrumented Property, instead
+      // of using the passed in Property. This option was created to support passing DynamicProperty or "wrapping"
+      // Property that are "implementation  details" to the PhET-iO API, and still support having a LinkedElement that
+      // points to the underlying model Property.
+      phetioLinkedProperty: null
     }, options );
 
     assert && assert( range instanceof Range, 'range must be of type Range:' + range );
@@ -334,9 +340,12 @@ define( function( require ) {
         ) );
     }
 
-    // this.addLinkedElement( valueProperty, {
-    //   tandem: options.tandem.createTandem( 'valueProperty' )
-    // } );
+    assert && assert( !options.phetioLinkedProperty || options.phetioLinkedProperty.isPhetioInstrumented(),
+      'If provided, phetioLinkedProperty should be PhET-iO instrumented' );
+
+    this.addLinkedElement( options.phetioLinkedProperty || valueProperty, {
+      tandem: options.tandem.createTandem( 'valueProperty' )
+    } );
 
     // support for binder documentation, stripped out in builds and only runs when ?binder is specified
     assert && phet.chipper.queryParameters.binder && InstanceRegistry.registerDataURL( 'sun', 'Slider', this );

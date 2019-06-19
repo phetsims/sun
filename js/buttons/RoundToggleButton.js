@@ -40,6 +40,10 @@ define( function( require ) {
 
     RoundButtonView.call( this, this.toggleButtonModel, toggleButtonInteractionStateProperty, options );
 
+    this.addLinkedElement( property, {
+      tandem: options.tandem.createTandem( 'property' )
+    } );
+
     // @private
     this.disposeRoundToggleButton = function() {
       this.toggleButtonModel.dispose();

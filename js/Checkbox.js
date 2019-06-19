@@ -26,6 +26,7 @@ define( function( require ) {
 
   // constants
   var CheckboxEmitterIO = ActionIO( [ { name: 'isChecked', type: BooleanIO } ] );
+  const ENABLED_PROPERTY_TANDEM_NAME = 'enabledProperty';
 
   /**
    * @param {Node} content
@@ -64,25 +65,6 @@ define( function( require ) {
     Node.call( this );
 
     PhetioObject.mergePhetioComponentOptions( { visibleProperty: { phetioFeatured: true } }, options );
-
-    // does this instance own enabledProperty?
-    var ownsEnabledProperty = !options.enabledProperty;
-
-    options.phetioLinkProperty && this.addLinkedElement( property, {
-      tandem: options.tandem.createTandem( 'property' )
-    } );
-
-    // If enabledProperty was passed in, Studio needs to know about that linkage
-    options.enabledProperty && this.addLinkedElement( options.enabledProperty, {
-      tandem: options.tandem.createTandem( 'enabledProperty' )
-    } );
-
-    // @public
-    this.enabledProperty = options.enabledProperty || new BooleanProperty( true, {
-      tandem: options.tandem.createTandem( 'enabledProperty' ),
-      phetioReadOnly: options.phetioReadOnly,
-      phetioDocumentation: 'When disabled, the checkbox is grayed out and cannot be pressed.'
-    } );
 
     // @private - sends out notifications when the checkbox is toggled.
     var toggleAction = new Action( function( value ) {
@@ -149,15 +131,35 @@ define( function( require ) {
     };
     property.link( checkboxCheckedListener );
 
+    // Apply additional options
+    this.mutate( options );
+
+    // does this instance own enabledProperty?
+    var ownsEnabledProperty = !options.enabledProperty;
+
+    // must be after the Checkbox is instrumented
+    options.phetioLinkProperty && this.addLinkedElement( property, {
+      tandem: options.tandem.createTandem( 'property' )
+    } );
+
+    // If enabledProperty was passed in, Studio needs to know about that linkage
+    options.enabledProperty && this.addLinkedElement( options.enabledProperty, {
+      tandem: options.tandem.createTandem( ENABLED_PROPERTY_TANDEM_NAME )
+    } );
+
+    // @public
+    this.enabledProperty = options.enabledProperty || new BooleanProperty( true, {
+      tandem: options.tandem.createTandem( ENABLED_PROPERTY_TANDEM_NAME ),
+      phetioReadOnly: options.phetioReadOnly,
+      phetioDocumentation: 'When disabled, the checkbox is grayed out and cannot be pressed.'
+    } );
+
     var enabledListener = function( enabled ) {
       !enabled && self.interruptSubtreeInput(); // interrupt interaction
       self.pickable = enabled;
       self.opacity = enabled ? 1 : options.disabledOpacity;
     };
     this.enabledProperty.link( enabledListener );
-
-    // Apply additional options
-    this.mutate( options );
 
     // assert that phet-io is set up correctly after the PhetioObject has been properly initialized (after mutate)
 

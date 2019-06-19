@@ -16,7 +16,7 @@ define( function( require ) {
   /**
    * @param {Node} trueNode
    * @param {Node} falseNode
-   * @param booleanProperty
+   * @param {Property.<boolean>} booleanProperty
    * @param {Object} [options]
    * @constructor
    */
