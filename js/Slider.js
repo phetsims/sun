@@ -340,7 +340,7 @@ define( function( require ) {
         ) );
     }
 
-    assert && assert( !options.phetioLinkedProperty || options.phetioLinkedProperty.isPhetioInstrumented(),
+    assert && Tandem.PHET_IO_ENABLED && assert( !options.phetioLinkedProperty || options.phetioLinkedProperty.isPhetioInstrumented(),
       'If provided, phetioLinkedProperty should be PhET-iO instrumented' );
 
     this.addLinkedElement( options.phetioLinkedProperty || valueProperty, {
