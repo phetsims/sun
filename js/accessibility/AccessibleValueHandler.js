@@ -34,6 +34,9 @@ define( require => {
   const Utterance = require( 'SCENERY_PHET/accessibility/Utterance' );
   const utteranceQueue = require( 'SCENERY_PHET/accessibility/utteranceQueue' );
 
+  // constants
+  const DEFAULT_TAG_NAME = 'input';
+
   const AccessibleValueHandler = {
 
     /**
@@ -175,7 +178,7 @@ define( require => {
 
           // cannot be set by client
           assert && assert( options.tagName === undefined, 'AccessibleSlider sets tagName' );
-          optionsToMutate.tagName = 'input';
+          optionsToMutate.tagName = DEFAULT_TAG_NAME;
 
           assert && assert( options.inputType === undefined, 'AccessibleSlider sets inputType' );
           optionsToMutate.inputType = 'range';
@@ -899,6 +902,9 @@ define( require => {
     }
     return correctedValue;
   };
+
+  // @public {string}
+  AccessibleValueHandler.DEFAULT_TAG_NAME = DEFAULT_TAG_NAME;
 
   return AccessibleValueHandler;
 } );
