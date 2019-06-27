@@ -97,7 +97,7 @@ define( function( require ) {
       // Applied to default or supplied thumb
       thumbYOffset: 0, // center of the thumb is vertically offset by this amount from the center of the track
 
-      // ticks
+      // ticks - if adding an option here, make sure it ends up in this.tickOptions
       tickLabelSpacing: 6,
       majorTickLength: 25,
       majorTickStroke: 'black',
