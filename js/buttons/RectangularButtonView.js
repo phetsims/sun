@@ -21,6 +21,7 @@ define( function( require ) {
   var Node = require( 'SCENERY/nodes/Node' );
   var PaintColorProperty = require( 'SCENERY/util/PaintColorProperty' );
   var Path = require( 'SCENERY/nodes/Path' );
+  var PhetioObject = require( 'TANDEM/PhetioObject' );
   var Shape = require( 'KITE/Shape' );
   var sun = require( 'SUN/sun' );
   var Tandem = require( 'TANDEM/Tandem' );
@@ -100,8 +101,7 @@ define( function( require ) {
       tagName: 'button',
 
       // phet-io
-      tandem: Tandem.optional, // This duplicates the parent option and works around https://github.com/phetsims/tandem/issues/50
-      phetioComponentOptions: { visibleProperty: { phetioFeatured: true } }
+      tandem: Tandem.optional // This duplicates the parent option and works around https://github.com/phetsims/tandem/issues/50
     }, options );
 
     // validate options
@@ -112,6 +112,10 @@ define( function( require ) {
       tandem: options.tandem.createTandem( 'pressListener' ),
       accessibleClick: options.accessibleClick
     }, options.listenerOptions );
+
+    PhetioObject.mergePhetioComponentOptions( {
+      visibleProperty: { phetioFeatured: true }
+    }, options );
 
     this.buttonModel = buttonModel; // @protected
 

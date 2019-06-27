@@ -51,7 +51,7 @@ define( function( require ) {
       phetioState: options.phetioState,
       phetioReadOnly: options.phetioReadOnly,
       phetioDocumentation: 'When disabled, the button is grayed out and cannot be pressed',
-      phetioFeatured: options.phetioFeatured
+      phetioFeatured: true
     }, options.enabledPropertyOptions );
 
     // model properties

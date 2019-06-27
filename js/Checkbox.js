@@ -142,16 +142,21 @@ define( function( require ) {
       tandem: options.tandem.createTandem( 'property' )
     } );
 
-    // If enabledProperty was passed in, Studio needs to know about that linkage
-    options.enabledProperty && this.addLinkedElement( options.enabledProperty, {
-      tandem: options.tandem.createTandem( ENABLED_PROPERTY_TANDEM_NAME )
-    } );
+    if ( options.enabledProperty ) {
+      assert && assert( options.enabledProperty.phetioFeatured, 'provided enabledProperty must be phetioFeatured' );
+
+      // If enabledProperty was passed in, Studio needs to know about that linkage
+      this.addLinkedElement( options.enabledProperty, {
+        tandem: options.tandem.createTandem( ENABLED_PROPERTY_TANDEM_NAME )
+      } );
+    }
 
     // @public
     this.enabledProperty = options.enabledProperty || new BooleanProperty( true, {
       tandem: options.tandem.createTandem( ENABLED_PROPERTY_TANDEM_NAME ),
       phetioReadOnly: options.phetioReadOnly,
-      phetioDocumentation: 'When disabled, the checkbox is grayed out and cannot be pressed.'
+      phetioDocumentation: 'When disabled, the checkbox is grayed out and cannot be pressed.',
+      phetioFeatured: true
     } );
 
     var enabledListener = function( enabled ) {

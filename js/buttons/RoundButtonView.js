@@ -21,6 +21,7 @@ define( function( require ) {
   var inherit = require( 'PHET_CORE/inherit' );
   var Node = require( 'SCENERY/nodes/Node' );
   var PaintColorProperty = require( 'SCENERY/util/PaintColorProperty' );
+  var PhetioObject = require( 'TANDEM/PhetioObject' );
   var RadialGradient = require( 'SCENERY/util/RadialGradient' );
   var Shape = require( 'KITE/Shape' );
   var sun = require( 'SUN/sun' );
@@ -87,7 +88,6 @@ define( function( require ) {
 
       // phet-io
       tandem: Tandem.optional, // This duplicates the parent option and works around https://github.com/phetsims/tandem/issues/50
-      phetioComponentOptions: { visibleProperty: { phetioFeatured: true } },
 
       // a11y
       tagName: 'button',
@@ -97,6 +97,10 @@ define( function( require ) {
     options.listenerOptions = _.extend( {
       tandem: options.tandem.createTandem( 'pressListener' )
     }, options.listenerOptions );
+
+    PhetioObject.mergePhetioComponentOptions( {
+      visibleProperty: { phetioFeatured: true }
+    }, options );
 
     Node.call( this );
     var content = options.content; // convenience variable
