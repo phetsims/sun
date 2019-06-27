@@ -141,7 +141,7 @@ define( function( require ) {
   var demoCheckbox = function( layoutBounds ) {
 
     const property = new BooleanProperty( true );
-    const enabledProperty = new BooleanProperty( true );
+    const enabledProperty = new BooleanProperty( true, { phetioFeatured: true } );
 
     const checkbox = new Checkbox( new Text( 'My Awesome Checkbox', {
       font: new PhetFont( 30 )
