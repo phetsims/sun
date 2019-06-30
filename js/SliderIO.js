@@ -30,7 +30,7 @@ define( function( require ) {
       returnType: VoidIO,
       parameterTypes: [ BooleanIO ],
       implementation: function( visible ) {
-        this.instance.setMajorTicksVisible( visible );
+        this.phetioObject.setMajorTicksVisible( visible );
       },
       documentation: 'Set whether the major tick marks should be shown',
       invocableForReadOnlyElements: false
@@ -40,7 +40,7 @@ define( function( require ) {
       returnType: VoidIO,
       parameterTypes: [ BooleanIO ],
       implementation: function( visible ) {
-        this.instance.setMinorTicksVisible( visible );
+        this.phetioObject.setMinorTicksVisible( visible );
       },
       documentation: 'Set whether the minor tick marks should be shown',
       invocableForReadOnlyElements: false
