@@ -581,6 +581,13 @@ define( function( require ) {
     get enabled() { return this.getEnabled(); },
 
     /**
+     * Gets the enabledProperty.
+     * @returns {Property.<boolean>}
+     * @public
+     */
+    getEnabledProperty: function() { return this.buttonModel.enabledProperty; },
+
+    /**
      * Sets the base color, which is the main background fill color used for the button.
      * @param {null|string|Color|Property.<string|Color>} baseColor
      * @public

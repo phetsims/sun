@@ -501,8 +501,15 @@ define( function( require ) {
      * @returns {boolean}
      * @public
      */
-    getEnabled: function() {return this.buttonModel.enabledProperty.get(); },
+    getEnabled: function() { return this.buttonModel.enabledProperty.get(); },
     get enabled() { return this.getEnabled(); },
+
+    /**
+     * Gets the enabledProperty.
+     * @returns {Property.<boolean>}
+     * @public
+     */
+    getEnabledProperty: function() { return this.buttonModel.enabledProperty; },
 
     /**
      * Sets the base color, which is the main background fill color used for the button.
