@@ -119,6 +119,14 @@ define( require => {
             a11yMapValue: _.identity,
 
             /**
+             * If true, the aria-valuetext will be spoken every value change, even if the aria-valuetext doesn't
+             * actually change. By default, screen readers won't speak aria-valuetext if it remains the same for
+             * multiple values.
+             * @type {boolean}
+             */
+            a11yRepeatEqualValueText: true,
+
+            /**
              * Custom aria-valuetext creation function, called when the valueProperty changes. Used in replacement of
              * the simpler/easier option: a11yValuePattern.
              * This string is read by AT every time the slider value changes.
@@ -279,6 +287,9 @@ define( require => {
           // @private - {null|function} see options for doc
           this.a11yCreateOnFocusAriaValueText = options.a11yCreateOnFocusAriaValueText;
 
+          // @private {boolean} see options for doc
+          this._a11yRepeatEqualValueText = options.a11yRepeatEqualValueText;
+
           this.setA11yDependencies( options.a11yDependencies );
 
           // listeners, must be unlinked in dispose
@@ -360,9 +371,17 @@ define( require => {
 
           // create the final string from optional parameters. Only the valuePattern OR the create function can be
           // specified (see above assertions).
-          this.ariaValueText = StringUtils.fillIn( this.a11yValuePattern, {
+          let newAriaValueText = StringUtils.fillIn( this.a11yValuePattern, {
             value: this.a11yCreateValueChangeAriaValueText( formattedValue, this._valueProperty.value, oldPropertyValue )
           } );
+
+          if ( this._a11yRepeatEqualValueText && newAriaValueText === this.ariaValueText ) {
+
+            // use a "hair space" because it won't be spoken by a screen reader when appended to the valuetext string
+            newAriaValueText += '\u200A';
+          }
+
+          this.ariaValueText = newAriaValueText;
         },
 
         /**
