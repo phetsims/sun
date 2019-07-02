@@ -64,7 +64,7 @@ define( function( require ) {
         children: [ new HStrut( maxItemWidth ), item.node ]
       } );
 
-      var checkbox = new Checkbox( content, item.property, _.extend( {}, item.options, options.checkboxOptions, {
+      var checkbox = new Checkbox( content, item.property, _.extend( {}, options.checkboxOptions, item.options, {
         tandem: item.tandem || Tandem.optional
       } ) );
 
