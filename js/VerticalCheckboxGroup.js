@@ -22,6 +22,7 @@ define( function( require ) {
    * @param {Object[]} items - Each item describes a checkbox, and is an object with these properties:
    *    node: {Node}, // label for the button
    *    property: {Property.<boolean>}, // Property associated with the button
+   *    [options]: {Object}, // Item specific options to be passed to the checkbox
    *    [tandem]: {Tandem} // optional tandem for PhET-iO
    * @param {Object} [options]
    * @constructor
@@ -63,7 +64,7 @@ define( function( require ) {
         children: [ new HStrut( maxItemWidth ), item.node ]
       } );
 
-      var checkbox = new Checkbox( content, item.property, _.extend( {}, options.checkboxOptions, {
+      var checkbox = new Checkbox( content, item.property, _.extend( {}, item.options, options.checkboxOptions, {
         tandem: item.tandem || Tandem.optional
       } ) );
 
