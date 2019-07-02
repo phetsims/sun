@@ -216,9 +216,11 @@ define( function( require ) {
     if ( options.titleBarExpandCollapse ) {
       this.collapsedTitleBar.addInputListener( {
         down: function() {
-          self.phetioStartEvent( 'expanded' );
-          self.expandedProperty.value = true;
-          self.phetioEndEvent();
+          if ( self.expandCollapseButton.getEnabled() ) {
+            self.phetioStartEvent( 'expanded' );
+            self.expandedProperty.value = true;
+            self.phetioEndEvent();
+          }
         }
       } );
     }
@@ -228,9 +230,11 @@ define( function( require ) {
       if ( options.titleBarExpandCollapse ) {
         this.expandedTitleBar.addInputListener( {
           down: function() {
-            self.phetioStartEvent( 'collapsed' );
-            self.expandedProperty.value = false;
-            self.phetioEndEvent();
+            if ( self.expandCollapseButton.getEnabled() ) {
+              self.phetioStartEvent( 'collapsed' );
+              self.expandedProperty.value = false;
+              self.phetioEndEvent();
+            }
           }
         } );
       }
@@ -240,6 +244,11 @@ define( function( require ) {
     this.expandCollapseButton.on( 'visibility', () => {
       this.collapsedTitleBar.pickable = this.expandCollapseButton.visible;
       this.expandedTitleBar.pickable = this.expandCollapseButton.visible;
+    } );
+
+    this.expandCollapseButton.getEnabledProperty().link( enabled => {
+      this.collapsedTitleBar.cursor = enabled ? options.cursor : null;
+      this.expandedTitleBar.cursor = enabled ? options.cursor : null;
     } );
 
     this.addChild( this.titleNode );
