@@ -142,7 +142,7 @@ define( function( require ) {
       tandem: options.tandem.createTandem( 'property' )
     } );
 
-    if ( options.enabledProperty ) {
+    if ( !ownsEnabledProperty ) {
       assert && assert( options.enabledProperty.phetioFeatured, 'provided enabledProperty must be phetioFeatured' );
 
       // If enabledProperty was passed in, Studio needs to know about that linkage
