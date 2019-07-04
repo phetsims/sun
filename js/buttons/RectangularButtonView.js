@@ -581,7 +581,9 @@ define( function( require ) {
     get enabled() { return this.getEnabled(); },
 
     /**
-     * Gets the enabledProperty.
+     * Gets the enabledProperty. This is meant to be a workaround for https://github.com/phetsims/sun/issues/515 while
+     * https://github.com/phetsims/sun/issues/257 is being figured out and worked on.
+     * TODO: remove me once https://github.com/phetsims/sun/issues/257 is complete
      * @returns {Property.<boolean>}
      * @public
      */
