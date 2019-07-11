@@ -1,4 +1,4 @@
-// Copyright 2016-2018, University of Colorado Boulder
+// Copyright 2016-2019, University of Colorado Boulder
 
 /**
  * A Scenery input listener that is able to find the closest in a list of nodes to a "down" event and trigger a drag
