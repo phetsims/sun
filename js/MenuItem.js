@@ -11,12 +11,12 @@ define( function( require ) {
 
   // modules
   var AccessibilityUtil = require( 'SCENERY/accessibility/AccessibilityUtil' );
+  var EventType = require( 'TANDEM/EventType' );
   var FireListener = require( 'SCENERY/listeners/FireListener' );
   var FontAwesomeNode = require( 'SUN/FontAwesomeNode' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Node = require( 'SCENERY/nodes/Node' );
   var PhetFont = require( 'SCENERY_PHET/PhetFont' );
-  var PhetioObject = require( 'TANDEM/PhetioObject' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var sun = require( 'SUN/sun' );
   var Tandem = require( 'TANDEM/Tandem' );
@@ -59,7 +59,7 @@ define( function( require ) {
 
       // phet-io
       phetioDocumentation: 'Item buttons shown in a popup menu',
-      phetioEventType: PhetioObject.EventType.USER,
+      phetioEventType: EventType.USER,
 
       // a11y
       tagName: 'button',

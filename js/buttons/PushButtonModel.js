@@ -11,6 +11,7 @@ define( function( require ) {
   'use strict';
 
   // modules
+  var EventType = require( 'TANDEM/EventType' );
   var BooleanProperty = require( 'AXON/BooleanProperty' );
   var ButtonModel = require( 'SUN/buttons/ButtonModel' );
   var CallbackTimer = require( 'SUN/CallbackTimer' );
@@ -51,7 +52,7 @@ define( function( require ) {
       tandem: options.tandem.createTandem( 'firedEmitter' ),
       phetioDocumentation: 'Emits when the button is fired',
       phetioReadOnly: options.phetioReadOnly,
-      phetioEventType: PhetioObject.EventType.USER
+      phetioEventType: EventType.USER
     } );
     if ( options.listener !== null ) {
       this.firedEmitter.addListener( options.listener );

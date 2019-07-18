@@ -15,6 +15,7 @@ define( function( require ) {
   var Color = require( 'SCENERY/util/Color' );
   var ColorConstants = require( 'SUN/ColorConstants' );
   var Emitter = require( 'AXON/Emitter' );
+  var EventType = require( 'TANDEM/EventType' );
   var inherit = require( 'PHET_CORE/inherit' );
   var PhetioObject = require( 'TANDEM/PhetioObject' );
   var RadioButtonGroupAppearance = require( 'SUN/buttons/RadioButtonGroupAppearance' );
@@ -118,7 +119,7 @@ define( function( require ) {
       tandem: options.tandem.createTandem( 'firedEmitter' ),
       phetioDocumentation: 'Emits when the radio button is pressed',
       phetioReadOnly: options.phetioReadOnly,
-      phetioEventType: PhetioObject.EventType.USER
+      phetioEventType: EventType.USER
     } );
 
     this.firedEmitter.addListener( function() {

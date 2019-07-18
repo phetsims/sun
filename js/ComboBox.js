@@ -26,9 +26,9 @@ define( require => {
   const ComboBoxButton = require( 'SUN/ComboBoxButton' );
   const ComboBoxIO = require( 'SUN/ComboBoxIO' );
   const ComboBoxListBox = require( 'SUN/ComboBoxListBox' );
+  const EventType = require( 'TANDEM/EventType' );
   const InstanceRegistry = require( 'PHET_CORE/documentation/InstanceRegistry' );
   const Node = require( 'SCENERY/nodes/Node' );
-  const PhetioObject = require( 'TANDEM/PhetioObject' );
   const sun = require( 'SUN/sun' );
   const Tandem = require( 'TANDEM/Tandem' );
   const Vector2 = require( 'DOT/Vector2' );
@@ -82,8 +82,7 @@ define( require => {
         // phet-io
         tandem: Tandem.required,
         phetioType: ComboBoxIO,
-        phetioEventType: PhetioObject.EventType.USER
-
+        phetioEventType: EventType.USER
       }, options );
 
       // validate option values

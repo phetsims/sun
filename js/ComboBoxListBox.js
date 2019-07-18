@@ -13,9 +13,9 @@ define( require => {
   const ActionIO = require( 'AXON/ActionIO' );
   const ComboBoxListItemNode = require( 'SUN/ComboBoxListItemNode' );
   const Event = require( 'SCENERY/input/Event' );
+  const EventType = require( 'TANDEM/EventType' );
   const KeyboardUtil = require( 'SCENERY/accessibility/KeyboardUtil' );
   const Panel = require( 'SUN/Panel' );
-  const PhetioObject = require( 'TANDEM/PhetioObject' );
   const sun = require( 'SUN/sun' );
   const Tandem = require( 'TANDEM/Tandem' );
   const VBox = require( 'SCENERY/nodes/VBox' );
@@ -80,7 +80,7 @@ define( require => {
 
         //TODO https://github.com/phetsims/phet-io/issues/1426, use type:EventIO, phetioDataStream:false
         phetioType: ActionIO( [ { name: 'event', type: VoidIO, validator: { valueType: Event } } ] ),
-        phetioEventType: PhetioObject.EventType.USER
+        phetioEventType: EventType.USER
       } );
 
       //TODO sun#462 replace fireEmitter and selectionListener with a standard scenery listener

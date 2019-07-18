@@ -14,6 +14,7 @@ define( function( require ) {
   var BooleanIO = require( 'TANDEM/types/BooleanIO' );
   var BooleanProperty = require( 'AXON/BooleanProperty' );
   var ButtonListener = require( 'SCENERY/input/ButtonListener' );
+  var EventType = require( 'TANDEM/EventType' );
   var FontAwesomeNode = require( 'SUN/FontAwesomeNode' );
   var inherit = require( 'PHET_CORE/inherit' );
   var InstanceRegistry = require( 'PHET_CORE/documentation/InstanceRegistry' );
@@ -48,7 +49,7 @@ define( function( require ) {
 
       // phet-io
       tandem: Tandem.required,
-      phetioEventType: PhetioObject.EventType.USER,
+      phetioEventType: EventType.USER,
       // to support properly passing this to children, see https://github.com/phetsims/tandem/issues/60
       phetioReadOnly: PhetioObject.DEFAULT_OPTIONS.phetioReadOnly,
       phetioLinkProperty: true, // whether a link to the checkbox's Property is created
@@ -74,7 +75,7 @@ define( function( require ) {
       phetioDocumentation: 'Emits when user input causes the checkbox to toggle, emitting a single arg: ' +
                            'the new boolean value of the checkbox state.',
       phetioReadOnly: options.phetioReadOnly,
-      phetioEventType: PhetioObject.EventType.USER,
+      phetioEventType: EventType.USER,
       phetioType: CheckboxEmitterIO
     } );
 

@@ -19,10 +19,10 @@ define( function( require ) {
 
   // modules
   var Dimension2 = require( 'DOT/Dimension2' );
+  var EventType = require( 'TANDEM/EventType' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Node = require( 'SCENERY/nodes/Node' );
   var OnOffSwitchIO = require( 'SUN/OnOffSwitchIO' );
-  var PhetioObject = require( 'TANDEM/PhetioObject' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var Shape = require( 'KITE/Shape' );
   var SimpleDragHandler = require( 'SCENERY/input/SimpleDragHandler' );
@@ -71,7 +71,7 @@ define( function( require ) {
       // phet-io
       tandem: Tandem.required,
       phetioType: OnOffSwitchIO,
-      phetioEventType: PhetioObject.EventType.USER
+      phetioEventType: EventType.USER
     }, options );
 
     var self = this;

@@ -13,6 +13,7 @@ define( function( require ) {
   var AccordionBoxIO = require( 'SUN/AccordionBoxIO' );
   var BooleanProperty = require( 'AXON/BooleanProperty' );
   var Emitter = require( 'AXON/Emitter' );
+  var EventType = require( 'TANDEM/EventType' );
   var ExpandCollapseButton = require( 'SUN/ExpandCollapseButton' );
   var inherit = require( 'PHET_CORE/inherit' );
   var InstanceRegistry = require( 'PHET_CORE/documentation/InstanceRegistry' );
@@ -89,7 +90,7 @@ define( function( require ) {
       // phet-io support
       tandem: Tandem.required,
       phetioType: AccordionBoxIO,
-      phetioEventType: PhetioObject.EventType.USER,
+      phetioEventType: EventType.USER,
       phetioComponentOptions: null // filled in below with PhetioObject.mergePhetioComponentOptions()
     }, options );
 
