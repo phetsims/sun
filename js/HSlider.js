@@ -10,10 +10,10 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var inherit = require( 'PHET_CORE/inherit' );
-  var InstanceRegistry = require( 'PHET_CORE/documentation/InstanceRegistry' );
-  var Slider = require( 'SUN/Slider' );
-  var sun = require( 'SUN/sun' );
+  const inherit = require( 'PHET_CORE/inherit' );
+  const InstanceRegistry = require( 'PHET_CORE/documentation/InstanceRegistry' );
+  const Slider = require( 'SUN/Slider' );
+  const sun = require( 'SUN/sun' );
 
   /**
    * @param {Property.<number>} valueProperty

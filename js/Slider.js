@@ -12,32 +12,31 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var AccessibleSlider = require( 'SUN/accessibility/AccessibleSlider' );
-  var assertMutuallyExclusiveOptions = require( 'PHET_CORE/assertMutuallyExclusiveOptions' );
-  var BooleanProperty = require( 'AXON/BooleanProperty' );
-  var DefaultSliderTrack = require( 'SUN/DefaultSliderTrack' );
-  var Dimension2 = require( 'DOT/Dimension2' );
-  var FocusHighlightFromNode = require( 'SCENERY/accessibility/FocusHighlightFromNode' );
-  var inherit = require( 'PHET_CORE/inherit' );
-  var InstanceRegistry = require( 'PHET_CORE/documentation/InstanceRegistry' );
-  var Node = require( 'SCENERY/nodes/Node' );
-  var Path = require( 'SCENERY/nodes/Path' );
-  var PhetioObject = require( 'TANDEM/PhetioObject' );
-  var Property = require( 'AXON/Property' );
-  var PropertyIO = require( 'AXON/PropertyIO' );
-  var Range = require( 'DOT/Range' );
-  var RangeIO = require( 'DOT/RangeIO' );
-  var Shape = require( 'KITE/Shape' );
-  var SimpleDragHandler = require( 'SCENERY/input/SimpleDragHandler' );
-  var SliderIO = require( 'SUN/SliderIO' );
-  var SliderThumb = require( 'SUN/SliderThumb' );
-  var sun = require( 'SUN/sun' );
-  var SunConstants = require( 'SUN/SunConstants' );
-  var Tandem = require( 'TANDEM/Tandem' );
-  var Util = require( 'DOT/Util' );
+  const AccessibleSlider = require( 'SUN/accessibility/AccessibleSlider' );
+  const assertMutuallyExclusiveOptions = require( 'PHET_CORE/assertMutuallyExclusiveOptions' );
+  const BooleanProperty = require( 'AXON/BooleanProperty' );
+  const DefaultSliderTrack = require( 'SUN/DefaultSliderTrack' );
+  const Dimension2 = require( 'DOT/Dimension2' );
+  const FocusHighlightFromNode = require( 'SCENERY/accessibility/FocusHighlightFromNode' );
+  const inherit = require( 'PHET_CORE/inherit' );
+  const Node = require( 'SCENERY/nodes/Node' );
+  const Path = require( 'SCENERY/nodes/Path' );
+  const PhetioObject = require( 'TANDEM/PhetioObject' );
+  const Property = require( 'AXON/Property' );
+  const PropertyIO = require( 'AXON/PropertyIO' );
+  const Range = require( 'DOT/Range' );
+  const RangeIO = require( 'DOT/RangeIO' );
+  const Shape = require( 'KITE/Shape' );
+  const SimpleDragHandler = require( 'SCENERY/input/SimpleDragHandler' );
+  const SliderIO = require( 'SUN/SliderIO' );
+  const SliderThumb = require( 'SUN/SliderThumb' );
+  const sun = require( 'SUN/sun' );
+  const SunConstants = require( 'SUN/SunConstants' );
+  const Tandem = require( 'TANDEM/Tandem' );
+  const Util = require( 'DOT/Util' );
 
   // constants
-  var VERTICAL_ROTATION = -Math.PI / 2;
+  const VERTICAL_ROTATION = -Math.PI / 2;
 
   /**
    * @param {Property.<number>} valueProperty
@@ -351,10 +350,7 @@ define( function( require ) {
     this.addLinkedElement( options.phetioLinkedProperty || valueProperty, {
       tandem: options.tandem.createTandem( 'valueProperty' )
     } );
-
-    // support for binder documentation, stripped out in builds and only runs when ?binder is specified
-    assert && phet.chipper.queryParameters.binder && InstanceRegistry.registerDataURL( 'sun', 'Slider', this );
-  }
+   }
 
   sun.register( 'Slider', Slider );
 

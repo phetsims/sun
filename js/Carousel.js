@@ -16,23 +16,24 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var Animation = require( 'TWIXT/Animation' );
-  var CarouselButton = require( 'SUN/buttons/CarouselButton' );
-  var Dimension2 = require( 'DOT/Dimension2' );
-  var Easing = require( 'TWIXT/Easing' );
-  var HSeparator = require( 'SUN/HSeparator' );
-  var inherit = require( 'PHET_CORE/inherit' );
-  var Node = require( 'SCENERY/nodes/Node' );
-  var Property = require( 'AXON/Property' );
-  var Rectangle = require( 'SCENERY/nodes/Rectangle' );
-  var Shape = require( 'KITE/Shape' );
-  var sun = require( 'SUN/sun' );
-  var timer = require( 'AXON/timer' );
-  var Util = require( 'DOT/Util' );
-  var VSeparator = require( 'SUN/VSeparator' );
+  const Animation = require( 'TWIXT/Animation' );
+  const CarouselButton = require( 'SUN/buttons/CarouselButton' );
+  const Dimension2 = require( 'DOT/Dimension2' );
+  const Easing = require( 'TWIXT/Easing' );
+  const HSeparator = require( 'SUN/HSeparator' );
+  const inherit = require( 'PHET_CORE/inherit' );
+  const InstanceRegistry = require( 'PHET_CORE/documentation/InstanceRegistry' );
+  const Node = require( 'SCENERY/nodes/Node' );
+  const Property = require( 'AXON/Property' );
+  const Rectangle = require( 'SCENERY/nodes/Rectangle' );
+  const Shape = require( 'KITE/Shape' );
+  const sun = require( 'SUN/sun' );
+  const timer = require( 'AXON/timer' );
+  const Util = require( 'DOT/Util' );
+  const VSeparator = require( 'SUN/VSeparator' );
 
   // constants
-  var DEFAULT_OPTIONS = {
+  const DEFAULT_OPTIONS = {
 
     // container
     orientation: 'horizontal', // {string} 'horizontal'|'vertical'
@@ -330,6 +331,9 @@ define( function( require ) {
     };
 
     Node.call( this, options );
+
+    // support for binder documentation, stripped out in builds and only runs when ?binder is specified
+    assert && phet.chipper.queryParameters.binder && InstanceRegistry.registerDataURL( 'sun', 'Carousel', this );
   }
 
   sun.register( 'Carousel', Carousel );

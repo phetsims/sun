@@ -10,9 +10,10 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var inherit = require( 'PHET_CORE/inherit' );
-  var Slider = require( 'SUN/Slider' );
-  var sun = require( 'SUN/sun' );
+  const inherit = require( 'PHET_CORE/inherit' );
+  const InstanceRegistry = require( 'PHET_CORE/documentation/InstanceRegistry' );
+  const Slider = require( 'SUN/Slider' );
+  const sun = require( 'SUN/sun' );
 
   /**
    * @param {Property.<number>} valueProperty
@@ -27,6 +28,9 @@ define( function( require ) {
     Slider.call( this, valueProperty, range, _.extend( {
       orientation: 'vertical'
     }, options ) );
+
+    // support for binder documentation, stripped out in builds and only runs when ?binder is specified
+    assert && phet.chipper.queryParameters.binder && InstanceRegistry.registerDataURL( 'sun', 'VSlider', this );
   }
 
   sun.register( 'VSlider', VSlider );
