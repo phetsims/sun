@@ -90,8 +90,8 @@ define( require => {
 
           // @protected {Emitter} emits events when increment and decrement actions occur, but only for changes
           // of keyboardStep (not pageKeyboardStep or shiftKeyboardStep)
-          this.incrementDownEmitter = new Emitter( { validationEnabled: false } );
-          this.decrementDownEmitter = new Emitter( { validationEnabled: false } );
+          this.incrementDownEmitter = new Emitter( { validators: [ { valueType: 'boolean' } ] } );
+          this.decrementDownEmitter = new Emitter( { validators: [ { valueType: 'boolean' } ] } );
 
           this.setAccessibleAttribute( 'aria-roledescription', numberSpinnerRoleDescriptionString );
 
