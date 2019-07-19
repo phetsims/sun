@@ -19,6 +19,7 @@ define( function( require ) {
   const Dimension2 = require( 'DOT/Dimension2' );
   const FocusHighlightFromNode = require( 'SCENERY/accessibility/FocusHighlightFromNode' );
   const inherit = require( 'PHET_CORE/inherit' );
+  const InstanceRegistry = require( 'PHET_CORE/documentation/InstanceRegistry' );
   const Node = require( 'SCENERY/nodes/Node' );
   const Path = require( 'SCENERY/nodes/Path' );
   const PhetioObject = require( 'TANDEM/PhetioObject' );
@@ -350,7 +351,10 @@ define( function( require ) {
     this.addLinkedElement( options.phetioLinkedProperty || valueProperty, {
       tandem: options.tandem.createTandem( 'valueProperty' )
     } );
-   }
+
+    // support for binder documentation, stripped out in builds and only runs when ?binder is specified
+    assert && phet.chipper.queryParameters.binder && InstanceRegistry.registerDataURL( 'sun', 'Slider', this );
+  }
 
   sun.register( 'Slider', Slider );
 
