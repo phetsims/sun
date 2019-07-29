@@ -376,6 +376,12 @@ define( require => {
     focusCloseButton() {
       this.closeButton.focus();
     }
+  }, {
+
+    // @public - Center in the screenBounds (doesn't include the navigation bar)
+    layoutStrategyCenteredInScreen: function( dialog, simBounds, screenBounds, scale ) {
+      dialog.center = screenBounds.center.times( 1.0 / scale );
+    }
   } );
 
 
