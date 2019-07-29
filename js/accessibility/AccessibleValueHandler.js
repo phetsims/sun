@@ -185,10 +185,10 @@ define( require => {
           var optionsToMutate = _.pick( options, _.keys( defaults ) );
 
           // cannot be set by client
-          assert && assert( options.tagName === undefined, 'AccessibleSlider sets tagName' );
+          assert && assert( options.tagName === undefined, 'AccessibleValueHandler sets tagName' );
           optionsToMutate.tagName = DEFAULT_TAG_NAME;
 
-          assert && assert( options.inputType === undefined, 'AccessibleSlider sets inputType' );
+          assert && assert( options.inputType === undefined, 'AccessibleValueHandler sets inputType' );
           optionsToMutate.inputType = 'range';
 
           this.mutate( optionsToMutate );
