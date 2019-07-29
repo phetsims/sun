@@ -15,6 +15,7 @@
       "twixt"
     ],
     "runnable": true,
+    "accessible": true,
     "supportedBrands": [
       "phet",
       "adapted-from-phet"
