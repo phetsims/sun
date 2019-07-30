@@ -161,7 +161,18 @@ define( function( require ) {
     } );
 
     var enabledListener = function( enabled ) {
-      !enabled && self.interruptSubtreeInput(); // interrupt interaction
+      if ( enabled ) {
+        self.hasAccessibleAttribute( 'onclick' ) && self.removeAccessibleAttribute( 'onclick' );
+      }
+      else {
+        self.interruptSubtreeInput(); // interrupt interaction
+
+        // By returning false, we prevent the a11y checkbox from toggling when the enabledProperty is false. This way
+        // we can keep the checkbox in tab order and don't need to add the `disabled` attribute. See https://github.com/phetsims/sun/issues/519
+        // This solution was found at https://stackoverflow.com/a/12267350/3408502
+        self.setAccessibleAttribute( 'onclick', 'return false' );
+      }
+
       self.pickable = enabled;
       self.opacity = enabled ? 1 : options.disabledOpacity;
     };
