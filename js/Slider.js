@@ -117,9 +117,6 @@ define( function( require ) {
       enabledRangeProperty: null, // {Property.<Range>|null} determine the portion of range that is enabled
       disabledOpacity: SunConstants.DISABLED_OPACITY, // opacity applied to the entire Slider when disabled
 
-      // a11y - if false, Slider will not be keyboard navigable and have no representation in the PDOM
-      isAccessible: true,
-
       // phet-io
       tandem: Tandem.required,
       phetioType: SliderIO,
@@ -322,9 +319,7 @@ define( function( require ) {
       thumb.dispose && thumb.dispose(); // in case a custom thumb is provided via options.thumbNode that doesn't implement dispose
       self.track.dispose();
 
-      if ( options.isAccessible ) {
-        self.disposeAccessibleSlider();
-      }
+      self.disposeAccessibleSlider();
 
       valueProperty.unlink( valueObserver );
       ownsEnabledRangeProperty && self.enabledRangeProperty.dispose();
@@ -332,18 +327,14 @@ define( function( require ) {
       thumbInputListener.dispose();
     };
 
-    // a11y - custom focus highlight that surrounds and moves with the thumb, set outside of options.isAccessible
-    // check because some composite types that include Slider may use the focus highlight, regardless of whether or
-    // not it is accessible
+    // a11y - custom focus highlight that surrounds and moves with the thumb
     this.focusHighlight = new FocusHighlightFromNode( thumb );
 
-    if ( options.isAccessible ) {
-      this.initializeAccessibleSlider( valueProperty, this.enabledRangeProperty, this.enabledProperty,
-        _.extend( {}, options, {
-            ariaOrientation: options.orientation
-          }
-        ) );
-    }
+    this.initializeAccessibleSlider( valueProperty, this.enabledRangeProperty, this.enabledProperty,
+      _.extend( {}, options, {
+          ariaOrientation: options.orientation
+        }
+      ) );
 
     assert && Tandem.PHET_IO_ENABLED && assert( !options.phetioLinkedProperty || options.phetioLinkedProperty.isPhetioInstrumented(),
       'If provided, phetioLinkedProperty should be PhET-iO instrumented' );
