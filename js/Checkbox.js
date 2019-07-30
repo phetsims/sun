@@ -26,7 +26,7 @@ define( function( require ) {
   var Tandem = require( 'TANDEM/Tandem' );
 
   // constants
-  var CheckboxEmitterIO = ActionIO( [ { name: 'isChecked', type: BooleanIO } ] );
+  var CheckboxActionIO = ActionIO( [ { name: 'isChecked', type: BooleanIO } ] );
   const ENABLED_PROPERTY_TANDEM_NAME = 'enabledProperty';
 
   /**
@@ -76,7 +76,7 @@ define( function( require ) {
                            'the new boolean value of the checkbox state.',
       phetioReadOnly: options.phetioReadOnly,
       phetioEventType: EventType.USER,
-      phetioType: CheckboxEmitterIO
+      phetioType: CheckboxActionIO
     } );
 
     // @private - Create the background.  Until we are creating our own shapes, just put a rectangle behind the font
