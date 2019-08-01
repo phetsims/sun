@@ -10,7 +10,6 @@ define( function( require ) {
 
   // modules
   var Action = require( 'AXON/Action' );
-  var ActionIO = require( 'AXON/ActionIO' );
   var BooleanIO = require( 'TANDEM/types/BooleanIO' );
   var BooleanProperty = require( 'AXON/BooleanProperty' );
   var ButtonListener = require( 'SCENERY/input/ButtonListener' );
@@ -26,7 +25,6 @@ define( function( require ) {
   var Tandem = require( 'TANDEM/Tandem' );
 
   // constants
-  var CheckboxActionIO = ActionIO( [ { name: 'isChecked', type: BooleanIO } ] );
   const ENABLED_PROPERTY_TANDEM_NAME = 'enabledProperty';
 
   /**
@@ -71,12 +69,12 @@ define( function( require ) {
     var toggleAction = new Action( function( value ) {
       property.value = value;
     }, {
+      parameters: [ { name: 'isChecked', phetioType: BooleanIO } ],
       tandem: options.tandem.createTandem( 'toggleAction' ),
       phetioDocumentation: 'Emits when user input causes the checkbox to toggle, emitting a single arg: ' +
                            'the new boolean value of the checkbox state.',
       phetioReadOnly: options.phetioReadOnly,
-      phetioEventType: EventType.USER,
-      phetioType: CheckboxActionIO
+      phetioEventType: EventType.USER
     } );
 
     // @private - Create the background.  Until we are creating our own shapes, just put a rectangle behind the font

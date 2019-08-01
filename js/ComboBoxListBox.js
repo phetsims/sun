@@ -10,7 +10,6 @@ define( require => {
 
   // modules
   const Action = require( 'AXON/Action' );
-  const ActionIO = require( 'AXON/ActionIO' );
   const ComboBoxListItemNode = require( 'SUN/ComboBoxListItemNode' );
   const Event = require( 'SCENERY/input/Event' );
   const EventType = require( 'TANDEM/EventType' );
@@ -74,12 +73,10 @@ define( require => {
         // set value based on which item was chosen in the list box
         property.value = listItemNode.item.value;
       }, {
+        parameters: [ { name: 'event', phetioType: VoidIO, valueType: Event } ],
 
         // phet-io
         tandem: tandem.createTandem( 'fireAction' ),
-
-        //TODO https://github.com/phetsims/phet-io/issues/1426, use type:EventIO, phetioDataStream:false
-        phetioType: ActionIO( [ { name: 'event', type: VoidIO, validator: { valueType: Event } } ] ),
         phetioEventType: EventType.USER
       } );
 
