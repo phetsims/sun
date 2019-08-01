@@ -18,7 +18,6 @@ define( require => {
   const sun = require( 'SUN/sun' );
   const Tandem = require( 'TANDEM/Tandem' );
   const VBox = require( 'SCENERY/nodes/VBox' );
-  const VoidIO = require( 'TANDEM/types/VoidIO' );
 
   class ComboBoxListBox extends Panel {
 
@@ -73,7 +72,7 @@ define( require => {
         // set value based on which item was chosen in the list box
         property.value = listItemNode.item.value;
       }, {
-        parameters: [ { name: 'event', phetioType: VoidIO, valueType: Event } ],
+        parameters: [ { phetioPrivate: true, valueType: Event } ],
 
         // phet-io
         tandem: tandem.createTandem( 'fireAction' ),
