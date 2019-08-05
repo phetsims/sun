@@ -142,7 +142,7 @@ define( function( require ) {
     } );
 
     if ( !ownsEnabledProperty ) {
-      assert && assert( !!options.enabledProperty.phetioFeatured === !!this.phetioFeatured,
+      assert && this.isPhetioInstrumented() && assert( !!options.enabledProperty.phetioFeatured === !!this.phetioFeatured,
         'provided enabledProperty must be phetioFeatured if this checkbox is' );
 
       // If enabledProperty was passed in, Studio needs to know about that linkage
