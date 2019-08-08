@@ -51,15 +51,13 @@ define( function( require ) {
     var self = this;
 
     // Guard against mutually exclusive options before defaults are filled in.
-    if ( assert && options ) {
-      assertMutuallyExclusiveOptions( options, [ 'thumbNode' ], [
-        'thumbSize', 'thumbFill', 'thumbFillHighlighted', 'thumbStroke', 'thumbLineWidth', 'thumbCenterLineStroke',
-        'thumbTouchAreaXDilation', 'thumbTouchAreaYDilation', 'thumbMouseAreaXDilation', 'thumbMouseAreaYDilation'
-      ] );
+    assert && assertMutuallyExclusiveOptions( options, [ 'thumbNode' ], [
+      'thumbSize', 'thumbFill', 'thumbFillHighlighted', 'thumbStroke', 'thumbLineWidth', 'thumbCenterLineStroke',
+      'thumbTouchAreaXDilation', 'thumbTouchAreaYDilation', 'thumbMouseAreaXDilation', 'thumbMouseAreaYDilation'
+    ] );
 
-      assertMutuallyExclusiveOptions( options, [ 'trackNode' ], [
-        'trackSize', 'trackFillEnabled', 'trackFillDisabled', 'trackStroke', 'trackLineWidth', 'trackCornerRadius' ] );
-    }
+    assert && assertMutuallyExclusiveOptions( options, [ 'trackNode' ], [
+      'trackSize', 'trackFillEnabled', 'trackFillDisabled', 'trackStroke', 'trackLineWidth', 'trackCornerRadius' ] );
 
     options = _.extend( {
 
