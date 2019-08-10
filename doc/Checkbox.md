@@ -28,7 +28,7 @@ Here’s the when and why we use a checkbox (traditional looking checkbox user i
 * Checkboxes that appear visually grouped (e.g., by proximity or with a visual box) for convenience or space-saving may not benefit from explicit group semantics in the PDOM.
 * When a group is very important, consider using a heading, e.g., `h3` as headings are placed in the heading outline which can be navigated with screen reader software whereas the `legend` element is not placed in the heading hierarchy.
 
-**Note:** Known issue that some screen readers (i.e., VoiceOver) repeat the checkbox's label content when the `label` is associated with the `input` via the `for` attribute. The `aria-label` attribute does not cause any repetition.
+**Note:** Known issue that some screen readers (i.e., VoiceOver) repeat the checkbox's label content when the `label` is associated with the `input` via the `for` attribute. We discovered that we do not get repetition of the label content when the `label` comes before the checkbox. When there is no visible screen label, the `aria-label` attribute is an option, and it also does not cause any repetition.
 
 
 ### Gesture Support
