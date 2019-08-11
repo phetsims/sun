@@ -351,6 +351,9 @@ define( require => {
           assert && assert( Array.isArray( dependencies ) );
           assert && assert( dependencies.indexOf( this._valueProperty ) === -1,
             'The value Property is already a dependency, and does not need to be added to this list' );
+          assert && dependencies.forEach( property => {
+            assert && assert( property instanceof Property, `${property} is not an instance of Property` );
+          } );
 
           // dispose the previous multilink, there is only one set of dependencies, though they can be overwritten.
           this._dependenciesMultilink && this._dependenciesMultilink.dispose();
