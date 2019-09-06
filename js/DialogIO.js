@@ -10,25 +10,15 @@ define( function( require ) {
   'use strict';
 
   var NodeIO = require( 'SCENERY/nodes/NodeIO' );
-  var phetioInherit = require( 'TANDEM/phetioInherit' );
+  const ObjectIO = require( 'TANDEM/types/ObjectIO' );
   var sun = require( 'SUN/sun' );
 
-  /**
-   * IO type for phet/sun's Dialog
-   * @param {Dialog} dialog - instance of Dialog
-   * @param {string} phetioID - identifier string
-   * @constructor
-   */
-  function DialogIO( dialog, phetioID ) {
-    NodeIO.call( this, dialog, phetioID );
-  }
+  class DialogIO extends NodeIO {}
 
-  phetioInherit( NodeIO, 'DialogIO', DialogIO, {}, {
-    documentation: 'A dialog panel',
-    validator: { isValidValue: v => v instanceof phet.sun.Dialog }
-  } );
+  DialogIO.documentation = 'A dialog panel';
+  DialogIO.validator = { isValidValue: v => v instanceof phet.sun.Dialog };
+  DialogIO.typeName = 'DialogIO';
+  ObjectIO.validateSubtype( DialogIO );
 
-  sun.register( 'DialogIO', DialogIO );
-
-  return DialogIO;
+  return sun.register( 'DialogIO', DialogIO );
 } );

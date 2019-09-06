@@ -10,34 +10,25 @@ define( function( require ) {
   'use strict';
 
   // modules
+  const ObjectIO = require( 'TANDEM/types/ObjectIO' );
   var NodeIO = require( 'SCENERY/nodes/NodeIO' );
-  var phetioInherit = require( 'TANDEM/phetioInherit' );
   var sun = require( 'SUN/sun' );
 
-  /**
-   * @param {RectangularToggleButton|RoundStickyToggleButton|RoundToggleButton} toggleButton
-   * @param {string} phetioID
-   * @constructor
-   */
-  function ToggleButtonIO( toggleButton, phetioID ) {
-    NodeIO.call( this, toggleButton, phetioID );
-  }
+  class ToggleButtonIO extends NodeIO {}
 
-  phetioInherit( NodeIO, 'ToggleButtonIO', ToggleButtonIO, {}, {
-    documentation: 'A button that toggles state (in/out) when pressed',
-    events: [ 'toggled' ],
+  ToggleButtonIO.documentation = 'A button that toggles state (in/out) when pressed';
+  ToggleButtonIO.events = [ 'toggled' ];
 
-    validator: {
-      isValidValue: instance => {
-        const types = [ phet.sun.RectangularToggleButton, phet.sun.RoundStickyToggleButton, phet.sun.RoundToggleButton ];
-        const definedTypes = types.filter( v => !!v );
-        const matches = definedTypes.filter( v => instance instanceof v );
-        return matches.length > 0;
-      }
+  ToggleButtonIO.validator = {
+    isValidValue: instance => {
+      const types = [ phet.sun.RectangularToggleButton, phet.sun.RoundStickyToggleButton, phet.sun.RoundToggleButton ];
+      const definedTypes = types.filter( v => !!v );
+      const matches = definedTypes.filter( v => instance instanceof v );
+      return matches.length > 0;
     }
-  } );
+  };
+  ToggleButtonIO.typeName = 'ToggleButtonIO';
+  ObjectIO.validateSubtype( ToggleButtonIO );
 
-  sun.register( 'ToggleButtonIO', ToggleButtonIO );
-
-  return ToggleButtonIO;
+  return sun.register( 'ToggleButtonIO', ToggleButtonIO );
 } );

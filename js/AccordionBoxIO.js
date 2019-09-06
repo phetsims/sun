@@ -10,27 +10,17 @@ define( function( require ) {
 
   // modules
   var NodeIO = require( 'SCENERY/nodes/NodeIO' );
-  var phetioInherit = require( 'TANDEM/phetioInherit' );
+  const ObjectIO = require( 'TANDEM/types/ObjectIO' );
   var sun = require( 'SUN/sun' );
 
-  /**
-   * IO type for phet/sun's AccordionBox class.
-   * @param {AccordionBox} accordionBox
-   * @param {string} phetioID
-   * @constructor
-   */
-  function AccordionBoxIO( accordionBox, phetioID ) {
-    NodeIO.call( this, accordionBox, phetioID );
-  }
+  class AccordionBoxIO extends NodeIO {}
 
-  phetioInherit( NodeIO, 'AccordionBoxIO', AccordionBoxIO, {}, {
-    documentation: 'A traditional accordionBox',
-    events: [ 'expanded', 'collapsed' ],
-    validator: { isValidValue: v => v instanceof phet.sun.AccordionBox }
-  } );
+  AccordionBoxIO.documentation = 'A traditional accordionBox';
+  AccordionBoxIO.events = [ 'expanded', 'collapsed' ];
+  AccordionBoxIO.validator = { isValidValue: v => v instanceof phet.sun.AccordionBox };
+  AccordionBoxIO.typeName = 'AccordionBoxIO';
+  ObjectIO.validateSubtype( AccordionBoxIO );
 
-  sun.register( 'AccordionBoxIO', AccordionBoxIO );
-
-  return AccordionBoxIO;
+  return sun.register( 'AccordionBoxIO', AccordionBoxIO );
 } );
 

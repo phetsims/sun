@@ -11,26 +11,17 @@ define( function( require ) {
 
   // modules
   var NodeIO = require( 'SCENERY/nodes/NodeIO' );
-  var phetioInherit = require( 'TANDEM/phetioInherit' );
+  const ObjectIO = require( 'TANDEM/types/ObjectIO' );
   var sun = require( 'SUN/sun' );
 
-  /**
-   * @param {OnOffSwitch} onOffSwitch
-   * @param {string} phetioID
-   * @constructor
-   */
-  function OnOffSwitchIO( onOffSwitch, phetioID ) {
-    NodeIO.call( this, onOffSwitch, phetioID );
-  }
+  class OnOffSwitchIO extends NodeIO {}
 
-  phetioInherit( NodeIO, 'OnOffSwitchIO', OnOffSwitchIO, {}, {
-    documentation: 'A traditional switch component',
-    events: [ 'toggled' ],
-    validator: { isValidValue: v => v instanceof phet.sun.OnOffSwitch }
-  } );
+  OnOffSwitchIO.documentation = 'A traditional switch component';
+  OnOffSwitchIO.events = [ 'toggled' ];
+  OnOffSwitchIO.validator = { isValidValue: v => v instanceof phet.sun.OnOffSwitch };
+  OnOffSwitchIO.typeName = 'OnOffSwitchIO';
+  ObjectIO.validateSubtype( OnOffSwitchIO );
 
-  sun.register( 'OnOffSwitchIO', OnOffSwitchIO );
-
-  return OnOffSwitchIO;
+  return sun.register( 'OnOffSwitchIO', OnOffSwitchIO );
 } );
 

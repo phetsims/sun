@@ -9,22 +9,15 @@ define( function( require ) {
   'use strict';
 
   // modules
+  const ObjectIO = require( 'TANDEM/types/ObjectIO' );
   var BooleanIO = require( 'TANDEM/types/BooleanIO' );
   var NodeIO = require( 'SCENERY/nodes/NodeIO' );
-  var phetioInherit = require( 'TANDEM/phetioInherit' );
   var sun = require( 'SUN/sun' );
   var VoidIO = require( 'TANDEM/types/VoidIO' );
 
-  /**
-   * @param {Slider} slider
-   * @param {string} phetioID
-   * @constructor
-   */
-  function SliderIO( slider, phetioID ) {
-    NodeIO.call( this, slider, phetioID );
-  }
+  class SliderIO extends NodeIO {}
 
-  phetioInherit( NodeIO, 'SliderIO', SliderIO, {
+  SliderIO.methods = {
 
     setMajorTicksVisible: {
       returnType: VoidIO,
@@ -45,12 +38,11 @@ define( function( require ) {
       documentation: 'Set whether the minor tick marks should be shown',
       invocableForReadOnlyElements: false
     }
-  }, {
-    documentation: 'A traditional slider component, with a knob and possibly tick marks',
-    validator: { isValidValue: v => v instanceof phet.sun.Slider }
-  } );
+  };
+  SliderIO.documentation = 'A traditional slider component, with a knob and possibly tick marks';
+  SliderIO.validator = { isValidValue: v => v instanceof phet.sun.Slider };
+  SliderIO.typeName = 'SliderIO';
+  ObjectIO.validateSubtype( SliderIO );
 
-  sun.register( 'SliderIO', SliderIO );
-
-  return SliderIO;
+  return sun.register( 'SliderIO', SliderIO );
 } );

@@ -10,27 +10,17 @@ define( function( require ) {
   'use strict';
 
   // modules
+  const ObjectIO = require( 'TANDEM/types/ObjectIO' );
   var NodeIO = require( 'SCENERY/nodes/NodeIO' );
-  var phetioInherit = require( 'TANDEM/phetioInherit' );
   var sun = require( 'SUN/sun' );
 
-  /**
-   * IO type for phet/sun's RoundMomentaryButton class.
-   * @param {RoundMomentaryButton} roundMomentaryButton
-   * @param {string} phetioID
-   * @constructor
-   */
-  function RoundMomentaryButtonIO( roundMomentaryButton, phetioID ) {
-    NodeIO.call( this, roundMomentaryButton, phetioID );
-  }
+  class RoundMomentaryButtonIO extends NodeIO {}
 
-  phetioInherit( NodeIO, 'RoundMomentaryButtonIO', RoundMomentaryButtonIO, {}, {
-    documentation: 'Button that performs an action while it is being pressed, and stops the action when released',
-    events: [ 'pressed', 'released', 'releasedDisabled' ],
-    validator: { isValidValue: v => v instanceof phet.sun.RoundMomentaryButton }
-  } );
+  RoundMomentaryButtonIO.documentation = 'Button that performs an action while it is being pressed, and stops the action when released';
+  RoundMomentaryButtonIO.events = [ 'pressed', 'released', 'releasedDisabled' ];
+  RoundMomentaryButtonIO.validator = { isValidValue: v => v instanceof phet.sun.RoundMomentaryButton };
+  RoundMomentaryButtonIO.typeName = 'RoundMomentaryButtonIO';
+  ObjectIO.validateSubtype( RoundMomentaryButtonIO );
 
-  sun.register( 'RoundMomentaryButtonIO', RoundMomentaryButtonIO );
-
-  return RoundMomentaryButtonIO;
+  return sun.register( 'RoundMomentaryButtonIO', RoundMomentaryButtonIO );
 } );
