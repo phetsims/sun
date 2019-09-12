@@ -79,7 +79,7 @@ define( require => {
 
           // verify that a11yValuePattern includes SunConstants.VALUE_NAMED_PLACEHOLDER, and that is the only key in the pattern
           if ( assert && options.a11yValuePattern ) {
-            assert( options.a11yValuePattern.match( /\{\{[^\{\}]+\}\}/g ).length === 1,
+            assert( options.a11yValuePattern.match( /{{[^{}]+}}/g ).length === 1,
               'a11yValuePattern only accepts a single \'value\' key'
             );
             assert( options.a11yValuePattern.indexOf( SunConstants.VALUE_NAMED_PLACEHOLDER ) >= 0,
