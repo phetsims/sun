@@ -95,8 +95,8 @@ define( require => {
       title: null,
       titleAlign: 'center', // horizontal alignment of the title: {string} left, right or center
 
-      // {function} which sets the dialog's position in global coordinates. called as
-      // layoutStrategy( dialog, simBounds, screenBounds, scale )
+      // {function( Dialog, simBounds:Bounds2, screenBounds:Bounds2, scale:number)} which sets the dialog's position in
+      // global coordinates.
       layoutStrategy: Dialog.DEFAULT_LAYOUT_STRATEGY,
 
       // close button options
@@ -302,13 +302,6 @@ define( require => {
 
   sun.register( 'Dialog', Dialog );
 
-  // @private
-  Dialog.DEFAULT_LAYOUT_STRATEGY = ( dialog, simBounds, screenBounds, scale ) => {
-
-    // The size is set in the Sim.topLayer, but we need to update the location here
-    dialog.center = simBounds.center.times( 1.0 / scale );
-  };
-
   inherit( Panel, Dialog, {
 
     // @public
@@ -376,14 +369,19 @@ define( require => {
     focusCloseButton() {
       this.closeButton.focus();
     }
-  }, {
-
-    // @public - Center in the screenBounds (doesn't include the navigation bar)
-    layoutStrategyCenteredInScreen: function( dialog, simBounds, screenBounds, scale ) {
-      dialog.center = screenBounds.center.times( 1.0 / scale );
-    }
   } );
 
+  // @public - to center the dialog based on the sim bounds (including the navigation bar)
+  Dialog.SIM_BOUNDS_CENTER_LAYOUT_STRATEGY = ( dialog, simBounds, screenBounds, scale ) => {
+
+    // The size is set in the Sim.topLayer, but we need to update the location here
+    dialog.center = simBounds.center.times( 1.0 / scale );
+  };
+
+  // @private - Center in the screenBounds (doesn't include the navigation bar)
+  Dialog.DEFAULT_LAYOUT_STRATEGY = ( dialog, simBounds, screenBounds, scale ) => {
+    dialog.center = screenBounds.center.times( 1.0 / scale );
+  };
 
   /**
    * The close button for Dialog
