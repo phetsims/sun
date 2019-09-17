@@ -57,13 +57,13 @@ define( require => {
          * This should be called in the constructor to initialize the accessible input features for the node.
          *
          * @param {Property.<number>} valueProperty
-         * @param {Property.<Range>} enabledRangeProperty - Property whose value constricts the range of ValueProperty
+         * @param {Property.<Range>} rangeProperty - Property whose value constricts the range of valueProperty
          * @param {BooleanProperty} enabledProperty
          * @param {Object} [options] - note, does not mutate the Node
          *
          * @protected
          */
-        initializeAccessibleValueHandler( valueProperty, enabledRangeProperty, enabledProperty, options ) {
+        initializeAccessibleValueHandler( valueProperty, rangeProperty, enabledProperty, options ) {
 
           // ensure that the client does not set both a custom text pattern and a text creation function
           assert && assert(
@@ -95,9 +95,9 @@ define( require => {
             constrainValue: _.identity, // called before valueProperty is set
 
             // keyboard steps for various keys/interactions
-            keyboardStep: ( enabledRangeProperty.get().max - enabledRangeProperty.get().min ) / 20,
-            shiftKeyboardStep: ( enabledRangeProperty.get().max - enabledRangeProperty.get().min ) / 100,
-            pageKeyboardStep: ( enabledRangeProperty.get().max - enabledRangeProperty.get().min ) / 10,
+            keyboardStep: ( rangeProperty.get().max - rangeProperty.get().min ) / 20,
+            shiftKeyboardStep: ( rangeProperty.get().max - rangeProperty.get().min ) / 100,
+            pageKeyboardStep: ( rangeProperty.get().max - rangeProperty.get().min ) / 10,
 
             // TODO: this should be an enumeration, https://github.com/phetsims/gravity-force-lab-basics/issues/134
             ariaOrientation: 'horizontal', // specify orientation, read by assistive technology
@@ -197,7 +197,7 @@ define( require => {
           this._valueProperty = valueProperty;
 
           // @private {Property.<Range>}
-          this._enabledRangeProperty = enabledRangeProperty;
+          this._rangeProperty = rangeProperty;
 
           // @private{Property.<boolean>}
           this._enabledProperty = enabledProperty;
@@ -304,7 +304,7 @@ define( require => {
             // will modify the valueProperty. See function for more information.
             this.updateSiblingStepAttribute();
           };
-          this._enabledRangeProperty.link( enabledRangeObserver );
+          this._rangeProperty.link( enabledRangeObserver );
 
           // when the property changes, be sure to update the accessible input value and aria-valuetext which is read
           // by assistive technology when the value changes
@@ -333,7 +333,7 @@ define( require => {
 
           // @private - called by disposeAccessibleValueHandler to prevent memory leaks
           this._disposeAccessibleValueHandler = () => {
-            this._enabledRangeProperty.unlink( enabledRangeObserver );
+            this._rangeProperty.unlink( enabledRangeObserver );
             this.removeInputListener( valueHandlerListener );
             this._valueProperty.unlink( valuePropertyListener );
             this._dependenciesMultilink && this._dependenciesMultilink.dispose();
@@ -511,11 +511,11 @@ define( require => {
                 // behavior for sliders)
                 if ( code === KeyboardUtil.KEY_END ) {
                   this.attemptedIncreaseEmitter.emit();
-                  newValue = this._enabledRangeProperty.get().max;
+                  newValue = this._rangeProperty.get().max;
                 }
                 else if ( code === KeyboardUtil.KEY_HOME ) {
                   this.attemptedDecreaseEmitter.emit();
-                  newValue = this._enabledRangeProperty.get().min;
+                  newValue = this._rangeProperty.get().min;
                 }
               }
               else {
@@ -553,7 +553,7 @@ define( require => {
                 }
 
                 // limit the value to the enabled range
-                newValue = Util.clamp( newValue, this._enabledRangeProperty.get().min, this._enabledRangeProperty.get().max );
+                newValue = Util.clamp( newValue, this._rangeProperty.get().min, this._rangeProperty.get().max );
               }
 
               // optionally constrain the value further
@@ -657,7 +657,7 @@ define( require => {
             }
 
             // limit to enabled range
-            newValue = Util.clamp( newValue, this._enabledRangeProperty.get().min, this._enabledRangeProperty.get().max );
+            newValue = Util.clamp( newValue, this._rangeProperty.get().min, this._rangeProperty.get().max );
 
             // optionally constrain value
             this._valueProperty.set( this._constrainValue( newValue ) );
@@ -862,12 +862,12 @@ define( require => {
         updateSiblingStepAttribute() {
           let stepValue = Math.pow( 10, -this.a11yDecimalPlaces );
 
-          const fullRange = this._enabledRangeProperty.get().getLength();
+          const fullRange = this._rangeProperty.get().getLength();
 
           // step is too small relative to full range for VoiceOver to receive input, fall back to portion of
           // full range
           if ( stepValue / fullRange < 1e-5 ) {
-            stepValue = this._enabledRangeProperty.get().max / 100;
+            stepValue = this._rangeProperty.get().max / 100;
           }
 
           this.setAccessibleAttribute( 'step', stepValue );
