@@ -494,7 +494,7 @@ define( require => {
 
             // Prevent default so browser doesn't change input value automatically
             if ( KeyboardUtil.isRangeKey( code ) ) {
-              domEvent.preventDefault();
+              domEvent.preventDefault(); // this should do the same thing as this.a11yInputHandled for "change" and "input"
 
               // if this is the first keydown this is the start of the drag interaction
               if ( !this.anyKeysDown() ) {

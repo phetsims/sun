@@ -166,9 +166,7 @@ define( function( require ) {
       // assign a new Multilink (for disposal), and make sure that the button looks pressed when any of the
       // PressListeners created by this ButtonModel look pressed
       this.looksPressedMultilink = Property.multilink( looksPressedProperties, function() {
-        self.looksPressedProperty.value = _.reduce( arguments, function( sum, newValue ) {
-          return sum || newValue;
-        }, false );
+        self.looksPressedProperty.value = _.reduce( arguments, ( sum, newValue ) => sum || newValue, false );
       } );
 
       return pressListener;
