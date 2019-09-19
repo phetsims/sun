@@ -20,7 +20,7 @@ define( require => {
   const sun = require( 'SUN/sun' );
 
   // maps arrow directions to rotation angles, in radians
-  var ANGLES = {
+  const ANGLES = {
     up: 0, // arrow shape is created in 'up' direction
     down: Math.PI,
     left: -Math.PI / 2,
@@ -62,7 +62,7 @@ define( require => {
     assert && assert( ANGLES.hasOwnProperty( options.arrowDirection ), 'invalid direction: ' + options.direction );
 
     // Generic arrow shape, points 'up'
-    var arrowShape = new Shape()
+    let arrowShape = new Shape()
       .moveTo( 0, 0 )
       .lineTo( options.arrowSize.width / 2, -options.arrowSize.height )
       .lineTo( options.arrowSize.width, 0 );
@@ -78,8 +78,8 @@ define( require => {
     } );
 
     // set up the options such that the inner corners are square and outer ones are rounded
-    var arrowDirection = options.arrowDirection; // convenience var
-    var cornerRadius = options.cornerRadius; // convenience var
+    const arrowDirection = options.arrowDirection; // convenience var
+    const cornerRadius = options.cornerRadius; // convenience var
     options.leftTopCornerRadius = arrowDirection === 'up' || arrowDirection === 'left' ? cornerRadius : 0;
     options.rightTopCornerRadius = arrowDirection === 'up' || arrowDirection === 'right' ? cornerRadius : 0;
     options.leftBottomCornerRadius = arrowDirection === 'down' || arrowDirection === 'left' ? cornerRadius : 0;
@@ -106,7 +106,7 @@ define( require => {
    * @returns {Bounds2} - null if no dilation is necessary, i.e. x === 0 && y === 0
    */
   var computePointerArea = function( button, arrowDirection, x, y ) {
-    var pointerArea = null;
+    let pointerArea = null;
     if ( x || y ) {
       switch( arrowDirection ) {
         case 'up':

@@ -52,7 +52,7 @@ define( require => {
       tandem: Tandem.required
     }, options );
 
-    var defaultTrackFill = new LinearGradient( 0, 0, 0, options.switchSize.height ).addColorStop( 0, 'rgb(40,40,40)' ).addColorStop( 1, 'rgb(200,200,200)' );
+    const defaultTrackFill = new LinearGradient( 0, 0, 0, options.switchSize.height ).addColorStop( 0, 'rgb(40,40,40)' ).addColorStop( 1, 'rgb(200,200,200)' );
     options.trackFillA = options.trackFillA || defaultTrackFill;
     options.trackFillB = options.trackFillB || defaultTrackFill;
     options.thumbFill = options.thumbFill ||
@@ -61,9 +61,9 @@ define( require => {
     Node.call( this );
 
     // property for adapting to OnOffSwitch. 'true' is 'B', the object on the 'on' end of the OnOffSwitch.
-    var onProperty = new Property( valueB === property.get() );
+    const onProperty = new Property( valueB === property.get() );
 
-    var onOffSwitch = new OnOffSwitch( onProperty, {
+    const onOffSwitch = new OnOffSwitch( onProperty, {
       size: options.switchSize,
       cursor: options.cursor,
       thumbFill: options.thumbFill,
@@ -89,8 +89,8 @@ define( require => {
 
     // add a horizontal strut that will cause the 'centerX' of this node to be at the center of the button
     if ( options.centerOnButton ) {
-      var additionalWidth = Math.abs( labelA.width - labelB.width );
-      var strut = new Line( 0, 0, this.width + additionalWidth, 0 );
+      const additionalWidth = Math.abs( labelA.width - labelB.width );
+      const strut = new Line( 0, 0, this.width + additionalWidth, 0 );
       this.addChild( strut );
       strut.moveToBack();
       if ( labelA.width < labelB.width ) {
@@ -102,12 +102,12 @@ define( require => {
     }
 
     // sync properties, listeners must be disposed
-    var propertyListener = function( object ) {
+    const propertyListener = function( object ) {
       onProperty.set( valueB === object );
     };
     property.link( propertyListener );
 
-    var onPropertyListener = function( on ) {
+    const onPropertyListener = function( on ) {
       property.set( on ? valueB : valueA );
       if ( options.setEnabled ) {
         options.setEnabled( labelA, !on );
@@ -117,10 +117,10 @@ define( require => {
     onProperty.link( onPropertyListener );
 
     // click on labels to select, must be disposed
-    var aInputListener = new ButtonListener( {
+    const aInputListener = new ButtonListener( {
       fire: function() { onProperty.set( false ); }
     } );
-    var bInputListener = new ButtonListener( {
+    const bInputListener = new ButtonListener( {
       fire: function() { onProperty.set( true ); }
     } );
     labelA.addInputListener( aInputListener );

@@ -27,12 +27,12 @@ define( require => {
   const Tandem = require( 'TANDEM/Tandem' );
 
   // constants
-  var VERTICAL_HIGHLIGHT_GRADIENT_LENGTH = 7; // In screen coords, which are roughly pixels.
-  var HORIZONTAL_HIGHLIGHT_GRADIENT_LENGTH = 7; // In screen coords, which are roughly pixels.
-  var SHADE_GRADIENT_LENGTH = 3; // In screen coords, which are roughly pixels.
-  var DEFAULT_COLOR = ColorConstants.LIGHT_BLUE;
-  var X_ALIGN_VALUES = [ 'center', 'left', 'right' ];
-  var Y_ALIGN_VALUES = [ 'center', 'top', 'bottom' ];
+  const VERTICAL_HIGHLIGHT_GRADIENT_LENGTH = 7; // In screen coords, which are roughly pixels.
+  const HORIZONTAL_HIGHLIGHT_GRADIENT_LENGTH = 7; // In screen coords, which are roughly pixels.
+  const SHADE_GRADIENT_LENGTH = 3; // In screen coords, which are roughly pixels.
+  const DEFAULT_COLOR = ColorConstants.LIGHT_BLUE;
+  const X_ALIGN_VALUES = [ 'center', 'left', 'right' ];
+  const Y_ALIGN_VALUES = [ 'center', 'top', 'bottom' ];
 
   /**
    * @param {ButtonModel} buttonModel - Model that defines the button's behavior.
@@ -121,7 +121,7 @@ define( require => {
 
     Node.call( this );
 
-    var content = options.content; // convenience variable
+    const content = options.content; // convenience variable
 
     // Hook up the input listener
     // @private (a11y) {PressListener}
@@ -132,11 +132,11 @@ define( require => {
     this.baseColorProperty = new PaintColorProperty( options.baseColor ); // @private
 
     // Figure out the size of the button.
-    var buttonWidth = Math.max( content ? content.width + options.xMargin * 2 : 0, options.minWidth );
-    var buttonHeight = Math.max( content ? content.height + options.yMargin * 2 : 0, options.minHeight );
+    const buttonWidth = Math.max( content ? content.width + options.xMargin * 2 : 0, options.minWidth );
+    const buttonHeight = Math.max( content ? content.height + options.yMargin * 2 : 0, options.minHeight );
 
     // create and add the button node
-    var button = new Path( createButtonShape( buttonWidth, buttonHeight, options ), {
+    const button = new Path( createButtonShape( buttonWidth, buttonHeight, options ), {
       fill: options.baseColor,
       lineWidth: options.lineWidth
     } );
@@ -165,7 +165,7 @@ define( require => {
     }
 
     // Hook up the strategy that will control the basic button appearance.
-    var buttonAppearanceStrategy = new options.buttonAppearanceStrategy(
+    const buttonAppearanceStrategy = new options.buttonAppearanceStrategy(
       button,
       interactionStateProperty,
       this.baseColorProperty,
@@ -173,11 +173,11 @@ define( require => {
     );
 
     // Hook up the strategy that will control the content appearance.
-    var contentAppearanceStrategy = new options.contentAppearanceStrategy( content, interactionStateProperty, options );
+    const contentAppearanceStrategy = new options.contentAppearanceStrategy( content, interactionStateProperty, options );
 
     // Control the pointer state based on the interaction state.
     // Control the pointer state based on the interaction state.
-    var self = this;
+    const self = this;
 
     function handleInteractionStateChanged( state ) {
       self.cursor = state === ButtonInteractionState.DISABLED ||
@@ -248,92 +248,92 @@ define( require => {
                                                              baseColorProperty,
                                                              options ) {
 
-    var buttonWidth = button.width;
-    var buttonHeight = button.height;
+    const buttonWidth = button.width;
+    const buttonHeight = button.height;
 
     // compute color stops for gradient, see issue #148
     assert && assert( buttonWidth >= HORIZONTAL_HIGHLIGHT_GRADIENT_LENGTH + SHADE_GRADIENT_LENGTH );
     assert && assert( buttonHeight >= VERTICAL_HIGHLIGHT_GRADIENT_LENGTH + SHADE_GRADIENT_LENGTH );
-    var verticalHighlightStop = Math.min( VERTICAL_HIGHLIGHT_GRADIENT_LENGTH / buttonHeight, 1 );
-    var verticalShadowStop = Math.max( 1 - SHADE_GRADIENT_LENGTH / buttonHeight, 0 );
-    var horizontalHighlightStop = Math.min( HORIZONTAL_HIGHLIGHT_GRADIENT_LENGTH / buttonWidth, 1 );
-    var horizontalShadowStop = Math.max( 1 - SHADE_GRADIENT_LENGTH / buttonWidth, 0 );
+    const verticalHighlightStop = Math.min( VERTICAL_HIGHLIGHT_GRADIENT_LENGTH / buttonHeight, 1 );
+    const verticalShadowStop = Math.max( 1 - SHADE_GRADIENT_LENGTH / buttonHeight, 0 );
+    const horizontalHighlightStop = Math.min( HORIZONTAL_HIGHLIGHT_GRADIENT_LENGTH / buttonWidth, 1 );
+    const horizontalShadowStop = Math.max( 1 - SHADE_GRADIENT_LENGTH / buttonWidth, 0 );
 
-    var transparentWhite = new Color( 255, 255, 255, 0.7 );
+    const transparentWhite = new Color( 255, 255, 255, 0.7 );
 
     // Color properties
-    var baseBrighter7 = new PaintColorProperty( baseColorProperty, { luminanceFactor: 0.7 } );
-    var baseBrighter5 = new PaintColorProperty( baseColorProperty, { luminanceFactor: 0.5 } );
-    var baseBrighter2 = new PaintColorProperty( baseColorProperty, { luminanceFactor: 0.2 } );
-    var baseDarker3 = new PaintColorProperty( baseColorProperty, { luminanceFactor: -0.3 } );
-    var baseDarker4 = new PaintColorProperty( baseColorProperty, { luminanceFactor: -0.4 } );
-    var baseDarker5 = new PaintColorProperty( baseColorProperty, { luminanceFactor: -0.5 } );
-    var disabledBase = new PaintColorProperty( options.disabledBaseColor );
-    var disabledBaseBrighter7 = new PaintColorProperty( options.disabledBaseColor, { luminanceFactor: 0.7 } );
-    var disabledBaseBrighter5 = new PaintColorProperty( options.disabledBaseColor, { luminanceFactor: 0.5 } );
-    var disabledBaseBrighter2 = new PaintColorProperty( options.disabledBaseColor, { luminanceFactor: 0.2 } );
-    var disabledBaseDarker3 = new PaintColorProperty( options.disabledBaseColor, { luminanceFactor: -0.3 } );
-    var disabledBaseDarker4 = new PaintColorProperty( options.disabledBaseColor, { luminanceFactor: -0.4 } );
-    var disabledBaseDarker5 = new PaintColorProperty( options.disabledBaseColor, { luminanceFactor: -0.5 } );
-    var baseTransparent = new DerivedProperty( [ baseColorProperty ], function( color ) {
+    const baseBrighter7 = new PaintColorProperty( baseColorProperty, { luminanceFactor: 0.7 } );
+    const baseBrighter5 = new PaintColorProperty( baseColorProperty, { luminanceFactor: 0.5 } );
+    const baseBrighter2 = new PaintColorProperty( baseColorProperty, { luminanceFactor: 0.2 } );
+    const baseDarker3 = new PaintColorProperty( baseColorProperty, { luminanceFactor: -0.3 } );
+    const baseDarker4 = new PaintColorProperty( baseColorProperty, { luminanceFactor: -0.4 } );
+    const baseDarker5 = new PaintColorProperty( baseColorProperty, { luminanceFactor: -0.5 } );
+    const disabledBase = new PaintColorProperty( options.disabledBaseColor );
+    const disabledBaseBrighter7 = new PaintColorProperty( options.disabledBaseColor, { luminanceFactor: 0.7 } );
+    const disabledBaseBrighter5 = new PaintColorProperty( options.disabledBaseColor, { luminanceFactor: 0.5 } );
+    const disabledBaseBrighter2 = new PaintColorProperty( options.disabledBaseColor, { luminanceFactor: 0.2 } );
+    const disabledBaseDarker3 = new PaintColorProperty( options.disabledBaseColor, { luminanceFactor: -0.3 } );
+    const disabledBaseDarker4 = new PaintColorProperty( options.disabledBaseColor, { luminanceFactor: -0.4 } );
+    const disabledBaseDarker5 = new PaintColorProperty( options.disabledBaseColor, { luminanceFactor: -0.5 } );
+    const baseTransparent = new DerivedProperty( [ baseColorProperty ], function( color ) {
       return color.withAlpha( 0 );
     } );
-    var disabledBaseTransparent = new DerivedProperty( [ disabledBase ], function( color ) {
+    const disabledBaseTransparent = new DerivedProperty( [ disabledBase ], function( color ) {
       return color.withAlpha( 0 );
     } );
 
     // Create the gradient fills used for various button states
-    var upFillVertical = new LinearGradient( 0, 0, 0, buttonHeight )
+    const upFillVertical = new LinearGradient( 0, 0, 0, buttonHeight )
       .addColorStop( 0, baseBrighter7 )
       .addColorStop( verticalHighlightStop, baseColorProperty )
       .addColorStop( verticalShadowStop, baseColorProperty )
       .addColorStop( 1, baseDarker5 );
 
-    var upFillHorizontal = new LinearGradient( 0, 0, buttonWidth, 0 )
+    const upFillHorizontal = new LinearGradient( 0, 0, buttonWidth, 0 )
       .addColorStop( 0, transparentWhite )
       .addColorStop( horizontalHighlightStop, baseTransparent )
       .addColorStop( horizontalShadowStop, baseTransparent )
       .addColorStop( 1, baseDarker5 );
 
-    var overFillVertical = new LinearGradient( 0, 0, 0, buttonHeight )
+    const overFillVertical = new LinearGradient( 0, 0, 0, buttonHeight )
       .addColorStop( 0, baseBrighter7 )
       .addColorStop( verticalHighlightStop, baseBrighter5 )
       .addColorStop( verticalShadowStop, baseBrighter5 )
       .addColorStop( 1, baseDarker5 );
 
-    var overFillHorizontal = new LinearGradient( 0, 0, buttonWidth, 0 )
+    const overFillHorizontal = new LinearGradient( 0, 0, buttonWidth, 0 )
       .addColorStop( 0, transparentWhite )
       .addColorStop( horizontalHighlightStop / 2, new Color( 255, 255, 255, 0 ) )
       .addColorStop( horizontalShadowStop, baseTransparent )
       .addColorStop( 1, baseDarker3 );
 
-    var downFillVertical = new LinearGradient( 0, 0, 0, buttonHeight )
+    const downFillVertical = new LinearGradient( 0, 0, 0, buttonHeight )
       .addColorStop( 0, baseBrighter7 )
       .addColorStop( verticalHighlightStop * 0.67, baseDarker3 )
       .addColorStop( verticalShadowStop, baseBrighter2 )
       .addColorStop( 1, baseDarker5 );
 
-    var disabledFillVertical = new LinearGradient( 0, 0, 0, buttonHeight )
+    const disabledFillVertical = new LinearGradient( 0, 0, 0, buttonHeight )
       .addColorStop( 0, disabledBaseBrighter7 )
       .addColorStop( verticalHighlightStop, disabledBaseBrighter5 )
       .addColorStop( verticalShadowStop, disabledBaseBrighter5 )
       .addColorStop( 1, disabledBaseDarker5 );
 
-    var disabledFillHorizontal = new LinearGradient( 0, 0, buttonWidth, 0 )
+    const disabledFillHorizontal = new LinearGradient( 0, 0, buttonWidth, 0 )
       .addColorStop( 0, disabledBaseBrighter7 )
       .addColorStop( horizontalHighlightStop, disabledBaseTransparent )
       .addColorStop( horizontalShadowStop, disabledBaseTransparent )
       .addColorStop( 1, disabledBaseDarker5 );
 
-    var disabledPressedFillVertical = new LinearGradient( 0, 0, 0, buttonHeight )
+    const disabledPressedFillVertical = new LinearGradient( 0, 0, 0, buttonHeight )
       .addColorStop( 0, disabledBaseBrighter7 )
       .addColorStop( verticalHighlightStop * 0.67, disabledBaseDarker3 )
       .addColorStop( verticalShadowStop, disabledBaseBrighter2 )
       .addColorStop( 1, disabledBaseDarker5 );
 
     // strokes filled in below
-    var enabledStroke;
-    var disabledStroke;
+    let enabledStroke;
+    let disabledStroke;
 
     if ( options.stroke === null ) {
       // The stroke was explicitly set to null, so the button should have no stroke.
@@ -352,7 +352,7 @@ define( require => {
     }
 
     // Create the overlay that is used to add shading to left and right edges of the button.
-    var overlayForHorizGradient = new Path( createButtonShape( buttonWidth, buttonHeight, options ), {
+    const overlayForHorizGradient = new Path( createButtonShape( buttonWidth, buttonHeight, options ), {
       lineWidth: options.lineWidth,
       pickable: false
     } );
@@ -450,19 +450,19 @@ define( require => {
   RectangularButtonView.FlatAppearanceStrategy = function( button, interactionStateProperty, baseColorProperty, options ) {
 
     // Color properties
-    var baseBrighter4 = new PaintColorProperty( baseColorProperty, { luminanceFactor: 0.4 } );
-    var baseDarker4 = new PaintColorProperty( baseColorProperty, { luminanceFactor: -0.4 } );
-    var disabledBaseDarker4 = new PaintColorProperty( options.disabledBaseColor, { luminanceFactor: -0.4 } );
+    const baseBrighter4 = new PaintColorProperty( baseColorProperty, { luminanceFactor: 0.4 } );
+    const baseDarker4 = new PaintColorProperty( baseColorProperty, { luminanceFactor: -0.4 } );
+    const disabledBaseDarker4 = new PaintColorProperty( options.disabledBaseColor, { luminanceFactor: -0.4 } );
 
     // fills used for various button states
-    var upFill = baseColorProperty;
-    var overFill = baseBrighter4;
-    var downFill = baseDarker4;
-    var disabledFill = options.disabledBaseColor;
-    var disabledPressedFillVertical = disabledFill;
+    const upFill = baseColorProperty;
+    const overFill = baseBrighter4;
+    const downFill = baseDarker4;
+    const disabledFill = options.disabledBaseColor;
+    const disabledPressedFillVertical = disabledFill;
 
-    var enabledStroke;
-    var disabledStroke;
+    let enabledStroke;
+    let disabledStroke;
 
     if ( options.stroke === null ) {
       // The stroke was explicitly set to null, so the button should have no stroke.

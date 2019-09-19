@@ -24,7 +24,7 @@ define( require => {
   const Util = require( 'DOT/Util' );
 
   // possible values for options.arrowsPosition
-  var ARROWS_POSITION_VALUES = [
+  const ARROWS_POSITION_VALUES = [
     'leftRight', // arrow buttons on left and right of value
     'topBottom', // arrow buttons on top and bottom of value
     'bothRight', // both arrow buttons to the right of the value
@@ -32,7 +32,7 @@ define( require => {
   ];
 
   // possible values for options.valueAlign
-  var VALUE_ALIGN_VALUES = [ 'center', 'left', 'right' ];
+  const VALUE_ALIGN_VALUES = [ 'center', 'left', 'right' ];
 
   /**
    * @param {Property.<number>} numberProperty value, must be an integer
@@ -91,44 +91,44 @@ define( require => {
                       options.valuePattern.indexOf( SunConstants.VALUE_NAMED_PLACEHOLDER ) !== -1,
       'missing value placeholder in options.valuePattern: ' + options.valuePattern );
 
-    var self = this;
+    const self = this;
 
-    var valueOptions = {
+    const valueOptions = {
       font: options.font,
       fill: 'black'
     };
 
     // compute max width of the value that's going to be displayed
-    var minString = StringUtils.fillIn( options.valuePattern, {
+    const minString = StringUtils.fillIn( options.valuePattern, {
       value: Util.toFixed( rangeProperty.value.min, options.decimalPlaces )
     } );
-    var maxString = StringUtils.fillIn( options.valuePattern, {
+    const maxString = StringUtils.fillIn( options.valuePattern, {
       value: Util.toFixed( rangeProperty.value.max, options.decimalPlaces )
     } );
-    var maxWidth = Math.max(
+    const maxWidth = Math.max(
       new Text( minString, valueOptions ).width,
       new Text( maxString, valueOptions ).width
     );
 
     // number
-    var numberNode = new Text( numberProperty.get(), valueOptions );
+    const numberNode = new Text( numberProperty.get(), valueOptions );
 
     // compute the size of the background
-    var backgroundWidth = Math.max( maxWidth + 2 * options.xMargin, options.backgroundMinWidth );
-    var backgroundHeight = numberNode.height + ( 2 * options.yMargin );
+    const backgroundWidth = Math.max( maxWidth + 2 * options.xMargin, options.backgroundMinWidth );
+    const backgroundHeight = numberNode.height + ( 2 * options.yMargin );
 
     // background for displaying the value
-    var backgroundNode = new Rectangle( 0, 0, backgroundWidth, backgroundHeight,
+    const backgroundNode = new Rectangle( 0, 0, backgroundWidth, backgroundHeight,
       options.cornerRadius, options.cornerRadius, {
         fill: options.backgroundFill,
         stroke: options.backgroundStroke,
         lineWidth: options.backgroundLineWidth
       } );
     numberNode.center = backgroundNode.center;
-    var valueParent = new Node( { children: [ backgroundNode, numberNode ] } );
+    const valueParent = new Node( { children: [ backgroundNode, numberNode ] } );
 
     // buttons
-    var arrowButtonOptions = {
+    const arrowButtonOptions = {
       baseColor: options.arrowButtonFill,
       stroke: options.arrowButtonStroke,
       lineWidth: options.arrowButtonLineWidth,
@@ -136,21 +136,21 @@ define( require => {
     };
 
     // increment button
-    var incrementFunction = function() {
+    const incrementFunction = function() {
       numberProperty.set( numberProperty.get() + options.deltaValue );
     };
-    var incrementDirection = ( options.arrowsPosition === 'topBottom' || options.arrowsPosition === 'bothRight' ) ? 'up' : 'right';
-    var incrementButton = new ArrowButton( incrementDirection, incrementFunction, arrowButtonOptions );
+    const incrementDirection = ( options.arrowsPosition === 'topBottom' || options.arrowsPosition === 'bothRight' ) ? 'up' : 'right';
+    const incrementButton = new ArrowButton( incrementDirection, incrementFunction, arrowButtonOptions );
 
     // decrement button
-    var decrementFunction = function() {
+    const decrementFunction = function() {
       numberProperty.set( numberProperty.get() - options.deltaValue );
     };
-    var decrementDirection = ( options.arrowsPosition === 'topBottom' || options.arrowsPosition === 'bothRight' ) ? 'down' : 'left';
-    var decrementButton = new ArrowButton( decrementDirection, decrementFunction, arrowButtonOptions );
+    const decrementDirection = ( options.arrowsPosition === 'topBottom' || options.arrowsPosition === 'bothRight' ) ? 'down' : 'left';
+    const decrementButton = new ArrowButton( decrementDirection, decrementFunction, arrowButtonOptions );
 
     // arrow button scaling
-    var arrowsScale;
+    let arrowsScale;
     if ( !arrowsScale ) {
       if ( options.arrowsPosition === 'leftRight' ) {
         arrowsScale = valueParent.height / incrementButton.height;
@@ -232,14 +232,14 @@ define( require => {
 
     Node.call( this, options );
 
-    var updateEnabled = function() {
+    const updateEnabled = function() {
       // enable/disable arrow buttons
       incrementButton.enabled = ( ( numberProperty.value + options.deltaValue ) <= rangeProperty.value.max );
       decrementButton.enabled = ( ( numberProperty.value - options.deltaValue ) >= rangeProperty.value.min );
     };
 
     // synchronize with number value
-    var numberPropertyObserver = function( value ) {
+    const numberPropertyObserver = function( value ) {
       assert && assert( rangeProperty.value.contains( value ), 'value out of range: ' + value );
 
       // update the number
@@ -267,7 +267,7 @@ define( require => {
     numberProperty.link( numberPropertyObserver ); // must be unlinked in dispose
 
     // Dynamic range changes, see https://github.com/phetsims/scenery-phet/issues/305
-    var rangeObserver = function( range ) {
+    const rangeObserver = function( range ) {
       // If our value is outside our new range, adjust it to be within the range.
       numberProperty.value = range.constrainValue( numberProperty.value );
 
@@ -278,7 +278,7 @@ define( require => {
 
     // enable or disable this component
     this.enabledProperty = options.enabledProperty; // @public
-    var enabledPropertyObserver = function( enabled ) {
+    const enabledPropertyObserver = function( enabled ) {
       self.pickable = enabled;
       self.opacity = enabled ? 1 : 0.5;
       //TODO if !enabled, cancel any interaction that is in progress, see scenery#218
@@ -293,8 +293,8 @@ define( require => {
     this.initializeAccessibleNumberSpinner( numberProperty, rangeProperty, this.enabledProperty, options );
 
     // a11y - click arrow buttons on keyboard increment/decrement; must be disposed
-    var increasedListener = function( isDown ) { isDown && incrementButton.a11yClick(); };
-    var decreasedListener = function( isDown ) { isDown && decrementButton.a11yClick(); };
+    const increasedListener = function( isDown ) { isDown && incrementButton.a11yClick(); };
+    const decreasedListener = function( isDown ) { isDown && decrementButton.a11yClick(); };
     this.incrementDownEmitter.addListener( increasedListener );
     this.decrementDownEmitter.addListener( decreasedListener );
 

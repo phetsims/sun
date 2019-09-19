@@ -18,7 +18,7 @@ define( require => {
   const sun = require( 'SUN/sun' );
 
   // constants
-  var DEFAULT_ARROW_HEIGHT = 20;
+  const DEFAULT_ARROW_HEIGHT = 20;
 
   /**
    * @param {string} direction 'up'|'down'|'left'|'right'
@@ -63,11 +63,11 @@ define( require => {
     options.listener = callback;
 
     // arrow node
-    var arrowShape = new Shape();
-    for ( var i = 0; i < options.numberOfArrows; i++ ) {
+    const arrowShape = new Shape();
+    for ( let i = 0; i < options.numberOfArrows; i++ ) {
 
       // offset for the base of the arrow, shifting the shape of the arrow when there are more than one
-      var arrowOffset = i * ( options.arrowHeight + options.arrowSpacing );
+      const arrowOffset = i * ( options.arrowHeight + options.arrowSpacing );
       if ( direction === 'up' ) {
         arrowShape.moveTo( options.arrowHeight / 2, arrowOffset ).lineTo( options.arrowHeight, options.arrowWidth + arrowOffset ).lineTo( 0, options.arrowWidth + arrowOffset ).close();
       }

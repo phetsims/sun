@@ -48,7 +48,7 @@ define( require => {
     assert && assert( !options.children, 'VerticalCheckboxGroup sets children' );
 
     // Determine the max item width
-    var maxItemWidth = 0;
+    let maxItemWidth = 0;
     for ( var i = 0; i < items.length; i++ ) {
       maxItemWidth = Math.max( maxItemWidth, items[ i ].node.width );
     }
@@ -57,19 +57,19 @@ define( require => {
     options.children = [];
     for ( i = 0; i < items.length; i++ ) {
 
-      var item = items[ i ];
+      const item = items[ i ];
 
       // Content for the checkbox. Add an invisible strut, so that checkboxes have uniform width.
-      var content = new Node( {
+      const content = new Node( {
         children: [ new HStrut( maxItemWidth ), item.node ]
       } );
 
-      var checkbox = new Checkbox( content, item.property, _.extend( {}, options.checkboxOptions, item.options, {
+      const checkbox = new Checkbox( content, item.property, _.extend( {}, options.checkboxOptions, item.options, {
         tandem: item.tandem || Tandem.optional
       } ) );
 
       // set pointer areas, y dimensions are computed
-      var yDilation = options.spacing / 2;
+      const yDilation = options.spacing / 2;
       checkbox.mouseArea = checkbox.localBounds.dilatedXY( options.mouseAreaXDilation, yDilation );
       checkbox.touchArea = checkbox.localBounds.dilatedXY( options.touchAreaXDilation, yDilation );
 

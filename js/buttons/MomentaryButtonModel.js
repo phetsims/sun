@@ -23,7 +23,7 @@ define( require => {
    * @constructor
    */
   function MomentaryButtonModel( valueOff, valueOn, valueProperty, options ) {
-    var self = this;
+    const self = this;
 
     // Tandem support
     options = _.extend( {
@@ -33,7 +33,7 @@ define( require => {
 
     ButtonModel.call( self, options );
 
-    var downListener = function( down ) {
+    const downListener = function( down ) {
 
       // turn on when pressed (if enabled)
       if ( down ) {
@@ -48,7 +48,7 @@ define( require => {
     this.downProperty.lazyLink( downListener );
 
     // if valueProperty set externally, signify to ButtonModel
-    var valuePropertyListener = function( value ) {
+    const valuePropertyListener = function( value ) {
       self.downProperty.set( value === valueOn );
     };
     valueProperty.link( valuePropertyListener );

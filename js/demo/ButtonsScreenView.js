@@ -37,8 +37,8 @@ define( require => {
   const VerticalAquaRadioButtonGroup = require( 'SUN/VerticalAquaRadioButtonGroup' );
 
   // constants
-  var BUTTON_FONT = new Font( { size: 24 } );
-  var BUTTON_CAPTION_FONT = new Font( { size: 20 } );
+  const BUTTON_FONT = new Font( { size: 24 } );
+  const BUTTON_CAPTION_FONT = new Font( { size: 20 } );
 
   /**
    * @constructor
@@ -48,14 +48,14 @@ define( require => {
     ScreenView.call( this );
 
     // Message area, for outputting test messages
-    var messagePrefix = 'Message: ';
-    var messageText = new Text( messagePrefix, {
+    const messagePrefix = 'Message: ';
+    const messageText = new Text( messagePrefix, {
       font: new Font( { size: 20 } ),
       bottom: this.layoutBounds.height - 5,
       left: this.layoutBounds.minX + 10
     } );
     this.addChild( messageText );
-    var message = function( text ) {
+    const message = function( text ) {
       messageText.text = messagePrefix + text;
     };
 
@@ -63,25 +63,25 @@ define( require => {
     // Common colors
     //===================================================================================
 
-    var alignBaseColor = new Property( new Color( 'red' ) );
-    var roundBaseColor = new Property( new Color( 'blue' ) );
-    var radioGroupBaseColor = new Property( 'green' );
+    const alignBaseColor = new Property( new Color( 'red' ) );
+    const roundBaseColor = new Property( new Color( 'blue' ) );
+    const radioGroupBaseColor = new Property( 'green' );
 
     //===================================================================================
     // Radio buttons
     //===================================================================================
 
-    var radioButtonProperty = new Property( 'TWO' );
+    const radioButtonProperty = new Property( 'TWO' );
     radioButtonProperty.lazyLink( function( value ) {
       message( 'Radio button ' + value + ' pressed' );
     } );
-    var radioButtonContent = [
+    const radioButtonContent = [
       { value: 'ONE', node: new Text( 'ONE', { font: new Font( { size: 32 } ) } ), label: new Text( 'one' ) }, // bigger than the others
       { value: 'TWO', node: new Text( 'TWO', { font: BUTTON_FONT } ), label: new Text( 'two' ) },
       { value: 'THREE', node: new Text( 'THREE', { font: BUTTON_FONT } ), label: new Text( 'three' ) },
       { value: '4', node: new Text( '4', { font: BUTTON_FONT } ), label: new Text( 'four' ) }
     ];
-    var radioButtonGroup = new RadioButtonGroup( radioButtonProperty, radioButtonContent, {
+    const radioButtonGroup = new RadioButtonGroup( radioButtonProperty, radioButtonContent, {
       selectedLineWidth: 4,
 
       // change these to test various orientations and alignments
@@ -91,7 +91,7 @@ define( require => {
 
       baseColor: radioGroupBaseColor
     } );
-    var radioButtonPanel = new Panel( radioButtonGroup, {
+    const radioButtonPanel = new Panel( radioButtonGroup, {
       stroke: 'black',
       left: this.layoutBounds.left + 15,
       top: this.layoutBounds.top + 15
@@ -103,12 +103,12 @@ define( require => {
     // Aqua Radio buttons
     //===================================================================================
 
-    var firstOption = 'A';
-    var verticalAquaProperty = new Property( firstOption );
+    const firstOption = 'A';
+    const verticalAquaProperty = new Property( firstOption );
     verticalAquaProperty.lazyLink( function( value ) {
       message( 'Aqua Radio Button ' + value + ' pressed' );
     } );
-    var verticalAquaRadioButtons = new VerticalAquaRadioButtonGroup( verticalAquaProperty, [
+    const verticalAquaRadioButtons = new VerticalAquaRadioButtonGroup( verticalAquaProperty, [
       {
         value: firstOption,
         node: new Text( firstOption )
@@ -132,8 +132,8 @@ define( require => {
     // Pseudo-3D buttons A, B, C, D, E
     //===================================================================================
 
-    var buttonAFireCount = 0;
-    var buttonA = new RectangularPushButton( {
+    let buttonAFireCount = 0;
+    const buttonA = new RectangularPushButton( {
       content: new Text( '--- A ---', { font: BUTTON_FONT } ),
       listener: function() { message( 'Button A pressed ' + ( ++buttonAFireCount ) + 'x' ); },
       
@@ -144,20 +144,20 @@ define( require => {
       mouseAreaYDilation: 5
     } );
 
-    var buttonB = new RectangularPushButton( {
+    const buttonB = new RectangularPushButton( {
       content: new Text( '--- B ---', { font: BUTTON_FONT } ),
       listener: function() { message( 'Button B pressed' ); },
       baseColor: new Color( 250, 0, 0 )
     } );
 
-    var buttonC = new RectangularPushButton( {
+    const buttonC = new RectangularPushButton( {
       content: new Text( '--- C ---', { font: BUTTON_FONT } ),
       listener: function() { message( 'Button C pressed' ); },
       baseColor: 'rgb( 204, 102, 204 )'
     } );
 
     // Test for a button with different radii for each corner
-    var radiiTestButton = new RectangularPushButton( {
+    const radiiTestButton = new RectangularPushButton( {
       baseColor: 'orange',
       minWidth: 50,
       minHeight: 50,
@@ -168,13 +168,13 @@ define( require => {
       listener: function() { message( 'Custom corner button pressed' ); }
     } );
 
-    var buttonD = new RoundPushButton( {
+    const buttonD = new RoundPushButton( {
       content: new Text( '--- D ---', { font: BUTTON_FONT } ),
       listener: function() { message( 'Button D pressed' ); },
       baseColor: roundBaseColor
     } );
 
-    var buttonE = new RoundPushButton( {
+    const buttonE = new RoundPushButton( {
       content: new Text( '--- E ---', { font: BUTTON_FONT } ),
       listener: function() { message( 'Button E pressed' ); },
       baseColor: 'yellow',
@@ -186,7 +186,7 @@ define( require => {
       mouseAreaYShift: 10
     } );
 
-    var pseudo3DButtonsBox = new HBox( {
+    const pseudo3DButtonsBox = new HBox( {
       children: [ buttonA, buttonB, buttonC, radiiTestButton, buttonD, buttonE ],
       spacing: 10,
       left: radioButtonPanel.right + 25,
@@ -198,14 +198,14 @@ define( require => {
     // Flat buttons labeled 1, 2, 3, 4
     //===================================================================================
 
-    var button1 = new RectangularPushButton( {
+    const button1 = new RectangularPushButton( {
       content: new Text( '-- 1 --', { font: BUTTON_FONT } ),
       listener: function() { message( 'Button 1 pressed' ); },
       baseColor: 'rgb( 204, 102, 204 )',
       buttonAppearanceStrategy: RectangularButtonView.FlatAppearanceStrategy
     } );
 
-    var button2 = new RectangularPushButton( {
+    const button2 = new RectangularPushButton( {
       content: new Text( '-- 2 --', { font: BUTTON_FONT } ),
       listener: function() { message( 'Button 2 pressed' ); },
       baseColor: '#A0D022',
@@ -214,20 +214,20 @@ define( require => {
       stroke: '#202020'
     } );
 
-    var button3 = new RoundPushButton( {
+    const button3 = new RoundPushButton( {
       content: new Text( '- 3 -', { font: BUTTON_FONT } ),
       listener: function() { message( 'Button 3 pressed ' ); },
       buttonAppearanceStrategy: RoundButtonView.FlatAppearanceStrategy
     } );
 
-    var button4 = new RoundPushButton( {
+    const button4 = new RoundPushButton( {
       content: new Text( '-- 4 --', { font: BUTTON_FONT, fill: 'white' } ),
       listener: function() { message( 'Button 4 pressed ' ); },
       baseColor: '#CC3300',
       buttonAppearanceStrategy: RoundButtonView.FlatAppearanceStrategy
     } );
 
-    var flatButtonsBox = new HBox( {
+    const flatButtonsBox = new HBox( {
       children: [ button1, button2, button3, button4 ],
       spacing: 10,
       left: pseudo3DButtonsBox.left,
@@ -239,7 +239,7 @@ define( require => {
     // Fire! Go! Help! buttons - these demonstrate more colors and sizes of buttons
     //===================================================================================
 
-    var fireButton = new RoundPushButton( {
+    const fireButton = new RoundPushButton( {
       content: new Text( 'Fire!', { font: BUTTON_FONT } ),
       listener: function() { message( 'Fire button pressed' ); },
       baseColor: 'orange',
@@ -247,21 +247,21 @@ define( require => {
       lineWidth: 0.5
     } );
 
-    var goButton = new RoundPushButton( {
+    const goButton = new RoundPushButton( {
       content: new Text( 'Go!', { font: BUTTON_FONT } ),
       listener: function() { message( 'Go button pressed' ); },
       baseColor: new Color( 0, 163, 0 ),
       minXPadding: 10
     } );
 
-    var helpButton = new RoundPushButton( {
+    const helpButton = new RoundPushButton( {
       content: new Text( 'Help', { font: BUTTON_FONT } ),
       listener: function() { message( 'Help button pressed' ); },
       baseColor: new Color( 244, 154, 194 ),
       minXPadding: 10
     } );
 
-    var actionButtonsBox = new HBox( {
+    const actionButtonsBox = new HBox( {
       children: [ fireButton, goButton, helpButton ],
       spacing: 15,
       left: flatButtonsBox.left,
@@ -273,8 +273,8 @@ define( require => {
     // Buttons with fire-on-hold turned on
     //===================================================================================
 
-    var fireOnHeldCount = 0;
-    var fireQuicklyWhenHeldButton = new RectangularPushButton( {
+    let fireOnHeldCount = 0;
+    const fireQuicklyWhenHeldButton = new RectangularPushButton( {
       content: new Text( 'Press and hold to test (fast fire)', { font: BUTTON_CAPTION_FONT } ),
       listener: function() { message( 'Fast held button fired ' + ( ++fireOnHeldCount ) + 'x' ); },
       baseColor: new Color( 114, 132, 62 ),
@@ -283,8 +283,8 @@ define( require => {
       fireOnHoldInterval: 50
     } );
 
-    var fireSlowlyOnHoldCount = 0;
-    var fireSlowlyWhenHeldButton = new RectangularPushButton( {
+    let fireSlowlyOnHoldCount = 0;
+    const fireSlowlyWhenHeldButton = new RectangularPushButton( {
       content: new Text( 'Press and hold to test (slow fire)', { font: BUTTON_CAPTION_FONT } ),
       listener: function() { message( 'Slow held button fired ' + ( ++fireSlowlyOnHoldCount ) + 'x' ); },
       baseColor: new Color( 147, 92, 120 ),
@@ -294,7 +294,7 @@ define( require => {
       top: fireQuicklyWhenHeldButton.bottom + 10
     } );
 
-    var heldButtonsBox = new VBox( {
+    const heldButtonsBox = new VBox( {
       children: [ fireQuicklyWhenHeldButton, fireSlowlyWhenHeldButton ],
       spacing: 10,
       align: 'left',
@@ -303,8 +303,8 @@ define( require => {
     } );
     this.addChild( heldButtonsBox );
 
-    var upperLeftAlignTextNode = new Text( 'upper left align test', { font: BUTTON_CAPTION_FONT } );
-    var upperLeftContentButton = new RectangularPushButton( {
+    const upperLeftAlignTextNode = new Text( 'upper left align test', { font: BUTTON_CAPTION_FONT } );
+    const upperLeftContentButton = new RectangularPushButton( {
       content: upperLeftAlignTextNode,
       listener: function() { message( 'Upper left alignment button fired ' ); },
       baseColor: alignBaseColor,
@@ -314,8 +314,8 @@ define( require => {
       minHeight: upperLeftAlignTextNode.height * 2
     } );
 
-    var lowerRightAlignTextNode = new Text( 'lower right align test', { font: BUTTON_CAPTION_FONT } );
-    var lowerRightContentButton = new RectangularPushButton( {
+    const lowerRightAlignTextNode = new Text( 'lower right align test', { font: BUTTON_CAPTION_FONT } );
+    const lowerRightContentButton = new RectangularPushButton( {
       content: lowerRightAlignTextNode,
       listener: function() { message( 'Lower right alignment button fired ' ); },
       baseColor: alignBaseColor,
@@ -326,7 +326,7 @@ define( require => {
       top: upperLeftContentButton.height + 10
     } );
 
-    var alignTextButtonsBox = new VBox( {
+    const alignTextButtonsBox = new VBox( {
       children: [ upperLeftContentButton, lowerRightContentButton ],
       spacing: 10,
       left: heldButtonsBox.left,
@@ -340,8 +340,8 @@ define( require => {
     // Miscellaneous other button examples
     //===================================================================================
 
-    var fireOnDownCount = 0;
-    var fireOnDownButton = new RectangularPushButton( {
+    let fireOnDownCount = 0;
+    const fireOnDownButton = new RectangularPushButton( {
       content: new Text( 'Fire on Down Button', { font: BUTTON_FONT } ),
       listener: function() { message( 'Fire on down button pressed ' + ( ++fireOnDownCount ) + 'x' ); },
       baseColor: new Color( 255, 255, 61 ),
@@ -350,25 +350,25 @@ define( require => {
       lineWidth: 1
     } );
 
-    var htmlButton = new HTMLPushButton( 'HTML <em>button</em> <b>example</b>', {
+    const htmlButton = new HTMLPushButton( 'HTML <em>button</em> <b>example</b>', {
       listener: function() { message( 'HTML button pressed' ); },
       baseColor: new Color( 64, 225, 0 )
     } );
 
     // transparent button with something behind it
     // TODO: this isn't transparent when disabled.
-    var rectangleNode = new Rectangle( 0, 0, 25, 50, { fill: 'red' } );
-    var transparentButton = new RectangularPushButton( {
+    const rectangleNode = new Rectangle( 0, 0, 25, 50, { fill: 'red' } );
+    const transparentButton = new RectangularPushButton( {
       content: new Text( 'Transparent Button', { font: BUTTON_FONT } ),
       listener: function() { message( 'Transparent button pressed' ); },
       baseColor: new Color( 255, 255, 0, 0.7 ),
       center: rectangleNode.center
     } );
-    var transparentParent = new Node( { children: [ rectangleNode, transparentButton ] } );
+    const transparentParent = new Node( { children: [ rectangleNode, transparentButton ] } );
 
-    var arrowButton = new ArrowButton( 'left', function() { message( 'ArrowButton pressed' ); } );
+    const arrowButton = new ArrowButton( 'left', function() { message( 'ArrowButton pressed' ); } );
 
-    var miscButtonsBox = new VBox( {
+    const miscButtonsBox = new VBox( {
       children: [ fireOnDownButton, htmlButton, transparentParent, arrowButton ],
       spacing: 15,
       left: actionButtonsBox.left,
@@ -382,19 +382,19 @@ define( require => {
 
     // Demonstrate using arbitrary values for toggle button.  Wrap in extra
     // quotes so it is clear that it is a string in the debugging UI.
-    var roundToggleButtonProperty = new Property( 'off' );
+    const roundToggleButtonProperty = new Property( 'off' );
     roundToggleButtonProperty.lazyLink( function( value ) {
       message( 'Round sticky toggle button state changed to: ' + value );
     } );
-    var roundStickyToggleButton = new RoundStickyToggleButton( 'off', 'on', roundToggleButtonProperty, {
+    const roundStickyToggleButton = new RoundStickyToggleButton( 'off', 'on', roundToggleButtonProperty, {
       baseColor: new Color( 255, 0, 0 )
     } );
 
-    var rectangularToggleButtonProperty = new Property( false );
+    const rectangularToggleButtonProperty = new Property( false );
     rectangularToggleButtonProperty.lazyLink( function( value ) {
       message( 'Rectangular sticky toggle button state changed to: ' + value );
     } );
-    var booleanRectangularStickyToggleButton = new BooleanRectangularStickyToggleButton( rectangularToggleButtonProperty, {
+    const booleanRectangularStickyToggleButton = new BooleanRectangularStickyToggleButton( rectangularToggleButtonProperty, {
       baseColor: new Color( 0, 200, 200 ),
       centerX: roundStickyToggleButton.centerX,
       top: roundStickyToggleButton.bottom + 10,
@@ -402,7 +402,7 @@ define( require => {
       minHeight: 35
     } );
 
-    var toggleButtonsBox = new VBox( {
+    const toggleButtonsBox = new VBox( {
       children: [ roundStickyToggleButton, booleanRectangularStickyToggleButton ],
       spacing: 15,
       left: miscButtonsBox.right + 25,
@@ -415,18 +415,18 @@ define( require => {
     //===================================================================================
 
     // round
-    var roundOnProperty = new Property( false );
+    const roundOnProperty = new Property( false );
     roundOnProperty.lazyLink( function( on ) { message( 'RoundMomentaryButton on=' + on ); } );
-    var roundMomentaryButton = new RoundMomentaryButton( false, true, roundOnProperty, {
+    const roundMomentaryButton = new RoundMomentaryButton( false, true, roundOnProperty, {
       baseColor: '#D76958',
       left: roundStickyToggleButton.right + 10,
       centerY: roundStickyToggleButton.centerY
     } );
 
     // rectangular
-    var rectangularOnProperty = new Property( false );
+    const rectangularOnProperty = new Property( false );
     rectangularOnProperty.lazyLink( function( on ) { message( 'RectangularMomentaryButton on=' + on ); } );
-    var rectangularMomentaryButton = new RectangularMomentaryButton( false, true, rectangularOnProperty, {
+    const rectangularMomentaryButton = new RectangularMomentaryButton( false, true, rectangularOnProperty, {
       baseColor: '#724C35',
       minWidth: 50,
       minHeight: 40,
@@ -434,7 +434,7 @@ define( require => {
       top: roundMomentaryButton.bottom + 10
     } );
 
-    var momentaryButtonsBox = new VBox( {
+    const momentaryButtonsBox = new VBox( {
       children: [ roundMomentaryButton, rectangularMomentaryButton ],
       spacing: 15,
       left: toggleButtonsBox.right + 25,
@@ -448,7 +448,7 @@ define( require => {
 
     //TODO Shouldn't all of these buttons be able to observe buttonEnabledProperty?
     // Set up a property for testing button enable/disable.
-    var buttonsEnabledProperty = new Property( true );
+    const buttonsEnabledProperty = new Property( true );
     buttonsEnabledProperty.link( function( enabled ) {
       arrowButton.enabled = enabled;
       radioButtonGroup.enabled = enabled;
@@ -477,7 +477,7 @@ define( require => {
       rectangularMomentaryButton.enabled = enabled;
       roundMomentaryButton.enabled = enabled;
     } );
-    var disableEnableButton = new BooleanRectangularToggleButton(
+    const disableEnableButton = new BooleanRectangularToggleButton(
       new Text( 'Disable Buttons', { font: BUTTON_CAPTION_FONT } ),
       new Text( 'Enable Buttons', { font: BUTTON_CAPTION_FONT } ),
       buttonsEnabledProperty, {
@@ -489,7 +489,7 @@ define( require => {
     this.addChild( disableEnableButton );
 
     // Add a button to set alternative color scheme.
-    var changeButtonColorsButton = new RectangularPushButton( {
+    const changeButtonColorsButton = new RectangularPushButton( {
         content: new Text( 'Change Some Button Colors', { font: BUTTON_CAPTION_FONT } ),
         listener: function() {
           buttonA.baseColor = new Color( _.random( 0, 255 ), _.random( 0, 255 ), _.random( 0, 255 ) );

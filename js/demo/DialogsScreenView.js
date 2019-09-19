@@ -20,7 +20,7 @@ define( require => {
   const Text = require( 'SCENERY/nodes/Text' );
 
   // constants
-  var BUTTON_FONT = new Font( { size: 20 } );
+  const BUTTON_FONT = new Font( { size: 20 } );
 
   /**
    * @constructor
@@ -31,9 +31,9 @@ define( require => {
 
     // dialog will be created the first time the button is pressed, lazily because Dialog
     // requires sim bounds during Dialog construction
-    var dialog = null;
+    let dialog = null;
 
-    var modalDialogButton = new RectangularPushButton( {
+    const modalDialogButton = new RectangularPushButton( {
       content: new Text( 'modal dialog', { font: BUTTON_FONT } ),
       listener: function() {
         if ( !dialog ) {
@@ -66,15 +66,15 @@ define( require => {
    */
   var createDialog = function( modal ) {
 
-    var resizeButton = new RectangularPushButton( {
+    const resizeButton = new RectangularPushButton( {
       content: new Text( 'Resize', { font: new Font( { size: 18 } ) } )
     } );
 
-    var minWidth = 1.5 * resizeButton.width;
-    var minHeight = 1.5 * resizeButton.height;
+    const minWidth = 1.5 * resizeButton.width;
+    const minHeight = 1.5 * resizeButton.height;
 
     // This rectangle represents that bounds of the Dialog's content.
-    var randomRect = new Rectangle( 0, 0, minWidth, minHeight, { stroke: 'red' } );
+    const randomRect = new Rectangle( 0, 0, minWidth, minHeight, { stroke: 'red' } );
     resizeButton.center = randomRect.center;
 
     resizeButton.addListener( function() {
@@ -83,7 +83,7 @@ define( require => {
       resizeButton.center = randomRect.center;
     } );
 
-    var contentNode = new Node( { children: [ randomRect, resizeButton ] } );
+    const contentNode = new Node( { children: [ randomRect, resizeButton ] } );
 
     return new Dialog( contentNode, {
       titleAlign: 'center',

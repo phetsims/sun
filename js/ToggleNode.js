@@ -27,7 +27,7 @@ define( require => {
     assert && assert( Array.isArray( elements ), 'elements should be an array' );
     if ( assert ) {
       elements.forEach( function( element ) {
-        var keys = _.keys( element );
+        const keys = _.keys( element );
         assert( keys.length === 2, 'each element should have two keys' );
         assert( keys[ 0 ] === 'value' || keys[ 1 ] === 'value', 'element should have a value key' );
         assert( element.node instanceof Node, 'element.node should be a node' );
@@ -41,11 +41,11 @@ define( require => {
       tandem: Tandem.optional
     }, options );
 
-    var valueListener = function( value ) {
-      var matchCount = 0;
-      for ( var i = 0; i < elements.length; i++ ) {
-        var element = elements[ i ];
-        var visible = element.value === value;
+    const valueListener = function( value ) {
+      let matchCount = 0;
+      for ( let i = 0; i < elements.length; i++ ) {
+        const element = elements[ i ];
+        const visible = element.value === value;
         element.node.visible = visible;
         if ( visible ) {
           matchCount++;
@@ -90,7 +90,7 @@ define( require => {
      * @static
      */
     CENTER: function( children ) {
-      for ( var i = 1; i < children.length; i++ ) {
+      for ( let i = 1; i < children.length; i++ ) {
         children[ i ].center = children[ 0 ].center;
       }
     },
@@ -102,7 +102,7 @@ define( require => {
      * @static
      */
     CENTER_X: function( children ) {
-      for ( var i = 1; i < children.length; i++ ) {
+      for ( let i = 1; i < children.length; i++ ) {
         children[ i ].centerX = children[ 0 ].centerX;
       }
     },
@@ -114,7 +114,7 @@ define( require => {
      * @static
      */
     CENTER_Y: function( children ) {
-      for ( var i = 1; i < children.length; i++ ) {
+      for ( let i = 1; i < children.length; i++ ) {
         children[ i ].centerY = children[ 0 ].centerY;
       }
     },
@@ -126,7 +126,7 @@ define( require => {
      * @static
      */
     LEFT: function( children ) {
-      for ( var i = 1; i < children.length; i++ ) {
+      for ( let i = 1; i < children.length; i++ ) {
         children[ i ].left = children[ 0 ].left;
       }
     },
@@ -138,7 +138,7 @@ define( require => {
      * @static
      */
     BOTTOM: function( children ) {
-      for ( var i = 1; i < children.length; i++ ) {
+      for ( let i = 1; i < children.length; i++ ) {
         children[ i ].bottom = children[ 0 ].bottom;
       }
     },
@@ -150,7 +150,7 @@ define( require => {
      * @static
      */
     CENTER_BOTTOM: function( children ) {
-      for ( var i = 1; i < children.length; i++ ) {
+      for ( let i = 1; i < children.length; i++ ) {
         children[ i ].centerBottom = children[ 0 ].centerBottom;
       }
     },
@@ -162,7 +162,7 @@ define( require => {
      * @static
      */
     RIGHT: function( children ) {
-      for ( var i = 1; i < children.length; i++ ) {
+      for ( let i = 1; i < children.length; i++ ) {
         children[ i ].right = children[ 0 ].right;
       }
     },

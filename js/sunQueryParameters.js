@@ -11,7 +11,7 @@ define( require => {
   // modules
   const sun = require( 'SUN/sun' );
 
-  var sunQueryParameters = QueryStringMachine.getAll( {
+  const sunQueryParameters = QueryStringMachine.getAll( {
 
     // background color of the screens
     backgroundColor: {

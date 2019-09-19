@@ -36,7 +36,7 @@ define( require => {
    */
   function AccordionBox( contentNode, options ) {
 
-    var self = this;
+    const self = this;
 
     options = _.extend( {
 
@@ -168,7 +168,7 @@ define( require => {
     } );
 
     // Expanded box
-    var boxOptions = {
+    const boxOptions = {
       fill: options.fill,
       cornerRadius: options.cornerRadius
     };
@@ -258,7 +258,7 @@ define( require => {
     // optional box outline, on top of everything else
     if ( options.stroke ) {
 
-      var outlineOptions = {
+      const outlineOptions = {
         stroke: options.stroke,
         lineWidth: options.lineWidth,
         cornerRadius: options.cornerRadius
@@ -279,7 +279,7 @@ define( require => {
 
     // Watch future changes for re-layout (don't want to trigger on our first layout and queue useless ones)
     if ( options.resize ) {
-      var layoutListener = this.layout.bind( this );
+      const layoutListener = this.layout.bind( this );
       contentNode.on( 'bounds', layoutListener );
       this.titleNode.on( 'bounds', layoutListener );
       this.disposeEmitterAccordionBox.addListener( function() {
@@ -289,7 +289,7 @@ define( require => {
     }
 
     // expand/collapse the box
-    var expandedPropertyObserver = function( expanded ) {
+    const expandedPropertyObserver = function( expanded ) {
       self.expandedBox.visible = expanded;
       self.collapsedBox.visible = !expanded;
 
@@ -318,14 +318,14 @@ define( require => {
      * @private
      */
     layout: function() {
-      var collapsedBoxHeight = this.getCollapsedBoxHeight();
-      var boxWidth = this.getBoxWidth();
-      var expandedBoxHeight = this.getExpandedBoxHeight();
+      const collapsedBoxHeight = this.getCollapsedBoxHeight();
+      const boxWidth = this.getBoxWidth();
+      const expandedBoxHeight = this.getExpandedBoxHeight();
 
       this.expandedBox.rectWidth = boxWidth;
       this.expandedBox.rectHeight = expandedBoxHeight;
 
-      var expandedBounds = this.expandedBox.selfBounds;
+      const expandedBounds = this.expandedBox.selfBounds;
 
       this.expandedBoxOutline.rectWidth = boxWidth;
       this.expandedBoxOutline.rectHeight = expandedBoxHeight;
@@ -349,8 +349,8 @@ define( require => {
 
       // content layout
       this._contentNode.bottom = expandedBounds.bottom - this._contentYMargin;
-      var contentSpanLeft = expandedBounds.left + this._contentXMargin;
-      var contentSpanRight = expandedBounds.right - this._contentXMargin;
+      let contentSpanLeft = expandedBounds.left + this._contentXMargin;
+      let contentSpanRight = expandedBounds.right - this._contentXMargin;
       if ( !this._showTitleWhenExpanded ) {
         // content will be placed next to button
         if ( this._buttonAlign === 'left' ) {
@@ -371,8 +371,8 @@ define( require => {
       }
 
       // button horizontal layout
-      var titleLeftSpan = expandedBounds.left + this._titleXMargin;
-      var titleRightSpan = expandedBounds.right - this._titleXMargin;
+      let titleLeftSpan = expandedBounds.left + this._titleXMargin;
+      let titleRightSpan = expandedBounds.right - this._titleXMargin;
       if ( this._buttonAlign === 'left' ) {
         this.expandCollapseButton.left = expandedBounds.left + this._buttonXMargin;
         titleLeftSpan = this.expandCollapseButton.right + this._titleXSpacing;
@@ -429,7 +429,7 @@ define( require => {
     getBoxWidth: function() {
 
       // Initial width is dependent on width of title section of the accordion box
-      var width = Math.max( this._minWidth, this._buttonXMargin + this.expandCollapseButton.width + this._titleXSpacing + this.titleNode.width + this._titleXMargin );
+      let width = Math.max( this._minWidth, this._buttonXMargin + this.expandCollapseButton.width + this._titleXSpacing + this.titleNode.width + this._titleXMargin );
 
       // Limit width by the necessary space for the title node
       if ( this._titleAlignX === 'center' ) {

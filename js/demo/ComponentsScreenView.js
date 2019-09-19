@@ -76,16 +76,16 @@ define( require => {
   var demoCarousel = function( layoutBounds ) {
 
     // create items
-    var colors = [ 'red', 'blue', 'green', 'yellow', 'pink', 'white', 'orange', 'magenta', 'purple', 'pink' ];
-    var vItems = [];
-    var hItems = [];
+    const colors = [ 'red', 'blue', 'green', 'yellow', 'pink', 'white', 'orange', 'magenta', 'purple', 'pink' ];
+    const vItems = [];
+    const hItems = [];
     colors.forEach( function( color ) {
       vItems.push( new Rectangle( 0, 0, 60, 60, { fill: color, stroke: 'black' } ) );
       hItems.push( new Circle( 30, { fill: color, stroke: 'black' } ) );
     } );
 
     // vertical carousel
-    var vCarousel = new Carousel( vItems, {
+    const vCarousel = new Carousel( vItems, {
       orientation: 'vertical',
       separatorsVisible: true,
       buttonTouchAreaXDilation: 5,
@@ -95,7 +95,7 @@ define( require => {
     } );
 
     // horizontal carousel
-    var hCarousel = new Carousel( hItems, {
+    const hCarousel = new Carousel( hItems, {
       orientation: 'horizontal',
       buttonTouchAreaXDilation: 15,
       buttonTouchAreaYDilation: 5,
@@ -106,8 +106,8 @@ define( require => {
     } );
 
     // button that scrolls the horizontal carousel to a specific item
-    var itemIndex = 4;
-    var hScrollToItemButton = new RectangularPushButton( {
+    const itemIndex = 4;
+    const hScrollToItemButton = new RectangularPushButton( {
       content: new Text( 'scroll to item ' + itemIndex, { font: new PhetFont( 20 ) } ),
       listener: function() {
         hCarousel.scrollToItem( hItems[ itemIndex ] );
@@ -115,8 +115,8 @@ define( require => {
     } );
 
     // button that sets the horizontal carousel to a specific page number
-    var pageNumber = 0;
-    var hScrollToPageButton = new RectangularPushButton( {
+    const pageNumber = 0;
+    const hScrollToPageButton = new RectangularPushButton( {
       content: new Text( 'scroll to page ' + pageNumber, { font: new PhetFont( 20 ) } ),
       listener: function() {
         hCarousel.pageNumberProperty.set( pageNumber );
@@ -124,7 +124,7 @@ define( require => {
     } );
 
     // group the buttons
-    var buttonGroup = new VBox( {
+    const buttonGroup = new VBox( {
       children: [ hScrollToItemButton, hScrollToPageButton ],
       align: 'left',
       spacing: 7,
@@ -163,24 +163,24 @@ define( require => {
   // Creates a demo of ComboBox
   var demoComboBox = function( layoutBounds ) {
 
-    var labels = [ 'one', 'two', 'three', 'four', 'five', 'six' ];
-    var items = [];
+    const labels = [ 'one', 'two', 'three', 'four', 'five', 'six' ];
+    const items = [];
     labels.forEach( function( label ) {
       items.push( new ComboBoxItem( new Text( label, { font: new PhetFont( { size: 20 } ) } ), label ) );
     } );
 
-    var selectedItemProperty = new Property( labels[ 0 ] );
+    const selectedItemProperty = new Property( labels[ 0 ] );
 
-    var listParent = new Node();
+    const listParent = new Node();
 
-    var comboBox = new ComboBox( items, selectedItemProperty, listParent, {
+    const comboBox = new ComboBox( items, selectedItemProperty, listParent, {
       highlightFill: 'yellow',
       listPosition: 'above'
     } );
 
-    var enabledCheckbox = new Checkbox( new Text( 'enabled', { font: new PhetFont( 20 ) } ), comboBox.enabledProperty );
+    const enabledCheckbox = new Checkbox( new Text( 'enabled', { font: new PhetFont( 20 ) } ), comboBox.enabledProperty );
 
-    var uiComponents = new VBox( {
+    const uiComponents = new VBox( {
       children: [ comboBox, enabledCheckbox ],
       spacing: 40,
       center: layoutBounds.center
@@ -207,10 +207,10 @@ define( require => {
    */
   var demoSlider = function( layoutBounds, orientation ) {
 
-    var property = new Property( 0 );
-    var range = new Range( 0, 100 );
-    var tickLabelOptions = { font: new PhetFont( 16 ) };
-    var sliderOptions = {
+    const property = new Property( 0 );
+    const range = new Range( 0, 100 );
+    const tickLabelOptions = { font: new PhetFont( 16 ) };
+    const sliderOptions = {
       trackSize: new Dimension2( 300, 5 ),
       thumbTouchAreaXDilation: 15,
       thumbTouchAreaYDilation: 15,
@@ -220,7 +220,7 @@ define( require => {
       enabledProperty: new Property( true )
     };
 
-    var slider = null;
+    let slider = null;
     if ( orientation === 'horizontal' ) {
       slider = new HSlider( property, range, sliderOptions );
     }
@@ -238,67 +238,67 @@ define( require => {
     slider.addMinorTick( range.min + 0.75 * range.getLength() );
 
     // show/hide major ticks
-    var majorTicksVisibleProperty = new Property( true );
+    const majorTicksVisibleProperty = new Property( true );
     majorTicksVisibleProperty.link( function( visible ) {
       slider.majorTicksVisible = visible;
     } );
-    var majorTicksCheckbox = new Checkbox( new Text( 'Major ticks visible', { font: new PhetFont( 20 ) } ),
+    const majorTicksCheckbox = new Checkbox( new Text( 'Major ticks visible', { font: new PhetFont( 20 ) } ),
       majorTicksVisibleProperty, {
         left: slider.left,
         top: slider.bottom + 40
       } );
 
     // show/hide minor ticks
-    var minorTicksVisibleProperty = new Property( true );
+    const minorTicksVisibleProperty = new Property( true );
     minorTicksVisibleProperty.link( function( visible ) {
       slider.minorTicksVisible = visible;
     } );
-    var minorTicksCheckbox = new Checkbox( new Text( 'Minor ticks visible', { font: new PhetFont( 20 ) } ),
+    const minorTicksCheckbox = new Checkbox( new Text( 'Minor ticks visible', { font: new PhetFont( 20 ) } ),
       minorTicksVisibleProperty, {
         left: slider.left,
         top: majorTicksCheckbox.bottom + 40
       } );
 
     // enable/disable slider
-    var enabledProperty = new Property( true );
+    const enabledProperty = new Property( true );
     enabledProperty.link( function( enabled ) {
       slider.enabled = enabled;
     } );
-    var enabledCheckbox = new Checkbox( new Text( 'Enable slider', { font: new PhetFont( 20 ) } ),
+    const enabledCheckbox = new Checkbox( new Text( 'Enable slider', { font: new PhetFont( 20 ) } ),
       enabledProperty, {
         left: slider.left,
         top: minorTicksCheckbox.bottom + 40
       } );
 
     // restrict enabled range of slider
-    var restrictedRangeProperty = new Property( false );
-    var enabledRangeProperty = new Property( new Range( 0, 100 ) );
+    const restrictedRangeProperty = new Property( false );
+    const enabledRangeProperty = new Property( new Range( 0, 100 ) );
     restrictedRangeProperty.link( function( restrictedRange ) {
       enabledRangeProperty.value = restrictedRange ? new Range( 25, 75 ) : new Range( 0, 100 );
     } );
     enabledRangeProperty.link( function( enabledRange ) {
       slider.enabledRange = enabledRange;
     } );
-    var enabledRangeCheckbox = new Checkbox( new Text( 'Enable Range [25, 75]', { font: new PhetFont( 20 ) } ),
+    const enabledRangeCheckbox = new Checkbox( new Text( 'Enable Range [25, 75]', { font: new PhetFont( 20 ) } ),
       restrictedRangeProperty, {
         left: slider.left,
         top: enabledCheckbox.bottom + 40
       } );
 
     // All of the controls related to the slider
-    var controls = new VBox( {
+    const controls = new VBox( {
       align: 'left',
       spacing: 30,
       children: [ majorTicksCheckbox, minorTicksCheckbox, enabledCheckbox, enabledRangeCheckbox ]
     } );
 
     // Position the control based on the orientation of the slider
-    var layoutBoxOptions = {
+    const layoutBoxOptions = {
       spacing: 60,
       children: [ slider, controls ],
       center: layoutBounds.center
     };
-    var layoutBox = null;
+    let layoutBox = null;
     if ( orientation === 'horizontal' ) {
       layoutBox = new VBox( layoutBoxOptions );
     }
@@ -325,20 +325,20 @@ define( require => {
   var demoPageControl = function( layoutBounds ) {
 
     // create items
-    var colors = [ 'red', 'blue', 'green', 'yellow', 'pink', 'white', 'orange', 'magenta', 'purple', 'pink' ];
-    var items = [];
+    const colors = [ 'red', 'blue', 'green', 'yellow', 'pink', 'white', 'orange', 'magenta', 'purple', 'pink' ];
+    const items = [];
     colors.forEach( function( color ) {
       items.push( new Rectangle( 0, 0, 100, 100, { fill: color, stroke: 'black' } ) );
     } );
 
     // carousel
-    var carousel = new Carousel( items, {
+    const carousel = new Carousel( items, {
       orientation: 'horizontal',
       itemsPerPage: 3
     } );
 
     // page control
-    var pageControl = new PageControl( carousel.numberOfPages, carousel.pageNumberProperty, {
+    const pageControl = new PageControl( carousel.numberOfPages, carousel.pageNumberProperty, {
       orientation: 'horizontal',
       interactive: true,
       dotRadius: 10,
@@ -360,12 +360,12 @@ define( require => {
   // Creates a demo for NumberSpinner
   var demoNumberSpinner = function( layoutBounds ) {
 
-    var valueProperty = new Property( 0 );
-    var valueRangeProperty = new Property( new Range( -5, 5 ) );
-    var enabledProperty = new Property( true );
+    const valueProperty = new Property( 0 );
+    const valueRangeProperty = new Property( new Range( -5, 5 ) );
+    const enabledProperty = new Property( true );
 
     // options for all spinners
-    var spinnerOptions = {
+    const spinnerOptions = {
       enabledProperty: enabledProperty,
       touchAreaXDilation: 20,
       touchAreaYDilation: 10,
@@ -378,20 +378,20 @@ define( require => {
     };
 
     // Demonstrate each value of options.arrowsPosition
-    var spinnerLeftRight = new NumberSpinner( valueProperty, valueRangeProperty, _.extend( {}, spinnerOptions, {
+    const spinnerLeftRight = new NumberSpinner( valueProperty, valueRangeProperty, _.extend( {}, spinnerOptions, {
       arrowsPosition: 'leftRight',
       valuePattern: '{{value}} bottles of beer on the wall'
     } ) );
-    var spinnerTopBottom = new NumberSpinner( valueProperty, valueRangeProperty, _.extend( {}, spinnerOptions, {
+    const spinnerTopBottom = new NumberSpinner( valueProperty, valueRangeProperty, _.extend( {}, spinnerOptions, {
       arrowsPosition: 'topBottom',
       arrowsScale: 0.65
     } ) );
-    var spinnerBothRight = new NumberSpinner( valueProperty, valueRangeProperty, _.extend( {}, spinnerOptions, {
+    const spinnerBothRight = new NumberSpinner( valueProperty, valueRangeProperty, _.extend( {}, spinnerOptions, {
       arrowsPosition: 'bothRight',
       yMargin: 10,
       valueAlign: 'right'
     } ) );
-    var spinnerBothBottom = new NumberSpinner( valueProperty, valueRangeProperty, _.extend( {}, spinnerOptions, {
+    const spinnerBothBottom = new NumberSpinner( valueProperty, valueRangeProperty, _.extend( {}, spinnerOptions, {
       arrowsPosition: 'bothBottom',
       backgroundFill: 'pink',
       backgroundStroke: 'red',
@@ -402,7 +402,7 @@ define( require => {
       valueAlign: 'left'
     } ) );
 
-    var enabledCheckbox = new Checkbox( new Text( 'enabled', { font: new PhetFont( 20 ) } ), enabledProperty );
+    const enabledCheckbox = new Checkbox( new Text( 'enabled', { font: new PhetFont( 20 ) } ), enabledProperty );
 
     return new VBox( {
       children: [ spinnerTopBottom, spinnerBothRight, spinnerBothBottom, spinnerLeftRight, enabledCheckbox ],
@@ -413,7 +413,7 @@ define( require => {
 
   var demoAlignGroup = function( layoutBounds ) {
     function highlightWrap( node ) {
-      var rect = Rectangle.bounds( node.bounds, { fill: 'rgba(0,0,0,0.25)' } );
+      const rect = Rectangle.bounds( node.bounds, { fill: 'rgba(0,0,0,0.25)' } );
       node.on( 'bounds', function() {
         rect.setRectBounds( node.bounds );
       } );
@@ -425,11 +425,11 @@ define( require => {
       } );
     }
 
-    var iconGroup = new AlignGroup();
-    var iconRow = new HBox( {
+    const iconGroup = new AlignGroup();
+    const iconRow = new HBox( {
       spacing: 10,
       children: _.range( 1, 10 ).map( function() {
-        var randomRect = new Rectangle( 0, 0, phet.joist.random.nextDouble() * 60 + 10, phet.joist.random.nextDouble() * 60 + 10, {
+        const randomRect = new Rectangle( 0, 0, phet.joist.random.nextDouble() * 60 + 10, phet.joist.random.nextDouble() * 60 + 10, {
           fill: 'black'
         } );
         timer.addListener( function() {
@@ -445,13 +445,13 @@ define( require => {
       } ).map( highlightWrap )
     } );
 
-    var panelGroup = new AlignGroup( { matchVertical: false } );
+    const panelGroup = new AlignGroup( { matchVertical: false } );
 
     function randomText() {
-      var text = new Text( 'Test', { fontSize: 20 } );
+      const text = new Text( 'Test', { fontSize: 20 } );
       timer.addListener( function() {
         if ( phet.joist.random.nextDouble() < 0.03 ) {
-          var string = '';
+          let string = '';
           while ( phet.joist.random.nextDouble() < 0.94 && string.length < 20 ) {
             string += ( phet.joist.random.nextDouble() + '' ).slice( -1 );
           }
@@ -461,7 +461,7 @@ define( require => {
       return text;
     }
 
-    var panelRow = new VBox( {
+    const panelRow = new VBox( {
       spacing: 10,
       children: [
         new Panel( new AlignBox( randomText(), { group: panelGroup } ) ),
@@ -483,9 +483,9 @@ define( require => {
   };
 
   var demoAccordionBox = function( layoutBounds ) {
-    var randomRect = new Rectangle( 0, 0, 100, 50, { fill: 'red' } );
+    const randomRect = new Rectangle( 0, 0, 100, 50, { fill: 'red' } );
 
-    var resizeButton = new RectangularPushButton( {
+    const resizeButton = new RectangularPushButton( {
       content: new Text( 'Resize', { font: new PhetFont( 20 ) } ),
       listener: function() {
         randomRect.rectWidth = 50 + phet.joist.random.nextDouble() * 150;

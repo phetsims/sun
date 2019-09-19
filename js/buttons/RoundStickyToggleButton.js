@@ -36,8 +36,8 @@ define( require => {
 
     // @private (read-only)
     // Note it shares a tandem with this, so the emitter will be instrumented as a child of the button
-    var toggleButtonModel = new StickyToggleButtonModel( valueUp, valueDown, property, options );
-    var stickyToggleButtonInteractionStateProperty = new StickyToggleButtonInteractionStateProperty( toggleButtonModel );
+    const toggleButtonModel = new StickyToggleButtonModel( valueUp, valueDown, property, options );
+    const stickyToggleButtonInteractionStateProperty = new StickyToggleButtonInteractionStateProperty( toggleButtonModel );
     RoundButtonView.call( this, toggleButtonModel, stickyToggleButtonInteractionStateProperty, options );
 
     // @private - dispose items specific to this instance

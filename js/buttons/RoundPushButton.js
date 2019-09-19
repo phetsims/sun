@@ -32,12 +32,12 @@ define( require => {
       tandem: Tandem.required
     }, options );
 
-    var self = this;
+    const self = this;
 
     // If a listener was passed in, save it and add it after creating the button model.  This is done so that
     // the same code path is always used for adding listener, thus guaranteeing a consistent code path if addListener is
     // overridden, see https://github.com/phetsims/sun/issues/284.
-    var listener = options.listener;
+    const listener = options.listener;
     options = _.omit( options, [ 'listener' ] );
 
     // @public - listening only

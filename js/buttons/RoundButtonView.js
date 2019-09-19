@@ -29,8 +29,8 @@ define( require => {
   const Vector2 = require( 'DOT/Vector2' );
 
   // constants
-  var HIGHLIGHT_GRADIENT_LENGTH = 5; // In screen coords, which are roughly pixels.
-  var DEFAULT_COLOR = ColorConstants.LIGHT_BLUE;
+  const HIGHLIGHT_GRADIENT_LENGTH = 5; // In screen coords, which are roughly pixels.
+  const DEFAULT_COLOR = ColorConstants.LIGHT_BLUE;
 
   /**
    * @param {PushButtonModel} pushButtonModel
@@ -103,8 +103,8 @@ define( require => {
     }, options );
 
     Node.call( this );
-    var content = options.content; // convenience variable
-    var upCenter = new Vector2( options.xContentOffset, options.yContentOffset );
+    const content = options.content; // convenience variable
+    const upCenter = new Vector2( options.xContentOffset, options.yContentOffset );
 
     // For performance reasons, the content should be unpickable.
     if ( content ) {
@@ -115,20 +115,20 @@ define( require => {
     this.baseColorProperty = new PaintColorProperty( options.baseColor ); // @private
 
     // @private {PressListener}
-    var pressListener = pushButtonModel.createListener( options.listenerOptions );
+    const pressListener = pushButtonModel.createListener( options.listenerOptions );
     this.addInputListener( pressListener );
 
     // Use the user-specified radius if present, otherwise calculate the
     // radius based on the content and the margin.
-    var buttonRadius = options.radius ||
+    const buttonRadius = options.radius ||
                        Math.max( content.width + options.minXMargin * 2, content.height + options.minYMargin * 2 ) / 2;
 
     // Create the basic button shape.
-    var button = new Circle( buttonRadius, { fill: options.baseColor, lineWidth: options.lineWidth } );
+    const button = new Circle( buttonRadius, { fill: options.baseColor, lineWidth: options.lineWidth } );
     this.addChild( button );
 
     // Hook up the strategy that will control the basic button appearance.
-    var buttonAppearanceStrategy = new options.buttonAppearanceStrategy(
+    const buttonAppearanceStrategy = new options.buttonAppearanceStrategy(
       button,
       interactionStateProperty,
       this.baseColorProperty,
@@ -142,10 +142,10 @@ define( require => {
     }
 
     // Hook up the strategy that will control the content appearance.
-    var contentAppearanceStrategy = new options.contentAppearanceStrategy( content, interactionStateProperty );
+    const contentAppearanceStrategy = new options.contentAppearanceStrategy( content, interactionStateProperty );
 
     // Control the pointer state based on the interaction state.
-    var self = this;
+    const self = this;
 
     function handleInteractionStateChanged( state ) {
       self.cursor = state === ButtonInteractionState.DISABLED ||
@@ -199,71 +199,71 @@ define( require => {
 
     // Color properties
     // TODO: Include "Property" in all of these PaintColorProperty names
-    var baseBrighter8 = new PaintColorProperty( baseColorProperty, { luminanceFactor: 0.8 } );
-    var baseBrighter7 = new PaintColorProperty( baseColorProperty, { luminanceFactor: 0.7 } );
-    var baseBrighter3 = new PaintColorProperty( baseColorProperty, { luminanceFactor: 0.3 } );
-    var baseDarker1 = new PaintColorProperty( baseColorProperty, { luminanceFactor: -0.1 } );
-    var baseDarker2 = new PaintColorProperty( baseColorProperty, { luminanceFactor: -0.2 } );
-    var baseDarker4 = new PaintColorProperty( baseColorProperty, { luminanceFactor: -0.4 } );
-    var baseDarker5 = new PaintColorProperty( baseColorProperty, { luminanceFactor: -0.5 } );
-    var disabledBase = new PaintColorProperty( options.disabledBaseColor );
-    var disabledBaseBrighter8 = new PaintColorProperty( options.disabledBaseColor, { luminanceFactor: 0.8 } );
-    var disabledBaseBrighter5 = new PaintColorProperty( options.disabledBaseColor, { luminanceFactor: 0.5 } );
-    var disabledBaseDarker1 = new PaintColorProperty( options.disabledBaseColor, { luminanceFactor: -0.1 } );
-    var disabledBaseDarker2 = new PaintColorProperty( options.disabledBaseColor, { luminanceFactor: -0.2 } );
-    var disabledBaseDarker4 = new PaintColorProperty( options.disabledBaseColor, { luminanceFactor: -0.4 } );
-    var disabledBaseDarker5 = new PaintColorProperty( options.disabledBaseColor, { luminanceFactor: -0.5 } );
-    var baseTransparent = new DerivedProperty( [ baseColorProperty ], function( color ) {
+    const baseBrighter8 = new PaintColorProperty( baseColorProperty, { luminanceFactor: 0.8 } );
+    const baseBrighter7 = new PaintColorProperty( baseColorProperty, { luminanceFactor: 0.7 } );
+    const baseBrighter3 = new PaintColorProperty( baseColorProperty, { luminanceFactor: 0.3 } );
+    const baseDarker1 = new PaintColorProperty( baseColorProperty, { luminanceFactor: -0.1 } );
+    const baseDarker2 = new PaintColorProperty( baseColorProperty, { luminanceFactor: -0.2 } );
+    const baseDarker4 = new PaintColorProperty( baseColorProperty, { luminanceFactor: -0.4 } );
+    const baseDarker5 = new PaintColorProperty( baseColorProperty, { luminanceFactor: -0.5 } );
+    const disabledBase = new PaintColorProperty( options.disabledBaseColor );
+    const disabledBaseBrighter8 = new PaintColorProperty( options.disabledBaseColor, { luminanceFactor: 0.8 } );
+    const disabledBaseBrighter5 = new PaintColorProperty( options.disabledBaseColor, { luminanceFactor: 0.5 } );
+    const disabledBaseDarker1 = new PaintColorProperty( options.disabledBaseColor, { luminanceFactor: -0.1 } );
+    const disabledBaseDarker2 = new PaintColorProperty( options.disabledBaseColor, { luminanceFactor: -0.2 } );
+    const disabledBaseDarker4 = new PaintColorProperty( options.disabledBaseColor, { luminanceFactor: -0.4 } );
+    const disabledBaseDarker5 = new PaintColorProperty( options.disabledBaseColor, { luminanceFactor: -0.5 } );
+    const baseTransparent = new DerivedProperty( [ baseColorProperty ], function( color ) {
       return color.withAlpha( 0 );
     } );
-    var disabledBaseTransparent = new DerivedProperty( [ disabledBase ], function( color ) {
+    const disabledBaseTransparent = new DerivedProperty( [ disabledBase ], function( color ) {
       return color.withAlpha( 0 );
     } );
 
     // Set up variables needed to create the various gradient fills and otherwise mod the appearance
-    var buttonRadius = button.width / 2;
-    var innerGradientRadius = buttonRadius - HIGHLIGHT_GRADIENT_LENGTH / 2;
-    var outerGradientRadius = buttonRadius + HIGHLIGHT_GRADIENT_LENGTH / 2;
-    var gradientOffset = HIGHLIGHT_GRADIENT_LENGTH / 2;
+    const buttonRadius = button.width / 2;
+    const innerGradientRadius = buttonRadius - HIGHLIGHT_GRADIENT_LENGTH / 2;
+    const outerGradientRadius = buttonRadius + HIGHLIGHT_GRADIENT_LENGTH / 2;
+    const gradientOffset = HIGHLIGHT_GRADIENT_LENGTH / 2;
 
-    var upFillHighlight = new RadialGradient( gradientOffset, gradientOffset, innerGradientRadius, gradientOffset, gradientOffset, outerGradientRadius )
+    const upFillHighlight = new RadialGradient( gradientOffset, gradientOffset, innerGradientRadius, gradientOffset, gradientOffset, outerGradientRadius )
       .addColorStop( 0, baseColorProperty )
       .addColorStop( 1, baseBrighter7 );
 
-    var upFillShadow = new RadialGradient( -gradientOffset, -gradientOffset, innerGradientRadius, -gradientOffset, -gradientOffset, outerGradientRadius )
+    const upFillShadow = new RadialGradient( -gradientOffset, -gradientOffset, innerGradientRadius, -gradientOffset, -gradientOffset, outerGradientRadius )
       .addColorStop( 0, baseTransparent )
       .addColorStop( 1, baseDarker5 );
 
-    var overFillHighlight = new RadialGradient( gradientOffset, gradientOffset, innerGradientRadius, gradientOffset, gradientOffset, outerGradientRadius )
+    const overFillHighlight = new RadialGradient( gradientOffset, gradientOffset, innerGradientRadius, gradientOffset, gradientOffset, outerGradientRadius )
       .addColorStop( 0, baseBrighter3 )
       .addColorStop( 1, baseBrighter8 );
 
-    var overFillShadow = new RadialGradient( -gradientOffset, -gradientOffset, innerGradientRadius, -gradientOffset, -gradientOffset, outerGradientRadius )
+    const overFillShadow = new RadialGradient( -gradientOffset, -gradientOffset, innerGradientRadius, -gradientOffset, -gradientOffset, outerGradientRadius )
       .addColorStop( 0, baseTransparent )
       .addColorStop( 1, baseDarker5 );
 
-    var pressedFill = new RadialGradient( -gradientOffset, -gradientOffset, 0, 0, 0, outerGradientRadius )
+    const pressedFill = new RadialGradient( -gradientOffset, -gradientOffset, 0, 0, 0, outerGradientRadius )
       .addColorStop( 0, baseDarker1 )
       .addColorStop( 0.6, baseDarker2 )
       .addColorStop( 0.8, baseColorProperty )
       .addColorStop( 1, baseBrighter8 );
 
-    var disabledFillHighlight = new RadialGradient( gradientOffset, gradientOffset, innerGradientRadius, gradientOffset, gradientOffset, outerGradientRadius )
+    const disabledFillHighlight = new RadialGradient( gradientOffset, gradientOffset, innerGradientRadius, gradientOffset, gradientOffset, outerGradientRadius )
       .addColorStop( 0, options.disabledBaseColor )
       .addColorStop( 1, disabledBaseBrighter5 );
 
-    var disabledFillShadow = new RadialGradient( -gradientOffset, -gradientOffset, innerGradientRadius, -gradientOffset, -gradientOffset, outerGradientRadius )
+    const disabledFillShadow = new RadialGradient( -gradientOffset, -gradientOffset, innerGradientRadius, -gradientOffset, -gradientOffset, outerGradientRadius )
       .addColorStop( 0, disabledBaseTransparent )
       .addColorStop( 1, disabledBaseDarker5 );
 
-    var disabledPressedFillHighlight = new RadialGradient( -gradientOffset, -gradientOffset, 0, 0, 0, outerGradientRadius )
+    const disabledPressedFillHighlight = new RadialGradient( -gradientOffset, -gradientOffset, 0, 0, 0, outerGradientRadius )
       .addColorStop( 0, disabledBaseDarker1 )
       .addColorStop( 0.6, disabledBaseDarker2 )
       .addColorStop( 0.8, options.disabledBaseColor )
       .addColorStop( 1, disabledBaseBrighter8 );
 
-    var enabledStroke = null;
-    var disabledStroke = null;
+    let enabledStroke = null;
+    let disabledStroke = null;
 
     if ( options.stroke === null ) {
       // The stroke was explicitly set to null, so the button should have no stroke.
@@ -282,7 +282,7 @@ define( require => {
     }
 
     // Create and add the overlay that is used to add shading.
-    var overlayForShadowGradient = new Circle( buttonRadius, { lineWidth: options.lineWidth, pickable: false } );
+    const overlayForShadowGradient = new Circle( buttonRadius, { lineWidth: options.lineWidth, pickable: false } );
     button.addChild( overlayForShadowGradient );
 
     button.cachedPaints = [
@@ -376,19 +376,19 @@ define( require => {
   RoundButtonView.FlatAppearanceStrategy = function( button, interactionStateProperty, baseColorProperty, options ) {
 
     // Color properties
-    var baseBrighter4 = new PaintColorProperty( baseColorProperty, { luminanceFactor: 0.4 } );
-    var baseDarker4 = new PaintColorProperty( baseColorProperty, { luminanceFactor: -0.4 } );
-    var disabledBaseDarker4 = new PaintColorProperty( options.disabledBaseColor, { luminanceFactor: -0.4 } );
+    const baseBrighter4 = new PaintColorProperty( baseColorProperty, { luminanceFactor: 0.4 } );
+    const baseDarker4 = new PaintColorProperty( baseColorProperty, { luminanceFactor: -0.4 } );
+    const disabledBaseDarker4 = new PaintColorProperty( options.disabledBaseColor, { luminanceFactor: -0.4 } );
 
     // various fills that are used to alter the button's appearance
-    var upFill = baseColorProperty;
-    var overFill = baseBrighter4;
-    var downFill = baseDarker4;
-    var disabledFill = options.disabledBaseColor;
-    var disabledPressedFillVertical = disabledFill;
+    const upFill = baseColorProperty;
+    const overFill = baseBrighter4;
+    const downFill = baseDarker4;
+    const disabledFill = options.disabledBaseColor;
+    const disabledPressedFillVertical = disabledFill;
 
-    var enabledStroke = null;
-    var disabledStroke = null;
+    let enabledStroke = null;
+    let disabledStroke = null;
 
     if ( options.stroke === null ) {
       // The stroke was explicitly set to null, so the button should have no stroke.

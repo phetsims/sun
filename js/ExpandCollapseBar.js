@@ -42,16 +42,16 @@ define( require => {
     Node.call( this );
 
     // expand/collapse button
-    var button = new ExpandCollapseButton( expandedProperty, {
+    const button = new ExpandCollapseButton( expandedProperty, {
       sideLength: options.buttonLength,
       tandem: options.tandem.createTandem( 'button' )
     } );
     button.touchArea = Shape.bounds( button.localBounds.dilatedXY( 10, 10 ) );
 
     // bar
-    var barWidth = Math.max( options.minWidth, titleNode.width + button.width + options.xSpacing + ( 2 * options.xMargin ) );
-    var barHeight = Math.max( options.minHeight, Math.max( titleNode.height, button.height ) + ( 2 * options.yMargin ) );
-    var barNode = new Rectangle( 0, 0, barWidth, barHeight, options.cornerRadius, options.cornerRadius, {
+    const barWidth = Math.max( options.minWidth, titleNode.width + button.width + options.xSpacing + ( 2 * options.xMargin ) );
+    const barHeight = Math.max( options.minHeight, Math.max( titleNode.height, button.height ) + ( 2 * options.yMargin ) );
+    const barNode = new Rectangle( 0, 0, barWidth, barHeight, options.cornerRadius, options.cornerRadius, {
       fill: options.barFill,
       stroke: options.barStroke,
       lineWidth: options.barLineWidth

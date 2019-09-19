@@ -25,7 +25,7 @@ define( require => {
    * @constructor
    */
   function ToggleButtonModel( valueOff, valueOn, property, options ) {
-    var self = this;
+    const self = this;
 
     options = _.extend( {
       tandem: Tandem.required
@@ -39,7 +39,7 @@ define( require => {
     ButtonModel.call( this, options );
 
     // Behaves like a push button (with fireOnDown:false), but toggles its state when the button is released.
-    var downListener = function( down ) {
+    const downListener = function( down ) {
       if ( self.enabledProperty.get() && self.overProperty.get() ) {
         if ( !down ) {
           self.toggle();
@@ -55,7 +55,7 @@ define( require => {
       phetioEventType: EventType.USER
     } );
 
-    var toggleListener = function() {
+    const toggleListener = function() {
       assert && assert( self.valueProperty.value === self.valueOff || self.valueProperty.value === self.valueOn,
         'unrecognized value: ' + self.valueProperty.value );
 

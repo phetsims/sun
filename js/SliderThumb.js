@@ -36,10 +36,10 @@ define( require => {
       tandem: Tandem.required
     }, options );
 
-    var self = this;
+    const self = this;
 
     // rectangle
-    var arcWidth = 0.25 * options.size.width;
+    const arcWidth = 0.25 * options.size.width;
     Rectangle.call( this, 0, 0,
       options.size.width, options.size.height,
       arcWidth, arcWidth, _.extend( options, {
@@ -52,7 +52,7 @@ define( require => {
 
     // Paint area that is slightly larger than the slider thumb so SVG updates a large enough paintable region.
     // Related to https://github.com/phetsims/masses-and-springs/issues/334
-    var paintLayer = Rectangle.bounds( this.bounds.dilated( 5 ), {
+    const paintLayer = Rectangle.bounds( this.bounds.dilated( 5 ), {
       fill: 'transparent',
       localBounds: this.bounds,
       pickable: false
@@ -60,7 +60,7 @@ define( require => {
     this.addChild( paintLayer );
 
     // vertical line down the center
-    var centerLineYMargin = 3;
+    const centerLineYMargin = 3;
     this.addChild( new Path( Shape.lineSegment(
       options.size.width / 2, centerLineYMargin,
       options.size.width / 2, options.size.height - centerLineYMargin ), {

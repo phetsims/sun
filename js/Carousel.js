@@ -82,7 +82,7 @@ define( require => {
    */
   function Carousel( items, options ) {
 
-    var self = this;
+    const self = this;
 
     // Override defaults with specified options
     options = _.extend( {}, DEFAULT_OPTIONS, options );
@@ -91,17 +91,17 @@ define( require => {
     assert && assert( _.includes( [ 'horizontal', 'vertical' ], options.orientation ), 'invalid orientation=' + options.orientation );
 
     // To improve readability
-    var isHorizontal = ( options.orientation === 'horizontal' );
+    const isHorizontal = ( options.orientation === 'horizontal' );
 
     // Dimensions of largest item
-    var maxItemWidth = _.maxBy( items, function( item ) { return item.width; } ).width;
-    var maxItemHeight = _.maxBy( items, function( item ) { return item.height; } ).height;
+    const maxItemWidth = _.maxBy( items, function( item ) { return item.width; } ).width;
+    const maxItemHeight = _.maxBy( items, function( item ) { return item.height; } ).height;
 
     // This quantity is used make some other computations independent of orientation.
-    var maxItemLength = isHorizontal ? maxItemWidth : maxItemHeight;
+    const maxItemLength = isHorizontal ? maxItemWidth : maxItemHeight;
 
     // Options common to both buttons
-    var buttonOptions = {
+    const buttonOptions = {
       xMargin: 5,
       yMargin: 5,
       cornerRadius: options.cornerRadius,
@@ -121,18 +121,18 @@ define( require => {
     };
 
     // Next/previous buttons
-    var nextButton = new CarouselButton( _.extend( { arrowDirection: isHorizontal ? 'right' : 'down' }, buttonOptions ) );
-    var previousButton = new CarouselButton( _.extend( { arrowDirection: isHorizontal ? 'left' : 'up' }, buttonOptions ) );
+    const nextButton = new CarouselButton( _.extend( { arrowDirection: isHorizontal ? 'right' : 'down' }, buttonOptions ) );
+    const previousButton = new CarouselButton( _.extend( { arrowDirection: isHorizontal ? 'left' : 'up' }, buttonOptions ) );
 
     // Computations related to layout of items
-    var numberOfSeparators = ( options.separatorsVisible ) ? ( items.length - 1 ) : 0;
-    var scrollingLength = ( items.length * ( maxItemLength + options.spacing ) + ( numberOfSeparators * options.spacing ) + options.spacing );
-    var scrollingWidth = isHorizontal ? scrollingLength : ( maxItemWidth + 2 * options.margin );
-    var scrollingHeight = isHorizontal ? ( maxItemHeight + 2 * options.margin ) : scrollingLength;
-    var itemCenter = options.spacing + ( maxItemLength / 2 );
+    const numberOfSeparators = ( options.separatorsVisible ) ? ( items.length - 1 ) : 0;
+    const scrollingLength = ( items.length * ( maxItemLength + options.spacing ) + ( numberOfSeparators * options.spacing ) + options.spacing );
+    const scrollingWidth = isHorizontal ? scrollingLength : ( maxItemWidth + 2 * options.margin );
+    const scrollingHeight = isHorizontal ? ( maxItemHeight + 2 * options.margin ) : scrollingLength;
+    let itemCenter = options.spacing + ( maxItemLength / 2 );
 
     // Options common to all separators
-    var separatorOptions = {
+    const separatorOptions = {
       stroke: options.separatorColor,
       lineWidth: options.separatorLineWidth
     };
@@ -143,7 +143,7 @@ define( require => {
     // All items, arranged in the proper orientation, with margins and spacing.
     // Horizontal carousel arrange items left-to-right, vertical is top-to-bottom.
     // Translation of this node will be animated to give the effect of scrolling through the items.
-    var scrollingNode = new Rectangle( 0, 0, scrollingWidth, scrollingHeight );
+    const scrollingNode = new Rectangle( 0, 0, scrollingWidth, scrollingHeight );
     items.forEach( function( item ) {
 
       // add the item
@@ -162,7 +162,7 @@ define( require => {
 
       // add optional separator
       if ( options.separatorsVisible ) {
-        var separator;
+        let separator;
         if ( isHorizontal ) {
 
           // vertical separator, to the left of the item
@@ -191,36 +191,36 @@ define( require => {
     } );
 
     // How much to translate scrollingNode each time a next/previous button is pressed
-    var scrollingDelta = options.itemsPerPage * ( maxItemLength + options.spacing );
+    let scrollingDelta = options.itemsPerPage * ( maxItemLength + options.spacing );
     if ( options.separatorsVisible ) {
       scrollingDelta += ( options.itemsPerPage * options.spacing );
     }
 
     // Clipping window, to show one page at a time.
     // Clips at the midpoint of spacing between items so that you don't see any stray bits of the items that shouldn't be visible.
-    var windowLength = ( scrollingDelta + options.spacing );
+    let windowLength = ( scrollingDelta + options.spacing );
     if ( options.separatorsVisible ) {
       windowLength -= options.spacing;
     }
-    var windowWidth = isHorizontal ? windowLength : scrollingNode.width;
-    var windowHeight = isHorizontal ? scrollingNode.height : windowLength;
-    var clipArea = isHorizontal ?
+    const windowWidth = isHorizontal ? windowLength : scrollingNode.width;
+    const windowHeight = isHorizontal ? scrollingNode.height : windowLength;
+    const clipArea = isHorizontal ?
                    Shape.rectangle( options.spacing / 2, 0, windowWidth - options.spacing, windowHeight ) :
                    Shape.rectangle( 0, options.spacing / 2, windowWidth, windowHeight - options.spacing );
-    var windowNode = new Node( {
+    const windowNode = new Node( {
       children: [ scrollingNode ],
       clipArea: clipArea
     } );
 
     // Background - displays the carousel's fill color
-    var backgroundWidth = isHorizontal ? ( windowWidth + nextButton.width + previousButton.width ) : windowWidth;
-    var backgroundHeight = isHorizontal ? windowHeight : ( windowHeight + nextButton.height + previousButton.height );
-    var backgroundNode = new Rectangle( 0, 0, backgroundWidth, backgroundHeight, options.cornerRadius, options.cornerRadius, {
+    const backgroundWidth = isHorizontal ? ( windowWidth + nextButton.width + previousButton.width ) : windowWidth;
+    const backgroundHeight = isHorizontal ? windowHeight : ( windowHeight + nextButton.height + previousButton.height );
+    const backgroundNode = new Rectangle( 0, 0, backgroundWidth, backgroundHeight, options.cornerRadius, options.cornerRadius, {
       fill: options.fill
     } );
 
     // Foreground - displays the carousel's outline, created as a separate node so that it can be placed on top of everything, for a clean look.
-    var foregroundNode = new Rectangle( 0, 0, backgroundWidth, backgroundHeight, options.cornerRadius, options.cornerRadius, {
+    const foregroundNode = new Rectangle( 0, 0, backgroundWidth, backgroundHeight, options.cornerRadius, options.cornerRadius, {
       stroke: options.stroke
     } );
 
@@ -239,7 +239,7 @@ define( require => {
     }
 
     // Number of pages
-    var numberOfPages = items.length / options.itemsPerPage;
+    let numberOfPages = items.length / options.itemsPerPage;
     if ( !Util.isInteger( numberOfPages ) ) {
       numberOfPages = Math.floor( numberOfPages + 1 );
     }
@@ -247,10 +247,10 @@ define( require => {
     // Number of the page that is visible in the carousel.
     assert && assert( options.defaultPageNumber >= 0 && options.defaultPageNumber <= numberOfPages - 1,
       'defaultPageNumber is out of range: ' + options.defaultPageNumber );
-    var pageNumberProperty = new Property( options.defaultPageNumber );
+    const pageNumberProperty = new Property( options.defaultPageNumber );
 
     // Change pages
-    var scrollAnimation = null;
+    let scrollAnimation = null;
 
     function pageNumberListener( pageNumber ) {
 
@@ -270,7 +270,7 @@ define( require => {
       if ( self._animationEnabled ) {
 
         // options that are independent of orientation
-        var animationOptions = {
+        let animationOptions = {
           duration: options.animationDuration,
           stepEmitter: options.stepEmitter,
           easing: Easing.CUBIC_IN_OUT
@@ -357,7 +357,7 @@ define( require => {
         animationEnabled: this.animationEnabled // {boolean} whether to enable animation during reset
       }, options );
 
-      var saveAnimationEnabled = this.animationEnabled;
+      const saveAnimationEnabled = this.animationEnabled;
       this.animationEnabled = options.animationEnabled;
       this.pageNumberProperty.reset();
       this.animationEnabled = saveAnimationEnabled;
@@ -408,7 +408,7 @@ define( require => {
      * @public
      */
     isItemVisible: function( item ) {
-      var itemIndex = this.items.indexOf( item );
+      const itemIndex = this.items.indexOf( item );
       assert && assert( itemIndex !== -1, 'item not found' );
       return ( this.pageNumberProperty.get() === this.itemIndexToPageNumber( itemIndex ) );
     },

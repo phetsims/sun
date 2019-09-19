@@ -19,7 +19,7 @@ define( require => {
   const Text = require( 'SCENERY/nodes/Text' );
 
   function ComponentHolder( createFunction ) {
-    var self = this;
+    const self = this;
     this.dispose = function() {
       self.instance.dispose();
     };
@@ -28,10 +28,10 @@ define( require => {
     };
   }
 
-  var numberProperty = new Property( 0 );
-  var booleanProperty = new Property( false );
+  const numberProperty = new Property( 0 );
+  const booleanProperty = new Property( false );
 
-  var components = [
+  const components = [
     new ComponentHolder( function() {
       return new HSlider( numberProperty, new Range( 0, 10 ) );
     } ),
@@ -55,8 +55,8 @@ define( require => {
   return inherit( ScreenView, MemoryTestsScreenView, {
     step: function() {
 
-      for ( var i = 0; i < components.length; i++ ) {
-        var holder = components[ i ];
+      for ( let i = 0; i < components.length; i++ ) {
+        const holder = components[ i ];
 
         // dispose first, then create and add at the end of the loop so components will be visible on the screen during
         // animation.

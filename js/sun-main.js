@@ -21,13 +21,13 @@ define( require => {
   // strings
   const sunTitleString = require( 'string!SUN/sun.title' );
 
-  var simOptions = {
+  const simOptions = {
     credits: {
       leadDesign: 'PhET'
     }
   };
 
-  var createScreenIcon = function( color ) {
+  const createScreenIcon = function( color ) {
     return new Rectangle( 0, 0, Screen.MINIMUM_HOME_SCREEN_ICON_SIZE.width, Screen.MINIMUM_HOME_SCREEN_ICON_SIZE.height, { fill: color } );
   };
 

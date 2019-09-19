@@ -52,10 +52,10 @@ define( require => {
     assert && assert( _.includes( [ 'horizontal', 'vertical' ], options.orientation ), 'invalid orientation=' + options.orientation );
 
     // To improve readability
-    var isHorizontal = ( options.orientation === 'horizontal' );
+    const isHorizontal = ( options.orientation === 'horizontal' );
 
     // Clicking on a dot goes to that page
-    var dotListener = new DownUpListener( {
+    const dotListener = new DownUpListener( {
       down: function( event ) {
         assert && assert( event.currentTarget.hasOwnProperty( 'pageNumber' ) );
         pageNumberProperty.set( event.currentTarget.pageNumber );
@@ -66,12 +66,12 @@ define( require => {
     // Add them to an intermediate parent node, so that additional children can't be inadvertently added.
     // For horizontal orientation, pages are ordered left-to-right.
     // For vertical orientation, pages are ordered top-to-bottom.
-    var dotsParent = new Node();
-    for ( var pageNumber = 0; pageNumber < numberOfPages; pageNumber++ ) {
+    const dotsParent = new Node();
+    for ( let pageNumber = 0; pageNumber < numberOfPages; pageNumber++ ) {
 
       // dot
-      var dotCenter = ( pageNumber * ( 2 * options.dotRadius + options.dotSpacing ) );
-      var dotNode = new DotNode( pageNumber, options.dotRadius, {
+      const dotCenter = ( pageNumber * ( 2 * options.dotRadius + options.dotSpacing ) );
+      const dotNode = new DotNode( pageNumber, options.dotRadius, {
         fill: options.pageFill,
         stroke: options.pageStroke,
         lineWidth: options.lineWidth,
@@ -92,7 +92,7 @@ define( require => {
     }
 
     // Indicate which page is selected
-    var pageNumberObserver = function( pageNumber, oldPageNumber ) {
+    const pageNumberObserver = function( pageNumber, oldPageNumber ) {
 
       // previous dot
       if ( oldPageNumber || oldPageNumber === 0 ) {

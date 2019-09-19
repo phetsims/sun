@@ -57,7 +57,7 @@ define( require => {
      * @param {item} item
      */
     removeDraggableItem: function( item ) {
-      var index = _.indexOf( this.items, item );
+      const index = _.indexOf( this.items, item );
       assert && assert( index >= 0 );
       this.items.splice( index, 1 );
     },
@@ -65,7 +65,7 @@ define( require => {
     down: function( event ) {
       // If there was nothing else in the way
       if ( event.target === event.currentTarget ) {
-        var threshold = 0;
+        let threshold = 0;
         if ( event.pointer instanceof Touch ) {
           threshold = this.touchThreshold;
         }
@@ -74,14 +74,14 @@ define( require => {
         }
         if ( threshold ) {
           // search for the closest item
-          var currentItem = null;
-          var currentDistance = Number.POSITIVE_INFINITY;
-          var globalPoint = event.pointer.point;
-          var numItems = this.items.length;
-          for ( var i = 0; i < numItems; i++ ) {
-            var item = this.items[ i ];
+          let currentItem = null;
+          let currentDistance = Number.POSITIVE_INFINITY;
+          const globalPoint = event.pointer.point;
+          const numItems = this.items.length;
+          for ( let i = 0; i < numItems; i++ ) {
+            const item = this.items[ i ];
 
-            var distance = item.computeDistance( globalPoint );
+            const distance = item.computeDistance( globalPoint );
             if ( distance < currentDistance ) {
               currentDistance = distance;
               currentItem = item;

@@ -28,7 +28,7 @@ define( require => {
    * @constructor
    */
   function StickyToggleButtonModel( valueUp, valueDown, valueProperty, options ) {
-    var self = this;
+    const self = this;
 
     options = _.extend( {
       tandem: Tandem.required
@@ -44,7 +44,7 @@ define( require => {
       phetioEventType: EventType.USER
     } );
 
-    var toggleListener = function() {
+    const toggleListener = function() {
       assert && assert( self.valueProperty.value === self.valueUp || self.valueProperty.value === self.valueDown,
         'unrecognized value: ' + self.valueProperty.value );
 
@@ -65,7 +65,7 @@ define( require => {
     // If the button is up and the user presses it, show it pressed and toggle the state right away.  When the button is
     // released, pop up the button (unless it was part of the same action that pressed the button down in the first
     // place).
-    var downListener = function( down ) {
+    const downListener = function( down ) {
       if ( self.enabledProperty.get() && self.overProperty.get() ) {
         if ( down && valueProperty.value === valueUp ) {
           self.toggle();
@@ -91,13 +91,13 @@ define( require => {
 
     // if the valueProperty is set externally to user interaction, update the buttonModel
     // downProperty so the model stays in sync
-    var valuePropertyListener = function( value ) {
+    const valuePropertyListener = function( value ) {
       self.downProperty.set( value === valueDown );
     };
     valueProperty.link( valuePropertyListener );
 
     // make the button ready to toggle when enabled
-    var enabledPropertyOnListener = function( enabled ) {
+    const enabledPropertyOnListener = function( enabled ) {
       if ( enabled ) {
         self.pressedWhileDownProperty.set( true );
       }

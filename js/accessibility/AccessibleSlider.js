@@ -22,7 +22,7 @@ define( require => {
   const Node = require( 'SCENERY/nodes/Node' );
   const sun = require( 'SUN/sun' );
 
-  var AccessibleSlider = {
+  const AccessibleSlider = {
 
     /**
      * Implement functionality for a slider.
@@ -35,7 +35,7 @@ define( require => {
     mixInto: function( type ) {
       assert && assert( _.includes( inheritance( type ), Node ) );
 
-      var proto = type.prototype;
+      const proto = type.prototype;
 
       // mixin general value handling
       AccessibleValueHandler.mixInto( type );
@@ -53,9 +53,9 @@ define( require => {
          * @protected
          */
         initializeAccessibleSlider: function( valueProperty, enabledRangeProperty, enabledProperty, options ) {
-          var self = this;
+          const self = this;
 
-          var defaults = {
+          const defaults = {
             startDrag: _.noop, // called when a drag sequence starts
             endDrag: _.noop, // called when a drag sequence ends
             constrainValue: _.identity // called before valueProperty is set
@@ -74,7 +74,7 @@ define( require => {
           this.initializeAccessibleValueHandler( valueProperty, enabledRangeProperty, enabledProperty, options );
 
           // handle all accessible event input
-          var accessibleInputListener = this.getAccessibleValueHandlerInputListener();
+          const accessibleInputListener = this.getAccessibleValueHandlerInputListener();
           this.addInputListener( accessibleInputListener );
 
           // @private - called by disposeAccessibleSlider to prevent memory leaks

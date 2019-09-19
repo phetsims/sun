@@ -23,21 +23,21 @@ define( require => {
   const Text = require( 'SCENERY/nodes/Text' );
 
   // the check mark used for toggle-able menu items
-  var CHECK_MARK_NODE = new FontAwesomeNode( 'check', {
+  const CHECK_MARK_NODE = new FontAwesomeNode( 'check', {
     fill: 'rgba(0,0,0,0.7)',
     scale: 0.4
   } );
 
   // constants
-  var FONT_SIZE = 18;
-  var HIGHLIGHT_COLOR = '#a6d2f4';
-  var MAX_ITEM_WIDTH = 400;
-  var CHECK_PADDING = 2;  // padding between the check and text
-  var CHECK_OFFSET = CHECK_MARK_NODE.width + CHECK_PADDING; // offset that includes the check mark's width and padding
-  var LEFT_X_MARGIN = 2;
-  var RIGHT_X_MARGIN = 5;
-  var Y_MARGIN = 3;
-  var CORNER_RADIUS = 5;
+  const FONT_SIZE = 18;
+  const HIGHLIGHT_COLOR = '#a6d2f4';
+  const MAX_ITEM_WIDTH = 400;
+  const CHECK_PADDING = 2;  // padding between the check and text
+  const CHECK_OFFSET = CHECK_MARK_NODE.width + CHECK_PADDING; // offset that includes the check mark's width and padding
+  const LEFT_X_MARGIN = 2;
+  const RIGHT_X_MARGIN = 5;
+  const Y_MARGIN = 3;
+  const CORNER_RADIUS = 5;
 
   /**
    * @param {Number} width - the width of the menu item
@@ -49,7 +49,7 @@ define( require => {
    * @constructor
    */
   function MenuItem( width, height, closeCallback, text, callback, options ) {
-    var self = this;
+    const self = this;
 
     // Extend the object with defaults.
     options = _.extend( {
@@ -72,13 +72,13 @@ define( require => {
 
     Node.call( this );
 
-    var textNode = new Text( text, {
+    const textNode = new Text( text, {
       font: new PhetFont( FONT_SIZE ),
       fill: options.textFill,
       maxWidth: MAX_ITEM_WIDTH
     } );
 
-    var highlight = new Rectangle( 0, 0, width + LEFT_X_MARGIN + RIGHT_X_MARGIN + CHECK_OFFSET,
+    const highlight = new Rectangle( 0, 0, width + LEFT_X_MARGIN + RIGHT_X_MARGIN + CHECK_OFFSET,
       height + Y_MARGIN + Y_MARGIN, CORNER_RADIUS, CORNER_RADIUS );
 
     this.addChild( highlight );
@@ -92,7 +92,7 @@ define( require => {
       exit: function() { highlight.fill = null; }
     } );
 
-    var fire = function( event ) {
+    const fire = function( event ) {
       closeCallback( event );
       callback( event );
     };
@@ -106,9 +106,9 @@ define( require => {
     this.separatorBefore = options.separatorBefore;
 
     // if there is a check-mark property, add the check mark and hook up visibility changes
-    var checkListener;
+    let checkListener;
     if ( options.checkedProperty ) {
-      var checkMarkWrapper = new Node( {
+      const checkMarkWrapper = new Node( {
         children: [ CHECK_MARK_NODE ],
         right: textNode.left - CHECK_PADDING,
         centerY: textNode.centerY
@@ -121,12 +121,12 @@ define( require => {
     }
 
     // a11y - activate the item when selected with the keyboard
-    var clickListener = {
+    const clickListener = {
       click: function( event ) {
         fire();
 
         // limit search of next focusable to root accessible HTML element
-        var rootElement = phet.joist.display.accessibleDOMElement;
+        const rootElement = phet.joist.display.accessibleDOMElement;
         options.focusAfterCallback && AccessibilityUtil.getNextFocusable( rootElement ).focus();
       }
     };
