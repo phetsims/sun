@@ -145,7 +145,7 @@ define( require => {
 
       // When Property's value changes, show the corresponding item's Node on the button.
       let item = null;
-      const propertyObserver = ( value ) => {
+      const propertyObserver = value => {
         
         // Remove bounds listener from previous item.node
         if ( item && item.node.hasListener( 'bounds', updateItemLayout ) ) {

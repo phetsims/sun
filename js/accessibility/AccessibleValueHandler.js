@@ -293,7 +293,7 @@ define( require => {
           this.setA11yDependencies( options.a11yDependencies );
 
           // listeners, must be unlinked in dispose
-          var enabledRangeObserver = ( enabledRange ) => {
+          var enabledRangeObserver = enabledRange => {
 
             // a11y - update enabled slider range for AT, required for screen reader events to behave correctly
             this.setAccessibleAttribute( 'min', enabledRange.min );
