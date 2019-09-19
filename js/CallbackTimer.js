@@ -52,7 +52,7 @@ define( require => {
 
     // @public Starts the timer.
     start: function() {
-      var self = this;
+      const self = this;
       if ( !self.isRunning() ) {
         self.fired = false;
         self.delayID = timer.setTimeout( function() {
@@ -100,7 +100,7 @@ define( require => {
 
     // @public Removes a {function} callback.
     removeCallback: function( callback ) {
-      var index = this.callbacks.indexOf( callback );
+      const index = this.callbacks.indexOf( callback );
       if ( index !== -1 ) {
         this.callbacks.splice( index, 1 );
       }
@@ -112,8 +112,8 @@ define( require => {
      * @public
      */
     fire: function() {
-      var callbacksCopy = this.callbacks.slice( 0 );
-      for ( var i = 0; i < callbacksCopy.length; i++ ) {
+      const callbacksCopy = this.callbacks.slice( 0 );
+      for ( let i = 0; i < callbacksCopy.length; i++ ) {
         callbacksCopy[ i ]();
       }
       this.fired = true;

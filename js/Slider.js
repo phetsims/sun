@@ -48,7 +48,7 @@ define( require => {
    */
   function Slider( valueProperty, range, options ) {
 
-    var self = this;
+    const self = this;
 
     // Guard against mutually exclusive options before defaults are filled in.
     assert && assertMutuallyExclusiveOptions( options, [ 'thumbNode' ], [
@@ -141,8 +141,8 @@ define( require => {
 
     Node.call( this );
 
-    var ownsEnabledProperty = !options.enabledProperty;
-    var ownsEnabledRangeProperty = !options.enabledRangeProperty;
+    const ownsEnabledProperty = !options.enabledProperty;
+    const ownsEnabledRangeProperty = !options.enabledRangeProperty;
 
     if ( assert && Tandem.PHET_IO_ENABLED && !ownsEnabledProperty ) {
       options.tandem.supplied && assert( options.enabledProperty.isPhetioInstrumented(),
@@ -176,7 +176,7 @@ define( require => {
       'majorTickLength', 'majorTickStroke', 'majorTickLineWidth',
       'minorTickLength', 'minorTickStroke', 'minorTickLineWidth' );
 
-    var sliderParts = [];
+    const sliderParts = [];
 
     // @private ticks are added to these parents, so they are behind the knob
     this.majorTicksParent = new Node();
@@ -207,7 +207,7 @@ define( require => {
     this.track.centerX = this.track.valueToPosition( ( range.max + range.min ) / 2 );
 
     // The thumb of the slider
-    var thumb = options.thumbNode || new SliderThumb( {
+    const thumb = options.thumbNode || new SliderThumb( {
 
       // propagate options that are specific to SliderThumb
       size: options.thumbSize,
@@ -234,7 +234,7 @@ define( require => {
     // Wrap all of the slider parts in a Node, and set the orientation of that Node.
     // This allows us to still decorate the Slider with additional children.
     // See https://github.com/phetsims/sun/issues/406
-    var sliderPartsNode = new Node( { children: sliderParts } );
+    const sliderPartsNode = new Node( { children: sliderParts } );
     if ( options.orientation === 'vertical' ) {
       sliderPartsNode.rotation = VERTICAL_ROTATION;
     }
@@ -251,8 +251,8 @@ define( require => {
     }
 
     // update value when thumb is dragged
-    var clickXOffset = 0; // x-offset between initial click and thumb's origin
-    var thumbInputListener = new SimpleDragHandler( {
+    let clickXOffset = 0; // x-offset between initial click and thumb's origin
+    const thumbInputListener = new SimpleDragHandler( {
 
       tandem: options.tandem.createTandem( 'thumbInputListener' ),
 
@@ -262,7 +262,7 @@ define( require => {
       start: function( event, trail ) {
         if ( self.enabledProperty.get() ) {
           options.startDrag( event );
-          var transform = trail.subtrailTo( sliderPartsNode ).getTransform();
+          const transform = trail.subtrailTo( sliderPartsNode ).getTransform();
 
           // Determine the offset relative to the center of the thumb
           clickXOffset = transform.inversePosition2( event.pointer.point ).x - thumb.centerX;
@@ -271,9 +271,9 @@ define( require => {
 
       drag: function( event, trail ) {
         if ( self.enabledProperty.get() ) {
-          var transform = trail.subtrailTo( sliderPartsNode ).getTransform(); // we only want the transform to our parent
-          var x = transform.inversePosition2( event.pointer.point ).x - clickXOffset;
-          var newValue = self.track.valueToPosition.inverse( x );
+          const transform = trail.subtrailTo( sliderPartsNode ).getTransform(); // we only want the transform to our parent
+          const x = transform.inversePosition2( event.pointer.point ).x - clickXOffset;
+          const newValue = self.track.valueToPosition.inverse( x );
 
           valueProperty.set( options.constrainValue( newValue ) );
         }
@@ -288,7 +288,7 @@ define( require => {
     thumb.addInputListener( thumbInputListener );
 
     // enable/disable
-    var enabledObserver = function( enabled ) {
+    const enabledObserver = function( enabled ) {
       self.interruptSubtreeInput();
       self.pickable = enabled;
       self.cursor = enabled ? options.cursor : 'default';
@@ -297,13 +297,13 @@ define( require => {
     this.enabledProperty.link( enabledObserver ); // must be unlinked in disposeSlider
 
     // update thumb location when value changes
-    var valueObserver = function( value ) {
+    const valueObserver = function( value ) {
       thumb.centerX = self.track.valueToPosition( value );
     };
     valueProperty.link( valueObserver ); // must be unlinked in disposeSlider
 
     // when the enabled range changes, the value to position linear function must change as well
-    var enabledRangeObserver = function( enabledRange ) {
+    const enabledRangeObserver = function( enabledRange ) {
 
       // clamp the value to the enabled range if it changes
       valueProperty.set( Util.clamp( valueProperty.value, enabledRange.min, enabledRange.max ) );
@@ -388,10 +388,10 @@ define( require => {
      * @private
      */
     addTick: function( parent, value, label, length, stroke, lineWidth ) {
-      var labelX = this.track.valueToPosition( value );
+      const labelX = this.track.valueToPosition( value );
 
       // ticks
-      var tick = new Path( new Shape()
+      const tick = new Path( new Shape()
           .moveTo( labelX, this.track.top )
           .lineTo( labelX, this.track.top - length ),
         { stroke: stroke, lineWidth: lineWidth } );

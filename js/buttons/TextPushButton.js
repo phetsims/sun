@@ -31,7 +31,7 @@ define( require => {
       innerContent: text
     }, options );
 
-    var textNode = new Text( text, {
+    const textNode = new Text( text, {
       font: options.font,
       fill: options.textFill,
       maxWidth: options.maxTextWidth,

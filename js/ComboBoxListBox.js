@@ -159,7 +159,7 @@ define( require => {
 
         // Handle keydown
         keydown: event => {
-          var keyCode = event.domEvent.keyCode;
+          const keyCode = event.domEvent.keyCode;
           if ( keyCode === KeyboardUtil.KEY_ESCAPE || keyCode === KeyboardUtil.KEY_TAB ) {
 
             // Escape and Tab hide the list box and return focus to the button

@@ -32,7 +32,7 @@ define( require => {
    */
   function RadioButtonGroupMember( property, value, options ) {
 
-    var self = this;
+    const self = this;
 
     options = _.extend( {
       // The fill for the rectangle behind the radio buttons.  Default color is bluish color, as in the other button library.
@@ -103,7 +103,7 @@ define( require => {
 
     // a11y - when the property changes, make sure the correct radio button is marked as 'checked' so that this button
     // receives focus on 'tab'
-    var accessibleCheckedListener = function( newValue ) {
+    const accessibleCheckedListener = function( newValue ) {
       self.accessibleChecked = newValue === value;
     };
     property.link( accessibleCheckedListener );

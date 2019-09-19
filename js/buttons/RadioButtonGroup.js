@@ -31,14 +31,14 @@ define( require => {
   const Tandem = require( 'TANDEM/Tandem' );
 
   // constants
-  var BUTTON_CONTENT_X_ALIGN_VALUES = [ 'center', 'left', 'right' ];
-  var BUTTON_CONTENT_Y_ALIGN_VALUES = [ 'center', 'top', 'bottom' ];
-  var CLASS_NAME = 'RadioButtonGroup'; // to prefix instanceCount in case there are different kinds of "groups"
+  const BUTTON_CONTENT_X_ALIGN_VALUES = [ 'center', 'left', 'right' ];
+  const BUTTON_CONTENT_Y_ALIGN_VALUES = [ 'center', 'top', 'bottom' ];
+  const CLASS_NAME = 'RadioButtonGroup'; // to prefix instanceCount in case there are different kinds of "groups"
 
   // a11y - Unique ID for each instance if RadioButtonGroup, passed to individual buttons in the group. All buttons in
   // the  radio button group must have the same name or else the browser will treat all inputs of type radio in the
   // document as being in a single group.
-  var instanceCount = 0;
+  let instanceCount = 0;
 
   /**
    * RadioButtonGroup constructor.
@@ -77,10 +77,10 @@ define( require => {
       return obj.hasOwnProperty( 'node' ) && obj.hasOwnProperty( 'value' );
     } ), 'contentArray must be an array of objects with properties "node" and "value"' );
 
-    var i; // for loops
+    let i; // for loops
 
     // make sure that each value passed into the contentArray is unique
-    var uniqueValues = [];
+    const uniqueValues = [];
     for ( i = 0; i < contentArray.length; i++ ) {
       if ( uniqueValues.indexOf( contentArray[ i ].value ) < 0 ) {
         uniqueValues.push( contentArray[ i ].value );
@@ -96,7 +96,7 @@ define( require => {
                        '" that is not present in the contentArray' );
     }
 
-    var defaultOptions = {
+    const defaultOptions = {
 
       // LayoutBox options (super class of RadioButtonGroup)
       spacing: 10,
@@ -171,17 +171,17 @@ define( require => {
       'invalid buttonContentYAlign: ' + options.buttonContentYAlign );
 
     // make a copy of the options to pass to individual buttons that includes all default options but not scenery options
-    var buttonOptions = _.pick( options, _.keys( defaultOptions ) );
+    const buttonOptions = _.pick( options, _.keys( defaultOptions ) );
 
     // calculate the maximum width and height of the content so we can make all radio buttons the same size
-    var widestContentWidth = _.maxBy( contentArray, function( content ) { return content.node.width; } ).node.width;
-    var tallestContentHeight = _.maxBy( contentArray, function( content ) { return content.node.height; } ).node.height;
+    const widestContentWidth = _.maxBy( contentArray, function( content ) { return content.node.width; } ).node.width;
+    const tallestContentHeight = _.maxBy( contentArray, function( content ) { return content.node.height; } ).node.height;
 
     // make sure all radio buttons are the same size and create the RadioButtons
-    var buttons = [];
-    var button;
+    const buttons = [];
+    let button;
     for ( i = 0; i < contentArray.length; i++ ) {
-      var currentContent = contentArray[ i ];
+      const currentContent = contentArray[ i ];
 
       assert && assert( !currentContent.hasOwnProperty( 'phetioType' ), 'phetioType should be provided by ' +
                                                                         'the property passed to the ' +
@@ -190,7 +190,7 @@ define( require => {
       assert && assert( !currentContent.tandem, 'content arrays should not have tandem instances, they should use ' +
                                                 'tandemName instead' );
 
-      var opts = _.extend( {
+      const opts = _.extend( {
         content: currentContent.node,
         xMargin: options.buttonContentXMargin,
         yMargin: options.buttonContentYMargin,
@@ -217,37 +217,37 @@ define( require => {
         opts.descriptionContent = currentContent.descriptionContent;
       }
 
-      var radioButton = new RadioButtonGroupMember( property, currentContent.value, opts );
+      const radioButton = new RadioButtonGroupMember( property, currentContent.value, opts );
 
       // a11y - so the browser recognizes these buttons are in the same group, see instanceCount for more info
       radioButton.setAccessibleAttribute( 'name', CLASS_NAME + instanceCount );
 
       // ensure the buttons don't resize when selected vs unselected by adding a rectangle with the max size
-      var maxLineWidth = Math.max( options.selectedLineWidth, options.deselectedLineWidth );
-      var maxButtonWidth = maxLineWidth + widestContentWidth + options.buttonContentXMargin * 2;
-      var maxButtonHeight = maxLineWidth + tallestContentHeight + options.buttonContentYMargin * 2;
-      var boundingRect = new Rectangle( 0, 0, maxButtonWidth, maxButtonHeight, {
+      const maxLineWidth = Math.max( options.selectedLineWidth, options.deselectedLineWidth );
+      const maxButtonWidth = maxLineWidth + widestContentWidth + options.buttonContentXMargin * 2;
+      const maxButtonHeight = maxLineWidth + tallestContentHeight + options.buttonContentYMargin * 2;
+      const boundingRect = new Rectangle( 0, 0, maxButtonWidth, maxButtonHeight, {
         fill: 'rgba(0,0,0,0)',
         center: radioButton.center
       } );
       radioButton.addChild( boundingRect );
 
       // default bounds for focus highlight, will include label if one exists
-      var defaultHighlightBounds = null;
+      let defaultHighlightBounds = null;
 
       // if a label is given, the button becomes a LayoutBox with the label and button
       if ( currentContent.label ) {
-        var label = currentContent.label;
-        var labelOrientation = ( options.labelAlign === 'bottom' || options.labelAlign === 'top' ) ? 'vertical' : 'horizontal';
-        var labelChildren = ( options.labelAlign === 'left' || options.labelAlign === 'top' ) ? [ label, radioButton ] : [ radioButton, label ];
+        const label = currentContent.label;
+        const labelOrientation = ( options.labelAlign === 'bottom' || options.labelAlign === 'top' ) ? 'vertical' : 'horizontal';
+        const labelChildren = ( options.labelAlign === 'left' || options.labelAlign === 'top' ) ? [ label, radioButton ] : [ radioButton, label ];
         button = new LayoutBox( {
           children: labelChildren,
           spacing: options.labelSpacing,
           orientation: labelOrientation
         } );
 
-        var xDilation = options.touchAreaXDilation;
-        var yDilation = options.touchAreaYDilation;
+        let xDilation = options.touchAreaXDilation;
+        let yDilation = options.touchAreaYDilation;
 
         // override the touch and mouse areas defined in RectangularButtonView
         // extra width is added to the SingleRadioButtons so they don't change size if the line width changes,
@@ -283,7 +283,7 @@ define( require => {
       }
 
       // a11y - set the focus highlight, dilated by the optional expansion values
-      var highlightBounds = defaultHighlightBounds.dilatedX( opts.a11yHighlightXDilation ).dilatedY( opts.a11yHighlightYDilation );
+      const highlightBounds = defaultHighlightBounds.dilatedX( opts.a11yHighlightXDilation ).dilatedY( opts.a11yHighlightYDilation );
       radioButton.setFocusHighlight( Shape.bounds( highlightBounds ) );
 
       buttons.push( button );
@@ -295,7 +295,7 @@ define( require => {
     // super call
     options.children = buttons;
     LayoutBox.call( this, options );
-    var self = this;
+    const self = this;
 
     // a11y - this node's primary sibling is aria-labelledby its own label so the label content is read whenever
     // a member of the group receives focus
@@ -306,12 +306,12 @@ define( require => {
     } );
 
     // When the entire RadioButtonGroup gets disabled, gray them out and make them unpickable (and vice versa)
-    var enabledListener = function( isEnabled ) {
+    const enabledListener = function( isEnabled ) {
       self.pickable = isEnabled;
 
       for ( i = 0; i < contentArray.length; i++ ) {
         if ( buttons[ i ] instanceof LayoutBox ) {
-          for ( var j = 0; j < 2; j++ ) {
+          for ( let j = 0; j < 2; j++ ) {
             buttons[ i ].children[ j ].enabled = isEnabled;
           }
         }
@@ -323,7 +323,7 @@ define( require => {
     this.enabledProperty.link( enabledListener );
 
     // make the unselected buttons pickable and have a pointer cursor
-    var propertyListener = function( value ) {
+    const propertyListener = function( value ) {
       if ( self.enabledProperty.get() ) {
         for ( i = 0; i < contentArray.length; i++ ) {
           if ( contentArray[ i ].value === value ) {

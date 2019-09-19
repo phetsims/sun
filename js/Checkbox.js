@@ -34,7 +34,7 @@ define( require => {
    * @constructor
    */
   function Checkbox( content, property, options ) {
-    var self = this;
+    const self = this;
 
     options = _.extend( {
       spacing: 5,
@@ -64,7 +64,7 @@ define( require => {
     PhetioObject.mergePhetioComponentOptions( { visibleProperty: { phetioFeatured: true } }, options );
 
     // @private - sends out notifications when the checkbox is toggled.
-    var toggleAction = new Action( function( value ) {
+    const toggleAction = new Action( function( value ) {
       property.value = value;
     }, {
       parameters: [ { name: 'isChecked', phetioType: BooleanIO } ],
@@ -86,7 +86,7 @@ define( require => {
     this.uncheckedNode = new FontAwesomeNode( 'check_empty', {
       fill: options.checkboxColor
     } );
-    var iconScale = options.boxWidth / this.uncheckedNode.width;
+    const iconScale = options.boxWidth / this.uncheckedNode.width;
     this.uncheckedNode.scale( iconScale );
 
     // @private
@@ -110,10 +110,10 @@ define( require => {
     content.pickable = false; // since there's a pickable rectangle on top of content
 
     // interactivity
-    var checkboxButtonListener = new ButtonListener( {
+    const checkboxButtonListener = new ButtonListener( {
       fire: function() {
         if ( self.enabledProperty.value ) {
-          var newValue = !property.value;
+          const newValue = !property.value;
           toggleAction.execute( newValue );
         }
       }
@@ -121,7 +121,7 @@ define( require => {
     this.addInputListener( checkboxButtonListener );
 
     // sync with property
-    var checkboxCheckedListener = function( checked ) {
+    const checkboxCheckedListener = function( checked ) {
       self.checkedNode.visible = checked;
       self.uncheckedNode.visible = !checked;
       self.accessibleChecked = checked;
@@ -132,7 +132,7 @@ define( require => {
     this.mutate( options );
 
     // does this instance own enabledProperty?
-    var ownsEnabledProperty = !options.enabledProperty;
+    const ownsEnabledProperty = !options.enabledProperty;
 
     // must be after the Checkbox is instrumented
     options.phetioLinkProperty && this.addLinkedElement( property, {
@@ -157,7 +157,7 @@ define( require => {
       phetioFeatured: true
     } );
 
-    var enabledListener = function( enabled ) {
+    const enabledListener = function( enabled ) {
       if ( enabled ) {
         self.setAccessibleAttribute( 'onclick', '' );
         self.setAccessibleAttribute( 'aria-disabled', false );

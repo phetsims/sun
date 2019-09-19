@@ -182,7 +182,7 @@ define( require => {
 
           // Some options were already mutated in the constructor, only apply the accessibility-specific options here
           // so options are not doubled up, see https://github.com/phetsims/sun/issues/330
-          var optionsToMutate = _.pick( options, _.keys( defaults ) );
+          const optionsToMutate = _.pick( options, _.keys( defaults ) );
 
           // cannot be set by client
           assert && assert( options.tagName === undefined, 'AccessibleValueHandler sets tagName' );
@@ -293,7 +293,7 @@ define( require => {
           this.setA11yDependencies( options.a11yDependencies );
 
           // listeners, must be unlinked in dispose
-          var enabledRangeObserver = enabledRange => {
+          const enabledRangeObserver = enabledRange => {
 
             // a11y - update enabled slider range for AT, required for screen reader events to behave correctly
             this.setAccessibleAttribute( 'min', enabledRange.min );
@@ -482,8 +482,8 @@ define( require => {
          * Add this as an input listener to the `keydown` event to the Node mixing in AccessibleValueHandler.
          */
         handleKeyDown( event ) {
-          var domEvent = event.domEvent;
-          var code = domEvent.keyCode;
+          const domEvent = event.domEvent;
+          const code = domEvent.keyCode;
           this._shiftKey = domEvent.shiftKey;
 
           // if we receive a keydown event, we shouldn't handle any input events (which should only be provided
@@ -504,7 +504,7 @@ define( require => {
               // track that a new key is being held down
               this.rangeKeysDown[ code ] = true;
 
-              var newValue = this._valueProperty.get();
+              let newValue = this._valueProperty.get();
               if ( code === KeyboardUtil.KEY_END || code === KeyboardUtil.KEY_HOME ) {
 
                 // on 'end' and 'home' snap to max and min of enabled range respectively (this is typical browser
@@ -519,7 +519,7 @@ define( require => {
                 }
               }
               else {
-                var stepSize;
+                let stepSize;
                 if ( code === KeyboardUtil.KEY_PAGE_UP || code === KeyboardUtil.KEY_PAGE_DOWN ) {
                   // on page up and page down, the default step size is 1/10 of the range (this is typical browser behavior)
                   stepSize = this.pageKeyboardStep;
@@ -570,7 +570,7 @@ define( require => {
          * @param {Event} event
          */
         handleKeyUp( event ) {
-          var domEvent = event.domEvent;
+          const domEvent = event.domEvent;
 
           // handle case where user tabbed to this input while an arrow key might have been held down
           if ( this.allKeysUp() ) {
@@ -635,10 +635,10 @@ define( require => {
             // don't handle again on "change" event
             this.a11yInputHandled = true;
 
-            var newValue = this._valueProperty.get();
+            let newValue = this._valueProperty.get();
 
-            var inputValue = event.domEvent.target.value;
-            var stepSize = this._shiftKey ? this.shiftKeyboardStep : this.keyboardStep;
+            const inputValue = event.domEvent.target.value;
+            const stepSize = this._shiftKey ? this.shiftKeyboardStep : this.keyboardStep;
 
             // start of change event is start of drag
             this._startChange( event );
@@ -888,7 +888,7 @@ define( require => {
    * @returns {number}
    */
   var roundValue = function( newValue, currentValue, stepSize ) {
-    var roundValue = newValue;
+    let roundValue = newValue;
     if ( stepSize !== 0 ) {
 
       // round the value to the nearest keyboard step
@@ -911,14 +911,14 @@ define( require => {
    * @returns {number}
    */
   var correctRounding = function( newValue, currentValue, stepSize ) {
-    var correctedValue = newValue;
+    let correctedValue = newValue;
 
-    var proposedStep = Math.abs( newValue - currentValue );
-    var stepToFar = proposedStep > stepSize;
+    const proposedStep = Math.abs( newValue - currentValue );
+    const stepToFar = proposedStep > stepSize;
 
     // it is possible that proposedStep will be larger than the stepSize but only because of precision
     // constraints with floating point values, don't correct if that is the cases
-    var stepsAboutEqual = Util.equalsEpsilon( proposedStep, stepSize, 1e-14 );
+    const stepsAboutEqual = Util.equalsEpsilon( proposedStep, stepSize, 1e-14 );
     if ( stepToFar && !stepsAboutEqual ) {
       correctedValue += ( newValue > currentValue ) ? ( -1 * stepSize ) : stepSize;
     }

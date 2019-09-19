@@ -9,7 +9,7 @@ define( require => {
 
   const sun = require( 'SUN/sun' );
 
-  var RadioButtonInteractionState = {
+  const RadioButtonInteractionState = {
 
     // the button is selected and enabled
     SELECTED: 'SELECTED',

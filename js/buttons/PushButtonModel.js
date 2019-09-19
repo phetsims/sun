@@ -40,7 +40,7 @@ define( require => {
       phetioReadOnly: PhetioObject.DEFAULT_OPTIONS.phetioReadOnly // to support properly passing this to children, see https://github.com/phetsims/tandem/issues/60
     }, options );
 
-    var self = this;
+    const self = this;
 
     ButtonModel.call( this, options );
 
@@ -69,7 +69,7 @@ define( require => {
     }
 
     // Point down
-    var downPropertyObserver = function( down ) {
+    const downPropertyObserver = function( down ) {
       if ( down ) {
         if ( self.enabledProperty.get() ) {
           if ( options.fireOnDown ) {
@@ -81,7 +81,7 @@ define( require => {
         }
       }
       else {
-        var fire = ( !options.fireOnDown && self.overProperty.get() && self.enabledProperty.get() ); // should the button fire?
+        const fire = ( !options.fireOnDown && self.overProperty.get() && self.enabledProperty.get() ); // should the button fire?
         if ( self.timer ) {
           self.timer.stop( fire );
         }
@@ -93,7 +93,7 @@ define( require => {
     this.downProperty.link( downPropertyObserver );
 
     // Stop the timer when the button is disabled.
-    var enabledPropertyObserver = function( enabled ) {
+    const enabledPropertyObserver = function( enabled ) {
       if ( !enabled && self.timer ) {
         self.timer.stop( false ); // Stop the timer, don't fire if we haven't already
       }

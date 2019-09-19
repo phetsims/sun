@@ -27,8 +27,8 @@ define( require => {
   function RectangularStickyToggleButton( valueUp, valueDown, property, options ) {
 
     // Note it shares a tandem with this, so the emitter will be instrumented as a child of the button
-    var buttonModel = new StickyToggleButtonModel( valueUp, valueDown, property, options );
-    var stickyToggleButtonInteractionStateProperty = new StickyToggleButtonInteractionStateProperty( buttonModel );
+    const buttonModel = new StickyToggleButtonModel( valueUp, valueDown, property, options );
+    const stickyToggleButtonInteractionStateProperty = new StickyToggleButtonInteractionStateProperty( buttonModel );
     RectangularButtonView.call( this, buttonModel, stickyToggleButtonInteractionStateProperty, options );
 
     // @private - dispose items specific to this instance

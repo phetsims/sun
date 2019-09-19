@@ -36,7 +36,7 @@ define( require => {
    *     E.g. 'fa-level-down' -> level_down.
    * (7) Copy the SVG data to the new field in ICONS.
    */
-  var ICONS = {
+  const ICONS = {
     camera: 'M960 864q119 0 203.5 -84.5t84.5 -203.5t-84.5 -203.5t-203.5 -84.5t-203.5 84.5t-84.5 203.5t84.5 203.5t203.5 84.5zM1664 1280q106 0 181 -75t75 -181v-896q0 -106 -75 -181t-181 -75h-1408q-106 0 -181 75t-75 181v896q0 106 75 181t181 75h224l51 136 q19 49 69.5 84.5t103.5 35.5h512q53 0 103.5 -35.5t69.5 -84.5l51 -136h224zM960 128q185 0 316.5 131.5t131.5 316.5t-131.5 316.5t-316.5 131.5t-316.5 -131.5t-131.5 -316.5t131.5 -316.5t316.5 -131.5z',
     check: 'M1671 970q0 -40 -28 -68l-724 -724l-136 -136q-28 -28 -68 -28t-68 28l-136 136l-362 362q-28 28 -28 68t28 68l136 136q28 28 68 28t68 -28l294 -295l656 657q28 28 68 28t68 -28l136 -136q28 -28 28 -68z',
     check_empty: 'M1120 1280h-832q-66 0 -113 -47t-47 -113v-832q0 -66 47 -113t113 -47h832q66 0 113 47t47 113v832q0 66 -47 113t-113 47zM1408 1120v-832q0 -119 -84.5 -203.5t-203.5 -84.5h-832q-119 0 -203.5 84.5t-84.5 203.5v832q0 119 84.5 203.5t203.5 84.5h832 q119 0 203.5 -84.5t84.5 -203.5z',
@@ -61,11 +61,11 @@ define( require => {
   };
 
   // constants
-  var SHAPE_MATRIX = Matrix3.createFromPool( 0.025, 0, 0, 0, -0.025, 0, 0, 0, 1 ); // to create a unity-scale icon
+  const SHAPE_MATRIX = Matrix3.createFromPool( 0.025, 0, 0, 0, -0.025, 0, 0, 0, 1 ); // to create a unity-scale icon
 
   // keys are fontawesome icon names, values are Shape instances.
   // Shapes are immutable so that Path doesn't add a listener, which creates a memory leak.
-  var shapeCache = {};
+  const shapeCache = {};
 
   /**
    * @param {string} iconName - the fontawesome icon name
@@ -87,7 +87,7 @@ define( require => {
       enableCache: true
     }, options );
 
-    var shape;
+    let shape;
     if ( options.enableCache ) {
 
       // cache the shape

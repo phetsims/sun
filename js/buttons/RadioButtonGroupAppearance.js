@@ -26,19 +26,19 @@ define( require => {
    * @param {Object} [options]
    * @constructor
    */
-  var DefaultRadioButtonsAppearance = function( button, interactionStateProperty, baseColorProperty, options ) {
+  const DefaultRadioButtonsAppearance = function( button, interactionStateProperty, baseColorProperty, options ) {
 
     // Create the fills and strokes used for various button states
-    var disabledStroke = new PaintColorProperty( options.disabledBaseColor, {
+    const disabledStroke = new PaintColorProperty( options.disabledBaseColor, {
       luminanceFactor: -0.4
     } );
-    var overStroke = new PaintColorProperty( options.overStroke || options.deselectedStroke, {
+    const overStroke = new PaintColorProperty( options.overStroke || options.deselectedStroke, {
       luminanceFactor: options.overStroke ? 0 : -0.4
     } );
-    var overFill = new PaintColorProperty( options.overFill || baseColorProperty, {
+    const overFill = new PaintColorProperty( options.overFill || baseColorProperty, {
       luminanceFactor: options.overFill ? 0 : 0.4
     } );
-    var pressedFill = new PaintColorProperty( baseColorProperty, {
+    const pressedFill = new PaintColorProperty( baseColorProperty, {
       luminanceFactor: -0.4
     } );
 
@@ -122,7 +122,7 @@ define( require => {
    * @constructor
    * @public
    */
-  var ContentAppearanceStrategy = function( content, interactionStateProperty, options ) {
+  const ContentAppearanceStrategy = function( content, interactionStateProperty, options ) {
 
     // The button is not the parent of the content, therefore it is necessary to set the opacity on the content separately
     function handleInteractionStateChanged( state ) {
@@ -170,7 +170,7 @@ define( require => {
     };
   };
 
-  var RadioButtonGroupAppearance = {
+  const RadioButtonGroupAppearance = {
     defaultRadioButtonsAppearance: DefaultRadioButtonsAppearance,
     contentAppearanceStrategy: ContentAppearanceStrategy
   };

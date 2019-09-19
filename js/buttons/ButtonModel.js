@@ -21,7 +21,7 @@ define( require => {
    * @constructor
    */
   function ButtonModel( options ) {
-    var self = this;
+    const self = this;
 
     options = _.extend( {
       // {function()} called on pointer down
@@ -92,8 +92,8 @@ define( require => {
     // interrupt listeners when enabled is set to false
     this.enabledProperty.link( function( enabled ) {
       if ( !enabled ) {
-        for ( var i = 0; i < self.listeners.length; i++ ) {
-          var listener = self.listeners[ i ];
+        for ( let i = 0; i < self.listeners.length; i++ ) {
+          const listener = self.listeners[ i ];
           listener.interrupt && listener.interrupt();
         }
       }
@@ -140,7 +140,7 @@ define( require => {
      * @public
      */
     createListener: function( options ) {
-      var self = this;
+      const self = this;
 
       options = _.extend( {
         phetioDocumentation: 'Indicates when the button has been pressed or released',
@@ -149,7 +149,7 @@ define( require => {
         }
       }, options );
 
-      var pressListener = new PressListener( options );
+      const pressListener = new PressListener( options );
       this.listeners.push( pressListener );
 
       // link lazily in case client externally sets downProperty - don't update until the next press
@@ -160,7 +160,7 @@ define( require => {
       // dispose the previous multilink in case we already created a PressListener with this model
       this.looksPressedMultilink && this.looksPressedMultilink.dispose();
 
-      var looksPressedProperties = this.listeners.map( function( listener ) { return listener.looksPressedProperty; } );
+      const looksPressedProperties = this.listeners.map( function( listener ) { return listener.looksPressedProperty; } );
       looksPressedProperties.push( this.downProperty );
 
       // assign a new Multilink (for disposal), and make sure that the button looks pressed when any of the

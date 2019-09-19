@@ -58,7 +58,7 @@ define( require => {
     // @private {Function} - The constructor for our custom subtype
     this._type = function MutableOptionsNodeConstructor() {
       // Unwrap the properties in dynamicOptions
-      var options = _.extend( _.mapValues( dynamicOptions, function( property ) {
+      const options = _.extend( _.mapValues( dynamicOptions, function( property ) {
         return property.value;
       } ), staticOptions );
 
@@ -85,9 +85,9 @@ define( require => {
      * @private
      */
     replaceCopy: function() {
-      var Type = this._type; // avoids our linter complaining about uncapitalized types with 'new'
-      var newCopy = new Type();
-      var oldCopy = this.nodeProperty.value;
+      const Type = this._type; // avoids our linter complaining about uncapitalized types with 'new'
+      const newCopy = new Type();
+      const oldCopy = this.nodeProperty.value;
       this.nodeProperty.value = newCopy;
 
       // Add first, so that there's a good chance we won't change bounds (depending on the type)

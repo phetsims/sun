@@ -36,7 +36,7 @@ define( require => {
     // @private (read-only)
     // Note it shares a tandem with this, so the emitter will be instrumented as a child of the button
     this.toggleButtonModel = new ToggleButtonModel( valueOff, valueOn, property, options );
-    var toggleButtonInteractionStateProperty = new ToggleButtonInteractionStateProperty( this.toggleButtonModel );
+    const toggleButtonInteractionStateProperty = new ToggleButtonInteractionStateProperty( this.toggleButtonModel );
 
     RoundButtonView.call( this, this.toggleButtonModel, toggleButtonInteractionStateProperty, options );
 

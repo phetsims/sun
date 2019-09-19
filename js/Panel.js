@@ -19,9 +19,9 @@ define( require => {
   const Tandem = require( 'TANDEM/Tandem' );
 
   // valid values for options.align
-  var ALIGN_VALUES = [ 'left', 'center', 'right' ];
+  const ALIGN_VALUES = [ 'left', 'center', 'right' ];
 
-  var DEFAULT_OPTIONS = {
+  const DEFAULT_OPTIONS = {
     fill: 'white', // TODO: Should these be color constants?
     stroke: 'black', // TODO: Should these be color constants?
     lineWidth: 1, // width of the background border
@@ -56,7 +56,7 @@ define( require => {
     Node.call( this );
 
     // correct size will be set by updateBackground
-    var background = new Rectangle( 0, 0, 1, 1, {
+    const background = new Rectangle( 0, 0, 1, 1, {
       lineWidth: options.lineWidth,
       pickable: options.backgroundPickable,
       lineDash: options.lineDash,
@@ -71,10 +71,10 @@ define( require => {
     this.addChild( content );
 
     // flag for preventing recursion
-    var backgroundUpdateInProgress = false;
+    let backgroundUpdateInProgress = false;
 
     // Adjust the background size to match the content.
-    var updateBackground = function() {
+    const updateBackground = function() {
 
       // Check that an update isn't already in progress, lest we end up with some nasty recursion.  For details, please
       // see https://github.com/phetsims/sun/issues/110 and https://github.com/phetsims/molecule-shapes/issues/130.
@@ -91,7 +91,7 @@ define( require => {
       backgroundUpdateInProgress = true;
 
       // size the background to fit the content
-      var backgroundWidth = Math.max( options.minWidth, content.width + ( 2 * options.xMargin ) );
+      const backgroundWidth = Math.max( options.minWidth, content.width + ( 2 * options.xMargin ) );
       background.setRect( 0, 0, backgroundWidth, content.height + ( 2 * options.yMargin ) );
 
       // Align the content within the background. If the content width >= minWidth, then all alignments are equivalent.

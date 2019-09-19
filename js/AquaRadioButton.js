@@ -21,7 +21,7 @@ define( require => {
   const Tandem = require( 'TANDEM/Tandem' );
 
   // constants
-  var DEFAULT_RADIUS = 7;
+  const DEFAULT_RADIUS = 7;
 
   /**
    * @param property
@@ -59,7 +59,7 @@ define( require => {
       a11yNameAttribute: null
     }, options );
 
-    var self = this;
+    const self = this;
 
     // @private - converted to an AXON/Property from a property to support PhET-iO
     this.enabledProperty = new BooleanProperty( options.enabled, {
@@ -68,9 +68,9 @@ define( require => {
     } );
 
     // selected node creation
-    var selectedNode = new Node();
-    var innerCircle = new Circle( options.radius / 3, { fill: options.centerColor } );
-    var outerCircleSelected = new Circle( options.radius, { fill: options.selectedColor, stroke: options.stroke } );
+    const selectedNode = new Node();
+    const innerCircle = new Circle( options.radius / 3, { fill: options.centerColor } );
+    const outerCircleSelected = new Circle( options.radius, { fill: options.selectedColor, stroke: options.stroke } );
 
     // @private
     this.selectedCircleButton = new Node( {
@@ -82,7 +82,7 @@ define( require => {
     node.centerY = outerCircleSelected.centerY;
 
     // deselected node
-    var deselectedNode = new Node();
+    const deselectedNode = new Node();
 
     // @private
     this.deselectedCircleButton = new Circle( options.radius, {
@@ -97,7 +97,7 @@ define( require => {
     Node.call( this );
 
     //Add an invisible node to make sure the layout for selected vs deselected is the same
-    var background = new Rectangle( selectedNode.bounds.union( deselectedNode.bounds ) );
+    const background = new Rectangle( selectedNode.bounds.union( deselectedNode.bounds ) );
     selectedNode.pickable = deselectedNode.pickable = false; // the background rectangle suffices
 
     this.addChild( background );
@@ -105,24 +105,24 @@ define( require => {
     this.addChild( deselectedNode );
 
     // sync control with model
-    var syncWithModel = function( newValue ) {
+    const syncWithModel = function( newValue ) {
       selectedNode.visible = ( newValue === value );
       deselectedNode.visible = !selectedNode.visible;
     };
     property.link( syncWithModel );
 
     // set property value on fire
-    var fire = function() {
+    const fire = function() {
       property.set( value );
     };
-    var inputListener = new FireListener( {
+    const inputListener = new FireListener( {
       fire: fire,
       tandem: options.tandem.createTandem( 'inputListener' )
     } );
     this.addInputListener( inputListener );
 
     // a11y - input listener so that updates the state of the radio button with keyboard interaction
-    var changeListener = {
+    const changeListener = {
       change: fire
     };
     this.addInputListener( changeListener );
@@ -137,7 +137,7 @@ define( require => {
 
     // a11y - when the property changes, make sure the correct radio button is marked as 'checked' so that this button
     // receives focus on 'tab'
-    var accessibleCheckedListener = function( newValue ) {
+    const accessibleCheckedListener = function( newValue ) {
       self.accessibleChecked = newValue === value;
     };
     property.link( accessibleCheckedListener );

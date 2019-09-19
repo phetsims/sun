@@ -9,7 +9,7 @@ define( require => {
 
   const sun = require( 'SUN/sun' );
 
-  var ButtonInteractionState = {
+  const ButtonInteractionState = {
 
     // button is just sitting there, doing nothing
     IDLE: 'IDLE',

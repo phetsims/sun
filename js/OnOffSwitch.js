@@ -74,12 +74,12 @@ define( require => {
       phetioEventType: EventType.USER
     }, options );
 
-    var self = this;
+    const self = this;
     Node.call( this );
 
     // track that the thumb slides in
-    var cornerRadius = options.size.height / 2;
-    var trackNode = this.trackNode = new Rectangle( 0, 0, options.size.width, options.size.height, cornerRadius, cornerRadius, {
+    const cornerRadius = options.size.height / 2;
+    const trackNode = this.trackNode = new Rectangle( 0, 0, options.size.width, options.size.height, cornerRadius, cornerRadius, {
       fill: options.trackOffFill,
       stroke: options.trackStroke,
       cachedPaints: [ options.trackOnFill, options.trackOffFill ]
@@ -87,7 +87,7 @@ define( require => {
     this.addChild( trackNode );
 
     // thumb (aka knob)
-    var thumbNode = this.thumbNode = new Rectangle( 0, 0, 0.5 * options.size.width, options.size.height, cornerRadius, cornerRadius, {
+    const thumbNode = this.thumbNode = new Rectangle( 0, 0, 0.5 * options.size.width, options.size.height, cornerRadius, cornerRadius, {
       fill: options.thumbFill,
       stroke: options.thumbStroke
     } );
@@ -110,7 +110,7 @@ define( require => {
     }
 
     // move thumb to on or off position
-    var updateThumb = function( on ) {
+    const updateThumb = function( on ) {
       if ( on ) {
         thumbNode.right = options.size.width;
         trackNode.fill = options.trackOnFill;
@@ -125,9 +125,9 @@ define( require => {
     onProperty.link( updateThumb.bind( this ) );
 
     // thumb interactivity
-    var dragThresholdSquared = options.dragThreshold * options.dragThreshold; // comparing squared magnitudes is a bit faster
-    var accumulatedDelta = new Vector2( 0, 0 ); // stores how far we are from where our drag started, in our local coordinate frame
-    var passedDragThreshold = false; // whether we have dragged far enough to be considered for "drag" behavior (pick closest side), or "tap" behavior (toggle)
+    const dragThresholdSquared = options.dragThreshold * options.dragThreshold; // comparing squared magnitudes is a bit faster
+    const accumulatedDelta = new Vector2( 0, 0 ); // stores how far we are from where our drag started, in our local coordinate frame
+    let passedDragThreshold = false; // whether we have dragged far enough to be considered for "drag" behavior (pick closest side), or "tap" behavior (toggle)
 
     this.addInputListener( new SimpleDragHandler( {
       tandem: options.tandem.createTandem( 'simpleDragHandler' ),
@@ -145,16 +145,16 @@ define( require => {
 
       drag: function( evt, trail ) {
         // center the thumb on the pointer's x-coordinate if possible (but clamp to left and right ends)
-        var viewPoint = evt.currentTarget.globalToLocalPoint( evt.pointer.point );
-        var halfThumbWidth = thumbNode.width / 2;
+        const viewPoint = evt.currentTarget.globalToLocalPoint( evt.pointer.point );
+        const halfThumbWidth = thumbNode.width / 2;
         thumbNode.centerX = Util.clamp( viewPoint.x, halfThumbWidth, options.size.width - halfThumbWidth );
 
         // whether the thumb is dragged outside of the possible range far enough beyond our threshold to potentially
         // trigger an immediate model change
-        var isDraggedOutside = viewPoint.x < ( 1 - 2 * options.toggleThreshold ) * halfThumbWidth ||
+        const isDraggedOutside = viewPoint.x < ( 1 - 2 * options.toggleThreshold ) * halfThumbWidth ||
                                viewPoint.x > ( -1 + 2 * options.toggleThreshold ) * halfThumbWidth + options.size.width;
 
-        var value = self.thumbPositionToValue(); // value represented by the current thumb position
+        const value = self.thumbPositionToValue(); // value represented by the current thumb position
 
         // track fill changes based on the thumb positions
         trackNode.fill = value ? options.trackOnFill : options.trackOffFill;
@@ -165,7 +165,7 @@ define( require => {
 
           // Only signify a change if the value actually changed to avoid duplicate messages in the PhET-iO Event
           // stream, see https://github.com/phetsims/phet-io/issues/369
-          var changed = onProperty.get() !== value;
+          const changed = onProperty.get() !== value;
           if ( changed ) {
             self.phetioStartEvent( 'toggled', {
               oldValue: !value,
@@ -178,10 +178,10 @@ define( require => {
       },
 
       end: function( evt, trail ) {
-        var oldValue = onProperty.get();
+        const oldValue = onProperty.get();
 
         // if moved past the threshold, choose value based on the side, otherwise just toggle
-        var newValue = passedDragThreshold ? self.thumbPositionToValue() : !onProperty.get();
+        const newValue = passedDragThreshold ? self.thumbPositionToValue() : !onProperty.get();
 
         self.phetioStartEvent( 'toggled', {
           oldValue: oldValue,

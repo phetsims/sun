@@ -25,7 +25,7 @@ define( require => {
       textFill: 'black'
     }, options );
 
-    var htmlTextNode = new RichText( html, options );
+    const htmlTextNode = new RichText( html, options );
     RectangularPushButton.call( this, _.extend( { content: htmlTextNode }, options ) );
   }
 
