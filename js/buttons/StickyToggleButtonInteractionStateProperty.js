@@ -3,7 +3,7 @@
 /**
  * A derived property the maps sticky toggle button model states to the values needed by the button view.
  */
-define( function( require ) {
+define( require => {
   'use strict';
 
   // modules

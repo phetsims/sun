@@ -3,15 +3,15 @@
 /**
  * This toggle button uses a boolean property and a trueNode and falseNode to display its content.
  */
-define( function( require ) {
+define( require => {
   'use strict';
 
   // modules
-  var BooleanToggleNode = require( 'SUN/BooleanToggleNode' );
-  var inherit = require( 'PHET_CORE/inherit' );
-  var RoundToggleButton = require( 'SUN/buttons/RoundToggleButton' );
-  var sun = require( 'SUN/sun' );
-  var Tandem = require( 'TANDEM/Tandem' );
+  const BooleanToggleNode = require( 'SUN/BooleanToggleNode' );
+  const inherit = require( 'PHET_CORE/inherit' );
+  const RoundToggleButton = require( 'SUN/buttons/RoundToggleButton' );
+  const sun = require( 'SUN/sun' );
+  const Tandem = require( 'TANDEM/Tandem' );
 
   /**
    * @param {Node} trueNode

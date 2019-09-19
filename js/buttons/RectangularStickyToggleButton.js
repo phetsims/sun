@@ -7,15 +7,15 @@
  * @author John Blanco (PhET Interactive Simulations)
  * @author Sam Reid (PhET Interactive Simulations)
  */
-define( function( require ) {
+define( require => {
   'use strict';
 
   // modules
-  var inherit = require( 'PHET_CORE/inherit' );
-  var RectangularButtonView = require( 'SUN/buttons/RectangularButtonView' );
-  var StickyToggleButtonInteractionStateProperty = require( 'SUN/buttons/StickyToggleButtonInteractionStateProperty' );
-  var StickyToggleButtonModel = require( 'SUN/buttons/StickyToggleButtonModel' );
-  var sun = require( 'SUN/sun' );
+  const inherit = require( 'PHET_CORE/inherit' );
+  const RectangularButtonView = require( 'SUN/buttons/RectangularButtonView' );
+  const StickyToggleButtonInteractionStateProperty = require( 'SUN/buttons/StickyToggleButtonInteractionStateProperty' );
+  const StickyToggleButtonModel = require( 'SUN/buttons/StickyToggleButtonModel' );
+  const sun = require( 'SUN/sun' );
 
   /**
    * @param {Object} valueUp value when the toggle is in the 'up' position

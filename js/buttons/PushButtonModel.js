@@ -7,19 +7,19 @@
  * @author John Blanco (PhET Interactive Simulations)
  * @author Chris Malley (PixelZoom, Inc.)
  */
-define( function( require ) {
+define( require => {
   'use strict';
 
   // modules
-  var EventType = require( 'TANDEM/EventType' );
-  var BooleanProperty = require( 'AXON/BooleanProperty' );
-  var ButtonModel = require( 'SUN/buttons/ButtonModel' );
-  var CallbackTimer = require( 'SUN/CallbackTimer' );
-  var Emitter = require( 'AXON/Emitter' );
-  var inherit = require( 'PHET_CORE/inherit' );
-  var PhetioObject = require( 'TANDEM/PhetioObject' );
-  var sun = require( 'SUN/sun' );
-  var Tandem = require( 'TANDEM/Tandem' );
+  const EventType = require( 'TANDEM/EventType' );
+  const BooleanProperty = require( 'AXON/BooleanProperty' );
+  const ButtonModel = require( 'SUN/buttons/ButtonModel' );
+  const CallbackTimer = require( 'SUN/CallbackTimer' );
+  const Emitter = require( 'AXON/Emitter' );
+  const inherit = require( 'PHET_CORE/inherit' );
+  const PhetioObject = require( 'TANDEM/PhetioObject' );
+  const sun = require( 'SUN/sun' );
+  const Tandem = require( 'TANDEM/Tandem' );
 
   /**
    * @param {Object} [options]

@@ -5,24 +5,24 @@
  *
  * @author Chris Malley (PixelZoom, Inc.)
  */
-define( function( require ) {
+define( require => {
   'use strict';
 
   // modules
-  var Action = require( 'AXON/Action' );
-  var BooleanIO = require( 'TANDEM/types/BooleanIO' );
-  var BooleanProperty = require( 'AXON/BooleanProperty' );
-  var ButtonListener = require( 'SCENERY/input/ButtonListener' );
-  var EventType = require( 'TANDEM/EventType' );
-  var FontAwesomeNode = require( 'SUN/FontAwesomeNode' );
-  var inherit = require( 'PHET_CORE/inherit' );
-  var InstanceRegistry = require( 'PHET_CORE/documentation/InstanceRegistry' );
-  var Node = require( 'SCENERY/nodes/Node' );
-  var PhetioObject = require( 'TANDEM/PhetioObject' );
-  var Rectangle = require( 'SCENERY/nodes/Rectangle' );
-  var sun = require( 'SUN/sun' );
-  var SunConstants = require( 'SUN/SunConstants' );
-  var Tandem = require( 'TANDEM/Tandem' );
+  const Action = require( 'AXON/Action' );
+  const BooleanIO = require( 'TANDEM/types/BooleanIO' );
+  const BooleanProperty = require( 'AXON/BooleanProperty' );
+  const ButtonListener = require( 'SCENERY/input/ButtonListener' );
+  const EventType = require( 'TANDEM/EventType' );
+  const FontAwesomeNode = require( 'SUN/FontAwesomeNode' );
+  const inherit = require( 'PHET_CORE/inherit' );
+  const InstanceRegistry = require( 'PHET_CORE/documentation/InstanceRegistry' );
+  const Node = require( 'SCENERY/nodes/Node' );
+  const PhetioObject = require( 'TANDEM/PhetioObject' );
+  const Rectangle = require( 'SCENERY/nodes/Rectangle' );
+  const sun = require( 'SUN/sun' );
+  const SunConstants = require( 'SUN/SunConstants' );
+  const Tandem = require( 'TANDEM/Tandem' );
 
   // constants
   const ENABLED_PROPERTY_TANDEM_NAME = 'enabledProperty';

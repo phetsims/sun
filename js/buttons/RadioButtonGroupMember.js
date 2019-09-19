@@ -7,22 +7,22 @@
  *
  * @author Aaron Davis (PhET Interactive Simulations)
  */
-define( function( require ) {
+define( require => {
   'use strict';
 
   // modules
-  var ButtonModel = require( 'SUN/buttons/ButtonModel' );
-  var Color = require( 'SCENERY/util/Color' );
-  var ColorConstants = require( 'SUN/ColorConstants' );
-  var Emitter = require( 'AXON/Emitter' );
-  var EventType = require( 'TANDEM/EventType' );
-  var inherit = require( 'PHET_CORE/inherit' );
-  var PhetioObject = require( 'TANDEM/PhetioObject' );
-  var RadioButtonGroupAppearance = require( 'SUN/buttons/RadioButtonGroupAppearance' );
-  var RadioButtonInteractionStateProperty = require( 'SUN/buttons/RadioButtonInteractionStateProperty' );
-  var RectangularButtonView = require( 'SUN/buttons/RectangularButtonView' );
-  var sun = require( 'SUN/sun' );
-  var Tandem = require( 'TANDEM/Tandem' );
+  const ButtonModel = require( 'SUN/buttons/ButtonModel' );
+  const Color = require( 'SCENERY/util/Color' );
+  const ColorConstants = require( 'SUN/ColorConstants' );
+  const Emitter = require( 'AXON/Emitter' );
+  const EventType = require( 'TANDEM/EventType' );
+  const inherit = require( 'PHET_CORE/inherit' );
+  const PhetioObject = require( 'TANDEM/PhetioObject' );
+  const RadioButtonGroupAppearance = require( 'SUN/buttons/RadioButtonGroupAppearance' );
+  const RadioButtonInteractionStateProperty = require( 'SUN/buttons/RadioButtonInteractionStateProperty' );
+  const RectangularButtonView = require( 'SUN/buttons/RectangularButtonView' );
+  const sun = require( 'SUN/sun' );
+  const Tandem = require( 'TANDEM/Tandem' );
 
   /**
    * @param {Property} property axon property that can take on a set of values, one for each radio button in the group

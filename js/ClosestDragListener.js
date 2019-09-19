@@ -12,14 +12,14 @@
  *
  * @author Jonathan Olson (PhET Interactive Simulations)
  */
-define( function( require ) {
+define( require => {
   'use strict';
 
   // modules
-  var inherit = require( 'PHET_CORE/inherit' );
-  var Mouse = require( 'SCENERY/input/Mouse' );
-  var sun = require( 'SUN/sun' );
-  var Touch = require( 'SCENERY/input/Touch' );
+  const inherit = require( 'PHET_CORE/inherit' );
+  const Mouse = require( 'SCENERY/input/Mouse' );
+  const sun = require( 'SUN/sun' );
+  const Touch = require( 'SCENERY/input/Touch' );
 
   /**
    * @constructor

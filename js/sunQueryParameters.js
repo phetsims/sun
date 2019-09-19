@@ -5,11 +5,11 @@
  *
  * @author Chris Malley (PixelZoom, Inc.)
  */
-define( function( require ) {
+define( require => {
   'use strict';
 
   // modules
-  var sun = require( 'SUN/sun' );
+  const sun = require( 'SUN/sun' );
 
   var sunQueryParameters = QueryStringMachine.getAll( {
 

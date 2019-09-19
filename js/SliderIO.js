@@ -5,15 +5,15 @@
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */
-define( function( require ) {
+define( require => {
   'use strict';
 
   // modules
   const ObjectIO = require( 'TANDEM/types/ObjectIO' );
-  var BooleanIO = require( 'TANDEM/types/BooleanIO' );
-  var NodeIO = require( 'SCENERY/nodes/NodeIO' );
-  var sun = require( 'SUN/sun' );
-  var VoidIO = require( 'TANDEM/types/VoidIO' );
+  const BooleanIO = require( 'TANDEM/types/BooleanIO' );
+  const NodeIO = require( 'SCENERY/nodes/NodeIO' );
+  const sun = require( 'SUN/sun' );
+  const VoidIO = require( 'TANDEM/types/VoidIO' );
 
   class SliderIO extends NodeIO {}
 

@@ -6,13 +6,13 @@
  *
  * @author Chris Malley (PixelZoom, Inc.)
  */
-define( function( require ) {
+define( require => {
   'use strict';
 
   // modules
-  var inherit = require( 'PHET_CORE/inherit' );
-  var sun = require( 'SUN/sun' );
-  var timer = require( 'AXON/timer' );
+  const inherit = require( 'PHET_CORE/inherit' );
+  const sun = require( 'SUN/sun' );
+  const timer = require( 'AXON/timer' );
 
   /**
    * @param {Object} [options]

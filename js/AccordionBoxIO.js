@@ -5,13 +5,13 @@
  *
  * @author John Blanco
  */
-define( function( require ) {
+define( require => {
   'use strict';
 
   // modules
-  var NodeIO = require( 'SCENERY/nodes/NodeIO' );
+  const NodeIO = require( 'SCENERY/nodes/NodeIO' );
   const ObjectIO = require( 'TANDEM/types/ObjectIO' );
-  var sun = require( 'SUN/sun' );
+  const sun = require( 'SUN/sun' );
 
   class AccordionBoxIO extends NodeIO {}
 

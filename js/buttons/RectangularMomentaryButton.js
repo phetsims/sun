@@ -6,17 +6,17 @@
  *
  * @author Chris Malley (PixelZoom, Inc.)
  */
-define( function( require ) {
+define( require => {
   'use strict';
 
   // modules
-  var inherit = require( 'PHET_CORE/inherit' );
-  var InstanceRegistry = require( 'PHET_CORE/documentation/InstanceRegistry' );
-  var MomentaryButtonInteractionStateProperty = require( 'SUN/buttons/MomentaryButtonInteractionStateProperty' );
-  var MomentaryButtonModel = require( 'SUN/buttons/MomentaryButtonModel' );
-  var RectangularButtonView = require( 'SUN/buttons/RectangularButtonView' );
-  var sun = require( 'SUN/sun' );
-  var Tandem = require( 'TANDEM/Tandem' );
+  const inherit = require( 'PHET_CORE/inherit' );
+  const InstanceRegistry = require( 'PHET_CORE/documentation/InstanceRegistry' );
+  const MomentaryButtonInteractionStateProperty = require( 'SUN/buttons/MomentaryButtonInteractionStateProperty' );
+  const MomentaryButtonModel = require( 'SUN/buttons/MomentaryButtonModel' );
+  const RectangularButtonView = require( 'SUN/buttons/RectangularButtonView' );
+  const sun = require( 'SUN/sun' );
+  const Tandem = require( 'TANDEM/Tandem' );
 
   /**
    * @param {Object} valueOff - value when the button is in the off state

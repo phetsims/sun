@@ -6,12 +6,12 @@
  *
  * @author Andrew Adare (PhET Interactive Simulations)
  */
-define( function( require ) {
+define( require => {
   'use strict';
 
-  var NodeIO = require( 'SCENERY/nodes/NodeIO' );
+  const NodeIO = require( 'SCENERY/nodes/NodeIO' );
   const ObjectIO = require( 'TANDEM/types/ObjectIO' );
-  var sun = require( 'SUN/sun' );
+  const sun = require( 'SUN/sun' );
 
   class DialogIO extends NodeIO {}
 

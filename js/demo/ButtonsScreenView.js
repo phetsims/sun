@@ -6,35 +6,35 @@
  *
  * @author John Blanco (PhET Interactive Simulations)
  */
-define( function( require ) {
+define( require => {
   'use strict';
 
   // modules
-  var ArrowButton = require( 'SUN/buttons/ArrowButton' );
-  var BooleanRectangularStickyToggleButton = require( 'SUN/buttons/BooleanRectangularStickyToggleButton' );
-  var BooleanRectangularToggleButton = require( 'SUN/buttons/BooleanRectangularToggleButton' );
-  var Color = require( 'SCENERY/util/Color' );
-  var Font = require( 'SCENERY/util/Font' );
-  var HBox = require( 'SCENERY/nodes/HBox' );
-  var HTMLPushButton = require( 'SUN/buttons/HTMLPushButton' );
-  var inherit = require( 'PHET_CORE/inherit' );
-  var Node = require( 'SCENERY/nodes/Node' );
-  var Panel = require( 'SUN/Panel' );
-  var Property = require( 'AXON/Property' );
-  var RadioButtonGroup = require( 'SUN/buttons/RadioButtonGroup' );
-  var Rectangle = require( 'SCENERY/nodes/Rectangle' );
-  var RectangularButtonView = require( 'SUN/buttons/RectangularButtonView' );
-  var RectangularMomentaryButton = require( 'SUN/buttons/RectangularMomentaryButton' );
-  var RectangularPushButton = require( 'SUN/buttons/RectangularPushButton' );
-  var RoundButtonView = require( 'SUN/buttons/RoundButtonView' );
-  var RoundMomentaryButton = require( 'SUN/buttons/RoundMomentaryButton' );
-  var RoundPushButton = require( 'SUN/buttons/RoundPushButton' );
-  var RoundStickyToggleButton = require( 'SUN/buttons/RoundStickyToggleButton' );
-  var ScreenView = require( 'JOIST/ScreenView' );
-  var sun = require( 'SUN/sun' );
-  var Text = require( 'SCENERY/nodes/Text' );
-  var VBox = require( 'SCENERY/nodes/VBox' );
-  var VerticalAquaRadioButtonGroup = require( 'SUN/VerticalAquaRadioButtonGroup' );
+  const ArrowButton = require( 'SUN/buttons/ArrowButton' );
+  const BooleanRectangularStickyToggleButton = require( 'SUN/buttons/BooleanRectangularStickyToggleButton' );
+  const BooleanRectangularToggleButton = require( 'SUN/buttons/BooleanRectangularToggleButton' );
+  const Color = require( 'SCENERY/util/Color' );
+  const Font = require( 'SCENERY/util/Font' );
+  const HBox = require( 'SCENERY/nodes/HBox' );
+  const HTMLPushButton = require( 'SUN/buttons/HTMLPushButton' );
+  const inherit = require( 'PHET_CORE/inherit' );
+  const Node = require( 'SCENERY/nodes/Node' );
+  const Panel = require( 'SUN/Panel' );
+  const Property = require( 'AXON/Property' );
+  const RadioButtonGroup = require( 'SUN/buttons/RadioButtonGroup' );
+  const Rectangle = require( 'SCENERY/nodes/Rectangle' );
+  const RectangularButtonView = require( 'SUN/buttons/RectangularButtonView' );
+  const RectangularMomentaryButton = require( 'SUN/buttons/RectangularMomentaryButton' );
+  const RectangularPushButton = require( 'SUN/buttons/RectangularPushButton' );
+  const RoundButtonView = require( 'SUN/buttons/RoundButtonView' );
+  const RoundMomentaryButton = require( 'SUN/buttons/RoundMomentaryButton' );
+  const RoundPushButton = require( 'SUN/buttons/RoundPushButton' );
+  const RoundStickyToggleButton = require( 'SUN/buttons/RoundStickyToggleButton' );
+  const ScreenView = require( 'JOIST/ScreenView' );
+  const sun = require( 'SUN/sun' );
+  const Text = require( 'SCENERY/nodes/Text' );
+  const VBox = require( 'SCENERY/nodes/VBox' );
+  const VerticalAquaRadioButtonGroup = require( 'SUN/VerticalAquaRadioButtonGroup' );
 
   // constants
   var BUTTON_FONT = new Font( { size: 24 } );

@@ -6,18 +6,18 @@
  *
  * @author Chris Malley (PixelZoom, Inc.)
  */
-define( function( require ) {
+define( require => {
   'use strict';
 
   // modules
-  var Dimension2 = require( 'DOT/Dimension2' );
-  var inherit = require( 'PHET_CORE/inherit' );
-  var Matrix3 = require( 'DOT/Matrix3' );
-  var Path = require( 'SCENERY/nodes/Path' );
-  var RectangularButtonView = require( 'SUN/buttons/RectangularButtonView' );
-  var RectangularPushButton = require( 'SUN/buttons/RectangularPushButton' );
-  var Shape = require( 'KITE/Shape' );
-  var sun = require( 'SUN/sun' );
+  const Dimension2 = require( 'DOT/Dimension2' );
+  const inherit = require( 'PHET_CORE/inherit' );
+  const Matrix3 = require( 'DOT/Matrix3' );
+  const Path = require( 'SCENERY/nodes/Path' );
+  const RectangularButtonView = require( 'SUN/buttons/RectangularButtonView' );
+  const RectangularPushButton = require( 'SUN/buttons/RectangularPushButton' );
+  const Shape = require( 'KITE/Shape' );
+  const sun = require( 'SUN/sun' );
 
   // maps arrow directions to rotation angles, in radians
   var ANGLES = {

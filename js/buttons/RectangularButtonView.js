@@ -6,25 +6,25 @@
  * @author John Blanco (PhET Interactive Simulations)
  * @author Sam Reid (PhET Interactive Simulations)
  */
-define( function( require ) {
+define( require => {
   'use strict';
 
   // modules
-  var AlignBox = require( 'SCENERY/nodes/AlignBox' );
-  var Bounds2 = require( 'DOT/Bounds2' );
-  var ButtonInteractionState = require( 'SUN/buttons/ButtonInteractionState' );
-  var Color = require( 'SCENERY/util/Color' );
-  var ColorConstants = require( 'SUN/ColorConstants' );
-  var DerivedProperty = require( 'AXON/DerivedProperty' );
-  var inherit = require( 'PHET_CORE/inherit' );
-  var LinearGradient = require( 'SCENERY/util/LinearGradient' );
-  var Node = require( 'SCENERY/nodes/Node' );
-  var PaintColorProperty = require( 'SCENERY/util/PaintColorProperty' );
-  var Path = require( 'SCENERY/nodes/Path' );
-  var PhetioObject = require( 'TANDEM/PhetioObject' );
-  var Shape = require( 'KITE/Shape' );
-  var sun = require( 'SUN/sun' );
-  var Tandem = require( 'TANDEM/Tandem' );
+  const AlignBox = require( 'SCENERY/nodes/AlignBox' );
+  const Bounds2 = require( 'DOT/Bounds2' );
+  const ButtonInteractionState = require( 'SUN/buttons/ButtonInteractionState' );
+  const Color = require( 'SCENERY/util/Color' );
+  const ColorConstants = require( 'SUN/ColorConstants' );
+  const DerivedProperty = require( 'AXON/DerivedProperty' );
+  const inherit = require( 'PHET_CORE/inherit' );
+  const LinearGradient = require( 'SCENERY/util/LinearGradient' );
+  const Node = require( 'SCENERY/nodes/Node' );
+  const PaintColorProperty = require( 'SCENERY/util/PaintColorProperty' );
+  const Path = require( 'SCENERY/nodes/Path' );
+  const PhetioObject = require( 'TANDEM/PhetioObject' );
+  const Shape = require( 'KITE/Shape' );
+  const sun = require( 'SUN/sun' );
+  const Tandem = require( 'TANDEM/Tandem' );
 
   // constants
   var VERTICAL_HIGHLIGHT_GRADIENT_LENGTH = 7; // In screen coords, which are roughly pixels.
