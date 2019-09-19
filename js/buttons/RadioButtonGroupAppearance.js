@@ -7,14 +7,14 @@
  * @author Sam Reid (PhET Interactive Simulations)
  * @author Aaron Davis (PhET Interactive Simulations)
  */
-define( function( require ) {
+define( require => {
   'use strict';
 
   // modules
-  var PaintColorProperty = require( 'SCENERY/util/PaintColorProperty' );
-  var RadioButtonInteractionState = require( 'SUN/buttons/RadioButtonInteractionState' );
-  var sun = require( 'SUN/sun' );
-  var SunConstants = require( 'SUN/SunConstants' );
+  const PaintColorProperty = require( 'SCENERY/util/PaintColorProperty' );
+  const RadioButtonInteractionState = require( 'SUN/buttons/RadioButtonInteractionState' );
+  const sun = require( 'SUN/sun' );
+  const SunConstants = require( 'SUN/SunConstants' );
 
   /**
    * Strategy for buttons that look flat, i.e. no shading or highlighting, but

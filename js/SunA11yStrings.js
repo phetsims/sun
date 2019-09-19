@@ -8,10 +8,10 @@
  *
  * @author Andrea Lin
  */
-define( function( require ) {
+define( require => {
   'use strict';
 
-  var sun = require( 'SUN/sun' );
+  const sun = require( 'SUN/sun' );
 
   var SunA11yStrings = {
     accordionBoxCollapse: {

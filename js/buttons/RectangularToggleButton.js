@@ -6,17 +6,17 @@
  * @author John Blanco (PhET Interactive Simulations)
  * @author Sam Reid (PhET Interactive Simulations)
  */
-define( function( require ) {
+define( require => {
   'use strict';
 
   // modules
-  var inherit = require( 'PHET_CORE/inherit' );
-  var RectangularButtonView = require( 'SUN/buttons/RectangularButtonView' );
-  var sun = require( 'SUN/sun' );
-  var Tandem = require( 'TANDEM/Tandem' );
-  var ToggleButtonInteractionStateProperty = require( 'SUN/buttons/ToggleButtonInteractionStateProperty' );
-  var ToggleButtonIO = require( 'SUN/buttons/ToggleButtonIO' );
-  var ToggleButtonModel = require( 'SUN/buttons/ToggleButtonModel' );
+  const inherit = require( 'PHET_CORE/inherit' );
+  const RectangularButtonView = require( 'SUN/buttons/RectangularButtonView' );
+  const sun = require( 'SUN/sun' );
+  const Tandem = require( 'TANDEM/Tandem' );
+  const ToggleButtonInteractionStateProperty = require( 'SUN/buttons/ToggleButtonInteractionStateProperty' );
+  const ToggleButtonIO = require( 'SUN/buttons/ToggleButtonIO' );
+  const ToggleButtonModel = require( 'SUN/buttons/ToggleButtonModel' );
 
   /**
    * @param {Object} valueOff - value when the button is in the off state

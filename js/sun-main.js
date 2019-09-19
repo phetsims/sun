@@ -3,23 +3,23 @@
 /**
  * Main file for the Sun library demo.
  */
-define( function( require ) {
+define( require => {
   'use strict';
 
   // modules
-  var ButtonsScreenView = require( 'SUN/demo/ButtonsScreenView' );
-  var ComponentsScreenView = require( 'SUN/demo/ComponentsScreenView' );
-  var DialogsScreenView = require( 'SUN/demo/DialogsScreenView' );
-  var MemoryTestsScreenView = require( 'SUN/demo/MemoryTestsScreenView' );
-  var Property = require( 'AXON/Property' );
-  var Rectangle = require( 'SCENERY/nodes/Rectangle' );
-  var Screen = require( 'JOIST/Screen' );
-  var Sim = require( 'JOIST/Sim' );
-  var SimLauncher = require( 'JOIST/SimLauncher' );
-  var sunQueryParameters = require( 'SUN/sunQueryParameters' );
+  const ButtonsScreenView = require( 'SUN/demo/ButtonsScreenView' );
+  const ComponentsScreenView = require( 'SUN/demo/ComponentsScreenView' );
+  const DialogsScreenView = require( 'SUN/demo/DialogsScreenView' );
+  const MemoryTestsScreenView = require( 'SUN/demo/MemoryTestsScreenView' );
+  const Property = require( 'AXON/Property' );
+  const Rectangle = require( 'SCENERY/nodes/Rectangle' );
+  const Screen = require( 'JOIST/Screen' );
+  const Sim = require( 'JOIST/Sim' );
+  const SimLauncher = require( 'JOIST/SimLauncher' );
+  const sunQueryParameters = require( 'SUN/sunQueryParameters' );
 
   // strings
-  var sunTitleString = require( 'string!SUN/sun.title' );
+  const sunTitleString = require( 'string!SUN/sun.title' );
 
   var simOptions = {
     credits: {

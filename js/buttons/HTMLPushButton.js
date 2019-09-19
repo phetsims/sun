@@ -6,14 +6,14 @@
  * @author Chris Malley (PixelZoom, Inc.)
  * @author John Blanco (PhET Interactive Simulations)
  */
-define( function( require ) {
+define( require => {
   'use strict';
 
   // modules
-  var inherit = require( 'PHET_CORE/inherit' );
-  var RectangularPushButton = require( 'SUN/buttons/RectangularPushButton' );
-  var RichText = require( 'SCENERY/nodes/RichText' );
-  var sun = require( 'SUN/sun' );
+  const inherit = require( 'PHET_CORE/inherit' );
+  const RectangularPushButton = require( 'SUN/buttons/RectangularPushButton' );
+  const RichText = require( 'SCENERY/nodes/RichText' );
+  const sun = require( 'SUN/sun' );
 
   /**
    * @param {string} html

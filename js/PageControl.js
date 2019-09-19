@@ -6,16 +6,16 @@
  *
  * @author Chris Malley (PixelZoom, Inc.)
  */
-define( function( require ) {
+define( require => {
   'use strict';
 
   // modules
-  var Circle = require( 'SCENERY/nodes/Circle' );
-  var DownUpListener = require( 'SCENERY/input/DownUpListener' );
-  var inherit = require( 'PHET_CORE/inherit' );
-  var Node = require( 'SCENERY/nodes/Node' );
-  var Shape = require( 'KITE/Shape' );
-  var sun = require( 'SUN/sun' );
+  const Circle = require( 'SCENERY/nodes/Circle' );
+  const DownUpListener = require( 'SCENERY/input/DownUpListener' );
+  const inherit = require( 'PHET_CORE/inherit' );
+  const Node = require( 'SCENERY/nodes/Node' );
+  const Shape = require( 'KITE/Shape' );
+  const sun = require( 'SUN/sun' );
 
   /**
    * @param {number} numberOfPages - number of pages

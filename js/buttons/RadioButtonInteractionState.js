@@ -4,10 +4,10 @@
  * enum of the possible interaction states for the radio buttons
  * @author John Blanco
  */
-define( function( require ) {
+define( require => {
   'use strict';
 
-  var sun = require( 'SUN/sun' );
+  const sun = require( 'SUN/sun' );
 
   var RadioButtonInteractionState = {
 

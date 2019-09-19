@@ -8,40 +8,40 @@
  * @author Sam Reid (PhET Interactive Simulations)
  * @author Chris Malley (PixelZoom, Inc.)
  */
-define( function( require ) {
+define( require => {
   'use strict';
 
   // modules
-  var AccordionBox = require( 'SUN/AccordionBox' );
-  var AlignBox = require( 'SCENERY/nodes/AlignBox' );
-  var AlignGroup = require( 'SCENERY/nodes/AlignGroup' );
-  var BooleanProperty = require( 'AXON/BooleanProperty' );
-  var Carousel = require( 'SUN/Carousel' );
-  var Checkbox = require( 'SUN/Checkbox' );
-  var Circle = require( 'SCENERY/nodes/Circle' );
-  var ComboBox = require( 'SUN/ComboBox' );
-  var ComboBoxItem = require( 'SUN/ComboBoxItem' );
-  var DemosScreenView = require( 'SUN/demo/DemosScreenView' );
-  var Dimension2 = require( 'DOT/Dimension2' );
-  var HBox = require( 'SCENERY/nodes/HBox' );
-  var HSlider = require( 'SUN/HSlider' );
-  var inherit = require( 'PHET_CORE/inherit' );
-  var Node = require( 'SCENERY/nodes/Node' );
-  var NumberSpinner = require( 'SUN/NumberSpinner' );
-  var OnOffSwitch = require( 'SUN/OnOffSwitch' );
-  var PageControl = require( 'SUN/PageControl' );
-  var Panel = require( 'SUN/Panel' );
-  var PhetFont = require( 'SCENERY_PHET/PhetFont' );
-  var Property = require( 'AXON/Property' );
-  var Range = require( 'DOT/Range' );
-  var Rectangle = require( 'SCENERY/nodes/Rectangle' );
-  var RectangularPushButton = require( 'SUN/buttons/RectangularPushButton' );
-  var sun = require( 'SUN/sun' );
-  var sunQueryParameters = require( 'SUN/sunQueryParameters' );
-  var Text = require( 'SCENERY/nodes/Text' );
-  var timer = require( 'AXON/timer' );
-  var VBox = require( 'SCENERY/nodes/VBox' );
-  var VSlider = require( 'SUN/VSlider' );
+  const AccordionBox = require( 'SUN/AccordionBox' );
+  const AlignBox = require( 'SCENERY/nodes/AlignBox' );
+  const AlignGroup = require( 'SCENERY/nodes/AlignGroup' );
+  const BooleanProperty = require( 'AXON/BooleanProperty' );
+  const Carousel = require( 'SUN/Carousel' );
+  const Checkbox = require( 'SUN/Checkbox' );
+  const Circle = require( 'SCENERY/nodes/Circle' );
+  const ComboBox = require( 'SUN/ComboBox' );
+  const ComboBoxItem = require( 'SUN/ComboBoxItem' );
+  const DemosScreenView = require( 'SUN/demo/DemosScreenView' );
+  const Dimension2 = require( 'DOT/Dimension2' );
+  const HBox = require( 'SCENERY/nodes/HBox' );
+  const HSlider = require( 'SUN/HSlider' );
+  const inherit = require( 'PHET_CORE/inherit' );
+  const Node = require( 'SCENERY/nodes/Node' );
+  const NumberSpinner = require( 'SUN/NumberSpinner' );
+  const OnOffSwitch = require( 'SUN/OnOffSwitch' );
+  const PageControl = require( 'SUN/PageControl' );
+  const Panel = require( 'SUN/Panel' );
+  const PhetFont = require( 'SCENERY_PHET/PhetFont' );
+  const Property = require( 'AXON/Property' );
+  const Range = require( 'DOT/Range' );
+  const Rectangle = require( 'SCENERY/nodes/Rectangle' );
+  const RectangularPushButton = require( 'SUN/buttons/RectangularPushButton' );
+  const sun = require( 'SUN/sun' );
+  const sunQueryParameters = require( 'SUN/sunQueryParameters' );
+  const Text = require( 'SCENERY/nodes/Text' );
+  const timer = require( 'AXON/timer' );
+  const VBox = require( 'SCENERY/nodes/VBox' );
+  const VSlider = require( 'SUN/VSlider' );
 
   /**
    * @constructor

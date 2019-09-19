@@ -9,13 +9,13 @@
  * @author John Blanco (PhET Interactive Simulations)
  * @author Sam Reid (PhET Interactive Simulations)
  */
-define( function( require ) {
+define( require => {
   'use strict';
 
   // modules
-  var inherit = require( 'PHET_CORE/inherit' );
-  var RoundStickyToggleButton = require( 'SUN/buttons/RoundStickyToggleButton' );
-  var sun = require( 'SUN/sun' );
+  const inherit = require( 'PHET_CORE/inherit' );
+  const RoundStickyToggleButton = require( 'SUN/buttons/RoundStickyToggleButton' );
+  const sun = require( 'SUN/sun' );
 
   /**
    * @param {Property.<boolean>} booleanProperty

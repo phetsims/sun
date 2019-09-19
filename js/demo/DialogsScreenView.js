@@ -5,19 +5,19 @@
  *
  * @author Chris Malley (PixelZoom, Inc.)
  */
-define( function( require ) {
+define( require => {
   'use strict';
 
   // modules
-  var Dialog = require( 'SUN/Dialog' );
-  var Font = require( 'SCENERY/util/Font' );
-  var inherit = require( 'PHET_CORE/inherit' );
-  var Node = require( 'SCENERY/nodes/Node' );
-  var Rectangle = require( 'SCENERY/nodes/Rectangle' );
-  var RectangularPushButton = require( 'SUN/buttons/RectangularPushButton' );
-  var ScreenView = require( 'JOIST/ScreenView' );
-  var sun = require( 'SUN/sun' );
-  var Text = require( 'SCENERY/nodes/Text' );
+  const Dialog = require( 'SUN/Dialog' );
+  const Font = require( 'SCENERY/util/Font' );
+  const inherit = require( 'PHET_CORE/inherit' );
+  const Node = require( 'SCENERY/nodes/Node' );
+  const Rectangle = require( 'SCENERY/nodes/Rectangle' );
+  const RectangularPushButton = require( 'SUN/buttons/RectangularPushButton' );
+  const ScreenView = require( 'JOIST/ScreenView' );
+  const sun = require( 'SUN/sun' );
+  const Text = require( 'SCENERY/nodes/Text' );
 
   // constants
   var BUTTON_FONT = new Font( { size: 20 } );

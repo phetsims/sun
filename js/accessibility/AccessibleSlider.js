@@ -13,14 +13,14 @@
  * @author Jesse Greenberg (PhET Interactive Simulations)
  */
 
-define( function( require ) {
+define( require => {
   'use strict';
 
-  var AccessibleValueHandler = require( 'SUN/accessibility/AccessibleValueHandler' );
-  var extend = require( 'PHET_CORE/extend' );
-  var inheritance = require( 'PHET_CORE/inheritance' );
-  var Node = require( 'SCENERY/nodes/Node' );
-  var sun = require( 'SUN/sun' );
+  const AccessibleValueHandler = require( 'SUN/accessibility/AccessibleValueHandler' );
+  const extend = require( 'PHET_CORE/extend' );
+  const inheritance = require( 'PHET_CORE/inheritance' );
+  const Node = require( 'SCENERY/nodes/Node' );
+  const sun = require( 'SUN/sun' );
 
   var AccessibleSlider = {
 

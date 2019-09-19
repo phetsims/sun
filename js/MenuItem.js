@@ -6,21 +6,21 @@
  *
  * @author Michael Kauzmann (PhET Interactive Simulations)
  */
-define( function( require ) {
+define( require => {
   'use strict';
 
   // modules
-  var AccessibilityUtil = require( 'SCENERY/accessibility/AccessibilityUtil' );
-  var EventType = require( 'TANDEM/EventType' );
-  var FireListener = require( 'SCENERY/listeners/FireListener' );
-  var FontAwesomeNode = require( 'SUN/FontAwesomeNode' );
-  var inherit = require( 'PHET_CORE/inherit' );
-  var Node = require( 'SCENERY/nodes/Node' );
-  var PhetFont = require( 'SCENERY_PHET/PhetFont' );
-  var Rectangle = require( 'SCENERY/nodes/Rectangle' );
-  var sun = require( 'SUN/sun' );
-  var Tandem = require( 'TANDEM/Tandem' );
-  var Text = require( 'SCENERY/nodes/Text' );
+  const AccessibilityUtil = require( 'SCENERY/accessibility/AccessibilityUtil' );
+  const EventType = require( 'TANDEM/EventType' );
+  const FireListener = require( 'SCENERY/listeners/FireListener' );
+  const FontAwesomeNode = require( 'SUN/FontAwesomeNode' );
+  const inherit = require( 'PHET_CORE/inherit' );
+  const Node = require( 'SCENERY/nodes/Node' );
+  const PhetFont = require( 'SCENERY_PHET/PhetFont' );
+  const Rectangle = require( 'SCENERY/nodes/Rectangle' );
+  const sun = require( 'SUN/sun' );
+  const Tandem = require( 'TANDEM/Tandem' );
+  const Text = require( 'SCENERY/nodes/Text' );
 
   // the check mark used for toggle-able menu items
   var CHECK_MARK_NODE = new FontAwesomeNode( 'check', {

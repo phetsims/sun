@@ -6,13 +6,13 @@
  * @author Sam Reid (PhET Interactive Simulations)
  * @author Andrew Adare (PhET Interactive Simulations)
  */
-define( function( require ) {
+define( require => {
   'use strict';
 
   // modules
   const ObjectIO = require( 'TANDEM/types/ObjectIO' );
-  var NodeIO = require( 'SCENERY/nodes/NodeIO' );
-  var sun = require( 'SUN/sun' );
+  const NodeIO = require( 'SCENERY/nodes/NodeIO' );
+  const sun = require( 'SUN/sun' );
 
   class ToggleButtonIO extends NodeIO {}
 

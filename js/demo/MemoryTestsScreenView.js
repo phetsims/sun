@@ -4,19 +4,19 @@
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */
-define( function( require ) {
+define( require => {
   'use strict';
 
   // modules
-  var ABSwitch = require( 'SUN/ABSwitch' );
-  var BooleanToggleNode = require( 'SUN/BooleanToggleNode' );
-  var HSlider = require( 'SUN/HSlider' );
-  var inherit = require( 'PHET_CORE/inherit' );
-  var Property = require( 'AXON/Property' );
-  var Range = require( 'DOT/Range' );
-  var ScreenView = require( 'JOIST/ScreenView' );
-  var sun = require( 'SUN/sun' );
-  var Text = require( 'SCENERY/nodes/Text' );
+  const ABSwitch = require( 'SUN/ABSwitch' );
+  const BooleanToggleNode = require( 'SUN/BooleanToggleNode' );
+  const HSlider = require( 'SUN/HSlider' );
+  const inherit = require( 'PHET_CORE/inherit' );
+  const Property = require( 'AXON/Property' );
+  const Range = require( 'DOT/Range' );
+  const ScreenView = require( 'JOIST/ScreenView' );
+  const sun = require( 'SUN/sun' );
+  const Text = require( 'SCENERY/nodes/Text' );
 
   function ComponentHolder( createFunction ) {
     var self = this;

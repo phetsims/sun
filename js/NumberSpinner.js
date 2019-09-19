@@ -6,22 +6,22 @@
  * @author Chris Malley (PixelZoom, Inc.)
  * @author Andrea Lin (PhET Interactive Simulations)
  */
-define( function( require ) {
+define( require => {
   'use strict';
 
   // modules
-  var AccessibleNumberSpinner = require( 'SUN/accessibility/AccessibleNumberSpinner' );
-  var ArrowButton = require( 'SUN/buttons/ArrowButton' );
-  var inherit = require( 'PHET_CORE/inherit' );
-  var Node = require( 'SCENERY/nodes/Node' );
-  var PhetFont = require( 'SCENERY_PHET/PhetFont' );
-  var Property = require( 'AXON/Property' );
-  var Rectangle = require( 'SCENERY/nodes/Rectangle' );
-  var StringUtils = require( 'PHETCOMMON/util/StringUtils' );
-  var sun = require( 'SUN/sun' );
-  var SunConstants = require( 'SUN/SunConstants' );
-  var Text = require( 'SCENERY/nodes/Text' );
-  var Util = require( 'DOT/Util' );
+  const AccessibleNumberSpinner = require( 'SUN/accessibility/AccessibleNumberSpinner' );
+  const ArrowButton = require( 'SUN/buttons/ArrowButton' );
+  const inherit = require( 'PHET_CORE/inherit' );
+  const Node = require( 'SCENERY/nodes/Node' );
+  const PhetFont = require( 'SCENERY_PHET/PhetFont' );
+  const Property = require( 'AXON/Property' );
+  const Rectangle = require( 'SCENERY/nodes/Rectangle' );
+  const StringUtils = require( 'PHETCOMMON/util/StringUtils' );
+  const sun = require( 'SUN/sun' );
+  const SunConstants = require( 'SUN/SunConstants' );
+  const Text = require( 'SCENERY/nodes/Text' );
+  const Util = require( 'DOT/Util' );
 
   // possible values for options.arrowsPosition
   var ARROWS_POSITION_VALUES = [

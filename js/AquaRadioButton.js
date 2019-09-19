@@ -5,20 +5,20 @@
  *
  * @author Chris Malley (PixelZoom, Inc.)
  */
-define( function( require ) {
+define( require => {
   'use strict';
 
   // modules
-  var BooleanProperty = require( 'AXON/BooleanProperty' );
-  var Circle = require( 'SCENERY/nodes/Circle' );
-  var FireListener = require( 'SCENERY/listeners/FireListener' );
-  var inherit = require( 'PHET_CORE/inherit' );
-  var InstanceRegistry = require( 'PHET_CORE/documentation/InstanceRegistry' );
-  var Node = require( 'SCENERY/nodes/Node' );
-  var Rectangle = require( 'SCENERY/nodes/Rectangle' );
-  var sun = require( 'SUN/sun' );
-  var SunConstants = require( 'SUN/SunConstants' );
-  var Tandem = require( 'TANDEM/Tandem' );
+  const BooleanProperty = require( 'AXON/BooleanProperty' );
+  const Circle = require( 'SCENERY/nodes/Circle' );
+  const FireListener = require( 'SCENERY/listeners/FireListener' );
+  const inherit = require( 'PHET_CORE/inherit' );
+  const InstanceRegistry = require( 'PHET_CORE/documentation/InstanceRegistry' );
+  const Node = require( 'SCENERY/nodes/Node' );
+  const Rectangle = require( 'SCENERY/nodes/Rectangle' );
+  const sun = require( 'SUN/sun' );
+  const SunConstants = require( 'SUN/SunConstants' );
+  const Tandem = require( 'TANDEM/Tandem' );
 
   // constants
   var DEFAULT_RADIUS = 7;

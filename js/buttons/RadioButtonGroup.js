@@ -10,25 +10,25 @@
  *
  * @author Aaron Davis (PhET Interactive Simulations)
  */
-define( function( require ) {
+define( require => {
   'use strict';
 
   // modules
-  var AccessiblePeer = require( 'SCENERY/accessibility/AccessiblePeer' );
-  var Color = require( 'SCENERY/util/Color' );
-  var ColorConstants = require( 'SUN/ColorConstants' );
-  var FocusHighlightPath = require( 'SCENERY/accessibility/FocusHighlightPath' );
-  var inherit = require( 'PHET_CORE/inherit' );
-  var InstanceRegistry = require( 'PHET_CORE/documentation/InstanceRegistry' );
-  var LayoutBox = require( 'SCENERY/nodes/LayoutBox' );
-  var PhetioObject = require( 'TANDEM/PhetioObject' );
-  var Property = require( 'AXON/Property' );
-  var RadioButtonGroupAppearance = require( 'SUN/buttons/RadioButtonGroupAppearance' );
-  var RadioButtonGroupMember = require( 'SUN/buttons/RadioButtonGroupMember' );
-  var Rectangle = require( 'SCENERY/nodes/Rectangle' );
-  var Shape = require( 'KITE/Shape' );
-  var sun = require( 'SUN/sun' );
-  var Tandem = require( 'TANDEM/Tandem' );
+  const AccessiblePeer = require( 'SCENERY/accessibility/AccessiblePeer' );
+  const Color = require( 'SCENERY/util/Color' );
+  const ColorConstants = require( 'SUN/ColorConstants' );
+  const FocusHighlightPath = require( 'SCENERY/accessibility/FocusHighlightPath' );
+  const inherit = require( 'PHET_CORE/inherit' );
+  const InstanceRegistry = require( 'PHET_CORE/documentation/InstanceRegistry' );
+  const LayoutBox = require( 'SCENERY/nodes/LayoutBox' );
+  const PhetioObject = require( 'TANDEM/PhetioObject' );
+  const Property = require( 'AXON/Property' );
+  const RadioButtonGroupAppearance = require( 'SUN/buttons/RadioButtonGroupAppearance' );
+  const RadioButtonGroupMember = require( 'SUN/buttons/RadioButtonGroupMember' );
+  const Rectangle = require( 'SCENERY/nodes/Rectangle' );
+  const Shape = require( 'KITE/Shape' );
+  const sun = require( 'SUN/sun' );
+  const Tandem = require( 'TANDEM/Tandem' );
 
   // constants
   var BUTTON_CONTENT_X_ALIGN_VALUES = [ 'center', 'left', 'right' ];

@@ -4,17 +4,17 @@
  * Base class for button models, which describe the behavior of buttons when users interact with them.  Property values
  * are set by an associated listener, see ButtonListener for details.
  */
-define( function( require ) {
+define( require => {
   'use strict';
 
   // modules
-  var BooleanProperty = require( 'AXON/BooleanProperty' );
-  var inherit = require( 'PHET_CORE/inherit' );
-  var PhetioObject = require( 'TANDEM/PhetioObject' );
-  var PressListener = require( 'SCENERY/listeners/PressListener' );
-  var Property = require( 'AXON/Property' );
-  var sun = require( 'SUN/sun' );
-  var Tandem = require( 'TANDEM/Tandem' );
+  const BooleanProperty = require( 'AXON/BooleanProperty' );
+  const inherit = require( 'PHET_CORE/inherit' );
+  const PhetioObject = require( 'TANDEM/PhetioObject' );
+  const PressListener = require( 'SCENERY/listeners/PressListener' );
+  const Property = require( 'AXON/Property' );
+  const sun = require( 'SUN/sun' );
+  const Tandem = require( 'TANDEM/Tandem' );
 
   /**
    * @param {Object} [options]

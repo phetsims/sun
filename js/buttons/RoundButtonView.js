@@ -10,23 +10,23 @@
  * @author John Blanco (PhET Interactive Simulations)
  * @author Sam Reid (PhET Interactive Simulations)
  */
-define( function( require ) {
+define( require => {
   'use strict';
 
   // modules
-  var ButtonInteractionState = require( 'SUN/buttons/ButtonInteractionState' );
-  var Circle = require( 'SCENERY/nodes/Circle' );
-  var ColorConstants = require( 'SUN/ColorConstants' );
-  var DerivedProperty = require( 'AXON/DerivedProperty' );
-  var inherit = require( 'PHET_CORE/inherit' );
-  var Node = require( 'SCENERY/nodes/Node' );
-  var PaintColorProperty = require( 'SCENERY/util/PaintColorProperty' );
-  var PhetioObject = require( 'TANDEM/PhetioObject' );
-  var RadialGradient = require( 'SCENERY/util/RadialGradient' );
-  var Shape = require( 'KITE/Shape' );
-  var sun = require( 'SUN/sun' );
-  var Tandem = require( 'TANDEM/Tandem' );
-  var Vector2 = require( 'DOT/Vector2' );
+  const ButtonInteractionState = require( 'SUN/buttons/ButtonInteractionState' );
+  const Circle = require( 'SCENERY/nodes/Circle' );
+  const ColorConstants = require( 'SUN/ColorConstants' );
+  const DerivedProperty = require( 'AXON/DerivedProperty' );
+  const inherit = require( 'PHET_CORE/inherit' );
+  const Node = require( 'SCENERY/nodes/Node' );
+  const PaintColorProperty = require( 'SCENERY/util/PaintColorProperty' );
+  const PhetioObject = require( 'TANDEM/PhetioObject' );
+  const RadialGradient = require( 'SCENERY/util/RadialGradient' );
+  const Shape = require( 'KITE/Shape' );
+  const sun = require( 'SUN/sun' );
+  const Tandem = require( 'TANDEM/Tandem' );
+  const Vector2 = require( 'DOT/Vector2' );
 
   // constants
   var HIGHLIGHT_GRADIENT_LENGTH = 5; // In screen coords, which are roughly pixels.
