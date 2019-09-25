@@ -75,8 +75,8 @@ define( require => {
 
       // when the enabled range changes gray out the unusable parts of the slider
       const enabledRangeObserver = enabledRange => {
-        const minViewCoordinate = this.fullRangeValueToPosition( enabledRange.min );
-        const maxViewCoordinate = this.fullRangeValueToPosition( enabledRange.max );
+        const minViewCoordinate = this.valueToPosition( enabledRange.min );
+        const maxViewCoordinate = this.valueToPosition( enabledRange.max );
 
         // update the geometry of the enabled track
         const enabledWidth = maxViewCoordinate - minViewCoordinate;

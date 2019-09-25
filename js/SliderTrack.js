@@ -60,7 +60,8 @@ define( require => {
         const transform = trail.subtrailTo( this ).getTransform();
         const x = transform.inversePosition2( event.pointer.point ).x;
         const value = this.valueToPosition.inverse( x );
-        const newValue = options.constrainValue( value );
+        const valueInRange = options.enabledRangeProperty.value.constrainValue( value );
+        const newValue = options.constrainValue( valueInRange );
         valueProperty.set( newValue );
       };
 
@@ -86,24 +87,12 @@ define( require => {
       } );
       trackNode.addInputListener( trackInputListener );
 
-      // @protected - maps the full range to the full width
-      this.fullRangeValueToPosition = new LinearFunction( range.min, range.max, 0, this.size.width, true /* clamp */ );
-
-      // when the enabled range changes, the value to position linear function must change as well
-      const enabledRangeObserver = enabledRange => {
-        assert && assert( range.containsRange( enabledRange ), 'enabledRange is out of range' );
-        const min = this.fullRangeValueToPosition( enabledRange.min );
-        const max = this.fullRangeValueToPosition( enabledRange.max );
-
-        // update the function that maps value to position for the track and the slider
-        this.valueToPosition = new LinearFunction( enabledRange.min, enabledRange.max, min, max, true /* clamp */ );
-      };
-      options.enabledRangeProperty.link( enabledRangeObserver ); // needs to be unlinked in dispose function
+      // @public (read-only) - maps the value along the range of the track to the position along the width of the track
+      this.valueToPosition = new LinearFunction( range.min, range.max, 0, this.size.width, true /* clamp */ );
 
       // @private Called by dispose
       this.disposeSliderTrack = () => {
         trackInputListener.dispose();
-        options.enabledRangeProperty.unlink( enabledRangeObserver );
       };
     }
 

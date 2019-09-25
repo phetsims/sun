@@ -274,8 +274,9 @@ define( require => {
           const transform = trail.subtrailTo( sliderPartsNode ).getTransform(); // we only want the transform to our parent
           const x = transform.inversePosition2( event.pointer.point ).x - clickXOffset;
           const newValue = self.track.valueToPosition.inverse( x );
+          const valueInRange = self.enabledRangeProperty.get().constrainValue( newValue );
 
-          valueProperty.set( options.constrainValue( newValue ) );
+          valueProperty.set( options.constrainValue( valueInRange ) );
         }
       },
 
