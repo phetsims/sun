@@ -50,8 +50,7 @@ define( require => {
       // @public (read-only)
       this.size = options.size;
 
-      // @private - linear function that maps property value to position along the track.  Set after construction and
-      // if/when the function changes.
+      // @public (read-only) - maps the value along the range of the track to the position along the width of the track
       this.valueToPosition = new LinearFunction( range.min, range.max, 0, this.size.width, true /* clamp */ );
 
       // click in the track to change the value, continue dragging if desired
@@ -87,23 +86,10 @@ define( require => {
       } );
       trackNode.addInputListener( trackInputListener );
 
-      // @public (read-only) - maps the value along the range of the track to the position along the width of the track
-      this.valueToPosition = new LinearFunction( range.min, range.max, 0, this.size.width, true /* clamp */ );
-
       // @private Called by dispose
       this.disposeSliderTrack = () => {
         trackInputListener.dispose();
       };
-    }
-
-    /**
-     * Sets the function that converts a model value to a slider and track position.
-     * @param {LinearFunction} valueToPosition
-     * @public
-     */
-    setValueToPositionFunction( valueToPosition ) {
-      assert && assert( valueToPosition, 'valueToPosition should be defined' );
-      this.valueToPosition = valueToPosition;
     }
 
     // @public - ensures that this object is eligible for GC
