@@ -75,27 +75,29 @@ define( require => {
     }, options );
 
     const self = this;
+
     Node.call( this );
 
-    // track that the thumb slides in
     const cornerRadius = options.size.height / 2;
-    const trackNode = this.trackNode = new Rectangle( 0, 0, options.size.width, options.size.height, cornerRadius, cornerRadius, {
+
+    // @private track that the thumb slides in
+    this.trackNode = new Rectangle( 0, 0, options.size.width, options.size.height, cornerRadius, cornerRadius, {
       fill: options.trackOffFill,
       stroke: options.trackStroke,
       cachedPaints: [ options.trackOnFill, options.trackOffFill ]
     } );
-    this.addChild( trackNode );
+    this.addChild( this.trackNode );
 
-    // thumb (aka knob)
-    const thumbNode = this.thumbNode = new Rectangle( 0, 0, 0.5 * options.size.width, options.size.height, cornerRadius, cornerRadius, {
+    // @private thumb (aka knob)
+    this.thumbNode = new Rectangle( 0, 0, 0.5 * options.size.width, options.size.height, cornerRadius, cornerRadius, {
       fill: options.thumbFill,
       stroke: options.thumbStroke
     } );
-    this.addChild( thumbNode );
+    this.addChild( this.thumbNode );
 
     // thumb touchArea
     if ( options.thumbTouchAreaXDilation || options.thumbTouchAreaYDilation ) {
-      thumbNode.touchArea = Shape.roundRect(
+      this.thumbNode.touchArea = Shape.roundRect(
         -options.thumbTouchAreaXDilation, -options.thumbTouchAreaYDilation,
         ( 0.5 * options.size.width ) + ( 2 * options.thumbTouchAreaXDilation ),
         options.size.height + ( 2 * options.thumbTouchAreaYDilation ), cornerRadius, cornerRadius );
@@ -103,7 +105,7 @@ define( require => {
 
     // thumb mouseArea
     if ( options.thumbMouseAreaXDilation || options.thumbMouseAreaYDilation ) {
-      thumbNode.mouseArea = Shape.roundRect(
+      this.thumbNode.mouseArea = Shape.roundRect(
         -options.thumbMouseAreaXDilation, -options.thumbMouseAreaYDilation,
         ( 0.5 * options.size.width ) + ( 2 * options.thumbMouseAreaXDilation ),
         options.size.height + ( 2 * options.thumbMouseAreaYDilation ), cornerRadius, cornerRadius );
@@ -112,12 +114,12 @@ define( require => {
     // move thumb to on or off position
     const updateThumb = function( on ) {
       if ( on ) {
-        thumbNode.right = options.size.width;
-        trackNode.fill = options.trackOnFill;
+        self.thumbNode.right = options.size.width;
+        self.trackNode.fill = options.trackOnFill;
       }
       else {
-        thumbNode.left = 0;
-        trackNode.fill = options.trackOffFill;
+        self.thumbNode.left = 0;
+        self.trackNode.fill = options.trackOffFill;
       }
     };
 
@@ -134,7 +136,7 @@ define( require => {
 
       // only touch to snag when over the thumb (don't snag on the track itself)
       allowTouchSnag: function( evt ) {
-        return _.includes( evt.trail.nodes, thumbNode );
+        return _.includes( evt.trail.nodes, self.thumbNode );
       },
 
       start: function( evt, trail ) {
@@ -146,8 +148,8 @@ define( require => {
       drag: function( evt, trail ) {
         // center the thumb on the pointer's x-coordinate if possible (but clamp to left and right ends)
         const viewPoint = evt.currentTarget.globalToLocalPoint( evt.pointer.point );
-        const halfThumbWidth = thumbNode.width / 2;
-        thumbNode.centerX = Util.clamp( viewPoint.x, halfThumbWidth, options.size.width - halfThumbWidth );
+        const halfThumbWidth = self.thumbNode.width / 2;
+        self.thumbNode.centerX = Util.clamp( viewPoint.x, halfThumbWidth, options.size.width - halfThumbWidth );
 
         // whether the thumb is dragged outside of the possible range far enough beyond our threshold to potentially
         // trigger an immediate model change
@@ -157,7 +159,7 @@ define( require => {
         const value = self.thumbPositionToValue(); // value represented by the current thumb position
 
         // track fill changes based on the thumb positions
-        trackNode.fill = value ? options.trackOnFill : options.trackOffFill;
+        self.trackNode.fill = value ? options.trackOnFill : options.trackOffFill;
 
         if ( options.toggleWhileDragging === true || ( isDraggedOutside && options.toggleWhileDragging === null ) ) {
 
