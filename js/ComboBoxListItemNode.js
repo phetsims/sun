@@ -103,4 +103,4 @@ define( require => {
   }
 
   return sun.register( 'ComboBoxListItemNode', ComboBoxListItemNode );
-} ); 
+} );

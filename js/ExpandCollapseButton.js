@@ -100,10 +100,9 @@ define( require => {
      */
     dispose() {
       this.disposeExpandCollapseButton();
-      super.dispose(); 
+      super.dispose();
     }
   }
 
   return sun.register( 'ExpandCollapseButton', ExpandCollapseButton );
-
 } );
