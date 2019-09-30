@@ -329,11 +329,10 @@ define( require => {
     // a11y - custom focus highlight that surrounds and moves with the thumb
     this.focusHighlight = new FocusHighlightFromNode( thumb );
 
+    assert && assert( !options.ariaOrientation, 'Slider sets its own ariaOrientation' );
+
     this.initializeAccessibleSlider( valueProperty, this.enabledRangeProperty, this.enabledProperty,
-      _.extend( {}, options, {
-          ariaOrientation: options.orientation
-        }
-      ) );
+      _.extend( { ariaOrientation: options.orientation }, options ) );
 
     assert && Tandem.PHET_IO_ENABLED && assert( !options.phetioLinkedProperty || options.phetioLinkedProperty.isPhetioInstrumented(),
       'If provided, phetioLinkedProperty should be PhET-iO instrumented' );
