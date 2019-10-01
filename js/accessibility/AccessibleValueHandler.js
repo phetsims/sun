@@ -156,23 +156,7 @@ define( require => {
              * should list any Properties who's change should trigger description update for this Node.
              * @type {Property[]}
              */
-            a11yDependencies: [],
-
-            /**
-             * By default there will be nothing special provided on focus, just the previous value set on Property change.
-             * If a specific aria-valuetext is desired when the interactive DOM element is focused, then use this option
-             * to provide the proper "on focus" text. If provided, this will be called independently of the "on change"
-             * valuetext updates. As a result, you can use either a11yCreateValueChangeAriaValueText or a11yValuePattern
-             * with this.
-             *
-             * The string that this function returns is set as aria-valuetext when the component is focused.
-             *
-             * @type {null|Function}
-             * @param {number} formattedValue - mapped value fixed to the provided decimal places
-             * @param {number} value - the current value of the Property, unformatted
-             * @returns {string} - aria-valuetext to be set to the primarySibling
-             */
-            a11yCreateOnFocusAriaValueText: null
+            a11yDependencies: []
           };
 
           options = _.extend( {}, defaults, options );
@@ -284,9 +268,6 @@ define( require => {
           // @private {Multilink}
           this._dependenciesMultilink = null;
 
-          // @private - {null|function} see options for doc
-          this.a11yCreateOnFocusAriaValueText = options.a11yCreateOnFocusAriaValueText;
-
           // @private {boolean} see options for doc
           this._a11yRepeatEqualValueText = options.a11yRepeatEqualValueText;
 
@@ -322,19 +303,9 @@ define( require => {
           };
           this._valueProperty.link( valuePropertyListener );
 
-          const valueHandlerListener = {
-
-            // When not providing a timeout, we would often get this change for the previously focused element even
-            // though it wasn't the active element of the screen. Perhaps this is just a bug/problem with how AT monitor
-            // for aria-valuetext updating.
-            focus: () => { timer.setTimeout( () => this.updateOnFocusAriaValueText(), 0 );}
-          };
-          this.addInputListener( valueHandlerListener );
-
           // @private - called by disposeAccessibleValueHandler to prevent memory leaks
           this._disposeAccessibleValueHandler = () => {
             this._rangeProperty.unlink( enabledRangeObserver );
-            this.removeInputListener( valueHandlerListener );
             this._valueProperty.unlink( valuePropertyListener );
             this._dependenciesMultilink && this._dependenciesMultilink.dispose();
           };
@@ -410,8 +381,7 @@ define( require => {
 
             // 700 and 2000 ms are arbitrary values but sound good with limited testing. We want to give enough time
             // for VO to read aria-valuetext but don't want to have too much silence before the alert is spoken.
-            const delayTime = Math.min( this.timesChangedBeforeAlerting * 700, 2000 );
-            this.utterance.alertStableDelay = delayTime;
+            this.utterance.alertStableDelay = Math.min( this.timesChangedBeforeAlerting * 700, 2000 );
 
             utteranceQueue.addToBack( this.utterance );
           }
@@ -428,16 +398,6 @@ define( require => {
 
           // on reset, make sure that the PDOM descriptions are completely up to date.
           this.updateAriaValueText( null );
-        },
-
-        /**
-         * @public
-         * Update the aria-valuetext for the next time that this element is focused.
-         */
-        updateOnFocusAriaValueText() {
-          if ( this.a11yCreateOnFocusAriaValueText ) {
-            this.ariaValueText = this.a11yCreateOnFocusAriaValueText( this.getA11yFormattedValue(), this._valueProperty.value );
-          }
         },
 
         /**
