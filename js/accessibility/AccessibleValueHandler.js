@@ -66,8 +66,8 @@ define( require => {
 
           // ensure that the client does not set both a custom text pattern and a text creation function
           assert && assert(
-            !( options.a11yValuePattern && options.a11yCreateValueChangeAriaValueText ),
-            'cannot set both a11yValuePattern and a11yCreateValueChangeAriaValueText in options'
+            !( options.a11yValuePattern && options.a11yCreateAriaValueText ),
+            'cannot set both a11yValuePattern and a11yCreateAriaValueText in options'
           );
 
           // if rounding to keyboard step, keyboardStep must be defined so values aren't skipped and the slider   
@@ -137,7 +137,7 @@ define( require => {
              *                              to be called when the AccessibleValueHandler is reset.
              * @returns {string} - aria-valuetext to be set to the primarySibling
              */
-            a11yCreateValueChangeAriaValueText: _.identity,
+            a11yCreateAriaValueText: _.identity,
 
             /**
              * Create content for an alert that will be sent to the utteranceQueue when the user interacts with the
@@ -262,7 +262,7 @@ define( require => {
           this.a11yValuePattern = options.a11yValuePattern;
 
           // @private {function}
-          this.a11yCreateValueChangeAriaValueText = options.a11yCreateValueChangeAriaValueText;
+          this.a11yCreateAriaValueText = options.a11yCreateAriaValueText;
 
           // @private {Multilink}
           this._dependenciesMultilink = null;
@@ -345,7 +345,7 @@ define( require => {
           // create the final string from optional parameters. Only the valuePattern OR the create function can be
           // specified (see above assertions).
           let newAriaValueText = StringUtils.fillIn( this.a11yValuePattern, {
-            value: this.a11yCreateValueChangeAriaValueText( formattedValue, this._valueProperty.value, oldPropertyValue )
+            value: this.a11yCreateAriaValueText( formattedValue, this._valueProperty.value, oldPropertyValue )
           } );
 
           if ( this._a11yRepeatEqualValueText && newAriaValueText === this.ariaValueText ) {
@@ -393,7 +393,7 @@ define( require => {
         reset() {
 
           // reset the aria-valuetext creator if it supports that
-          this.a11yCreateValueChangeAriaValueText.reset && this.a11yCreateValueChangeAriaValueText.reset();
+          this.a11yCreateAriaValueText.reset && this.a11yCreateAriaValueText.reset();
 
           // on reset, make sure that the PDOM descriptions are completely up to date.
           this.updateAriaValueText( null );
