@@ -29,7 +29,6 @@ define( require => {
   const StringUtils = require( 'PHETCOMMON/util/StringUtils' );
   const sun = require( 'SUN/sun' );
   const SunConstants = require( 'SUN/SunConstants' );
-  const timer = require( 'AXON/timer' );
   const Util = require( 'DOT/Util' );
   const Utterance = require( 'SCENERY_PHET/accessibility/Utterance' );
   const utteranceQueue = require( 'SCENERY_PHET/accessibility/utteranceQueue' );
