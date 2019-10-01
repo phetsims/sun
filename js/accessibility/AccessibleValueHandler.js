@@ -42,7 +42,7 @@ define( require => {
     /**
      * Implement functionality for a number spinner.
      * @public
-     * @trait
+     * @trait {Node}
      *
      * @param {function} type - The type (constructor) whose prototype that is modified.
      */

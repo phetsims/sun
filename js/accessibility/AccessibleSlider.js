@@ -27,7 +27,7 @@ define( require => {
     /**
      * Implement functionality for a slider.
      * @public
-     * @trait
+     * @trait {Node}
      * @mixes AccessibleValueHandler
      *
      * @param {function} type - The type (constructor) whose prototype we'll modify.
