@@ -102,7 +102,6 @@ define( require => {
             ariaOrientation: 'horizontal', // specify orientation, read by assistive technology
 
             a11yValuePattern: SunConstants.VALUE_NAMED_PLACEHOLDER, // {string} if you want units or additional content, add to pattern
-            a11yDecimalPlaces: 0, // number of decimal places for the value when formatted and read by assistive technology
 
             // {boolean} - Whether or not to round the value to a multiple of the keyboardStep. This will only round
             // the value on normal key presses, rounding will not occur on large jumps like page up/page down/home/end.
@@ -251,9 +250,6 @@ define( require => {
 
           // @private - setting to enable/disable rounding to the step size
           this.roundToStepSize = options.roundToStepSize;
-
-          // @public (read-only) - precision for the output value to be read by an assistive device
-          this.a11yDecimalPlaces = options.a11yDecimalPlaces;
 
           // @private {function}
           this.a11yMapValue = options.a11yMapValue;
@@ -408,8 +404,7 @@ define( require => {
           const mappedValue = this.a11yMapValue( this._valueProperty.value );
           assert && assert( typeof mappedValue === 'number', 'a11yMapValue must return a number' );
 
-          // format the value text for reading
-          return Util.toFixedNumber( mappedValue, this.a11yDecimalPlaces );
+          return mappedValue;
         },
 
         /**
@@ -819,14 +814,15 @@ define( require => {
          * @private
          */
         updateSiblingStepAttribute() {
-          let stepValue = Math.pow( 10, -this.a11yDecimalPlaces );
+          const smallestStep = Math.min( Math.min( this.keyboardStep, this.shiftKeyboardStep ), this.pageKeyboardStep );
+          let stepValue = Math.pow( 10, -Util.numberOfDecimalPlaces( smallestStep ) );
 
           const fullRange = this._rangeProperty.get().getLength();
 
           // step is too small relative to full range for VoiceOver to receive input, fall back to portion of
           // full range
           if ( stepValue / fullRange < 1e-5 ) {
-            stepValue = this._rangeProperty.get().max / 100;
+            stepValue = fullRange / 100;
           }
 
           this.setAccessibleAttribute( 'step', stepValue );
