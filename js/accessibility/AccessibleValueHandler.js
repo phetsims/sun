@@ -26,9 +26,7 @@ define( require => {
   const KeyboardUtil = require( 'SCENERY/accessibility/KeyboardUtil' );
   const Node = require( 'SCENERY/nodes/Node' );
   const Property = require( 'AXON/Property' );
-  const StringUtils = require( 'PHETCOMMON/util/StringUtils' );
   const sun = require( 'SUN/sun' );
-  const SunConstants = require( 'SUN/SunConstants' );
   const Util = require( 'DOT/Util' );
   const Utterance = require( 'SCENERY_PHET/accessibility/Utterance' );
   const utteranceQueue = require( 'SCENERY_PHET/accessibility/utteranceQueue' );
@@ -64,26 +62,10 @@ define( require => {
          */
         initializeAccessibleValueHandler( valueProperty, rangeProperty, enabledProperty, options ) {
 
-          // ensure that the client does not set both a custom text pattern and a text creation function
-          assert && assert(
-            !( options.a11yValuePattern && options.a11yCreateValueChangeAriaValueText ),
-            'cannot set both a11yValuePattern and a11yCreateValueChangeAriaValueText in options'
-          );
-
           // if rounding to keyboard step, keyboardStep must be defined so values aren't skipped and the slider   
           // doesn't get stuck while rounding to the nearest value, see https://github.com/phetsims/sun/issues/410
           if ( assert && options.roundToStepSize ) {
             assert( options.keyboardStep, 'rounding to keyboardStep, define appropriate keyboardStep to round to' );
-          }
-
-          // verify that a11yValuePattern includes SunConstants.VALUE_NAMED_PLACEHOLDER, and that is the only key in the pattern
-          if ( assert && options.a11yValuePattern ) {
-            assert( options.a11yValuePattern.match( /{{[^{}]+}}/g ).length === 1,
-              'a11yValuePattern only accepts a single \'value\' key'
-            );
-            assert( options.a11yValuePattern.indexOf( SunConstants.VALUE_NAMED_PLACEHOLDER ) >= 0,
-              'a11yValuePattern must contain a key of \'value\''
-            );
           }
 
           const defaults = {
@@ -100,8 +82,6 @@ define( require => {
 
             // TODO: this should be an enumeration, https://github.com/phetsims/gravity-force-lab-basics/issues/134
             ariaOrientation: 'horizontal', // specify orientation, read by assistive technology
-
-            a11yValuePattern: SunConstants.VALUE_NAMED_PLACEHOLDER, // {string} if you want units or additional content, add to pattern
 
             // {boolean} - Whether or not to round the value to a multiple of the keyboardStep. This will only round
             // the value on normal key presses, rounding will not occur on large jumps like page up/page down/home/end.
@@ -125,8 +105,7 @@ define( require => {
             a11yRepeatEqualValueText: true,
 
             /**
-             * Custom aria-valuetext creation function, called when the valueProperty changes. Used in replacement of
-             * the simpler/easier option: a11yValuePattern.
+             * aria-valuetext creation function, called when the valueProperty changes.
              * This string is read by AT every time the slider value changes.
              * @type {Function}
              * @param {number} formattedValue - mapped value fixed to the provided decimal places
@@ -136,7 +115,7 @@ define( require => {
              *                              to be called when the AccessibleValueHandler is reset.
              * @returns {string} - aria-valuetext to be set to the primarySibling
              */
-            a11yCreateValueChangeAriaValueText: _.identity,
+            a11yCreateAriaValueText: _.identity,
 
             /**
              * Create content for an alert that will be sent to the utteranceQueue when the user interacts with the
@@ -255,10 +234,7 @@ define( require => {
           this.a11yMapValue = options.a11yMapValue;
 
           // @private {function}
-          this.a11yValuePattern = options.a11yValuePattern;
-
-          // @private {function}
-          this.a11yCreateValueChangeAriaValueText = options.a11yCreateValueChangeAriaValueText;
+          this.a11yCreateAriaValueText = options.a11yCreateAriaValueText;
 
           // @private {Multilink}
           this._dependenciesMultilink = null;
@@ -338,11 +314,8 @@ define( require => {
         updateAriaValueText( oldPropertyValue ) {
           const formattedValue = this.getA11yFormattedValue();
 
-          // create the final string from optional parameters. Only the valuePattern OR the create function can be
-          // specified (see above assertions).
-          let newAriaValueText = StringUtils.fillIn( this.a11yValuePattern, {
-            value: this.a11yCreateValueChangeAriaValueText( formattedValue, this._valueProperty.value, oldPropertyValue )
-          } );
+          // create the dynamic aria-valuetext from a11yCreateAriaValueText.
+          let newAriaValueText = this.a11yCreateAriaValueText( formattedValue, this._valueProperty.value, oldPropertyValue );
 
           if ( this._a11yRepeatEqualValueText && newAriaValueText === this.ariaValueText ) {
 
@@ -389,7 +362,7 @@ define( require => {
         reset() {
 
           // reset the aria-valuetext creator if it supports that
-          this.a11yCreateValueChangeAriaValueText.reset && this.a11yCreateValueChangeAriaValueText.reset();
+          this.a11yCreateAriaValueText.reset && this.a11yCreateAriaValueText.reset();
 
           // on reset, make sure that the PDOM descriptions are completely up to date.
           this.updateAriaValueText( null );
