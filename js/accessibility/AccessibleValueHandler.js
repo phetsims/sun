@@ -562,7 +562,9 @@ define( require => {
         /**
          * Handle a direct 'input' event that might come from assistive technology. It is possible that the user agent
          * (particularly VoiceOver, or a switch device) will initiate an input event directly without going through
-         * keydown. In that case, handle the change depending on which direction the user tried to go.
+         * keydown. In that case, handle the change depending on which direction the user tried to go. We determine
+         * this by detecting how the input value changed in response to the `input` event relative to the current
+         * value of the valueProperty.
          *
          * Note that it is important to handle the "input" event, rather than the "change" event. The "input" will
          * fire when the value changes from a gesture, while the "change" will only happen on submission, like as
@@ -584,15 +586,16 @@ define( require => {
 
             const inputValue = event.domEvent.target.value;
             const stepSize = this._shiftKey ? this.shiftKeyboardStep : this.keyboardStep;
+            const mappedValue = this.getMappedValue();
 
             // start of change event is start of drag
             this._startChange( event );
 
-            if ( inputValue > this._valueProperty.get() ) {
+            if ( inputValue > mappedValue ) {
               this.attemptedIncreaseEmitter.emit();
               newValue = this._valueProperty.get() + stepSize;
             }
-            else if ( inputValue < this._valueProperty.get() ) {
+            else if ( inputValue < mappedValue ) {
               this.attemptedDecreaseEmitter.emit();
               newValue = this._valueProperty.get() - stepSize;
             }
