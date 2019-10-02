@@ -63,7 +63,7 @@ define( require => {
          */
         initializeAccessibleValueHandler( valueProperty, rangeProperty, enabledProperty, options ) {
 
-          // if rounding to keyboard step, keyboardStep must be defined so values aren't skipped and the slider   
+          // if rounding to keyboard step, keyboardStep must be defined so values aren't skipped and the slider
           // doesn't get stuck while rounding to the nearest value, see https://github.com/phetsims/sun/issues/410
           if ( assert && options.roundToStepSize ) {
             assert( options.keyboardStep, 'rounding to keyboardStep, define appropriate keyboardStep to round to' );
@@ -201,7 +201,7 @@ define( require => {
           // initialize slider attributes
           this.ariaOrientation = options.ariaOrientation;
 
-          // @private - track previous values for callbacks outside of Property listeners 
+          // @private - track previous values for callbacks outside of Property listeners
           this.oldValue = null;
 
           // @public - Emitted whenever there is an attempt to change the value in a particular direction. Note that
@@ -808,15 +808,17 @@ define( require => {
           const smallestStep = Math.min( Math.min( this.keyboardStep, this.shiftKeyboardStep ), this.pageKeyboardStep );
           let stepValue = Math.pow( 10, -Util.numberOfDecimalPlaces( smallestStep ) );
 
-          const fullRange = this._rangeProperty.get().getLength();
+          const mappedMin = this.getMappedValue( this._rangeProperty.get().min );
+          const mappedMax = this.getMappedValue( this._rangeProperty.get().max );
+          const mappedLength = mappedMax - mappedMin;
 
           // step is too small relative to full range for VoiceOver to receive input, fall back to portion of
-          // full range
-          if ( stepValue / fullRange < 1e-5 ) {
-            stepValue = fullRange / 100;
+          // the max value as a workaround
+          if ( stepValue / mappedLength < 1e-5 ) {
+            stepValue = mappedMax / 100;
           }
 
-          this.setAccessibleAttribute( 'step', this.getMappedValue( stepValue ) );
+          this.setAccessibleAttribute( 'step', stepValue );
         }
       } );
     }
