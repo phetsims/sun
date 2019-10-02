@@ -33,6 +33,7 @@ define( require => {
 
   // constants
   const DEFAULT_TAG_NAME = 'input';
+  const toString = v => v + '';
 
   const AccessibleValueHandler = {
 
@@ -92,9 +93,18 @@ define( require => {
 
             /**
              * Map the valueProperty value to another number that will be read by the assistive device on
-             * valueProperty changes.
-             * @param {number} value
-             * @returns {number}
+             * valueProperty changes. This is used to set the values for aria-valuetext and the on change alert, as well
+             * as the following attributes on the PDOM input:
+             *    value
+             *    aria-valuenow
+             *    min
+             *    max
+             *    step
+             *
+             * For this reason, it is important that the mapped "min" would not be bigger than the mapped "max" from the
+             * rangeProperty.
+             *
+             * @type {function(number):number}
              */
             a11yMapValue: _.identity,
 
@@ -117,7 +127,7 @@ define( require => {
              *                              to be called when the AccessibleValueHandler is reset.
              * @returns {string} - aria-valuetext to be set to the primarySibling
              */
-            a11yCreateAriaValueText: _.identity,
+            a11yCreateAriaValueText: toString, // by default make sure it returns a string
 
             /**
              * Create content for an alert that will be sent to the utteranceQueue when the user interacts with the
@@ -249,9 +259,15 @@ define( require => {
           // listeners, must be unlinked in dispose
           const enabledRangeObserver = enabledRange => {
 
+            const mappedMin = this.getMappedValue( enabledRange.min );
+            const mappedMax = this.getMappedValue( enabledRange.max );
+
+            // TODO: should this assert be added back in? Right now area model fails it, see https://github.com/phetsims/sun/issues/530
+            // assert && assert( mappedMin <= mappedMax, 'min should be less than max' );
+
             // a11y - update enabled slider range for AT, required for screen reader events to behave correctly
-            this.setAccessibleAttribute( 'min', enabledRange.min );
-            this.setAccessibleAttribute( 'max', enabledRange.max );
+            this.setAccessibleAttribute( 'min', mappedMin );
+            this.setAccessibleAttribute( 'max', mappedMax );
 
             // update the step attribute slider element - this attribute is only added because it is required to
             // receive accessibility events on all browsers, and is totally separate from the step values above that
@@ -264,7 +280,7 @@ define( require => {
           // by assistive technology when the value changes
           const valuePropertyListener = () => {
 
-            const formattedValue = this.getA11yFormattedValue();
+            const formattedValue = this.getMappedValue();
 
             // set the aria-valuenow attribute in case the AT requires it to read the value correctly, some may
             // fall back on this from aria-valuetext see
@@ -314,10 +330,11 @@ define( require => {
          * @private
          */
         updateAriaValueText( oldPropertyValue ) {
-          const formattedValue = this.getA11yFormattedValue();
+          const formattedValue = this.getMappedValue();
 
           // create the dynamic aria-valuetext from a11yCreateAriaValueText.
           let newAriaValueText = this.a11yCreateAriaValueText( formattedValue, this._valueProperty.value, oldPropertyValue );
+          assert && assert( typeof newAriaValueText === 'string' );
 
           if ( this._a11yRepeatEqualValueText && newAriaValueText === this.ariaValueText ) {
 
@@ -325,7 +342,7 @@ define( require => {
             newAriaValueText += '\u200A';
           }
 
-          this.ariaValueText = newAriaValueText;
+          this.ariaValueText = newAriaValueText + '';
         },
 
         /**
@@ -339,7 +356,7 @@ define( require => {
 
             this.utterance.resetTimingVariables();
 
-            const formattedValue = this.getA11yFormattedValue();
+            const formattedValue = this.getMappedValue();
             this.utterance.alert = this.a11yCreateValueChangeAlert( formattedValue, this._valueProperty.value, this.oldValue );
 
             if ( utteranceQueue.hasUtterance( this.utterance ) ) {
@@ -371,12 +388,13 @@ define( require => {
         },
 
         /**
-         * @private
          * get the formatted value based on the current value of the Property.
+         * @param {number} [value] - if not provided, will use the current value of the valueProperty
          * @returns {number}
+         * @private
          */
-        getA11yFormattedValue() {
-          const mappedValue = this.a11yMapValue( this._valueProperty.value );
+        getMappedValue( value = this._valueProperty.value ) {
+          const mappedValue = this.a11yMapValue( value );
           assert && assert( typeof mappedValue === 'number', 'a11yMapValue must return a number' );
 
           return mappedValue;
@@ -800,7 +818,7 @@ define( require => {
             stepValue = fullRange / 100;
           }
 
-          this.setAccessibleAttribute( 'step', stepValue );
+          this.setAccessibleAttribute( 'step', this.getMappedValue( stepValue ) );
         }
       } );
     }
