@@ -783,14 +783,17 @@ define( require => {
          * Set the `step` attribute on accessible siblings for this Node. The step attribute must be non zero
          * for the accessible input to receive accessibility events and only certain slider input values are
          * allowed depending on `step`, `min`, and `max` attributes. Only values which are equal to min value plus
-         * the basis of step are allowed. If the input value is set to anything else, the result is confusing
+         * the basis of step are allowed. In other words, the following must always be true:
+         * value = min + n * step where value <= max and n is an integer.
+         *
+         * If the input value is set to anything else, the result is confusing
          * keyboard behavior and the screen reader will say "Invalid" when the value changes.
          * See https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/number#step
          *
          * This limitation is too restrictive for PhET as many sliders span physical ranges with keyboard steps that
          * are design to be convenient or pedagogically useful. For example, a slider that spans 0.01 to 15 requires
          * a step of 1, but DOM specification would only allow values 0.01, 1.01, 2.01, ...
-         * This restriction is the main reason we decided to "roll our own" for accessible sliders.
+         * This restriction is why `step` attribute cannot equal keyboardStep of this trait.
          *
          * We tried to use the `any` attribute which is valid according to DOM specification but screen readers
          * generally don't support it. See https://github.com/phetsims/sun/issues/413.
