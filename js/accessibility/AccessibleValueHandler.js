@@ -84,8 +84,9 @@ define( require => {
             // TODO: this should be an enumeration, https://github.com/phetsims/gravity-force-lab-basics/issues/134
             ariaOrientation: 'horizontal', // specify orientation, read by assistive technology
 
-            // {boolean} - Whether or not to round the value to a multiple of the keyboardStep. This will only round
-            // the value on normal key presses, rounding will not occur on large jumps like page up/page down/home/end.
+            // {boolean} - When setting the Property value from the PDOM input, this option controls whether or not to
+            // round the value to a multiple of the keyboardStep. This will only round the value on normal key presses,
+            // rounding will not occur on large jumps like page up/page down/home/end.
             // see https://github.com/phetsims/gravity-force-lab-basics/issues/72
             roundToStepSize: false,
 
