@@ -409,13 +409,6 @@ define( require => {
     }
   } );
 
-  // @public - to center the dialog based on the sim bounds (including the navigation bar)
-  Dialog.SIM_BOUNDS_CENTER_LAYOUT_STRATEGY = ( dialog, simBounds, screenBounds, scale ) => {
-
-    // The size is set in the Sim.topLayer, but we need to update the location here
-    dialog.center = simBounds.center.times( 1.0 / scale );
-  };
-
   // @private - Center in the screenBounds (doesn't include the navigation bar)
   Dialog.DEFAULT_LAYOUT_STRATEGY = ( dialog, simBounds, screenBounds, scale ) => {
     dialog.center = screenBounds.center.times( 1.0 / scale );
