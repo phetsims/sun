@@ -42,6 +42,7 @@ define( require => {
   // The min distance from the top of the dialog to the dev bounds, same as the distance from the bottom of the dialog
   // to the top of the navigation bar. Empirically determined
   var EXTERNAL_MARGIN = 12;
+  var DOUBLE_MARGIN = EXTERNAL_MARGIN * 2; // total added width/height for the margin
 
   /**
    * @param {Node} content - The content to display inside the dialog (not including the title)
@@ -254,25 +255,27 @@ define( require => {
       sim.currentScreenProperty
     ], ( bounds, screenBounds, scale, currentScreen ) => {
 
-      const currentScreenOrHomeScreen = currentScreen ? currentScreen : sim.homeScreen;
-      const screenView = currentScreenOrHomeScreen.view;
-
-      // calculate the scale based on the current screen bounds instead of using sim.scaleProperty which is a single
-      // static scale that doesn't change based on the current screen. This allows the flexibility to apply the max
-      // width/height to within the screen's layout bounds.
-      const screenScale = Math.min( screenBounds.width / screenView.layoutBounds.width,
-        screenBounds.height / screenView.layoutBounds.height );
-
-      // get the actual size of the screen, scaled via the sim.scaleProperty, in global coordinates
-      const globalScreenViewBounds = screenView.localToGlobalBounds( screenView.localBounds );
-
-      if ( !suppliedMaxHeight ) {
-        this.maxHeight = globalScreenViewBounds.height / screenScale - EXTERNAL_MARGIN * 2;
-      }
-      if ( !suppliedMaxWidth ) {
-        this.maxWidth = globalScreenViewBounds.width / screenScale - EXTERNAL_MARGIN * 2;
-      }
       if ( bounds && screenBounds && scale ) {
+        const currentScreenOrHomeScreen = currentScreen ? currentScreen : sim.homeScreen;
+        const screenView = currentScreenOrHomeScreen.view;
+
+        // calculate the scale based on the current screen bounds instead of using sim.scaleProperty which is a single
+        // static scale that doesn't change based on the current screen. This allows the flexibility to apply the max
+        // width/height to within the screen's layout bounds.
+        const screenScale = Math.min( screenBounds.width / screenView.layoutBounds.width,
+          screenBounds.height / screenView.layoutBounds.height );
+
+        // get the actual size of the screen, scaled via the sim.scaleProperty, in global coordinates
+        const globalScreenViewBounds = screenView.localToGlobalBounds( screenView.localBounds );
+
+        if ( !suppliedMaxHeight ) {
+          const height = globalScreenViewBounds.height / screenScale;
+          this.maxHeight = height > DOUBLE_MARGIN ? height - DOUBLE_MARGIN : height;
+        }
+        if ( !suppliedMaxWidth ) {
+          const width = globalScreenViewBounds.width / screenScale;
+          this.maxWidth = width > DOUBLE_MARGIN ? width - DOUBLE_MARGIN : width;
+        }
         options.layoutStrategy( this, bounds, screenBounds, scale );
       }
     } );
