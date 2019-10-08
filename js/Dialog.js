@@ -39,6 +39,10 @@ define( require => {
   // constants
   const CLOSE_BUTTON_WIDTH = 14;
 
+  // The min distance from the top of the dialog to the dev bounds, same as the distance from the bottom of the dialog
+  // to the top of the navigation bar. Empirically determined
+  var EXTERNAL_MARGIN = 12;
+
   /**
    * @param {Node} content - The content to display inside the dialog (not including the title)
    * @param {Object} [options]
@@ -95,8 +99,8 @@ define( require => {
       title: null,
       titleAlign: 'center', // horizontal alignment of the title: {string} left, right or center
 
-      // {function( Dialog, simBounds:Bounds2, screenBounds:Bounds2, scale:number)} which sets the dialog's position in
-      // global coordinates.
+      // {function(Dialog,simBounds:Bounds2,screenBounds:Bounds2,scale:number)} which sets the dialog's position in
+      // global coordinates. By default it will center the dialog in the middle of the current screen (not including nav bar).
       layoutStrategy: Dialog.DEFAULT_LAYOUT_STRATEGY,
 
       // close button options
@@ -118,6 +122,8 @@ define( require => {
       fill: 'white', // {string|Color}
       stroke: 'black', // {string|Color}
       backgroundPickable: true,
+      maxHeight: null, // if not provided, then dynamically calculate based on the layoutBounds of the current screen, see updateLayoutMultilink
+      maxWidth: null, // if not provided, then dynamically calculate based on the layoutBounds of the current screen, see updateLayoutMultilink
       tandem: Tandem.optional,
       phetioType: DialogIO,
       phetioReadOnly: false, // default to false so it can pass it through to the close button
@@ -163,6 +169,14 @@ define( require => {
       phetioReadOnly: true,
       phetioState: options.phetioState // match the state transfer of the Dialog
     } );
+
+    assert && assert( options.maxHeight === null || typeof options.maxHeight === 'number' );
+    assert && assert( options.maxWidth === null || typeof options.maxWidth === 'number' );
+
+    // keep track of if maxWidth and maxHeight were supplied by the client, because the default approach dynamically
+    // updates them based on the current screens layoutBounds.
+    const suppliedMaxHeight = !!options.maxHeight;
+    const suppliedMaxWidth = !!options.maxWidth;
 
     // create close button
     const closeButton = new CloseButton( {
@@ -233,7 +247,31 @@ define( require => {
 
     const sim = window.phet.joist.sim;
 
-    this.updateLayoutMultilink = Property.multilink( [ sim.boundsProperty, sim.screenBoundsProperty, sim.scaleProperty ], ( bounds, screenBounds, scale ) => {
+    this.updateLayoutMultilink = Property.multilink( [
+      sim.boundsProperty,
+      sim.screenBoundsProperty,
+      sim.scaleProperty,
+      sim.currentScreenProperty
+    ], ( bounds, screenBounds, scale, currentScreen ) => {
+
+      const currentScreenOrHomeScreen = currentScreen ? currentScreen : sim.homeScreen;
+      const screenView = currentScreenOrHomeScreen.view;
+
+      // calculate the scale based on the current screen bounds instead of using sim.scaleProperty which is a single
+      // static scale that doesn't change based on the current screen. This allows the flexibility to apply the max
+      // width/height to within the screen's layout bounds.
+      const screenScale = Math.min( screenBounds.width / screenView.layoutBounds.width,
+        screenBounds.height / screenView.layoutBounds.height );
+
+      // get the actual size of the screen, scaled via the sim.scaleProperty, in global coordinates
+      const globalScreenViewBounds = screenView.localToGlobalBounds( screenView.localBounds );
+
+      if ( !suppliedMaxHeight ) {
+        this.maxHeight = globalScreenViewBounds.height / screenScale - EXTERNAL_MARGIN * 2;
+      }
+      if ( !suppliedMaxWidth ) {
+        this.maxWidth = globalScreenViewBounds.width / screenScale - EXTERNAL_MARGIN * 2;
+      }
       if ( bounds && screenBounds && scale ) {
         options.layoutStrategy( this, bounds, screenBounds, scale );
       }
