@@ -20,7 +20,6 @@ define( require => {
   'use strict';
 
   // modules
-  const Emitter = require( 'AXON/Emitter' );
   const extend = require( 'PHET_CORE/extend' );
   const inheritance = require( 'PHET_CORE/inheritance' );
   const KeyboardUtil = require( 'SCENERY/accessibility/KeyboardUtil' );
@@ -204,12 +203,6 @@ define( require => {
 
           // @private - track previous values for callbacks outside of Property listeners
           this.oldValue = null;
-
-          // @public - Emitted whenever there is an attempt to change the value in a particular direction. Note that
-          // these will emit whether or not the value will actually change (like when stepSize is 0). These may
-          // be used to change the valueProperty, changes from accessible input are handled after these are emitted.
-          this.attemptedIncreaseEmitter = new Emitter();
-          this.attemptedDecreaseEmitter = new Emitter();
 
           // @private {null|function} see options for doc
           this.a11yCreateValueChangeAlert = options.a11yCreateValueChangeAlert;
@@ -456,11 +449,9 @@ define( require => {
                 // on 'end' and 'home' snap to max and min of enabled range respectively (this is typical browser
                 // behavior for sliders)
                 if ( code === KeyboardUtil.KEY_END ) {
-                  this.attemptedIncreaseEmitter.emit();
                   newValue = this._rangeProperty.get().max;
                 }
                 else if ( code === KeyboardUtil.KEY_HOME ) {
-                  this.attemptedDecreaseEmitter.emit();
                   newValue = this._rangeProperty.get().min;
                 }
               }
@@ -471,11 +462,9 @@ define( require => {
                   stepSize = this.pageKeyboardStep;
 
                   if ( code === KeyboardUtil.KEY_PAGE_UP ) {
-                    this.attemptedIncreaseEmitter.emit();
                     newValue = this._valueProperty.get() + stepSize;
                   }
                   else if ( code === KeyboardUtil.KEY_PAGE_DOWN ) {
-                    this.attemptedDecreaseEmitter.emit();
                     newValue = this._valueProperty.get() - stepSize;
                   }
                 }
@@ -485,11 +474,9 @@ define( require => {
                   stepSize = domEvent.shiftKey ? this.shiftKeyboardStep : this.keyboardStep;
 
                   if ( code === KeyboardUtil.KEY_RIGHT_ARROW || code === KeyboardUtil.KEY_UP_ARROW ) {
-                    this.attemptedIncreaseEmitter.emit();
                     newValue = this._valueProperty.get() + stepSize;
                   }
                   else if ( code === KeyboardUtil.KEY_LEFT_ARROW || code === KeyboardUtil.KEY_DOWN_ARROW ) {
-                    this.attemptedDecreaseEmitter.emit();
                     newValue = this._valueProperty.get() - stepSize;
                   }
 
@@ -593,11 +580,9 @@ define( require => {
             this._startChange( event );
 
             if ( inputValue > mappedValue ) {
-              this.attemptedIncreaseEmitter.emit();
               newValue = this._valueProperty.get() + stepSize;
             }
             else if ( inputValue < mappedValue ) {
-              this.attemptedDecreaseEmitter.emit();
               newValue = this._valueProperty.get() - stepSize;
             }
 
