@@ -219,7 +219,8 @@ define( require => {
         this.pickable = !displayOnly;
       } );
 
-      this.addLinkedElement( property, {
+      // TODO: should this be graceful?
+      property.isPhetioInstrumented() && this.addLinkedElement( property, {
         tandem: options.tandem.createTandem( 'property' )
       } );
 
