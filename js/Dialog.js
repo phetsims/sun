@@ -259,14 +259,15 @@ define( require => {
         const currentScreenOrHomeScreen = currentScreen ? currentScreen : sim.homeScreen;
         const screenView = currentScreenOrHomeScreen.view;
 
-        // calculate the scale based on the current screen bounds instead of using sim.scaleProperty which is a single
+        // Calculate the scale based on the current screen instead of using sim.scaleProperty which is a single
         // static scale that doesn't change based on the current screen. This allows the flexibility to apply the max
-        // width/height to within the screen's layout bounds.
-        const screenScale = Math.min( screenBounds.width / screenView.layoutBounds.width,
-          screenBounds.height / screenView.layoutBounds.height );
+        // width/height to within the screen's layout bounds. Use bounds instead of screenBounds because of the
+        // localToGlobalBounds call below.
+        const screenScale = Math.min( bounds.width / screenView.layoutBounds.width,
+          bounds.height / screenView.layoutBounds.height );
 
-        // get the actual size of the screen, scaled via the sim.scaleProperty, in global coordinates
-        const globalScreenViewBounds = screenView.localToGlobalBounds( screenView.localBounds );
+        // get the converted size of the screen's layout bounds, scaled via the sim.scaleProperty, in global coordinates
+        const globalScreenViewBounds = screenView.localToGlobalBounds( screenView.layoutBounds );
 
         if ( !suppliedMaxHeight ) {
           const height = globalScreenViewBounds.height / screenScale;
