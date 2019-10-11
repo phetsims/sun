@@ -28,6 +28,7 @@ define( require => {
   const Rectangle = require( 'SCENERY/nodes/Rectangle' );
   const Shape = require( 'KITE/Shape' );
   const sun = require( 'SUN/sun' );
+  const Tandem = require( 'TANDEM/Tandem' );
   const timer = require( 'AXON/timer' );
   const Util = require( 'DOT/Util' );
   const VSeparator = require( 'SUN/VSeparator' );
@@ -71,7 +72,10 @@ define( require => {
     // animation, scrolling between pages
     animationEnabled: true, // {boolean} is animation enabled when scrolling between pages?,
     animationDuration: 0.4, // {number} seconds
-    stepEmitter: timer // {string} see Animation options.stepEmitter
+    stepEmitter: timer, // {string} see Animation options.stepEmitter
+
+    // phet-io
+    tandem: Tandem.optional
   };
   assert && Object.freeze( DEFAULT_OPTIONS );
 
@@ -121,8 +125,14 @@ define( require => {
     };
 
     // Next/previous buttons
-    const nextButton = new CarouselButton( _.extend( { arrowDirection: isHorizontal ? 'right' : 'down' }, buttonOptions ) );
-    const previousButton = new CarouselButton( _.extend( { arrowDirection: isHorizontal ? 'left' : 'up' }, buttonOptions ) );
+    const nextButton = new CarouselButton( _.extend( {
+      arrowDirection: isHorizontal ? 'right' : 'down',
+      tandem: options.tandem.createTandem( 'nextButton' )
+    }, buttonOptions ) );
+    const previousButton = new CarouselButton( _.extend( {
+      arrowDirection: isHorizontal ? 'left' : 'up',
+      tandem: options.tandem.createTandem( 'previousButton' )
+    }, buttonOptions ) );
 
     // Computations related to layout of items
     const numberOfSeparators = ( options.separatorsVisible ) ? ( items.length - 1 ) : 0;
@@ -205,8 +215,8 @@ define( require => {
     const windowWidth = isHorizontal ? windowLength : scrollingNode.width;
     const windowHeight = isHorizontal ? scrollingNode.height : windowLength;
     const clipArea = isHorizontal ?
-                   Shape.rectangle( options.spacing / 2, 0, windowWidth - options.spacing, windowHeight ) :
-                   Shape.rectangle( 0, options.spacing / 2, windowWidth, windowHeight - options.spacing );
+                     Shape.rectangle( options.spacing / 2, 0, windowWidth - options.spacing, windowHeight ) :
+                     Shape.rectangle( 0, options.spacing / 2, windowWidth, windowHeight - options.spacing );
     const windowNode = new Node( {
       children: [ scrollingNode ],
       clipArea: clipArea
