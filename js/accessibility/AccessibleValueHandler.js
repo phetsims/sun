@@ -67,8 +67,8 @@ define( require => {
 
           // ensure that the client does not set both a custom text pattern and a text creation function
           assert && assert(
-            !( options.a11yValuePattern && options.a11yCreateAriaValueText ),
-            'cannot set both a11yValuePattern and a11yCreateAriaValueText in options'
+            !( options.a11yValuePattern && options.a11yCreateValueChangeAriaValueText ),
+            'cannot set both a11yValuePattern and a11yCreateValueChangeAriaValueText in options'
           );
 
           // if rounding to keyboard step, keyboardStep must be defined so values aren't skipped and the slider   
@@ -138,7 +138,7 @@ define( require => {
              *                              to be called when the AccessibleValueHandler is reset.
              * @returns {string} - aria-valuetext to be set to the primarySibling
              */
-            a11yCreateAriaValueText: _.identity,
+            a11yCreateValueChangeAriaValueText: _.identity,
 
             /**
              * Create content for an alert that will be sent to the utteranceQueue when the user interacts with the
@@ -162,7 +162,7 @@ define( require => {
              * By default there will be nothing special provided on focus, just the previous value set on Property change.
              * If a specific aria-valuetext is desired when the interactive DOM element is focused, then use this option
              * to provide the proper "on focus" text. If provided, this will be called independently of the "on change"
-             * valuetext updates. As a result, you can use either a11yCreateAriaValueText or a11yValuePattern
+             * valuetext updates. As a result, you can use either a11yCreateValueChangeAriaValueText or a11yValuePattern
              * with this.
              *
              * The string that this function returns is set as aria-valuetext when the component is focused.
@@ -279,7 +279,7 @@ define( require => {
           this.a11yValuePattern = options.a11yValuePattern;
 
           // @private {function}
-          this.a11yCreateAriaValueText = options.a11yCreateAriaValueText;
+          this.a11yCreateValueChangeAriaValueText = options.a11yCreateValueChangeAriaValueText;
 
           // @private {Multilink}
           this._dependenciesMultilink = null;
@@ -375,7 +375,7 @@ define( require => {
           // create the final string from optional parameters. Only the valuePattern OR the create function can be
           // specified (see above assertions).
           let newAriaValueText = StringUtils.fillIn( this.a11yValuePattern, {
-            value: this.a11yCreateAriaValueText( formattedValue, this._valueProperty.value, oldPropertyValue )
+            value: this.a11yCreateValueChangeAriaValueText( formattedValue, this._valueProperty.value, oldPropertyValue )
           } );
 
           if ( this._a11yRepeatEqualValueText && newAriaValueText === this.ariaValueText ) {
@@ -424,7 +424,7 @@ define( require => {
         reset() {
 
           // reset the aria-valuetext creator if it supports that
-          this.a11yCreateAriaValueText.reset && this.a11yCreateAriaValueText.reset();
+          this.a11yCreateValueChangeAriaValueText.reset && this.a11yCreateValueChangeAriaValueText.reset();
 
           // on reset, make sure that the PDOM descriptions are completely up to date.
           this.updateAriaValueText( null );
