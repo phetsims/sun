@@ -94,6 +94,12 @@ define( require => {
             fireAction.execute( event );
             focusButtonCallback();
           }
+        },
+
+        // handle activation from an assistive device that may not use a keyboard (such as mobile VoiceOver)
+        click: event => {
+          fireAction.execute( event );
+          focusButtonCallback();
         }
       };
 
