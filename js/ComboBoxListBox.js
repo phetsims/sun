@@ -189,6 +189,14 @@ define( require => {
               }
             }
           }
+          else if ( keyCode === KeyboardUtil.KEY_HOME ) {
+            this.focusedItemNode = listItemNodes[ 0 ];
+            this.focusedItemNode.focus();
+          }
+          else if ( keyCode === KeyboardUtil.KEY_END ) {
+            this.focusedItemNode = listItemNodes[ listItemNodes.length - 1 ];
+            this.focusedItemNode.focus();
+          }
         }
       } );
 
