@@ -26,6 +26,7 @@ define( require => {
   const HBox = require( 'SCENERY/nodes/HBox' );
   const HSlider = require( 'SUN/HSlider' );
   const inherit = require( 'PHET_CORE/inherit' );
+  const merge = require( 'PHET_CORE/merge' );
   const Node = require( 'SCENERY/nodes/Node' );
   const NumberSpinner = require( 'SUN/NumberSpinner' );
   const OnOffSwitch = require( 'SUN/OnOffSwitch' );
@@ -378,20 +379,20 @@ define( require => {
     };
 
     // Demonstrate each value of options.arrowsPosition
-    const spinnerLeftRight = new NumberSpinner( valueProperty, valueRangeProperty, _.extend( {}, spinnerOptions, {
+    const spinnerLeftRight = new NumberSpinner( valueProperty, valueRangeProperty, merge( {}, spinnerOptions, {
       arrowsPosition: 'leftRight',
       valuePattern: '{{value}} bottles of beer on the wall'
     } ) );
-    const spinnerTopBottom = new NumberSpinner( valueProperty, valueRangeProperty, _.extend( {}, spinnerOptions, {
+    const spinnerTopBottom = new NumberSpinner( valueProperty, valueRangeProperty, merge( {}, spinnerOptions, {
       arrowsPosition: 'topBottom',
       arrowsScale: 0.65
     } ) );
-    const spinnerBothRight = new NumberSpinner( valueProperty, valueRangeProperty, _.extend( {}, spinnerOptions, {
+    const spinnerBothRight = new NumberSpinner( valueProperty, valueRangeProperty, merge( {}, spinnerOptions, {
       arrowsPosition: 'bothRight',
       yMargin: 10,
       valueAlign: 'right'
     } ) );
-    const spinnerBothBottom = new NumberSpinner( valueProperty, valueRangeProperty, _.extend( {}, spinnerOptions, {
+    const spinnerBothBottom = new NumberSpinner( valueProperty, valueRangeProperty, merge( {}, spinnerOptions, {
       arrowsPosition: 'bothBottom',
       backgroundFill: 'pink',
       backgroundStroke: 'red',

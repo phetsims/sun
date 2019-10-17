@@ -21,6 +21,7 @@ define( require => {
   const Dimension2 = require( 'DOT/Dimension2' );
   const EventType = require( 'TANDEM/EventType' );
   const inherit = require( 'PHET_CORE/inherit' );
+  const merge = require( 'PHET_CORE/merge' );
   const Node = require( 'SCENERY/nodes/Node' );
   const OnOffSwitchIO = require( 'SUN/OnOffSwitchIO' );
   const Rectangle = require( 'SCENERY/nodes/Rectangle' );
@@ -38,7 +39,7 @@ define( require => {
    */
   function OnOffSwitch( onProperty, options ) {
 
-    options = _.extend( {
+    options = merge( {
 
       size: new Dimension2( 60, 30 ), // if you want the thumb to be a circle, use width that is 2x height
       cursor: 'pointer',

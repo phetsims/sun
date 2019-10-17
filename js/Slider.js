@@ -20,6 +20,7 @@ define( require => {
   const FocusHighlightFromNode = require( 'SCENERY/accessibility/FocusHighlightFromNode' );
   const inherit = require( 'PHET_CORE/inherit' );
   const InstanceRegistry = require( 'PHET_CORE/documentation/InstanceRegistry' );
+  const merge = require( 'PHET_CORE/merge' );
   const Node = require( 'SCENERY/nodes/Node' );
   const Path = require( 'SCENERY/nodes/Path' );
   const PhetioObject = require( 'TANDEM/PhetioObject' );
@@ -59,7 +60,7 @@ define( require => {
     assert && assertMutuallyExclusiveOptions( options, [ 'trackNode' ], [
       'trackSize', 'trackFillEnabled', 'trackFillDisabled', 'trackStroke', 'trackLineWidth', 'trackCornerRadius' ] );
 
-    options = _.extend( {
+    options = merge( {
 
       orientation: 'horizontal', // 'horizontal'|'vertical'
 
@@ -154,7 +155,7 @@ define( require => {
     }
 
     // phet-io, Assign default options that need tandems.
-    options.enabledProperty = options.enabledProperty || new BooleanProperty( true, _.extend( {
+    options.enabledProperty = options.enabledProperty || new BooleanProperty( true, merge( {
       tandem: options.tandem.createTandem( 'enabledProperty' ),
       phetioFeatured: true
     }, options.enabledPropertyOptions ) );
@@ -332,7 +333,7 @@ define( require => {
     assert && assert( !options.ariaOrientation, 'Slider sets its own ariaOrientation' );
 
     this.initializeAccessibleSlider( valueProperty, this.enabledRangeProperty, this.enabledProperty,
-      _.extend( { ariaOrientation: options.orientation }, options ) );
+      merge( { ariaOrientation: options.orientation }, options ) );
 
     assert && Tandem.PHET_IO_ENABLED && assert( !options.phetioLinkedProperty || options.phetioLinkedProperty.isPhetioInstrumented(),
       'If provided, phetioLinkedProperty should be PhET-iO instrumented' );

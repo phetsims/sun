@@ -13,6 +13,7 @@ define( require => {
 
   // modules
   const inherit = require( 'PHET_CORE/inherit' );
+  const merge = require( 'PHET_CORE/merge' );
   const Node = require( 'SCENERY/nodes/Node' );
   const Rectangle = require( 'SCENERY/nodes/Rectangle' );
   const sun = require( 'SUN/sun' );
@@ -49,7 +50,7 @@ define( require => {
    */
   function Panel( content, options ) {
 
-    options = _.extend( {}, DEFAULT_OPTIONS, options );
+    options = merge( {}, DEFAULT_OPTIONS, options );
 
     assert && assert( _.includes( ALIGN_VALUES, options.align ), 'invalid align: ' + options.align );
 

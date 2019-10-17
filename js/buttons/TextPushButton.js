@@ -10,6 +10,7 @@ define( require => {
 
   // modules
   const inherit = require( 'PHET_CORE/inherit' );
+  const merge = require( 'PHET_CORE/merge' );
   const RectangularPushButton = require( 'SUN/buttons/RectangularPushButton' );
   const sun = require( 'SUN/sun' );
   const Tandem = require( 'TANDEM/Tandem' );
@@ -22,7 +23,7 @@ define( require => {
    */
   function TextPushButton( text, options ) {
 
-    options = _.extend( {
+    options = merge( {
       textFill: 'black',
       maxTextWidth: null,
       tandem: Tandem.required,
@@ -38,7 +39,7 @@ define( require => {
       tandem: options.tandem.createTandem( 'textNode' )
     } );
 
-    RectangularPushButton.call( this, _.extend( { content: textNode }, options ) );
+    RectangularPushButton.call( this, merge( { content: textNode }, options ) );
 
     // @private
     this.disposeTextPushButton = function() {

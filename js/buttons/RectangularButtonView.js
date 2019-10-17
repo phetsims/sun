@@ -18,6 +18,7 @@ define( require => {
   const DerivedProperty = require( 'AXON/DerivedProperty' );
   const inherit = require( 'PHET_CORE/inherit' );
   const LinearGradient = require( 'SCENERY/util/LinearGradient' );
+  const merge = require( 'PHET_CORE/merge' );
   const Node = require( 'SCENERY/nodes/Node' );
   const PaintColorProperty = require( 'SCENERY/util/PaintColorProperty' );
   const Path = require( 'SCENERY/nodes/Path' );
@@ -42,7 +43,7 @@ define( require => {
    */
   function RectangularButtonView( buttonModel, interactionStateProperty, options ) {
 
-    options = _.extend( {
+    options = merge( {
 
       content: null,
       minWidth: HORIZONTAL_HIGHLIGHT_GRADIENT_LENGTH + SHADE_GRADIENT_LENGTH,
@@ -108,7 +109,7 @@ define( require => {
     assert && assert( _.includes( X_ALIGN_VALUES, options.xAlign ), 'invalid xAlign: ' + options.xAlign );
     assert && assert( _.includes( Y_ALIGN_VALUES, options.yAlign ), 'invalid yAlign: ' + options.yAlign );
 
-    options.listenerOptions = _.extend( {
+    options.listenerOptions = merge( {
       tandem: options.tandem.createTandem( 'pressListener' ),
       accessibleClick: options.accessibleClick
     }, options.listenerOptions );

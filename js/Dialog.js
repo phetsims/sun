@@ -22,6 +22,7 @@ define( require => {
   const HBox = require( 'SCENERY/nodes/HBox' );
   const inherit = require( 'PHET_CORE/inherit' );
   const KeyboardUtil = require( 'SCENERY/accessibility/KeyboardUtil' );
+  const merge = require( 'PHET_CORE/merge' );
   const Panel = require( 'SUN/Panel' );
   const Path = require( 'SCENERY/nodes/Path' );
   const Property = require( 'AXON/Property' );
@@ -51,7 +52,7 @@ define( require => {
    */
   function Dialog( content, options ) {
 
-    options = _.extend( {
+    options = merge( {
 
       /* Margins and spacing:
        ____________________________________________________________________________
@@ -426,7 +427,7 @@ define( require => {
    * @constructor
    */
   function CloseButton( options ) {
-    options = _.extend( {
+    options = merge( {
       iconLength: 7,
       baseColor: 'transparent',
       buttonAppearanceStrategy: RectangularButtonView.FlatAppearanceStrategy,

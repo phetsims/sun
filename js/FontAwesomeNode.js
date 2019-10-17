@@ -12,6 +12,7 @@ define( require => {
   // modules
   const inherit = require( 'PHET_CORE/inherit' );
   const Matrix3 = require( 'DOT/Matrix3' );
+  const merge = require( 'PHET_CORE/merge' );
   const Path = require( 'SCENERY/nodes/Path' );
   const Shape = require( 'KITE/Shape' );
   const sun = require( 'SUN/sun' );
@@ -77,7 +78,7 @@ define( require => {
   function FontAwesomeNode( iconName, options ) {
 
     // default values
-    options = _.extend( {
+    options = merge( {
       fill: '#000',
 
       // Font awesome nodes are expensive to pick (and have a lot of holes in them which you may wish to pick anyways,

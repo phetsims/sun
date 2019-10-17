@@ -11,6 +11,7 @@ define( require => {
 
   // modules
   const inherit = require( 'PHET_CORE/inherit' );
+  const merge = require( 'PHET_CORE/merge' );
   const Node = require( 'SCENERY/nodes/Node' );
   const Property = require( 'AXON/Property' );
   const sun = require( 'SUN/sun' );
@@ -58,7 +59,7 @@ define( require => {
     // @private {Function} - The constructor for our custom subtype
     this._type = function MutableOptionsNodeConstructor() {
       // Unwrap the properties in dynamicOptions
-      const options = _.extend( _.mapValues( dynamicOptions, function( property ) {
+      const options = merge( _.mapValues( dynamicOptions, function( property ) {
         return property.value;
       } ), staticOptions );
 

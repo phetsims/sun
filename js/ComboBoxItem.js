@@ -9,6 +9,7 @@ define( require => {
   'use strict';
 
   // modules
+  const merge = require( 'PHET_CORE/merge' );
   const Node = require( 'SCENERY/nodes/Node' );
   const sun = require( 'SUN/sun' );
 
@@ -24,7 +25,7 @@ define( require => {
       assert && assert( node instanceof Node, 'invalid node: ' + node );
       assert && assert( !node.accessibleContent, 'accessibleContent is set by ComboBox, use options.a11yLabel' );
 
-      options = _.extend( {
+      options = merge( {
 
         // phet-io
         tandemName: null, // {string|null} the tandem name for this item's associated Node in the combo box

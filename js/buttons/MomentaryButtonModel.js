@@ -11,6 +11,7 @@ define( require => {
   // modules
   const ButtonModel = require( 'SUN/buttons/ButtonModel' );
   const inherit = require( 'PHET_CORE/inherit' );
+  const merge = require( 'PHET_CORE/merge' );
   const PhetioObject = require( 'TANDEM/PhetioObject' );
   const sun = require( 'SUN/sun' );
   const Tandem = require( 'TANDEM/Tandem' );
@@ -26,7 +27,7 @@ define( require => {
     const self = this;
 
     // Tandem support
-    options = _.extend( {
+    options = merge( {
       tandem: Tandem.required,
       phetioReadOnly: PhetioObject.DEFAULT_OPTIONS.phetioReadOnly // to support properly passing this to children, see https://github.com/phetsims/tandem/issues/60
     }, options );

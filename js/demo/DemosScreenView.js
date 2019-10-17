@@ -12,14 +12,15 @@ define( require => {
   const ComboBox = require( 'SUN/ComboBox' );
   const ComboBoxItem = require( 'SUN/ComboBoxItem' );
   const inherit = require( 'PHET_CORE/inherit' );
+  const merge = require( 'PHET_CORE/merge' );
   const Node = require( 'SCENERY/nodes/Node' );
   const PhetFont = require( 'SCENERY_PHET/PhetFont' );
   const Property = require( 'AXON/Property' );
   const ScreenView = require( 'JOIST/ScreenView' );
   const sun = require( 'SUN/sun' );
+  const Tandem = require( 'TANDEM/Tandem' );
   const Text = require( 'SCENERY/nodes/Text' );
   const Vector2 = require( 'DOT/Vector2' );
-  const Tandem = require( 'TANDEM/Tandem' );
 
   /**
    * @param {Object[]} demos - each demo has these properties:
@@ -31,7 +32,7 @@ define( require => {
    */
   function DemosScreenView( demos, options ) {
 
-    options = _.extend( {
+    options = merge( {
 
       selectedDemoLabel: null, // {string|null} label field of the demo to be selected initially
 

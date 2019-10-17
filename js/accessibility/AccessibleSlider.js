@@ -19,6 +19,7 @@ define( require => {
   const AccessibleValueHandler = require( 'SUN/accessibility/AccessibleValueHandler' );
   const extend = require( 'PHET_CORE/extend' );
   const inheritance = require( 'PHET_CORE/inheritance' );
+  const merge = require( 'PHET_CORE/merge' );
   const Node = require( 'SCENERY/nodes/Node' );
   const sun = require( 'SUN/sun' );
 
@@ -61,7 +62,7 @@ define( require => {
             constrainValue: _.identity // called before valueProperty is set
           };
 
-          options = _.extend( {}, defaults, options );
+          options = merge( {}, defaults, options );
 
           // AccessibleSlider uses 'drag' terminology rather than 'change' for consistency with Slider
           assert && assert( options.startChange === undefined, 'AccessibleSlider sets startChange through options.startDrag' );

@@ -13,6 +13,7 @@ define( require => {
   const Checkbox = require( 'SUN/Checkbox' );
   const HStrut = require( 'SCENERY/nodes/HStrut' );
   const inherit = require( 'PHET_CORE/inherit' );
+  const merge = require( 'PHET_CORE/merge' );
   const Node = require( 'SCENERY/nodes/Node' );
   const sun = require( 'SUN/sun' );
   const Tandem = require( 'TANDEM/Tandem' );
@@ -29,7 +30,7 @@ define( require => {
    */
   function VerticalCheckboxGroup( items, options ) {
 
-    options = _.extend( {
+    options = merge( {
 
       // {Object|null} options passed to constructor of the Checkbox
       checkboxOptions: null,
@@ -64,7 +65,7 @@ define( require => {
         children: [ new HStrut( maxItemWidth ), item.node ]
       } );
 
-      const checkbox = new Checkbox( content, item.property, _.extend( {}, options.checkboxOptions, item.options, {
+      const checkbox = new Checkbox( content, item.property, merge( {}, options.checkboxOptions, item.options, {
         tandem: item.tandem || Tandem.optional
       } ) );
 

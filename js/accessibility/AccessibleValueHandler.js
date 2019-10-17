@@ -23,6 +23,7 @@ define( require => {
   const extend = require( 'PHET_CORE/extend' );
   const inheritance = require( 'PHET_CORE/inheritance' );
   const KeyboardUtil = require( 'SCENERY/accessibility/KeyboardUtil' );
+  const merge = require( 'PHET_CORE/merge' );
   const Node = require( 'SCENERY/nodes/Node' );
   const Property = require( 'AXON/Property' );
   const sun = require( 'SUN/sun' );
@@ -146,7 +147,7 @@ define( require => {
             a11yDependencies: []
           };
 
-          options = _.extend( {}, defaults, options );
+          options = merge( {}, defaults, options );
 
           assert && assert( options.ariaOrientation === 'horizontal' || options.ariaOrientation === 'vertical',
             'invalid ariaOrientation: ' + options.ariaOrientation );

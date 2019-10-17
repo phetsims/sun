@@ -16,6 +16,7 @@ define( require => {
   const Emitter = require( 'AXON/Emitter' );
   const EventType = require( 'TANDEM/EventType' );
   const inherit = require( 'PHET_CORE/inherit' );
+  const merge = require( 'PHET_CORE/merge' );
   const Property = require( 'AXON/Property' );
   const sun = require( 'SUN/sun' );
   const Tandem = require( 'TANDEM/Tandem' );
@@ -30,7 +31,7 @@ define( require => {
   function StickyToggleButtonModel( valueUp, valueDown, valueProperty, options ) {
     const self = this;
 
-    options = _.extend( {
+    options = merge( {
       tandem: Tandem.required
     }, options );
 

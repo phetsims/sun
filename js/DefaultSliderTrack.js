@@ -14,6 +14,7 @@ define( require => {
 
   // modules
   const Dimension2 = require( 'DOT/Dimension2' );
+  const merge = require( 'PHET_CORE/merge' );
   const Node = require( 'SCENERY/nodes/Node' );
   const Rectangle = require( 'SCENERY/nodes/Rectangle' );
   const SliderTrack = require( 'SUN/SliderTrack' );
@@ -29,7 +30,7 @@ define( require => {
      */
     constructor( valueProperty, range, options ) {
 
-      options = _.extend( {
+      options = merge( {
         size: new Dimension2( 100, 5 ),
         fillEnabled: 'white',
         fillDisabled: 'gray',

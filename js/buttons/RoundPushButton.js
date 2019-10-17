@@ -16,6 +16,7 @@ define( require => {
   // modules
   const inherit = require( 'PHET_CORE/inherit' );
   const InstanceRegistry = require( 'PHET_CORE/documentation/InstanceRegistry' );
+  const merge = require( 'PHET_CORE/merge' );
   const PushButtonInteractionStateProperty = require( 'SUN/buttons/PushButtonInteractionStateProperty' );
   const PushButtonModel = require( 'SUN/buttons/PushButtonModel' );
   const RoundButtonView = require( 'SUN/buttons/RoundButtonView' );
@@ -28,7 +29,7 @@ define( require => {
    */
   function RoundPushButton( options ) {
 
-    options = _.extend( {
+    options = merge( {
       tandem: Tandem.required
     }, options );
 

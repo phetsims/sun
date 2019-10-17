@@ -12,6 +12,7 @@ define( require => {
   // modules
   const AquaRadioButton = require( 'SUN/AquaRadioButton' );
   const HStrut = require( 'SCENERY/nodes/HStrut' );
+  const merge = require( 'PHET_CORE/merge' );
   const Node = require( 'SCENERY/nodes/Node' );
   const sun = require( 'SUN/sun' );
   const Tandem = require( 'TANDEM/Tandem' );
@@ -41,7 +42,7 @@ define( require => {
 
       instanceCount++;
 
-      options = _.extend( {
+      options = merge( {
 
         // {Object|null} options passed to constructor of the AquaRadioButtons
         radioButtonOptions: null,
@@ -78,7 +79,7 @@ define( require => {
         } );
 
         const radioButton = new AquaRadioButton( property, item.value, content,
-          _.extend( {}, options.radioButtonOptions, {
+          merge( {}, options.radioButtonOptions, {
             tandem: item.tandemName ? options.tandem.createTandem( item.tandemName ) : Tandem.required,
             labelContent: item.labelContent || null,
             a11yNameAttribute: CLASS_NAME + instanceCount

@@ -21,6 +21,7 @@ define( require => {
   const inherit = require( 'PHET_CORE/inherit' );
   const InstanceRegistry = require( 'PHET_CORE/documentation/InstanceRegistry' );
   const LayoutBox = require( 'SCENERY/nodes/LayoutBox' );
+  const merge = require( 'PHET_CORE/merge' );
   const PhetioObject = require( 'TANDEM/PhetioObject' );
   const Property = require( 'AXON/Property' );
   const RadioButtonGroupAppearance = require( 'SUN/buttons/RadioButtonGroupAppearance' );
@@ -53,7 +54,7 @@ define( require => {
    * @constructor
    */
   function RadioButtonGroup( property, contentArray, options ) {
-    options = _.extend( {
+    options = merge( {
       tandem: Tandem.required,
       phetioComponentOptions: null, // filled in below with PhetioObject.mergePhetioComponentOptions()
 
@@ -163,7 +164,7 @@ define( require => {
       a11yHighlightYDilation: 0
     };
 
-    options = _.extend( _.clone( defaultOptions ), options );
+    options = merge( _.clone( defaultOptions ), options );
 
     assert && assert( _.includes( BUTTON_CONTENT_X_ALIGN_VALUES, options.buttonContentXAlign ),
       'invalid buttonContentXAlign: ' + options.buttonContentXAlign );
@@ -190,7 +191,7 @@ define( require => {
       assert && assert( !currentContent.tandem, 'content arrays should not have tandem instances, they should use ' +
                                                 'tandemName instead' );
 
-      const opts = _.extend( {
+      const opts = merge( {
         content: currentContent.node,
         xMargin: options.buttonContentXMargin,
         yMargin: options.buttonContentYMargin,

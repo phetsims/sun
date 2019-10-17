@@ -11,12 +11,13 @@ define( require => {
   'use strict';
 
   // modules
-  const EventType = require( 'TANDEM/EventType' );
   const BooleanProperty = require( 'AXON/BooleanProperty' );
   const ButtonModel = require( 'SUN/buttons/ButtonModel' );
   const CallbackTimer = require( 'SUN/CallbackTimer' );
   const Emitter = require( 'AXON/Emitter' );
+  const EventType = require( 'TANDEM/EventType' );
   const inherit = require( 'PHET_CORE/inherit' );
+  const merge = require( 'PHET_CORE/merge' );
   const PhetioObject = require( 'TANDEM/PhetioObject' );
   const sun = require( 'SUN/sun' );
   const Tandem = require( 'TANDEM/Tandem' );
@@ -27,7 +28,7 @@ define( require => {
    */
   function PushButtonModel( options ) {
 
-    options = _.extend( {
+    options = merge( {
 
       fireOnDown: false, // true: fire on pointer down; false: fire on pointer up if pointer is over button
       listener: null, // {function} convenience for adding 1 listener, no args

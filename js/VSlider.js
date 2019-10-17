@@ -12,6 +12,7 @@ define( require => {
   // modules
   const inherit = require( 'PHET_CORE/inherit' );
   const InstanceRegistry = require( 'PHET_CORE/documentation/InstanceRegistry' );
+  const merge = require( 'PHET_CORE/merge' );
   const Slider = require( 'SUN/Slider' );
   const sun = require( 'SUN/sun' );
 
@@ -25,7 +26,7 @@ define( require => {
 
     assert && assert( !options || options.orientation === undefined, 'VSlider sets orientation' );
 
-    Slider.call( this, valueProperty, range, _.extend( {
+    Slider.call( this, valueProperty, range, merge( {
       orientation: 'vertical'
     }, options ) );
 

@@ -19,6 +19,7 @@ define( require => {
   const ColorConstants = require( 'SUN/ColorConstants' );
   const DerivedProperty = require( 'AXON/DerivedProperty' );
   const inherit = require( 'PHET_CORE/inherit' );
+  const merge = require( 'PHET_CORE/merge' );
   const Node = require( 'SCENERY/nodes/Node' );
   const PaintColorProperty = require( 'SCENERY/util/PaintColorProperty' );
   const PhetioObject = require( 'TANDEM/PhetioObject' );
@@ -41,7 +42,7 @@ define( require => {
   function RoundButtonView( pushButtonModel, interactionStateProperty, options ) {
     this.buttonModel = pushButtonModel; // @protected // TODO: rename to pushButtonModel
 
-    options = _.extend( {
+    options = merge( {
 
       radius: ( options && options.content ) ? undefined : 30,
       content: null,
@@ -94,7 +95,7 @@ define( require => {
       focusHighlightDilation: 5 // radius dilation for circular highlight
     }, options );
 
-    options.listenerOptions = _.extend( {
+    options.listenerOptions = merge( {
       tandem: options.tandem.createTandem( 'pressListener' )
     }, options.listenerOptions );
 

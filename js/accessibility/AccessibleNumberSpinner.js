@@ -25,15 +25,16 @@ define( require => {
   'use strict';
 
   // modules
-  const SunA11yStrings = require( 'SUN/SunA11yStrings' );
   const AccessibleValueHandler = require( 'SUN/accessibility/AccessibleValueHandler' );
   const CallbackTimer = require( 'SUN/CallbackTimer' );
   const Emitter = require( 'AXON/Emitter' );
   const extend = require( 'PHET_CORE/extend' );
   const inheritance = require( 'PHET_CORE/inheritance' );
   const KeyboardUtil = require( 'SCENERY/accessibility/KeyboardUtil' );
+  const merge = require( 'PHET_CORE/merge' );
   const Node = require( 'SCENERY/nodes/Node' );
   const sun = require( 'SUN/sun' );
+  const SunA11yStrings = require( 'SUN/SunA11yStrings' );
 
   // a11y strings
   const numberSpinnerRoleDescriptionString = SunA11yStrings.numberSpinnerRoleDescription.value;
@@ -77,7 +78,7 @@ define( require => {
 
             ariaOrientation: 'vertical' // by default, number spinners should be oriented vertically
           };
-          options = _.extend( {}, defaults, options );
+          options = merge( {}, defaults, options );
 
           // initialize "parent" mixin
           this.initializeAccessibleValueHandler( valueProperty, enabledRangeProperty, enabledProperty, options );

@@ -15,6 +15,7 @@ define( require => {
   const FireListener = require( 'SCENERY/listeners/FireListener' );
   const FontAwesomeNode = require( 'SUN/FontAwesomeNode' );
   const inherit = require( 'PHET_CORE/inherit' );
+  const merge = require( 'PHET_CORE/merge' );
   const Node = require( 'SCENERY/nodes/Node' );
   const PhetFont = require( 'SCENERY_PHET/PhetFont' );
   const Rectangle = require( 'SCENERY/nodes/Rectangle' );
@@ -52,7 +53,7 @@ define( require => {
     const self = this;
 
     // Extend the object with defaults.
-    options = _.extend( {
+    options = merge( {
       cursor: 'pointer',
       tandem: Tandem.optional,
       textFill: 'black',

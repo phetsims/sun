@@ -12,6 +12,7 @@ define( require => {
   // modules
   const BooleanRectangularToggleButton = require( 'SUN/buttons/BooleanRectangularToggleButton' );
   const InstanceRegistry = require( 'PHET_CORE/documentation/InstanceRegistry' );
+  const merge = require( 'PHET_CORE/merge' );
   const Path = require( 'SCENERY/nodes/Path' );
   const RectangularButtonView = require( 'SUN/buttons/RectangularButtonView' );
   const Shape = require( 'KITE/Shape' );
@@ -30,7 +31,7 @@ define( require => {
      */
     constructor( expandedProperty, options ) {
 
-      options = _.extend( {
+      options = merge( {
         stroke: 'black',
         sideLength: 25,  // length of one side of the square button
 

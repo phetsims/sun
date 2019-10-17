@@ -12,6 +12,7 @@ define( require => {
   // modules
   const AccessiblePeer = require( 'SCENERY/accessibility/AccessiblePeer' );
   const HStrut = require( 'SCENERY/nodes/HStrut' );
+  const merge = require( 'PHET_CORE/merge' );
   const Node = require( 'SCENERY/nodes/Node' );
   const Path = require( 'SCENERY/nodes/Path' );
   const RectangularButtonView = require( 'SUN/buttons/RectangularButtonView' );
@@ -34,7 +35,7 @@ define( require => {
      */
     constructor( property, items, options ) {
 
-      options = _.extend( {
+      options = merge( {
 
         align: 'left', // see ALIGN_VALUES
         arrowDirection: 'down', // see ARROW_DIRECTION_VALUES

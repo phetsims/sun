@@ -13,6 +13,7 @@ define( require => {
   const Circle = require( 'SCENERY/nodes/Circle' );
   const DownUpListener = require( 'SCENERY/input/DownUpListener' );
   const inherit = require( 'PHET_CORE/inherit' );
+  const merge = require( 'PHET_CORE/merge' );
   const Node = require( 'SCENERY/nodes/Node' );
   const Shape = require( 'KITE/Shape' );
   const sun = require( 'SUN/sun' );
@@ -25,7 +26,7 @@ define( require => {
    */
   function PageControl( numberOfPages, pageNumberProperty, options ) {
 
-    options = _.extend( {
+    options = merge( {
 
       //TODO support multiple types of interactivity? see https://github.com/phetsims/sun/issues/199
       interactive: false, // {boolean} whether the control is interactive

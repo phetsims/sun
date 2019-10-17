@@ -13,6 +13,7 @@ define( require => {
   const Dimension2 = require( 'DOT/Dimension2' );
   const inherit = require( 'PHET_CORE/inherit' );
   const Matrix3 = require( 'DOT/Matrix3' );
+  const merge = require( 'PHET_CORE/merge' );
   const Path = require( 'SCENERY/nodes/Path' );
   const RectangularButtonView = require( 'SUN/buttons/RectangularButtonView' );
   const RectangularPushButton = require( 'SUN/buttons/RectangularPushButton' );
@@ -34,7 +35,7 @@ define( require => {
   function CarouselButton( options ) {
 
     // see supertype for additional options
-    options = _.extend( {
+    options = merge( {
 
       // button
       baseColor: 'rgba( 200, 200, 200, 0.5 )', // {Color|string} button fill color

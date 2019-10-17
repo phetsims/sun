@@ -17,6 +17,7 @@ define( require => {
   const FontAwesomeNode = require( 'SUN/FontAwesomeNode' );
   const inherit = require( 'PHET_CORE/inherit' );
   const InstanceRegistry = require( 'PHET_CORE/documentation/InstanceRegistry' );
+  const merge = require( 'PHET_CORE/merge' );
   const Node = require( 'SCENERY/nodes/Node' );
   const PhetioObject = require( 'TANDEM/PhetioObject' );
   const Rectangle = require( 'SCENERY/nodes/Rectangle' );
@@ -36,7 +37,7 @@ define( require => {
   function Checkbox( content, property, options ) {
     const self = this;
 
-    options = _.extend( {
+    options = merge( {
       spacing: 5,
       boxWidth: 21,
       cursor: 'pointer',

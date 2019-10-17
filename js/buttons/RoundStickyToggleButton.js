@@ -13,6 +13,7 @@ define( require => {
 
   // modules
   const inherit = require( 'PHET_CORE/inherit' );
+  const merge = require( 'PHET_CORE/merge' );
   const RoundButtonView = require( 'SUN/buttons/RoundButtonView' );
   const StickyToggleButtonInteractionStateProperty = require( 'SUN/buttons/StickyToggleButtonInteractionStateProperty' );
   const StickyToggleButtonModel = require( 'SUN/buttons/StickyToggleButtonModel' );
@@ -29,7 +30,7 @@ define( require => {
    */
   function RoundStickyToggleButton( valueUp, valueDown, property, options ) {
 
-    options = _.extend( {
+    options = merge( {
       tandem: Tandem.required,
       phetioType: ToggleButtonIO
     }, options );

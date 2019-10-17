@@ -12,6 +12,7 @@ define( require => {
 
   // modules
   const inherit = require( 'PHET_CORE/inherit' );
+  const merge = require( 'PHET_CORE/merge' );
   const Path = require( 'SCENERY/nodes/Path' );
   const RectangularPushButton = require( 'SUN/buttons/RectangularPushButton' );
   const Shape = require( 'KITE/Shape' );
@@ -28,7 +29,7 @@ define( require => {
    */
   function ArrowButton( direction, callback, options ) {
 
-    options = _.extend( {
+    options = merge( {
 
       // options for the button
       cursor: 'pointer',

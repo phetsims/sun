@@ -11,6 +11,7 @@ define( require => {
 
   // modules
   const inherit = require( 'PHET_CORE/inherit' );
+  const merge = require( 'PHET_CORE/merge' );
   const MomentaryButtonInteractionStateProperty = require( 'SUN/buttons/MomentaryButtonInteractionStateProperty' );
   const MomentaryButtonModel = require( 'SUN/buttons/MomentaryButtonModel' );
   const RoundButtonView = require( 'SUN/buttons/RoundButtonView' );
@@ -26,7 +27,7 @@ define( require => {
    * @constructor
    */
   function RoundMomentaryButton( valueOff, valueOn, property, options ) {
-    options = _.extend( {
+    options = merge( {
       tandem: Tandem.required,
       phetioType: RoundMomentaryButtonIO
     }, options );

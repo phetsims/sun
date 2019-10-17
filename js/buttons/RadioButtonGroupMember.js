@@ -17,6 +17,7 @@ define( require => {
   const Emitter = require( 'AXON/Emitter' );
   const EventType = require( 'TANDEM/EventType' );
   const inherit = require( 'PHET_CORE/inherit' );
+  const merge = require( 'PHET_CORE/merge' );
   const PhetioObject = require( 'TANDEM/PhetioObject' );
   const RadioButtonGroupAppearance = require( 'SUN/buttons/RadioButtonGroupAppearance' );
   const RadioButtonInteractionStateProperty = require( 'SUN/buttons/RadioButtonInteractionStateProperty' );
@@ -34,7 +35,7 @@ define( require => {
 
     const self = this;
 
-    options = _.extend( {
+    options = merge( {
       // The fill for the rectangle behind the radio buttons.  Default color is bluish color, as in the other button library.
       baseColor: ColorConstants.LIGHT_BLUE,
       disabledBaseColor: ColorConstants.LIGHT_GRAY,

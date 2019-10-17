@@ -13,6 +13,7 @@ define( require => {
   // modules
   const Dimension2 = require( 'DOT/Dimension2' );
   const LinearFunction = require( 'DOT/LinearFunction' );
+  const merge = require( 'PHET_CORE/merge' );
   const Node = require( 'SCENERY/nodes/Node' );
   const Property = require( 'AXON/Property' );
   const Range = require( 'DOT/Range' );
@@ -31,7 +32,7 @@ define( require => {
     constructor( trackNode, valueProperty, range, options ) {
       super();
 
-      options = _.extend( {
+      options = merge( {
         size: new Dimension2( 100, 5 ),
         fillEnabled: 'white',
         fillDisabled: 'gray',

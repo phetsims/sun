@@ -28,6 +28,7 @@ define( require => {
   const ComboBoxListBox = require( 'SUN/ComboBoxListBox' );
   const EventType = require( 'TANDEM/EventType' );
   const InstanceRegistry = require( 'PHET_CORE/documentation/InstanceRegistry' );
+  const merge = require( 'PHET_CORE/merge' );
   const Node = require( 'SCENERY/nodes/Node' );
   const sun = require( 'SUN/sun' );
   const Tandem = require( 'TANDEM/Tandem' );
@@ -48,7 +49,7 @@ define( require => {
      */
     constructor( items, property, listParent, options ) {
 
-      options = _.extend( {
+      options = merge( {
 
         align: 'left', // see ALIGN_VALUES
         listPosition: 'below', // see LIST_POSITION_VALUES

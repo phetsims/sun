@@ -11,10 +11,11 @@ define( require => {
   // modules
   const inherit = require( 'PHET_CORE/inherit' );
   const Line = require( 'SCENERY/nodes/Line' );
+  const merge = require( 'PHET_CORE/merge' );
   const sun = require( 'SUN/sun' );
 
   function VSeparator( height, options ) {
-    options = _.extend( {
+    options = merge( {
       stroke: 'rgb(100,100,100)'
     }, options );
 

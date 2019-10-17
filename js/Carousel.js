@@ -23,6 +23,7 @@ define( require => {
   const HSeparator = require( 'SUN/HSeparator' );
   const inherit = require( 'PHET_CORE/inherit' );
   const InstanceRegistry = require( 'PHET_CORE/documentation/InstanceRegistry' );
+  const merge = require( 'PHET_CORE/merge' );
   const Node = require( 'SCENERY/nodes/Node' );
   const Property = require( 'AXON/Property' );
   const Rectangle = require( 'SCENERY/nodes/Rectangle' );
@@ -89,7 +90,7 @@ define( require => {
     const self = this;
 
     // Override defaults with specified options
-    options = _.extend( {}, DEFAULT_OPTIONS, options );
+    options = merge( {}, DEFAULT_OPTIONS, options );
 
     // Validate options
     assert && assert( _.includes( [ 'horizontal', 'vertical' ], options.orientation ), 'invalid orientation=' + options.orientation );
@@ -125,11 +126,11 @@ define( require => {
     };
 
     // Next/previous buttons
-    const nextButton = new CarouselButton( _.extend( {
+    const nextButton = new CarouselButton( merge( {
       arrowDirection: isHorizontal ? 'right' : 'down',
       tandem: options.tandem.createTandem( 'nextButton' )
     }, buttonOptions ) );
-    const previousButton = new CarouselButton( _.extend( {
+    const previousButton = new CarouselButton( merge( {
       arrowDirection: isHorizontal ? 'left' : 'up',
       tandem: options.tandem.createTandem( 'previousButton' )
     }, buttonOptions ) );
@@ -176,7 +177,7 @@ define( require => {
         if ( isHorizontal ) {
 
           // vertical separator, to the left of the item
-          separator = new VSeparator( scrollingHeight, _.extend( {
+          separator = new VSeparator( scrollingHeight, merge( {
             centerX: item.centerX + ( maxItemLength / 2 ) + options.spacing,
             centerY: item.centerY
           }, separatorOptions ) );
@@ -188,7 +189,7 @@ define( require => {
         else {
 
           // horizontal separator, below the item
-          separator = new HSeparator( scrollingWidth, _.extend( {
+          separator = new HSeparator( scrollingWidth, merge( {
             centerX: item.centerX,
             centerY: item.centerY + ( maxItemLength / 2 ) + options.spacing
           }, separatorOptions ) );
@@ -288,14 +289,14 @@ define( require => {
 
         // options that are specific to orientation
         if ( isHorizontal ) {
-          animationOptions = _.extend( {
+          animationOptions = merge( {
             getValue: function() { return scrollingNode.left; },
             setValue: function( value ) { scrollingNode.left = value; },
             to: -pageNumber * scrollingDelta
           }, animationOptions );
         }
         else {
-          animationOptions = _.extend( {
+          animationOptions = merge( {
             getValue: function() { return scrollingNode.top; },
             setValue: function( value ) { scrollingNode.top = value; },
             to: -pageNumber * scrollingDelta
@@ -363,7 +364,7 @@ define( require => {
      */
     reset: function( options ) {
 
-      options = _.extend( {
+      options = merge( {
         animationEnabled: this.animationEnabled // {boolean} whether to enable animation during reset
       }, options );
 

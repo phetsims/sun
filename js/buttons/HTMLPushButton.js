@@ -11,6 +11,7 @@ define( require => {
 
   // modules
   const inherit = require( 'PHET_CORE/inherit' );
+  const merge = require( 'PHET_CORE/merge' );
   const RectangularPushButton = require( 'SUN/buttons/RectangularPushButton' );
   const RichText = require( 'SCENERY/nodes/RichText' );
   const sun = require( 'SUN/sun' );
@@ -21,12 +22,12 @@ define( require => {
    * @constructor
    */
   function HTMLPushButton( html, options ) {
-    options = _.extend( {
+    options = merge( {
       textFill: 'black'
     }, options );
 
     const htmlTextNode = new RichText( html, options );
-    RectangularPushButton.call( this, _.extend( { content: htmlTextNode }, options ) );
+    RectangularPushButton.call( this, merge( { content: htmlTextNode }, options ) );
   }
 
   sun.register( 'HTMLPushButton', HTMLPushButton );

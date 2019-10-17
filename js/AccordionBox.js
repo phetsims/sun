@@ -17,6 +17,7 @@ define( require => {
   const ExpandCollapseButton = require( 'SUN/ExpandCollapseButton' );
   const inherit = require( 'PHET_CORE/inherit' );
   const InstanceRegistry = require( 'PHET_CORE/documentation/InstanceRegistry' );
+  const merge = require( 'PHET_CORE/merge' );
   const Node = require( 'SCENERY/nodes/Node' );
   const Path = require( 'SCENERY/nodes/Path' );
   const PhetioObject = require( 'TANDEM/PhetioObject' );
@@ -38,7 +39,7 @@ define( require => {
 
     const self = this;
 
-    options = _.extend( {
+    options = merge( {
 
       // {Node} - If not provided, a Text node will be supplied. Should have and maintain well-defined bounds if passed
       //          in.
@@ -95,13 +96,13 @@ define( require => {
     }, options );
 
     // titleBarOptions defaults
-    options.titleBarOptions = _.extend( {
+    options.titleBarOptions = merge( {
       fill: null, // {Color|string|null} title bar fill
       stroke: null // {Color|string|null} title bar stroke, used only for the expanded title bar
     }, options.titleBarOptions );
 
     // expandCollapseButtonOptions defaults
-    options.expandCollapseButtonOptions = _.extend( {
+    options.expandCollapseButtonOptions = merge( {
       sideLength: 16, // button is a square, this is the length of one side
       cursor: options.cursor,
       tandem: options.tandem.createTandem( 'expandCollapseButton' )
@@ -194,7 +195,7 @@ define( require => {
     this.addChild( this.workaroundBox );
 
     // @private {Path}
-    this.expandedTitleBar = new Path( null, _.extend( {
+    this.expandedTitleBar = new Path( null, merge( {
       lineWidth: options.lineWidth, // use same lineWidth as box, for consistent look
       cursor: options.cursor
     }, options.titleBarOptions ) );
@@ -205,7 +206,7 @@ define( require => {
 
     // @private {Rectangle} - Collapsed title bar has corners that match the box. Clicking it operates like
     //                        expand/collapse button.
-    this.collapsedTitleBar = new Rectangle( _.extend( {
+    this.collapsedTitleBar = new Rectangle( merge( {
       cornerRadius: options.cornerRadius,
       cursor: options.cursor
     }, options.titleBarOptions ) );

@@ -12,6 +12,7 @@ define( require => {
   // modules
   const inherit = require( 'PHET_CORE/inherit' );
   const InstanceRegistry = require( 'PHET_CORE/documentation/InstanceRegistry' );
+  const merge = require( 'PHET_CORE/merge' );
   const MomentaryButtonInteractionStateProperty = require( 'SUN/buttons/MomentaryButtonInteractionStateProperty' );
   const MomentaryButtonModel = require( 'SUN/buttons/MomentaryButtonModel' );
   const RectangularButtonView = require( 'SUN/buttons/RectangularButtonView' );
@@ -27,7 +28,7 @@ define( require => {
    */
   function RectangularMomentaryButton( valueOff, valueOn, property, options ) {
 
-    options = _.extend( {
+    options = merge( {
       tandem: Tandem.required
     }, options );
 

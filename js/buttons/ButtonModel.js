@@ -10,6 +10,7 @@ define( require => {
   // modules
   const BooleanProperty = require( 'AXON/BooleanProperty' );
   const inherit = require( 'PHET_CORE/inherit' );
+  const merge = require( 'PHET_CORE/merge' );
   const PhetioObject = require( 'TANDEM/PhetioObject' );
   const PressListener = require( 'SCENERY/listeners/PressListener' );
   const Property = require( 'AXON/Property' );
@@ -23,7 +24,7 @@ define( require => {
   function ButtonModel( options ) {
     const self = this;
 
-    options = _.extend( {
+    options = merge( {
       // {function()} called on pointer down
       startCallback: _.noop,
       // {function(over:boolean)} called on pointer up, @param {boolean} over - indicates whether the pointer was released over the button
@@ -44,7 +45,7 @@ define( require => {
     options && options.enabledPropertyOptions && assert && assert( options.enabledPropertyOptions.tandem === undefined,
       'ButtonModel supplies its own tandem to its enabledProperty' );
 
-    options.enabledPropertyOptions = _.extend( {
+    options.enabledPropertyOptions = merge( {
 
       // phet-io
       tandem: options.tandem.createTandem( 'enabledProperty' ),
@@ -142,7 +143,7 @@ define( require => {
     createListener: function( options ) {
       const self = this;
 
-      options = _.extend( {
+      options = merge( {
         phetioDocumentation: 'Indicates when the button has been pressed or released',
         canStartPress: function() {
           return self.enabledProperty.value;

@@ -12,6 +12,7 @@ define( require => {
 
   // modules
   const ComboBoxItem = require( 'SUN/ComboBoxItem' );
+  const merge = require( 'PHET_CORE/merge' );
   const Node = require( 'SCENERY/nodes/Node' );
   const Rectangle = require( 'SCENERY/nodes/Rectangle' );
   const Shape = require( 'KITE/Shape' );
@@ -30,7 +31,7 @@ define( require => {
 
       assert && assert( item instanceof ComboBoxItem );
 
-      options = _.extend( {
+      options = merge( {
 
         cursor: 'pointer',
         align: 'left',

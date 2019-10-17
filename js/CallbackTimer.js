@@ -11,6 +11,7 @@ define( require => {
 
   // modules
   const inherit = require( 'PHET_CORE/inherit' );
+  const merge = require( 'PHET_CORE/merge' );
   const sun = require( 'SUN/sun' );
   const timer = require( 'AXON/timer' );
 
@@ -20,7 +21,7 @@ define( require => {
    */
   function CallbackTimer( options ) {
 
-    options = _.extend( {
+    options = merge( {
       callback: null, // {function} convenience for adding 1 callback
       delay: 400, // {number} start to fire continuously after pressing for this long (milliseconds)
       interval: 100 // {number} fire continuously at this interval (milliseconds)

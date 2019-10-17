@@ -17,6 +17,7 @@ define( require => {
   const InstanceRegistry = require( 'PHET_CORE/documentation/InstanceRegistry' );
   const Line = require( 'SCENERY/nodes/Line' );
   const LinearGradient = require( 'SCENERY/util/LinearGradient' );
+  const merge = require( 'PHET_CORE/merge' );
   const Node = require( 'SCENERY/nodes/Node' );
   const OnOffSwitch = require( 'SUN/OnOffSwitch' );
   const Property = require( 'AXON/Property' );
@@ -35,7 +36,7 @@ define( require => {
   function ABSwitch( property, valueA, labelA, valueB, labelB, options ) {
 
     // default option values
-    options = _.extend( {
+    options = merge( {
       switchSize: new Dimension2( 60, 30 ),
       xSpacing: 8,
       cursor: 'pointer',

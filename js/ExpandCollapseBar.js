@@ -11,6 +11,7 @@ define( require => {
   // modules
   const ExpandCollapseButton = require( 'SUN/ExpandCollapseButton' );
   const inherit = require( 'PHET_CORE/inherit' );
+  const merge = require( 'PHET_CORE/merge' );
   const Node = require( 'SCENERY/nodes/Node' );
   const Rectangle = require( 'SCENERY/nodes/Rectangle' );
   const Shape = require( 'KITE/Shape' );
@@ -25,7 +26,7 @@ define( require => {
    */
   function ExpandCollapseBar( titleNode, expandedProperty, options ) {
 
-    options = _.extend( {
+    options = merge( {
       buttonLength: 15,
       minWidth: 1, // minimum width of the bar
       minHeight: 1, // minimum height of the bar

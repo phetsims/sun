@@ -13,6 +13,7 @@ define( require => {
   const AccessibleNumberSpinner = require( 'SUN/accessibility/AccessibleNumberSpinner' );
   const ArrowButton = require( 'SUN/buttons/ArrowButton' );
   const inherit = require( 'PHET_CORE/inherit' );
+  const merge = require( 'PHET_CORE/merge' );
   const Node = require( 'SCENERY/nodes/Node' );
   const PhetFont = require( 'SCENERY_PHET/PhetFont' );
   const Property = require( 'AXON/Property' );
@@ -46,7 +47,7 @@ define( require => {
     assert && assert( rangeProperty.value.contains( numberProperty.get() ),
       'value ' + numberProperty.get() + ' is out of range ' + rangeProperty.value.toString() );
 
-    options = _.extend( {
+    options = merge( {
       enabledProperty: new Property( true ),
 
       // {string} where to place the arrow buttons, see ARROWS_POSITION_VALUES

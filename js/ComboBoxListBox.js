@@ -14,6 +14,7 @@ define( require => {
   const Event = require( 'SCENERY/input/Event' );
   const EventType = require( 'TANDEM/EventType' );
   const KeyboardUtil = require( 'SCENERY/accessibility/KeyboardUtil' );
+  const merge = require( 'PHET_CORE/merge' );
   const Panel = require( 'SUN/Panel' );
   const sun = require( 'SUN/sun' );
   const Tandem = require( 'TANDEM/Tandem' );
@@ -31,7 +32,7 @@ define( require => {
      */
     constructor( property, items, hideListBoxCallback, focusButtonCallback, tandem, options ) {
 
-      options = _.extend( {
+      options = merge( {
 
         // {Color|string} fill for the highlight behind items in the list
         highlightFill: 'rgb( 245, 245, 245 )',

@@ -9,6 +9,7 @@ define( require => {
   // modules
   const BooleanToggleNode = require( 'SUN/BooleanToggleNode' );
   const inherit = require( 'PHET_CORE/inherit' );
+  const merge = require( 'PHET_CORE/merge' );
   const RoundToggleButton = require( 'SUN/buttons/RoundToggleButton' );
   const sun = require( 'SUN/sun' );
   const Tandem = require( 'TANDEM/Tandem' );
@@ -22,7 +23,7 @@ define( require => {
    */
   function BooleanRoundToggleButton( trueNode, falseNode, booleanProperty, options ) {
 
-    options = _.extend( {
+    options = merge( {
       tandem: Tandem.required
     }, options );
 

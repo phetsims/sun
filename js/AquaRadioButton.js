@@ -14,6 +14,7 @@ define( require => {
   const FireListener = require( 'SCENERY/listeners/FireListener' );
   const inherit = require( 'PHET_CORE/inherit' );
   const InstanceRegistry = require( 'PHET_CORE/documentation/InstanceRegistry' );
+  const merge = require( 'PHET_CORE/merge' );
   const Node = require( 'SCENERY/nodes/Node' );
   const Rectangle = require( 'SCENERY/nodes/Rectangle' );
   const sun = require( 'SUN/sun' );
@@ -32,7 +33,7 @@ define( require => {
    */
   function AquaRadioButton( property, value, node, options ) {
 
-    options = _.extend( {
+    options = merge( {
       cursor: 'pointer',
       enabled: true,
       selectedColor: 'rgb( 143, 197, 250 )', // color used to fill the button when it's selected

@@ -13,6 +13,7 @@ define( require => {
   const ButtonListener = require( 'SCENERY/input/ButtonListener' );
   const Dimension2 = require( 'DOT/Dimension2' );
   const inherit = require( 'PHET_CORE/inherit' );
+  const merge = require( 'PHET_CORE/merge' );
   const Path = require( 'SCENERY/nodes/Path' );
   const Rectangle = require( 'SCENERY/nodes/Rectangle' );
   const Shape = require( 'KITE/Shape' );
@@ -26,7 +27,7 @@ define( require => {
    */
   function SliderThumb( options ) {
 
-    options = _.extend( {
+    options = merge( {
       size: new Dimension2( 22, 45 ),
       fill: 'rgb(50,145,184)',
       fillHighlighted: 'rgb(71,207,255)',
@@ -42,7 +43,7 @@ define( require => {
     const arcWidth = 0.25 * options.size.width;
     Rectangle.call( this, 0, 0,
       options.size.width, options.size.height,
-      arcWidth, arcWidth, _.extend( options, {
+      arcWidth, arcWidth, merge( options, {
         fill: options.fill,
         stroke: options.stroke,
         lineWidth: options.lineWidth,

@@ -11,6 +11,7 @@ define( require => {
 
   // modules
   const inherit = require( 'PHET_CORE/inherit' );
+  const merge = require( 'PHET_CORE/merge' );
   const RoundButtonView = require( 'SUN/buttons/RoundButtonView' );
   const sun = require( 'SUN/sun' );
   const Tandem = require( 'TANDEM/Tandem' );
@@ -28,7 +29,7 @@ define( require => {
   function RoundToggleButton( valueOff, valueOn, property, options ) {
 
     // Tandem support
-    options = _.extend( {
+    options = merge( {
       tandem: Tandem.required,
       phetioType: ToggleButtonIO
     }, options );

@@ -11,10 +11,11 @@ define( require => {
   'use strict';
 
   // modules
-  const Tandem = require( 'TANDEM/Tandem' );
   const inherit = require( 'PHET_CORE/inherit' );
+  const merge = require( 'PHET_CORE/merge' );
   const Node = require( 'SCENERY/nodes/Node' );
   const sun = require( 'SUN/sun' );
+  const Tandem = require( 'TANDEM/Tandem' );
 
   /**
    * @param {Property.<Object>} valueProperty
@@ -34,7 +35,7 @@ define( require => {
       } );
     }
 
-    options = _.extend( {
+    options = merge( {
 
       // {function} determines the relative layout of element Nodes. See below for pre-defined layout.
       alignChildren: ToggleNode.CENTER,
