@@ -40,11 +40,6 @@ define( require => {
   // constants
   const CLOSE_BUTTON_WIDTH = 14;
 
-  // The min distance from the top of the dialog to the dev bounds, same as the distance from the bottom of the dialog
-  // to the top of the navigation bar. Empirically determined
-  var EXTERNAL_MARGIN = 12;
-  var DOUBLE_MARGIN = EXTERNAL_MARGIN * 2; // total added width/height for the margin
-
   /**
    * @param {Node} content - The content to display inside the dialog (not including the title)
    * @param {Object} [options]
@@ -55,26 +50,28 @@ define( require => {
     options = merge( {
 
       /* Margins and spacing:
+
+                                    maxHeightMargin
        ____________________________________________________________________________
       |                                     |                          |           |
       |                                     |                          closeButton |
       |                                     topMargin                  TopMargin   |
       |                                     |                         _|___        |
       |                  ___________________|____________________    |     |       |
-      |--------l--------|                                        |-x-|  X  |---c---|
-      |        e        |   Title                                | S |_____|   l   |
-      |        f        |________________________________________| P           o   |
-      |        t        |   |                                    | a           s   |
-      |        M        |   ySpacing                             | c           e   |
-      |        a        |___|____________________________________| i           B   |
-      |        r        |                                        | n           u   |
-      |        g        |   Content                              | g           t   |
-      |        i        |                                        |             t   |
-      |        n        |                                        |             o   |
-      |                 |                                        |             n   |
-      |                 |                                        |             R   |
-      |                 |                                        |             i   |
-      |                 |                                        |             g   |
+     m|--------l--------|                                        |-x-|  X  |---c---|m
+     a|        e        |   Title                                | S |_____|   l   |a
+     x|        f        |________________________________________| P           o   |x
+     W|        t        |   |                                    | a           s   |W
+     i|        M        |   ySpacing                             | c           e   |i
+     d|        a        |___|____________________________________| i           B   |d
+     t|        r        |                                        | n           u   |t
+     h|        g        |   Content                              | g           t   |h
+     M|        i        |                                        |             t   |M
+     a|        n        |                                        |             o   |a
+     r|                 |                                        |             n   |r
+     g|                 |                                        |             R   |g
+     i|                 |                                        |             i   |i
+     n|                 |                                        |             g   |n
       |                 |                                        |             h   |
       |                 |                                        |             M   |
       |                 |________________________________________|             a   |
@@ -83,6 +80,8 @@ define( require => {
       |                                     bottomMargin                       i   |
       |                                     |                                  n   |
       |_____________________________________|______________________________________|
+
+                                        maxHeightMargin
        */
 
       xSpacing: 10, // {number} how far the title and content is placed to the left of the close button
@@ -91,6 +90,8 @@ define( require => {
       bottomMargin: 15, // {number} margin below content
       leftMargin: null, // {number|null} margin to the left of the content.  If null, this is computed so that we have
       // the same margins on the left and right of the content.
+      maxWidthMargin: 12, // {number} the margin between the left/right of the layoutBounds and the dialog, ignored if maxWidth is specified
+      maxHeightMargin: 12, // {number} the margin between the top/bottom of the layoutBounds and the dialog, ignored if maxHeight is specified
       closeButtonTopMargin: 10, // {number} margin above the close button
       closeButtonRightMargin: 10, // {number} margin to the right of the close button
 
@@ -272,11 +273,11 @@ define( require => {
 
         if ( !suppliedMaxHeight ) {
           const height = globalScreenViewBounds.height / screenScale;
-          this.maxHeight = height > DOUBLE_MARGIN ? height - DOUBLE_MARGIN : height;
+          this.maxHeight = applyDoubleMargin( height, options.maxHeightMargin );
         }
         if ( !suppliedMaxWidth ) {
           const width = globalScreenViewBounds.width / screenScale;
-          this.maxWidth = width > DOUBLE_MARGIN ? width - DOUBLE_MARGIN : width;
+          this.maxWidth = applyDoubleMargin( width, options.maxWidthMargin );
         }
         options.layoutStrategy( this, bounds, screenBounds, scale );
       }
@@ -418,6 +419,9 @@ define( require => {
   Dialog.DEFAULT_LAYOUT_STRATEGY = ( dialog, simBounds, screenBounds, scale ) => {
     dialog.center = screenBounds.center.times( 1.0 / scale );
   };
+
+  // {function(number,number):number}
+  const applyDoubleMargin = ( dimension, margin ) => dimension > margin * 2 ? dimension - margin * 2 : dimension;
 
   /**
    * The close button for Dialog
