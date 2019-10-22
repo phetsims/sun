@@ -28,8 +28,8 @@ define( require => {
   const Property = require( 'AXON/Property' );
   const sun = require( 'SUN/sun' );
   const Util = require( 'DOT/Util' );
-  const Utterance = require( 'SCENERY_PHET/accessibility/Utterance' );
-  const utteranceQueue = require( 'SCENERY_PHET/accessibility/utteranceQueue' );
+  const Utterance = require( 'UTTERANCE_QUEUE/Utterance' );
+  const utteranceQueue = require( 'UTTERANCE_QUEUE/utteranceQueue' );
 
   // constants
   const DEFAULT_TAG_NAME = 'input';
