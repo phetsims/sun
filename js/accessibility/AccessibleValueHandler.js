@@ -129,8 +129,11 @@ define( require => {
             a11yCreateAriaValueText: toString, // by default make sure it returns a string
 
             /**
-             * Create content for an alert that will be sent to the utteranceQueue when the user interacts with the
-             * input. Is not generated every change, but on every "drag" interaction, this is called with endChange.
+             * Create content for an alert that will be sent to the utteranceQueue when the user finishes interacting
+             * with the input. Is not generated every change, but on every "drag" interaction, this is called with
+             * endChange. With a keyboard, this will be called even with no value change (on the key up event ending the
+             * interaction), On a touch system like iOS with Voice Over however, input and change events will only fire
+             * when there is a Property value change, so "edge" alerts will not fire, see https://github.com/phetsims/gravity-force-lab-basics/issues/185
              * @type {Function}
              * @param {number} formattedValue - mapped value fixed to the provided decimal places
              * @param {number} newValue - the new value, unformatted
@@ -216,7 +219,7 @@ define( require => {
           // optional a11yCreateValueChangeAlert. The alertStableDelay on this utterance will increase if the input
           // receives many interactions before the utterance can be announced so that VoiceOver has time to read the
           // aria-valuetext before the alert.
-          this.utterance = new Utterance();
+          this.onEndInteractionUtterance = new Utterance();
 
           // @private (a11y) - whether or not an input event has been handled. If handled, we will not respond to the
           // change event. An AT (particularly VoiceOver) may send a change event (and not an input event) to the
@@ -347,12 +350,12 @@ define( require => {
         setUtteranceAndAlert() {
           if ( this.a11yCreateValueChangeAlert ) {
 
-            this.utterance.resetTimingVariables();
+            this.onEndInteractionUtterance.resetTimingVariables();
 
             const formattedValue = this.getMappedValue();
-            this.utterance.alert = this.a11yCreateValueChangeAlert( formattedValue, this._valueProperty.value, this.oldValue );
+            this.onEndInteractionUtterance.alert = this.a11yCreateValueChangeAlert( formattedValue, this._valueProperty.value, this.oldValue );
 
-            if ( utteranceQueue.hasUtterance( this.utterance ) ) {
+            if ( utteranceQueue.hasUtterance( this.onEndInteractionUtterance ) ) {
               this.timesChangedBeforeAlerting++;
             }
             else {
@@ -361,9 +364,9 @@ define( require => {
 
             // 700 and 2000 ms are arbitrary values but sound good with limited testing. We want to give enough time
             // for VO to read aria-valuetext but don't want to have too much silence before the alert is spoken.
-            this.utterance.alertStableDelay = Math.min( this.timesChangedBeforeAlerting * 700, 2000 );
+            this.onEndInteractionUtterance.alertStableDelay = Math.min( this.timesChangedBeforeAlerting * 700, 2000 );
 
-            utteranceQueue.addToBack( this.utterance );
+            utteranceQueue.addToBack( this.onEndInteractionUtterance );
           }
         },
 
