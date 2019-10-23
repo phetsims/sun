@@ -25,6 +25,7 @@ define( require => {
   const merge = require( 'PHET_CORE/merge' );
   const Panel = require( 'SUN/Panel' );
   const Path = require( 'SCENERY/nodes/Path' );
+  const PhetioObject = require( 'TANDEM/PhetioObject' );
   const Property = require( 'AXON/Property' );
   const RectangularButtonView = require( 'SUN/buttons/RectangularButtonView' );
   const RectangularPushButton = require( 'SUN/buttons/RectangularPushButton' );
@@ -131,6 +132,7 @@ define( require => {
       phetioType: DialogIO,
       phetioReadOnly: false, // default to false so it can pass it through to the close button
       phetioState: false, // default to false so it can pass it through to the close button
+      phetioComponentOptions: null, // filled in below with PhetioObject.mergePhetioComponentOptions()
 
       // a11y options
       tagName: 'div',
@@ -149,6 +151,11 @@ define( require => {
       // TODO: Support instrumented element that is dynamic/lazily created, see https://github.com/phetsims/phet-io/issues/1454
       options.tandem = Tandem.optional;
     }
+
+    // by default, copy the state of the dialog
+    PhetioObject.mergePhetioComponentOptions( {
+      phetioState: options.phetioState
+    }, options );
 
     assert && assert( options.xMargin === undefined, 'Dialog sets xMargin' );
     options.xMargin = 0;
@@ -201,7 +208,8 @@ define( require => {
       // phet-io
       tandem: options.tandem.createTandem( 'closeButton' ),
       phetioReadOnly: options.phetioReadOnly, // match the readOnly of the Dialog
-      phetioState: options.phetioState, // match the state transfer of the Dialog
+      phetioState: false, // close button should not be in state
+      phetioComponentOptions: { phetioState: false },
 
       // a11y
       tagName: 'button',
