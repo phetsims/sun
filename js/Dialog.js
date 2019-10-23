@@ -143,8 +143,12 @@ define( require => {
       addAriaLabelledByFromTitle: true
     }, options );
 
-    // TODO: Support instrumented element that is dynamic/lazily created, see https://github.com/phetsims/phet-io/issues/1454
-    options.tandem = Tandem.optional;
+    // TODO: just to support a single usage of PhetioCapsule in AboutDialog, but not break everything else https://github.com/phetsims/phet-io/issues/1454
+    if ( options.tandem.phetioID.indexOf( 'aboutDialog' ) < 0 ) {
+
+      // TODO: Support instrumented element that is dynamic/lazily created, see https://github.com/phetsims/phet-io/issues/1454
+      options.tandem = Tandem.optional;
+    }
 
     assert && assert( options.xMargin === undefined, 'Dialog sets xMargin' );
     options.xMargin = 0;
