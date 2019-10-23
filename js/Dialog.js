@@ -145,13 +145,6 @@ define( require => {
       addAriaLabelledByFromTitle: true
     }, options );
 
-    // TODO: just to support a single usage of PhetioCapsule in AboutDialog, but not break everything else https://github.com/phetsims/phet-io/issues/1454
-    if ( options.tandem.phetioID.indexOf( 'aboutDialog' ) < 0 ) {
-
-      // TODO: Support instrumented element that is dynamic/lazily created, see https://github.com/phetsims/phet-io/issues/1454
-      options.tandem = Tandem.optional;
-    }
-
     // by default, copy the state of the dialog
     PhetioObject.mergePhetioComponentOptions( {
       phetioState: options.phetioState
