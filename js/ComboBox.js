@@ -70,6 +70,8 @@ define( require => {
         buttonFill: 'white', // {Color|string}
         buttonStroke: 'black', // {Color|string}
         buttonLineWidth: 1,
+        buttonTouchAreaXDilation: 0,
+        buttonTouchAreaYDilation: 0,
 
         // list
         listFill: 'white', // {Color|string}
@@ -116,6 +118,8 @@ define( require => {
         baseColor: options.buttonFill,
         stroke: options.buttonStroke,
         lineWidth: options.buttonLineWidth,
+        touchAreaXDilation: options.buttonTouchAreaXDilation,
+        touchAreaYDilation: options.buttonTouchAreaYDilation,
 
         // a11y - accessibleName and helpText are set via overridden functions on the prototype. See below.
 
