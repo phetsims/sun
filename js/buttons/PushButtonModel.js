@@ -45,7 +45,7 @@ define( require => {
 
     ButtonModel.call( this, options );
 
-    // @public - used by ResetAllButton to call functions during reset start/end
+    // @public (read-only) - used by ResetAllButton to call functions during reset start/end
     this.isFiringProperty = new BooleanProperty( false );
 
     // @private - sends out notifications when the button is released.
