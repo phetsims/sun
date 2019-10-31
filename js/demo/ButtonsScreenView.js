@@ -1,5 +1,4 @@
 // Copyright 2014-2019, University of Colorado Boulder
-/* eslint-disable bad-sim-text */
 
 /**
  * Main ScreenView container for demonstrating and testing the various buttons.
@@ -136,7 +135,7 @@ define( require => {
     const buttonA = new RectangularPushButton( {
       content: new Text( '--- A ---', { font: BUTTON_FONT } ),
       listener: function() { message( 'Button A pressed ' + ( ++buttonAFireCount ) + 'x' ); },
-      
+
       // demonstrate pointer areas, see https://github.com/phetsims/sun/issues/464
       touchAreaXDilation: 10,
       touchAreaYDilation: 10,
@@ -492,6 +491,8 @@ define( require => {
     const changeButtonColorsButton = new RectangularPushButton( {
         content: new Text( 'Change Some Button Colors', { font: BUTTON_CAPTION_FONT } ),
         listener: function() {
+
+          /* eslint-disable bad-sim-text */
           buttonA.baseColor = new Color( _.random( 0, 255 ), _.random( 0, 255 ), _.random( 0, 255 ) );
           buttonD.baseColor = new Color( _.random( 0, 255 ), _.random( 0, 255 ), _.random( 0, 255 ) );
           button1.baseColor = new Color( _.random( 0, 255 ), _.random( 0, 255 ), _.random( 0, 255 ) );
@@ -500,6 +501,7 @@ define( require => {
           alignBaseColor.value = new Color( _.random( 0, 255 ), _.random( 0, 255 ), _.random( 0, 255 ) );
           radioGroupBaseColor.value = new Color( _.random( 0, 255 ), _.random( 0, 255 ), _.random( 0, 255 ) );
           roundBaseColor.value = new Color( _.random( 0, 255 ), _.random( 0, 255 ), _.random( 0, 255 ) );
+          /* eslint-enable bad-sim-text */
 
           message( 'Button colors changed' );
         },
