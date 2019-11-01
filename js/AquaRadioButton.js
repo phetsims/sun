@@ -45,6 +45,7 @@ define( require => {
 
       // phet-io
       tandem: Tandem.required,
+      phetioLinkProperty: true,
 
       // a11y
       tagName: 'input',
@@ -149,6 +150,11 @@ define( require => {
     }
 
     this.mutate( options );
+
+    // Add linked element after the radio button is instrumented
+    options.phetioLinkProperty && this.addLinkedElement( property, {
+      tandem: options.tandem.createTandem( 'property' )
+    } );
 
     this.enabledProperty.link( this.updateEnabled.bind( this ) );
 
