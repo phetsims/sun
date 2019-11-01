@@ -132,13 +132,13 @@ define( require => {
     // Apply additional options
     this.mutate( options );
 
-    // does this instance own enabledProperty?
-    const ownsEnabledProperty = !options.enabledProperty;
-
     // must be after the Checkbox is instrumented
     options.phetioLinkProperty && this.addLinkedElement( property, {
       tandem: options.tandem.createTandem( 'property' )
     } );
+
+    // does this instance own enabledProperty?
+    const ownsEnabledProperty = !options.enabledProperty;
 
     if ( !ownsEnabledProperty ) {
       assert && this.isPhetioInstrumented() && assert( !!options.enabledProperty.phetioFeatured === !!this.phetioFeatured,
