@@ -21,6 +21,7 @@ define( require => {
   const StringUtils = require( 'PHETCOMMON/util/StringUtils' );
   const sun = require( 'SUN/sun' );
   const SunConstants = require( 'SUN/SunConstants' );
+  const Tandem = require( 'TANDEM/Tandem' );
   const Text = require( 'SCENERY/nodes/Text' );
   const Util = require( 'DOT/Util' );
 
@@ -82,7 +83,10 @@ define( require => {
       touchAreaXDilation: 0,
       touchAreaYDilation: 0,
       mouseAreaXDilation: 0,
-      mouseAreaYDilation: 0
+      mouseAreaYDilation: 0,
+
+      // PhET-iO
+      tandem: Tandem.required
     }, options );
 
     // validate options
@@ -141,14 +145,18 @@ define( require => {
       numberProperty.set( numberProperty.get() + options.deltaValue );
     };
     const incrementDirection = ( options.arrowsPosition === 'topBottom' || options.arrowsPosition === 'bothRight' ) ? 'up' : 'right';
-    const incrementButton = new ArrowButton( incrementDirection, incrementFunction, arrowButtonOptions );
+    const incrementButton = new ArrowButton( incrementDirection, incrementFunction, merge( {
+      tandem: options.tandem.createTandem( 'incrementButton' )
+    }, arrowButtonOptions ) );
 
     // decrement button
     const decrementFunction = function() {
       numberProperty.set( numberProperty.get() - options.deltaValue );
     };
     const decrementDirection = ( options.arrowsPosition === 'topBottom' || options.arrowsPosition === 'bothRight' ) ? 'down' : 'left';
-    const decrementButton = new ArrowButton( decrementDirection, decrementFunction, arrowButtonOptions );
+    const decrementButton = new ArrowButton( decrementDirection, decrementFunction, merge( {
+      tandem: options.tandem.createTandem( 'decrementButton' )
+    }, arrowButtonOptions ) );
 
     // arrow button scaling
     let arrowsScale;
