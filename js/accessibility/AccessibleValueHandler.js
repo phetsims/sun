@@ -138,7 +138,7 @@ define( require => {
              * @param {number} formattedValue - mapped value fixed to the provided decimal places
              * @param {number} newValue - the new value, unformatted
              * @param {number} previousValue - just the "oldValue" from the property listener
-             * @returns {string}
+             * @returns {string|null} - if null, then no alert will be sent
              */
             a11yCreateValueChangeAlert: null,
 
@@ -219,7 +219,7 @@ define( require => {
           // optional a11yCreateValueChangeAlert. The alertStableDelay on this utterance will increase if the input
           // receives many interactions before the utterance can be announced so that VoiceOver has time to read the
           // aria-valuetext before the alert.
-          this.onEndInteractionUtterance = new Utterance();
+          this.endInteractionUtterance = new Utterance();
 
           // @private (a11y) - whether or not an input event has been handled. If handled, we will not respond to the
           // change event. An AT (particularly VoiceOver) may send a change event (and not an input event) to the
@@ -350,23 +350,28 @@ define( require => {
         setUtteranceAndAlert() {
           if ( this.a11yCreateValueChangeAlert ) {
 
-            this.onEndInteractionUtterance.resetTimingVariables();
+            this.endInteractionUtterance.resetTimingVariables();
 
             const formattedValue = this.getMappedValue();
-            this.onEndInteractionUtterance.alert = this.a11yCreateValueChangeAlert( formattedValue, this._valueProperty.value, this.oldValue );
+            const endInteractionAlert = this.a11yCreateValueChangeAlert( formattedValue, this._valueProperty.value, this.oldValue );
 
-            if ( utteranceQueue.hasUtterance( this.onEndInteractionUtterance ) ) {
-              this.timesChangedBeforeAlerting++;
+            // only if it returned an alert
+            if ( endInteractionAlert ) {
+              this.endInteractionUtterance.alert = endInteractionAlert;
+
+              if ( utteranceQueue.hasUtterance( this.endInteractionUtterance ) ) {
+                this.timesChangedBeforeAlerting++;
+              }
+              else {
+                this.timesChangedBeforeAlerting = 1;
+              }
+
+              // 700 and 2000 ms are arbitrary values but sound good with limited testing. We want to give enough time
+              // for VO to read aria-valuetext but don't want to have too much silence before the alert is spoken.
+              this.endInteractionUtterance.alertStableDelay = Math.min( this.timesChangedBeforeAlerting * 700, 2000 );
+
+              utteranceQueue.addToBack( this.endInteractionUtterance );
             }
-            else {
-              this.timesChangedBeforeAlerting = 1;
-            }
-
-            // 700 and 2000 ms are arbitrary values but sound good with limited testing. We want to give enough time
-            // for VO to read aria-valuetext but don't want to have too much silence before the alert is spoken.
-            this.onEndInteractionUtterance.alertStableDelay = Math.min( this.timesChangedBeforeAlerting * 700, 2000 );
-
-            utteranceQueue.addToBack( this.onEndInteractionUtterance );
           }
         },
 

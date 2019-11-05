@@ -56,13 +56,11 @@ define( require => {
         initializeAccessibleSlider: function( valueProperty, enabledRangeProperty, enabledProperty, options ) {
           const self = this;
 
-          const defaults = {
+          options = merge( {
             startDrag: _.noop, // called when a drag sequence starts
             endDrag: _.noop, // called when a drag sequence ends
             constrainValue: _.identity // called before valueProperty is set
-          };
-
-          options = merge( {}, defaults, options );
+          }, options );
 
           // AccessibleSlider uses 'drag' terminology rather than 'change' for consistency with Slider
           assert && assert( options.startChange === undefined, 'AccessibleSlider sets startChange through options.startDrag' );
