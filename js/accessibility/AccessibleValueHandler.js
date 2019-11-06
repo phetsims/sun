@@ -29,9 +29,7 @@ define( require => {
   const sun = require( 'SUN/sun' );
   const Util = require( 'DOT/Util' );
   const Utterance = require( 'UTTERANCE_QUEUE/Utterance' );
-  const utteranceQueue = require( 'UTTERANCE_QUEUE/utteranceQueue' );
-
-  // constants
+// constants
   const DEFAULT_TAG_NAME = 'input';
   const toString = v => v + '';
 
@@ -346,9 +344,11 @@ define( require => {
          * to the utterancQueue. For VoiceOver, it is important that if the value is changed multiple times before
          * the alert can be spoken, we provide more time for the AT to finish speaking aria-valuetext. Otherwise, the
          * alert may be lost. See https://github.com/phetsims/gravity-force-lab-basics/issues/146.
+         * @private
          */
         setUtteranceAndAlert() {
           if ( this.a11yCreateValueChangeAlert ) {
+            const utteranceQueue = phet.joist.sim.display.utteranceQueue;
 
             this.endInteractionUtterance.resetTimingVariables();
 
