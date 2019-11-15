@@ -82,7 +82,7 @@ define( require => {
         }
       }
       else {
-        const fire = ( !options.fireOnDown && self.overProperty.get() && self.enabledProperty.get() ); // should the button fire?
+        const fire = ( !options.fireOnDown && self.overProperty.get() && self.enabledProperty.get() && !self.interrupted ); // should the button fire?
         if ( self.timer ) {
           self.timer.stop( fire );
         }
