@@ -67,7 +67,7 @@ define( require => {
     // released, pop up the button (unless it was part of the same action that pressed the button down in the first
     // place).
     const downListener = function( down ) {
-      if ( self.enabledProperty.get() && self.overProperty.get() ) {
+      if ( self.enabledProperty.get() && self.overProperty.get() && !self.interrupted ) {
         if ( down && valueProperty.value === valueUp ) {
           self.toggle();
           self.pressedWhileDownProperty.set( false );
