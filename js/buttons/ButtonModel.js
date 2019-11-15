@@ -72,6 +72,9 @@ define( require => {
     // @public - Is the button enabled?
     this.enabledProperty = new BooleanProperty( options.enabled, options.enabledPropertyOptions );
 
+    // @public (read-only) - indicates that interaction was interrupted during a press. Valid until next press.
+    this.interrupted = false;
+
     // @private - keep track of and store all listeners this model creates
     this.listeners = [];
 
@@ -154,7 +157,12 @@ define( require => {
       this.listeners.push( pressListener );
 
       // link lazily in case client externally sets downProperty - don't update until the next press
-      pressListener.isPressedProperty.lazyLink( this.downProperty.set.bind( this.downProperty ) );
+      pressListener.isPressedProperty.lazyLink( isPressed => {
+
+        // determine interrupted first so listeners on downProperty have access
+        this.interrupted = pressListener.interrupted;
+        this.downProperty.set( isPressed );
+      } );
       pressListener.isOverProperty.lazyLink( this.overProperty.set.bind( this.overProperty ) );
       pressListener.a11yClickingProperty.link( this.a11yClickingProperty.set.bind( this.a11yClickingProperty ) );
 

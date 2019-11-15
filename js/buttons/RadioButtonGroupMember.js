@@ -85,7 +85,7 @@ define( require => {
 
     // When the button model triggers an event, fire from the radio button
     this.buttonModel.downProperty.link( function( down ) {
-      if ( !down && self.buttonModel.overProperty.get() ) {
+      if ( !down && self.buttonModel.overProperty.get() && !self.buttonModel.interrupted ) {
         self.fire();
       }
     } );
@@ -95,7 +95,7 @@ define( require => {
 
     RectangularButtonView.call( this, this.buttonModel, this.interactionStateProperty, options );
 
-    // a11y - Specify the default value for assistive technology, this attribute is needed in addition to 
+    // a11y - Specify the default value for assistive technology, this attribute is needed in addition to
     // the 'checked' property to mark this element as the default selection since 'checked' may be set before
     // we are finished adding RadioButtonGroupMembers to the RadioButtonGroup.
     if ( property.value === value ) {
