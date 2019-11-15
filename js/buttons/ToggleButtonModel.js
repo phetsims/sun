@@ -41,7 +41,7 @@ define( require => {
 
     // Behaves like a push button (with fireOnDown:false), but toggles its state when the button is released.
     const downListener = function( down ) {
-      if ( self.enabledProperty.get() && self.overProperty.get() ) {
+      if ( self.enabledProperty.get() && self.overProperty.get() && !self.interrupted ) {
         if ( !down ) {
           self.toggle();
         }
