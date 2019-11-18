@@ -28,6 +28,10 @@ define( require => {
   // constants
   const ENABLED_PROPERTY_TANDEM_NAME = 'enabledProperty';
 
+  // sounds
+  const checkboxCheckedSoundPlayer = require( 'TAMBO/shared-sound-players/checkboxCheckedSoundPlayer' );
+  const checkboxUncheckedSoundPlayer = require( 'TAMBO/shared-sound-players/checkboxUncheckedSoundPlayer' );
+
   /**
    * @param {Node} content
    * @param {Property.<boolean>} property
@@ -53,6 +57,10 @@ define( require => {
       phetioReadOnly: PhetioObject.DEFAULT_OPTIONS.phetioReadOnly,
       phetioLinkProperty: true, // whether a link to the checkbox's Property is created
       phetioComponentOptions: null, // filled in below with PhetioObject.mergePhetioComponentOptions()
+
+      // {Playable|null} - sound generators, if set to null defaults will be used, set to Playable.NO_SOUND to disable
+      checkedSoundPlayer: null,
+      uncheckedSoundPlayer: null,
 
       // a11y
       tagName: 'input',
@@ -110,12 +118,22 @@ define( require => {
 
     content.pickable = false; // since there's a pickable rectangle on top of content
 
+    // get default sound generators if needed
+    const checkedSoundPlayer = options.checkedSoundPlayer || checkboxCheckedSoundPlayer;
+    const uncheckedSoundPlayer = options.uncheckedSoundPlayer || checkboxUncheckedSoundPlayer;
+
     // interactivity
     const checkboxButtonListener = new ButtonListener( {
       fire: function() {
         if ( self.enabledProperty.value ) {
           const newValue = !property.value;
           toggleAction.execute( newValue );
+          if ( newValue ) {
+            checkedSoundPlayer.play();
+          }
+          else {
+            uncheckedSoundPlayer.play();
+          }
         }
       }
     } );
