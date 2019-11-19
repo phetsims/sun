@@ -117,7 +117,7 @@ define( require => {
              * aria-valuetext creation function, called when the valueProperty changes.
              * This string is read by AT every time the slider value changes.
              * @type {Function}
-             * @param {number} formattedValue - mapped value fixed to the provided decimal places
+             * @param {number} mappedValue
              * @param {number} newValue - the new value, unformatted
              * @param {number} previousValue - just the "oldValue" from the property listener
              * @property {function} reset - if this function needs resetting, include a `reset` field on this function
@@ -133,7 +133,7 @@ define( require => {
              * interaction), On a touch system like iOS with Voice Over however, input and change events will only fire
              * when there is a Property value change, so "edge" alerts will not fire, see https://github.com/phetsims/gravity-force-lab-basics/issues/185
              * @type {Function}
-             * @param {number} formattedValue - mapped value fixed to the provided decimal places
+             * @param {number} mappedValue
              * @param {number} newValue - the new value, unformatted
              * @param {number} previousValue - just the "oldValue" from the property listener
              * @returns {string|null} - if null, then no alert will be sent
@@ -274,15 +274,15 @@ define( require => {
           // by assistive technology when the value changes
           const valuePropertyListener = () => {
 
-            const formattedValue = this.getMappedValue();
+            const mappedValue = this.getMappedValue();
 
             // set the aria-valuenow attribute in case the AT requires it to read the value correctly, some may
             // fall back on this from aria-valuetext see
             // https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/ARIA_Techniques/Using_the_aria-valuetext_attribute#Possible_effects_on_user_agents_and_assistive_technology
-            this.setAccessibleAttribute( 'aria-valuenow', formattedValue );
+            this.setAccessibleAttribute( 'aria-valuenow', mappedValue );
 
             // update the PDOM input value on Property change
-            this.inputValue = formattedValue;
+            this.inputValue = mappedValue;
           };
           this._valueProperty.link( valuePropertyListener );
 
@@ -324,10 +324,10 @@ define( require => {
          * @private
          */
         updateAriaValueText( oldPropertyValue ) {
-          const formattedValue = this.getMappedValue();
+          const mappedValue = this.getMappedValue();
 
           // create the dynamic aria-valuetext from a11yCreateAriaValueText.
-          let newAriaValueText = this.a11yCreateAriaValueText( formattedValue, this._valueProperty.value, oldPropertyValue );
+          let newAriaValueText = this.a11yCreateAriaValueText( mappedValue, this._valueProperty.value, oldPropertyValue );
           assert && assert( typeof newAriaValueText === 'string' );
 
           if ( this._a11yRepeatEqualValueText && newAriaValueText === this.ariaValueText ) {
@@ -352,8 +352,8 @@ define( require => {
 
             this.endInteractionUtterance.resetTimingVariables();
 
-            const formattedValue = this.getMappedValue();
-            const endInteractionAlert = this.a11yCreateValueChangeAlert( formattedValue, this._valueProperty.value, this.oldValue );
+            const mappedValue = this.getMappedValue();
+            const endInteractionAlert = this.a11yCreateValueChangeAlert( mappedValue, this._valueProperty.value, this.oldValue );
 
             // only if it returned an alert
             if ( endInteractionAlert ) {
@@ -386,6 +386,16 @@ define( require => {
 
           // on reset, make sure that the PDOM descriptions are completely up to date.
           this.updateAriaValueText( null );
+        },
+
+        /**
+         * Set the a11yMapValueFunction
+         * @param {function(number):number} mapValueFunction
+         * @public
+         */
+        setMapValueFunction( mapValueFunction ) {
+          assert && assert( typeof mapValueFunction === 'function', 'a11yMapValue function must be a function' );
+          this.a11yMapValue = mapValueFunction;
         },
 
         /**
