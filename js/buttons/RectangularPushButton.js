@@ -17,6 +17,7 @@ define( require => {
   const merge = require( 'PHET_CORE/merge' );
   const PushButtonInteractionStateProperty = require( 'SUN/buttons/PushButtonInteractionStateProperty' );
   const PushButtonModel = require( 'SUN/buttons/PushButtonModel' );
+  const pushButtonSoundPlayer = require( 'TAMBO/shared-sound-players/pushButtonSoundPlayer' );
   const RectangularButtonView = require( 'SUN/buttons/RectangularButtonView' );
   const sun = require( 'SUN/sun' );
   const Tandem = require( 'TANDEM/Tandem' );
@@ -28,7 +29,13 @@ define( require => {
   function RectangularPushButton( options ) {
 
     options = merge( {
+
+      // {Playable|null} - sound generators, if set to null defaults will be used, set to Playable.NO_SOUND to disable
+      soundPlayer: null,
+
+      // tandem support
       tandem: Tandem.required
+
     }, options );
 
     // If a listener was passed in, save it and add it after creating the button model.  This is done so that
@@ -47,7 +54,20 @@ define( require => {
     // Call the parent type
     RectangularButtonView.call( this, this.buttonModel, new PushButtonInteractionStateProperty( this.buttonModel ), options );
 
+    // get default sound generator if needed
+    const soundPlayer = options.soundPlayer || pushButtonSoundPlayer;
+
+    // If sound production is enabled, hook it up.
+    let playSound;
+    if ( soundPlayer ) {
+      playSound = () => { soundPlayer.play(); };
+      this.buttonModel.produceSoundEmitter.addListener( playSound );
+    }
+
     this.disposeRectangularPushButton = function() {
+      if ( playSound ) {
+        this.buttonModel.produceSoundEmitter.removeListener( playSound );
+      }
       this.buttonModel.dispose(); //TODO this fails when assertions are enabled, see sun#212
     };
 

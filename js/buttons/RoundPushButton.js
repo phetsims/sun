@@ -19,6 +19,7 @@ define( require => {
   const merge = require( 'PHET_CORE/merge' );
   const PushButtonInteractionStateProperty = require( 'SUN/buttons/PushButtonInteractionStateProperty' );
   const PushButtonModel = require( 'SUN/buttons/PushButtonModel' );
+  const pushButtonSoundPlayer = require( 'TAMBO/shared-sound-players/pushButtonSoundPlayer' );
   const RoundButtonView = require( 'SUN/buttons/RoundButtonView' );
   const sun = require( 'SUN/sun' );
   const Tandem = require( 'TANDEM/Tandem' );
@@ -30,7 +31,13 @@ define( require => {
   function RoundPushButton( options ) {
 
     options = merge( {
+
+      // {Playable|null} - sound generators, if set to null defaults will be used, set to Playable.NO_SOUND to disable
+      soundPlayer: null,
+
+      // tandem support
       tandem: Tandem.required
+
     }, options );
 
     const self = this;
@@ -49,7 +56,20 @@ define( require => {
     // add the listener that was potentially saved above
     listener && this.addListener( listener );
 
+    // get default sound generator if needed
+    const soundPlayer = options.soundPlayer || pushButtonSoundPlayer;
+
+    // If sound production is enabled, hook it up.
+    let playSound;
+    if ( soundPlayer ) {
+      playSound = () => { soundPlayer.play(); };
+      this.buttonModel.produceSoundEmitter.addListener( playSound );
+    }
+
     this.disposeRoundPushButton = function() {
+      if ( playSound ) {
+        this.buttonModel.produceSoundEmitter.removeListener( playSound );
+      }
       self.buttonModel.dispose();
     };
 

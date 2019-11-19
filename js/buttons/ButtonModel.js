@@ -9,6 +9,7 @@ define( require => {
 
   // modules
   const BooleanProperty = require( 'AXON/BooleanProperty' );
+  const Emitter = require( 'AXON/Emitter' );
   const inherit = require( 'PHET_CORE/inherit' );
   const merge = require( 'PHET_CORE/merge' );
   const PhetioObject = require( 'TANDEM/PhetioObject' );
@@ -71,6 +72,9 @@ define( require => {
 
     // @public - Is the button enabled?
     this.enabledProperty = new BooleanProperty( options.enabled, options.enabledPropertyOptions );
+
+    // @public (read-only by users, read-write in subclasses) - emitter that is fired when sound should be produced
+    this.produceSoundEmitter = new Emitter();
 
     // @public (read-only) - indicates that interaction was interrupted during a press. Valid until next press.
     this.interrupted = false;
