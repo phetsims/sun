@@ -30,7 +30,7 @@ define( require => {
 
     options = merge( {
 
-      // {Playable|null} - sound generators, if set to null defaults will be used, set to Playable.NO_SOUND to disable
+      // {Playable|null} - sound generator, if set to null default will be used, set to Playable.NO_SOUND to disable
       soundPlayer: null,
 
       // tandem support
