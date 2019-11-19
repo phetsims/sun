@@ -32,7 +32,7 @@ define( require => {
 
     options = merge( {
 
-      // {Playable|null} - sound generators, if set to null defaults will be used, set to Playable.NO_SOUND to disable
+      // {Playable|null} - sound generator, if set to null defaults will be used, set to Playable.NO_SOUND to disable
       soundPlayer: null,
 
       // tandem support
@@ -56,20 +56,14 @@ define( require => {
     // add the listener that was potentially saved above
     listener && this.addListener( listener );
 
-    // get default sound generator if needed
+    // sound generation
     const soundPlayer = options.soundPlayer || pushButtonSoundPlayer;
+    const playSound = () => { soundPlayer.play(); };
+    this.buttonModel.produceSoundEmitter.addListener( playSound );
 
-    // If sound production is enabled, hook it up.
-    let playSound;
-    if ( soundPlayer ) {
-      playSound = () => { soundPlayer.play(); };
-      this.buttonModel.produceSoundEmitter.addListener( playSound );
-    }
-
+    // dispose function
     this.disposeRoundPushButton = function() {
-      if ( playSound ) {
-        this.buttonModel.produceSoundEmitter.removeListener( playSound );
-      }
+      this.buttonModel.produceSoundEmitter.removeListener( playSound );
       self.buttonModel.dispose();
     };
 
