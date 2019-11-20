@@ -26,6 +26,7 @@ define( require => {
   const Property = require( 'AXON/Property' );
   const RadioButtonGroupAppearance = require( 'SUN/buttons/RadioButtonGroupAppearance' );
   const RadioButtonGroupMember = require( 'SUN/buttons/RadioButtonGroupMember' );
+  const radioButtonSoundPlayerFactory = require( 'TAMBO/radioButtonSoundPlayerFactory' );
   const Rectangle = require( 'SCENERY/nodes/Rectangle' );
   const Shape = require( 'KITE/Shape' );
   const sun = require( 'SUN/sun' );
@@ -199,7 +200,8 @@ define( require => {
         yAlign: options.buttonContentYAlign,
         minWidth: widestContentWidth + 2 * options.buttonContentXMargin,
         minHeight: tallestContentHeight + 2 * options.buttonContentYMargin,
-        phetioDocumentation: currentContent.phetioDocumentation || ''
+        phetioDocumentation: currentContent.phetioDocumentation || '',
+        soundPlayer: radioButtonSoundPlayerFactory.getRadioButtonSoundPlayer( i )
       }, buttonOptions );
 
       // Pass through the tandem given the tandemName, but also support uninstrumented simulations

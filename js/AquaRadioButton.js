@@ -16,6 +16,7 @@ define( require => {
   const InstanceRegistry = require( 'PHET_CORE/documentation/InstanceRegistry' );
   const merge = require( 'PHET_CORE/merge' );
   const Node = require( 'SCENERY/nodes/Node' );
+  const radioButtonSoundPlayerFactory = require( 'TAMBO/radioButtonSoundPlayerFactory' );
   const Rectangle = require( 'SCENERY/nodes/Rectangle' );
   const sun = require( 'SUN/sun' );
   const SunConstants = require( 'SUN/SunConstants' );
@@ -46,6 +47,9 @@ define( require => {
       // phet-io
       tandem: Tandem.required,
       phetioLinkProperty: true,
+
+      // {Playable|null} - sound generator, if set to null default will be used, set to Playable.NO_SOUND to disable
+      soundPlayer: null,
 
       // a11y
       tagName: 'input',
@@ -113,9 +117,13 @@ define( require => {
     };
     property.link( syncWithModel );
 
+    // sound generation
+    const soundPlayer = options.soundPlayer || radioButtonSoundPlayerFactory.getRadioButtonSoundPlayer( 0 );
+
     // set property value on fire
     const fire = function() {
       property.set( value );
+      soundPlayer.play();
     };
     const inputListener = new FireListener( {
       fire: fire,

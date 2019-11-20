@@ -30,7 +30,7 @@ define( require => {
 
     options = merge( {
 
-      // {Playable|null} - sound generators, if set to null defaults will be used, set to Playable.NO_SOUND to disable
+      // {Playable|null} - sound generator, if set to null default will be used, set to Playable.NO_SOUND to disable
       soundPlayer: null,
 
       // tandem support
@@ -54,20 +54,13 @@ define( require => {
     // Call the parent type
     RectangularButtonView.call( this, this.buttonModel, new PushButtonInteractionStateProperty( this.buttonModel ), options );
 
-    // get default sound generator if needed
+    // sound generation
     const soundPlayer = options.soundPlayer || pushButtonSoundPlayer;
-
-    // If sound production is enabled, hook it up.
-    let playSound;
-    if ( soundPlayer ) {
-      playSound = () => { soundPlayer.play(); };
-      this.buttonModel.produceSoundEmitter.addListener( playSound );
-    }
+    const playSound = () => { soundPlayer.play(); };
+    this.buttonModel.produceSoundEmitter.addListener( playSound );
 
     this.disposeRectangularPushButton = function() {
-      if ( playSound ) {
-        this.buttonModel.produceSoundEmitter.removeListener( playSound );
-      }
+      this.buttonModel.produceSoundEmitter.removeListener( playSound );
       this.buttonModel.dispose(); //TODO this fails when assertions are enabled, see sun#212
     };
 

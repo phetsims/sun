@@ -14,6 +14,7 @@ define( require => {
   const HStrut = require( 'SCENERY/nodes/HStrut' );
   const merge = require( 'PHET_CORE/merge' );
   const Node = require( 'SCENERY/nodes/Node' );
+  const radioButtonSoundPlayerFactory = require( 'TAMBO/radioButtonSoundPlayerFactory' );
   const sun = require( 'SUN/sun' );
   const Tandem = require( 'TANDEM/Tandem' );
   const VBox = require( 'SCENERY/nodes/VBox' );
@@ -82,6 +83,7 @@ define( require => {
           merge( {}, options.radioButtonOptions, {
             tandem: item.tandemName ? options.tandem.createTandem( item.tandemName ) : Tandem.required,
             labelContent: item.labelContent || null,
+            soundPlayer: radioButtonSoundPlayerFactory.getRadioButtonSoundPlayer( i ),
             a11yNameAttribute: CLASS_NAME + instanceCount
           } ) );
 

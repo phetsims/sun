@@ -19,6 +19,7 @@ define( require => {
   const inherit = require( 'PHET_CORE/inherit' );
   const merge = require( 'PHET_CORE/merge' );
   const PhetioObject = require( 'TANDEM/PhetioObject' );
+  const pushButtonSoundPlayer = require( 'TAMBO/shared-sound-players/pushButtonSoundPlayer' );
   const RadioButtonGroupAppearance = require( 'SUN/buttons/RadioButtonGroupAppearance' );
   const RadioButtonInteractionStateProperty = require( 'SUN/buttons/RadioButtonInteractionStateProperty' );
   const RectangularButtonView = require( 'SUN/buttons/RectangularButtonView' );
@@ -63,6 +64,9 @@ define( require => {
       // customized behavior.  Generally setting the color values above should be enough to specify the desired look.
       buttonAppearanceStrategy: RadioButtonGroupAppearance.defaultRadioButtonsAppearance,
       contentAppearanceStrategy: RadioButtonGroupAppearance.contentAppearanceStrategy,
+
+      // {Playable|null} - sound generator, if set to null the default will be used, set to Playable.NO_SOUND to disable
+      soundPlayer: null,
 
       // a11y
       tagName: 'input',
@@ -127,10 +131,16 @@ define( require => {
       property.set( value );
     } );
 
+    // sound generation
+    const soundPlayer = options.soundPlayer || pushButtonSoundPlayer;
+    const playSound = () => { soundPlayer.play(); };
+    this.buttonModel.produceSoundEmitter.addListener( playSound );
+
     // @private
     this.disposeRadioButtonGroupMember = function() {
       property.unlink( accessibleCheckedListener );
       this.firedEmitter.dispose();
+      this.buttonModel.produceSoundEmitter.removeListener( playSound );
       this.buttonModel.dispose();
       this.interactionStateProperty.dispose();
     };
@@ -146,6 +156,7 @@ define( require => {
     fire: function() {
       if ( this.buttonModel.enabledProperty.get() ) {
         this.firedEmitter.emit();
+        this.buttonModel.produceSoundEmitter.emit();
       }
     },
 
