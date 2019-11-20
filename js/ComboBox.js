@@ -49,6 +49,10 @@ define( require => {
      */
     constructor( items, property, listParent, options ) {
 
+      // See https://github.com/phetsims/sun/issues/542
+      assert && assert( listParent.maxWidth === null,
+        'ComboBox is responsible for scaling listBox. Setting maxWidth for listParent may result in buggy behavior.' );
+      
       options = merge( {
 
         align: 'left', // see ALIGN_VALUES
