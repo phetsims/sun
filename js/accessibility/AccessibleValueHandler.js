@@ -348,7 +348,7 @@ define( require => {
          */
         setUtteranceAndAlert() {
           if ( this.a11yCreateValueChangeAlert ) {
-            const utteranceQueue = phet.joist.sim.display.utteranceQueue;
+            const utteranceQueue = phet.joist.sim.utteranceQueue;
 
             this.endInteractionUtterance.resetTimingVariables();
 
