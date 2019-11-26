@@ -56,6 +56,8 @@ define( require => {
    */
   function RadioButtonGroup( property, contentArray, options ) {
     options = merge( {
+
+      // phet-io
       tandem: Tandem.required,
       phetioComponentOptions: null, // filled in below with PhetioObject.mergePhetioComponentOptions()
 
