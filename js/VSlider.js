@@ -34,10 +34,10 @@ define( require => {
     // swap dimensions because Slider.js expects these set up as dimensions for a horizontal slider.
     // These aren't specified in options above, because we want to check against undefined and to use Slider.js defaults.
     if ( options.trackSize !== undefined ) {
-      options.trackSize = new Dimension2( options.trackSize.height, options.trackSize.width );
+      options.trackSize = options.trackSize.flip();
     }
     if ( options.thumbSize !== undefined ) {
-      options.thumbSize = new Dimension2( options.thumbSize.height, options.thumbSize.width );
+      options.thumbSize = options.thumbSize.flip();
     }
     Slider.call( this, valueProperty, range, options );
 
