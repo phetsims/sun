@@ -46,10 +46,10 @@ define( require => {
    * RadioButtonGroup constructor.
    *
    * @param {Property} property
-   * @param {Array} contentArray an array of objects that have two keys each: value and node the node key holds a
-   * scenery Node that is the content for a given radio button. the value key should hold the value that the property
-   * takes on for the corresponding node to be selected. Optionally, these objects can have an attribute 'label', which
-   * is a {Node} used to label the button. You can also pass some specific a11y options
+   * @param {Object[]} contentArray - an array of objects that have two keys each: "value" and "node", where the node
+   * key holds a scenery Node that is the content for a given radio button and the value key holds the value that the
+   * property takes on when the corresponding node is selected. Optionally, these objects can have an attribute 'label',
+   * which is a {Node} used to label the button. You can also pass some specific a11y options.
    * (labelContent/descriptionContent) through, see "new RadioButtonGroupMember" construction.
    * @param {Object} [options]
    * @constructor
@@ -60,6 +60,10 @@ define( require => {
       // phet-io
       tandem: Tandem.required,
       phetioComponentOptions: null, // filled in below with PhetioObject.mergePhetioComponentOptions()
+
+      // {Playable[]|null} - sound generation for the radio buttons, null means to use the defaults, otherwise there
+      // must be one for each element in contentArray
+      soundPlayers: null,
 
       // a11y
       tagName: 'ul',
@@ -80,6 +84,9 @@ define( require => {
     assert && assert( _.every( contentArray, function( obj ) {
       return obj.hasOwnProperty( 'node' ) && obj.hasOwnProperty( 'value' );
     } ), 'contentArray must be an array of objects with properties "node" and "value"' );
+
+    // make sure that if sound players are provided, there is one per radio button
+    assert && assert( options.soundPlayers === null || options.soundPlayers.length === contentArray.length );
 
     let i; // for loops
 
@@ -203,7 +210,8 @@ define( require => {
         minWidth: widestContentWidth + 2 * options.buttonContentXMargin,
         minHeight: tallestContentHeight + 2 * options.buttonContentYMargin,
         phetioDocumentation: currentContent.phetioDocumentation || '',
-        soundPlayer: radioButtonSoundPlayerFactory.getRadioButtonSoundPlayer( i )
+        soundPlayer: options.soundPlayers ? options.soundPlayers[ i ] :
+                     radioButtonSoundPlayerFactory.getRadioButtonSoundPlayer( i )
       }, buttonOptions );
 
       // Pass through the tandem given the tandemName, but also support uninstrumented simulations
