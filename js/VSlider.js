@@ -10,7 +10,6 @@ define( require => {
   'use strict';
 
   // modules
-  const Dimension2 = require( 'DOT/Dimension2' );
   const inherit = require( 'PHET_CORE/inherit' );
   const InstanceRegistry = require( 'PHET_CORE/documentation/InstanceRegistry' );
   const merge = require( 'PHET_CORE/merge' );
