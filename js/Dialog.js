@@ -35,7 +35,7 @@ define( require => {
   const Tandem = require( 'TANDEM/Tandem' );
   const VBox = require( 'SCENERY/nodes/VBox' );
 
-  // strings
+  // a11y strings
   const closeString = SunA11yStrings.close.value;
 
   // constants
