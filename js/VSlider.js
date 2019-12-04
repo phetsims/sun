@@ -13,7 +13,7 @@ define( require => {
   const inherit = require( 'PHET_CORE/inherit' );
   const InstanceRegistry = require( 'PHET_CORE/documentation/InstanceRegistry' );
   const merge = require( 'PHET_CORE/merge' );
-  const swapIfDefined = require( 'PHET_CORE/swapIfDefined' );
+  const swapObjectKeys = require( 'PHET_CORE/swapObjectKeys' );
   const Slider = require( 'SUN/Slider' );
   const sun = require( 'SUN/sun' );
 
@@ -40,8 +40,8 @@ define( require => {
       options.thumbSize = options.thumbSize.flipped();
     }
 
-    swapIfDefined( options, 'thumbTouchAreaXDilation', 'thumbTouchAreaYDilation' );
-    swapIfDefined( options, 'thumbMouseAreaXDilation', 'thumbMouseAreaYDilation' );
+    swapObjectKeys( options, 'thumbTouchAreaXDilation', 'thumbTouchAreaYDilation' );
+    swapObjectKeys( options, 'thumbMouseAreaXDilation', 'thumbMouseAreaYDilation' );
 
     Slider.call( this, valueProperty, range, options );
 
