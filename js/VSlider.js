@@ -13,6 +13,7 @@ define( require => {
   const inherit = require( 'PHET_CORE/inherit' );
   const InstanceRegistry = require( 'PHET_CORE/documentation/InstanceRegistry' );
   const merge = require( 'PHET_CORE/merge' );
+  const swapIfDefined = require( 'PHET_CORE/swapIfDefined' );
   const Slider = require( 'SUN/Slider' );
   const sun = require( 'SUN/sun' );
 
@@ -38,6 +39,10 @@ define( require => {
     if ( options.thumbSize !== undefined ) {
       options.thumbSize = options.thumbSize.flipped();
     }
+
+    swapIfDefined( options, 'thumbTouchAreaXDilation', 'thumbTouchAreaYDilation' );
+    swapIfDefined( options, 'thumbMouseAreaXDilation', 'thumbMouseAreaYDilation' );
+
     Slider.call( this, valueProperty, range, options );
 
     // support for binder documentation, stripped out in builds and only runs when ?binder is specified
