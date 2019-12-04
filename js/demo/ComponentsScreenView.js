@@ -226,7 +226,7 @@ define( require => {
       slider = new HSlider( property, range, sliderOptions );
     }
     else {
-      sliderOptions.trackSize = sliderOptions.trackSize.flip();
+      sliderOptions.trackSize = sliderOptions.trackSize.flipped();
       slider = new VSlider( property, range, sliderOptions );
     }
 
