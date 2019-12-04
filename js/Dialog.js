@@ -109,6 +109,7 @@ define( require => {
 
       // close button options
       closeButtonListener: () => this.hide(),
+      closeButtonColor: 'black', // {Color|null} color for the close button 'X'
       closeButtonTouchAreaXDilation: 0,
       closeButtonTouchAreaYDilation: 0,
       closeButtonMouseAreaXDilation: 0,
@@ -188,6 +189,7 @@ define( require => {
     // create close button
     const closeButton = new CloseButton( {
 
+      pathStroke: options.closeButtonColor,
       iconLength: CLOSE_BUTTON_WIDTH,
       listener: () => {
         options.closeButtonListener();
@@ -439,6 +441,7 @@ define( require => {
     options = merge( {
       iconLength: 7,
       baseColor: 'transparent',
+      pathStroke: 'black', // {Color|null} color for the close button 'X'
       buttonAppearanceStrategy: RectangularButtonView.FlatAppearanceStrategy,
       xMargin: 0,
       yMargin: 0,
@@ -455,7 +458,7 @@ define( require => {
     assert && assert( !options.content, 'Dialog.CloseButton sets content' );
 
     options.content = new Path( closeButtonShape, {
-      stroke: 'black',
+      stroke: options.pathStroke,
       lineCap: 'round',
       lineWidth: 2
     } );
