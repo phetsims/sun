@@ -54,6 +54,8 @@ define( require => {
 
         // supertype options
         spacing: 3, // vertical space between each button
+
+        // phet-io
         tandem: Tandem.required,
 
         // supertype a11y options
