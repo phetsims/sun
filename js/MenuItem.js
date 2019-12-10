@@ -64,7 +64,16 @@ define( require => {
 
       // a11y
       tagName: 'button',
-      focusAfterCallback: false, // whether or not next focusable element should receive focus after the callback
+
+      // @param {Event} - Only called after PDOM interaction and called AFTER closeCallback, use this to move focus to
+      // a particular Node in the document. By default focus is moved to the top of the document after a MenuItem
+      // action since the PhET Menu closes after activation
+      handleFocusCallback: event => {
+
+        // limit search of next focusable to root accessible HTML element
+        const rootElement = phet.joist.display.accessibleDOMElement;
+        AccessibilityUtil.getNextFocusable( rootElement ).focus();
+      },
       containerTagName: 'li',
       containerAriaRole: 'none', // this is required for JAWS to handle focus correctly, see https://github.com/phetsims/john-travoltage/issues/225
       innerContent: text,
@@ -124,11 +133,8 @@ define( require => {
     // a11y - activate the item when selected with the keyboard
     const clickListener = {
       click: function( event ) {
-        fire();
-
-        // limit search of next focusable to root accessible HTML element
-        const rootElement = phet.joist.display.accessibleDOMElement;
-        options.focusAfterCallback && AccessibilityUtil.getNextFocusable( rootElement ).focus();
+        fire( event );
+        options.handleFocusCallback( event );
       }
     };
     this.addInputListener( clickListener );
