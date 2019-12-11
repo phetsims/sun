@@ -58,6 +58,7 @@ define( require => {
     arrowStroke: 'black', // {Color|string} color used for the arrow icons
     arrowLineWidth: 3, // {number} line width used to stroke the arrow icons
     hideDisabledButtons: false, // {boolean} whether to hide buttons when they are disabled
+    soundPlayer: null,
 
     // for dilating pointer areas of next/previous buttons such that they do not overlap with Carousel content
     buttonTouchAreaXDilation: 0, // {number} horizontal touchArea dilation
@@ -122,7 +123,8 @@ define( require => {
       touchAreaXDilation: options.buttonTouchAreaXDilation,
       touchAreaYDilation: options.buttonTouchAreaYDilation,
       mouseAreaXDilation: options.buttonMouseAreaXDilation,
-      mouseAreaYDilation: options.buttonMouseAreaYDilation
+      mouseAreaYDilation: options.buttonMouseAreaYDilation,
+      soundPlayer: options.soundPlayer
     };
 
     // Next/previous buttons

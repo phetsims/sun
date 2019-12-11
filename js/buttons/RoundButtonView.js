@@ -155,6 +155,12 @@ define( require => {
 
     interactionStateProperty.link( handleInteractionStateChanged );
 
+    // PDOM - indicate to screen readers that the button is not clickable
+    function updatePDOMEnabled( enabled ) {
+      self.setAccessibleAttribute( 'aria-disabled', !enabled );
+    }
+    pushButtonModel.enabledProperty.link( updatePDOMEnabled );
+
     // Dilate the pointer areas.
     this.touchArea = Shape.circle( options.touchAreaXShift, options.touchAreaYShift,
       buttonRadius + options.touchAreaDilation );
@@ -178,6 +184,9 @@ define( require => {
       pressListener.dispose();
       if ( interactionStateProperty.hasListener( handleInteractionStateChanged ) ) {
         interactionStateProperty.unlink( handleInteractionStateChanged );
+      }
+      if ( pushButtonModel.enabledProperty.hasListener( updatePDOMEnabled ) ) {
+        pushButtonModel.enabledProperty.unlink( updatePDOMEnabled );
       }
       this.baseColorProperty.dispose();
     };
