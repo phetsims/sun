@@ -97,7 +97,7 @@ define( require => {
       closeButtonRightMargin: 10, // {number} margin to the right of the close button
 
       // more Dialog-specific options
-      modal: true, // {boolean} modal dialogs prevent interaction with the rest of the sim while open
+      isModal: true, // {boolean} modal dialogs prevent interaction with the rest of the sim while open
 
       // {Node|null} Title to be displayed at top. For a11y, make sure that its primary sibling has an accessible name
       title: null,
@@ -161,21 +161,41 @@ define( require => {
       options.leftMargin = options.xSpacing + CLOSE_BUTTON_WIDTH + options.closeButtonRightMargin;
     }
 
-    // @private (read-only)
-    this.isModal = options.modal;
-
-    // @private
-    this.showCallback = options.showCallback;
-    this.hideCallback = options.hideCallback;
-
     // see https://github.com/phetsims/joist/issues/293
-    assert && assert( this.isModal, 'Non-modal dialogs not currently supported' );
+    assert && assert( options.isModal, 'Non-modal dialogs not currently supported' );
 
     // @protected (read-only) - whether the dialog is showing
     this.isShowingProperty = new BooleanProperty( false, {
       tandem: options.tandem.createTandem( 'isShowingProperty' ),
       phetioReadOnly: true,
       phetioState: options.phetioState // match the state transfer of the Dialog
+    } );
+
+    // The Dialog's display runs on this Property, so add the listener that controls show/hide.
+    this.isShowingProperty.lazyLink( isShowing => {
+      if ( isShowing ) {
+        window.phet.joist.sim.showPopup( this, options.isModal );
+
+        // a11y - focus is returned to this element if dialog closed from accessible input
+        this.activeElement = this.activeElement || Display.focusedNode;
+
+        // a11y - modal dialogs should be the only readable content in the sim
+        // TODO: non-modal dialogs shouldn't hide other accessible content, and this should be dependant on other
+        // things in the sim modalNodeStack, see https://github.com/phetsims/joist/issues/293
+        this.sim.setAccessibleViewsVisible( false );
+
+        // Do this last
+        options.showCallback && options.showCallback();
+      }
+      else {
+        window.phet.joist.sim.hidePopup( this, options.isModal );
+
+        // a11y - when the dialog is hidden, make all ScreenView content visible to assistive technology
+        this.sim.setAccessibleViewsVisible( true );
+
+        // Do this last
+        options.hideCallback && options.hideCallback();
+      }
     } );
 
     assert && assert( options.maxHeight === null || typeof options.maxHeight === 'number' );
@@ -355,23 +375,11 @@ define( require => {
 
   inherit( Panel, Dialog, {
 
-    // @public
+    /**
+     * @public
+     */
     show: function() {
-      if ( !this.isShowingProperty.value ) {
-        window.phet.joist.sim.showPopup( this, this.isModal );
-        this.isShowingProperty.value = true;
-
-        // a11y - focus is returned to this element if dialog closed from accessible input
-        this.activeElement = this.activeElement || Display.focusedNode;
-
-        // a11y - modal dialogs should be the only readable content in the sim
-        // TODO: non-modal dialogs shouldn't hide other accessible content, and this should be dependant on other
-        // things in the sim modalNodeStack, see https://github.com/phetsims/joist/issues/293
-        this.sim.setAccessibleViewsVisible( false );
-
-        // Do this last
-        this.showCallback && this.showCallback();
-      }
+      this.isShowingProperty.value = true;
     },
 
     /**
@@ -380,17 +388,7 @@ define( require => {
      * @public
      */
     hide: function() {
-      if ( this.isShowingProperty.value ) {
-
-        window.phet.joist.sim.hidePopup( this, this.isModal );
-        this.isShowingProperty.value = false;
-
-        // a11y - when the dialog is hidden, make all ScreenView content visible to assistive technology
-        this.sim.setAccessibleViewsVisible( true );
-
-        // Do this last
-        this.hideCallback && this.hideCallback();
-      }
+      this.isShowingProperty.value = false;
     },
 
     /**
