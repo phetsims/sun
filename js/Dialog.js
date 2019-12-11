@@ -224,7 +224,13 @@ define( require => {
       tandem: options.tandem.createTandem( 'closeButton' ),
       phetioReadOnly: options.phetioReadOnly, // match the readOnly of the Dialog
       phetioState: false, // close button should not be in state
-      phetioComponentOptions: { phetioState: false },
+      phetioComponentOptions: {
+        phetioState: false,
+
+        // dialog close buttons by default do not have a featured visibleProperty
+        visibleProperty: { phetioFeatured: false }
+      },
+      enabledPropertyOptions: { phetioFeatured: false }, // dialog close buttons by default do not have a featured enabledProperty
 
       // a11y
       tagName: 'button',
