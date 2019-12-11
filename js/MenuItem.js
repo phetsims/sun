@@ -55,10 +55,16 @@ define( require => {
     // Extend the object with defaults.
     options = merge( {
       cursor: 'pointer',
-      tandem: Tandem.optional,
       textFill: 'black',
 
+      // if there should be a horizontal separator between this MenuItem and the one immediately previous
+      separatorBefore: false,
+
+      // {Property.<boolean>} - if provided add a checkmark next to the MenuItem text whenever this Property is true.
+      checkedProperty: null,
+
       // phet-io
+      tandem: Tandem.optional,
       phetioDocumentation: 'Item buttons shown in a popup menu',
       phetioEventType: EventType.USER,
 
