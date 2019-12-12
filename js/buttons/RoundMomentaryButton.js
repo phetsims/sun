@@ -28,7 +28,7 @@ define( require => {
    */
   function RoundMomentaryButton( valueOff, valueOn, property, options ) {
     options = merge( {
-      tandem: Tandem.required,
+      tandem: Tandem.REQUIRED,
       phetioType: RoundMomentaryButtonIO
     }, options );
 

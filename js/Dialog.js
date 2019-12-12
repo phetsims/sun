@@ -129,7 +129,7 @@ define( require => {
       backgroundPickable: true,
       maxHeight: null, // if not provided, then dynamically calculate based on the layoutBounds of the current screen, see updateLayoutMultilink
       maxWidth: null, // if not provided, then dynamically calculate based on the layoutBounds of the current screen, see updateLayoutMultilink
-      tandem: Tandem.optional,
+      tandem: Tandem.OPTIONAL,
       phetioType: DialogIO,
       phetioReadOnly: false, // default to false so it can pass it through to the close button
       phetioState: false, // default to false so it can pass it through to the close button

@@ -45,7 +45,7 @@ define( require => {
       stroke: 'black', // color used to stroke the outer edge of the button
 
       // phet-io
-      tandem: Tandem.required,
+      tandem: Tandem.REQUIRED,
       phetioLinkProperty: true,
 
       // {Playable|null} - sound generator, if set to null default will be used, set to Playable.NO_SOUND to disable

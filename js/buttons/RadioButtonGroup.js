@@ -58,7 +58,7 @@ define( require => {
     options = merge( {
 
       // phet-io
-      tandem: Tandem.required,
+      tandem: Tandem.REQUIRED,
       phetioComponentOptions: null, // filled in below with PhetioObject.mergePhetioComponentOptions()
 
       // {Playable[]|null} - sound generation for the radio buttons, null means to use the defaults, otherwise there

@@ -77,7 +77,7 @@ define( require => {
     stepEmitter: timer, // {string} see Animation options.stepEmitter
 
     // phet-io
-    tandem: Tandem.optional
+    tandem: Tandem.OPTIONAL
   };
   assert && Object.freeze( DEFAULT_OPTIONS );
 

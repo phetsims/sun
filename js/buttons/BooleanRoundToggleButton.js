@@ -24,7 +24,7 @@ define( require => {
   function BooleanRoundToggleButton( trueNode, falseNode, booleanProperty, options ) {
 
     options = merge( {
-      tandem: Tandem.required
+      tandem: Tandem.REQUIRED
     }, options );
 
     assert && assert( !options.content, 'BooleanRoundToggleButton sets content' );

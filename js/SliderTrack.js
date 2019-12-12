@@ -45,7 +45,7 @@ define( require => {
         enabledRangeProperty: new Property( new Range( range.min, range.max ) ), // Defaults to a constant range
 
         // phet-io
-        tandem: Tandem.required
+        tandem: Tandem.REQUIRED
       }, options );
 
       // @public (read-only)

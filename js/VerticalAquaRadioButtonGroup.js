@@ -56,7 +56,7 @@ define( require => {
         spacing: 3, // vertical space between each button
 
         // phet-io
-        tandem: Tandem.required,
+        tandem: Tandem.REQUIRED,
 
         // supertype a11y options
         tagName: 'ul',
@@ -83,7 +83,7 @@ define( require => {
 
         const radioButton = new AquaRadioButton( property, item.value, content,
           merge( {}, options.radioButtonOptions, {
-            tandem: item.tandemName ? options.tandem.createTandem( item.tandemName ) : Tandem.required,
+            tandem: item.tandemName ? options.tandem.createTandem( item.tandemName ) : Tandem.REQUIRED,
             labelContent: item.labelContent || null,
             soundPlayer: radioButtonSoundPlayerFactory.getRadioButtonSoundPlayer( i ),
             a11yNameAttribute: CLASS_NAME + instanceCount

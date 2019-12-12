@@ -117,7 +117,7 @@ define( require => {
       disabledOpacity: SunConstants.DISABLED_OPACITY, // opacity applied to the entire Slider when disabled
 
       // phet-io
-      tandem: Tandem.required,
+      tandem: Tandem.REQUIRED,
       phetioType: SliderIO,
       phetioComponentOptions: null, // filled in below with PhetioObject.mergePhetioComponentOptions()
 

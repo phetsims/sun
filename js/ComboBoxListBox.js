@@ -126,7 +126,7 @@ define( require => {
           xMargin: 0.5 * options.xMargin,
           left: 0.5 * options.xMargin,
           top: ( 0.5 * options.yMargin ) + ( index * highlightHeight ),
-          tandem: item.tandemName ? tandem.createTandem( item.tandemName ) : Tandem.optional
+          tandem: item.tandemName ? tandem.createTandem( item.tandemName ) : Tandem.OPTIONAL
         } );
         listItemNodes.push( listItemNode );
 

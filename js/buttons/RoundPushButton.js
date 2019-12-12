@@ -36,7 +36,7 @@ define( require => {
       soundPlayer: null,
 
       // tandem support
-      tandem: Tandem.required
+      tandem: Tandem.REQUIRED
 
     }, options );
 

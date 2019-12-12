@@ -29,7 +29,7 @@ define( require => {
   function RectangularMomentaryButton( valueOff, valueOn, property, options ) {
 
     options = merge( {
-      tandem: Tandem.required
+      tandem: Tandem.REQUIRED
     }, options );
 
     // Note it shares a tandem with this, so the emitter will be instrumented as a child of the button

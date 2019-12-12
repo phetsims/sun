@@ -64,7 +64,7 @@ define( require => {
       checkedProperty: null,
 
       // phet-io
-      tandem: Tandem.optional,
+      tandem: Tandem.OPTIONAL,
       phetioDocumentation: 'Item buttons shown in a popup menu',
       phetioEventType: EventType.USER,
 

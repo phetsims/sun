@@ -38,7 +38,7 @@ define( require => {
       valueOnSoundPlayer: null,
 
       // phet-io support
-      tandem: Tandem.required,
+      tandem: Tandem.REQUIRED,
       phetioType: ToggleButtonIO
 
     }, options );

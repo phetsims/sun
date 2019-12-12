@@ -34,7 +34,7 @@ define( require => {
       stroke: 'black',
       lineWidth: 1,
       centerLineStroke: 'white',
-      tandem: Tandem.required
+      tandem: Tandem.REQUIRED
     }, options );
 
     const self = this;

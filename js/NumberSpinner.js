@@ -86,7 +86,7 @@ define( require => {
       mouseAreaYDilation: 0,
 
       // PhET-iO
-      tandem: Tandem.required
+      tandem: Tandem.REQUIRED
     }, options );
 
     // validate options

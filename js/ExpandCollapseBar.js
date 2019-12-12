@@ -37,7 +37,7 @@ define( require => {
       barFill: 'white',
       barStroke: 'black',
       barLineWidth: 1,
-      tandem: Tandem.required
+      tandem: Tandem.REQUIRED
     }, options );
 
     Node.call( this );

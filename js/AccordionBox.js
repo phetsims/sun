@@ -89,7 +89,7 @@ define( require => {
       titleBarOptions: null,
 
       // phet-io support
-      tandem: Tandem.required,
+      tandem: Tandem.REQUIRED,
       phetioType: AccordionBoxIO,
       phetioEventType: EventType.USER,
       phetioComponentOptions: null // filled in below with PhetioObject.mergePhetioComponentOptions()

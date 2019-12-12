@@ -89,7 +89,7 @@ define( require => {
         helpText: null, // the a11y setter for this is overridden, see below
 
         // phet-io
-        tandem: Tandem.required,
+        tandem: Tandem.REQUIRED,
         phetioType: ComboBoxIO,
         phetioEventType: EventType.USER
       }, options );

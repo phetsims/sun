@@ -51,7 +51,7 @@ define( require => {
         lineWidth: 1,
 
         // phet-io
-        tandem: Tandem.optional,
+        tandem: Tandem.OPTIONAL,
 
         // a11y
         labelTagName: 'span',

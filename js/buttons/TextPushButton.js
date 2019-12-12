@@ -26,7 +26,7 @@ define( require => {
     options = merge( {
       textFill: 'black',
       maxTextWidth: null,
-      tandem: Tandem.required,
+      tandem: Tandem.REQUIRED,
 
       // a11y
       innerContent: text

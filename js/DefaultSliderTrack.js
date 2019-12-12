@@ -43,7 +43,7 @@ define( require => {
         enabledRangeProperty: null,
 
         // phet-io
-        tandem: Tandem.required
+        tandem: Tandem.REQUIRED
       }, options );
 
       // @private - Represents the disabled range of the slider, always visible and always the full range

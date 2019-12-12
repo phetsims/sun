@@ -48,7 +48,7 @@ define( require => {
       // false = keeps only the Node for the selected demo in memory
       cacheDemos: false,
 
-      tandem: Tandem.required
+      tandem: Tandem.REQUIRED
     }, options );
 
     ScreenView.call( this, options );

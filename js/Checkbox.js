@@ -51,7 +51,7 @@ define( require => {
       disabledOpacity: SunConstants.DISABLED_OPACITY,
 
       // phet-io
-      tandem: Tandem.required,
+      tandem: Tandem.REQUIRED,
       phetioEventType: EventType.USER,
       // to support properly passing this to children, see https://github.com/phetsims/tandem/issues/60
       phetioReadOnly: PhetioObject.DEFAULT_OPTIONS.phetioReadOnly,

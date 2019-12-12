@@ -40,7 +40,7 @@ define( require => {
         highlightCornerRadius: 4, // {number} corner radius for the highlight
 
         // phet-io
-        tandem: Tandem.required,
+        tandem: Tandem.REQUIRED,
 
         // a11y
         tagName: 'li',

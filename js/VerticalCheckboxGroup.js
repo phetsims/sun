@@ -42,7 +42,7 @@ define( require => {
       // supertype options
       spacing: 10, // vertical spacing
       align: 'left',
-      tandem: Tandem.optional
+      tandem: Tandem.OPTIONAL
     }, options );
 
     // Verify that the client hasn't set options that we will be overwriting.
@@ -66,7 +66,7 @@ define( require => {
       } );
 
       const checkbox = new Checkbox( content, item.property, merge( {}, options.checkboxOptions, item.options, {
-        tandem: item.tandem || Tandem.optional
+        tandem: item.tandem || Tandem.OPTIONAL
       } ) );
 
       // set pointer areas, y dimensions are computed

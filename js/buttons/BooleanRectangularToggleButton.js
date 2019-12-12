@@ -23,7 +23,7 @@ define( require => {
    */
   function BooleanRectangularToggleButton( trueNode, falseNode, booleanProperty, options ) {
 
-    options = merge( { tandem: Tandem.required }, options );
+    options = merge( { tandem: Tandem.REQUIRED }, options );
 
     assert && assert( !options.content, 'options.content cannot be set' );
     options.content = new BooleanToggleNode( trueNode, falseNode, booleanProperty );

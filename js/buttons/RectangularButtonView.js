@@ -102,7 +102,7 @@ define( require => {
       tagName: 'button',
 
       // phet-io
-      tandem: Tandem.optional // This duplicates the parent option and works around https://github.com/phetsims/tandem/issues/50
+      tandem: Tandem.OPTIONAL // This duplicates the parent option and works around https://github.com/phetsims/tandem/issues/50
     }, options );
 
     // validate options

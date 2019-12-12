@@ -29,7 +29,7 @@ define( require => {
   function RectangularToggleButton( valueOff, valueOn, property, options ) {
 
     options = merge( {
-      tandem: Tandem.required,
+      tandem: Tandem.REQUIRED,
       phetioType: ToggleButtonIO
     }, options );
 

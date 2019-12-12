@@ -31,7 +31,7 @@ define( require => {
   function RoundStickyToggleButton( valueUp, valueDown, property, options ) {
 
     options = merge( {
-      tandem: Tandem.required,
+      tandem: Tandem.REQUIRED,
       phetioType: ToggleButtonIO
     }, options );
 

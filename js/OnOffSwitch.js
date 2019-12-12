@@ -70,7 +70,7 @@ define( require => {
       trackStroke: 'black',
 
       // phet-io
-      tandem: Tandem.required,
+      tandem: Tandem.REQUIRED,
       phetioType: OnOffSwitchIO,
       phetioEventType: EventType.USER
     }, options );

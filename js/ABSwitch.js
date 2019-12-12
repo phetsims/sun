@@ -50,7 +50,7 @@ define( require => {
       thumbTouchAreaYDilation: 8,
       thumbMouseAreaXDilation: 0,
       thumbMouseAreaYDilation: 0,
-      tandem: Tandem.required
+      tandem: Tandem.REQUIRED
     }, options );
 
     const defaultTrackFill = new LinearGradient( 0, 0, 0, options.switchSize.height ).addColorStop( 0, 'rgb(40,40,40)' ).addColorStop( 1, 'rgb(200,200,200)' );

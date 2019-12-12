@@ -36,7 +36,7 @@ define( require => {
         sideLength: 25,  // length of one side of the square button
 
         // phet-io
-        tandem: Tandem.required
+        tandem: Tandem.REQUIRED
       }, options );
 
       assert && assert( options.cornerRadius === undefined, 'ExpandCollapseButton sets cornerRadius' );
