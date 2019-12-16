@@ -124,7 +124,7 @@ define( require => {
       touchAreaYDilation: options.buttonTouchAreaYDilation,
       mouseAreaXDilation: options.buttonMouseAreaXDilation,
       mouseAreaYDilation: options.buttonMouseAreaYDilation,
-      soundPlayer: options.soundPlayer
+      soundPlayer: options.buttonSoundPlayer
     };
 
     // Next/previous buttons
