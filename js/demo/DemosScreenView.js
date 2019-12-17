@@ -69,7 +69,7 @@ define( require => {
     demos.forEach( function( demo ) {
       comboBoxItems.push( new ComboBoxItem( new Text( demo.label, { font: options.comboBoxItemFont } ), demo, {
 
-        // demo.label is like ArrowNode or TimerNode, decorate it for use as a tandem.
+        // demo.label is like ArrowNode or StopwatchNode, decorate it for use as a tandem.
         tandemName: 'demo' + demo.label + 'ComboBoxItem'
       } ) );
     } );
