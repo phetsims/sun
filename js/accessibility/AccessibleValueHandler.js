@@ -519,7 +519,7 @@ define( require => {
          * function on release. Add this as an input listener to the node mixing in AccessibleValueHandler.
          * @private
          *
-         * @param {Event} event
+         * @param {SceneryEvent} event
          */
         handleKeyUp( event ) {
           const domEvent = event.domEvent;
@@ -555,7 +555,7 @@ define( require => {
          *
          * @private
          *
-         * @param  {Event} event
+         * @param {SceneryEvent} event
          */
         handleChange( event ) {
 
@@ -581,7 +581,7 @@ define( require => {
          *
          * @private
          *
-         * @param {Event} event
+         * @param {SceneryEvent} event
          */
         handleInput( event ) {
           if ( this._enabledProperty.get() && !this.blockInput ) {
@@ -626,7 +626,7 @@ define( require => {
          * Add this as a listener on the `blur` event to the Node that is mixing in AccessibleValueHandler.
          * @private
          *
-         * @param {Event} event
+         * @param {SceneryEvent} event
          */
         handleBlur( event ) {
 
@@ -647,7 +647,7 @@ define( require => {
          * optional "end" function.
          * @private
          *
-         * @param   {Event} event
+         * @param {SceneryEvent} event
          */
         onInteractionEnd( event ) {
           this.setUtteranceAndAlert();

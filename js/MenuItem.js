@@ -71,9 +71,9 @@ define( require => {
       // a11y
       tagName: 'button',
 
-      // @param {Event} - Only called after PDOM interaction and called AFTER closeCallback, use this to move focus to
-      // a particular Node in the document. By default focus is moved to the top of the document after a MenuItem
-      // action since the PhET Menu closes after activation
+      // @param {SceneryEvent} - Only called after PDOM interaction and called AFTER closeCallback, use this to move
+      // focus to a particular Node in the document. By default focus is moved to the top of the document after a
+      // MenuItem action since the PhET Menu closes after activation
       handleFocusCallback: event => {
 
         // limit search of next focusable to root accessible HTML element

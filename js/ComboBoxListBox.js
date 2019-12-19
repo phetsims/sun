@@ -11,11 +11,11 @@ define( require => {
   // modules
   const Action = require( 'AXON/Action' );
   const ComboBoxListItemNode = require( 'SUN/ComboBoxListItemNode' );
-  const Event = require( 'SCENERY/input/Event' );
   const EventType = require( 'TANDEM/EventType' );
   const KeyboardUtil = require( 'SCENERY/accessibility/KeyboardUtil' );
   const merge = require( 'PHET_CORE/merge' );
   const Panel = require( 'SUN/Panel' );
+  const SceneryEvent = require( 'SCENERY/input/SceneryEvent' );
   const sun = require( 'SUN/sun' );
   const Tandem = require( 'TANDEM/Tandem' );
   const VBox = require( 'SCENERY/nodes/VBox' );
@@ -73,7 +73,7 @@ define( require => {
         // set value based on which item was chosen in the list box
         property.value = listItemNode.item.value;
       }, {
-        parameters: [ { phetioPrivate: true, valueType: Event } ],
+        parameters: [ { phetioPrivate: true, valueType: SceneryEvent } ],
 
         // phet-io
         tandem: tandem.createTandem( 'fireAction' ),
