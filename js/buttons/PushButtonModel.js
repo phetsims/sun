@@ -13,7 +13,7 @@ define( require => {
   // modules
   const BooleanProperty = require( 'AXON/BooleanProperty' );
   const ButtonModel = require( 'SUN/buttons/ButtonModel' );
-  const CallbackTimer = require( 'SUN/CallbackTimer' );
+  const CallbackTimer = require( 'AXON/CallbackTimer' );
   const Emitter = require( 'AXON/Emitter' );
   const EventType = require( 'TANDEM/EventType' );
   const inherit = require( 'PHET_CORE/inherit' );

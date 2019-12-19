@@ -26,7 +26,7 @@ define( require => {
 
   // modules
   const AccessibleValueHandler = require( 'SUN/accessibility/AccessibleValueHandler' );
-  const CallbackTimer = require( 'SUN/CallbackTimer' );
+  const CallbackTimer = require( 'AXON/CallbackTimer' );
   const Emitter = require( 'AXON/Emitter' );
   const extend = require( 'PHET_CORE/extend' );
   const inheritance = require( 'PHET_CORE/inheritance' );
