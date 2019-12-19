@@ -168,7 +168,7 @@ define( require => {
          * override AccessibleValueHandler.handleKeyDown, but overriding is not supported with PhET Trait pattern.
          * @private
          *
-         * @param   {DOMEvent} event
+         * @param {Event} event
          */
         accessibleNumberSpinnerHandleKeyDown: function( event ) {
           this.handleKeyDown( event );
