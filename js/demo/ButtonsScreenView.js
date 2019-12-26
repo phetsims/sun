@@ -445,7 +445,7 @@ define( require => {
     // Enable/Disable buttons
     //===================================================================================
 
-    //TODO Shouldn't all of these buttons be able to observe buttonEnabledProperty?
+    //TODO https://github.com/phetsims/sun/issues/554 Shouldn't all of these buttons be able to observe buttonEnabledProperty?
     // Set up a property for testing button enable/disable.
     const buttonsEnabledProperty = new Property( true );
     buttonsEnabledProperty.link( function( enabled ) {
@@ -476,6 +476,7 @@ define( require => {
       rectangularMomentaryButton.enabled = enabled;
       roundMomentaryButton.enabled = enabled;
     } );
+
     const disableEnableButton = new BooleanRectangularToggleButton(
       new Text( 'Disable Buttons', { font: BUTTON_CAPTION_FONT } ),
       new Text( 'Enable Buttons', { font: BUTTON_CAPTION_FONT } ),
