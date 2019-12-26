@@ -355,12 +355,12 @@ define( require => {
     } );
 
     // transparent button with something behind it
-    // TODO: this isn't transparent when disabled.
     const rectangleNode = new Rectangle( 0, 0, 25, 50, { fill: 'red' } );
     const transparentButton = new RectangularPushButton( {
       content: new Text( 'Transparent Button', { font: BUTTON_FONT } ),
       listener: function() { message( 'Transparent button pressed' ); },
       baseColor: new Color( 255, 255, 0, 0.7 ),
+      disabledBaseColor: new Color( 192, 192, 192, 0.7 ),
       center: rectangleNode.center
     } );
     const transparentParent = new Node( { children: [ rectangleNode, transparentButton ] } );
