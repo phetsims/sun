@@ -23,8 +23,8 @@ define( require => {
   const ALIGN_VALUES = [ 'left', 'center', 'right' ];
 
   const DEFAULT_OPTIONS = {
-    fill: 'white', // TODO: Should these be color constants?
-    stroke: 'black', // TODO: Should these be color constants?
+    fill: 'white',
+    stroke: 'black',
     lineWidth: 1, // width of the background border
     xMargin: 5,
     yMargin: 5,
@@ -35,7 +35,7 @@ define( require => {
     // {string} horizontal alignment of content in the pane, see ALIGN_VALUES
     // All alignments are equal when the content width >= minWidth
     // Left is the default alignment so when there are multiple panels, their content will left align, see #252
-    align: 'left', // TODO: should this be an enum?
+    align: 'left',
 
     minWidth: 0, // minimum width of the panel
     tandem: Tandem.OPTIONAL
