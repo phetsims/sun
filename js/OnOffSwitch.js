@@ -164,7 +164,7 @@ define( require => {
 
         if ( options.toggleWhileDragging === true || ( isDraggedOutside && options.toggleWhileDragging === null ) ) {
 
-          // TODO: A way to distinguish between drag-to-toggle vs click-to-toggle
+          // TODO https://github.com/phetsims/sun/issues/552 A way to distinguish between drag-to-toggle vs click-to-toggle
 
           // Only signify a change if the value actually changed to avoid duplicate messages in the PhET-iO Event
           // stream, see https://github.com/phetsims/phet-io/issues/369
