@@ -180,8 +180,8 @@ define( require => {
         this.activeElement = this.activeElement || Display.focusedNode;
 
         // a11y - modal dialogs should be the only readable content in the sim
-        // TODO: non-modal dialogs shouldn't hide other accessible content, and this should be dependant on other
-        // things in the sim modalNodeStack, see https://github.com/phetsims/joist/issues/293
+        // TODO: https://github.com/phetsims/joist/issues/293 non-modal dialogs shouldn't hide other accessible content,
+        // and this should be dependant on other things in the sim modalNodeStack
         this.sim.setAccessibleViewsVisible( false );
 
         // Do this last
