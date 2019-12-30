@@ -35,7 +35,7 @@ define( require => {
   const sun = require( 'SUN/sun' );
   const SunConstants = require( 'SUN/SunConstants' );
   const Tandem = require( 'TANDEM/Tandem' );
-  const Util = require( 'DOT/Util' );
+  const Utils = require( 'DOT/Utils' );
 
   // constants
   const VERTICAL_ROTATION = -Math.PI / 2;
@@ -308,7 +308,7 @@ define( require => {
     const enabledRangeObserver = function( enabledRange ) {
 
       // clamp the value to the enabled range if it changes
-      valueProperty.set( Util.clamp( valueProperty.value, enabledRange.min, enabledRange.max ) );
+      valueProperty.set( Utils.clamp( valueProperty.value, enabledRange.min, enabledRange.max ) );
     };
     this.enabledRangeProperty.link( enabledRangeObserver ); // needs to be unlinked in dispose function
 

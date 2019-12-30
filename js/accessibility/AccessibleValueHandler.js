@@ -27,7 +27,7 @@ define( require => {
   const Node = require( 'SCENERY/nodes/Node' );
   const Property = require( 'AXON/Property' );
   const sun = require( 'SUN/sun' );
-  const Util = require( 'DOT/Util' );
+  const Utils = require( 'DOT/Utils' );
   const Utterance = require( 'UTTERANCE_QUEUE/Utterance' );
 // constants
   const DEFAULT_TAG_NAME = 'input';
@@ -505,7 +505,7 @@ define( require => {
                 }
 
                 // limit the value to the enabled range
-                newValue = Util.clamp( newValue, this._rangeProperty.get().min, this._rangeProperty.get().max );
+                newValue = Utils.clamp( newValue, this._rangeProperty.get().min, this._rangeProperty.get().max );
               }
 
               // optionally constrain the value further
@@ -610,7 +610,7 @@ define( require => {
             }
 
             // limit to enabled range
-            newValue = Util.clamp( newValue, this._rangeProperty.get().min, this._rangeProperty.get().max );
+            newValue = Utils.clamp( newValue, this._rangeProperty.get().min, this._rangeProperty.get().max );
 
             // optionally constrain value
             this._valueProperty.set( this._constrainValue( newValue ) );
@@ -817,7 +817,7 @@ define( require => {
          */
         updateSiblingStepAttribute() {
           const smallestStep = Math.min( Math.min( this.keyboardStep, this.shiftKeyboardStep ), this.pageKeyboardStep );
-          let stepValue = Math.pow( 10, -Util.numberOfDecimalPlaces( smallestStep ) );
+          let stepValue = Math.pow( 10, -Utils.numberOfDecimalPlaces( smallestStep ) );
 
           const mappedMin = this.getMappedValue( this._rangeProperty.get().min );
           const mappedMax = this.getMappedValue( this._rangeProperty.get().max );
@@ -851,7 +851,7 @@ define( require => {
     if ( stepSize !== 0 ) {
 
       // round the value to the nearest keyboard step
-      roundValue = Util.roundSymmetric( roundValue / stepSize ) * stepSize;
+      roundValue = Utils.roundSymmetric( roundValue / stepSize ) * stepSize;
 
       // go back a step if we went too far due to rounding
       roundValue = correctRounding( roundValue, currentValue, stepSize );
@@ -877,7 +877,7 @@ define( require => {
 
     // it is possible that proposedStep will be larger than the stepSize but only because of precision
     // constraints with floating point values, don't correct if that is the cases
-    const stepsAboutEqual = Util.equalsEpsilon( proposedStep, stepSize, 1e-14 );
+    const stepsAboutEqual = Utils.equalsEpsilon( proposedStep, stepSize, 1e-14 );
     if ( stepToFar && !stepsAboutEqual ) {
       correctedValue += ( newValue > currentValue ) ? ( -1 * stepSize ) : stepSize;
     }

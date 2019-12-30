@@ -31,7 +31,7 @@ define( require => {
   const sun = require( 'SUN/sun' );
   const Tandem = require( 'TANDEM/Tandem' );
   const timer = require( 'AXON/timer' );
-  const Util = require( 'DOT/Util' );
+  const Utils = require( 'DOT/Utils' );
   const VSeparator = require( 'SUN/VSeparator' );
 
   // constants
@@ -253,7 +253,7 @@ define( require => {
 
     // Number of pages
     let numberOfPages = items.length / options.itemsPerPage;
-    if ( !Util.isInteger( numberOfPages ) ) {
+    if ( !Utils.isInteger( numberOfPages ) ) {
       numberOfPages = Math.floor( numberOfPages + 1 );
     }
 

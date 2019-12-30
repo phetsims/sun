@@ -29,7 +29,7 @@ define( require => {
   const SimpleDragHandler = require( 'SCENERY/input/SimpleDragHandler' );
   const sun = require( 'SUN/sun' );
   const Tandem = require( 'TANDEM/Tandem' );
-  const Util = require( 'DOT/Util' );
+  const Utils = require( 'DOT/Utils' );
   const Vector2 = require( 'DOT/Vector2' );
 
   /**
@@ -150,7 +150,7 @@ define( require => {
         // center the thumb on the pointer's x-coordinate if possible (but clamp to left and right ends)
         const viewPoint = evt.currentTarget.globalToLocalPoint( evt.pointer.point );
         const halfThumbWidth = self.thumbNode.width / 2;
-        self.thumbNode.centerX = Util.clamp( viewPoint.x, halfThumbWidth, options.size.width - halfThumbWidth );
+        self.thumbNode.centerX = Utils.clamp( viewPoint.x, halfThumbWidth, options.size.width - halfThumbWidth );
 
         // whether the thumb is dragged outside of the possible range far enough beyond our threshold to potentially
         // trigger an immediate model change

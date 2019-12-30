@@ -23,7 +23,7 @@ define( require => {
   const SunConstants = require( 'SUN/SunConstants' );
   const Tandem = require( 'TANDEM/Tandem' );
   const Text = require( 'SCENERY/nodes/Text' );
-  const Util = require( 'DOT/Util' );
+  const Utils = require( 'DOT/Utils' );
 
   // possible values for options.arrowsPosition
   const ARROWS_POSITION_VALUES = [
@@ -105,10 +105,10 @@ define( require => {
 
     // compute max width of the value that's going to be displayed
     const minString = StringUtils.fillIn( options.valuePattern, {
-      value: Util.toFixed( rangeProperty.value.min, options.decimalPlaces )
+      value: Utils.toFixed( rangeProperty.value.min, options.decimalPlaces )
     } );
     const maxString = StringUtils.fillIn( options.valuePattern, {
-      value: Util.toFixed( rangeProperty.value.max, options.decimalPlaces )
+      value: Utils.toFixed( rangeProperty.value.max, options.decimalPlaces )
     } );
     const maxWidth = Math.max(
       new Text( minString, valueOptions ).width,
@@ -253,7 +253,7 @@ define( require => {
 
       // update the number
       numberNode.text = StringUtils.fillIn( options.valuePattern, {
-        value: Util.toFixed( value, options.decimalPlaces )
+        value: Utils.toFixed( value, options.decimalPlaces )
       } );
 
       // update the alignment
