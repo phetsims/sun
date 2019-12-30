@@ -30,7 +30,7 @@ define( require => {
   const Emitter = require( 'AXON/Emitter' );
   const extend = require( 'PHET_CORE/extend' );
   const inheritance = require( 'PHET_CORE/inheritance' );
-  const KeyboardUtil = require( 'SCENERY/accessibility/KeyboardUtil' );
+  const KeyboardUtils = require( 'SCENERY/accessibility/KeyboardUtils' );
   const merge = require( 'PHET_CORE/merge' );
   const Node = require( 'SCENERY/nodes/Node' );
   const sun = require( 'SUN/sun' );
@@ -106,7 +106,7 @@ define( require => {
               if ( enabledProperty.get() ) {
 
                 // check for relevant keys here
-                if ( KeyboardUtil.isRangeKey( event.domEvent.keyCode ) ) {
+                if ( KeyboardUtils.isRangeKey( event.domEvent.keyCode ) ) {
                   if ( !self._callbackTimer.isRunning() ) {
                     self.accessibleNumberSpinnerHandleKeyDown( event );
 
@@ -119,7 +119,7 @@ define( require => {
               }
             },
             keyup: function( event ) {
-              if ( KeyboardUtil.isRangeKey( event.domEvent.keyCode ) ) {
+              if ( KeyboardUtils.isRangeKey( event.domEvent.keyCode ) ) {
                 if ( event.domEvent.keyCode === runningTimerCallbackKeyCode ) {
                   self.emitKeyState( event.domEvent.keyCode, false );
                   self._callbackTimer.stop( false );
@@ -184,10 +184,10 @@ define( require => {
          * @param {boolean} isDown - whether or not event was triggered from down or up keys
          */
         emitKeyState: function( keyCode, isDown ) {
-          if ( keyCode === KeyboardUtil.KEY_UP_ARROW || keyCode === KeyboardUtil.KEY_RIGHT_ARROW ) {
+          if ( keyCode === KeyboardUtils.KEY_UP_ARROW || keyCode === KeyboardUtils.KEY_RIGHT_ARROW ) {
             this.incrementDownEmitter.emit( isDown );
           }
-          else if ( keyCode === KeyboardUtil.KEY_DOWN_ARROW || keyCode === KeyboardUtil.KEY_LEFT_ARROW ) {
+          else if ( keyCode === KeyboardUtils.KEY_DOWN_ARROW || keyCode === KeyboardUtils.KEY_LEFT_ARROW ) {
             this.decrementDownEmitter.emit( isDown );
           }
         },

@@ -22,7 +22,7 @@ define( require => {
   // modules
   const extend = require( 'PHET_CORE/extend' );
   const inheritance = require( 'PHET_CORE/inheritance' );
-  const KeyboardUtil = require( 'SCENERY/accessibility/KeyboardUtil' );
+  const KeyboardUtils = require( 'SCENERY/accessibility/KeyboardUtils' );
   const merge = require( 'PHET_CORE/merge' );
   const Node = require( 'SCENERY/nodes/Node' );
   const Property = require( 'AXON/Property' );
@@ -451,7 +451,7 @@ define( require => {
           if ( this._enabledProperty.get() ) {
 
             // Prevent default so browser doesn't change input value automatically
-            if ( KeyboardUtil.isRangeKey( code ) ) {
+            if ( KeyboardUtils.isRangeKey( code ) ) {
               domEvent.preventDefault(); // this should do the same thing as this.a11yInputHandled for "change" and "input"
 
               // if this is the first keydown this is the start of the drag interaction
@@ -463,39 +463,39 @@ define( require => {
               this.rangeKeysDown[ code ] = true;
 
               let newValue = this._valueProperty.get();
-              if ( code === KeyboardUtil.KEY_END || code === KeyboardUtil.KEY_HOME ) {
+              if ( code === KeyboardUtils.KEY_END || code === KeyboardUtils.KEY_HOME ) {
 
                 // on 'end' and 'home' snap to max and min of enabled range respectively (this is typical browser
                 // behavior for sliders)
-                if ( code === KeyboardUtil.KEY_END ) {
+                if ( code === KeyboardUtils.KEY_END ) {
                   newValue = this._rangeProperty.get().max;
                 }
-                else if ( code === KeyboardUtil.KEY_HOME ) {
+                else if ( code === KeyboardUtils.KEY_HOME ) {
                   newValue = this._rangeProperty.get().min;
                 }
               }
               else {
                 let stepSize;
-                if ( code === KeyboardUtil.KEY_PAGE_UP || code === KeyboardUtil.KEY_PAGE_DOWN ) {
+                if ( code === KeyboardUtils.KEY_PAGE_UP || code === KeyboardUtils.KEY_PAGE_DOWN ) {
                   // on page up and page down, the default step size is 1/10 of the range (this is typical browser behavior)
                   stepSize = this.pageKeyboardStep;
 
-                  if ( code === KeyboardUtil.KEY_PAGE_UP ) {
+                  if ( code === KeyboardUtils.KEY_PAGE_UP ) {
                     newValue = this._valueProperty.get() + stepSize;
                   }
-                  else if ( code === KeyboardUtil.KEY_PAGE_DOWN ) {
+                  else if ( code === KeyboardUtils.KEY_PAGE_DOWN ) {
                     newValue = this._valueProperty.get() - stepSize;
                   }
                 }
-                else if ( KeyboardUtil.isArrowKey( code ) ) {
+                else if ( KeyboardUtils.isArrowKey( code ) ) {
 
                   // if the shift key is pressed down, modify the step size (this is atypical browser behavior for sliders)
                   stepSize = domEvent.shiftKey ? this.shiftKeyboardStep : this.keyboardStep;
 
-                  if ( code === KeyboardUtil.KEY_RIGHT_ARROW || code === KeyboardUtil.KEY_UP_ARROW ) {
+                  if ( code === KeyboardUtils.KEY_RIGHT_ARROW || code === KeyboardUtils.KEY_UP_ARROW ) {
                     newValue = this._valueProperty.get() + stepSize;
                   }
-                  else if ( code === KeyboardUtil.KEY_LEFT_ARROW || code === KeyboardUtil.KEY_DOWN_ARROW ) {
+                  else if ( code === KeyboardUtils.KEY_LEFT_ARROW || code === KeyboardUtils.KEY_DOWN_ARROW ) {
                     newValue = this._valueProperty.get() - stepSize;
                   }
 
@@ -530,12 +530,12 @@ define( require => {
           }
 
           // reset shift key flag when we release it
-          if ( domEvent.keyCode === KeyboardUtil.KEY_SHIFT ) {
+          if ( domEvent.keyCode === KeyboardUtils.KEY_SHIFT ) {
             this._shiftKey = false;
           }
 
           if ( this._enabledProperty.get() ) {
-            if ( KeyboardUtil.isRangeKey( domEvent.keyCode ) ) {
+            if ( KeyboardUtils.isRangeKey( domEvent.keyCode ) ) {
               this.rangeKeysDown[ domEvent.keyCode ] = false;
 
               // when all range keys are released, we are done dragging

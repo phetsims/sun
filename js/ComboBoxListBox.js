@@ -12,7 +12,7 @@ define( require => {
   const Action = require( 'AXON/Action' );
   const ComboBoxListItemNode = require( 'SUN/ComboBoxListItemNode' );
   const EventType = require( 'TANDEM/EventType' );
-  const KeyboardUtil = require( 'SCENERY/accessibility/KeyboardUtil' );
+  const KeyboardUtils = require( 'SCENERY/accessibility/KeyboardUtils' );
   const merge = require( 'PHET_CORE/merge' );
   const Panel = require( 'SUN/Panel' );
   const SceneryEvent = require( 'SCENERY/input/SceneryEvent' );
@@ -91,7 +91,7 @@ define( require => {
         // Handle keyup on each item in the list box, for a11y.
         //TODO sun#447, scenery#931 we're using keyup because keydown fires continuously
         keyup: event => {
-          if ( KeyboardUtil.KEY_ENTER === event.domEvent.keyCode || KeyboardUtil.KEY_SPACE === event.domEvent.keyCode ) {
+          if ( KeyboardUtils.KEY_ENTER === event.domEvent.keyCode || KeyboardUtils.KEY_SPACE === event.domEvent.keyCode ) {
             fireAction.execute( event );
             focusButtonCallback();
           }
@@ -167,16 +167,16 @@ define( require => {
         // Handle keydown
         keydown: event => {
           const keyCode = event.domEvent.keyCode;
-          if ( keyCode === KeyboardUtil.KEY_ESCAPE || keyCode === KeyboardUtil.KEY_TAB ) {
+          if ( keyCode === KeyboardUtils.KEY_ESCAPE || keyCode === KeyboardUtils.KEY_TAB ) {
 
             // Escape and Tab hide the list box and return focus to the button
             hideListBoxCallback();
             focusButtonCallback();
           }
-          else if ( keyCode === KeyboardUtil.KEY_DOWN_ARROW || keyCode === KeyboardUtil.KEY_UP_ARROW ) {
+          else if ( keyCode === KeyboardUtils.KEY_DOWN_ARROW || keyCode === KeyboardUtils.KEY_UP_ARROW ) {
 
             // Up/down arrow keys move the focus between items in the list box
-            const direction = ( keyCode === KeyboardUtil.KEY_DOWN_ARROW ) ? 1 : -1;
+            const direction = ( keyCode === KeyboardUtils.KEY_DOWN_ARROW ) ? 1 : -1;
             for ( let i = 0; i < listItemNodes.length; i++ ) {
               if ( this.focusedItemNode === listItemNodes[ i ] ) {
                 const nextListItemNode = listItemNodes[ i + direction ];
@@ -190,11 +190,11 @@ define( require => {
               }
             }
           }
-          else if ( keyCode === KeyboardUtil.KEY_HOME ) {
+          else if ( keyCode === KeyboardUtils.KEY_HOME ) {
             this.focusedItemNode = listItemNodes[ 0 ];
             this.focusedItemNode.focus();
           }
-          else if ( keyCode === KeyboardUtil.KEY_END ) {
+          else if ( keyCode === KeyboardUtils.KEY_END ) {
             this.focusedItemNode = listItemNodes[ listItemNodes.length - 1 ];
             this.focusedItemNode.focus();
           }

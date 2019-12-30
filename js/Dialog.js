@@ -21,7 +21,7 @@ define( require => {
   const FullScreen = require( 'SCENERY/util/FullScreen' );
   const HBox = require( 'SCENERY/nodes/HBox' );
   const inherit = require( 'PHET_CORE/inherit' );
-  const KeyboardUtil = require( 'SCENERY/accessibility/KeyboardUtil' );
+  const KeyboardUtils = require( 'SCENERY/accessibility/KeyboardUtils' );
   const merge = require( 'PHET_CORE/merge' );
   const Panel = require( 'SUN/Panel' );
   const Path = require( 'SCENERY/nodes/Path' );
@@ -340,12 +340,12 @@ define( require => {
       keydown: event => {
         const domEvent = event.domEvent;
 
-        if ( domEvent.keyCode === KeyboardUtil.KEY_ESCAPE ) {
+        if ( domEvent.keyCode === KeyboardUtils.KEY_ESCAPE ) {
           domEvent.preventDefault();
           this.hide();
           this.focusActiveElement();
         }
-        else if ( domEvent.keyCode === KeyboardUtil.KEY_TAB && FullScreen.isFullScreen() ) {
+        else if ( domEvent.keyCode === KeyboardUtils.KEY_TAB && FullScreen.isFullScreen() ) {
 
           // prevent a particular bug in Windows 7/8.1 Firefox where focus gets trapped in the document
           // when the navigation bar is hidden and there is only one focusable element in the DOM
