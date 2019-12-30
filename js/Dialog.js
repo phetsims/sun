@@ -12,7 +12,7 @@ define( require => {
   'use strict';
 
   // modules
-  const AccessibilityUtil = require( 'SCENERY/accessibility/AccessibilityUtil' );
+  const AccessibilityUtils = require( 'SCENERY/accessibility/AccessibilityUtils' );
   const AccessiblePeer = require( 'SCENERY/accessibility/AccessiblePeer' );
   const AlignBox = require( 'SCENERY/nodes/AlignBox' );
   const BooleanProperty = require( 'AXON/BooleanProperty' );
@@ -351,8 +351,8 @@ define( require => {
           // when the navigation bar is hidden and there is only one focusable element in the DOM
           // see https://bugzilla.mozilla.org/show_bug.cgi?id=910136
           const activeId = Display.focus.trail.getUniqueId();
-          const noNextFocusable = AccessibilityUtil.getNextFocusable().id === activeId;
-          const noPreviousFocusable = AccessibilityUtil.getPreviousFocusable().id === activeId;
+          const noNextFocusable = AccessibilityUtils.getNextFocusable().id === activeId;
+          const noPreviousFocusable = AccessibilityUtils.getPreviousFocusable().id === activeId;
 
           if ( noNextFocusable && noPreviousFocusable ) {
             domEvent.preventDefault();

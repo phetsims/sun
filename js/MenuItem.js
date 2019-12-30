@@ -10,7 +10,7 @@ define( require => {
   'use strict';
 
   // modules
-  const AccessibilityUtil = require( 'SCENERY/accessibility/AccessibilityUtil' );
+  const AccessibilityUtils = require( 'SCENERY/accessibility/AccessibilityUtils' );
   const EventType = require( 'TANDEM/EventType' );
   const FireListener = require( 'SCENERY/listeners/FireListener' );
   const FontAwesomeNode = require( 'SUN/FontAwesomeNode' );
@@ -78,7 +78,7 @@ define( require => {
 
         // limit search of next focusable to root accessible HTML element
         const rootElement = phet.joist.display.accessibleDOMElement;
-        AccessibilityUtil.getNextFocusable( rootElement ).focus();
+        AccessibilityUtils.getNextFocusable( rootElement ).focus();
       },
       containerTagName: 'li',
       containerAriaRole: 'none', // this is required for JAWS to handle focus correctly, see https://github.com/phetsims/john-travoltage/issues/225
