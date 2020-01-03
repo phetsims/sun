@@ -232,8 +232,7 @@ define( require => {
         this.pickable = !displayOnly;
       } );
 
-      // TODO https://github.com/phetsims/sun/issues/551 should this be graceful?
-      property.isPhetioInstrumented() && this.addLinkedElement( property, {
+      this.addLinkedElement( property, {
         tandem: options.tandem.createTandem( 'property' )
       } );
 

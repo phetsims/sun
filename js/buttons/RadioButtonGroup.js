@@ -65,8 +65,6 @@ define( require => {
       // must be one for each element in contentArray
       soundPlayers: null,
 
-      phetioLinkProperty: true, // whether a link to the checkbox's Property is created
-
       // a11y
       tagName: 'ul',
       labelTagName: 'h3',
@@ -355,7 +353,7 @@ define( require => {
     property.link( propertyListener );
 
     // must be done after this instance is instrumented
-    options.phetioLinkProperty && this.addLinkedElement( property, {
+    this.addLinkedElement( property, {
       tandem: options.tandem.createTandem( 'property' )
     } );
 

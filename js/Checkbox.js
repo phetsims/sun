@@ -55,7 +55,6 @@ define( require => {
       phetioEventType: EventType.USER,
       // to support properly passing this to children, see https://github.com/phetsims/tandem/issues/60
       phetioReadOnly: PhetioObject.DEFAULT_OPTIONS.phetioReadOnly,
-      phetioLinkProperty: true, // whether a link to the checkbox's Property is created
       phetioComponentOptions: null, // filled in below with PhetioObject.mergePhetioComponentOptions()
 
       // {Playable|null} - sound generators, if set to null defaults will be used, set to Playable.NO_SOUND to disable
@@ -151,7 +150,7 @@ define( require => {
     this.mutate( options );
 
     // must be after the Checkbox is instrumented
-    options.phetioLinkProperty && this.addLinkedElement( property, {
+    this.addLinkedElement( property, {
       tandem: options.tandem.createTandem( 'property' )
     } );
 

@@ -46,7 +46,6 @@ define( require => {
 
       // phet-io
       tandem: Tandem.REQUIRED,
-      phetioLinkProperty: true,
 
       // {Playable|null} - sound generator, if set to null default will be used, set to Playable.NO_SOUND to disable
       soundPlayer: null,
@@ -160,7 +159,7 @@ define( require => {
     this.mutate( options );
 
     // Add linked element after the radio button is instrumented
-    options.phetioLinkProperty && this.addLinkedElement( property, {
+    this.addLinkedElement( property, {
       tandem: options.tandem.createTandem( 'property' )
     } );
 
