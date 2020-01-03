@@ -61,7 +61,6 @@ define( require => {
         // supertype a11y options
         tagName: 'ul',
         groupFocusHighlight: true
-
       }, options );
 
       // Determine the max item width
@@ -102,6 +101,11 @@ define( require => {
       options.children = radioButtons;
 
       super( options );
+
+      // Add linked element after the radio button is instrumented
+      this.addLinkedElement( property, {
+        tandem: options.tandem.createTandem( 'property' )
+      } );
 
       // @private
       this.disposeVerticalAquaRadioButtonGroup = () => {

@@ -158,11 +158,6 @@ define( require => {
 
     this.mutate( options );
 
-    // Add linked element after the radio button is instrumented
-    this.addLinkedElement( property, {
-      tandem: options.tandem.createTandem( 'property' )
-    } );
-
     this.enabledProperty.link( this.updateEnabled.bind( this ) );
 
     // @private
