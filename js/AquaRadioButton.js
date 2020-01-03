@@ -125,11 +125,11 @@ define( require => {
       property.set( value );
       soundPlayer.play();
     };
-    const inputListener = new FireListener( {
+    const fireListener = new FireListener( {
       fire: fire,
-      tandem: options.tandem.createTandem( 'inputListener' )
+      tandem: options.tandem.createTandem( 'fireListener' )
     } );
-    this.addInputListener( inputListener );
+    this.addInputListener( fireListener );
 
     // a11y - input listener so that updates the state of the radio button with keyboard interaction
     const changeListener = {
@@ -168,14 +168,14 @@ define( require => {
 
     // @private
     this.disposeAquaRadioButton = function() {
-      self.removeInputListener( inputListener );
+      self.removeInputListener( fireListener );
       self.removeInputListener( changeListener );
       property.unlink( accessibleCheckedListener );
       property.unlink( syncWithModel );
       self.enabledProperty.dispose();
 
       // phet-io: Unregister Emitters
-      inputListener.dispose();
+      fireListener.dispose();
     };
 
     // support for binder documentation, stripped out in builds and only runs when ?binder is specified
