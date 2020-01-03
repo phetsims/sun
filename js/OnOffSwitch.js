@@ -1,4 +1,4 @@
-// Copyright 2014-2019, University of Colorado Boulder
+// Copyright 2014-2020, University of Colorado Boulder
 
 /**
  * On/off switch, similar to iOS' UISwitch, used in iOS `'Settings' app.
@@ -163,8 +163,6 @@ define( require => {
         self.trackNode.fill = value ? options.trackOnFill : options.trackOffFill;
 
         if ( options.toggleWhileDragging === true || ( isDraggedOutside && options.toggleWhileDragging === null ) ) {
-
-          // TODO https://github.com/phetsims/sun/issues/552 A way to distinguish between drag-to-toggle vs click-to-toggle
 
           // Only signify a change if the value actually changed to avoid duplicate messages in the PhET-iO Event
           // stream, see https://github.com/phetsims/phet-io/issues/369
