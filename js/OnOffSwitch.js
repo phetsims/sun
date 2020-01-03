@@ -1,4 +1,4 @@
-// Copyright 2014-2019, University of Colorado Boulder
+// Copyright 2014-2020, University of Colorado Boulder
 
 /**
  * On/off switch, similar to iOS' UISwitch, used in iOS `'Settings' app.
