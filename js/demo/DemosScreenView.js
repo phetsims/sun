@@ -38,7 +38,7 @@ define( require => {
 
       // options related to the ComboBox that selects the demo
       comboBoxCornerRadius: 4,
-      comboBoxLocation: new Vector2( 20, 20 ), // {Vector2} location of ComboBox used to select a demo
+      comboBoxPosition: new Vector2( 20, 20 ), // {Vector2} position of ComboBox used to select a demo
       comboBoxItemFont: new PhetFont( 20 ), // {Font} font used for ComboBox items
       comboBoxItemXMargin: 12, // {number} x margin around ComboBox items
       comboBoxItemYMargin: 8, // {number} y margin around ComboBox items
@@ -96,8 +96,8 @@ define( require => {
       cornerRadius: options.comboBoxCornerRadius,
       xMargin: options.comboBoxItemXMargin,
       yMargin: options.comboBoxItemYMargin,
-      top: options.comboBoxLocation.x,
-      left: options.comboBoxLocation.y,
+      top: options.comboBoxPosition.x,
+      left: options.comboBoxPosition.y,
       tandem: options.tandem.createTandem( 'comboBox' )
     } );
     this.addChild( comboBox );
