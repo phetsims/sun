@@ -146,7 +146,7 @@ define( require => {
     const ownsEnabledRangeProperty = !options.enabledRangeProperty;
 
     if ( assert && Tandem.PHET_IO_ENABLED && !ownsEnabledProperty ) {
-      options.tandem.supplied && assert( options.enabledProperty.isPhetioInstrumented(),
+      this.isPhetioInstrumented() && assert( options.enabledProperty.isPhetioInstrumented(),
         'enabledProperty must be instrumented if slider is' );
 
       // This may be too strict long term, but for now, each enabledProperty should be phetioFeatured
