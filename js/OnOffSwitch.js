@@ -155,7 +155,7 @@ define( require => {
         // whether the thumb is dragged outside of the possible range far enough beyond our threshold to potentially
         // trigger an immediate model change
         const isDraggedOutside = viewPoint.x < ( 1 - 2 * options.toggleThreshold ) * halfThumbWidth ||
-                               viewPoint.x > ( -1 + 2 * options.toggleThreshold ) * halfThumbWidth + options.size.width;
+                                 viewPoint.x > ( -1 + 2 * options.toggleThreshold ) * halfThumbWidth + options.size.width;
 
         const value = self.thumbPositionToValue(); // value represented by the current thumb position
 
@@ -169,8 +169,10 @@ define( require => {
           const changed = onProperty.get() !== value;
           if ( changed ) {
             self.phetioStartEvent( 'toggled', {
-              oldValue: !value,
-              newValue: value
+              data: {
+                oldValue: !value,
+                newValue: value
+              }
             } );
             onProperty.set( value );
             self.phetioEndEvent();
@@ -185,8 +187,10 @@ define( require => {
         const newValue = passedDragThreshold ? self.thumbPositionToValue() : !onProperty.get();
 
         self.phetioStartEvent( 'toggled', {
-          oldValue: oldValue,
-          newValue: newValue
+          data: {
+            oldValue: oldValue,
+            newValue: newValue
+          }
         } );
 
         onProperty.set( newValue );
