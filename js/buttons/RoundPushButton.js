@@ -35,9 +35,11 @@ define( require => {
       // {Playable|null} - sound generator, if set to null defaults will be used, set to Playable.NO_SOUND to disable
       soundPlayer: null,
 
+      // {function} listener called when button is pushed.
+      listener: _.noop,
+
       // tandem support
       tandem: Tandem.REQUIRED
-
     }, options );
 
     const self = this;
