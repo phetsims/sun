@@ -44,7 +44,7 @@ define( require => {
 
     const self = this;
 
-    // If a listener was passed in, save it and add it after creating the button model.  This is done so that
+    // Save the listener and add it after creating the button model. This is done so that
     // the same code path is always used for adding listener, thus guaranteeing a consistent code path if addListener is
     // overridden, see https://github.com/phetsims/sun/issues/284.
     const listener = options.listener;
@@ -56,7 +56,7 @@ define( require => {
     RoundButtonView.call( this, this.buttonModel, new PushButtonInteractionStateProperty( this.buttonModel ), options );
 
     // add the listener that was potentially saved above
-    listener && this.addListener( listener );
+    this.addListener( listener );
 
     // sound generation
     const soundPlayer = options.soundPlayer || pushButtonSoundPlayer;
