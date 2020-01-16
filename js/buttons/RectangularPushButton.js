@@ -33,12 +33,15 @@ define( require => {
       // {Playable|null} - sound generator, if set to null default will be used, set to Playable.NO_SOUND to disable
       soundPlayer: null,
 
+      // {function} listener called when button is pushed.
+      listener: _.noop,
+
       // tandem support
       tandem: Tandem.REQUIRED
 
     }, options );
 
-    // If a listener was passed in, save it and add it after creating the button model.  This is done so that
+    // Save the listener and add it after creating the button model.  This is done so that
     // the same code path is always used for adding listener, thus guaranteeing a consistent code path if addListener is
     // overridden, see https://github.com/phetsims/sun/issues/284.
     const listener = options.listener;
@@ -49,7 +52,7 @@ define( require => {
     this.buttonModel = new PushButtonModel( options ); // @public, listen only
 
     // add the listener that was potentially saved above
-    listener && this.addListener( listener );
+    this.addListener( listener );
 
     // Call the parent type
     RectangularButtonView.call( this, this.buttonModel, new PushButtonInteractionStateProperty( this.buttonModel ), options );
