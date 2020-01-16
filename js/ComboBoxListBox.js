@@ -175,6 +175,10 @@ define( require => {
           }
           else if ( keyCode === KeyboardUtil.KEY_DOWN_ARROW || keyCode === KeyboardUtil.KEY_UP_ARROW ) {
 
+            // prevent "native" behavior so that Safari doesn't make an error sound with arrow keys in
+            // full screen mode, see #210
+            event.domEvent.preventDefault();
+
             // Up/down arrow keys move the focus between items in the list box
             const direction = ( keyCode === KeyboardUtil.KEY_DOWN_ARROW ) ? 1 : -1;
             for ( let i = 0; i < listItemNodes.length; i++ ) {
