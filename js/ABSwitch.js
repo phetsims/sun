@@ -119,10 +119,12 @@ define( require => {
 
     // click on labels to select, must be disposed
     const aInputListener = new ButtonListener( {
-      fire: function() { onProperty.set( false ); }
+      fire: function() { onProperty.set( false ); },
+      tandem: options.tandem.createTandem( 'aInputListener' )
     } );
     const bInputListener = new ButtonListener( {
-      fire: function() { onProperty.set( true ); }
+      fire: function() { onProperty.set( true ); },
+      tandem: options.tandem.createTandem( 'bInputListener' )
     } );
     labelA.addInputListener( aInputListener );
     labelB.addInputListener( bInputListener );
