@@ -26,6 +26,7 @@ define( require => {
   const Panel = require( 'SUN/Panel' );
   const Path = require( 'SCENERY/nodes/Path' );
   const PhetioObject = require( 'TANDEM/PhetioObject' );
+  const Playable = require( 'TAMBO/Playable' );
   const Property = require( 'AXON/Property' );
   const RectangularButtonView = require( 'SUN/buttons/RectangularButtonView' );
   const RectangularPushButton = require( 'SUN/buttons/RectangularPushButton' );
@@ -34,6 +35,10 @@ define( require => {
   const SunA11yStrings = require( 'SUN/SunA11yStrings' );
   const Tandem = require( 'TANDEM/Tandem' );
   const VBox = require( 'SCENERY/nodes/VBox' );
+
+  // sounds
+  const generalOpenSoundPlayer = require( 'TAMBO/shared-sound-players/generalOpenSoundPlayer' );
+  const generalCloseSoundPlayer = require( 'TAMBO/shared-sound-players/generalCloseSoundPlayer' );
 
   // a11y strings
   const closeString = SunA11yStrings.close.value;
@@ -135,6 +140,10 @@ define( require => {
       phetioState: false, // default to false so it can pass it through to the close button
       phetioComponentOptions: null, // filled in below with PhetioObject.mergePhetioComponentOptions()
 
+      // sound generation, if set to null defaults will be used, set to Playable.NO_SOUND to disable
+      openedSoundPlayer: null,
+      closedSoundPlayer: null,
+
       // a11y options
       tagName: 'div',
       ariaRole: 'dialog',
@@ -164,6 +173,10 @@ define( require => {
     // see https://github.com/phetsims/joist/issues/293
     assert && assert( options.isModal, 'Non-modal dialogs not currently supported' );
 
+    // sound generation - create default players if needed
+    const openedSoundPlayer = options.openedSoundPlayer || generalOpenSoundPlayer;
+    const closedSoundPlayer = options.closedSoundPlayer || generalCloseSoundPlayer;
+
     // @protected (read-only) - whether the dialog is showing
     this.isShowingProperty = new BooleanProperty( false, {
       tandem: options.tandem.createTandem( 'isShowingProperty' ),
@@ -175,6 +188,9 @@ define( require => {
     this.isShowingProperty.lazyLink( isShowing => {
       if ( isShowing ) {
         window.phet.joist.sim.showPopup( this, options.isModal );
+
+        // sound generation
+        openedSoundPlayer.play();
 
         // a11y - focus is returned to this element if dialog closed from accessible input
         this.activeElement = this.activeElement || Display.focusedNode;
@@ -189,6 +205,9 @@ define( require => {
       }
       else {
         window.phet.joist.sim.hidePopup( this, options.isModal );
+
+        // sound generation
+        closedSoundPlayer.play();
 
         // a11y - when the dialog is hidden, make all ScreenView content visible to assistive technology
         this.sim.setAccessibleViewsVisible( true );
@@ -231,6 +250,9 @@ define( require => {
         visibleProperty: { phetioFeatured: false }
       },
       enabledPropertyOptions: { phetioFeatured: false }, // dialog close buttons by default do not have a featured enabledProperty
+
+      // turn off default sound generation, Dialog will create its own sounds
+      soundPlayer: Playable.NO_SOUND,
 
       // a11y
       tagName: 'button',
