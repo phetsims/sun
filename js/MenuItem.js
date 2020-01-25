@@ -46,10 +46,12 @@ define( require => {
    * @param {Function} closeCallback - called when closing the dialog that the menu item opened
    * @param {String} text
    * @param {Function} callback
+   * @param {boolean} present - if this MenuItem will be shown in the menu. Some items are just created to maintain a
+   *                              consistent PhET-iO API for all sim runtimes, see https://github.com/phetsims/phet-io/issues/1457
    * @param {Object} [options]
    * @constructor
    */
-  function MenuItem( width, height, closeCallback, text, callback, options ) {
+  function MenuItem( width, height, closeCallback, text, callback, present, options ) {
     const self = this;
 
     // Extend the object with defaults.
@@ -87,6 +89,9 @@ define( require => {
     }, options );
 
     Node.call( this );
+
+    // @public (read-only) {boolean}
+    this.present = present;
 
     const textNode = new Text( text, {
       font: new PhetFont( FONT_SIZE ),
