@@ -26,6 +26,7 @@ define( require => {
   const ComboBoxButton = require( 'SUN/ComboBoxButton' );
   const ComboBoxIO = require( 'SUN/ComboBoxIO' );
   const ComboBoxListBox = require( 'SUN/ComboBoxListBox' );
+  const Display = require( 'SCENERY/display/Display' );
   const EventType = require( 'TANDEM/EventType' );
   const InstanceRegistry = require( 'PHET_CORE/documentation/InstanceRegistry' );
   const merge = require( 'PHET_CORE/merge' );
@@ -52,7 +53,7 @@ define( require => {
       // See https://github.com/phetsims/sun/issues/542
       assert && assert( listParent.maxWidth === null,
         'ComboBox is responsible for scaling listBox. Setting maxWidth for listParent may result in buggy behavior.' );
-      
+
       options = merge( {
 
         align: 'left', // see ALIGN_VALUES
@@ -204,6 +205,17 @@ define( require => {
         }
       };
 
+      // @private - (PDOM) when focus leaves the ComboBoxListBox, it should be closed. This could happen from keyboard
+      // or from other screen reader controls (like VoiceOver gestures)
+      this.dismissWithFocusListener = focus => {
+        if ( focus ) {
+          if ( !focus.trail.containsNode( this.listBox ) ) {
+            this.hideListBox();
+          }
+        }
+      };
+      Display.focusProperty.link( this.dismissWithFocusListener );
+
       // So we know whether we can dispose of the enabledProperty and its tandem
       const ownsEnabledProperty = !options.enabledProperty;
 
@@ -249,6 +261,8 @@ define( require => {
         else {
           this.enabledProperty.unlink( enabledObserver );
         }
+
+        Display.focusProperty.unlink( this.dismissWithFocusListener );
 
         // dispose of subcomponents
         this.listBox.dispose();

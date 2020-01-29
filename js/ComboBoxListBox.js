@@ -11,7 +11,6 @@ define( require => {
   // modules
   const Action = require( 'AXON/Action' );
   const ComboBoxListItemNode = require( 'SUN/ComboBoxListItemNode' );
-  const Display = require( 'SCENERY/display/Display' );
   const EventType = require( 'TANDEM/EventType' );
   const KeyboardUtils = require( 'SCENERY/accessibility/KeyboardUtils' );
   const merge = require( 'PHET_CORE/merge' );
@@ -206,23 +205,11 @@ define( require => {
         }
       } );
 
-      // PDOM - When focus leaves ComboBox, it should be closed. This could happen from keyboard navigation or from
-      // other screen reader controls
-      const focusListener = focus => {
-        if ( focus ) {
-          if ( !focus.trail.containsNode( this ) ) {
-            hideListBoxCallback();
-          }
-        }
-      };
-      Display.focusProperty.link( focusListener );
-
       // @private
       this.disposeComboBoxListBox = () => {
         for ( let i = 0; i < listItemNodes; i++ ) {
           listItemNodes[ i ].dispose(); // to unregister tandem
         }
-        Display.focusProperty.unlink( focusListener );
       };
     }
 
