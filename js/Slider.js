@@ -165,7 +165,9 @@ define( require => {
       valueType: Range,
       isValidValue: value => ( value.min >= range.min && value.max <= range.max ),
       tandem: options.tandem.createTandem( 'enabledRangeProperty' ),
-      phetioType: PropertyIO( RangeIO )
+      phetioType: PropertyIO( RangeIO ),
+      phetioDocumentation: 'Sliders support two ranges: the outer range which specifies the min and max of the track and ' +
+                           'the enabledRangeProperty, which determines how low and high the thumb can be dragged within the track.'
     } );
 
     // @public
