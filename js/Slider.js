@@ -108,7 +108,7 @@ define( require => {
       // other
       cursor: 'pointer',
       startDrag: _.noop, // called when a drag sequence starts
-      drag: _.noop, // called on drag
+      drag: _.noop, // called at the beginning of a drag event, before any other drag work happens
       endDrag: _.noop, // called when a drag sequence ends
       constrainValue: _.identity, // called before valueProperty is set
 
