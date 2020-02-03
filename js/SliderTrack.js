@@ -40,6 +40,7 @@ define( require => {
         lineWidth: 1,
         cornerRadius: 0,
         startDrag: _.noop, // called when a drag sequence starts
+        drag: _.noop, // called on drag
         endDrag: _.noop, // called when a drag sequence ends
         constrainValue: _.identity, // called before valueProperty is set
         enabledRangeProperty: new Property( new Range( range.min, range.max ) ), // Defaults to a constant range
@@ -76,6 +77,7 @@ define( require => {
         },
 
         drag: function( event, trail ) {
+          options.drag( event );
 
           // Reuse the same handleTrackEvent but make sure the startedCallbacks call is made before the value changes
           handleTrackEvent( event, trail );

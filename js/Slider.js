@@ -108,6 +108,7 @@ define( require => {
       // other
       cursor: 'pointer',
       startDrag: _.noop, // called when a drag sequence starts
+      drag: _.noop, // called on drag
       endDrag: _.noop, // called when a drag sequence ends
       constrainValue: _.identity, // called before valueProperty is set
 
@@ -198,6 +199,7 @@ define( require => {
       lineWidth: options.trackLineWidth,
       cornerRadius: options.trackCornerRadius,
       startDrag: options.startDrag,
+      drag: options.drag,
       endDrag: options.endDrag,
       constrainValue: options.constrainValue,
       enabledRangeProperty: this.enabledRangeProperty,
@@ -274,6 +276,7 @@ define( require => {
 
       drag: function( event, trail ) {
         if ( self.enabledProperty.get() ) {
+          options.drag( event );
           const transform = trail.subtrailTo( sliderPartsNode ).getTransform(); // we only want the transform to our parent
           const x = transform.inversePosition2( event.pointer.point ).x - clickXOffset;
           const newValue = self.track.valueToPosition.inverse( x );

@@ -38,6 +38,7 @@ define( require => {
         lineWidth: 1,
         cornerRadius: 0,
         startDrag: _.noop, // called when a drag sequence starts
+        drag: _.noop, // called on drag
         endDrag: _.noop, // called when a drag sequence ends
         constrainValue: _.identity, // called before valueProperty is set
         enabledRangeProperty: null,
