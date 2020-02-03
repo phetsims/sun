@@ -16,7 +16,7 @@ define( require => {
 
   /**
    * @param {number} width
-   * @param {Object} options
+   * @param {Object} [options]
    * @constructor
    */
   function HSeparator( width, options ) {
