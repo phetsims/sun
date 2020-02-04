@@ -12,11 +12,11 @@ define( require => {
   // modules
   const inherit = require( 'PHET_CORE/inherit' );
   const merge = require( 'PHET_CORE/merge' );
-  const toggleOffSoundPlayer = require( 'TAMBO/shared-sound-players/toggleOffSoundPlayer' );
-  const toggleOnSoundPlayer = require( 'TAMBO/shared-sound-players/toggleOnSoundPlayer' );
   const RoundButtonView = require( 'SUN/buttons/RoundButtonView' );
   const sun = require( 'SUN/sun' );
   const Tandem = require( 'TANDEM/Tandem' );
+  const toggleOffSoundPlayer = require( 'TAMBO/shared-sound-players/toggleOffSoundPlayer' );
+  const toggleOnSoundPlayer = require( 'TAMBO/shared-sound-players/toggleOnSoundPlayer' );
   const ToggleButtonInteractionStateProperty = require( 'SUN/buttons/ToggleButtonInteractionStateProperty' );
   const ToggleButtonIO = require( 'SUN/buttons/ToggleButtonIO' );
   const ToggleButtonModel = require( 'SUN/buttons/ToggleButtonModel' );
@@ -30,7 +30,6 @@ define( require => {
    */
   function RoundToggleButton( valueOff, valueOn, property, options ) {
 
-    // Tandem support
     options = merge( {
 
       // {Playable|null} - sounds to be played on toggle transitions, use Playable.NO_SOUND to disable
@@ -40,14 +39,12 @@ define( require => {
       // phet-io support
       tandem: Tandem.REQUIRED,
       phetioType: ToggleButtonIO
-
     }, options );
 
-    // @private (read-only)
+    // @public (phet-io)
     // Note it shares a tandem with this, so the emitter will be instrumented as a child of the button
     this.toggleButtonModel = new ToggleButtonModel( valueOff, valueOn, property, options );
     const toggleButtonInteractionStateProperty = new ToggleButtonInteractionStateProperty( this.toggleButtonModel );
-
     RoundButtonView.call( this, this.toggleButtonModel, toggleButtonInteractionStateProperty, options );
 
     this.addLinkedElement( property, {
@@ -79,7 +76,9 @@ define( require => {
 
   return inherit( RoundButtonView, RoundToggleButton, {
 
-    // @public
+    /**
+     * @public
+     */
     dispose: function() {
       this.disposeRoundToggleButton();
       RoundButtonView.prototype.dispose.call( this );

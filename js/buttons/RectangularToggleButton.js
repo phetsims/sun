@@ -15,6 +15,8 @@ define( require => {
   const RectangularButtonView = require( 'SUN/buttons/RectangularButtonView' );
   const sun = require( 'SUN/sun' );
   const Tandem = require( 'TANDEM/Tandem' );
+  const toggleOffSoundPlayer = require( 'TAMBO/shared-sound-players/toggleOffSoundPlayer' );
+  const toggleOnSoundPlayer = require( 'TAMBO/shared-sound-players/toggleOnSoundPlayer' );
   const ToggleButtonInteractionStateProperty = require( 'SUN/buttons/ToggleButtonInteractionStateProperty' );
   const ToggleButtonIO = require( 'SUN/buttons/ToggleButtonIO' );
   const ToggleButtonModel = require( 'SUN/buttons/ToggleButtonModel' );
@@ -29,6 +31,12 @@ define( require => {
   function RectangularToggleButton( valueOff, valueOn, property, options ) {
 
     options = merge( {
+
+      // {Playable|null} - sounds to be played on toggle transitions, use Playable.NO_SOUND to disable
+      valueOffSoundPlayer: null,
+      valueOnSoundPlayer: null,
+
+      // phet-io support
       tandem: Tandem.REQUIRED,
       phetioType: ToggleButtonIO
     }, options );
@@ -43,8 +51,23 @@ define( require => {
       tandem: options.tandem.createTandem( 'property' )
     } );
 
+    // sound generation
+    const valueOffSoundPlayer = options.valueOffSoundPlayer || toggleOffSoundPlayer;
+    const valueOnSoundPlayer = options.valueOnSoundPlayer || toggleOnSoundPlayer;
+    const playSounds = () => {
+      if ( property.value === valueOff ) {
+        valueOffSoundPlayer.play();
+      }
+      else if ( property.value === valueOn ) {
+        valueOnSoundPlayer.play();
+      }
+    };
+    this.buttonModel.produceSoundEmitter.addListener( playSounds );
+
     // @private
     this.disposeRectangularToggleButton = function() {
+      this.toggleButtonModel.dispose();
+      this.buttonModel.produceSoundEmitter.removeListener( playSounds );
       toggleButtonInteractionStateProperty.dispose();
     };
   }
@@ -58,7 +81,7 @@ define( require => {
      */
     dispose: function() {
       this.disposeRectangularToggleButton();
-      RectangularButtonView.prototype.dispose && RectangularButtonView.prototype.dispose.call( this );
+      RectangularButtonView.prototype.dispose.call( this );
     }
   } );
 } );
