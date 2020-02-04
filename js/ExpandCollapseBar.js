@@ -68,6 +68,8 @@ define( require => {
     titleNode.centerY = barNode.centerY;
     button.right = barNode.right - options.xMargin;
     button.centerY = barNode.centerY;
+
+    this.mutate( options );
   }
 
   sun.register( 'ExpandCollapseBar', ExpandCollapseBar );
