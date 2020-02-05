@@ -208,10 +208,8 @@ define( require => {
       // @private - (PDOM) when focus leaves the ComboBoxListBox, it should be closed. This could happen from keyboard
       // or from other screen reader controls (like VoiceOver gestures)
       this.dismissWithFocusListener = focus => {
-        if ( focus ) {
-          if ( !focus.trail.containsNode( this.listBox ) ) {
-            this.hideListBox();
-          }
+        if ( focus && !focus.trail.containsNode( this.listBox ) ) {
+          this.hideListBox();
         }
       };
       Display.focusProperty.link( this.dismissWithFocusListener );
