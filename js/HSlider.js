@@ -24,7 +24,7 @@ define( require => {
    */
   function HSlider( valueProperty, range, options ) {
 
-    assert && assert( !options || options.orientation === undefined, 'HSlider sets orientation' );
+    // assert && assert( !options || options.orientation === undefined, 'HSlider sets orientation' );
 
     Slider.call( this, valueProperty, range, merge( {
       orientation: 'horizontal'
