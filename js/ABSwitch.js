@@ -3,7 +3,7 @@
 /**
  * Control for switching between 2 choices (A & B).
  * Choice 'A' is to the left of the switch, choice 'B' is to the right.
- * This decorates OnOffProperty, the iOS-like on/off switch.
+ * This decorates OnOffSwitch, the iOS-like on/off switch.
  *
  * @author Chris Malley (PixelZoom, Inc.)
  */
