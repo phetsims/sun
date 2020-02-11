@@ -12,6 +12,7 @@ define( require => {
   'use strict';
 
   // modules
+  const ABSwitch = require( 'SUN/ABSwitch' );
   const AccordionBox = require( 'SUN/AccordionBox' );
   const AlignBox = require( 'SCENERY/nodes/AlignBox' );
   const AlignGroup = require( 'SCENERY/nodes/AlignGroup' );
@@ -37,6 +38,7 @@ define( require => {
   const Range = require( 'DOT/Range' );
   const Rectangle = require( 'SCENERY/nodes/Rectangle' );
   const RectangularPushButton = require( 'SUN/buttons/RectangularPushButton' );
+  const StringProperty = require( 'AXON/StringProperty' );
   const sun = require( 'SUN/sun' );
   const sunQueryParameters = require( 'SUN/sunQueryParameters' );
   const Text = require( 'SCENERY/nodes/Text' );
@@ -56,6 +58,7 @@ define( require => {
        * {string} label - label in the combo box
        * {function(Bounds2): Node} createNode - creates the scene graph for the demo
        */
+      { label: 'ABSwitch', createNode: demoABSwitch },
       { label: 'Carousel', createNode: demoCarousel },
       { label: 'Checkbox', createNode: demoCheckbox },
       { label: 'ComboBox', createNode: demoComboBox },
@@ -72,6 +75,17 @@ define( require => {
   }
 
   sun.register( 'ComponentsScreenView', ComponentsScreenView );
+
+  var demoABSwitch = function( layoutBounds ) {
+
+    const property = new StringProperty( 'A' );
+    const aNode = new Text( 'A', { font: new PhetFont( 24 ) } );
+    const bNode = new Text( 'B', { font: new PhetFont( 24 ) } );
+
+    return new ABSwitch( property, 'A', aNode, 'B', bNode, {
+      center: layoutBounds.center
+    } );
+  };
 
   // Creates a demo for Carousel
   var demoCarousel = function( layoutBounds ) {
