@@ -309,12 +309,11 @@ define( require => {
       sim.boundsProperty,
       sim.screenBoundsProperty,
       sim.scaleProperty,
-      sim.currentScreenProperty
-    ], ( bounds, screenBounds, scale, currentScreen ) => {
+      sim.screenProperty
+    ], ( bounds, screenBounds, scale, screen ) => {
 
       if ( bounds && screenBounds && scale ) {
-        const currentScreenOrHomeScreen = currentScreen ? currentScreen : sim.homeScreen;
-        const screenView = currentScreenOrHomeScreen.view;
+        const screenView = screen.view;
 
         // Calculate the scale based on the current screen instead of using sim.scaleProperty which is a single
         // static scale that doesn't change based on the current screen. This allows the flexibility to apply the max
