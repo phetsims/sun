@@ -55,7 +55,7 @@ define( require => {
 
         // supertype options
         orientation: 'vertical', // Aqua radio buttons are typically vertical, rarely horizontal
-        spacing: 3, // vertical space between each button
+        spacing: 3, // space between each button, perpendicular to options.orientation
 
         // phet-io
         tandem: Tandem.REQUIRED,
