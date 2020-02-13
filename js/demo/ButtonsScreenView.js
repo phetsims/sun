@@ -1,4 +1,4 @@
-// Copyright 2014-2019, University of Colorado Boulder
+// Copyright 2014-2020, University of Colorado Boulder
 
 /**
  * Main ScreenView container for demonstrating and testing the various buttons.
@@ -9,6 +9,7 @@ define( require => {
   'use strict';
 
   // modules
+  const AccessiblePeer = require( 'SCENERY/accessibility/AccessiblePeer' );
   const ArrowButton = require( 'SUN/buttons/ArrowButton' );
   const BooleanRectangularStickyToggleButton = require( 'SUN/buttons/BooleanRectangularStickyToggleButton' );
   const BooleanRectangularToggleButton = require( 'SUN/buttons/BooleanRectangularToggleButton' );
@@ -110,13 +111,16 @@ define( require => {
     const verticalAquaRadioButtons = new VerticalAquaRadioButtonGroup( verticalAquaProperty, [
       {
         value: firstOption,
-        node: new Text( firstOption )
+        node: new Text( firstOption ),
+        labelContent: firstOption
       }, {
         value: 'B',
-        node: new Text( 'B' )
+        node: new Text( 'B' ),
+        labelContent: 'B'
       }, {
         value: 'C',
-        node: new Text( 'C' )
+        node: new Text( 'C' ),
+        labelContent: 'C'
       }
     ] );
 
@@ -125,6 +129,50 @@ define( require => {
       scale: 2,
       x: 900,
       y: 10
+    } ) );
+
+    // Different pattern for interactive descriptions when there is the presence of a visual heading
+    const verticalAquaPropertyWithGroup = new Property( firstOption );
+    verticalAquaProperty.lazyLink( function( value ) {
+      message( 'Aqua Radio Button in group with heading' + value + ' pressed' );
+    } );
+    const radioButtonsString = 'Radio Buttons';
+    const radioButtonsHeading = new Text( radioButtonsString, {
+      tagName: 'h3',
+      innerContent: radioButtonsString
+    } );
+    const verticalAquaRadioButtonsWithGroup = new VerticalAquaRadioButtonGroup( verticalAquaPropertyWithGroup, [
+      {
+        value: firstOption,
+        node: new Text( firstOption ),
+        labelContent: firstOption
+      }, {
+        value: 'B',
+        node: new Text( 'B' ),
+        labelContent: 'B'
+      }, {
+        value: 'C',
+        node: new Text( 'C' ),
+        labelContent: 'C'
+      }
+    ] );
+
+    // The ul radio button group is aria-labelledby its the radio button heading
+    verticalAquaRadioButtonsWithGroup.addAriaLabelledbyAssociation( {
+      thisElementName: AccessiblePeer.PRIMARY_SIBLING,
+      otherElementName: AccessiblePeer.PRIMARY_SIBLING,
+      otherNode: radioButtonsHeading
+    } );
+
+    this.addChild( new Panel( new VBox( {
+      children: [ radioButtonsHeading, verticalAquaRadioButtonsWithGroup ],
+      align: 'left',
+      spacing: 5
+    } ), {
+      stroke: 'black',
+      scale: 2,
+      right: this.layoutBounds.right - 20,
+      top: verticalAquaRadioButtons.bottom + 100
     } ) );
 
     //===================================================================================
