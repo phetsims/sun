@@ -1,7 +1,7 @@
 // Copyright 2020, University of Colorado Boulder
 
 /**
- * VerticalAquaRadioButtonGroup is a convenience class for creating a vertical AquaRadioButtonGroup.
+ * HorizontalAquaRadioButtonGroup is a convenience class for creating a vertical AquaRadioButtonGroup.
  *
  * @author Chris Malley (PixelZoom, Inc.)
  */
@@ -13,7 +13,7 @@ define( require => {
   const merge = require( 'PHET_CORE/merge' );
   const sun = require( 'SUN/sun' );
 
-  class VerticalAquaRadioButtonGroup extends AquaRadioButtonGroup {
+  class HorizontalAquaRadioButtonGroup extends AquaRadioButtonGroup {
 
     /**
      * @param {Property} property
@@ -22,13 +22,13 @@ define( require => {
      */
     constructor( property, items, options ) {
 
-      assert && assert( !options || options.orientation === undefined, 'VerticalAquaRadioButtonGroup sets orientation' );
+      assert && assert( !options || options.orientation === undefined, 'HorizontalAquaRadioButtonGroup sets orientation' );
 
       super( property, items, merge( {
-        orientation: 'vertical'
+        orientation: 'horizontal'
       }, options ) );
     }
   }
 
-  return sun.register( 'VerticalAquaRadioButtonGroup', VerticalAquaRadioButtonGroup );
+  return sun.register( 'HorizontalAquaRadioButtonGroup', HorizontalAquaRadioButtonGroup );
 } );
