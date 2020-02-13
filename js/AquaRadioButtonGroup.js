@@ -70,10 +70,7 @@ define( require => {
       assert && assert( options.mouseAreaXDilation === undefined, 'mouseAreaXDilation is deprecated, use mouseAreaDilation' );
 
       // Determine the max item width
-      let maxItemWidth = 0;
-      for ( let i = 0; i < items.length; i++ ) {
-        maxItemWidth = Math.max( maxItemWidth, items[ i ].node.width );
-      }
+      const maxItemWidth = _.maxBy( items, item => item.node.width ).node.width;
 
       // Create a radio button for each item
       const radioButtons = [];
@@ -81,10 +78,11 @@ define( require => {
 
         const item = items[ i ];
 
-        // Content for the radio button. Add an invisible strut, so that buttons have uniform width.
-        const content = new Node( {
-          children: [ new HStrut( maxItemWidth ), item.node ]
-        } );
+        // Content for the radio button.
+        // For vertical orientation, add an invisible strut, so that buttons have uniform width.
+        const content = ( options.orientation === 'vertical' ) ?
+                        new Node( { children: [ new HStrut( maxItemWidth ), item.node ] } ) :
+                        item.node;
 
         const radioButton = new AquaRadioButton( property, item.value, content,
           merge( {}, options.radioButtonOptions, {
