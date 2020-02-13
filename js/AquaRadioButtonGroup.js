@@ -49,9 +49,9 @@ define( require => {
         // {Object|null} options passed to constructor of the AquaRadioButtons
         radioButtonOptions: null,
 
-        // dilation of pointer areas for each radio button, y dimension is computed
-        touchAreaXDilation: 0,
-        mouseAreaXDilation: 0,
+        // dilation of pointer areas for each radio button, perpendicular to options.orientation
+        touchAreaDilation: 0,
+        mouseAreaDilation: 0,
 
         // supertype options
         orientation: 'vertical', // Aqua radio buttons are typically vertical, rarely horizontal
@@ -64,6 +64,10 @@ define( require => {
         tagName: 'ul',
         groupFocusHighlight: true
       }, options );
+
+      // See https://github.com/phetsims/sun/issues/555
+      assert && assert( options.touchAreaXDilation === undefined, 'touchAreaXDilation is deprecated, use touchAreaDilation' );
+      assert && assert( options.mouseAreaXDilation === undefined, 'mouseAreaXDilation is deprecated, use mouseAreaDilation' );
 
       // Determine the max item width
       let maxItemWidth = 0;
@@ -90,10 +94,17 @@ define( require => {
             a11yNameAttribute: CLASS_NAME + instanceCount
           } ) );
 
-        // set pointer areas, y dimensions are computed
-        const yDilation = options.spacing / 2;
-        radioButton.mouseArea = radioButton.localBounds.dilatedXY( options.mouseAreaXDilation, yDilation );
-        radioButton.touchArea = radioButton.localBounds.dilatedXY( options.touchAreaXDilation, yDilation );
+        // set pointer areas
+        if ( options.orientation === 'vertical' ) {
+          const yDilation = options.spacing / 2;
+          radioButton.mouseArea = radioButton.localBounds.dilatedXY( options.mouseAreaDilation, yDilation );
+          radioButton.touchArea = radioButton.localBounds.dilatedXY( options.touchAreaDilation, yDilation );
+        }
+        else {
+          const xDilation = options.spacing / 2;
+          radioButton.mouseArea = radioButton.localBounds.dilatedXY( xDilation, options.mouseAreaDilation );
+          radioButton.touchArea = radioButton.localBounds.dilatedXY( xDilation, options.touchAreaDilation );
+        }
 
         radioButtons.push( radioButton );
       }
