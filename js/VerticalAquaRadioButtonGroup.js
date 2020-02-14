@@ -1,4 +1,4 @@
-// Copyright 2020, University of Colorado Boulder
+// Copyright 2013-2020, University of Colorado Boulder
 
 /**
  * VerticalAquaRadioButtonGroup is a convenience class for creating a vertical AquaRadioButtonGroup.
