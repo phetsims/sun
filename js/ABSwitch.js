@@ -43,7 +43,7 @@ define( require => {
         centerOnButton: false,
 
         // uses opacity as the default method of indicating whether a {Node} label is {boolean} enabled
-        setEnabled: function( label, enabled ) { label.opacity = enabled ? 1.0 : 0.5; },
+        setEnabled: ( label, enabled ) => { label.opacity = enabled ? 1.0 : 0.5; },
 
         // pointer areas for thumb
         thumbTouchAreaXDilation: 8,
@@ -105,12 +105,10 @@ define( require => {
       }
 
       // sync properties, listeners must be disposed
-      const propertyListener = function( object ) {
-        onProperty.set( valueB === object );
-      };
+      const propertyListener = object => onProperty.set( valueB === object );
       property.link( propertyListener );
 
-      const onPropertyListener = function( on ) {
+      const onPropertyListener = on => {
         property.set( on ? valueB : valueA );
         if ( options.setEnabled ) {
           options.setEnabled( labelA, !on );
@@ -121,19 +119,19 @@ define( require => {
 
       // click on labels to select, must be disposed
       const aPressListener = new PressListener( {
-        release: function() { onProperty.set( false ); },
+        release: () => onProperty.set( false ),
         tandem: labelA.tandem.createTandem( 'pressListener' )
       } );
 
       const bPressListener = new PressListener( {
-        release: function() { onProperty.set( true ); },
+        release: () => onProperty.set( true ),
         tandem: labelB.tandem.createTandem( 'pressListener' )
       } );
       labelA.addInputListener( aPressListener );
       labelB.addInputListener( bPressListener );
 
       // @private - for dispose
-      this.disposeABSwitch = function() {
+      this.disposeABSwitch = () => {
         property.unlink( propertyListener );
         onProperty.unlink( onPropertyListener );
         labelA.removeInputListener( aPressListener );
