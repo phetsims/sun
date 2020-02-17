@@ -11,7 +11,6 @@ define( require => {
   'use strict';
 
   // modules
-  const ButtonListener = require( 'SCENERY/input/ButtonListener' );
   const Dimension2 = require( 'DOT/Dimension2' );
   const inherit = require( 'PHET_CORE/inherit' );
   const InstanceRegistry = require( 'PHET_CORE/documentation/InstanceRegistry' );
@@ -20,6 +19,7 @@ define( require => {
   const merge = require( 'PHET_CORE/merge' );
   const Node = require( 'SCENERY/nodes/Node' );
   const OnOffSwitch = require( 'SUN/OnOffSwitch' );
+  const PressListener = require( 'SCENERY/listeners/PressListener' );
   const Property = require( 'AXON/Property' );
   const sun = require( 'SUN/sun' );
   const Tandem = require( 'TANDEM/Tandem' );
@@ -74,7 +74,9 @@ define( require => {
       thumbTouchAreaYDilation: options.thumbTouchAreaYDilation,
       thumbMouseAreaXDilation: options.thumbMouseAreaXDilation,
       thumbMouseAreaYDilation: options.thumbMouseAreaYDilation,
-      tandem: options.tandem.createTandem( 'onOffSwitch' )
+
+      // not named 'onOffSwitch' by design, see https://github.com/phetsims/sun/issues/559#issuecomment-585982604
+      tandem: options.tandem.createTandem( 'switch' )
     } );
 
     // rendering order
@@ -118,27 +120,27 @@ define( require => {
     onProperty.link( onPropertyListener );
 
     // click on labels to select, must be disposed
-    const aInputListener = new ButtonListener( {
-      fire: function() { onProperty.set( false ); },
-      tandem: options.tandem.createTandem( 'aInputListener' )
+    const aPressListener = new PressListener( {
+      release: function() { onProperty.set( false ); },
+      tandem: labelA.tandem.createTandem( 'pressListener' )
     } );
-    const bInputListener = new ButtonListener( {
-      fire: function() { onProperty.set( true ); },
-      tandem: options.tandem.createTandem( 'bInputListener' )
+    
+    const bPressListener = new PressListener( {
+      release: function() { onProperty.set( true ); },
+      tandem: labelB.tandem.createTandem( 'pressListener' )
     } );
-    labelA.addInputListener( aInputListener );
-    labelB.addInputListener( bInputListener );
+    labelA.addInputListener( aPressListener );
+    labelB.addInputListener( bPressListener );
 
     // @private - for dispose
     this.disposeABSwitch = function() {
       property.unlink( propertyListener );
       onProperty.unlink( onPropertyListener );
-      labelA.removeInputListener( aInputListener );
-      labelB.removeInputListener( bInputListener );
+      labelA.removeInputListener( aPressListener );
+      labelB.removeInputListener( bPressListener );
     };
 
     this.mutate( options );
-
 
     // support for binder documentation, stripped out in builds and only runs when ?binder is specified
     assert && phet.chipper.queryParameters.binder && InstanceRegistry.registerDataURL( 'sun', 'ABSwitch', this );
@@ -151,6 +153,7 @@ define( require => {
     /**
      * Make eligible for garbage collection.
      * @public
+     * @override
      */
     dispose: function() {
       this.disposeABSwitch();
