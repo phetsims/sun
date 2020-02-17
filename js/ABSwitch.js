@@ -23,6 +23,14 @@ define( require => {
   const sun = require( 'SUN/sun' );
   const Tandem = require( 'TANDEM/Tandem' );
 
+  // constants
+  const DEFAULT_SIZE = new Dimension2( 60, 30 );
+
+  // Uses opacity as the default method of indicating whether a {Node} label is {boolean} enabled.
+  const DEFAULT_SET_ENABLED = ( label, enabled ) => {
+    label.opacity = enabled ? 1.0 : 0.5;
+  };
+
   class ABSwitch extends Node {
 
     /**
@@ -37,13 +45,13 @@ define( require => {
 
       // default option values
       options = merge( {
-        switchSize: new Dimension2( 60, 30 ),
+        switchSize: DEFAULT_SIZE,
         xSpacing: 8,
         cursor: 'pointer',
         centerOnButton: false,
 
-        // uses opacity as the default method of indicating whether a {Node} label is {boolean} enabled
-        setEnabled: ( label, enabled ) => { label.opacity = enabled ? 1.0 : 0.5; },
+        // {function( Node, boolean )} method of making the switch look disabled
+        setEnabled: DEFAULT_SET_ENABLED,
 
         // pointer areas for thumb
         thumbTouchAreaXDilation: 8,
@@ -138,6 +146,7 @@ define( require => {
       this.disposeABSwitch = () => {
         property.unlink( propertyListener );
         onProperty.unlink( onPropertyListener );
+        onOffSwitch.dispose();
         labelA.removeInputListener( aPressListener );
         labelB.removeInputListener( bPressListener );
       };
