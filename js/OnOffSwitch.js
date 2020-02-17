@@ -139,13 +139,13 @@ define( require => {
         // only touch to snag when over the thumb (don't snag on the track itself)
         allowTouchSnag: event => _.includes( event.trail.nodes, this.thumbNode ),
 
-        start: ( event, trail ) => {
+        start: () => {
           // resets our state
           accumulatedDelta.setXY( 0, 0 ); // reset it mutably (less allocation)
           passedDragThreshold = false;
         },
 
-        drag: ( event, trail ) => {
+        drag: event => {
 
           // center the thumb on the pointer's x-coordinate if possible (but clamp to left and right ends)
           const viewPoint = event.currentTarget.globalToLocalPoint( event.pointer.point );
@@ -180,7 +180,7 @@ define( require => {
           }
         },
 
-        end: ( event, trail ) => {
+        end: () => {
           const oldValue = onProperty.get();
 
           // if moved past the threshold, choose value based on the side, otherwise just toggle
