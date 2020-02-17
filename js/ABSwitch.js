@@ -53,11 +53,15 @@ define( require => {
         tandem: Tandem.REQUIRED
       }, options );
 
-      const defaultTrackFill = new LinearGradient( 0, 0, 0, options.switchSize.height ).addColorStop( 0, 'rgb(40,40,40)' ).addColorStop( 1, 'rgb(200,200,200)' );
+      const defaultTrackFill = new LinearGradient( 0, 0, 0, options.switchSize.height )
+        .addColorStop( 0, 'rgb( 40, 40, 40 )' )
+        .addColorStop( 1, 'rgb( 200, 200, 200 )' );
       options.trackFillA = options.trackFillA || defaultTrackFill;
       options.trackFillB = options.trackFillB || defaultTrackFill;
       options.thumbFill = options.thumbFill ||
-                          new LinearGradient( 0, 0, 0, options.switchSize.height ).addColorStop( 0, 'white' ).addColorStop( 1, 'rgb(200,200,200)' );
+                          new LinearGradient( 0, 0, 0, options.switchSize.height )
+                            .addColorStop( 0, 'white' )
+                            .addColorStop( 1, 'rgb( 200, 200, 200 )' );
 
       super();
 
