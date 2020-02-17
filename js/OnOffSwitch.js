@@ -146,6 +146,7 @@ define( require => {
         },
 
         drag: ( event, trail ) => {
+
           // center the thumb on the pointer's x-coordinate if possible (but clamp to left and right ends)
           const viewPoint = event.currentTarget.globalToLocalPoint( event.pointer.point );
           const halfThumbWidth = this.thumbNode.width / 2;
