@@ -12,7 +12,6 @@ define( require => {
 
   // modules
   const Dimension2 = require( 'DOT/Dimension2' );
-  const inherit = require( 'PHET_CORE/inherit' );
   const InstanceRegistry = require( 'PHET_CORE/documentation/InstanceRegistry' );
   const Line = require( 'SCENERY/nodes/Line' );
   const LinearGradient = require( 'SCENERY/util/LinearGradient' );
@@ -24,140 +23,139 @@ define( require => {
   const sun = require( 'SUN/sun' );
   const Tandem = require( 'TANDEM/Tandem' );
 
-  /**
-   * @param {Property.<*>} property stores the value of the current choice
-   * @param {*} valueA value for choice 'A'
-   * @param {Node} labelA label for choice 'A'
-   * @param {*} valueB value for choice 'B'
-   * @param {Node} labelB label for choice 'B'
-   * @param {Object} [options]
-   * @constructor
-   */
-  function ABSwitch( property, valueA, labelA, valueB, labelB, options ) {
+  class ABSwitch extends Node {
 
-    // default option values
-    options = merge( {
-      switchSize: new Dimension2( 60, 30 ),
-      xSpacing: 8,
-      cursor: 'pointer',
-      centerOnButton: false,
+    /**
+     * @param {Property.<*>} property stores the value of the current choice
+     * @param {*} valueA value for choice 'A'
+     * @param {Node} labelA label for choice 'A'
+     * @param {*} valueB value for choice 'B'
+     * @param {Node} labelB label for choice 'B'
+     * @param {Object} [options]
+     */
+    constructor( property, valueA, labelA, valueB, labelB, options ) {
 
-      // uses opacity as the default method of indicating whether a {Node} label is {boolean} enabled
-      setEnabled: function( label, enabled ) { label.opacity = enabled ? 1.0 : 0.5; },
+      // default option values
+      options = merge( {
+        switchSize: new Dimension2( 60, 30 ),
+        xSpacing: 8,
+        cursor: 'pointer',
+        centerOnButton: false,
 
-      // pointer areas for thumb
-      thumbTouchAreaXDilation: 8,
-      thumbTouchAreaYDilation: 8,
-      thumbMouseAreaXDilation: 0,
-      thumbMouseAreaYDilation: 0,
-      tandem: Tandem.REQUIRED
-    }, options );
+        // uses opacity as the default method of indicating whether a {Node} label is {boolean} enabled
+        setEnabled: function( label, enabled ) { label.opacity = enabled ? 1.0 : 0.5; },
 
-    const defaultTrackFill = new LinearGradient( 0, 0, 0, options.switchSize.height ).addColorStop( 0, 'rgb(40,40,40)' ).addColorStop( 1, 'rgb(200,200,200)' );
-    options.trackFillA = options.trackFillA || defaultTrackFill;
-    options.trackFillB = options.trackFillB || defaultTrackFill;
-    options.thumbFill = options.thumbFill ||
-                        new LinearGradient( 0, 0, 0, options.switchSize.height ).addColorStop( 0, 'white' ).addColorStop( 1, 'rgb(200,200,200)' );
+        // pointer areas for thumb
+        thumbTouchAreaXDilation: 8,
+        thumbTouchAreaYDilation: 8,
+        thumbMouseAreaXDilation: 0,
+        thumbMouseAreaYDilation: 0,
+        tandem: Tandem.REQUIRED
+      }, options );
 
-    Node.call( this );
+      const defaultTrackFill = new LinearGradient( 0, 0, 0, options.switchSize.height ).addColorStop( 0, 'rgb(40,40,40)' ).addColorStop( 1, 'rgb(200,200,200)' );
+      options.trackFillA = options.trackFillA || defaultTrackFill;
+      options.trackFillB = options.trackFillB || defaultTrackFill;
+      options.thumbFill = options.thumbFill ||
+                          new LinearGradient( 0, 0, 0, options.switchSize.height ).addColorStop( 0, 'white' ).addColorStop( 1, 'rgb(200,200,200)' );
 
-    // property for adapting to OnOffSwitch. 'true' is 'B', the object on the 'on' end of the OnOffSwitch.
-    const onProperty = new Property( valueB === property.get() );
+      super();
 
-    const onOffSwitch = new OnOffSwitch( onProperty, {
-      size: options.switchSize,
-      cursor: options.cursor,
-      thumbFill: options.thumbFill,
-      trackOnFill: options.trackFillB,
-      trackOffFill: options.trackFillA,
-      thumbTouchAreaXDilation: options.thumbTouchAreaXDilation,
-      thumbTouchAreaYDilation: options.thumbTouchAreaYDilation,
-      thumbMouseAreaXDilation: options.thumbMouseAreaXDilation,
-      thumbMouseAreaYDilation: options.thumbMouseAreaYDilation,
+      // property for adapting to OnOffSwitch. 'true' is 'B', the object on the 'on' end of the OnOffSwitch.
+      const onProperty = new Property( valueB === property.get() );
 
-      // not named 'onOffSwitch' by design, see https://github.com/phetsims/sun/issues/559#issuecomment-585982604
-      tandem: options.tandem.createTandem( 'switch' )
-    } );
+      const onOffSwitch = new OnOffSwitch( onProperty, {
+        size: options.switchSize,
+        cursor: options.cursor,
+        thumbFill: options.thumbFill,
+        trackOnFill: options.trackFillB,
+        trackOffFill: options.trackFillA,
+        thumbTouchAreaXDilation: options.thumbTouchAreaXDilation,
+        thumbTouchAreaYDilation: options.thumbTouchAreaYDilation,
+        thumbMouseAreaXDilation: options.thumbMouseAreaXDilation,
+        thumbMouseAreaYDilation: options.thumbMouseAreaYDilation,
 
-    // rendering order
-    this.addChild( onOffSwitch );
-    this.addChild( labelA );
-    this.addChild( labelB );
+        // not named 'onOffSwitch' by design, see https://github.com/phetsims/sun/issues/559#issuecomment-585982604
+        tandem: options.tandem.createTandem( 'switch' )
+      } );
 
-    // layout: 'A' on the left, 'B' on the right
-    labelA.right = onOffSwitch.left - options.xSpacing;
-    labelA.centerY = onOffSwitch.centerY;
-    labelB.left = onOffSwitch.right + options.xSpacing;
-    labelB.centerY = onOffSwitch.centerY;
+      // rendering order
+      this.addChild( onOffSwitch );
+      this.addChild( labelA );
+      this.addChild( labelB );
 
-    // add a horizontal strut that will cause the 'centerX' of this node to be at the center of the button
-    if ( options.centerOnButton ) {
-      const additionalWidth = Math.abs( labelA.width - labelB.width );
-      const strut = new Line( 0, 0, this.width + additionalWidth, 0 );
-      this.addChild( strut );
-      strut.moveToBack();
-      if ( labelA.width < labelB.width ) {
-        strut.left = labelA.left - ( additionalWidth / 2 );
+      // layout: 'A' on the left, 'B' on the right
+      labelA.right = onOffSwitch.left - options.xSpacing;
+      labelA.centerY = onOffSwitch.centerY;
+      labelB.left = onOffSwitch.right + options.xSpacing;
+      labelB.centerY = onOffSwitch.centerY;
+
+      // add a horizontal strut that will cause the 'centerX' of this node to be at the center of the button
+      if ( options.centerOnButton ) {
+        const additionalWidth = Math.abs( labelA.width - labelB.width );
+        const strut = new Line( 0, 0, this.width + additionalWidth, 0 );
+        this.addChild( strut );
+        strut.moveToBack();
+        if ( labelA.width < labelB.width ) {
+          strut.left = labelA.left - ( additionalWidth / 2 );
+        }
+        else {
+          strut.left = labelA.left;
+        }
       }
-      else {
-        strut.left = labelA.left;
-      }
+
+      // sync properties, listeners must be disposed
+      const propertyListener = function( object ) {
+        onProperty.set( valueB === object );
+      };
+      property.link( propertyListener );
+
+      const onPropertyListener = function( on ) {
+        property.set( on ? valueB : valueA );
+        if ( options.setEnabled ) {
+          options.setEnabled( labelA, !on );
+          options.setEnabled( labelB, on );
+        }
+      };
+      onProperty.link( onPropertyListener );
+
+      // click on labels to select, must be disposed
+      const aPressListener = new PressListener( {
+        release: function() { onProperty.set( false ); },
+        tandem: labelA.tandem.createTandem( 'pressListener' )
+      } );
+
+      const bPressListener = new PressListener( {
+        release: function() { onProperty.set( true ); },
+        tandem: labelB.tandem.createTandem( 'pressListener' )
+      } );
+      labelA.addInputListener( aPressListener );
+      labelB.addInputListener( bPressListener );
+
+      // @private - for dispose
+      this.disposeABSwitch = function() {
+        property.unlink( propertyListener );
+        onProperty.unlink( onPropertyListener );
+        labelA.removeInputListener( aPressListener );
+        labelB.removeInputListener( bPressListener );
+      };
+
+      this.mutate( options );
+
+      // support for binder documentation, stripped out in builds and only runs when ?binder is specified
+      assert && phet.chipper.queryParameters.binder && InstanceRegistry.registerDataURL( 'sun', 'ABSwitch', this );
     }
-
-    // sync properties, listeners must be disposed
-    const propertyListener = function( object ) {
-      onProperty.set( valueB === object );
-    };
-    property.link( propertyListener );
-
-    const onPropertyListener = function( on ) {
-      property.set( on ? valueB : valueA );
-      if ( options.setEnabled ) {
-        options.setEnabled( labelA, !on );
-        options.setEnabled( labelB, on );
-      }
-    };
-    onProperty.link( onPropertyListener );
-
-    // click on labels to select, must be disposed
-    const aPressListener = new PressListener( {
-      release: function() { onProperty.set( false ); },
-      tandem: labelA.tandem.createTandem( 'pressListener' )
-    } );
-    
-    const bPressListener = new PressListener( {
-      release: function() { onProperty.set( true ); },
-      tandem: labelB.tandem.createTandem( 'pressListener' )
-    } );
-    labelA.addInputListener( aPressListener );
-    labelB.addInputListener( bPressListener );
-
-    // @private - for dispose
-    this.disposeABSwitch = function() {
-      property.unlink( propertyListener );
-      onProperty.unlink( onPropertyListener );
-      labelA.removeInputListener( aPressListener );
-      labelB.removeInputListener( bPressListener );
-    };
-
-    this.mutate( options );
-
-    // support for binder documentation, stripped out in builds and only runs when ?binder is specified
-    assert && phet.chipper.queryParameters.binder && InstanceRegistry.registerDataURL( 'sun', 'ABSwitch', this );
-  }
-
-  sun.register( 'ABSwitch', ABSwitch );
-
-  return inherit( Node, ABSwitch, {
 
     /**
      * Make eligible for garbage collection.
      * @public
      * @override
      */
-    dispose: function() {
+    dispose() {
       this.disposeABSwitch();
-      Node.prototype.dispose.call( this );
+      super.dispose();
     }
-  } );
+  }
+
+  return sun.register( 'ABSwitch', ABSwitch );
 } );
