@@ -29,7 +29,7 @@ define( require => {
   const CLASS_NAME = 'AquaRadioButtonGroup';
 
   class AquaRadioButtonGroup extends LayoutBox {
-    
+
     /**
      * @param {Property} property
      * @param {Object[]} items - Each item describes a radio button, and is an object with these properties:
@@ -60,8 +60,9 @@ define( require => {
         // phet-io
         tandem: Tandem.REQUIRED,
 
-        // supertype a11y options
+        // PDOM
         tagName: 'ul',
+        ariaRole: 'radiogroup',
         groupFocusHighlight: true
       }, options );
 
