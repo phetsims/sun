@@ -50,7 +50,7 @@ define( require => {
         cursor: 'pointer',
         centerOnButton: false,
 
-        // {function( Node, boolean )} method of making the switch look disabled
+        // {function( Node, boolean )} method of making the labels look disabled
         setEnabled: DEFAULT_SET_ENABLED,
 
         // pointer areas for thumb
