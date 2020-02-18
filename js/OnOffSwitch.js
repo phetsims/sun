@@ -19,13 +19,13 @@ define( require => {
 
   // modules
   const Dimension2 = require( 'DOT/Dimension2' );
+  const DragListener = require( 'SCENERY/listeners/DragListener' );
   const EventType = require( 'TANDEM/EventType' );
   const merge = require( 'PHET_CORE/merge' );
   const Node = require( 'SCENERY/nodes/Node' );
   const OnOffSwitchIO = require( 'SUN/OnOffSwitchIO' );
   const Rectangle = require( 'SCENERY/nodes/Rectangle' );
   const Shape = require( 'KITE/Shape' );
-  const SimpleDragHandler = require( 'SCENERY/input/SimpleDragHandler' );
   const sun = require( 'SUN/sun' );
   const Tandem = require( 'TANDEM/Tandem' );
   const Utils = require( 'DOT/Utils' );
@@ -133,11 +133,19 @@ define( require => {
       const accumulatedDelta = new Vector2( 0, 0 ); // stores how far we are from where our drag started, in our local coordinate frame
       let passedDragThreshold = false; // whether we have dragged far enough to be considered for "drag" behavior (pick closest side), or "tap" behavior (toggle)
 
-      this.addInputListener( new SimpleDragHandler( {
-        tandem: options.tandem.createTandem( 'simpleDragHandler' ),
+      this.addInputListener( new DragListener( {
+        tandem: options.tandem.createTandem( 'dragListener' ),
 
-        // only touch to snag when over the thumb (don't snag on the track itself)
-        allowTouchSnag: event => _.includes( event.trail.nodes, this.thumbNode ),
+        // Only touch to snag when moving the thumb (don't snag on the track itself),
+        // but still support presses in the track to toggle the value.
+        canStartPress: event => {
+          if ( event.type === 'move' || event.type === 'enter' ) {
+            return _.includes( event.trail.nodes, this.thumbNode );
+          }
+          else {
+            return true;
+          }
+        },
 
         start: () => {
           // resets our state
@@ -145,10 +153,13 @@ define( require => {
           passedDragThreshold = false;
         },
 
-        drag: event => {
+        drag: ( event, listener ) => {
+
+          accumulatedDelta.add( listener.modelDelta );
+          passedDragThreshold = passedDragThreshold || ( accumulatedDelta.magnitudeSquared > dragThresholdSquared );
 
           // center the thumb on the pointer's x-coordinate if possible (but clamp to left and right ends)
-          const viewPoint = event.currentTarget.globalToLocalPoint( event.pointer.point );
+          const viewPoint = listener.getCurrentTarget().globalToLocalPoint( event.pointer.point );
           const halfThumbWidth = this.thumbNode.width / 2;
           this.thumbNode.centerX = Utils.clamp( viewPoint.x, halfThumbWidth, options.size.width - halfThumbWidth );
 
@@ -199,11 +210,6 @@ define( require => {
           updateThumb( onProperty.get() );
 
           this.phetioEndEvent();
-        },
-
-        translate: params => {
-          accumulatedDelta.add( params.delta );
-          passedDragThreshold = passedDragThreshold || ( accumulatedDelta.magnitudeSquared > dragThresholdSquared );
         }
       } ) );
 
