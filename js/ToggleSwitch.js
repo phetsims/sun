@@ -176,7 +176,7 @@ define( require => {
       // Gets the value that corresponds to the current thumb position.
       const thumbPositionToValue = () => ( thumbNode.centerX < trackNode.centerX ) ? leftValue : rightValue;
 
-      this.addInputListener( new DragListener( {
+      const dragListener = new DragListener( {
         tandem: options.tandem.createTandem( 'dragListener' ),
 
         // Only touch to snag when moving the thumb (don't snag on the track itself),
@@ -240,13 +240,16 @@ define( require => {
           // update the thumb location (sanity check that it's here, only needs to be run if passedDragThreshold===true)
           update( newValue );
         }
-      } ) );
+      } );
+      this.addInputListener( dragListener );
 
       this.mutate( options );
 
       // @private
       this.disposeToggleSwitch = () => {
         property.unlink( update );
+        toggleAction.dispose();
+        dragListener.dispose();
       };
     }
 

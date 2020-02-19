@@ -102,24 +102,26 @@ define( require => {
       property.link( propertyListener ); // unlink on dispose
 
       // click on labels to select
-      const aPressListener = new PressListener( {
+      const pressListenerA = new PressListener( {
         release: () => { property.value = valueA; },
         tandem: labelA.tandem.createTandem( 'pressListener' )
       } );
-      labelA.addInputListener( aPressListener ); // removeInputListener on dispose
+      labelA.addInputListener( pressListenerA ); // removeInputListener on dispose
 
-      const bPressListener = new PressListener( {
+      const pressListenerB = new PressListener( {
         release: () => { property.value = valueB; },
         tandem: labelB.tandem.createTandem( 'pressListener' )
       } );
-      labelB.addInputListener( bPressListener ); // removeInputListener on dispose
+      labelB.addInputListener( pressListenerB ); // removeInputListener on dispose
 
       // @private - for dispose
       this.disposeABSwitch = () => {
         property.unlink( propertyListener );
         toggleSwitch.dispose();
-        labelA.removeInputListener( aPressListener );
-        labelB.removeInputListener( bPressListener );
+        labelA.removeInputListener( pressListenerA );
+        labelB.removeInputListener( pressListenerB );
+        pressListenerA.dispose();
+        pressListenerB.dispose();
       };
 
       this.mutate( options );
