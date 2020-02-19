@@ -68,7 +68,7 @@ define( require => {
         toggleThreshold: 1,
 
         // thumb
-        thumbFill: null,
+        thumbFill: null, // {Color|string} thumb fill, default computed below
         thumbStroke: 'black',
         thumbTouchAreaXDilation: 8,
         thumbTouchAreaYDilation: 8,
@@ -76,8 +76,8 @@ define( require => {
         thumbMouseAreaYDilation: 0,
 
         // track
-        trackFillLeft: null, // {Color|string} track fill when property.value == leftValue
-        trackFillRight: null, // {Color|string} track fill when property.value == rightValue
+        trackFillLeft: null, // {Color|string} track fill when property.value == leftValue, default computed below
+        trackFillRight: null, // {Color|string} track fill when property.value == rightValue, default computed below
         trackStroke: 'black',
 
         // phet-io
@@ -87,12 +87,17 @@ define( require => {
         phetioReadOnly: PhetioObject.DEFAULT_OPTIONS.phetioReadOnly
       }, options );
 
-      // Default fills
-      const defaultTrackFill = new LinearGradient( 0, 0, 0, options.size.height )
-        .addColorStop( 0, 'rgb( 40, 40, 40 )' )
-        .addColorStop( 1, 'rgb( 200, 200, 200 )' );
+      // Default track fills
+      let defaultTrackFill = null;
+      if ( !options.trackFillLeft || !options.trackFillRight ) {
+        defaultTrackFill = new LinearGradient( 0, 0, 0, options.size.height )
+          .addColorStop( 0, 'rgb( 40, 40, 40 )' )
+          .addColorStop( 1, 'rgb( 200, 200, 200 )' );
+      }
       options.trackFillLeft = options.trackFillLeft || defaultTrackFill;
       options.trackFillRight = options.trackFillRight || defaultTrackFill;
+
+      // Default thumb fill
       options.thumbFill = options.thumbFill ||
                           new LinearGradient( 0, 0, 0, options.size.height )
                             .addColorStop( 0, 'white' )
