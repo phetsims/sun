@@ -245,6 +245,11 @@ define( require => {
 
       this.mutate( options );
 
+      // Add a link to the Property that this switch controls
+      this.addLinkedElement( property, {
+        tandem: options.tandem.createTandem( 'property' )
+      } );
+
       // @private
       this.disposeToggleSwitch = () => {
         property.unlink( update );
