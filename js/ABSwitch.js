@@ -1,9 +1,9 @@
 // Copyright 2014-2020, University of Colorado Boulder
 
 /**
- * Control for switching between 2 choices (A & B).
+ * ABSwitch is a control for switching between 2 choices, referred to as 'A' & 'B'.
  * Choice 'A' is to the left of the switch, choice 'B' is to the right.
- * This decorates OnOffSwitch, the iOS-like on/off switch.
+ * This decorates ToggleSwitch with labels.
  *
  * @author Chris Malley (PixelZoom, Inc.)
  */
@@ -11,20 +11,16 @@ define( require => {
   'use strict';
 
   // modules
-  const Dimension2 = require( 'DOT/Dimension2' );
   const InstanceRegistry = require( 'PHET_CORE/documentation/InstanceRegistry' );
   const Line = require( 'SCENERY/nodes/Line' );
-  const LinearGradient = require( 'SCENERY/util/LinearGradient' );
   const merge = require( 'PHET_CORE/merge' );
   const Node = require( 'SCENERY/nodes/Node' );
-  const OnOffSwitch = require( 'SUN/OnOffSwitch' );
   const PressListener = require( 'SCENERY/listeners/PressListener' );
-  const Property = require( 'AXON/Property' );
   const sun = require( 'SUN/sun' );
   const Tandem = require( 'TANDEM/Tandem' );
+  const ToggleSwitch = require( 'SUN/ToggleSwitch' );
 
   // constants
-  const DEFAULT_SIZE = new Dimension2( 60, 30 );
 
   // Uses opacity as the default method of indicating whether a {Node} label is {boolean} enabled.
   const DEFAULT_SET_ENABLED = ( label, enabled ) => {
@@ -43,64 +39,45 @@ define( require => {
      */
     constructor( property, valueA, labelA, valueB, labelB, options ) {
 
+      // PhET-iO requirements
+      assert && assert( labelA.tandem, 'labelA must have a tandem' );
+      assert && assert( labelB.tandem, 'labelB must have a tandem' );
+
       // default option values
       options = merge( {
-        switchSize: DEFAULT_SIZE,
+
+        // options passed to ToggleSwitch
+        toggleSwitchOptions: null,
+
+        // {number} space between labels and switch
         xSpacing: 8,
-        cursor: 'pointer',
+
+        // if true, centerX will be at the centerX of the ToggleSwitch
         centerOnButton: false,
 
         // {function( Node, boolean )} method of making the labels look disabled
         setEnabled: DEFAULT_SET_ENABLED,
 
-        // pointer areas for thumb
-        thumbTouchAreaXDilation: 8,
-        thumbTouchAreaYDilation: 8,
-        thumbMouseAreaXDilation: 0,
-        thumbMouseAreaYDilation: 0,
+        // phet-io
         tandem: Tandem.REQUIRED
       }, options );
 
-      const defaultTrackFill = new LinearGradient( 0, 0, 0, options.switchSize.height )
-        .addColorStop( 0, 'rgb( 40, 40, 40 )' )
-        .addColorStop( 1, 'rgb( 200, 200, 200 )' );
-      options.trackFillA = options.trackFillA || defaultTrackFill;
-      options.trackFillB = options.trackFillB || defaultTrackFill;
-      options.thumbFill = options.thumbFill ||
-                          new LinearGradient( 0, 0, 0, options.switchSize.height )
-                            .addColorStop( 0, 'white' )
-                            .addColorStop( 1, 'rgb( 200, 200, 200 )' );
-
       super();
 
-      // property for adapting to OnOffSwitch. 'true' is 'B', the object on the 'on' end of the OnOffSwitch.
-      const onProperty = new Property( valueB === property.get() );
-
-      const onOffSwitch = new OnOffSwitch( onProperty, {
-        size: options.switchSize,
-        cursor: options.cursor,
-        thumbFill: options.thumbFill,
-        trackOnFill: options.trackFillB,
-        trackOffFill: options.trackFillA,
-        thumbTouchAreaXDilation: options.thumbTouchAreaXDilation,
-        thumbTouchAreaYDilation: options.thumbTouchAreaYDilation,
-        thumbMouseAreaXDilation: options.thumbMouseAreaXDilation,
-        thumbMouseAreaYDilation: options.thumbMouseAreaYDilation,
-
-        // not named 'onOffSwitch' by design, see https://github.com/phetsims/sun/issues/559#issuecomment-585982604
-        tandem: options.tandem.createTandem( 'switch' )
-      } );
+      const toggleSwitch = new ToggleSwitch( property, valueA, valueB, merge( {
+        tandem: options.tandem.createTandem( 'toggleSwitch' )
+      }, options.toggleSwitchOptions ) );
 
       // rendering order
-      this.addChild( onOffSwitch );
+      this.addChild( toggleSwitch );
       this.addChild( labelA );
       this.addChild( labelB );
 
       // layout: 'A' on the left, 'B' on the right
-      labelA.right = onOffSwitch.left - options.xSpacing;
-      labelA.centerY = onOffSwitch.centerY;
-      labelB.left = onOffSwitch.right + options.xSpacing;
-      labelB.centerY = onOffSwitch.centerY;
+      labelA.right = toggleSwitch.left - options.xSpacing;
+      labelA.centerY = toggleSwitch.centerY;
+      labelB.left = toggleSwitch.right + options.xSpacing;
+      labelB.centerY = toggleSwitch.centerY;
 
       // add a horizontal strut that will cause the 'centerX' of this node to be at the center of the button
       if ( options.centerOnButton ) {
@@ -116,37 +93,31 @@ define( require => {
         }
       }
 
-      // sync properties, listeners must be disposed
-      const propertyListener = object => onProperty.set( valueB === object );
-      property.link( propertyListener );
-
-      const onPropertyListener = on => {
-        property.set( on ? valueB : valueA );
+      const propertyListener = value => {
         if ( options.setEnabled ) {
-          options.setEnabled( labelA, !on );
-          options.setEnabled( labelB, on );
+          options.setEnabled( labelA, value === valueA );
+          options.setEnabled( labelB, value === valueB );
         }
       };
-      onProperty.link( onPropertyListener );
+      property.link( propertyListener ); // unlink on dispose
 
-      // click on labels to select, must be disposed
+      // click on labels to select
       const aPressListener = new PressListener( {
-        release: () => onProperty.set( false ),
+        release: () => { property.value = valueA; },
         tandem: labelA.tandem.createTandem( 'pressListener' )
       } );
+      labelA.addInputListener( aPressListener ); // removeInputListener on dispose
 
       const bPressListener = new PressListener( {
-        release: () => onProperty.set( true ),
+        release: () => { property.value = valueB; },
         tandem: labelB.tandem.createTandem( 'pressListener' )
       } );
-      labelA.addInputListener( aPressListener );
-      labelB.addInputListener( bPressListener );
+      labelB.addInputListener( bPressListener ); // removeInputListener on dispose
 
       // @private - for dispose
       this.disposeABSwitch = () => {
         property.unlink( propertyListener );
-        onProperty.unlink( onPropertyListener );
-        onOffSwitch.dispose();
+        toggleSwitch.dispose();
         labelA.removeInputListener( aPressListener );
         labelB.removeInputListener( bPressListener );
       };

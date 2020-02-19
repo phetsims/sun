@@ -43,6 +43,7 @@ define( require => {
   const sunQueryParameters = require( 'SUN/sunQueryParameters' );
   const Text = require( 'SCENERY/nodes/Text' );
   const timer = require( 'AXON/timer' );
+  const ToggleSwitch = require( 'SUN/ToggleSwitch' );
   const VBox = require( 'SCENERY/nodes/VBox' );
   const VSlider = require( 'SUN/VSlider' );
 
@@ -68,7 +69,8 @@ define( require => {
       { label: 'PageControl', createNode: demoPageControl },
       { label: 'NumberSpinner', createNode: demoNumberSpinner },
       { label: 'AlignGroup', createNode: demoAlignGroup },
-      { label: 'AccordionBox', createNode: demoAccordionBox }
+      { label: 'AccordionBox', createNode: demoAccordionBox },
+      { label: 'ToggleSwitch', createNode: demoToggleSwitch }
     ], {
       selectedDemoLabel: sunQueryParameters.component
     } );
@@ -79,10 +81,10 @@ define( require => {
   var demoABSwitch = function( layoutBounds ) {
 
     const property = new StringProperty( 'A' );
-    const aNode = new Text( 'A', { font: new PhetFont( 24 ) } );
-    const bNode = new Text( 'B', { font: new PhetFont( 24 ) } );
+    const labelA = new Text( 'A', { font: new PhetFont( 24 ) } );
+    const labelB = new Text( 'B', { font: new PhetFont( 24 ) } );
 
-    return new ABSwitch( property, 'A', aNode, 'B', bNode, {
+    return new ABSwitch( property, 'A', labelA, 'B', labelB, {
       center: layoutBounds.center
     } );
   };
@@ -325,14 +327,15 @@ define( require => {
     return layoutBox;
   };
 
+  var demoToggleSwitch = function( layoutBounds ) {
+    return new ToggleSwitch( new StringProperty( 'left' ), 'left', 'right', {
+      center: layoutBounds.center
+    } );
+  };
+
   // Creates a demo for OnOffSwitch
   var demoOnOffSwitch = function( layoutBounds ) {
-    return new OnOffSwitch( new Property( true ), {
-      size: new Dimension2( 80, 30 ),
-      thumbTouchAreaXDilation: 10,
-      thumbTouchAreaYDilation: 10,
-      thumbMouseAreaXDilation: 5,
-      thumbMouseAreaYDilation: 5,
+    return new OnOffSwitch( new BooleanProperty( true ), {
       center: layoutBounds.center
     } );
   };
