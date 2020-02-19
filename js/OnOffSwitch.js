@@ -1,4 +1,4 @@
-// Copyright 2020, University of Colorado Boulder
+// Copyright 2014-2020, University of Colorado Boulder
 
 /**
  * OnOffSwitch is a switch for toggling between true (on) and false (off).
