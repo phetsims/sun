@@ -15,6 +15,7 @@ define( require => {
   const inherit = require( 'PHET_CORE/inherit' );
   const merge = require( 'PHET_CORE/merge' );
   const RoundButtonView = require( 'SUN/buttons/RoundButtonView' );
+  const pushButtonSoundPlayer = require( 'TAMBO/shared-sound-players/pushButtonSoundPlayer' );
   const StickyToggleButtonInteractionStateProperty = require( 'SUN/buttons/StickyToggleButtonInteractionStateProperty' );
   const StickyToggleButtonModel = require( 'SUN/buttons/StickyToggleButtonModel' );
   const sun = require( 'SUN/sun' );
@@ -41,8 +42,14 @@ define( require => {
     const stickyToggleButtonInteractionStateProperty = new StickyToggleButtonInteractionStateProperty( toggleButtonModel );
     RoundButtonView.call( this, toggleButtonModel, stickyToggleButtonInteractionStateProperty, options );
 
+    // sound generation
+    const soundPlayer = options.soundPlayer || pushButtonSoundPlayer;
+    const playSound = () => soundPlayer.play();
+    toggleButtonModel.produceSoundEmitter.addListener( playSound );
+
     // @private - dispose items specific to this instance
     this.disposeRoundStickyToggleButton = function() {
+      toggleButtonModel.produceSoundEmitter.removeListener( playSound );
       toggleButtonModel.dispose();
       stickyToggleButtonInteractionStateProperty.dispose();
     };
