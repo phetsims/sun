@@ -124,6 +124,9 @@ define( require => {
           radioButtons[ i ].dispose();
         }
       };
+
+      // @private
+      this.radioButtons = radioButtons;
     }
 
     /**
@@ -133,6 +136,17 @@ define( require => {
     dispose() {
       this.disposeAquaRadioButtonGroup();
       super.dispose();
+    }
+
+    /**
+     * Gets the radio button that corresponds to the specified value.
+     * @param {*} value
+     * @returns {AquaRadioButton}
+     */
+    getButton( value ) {
+      const button = _.find( this.radioButtons, radioButton => radioButton.value === value );
+      assert && assert( button, `no radio button found for value ${value}` );
+      return button;
     }
   }
 
