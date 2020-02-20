@@ -70,10 +70,6 @@ define( require => {
         groupFocusHighlight: true
       }, options );
 
-      //TODO delete this, see https://github.com/phetsims/sun/issues/555
-      assert && assert( options.touchAreaDilation === undefined, 'oops, touchAreaDilation should not exist' );
-      assert && assert( options.mouseAreaDilation === undefined, 'oops, mouseAreaDilation should not exist' );
-
       // Determine the max item width
       const maxItemWidth = _.maxBy( items, item => item.node.width ).node.width;
 
