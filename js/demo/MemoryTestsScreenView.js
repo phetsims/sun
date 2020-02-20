@@ -9,6 +9,7 @@ define( require => {
 
   // modules
   const ABSwitch = require( 'SUN/ABSwitch' );
+  const BooleanProperty = require( 'AXON/BooleanProperty' );
   const BooleanToggleNode = require( 'SUN/BooleanToggleNode' );
   const HSlider = require( 'SUN/HSlider' );
   const inherit = require( 'PHET_CORE/inherit' );
@@ -29,7 +30,7 @@ define( require => {
   }
 
   const numberProperty = new Property( 0 );
-  const booleanProperty = new Property( false );
+  const booleanProperty = new BooleanProperty( false );
 
   const components = [
     new ComponentHolder( function() {
