@@ -1,4 +1,4 @@
-// Copyright 2014-2019, University of Colorado Boulder
+// Copyright 2014-2020, University of Colorado Boulder
 
 /**
  * Model for a toggle button that sticks when pushed down and pops up when pushed a second time. Unlike other general
