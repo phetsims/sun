@@ -50,6 +50,7 @@ define( require => {
         radioButtonOptions: null,
 
         // Dilation of pointer areas for each radio button.
+        // These are not part of radioButtonOptions because AquaRadioButton has no pointerArea options.
         // X dilation is ignored for orientation === 'horizontal'.
         // Y dilation is ignored for orientation === 'vertical'.
         touchAreaXDilation: 0,
