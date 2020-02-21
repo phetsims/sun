@@ -46,10 +46,6 @@ define( require => {
      */
     constructor( property, leftValue, rightValue, options ) {
 
-      // PhET-iO requirements
-      assert && assert( property.phetioType, 'property must have phetioType' );
-      assert && assert( property.phetioType.parameterTypes, 'property.phetioType must have parameterTypes' );
-
       options = merge( {
 
         size: DEFAULT_SIZE, // if you want the thumb to be a circle, use width that is 2x height
@@ -157,16 +153,28 @@ define( require => {
       const accumulatedDelta = new Vector2( 0, 0 ); // stores how far we are from where our drag started, in our local coordinate frame
       let passedDragThreshold = false; // whether we have dragged far enough to be considered for "drag" behavior (pick closest side), or "tap" behavior (toggle)
 
-      // Get the phetioType of the Property's value.  This is needed for the message sent by toggleAction.
-      const valuePhetioType = property.phetioType.parameterTypes[ 0 ];
+      // for all brands
+      const firstParameter = { name: 'oldValue', validValues: [ leftValue, rightValue ] };
+      const secondParameter = { name: 'newValue', validValues: [ leftValue, rightValue ] };
+
+      if ( property.isPhetioInstrumented() && property.phetioType && property.phetioType.parameterTypes ) {
+        const valueParameterType = property.phetioType.parameterTypes[ 0 ];
+        assert && assert( valueParameterType, 'property should have a parameterType' );
+
+        // if available, then add the phetioType for the property parameter also.
+        firstParameter.phetioType = valueParameterType;
+        secondParameter.phetioType = valueParameterType;
+      }
+      else {
+
+        // assert out only if we are validating tandems to support iterative development
+        assert && assert( !Tandem.VALIDATE_TANDEMS, 'property should be instrumented' );
+      }
 
       // Action that is performed when the switch is toggled.
       // Toggles the Property value and sends a phet-io message with the old and new values.
       const toggleAction = new Action( ( oldValue, newValue ) => { property.value = newValue; }, {
-        parameters: [
-          { name: 'oldValue', phetioType: valuePhetioType },
-          { name: 'newValue', phetioType: valuePhetioType }
-        ],
+        parameters: [ firstParameter, secondParameter ],
         tandem: options.tandem.createTandem( 'toggleAction' ),
         phetioDocumentation: 'Occurs when the switch is toggled via user interaction',
         phetioReadOnly: options.phetioReadOnly,
