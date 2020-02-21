@@ -16,6 +16,7 @@ define( require => {
   const AccordionBox = require( 'SUN/AccordionBox' );
   const AlignBox = require( 'SCENERY/nodes/AlignBox' );
   const AlignGroup = require( 'SCENERY/nodes/AlignGroup' );
+  const AquaRadioButtonGroup = require( 'SUN/AquaRadioButtonGroup' );
   const BooleanProperty = require( 'AXON/BooleanProperty' );
   const Carousel = require( 'SUN/Carousel' );
   const Checkbox = require( 'SUN/Checkbox' );
@@ -60,6 +61,7 @@ define( require => {
        * {function(Bounds2): Node} createNode - creates the scene graph for the demo
        */
       { label: 'ABSwitch', createNode: demoABSwitch },
+      { label: 'AquaRadioButtonGroup', createNode: demoAquaRadioButtonGroup },
       { label: 'Carousel', createNode: demoCarousel },
       { label: 'Checkbox', createNode: demoCheckbox },
       { label: 'ComboBox', createNode: demoComboBox },
@@ -78,6 +80,7 @@ define( require => {
 
   sun.register( 'ComponentsScreenView', ComponentsScreenView );
 
+  // Creates a demo for ABSwitch
   var demoABSwitch = function( layoutBounds ) {
 
     const property = new StringProperty( 'A' );
@@ -85,6 +88,44 @@ define( require => {
     const labelB = new Text( 'B', { font: new PhetFont( 24 ) } );
 
     return new ABSwitch( property, 'A', labelA, 'B', labelB, {
+      center: layoutBounds.center
+    } );
+  };
+
+  // Creates a demo for AquaRadioButtonGroup
+  const demoAquaRadioButtonGroup = function( layoutBounds ) {
+
+    const font = new PhetFont( 20 );
+
+    const horizontalChoices = [ 'left', 'center', 'right' ];
+    const horizontalProperty = new StringProperty( horizontalChoices[ 0 ] );
+    const horizontalItems = _.map( horizontalChoices,
+      choice => {
+        return {
+          node: new Text( choice, { font: font } ),
+          value: choice
+        };
+      } );
+    const horizontalGroup = new AquaRadioButtonGroup( horizontalProperty, horizontalItems, {
+      orientation: 'horizontal'
+    } );
+
+    const verticalChoices = [ 'top', 'center', 'bottom'  ];
+    const verticalProperty = new StringProperty( verticalChoices[ 0 ] );
+    const verticalItems = _.map( verticalChoices,
+      choice => {
+        return {
+          node: new Text( choice, { font: font } ),
+          value: choice
+        };
+      } );
+    const verticalGroup = new AquaRadioButtonGroup( verticalProperty, verticalItems, {
+      orientation: 'vertical'
+    } );
+
+    return new VBox( {
+      children: [ horizontalGroup, verticalGroup ],
+      spacing: 40,
       center: layoutBounds.center
     } );
   };
@@ -155,6 +196,7 @@ define( require => {
     } );
   };
 
+  // Creates a demo for Checkbox
   var demoCheckbox = function( layoutBounds ) {
 
     const property = new BooleanProperty( true );

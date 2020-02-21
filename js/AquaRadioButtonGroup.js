@@ -49,9 +49,14 @@ define( require => {
         // {Object|null} options passed to constructor of the AquaRadioButtons
         radioButtonOptions: null,
 
-        // dilation of pointer areas for each radio button, perpendicular to options.orientation
-        touchAreaDilation: 0,
-        mouseAreaDilation: 0,
+        // Dilation of pointer areas for each radio button.
+        // These are not part of radioButtonOptions because AquaRadioButton has no pointerArea options.
+        // X dilation is ignored for orientation === 'horizontal'.
+        // Y dilation is ignored for orientation === 'vertical'.
+        touchAreaXDilation: 0,
+        touchAreaYDilation: 0,
+        mouseAreaXDilation: 0,
+        mouseAreaYDilation: 0,
 
         // supertype options
         orientation: 'vertical', // Aqua radio buttons are typically vertical, rarely horizontal
@@ -65,10 +70,6 @@ define( require => {
         ariaRole: 'radiogroup',
         groupFocusHighlight: true
       }, options );
-
-      // See https://github.com/phetsims/sun/issues/555
-      assert && assert( options.touchAreaXDilation === undefined, 'touchAreaXDilation is deprecated, use touchAreaDilation' );
-      assert && assert( options.mouseAreaXDilation === undefined, 'mouseAreaXDilation is deprecated, use mouseAreaDilation' );
 
       // Determine the max item width
       const maxItemWidth = _.maxBy( items, item => item.node.width ).node.width;
@@ -95,14 +96,12 @@ define( require => {
 
         // set pointer areas
         if ( options.orientation === 'vertical' ) {
-          const yDilation = options.spacing / 2;
-          radioButton.mouseArea = radioButton.localBounds.dilatedXY( options.mouseAreaDilation, yDilation );
-          radioButton.touchArea = radioButton.localBounds.dilatedXY( options.touchAreaDilation, yDilation );
+          radioButton.mouseArea = radioButton.localBounds.dilatedXY( options.mouseAreaXDilation, options.spacing / 2 );
+          radioButton.touchArea = radioButton.localBounds.dilatedXY( options.touchAreaXDilation, options.spacing / 2 );
         }
         else {
-          const xDilation = options.spacing / 2;
-          radioButton.mouseArea = radioButton.localBounds.dilatedXY( xDilation, options.mouseAreaDilation );
-          radioButton.touchArea = radioButton.localBounds.dilatedXY( xDilation, options.touchAreaDilation );
+          radioButton.mouseArea = radioButton.localBounds.dilatedXY( options.spacing / 2, options.mouseAreaYDilation );
+          radioButton.touchArea = radioButton.localBounds.dilatedXY( options.spacing / 2, options.touchAreaYDilation );
         }
 
         radioButtons.push( radioButton );
@@ -125,6 +124,9 @@ define( require => {
           radioButtons[ i ].dispose();
         }
       };
+
+      // @private
+      this.radioButtons = radioButtons;
     }
 
     /**
@@ -134,6 +136,17 @@ define( require => {
     dispose() {
       this.disposeAquaRadioButtonGroup();
       super.dispose();
+    }
+
+    /**
+     * Gets the radio button that corresponds to the specified value.
+     * @param {*} value
+     * @returns {AquaRadioButton}
+     */
+    getButton( value ) {
+      const button = _.find( this.radioButtons, radioButton => radioButton.value === value );
+      assert && assert( button, `no radio button found for value ${value}` );
+      return button;
     }
   }
 

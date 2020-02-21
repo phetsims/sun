@@ -66,6 +66,9 @@ define( require => {
 
     const self = this;
 
+    // @public (read-only)
+    this.value = value;
+
     // @private - converted to an AXON/Property from a property to support PhET-iO
     this.enabledProperty = new BooleanProperty( options.enabled, {
       tandem: options.tandem.createTandem( 'enabledProperty' ),
