@@ -29,7 +29,6 @@ define( require => {
   const Shape = require( 'KITE/Shape' );
   const sun = require( 'SUN/sun' );
   const Tandem = require( 'TANDEM/Tandem' );
-  const ToggleSwitchIO = require( 'SUN/ToggleSwitchIO' );
   const Utils = require( 'DOT/Utils' );
   const Vector2 = require( 'DOT/Vector2' );
 
@@ -78,7 +77,6 @@ define( require => {
 
         // phet-io
         tandem: Tandem.REQUIRED,
-        phetioType: ToggleSwitchIO,
         phetioEventType: EventType.USER,
         phetioReadOnly: PhetioObject.DEFAULT_OPTIONS.phetioReadOnly
       }, options );
@@ -153,28 +151,12 @@ define( require => {
       const accumulatedDelta = new Vector2( 0, 0 ); // stores how far we are from where our drag started, in our local coordinate frame
       let passedDragThreshold = false; // whether we have dragged far enough to be considered for "drag" behavior (pick closest side), or "tap" behavior (toggle)
 
-      // for all brands
-      const firstParameter = { name: 'oldValue', validValues: [ leftValue, rightValue ] };
-      const secondParameter = { name: 'newValue', validValues: [ leftValue, rightValue ] };
-
-      if ( property.isPhetioInstrumented() && property.phetioType && property.phetioType.parameterTypes ) {
-        const valueParameterType = property.phetioType.parameterTypes[ 0 ];
-        assert && assert( valueParameterType, 'property should have a parameterType' );
-
-        // if available, then add the phetioType for the property parameter also.
-        firstParameter.phetioType = valueParameterType;
-        secondParameter.phetioType = valueParameterType;
-      }
-      else {
-
-        // assert out only if we are validating tandems to support iterative development
-        assert && assert( !Tandem.VALIDATE_TANDEMS, 'property should be instrumented' );
-      }
-
       // Action that is performed when the switch is toggled.
       // Toggles the Property value and sends a phet-io message with the old and new values.
-      const toggleAction = new Action( ( oldValue, newValue ) => { property.value = newValue; }, {
-        parameters: [ firstParameter, secondParameter ],
+      const toggleAction = new Action( value => {
+        property.value = value;
+        }, {
+        parameters: [ { validValues: [ leftValue, rightValue ],  phetioPrivate: true } ],
         tandem: options.tandem.createTandem( 'toggleAction' ),
         phetioDocumentation: 'Occurs when the switch is toggled via user interaction',
         phetioReadOnly: options.phetioReadOnly,
@@ -229,9 +211,8 @@ define( require => {
 
             // Only signify a change if the value actually changed to avoid duplicate messages in the PhET-iO Event
             // stream, see https://github.com/phetsims/phet-io/issues/369
-            const changed = ( property.value !== value );
-            if ( changed ) {
-              toggleAction.execute( property.value, value );
+            if ( property.value !== value ) {
+              toggleAction.execute( value );
             }
           }
         },
@@ -239,14 +220,15 @@ define( require => {
         end: () => {
 
           // if moved past the threshold, choose value based on the side, otherwise just toggle
-          const oldValue = property.value;
-          const toggleValue = ( oldValue === leftValue ? rightValue : leftValue );
-          const newValue = passedDragThreshold ? thumbPositionToValue() : toggleValue;
+          const toggleValue = ( property.value === leftValue ? rightValue : leftValue );
+          const value = passedDragThreshold ? thumbPositionToValue() : toggleValue;
 
-          toggleAction.execute( oldValue, newValue );
+          if ( property.value !== value ) {
+            toggleAction.execute( value );
+          }
 
           // update the thumb location (sanity check that it's here, only needs to be run if passedDragThreshold===true)
-          update( newValue );
+          update( value );
         }
       } );
       this.addInputListener( dragListener );
