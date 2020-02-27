@@ -5,43 +5,40 @@
  *
  * @author Chris Malley (PixelZoom, Inc.)
  */
-define( require => {
-  'use strict';
 
-  // modules
-  const merge = require( 'PHET_CORE/merge' );
-  const Node = require( 'SCENERY/nodes/Node' );
-  const sun = require( 'SUN/sun' );
+import merge from '../../phet-core/js/merge.js';
+import Node from '../../scenery/js/nodes/Node.js';
+import sun from './sun.js';
 
-  class ComboBoxItem {
+class ComboBoxItem {
 
-    /**
-     * @param {Node} node
-     * @param {*} value
-     * @param {Object} [options]
-     */
-    constructor( node, value, options ) {
+  /**
+   * @param {Node} node
+   * @param {*} value
+   * @param {Object} [options]
+   */
+  constructor( node, value, options ) {
 
-      assert && assert( node instanceof Node, 'invalid node: ' + node );
-      assert && assert( !node.accessibleContent, 'accessibleContent is set by ComboBox, use options.a11yLabel' );
+    assert && assert( node instanceof Node, 'invalid node: ' + node );
+    assert && assert( !node.accessibleContent, 'accessibleContent is set by ComboBox, use options.a11yLabel' );
 
-      options = merge( {
+    options = merge( {
 
-        // phet-io
-        tandemName: null, // {string|null} the tandem name for this item's associated Node in the combo box
+      // phet-io
+      tandemName: null, // {string|null} the tandem name for this item's associated Node in the combo box
 
-        // a11y
-        a11yLabel: null // {string|null} the label for this item's associated Node in the combo box
+      // a11y
+      a11yLabel: null // {string|null} the label for this item's associated Node in the combo box
 
-      }, options );
+    }, options );
 
-      // @public (read-only)
-      this.node = node;
-      this.value = value;
-      this.tandemName = options.tandemName;
-      this.a11yLabel = options.a11yLabel;
-    }
+    // @public (read-only)
+    this.node = node;
+    this.value = value;
+    this.tandemName = options.tandemName;
+    this.a11yLabel = options.a11yLabel;
   }
+}
 
-  return sun.register( 'ComboBoxItem', ComboBoxItem );
-} );
+sun.register( 'ComboBoxItem', ComboBoxItem );
+export default ComboBoxItem;

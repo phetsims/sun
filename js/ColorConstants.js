@@ -5,29 +5,25 @@
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */
-define( require => {
-  'use strict';
 
-  // modules
-  const Color = require( 'SCENERY/util/Color' );
-  const inherit = require( 'PHET_CORE/inherit' );
-  const sun = require( 'SUN/sun' );
+import inherit from '../../phet-core/js/inherit.js';
+import Color from '../../scenery/js/util/Color.js';
+import sun from './sun.js';
 
-  /**
-   *
-   * @constructor
-   */
-  function ColorConstants() {
-  }
+/**
+ *
+ * @constructor
+ */
+function ColorConstants() {
+}
 
-  sun.register( 'ColorConstants', ColorConstants );
+sun.register( 'ColorConstants', ColorConstants );
 
-  return inherit( Object, ColorConstants, {}, {
+export default inherit( Object, ColorConstants, {}, {
 
-    //The default blue color used in many places, for buttons
-    LIGHT_BLUE: new Color( 153, 206, 255 ),
+  //The default blue color used in many places, for buttons
+  LIGHT_BLUE: new Color( 153, 206, 255 ),
 
-    //Light gray, used as the 'disabled' color in many places.
-    LIGHT_GRAY: new Color( 220, 220, 220 )
-  } );
+  //Light gray, used as the 'disabled' color in many places.
+  LIGHT_GRAY: new Color( 220, 220, 220 )
 } );

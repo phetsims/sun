@@ -9,24 +9,21 @@
  * @author John Blanco (PhET Interactive Simulations)
  * @author Sam Reid (PhET Interactive Simulations)
  */
-define( require => {
-  'use strict';
 
-  // modules
-  const inherit = require( 'PHET_CORE/inherit' );
-  const RoundStickyToggleButton = require( 'SUN/buttons/RoundStickyToggleButton' );
-  const sun = require( 'SUN/sun' );
+import inherit from '../../../phet-core/js/inherit.js';
+import sun from '../sun.js';
+import RoundStickyToggleButton from './RoundStickyToggleButton.js';
 
-  /**
-   * @param {Property.<boolean>} booleanProperty
-   * @param {Object} [options]
-   * @constructor
-   */
-  function BooleanRoundStickyToggleButton( booleanProperty, options ) {
-    RoundStickyToggleButton.call( this, false, true, booleanProperty, options );
-  }
+/**
+ * @param {Property.<boolean>} booleanProperty
+ * @param {Object} [options]
+ * @constructor
+ */
+function BooleanRoundStickyToggleButton( booleanProperty, options ) {
+  RoundStickyToggleButton.call( this, false, true, booleanProperty, options );
+}
 
-  sun.register( 'BooleanRoundStickyToggleButton', BooleanRoundStickyToggleButton );
+sun.register( 'BooleanRoundStickyToggleButton', BooleanRoundStickyToggleButton );
 
-  return inherit( RoundStickyToggleButton, BooleanRoundStickyToggleButton );
-} );
+inherit( RoundStickyToggleButton, BooleanRoundStickyToggleButton );
+export default BooleanRoundStickyToggleButton;

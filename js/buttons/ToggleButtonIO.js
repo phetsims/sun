@@ -6,29 +6,26 @@
  * @author Sam Reid (PhET Interactive Simulations)
  * @author Andrew Adare (PhET Interactive Simulations)
  */
-define( require => {
-  'use strict';
 
-  // modules
-  const ObjectIO = require( 'TANDEM/types/ObjectIO' );
-  const NodeIO = require( 'SCENERY/nodes/NodeIO' );
-  const sun = require( 'SUN/sun' );
+import NodeIO from '../../../scenery/js/nodes/NodeIO.js';
+import ObjectIO from '../../../tandem/js/types/ObjectIO.js';
+import sun from '../sun.js';
 
-  class ToggleButtonIO extends NodeIO {}
+class ToggleButtonIO extends NodeIO {}
 
-  ToggleButtonIO.documentation = 'A button that toggles state (in/out) when pressed';
-  ToggleButtonIO.events = [ 'toggled' ];
+ToggleButtonIO.documentation = 'A button that toggles state (in/out) when pressed';
+ToggleButtonIO.events = [ 'toggled' ];
 
-  ToggleButtonIO.validator = {
-    isValidValue: instance => {
-      const types = [ phet.sun.RectangularToggleButton, phet.sun.RoundStickyToggleButton, phet.sun.RoundToggleButton ];
-      const definedTypes = types.filter( v => !!v );
-      const matches = definedTypes.filter( v => instance instanceof v );
-      return matches.length > 0;
-    }
-  };
-  ToggleButtonIO.typeName = 'ToggleButtonIO';
-  ObjectIO.validateSubtype( ToggleButtonIO );
+ToggleButtonIO.validator = {
+  isValidValue: instance => {
+    const types = [ phet.sun.RectangularToggleButton, phet.sun.RoundStickyToggleButton, phet.sun.RoundToggleButton ];
+    const definedTypes = types.filter( v => !!v );
+    const matches = definedTypes.filter( v => instance instanceof v );
+    return matches.length > 0;
+  }
+};
+ToggleButtonIO.typeName = 'ToggleButtonIO';
+ObjectIO.validateSubtype( ToggleButtonIO );
 
-  return sun.register( 'ToggleButtonIO', ToggleButtonIO );
-} );
+sun.register( 'ToggleButtonIO', ToggleButtonIO );
+export default ToggleButtonIO;

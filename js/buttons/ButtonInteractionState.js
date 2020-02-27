@@ -4,34 +4,30 @@
  * enum of the possible button interaction states
  * @author John Blanco
  */
-define( require => {
-  'use strict';
 
-  const sun = require( 'SUN/sun' );
+import sun from '../sun.js';
 
-  const ButtonInteractionState = {
+const ButtonInteractionState = {
 
-    // button is just sitting there, doing nothing
-    IDLE: 'IDLE',
+  // button is just sitting there, doing nothing
+  IDLE: 'IDLE',
 
-    // a pointer is over the button, but not pressing it
-    OVER: 'OVER',
+  // a pointer is over the button, but not pressing it
+  OVER: 'OVER',
 
-    // the button is pressed, generally because the user has clicked on it or touched it
-    PRESSED: 'PRESSED',
+  // the button is pressed, generally because the user has clicked on it or touched it
+  PRESSED: 'PRESSED',
 
-    // the button is disabled
-    DISABLED: 'DISABLED',
+  // the button is disabled
+  DISABLED: 'DISABLED',
 
-    // the button is disabled, but was already pressed when that happened, so it is also pressed
-    DISABLED_PRESSED: 'DISABLED_PRESSED'
-  };
+  // the button is disabled, but was already pressed when that happened, so it is also pressed
+  DISABLED_PRESSED: 'DISABLED_PRESSED'
+};
 
-  // verify that enum is immutable, without the runtime penalty in production code
-  if ( assert ) { Object.freeze( ButtonInteractionState ); }
+// verify that enum is immutable, without the runtime penalty in production code
+if ( assert ) { Object.freeze( ButtonInteractionState ); }
 
-  sun.register( 'ButtonInteractionState', ButtonInteractionState );
+sun.register( 'ButtonInteractionState', ButtonInteractionState );
 
-  return ButtonInteractionState;
-} );
-
+export default ButtonInteractionState;

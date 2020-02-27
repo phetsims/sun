@@ -21,190 +21,185 @@
  * @author Michael Barlow (PhET Interactive Simulations)
  */
 
-define( require => {
-  'use strict';
+import CallbackTimer from '../../../axon/js/CallbackTimer.js';
+import Emitter from '../../../axon/js/Emitter.js';
+import extend from '../../../phet-core/js/extend.js';
+import inheritance from '../../../phet-core/js/inheritance.js';
+import merge from '../../../phet-core/js/merge.js';
+import KeyboardUtils from '../../../scenery/js/accessibility/KeyboardUtils.js';
+import Node from '../../../scenery/js/nodes/Node.js';
+import sun from '../sun.js';
+import SunA11yStrings from '../SunA11yStrings.js';
+import AccessibleValueHandler from './AccessibleValueHandler.js';
 
-  // modules
-  const AccessibleValueHandler = require( 'SUN/accessibility/AccessibleValueHandler' );
-  const CallbackTimer = require( 'AXON/CallbackTimer' );
-  const Emitter = require( 'AXON/Emitter' );
-  const extend = require( 'PHET_CORE/extend' );
-  const inheritance = require( 'PHET_CORE/inheritance' );
-  const KeyboardUtils = require( 'SCENERY/accessibility/KeyboardUtils' );
-  const merge = require( 'PHET_CORE/merge' );
-  const Node = require( 'SCENERY/nodes/Node' );
-  const sun = require( 'SUN/sun' );
-  const SunA11yStrings = require( 'SUN/SunA11yStrings' );
+// a11y strings
+const numberSpinnerRoleDescriptionString = SunA11yStrings.numberSpinnerRoleDescription.value;
 
-  // a11y strings
-  const numberSpinnerRoleDescriptionString = SunA11yStrings.numberSpinnerRoleDescription.value;
+const AccessibleNumberSpinner = {
 
-  const AccessibleNumberSpinner = {
+  /**
+   * Implement functionality for a number spinner.
+   * @public
+   * @trait {Node}
+   * @mixes AccessibleValueHandler
+   *
+   * @param {function} type - The type (constructor) whose prototype we'll modify.
+   */
+  mixInto: function( type ) {
+    assert && assert( _.includes( inheritance( type ), Node ) );
 
-    /**
-     * Implement functionality for a number spinner.
-     * @public
-     * @trait {Node}
-     * @mixes AccessibleValueHandler
-     *
-     * @param {function} type - The type (constructor) whose prototype we'll modify.
-     */
-    mixInto: function( type ) {
-      assert && assert( _.includes( inheritance( type ), Node ) );
+    const proto = type.prototype;
 
-      const proto = type.prototype;
+    // mixin general value handling
+    AccessibleValueHandler.mixInto( type );
 
-      // mixin general value handling
-      AccessibleValueHandler.mixInto( type );
+    extend( proto, {
 
-      extend( proto, {
+      /**
+       * This should be called in the constructor to initialize the accessible input features for the node.
+       *
+       * @param {Property.<number>} valueProperty
+       * @param {Property.<Range>} enabledRangeProperty
+       * @param {Property.<boolean>} enabledProperty
+       * @param {Object} [options]
+       *
+       * @protected
+       */
+      initializeAccessibleNumberSpinner: function( valueProperty, enabledRangeProperty, enabledProperty, options ) {
+        const self = this;
 
-        /**
-         * This should be called in the constructor to initialize the accessible input features for the node.
-         *
-         * @param {Property.<number>} valueProperty
-         * @param {Property.<Range>} enabledRangeProperty
-         * @param {Property.<boolean>} enabledProperty
-         * @param {Object} [options]
-         *
-         * @protected
-         */
-        initializeAccessibleNumberSpinner: function( valueProperty, enabledRangeProperty, enabledProperty, options ) {
-          const self = this;
+        const defaults = {
+          timerDelay: 400, // start to fire continuously after pressing for this long (milliseconds)
+          timerInterval: 100, // fire continuously at this frequency (milliseconds),
 
-          const defaults = {
-            timerDelay: 400, // start to fire continuously after pressing for this long (milliseconds)
-            timerInterval: 100, // fire continuously at this frequency (milliseconds),
+          ariaOrientation: 'vertical' // by default, number spinners should be oriented vertically
+        };
+        options = merge( {}, defaults, options );
 
-            ariaOrientation: 'vertical' // by default, number spinners should be oriented vertically
-          };
-          options = merge( {}, defaults, options );
+        // initialize "parent" mixin
+        this.initializeAccessibleValueHandler( valueProperty, enabledRangeProperty, enabledProperty, options );
 
-          // initialize "parent" mixin
-          this.initializeAccessibleValueHandler( valueProperty, enabledRangeProperty, enabledProperty, options );
+        // @private - manages timing must be disposed
+        this._callbackTimer = new CallbackTimer( {
+          delay: options.timerDelay,
+          interval: options.timerInterval
+        } );
 
-          // @private - manages timing must be disposed
-          this._callbackTimer = new CallbackTimer( {
-            delay: options.timerDelay,
-            interval: options.timerInterval
-          } );
+        // @protected {Emitter} emits events when increment and decrement actions occur, but only for changes
+        // of keyboardStep (not pageKeyboardStep or shiftKeyboardStep)
+        this.incrementDownEmitter = new Emitter( { parameters: [ { valueType: 'boolean' } ] } );
+        this.decrementDownEmitter = new Emitter( { parameters: [ { valueType: 'boolean' } ] } );
 
-          // @protected {Emitter} emits events when increment and decrement actions occur, but only for changes
-          // of keyboardStep (not pageKeyboardStep or shiftKeyboardStep)
-          this.incrementDownEmitter = new Emitter( { parameters: [ { valueType: 'boolean' } ] } );
-          this.decrementDownEmitter = new Emitter( { parameters: [ { valueType: 'boolean' } ] } );
+        this.setAccessibleAttribute( 'aria-roledescription', numberSpinnerRoleDescriptionString );
 
-          this.setAccessibleAttribute( 'aria-roledescription', numberSpinnerRoleDescriptionString );
+        // a callback that is added and removed from the timer depending on keystate
+        let downCallback = null;
+        let runningTimerCallbackKeyCode = null;
 
-          // a callback that is added and removed from the timer depending on keystate
-          let downCallback = null;
-          let runningTimerCallbackKeyCode = null;
+        // handle all accessible event input
+        const accessibleInputListener = {
+          keydown: function( event ) {
+            if ( enabledProperty.get() ) {
 
-          // handle all accessible event input
-          const accessibleInputListener = {
-            keydown: function( event ) {
-              if ( enabledProperty.get() ) {
-
-                // check for relevant keys here
-                if ( KeyboardUtils.isRangeKey( event.domEvent.keyCode ) ) {
-                  if ( !self._callbackTimer.isRunning() ) {
-                    self.accessibleNumberSpinnerHandleKeyDown( event );
-
-                    downCallback = self.accessibleNumberSpinnerHandleKeyDown.bind( self, event );
-                    runningTimerCallbackKeyCode = event.domEvent.keyCode;
-                    self._callbackTimer.addCallback( downCallback );
-                    self._callbackTimer.start();
-                  }
-                }
-              }
-            },
-            keyup: function( event ) {
+              // check for relevant keys here
               if ( KeyboardUtils.isRangeKey( event.domEvent.keyCode ) ) {
-                if ( event.domEvent.keyCode === runningTimerCallbackKeyCode ) {
-                  self.emitKeyState( event.domEvent.keyCode, false );
-                  self._callbackTimer.stop( false );
-                  self._callbackTimer.removeCallback( downCallback );
-                  downCallback = null;
-                  runningTimerCallbackKeyCode = null;
+                if ( !self._callbackTimer.isRunning() ) {
+                  self.accessibleNumberSpinnerHandleKeyDown( event );
+
+                  downCallback = self.accessibleNumberSpinnerHandleKeyDown.bind( self, event );
+                  runningTimerCallbackKeyCode = event.domEvent.keyCode;
+                  self._callbackTimer.addCallback( downCallback );
+                  self._callbackTimer.start();
                 }
-
-                self.handleKeyUp( event );
               }
-            },
-            blur: function() {
-
-              // if a key is currently down when focus leaves the spinner, stop callbacks and emit that the
-              // keycode is up
-              if ( downCallback ) {
-                assert && assert( runningTimerCallbackKeyCode !== null, 'key should be down if running downCallback' );
-
-                self.emitKeyState( runningTimerCallbackKeyCode, false );
+            }
+          },
+          keyup: function( event ) {
+            if ( KeyboardUtils.isRangeKey( event.domEvent.keyCode ) ) {
+              if ( event.domEvent.keyCode === runningTimerCallbackKeyCode ) {
+                self.emitKeyState( event.domEvent.keyCode, false );
                 self._callbackTimer.stop( false );
                 self._callbackTimer.removeCallback( downCallback );
+                downCallback = null;
+                runningTimerCallbackKeyCode = null;
               }
 
-              self.handleBlur( event );
-            },
-            input: this.handleInput.bind( this ),
-            change: this.handleChange.bind( this )
-          };
-          this.addInputListener( accessibleInputListener );
+              self.handleKeyUp( event );
+            }
+          },
+          blur: function() {
 
-          // @private - called by disposeAccessibleNumberSpinner to prevent memory leaks
-          this._disposeAccessibleNumberSpinner = function() {
-            self._callbackTimer.dispose();
+            // if a key is currently down when focus leaves the spinner, stop callbacks and emit that the
+            // keycode is up
+            if ( downCallback ) {
+              assert && assert( runningTimerCallbackKeyCode !== null, 'key should be down if running downCallback' );
 
-            // emitters owned by this instance, can be disposed here
-            self.incrementDownEmitter.dispose();
-            self.decrementDownEmitter.dispose();
+              self.emitKeyState( runningTimerCallbackKeyCode, false );
+              self._callbackTimer.stop( false );
+              self._callbackTimer.removeCallback( downCallback );
+            }
 
-            self.removeInputListener( accessibleInputListener );
-            self.disposeAccessibleValueHandler();
-          };
-        },
+            self.handleBlur( event );
+          },
+          input: this.handleInput.bind( this ),
+          change: this.handleChange.bind( this )
+        };
+        this.addInputListener( accessibleInputListener );
 
-        /**
-         * Handle the keydown event and emit events related to the user interaction. Ideally, this would
-         * override AccessibleValueHandler.handleKeyDown, but overriding is not supported with PhET Trait pattern.
-         * @private
-         *
-         * @param {Event} event
-         */
-        accessibleNumberSpinnerHandleKeyDown: function( event ) {
-          this.handleKeyDown( event );
-          this.emitKeyState( event.domEvent.keyCode, true );
-        },
+        // @private - called by disposeAccessibleNumberSpinner to prevent memory leaks
+        this._disposeAccessibleNumberSpinner = function() {
+          self._callbackTimer.dispose();
 
-        /**
-         * Emit events related to the keystate of the spinner. Typically used to style the spinner during keyboard
-         * interaction.
-         * @private
-         *
-         * @param {number} keyCode - the code of the key changing state
-         * @param {boolean} isDown - whether or not event was triggered from down or up keys
-         */
-        emitKeyState: function( keyCode, isDown ) {
-          if ( keyCode === KeyboardUtils.KEY_UP_ARROW || keyCode === KeyboardUtils.KEY_RIGHT_ARROW ) {
-            this.incrementDownEmitter.emit( isDown );
-          }
-          else if ( keyCode === KeyboardUtils.KEY_DOWN_ARROW || keyCode === KeyboardUtils.KEY_LEFT_ARROW ) {
-            this.decrementDownEmitter.emit( isDown );
-          }
-        },
+          // emitters owned by this instance, can be disposed here
+          self.incrementDownEmitter.dispose();
+          self.decrementDownEmitter.dispose();
 
-        /**
-         * Make the accessibility related aspects of this node eligible for garbage collection. Call when disposing
-         * the type that this trait is mixed into.
-         * @public
-         */
-        disposeAccessibleNumberSpinner: function() {
-          this._disposeAccessibleNumberSpinner();
+          self.removeInputListener( accessibleInputListener );
+          self.disposeAccessibleValueHandler();
+        };
+      },
+
+      /**
+       * Handle the keydown event and emit events related to the user interaction. Ideally, this would
+       * override AccessibleValueHandler.handleKeyDown, but overriding is not supported with PhET Trait pattern.
+       * @private
+       *
+       * @param {Event} event
+       */
+      accessibleNumberSpinnerHandleKeyDown: function( event ) {
+        this.handleKeyDown( event );
+        this.emitKeyState( event.domEvent.keyCode, true );
+      },
+
+      /**
+       * Emit events related to the keystate of the spinner. Typically used to style the spinner during keyboard
+       * interaction.
+       * @private
+       *
+       * @param {number} keyCode - the code of the key changing state
+       * @param {boolean} isDown - whether or not event was triggered from down or up keys
+       */
+      emitKeyState: function( keyCode, isDown ) {
+        if ( keyCode === KeyboardUtils.KEY_UP_ARROW || keyCode === KeyboardUtils.KEY_RIGHT_ARROW ) {
+          this.incrementDownEmitter.emit( isDown );
         }
-      } );
-    }
-  };
+        else if ( keyCode === KeyboardUtils.KEY_DOWN_ARROW || keyCode === KeyboardUtils.KEY_LEFT_ARROW ) {
+          this.decrementDownEmitter.emit( isDown );
+        }
+      },
 
-  sun.register( 'AccessibleNumberSpinner', AccessibleNumberSpinner );
+      /**
+       * Make the accessibility related aspects of this node eligible for garbage collection. Call when disposing
+       * the type that this trait is mixed into.
+       * @public
+       */
+      disposeAccessibleNumberSpinner: function() {
+        this._disposeAccessibleNumberSpinner();
+      }
+    } );
+  }
+};
 
-  return AccessibleNumberSpinner;
-} );
+sun.register( 'AccessibleNumberSpinner', AccessibleNumberSpinner );
+
+export default AccessibleNumberSpinner;

@@ -12,90 +12,86 @@
  *
  * @author Jonathan Olson (PhET Interactive Simulations)
  */
-define( require => {
-  'use strict';
 
-  // modules
-  const inherit = require( 'PHET_CORE/inherit' );
-  const Mouse = require( 'SCENERY/input/Mouse' );
-  const sun = require( 'SUN/sun' );
-  const Touch = require( 'SCENERY/input/Touch' );
+import inherit from '../../phet-core/js/inherit.js';
+import Mouse from '../../scenery/js/input/Mouse.js';
+import Touch from '../../scenery/js/input/Touch.js';
+import sun from './sun.js';
+
+/**
+ * @constructor
+ *
+ * @param {number} touchThreshold - The maximum distance from an item that will cause a touch to start a drag
+ * @param {number} mouseThreshold - The maximum distance from an item that will cause a mouse down event to start a drag
+ */
+function ClosestDragListener( touchThreshold, mouseThreshold ) {
+  // @private
+  this.touchThreshold = touchThreshold;
+  this.mouseThreshold = mouseThreshold;
+
+  // @private
+  this.items = [];
+}
+
+sun.register( 'ClosestDragListener', ClosestDragListener );
+
+inherit( Object, ClosestDragListener, {
+  /**
+   * Adds an item that can be dragged.
+   * @public
+   *
+   * @param {item} item
+   */
+  addDraggableItem: function( item ) {
+    assert && assert( !!item.startDrag && !!item.computeDistance, 'Added an invalid item for ClosestDragListener' );
+    this.items.push( item );
+  },
 
   /**
-   * @constructor
+   * Removes a previously-added item.
+   * @public
    *
-   * @param {number} touchThreshold - The maximum distance from an item that will cause a touch to start a drag
-   * @param {number} mouseThreshold - The maximum distance from an item that will cause a mouse down event to start a drag
+   * @param {item} item
    */
-  function ClosestDragListener( touchThreshold, mouseThreshold ) {
-    // @private
-    this.touchThreshold = touchThreshold;
-    this.mouseThreshold = mouseThreshold;
+  removeDraggableItem: function( item ) {
+    const index = _.indexOf( this.items, item );
+    assert && assert( index >= 0 );
+    this.items.splice( index, 1 );
+  },
 
-    // @private
-    this.items = [];
-  }
+  down: function( event ) {
+    // If there was nothing else in the way
+    if ( event.target === event.currentTarget ) {
+      let threshold = 0;
+      if ( event.pointer instanceof Touch ) {
+        threshold = this.touchThreshold;
+      }
+      if ( event.pointer instanceof Mouse ) {
+        threshold = this.mouseThreshold;
+      }
+      if ( threshold ) {
+        // search for the closest item
+        let currentItem = null;
+        let currentDistance = Number.POSITIVE_INFINITY;
+        const globalPoint = event.pointer.point;
+        const numItems = this.items.length;
+        for ( let i = 0; i < numItems; i++ ) {
+          const item = this.items[ i ];
 
-  sun.register( 'ClosestDragListener', ClosestDragListener );
-
-  inherit( Object, ClosestDragListener, {
-    /**
-     * Adds an item that can be dragged.
-     * @public
-     *
-     * @param {item} item
-     */
-    addDraggableItem: function( item ) {
-      assert && assert( !!item.startDrag && !!item.computeDistance, 'Added an invalid item for ClosestDragListener' );
-      this.items.push( item );
-    },
-
-    /**
-     * Removes a previously-added item.
-     * @public
-     *
-     * @param {item} item
-     */
-    removeDraggableItem: function( item ) {
-      const index = _.indexOf( this.items, item );
-      assert && assert( index >= 0 );
-      this.items.splice( index, 1 );
-    },
-
-    down: function( event ) {
-      // If there was nothing else in the way
-      if ( event.target === event.currentTarget ) {
-        let threshold = 0;
-        if ( event.pointer instanceof Touch ) {
-          threshold = this.touchThreshold;
-        }
-        if ( event.pointer instanceof Mouse ) {
-          threshold = this.mouseThreshold;
-        }
-        if ( threshold ) {
-          // search for the closest item
-          let currentItem = null;
-          let currentDistance = Number.POSITIVE_INFINITY;
-          const globalPoint = event.pointer.point;
-          const numItems = this.items.length;
-          for ( let i = 0; i < numItems; i++ ) {
-            const item = this.items[ i ];
-
-            const distance = item.computeDistance( globalPoint );
-            if ( distance < currentDistance ) {
-              currentDistance = distance;
-              currentItem = item;
-            }
+          const distance = item.computeDistance( globalPoint );
+          if ( distance < currentDistance ) {
+            currentDistance = distance;
+            currentItem = item;
           }
+        }
 
-          // if we have a closest item under the threshold, attempt to start a drag on it
-          if ( currentItem && currentDistance < threshold ) {
-            currentItem.startDrag( event );
-          }
+        // if we have a closest item under the threshold, attempt to start a drag on it
+        if ( currentItem && currentDistance < threshold ) {
+          currentItem.startDrag( event );
         }
       }
     }
-  } );
-
-  return ClosestDragListener;
+  }
 } );
+
+export default ClosestDragListener;

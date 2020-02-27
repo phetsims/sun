@@ -9,24 +9,21 @@
  * @author John Blanco (PhET Interactive Simulations)
  * @author Sam Reid (PhET Interactive Simulations)
  */
-define( require => {
-  'use strict';
 
-  // modules
-  const inherit = require( 'PHET_CORE/inherit' );
-  const RectangularStickyToggleButton = require( 'SUN/buttons/RectangularStickyToggleButton' );
-  const sun = require( 'SUN/sun' );
+import inherit from '../../../phet-core/js/inherit.js';
+import sun from '../sun.js';
+import RectangularStickyToggleButton from './RectangularStickyToggleButton.js';
 
-  /**
-   * @param {Property.<boolean>} booleanProperty
-   * @param {Object} [options]
-   * @constructor
-   */
-  function BooleanRectangularStickyToggleButton( booleanProperty, options ) {
-    RectangularStickyToggleButton.call( this, false, true, booleanProperty, options );
-  }
+/**
+ * @param {Property.<boolean>} booleanProperty
+ * @param {Object} [options]
+ * @constructor
+ */
+function BooleanRectangularStickyToggleButton( booleanProperty, options ) {
+  RectangularStickyToggleButton.call( this, false, true, booleanProperty, options );
+}
 
-  sun.register( 'BooleanRectangularStickyToggleButton', BooleanRectangularStickyToggleButton );
+sun.register( 'BooleanRectangularStickyToggleButton', BooleanRectangularStickyToggleButton );
 
-  return inherit( RectangularStickyToggleButton, BooleanRectangularStickyToggleButton );
-} );
+inherit( RectangularStickyToggleButton, BooleanRectangularStickyToggleButton );
+export default BooleanRectangularStickyToggleButton;

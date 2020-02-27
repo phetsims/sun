@@ -6,223 +6,220 @@
  *
  * @author Chris Malley (PixelZoom, Inc.)
  */
-define( require => {
-  'use strict';
 
-  // modules
-  const AccessiblePeer = require( 'SCENERY/accessibility/AccessiblePeer' );
-  const HStrut = require( 'SCENERY/nodes/HStrut' );
-  const merge = require( 'PHET_CORE/merge' );
-  const Node = require( 'SCENERY/nodes/Node' );
-  const Path = require( 'SCENERY/nodes/Path' );
-  const RectangularButtonView = require( 'SUN/buttons/RectangularButtonView' );
-  const RectangularPushButton = require( 'SUN/buttons/RectangularPushButton' );
-  const Shape = require( 'KITE/Shape' );
-  const sun = require( 'SUN/sun' );
-  const Tandem = require( 'TANDEM/Tandem' );
-  const VSeparator = require( 'SUN/VSeparator' );
+import Shape from '../../kite/js/Shape.js';
+import merge from '../../phet-core/js/merge.js';
+import AccessiblePeer from '../../scenery/js/accessibility/AccessiblePeer.js';
+import HStrut from '../../scenery/js/nodes/HStrut.js';
+import Node from '../../scenery/js/nodes/Node.js';
+import Path from '../../scenery/js/nodes/Path.js';
+import Tandem from '../../tandem/js/Tandem.js';
+import RectangularButtonView from './buttons/RectangularButtonView.js';
+import RectangularPushButton from './buttons/RectangularPushButton.js';
+import sun from './sun.js';
+import VSeparator from './VSeparator.js';
 
-  // constants
-  const ALIGN_VALUES = [ 'left', 'center', 'right' ];
-  const ARROW_DIRECTION_VALUES = [ 'up', 'down' ];
+// constants
+const ALIGN_VALUES = [ 'left', 'center', 'right' ];
+const ARROW_DIRECTION_VALUES = [ 'up', 'down' ];
 
-  class ComboBoxButton extends RectangularPushButton {
+class ComboBoxButton extends RectangularPushButton {
 
-    /**
-     * @param {Property} property
-     * @param {ComboBoxItem[]} items
-     * @param {Object} [options]
-     */
-    constructor( property, items, options ) {
+  /**
+   * @param {Property} property
+   * @param {ComboBoxItem[]} items
+   * @param {Object} [options]
+   */
+  constructor( property, items, options ) {
 
-      options = merge( {
+    options = merge( {
 
-        align: 'left', // see ALIGN_VALUES
-        arrowDirection: 'down', // see ARROW_DIRECTION_VALUES
-        arrowFill: 'black',
+      align: 'left', // see ALIGN_VALUES
+      arrowDirection: 'down', // see ARROW_DIRECTION_VALUES
+      arrowFill: 'black',
 
-        // RectangularPushButton options
-        cursor: 'pointer',
-        baseColor: 'white',
-        buttonAppearanceStrategy: RectangularButtonView.FlatAppearanceStrategy,
-        xMargin: 12,
-        yMargin: 8,
-        stroke: 'black',
-        lineWidth: 1,
+      // RectangularPushButton options
+      cursor: 'pointer',
+      baseColor: 'white',
+      buttonAppearanceStrategy: RectangularButtonView.FlatAppearanceStrategy,
+      xMargin: 12,
+      yMargin: 8,
+      stroke: 'black',
+      lineWidth: 1,
 
-        // phet-io
-        tandem: Tandem.OPTIONAL,
+      // phet-io
+      tandem: Tandem.OPTIONAL,
 
-        // a11y
-        labelTagName: 'span',
-        containerTagName: 'div',
-        labelContent: null // {string|null}
+      // a11y
+      labelTagName: 'span',
+      containerTagName: 'div',
+      labelContent: null // {string|null}
 
-      }, options );
+    }, options );
 
-      assert && assert( _.includes( ALIGN_VALUES, options.align ),
-        'invalid align: ' + options.align );
-      assert && assert( _.includes( ARROW_DIRECTION_VALUES, options.arrowDirection ),
-        'invalid arrowDirection: ' + options.arrowDirection );
+    assert && assert( _.includes( ALIGN_VALUES, options.align ),
+      'invalid align: ' + options.align );
+    assert && assert( _.includes( ARROW_DIRECTION_VALUES, options.arrowDirection ),
+      'invalid arrowDirection: ' + options.arrowDirection );
 
-      // To improve readability
-      const itemXMargin = options.xMargin;
+    // To improve readability
+    const itemXMargin = options.xMargin;
 
-      // Compute max item size
-      const maxItemWidth = _.maxBy( items, item => item.node.width ).node.width;
-      const maxItemHeight = _.maxBy( items, item => item.node.height ).node.height;
+    // Compute max item size
+    const maxItemWidth = _.maxBy( items, item => item.node.width ).node.width;
+    const maxItemHeight = _.maxBy( items, item => item.node.height ).node.height;
 
-      // We want the arrow area to be square, see https://github.com/phetsims/sun/issues/453
-      const arrowAreaSize = ( maxItemHeight + 2 * options.yMargin );
+    // We want the arrow area to be square, see https://github.com/phetsims/sun/issues/453
+    const arrowAreaSize = ( maxItemHeight + 2 * options.yMargin );
 
-      // The arrow is sized to fit in the arrow area, empirically determined to be visually pleasing.
-      const arrowHeight = 0.35 * arrowAreaSize; // height of equilateral triangle
-      const arrowWidth = 2 * arrowHeight * Math.sqrt( 3 ) / 3; // side of equilateral triangle
+    // The arrow is sized to fit in the arrow area, empirically determined to be visually pleasing.
+    const arrowHeight = 0.35 * arrowAreaSize; // height of equilateral triangle
+    const arrowWidth = 2 * arrowHeight * Math.sqrt( 3 ) / 3; // side of equilateral triangle
 
-      // Invisible horizontal struts that span the item area and arrow area. Makes layout more straightforward.
-      const itemAreaStrut = new HStrut( maxItemWidth + 2 * itemXMargin );
-      const arrowAreaStrut = new HStrut( arrowAreaSize, {
-        left: itemAreaStrut.right
-      } );
+    // Invisible horizontal struts that span the item area and arrow area. Makes layout more straightforward.
+    const itemAreaStrut = new HStrut( maxItemWidth + 2 * itemXMargin );
+    const arrowAreaStrut = new HStrut( arrowAreaSize, {
+      left: itemAreaStrut.right
+    } );
 
-      // arrow that points up or down, to indicate which way the list pops up
-      let arrowShape = null;
-      if ( options.arrowDirection === 'up' ) {
-        arrowShape = new Shape()
-          .moveTo( 0, arrowHeight )
-          .lineTo( arrowWidth / 2, 0 )
-          .lineTo( arrowWidth, arrowHeight )
-          .close();
+    // arrow that points up or down, to indicate which way the list pops up
+    let arrowShape = null;
+    if ( options.arrowDirection === 'up' ) {
+      arrowShape = new Shape()
+        .moveTo( 0, arrowHeight )
+        .lineTo( arrowWidth / 2, 0 )
+        .lineTo( arrowWidth, arrowHeight )
+        .close();
+    }
+    else {
+      arrowShape = new Shape()
+        .moveTo( 0, 0 )
+        .lineTo( arrowWidth, 0 )
+        .lineTo( arrowWidth / 2, arrowHeight )
+        .close();
+    }
+    const arrow = new Path( arrowShape, {
+      fill: options.arrowFill,
+      center: arrowAreaStrut.center
+    } );
+
+    // Wrapper for the selected item's Node.
+    // Do not transform ComboBoxItem.node because it is shared with ComboBoxListItemNode.
+    const itemNodeWrapper = new Node();
+
+    // Vertical separator between the item and arrow that is the full height of the button.
+    const vSeparator = new VSeparator( maxItemHeight + 2 * options.yMargin, {
+      stroke: 'black',
+      lineWidth: options.lineWidth,
+      centerX: itemAreaStrut.right,
+      centerY: itemAreaStrut.centerY
+    } );
+
+    // Margins are different in the item and button areas. And we want the vertical separator to extend
+    // beyond the margin.  We've handled those margins above, so the actual margins propagated to the button
+    // need to be zero.
+    options.xMargin = 0;
+    options.yMargin = 0;
+
+    assert && assert( !options.content, 'ComboBoxButton sets content' );
+    options.content = new Node( {
+      children: [ itemAreaStrut, arrowAreaStrut, itemNodeWrapper, vSeparator, arrow ]
+    } );
+
+    super( options );
+
+    const updateItemLayout = () => {
+      if ( options.align === 'left' ) {
+        itemNodeWrapper.left = itemAreaStrut.left + itemXMargin;
+      }
+      else if ( options.align === 'right' ) {
+        itemNodeWrapper.right = itemAreaStrut.right - itemXMargin;
       }
       else {
-        arrowShape = new Shape()
-          .moveTo( 0, 0 )
-          .lineTo( arrowWidth, 0 )
-          .lineTo( arrowWidth / 2, arrowHeight )
-          .close();
+        itemNodeWrapper.centerX = itemAreaStrut.centerX;
       }
-      const arrow = new Path( arrowShape, {
-        fill: options.arrowFill,
-        center: arrowAreaStrut.center
-      } );
+      itemNodeWrapper.centerY = itemAreaStrut.centerY;
+    };
 
-      // Wrapper for the selected item's Node.
-      // Do not transform ComboBoxItem.node because it is shared with ComboBoxListItemNode.
-      const itemNodeWrapper = new Node();
+    // When Property's value changes, show the corresponding item's Node on the button.
+    let item = null;
+    const propertyObserver = value => {
 
-      // Vertical separator between the item and arrow that is the full height of the button.
-      const vSeparator = new VSeparator( maxItemHeight + 2 * options.yMargin, {
-        stroke: 'black',
-        lineWidth: options.lineWidth,
-        centerX: itemAreaStrut.right,
-        centerY: itemAreaStrut.centerY
-      } );
+      // Remove bounds listener from previous item.node
+      if ( item && item.node.hasListener( 'bounds', updateItemLayout ) ) {
+        item.node.off( 'bounds', updateItemLayout );
+      }
 
-      // Margins are different in the item and button areas. And we want the vertical separator to extend
-      // beyond the margin.  We've handled those margins above, so the actual margins propagated to the button
-      // need to be zero.
-      options.xMargin = 0;
-      options.yMargin = 0;
+      // remove the node for the previous item
+      itemNodeWrapper.removeAllChildren();
 
-      assert && assert( !options.content, 'ComboBoxButton sets content' );
-      options.content = new Node( {
-        children: [ itemAreaStrut, arrowAreaStrut, itemNodeWrapper, vSeparator, arrow ]
-      } );
+      // find the ComboBoxItem whose value matches the property's value
+      item = _.find( items, item => item.value === value );
+      assert && assert( item, 'no item found for value: ' + value );
 
-      super( options );
+      // add the associated node
+      itemNodeWrapper.addChild( item.node );
 
-      const updateItemLayout = () => {
-        if ( options.align === 'left' ) {
-          itemNodeWrapper.left = itemAreaStrut.left + itemXMargin;
-        }
-        else if ( options.align === 'right' ) {
-          itemNodeWrapper.right = itemAreaStrut.right - itemXMargin;
-        }
-        else {
-          itemNodeWrapper.centerX = itemAreaStrut.centerX;
-        }
-        itemNodeWrapper.centerY = itemAreaStrut.centerY;
-      };
+      // Update layout if bounds change, see https://github.com/phetsims/scenery-phet/issues/482
+      item.node.on( 'bounds', updateItemLayout );
 
-      // When Property's value changes, show the corresponding item's Node on the button.
-      let item = null;
-      const propertyObserver = value => {
-        
-        // Remove bounds listener from previous item.node
-        if ( item && item.node.hasListener( 'bounds', updateItemLayout ) ) {
-          item.node.off( 'bounds', updateItemLayout );
-        }
+      updateItemLayout();
 
-        // remove the node for the previous item
-        itemNodeWrapper.removeAllChildren();
+      // a11y
+      this.innerContent = item.a11yLabel;
+    };
+    property.link( propertyObserver );
 
-        // find the ComboBoxItem whose value matches the property's value
-        item = _.find( items, item => item.value === value );
-        assert && assert( item, 'no item found for value: ' + value );
+    // Add aria-labelledby attribute to the button.
+    // The button is aria-labelledby its own label sibling, and then (second) its primary sibling in the PDOM.
+    // Order matters!
+    assert && assert( !options.ariaLabelledbyAssociations, 'ComboBoxButton sets ariaLabelledbyAssociations' );
+    this.ariaLabelledbyAssociations = [
+      {
+        otherNode: this,
+        otherElementName: AccessiblePeer.LABEL_SIBLING,
+        thisElementName: AccessiblePeer.PRIMARY_SIBLING
+      },
+      {
+        otherNode: this,
+        otherElementName: AccessiblePeer.PRIMARY_SIBLING,
+        thisElementName: AccessiblePeer.PRIMARY_SIBLING
+      }
+    ];
 
-        // add the associated node
-        itemNodeWrapper.addChild( item.node );
+    // signify to AT that this button opens a menu
+    this.setAccessibleAttribute( 'aria-haspopup', 'listbox' );
 
-        // Update layout if bounds change, see https://github.com/phetsims/scenery-phet/issues/482
-        item.node.on( 'bounds', updateItemLayout );
+    // @private
+    this.disposeComboBoxButton = () => {
+      property.unlink( propertyObserver );
+    };
 
-        updateItemLayout();
-
-        // a11y
-        this.innerContent = item.a11yLabel;
-      };
-      property.link( propertyObserver );
-
-      // Add aria-labelledby attribute to the button.
-      // The button is aria-labelledby its own label sibling, and then (second) its primary sibling in the PDOM.
-      // Order matters!
-      assert && assert( !options.ariaLabelledbyAssociations, 'ComboBoxButton sets ariaLabelledbyAssociations' );
-      this.ariaLabelledbyAssociations = [
-        {
-          otherNode: this,
-          otherElementName: AccessiblePeer.LABEL_SIBLING,
-          thisElementName: AccessiblePeer.PRIMARY_SIBLING
-        },
-        {
-          otherNode: this,
-          otherElementName: AccessiblePeer.PRIMARY_SIBLING,
-          thisElementName: AccessiblePeer.PRIMARY_SIBLING
-        }
-      ];
-
-      // signify to AT that this button opens a menu
-      this.setAccessibleAttribute( 'aria-haspopup', 'listbox' );
-
-      // @private
-      this.disposeComboBoxButton = () => {
-        property.unlink( propertyObserver );
-      };
-
-      // @private needed by methods
-      this.arrow = arrow;
-      this.vSeparator = vSeparator;
-    }
-
-    /**
-     * Sets the button to look like a value display instead of a combo box button.
-     * See https://github.com/phetsims/sun/issues/451
-     * @param {boolean} displayOnly
-     * @public
-     */
-    setDisplayOnly( displayOnly ) {
-      this.arrow.visible = !displayOnly;
-      this.vSeparator.visible = !displayOnly;
-    }
-
-    /**
-     * @public
-     * @override
-     */
-    dispose() {
-      this.disposeComboBoxButton();
-      super.dispose();
-    }
+    // @private needed by methods
+    this.arrow = arrow;
+    this.vSeparator = vSeparator;
   }
 
-  return sun.register( 'ComboBoxButton', ComboBoxButton );
-} );
+  /**
+   * Sets the button to look like a value display instead of a combo box button.
+   * See https://github.com/phetsims/sun/issues/451
+   * @param {boolean} displayOnly
+   * @public
+   */
+  setDisplayOnly( displayOnly ) {
+    this.arrow.visible = !displayOnly;
+    this.vSeparator.visible = !displayOnly;
+  }
+
+  /**
+   * @public
+   * @override
+   */
+  dispose() {
+    this.disposeComboBoxButton();
+    super.dispose();
+  }
+}
+
+sun.register( 'ComboBoxButton', ComboBoxButton );
+export default ComboBoxButton;

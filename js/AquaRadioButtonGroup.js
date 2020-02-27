@@ -6,149 +6,146 @@
  * @author Sam Reid (PhET Interactive Simulations)
  * @author Chris Malley (PixelZoom, Inc.)
  */
-define( require => {
-  'use strict';
 
-  // modules
-  const AquaRadioButton = require( 'SUN/AquaRadioButton' );
-  const HStrut = require( 'SCENERY/nodes/HStrut' );
-  const merge = require( 'PHET_CORE/merge' );
-  const LayoutBox = require( 'SCENERY/nodes/LayoutBox' );
-  const Node = require( 'SCENERY/nodes/Node' );
-  const radioButtonSoundPlayerFactory = require( 'TAMBO/radioButtonSoundPlayerFactory' );
-  const sun = require( 'SUN/sun' );
-  const Tandem = require( 'TANDEM/Tandem' );
+import merge from '../../phet-core/js/merge.js';
+import HStrut from '../../scenery/js/nodes/HStrut.js';
+import LayoutBox from '../../scenery/js/nodes/LayoutBox.js';
+import Node from '../../scenery/js/nodes/Node.js';
+import radioButtonSoundPlayerFactory from '../../tambo/js/radioButtonSoundPlayerFactory.js';
+import Tandem from '../../tandem/js/Tandem.js';
+import AquaRadioButton from './AquaRadioButton.js';
+import sun from './sun.js';
 
-  // a11y - An id for each instance of AquaRadioButtonGroup, passed to individual buttons in the group.
-  // Each button in a radio button group must have the same "name" attribute to be considered in a group, otherwise
-  // arrow keys will navigate all radio type inputs in the document.
-  let instanceCount = 0;
+// a11y - An id for each instance of AquaRadioButtonGroup, passed to individual buttons in the group.
+// Each button in a radio button group must have the same "name" attribute to be considered in a group, otherwise
+// arrow keys will navigate all radio type inputs in the document.
+let instanceCount = 0;
 
-  // constants
-  // to prefix instanceCount in case there are different kinds of "groups"
-  const CLASS_NAME = 'AquaRadioButtonGroup';
+// constants
+// to prefix instanceCount in case there are different kinds of "groups"
+const CLASS_NAME = 'AquaRadioButtonGroup';
 
-  class AquaRadioButtonGroup extends LayoutBox {
+class AquaRadioButtonGroup extends LayoutBox {
 
-    /**
-     * @param {Property} property
-     * @param {Object[]} items - Each item describes a radio button, and is an object with these properties:
-     *    node: Node, // label for the button
-     *    value: *, // value associated with the button
-     *    [tandemName: Tandem], // optional tandem for PhET-iO
-     *    [labelContent: string] // optional label for a11y
-     * @param {Object} [options]
-     * @constructor
-     */
-    constructor( property, items, options ) {
+  /**
+   * @param {Property} property
+   * @param {Object[]} items - Each item describes a radio button, and is an object with these properties:
+   *    node: Node, // label for the button
+   *    value: *, // value associated with the button
+   *    [tandemName: Tandem], // optional tandem for PhET-iO
+   *    [labelContent: string] // optional label for a11y
+   * @param {Object} [options]
+   * @constructor
+   */
+  constructor( property, items, options ) {
 
-      instanceCount++;
+    instanceCount++;
 
-      options = merge( {
+    options = merge( {
 
-        // {Object|null} options passed to constructor of the AquaRadioButtons
-        radioButtonOptions: null,
+      // {Object|null} options passed to constructor of the AquaRadioButtons
+      radioButtonOptions: null,
 
-        // Dilation of pointer areas for each radio button.
-        // These are not part of radioButtonOptions because AquaRadioButton has no pointerArea options.
-        // X dilation is ignored for orientation === 'horizontal'.
-        // Y dilation is ignored for orientation === 'vertical'.
-        touchAreaXDilation: 0,
-        touchAreaYDilation: 0,
-        mouseAreaXDilation: 0,
-        mouseAreaYDilation: 0,
+      // Dilation of pointer areas for each radio button.
+      // These are not part of radioButtonOptions because AquaRadioButton has no pointerArea options.
+      // X dilation is ignored for orientation === 'horizontal'.
+      // Y dilation is ignored for orientation === 'vertical'.
+      touchAreaXDilation: 0,
+      touchAreaYDilation: 0,
+      mouseAreaXDilation: 0,
+      mouseAreaYDilation: 0,
 
-        // supertype options
-        orientation: 'vertical', // Aqua radio buttons are typically vertical, rarely horizontal
-        spacing: 3, // space between each button, perpendicular to options.orientation
+      // supertype options
+      orientation: 'vertical', // Aqua radio buttons are typically vertical, rarely horizontal
+      spacing: 3, // space between each button, perpendicular to options.orientation
 
-        // phet-io
-        tandem: Tandem.REQUIRED,
+      // phet-io
+      tandem: Tandem.REQUIRED,
 
-        // PDOM
-        tagName: 'ul',
-        ariaRole: 'radiogroup',
-        groupFocusHighlight: true
-      }, options );
+      // PDOM
+      tagName: 'ul',
+      ariaRole: 'radiogroup',
+      groupFocusHighlight: true
+    }, options );
 
-      // Determine the max item width
-      const maxItemWidth = _.maxBy( items, item => item.node.width ).node.width;
+    // Determine the max item width
+    const maxItemWidth = _.maxBy( items, item => item.node.width ).node.width;
 
-      // Create a radio button for each item
-      const radioButtons = [];
-      for ( let i = 0; i < items.length; i++ ) {
+    // Create a radio button for each item
+    const radioButtons = [];
+    for ( let i = 0; i < items.length; i++ ) {
 
-        const item = items[ i ];
+      const item = items[ i ];
 
-        // Content for the radio button.
-        // For vertical orientation, add an invisible strut, so that buttons have uniform width.
-        const content = ( options.orientation === 'vertical' ) ?
-                        new Node( { children: [ new HStrut( maxItemWidth ), item.node ] } ) :
-                        item.node;
+      // Content for the radio button.
+      // For vertical orientation, add an invisible strut, so that buttons have uniform width.
+      const content = ( options.orientation === 'vertical' ) ?
+                      new Node( { children: [ new HStrut( maxItemWidth ), item.node ] } ) :
+                      item.node;
 
-        const radioButton = new AquaRadioButton( property, item.value, content,
-          merge( {}, options.radioButtonOptions, {
-            tandem: item.tandemName ? options.tandem.createTandem( item.tandemName ) : Tandem.REQUIRED,
-            labelContent: item.labelContent || null,
-            soundPlayer: radioButtonSoundPlayerFactory.getRadioButtonSoundPlayer( i ),
-            a11yNameAttribute: CLASS_NAME + instanceCount
-          } ) );
+      const radioButton = new AquaRadioButton( property, item.value, content,
+        merge( {}, options.radioButtonOptions, {
+          tandem: item.tandemName ? options.tandem.createTandem( item.tandemName ) : Tandem.REQUIRED,
+          labelContent: item.labelContent || null,
+          soundPlayer: radioButtonSoundPlayerFactory.getRadioButtonSoundPlayer( i ),
+          a11yNameAttribute: CLASS_NAME + instanceCount
+        } ) );
 
-        // set pointer areas
-        if ( options.orientation === 'vertical' ) {
-          radioButton.mouseArea = radioButton.localBounds.dilatedXY( options.mouseAreaXDilation, options.spacing / 2 );
-          radioButton.touchArea = radioButton.localBounds.dilatedXY( options.touchAreaXDilation, options.spacing / 2 );
-        }
-        else {
-          radioButton.mouseArea = radioButton.localBounds.dilatedXY( options.spacing / 2, options.mouseAreaYDilation );
-          radioButton.touchArea = radioButton.localBounds.dilatedXY( options.spacing / 2, options.touchAreaYDilation );
-        }
-
-        radioButtons.push( radioButton );
+      // set pointer areas
+      if ( options.orientation === 'vertical' ) {
+        radioButton.mouseArea = radioButton.localBounds.dilatedXY( options.mouseAreaXDilation, options.spacing / 2 );
+        radioButton.touchArea = radioButton.localBounds.dilatedXY( options.touchAreaXDilation, options.spacing / 2 );
+      }
+      else {
+        radioButton.mouseArea = radioButton.localBounds.dilatedXY( options.spacing / 2, options.mouseAreaYDilation );
+        radioButton.touchArea = radioButton.localBounds.dilatedXY( options.spacing / 2, options.touchAreaYDilation );
       }
 
-      // Verify that the client hasn't set options that we will be overwriting.
-      assert && assert( !options.children, 'AquaRadioButtonGroup sets children' );
-      options.children = radioButtons;
-
-      super( options );
-
-      // Add linked element after the radio button is instrumented
-      this.addLinkedElement( property, {
-        tandem: options.tandem.createTandem( 'property' )
-      } );
-
-      // @private
-      this.disposeAquaRadioButtonGroup = () => {
-        for ( let i = 0; i < radioButtons.length; i++ ) {
-          radioButtons[ i ].dispose();
-        }
-      };
-
-      // @private
-      this.radioButtons = radioButtons;
+      radioButtons.push( radioButton );
     }
 
-    /**
-     * @public
-     * @override
-     */
-    dispose() {
-      this.disposeAquaRadioButtonGroup();
-      super.dispose();
-    }
+    // Verify that the client hasn't set options that we will be overwriting.
+    assert && assert( !options.children, 'AquaRadioButtonGroup sets children' );
+    options.children = radioButtons;
 
-    /**
-     * Gets the radio button that corresponds to the specified value.
-     * @param {*} value
-     * @returns {AquaRadioButton}
-     */
-    getButton( value ) {
-      const button = _.find( this.radioButtons, radioButton => radioButton.value === value );
-      assert && assert( button, `no radio button found for value ${value}` );
-      return button;
-    }
+    super( options );
+
+    // Add linked element after the radio button is instrumented
+    this.addLinkedElement( property, {
+      tandem: options.tandem.createTandem( 'property' )
+    } );
+
+    // @private
+    this.disposeAquaRadioButtonGroup = () => {
+      for ( let i = 0; i < radioButtons.length; i++ ) {
+        radioButtons[ i ].dispose();
+      }
+    };
+
+    // @private
+    this.radioButtons = radioButtons;
   }
 
-  return sun.register( 'AquaRadioButtonGroup', AquaRadioButtonGroup );
-} );
+  /**
+   * @public
+   * @override
+   */
+  dispose() {
+    this.disposeAquaRadioButtonGroup();
+    super.dispose();
+  }
+
+  /**
+   * Gets the radio button that corresponds to the specified value.
+   * @param {*} value
+   * @returns {AquaRadioButton}
+   */
+  getButton( value ) {
+    const button = _.find( this.radioButtons, radioButton => radioButton.value === value );
+    assert && assert( button, `no radio button found for value ${value}` );
+    return button;
+  }
+}
+
+sun.register( 'AquaRadioButtonGroup', AquaRadioButtonGroup );
+export default AquaRadioButtonGroup;

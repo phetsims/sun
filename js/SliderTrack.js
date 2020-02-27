@@ -7,100 +7,97 @@
  * @author Sam Reid (PhET Interactive Simulations)
  * @author Jesse Greenberg (PhET Interactive Simulations)
  */
-define( require => {
-  'use strict';
 
-  // modules
-  const Dimension2 = require( 'DOT/Dimension2' );
-  const LinearFunction = require( 'DOT/LinearFunction' );
-  const merge = require( 'PHET_CORE/merge' );
-  const Node = require( 'SCENERY/nodes/Node' );
-  const Property = require( 'AXON/Property' );
-  const Range = require( 'DOT/Range' );
-  const SimpleDragHandler = require( 'SCENERY/input/SimpleDragHandler' );
-  const sun = require( 'SUN/sun' );
-  const Tandem = require( 'TANDEM/Tandem' );
+import Property from '../../axon/js/Property.js';
+import Dimension2 from '../../dot/js/Dimension2.js';
+import LinearFunction from '../../dot/js/LinearFunction.js';
+import Range from '../../dot/js/Range.js';
+import merge from '../../phet-core/js/merge.js';
+import SimpleDragHandler from '../../scenery/js/input/SimpleDragHandler.js';
+import Node from '../../scenery/js/nodes/Node.js';
+import Tandem from '../../tandem/js/Tandem.js';
+import sun from './sun.js';
 
-  class SliderTrack extends Node {
+class SliderTrack extends Node {
 
-    /**
-     * @param {Node} trackNode
-     * @param {Property.<number>} valueProperty
-     * @param {Range} range
-     * @param {Object} [options]
-     */
-    constructor( trackNode, valueProperty, range, options ) {
-      super();
+  /**
+   * @param {Node} trackNode
+   * @param {Property.<number>} valueProperty
+   * @param {Range} range
+   * @param {Object} [options]
+   */
+  constructor( trackNode, valueProperty, range, options ) {
+    super();
 
-      options = merge( {
-        size: new Dimension2( 100, 5 ),
-        fillEnabled: 'white',
-        fillDisabled: 'gray',
-        stroke: 'black',
-        lineWidth: 1,
-        cornerRadius: 0,
-        startDrag: _.noop, // called when a drag sequence starts
-        drag: _.noop, // called at the beginning of a drag event, before any other drag work happens
-        endDrag: _.noop, // called when a drag sequence ends
-        constrainValue: _.identity, // called before valueProperty is set
-        enabledRangeProperty: new Property( new Range( range.min, range.max ) ), // Defaults to a constant range
+    options = merge( {
+      size: new Dimension2( 100, 5 ),
+      fillEnabled: 'white',
+      fillDisabled: 'gray',
+      stroke: 'black',
+      lineWidth: 1,
+      cornerRadius: 0,
+      startDrag: _.noop, // called when a drag sequence starts
+      drag: _.noop, // called at the beginning of a drag event, before any other drag work happens
+      endDrag: _.noop, // called when a drag sequence ends
+      constrainValue: _.identity, // called before valueProperty is set
+      enabledRangeProperty: new Property( new Range( range.min, range.max ) ), // Defaults to a constant range
 
-        // phet-io
-        tandem: Tandem.REQUIRED
-      }, options );
+      // phet-io
+      tandem: Tandem.REQUIRED
+    }, options );
 
-      // @public (read-only)
-      this.size = options.size;
+    // @public (read-only)
+    this.size = options.size;
 
-      // @public (read-only) - maps the value along the range of the track to the position along the width of the track
-      this.valueToPosition = new LinearFunction( range.min, range.max, 0, this.size.width, true /* clamp */ );
+    // @public (read-only) - maps the value along the range of the track to the position along the width of the track
+    this.valueToPosition = new LinearFunction( range.min, range.max, 0, this.size.width, true /* clamp */ );
 
-      // click in the track to change the value, continue dragging if desired
-      const handleTrackEvent = ( event, trail ) => {
-        assert && assert( this.valueToPosition, 'valueToPosition should be defined' );
-        const transform = trail.subtrailTo( this ).getTransform();
-        const x = transform.inversePosition2( event.pointer.point ).x;
-        const value = this.valueToPosition.inverse( x );
-        const valueInRange = options.enabledRangeProperty.value.constrainValue( value );
-        const newValue = options.constrainValue( valueInRange );
-        valueProperty.set( newValue );
-      };
+    // click in the track to change the value, continue dragging if desired
+    const handleTrackEvent = ( event, trail ) => {
+      assert && assert( this.valueToPosition, 'valueToPosition should be defined' );
+      const transform = trail.subtrailTo( this ).getTransform();
+      const x = transform.inversePosition2( event.pointer.point ).x;
+      const value = this.valueToPosition.inverse( x );
+      const valueInRange = options.enabledRangeProperty.value.constrainValue( value );
+      const newValue = options.constrainValue( valueInRange );
+      valueProperty.set( newValue );
+    };
 
-      this.addChild( trackNode );
+    this.addChild( trackNode );
 
-      const trackInputListener = new SimpleDragHandler( {
-        tandem: options.tandem.createTandem( 'trackInputListener' ),
+    const trackInputListener = new SimpleDragHandler( {
+      tandem: options.tandem.createTandem( 'trackInputListener' ),
 
-        start: function( event, trail ) {
-          options.startDrag( event );
-          handleTrackEvent( event, trail );
-        },
+      start: function( event, trail ) {
+        options.startDrag( event );
+        handleTrackEvent( event, trail );
+      },
 
-        drag: function( event, trail ) {
-          options.drag( event );
+      drag: function( event, trail ) {
+        options.drag( event );
 
-          // Reuse the same handleTrackEvent but make sure the startedCallbacks call is made before the value changes
-          handleTrackEvent( event, trail );
-        },
+        // Reuse the same handleTrackEvent but make sure the startedCallbacks call is made before the value changes
+        handleTrackEvent( event, trail );
+      },
 
-        end: function( event ) {
-          options.endDrag( event );
-        }
-      } );
-      trackNode.addInputListener( trackInputListener );
+      end: function( event ) {
+        options.endDrag( event );
+      }
+    } );
+    trackNode.addInputListener( trackInputListener );
 
-      // @private Called by dispose
-      this.disposeSliderTrack = () => {
-        trackInputListener.dispose();
-      };
-    }
-
-    // @public - ensures that this object is eligible for GC
-    dispose() {
-      this.disposeSliderTrack();
-      super.dispose();
-    }
+    // @private Called by dispose
+    this.disposeSliderTrack = () => {
+      trackInputListener.dispose();
+    };
   }
 
-  return sun.register( 'SliderTrack', SliderTrack );
-} );
+  // @public - ensures that this object is eligible for GC
+  dispose() {
+    this.disposeSliderTrack();
+    super.dispose();
+  }
+}
+
+sun.register( 'SliderTrack', SliderTrack );
+export default SliderTrack;

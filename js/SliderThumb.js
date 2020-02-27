@@ -6,80 +6,77 @@
  *
  * @author Chris Malley (PixelZoom, Inc.)
  */
-define( require => {
-  'use strict';
 
-  // modules
-  const ButtonListener = require( 'SCENERY/input/ButtonListener' );
-  const Dimension2 = require( 'DOT/Dimension2' );
-  const inherit = require( 'PHET_CORE/inherit' );
-  const merge = require( 'PHET_CORE/merge' );
-  const Path = require( 'SCENERY/nodes/Path' );
-  const Rectangle = require( 'SCENERY/nodes/Rectangle' );
-  const Shape = require( 'KITE/Shape' );
-  const sun = require( 'SUN/sun' );
-  const Tandem = require( 'TANDEM/Tandem' );
+import Dimension2 from '../../dot/js/Dimension2.js';
+import Shape from '../../kite/js/Shape.js';
+import inherit from '../../phet-core/js/inherit.js';
+import merge from '../../phet-core/js/merge.js';
+import ButtonListener from '../../scenery/js/input/ButtonListener.js';
+import Path from '../../scenery/js/nodes/Path.js';
+import Rectangle from '../../scenery/js/nodes/Rectangle.js';
+import Tandem from '../../tandem/js/Tandem.js';
+import sun from './sun.js';
 
-  /**
-   * @param {Object} [options] see HSlider constructor
-   * @constructor
-   * @private
-   */
-  function SliderThumb( options ) {
+/**
+ * @param {Object} [options] see HSlider constructor
+ * @constructor
+ * @private
+ */
+function SliderThumb( options ) {
 
-    options = merge( {
-      size: new Dimension2( 22, 45 ),
-      fill: 'rgb(50,145,184)',
-      fillHighlighted: 'rgb(71,207,255)',
-      stroke: 'black',
-      lineWidth: 1,
-      centerLineStroke: 'white',
-      tandem: Tandem.REQUIRED
-    }, options );
+  options = merge( {
+    size: new Dimension2( 22, 45 ),
+    fill: 'rgb(50,145,184)',
+    fillHighlighted: 'rgb(71,207,255)',
+    stroke: 'black',
+    lineWidth: 1,
+    centerLineStroke: 'white',
+    tandem: Tandem.REQUIRED
+  }, options );
 
-    const self = this;
+  const self = this;
 
-    // rectangle
-    const arcWidth = 0.25 * options.size.width;
-    Rectangle.call( this, 0, 0,
-      options.size.width, options.size.height,
-      arcWidth, arcWidth, merge( options, {
-        fill: options.fill,
-        stroke: options.stroke,
-        lineWidth: options.lineWidth,
-        cachedPaints: [ options.fill, options.fillHighlighted ]
-      } )
-    );
+  // rectangle
+  const arcWidth = 0.25 * options.size.width;
+  Rectangle.call( this, 0, 0,
+    options.size.width, options.size.height,
+    arcWidth, arcWidth, merge( options, {
+      fill: options.fill,
+      stroke: options.stroke,
+      lineWidth: options.lineWidth,
+      cachedPaints: [ options.fill, options.fillHighlighted ]
+    } )
+  );
 
-    // Paint area that is slightly larger than the slider thumb so SVG updates a large enough paintable region.
-    // Related to https://github.com/phetsims/masses-and-springs/issues/334
-    const paintLayer = Rectangle.bounds( this.bounds.dilated( 5 ), {
-      fill: 'transparent',
-      localBounds: this.bounds,
-      pickable: false
-    } );
-    this.addChild( paintLayer );
+  // Paint area that is slightly larger than the slider thumb so SVG updates a large enough paintable region.
+  // Related to https://github.com/phetsims/masses-and-springs/issues/334
+  const paintLayer = Rectangle.bounds( this.bounds.dilated( 5 ), {
+    fill: 'transparent',
+    localBounds: this.bounds,
+    pickable: false
+  } );
+  this.addChild( paintLayer );
 
-    // vertical line down the center
-    const centerLineYMargin = 3;
-    this.addChild( new Path( Shape.lineSegment(
-      options.size.width / 2, centerLineYMargin,
-      options.size.width / 2, options.size.height - centerLineYMargin ), {
-      stroke: options.centerLineStroke
-    } ) );
+  // vertical line down the center
+  const centerLineYMargin = 3;
+  this.addChild( new Path( Shape.lineSegment(
+    options.size.width / 2, centerLineYMargin,
+    options.size.width / 2, options.size.height - centerLineYMargin ), {
+    stroke: options.centerLineStroke
+  } ) );
 
-    // highlight thumb on pointer over
-    this.addInputListener( new ButtonListener( {
-      over: function( event ) {
-        self.fill = options.fillHighlighted;
-      },
-      up: function( event ) {
-        self.fill = options.fill;
-      }
-    } ) );
-  }
+  // highlight thumb on pointer over
+  this.addInputListener( new ButtonListener( {
+    over: function( event ) {
+      self.fill = options.fillHighlighted;
+    },
+    up: function( event ) {
+      self.fill = options.fill;
+    }
+  } ) );
+}
 
-  sun.register( 'SliderThumb', SliderThumb );
+sun.register( 'SliderThumb', SliderThumb );
 
-  return inherit( Rectangle, SliderThumb );
-} );
+inherit( Rectangle, SliderThumb );
+export default SliderThumb;

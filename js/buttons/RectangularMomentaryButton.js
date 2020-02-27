@@ -6,41 +6,38 @@
  *
  * @author Chris Malley (PixelZoom, Inc.)
  */
-define( require => {
-  'use strict';
 
-  // modules
-  const inherit = require( 'PHET_CORE/inherit' );
-  const InstanceRegistry = require( 'PHET_CORE/documentation/InstanceRegistry' );
-  const merge = require( 'PHET_CORE/merge' );
-  const MomentaryButtonInteractionStateProperty = require( 'SUN/buttons/MomentaryButtonInteractionStateProperty' );
-  const MomentaryButtonModel = require( 'SUN/buttons/MomentaryButtonModel' );
-  const RectangularButtonView = require( 'SUN/buttons/RectangularButtonView' );
-  const sun = require( 'SUN/sun' );
-  const Tandem = require( 'TANDEM/Tandem' );
+import InstanceRegistry from '../../../phet-core/js/documentation/InstanceRegistry.js';
+import inherit from '../../../phet-core/js/inherit.js';
+import merge from '../../../phet-core/js/merge.js';
+import Tandem from '../../../tandem/js/Tandem.js';
+import sun from '../sun.js';
+import MomentaryButtonInteractionStateProperty from './MomentaryButtonInteractionStateProperty.js';
+import MomentaryButtonModel from './MomentaryButtonModel.js';
+import RectangularButtonView from './RectangularButtonView.js';
 
-  /**
-   * @param {Object} valueOff - value when the button is in the off state
-   * @param {Object} valueOn - value when the button is in the on state
-   * @param {Property} property
-   * @param {Object} [options]
-   * @constructor
-   */
-  function RectangularMomentaryButton( valueOff, valueOn, property, options ) {
+/**
+ * @param {Object} valueOff - value when the button is in the off state
+ * @param {Object} valueOn - value when the button is in the on state
+ * @param {Property} property
+ * @param {Object} [options]
+ * @constructor
+ */
+function RectangularMomentaryButton( valueOff, valueOn, property, options ) {
 
-    options = merge( {
-      tandem: Tandem.REQUIRED
-    }, options );
+  options = merge( {
+    tandem: Tandem.REQUIRED
+  }, options );
 
-    // Note it shares a tandem with this, so the emitter will be instrumented as a child of the button
-    const buttonModel = new MomentaryButtonModel( valueOff, valueOn, property, options );
-    RectangularButtonView.call( this, buttonModel, new MomentaryButtonInteractionStateProperty( buttonModel ), options );
+  // Note it shares a tandem with this, so the emitter will be instrumented as a child of the button
+  const buttonModel = new MomentaryButtonModel( valueOff, valueOn, property, options );
+  RectangularButtonView.call( this, buttonModel, new MomentaryButtonInteractionStateProperty( buttonModel ), options );
 
-    // support for binder documentation, stripped out in builds and only runs when ?binder is specified
-    assert && phet.chipper.queryParameters.binder && InstanceRegistry.registerDataURL( 'sun', 'AccordionBox', this );
-  }
+  // support for binder documentation, stripped out in builds and only runs when ?binder is specified
+  assert && phet.chipper.queryParameters.binder && InstanceRegistry.registerDataURL( 'sun', 'AccordionBox', this );
+}
 
-  sun.register( 'RectangularMomentaryButton', RectangularMomentaryButton );
+sun.register( 'RectangularMomentaryButton', RectangularMomentaryButton );
 
-  return inherit( RectangularButtonView, RectangularMomentaryButton );
-} );
+inherit( RectangularButtonView, RectangularMomentaryButton );
+export default RectangularMomentaryButton;

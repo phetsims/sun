@@ -7,103 +7,100 @@
  *
  * @author Chris Malley (PixelZoom, Inc.)
  */
-define( require => {
-  'use strict';
 
-  // modules
-  const ComboBoxItem = require( 'SUN/ComboBoxItem' );
-  const merge = require( 'PHET_CORE/merge' );
-  const Node = require( 'SCENERY/nodes/Node' );
-  const Rectangle = require( 'SCENERY/nodes/Rectangle' );
-  const Shape = require( 'KITE/Shape' );
-  const sun = require( 'SUN/sun' );
-  const Tandem = require( 'TANDEM/Tandem' );
+import Shape from '../../kite/js/Shape.js';
+import merge from '../../phet-core/js/merge.js';
+import Node from '../../scenery/js/nodes/Node.js';
+import Rectangle from '../../scenery/js/nodes/Rectangle.js';
+import Tandem from '../../tandem/js/Tandem.js';
+import ComboBoxItem from './ComboBoxItem.js';
+import sun from './sun.js';
 
-  class ComboBoxListItemNode extends Node {
+class ComboBoxListItemNode extends Node {
 
-    /**
-     * @param {ComboBoxItem} item
-     * @param {number} highlightWidth
-     * @param {number} highlightHeight
-     * @param {Object} [options]
-     */
-    constructor( item, highlightWidth, highlightHeight, options ) {
+  /**
+   * @param {ComboBoxItem} item
+   * @param {number} highlightWidth
+   * @param {number} highlightHeight
+   * @param {Object} [options]
+   */
+  constructor( item, highlightWidth, highlightHeight, options ) {
 
-      assert && assert( item instanceof ComboBoxItem );
+    assert && assert( item instanceof ComboBoxItem );
 
-      options = merge( {
+    options = merge( {
 
-        cursor: 'pointer',
-        align: 'left',
-        xMargin: 6, // margin between the item and the highlight edge
-        highlightFill: 'rgb( 245, 245, 245 )', // {Color|string} highlight behind the item
-        highlightCornerRadius: 4, // {number} corner radius for the highlight
+      cursor: 'pointer',
+      align: 'left',
+      xMargin: 6, // margin between the item and the highlight edge
+      highlightFill: 'rgb( 245, 245, 245 )', // {Color|string} highlight behind the item
+      highlightCornerRadius: 4, // {number} corner radius for the highlight
 
-        // phet-io
-        tandem: Tandem.REQUIRED,
+      // phet-io
+      tandem: Tandem.REQUIRED,
 
-        // a11y
-        tagName: 'li',
-        focusable: true,
-        ariaRole: 'option'
+      // a11y
+      tagName: 'li',
+      focusable: true,
+      ariaRole: 'option'
 
-      }, options );
+    }, options );
 
-      // a11y: get innerContent from the item
-      assert && assert( options.innerContent === undefined, 'ComboBoxListItemNode sets innerContent' );
-      options.innerContent = item.a11yLabel;
+    // a11y: get innerContent from the item
+    assert && assert( options.innerContent === undefined, 'ComboBoxListItemNode sets innerContent' );
+    options.innerContent = item.a11yLabel;
 
-      // Highlight that is shown when the pointer is over this item. This is not the a11y focus rectangle.
-      const highlightRectangle = new Rectangle( 0, 0, highlightWidth, highlightHeight, {
-        cornerRadius: options.highlightCornerRadius
-      } );
+    // Highlight that is shown when the pointer is over this item. This is not the a11y focus rectangle.
+    const highlightRectangle = new Rectangle( 0, 0, highlightWidth, highlightHeight, {
+      cornerRadius: options.highlightCornerRadius
+    } );
 
-      // Wrapper for the item's Node. Do not transform item.node because it is shared with ComboBoxButton!
-      const itemNodeWrapper = new Node( {
-        children: [ item.node ],
-        maxWidth: highlightWidth,
-        maxHeight: highlightHeight
-      } );
+    // Wrapper for the item's Node. Do not transform item.node because it is shared with ComboBoxButton!
+    const itemNodeWrapper = new Node( {
+      children: [ item.node ],
+      maxWidth: highlightWidth,
+      maxHeight: highlightHeight
+    } );
 
-      // Assume that item.node may change (as in ComboBoxDisplay) and adjust layout dynamically.
-      // See https://github.com/phetsims/scenery-phet/issues/482
-      const updateItemLayout = () => {
-        if ( options.align === 'left' ) {
-          itemNodeWrapper.left = highlightRectangle.left + options.xMargin;
-        }
-        else if ( options.align === 'right' ) {
-          itemNodeWrapper.right = highlightRectangle.right - options.xMargin;
-        }
-        else {
-          itemNodeWrapper.centerX = highlightRectangle.centerX;
-        }
-        itemNodeWrapper.centerY = highlightRectangle.centerY;
-      };
-      itemNodeWrapper.on( 'bounds', updateItemLayout );
-      updateItemLayout();
+    // Assume that item.node may change (as in ComboBoxDisplay) and adjust layout dynamically.
+    // See https://github.com/phetsims/scenery-phet/issues/482
+    const updateItemLayout = () => {
+      if ( options.align === 'left' ) {
+        itemNodeWrapper.left = highlightRectangle.left + options.xMargin;
+      }
+      else if ( options.align === 'right' ) {
+        itemNodeWrapper.right = highlightRectangle.right - options.xMargin;
+      }
+      else {
+        itemNodeWrapper.centerX = highlightRectangle.centerX;
+      }
+      itemNodeWrapper.centerY = highlightRectangle.centerY;
+    };
+    itemNodeWrapper.on( 'bounds', updateItemLayout );
+    updateItemLayout();
 
-      assert && assert( !options.children, 'ComboBoxListItemNode sets children' );
-      options.children = [ highlightRectangle, itemNodeWrapper ];
+    assert && assert( !options.children, 'ComboBoxListItemNode sets children' );
+    options.children = [ highlightRectangle, itemNodeWrapper ];
 
-      super( options );
+    super( options );
 
-      // @public (read-only)
-      this.item = item;
+    // @public (read-only)
+    this.item = item;
 
-      // a11y focus highlight is fitted to this Node's bounds, so that it doesn't overlap other items in the list box
-      this.focusHighlight = Shape.bounds( this.localBounds );
+    // a11y focus highlight is fitted to this Node's bounds, so that it doesn't overlap other items in the list box
+    this.focusHighlight = Shape.bounds( this.localBounds );
 
-      // Show highlight when pointer is over this item.
-      // Change fill instead of visibility so that we don't end up with vertical pointer gaps in the list
-      this.addInputListener( {
-        enter() { highlightRectangle.fill = options.highlightFill; },
-        focus() { highlightRectangle.fill = options.highlightFill; },
+    // Show highlight when pointer is over this item.
+    // Change fill instead of visibility so that we don't end up with vertical pointer gaps in the list
+    this.addInputListener( {
+      enter() { highlightRectangle.fill = options.highlightFill; },
+      focus() { highlightRectangle.fill = options.highlightFill; },
 
-        exit() { highlightRectangle.fill = null; },
-        blur() { highlightRectangle.fill = null; }
-      } );
-    }
+      exit() { highlightRectangle.fill = null; },
+      blur() { highlightRectangle.fill = null; }
+    } );
   }
+}
 
-  return sun.register( 'ComboBoxListItemNode', ComboBoxListItemNode );
-} );
+sun.register( 'ComboBoxListItemNode', ComboBoxListItemNode );
+export default ComboBoxListItemNode;

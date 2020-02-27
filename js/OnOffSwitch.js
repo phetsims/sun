@@ -6,30 +6,27 @@
  *
  * @author Chris Malley (PixelZoom, Inc.)
  */
-define( require => {
-  'use strict';
 
-  // modules
-  const merge = require( 'PHET_CORE/merge' );
-  const sun = require( 'SUN/sun' );
-  const ToggleSwitch = require( 'SUN/ToggleSwitch' );
+import merge from '../../phet-core/js/merge.js';
+import sun from './sun.js';
+import ToggleSwitch from './ToggleSwitch.js';
 
-  class OnOffSwitch extends ToggleSwitch {
+class OnOffSwitch extends ToggleSwitch {
 
-    /**
-     * @param {Property.<boolean>} property
-     * @param {Object} [options]
-     */
-    constructor( property, options ) {
+  /**
+   * @param {Property.<boolean>} property
+   * @param {Object} [options]
+   */
+  constructor( property, options ) {
 
-      options = merge( {
-        trackFillLeft: 'white', // track fill when property.value === false
-        trackFillRight: 'rgb( 0, 200, 0 )' // track fill when property.value === true
-      }, options );
+    options = merge( {
+      trackFillLeft: 'white', // track fill when property.value === false
+      trackFillRight: 'rgb( 0, 200, 0 )' // track fill when property.value === true
+    }, options );
 
-      super( property, false, true, options );
-    }
+    super( property, false, true, options );
   }
+}
 
-  return sun.register( 'OnOffSwitch', OnOffSwitch );
-} );
+sun.register( 'OnOffSwitch', OnOffSwitch );
+export default OnOffSwitch;

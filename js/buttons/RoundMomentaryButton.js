@@ -6,45 +6,41 @@
  *
  * @author Chris Malley (PixelZoom, Inc.)
  */
-define( require => {
-  'use strict';
 
-  // modules
-  const inherit = require( 'PHET_CORE/inherit' );
-  const merge = require( 'PHET_CORE/merge' );
-  const MomentaryButtonInteractionStateProperty = require( 'SUN/buttons/MomentaryButtonInteractionStateProperty' );
-  const MomentaryButtonModel = require( 'SUN/buttons/MomentaryButtonModel' );
-  const RoundButtonView = require( 'SUN/buttons/RoundButtonView' );
-  const RoundMomentaryButtonIO = require( 'SUN/buttons/RoundMomentaryButtonIO' );
-  const sun = require( 'SUN/sun' );
-  const Tandem = require( 'TANDEM/Tandem' );
+import inherit from '../../../phet-core/js/inherit.js';
+import merge from '../../../phet-core/js/merge.js';
+import Tandem from '../../../tandem/js/Tandem.js';
+import sun from '../sun.js';
+import MomentaryButtonInteractionStateProperty from './MomentaryButtonInteractionStateProperty.js';
+import MomentaryButtonModel from './MomentaryButtonModel.js';
+import RoundButtonView from './RoundButtonView.js';
+import RoundMomentaryButtonIO from './RoundMomentaryButtonIO.js';
 
-  /**
-   * @param {Object} valueOff - value when the button is in the off state
-   * @param {Object} valueOn - value when the button is in the on state
-   * @param {Property} property
-   * @param {Object} [options]
-   * @constructor
-   */
-  function RoundMomentaryButton( valueOff, valueOn, property, options ) {
-    options = merge( {
-      tandem: Tandem.REQUIRED,
-      phetioType: RoundMomentaryButtonIO
-    }, options );
+/**
+ * @param {Object} valueOff - value when the button is in the off state
+ * @param {Object} valueOn - value when the button is in the on state
+ * @param {Property} property
+ * @param {Object} [options]
+ * @constructor
+ */
+function RoundMomentaryButton( valueOff, valueOn, property, options ) {
+  options = merge( {
+    tandem: Tandem.REQUIRED,
+    phetioType: RoundMomentaryButtonIO
+  }, options );
 
-    // Note it shares a tandem with this, so the emitter will be instrumented as a child of the button
-    this.buttonModel = new MomentaryButtonModel( valueOff, valueOn, property, options );
-    RoundButtonView.call( this, this.buttonModel, new MomentaryButtonInteractionStateProperty( this.buttonModel ), options );
+  // Note it shares a tandem with this, so the emitter will be instrumented as a child of the button
+  this.buttonModel = new MomentaryButtonModel( valueOff, valueOn, property, options );
+  RoundButtonView.call( this, this.buttonModel, new MomentaryButtonInteractionStateProperty( this.buttonModel ), options );
+}
+
+sun.register( 'RoundMomentaryButton', RoundMomentaryButton );
+
+export default inherit( RoundButtonView, RoundMomentaryButton, {
+
+  // @public
+  dispose: function() {
+    this.buttonModel.dispose(); //TODO fails with assertions enable, see sun#212
+    RoundButtonView.prototype.dispose.call( this );
   }
-
-  sun.register( 'RoundMomentaryButton', RoundMomentaryButton );
-
-  return inherit( RoundButtonView, RoundMomentaryButton, {
-
-    // @public
-    dispose: function() {
-      this.buttonModel.dispose(); //TODO fails with assertions enable, see sun#212
-      RoundButtonView.prototype.dispose.call( this );
-    }
-  } );
 } );

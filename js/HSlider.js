@@ -6,35 +6,32 @@
  *
  * @author Chris Malley (PixelZoom, Inc.)
  */
-define( require => {
-  'use strict';
 
-  // modules
-  const inherit = require( 'PHET_CORE/inherit' );
-  const InstanceRegistry = require( 'PHET_CORE/documentation/InstanceRegistry' );
-  const merge = require( 'PHET_CORE/merge' );
-  const Slider = require( 'SUN/Slider' );
-  const sun = require( 'SUN/sun' );
+import InstanceRegistry from '../../phet-core/js/documentation/InstanceRegistry.js';
+import inherit from '../../phet-core/js/inherit.js';
+import merge from '../../phet-core/js/merge.js';
+import Slider from './Slider.js';
+import sun from './sun.js';
 
-  /**
-   * @param {Property.<number>} valueProperty
-   * @param {Range} range
-   * @param {Object} [options]
-   * @constructor
-   */
-  function HSlider( valueProperty, range, options ) {
+/**
+ * @param {Property.<number>} valueProperty
+ * @param {Range} range
+ * @param {Object} [options]
+ * @constructor
+ */
+function HSlider( valueProperty, range, options ) {
 
-    assert && assert( !options || options.orientation === undefined, 'HSlider sets orientation' );
+  assert && assert( !options || options.orientation === undefined, 'HSlider sets orientation' );
 
-    Slider.call( this, valueProperty, range, merge( {
-      orientation: 'horizontal'
-    }, options ) );
+  Slider.call( this, valueProperty, range, merge( {
+    orientation: 'horizontal'
+  }, options ) );
 
-    // support for binder documentation, stripped out in builds and only runs when ?binder is specified
-    assert && phet.chipper.queryParameters.binder && InstanceRegistry.registerDataURL( 'sun', 'HSlider', this );
-  }
+  // support for binder documentation, stripped out in builds and only runs when ?binder is specified
+  assert && phet.chipper.queryParameters.binder && InstanceRegistry.registerDataURL( 'sun', 'HSlider', this );
+}
 
-  sun.register( 'HSlider', HSlider );
+sun.register( 'HSlider', HSlider );
 
-  return inherit( Slider, HSlider );
-} );
+inherit( Slider, HSlider );
+export default HSlider;

@@ -7,45 +7,41 @@
  * @author John Blanco (PhET Interactive Simulations)
  * @author Sam Reid (PhET Interactive Simulations)
  */
-define( require => {
-  'use strict';
 
-  // modules
-  const inherit = require( 'PHET_CORE/inherit' );
-  const RectangularButtonView = require( 'SUN/buttons/RectangularButtonView' );
-  const StickyToggleButtonInteractionStateProperty = require( 'SUN/buttons/StickyToggleButtonInteractionStateProperty' );
-  const StickyToggleButtonModel = require( 'SUN/buttons/StickyToggleButtonModel' );
-  const sun = require( 'SUN/sun' );
+import inherit from '../../../phet-core/js/inherit.js';
+import sun from '../sun.js';
+import RectangularButtonView from './RectangularButtonView.js';
+import StickyToggleButtonInteractionStateProperty from './StickyToggleButtonInteractionStateProperty.js';
+import StickyToggleButtonModel from './StickyToggleButtonModel.js';
 
-  /**
-   * @param {Object} valueUp value when the toggle is in the 'up' position
-   * @param {Object} valueDown value when the toggle is in the 'down' position
-   * @param {Property} property axon property that can be either valueUp or valueDown.
-   * @param {Object} [options]
-   * @constructor
-   */
-  function RectangularStickyToggleButton( valueUp, valueDown, property, options ) {
+/**
+ * @param {Object} valueUp value when the toggle is in the 'up' position
+ * @param {Object} valueDown value when the toggle is in the 'down' position
+ * @param {Property} property axon property that can be either valueUp or valueDown.
+ * @param {Object} [options]
+ * @constructor
+ */
+function RectangularStickyToggleButton( valueUp, valueDown, property, options ) {
 
-    // Note it shares a tandem with this, so the emitter will be instrumented as a child of the button
-    const buttonModel = new StickyToggleButtonModel( valueUp, valueDown, property, options );
-    const stickyToggleButtonInteractionStateProperty = new StickyToggleButtonInteractionStateProperty( buttonModel );
-    RectangularButtonView.call( this, buttonModel, stickyToggleButtonInteractionStateProperty, options );
+  // Note it shares a tandem with this, so the emitter will be instrumented as a child of the button
+  const buttonModel = new StickyToggleButtonModel( valueUp, valueDown, property, options );
+  const stickyToggleButtonInteractionStateProperty = new StickyToggleButtonInteractionStateProperty( buttonModel );
+  RectangularButtonView.call( this, buttonModel, stickyToggleButtonInteractionStateProperty, options );
 
-    // @private - dispose items specific to this instance
-    this.disposeRectangularStickyToggleButton = function() {
-      buttonModel.dispose();
-      stickyToggleButtonInteractionStateProperty.dispose();
-    };
+  // @private - dispose items specific to this instance
+  this.disposeRectangularStickyToggleButton = function() {
+    buttonModel.dispose();
+    stickyToggleButtonInteractionStateProperty.dispose();
+  };
+}
+
+sun.register( 'RectangularStickyToggleButton', RectangularStickyToggleButton );
+
+export default inherit( RectangularButtonView, RectangularStickyToggleButton, {
+
+  // @public
+  dispose: function() {
+    this.disposeRectangularStickyToggleButton();
+    RectangularButtonView.prototype.dispose.call( this );
   }
-
-  sun.register( 'RectangularStickyToggleButton', RectangularStickyToggleButton );
-
-  return inherit( RectangularButtonView, RectangularStickyToggleButton, {
-
-    // @public
-    dispose: function() {
-      this.disposeRectangularStickyToggleButton();
-      RectangularButtonView.prototype.dispose.call( this );
-    }
-  } );
 } );

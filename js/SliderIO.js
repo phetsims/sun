@@ -5,44 +5,41 @@
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */
-define( require => {
-  'use strict';
 
-  // modules
-  const ObjectIO = require( 'TANDEM/types/ObjectIO' );
-  const BooleanIO = require( 'TANDEM/types/BooleanIO' );
-  const NodeIO = require( 'SCENERY/nodes/NodeIO' );
-  const sun = require( 'SUN/sun' );
-  const VoidIO = require( 'TANDEM/types/VoidIO' );
+import NodeIO from '../../scenery/js/nodes/NodeIO.js';
+import BooleanIO from '../../tandem/js/types/BooleanIO.js';
+import ObjectIO from '../../tandem/js/types/ObjectIO.js';
+import VoidIO from '../../tandem/js/types/VoidIO.js';
+import sun from './sun.js';
 
-  class SliderIO extends NodeIO {}
+class SliderIO extends NodeIO {}
 
-  SliderIO.methods = {
+SliderIO.methods = {
 
-    setMajorTicksVisible: {
-      returnType: VoidIO,
-      parameterTypes: [ BooleanIO ],
-      implementation: function( visible ) {
-        this.phetioObject.setMajorTicksVisible( visible );
-      },
-      documentation: 'Set whether the major tick marks should be shown',
-      invocableForReadOnlyElements: false
+  setMajorTicksVisible: {
+    returnType: VoidIO,
+    parameterTypes: [ BooleanIO ],
+    implementation: function( visible ) {
+      this.phetioObject.setMajorTicksVisible( visible );
     },
+    documentation: 'Set whether the major tick marks should be shown',
+    invocableForReadOnlyElements: false
+  },
 
-    setMinorTicksVisible: {
-      returnType: VoidIO,
-      parameterTypes: [ BooleanIO ],
-      implementation: function( visible ) {
-        this.phetioObject.setMinorTicksVisible( visible );
-      },
-      documentation: 'Set whether the minor tick marks should be shown',
-      invocableForReadOnlyElements: false
-    }
-  };
-  SliderIO.documentation = 'A traditional slider component, with a knob and possibly tick marks';
-  SliderIO.validator = { isValidValue: v => v instanceof phet.sun.Slider };
-  SliderIO.typeName = 'SliderIO';
-  ObjectIO.validateSubtype( SliderIO );
+  setMinorTicksVisible: {
+    returnType: VoidIO,
+    parameterTypes: [ BooleanIO ],
+    implementation: function( visible ) {
+      this.phetioObject.setMinorTicksVisible( visible );
+    },
+    documentation: 'Set whether the minor tick marks should be shown',
+    invocableForReadOnlyElements: false
+  }
+};
+SliderIO.documentation = 'A traditional slider component, with a knob and possibly tick marks';
+SliderIO.validator = { isValidValue: v => v instanceof phet.sun.Slider };
+SliderIO.typeName = 'SliderIO';
+ObjectIO.validateSubtype( SliderIO );
 
-  return sun.register( 'SliderIO', SliderIO );
-} );
+sun.register( 'SliderIO', SliderIO );
+export default SliderIO;

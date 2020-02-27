@@ -5,30 +5,27 @@
  *
  * @author Chris Malley (PixelZoom, Inc.)
  */
-define( require => {
-  'use strict';
 
-  // modules
-  const AquaRadioButtonGroup = require( 'SUN/AquaRadioButtonGroup' );
-  const merge = require( 'PHET_CORE/merge' );
-  const sun = require( 'SUN/sun' );
+import merge from '../../phet-core/js/merge.js';
+import AquaRadioButtonGroup from './AquaRadioButtonGroup.js';
+import sun from './sun.js';
 
-  class VerticalAquaRadioButtonGroup extends AquaRadioButtonGroup {
+class VerticalAquaRadioButtonGroup extends AquaRadioButtonGroup {
 
-    /**
-     * @param {Property} property
-     * @param {Object[]} items - see AquaRadioButtonGroup
-     * @param {Object} [options]
-     */
-    constructor( property, items, options ) {
+  /**
+   * @param {Property} property
+   * @param {Object[]} items - see AquaRadioButtonGroup
+   * @param {Object} [options]
+   */
+  constructor( property, items, options ) {
 
-      assert && assert( !options || options.orientation === undefined, 'VerticalAquaRadioButtonGroup sets orientation' );
+    assert && assert( !options || options.orientation === undefined, 'VerticalAquaRadioButtonGroup sets orientation' );
 
-      super( property, items, merge( {
-        orientation: 'vertical'
-      }, options ) );
-    }
+    super( property, items, merge( {
+      orientation: 'vertical'
+    }, options ) );
   }
+}
 
-  return sun.register( 'VerticalAquaRadioButtonGroup', VerticalAquaRadioButtonGroup );
-} );
+sun.register( 'VerticalAquaRadioButtonGroup', VerticalAquaRadioButtonGroup );
+export default VerticalAquaRadioButtonGroup;

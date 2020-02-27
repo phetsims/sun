@@ -8,39 +8,36 @@
  *
  * @author Andrea Lin
  */
-define( require => {
-  'use strict';
 
-  const sun = require( 'SUN/sun' );
+import sun from './sun.js';
 
-  const SunA11yStrings = {
-    accordionBoxCollapse: {
-      value: 'Collapse'
-    },
-    accordionBoxExpand: {
-      value: 'Expand'
-    },
+const SunA11yStrings = {
+  accordionBoxCollapse: {
+    value: 'Collapse'
+  },
+  accordionBoxExpand: {
+    value: 'Expand'
+  },
 
-    numberSpinnerRoleDescription: {
-      value: 'number spinner'
-    },
+  numberSpinnerRoleDescription: {
+    value: 'number spinner'
+  },
 
-    // dialogs
-    close: {
-      value: 'Close'
-    }
-  };
-
-  if ( phet.chipper.queryParameters.stringTest === 'xss' ) {
-    for ( const key in SunA11yStrings ) {
-      SunA11yStrings[ key ].value += '<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQIW2NkYGD4DwABCQEBtxmN7wAAAABJRU5ErkJggg==" onload="window.location.href=atob(\'aHR0cHM6Ly93d3cueW91dHViZS5jb20vd2F0Y2g/dj1kUXc0dzlXZ1hjUQ==\')" />';
-    }
+  // dialogs
+  close: {
+    value: 'Close'
   }
+};
 
-  // verify that object is immutable, without the runtime penalty in production code
-  if ( assert ) { Object.freeze( SunA11yStrings ); }
+if ( phet.chipper.queryParameters.stringTest === 'xss' ) {
+  for ( const key in SunA11yStrings ) {
+    SunA11yStrings[ key ].value += '<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQIW2NkYGD4DwABCQEBtxmN7wAAAABJRU5ErkJggg==" onload="window.location.href=atob(\'aHR0cHM6Ly93d3cueW91dHViZS5jb20vd2F0Y2g/dj1kUXc0dzlXZ1hjUQ==\')" />';
+  }
+}
 
-  sun.register( 'SunA11yStrings', SunA11yStrings );
+// verify that object is immutable, without the runtime penalty in production code
+if ( assert ) { Object.freeze( SunA11yStrings ); }
 
-  return SunA11yStrings;
-} );
+sun.register( 'SunA11yStrings', SunA11yStrings );
+
+export default SunA11yStrings;

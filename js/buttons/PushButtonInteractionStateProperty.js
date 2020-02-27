@@ -3,30 +3,27 @@
 /**
  * A derived property that maps push button model states to the values needed by the button view.
  */
-define( require => {
-  'use strict';
 
-  // modules
-  const ButtonInteractionState = require( 'SUN/buttons/ButtonInteractionState' );
-  const DerivedProperty = require( 'AXON/DerivedProperty' );
-  const sun = require( 'SUN/sun' );
+import DerivedProperty from '../../../axon/js/DerivedProperty.js';
+import sun from '../sun.js';
+import ButtonInteractionState from './ButtonInteractionState.js';
 
-  class PushButtonInteractionStateProperty extends DerivedProperty {
+class PushButtonInteractionStateProperty extends DerivedProperty {
 
-    /**
-     * @param {ButtonModel} buttonModel
-     * @param {Object} [options]
-     */
-    constructor( buttonModel, options ) {
-      super( [ buttonModel.overProperty, buttonModel.looksPressedProperty, buttonModel.enabledProperty ],
-        ( over, looksPressed, enabled ) => {
-          return !enabled ? ButtonInteractionState.DISABLED :
-                 over && !looksPressed ? ButtonInteractionState.OVER :
-                 over && looksPressed ? ButtonInteractionState.PRESSED :
-                 ButtonInteractionState.IDLE;
-        }, options );
-    }
+  /**
+   * @param {ButtonModel} buttonModel
+   * @param {Object} [options]
+   */
+  constructor( buttonModel, options ) {
+    super( [ buttonModel.overProperty, buttonModel.looksPressedProperty, buttonModel.enabledProperty ],
+      ( over, looksPressed, enabled ) => {
+        return !enabled ? ButtonInteractionState.DISABLED :
+               over && !looksPressed ? ButtonInteractionState.OVER :
+               over && looksPressed ? ButtonInteractionState.PRESSED :
+               ButtonInteractionState.IDLE;
+      }, options );
   }
+}
 
-  return sun.register( 'PushButtonInteractionStateProperty', PushButtonInteractionStateProperty );
-} );
+sun.register( 'PushButtonInteractionStateProperty', PushButtonInteractionStateProperty );
+export default PushButtonInteractionStateProperty;

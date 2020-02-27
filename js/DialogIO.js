@@ -2,23 +2,21 @@
 
 /**
  * IO type for Dialog
- * Used to live at 'JOIST/DialogIO'. Moved to 'SUN/DialogIO' on 4/10/2018
+ * Used to live at '/joist/js/DialogIO'. Moved to '/sun/js/DialogIO' on 4/10/2018
  *
  * @author Andrew Adare (PhET Interactive Simulations)
  */
-define( require => {
-  'use strict';
 
-  const NodeIO = require( 'SCENERY/nodes/NodeIO' );
-  const ObjectIO = require( 'TANDEM/types/ObjectIO' );
-  const sun = require( 'SUN/sun' );
+import NodeIO from '../../scenery/js/nodes/NodeIO.js';
+import ObjectIO from '../../tandem/js/types/ObjectIO.js';
+import sun from './sun.js';
 
-  class DialogIO extends NodeIO {}
+class DialogIO extends NodeIO {}
 
-  DialogIO.documentation = 'A dialog panel';
-  DialogIO.validator = { isValidValue: v => v instanceof phet.sun.Dialog };
-  DialogIO.typeName = 'DialogIO';
-  ObjectIO.validateSubtype( DialogIO );
+DialogIO.documentation = 'A dialog panel';
+DialogIO.validator = { isValidValue: v => v instanceof phet.sun.Dialog };
+DialogIO.typeName = 'DialogIO';
+ObjectIO.validateSubtype( DialogIO );
 
-  return sun.register( 'DialogIO', DialogIO );
-} );
+sun.register( 'DialogIO', DialogIO );
+export default DialogIO;

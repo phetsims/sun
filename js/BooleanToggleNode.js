@@ -7,29 +7,26 @@
  * @author Sam Reid (PhET Interactive Simulations)
  * @author Chris Malley (PixelZoom, Inc.)
  */
-define( require => {
-  'use strict';
 
-  // modules
-  const inherit = require( 'PHET_CORE/inherit' );
-  const sun = require( 'SUN/sun' );
-  const ToggleNode = require( 'SUN/ToggleNode' );
+import inherit from '../../phet-core/js/inherit.js';
+import sun from './sun.js';
+import ToggleNode from './ToggleNode.js';
 
-  /**
-   * @param {Node} trueNode
-   * @param {Node} falseNode
-   * @param {Property.<boolean>} booleanProperty
-   * @param {Object} [options]
-   * @constructor
-   */
-  function BooleanToggleNode( trueNode, falseNode, booleanProperty, options ) {
-    ToggleNode.call( this, booleanProperty, [
-      { value: true, node: trueNode },
-      { value: false, node: falseNode }
-    ], options );
-  }
+/**
+ * @param {Node} trueNode
+ * @param {Node} falseNode
+ * @param {Property.<boolean>} booleanProperty
+ * @param {Object} [options]
+ * @constructor
+ */
+function BooleanToggleNode( trueNode, falseNode, booleanProperty, options ) {
+  ToggleNode.call( this, booleanProperty, [
+    { value: true, node: trueNode },
+    { value: false, node: falseNode }
+  ], options );
+}
 
-  sun.register( 'BooleanToggleNode', BooleanToggleNode );
+sun.register( 'BooleanToggleNode', BooleanToggleNode );
 
-  return inherit( ToggleNode, BooleanToggleNode );
-} );
+inherit( ToggleNode, BooleanToggleNode );
+export default BooleanToggleNode;
