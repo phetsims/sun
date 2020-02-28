@@ -28,6 +28,7 @@ import EventType from '../../tandem/js/EventType.js';
 import PhetioObject from '../../tandem/js/PhetioObject.js';
 import Tandem from '../../tandem/js/Tandem.js';
 import sun from './sun.js';
+import UIComponent from './UIComponent.js';
 
 // constants
 const DEFAULT_SIZE = new Dimension2( 60, 30 );
@@ -95,6 +96,8 @@ class ToggleSwitch extends Node {
                           .addColorStop( 1, 'rgb( 200, 200, 200 )' );
 
     super();
+
+    this.initializeUIComponent( options );
 
     const cornerRadius = options.size.height / 2;
 
@@ -242,6 +245,7 @@ class ToggleSwitch extends Node {
       property.unlink( update );
       toggleAction.dispose();
       dragListener.dispose();
+      this.disposeUIComponent();
     };
   }
 
@@ -254,6 +258,8 @@ class ToggleSwitch extends Node {
     super.dispose();
   }
 }
+
+UIComponent.mixInto( ToggleSwitch );
 
 sun.register( 'ToggleSwitch', ToggleSwitch );
 export default ToggleSwitch;
