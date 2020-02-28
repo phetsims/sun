@@ -1,4 +1,4 @@
-// Copyright 2018-2019, University of Colorado Boulder
+// Copyright 2018-2020, University of Colorado Boulder
 
 /**
  * A trait for subtypes of Node, used to make the Node behave like a 'number' input with assistive technology.
