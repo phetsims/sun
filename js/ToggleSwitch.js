@@ -33,6 +33,9 @@ import UIComponent from './UIComponent.js';
 // constants
 const DEFAULT_SIZE = new Dimension2( 60, 30 );
 
+/**
+ * @mixes {UIComponent}
+ */
 class ToggleSwitch extends Node {
 
   /**

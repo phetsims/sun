@@ -5,15 +5,15 @@
  *
  * TODO: THIS FILE IS UNDER ACTIVE DEVELOPMENT, SEE https://github.com/phetsims/sun/issues/257
  *
- * TODO: can sun buttons use this? I don't think so since their enabledProperty is in their model, and this is a trait.
+ * TODO: can sun buttons use this? I don't think so since their enabledProperty is in their model. Would we ever want
+ * TODO: logic in this file to be specific to SCENERY/Node?
+ *
  * @author Michael Kauzmann (PhET Interactive Simulations)
  */
 
 import BooleanProperty from '../../axon/js/BooleanProperty.js';
 import extend from '../../phet-core/js/extend.js';
-import inheritance from '../../phet-core/js/inheritance.js';
 import merge from '../../phet-core/js/merge.js';
-import Node from '../../scenery/js/nodes/Node.js';
 import sun from './sun.js';
 import SunConstants from './SunConstants.js';
 import Tandem from '../../tandem/js/Tandem.js';
@@ -32,14 +32,9 @@ const UIComponent = {
 
   /**
    * @public
-   * @trait {Node}
-   * @mixes UIComponent
-   *
    * @param {function} type - The type (constructor) whose prototype we'll modify.
    */
   mixInto: function( type ) {
-    assert && assert( _.includes( inheritance( type ), Node ), 'Must mix into a SCENERY/Node' );
-
     const proto = type.prototype;
 
     assert && assert( !proto.hasOwnProperty( 'setEnabled' ), 'do not want to overwrite' );
@@ -97,16 +92,24 @@ const UIComponent = {
         };
       },
 
-      // @public
+      /**
+       * @public
+       */
       disposeUIComponent: function() {
         this._disposeUIComponent();
       },
 
-      // @public
+      /**
+       * @public
+       * @param {boolean} enabled
+       */
       setEnabled: function( enabled ) { this.enabledProperty.value = enabled; },
       set enabled( value ) { this.setEnabled( value ); },
 
-      // @public
+      /**
+       * @public
+       * @returns {boolean}
+       */
       getEnabled: function() { return this.enabledProperty.value; },
       get enabled() { return this.getEnabled(); }
     } );
