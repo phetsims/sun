@@ -13,6 +13,7 @@ import merge from '../../phet-core/js/merge.js';
 import PressListener from '../../scenery/js/listeners/PressListener.js';
 import Line from '../../scenery/js/nodes/Line.js';
 import Node from '../../scenery/js/nodes/Node.js';
+import PhetioObject from '../../tandem/js/PhetioObject.js';
 import Tandem from '../../tandem/js/Tandem.js';
 import sun from './sun.js';
 import ToggleSwitch from './ToggleSwitch.js';
@@ -60,6 +61,8 @@ class ABSwitch extends Node {
     }, options );
 
     super();
+
+    PhetioObject.mergePhetioComponentOptions( { visibleProperty: { phetioFeatured: true } }, options );
 
     const toggleSwitch = new ToggleSwitch( property, valueA, valueB, merge( {
       tandem: options.tandem.createTandem( 'toggleSwitch' )

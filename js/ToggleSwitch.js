@@ -82,6 +82,8 @@ class ToggleSwitch extends Node {
       phetioReadOnly: PhetioObject.DEFAULT_OPTIONS.phetioReadOnly
     }, options );
 
+    PhetioObject.mergePhetioComponentOptions( { visibleProperty: { phetioFeatured: true } }, options );
+
     // Default track fills
     let defaultTrackFill = null;
     if ( !options.trackFillLeft || !options.trackFillRight ) {
