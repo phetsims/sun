@@ -18,6 +18,7 @@ import Tandem from '../../tandem/js/Tandem.js';
 import sun from './sun.js';
 import SunConstants from './SunConstants.js';
 import ToggleSwitch from './ToggleSwitch.js';
+import UIComponent from './UIComponent.js';
 
 // constants
 
@@ -26,6 +27,9 @@ const DEFAULT_SET_ENABLED = ( label, enabled ) => {
   label.opacity = enabled ? 1.0 : SunConstants.DISABLED_OPACITY;
 };
 
+/**
+ * @mixes {UIComponent}
+ */
 class ABSwitch extends Node {
 
   /**
@@ -46,7 +50,11 @@ class ABSwitch extends Node {
     options = merge( {
 
       // options passed to ToggleSwitch
-      toggleSwitchOptions: null,
+      toggleSwitchOptions: {
+        enabledPropertyOptions: {
+          phetioFeatured: false // ABSwitch has an enabledProperty that is preferred to the sub-component's
+        }
+      },
 
       // {number} space between labels and switch
       xSpacing: 8,
@@ -64,6 +72,8 @@ class ABSwitch extends Node {
     super();
 
     PhetioObject.mergePhetioComponentOptions( { visibleProperty: { phetioFeatured: true } }, options );
+
+    this.initializeUIComponent( options );
 
     const toggleSwitch = new ToggleSwitch( property, valueA, valueB, merge( {
       tandem: options.tandem.createTandem( 'toggleSwitch' )
@@ -101,23 +111,6 @@ class ABSwitch extends Node {
       }
     };
     property.link( propertyListener ); // unlink on dispose
-
-    // No need to dispose because we own the toggleSwitch
-    toggleSwitch.enabledProperty.link( enabled => {
-      if ( options.setEnabled ) {
-
-        // When disabled, make both look disabled
-        if ( !enabled ) {
-          options.setEnabled( labelA, false );
-          options.setEnabled( labelB, false );
-        }
-        else {
-          options.setEnabled( labelA, property.value === valueA );
-          options.setEnabled( labelB, property.value === valueB );
-        }
-      }
-      this.pickable = enabled;
-    } );
 
     // click on labels to select
     const pressListenerA = new PressListener( {
@@ -158,6 +151,8 @@ class ABSwitch extends Node {
     super.dispose();
   }
 }
+
+UIComponent.mixInto( ABSwitch );
 
 sun.register( 'ABSwitch', ABSwitch );
 export default ABSwitch;
