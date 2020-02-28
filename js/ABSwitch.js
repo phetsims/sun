@@ -18,7 +18,7 @@ import Tandem from '../../tandem/js/Tandem.js';
 import sun from './sun.js';
 import SunConstants from './SunConstants.js';
 import ToggleSwitch from './ToggleSwitch.js';
-import UIComponent from './UIComponent.js';
+import EnabledComponent from './EnabledComponent.js';
 
 // constants
 
@@ -28,7 +28,7 @@ const DEFAULT_SET_ENABLED = ( label, enabled ) => {
 };
 
 /**
- * @mixes {UIComponent}
+ * @mixes {EnabledComponent}
  */
 class ABSwitch extends Node {
 
@@ -152,7 +152,7 @@ class ABSwitch extends Node {
   }
 }
 
-UIComponent.mixInto( ABSwitch );
+EnabledComponent.mixInto( ABSwitch );
 
 sun.register( 'ABSwitch', ABSwitch );
 export default ABSwitch;

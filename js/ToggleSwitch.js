@@ -28,13 +28,13 @@ import EventType from '../../tandem/js/EventType.js';
 import PhetioObject from '../../tandem/js/PhetioObject.js';
 import Tandem from '../../tandem/js/Tandem.js';
 import sun from './sun.js';
-import UIComponent from './UIComponent.js';
+import EnabledComponent from './EnabledComponent.js';
 
 // constants
 const DEFAULT_SIZE = new Dimension2( 60, 30 );
 
 /**
- * @mixes {UIComponent}
+ * @mixes {EnabledComponent}
  */
 class ToggleSwitch extends Node {
 
@@ -264,7 +264,7 @@ class ToggleSwitch extends Node {
   }
 }
 
-UIComponent.mixInto( ToggleSwitch );
+EnabledComponent.mixInto( ToggleSwitch );
 
 sun.register( 'ToggleSwitch', ToggleSwitch );
 export default ToggleSwitch;

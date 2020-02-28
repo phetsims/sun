@@ -28,7 +28,7 @@ const DEFAULT_OPTIONS = {
 };
 const ENABLED_PROPERTY_TANDEM_NAME = 'enabledProperty';
 
-const UIComponent = {
+const EnabledComponent = {
 
   /**
    * @public
@@ -116,5 +116,5 @@ const UIComponent = {
   }
 };
 
-sun.register( 'UIComponent', UIComponent );
-export default UIComponent;
+sun.register( 'EnabledComponent', EnabledComponent );
+export default EnabledComponent;
