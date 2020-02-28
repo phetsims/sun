@@ -16,13 +16,14 @@ import Node from '../../scenery/js/nodes/Node.js';
 import PhetioObject from '../../tandem/js/PhetioObject.js';
 import Tandem from '../../tandem/js/Tandem.js';
 import sun from './sun.js';
+import SunConstants from './SunConstants.js';
 import ToggleSwitch from './ToggleSwitch.js';
 
 // constants
 
 // Uses opacity as the default method of indicating whether a {Node} label is {boolean} enabled.
 const DEFAULT_SET_ENABLED = ( label, enabled ) => {
-  label.opacity = enabled ? 1.0 : 0.5;
+  label.opacity = enabled ? 1.0 : SunConstants.DISABLED_OPACITY;
 };
 
 class ABSwitch extends Node {
