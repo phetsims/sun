@@ -101,6 +101,23 @@ class ABSwitch extends Node {
     };
     property.link( propertyListener ); // unlink on dispose
 
+    // No need to dispose because we own the toggleSwitch
+    toggleSwitch.enabledProperty.link( enabled => {
+      if ( options.setEnabled ) {
+
+        // When disabled, make both look disabled
+        if ( !enabled ) {
+          options.setEnabled( labelA, false );
+          options.setEnabled( labelB, false );
+        }
+        else {
+          options.setEnabled( labelA, property.value === valueA );
+          options.setEnabled( labelB, property.value === valueB );
+        }
+      }
+      this.pickable = enabled;
+    } );
+
     // click on labels to select
     const pressListenerA = new PressListener( {
       release: () => { property.value = valueA; },
