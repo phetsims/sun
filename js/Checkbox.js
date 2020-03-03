@@ -149,6 +149,10 @@ define( require => {
     // Apply additional options
     this.mutate( options );
 
+    // PDOM - to prevent a bug with NVDA and Firefox where the label sibling receives two click events, see
+    // https://github.com/phetsims/gravity-force-lab/issues/257
+    this.setExcludeLabelSiblingFromInput();
+
     // must be after the Checkbox is instrumented
     this.addLinkedElement( property, {
       tandem: options.tandem.createTandem( 'property' )
