@@ -239,11 +239,15 @@ function AccordionBox( contentNode, options ) {
     }
   }
 
-  // If we hide the button, disable interactivity of the title bar, see https://github.com/phetsims/sun/issues/477
-  this.expandCollapseButton.on( 'visibility', () => {
-    this.collapsedTitleBar.pickable = this.expandCollapseButton.visible;
-    this.expandedTitleBar.pickable = this.expandCollapseButton.visible;
-  } );
+  // If we hide the button or make it unpickable, disable interactivity of the title bar,
+  // see https://github.com/phetsims/sun/issues/477 and https://github.com/phetsims/sun/issues/573.
+  const pickableListener = () => {
+    const pickable = this.expandCollapseButton.visible && this.expandCollapseButton.pickable;
+    this.collapsedTitleBar.pickable = pickable;
+    this.expandedTitleBar.pickable = pickable;
+  };
+  this.expandCollapseButton.on( 'visibility', pickableListener );
+  this.expandCollapseButton.on( 'pickability', pickableListener );
 
   this.expandCollapseButton.getEnabledProperty().link( enabled => {
     this.collapsedTitleBar.cursor = enabled ? options.cursor : null;
