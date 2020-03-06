@@ -314,7 +314,7 @@ function AccordionBox( contentNode, options ) {
 
 sun.register( 'AccordionBox', AccordionBox );
 
-export default inherit( Node, AccordionBox, {
+inherit( Node, AccordionBox, {
   /**
    * Performs layout that positions everything that can change.
    * @private
@@ -489,3 +489,5 @@ export default inherit( Node, AccordionBox, {
     Node.prototype.dispose.call( this );
   }
 } );
+
+export default AccordionBox;
