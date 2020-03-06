@@ -60,7 +60,7 @@ const EnabledComponent = {
         const ownsEnabledProperty = !options.enabledProperty;
 
         if ( !ownsEnabledProperty ) {
-          assert && Tandem.PHET_IO_ENABLED && Tandem.VALIDATE_TANDEMS && this.isPhetioInstrumented() &&
+          assert && Tandem.PHET_IO_ENABLED && Tandem.errorOnFailedValidation() && this.isPhetioInstrumented() &&
           assert( !!options.enabledProperty.phetioFeatured === !!this.phetioFeatured,
             'provided enabledProperty must be phetioFeatured if this checkbox is' );
 
