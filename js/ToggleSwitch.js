@@ -250,7 +250,7 @@ class ToggleSwitch extends Node {
       property.unlink( update );
       toggleAction.dispose();
       dragListener.dispose();
-      this.disposeUIComponent();
+      this.disposeEnabledComponent();
     };
   }
 

@@ -86,7 +86,7 @@ const EnabledComponent = {
         this.enabledProperty.link( enabledListener );
 
         // @private called by dispose
-        this._disposeUIComponent = function() {
+        this._disposeEnabledComponent = function() {
           this.enabledProperty.unlink( enabledListener );
           ownsEnabledProperty && this.enabledProperty.dispose();
         };
@@ -95,8 +95,8 @@ const EnabledComponent = {
       /**
        * @public
        */
-      disposeUIComponent: function() {
-        this._disposeUIComponent();
+      disposeEnabledComponent: function() {
+        this._disposeEnabledComponent();
       },
 
       /**
