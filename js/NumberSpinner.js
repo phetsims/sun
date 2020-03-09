@@ -304,6 +304,11 @@ function NumberSpinner( numberProperty, rangeProperty, options ) {
   this.incrementDownEmitter.addListener( increasedListener );
   this.decrementDownEmitter.addListener( decreasedListener );
 
+  // Create a link to associated Property, so it's easier to find in Studio.
+  this.addLinkedElement( numberProperty, {
+    tandem: options.tandem.createTandem( 'property' )
+  } );
+
   // @private
   this.disposeNumberSpinner = function() {
 
