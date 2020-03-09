@@ -134,7 +134,13 @@ function NumberSpinner( numberProperty, rangeProperty, options ) {
     baseColor: options.arrowButtonFill,
     stroke: options.arrowButtonStroke,
     lineWidth: options.arrowButtonLineWidth,
-    focusable: false
+    focusable: false,
+
+    // as requested in https://github.com/phetsims/sun/issues/575
+    enabledPropertyOptions: {
+      phetioReadOnly: true,
+      phetioFeatured: false
+    }
   };
 
   // increment button
