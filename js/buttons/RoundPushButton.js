@@ -72,7 +72,7 @@ function RoundPushButton( options ) {
 
 sun.register( 'RoundPushButton', RoundPushButton );
 
-export default inherit( RoundButtonView, RoundPushButton, {
+inherit( RoundButtonView, RoundPushButton, {
 
   // @public
   dispose: function() {
@@ -94,3 +94,5 @@ export default inherit( RoundButtonView, RoundPushButton, {
     this.buttonModel.removeListener( listener );
   }
 } );
+
+export default RoundPushButton;
