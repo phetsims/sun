@@ -34,7 +34,7 @@ import EnabledComponent from './EnabledComponent.js';
 const DEFAULT_SIZE = new Dimension2( 60, 30 );
 
 /**
- * @mixes {EnabledComponent}
+ * @mixes EnabledComponent
  */
 class ToggleSwitch extends Node {
 

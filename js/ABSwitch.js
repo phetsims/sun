@@ -28,7 +28,7 @@ const DEFAULT_SET_ENABLED = ( label, enabled ) => {
 };
 
 /**
- * @mixes {EnabledComponent}
+ * @mixes EnabledComponent
  */
 class ABSwitch extends Node {
 
