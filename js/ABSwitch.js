@@ -148,6 +148,7 @@ class ABSwitch extends Node {
    */
   dispose() {
     this.disposeABSwitch();
+    this.disposeEnabledComponent();
     super.dispose();
   }
 }

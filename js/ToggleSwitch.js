@@ -250,7 +250,6 @@ class ToggleSwitch extends Node {
       property.unlink( update );
       toggleAction.dispose();
       dragListener.dispose();
-      this.disposeEnabledComponent();
     };
   }
 
@@ -260,6 +259,7 @@ class ToggleSwitch extends Node {
    */
   dispose() {
     this.disposeToggleSwitch();
+    this.disposeEnabledComponent();
     super.dispose();
   }
 }
