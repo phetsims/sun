@@ -46,7 +46,7 @@ const EnabledComponent = {
       /**
        * @param {Object} [options]
        */
-      initializeUIComponent: function( options ) {
+      initializeEnabledComponent: function( options ) {
 
         options = merge( {}, DEFAULT_OPTIONS, options );
 

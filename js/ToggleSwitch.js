@@ -102,7 +102,7 @@ class ToggleSwitch extends Node {
 
     super();
 
-    this.initializeUIComponent( options );
+    this.initializeEnabledComponent( options );
 
     const cornerRadius = options.size.height / 2;
 

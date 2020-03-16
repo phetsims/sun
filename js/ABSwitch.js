@@ -73,7 +73,7 @@ class ABSwitch extends Node {
 
     PhetioObject.mergePhetioComponentOptions( { visibleProperty: { phetioFeatured: true } }, options );
 
-    this.initializeUIComponent( options );
+    this.initializeEnabledComponent( options );
 
     const toggleSwitch = new ToggleSwitch( property, valueA, valueB, merge( {
       tandem: options.tandem.createTandem( 'toggleSwitch' )
