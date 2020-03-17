@@ -57,9 +57,15 @@ function NumberSpinner( numberProperty, rangeProperty, options ) {
     arrowButtonStroke: 'black',
     arrowButtonLineWidth: 1,
 
+    // {function|null} function called when the increment button is pressed, defaults to adding options.deltaValue
+    incrementFunction: null,
+
+    // {function|null} function called when the decrement button is pressed, defaults to subtracting options.deltaValue
+    decrementFunction: null,
+
     valuePattern: SunConstants.VALUE_NAMED_PLACEHOLDER, // {string} must contain SunConstants.VALUE_NAMED_PLACEHOLDER
     decimalPlaces: 0,
-    deltaValue: 1,
+    deltaValue: 1, // may be ignored if incrementFunction and decrementFunction are provided
     font: new PhetFont( 28 ),
 
     // {string} alignment for value, see VALUE_ALIGN_VALUES
@@ -144,7 +150,7 @@ function NumberSpinner( numberProperty, rangeProperty, options ) {
   };
 
   // increment button
-  const incrementFunction = function() {
+  const incrementFunction = options.incrementFunction || function() {
     numberProperty.set( numberProperty.get() + options.deltaValue );
   };
   const incrementDirection = ( options.arrowsPosition === 'topBottom' || options.arrowsPosition === 'bothRight' ) ? 'up' : 'right';
@@ -153,7 +159,7 @@ function NumberSpinner( numberProperty, rangeProperty, options ) {
   }, arrowButtonOptions ) );
 
   // decrement button
-  const decrementFunction = function() {
+  const decrementFunction = options.decrementFunction || function() {
     numberProperty.set( numberProperty.get() - options.deltaValue );
   };
   const decrementDirection = ( options.arrowsPosition === 'topBottom' || options.arrowsPosition === 'bothRight' ) ? 'down' : 'left';
