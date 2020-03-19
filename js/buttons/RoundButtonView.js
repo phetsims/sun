@@ -24,6 +24,7 @@ import PhetioObject from '../../../tandem/js/PhetioObject.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import ColorConstants from '../ColorConstants.js';
 import sun from '../sun.js';
+import SunConstants from '../SunConstants.js';
 import ButtonInteractionState from './ButtonInteractionState.js';
 
 // constants
@@ -477,7 +478,7 @@ RoundButtonView.FadeContentWhenDisabled = function( content, interactionStatePro
   function updateOpacity( state ) {
     if ( content ) {
       content.opacity = state === ButtonInteractionState.DISABLED ||
-                        state === ButtonInteractionState.DISABLED_PRESSED ? 0.3 : 1;
+                        state === ButtonInteractionState.DISABLED_PRESSED ? SunConstants.DISABLED_OPACITY : 1;
     }
   }
 
