@@ -22,9 +22,11 @@ import Tandem from '../../tandem/js/Tandem.js';
 import FontAwesomeNode from './FontAwesomeNode.js';
 import sun from './sun.js';
 import SunConstants from './SunConstants.js';
+import validate from '../../axon/js/validate.js';
 
 // constants
 const ENABLED_PROPERTY_TANDEM_NAME = 'enabledProperty';
+const BOOLEAN_VALIDATOR = { valueType: 'boolean' };
 
 // sounds
 
@@ -67,11 +69,21 @@ function Checkbox( content, property, options ) {
 
   PhetioObject.mergePhetioComponentOptions( { visibleProperty: { phetioFeatured: true } }, options );
 
+  // value should be a boolean
+  validate( property.value, BOOLEAN_VALIDATOR );
+
   // @private - sends out notifications when the checkbox is toggled.
-  const toggleAction = new Action( function( value ) {
-    property.value = value;
+  const toggleAction = new Action( function() {
+    property.toggle();
+    validate( property.value, BOOLEAN_VALIDATOR );
+    if ( property.value ) {
+      checkedSoundPlayer.play();
+    }
+    else {
+      uncheckedSoundPlayer.play();
+    }
   }, {
-    parameters: [ { phetioPrivate: true, isValidValue: value => value === true || value === false } ],
+    parameters: [],
     tandem: options.tandem.createTandem( 'toggleAction' ),
     phetioDocumentation: 'Emits when user input causes the checkbox to toggle, emitting a single arg: ' +
                          'the new boolean value of the checkbox state.',
@@ -121,14 +133,7 @@ function Checkbox( content, property, options ) {
   const checkboxButtonListener = new ButtonListener( {
     fire: function() {
       if ( self.enabledProperty.value ) {
-        const newValue = !property.value;
-        toggleAction.execute( newValue );
-        if ( newValue ) {
-          checkedSoundPlayer.play();
-        }
-        else {
-          uncheckedSoundPlayer.play();
-        }
+        toggleAction.execute();
       }
     }
   } );
