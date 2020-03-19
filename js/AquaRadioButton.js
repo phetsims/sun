@@ -43,6 +43,9 @@ function AquaRadioButton( property, value, node, options ) {
 
     // phet-io
     tandem: Tandem.REQUIRED,
+    phetioComponentOptions: {
+      visibleProperty: { phetioFeatured: true }
+    },
 
     // {Playable|null} - sound generator, if set to null default will be used, set to Playable.NO_SOUND to disable
     soundPlayer: null,
@@ -69,6 +72,7 @@ function AquaRadioButton( property, value, node, options ) {
   // @private - converted to an AXON/Property from a property to support PhET-iO
   this.enabledProperty = new BooleanProperty( options.enabled, {
     tandem: options.tandem.createTandem( 'enabledProperty' ),
+    phetioFeatured: true,
     phetioDocumentation: 'Determines whether the AquaRadioButton is enabled (pressable) or disabled (grayed-out)'
   } );
 
