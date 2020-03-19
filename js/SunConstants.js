@@ -24,7 +24,7 @@ const SunConstants = {
   VALUE_NUMBERED_PLACEHOLDER: '{0}',
 
   // Opacity that is typically applied to a UI component in its disabled state, to make it look grayed out.
-  DISABLED_OPACITY: 0.3
+  DISABLED_OPACITY: 0.5
 };
 
 sun.register( 'SunConstants', SunConstants );
