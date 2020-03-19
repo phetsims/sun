@@ -71,7 +71,7 @@ function Checkbox( content, property, options ) {
   const toggleAction = new Action( function( value ) {
     property.value = value;
   }, {
-    parameters: [],
+    parameters: [ { phetioPrivate: true, isValidValue: value => value === true || value === false } ],
     tandem: options.tandem.createTandem( 'toggleAction' ),
     phetioDocumentation: 'Emits when user input causes the checkbox to toggle, emitting a single arg: ' +
                          'the new boolean value of the checkbox state.',
@@ -122,7 +122,7 @@ function Checkbox( content, property, options ) {
     fire: function() {
       if ( self.enabledProperty.value ) {
         const newValue = !property.value;
-        toggleAction.execute();
+        toggleAction.execute( newValue );
         if ( newValue ) {
           checkedSoundPlayer.play();
         }
