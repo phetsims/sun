@@ -19,7 +19,6 @@ import checkboxUncheckedSoundPlayer from '../../tambo/js/shared-sound-players/ch
 import EventType from '../../tandem/js/EventType.js';
 import PhetioObject from '../../tandem/js/PhetioObject.js';
 import Tandem from '../../tandem/js/Tandem.js';
-import BooleanIO from '../../tandem/js/types/BooleanIO.js';
 import FontAwesomeNode from './FontAwesomeNode.js';
 import sun from './sun.js';
 import SunConstants from './SunConstants.js';
@@ -72,7 +71,7 @@ function Checkbox( content, property, options ) {
   const toggleAction = new Action( function( value ) {
     property.value = value;
   }, {
-    parameters: [ { name: 'isChecked', phetioType: BooleanIO } ],
+    parameters: [],
     tandem: options.tandem.createTandem( 'toggleAction' ),
     phetioDocumentation: 'Emits when user input causes the checkbox to toggle, emitting a single arg: ' +
                          'the new boolean value of the checkbox state.',
@@ -123,7 +122,7 @@ function Checkbox( content, property, options ) {
     fire: function() {
       if ( self.enabledProperty.value ) {
         const newValue = !property.value;
-        toggleAction.execute( newValue );
+        toggleAction.execute();
         if ( newValue ) {
           checkedSoundPlayer.play();
         }
