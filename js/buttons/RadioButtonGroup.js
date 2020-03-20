@@ -371,7 +371,7 @@ function RadioButtonGroup( property, contentArray, options ) {
 
 sun.register( 'RadioButtonGroup', RadioButtonGroup );
 
-export default inherit( LayoutBox, RadioButtonGroup, {
+inherit( LayoutBox, RadioButtonGroup, {
 
   // @public
   dispose: function() {
@@ -390,3 +390,4 @@ export default inherit( LayoutBox, RadioButtonGroup, {
     return this.enabledProperty.get();
   }
 } );
+export default RadioButtonGroup;
