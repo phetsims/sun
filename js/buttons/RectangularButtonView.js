@@ -559,7 +559,7 @@ RectangularButtonView.FadeContentWhenDisabled = function( content, interactionSt
   };
 };
 
-export default inherit( Node, RectangularButtonView, {
+inherit( Node, RectangularButtonView, {
 
   /**
    * Sets the enabled state.
@@ -624,3 +624,5 @@ export default inherit( Node, RectangularButtonView, {
     Node.prototype.dispose.call( this );
   }
 } );
+
+export default RectangularButtonView;

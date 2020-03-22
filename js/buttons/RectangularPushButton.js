@@ -70,7 +70,7 @@ function RectangularPushButton( options ) {
 
 sun.register( 'RectangularPushButton', RectangularPushButton );
 
-export default inherit( RectangularButtonView, RectangularPushButton, {
+inherit( RectangularButtonView, RectangularPushButton, {
 
   // @public
   dispose: function() {
@@ -92,3 +92,4 @@ export default inherit( RectangularButtonView, RectangularPushButton, {
     this.buttonModel.removeListener( listener );
   }
 } );
+export default RectangularPushButton;
