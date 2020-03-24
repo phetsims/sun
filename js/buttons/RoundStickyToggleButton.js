@@ -44,8 +44,13 @@ function RoundStickyToggleButton( valueUp, valueDown, property, options ) {
   const playSound = () => soundPlayer.play();
   toggleButtonModel.produceSoundEmitter.addListener( playSound );
 
+  // PDOM - signify button is 'pressed' when down
+  const setAriaPressed = value => this.setAccessibleAttribute( 'aria-pressed', property.value === valueDown );
+  property.link( setAriaPressed );
+
   // @private - dispose items specific to this instance
   this.disposeRoundStickyToggleButton = function() {
+    property.unlink( setAriaPressed );
     toggleButtonModel.produceSoundEmitter.removeListener( playSound );
     toggleButtonModel.dispose();
     stickyToggleButtonInteractionStateProperty.dispose();
