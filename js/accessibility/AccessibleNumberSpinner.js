@@ -29,11 +29,11 @@ import merge from '../../../phet-core/js/merge.js';
 import KeyboardUtils from '../../../scenery/js/accessibility/KeyboardUtils.js';
 import Node from '../../../scenery/js/nodes/Node.js';
 import sun from '../sun.js';
-import SunA11yStrings from '../SunA11yStrings.js';
+import sunStrings from '../sun-strings.js';
 import AccessibleValueHandler from './AccessibleValueHandler.js';
 
 // a11y strings
-const numberSpinnerRoleDescriptionString = SunA11yStrings.numberSpinnerRoleDescription.value;
+const numberSpinnerRoleDescriptionString = sunStrings.a11y.numberSpinnerRoleDescription;
 
 const AccessibleNumberSpinner = {
 

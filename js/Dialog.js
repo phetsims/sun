@@ -33,14 +33,10 @@ import RectangularPushButton from './buttons/RectangularPushButton.js';
 import DialogIO from './DialogIO.js';
 import Panel from './Panel.js';
 import sun from './sun.js';
-import SunA11yStrings from './SunA11yStrings.js';
-
-// sounds
-
-// a11y strings
-const closeString = SunA11yStrings.close.value;
+import sunStrings from './sun-strings.js';
 
 // constants
+const closeString = sunStrings.a11y.close;
 const CLOSE_BUTTON_WIDTH = 14;
 
 /**

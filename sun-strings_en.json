@@ -1,5 +1,13 @@
 {
   "sun.title": {
     "value": "sun demo"
+  },
+  "a11y": {
+    "numberSpinnerRoleDescription": {
+      "value": "number spinner"
+    },
+    "close": {
+      "value": "Close"
+    }
   }
 }
