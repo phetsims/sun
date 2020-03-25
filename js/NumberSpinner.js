@@ -57,10 +57,12 @@ class NumberSpinner extends Node {
       arrowButtonStroke: 'black',
       arrowButtonLineWidth: 1,
 
-      // {function|null} function called when the increment button is pressed, defaults to adding options.deltaValue
+      // {function(number):number|null} function called when the increment button is pressed.
+      // Parameter is the current value, returns the new value. Defaults to adding options.deltaValue.
       incrementFunction: null,
 
-      // {function|null} function called when the decrement button is pressed, defaults to subtracting options.deltaValue
+      // {function(number):number|null} function called when the decrement button is pressed.
+      // Parameter is the current value, returns the new value. Defaults to subtracting options.deltaValue.
       decrementFunction: null,
 
       valuePattern: SunConstants.VALUE_NAMED_PLACEHOLDER, // {string} must contain SunConstants.VALUE_NAMED_PLACEHOLDER
@@ -98,6 +100,14 @@ class NumberSpinner extends Node {
     assert && assert( !!phet.chipper.queryParameters.stringTest ||
                       options.valuePattern.indexOf( SunConstants.VALUE_NAMED_PLACEHOLDER ) !== -1,
       'missing value placeholder in options.valuePattern: ' + options.valuePattern );
+
+    // Defaults for incrementFunction and decrementFunction
+    if ( !options.incrementFunction ) {
+      options.incrementFunction = value => value + options.deltaValue;
+    }
+    if ( !options.decrementFunction ) {
+      options.decrementFunction = value => value - options.deltaValue;
+    }
 
     const valueOptions = {
       font: options.font,
@@ -147,23 +157,21 @@ class NumberSpinner extends Node {
       }
     };
 
-  // increment button
-  const incrementFunction = options.incrementFunction || function() {
-    numberProperty.set( numberProperty.get() + options.deltaValue );
-  };
-  const incrementDirection = ( options.arrowsPosition === 'topBottom' || options.arrowsPosition === 'bothRight' ) ? 'up' : 'right';
-  const incrementButton = new ArrowButton( incrementDirection, incrementFunction, merge( {
-    tandem: options.tandem.createTandem( 'incrementButton' )
-  }, arrowButtonOptions ) );
+    // increment button
+    const incrementDirection = ( options.arrowsPosition === 'topBottom' || options.arrowsPosition === 'bothRight' ) ? 'up' : 'right';
+    const incrementButton = new ArrowButton( incrementDirection,
+      () => numberProperty.set( options.incrementFunction( numberProperty.get() ) ),
+      merge( {
+        tandem: options.tandem.createTandem( 'incrementButton' )
+      }, arrowButtonOptions ) );
 
-  // decrement button
-  const decrementFunction = options.decrementFunction || function() {
-    numberProperty.set( numberProperty.get() - options.deltaValue );
-  };
-  const decrementDirection = ( options.arrowsPosition === 'topBottom' || options.arrowsPosition === 'bothRight' ) ? 'down' : 'left';
-  const decrementButton = new ArrowButton( decrementDirection, decrementFunction, merge( {
-    tandem: options.tandem.createTandem( 'decrementButton' )
-  }, arrowButtonOptions ) );
+    // decrement button
+    const decrementDirection = ( options.arrowsPosition === 'topBottom' || options.arrowsPosition === 'bothRight' ) ? 'down' : 'left';
+    const decrementButton = new ArrowButton( decrementDirection,
+      () => numberProperty.set( options.decrementFunction( numberProperty.get() ) ),
+      merge( {
+        tandem: options.tandem.createTandem( 'decrementButton' )
+      }, arrowButtonOptions ) );
 
     // arrow button scaling
     let arrowsScale;
@@ -248,10 +256,10 @@ class NumberSpinner extends Node {
 
     super( options );
 
+    // enable/disable arrow buttons
     const updateEnabled = () => {
-      // enable/disable arrow buttons
-      incrementButton.enabled = ( ( numberProperty.value + options.deltaValue ) <= rangeProperty.value.max );
-      decrementButton.enabled = ( ( numberProperty.value - options.deltaValue ) >= rangeProperty.value.min );
+      incrementButton.enabled = ( options.incrementFunction( numberProperty.value ) <= rangeProperty.value.max );
+      decrementButton.enabled = ( options.decrementFunction( numberProperty.value ) >= rangeProperty.value.min );
     };
 
     // synchronize with number value
