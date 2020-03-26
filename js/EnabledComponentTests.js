@@ -40,9 +40,14 @@ QUnit.test( 'EnabledComponent into PhetioObject', assert => {
   // mix in enabled component into a Node
   EnabledComponent.mixInto( EnabledPhetioObject );
 
-  const phetioObject = new EnabledPhetioObject();
+  const phetioObject = new EnabledPhetioObject( {
+    enabledPropertyOptions: {
+      phetioFeatured: true
+    }
+  } );
   testEnabledComponent( assert, phetioObject, 'For PhetioObject' );
   assert.ok( phetioObject instanceof PhetioObject );
+  assert.ok( phetioObject.enabledProperty.phetioFeatured, 'should have passed phet-io metadata through to enabledProperty' );
 } );
 
 QUnit.test( 'EnabledComponent into Node', assert => {

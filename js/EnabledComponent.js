@@ -19,7 +19,7 @@ import Tandem from '../../tandem/js/Tandem.js';
 // TODO: maybe provide a default value for a custom made enabledProperty like in AquaRadioButton `enabled`?
 const DEFAULT_OPTIONS = {
   enabledProperty: null, // {BooleanProperty} initialized in mixin if not provided
-  enabledPropertyOptions: null, // TODO: we support this in Slider.js and ButtonModel.js, do so here?
+  enabledPropertyOptions: null,
   disabledOpacity: SunConstants.DISABLED_OPACITY,
   tandem: Tandem.OPTIONAL
 };
