@@ -378,7 +378,7 @@ var demoEnabledComponent = function( layoutBounds ) {
 
   class EnabledCircle extends Circle {
     constructor() {
-      super( 200, { fill: 'red' } );
+      super( 200, { fill: 'red', cursor: 'pointer' } );
       this.addChild( new Text( 'A Circle', { scale: 5, center: this.center } ) );
       this.initializeEnabledComponent();
     }

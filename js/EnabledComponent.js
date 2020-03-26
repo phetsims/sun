@@ -81,15 +81,17 @@ const EnabledComponent = {
           phetioFeatured: true
         }, options.enabledPropertyOptions ) );
 
+        const cursor = mixedIntoNode ? this.cursor : null;
         const enabledListener = enabled => {
 
           // handle Node specific logic only if this instance is a Node.
           if ( mixedIntoNode ) {
-
-            // TODO: interrupt subtree like in Slider? Also related to scenery#218 in NumberSpinner.
-            // TODO: set cursor like in Slider?
+            this.interruptSubtreeInput();
             this.pickable = enabled;
             this.opacity = enabled ? 1.0 : options.disabledOpacity;
+
+            // handle cursor by supporting setting back to what the cursor was when component was made disabled.
+            this.cursor = enabled ? cursor : 'default';
           }
         };
         this.enabledProperty.link( enabledListener );
