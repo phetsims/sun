@@ -34,6 +34,7 @@ import Carousel from '../Carousel.js';
 import Checkbox from '../Checkbox.js';
 import ComboBox from '../ComboBox.js';
 import ComboBoxItem from '../ComboBoxItem.js';
+import EnabledComponent from '../EnabledComponent.js';
 import HSlider from '../HSlider.js';
 import NumberSpinner from '../NumberSpinner.js';
 import OnOffSwitch from '../OnOffSwitch.js';
@@ -69,7 +70,8 @@ function ComponentsScreenView() {
     { label: 'NumberSpinner', createNode: demoNumberSpinner },
     { label: 'AlignGroup', createNode: demoAlignGroup },
     { label: 'AccordionBox', createNode: demoAccordionBox },
-    { label: 'ToggleSwitch', createNode: demoToggleSwitch }
+    { label: 'ToggleSwitch', createNode: demoToggleSwitch },
+    { label: 'EnabledComponent', createNode: demoEnabledComponent }
   ], {
     selectedDemoLabel: sunQueryParameters.component
   } );
@@ -369,6 +371,29 @@ var demoSlider = function( layoutBounds, orientation ) {
 var demoToggleSwitch = function( layoutBounds ) {
   return new ToggleSwitch( new StringProperty( 'left' ), 'left', 'right', {
     center: layoutBounds.center
+  } );
+};
+
+var demoEnabledComponent = function( layoutBounds ) {
+
+  class EnabledCircle extends Circle {
+    constructor() {
+      super( 200, { fill: 'red' } );
+      this.addChild( new Text( 'A Circle', { scale: 5, center: this.center } ) );
+      this.initializeEnabledComponent();
+    }
+  }
+
+  // mix in enabled component into a Node
+  EnabledComponent.mixInto( EnabledCircle );
+
+  const circle = new EnabledCircle();
+  const enabledCheckbox = new Checkbox( new Text( 'enabled' ), circle.enabledProperty, { scale: 4 } );
+
+  return new VBox( {
+    children: [ circle, enabledCheckbox ],
+    center: layoutBounds.center,
+    spacing: 20
   } );
 };
 
