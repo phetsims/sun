@@ -1,0 +1,89 @@
+// Copyright 2020, University of Colorado Boulder
+
+/**
+ * QUnit tests for EnabledComponent
+ *
+ * @author Michael Kauzmann (PhET Interactive Simulations)
+ */
+
+import Node from '../../scenery/js/nodes/Node.js';
+import Property from '../../axon/js/Property.js';
+import PhetioObject from '../../tandem/js/PhetioObject.js';
+import EnabledComponent from './EnabledComponent.js';
+
+QUnit.module( 'EnabledComponent' );
+
+QUnit.test( 'EnabledComponent into Object', assert => {
+
+  class EnabledObject {
+    constructor( options ) {
+      this.initializeEnabledComponent( options );
+    }
+  }
+
+  // mix in enabled component into a Node
+  EnabledComponent.mixInto( EnabledObject );
+
+  const object = new EnabledObject();
+  testEnabledComponent( assert, object, 'For Object' );
+} );
+
+QUnit.test( 'EnabledComponent into PhetioObject', assert => {
+
+  class EnabledPhetioObject extends PhetioObject {
+    constructor( options ) {
+      super( options );
+      this.initializeEnabledComponent( options );
+    }
+  }
+
+  // mix in enabled component into a Node
+  EnabledComponent.mixInto( EnabledPhetioObject );
+
+  const phetioObject = new EnabledPhetioObject();
+  testEnabledComponent( assert, phetioObject, 'For PhetioObject' );
+  assert.ok( phetioObject instanceof PhetioObject );
+} );
+
+QUnit.test( 'EnabledComponent into Node', assert => {
+
+  class EnabledNode extends Node {
+    constructor( options ) {
+      super( options );
+      this.initializeEnabledComponent( options );
+    }
+  }
+
+  // mix in enabled component into a Node
+  EnabledComponent.mixInto( EnabledNode );
+
+  let node = new EnabledNode();
+
+  testEnabledComponent( assert, node, 'For Node' );
+
+  const disabledOpacity = .2;
+  node = new EnabledNode( {
+    disabledOpacity: disabledOpacity
+  } );
+
+  assert.ok( node.opacity === new Node().opacity, 'opacity should default to Node default' );
+  node.enabled = false;
+  assert.ok( node.opacity === disabledOpacity, 'test disabled opacity' );
+} );
+
+/**
+ * Test basic functionality for an object that mixes in EnabledComponent
+ * @param {Object} assert - from QUnit
+ * @param {Object} enabledObject - mixed in with EnabledComponent
+ * @param {string} message - to tack onto assert messages
+ */
+function testEnabledComponent( assert, enabledObject, message ) {
+  assert.ok( enabledObject.enabledProperty instanceof Property, `${message}: enabledProperty should exist` );
+
+  assert.ok( enabledObject.enabledProperty.value === enabledObject.enabled, `${message}: test getter` );
+
+  enabledObject.enabled = false;
+  assert.ok( enabledObject.enabled === false, `${message}: test setter` );
+  assert.ok( enabledObject.enabledProperty.value === enabledObject.enabled, `${message}: test getter after setting` );
+  assert.ok( enabledObject.enabledProperty.value === false, `${message}: test getter after setting` );
+}
