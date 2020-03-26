@@ -1,12 +1,14 @@
 // Copyright 2020, University of Colorado Boulder
 
 /**
- * Mixin for UI components that provides general features that apply to each one, like an enabledProperty interface.
+ * Mixin that adds a settable Property that determines whether the Object is enabled or not. This includes support for
+ * phet-io instrumentation and a variety of options to customize the enabled Property as well as how it is created.
  *
  * @author Michael Kauzmann (PhET Interactive Simulations)
  */
 
 import BooleanProperty from '../../axon/js/BooleanProperty.js';
+import assertMutuallyExclusiveOptions from '../../phet-core/js/assertMutuallyExclusiveOptions.js';
 import extend from '../../phet-core/js/extend.js';
 import merge from '../../phet-core/js/merge.js';
 import Node from '../../scenery/js/nodes/Node.js';
@@ -48,11 +50,12 @@ const EnabledComponent = {
        */
       initializeEnabledComponent: function( options ) {
 
+        // can't provide both
+        assert && assertMutuallyExclusiveOptions( options, [ 'enabledProperty' ], [ 'enabledPropertyOptions' ] );
+
         options = merge( {}, DEFAULT_OPTIONS, options );
 
         // validate options
-        assert && assert( !( options.enabledProperty && options.enabledPropertyOptions ),
-          'enabledProperty and enabledPropertyOptions are mutually exclusive' );
         assert && assert( options.disabledOpacity >= 0 && options.disabledOpacity <= 1,
           'invalid disabledOpacity: ' + options.disabledOpacity );
 

@@ -6,6 +6,7 @@
  * @author Michael Kauzmann (PhET Interactive Simulations)
  */
 
+import BooleanProperty from '../../axon/js/BooleanProperty.js';
 import Node from '../../scenery/js/nodes/Node.js';
 import Property from '../../axon/js/Property.js';
 import PhetioObject from '../../tandem/js/PhetioObject.js';
@@ -26,6 +27,13 @@ QUnit.test( 'EnabledComponent into Object', assert => {
 
   const object = new EnabledObject();
   testEnabledComponent( assert, object, 'For Object' );
+
+  window.assert && assert.throws( () => {
+    new EnabledObject( {
+      enabledProperty: new BooleanProperty(),
+      enabledPropertyOptions: {}
+    } );
+  }, 'should fail mutually exclusive options' )
 } );
 
 QUnit.test( 'EnabledComponent into PhetioObject', assert => {
