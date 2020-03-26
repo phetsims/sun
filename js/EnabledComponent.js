@@ -3,17 +3,14 @@
 /**
  * Mixin for UI components that provides general features that apply to each one, like an enabledProperty interface.
  *
- * TODO: THIS FILE IS UNDER ACTIVE DEVELOPMENT, SEE https://github.com/phetsims/sun/issues/257
- *
- * TODO: can sun buttons use this? I don't think so since their enabledProperty is in their model. Would we ever want
- * TODO: logic in this file to be specific to SCENERY/Node?
- *
  * @author Michael Kauzmann (PhET Interactive Simulations)
  */
 
 import BooleanProperty from '../../axon/js/BooleanProperty.js';
 import extend from '../../phet-core/js/extend.js';
 import merge from '../../phet-core/js/merge.js';
+import Node from '../../scenery/js/nodes/Node.js';
+import PhetioObject from '../../tandem/js/PhetioObject.js';
 import sun from './sun.js';
 import SunConstants from './SunConstants.js';
 import Tandem from '../../tandem/js/Tandem.js';
@@ -44,6 +41,9 @@ const EnabledComponent = {
     extend( proto, {
 
       /**
+       * IMPORTANT: This must be called after the supertype constructor has been called. In es6 classes this is forced behavior, but
+       * for older `inherit` style hierarchy, the developer must manually ensure this behavior.
+       *
        * @param {Object} [options]
        */
       initializeEnabledComponent: function( options ) {
@@ -56,10 +56,14 @@ const EnabledComponent = {
         assert && assert( options.disabledOpacity >= 0 && options.disabledOpacity <= 1,
           'invalid disabledOpacity: ' + options.disabledOpacity );
 
-        // does this instance own enabledProperty?
+        const mixedIntoNode = this instanceof Node;
+        const mixedIntoPhetioObject = this instanceof PhetioObject;
+
+        // does this mixin own the enabledProperty?
         const ownsEnabledProperty = !options.enabledProperty;
 
-        if ( !ownsEnabledProperty ) {
+        // This phet-io support only applies to instances of PhetioObject
+        if ( !ownsEnabledProperty && mixedIntoPhetioObject ) {
           assert && Tandem.PHET_IO_ENABLED && Tandem.errorOnFailedValidation() && this.isPhetioInstrumented() &&
           assert( !!options.enabledProperty.phetioFeatured === !!this.phetioFeatured,
             'provided enabledProperty must be phetioFeatured if this checkbox is' );
@@ -78,10 +82,15 @@ const EnabledComponent = {
         }, options.enabledPropertyOptions ) );
 
         const enabledListener = enabled => {
-          // TODO: interrupt subtree like in Slider? Also related to scenery#218 in NumberSpinner.
-          // TODO: set cursor like in Slider?
-          this.pickable = enabled;
-          this.opacity = enabled ? 1.0 : options.disabledOpacity;
+
+          // handle Node specific logic only if this instance is a Node.
+          if ( mixedIntoNode ) {
+
+            // TODO: interrupt subtree like in Slider? Also related to scenery#218 in NumberSpinner.
+            // TODO: set cursor like in Slider?
+            this.pickable = enabled;
+            this.opacity = enabled ? 1.0 : options.disabledOpacity;
+          }
         };
         this.enabledProperty.link( enabledListener );
 
