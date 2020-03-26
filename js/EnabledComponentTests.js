@@ -28,12 +28,14 @@ QUnit.test( 'EnabledComponent into Object', assert => {
   const object = new EnabledObject();
   testEnabledComponent( assert, object, 'For Object' );
 
+  // to get around the "no `new` for side effects" lint rule
+  const create = () => new EnabledObject( {
+    enabledProperty: new BooleanProperty(),
+    enabledPropertyOptions: {}
+  } );
   window.assert && assert.throws( () => {
-    new EnabledObject( {
-      enabledProperty: new BooleanProperty(),
-      enabledPropertyOptions: {}
-    } );
-  }, 'should fail mutually exclusive options' )
+    create();
+  }, 'should fail mutually exclusive options' );
 } );
 
 QUnit.test( 'EnabledComponent into PhetioObject', assert => {
