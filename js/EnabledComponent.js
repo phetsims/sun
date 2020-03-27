@@ -8,6 +8,7 @@
  */
 
 import BooleanProperty from '../../axon/js/BooleanProperty.js';
+import assertHasOwnProperties from '../../phet-core/js/assertHasOwnProperties.js';
 import assertMutuallyExclusiveOptions from '../../phet-core/js/assertMutuallyExclusiveOptions.js';
 import extend from '../../phet-core/js/extend.js';
 import merge from '../../phet-core/js/merge.js';
@@ -60,7 +61,13 @@ const EnabledComponent = {
           'invalid disabledOpacity: ' + options.disabledOpacity );
 
         const mixedIntoNode = this instanceof Node;
+        if ( mixedIntoNode ) {
+          assertHasOwnProperties( this, [ 'interruptSubtreeInput', 'opacity', 'pickable', 'cursor' ] ); // used from the Node API
+        }
         const mixedIntoPhetioObject = this instanceof PhetioObject;
+        if ( mixedIntoPhetioObject ) {
+          assertHasOwnProperties( this, [ 'isPhetioInstrumented', 'addLinkedElement', 'phetioFeatured' ] ); // used from the PhetioObject API
+        }
 
         // does this mixin own the enabledProperty?
         const ownsEnabledProperty = !options.enabledProperty;
