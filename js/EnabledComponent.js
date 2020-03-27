@@ -14,9 +14,9 @@ import extend from '../../phet-core/js/extend.js';
 import merge from '../../phet-core/js/merge.js';
 import Node from '../../scenery/js/nodes/Node.js';
 import PhetioObject from '../../tandem/js/PhetioObject.js';
+import Tandem from '../../tandem/js/Tandem.js';
 import sun from './sun.js';
 import SunConstants from './SunConstants.js';
-import Tandem from '../../tandem/js/Tandem.js';
 
 // constants
 // TODO: maybe provide a default value for a custom made enabledProperty like in AquaRadioButton `enabled`?
@@ -91,24 +91,23 @@ const EnabledComponent = {
           phetioFeatured: true
         }, options.enabledPropertyOptions ) );
 
-        const cursor = mixedIntoNode ? this.cursor : null;
-        const enabledListener = enabled => {
-
-          // handle Node specific logic only if this instance is a Node.
-          if ( mixedIntoNode ) {
+        let enabledListener = null;
+        if ( mixedIntoNode ) {
+          const cursor = this.cursor;
+          enabledListener = enabled => {
             this.interruptSubtreeInput();
             this.pickable = enabled;
             this.opacity = enabled ? 1.0 : options.disabledOpacity;
 
             // handle cursor by supporting setting back to what the cursor was when component was made disabled.
             this.cursor = enabled ? cursor : 'default';
-          }
-        };
-        this.enabledProperty.link( enabledListener );
+          };
+          this.enabledProperty.link( enabledListener );
+        }
 
         // @private called by dispose
         this._disposeEnabledComponent = () => {
-          this.enabledProperty.unlink( enabledListener );
+          enabledListener && this.enabledProperty.unlink( enabledListener );
           ownsEnabledProperty && this.enabledProperty.dispose();
         };
       },
