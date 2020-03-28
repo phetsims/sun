@@ -14,6 +14,7 @@ import Node from '../../scenery/js/nodes/Node.js';
 import radioButtonSoundPlayerFactory from '../../tambo/js/radioButtonSoundPlayerFactory.js';
 import Tandem from '../../tandem/js/Tandem.js';
 import AquaRadioButton from './AquaRadioButton.js';
+import EnabledComponent from './EnabledComponent.js';
 import sun from './sun.js';
 
 // a11y - An id for each instance of AquaRadioButtonGroup, passed to individual buttons in the group.
@@ -25,6 +26,9 @@ let instanceCount = 0;
 // to prefix instanceCount in case there are different kinds of "groups"
 const CLASS_NAME = 'AquaRadioButtonGroup';
 
+/**
+ * @mixes EnabledComponent
+ */
 class AquaRadioButtonGroup extends LayoutBox {
 
   /**
@@ -113,6 +117,8 @@ class AquaRadioButtonGroup extends LayoutBox {
 
     super( options );
 
+    this.initializeEnabledComponent( options );
+
     // Add linked element after the radio button is instrumented
     this.addLinkedElement( property, {
       tandem: options.tandem.createTandem( 'property' )
@@ -149,6 +155,8 @@ class AquaRadioButtonGroup extends LayoutBox {
     return button;
   }
 }
+
+EnabledComponent.mixInto( AquaRadioButtonGroup );
 
 sun.register( 'AquaRadioButtonGroup', AquaRadioButtonGroup );
 export default AquaRadioButtonGroup;
