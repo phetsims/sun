@@ -133,7 +133,6 @@ class ABSwitch extends Node {
       labelB.removeInputListener( pressListenerB );
       pressListenerA.dispose();
       pressListenerB.dispose();
-      this.disposeEnabledComponent();
     };
 
     this.mutate( options );
@@ -149,6 +148,7 @@ class ABSwitch extends Node {
    */
   dispose() {
     this.disposeABSwitch();
+    this.disposeEnabledComponent();
     super.dispose();
   }
 }
