@@ -129,6 +129,7 @@ class AquaRadioButtonGroup extends LayoutBox {
       for ( let i = 0; i < radioButtons.length; i++ ) {
         radioButtons[ i ].dispose();
       }
+      this.disposeEnabledComponent();
     };
 
     // @private
