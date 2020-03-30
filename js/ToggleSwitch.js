@@ -27,8 +27,8 @@ import LinearGradient from '../../scenery/js/util/LinearGradient.js';
 import EventType from '../../tandem/js/EventType.js';
 import PhetioObject from '../../tandem/js/PhetioObject.js';
 import Tandem from '../../tandem/js/Tandem.js';
-import sun from './sun.js';
 import EnabledComponent from './EnabledComponent.js';
+import sun from './sun.js';
 
 // constants
 const DEFAULT_SIZE = new Dimension2( 60, 30 );
@@ -250,6 +250,7 @@ class ToggleSwitch extends Node {
       property.unlink( update );
       toggleAction.dispose();
       dragListener.dispose();
+      this.disposeEnabledComponent();
     };
   }
 
@@ -259,7 +260,6 @@ class ToggleSwitch extends Node {
    */
   dispose() {
     this.disposeToggleSwitch();
-    this.disposeEnabledComponent();
     super.dispose();
   }
 }
