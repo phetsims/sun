@@ -15,10 +15,10 @@ import Line from '../../scenery/js/nodes/Line.js';
 import Node from '../../scenery/js/nodes/Node.js';
 import PhetioObject from '../../tandem/js/PhetioObject.js';
 import Tandem from '../../tandem/js/Tandem.js';
+import EnabledComponent from './EnabledComponent.js';
 import sun from './sun.js';
 import SunConstants from './SunConstants.js';
 import ToggleSwitch from './ToggleSwitch.js';
-import EnabledComponent from './EnabledComponent.js';
 
 // constants
 
@@ -133,6 +133,7 @@ class ABSwitch extends Node {
       labelB.removeInputListener( pressListenerB );
       pressListenerA.dispose();
       pressListenerB.dispose();
+      this.disposeEnabledComponent();
     };
 
     this.mutate( options );
@@ -148,7 +149,6 @@ class ABSwitch extends Node {
    */
   dispose() {
     this.disposeABSwitch();
-    this.disposeEnabledComponent();
     super.dispose();
   }
 }
