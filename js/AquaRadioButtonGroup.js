@@ -8,6 +8,7 @@
  */
 
 import merge from '../../phet-core/js/merge.js';
+import AccessiblePeer from '../../scenery/js/accessibility/AccessiblePeer.js';
 import HStrut from '../../scenery/js/nodes/HStrut.js';
 import LayoutBox from '../../scenery/js/nodes/LayoutBox.js';
 import Node from '../../scenery/js/nodes/Node.js';
@@ -116,6 +117,14 @@ class AquaRadioButtonGroup extends LayoutBox {
     options.children = radioButtons;
 
     super( options );
+
+    // PDOM - this node's primary sibling is aria-labelledby its own label so the label content is read whenever
+    // a member of the group receives focus
+    this.addAriaLabelledbyAssociation( {
+      thisElementName: AccessiblePeer.PRIMARY_SIBLING,
+      otherNode: this,
+      otherElementName: AccessiblePeer.LABEL_SIBLING
+    } );
 
     this.initializeEnabledComponent( options );
 
