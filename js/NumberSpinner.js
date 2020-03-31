@@ -141,6 +141,7 @@ class NumberSpinner extends Node {
         lineWidth: options.backgroundLineWidth
       } );
     numberNode.center = backgroundNode.center;
+    numberNode.maxWidth = backgroundWidth - ( 2 * options.xMargin );
     const valueParent = new Node( { children: [ backgroundNode, numberNode ] } );
 
     // buttons
