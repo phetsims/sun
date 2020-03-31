@@ -33,7 +33,7 @@ import RectangularPushButton from './buttons/RectangularPushButton.js';
 import DialogIO from './DialogIO.js';
 import Panel from './Panel.js';
 import sun from './sun.js';
-import sunStrings from './sun-strings.js';
+import sunStrings from './sunStrings.js';
 
 // constants
 const closeString = sunStrings.a11y.close;

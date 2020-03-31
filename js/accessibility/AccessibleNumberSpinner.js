@@ -29,7 +29,7 @@ import merge from '../../../phet-core/js/merge.js';
 import KeyboardUtils from '../../../scenery/js/accessibility/KeyboardUtils.js';
 import Node from '../../../scenery/js/nodes/Node.js';
 import sun from '../sun.js';
-import sunStrings from '../sun-strings.js';
+import sunStrings from '../sunStrings.js';
 import AccessibleValueHandler from './AccessibleValueHandler.js';
 
 // a11y strings

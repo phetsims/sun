@@ -13,7 +13,7 @@ import ButtonsScreenView from './demo/ButtonsScreenView.js';
 import ComponentsScreenView from './demo/ComponentsScreenView.js';
 import DialogsScreenView from './demo/DialogsScreenView.js';
 import MemoryTestsScreenView from './demo/MemoryTestsScreenView.js';
-import sunStrings from './sun-strings.js';
+import sunStrings from './sunStrings.js';
 import sunQueryParameters from './sunQueryParameters.js';
 
 const sunTitleString = sunStrings.sun.title;
