@@ -9,7 +9,6 @@
 import Property from '../../../axon/js/Property.js';
 import ScreenView from '../../../joist/js/ScreenView.js';
 import inherit from '../../../phet-core/js/inherit.js';
-import AccessiblePeer from '../../../scenery/js/accessibility/AccessiblePeer.js';
 import HBox from '../../../scenery/js/nodes/HBox.js';
 import Node from '../../../scenery/js/nodes/Node.js';
 import Rectangle from '../../../scenery/js/nodes/Rectangle.js';
@@ -153,13 +152,6 @@ function ButtonsScreenView() {
       labelContent: 'C'
     }
   ] );
-
-  // The ul radio button group is aria-labelledby its the radio button heading
-  verticalAquaRadioButtonsWithGroup.addAriaLabelledbyAssociation( {
-    thisElementName: AccessiblePeer.PRIMARY_SIBLING,
-    otherElementName: AccessiblePeer.PRIMARY_SIBLING,
-    otherNode: radioButtonsHeading
-  } );
 
   this.addChild( new Panel( new VBox( {
     children: [ radioButtonsHeading, verticalAquaRadioButtonsWithGroup ],
