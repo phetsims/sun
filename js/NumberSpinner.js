@@ -8,12 +8,13 @@
  */
 
 import Property from '../../axon/js/Property.js';
+import Range from '../../../dot/js/Range.js';
 import Utils from '../../dot/js/Utils.js';
 import merge from '../../phet-core/js/merge.js';
 import StringUtils from '../../phetcommon/js/util/StringUtils.js';
+import NumberDisplay from '../../../../scenery-phet/js/NumberDisplay.js';
 import PhetFont from '../../scenery-phet/js/PhetFont.js';
 import Node from '../../scenery/js/nodes/Node.js';
-import Rectangle from '../../scenery/js/nodes/Rectangle.js';
 import Text from '../../scenery/js/nodes/Text.js';
 import Tandem from '../../tandem/js/Tandem.js';
 import AccessibleNumberSpinner from './accessibility/AccessibleNumberSpinner.js';
@@ -126,23 +127,21 @@ class NumberSpinner extends Node {
       new Text( maxString, valueOptions ).width
     );
 
-    // number
-    const numberNode = new Text( numberProperty.get(), valueOptions );
-
     // compute the size of the background
     const backgroundWidth = Math.max( maxWidth + 2 * options.xMargin, options.backgroundMinWidth );
-    const backgroundHeight = numberNode.height + ( 2 * options.yMargin );
 
-    // background for displaying the value
-    const backgroundNode = new Rectangle( 0, 0, backgroundWidth, backgroundHeight,
-      options.cornerRadius, options.cornerRadius, {
-        fill: options.backgroundFill,
-        stroke: options.backgroundStroke,
-        lineWidth: options.backgroundLineWidth
-      } );
-    numberNode.center = backgroundNode.center;
-    numberNode.maxWidth = backgroundWidth - ( 2 * options.xMargin );
-    const valueParent = new Node( { children: [ backgroundNode, numberNode ] } );
+    // display for the number
+    const valueParent = new NumberDisplay( numberProperty, new Range( 0, backgroundWidth ), {
+      textOptions: valueOptions,
+      align: options.valueAlign,
+      valuePattern: options.valuePattern,
+      cornerRadius: options.cornerRadius,
+      decimalPlaces: options.decimalPlaces,
+      backgroundFill: options.backgroundFill,
+      backgroundStroke: options.backgroundStroke,
+      backgroundLineWidth: options.backgroundLineWidth,
+      tandem: options.tandem.createTandem( 'valueDisplay' )
+    } );
 
     // buttons
     const arrowButtonOptions = {
@@ -263,34 +262,6 @@ class NumberSpinner extends Node {
       decrementButton.enabled = ( options.decrementFunction( numberProperty.value ) >= rangeProperty.value.min );
     };
 
-    // synchronize with number value
-    const numberPropertyObserver = value => {
-      assert && assert( rangeProperty.value.contains( value ), 'value out of range: ' + value );
-
-      // update the number
-      numberNode.text = StringUtils.fillIn( options.valuePattern, {
-        value: Utils.toFixed( value, options.decimalPlaces )
-      } );
-
-      // update the alignment
-      switch( options.valueAlign ) {
-        case 'center':
-          numberNode.center = backgroundNode.center;
-          break;
-        case 'left':
-          numberNode.left = backgroundNode.left + options.xMargin;
-          break;
-        case 'right':
-          numberNode.right = backgroundNode.right - options.xMargin;
-          break;
-        default:
-          throw new Error( 'invalid valueAlign: ' + options.valueAlign );
-      }
-
-      updateEnabled();
-    };
-    numberProperty.link( numberPropertyObserver ); // must be unlinked in dispose
-
     // Dynamic range changes, see https://github.com/phetsims/scenery-phet/issues/305
     const rangeObserver = range => {
       // If our value is outside our new range, adjust it to be within the range.
@@ -317,11 +288,11 @@ class NumberSpinner extends Node {
     options.shiftKeyboardStep = 0;
     this.initializeAccessibleNumberSpinner( numberProperty, rangeProperty, this.enabledProperty, options );
 
-  // a11y - click arrow buttons on keyboard increment/decrement; must be disposed
-  const increasedListener = function( isDown ) { isDown && incrementButton.a11yClick(); };
-  const decreasedListener = function( isDown ) { isDown && decrementButton.a11yClick(); };
-  this.incrementDownEmitter.addListener( increasedListener );
-  this.decrementDownEmitter.addListener( decreasedListener );
+    // a11y - click arrow buttons on keyboard increment/decrement; must be disposed
+    const increasedListener = function( isDown ) { isDown && incrementButton.a11yClick(); };
+    const decreasedListener = function( isDown ) { isDown && decrementButton.a11yClick(); };
+    this.incrementDownEmitter.addListener( increasedListener );
+    this.decrementDownEmitter.addListener( decreasedListener );
 
     // Create a link to associated Property, so it's easier to find in Studio.
     this.addLinkedElement( numberProperty, {
@@ -336,7 +307,6 @@ class NumberSpinner extends Node {
       this.decrementDownEmitter.removeListener( decreasedListener );
       this.disposeAccessibleNumberSpinner();
 
-      numberProperty.unlink( numberPropertyObserver );
       rangeProperty.unlink( rangeObserver );
       this.enabledProperty.unlink( enabledPropertyObserver );
     };
