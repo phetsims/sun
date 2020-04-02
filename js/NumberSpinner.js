@@ -8,11 +8,11 @@
  */
 
 import Property from '../../axon/js/Property.js';
-import Range from '../../dot/js/Range.js';
+import Range from '../../../dot/js/Range.js';
 import Utils from '../../dot/js/Utils.js';
 import merge from '../../phet-core/js/merge.js';
 import StringUtils from '../../phetcommon/js/util/StringUtils.js';
-import NumberDisplay from '../../scenery-phet/js/NumberDisplay.js';
+import NumberDisplay from '../../../../scenery-phet/js/NumberDisplay.js';
 import PhetFont from '../../scenery-phet/js/PhetFont.js';
 import Node from '../../scenery/js/nodes/Node.js';
 import Text from '../../scenery/js/nodes/Text.js';
