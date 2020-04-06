@@ -16,7 +16,7 @@ import Shape from '../../../kite/js/Shape.js';
 import InstanceRegistry from '../../../phet-core/js/documentation/InstanceRegistry.js';
 import inherit from '../../../phet-core/js/inherit.js';
 import merge from '../../../phet-core/js/merge.js';
-import AccessiblePeer from '../../../scenery/js/accessibility/AccessiblePeer.js';
+import AccessiblePeer from '../../../scenery/js/accessibility/pdom/AccessiblePeer.js';
 import FocusHighlightPath from '../../../scenery/js/accessibility/FocusHighlightPath.js';
 import LayoutBox from '../../../scenery/js/nodes/LayoutBox.js';
 import Rectangle from '../../../scenery/js/nodes/Rectangle.js';

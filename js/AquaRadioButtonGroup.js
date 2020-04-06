@@ -8,7 +8,7 @@
  */
 
 import merge from '../../phet-core/js/merge.js';
-import AccessiblePeer from '../../scenery/js/accessibility/AccessiblePeer.js';
+import AccessiblePeer from '../../scenery/js/accessibility/pdom/AccessiblePeer.js';
 import HStrut from '../../scenery/js/nodes/HStrut.js';
 import LayoutBox from '../../scenery/js/nodes/LayoutBox.js';
 import Node from '../../scenery/js/nodes/Node.js';

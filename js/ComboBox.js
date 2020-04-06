@@ -22,7 +22,7 @@ import BooleanProperty from '../../axon/js/BooleanProperty.js';
 import Vector2 from '../../dot/js/Vector2.js';
 import InstanceRegistry from '../../phet-core/js/documentation/InstanceRegistry.js';
 import merge from '../../phet-core/js/merge.js';
-import AccessiblePeer from '../../scenery/js/accessibility/AccessiblePeer.js';
+import AccessiblePeer from '../../scenery/js/accessibility/pdom/AccessiblePeer.js';
 import Display from '../../scenery/js/display/Display.js';
 import Node from '../../scenery/js/nodes/Node.js';
 import EventType from '../../tandem/js/EventType.js';
