@@ -132,6 +132,7 @@ class ComboBoxListBox extends Panel {
 
     const content = new VBox( {
       spacing: 0,
+      excludeInvisibleChildrenFromBounds: true,
       children: listItemNodes
     } );
 
