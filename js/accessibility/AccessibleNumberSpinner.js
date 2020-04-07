@@ -32,7 +32,6 @@ import sun from '../sun.js';
 import sunStrings from '../sunStrings.js';
 import AccessibleValueHandler from './AccessibleValueHandler.js';
 
-// a11y strings
 const numberSpinnerRoleDescriptionString = sunStrings.a11y.numberSpinnerRoleDescription;
 
 const AccessibleNumberSpinner = {
