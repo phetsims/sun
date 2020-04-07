@@ -65,7 +65,7 @@ function RadioButtonGroupMember( property, value, options ) {
     // {Playable|null} - sound generator, if set to null the default will be used, set to Playable.NO_SOUND to disable
     soundPlayer: null,
 
-    // a11y
+    // pdom
     tagName: 'input',
     inputType: 'radio',
     labelTagName: 'label',
@@ -96,14 +96,14 @@ function RadioButtonGroupMember( property, value, options ) {
 
   RectangularButtonView.call( this, this.buttonModel, this.interactionStateProperty, options );
 
-  // a11y - Specify the default value for assistive technology, this attribute is needed in addition to
+  // pdom - Specify the default value for assistive technology, this attribute is needed in addition to
   // the 'checked' property to mark this element as the default selection since 'checked' may be set before
   // we are finished adding RadioButtonGroupMembers to the RadioButtonGroup.
   if ( property.value === value ) {
     this.setAccessibleAttribute( 'checked', 'checked' );
   }
 
-  // a11y - when the property changes, make sure the correct radio button is marked as 'checked' so that this button
+  // pdom - when the property changes, make sure the correct radio button is marked as 'checked' so that this button
   // receives focus on 'tab'
   const accessibleCheckedListener = function( newValue ) {
     self.accessibleChecked = newValue === value;

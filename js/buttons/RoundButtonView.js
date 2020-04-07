@@ -88,7 +88,7 @@ function RoundButtonView( pushButtonModel, interactionStateProperty, options ) {
     // phet-io
     tandem: Tandem.OPTIONAL, // This duplicates the parent option and works around https://github.com/phetsims/tandem/issues/50
 
-    // a11y
+    // pdom
     tagName: 'button',
     focusHighlightDilation: 5 // radius dilation for circular highlight
   }, options );
@@ -169,7 +169,7 @@ function RoundButtonView( pushButtonModel, interactionStateProperty, options ) {
   // Set pickable such that sub-nodes are pruned from hit testing.
   this.pickable = null;
 
-  // a11y
+  // pdom
   this.focusHighlight = new Shape.circle( 0, 0, buttonRadius + options.focusHighlightDilation );
 
   // Mutate with the options after the layout is complete so that

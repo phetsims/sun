@@ -34,7 +34,7 @@ const BUTTON_CONTENT_X_ALIGN_VALUES = [ 'center', 'left', 'right' ];
 const BUTTON_CONTENT_Y_ALIGN_VALUES = [ 'center', 'top', 'bottom' ];
 const CLASS_NAME = 'RadioButtonGroup'; // to prefix instanceCount in case there are different kinds of "groups"
 
-// a11y - Unique ID for each instance if RadioButtonGroup, passed to individual buttons in the group. All buttons in
+// pdom - Unique ID for each instance if RadioButtonGroup, passed to individual buttons in the group. All buttons in
 // the  radio button group must have the same name or else the browser will treat all inputs of type radio in the
 // document as being in a single group.
 let instanceCount = 0;
@@ -62,7 +62,7 @@ function RadioButtonGroup( property, contentArray, options ) {
     // must be one for each element in contentArray
     soundPlayers: null,
 
-    // a11y
+    // pdom
     tagName: 'ul',
     labelTagName: 'h3',
     ariaRole: 'radiogroup',
@@ -166,7 +166,7 @@ function RadioButtonGroup( property, contentArray, options ) {
     buttonAppearanceStrategy: RadioButtonGroupAppearance.defaultRadioButtonsAppearance,
     contentAppearanceStrategy: RadioButtonGroupAppearance.contentAppearanceStrategy,
 
-    // a11y - focus highlight expansion
+    // pdom - focus highlight expansion
     a11yHighlightXDilation: 0,
     a11yHighlightYDilation: 0
   };
@@ -216,12 +216,12 @@ function RadioButtonGroup( property, contentArray, options ) {
       opts.tandem = options.tandem.createTandem( currentContent.tandemName );
     }
 
-    // a11y create the label for the radio button
+    // pdom create the label for the radio button
     if ( currentContent.labelContent ) {
       opts.labelContent = currentContent.labelContent;
     }
 
-    // a11y create description for radio button
+    // pdom create description for radio button
     // use if block to prevent empty 'p' tag being added when no option is present
     if ( currentContent.descriptionContent ) {
       opts.descriptionContent = currentContent.descriptionContent;
@@ -229,7 +229,7 @@ function RadioButtonGroup( property, contentArray, options ) {
 
     const radioButton = new RadioButtonGroupMember( property, currentContent.value, opts );
 
-    // a11y - so the browser recognizes these buttons are in the same group, see instanceCount for more info
+    // pdom - so the browser recognizes these buttons are in the same group, see instanceCount for more info
     radioButton.setAccessibleAttribute( 'name', CLASS_NAME + instanceCount );
 
     // ensure the buttons don't resize when selected vs unselected by adding a rectangle with the max size
@@ -284,7 +284,7 @@ function RadioButtonGroup( property, contentArray, options ) {
       // use the same content appearance strategy for the labels that is used for the button content
       options.contentAppearanceStrategy( label, radioButton.interactionStateProperty, options );
 
-      // a11y - include label in focus highlight
+      // pdom - include label in focus highlight
       defaultHighlightBounds = radioButton.mouseArea.bounds.dilated( 5 );
     }
     else {
@@ -292,7 +292,7 @@ function RadioButtonGroup( property, contentArray, options ) {
       defaultHighlightBounds = button.bounds.dilated( FocusHighlightPath.getDilationCoefficient( button ) );
     }
 
-    // a11y - set the focus highlight, dilated by the optional expansion values
+    // pdom - set the focus highlight, dilated by the optional expansion values
     const highlightBounds = defaultHighlightBounds.dilatedX( opts.a11yHighlightXDilation ).dilatedY( opts.a11yHighlightYDilation );
     radioButton.setFocusHighlight( Shape.bounds( highlightBounds ) );
 
@@ -307,7 +307,7 @@ function RadioButtonGroup( property, contentArray, options ) {
   LayoutBox.call( this, options );
   const self = this;
 
-  // a11y - this node's primary sibling is aria-labelledby its own label so the label content is read whenever
+  // pdom - this node's primary sibling is aria-labelledby its own label so the label content is read whenever
   // a member of the group receives focus
   this.addAriaLabelledbyAssociation( {
     thisElementName: PDOMPeer.PRIMARY_SIBLING,
@@ -365,7 +365,7 @@ function RadioButtonGroup( property, contentArray, options ) {
     }
   };
 
-  // a11y - register component for binder docs
+  // pdom - register component for binder docs
   assert && phet.chipper.queryParameters.binder && InstanceRegistry.registerDataURL( 'sun', 'RadioButtonGroup', this );
 }
 

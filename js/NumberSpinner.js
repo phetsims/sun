@@ -310,14 +310,14 @@ class NumberSpinner extends Node {
     };
     this.enabledProperty.link( enabledPropertyObserver );
 
-    // a11y - initialize accessibility features
+    // pdom - initialize accessibility features
     assert && assert( !options.keyboardStep, 'keyboardStep supported by arrow buttons, do not pass value to NumberSpinner' );
     assert && assert( !options.shiftKeyboardStep, 'shiftKeyboardStep handled by arrow buttons' );
     options.keyboardStep = 0;
     options.shiftKeyboardStep = 0;
     this.initializeAccessibleNumberSpinner( numberProperty, rangeProperty, this.enabledProperty, options );
 
-  // a11y - click arrow buttons on keyboard increment/decrement; must be disposed
+  // pdom - click arrow buttons on keyboard increment/decrement; must be disposed
   const increasedListener = function( isDown ) { isDown && incrementButton.a11yClick(); };
   const decreasedListener = function( isDown ) { isDown && decrementButton.a11yClick(); };
   this.incrementDownEmitter.addListener( increasedListener );

@@ -27,7 +27,7 @@ class ComboBoxItem {
       // phet-io
       tandemName: null, // {string|null} the tandem name for this item's associated Node in the combo box
 
-      // a11y
+      // pdom
       a11yLabel: null // {string|null} the label for this item's associated Node in the combo box
 
     }, options );

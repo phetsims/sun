@@ -39,14 +39,14 @@ class ComboBoxListItemNode extends Node {
       // phet-io
       tandem: Tandem.REQUIRED,
 
-      // a11y
+      // pdom
       tagName: 'li',
       focusable: true,
       ariaRole: 'option'
 
     }, options );
 
-    // a11y: get innerContent from the item
+    // pdom: get innerContent from the item
     assert && assert( options.innerContent === undefined, 'ComboBoxListItemNode sets innerContent' );
     options.innerContent = item.a11yLabel;
 
@@ -87,7 +87,7 @@ class ComboBoxListItemNode extends Node {
     // @public (read-only)
     this.item = item;
 
-    // a11y focus highlight is fitted to this Node's bounds, so that it doesn't overlap other items in the list box
+    // pdom focus highlight is fitted to this Node's bounds, so that it doesn't overlap other items in the list box
     this.focusHighlight = Shape.bounds( this.localBounds );
 
     // Show highlight when pointer is over this item.

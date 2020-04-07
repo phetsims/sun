@@ -96,7 +96,7 @@ function RectangularButtonView( buttonModel, interactionStateProperty, options )
     // Options that will be passed through to the main input listener (PressListener)
     listenerOptions: null,
 
-    // a11y
+    // pdom
     tagName: 'button',
 
     // phet-io

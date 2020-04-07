@@ -329,7 +329,7 @@ function Slider( valueProperty, range, options ) {
     thumbInputListener.dispose();
   };
 
-  // a11y - custom focus highlight that surrounds and moves with the thumb
+  // pdom - custom focus highlight that surrounds and moves with the thumb
   this.focusHighlight = new FocusHighlightFromNode( thumb );
 
   assert && assert( !options.ariaOrientation, 'Slider sets its own ariaOrientation' );

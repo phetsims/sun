@@ -137,7 +137,7 @@ function Dialog( content, options ) {
     openedSoundPlayer: null,
     closedSoundPlayer: null,
 
-    // a11y options
+    // pdom options
     tagName: 'div',
     ariaRole: 'dialog',
     focusOnCloseNode: null, // {Node} receives focus on close, if null focus returns to element that had focus on open
@@ -185,10 +185,10 @@ function Dialog( content, options ) {
       // sound generation
       openedSoundPlayer.play();
 
-      // a11y - focus is returned to this element if dialog closed from accessible input
+      // pdom - focus is returned to this element if dialog closed from accessible input
       this.activeElement = this.activeElement || Display.focusedNode;
 
-      // a11y - modal dialogs should be the only readable content in the sim
+      // pdom - modal dialogs should be the only readable content in the sim
       // TODO: https://github.com/phetsims/joist/issues/293 non-modal dialogs shouldn't hide other accessible content,
       // and this should be dependant on other things in the sim modalNodeStack
       this.sim.setAccessibleViewsVisible( false );
@@ -202,7 +202,7 @@ function Dialog( content, options ) {
       // sound generation
       closedSoundPlayer.play();
 
-      // a11y - when the dialog is hidden, make all ScreenView content visible to assistive technology
+      // pdom - when the dialog is hidden, make all ScreenView content visible to assistive technology
       this.sim.setAccessibleViewsVisible( true );
 
       // Do this last
@@ -247,7 +247,7 @@ function Dialog( content, options ) {
     // turn off default sound generation, Dialog will create its own sounds
     soundPlayer: Playable.NO_SOUND,
 
-    // a11y
+    // pdom
     tagName: 'button',
     innerContent: closeString
   } );
@@ -333,11 +333,11 @@ function Dialog( content, options ) {
   // @private
   this.sim = sim;
 
-  // a11y - set the order of content, close button first so remaining content can be read from top to bottom
+  // pdom - set the order of content, close button first so remaining content can be read from top to bottom
   // with virtual cursor
   this.accessibleOrder = [ closeButton, options.title, content ].filter( node => node !== undefined );
 
-  // a11y - set the aria-labelledby relation so that whenever focus enters the dialog the title is read
+  // pdom - set the aria-labelledby relation so that whenever focus enters the dialog the title is read
   if ( options.title && options.title.tagName && options.addAriaLabelledByFromTitle ) {
     this.addAriaLabelledbyAssociation( {
       thisElementName: PDOMPeer.PRIMARY_SIBLING,
@@ -349,7 +349,7 @@ function Dialog( content, options ) {
   // @private (a11y) - the active element when the dialog is shown, tracked so that focus can be restored on close
   this.activeElement = options.focusOnCloseNode || null;
 
-  // a11y - close the dialog when pressing "escape"
+  // pdom - close the dialog when pressing "escape"
   const escapeListener = {
     keydown: event => {
       const domEvent = event.domEvent;

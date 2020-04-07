@@ -50,7 +50,7 @@ function AquaRadioButton( property, value, node, options ) {
     // {Playable|null} - sound generator, if set to null default will be used, set to Playable.NO_SOUND to disable
     soundPlayer: null,
 
-    // a11y
+    // pdom
     tagName: 'input',
     inputType: 'radio',
     containerTagName: 'li',
@@ -134,13 +134,13 @@ function AquaRadioButton( property, value, node, options ) {
   } );
   this.addInputListener( fireListener );
 
-  // a11y - input listener so that updates the state of the radio button with keyboard interaction
+  // pdom - input listener so that updates the state of the radio button with keyboard interaction
   const changeListener = {
     change: fire
   };
   this.addInputListener( changeListener );
 
-  // a11y - Specify the default value for assistive technology. This attribute is needed in addition to
+  // pdom - Specify the default value for assistive technology. This attribute is needed in addition to
   // the 'checked' property to mark this element as the default selection since 'checked' may be set before
   // we are finished adding RadioButtons to the containing group, and the browser will remove the boolean
   // 'checked' flag when new buttons are added.
@@ -148,14 +148,14 @@ function AquaRadioButton( property, value, node, options ) {
     this.setAccessibleAttribute( 'checked', 'checked' );
   }
 
-  // a11y - when the property changes, make sure the correct radio button is marked as 'checked' so that this button
+  // pdom - when the property changes, make sure the correct radio button is marked as 'checked' so that this button
   // receives focus on 'tab'
   const accessibleCheckedListener = function( newValue ) {
     self.accessibleChecked = newValue === value;
   };
   property.link( accessibleCheckedListener );
 
-  // a11y - every button in a group of radio buttons should have the same name, see options for more info
+  // pdom - every button in a group of radio buttons should have the same name, see options for more info
   if ( options.a11yNameAttribute !== null ) {
     this.setAccessibleAttribute( 'name', options.a11yNameAttribute );
   }

@@ -50,7 +50,7 @@ class ComboBoxButton extends RectangularPushButton {
       // phet-io
       tandem: Tandem.OPTIONAL,
 
-      // a11y
+      // pdom
       labelTagName: 'span',
       containerTagName: 'div',
       labelContent: null // {string|null}
@@ -165,7 +165,7 @@ class ComboBoxButton extends RectangularPushButton {
 
       updateItemLayout();
 
-      // a11y
+      // pdom
       this.innerContent = item.a11yLabel;
     };
     property.link( propertyObserver );

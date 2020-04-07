@@ -256,7 +256,7 @@ const AccessibleValueHandler = {
           // TODO: should this assert be added back in? Right now area model fails it, see https://github.com/phetsims/sun/issues/530
           // assert && assert( mappedMin <= mappedMax, 'min should be less than max' );
 
-          // a11y - update enabled slider range for AT, required for screen reader events to behave correctly
+          // pdom - update enabled slider range for AT, required for screen reader events to behave correctly
           this.setAccessibleAttribute( 'min', mappedMin );
           this.setAccessibleAttribute( 'max', mappedMax );
 

@@ -59,7 +59,7 @@ function Checkbox( content, property, options ) {
     checkedSoundPlayer: null,
     uncheckedSoundPlayer: null,
 
-    // a11y
+    // pdom
     tagName: 'input',
     inputType: 'checkbox',
     appendDescription: true

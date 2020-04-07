@@ -18,7 +18,7 @@ import AquaRadioButton from './AquaRadioButton.js';
 import EnabledComponent from './EnabledComponent.js';
 import sun from './sun.js';
 
-// a11y - An id for each instance of AquaRadioButtonGroup, passed to individual buttons in the group.
+// pdom - An id for each instance of AquaRadioButtonGroup, passed to individual buttons in the group.
 // Each button in a radio button group must have the same "name" attribute to be considered in a group, otherwise
 // arrow keys will navigate all radio type inputs in the document.
 let instanceCount = 0;

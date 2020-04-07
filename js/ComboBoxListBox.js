@@ -39,7 +39,7 @@ class ComboBoxListBox extends Panel {
       yMargin: 8,
       backgroundPickable: true,
 
-      // a11y
+      // pdom
       tagName: 'ul',
       ariaRole: 'listbox',
       groupFocusHighlight: true,
@@ -144,7 +144,7 @@ class ComboBoxListBox extends Panel {
     // @public {ComboBoxListItemNode|null} the ComboBoxListItemNode that has focus
     this.focusedItemNode = null;
 
-    // a11y listener for the entire list box
+    // pdom listener for the entire list box
     this.addInputListener( {
 
       // When the list box gets focus, transfer focus to the ComboBoxListItemNode that matches property.value.

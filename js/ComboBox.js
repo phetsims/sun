@@ -82,7 +82,7 @@ class ComboBox extends Node {
       listStroke: 'black', // {Color|string}
       listLineWidth: 1,
 
-      // a11y
+      // pdom
       accessibleName: null, // the a11y setter for this is overridden, see below
       helpText: null, // the a11y setter for this is overridden, see below
 
@@ -127,7 +127,7 @@ class ComboBox extends Node {
       mouseAreaXDilation: options.buttonMouseAreaXDilation,
       mouseAreaYDilation: options.buttonMouseAreaYDilation,
 
-      // a11y - accessibleName and helpText are set via overridden functions on the prototype. See below.
+      // pdom - accessibleName and helpText are set via overridden functions on the prototype. See below.
 
       // phet-io
       tandem: options.tandem.createTandem( 'button' )
@@ -155,7 +155,7 @@ class ComboBox extends Node {
         lineWidth: options.listLineWidth,
         visible: false,
 
-        // a11y
+        // pdom
         // the list box is aria-labelledby its own label sibling
         ariaLabelledbyAssociations: [ {
           otherNode: this.button,

@@ -25,7 +25,7 @@ function TextPushButton( text, options ) {
     maxTextWidth: null,
     tandem: Tandem.REQUIRED,
 
-    // a11y
+    // pdom
     innerContent: text
   }, options );
 

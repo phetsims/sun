@@ -67,7 +67,7 @@ function MenuItem( width, height, closeCallback, text, callback, present, option
     phetioDocumentation: 'Item buttons shown in a popup menu',
     phetioEventType: EventType.USER,
 
-    // a11y
+    // pdom
     tagName: 'button',
 
     // @param {SceneryEvent} - Only called after PDOM interaction and called AFTER closeCallback, use this to move
@@ -138,7 +138,7 @@ function MenuItem( width, height, closeCallback, text, callback, present, option
     this.addChild( checkMarkWrapper );
   }
 
-  // a11y - activate the item when selected with the keyboard
+  // pdom - activate the item when selected with the keyboard
   const clickListener = {
     click: function( event ) {
       fire( event );
