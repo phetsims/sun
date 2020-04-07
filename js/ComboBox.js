@@ -22,7 +22,7 @@ import BooleanProperty from '../../axon/js/BooleanProperty.js';
 import Vector2 from '../../dot/js/Vector2.js';
 import InstanceRegistry from '../../phet-core/js/documentation/InstanceRegistry.js';
 import merge from '../../phet-core/js/merge.js';
-import AccessiblePeer from '../../scenery/js/accessibility/pdom/AccessiblePeer.js';
+import PDOMPeer from '../../scenery/js/accessibility/pdom/PDOMPeer.js';
 import Display from '../../scenery/js/display/Display.js';
 import Node from '../../scenery/js/nodes/Node.js';
 import EventType from '../../tandem/js/EventType.js';
@@ -159,8 +159,8 @@ class ComboBox extends Node {
         // the list box is aria-labelledby its own label sibling
         ariaLabelledbyAssociations: [ {
           otherNode: this.button,
-          otherElementName: AccessiblePeer.LABEL_SIBLING,
-          thisElementName: AccessiblePeer.PRIMARY_SIBLING
+          otherElementName: PDOMPeer.LABEL_SIBLING,
+          thisElementName: PDOMPeer.PRIMARY_SIBLING
         } ]
       } );
     listParent.addChild( this.listBox );

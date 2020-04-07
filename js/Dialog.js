@@ -14,8 +14,8 @@ import Property from '../../axon/js/Property.js';
 import Shape from '../../kite/js/Shape.js';
 import inherit from '../../phet-core/js/inherit.js';
 import merge from '../../phet-core/js/merge.js';
-import AccessibilityUtils from '../../scenery/js/accessibility/pdom/AccessibilityUtils.js';
-import AccessiblePeer from '../../scenery/js/accessibility/pdom/AccessiblePeer.js';
+import PDOMUtils from '../../scenery/js/accessibility/pdom/PDOMUtils.js';
+import PDOMPeer from '../../scenery/js/accessibility/pdom/PDOMPeer.js';
 import KeyboardUtils from '../../scenery/js/accessibility/KeyboardUtils.js';
 import Display from '../../scenery/js/display/Display.js';
 import AlignBox from '../../scenery/js/nodes/AlignBox.js';
@@ -340,9 +340,9 @@ function Dialog( content, options ) {
   // a11y - set the aria-labelledby relation so that whenever focus enters the dialog the title is read
   if ( options.title && options.title.tagName && options.addAriaLabelledByFromTitle ) {
     this.addAriaLabelledbyAssociation( {
-      thisElementName: AccessiblePeer.PRIMARY_SIBLING,
+      thisElementName: PDOMPeer.PRIMARY_SIBLING,
       otherNode: options.title,
-      otherElementName: AccessiblePeer.PRIMARY_SIBLING
+      otherElementName: PDOMPeer.PRIMARY_SIBLING
     } );
   }
 
@@ -365,8 +365,8 @@ function Dialog( content, options ) {
         // when the navigation bar is hidden and there is only one focusable element in the DOM
         // see https://bugzilla.mozilla.org/show_bug.cgi?id=910136
         const activeId = Display.focus.trail.getUniqueId();
-        const noNextFocusable = AccessibilityUtils.getNextFocusable().id === activeId;
-        const noPreviousFocusable = AccessibilityUtils.getPreviousFocusable().id === activeId;
+        const noNextFocusable = PDOMUtils.getNextFocusable().id === activeId;
+        const noPreviousFocusable = PDOMUtils.getPreviousFocusable().id === activeId;
 
         if ( noNextFocusable && noPreviousFocusable ) {
           domEvent.preventDefault();

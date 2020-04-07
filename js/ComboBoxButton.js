@@ -9,7 +9,7 @@
 
 import Shape from '../../kite/js/Shape.js';
 import merge from '../../phet-core/js/merge.js';
-import AccessiblePeer from '../../scenery/js/accessibility/pdom/AccessiblePeer.js';
+import PDOMPeer from '../../scenery/js/accessibility/pdom/PDOMPeer.js';
 import HStrut from '../../scenery/js/nodes/HStrut.js';
 import Node from '../../scenery/js/nodes/Node.js';
 import Path from '../../scenery/js/nodes/Path.js';
@@ -177,13 +177,13 @@ class ComboBoxButton extends RectangularPushButton {
     this.ariaLabelledbyAssociations = [
       {
         otherNode: this,
-        otherElementName: AccessiblePeer.LABEL_SIBLING,
-        thisElementName: AccessiblePeer.PRIMARY_SIBLING
+        otherElementName: PDOMPeer.LABEL_SIBLING,
+        thisElementName: PDOMPeer.PRIMARY_SIBLING
       },
       {
         otherNode: this,
-        otherElementName: AccessiblePeer.PRIMARY_SIBLING,
-        thisElementName: AccessiblePeer.PRIMARY_SIBLING
+        otherElementName: PDOMPeer.PRIMARY_SIBLING,
+        thisElementName: PDOMPeer.PRIMARY_SIBLING
       }
     ];
 

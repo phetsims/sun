@@ -16,7 +16,7 @@ import Shape from '../../../kite/js/Shape.js';
 import InstanceRegistry from '../../../phet-core/js/documentation/InstanceRegistry.js';
 import inherit from '../../../phet-core/js/inherit.js';
 import merge from '../../../phet-core/js/merge.js';
-import AccessiblePeer from '../../../scenery/js/accessibility/pdom/AccessiblePeer.js';
+import PDOMPeer from '../../../scenery/js/accessibility/pdom/PDOMPeer.js';
 import FocusHighlightPath from '../../../scenery/js/accessibility/FocusHighlightPath.js';
 import LayoutBox from '../../../scenery/js/nodes/LayoutBox.js';
 import Rectangle from '../../../scenery/js/nodes/Rectangle.js';
@@ -310,9 +310,9 @@ function RadioButtonGroup( property, contentArray, options ) {
   // a11y - this node's primary sibling is aria-labelledby its own label so the label content is read whenever
   // a member of the group receives focus
   this.addAriaLabelledbyAssociation( {
-    thisElementName: AccessiblePeer.PRIMARY_SIBLING,
+    thisElementName: PDOMPeer.PRIMARY_SIBLING,
     otherNode: this,
-    otherElementName: AccessiblePeer.LABEL_SIBLING
+    otherElementName: PDOMPeer.LABEL_SIBLING
   } );
 
   // When the entire RadioButtonGroup gets disabled, gray them out and make them unpickable (and vice versa)

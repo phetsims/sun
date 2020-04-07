@@ -10,7 +10,7 @@
 import inherit from '../../phet-core/js/inherit.js';
 import merge from '../../phet-core/js/merge.js';
 import PhetFont from '../../scenery-phet/js/PhetFont.js';
-import AccessibilityUtils from '../../scenery/js/accessibility/pdom/AccessibilityUtils.js';
+import PDOMUtils from '../../scenery/js/accessibility/pdom/PDOMUtils.js';
 import FireListener from '../../scenery/js/listeners/FireListener.js';
 import Node from '../../scenery/js/nodes/Node.js';
 import Rectangle from '../../scenery/js/nodes/Rectangle.js';
@@ -77,7 +77,7 @@ function MenuItem( width, height, closeCallback, text, callback, present, option
 
       // limit search of next focusable to root accessible HTML element
       const rootElement = phet.joist.display.accessibleDOMElement;
-      AccessibilityUtils.getNextFocusable( rootElement ).focus();
+      PDOMUtils.getNextFocusable( rootElement ).focus();
     },
     containerTagName: 'li',
     containerAriaRole: 'none', // this is required for JAWS to handle focus correctly, see https://github.com/phetsims/john-travoltage/issues/225
