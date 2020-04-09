@@ -246,8 +246,8 @@ function AccordionBox( contentNode, options ) {
     this.collapsedTitleBar.pickable = pickable;
     this.expandedTitleBar.pickable = pickable;
   };
-  this.expandCollapseButton.on( 'visibility', pickableListener );
-  this.expandCollapseButton.on( 'pickability', pickableListener );
+  this.expandCollapseButton.visibleProperty.lazyLink( pickableListener );
+  this.expandCollapseButton.pickableProperty.lazyLink( pickableListener );
 
   this.expandCollapseButton.getEnabledProperty().link( enabled => {
     this.collapsedTitleBar.cursor = enabled ? options.cursor : null;
@@ -282,11 +282,11 @@ function AccordionBox( contentNode, options ) {
   // Watch future changes for re-layout (don't want to trigger on our first layout and queue useless ones)
   if ( options.resize ) {
     const layoutListener = this.layout.bind( this );
-    contentNode.on( 'bounds', layoutListener );
-    this.titleNode.on( 'bounds', layoutListener );
+    contentNode.boundsProperty.lazyLink( layoutListener );
+    this.titleNode.boundsProperty.lazyLink( layoutListener );
     this.disposeEmitterAccordionBox.addListener( function() {
-      contentNode.off( 'bounds', layoutListener );
-      self.titleNode.off( 'bounds', layoutListener );
+      contentNode.boundsProperty.unlink( layoutListener );
+      self.titleNode.boundsProperty.unlink( layoutListener );
     } );
   }
 

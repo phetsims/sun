@@ -226,7 +226,7 @@ class ComboBox extends Node {
     };
     this.enabledProperty.link( enabledObserver );
 
-    this.listBox.on( 'localBounds', () => this.moveListBox() );
+    this.listBox.localBoundsProperty.lazyLink( () => this.moveListBox() );
 
     // @private for use via PhET-iO, see https://github.com/phetsims/sun/issues/451
     // This is not generally controlled by the user, so it is not reset when the Reset All button is pressed.

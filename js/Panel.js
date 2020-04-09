@@ -114,13 +114,13 @@ function Panel( content, options ) {
   };
 
   if ( options.resize ) {
-    content.on( 'bounds', updateBackground );
+    content.boundsProperty.lazyLink( updateBackground );
   }
   updateBackground();
 
   this.disposePanel = function() {
     if ( options.resize ) {
-      content.off( 'bounds', updateBackground );
+      content.boundsProperty.unlink( updateBackground );
     }
   };
 

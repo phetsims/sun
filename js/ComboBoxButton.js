@@ -146,8 +146,8 @@ class ComboBoxButton extends RectangularPushButton {
     const propertyObserver = value => {
 
       // Remove bounds listener from previous item.node
-      if ( item && item.node.hasListener( 'bounds', updateItemLayout ) ) {
-        item.node.off( 'bounds', updateItemLayout );
+      if ( item && item.node.boundsProperty.hasListener( updateItemLayout ) ) {
+        item.node.boundsProperty.unlink( updateItemLayout );
       }
 
       // remove the node for the previous item
@@ -161,7 +161,7 @@ class ComboBoxButton extends RectangularPushButton {
       itemNodeWrapper.addChild( item.node );
 
       // Update layout if bounds change, see https://github.com/phetsims/scenery-phet/issues/482
-      item.node.on( 'bounds', updateItemLayout );
+      item.node.boundsProperty.lazyLink( updateItemLayout );
 
       updateItemLayout();
 

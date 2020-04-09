@@ -497,7 +497,7 @@ var demoNumberSpinner = function( layoutBounds ) {
 var demoAlignGroup = function( layoutBounds ) {
   function highlightWrap( node ) {
     const rect = Rectangle.bounds( node.bounds, { fill: 'rgba(0,0,0,0.25)' } );
-    node.on( 'bounds', function() {
+    node.boundsProperty.lazyLink( function() {
       rect.setRectBounds( node.bounds );
     } );
     return new Node( {

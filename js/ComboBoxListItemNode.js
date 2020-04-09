@@ -76,7 +76,7 @@ class ComboBoxListItemNode extends Node {
       }
       itemNodeWrapper.centerY = highlightRectangle.centerY;
     };
-    itemNodeWrapper.on( 'bounds', updateItemLayout );
+    itemNodeWrapper.boundsProperty.lazyLink( updateItemLayout );
     updateItemLayout();
 
     assert && assert( !options.children, 'ComboBoxListItemNode sets children' );
