@@ -6,6 +6,7 @@
  * @author Michael Kauzmann (PhET Interactive Simulations)
  */
 
+import BooleanProperty from '../../axon/js/BooleanProperty.js';
 import Node from '../../scenery/js/nodes/Node.js';
 import Property from '../../axon/js/Property.js';
 import EnabledNode from './EnabledNode.js';
@@ -40,6 +41,19 @@ QUnit.test( 'EnabledNode', assert => {
   node.enabled = false;
   assert.ok( node.cursor !== customCursor, 'enabled listener should have changed cursor' );
   assert.ok( node.opacity === disabledOpacity, 'test disabled opacity' );
+
+  node.disposeEnabledNode();
+  assert.ok( node.enabledProperty.isDisposed, 'should be disposed' );
+
+  const myEnabledProperty = new BooleanProperty( true );
+  const defaultListenerCount = myEnabledProperty.changedEmitter.getListenerCount();
+  const node2 = new EnabledNodeClass( {
+    enabledProperty: myEnabledProperty
+  } );
+  assert.ok( myEnabledProperty.changedEmitter.getListenerCount() > defaultListenerCount, 'listener count should be more since passing in enabledProperty' );
+
+  node2.disposeEnabledNode();
+  assert.ok( myEnabledProperty.changedEmitter.getListenerCount() === defaultListenerCount, 'listener count should match original' );
 } );
 
 /**

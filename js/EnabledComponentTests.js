@@ -24,7 +24,10 @@ QUnit.test( 'EnabledComponent into Object', assert => {
   EnabledComponent.mixInto( EnabledObject );
 
   const object = new EnabledObject();
-  testEnabledComponent( assert, object, 'For Object' );
+  testEnabledComponent( assert, object, 'default enabledProperty created' );
+
+  object.disposeEnabledComponent();
+  assert.ok( object.enabledProperty.isDisposed, 'enabledProperty should be disposed because it was not passed in' );
 
   // to get around the "no `new` for side effects" lint rule
   const create = () => new EnabledObject( {
@@ -34,6 +37,15 @@ QUnit.test( 'EnabledComponent into Object', assert => {
   window.assert && assert.throws( () => {
     create();
   }, 'should fail mutually exclusive options' );
+
+  const myEnabledProperty = new BooleanProperty( false );
+  const passedInEnabledPropertyObject = new EnabledObject( {
+    enabledProperty: myEnabledProperty
+  } );
+  testEnabledComponent( assert, object, 'passed in enabledProperty' );
+  assert.ok( myEnabledProperty === passedInEnabledPropertyObject.enabledProperty, 'passed in should be the same' );
+  passedInEnabledPropertyObject.disposeEnabledComponent();
+  assert.ok( !myEnabledProperty.isDisposed, 'do not dispose my enabledProperty!' );
 } );
 
 /**

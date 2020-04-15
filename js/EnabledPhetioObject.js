@@ -54,7 +54,7 @@ const EnabledPhetioObject = {
             'provided enabledProperty must be phetioFeatured if this checkbox is' );
 
           // If enabledProperty was passed in, PhET-iO wrappers like Studio needs to know about that linkage
-          this.addLinkedElement( options.enabledProperty, {
+          this.enabledProperty.isPhetioInstrumented() && this.addLinkedElement( options.enabledProperty, {
             tandem: options.tandem.createTandem( EnabledComponent.ENABLED_PROPERTY_TANDEM_NAME )
           } );
         }
@@ -64,7 +64,7 @@ const EnabledPhetioObject = {
        * @public
        */
       disposeEnabledPhetioObject: function() {
-        this.disposeEnabledComponent;
+        this.disposeEnabledComponent();
       }
     } );
   }
