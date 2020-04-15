@@ -56,6 +56,7 @@ const AccessibleSlider = {
         options = merge( {
           startDrag: _.noop, // called when a drag sequence starts
           endDrag: _.noop, // called when a drag sequence ends
+          drag: _.noop, // called once per drag event, before other modifications to the valueProperty
           constrainValue: _.identity // called before valueProperty is set
         }, options );
 
