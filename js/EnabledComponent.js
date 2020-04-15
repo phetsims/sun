@@ -15,7 +15,6 @@ import Tandem from '../../tandem/js/Tandem.js';
 import sun from './sun.js';
 
 // constants
-// TODO: maybe provide a default value for a custom made enabledProperty like in AquaRadioButton `enabled`? https://github.com/phetsims/sun/issues/257
 const DEFAULT_OPTIONS = {
   enabledProperty: null, // {BooleanProperty} initialized in mixin if not provided
   enabledPropertyOptions: null,
