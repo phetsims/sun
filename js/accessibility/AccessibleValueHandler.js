@@ -69,6 +69,13 @@ const AccessibleValueHandler = {
           // other
           startChange: _.noop, // called when a value change sequence starts
           endChange: _.noop, // called when a value change sequence ends
+
+          // Called at the beginning of any event that would change the value and before any other changes to
+          // valueProperty. Useful for "press and hold" keyboard input. However, be aware that other some devices
+          // as switch will only trigger one change per input, and no concept of "press and hold". This function
+          // will still be called once per input in those cases.
+          change: _.noop,
+
           constrainValue: _.identity, // called before valueProperty is set
 
           // keyboard steps for various keys/interactions
@@ -174,6 +181,9 @@ const AccessibleValueHandler = {
 
         // @private {function} - called when value change input is starts
         this._startChange = options.startChange;
+
+        // @private {function}
+        this._change = options.change;
 
         // @private {function} - called when value change input ends
         this._endChange = options.endChange;
@@ -456,6 +466,8 @@ const AccessibleValueHandler = {
               this._startChange( event );
             }
 
+            this._change( event );
+
             // track that a new key is being held down
             this.rangeKeysDown[ code ] = true;
 
@@ -594,6 +606,9 @@ const AccessibleValueHandler = {
 
           // start of change event is start of drag
           this._startChange( event );
+
+          // only one change per input, but still call optional change function
+          this._change( event );
 
           if ( inputValue > mappedValue ) {
             newValue = this._valueProperty.get() + stepSize;
