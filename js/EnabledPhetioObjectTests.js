@@ -1,39 +1,37 @@
 // Copyright 2020, University of Colorado Boulder
 
 /**
- * QUnit tests for EnabledComponent
+ * QUnit tests for EnabledPhetioObject
  *
  * @author Michael Kauzmann (PhET Interactive Simulations)
  */
 
-import BooleanProperty from '../../axon/js/BooleanProperty.js';
 import Property from '../../axon/js/Property.js';
-import EnabledComponent from './EnabledComponent.js';
+import PhetioObject from '../../tandem/js/PhetioObject.js';
+import EnabledPhetioObject from './EnabledPhetioObject.js';
 
-QUnit.module( 'EnabledComponent' );
+QUnit.module( 'EnabledPhetioObject' );
 
-QUnit.test( 'EnabledComponent into Object', assert => {
+QUnit.test( 'EnabledPhetioObject', assert => {
 
-  class EnabledObject {
+  class EnabledPhetioObjectClass extends PhetioObject {
     constructor( options ) {
-      this.initializeEnabledComponent( options );
+      super( options );
+      this.initializeEnabledPhetioObject( options );
     }
   }
 
-  // mix in enabled component into a Node
-  EnabledComponent.mixInto( EnabledObject );
+  // mix in enabled component into a PhetioObject
+  EnabledPhetioObject.mixInto( EnabledPhetioObjectClass );
 
-  const object = new EnabledObject();
-  testEnabledComponent( assert, object, 'For Object' );
-
-  // to get around the "no `new` for side effects" lint rule
-  const create = () => new EnabledObject( {
-    enabledProperty: new BooleanProperty( false ),
-    enabledPropertyOptions: {}
+  const phetioObject = new EnabledPhetioObjectClass( {
+    enabledPropertyOptions: {
+      phetioFeatured: true
+    }
   } );
-  window.assert && assert.throws( () => {
-    create();
-  }, 'should fail mutually exclusive options' );
+  testEnabledPhetioObject( assert, phetioObject, 'For PhetioObject' );
+  assert.ok( phetioObject instanceof PhetioObject );
+  assert.ok( phetioObject.enabledProperty.phetioFeatured, 'should have passed phet-io metadata through to enabledProperty' );
 } );
 
 /**
@@ -42,7 +40,7 @@ QUnit.test( 'EnabledComponent into Object', assert => {
  * @param {Object} enabledObject - mixed in with EnabledComponent
  * @param {string} message - to tack onto assert messages
  */
-function testEnabledComponent( assert, enabledObject, message ) {
+function testEnabledPhetioObject( assert, enabledObject, message ) {
   assert.ok( enabledObject.enabledProperty instanceof Property, `${message}: enabledProperty should exist` );
 
   assert.ok( enabledObject.enabledProperty.value === enabledObject.enabled, `${message}: test getter` );

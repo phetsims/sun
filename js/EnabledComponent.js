@@ -8,30 +8,27 @@
  */
 
 import BooleanProperty from '../../axon/js/BooleanProperty.js';
-import assertHasProperties from '../../phet-core/js/assertHasProperties.js';
 import assertMutuallyExclusiveOptions from '../../phet-core/js/assertMutuallyExclusiveOptions.js';
 import extend from '../../phet-core/js/extend.js';
 import merge from '../../phet-core/js/merge.js';
-import Node from '../../scenery/js/nodes/Node.js';
-import PhetioObject from '../../tandem/js/PhetioObject.js';
 import Tandem from '../../tandem/js/Tandem.js';
 import sun from './sun.js';
-import SunConstants from './SunConstants.js';
 
 // constants
-// TODO: maybe provide a default value for a custom made enabledProperty like in AquaRadioButton `enabled`?
+// TODO: maybe provide a default value for a custom made enabledProperty like in AquaRadioButton `enabled`? https://github.com/phetsims/sun/issues/257
 const DEFAULT_OPTIONS = {
   enabledProperty: null, // {BooleanProperty} initialized in mixin if not provided
   enabledPropertyOptions: null,
-  disabledOpacity: SunConstants.DISABLED_OPACITY,
   tandem: Tandem.OPTIONAL
 };
+
 const ENABLED_PROPERTY_TANDEM_NAME = 'enabledProperty';
 
 const EnabledComponent = {
 
   /**
    * @public
+   *
    * @param {function} type - The type (constructor) whose prototype we'll modify.
    */
   mixInto: function( type ) {
@@ -56,33 +53,8 @@ const EnabledComponent = {
 
         options = merge( {}, DEFAULT_OPTIONS, options );
 
-        // validate options
-        assert && assert( options.disabledOpacity >= 0 && options.disabledOpacity <= 1,
-          'invalid disabledOpacity: ' + options.disabledOpacity );
-
-        const mixedIntoNode = this instanceof Node;
-        if ( mixedIntoNode ) {
-          assertHasProperties( this, [ 'interruptSubtreeInput', 'opacity', 'pickable', 'cursor' ] ); // used from the Node API
-        }
-        const mixedIntoPhetioObject = this instanceof PhetioObject;
-        if ( mixedIntoPhetioObject ) {
-          assertHasProperties( this, [ 'isPhetioInstrumented', 'addLinkedElement', 'phetioFeatured' ] ); // used from the PhetioObject API
-        }
-
         // does this mixin own the enabledProperty?
         const ownsEnabledProperty = !options.enabledProperty;
-
-        // This phet-io support only applies to instances of PhetioObject
-        if ( !ownsEnabledProperty && mixedIntoPhetioObject ) {
-          assert && Tandem.PHET_IO_ENABLED && Tandem.errorOnFailedValidation() && this.isPhetioInstrumented() &&
-          assert( !!options.enabledProperty.phetioFeatured === !!this.phetioFeatured,
-            'provided enabledProperty must be phetioFeatured if this checkbox is' );
-
-          // If enabledProperty was passed in, PhET-iO wrappers like Studio needs to know about that linkage
-          this.addLinkedElement( options.enabledProperty, {
-            tandem: options.tandem.createTandem( ENABLED_PROPERTY_TANDEM_NAME )
-          } );
-        }
 
         // @public
         this.enabledProperty = options.enabledProperty || new BooleanProperty( true, merge( {
@@ -91,23 +63,9 @@ const EnabledComponent = {
           phetioFeatured: true
         }, options.enabledPropertyOptions ) );
 
-        let enabledListener = null;
-        if ( mixedIntoNode ) {
-          const cursor = this.cursor;
-          enabledListener = enabled => {
-            this.interruptSubtreeInput();
-            this.pickable = enabled;
-            this.opacity = enabled ? 1.0 : options.disabledOpacity;
-
-            // handle cursor by supporting setting back to what the cursor was when component was made disabled.
-            this.cursor = enabled ? cursor : 'default';
-          };
-          this.enabledProperty.link( enabledListener );
-        }
 
         // @private called by dispose
         this._disposeEnabledComponent = () => {
-          enabledListener && this.enabledProperty.unlink( enabledListener );
           ownsEnabledProperty && this.enabledProperty.dispose();
         };
       },
@@ -135,6 +93,9 @@ const EnabledComponent = {
     } );
   }
 };
+
+// @protected - should not be needed outside of the mixin hierarchy
+EnabledComponent.ENABLED_PROPERTY_TANDEM_NAME = ENABLED_PROPERTY_TANDEM_NAME;
 
 sun.register( 'EnabledComponent', EnabledComponent );
 export default EnabledComponent;

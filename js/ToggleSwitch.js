@@ -27,14 +27,14 @@ import LinearGradient from '../../scenery/js/util/LinearGradient.js';
 import EventType from '../../tandem/js/EventType.js';
 import PhetioObject from '../../tandem/js/PhetioObject.js';
 import Tandem from '../../tandem/js/Tandem.js';
-import EnabledComponent from './EnabledComponent.js';
+import EnabledNode from './EnabledNode.js';
 import sun from './sun.js';
 
 // constants
 const DEFAULT_SIZE = new Dimension2( 60, 30 );
 
 /**
- * @mixes EnabledComponent
+ * @mixes EnabledNode
  */
 class ToggleSwitch extends Node {
 
@@ -102,7 +102,7 @@ class ToggleSwitch extends Node {
 
     super();
 
-    this.initializeEnabledComponent( options );
+    this.initializeEnabledNode( options );
 
     const cornerRadius = options.size.height / 2;
 
@@ -259,12 +259,12 @@ class ToggleSwitch extends Node {
    */
   dispose() {
     this.disposeToggleSwitch();
-    this.disposeEnabledComponent();
+    this.disposeEnabledNode();
     super.dispose();
   }
 }
 
-EnabledComponent.mixInto( ToggleSwitch );
+EnabledNode.mixInto( ToggleSwitch );
 
 sun.register( 'ToggleSwitch', ToggleSwitch );
 export default ToggleSwitch;

@@ -7,6 +7,8 @@
  */
 
 import './EnabledComponentTests.js';
+import './EnabledPhetioObjectTests.js';
+import './EnabledNodeTests.js';
 
 // Since our tests are loaded asynchronously, we must direct QUnit to begin the tests
 QUnit.start();

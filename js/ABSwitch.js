@@ -15,7 +15,7 @@ import Line from '../../scenery/js/nodes/Line.js';
 import Node from '../../scenery/js/nodes/Node.js';
 import PhetioObject from '../../tandem/js/PhetioObject.js';
 import Tandem from '../../tandem/js/Tandem.js';
-import EnabledComponent from './EnabledComponent.js';
+import EnabledNode from './EnabledNode.js';
 import sun from './sun.js';
 import SunConstants from './SunConstants.js';
 import ToggleSwitch from './ToggleSwitch.js';
@@ -28,7 +28,7 @@ const DEFAULT_SET_ENABLED = ( label, enabled ) => {
 };
 
 /**
- * @mixes EnabledComponent
+ * @mixes EnabledNode
  */
 class ABSwitch extends Node {
 
@@ -73,7 +73,7 @@ class ABSwitch extends Node {
 
     PhetioObject.mergePhetioComponentOptions( { visibleProperty: { phetioFeatured: true } }, options );
 
-    this.initializeEnabledComponent( options );
+    this.initializeEnabledNode( options );
 
     const toggleSwitch = new ToggleSwitch( property, valueA, valueB, merge( {
       tandem: options.tandem.createTandem( 'toggleSwitch' )
@@ -148,12 +148,12 @@ class ABSwitch extends Node {
    */
   dispose() {
     this.disposeABSwitch();
-    this.disposeEnabledComponent();
+    this.disposeEnabledNode();
     super.dispose();
   }
 }
 
-EnabledComponent.mixInto( ABSwitch );
+EnabledNode.mixInto( ABSwitch );
 
 sun.register( 'ABSwitch', ABSwitch );
 export default ABSwitch;
