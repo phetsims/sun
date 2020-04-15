@@ -26,6 +26,7 @@ import PDOMPeer from '../../scenery/js/accessibility/pdom/PDOMPeer.js';
 import Display from '../../scenery/js/display/Display.js';
 import Node from '../../scenery/js/nodes/Node.js';
 import EventType from '../../tandem/js/EventType.js';
+import PhetioObject from '../../tandem/js/PhetioObject.js';
 import Tandem from '../../tandem/js/Tandem.js';
 import ComboBoxButton from './ComboBoxButton.js';
 import ComboBoxIO from './ComboBoxIO.js';
@@ -91,6 +92,9 @@ class ComboBox extends Node {
       phetioType: ComboBoxIO,
       phetioEventType: EventType.USER
     }, options );
+
+    // Use this pattern so that passed in phetioComponentOptions are not blown away.
+    PhetioObject.mergePhetioComponentOptions( { visibleProperty: { phetioFeatured: true } }, options );
 
     // validate option values
     assert && assert( options.xMargin > 0 && options.yMargin > 0,
@@ -216,7 +220,8 @@ class ComboBox extends Node {
 
     // @public Provide a default if not specified
     this.enabledProperty = options.enabledProperty || new BooleanProperty( true, {
-      tandem: options.tandem.createTandem( 'enabledProperty' )
+      tandem: options.tandem.createTandem( 'enabledProperty' ),
+      phetioFeatured: true
     } );
 
     // enable/disable the combo box
@@ -232,6 +237,7 @@ class ComboBox extends Node {
     // This is not generally controlled by the user, so it is not reset when the Reset All button is pressed.
     this.displayOnlyProperty = new BooleanProperty( false, {
       tandem: options.tandem.createTandem( 'displayOnlyProperty' ),
+      phetioFeatured: true,
       phetioDocumentation: 'disables interaction with the ComboBox and ' +
                            'makes it appear like a display that shows the current selection'
     } );

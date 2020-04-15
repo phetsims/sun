@@ -12,6 +12,7 @@ import Shape from '../../kite/js/Shape.js';
 import merge from '../../phet-core/js/merge.js';
 import Node from '../../scenery/js/nodes/Node.js';
 import Rectangle from '../../scenery/js/nodes/Rectangle.js';
+import PhetioObject from '../../tandem/js/PhetioObject.js';
 import Tandem from '../../tandem/js/Tandem.js';
 import ComboBoxItem from './ComboBoxItem.js';
 import sun from './sun.js';
@@ -43,8 +44,10 @@ class ComboBoxListItemNode extends Node {
       tagName: 'li',
       focusable: true,
       ariaRole: 'option'
-
     }, options );
+
+    // Use this pattern so that passed in phetioComponentOptions are not blown away.
+    PhetioObject.mergePhetioComponentOptions( { visibleProperty: { phetioFeatured: true } }, options );
 
     // pdom: get innerContent from the item
     assert && assert( options.innerContent === undefined, 'ComboBoxListItemNode sets innerContent' );

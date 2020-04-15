@@ -12,6 +12,7 @@ import KeyboardUtils from '../../scenery/js/accessibility/KeyboardUtils.js';
 import SceneryEvent from '../../scenery/js/input/SceneryEvent.js';
 import VBox from '../../scenery/js/nodes/VBox.js';
 import EventType from '../../tandem/js/EventType.js';
+import PhetioObject from '../../tandem/js/PhetioObject.js';
 import Tandem from '../../tandem/js/Tandem.js';
 import ComboBoxListItemNode from './ComboBoxListItemNode.js';
 import Panel from './Panel.js';
@@ -50,6 +51,10 @@ class ComboBoxListBox extends Panel {
       // TODO: we need this for accessibility in the sonification wrapper, see https://github.com/phetsims/sun/issues/496
       tandem: tandem
     }, options );
+
+    // Use this pattern so that passed in phetioComponentOptions are not blown away.
+    // list box visibility is controlled by the combo box, and should not be controlled through the PhET-iO API.
+    PhetioObject.mergePhetioComponentOptions( { visibleProperty: { phetioReadOnly: true } }, options );
 
     assert && assert( options.xMargin > 0 && options.yMargin > 0,
       'margins must be > 0, xMargin=' + options.xMargin + ', yMargin=' + options.yMargin );
