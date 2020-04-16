@@ -69,7 +69,7 @@ class ComboBoxButton extends RectangularPushButton {
       'invalid arrowDirection: ' + options.arrowDirection );
 
     // Use this pattern so that passed in phetioComponentOptions are not blown away.
-    PhetioObject.mergePhetioComponentOptions( { visibleProperty: { phetioFeatured: true } }, options );
+    PhetioObject.mergePhetioComponentOptions( { visibleProperty: { phetioFeatured: false } }, options );
 
     // To improve readability
     const itemXMargin = options.xMargin;
