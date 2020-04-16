@@ -53,8 +53,9 @@ class ComboBoxListBox extends Panel {
     }, options );
 
     // Use this pattern so that passed in phetioComponentOptions are not blown away.
-    // list box visibility is controlled by the combo box, and should not be controlled through the PhET-iO API.
-    PhetioObject.mergePhetioComponentOptions( { visibleProperty: { phetioReadOnly: true } }, options );
+    // List box visibility, opacity, and pickability is controlled by the combo box, and should not be controlled
+    // through the PhET-iO API.
+    PhetioObject.mergePhetioComponentOptions( { phetioReadOnly: true }, options );
 
     assert && assert( options.xMargin > 0 && options.yMargin > 0,
       'margins must be > 0, xMargin=' + options.xMargin + ', yMargin=' + options.yMargin );
