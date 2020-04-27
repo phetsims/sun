@@ -56,6 +56,8 @@ class ABSwitch extends Node {
         }
       },
 
+      cursor: 'pointer',
+
       // {number} space between labels and switch
       xSpacing: 8,
 
