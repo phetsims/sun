@@ -7,8 +7,9 @@
  */
 
 import './EnabledComponentTests.js';
-import './EnabledPhetioObjectTests.js';
 import './EnabledNodeTests.js';
+import './EnabledPhetioObjectTests.js';
+import './SliderTests.js';
+import qunitStart from '../../aqua/js/qunitStart.js';
 
-// Since our tests are loaded asynchronously, we must direct QUnit to begin the tests
-QUnit.start();
+qunitStart();
