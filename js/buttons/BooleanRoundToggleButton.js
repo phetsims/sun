@@ -39,7 +39,7 @@ function BooleanRoundToggleButton( trueNode, falseNode, booleanProperty, options
 
 sun.register( 'BooleanRoundToggleButton', BooleanRoundToggleButton );
 
-export default inherit( RoundToggleButton, BooleanRoundToggleButton, {
+inherit( RoundToggleButton, BooleanRoundToggleButton, {
 
   /**
    * @public
@@ -50,3 +50,5 @@ export default inherit( RoundToggleButton, BooleanRoundToggleButton, {
     RoundToggleButton.prototype.dispose.call( this );
   }
 } );
+
+export default BooleanRoundToggleButton;

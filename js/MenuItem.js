@@ -161,7 +161,7 @@ function MenuItem( width, height, closeCallback, text, callback, present, option
 
 sun.register( 'MenuItem', MenuItem );
 
-export default inherit( Node, MenuItem, {
+inherit( Node, MenuItem, {
 
   // @public - dispose the menu item when it will no longer be used.
   dispose: function() {
@@ -169,3 +169,5 @@ export default inherit( Node, MenuItem, {
     Node.prototype.dispose.call( this );
   }
 } );
+
+export default MenuItem;

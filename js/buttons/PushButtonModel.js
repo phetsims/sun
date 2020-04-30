@@ -120,7 +120,7 @@ function PushButtonModel( options ) {
 
 sun.register( 'PushButtonModel', PushButtonModel );
 
-export default inherit( ButtonModel, PushButtonModel, {
+inherit( ButtonModel, PushButtonModel, {
 
   // @public
   dispose: function() {
@@ -159,3 +159,5 @@ export default inherit( ButtonModel, PushButtonModel, {
     this.isFiringProperty.value = false;
   }
 } );
+
+export default PushButtonModel;

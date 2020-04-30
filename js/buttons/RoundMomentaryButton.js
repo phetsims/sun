@@ -36,7 +36,7 @@ function RoundMomentaryButton( valueOff, valueOn, property, options ) {
 
 sun.register( 'RoundMomentaryButton', RoundMomentaryButton );
 
-export default inherit( RoundButtonView, RoundMomentaryButton, {
+inherit( RoundButtonView, RoundMomentaryButton, {
 
   // @public
   dispose: function() {
@@ -44,3 +44,5 @@ export default inherit( RoundButtonView, RoundMomentaryButton, {
     RoundButtonView.prototype.dispose.call( this );
   }
 } );
+
+export default RoundMomentaryButton;

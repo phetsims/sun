@@ -60,7 +60,7 @@ function MomentaryButtonModel( valueOff, valueOn, valueProperty, options ) {
 
 sun.register( 'MomentaryButtonModel', MomentaryButtonModel );
 
-export default inherit( ButtonModel, MomentaryButtonModel, {
+inherit( ButtonModel, MomentaryButtonModel, {
 
   // @public - Ensures that this model is eligible for GC.
   dispose: function() {
@@ -68,3 +68,5 @@ export default inherit( ButtonModel, MomentaryButtonModel, {
     ButtonModel.prototype.dispose.call( this ); //TODO fails with assertions enabled, see sun#212
   }
 } );
+
+export default MomentaryButtonModel;

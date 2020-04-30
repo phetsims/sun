@@ -77,7 +77,7 @@ function MutableOptionsNode( nodeSubtype, parameters, staticOptions, dynamicOpti
 
 sun.register( 'MutableOptionsNode', MutableOptionsNode );
 
-export default inherit( Node, MutableOptionsNode, {
+inherit( Node, MutableOptionsNode, {
   /**
    * Creates a copy of our type of node, and replaces any existing copy.
    * @private
@@ -116,3 +116,5 @@ export default inherit( Node, MutableOptionsNode, {
     Node.prototype.dispose.call( this );
   }
 } );
+
+export default MutableOptionsNode;

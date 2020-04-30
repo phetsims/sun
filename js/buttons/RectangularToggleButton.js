@@ -71,7 +71,7 @@ function RectangularToggleButton( valueOff, valueOn, property, options ) {
 
 sun.register( 'RectangularToggleButton', RectangularToggleButton );
 
-export default inherit( RectangularButtonView, RectangularToggleButton, {
+inherit( RectangularButtonView, RectangularToggleButton, {
 
   /**
    * @public
@@ -81,3 +81,5 @@ export default inherit( RectangularButtonView, RectangularToggleButton, {
     RectangularButtonView.prototype.dispose.call( this );
   }
 } );
+
+export default RectangularToggleButton;

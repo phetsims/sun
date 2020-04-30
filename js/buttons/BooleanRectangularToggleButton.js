@@ -35,7 +35,7 @@ function BooleanRectangularToggleButton( trueNode, falseNode, booleanProperty, o
 
 sun.register( 'BooleanRectangularToggleButton', BooleanRectangularToggleButton );
 
-export default inherit( RectangularToggleButton, BooleanRectangularToggleButton, {
+inherit( RectangularToggleButton, BooleanRectangularToggleButton, {
   /**
    * @public
    */
@@ -44,3 +44,5 @@ export default inherit( RectangularToggleButton, BooleanRectangularToggleButton,
     RectangularToggleButton.prototype.dispose.call( this );
   }
 } );
+
+export default BooleanRectangularToggleButton;

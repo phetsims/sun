@@ -59,9 +59,11 @@ function RoundStickyToggleButton( valueUp, valueDown, property, options ) {
 
 sun.register( 'RoundStickyToggleButton', RoundStickyToggleButton );
 
-export default inherit( RoundButtonView, RoundStickyToggleButton, {
+inherit( RoundButtonView, RoundStickyToggleButton, {
   dispose: function() {
     this.disposeRoundStickyToggleButton();
     RoundButtonView.prototype.dispose.call( this );
   }
 } );
+
+export default RoundStickyToggleButton;

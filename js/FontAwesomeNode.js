@@ -111,7 +111,7 @@ function FontAwesomeNode( iconName, options ) {
 
 sun.register( 'FontAwesomeNode', FontAwesomeNode );
 
-export default inherit( Path, FontAwesomeNode, {}, {
+inherit( Path, FontAwesomeNode, {}, {
 
   /**
    * Creates an immutable Shape for a specified fontawesome icon.
@@ -124,3 +124,5 @@ export default inherit( Path, FontAwesomeNode, {}, {
     return new Shape( ICONS[ iconName ] ).transformed( SHAPE_MATRIX ).makeImmutable();
   }
 } );
+
+export default FontAwesomeNode;

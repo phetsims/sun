@@ -37,7 +37,7 @@ function RectangularStickyToggleButton( valueUp, valueDown, property, options ) 
 
 sun.register( 'RectangularStickyToggleButton', RectangularStickyToggleButton );
 
-export default inherit( RectangularButtonView, RectangularStickyToggleButton, {
+inherit( RectangularButtonView, RectangularStickyToggleButton, {
 
   // @public
   dispose: function() {
@@ -45,3 +45,5 @@ export default inherit( RectangularButtonView, RectangularStickyToggleButton, {
     RectangularButtonView.prototype.dispose.call( this );
   }
 } );
+
+export default RectangularStickyToggleButton;

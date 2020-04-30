@@ -120,7 +120,7 @@ function ButtonModel( options ) {
 
 sun.register( 'ButtonModel', ButtonModel );
 
-export default inherit( Object, ButtonModel, {
+inherit( Object, ButtonModel, {
 
   /**
    * @public
@@ -182,3 +182,5 @@ export default inherit( Object, ButtonModel, {
     return pressListener;
   }
 } );
+
+export default ButtonModel;

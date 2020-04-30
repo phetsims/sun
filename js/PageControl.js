@@ -128,7 +128,7 @@ function DotNode( pageNumber, radius, options ) {
 
 inherit( Circle, DotNode );
 
-export default inherit( Node, PageControl, {
+inherit( Node, PageControl, {
 
   // @public
   dispose: function() {
@@ -136,3 +136,5 @@ export default inherit( Node, PageControl, {
     Node.prototype.dispose.call( this );
   }
 } );
+
+export default PageControl;

@@ -182,7 +182,7 @@ function AquaRadioButton( property, value, node, options ) {
 
 sun.register( 'AquaRadioButton', AquaRadioButton );
 
-export default inherit( Node, AquaRadioButton, {
+inherit( Node, AquaRadioButton, {
 
   // @public - Provide dispose() on the prototype for ease of subclassing.
   dispose: function() {
@@ -219,3 +219,5 @@ export default inherit( Node, AquaRadioButton, {
 
   DEFAULT_RADIUS: DEFAULT_RADIUS
 } );
+
+export default AquaRadioButton;

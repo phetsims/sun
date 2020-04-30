@@ -492,7 +492,7 @@ RoundButtonView.FadeContentWhenDisabled = function( content, interactionStatePro
   };
 };
 
-export default inherit( Node, RoundButtonView, {
+inherit( Node, RoundButtonView, {
 
   /**
    * Sets the enabled state.
@@ -538,3 +538,5 @@ export default inherit( Node, RoundButtonView, {
     Node.prototype.dispose.call( this );
   }
 } );
+
+export default RoundButtonView;

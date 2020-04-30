@@ -145,7 +145,7 @@ function RadioButtonGroupMember( property, value, options ) {
 
 sun.register( 'RadioButtonGroupMember', RadioButtonGroupMember );
 
-export default inherit( RectangularButtonView, RadioButtonGroupMember, {
+inherit( RectangularButtonView, RadioButtonGroupMember, {
 
   /**
    * @public (read-only) - fire on up if the button is enabled, public for use in the accessibility tree
@@ -167,3 +167,5 @@ export default inherit( RectangularButtonView, RadioButtonGroupMember, {
     RectangularButtonView.prototype.dispose && RectangularButtonView.prototype.dispose.call( this );
   }
 } );
+
+export default RadioButtonGroupMember;

@@ -70,7 +70,7 @@ function ToggleButtonModel( valueOff, valueOn, property, options ) {
 
 sun.register( 'ToggleButtonModel', ToggleButtonModel );
 
-export default inherit( ButtonModel, ToggleButtonModel, {
+inherit( ButtonModel, ToggleButtonModel, {
 
   // @public
   dispose: function() {
@@ -84,3 +84,5 @@ export default inherit( ButtonModel, ToggleButtonModel, {
     this.produceSoundEmitter.emit();
   }
 } );
+
+export default ToggleButtonModel;

@@ -113,7 +113,7 @@ function StickyToggleButtonModel( valueUp, valueDown, valueProperty, options ) {
 
 sun.register( 'StickyToggleButtonModel', StickyToggleButtonModel );
 
-export default inherit( ButtonModel, StickyToggleButtonModel, {
+inherit( ButtonModel, StickyToggleButtonModel, {
 
   // @public
   dispose: function() {
@@ -127,3 +127,5 @@ export default inherit( ButtonModel, StickyToggleButtonModel, {
     this.produceSoundEmitter.emit();
   }
 } );
+
+export default StickyToggleButtonModel;

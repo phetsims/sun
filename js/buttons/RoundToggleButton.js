@@ -71,7 +71,7 @@ function RoundToggleButton( valueOff, valueOn, property, options ) {
 
 sun.register( 'RoundToggleButton', RoundToggleButton );
 
-export default inherit( RoundButtonView, RoundToggleButton, {
+inherit( RoundButtonView, RoundToggleButton, {
 
   /**
    * @public
@@ -81,3 +81,5 @@ export default inherit( RoundButtonView, RoundToggleButton, {
     RoundButtonView.prototype.dispose.call( this );
   }
 } );
+
+export default RoundToggleButton;

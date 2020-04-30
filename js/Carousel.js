@@ -348,7 +348,7 @@ function Carousel( items, options ) {
 
 sun.register( 'Carousel', Carousel );
 
-export default inherit( Node, Carousel, {
+inherit( Node, Carousel, {
 
   dispose: function() {
     this.disposeCarousel();
@@ -438,3 +438,5 @@ export default inherit( Node, Carousel, {
   // @static @public (read-only)
   DEFAULT_OPTIONS: DEFAULT_OPTIONS
 } );
+
+export default Carousel;

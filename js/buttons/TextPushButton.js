@@ -46,7 +46,7 @@ function TextPushButton( text, options ) {
 
 sun.register( 'TextPushButton', TextPushButton );
 
-export default inherit( RectangularPushButton, TextPushButton, {
+inherit( RectangularPushButton, TextPushButton, {
 
   /**
    * @public
@@ -56,3 +56,5 @@ export default inherit( RectangularPushButton, TextPushButton, {
     RectangularPushButton.prototype.dispose.call( this );
   }
 } );
+
+export default TextPushButton;

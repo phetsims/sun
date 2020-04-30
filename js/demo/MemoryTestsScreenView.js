@@ -50,7 +50,7 @@ function MemoryTestsScreenView() {
 
 sun.register( 'MemoryTestsScreenView', MemoryTestsScreenView );
 
-export default inherit( ScreenView, MemoryTestsScreenView, {
+inherit( ScreenView, MemoryTestsScreenView, {
   step: function() {
 
     for ( let i = 0; i < components.length; i++ ) {
@@ -66,3 +66,5 @@ export default inherit( ScreenView, MemoryTestsScreenView, {
     }
   }
 } );
+
+export default MemoryTestsScreenView;

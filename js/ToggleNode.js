@@ -69,7 +69,7 @@ function ToggleNode( valueProperty, elements, options ) {
 
 sun.register( 'ToggleNode', ToggleNode );
 
-export default inherit( Node, ToggleNode, {
+inherit( Node, ToggleNode, {
 
   /**
    * Make eligible for garbage collection.
@@ -174,3 +174,5 @@ export default inherit( Node, ToggleNode, {
   NONE: function( children ) {
   }
 } );
+
+export default ToggleNode;

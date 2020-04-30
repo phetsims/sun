@@ -19,7 +19,7 @@ function ColorConstants() {
 
 sun.register( 'ColorConstants', ColorConstants );
 
-export default inherit( Object, ColorConstants, {}, {
+inherit( Object, ColorConstants, {}, {
 
   //The default blue color used in many places, for buttons
   LIGHT_BLUE: new Color( 153, 206, 255 ),
@@ -27,3 +27,5 @@ export default inherit( Object, ColorConstants, {}, {
   //Light gray, used as the 'disabled' color in many places.
   LIGHT_GRAY: new Color( 220, 220, 220 )
 } );
+
+export default ColorConstants;
