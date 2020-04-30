@@ -170,9 +170,8 @@ class ComboBox extends Node {
     listParent.addChild( this.listBox );
     this.listParent = listParent; // @private
 
-    // The listBox is not a child Node of ComboBox and, as a result, listen to these properties of the ComboBox and keep
+    // The listBox is not a child Node of ComboBox and, as a result, listen to opacity of the ComboBox and keep
     // the listBox in sync with them. See https://github.com/phetsims/sun/issues/587
-    this.pickableProperty.link( pickable => { this.listBox.pickableProperty.value = pickable; } );
     this.opacityProperty.link( opacity => { this.listBox.opacityProperty.value = opacity; } );
 
     this.mutate( options );
