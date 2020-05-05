@@ -173,11 +173,9 @@ function AccordionBox( contentNode, options ) {
 
   // @private {Rectangle} - Expanded box
   this.expandedBox = new Rectangle( boxOptions );
-  this.addChild( this.expandedBox );
 
   // @private {Rectangle} - Collapsed box
   this.collapsedBox = new Rectangle( boxOptions );
-  this.addChild( this.collapsedBox );
 
   // @private {Rectangle} - Transparent rectangle for working around issues like
   // https://github.com/phetsims/graphing-quadratics/issues/86. The current hypothesis is that browsers (in this case,
@@ -189,7 +187,6 @@ function AccordionBox( contentNode, options ) {
     fill: 'transparent',
     pickable: false
   } );
-  this.addChild( this.workaroundBox );
 
   // @private {Path}
   this.expandedTitleBar = new Path( null, merge( {
@@ -254,9 +251,6 @@ function AccordionBox( contentNode, options ) {
     this.expandedTitleBar.cursor = enabled ? options.cursor : null;
   } );
 
-  this.addChild( this.titleNode );
-  this.addChild( this.expandCollapseButton );
-
   // optional box outline, on top of everything else
   if ( options.stroke ) {
 
@@ -276,6 +270,10 @@ function AccordionBox( contentNode, options ) {
   }
 
   this.expandedBox.addChild( this._contentNode );
+
+  // @private {Node} - Holds the main components when the content's bounds are valid
+  this.containerNode = new Node();
+  this.addChild( this.containerNode );
 
   this.layout();
 
@@ -320,6 +318,19 @@ inherit( Node, AccordionBox, {
    * @private
    */
   layout: function() {
+    const hasValidBounds = this._contentNode.bounds.isValid();
+    this.containerNode.children = hasValidBounds ? [
+      this.expandedBox,
+      this.collapsedBox,
+      this.workaroundBox,
+      this.titleNode,
+      this.expandCollapseButton
+    ] : [];
+
+    if ( !hasValidBounds ) {
+      return;
+    }
+
     const collapsedBoxHeight = this.getCollapsedBoxHeight();
     const boxWidth = this.getBoxWidth();
     const expandedBoxHeight = this.getExpandedBoxHeight();
