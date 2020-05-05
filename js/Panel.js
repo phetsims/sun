@@ -53,26 +53,28 @@ function Panel( content, options ) {
 
   Node.call( this );
 
-  // correct size will be set by updateBackground
-  const background = new Rectangle( 0, 0, 1, 1, {
+  const backgroundContainer = new Node();
+
+  // @private {Rectangle} - correct size will be set by updateBackground
+  this.background = new Rectangle( 0, 0, 1, 1, {
     lineWidth: options.lineWidth,
     pickable: options.backgroundPickable,
     lineDash: options.lineDash,
     cornerRadius: options.cornerRadius
   } );
-  this.background = background; // @private
+
   // update the fill and stroke
   this.setStroke( options.stroke );
   this.setFill( options.fill );
 
-  this.addChild( background );
+  this.addChild( backgroundContainer );
   this.addChild( content );
 
   // flag for preventing recursion
   let backgroundUpdateInProgress = false;
 
   // Adjust the background size to match the content.
-  const updateBackground = function() {
+  const updateBackground = () => {
 
     // Check that an update isn't already in progress, lest we end up with some nasty recursion.  For details, please
     // see https://github.com/phetsims/sun/issues/110 and https://github.com/phetsims/molecule-shapes/issues/130.
@@ -80,9 +82,10 @@ function Panel( content, options ) {
       return;
     }
 
-    // Bail out (and make the background invisible) if our bounds are invalid
-    background.visible = content.bounds.isValid();
-    if ( !background.visible ) {
+    const hasValidContent = content.bounds.isValid();
+    backgroundContainer.children = hasValidContent ? [ this.background ] : [];
+    if ( !hasValidContent ) {
+      // Bail out (and make the background invisible) if our bounds are invalid
       return;
     }
 
@@ -90,23 +93,23 @@ function Panel( content, options ) {
 
     // size the background to fit the content
     const backgroundWidth = Math.max( options.minWidth, content.width + ( 2 * options.xMargin ) );
-    background.setRect( 0, 0, backgroundWidth, content.height + ( 2 * options.yMargin ) );
+    this.background.setRect( 0, 0, backgroundWidth, content.height + ( 2 * options.yMargin ) );
 
     // Align the content within the background. If the content width >= minWidth, then all alignments are equivalent.
     if ( options.align === 'center' ) {
-      content.center = background.center;
+      content.center = this.background.center;
     }
     else if ( options.align === 'left' ) {
 
       // Use backgroundWidth instead of background.width because they differ by the background lineWidth
-      content.left = background.centerX - backgroundWidth / 2 + options.xMargin;
-      content.centerY = background.centerY;
+      content.left = this.background.centerX - backgroundWidth / 2 + options.xMargin;
+      content.centerY = this.background.centerY;
     }
     else { /* right */
 
       // Use backgroundWidth instead of background.width because they differ by the background lineWidth
-      content.right = background.centerX + backgroundWidth / 2 - options.xMargin;
-      content.centerY = background.centerY;
+      content.right = this.background.centerX + backgroundWidth / 2 - options.xMargin;
+      content.centerY = this.background.centerY;
     }
 
     // clear the recursion-prevention flag
@@ -118,6 +121,7 @@ function Panel( content, options ) {
   }
   updateBackground();
 
+  // @private {function}
   this.disposePanel = function() {
     if ( options.resize ) {
       content.boundsProperty.unlink( updateBackground );
@@ -167,7 +171,7 @@ inherit( Node, Panel, {
   get fill() { return this.getFill(); }
 }, {
 
-  // @static @public (read-only)
+  // @static @public (read-only) {Object}
   DEFAULT_OPTIONS: DEFAULT_OPTIONS
 } );
 
