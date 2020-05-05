@@ -72,6 +72,7 @@ class AquaRadioButtonGroup extends LayoutBox {
 
       // PDOM
       tagName: 'ul',
+      labelTagName: 'h3',
       ariaRole: 'radiogroup',
       groupFocusHighlight: true
     }, options );
