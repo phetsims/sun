@@ -16,8 +16,8 @@ import Shape from '../../../kite/js/Shape.js';
 import InstanceRegistry from '../../../phet-core/js/documentation/InstanceRegistry.js';
 import inherit from '../../../phet-core/js/inherit.js';
 import merge from '../../../phet-core/js/merge.js';
-import PDOMPeer from '../../../scenery/js/accessibility/pdom/PDOMPeer.js';
 import FocusHighlightPath from '../../../scenery/js/accessibility/FocusHighlightPath.js';
+import PDOMPeer from '../../../scenery/js/accessibility/pdom/PDOMPeer.js';
 import LayoutBox from '../../../scenery/js/nodes/LayoutBox.js';
 import Rectangle from '../../../scenery/js/nodes/Rectangle.js';
 import Color from '../../../scenery/js/util/Color.js';
@@ -315,6 +315,10 @@ function RadioButtonGroup( property, contentArray, options ) {
     otherElementName: PDOMPeer.LABEL_SIBLING
   } );
 
+  // zoom - signify that key input is reserved and we should not pan when user presses arrow keys
+  const intentListener = { keydown: event => event.pointer.reserveForKeyboardDrag() };
+  this.addInputListener( intentListener );
+
   // When the entire RadioButtonGroup gets disabled, gray them out and make them unpickable (and vice versa)
   const enabledListener = function( isEnabled ) {
     self.pickable = isEnabled;
@@ -358,6 +362,7 @@ function RadioButtonGroup( property, contentArray, options ) {
   this.disposeRadioButtonGroup = function() {
     self.enabledProperty.unlink( enabledListener );
     property.unlink( propertyListener );
+    self.removeInputListener( intentListener );
 
     // dispose all buttons
     for ( i = 0; i < contentArray.length; i++ ) {

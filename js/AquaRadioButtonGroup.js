@@ -127,6 +127,10 @@ class AquaRadioButtonGroup extends LayoutBox {
       otherElementName: PDOMPeer.LABEL_SIBLING
     } );
 
+    // zoom - signify that key input is reserved and we should not pan when user presses arrow keys
+    const intentListener = { keydown: event => event.pointer.reserveForKeyboardDrag() };
+    this.addInputListener( intentListener );
+
     this.initializeEnabledNode( options );
 
     // Add linked element after the radio button is instrumented
@@ -136,6 +140,8 @@ class AquaRadioButtonGroup extends LayoutBox {
 
     // @private
     this.disposeAquaRadioButtonGroup = () => {
+      this.removeInputListener( intentListener );
+
       for ( let i = 0; i < radioButtons.length; i++ ) {
         radioButtons[ i ].dispose();
       }
