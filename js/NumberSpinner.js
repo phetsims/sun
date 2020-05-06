@@ -69,6 +69,7 @@ class NumberSpinner extends Node {
       decimalPlaces: 0,
       deltaValue: 1, // may be ignored if incrementFunction and decrementFunction are provided
       font: new PhetFont( 28 ),
+      valueMaxWidth: null,
 
       // {string} alignment for value, see VALUE_ALIGN_VALUES
       valueAlign: 'center',
@@ -111,7 +112,8 @@ class NumberSpinner extends Node {
 
     const valueOptions = {
       font: options.font,
-      fill: 'black'
+      fill: 'black',
+      maxWidth: options.valueMaxWidth
     };
 
     // compute max width of the value that's going to be displayed
