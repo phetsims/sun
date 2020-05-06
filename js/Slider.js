@@ -22,17 +22,17 @@ import InstanceRegistry from '../../phet-core/js/documentation/InstanceRegistry.
 import inherit from '../../phet-core/js/inherit.js';
 import merge from '../../phet-core/js/merge.js';
 import FocusHighlightFromNode from '../../scenery/js/accessibility/FocusHighlightFromNode.js';
-import SimpleDragHandler from '../../scenery/js/input/SimpleDragHandler.js';
+import DragListener from '../../scenery/js/listeners/DragListener.js';
 import Node from '../../scenery/js/nodes/Node.js';
 import Path from '../../scenery/js/nodes/Path.js';
 import PhetioObject from '../../tandem/js/PhetioObject.js';
 import Tandem from '../../tandem/js/Tandem.js';
-import AccessibleSlider from './accessibility/AccessibleSlider.js';
 import DefaultSliderTrack from './DefaultSliderTrack.js';
 import SliderIO from './SliderIO.js';
 import SliderThumb from './SliderThumb.js';
-import sun from './sun.js';
 import SunConstants from './SunConstants.js';
+import AccessibleSlider from './accessibility/AccessibleSlider.js';
+import sun from './sun.js';
 
 // constants
 const VERTICAL_ROTATION = -Math.PI / 2;
@@ -254,27 +254,24 @@ function Slider( valueProperty, range, options ) {
 
   // update value when thumb is dragged
   let clickXOffset = 0; // x-offset between initial click and thumb's origin
-  const thumbInputListener = new SimpleDragHandler( {
+  const thumbInputListener = new DragListener( {
 
     tandem: options.tandem.createTandem( 'thumbInputListener' ),
 
-    allowTouchSnag: true,
-    attach: true,
-
-    start: function( event, trail ) {
+    start: function( event, listener ) {
       if ( self.enabledProperty.get() ) {
         options.startDrag( event );
-        const transform = trail.subtrailTo( sliderPartsNode ).getTransform();
+        const transform = listener.pressedTrail.subtrailTo( sliderPartsNode ).getTransform();
 
         // Determine the offset relative to the center of the thumb
         clickXOffset = transform.inversePosition2( event.pointer.point ).x - thumb.centerX;
       }
     },
 
-    drag: function( event, trail ) {
+    drag: function( event, listener ) {
       if ( self.enabledProperty.get() ) {
         options.drag( event );
-        const transform = trail.subtrailTo( sliderPartsNode ).getTransform(); // we only want the transform to our parent
+        const transform = listener.pressedTrail.subtrailTo( sliderPartsNode ).getTransform(); // we only want the transform to our parent
         const x = transform.inversePosition2( event.pointer.point ).x - clickXOffset;
         const newValue = self.track.valueToPosition.inverse( x );
         const valueInRange = self.enabledRangeProperty.get().constrainValue( newValue );
