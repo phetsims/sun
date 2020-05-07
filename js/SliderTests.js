@@ -316,6 +316,7 @@ QUnit.test( 'Slider PhET-iO API validation', assert => {
 
     const report = compareAPIs( desiredAPI, actualAPI );
     // assert.ok( report.length === 0, 'error report should be empty: \n\n' + report.join( '\n' ) );
+    console.log( report );
 
     // TODO: many issues listed below for https://github.com/phetsims/phet-io/issues/1648
     // TODO: Make it easy to generate tests like this.  Like `grunt create-api-for-component Slider` > creates a test like this one.
