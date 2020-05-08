@@ -165,6 +165,7 @@ class AquaRadioButtonGroup extends LayoutBox {
    * Gets the radio button that corresponds to the specified value.
    * @param {*} value
    * @returns {AquaRadioButton}
+   * @public
    */
   getButton( value ) {
     const button = _.find( this.radioButtons, radioButton => radioButton.value === value );
