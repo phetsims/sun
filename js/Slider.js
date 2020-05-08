@@ -105,7 +105,7 @@ function Slider( valueProperty, range, options ) {
     // other
     cursor: 'pointer',
     startDrag: _.noop, // called when a drag sequence starts
-    drag: _.noop, // called at the beginning of a drag event, before any other drag work happens
+    drag: _.noop, // called at the end of a drag event, after the valueProperty changes
     endDrag: _.noop, // called when a drag sequence ends
     constrainValue: _.identity, // called before valueProperty is set
 
