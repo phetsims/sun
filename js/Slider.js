@@ -270,13 +270,15 @@ function Slider( valueProperty, range, options ) {
 
     drag: function( event, listener ) {
       if ( self.enabledProperty.get() ) {
-        options.drag( event );
         const transform = listener.pressedTrail.subtrailTo( sliderPartsNode ).getTransform(); // we only want the transform to our parent
         const x = transform.inversePosition2( event.pointer.point ).x - clickXOffset;
         const newValue = self.track.valueToPosition.inverse( x );
         const valueInRange = self.enabledRangeProperty.get().constrainValue( newValue );
 
         valueProperty.set( options.constrainValue( valueInRange ) );
+
+        // after valueProperty is set so listener can use the new value
+        options.drag( event );
       }
     },
 

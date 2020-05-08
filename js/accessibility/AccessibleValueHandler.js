@@ -466,8 +466,6 @@ const AccessibleValueHandler = {
               this._startChange( event );
             }
 
-            this._change( event );
-
             // track that a new key is being held down
             this.rangeKeysDown[ code ] = true;
 
@@ -519,6 +517,9 @@ const AccessibleValueHandler = {
 
             // optionally constrain the value further
             this._valueProperty.set( this._constrainValue( newValue ) );
+
+            // optional change callback after the valueProperty is set so that the listener can use the new value
+            this._change( event );
           }
         }
       },
@@ -607,9 +608,6 @@ const AccessibleValueHandler = {
           // start of change event is start of drag
           this._startChange( event );
 
-          // only one change per input, but still call optional change function
-          this._change( event );
-
           if ( inputValue > mappedValue ) {
             newValue = this._valueProperty.get() + stepSize;
           }
@@ -626,6 +624,10 @@ const AccessibleValueHandler = {
 
           // optionally constrain value
           this._valueProperty.set( this._constrainValue( newValue ) );
+
+          // only one change per input, but still call optional change function - after valueProperty is set so
+          // listener can use new value
+          this._change( event );
 
           // end of change is the end of a drag
           this.onInteractionEnd( event );
