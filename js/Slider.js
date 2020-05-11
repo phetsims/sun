@@ -136,7 +136,8 @@ function Slider( valueProperty, range, options ) {
     visibleProperty: { phetioFeatured: true }
   }, options );
 
-  this.orientation = options.orientation; // @private
+  // @private {string} - 'horizontal' or 'vertical'
+  this.orientation = options.orientation;
 
   Node.call( this );
 
@@ -168,24 +169,26 @@ function Slider( valueProperty, range, options ) {
                          'the enabledRangeProperty, which determines how low and high the thumb can be dragged within the track.'
   } );
 
-  // @public
+  // @public {BooleanProperty|null}
   this.enabledProperty = options.enabledProperty;
+
+  // @public {Property.<Range>|null}
   this.enabledRangeProperty = options.enabledRangeProperty;
 
-  // @private options needed by prototype functions that add ticks
+  // @private {Object} - options needed by prototype functions that add ticks
   this.tickOptions = _.pick( options, 'tickLabelSpacing',
     'majorTickLength', 'majorTickStroke', 'majorTickLineWidth',
     'minorTickLength', 'minorTickStroke', 'minorTickLineWidth' );
 
   const sliderParts = [];
 
-  // @private ticks are added to these parents, so they are behind the knob
+  // @private {Node} ticks are added to these parents, so they are behind the knob
   this.majorTicksParent = new Node();
   this.minorTicksParent = new Node();
   sliderParts.push( this.majorTicksParent );
   sliderParts.push( this.minorTicksParent );
 
-  // @private track
+  // @private {Node} track
   this.track = options.trackNode || new DefaultSliderTrack( valueProperty, range, {
 
     // propagate options that are specific to SliderTrack
@@ -315,7 +318,7 @@ function Slider( valueProperty, range, options ) {
 
   this.mutate( options );
 
-  // @private Called by dispose
+  // @private {function} - Called by dispose
   this.disposeSlider = function() {
     thumb.dispose && thumb.dispose(); // in case a custom thumb is provided via options.thumbNode that doesn't implement dispose
     self.track.dispose();
