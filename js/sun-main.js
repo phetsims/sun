@@ -6,6 +6,7 @@
 
 import Property from '../../axon/js/Property.js';
 import Screen from '../../joist/js/Screen.js';
+import ScreenIcon from '../../joist/js/ScreenIcon.js';
 import Sim from '../../joist/js/Sim.js';
 import simLauncher from '../../joist/js/simLauncher.js';
 import Rectangle from '../../scenery/js/nodes/Rectangle.js';
@@ -25,7 +26,11 @@ const simOptions = {
 };
 
 const createScreenIcon = function( color ) {
-  return new Rectangle( 0, 0, Screen.MINIMUM_HOME_SCREEN_ICON_SIZE.width, Screen.MINIMUM_HOME_SCREEN_ICON_SIZE.height, { fill: color } );
+  return new ScreenIcon(
+    new Rectangle( 0, 0, Screen.MINIMUM_HOME_SCREEN_ICON_SIZE.width, Screen.MINIMUM_HOME_SCREEN_ICON_SIZE.height, {
+      fill: color
+    } )
+  );
 };
 
 simLauncher.launch( function() {
@@ -60,7 +65,7 @@ simLauncher.launch( function() {
       {
         name: 'Dialogs',
         backgroundColorProperty: new Property( sunQueryParameters.backgroundColor ),
-        homeScreenIcon: createScreenIcon( 'white' )
+        homeScreenIcon: createScreenIcon( 'purple' )
       }
     ),
 
