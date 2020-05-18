@@ -46,7 +46,7 @@ class ComboBoxListBox extends Panel {
       groupFocusHighlight: true,
       focusable: true,
 
-      // Not instrumented for PhET-iO because the list's location isn't valid until it has been popped up.
+      // Not instrumented for PhET-iO because the list's position isn't valid until it has been popped up.
       // See https://github.com/phetsims/phet-io/issues/1102
       // TODO: we need this for accessibility in the sonification wrapper, see https://github.com/phetsims/sun/issues/496
       tandem: tandem

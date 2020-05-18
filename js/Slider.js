@@ -27,12 +27,12 @@ import Node from '../../scenery/js/nodes/Node.js';
 import Path from '../../scenery/js/nodes/Path.js';
 import PhetioObject from '../../tandem/js/PhetioObject.js';
 import Tandem from '../../tandem/js/Tandem.js';
+import AccessibleSlider from './accessibility/AccessibleSlider.js';
 import DefaultSliderTrack from './DefaultSliderTrack.js';
 import SliderIO from './SliderIO.js';
 import SliderThumb from './SliderThumb.js';
-import SunConstants from './SunConstants.js';
-import AccessibleSlider from './accessibility/AccessibleSlider.js';
 import sun from './sun.js';
+import SunConstants from './SunConstants.js';
 
 // constants
 const VERTICAL_ROTATION = -Math.PI / 2;
@@ -302,7 +302,7 @@ function Slider( valueProperty, range, options ) {
   };
   this.enabledProperty.link( enabledObserver ); // must be unlinked in disposeSlider
 
-  // update thumb location when value changes
+  // update thumb position when value changes
   const valueObserver = function( value ) {
     thumb.centerX = self.track.valueToPosition( value );
   };

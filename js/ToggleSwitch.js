@@ -232,7 +232,7 @@ class ToggleSwitch extends Node {
           toggleAction.execute( value );
         }
 
-        // update the thumb location (sanity check that it's here, only needs to be run if passedDragThreshold===true)
+        // update the thumb position (sanity check that it's here, only needs to be run if passedDragThreshold===true)
         update( value );
       }
     } );
