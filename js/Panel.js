@@ -29,6 +29,8 @@ const DEFAULT_OPTIONS = {
   resize: true, // dynamically resize when content bounds change
   backgroundPickable: false,
 
+  excludeInvisibleChildrenFromBounds: true,
+
   // {string} horizontal alignment of content in the pane, see ALIGN_VALUES
   // All alignments are equal when the content width >= minWidth
   // Left is the default alignment so when there are multiple panels, their content will left align, see #252
@@ -82,7 +84,7 @@ function Panel( content, options ) {
       return;
     }
 
-    const hasValidContent = content.bounds.isValid();
+    const hasValidContent = this.isChildIncludedInLayout( content );
     backgroundContainer.children = hasValidContent ? [ this.background ] : [];
     if ( !hasValidContent ) {
       // Bail out (and make the background invisible) if our bounds are invalid
@@ -118,6 +120,7 @@ function Panel( content, options ) {
 
   if ( options.resize ) {
     content.boundsProperty.lazyLink( updateBackground );
+    content.visibleProperty.lazyLink( updateBackground );
   }
   updateBackground();
 
@@ -125,6 +128,7 @@ function Panel( content, options ) {
   this.disposePanel = function() {
     if ( options.resize ) {
       content.boundsProperty.unlink( updateBackground );
+      content.visibleProperty.unlink( updateBackground );
     }
   };
 
