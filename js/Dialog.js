@@ -129,8 +129,8 @@ function Dialog( content, options ) {
     maxWidth: null, // if not provided, then dynamically calculate based on the layoutBounds of the current screen, see updateLayoutMultilink
     tandem: Tandem.OPTIONAL,
     phetioType: DialogIO,
-    phetioReadOnly: false, // default to false so it can pass it through to the close button
-    phetioState: false, // default to false so it can pass it through to the close button
+    phetioReadOnly: PhetioObject.DEFAULT_OPTIONS.phetioReadOnly, // default to false so it can pass it through to the close button
+    phetioState: PhetioObject.DEFAULT_OPTIONS.phetioState,
     phetioComponentOptions: null, // filled in below with PhetioObject.mergePhetioComponentOptions()
 
     // sound generation, if set to null defaults will be used, set to Playable.NO_SOUND to disable
@@ -235,6 +235,7 @@ function Dialog( content, options ) {
     // phet-io
     tandem: options.tandem.createTandem( 'closeButton' ),
     phetioReadOnly: options.phetioReadOnly, // match the readOnly of the Dialog
+
     phetioState: false, // close button should not be in state
     phetioComponentOptions: {
       phetioState: false,
