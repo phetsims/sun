@@ -25,7 +25,6 @@ function PageControl( numberOfPages, pageNumberProperty, options ) {
 
   options = merge( {
 
-    //TODO support multiple types of interactivity? see https://github.com/phetsims/sun/issues/199
     interactive: false, // {boolean} whether the control is interactive
 
     // all dots
