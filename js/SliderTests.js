@@ -17,7 +17,7 @@ import Slider from './Slider.js';
 
 QUnit.module( 'Slider' );
 
-// TODO: we may not keep this style of api validation for common code components, see https://github.com/phetsims/phet-io/issues/1648
+// TODO: we may not keep this style of api validation for common code components, see https://github.com/phetsims/phet-io/issues/1657
 QUnit.test( 'Slider PhET-iO API validation', assert => {
   assert.ok( true, 'always pass to support phet brand' );
 
@@ -47,7 +47,7 @@ QUnit.test( 'Slider PhET-iO API validation', assert => {
       }
     } );
 
-    // TODO: better way to generate desired API  https://github.com/phetsims/phet-io/issues/1648
+    // TODO: better way to generate desired API  https://github.com/phetsims/phet-io/issues/1657
     // console.log( JSON.stringify( actualAPI, null, 2 ) );
 
     /* eslint-disable */
@@ -318,7 +318,7 @@ QUnit.test( 'Slider PhET-iO API validation', assert => {
     // assert.ok( report.length === 0, 'error report should be empty: \n\n' + report.join( '\n' ) );
     console.log( report );
 
-    // TODO: many issues listed below for https://github.com/phetsims/phet-io/issues/1648
+    // TODO: many issues listed below for https://github.com/phetsims/phet-io/issues/1657
     // TODO: Make it easy to generate tests like this.  Like `grunt create-api-for-component Slider` > creates a test like this one.
     // TODO: Move compareAPIs to a separate module so it can be used at sim validation time and also for diff wrapper.  Will need to be UMD or wrappers will need to support ES6 modules.
     // TODO: Run unit tests automatically in pre-commit hooks
