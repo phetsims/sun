@@ -83,7 +83,6 @@ const AccessibleValueHandler = {
           shiftKeyboardStep: ( rangeProperty.get().max - rangeProperty.get().min ) / 100,
           pageKeyboardStep: ( rangeProperty.get().max - rangeProperty.get().min ) / 10,
 
-          // TODO: this should be an enumeration, https://github.com/phetsims/gravity-force-lab-basics/issues/134
           ariaOrientation: 'horizontal', // specify orientation, read by assistive technology
 
           // {boolean} - When setting the Property value from the PDOM input, this option controls whether or not to
