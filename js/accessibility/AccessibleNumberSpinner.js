@@ -23,6 +23,7 @@
 
 import CallbackTimer from '../../../axon/js/CallbackTimer.js';
 import Emitter from '../../../axon/js/Emitter.js';
+import assertHasProperties from '../../../phet-core/js/assertHasProperties.js';
 import extend from '../../../phet-core/js/extend.js';
 import inheritance from '../../../phet-core/js/inheritance.js';
 import merge from '../../../phet-core/js/merge.js';
@@ -68,13 +69,15 @@ const AccessibleNumberSpinner = {
       initializeAccessibleNumberSpinner: function( valueProperty, enabledRangeProperty, enabledProperty, options ) {
         const self = this;
 
-        const defaults = {
+        // members of the Node API that are used by this trait
+        assertHasProperties( this, [ 'addInputListener' ] );
+
+        options = merge( {
           timerDelay: 400, // start to fire continuously after pressing for this long (milliseconds)
           timerInterval: 100, // fire continuously at this frequency (milliseconds),
 
           ariaOrientation: Orientation.VERTICAL // by default, number spinners should be oriented vertically
-        };
-        options = merge( {}, defaults, options );
+        }, options );
 
         // initialize "parent" mixin
         this.initializeAccessibleValueHandler( valueProperty, enabledRangeProperty, enabledProperty, options );

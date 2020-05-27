@@ -18,6 +18,7 @@
 
 import Property from '../../../axon/js/Property.js';
 import Utils from '../../../dot/js/Utils.js';
+import assertHasProperties from '../../../phet-core/js/assertHasProperties.js';
 import extend from '../../../phet-core/js/extend.js';
 import inheritance from '../../../phet-core/js/inheritance.js';
 import merge from '../../../phet-core/js/merge.js';
@@ -36,7 +37,7 @@ const AccessibleValueHandler = {
   /**
    * Implement functionality for a number spinner.
    * @public
-   * @trait {Node}
+   * @trait {Node} - which should mix ParallelDOM.js
    *
    * @param {function} type - The type (constructor) whose prototype that is modified.
    */
@@ -64,6 +65,9 @@ const AccessibleValueHandler = {
         if ( assert && options.roundToStepSize ) {
           assert( options.keyboardStep, 'rounding to keyboardStep, define appropriate keyboardStep to round to' );
         }
+
+        // members of the Node API that are used by this trait
+        assertHasProperties( this, [ 'mutate', 'inputValue', 'setAccessibleAttribute' ] );
 
         const defaults = {
 

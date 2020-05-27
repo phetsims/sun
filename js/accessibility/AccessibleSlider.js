@@ -13,6 +13,7 @@
  * @author Jesse Greenberg (PhET Interactive Simulations)
  */
 
+import assertHasProperties from '../../../phet-core/js/assertHasProperties.js';
 import extend from '../../../phet-core/js/extend.js';
 import inheritance from '../../../phet-core/js/inheritance.js';
 import merge from '../../../phet-core/js/merge.js';
@@ -52,6 +53,9 @@ const AccessibleSlider = {
        */
       initializeAccessibleSlider: function( valueProperty, enabledRangeProperty, enabledProperty, options ) {
         const self = this;
+
+        // members of the Node API that are used by this trait
+        assertHasProperties( this, [ 'addInputListener', 'removeInputListener' ] );
 
         options = merge( {
           startDrag: _.noop, // called when a drag sequence starts
