@@ -21,6 +21,7 @@ import Utils from '../../../dot/js/Utils.js';
 import extend from '../../../phet-core/js/extend.js';
 import inheritance from '../../../phet-core/js/inheritance.js';
 import merge from '../../../phet-core/js/merge.js';
+import Orientation from '../../../phet-core/js/Orientation.js';
 import KeyboardUtils from '../../../scenery/js/accessibility/KeyboardUtils.js';
 import Node from '../../../scenery/js/nodes/Node.js';
 import Utterance from '../../../utterance-queue/js/Utterance.js';
@@ -83,7 +84,7 @@ const AccessibleValueHandler = {
           shiftKeyboardStep: ( rangeProperty.get().max - rangeProperty.get().min ) / 100,
           pageKeyboardStep: ( rangeProperty.get().max - rangeProperty.get().min ) / 10,
 
-          ariaOrientation: 'horizontal', // specify orientation, read by assistive technology
+          ariaOrientation: Orientation.HORIZONTAL, // specify orientation, read by assistive technology
 
           // {boolean} - When setting the Property value from the PDOM input, this option controls whether or not to
           // round the value to a multiple of the keyboardStep. This will only round the value on normal key presses,
@@ -153,7 +154,7 @@ const AccessibleValueHandler = {
 
         options = merge( {}, defaults, options );
 
-        assert && assert( options.ariaOrientation === 'horizontal' || options.ariaOrientation === 'vertical',
+        assert && assert( Orientation.includes( options.ariaOrientation ),
           'invalid ariaOrientation: ' + options.ariaOrientation );
 
         // Some options were already mutated in the constructor, only apply the accessibility-specific options here
@@ -206,7 +207,8 @@ const AccessibleValueHandler = {
         // @private (a11y) - whether or not 'shift' key is currently held down
         this._shiftKey = false;
 
-        // initialize slider attributes
+        // @private {Orientation} - set immediately
+        this._ariaOrientation = null;
         this.ariaOrientation = options.ariaOrientation;
 
         // @private - track previous values for callbacks outside of Property listeners
@@ -751,13 +753,13 @@ const AccessibleValueHandler = {
        * Depending on the value of this attribute, a screen reader will give different indications about which
        * arrow keys should be used
        *
-       * @param {string} orientation - one of "horizontal" or "vertical"
+       * @param {Orientation} orientation
        */
       setAriaOrientation: function( orientation ) {
-        assert && assert( orientation === 'horizontal' || orientation === 'vertical' );
+        assert && assert( Orientation.includes( orientation ) );
 
         this._ariaOrientation = orientation;
-        this.setAccessibleAttribute( 'aria-orientation', orientation );
+        this.setAccessibleAttribute( 'aria-orientation', orientation.ariaOrientation );
       },
       set ariaOrientation( orientation ) { this.setAriaOrientation( orientation ); },
 
@@ -765,7 +767,7 @@ const AccessibleValueHandler = {
        * Get the orientation of the accessible slider, see setAriaOrientation for information on the behavior of this
        * attribute.
        *
-       * @returns {string}
+       * @returns {Orientation}
        */
       getAriaOrientation: function() {
         return this._ariaOrientation;

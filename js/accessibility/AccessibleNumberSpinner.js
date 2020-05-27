@@ -26,6 +26,7 @@ import Emitter from '../../../axon/js/Emitter.js';
 import extend from '../../../phet-core/js/extend.js';
 import inheritance from '../../../phet-core/js/inheritance.js';
 import merge from '../../../phet-core/js/merge.js';
+import Orientation from '../../../phet-core/js/Orientation.js';
 import KeyboardUtils from '../../../scenery/js/accessibility/KeyboardUtils.js';
 import Node from '../../../scenery/js/nodes/Node.js';
 import sun from '../sun.js';
@@ -71,7 +72,7 @@ const AccessibleNumberSpinner = {
           timerDelay: 400, // start to fire continuously after pressing for this long (milliseconds)
           timerInterval: 100, // fire continuously at this frequency (milliseconds),
 
-          ariaOrientation: 'vertical' // by default, number spinners should be oriented vertically
+          ariaOrientation: Orientation.VERTICAL // by default, number spinners should be oriented vertically
         };
         options = merge( {}, defaults, options );
 

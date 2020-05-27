@@ -21,6 +21,7 @@ import assertMutuallyExclusiveOptions from '../../phet-core/js/assertMutuallyExc
 import InstanceRegistry from '../../phet-core/js/documentation/InstanceRegistry.js';
 import inherit from '../../phet-core/js/inherit.js';
 import merge from '../../phet-core/js/merge.js';
+import Orientation from '../../phet-core/js/Orientation.js';
 import FocusHighlightFromNode from '../../scenery/js/accessibility/FocusHighlightFromNode.js';
 import DragListener from '../../scenery/js/listeners/DragListener.js';
 import Node from '../../scenery/js/nodes/Node.js';
@@ -59,7 +60,7 @@ function Slider( valueProperty, range, options ) {
 
   options = merge( {
 
-    orientation: 'horizontal', // 'horizontal'|'vertical'
+    orientation: Orientation.HORIZONTAL, // {Orientation}
 
     // {SliderTrack} optional track, replaces the default.
     // Client is responsible for highlighting, disable and pointer areas.
@@ -127,7 +128,7 @@ function Slider( valueProperty, range, options ) {
   }, options );
 
   assert && assert( range instanceof Range, 'range must be of type Range:' + range );
-  assert && assert( options.orientation === 'horizontal' || options.orientation === 'vertical',
+  assert && assert( Orientation.includes( options.orientation ),
     'invalid orientation: ' + options.orientation );
   assert && assert( !( options.enabledProperty && options.enabledPropertyOptions ),
     'enabledProperty and enabledPropertyOptions are mutually exclusive' );
@@ -136,7 +137,7 @@ function Slider( valueProperty, range, options ) {
     visibleProperty: { phetioFeatured: true }
   }, options );
 
-  // @private {string} - 'horizontal' or 'vertical'
+  // @private {Orientation}
   this.orientation = options.orientation;
 
   Node.call( this );
@@ -240,7 +241,7 @@ function Slider( valueProperty, range, options ) {
   // This allows us to still decorate the Slider with additional children.
   // See https://github.com/phetsims/sun/issues/406
   const sliderPartsNode = new Node( { children: sliderParts } );
-  if ( options.orientation === 'vertical' ) {
+  if ( options.orientation === Orientation.VERTICAL ) {
     sliderPartsNode.rotation = VERTICAL_ROTATION;
   }
   this.addChild( sliderPartsNode );
@@ -406,7 +407,7 @@ inherit( Node, Slider, {
     if ( label ) {
 
       // For a vertical slider, rotate labels opposite the rotation of the slider, so that they appear as expected.
-      if ( this.orientation === 'vertical' ) {
+      if ( this.orientation === Orientation.VERTICAL ) {
         label.rotation = -VERTICAL_ROTATION;
       }
       parent.addChild( label );

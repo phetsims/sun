@@ -10,6 +10,7 @@
 import InstanceRegistry from '../../phet-core/js/documentation/InstanceRegistry.js';
 import inherit from '../../phet-core/js/inherit.js';
 import merge from '../../phet-core/js/merge.js';
+import Orientation from '../../phet-core/js/Orientation.js';
 import swapObjectKeys from '../../phet-core/js/swapObjectKeys.js';
 import Slider from './Slider.js';
 import sun from './sun.js';
@@ -25,7 +26,7 @@ function VSlider( valueProperty, range, options ) {
   assert && assert( !options || options.orientation === undefined, 'VSlider sets orientation' );
 
   options = merge( {
-    orientation: 'vertical'
+    orientation: Orientation.VERTICAL
   }, options );
 
   // swap dimensions because Slider.js expects these set up as dimensions for a horizontal slider.

@@ -10,6 +10,7 @@
 import InstanceRegistry from '../../phet-core/js/documentation/InstanceRegistry.js';
 import inherit from '../../phet-core/js/inherit.js';
 import merge from '../../phet-core/js/merge.js';
+import Orientation from '../../phet-core/js/Orientation.js';
 import Slider from './Slider.js';
 import sun from './sun.js';
 
@@ -24,7 +25,7 @@ function HSlider( valueProperty, range, options ) {
   assert && assert( !options || options.orientation === undefined, 'HSlider sets orientation' );
 
   Slider.call( this, valueProperty, range, merge( {
-    orientation: 'horizontal'
+    orientation: Orientation.HORIZONTAL
   }, options ) );
 
   // support for binder documentation, stripped out in builds and only runs when ?binder is specified
