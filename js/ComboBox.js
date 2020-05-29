@@ -170,6 +170,14 @@ class ComboBox extends Node {
     listParent.addChild( this.listBox );
     this.listParent = listParent; // @private
 
+    // when the list box becomes visible it should pop to the top of the z-order
+    const moveListBoxToFrontOnVisible = visible => {
+      if ( visible ) {
+        this.listBox.moveToFront();
+      }
+    };
+    this.listBox.visibleProperty.link( moveListBoxToFrontOnVisible );
+
     // The listBox is not a child Node of ComboBox and, as a result, listen to opacity of the ComboBox and keep
     // the listBox in sync with them. See https://github.com/phetsims/sun/issues/587
     this.opacityProperty.link( opacity => { this.listBox.opacityProperty.value = opacity; } );
@@ -272,6 +280,7 @@ class ComboBox extends Node {
       Display.focusProperty.unlink( this.dismissWithFocusListener );
 
       // dispose of subcomponents
+      this.listBox.visibleProperty.unlink( moveListBoxToFrontOnVisible );
       this.listBox.dispose();
       this.button.dispose();
     };
@@ -325,7 +334,6 @@ class ComboBox extends Node {
       // show the list box
       this.scaleListBox();
       this.moveListBox();
-      this.listBox.moveToFront();
       this.listBox.visible = true;
 
       // manage clickToDismissListener
