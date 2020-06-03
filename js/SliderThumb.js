@@ -11,7 +11,7 @@ import Dimension2 from '../../dot/js/Dimension2.js';
 import Shape from '../../kite/js/Shape.js';
 import inherit from '../../phet-core/js/inherit.js';
 import merge from '../../phet-core/js/merge.js';
-import ButtonListener from '../../scenery/js/input/ButtonListener.js';
+import PressListener from '../../scenery/js/listeners/PressListener.js';
 import Path from '../../scenery/js/nodes/Path.js';
 import Rectangle from '../../scenery/js/nodes/Rectangle.js';
 import Tandem from '../../tandem/js/Tandem.js';
@@ -33,8 +33,6 @@ function SliderThumb( options ) {
     centerLineStroke: 'white',
     tandem: Tandem.REQUIRED
   }, options );
-
-  const self = this;
 
   // rectangle
   const arcWidth = 0.25 * options.size.width;
@@ -66,14 +64,13 @@ function SliderThumb( options ) {
   } ) );
 
   // highlight thumb on pointer over
-  this.addInputListener( new ButtonListener( {
-    over: function( event ) {
-      self.fill = options.fillHighlighted;
-    },
-    up: function( event ) {
-      self.fill = options.fill;
-    }
-  } ) );
+  const pressListener = new PressListener( {
+    attach: false
+  } );
+  pressListener.isHighlightedProperty.link( isHighlighted => {
+    this.fill = isHighlighted ? options.fillHighlighted : options.fill;
+  } );
+  this.addInputListener( pressListener );
 }
 
 sun.register( 'SliderThumb', SliderThumb );
