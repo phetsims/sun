@@ -13,7 +13,7 @@ import Dimension2 from '../../dot/js/Dimension2.js';
 import LinearFunction from '../../dot/js/LinearFunction.js';
 import Range from '../../dot/js/Range.js';
 import merge from '../../phet-core/js/merge.js';
-import SimpleDragHandler from '../../scenery/js/input/SimpleDragHandler.js';
+import DragListener from '../../scenery/js/listeners/DragListener.js';
 import Node from '../../scenery/js/nodes/Node.js';
 import Tandem from '../../tandem/js/Tandem.js';
 import sun from './sun.js';
@@ -65,22 +65,22 @@ class SliderTrack extends Node {
 
     this.addChild( trackNode );
 
-    const trackInputListener = new SimpleDragHandler( {
+    const trackInputListener = new DragListener( {
       tandem: options.tandem.createTandem( 'trackInputListener' ),
 
-      start: function( event, trail ) {
+      start: ( event, listener ) => {
         options.startDrag( event );
-        handleTrackEvent( event, trail );
+        handleTrackEvent( event, listener.pressedTrail );
       },
 
-      drag: function( event, trail ) {
+      drag: ( event, listener ) => {
         options.drag( event );
 
         // Reuse the same handleTrackEvent but make sure the startedCallbacks call is made before the value changes
-        handleTrackEvent( event, trail );
+        handleTrackEvent( event, listener.pressedTrail );
       },
 
-      end: function( event ) {
+      end: event => {
         options.endDrag( event );
       }
     } );
