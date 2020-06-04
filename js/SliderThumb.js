@@ -66,7 +66,7 @@ function SliderThumb( options ) {
   // highlight thumb on pointer over
   const pressListener = new PressListener( {
     attach: false,
-    tandem: options.tandem.createTandem( 'pressListener' )
+    tandem: Tandem.OPT_OUT
   } );
   pressListener.isHighlightedProperty.link( isHighlighted => {
     this.fill = isHighlighted ? options.fillHighlighted : options.fill;
