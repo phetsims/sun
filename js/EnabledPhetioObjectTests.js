@@ -8,6 +8,7 @@
 
 import Property from '../../axon/js/Property.js';
 import PhetioObject from '../../tandem/js/PhetioObject.js';
+import Tandem from '../../tandem/js/Tandem.js';
 import EnabledPhetioObject from './EnabledPhetioObject.js';
 
 QUnit.module( 'EnabledPhetioObject' );
@@ -26,12 +27,14 @@ QUnit.test( 'EnabledPhetioObject', assert => {
 
   const phetioObject = new EnabledPhetioObjectClass( {
     enabledPropertyOptions: {
-      phetioFeatured: true
+      phetioFeatured: true,
+      tandem: Tandem.GENERAL.createTandem( 'enabledProperty' ) // must be instrumented to look at metadata
     }
   } );
   testEnabledPhetioObject( assert, phetioObject, 'For PhetioObject' );
   assert.ok( phetioObject instanceof PhetioObject );
   assert.ok( phetioObject.enabledProperty.phetioFeatured, 'should have passed phet-io metadata through to enabledProperty' );
+  phetioObject.dispose();
 } );
 
 /**
