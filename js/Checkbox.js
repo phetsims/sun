@@ -28,8 +28,6 @@ import validate from '../../axon/js/validate.js';
 const ENABLED_PROPERTY_TANDEM_NAME = 'enabledProperty';
 const BOOLEAN_VALIDATOR = { valueType: 'boolean' };
 
-// sounds
-
 /**
  * @param {Node} content
  * @param {Property.<boolean>} property
