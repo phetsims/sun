@@ -303,7 +303,8 @@ function Dialog( content, options ) {
     sim.boundsProperty,
     sim.screenBoundsProperty,
     sim.scaleProperty,
-    sim.screenProperty
+    sim.screenProperty,
+    this.isShowingProperty
   ], ( bounds, screenBounds, scale, screen ) => {
 
     if ( bounds && screenBounds && scale ) {
