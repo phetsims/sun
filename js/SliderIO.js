@@ -6,7 +6,10 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
+import PropertyIO from '../../axon/js/PropertyIO.js';
+import RangeIO from '../../dot/js/RangeIO.js';
 import NodeIO from '../../scenery/js/nodes/NodeIO.js';
+import LinkedElementIO from '../../tandem/js/LinkedElementIO.js';
 import BooleanIO from '../../tandem/js/types/BooleanIO.js';
 import ObjectIO from '../../tandem/js/types/ObjectIO.js';
 import VoidIO from '../../tandem/js/types/VoidIO.js';
@@ -39,6 +42,23 @@ SliderIO.methods = {
 SliderIO.documentation = 'A traditional slider component, with a knob and possibly tick marks';
 SliderIO.validator = { isValidValue: v => v instanceof phet.sun.Slider };
 SliderIO.typeName = 'SliderIO';
+SliderIO.api = {
+  enabledProperty: {
+    phetioType: PropertyIO( BooleanIO ),
+    phetioFeatured: true
+  },
+  enabledRangeProperty: {
+    phetioType: PropertyIO( RangeIO )
+  },
+
+  // TODO: add trackInputListener https://github.com/phetsims/phet-io/issues/1657
+  track: {},
+  thumbInputListener: {}, // TODO: rename this https://github.com/phetsims/sun/issues/590
+  thumb: {}, // TODO: what is in here?
+  valueProperty: {
+    phetioType: LinkedElementIO
+  }
+};
 ObjectIO.validateSubtype( SliderIO );
 
 sun.register( 'SliderIO', SliderIO );
