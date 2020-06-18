@@ -65,8 +65,8 @@ class SliderTrack extends Node {
 
     this.addChild( trackNode );
 
-    const trackInputListener = new DragListener( {
-      tandem: options.tandem.createTandem( 'trackInputListener' ),
+    const dragListener = new DragListener( {
+      tandem: options.tandem.createTandem( 'dragListener' ),
 
       start: ( event, listener ) => {
         options.startDrag( event );
@@ -84,11 +84,13 @@ class SliderTrack extends Node {
         options.endDrag( event );
       }
     } );
-    trackNode.addInputListener( trackInputListener );
+    trackNode.addInputListener( dragListener );
+
+    this.mutate( options );
 
     // @private Called by dispose
     this.disposeSliderTrack = () => {
-      trackInputListener.dispose();
+      dragListener.dispose();
     };
   }
 

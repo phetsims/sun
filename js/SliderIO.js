@@ -51,10 +51,14 @@ SliderIO.api = {
     phetioType: PropertyIO( RangeIO )
   },
 
-  // TODO: add trackInputListener https://github.com/phetsims/phet-io/issues/1657
-  track: {},
-  thumbInputListener: {}, // TODO: rename this https://github.com/phetsims/sun/issues/590
-  thumb: {}, // TODO: what is in here?
+  track: {
+    phetioType: NodeIO,
+    dragListener: {} // TODO: handle synthetic elements that link to sub-components, https://github.com/phetsims/phet-io/issues/1657
+  },
+  thumb: {
+    phetioType: NodeIO,
+    dragListener: {}
+  },
   valueProperty: {
     phetioType: LinkedElementIO
   }

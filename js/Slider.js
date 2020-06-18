@@ -77,6 +77,8 @@ function Slider( valueProperty, range, options ) {
     // {Node} optional thumb, replaces the default.
     // Client is responsible for highlighting, disabling and pointer areas.
     // The thumb is positioned based on its center and hence can have its origin anywhere
+    // Note for PhET-IO: This thumbNode should be instrumented. The thumb's dragListener is instrumented underneath
+    // this thumbNode.
     thumbNode: null,
 
     // Options for the default thumb, ignored if thumbNode is set
@@ -258,9 +260,10 @@ function Slider( valueProperty, range, options ) {
 
   // update value when thumb is dragged
   let clickXOffset = 0; // x-offset between initial click and thumb's origin
-  const thumbInputListener = new DragListener( {
+  const thumbDragListener = new DragListener( {
 
-    tandem: options.tandem.createTandem( 'thumbInputListener' ),
+    // Deviate from the variable name because we will nest this tandem under the thumb directly
+    tandem: thumb.tandem.createTandem( 'dragListener' ),
 
     start: function( event, listener ) {
       if ( self.enabledProperty.get() ) {
@@ -292,7 +295,7 @@ function Slider( valueProperty, range, options ) {
       }
     }
   } );
-  thumb.addInputListener( thumbInputListener );
+  thumb.addInputListener( thumbDragListener );
 
   // enable/disable
   const enabledObserver = function( enabled ) {
@@ -329,7 +332,7 @@ function Slider( valueProperty, range, options ) {
     valueProperty.unlink( valueObserver );
     ownsEnabledRangeProperty && self.enabledRangeProperty.dispose();
     ownsEnabledProperty && self.enabledProperty.dispose();
-    thumbInputListener.dispose();
+    thumbDragListener.dispose();
   };
 
   // pdom - custom focus highlight that surrounds and moves with the thumb
