@@ -8,6 +8,7 @@
 
 import PropertyIO from '../../axon/js/PropertyIO.js';
 import RangeIO from '../../dot/js/RangeIO.js';
+import PressListenerIO from '../../scenery/js/listeners/PressListenerIO.js';
 import NodeIO from '../../scenery/js/nodes/NodeIO.js';
 import LinkedElementIO from '../../tandem/js/LinkedElementIO.js';
 import BooleanIO from '../../tandem/js/types/BooleanIO.js';
@@ -50,14 +51,20 @@ SliderIO.api = {
   enabledRangeProperty: {
     phetioType: PropertyIO( RangeIO )
   },
-
   track: {
     phetioType: NodeIO,
-    dragListener: {} // TODO: handle synthetic elements that link to sub-components, https://github.com/phetsims/phet-io/issues/1657
+    dragListener: {
+
+      // TODO: Make this be DragListenerIO, https://github.com/phetsims/phet-io/issues/1657
+      // TODO: right now PressListenerIO isn't doing anything! https://github.com/phetsims/phet-io/issues/1657
+      phetioType: PressListenerIO
+    }
   },
   thumb: {
     phetioType: NodeIO,
-    dragListener: {}
+    dragListener: {
+      phetioType: PressListenerIO
+    }
   },
   valueProperty: {
     phetioType: LinkedElementIO
