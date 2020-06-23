@@ -54,6 +54,9 @@ const EnabledNode = {
           this.pickable = enabled;
           this.opacity = enabled ? 1.0 : options.disabledOpacity;
 
+          // Mark this Node as disabled in the ParallelDOM
+          this.setAccessibleAttribute( 'aria-disabled', !enabled );
+
           // handle cursor by supporting setting back to what the cursor was when component was made disabled.
           this.cursor = enabled ? cursor : 'default';
         };

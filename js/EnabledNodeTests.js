@@ -7,23 +7,24 @@
  */
 
 import BooleanProperty from '../../axon/js/BooleanProperty.js';
-import Node from '../../scenery/js/nodes/Node.js';
 import Property from '../../axon/js/Property.js';
+import Display from '../../scenery/js/display/Display.js';
+import Node from '../../scenery/js/nodes/Node.js';
 import EnabledNode from './EnabledNode.js';
 
 QUnit.module( 'EnabledNode' );
 
-QUnit.test( 'EnabledNode', assert => {
-
-  class EnabledNodeClass extends Node {
-    constructor( options ) {
-      super( options );
-      this.initializeEnabledNode( options );
-    }
+class EnabledNodeClass extends Node {
+  constructor( options ) {
+    super( options );
+    this.initializeEnabledNode( options );
   }
+}
 
-  // mix in enabled component into a Node
-  EnabledNode.mixInto( EnabledNodeClass );
+// mix in enabled component into a Node
+EnabledNode.mixInto( EnabledNodeClass );
+
+QUnit.test( 'EnabledNode', assert => {
 
   let node = new EnabledNodeClass();
 
@@ -54,6 +55,25 @@ QUnit.test( 'EnabledNode', assert => {
 
   node2.disposeEnabledNode();
   assert.ok( myEnabledProperty.changedEmitter.getListenerCount() === defaultListenerCount, 'listener count should match original' );
+} );
+
+QUnit.test( 'EnabledNode with PDOM', assert => {
+
+  const rootNode = new Node( { tagName: 'div' } );
+  var display = new Display( rootNode ); // eslint-disable-line
+  document.body.appendChild( display.domElement );
+
+  const a11yNode = new EnabledNodeClass( {
+    tagName: 'p'
+  } );
+
+  rootNode.addChild( a11yNode );
+  assert.ok( a11yNode.accessibleInstances.length === 1, 'should have an instance when attached to display' );
+  assert.ok( a11yNode.accessibleInstances[ 0 ].peer, 'should have a peer' );
+  assert.ok( a11yNode.accessibleInstances[ 0 ].peer.primarySibling.getAttribute( 'aria-disabled' ) === 'false', 'should be enabled' );
+  a11yNode.enabled = false;
+  assert.ok( a11yNode.accessibleInstances[ 0 ].peer.primarySibling.getAttribute( 'aria-disabled' ) === 'true', 'should be enabled' );
+  testEnabledNode( assert, a11yNode, 'For accessible Node' );
 } );
 
 /**

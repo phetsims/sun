@@ -232,6 +232,7 @@ class ComboBox extends Node {
     const enabledObserver = enabled => {
       this.pickable = enabled;
       this.opacity = enabled ? 1.0 : options.disabledOpacity;
+      this.button.setAccessibleAttribute( 'aria-disabled', !enabled );
     };
     this.enabledProperty.link( enabledObserver );
 
