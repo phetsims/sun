@@ -178,12 +178,7 @@ class ComboBox extends Node {
 
     // Clicking on the button toggles visibility of the list box
     this.button.addListener( () => {
-      if ( !this.listBox.visible ) {
-        this.showListBox();
-      }
-      else {
-        this.hideListBox();
-      }
+      this.listBox.visibleProperty.value = !this.listBox.visibleProperty.value;
     } );
 
     //TODO sun#462 integrate this with above button listener, to eliminate order dependency
@@ -232,10 +227,34 @@ class ComboBox extends Node {
     const enabledObserver = enabled => {
       this.pickable = enabled;
       this.opacity = enabled ? 1.0 : options.disabledOpacity;
+      this.button.setAccessibleAttribute( 'aria-disabled', !enabled );
     };
     this.enabledProperty.link( enabledObserver );
 
     this.listBox.localBoundsProperty.lazyLink( () => this.moveListBox() );
+
+    this.listBox.visibleProperty.link( visible => {
+      if ( visible ) {
+
+        // show the list box
+        this.scaleListBox();
+        this.listBox.moveToFront();
+        this.moveListBox();
+
+        // manage clickToDismissListener
+        assert && assert( !this.display, 'unexpected display' );
+        this.display = this.getUniqueTrail().rootNode().getRootedDisplays()[ 0 ];
+        this.display.addInputListener( this.clickToDismissListener );
+      }
+      else {
+
+        // manage clickToDismissListener
+        if ( this.display && this.display.hasInputListener( this.clickToDismissListener ) ) {
+          this.display.removeInputListener( this.clickToDismissListener );
+          this.display = null;
+        }
+      }
+    } );
 
     // @private for use via PhET-iO, see https://github.com/phetsims/sun/issues/451
     // This is not generally controlled by the user, so it is not reset when the Reset All button is pressed.
@@ -319,22 +338,7 @@ class ComboBox extends Node {
    * @public
    */
   showListBox() {
-    if ( !this.listBox.visible ) {
-      this.phetioStartEvent( 'listBoxShown' );
-
-      // show the list box
-      this.scaleListBox();
-      this.listBox.moveToFront();
-      this.moveListBox();
-      this.listBox.visible = true;
-
-      // manage clickToDismissListener
-      assert && assert( !this.display, 'unexpected display' );
-      this.display = this.getUniqueTrail().rootNode().getRootedDisplays()[ 0 ];
-      this.display.addInputListener( this.clickToDismissListener );
-
-      this.phetioEndEvent();
-    }
+    this.listBox.visibleProperty.value = true;
   }
 
   /**
@@ -342,20 +346,7 @@ class ComboBox extends Node {
    * @public
    */
   hideListBox() {
-    if ( this.listBox.visible ) {
-      this.phetioStartEvent( 'listBoxHidden' );
-
-      // manage clickToDismissListener
-      if ( this.display && this.display.hasInputListener( this.clickToDismissListener ) ) {
-        this.display.removeInputListener( this.clickToDismissListener );
-        this.display = null;
-      }
-
-      // hide the list box
-      this.listBox.visible = false;
-
-      this.phetioEndEvent();
-    }
+    this.listBox.visibleProperty.value = false;
   }
 
   /**

@@ -8,6 +8,7 @@
 
 import Action from '../../axon/js/Action.js';
 import BooleanProperty from '../../axon/js/BooleanProperty.js';
+import validate from '../../axon/js/validate.js';
 import InstanceRegistry from '../../phet-core/js/documentation/InstanceRegistry.js';
 import inherit from '../../phet-core/js/inherit.js';
 import merge from '../../phet-core/js/merge.js';
@@ -22,7 +23,6 @@ import Tandem from '../../tandem/js/Tandem.js';
 import FontAwesomeNode from './FontAwesomeNode.js';
 import sun from './sun.js';
 import SunConstants from './SunConstants.js';
-import validate from '../../axon/js/validate.js';
 
 // constants
 const ENABLED_PROPERTY_TANDEM_NAME = 'enabledProperty';
@@ -178,6 +178,7 @@ function Checkbox( content, property, options ) {
     phetioFeatured: true
   } );
 
+  // TODO: aria-disabled is covered by EnabledNode, and can be removed once Checkbox uses that mixin. https://github.com/phetsims/sun/issues/585
   const enabledListener = function( enabled ) {
     if ( enabled ) {
       self.setAccessibleAttribute( 'onclick', '' );
