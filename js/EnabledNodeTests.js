@@ -69,7 +69,7 @@ QUnit.test( 'EnabledNode with PDOM', assert => {
 
   rootNode.addChild( a11yNode );
   assert.ok( a11yNode.accessibleInstances.length === 1, 'should have an instance when attached to display' );
-  assert.ok( a11yNode.accessibleInstances[ 0 ].peer, 'should have a peer' );
+  assert.ok( !!a11yNode.accessibleInstances[ 0 ].peer, 'should have a peer' );
   assert.ok( a11yNode.accessibleInstances[ 0 ].peer.primarySibling.getAttribute( 'aria-disabled' ) === 'false', 'should be enabled' );
   a11yNode.enabled = false;
   assert.ok( a11yNode.accessibleInstances[ 0 ].peer.primarySibling.getAttribute( 'aria-disabled' ) === 'true', 'should be enabled' );
