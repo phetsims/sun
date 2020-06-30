@@ -86,7 +86,7 @@ class ComboBox extends Node {
       listLineWidth: 1,
 
       // {Playable|null} - Sound generators, if set to null defaults will be used, use Playable.NO_SOUND to disable.
-      // It is a common pattern to supply a more elaborate sound player for closedSoundPlayer that generates a differnt
+      // It is a common pattern to supply a more elaborate sound player for closedSoundPlayer that generates a different
       // sound based on what the user selected.
       openedSoundPlayer: null,
       closedSoundPlayer: null,
