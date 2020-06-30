@@ -466,6 +466,10 @@ const AccessibleValueHandler = {
           if ( KeyboardUtils.isRangeKey( code ) ) {
             domEvent.preventDefault(); // this should do the same thing as this.a11yInputHandled for "change" and "input"
 
+            // signify that this listener is reserved for dragging so that other listeners can change
+            // their behavior during scenery event dispatch
+            event.pointer.reserveForKeyboardDrag();
+
             // if this is the first keydown this is the start of the drag interaction
             if ( !this.anyKeysDown() ) {
               this._startChange( event );
