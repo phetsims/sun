@@ -13,6 +13,7 @@ import PDOMPeer from '../../scenery/js/accessibility/pdom/PDOMPeer.js';
 import HStrut from '../../scenery/js/nodes/HStrut.js';
 import Node from '../../scenery/js/nodes/Node.js';
 import Path from '../../scenery/js/nodes/Path.js';
+import Playable from '../../tambo/js/Playable.js';
 import PhetioObject from '../../tandem/js/PhetioObject.js';
 import Tandem from '../../tandem/js/Tandem.js';
 import RectangularButtonView from './buttons/RectangularButtonView.js';
@@ -47,6 +48,7 @@ class ComboBoxButton extends RectangularPushButton {
       yMargin: 8,
       stroke: 'black',
       lineWidth: 1,
+      soundPlayer: Playable.NO_SOUND, // disable default sound generation
 
       // PushButtonModel options
       enabledPropertyOptions: {

@@ -25,6 +25,8 @@ import merge from '../../phet-core/js/merge.js';
 import PDOMPeer from '../../scenery/js/accessibility/pdom/PDOMPeer.js';
 import Display from '../../scenery/js/display/Display.js';
 import Node from '../../scenery/js/nodes/Node.js';
+import generalCloseSoundPlayer from '../../tambo/js/shared-sound-players/generalCloseSoundPlayer.js';
+import generalOpenSoundPlayer from '../../tambo/js/shared-sound-players/generalOpenSoundPlayer.js';
 import EventType from '../../tandem/js/EventType.js';
 import PhetioObject from '../../tandem/js/PhetioObject.js';
 import Tandem from '../../tandem/js/Tandem.js';
@@ -82,6 +84,12 @@ class ComboBox extends Node {
       listFill: 'white', // {Color|string}
       listStroke: 'black', // {Color|string}
       listLineWidth: 1,
+
+      // {Playable|null} - Sound generators, if set to null defaults will be used, use Playable.NO_SOUND to disable.
+      // It is a common pattern to supply a more elaborate sound player for closedSoundPlayer that generates a differnt
+      // sound based on what the user selected.
+      openedSoundPlayer: null,
+      closedSoundPlayer: null,
 
       // pdom
       accessibleName: null, // the a11y setter for this is overridden, see below
@@ -174,6 +182,10 @@ class ComboBox extends Node {
     // the listBox in sync with them. See https://github.com/phetsims/sun/issues/587
     this.opacityProperty.link( opacity => { this.listBox.opacityProperty.value = opacity; } );
 
+    // set up sound players
+    const openedSoundPlayer = options.openedSoundPlayer || generalOpenSoundPlayer;
+    const closedSoundPlayer = options.closedSoundPlayer || generalCloseSoundPlayer;
+
     this.mutate( options );
 
     // Clicking on the button toggles visibility of the list box
@@ -233,7 +245,7 @@ class ComboBox extends Node {
 
     this.listBox.localBoundsProperty.lazyLink( () => this.moveListBox() );
 
-    this.listBox.visibleProperty.link( visible => {
+    this.listBox.visibleProperty.link( ( visible, wasVisible ) => {
       if ( visible ) {
 
         // show the list box
@@ -245,6 +257,9 @@ class ComboBox extends Node {
         assert && assert( !this.display, 'unexpected display' );
         this.display = this.getUniqueTrail().rootNode().getRootedDisplays()[ 0 ];
         this.display.addInputListener( this.clickToDismissListener );
+
+        // play the 'opened' sound
+        openedSoundPlayer.play();
       }
       else {
 
@@ -253,6 +268,9 @@ class ComboBox extends Node {
           this.display.removeInputListener( this.clickToDismissListener );
           this.display = null;
         }
+
+        // play the 'closed' sound (if the combo box was previously open)
+        wasVisible && closedSoundPlayer.play();
       }
     } );
 
