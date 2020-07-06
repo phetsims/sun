@@ -27,6 +27,7 @@ import Display from '../../scenery/js/display/Display.js';
 import Node from '../../scenery/js/nodes/Node.js';
 import generalCloseSoundPlayer from '../../tambo/js/shared-sound-players/generalCloseSoundPlayer.js';
 import generalOpenSoundPlayer from '../../tambo/js/shared-sound-players/generalOpenSoundPlayer.js';
+import comboBoxSelectionSoundPlayer from '../../tambo/js/shared-sound-players/comboBoxSelectionSoundPlayer.js';
 import EventType from '../../tandem/js/EventType.js';
 import PhetioObject from '../../tandem/js/PhetioObject.js';
 import Tandem from '../../tandem/js/Tandem.js';
@@ -85,11 +86,17 @@ class ComboBox extends Node {
       listStroke: 'black', // {Color|string}
       listLineWidth: 1,
 
-      // {Playable|null} - Sound generators, if set to null defaults will be used, use Playable.NO_SOUND to disable.
-      // It is a common pattern to supply a more elaborate sound player for closedSoundPlayer that generates a different
-      // sound based on what the user selected.
+      // {Playable|null} - Sound generator for when combo box is opened.  If set to `null` the default sound will be
+      // used, use Playable.NO_SOUND to disable.
       openedSoundPlayer: null,
-      closedSoundPlayer: null,
+
+      // {Playable|null} - Sound generator for when combo box is closed and the selection was not changed.  If set to
+      // `null` the default sound will be used, use Playable.NO_SOUND to disable.
+      closedNoChangeSoundPlayer: null,
+
+      // {Playable|null} - Sound generator for when the combo box selection has changed, which is only made official
+      // when it closes.  If set to null the default sound will be used, use Playable.NO_SOUND to disable.
+      selectionChangedSoundPlayer: null,
 
       // pdom
       accessibleName: null, // the a11y setter for this is overridden, see below
@@ -184,7 +191,8 @@ class ComboBox extends Node {
 
     // set up sound players
     const openedSoundPlayer = options.openedSoundPlayer || generalOpenSoundPlayer;
-    const closedSoundPlayer = options.closedSoundPlayer || generalCloseSoundPlayer;
+    const closedNoChangeSoundPlayer = options.closedNoChangeSoundPlayer || generalCloseSoundPlayer;
+    const selectionChangedSoundPlayer = options.selectionChangedSoundPlayer || comboBoxSelectionSoundPlayer;
 
     this.mutate( options );
 
@@ -245,6 +253,9 @@ class ComboBox extends Node {
 
     this.listBox.localBoundsProperty.lazyLink( () => this.moveListBox() );
 
+    // variable for tracking whether the selected value was changed by the user
+    let selectionWhenListBoxOpened = null;
+
     this.listBox.visibleProperty.link( ( visible, wasVisible ) => {
       if ( visible ) {
 
@@ -260,6 +271,9 @@ class ComboBox extends Node {
 
         // play the 'opened' sound
         openedSoundPlayer.play();
+
+        // keep track of what was selected when the list box was shown
+        selectionWhenListBoxOpened = property.value;
       }
       else {
 
@@ -269,8 +283,17 @@ class ComboBox extends Node {
           this.display = null;
         }
 
-        // play the 'closed' sound (if the combo box was previously open)
-        wasVisible && closedSoundPlayer.play();
+        // sound generation - assumes that value has been updated before list box is hidden
+        if ( wasVisible ) {
+          assert && assert( selectionWhenListBoxOpened !== 'null', 'no value for when the list box was opened' );
+          if ( selectionWhenListBoxOpened === property.value ) {
+            closedNoChangeSoundPlayer.play();
+          }
+          else {
+            selectionChangedSoundPlayer.play();
+          }
+          selectionWhenListBoxOpened = null;
+        }
       }
     } );
 

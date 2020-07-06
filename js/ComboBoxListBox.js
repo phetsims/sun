@@ -67,14 +67,14 @@ class ComboBoxListBox extends Panel {
       const listItemNode = event.currentTarget;
       assert && assert( listItemNode instanceof ComboBoxListItemNode, 'expected a ComboBoxListItemNode' );
 
+      // set value based on which item was chosen in the list box
+      property.value = listItemNode.item.value;
+
       // hide the list
       hideListBoxCallback();
 
       // prevent nodes (eg, controls) behind the list from receiving the event
       event.abort();
-
-      // set value based on which item was chosen in the list box
-      property.value = listItemNode.item.value;
     }, {
       parameters: [ { phetioPrivate: true, valueType: SceneryEvent } ],
 
