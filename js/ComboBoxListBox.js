@@ -11,6 +11,9 @@ import merge from '../../phet-core/js/merge.js';
 import KeyboardUtils from '../../scenery/js/accessibility/KeyboardUtils.js';
 import SceneryEvent from '../../scenery/js/input/SceneryEvent.js';
 import VBox from '../../scenery/js/nodes/VBox.js';
+import comboBoxSelectionSoundPlayer from '../../tambo/js/shared-sound-players/comboBoxSelectionSoundPlayer.js';
+import generalCloseSoundPlayer from '../../tambo/js/shared-sound-players/generalCloseSoundPlayer.js';
+import generalOpenSoundPlayer from '../../tambo/js/shared-sound-players/generalOpenSoundPlayer.js';
 import EventType from '../../tandem/js/EventType.js';
 import PhetioObject from '../../tandem/js/PhetioObject.js';
 import Tandem from '../../tandem/js/Tandem.js';
@@ -45,6 +48,12 @@ class ComboBoxListBox extends Panel {
       ariaRole: 'listbox',
       groupFocusHighlight: true,
       focusable: true,
+
+      // {Playable|null} - Sound generators for when combo box is opened, closed with no change, and/or closed with a
+      // changed selection.  If set to `null` the default sound will be used, use Playable.NO_SOUND to disable.
+      openedSoundPlayer: null,
+      closedNoChangeSoundPlayer: null,
+      selectionChangedSoundPlayer: null,
 
       // Not instrumented for PhET-iO because the list's position isn't valid until it has been popped up.
       // See https://github.com/phetsims/phet-io/issues/1102
@@ -147,6 +156,39 @@ class ComboBoxListBox extends Panel {
     options.yMargin = options.yMargin / 2;
 
     super( content, options );
+
+    // set up sound players
+    const openedSoundPlayer = options.openedSoundPlayer || generalOpenSoundPlayer;
+    const closedNoChangeSoundPlayer = options.closedNoChangeSoundPlayer || generalCloseSoundPlayer;
+    const selectionChangedSoundPlayer = options.selectionChangedSoundPlayer || comboBoxSelectionSoundPlayer;
+
+    // variable for tracking whether the selected value was changed by the user
+    let selectionWhenListBoxOpened = null;
+
+    // sound generation
+    this.visibleProperty.lazyLink( visible => {
+
+      if ( visible ) {
+
+        // play the 'opened' sound
+        openedSoundPlayer.play();
+
+        // keep track of what was selected when the list box was shown
+        selectionWhenListBoxOpened = property.value;
+      }
+      else {
+
+        // sound generation - assumes that the property value has been updated before this list box is hidden
+        assert && assert( selectionWhenListBoxOpened !== null, 'no value for when the list box was opened' );
+        if ( selectionWhenListBoxOpened === property.value ) {
+          closedNoChangeSoundPlayer.play();
+        }
+        else {
+          selectionChangedSoundPlayer.play();
+        }
+        selectionWhenListBoxOpened = null;
+      }
+    } );
 
     // @public {ComboBoxListItemNode|null} the ComboBoxListItemNode that has focus
     this.focusedItemNode = null;

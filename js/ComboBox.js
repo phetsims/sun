@@ -25,9 +25,6 @@ import merge from '../../phet-core/js/merge.js';
 import PDOMPeer from '../../scenery/js/accessibility/pdom/PDOMPeer.js';
 import Display from '../../scenery/js/display/Display.js';
 import Node from '../../scenery/js/nodes/Node.js';
-import generalCloseSoundPlayer from '../../tambo/js/shared-sound-players/generalCloseSoundPlayer.js';
-import generalOpenSoundPlayer from '../../tambo/js/shared-sound-players/generalOpenSoundPlayer.js';
-import comboBoxSelectionSoundPlayer from '../../tambo/js/shared-sound-players/comboBoxSelectionSoundPlayer.js';
 import EventType from '../../tandem/js/EventType.js';
 import PhetioObject from '../../tandem/js/PhetioObject.js';
 import Tandem from '../../tandem/js/Tandem.js';
@@ -86,16 +83,10 @@ class ComboBox extends Node {
       listStroke: 'black', // {Color|string}
       listLineWidth: 1,
 
-      // {Playable|null} - Sound generator for when combo box is opened.  If set to `null` the default sound will be
-      // used, use Playable.NO_SOUND to disable.
+      // {Playable|null} - Sound generators for when combo box is opened, closed with no change, and/or closed with a
+      // changed selection.  If set to `null` the default sound will be used, use Playable.NO_SOUND to disable.
       openedSoundPlayer: null,
-
-      // {Playable|null} - Sound generator for when combo box is closed and the selection was not changed.  If set to
-      // `null` the default sound will be used, use Playable.NO_SOUND to disable.
       closedNoChangeSoundPlayer: null,
-
-      // {Playable|null} - Sound generator for when the combo box selection has changed, which is only made official
-      // when it closes.  If set to null the default sound will be used, use Playable.NO_SOUND to disable.
       selectionChangedSoundPlayer: null,
 
       // pdom
@@ -189,11 +180,6 @@ class ComboBox extends Node {
     // the listBox in sync with them. See https://github.com/phetsims/sun/issues/587
     this.opacityProperty.link( opacity => { this.listBox.opacityProperty.value = opacity; } );
 
-    // set up sound players
-    const openedSoundPlayer = options.openedSoundPlayer || generalOpenSoundPlayer;
-    const closedNoChangeSoundPlayer = options.closedNoChangeSoundPlayer || generalCloseSoundPlayer;
-    const selectionChangedSoundPlayer = options.selectionChangedSoundPlayer || comboBoxSelectionSoundPlayer;
-
     this.mutate( options );
 
     // Clicking on the button toggles visibility of the list box
@@ -253,9 +239,6 @@ class ComboBox extends Node {
 
     this.listBox.localBoundsProperty.lazyLink( () => this.moveListBox() );
 
-    // variable for tracking whether the selected value was changed by the user
-    let selectionWhenListBoxOpened = null;
-
     this.listBox.visibleProperty.link( ( visible, wasVisible ) => {
       if ( visible ) {
 
@@ -268,12 +251,6 @@ class ComboBox extends Node {
         assert && assert( !this.display, 'unexpected display' );
         this.display = this.getUniqueTrail().rootNode().getRootedDisplays()[ 0 ];
         this.display.addInputListener( this.clickToDismissListener );
-
-        // play the 'opened' sound
-        openedSoundPlayer.play();
-
-        // keep track of what was selected when the list box was shown
-        selectionWhenListBoxOpened = property.value;
       }
       else {
 
@@ -281,18 +258,6 @@ class ComboBox extends Node {
         if ( this.display && this.display.hasInputListener( this.clickToDismissListener ) ) {
           this.display.removeInputListener( this.clickToDismissListener );
           this.display = null;
-        }
-
-        // sound generation - assumes that value has been updated before list box is hidden
-        if ( wasVisible ) {
-          assert && assert( selectionWhenListBoxOpened !== 'null', 'no value for when the list box was opened' );
-          if ( selectionWhenListBoxOpened === property.value ) {
-            closedNoChangeSoundPlayer.play();
-          }
-          else {
-            selectionChangedSoundPlayer.play();
-          }
-          selectionWhenListBoxOpened = null;
         }
       }
     } );
