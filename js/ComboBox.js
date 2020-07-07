@@ -165,6 +165,11 @@ class ComboBox extends Node {
         lineWidth: options.listLineWidth,
         visible: false,
 
+        // sound generation
+        openedSoundPlayer: options.openedSoundPlayer,
+        closedNoChangeSoundPlayer: options.closedNoChangeSoundPlayer,
+        selectionChangedSoundPlayer: options.selectionChangedSoundPlayer,
+
         // pdom
         // the list box is aria-labelledby its own label sibling
         ariaLabelledbyAssociations: [ {
