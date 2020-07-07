@@ -163,7 +163,7 @@ class ComboBoxListBox extends Panel {
     const selectionChangedSoundPlayer = options.selectionChangedSoundPlayer || comboBoxSelectionSoundPlayer;
 
     // variable for tracking whether the selected value was changed by the user
-    let selectionWhenListBoxOpened = null;
+    let selectionWhenListBoxOpened;
 
     // sound generation
     this.visibleProperty.lazyLink( visible => {
@@ -179,7 +179,7 @@ class ComboBoxListBox extends Panel {
       else {
 
         // sound generation - assumes that the property value has been updated before this list box is hidden
-        assert && assert( selectionWhenListBoxOpened !== null, 'no value for when the list box was opened' );
+        assert && assert( selectionWhenListBoxOpened !== undefined, 'no value for property when list box opened' );
         if ( selectionWhenListBoxOpened === property.value ) {
           closedNoChangeSoundPlayer.play();
         }
