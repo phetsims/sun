@@ -186,7 +186,6 @@ class ComboBoxListBox extends Panel {
         else {
           selectionChangedSoundPlayer.play();
         }
-        selectionWhenListBoxOpened = null;
       }
     } );
 
