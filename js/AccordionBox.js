@@ -17,6 +17,8 @@ import Node from '../../scenery/js/nodes/Node.js';
 import Path from '../../scenery/js/nodes/Path.js';
 import Rectangle from '../../scenery/js/nodes/Rectangle.js';
 import Text from '../../scenery/js/nodes/Text.js';
+import generalCloseSoundPlayer from '../../tambo/js/shared-sound-players/generalCloseSoundPlayer.js';
+import generalOpenSoundPlayer from '../../tambo/js/shared-sound-players/generalOpenSoundPlayer.js';
 import EventType from '../../tandem/js/EventType.js';
 import PhetioObject from '../../tandem/js/PhetioObject.js';
 import Tandem from '../../tandem/js/Tandem.js';
@@ -78,12 +80,17 @@ function AccordionBox( contentNode, options ) {
     // content
     contentAlign: 'center', // {string} horizontal alignment of the content, 'left'|'center'|'right'
     contentXMargin: 15, // horizontal space between content and left/right edges of box
-    contentYMargin: 8,  // horizontal space between content and bottom edge of box
+    contentYMargin: 8,  // vertical space between content and bottom edge of box
     contentXSpacing: 5, // horizontal space between content and button, ignored if showTitleWhenExpanded is true
     contentYSpacing: 8, // vertical space between content and title+button, ignored if showTitleWhenExpanded is false
 
     // {*|null} options for the title bar, defaults filled in below
     titleBarOptions: null,
+
+    // {Playable|null} - Sound generators for expand and collapse.  If set to `null` the default sound will be used, use
+    // Playable.NO_SOUND to disable.
+    expandedSoundPlayer: null,
+    collapsedSoundPlayer: null,
 
     // phet-io support
     tandem: Tandem.REQUIRED,
@@ -98,10 +105,16 @@ function AccordionBox( contentNode, options ) {
     stroke: null // {Color|string|null} title bar stroke, used only for the expanded title bar
   }, options.titleBarOptions );
 
+  // set up the sound generators
+  const expandedSoundPlayer = options.expandedSoundPlayer || generalOpenSoundPlayer;
+  const collapsedSoundPlayer = options.expandedSoundPlayer || generalCloseSoundPlayer;
+
   // expandCollapseButtonOptions defaults
   options.expandCollapseButtonOptions = merge( {
     sideLength: 16, // button is a square, this is the length of one side
     cursor: options.cursor,
+    valueOnSoundPlayer: expandedSoundPlayer,
+    valueOffSoundPlayer: collapsedSoundPlayer,
     tandem: options.tandem.createTandem( 'expandCollapseButton' )
   }, options.expandCollapseButtonOptions );
 
@@ -215,6 +228,7 @@ function AccordionBox( contentNode, options ) {
         if ( self.expandCollapseButton.getEnabled() ) {
           self.phetioStartEvent( 'expanded' );
           self.expandedProperty.value = true;
+          expandedSoundPlayer.play();
           self.phetioEndEvent();
         }
       }
@@ -228,6 +242,7 @@ function AccordionBox( contentNode, options ) {
         down: function() {
           if ( self.expandCollapseButton.getEnabled() ) {
             self.phetioStartEvent( 'collapsed' );
+            collapsedSoundPlayer.play();
             self.expandedProperty.value = false;
             self.phetioEndEvent();
           }
