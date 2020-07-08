@@ -65,19 +65,22 @@ class NumberSpinner extends Node {
       xSpacing: 5,
       ySpacing: 3,
 
-      //TODO https://github.com/phetsims/sun/issues/575 convert to nested numberDisplayOptions
-      // NumberSpinner options
-      font: new PhetFont( 28 ),
-      valueAlign: 'center',
-      valuePattern: SunConstants.VALUE_NAMED_PLACEHOLDER, // {string} must contain SunConstants.VALUE_NAMED_PLACEHOLDER
-      decimalPlaces: 0,
-      xMargin: 5,
-      yMargin: 3,
-      cornerRadius: 5,
-      backgroundFill: 'white',
-      backgroundStroke: 'black',
-      backgroundLineWidth: 1,
-      backgroundMinWidth: 0,
+      // NumberDisplay options
+      numberDisplayOptions: {
+        align: 'center',
+        valuePattern: SunConstants.VALUE_NAMED_PLACEHOLDER, // {string} must contain SunConstants.VALUE_NAMED_PLACEHOLDER
+        decimalPlaces: 0,
+        xMargin: 5,
+        yMargin: 3,
+        cornerRadius: 5,
+        backgroundFill: 'white',
+        backgroundStroke: 'black',
+        backgroundLineWidth: 1,
+        minBackgroundWidth: 0,
+        textOptions: {
+          font: new PhetFont( 28 )
+        }
+      },
 
       // arrow button pointer areas
       touchAreaXDilation: 0,
@@ -100,22 +103,10 @@ class NumberSpinner extends Node {
       options.decrementFunction = value => value - options.deltaValue;
     }
 
-    const numberDisplay = new NumberDisplay( numberProperty, rangeProperty.value, {
-      textOptions: {
-        font: options.font
-      },
-      align: options.valueAlign,
-      valuePattern: options.valuePattern,
-      decimalPlaces: options.decimalPlaces,
-      xMargin: options.xMargin,
-      yMargin: options.yMargin,
-      cornerRadius: options.cornerRadius,
-      backgroundFill: options.backgroundFill,
-      backgroundStroke: options.backgroundStroke,
-      backgroundLineWidth: options.backgroundLineWidth,
-      minBackgroundWidth: options.backgroundMinWidth,
-      tandem: options.tandem.createTandem( 'numberDisplay' )
-    } );
+    const numberDisplay = new NumberDisplay( numberProperty, rangeProperty.value, merge( {},
+      options.numberDisplayOptions, {
+        tandem: options.tandem.createTandem( 'numberDisplay' )
+      } ) );
 
     // buttons
     const arrowButtonOptions = {
