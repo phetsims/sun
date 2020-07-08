@@ -10,13 +10,11 @@
 import Property from '../../axon/js/Property.js';
 import merge from '../../phet-core/js/merge.js';
 import NumberDisplay from '../../scenery-phet/js/NumberDisplay.js';
-import PhetFont from '../../scenery-phet/js/PhetFont.js';
 import Node from '../../scenery/js/nodes/Node.js';
 import Tandem from '../../tandem/js/Tandem.js';
 import AccessibleNumberSpinner from './accessibility/AccessibleNumberSpinner.js';
 import ArrowButton from './buttons/ArrowButton.js';
 import sun from './sun.js';
-import SunConstants from './SunConstants.js';
 
 // possible values for options.arrowsPosition
 const ARROWS_POSITION_VALUES = [
@@ -67,19 +65,8 @@ class NumberSpinner extends Node {
 
       // NumberDisplay options
       numberDisplayOptions: {
-        align: 'center',
-        valuePattern: SunConstants.VALUE_NAMED_PLACEHOLDER, // {string} must contain SunConstants.VALUE_NAMED_PLACEHOLDER
-        decimalPlaces: 0,
-        xMargin: 5,
-        yMargin: 3,
         cornerRadius: 5,
-        backgroundFill: 'white',
-        backgroundStroke: 'black',
-        backgroundLineWidth: 1,
-        minBackgroundWidth: 0,
-        textOptions: {
-          font: new PhetFont( 28 )
-        }
+        backgroundStroke: 'black'
       },
 
       // arrow button pointer areas

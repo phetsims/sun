@@ -457,8 +457,13 @@ var demoNumberSpinner = function( layoutBounds ) {
     mouseAreaYDilation: 5,
     numberDisplayOptions: {
       decimalPlaces: 1,
+      align: 'center',
+      xMargin: 10,
+      yMargin: 3,
       minBackgroundWidth: 100,
-      xMargin: 10
+      textOptions: {
+        font: new PhetFont( 28 )
+      }
     }
   };
 
