@@ -450,20 +450,29 @@ var demoNumberSpinner = function( layoutBounds ) {
   // options for all spinners
   const spinnerOptions = {
     enabledProperty: enabledProperty,
+    deltaValue: 0.1,
     touchAreaXDilation: 20,
     touchAreaYDilation: 10,
     mouseAreaXDilation: 10,
     mouseAreaYDilation: 5,
-    decimalPlaces: 1,
-    deltaValue: 0.1,
-    backgroundMinWidth: 100,
-    xMargin: 10
+    numberDisplayOptions: {
+      decimalPlaces: 1,
+      align: 'center',
+      xMargin: 10,
+      yMargin: 3,
+      minBackgroundWidth: 100,
+      textOptions: {
+        font: new PhetFont( 28 )
+      }
+    }
   };
 
   // Demonstrate each value of options.arrowsPosition
   const spinnerLeftRight = new NumberSpinner( valueProperty, valueRangeProperty, merge( {}, spinnerOptions, {
     arrowsPosition: 'leftRight',
-    valuePattern: '{{value}} bottles of beer on the wall'
+    numberDisplayOptions: {
+      valuePattern: '{{value}} bottles of beer on the wall'
+    }
   } ) );
   const spinnerTopBottom = new NumberSpinner( valueProperty, valueRangeProperty, merge( {}, spinnerOptions, {
     arrowsPosition: 'topBottom',
@@ -471,18 +480,22 @@ var demoNumberSpinner = function( layoutBounds ) {
   } ) );
   const spinnerBothRight = new NumberSpinner( valueProperty, valueRangeProperty, merge( {}, spinnerOptions, {
     arrowsPosition: 'bothRight',
-    yMargin: 10,
-    valueAlign: 'right'
+    numberDisplayOptions: {
+      yMargin: 10,
+      align: 'right'
+    }
   } ) );
   const spinnerBothBottom = new NumberSpinner( valueProperty, valueRangeProperty, merge( {}, spinnerOptions, {
     arrowsPosition: 'bothBottom',
-    backgroundFill: 'pink',
-    backgroundStroke: 'red',
-    backgroundLineWidth: 3,
+    numberDisplayOptions: {
+      backgroundFill: 'pink',
+      backgroundStroke: 'red',
+      backgroundLineWidth: 3,
+      align: 'left'
+    },
     arrowButtonFill: 'lightblue',
     arrowButtonStroke: 'blue',
-    arrowButtonLineWidth: 0.2,
-    valueAlign: 'left'
+    arrowButtonLineWidth: 0.2
   } ) );
 
   const enabledCheckbox = new Checkbox( new Text( 'enabled', { font: new PhetFont( 20 ) } ), enabledProperty );

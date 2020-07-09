@@ -8,18 +8,13 @@
  */
 
 import Property from '../../axon/js/Property.js';
-import Utils from '../../dot/js/Utils.js';
 import merge from '../../phet-core/js/merge.js';
-import StringUtils from '../../phetcommon/js/util/StringUtils.js';
-import PhetFont from '../../scenery-phet/js/PhetFont.js';
+import NumberDisplay from '../../scenery-phet/js/NumberDisplay.js';
 import Node from '../../scenery/js/nodes/Node.js';
-import Rectangle from '../../scenery/js/nodes/Rectangle.js';
-import Text from '../../scenery/js/nodes/Text.js';
 import Tandem from '../../tandem/js/Tandem.js';
 import AccessibleNumberSpinner from './accessibility/AccessibleNumberSpinner.js';
 import ArrowButton from './buttons/ArrowButton.js';
 import sun from './sun.js';
-import SunConstants from './SunConstants.js';
 
 // possible values for options.arrowsPosition
 const ARROWS_POSITION_VALUES = [
@@ -28,9 +23,6 @@ const ARROWS_POSITION_VALUES = [
   'bothRight', // both arrow buttons to the right of the value
   'bothBottom' // both arrow buttons below the value
 ];
-
-// possible values for options.valueAlign
-const VALUE_ALIGN_VALUES = [ 'center', 'left', 'right' ];
 
 class NumberSpinner extends Node {
 
@@ -65,25 +57,17 @@ class NumberSpinner extends Node {
       // Parameter is the current value, returns the new value. Defaults to subtracting options.deltaValue.
       decrementFunction: null,
 
-      valuePattern: SunConstants.VALUE_NAMED_PLACEHOLDER, // {string} must contain SunConstants.VALUE_NAMED_PLACEHOLDER
-      decimalPlaces: 0,
-      deltaValue: 1, // may be ignored if incrementFunction and decrementFunction are provided
-      font: new PhetFont( 28 ),
-      valueMaxWidth: null,
+      // may be ignored if incrementFunction and decrementFunction are provided
+      deltaValue: 1,
 
-      // {string} alignment for value, see VALUE_ALIGN_VALUES
-      valueAlign: 'center',
       xSpacing: 5,
       ySpacing: 3,
 
-      // background node
-      xMargin: 5,
-      yMargin: 3,
-      cornerRadius: 5,
-      backgroundMinWidth: 0,
-      backgroundFill: 'white',
-      backgroundStroke: 'black',
-      backgroundLineWidth: 1,
+      // NumberDisplay options
+      numberDisplayOptions: {
+        cornerRadius: 5,
+        backgroundStroke: 'black'
+      },
 
       // arrow button pointer areas
       touchAreaXDilation: 0,
@@ -97,10 +81,6 @@ class NumberSpinner extends Node {
 
     // validate options
     assert && assert( _.includes( ARROWS_POSITION_VALUES, options.arrowsPosition ), 'invalid arrowsPosition: ' + options.arrowsPosition );
-    assert && assert( _.includes( VALUE_ALIGN_VALUES, options.valueAlign ), 'invalid valueAlign: ' + options.valueAlign );
-    assert && assert( !!phet.chipper.queryParameters.stringTest ||
-                      options.valuePattern.indexOf( SunConstants.VALUE_NAMED_PLACEHOLDER ) !== -1,
-      'missing value placeholder in options.valuePattern: ' + options.valuePattern );
 
     // Defaults for incrementFunction and decrementFunction
     if ( !options.incrementFunction ) {
@@ -110,41 +90,10 @@ class NumberSpinner extends Node {
       options.decrementFunction = value => value - options.deltaValue;
     }
 
-    const valueOptions = {
-      font: options.font,
-      fill: 'black',
-      maxWidth: options.valueMaxWidth
-    };
-
-    // compute max width of the value that's going to be displayed
-    const minString = StringUtils.fillIn( options.valuePattern, {
-      value: Utils.toFixed( rangeProperty.value.min, options.decimalPlaces )
-    } );
-    const maxString = StringUtils.fillIn( options.valuePattern, {
-      value: Utils.toFixed( rangeProperty.value.max, options.decimalPlaces )
-    } );
-    const maxWidth = Math.max(
-      new Text( minString, valueOptions ).width,
-      new Text( maxString, valueOptions ).width
-    );
-
-    // number
-    const numberNode = new Text( numberProperty.get(), valueOptions );
-
-    // compute the size of the background
-    const backgroundWidth = Math.max( maxWidth + 2 * options.xMargin, options.backgroundMinWidth );
-    const backgroundHeight = numberNode.height + ( 2 * options.yMargin );
-
-    // background for displaying the value
-    const backgroundNode = new Rectangle( 0, 0, backgroundWidth, backgroundHeight,
-      options.cornerRadius, options.cornerRadius, {
-        fill: options.backgroundFill,
-        stroke: options.backgroundStroke,
-        lineWidth: options.backgroundLineWidth
-      } );
-    numberNode.center = backgroundNode.center;
-    numberNode.maxWidth = backgroundWidth - ( 2 * options.xMargin );
-    const valueParent = new Node( { children: [ backgroundNode, numberNode ] } );
+    const numberDisplay = new NumberDisplay( numberProperty, rangeProperty.value, merge( {},
+      options.numberDisplayOptions, {
+        tandem: options.tandem.createTandem( 'numberDisplay' )
+      } ) );
 
     // buttons
     const arrowButtonOptions = {
@@ -180,16 +129,16 @@ class NumberSpinner extends Node {
     let arrowsScale;
     if ( !arrowsScale ) {
       if ( options.arrowsPosition === 'leftRight' ) {
-        arrowsScale = valueParent.height / incrementButton.height;
+        arrowsScale = numberDisplay.height / incrementButton.height;
       }
       else if ( options.arrowsPosition === 'topBottom' ) {
-        arrowsScale = valueParent.width / incrementButton.width;
+        arrowsScale = numberDisplay.width / incrementButton.width;
       }
       else if ( options.arrowsPosition === 'bothRight' ) {
-        arrowsScale = ( ( valueParent.height / 2 ) - ( options.ySpacing / 2 ) ) / incrementButton.height;
+        arrowsScale = ( ( numberDisplay.height / 2 ) - ( options.ySpacing / 2 ) ) / incrementButton.height;
       }
       else { // 'bothBottom'
-        arrowsScale = ( ( valueParent.width / 2 ) - ( options.xSpacing / 2 ) ) / incrementButton.width;
+        arrowsScale = ( ( numberDisplay.width / 2 ) - ( options.xSpacing / 2 ) ) / incrementButton.width;
       }
     }
     if ( options.arrowsScale ) {
@@ -200,24 +149,24 @@ class NumberSpinner extends Node {
 
     // layout
     if ( options.arrowsPosition === 'leftRight' ) {
-      incrementButton.left = valueParent.right + options.xSpacing;
-      decrementButton.right = valueParent.left - options.xSpacing;
-      incrementButton.centerY = decrementButton.centerY = valueParent.centerY;
+      incrementButton.left = numberDisplay.right + options.xSpacing;
+      decrementButton.right = numberDisplay.left - options.xSpacing;
+      incrementButton.centerY = decrementButton.centerY = numberDisplay.centerY;
     }
     else if ( options.arrowsPosition === 'topBottom' ) {
-      incrementButton.centerX = decrementButton.centerX = valueParent.centerX;
-      incrementButton.bottom = valueParent.top - options.ySpacing;
-      decrementButton.top = valueParent.bottom + options.ySpacing;
+      incrementButton.centerX = decrementButton.centerX = numberDisplay.centerX;
+      incrementButton.bottom = numberDisplay.top - options.ySpacing;
+      decrementButton.top = numberDisplay.bottom + options.ySpacing;
     }
     else if ( options.arrowsPosition === 'bothRight' ) {
-      incrementButton.left = decrementButton.left = valueParent.right + options.xSpacing;
-      incrementButton.bottom = valueParent.centerY - ( options.ySpacing / 2 );
-      decrementButton.top = valueParent.centerY + ( options.ySpacing / 2 );
+      incrementButton.left = decrementButton.left = numberDisplay.right + options.xSpacing;
+      incrementButton.bottom = numberDisplay.centerY - ( options.ySpacing / 2 );
+      decrementButton.top = numberDisplay.centerY + ( options.ySpacing / 2 );
     }
     else { // 'bothBottom'
-      incrementButton.left = valueParent.centerX + ( options.xSpacing / 2 );
-      decrementButton.right = valueParent.centerX - ( options.xSpacing / 2 );
-      incrementButton.top = decrementButton.top = valueParent.bottom + options.ySpacing;
+      incrementButton.left = numberDisplay.centerX + ( options.xSpacing / 2 );
+      decrementButton.right = numberDisplay.centerX - ( options.xSpacing / 2 );
+      incrementButton.top = decrementButton.top = numberDisplay.bottom + options.ySpacing;
     }
 
     // touch areas
@@ -255,7 +204,7 @@ class NumberSpinner extends Node {
     }
 
     assert && assert( !options.children, 'decoration not supported' );
-    options.children = [ valueParent, incrementButton, decrementButton ];
+    options.children = [ numberDisplay, incrementButton, decrementButton ];
 
     super( options );
 
@@ -268,27 +217,6 @@ class NumberSpinner extends Node {
     // synchronize with number value
     const numberPropertyObserver = value => {
       assert && assert( rangeProperty.value.contains( value ), 'value out of range: ' + value );
-
-      // update the number
-      numberNode.text = StringUtils.fillIn( options.valuePattern, {
-        value: Utils.toFixed( value, options.decimalPlaces )
-      } );
-
-      // update the alignment
-      switch( options.valueAlign ) {
-        case 'center':
-          numberNode.center = backgroundNode.center;
-          break;
-        case 'left':
-          numberNode.left = backgroundNode.left + options.xMargin;
-          break;
-        case 'right':
-          numberNode.right = backgroundNode.right - options.xMargin;
-          break;
-        default:
-          throw new Error( 'invalid valueAlign: ' + options.valueAlign );
-      }
-
       updateEnabled();
     };
     numberProperty.link( numberPropertyObserver ); // must be unlinked in dispose
