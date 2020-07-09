@@ -81,6 +81,7 @@ class NumberSpinner extends Node {
 
     // validate options
     assert && assert( _.includes( ARROWS_POSITION_VALUES, options.arrowsPosition ), 'invalid arrowsPosition: ' + options.arrowsPosition );
+    assert && assert( options.numberDisplayOptions.tandem === undefined, 'NumberSpinner sets tandem for NumberDisplay' );
 
     // Defaults for incrementFunction and decrementFunction
     if ( !options.incrementFunction ) {
