@@ -329,9 +329,10 @@ class ComboBox extends Node {
   /**
    * Instead of setting accessibleName on ComboBox, forward accessibleName setter to the button
    * @param {string} accessibleName
+   * @public
    * @override
    */
-  set accessibleName( accessibleName ) {
+  setAccessibleName( accessibleName ) {
 
     // set labelContent here instead of accessibleName because of ComboBoxButton implementation -- see that file for more details
     this.button.labelContent = accessibleName;
