@@ -75,10 +75,9 @@ const AccessibleValueHandler = {
           startChange: _.noop, // called when a value change sequence starts
           endChange: _.noop, // called when a value change sequence ends
 
-          // Called at the beginning of any event that would change the value and before any other changes to
-          // valueProperty. Useful for "press and hold" keyboard input. However, be aware that other some devices
-          // as switch will only trigger one change per input, and no concept of "press and hold". This function
-          // will still be called once per input in those cases.
+          // Called after any change to valueProperty. Useful for "press and hold" keyboard input. However, be aware
+          // that other some devices as switch will only trigger one change per input, and no concept of "press and
+          // hold". This function will still be called once per input in those cases.
           change: _.noop,
 
           constrainValue: _.identity, // called before valueProperty is set
