@@ -83,11 +83,11 @@ class ComboBox extends Node {
       listStroke: 'black', // {Color|string}
       listLineWidth: 1,
 
-      // {Playable|null} - Sound generators for when combo box is opened, closed with no change, and/or closed with a
-      // changed selection.  If set to `null` the default sound will be used, use Playable.NO_SOUND to disable.
+      // {Playable|null} - Sound generators for when combo box is opened and closed with no change.  If set to `null`
+      // the default sound will be used, use Playable.NO_SOUND to disable.  Note that the individual combo box items
+      // take care of their own sound generation when selected.
       openedSoundPlayer: null,
       closedNoChangeSoundPlayer: null,
-      selectionChangedSoundPlayer: null,
 
       // pdom
       accessibleName: null, // the a11y setter for this is overridden, see below
@@ -168,7 +168,6 @@ class ComboBox extends Node {
         // sound generation
         openedSoundPlayer: options.openedSoundPlayer,
         closedNoChangeSoundPlayer: options.closedNoChangeSoundPlayer,
-        selectionChangedSoundPlayer: options.selectionChangedSoundPlayer,
 
         // pdom
         // the list box is aria-labelledby its own label sibling

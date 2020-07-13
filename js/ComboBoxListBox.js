@@ -11,7 +11,7 @@ import merge from '../../phet-core/js/merge.js';
 import KeyboardUtils from '../../scenery/js/accessibility/KeyboardUtils.js';
 import SceneryEvent from '../../scenery/js/input/SceneryEvent.js';
 import VBox from '../../scenery/js/nodes/VBox.js';
-import comboBoxSelectionSoundPlayer from '../../tambo/js/shared-sound-players/comboBoxSelectionSoundPlayer.js';
+import radioButtonSoundPlayerFactory from '../../tambo/js/radioButtonSoundPlayerFactory.js';
 import generalCloseSoundPlayer from '../../tambo/js/shared-sound-players/generalCloseSoundPlayer.js';
 import generalOpenSoundPlayer from '../../tambo/js/shared-sound-players/generalOpenSoundPlayer.js';
 import EventType from '../../tandem/js/EventType.js';
@@ -53,7 +53,6 @@ class ComboBoxListBox extends Panel {
       // changed selection.  If set to `null` the default sound will be used, use Playable.NO_SOUND to disable.
       openedSoundPlayer: null,
       closedNoChangeSoundPlayer: null,
-      selectionChangedSoundPlayer: null,
 
       // Not instrumented for PhET-iO because the list's position isn't valid until it has been popped up.
       // See https://github.com/phetsims/phet-io/issues/1102
@@ -160,10 +159,16 @@ class ComboBoxListBox extends Panel {
     // set up sound players
     const openedSoundPlayer = options.openedSoundPlayer || generalOpenSoundPlayer;
     const closedNoChangeSoundPlayer = options.closedNoChangeSoundPlayer || generalCloseSoundPlayer;
-    const selectionChangedSoundPlayer = options.selectionChangedSoundPlayer || comboBoxSelectionSoundPlayer;
 
     // variable for tracking whether the selected value was changed by the user
     let selectionWhenListBoxOpened;
+
+    // Make a list of sound generators for the items, using defaults if nothing was provided.
+    const itemSelectedSoundPlayers = items.map( item => {
+      return item.soundPlayer ?
+             item.soundPlayer :
+             radioButtonSoundPlayerFactory.getRadioButtonSoundPlayer( items.indexOf( item ) );
+    } );
 
     // sound generation
     this.visibleProperty.lazyLink( visible => {
@@ -184,7 +189,8 @@ class ComboBoxListBox extends Panel {
           closedNoChangeSoundPlayer.play();
         }
         else {
-          selectionChangedSoundPlayer.play();
+          const indexOfSelection = items.findIndex( item => item.value === property.value );
+          itemSelectedSoundPlayers[ indexOfSelection ].play();
         }
       }
     } );
