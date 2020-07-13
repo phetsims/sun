@@ -13,6 +13,7 @@ import Shape from '../../kite/js/Shape.js';
 import InstanceRegistry from '../../phet-core/js/documentation/InstanceRegistry.js';
 import inherit from '../../phet-core/js/inherit.js';
 import merge from '../../phet-core/js/merge.js';
+import FocusHighlightFromNode from '../../scenery/js/accessibility/FocusHighlightFromNode.js';
 import PDOMPeer from '../../scenery/js/accessibility/pdom/PDOMPeer.js';
 import Node from '../../scenery/js/nodes/Node.js';
 import Path from '../../scenery/js/nodes/Path.js';
@@ -388,9 +389,8 @@ inherit( Node, AccordionBox, {
 
     this.expandedTitleBar.shape = this.getTitleBarShape();
 
-    if ( !this._showTitleWhenExpanded ) {
-      this.expandedTitleBar.focusHighlight = Shape.bounds( this.expandCollapseButton.bounds.dilatedXY( this._buttonXMargin, this._buttonYMargin ) );
-    }
+    // Set the focusHighlight for the interactive PDOM element based on the dimensions of the whole title bar.
+    this.expandCollapseButton.setFocusHighlight( new FocusHighlightFromNode( this.expandedTitleBar ) );
 
     this.collapsedBox.rectWidth = boxWidth;
     this.collapsedBox.rectHeight = collapsedBoxHeight;
