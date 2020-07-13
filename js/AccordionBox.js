@@ -13,6 +13,7 @@ import Shape from '../../kite/js/Shape.js';
 import InstanceRegistry from '../../phet-core/js/documentation/InstanceRegistry.js';
 import inherit from '../../phet-core/js/inherit.js';
 import merge from '../../phet-core/js/merge.js';
+import PDOMPeer from '../../scenery/js/accessibility/pdom/PDOMPeer.js';
 import Node from '../../scenery/js/nodes/Node.js';
 import Path from '../../scenery/js/nodes/Path.js';
 import Rectangle from '../../scenery/js/nodes/Rectangle.js';
@@ -91,6 +92,10 @@ function AccordionBox( contentNode, options ) {
     // Playable.NO_SOUND to disable.
     expandedSoundPlayer: null,
     collapsedSoundPlayer: null,
+
+    // pdom
+    tagName: 'div',
+    headingTagName: 'h3', // specify the heading that this AccordionBox will be, TODO: use this.headingLevel when no longer experimental https://github.com/phetsims/scenery/issues/855
 
     // phet-io support
     tandem: Tandem.REQUIRED,
@@ -290,6 +295,27 @@ function AccordionBox( contentNode, options ) {
   this.containerNode = new Node();
   this.addChild( this.containerNode );
 
+  // pdom display
+  const pdomContentNode = new Node( {
+    tagName: 'div',
+    ariaRole: 'region',
+    accessibleOrder: [ this._contentNode ],
+    ariaLabelledbyAssociations: [ {
+      otherNode: this.expandCollapseButton,
+      otherElementName: PDOMPeer.PRIMARY_SIBLING,
+      thisElementName: PDOMPeer.PRIMARY_SIBLING
+    } ]
+  } );
+  const pdomHeading = new Node( {
+    tagName: options.headingTagName,
+    accessibleOrder: [ this.expandCollapseButton ]
+  } );
+
+  const pdomContainerNode = new Node( {
+    children: [ pdomHeading, pdomContentNode ]
+  } );
+  this.addChild( pdomContainerNode );
+
   this.layout();
 
   // Watch future changes for re-layout (don't want to trigger on our first layout and queue useless ones)
@@ -313,6 +339,8 @@ function AccordionBox( contentNode, options ) {
     self.workaroundBox.rectBounds = ( expanded ? self.expandedBox : self.collapsedBox ).bounds.dilated( 10 );
 
     self.titleNode.visible = ( expanded && options.showTitleWhenExpanded ) || !expanded;
+
+    pdomContainerNode.setAccessibleAttribute( 'aria-hidden', !expanded );
   };
   this.expandedProperty.link( expandedPropertyObserver );
   this.disposeEmitterAccordionBox.addListener( function() {
@@ -504,6 +532,17 @@ inherit( Node, AccordionBox, {
     else {
       return Math.max( this.expandCollapseButton.height + ( 2 * this._buttonYMargin ), this._contentNode.height + ( 2 * this._contentYMargin ) );
     }
+  },
+
+  /**
+   * The accessibleName of the AccordionBox is passed through to its ExpandCollapseButton, as that is its PDOM display.
+   * @override
+   * @param {string|null} accessibleName
+   */
+  setAccessibleName: function( accessibleName ) {
+    assert && assert( this.accessibleName === null, 'accessibleName should not be set directly on the AccordionBox, but ' +
+                                                    'should instead forward to its expandCollapseButton.' );
+    this.expandCollapseButton.accessibleName = accessibleName;
   },
 
   /**
