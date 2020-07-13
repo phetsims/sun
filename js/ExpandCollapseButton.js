@@ -80,6 +80,8 @@ class ExpandCollapseButton extends BooleanRectangularToggleButton {
 
       //TODO use PhetColorScheme.RED_COLORBLIND, see https://github.com/phetsims/sun/issues/485
       this.baseColor = expanded ? 'rgb( 255, 85, 0 )' : 'rgb( 0, 179, 0 )';
+
+      this.setAccessibleAttribute( 'aria-expanded', expanded );
     };
     expandedProperty.link( expandedPropertyObserver );
 
