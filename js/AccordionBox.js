@@ -272,6 +272,9 @@ function AccordionBox( contentNode, options ) {
     this.expandedTitleBar.cursor = enabled ? options.cursor : null;
   } );
 
+  // Set the focusHighlight for the interactive PDOM element based on the dimensions of the whole title bar.
+  this.expandCollapseButton.setFocusHighlight( new FocusHighlightFromNode( this.expandedTitleBar ) );
+
   // optional box outline, on top of everything else
   if ( options.stroke ) {
 
@@ -388,9 +391,6 @@ inherit( Node, AccordionBox, {
     this.expandedBoxOutline.rectHeight = expandedBoxHeight;
 
     this.expandedTitleBar.shape = this.getTitleBarShape();
-
-    // Set the focusHighlight for the interactive PDOM element based on the dimensions of the whole title bar.
-    this.expandCollapseButton.setFocusHighlight( new FocusHighlightFromNode( this.expandedTitleBar ) );
 
     this.collapsedBox.rectWidth = boxWidth;
     this.collapsedBox.rectHeight = collapsedBoxHeight;
