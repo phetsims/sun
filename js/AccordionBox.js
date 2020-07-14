@@ -19,8 +19,8 @@ import Node from '../../scenery/js/nodes/Node.js';
 import Path from '../../scenery/js/nodes/Path.js';
 import Rectangle from '../../scenery/js/nodes/Rectangle.js';
 import Text from '../../scenery/js/nodes/Text.js';
-import generalCloseSoundPlayer from '../../tambo/js/shared-sound-players/generalCloseSoundPlayer.js';
-import generalOpenSoundPlayer from '../../tambo/js/shared-sound-players/generalOpenSoundPlayer.js';
+import accordionBoxClosedSoundPlayer from '../../tambo/js/shared-sound-players/accordionBoxClosedSoundPlayer.js';
+import accordionBoxOpenedSoundPlayer from '../../tambo/js/shared-sound-players/accordionBoxOpenedSoundPlayer.js';
 import EventType from '../../tandem/js/EventType.js';
 import PhetioObject from '../../tandem/js/PhetioObject.js';
 import Tandem from '../../tandem/js/Tandem.js';
@@ -112,8 +112,8 @@ function AccordionBox( contentNode, options ) {
   }, options.titleBarOptions );
 
   // set up the sound generators
-  const expandedSoundPlayer = options.expandedSoundPlayer || generalOpenSoundPlayer;
-  const collapsedSoundPlayer = options.expandedSoundPlayer || generalCloseSoundPlayer;
+  const expandedSoundPlayer = options.expandedSoundPlayer || accordionBoxOpenedSoundPlayer;
+  const collapsedSoundPlayer = options.expandedSoundPlayer || accordionBoxClosedSoundPlayer;
 
   // expandCollapseButtonOptions defaults
   options.expandCollapseButtonOptions = merge( {
