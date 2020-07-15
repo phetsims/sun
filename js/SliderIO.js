@@ -43,6 +43,8 @@ SliderIO.methods = {
 SliderIO.documentation = 'A traditional slider component, with a knob and possibly tick marks';
 SliderIO.validator = { isValidValue: v => v instanceof phet.sun.Slider };
 SliderIO.typeName = 'SliderIO';
+
+// TODO: experimental, do not use without consulting https://github.com/phetsims/phet-io/issues/1657
 SliderIO.api = {
   enabledProperty: {
     phetioType: PropertyIO( BooleanIO ),
