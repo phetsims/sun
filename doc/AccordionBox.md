@@ -6,7 +6,7 @@ category: other-ui
 
 ## General Design Considerations
 Here’s when and why we use accordion boxes:
-* Default state can be expanded or collapsed depending on how the designer wants to scaffold the user interaction. A closed panel can be used to keep the default opening condition of sim from being visually overwhelming, and suggesting a logical route for exploration, for example in Build an Atom and in GE:B (what's GE:B?).
+* Default state can be expanded or collapsed depending on how the designer wants to scaffold the user interaction. A closed panel can be used to keep the default opening condition of sim from being visually overwhelming, and suggesting a logical route for exploration, for example in Build an Atom and in GE:B (please spell out simulation name).
 * Accordion boxes can also be useful for teachers to ask predictive questions.
 * Can contain non-interactive readouts, interactive controls, but not sprites (e.g., draggable toolbox items).
 
