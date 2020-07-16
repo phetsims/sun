@@ -71,7 +71,7 @@ Adapted from: ARIA Pracrices 1.1, [section 3.1 Accordion](https://www.w3.org/TR/
 ```html
 <! -- expanded state -->
 	<h3>
-	   <button id="accordion-header-01" aria-expanded="true" aria-controls="accordion-panel-01">Factors</button>
+	   <button id="accordion-header-01" aria-expanded="true">Factors</button>
 	</h3>
 	<div id="accordion-panel-01" role="region" aria-labelledby="accordion-header-01">
 	   <p>Box content.</p>
@@ -79,7 +79,7 @@ Adapted from: ARIA Pracrices 1.1, [section 3.1 Accordion](https://www.w3.org/TR/
 	</div>
 <! -- collapsed state -->
   <h3>
-     <button id="accordion-header-02" aria-expanded="false" aria-controls="accordion-panel-02">Product</button>
+     <button id="accordion-header-02" aria-expanded="false">Product</button>
   </h3>
   <div id="accordion-panel-02" role="region" aria-labelledby="accordion-header-02" aria-hidden="true">
      <p>Box content.</p>
@@ -93,11 +93,11 @@ Adapted from: ARIA Pracrices 1.1, [section 3.1 Accordion](https://www.w3.org/TR/
 **Accordion Box**
 - Accordion Box Title (header):
 - Accessible Name: content for the accordon box title
-	 - Header contains a title? Yes/No, default Yes
+	 - Header contains a title? Yes/No, default Yes - actually, title for header should be required.
 	 - Title is a heading? Yes/No, defaults to Yes
 	 - If title is heading, set heading level, defaults to H3
-	 - Accordion Title Hidden: Yes/No (defaults to No)
+	 - Accordion title is visually hidden: Yes/No (defaults to No)
 - Accordion Box Content (panel):
 	- Parent container accordion box contents: defaults to a div
 	- Use same convention as other objects and controls.
-	- Default open state: expanded/collapsed (Question: What is the best default?)
+	- Default open state: expanded/collapsed (defaults to expanded)
