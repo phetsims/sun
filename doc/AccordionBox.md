@@ -16,7 +16,7 @@ Here’s when and why we use accordion boxes:
 * [ExpandCollpaseButton.js](https://github.com/phetsims/sun/blob/master/js/ExpandCollpaseButton.js)
 
 ## Aesthetic Considerations
-* If space is a concern, the title can be hidden while the accordion box is expanded.
+* If space is a concern, the title can be hidden while the accordion box is expanded (an accessible name for the title is always needed and available for the non-visual experience)
 * An expanded accordion box cannot overlap other elements when opened (unlike combo box, for instance).
 * Always includes an iconed button (+/-), typically to the left of the title.  
 * Other sim content does not fill the space when an accordion box is collapsed.
