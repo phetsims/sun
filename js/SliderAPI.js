@@ -6,9 +6,12 @@
  * @author Michael Kauzmann (PhET Interactive Simulations)
  */
 
+import PropertyAPI from '../../axon/js/PropertyAPI.js';
+import PropertyIO from '../../axon/js/PropertyIO.js';
 import merge from '../../phet-core/js/merge.js';
 import DragListenerAPI from '../../scenery/js/listeners/DragListenerAPI.js';
 import NodeAPI from '../../scenery/js/nodes/NodeAPI.js';
+import NumberIO from '../../tandem/js/types/NumberIO.js';
 import EnabledComponentAPIMixin from './EnabledComponentAPIMixin.js';
 import SliderIO from './SliderIO.js';
 import sun from './sun.js';
@@ -54,6 +57,7 @@ class SliderAPI extends EnabledComponentAPIMixin( NodeAPI ) {
     super( options );
 
     this.track = new TrackAPI();
+    this.valueProperty = new PropertyAPI( { phetioType: PropertyIO( NumberIO ) } );
   }
 }
 
