@@ -8,6 +8,7 @@
  * @author Michael Kauzmann (PhET Interactive Simulations)
  */
 
+import BooleanProperty from '../../axon/js/BooleanProperty.js';
 import Property from '../../axon/js/Property.js';
 import Range from '../../dot/js/Range.js';
 import phetioAPITest from '../../tandem/js/phetioAPITest.js';
@@ -17,5 +18,14 @@ import SliderAPI from './SliderAPI.js';
 QUnit.module( 'Slider' );
 
 QUnit.test( 'Slider PhET-iO API validation', assert => {
-  phetioAPITest( assert, new SliderAPI(), 'slider', tandem => new HSlider( new Property( 0 ), new Range( 0, 10 ), { tandem: tandem } ) );
+  phetioAPITest( assert, new SliderAPI(), 'slider',
+    tandem => new HSlider( new Property( 0 ), new Range( 0, 10 ), { tandem: tandem } ) );
+} );
+
+QUnit.test( 'Slider PhET-iO API validation, provided enabledProperty', assert => {
+  phetioAPITest( assert, new SliderAPI(), 'slider',
+    tandem => new HSlider( new Property( 0 ), new Range( 0, 10 ), {
+      tandem: tandem,
+      enabledProperty: new BooleanProperty( false, { tandem: tandem.createTandem( 'otherEnabledProperty' ), phetioFeatured: true } )
+    } ) );
 } );

@@ -9,6 +9,7 @@
 import merge from '../../phet-core/js/merge.js';
 import DragListenerAPI from '../../scenery/js/listeners/DragListenerAPI.js';
 import NodeAPI from '../../scenery/js/nodes/NodeAPI.js';
+import EnabledComponentAPIMixin from './EnabledComponentAPIMixin.js';
 import SliderIO from './SliderIO.js';
 import sun from './sun.js';
 
@@ -36,7 +37,7 @@ class TrackAPI extends NodeAPI {
   }
 }
 
-class SliderAPI extends NodeAPI {
+class SliderAPI extends EnabledComponentAPIMixin( NodeAPI ) {
 
   /**
    * @param {Object} [options]
@@ -52,15 +53,7 @@ class SliderAPI extends NodeAPI {
 
     super( options );
 
-    this.track = new TrackAPI( {
-
-      // TODO: this is now part of the API, but how to we tell phetioAPITest to test this arbitrarily deep tandem override for Slider, https://github.com/phetsims/phet-io/issues/1657
-      dragListenerOptions: {
-        pressActionOptions: {
-          phetioFeature: true
-        }
-      }
-    } );
+    this.track = new TrackAPI();
   }
 }
 

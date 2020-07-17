@@ -49,11 +49,15 @@ const EnabledPhetioObject = {
 
         // This phet-io support only applies to instances of PhetioObject
         if ( !ownsEnabledProperty ) {
-          assert && Tandem.PHET_IO_ENABLED && Tandem.errorOnFailedValidation() && this.isPhetioInstrumented() &&
-          assert( !!options.enabledProperty.phetioFeatured === !!this.phetioFeatured,
-            'provided enabledProperty must be phetioFeatured if this checkbox is' );
+
+          if ( Tandem.PHET_IO_ENABLED && Tandem.errorOnFailedValidation() && this.isPhetioInstrumented() ) {
+
+            assert && assert( options.enabledProperty.isPhetioInstrumented(), 'provided enabledProperty must be instrumented if this PhetioObject is.' );
+            assert && this.phetioFeatured && assert( options.enabledProperty.phetioFeatured, 'provided enabledProperty must be phetioFeatured if this PhetioObject is.' );
+          }
 
           // If enabledProperty was passed in, PhET-iO wrappers like Studio needs to know about that linkage
+          // This is supported in API.js types because in practice LinkedElementIO defer to their linked PhetioObject.
           this.enabledProperty.isPhetioInstrumented() && this.addLinkedElement( options.enabledProperty, {
             tandem: options.tandem.createTandem( EnabledComponent.ENABLED_PROPERTY_TANDEM_NAME )
           } );
