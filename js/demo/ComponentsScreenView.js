@@ -26,6 +26,7 @@ import Node from '../../../scenery/js/nodes/Node.js';
 import Rectangle from '../../../scenery/js/nodes/Rectangle.js';
 import Text from '../../../scenery/js/nodes/Text.js';
 import VBox from '../../../scenery/js/nodes/VBox.js';
+import Tandem from '../../../tandem/js/Tandem.js';
 import ABSwitch from '../ABSwitch.js';
 import AccordionBox from '../AccordionBox.js';
 import AquaRadioButtonGroup from '../AquaRadioButtonGroup.js';
@@ -275,7 +276,8 @@ var demoSlider = function( layoutBounds, orientation ) {
     thumbMouseAreaXDilation: 5,
     thumbMouseAreaYDilation: 5,
     center: layoutBounds.center,
-    enabledProperty: new Property( true )
+    tandem: Tandem.GENERAL.createTandem( 'demoSlider' ),
+    enabledProperty: new BooleanProperty( true, {tandem: Tandem.GENERAL.createTandem( 'demoSliderEnabledProperty' )} )
   };
 
   let slider = null;

@@ -10,6 +10,7 @@ import ScreenIcon from '../../joist/js/ScreenIcon.js';
 import Sim from '../../joist/js/Sim.js';
 import simLauncher from '../../joist/js/simLauncher.js';
 import Rectangle from '../../scenery/js/nodes/Rectangle.js';
+import Tandem from '../../tandem/js/Tandem.js';
 import ButtonsScreenView from './demo/ButtonsScreenView.js';
 import ComponentsScreenView from './demo/ComponentsScreenView.js';
 import DialogsScreenView from './demo/DialogsScreenView.js';
@@ -43,7 +44,8 @@ simLauncher.launch( function() {
       {
         name: 'Buttons',
         backgroundColorProperty: new Property( sunQueryParameters.backgroundColor ),
-        homeScreenIcon: createScreenIcon( 'red' )
+        homeScreenIcon: createScreenIcon( 'red' ),
+        tandem: Tandem.ROOT.createTandem( 'buttonsScreen')
       }
     ),
 
@@ -54,7 +56,8 @@ simLauncher.launch( function() {
       {
         name: 'Components',
         backgroundColorProperty: new Property( sunQueryParameters.backgroundColor ),
-        homeScreenIcon: createScreenIcon( 'yellow' )
+        homeScreenIcon: createScreenIcon( 'yellow' ),
+        tandem: Tandem.ROOT.createTandem( 'componentsScreen')
       }
     ),
 
@@ -65,7 +68,8 @@ simLauncher.launch( function() {
       {
         name: 'Dialogs',
         backgroundColorProperty: new Property( sunQueryParameters.backgroundColor ),
-        homeScreenIcon: createScreenIcon( 'purple' )
+        homeScreenIcon: createScreenIcon( 'purple' ),
+        tandem: Tandem.ROOT.createTandem( 'dialogsScreen')
       }
     ),
 
@@ -78,7 +82,8 @@ simLauncher.launch( function() {
       {
         name: 'Memory Tests',
         backgroundColorProperty: new Property( sunQueryParameters.backgroundColor ),
-        homeScreenIcon: createScreenIcon( 'blue' )
+        homeScreenIcon: createScreenIcon( 'blue' ),
+        tandem: Tandem.ROOT.createTandem( 'memoryTestsScreen')
       }
     )
   ], simOptions ).start();
