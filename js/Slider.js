@@ -9,7 +9,6 @@
  * @author Chris Malley (PixelZoom, Inc.)
  */
 
-import BooleanProperty from '../../axon/js/BooleanProperty.js';
 import Property from '../../axon/js/Property.js';
 import PropertyIO from '../../axon/js/PropertyIO.js';
 import Dimension2 from '../../dot/js/Dimension2.js';
@@ -30,6 +29,7 @@ import PhetioObject from '../../tandem/js/PhetioObject.js';
 import Tandem from '../../tandem/js/Tandem.js';
 import AccessibleSlider from './accessibility/AccessibleSlider.js';
 import DefaultSliderTrack from './DefaultSliderTrack.js';
+import EnabledNode from './EnabledNode.js';
 import SliderIO from './SliderIO.js';
 import SliderThumb from './SliderThumb.js';
 import sun from './sun.js';
@@ -43,6 +43,7 @@ const VERTICAL_ROTATION = -Math.PI / 2;
  * @param {Range} range
  * @param {Object} [options]
  * @mixes AccessibleSlider
+ * @mixes EnabledNode
  * @constructor
  */
 function Slider( valueProperty, range, options ) {
@@ -112,8 +113,6 @@ function Slider( valueProperty, range, options ) {
     endDrag: _.noop, // called when a drag sequence ends
     constrainValue: _.identity, // called before valueProperty is set
 
-    enabledProperty: null, // {BooleanProperty|null} determines whether this Slider is enabled
-    enabledPropertyOptions: null, // {Object|null} options applied to the default enabledProperty
     enabledRangeProperty: null, // {Property.<Range>|null} determine the portion of range that is enabled
     disabledOpacity: SunConstants.DISABLED_OPACITY, // opacity applied to the entire Slider when disabled
 
@@ -129,11 +128,20 @@ function Slider( valueProperty, range, options ) {
     phetioLinkedProperty: null
   }, options );
 
+  // Extra logic to prevent providing two conflicting options to EnabledNode
+  if ( !options.enabledProperty ) {
+    options = merge( {
+
+      // EnabledNode
+      enabledPropertyOptions: {
+        phetioFeatured: true
+      }
+    }, options );
+  }
+
   assert && assert( range instanceof Range, 'range must be of type Range:' + range );
   assert && assert( Orientation.includes( options.orientation ),
     'invalid orientation: ' + options.orientation );
-  assert && assert( !( options.enabledProperty && options.enabledPropertyOptions ),
-    'enabledProperty and enabledPropertyOptions are mutually exclusive' );
 
   PhetioObject.mergePhetioComponentOptions( {
     visibleProperty: { phetioFeatured: true }
@@ -144,23 +152,7 @@ function Slider( valueProperty, range, options ) {
 
   Node.call( this );
 
-  const ownsEnabledProperty = !options.enabledProperty;
   const ownsEnabledRangeProperty = !options.enabledRangeProperty;
-
-  if ( assert && Tandem.PHET_IO_ENABLED && !ownsEnabledProperty ) {
-    this.isPhetioInstrumented() && assert( options.enabledProperty.isPhetioInstrumented(),
-      'enabledProperty must be instrumented if slider is' );
-
-    // This may be too strict long term, but for now, each enabledProperty should be phetioFeatured
-    assert( options.enabledProperty.phetioFeatured,
-      'provided enabledProperty must be phetioFeatured' );
-  }
-
-  // phet-io, Assign default options that need tandems.
-  options.enabledProperty = options.enabledProperty || new BooleanProperty( true, merge( {
-    tandem: options.tandem.createTandem( 'enabledProperty' ),
-    phetioFeatured: true
-  }, options.enabledPropertyOptions ) );
 
   // controls the portion of the slider that is enabled
   options.enabledRangeProperty = options.enabledRangeProperty || new Property( range, {
@@ -171,9 +163,6 @@ function Slider( valueProperty, range, options ) {
     phetioDocumentation: 'Sliders support two ranges: the outer range which specifies the min and max of the track and ' +
                          'the enabledRangeProperty, which determines how low and high the thumb can be dragged within the track.'
   } );
-
-  // @public {BooleanProperty|null}
-  this.enabledProperty = options.enabledProperty;
 
   // @public {Property.<Range>|null}
   this.enabledRangeProperty = options.enabledRangeProperty;
@@ -297,15 +286,6 @@ function Slider( valueProperty, range, options ) {
   } );
   thumb.addInputListener( thumbDragListener );
 
-  // enable/disable
-  const enabledObserver = function( enabled ) {
-    self.interruptSubtreeInput();
-    self.pickable = enabled;
-    self.cursor = enabled ? options.cursor : 'default';
-    self.opacity = enabled ? 1 : options.disabledOpacity;
-  };
-  this.enabledProperty.link( enabledObserver ); // must be unlinked in disposeSlider
-
   // update thumb position when value changes
   const valueObserver = function( value ) {
     thumb.centerX = self.track.valueToPosition( value );
@@ -322,16 +302,20 @@ function Slider( valueProperty, range, options ) {
 
   this.mutate( options );
 
+  // must initialize after the Slider is instrumented
+  this.initializeEnabledNode( options );
+
+
   // @private {function} - Called by dispose
   this.disposeSlider = function() {
     thumb.dispose && thumb.dispose(); // in case a custom thumb is provided via options.thumbNode that doesn't implement dispose
     self.track.dispose();
 
     self.disposeAccessibleSlider();
+    self.disposeEnabledNode();
 
     valueProperty.unlink( valueObserver );
     ownsEnabledRangeProperty && self.enabledRangeProperty.dispose();
-    ownsEnabledProperty && self.enabledProperty.dispose();
     thumbDragListener.dispose();
   };
 
@@ -421,14 +405,6 @@ inherit( Node, Slider, {
   },
 
   // @public
-  setEnabled: function( enabled ) { this.enabledProperty.value = enabled; },
-  set enabled( value ) { this.setEnabled( value ); },
-
-  // @public
-  getEnabled: function() { return this.enabledProperty.value; },
-  get enabled() { return this.getEnabled(); },
-
-  // @public
   setEnabledRange: function( enabledRange ) { this.enabledRangeProperty.value = enabledRange; },
   set enabledRange( range ) { this.setEnabledRange( range ); },
 
@@ -463,5 +439,8 @@ inherit( Node, Slider, {
 
 // mix accessibility into Slider
 AccessibleSlider.mixInto( Slider );
+
+// mix enabledProperty into Slider
+EnabledNode.mixInto( Slider );
 
 export default Slider;

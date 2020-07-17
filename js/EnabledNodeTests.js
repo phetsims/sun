@@ -8,9 +8,11 @@
 
 import BooleanProperty from '../../axon/js/BooleanProperty.js';
 import Property from '../../axon/js/Property.js';
+import Range from '../../dot/js/Range.js';
 import Display from '../../scenery/js/display/Display.js';
 import Node from '../../scenery/js/nodes/Node.js';
 import EnabledNode from './EnabledNode.js';
+import HSlider from './HSlider.js';
 
 QUnit.module( 'EnabledNode' );
 
@@ -74,6 +76,17 @@ QUnit.test( 'EnabledNode with PDOM', assert => {
   a11yNode.enabled = false;
   assert.ok( a11yNode.accessibleInstances[ 0 ].peer.primarySibling.getAttribute( 'aria-disabled' ) === 'true', 'should be enabled' );
   testEnabledNode( assert, a11yNode, 'For accessible Node' );
+} );
+
+QUnit.test( 'EnabledNode in Slider', assert => {
+  let slider = new HSlider( new Property( 0 ), new Range( 0, 10 ) );
+  testEnabledNode( assert, slider, 'For Slider' );
+
+  const myEnabledProperty = new BooleanProperty( true );
+  slider = new HSlider( new Property( 0 ), new Range( 0, 10 ), {
+    enabledProperty: myEnabledProperty
+  } );
+  testEnabledNode( assert, slider, 'For Slider' );
 } );
 
 /**
