@@ -327,7 +327,7 @@ function Slider( valueProperty, range, options ) {
   this.initializeAccessibleSlider( valueProperty, this.enabledRangeProperty, this.enabledProperty,
     merge( { ariaOrientation: options.orientation }, options ) );
 
-  assert && Tandem.PHET_IO_ENABLED && assert( !options.phetioLinkedProperty || options.phetioLinkedProperty.isPhetioInstrumented(),
+  assert && Tandem.VALIDATION && assert( !options.phetioLinkedProperty || options.phetioLinkedProperty.isPhetioInstrumented(),
     'If provided, phetioLinkedProperty should be PhET-iO instrumented' );
 
   this.addLinkedElement( options.phetioLinkedProperty || valueProperty, {

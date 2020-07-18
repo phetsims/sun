@@ -50,7 +50,7 @@ const EnabledPhetioObject = {
         // This phet-io support only applies to instances of PhetioObject
         if ( !ownsEnabledProperty ) {
 
-          if ( Tandem.PHET_IO_ENABLED && Tandem.errorOnFailedValidation() && this.isPhetioInstrumented() ) {
+          if ( Tandem.VALIDATION && this.isPhetioInstrumented() ) {
 
             assert && assert( options.enabledProperty.isPhetioInstrumented(), 'provided enabledProperty must be instrumented if this PhetioObject is.' );
             assert && this.phetioFeatured && assert( options.enabledProperty.phetioFeatured, 'provided enabledProperty must be phetioFeatured if this PhetioObject is.' );

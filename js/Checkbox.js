@@ -161,7 +161,7 @@ function Checkbox( content, property, options ) {
   const ownsEnabledProperty = !options.enabledProperty;
 
   if ( !ownsEnabledProperty ) {
-    assert && Tandem.PHET_IO_ENABLED && this.isPhetioInstrumented() && assert( !!options.enabledProperty.phetioFeatured === !!this.phetioFeatured,
+    assert && Tandem.VALIDATION && this.isPhetioInstrumented() && assert( !!options.enabledProperty.phetioFeatured === !!this.phetioFeatured,
       'provided enabledProperty must be phetioFeatured if this checkbox is' );
 
     // If enabledProperty was passed in, Studio needs to know about that linkage
@@ -202,7 +202,7 @@ function Checkbox( content, property, options ) {
   // assert that phet-io is set up correctly after the PhetioObject has been properly initialized (after mutate)
 
   // If either one is instrumented, then the other must be too.
-  assert && Tandem.errorOnFailedValidation() && assert( this.enabledProperty.isPhetioInstrumented() === this.isPhetioInstrumented(),
+  assert && Tandem.VALIDATION && assert( this.enabledProperty.isPhetioInstrumented() === this.isPhetioInstrumented(),
     'provided enabled property must be instrumented for phet-io.' );
 
   // support for binder documentation, stripped out in builds and only runs when ?binder is specified
