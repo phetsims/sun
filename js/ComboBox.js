@@ -367,11 +367,11 @@ class ComboBox extends Node {
    * @private
    */
   scaleListBox() {
-    const buttonScale = this.button.localToGlobalBounds( this.button.localBounds ).width / this.button.localBounds.width;
-    const listBoxScale = this.listBox.localToGlobalBounds( this.listBox.localBounds ).width / this.listBox.localBounds.width;
 
     // To support an empty list box due to PhET-iO customization, see https://github.com/phetsims/sun/issues/606
-    if ( Number.isFinite( listBoxScale ) ) {
+    if ( !this.listBox.localBounds.isEmpty() ) {
+      const buttonScale = this.button.localToGlobalBounds( this.button.localBounds ).width / this.button.localBounds.width;
+      const listBoxScale = this.listBox.localToGlobalBounds( this.listBox.localBounds ).width / this.listBox.localBounds.width;
       this.listBox.scale( buttonScale / listBoxScale );
     }
   }
