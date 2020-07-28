@@ -9,14 +9,14 @@
  * @author Chris Malley (PixelZoom, Inc.)
  */
 
-import BooleanProperty from '../../axon/js/BooleanProperty.js';
 import Property from '../../axon/js/Property.js';
+import ScreenView from '../../joist/js/ScreenView.js';
 import Shape from '../../kite/js/Shape.js';
 import inherit from '../../phet-core/js/inherit.js';
 import merge from '../../phet-core/js/merge.js';
-import PDOMUtils from '../../scenery/js/accessibility/pdom/PDOMUtils.js';
-import PDOMPeer from '../../scenery/js/accessibility/pdom/PDOMPeer.js';
 import KeyboardUtils from '../../scenery/js/accessibility/KeyboardUtils.js';
+import PDOMPeer from '../../scenery/js/accessibility/pdom/PDOMPeer.js';
+import PDOMUtils from '../../scenery/js/accessibility/pdom/PDOMUtils.js';
 import Display from '../../scenery/js/display/Display.js';
 import AlignBox from '../../scenery/js/nodes/AlignBox.js';
 import HBox from '../../scenery/js/nodes/HBox.js';
@@ -28,16 +28,19 @@ import generalCloseSoundPlayer from '../../tambo/js/shared-sound-players/general
 import generalOpenSoundPlayer from '../../tambo/js/shared-sound-players/generalOpenSoundPlayer.js';
 import PhetioObject from '../../tandem/js/PhetioObject.js';
 import Tandem from '../../tandem/js/Tandem.js';
-import RectangularButtonView from './buttons/RectangularButtonView.js';
-import RectangularPushButton from './buttons/RectangularPushButton.js';
 import DialogIO from './DialogIO.js';
 import Panel from './Panel.js';
+import Popupable from './Popupable.js';
+import RectangularButtonView from './buttons/RectangularButtonView.js';
+import RectangularPushButton from './buttons/RectangularPushButton.js';
 import sun from './sun.js';
 import sunStrings from './sunStrings.js';
 
 // constants
 const closeString = sunStrings.a11y.close;
 const CLOSE_BUTTON_WIDTH = 14;
+const PopupablePanel = Popupable( Panel );
+const applyDoubleMargin = ( dimension, margin ) => dimension > margin * 2 ? dimension - margin * 2 : dimension;
 
 /**
  * @param {Node} content - The content to display inside the dialog (not including the title)
@@ -93,6 +96,9 @@ function Dialog( content, options ) {
     maxHeightMargin: 12, // {number} the margin between the top/bottom of the layoutBounds and the dialog, ignored if maxHeight is specified
     closeButtonTopMargin: 10, // {number} margin above the close button
     closeButtonRightMargin: 10, // {number} margin to the right of the close button
+
+    // {Bounds2|null}
+    layoutBounds: ScreenView.DEFAULT_LAYOUT_BOUNDS,
 
     // more Dialog-specific options
     isModal: true, // {boolean} modal dialogs prevent interaction with the rest of the sim while open
@@ -170,53 +176,16 @@ function Dialog( content, options ) {
   const openedSoundPlayer = options.openedSoundPlayer || generalOpenSoundPlayer;
   const closedSoundPlayer = options.closedSoundPlayer || generalCloseSoundPlayer;
 
-  // @protected (read-only) - whether the dialog is showing
-  this.isShowingProperty = new BooleanProperty( false, {
-    tandem: options.tandem.createTandem( 'isShowingProperty' ),
-    phetioReadOnly: true,
-    phetioState: options.phetioState // match the state transfer of the Dialog
-  } );
-
-  // The Dialog's display runs on this Property, so add the listener that controls show/hide.
-  this.isShowingProperty.lazyLink( isShowing => {
-    if ( isShowing ) {
-      window.phet.joist.sim.showPopup( this, options.isModal );
-
-      // sound generation
-      openedSoundPlayer.play();
-
-      // pdom - focus is returned to this element if dialog closed from accessible input
-      this.activeElement = this.activeElement || Display.focusedNode;
-
-      // pdom - modal dialogs should be the only readable content in the sim
-      // TODO: https://github.com/phetsims/joist/issues/293 non-modal dialogs shouldn't hide other accessible content,
-      // and this should be dependant on other things in the sim modalNodeStack
-      this.sim.setAccessibleViewsVisible( false );
-
-      // Do this last
-      options.showCallback && options.showCallback();
-    }
-    else {
-      window.phet.joist.sim.hidePopup( this, options.isModal );
-
-      // sound generation
-      closedSoundPlayer.play();
-
-      // pdom - when the dialog is hidden, make all ScreenView content visible to assistive technology
-      this.sim.setAccessibleViewsVisible( true );
-
-      // Do this last
-      options.hideCallback && options.hideCallback();
-    }
-  } );
-
   assert && assert( options.maxHeight === null || typeof options.maxHeight === 'number' );
   assert && assert( options.maxWidth === null || typeof options.maxWidth === 'number' );
 
-  // keep track of if maxWidth and maxHeight were supplied by the client, because the default approach dynamically
-  // updates them based on the current screens layoutBounds.
-  const suppliedMaxHeight = !!options.maxHeight;
-  const suppliedMaxWidth = !!options.maxWidth;
+  // Apply maxWidth/maxHeight depending on the margins and layoutBounds
+  if ( !options.maxWidth && options.layoutBounds ) {
+    options.maxWidth = applyDoubleMargin( options.layoutBounds.width, options.maxWidthMargin );
+  }
+  if ( !options.maxHeight && options.layoutBounds ) {
+    options.maxHeight = applyDoubleMargin( options.layoutBounds.height, options.maxHeightMargin );
+  }
 
   // create close button
   const closeButton = new CloseButton( {
@@ -263,9 +232,6 @@ function Dialog( content, options ) {
     options.closeButtonMouseAreaYDilation
   );
 
-  // @private (a11y)
-  this.closeButton = closeButton;
-
   // Align content, title, and close button using spacing and margin options
 
   // align content and title (if provided) vertically
@@ -295,7 +261,47 @@ function Dialog( content, options ) {
     align: 'top'
   } );
 
-  Panel.call( this, dialogContent, options );
+  PopupablePanel.call( this, {
+    isModal: options.isModal,
+    layoutBounds: options.layoutBounds,
+    tandem: options.tandem,
+    phetioState: options.phetioState
+  }, dialogContent, options );
+
+  // The Dialog's display runs on this Property, so add the listener that controls show/hide.
+  this.isShowingProperty.lazyLink( isShowing => {
+    if ( isShowing ) {
+      // sound generation
+      openedSoundPlayer.play();
+
+      // pdom - focus is returned to this element if dialog closed from accessible input
+      this.activeElement = this.activeElement || Display.focusedNode;
+
+      // pdom - modal dialogs should be the only readable content in the sim
+      // TODO: https://github.com/phetsims/joist/issues/293 non-modal dialogs shouldn't hide other accessible content,
+      // and this should be dependant on other things in the sim modalNodeStack
+      this.sim.setAccessibleViewsVisible( false );
+
+      // Do this last
+      options.showCallback && options.showCallback();
+    }
+    else {
+      // sound generation
+      closedSoundPlayer.play();
+
+      // pdom - when the dialog is hidden, make all ScreenView content visible to assistive technology
+      this.sim.setAccessibleViewsVisible( true );
+
+      // Do this last
+      options.hideCallback && options.hideCallback();
+    }
+  } );
+
+  // @private {Bounds2|null}
+  this.layoutBounds = options.layoutBounds;
+
+  // @private (a11y)
+  this.closeButton = closeButton;
 
   const sim = window.phet.joist.sim;
 
@@ -306,33 +312,12 @@ function Dialog( content, options ) {
     sim.screenProperty,
     this.isShowingProperty
   ], ( bounds, screenBounds, scale, screen ) => {
-
     if ( bounds && screenBounds && scale ) {
-      const screenView = screen.view;
-
-      // Calculate the scale based on the current screen instead of using sim.scaleProperty which is a single
-      // static scale that doesn't change based on the current screen. This allows the flexibility to apply the max
-      // width/height to within the screen's layout bounds. Use bounds instead of screenBounds because of the
-      // localToGlobalBounds call below.
-      const screenScale = Math.min( bounds.width / screenView.layoutBounds.width,
-        bounds.height / screenView.layoutBounds.height );
-
-      // get the converted size of the screen's layout bounds, scaled via the sim.scaleProperty, in global coordinates
-      const globalScreenViewBounds = screenView.localToGlobalBounds( screenView.layoutBounds );
-
-      if ( !suppliedMaxHeight ) {
-        const height = globalScreenViewBounds.height / screenScale;
-        this.maxHeight = applyDoubleMargin( height, options.maxHeightMargin );
-      }
-      if ( !suppliedMaxWidth ) {
-        const width = globalScreenViewBounds.width / screenScale;
-        this.maxWidth = applyDoubleMargin( width, options.maxWidthMargin );
-      }
       options.layoutStrategy( this, bounds, screenBounds, scale );
     }
   } );
 
-  // @private
+  // @private {Sim}
   this.sim = sim;
 
   // pdom - set the order of content, close button first so remaining content can be read from top to bottom
@@ -383,7 +368,6 @@ function Dialog( content, options ) {
     this.updateLayoutMultilink.dispose();
     this.removeInputListener( escapeListener );
 
-    this.isShowingProperty.dispose();
     closeButton.dispose();
 
     // remove dialog content from scene graph, but don't dispose because Panel
@@ -395,32 +379,15 @@ function Dialog( content, options ) {
 
 sun.register( 'Dialog', Dialog );
 
-inherit( Panel, Dialog, {
-
-  /**
-   * @public
-   */
-  show: function() {
-    this.isShowingProperty.value = true;
-  },
-
-  /**
-   * Hide the dialog.  If you create a new dialog next time you show(), be sure to dispose this
-   * dialog instead.
-   * @public
-   */
-  hide: function() {
-    this.isShowingProperty.value = false;
-  },
+inherit( PopupablePanel, Dialog, {
 
   /**
    * Make eligible for garbage collection.
    * @public
    */
   dispose() {
-    this.hide();
     this.disposeDialog();
-    Panel.prototype.dispose.call( this );
+    PopupablePanel.prototype.dispose.call( this );
   },
 
   /**
@@ -444,11 +411,10 @@ inherit( Panel, Dialog, {
 
 // @private - Center in the screenBounds (doesn't include the navigation bar)
 Dialog.DEFAULT_LAYOUT_STRATEGY = ( dialog, simBounds, screenBounds, scale ) => {
-  dialog.center = screenBounds.center.times( 1.0 / scale );
+  if ( dialog.layoutBounds ) {
+    dialog.center = dialog.layoutBounds.center;
+  }
 };
-
-// {function(number,number):number}
-const applyDoubleMargin = ( dimension, margin ) => dimension > margin * 2 ? dimension - margin * 2 : dimension;
 
 /**
  * The close button for Dialog
