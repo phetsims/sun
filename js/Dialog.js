@@ -114,8 +114,8 @@ function Dialog( content, options ) {
     // close button options
     closeButtonListener: () => this.hide(),
     closeButtonColor: 'black', // {Color|null} color for the close button 'X'
-    closeButtonTouchAreaXDilation: 5,
-    closeButtonTouchAreaYDilation: 5,
+    closeButtonTouchAreaXDilation: 0,
+    closeButtonTouchAreaYDilation: 0,
     closeButtonMouseAreaXDilation: 0,
     closeButtonMouseAreaYDilation: 0,
 
