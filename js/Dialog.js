@@ -38,7 +38,7 @@ import sunStrings from './sunStrings.js';
 
 // constants
 const closeString = sunStrings.a11y.close;
-const CLOSE_BUTTON_WIDTH = 14;
+const CLOSE_BUTTON_WIDTH = 18.2;
 const PopupablePanel = Popupable( Panel );
 const applyDoubleMargin = ( dimension, margin ) => dimension > margin * 2 ? dimension - margin * 2 : dimension;
 
@@ -448,7 +448,7 @@ function CloseButton( options ) {
   options.content = new Path( closeButtonShape, {
     stroke: options.pathStroke,
     lineCap: 'round',
-    lineWidth: 2
+    lineWidth: 2.5
   } );
 
   RectangularPushButton.call( this, options );
