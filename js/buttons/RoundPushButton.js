@@ -29,8 +29,8 @@ function RoundPushButton( options ) {
 
   options = merge( {
 
-    // {Playable|null} - sound generator, if set to null defaults will be used, set to Playable.NO_SOUND to disable
-    soundPlayer: null,
+    // {Playable} - sound generation
+    soundPlayer: pushButtonSoundPlayer,
 
     // {function} listener called when button is pushed.
     listener: _.noop,
@@ -56,8 +56,7 @@ function RoundPushButton( options ) {
   this.addListener( listener );
 
   // sound generation
-  const soundPlayer = options.soundPlayer || pushButtonSoundPlayer;
-  const playSound = () => { soundPlayer.play(); };
+  const playSound = () => { options.soundPlayer.play(); };
   this.buttonModel.produceSoundEmitter.addListener( playSound );
 
   // dispose function
