@@ -28,11 +28,11 @@ import generalCloseSoundPlayer from '../../tambo/js/shared-sound-players/general
 import generalOpenSoundPlayer from '../../tambo/js/shared-sound-players/generalOpenSoundPlayer.js';
 import PhetioObject from '../../tandem/js/PhetioObject.js';
 import Tandem from '../../tandem/js/Tandem.js';
+import RectangularButtonView from './buttons/RectangularButtonView.js';
+import RectangularPushButton from './buttons/RectangularPushButton.js';
 import DialogIO from './DialogIO.js';
 import Panel from './Panel.js';
 import Popupable from './Popupable.js';
-import RectangularButtonView from './buttons/RectangularButtonView.js';
-import RectangularPushButton from './buttons/RectangularPushButton.js';
 import sun from './sun.js';
 import sunStrings from './sunStrings.js';
 
