@@ -11,16 +11,15 @@
 
 import Property from '../../axon/js/Property.js';
 import ScreenView from '../../joist/js/ScreenView.js';
-import Shape from '../../kite/js/Shape.js';
 import inherit from '../../phet-core/js/inherit.js';
 import merge from '../../phet-core/js/merge.js';
+import CloseButton from '../../scenery-phet/js/buttons/CloseButton.js';
 import KeyboardUtils from '../../scenery/js/accessibility/KeyboardUtils.js';
 import PDOMPeer from '../../scenery/js/accessibility/pdom/PDOMPeer.js';
 import PDOMUtils from '../../scenery/js/accessibility/pdom/PDOMUtils.js';
 import Display from '../../scenery/js/display/Display.js';
 import AlignBox from '../../scenery/js/nodes/AlignBox.js';
 import HBox from '../../scenery/js/nodes/HBox.js';
-import Path from '../../scenery/js/nodes/Path.js';
 import VBox from '../../scenery/js/nodes/VBox.js';
 import FullScreen from '../../scenery/js/util/FullScreen.js';
 import Playable from '../../tambo/js/Playable.js';
@@ -29,7 +28,6 @@ import generalOpenSoundPlayer from '../../tambo/js/shared-sound-players/generalO
 import PhetioObject from '../../tandem/js/PhetioObject.js';
 import Tandem from '../../tandem/js/Tandem.js';
 import RectangularButtonView from './buttons/RectangularButtonView.js';
-import RectangularPushButton from './buttons/RectangularPushButton.js';
 import DialogIO from './DialogIO.js';
 import Panel from './Panel.js';
 import Popupable from './Popupable.js';
@@ -183,11 +181,16 @@ function Dialog( content, options ) {
     options.maxHeight = applyDoubleMargin( options.layoutBounds.height, options.maxHeightMargin );
   }
 
-  // create close button
+  // create close button - a flat "X"
   const closeButton = new CloseButton( {
-
-    pathStroke: options.closeButtonColor,
     iconLength: CLOSE_BUTTON_WIDTH,
+    baseColor: 'transparent',
+    buttonAppearanceStrategy: RectangularButtonView.FlatAppearanceStrategy,
+
+    // no margins since the flat X takes up all the space
+    xMargin: 0,
+    yMargin: 0,
+
     listener: () => {
       options.closeButtonListener();
 
@@ -195,6 +198,10 @@ function Dialog( content, options ) {
       if ( closeButton.buttonModel.isA11yClicking() ) {
         this.focusActiveElement();
       }
+    },
+
+    pathOptions: {
+      stroke: options.closeButtonColor
     },
 
     // phet-io
@@ -413,43 +420,5 @@ Dialog.DEFAULT_LAYOUT_STRATEGY = ( dialog, simBounds, screenBounds, scale ) => {
     dialog.center = dialog.layoutBounds.center;
   }
 };
-
-/**
- * The close button for Dialog
- * A flat x
- *
- * @param {Object} [options] - see RectangularPushButton
- * @constructor
- */
-function CloseButton( options ) {
-  options = merge( {
-    iconLength: 7,
-    baseColor: 'transparent',
-    pathStroke: 'black', // {Color|null} color for the close button 'X'
-    buttonAppearanceStrategy: RectangularButtonView.FlatAppearanceStrategy,
-    xMargin: 0,
-    yMargin: 0,
-    listener: null // {function} called when the button is pressed
-  }, options );
-
-  // close button shape, an 'X'
-  const closeButtonShape = new Shape()
-    .moveTo( -options.iconLength / 2, -options.iconLength / 2 )
-    .lineTo( options.iconLength / 2, options.iconLength / 2 )
-    .moveTo( options.iconLength / 2, -options.iconLength / 2 )
-    .lineTo( -options.iconLength / 2, options.iconLength / 2 );
-
-  assert && assert( !options.content, 'Dialog.CloseButton sets content' );
-
-  options.content = new Path( closeButtonShape, {
-    stroke: options.pathStroke,
-    lineCap: 'round',
-    lineWidth: 2.5
-  } );
-
-  RectangularPushButton.call( this, options );
-}
-
-inherit( RectangularPushButton, CloseButton );
 
 export default Dialog;
