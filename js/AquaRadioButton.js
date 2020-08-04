@@ -47,8 +47,8 @@ function AquaRadioButton( property, value, node, options ) {
       visibleProperty: { phetioFeatured: true }
     },
 
-    // {Playable|null} - sound generator, if set to null default will be used, set to Playable.NO_SOUND to disable
-    soundPlayer: null,
+    // {Playable} - sound generator, usually overridden when creating a group of these
+    soundPlayer: radioButtonSoundPlayerFactory.getRadioButtonSoundPlayer( 0 ),
 
     // pdom
     tagName: 'input',
@@ -120,13 +120,10 @@ function AquaRadioButton( property, value, node, options ) {
   };
   property.link( syncWithModel );
 
-  // sound generation
-  const soundPlayer = options.soundPlayer || radioButtonSoundPlayerFactory.getRadioButtonSoundPlayer( 0 );
-
   // set property value on fire
   const fire = function() {
     property.set( value );
-    soundPlayer.play();
+    options.soundPlayer.play();
   };
   const fireListener = new FireListener( {
     fire: fire,

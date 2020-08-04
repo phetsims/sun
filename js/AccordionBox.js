@@ -89,10 +89,9 @@ function AccordionBox( contentNode, options ) {
     // {*|null} options for the title bar, defaults filled in below
     titleBarOptions: null,
 
-    // {Playable|null} - Sound generators for expand and collapse.  If set to `null` the default sound will be used, use
-    // Playable.NO_SOUND to disable.
-    expandedSoundPlayer: null,
-    collapsedSoundPlayer: null,
+    // {Playable} - sound generators for expand and collapse
+    expandedSoundPlayer: accordionBoxOpenedSoundPlayer,
+    collapsedSoundPlayer: accordionBoxClosedSoundPlayer,
 
     // pdom
     tagName: 'div',
@@ -111,16 +110,12 @@ function AccordionBox( contentNode, options ) {
     stroke: null // {Color|string|null} title bar stroke, used only for the expanded title bar
   }, options.titleBarOptions );
 
-  // set up the sound generators
-  const expandedSoundPlayer = options.expandedSoundPlayer || accordionBoxOpenedSoundPlayer;
-  const collapsedSoundPlayer = options.expandedSoundPlayer || accordionBoxClosedSoundPlayer;
-
   // expandCollapseButtonOptions defaults
   options.expandCollapseButtonOptions = merge( {
     sideLength: 16, // button is a square, this is the length of one side
     cursor: options.cursor,
-    valueOnSoundPlayer: expandedSoundPlayer,
-    valueOffSoundPlayer: collapsedSoundPlayer,
+    valueOnSoundPlayer: options.expandedSoundPlayer,
+    valueOffSoundPlayer: options.collapsedSoundPlayer,
     tandem: options.tandem.createTandem( 'expandCollapseButton' )
   }, options.expandCollapseButtonOptions );
 
@@ -234,7 +229,7 @@ function AccordionBox( contentNode, options ) {
         if ( self.expandCollapseButton.getEnabled() ) {
           self.phetioStartEvent( 'expanded' );
           self.expandedProperty.value = true;
-          expandedSoundPlayer.play();
+          options.expandedSoundPlayer.play();
           self.phetioEndEvent();
         }
       }
@@ -248,7 +243,7 @@ function AccordionBox( contentNode, options ) {
         down: function() {
           if ( self.expandCollapseButton.getEnabled() ) {
             self.phetioStartEvent( 'collapsed' );
-            collapsedSoundPlayer.play();
+            options.collapsedSoundPlayer.play();
             self.expandedProperty.value = false;
             self.phetioEndEvent();
           }

@@ -23,6 +23,7 @@ import inherit from '../../phet-core/js/inherit.js';
 import merge from '../../phet-core/js/merge.js';
 import Node from '../../scenery/js/nodes/Node.js';
 import Rectangle from '../../scenery/js/nodes/Rectangle.js';
+import pushButtonSoundPlayer from '../../tambo/js/shared-sound-players/pushButtonSoundPlayer.js';
 import Tandem from '../../tandem/js/Tandem.js';
 import Animation from '../../twixt/js/Animation.js';
 import Easing from '../../twixt/js/Easing.js';
@@ -55,7 +56,7 @@ const DEFAULT_OPTIONS = {
   arrowStroke: 'black', // {Color|string} color used for the arrow icons
   arrowLineWidth: 3, // {number} line width used to stroke the arrow icons
   hideDisabledButtons: false, // {boolean} whether to hide buttons when they are disabled
-  buttonSoundPlayer: null,
+  buttonSoundPlayer: pushButtonSoundPlayer, // {Playable} sound played when carousel button is pressed
 
   // for dilating pointer areas of next/previous buttons such that they do not overlap with Carousel content
   buttonTouchAreaXDilation: 0, // {number} horizontal touchArea dilation

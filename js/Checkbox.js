@@ -53,9 +53,9 @@ function Checkbox( content, property, options ) {
     phetioReadOnly: PhetioObject.DEFAULT_OPTIONS.phetioReadOnly,
     phetioComponentOptions: null, // filled in below with PhetioObject.mergePhetioComponentOptions()
 
-    // {Playable|null} - sound generators, if set to null defaults will be used, set to Playable.NO_SOUND to disable
-    checkedSoundPlayer: null,
-    uncheckedSoundPlayer: null,
+    // {Playable} - sound generators
+    checkedSoundPlayer: checkboxCheckedSoundPlayer,
+    uncheckedSoundPlayer: checkboxUncheckedSoundPlayer,
 
     // pdom
     tagName: 'input',
@@ -75,10 +75,10 @@ function Checkbox( content, property, options ) {
     property.toggle();
     validate( property.value, BOOLEAN_VALIDATOR );
     if ( property.value ) {
-      checkedSoundPlayer.play();
+      options.checkedSoundPlayer.play();
     }
     else {
-      uncheckedSoundPlayer.play();
+      options.uncheckedSoundPlayer.play();
     }
   }, {
     parameters: [],
@@ -122,10 +122,6 @@ function Checkbox( content, property, options ) {
   this.addChild( new Rectangle( this.left, this.top, this.width, this.height ) );
 
   content.pickable = false; // since there's a pickable rectangle on top of content
-
-  // get default sound generators if needed
-  const checkedSoundPlayer = options.checkedSoundPlayer || checkboxCheckedSoundPlayer;
-  const uncheckedSoundPlayer = options.uncheckedSoundPlayer || checkboxUncheckedSoundPlayer;
 
   // interactivity
   const checkboxButtonListener = new ButtonListener( {
