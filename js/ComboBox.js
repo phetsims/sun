@@ -25,6 +25,8 @@ import merge from '../../phet-core/js/merge.js';
 import PDOMPeer from '../../scenery/js/accessibility/pdom/PDOMPeer.js';
 import Display from '../../scenery/js/display/Display.js';
 import Node from '../../scenery/js/nodes/Node.js';
+import generalCloseSoundPlayer from '../../tambo/js/shared-sound-players/generalCloseSoundPlayer.js';
+import generalOpenSoundPlayer from '../../tambo/js/shared-sound-players/generalOpenSoundPlayer.js';
 import EventType from '../../tandem/js/EventType.js';
 import PhetioObject from '../../tandem/js/PhetioObject.js';
 import Tandem from '../../tandem/js/Tandem.js';
@@ -83,11 +85,10 @@ class ComboBox extends Node {
       listStroke: 'black', // {Color|string}
       listLineWidth: 1,
 
-      // {Playable|null} - Sound generators for when combo box is opened and closed with no change.  If set to `null`
-      // the default sound will be used, use Playable.NO_SOUND to disable.  Note that the individual combo box items
-      // take care of their own sound generation when selected.
-      openedSoundPlayer: null,
-      closedNoChangeSoundPlayer: null,
+      // {Playable} - Sound generators for when combo box is opened and for when it is closed with no change (closing
+      // *with* a change is covered by individual combo box items).
+      openedSoundPlayer: generalOpenSoundPlayer,
+      closedNoChangeSoundPlayer: generalCloseSoundPlayer,
 
       // pdom
       accessibleName: null, // the a11y setter for this is overridden, see below

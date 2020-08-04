@@ -49,10 +49,10 @@ class ComboBoxListBox extends Panel {
       groupFocusHighlight: true,
       focusable: true,
 
-      // {Playable|null} - Sound generators for when combo box is opened, closed with no change, and/or closed with a
-      // changed selection.  If set to `null` the default sound will be used, use Playable.NO_SOUND to disable.
-      openedSoundPlayer: null,
-      closedNoChangeSoundPlayer: null,
+      // {Playable} - Sound generators for when combo box is opened and when it is closed with no change. Closing *with*
+      // a change is covered by individual combo box items).
+      openedSoundPlayer: generalOpenSoundPlayer,
+      closedNoChangeSoundPlayer: generalCloseSoundPlayer,
 
       // Not instrumented for PhET-iO because the list's position isn't valid until it has been popped up.
       // See https://github.com/phetsims/phet-io/issues/1102
@@ -156,10 +156,6 @@ class ComboBoxListBox extends Panel {
 
     super( content, options );
 
-    // set up sound players
-    const openedSoundPlayer = options.openedSoundPlayer || generalOpenSoundPlayer;
-    const closedNoChangeSoundPlayer = options.closedNoChangeSoundPlayer || generalCloseSoundPlayer;
-
     // variable for tracking whether the selected value was changed by the user
     let selectionWhenListBoxOpened;
 
@@ -176,7 +172,7 @@ class ComboBoxListBox extends Panel {
       if ( visible ) {
 
         // play the 'opened' sound
-        openedSoundPlayer.play();
+        options.openedSoundPlayer.play();
 
         // keep track of what was selected when the list box was shown
         selectionWhenListBoxOpened = property.value;
@@ -186,7 +182,7 @@ class ComboBoxListBox extends Panel {
         // sound generation - assumes that the property value has been updated before this list box is hidden
         assert && assert( selectionWhenListBoxOpened !== undefined, 'no value for property when list box opened' );
         if ( selectionWhenListBoxOpened === property.value ) {
-          closedNoChangeSoundPlayer.play();
+          options.closedNoChangeSoundPlayer.play();
         }
         else {
           const indexOfSelection = items.findIndex( item => item.value === property.value );
