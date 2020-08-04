@@ -24,8 +24,8 @@ class ComboBoxItem {
 
     options = merge( {
 
-      // {Playable} - Sound that will be played when this item is selected.  If set to `null` the default sound will be
-      // used, use Playable.NO_SOUND to disable.
+      // {Playable} - Sound that will be played when this item is selected.  If set to `null` a default sound will be
+      // used that is based on this item's position in the combo box list.  Playable.NO_SOUND can be used to disable.
       soundPlayer: null,
 
       // phet-io

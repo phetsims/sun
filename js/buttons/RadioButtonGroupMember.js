@@ -62,7 +62,8 @@ function RadioButtonGroupMember( property, value, options ) {
     buttonAppearanceStrategy: RadioButtonGroupAppearance.defaultRadioButtonsAppearance,
     contentAppearanceStrategy: RadioButtonGroupAppearance.contentAppearanceStrategy,
 
-    // {Playable|null} - sound generator, if set to null the default will be used, set to Playable.NO_SOUND to disable
+    // {Playable|null} - sound generation - If set to null a default will be used that is based on this button's
+    // position within the radio button group.  Can be set to Playable.NO_SOUND to disable.
     soundPlayer: null,
 
     // pdom

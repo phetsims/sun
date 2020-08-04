@@ -27,8 +27,8 @@ function RectangularPushButton( options ) {
 
   options = merge( {
 
-    // {Playable|null} - sound generator, if set to null default will be used, set to Playable.NO_SOUND to disable
-    soundPlayer: null,
+    // {Playable} - sound generation
+    soundPlayer: pushButtonSoundPlayer,
 
     // {function} listener called when button is pushed.
     listener: _.noop,
@@ -55,8 +55,7 @@ function RectangularPushButton( options ) {
   RectangularButtonView.call( this, this.buttonModel, new PushButtonInteractionStateProperty( this.buttonModel ), options );
 
   // sound generation
-  const soundPlayer = options.soundPlayer || pushButtonSoundPlayer;
-  const playSound = () => { soundPlayer.play(); };
+  const playSound = () => { options.soundPlayer.play(); };
   this.buttonModel.produceSoundEmitter.addListener( playSound );
 
   this.disposeRectangularPushButton = function() {

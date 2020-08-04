@@ -139,9 +139,9 @@ function Dialog( content, options ) {
     phetioState: PhetioObject.DEFAULT_OPTIONS.phetioState,
     phetioComponentOptions: null, // filled in below with PhetioObject.mergePhetioComponentOptions()
 
-    // sound generation, if set to null defaults will be used, set to Playable.NO_SOUND to disable
-    openedSoundPlayer: null,
-    closedSoundPlayer: null,
+    // {Playable} - sound generation
+    openedSoundPlayer: generalOpenSoundPlayer,
+    closedSoundPlayer: generalCloseSoundPlayer,
 
     // pdom options
     tagName: 'div',
@@ -171,10 +171,6 @@ function Dialog( content, options ) {
 
   // see https://github.com/phetsims/joist/issues/293
   assert && assert( options.isModal, 'Non-modal dialogs not currently supported' );
-
-  // sound generation - create default players if needed
-  const openedSoundPlayer = options.openedSoundPlayer || generalOpenSoundPlayer;
-  const closedSoundPlayer = options.closedSoundPlayer || generalCloseSoundPlayer;
 
   assert && assert( options.maxHeight === null || typeof options.maxHeight === 'number' );
   assert && assert( options.maxWidth === null || typeof options.maxWidth === 'number' );
@@ -272,7 +268,7 @@ function Dialog( content, options ) {
   this.isShowingProperty.lazyLink( isShowing => {
     if ( isShowing ) {
       // sound generation
-      openedSoundPlayer.play();
+      options.openedSoundPlayer.play();
 
       // pdom - focus is returned to this element if dialog closed from accessible input
       this.activeElement = this.activeElement || Display.focusedNode;
@@ -287,7 +283,7 @@ function Dialog( content, options ) {
     }
     else {
       // sound generation
-      closedSoundPlayer.play();
+      options.closedSoundPlayer.play();
 
       // pdom - when the dialog is hidden, make all ScreenView content visible to assistive technology
       this.sim.setAccessibleViewsVisible( true );

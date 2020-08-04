@@ -29,9 +29,9 @@ function RectangularToggleButton( valueOff, valueOn, property, options ) {
 
   options = merge( {
 
-    // {Playable|null} - sounds to be played on toggle transitions, use Playable.NO_SOUND to disable
-    valueOffSoundPlayer: null,
-    valueOnSoundPlayer: null,
+    // {Playable} - sounds to be played on toggle transitions
+    valueOffSoundPlayer: toggleOffSoundPlayer,
+    valueOnSoundPlayer: toggleOnSoundPlayer,
 
     // phet-io support
     tandem: Tandem.REQUIRED,
@@ -49,14 +49,12 @@ function RectangularToggleButton( valueOff, valueOn, property, options ) {
   } );
 
   // sound generation
-  const valueOffSoundPlayer = options.valueOffSoundPlayer || toggleOffSoundPlayer;
-  const valueOnSoundPlayer = options.valueOnSoundPlayer || toggleOnSoundPlayer;
   const playSounds = () => {
     if ( property.value === valueOff ) {
-      valueOffSoundPlayer.play();
+      options.valueOffSoundPlayer.play();
     }
     else if ( property.value === valueOn ) {
-      valueOnSoundPlayer.play();
+      options.valueOnSoundPlayer.play();
     }
   };
   this.buttonModel.produceSoundEmitter.addListener( playSounds );
