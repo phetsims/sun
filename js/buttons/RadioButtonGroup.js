@@ -341,11 +341,14 @@ function RadioButtonGroup( property, contentArray, options ) {
     if ( self.enabledProperty.get() ) {
       for ( i = 0; i < contentArray.length; i++ ) {
         if ( contentArray[ i ].value === value ) {
-          buttons[ i ].pickable = false;
+
+          // momentarily removed to demonstrate changes for
+          // https://github.com/phetsims/sun/issues/609
+          //buttons[ i ].pickable = false;
           buttons[ i ].cursor = null;
         }
         else {
-          buttons[ i ].pickable = true;
+          //buttons[ i ].pickable = true;
           buttons[ i ].cursor = 'pointer';
         }
       }
