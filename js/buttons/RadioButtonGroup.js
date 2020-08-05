@@ -336,23 +336,6 @@ function RadioButtonGroup( property, contentArray, options ) {
   };
   this.enabledProperty.link( enabledListener );
 
-  // make the unselected buttons pickable and have a pointer cursor
-  const propertyListener = function( value ) {
-    if ( self.enabledProperty.get() ) {
-      for ( i = 0; i < contentArray.length; i++ ) {
-        if ( contentArray[ i ].value === value ) {
-          buttons[ i ].pickable = false;
-          buttons[ i ].cursor = null;
-        }
-        else {
-          buttons[ i ].pickable = true;
-          buttons[ i ].cursor = 'pointer';
-        }
-      }
-    }
-  };
-  property.link( propertyListener );
-
   // must be done after this instance is instrumented
   this.addLinkedElement( property, {
     tandem: options.tandem.createTandem( 'property' )
@@ -361,7 +344,6 @@ function RadioButtonGroup( property, contentArray, options ) {
   // @private - remove listeners from buttons and make eligible for garbage collection
   this.disposeRadioButtonGroup = function() {
     self.enabledProperty.unlink( enabledListener );
-    property.unlink( propertyListener );
     self.removeInputListener( intentListener );
 
     // dispose all buttons
