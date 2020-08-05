@@ -236,6 +236,10 @@ class ComboBoxListBox extends Panel {
                 // set focus for next item
                 this.focusedItemNode = nextListItemNode;
                 this.focusedItemNode.focus();
+
+                // reserve for drag after focus has moved, as the change in focus will clear the intent
+                // on the pointer
+                event.pointer.reserveForKeyboardDrag();
                 break;
               }
             }
