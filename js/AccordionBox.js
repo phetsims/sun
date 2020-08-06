@@ -547,6 +547,13 @@ inherit( Node, AccordionBox, {
   dispose: function() {
     this.disposeEmitterAccordionBox.emit();
     Node.prototype.dispose.call( this );
+  },
+
+  /**
+   * @public
+   */
+  reset: function() {
+    this.expandedProperty.reset();
   }
 } );
 
