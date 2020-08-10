@@ -14,9 +14,9 @@ import Property from '../../axon/js/Property.js';
 import Shape from '../../kite/js/Shape.js';
 import inherit from '../../phet-core/js/inherit.js';
 import merge from '../../phet-core/js/merge.js';
-import PDOMUtils from '../../scenery/js/accessibility/pdom/PDOMUtils.js';
-import PDOMPeer from '../../scenery/js/accessibility/pdom/PDOMPeer.js';
 import KeyboardUtils from '../../scenery/js/accessibility/KeyboardUtils.js';
+import PDOMPeer from '../../scenery/js/accessibility/pdom/PDOMPeer.js';
+import PDOMUtils from '../../scenery/js/accessibility/pdom/PDOMUtils.js';
 import Display from '../../scenery/js/display/Display.js';
 import AlignBox from '../../scenery/js/nodes/AlignBox.js';
 import HBox from '../../scenery/js/nodes/HBox.js';
@@ -37,7 +37,7 @@ import sunStrings from './sunStrings.js';
 
 // constants
 const closeString = sunStrings.a11y.close;
-const CLOSE_BUTTON_WIDTH = 14;
+const CLOSE_BUTTON_WIDTH = 18.2;
 
 /**
  * @param {Node} content - The content to display inside the dialog (not including the title)
@@ -480,7 +480,7 @@ function CloseButton( options ) {
   options.content = new Path( closeButtonShape, {
     stroke: options.pathStroke,
     lineCap: 'round',
-    lineWidth: 2
+    lineWidth: 2.5
   } );
 
   RectangularPushButton.call( this, options );
