@@ -67,7 +67,7 @@ function DemosScreenView( demos, options ) {
     comboBoxItems.push( new ComboBoxItem( new Text( demo.label, { font: options.comboBoxItemFont } ), demo, {
 
       // demo.label is like ArrowNode or StopwatchNode, decorate it for use as a tandem.
-      tandemName: 'demo' + demo.label + 'ComboBoxItem'
+      tandemName: 'demo' + demo.label + 'Item'
     } ) );
   } );
 
