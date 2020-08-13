@@ -35,7 +35,7 @@ class ComboBoxItem {
     assert && assert( options.tandemName === null || typeof options.tandemName === 'string',
       `invalid tandemName: ${options.tandemName}` );
     assert && assert( !options.tandemName || options.tandemName.endsWith( 'Item' ),
-      'ComboBoxItem tandemName must end with \'Item\'' );
+      `ComboBoxItem tandemName must end with 'Item': ${options.tandemName}` );
 
     // @public (read-only)
     this.node = node;
