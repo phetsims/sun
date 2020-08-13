@@ -79,6 +79,10 @@ function RadioButtonGroupMember( property, value, options ) {
     phetioReadOnly: PhetioObject.DEFAULT_OPTIONS.phetioReadOnly // to support properly passing this to children, see https://github.com/phetsims/tandem/issues/60
   }, options );
 
+  assert && assert( options.tandem instanceof Tandem, 'invalid tandem' );
+  assert && assert( !options.tandem.supplied || options.tandem.name.endsWith( 'RadioButton' ),
+    `RadioButtonGroupMember tandem.name must end with RadioButton: ${options.tandem.name}` );
+
   // @private
   // Note it shares a tandem with this, so the emitter will be instrumented as a child of the button
   this.buttonModel = new ButtonModel( {

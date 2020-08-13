@@ -64,6 +64,10 @@ function AquaRadioButton( property, value, node, options ) {
     a11yNameAttribute: null
   }, options );
 
+  assert && assert( options.tandem instanceof Tandem, 'invalid tandem' );
+  assert && assert( !options.tandem.supplied || options.tandem.name.endsWith( 'RadioButton' ),
+    `AquaRadioButton tandem.name must end with RadioButton: ${options.tandem.name}` );
+
   const self = this;
 
   // @public (read-only)
