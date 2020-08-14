@@ -81,7 +81,7 @@ function RadioButtonGroupMember( property, value, options ) {
 
   assert && assert( options.tandem instanceof Tandem, 'invalid tandem' );
   assert && assert( !options.tandem.supplied || options.tandem.name.endsWith( 'RadioButton' ),
-    `RadioButtonGroupMember tandem.name must end with RadioButton: ${options.tandem.name}` );
+    `RadioButtonGroupMember tandem.name must end with RadioButton: ${options.tandem.phetioID}` );
 
   // @private
   // Note it shares a tandem with this, so the emitter will be instrumented as a child of the button
