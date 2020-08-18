@@ -28,6 +28,17 @@ import AccordionBoxIO from './AccordionBoxIO.js';
 import ExpandCollapseButton from './ExpandCollapseButton.js';
 import sun from './sun.js';
 
+// The definition for how AccordionBox sets its accessibleName in the PDOM. Forward it onto its expandCollapseButton. See
+// AccordionBox.md for further style guide and documentation on the pattern.
+const ACCESSIBLE_NAME_BEHAVIOR = ( node, options, accessibleName ) => {
+
+  // Support mutation before this is defined
+  if ( node.expandCollapseButton ) {
+    node.expandCollapseButton.accessibleName = accessibleName;
+  }
+  return options;
+};
+
 /**
  * @constructor
  *
@@ -96,6 +107,7 @@ function AccordionBox( contentNode, options ) {
     // pdom
     tagName: 'div',
     headingTagName: 'h3', // specify the heading that this AccordionBox will be, TODO: use this.headingLevel when no longer experimental https://github.com/phetsims/scenery/issues/855
+    accessibleNameBehavior: ACCESSIBLE_NAME_BEHAVIOR,
 
     // phet-io support
     tandem: Tandem.REQUIRED,
@@ -527,17 +539,6 @@ inherit( Node, AccordionBox, {
     else {
       return Math.max( this.expandCollapseButton.height + ( 2 * this._buttonYMargin ), this._contentNode.height + ( 2 * this._contentYMargin ) );
     }
-  },
-
-  /**
-   * The accessibleName of the AccordionBox is passed through to its ExpandCollapseButton, as that is its PDOM display.
-   * @override
-   * @param {string|null} accessibleName
-   */
-  setAccessibleName: function( accessibleName ) {
-    assert && assert( this.accessibleName === null, 'accessibleName should not be set directly on the AccordionBox, but ' +
-                                                    'should instead forward to its expandCollapseButton.' );
-    this.expandCollapseButton.accessibleName = accessibleName;
   },
 
   /**
