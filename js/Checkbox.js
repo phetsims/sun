@@ -49,6 +49,8 @@ function Checkbox( content, property, options ) {
     // phet-io
     tandem: Tandem.REQUIRED,
     phetioEventType: EventType.USER,
+    phetioLinkProperty: true, // whether a link to the checkbox's Property is created
+
     // to support properly passing this to children, see https://github.com/phetsims/tandem/issues/60
     phetioReadOnly: PhetioObject.DEFAULT_OPTIONS.phetioReadOnly,
     phetioComponentOptions: null, // filled in below with PhetioObject.mergePhetioComponentOptions()
@@ -149,7 +151,7 @@ function Checkbox( content, property, options ) {
   this.setExcludeLabelSiblingFromInput();
 
   // must be after the Checkbox is instrumented
-  this.addLinkedElement( property, {
+  options.phetioLinkProperty && this.addLinkedElement( property, {
     tandem: options.tandem.createTandem( 'property' )
   } );
 
