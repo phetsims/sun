@@ -11,6 +11,7 @@ import Property from '../../axon/js/Property.js';
 import Range from '../../dot/js/Range.js';
 import Display from '../../scenery/js/display/Display.js';
 import Node from '../../scenery/js/nodes/Node.js';
+import Tandem from '../../tandem/js/Tandem.js';
 import EnabledNode from './EnabledNode.js';
 import HSlider from './HSlider.js';
 
@@ -79,14 +80,20 @@ QUnit.test( 'EnabledNode with PDOM', assert => {
 } );
 
 QUnit.test( 'EnabledNode in Slider', assert => {
-  let slider = new HSlider( new Property( 0 ), new Range( 0, 10 ) );
+  let slider = new HSlider( new Property( 0 ), new Range( 0, 10 ), {
+    tandem: Tandem.GENERAL.createTandem( 'mySlider' )
+  } );
   testEnabledNode( assert, slider, 'For Slider' );
+  slider.dispose();
 
-  const myEnabledProperty = new BooleanProperty( true );
+  const myEnabledProperty = new BooleanProperty( true, { tandem: Tandem.GENERAL.createTandem( 'myEnabledProperty' ) } );
   slider = new HSlider( new Property( 0 ), new Range( 0, 10 ), {
+    tandem: Tandem.GENERAL.createTandem( 'mySlider' ),
     enabledProperty: myEnabledProperty
   } );
   testEnabledNode( assert, slider, 'For Slider' );
+  slider.dispose();
+  myEnabledProperty.dispose();
 } );
 
 /**
