@@ -10,6 +10,7 @@
 
 import Shape from '../../kite/js/Shape.js';
 import merge from '../../phet-core/js/merge.js';
+import IndexedNodeIO from '../../scenery/js/nodes/IndexedNodeIO.js';
 import Node from '../../scenery/js/nodes/Node.js';
 import Rectangle from '../../scenery/js/nodes/Rectangle.js';
 import PhetioObject from '../../tandem/js/PhetioObject.js';
@@ -43,7 +44,12 @@ class ComboBoxListItemNode extends Node {
       // pdom
       tagName: 'li',
       focusable: true,
-      ariaRole: 'option'
+      ariaRole: 'option',
+
+      // Together, these options make it possible to reorder the combo box items in studio, and save a customized
+      // simulation with the new order.
+      phetioType: IndexedNodeIO,
+      phetioState: true
     }, options );
 
     // Use this pattern so that passed in phetioComponentOptions are not blown away.
