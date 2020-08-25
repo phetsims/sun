@@ -30,12 +30,10 @@ import sun from './sun.js';
 
 // The definition for how AccordionBox sets its accessibleName in the PDOM. Forward it onto its expandCollapseButton. See
 // AccordionBox.md for further style guide and documentation on the pattern.
-const ACCESSIBLE_NAME_BEHAVIOR = ( node, options, accessibleName ) => {
-
-  // Support mutation before this is defined
-  if ( node.expandCollapseButton ) {
+const ACCESSIBLE_NAME_BEHAVIOR = ( node, options, accessibleName, callbacksForOtherNodes ) => {
+  callbacksForOtherNodes.push( () => {
     node.expandCollapseButton.accessibleName = accessibleName;
-  }
+  } );
   return options;
 };
 

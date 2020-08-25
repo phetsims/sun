@@ -25,6 +25,14 @@ import VSeparator from './VSeparator.js';
 const ALIGN_VALUES = [ 'left', 'center', 'right' ];
 const ARROW_DIRECTION_VALUES = [ 'up', 'down' ];
 
+// The definition for how ComboBoxButton sets its accessibleName in the PDOM. See ComboBox.md for further style guide
+// and documentation on the pattern.
+const ACCESSIBLE_NAME_BEHAVIOR = ( node, options, accessibleName ) => {
+  options.labelTagName = 'span';
+  options.labelContent = accessibleName;
+  return options;
+};
+
 class ComboBoxButton extends RectangularPushButton {
 
   /**
@@ -59,10 +67,8 @@ class ComboBoxButton extends RectangularPushButton {
       tandem: Tandem.OPTIONAL,
 
       // pdom
-      labelTagName: 'span',
       containerTagName: 'div',
-      labelContent: null // {string|null}
-
+      accessibleNameBehavior: ACCESSIBLE_NAME_BEHAVIOR
     }, options );
 
     assert && assert( _.includes( ALIGN_VALUES, options.align ),

@@ -39,6 +39,21 @@ import sun from './sun.js';
 const LIST_POSITION_VALUES = [ 'above', 'below' ]; // where the list pops up relative to the button
 const ALIGN_VALUES = [ 'left', 'right', 'center' ]; // alignment of item on button and in list
 
+// The definition for how ComboBox sets its accessibleName and helpText in the PDOM. Forward it onto its button. See
+// ComboBox.md for further style guide and documentation on the pattern.
+const ACCESSIBLE_NAME_BEHAVIOR = ( node, options, accessibleName, otherNodeCallbacks ) => {
+  otherNodeCallbacks.push( () => {
+    node.button.accessibleName = accessibleName;
+  } );
+  return options;
+};
+const HELP_TEXT_BEHAVIOR = ( node, options, helpText, otherNodeCallbacks ) => {
+  otherNodeCallbacks.push( () => {
+    node.button.helpText = helpText;
+  } );
+  return options;
+};
+
 class ComboBox extends Node {
 
   /**
@@ -91,8 +106,9 @@ class ComboBox extends Node {
       closedNoChangeSoundPlayer: generalCloseSoundPlayer,
 
       // pdom
-      accessibleName: null, // the a11y setter for this is overridden, see below
-      helpText: null, // the a11y setter for this is overridden, see below
+      tagName: 'div', // must have accessible content to support behavior functions
+      accessibleNameBehavior: ACCESSIBLE_NAME_BEHAVIOR,
+      helpTextBehavior: HELP_TEXT_BEHAVIOR,
 
       // phet-io
       tandem: Tandem.REQUIRED,
@@ -138,7 +154,7 @@ class ComboBox extends Node {
       mouseAreaXDilation: options.buttonMouseAreaXDilation,
       mouseAreaYDilation: options.buttonMouseAreaYDilation,
 
-      // pdom - accessibleName and helpText are set via overridden functions on the prototype. See below.
+      // pdom - accessibleName and helpText are set via behavior functions on the ComboBox
 
       // phet-io
       tandem: options.tandem.createTandem( 'button' )
@@ -325,25 +341,6 @@ class ComboBox extends Node {
   getEnabled() { return this.enabledProperty.value; }
 
   get enabled() { return this.getEnabled(); }
-
-  /**
-   * Instead of setting accessibleName on ComboBox, forward accessibleName setter to the button
-   * @param {string} accessibleName
-   * @public
-   * @override
-   */
-  setAccessibleName( accessibleName ) {
-
-    // set labelContent here instead of accessibleName because of ComboBoxButton implementation -- see that file for more details
-    this.button.labelContent = accessibleName;
-  }
-
-  /**
-   * Instead of setting accessibleName on ComboBox, forward helpText setter to the button
-   * @param {string} helpText
-   * @override
-   */
-  set helpText( helpText ) { this.button.helpText = helpText; }
 
   /**
    * Shows the list box.
