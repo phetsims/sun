@@ -12,7 +12,7 @@ import PDOMPeer from '../../scenery/js/accessibility/pdom/PDOMPeer.js';
 import HStrut from '../../scenery/js/nodes/HStrut.js';
 import LayoutBox from '../../scenery/js/nodes/LayoutBox.js';
 import Node from '../../scenery/js/nodes/Node.js';
-import radioButtonSoundPlayerFactory from '../../tambo/js/radioButtonSoundPlayerFactory.js';
+import multiSelectionSoundPlayerFactory from '../../tambo/js/multiSelectionSoundPlayerFactory.js';
 import Tandem from '../../tandem/js/Tandem.js';
 import AquaRadioButton from './AquaRadioButton.js';
 import EnabledNode from './EnabledNode.js';
@@ -96,7 +96,7 @@ class AquaRadioButtonGroup extends LayoutBox {
         merge( {}, options.radioButtonOptions, {
           tandem: item.tandemName ? options.tandem.createTandem( item.tandemName ) : Tandem.REQUIRED,
           labelContent: item.labelContent || null,
-          soundPlayer: radioButtonSoundPlayerFactory.getRadioButtonSoundPlayer( i ),
+          soundPlayer: multiSelectionSoundPlayerFactory.getSelectionSoundPlayer( i ),
           a11yNameAttribute: CLASS_NAME + instanceCount
         } ) );
 

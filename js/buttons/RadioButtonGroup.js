@@ -21,7 +21,7 @@ import PDOMPeer from '../../../scenery/js/accessibility/pdom/PDOMPeer.js';
 import LayoutBox from '../../../scenery/js/nodes/LayoutBox.js';
 import Rectangle from '../../../scenery/js/nodes/Rectangle.js';
 import Color from '../../../scenery/js/util/Color.js';
-import radioButtonSoundPlayerFactory from '../../../tambo/js/radioButtonSoundPlayerFactory.js';
+import multiSelectionSoundPlayerFactory from '../../../tambo/js/multiSelectionSoundPlayerFactory.js';
 import PhetioObject from '../../../tandem/js/PhetioObject.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import ColorConstants from '../ColorConstants.js';
@@ -208,7 +208,7 @@ function RadioButtonGroup( property, contentArray, options ) {
       minHeight: tallestContentHeight + 2 * options.buttonContentYMargin,
       phetioDocumentation: currentContent.phetioDocumentation || '',
       soundPlayer: options.soundPlayers ? options.soundPlayers[ i ] :
-                   radioButtonSoundPlayerFactory.getRadioButtonSoundPlayer( i )
+                   multiSelectionSoundPlayerFactory.getSelectionSoundPlayer( i )
     }, buttonOptions );
 
     // Pass through the tandem given the tandemName, but also support uninstrumented simulations

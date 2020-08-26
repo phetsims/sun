@@ -14,7 +14,7 @@ import FireListener from '../../scenery/js/listeners/FireListener.js';
 import Circle from '../../scenery/js/nodes/Circle.js';
 import Node from '../../scenery/js/nodes/Node.js';
 import Rectangle from '../../scenery/js/nodes/Rectangle.js';
-import radioButtonSoundPlayerFactory from '../../tambo/js/radioButtonSoundPlayerFactory.js';
+import multiSelectionSoundPlayerFactory from '../../tambo/js/multiSelectionSoundPlayerFactory.js';
 import Tandem from '../../tandem/js/Tandem.js';
 import sun from './sun.js';
 import SunConstants from './SunConstants.js';
@@ -48,7 +48,7 @@ function AquaRadioButton( property, value, node, options ) {
     },
 
     // {Playable} - sound generator, usually overridden when creating a group of these
-    soundPlayer: radioButtonSoundPlayerFactory.getRadioButtonSoundPlayer( 0 ),
+    soundPlayer: multiSelectionSoundPlayerFactory.getSelectionSoundPlayer( 0 ),
 
     // pdom
     tagName: 'input',

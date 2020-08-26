@@ -11,7 +11,7 @@ import merge from '../../phet-core/js/merge.js';
 import KeyboardUtils from '../../scenery/js/accessibility/KeyboardUtils.js';
 import SceneryEvent from '../../scenery/js/input/SceneryEvent.js';
 import VBox from '../../scenery/js/nodes/VBox.js';
-import radioButtonSoundPlayerFactory from '../../tambo/js/radioButtonSoundPlayerFactory.js';
+import multiSelectionSoundPlayerFactory from '../../tambo/js/multiSelectionSoundPlayerFactory.js';
 import generalCloseSoundPlayer from '../../tambo/js/shared-sound-players/generalCloseSoundPlayer.js';
 import generalOpenSoundPlayer from '../../tambo/js/shared-sound-players/generalOpenSoundPlayer.js';
 import EventType from '../../tandem/js/EventType.js';
@@ -163,7 +163,7 @@ class ComboBoxListBox extends Panel {
     const itemSelectedSoundPlayers = items.map( item => {
       return item.soundPlayer ?
              item.soundPlayer :
-             radioButtonSoundPlayerFactory.getRadioButtonSoundPlayer( items.indexOf( item ) );
+             multiSelectionSoundPlayerFactory.getSelectionSoundPlayer( items.indexOf( item ) );
     } );
 
     // sound generation
