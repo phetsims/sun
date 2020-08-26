@@ -101,7 +101,7 @@ class ComboBox extends Node {
       listLineWidth: 1,
 
       // {Playable} - Sound generators for when combo box is opened and for when it is closed with no change (closing
-      // *with* a change is covered by individual combo box items).
+      // *with* a change is handled elsewhere).
       openedSoundPlayer: generalOpenSoundPlayer,
       closedNoChangeSoundPlayer: generalCloseSoundPlayer,
 
