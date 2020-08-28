@@ -87,7 +87,7 @@ function Checkbox( content, property, options ) {
     tandem: options.tandem.createTandem( 'toggleAction' ),
     phetioDocumentation: 'Emits when user input causes the checkbox to toggle, emitting a single arg: ' +
                          'the new boolean value of the checkbox state.',
-    phetioReadOnly: options.phetioReadOnly,
+    phetioReadOnly: true, // interoperability should be done through the Property, this is just for the data stream event.
     phetioEventType: EventType.USER
   } );
 
