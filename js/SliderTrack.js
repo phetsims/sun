@@ -31,11 +31,6 @@ class SliderTrack extends Node {
 
     options = merge( {
       size: new Dimension2( 100, 5 ),
-      fillEnabled: 'white',
-      fillDisabled: 'gray',
-      stroke: 'black',
-      lineWidth: 1,
-      cornerRadius: 0,
       startDrag: _.noop, // called when a drag sequence starts
       drag: _.noop, // called at the beginning of a drag event, before any other drag work happens
       endDrag: _.noop, // called when a drag sequence ends
