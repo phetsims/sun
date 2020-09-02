@@ -1,7 +1,7 @@
 // Copyright 2017-2020, University of Colorado Boulder
 
 /**
- * IO type for RectangularToggleButton|RoundStickyToggleButton|RoundToggleButton
+ * IO Type for RectangularToggleButton|RoundStickyToggleButton|RoundToggleButton
  *
  * @author Sam Reid (PhET Interactive Simulations)
  * @author Andrew Adare (PhET Interactive Simulations)

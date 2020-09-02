@@ -1,7 +1,7 @@
 // Copyright 2018-2020, University of Colorado Boulder
 
 /**
- * IO type for Dialog
+ * IO Type for Dialog
  * Used to live at '/joist/js/DialogIO'. Moved to '/sun/js/DialogIO' on 4/10/2018
  *
  * @author Andrew Adare (PhET Interactive Simulations)
