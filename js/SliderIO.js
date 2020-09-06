@@ -40,7 +40,7 @@ SliderIO.documentation = 'A traditional slider component, with a knob and possib
 SliderIO.validator = { isValidValue: v => v instanceof phet.sun.Slider };
 SliderIO.typeName = 'SliderIO';
 
-ObjectIO.validateSubtype( SliderIO );
+ObjectIO.validateIOType( SliderIO );
 
 sun.register( 'SliderIO', SliderIO );
 export default SliderIO;

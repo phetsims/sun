@@ -17,7 +17,7 @@ RoundMomentaryButtonIO.documentation = 'Button that performs an action while it 
 RoundMomentaryButtonIO.events = [ 'pressed', 'released', 'releasedDisabled' ];
 RoundMomentaryButtonIO.validator = { isValidValue: v => v instanceof phet.sun.RoundMomentaryButton };
 RoundMomentaryButtonIO.typeName = 'RoundMomentaryButtonIO';
-ObjectIO.validateSubtype( RoundMomentaryButtonIO );
+ObjectIO.validateIOType( RoundMomentaryButtonIO );
 
 sun.register( 'RoundMomentaryButtonIO', RoundMomentaryButtonIO );
 export default RoundMomentaryButtonIO;

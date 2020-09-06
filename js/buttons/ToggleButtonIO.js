@@ -25,7 +25,7 @@ ToggleButtonIO.validator = {
   }
 };
 ToggleButtonIO.typeName = 'ToggleButtonIO';
-ObjectIO.validateSubtype( ToggleButtonIO );
+ObjectIO.validateIOType( ToggleButtonIO );
 
 sun.register( 'ToggleButtonIO', ToggleButtonIO );
 export default ToggleButtonIO;

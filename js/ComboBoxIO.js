@@ -19,7 +19,7 @@ ComboBoxIO.documentation = 'A combo box is composed of a push button and a listb
 ComboBoxIO.events = [ 'listBoxShown', 'listBoxHidden' ];
 ComboBoxIO.validator = { isValidValue: v => v instanceof phet.sun.ComboBox };
 ComboBoxIO.typeName = 'ComboBoxIO';
-ObjectIO.validateSubtype( ComboBoxIO );
+ObjectIO.validateIOType( ComboBoxIO );
 
 sun.register( 'ComboBoxIO', ComboBoxIO );
 export default ComboBoxIO;

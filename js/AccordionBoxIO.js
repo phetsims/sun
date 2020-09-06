@@ -16,7 +16,7 @@ AccordionBoxIO.documentation = 'A traditional accordionBox';
 AccordionBoxIO.events = [ 'expanded', 'collapsed' ];
 AccordionBoxIO.validator = { isValidValue: v => v instanceof phet.sun.AccordionBox };
 AccordionBoxIO.typeName = 'AccordionBoxIO';
-ObjectIO.validateSubtype( AccordionBoxIO );
+ObjectIO.validateIOType( AccordionBoxIO );
 
 sun.register( 'AccordionBoxIO', AccordionBoxIO );
 export default AccordionBoxIO;

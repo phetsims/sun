@@ -30,7 +30,7 @@ class DialogIO extends NodeIO {
 DialogIO.documentation = 'A dialog panel';
 DialogIO.validator = { isValidValue: v => v instanceof phet.sun.Dialog };
 DialogIO.typeName = 'DialogIO';
-ObjectIO.validateSubtype( DialogIO );
+ObjectIO.validateIOType( DialogIO );
 
 sun.register( 'DialogIO', DialogIO );
 export default DialogIO;
