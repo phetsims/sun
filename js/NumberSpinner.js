@@ -113,7 +113,7 @@ class NumberSpinner extends Node {
     // increment button
     const incrementDirection = ( options.arrowsPosition === 'topBottom' || options.arrowsPosition === 'bothRight' ) ? 'up' : 'right';
     const incrementButton = new ArrowButton( incrementDirection,
-      () => numberProperty.set( options.incrementFunction( numberProperty.get() ) ),
+      () => incrementButton.enabled && numberProperty.set( options.incrementFunction( numberProperty.get() ) ),
       merge( {
         tandem: options.tandem.createTandem( 'incrementButton' )
       }, arrowButtonOptions ) );
@@ -121,7 +121,7 @@ class NumberSpinner extends Node {
     // decrement button
     const decrementDirection = ( options.arrowsPosition === 'topBottom' || options.arrowsPosition === 'bothRight' ) ? 'down' : 'left';
     const decrementButton = new ArrowButton( decrementDirection,
-      () => numberProperty.set( options.decrementFunction( numberProperty.get() ) ),
+      () => decrementButton.enabled && numberProperty.set( options.decrementFunction( numberProperty.get() ) ),
       merge( {
         tandem: options.tandem.createTandem( 'decrementButton' )
       }, arrowButtonOptions ) );
