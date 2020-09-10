@@ -127,14 +127,15 @@ class Checkbox extends Node {
     content.pickable = false; // since there's a pickable rectangle on top of content
 
     // interactivity
-    const checkboxButtonListener = new ButtonListener( {
+    const buttonListener = new ButtonListener( {
       fire: () => {
         if ( this.enabledProperty.value ) {
           toggleAction.execute();
         }
-      }
+      },
+      tandem: options.tandem.createTandem( 'buttonListener' )
     } );
-    this.addInputListener( checkboxButtonListener );
+    this.addInputListener( buttonListener );
 
     // sync with property
     const checkboxCheckedListener = checked => {
@@ -209,6 +210,8 @@ class Checkbox extends Node {
 
     // @private
     this.disposeCheckbox = () => {
+
+      buttonListener.dispose();
 
       // Client owns property, remove the listener that we added.
       if ( property.hasListener( checkboxCheckedListener ) ) {
