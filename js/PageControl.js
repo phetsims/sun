@@ -9,7 +9,7 @@
 
 import Shape from '../../kite/js/Shape.js';
 import merge from '../../phet-core/js/merge.js';
-import DownUpListener from '../../scenery/js/input/DownUpListener.js';
+import PressListener from '../../scenery/js/listeners/PressListener.js';
 import Circle from '../../scenery/js/nodes/Circle.js';
 import Node from '../../scenery/js/nodes/Node.js';
 import sun from './sun.js';
@@ -52,8 +52,8 @@ class PageControl extends Node {
     const isHorizontal = ( options.orientation === 'horizontal' );
 
     // Clicking on a dot goes to that page
-    const dotListener = new DownUpListener( {
-      down: event => {
+    const dotListener = new PressListener( {
+      press: event => {
         assert && assert( event.currentTarget.hasOwnProperty( 'pageNumber' ) );
         pageNumberProperty.set( event.currentTarget.pageNumber );
       }
