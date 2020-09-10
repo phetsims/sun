@@ -12,7 +12,7 @@ import Property from '../../axon/js/Property.js';
 import validate from '../../axon/js/validate.js';
 import InstanceRegistry from '../../phet-core/js/documentation/InstanceRegistry.js';
 import merge from '../../phet-core/js/merge.js';
-import ButtonListener from '../../scenery/js/input/ButtonListener.js';
+import FireListener from '../../scenery/js/listeners/FireListener.js';
 import Node from '../../scenery/js/nodes/Node.js';
 import Rectangle from '../../scenery/js/nodes/Rectangle.js';
 import checkboxCheckedSoundPlayer from '../../tambo/js/shared-sound-players/checkboxCheckedSoundPlayer.js';
@@ -127,15 +127,15 @@ class Checkbox extends Node {
     content.pickable = false; // since there's a pickable rectangle on top of content
 
     // interactivity
-    const buttonListener = new ButtonListener( {
+    const fireListener = new FireListener( {
       fire: () => {
         if ( this.enabledProperty.value ) {
           toggleAction.execute();
         }
       },
-      tandem: options.tandem.createTandem( 'buttonListener' )
+      tandem: options.tandem.createTandem( 'fireListener' )
     } );
-    this.addInputListener( buttonListener );
+    this.addInputListener( fireListener );
 
     // sync with property
     const checkboxCheckedListener = checked => {
@@ -211,7 +211,7 @@ class Checkbox extends Node {
     // @private
     this.disposeCheckbox = () => {
 
-      buttonListener.dispose();
+      fireListener.dispose();
 
       // Client owns property, remove the listener that we added.
       if ( property.hasListener( checkboxCheckedListener ) ) {
