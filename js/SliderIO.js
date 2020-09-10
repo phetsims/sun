@@ -20,7 +20,7 @@ SliderIO.methods = {
     returnType: VoidIO,
     parameterTypes: [ BooleanIO ],
     implementation: function( visible ) {
-      this.phetioObject.setMajorTicksVisible( visible );
+      this.setMajorTicksVisible( visible );
     },
     documentation: 'Set whether the major tick marks should be shown',
     invocableForReadOnlyElements: false
@@ -30,7 +30,7 @@ SliderIO.methods = {
     returnType: VoidIO,
     parameterTypes: [ BooleanIO ],
     implementation: function( visible ) {
-      this.phetioObject.setMinorTicksVisible( visible );
+      this.setMinorTicksVisible( visible );
     },
     documentation: 'Set whether the minor tick marks should be shown',
     invocableForReadOnlyElements: false
