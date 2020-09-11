@@ -12,6 +12,7 @@ import merge from '../../phet-core/js/merge.js';
 import PressListener from '../../scenery/js/listeners/PressListener.js';
 import Circle from '../../scenery/js/nodes/Circle.js';
 import Node from '../../scenery/js/nodes/Node.js';
+import Tandem from '../../tandem/js/Tandem.js';
 import sun from './sun.js';
 
 class PageControl extends Node {
@@ -41,8 +42,9 @@ class PageControl extends Node {
 
       // dots representing all pages except the current page
       pageFill: 'rgb( 200, 200, 200 )', // {Color|string} dot color for pages that are not visible
-      pageStroke: null
+      pageStroke: null,
 
+      tandem: Tandem.REQUIRED
     }, options );
 
     // validate options
@@ -52,7 +54,8 @@ class PageControl extends Node {
     const isHorizontal = ( options.orientation === 'horizontal' );
 
     // Clicking on a dot goes to that page
-    const dotListener = new PressListener( {
+    const pressListener = new PressListener( {
+      tandem: options.tandem.createTandem( 'pressListener' ),
       press: event => {
         assert && assert( event.currentTarget.hasOwnProperty( 'pageNumber' ) );
         pageNumberProperty.set( event.currentTarget.pageNumber );
@@ -84,7 +87,7 @@ class PageControl extends Node {
       // optional interactivity
       if ( options.interactive ) {
         dotNode.cursor = 'pointer';
-        dotNode.addInputListener( dotListener );
+        dotNode.addInputListener( pressListener );
       }
     }
 
