@@ -12,7 +12,7 @@
 import BooleanProperty from '../../../axon/js/BooleanProperty.js';
 import Property from '../../../axon/js/Property.js';
 import StringProperty from '../../../axon/js/StringProperty.js';
-import timer from '../../../axon/js/timer.js';
+import stepTimer from '../../../axon/js/stepTimer.js';
 import Dimension2 from '../../../dot/js/Dimension2.js';
 import Range from '../../../dot/js/Range.js';
 import inherit from '../../../phet-core/js/inherit.js';
@@ -530,7 +530,7 @@ var demoAlignGroup = function( layoutBounds ) {
       const randomRect = new Rectangle( 0, 0, phet.joist.random.nextDouble() * 60 + 10, phet.joist.random.nextDouble() * 60 + 10, {
         fill: 'black'
       } );
-      timer.addListener( function() {
+      stepTimer.addListener( function() {
         if ( phet.joist.random.nextDouble() < 0.02 ) {
           randomRect.rectWidth = phet.joist.random.nextDouble() * 60 + 10;
           randomRect.rectHeight = phet.joist.random.nextDouble() * 60 + 10;
@@ -547,7 +547,7 @@ var demoAlignGroup = function( layoutBounds ) {
 
   function randomText() {
     const text = new Text( 'Test', { fontSize: 20 } );
-    timer.addListener( function() {
+    stepTimer.addListener( function() {
       if ( phet.joist.random.nextDouble() < 0.03 ) {
         let string = '';
         while ( phet.joist.random.nextDouble() < 0.94 && string.length < 20 ) {

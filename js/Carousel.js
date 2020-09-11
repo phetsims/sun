@@ -14,7 +14,7 @@
  */
 
 import Property from '../../axon/js/Property.js';
-import timer from '../../axon/js/timer.js';
+import stepTimer from '../../axon/js/stepTimer.js';
 import Dimension2 from '../../dot/js/Dimension2.js';
 import Utils from '../../dot/js/Utils.js';
 import Shape from '../../kite/js/Shape.js';
@@ -72,7 +72,7 @@ const DEFAULT_OPTIONS = {
   // animation, scrolling between pages
   animationEnabled: true, // {boolean} is animation enabled when scrolling between pages?,
   animationDuration: 0.4, // {number} seconds
-  stepEmitter: timer, // {string} see Animation options.stepEmitter
+  stepEmitter: stepTimer, // {string} see Animation options.stepEmitter
 
   // phet-io
   tandem: Tandem.OPTIONAL
