@@ -20,6 +20,8 @@ import sunQueryParameters from './sunQueryParameters.js';
 
 const sunTitleString = sunStrings.sun.title;
 
+const MODEL = {};
+
 const simOptions = {
   credits: {
     leadDesign: 'PhET'
@@ -39,51 +41,49 @@ simLauncher.launch( function() {
 
     // Buttons screen
     new Screen(
-      function() {return {};},
-      function( model ) {return new ButtonsScreenView();},
+      () => MODEL,
+      () => new ButtonsScreenView(),
       {
         name: 'Buttons',
         backgroundColorProperty: new Property( sunQueryParameters.backgroundColor ),
         homeScreenIcon: createScreenIcon( 'red' ),
-        tandem: Tandem.ROOT.createTandem( 'buttonsScreen')
+        tandem: Tandem.ROOT.createTandem( 'buttonsScreen' )
       }
     ),
 
     // Components screen
     new Screen(
-      function() {return {};},
-      function( model ) {return new ComponentsScreenView();},
+      () => MODEL,
+      () => new ComponentsScreenView(),
       {
         name: 'Components',
         backgroundColorProperty: new Property( sunQueryParameters.backgroundColor ),
         homeScreenIcon: createScreenIcon( 'yellow' ),
-        tandem: Tandem.ROOT.createTandem( 'componentsScreen')
-      }
-    ),
-
-    // Components screen
-    new Screen(
-      function() {return {};},
-      function( model ) {return new DialogsScreenView();},
-      {
-        name: 'Dialogs',
-        backgroundColorProperty: new Property( sunQueryParameters.backgroundColor ),
-        homeScreenIcon: createScreenIcon( 'purple' ),
-        tandem: Tandem.ROOT.createTandem( 'dialogsScreen')
+        tandem: Tandem.ROOT.createTandem( 'componentsScreen' )
       }
     ),
 
     // Dialogs screen
+    new Screen(
+      () => MODEL,
+      () => new DialogsScreenView(),
+      {
+        name: 'Dialogs',
+        backgroundColorProperty: new Property( sunQueryParameters.backgroundColor ),
+        homeScreenIcon: createScreenIcon( 'purple' ),
+        tandem: Tandem.ROOT.createTandem( 'dialogsScreen' )
+      }
+    ),
 
     // Memory Test screen
     new Screen(
-      function() {return {};},
-      function( model ) {return new MemoryTestsScreenView();},
+      () => MODEL,
+      () => new MemoryTestsScreenView(),
       {
         name: 'Memory Tests',
         backgroundColorProperty: new Property( sunQueryParameters.backgroundColor ),
         homeScreenIcon: createScreenIcon( 'blue' ),
-        tandem: Tandem.ROOT.createTandem( 'memoryTestsScreen')
+        tandem: Tandem.ROOT.createTandem( 'memoryTestsScreen' )
       }
     )
   ], simOptions ).start();
