@@ -7,7 +7,6 @@
  */
 
 import ScreenView from '../../../joist/js/ScreenView.js';
-import inherit from '../../../phet-core/js/inherit.js';
 import Node from '../../../scenery/js/nodes/Node.js';
 import Rectangle from '../../../scenery/js/nodes/Rectangle.js';
 import Text from '../../../scenery/js/nodes/Text.js';
@@ -19,49 +18,36 @@ import sun from '../sun.js';
 // constants
 const BUTTON_FONT = new Font( { size: 20 } );
 
-/**
- * @constructor
- */
-function DialogsScreenView() {
+class DialogsScreenView extends ScreenView {
+  constructor() {
 
-  ScreenView.call( this );
+    super();
 
-  // dialog will be created the first time the button is pressed, lazily because Dialog
-  // requires sim bounds during Dialog construction
-  let dialog = null;
+    // dialog will be created the first time the button is pressed, lazily because Dialog
+    // requires sim bounds during Dialog construction
+    let dialog = null;
 
-  const modalDialogButton = new RectangularPushButton( {
-    content: new Text( 'modal dialog', { font: BUTTON_FONT } ),
-    listener: function() {
-      if ( !dialog ) {
-        dialog = createDialog( true );
-      }
-      dialog.show();
-    },
-    left: this.layoutBounds.left + 100,
-    top: this.layoutBounds.top + 100
-  } );
-  this.addChild( modalDialogButton );
-
-  // var nonModalDialogButton = new RectangularPushButton( {
-  //   content: new Text( 'non-modal dialog', { font: BUTTON_FONT } ),
-  //   listener: function() {
-  //     createDialog( false ).show();
-  //   },
-  //   left: modalDialogButton.right + 20,
-  //   top: modalDialogButton.top
-  // } );
-  // this.addChild( nonModalDialogButton );
+    const modalDialogButton = new RectangularPushButton( {
+      content: new Text( 'modal dialog', { font: BUTTON_FONT } ),
+      listener: () => {
+        if ( !dialog ) {
+          dialog = createDialog( true );
+        }
+        dialog.show();
+      },
+      left: this.layoutBounds.left + 100,
+      top: this.layoutBounds.top + 100
+    } );
+    this.addChild( modalDialogButton );
+  }
 }
-
-sun.register( 'DialogsScreenView', DialogsScreenView );
 
 /**
  * Creates a model or non-modal dialog
  * @param {boolean} modal
  * @returns {Dialog}
  */
-var createDialog = function( modal ) {
+function createDialog( modal ) {
 
   const resizeButton = new RectangularPushButton( {
     content: new Text( 'Resize', { font: new Font( { size: 18 } ) } )
@@ -74,7 +60,7 @@ var createDialog = function( modal ) {
   const randomRect = new Rectangle( 0, 0, minWidth, minHeight, { stroke: 'red' } );
   resizeButton.center = randomRect.center;
 
-  resizeButton.addListener( function() {
+  resizeButton.addListener( () => {
     randomRect.rectWidth = minWidth + phet.joist.random.nextDouble() * 200;
     randomRect.rectHeight = minHeight + phet.joist.random.nextDouble() * 100;
     resizeButton.center = randomRect.center;
@@ -88,7 +74,7 @@ var createDialog = function( modal ) {
     hasCloseButton: !modal,
     title: new Text( 'Title', { font: new Font( { size: 32 } ) } )
   } );
-};
+}
 
-inherit( ScreenView, DialogsScreenView );
+sun.register( 'DialogsScreenView', DialogsScreenView );
 export default DialogsScreenView;

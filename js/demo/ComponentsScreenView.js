@@ -11,11 +11,10 @@
 
 import BooleanProperty from '../../../axon/js/BooleanProperty.js';
 import Property from '../../../axon/js/Property.js';
-import StringProperty from '../../../axon/js/StringProperty.js';
 import stepTimer from '../../../axon/js/stepTimer.js';
+import StringProperty from '../../../axon/js/StringProperty.js';
 import Dimension2 from '../../../dot/js/Dimension2.js';
 import Range from '../../../dot/js/Range.js';
-import inherit from '../../../phet-core/js/inherit.js';
 import merge from '../../../phet-core/js/merge.js';
 import PhetFont from '../../../scenery-phet/js/PhetFont.js';
 import AlignBox from '../../../scenery/js/nodes/AlignBox.js';
@@ -47,41 +46,38 @@ import ToggleSwitch from '../ToggleSwitch.js';
 import VSlider from '../VSlider.js';
 import DemosScreenView from './DemosScreenView.js';
 
-/**
- * @constructor
- */
-function ComponentsScreenView() {
-  DemosScreenView.call( this, [
+class ComponentsScreenView extends DemosScreenView {
+  constructor() {
+    super( [
 
-    /**
-     * To add a demo, add an object literal here. Each object has these properties:
-     *
-     * {string} label - label in the combo box
-     * {function(Bounds2): Node} createNode - creates the scene graph for the demo
-     */
-    { label: 'ABSwitch', createNode: demoABSwitch },
-    { label: 'AquaRadioButtonGroup', createNode: demoAquaRadioButtonGroup },
-    { label: 'Carousel', createNode: demoCarousel },
-    { label: 'Checkbox', createNode: demoCheckbox },
-    { label: 'ComboBox', createNode: demoComboBox },
-    { label: 'HSlider', createNode: demoHSlider },
-    { label: 'VSlider', createNode: demoVSlider },
-    { label: 'OnOffSwitch', createNode: demoOnOffSwitch },
-    { label: 'PageControl', createNode: demoPageControl },
-    { label: 'NumberSpinner', createNode: demoNumberSpinner },
-    { label: 'AlignGroup', createNode: demoAlignGroup },
-    { label: 'AccordionBox', createNode: demoAccordionBox },
-    { label: 'ToggleSwitch', createNode: demoToggleSwitch },
-    { label: 'EnabledComponent', createNode: demoEnabledComponent }
-  ], {
-    selectedDemoLabel: sunQueryParameters.component
-  } );
+      /**
+       * To add a demo, add an object literal here. Each object has these properties:
+       *
+       * {string} label - label in the combo box
+       * {function(Bounds2): Node} createNode - creates the scene graph for the demo
+       */
+      { label: 'ABSwitch', createNode: demoABSwitch },
+      { label: 'AquaRadioButtonGroup', createNode: demoAquaRadioButtonGroup },
+      { label: 'Carousel', createNode: demoCarousel },
+      { label: 'Checkbox', createNode: demoCheckbox },
+      { label: 'ComboBox', createNode: demoComboBox },
+      { label: 'HSlider', createNode: demoHSlider },
+      { label: 'VSlider', createNode: demoVSlider },
+      { label: 'OnOffSwitch', createNode: demoOnOffSwitch },
+      { label: 'PageControl', createNode: demoPageControl },
+      { label: 'NumberSpinner', createNode: demoNumberSpinner },
+      { label: 'AlignGroup', createNode: demoAlignGroup },
+      { label: 'AccordionBox', createNode: demoAccordionBox },
+      { label: 'ToggleSwitch', createNode: demoToggleSwitch },
+      { label: 'EnabledComponent', createNode: demoEnabledComponent }
+    ], {
+      selectedDemoLabel: sunQueryParameters.component
+    } );
+  }
 }
 
-sun.register( 'ComponentsScreenView', ComponentsScreenView );
-
 // Creates a demo for ABSwitch
-var demoABSwitch = function( layoutBounds ) {
+function demoABSwitch( layoutBounds ) {
 
   const property = new StringProperty( 'A' );
   const labelA = new Text( 'A', { font: new PhetFont( 24 ) } );
@@ -90,10 +86,10 @@ var demoABSwitch = function( layoutBounds ) {
   return new ABSwitch( property, 'A', labelA, 'B', labelB, {
     center: layoutBounds.center
   } );
-};
+}
 
 // Creates a demo for AquaRadioButtonGroup
-const demoAquaRadioButtonGroup = function( layoutBounds ) {
+function demoAquaRadioButtonGroup( layoutBounds ) {
 
   const font = new PhetFont( 20 );
 
@@ -128,10 +124,10 @@ const demoAquaRadioButtonGroup = function( layoutBounds ) {
     spacing: 40,
     center: layoutBounds.center
   } );
-};
+}
 
 // Creates a demo for Carousel
-var demoCarousel = function( layoutBounds ) {
+function demoCarousel( layoutBounds ) {
 
   // create items
   const colors = [ 'red', 'blue', 'green', 'yellow', 'pink', 'white', 'orange', 'magenta', 'purple', 'pink' ];
@@ -194,10 +190,10 @@ var demoCarousel = function( layoutBounds ) {
     children: [ vCarousel, hCarousel, buttonGroup ],
     center: layoutBounds.center
   } );
-};
+}
 
 // Creates a demo for Checkbox
-var demoCheckbox = function( layoutBounds ) {
+function demoCheckbox( layoutBounds ) {
 
   const property = new BooleanProperty( true );
   const enabledProperty = new BooleanProperty( true, { phetioFeatured: true } );
@@ -217,10 +213,10 @@ var demoCheckbox = function( layoutBounds ) {
     spacing: 30,
     center: layoutBounds.center
   } );
-};
+}
 
 // Creates a demo of ComboBox
-var demoComboBox = function( layoutBounds ) {
+function demoComboBox( layoutBounds ) {
 
   const labels = [ 'one', 'two', 'three', 'four', 'five', 'six' ];
   const items = [];
@@ -246,17 +242,17 @@ var demoComboBox = function( layoutBounds ) {
   } );
 
   return new Node( { children: [ uiComponents, listParent ] } );
-};
+}
 
 // Creates a demo for HSlider
-var demoHSlider = function( layoutBounds ) {
+function demoHSlider( layoutBounds ) {
   return demoSlider( layoutBounds, 'horizontal' );
-};
+}
 
 // Creates a demo for VSlider
-var demoVSlider = function( layoutBounds ) {
+function demoVSlider( layoutBounds ) {
   return demoSlider( layoutBounds, 'vertical' );
-};
+}
 
 /**
  * Used by demoHSlider and demoVSlider
@@ -264,7 +260,7 @@ var demoVSlider = function( layoutBounds ) {
  * @param {string} orientation - see Slider orientation option
  * @returns {Node}
  */
-var demoSlider = function( layoutBounds, orientation ) {
+function demoSlider( layoutBounds, orientation ) {
 
   const property = new Property( 0 );
   const range = new Range( 0, 100 );
@@ -368,15 +364,15 @@ var demoSlider = function( layoutBounds, orientation ) {
   }
 
   return layoutBox;
-};
+}
 
-var demoToggleSwitch = function( layoutBounds ) {
+function demoToggleSwitch( layoutBounds ) {
   return new ToggleSwitch( new StringProperty( 'left' ), 'left', 'right', {
     center: layoutBounds.center
   } );
-};
+}
 
-var demoEnabledComponent = function( layoutBounds ) {
+function demoEnabledComponent( layoutBounds ) {
 
   class EnabledCircle extends Circle {
     constructor() {
@@ -397,17 +393,17 @@ var demoEnabledComponent = function( layoutBounds ) {
     center: layoutBounds.center,
     spacing: 20
   } );
-};
+}
 
 // Creates a demo for OnOffSwitch
-var demoOnOffSwitch = function( layoutBounds ) {
+function demoOnOffSwitch( layoutBounds ) {
   return new OnOffSwitch( new BooleanProperty( true ), {
     center: layoutBounds.center
   } );
-};
+}
 
 // Creates a demo for PageControl
-var demoPageControl = function( layoutBounds ) {
+function demoPageControl( layoutBounds ) {
 
   // create items
   const colors = [ 'red', 'blue', 'green', 'yellow', 'pink', 'white', 'orange', 'magenta', 'purple', 'pink' ];
@@ -440,10 +436,10 @@ var demoPageControl = function( layoutBounds ) {
     children: [ carousel, pageControl ],
     center: layoutBounds.center
   } );
-};
+}
 
 // Creates a demo for NumberSpinner
-var demoNumberSpinner = function( layoutBounds ) {
+function demoNumberSpinner( layoutBounds ) {
 
   const valueProperty = new Property( 0 );
   const valueRangeProperty = new Property( new Range( -5, 5 ) );
@@ -507,9 +503,9 @@ var demoNumberSpinner = function( layoutBounds ) {
     spacing: 40,
     center: layoutBounds.center
   } );
-};
+}
 
-var demoAlignGroup = function( layoutBounds ) {
+function demoAlignGroup( layoutBounds ) {
   function highlightWrap( node ) {
     const rect = Rectangle.bounds( node.bounds, { fill: 'rgba(0,0,0,0.25)' } );
     node.boundsProperty.lazyLink( function() {
@@ -578,9 +574,9 @@ var demoAlignGroup = function( layoutBounds ) {
     children: [ iconRow, panelRow ],
     center: layoutBounds.center
   } );
-};
+}
 
-var demoAccordionBox = function( layoutBounds ) {
+function demoAccordionBox( layoutBounds ) {
   const randomRect = new Rectangle( 0, 0, 100, 50, { fill: 'red' } );
 
   const resizeButton = new RectangularPushButton( {
@@ -604,7 +600,7 @@ var demoAccordionBox = function( layoutBounds ) {
   } );
 
   return box;
-};
+}
 
-inherit( DemosScreenView, ComponentsScreenView );
+sun.register( 'ComponentsScreenView', ComponentsScreenView );
 export default ComponentsScreenView;
