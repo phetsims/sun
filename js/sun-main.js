@@ -18,8 +18,7 @@ import MemoryTestsScreenView from './demo/MemoryTestsScreenView.js';
 import sunStrings from './sunStrings.js';
 import sunQueryParameters from './sunQueryParameters.js';
 
-const sunTitleString = sunStrings.sun.title;
-
+// empty model used for all demo screens
 const MODEL = {};
 
 const simOptions = {
@@ -28,16 +27,21 @@ const simOptions = {
   }
 };
 
-const createScreenIcon = function( color ) {
+/**
+ * Creates a simple screen icon, a colored rectangle.
+ * @param {ColorDef} color
+ * @returns {ScreenIcon}
+ */
+function createScreenIcon( color ) {
   return new ScreenIcon(
     new Rectangle( 0, 0, Screen.MINIMUM_HOME_SCREEN_ICON_SIZE.width, Screen.MINIMUM_HOME_SCREEN_ICON_SIZE.height, {
       fill: color
     } )
   );
-};
+}
 
 simLauncher.launch( function() {
-  new Sim( sunTitleString, [
+  new Sim( sunStrings.sun.title, [
 
     // Buttons screen
     new Screen(
