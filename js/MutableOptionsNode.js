@@ -60,9 +60,7 @@ function MutableOptionsNode( nodeSubtype, parameters, staticOptions, dynamicOpti
       return property.value;
     } ), staticOptions );
 
-    // NOTE: In the future, we won't need to subtype if we can rely on Reflect.construct:
-    // return Reflect.construct( this.nodeSubtype, this.parameters.concat( [ options ] ) );
-    nodeSubtype.apply( this, parameters.concat( [ options ] ) );
+    return Reflect.construct( nodeSubtype, parameters.concat( [ options ] ) );
   };
 
   // Have our copies inherit directly (for now, use Reflect.construct when IE11 support is dropped?)
