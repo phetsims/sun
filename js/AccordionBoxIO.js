@@ -7,16 +7,14 @@
  */
 
 import NodeIO from '../../scenery/js/nodes/NodeIO.js';
-import ObjectIO from '../../tandem/js/types/ObjectIO.js';
+import IOType from '../../tandem/js/types/IOType.js';
 import sun from './sun.js';
 
-class AccordionBoxIO extends NodeIO {}
-
-AccordionBoxIO.documentation = 'A traditional accordionBox';
-AccordionBoxIO.events = [ 'expanded', 'collapsed' ];
-AccordionBoxIO.validator = { isValidValue: v => v instanceof phet.sun.AccordionBox };
-AccordionBoxIO.typeName = 'AccordionBoxIO';
-ObjectIO.validateIOType( AccordionBoxIO );
+const AccordionBoxIO = new IOType( 'AccordionBoxIO', {
+  isValidValue: v => v instanceof phet.sun.AccordionBox,
+  supertype: NodeIO,
+  events: [ 'expanded', 'collapsed' ]
+} );
 
 sun.register( 'AccordionBoxIO', AccordionBoxIO );
 export default AccordionBoxIO;

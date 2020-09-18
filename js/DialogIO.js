@@ -8,10 +8,12 @@
  */
 
 import NodeIO from '../../scenery/js/nodes/NodeIO.js';
-import ObjectIO from '../../tandem/js/types/ObjectIO.js';
+import IOType from '../../tandem/js/types/IOType.js';
 import sun from './sun.js';
 
-class DialogIO extends NodeIO {
+const DialogIO = new IOType( 'DialogIO', {
+  isValidValue: v => v instanceof phet.sun.Dialog,
+  supertype: NodeIO,
 
   /**
    * Since many Dialogs are dynamic elements, these need to be in the state. The value of the state object doesn't
@@ -22,15 +24,10 @@ class DialogIO extends NodeIO {
    * @param {Dialog} dialog
    * @returns {string}
    */
-  static toStateObject( dialog ) {
+  toStateObject( dialog ) {
     return dialog.tandem.phetioID;
   }
-}
-
-DialogIO.documentation = 'A dialog panel';
-DialogIO.validator = { isValidValue: v => v instanceof phet.sun.Dialog };
-DialogIO.typeName = 'DialogIO';
-ObjectIO.validateIOType( DialogIO );
+} );
 
 sun.register( 'DialogIO', DialogIO );
 export default DialogIO;

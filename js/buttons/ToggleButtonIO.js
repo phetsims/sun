@@ -8,24 +8,20 @@
  */
 
 import NodeIO from '../../../scenery/js/nodes/NodeIO.js';
-import ObjectIO from '../../../tandem/js/types/ObjectIO.js';
+import IOType from '../../../tandem/js/types/IOType.js';
 import sun from '../sun.js';
 
-class ToggleButtonIO extends NodeIO {}
-
-ToggleButtonIO.documentation = 'A button that toggles state (in/out) when pressed';
-ToggleButtonIO.events = [ 'toggled' ];
-
-ToggleButtonIO.validator = {
+const ToggleButtonIO = new IOType( 'ToggleButtonIO', {
   isValidValue: instance => {
     const types = [ phet.sun.RectangularToggleButton, phet.sun.RoundStickyToggleButton, phet.sun.RoundToggleButton ];
     const definedTypes = types.filter( v => !!v );
     const matches = definedTypes.filter( v => instance instanceof v );
     return matches.length > 0;
-  }
-};
-ToggleButtonIO.typeName = 'ToggleButtonIO';
-ObjectIO.validateIOType( ToggleButtonIO );
+  },
+  supertype: NodeIO,
+  documentation: 'A button that toggles state (in/out) when pressed',
+  events: [ 'toggled' ]
+} );
 
 sun.register( 'ToggleButtonIO', ToggleButtonIO );
 export default ToggleButtonIO;

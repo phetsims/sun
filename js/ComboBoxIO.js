@@ -8,18 +8,17 @@
  */
 
 import NodeIO from '../../scenery/js/nodes/NodeIO.js';
-import ObjectIO from '../../tandem/js/types/ObjectIO.js';
+import IOType from '../../tandem/js/types/IOType.js';
 import sun from './sun.js';
 
-class ComboBoxIO extends NodeIO {}
-
-ComboBoxIO.documentation = 'A combo box is composed of a push button and a listbox. The listbox contains items that represent ' +
-                           'choices. Pressing the button pops up the listbox. Selecting from an item in the listbox sets the ' +
-                           'value of an associated Property. The button shows the item that is currently selected.';
-ComboBoxIO.events = [ 'listBoxShown', 'listBoxHidden' ];
-ComboBoxIO.validator = { isValidValue: v => v instanceof phet.sun.ComboBox };
-ComboBoxIO.typeName = 'ComboBoxIO';
-ObjectIO.validateIOType( ComboBoxIO );
+const ComboBoxIO = new IOType( 'ComboBoxIO', {
+  isValidValue: v => v instanceof phet.sun.ComboBox,
+  documentation: 'A combo box is composed of a push button and a listbox. The listbox contains items that represent ' +
+                 'choices. Pressing the button pops up the listbox. Selecting from an item in the listbox sets the ' +
+                 'value of an associated Property. The button shows the item that is currently selected.',
+  supertype: NodeIO,
+  events: [ 'listBoxShown', 'listBoxHidden' ]
+} );
 
 sun.register( 'ComboBoxIO', ComboBoxIO );
 export default ComboBoxIO;

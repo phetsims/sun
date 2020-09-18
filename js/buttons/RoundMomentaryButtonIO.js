@@ -8,16 +8,15 @@
  */
 
 import NodeIO from '../../../scenery/js/nodes/NodeIO.js';
-import ObjectIO from '../../../tandem/js/types/ObjectIO.js';
+import IOType from '../../../tandem/js/types/IOType.js';
 import sun from '../sun.js';
 
-class RoundMomentaryButtonIO extends NodeIO {}
-
-RoundMomentaryButtonIO.documentation = 'Button that performs an action while it is being pressed, and stops the action when released';
-RoundMomentaryButtonIO.events = [ 'pressed', 'released', 'releasedDisabled' ];
-RoundMomentaryButtonIO.validator = { isValidValue: v => v instanceof phet.sun.RoundMomentaryButton };
-RoundMomentaryButtonIO.typeName = 'RoundMomentaryButtonIO';
-ObjectIO.validateIOType( RoundMomentaryButtonIO );
+const RoundMomentaryButtonIO = new IOType( 'RoundMomentaryButtonIO', {
+  isValidValue: v => v instanceof phet.sun.RoundMomentaryButton,
+  supertype: NodeIO,
+  documentation: 'Button that performs an action while it is being pressed, and stops the action when released',
+  events: [ 'pressed', 'released', 'releasedDisabled' ]
+} );
 
 sun.register( 'RoundMomentaryButtonIO', RoundMomentaryButtonIO );
 export default RoundMomentaryButtonIO;
