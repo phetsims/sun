@@ -15,18 +15,10 @@ const DialogIO = new IOType( 'DialogIO', {
   isValidValue: v => v instanceof phet.sun.Dialog,
   supertype: NodeIO,
 
-  /**
-   * Since many Dialogs are dynamic elements, these need to be in the state. The value of the state object doesn't
-   * matter, but it instead just serves as a marker to tell the state engine to recreate the Dialog (if dynamic) when
-   * setting state.
-   * @override
-   * @public
-   * @param {Dialog} dialog
-   * @returns {string}
-   */
-  toStateObject( dialog ) {
-    return dialog.tandem.phetioID;
-  }
+  // Since many Dialogs are dynamic elements, these need to be in the state. The value of the state object doesn't
+  // matter, but it instead just serves as a marker to tell the state engine to recreate the Dialog (if dynamic) when
+  // setting state.
+  toStateObject: dialog => dialog.tandem.phetioID
 } );
 
 sun.register( 'DialogIO', DialogIO );
