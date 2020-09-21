@@ -49,7 +49,6 @@ const CORNER_RADIUS = 5;
  * @constructor
  */
 function MenuItem( width, height, closeCallback, text, callback, present, options ) {
-  const self = this;
 
   // Extend the object with defaults.
   options = merge( {
@@ -110,14 +109,18 @@ function MenuItem( width, height, closeCallback, text, callback, present, option
     exit: function() { highlight.fill = null; }
   } );
 
-  const fire = function( event ) {
-    closeCallback( event );
-    callback( event );
-  };
-
   this.addInputListener( new FireListener( {
     tandem: options.tandem.createTandem( 'inputListener' ),
-    fire: fire
+    fire: event => {
+      closeCallback( event );
+      callback( event );
+
+      // send focus to a custom spot, but focus should only be placed if the fire event
+      // came from the PDOM
+      if ( event.isFromPDOM() ) {
+        options.handleFocusCallback( event );
+      }
+    }
   } ) );
 
   // @public (sun)
@@ -138,15 +141,6 @@ function MenuItem( width, height, closeCallback, text, callback, present, option
     this.addChild( checkMarkWrapper );
   }
 
-  // pdom - activate the item when selected with the keyboard
-  const clickListener = {
-    click: function( event ) {
-      fire( event );
-      options.handleFocusCallback( event );
-    }
-  };
-  this.addInputListener( clickListener );
-
   this.mutate( options );
 
   // @private - dispose the menu item
@@ -154,8 +148,6 @@ function MenuItem( width, height, closeCallback, text, callback, present, option
     if ( options.checkedProperty ) {
       options.checkedProperty.unlink( checkListener );
     }
-
-    self.removeInputListener( clickListener );
   };
 }
 
