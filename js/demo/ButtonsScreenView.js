@@ -18,7 +18,6 @@ import Font from '../../../scenery/js/util/Font.js';
 import ArrowButton from '../buttons/ArrowButton.js';
 import BooleanRectangularStickyToggleButton from '../buttons/BooleanRectangularStickyToggleButton.js';
 import BooleanRectangularToggleButton from '../buttons/BooleanRectangularToggleButton.js';
-import HTMLPushButton from '../buttons/HTMLPushButton.js';
 import RadioButtonGroup from '../buttons/RadioButtonGroup.js';
 import RectangularButtonView from '../buttons/RectangularButtonView.js';
 import RectangularMomentaryButton from '../buttons/RectangularMomentaryButton.js';
@@ -382,11 +381,6 @@ class ButtonsScreenView extends ScreenView {
       lineWidth: 1
     } );
 
-    const htmlButton = new HTMLPushButton( 'HTML <em>button</em> <b>example</b>', {
-      listener: function() { message( 'HTML button pressed' ); },
-      baseColor: new Color( 64, 225, 0 )
-    } );
-
     // transparent button with something behind it
     const rectangleNode = new Rectangle( 0, 0, 25, 50, { fill: 'red' } );
     const transparentButton = new RectangularPushButton( {
@@ -401,7 +395,7 @@ class ButtonsScreenView extends ScreenView {
     const arrowButton = new ArrowButton( 'left', function() { message( 'ArrowButton pressed' ); } );
 
     const miscButtonsBox = new VBox( {
-      children: [ fireOnDownButton, htmlButton, transparentParent, arrowButton ],
+      children: [ fireOnDownButton, transparentParent, arrowButton ],
       spacing: 15,
       left: actionButtonsBox.left,
       top: actionButtonsBox.bottom + 25
@@ -498,7 +492,6 @@ class ButtonsScreenView extends ScreenView {
       goButton.enabled = enabled;
       helpButton.enabled = enabled;
       fireOnDownButton.enabled = enabled;
-      htmlButton.enabled = enabled;
       transparentButton.enabled = enabled;
       roundStickyToggleButton.enabled = enabled;
       booleanRectangularStickyToggleButton.enabled = enabled;
