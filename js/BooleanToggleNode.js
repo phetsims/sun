@@ -8,25 +8,24 @@
  * @author Chris Malley (PixelZoom, Inc.)
  */
 
-import inherit from '../../phet-core/js/inherit.js';
 import sun from './sun.js';
 import ToggleNode from './ToggleNode.js';
 
-/**
- * @param {Node} trueNode
- * @param {Node} falseNode
- * @param {Property.<boolean>} booleanProperty
- * @param {Object} [options]
- * @constructor
- */
-function BooleanToggleNode( trueNode, falseNode, booleanProperty, options ) {
-  ToggleNode.call( this, booleanProperty, [
-    { value: true, node: trueNode },
-    { value: false, node: falseNode }
-  ], options );
+class BooleanToggleNode extends ToggleNode {
+
+  /**
+   * @param {Node} trueNode
+   * @param {Node} falseNode
+   * @param {Property.<boolean>} booleanProperty
+   * @param {Object} [options]
+   */
+  constructor( trueNode, falseNode, booleanProperty, options ) {
+    super( booleanProperty, [
+      { value: true, node: trueNode },
+      { value: false, node: falseNode }
+    ], options );
+  }
 }
 
 sun.register( 'BooleanToggleNode', BooleanToggleNode );
-
-inherit( ToggleNode, BooleanToggleNode );
 export default BooleanToggleNode;
