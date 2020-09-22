@@ -10,20 +10,20 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
-import inherit from '../../../phet-core/js/inherit.js';
 import sun from '../sun.js';
 import RectangularStickyToggleButton from './RectangularStickyToggleButton.js';
 
-/**
- * @param {Property.<boolean>} booleanProperty
- * @param {Object} [options]
- * @constructor
- */
-function BooleanRectangularStickyToggleButton( booleanProperty, options ) {
-  RectangularStickyToggleButton.call( this, false, true, booleanProperty, options );
+class BooleanRectangularStickyToggleButton extends RectangularStickyToggleButton {
+
+  /**
+   * @param {Property.<boolean>} booleanProperty
+   * @param {Object} [options]
+   * @constructor
+   */
+  constructor( booleanProperty, options ) {
+    super( false, true, booleanProperty, options );
+  }
 }
 
 sun.register( 'BooleanRectangularStickyToggleButton', BooleanRectangularStickyToggleButton );
-
-inherit( RectangularStickyToggleButton, BooleanRectangularStickyToggleButton );
 export default BooleanRectangularStickyToggleButton;

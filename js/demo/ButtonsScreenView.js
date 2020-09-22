@@ -6,6 +6,7 @@
  * @author John Blanco (PhET Interactive Simulations)
  */
 
+import BooleanProperty from '../../../axon/js/BooleanProperty.js';
 import Property from '../../../axon/js/Property.js';
 import ScreenView from '../../../joist/js/ScreenView.js';
 import HBox from '../../../scenery/js/nodes/HBox.js';
@@ -410,17 +411,17 @@ class ButtonsScreenView extends ScreenView {
     // quotes so it is clear that it is a string in the debugging UI.
     const roundToggleButtonProperty = new Property( 'off' );
     roundToggleButtonProperty.lazyLink( function( value ) {
-      message( 'Round sticky toggle button state changed to: ' + value );
+      message( 'RoundStickyToggleButton state changed to: ' + value );
     } );
     const roundStickyToggleButton = new RoundStickyToggleButton( 'off', 'on', roundToggleButtonProperty, {
       baseColor: new Color( 255, 0, 0 )
     } );
 
-    const rectangularToggleButtonProperty = new Property( false );
-    rectangularToggleButtonProperty.lazyLink( function( value ) {
-      message( 'Rectangular sticky toggle button state changed to: ' + value );
+    const booleanRectangularToggleButtonProperty = new BooleanProperty( false );
+    booleanRectangularToggleButtonProperty.lazyLink( function( value ) {
+      message( 'BooleanRectangularStickyToggleButton state changed to: ' + value );
     } );
-    const booleanRectangularStickyToggleButton = new BooleanRectangularStickyToggleButton( rectangularToggleButtonProperty, {
+    const booleanRectangularStickyToggleButton = new BooleanRectangularStickyToggleButton( booleanRectangularToggleButtonProperty, {
       baseColor: new Color( 0, 200, 200 ),
       centerX: roundStickyToggleButton.centerX,
       top: roundStickyToggleButton.bottom + 10,
