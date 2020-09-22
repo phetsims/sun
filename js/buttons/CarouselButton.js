@@ -10,14 +10,13 @@
 import Dimension2 from '../../../dot/js/Dimension2.js';
 import Matrix3 from '../../../dot/js/Matrix3.js';
 import Shape from '../../../kite/js/Shape.js';
-import inherit from '../../../phet-core/js/inherit.js';
 import merge from '../../../phet-core/js/merge.js';
 import Path from '../../../scenery/js/nodes/Path.js';
 import sun from '../sun.js';
 import RectangularButtonView from './RectangularButtonView.js';
 import RectangularPushButton from './RectangularPushButton.js';
 
-// maps arrow directions to rotation angles, in radians
+// maps options.arrowDirection to rotation angles, in radians
 const ANGLES = {
   up: 0, // arrow shape is created in 'up' direction
   down: Math.PI,
@@ -25,72 +24,72 @@ const ANGLES = {
   right: Math.PI / 2
 };
 
-/**
- * @param {Object} [options]
- * @constructor
- */
-function CarouselButton( options ) {
+class CarouselButton extends RectangularPushButton {
 
-  // see supertype for additional options
-  options = merge( {
+  /**
+   * @param {Object} [options]
+   */
+  constructor( options ) {
 
-    // button
-    baseColor: 'rgba( 200, 200, 200, 0.5 )', // {Color|string} button fill color
-    stroke: 'black', // {Color|string|null} button stroke
-    buttonAppearanceStrategy: RectangularButtonView.FlatAppearanceStrategy,
-    cornerRadius: 4, // {number} radius for the two potentially rounded corners
+    // see supertype for additional options
+    options = merge( {
 
-    // arrow
-    arrowDirection: 'up', // {string} direction that the arrow points, 'up'|'down'|'left'|'right'
-    arrowSize: new Dimension2( 20, 7 ), // {Dimension2} size of the arrow, in 'up' directions
-    arrowStroke: 'black', // {Color|string} color used for the arrow icons
-    arrowLineWidth: 3, // {number} line width used to stroke the arrow icons
-    arrowLineCap: 'round', // {string} 'butt'|'round'|'square'
+      // button
+      baseColor: 'rgba( 200, 200, 200, 0.5 )', // {Color|string} button fill color
+      stroke: 'black', // {Color|string|null} button stroke
+      buttonAppearanceStrategy: RectangularButtonView.FlatAppearanceStrategy,
+      cornerRadius: 4, // {number} radius for the two potentially rounded corners
 
-    // Convenience options for dilating pointer areas such that they do not overlap with Carousel content.
-    // See computePointerArea.
-    touchAreaXDilation: 0,
-    touchAreaYDilation: 0,
-    mouseAreaXDilation: 0,
-    mouseAreaYDilation: 0
+      // arrow
+      arrowDirection: 'up', // {string} direction that the arrow points, 'up'|'down'|'left'|'right'
+      arrowSize: new Dimension2( 20, 7 ), // {Dimension2} size of the arrow, in 'up' directions
+      arrowStroke: 'black', // {Color|string} color used for the arrow icons
+      arrowLineWidth: 3, // {number} line width used to stroke the arrow icons
+      arrowLineCap: 'round', // {string} 'butt'|'round'|'square'
 
-  }, options );
+      // Convenience options for dilating pointer areas such that they do not overlap with Carousel content.
+      // See computePointerArea.
+      touchAreaXDilation: 0,
+      touchAreaYDilation: 0,
+      mouseAreaXDilation: 0,
+      mouseAreaYDilation: 0
 
-  // validate options
-  assert && assert( ANGLES.hasOwnProperty( options.arrowDirection ), 'invalid direction: ' + options.direction );
+    }, options );
 
-  // Generic arrow shape, points 'up'
-  let arrowShape = new Shape()
-    .moveTo( 0, 0 )
-    .lineTo( options.arrowSize.width / 2, -options.arrowSize.height )
-    .lineTo( options.arrowSize.width, 0 );
+    // validate options
+    assert && assert( ANGLES.hasOwnProperty( options.arrowDirection ), 'invalid direction: ' + options.direction );
 
-  // Transform arrow shape to match direction
-  arrowShape = arrowShape.transformed( Matrix3.rotation2( ANGLES[ options.arrowDirection ] ) );
+    // Generic arrow shape, points 'up'
+    let arrowShape = new Shape()
+      .moveTo( 0, 0 )
+      .lineTo( options.arrowSize.width / 2, -options.arrowSize.height )
+      .lineTo( options.arrowSize.width, 0 );
 
-  // Arrow node
-  options.content = new Path( arrowShape, {
-    stroke: options.arrowStroke,
-    lineWidth: options.arrowLineWidth,
-    lineCap: options.arrowLineCap
-  } );
+    // Transform arrow shape to match direction
+    arrowShape = arrowShape.transformed( Matrix3.rotation2( ANGLES[ options.arrowDirection ] ) );
 
-  // set up the options such that the inner corners are square and outer ones are rounded
-  const arrowDirection = options.arrowDirection; // convenience var
-  const cornerRadius = options.cornerRadius; // convenience var
-  options.leftTopCornerRadius = arrowDirection === 'up' || arrowDirection === 'left' ? cornerRadius : 0;
-  options.rightTopCornerRadius = arrowDirection === 'up' || arrowDirection === 'right' ? cornerRadius : 0;
-  options.leftBottomCornerRadius = arrowDirection === 'down' || arrowDirection === 'left' ? cornerRadius : 0;
-  options.rightBottomCornerRadius = arrowDirection === 'down' || arrowDirection === 'right' ? cornerRadius : 0;
+    // Arrow node
+    options.content = new Path( arrowShape, {
+      stroke: options.arrowStroke,
+      lineWidth: options.arrowLineWidth,
+      lineCap: options.arrowLineCap
+    } );
 
-  RectangularPushButton.call( this, options );
+    // set up the options such that the inner corners are square and outer ones are rounded
+    const arrowDirection = options.arrowDirection; // convenience var
+    const cornerRadius = options.cornerRadius; // convenience var
+    options.leftTopCornerRadius = arrowDirection === 'up' || arrowDirection === 'left' ? cornerRadius : 0;
+    options.rightTopCornerRadius = arrowDirection === 'up' || arrowDirection === 'right' ? cornerRadius : 0;
+    options.leftBottomCornerRadius = arrowDirection === 'down' || arrowDirection === 'left' ? cornerRadius : 0;
+    options.rightBottomCornerRadius = arrowDirection === 'down' || arrowDirection === 'right' ? cornerRadius : 0;
 
-  // pointer areas
-  this.touchArea = computePointerArea( this, arrowDirection, options.touchAreaXDilation, options.touchAreaYDilation );
-  this.mouseArea = computePointerArea( this, arrowDirection, options.mouseAreaXDilation, options.mouseAreaYDilation );
+    super( options );
+
+    // pointer areas
+    this.touchArea = computePointerArea( this, arrowDirection, options.touchAreaXDilation, options.touchAreaYDilation );
+    this.mouseArea = computePointerArea( this, arrowDirection, options.mouseAreaXDilation, options.mouseAreaYDilation );
+  }
 }
-
-sun.register( 'CarouselButton', CarouselButton );
 
 /**
  * Computes a pointer area based on dilation of a CarouselButton's local bounds.
@@ -103,7 +102,7 @@ sun.register( 'CarouselButton', CarouselButton );
  * @param {number} y - vertical dilation
  * @returns {Bounds2} - null if no dilation is necessary, i.e. x === 0 && y === 0
  */
-var computePointerArea = function( button, arrowDirection, x, y ) {
+function computePointerArea( button, arrowDirection, x, y ) {
   let pointerArea = null;
   if ( x || y ) {
     switch( arrowDirection ) {
@@ -124,7 +123,7 @@ var computePointerArea = function( button, arrowDirection, x, y ) {
     }
   }
   return pointerArea;
-};
+}
 
-inherit( RectangularPushButton, CarouselButton );
+sun.register( 'CarouselButton', CarouselButton );
 export default CarouselButton;
