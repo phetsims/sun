@@ -9,7 +9,6 @@
 
 import Matrix3 from '../../dot/js/Matrix3.js';
 import Shape from '../../kite/js/Shape.js';
-import inherit from '../../phet-core/js/inherit.js';
 import merge from '../../phet-core/js/merge.js';
 import Path from '../../scenery/js/nodes/Path.js';
 import sun from './sun.js';
@@ -70,60 +69,59 @@ const SHAPE_MATRIX = Matrix3.createFromPool( 0.025, 0, 0, 0, -0.025, 0, 0, 0, 1 
 // Shapes are immutable so that Path doesn't add a listener, which creates a memory leak.
 const shapeCache = {};
 
-/**
- * @param {string} iconName - the fontawesome icon name
- * @param {Object} [options]
- * @constructor
- */
-function FontAwesomeNode( iconName, options ) {
+class FontAwesomeNode extends Path {
 
-  // default values
-  options = merge( {
-    fill: '#000',
+  /**
+   * @param {string} iconName - the fontawesome icon name
+   * @param {Object} [options]
+   */
+  constructor( iconName, options ) {
 
-    // Font awesome nodes are expensive to pick (and have a lot of holes in them which you may wish to pick anyways,
-    // such as the door of the 'home' icon, so don't pick by default.
-    pickable: false,
+    // default values
+    options = merge( {
+      fill: '#000',
 
-    // {boolean} use Shape caching for this instance? Note that there is no way to remove an entry from the cache
-    // so only cache a shape if it will persist for the lifetime of the simulation.
-    enableCache: true
-  }, options );
+      // Font awesome nodes are expensive to pick (and have a lot of holes in them which you may wish to pick anyways,
+      // such as the door of the 'home' icon, so don't pick by default.
+      pickable: false,
 
-  let shape;
-  if ( options.enableCache ) {
+      // {boolean} use Shape caching for this instance? Note that there is no way to remove an entry from the cache
+      // so only cache a shape if it will persist for the lifetime of the simulation.
+      enableCache: true
+    }, options );
 
-    // cache the shape
-    if ( !shapeCache[ iconName ] ) {
-      shapeCache[ iconName ] = FontAwesomeNode.createShape( iconName );
+    let shape;
+    if ( options.enableCache ) {
+
+      // cache the shape
+      if ( !shapeCache[ iconName ] ) {
+        shapeCache[ iconName ] = FontAwesomeNode.createShape( iconName );
+      }
+
+      // get the shape from the cache
+      shape = shapeCache[ iconName ];
     }
+    else {
 
-    // get the shape from the cache
-    shape = shapeCache[ iconName ];
+      // don't use the cache
+      shape = FontAwesomeNode.createShape( iconName );
+    }
+    assert && assert( shape, 'expected shape to be defined' );
+
+    super( shape, options );
   }
-  else {
-
-    // don't use the cache
-    shape = FontAwesomeNode.createShape( iconName );
-  }
-
-  Path.call( this, shape, options );
-}
-
-sun.register( 'FontAwesomeNode', FontAwesomeNode );
-
-inherit( Path, FontAwesomeNode, {}, {
 
   /**
    * Creates an immutable Shape for a specified fontawesome icon.
-   *
    * @param {string} iconName - the fontawesome icon name
    * @returns {Shape}
+   * @public
    */
-  createShape: function( iconName ) {
+  static createShape( iconName ) {
     assert && assert( ICONS[ iconName ], 'unsupported iconName: ' + iconName );
     return new Shape( ICONS[ iconName ] ).transformed( SHAPE_MATRIX ).makeImmutable();
   }
-} );
+}
 
+sun.register( 'FontAwesomeNode', FontAwesomeNode );
 export default FontAwesomeNode;
