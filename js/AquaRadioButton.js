@@ -116,14 +116,14 @@ class AquaRadioButton extends Node {
     this.addChild( deselectedNode );
 
     // sync control with model
-    const syncWithModel = function( newValue ) {
+    const syncWithModel = newValue => {
       selectedNode.visible = ( newValue === value );
       deselectedNode.visible = !selectedNode.visible;
     };
     property.link( syncWithModel );
 
     // set property value on fire
-    const fire = function() {
+    const fire = () => {
       property.set( value );
       options.soundPlayer.play();
     };
