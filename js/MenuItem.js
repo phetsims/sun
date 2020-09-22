@@ -7,7 +7,6 @@
  * @author Michael Kauzmann (PhET Interactive Simulations)
  */
 
-import inherit from '../../phet-core/js/inherit.js';
 import merge from '../../phet-core/js/merge.js';
 import PhetFont from '../../scenery-phet/js/PhetFont.js';
 import PDOMUtils from '../../scenery/js/accessibility/pdom/PDOMUtils.js';
@@ -37,129 +36,129 @@ const RIGHT_X_MARGIN = 5;
 const Y_MARGIN = 3;
 const CORNER_RADIUS = 5;
 
-/**
- * @param {Number} width - the width of the menu item
- * @param {Number} height - the height of the menu item
- * @param {Function} closeCallback - called when closing the dialog that the menu item opened
- * @param {String} text
- * @param {Function} callback
- * @param {boolean} present - if this MenuItem will be shown in the menu. Some items are just created to maintain a
- *                              consistent PhET-iO API for all sim runtimes, see https://github.com/phetsims/phet-io/issues/1457
- * @param {Object} [options]
- * @constructor
- */
-function MenuItem( width, height, closeCallback, text, callback, present, options ) {
+class MenuItem extends Node {
+  /**
+   * @param {Number} width - the width of the menu item
+   * @param {Number} height - the height of the menu item
+   * @param {Function} closeCallback - called when closing the dialog that the menu item opened
+   * @param {String} text
+   * @param {Function} callback
+   * @param {boolean} present - if this MenuItem will be shown in the menu. Some items are just created to maintain a
+   *                              consistent PhET-iO API for all sim runtimes, see https://github.com/phetsims/phet-io/issues/1457
+   * @param {Object} [options]
+   */
+  constructor( width, height, closeCallback, text, callback, present, options ) {
 
-  // Extend the object with defaults.
-  options = merge( {
-    cursor: 'pointer',
-    textFill: 'black',
+    // Extend the object with defaults.
+    options = merge( {
+      cursor: 'pointer',
+      textFill: 'black',
 
-    // if there should be a horizontal separator between this MenuItem and the one immediately previous
-    separatorBefore: false,
+      // if there should be a horizontal separator between this MenuItem and the one immediately previous
+      separatorBefore: false,
 
-    // {Property.<boolean>} - if provided add a checkmark next to the MenuItem text whenever this Property is true.
-    checkedProperty: null,
+      // {Property.<boolean>} - if provided add a checkmark next to the MenuItem text whenever this Property is true.
+      checkedProperty: null,
 
-    // phet-io
-    tandem: Tandem.OPTIONAL,
-    phetioDocumentation: 'Item buttons shown in a popup menu',
-    phetioEventType: EventType.USER,
+      // phet-io
+      tandem: Tandem.OPTIONAL,
+      phetioDocumentation: 'Item buttons shown in a popup menu',
+      phetioEventType: EventType.USER,
 
-    // pdom
-    tagName: 'button',
+      // pdom
+      tagName: 'button',
 
-    // @param {SceneryEvent} - Only called after PDOM interaction and called AFTER closeCallback, use this to move
-    // focus to a particular Node in the document. By default focus is moved to the top of the document after a
-    // MenuItem action since the PhET Menu closes after activation
-    handleFocusCallback: event => {
+      // @param {SceneryEvent} - Only called after PDOM interaction and called AFTER closeCallback, use this to move
+      // focus to a particular Node in the document. By default focus is moved to the top of the document after a
+      // MenuItem action since the PhET Menu closes after activation
+      handleFocusCallback: event => {
 
-      // limit search of next focusable to root accessible HTML element
-      const rootElement = phet.joist.display.accessibleDOMElement;
-      PDOMUtils.getNextFocusable( rootElement ).focus();
-    },
-    containerTagName: 'li',
-    containerAriaRole: 'none', // this is required for JAWS to handle focus correctly, see https://github.com/phetsims/john-travoltage/issues/225
-    innerContent: text,
-    ariaRole: 'menuitem'
-  }, options );
+        // limit search of next focusable to root accessible HTML element
+        const rootElement = phet.joist.display.accessibleDOMElement;
+        PDOMUtils.getNextFocusable( rootElement ).focus();
+      },
+      containerTagName: 'li',
+      containerAriaRole: 'none', // this is required for JAWS to handle focus correctly, see https://github.com/phetsims/john-travoltage/issues/225
+      innerContent: text,
+      ariaRole: 'menuitem'
+    }, options );
 
-  Node.call( this );
+    super();
 
-  // @public (read-only) {boolean}
-  this.present = present;
+    // @public (read-only) {boolean}
+    this.present = present;
 
-  const textNode = new Text( text, {
-    font: new PhetFont( FONT_SIZE ),
-    fill: options.textFill,
-    maxWidth: MAX_ITEM_WIDTH
-  } );
-
-  const highlight = new Rectangle( 0, 0, width + LEFT_X_MARGIN + RIGHT_X_MARGIN + CHECK_OFFSET,
-    height + Y_MARGIN + Y_MARGIN, CORNER_RADIUS, CORNER_RADIUS );
-
-  this.addChild( highlight );
-  this.addChild( textNode );
-
-  textNode.left = highlight.left + LEFT_X_MARGIN + CHECK_OFFSET; // text is left aligned
-  textNode.centerY = highlight.centerY;
-
-  this.addInputListener( {
-    enter: function() { highlight.fill = HIGHLIGHT_COLOR; },
-    exit: function() { highlight.fill = null; }
-  } );
-
-  this.addInputListener( new FireListener( {
-    tandem: options.tandem.createTandem( 'inputListener' ),
-    fire: event => {
-      closeCallback( event );
-      callback( event );
-
-      // send focus to a custom spot, but focus should only be placed if the fire event
-      // came from the PDOM
-      if ( event.isFromPDOM() ) {
-        options.handleFocusCallback( event );
-      }
-    }
-  } ) );
-
-  // @public (sun)
-  this.separatorBefore = options.separatorBefore;
-
-  // if there is a check-mark property, add the check mark and hook up visibility changes
-  let checkListener;
-  if ( options.checkedProperty ) {
-    const checkMarkWrapper = new Node( {
-      children: [ CHECK_MARK_NODE ],
-      right: textNode.left - CHECK_PADDING,
-      centerY: textNode.centerY
+    const textNode = new Text( text, {
+      font: new PhetFont( FONT_SIZE ),
+      fill: options.textFill,
+      maxWidth: MAX_ITEM_WIDTH
     } );
-    checkListener = function( isChecked ) {
-      checkMarkWrapper.visible = isChecked;
+
+    const highlight = new Rectangle( 0, 0, width + LEFT_X_MARGIN + RIGHT_X_MARGIN + CHECK_OFFSET,
+      height + Y_MARGIN + Y_MARGIN, CORNER_RADIUS, CORNER_RADIUS );
+
+    this.addChild( highlight );
+    this.addChild( textNode );
+
+    textNode.left = highlight.left + LEFT_X_MARGIN + CHECK_OFFSET; // text is left aligned
+    textNode.centerY = highlight.centerY;
+
+    this.addInputListener( {
+      enter: () => { highlight.fill = HIGHLIGHT_COLOR; },
+      exit: () => { highlight.fill = null; }
+    } );
+
+    this.addInputListener( new FireListener( {
+      tandem: options.tandem.createTandem( 'inputListener' ),
+      fire: event => {
+        closeCallback( event );
+        callback( event );
+
+        // send focus to a custom spot, but focus should only be placed if the fire event
+        // came from the PDOM
+        if ( event.isFromPDOM() ) {
+          options.handleFocusCallback( event );
+        }
+      }
+    } ) );
+
+    // @public (sun)
+    this.separatorBefore = options.separatorBefore;
+
+    // if there is a check-mark property, add the check mark and hook up visibility changes
+    let checkListener;
+    if ( options.checkedProperty ) {
+      const checkMarkWrapper = new Node( {
+        children: [ CHECK_MARK_NODE ],
+        right: textNode.left - CHECK_PADDING,
+        centerY: textNode.centerY
+      } );
+      checkListener = isChecked => {
+        checkMarkWrapper.visible = isChecked;
+      };
+      options.checkedProperty.link( checkListener );
+      this.addChild( checkMarkWrapper );
+    }
+
+    this.mutate( options );
+
+    // @private - dispose the menu item
+    this.disposeMenuItem = () => {
+      if ( options.checkedProperty ) {
+        options.checkedProperty.unlink( checkListener );
+      }
     };
-    options.checkedProperty.link( checkListener );
-    this.addChild( checkMarkWrapper );
   }
 
-  this.mutate( options );
-
-  // @private - dispose the menu item
-  this.disposeMenuItem = function() {
-    if ( options.checkedProperty ) {
-      options.checkedProperty.unlink( checkListener );
-    }
-  };
+  /**
+   * @public
+   * @override
+   */
+  dispose() {
+    this.disposeMenuItem();
+    super.dispose();
+  }
 }
 
 sun.register( 'MenuItem', MenuItem );
-
-inherit( Node, MenuItem, {
-
-  // @public - dispose the menu item when it will no longer be used.
-  dispose: function() {
-    this.disposeMenuItem();
-    Node.prototype.dispose.call( this );
-  }
-} );
-
 export default MenuItem;
