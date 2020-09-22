@@ -72,6 +72,15 @@ class ToggleNode extends Node {
   }
 
   /**
+   * @public
+   * @override
+   */
+  dispose() {
+    this.disposeToggleNode();
+    super.dispose();
+  }
+
+  /**
    * A value for the alignChildren option.
    * Centers the latter nodes on the x,y center of the first node.
    * @param {Node[]} children
@@ -170,15 +179,6 @@ class ToggleNode extends Node {
    * @static
    */
   static NONE( children ) {
-  }
-
-  /**
-   * @public
-   * @override
-   */
-  dispose() {
-    this.disposeToggleNode();
-    super.dispose();
   }
 }
 
