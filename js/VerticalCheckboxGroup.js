@@ -7,7 +7,6 @@
  * @author Chris Malley (PixelZoom, Inc.)
  */
 
-import inherit from '../../phet-core/js/inherit.js';
 import merge from '../../phet-core/js/merge.js';
 import HStrut from '../../scenery/js/nodes/HStrut.js';
 import Node from '../../scenery/js/nodes/Node.js';
@@ -16,68 +15,69 @@ import Tandem from '../../tandem/js/Tandem.js';
 import Checkbox from './Checkbox.js';
 import sun from './sun.js';
 
-/**
- * @param {Object[]} items - Each item describes a checkbox, and is an object with these properties:
- *    node: {Node}, // label for the button
- *    property: {Property.<boolean>}, // Property associated with the button
- *    [options]: {Object}, // Item specific options to be passed to the checkbox
- *    [tandem]: {Tandem} // optional tandem for PhET-iO
- * @param {Object} [options]
- * @constructor
- */
-function VerticalCheckboxGroup( items, options ) {
+class VerticalCheckboxGroup extends VBox {
 
-  options = merge( {
+  /**
+   * @param {Object[]} items - Each item describes a checkbox, and is an object with these properties:
+   *    node: {Node}, // label for the button
+   *    property: {Property.<boolean>}, // Property associated with the button
+   *    [options]: {Object}, // Item specific options to be passed to the checkbox
+   *    [tandem]: {Tandem} // optional tandem for PhET-iO
+   * @param {Object} [options]
+   */
+  constructor( items, options ) {
 
-    // {Object|null} options passed to constructor of the Checkbox
-    checkboxOptions: null,
+    options = merge( {
 
-    // dilation of pointer areas for each checkbox, y dimension is computed
-    touchAreaXDilation: 5,
-    mouseAreaXDilation: 5,
+      // {Object|null} options passed to constructor of the Checkbox
+      checkboxOptions: null,
 
-    // supertype options
-    spacing: 10, // vertical spacing
-    align: 'left',
-    tandem: Tandem.OPTIONAL
-  }, options );
+      // dilation of pointer areas for each checkbox, y dimension is computed
+      touchAreaXDilation: 5,
+      mouseAreaXDilation: 5,
 
-  // Verify that the client hasn't set options that we will be overwriting.
-  assert && assert( !options.children, 'VerticalCheckboxGroup sets children' );
+      // supertype options
+      spacing: 10, // vertical spacing
+      align: 'left',
+      tandem: Tandem.OPTIONAL
+    }, options );
 
-  // Determine the max item width
-  let maxItemWidth = 0;
-  for ( var i = 0; i < items.length; i++ ) {
-    maxItemWidth = Math.max( maxItemWidth, items[ i ].node.width );
+    // Verify that the client hasn't set options that we will be overwriting.
+    assert && assert( !options.children, 'VerticalCheckboxGroup sets children' );
+
+    // Determine the max item width
+    let maxItemWidth = 0;
+    for ( var i = 0; i < items.length; i++ ) {
+      maxItemWidth = Math.max( maxItemWidth, items[ i ].node.width );
+    }
+
+    // Create a checkbox for each item
+    assert && assert( !options.children, 'VerticalCheckboxGroup sets children' );
+    options.children = [];
+    for ( i = 0; i < items.length; i++ ) {
+
+      const item = items[ i ];
+
+      // Content for the checkbox. Add an invisible strut, so that checkboxes have uniform width.
+      const content = new Node( {
+        children: [ new HStrut( maxItemWidth ), item.node ]
+      } );
+
+      const checkbox = new Checkbox( content, item.property, merge( {}, options.checkboxOptions, item.options, {
+        tandem: item.tandem || Tandem.OPTIONAL
+      } ) );
+
+      // set pointer areas, y dimensions are computed
+      const yDilation = options.spacing / 2;
+      checkbox.mouseArea = checkbox.localBounds.dilatedXY( options.mouseAreaXDilation, yDilation );
+      checkbox.touchArea = checkbox.localBounds.dilatedXY( options.touchAreaXDilation, yDilation );
+
+      options.children.push( checkbox );
+    }
+
+    super( options );
   }
-
-  // Create a checkbox for each item
-  options.children = [];
-  for ( i = 0; i < items.length; i++ ) {
-
-    const item = items[ i ];
-
-    // Content for the checkbox. Add an invisible strut, so that checkboxes have uniform width.
-    const content = new Node( {
-      children: [ new HStrut( maxItemWidth ), item.node ]
-    } );
-
-    const checkbox = new Checkbox( content, item.property, merge( {}, options.checkboxOptions, item.options, {
-      tandem: item.tandem || Tandem.OPTIONAL
-    } ) );
-
-    // set pointer areas, y dimensions are computed
-    const yDilation = options.spacing / 2;
-    checkbox.mouseArea = checkbox.localBounds.dilatedXY( options.mouseAreaXDilation, yDilation );
-    checkbox.touchArea = checkbox.localBounds.dilatedXY( options.touchAreaXDilation, yDilation );
-
-    options.children.push( checkbox );
-  }
-
-  VBox.call( this, options );
 }
 
 sun.register( 'VerticalCheckboxGroup', VerticalCheckboxGroup );
-
-inherit( VBox, VerticalCheckboxGroup );
 export default VerticalCheckboxGroup;
