@@ -6,55 +6,58 @@
  * @author John Blanco (PhET Interactive Simulations)
  */
 
-import inherit from '../../../phet-core/js/inherit.js';
 import merge from '../../../phet-core/js/merge.js';
 import Text from '../../../scenery/js/nodes/Text.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import sun from '../sun.js';
 import RectangularPushButton from './RectangularPushButton.js';
 
-/**
- * @param {string} text
- * @param {Object} [options]
- * @constructor
- */
-function TextPushButton( text, options ) {
+class TextPushButton extends RectangularPushButton {
 
-  options = merge( {
-    textFill: 'black',
-    maxTextWidth: null,
-    tandem: Tandem.REQUIRED,
+  /**
+   * @param {string} text
+   * @param {Object} [options]
+   */
+  constructor( text, options ) {
 
-    // pdom
-    innerContent: text
-  }, options );
+    options = merge( {
+      textFill: 'black',
+      maxTextWidth: null,
 
-  const textNode = new Text( text, {
-    font: options.font,
-    fill: options.textFill,
-    maxWidth: options.maxTextWidth,
-    tandem: options.tandem.createTandem( 'textNode' )
-  } );
+      // phet-io
+      tandem: Tandem.REQUIRED,
 
-  RectangularPushButton.call( this, merge( { content: textNode }, options ) );
+      // pdom
+      innerContent: text
+    }, options );
 
-  // @private
-  this.disposeTextPushButton = function() {
-    textNode.dispose();
-  };
-}
+    const textNode = new Text( text, {
+      font: options.font,
+      fill: options.textFill,
+      maxWidth: options.maxTextWidth,
+      tandem: options.tandem.createTandem( 'textNode' )
+    } );
 
-sun.register( 'TextPushButton', TextPushButton );
+    assert && assert( !options.content, 'TextPushButton sets content' );
+    options.content = textNode;
 
-inherit( RectangularPushButton, TextPushButton, {
+    super( options );
+
+    // @private
+    this.disposeTextPushButton = () => {
+      textNode.dispose();
+    };
+  }
 
   /**
    * @public
+   * @override
    */
-  dispose: function() {
+  dispose() {
     this.disposeTextPushButton();
-    RectangularPushButton.prototype.dispose.call( this );
+    super.dispose();
   }
-} );
+}
 
+sun.register( 'TextPushButton', TextPushButton );
 export default TextPushButton;
