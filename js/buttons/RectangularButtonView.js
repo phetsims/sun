@@ -108,8 +108,7 @@ function RectangularButtonView( buttonModel, interactionStateProperty, options )
   assert && assert( _.includes( Y_ALIGN_VALUES, options.yAlign ), 'invalid yAlign: ' + options.yAlign );
 
   options.listenerOptions = merge( {
-    tandem: options.tandem.createTandem( 'pressListener' ),
-    accessibleClick: options.accessibleClick
+    tandem: options.tandem.createTandem( 'pressListener' )
   }, options.listenerOptions );
 
   // Use this pattern so that passed in phetioComponentOptions are not blown away.
