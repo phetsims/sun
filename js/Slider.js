@@ -9,6 +9,7 @@
  * @author Chris Malley (PixelZoom, Inc.)
  */
 
+
 import Property from '../../axon/js/Property.js';
 import PropertyIO from '../../axon/js/PropertyIO.js';
 import Dimension2 from '../../dot/js/Dimension2.js';
