@@ -8,31 +8,30 @@
  */
 
 import InstanceRegistry from '../../phet-core/js/documentation/InstanceRegistry.js';
-import inherit from '../../phet-core/js/inherit.js';
 import merge from '../../phet-core/js/merge.js';
 import Orientation from '../../phet-core/js/Orientation.js';
 import Slider from './Slider.js';
 import sun from './sun.js';
 
-/**
- * @param {Property.<number>} valueProperty
- * @param {Range} range
- * @param {Object} [options]
- * @constructor
- */
-function HSlider( valueProperty, range, options ) {
+class HSlider extends Slider {
 
-  assert && assert( !options || options.orientation === undefined, 'HSlider sets orientation' );
+  /**
+   * @param {Property.<number>} valueProperty
+   * @param {Range} range
+   * @param {Object} [options]
+   */
+  constructor( valueProperty, range, options ) {
 
-  Slider.call( this, valueProperty, range, merge( {
-    orientation: Orientation.HORIZONTAL
-  }, options ) );
+    assert && assert( !options || options.orientation === undefined, 'HSlider sets orientation' );
 
-  // support for binder documentation, stripped out in builds and only runs when ?binder is specified
-  assert && phet.chipper.queryParameters.binder && InstanceRegistry.registerDataURL( 'sun', 'HSlider', this );
+    super( valueProperty, range, merge( {
+      orientation: Orientation.HORIZONTAL
+    }, options ) );
+
+    // support for binder documentation, stripped out in builds and only runs when ?binder is specified
+    assert && phet.chipper.queryParameters.binder && InstanceRegistry.registerDataURL( 'sun', 'HSlider', this );
+  }
 }
 
 sun.register( 'HSlider', HSlider );
-
-inherit( Slider, HSlider );
 export default HSlider;
