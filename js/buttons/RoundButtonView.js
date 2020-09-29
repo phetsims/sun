@@ -14,7 +14,6 @@
 import DerivedProperty from '../../../axon/js/DerivedProperty.js';
 import Vector2 from '../../../dot/js/Vector2.js';
 import Shape from '../../../kite/js/Shape.js';
-import inherit from '../../../phet-core/js/inherit.js';
 import merge from '../../../phet-core/js/merge.js';
 import Circle from '../../../scenery/js/nodes/Circle.js';
 import Node from '../../../scenery/js/nodes/Node.js';
@@ -31,169 +30,214 @@ import ButtonInteractionState from './ButtonInteractionState.js';
 const HIGHLIGHT_GRADIENT_LENGTH = 5; // In screen coords, which are roughly pixels.
 const DEFAULT_COLOR = ColorConstants.LIGHT_BLUE;
 
-/**
- * @param {PushButtonModel} buttonModel TODO should this be {ButtonModel} ?
- * @param {Property} interactionStateProperty - A property that is used to drive the visual appearance of the button.
- * @param {Object} [options]
- * @constructor
- */
-function RoundButtonView( buttonModel, interactionStateProperty, options ) {
+class RoundButtonView extends Node {
 
-  // @protected
-  this.buttonModel = buttonModel;
+  /**
+   * @param {PushButtonModel} buttonModel TODO should this be {ButtonModel} ?
+   * @param {Property} interactionStateProperty - A property that is used to drive the visual appearance of the button.
+   * @param {Object} [options]
+   */
+  constructor( buttonModel, interactionStateProperty, options ) {
 
-  options = merge( {
+    options = merge( {
 
-    radius: ( options && options.content ) ? undefined : 30,
-    content: null,
-    cursor: 'pointer',
-    baseColor: DEFAULT_COLOR,
-    disabledBaseColor: ColorConstants.LIGHT_GRAY,
-    minXMargin: 5, // Minimum margin in x direction, i.e. on left and right
-    minYMargin: 5, // Minimum margin in y direction, i.e. on top and bottom
-    fireOnDown: false,
+      radius: ( options && options.content ) ? undefined : 30,
+      content: null,
+      cursor: 'pointer',
+      baseColor: DEFAULT_COLOR,
+      disabledBaseColor: ColorConstants.LIGHT_GRAY,
+      minXMargin: 5, // Minimum margin in x direction, i.e. on left and right
+      minYMargin: 5, // Minimum margin in y direction, i.e. on top and bottom
+      fireOnDown: false,
 
-    // pointer area dilation
-    touchAreaDilation: 0, // radius dilation for touch area
-    mouseAreaDilation: 0, // radius dilation for mouse area
+      // pointer area dilation
+      touchAreaDilation: 0, // radius dilation for touch area
+      mouseAreaDilation: 0, // radius dilation for mouse area
 
-    // pointer area shift
-    touchAreaXShift: 0,
-    touchAreaYShift: 0,
-    mouseAreaXShift: 0,
-    mouseAreaYShift: 0,
+      // pointer area shift
+      touchAreaXShift: 0,
+      touchAreaYShift: 0,
+      mouseAreaXShift: 0,
+      mouseAreaYShift: 0,
 
-    stroke: undefined, // undefined by default, which will cause a stroke to be derived from the base color
-    lineWidth: 0.5, // Only meaningful if stroke is non-null
+      stroke: undefined, // undefined by default, which will cause a stroke to be derived from the base color
+      lineWidth: 0.5, // Only meaningful if stroke is non-null
 
-    // By default, icons are centered in the button, but icons with odd
-    // shapes that are not wrapped in a normalizing parent node may need to
-    // specify offsets to line things up properly
-    xContentOffset: 0,
-    yContentOffset: 0,
+      // By default, icons are centered in the button, but icons with odd
+      // shapes that are not wrapped in a normalizing parent node may need to
+      // specify offsets to line things up properly
+      xContentOffset: 0,
+      yContentOffset: 0,
 
-    // Strategy for controlling the button's appearance, excluding any
-    // content.  This can be a stock strategy from this file or custom.  To
-    // create a custom one, model it off of the stock strategies defined in
-    // this file.
-    buttonAppearanceStrategy: RoundButtonView.ThreeDAppearanceStrategy,
+      // Strategy for controlling the button's appearance, excluding any
+      // content.  This can be a stock strategy from this file or custom.  To
+      // create a custom one, model it off of the stock strategies defined in
+      // this file.
+      buttonAppearanceStrategy: RoundButtonView.ThreeDAppearanceStrategy,
 
-    // Strategy for controlling the appearance of the button's content based
-    // on the button's state.  This can be a stock strategy from this file,
-    // or custom.  To create a custom one, model it off of the stock
-    // version(s) defined in this file.
-    contentAppearanceStrategy: RoundButtonView.FadeContentWhenDisabled,
+      // Strategy for controlling the appearance of the button's content based
+      // on the button's state.  This can be a stock strategy from this file,
+      // or custom.  To create a custom one, model it off of the stock
+      // version(s) defined in this file.
+      contentAppearanceStrategy: RoundButtonView.FadeContentWhenDisabled,
 
-    // Options that will be passed through to the main input listener (PressListener)
-    listenerOptions: null,
+      // Options that will be passed through to the main input listener (PressListener)
+      listenerOptions: null,
 
-    // phet-io
-    tandem: Tandem.OPTIONAL, // This duplicates the parent option and works around https://github.com/phetsims/tandem/issues/50
+      // phet-io
+      tandem: Tandem.OPTIONAL, // This duplicates the parent option and works around https://github.com/phetsims/tandem/issues/50
+
+      // pdom
+      tagName: 'button',
+      focusHighlightDilation: 5 // radius dilation for circular highlight
+    }, options );
+
+    options.listenerOptions = merge( {
+      tandem: options.tandem.createTandem( 'pressListener' )
+    }, options.listenerOptions );
+
+    PhetioObject.mergePhetioComponentOptions( {
+      visibleProperty: { phetioFeatured: true }
+    }, options );
+
+    super();
+
+    // @protected
+    this.buttonModel = buttonModel;
+
+    const content = options.content; // convenience variable
+    const upCenter = new Vector2( options.xContentOffset, options.yContentOffset );
+
+    // For performance reasons, the content should be unpickable.
+    if ( content ) {
+      content.pickable = false;
+    }
+
+    // Make the base color into a property so that the appearance strategy can update itself if changes occur.
+    this.baseColorProperty = new PaintColorProperty( options.baseColor ); // @private
+
+    // @private {PressListener}
+    const pressListener = buttonModel.createListener( options.listenerOptions );
+    this.addInputListener( pressListener );
+
+    // Use the user-specified radius if present, otherwise calculate the
+    // radius based on the content and the margin.
+    const buttonRadius = options.radius ||
+                         Math.max( content.width + options.minXMargin * 2, content.height + options.minYMargin * 2 ) / 2;
+
+    // Create the basic button shape.
+    const button = new Circle( buttonRadius, { fill: options.baseColor, lineWidth: options.lineWidth } );
+    this.addChild( button );
+
+    // Hook up the strategy that will control the basic button appearance.
+    const buttonAppearanceStrategy = new options.buttonAppearanceStrategy(
+      button,
+      interactionStateProperty,
+      this.baseColorProperty,
+      options
+    );
+
+    // Add the content to the button.
+    if ( content ) {
+      content.center = upCenter;
+      this.addChild( content );
+    }
+
+    // Hook up the strategy that will control the content appearance.
+    const contentAppearanceStrategy = new options.contentAppearanceStrategy( content, interactionStateProperty );
+
+    // Control the pointer state based on the interaction state.
+    const handleInteractionStateChanged = state => {
+      this.cursor = state === ButtonInteractionState.DISABLED ||
+                    state === ButtonInteractionState.DISABLED_PRESSED ? null : 'pointer';
+    };
+    interactionStateProperty.link( handleInteractionStateChanged );
+
+    // PDOM - indicate to screen readers that the button is not clickable
+    const updatePDOMEnabled = enabled => {
+      this.setAccessibleAttribute( 'aria-disabled', !enabled );
+    };
+    buttonModel.enabledProperty.link( updatePDOMEnabled );
+
+    // Dilate the pointer areas.
+    this.touchArea = Shape.circle( options.touchAreaXShift, options.touchAreaYShift,
+      buttonRadius + options.touchAreaDilation );
+    this.mouseArea = Shape.circle( options.mouseAreaXShift, options.mouseAreaYShift,
+      buttonRadius + options.mouseAreaDilation );
+
+    // Set pickable such that sub-nodes are pruned from hit testing.
+    this.pickable = null;
 
     // pdom
-    tagName: 'button',
-    focusHighlightDilation: 5 // radius dilation for circular highlight
-  }, options );
+    this.focusHighlight = new Shape.circle( 0, 0, buttonRadius + options.focusHighlightDilation );
 
-  options.listenerOptions = merge( {
-    tandem: options.tandem.createTandem( 'pressListener' )
-  }, options.listenerOptions );
+    // Mutate with the options after the layout is complete so that
+    // width-dependent fields like centerX will work.
+    this.mutate( options );
 
-  PhetioObject.mergePhetioComponentOptions( {
-    visibleProperty: { phetioFeatured: true }
-  }, options );
-
-  Node.call( this );
-  const content = options.content; // convenience variable
-  const upCenter = new Vector2( options.xContentOffset, options.yContentOffset );
-
-  // For performance reasons, the content should be unpickable.
-  if ( content ) {
-    content.pickable = false;
+    // define a dispose function
+    this.disposeRoundButtonView = () => {
+      buttonAppearanceStrategy.dispose();
+      contentAppearanceStrategy.dispose();
+      pressListener.dispose();
+      if ( interactionStateProperty.hasListener( handleInteractionStateChanged ) ) {
+        interactionStateProperty.unlink( handleInteractionStateChanged );
+      }
+      if ( buttonModel.enabledProperty.hasListener( updatePDOMEnabled ) ) {
+        buttonModel.enabledProperty.unlink( updatePDOMEnabled );
+      }
+      this.baseColorProperty.dispose();
+    };
   }
 
-  // Make the base color into a property so that the appearance strategy can update itself if changes occur.
-  this.baseColorProperty = new PaintColorProperty( options.baseColor ); // @private
+  get enabled() { return this.getEnabled(); }
 
-  // @private {PressListener}
-  const pressListener = buttonModel.createListener( options.listenerOptions );
-  this.addInputListener( pressListener );
+  set enabled( value ) { this.setEnabled( value ); }
 
-  // Use the user-specified radius if present, otherwise calculate the
-  // radius based on the content and the margin.
-  const buttonRadius = options.radius ||
-                       Math.max( content.width + options.minXMargin * 2, content.height + options.minYMargin * 2 ) / 2;
+  get baseColor() { return this.getBaseColor(); }
 
-  // Create the basic button shape.
-  const button = new Circle( buttonRadius, { fill: options.baseColor, lineWidth: options.lineWidth } );
-  this.addChild( button );
+  set baseColor( baseColor ) { this.setBaseColor( baseColor ); }
 
-  // Hook up the strategy that will control the basic button appearance.
-  const buttonAppearanceStrategy = new options.buttonAppearanceStrategy(
-    button,
-    interactionStateProperty,
-    this.baseColorProperty,
-    options
-  );
-
-  // Add the content to the button.
-  if ( content ) {
-    content.center = upCenter;
-    this.addChild( content );
+  /**
+   * @public
+   * @override
+   */
+  dispose() {
+    this.disposeRoundButtonView();
+    super.dispose();
   }
 
-  // Hook up the strategy that will control the content appearance.
-  const contentAppearanceStrategy = new options.contentAppearanceStrategy( content, interactionStateProperty );
-
-  // Control the pointer state based on the interaction state.
-  const self = this;
-
-  function handleInteractionStateChanged( state ) {
-    self.cursor = state === ButtonInteractionState.DISABLED ||
-                  state === ButtonInteractionState.DISABLED_PRESSED ? null : 'pointer';
+  /**
+   * Sets the enabled state.
+   * @param {boolean} value
+   * @public
+   */
+  setEnabled( value ) {
+    assert && assert( typeof value === 'boolean', 'RoundButtonView.enabled must be a boolean value' );
+    this.buttonModel.enabledProperty.set( value );
   }
 
-  interactionStateProperty.link( handleInteractionStateChanged );
+  /**
+   * Gets the enabled state.
+   * @returns {boolean}
+   * @public
+   */
+  getEnabled() { return this.buttonModel.enabledProperty.get(); }
 
-  // PDOM - indicate to screen readers that the button is not clickable
-  function updatePDOMEnabled( enabled ) {
-    self.setAccessibleAttribute( 'aria-disabled', !enabled );
-  }
+  /**
+   * Sets the base color, which is the main background fill color used for the button.
+   * @param {Color|String} baseColor
+   * @public
+   */
+  setBaseColor( baseColor ) { this.baseColorProperty.paint = baseColor; }
 
-  buttonModel.enabledProperty.link( updatePDOMEnabled );
-
-  // Dilate the pointer areas.
-  this.touchArea = Shape.circle( options.touchAreaXShift, options.touchAreaYShift,
-    buttonRadius + options.touchAreaDilation );
-  this.mouseArea = Shape.circle( options.mouseAreaXShift, options.mouseAreaYShift,
-    buttonRadius + options.mouseAreaDilation );
-
-  // Set pickable such that sub-nodes are pruned from hit testing.
-  this.pickable = null;
-
-  // pdom
-  this.focusHighlight = new Shape.circle( 0, 0, buttonRadius + options.focusHighlightDilation );
-
-  // Mutate with the options after the layout is complete so that
-  // width-dependent fields like centerX will work.
-  this.mutate( options );
-
-  // define a dispose function
-  this.disposeRoundButtonView = function() {
-    buttonAppearanceStrategy.dispose();
-    contentAppearanceStrategy.dispose();
-    pressListener.dispose();
-    if ( interactionStateProperty.hasListener( handleInteractionStateChanged ) ) {
-      interactionStateProperty.unlink( handleInteractionStateChanged );
-    }
-    if ( buttonModel.enabledProperty.hasListener( updatePDOMEnabled ) ) {
-      buttonModel.enabledProperty.unlink( updatePDOMEnabled );
-    }
-    this.baseColorProperty.dispose();
-  };
+  /**
+   * Gets the base color for this button.
+   * @returns {Color}
+   * @public
+   */
+  getBaseColor() { return this.baseColorProperty.paint; }
 }
-
-sun.register( 'RoundButtonView', RoundButtonView );
 
 /**
  * Strategy for making a button look 3D-ish by using gradients that create the appearance of highlighted and shaded
@@ -224,12 +268,8 @@ RoundButtonView.ThreeDAppearanceStrategy = function( button, interactionStatePro
   const disabledBaseDarker2 = new PaintColorProperty( options.disabledBaseColor, { luminanceFactor: -0.2 } );
   const disabledBaseDarker4 = new PaintColorProperty( options.disabledBaseColor, { luminanceFactor: -0.4 } );
   const disabledBaseDarker5 = new PaintColorProperty( options.disabledBaseColor, { luminanceFactor: -0.5 } );
-  const baseTransparent = new DerivedProperty( [ baseColorProperty ], function( color ) {
-    return color.withAlpha( 0 );
-  } );
-  const disabledBaseTransparent = new DerivedProperty( [ disabledBase ], function( color ) {
-    return color.withAlpha( 0 );
-  } );
+  const baseTransparent = new DerivedProperty( [ baseColorProperty ], color => color.withAlpha( 0 ) );
+  const disabledBaseTransparent = new DerivedProperty( [ disabledBase ], color => color.withAlpha( 0 ) );
 
   // Set up variables needed to create the various gradient fills and otherwise mod the appearance
   const buttonRadius = button.width / 2;
@@ -350,7 +390,7 @@ RoundButtonView.ThreeDAppearanceStrategy = function( button, interactionStatePro
   interactionStateProperty.link( updateAppearance );
 
   // add a dispose function
-  this.dispose = function() {
+  this.dispose = () => {
     if ( interactionStateProperty.hasListener( updateAppearance ) ) {
       interactionStateProperty.unlink( updateAppearance );
     }
@@ -459,7 +499,7 @@ RoundButtonView.FlatAppearanceStrategy = function( button, interactionStatePrope
   interactionStateProperty.link( updateAppearance );
 
   // add a dispose function
-  this.dispose = function() {
+  this.dispose = () => {
     if ( interactionStateProperty.hasListener( updateAppearance ) ) {
       interactionStateProperty.unlink( updateAppearance );
     }
@@ -487,58 +527,12 @@ RoundButtonView.FadeContentWhenDisabled = function( content, interactionStatePro
   interactionStateProperty.link( updateOpacity );
 
   // add dispose function to unlink listener
-  this.dispose = function() {
+  this.dispose = () => {
     if ( interactionStateProperty.hasListener( updateOpacity ) ) {
       interactionStateProperty.unlink( updateOpacity );
     }
   };
 };
 
-inherit( Node, RoundButtonView, {
-
-  /**
-   * Sets the enabled state.
-   * @param {boolean} value
-   * @public
-   */
-  setEnabled: function( value ) {
-    assert && assert( typeof value === 'boolean', 'RoundButtonView.enabled must be a boolean value' );
-    this.buttonModel.enabledProperty.set( value );
-  },
-  set enabled( value ) { this.setEnabled( value ); },
-
-  /**
-   * Gets the enabled state.
-   * @returns {boolean}
-   * @public
-   */
-  getEnabled: function() { return this.buttonModel.enabledProperty.get(); },
-  get enabled() { return this.getEnabled(); },
-
-  /**
-   * Sets the base color, which is the main background fill color used for the button.
-   * @param {Color|String} baseColor
-   * @public
-   */
-  setBaseColor: function( baseColor ) { this.baseColorProperty.paint = baseColor; },
-  set baseColor( baseColor ) { this.setBaseColor( baseColor ); },
-
-  /**
-   * Gets the base color for this button.
-   * @returns {Color}
-   * @public
-   */
-  getBaseColor: function() { return this.baseColorProperty.paint; },
-  get baseColor() { return this.getBaseColor(); },
-
-  /**
-   * dispose function
-   * @public
-   */
-  dispose: function() {
-    this.disposeRoundButtonView();
-    Node.prototype.dispose.call( this );
-  }
-} );
-
+sun.register( 'RoundButtonView', RoundButtonView );
 export default RoundButtonView;
