@@ -8,81 +8,80 @@
  */
 
 import Emitter from '../../../axon/js/Emitter.js';
-import inherit from '../../../phet-core/js/inherit.js';
 import merge from '../../../phet-core/js/merge.js';
 import EventType from '../../../tandem/js/EventType.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import sun from '../sun.js';
 import ButtonModel from './ButtonModel.js';
 
-/**
- * @param {Object} valueOff - value when the button is in the off state
- * @param {Object} valueOn - value when the button is in the on state
- * @param {Property} property - axon Property that can be either valueOff or valueOn.
- * @param {Object} [options]
- * @constructor
- */
-function ToggleButtonModel( valueOff, valueOn, property, options ) {
-  const self = this;
+class ToggleButtonModel extends ButtonModel {
 
-  options = merge( {
-    tandem: Tandem.REQUIRED
-  }, options );
+  /**
+   * @param {Object} valueOff - value when the button is in the off state
+   * @param {Object} valueOn - value when the button is in the on state
+   * @param {Property} property - axon Property that can be either valueOff or valueOn.
+   * @param {Object} [options]
+   */
+  constructor( valueOff, valueOn, property, options ) {
 
-  // @private
-  this.valueOff = valueOff;
-  this.valueOn = valueOn;
-  this.valueProperty = property;
+    options = merge( {
+      tandem: Tandem.REQUIRED
+    }, options );
 
-  ButtonModel.call( this, options );
+    super( options );
 
-  // Behaves like a push button (with fireOnDown:false), but toggles its state when the button is released.
-  const downListener = function( down ) {
-    if ( self.enabledProperty.get() && self.overProperty.get() && !self.interrupted ) {
-      if ( !down ) {
-        self.toggle();
+    // @private
+    this.valueOff = valueOff;
+    this.valueOn = valueOn;
+    this.valueProperty = property;
+
+    // Behaves like a push button (with fireOnDown:false), but toggles its state when the button is released.
+    const downListener = down => {
+      if ( this.enabledProperty.get() && this.overProperty.get() && !this.interrupted ) {
+        if ( !down ) {
+          this.toggle();
+        }
       }
-    }
-  };
-  this.downProperty.link( downListener ); // @private
+    };
+    this.downProperty.link( downListener ); // @private
 
-  // @private
-  this.toggledEmitter = new Emitter( {
-    tandem: options.tandem.createTandem( 'toggledEmitter' ),
-    phetioDocumentation: 'Emits when the button is toggled',
-    phetioEventType: EventType.USER
-  } );
+    // @private
+    this.toggledEmitter = new Emitter( {
+      tandem: options.tandem.createTandem( 'toggledEmitter' ),
+      phetioDocumentation: 'Emits when the button is toggled',
+      phetioEventType: EventType.USER
+    } );
 
-  const toggleListener = function() {
-    assert && assert( self.valueProperty.value === self.valueOff || self.valueProperty.value === self.valueOn,
-      'unrecognized value: ' + self.valueProperty.value );
+    const toggleListener = () => {
+      assert && assert( this.valueProperty.value === this.valueOff || this.valueProperty.value === this.valueOn,
+        'unrecognized value: ' + this.valueProperty.value );
 
-    self.valueProperty.value = self.valueProperty.value === self.valueOff ? self.valueOn : self.valueOff;
-  };
-  this.toggledEmitter.addListener( toggleListener );
+      this.valueProperty.value = this.valueProperty.value === this.valueOff ? this.valueOn : this.valueOff;
+    };
+    this.toggledEmitter.addListener( toggleListener );
 
-  // @private - dispose items specific to this instance
-  this.disposeToggleButtonModel = function() {
-    self.downProperty.unlink( downListener );
-    self.toggledEmitter.removeListener( toggleListener );
-  };
-}
+    // @private - dispose items specific to this instance
+    this.disposeToggleButtonModel = () => {
+      this.downProperty.unlink( downListener );
+      this.toggledEmitter.removeListener( toggleListener );
+    };
+  }
 
-sun.register( 'ToggleButtonModel', ToggleButtonModel );
-
-inherit( ButtonModel, ToggleButtonModel, {
-
-  // @public
-  dispose: function() {
+  /**
+   * @public
+   * @override
+   */
+  dispose() {
     this.disposeToggleButtonModel();
-    ButtonModel.prototype.dispose.call( this );
-  },
+    super.dispose();
+  }
 
   // @public
-  toggle: function() {
+  toggle() {
     this.toggledEmitter.emit();
     this.produceSoundEmitter.emit();
   }
-} );
+}
 
+sun.register( 'ToggleButtonModel', ToggleButtonModel );
 export default ToggleButtonModel;
