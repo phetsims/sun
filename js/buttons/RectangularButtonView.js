@@ -114,7 +114,8 @@ function RectangularButtonView( buttonModel, interactionStateProperty, options )
   // Use this pattern so that passed in phetioComponentOptions are not blown away.
   PhetioObject.mergePhetioComponentOptions( { visibleProperty: { phetioFeatured: true } }, options );
 
-  this.buttonModel = buttonModel; // @protected
+  // @protected
+  this.buttonModel = buttonModel;
 
   Node.call( this );
 

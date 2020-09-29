@@ -10,7 +10,6 @@
  */
 
 import InstanceRegistry from '../../../phet-core/js/documentation/InstanceRegistry.js';
-import inherit from '../../../phet-core/js/inherit.js';
 import merge from '../../../phet-core/js/merge.js';
 import pushButtonSoundPlayer from '../../../tambo/js/shared-sound-players/pushButtonSoundPlayer.js';
 import Tandem from '../../../tandem/js/Tandem.js';
@@ -19,78 +18,76 @@ import PushButtonInteractionStateProperty from './PushButtonInteractionStateProp
 import PushButtonModel from './PushButtonModel.js';
 import RectangularButtonView from './RectangularButtonView.js';
 
-/**
- * @param {Object} [options]
- * @constructor
- */
-function RectangularPushButton( options ) {
+class RectangularPushButton extends RectangularButtonView {
 
-  options = merge( {
+  /**
+   * @param {Object} [options]
+   */
+  constructor( options ) {
 
-    // {Playable} - sound generation
-    soundPlayer: pushButtonSoundPlayer,
+    options = merge( {
 
-    // {function} listener called when button is pushed.
-    listener: _.noop,
+      // {Playable} - sound generation
+      soundPlayer: pushButtonSoundPlayer,
 
-    // tandem support
-    tandem: Tandem.REQUIRED
+      // {function} listener called when button is pushed.
+      listener: _.noop,
 
-  }, options );
+      // tandem support
+      tandem: Tandem.REQUIRED
 
-  // Save the listener and add it after creating the button model.  This is done so that
-  // the same code path is always used for adding listener, thus guaranteeing a consistent code path if addListener is
-  // overridden, see https://github.com/phetsims/sun/issues/284.
-  const listener = options.listener;
-  options = _.omit( options, [ 'listener' ] );
+    }, options );
 
-  // Safe to pass through options to the PushButtonModel like "fireOnDown".  Other scenery options will be safely ignored.
-  // Note it shares a tandem with this, so the emitter will be instrumented as a child of the button
-  this.buttonModel = new PushButtonModel( options ); // @public, listen only
+    // Save the listener and add it after creating the button model.  This is done so that
+    // the same code path is always used for adding listener, thus guaranteeing a consistent code path if addListener is
+    // overridden, see https://github.com/phetsims/sun/issues/284.
+    const listener = options.listener;
+    options = _.omit( options, [ 'listener' ] );
 
-  // add the listener that was potentially saved above
-  this.addListener( listener );
+    // Safe to pass through options to the PushButtonModel like "fireOnDown".  Other scenery options will be safely ignored.
+    // Note it shares a tandem with this, so the emitter will be instrumented as a child of the button
+    const buttonModel = new PushButtonModel( options ); // @public, listen only
 
-  // Call the parent type
-  RectangularButtonView.call( this, this.buttonModel, new PushButtonInteractionStateProperty( this.buttonModel ), options );
+    super( buttonModel, new PushButtonInteractionStateProperty( buttonModel ), options );
 
-  // sound generation
-  const playSound = () => { options.soundPlayer.play(); };
-  this.buttonModel.produceSoundEmitter.addListener( playSound );
+    // add the listener that was potentially saved above
+    listener && this.addListener( listener );
 
-  this.disposeRectangularPushButton = function() {
-    this.buttonModel.produceSoundEmitter.removeListener( playSound );
-    this.buttonModel.dispose(); //TODO this fails when assertions are enabled, see sun#212
-  };
+    // sound generation
+    const playSound = () => { options.soundPlayer.play(); };
+    buttonModel.produceSoundEmitter.addListener( playSound );
 
-  // support for binder documentation, stripped out in builds and only runs when ?binder is specified
-  assert && phet.chipper.queryParameters.binder && InstanceRegistry.registerDataURL( 'sun', 'AccordionBox', this );
-}
+    this.disposeRectangularPushButton = function() {
+      buttonModel.produceSoundEmitter.removeListener( playSound );
+      buttonModel.dispose(); //TODO this fails when assertions are enabled, see sun#212
+    };
 
-sun.register( 'RectangularPushButton', RectangularPushButton );
-
-inherit( RectangularButtonView, RectangularPushButton, {
+    // support for binder documentation, stripped out in builds and only runs when ?binder is specified
+    assert && phet.chipper.queryParameters.binder && InstanceRegistry.registerDataURL( 'sun', 'AccordionBox', this );
+  }
 
   // @public
-  dispose: function() {
+  dispose() {
 
     // The order of operations here is important - the view needs to be disposed first so that it is unhooked from
     // the model before the model is disposed.  If the model is disposed first, the view ends up trying to change some
     // of its property values when it is disposed.  See https://github.com/phetsims/axon/issues/242.
-    RectangularButtonView.prototype.dispose.call( this );
+    super.dispose();
     this.disposeRectangularPushButton();
-  },
+  }
 
   //TODO move to RectangularButtonView
   // @public
-  addListener: function( listener ) {
+  addListener( listener ) {
     this.buttonModel.addListener( listener );
-  },
+  }
 
   //TODO move to RectangularButtonView
   // @public
-  removeListener: function( listener ) {
+  removeListener( listener ) {
     this.buttonModel.removeListener( listener );
   }
-} );
+}
+
+sun.register( 'RectangularPushButton', RectangularPushButton );
 export default RectangularPushButton;
