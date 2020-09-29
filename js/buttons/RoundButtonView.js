@@ -237,6 +237,16 @@ class RoundButtonView extends Node {
    * @public
    */
   getBaseColor() { return this.baseColorProperty.paint; }
+
+  // @public
+  addListener( listener ) {
+    this.buttonModel.addListener( listener );
+  }
+
+  // @public
+  removeListener( listener ) {
+    this.buttonModel.removeListener( listener );
+  }
 }
 
 /**

@@ -80,18 +80,6 @@ class RoundPushButton extends RoundButtonView {
     super.dispose();
     this.disposeRoundPushButton();
   }
-
-  //TODO move to RoundButtonView
-  // @public
-  addListener( listener ) {
-    this.buttonModel.addListener( listener );
-  }
-
-  //TODO move to RoundButtonView
-  // @public
-  removeListener( listener ) {
-    this.buttonModel.removeListener( listener );
-  }
 }
 
 sun.register( 'RoundPushButton', RoundPushButton );
