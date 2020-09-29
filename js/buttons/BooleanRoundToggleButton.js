@@ -4,51 +4,48 @@
  * This toggle button uses a boolean property and a trueNode and falseNode to display its content.
  */
 
-import inherit from '../../../phet-core/js/inherit.js';
 import merge from '../../../phet-core/js/merge.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import BooleanToggleNode from '../BooleanToggleNode.js';
 import sun from '../sun.js';
 import RoundToggleButton from './RoundToggleButton.js';
 
-/**
- * @param {Node} trueNode
- * @param {Node} falseNode
- * @param {Property.<boolean>} booleanProperty
- * @param {Object} [options]
- * @constructor
- */
-function BooleanRoundToggleButton( trueNode, falseNode, booleanProperty, options ) {
+class BooleanRoundToggleButton extends RoundToggleButton {
 
-  options = merge( {
-    tandem: Tandem.REQUIRED
-  }, options );
+  /**
+   * @param {Node} trueNode
+   * @param {Node} falseNode
+   * @param {Property.<boolean>} booleanProperty
+   * @param {Object} [options]
+   */
+  constructor( trueNode, falseNode, booleanProperty, options ) {
 
-  assert && assert( !options.content, 'BooleanRoundToggleButton sets content' );
-  options.content = new BooleanToggleNode( trueNode, falseNode, booleanProperty, {
-    tandem: options.tandem.createTandem( 'toggleNode' )
-  } );
+    options = merge( {
+      tandem: Tandem.REQUIRED
+    }, options );
 
-  RoundToggleButton.call( this, false, true, booleanProperty, options );
+    assert && assert( !options.content, 'BooleanRoundToggleButton sets content' );
+    options.content = new BooleanToggleNode( trueNode, falseNode, booleanProperty, {
+      tandem: options.tandem.createTandem( 'toggleNode' )
+    } );
 
-  // @private
-  this.disposeBooleanRoundToggleButton = function() {
-    options.content.dispose();
-  };
-}
+    super( false, true, booleanProperty, options );
 
-sun.register( 'BooleanRoundToggleButton', BooleanRoundToggleButton );
-
-inherit( RoundToggleButton, BooleanRoundToggleButton, {
+    // @private
+    this.disposeBooleanRoundToggleButton = function() {
+      options.content.dispose();
+    };
+  }
 
   /**
    * @public
    * @override
    */
-  dispose: function() {
+  dispose() {
     this.disposeBooleanRoundToggleButton();
-    RoundToggleButton.prototype.dispose.call( this );
+    super.dispose();
   }
-} );
+}
 
+sun.register( 'BooleanRoundToggleButton', BooleanRoundToggleButton );
 export default BooleanRoundToggleButton;
