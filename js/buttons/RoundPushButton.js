@@ -12,7 +12,6 @@
  */
 
 import InstanceRegistry from '../../../phet-core/js/documentation/InstanceRegistry.js';
-import inherit from '../../../phet-core/js/inherit.js';
 import merge from '../../../phet-core/js/merge.js';
 import pushButtonSoundPlayer from '../../../tambo/js/shared-sound-players/pushButtonSoundPlayer.js';
 import Tandem from '../../../tandem/js/Tandem.js';
@@ -21,77 +20,79 @@ import PushButtonInteractionStateProperty from './PushButtonInteractionStateProp
 import PushButtonModel from './PushButtonModel.js';
 import RoundButtonView from './RoundButtonView.js';
 
-/**
- * @param {Object} [options]
- * @constructor
- */
-function RoundPushButton( options ) {
+class RoundPushButton extends RoundButtonView {
 
-  options = merge( {
+  /**
+   * @param {Object} [options]
+   */
+  constructor( options ) {
 
-    // {Playable} - sound generation
-    soundPlayer: pushButtonSoundPlayer,
+    options = merge( {
 
-    // {function} listener called when button is pushed.
-    listener: _.noop,
+      // {Playable} - sound generation
+      soundPlayer: pushButtonSoundPlayer,
 
-    // tandem support
-    tandem: Tandem.REQUIRED
-  }, options );
+      // {function} listener called when button is pushed.
+      listener: _.noop,
 
-  const self = this;
+      // tandem support
+      tandem: Tandem.REQUIRED
+    }, options );
 
-  // Save the listener and add it after creating the button model. This is done so that
-  // the same code path is always used for adding listener, thus guaranteeing a consistent code path if addListener is
-  // overridden, see https://github.com/phetsims/sun/issues/284.
-  const listener = options.listener;
-  options = _.omit( options, [ 'listener' ] );
+    // Save the listener and add it after creating the button model. This is done so that
+    // the same code path is always used for adding listener, thus guaranteeing a consistent code path if addListener is
+    // overridden, see https://github.com/phetsims/sun/issues/284.
+    const listener = options.listener;
+    options = _.omit( options, [ 'listener' ] );
 
-  // @public - listening only
-  // Note it shares a tandem with this, so the emitter will be instrumented as a child of the button
-  this.buttonModel = new PushButtonModel( options );
-  RoundButtonView.call( this, this.buttonModel, new PushButtonInteractionStateProperty( this.buttonModel ), options );
+    // @public - listening only
+    // Note it shares a tandem with this, so the emitter will be instrumented as a child of the button
+    const buttonModel = new PushButtonModel( options );
 
-  // add the listener that was potentially saved above
-  this.addListener( listener );
+    super( buttonModel, new PushButtonInteractionStateProperty( buttonModel ), options );
 
-  // sound generation
-  const playSound = () => { options.soundPlayer.play(); };
-  this.buttonModel.produceSoundEmitter.addListener( playSound );
+    // add the listener that was potentially saved above
+    this.addListener( listener );
 
-  // dispose function
-  this.disposeRoundPushButton = function() {
-    this.buttonModel.produceSoundEmitter.removeListener( playSound );
-    self.buttonModel.dispose();
-  };
+    // sound generation
+    const playSound = () => { options.soundPlayer.play(); };
+    buttonModel.produceSoundEmitter.addListener( playSound );
 
-  // support for binder documentation, stripped out in builds and only runs when ?binder is specified
-  assert && phet.chipper.queryParameters.binder && InstanceRegistry.registerDataURL( 'sun', 'RoundPushButton', this );
-}
+    // dispose function
+    this.disposeRoundPushButton = () => {
+      buttonModel.produceSoundEmitter.removeListener( playSound );
+      buttonModel.dispose();
+    };
 
-sun.register( 'RoundPushButton', RoundPushButton );
+    // support for binder documentation, stripped out in builds and only runs when ?binder is specified
+    assert && phet.chipper.queryParameters.binder && InstanceRegistry.registerDataURL( 'sun', 'RoundPushButton', this );
+  }
 
-inherit( RoundButtonView, RoundPushButton, {
-
-  // @public
-  dispose: function() {
+  /**
+   * @public
+   * @override
+   */
+  dispose() {
 
     // The order of operations here is important - the view needs to be disposed first so that it is unhooked from
     // the model before the model is disposed.  If the model is disposed first, the view ends up trying to change some
-    // of its property values when it is disposed.  See https://github.com/phetsims/axon/issues/242.
-    RoundButtonView.prototype.dispose.call( this );
+    // of its Property values when it is disposed.  See https://github.com/phetsims/axon/issues/242.
+    super.dispose();
     this.disposeRoundPushButton();
-  },
+  }
 
+  //TODO move to RoundButtonView
   // @public
-  addListener: function( listener ) {
+  addListener( listener ) {
     this.buttonModel.addListener( listener );
-  },
+  }
 
+  //TODO move to RoundButtonView
   // @public
-  removeListener: function( listener ) {
+  removeListener( listener ) {
     this.buttonModel.removeListener( listener );
   }
-} );
+}
 
+sun.register( 'RoundPushButton', RoundPushButton );
 export default RoundPushButton;

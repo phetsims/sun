@@ -32,13 +32,15 @@ const HIGHLIGHT_GRADIENT_LENGTH = 5; // In screen coords, which are roughly pixe
 const DEFAULT_COLOR = ColorConstants.LIGHT_BLUE;
 
 /**
- * @param {PushButtonModel} pushButtonModel
+ * @param {PushButtonModel} buttonModel TODO should this be {ButtonModel} ?
  * @param {Property} interactionStateProperty - A property that is used to drive the visual appearance of the button.
  * @param {Object} [options]
  * @constructor
  */
-function RoundButtonView( pushButtonModel, interactionStateProperty, options ) {
-  this.buttonModel = pushButtonModel; // @protected // TODO: rename to pushButtonModel
+function RoundButtonView( buttonModel, interactionStateProperty, options ) {
+
+  // @protected
+  this.buttonModel = buttonModel;
 
   options = merge( {
 
@@ -114,7 +116,7 @@ function RoundButtonView( pushButtonModel, interactionStateProperty, options ) {
   this.baseColorProperty = new PaintColorProperty( options.baseColor ); // @private
 
   // @private {PressListener}
-  const pressListener = pushButtonModel.createListener( options.listenerOptions );
+  const pressListener = buttonModel.createListener( options.listenerOptions );
   this.addInputListener( pressListener );
 
   // Use the user-specified radius if present, otherwise calculate the
@@ -158,7 +160,7 @@ function RoundButtonView( pushButtonModel, interactionStateProperty, options ) {
     self.setAccessibleAttribute( 'aria-disabled', !enabled );
   }
 
-  pushButtonModel.enabledProperty.link( updatePDOMEnabled );
+  buttonModel.enabledProperty.link( updatePDOMEnabled );
 
   // Dilate the pointer areas.
   this.touchArea = Shape.circle( options.touchAreaXShift, options.touchAreaYShift,
@@ -184,8 +186,8 @@ function RoundButtonView( pushButtonModel, interactionStateProperty, options ) {
     if ( interactionStateProperty.hasListener( handleInteractionStateChanged ) ) {
       interactionStateProperty.unlink( handleInteractionStateChanged );
     }
-    if ( pushButtonModel.enabledProperty.hasListener( updatePDOMEnabled ) ) {
-      pushButtonModel.enabledProperty.unlink( updatePDOMEnabled );
+    if ( buttonModel.enabledProperty.hasListener( updatePDOMEnabled ) ) {
+      buttonModel.enabledProperty.unlink( updatePDOMEnabled );
     }
     this.baseColorProperty.dispose();
   };

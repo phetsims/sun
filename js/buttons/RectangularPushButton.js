@@ -81,11 +81,13 @@ inherit( RectangularButtonView, RectangularPushButton, {
     this.disposeRectangularPushButton();
   },
 
+  //TODO move to RectangularButtonView
   // @public
   addListener: function( listener ) {
     this.buttonModel.addListener( listener );
   },
 
+  //TODO move to RectangularButtonView
   // @public
   removeListener: function( listener ) {
     this.buttonModel.removeListener( listener );
