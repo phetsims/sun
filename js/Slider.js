@@ -10,7 +10,6 @@
  */
 
 import Property from '../../axon/js/Property.js';
-import PropertyIO from '../../axon/js/PropertyIO.js';
 import Dimension2 from '../../dot/js/Dimension2.js';
 import Range from '../../dot/js/Range.js';
 import RangeIO from '../../dot/js/RangeIO.js';
@@ -157,7 +156,7 @@ class Slider extends Node {
       valueType: Range,
       isValidValue: value => ( value.min >= range.min && value.max <= range.max ),
       tandem: options.tandem.createTandem( 'enabledRangeProperty' ),
-      phetioType: PropertyIO( RangeIO ),
+      phetioType: Property.PropertyIO( RangeIO ),
       phetioDocumentation: 'Sliders support two ranges: the outer range which specifies the min and max of the track and ' +
                            'the enabledRangeProperty, which determines how low and high the thumb can be dragged within the track.'
     } );

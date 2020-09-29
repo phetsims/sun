@@ -7,7 +7,7 @@
  */
 
 import PropertyAPI from '../../axon/js/PropertyAPI.js';
-import PropertyIO from '../../axon/js/PropertyIO.js';
+import Property from '../../axon/js/Property.js';
 import merge from '../../phet-core/js/merge.js';
 import DragListenerAPI from '../../scenery/js/listeners/DragListenerAPI.js';
 import NodeAPI from '../../scenery/js/nodes/NodeAPI.js';
@@ -57,7 +57,7 @@ class SliderAPI extends EnabledComponentAPIMixin( NodeAPI ) {
     super( options );
 
     this.track = new TrackAPI();
-    this.valueProperty = new PropertyAPI( { phetioType: PropertyIO( NumberIO ) } );
+    this.valueProperty = new PropertyAPI( { phetioType: Property.PropertyIO( NumberIO ) } );
   }
 }
 

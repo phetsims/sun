@@ -7,7 +7,7 @@
  */
 
 import PropertyAPI from '../../axon/js/PropertyAPI.js';
-import PropertyIO from '../../axon/js/PropertyIO.js';
+import Property from '../../axon/js/Property.js';
 import merge from '../../phet-core/js/merge.js';
 import BooleanIO from '../../tandem/js/types/BooleanIO.js';
 import sun from './sun.js';
@@ -24,7 +24,7 @@ const EnabledComponentAPIMixin = Type => {
       options = merge( {
         enabledPropertyOptions: {
           phetioFeatured: true,
-          phetioType: PropertyIO( BooleanIO )
+          phetioType: Property.PropertyIO( BooleanIO )
         }
       }, options );
 

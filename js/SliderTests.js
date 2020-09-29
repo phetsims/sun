@@ -10,7 +10,6 @@
 
 import BooleanProperty from '../../axon/js/BooleanProperty.js';
 import Property from '../../axon/js/Property.js';
-import PropertyIO from '../../axon/js/PropertyIO.js';
 import Range from '../../dot/js/Range.js';
 import phetioAPITest from '../../tandem/js/phetioAPITest.js';
 import NumberIO from '../../tandem/js/types/NumberIO.js';
@@ -23,7 +22,7 @@ QUnit.test( 'Slider PhET-iO API validation', assert => {
   phetioAPITest( assert, new SliderAPI(), 'slider',
     tandem => {
       return new HSlider( new Property( 0, {
-          phetioType: PropertyIO( NumberIO ),
+          phetioType: Property.PropertyIO( NumberIO ),
           tandem: tandem.createTandem( 'otherValueProperty' )
         } ),
         new Range( 0, 10 ), { tandem: tandem } );
@@ -34,7 +33,7 @@ QUnit.test( 'Slider PhET-iO API validation, provided enabledProperty', assert =>
   phetioAPITest( assert, new SliderAPI(), 'slider',
 
     tandem => new HSlider( new Property( 0, {
-        phetioType: PropertyIO( NumberIO ),
+        phetioType: Property.PropertyIO( NumberIO ),
         tandem: tandem.createTandem( 'otherValue2Property' )
       } ),
       new Range( 0, 10 ), {
