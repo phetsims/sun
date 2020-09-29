@@ -9,7 +9,6 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
-import inherit from '../../../phet-core/js/inherit.js';
 import merge from '../../../phet-core/js/merge.js';
 import pushButtonSoundPlayer from '../../../tambo/js/shared-sound-players/pushButtonSoundPlayer.js';
 import Tandem from '../../../tandem/js/Tandem.js';
@@ -19,51 +18,55 @@ import StickyToggleButtonInteractionStateProperty from './StickyToggleButtonInte
 import StickyToggleButtonModel from './StickyToggleButtonModel.js';
 import ToggleButtonIO from './ToggleButtonIO.js';
 
-/**
- * @param {Object} valueUp value when the toggle is in the 'up' position
- * @param {Object} valueDown value when the toggle is in the 'down' position
- * @param {Property} property axon property that can be either valueUp or valueDown.
- * @param {Object} [options]
- * @constructor
- */
-function RoundStickyToggleButton( valueUp, valueDown, property, options ) {
+class RoundStickyToggleButton extends RoundButtonView {
 
-  options = merge( {
-    tandem: Tandem.REQUIRED,
-    phetioType: ToggleButtonIO
-  }, options );
+  /**
+   * @param {Object} valueUp value when the toggle is in the 'up' position
+   * @param {Object} valueDown value when the toggle is in the 'down' position
+   * @param {Property} property axon property that can be either valueUp or valueDown.
+   * @param {Object} [options]
+   */
+  constructor( valueUp, valueDown, property, options ) {
 
-  // @private (read-only)
-  // Note it shares a tandem with this, so the emitter will be instrumented as a child of the button
-  const toggleButtonModel = new StickyToggleButtonModel( valueUp, valueDown, property, options );
-  const stickyToggleButtonInteractionStateProperty = new StickyToggleButtonInteractionStateProperty( toggleButtonModel );
-  RoundButtonView.call( this, toggleButtonModel, stickyToggleButtonInteractionStateProperty, options );
+    options = merge( {
+      tandem: Tandem.REQUIRED,
+      phetioType: ToggleButtonIO
+    }, options );
 
-  // sound generation
-  const soundPlayer = options.soundPlayer || pushButtonSoundPlayer;
-  const playSound = () => soundPlayer.play();
-  toggleButtonModel.produceSoundEmitter.addListener( playSound );
+    // @private (read-only)
+    // Note it shares a tandem with this, so the emitter will be instrumented as a child of the button
+    const toggleButtonModel = new StickyToggleButtonModel( valueUp, valueDown, property, options );
+    const stickyToggleButtonInteractionStateProperty = new StickyToggleButtonInteractionStateProperty( toggleButtonModel );
 
-  // PDOM - signify button is 'pressed' when down
-  const setAriaPressed = value => this.setAccessibleAttribute( 'aria-pressed', property.value === valueDown );
-  property.link( setAriaPressed );
+    super( toggleButtonModel, stickyToggleButtonInteractionStateProperty, options );
 
-  // @private - dispose items specific to this instance
-  this.disposeRoundStickyToggleButton = function() {
-    property.unlink( setAriaPressed );
-    toggleButtonModel.produceSoundEmitter.removeListener( playSound );
-    toggleButtonModel.dispose();
-    stickyToggleButtonInteractionStateProperty.dispose();
-  };
+    // sound generation
+    const soundPlayer = options.soundPlayer || pushButtonSoundPlayer;
+    const playSound = () => soundPlayer.play();
+    toggleButtonModel.produceSoundEmitter.addListener( playSound );
+
+    // PDOM - signify button is 'pressed' when down
+    const setAriaPressed = value => this.setAccessibleAttribute( 'aria-pressed', property.value === valueDown );
+    property.link( setAriaPressed );
+
+    // @private - dispose items specific to this instance
+    this.disposeRoundStickyToggleButton = () => {
+      property.unlink( setAriaPressed );
+      toggleButtonModel.produceSoundEmitter.removeListener( playSound );
+      toggleButtonModel.dispose();
+      stickyToggleButtonInteractionStateProperty.dispose();
+    };
+  }
+
+  /**
+   * @public
+   * @override
+   */
+  dispose() {
+    this.disposeRoundStickyToggleButton();
+    super.dispose();
+  }
 }
 
 sun.register( 'RoundStickyToggleButton', RoundStickyToggleButton );
-
-inherit( RoundButtonView, RoundStickyToggleButton, {
-  dispose: function() {
-    this.disposeRoundStickyToggleButton();
-    RoundButtonView.prototype.dispose.call( this );
-  }
-} );
-
 export default RoundStickyToggleButton;
