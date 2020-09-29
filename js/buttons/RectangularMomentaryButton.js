@@ -8,7 +8,6 @@
  */
 
 import InstanceRegistry from '../../../phet-core/js/documentation/InstanceRegistry.js';
-import inherit from '../../../phet-core/js/inherit.js';
 import merge from '../../../phet-core/js/merge.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import sun from '../sun.js';
@@ -16,28 +15,29 @@ import MomentaryButtonInteractionStateProperty from './MomentaryButtonInteractio
 import MomentaryButtonModel from './MomentaryButtonModel.js';
 import RectangularButtonView from './RectangularButtonView.js';
 
-/**
- * @param {Object} valueOff - value when the button is in the off state
- * @param {Object} valueOn - value when the button is in the on state
- * @param {Property} property
- * @param {Object} [options]
- * @constructor
- */
-function RectangularMomentaryButton( valueOff, valueOn, property, options ) {
+class RectangularMomentaryButton extends RectangularButtonView {
 
-  options = merge( {
-    tandem: Tandem.REQUIRED
-  }, options );
+  /**
+   * @param {Object} valueOff - value when the button is in the off state
+   * @param {Object} valueOn - value when the button is in the on state
+   * @param {Property} property
+   * @param {Object} [options]
+   */
+  constructor( valueOff, valueOn, property, options ) {
 
-  // Note it shares a tandem with this, so the emitter will be instrumented as a child of the button
-  const buttonModel = new MomentaryButtonModel( valueOff, valueOn, property, options );
-  RectangularButtonView.call( this, buttonModel, new MomentaryButtonInteractionStateProperty( buttonModel ), options );
+    options = merge( {
+      tandem: Tandem.REQUIRED
+    }, options );
 
-  // support for binder documentation, stripped out in builds and only runs when ?binder is specified
-  assert && phet.chipper.queryParameters.binder && InstanceRegistry.registerDataURL( 'sun', 'AccordionBox', this );
+    // Note it shares a tandem with this, so the emitter will be instrumented as a child of the button
+    const buttonModel = new MomentaryButtonModel( valueOff, valueOn, property, options );
+
+    super( buttonModel, new MomentaryButtonInteractionStateProperty( buttonModel ), options );
+
+    // support for binder documentation, stripped out in builds and only runs when ?binder is specified
+    assert && phet.chipper.queryParameters.binder && InstanceRegistry.registerDataURL( 'sun', 'AccordionBox', this );
+  }
 }
 
 sun.register( 'RectangularMomentaryButton', RectangularMomentaryButton );
-
-inherit( RectangularButtonView, RectangularMomentaryButton );
 export default RectangularMomentaryButton;
