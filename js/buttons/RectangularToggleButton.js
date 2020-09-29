@@ -7,7 +7,6 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
-import inherit from '../../../phet-core/js/inherit.js';
 import merge from '../../../phet-core/js/merge.js';
 import toggleOffSoundPlayer from '../../../tambo/js/shared-sound-players/toggleOffSoundPlayer.js';
 import toggleOnSoundPlayer from '../../../tambo/js/shared-sound-players/toggleOnSoundPlayer.js';
@@ -18,66 +17,68 @@ import ToggleButtonInteractionStateProperty from './ToggleButtonInteractionState
 import ToggleButtonIO from './ToggleButtonIO.js';
 import ToggleButtonModel from './ToggleButtonModel.js';
 
-/**
- * @param {Object} valueOff - value when the button is in the off state
- * @param {Object} valueOn - value when the button is in the on state
- * @param {Property} property - axon Property that can be either valueOff or valueOn
- * @param {Object} [options]
- * @constructor
- */
-function RectangularToggleButton( valueOff, valueOn, property, options ) {
+class RectangularToggleButton extends RectangularButtonView {
 
-  options = merge( {
+  /**
+   * @param {Object} valueOff - value when the button is in the off state
+   * @param {Object} valueOn - value when the button is in the on state
+   * @param {Property} property - axon Property that can be either valueOff or valueOn
+   * @param {Object} [options]
+   */
+  constructor( valueOff, valueOn, property, options ) {
 
-    // {Playable} - sounds to be played on toggle transitions
-    valueOffSoundPlayer: toggleOffSoundPlayer,
-    valueOnSoundPlayer: toggleOnSoundPlayer,
+    options = merge( {
 
-    // phet-io support
-    tandem: Tandem.REQUIRED,
-    phetioType: ToggleButtonIO
-  }, options );
+      // {Playable} - sounds to be played on toggle transitions
+      valueOffSoundPlayer: toggleOffSoundPlayer,
+      valueOnSoundPlayer: toggleOnSoundPlayer,
 
-  // @public (phet-io)
-  // Note it shares a tandem with this, so the emitter will be instrumented as a child of the button
-  this.toggleButtonModel = new ToggleButtonModel( valueOff, valueOn, property, options );
-  const toggleButtonInteractionStateProperty = new ToggleButtonInteractionStateProperty( this.toggleButtonModel );
-  RectangularButtonView.call( this, this.toggleButtonModel, toggleButtonInteractionStateProperty, options );
+      // phet-io support
+      tandem: Tandem.REQUIRED,
+      phetioType: ToggleButtonIO
+    }, options );
 
-  this.addLinkedElement( property, {
-    tandem: options.tandem.createTandem( 'property' )
-  } );
+    // Note it shares a tandem with this, so the emitter will be instrumented as a child of the button
+    const toggleButtonModel = new ToggleButtonModel( valueOff, valueOn, property, options );
+    const toggleButtonInteractionStateProperty = new ToggleButtonInteractionStateProperty( toggleButtonModel );
 
-  // sound generation
-  const playSounds = () => {
-    if ( property.value === valueOff ) {
-      options.valueOffSoundPlayer.play();
-    }
-    else if ( property.value === valueOn ) {
-      options.valueOnSoundPlayer.play();
-    }
-  };
-  this.buttonModel.produceSoundEmitter.addListener( playSounds );
+    super( toggleButtonModel, toggleButtonInteractionStateProperty, options );
 
-  // @private
-  this.disposeRectangularToggleButton = function() {
-    this.toggleButtonModel.dispose();
-    this.buttonModel.produceSoundEmitter.removeListener( playSounds );
-    toggleButtonInteractionStateProperty.dispose();
-  };
-}
+    // @public (phet-io)
+    this.toggleButtonModel = toggleButtonModel;
 
-sun.register( 'RectangularToggleButton', RectangularToggleButton );
+    this.addLinkedElement( property, {
+      tandem: options.tandem.createTandem( 'property' )
+    } );
 
-inherit( RectangularButtonView, RectangularToggleButton, {
+    // sound generation
+    const playSounds = () => {
+      if ( property.value === valueOff ) {
+        options.valueOffSoundPlayer.play();
+      }
+      else if ( property.value === valueOn ) {
+        options.valueOnSoundPlayer.play();
+      }
+    };
+    this.buttonModel.produceSoundEmitter.addListener( playSounds );
+
+    // @private
+    this.disposeRectangularToggleButton = () => {
+      this.toggleButtonModel.dispose();
+      this.buttonModel.produceSoundEmitter.removeListener( playSounds );
+      toggleButtonInteractionStateProperty.dispose();
+    };
+  }
 
   /**
    * @public
+   * @override
    */
-  dispose: function() {
+  dispose() {
     this.disposeRectangularToggleButton();
-    RectangularButtonView.prototype.dispose.call( this );
+    super.dispose();
   }
-} );
+}
 
+sun.register( 'RectangularToggleButton', RectangularToggleButton );
 export default RectangularToggleButton;
