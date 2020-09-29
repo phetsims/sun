@@ -44,6 +44,9 @@ class RoundToggleButton extends RoundButtonView {
 
     super( toggleButtonModel, toggleButtonInteractionStateProperty, options );
 
+    // @public (phet-io)
+    this.toggleButtonModel = toggleButtonModel;
+
     this.addLinkedElement( property, {
       tandem: options.tandem.createTandem( 'property' )
     } );
@@ -65,9 +68,6 @@ class RoundToggleButton extends RoundButtonView {
       this.buttonModel.produceSoundEmitter.removeListener( playSounds );
       toggleButtonInteractionStateProperty.dispose();
     };
-
-    // @public (phet-io)
-    this.toggleButtonModel = toggleButtonModel;
   }
 
   /**
