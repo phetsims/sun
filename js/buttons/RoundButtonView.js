@@ -88,8 +88,7 @@ class RoundButtonView extends Node {
       tandem: Tandem.OPTIONAL, // This duplicates the parent option and works around https://github.com/phetsims/tandem/issues/50
 
       // pdom
-      tagName: 'button',
-      focusHighlightDilation: 5 // radius dilation for circular highlight
+      tagName: 'button'
     }, options );
 
     options.listenerOptions = merge( {
@@ -168,8 +167,9 @@ class RoundButtonView extends Node {
     // Set pickable such that sub-nodes are pruned from hit testing.
     this.pickable = null;
 
-    // pdom
-    this.focusHighlight = new Shape.circle( 0, 0, buttonRadius + options.focusHighlightDilation );
+    // PDOM - focus highlight is circular for round buttons, with a little bit of padding
+    // between button shape and inner edge of highlight
+    this.focusHighlight = new Shape.circle( 0, 0, buttonRadius + 5 );
 
     // Mutate with the options after the layout is complete so that
     // width-dependent fields like centerX will work.
