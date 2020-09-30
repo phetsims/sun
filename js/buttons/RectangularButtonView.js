@@ -10,7 +10,6 @@
 import DerivedProperty from '../../../axon/js/DerivedProperty.js';
 import Bounds2 from '../../../dot/js/Bounds2.js';
 import Shape from '../../../kite/js/Shape.js';
-import inherit from '../../../phet-core/js/inherit.js';
 import merge from '../../../phet-core/js/merge.js';
 import AlignBox from '../../../scenery/js/nodes/AlignBox.js';
 import Node from '../../../scenery/js/nodes/Node.js';
@@ -33,186 +32,249 @@ const DEFAULT_COLOR = ColorConstants.LIGHT_BLUE;
 const X_ALIGN_VALUES = [ 'center', 'left', 'right' ];
 const Y_ALIGN_VALUES = [ 'center', 'top', 'bottom' ];
 
-/**
- * @param {ButtonModel} buttonModel - Model that defines the button's behavior.
- * @param {Property.<String>} interactionStateProperty - A property that is used to drive the visual appearance of the button.
- * @param {Object} [options]
- * @constructor
- */
-function RectangularButtonView( buttonModel, interactionStateProperty, options ) {
+class RectangularButtonView extends Node {
 
-  options = merge( {
+  /**
+   * @param {ButtonModel} buttonModel - Model that defines the button's behavior.
+   * @param {Property.<String>} interactionStateProperty - A property that is used to drive the visual appearance of the button.
+   * @param {Object} [options]
+   */
+  constructor( buttonModel, interactionStateProperty, options ) {
 
-    content: null,
-    minWidth: HORIZONTAL_HIGHLIGHT_GRADIENT_LENGTH + SHADE_GRADIENT_LENGTH,
-    minHeight: VERTICAL_HIGHLIGHT_GRADIENT_LENGTH + SHADE_GRADIENT_LENGTH,
-    cursor: 'pointer',
-    baseColor: DEFAULT_COLOR,
-    disabledBaseColor: ColorConstants.LIGHT_GRAY,
-    xMargin: 8, // should be visibly greater than yMargin, see issue #109
-    yMargin: 5,
-    fireOnDown: false,
+    options = merge( {
 
-    // pointer area dilation
-    touchAreaXDilation: 0,
-    touchAreaYDilation: 0,
-    mouseAreaXDilation: 0,
-    mouseAreaYDilation: 0,
+      content: null,
+      minWidth: HORIZONTAL_HIGHLIGHT_GRADIENT_LENGTH + SHADE_GRADIENT_LENGTH,
+      minHeight: VERTICAL_HIGHLIGHT_GRADIENT_LENGTH + SHADE_GRADIENT_LENGTH,
+      cursor: 'pointer',
+      baseColor: DEFAULT_COLOR,
+      disabledBaseColor: ColorConstants.LIGHT_GRAY,
+      xMargin: 8, // should be visibly greater than yMargin, see issue #109
+      yMargin: 5,
+      fireOnDown: false,
 
-    // pointer area shift, see https://github.com/phetsims/sun/issues/500
-    touchAreaXShift: 0,
-    touchAreaYShift: 0,
-    mouseAreaXShift: 0,
-    mouseAreaYShift: 0,
+      // pointer area dilation
+      touchAreaXDilation: 0,
+      touchAreaYDilation: 0,
+      mouseAreaXDilation: 0,
+      mouseAreaYDilation: 0,
 
-    stroke: undefined, // undefined by default, which will cause a stroke to be derived from the base color
-    lineWidth: 0.5, // Only meaningful if stroke is non-null
-    xAlign: 'center', // {string} see X_ALIGN_VALUES
-    yAlign: 'center', // {string} see Y_ALIGN_VALUES
+      // pointer area shift, see https://github.com/phetsims/sun/issues/500
+      touchAreaXShift: 0,
+      touchAreaYShift: 0,
+      mouseAreaXShift: 0,
+      mouseAreaYShift: 0,
 
-    // radius applied to all corners unless a corner-specific value is provided
-    cornerRadius: 4,
+      stroke: undefined, // undefined by default, which will cause a stroke to be derived from the base color
+      lineWidth: 0.5, // Only meaningful if stroke is non-null
+      xAlign: 'center', // {string} see X_ALIGN_VALUES
+      yAlign: 'center', // {string} see Y_ALIGN_VALUES
 
-    // {number|null} corner-specific radii
-    // If null, the option is ignored.
-    // If non-null, it overrides cornerRadius for the associated corner of the button.
-    leftTopCornerRadius: null,
-    rightTopCornerRadius: null,
-    leftBottomCornerRadius: null,
-    rightBottomCornerRadius: null,
+      // radius applied to all corners unless a corner-specific value is provided
+      cornerRadius: 4,
 
-    // Strategy for controlling the button's appearance, excluding any
-    // content.  This can be a stock strategy from this file or custom.  To
-    // create a custom one, model it off of the stock strategies defined in
-    // this file.
-    buttonAppearanceStrategy: RectangularButtonView.ThreeDAppearanceStrategy,
+      // {number|null} corner-specific radii
+      // If null, the option is ignored.
+      // If non-null, it overrides cornerRadius for the associated corner of the button.
+      leftTopCornerRadius: null,
+      rightTopCornerRadius: null,
+      leftBottomCornerRadius: null,
+      rightBottomCornerRadius: null,
 
-    // Strategy for controlling the appearance of the button's content based
-    // on the button's state.  This can be a stock strategy from this file,
-    // or custom.  To create a custom one, model it off of the stock
-    // version(s) defined in this file.
-    contentAppearanceStrategy: RectangularButtonView.FadeContentWhenDisabled,
+      // Strategy for controlling the button's appearance, excluding any
+      // content.  This can be a stock strategy from this file or custom.  To
+      // create a custom one, model it off of the stock strategies defined in
+      // this file.
+      buttonAppearanceStrategy: RectangularButtonView.ThreeDAppearanceStrategy,
 
-    // Options that will be passed through to the main input listener (PressListener)
-    listenerOptions: null,
+      // Strategy for controlling the appearance of the button's content based
+      // on the button's state.  This can be a stock strategy from this file,
+      // or custom.  To create a custom one, model it off of the stock
+      // version(s) defined in this file.
+      contentAppearanceStrategy: RectangularButtonView.FadeContentWhenDisabled,
 
-    // pdom
-    tagName: 'button',
+      // Options that will be passed through to the main input listener (PressListener)
+      listenerOptions: null,
 
-    // phet-io
-    tandem: Tandem.OPTIONAL // This duplicates the parent option and works around https://github.com/phetsims/tandem/issues/50
-  }, options );
+      // pdom
+      tagName: 'button',
 
-  // validate options
-  assert && assert( _.includes( X_ALIGN_VALUES, options.xAlign ), 'invalid xAlign: ' + options.xAlign );
-  assert && assert( _.includes( Y_ALIGN_VALUES, options.yAlign ), 'invalid yAlign: ' + options.yAlign );
+      // phet-io
+      tandem: Tandem.OPTIONAL // This duplicates the parent option and works around https://github.com/phetsims/tandem/issues/50
+    }, options );
 
-  options.listenerOptions = merge( {
-    tandem: options.tandem.createTandem( 'pressListener' )
-  }, options.listenerOptions );
+    // validate options
+    assert && assert( _.includes( X_ALIGN_VALUES, options.xAlign ), 'invalid xAlign: ' + options.xAlign );
+    assert && assert( _.includes( Y_ALIGN_VALUES, options.yAlign ), 'invalid yAlign: ' + options.yAlign );
 
-  // Use this pattern so that passed in phetioComponentOptions are not blown away.
-  PhetioObject.mergePhetioComponentOptions( { visibleProperty: { phetioFeatured: true } }, options );
+    options.listenerOptions = merge( {
+      tandem: options.tandem.createTandem( 'pressListener' )
+    }, options.listenerOptions );
 
-  // @protected
-  this.buttonModel = buttonModel;
+    // Use this pattern so that passed in phetioComponentOptions are not blown away.
+    PhetioObject.mergePhetioComponentOptions( { visibleProperty: { phetioFeatured: true } }, options );
 
-  Node.call( this );
+    super();
 
-  const content = options.content; // convenience variable
+    // @protected
+    this.buttonModel = buttonModel;
 
-  // Hook up the input listener
-  // @private (a11y) {PressListener}
-  this._pressListener = buttonModel.createListener( options.listenerOptions );
-  this.addInputListener( this._pressListener );
+    const content = options.content; // convenience variable
 
-  // @private - make the base color into a property so that the appearance strategy can update itself if changes occur.
-  this.baseColorProperty = new PaintColorProperty( options.baseColor ); // @private
+    // Hook up the input listener
+    // @private (a11y) {PressListener}
+    this._pressListener = buttonModel.createListener( options.listenerOptions );
+    this.addInputListener( this._pressListener );
 
-  // Figure out the size of the button.
-  const buttonWidth = Math.max( content ? content.width + options.xMargin * 2 : 0, options.minWidth );
-  const buttonHeight = Math.max( content ? content.height + options.yMargin * 2 : 0, options.minHeight );
+    // @private - make the base color into a property so that the appearance strategy can update itself if changes occur.
+    this.baseColorProperty = new PaintColorProperty( options.baseColor ); // @private
 
-  // create and add the button node
-  const button = new Path( createButtonShape( buttonWidth, buttonHeight, options ), {
-    fill: options.baseColor,
-    lineWidth: options.lineWidth
-  } );
-  this.addChild( button );
+    // Figure out the size of the button.
+    const buttonWidth = Math.max( content ? content.width + options.xMargin * 2 : 0, options.minWidth );
+    const buttonHeight = Math.max( content ? content.height + options.yMargin * 2 : 0, options.minHeight );
 
-  // Add the content to the button.
-  if ( content ) {
-
-    // For performance reasons, the content should be unpickable.
-    if ( content ) {
-      content.pickable = false;
-    }
-
-    // align content in the button, this AlignBox must be disposed since it adds listener to content bounds
-    var alignBox = new AlignBox( content, {
-      alignBounds: new Bounds2(
-        options.xMargin,
-        options.yMargin,
-        button.width - options.xMargin,
-        buttonHeight - options.yMargin
-      ),
-      xAlign: options.xAlign,
-      yAlign: options.yAlign
+    // create and add the button node
+    const button = new Path( createButtonShape( buttonWidth, buttonHeight, options ), {
+      fill: options.baseColor,
+      lineWidth: options.lineWidth
     } );
-    this.addChild( alignBox );
-  }
+    this.addChild( button );
 
-  // Hook up the strategy that will control the basic button appearance.
-  const buttonAppearanceStrategy = new options.buttonAppearanceStrategy(
-    button,
-    interactionStateProperty,
-    this.baseColorProperty,
-    options
-  );
-
-  // Hook up the strategy that will control the content appearance.
-  const contentAppearanceStrategy = new options.contentAppearanceStrategy( content, interactionStateProperty, options );
-
-  // Control the pointer state based on the interaction state.
-  // Control the pointer state based on the interaction state.
-  const self = this;
-
-  function handleInteractionStateChanged( state ) {
-    self.cursor = state === ButtonInteractionState.DISABLED ||
-                  state === ButtonInteractionState.DISABLED_PRESSED ? null : 'pointer';
-  }
-
-  interactionStateProperty.link( handleInteractionStateChanged );
-
-  // set pointer areas
-  this.touchArea = button.localBounds
-    .dilatedXY( options.touchAreaXDilation, options.touchAreaYDilation )
-    .shifted( options.touchAreaXShift, options.touchAreaYShift );
-  this.mouseArea = button.localBounds
-    .dilatedXY( options.mouseAreaXDilation, options.mouseAreaYDilation )
-    .shifted( options.mouseAreaXShift, options.mouseAreaYShift );
-
-  // Mutate with the options after the layout is complete so that width-
-  // dependent fields like centerX will work.
-  this.mutate( options );
-
-  // define a dispose function
-  this.disposeRectangularButtonView = function() {
-    buttonAppearanceStrategy.dispose();
-    contentAppearanceStrategy.dispose();
-    this.baseColorProperty.dispose();
-    this._pressListener.dispose();
-    if ( interactionStateProperty.hasListener( handleInteractionStateChanged ) ) {
-      interactionStateProperty.unlink( handleInteractionStateChanged );
-    }
-
+    // Add the content to the button.
     if ( content ) {
-      alignBox.dispose();
-    }
-  };
-}
 
-sun.register( 'RectangularButtonView', RectangularButtonView );
+      // For performance reasons, the content should be unpickable.
+      if ( content ) {
+        content.pickable = false;
+      }
+
+      // align content in the button, this AlignBox must be disposed since it adds listener to content bounds
+      var alignBox = new AlignBox( content, {
+        alignBounds: new Bounds2(
+          options.xMargin,
+          options.yMargin,
+          button.width - options.xMargin,
+          buttonHeight - options.yMargin
+        ),
+        xAlign: options.xAlign,
+        yAlign: options.yAlign
+      } );
+      this.addChild( alignBox );
+    }
+
+    // Hook up the strategy that will control the basic button appearance.
+    const buttonAppearanceStrategy = new options.buttonAppearanceStrategy(
+      button,
+      interactionStateProperty,
+      this.baseColorProperty,
+      options
+    );
+
+    // Hook up the strategy that will control the content appearance.
+    const contentAppearanceStrategy = new options.contentAppearanceStrategy( content, interactionStateProperty, options );
+
+    // Control the pointer state based on the interaction state.
+    const handleInteractionStateChanged = state => {
+      this.cursor = state === ButtonInteractionState.DISABLED ||
+                    state === ButtonInteractionState.DISABLED_PRESSED ? null : 'pointer';
+    };
+    interactionStateProperty.link( handleInteractionStateChanged );
+
+    // set pointer areas
+    this.touchArea = button.localBounds
+      .dilatedXY( options.touchAreaXDilation, options.touchAreaYDilation )
+      .shifted( options.touchAreaXShift, options.touchAreaYShift );
+    this.mouseArea = button.localBounds
+      .dilatedXY( options.mouseAreaXDilation, options.mouseAreaYDilation )
+      .shifted( options.mouseAreaXShift, options.mouseAreaYShift );
+
+    // Mutate with the options after the layout is complete so that width-
+    // dependent fields like centerX will work.
+    this.mutate( options );
+
+    // define a dispose function
+    this.disposeRectangularButtonView = () => {
+      buttonAppearanceStrategy.dispose();
+      contentAppearanceStrategy.dispose();
+      this.baseColorProperty.dispose();
+      this._pressListener.dispose();
+      if ( interactionStateProperty.hasListener( handleInteractionStateChanged ) ) {
+        interactionStateProperty.unlink( handleInteractionStateChanged );
+      }
+
+      if ( content ) {
+        alignBox.dispose();
+      }
+    };
+  }
+
+  get enabled() { return this.getEnabled(); }
+
+  set enabled( value ) { this.setEnabled( value ); }
+
+  get baseColor() { return this.getBaseColor(); }
+
+  set baseColor( baseColor ) { this.setBaseColor( baseColor ); }
+
+  /**
+   * @public
+   * @override
+   */
+  dispose() {
+    this.disposeRectangularButtonView();
+    super.dispose();
+  }
+
+  /**
+   * Sets the enabled state.
+   * @param {boolean} value
+   * @public
+   */
+  setEnabled( value ) {
+    assert && assert( typeof value === 'boolean', 'RectangularButtonView.enabled must be a boolean value' );
+    this.buttonModel.enabledProperty.set( value );
+  }
+
+  /**
+   * Gets the enabled state.
+   * @returns {boolean}
+   * @public
+   */
+  getEnabled() { return this.buttonModel.enabledProperty.get(); }
+
+  /**
+   * Gets the enabledProperty. This is meant to be a workaround for https://github.com/phetsims/sun/issues/515 while
+   * https://github.com/phetsims/sun/issues/257 is being figured out and worked on.
+   * TODO: remove me once https://github.com/phetsims/sun/issues/257 is complete
+   * @returns {Property.<boolean>}
+   * @public
+   */
+  getEnabledProperty() { return this.buttonModel.enabledProperty; }
+
+  /**
+   * Sets the base color, which is the main background fill color used for the button.
+   * @param {null|string|Color|Property.<string|Color>} baseColor
+   * @public
+   */
+  setBaseColor( baseColor ) { this.baseColorProperty.paint = baseColor; }
+
+  /**
+   * Gets the base color for this button.
+   * @returns {Color}
+   * @public
+   */
+  getBaseColor() { return this.baseColorProperty.value; }
+
+  /**
+   * Clicks the button. Recommended only for accessibility usages. For the most part, a11y button functionality should
+   * be managed by the PressListener. This is more for edge cases.
+   * @public
+   * @a11y
+   */
+  a11yClick() {
+    this._pressListener.click();
+  }
+}
 
 /**
  * Convenience function for creating the shape of the button, done to avoid code duplication
@@ -274,12 +336,8 @@ RectangularButtonView.ThreeDAppearanceStrategy = function( button,
   const disabledBaseDarker3 = new PaintColorProperty( options.disabledBaseColor, { luminanceFactor: -0.3 } );
   const disabledBaseDarker4 = new PaintColorProperty( options.disabledBaseColor, { luminanceFactor: -0.4 } );
   const disabledBaseDarker5 = new PaintColorProperty( options.disabledBaseColor, { luminanceFactor: -0.5 } );
-  const baseTransparent = new DerivedProperty( [ baseColorProperty ], function( color ) {
-    return color.withAlpha( 0 );
-  } );
-  const disabledBaseTransparent = new DerivedProperty( [ disabledBase ], function( color ) {
-    return color.withAlpha( 0 );
-  } );
+  const baseTransparent = new DerivedProperty( [ baseColorProperty ], color => color.withAlpha( 0 ) );
+  const disabledBaseTransparent = new DerivedProperty( [ disabledBase ], color => color.withAlpha( 0 ) );
 
   // Create the gradient fills used for various button states
   const upFillVertical = new LinearGradient( 0, 0, 0, buttonHeight )
@@ -412,7 +470,7 @@ RectangularButtonView.ThreeDAppearanceStrategy = function( button,
   // a minimum and allows us to update some optimization flags the first time the base color is actually changed.
   interactionStateProperty.link( updateAppearance );
 
-  this.dispose = function() {
+  this.dispose = () => {
     if ( interactionStateProperty.hasListener( updateAppearance ) ) {
       interactionStateProperty.unlink( updateAppearance );
     }
@@ -519,7 +577,7 @@ RectangularButtonView.FlatAppearanceStrategy = function( button, interactionStat
 
   interactionStateProperty.link( updateAppearance );
 
-  this.dispose = function() {
+  this.dispose = () => {
     if ( interactionStateProperty.hasListener( updateAppearance ) ) {
       interactionStateProperty.unlink( updateAppearance );
     }
@@ -551,77 +609,12 @@ RectangularButtonView.FadeContentWhenDisabled = function( content, interactionSt
   interactionStateProperty.link( updateOpacity );
 
   // add dispose function to unlink listener
-  this.dispose = function() {
+  this.dispose = () => {
     if ( interactionStateProperty.hasListener( updateOpacity ) ) {
       interactionStateProperty.unlink( updateOpacity );
     }
   };
 };
 
-inherit( Node, RectangularButtonView, {
-
-  /**
-   * Sets the enabled state.
-   * @param {boolean} value
-   * @public
-   */
-  setEnabled: function( value ) {
-    assert && assert( typeof value === 'boolean', 'RectangularButtonView.enabled must be a boolean value' );
-    this.buttonModel.enabledProperty.set( value );
-  },
-  set enabled( value ) { this.setEnabled( value ); },
-
-  /**
-   * Gets the enabled state.
-   * @returns {boolean}
-   * @public
-   */
-  getEnabled: function() { return this.buttonModel.enabledProperty.get(); },
-  get enabled() { return this.getEnabled(); },
-
-  /**
-   * Gets the enabledProperty. This is meant to be a workaround for https://github.com/phetsims/sun/issues/515 while
-   * https://github.com/phetsims/sun/issues/257 is being figured out and worked on.
-   * TODO: remove me once https://github.com/phetsims/sun/issues/257 is complete
-   * @returns {Property.<boolean>}
-   * @public
-   */
-  getEnabledProperty: function() { return this.buttonModel.enabledProperty; },
-
-  /**
-   * Sets the base color, which is the main background fill color used for the button.
-   * @param {null|string|Color|Property.<string|Color>} baseColor
-   * @public
-   */
-  setBaseColor: function( baseColor ) { this.baseColorProperty.paint = baseColor; },
-  set baseColor( baseColor ) { this.setBaseColor( baseColor ); },
-
-  /**
-   * Gets the base color for this button.
-   * @returns {Color}
-   * @public
-   */
-  getBaseColor: function() { return this.baseColorProperty.value; },
-  get baseColor() { return this.getBaseColor(); },
-
-  /**
-   * Clicks the button. Recommended only for accessibility usages. For the most part, a11y button functionality should
-   * be managed by the PressListener. This is more for edge cases.
-   * @public
-   * @a11y
-   */
-  a11yClick: function() {
-    this._pressListener.click();
-  },
-
-  /**
-   * dispose function
-   * @public
-   */
-  dispose: function() {
-    this.disposeRectangularButtonView();
-    Node.prototype.dispose.call( this );
-  }
-} );
-
+sun.register( 'RectangularButtonView', RectangularButtonView );
 export default RectangularButtonView;
