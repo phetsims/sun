@@ -19,6 +19,7 @@ import PDOMUtils from '../../scenery/js/accessibility/pdom/PDOMUtils.js';
 import Display from '../../scenery/js/display/Display.js';
 import AlignBox from '../../scenery/js/nodes/AlignBox.js';
 import HBox from '../../scenery/js/nodes/HBox.js';
+import Node from '../../scenery/js/nodes/Node.js';
 import VBox from '../../scenery/js/nodes/VBox.js';
 import FullScreen from '../../scenery/js/util/FullScreen.js';
 import Playable from '../../tambo/js/Playable.js';
@@ -26,8 +27,8 @@ import generalCloseSoundPlayer from '../../tambo/js/shared-sound-players/general
 import generalOpenSoundPlayer from '../../tambo/js/shared-sound-players/generalOpenSoundPlayer.js';
 import PhetioObject from '../../tandem/js/PhetioObject.js';
 import Tandem from '../../tandem/js/Tandem.js';
+import IOType from '../../tandem/js/types/IOType.js';
 import RectangularButtonView from './buttons/RectangularButtonView.js';
-import DialogIO from './DialogIO.js';
 import Panel from './Panel.js';
 import Popupable from './Popupable.js';
 import sun from './sun.js';
@@ -130,7 +131,7 @@ class Dialog extends PopupablePanel {
       maxHeight: null, // if not provided, then dynamically calculate based on the layoutBounds of the current screen, see updateLayoutMultilink
       maxWidth: null, // if not provided, then dynamically calculate based on the layoutBounds of the current screen, see updateLayoutMultilink
       tandem: Tandem.OPTIONAL,
-      phetioType: DialogIO,
+      phetioType: Dialog.DialogIO,
       phetioReadOnly: PhetioObject.DEFAULT_OPTIONS.phetioReadOnly, // default to false so it can pass it through to the close button
       phetioState: PhetioObject.DEFAULT_OPTIONS.phetioState,
       phetioComponentOptions: null, // filled in below with PhetioObject.mergePhetioComponentOptions()
@@ -418,6 +419,17 @@ function defaultLayoutStrategy( dialog, simBounds, screenBounds, scale ) {
 function applyDoubleMargin( dimension, margin ) {
   return ( dimension > margin * 2 ) ? ( dimension - margin * 2 ) : dimension;
 }
+
+Dialog.DialogIO = new IOType( 'DialogIO', {
+  valueType: Dialog,
+  supertype: Node.NodeIO,
+
+  // Since many Dialogs are dynamic elements, these need to be in the state. The value of the state object doesn't
+  // matter, but it instead just serves as a marker to tell the state engine to recreate the Dialog (if dynamic) when
+  // setting state.
+  // TODO: Should this use ReferenceIO or other shared code? https://github.com/phetsims/tandem/issues/215
+  toStateObject: dialog => dialog.tandem.phetioID
+} );
 
 sun.register( 'Dialog', Dialog );
 export default Dialog;
