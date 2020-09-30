@@ -274,6 +274,16 @@ class RectangularButtonView extends Node {
   a11yClick() {
     this._pressListener.click();
   }
+
+  // @public
+  addListener( listener ) {
+    this.buttonModel.addListener( listener );
+  }
+
+  // @public
+  removeListener( listener ) {
+    this.buttonModel.removeListener( listener );
+  }
 }
 
 /**

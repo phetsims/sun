@@ -75,18 +75,6 @@ class RectangularPushButton extends RectangularButtonView {
     super.dispose();
     this.disposeRectangularPushButton();
   }
-
-  //TODO move to RectangularButtonView
-  // @public
-  addListener( listener ) {
-    this.buttonModel.addListener( listener );
-  }
-
-  //TODO move to RectangularButtonView
-  // @public
-  removeListener( listener ) {
-    this.buttonModel.removeListener( listener );
-  }
 }
 
 sun.register( 'RectangularPushButton', RectangularPushButton );
