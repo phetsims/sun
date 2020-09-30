@@ -6,7 +6,7 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
-import NodeIO from '../../scenery/js/nodes/NodeIO.js';
+import Node from '../../scenery/js/nodes/Node.js';
 import BooleanIO from '../../tandem/js/types/BooleanIO.js';
 import IOType from '../../tandem/js/types/IOType.js';
 import VoidIO from '../../tandem/js/types/VoidIO.js';
@@ -15,7 +15,7 @@ import sun from './sun.js';
 const SliderIO = new IOType( 'SliderIO', {
   isValidValue: v => v instanceof phet.sun.Slider,
   documentation: 'A traditional slider component, with a knob and possibly tick marks',
-  supertype: NodeIO,
+  supertype: Node.NodeIO,
   methods: {
     setMajorTicksVisible: {
       returnType: VoidIO,

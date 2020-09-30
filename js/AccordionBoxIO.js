@@ -6,13 +6,13 @@
  * @author John Blanco
  */
 
-import NodeIO from '../../scenery/js/nodes/NodeIO.js';
+import Node from '../../scenery/js/nodes/Node.js';
 import IOType from '../../tandem/js/types/IOType.js';
 import sun from './sun.js';
 
 const AccordionBoxIO = new IOType( 'AccordionBoxIO', {
   isValidValue: v => v instanceof phet.sun.AccordionBox,
-  supertype: NodeIO,
+  supertype: Node.NodeIO,
   events: [ 'expanded', 'collapsed' ]
 } );
 

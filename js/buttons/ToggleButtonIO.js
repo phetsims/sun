@@ -7,7 +7,7 @@
  * @author Andrew Adare (PhET Interactive Simulations)
  */
 
-import NodeIO from '../../../scenery/js/nodes/NodeIO.js';
+import Node from '../../../scenery/js/nodes/Node.js';
 import IOType from '../../../tandem/js/types/IOType.js';
 import sun from '../sun.js';
 
@@ -18,7 +18,7 @@ const ToggleButtonIO = new IOType( 'ToggleButtonIO', {
     const matches = definedTypes.filter( v => instance instanceof v );
     return matches.length > 0;
   },
-  supertype: NodeIO,
+  supertype: Node.NodeIO,
   documentation: 'A button that toggles state (in/out) when pressed',
   events: [ 'toggled' ]
 } );

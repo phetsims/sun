@@ -7,13 +7,13 @@
  * @author Andrew Adare (PhET Interactive Simulations)
  */
 
-import NodeIO from '../../scenery/js/nodes/NodeIO.js';
+import Node from '../../scenery/js/nodes/Node.js';
 import IOType from '../../tandem/js/types/IOType.js';
 import sun from './sun.js';
 
 const DialogIO = new IOType( 'DialogIO', {
   isValidValue: v => v instanceof phet.sun.Dialog,
-  supertype: NodeIO,
+  supertype: Node.NodeIO,
 
   // Since many Dialogs are dynamic elements, these need to be in the state. The value of the state object doesn't
   // matter, but it instead just serves as a marker to tell the state engine to recreate the Dialog (if dynamic) when

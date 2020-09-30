@@ -25,7 +25,6 @@ import merge from '../../phet-core/js/merge.js';
 import PDOMPeer from '../../scenery/js/accessibility/pdom/PDOMPeer.js';
 import Display from '../../scenery/js/display/Display.js';
 import Node from '../../scenery/js/nodes/Node.js';
-import NodeIO from '../../scenery/js/nodes/NodeIO.js';
 import generalCloseSoundPlayer from '../../tambo/js/shared-sound-players/generalCloseSoundPlayer.js';
 import generalOpenSoundPlayer from '../../tambo/js/shared-sound-players/generalOpenSoundPlayer.js';
 import EventType from '../../tandem/js/EventType.js';
@@ -400,7 +399,7 @@ ComboBox.ComboBoxIO = new IOType( 'ComboBoxIO', {
   documentation: 'A combo box is composed of a push button and a listbox. The listbox contains items that represent ' +
                  'choices. Pressing the button pops up the listbox. Selecting from an item in the listbox sets the ' +
                  'value of an associated Property. The button shows the item that is currently selected.',
-  supertype: NodeIO,
+  supertype: Node.NodeIO,
   events: [ 'listBoxShown', 'listBoxHidden' ]
 } );
 
