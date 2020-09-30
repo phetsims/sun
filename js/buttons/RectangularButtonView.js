@@ -208,14 +208,6 @@ class RectangularButtonView extends Node {
     };
   }
 
-  get enabled() { return this.getEnabled(); }
-
-  set enabled( value ) { this.setEnabled( value ); }
-
-  get baseColor() { return this.getBaseColor(); }
-
-  set baseColor( baseColor ) { this.setBaseColor( baseColor ); }
-
   /**
    * @public
    * @override
@@ -235,12 +227,16 @@ class RectangularButtonView extends Node {
     this.buttonModel.enabledProperty.set( value );
   }
 
+  get enabled() { return this.getEnabled(); }
+
   /**
    * Gets the enabled state.
    * @returns {boolean}
    * @public
    */
   getEnabled() { return this.buttonModel.enabledProperty.get(); }
+
+  set enabled( value ) { this.setEnabled( value ); }
 
   /**
    * Gets the enabledProperty. This is meant to be a workaround for https://github.com/phetsims/sun/issues/515 while
@@ -258,12 +254,16 @@ class RectangularButtonView extends Node {
    */
   setBaseColor( baseColor ) { this.baseColorProperty.paint = baseColor; }
 
+  get baseColor() { return this.getBaseColor(); }
+
   /**
    * Gets the base color for this button.
    * @returns {Color}
    * @public
    */
   getBaseColor() { return this.baseColorProperty.value; }
+
+  set baseColor( baseColor ) { this.setBaseColor( baseColor ); }
 
   /**
    * Clicks the button. Recommended only for accessibility usages. For the most part, a11y button functionality should
