@@ -23,7 +23,7 @@ import accordionBoxOpenedSoundPlayer from '../../tambo/js/shared-sound-players/a
 import EventType from '../../tandem/js/EventType.js';
 import PhetioObject from '../../tandem/js/PhetioObject.js';
 import Tandem from '../../tandem/js/Tandem.js';
-import AccordionBoxIO from './AccordionBoxIO.js';
+import IOType from '../../tandem/js/types/IOType.js';
 import ExpandCollapseButton from './ExpandCollapseButton.js';
 import sun from './sun.js';
 
@@ -106,7 +106,7 @@ class AccordionBox extends Node {
 
       // phet-io support
       tandem: Tandem.REQUIRED,
-      phetioType: AccordionBoxIO,
+      phetioType: AccordionBox.AccordionBoxIO,
       phetioEventType: EventType.USER,
       phetioComponentOptions: null // filled in below with PhetioObject.mergePhetioComponentOptions()
     }, options );
@@ -537,6 +537,12 @@ class AccordionBox extends Node {
     }
   }
 }
+
+AccordionBox.AccordionBoxIO = new IOType( 'AccordionBoxIO', {
+  valueType: AccordionBox,
+  supertype: Node.NodeIO,
+  events: [ 'expanded', 'collapsed' ]
+} );
 
 sun.register( 'AccordionBox', AccordionBox );
 export default AccordionBox;
