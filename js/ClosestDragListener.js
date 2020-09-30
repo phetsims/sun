@@ -14,39 +14,36 @@
  * @author Jonathan Olson (PhET Interactive Simulations)
  */
 
-import inherit from '../../phet-core/js/inherit.js';
 import Mouse from '../../scenery/js/input/Mouse.js';
 import Touch from '../../scenery/js/input/Touch.js';
 import sun from './sun.js';
 
-/**
- * @constructor
- *
- * @param {number} touchThreshold - The maximum distance from an item that will cause a touch to start a drag
- * @param {number} mouseThreshold - The maximum distance from an item that will cause a mouse down event to start a drag
- */
-function ClosestDragListener( touchThreshold, mouseThreshold ) {
-  // @private
-  this.touchThreshold = touchThreshold;
-  this.mouseThreshold = mouseThreshold;
+class ClosestDragListener {
 
-  // @private
-  this.items = [];
-}
+  /**
+   * @param {number} touchThreshold - The maximum distance from an item that will cause a touch to start a drag
+   * @param {number} mouseThreshold - The maximum distance from an item that will cause a mouse down event to start a drag
+   */
+  constructor( touchThreshold, mouseThreshold ) {
 
-sun.register( 'ClosestDragListener', ClosestDragListener );
+    // @private
+    this.touchThreshold = touchThreshold;
+    this.mouseThreshold = mouseThreshold;
 
-inherit( Object, ClosestDragListener, {
+    // @private
+    this.items = [];
+  }
+
   /**
    * Adds an item that can be dragged.
    * @public
    *
    * @param {item} item
    */
-  addDraggableItem: function( item ) {
+  addDraggableItem( item ) {
     assert && assert( !!item.startDrag && !!item.computeDistance, 'Added an invalid item for ClosestDragListener' );
     this.items.push( item );
-  },
+  }
 
   /**
    * Removes a previously-added item.
@@ -54,13 +51,18 @@ inherit( Object, ClosestDragListener, {
    *
    * @param {item} item
    */
-  removeDraggableItem: function( item ) {
+  removeDraggableItem( item ) {
     const index = _.indexOf( this.items, item );
     assert && assert( index >= 0 );
     this.items.splice( index, 1 );
-  },
+  }
 
-  down: function( event ) {
+  /**
+   * @public
+   *
+   * @param {SceneryEvent} event
+   */
+  down( event ) {
     // If there was nothing else in the way
     if ( event.target === event.currentTarget ) {
       let threshold = 0;
@@ -93,6 +95,7 @@ inherit( Object, ClosestDragListener, {
       }
     }
   }
-} );
+}
 
+sun.register( 'ClosestDragListener', ClosestDragListener );
 export default ClosestDragListener;
