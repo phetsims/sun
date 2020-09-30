@@ -24,10 +24,12 @@ import Node from '../../scenery/js/nodes/Node.js';
 import Path from '../../scenery/js/nodes/Path.js';
 import PhetioObject from '../../tandem/js/PhetioObject.js';
 import Tandem from '../../tandem/js/Tandem.js';
+import BooleanIO from '../../tandem/js/types/BooleanIO.js';
+import IOType from '../../tandem/js/types/IOType.js';
+import VoidIO from '../../tandem/js/types/VoidIO.js';
 import AccessibleSlider from './accessibility/AccessibleSlider.js';
 import DefaultSliderTrack from './DefaultSliderTrack.js';
 import EnabledNode from './EnabledNode.js';
-import SliderIO from './SliderIO.js';
 import SliderThumb from './SliderThumb.js';
 import sun from './sun.js';
 import SunConstants from './SunConstants.js';
@@ -114,7 +116,7 @@ class Slider extends Node {
 
       // phet-io
       tandem: Tandem.REQUIRED,
-      phetioType: SliderIO,
+      phetioType: Slider.SliderIO,
       phetioComponentOptions: null, // filled in below with PhetioObject.mergePhetioComponentOptions()
 
       // {Property.<number>|null} - if provided, create a LinkedElement for this PhET-iO instrumented Property, instead
@@ -442,6 +444,33 @@ AccessibleSlider.mixInto( Slider );
 
 // mix enabledProperty into Slider
 EnabledNode.mixInto( Slider );
+
+Slider.SliderIO = new IOType( 'SliderIO', {
+  valueType: Slider,
+  documentation: 'A traditional slider component, with a knob and possibly tick marks',
+  supertype: Node.NodeIO,
+  methods: {
+    setMajorTicksVisible: {
+      returnType: VoidIO,
+      parameterTypes: [ BooleanIO ],
+      implementation: function( visible ) {
+        this.setMajorTicksVisible( visible );
+      },
+      documentation: 'Set whether the major tick marks should be shown',
+      invocableForReadOnlyElements: false
+    },
+
+    setMinorTicksVisible: {
+      returnType: VoidIO,
+      parameterTypes: [ BooleanIO ],
+      implementation: function( visible ) {
+        this.setMinorTicksVisible( visible );
+      },
+      documentation: 'Set whether the minor tick marks should be shown',
+      invocableForReadOnlyElements: false
+    }
+  }
+} );
 
 sun.register( 'Slider', Slider );
 export default Slider;

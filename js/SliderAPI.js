@@ -13,7 +13,7 @@ import DragListenerAPI from '../../scenery/js/listeners/DragListenerAPI.js';
 import NodeAPI from '../../scenery/js/nodes/NodeAPI.js';
 import NumberIO from '../../tandem/js/types/NumberIO.js';
 import EnabledComponentAPIMixin from './EnabledComponentAPIMixin.js';
-import SliderIO from './SliderIO.js';
+import Slider from './Slider.js';
 import sun from './sun.js';
 
 // private API class just used for Slider
@@ -48,7 +48,7 @@ class SliderAPI extends EnabledComponentAPIMixin( NodeAPI ) {
   constructor( options ) {
 
     options = merge( {
-      phetioType: SliderIO,
+      phetioType: Slider.SliderIO,
       visiblePropertyOptions: {
         phetioFeatured: true
       }
