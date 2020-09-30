@@ -370,8 +370,6 @@ class Dialog extends PopupablePanel {
       this.updateLayoutMultilink.dispose();
       this.removeInputListener( escapeListener );
 
-      this.isShowingProperty.dispose();
-
       closeButton.dispose();
 
       // remove dialog content from scene graph, but don't dispose because Panel

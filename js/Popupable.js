@@ -101,6 +101,8 @@ const Popupable = type => {
     dispose() {
       this.hide();
 
+      this.isShowingProperty.dispose();
+
       type.prototype.dispose.call( this );
     }
   } );
