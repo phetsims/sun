@@ -44,9 +44,6 @@ class RectangularToggleButton extends RectangularButtonView {
 
     super( toggleButtonModel, toggleButtonInteractionStateProperty, options );
 
-    // @public (phet-io)
-    this.toggleButtonModel = toggleButtonModel;
-
     this.addLinkedElement( property, {
       tandem: options.tandem.createTandem( 'property' )
     } );
@@ -64,7 +61,7 @@ class RectangularToggleButton extends RectangularButtonView {
 
     // @private
     this.disposeRectangularToggleButton = () => {
-      this.toggleButtonModel.dispose();
+      toggleButtonModel.dispose();
       this.buttonModel.produceSoundEmitter.removeListener( playSounds );
       toggleButtonInteractionStateProperty.dispose();
     };
