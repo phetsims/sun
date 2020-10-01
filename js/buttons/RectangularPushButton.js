@@ -62,7 +62,7 @@ class RectangularPushButton extends RectangularButtonView {
     };
 
     // support for binder documentation, stripped out in builds and only runs when ?binder is specified
-    assert && phet.chipper.queryParameters.binder && InstanceRegistry.registerDataURL( 'sun', 'AccordionBox', this );
+    assert && phet.chipper.queryParameters.binder && InstanceRegistry.registerDataURL( 'sun', 'RectangularPushButton', this );
   }
 
   // @public
