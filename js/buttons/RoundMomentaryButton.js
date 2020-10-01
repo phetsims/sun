@@ -36,8 +36,10 @@ class RoundMomentaryButton extends RoundButtonView {
 
     super( buttonModel, new MomentaryButtonInteractionStateProperty( buttonModel ), options );
 
-    // @public
-    this.buttonModel = buttonModel;
+    // @private
+    this.disposeRoundMomentaryButton = () => {
+      buttonModel.dispose();
+    };
   }
 
   /**
@@ -45,7 +47,7 @@ class RoundMomentaryButton extends RoundButtonView {
    * @override
    */
   dispose() {
-    this.buttonModel.dispose(); //TODO fails with assertions enable, see sun#212
+    this.disposeRoundMomentaryButton();
     super.dispose();
   }
 }

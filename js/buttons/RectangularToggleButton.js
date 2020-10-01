@@ -62,7 +62,6 @@ class RectangularToggleButton extends RectangularButtonView {
     // @private
     this.disposeRectangularToggleButton = () => {
       toggleButtonModel.dispose();
-      toggleButtonInteractionStateProperty.dispose();
     };
   }
 

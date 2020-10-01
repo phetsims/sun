@@ -53,7 +53,6 @@ class RoundStickyToggleButton extends RoundButtonView {
     this.disposeRoundStickyToggleButton = () => {
       property.unlink( setAriaPressed );
       toggleButtonModel.dispose();
-      stickyToggleButtonInteractionStateProperty.dispose();
     };
   }
 

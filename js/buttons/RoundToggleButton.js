@@ -62,7 +62,6 @@ class RoundToggleButton extends RoundButtonView {
     // @private
     this.disposeRoundToggleButton = () => {
       toggleButtonModel.dispose();
-      toggleButtonInteractionStateProperty.dispose();
     };
   }
 

@@ -32,7 +32,6 @@ class RectangularStickyToggleButton extends RectangularButtonView {
     // @private - dispose items specific to this instance
     this.disposeRectangularStickyToggleButton = () => {
       buttonModel.dispose();
-      stickyToggleButtonInteractionStateProperty.dispose();
     };
   }
 

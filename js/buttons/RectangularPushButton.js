@@ -57,6 +57,7 @@ class RectangularPushButton extends RectangularButtonView {
     const playSound = () => { options.soundPlayer.play(); };
     buttonModel.produceSoundEmitter.addListener( playSound );
 
+    // @private
     this.disposeRectangularPushButton = function() {
       buttonModel.dispose(); //TODO this fails when assertions are enabled, see sun#212
     };

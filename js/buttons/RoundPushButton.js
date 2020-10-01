@@ -58,7 +58,7 @@ class RoundPushButton extends RoundButtonView {
     const playSound = () => { options.soundPlayer.play(); };
     buttonModel.produceSoundEmitter.addListener( playSound );
 
-    // dispose function
+    // @private - dispose function
     this.disposeRoundPushButton = () => {
       buttonModel.dispose();
     };
