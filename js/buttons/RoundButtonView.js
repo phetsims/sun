@@ -116,8 +116,8 @@ class RoundButtonView extends Node {
     this.baseColorProperty = new PaintColorProperty( options.baseColor ); // @private
 
     // @private {PressListener}
-    const pressListener = buttonModel.createListener( options.listenerOptions );
-    this.addInputListener( pressListener );
+    this._pressListener = buttonModel.createListener( options.listenerOptions );
+    this.addInputListener( this._pressListener );
 
     // Use the user-specified radius if present, otherwise calculate the
     // radius based on the content and the margin.
@@ -179,7 +179,7 @@ class RoundButtonView extends Node {
     this.disposeRoundButtonView = () => {
       buttonAppearanceStrategy.dispose();
       contentAppearanceStrategy.dispose();
-      pressListener.dispose();
+      this._pressListener.dispose();
       if ( interactionStateProperty.hasListener( handleInteractionStateChanged ) ) {
         interactionStateProperty.unlink( handleInteractionStateChanged );
       }
@@ -246,6 +246,16 @@ class RoundButtonView extends Node {
   // @public
   removeListener( listener ) {
     this.buttonModel.removeListener( listener );
+  }
+
+  /**
+   * Manually click the button, as it would be clicked in response to alternative input. Recommended only for
+   * accessibility usages. For the most part, a11y button functionality should be managed by PressListener, this should
+   * rarely be used.
+   * @public
+   */
+  a11yClick() {
+    this._pressListener.click();
   }
 }
 

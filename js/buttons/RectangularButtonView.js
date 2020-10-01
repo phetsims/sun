@@ -278,7 +278,6 @@ class RectangularButtonView extends Node {
    * Clicks the button. Recommended only for accessibility usages. For the most part, a11y button functionality should
    * be managed by the PressListener. This is more for edge cases.
    * @public
-   * @a11y
    */
   a11yClick() {
     this._pressListener.click();
