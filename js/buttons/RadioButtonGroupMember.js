@@ -140,7 +140,6 @@ class RadioButtonGroupMember extends RectangularButtonView {
     this.disposeRadioButtonGroupMember = () => {
       property.unlink( accessibleCheckedListener );
       this.firedEmitter.dispose();
-      buttonModel.produceSoundEmitter.removeListener( playSound );
       buttonModel.dispose();
       this.interactionStateProperty.dispose();
     };

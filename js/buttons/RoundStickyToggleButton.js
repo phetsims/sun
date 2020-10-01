@@ -52,7 +52,6 @@ class RoundStickyToggleButton extends RoundButtonView {
     // @private - dispose items specific to this instance
     this.disposeRoundStickyToggleButton = () => {
       property.unlink( setAriaPressed );
-      toggleButtonModel.produceSoundEmitter.removeListener( playSound );
       toggleButtonModel.dispose();
       stickyToggleButtonInteractionStateProperty.dispose();
     };

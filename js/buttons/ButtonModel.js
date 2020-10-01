@@ -110,6 +110,7 @@ class ButtonModel {
       this.overProperty.dispose();
       this.downProperty.dispose();
       this.enabledProperty.dispose();
+      this.produceSoundEmitter.dispose();
 
       this.looksPressedMultilink && this.looksPressedMultilink.dispose();
 
