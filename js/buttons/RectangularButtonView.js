@@ -180,6 +180,12 @@ class RectangularButtonView extends Node {
     };
     interactionStateProperty.link( handleInteractionStateChanged );
 
+    // PDOM - indicate to screen readers whether the button is enabled
+    const updatePDOMEnabled = enabled => {
+      this.setAccessibleAttribute( 'aria-disabled', !enabled );
+    };
+    this.buttonModel.enabledProperty.link( updatePDOMEnabled );
+
     // set pointer areas
     this.touchArea = button.localBounds
       .dilatedXY( options.touchAreaXDilation, options.touchAreaYDilation )
@@ -200,6 +206,9 @@ class RectangularButtonView extends Node {
       this._pressListener.dispose();
       if ( interactionStateProperty.hasListener( handleInteractionStateChanged ) ) {
         interactionStateProperty.unlink( handleInteractionStateChanged );
+      }
+      if ( buttonModel.enabledProperty.hasListener( updatePDOMEnabled ) ) {
+        buttonModel.enabledProperty.unlink( updatePDOMEnabled );
       }
 
       if ( content ) {
