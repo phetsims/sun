@@ -87,8 +87,10 @@ class PushButtonModel extends ButtonModel {
           this.timer.stop( fire );
         }
         else if ( fire ) {
-          this.fire();
+
+          // Produce sound before firing, in case firing causes the disposal of this PushButtonModel
           this.produceSoundEmitter.emit();
+          this.fire();
         }
       }
     };
