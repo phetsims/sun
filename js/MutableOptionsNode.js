@@ -53,18 +53,11 @@ function MutableOptionsNode( nodeSubtype, parameters, staticOptions, dynamicOpti
   //                                              specific initial value).
   this.nodeProperty = new Property( null );
 
-  // @private {Function} - The constructor for our custom subtype
-  this._type = function MutableOptionsNodeConstructor() {
-    // Unwrap the properties in dynamicOptions
-    const options = merge( _.mapValues( dynamicOptions, function( property ) {
-      return property.value;
-    } ), staticOptions );
-
-    return Reflect.construct( nodeSubtype, parameters.concat( [ options ] ) );
-  };
-
-  // Have our copies inherit directly (for now, use Reflect.construct when IE11 support is dropped?)
-  inherit( nodeSubtype, this._type );
+  // @private {function} - The constructor for our custom subtype, unwraps the Properties in dynamicOptions.
+  this._constructInstance = () => Reflect.construct( nodeSubtype, [
+    ...parameters,
+    merge( _.mapValues( dynamicOptions, property => property.value ), staticOptions ) // options
+  ] );
 
   // @private {Multilink} - Make a copy, and replace it when one of our dyanmic options changes.
   this.multilink = Property.multilink( _.values( dynamicOptions ), this.replaceCopy.bind( this ) );
@@ -81,8 +74,7 @@ inherit( Node, MutableOptionsNode, {
    * @private
    */
   replaceCopy: function() {
-    const Type = this._type; // avoids our linter complaining about uncapitalized types with 'new'
-    const newCopy = new Type();
+    const newCopy = this._constructInstance();
     const oldCopy = this.nodeProperty.value;
     this.nodeProperty.value = newCopy;
 
