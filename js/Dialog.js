@@ -36,9 +36,8 @@ import sunStrings from './sunStrings.js';
 
 // constants
 const CLOSE_BUTTON_WIDTH = 18.2;
-const PopupablePanel = Popupable( Panel );
 
-class Dialog extends PopupablePanel {
+class Dialog extends Popupable( Panel ) {
 
   /**
    * @param {Node} content - The content to display inside the dialog (not including the title)

@@ -9,7 +9,6 @@
  * @author John Blanco (PhET Interactive Simulations)
  */
 
-import inherit from '../../phet-core/js/inherit.js';
 import merge from '../../phet-core/js/merge.js';
 import Node from '../../scenery/js/nodes/Node.js';
 import Rectangle from '../../scenery/js/nodes/Rectangle.js';
@@ -41,142 +40,141 @@ const DEFAULT_OPTIONS = {
 };
 assert && Object.freeze( DEFAULT_OPTIONS );
 
+class Panel extends Node {
 
-/**
- * @param {Node} content
- * @param {Object} [options]
- * @constructor
- */
-function Panel( content, options ) {
+  /**
+   * @param {Node} content
+   * @param {Object} [options]
+   */
+  constructor( content, options ) {
 
-  options = merge( {}, DEFAULT_OPTIONS, options );
+    options = merge( {}, DEFAULT_OPTIONS, options );
 
-  assert && assert( _.includes( ALIGN_VALUES, options.align ), 'invalid align: ' + options.align );
+    assert && assert( _.includes( ALIGN_VALUES, options.align ), 'invalid align: ' + options.align );
 
-  Node.call( this );
+    super();
 
-  const backgroundContainer = new Node();
+    const backgroundContainer = new Node();
 
-  // @private {Rectangle} - correct size will be set by updateBackground
-  this.background = new Rectangle( 0, 0, 1, 1, {
-    lineWidth: options.lineWidth,
-    pickable: options.backgroundPickable,
-    lineDash: options.lineDash,
-    cornerRadius: options.cornerRadius
-  } );
+    // @private {Rectangle} - correct size will be set by updateBackground
+    this.background = new Rectangle( 0, 0, 1, 1, {
+      lineWidth: options.lineWidth,
+      pickable: options.backgroundPickable,
+      lineDash: options.lineDash,
+      cornerRadius: options.cornerRadius
+    } );
 
-  // update the fill and stroke
-  this.setStroke( options.stroke );
-  this.setFill( options.fill );
+    // update the fill and stroke
+    this.setStroke( options.stroke );
+    this.setFill( options.fill );
 
-  this.addChild( backgroundContainer );
-  this.addChild( content );
+    this.addChild( backgroundContainer );
+    this.addChild( content );
 
-  // flag for preventing recursion
-  let backgroundUpdateInProgress = false;
+    // flag for preventing recursion
+    let backgroundUpdateInProgress = false;
 
-  // Adjust the background size to match the content.
-  const updateBackground = () => {
+    // Adjust the background size to match the content.
+    const updateBackground = () => {
 
-    // Check that an update isn't already in progress, lest we end up with some nasty recursion.  For details, please
-    // see https://github.com/phetsims/sun/issues/110 and https://github.com/phetsims/molecule-shapes/issues/130.
-    if ( backgroundUpdateInProgress ) {
-      return;
-    }
+      // Check that an update isn't already in progress, lest we end up with some nasty recursion.  For details, please
+      // see https://github.com/phetsims/sun/issues/110 and https://github.com/phetsims/molecule-shapes/issues/130.
+      if ( backgroundUpdateInProgress ) {
+        return;
+      }
 
-    const hasValidContent = this.isChildIncludedInLayout( content );
-    backgroundContainer.children = hasValidContent ? [ this.background ] : [];
-    if ( !hasValidContent ) {
-      // Bail out (and make the background invisible) if our bounds are invalid
-      return;
-    }
+      const hasValidContent = this.isChildIncludedInLayout( content );
+      backgroundContainer.children = hasValidContent ? [ this.background ] : [];
+      if ( !hasValidContent ) {
+        // Bail out (and make the background invisible) if our bounds are invalid
+        return;
+      }
 
-    backgroundUpdateInProgress = true;
+      backgroundUpdateInProgress = true;
 
-    // size the background to fit the content
-    const backgroundWidth = Math.max( options.minWidth, content.width + ( 2 * options.xMargin ) );
-    this.background.setRect( 0, 0, backgroundWidth, content.height + ( 2 * options.yMargin ) );
+      // size the background to fit the content
+      const backgroundWidth = Math.max( options.minWidth, content.width + ( 2 * options.xMargin ) );
+      this.background.setRect( 0, 0, backgroundWidth, content.height + ( 2 * options.yMargin ) );
 
-    // Align the content within the background. If the content width >= minWidth, then all alignments are equivalent.
-    if ( options.align === 'center' ) {
-      content.center = this.background.center;
-    }
-    else if ( options.align === 'left' ) {
+      // Align the content within the background. If the content width >= minWidth, then all alignments are equivalent.
+      if ( options.align === 'center' ) {
+        content.center = this.background.center;
+      }
+      else if ( options.align === 'left' ) {
 
-      // Use backgroundWidth instead of background.width because they differ by the background lineWidth
-      content.left = this.background.centerX - backgroundWidth / 2 + options.xMargin;
-      content.centerY = this.background.centerY;
-    }
-    else { /* right */
+        // Use backgroundWidth instead of background.width because they differ by the background lineWidth
+        content.left = this.background.centerX - backgroundWidth / 2 + options.xMargin;
+        content.centerY = this.background.centerY;
+      }
+      else { /* right */
 
-      // Use backgroundWidth instead of background.width because they differ by the background lineWidth
-      content.right = this.background.centerX + backgroundWidth / 2 - options.xMargin;
-      content.centerY = this.background.centerY;
-    }
+        // Use backgroundWidth instead of background.width because they differ by the background lineWidth
+        content.right = this.background.centerX + backgroundWidth / 2 - options.xMargin;
+        content.centerY = this.background.centerY;
+      }
 
-    // clear the recursion-prevention flag
-    backgroundUpdateInProgress = false;
-  };
+      // clear the recursion-prevention flag
+      backgroundUpdateInProgress = false;
+    };
 
-  if ( options.resize ) {
-    content.boundsProperty.lazyLink( updateBackground );
-    content.visibleProperty.lazyLink( updateBackground );
-  }
-  updateBackground();
-
-  // @private {function}
-  this.disposePanel = function() {
     if ( options.resize ) {
-      content.boundsProperty.unlink( updateBackground );
-      content.visibleProperty.unlink( updateBackground );
+      content.boundsProperty.lazyLink( updateBackground );
+      content.visibleProperty.lazyLink( updateBackground );
     }
-  };
+    updateBackground();
 
-  // Apply options after the layout is done, so that options that use the bounds will work properly.
-  this.mutate( options );
-}
+    // @private
+    this.disposePanel = () => {
+      if ( options.resize ) {
+        content.boundsProperty.unlink( updateBackground );
+        content.visibleProperty.unlink( updateBackground );
+      }
+    };
 
-sun.register( 'Panel', Panel );
+    // Apply options after the layout is done, so that options that use the bounds will work properly.
+    this.mutate( options );
+  }
 
-inherit( Node, Panel, {
+  get stroke() { return this.getStroke(); }
 
-  // @public
-  dispose: function() {
+  set stroke( value ) { this.setStroke( value ); }
+
+  set fill( value ) { this.setFill( value ); }
+
+  /**
+   * @public
+   * @override
+   */
+  dispose() {
     this.disposePanel();
-    Node.prototype.dispose.call( this );
-  },
+    super.dispose();
+  }
 
   // @public - Change the background rectangle's stroke (can be overridden)
-  setStroke: function( stroke ) {
+  setStroke( stroke ) {
     this.background.stroke = stroke;
-  },
+  }
 
   // @public - Get the background rectangle's stroke (can be overridden)
-  getStroke: function() {
+  getStroke() {
     return this.background.stroke;
-  },
-
-  // @public - Getter/setter for background stroke
-  set stroke( value ) { this.setStroke( value ); },
-  get stroke() { return this.getStroke(); },
+  }
 
   // @public - Change the background rectangle's fill (can be overridden)
-  setFill: function( fill ) {
+  setFill( fill ) {
     this.background.fill = fill;
-  },
+  }
 
   // @public - Get the background rectangle's fill (can be overridden)
-  getFill: function() {
+  getFill() {
     return this.background.fill;
-  },
+  }
 
-  // @public - Getter/setter for background fill
-  set fill( value ) { this.setFill( value ); },
   get fill() { return this.getFill(); }
-}, {
+}
 
-  // @static @public (read-only) {Object}
-  DEFAULT_OPTIONS: DEFAULT_OPTIONS
-} );
+// @public (read-only)
+Panel.DEFAULT_OPTIONS = DEFAULT_OPTIONS;
 
+sun.register( 'Panel', Panel );
 export default Panel;
