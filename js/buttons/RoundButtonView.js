@@ -169,7 +169,7 @@ class RoundButtonView extends Node {
 
     // PDOM - focus highlight is circular for round buttons, with a little bit of padding
     // between button shape and inner edge of highlight
-    this.focusHighlight = new Shape.circle( 0, 0, buttonRadius + 5 );
+    this.focusHighlight = Shape.circle( 0, 0, buttonRadius + 5 );
 
     // Mutate with the options after the layout is complete so that
     // width-dependent fields like centerX will work.
