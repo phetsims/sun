@@ -4,18 +4,6 @@
  * Assists "changing" options for types of nodes where the node does not support modifying the option.
  * This will create a new copy of the node whenever the options change, and will swap it into place.
  *
- * @author Jonathan Olson (PhET Interactive Simulations)
- */
-
-import Property from '../../axon/js/Property.js';
-import inherit from '../../phet-core/js/inherit.js';
-import merge from '../../phet-core/js/merge.js';
-import Node from '../../scenery/js/nodes/Node.js';
-import sun from './sun.js';
-
-/**
- * @constructor
- *
  * Given a type that has an option that can only be provided on construction (e.g. 'color' option for NumberPicker),
  * MutableOptionsNode can act like a mutable form of that Node. For example, if you have a color property:
  *
@@ -39,41 +27,49 @@ import sun from './sun.js';
  *   color: colorProperty.value
  * } )
  *
- * @param {Function} nodeSubtype - The type of the node that we'll be constructing copies of.
- * @param {Array.<*>} parameters - Arbitrary initial parameters that will be passed to the type's constructor
- * @param {Object} staticOptions - Options passed in that won't change (will not unwrap properties)
- * @param {Object} dynamicOptions - Options passed in that will change. Should be a map from key names to
- *                                  Property.<*> values.
- * @param {Object} [wrapperOptions] - Node options passed to MutableOptionsNode itself (the wrapper).
+ * @author Jonathan Olson (PhET Interactive Simulations)
  */
-function MutableOptionsNode( nodeSubtype, parameters, staticOptions, dynamicOptions, wrapperOptions ) {
-  Node.call( this );
 
-  // @public {Property.<Node|null>} [read-only] - Holds our current copy of the node (or null, so we don't have a
-  //                                              specific initial value).
-  this.nodeProperty = new Property( null );
+import Property from '../../axon/js/Property.js';
+import merge from '../../phet-core/js/merge.js';
+import Node from '../../scenery/js/nodes/Node.js';
+import sun from './sun.js';
 
-  // @private {function} - The constructor for our custom subtype, unwraps the Properties in dynamicOptions.
-  this._constructInstance = () => Reflect.construct( nodeSubtype, [
-    ...parameters,
-    merge( _.mapValues( dynamicOptions, property => property.value ), staticOptions ) // options
-  ] );
+class MutableOptionsNode extends Node {
 
-  // @private {Multilink} - Make a copy, and replace it when one of our dyanmic options changes.
-  this.multilink = Property.multilink( _.values( dynamicOptions ), this.replaceCopy.bind( this ) );
+  /**
+   * @param {Function} nodeSubtype - The type of the node that we'll be constructing copies of.
+   * @param {Array.<*>} parameters - Arbitrary initial parameters that will be passed to the type's constructor
+   * @param {Object} staticOptions - Options passed in that won't change (will not unwrap properties)
+   * @param {Object} dynamicOptions - Options passed in that will change. Should be a map from key names to
+   *                                  Property.<*> values.
+   * @param {Object} [wrapperOptions] - Node options passed to MutableOptionsNode itself (the wrapper).
+   */
+  constructor( nodeSubtype, parameters, staticOptions, dynamicOptions, wrapperOptions ) {
+    super();
 
-  // Apply any options that make more sense on the wrapper (typically like positioning)
-  this.mutate( wrapperOptions );
-}
+    // @public {Property.<Node|null>} [read-only] - Holds our current copy of the node (or null, so we don't have a
+    //                                              specific initial value).
+    this.nodeProperty = new Property( null );
 
-sun.register( 'MutableOptionsNode', MutableOptionsNode );
+    // @private {function} - The constructor for our custom subtype, unwraps the Properties in dynamicOptions.
+    this._constructInstance = () => Reflect.construct( nodeSubtype, [
+      ...parameters,
+      merge( _.mapValues( dynamicOptions, property => property.value ), staticOptions ) // options
+    ] );
 
-inherit( Node, MutableOptionsNode, {
+    // @private {Multilink} - Make a copy, and replace it when one of our dyanmic options changes.
+    this.multilink = Property.multilink( _.values( dynamicOptions ), this.replaceCopy.bind( this ) );
+
+    // Apply any options that make more sense on the wrapper (typically like positioning)
+    this.mutate( wrapperOptions );
+  }
+
   /**
    * Creates a copy of our type of node, and replaces any existing copy.
    * @private
    */
-  replaceCopy: function() {
+  replaceCopy() {
     const newCopy = this._constructInstance();
     const oldCopy = this.nodeProperty.value;
     this.nodeProperty.value = newCopy;
@@ -84,7 +80,7 @@ inherit( Node, MutableOptionsNode, {
       this.removeChild( oldCopy );
       this.disposeCopy( oldCopy );
     }
-  },
+  }
 
   /**
    * Attempt to dispose an instance of our node.
@@ -92,19 +88,21 @@ inherit( Node, MutableOptionsNode, {
    *
    * @param {Node} copy
    */
-  disposeCopy: function( copy ) {
+  disposeCopy( copy ) {
     copy.dispose && copy.dispose();
-  },
+  }
 
   /**
-   * Handles disposal.
+   * @public
+   * @override
    */
-  dispose: function() {
+  dispose() {
     this.multilink.dispose();
     this.disposeCopy( this.nodeProperty.value );
     this.nodeProperty.dispose();
-    Node.prototype.dispose.call( this );
+    super.dispose();
   }
-} );
+}
 
+sun.register( 'MutableOptionsNode', MutableOptionsNode );
 export default MutableOptionsNode;
