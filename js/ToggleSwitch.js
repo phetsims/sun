@@ -79,10 +79,9 @@ class ToggleSwitch extends Node {
       // phet-io
       tandem: Tandem.REQUIRED,
       phetioEventType: EventType.USER,
-      phetioReadOnly: PhetioObject.DEFAULT_OPTIONS.phetioReadOnly
+      phetioReadOnly: PhetioObject.DEFAULT_OPTIONS.phetioReadOnly,
+      visiblePropertyOptions: { phetioFeatured: true }
     }, options );
-
-    PhetioObject.mergePhetioComponentOptions( { visibleProperty: { phetioFeatured: true } }, options );
 
     // Default track fills
     let defaultTrackFill = null;

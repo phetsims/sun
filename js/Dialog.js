@@ -207,12 +207,14 @@ class Dialog extends Popupable( Panel ) {
 
       phetioState: false, // close button should not be in state
       phetioComponentOptions: {
-        phetioState: false,
-
-        // dialog close buttons by default do not have a featured visibleProperty
-        visibleProperty: { phetioFeatured: false }
+        phetioState: false
       },
-      enabledPropertyOptions: { phetioFeatured: false }, // dialog close buttons by default do not have a featured enabledProperty
+
+      // dialog close buttons by default do not have a featured visibleProperty
+      visiblePropertyOptions: { phetioFeatured: false },
+
+      // dialog close buttons by default do not have a featured enabledProperty
+      enabledPropertyOptions: { phetioFeatured: false },
 
       // turn off default sound generation, Dialog will create its own sounds
       soundPlayer: Playable.NO_SOUND,

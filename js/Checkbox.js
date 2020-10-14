@@ -54,10 +54,10 @@ class Checkbox extends Node {
       tandem: Tandem.REQUIRED,
       phetioEventType: EventType.USER,
       phetioLinkProperty: true, // whether a link to the checkbox's Property is created
+      visiblePropertyOptions: { phetioFeatured: true },
 
       // to support properly passing this to children, see https://github.com/phetsims/tandem/issues/60
       phetioReadOnly: PhetioObject.DEFAULT_OPTIONS.phetioReadOnly,
-      phetioComponentOptions: null, // filled in below with PhetioObject.mergePhetioComponentOptions()
 
       // {Playable} - sound generators
       checkedSoundPlayer: checkboxCheckedSoundPlayer,
@@ -70,8 +70,6 @@ class Checkbox extends Node {
     }, options );
 
     super();
-
-    PhetioObject.mergePhetioComponentOptions( { visibleProperty: { phetioFeatured: true } }, options );
 
     // @private - sends out notifications when the checkbox is toggled.
     const toggleAction = new Action( () => {

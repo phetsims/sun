@@ -13,7 +13,6 @@ import merge from '../../phet-core/js/merge.js';
 import IndexedNodeIO from '../../scenery/js/nodes/IndexedNodeIO.js';
 import Node from '../../scenery/js/nodes/Node.js';
 import Rectangle from '../../scenery/js/nodes/Rectangle.js';
-import PhetioObject from '../../tandem/js/PhetioObject.js';
 import Tandem from '../../tandem/js/Tandem.js';
 import ComboBoxItem from './ComboBoxItem.js';
 import sun from './sun.js';
@@ -38,22 +37,20 @@ class ComboBoxListItemNode extends Node {
       highlightFill: 'rgb( 245, 245, 245 )', // {Color|string} highlight behind the item
       highlightCornerRadius: 4, // {number} corner radius for the highlight
 
-      // phet-io
-      tandem: Tandem.REQUIRED,
-
       // pdom
       tagName: 'li',
       focusable: true,
       ariaRole: 'option',
 
+      // phet-io
+      tandem: Tandem.REQUIRED,
+
       // Together, these options make it possible to reorder the combo box items in studio, and save a customized
       // simulation with the new order.
       phetioType: IndexedNodeIO,
-      phetioState: true
+      phetioState: true,
+      visiblePropertyOptions: { phetioFeatured: true }
     }, options );
-
-    // Use this pattern so that passed in phetioComponentOptions are not blown away.
-    PhetioObject.mergePhetioComponentOptions( { visibleProperty: { phetioFeatured: true } }, options );
 
     // pdom: get innerContent from the item
     assert && assert( options.innerContent === undefined, 'ComboBoxListItemNode sets innerContent' );

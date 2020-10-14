@@ -22,7 +22,6 @@ import FocusHighlightFromNode from '../../scenery/js/accessibility/FocusHighligh
 import DragListener from '../../scenery/js/listeners/DragListener.js';
 import Node from '../../scenery/js/nodes/Node.js';
 import Path from '../../scenery/js/nodes/Path.js';
-import PhetioObject from '../../tandem/js/PhetioObject.js';
 import Tandem from '../../tandem/js/Tandem.js';
 import BooleanIO from '../../tandem/js/types/BooleanIO.js';
 import IOType from '../../tandem/js/types/IOType.js';
@@ -117,7 +116,7 @@ class Slider extends Node {
       // phet-io
       tandem: Tandem.REQUIRED,
       phetioType: Slider.SliderIO,
-      phetioComponentOptions: null, // filled in below with PhetioObject.mergePhetioComponentOptions()
+      visiblePropertyOptions: { phetioFeatured: true },
 
       // {Property.<number>|null} - if provided, create a LinkedElement for this PhET-iO instrumented Property, instead
       // of using the passed in Property. This option was created to support passing DynamicProperty or "wrapping"
@@ -140,10 +139,6 @@ class Slider extends Node {
     assert && assert( range instanceof Range, 'range must be of type Range:' + range );
     assert && assert( Orientation.includes( options.orientation ),
       'invalid orientation: ' + options.orientation );
-
-    PhetioObject.mergePhetioComponentOptions( {
-      visibleProperty: { phetioFeatured: true }
-    }, options );
 
     super();
 

@@ -21,7 +21,6 @@ import Text from '../../scenery/js/nodes/Text.js';
 import accordionBoxClosedSoundPlayer from '../../tambo/js/shared-sound-players/accordionBoxClosedSoundPlayer.js';
 import accordionBoxOpenedSoundPlayer from '../../tambo/js/shared-sound-players/accordionBoxOpenedSoundPlayer.js';
 import EventType from '../../tandem/js/EventType.js';
-import PhetioObject from '../../tandem/js/PhetioObject.js';
 import Tandem from '../../tandem/js/Tandem.js';
 import IOType from '../../tandem/js/types/IOType.js';
 import ExpandCollapseButton from './ExpandCollapseButton.js';
@@ -108,7 +107,7 @@ class AccordionBox extends Node {
       tandem: Tandem.REQUIRED,
       phetioType: AccordionBox.AccordionBoxIO,
       phetioEventType: EventType.USER,
-      phetioComponentOptions: null // filled in below with PhetioObject.mergePhetioComponentOptions()
+      visiblePropertyOptions: { phetioFeatured: true }
     }, options );
 
     // titleBarOptions defaults
@@ -125,8 +124,6 @@ class AccordionBox extends Node {
       valueOffSoundPlayer: options.collapsedSoundPlayer,
       tandem: options.tandem.createTandem( 'expandCollapseButton' )
     }, options.expandCollapseButtonOptions );
-
-    PhetioObject.mergePhetioComponentOptions( { visibleProperty: { phetioFeatured: true } }, options );
 
     // verify string options
     assert && assert( options.buttonAlign === 'left' || options.buttonAlign === 'right' );

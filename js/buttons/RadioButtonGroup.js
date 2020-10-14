@@ -21,7 +21,6 @@ import LayoutBox from '../../../scenery/js/nodes/LayoutBox.js';
 import Rectangle from '../../../scenery/js/nodes/Rectangle.js';
 import Color from '../../../scenery/js/util/Color.js';
 import multiSelectionSoundPlayerFactory from '../../../tambo/js/multiSelectionSoundPlayerFactory.js';
-import PhetioObject from '../../../tandem/js/PhetioObject.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import ColorConstants from '../ColorConstants.js';
 import sun from '../sun.js';
@@ -54,7 +53,7 @@ class RadioButtonGroup extends LayoutBox {
 
       // phet-io
       tandem: Tandem.REQUIRED,
-      phetioComponentOptions: null, // filled in below with PhetioObject.mergePhetioComponentOptions()
+      visiblePropertyOptions: { phetioFeatured: true },
 
       // {Playable[]|null} - sound generation for the radio buttons, null means to use the defaults, otherwise there
       // must be one for each element in contentArray
@@ -69,8 +68,6 @@ class RadioButtonGroup extends LayoutBox {
 
     // increment instance count
     instanceCount++;
-
-    PhetioObject.mergePhetioComponentOptions( { visibleProperty: { phetioFeatured: true } }, options );
 
     assert && assert( !options.hasOwnProperty( 'children' ), 'Cannot pass in children to a RadioButtonGroup, ' +
                                                              'create siblings in the parent node instead' );

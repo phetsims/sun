@@ -17,7 +17,6 @@ import Path from '../../../scenery/js/nodes/Path.js';
 import Color from '../../../scenery/js/util/Color.js';
 import LinearGradient from '../../../scenery/js/util/LinearGradient.js';
 import PaintColorProperty from '../../../scenery/js/util/PaintColorProperty.js';
-import PhetioObject from '../../../tandem/js/PhetioObject.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import ColorConstants from '../ColorConstants.js';
 import sun from '../sun.js';
@@ -100,7 +99,8 @@ class RectangularButtonView extends Node {
       tagName: 'button',
 
       // phet-io
-      tandem: Tandem.OPTIONAL // This duplicates the parent option and works around https://github.com/phetsims/tandem/issues/50
+      tandem: Tandem.OPTIONAL, // This duplicates the parent option and works around https://github.com/phetsims/tandem/issues/50
+      visiblePropertyOptions: { phetioFeatured: true }
     }, options );
 
     // validate options
@@ -110,9 +110,6 @@ class RectangularButtonView extends Node {
     options.listenerOptions = merge( {
       tandem: options.tandem.createTandem( 'pressListener' )
     }, options.listenerOptions );
-
-    // Use this pattern so that passed in phetioComponentOptions are not blown away.
-    PhetioObject.mergePhetioComponentOptions( { visibleProperty: { phetioFeatured: true } }, options );
 
     super();
 
