@@ -71,8 +71,8 @@ class ComboBoxButton extends RectangularPushButton {
       accessibleNameBehavior: ACCESSIBLE_NAME_BEHAVIOR
     }, options );
 
-    assert( _.includes( ALIGN_VALUES, options.align ),
-      'invalid align: ' + options.align ) && assert;
+    assert && assert( _.includes( ALIGN_VALUES, options.align ),
+      'invalid align: ' + options.align );
     assert && assert( _.includes( ARROW_DIRECTION_VALUES, options.arrowDirection ),
       'invalid arrowDirection: ' + options.arrowDirection );
 
