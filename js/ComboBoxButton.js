@@ -14,7 +14,6 @@ import HStrut from '../../scenery/js/nodes/HStrut.js';
 import Node from '../../scenery/js/nodes/Node.js';
 import Path from '../../scenery/js/nodes/Path.js';
 import Playable from '../../tambo/js/Playable.js';
-import PhetioObject from '../../tandem/js/PhetioObject.js';
 import Tandem from '../../tandem/js/Tandem.js';
 import RectangularButtonView from './buttons/RectangularButtonView.js';
 import RectangularPushButton from './buttons/RectangularPushButton.js';
@@ -62,6 +61,7 @@ class ComboBoxButton extends RectangularPushButton {
       enabledPropertyOptions: {
         phetioFeatured: false
       },
+      visiblePropertyOptions: { phetioFeatured: false },
 
       // phet-io
       tandem: Tandem.OPTIONAL,
@@ -71,13 +71,10 @@ class ComboBoxButton extends RectangularPushButton {
       accessibleNameBehavior: ACCESSIBLE_NAME_BEHAVIOR
     }, options );
 
-    assert && assert( _.includes( ALIGN_VALUES, options.align ),
-      'invalid align: ' + options.align );
+    assert( _.includes( ALIGN_VALUES, options.align ),
+      'invalid align: ' + options.align ) && assert;
     assert && assert( _.includes( ARROW_DIRECTION_VALUES, options.arrowDirection ),
       'invalid arrowDirection: ' + options.arrowDirection );
-
-    // Use this pattern so that passed in phetioComponentOptions are not blown away.
-    PhetioObject.mergePhetioComponentOptions( { visibleProperty: { phetioFeatured: false } }, options );
 
     // To improve readability
     const itemXMargin = options.xMargin;

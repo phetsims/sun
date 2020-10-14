@@ -13,7 +13,6 @@ import merge from '../../phet-core/js/merge.js';
 import PressListener from '../../scenery/js/listeners/PressListener.js';
 import Line from '../../scenery/js/nodes/Line.js';
 import Node from '../../scenery/js/nodes/Node.js';
-import PhetioObject from '../../tandem/js/PhetioObject.js';
 import Tandem from '../../tandem/js/Tandem.js';
 import EnabledNode from './EnabledNode.js';
 import sun from './sun.js';
@@ -68,12 +67,11 @@ class ABSwitch extends Node {
       setEnabled: DEFAULT_SET_ENABLED,
 
       // phet-io
-      tandem: Tandem.REQUIRED
+      tandem: Tandem.REQUIRED,
+      visiblePropertyOptions: { phetioFeatured: true }
     }, options );
 
     super();
-
-    PhetioObject.mergePhetioComponentOptions( { visibleProperty: { phetioFeatured: true } }, options );
 
     this.initializeEnabledNode( options );
 

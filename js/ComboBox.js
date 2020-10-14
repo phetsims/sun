@@ -28,7 +28,6 @@ import Node from '../../scenery/js/nodes/Node.js';
 import generalCloseSoundPlayer from '../../tambo/js/shared-sound-players/generalCloseSoundPlayer.js';
 import generalOpenSoundPlayer from '../../tambo/js/shared-sound-players/generalOpenSoundPlayer.js';
 import EventType from '../../tandem/js/EventType.js';
-import PhetioObject from '../../tandem/js/PhetioObject.js';
 import Tandem from '../../tandem/js/Tandem.js';
 import IOType from '../../tandem/js/types/IOType.js';
 import ComboBoxButton from './ComboBoxButton.js';
@@ -113,11 +112,9 @@ class ComboBox extends Node {
       // phet-io
       tandem: Tandem.REQUIRED,
       phetioType: ComboBox.ComboBoxIO,
-      phetioEventType: EventType.USER
+      phetioEventType: EventType.USER,
+      visiblePropertyOptions: { phetioFeatured: true }
     }, options );
-
-    // Use this pattern so that passed in phetioComponentOptions are not blown away.
-    PhetioObject.mergePhetioComponentOptions( { visibleProperty: { phetioFeatured: true } }, options );
 
     // validate option values
     assert && assert( options.xMargin > 0 && options.yMargin > 0,

@@ -66,9 +66,7 @@ class AquaRadioButtonGroup extends LayoutBox {
 
       // phet-io
       tandem: Tandem.REQUIRED,
-      phetioComponentOptions: {
-        visibleProperty: { phetioFeatured: true }
-      },
+      visiblePropertyOptions: { phetioFeatured: true },
 
       // PDOM
       tagName: 'ul',

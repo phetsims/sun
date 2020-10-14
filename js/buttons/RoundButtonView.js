@@ -19,7 +19,6 @@ import Circle from '../../../scenery/js/nodes/Circle.js';
 import Node from '../../../scenery/js/nodes/Node.js';
 import PaintColorProperty from '../../../scenery/js/util/PaintColorProperty.js';
 import RadialGradient from '../../../scenery/js/util/RadialGradient.js';
-import PhetioObject from '../../../tandem/js/PhetioObject.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import ColorConstants from '../ColorConstants.js';
 import sun from '../sun.js';
@@ -86,6 +85,7 @@ class RoundButtonView extends Node {
 
       // phet-io
       tandem: Tandem.OPTIONAL, // This duplicates the parent option and works around https://github.com/phetsims/tandem/issues/50
+      visiblePropertyOptions: { phetioFeatured: true },
 
       // pdom
       tagName: 'button'
@@ -94,10 +94,6 @@ class RoundButtonView extends Node {
     options.listenerOptions = merge( {
       tandem: options.tandem.createTandem( 'pressListener' )
     }, options.listenerOptions );
-
-    PhetioObject.mergePhetioComponentOptions( {
-      visibleProperty: { phetioFeatured: true }
-    }, options );
 
     super();
 
