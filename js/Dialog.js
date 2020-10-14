@@ -142,7 +142,6 @@ class Dialog extends Popupable( Panel ) {
       // pdom options
       tagName: 'div',
       ariaRole: 'dialog',
-      focusOnCloseNode: null, // {Node} receives focus on close, if null focus returns to element that had focus on open
 
       // By default set the accessible name of this dialog to be the content of the title. Some dialogs want to opt out
       // of providing the default accessible name for the dialog, opting to instead manage the accessible name
@@ -194,7 +193,7 @@ class Dialog extends Popupable( Panel ) {
 
         // if listener was fired because of accessibility
         if ( closeButton.buttonModel.isA11yClicking() ) {
-          this.focusActiveElement();
+          this.focusOnCloseNode && this.focusOnCloseNode.focus();
         }
       },
 
@@ -271,14 +270,14 @@ class Dialog extends Popupable( Panel ) {
       phetioState: options.phetioState
     }, dialogContent, options );
 
+    // {Node|null} see setFocusOnCloseNode
+    this.focusOnCloseNode = null;
+
     // The Dialog's display runs on this Property, so add the listener that controls show/hide.
     this.isShowingProperty.lazyLink( isShowing => {
       if ( isShowing ) {
         // sound generation
         options.openedSoundPlayer.play();
-
-        // pdom - focus is returned to this element if dialog closed from accessible input
-        this.activeElement = this.activeElement || Display.focusedNode;
 
         // pdom - modal dialogs should be the only readable content in the sim
         // TODO: https://github.com/phetsims/joist/issues/293 non-modal dialogs shouldn't hide other accessible content,
@@ -336,8 +335,8 @@ class Dialog extends Popupable( Panel ) {
       } );
     }
 
-    // @private (a11y) - the active element when the dialog is shown, tracked so that focus can be restored on close
-    this.activeElement = options.focusOnCloseNode || null;
+    // @private (a11y) {Node|null} see setFocusOnCloseNode
+    this.focusOnCloseNode = null;
 
     // pdom - close the dialog when pressing "escape"
     const escapeListener = {
@@ -347,7 +346,7 @@ class Dialog extends Popupable( Panel ) {
         if ( domEvent.keyCode === KeyboardUtils.KEY_ESCAPE ) {
           domEvent.preventDefault();
           this.hide();
-          this.focusActiveElement();
+          this.restoreFocus();
         }
         else if ( domEvent.keyCode === KeyboardUtils.KEY_TAB && FullScreen.isFullScreen() ) {
 
@@ -390,13 +389,24 @@ class Dialog extends Popupable( Panel ) {
   }
 
   /**
-   * If there is an active element, focus it.  Should almost always be called after the Dialog has been closed.
-   *
+   * Set the Node that receives focus when the Dialog is closed. If null, focus returns to the element that had focus
+   * when the Dialog was opened.
+   * @param {Node|null} node
    * @public
-   * @a11y
    */
-  focusActiveElement() {
-    this.activeElement && this.activeElement.focus();
+  setFocusOnCloseNode( node ) {
+    this.focusOnCloseNode = node;
+  }
+
+  /**
+   * Restores focus to either focusOnCloseNode, or the element that had focus when the menu was opened.
+   * @private
+   */
+  restoreFocus() {
+    const focusNode = this.focusOnCloseNode || Display.focusedNode;
+    if ( focusNode ) {
+      focusNode.focus();
+    }
   }
 
   /**
