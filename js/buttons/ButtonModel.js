@@ -15,7 +15,6 @@ import Tandem from '../../../tandem/js/Tandem.js';
 import EnabledComponent from '../EnabledComponent.js';
 import sun from '../sun.js';
 
-//TODO CREATE NEW ISSUE to talk about linkedElement and how to handle this button model business
 class ButtonModel {
 
   /**
