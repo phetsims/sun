@@ -125,6 +125,7 @@ class Slider extends Node {
       phetioLinkedProperty: null
     }, options );
 
+    //TODO https://github.com/phetsims/sun/issues/637 this no longer needs to be conditional
     // Extra logic to prevent providing two conflicting options to EnabledNode
     if ( !options.enabledProperty ) {
       options = merge( {
