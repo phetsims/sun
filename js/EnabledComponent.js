@@ -41,9 +41,7 @@ const EnabledComponent = {
   mixInto: function( type ) {
     const proto = type.prototype;
 
-    //TODO CREATE AN ISSUE
-    // - this should look up the type hierarchy, like assertHasProperties
-    // - factor out a new assert function for this boilerplate
+    //TODO https://github.com/phetsims/sun/issues/638 boilerplate and does not detect inherited properties
     assert && assert( !proto.hasOwnProperty( 'setEnabled' ), 'do not want to overwrite setEnabled' );
     assert && assert( !proto.hasOwnProperty( 'getEnabled' ), 'do not want to overwrite getEnabled' );
     assert && assert( !proto.hasOwnProperty( 'enabled' ), 'do not want to overwrite enabled' );
