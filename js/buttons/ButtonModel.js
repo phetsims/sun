@@ -12,11 +12,13 @@ import merge from '../../../phet-core/js/merge.js';
 import PressListener from '../../../scenery/js/listeners/PressListener.js';
 import PhetioObject from '../../../tandem/js/PhetioObject.js';
 import Tandem from '../../../tandem/js/Tandem.js';
+import EnabledComponent from '../EnabledComponent.js';
 import sun from '../sun.js';
 
 class ButtonModel {
 
   /**
+   * @mixes EnabledComponent
    * @param {Object} [options]
    */
   constructor( options ) {
@@ -26,11 +28,6 @@ class ButtonModel {
       startCallback: _.noop,
       // {function(over:boolean)} called on pointer up, @param {boolean} over - indicates whether the pointer was released over the button
       endCallback: _.noop,
-      // {boolean} is the button enabled?
-      enabled: true,
-
-      // nested options
-      enabledPropertyOptions: null,
 
       // phet-io
       tandem: Tandem.REQUIRED,
@@ -39,18 +36,18 @@ class ButtonModel {
       phetioFeatured: PhetioObject.DEFAULT_OPTIONS.phetioFeatured // to support properly passing this to children, see https://github.com/phetsims/tandem/issues/60
     }, options );
 
-    options && options.enabledPropertyOptions && assert && assert( options.enabledPropertyOptions.tandem === undefined,
-      'ButtonModel supplies its own tandem to its enabledProperty' );
-
+    // Set up enabledPropertyOptions for the enabledProperty that the mixin might create
     options.enabledPropertyOptions = merge( {
 
       // phet-io
-      tandem: options.tandem.createTandem( 'enabledProperty' ),
       phetioState: options.phetioState,
       phetioReadOnly: options.phetioReadOnly,
       phetioDocumentation: 'When disabled, the button is grayed out and cannot be pressed',
       phetioFeatured: true
     }, options.enabledPropertyOptions );
+
+    // Initialize the mixin, which defines this.enabledProperty.
+    this.initializeEnabledComponent( options );
 
     // model Properties
     this.overProperty = new BooleanProperty( false ); // @public - Is the pointer over the button?
@@ -65,9 +62,6 @@ class ButtonModel {
     // are fired right away but the button will look down for as long as PressListener.a11yLooksPressedInterval.
     // See PressListener.click for more details.
     this.looksPressedProperty = new BooleanProperty( false );
-
-    // @public - Is the button enabled?
-    this.enabledProperty = new BooleanProperty( options.enabled, options.enabledPropertyOptions );
 
     // @public (read-only by users, read-write in subclasses) - emitter that is fired when sound should be produced
     this.produceSoundEmitter = new Emitter();
@@ -109,7 +103,6 @@ class ButtonModel {
       // This will unlink all listeners, causing potential issues if listeners try to unlink Properties afterwards
       this.overProperty.dispose();
       this.downProperty.dispose();
-      this.enabledProperty.dispose();
       this.produceSoundEmitter.dispose();
 
       this.looksPressedMultilink && this.looksPressedMultilink.dispose();
@@ -123,6 +116,7 @@ class ButtonModel {
    */
   dispose() {
     this.disposeButtonModel();
+    this.disposeEnabledComponent();
   }
 
   /**
@@ -177,6 +171,8 @@ class ButtonModel {
     return pressListener;
   }
 }
+
+EnabledComponent.mixInto( ButtonModel );
 
 sun.register( 'ButtonModel', ButtonModel );
 export default ButtonModel;

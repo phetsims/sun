@@ -29,15 +29,6 @@ QUnit.test( 'EnabledComponent into Object', assert => {
   object.disposeEnabledComponent();
   assert.ok( object.enabledProperty.isDisposed, 'enabledProperty should be disposed because it was not passed in' );
 
-  // to get around the "no `new` for side effects" lint rule
-  const create = () => new EnabledObject( {
-    enabledProperty: new BooleanProperty( false ),
-    enabledPropertyOptions: {}
-  } );
-  window.assert && assert.throws( () => {
-    create();
-  }, 'should fail mutually exclusive options' );
-
   const myEnabledProperty = new BooleanProperty( false );
   const passedInEnabledPropertyObject = new EnabledObject( {
     enabledProperty: myEnabledProperty

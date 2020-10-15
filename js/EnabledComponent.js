@@ -8,7 +8,6 @@
  */
 
 import BooleanProperty from '../../axon/js/BooleanProperty.js';
-import assertMutuallyExclusiveOptions from '../../phet-core/js/assertMutuallyExclusiveOptions.js';
 import extend from '../../phet-core/js/extend.js';
 import merge from '../../phet-core/js/merge.js';
 import Tandem from '../../tandem/js/Tandem.js';
@@ -16,8 +15,17 @@ import sun from './sun.js';
 
 // constants
 const DEFAULT_OPTIONS = {
-  enabledProperty: null, // {BooleanProperty} initialized in mixin if not provided
+
+  // {Property.<boolean>} if not provided, a Property will be created
+  enabledProperty: null,
+
+  // {boolean} initial value of enabledProperty if we create it, ignored if enabledProperty is provided
+  enabled: true,
+
+  // {*} options to enabledProperty if we create it, ignored if enabledProperty is provided
   enabledPropertyOptions: null,
+
+  // phet-io
   tandem: Tandem.OPTIONAL
 };
 
@@ -33,9 +41,10 @@ const EnabledComponent = {
   mixInto: function( type ) {
     const proto = type.prototype;
 
-    assert && assert( !proto.hasOwnProperty( 'setEnabled' ), 'do not want to overwrite' );
-    assert && assert( !proto.hasOwnProperty( 'getEnabled' ), 'do not want to overwrite' );
-    assert && assert( !proto.hasOwnProperty( 'enabled' ), 'do not want to overwrite' );
+    //TODO https://github.com/phetsims/sun/issues/638 boilerplate and does not detect inherited properties
+    assert && assert( !proto.hasOwnProperty( 'setEnabled' ), 'do not want to overwrite setEnabled' );
+    assert && assert( !proto.hasOwnProperty( 'getEnabled' ), 'do not want to overwrite getEnabled' );
+    assert && assert( !proto.hasOwnProperty( 'enabled' ), 'do not want to overwrite enabled' );
 
     extend( proto, {
 
@@ -47,21 +56,18 @@ const EnabledComponent = {
        */
       initializeEnabledComponent: function( options ) {
 
-        // can't provide both
-        assert && assertMutuallyExclusiveOptions( options, [ 'enabledProperty' ], [ 'enabledPropertyOptions' ] );
-
         options = merge( {}, DEFAULT_OPTIONS, options );
 
         // does this mixin own the enabledProperty?
         const ownsEnabledProperty = !options.enabledProperty;
 
         // @public
-        this.enabledProperty = options.enabledProperty || new BooleanProperty( true, merge( {
+        assert && assert( this.enabledProperty === undefined, 'enabledProperty already exists' );
+        this.enabledProperty = options.enabledProperty || new BooleanProperty( options.enabled, merge( {
           tandem: options.tandem.createTandem( ENABLED_PROPERTY_TANDEM_NAME ),
           phetioDocumentation: 'When disabled, the component is grayed out and cannot be interacted with.',
           phetioFeatured: true
         }, options.enabledPropertyOptions ) );
-
 
         // @private called by dispose
         this._disposeEnabledComponent = () => {

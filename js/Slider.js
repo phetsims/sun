@@ -113,6 +113,11 @@ class Slider extends Node {
       enabledRangeProperty: null, // {Property.<Range>|null} determine the portion of range that is enabled
       disabledOpacity: SunConstants.DISABLED_OPACITY, // opacity applied to the entire Slider when disabled
 
+      // EnabledNode options
+      enabledPropertyOptions: {
+        phetioFeatured: true
+      },
+
       // phet-io
       tandem: Tandem.REQUIRED,
       phetioType: Slider.SliderIO,
@@ -124,18 +129,6 @@ class Slider extends Node {
       // points to the underlying model Property.
       phetioLinkedProperty: null
     }, options );
-
-    // Extra logic to prevent providing two conflicting options to EnabledNode
-    // TODO: this is no longer needed because EnabledComponent is more graceful now,
-    if ( !options.enabledProperty ) {
-      options = merge( {
-
-        // EnabledNode
-        enabledPropertyOptions: {
-          phetioFeatured: true
-        }
-      }, options );
-    }
 
     assert && assert( range instanceof Range, 'range must be of type Range:' + range );
     assert && assert( Orientation.includes( options.orientation ),

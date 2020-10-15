@@ -40,6 +40,9 @@ class ButtonsScreenView extends ScreenView {
 
     super();
 
+    // For enabling/disabling all buttons
+    const buttonsEnabledProperty = new Property( true );
+
     // Message area, for outputting test messages
     const messagePrefix = 'Message: ';
     const messageText = new Text( messagePrefix, {
@@ -101,7 +104,7 @@ class ButtonsScreenView extends ScreenView {
     verticalAquaProperty.lazyLink( function( value ) {
       message( 'Aqua Radio Button ' + value + ' pressed' );
     } );
-    const verticalAquaRadioButtons = new VerticalAquaRadioButtonGroup( verticalAquaProperty, [
+    const verticalAquaRadioButtonGroup1 = new VerticalAquaRadioButtonGroup( verticalAquaProperty, [
       {
         value: firstOption,
         node: new Text( firstOption ),
@@ -117,7 +120,7 @@ class ButtonsScreenView extends ScreenView {
       }
     ] );
 
-    this.addChild( new Panel( verticalAquaRadioButtons, {
+    this.addChild( new Panel( verticalAquaRadioButtonGroup1, {
       stroke: 'black',
       scale: 2,
       x: 900,
@@ -134,7 +137,7 @@ class ButtonsScreenView extends ScreenView {
       tagName: 'h3',
       innerContent: radioButtonsString
     } );
-    const verticalAquaRadioButtonsWithGroup = new VerticalAquaRadioButtonGroup( verticalAquaPropertyWithGroup, [
+    const verticalAquaRadioButtonGroup2 = new VerticalAquaRadioButtonGroup( verticalAquaPropertyWithGroup, [
       {
         value: firstOption,
         node: new Text( firstOption ),
@@ -151,14 +154,14 @@ class ButtonsScreenView extends ScreenView {
     ] );
 
     this.addChild( new Panel( new VBox( {
-      children: [ radioButtonsHeading, verticalAquaRadioButtonsWithGroup ],
+      children: [ radioButtonsHeading, verticalAquaRadioButtonGroup2 ],
       align: 'left',
       spacing: 5
     } ), {
       stroke: 'black',
       scale: 2,
       right: this.layoutBounds.right - 20,
-      top: verticalAquaRadioButtons.bottom + 100
+      top: verticalAquaRadioButtonGroup1.bottom + 100
     } ) );
 
     //===================================================================================
@@ -393,7 +396,9 @@ class ButtonsScreenView extends ScreenView {
     } );
     const transparentParent = new Node( { children: [ rectangleNode, transparentButton ] } );
 
-    const arrowButton = new ArrowButton( 'left', function() { message( 'ArrowButton pressed' ); } );
+    const arrowButton = new ArrowButton( 'left', function() { message( 'ArrowButton pressed' ); }, {
+      enabledProperty: buttonsEnabledProperty
+    } );
 
     const miscButtonsBox = new VBox( {
       children: [ fireOnDownButton, transparentParent, arrowButton ],
@@ -473,18 +478,22 @@ class ButtonsScreenView extends ScreenView {
     // Enable/Disable buttons
     //===================================================================================
 
-    //TODO https://github.com/phetsims/sun/issues/554 Shouldn't all of these buttons be able to observe buttonEnabledProperty?
-    // Set up a property for testing button enable/disable.
-    const buttonsEnabledProperty = new Property( true );
-    buttonsEnabledProperty.link( function( enabled ) {
-      arrowButton.enabled = enabled;
+    // For all of the button instances that do not use options.enabledProperty to observe
+    // buttonsEnabledProperty directly, synchronize their enabled state here.
+    buttonsEnabledProperty.link( enabled => {
+
+      // Radio button groups
       radioButtonGroup.enabled = enabled;
-      verticalAquaRadioButtons.children.forEach( function( radioButton ) {radioButton.enabled = enabled;} );
+      verticalAquaRadioButtonGroup1.enabled = enabled;
+      verticalAquaRadioButtonGroup2.enabled = enabled;
+
+      // Other buttons
       buttonA.enabled = enabled;
       buttonB.enabled = enabled;
       buttonC.enabled = enabled;
       buttonD.enabled = enabled;
       buttonE.enabled = enabled;
+      radiiTestButton.enabled = enabled;
       button1.enabled = enabled;
       button2.enabled = enabled;
       button3.enabled = enabled;
