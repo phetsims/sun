@@ -478,7 +478,8 @@ class ButtonsScreenView extends ScreenView {
     // Enable/Disable buttons
     //===================================================================================
 
-    //TODO https://github.com/phetsims/sun/issues/554 all of these buttons should be able to observe buttonsEnabledProperty
+    // For all of the button instances that do not use options.enabledProperty to observe
+    // buttonsEnabledProperty directly, synchronize their enabled state here.
     buttonsEnabledProperty.link( enabled => {
 
       // Radio button groups
