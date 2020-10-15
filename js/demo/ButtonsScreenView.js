@@ -396,7 +396,9 @@ class ButtonsScreenView extends ScreenView {
     } );
     const transparentParent = new Node( { children: [ rectangleNode, transparentButton ] } );
 
-    const arrowButton = new ArrowButton( 'left', function() { message( 'ArrowButton pressed' ); } );
+    const arrowButton = new ArrowButton( 'left', function() { message( 'ArrowButton pressed' ); }, {
+      enabledProperty: buttonsEnabledProperty
+    } );
 
     const miscButtonsBox = new VBox( {
       children: [ fireOnDownButton, transparentParent, arrowButton ],
@@ -485,7 +487,6 @@ class ButtonsScreenView extends ScreenView {
       verticalAquaRadioButtonGroup2.enabled = enabled;
 
       // Other buttons
-      arrowButton.enabled = enabled;
       buttonA.enabled = enabled;
       buttonB.enabled = enabled;
       buttonC.enabled = enabled;
