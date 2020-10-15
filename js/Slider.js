@@ -126,6 +126,7 @@ class Slider extends Node {
     }, options );
 
     // Extra logic to prevent providing two conflicting options to EnabledNode
+    // TODO: this is no longer needed because EnabledComponent is more graceful now,
     if ( !options.enabledProperty ) {
       options = merge( {
 
