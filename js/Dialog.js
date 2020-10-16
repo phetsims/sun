@@ -206,12 +206,12 @@ class Dialog extends Popupable( Panel ) {
       phetioReadOnly: options.phetioReadOnly, // match the readOnly of the Dialog
 
       phetioState: false, // close button should not be in state
-      phetioComponentOptions: {
-        phetioState: false
-      },
 
       // dialog close buttons by default do not have a featured visibleProperty
-      visiblePropertyOptions: { phetioFeatured: false },
+      visiblePropertyOptions: {
+        phetioFeatured: false,
+        phetioState: false
+      },
 
       // dialog close buttons by default do not have a featured enabledProperty
       enabledPropertyOptions: { phetioFeatured: false },
