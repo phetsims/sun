@@ -29,7 +29,7 @@ class TrackAPI extends NodeAPI {
       // All TrackAPIs have an unfeatured drag press action
       dragListenerOptions: {
         pressActionOptions: {
-          phetioFeature: false
+          phetioFeatured: false
         }
       }
     }, options );
