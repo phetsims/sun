@@ -133,7 +133,6 @@ class Dialog extends Popupable( Panel ) {
       phetioType: Dialog.DialogIO,
       phetioReadOnly: PhetioObject.DEFAULT_OPTIONS.phetioReadOnly, // default to false so it can pass it through to the close button
       phetioState: PhetioObject.DEFAULT_OPTIONS.phetioState,
-      phetioComponentOptions: null, // filled in below with PhetioObject.mergePhetioComponentOptions()
 
       // {Playable} - sound generation
       openedSoundPlayer: generalOpenSoundPlayer,
@@ -149,10 +148,8 @@ class Dialog extends Popupable( Panel ) {
       addAriaLabelledByFromTitle: true
     }, options );
 
-    // by default, copy the state of the dialog
-    PhetioObject.mergePhetioComponentOptions( {
-      phetioState: options.phetioState
-    }, options );
+    // Wait until merge complete to determine this value
+    options.visiblePropertyOptions = {phetioState: options.phetioState};
 
     assert && assert( options.xMargin === undefined, 'Dialog sets xMargin' );
     options.xMargin = 0;
