@@ -15,7 +15,6 @@ import multiSelectionSoundPlayerFactory from '../../tambo/js/multiSelectionSound
 import generalCloseSoundPlayer from '../../tambo/js/shared-sound-players/generalCloseSoundPlayer.js';
 import generalOpenSoundPlayer from '../../tambo/js/shared-sound-players/generalOpenSoundPlayer.js';
 import EventType from '../../tandem/js/EventType.js';
-import PhetioObject from '../../tandem/js/PhetioObject.js';
 import Tandem from '../../tandem/js/Tandem.js';
 import ComboBoxListItemNode from './ComboBoxListItemNode.js';
 import Panel from './Panel.js';
@@ -53,17 +52,13 @@ class ComboBoxListBox extends Panel {
       // a change is covered by individual combo box items.
       openedSoundPlayer: generalOpenSoundPlayer,
       closedNoChangeSoundPlayer: generalCloseSoundPlayer,
+      visiblePropertyOptions: { phetioReadOnly: true },
 
       // Not instrumented for PhET-iO because the list's position isn't valid until it has been popped up.
       // See https://github.com/phetsims/phet-io/issues/1102
       // TODO: we need this for accessibility in the sonification wrapper, see https://github.com/phetsims/sun/issues/496
       tandem: tandem
     }, options );
-
-    // Use this pattern so that passed in phetioComponentOptions are not blown away.
-    // List box visibility, opacity, and pickability is controlled by the combo box, and should not be controlled
-    // through the PhET-iO API.
-    PhetioObject.mergePhetioComponentOptions( { phetioReadOnly: true }, options );
 
     assert && assert( options.xMargin > 0 && options.yMargin > 0,
       'margins must be > 0, xMargin=' + options.xMargin + ', yMargin=' + options.yMargin );
