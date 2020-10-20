@@ -11,7 +11,6 @@
  * @author Aaron Davis (PhET Interactive Simulations)
  */
 
-import Property from '../../../axon/js/Property.js';
 import Shape from '../../../kite/js/Shape.js';
 import InstanceRegistry from '../../../phet-core/js/documentation/InstanceRegistry.js';
 import merge from '../../../phet-core/js/merge.js';
@@ -23,6 +22,7 @@ import Color from '../../../scenery/js/util/Color.js';
 import multiSelectionSoundPlayerFactory from '../../../tambo/js/multiSelectionSoundPlayerFactory.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import ColorConstants from '../ColorConstants.js';
+import EnabledNode from '../EnabledNode.js';
 import sun from '../sun.js';
 import RadioButtonGroupAppearance from './RadioButtonGroupAppearance.js';
 import RadioButtonGroupMember from './RadioButtonGroupMember.js';
@@ -32,7 +32,7 @@ const BUTTON_CONTENT_X_ALIGN_VALUES = [ 'center', 'left', 'right' ];
 const BUTTON_CONTENT_Y_ALIGN_VALUES = [ 'center', 'top', 'bottom' ];
 const CLASS_NAME = 'RadioButtonGroup'; // to prefix instanceCount in case there are different kinds of "groups"
 
-// pdom - Unique ID for each instance if RadioButtonGroup, passed to individual buttons in the group. All buttons in
+// pdom - Unique ID for each instance of RadioButtonGroup, passed to individual buttons in the group. All buttons in
 // the  radio button group must have the same name or else the browser will treat all inputs of type radio in the
 // document as being in a single group.
 let instanceCount = 0;
@@ -40,6 +40,7 @@ let instanceCount = 0;
 class RadioButtonGroup extends LayoutBox {
 
   /**
+   * @mixes EnabledNode
    * @param {Property} property
    * @param {Object[]} contentArray - an array of objects that have two keys each: "value" and "node", where the node
    * key holds a scenery Node that is the content for a given radio button and the value key holds the value that the
@@ -104,8 +105,6 @@ class RadioButtonGroup extends LayoutBox {
       // LayoutBox options (super class of RadioButtonGroup)
       spacing: 10,
       orientation: 'vertical',
-
-      enabledProperty: new Property( true ), // whether or not the set of radio buttons as a whole is enabled
 
       // The fill for the rectangle behind the radio buttons.  Default color is bluish color, as in the other button library.
       baseColor: ColorConstants.LIGHT_BLUE,
@@ -301,8 +300,8 @@ class RadioButtonGroup extends LayoutBox {
 
     super( options );
 
-    // @private
-    this.enabledProperty = options.enabledProperty;
+    // Initialize the mixin, which defines this.enabledProperty.
+    this.initializeEnabledNode( options );
 
     // pdom - this node's primary sibling is aria-labelledby its own label so the label content is read whenever
     // a member of the group receives focus
@@ -316,23 +315,6 @@ class RadioButtonGroup extends LayoutBox {
     const intentListener = { keydown: event => event.pointer.reserveForKeyboardDrag() };
     this.addInputListener( intentListener );
 
-    // When the entire RadioButtonGroup gets disabled, gray them out and make them unpickable (and vice versa)
-    const enabledListener = isEnabled => {
-      this.pickable = isEnabled;
-
-      for ( i = 0; i < contentArray.length; i++ ) {
-        if ( buttons[ i ] instanceof LayoutBox ) {
-          for ( let j = 0; j < 2; j++ ) {
-            buttons[ i ].children[ j ].enabled = isEnabled;
-          }
-        }
-        else {
-          buttons[ i ].enabled = isEnabled;
-        }
-      }
-    };
-    this.enabledProperty.link( enabledListener );
-
     // must be done after this instance is instrumented
     this.addLinkedElement( property, {
       tandem: options.tandem.createTandem( 'property' )
@@ -340,7 +322,6 @@ class RadioButtonGroup extends LayoutBox {
 
     // @private - remove listeners from buttons and make eligible for garbage collection
     this.disposeRadioButtonGroup = () => {
-      this.enabledProperty.unlink( enabledListener );
       this.removeInputListener( intentListener );
 
       // dispose all buttons
@@ -353,26 +334,18 @@ class RadioButtonGroup extends LayoutBox {
     assert && phet.chipper.queryParameters.binder && InstanceRegistry.registerDataURL( 'sun', 'RadioButtonGroup', this );
   }
 
-  // @public
-  get enabled() {
-    return this.enabledProperty.get();
-  }
-
-  // @public
-  set enabled( value ) {
-    assert && assert( typeof value === 'boolean', 'invalid value' );
-    this.enabledProperty.set( value );
-  }
-
   /**
    * @public
    * @override
    */
   dispose() {
     this.disposeRadioButtonGroup();
+    this.disposeEnabledNode();
     super.dispose();
   }
 }
+
+EnabledNode.mixInto( RadioButtonGroup );
 
 sun.register( 'RadioButtonGroup', RadioButtonGroup );
 export default RadioButtonGroup;
