@@ -32,6 +32,7 @@ import Tandem from '../../tandem/js/Tandem.js';
 import IOType from '../../tandem/js/types/IOType.js';
 import ComboBoxButton from './ComboBoxButton.js';
 import ComboBoxListBox from './ComboBoxListBox.js';
+import EnabledNode from './EnabledNode.js';
 import sun from './sun.js';
 
 // const
@@ -56,6 +57,7 @@ const HELP_TEXT_BEHAVIOR = ( node, options, helpText, otherNodeCallbacks ) => {
 class ComboBox extends Node {
 
   /**
+   * @mixes EnabledNode
    * @param {ComboBoxItem[]} items
    * @param {Property} property
    * @param {Node} listParent node that will be used as the list's parent, use this to ensure that the list is in front of everything else
@@ -74,7 +76,6 @@ class ComboBox extends Node {
       listPosition: 'below', // see LIST_POSITION_VALUES
       labelNode: null, // {Node|null} optional label, placed to the left of the combo box
       labelXSpacing: 10, // horizontal space between label and combo box
-      enabledProperty: null, // {BooleanProperty|null} default will be provided if null
       disabledOpacity: 0.5, // {number} opacity used to make the control look disabled, 0-1
       cornerRadius: 4, // applied to button, listBox, and item highlights
       highlightFill: 'rgb( 245, 245, 245 )', // {Color|string} highlight behind items in the list
@@ -127,6 +128,9 @@ class ComboBox extends Node {
       'invalid align: ' + options.align );
 
     super();
+
+    // Initialize the mixin, which defines this.enabledProperty.
+    this.initializeEnabledNode( options );
 
     this.items = items; // @private
     this.listPosition = options.listPosition; // @private
@@ -238,23 +242,6 @@ class ComboBox extends Node {
     };
     Display.focusProperty.link( this.dismissWithFocusListener );
 
-    // So we know whether we can dispose of the enabledProperty and its tandem
-    const ownsEnabledProperty = !options.enabledProperty;
-
-    // @public Provide a default if not specified
-    this.enabledProperty = options.enabledProperty || new BooleanProperty( true, {
-      tandem: options.tandem.createTandem( 'enabledProperty' ),
-      phetioFeatured: true
-    } );
-
-    // enable/disable the combo box
-    const enabledObserver = enabled => {
-      this.pickable = enabled;
-      this.opacity = enabled ? 1.0 : options.disabledOpacity;
-      this.button.setAccessibleAttribute( 'aria-disabled', !enabled );
-    };
-    this.enabledProperty.link( enabledObserver );
-
     this.listBox.localBoundsProperty.lazyLink( () => this.moveListBox() );
 
     this.listBox.visibleProperty.link( ( visible, wasVisible ) => {
@@ -305,13 +292,6 @@ class ComboBox extends Node {
         this.display.removeInputListener( this.clickToDismissListener );
       }
 
-      if ( ownsEnabledProperty ) {
-        this.enabledProperty.dispose();
-      }
-      else {
-        this.enabledProperty.unlink( enabledObserver );
-      }
-
       Display.focusProperty.unlink( this.dismissWithFocusListener );
 
       // dispose of subcomponents
@@ -323,21 +303,15 @@ class ComboBox extends Node {
     assert && phet.chipper.queryParameters.binder && InstanceRegistry.registerDataURL( 'sun', 'ComboBox', this );
   }
 
-  // @public - Provide dispose() on the prototype for ease of subclassing.
+  /**
+   * @public
+   * @override
+   */
   dispose() {
     this.disposeComboBox();
+    this.disposeEnabledNode();
     super.dispose();
   }
-
-  // @public
-  setEnabled( enabled ) { this.enabledProperty.value = enabled; }
-
-  set enabled( value ) { this.setEnabled( value ); }
-
-  // @public
-  getEnabled() { return this.enabledProperty.value; }
-
-  get enabled() { return this.getEnabled(); }
 
   /**
    * Shows the list box.
@@ -399,6 +373,8 @@ ComboBox.ComboBoxIO = new IOType( 'ComboBoxIO', {
   supertype: Node.NodeIO,
   events: [ 'listBoxShown', 'listBoxHidden' ]
 } );
+
+EnabledNode.mixInto( ComboBox );
 
 sun.register( 'ComboBox', ComboBox );
 export default ComboBox;
