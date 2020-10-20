@@ -7,13 +7,13 @@
  * @author Andrea Lin (PhET Interactive Simulations)
  */
 
-import Property from '../../axon/js/Property.js';
 import merge from '../../phet-core/js/merge.js';
 import NumberDisplay from '../../scenery-phet/js/NumberDisplay.js';
 import Node from '../../scenery/js/nodes/Node.js';
 import Tandem from '../../tandem/js/Tandem.js';
 import AccessibleNumberSpinner from './accessibility/AccessibleNumberSpinner.js';
 import ArrowButton from './buttons/ArrowButton.js';
+import EnabledNode from './EnabledNode.js';
 import sun from './sun.js';
 
 // possible values for options.arrowsPosition
@@ -27,6 +27,7 @@ const ARROWS_POSITION_VALUES = [
 class NumberSpinner extends Node {
 
   /**
+   * @mixes EnabledNode
    * @param {Property.<number>} numberProperty value, must be an integer
    * @param {Property.<Range>} rangeProperty - Dynamic range of values, min and max must be integers
    * @param {Object} [options]
@@ -38,7 +39,6 @@ class NumberSpinner extends Node {
       'value ' + numberProperty.get() + ' is out of range ' + rangeProperty.value.toString() );
 
     options = merge( {
-      enabledProperty: new Property( true ),
 
       // {string} where to place the arrow buttons, see ARROWS_POSITION_VALUES
       arrowsPosition: 'bothRight',
@@ -209,6 +209,9 @@ class NumberSpinner extends Node {
 
     super( options );
 
+    // Initialize the mixin, which defines this.enabledProperty.
+    this.initializeEnabledNode( options );
+
     // enable/disable arrow buttons
     const updateEnabled = () => {
       incrementButton.enabled = ( options.incrementFunction( numberProperty.value ) <= rangeProperty.value.max );
@@ -232,15 +235,6 @@ class NumberSpinner extends Node {
     };
     rangeProperty.link( rangeObserver );
 
-    // enable or disable this component
-    this.enabledProperty = options.enabledProperty; // @public
-    const enabledPropertyObserver = enabled => {
-      this.pickable = enabled;
-      this.opacity = enabled ? 1 : 0.5;
-      //TODO if !enabled, cancel any interaction that is in progress, see scenery#218
-    };
-    this.enabledProperty.link( enabledPropertyObserver );
-
     // pdom - initialize accessibility features
     assert && assert( !options.keyboardStep, 'keyboardStep supported by arrow buttons, do not pass value to NumberSpinner' );
     assert && assert( !options.shiftKeyboardStep, 'shiftKeyboardStep handled by arrow buttons' );
@@ -248,11 +242,11 @@ class NumberSpinner extends Node {
     options.shiftKeyboardStep = 0;
     this.initializeAccessibleNumberSpinner( numberProperty, rangeProperty, this.enabledProperty, options );
 
-  // pdom - click arrow buttons on keyboard increment/decrement; must be disposed
-  const increasedListener = function( isDown ) { isDown && incrementButton.a11yClick(); };
-  const decreasedListener = function( isDown ) { isDown && decrementButton.a11yClick(); };
-  this.incrementDownEmitter.addListener( increasedListener );
-  this.decrementDownEmitter.addListener( decreasedListener );
+    // pdom - click arrow buttons on keyboard increment/decrement; must be disposed
+    const increasedListener = function( isDown ) { isDown && incrementButton.a11yClick(); };
+    const decreasedListener = function( isDown ) { isDown && decrementButton.a11yClick(); };
+    this.incrementDownEmitter.addListener( increasedListener );
+    this.decrementDownEmitter.addListener( decreasedListener );
 
     // Create a link to associated Property, so it's easier to find in Studio.
     this.addLinkedElement( numberProperty, {
@@ -265,33 +259,23 @@ class NumberSpinner extends Node {
       // dispose a11y features
       this.incrementDownEmitter.removeListener( increasedListener );
       this.decrementDownEmitter.removeListener( decreasedListener );
-      this.disposeAccessibleNumberSpinner();
 
       numberProperty.unlink( numberPropertyObserver );
       rangeProperty.unlink( rangeObserver );
-      this.enabledProperty.unlink( enabledPropertyObserver );
     };
   }
 
   // @public Ensures that this node is eligible for GC.
   dispose() {
     this.disposeNumberSpinner();
-    Node.prototype.dispose.call( this );
+    this.disposeEnabledNode();
+    this.disposeAccessibleNumberSpinner();
+    super.dispose();
   }
-
-  // @public
-  setEnabled( enabled ) { this.enabledProperty.set( enabled ); }
-
-  set enabled( value ) { this.setEnabled( value ); }
-
-  // @public
-  getEnabled() { return this.enabledProperty.get(); }
-
-  get enabled() { return this.getEnabled(); }
 }
 
-sun.register( 'NumberSpinner', NumberSpinner );
-
+EnabledNode.mixInto( NumberSpinner );
 AccessibleNumberSpinner.mixInto( NumberSpinner );
 
+sun.register( 'NumberSpinner', NumberSpinner );
 export default NumberSpinner;
