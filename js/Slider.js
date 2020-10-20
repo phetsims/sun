@@ -297,9 +297,6 @@ class Slider extends Node {
       thumb.dispose && thumb.dispose(); // in case a custom thumb is provided via options.thumbNode that doesn't implement dispose
       this.track.dispose();
 
-      this.disposeAccessibleSlider();
-      this.disposeEnabledNode();
-
       valueProperty.unlink( valueObserver );
       ownsEnabledRangeProperty && this.enabledRangeProperty.dispose();
       thumbDragListener.dispose();
@@ -342,6 +339,8 @@ class Slider extends Node {
    */
   dispose() {
     this.disposeSlider();
+    this.disposeAccessibleSlider();
+    this.disposeEnabledNode();
     super.dispose();
   }
 
