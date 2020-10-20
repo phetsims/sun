@@ -326,7 +326,7 @@ class ComboBox extends Node {
   // @public - Provide dispose() on the prototype for ease of subclassing.
   dispose() {
     this.disposeComboBox();
-    Node.prototype.dispose.call( this );
+    super.dispose();
   }
 
   // @public
