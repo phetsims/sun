@@ -7,7 +7,6 @@
  */
 
 import Action from '../../axon/js/Action.js';
-import BooleanProperty from '../../axon/js/BooleanProperty.js';
 import Property from '../../axon/js/Property.js';
 import validate from '../../axon/js/validate.js';
 import InstanceRegistry from '../../phet-core/js/documentation/InstanceRegistry.js';
@@ -20,17 +19,18 @@ import checkboxUncheckedSoundPlayer from '../../tambo/js/shared-sound-players/ch
 import EventType from '../../tandem/js/EventType.js';
 import PhetioObject from '../../tandem/js/PhetioObject.js';
 import Tandem from '../../tandem/js/Tandem.js';
+import EnabledNode from './EnabledNode.js';
 import FontAwesomeNode from './FontAwesomeNode.js';
 import sun from './sun.js';
 import SunConstants from './SunConstants.js';
 
 // constants
-const ENABLED_PROPERTY_TANDEM_NAME = 'enabledProperty';
 const BOOLEAN_VALIDATOR = { valueType: 'boolean' };
 
 class Checkbox extends Node {
 
   /**
+   * @mixes EnabledNode
    * @param {Node} content
    * @param {Property.<boolean>} property
    * @param {Object} [options]
@@ -47,7 +47,6 @@ class Checkbox extends Node {
       cursor: 'pointer',
       checkboxColor: 'black',
       checkboxColorBackground: 'white',
-      enabledProperty: null, // {BooleanProperty} initialized below if not provided
       disabledOpacity: SunConstants.DISABLED_OPACITY,
 
       // phet-io
@@ -70,6 +69,9 @@ class Checkbox extends Node {
     }, options );
 
     super();
+
+    // Initialize the mixin, which defines this.enabledProperty.
+    this.initializeEnabledNode( options );
 
     // @private - sends out notifications when the checkbox is toggled.
     const toggleAction = new Action( () => {
@@ -126,11 +128,7 @@ class Checkbox extends Node {
 
     // interactivity
     const fireListener = new FireListener( {
-      fire: () => {
-        if ( this.enabledProperty.value ) {
-          toggleAction.execute();
-        }
-      },
+      fire: () => toggleAction.execute(),
       tandem: options.tandem.createTandem( 'fireListener' )
     } );
     this.addInputListener( fireListener );
@@ -155,53 +153,20 @@ class Checkbox extends Node {
       tandem: options.tandem.createTandem( 'property' )
     } );
 
-    // does this instance own enabledProperty?
-    const ownsEnabledProperty = !options.enabledProperty;
-
-    if ( !ownsEnabledProperty ) {
-      assert && Tandem.VALIDATION && this.isPhetioInstrumented() && assert( !!options.enabledProperty.phetioFeatured === !!this.phetioFeatured,
-        'provided enabledProperty must be phetioFeatured if this checkbox is' );
-
-      // If enabledProperty was passed in, Studio needs to know about that linkage
-      this.addLinkedElement( options.enabledProperty, {
-        tandem: options.tandem.createTandem( ENABLED_PROPERTY_TANDEM_NAME )
-      } );
-    }
-
-    // @public
-    this.enabledProperty = options.enabledProperty || new BooleanProperty( true, {
-      tandem: options.tandem.createTandem( ENABLED_PROPERTY_TANDEM_NAME ),
-      phetioReadOnly: options.phetioReadOnly,
-      phetioDocumentation: 'When disabled, the checkbox is grayed out and cannot be pressed.',
-      phetioFeatured: true
-    } );
-
-    // TODO: aria-disabled is covered by EnabledNode, and can be removed once Checkbox uses that mixin. https://github.com/phetsims/sun/issues/585
+    //TODO https://github.com/phetsims/sun/issues/640 is 'onclick' specific to Checkbox, or should it be handled by EnabledNode?
     const enabledListener = enabled => {
       if ( enabled ) {
         this.setAccessibleAttribute( 'onclick', '' );
-        this.setAccessibleAttribute( 'aria-disabled', false );
       }
       else {
-        this.interruptSubtreeInput(); // interrupt interaction
 
         // By returning false, we prevent the a11y checkbox from toggling when the enabledProperty is false. This way
         // we can keep the checkbox in tab order and don't need to add the `disabled` attribute. See https://github.com/phetsims/sun/issues/519
         // This solution was found at https://stackoverflow.com/a/12267350/3408502
         this.setAccessibleAttribute( 'onclick', 'return false' );
-        this.setAccessibleAttribute( 'aria-disabled', true );
       }
-
-      this.pickable = enabled;
-      this.opacity = enabled ? 1 : options.disabledOpacity;
     };
     this.enabledProperty.link( enabledListener );
-
-    // assert that phet-io is set up correctly after the PhetioObject has been properly initialized (after mutate)
-
-    // If either one is instrumented, then the other must be too.
-    assert && Tandem.VALIDATION && assert( this.enabledProperty.isPhetioInstrumented() === this.isPhetioInstrumented(),
-      'provided enabled property must be instrumented for phet-io.' );
 
     // support for binder documentation, stripped out in builds and only runs when ?binder is specified
     assert && phet.chipper.queryParameters.binder && InstanceRegistry.registerDataURL( 'sun', 'Checkbox', this );
@@ -211,19 +176,11 @@ class Checkbox extends Node {
 
       fireListener.dispose();
 
-      // Client owns property, remove the listener that we added.
       if ( property.hasListener( checkboxCheckedListener ) ) {
         property.unlink( checkboxCheckedListener );
       }
 
-      if ( ownsEnabledProperty ) {
-
-        // Checkbox owns enabledProperty, so dispose to release tandem and remove all listeners.
-        this.enabledProperty.dispose();
-      }
-      else if ( this.enabledProperty.hasListener( enabledListener ) ) {
-
-        // Client owns enabledProperty, remove the listener that we added.
+      if ( this.enabledProperty.hasListener( enabledListener ) ) {
         this.enabledProperty.unlink( enabledListener );
       }
 
@@ -238,13 +195,14 @@ class Checkbox extends Node {
    */
   dispose() {
     this.disposeCheckbox();
+    this.disposeEnabledNode();
     super.dispose();
   }
 
   /**
-   *  Sets the background color of the checkbox.
-   *  @param {Color|String} value
-   *  @public
+   * Sets the background color of the checkbox.
+   * @param {Color|String} value
+   * @public
    */
   setCheckboxColorBackground( value ) { this.backgroundNode.fill = value; }
 
@@ -260,9 +218,9 @@ class Checkbox extends Node {
   get checkboxColorBackground() { return this.getCheckboxColorBackground(); }
 
   /**
-   *  Sets the color of the checkbox.
-   *  @param {Color|String} value
-   *  @public
+   * Sets the color of the checkbox.
+   * @param {Color|String} value
+   * @public
    */
   setCheckboxColor( value ) { this.checkedNode.fill = this.uncheckedNode.fill = value; }
 
@@ -276,26 +234,9 @@ class Checkbox extends Node {
   getCheckboxColor() { return this.checkedNode.fill; }
 
   get checkboxColor() { return this.getCheckboxColor(); }
-
-  /**
-   * Sets whether the checkbox is enabled.
-   * @param {boolean} enabled
-   * @public
-   */
-  setEnabled( enabled ) { this.enabledProperty.value = enabled; }
-
-  set enabled( value ) { this.setEnabled( value ); }
-
-  /**
-   * Is the checkbox enabled?
-   * @returns {boolean}
-   * @public
-   */
-  getEnabled() { return this.enabledProperty.value; }
-
-  get enabled() { return this.getEnabled(); }
 }
 
+EnabledNode.mixInto( Checkbox );
 
 sun.register( 'Checkbox', Checkbox );
 export default Checkbox;
