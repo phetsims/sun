@@ -6,7 +6,6 @@
  * @author Chris Malley (PixelZoom, Inc.)
  */
 
-import BooleanProperty from '../../axon/js/BooleanProperty.js';
 import InstanceRegistry from '../../phet-core/js/documentation/InstanceRegistry.js';
 import merge from '../../phet-core/js/merge.js';
 import FireListener from '../../scenery/js/listeners/FireListener.js';
@@ -15,8 +14,8 @@ import Node from '../../scenery/js/nodes/Node.js';
 import Rectangle from '../../scenery/js/nodes/Rectangle.js';
 import multiSelectionSoundPlayerFactory from '../../tambo/js/multiSelectionSoundPlayerFactory.js';
 import Tandem from '../../tandem/js/Tandem.js';
+import EnabledNode from './EnabledNode.js';
 import sun from './sun.js';
-import SunConstants from './SunConstants.js';
 
 // constants
 const DEFAULT_RADIUS = 7;
@@ -24,21 +23,21 @@ const DEFAULT_RADIUS = 7;
 class AquaRadioButton extends Node {
 
   /**
-   * @param property
-   * @param value the value that corresponds to this button, same type as property
-   * @param {Node} node that will be vertically centered to the right of the button
+   * @mixes EnabledNode
+   * @param {Property} property
+   * @param {*} value - the value that corresponds to this button, same type as property
+   * @param {Node} labelNode - Node that will be vertically centered to the right of the button
    * @param {Object} [options]
    */
-  constructor( property, value, node, options ) {
+  constructor( property, value, labelNode, options ) {
 
     options = merge( {
       cursor: 'pointer',
-      enabled: true,
       selectedColor: 'rgb( 143, 197, 250 )', // color used to fill the button when it's selected
       deselectedColor: 'white', // color used to fill the button when it's deselected
       centerColor: 'black', // color used to fill the center of teh button when it's selected
       radius: DEFAULT_RADIUS, // radius of the button
-      xSpacing: 8, // horizontal space between the button and the node
+      xSpacing: 8, // horizontal space between the button and the labelNode
       stroke: 'black', // color used to stroke the outer edge of the button
 
       // phet-io
@@ -67,45 +66,37 @@ class AquaRadioButton extends Node {
       `AquaRadioButton tandem.name must end with RadioButton: ${options.tandem.phetioID}` );
 
     super();
+    
+    // Initialize the mixin, which defines this.enabledProperty.
+    this.initializeEnabledNode( options );
 
     // @public (read-only)
     this.value = value;
 
-    // @private - converted to an AXON/Property from a property to support PhET-iO
-    this.enabledProperty = new BooleanProperty( options.enabled, {
-      tandem: options.tandem.createTandem( 'enabledProperty' ),
-      phetioFeatured: true,
-      phetioDocumentation: 'Determines whether the AquaRadioButton is enabled (pressable) or disabled (grayed-out)'
-    } );
-
-    // selected node creation
+    // selected Node
     const selectedNode = new Node();
     const innerCircle = new Circle( options.radius / 3, { fill: options.centerColor } );
     const outerCircleSelected = new Circle( options.radius, { fill: options.selectedColor, stroke: options.stroke } );
-
-    // @private
-    this.selectedCircleButton = new Node( {
+    const selectedCircleButton = new Node( {
       children: [ outerCircleSelected, innerCircle ]
     } );
-    selectedNode.addChild( this.selectedCircleButton );
-    selectedNode.addChild( node );
-    node.left = outerCircleSelected.right + options.xSpacing;
-    node.centerY = outerCircleSelected.centerY;
+    selectedNode.addChild( selectedCircleButton );
+    selectedNode.addChild( labelNode );
+    labelNode.left = outerCircleSelected.right + options.xSpacing;
+    labelNode.centerY = outerCircleSelected.centerY;
 
-    // deselected node
+    // deselected Node
     const deselectedNode = new Node();
-
-    // @private
-    this.deselectedCircleButton = new Circle( options.radius, {
+    const deselectedCircleButton = new Circle( options.radius, {
       fill: options.deselectedColor,
       stroke: options.stroke
     } );
-    deselectedNode.addChild( this.deselectedCircleButton );
-    deselectedNode.addChild( node );
-    node.left = this.deselectedCircleButton.right + options.xSpacing;
-    node.centerY = this.deselectedCircleButton.centerY;
+    deselectedNode.addChild( deselectedCircleButton );
+    deselectedNode.addChild( labelNode );
+    labelNode.left = deselectedCircleButton.right + options.xSpacing;
+    labelNode.centerY = deselectedCircleButton.centerY;
 
-    //Add an invisible node to make sure the layout for selected vs deselected is the same
+    // Add an invisible Node to make sure the layout for selected vs deselected is the same
     const background = new Rectangle( selectedNode.bounds.union( deselectedNode.bounds ) );
     selectedNode.pickable = deselectedNode.pickable = false; // the background rectangle suffices
 
@@ -120,7 +111,7 @@ class AquaRadioButton extends Node {
     };
     property.link( syncWithModel );
 
-    // set property value on fire
+    // set Property value on fire
     const fire = () => {
       property.set( value );
       options.soundPlayer.play();
@@ -138,14 +129,14 @@ class AquaRadioButton extends Node {
     this.addInputListener( changeListener );
 
     // pdom - Specify the default value for assistive technology. This attribute is needed in addition to
-    // the 'checked' property to mark this element as the default selection since 'checked' may be set before
+    // the 'checked' Property to mark this element as the default selection since 'checked' may be set before
     // we are finished adding RadioButtons to the containing group, and the browser will remove the boolean
     // 'checked' flag when new buttons are added.
     if ( property.value === value ) {
       this.setAccessibleAttribute( 'checked', 'checked' );
     }
 
-    // pdom - when the property changes, make sure the correct radio button is marked as 'checked' so that this button
+    // pdom - when the Property changes, make sure the correct radio button is marked as 'checked' so that this button
     // receives focus on 'tab'
     const accessibleCheckedListener = newValue => {
       this.accessibleChecked = newValue === value;
@@ -159,15 +150,12 @@ class AquaRadioButton extends Node {
 
     this.mutate( options );
 
-    this.enabledProperty.link( this.updateEnabled.bind( this ) );
-
     // @private
     this.disposeAquaRadioButton = () => {
       this.removeInputListener( fireListener );
       this.removeInputListener( changeListener );
       property.unlink( accessibleCheckedListener );
       property.unlink( syncWithModel );
-      this.enabledProperty.dispose();
 
       // phet-io: Unregister listener
       fireListener.dispose();
@@ -177,45 +165,20 @@ class AquaRadioButton extends Node {
     assert && phet.chipper.queryParameters.binder && InstanceRegistry.registerDataURL( 'sun', 'AquaRadioButton', this );
   }
 
-  get enabled() { return this.getEnabled(); }
-
-  set enabled( value ) { this.setEnabled( value ); }
-
   /**
    * @public
    * @override
    */
   dispose() {
     this.disposeAquaRadioButton();
+    this.disposeEnabledNode();
     super.dispose();
   }
-
-  /**
-   * Sets the enabled state.
-   * @param {boolean} enabled
-   * @public
-   */
-  setEnabled( enabled ) { this.enabledProperty.set( enabled ); }
-
-  /**
-   * Update settings when the enabled status changes.  This method is overrideable, for when subclasses need to
-   * change the appearance of other components.
-   * @public
-   */
-  updateEnabled() {
-    this.opacity = this.enabled ? 1 : SunConstants.DISABLED_OPACITY;
-    this.pickable = this.enabled; // NOTE: This is a side-effect. If you set pickable independently, it will be changed when you set enabled.
-  }
-
-  /**
-   * Gets the enabled state
-   * @returns {boolean}
-   * @public
-   */
-  getEnabled() { return this.enabledProperty.get(); }
 }
 
 AquaRadioButton.DEFAULT_RADIUS = DEFAULT_RADIUS;
+
+EnabledNode.mixInto( AquaRadioButton );
 
 sun.register( 'AquaRadioButton', AquaRadioButton );
 export default AquaRadioButton;
