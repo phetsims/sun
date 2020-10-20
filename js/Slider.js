@@ -428,11 +428,11 @@ class Slider extends Node {
   }
 }
 
-// mix accessibility into Slider
-AccessibleSlider.mixInto( Slider );
-
 // mix enabledProperty into Slider
 EnabledNode.mixInto( Slider );
+
+// mix accessibility into Slider
+AccessibleSlider.mixInto( Slider );
 
 Slider.SliderIO = new IOType( 'SliderIO', {
   valueType: Slider,
