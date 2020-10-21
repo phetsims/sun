@@ -224,6 +224,23 @@ class RectangularButtonView extends Node {
   }
 
   /**
+   * Gets a reference to the model's enabledProperty.
+   * @returns {Property.<boolean>}
+   * @public
+   */
+  getEnabledProperty() {
+    return this.buttonModel.enabledProperty;
+  }
+
+  /**
+   * ES5 getter for the model's enabledProperty. This is a bit of intentional obfuscation to make sun buttons
+   * have an enabledProperty API that is similar to other UI components.
+   * See https://github.com/phetsims/sun/issues/515#issuecomment-713870207
+   * @returns {Property.<boolean>}
+   */
+  get enabledProperty() { return this.getEnabledProperty(); }
+
+  /**
    * Sets the enabled state.
    * @param {boolean} value
    * @public
@@ -243,15 +260,6 @@ class RectangularButtonView extends Node {
   getEnabled() { return this.buttonModel.enabledProperty.get(); }
 
   set enabled( value ) { this.setEnabled( value ); }
-
-  /**
-   * Gets the enabledProperty. This is meant to be a workaround for https://github.com/phetsims/sun/issues/515 while
-   * https://github.com/phetsims/sun/issues/257 is being figured out and worked on.
-   * TODO: it sure would be nice to remove this, https://github.com/phetsims/sun/issues/515
-   * @returns {Property.<boolean>}
-   * @public
-   */
-  getEnabledProperty() { return this.buttonModel.enabledProperty; }
 
   /**
    * Sets the base color, which is the main background fill color used for the button.

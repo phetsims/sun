@@ -196,6 +196,23 @@ class RoundButtonView extends Node {
   }
 
   /**
+   * Gets a reference to the model's enabledProperty.
+   * @returns {Property.<boolean>}
+   * @public
+   */
+  getEnabledProperty() {
+    return this.buttonModel.enabledProperty;
+  }
+
+  /**
+   * ES5 getter for the model's enabledProperty. This is a bit of intentional obfuscation to make sun buttons
+   * have an enabledProperty API that is similar to other UI components.
+   * See https://github.com/phetsims/sun/issues/515#issuecomment-713870207
+   * @returns {Property.<boolean>}
+   */
+  get enabledProperty() { return this.getEnabledProperty(); }
+
+  /**
    * Sets the enabled state.
    * @param {boolean} value
    * @public
