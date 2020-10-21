@@ -186,14 +186,6 @@ class RoundButtonView extends Node {
     };
   }
 
-  get enabled() { return this.getEnabled(); }
-
-  set enabled( value ) { this.setEnabled( value ); }
-
-  get baseColor() { return this.getBaseColor(); }
-
-  set baseColor( baseColor ) { this.setBaseColor( baseColor ); }
-
   /**
    * @public
    * @override
@@ -213,12 +205,16 @@ class RoundButtonView extends Node {
     this.buttonModel.enabledProperty.set( value );
   }
 
+  set enabled( value ) { this.setEnabled( value ); }
+
   /**
    * Gets the enabled state.
    * @returns {boolean}
    * @public
    */
   getEnabled() { return this.buttonModel.enabledProperty.get(); }
+
+  get enabled() { return this.getEnabled(); }
 
   /**
    * Sets the base color, which is the main background fill color used for the button.
@@ -227,12 +223,16 @@ class RoundButtonView extends Node {
    */
   setBaseColor( baseColor ) { this.baseColorProperty.paint = baseColor; }
 
+  set baseColor( baseColor ) { this.setBaseColor( baseColor ); }
+
   /**
    * Gets the base color for this button.
    * @returns {Color}
    * @public
    */
   getBaseColor() { return this.baseColorProperty.paint; }
+
+  get baseColor() { return this.getBaseColor(); }
 
   // @public
   addListener( listener ) {
