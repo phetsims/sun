@@ -247,7 +247,7 @@ class RectangularButtonView extends Node {
   /**
    * Gets the enabledProperty. This is meant to be a workaround for https://github.com/phetsims/sun/issues/515 while
    * https://github.com/phetsims/sun/issues/257 is being figured out and worked on.
-   * TODO: remove me once https://github.com/phetsims/sun/issues/257 is complete
+   * TODO: it sure would be nice to remove this, https://github.com/phetsims/sun/issues/515
    * @returns {Property.<boolean>}
    * @public
    */
