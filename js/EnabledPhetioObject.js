@@ -51,7 +51,6 @@ const EnabledPhetioObject = {
         if ( !ownsEnabledProperty ) {
 
           if ( Tandem.VALIDATION && this.isPhetioInstrumented() ) {
-
             assert && assert( options.enabledProperty.isPhetioInstrumented(), 'provided enabledProperty must be instrumented if this PhetioObject is.' );
             assert && this.phetioFeatured && assert( options.enabledProperty.phetioFeatured, 'provided enabledProperty must be phetioFeatured if this PhetioObject is.' );
           }
