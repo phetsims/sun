@@ -487,7 +487,7 @@ class ButtonsScreenView extends ScreenView {
       verticalAquaRadioButtonGroup1.enabled = enabled;
       verticalAquaRadioButtonGroup2.enabled = enabled;
 
-      // Test the enabledProperty API for these buttons, see https://github.com/phetsims/sun/issues/515
+      // Test the enabledProperty ES5 getter for these buttons, see https://github.com/phetsims/sun/issues/515
       buttonA.enabledProperty.value = enabled;
       buttonB.enabledProperty.value = enabled;
       buttonC.enabledProperty.value = enabled;
