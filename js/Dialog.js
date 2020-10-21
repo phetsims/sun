@@ -149,7 +149,9 @@ class Dialog extends Popupable( Panel ) {
     }, options );
 
     // Wait until merge complete to determine this value
-    options.visiblePropertyOptions = { phetioState: options.phetioState };
+    options.visiblePropertyOptions = merge( {
+      phetioState: options.phetioState
+    }, options.visiblePropertyOptions );
 
     assert && assert( options.xMargin === undefined, 'Dialog sets xMargin' );
     options.xMargin = 0;
