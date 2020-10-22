@@ -16,7 +16,6 @@ import Vector2 from '../../../dot/js/Vector2.js';
 import Shape from '../../../kite/js/Shape.js';
 import merge from '../../../phet-core/js/merge.js';
 import Circle from '../../../scenery/js/nodes/Circle.js';
-import Node from '../../../scenery/js/nodes/Node.js';
 import PaintColorProperty from '../../../scenery/js/util/PaintColorProperty.js';
 import RadialGradient from '../../../scenery/js/util/RadialGradient.js';
 import Tandem from '../../../tandem/js/Tandem.js';
@@ -24,15 +23,16 @@ import ColorConstants from '../ColorConstants.js';
 import sun from '../sun.js';
 import SunConstants from '../SunConstants.js';
 import ButtonInteractionState from './ButtonInteractionState.js';
+import ButtonNode from './ButtonNode.js';
 
 // constants
 const HIGHLIGHT_GRADIENT_LENGTH = 5; // In screen coords, which are roughly pixels.
 const DEFAULT_COLOR = ColorConstants.LIGHT_BLUE;
 
-class RoundButtonView extends Node {
+class RoundButtonView extends ButtonNode {
 
   /**
-   * @param {PushButtonModel} buttonModel TODO should this be {ButtonModel} ?
+   * @param {ButtonModel} buttonModel
    * @param {Property} interactionStateProperty - A property that is used to drive the visual appearance of the button.
    * @param {Object} [options]
    */
@@ -40,8 +40,8 @@ class RoundButtonView extends Node {
 
     options = merge( {
 
-      radius: ( options && options.content ) ? undefined : 30,
       content: null,
+      radius: ( options && options.content ) ? undefined : 30,
       cursor: 'pointer',
       baseColor: DEFAULT_COLOR,
       disabledBaseColor: ColorConstants.LIGHT_GRAY,
@@ -80,9 +80,6 @@ class RoundButtonView extends Node {
       // version(s) defined in this file.
       contentAppearanceStrategy: RoundButtonView.FadeContentWhenDisabled,
 
-      // Options that will be passed through to the main input listener (PressListener)
-      listenerOptions: null,
-
       // phet-io
       tandem: Tandem.OPTIONAL, // This duplicates the parent option and works around https://github.com/phetsims/tandem/issues/50
       visiblePropertyOptions: { phetioFeatured: true },
@@ -91,14 +88,8 @@ class RoundButtonView extends Node {
       tagName: 'button'
     }, options );
 
-    options.listenerOptions = merge( {
-      tandem: options.tandem.createTandem( 'pressListener' )
-    }, options.listenerOptions );
+    super( buttonModel, options );
 
-    super();
-
-    // @protected
-    this.buttonModel = buttonModel;
 
     const content = options.content; // convenience variable
     const upCenter = new Vector2( options.xContentOffset, options.yContentOffset );
@@ -107,13 +98,6 @@ class RoundButtonView extends Node {
     if ( content ) {
       content.pickable = false;
     }
-
-    // Make the base color into a property so that the appearance strategy can update itself if changes occur.
-    this.baseColorProperty = new PaintColorProperty( options.baseColor ); // @private
-
-    // @private {PressListener}
-    this._pressListener = buttonModel.createListener( options.listenerOptions );
-    this.addInputListener( this._pressListener );
 
     // Use the user-specified radius if present, otherwise calculate the
     // radius based on the content and the margin.
@@ -175,14 +159,9 @@ class RoundButtonView extends Node {
     this.disposeRoundButtonView = () => {
       buttonAppearanceStrategy.dispose();
       contentAppearanceStrategy.dispose();
-      this._pressListener.dispose();
       if ( interactionStateProperty.hasListener( handleInteractionStateChanged ) ) {
         interactionStateProperty.unlink( handleInteractionStateChanged );
       }
-      if ( buttonModel.enabledProperty.hasListener( updatePDOMEnabled ) ) {
-        buttonModel.enabledProperty.unlink( updatePDOMEnabled );
-      }
-      this.baseColorProperty.dispose();
     };
   }
 
@@ -193,82 +172,6 @@ class RoundButtonView extends Node {
   dispose() {
     this.disposeRoundButtonView();
     super.dispose();
-  }
-
-  /**
-   * Gets a reference to the model's enabledProperty.
-   * @returns {Property.<boolean>}
-   * @public
-   */
-  getEnabledProperty() {
-    return this.buttonModel.enabledProperty;
-  }
-
-  /**
-   * ES5 getter for the model's enabledProperty. This is a bit of intentional obfuscation to make sun buttons
-   * have an enabledProperty API that is similar to other UI components.
-   * See https://github.com/phetsims/sun/issues/515#issuecomment-713870207
-   * @returns {Property.<boolean>}
-   */
-  get enabledProperty() { return this.getEnabledProperty(); }
-
-  /**
-   * Sets the enabled state.
-   * @param {boolean} value
-   * @public
-   */
-  setEnabled( value ) {
-    assert && assert( typeof value === 'boolean', 'RoundButtonView.enabled must be a boolean value' );
-    this.buttonModel.enabledProperty.set( value );
-  }
-
-  set enabled( value ) { this.setEnabled( value ); }
-
-  /**
-   * Gets the enabled state.
-   * @returns {boolean}
-   * @public
-   */
-  getEnabled() { return this.buttonModel.enabledProperty.get(); }
-
-  get enabled() { return this.getEnabled(); }
-
-  /**
-   * Sets the base color, which is the main background fill color used for the button.
-   * @param {Color|String} baseColor
-   * @public
-   */
-  setBaseColor( baseColor ) { this.baseColorProperty.paint = baseColor; }
-
-  set baseColor( baseColor ) { this.setBaseColor( baseColor ); }
-
-  /**
-   * Gets the base color for this button.
-   * @returns {Color}
-   * @public
-   */
-  getBaseColor() { return this.baseColorProperty.paint; }
-
-  get baseColor() { return this.getBaseColor(); }
-
-  // @public
-  addListener( listener ) {
-    this.buttonModel.addListener( listener );
-  }
-
-  // @public
-  removeListener( listener ) {
-    this.buttonModel.removeListener( listener );
-  }
-
-  /**
-   * Manually click the button, as it would be clicked in response to alternative input. Recommended only for
-   * accessibility usages. For the most part, a11y button functionality should be managed by PressListener, this should
-   * rarely be used.
-   * @public
-   */
-  a11yClick() {
-    this._pressListener.click();
   }
 }
 

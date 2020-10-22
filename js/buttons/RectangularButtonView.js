@@ -12,7 +12,6 @@ import Bounds2 from '../../../dot/js/Bounds2.js';
 import Shape from '../../../kite/js/Shape.js';
 import merge from '../../../phet-core/js/merge.js';
 import AlignBox from '../../../scenery/js/nodes/AlignBox.js';
-import Node from '../../../scenery/js/nodes/Node.js';
 import Path from '../../../scenery/js/nodes/Path.js';
 import Color from '../../../scenery/js/util/Color.js';
 import LinearGradient from '../../../scenery/js/util/LinearGradient.js';
@@ -22,6 +21,7 @@ import ColorConstants from '../ColorConstants.js';
 import sun from '../sun.js';
 import SunConstants from '../SunConstants.js';
 import ButtonInteractionState from './ButtonInteractionState.js';
+import ButtonNode from './ButtonNode.js';
 
 // constants
 const VERTICAL_HIGHLIGHT_GRADIENT_LENGTH = 7; // In screen coords, which are roughly pixels.
@@ -31,7 +31,7 @@ const DEFAULT_COLOR = ColorConstants.LIGHT_BLUE;
 const X_ALIGN_VALUES = [ 'center', 'left', 'right' ];
 const Y_ALIGN_VALUES = [ 'center', 'top', 'bottom' ];
 
-class RectangularButtonView extends Node {
+class RectangularButtonView extends ButtonNode {
 
   /**
    * @param {ButtonModel} buttonModel - Model that defines the button's behavior.
@@ -50,7 +50,6 @@ class RectangularButtonView extends Node {
       disabledBaseColor: ColorConstants.LIGHT_GRAY,
       xMargin: 8, // should be visibly greater than yMargin, see issue #109
       yMargin: 5,
-      fireOnDown: false,
 
       // pointer area dilation
       touchAreaXDilation: 0,
@@ -92,9 +91,6 @@ class RectangularButtonView extends Node {
       // version(s) defined in this file.
       contentAppearanceStrategy: RectangularButtonView.FadeContentWhenDisabled,
 
-      // Options that will be passed through to the main input listener (PressListener)
-      listenerOptions: null,
-
       // pdom
       tagName: 'button',
 
@@ -107,24 +103,9 @@ class RectangularButtonView extends Node {
     assert && assert( _.includes( X_ALIGN_VALUES, options.xAlign ), 'invalid xAlign: ' + options.xAlign );
     assert && assert( _.includes( Y_ALIGN_VALUES, options.yAlign ), 'invalid yAlign: ' + options.yAlign );
 
-    options.listenerOptions = merge( {
-      tandem: options.tandem.createTandem( 'pressListener' )
-    }, options.listenerOptions );
-
-    super();
-
-    // @protected
-    this.buttonModel = buttonModel;
+    super( buttonModel, options );
 
     const content = options.content; // convenience variable
-
-    // Hook up the input listener
-    // @private (a11y) {PressListener}
-    this._pressListener = buttonModel.createListener( options.listenerOptions );
-    this.addInputListener( this._pressListener );
-
-    // @private - make the base color into a property so that the appearance strategy can update itself if changes occur.
-    this.baseColorProperty = new PaintColorProperty( options.baseColor ); // @private
 
     // Figure out the size of the button.
     const buttonWidth = Math.max( content ? content.width + options.xMargin * 2 : 0, options.minWidth );
@@ -177,12 +158,6 @@ class RectangularButtonView extends Node {
     };
     interactionStateProperty.link( handleInteractionStateChanged );
 
-    // PDOM - indicate to screen readers whether the button is enabled
-    const updatePDOMEnabled = enabled => {
-      this.setAccessibleAttribute( 'aria-disabled', !enabled );
-    };
-    this.buttonModel.enabledProperty.link( updatePDOMEnabled );
-
     // set pointer areas
     this.touchArea = button.localBounds
       .dilatedXY( options.touchAreaXDilation, options.touchAreaYDilation )
@@ -199,13 +174,8 @@ class RectangularButtonView extends Node {
     this.disposeRectangularButtonView = () => {
       buttonAppearanceStrategy.dispose();
       contentAppearanceStrategy.dispose();
-      this.baseColorProperty.dispose();
-      this._pressListener.dispose();
       if ( interactionStateProperty.hasListener( handleInteractionStateChanged ) ) {
         interactionStateProperty.unlink( handleInteractionStateChanged );
-      }
-      if ( buttonModel.enabledProperty.hasListener( updatePDOMEnabled ) ) {
-        buttonModel.enabledProperty.unlink( updatePDOMEnabled );
       }
 
       if ( content ) {
@@ -221,81 +191,6 @@ class RectangularButtonView extends Node {
   dispose() {
     this.disposeRectangularButtonView();
     super.dispose();
-  }
-
-  /**
-   * Gets a reference to the model's enabledProperty.
-   * @returns {Property.<boolean>}
-   * @public
-   */
-  getEnabledProperty() {
-    return this.buttonModel.enabledProperty;
-  }
-
-  /**
-   * ES5 getter for the model's enabledProperty. This is a bit of intentional obfuscation to make sun buttons
-   * have an enabledProperty API that is similar to other UI components.
-   * See https://github.com/phetsims/sun/issues/515#issuecomment-713870207
-   * @returns {Property.<boolean>}
-   */
-  get enabledProperty() { return this.getEnabledProperty(); }
-
-  /**
-   * Sets the enabled state.
-   * @param {boolean} value
-   * @public
-   */
-  setEnabled( value ) {
-    assert && assert( typeof value === 'boolean', 'RectangularButtonView.enabled must be a boolean value' );
-    this.buttonModel.enabledProperty.set( value );
-  }
-
-  get enabled() { return this.getEnabled(); }
-
-  /**
-   * Gets the enabled state.
-   * @returns {boolean}
-   * @public
-   */
-  getEnabled() { return this.buttonModel.enabledProperty.get(); }
-
-  set enabled( value ) { this.setEnabled( value ); }
-
-  /**
-   * Sets the base color, which is the main background fill color used for the button.
-   * @param {null|string|Color|Property.<string|Color>} baseColor
-   * @public
-   */
-  setBaseColor( baseColor ) { this.baseColorProperty.paint = baseColor; }
-
-  get baseColor() { return this.getBaseColor(); }
-
-  /**
-   * Gets the base color for this button.
-   * @returns {Color}
-   * @public
-   */
-  getBaseColor() { return this.baseColorProperty.value; }
-
-  set baseColor( baseColor ) { this.setBaseColor( baseColor ); }
-
-  /**
-   * Clicks the button. Recommended only for accessibility usages. For the most part, a11y button functionality should
-   * be managed by the PressListener. This is more for edge cases.
-   * @public
-   */
-  a11yClick() {
-    this._pressListener.click();
-  }
-
-  // @public
-  addListener( listener ) {
-    this.buttonModel.addListener( listener );
-  }
-
-  // @public
-  removeListener( listener ) {
-    this.buttonModel.removeListener( listener );
   }
 }
 
@@ -614,7 +509,7 @@ RectangularButtonView.FlatAppearanceStrategy = function( button, interactionStat
 /**
  * Basic strategy for controlling content appearance, fades the content by making it transparent when disabled.
  *
- * @param {Node} content
+ * @param {Node}|null} content
  * @param {Property} interactionStateProperty
  * @constructor
  * @public
