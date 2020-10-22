@@ -12,6 +12,7 @@ import merge from '../../../phet-core/js/merge.js';
 import Node from '../../../scenery/js/nodes/Node.js';
 import PaintColorProperty from '../../../scenery/js/util/PaintColorProperty.js';
 import Tandem from '../../../tandem/js/Tandem.js';
+import EnabledNode from '../EnabledNode.js';
 import sun from '../sun.js';
 
 class ButtonNode extends Node {
@@ -26,7 +27,10 @@ class ButtonNode extends Node {
       tandem: Tandem.OPTIONAL,
 
       // Options that will be passed through to the main input listener (PressListener)
-      listenerOptions: null
+      listenerOptions: null,
+
+      // TODO: workaround for difficulty in mutate/instrumentation order of sun buttons, see https://github.com/phetsims/sun/issues/643 or https://github.com/phetsims/sun/issues/515
+      phetioLinkEnabledElement: false
 
     }, options );
 
@@ -39,6 +43,11 @@ class ButtonNode extends Node {
     // @protected
     this.buttonModel = buttonModel;
 
+    assert && options.enabledProperty && assert( options.enabledProperty === this.buttonModel.enabledProperty,
+      'a passed in enabledProperty should be the same as the ButtonModel\'s' );
+    options.enabledProperty = this.buttonModel.enabledProperty;
+    this.initializeEnabledNode( options );
+
     // Make the base color into a property so that the appearance strategy can update itself if changes occur.
     this.baseColorProperty = new PaintColorProperty( options.baseColor ); // @private
 
@@ -46,19 +55,9 @@ class ButtonNode extends Node {
     this._pressListener = buttonModel.createListener( options.listenerOptions );
     this.addInputListener( this._pressListener );
 
-    // TODO: EnabledNode will make this useless
-    // PDOM - indicate to screen readers that the button is not clickable
-    const updatePDOMEnabled = enabled => {
-      this.setAccessibleAttribute( 'aria-disabled', !enabled );
-    };
-    buttonModel.enabledProperty.link( updatePDOMEnabled );
-
     // @private - define a dispose function
     this.disposeButtonNode = () => {
       this._pressListener.dispose();
-      if ( buttonModel.enabledProperty.hasListener( updatePDOMEnabled ) ) {
-        buttonModel.enabledProperty.unlink( updatePDOMEnabled );
-      }
       this.baseColorProperty.dispose();
     };
   }
@@ -71,46 +70,6 @@ class ButtonNode extends Node {
     this.disposeButtonNode();
     super.dispose();
   }
-
-  /**
-   * Sets the enabled state.
-   * @param {boolean} value
-   * @public
-   */
-  setEnabled( value ) {
-    assert && assert( typeof value === 'boolean', 'ButtonNode.enabled must be a boolean value' );
-    this.buttonModel.enabledProperty.set( value );
-  }
-
-  set enabled( value ) { this.setEnabled( value ); }
-
-  /**
-   * Gets the enabled state.
-   * @returns {boolean}
-   * @public
-   */
-  getEnabled() { return this.buttonModel.enabledProperty.get(); }
-
-  get enabled() { return this.getEnabled(); }
-
-  /**
-   *
-   /**
-   * Gets a reference to the model's enabledProperty.
-   * @returns {Property.<boolean>}
-   * @public
-   */
-  getEnabledProperty() {
-    return this.buttonModel.enabledProperty;
-  }
-
-  /**
-   * ES5 getter for the model's enabledProperty. This is a bit of intentional obfuscation to make sun buttons
-   * have an enabledProperty API that is similar to other UI components.
-   * See https://github.com/phetsims/sun/issues/515#issuecomment-713870207
-   * @returns {Property.<boolean>}
-   */
-  get enabledProperty() { return this.getEnabledProperty(); }
 
   /**
    * Sets the base color, which is the main background fill color used for the button.
@@ -150,6 +109,8 @@ class ButtonNode extends Node {
     this._pressListener.click();
   }
 }
+
+EnabledNode.mixInto( ButtonNode );
 
 sun.register( 'ButtonNode', ButtonNode );
 export default ButtonNode;

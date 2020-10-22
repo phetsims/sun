@@ -256,7 +256,7 @@ class AccordionBox extends Node {
     this.expandCollapseButton.visibleProperty.lazyLink( pickableListener );
     this.expandCollapseButton.pickableProperty.lazyLink( pickableListener );
 
-    this.expandCollapseButton.getEnabledProperty().link( enabled => {
+    this.expandCollapseButton.enabledProperty.link( enabled => {
       this.collapsedTitleBar.cursor = enabled ? options.cursor : null;
       this.expandedTitleBar.cursor = enabled ? options.cursor : null;
     } );
