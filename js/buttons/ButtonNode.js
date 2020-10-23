@@ -97,16 +97,6 @@ class ButtonNode extends Node {
 
   get baseColor() { return this.getBaseColor(); }
 
-  // @public
-  addListener( listener ) {
-    this.buttonModel.addListener( listener );
-  }
-
-  // @public
-  removeListener( listener ) {
-    this.buttonModel.removeListener( listener );
-  }
-
   /**
    * Manually click the button, as it would be clicked in response to alternative input. Recommended only for
    * accessibility usages. For the most part, a11y button functionality should be managed by PressListener, this should

@@ -75,6 +75,24 @@ class RoundPushButton extends RoundButton {
     super.dispose();
     this.disposeRoundPushButton();
   }
+
+  /**
+   * Adds a listener that will be notified when the button fires.
+   * @param {function} listener
+   * @public
+   */
+  addListener( listener ) {
+    this.buttonModel.addListener( listener );
+  }
+
+  /**
+   * Removes a listener.
+   * @param {function} listener
+   * @public
+   */
+  removeListener( listener ) {
+    this.buttonModel.removeListener( listener );
+  }
 }
 
 sun.register( 'RoundPushButton', RoundPushButton );
