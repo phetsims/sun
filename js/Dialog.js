@@ -191,7 +191,7 @@ class Dialog extends Popupable( Panel ) {
         options.closeButtonListener();
 
         // if listener was fired because of accessibility
-        if ( closeButton.buttonModel.isA11yClicking() ) {
+        if ( closeButton.isPDOMClicking() ) {
           this.focusOnCloseNode && this.focusOnCloseNode.focus();
         }
       },

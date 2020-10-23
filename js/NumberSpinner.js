@@ -243,8 +243,8 @@ class NumberSpinner extends Node {
     this.initializeAccessibleNumberSpinner( numberProperty, rangeProperty, this.enabledProperty, options );
 
     // pdom - click arrow buttons on keyboard increment/decrement; must be disposed
-    const increasedListener = function( isDown ) { isDown && incrementButton.a11yClick(); };
-    const decreasedListener = function( isDown ) { isDown && decrementButton.a11yClick(); };
+    const increasedListener = function( isDown ) { isDown && incrementButton.pdomClick(); };
+    const decreasedListener = function( isDown ) { isDown && decrementButton.pdomClick(); };
     this.incrementDownEmitter.addListener( increasedListener );
     this.decrementDownEmitter.addListener( decreasedListener );
 

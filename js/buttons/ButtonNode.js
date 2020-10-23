@@ -99,12 +99,21 @@ class ButtonNode extends Node {
 
   /**
    * Manually click the button, as it would be clicked in response to alternative input. Recommended only for
-   * accessibility usages. For the most part, a11y button functionality should be managed by PressListener, this should
+   * accessibility usages. For the most part, PDOM button functionality should be managed by PressListener, this should
    * rarely be used.
    * @public
    */
-  a11yClick() {
+  pdomClick() {
     this._pressListener.click();
+  }
+
+  /**
+   * Is the button currently firing because of accessibility input coming from the PDOM?
+   * @public (pdom)
+   * @returns {boolean}
+   */
+  isPDOMClicking() {
+    return this._pressListener.pdomClickingProperty.get();
   }
 }
 
