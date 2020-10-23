@@ -95,7 +95,8 @@ class RoundButton extends ButtonNode {
     // Create the circular part of the button.
     const button = new Circle( buttonRadius, {
       fill: options.baseColorProperty,
-      lineWidth: options.lineWidth
+      lineWidth: options.lineWidth,
+      pickable: false
     } );
     this.addChild( button );
 
@@ -105,10 +106,7 @@ class RoundButton extends ButtonNode {
 
     // Add the content to the button.
     if ( content ) {
-
-      // For performance reasons, the content should be unpickable.
-      content.pickable = false;
-
+      content.pickable = false; // for performance
       content.center = new Vector2( options.xContentOffset, options.yContentOffset );
       this.addChild( content );
     }
@@ -121,9 +119,6 @@ class RoundButton extends ButtonNode {
       buttonRadius + options.touchAreaDilation );
     this.mouseArea = Shape.circle( options.mouseAreaXShift, options.mouseAreaYShift,
       buttonRadius + options.mouseAreaDilation );
-
-    // Set pickable such that sub-nodes are pruned from hit testing.
-    this.pickable = null;
 
     // PDOM - focus highlight is circular for round buttons, with a little bit of padding
     // between button shape and inner edge of highlight

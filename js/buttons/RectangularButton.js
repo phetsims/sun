@@ -116,7 +116,8 @@ class RectangularButton extends ButtonNode {
     // Create the rectangular part of the button.
     const button = new Path( createButtonShape( buttonWidth, buttonHeight, options ), {
       fill: this.baseColorProperty,
-      lineWidth: options.lineWidth
+      lineWidth: options.lineWidth,
+      pickable: false
     } );
     this.addChild( button );
 
@@ -128,10 +129,7 @@ class RectangularButton extends ButtonNode {
     let alignBox = null;
     if ( content ) {
 
-      // For performance reasons, the content should be unpickable.
-      content.pickable = false;
-
-      // align content in the button, this AlignBox must be disposed since it adds listener to content bounds
+      // Align content in the button rectangle. Must be disposed since it adds listener to content bounds.
       alignBox = new AlignBox( content, {
         alignBounds: new Bounds2(
           options.xMargin,
@@ -140,7 +138,8 @@ class RectangularButton extends ButtonNode {
           buttonHeight - options.yMargin
         ),
         xAlign: options.xAlign,
-        yAlign: options.yAlign
+        yAlign: options.yAlign,
+        pickable: false // for performance
       } );
       this.addChild( alignBox );
     }
