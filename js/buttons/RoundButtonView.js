@@ -90,7 +90,6 @@ class RoundButtonView extends ButtonNode {
 
     super( buttonModel, options );
 
-
     const content = options.content; // convenience variable
     const upCenter = new Vector2( options.xContentOffset, options.yContentOffset );
 
