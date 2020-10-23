@@ -9,6 +9,7 @@
 import BooleanProperty from '../../../axon/js/BooleanProperty.js';
 import Property from '../../../axon/js/Property.js';
 import ScreenView from '../../../joist/js/ScreenView.js';
+import PhetFont from '../../../scenery-phet/js/PhetFont.js';
 import HBox from '../../../scenery/js/nodes/HBox.js';
 import Node from '../../../scenery/js/nodes/Node.js';
 import Rectangle from '../../../scenery/js/nodes/Rectangle.js';
@@ -18,7 +19,6 @@ import Color from '../../../scenery/js/util/Color.js';
 import Font from '../../../scenery/js/util/Font.js';
 import ArrowButton from '../buttons/ArrowButton.js';
 import BooleanRectangularStickyToggleButton from '../buttons/BooleanRectangularStickyToggleButton.js';
-import BooleanRectangularToggleButton from '../buttons/BooleanRectangularToggleButton.js';
 import RadioButtonGroup from '../buttons/RadioButtonGroup.js';
 import RectangularButton from '../buttons/RectangularButton.js';
 import RectangularMomentaryButton from '../buttons/RectangularMomentaryButton.js';
@@ -27,6 +27,7 @@ import RoundButton from '../buttons/RoundButton.js';
 import RoundMomentaryButton from '../buttons/RoundMomentaryButton.js';
 import RoundPushButton from '../buttons/RoundPushButton.js';
 import RoundStickyToggleButton from '../buttons/RoundStickyToggleButton.js';
+import Checkbox from '../Checkbox.js';
 import Panel from '../Panel.js';
 import sun from '../sun.js';
 import VerticalAquaRadioButtonGroup from '../VerticalAquaRadioButtonGroup.js';
@@ -475,6 +476,39 @@ class ButtonsScreenView extends ScreenView {
     this.addChild( momentaryButtonsBox );
 
     //===================================================================================
+    // Demonstrate dynamic colors for some buttons
+    //===================================================================================
+
+    // Add a button to set alternative color scheme.
+    const changeButtonColorsButton = new RectangularPushButton( {
+      content: new Text( 'Change Some Button Colors', { font: BUTTON_CAPTION_FONT } ),
+      listener: function() {
+
+        /* eslint-disable bad-sim-text */
+        buttonA.baseColor = new Color( _.random( 0, 255 ), _.random( 0, 255 ), _.random( 0, 255 ) );
+        buttonD.baseColor = new Color( _.random( 0, 255 ), _.random( 0, 255 ), _.random( 0, 255 ) );
+        button1.baseColor = new Color( _.random( 0, 255 ), _.random( 0, 255 ), _.random( 0, 255 ) );
+        button3.baseColor = new Color( _.random( 0, 255 ), _.random( 0, 255 ), _.random( 0, 255 ) );
+
+        alignBaseColor.value = new Color( _.random( 0, 255 ), _.random( 0, 255 ), _.random( 0, 255 ) );
+        radioGroupBaseColor.value = new Color( _.random( 0, 255 ), _.random( 0, 255 ), _.random( 0, 255 ) );
+        roundBaseColor.value = new Color( _.random( 0, 255 ), _.random( 0, 255 ), _.random( 0, 255 ) );
+        /* eslint-enable bad-sim-text */
+
+        message( 'Button colors changed' );
+      },
+      left: messageText.left,
+      bottom: messageText.top - 15,
+
+      // Demonstrate shifted pointer areas, https://github.com/phetsims/sun/issues/500
+      touchAreaXShift: -20,
+      touchAreaYShift: -20,
+      mouseAreaXShift: -10,
+      mouseAreaYShift: -10
+    } );
+    this.addChild( changeButtonColorsButton );
+
+    //===================================================================================
     // Enable/Disable buttons
     //===================================================================================
 
@@ -513,48 +547,14 @@ class ButtonsScreenView extends ScreenView {
       lowerRightContentButton.enabled = enabled;
       rectangularMomentaryButton.enabled = enabled;
       roundMomentaryButton.enabled = enabled;
+      changeButtonColorsButton.enabled = enabled;
     } );
 
-    const disableEnableButton = new BooleanRectangularToggleButton(
-      new Text( 'Disable Buttons', { font: BUTTON_CAPTION_FONT } ),
-      new Text( 'Enable Buttons', { font: BUTTON_CAPTION_FONT } ),
-      buttonsEnabledProperty, {
-        baseColor: new Color( 204, 255, 51 ),
-        right: this.layoutBounds.right - 40,
-        bottom: this.layoutBounds.bottom - 40
-      }
-    );
-    this.addChild( disableEnableButton );
-
-    // Add a button to set alternative color scheme.
-    const changeButtonColorsButton = new RectangularPushButton( {
-        content: new Text( 'Change Some Button Colors', { font: BUTTON_CAPTION_FONT } ),
-        listener: function() {
-
-          /* eslint-disable bad-sim-text */
-          buttonA.baseColor = new Color( _.random( 0, 255 ), _.random( 0, 255 ), _.random( 0, 255 ) );
-          buttonD.baseColor = new Color( _.random( 0, 255 ), _.random( 0, 255 ), _.random( 0, 255 ) );
-          button1.baseColor = new Color( _.random( 0, 255 ), _.random( 0, 255 ), _.random( 0, 255 ) );
-          button3.baseColor = new Color( _.random( 0, 255 ), _.random( 0, 255 ), _.random( 0, 255 ) );
-
-          alignBaseColor.value = new Color( _.random( 0, 255 ), _.random( 0, 255 ), _.random( 0, 255 ) );
-          radioGroupBaseColor.value = new Color( _.random( 0, 255 ), _.random( 0, 255 ), _.random( 0, 255 ) );
-          roundBaseColor.value = new Color( _.random( 0, 255 ), _.random( 0, 255 ), _.random( 0, 255 ) );
-          /* eslint-enable bad-sim-text */
-
-          message( 'Button colors changed' );
-        },
-        right: disableEnableButton.right,
-        bottom: disableEnableButton.top - 15,
-
-        // Demonstrate shifted pointer areas, https://github.com/phetsims/sun/issues/500
-        touchAreaXShift: -20,
-        touchAreaYShift: -20,
-        mouseAreaXShift: -10,
-        mouseAreaYShift: -10
-      }
-    );
-    this.addChild( changeButtonColorsButton );
+    const buttonsEnabledCheckbox = new Checkbox( new Text( 'buttons enabled', { font: new PhetFont( 20 ) } ), buttonsEnabledProperty, {
+      right: this.layoutBounds.right - 15,
+      bottom: this.layoutBounds.bottom - 15
+    } );
+    this.addChild( buttonsEnabledCheckbox );
   }
 }
 
