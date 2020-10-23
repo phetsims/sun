@@ -58,7 +58,7 @@ class RadioButtonGroupMember extends RectangularButton {
 
       // The default appearance uses the color values specified above, but other appearances could be specified for more
       // customized behavior.  Generally setting the color values above should be enough to specify the desired look.
-      buttonAppearanceStrategy: flatAppearanceStrategy,
+      buttonAppearanceStrategy: RadioButtonGroupMember.FlatAppearanceStrategy,
 
       // {Playable|null} - sound generation - If set to null a default will be used that is based on this button's
       // position within the radio button group.  Can be set to Playable.NO_SOUND to disable.
@@ -175,8 +175,10 @@ class RadioButtonGroupMember extends RectangularButton {
  * @param {Property} interactionStateProperty
  * @param {Property} baseColorProperty
  * @param {Object} [options]
+ * @constructor
+ * @public
  */
-function flatAppearanceStrategy( button, interactionStateProperty, baseColorProperty, options ) {
+RadioButtonGroupMember.FlatAppearanceStrategy = function( button, interactionStateProperty, baseColorProperty, options ) {
 
   // Dynamic fills and strokes
   const overFill = new PaintColorProperty( options.overFill || baseColorProperty, {
@@ -244,7 +246,7 @@ function flatAppearanceStrategy( button, interactionStateProperty, baseColorProp
     overFill.dispose();
     pressedFill.dispose();
   };
-}
+};
 
 sun.register( 'RadioButtonGroupMember', RadioButtonGroupMember );
 export default RadioButtonGroupMember;
