@@ -119,13 +119,14 @@ class RectangularButtonView extends ButtonNode {
     this.addChild( button );
 
     // Add the content to the button.
+    let alignBox = null;
     if ( content ) {
 
       // For performance reasons, the content should be unpickable.
       content.pickable = false;
 
       // align content in the button, this AlignBox must be disposed since it adds listener to content bounds
-      var alignBox = new AlignBox( content, {
+      alignBox = new AlignBox( content, {
         alignBounds: new Bounds2(
           options.xMargin,
           options.yMargin,
@@ -176,9 +177,7 @@ class RectangularButtonView extends ButtonNode {
         interactionStateProperty.unlink( handleInteractionStateChanged );
       }
 
-      if ( content ) {
-        alignBox.dispose();
-      }
+      alignBox && alignBox.dispose();
     };
   }
 
