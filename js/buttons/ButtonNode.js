@@ -15,7 +15,6 @@ import Tandem from '../../../tandem/js/Tandem.js';
 import ColorConstants from '../ColorConstants.js';
 import EnabledNode from '../EnabledNode.js';
 import sun from '../sun.js';
-import ButtonInteractionState from './ButtonInteractionState.js';
 
 class ButtonNode extends Node {
 
@@ -35,6 +34,9 @@ class ButtonNode extends Node {
       // {ColorDef} initial color of the button's background
       baseColor: ColorConstants.LIGHT_BLUE,
 
+      // {string} default cursor
+      cursor: 'pointer',
+
       // TODO: workaround for difficulty in mutate/instrumentation order of sun buttons, see https://github.com/phetsims/sun/issues/643 or https://github.com/phetsims/sun/issues/515
       phetioLinkEnabledElement: false
 
@@ -45,6 +47,9 @@ class ButtonNode extends Node {
     }, options.listenerOptions );
 
     super();
+
+    //TODO https://github.com/phetsims/sun/issues/643 delete this when options are passed to super
+    this.cursor = options.cursor;
 
     // @protected
     this.buttonModel = buttonModel;
@@ -61,20 +66,10 @@ class ButtonNode extends Node {
     this._pressListener = buttonModel.createPressListener( options.listenerOptions );
     this.addInputListener( this._pressListener );
 
-    // Control the pointer state based on the interaction state.
-    const interactionStateListener = state => {
-      this.cursor = state === ButtonInteractionState.DISABLED ||
-                    state === ButtonInteractionState.DISABLED_PRESSED ? null : 'pointer';
-    };
-    interactionStateProperty.link( interactionStateListener ); // unlink in dispose
-
     // @private - define a dispose function
     this.disposeButtonNode = () => {
       this.baseColorProperty.dispose();
       this._pressListener.dispose();
-      if ( interactionStateProperty.hasListener( interactionStateListener ) ) {
-        interactionStateProperty.unlink( interactionStateListener );
-      }
     };
   }
 
