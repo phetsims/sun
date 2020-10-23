@@ -65,6 +65,8 @@ class RectangularButtonView extends ButtonNode {
 
       stroke: undefined, // undefined by default, which will cause a stroke to be derived from the base color
       lineWidth: 0.5, // Only meaningful if stroke is non-null
+
+      // Alignment, relevant only when options minWidth or minHeight are greater than the size of options.content
       xAlign: 'center', // {string} see X_ALIGN_VALUES
       yAlign: 'center', // {string} see Y_ALIGN_VALUES
 
