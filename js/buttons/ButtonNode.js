@@ -20,10 +20,9 @@ class ButtonNode extends Node {
 
   /**
    * @param {ButtonModel} buttonModel
-   * @param {Property} interactionStateProperty - a Property that is used to drive the visual appearance of the button
    * @param {Object} [options] - this type does not mutate its options, but relies on the subtype to
    */
-  constructor( buttonModel, interactionStateProperty, options ) {
+  constructor( buttonModel, options ) {
 
     options = merge( {
       tandem: Tandem.OPTIONAL,
@@ -47,7 +46,7 @@ class ButtonNode extends Node {
       tandem: options.tandem.createTandem( 'pressListener' )
     }, options.listenerOptions );
 
-    super();
+    super( options );
 
     // @protected
     this.buttonModel = buttonModel;

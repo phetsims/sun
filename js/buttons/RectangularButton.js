@@ -105,7 +105,7 @@ class RectangularButton extends ButtonNode {
     assert && assert( _.includes( X_ALIGN_VALUES, options.xAlign ), 'invalid xAlign: ' + options.xAlign );
     assert && assert( _.includes( Y_ALIGN_VALUES, options.yAlign ), 'invalid yAlign: ' + options.yAlign );
 
-    super( buttonModel, interactionStateProperty, options );
+    super( buttonModel, options );
 
     const content = options.content; // convenience variable
 
@@ -154,10 +154,6 @@ class RectangularButton extends ButtonNode {
     this.mouseArea = button.localBounds
       .dilatedXY( options.mouseAreaXDilation, options.mouseAreaYDilation )
       .shifted( options.mouseAreaXShift, options.mouseAreaYShift );
-
-    // Mutate with the options after the layout is complete so that width-
-    // dependent fields like centerX will work.
-    this.mutate( options );
 
     // @private
     this.disposeRectangularButton = () => {
