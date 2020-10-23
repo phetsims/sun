@@ -48,9 +48,6 @@ class ButtonNode extends Node {
 
     super();
 
-    //TODO https://github.com/phetsims/sun/issues/643 delete this when options are passed to super
-    this.cursor = options.cursor;
-
     // @protected
     this.buttonModel = buttonModel;
 

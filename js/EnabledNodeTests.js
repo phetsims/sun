@@ -34,16 +34,12 @@ QUnit.test( 'EnabledNode', assert => {
   testEnabledNode( assert, node, 'For Node' );
 
   const disabledOpacity = .2;
-  const customCursor = 'hi';
   node = new EnabledNodeClass( {
-    disabledOpacity: disabledOpacity,
-    cursor: customCursor
+    disabledOpacity: disabledOpacity
   } );
 
-  assert.ok( node.cursor === customCursor, 'cursor should be set' );
   assert.ok( node.opacity === new Node().opacity, 'opacity should default to Node default' );
   node.enabled = false;
-  assert.ok( node.cursor !== customCursor, 'enabled listener should have changed cursor' );
   assert.ok( node.opacity === disabledOpacity, 'test disabled opacity' );
 
   node.disposeEnabledNode();

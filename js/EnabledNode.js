@@ -48,7 +48,6 @@ const EnabledNode = {
         // this call defines enabledProperty
         this.initializeEnabledPhetioObject( options );
 
-        const cursor = this.cursor;
         const enabledListener = enabled => {
           this.interruptSubtreeInput();
           this.pickable = enabled;
@@ -56,9 +55,6 @@ const EnabledNode = {
 
           // Mark this Node as disabled in the ParallelDOM
           this.setAccessibleAttribute( 'aria-disabled', !enabled );
-
-          // handle cursor by supporting setting back to what the cursor was when component was made disabled.
-          this.cursor = enabled ? cursor : 'default';
         };
         this.enabledProperty.link( enabledListener );
 
