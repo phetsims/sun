@@ -1,19 +1,19 @@
 // Copyright 2014-2020, University of Colorado Boulder
 
 /**
- * A rectangular toggle button that switches the value of a property that can take on valueUp or valueDown.
- * It sticks in the down position when pressed, popping back up when pressed again.
+ * RectangularStickyToggleButton is a rectangular toggle button that toggles the value of a Property between 2 values.
+ * It has a different look (referred to as 'up' and 'down') for the 2 values.
  *
  * @author John Blanco (PhET Interactive Simulations)
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
 import sun from '../sun.js';
-import RectangularButtonView from './RectangularButtonView.js';
+import RectangularButton from './RectangularButton.js';
 import StickyToggleButtonInteractionStateProperty from './StickyToggleButtonInteractionStateProperty.js';
 import StickyToggleButtonModel from './StickyToggleButtonModel.js';
 
-class RectangularStickyToggleButton extends RectangularButtonView {
+class RectangularStickyToggleButton extends RectangularButton {
 
   /**
    * @param {Object} valueUp value when the toggle is in the 'up' position

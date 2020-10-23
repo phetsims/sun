@@ -20,7 +20,7 @@ import ArrowButton from '../buttons/ArrowButton.js';
 import BooleanRectangularStickyToggleButton from '../buttons/BooleanRectangularStickyToggleButton.js';
 import BooleanRectangularToggleButton from '../buttons/BooleanRectangularToggleButton.js';
 import RadioButtonGroup from '../buttons/RadioButtonGroup.js';
-import RectangularButtonView from '../buttons/RectangularButtonView.js';
+import RectangularButton from '../buttons/RectangularButton.js';
 import RectangularMomentaryButton from '../buttons/RectangularMomentaryButton.js';
 import RectangularPushButton from '../buttons/RectangularPushButton.js';
 import RoundButton from '../buttons/RoundButton.js';
@@ -238,14 +238,14 @@ class ButtonsScreenView extends ScreenView {
       content: new Text( '-- 1 --', { font: BUTTON_FONT } ),
       listener: function() { message( 'Button 1 pressed' ); },
       baseColor: 'rgb( 204, 102, 204 )',
-      buttonAppearanceStrategy: RectangularButtonView.FlatAppearanceStrategy
+      buttonAppearanceStrategy: RectangularButton.FlatAppearanceStrategy
     } );
 
     const button2 = new RectangularPushButton( {
       content: new Text( '-- 2 --', { font: BUTTON_FONT } ),
       listener: function() { message( 'Button 2 pressed' ); },
       baseColor: '#A0D022',
-      buttonAppearanceStrategy: RectangularButtonView.FlatAppearanceStrategy,
+      buttonAppearanceStrategy: RectangularButton.FlatAppearanceStrategy,
       lineWidth: 1,
       stroke: '#202020'
     } );

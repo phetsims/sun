@@ -28,7 +28,7 @@ import generalOpenSoundPlayer from '../../tambo/js/shared-sound-players/generalO
 import PhetioObject from '../../tandem/js/PhetioObject.js';
 import Tandem from '../../tandem/js/Tandem.js';
 import IOType from '../../tandem/js/types/IOType.js';
-import RectangularButtonView from './buttons/RectangularButtonView.js';
+import RectangularButton from './buttons/RectangularButton.js';
 import Panel from './Panel.js';
 import Popupable from './Popupable.js';
 import sun from './sun.js';
@@ -181,7 +181,7 @@ class Dialog extends Popupable( Panel ) {
     const closeButton = new CloseButton( {
       iconLength: CLOSE_BUTTON_WIDTH,
       baseColor: 'transparent',
-      buttonAppearanceStrategy: RectangularButtonView.FlatAppearanceStrategy,
+      buttonAppearanceStrategy: RectangularButton.FlatAppearanceStrategy,
 
       // no margins since the flat X takes up all the space
       xMargin: 0,

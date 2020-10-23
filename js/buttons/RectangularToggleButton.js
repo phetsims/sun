@@ -1,7 +1,8 @@
 // Copyright 2014-2020, University of Colorado Boulder
 
 /**
- * A rectangular toggle button that switches the value of a property between 2 values.
+ * RectangularToggleButton is a rectangular toggle button that toggles the value of a Property between 2 values.
+ * It has the same look for both values.
  *
  * @author John Blanco (PhET Interactive Simulations)
  * @author Sam Reid (PhET Interactive Simulations)
@@ -12,12 +13,12 @@ import toggleOffSoundPlayer from '../../../tambo/js/shared-sound-players/toggleO
 import toggleOnSoundPlayer from '../../../tambo/js/shared-sound-players/toggleOnSoundPlayer.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import sun from '../sun.js';
-import RectangularButtonView from './RectangularButtonView.js';
+import RectangularButton from './RectangularButton.js';
 import ToggleButtonInteractionStateProperty from './ToggleButtonInteractionStateProperty.js';
 import ToggleButtonIO from './ToggleButtonIO.js';
 import ToggleButtonModel from './ToggleButtonModel.js';
 
-class RectangularToggleButton extends RectangularButtonView {
+class RectangularToggleButton extends RectangularButton {
 
   /**
    * @param {Object} valueOff - value when the button is in the off state

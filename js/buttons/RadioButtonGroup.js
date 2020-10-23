@@ -4,7 +4,7 @@
  * Radio buttons. See sun.ButtonsScreenView for example usage.
  *
  * This type creates a group of radio buttons in either a horizontal or vertical formation.
- * Each button inherits from RectangularButtonView, and can take a Scenery Node as its content.
+ * Each button inherits from RectangularButton, and can take a Scenery Node as its content.
  * A typical use case is when you want to have different modes of a view to select from. Typically,
  * RadioButtonGroup radio buttons display some kind of icon or image, but that is not mandatory.
  *
@@ -253,7 +253,7 @@ class RadioButtonGroup extends LayoutBox {
         let xDilation = options.touchAreaXDilation;
         let yDilation = options.touchAreaYDilation;
 
-        // override the touch and mouse areas defined in RectangularButtonView
+        // override the touch and mouse areas defined in RectangularButton
         // extra width is added to the SingleRadioButtons so they don't change size if the line width changes,
         // that is why lineWidth is subtracted from the width and height when calculating these new areas
         radioButton.touchArea = Shape.rectangle(

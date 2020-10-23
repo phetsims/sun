@@ -20,9 +20,9 @@ import sun from '../sun.js';
 import ButtonModel from './ButtonModel.js';
 import RadioButtonGroupAppearance from './RadioButtonGroupAppearance.js';
 import RadioButtonInteractionStateProperty from './RadioButtonInteractionStateProperty.js';
-import RectangularButtonView from './RectangularButtonView.js';
+import RectangularButton from './RectangularButton.js';
 
-class RadioButtonGroupMember extends RectangularButtonView {
+class RadioButtonGroupMember extends RectangularButton {
 
   /**
    * @param {Property} property axon property that can take on a set of values, one for each radio button in the group

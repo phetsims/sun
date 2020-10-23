@@ -13,7 +13,7 @@ import Shape from '../../../kite/js/Shape.js';
 import merge from '../../../phet-core/js/merge.js';
 import Path from '../../../scenery/js/nodes/Path.js';
 import sun from '../sun.js';
-import RectangularButtonView from './RectangularButtonView.js';
+import RectangularButton from './RectangularButton.js';
 import RectangularPushButton from './RectangularPushButton.js';
 
 // maps options.arrowDirection to rotation angles, in radians
@@ -37,7 +37,7 @@ class CarouselButton extends RectangularPushButton {
       // button
       baseColor: 'rgba( 200, 200, 200, 0.5 )', // {Color|string} button fill color
       stroke: 'black', // {Color|string|null} button stroke
-      buttonAppearanceStrategy: RectangularButtonView.FlatAppearanceStrategy,
+      buttonAppearanceStrategy: RectangularButton.FlatAppearanceStrategy,
       cornerRadius: 4, // {number} radius for the two potentially rounded corners
 
       // arrow

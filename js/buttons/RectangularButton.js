@@ -30,7 +30,7 @@ const SHADE_GRADIENT_LENGTH = 3; // In screen coords, which are roughly pixels.
 const X_ALIGN_VALUES = [ 'center', 'left', 'right' ];
 const Y_ALIGN_VALUES = [ 'center', 'top', 'bottom' ];
 
-class RectangularButtonView extends ButtonNode {
+class RectangularButton extends ButtonNode {
 
   /**
    * @param {ButtonModel} buttonModel - Model that defines the button's behavior.
@@ -85,13 +85,13 @@ class RectangularButtonView extends ButtonNode {
       // content.  This can be a stock strategy from this file or custom.  To
       // create a custom one, model it off of the stock strategies defined in
       // this file.
-      buttonAppearanceStrategy: RectangularButtonView.ThreeDAppearanceStrategy,
+      buttonAppearanceStrategy: RectangularButton.ThreeDAppearanceStrategy,
 
       // Strategy for controlling the appearance of the button's content based
       // on the button's state.  This can be a stock strategy from this file,
       // or custom.  To create a custom one, model it off of the stock
       // version(s) defined in this file.
-      contentAppearanceStrategy: RectangularButtonView.FadeContentWhenDisabled,
+      contentAppearanceStrategy: RectangularButton.FadeContentWhenDisabled,
 
       // pdom
       tagName: 'button',
@@ -161,7 +161,7 @@ class RectangularButtonView extends ButtonNode {
     this.mutate( options );
 
     // @private
-    this.disposeRectangularButtonView = () => {
+    this.disposeRectangularButton = () => {
       buttonAppearanceStrategy.dispose();
       alignBox && alignBox.dispose();
       contentAppearanceStrategy.dispose();
@@ -173,7 +173,7 @@ class RectangularButtonView extends ButtonNode {
    * @override
    */
   dispose() {
-    this.disposeRectangularButtonView();
+    this.disposeRectangularButton();
     super.dispose();
   }
 }
@@ -182,7 +182,7 @@ class RectangularButtonView extends ButtonNode {
  * Convenience function for creating the shape of the button, done to avoid code duplication
  * @param {number} width
  * @param {number} height
- * @param {Object} config - RectangularButtonView config, containing values related to radii of button corners
+ * @param {Object} config - RectangularButton config, containing values related to radii of button corners
  * @returns {Shape}
  */
 function createButtonShape( width, height, config ) {
@@ -205,10 +205,10 @@ function createButtonShape( width, height, config ) {
  * @constructor
  * @public
  */
-RectangularButtonView.ThreeDAppearanceStrategy = function( button,
-                                                           interactionStateProperty,
-                                                           baseColorProperty,
-                                                           options ) {
+RectangularButton.ThreeDAppearanceStrategy = function( button,
+                                                       interactionStateProperty,
+                                                       baseColorProperty,
+                                                       options ) {
 
   const buttonWidth = button.width;
   const buttonHeight = button.height;
@@ -406,7 +406,7 @@ RectangularButtonView.ThreeDAppearanceStrategy = function( button,
  * @constructor
  * @public
  */
-RectangularButtonView.FlatAppearanceStrategy = function( button, interactionStateProperty, baseColorProperty, options ) {
+RectangularButton.FlatAppearanceStrategy = function( button, interactionStateProperty, baseColorProperty, options ) {
 
   // Color properties
   const baseBrighter4 = new PaintColorProperty( baseColorProperty, { luminanceFactor: 0.4 } );
@@ -498,7 +498,7 @@ RectangularButtonView.FlatAppearanceStrategy = function( button, interactionStat
  * @constructor
  * @public
  */
-RectangularButtonView.FadeContentWhenDisabled = function( content, interactionStateProperty ) {
+RectangularButton.FadeContentWhenDisabled = function( content, interactionStateProperty ) {
 
   // update the opacity when the state changes
   function updateOpacity( state ) {
@@ -518,5 +518,5 @@ RectangularButtonView.FadeContentWhenDisabled = function( content, interactionSt
   };
 };
 
-sun.register( 'RectangularButtonView', RectangularButtonView );
-export default RectangularButtonView;
+sun.register( 'RectangularButton', RectangularButton );
+export default RectangularButton;

@@ -1,7 +1,7 @@
 // Copyright 2015-2020, University of Colorado Boulder
 
 /**
- * RoundMomentaryButton is a momentary button that toggles a Property between 2 values.
+ * RoundMomentaryButton is a round momentary button that toggles a Property between 2 values.
  * The 'off value' is the value when the button is not pressed.
  * The 'on value' is the value when the button is pressed.
  *

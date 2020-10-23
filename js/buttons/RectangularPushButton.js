@@ -1,10 +1,7 @@
 // Copyright 2014-2020, University of Colorado Boulder
 
 /**
- * A rectangular push button.  This is the file in which the appearance and behavior are brought together.
- *
- * This class inherits from RectangularButtonView, which contains all of the code that defines the button's appearance,
- * and adds the button's behavior by hooking up a button model.
+ * RectangularPushButton is a rectangular push button, used to initiate some action.
  *
  * @author John Blanco (PhET Interactive Simulations)
  */
@@ -16,9 +13,9 @@ import Tandem from '../../../tandem/js/Tandem.js';
 import sun from '../sun.js';
 import PushButtonInteractionStateProperty from './PushButtonInteractionStateProperty.js';
 import PushButtonModel from './PushButtonModel.js';
-import RectangularButtonView from './RectangularButtonView.js';
+import RectangularButton from './RectangularButton.js';
 
-class RectangularPushButton extends RectangularButtonView {
+class RectangularPushButton extends RectangularButton {
 
   /**
    * @param {Object} [options]

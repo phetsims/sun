@@ -1,8 +1,9 @@
 // Copyright 2015-2020, University of Colorado Boulder
 
 /**
- * A rectangular momentary button: on when pressed, off when released.
- * This is the file in which the view (appearance) and model (behavior) are brought together.
+ * RectangularMomentaryButton is a rectangular momentary button that toggles a Property between 2 values.
+ * The 'off value' is the value when the button is not pressed.
+ * The 'on value' is the value when the button is pressed.
  *
  * @author Chris Malley (PixelZoom, Inc.)
  */
@@ -13,9 +14,9 @@ import Tandem from '../../../tandem/js/Tandem.js';
 import sun from '../sun.js';
 import MomentaryButtonInteractionStateProperty from './MomentaryButtonInteractionStateProperty.js';
 import MomentaryButtonModel from './MomentaryButtonModel.js';
-import RectangularButtonView from './RectangularButtonView.js';
+import RectangularButton from './RectangularButton.js';
 
-class RectangularMomentaryButton extends RectangularButtonView {
+class RectangularMomentaryButton extends RectangularButton {
 
   /**
    * @param {Object} valueOff - value when the button is in the off state
