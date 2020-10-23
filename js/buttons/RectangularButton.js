@@ -17,7 +17,6 @@ import Color from '../../../scenery/js/util/Color.js';
 import LinearGradient from '../../../scenery/js/util/LinearGradient.js';
 import PaintColorProperty from '../../../scenery/js/util/PaintColorProperty.js';
 import Tandem from '../../../tandem/js/Tandem.js';
-import ColorConstants from '../ColorConstants.js';
 import sun from '../sun.js';
 import ButtonInteractionState from './ButtonInteractionState.js';
 import ButtonNode from './ButtonNode.js';
@@ -46,7 +45,6 @@ class RectangularButton extends ButtonNode {
       minWidth: HORIZONTAL_HIGHLIGHT_GRADIENT_LENGTH + SHADE_GRADIENT_LENGTH,
       minHeight: VERTICAL_HIGHLIGHT_GRADIENT_LENGTH + SHADE_GRADIENT_LENGTH,
       cursor: 'pointer',
-      disabledBaseColor: ColorConstants.LIGHT_GRAY,
       xMargin: 8, // should be visibly greater than yMargin, see issue #109
       yMargin: 5,
 

@@ -15,7 +15,6 @@ import Circle from '../../../scenery/js/nodes/Circle.js';
 import PaintColorProperty from '../../../scenery/js/util/PaintColorProperty.js';
 import RadialGradient from '../../../scenery/js/util/RadialGradient.js';
 import Tandem from '../../../tandem/js/Tandem.js';
-import ColorConstants from '../ColorConstants.js';
 import sun from '../sun.js';
 import ButtonInteractionState from './ButtonInteractionState.js';
 import ButtonNode from './ButtonNode.js';
@@ -39,7 +38,6 @@ class RoundButton extends ButtonNode {
 
       radius: ( options && options.content ) ? undefined : 30,
       cursor: 'pointer',
-      disabledBaseColor: ColorConstants.LIGHT_GRAY,
       minXMargin: 5, // Minimum margin in x direction, i.e. on left and right
       minYMargin: 5, // Minimum margin in y direction, i.e. on top and bottom
       fireOnDown: false,
