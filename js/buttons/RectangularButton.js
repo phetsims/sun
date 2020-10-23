@@ -204,10 +204,9 @@ RectangularButton.ThreeDAppearanceStrategy = function( button,
   const verticalShadowStop = Math.max( 1 - SHADE_GRADIENT_LENGTH / buttonHeight, 0 );
   const horizontalHighlightStop = Math.min( HORIZONTAL_HIGHLIGHT_GRADIENT_LENGTH / buttonWidth, 1 );
   const horizontalShadowStop = Math.max( 1 - SHADE_GRADIENT_LENGTH / buttonWidth, 0 );
-
   const transparentWhite = new Color( 255, 255, 255, 0.7 );
 
-  // Color properties
+  // Dynamic colors
   // TODO https://github.com/phetsims/sun/issues/553 missing "Property" suffix for all PaintColorProperty names
   const baseBrighter7 = new PaintColorProperty( baseColorProperty, { luminanceFactor: 0.7 } );
   const baseBrighter5 = new PaintColorProperty( baseColorProperty, { luminanceFactor: 0.5 } );
@@ -215,17 +214,9 @@ RectangularButton.ThreeDAppearanceStrategy = function( button,
   const baseDarker3 = new PaintColorProperty( baseColorProperty, { luminanceFactor: -0.3 } );
   const baseDarker4 = new PaintColorProperty( baseColorProperty, { luminanceFactor: -0.4 } );
   const baseDarker5 = new PaintColorProperty( baseColorProperty, { luminanceFactor: -0.5 } );
-  const disabledBase = new PaintColorProperty( options.disabledBaseColor );
-  const disabledBaseBrighter7 = new PaintColorProperty( options.disabledBaseColor, { luminanceFactor: 0.7 } );
-  const disabledBaseBrighter5 = new PaintColorProperty( options.disabledBaseColor, { luminanceFactor: 0.5 } );
-  const disabledBaseBrighter2 = new PaintColorProperty( options.disabledBaseColor, { luminanceFactor: 0.2 } );
-  const disabledBaseDarker3 = new PaintColorProperty( options.disabledBaseColor, { luminanceFactor: -0.3 } );
-  const disabledBaseDarker4 = new PaintColorProperty( options.disabledBaseColor, { luminanceFactor: -0.4 } );
-  const disabledBaseDarker5 = new PaintColorProperty( options.disabledBaseColor, { luminanceFactor: -0.5 } );
   const baseTransparent = new DerivedProperty( [ baseColorProperty ], color => color.withAlpha( 0 ) );
-  const disabledBaseTransparent = new DerivedProperty( [ disabledBase ], color => color.withAlpha( 0 ) );
 
-  // Create the gradient fills used for various button states
+  // Gradient fills for button states
   const upFillVertical = new LinearGradient( 0, 0, 0, buttonHeight )
     .addColorStop( 0, baseBrighter7 )
     .addColorStop( verticalHighlightStop, baseColorProperty )
@@ -256,126 +247,59 @@ RectangularButton.ThreeDAppearanceStrategy = function( button,
     .addColorStop( verticalShadowStop, baseBrighter2 )
     .addColorStop( 1, baseDarker5 );
 
-  const disabledFillVertical = new LinearGradient( 0, 0, 0, buttonHeight )
-    .addColorStop( 0, disabledBaseBrighter7 )
-    .addColorStop( verticalHighlightStop, disabledBaseBrighter5 )
-    .addColorStop( verticalShadowStop, disabledBaseBrighter5 )
-    .addColorStop( 1, disabledBaseDarker5 );
-
-  const disabledFillHorizontal = new LinearGradient( 0, 0, buttonWidth, 0 )
-    .addColorStop( 0, disabledBaseBrighter7 )
-    .addColorStop( horizontalHighlightStop, disabledBaseTransparent )
-    .addColorStop( horizontalShadowStop, disabledBaseTransparent )
-    .addColorStop( 1, disabledBaseDarker5 );
-
-  const disabledPressedFillVertical = new LinearGradient( 0, 0, 0, buttonHeight )
-    .addColorStop( 0, disabledBaseBrighter7 )
-    .addColorStop( verticalHighlightStop * 0.67, disabledBaseDarker3 )
-    .addColorStop( verticalShadowStop, disabledBaseBrighter2 )
-    .addColorStop( 1, disabledBaseDarker5 );
-
-  // strokes filled in below
-  let enabledStroke;
-  let disabledStroke;
-
-  if ( options.stroke === null ) {
-    // The stroke was explicitly set to null, so the button should have no stroke.
-    enabledStroke = null;
-    disabledStroke = null;
-  }
-  else if ( typeof ( options.stroke ) === 'undefined' ) {
-    // No stroke was defined, but it wasn't set to null, so default to a stroke based on the base color of the
-    // button.  This behavior is a bit unconventional for Scenery nodes, but it makes the buttons look much better.
-    enabledStroke = baseDarker4;
-    disabledStroke = disabledBaseDarker4;
-  }
-  else {
-    enabledStroke = options.stroke;
-    disabledStroke = disabledBaseDarker4;
-  }
-
-  // Create the overlay that is used to add shading to left and right edges of the button.
-  const overlayForHorizGradient = new Path( createButtonShape( buttonWidth, buttonHeight, options ), {
+  // Adds shading to left and right edges of the button.
+  const horizontalShadingPath = new Path( createButtonShape( buttonWidth, buttonHeight, options ), {
+    stroke: ( typeof ( options.stroke ) === 'undefined' ) ? baseDarker4 : options.stroke,
     lineWidth: options.lineWidth,
     pickable: false
   } );
-  button.addChild( overlayForHorizGradient );
+  button.addChild( horizontalShadingPath );
 
-  button.cachedPaints = [
-    upFillVertical, overFillVertical, downFillVertical, disabledFillVertical, disabledPressedFillVertical,
-    disabledStroke
-  ];
+  // Cache gradients
+  button.cachedPaints = [ upFillVertical, overFillVertical, downFillVertical ];
+  horizontalShadingPath.cachedPaints = [ upFillHorizontal, overFillHorizontal ];
 
-  overlayForHorizGradient.cachedPaints = [
-    upFillHorizontal, overFillHorizontal, disabledFillHorizontal, enabledStroke, disabledStroke
-  ];
-
-  // Function for updating the button's appearance based on the current interaction state.
-  function updateAppearance( interactionState ) {
+  // Change colors to match interactionState 
+  function interactionStateListener( interactionState ) {
 
     switch( interactionState ) {
 
       case ButtonInteractionState.IDLE:
+      case ButtonInteractionState.DISABLED:
         button.fill = upFillVertical;
-        overlayForHorizGradient.stroke = enabledStroke;
-        overlayForHorizGradient.fill = upFillHorizontal;
+        horizontalShadingPath.fill = upFillHorizontal;
         break;
 
       case ButtonInteractionState.OVER:
         button.fill = overFillVertical;
-        overlayForHorizGradient.stroke = enabledStroke;
-        overlayForHorizGradient.fill = overFillHorizontal;
+        horizontalShadingPath.fill = overFillHorizontal;
         break;
 
       case ButtonInteractionState.PRESSED:
-        button.fill = downFillVertical;
-        overlayForHorizGradient.stroke = enabledStroke;
-        overlayForHorizGradient.fill = overFillHorizontal;
-        break;
-
-      case ButtonInteractionState.DISABLED:
-        button.fill = disabledFillVertical;
-        button.stroke = disabledStroke;
-        overlayForHorizGradient.stroke = disabledStroke;
-        overlayForHorizGradient.fill = disabledFillHorizontal;
-        break;
-
       case ButtonInteractionState.DISABLED_PRESSED:
-        button.fill = disabledPressedFillVertical;
-        button.stroke = disabledStroke;
-        overlayForHorizGradient.stroke = disabledStroke;
-        overlayForHorizGradient.fill = disabledFillHorizontal;
+        button.fill = downFillVertical;
+        horizontalShadingPath.fill = overFillHorizontal;
         break;
 
       default:
-        throw new Error( 'unsupported interactionState: ' + interactionState );
+        throw new Error( `unsupported interactionState: ${interactionState}` );
     }
   }
+  interactionStateProperty.link( interactionStateListener );
 
-  // Do the initial update explicitly, then lazy link to the properties.  This keeps the number of initial updates to
-  // a minimum and allows us to update some optimization flags the first time the base color is actually changed.
-  interactionStateProperty.link( updateAppearance );
-
+  // @public
   this.dispose = () => {
-    if ( interactionStateProperty.hasListener( updateAppearance ) ) {
-      interactionStateProperty.unlink( updateAppearance );
+    if ( interactionStateProperty.hasListener( interactionStateListener ) ) {
+      interactionStateProperty.unlink( interactionStateListener );
     }
 
-    baseTransparent.dispose();
-    disabledBaseTransparent.dispose();
-    disabledBase.dispose();
     baseBrighter7.dispose();
     baseBrighter5.dispose();
     baseBrighter2.dispose();
     baseDarker3.dispose();
     baseDarker4.dispose();
     baseDarker5.dispose();
-    disabledBaseBrighter7.dispose();
-    disabledBaseBrighter5.dispose();
-    disabledBaseBrighter2.dispose();
-    disabledBaseDarker3.dispose();
-    disabledBaseDarker4.dispose();
-    disabledBaseDarker5.dispose();
+    baseTransparent.dispose();
   };
 };
 
@@ -392,85 +316,53 @@ RectangularButton.ThreeDAppearanceStrategy = function( button,
  */
 RectangularButton.FlatAppearanceStrategy = function( button, interactionStateProperty, baseColorProperty, options ) {
 
-  // Color properties
+  // Dynamic colors
   const baseBrighter4 = new PaintColorProperty( baseColorProperty, { luminanceFactor: 0.4 } );
   const baseDarker4 = new PaintColorProperty( baseColorProperty, { luminanceFactor: -0.4 } );
-  const disabledBaseDarker4 = new PaintColorProperty( options.disabledBaseColor, { luminanceFactor: -0.4 } );
 
-  // fills used for various button states
+  // Fills used for various button states
   const upFill = baseColorProperty;
   const overFill = baseBrighter4;
   const downFill = baseDarker4;
-  const disabledFill = options.disabledBaseColor;
-  const disabledPressedFillVertical = disabledFill;
 
-  let enabledStroke;
-  let disabledStroke;
+  // If the stroke wasn't provided, set a default
+  button.stroke = ( typeof ( options.stroke ) === 'undefined' ) ? baseDarker4 : options.stroke;
 
-  if ( options.stroke === null ) {
-    // The stroke was explicitly set to null, so the button should have no stroke.
-    enabledStroke = null;
-    disabledStroke = null;
-  }
-  else if ( typeof ( options.stroke ) === 'undefined' ) {
-    // No stroke was defined, but it wasn't set to null, so default to a stroke based on the base color of the
-    // button.  This behavior is a bit unconventional for Scenery nodes, but it makes the buttons look much better.
-    enabledStroke = baseDarker4;
-    disabledStroke = disabledBaseDarker4;
-  }
-  else {
-    enabledStroke = options.stroke;
-    disabledStroke = disabledBaseDarker4;
-  }
+  // Cache paints
+  button.cachedPaints = [ upFill, overFill, downFill ];
 
-  button.cachedPaints = [
-    upFill, overFill, downFill, disabledFill, disabledPressedFillVertical,
-    enabledStroke, disabledStroke
-  ];
-
-  function updateAppearance( interactionState ) {
+  // Change colors to match interactionState 
+  function interactionStateListener( interactionState ) {
     switch( interactionState ) {
 
       case ButtonInteractionState.IDLE:
+      case ButtonInteractionState.DISABLED:
         button.fill = upFill;
-        button.stroke = enabledStroke;
         break;
 
       case ButtonInteractionState.OVER:
         button.fill = overFill;
-        button.stroke = enabledStroke;
         break;
 
       case ButtonInteractionState.PRESSED:
-        button.fill = downFill;
-        button.stroke = enabledStroke;
-        break;
-
-      case ButtonInteractionState.DISABLED:
-        button.fill = disabledFill;
-        button.stroke = disabledStroke;
-        break;
-
       case ButtonInteractionState.DISABLED_PRESSED:
-        button.fill = disabledPressedFillVertical;
-        button.stroke = disabledStroke;
+        button.fill = downFill;
         break;
 
       default:
-        throw new Error( 'unsupported interactionState: ' + interactionState );
+        throw new Error( `unsupported interactionState: ${interactionState}` );
     }
   }
+  interactionStateProperty.link( interactionStateListener );
 
-  interactionStateProperty.link( updateAppearance );
-
+  // @public
   this.dispose = () => {
-    if ( interactionStateProperty.hasListener( updateAppearance ) ) {
-      interactionStateProperty.unlink( updateAppearance );
+    if ( interactionStateProperty.hasListener( interactionStateListener ) ) {
+      interactionStateProperty.unlink( interactionStateListener );
     }
 
     baseBrighter4.dispose();
     baseDarker4.dispose();
-    disabledBaseDarker4.dispose();
   };
 };
 

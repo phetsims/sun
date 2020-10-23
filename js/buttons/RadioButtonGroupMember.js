@@ -168,8 +168,8 @@ class RadioButtonGroupMember extends RectangularButton {
 }
 
 /**
- * Strategy for radio buttons that look flat, i.e. no shading or highlighting, but
- * that change color on mouseover, press, etc.
+ * Appearance strategy for radio buttons that look flat, i.e. no shading or highlighting, but
+ * that change color on mouseover, press, selected, etc.
  *
  * @param {Node} button
  * @param {Property} interactionStateProperty
@@ -178,29 +178,36 @@ class RadioButtonGroupMember extends RectangularButton {
  */
 function flatAppearanceStrategy( button, interactionStateProperty, baseColorProperty, options ) {
 
-  // Create the fills and strokes used for various button states
-  const disabledStroke = new PaintColorProperty( options.disabledBaseColor, {
-    luminanceFactor: -0.4
-  } );
-  const overStroke = new PaintColorProperty( options.overStroke || options.deselectedStroke, {
-    luminanceFactor: options.overStroke ? 0 : -0.4
-  } );
+  // Dynamic fills and strokes
   const overFill = new PaintColorProperty( options.overFill || baseColorProperty, {
     luminanceFactor: options.overFill ? 0 : 0.4
   } );
   const pressedFill = new PaintColorProperty( baseColorProperty, {
     luminanceFactor: -0.4
   } );
+  const overStroke = new PaintColorProperty( options.overStroke || options.deselectedStroke, {
+    luminanceFactor: options.overStroke ? 0 : -0.4
+  } );
 
+  // Cache colors
   button.cachedPaints = [
-    baseColorProperty, overFill, options.disabledBaseColor, pressedFill,
-    options.deselectedStroke, overStroke, options.selectedStroke, disabledStroke
+    baseColorProperty, overFill, pressedFill, overStroke, options.selectedStroke, options.deselectedStroke
   ];
 
-  function handleInteractionStateChanged( state ) {
-    switch( state ) {
+  // Change colors and opacity to match interactionState
+  function interactionStateListener( interactionState ) {
+    switch( interactionState ) {
+
+      case RadioButtonInteractionState.SELECTED:
+      case RadioButtonInteractionState.DISABLED_SELECTED:
+        button.fill = baseColorProperty;
+        button.stroke = options.selectedStroke;
+        button.lineWidth = options.selectedLineWidth;
+        button.opacity = options.selectedButtonOpacity;
+        break;
 
       case RadioButtonInteractionState.DESELECTED:
+      case RadioButtonInteractionState.DISABLED_DESELECTED:
         button.fill = baseColorProperty;
         button.stroke = options.deselectedStroke;
         button.lineWidth = options.deselectedLineWidth;
@@ -215,27 +222,6 @@ function flatAppearanceStrategy( button, interactionStateProperty, baseColorProp
         button.opacity = options.overButtonOpacity;
         break;
 
-      case RadioButtonInteractionState.SELECTED:
-        button.fill = baseColorProperty;
-        button.stroke = options.selectedStroke;
-        button.lineWidth = options.selectedLineWidth;
-        button.opacity = options.selectedButtonOpacity;
-        break;
-
-      case RadioButtonInteractionState.DISABLED_DESELECTED:
-        button.fill = options.disabledBaseColor;
-        button.stroke = disabledStroke;
-        button.lineWidth = options.deselectedLineWidth;
-        button.opacity = options.deselectedButtonOpacity;
-        break;
-
-      case RadioButtonInteractionState.DISABLED_SELECTED:
-        button.fill = options.disabledBaseColor;
-        button.stroke = disabledStroke;
-        button.lineWidth = options.selectedLineWidth;
-        button.opacity = options.selectedButtonOpacity;
-        break;
-
       case RadioButtonInteractionState.PRESSED:
         button.fill = pressedFill;
         button.stroke = options.deselectedStroke;
@@ -244,18 +230,16 @@ function flatAppearanceStrategy( button, interactionStateProperty, baseColorProp
         break;
 
       default:
-        throw new Error( 'unsupported state: ' + state );
+        throw new Error( `unsupported interactionState: ${interactionState}` );
     }
   }
+  interactionStateProperty.link( interactionStateListener );
 
-  interactionStateProperty.link( handleInteractionStateChanged );
-
-  // add dispose function
-  this.dispose = function() {
-    if ( interactionStateProperty.hasListener( handleInteractionStateChanged ) ) {
-      interactionStateProperty.unlink( handleInteractionStateChanged );
+  // @public
+  this.dispose = () => {
+    if ( interactionStateProperty.hasListener( interactionStateListener ) ) {
+      interactionStateProperty.unlink( interactionStateListener );
     }
-    disabledStroke.dispose();
     overStroke.dispose();
     overFill.dispose();
     pressedFill.dispose();
