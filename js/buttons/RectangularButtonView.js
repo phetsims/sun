@@ -122,9 +122,7 @@ class RectangularButtonView extends ButtonNode {
     if ( content ) {
 
       // For performance reasons, the content should be unpickable.
-      if ( content ) {
-        content.pickable = false;
-      }
+      content.pickable = false;
 
       // align content in the button, this AlignBox must be disposed since it adds listener to content bounds
       var alignBox = new AlignBox( content, {
