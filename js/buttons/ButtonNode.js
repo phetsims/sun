@@ -52,7 +52,7 @@ class ButtonNode extends Node {
     this.baseColorProperty = new PaintColorProperty( options.baseColor ); // @private
 
     // @private {PressListener}
-    this._pressListener = buttonModel.createListener( options.listenerOptions );
+    this._pressListener = buttonModel.createPressListener( options.listenerOptions );
     this.addInputListener( this._pressListener );
 
     // @private - define a dispose function

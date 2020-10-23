@@ -74,7 +74,7 @@ class ButtonModel {
 
     // @private {Multilink|null} - Links all of the looksPressedProperties from the listeners that were created
     // by this ButtonModel, and updates the looksPressedProperty accordingly. First Multilink is added when the
-    // first listener is created. See this.createListener.
+    // first listener is created. See this.createPressListener.
     this.looksPressedMultilink = null;
 
     // startCallback on pointer down, endCallback on pointer up. lazyLink so they aren't called immediately.
@@ -87,7 +87,8 @@ class ButtonModel {
       }
     } );
 
-    // interrupt listeners when enabled is set to false
+    // Interrupt input listeners when enabled is set to false. This is the equivalent of Node.interruptSubtreeInput,
+    // but ButtonModel is not a Node, so we have to interrupt each listener. See https://github.com/phetsims/sun/issues/642.
     this.enabledProperty.link( enabled => {
       if ( !enabled ) {
         for ( let i = 0; i < this.listeners.length; i++ ) {
@@ -129,12 +130,13 @@ class ButtonModel {
   }
 
   /**
-   * Creates a standard button listener that can be added to a node and that will trigger the changes to this model.
+   * Creates a PressListener that will handle changes to ButtonModel when the associated button Node is pressed.
+   * The client is responsible for adding this PressListener to the associated button Node.
    * @param {Object} [options]
    * @returns {PressListener}
    * @public
    */
-  createListener( options ) {
+  createPressListener( options ) {
 
     options = merge( {
       phetioDocumentation: 'Indicates when the button has been pressed or released',
