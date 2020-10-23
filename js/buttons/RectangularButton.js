@@ -19,7 +19,6 @@ import PaintColorProperty from '../../../scenery/js/util/PaintColorProperty.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import ColorConstants from '../ColorConstants.js';
 import sun from '../sun.js';
-import SunConstants from '../SunConstants.js';
 import ButtonInteractionState from './ButtonInteractionState.js';
 import ButtonNode from './ButtonNode.js';
 
@@ -87,12 +86,6 @@ class RectangularButton extends ButtonNode {
       // this file.
       buttonAppearanceStrategy: RectangularButton.ThreeDAppearanceStrategy,
 
-      // Strategy for controlling the appearance of the button's content based
-      // on the button's state.  This can be a stock strategy from this file,
-      // or custom.  To create a custom one, model it off of the stock
-      // version(s) defined in this file.
-      contentAppearanceStrategy: RectangularButton.FadeContentWhenDisabled,
-
       // pdom
       tagName: 'button',
 
@@ -144,9 +137,6 @@ class RectangularButton extends ButtonNode {
       this.addChild( alignBox );
     }
 
-    // Hook up the strategy that will control the content's appearance.
-    const contentAppearanceStrategy = new options.contentAppearanceStrategy( content, interactionStateProperty, options );
-
     // Set pointer areas.
     this.touchArea = button.localBounds
       .dilatedXY( options.touchAreaXDilation, options.touchAreaYDilation )
@@ -159,7 +149,6 @@ class RectangularButton extends ButtonNode {
     this.disposeRectangularButton = () => {
       buttonAppearanceStrategy.dispose();
       alignBox && alignBox.dispose();
-      contentAppearanceStrategy.dispose();
     };
   }
 
@@ -482,34 +471,6 @@ RectangularButton.FlatAppearanceStrategy = function( button, interactionStatePro
     baseBrighter4.dispose();
     baseDarker4.dispose();
     disabledBaseDarker4.dispose();
-  };
-};
-
-/**
- * Basic strategy for controlling content appearance, fades the content by making it transparent when disabled.
- *
- * @param {Node|null} content
- * @param {Property} interactionStateProperty
- * @constructor
- * @public
- */
-RectangularButton.FadeContentWhenDisabled = function( content, interactionStateProperty ) {
-
-  // update the opacity when the state changes
-  function updateOpacity( state ) {
-    if ( content ) {
-      content.opacity = state === ButtonInteractionState.DISABLED ||
-                        state === ButtonInteractionState.DISABLED_PRESSED ? SunConstants.DISABLED_OPACITY : 1;
-    }
-  }
-
-  interactionStateProperty.link( updateOpacity );
-
-  // add dispose function to unlink listener
-  this.dispose = () => {
-    if ( interactionStateProperty.hasListener( updateOpacity ) ) {
-      interactionStateProperty.unlink( updateOpacity );
-    }
   };
 };
 

@@ -24,7 +24,6 @@ import Tandem from '../../../tandem/js/Tandem.js';
 import ColorConstants from '../ColorConstants.js';
 import EnabledNode from '../EnabledNode.js';
 import sun from '../sun.js';
-import RadioButtonGroupAppearance from './RadioButtonGroupAppearance.js';
 import RadioButtonGroupMember from './RadioButtonGroupMember.js';
 
 // constants
@@ -155,11 +154,6 @@ class RadioButtonGroup extends LayoutBox {
       // (only applies if labels are passed in)
       labelAlign: 'bottom',
 
-      // The default appearances use the color values specified above, but other appearances could be specified for more
-      // customized behavior.  Generally setting the color values above should be enough to specify the desired look.
-      buttonAppearanceStrategy: RadioButtonGroupAppearance.defaultRadioButtonsAppearance,
-      contentAppearanceStrategy: RadioButtonGroupAppearance.contentAppearanceStrategy,
-
       // pdom - focus highlight expansion
       a11yHighlightXDilation: 0,
       a11yHighlightYDilation: 0
@@ -274,9 +268,6 @@ class RadioButtonGroup extends LayoutBox {
 
         // make sure the label mouse and touch areas don't block the expanded button touch and mouse areas
         label.pickable = false;
-
-        // use the same content appearance strategy for the labels that is used for the button content
-        options.contentAppearanceStrategy( label, radioButton.interactionStateProperty, options );
 
         // pdom - include label in focus highlight
         defaultHighlightBounds = radioButton.mouseArea.bounds.dilated( 5 );

@@ -17,7 +17,6 @@ import RadialGradient from '../../../scenery/js/util/RadialGradient.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import ColorConstants from '../ColorConstants.js';
 import sun from '../sun.js';
-import SunConstants from '../SunConstants.js';
 import ButtonInteractionState from './ButtonInteractionState.js';
 import ButtonNode from './ButtonNode.js';
 
@@ -70,12 +69,6 @@ class RoundButton extends ButtonNode {
       // this file.
       buttonAppearanceStrategy: RoundButton.ThreeDAppearanceStrategy,
 
-      // Strategy for controlling the appearance of the button's content based
-      // on the button's state.  This can be a stock strategy from this file,
-      // or custom.  To create a custom one, model it off of the stock
-      // version(s) defined in this file.
-      contentAppearanceStrategy: RoundButton.FadeContentWhenDisabled,
-
       // phet-io
       tandem: Tandem.OPTIONAL, // This duplicates the parent option and works around https://github.com/phetsims/tandem/issues/50
       visiblePropertyOptions: { phetioFeatured: true },
@@ -111,9 +104,6 @@ class RoundButton extends ButtonNode {
       this.addChild( content );
     }
 
-    // Hook up the strategy that will control the content's appearance.
-    const contentAppearanceStrategy = new options.contentAppearanceStrategy( content, interactionStateProperty );
-
     // Set pointer areas.
     this.touchArea = Shape.circle( options.touchAreaXShift, options.touchAreaYShift,
       buttonRadius + options.touchAreaDilation );
@@ -127,7 +117,6 @@ class RoundButton extends ButtonNode {
     // @private
     this.disposeRoundButton = () => {
       buttonAppearanceStrategy.dispose();
-      contentAppearanceStrategy.dispose();
     };
   }
 
@@ -408,31 +397,6 @@ RoundButton.FlatAppearanceStrategy = function( button, interactionStateProperty,
     baseBrighter4.dispose();
     baseDarker4.dispose();
     disabledBaseDarker4.dispose();
-  };
-};
-
-/**
- * Basic strategy for controlling content appearance, fades the content by making it transparent when disabled.
- * @param {Node} content
- * @param {Property} interactionStateProperty
- */
-RoundButton.FadeContentWhenDisabled = function( content, interactionStateProperty ) {
-
-  // update the opacity when the state changes
-  function updateOpacity( state ) {
-    if ( content ) {
-      content.opacity = state === ButtonInteractionState.DISABLED ||
-                        state === ButtonInteractionState.DISABLED_PRESSED ? SunConstants.DISABLED_OPACITY : 1;
-    }
-  }
-
-  interactionStateProperty.link( updateOpacity );
-
-  // add dispose function to unlink listener
-  this.dispose = () => {
-    if ( interactionStateProperty.hasListener( updateOpacity ) ) {
-      interactionStateProperty.unlink( updateOpacity );
-    }
   };
 };
 
