@@ -1,7 +1,9 @@
 // Copyright 2014-2020, University of Colorado Boulder
 
 /**
- * A derived property the maps sticky toggle button model states to the values needed by the button view.
+ * A DerivedProperty the maps sticky toggle button model states to the values needed by the button view.
+ *
+ * @author John Blanco
  */
 
 import DerivedProperty from '../../../axon/js/DerivedProperty.js';

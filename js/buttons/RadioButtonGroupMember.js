@@ -25,7 +25,7 @@ import RectangularButton from './RectangularButton.js';
 class RadioButtonGroupMember extends RectangularButton {
 
   /**
-   * @param {Property} property axon property that can take on a set of values, one for each radio button in the group
+   * @param {Property} property axon Property that can take on a set of values, one for each radio button in the group
    * @param {Object} value value when this radio button is selected
    * @param {Object} [options]
    */
@@ -95,23 +95,23 @@ class RadioButtonGroupMember extends RectangularButton {
     this.interactionStateProperty = interactionStateProperty;
 
     // pdom - Specify the default value for assistive technology, this attribute is needed in addition to
-    // the 'checked' property to mark this element as the default selection since 'checked' may be set before
+    // the 'checked' Property to mark this element as the default selection since 'checked' may be set before
     // we are finished adding RadioButtonGroupMembers to the RadioButtonGroup.
     if ( property.value === value ) {
       this.setAccessibleAttribute( 'checked', 'checked' );
     }
 
-    // pdom - when the property changes, make sure the correct radio button is marked as 'checked' so that this button
+    // pdom - when the Property changes, make sure the correct radio button is marked as 'checked' so that this button
     // receives focus on 'tab'
     const accessibleCheckedListener = newValue => {
       this.accessibleChecked = ( newValue === value );
     };
     property.link( accessibleCheckedListener );
 
-    // @private - the property this button changes
+    // @private - the Property this button changes
     this.property = property;
 
-    // @private - the value that is set to the property when this button is pressed
+    // @private - the value that is set to the Property when this button is pressed
     this.value = value;
 
     // @private

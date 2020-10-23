@@ -57,7 +57,7 @@ class ButtonNode extends Node {
     options.enabledProperty = this.buttonModel.enabledProperty;
     this.initializeEnabledNode( options );
 
-    // Make the base color into a property so that the appearance strategy can update itself if changes occur.
+    // Make the base color into a Property so that the appearance strategy can update itself if changes occur.
     this.baseColorProperty = new PaintColorProperty( options.baseColor ); // @private
 
     // @private {PressListener}

@@ -22,7 +22,7 @@ class RoundStickyToggleButton extends RoundButton {
   /**
    * @param {Object} valueUp value when the toggle is in the 'up' position
    * @param {Object} valueDown value when the toggle is in the 'down' position
-   * @param {Property} property axon property that can be either valueUp or valueDown.
+   * @param {Property} property axon Property that can be either valueUp or valueDown.
    * @param {Object} [options]
    */
   constructor( valueUp, valueDown, property, options ) {

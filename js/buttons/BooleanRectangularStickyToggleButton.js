@@ -1,7 +1,7 @@
 // Copyright 2014-2020, University of Colorado Boulder
 
 /**
- * A rectangular toggle button that switches the value of a boolean property.  It sticks in the down position when
+ * A rectangular toggle button that switches the value of a boolean Property.  It sticks in the down position when
  * pressed, popping back up when pressed again.
  *
  * This class inherits from the more general RectangularStickyToggleButton, which can take any values.

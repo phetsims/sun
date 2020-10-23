@@ -44,7 +44,7 @@ class RadioButtonGroup extends LayoutBox {
    * @param {Property} property
    * @param {Object[]} contentArray - an array of objects that have two keys each: "value" and "node", where the node
    * key holds a scenery Node that is the content for a given radio button and the value key holds the value that the
-   * property takes on when the corresponding node is selected. Optionally, these objects can have an attribute 'label',
+   * Property takes on when the corresponding node is selected. Optionally, these objects can have an attribute 'label',
    * which is a {Node} used to label the button. You can also pass some specific a11y options.
    * (labelContent/descriptionContent) through, see "new RadioButtonGroupMember" construction.
    * @param {Object} [options]
@@ -94,9 +94,9 @@ class RadioButtonGroup extends LayoutBox {
       }
     }
 
-    // make sure that the property passed in currently has a value from the contentArray
+    // make sure that the Property passed in currently has a value from the contentArray
     if ( uniqueValues.indexOf( property.get() ) === -1 ) {
-      throw new Error( 'The property passed in to RadioButtonGroup has an illegal value "' + property.get() +
+      throw new Error( 'The Property passed in to RadioButtonGroup has an illegal value "' + property.get() +
                        '" that is not present in the contentArray' );
     }
 
@@ -186,7 +186,7 @@ class RadioButtonGroup extends LayoutBox {
       const currentContent = contentArray[ i ];
 
       assert && assert( !currentContent.hasOwnProperty( 'phetioType' ), 'phetioType should be provided by ' +
-                                                                        'the property passed to the ' +
+                                                                        'the Property passed to the ' +
                                                                         'RadioButtonGroup constructor' );
 
       assert && assert( !currentContent.tandem, 'content arrays should not have tandem instances, they should use ' +

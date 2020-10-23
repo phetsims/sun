@@ -1,7 +1,7 @@
 // Copyright 2014-2020, University of Colorado Boulder
 
 /**
- * A derived property that maps radio button group member model states to the values needed by the button view.
+ * A DerivedProperty that maps radio button group member model states to the values needed by the button view.
  *
  * @author Aaron Davis (PhET Interactive Simulations)
  */

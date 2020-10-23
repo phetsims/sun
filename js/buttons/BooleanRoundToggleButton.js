@@ -1,7 +1,7 @@
 // Copyright 2013-2020, University of Colorado Boulder
 
 /**
- * This toggle button uses a boolean property and a trueNode and falseNode to display its content.
+ * This toggle button uses a boolean Property and a trueNode and falseNode to display its content.
  */
 
 import merge from '../../../phet-core/js/merge.js';

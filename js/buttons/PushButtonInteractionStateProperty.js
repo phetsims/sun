@@ -1,7 +1,7 @@
 // Copyright 2014-2020, University of Colorado Boulder
 
 /**
- * A derived property that maps push button model states to the values needed by the button view.
+ * A DerivedProperty that maps push button model states to the values needed by the button view.
  */
 
 import DerivedProperty from '../../../axon/js/DerivedProperty.js';
