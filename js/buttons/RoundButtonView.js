@@ -33,7 +33,7 @@ class RoundButtonView extends ButtonNode {
 
   /**
    * @param {ButtonModel} buttonModel
-   * @param {Property} interactionStateProperty - A property that is used to drive the visual appearance of the button.
+   * @param {Property} interactionStateProperty - a Property that is used to drive the visual appearance of the button
    * @param {Object} [options]
    */
   constructor( buttonModel, interactionStateProperty, options ) {
@@ -90,7 +90,7 @@ class RoundButtonView extends ButtonNode {
       tagName: 'button'
     }, options );
 
-    super( buttonModel, options );
+    super( buttonModel, interactionStateProperty, options );
 
     const content = options.content; // convenience variable
 
@@ -106,12 +106,8 @@ class RoundButtonView extends ButtonNode {
     this.addChild( button );
 
     // Hook up the strategy that will control the button's appearance.
-    const buttonAppearanceStrategy = new options.buttonAppearanceStrategy(
-      button,
-      interactionStateProperty,
-      this.baseColorProperty,
-      options
-    );
+    const buttonAppearanceStrategy = new options.buttonAppearanceStrategy( button, interactionStateProperty,
+      this.baseColorProperty, options );
 
     // Add the content to the button.
     if ( content ) {
@@ -125,13 +121,6 @@ class RoundButtonView extends ButtonNode {
 
     // Hook up the strategy that will control the content's appearance.
     const contentAppearanceStrategy = new options.contentAppearanceStrategy( content, interactionStateProperty );
-
-    // Control the pointer state based on the interaction state.
-    const handleInteractionStateChanged = state => {
-      this.cursor = state === ButtonInteractionState.DISABLED ||
-                    state === ButtonInteractionState.DISABLED_PRESSED ? null : 'pointer';
-    };
-    interactionStateProperty.link( handleInteractionStateChanged );
 
     // Set pointer areas.
     this.touchArea = Shape.circle( options.touchAreaXShift, options.touchAreaYShift,
@@ -154,9 +143,6 @@ class RoundButtonView extends ButtonNode {
     this.disposeRoundButtonView = () => {
       buttonAppearanceStrategy.dispose();
       contentAppearanceStrategy.dispose();
-      if ( interactionStateProperty.hasListener( handleInteractionStateChanged ) ) {
-        interactionStateProperty.unlink( handleInteractionStateChanged );
-      }
     };
   }
 

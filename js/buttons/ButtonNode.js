@@ -14,14 +14,16 @@ import PaintColorProperty from '../../../scenery/js/util/PaintColorProperty.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import EnabledNode from '../EnabledNode.js';
 import sun from '../sun.js';
+import ButtonInteractionState from './ButtonInteractionState.js';
 
 class ButtonNode extends Node {
 
   /**
    * @param {ButtonModel} buttonModel
+   * @param {Property} interactionStateProperty - a Property that is used to drive the visual appearance of the button
    * @param {Object} [options] - this type does not mutate its options, but relies on the subtype to
    */
-  constructor( buttonModel, options ) {
+  constructor( buttonModel, interactionStateProperty, options ) {
 
     options = merge( {
       tandem: Tandem.OPTIONAL,
@@ -55,10 +57,20 @@ class ButtonNode extends Node {
     this._pressListener = buttonModel.createPressListener( options.listenerOptions );
     this.addInputListener( this._pressListener );
 
+    // Control the pointer state based on the interaction state.
+    const interactionStateListener = state => {
+      this.cursor = state === ButtonInteractionState.DISABLED ||
+                    state === ButtonInteractionState.DISABLED_PRESSED ? null : 'pointer';
+    };
+    interactionStateProperty.link( interactionStateListener ); // unlink in dispose
+
     // @private - define a dispose function
     this.disposeButtonNode = () => {
-      this._pressListener.dispose();
       this.baseColorProperty.dispose();
+      this._pressListener.dispose();
+      if ( interactionStateProperty.hasListener( interactionStateListener ) ) {
+        interactionStateProperty.unlink( interactionStateListener );
+      }
     };
   }
 

@@ -35,7 +35,7 @@ class RectangularButtonView extends ButtonNode {
 
   /**
    * @param {ButtonModel} buttonModel - Model that defines the button's behavior.
-   * @param {Property.<String>} interactionStateProperty - A property that is used to drive the visual appearance of the button.
+   * @param {Property} interactionStateProperty - a Property that is used to drive the visual appearance of the button
    * @param {Object} [options]
    */
   constructor( buttonModel, interactionStateProperty, options ) {
@@ -107,7 +107,7 @@ class RectangularButtonView extends ButtonNode {
     assert && assert( _.includes( X_ALIGN_VALUES, options.xAlign ), 'invalid xAlign: ' + options.xAlign );
     assert && assert( _.includes( Y_ALIGN_VALUES, options.yAlign ), 'invalid yAlign: ' + options.yAlign );
 
-    super( buttonModel, options );
+    super( buttonModel, interactionStateProperty, options );
 
     const content = options.content; // convenience variable
 
@@ -123,12 +123,8 @@ class RectangularButtonView extends ButtonNode {
     this.addChild( button );
 
     // Hook up the strategy that will control the button's appearance.
-    const buttonAppearanceStrategy = new options.buttonAppearanceStrategy(
-      button,
-      interactionStateProperty,
-      this.baseColorProperty,
-      options
-    );
+    const buttonAppearanceStrategy = new options.buttonAppearanceStrategy( button, interactionStateProperty,
+      this.baseColorProperty, options );
 
     // Add the content to the button.
     let alignBox = null;
@@ -154,13 +150,6 @@ class RectangularButtonView extends ButtonNode {
     // Hook up the strategy that will control the content's appearance.
     const contentAppearanceStrategy = new options.contentAppearanceStrategy( content, interactionStateProperty, options );
 
-    // Control the pointer state based on the interaction state.
-    const handleInteractionStateChanged = state => {
-      this.cursor = state === ButtonInteractionState.DISABLED ||
-                    state === ButtonInteractionState.DISABLED_PRESSED ? null : 'pointer';
-    };
-    interactionStateProperty.link( handleInteractionStateChanged );
-
     // Set pointer areas.
     this.touchArea = button.localBounds
       .dilatedXY( options.touchAreaXDilation, options.touchAreaYDilation )
@@ -178,9 +167,6 @@ class RectangularButtonView extends ButtonNode {
       buttonAppearanceStrategy.dispose();
       alignBox && alignBox.dispose();
       contentAppearanceStrategy.dispose();
-      if ( interactionStateProperty.hasListener( handleInteractionStateChanged ) ) {
-        interactionStateProperty.unlink( handleInteractionStateChanged );
-      }
     };
   }
 
