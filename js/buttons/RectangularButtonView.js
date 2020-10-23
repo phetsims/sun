@@ -27,7 +27,6 @@ import ButtonNode from './ButtonNode.js';
 const VERTICAL_HIGHLIGHT_GRADIENT_LENGTH = 7; // In screen coords, which are roughly pixels.
 const HORIZONTAL_HIGHLIGHT_GRADIENT_LENGTH = 7; // In screen coords, which are roughly pixels.
 const SHADE_GRADIENT_LENGTH = 3; // In screen coords, which are roughly pixels.
-const DEFAULT_COLOR = ColorConstants.LIGHT_BLUE;
 const X_ALIGN_VALUES = [ 'center', 'left', 'right' ];
 const Y_ALIGN_VALUES = [ 'center', 'top', 'bottom' ];
 
@@ -48,7 +47,6 @@ class RectangularButtonView extends ButtonNode {
       minWidth: HORIZONTAL_HIGHLIGHT_GRADIENT_LENGTH + SHADE_GRADIENT_LENGTH,
       minHeight: VERTICAL_HIGHLIGHT_GRADIENT_LENGTH + SHADE_GRADIENT_LENGTH,
       cursor: 'pointer',
-      baseColor: DEFAULT_COLOR,
       disabledBaseColor: ColorConstants.LIGHT_GRAY,
       xMargin: 8, // should be visibly greater than yMargin, see issue #109
       yMargin: 5,
@@ -117,7 +115,7 @@ class RectangularButtonView extends ButtonNode {
 
     // Create the rectangular part of the button.
     const button = new Path( createButtonShape( buttonWidth, buttonHeight, options ), {
-      fill: options.baseColor,
+      fill: this.baseColorProperty,
       lineWidth: options.lineWidth
     } );
     this.addChild( button );

@@ -27,7 +27,6 @@ import ButtonNode from './ButtonNode.js';
 
 // constants
 const HIGHLIGHT_GRADIENT_LENGTH = 5; // In screen coords, which are roughly pixels.
-const DEFAULT_COLOR = ColorConstants.LIGHT_BLUE;
 
 class RoundButtonView extends ButtonNode {
 
@@ -45,7 +44,6 @@ class RoundButtonView extends ButtonNode {
 
       radius: ( options && options.content ) ? undefined : 30,
       cursor: 'pointer',
-      baseColor: DEFAULT_COLOR,
       disabledBaseColor: ColorConstants.LIGHT_GRAY,
       minXMargin: 5, // Minimum margin in x direction, i.e. on left and right
       minYMargin: 5, // Minimum margin in y direction, i.e. on top and bottom
@@ -100,7 +98,7 @@ class RoundButtonView extends ButtonNode {
 
     // Create the circular part of the button.
     const button = new Circle( buttonRadius, {
-      fill: options.baseColor,
+      fill: options.baseColorProperty,
       lineWidth: options.lineWidth
     } );
     this.addChild( button );

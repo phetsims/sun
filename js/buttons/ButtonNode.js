@@ -12,6 +12,7 @@ import merge from '../../../phet-core/js/merge.js';
 import Node from '../../../scenery/js/nodes/Node.js';
 import PaintColorProperty from '../../../scenery/js/util/PaintColorProperty.js';
 import Tandem from '../../../tandem/js/Tandem.js';
+import ColorConstants from '../ColorConstants.js';
 import EnabledNode from '../EnabledNode.js';
 import sun from '../sun.js';
 import ButtonInteractionState from './ButtonInteractionState.js';
@@ -30,6 +31,9 @@ class ButtonNode extends Node {
 
       // Options that will be passed through to the main input listener (PressListener)
       listenerOptions: null,
+
+      // {ColorDef} initial color of the button's background
+      baseColor: ColorConstants.LIGHT_BLUE,
 
       // TODO: workaround for difficulty in mutate/instrumentation order of sun buttons, see https://github.com/phetsims/sun/issues/643 or https://github.com/phetsims/sun/issues/515
       phetioLinkEnabledElement: false
