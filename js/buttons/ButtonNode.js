@@ -37,7 +37,8 @@ class ButtonNode extends Node {
       // {string} default cursor
       cursor: 'pointer',
 
-      // TODO: workaround for difficulty in mutate/instrumentation order of sun buttons, see https://github.com/phetsims/sun/issues/643 or https://github.com/phetsims/sun/issues/515
+      // TODO: workaround for difficulty in mutate/instrumentation order of sun buttons,
+      //  see https://github.com/phetsims/sun/issues/643 or https://github.com/phetsims/sun/issues/515
       phetioLinkEnabledElement: false
 
     }, options );
