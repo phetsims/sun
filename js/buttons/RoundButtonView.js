@@ -132,12 +132,6 @@ class RoundButtonView extends ButtonNode {
     };
     interactionStateProperty.link( handleInteractionStateChanged );
 
-    // PDOM - indicate to screen readers that the button is not clickable
-    const updatePDOMEnabled = enabled => {
-      this.setAccessibleAttribute( 'aria-disabled', !enabled );
-    };
-    buttonModel.enabledProperty.link( updatePDOMEnabled );
-
     // Dilate the pointer areas.
     this.touchArea = Shape.circle( options.touchAreaXShift, options.touchAreaYShift,
       buttonRadius + options.touchAreaDilation );
