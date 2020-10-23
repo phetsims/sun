@@ -1,9 +1,8 @@
 // Copyright 2014-2020, University of Colorado Boulder
 
 /**
- * A round toggle button that switches the value of a property that can take on valueUp or valueDown.  It
- * sticks in the down position when pressed, popping back up when pressed
- * again.
+ * RoundStickyToggleButton is a round toggle button that toggles the value of a Property between 2 values.
+ * It has a different look (referred to as 'up' and 'down') for the 2 values.
  *
  * @author John Blanco (PhET Interactive Simulations)
  * @author Sam Reid (PhET Interactive Simulations)
@@ -13,12 +12,12 @@ import merge from '../../../phet-core/js/merge.js';
 import pushButtonSoundPlayer from '../../../tambo/js/shared-sound-players/pushButtonSoundPlayer.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import sun from '../sun.js';
-import RoundButtonView from './RoundButtonView.js';
+import RoundButton from './RoundButton.js';
 import StickyToggleButtonInteractionStateProperty from './StickyToggleButtonInteractionStateProperty.js';
 import StickyToggleButtonModel from './StickyToggleButtonModel.js';
 import ToggleButtonIO from './ToggleButtonIO.js';
 
-class RoundStickyToggleButton extends RoundButtonView {
+class RoundStickyToggleButton extends RoundButton {
 
   /**
    * @param {Object} valueUp value when the toggle is in the 'up' position

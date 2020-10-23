@@ -23,7 +23,7 @@ import RadioButtonGroup from '../buttons/RadioButtonGroup.js';
 import RectangularButtonView from '../buttons/RectangularButtonView.js';
 import RectangularMomentaryButton from '../buttons/RectangularMomentaryButton.js';
 import RectangularPushButton from '../buttons/RectangularPushButton.js';
-import RoundButtonView from '../buttons/RoundButtonView.js';
+import RoundButton from '../buttons/RoundButton.js';
 import RoundMomentaryButton from '../buttons/RoundMomentaryButton.js';
 import RoundPushButton from '../buttons/RoundPushButton.js';
 import RoundStickyToggleButton from '../buttons/RoundStickyToggleButton.js';
@@ -253,14 +253,14 @@ class ButtonsScreenView extends ScreenView {
     const button3 = new RoundPushButton( {
       content: new Text( '- 3 -', { font: BUTTON_FONT } ),
       listener: function() { message( 'Button 3 pressed ' ); },
-      buttonAppearanceStrategy: RoundButtonView.FlatAppearanceStrategy
+      buttonAppearanceStrategy: RoundButton.FlatAppearanceStrategy
     } );
 
     const button4 = new RoundPushButton( {
       content: new Text( '-- 4 --', { font: BUTTON_FONT, fill: 'white' } ),
       listener: function() { message( 'Button 4 pressed ' ); },
       baseColor: '#CC3300',
-      buttonAppearanceStrategy: RoundButtonView.FlatAppearanceStrategy
+      buttonAppearanceStrategy: RoundButton.FlatAppearanceStrategy
     } );
 
     const flatButtonsBox = new HBox( {

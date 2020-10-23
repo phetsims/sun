@@ -1,8 +1,9 @@
 // Copyright 2015-2020, University of Colorado Boulder
 
 /**
- * A round momentary button: on when pressed, off when released.
- * This is the file in which the view (appearance) and model (behavior) are brought together.
+ * RoundMomentaryButton is a momentary button that toggles a Property between 2 values.
+ * The 'off value' is the value when the button is not pressed.
+ * The 'on value' is the value when the button is pressed.
  *
  * @author Chris Malley (PixelZoom, Inc.)
  */
@@ -14,9 +15,9 @@ import IOType from '../../../tandem/js/types/IOType.js';
 import sun from '../sun.js';
 import MomentaryButtonInteractionStateProperty from './MomentaryButtonInteractionStateProperty.js';
 import MomentaryButtonModel from './MomentaryButtonModel.js';
-import RoundButtonView from './RoundButtonView.js';
+import RoundButton from './RoundButton.js';
 
-class RoundMomentaryButton extends RoundButtonView {
+class RoundMomentaryButton extends RoundButton {
 
   /**
    * @param {Object} valueOff - value when the button is in the off state

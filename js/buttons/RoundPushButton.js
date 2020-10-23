@@ -1,11 +1,7 @@
 // Copyright 2014-2020, University of Colorado Boulder
 
 /**
- * An interactive round push button.  This is the file in which the appearance and behavior are brought together.
- *
- * This class inherits from RoundButtonView, which contains all of the
- * code that defines the button's appearance, and adds the button's behavior
- * by hooking up a button model.
+ * RoundPushButton is a round push button, used to initiate some action.
  *
  * @author John Blanco (PhET Interactive Simulations)
  * @author Sam Reid (PhET Interactive Simulations)
@@ -18,9 +14,9 @@ import Tandem from '../../../tandem/js/Tandem.js';
 import sun from '../sun.js';
 import PushButtonInteractionStateProperty from './PushButtonInteractionStateProperty.js';
 import PushButtonModel from './PushButtonModel.js';
-import RoundButtonView from './RoundButtonView.js';
+import RoundButton from './RoundButton.js';
 
-class RoundPushButton extends RoundButtonView {
+class RoundPushButton extends RoundButton {
 
   /**
    * @param {Object} [options]

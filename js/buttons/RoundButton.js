@@ -1,11 +1,7 @@
 // Copyright 2014-2020, University of Colorado Boulder
 
 /**
- * Visual representation of a round button.  It is provided with a 'button
- * model' that is monitored to change the appearance of the button.
- *
- * Note: this is only the visual representation and does not have associated
- * input listeners so that it can be reused in multiple contexts.
+ * RoundButton is the base class for round buttons.
  *
  * @author John Blanco (PhET Interactive Simulations)
  * @author Sam Reid (PhET Interactive Simulations)
@@ -28,7 +24,7 @@ import ButtonNode from './ButtonNode.js';
 // constants
 const HIGHLIGHT_GRADIENT_LENGTH = 5; // In screen coords, which are roughly pixels.
 
-class RoundButtonView extends ButtonNode {
+class RoundButton extends ButtonNode {
 
   /**
    * @param {ButtonModel} buttonModel
@@ -72,13 +68,13 @@ class RoundButtonView extends ButtonNode {
       // content.  This can be a stock strategy from this file or custom.  To
       // create a custom one, model it off of the stock strategies defined in
       // this file.
-      buttonAppearanceStrategy: RoundButtonView.ThreeDAppearanceStrategy,
+      buttonAppearanceStrategy: RoundButton.ThreeDAppearanceStrategy,
 
       // Strategy for controlling the appearance of the button's content based
       // on the button's state.  This can be a stock strategy from this file,
       // or custom.  To create a custom one, model it off of the stock
       // version(s) defined in this file.
-      contentAppearanceStrategy: RoundButtonView.FadeContentWhenDisabled,
+      contentAppearanceStrategy: RoundButton.FadeContentWhenDisabled,
 
       // phet-io
       tandem: Tandem.OPTIONAL, // This duplicates the parent option and works around https://github.com/phetsims/tandem/issues/50
@@ -138,7 +134,7 @@ class RoundButtonView extends ButtonNode {
     this.mutate( options );
 
     // @private
-    this.disposeRoundButtonView = () => {
+    this.disposeRoundButton = () => {
       buttonAppearanceStrategy.dispose();
       contentAppearanceStrategy.dispose();
     };
@@ -149,7 +145,7 @@ class RoundButtonView extends ButtonNode {
    * @override
    */
   dispose() {
-    this.disposeRoundButtonView();
+    this.disposeRoundButton();
     super.dispose();
   }
 }
@@ -165,7 +161,7 @@ class RoundButtonView extends ButtonNode {
  * @constructor
  * @public
  */
-RoundButtonView.ThreeDAppearanceStrategy = function( button, interactionStateProperty, baseColorProperty, options ) {
+RoundButton.ThreeDAppearanceStrategy = function( button, interactionStateProperty, baseColorProperty, options ) {
 
   // Color properties
   // TODO https://github.com/phetsims/sun/issues/553 missing "Property" suffix for all PaintColorProperty names
@@ -339,7 +335,7 @@ RoundButtonView.ThreeDAppearanceStrategy = function( button, interactionStatePro
  * @constructor
  * @public
  */
-RoundButtonView.FlatAppearanceStrategy = function( button, interactionStateProperty, baseColorProperty, options ) {
+RoundButton.FlatAppearanceStrategy = function( button, interactionStateProperty, baseColorProperty, options ) {
 
   // Color properties
   const baseBrighter4 = new PaintColorProperty( baseColorProperty, { luminanceFactor: 0.4 } );
@@ -429,7 +425,7 @@ RoundButtonView.FlatAppearanceStrategy = function( button, interactionStatePrope
  * @param {Node} content
  * @param {Property} interactionStateProperty
  */
-RoundButtonView.FadeContentWhenDisabled = function( content, interactionStateProperty ) {
+RoundButton.FadeContentWhenDisabled = function( content, interactionStateProperty ) {
 
   // update the opacity when the state changes
   function updateOpacity( state ) {
@@ -449,5 +445,5 @@ RoundButtonView.FadeContentWhenDisabled = function( content, interactionStatePro
   };
 };
 
-sun.register( 'RoundButtonView', RoundButtonView );
-export default RoundButtonView;
+sun.register( 'RoundButton', RoundButton );
+export default RoundButton;
