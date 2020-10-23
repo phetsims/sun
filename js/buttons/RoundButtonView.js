@@ -40,7 +40,9 @@ class RoundButtonView extends ButtonNode {
 
     options = merge( {
 
+      // {Node|null} what appears on the button (icon, label, etc.)
       content: null,
+
       radius: ( options && options.content ) ? undefined : 30,
       cursor: 'pointer',
       baseColor: DEFAULT_COLOR,
@@ -91,23 +93,19 @@ class RoundButtonView extends ButtonNode {
     super( buttonModel, options );
 
     const content = options.content; // convenience variable
-    const upCenter = new Vector2( options.xContentOffset, options.yContentOffset );
 
-    // For performance reasons, the content should be unpickable.
-    if ( content ) {
-      content.pickable = false;
-    }
-
-    // Use the user-specified radius if present, otherwise calculate the
-    // radius based on the content and the margin.
+    // Compute the radius of the button.
     const buttonRadius = options.radius ||
                          Math.max( content.width + options.minXMargin * 2, content.height + options.minYMargin * 2 ) / 2;
 
-    // Create the basic button shape.
-    const button = new Circle( buttonRadius, { fill: options.baseColor, lineWidth: options.lineWidth } );
+    // Create the circular part of the button.
+    const button = new Circle( buttonRadius, {
+      fill: options.baseColor,
+      lineWidth: options.lineWidth
+    } );
     this.addChild( button );
 
-    // Hook up the strategy that will control the basic button appearance.
+    // Hook up the strategy that will control the button's appearance.
     const buttonAppearanceStrategy = new options.buttonAppearanceStrategy(
       button,
       interactionStateProperty,
@@ -117,11 +115,15 @@ class RoundButtonView extends ButtonNode {
 
     // Add the content to the button.
     if ( content ) {
-      content.center = upCenter;
+
+      // For performance reasons, the content should be unpickable.
+      content.pickable = false;
+
+      content.center = new Vector2( options.xContentOffset, options.yContentOffset );
       this.addChild( content );
     }
 
-    // Hook up the strategy that will control the content appearance.
+    // Hook up the strategy that will control the content's appearance.
     const contentAppearanceStrategy = new options.contentAppearanceStrategy( content, interactionStateProperty );
 
     // Control the pointer state based on the interaction state.
@@ -131,7 +133,7 @@ class RoundButtonView extends ButtonNode {
     };
     interactionStateProperty.link( handleInteractionStateChanged );
 
-    // Dilate the pointer areas.
+    // Set pointer areas.
     this.touchArea = Shape.circle( options.touchAreaXShift, options.touchAreaYShift,
       buttonRadius + options.touchAreaDilation );
     this.mouseArea = Shape.circle( options.mouseAreaXShift, options.mouseAreaYShift,
@@ -148,7 +150,7 @@ class RoundButtonView extends ButtonNode {
     // width-dependent fields like centerX will work.
     this.mutate( options );
 
-    // define a dispose function
+    // @private
     this.disposeRoundButtonView = () => {
       buttonAppearanceStrategy.dispose();
       contentAppearanceStrategy.dispose();

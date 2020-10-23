@@ -42,7 +42,9 @@ class RectangularButtonView extends ButtonNode {
 
     options = merge( {
 
+      // {Node|null} what appears on the button (icon, label, etc.)
       content: null,
+
       minWidth: HORIZONTAL_HIGHLIGHT_GRADIENT_LENGTH + SHADE_GRADIENT_LENGTH,
       minHeight: VERTICAL_HIGHLIGHT_GRADIENT_LENGTH + SHADE_GRADIENT_LENGTH,
       cursor: 'pointer',
@@ -109,16 +111,24 @@ class RectangularButtonView extends ButtonNode {
 
     const content = options.content; // convenience variable
 
-    // Figure out the size of the button.
+    // Compute the size of the button.
     const buttonWidth = Math.max( content ? content.width + options.xMargin * 2 : 0, options.minWidth );
     const buttonHeight = Math.max( content ? content.height + options.yMargin * 2 : 0, options.minHeight );
 
-    // create and add the button node
+    // Create the rectangular part of the button.
     const button = new Path( createButtonShape( buttonWidth, buttonHeight, options ), {
       fill: options.baseColor,
       lineWidth: options.lineWidth
     } );
     this.addChild( button );
+
+    // Hook up the strategy that will control the button's appearance.
+    const buttonAppearanceStrategy = new options.buttonAppearanceStrategy(
+      button,
+      interactionStateProperty,
+      this.baseColorProperty,
+      options
+    );
 
     // Add the content to the button.
     let alignBox = null;
@@ -141,15 +151,7 @@ class RectangularButtonView extends ButtonNode {
       this.addChild( alignBox );
     }
 
-    // Hook up the strategy that will control the basic button appearance.
-    const buttonAppearanceStrategy = new options.buttonAppearanceStrategy(
-      button,
-      interactionStateProperty,
-      this.baseColorProperty,
-      options
-    );
-
-    // Hook up the strategy that will control the content appearance.
+    // Hook up the strategy that will control the content's appearance.
     const contentAppearanceStrategy = new options.contentAppearanceStrategy( content, interactionStateProperty, options );
 
     // Control the pointer state based on the interaction state.
@@ -159,7 +161,7 @@ class RectangularButtonView extends ButtonNode {
     };
     interactionStateProperty.link( handleInteractionStateChanged );
 
-    // set pointer areas
+    // Set pointer areas.
     this.touchArea = button.localBounds
       .dilatedXY( options.touchAreaXDilation, options.touchAreaYDilation )
       .shifted( options.touchAreaXShift, options.touchAreaYShift );
@@ -171,15 +173,14 @@ class RectangularButtonView extends ButtonNode {
     // dependent fields like centerX will work.
     this.mutate( options );
 
-    // define a dispose function
+    // @private
     this.disposeRectangularButtonView = () => {
       buttonAppearanceStrategy.dispose();
+      alignBox && alignBox.dispose();
       contentAppearanceStrategy.dispose();
       if ( interactionStateProperty.hasListener( handleInteractionStateChanged ) ) {
         interactionStateProperty.unlink( handleInteractionStateChanged );
       }
-
-      alignBox && alignBox.dispose();
     };
   }
 
@@ -508,7 +509,7 @@ RectangularButtonView.FlatAppearanceStrategy = function( button, interactionStat
 /**
  * Basic strategy for controlling content appearance, fades the content by making it transparent when disabled.
  *
- * @param {Node}|null} content
+ * @param {Node|null} content
  * @param {Property} interactionStateProperty
  * @constructor
  * @public
