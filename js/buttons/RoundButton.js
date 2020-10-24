@@ -83,7 +83,7 @@ class RoundButton extends ButtonNode {
 
     // Create the circular part of the button.
     const button = new Circle( buttonRadius, {
-      fill: options.baseColorProperty,
+      fill: this.baseColorProperty,
       lineWidth: options.lineWidth,
       pickable: false
     } );
