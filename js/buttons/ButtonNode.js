@@ -46,15 +46,16 @@ class ButtonNode extends Node {
       tandem: options.tandem.createTandem( 'pressListener' )
     }, options.listenerOptions );
 
+    assert && options.enabledProperty && assert( options.enabledProperty === buttonModel.enabledProperty,
+      'if options.enabledProperty is provided, it must === buttonModel.enabledProperty' );
+    options.enabledProperty = buttonModel.enabledProperty;
+
     super( options );
+
+    this.initializeEnabledNode( options );
 
     // @protected
     this.buttonModel = buttonModel;
-
-    assert && options.enabledProperty && assert( options.enabledProperty === this.buttonModel.enabledProperty,
-      'a passed in enabledProperty should be the same as the ButtonModel\'s' );
-    options.enabledProperty = this.buttonModel.enabledProperty;
-    this.initializeEnabledNode( options );
 
     // Make the base color into a Property so that the appearance strategy can update itself if changes occur.
     this.baseColorProperty = new PaintColorProperty( options.baseColor ); // @private
