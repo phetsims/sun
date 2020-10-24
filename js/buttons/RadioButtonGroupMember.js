@@ -168,85 +168,91 @@ class RadioButtonGroupMember extends RectangularButton {
 }
 
 /**
- * Appearance strategy for radio buttons that look flat, i.e. no shading or highlighting, but
- * that change color on mouseover, press, selected, etc.
- *
- * @param {Node} button
- * @param {Property} interactionStateProperty
- * @param {Property} baseColorProperty
- * @param {Object} [options]
- * @constructor
- * @public
+ * FlatAppearanceStrategy is a value for RadioButtonGroupMember options.buttonAppearanceStrategy. It makes radio buttons
+ * that look flat, i.e. no shading or highlighting, but that change color on mouseover, press, selected, etc.
  */
-RadioButtonGroupMember.FlatAppearanceStrategy = function( button, interactionStateProperty, baseColorProperty, options ) {
+class FlatAppearanceStrategy {
 
-  // Dynamic fills and strokes
-  const overFill = new PaintColorProperty( options.overFill || baseColorProperty, {
-    luminanceFactor: options.overFill ? 0 : 0.4
-  } );
-  const pressedFill = new PaintColorProperty( baseColorProperty, {
-    luminanceFactor: -0.4
-  } );
-  const overStroke = new PaintColorProperty( options.overStroke || options.deselectedStroke, {
-    luminanceFactor: options.overStroke ? 0 : -0.4
-  } );
+  /**
+   * @param {Node} button
+   * @param {Property} interactionStateProperty
+   * @param {Property} baseColorProperty
+   * @param {Object} [options]
+   */
+  constructor( button, interactionStateProperty, baseColorProperty, options ) {
 
-  // Cache colors
-  button.cachedPaints = [
-    baseColorProperty, overFill, pressedFill, overStroke, options.selectedStroke, options.deselectedStroke
-  ];
+    // Dynamic fills and strokes
+    const overFill = new PaintColorProperty( options.overFill || baseColorProperty, {
+      luminanceFactor: options.overFill ? 0 : 0.4
+    } );
+    const pressedFill = new PaintColorProperty( baseColorProperty, {
+      luminanceFactor: -0.4
+    } );
+    const overStroke = new PaintColorProperty( options.overStroke || options.deselectedStroke, {
+      luminanceFactor: options.overStroke ? 0 : -0.4
+    } );
 
-  // Change colors and opacity to match interactionState
-  function interactionStateListener( interactionState ) {
-    switch( interactionState ) {
+    // Cache colors
+    button.cachedPaints = [
+      baseColorProperty, overFill, pressedFill, overStroke, options.selectedStroke, options.deselectedStroke
+    ];
 
-      case RadioButtonInteractionState.SELECTED:
-      case RadioButtonInteractionState.DISABLED_SELECTED:
-        button.fill = baseColorProperty;
-        button.stroke = options.selectedStroke;
-        button.lineWidth = options.selectedLineWidth;
-        button.opacity = options.selectedButtonOpacity;
-        break;
+    // Change colors and opacity to match interactionState
+    function interactionStateListener( interactionState ) {
+      switch( interactionState ) {
 
-      case RadioButtonInteractionState.DESELECTED:
-      case RadioButtonInteractionState.DISABLED_DESELECTED:
-        button.fill = baseColorProperty;
-        button.stroke = options.deselectedStroke;
-        button.lineWidth = options.deselectedLineWidth;
-        button.opacity = options.deselectedButtonOpacity;
-        break;
+        case RadioButtonInteractionState.SELECTED:
+        case RadioButtonInteractionState.DISABLED_SELECTED:
+          button.fill = baseColorProperty;
+          button.stroke = options.selectedStroke;
+          button.lineWidth = options.selectedLineWidth;
+          button.opacity = options.selectedButtonOpacity;
+          break;
 
-      // mouseover for deselected buttons
-      case RadioButtonInteractionState.OVER:
-        button.fill = overFill;
-        button.stroke = overStroke;
-        button.lineWidth = ( options.overLineWidth ) ? options.overLineWidth : options.deselectedLineWidth;
-        button.opacity = options.overButtonOpacity;
-        break;
+        case RadioButtonInteractionState.DESELECTED:
+        case RadioButtonInteractionState.DISABLED_DESELECTED:
+          button.fill = baseColorProperty;
+          button.stroke = options.deselectedStroke;
+          button.lineWidth = options.deselectedLineWidth;
+          button.opacity = options.deselectedButtonOpacity;
+          break;
 
-      case RadioButtonInteractionState.PRESSED:
-        button.fill = pressedFill;
-        button.stroke = options.deselectedStroke;
-        button.lineWidth = options.deselectedLineWidth;
-        button.opacity = options.selectedButtonOpacity;
-        break;
+        // mouseover for deselected buttons
+        case RadioButtonInteractionState.OVER:
+          button.fill = overFill;
+          button.stroke = overStroke;
+          button.lineWidth = ( options.overLineWidth ) ? options.overLineWidth : options.deselectedLineWidth;
+          button.opacity = options.overButtonOpacity;
+          break;
 
-      default:
-        throw new Error( `unsupported interactionState: ${interactionState}` );
+        case RadioButtonInteractionState.PRESSED:
+          button.fill = pressedFill;
+          button.stroke = options.deselectedStroke;
+          button.lineWidth = options.deselectedLineWidth;
+          button.opacity = options.selectedButtonOpacity;
+          break;
+
+        default:
+          throw new Error( `unsupported interactionState: ${interactionState}` );
+      }
     }
+
+    interactionStateProperty.link( interactionStateListener );
+
+    // @public
+    this.dispose = () => {
+      if ( interactionStateProperty.hasListener( interactionStateListener ) ) {
+        interactionStateProperty.unlink( interactionStateListener );
+      }
+      overStroke.dispose();
+      overFill.dispose();
+      pressedFill.dispose();
+    };
   }
-  interactionStateProperty.link( interactionStateListener );
+}
 
-  // @public
-  this.dispose = () => {
-    if ( interactionStateProperty.hasListener( interactionStateListener ) ) {
-      interactionStateProperty.unlink( interactionStateListener );
-    }
-    overStroke.dispose();
-    overFill.dispose();
-    pressedFill.dispose();
-  };
-};
+// @public
+RadioButtonGroupMember.FlatAppearanceStrategy = FlatAppearanceStrategy;
 
 sun.register( 'RadioButtonGroupMember', RadioButtonGroupMember );
 export default RadioButtonGroupMember;

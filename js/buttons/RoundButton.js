@@ -129,177 +129,188 @@ class RoundButton extends ButtonNode {
 }
 
 /**
- * Strategy for making a button look 3D-ish by using gradients that create the appearance of highlighted and shaded
- * edges.  The gradients are intended to make the light source appear to be above and to the left of the button.
- *
- * @param {Node} button
- * @param {Property.<boolean>} interactionStateProperty
- * @param {Property.<Color>} baseColorProperty
- * @param {Object} [options]
- * @constructor
- * @public
+ * ThreeDAppearanceStrategy is a value for RoundButton options.buttonAppearanceStrategy. It makes a round button
+ * look 3D-ish by using gradients that create the appearance of highlighted and shaded edges. The gradients are
+ * set up to make the light source appear to be in the upper left.
  */
-RoundButton.ThreeDAppearanceStrategy = function( button, interactionStateProperty, baseColorProperty, options ) {
+class ThreeDAppearanceStrategy {
 
-  // Dynamic colors
-  // TODO https://github.com/phetsims/sun/issues/553 missing "Property" suffix for all PaintColorProperty names
-  const baseBrighter8 = new PaintColorProperty( baseColorProperty, { luminanceFactor: 0.8 } );
-  const baseBrighter7 = new PaintColorProperty( baseColorProperty, { luminanceFactor: 0.7 } );
-  const baseBrighter3 = new PaintColorProperty( baseColorProperty, { luminanceFactor: 0.3 } );
-  const baseDarker1 = new PaintColorProperty( baseColorProperty, { luminanceFactor: -0.1 } );
-  const baseDarker2 = new PaintColorProperty( baseColorProperty, { luminanceFactor: -0.2 } );
-  const baseDarker4 = new PaintColorProperty( baseColorProperty, { luminanceFactor: -0.4 } );
-  const baseDarker5 = new PaintColorProperty( baseColorProperty, { luminanceFactor: -0.5 } );
-  const baseTransparent = new DerivedProperty( [ baseColorProperty ], color => color.withAlpha( 0 ) );
+  /**
+   * @param {Node} button
+   * @param {Property.<boolean>} interactionStateProperty
+   * @param {Property.<Color>} baseColorProperty
+   * @param {Object} [options]
+   */
+  constructor( button, interactionStateProperty, baseColorProperty, options ) {
 
-  // Set up variables needed to create the various gradient fills and otherwise modify the appearance
-  const buttonRadius = button.width / 2;
-  const innerGradientRadius = buttonRadius - HIGHLIGHT_GRADIENT_LENGTH / 2;
-  const outerGradientRadius = buttonRadius + HIGHLIGHT_GRADIENT_LENGTH / 2;
-  const gradientOffset = HIGHLIGHT_GRADIENT_LENGTH / 2;
+    // Dynamic colors
+    // TODO https://github.com/phetsims/sun/issues/553 missing "Property" suffix for all PaintColorProperty names
+    const baseBrighter8 = new PaintColorProperty( baseColorProperty, { luminanceFactor: 0.8 } );
+    const baseBrighter7 = new PaintColorProperty( baseColorProperty, { luminanceFactor: 0.7 } );
+    const baseBrighter3 = new PaintColorProperty( baseColorProperty, { luminanceFactor: 0.3 } );
+    const baseDarker1 = new PaintColorProperty( baseColorProperty, { luminanceFactor: -0.1 } );
+    const baseDarker2 = new PaintColorProperty( baseColorProperty, { luminanceFactor: -0.2 } );
+    const baseDarker4 = new PaintColorProperty( baseColorProperty, { luminanceFactor: -0.4 } );
+    const baseDarker5 = new PaintColorProperty( baseColorProperty, { luminanceFactor: -0.5 } );
+    const baseTransparent = new DerivedProperty( [ baseColorProperty ], color => color.withAlpha( 0 ) );
 
-  const upFillHighlight = new RadialGradient( gradientOffset, gradientOffset, innerGradientRadius, gradientOffset, gradientOffset, outerGradientRadius )
-    .addColorStop( 0, baseColorProperty )
-    .addColorStop( 1, baseBrighter7 );
+    // Set up variables needed to create the various gradient fills and otherwise modify the appearance
+    const buttonRadius = button.width / 2;
+    const innerGradientRadius = buttonRadius - HIGHLIGHT_GRADIENT_LENGTH / 2;
+    const outerGradientRadius = buttonRadius + HIGHLIGHT_GRADIENT_LENGTH / 2;
+    const gradientOffset = HIGHLIGHT_GRADIENT_LENGTH / 2;
 
-  const upFillShadow = new RadialGradient( -gradientOffset, -gradientOffset, innerGradientRadius, -gradientOffset, -gradientOffset, outerGradientRadius )
-    .addColorStop( 0, baseTransparent )
-    .addColorStop( 1, baseDarker5 );
+    const upFillHighlight = new RadialGradient( gradientOffset, gradientOffset, innerGradientRadius, gradientOffset, gradientOffset, outerGradientRadius )
+      .addColorStop( 0, baseColorProperty )
+      .addColorStop( 1, baseBrighter7 );
 
-  const overFillHighlight = new RadialGradient( gradientOffset, gradientOffset, innerGradientRadius, gradientOffset, gradientOffset, outerGradientRadius )
-    .addColorStop( 0, baseBrighter3 )
-    .addColorStop( 1, baseBrighter8 );
+    const upFillShadow = new RadialGradient( -gradientOffset, -gradientOffset, innerGradientRadius, -gradientOffset, -gradientOffset, outerGradientRadius )
+      .addColorStop( 0, baseTransparent )
+      .addColorStop( 1, baseDarker5 );
 
-  const overFillShadow = new RadialGradient( -gradientOffset, -gradientOffset, innerGradientRadius, -gradientOffset, -gradientOffset, outerGradientRadius )
-    .addColorStop( 0, baseTransparent )
-    .addColorStop( 1, baseDarker5 );
+    const overFillHighlight = new RadialGradient( gradientOffset, gradientOffset, innerGradientRadius, gradientOffset, gradientOffset, outerGradientRadius )
+      .addColorStop( 0, baseBrighter3 )
+      .addColorStop( 1, baseBrighter8 );
 
-  const pressedFill = new RadialGradient( -gradientOffset, -gradientOffset, 0, 0, 0, outerGradientRadius )
-    .addColorStop( 0, baseDarker1 )
-    .addColorStop( 0.6, baseDarker2 )
-    .addColorStop( 0.8, baseColorProperty )
-    .addColorStop( 1, baseBrighter8 );
+    const overFillShadow = new RadialGradient( -gradientOffset, -gradientOffset, innerGradientRadius, -gradientOffset, -gradientOffset, outerGradientRadius )
+      .addColorStop( 0, baseTransparent )
+      .addColorStop( 1, baseDarker5 );
 
-  // Create and add the overlay that is used to add shading.
-  const shadowNode = new Circle( buttonRadius, {
-    stroke: ( typeof ( options.stroke ) === 'undefined' ) ? baseDarker4 : options.stroke,
-    lineWidth: options.lineWidth,
-    pickable: false
-  } );
-  button.addChild( shadowNode );
+    const pressedFill = new RadialGradient( -gradientOffset, -gradientOffset, 0, 0, 0, outerGradientRadius )
+      .addColorStop( 0, baseDarker1 )
+      .addColorStop( 0.6, baseDarker2 )
+      .addColorStop( 0.8, baseColorProperty )
+      .addColorStop( 1, baseBrighter8 );
 
-  // Cache gradients
-  button.cachedPaints = [ upFillHighlight, overFillHighlight, pressedFill ];
-  shadowNode.cachedPaints = [ upFillShadow, overFillShadow ];
+    // Create and add the overlay that is used to add shading.
+    const shadowNode = new Circle( buttonRadius, {
+      stroke: ( typeof ( options.stroke ) === 'undefined' ) ? baseDarker4 : options.stroke,
+      lineWidth: options.lineWidth,
+      pickable: false
+    } );
+    button.addChild( shadowNode );
 
-  // Change colors to match interactionState
-  function interactionStateListener( interactionState ) {
+    // Cache gradients
+    button.cachedPaints = [ upFillHighlight, overFillHighlight, pressedFill ];
+    shadowNode.cachedPaints = [ upFillShadow, overFillShadow ];
 
-    switch( interactionState ) {
+    // Change colors to match interactionState
+    function interactionStateListener( interactionState ) {
 
-      case ButtonInteractionState.IDLE:
-      case ButtonInteractionState.DISABLED:
-        button.fill = upFillHighlight;
-        shadowNode.fill = upFillShadow;
-        break;
+      switch( interactionState ) {
 
-      case ButtonInteractionState.OVER:
-        button.fill = overFillHighlight;
-        shadowNode.fill = overFillShadow;
-        break;
+        case ButtonInteractionState.IDLE:
+        case ButtonInteractionState.DISABLED:
+          button.fill = upFillHighlight;
+          shadowNode.fill = upFillShadow;
+          break;
 
-      case ButtonInteractionState.PRESSED:
-      case ButtonInteractionState.DISABLED_PRESSED:
-        button.fill = pressedFill;
-        shadowNode.fill = overFillShadow;
-        break;
+        case ButtonInteractionState.OVER:
+          button.fill = overFillHighlight;
+          shadowNode.fill = overFillShadow;
+          break;
 
-      default:
-        throw new Error( `unsupported interactionState: ${interactionState}` );
+        case ButtonInteractionState.PRESSED:
+        case ButtonInteractionState.DISABLED_PRESSED:
+          button.fill = pressedFill;
+          shadowNode.fill = overFillShadow;
+          break;
+
+        default:
+          throw new Error( `unsupported interactionState: ${interactionState}` );
+      }
     }
+
+    interactionStateProperty.link( interactionStateListener );
+
+    // @public
+    this.dispose = () => {
+      if ( interactionStateProperty.hasListener( interactionStateListener ) ) {
+        interactionStateProperty.unlink( interactionStateListener );
+      }
+
+      baseBrighter8.dispose();
+      baseBrighter7.dispose();
+      baseBrighter3.dispose();
+      baseDarker1.dispose();
+      baseDarker2.dispose();
+      baseDarker4.dispose();
+      baseDarker5.dispose();
+      baseTransparent.dispose();
+    };
   }
-  interactionStateProperty.link( interactionStateListener );
-
-  // @public
-  this.dispose = () => {
-    if ( interactionStateProperty.hasListener( interactionStateListener ) ) {
-      interactionStateProperty.unlink( interactionStateListener );
-    }
-
-    baseBrighter8.dispose();
-    baseBrighter7.dispose();
-    baseBrighter3.dispose();
-    baseDarker1.dispose();
-    baseDarker2.dispose();
-    baseDarker4.dispose();
-    baseDarker5.dispose();
-    baseTransparent.dispose();
-  };
-};
+}
 
 /**
- * Strategy for buttons that look flat, i.e. no shading or highlighting, but
- * that change color on mouseover, press, etc.
- * @param {Node} button
- * @param {Property.<boolean>} interactionStateProperty
- * @param {Property.<Color>} baseColorProperty
- * @param {Object} [options]
- * @constructor
- * @public
+ * FlatAppearanceStrategy is a value for RoundButton options.buttonAppearanceStrategy. It makes a round
+ * button look flat, i.e. no shading or highlighting, with color changes on mouseover, press, etc.
  */
-RoundButton.FlatAppearanceStrategy = function( button, interactionStateProperty, baseColorProperty, options ) {
+class FlatAppearanceStrategy {
 
-  // Dynamic colors
-  const baseBrighter4 = new PaintColorProperty( baseColorProperty, { luminanceFactor: 0.4 } );
-  const baseDarker4 = new PaintColorProperty( baseColorProperty, { luminanceFactor: -0.4 } );
+  /*
+   * @param {Node} button
+   * @param {Property.<boolean>} interactionStateProperty
+   * @param {Property.<Color>} baseColorProperty
+   * @param {Object} [options]
+   */
+  constructor( button, interactionStateProperty, baseColorProperty, options ) {
 
-  // various fills that are used to alter the button's appearance
-  const upFill = baseColorProperty;
-  const overFill = baseBrighter4;
-  const downFill = baseDarker4;
+    // Dynamic colors
+    const baseBrighter4 = new PaintColorProperty( baseColorProperty, { luminanceFactor: 0.4 } );
+    const baseDarker4 = new PaintColorProperty( baseColorProperty, { luminanceFactor: -0.4 } );
 
-  // If the stroke wasn't provided, set a default
-  button.stroke = ( typeof ( options.stroke ) === 'undefined' ) ? baseDarker4 : options.stroke;
+    // various fills that are used to alter the button's appearance
+    const upFill = baseColorProperty;
+    const overFill = baseBrighter4;
+    const downFill = baseDarker4;
 
-  // Cache colors
-  button.cachedPaints = [ upFill, overFill, downFill ];
+    // If the stroke wasn't provided, set a default
+    button.stroke = ( typeof ( options.stroke ) === 'undefined' ) ? baseDarker4 : options.stroke;
 
-  // Change colors to match interactionState
-  function interactionStateListener( interactionState ) {
-    switch( interactionState ) {
+    // Cache colors
+    button.cachedPaints = [ upFill, overFill, downFill ];
 
-      case ButtonInteractionState.IDLE:
-      case ButtonInteractionState.DISABLED:
-        button.fill = upFill;
-        break;
+    // Change colors to match interactionState
+    function interactionStateListener( interactionState ) {
+      switch( interactionState ) {
 
-      case ButtonInteractionState.OVER:
-        button.fill = overFill;
-        break;
+        case ButtonInteractionState.IDLE:
+        case ButtonInteractionState.DISABLED:
+          button.fill = upFill;
+          break;
 
-      case ButtonInteractionState.PRESSED:
-      case ButtonInteractionState.DISABLED_PRESSED:
-        button.fill = downFill;
-        break;
+        case ButtonInteractionState.OVER:
+          button.fill = overFill;
+          break;
 
-      default:
-        throw new Error( `unsupported interactionState: ${interactionState}` );
+        case ButtonInteractionState.PRESSED:
+        case ButtonInteractionState.DISABLED_PRESSED:
+          button.fill = downFill;
+          break;
+
+        default:
+          throw new Error( `unsupported interactionState: ${interactionState}` );
+      }
     }
+
+    // Do the initial update explicitly, then lazy link to the properties.  This keeps the number of initial updates to
+    // a minimum and allows us to update some optimization flags the first time the base color is actually changed.
+    interactionStateProperty.link( interactionStateListener );
+
+    // @public
+    this.dispose = () => {
+      if ( interactionStateProperty.hasListener( interactionStateListener ) ) {
+        interactionStateProperty.unlink( interactionStateListener );
+      }
+      baseBrighter4.dispose();
+      baseDarker4.dispose();
+    };
   }
+}
 
-  // Do the initial update explicitly, then lazy link to the properties.  This keeps the number of initial updates to
-  // a minimum and allows us to update some optimization flags the first time the base color is actually changed.
-  interactionStateProperty.link( interactionStateListener );
-
-  // @public
-  this.dispose = () => {
-    if ( interactionStateProperty.hasListener( interactionStateListener ) ) {
-      interactionStateProperty.unlink( interactionStateListener );
-    }
-    baseBrighter4.dispose();
-    baseDarker4.dispose();
-  };
-};
+// @public
+RoundButton.ThreeDAppearanceStrategy = ThreeDAppearanceStrategy;
+RoundButton.FlatAppearanceStrategy = FlatAppearanceStrategy;
 
 sun.register( 'RoundButton', RoundButton );
 export default RoundButton;

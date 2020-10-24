@@ -178,191 +178,201 @@ function createButtonShape( width, height, config ) {
 }
 
 /**
- * Strategy for making a button look 3D-ish by using gradients that create the appearance of highlighted and shaded
- * edges.  The gradients are set up to make the light source appear to be in the upper left.
- * @param {Node} button
- * @param {Property.<String>} interactionStateProperty
- * @param {Property.<Color>} baseColorProperty
- * @param {Object} [options]
- * @constructor
- * @public
+ * ThreeDAppearanceStrategy is a value for RectangularButton options.buttonAppearanceStrategy. It makes a rectangular
+ * button look 3D-ish by using gradients that create the appearance of highlighted and shaded edges. The gradients are
+ * set up to make the light source appear to be in the upper left.
  */
-RectangularButton.ThreeDAppearanceStrategy = function( button,
-                                                       interactionStateProperty,
-                                                       baseColorProperty,
-                                                       options ) {
+class ThreeDAppearanceStrategy {
 
-  const buttonWidth = button.width;
-  const buttonHeight = button.height;
+  /**
+   * @param {Node} button
+   * @param {Property.<String>} interactionStateProperty
+   * @param {Property.<Color>} baseColorProperty
+   * @param {Object} [options]
+   */
+  constructor( button, interactionStateProperty, baseColorProperty, options ) {
 
-  // compute color stops for gradient, see issue #148
-  assert && assert( buttonWidth >= HORIZONTAL_HIGHLIGHT_GRADIENT_LENGTH + SHADE_GRADIENT_LENGTH );
-  assert && assert( buttonHeight >= VERTICAL_HIGHLIGHT_GRADIENT_LENGTH + SHADE_GRADIENT_LENGTH );
-  const verticalHighlightStop = Math.min( VERTICAL_HIGHLIGHT_GRADIENT_LENGTH / buttonHeight, 1 );
-  const verticalShadowStop = Math.max( 1 - SHADE_GRADIENT_LENGTH / buttonHeight, 0 );
-  const horizontalHighlightStop = Math.min( HORIZONTAL_HIGHLIGHT_GRADIENT_LENGTH / buttonWidth, 1 );
-  const horizontalShadowStop = Math.max( 1 - SHADE_GRADIENT_LENGTH / buttonWidth, 0 );
-  const transparentWhite = new Color( 255, 255, 255, 0.7 );
+    const buttonWidth = button.width;
+    const buttonHeight = button.height;
 
-  // Dynamic colors
-  // TODO https://github.com/phetsims/sun/issues/553 missing "Property" suffix for all PaintColorProperty names
-  const baseBrighter7 = new PaintColorProperty( baseColorProperty, { luminanceFactor: 0.7 } );
-  const baseBrighter5 = new PaintColorProperty( baseColorProperty, { luminanceFactor: 0.5 } );
-  const baseBrighter2 = new PaintColorProperty( baseColorProperty, { luminanceFactor: 0.2 } );
-  const baseDarker3 = new PaintColorProperty( baseColorProperty, { luminanceFactor: -0.3 } );
-  const baseDarker4 = new PaintColorProperty( baseColorProperty, { luminanceFactor: -0.4 } );
-  const baseDarker5 = new PaintColorProperty( baseColorProperty, { luminanceFactor: -0.5 } );
-  const baseTransparent = new DerivedProperty( [ baseColorProperty ], color => color.withAlpha( 0 ) );
+    // compute color stops for gradient, see issue #148
+    assert && assert( buttonWidth >= HORIZONTAL_HIGHLIGHT_GRADIENT_LENGTH + SHADE_GRADIENT_LENGTH );
+    assert && assert( buttonHeight >= VERTICAL_HIGHLIGHT_GRADIENT_LENGTH + SHADE_GRADIENT_LENGTH );
+    const verticalHighlightStop = Math.min( VERTICAL_HIGHLIGHT_GRADIENT_LENGTH / buttonHeight, 1 );
+    const verticalShadowStop = Math.max( 1 - SHADE_GRADIENT_LENGTH / buttonHeight, 0 );
+    const horizontalHighlightStop = Math.min( HORIZONTAL_HIGHLIGHT_GRADIENT_LENGTH / buttonWidth, 1 );
+    const horizontalShadowStop = Math.max( 1 - SHADE_GRADIENT_LENGTH / buttonWidth, 0 );
+    const transparentWhite = new Color( 255, 255, 255, 0.7 );
 
-  // Gradient fills for button states
-  const upFillVertical = new LinearGradient( 0, 0, 0, buttonHeight )
-    .addColorStop( 0, baseBrighter7 )
-    .addColorStop( verticalHighlightStop, baseColorProperty )
-    .addColorStop( verticalShadowStop, baseColorProperty )
-    .addColorStop( 1, baseDarker5 );
+    // Dynamic colors
+    // TODO https://github.com/phetsims/sun/issues/553 missing "Property" suffix for all PaintColorProperty names
+    const baseBrighter7 = new PaintColorProperty( baseColorProperty, { luminanceFactor: 0.7 } );
+    const baseBrighter5 = new PaintColorProperty( baseColorProperty, { luminanceFactor: 0.5 } );
+    const baseBrighter2 = new PaintColorProperty( baseColorProperty, { luminanceFactor: 0.2 } );
+    const baseDarker3 = new PaintColorProperty( baseColorProperty, { luminanceFactor: -0.3 } );
+    const baseDarker4 = new PaintColorProperty( baseColorProperty, { luminanceFactor: -0.4 } );
+    const baseDarker5 = new PaintColorProperty( baseColorProperty, { luminanceFactor: -0.5 } );
+    const baseTransparent = new DerivedProperty( [ baseColorProperty ], color => color.withAlpha( 0 ) );
 
-  const upFillHorizontal = new LinearGradient( 0, 0, buttonWidth, 0 )
-    .addColorStop( 0, transparentWhite )
-    .addColorStop( horizontalHighlightStop, baseTransparent )
-    .addColorStop( horizontalShadowStop, baseTransparent )
-    .addColorStop( 1, baseDarker5 );
+    // Gradient fills for button states
+    const upFillVertical = new LinearGradient( 0, 0, 0, buttonHeight )
+      .addColorStop( 0, baseBrighter7 )
+      .addColorStop( verticalHighlightStop, baseColorProperty )
+      .addColorStop( verticalShadowStop, baseColorProperty )
+      .addColorStop( 1, baseDarker5 );
 
-  const overFillVertical = new LinearGradient( 0, 0, 0, buttonHeight )
-    .addColorStop( 0, baseBrighter7 )
-    .addColorStop( verticalHighlightStop, baseBrighter5 )
-    .addColorStop( verticalShadowStop, baseBrighter5 )
-    .addColorStop( 1, baseDarker5 );
+    const upFillHorizontal = new LinearGradient( 0, 0, buttonWidth, 0 )
+      .addColorStop( 0, transparentWhite )
+      .addColorStop( horizontalHighlightStop, baseTransparent )
+      .addColorStop( horizontalShadowStop, baseTransparent )
+      .addColorStop( 1, baseDarker5 );
 
-  const overFillHorizontal = new LinearGradient( 0, 0, buttonWidth, 0 )
-    .addColorStop( 0, transparentWhite )
-    .addColorStop( horizontalHighlightStop / 2, new Color( 255, 255, 255, 0 ) )
-    .addColorStop( horizontalShadowStop, baseTransparent )
-    .addColorStop( 1, baseDarker3 );
+    const overFillVertical = new LinearGradient( 0, 0, 0, buttonHeight )
+      .addColorStop( 0, baseBrighter7 )
+      .addColorStop( verticalHighlightStop, baseBrighter5 )
+      .addColorStop( verticalShadowStop, baseBrighter5 )
+      .addColorStop( 1, baseDarker5 );
 
-  const downFillVertical = new LinearGradient( 0, 0, 0, buttonHeight )
-    .addColorStop( 0, baseBrighter7 )
-    .addColorStop( verticalHighlightStop * 0.67, baseDarker3 )
-    .addColorStop( verticalShadowStop, baseBrighter2 )
-    .addColorStop( 1, baseDarker5 );
+    const overFillHorizontal = new LinearGradient( 0, 0, buttonWidth, 0 )
+      .addColorStop( 0, transparentWhite )
+      .addColorStop( horizontalHighlightStop / 2, new Color( 255, 255, 255, 0 ) )
+      .addColorStop( horizontalShadowStop, baseTransparent )
+      .addColorStop( 1, baseDarker3 );
 
-  // Adds shading to left and right edges of the button.
-  const horizontalShadingPath = new Path( createButtonShape( buttonWidth, buttonHeight, options ), {
-    stroke: ( typeof ( options.stroke ) === 'undefined' ) ? baseDarker4 : options.stroke,
-    lineWidth: options.lineWidth,
-    pickable: false
-  } );
-  button.addChild( horizontalShadingPath );
+    const downFillVertical = new LinearGradient( 0, 0, 0, buttonHeight )
+      .addColorStop( 0, baseBrighter7 )
+      .addColorStop( verticalHighlightStop * 0.67, baseDarker3 )
+      .addColorStop( verticalShadowStop, baseBrighter2 )
+      .addColorStop( 1, baseDarker5 );
 
-  // Cache gradients
-  button.cachedPaints = [ upFillVertical, overFillVertical, downFillVertical ];
-  horizontalShadingPath.cachedPaints = [ upFillHorizontal, overFillHorizontal ];
+    // Adds shading to left and right edges of the button.
+    const horizontalShadingPath = new Path( createButtonShape( buttonWidth, buttonHeight, options ), {
+      stroke: ( typeof ( options.stroke ) === 'undefined' ) ? baseDarker4 : options.stroke,
+      lineWidth: options.lineWidth,
+      pickable: false
+    } );
+    button.addChild( horizontalShadingPath );
 
-  // Change colors to match interactionState 
-  function interactionStateListener( interactionState ) {
+    // Cache gradients
+    button.cachedPaints = [ upFillVertical, overFillVertical, downFillVertical ];
+    horizontalShadingPath.cachedPaints = [ upFillHorizontal, overFillHorizontal ];
 
-    switch( interactionState ) {
+    // Change colors to match interactionState
+    function interactionStateListener( interactionState ) {
 
-      case ButtonInteractionState.IDLE:
-      case ButtonInteractionState.DISABLED:
-        button.fill = upFillVertical;
-        horizontalShadingPath.fill = upFillHorizontal;
-        break;
+      switch( interactionState ) {
 
-      case ButtonInteractionState.OVER:
-        button.fill = overFillVertical;
-        horizontalShadingPath.fill = overFillHorizontal;
-        break;
+        case ButtonInteractionState.IDLE:
+        case ButtonInteractionState.DISABLED:
+          button.fill = upFillVertical;
+          horizontalShadingPath.fill = upFillHorizontal;
+          break;
 
-      case ButtonInteractionState.PRESSED:
-      case ButtonInteractionState.DISABLED_PRESSED:
-        button.fill = downFillVertical;
-        horizontalShadingPath.fill = overFillHorizontal;
-        break;
+        case ButtonInteractionState.OVER:
+          button.fill = overFillVertical;
+          horizontalShadingPath.fill = overFillHorizontal;
+          break;
 
-      default:
-        throw new Error( `unsupported interactionState: ${interactionState}` );
+        case ButtonInteractionState.PRESSED:
+        case ButtonInteractionState.DISABLED_PRESSED:
+          button.fill = downFillVertical;
+          horizontalShadingPath.fill = overFillHorizontal;
+          break;
+
+        default:
+          throw new Error( `unsupported interactionState: ${interactionState}` );
+      }
     }
+
+    interactionStateProperty.link( interactionStateListener );
+
+    // @public
+    this.dispose = () => {
+      if ( interactionStateProperty.hasListener( interactionStateListener ) ) {
+        interactionStateProperty.unlink( interactionStateListener );
+      }
+
+      baseBrighter7.dispose();
+      baseBrighter5.dispose();
+      baseBrighter2.dispose();
+      baseDarker3.dispose();
+      baseDarker4.dispose();
+      baseDarker5.dispose();
+      baseTransparent.dispose();
+    };
   }
-  interactionStateProperty.link( interactionStateListener );
+}
 
-  // @public
-  this.dispose = () => {
-    if ( interactionStateProperty.hasListener( interactionStateListener ) ) {
-      interactionStateProperty.unlink( interactionStateListener );
-    }
-
-    baseBrighter7.dispose();
-    baseBrighter5.dispose();
-    baseBrighter2.dispose();
-    baseDarker3.dispose();
-    baseDarker4.dispose();
-    baseDarker5.dispose();
-    baseTransparent.dispose();
-  };
-};
 
 /**
- * Strategy for buttons that look flat, i.e. no shading or highlighting, but that change color on mouseover, press,
- * etc.
- *
- * @param {Node} button
- * @param {Property.<boolean>} interactionStateProperty
- * @param {Property.<Color>} baseColorProperty
- * @param {Object} [options]
- * @constructor
- * @public
+ * FlatAppearanceStrategy is a value for RectangularButton options.buttonAppearanceStrategy. It makes a rectangular
+ * button look flat, i.e. no shading or highlighting, with color changes on mouseover, press, etc.
  */
-RectangularButton.FlatAppearanceStrategy = function( button, interactionStateProperty, baseColorProperty, options ) {
+class FlatAppearanceStrategy {
 
-  // Dynamic colors
-  const baseBrighter4 = new PaintColorProperty( baseColorProperty, { luminanceFactor: 0.4 } );
-  const baseDarker4 = new PaintColorProperty( baseColorProperty, { luminanceFactor: -0.4 } );
+  /*
+   * @param {Node} button
+   * @param {Property.<boolean>} interactionStateProperty
+   * @param {Property.<Color>} baseColorProperty
+   * @param {Object} [options]
+   */
+  constructor( button, interactionStateProperty, baseColorProperty, options ) {
 
-  // Fills used for various button states
-  const upFill = baseColorProperty;
-  const overFill = baseBrighter4;
-  const downFill = baseDarker4;
+    // Dynamic colors
+    const baseBrighter4 = new PaintColorProperty( baseColorProperty, { luminanceFactor: 0.4 } );
+    const baseDarker4 = new PaintColorProperty( baseColorProperty, { luminanceFactor: -0.4 } );
 
-  // If the stroke wasn't provided, set a default
-  button.stroke = ( typeof ( options.stroke ) === 'undefined' ) ? baseDarker4 : options.stroke;
+    // Fills used for various button states
+    const upFill = baseColorProperty;
+    const overFill = baseBrighter4;
+    const downFill = baseDarker4;
 
-  // Cache paints
-  button.cachedPaints = [ upFill, overFill, downFill ];
+    // If the stroke wasn't provided, set a default
+    button.stroke = ( typeof ( options.stroke ) === 'undefined' ) ? baseDarker4 : options.stroke;
 
-  // Change colors to match interactionState 
-  function interactionStateListener( interactionState ) {
-    switch( interactionState ) {
+    // Cache paints
+    button.cachedPaints = [ upFill, overFill, downFill ];
 
-      case ButtonInteractionState.IDLE:
-      case ButtonInteractionState.DISABLED:
-        button.fill = upFill;
-        break;
+    // Change colors to match interactionState
+    function interactionStateListener( interactionState ) {
+      switch( interactionState ) {
 
-      case ButtonInteractionState.OVER:
-        button.fill = overFill;
-        break;
+        case ButtonInteractionState.IDLE:
+        case ButtonInteractionState.DISABLED:
+          button.fill = upFill;
+          break;
 
-      case ButtonInteractionState.PRESSED:
-      case ButtonInteractionState.DISABLED_PRESSED:
-        button.fill = downFill;
-        break;
+        case ButtonInteractionState.OVER:
+          button.fill = overFill;
+          break;
 
-      default:
-        throw new Error( `unsupported interactionState: ${interactionState}` );
+        case ButtonInteractionState.PRESSED:
+        case ButtonInteractionState.DISABLED_PRESSED:
+          button.fill = downFill;
+          break;
+
+        default:
+          throw new Error( `unsupported interactionState: ${interactionState}` );
+      }
     }
+
+    interactionStateProperty.link( interactionStateListener );
+
+    // @public
+    this.dispose = () => {
+      if ( interactionStateProperty.hasListener( interactionStateListener ) ) {
+        interactionStateProperty.unlink( interactionStateListener );
+      }
+
+      baseBrighter4.dispose();
+      baseDarker4.dispose();
+    };
   }
-  interactionStateProperty.link( interactionStateListener );
+}
 
-  // @public
-  this.dispose = () => {
-    if ( interactionStateProperty.hasListener( interactionStateListener ) ) {
-      interactionStateProperty.unlink( interactionStateListener );
-    }
-
-    baseBrighter4.dispose();
-    baseDarker4.dispose();
-  };
-};
+// @public
+RectangularButton.ThreeDAppearanceStrategy = ThreeDAppearanceStrategy;
+RectangularButton.FlatAppearanceStrategy = FlatAppearanceStrategy;
 
 sun.register( 'RectangularButton', RectangularButton );
 export default RectangularButton;
