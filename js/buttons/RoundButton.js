@@ -38,8 +38,9 @@ class RoundButton extends ButtonNode {
 
       radius: ( options && options.content ) ? undefined : 30,
       cursor: 'pointer',
-      minXMargin: 5, // Minimum margin in x direction, i.e. on left and right
-      minYMargin: 5, // Minimum margin in y direction, i.e. on top and bottom
+
+      xMargin: 5, // Minimum margin in x direction, i.e. on left and right
+      yMargin: 5, // Minimum margin in y direction, i.e. on top and bottom
       fireOnDown: false,
 
       // pointer area dilation
@@ -77,7 +78,7 @@ class RoundButton extends ButtonNode {
 
     // Compute the radius of the button.
     const buttonRadius = options.radius ||
-                         Math.max( content.width + options.minXMargin * 2, content.height + options.minYMargin * 2 ) / 2;
+                         Math.max( content.width + options.xMargin * 2, content.height + options.yMargin * 2 ) / 2;
 
     // Create the circular part of the button.
     const buttonBackground = new Circle( buttonRadius, {
