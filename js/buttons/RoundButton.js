@@ -61,10 +61,8 @@ class RoundButton extends ButtonNode {
       xContentOffset: 0,
       yContentOffset: 0,
 
-      // Strategy for controlling the button's appearance, excluding any
-      // content.  This can be a stock strategy from this file or custom.  To
-      // create a custom one, model it off of the stock strategies defined in
-      // this file.
+      // Class that determines the button's appearance for the values of interactionStateProperty.
+      // See RoundButton.ThreeDAppearanceStrategy for an example of the interface required.
       buttonAppearanceStrategy: RoundButton.ThreeDAppearanceStrategy,
 
       // phet-io
@@ -114,7 +112,7 @@ class RoundButton extends ButtonNode {
 
     // @private
     this.disposeRoundButton = () => {
-      buttonAppearanceStrategy.dispose();
+      buttonAppearanceStrategy.dispose && buttonAppearanceStrategy.dispose();
     };
   }
 
@@ -136,7 +134,7 @@ class RoundButton extends ButtonNode {
 class ThreeDAppearanceStrategy {
 
   /**
-   * @param {Node} button
+   * @param {Node} button - the Node for the button's shape, sans content
    * @param {Property.<boolean>} interactionStateProperty
    * @param {Property.<Color>} baseColorProperty
    * @param {Object} [options]
@@ -248,7 +246,7 @@ class ThreeDAppearanceStrategy {
 class FlatAppearanceStrategy {
 
   /*
-   * @param {Node} button
+   * @param {Node} button - the Node for the button's shape, sans content
    * @param {Property.<boolean>} interactionStateProperty
    * @param {Property.<Color>} baseColorProperty
    * @param {Object} [options]

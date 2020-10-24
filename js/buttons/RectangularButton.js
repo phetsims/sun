@@ -78,10 +78,8 @@ class RectangularButton extends ButtonNode {
       leftBottomCornerRadius: null,
       rightBottomCornerRadius: null,
 
-      // Strategy for controlling the button's appearance, excluding any
-      // content.  This can be a stock strategy from this file or custom.  To
-      // create a custom one, model it off of the stock strategies defined in
-      // this file.
+      // Class that determines the button's appearance for the values of interactionStateProperty.
+      // See RectangularButton.ThreeDAppearanceStrategy for an example of the interface required.
       buttonAppearanceStrategy: RectangularButton.ThreeDAppearanceStrategy,
 
       // pdom
@@ -145,7 +143,7 @@ class RectangularButton extends ButtonNode {
 
     // @private
     this.disposeRectangularButton = () => {
-      buttonAppearanceStrategy.dispose();
+      buttonAppearanceStrategy.dispose && buttonAppearanceStrategy.dispose();
       alignBox && alignBox.dispose();
     };
   }
@@ -185,7 +183,7 @@ function createButtonShape( width, height, config ) {
 class ThreeDAppearanceStrategy {
 
   /**
-   * @param {Node} button
+   * @param {Node} button - the Node for the button's shape, sans content
    * @param {Property.<String>} interactionStateProperty
    * @param {Property.<Color>} baseColorProperty
    * @param {Object} [options]
@@ -311,7 +309,7 @@ class ThreeDAppearanceStrategy {
 class FlatAppearanceStrategy {
 
   /*
-   * @param {Node} button
+   * @param {Node} button - the Node for the button's shape, sans content
    * @param {Property.<boolean>} interactionStateProperty
    * @param {Property.<Color>} baseColorProperty
    * @param {Object} [options]

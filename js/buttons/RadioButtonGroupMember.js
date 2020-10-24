@@ -56,8 +56,8 @@ class RadioButtonGroupMember extends RectangularButton {
       overStroke: null,
       overLineWidth: null,
 
-      // The default appearance uses the color values specified above, but other appearances could be specified for more
-      // customized behavior.  Generally setting the color values above should be enough to specify the desired look.
+      // Class that determines the button's appearance for the values of interactionStateProperty.
+      // See RadioButtonGroupMember.FlatAppearanceStrategy for an example.
       buttonAppearanceStrategy: RadioButtonGroupMember.FlatAppearanceStrategy,
 
       // {Playable|null} - sound generation - If set to null a default will be used that is based on this button's
@@ -174,7 +174,7 @@ class RadioButtonGroupMember extends RectangularButton {
 class FlatAppearanceStrategy {
 
   /**
-   * @param {Node} button
+   * @param {Node} button - the Node for the button's shape, sans content
    * @param {Property} interactionStateProperty
    * @param {Property} baseColorProperty
    * @param {Object} [options]
