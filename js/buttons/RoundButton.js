@@ -8,13 +8,11 @@
  */
 
 import DerivedProperty from '../../../axon/js/DerivedProperty.js';
-import Vector2 from '../../../dot/js/Vector2.js';
 import Shape from '../../../kite/js/Shape.js';
 import merge from '../../../phet-core/js/merge.js';
 import Circle from '../../../scenery/js/nodes/Circle.js';
 import PaintColorProperty from '../../../scenery/js/util/PaintColorProperty.js';
 import RadialGradient from '../../../scenery/js/util/RadialGradient.js';
-import Tandem from '../../../tandem/js/Tandem.js';
 import sun from '../sun.js';
 import ButtonInteractionState from './ButtonInteractionState.js';
 import ButtonNode from './ButtonNode.js';
@@ -56,29 +54,17 @@ class RoundButton extends ButtonNode {
       stroke: undefined, // undefined by default, which will cause a stroke to be derived from the base color
       lineWidth: 0.5, // Only meaningful if stroke is non-null
 
-      // By default, icons are centered in the button, but icons with odd
-      // shapes that are not wrapped in a normalizing parent node may need to
-      // specify offsets to line things up properly
-      xContentOffset: 0,
-      yContentOffset: 0,
-
       // Class that determines the button's appearance for the values of interactionStateProperty.
       // See RoundButton.ThreeDAppearanceStrategy for an example of the interface required.
       buttonAppearanceStrategy: RoundButton.ThreeDAppearanceStrategy,
-
-      // phet-io
-      tandem: Tandem.OPTIONAL, // This duplicates the parent option and works around https://github.com/phetsims/tandem/issues/50
-      visiblePropertyOptions: { phetioFeatured: true },
 
       // pdom
       tagName: 'button'
     }, options );
 
-    const content = options.content; // convenience variable
-
-    // Compute the radius of the button.
+    // Compute the radius of the button. radius will not be falsey if content is also falsey
     const buttonRadius = options.radius ||
-                         Math.max( content.width + options.xMargin * 2, content.height + options.yMargin * 2 ) / 2;
+                         Math.max( options.content.width + options.xMargin * 2, options.content.height + options.yMargin * 2 ) / 2;
 
     // Create the circular part of the button.
     const buttonBackground = new Circle( buttonRadius, {
@@ -86,13 +72,6 @@ class RoundButton extends ButtonNode {
     } );
 
     super( buttonModel, buttonBackground, interactionStateProperty, options );
-
-    // Add the content to the button.
-    if ( content ) {
-      content.pickable = false; // for performance
-      content.center = new Vector2( options.xContentOffset, options.yContentOffset );
-      this.addChild( content );
-    }
 
     // Set pointer areas.
     this.touchArea = Shape.circle( options.touchAreaXShift, options.touchAreaYShift,

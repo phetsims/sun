@@ -8,15 +8,12 @@
  */
 
 import DerivedProperty from '../../../axon/js/DerivedProperty.js';
-import Bounds2 from '../../../dot/js/Bounds2.js';
 import Shape from '../../../kite/js/Shape.js';
 import merge from '../../../phet-core/js/merge.js';
-import AlignBox from '../../../scenery/js/nodes/AlignBox.js';
 import Path from '../../../scenery/js/nodes/Path.js';
 import Color from '../../../scenery/js/util/Color.js';
 import LinearGradient from '../../../scenery/js/util/LinearGradient.js';
 import PaintColorProperty from '../../../scenery/js/util/PaintColorProperty.js';
-import Tandem from '../../../tandem/js/Tandem.js';
 import sun from '../sun.js';
 import ButtonInteractionState from './ButtonInteractionState.js';
 import ButtonNode from './ButtonNode.js';
@@ -25,8 +22,6 @@ import ButtonNode from './ButtonNode.js';
 const VERTICAL_HIGHLIGHT_GRADIENT_LENGTH = 7; // In screen coords, which are roughly pixels.
 const HORIZONTAL_HIGHLIGHT_GRADIENT_LENGTH = 7; // In screen coords, which are roughly pixels.
 const SHADE_GRADIENT_LENGTH = 3; // In screen coords, which are roughly pixels.
-const X_ALIGN_VALUES = [ 'center', 'left', 'right' ];
-const Y_ALIGN_VALUES = [ 'center', 'top', 'bottom' ];
 
 class RectangularButton extends ButtonNode {
 
@@ -44,7 +39,6 @@ class RectangularButton extends ButtonNode {
 
       minWidth: HORIZONTAL_HIGHLIGHT_GRADIENT_LENGTH + SHADE_GRADIENT_LENGTH,
       minHeight: VERTICAL_HIGHLIGHT_GRADIENT_LENGTH + SHADE_GRADIENT_LENGTH,
-      cursor: 'pointer',
       xMargin: 8, // should be visibly greater than yMargin, see issue #109
       yMargin: 5,
 
@@ -83,23 +77,12 @@ class RectangularButton extends ButtonNode {
       buttonAppearanceStrategy: RectangularButton.ThreeDAppearanceStrategy,
 
       // pdom
-      tagName: 'button',
-
-      // phet-io
-      tandem: Tandem.OPTIONAL, // This duplicates the parent option and works around https://github.com/phetsims/tandem/issues/50
-      visiblePropertyOptions: { phetioFeatured: true }
+      tagName: 'button'
     }, options );
 
-    // validate options
-    assert && assert( _.includes( X_ALIGN_VALUES, options.xAlign ), 'invalid xAlign: ' + options.xAlign );
-    assert && assert( _.includes( Y_ALIGN_VALUES, options.yAlign ), 'invalid yAlign: ' + options.yAlign );
-
-
-    const content = options.content; // convenience variable
-
     // Compute the size of the button.
-    const buttonWidth = Math.max( content ? content.width + options.xMargin * 2 : 0, options.minWidth );
-    const buttonHeight = Math.max( content ? content.height + options.yMargin * 2 : 0, options.minHeight );
+    const buttonWidth = Math.max( options.content ? options.content.width + options.xMargin * 2 : 0, options.minWidth );
+    const buttonHeight = Math.max( options.content ? options.content.height + options.yMargin * 2 : 0, options.minHeight );
 
     // Create the rectangular part of the button.
     const buttonBackground = new Path( createButtonShape( buttonWidth, buttonHeight, options ), {
@@ -108,25 +91,6 @@ class RectangularButton extends ButtonNode {
 
     super( buttonModel, buttonBackground, interactionStateProperty, options );
 
-    // Add the content to the button.
-    let alignBox = null;
-    if ( content ) {
-
-      // Align content in the button rectangle. Must be disposed since it adds listener to content bounds.
-      alignBox = new AlignBox( content, {
-        alignBounds: new Bounds2(
-          options.xMargin,
-          options.yMargin,
-          buttonBackground.width - options.xMargin,
-          buttonHeight - options.yMargin
-        ),
-        xAlign: options.xAlign,
-        yAlign: options.yAlign,
-        pickable: false // for performance
-      } );
-      this.addChild( alignBox );
-    }
-
     // Set pointer areas.
     this.touchArea = buttonBackground.localBounds
       .dilatedXY( options.touchAreaXDilation, options.touchAreaYDilation )
@@ -134,20 +98,6 @@ class RectangularButton extends ButtonNode {
     this.mouseArea = buttonBackground.localBounds
       .dilatedXY( options.mouseAreaXDilation, options.mouseAreaYDilation )
       .shifted( options.mouseAreaXShift, options.mouseAreaYShift );
-
-    // @private
-    this.disposeRectangularButton = () => {
-      alignBox && alignBox.dispose();
-    };
-  }
-
-  /**
-   * @public
-   * @override
-   */
-  dispose() {
-    this.disposeRectangularButton();
-    super.dispose();
   }
 }
 

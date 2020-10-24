@@ -8,7 +8,10 @@
  * @author Michael Kauzmann (PhET Interactive Simulations)
  */
 
+import Bounds2 from '../../../dot/js/Bounds2.js';
+import Vector2 from '../../../dot/js/Vector2.js';
 import merge from '../../../phet-core/js/merge.js';
+import AlignBox from '../../../scenery/js/nodes/AlignBox.js';
 import Node from '../../../scenery/js/nodes/Node.js';
 import PaintColorProperty from '../../../scenery/js/util/PaintColorProperty.js';
 import Tandem from '../../../tandem/js/Tandem.js';
@@ -16,6 +19,10 @@ import ColorConstants from '../ColorConstants.js';
 import EnabledNode from '../EnabledNode.js';
 import sun from '../sun.js';
 import ButtonInteractionState from './ButtonInteractionState.js';
+
+// constants
+const X_ALIGN_VALUES = [ 'center', 'left', 'right' ];
+const Y_ALIGN_VALUES = [ 'center', 'top', 'bottom' ];
 
 class ButtonNode extends Node {
 
@@ -28,7 +35,22 @@ class ButtonNode extends Node {
   constructor( buttonModel, buttonBackground, interactionStateProperty, options ) {
 
     options = merge( {
-      tandem: Tandem.OPTIONAL,
+
+      // {Node|null} what appears on the button (icon, label, etc.)
+      content: null,
+
+      xMargin: 10, // margin in x direction, i.e. on left and right
+      yMargin: 5, // margin in y direction, i.e. on top and bottom
+
+      // Alignment, relevant only when options minWidth or minHeight are greater than the size of options.content
+      xAlign: 'center', // {string} see X_ALIGN_VALUES
+      yAlign: 'center', // {string} see Y_ALIGN_VALUES
+
+      // By default, icons are centered in the button, but icons with odd
+      // shapes that are not wrapped in a normalizing parent node may need to
+      // specify offsets to line things up properly
+      xContentOffset: 0,
+      yContentOffset: 0,
 
       // Options that will be passed through to the main input listener (PressListener)
       listenerOptions: null,
@@ -39,13 +61,16 @@ class ButtonNode extends Node {
       // {string} default cursor
       cursor: 'pointer',
 
+      // Class that determines the button's appearance for the values of interactionStateProperty.
+      // See ButtonNode.FlatAppearanceStrategy for an example of the interface required.
+      buttonAppearanceStrategy: ButtonNode.FlatAppearanceStrategy,
+
+      // phet-io
       // TODO: workaround for difficulty in mutate/instrumentation order of sun buttons,
       //  see https://github.com/phetsims/sun/issues/643 or https://github.com/phetsims/sun/issues/515
       phetioLinkEnabledElement: false,
-
-      // Class that determines the button's appearance for the values of interactionStateProperty.
-      // See ButtonNode.FlatAppearanceStrategy for an example of the interface required.
-      buttonAppearanceStrategy: ButtonNode.FlatAppearanceStrategy
+      tandem: Tandem.OPTIONAL,
+      visiblePropertyOptions: { phetioFeatured: true }
     }, options );
 
     options.listenerOptions = merge( {
@@ -56,7 +81,11 @@ class ButtonNode extends Node {
       'if options.enabledProperty is provided, it must === buttonModel.enabledProperty' );
     options.enabledProperty = buttonModel.enabledProperty;
 
-    super( options );
+    // validate options - TODO: are these needed? Won't AlignBox handle this validation? https://github.com/phetsims/sun/issues/643
+    assert && assert( _.includes( X_ALIGN_VALUES, options.xAlign ), 'invalid xAlign: ' + options.xAlign );
+    assert && assert( _.includes( Y_ALIGN_VALUES, options.yAlign ), 'invalid yAlign: ' + options.yAlign );
+
+    super();
 
     this.initializeEnabledNode( options );
 
@@ -79,11 +108,42 @@ class ButtonNode extends Node {
     const buttonAppearanceStrategy = new options.buttonAppearanceStrategy( buttonBackground, interactionStateProperty,
       this.baseColorProperty, options );
 
+    let alignBox = null;
+    if ( options.content ) {
+
+      // TODO: there is likely a simpler way to support this content offset, https://github.com/phetsims/sun/issues/643
+      const contentContainer = new Node( {
+        children: [ options.content ],
+        center: new Vector2( options.xContentOffset, options.yContentOffset )
+      } );
+
+      // Align content in the button rectangle. Must be disposed since it adds listener to content bounds.
+      alignBox = new AlignBox( contentContainer, {
+
+        // TODO: margins here would be broken for round buttons if they don't use the same value for x and y.
+        // TODO: Because they are used here differently from how they are used to calculate radius in RoundButton (as a minimum). Is that OK? https://github.com/phetsims/sun/issues/643
+        alignBounds: new Bounds2(
+          options.xMargin,
+          options.yMargin,
+          buttonBackground.width - options.xMargin,
+          buttonBackground.height - options.yMargin
+        ),
+        xAlign: options.xAlign,
+        yAlign: options.yAlign,
+        center: buttonBackground.center,
+        pickable: false // for performance
+      } );
+      this.addChild( alignBox );
+    }
+
+    this.mutate( options );
+
     // @private - define a dispose function
     this.disposeButtonNode = () => {
       this.baseColorProperty.dispose();
       this._pressListener.dispose();
       buttonAppearanceStrategy.dispose && buttonAppearanceStrategy.dispose();
+      alignBox && alignBox.dispose();
     };
   }
 
