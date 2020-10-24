@@ -15,7 +15,7 @@ import Node from '../../scenery/js/nodes/Node.js';
 import Path from '../../scenery/js/nodes/Path.js';
 import Playable from '../../tambo/js/Playable.js';
 import Tandem from '../../tandem/js/Tandem.js';
-import RectangularButton from './buttons/RectangularButton.js';
+import ButtonNode from './buttons/ButtonNode.js';
 import RectangularPushButton from './buttons/RectangularPushButton.js';
 import sun from './sun.js';
 import VSeparator from './VSeparator.js';
@@ -50,7 +50,7 @@ class ComboBoxButton extends RectangularPushButton {
       // RectangularPushButton options
       cursor: 'pointer',
       baseColor: 'white',
-      buttonAppearanceStrategy: RectangularButton.FlatAppearanceStrategy,
+      buttonAppearanceStrategy: ButtonNode.FlatAppearanceStrategy,
       xMargin: 12,
       yMargin: 8,
       stroke: 'black',

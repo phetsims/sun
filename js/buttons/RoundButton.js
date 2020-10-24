@@ -218,76 +218,8 @@ class ThreeDAppearanceStrategy {
   }
 }
 
-/**
- * FlatAppearanceStrategy is a value for RoundButton options.buttonAppearanceStrategy. It makes a round
- * button look flat, i.e. no shading or highlighting, with color changes on mouseover, press, etc.
- */
-class FlatAppearanceStrategy {
-
-  /*
-   * @param {Node} button - the Node for the button's shape, sans content
-   * @param {Property.<boolean>} interactionStateProperty
-   * @param {Property.<Color>} baseColorProperty
-   * @param {Object} [options]
-   */
-  constructor( button, interactionStateProperty, baseColorProperty, options ) {
-
-    // Dynamic colors
-    const baseBrighter4 = new PaintColorProperty( baseColorProperty, { luminanceFactor: 0.4 } );
-    const baseDarker4 = new PaintColorProperty( baseColorProperty, { luminanceFactor: -0.4 } );
-
-    // various fills that are used to alter the button's appearance
-    const upFill = baseColorProperty;
-    const overFill = baseBrighter4;
-    const downFill = baseDarker4;
-
-    // If the stroke wasn't provided, set a default
-    button.stroke = ( typeof ( options.stroke ) === 'undefined' ) ? baseDarker4 : options.stroke;
-
-    // Cache colors
-    button.cachedPaints = [ upFill, overFill, downFill ];
-
-    // Change colors to match interactionState
-    function interactionStateListener( interactionState ) {
-      switch( interactionState ) {
-
-        case ButtonInteractionState.IDLE:
-        case ButtonInteractionState.DISABLED:
-          button.fill = upFill;
-          break;
-
-        case ButtonInteractionState.OVER:
-          button.fill = overFill;
-          break;
-
-        case ButtonInteractionState.PRESSED:
-        case ButtonInteractionState.DISABLED_PRESSED:
-          button.fill = downFill;
-          break;
-
-        default:
-          throw new Error( `unsupported interactionState: ${interactionState}` );
-      }
-    }
-
-    // Do the initial update explicitly, then lazy link to the properties.  This keeps the number of initial updates to
-    // a minimum and allows us to update some optimization flags the first time the base color is actually changed.
-    interactionStateProperty.link( interactionStateListener );
-
-    // @public
-    this.dispose = () => {
-      if ( interactionStateProperty.hasListener( interactionStateListener ) ) {
-        interactionStateProperty.unlink( interactionStateListener );
-      }
-      baseBrighter4.dispose();
-      baseDarker4.dispose();
-    };
-  }
-}
-
 // @public
 RoundButton.ThreeDAppearanceStrategy = ThreeDAppearanceStrategy;
-RoundButton.FlatAppearanceStrategy = FlatAppearanceStrategy;
 
 sun.register( 'RoundButton', RoundButton );
 export default RoundButton;

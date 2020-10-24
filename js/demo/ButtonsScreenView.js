@@ -19,11 +19,10 @@ import Color from '../../../scenery/js/util/Color.js';
 import Font from '../../../scenery/js/util/Font.js';
 import ArrowButton from '../buttons/ArrowButton.js';
 import BooleanRectangularStickyToggleButton from '../buttons/BooleanRectangularStickyToggleButton.js';
+import ButtonNode from '../buttons/ButtonNode.js';
 import RadioButtonGroup from '../buttons/RadioButtonGroup.js';
-import RectangularButton from '../buttons/RectangularButton.js';
 import RectangularMomentaryButton from '../buttons/RectangularMomentaryButton.js';
 import RectangularPushButton from '../buttons/RectangularPushButton.js';
-import RoundButton from '../buttons/RoundButton.js';
 import RoundMomentaryButton from '../buttons/RoundMomentaryButton.js';
 import RoundPushButton from '../buttons/RoundPushButton.js';
 import RoundStickyToggleButton from '../buttons/RoundStickyToggleButton.js';
@@ -239,14 +238,14 @@ class ButtonsScreenView extends ScreenView {
       content: new Text( '-- 1 --', { font: BUTTON_FONT } ),
       listener: function() { message( 'Button 1 pressed' ); },
       baseColor: 'rgb( 204, 102, 204 )',
-      buttonAppearanceStrategy: RectangularButton.FlatAppearanceStrategy
+      buttonAppearanceStrategy: ButtonNode.FlatAppearanceStrategy
     } );
 
     const button2 = new RectangularPushButton( {
       content: new Text( '-- 2 --', { font: BUTTON_FONT } ),
       listener: function() { message( 'Button 2 pressed' ); },
       baseColor: '#A0D022',
-      buttonAppearanceStrategy: RectangularButton.FlatAppearanceStrategy,
+      buttonAppearanceStrategy: ButtonNode.FlatAppearanceStrategy,
       lineWidth: 1,
       stroke: '#202020'
     } );
@@ -254,14 +253,14 @@ class ButtonsScreenView extends ScreenView {
     const button3 = new RoundPushButton( {
       content: new Text( '- 3 -', { font: BUTTON_FONT } ),
       listener: function() { message( 'Button 3 pressed ' ); },
-      buttonAppearanceStrategy: RoundButton.FlatAppearanceStrategy
+      buttonAppearanceStrategy: ButtonNode.FlatAppearanceStrategy
     } );
 
     const button4 = new RoundPushButton( {
       content: new Text( '-- 4 --', { font: BUTTON_FONT, fill: 'white' } ),
       listener: function() { message( 'Button 4 pressed ' ); },
       baseColor: '#CC3300',
-      buttonAppearanceStrategy: RoundButton.FlatAppearanceStrategy
+      buttonAppearanceStrategy: ButtonNode.FlatAppearanceStrategy
     } );
 
     const flatButtonsBox = new HBox( {

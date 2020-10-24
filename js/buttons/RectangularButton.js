@@ -294,76 +294,8 @@ class ThreeDAppearanceStrategy {
   }
 }
 
-
-/**
- * FlatAppearanceStrategy is a value for RectangularButton options.buttonAppearanceStrategy. It makes a rectangular
- * button look flat, i.e. no shading or highlighting, with color changes on mouseover, press, etc.
- */
-class FlatAppearanceStrategy {
-
-  /*
-   * @param {Node} button - the Node for the button's shape, sans content
-   * @param {Property.<boolean>} interactionStateProperty
-   * @param {Property.<Color>} baseColorProperty
-   * @param {Object} [options]
-   */
-  constructor( button, interactionStateProperty, baseColorProperty, options ) {
-
-    // Dynamic colors
-    const baseBrighter4 = new PaintColorProperty( baseColorProperty, { luminanceFactor: 0.4 } );
-    const baseDarker4 = new PaintColorProperty( baseColorProperty, { luminanceFactor: -0.4 } );
-
-    // Fills used for various button states
-    const upFill = baseColorProperty;
-    const overFill = baseBrighter4;
-    const downFill = baseDarker4;
-
-    // If the stroke wasn't provided, set a default
-    button.stroke = ( typeof ( options.stroke ) === 'undefined' ) ? baseDarker4 : options.stroke;
-
-    // Cache paints
-    button.cachedPaints = [ upFill, overFill, downFill ];
-
-    // Change colors to match interactionState
-    function interactionStateListener( interactionState ) {
-      switch( interactionState ) {
-
-        case ButtonInteractionState.IDLE:
-        case ButtonInteractionState.DISABLED:
-          button.fill = upFill;
-          break;
-
-        case ButtonInteractionState.OVER:
-          button.fill = overFill;
-          break;
-
-        case ButtonInteractionState.PRESSED:
-        case ButtonInteractionState.DISABLED_PRESSED:
-          button.fill = downFill;
-          break;
-
-        default:
-          throw new Error( `unsupported interactionState: ${interactionState}` );
-      }
-    }
-
-    interactionStateProperty.link( interactionStateListener );
-
-    // @public
-    this.dispose = () => {
-      if ( interactionStateProperty.hasListener( interactionStateListener ) ) {
-        interactionStateProperty.unlink( interactionStateListener );
-      }
-
-      baseBrighter4.dispose();
-      baseDarker4.dispose();
-    };
-  }
-}
-
 // @public
 RectangularButton.ThreeDAppearanceStrategy = ThreeDAppearanceStrategy;
-RectangularButton.FlatAppearanceStrategy = FlatAppearanceStrategy;
 
 sun.register( 'RectangularButton', RectangularButton );
 export default RectangularButton;

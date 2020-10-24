@@ -13,7 +13,7 @@ import merge from '../../phet-core/js/merge.js';
 import Path from '../../scenery/js/nodes/Path.js';
 import Tandem from '../../tandem/js/Tandem.js';
 import BooleanRectangularToggleButton from './buttons/BooleanRectangularToggleButton.js';
-import RectangularButton from './buttons/RectangularButton.js';
+import ButtonNode from './buttons/ButtonNode.js';
 import sun from './sun.js';
 
 // constants
@@ -46,7 +46,7 @@ class ExpandCollapseButton extends BooleanRectangularToggleButton {
     options.yMargin = options.xMargin;
 
     assert && assert( options.buttonAppearanceStrategy === undefined, 'ExpandCollapseButton sets buttonAppearanceStrategy' );
-    options.buttonAppearanceStrategy = RectangularButton.FlatAppearanceStrategy;
+    options.buttonAppearanceStrategy = ButtonNode.FlatAppearanceStrategy;
 
     // configure the +/- symbol on the button
     const symbolLength = SYMBOL_RELATIVE_WIDTH * options.sideLength;
