@@ -94,7 +94,6 @@ class RectangularButton extends ButtonNode {
     assert && assert( _.includes( X_ALIGN_VALUES, options.xAlign ), 'invalid xAlign: ' + options.xAlign );
     assert && assert( _.includes( Y_ALIGN_VALUES, options.yAlign ), 'invalid yAlign: ' + options.yAlign );
 
-    super( buttonModel, options );
 
     const content = options.content; // convenience variable
 
@@ -103,16 +102,11 @@ class RectangularButton extends ButtonNode {
     const buttonHeight = Math.max( content ? content.height + options.yMargin * 2 : 0, options.minHeight );
 
     // Create the rectangular part of the button.
-    const button = new Path( createButtonShape( buttonWidth, buttonHeight, options ), {
-      fill: this.baseColorProperty,
-      lineWidth: options.lineWidth,
-      pickable: false
+    const buttonBackground = new Path( createButtonShape( buttonWidth, buttonHeight, options ), {
+      lineWidth: options.lineWidth
     } );
-    this.addChild( button );
 
-    // Hook up the strategy that will control the button's appearance.
-    const buttonAppearanceStrategy = new options.buttonAppearanceStrategy( button, interactionStateProperty,
-      this.baseColorProperty, options );
+    super( buttonModel, buttonBackground, interactionStateProperty, options );
 
     // Add the content to the button.
     let alignBox = null;
@@ -123,7 +117,7 @@ class RectangularButton extends ButtonNode {
         alignBounds: new Bounds2(
           options.xMargin,
           options.yMargin,
-          button.width - options.xMargin,
+          buttonBackground.width - options.xMargin,
           buttonHeight - options.yMargin
         ),
         xAlign: options.xAlign,
@@ -134,16 +128,15 @@ class RectangularButton extends ButtonNode {
     }
 
     // Set pointer areas.
-    this.touchArea = button.localBounds
+    this.touchArea = buttonBackground.localBounds
       .dilatedXY( options.touchAreaXDilation, options.touchAreaYDilation )
       .shifted( options.touchAreaXShift, options.touchAreaYShift );
-    this.mouseArea = button.localBounds
+    this.mouseArea = buttonBackground.localBounds
       .dilatedXY( options.mouseAreaXDilation, options.mouseAreaYDilation )
       .shifted( options.mouseAreaXShift, options.mouseAreaYShift );
 
     // @private
     this.disposeRectangularButton = () => {
-      buttonAppearanceStrategy.dispose && buttonAppearanceStrategy.dispose();
       alignBox && alignBox.dispose();
     };
   }

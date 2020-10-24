@@ -9,6 +9,7 @@
  */
 
 import merge from '../../../phet-core/js/merge.js';
+import required from '../../../phet-core/js/required.js';
 import Node from '../../../scenery/js/nodes/Node.js';
 import PaintColorProperty from '../../../scenery/js/util/PaintColorProperty.js';
 import Tandem from '../../../tandem/js/Tandem.js';
@@ -20,9 +21,11 @@ class ButtonNode extends Node {
 
   /**
    * @param {ButtonModel} buttonModel
+   * @param {Node} buttonBackground - the background of the button (like a circle or rectangle).
+   * @param {Property} interactionStateProperty - a Property that is used to drive the visual appearance of the button
    * @param {Object} [options] - this type does not mutate its options, but relies on the subtype to
    */
-  constructor( buttonModel, options ) {
+  constructor( buttonModel, buttonBackground, interactionStateProperty, options ) {
 
     options = merge( {
       tandem: Tandem.OPTIONAL,
@@ -38,7 +41,11 @@ class ButtonNode extends Node {
 
       // TODO: workaround for difficulty in mutate/instrumentation order of sun buttons,
       //  see https://github.com/phetsims/sun/issues/643 or https://github.com/phetsims/sun/issues/515
-      phetioLinkEnabledElement: false
+      phetioLinkEnabledElement: false,
+
+      // Class that determines the button's appearance for the values of interactionStateProperty.
+      // See RectangularButton.FlatAppearanceStrategy for an example of the interface required.
+      buttonAppearanceStrategy: null // TODO: add a default up here, see https://github.com/phetsims/sun/issues/647
 
     }, options );
 
@@ -64,10 +71,20 @@ class ButtonNode extends Node {
     this._pressListener = buttonModel.createPressListener( options.listenerOptions );
     this.addInputListener( this._pressListener );
 
+    assert && assert( buttonBackground.fill === null, 'ButtonNode controls the fill for the buttonBackground' );
+    buttonBackground.pickable = false;
+    buttonBackground.fill = this.baseColorProperty;
+    this.addChild( buttonBackground );
+
+    // Hook up the strategy that will control the button's appearance.
+    const buttonAppearanceStrategy = new (required( options.buttonAppearanceStrategy ))( buttonBackground, interactionStateProperty,
+      this.baseColorProperty, options );
+
     // @private - define a dispose function
     this.disposeButtonNode = () => {
       this.baseColorProperty.dispose();
       this._pressListener.dispose();
+      buttonAppearanceStrategy.dispose && buttonAppearanceStrategy.dispose();
     };
   }
 

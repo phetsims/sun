@@ -73,8 +73,6 @@ class RoundButton extends ButtonNode {
       tagName: 'button'
     }, options );
 
-    super( buttonModel, options );
-
     const content = options.content; // convenience variable
 
     // Compute the radius of the button.
@@ -82,16 +80,11 @@ class RoundButton extends ButtonNode {
                          Math.max( content.width + options.minXMargin * 2, content.height + options.minYMargin * 2 ) / 2;
 
     // Create the circular part of the button.
-    const button = new Circle( buttonRadius, {
-      fill: this.baseColorProperty,
-      lineWidth: options.lineWidth,
-      pickable: false
+    const buttonBackground = new Circle( buttonRadius, {
+      lineWidth: options.lineWidth
     } );
-    this.addChild( button );
 
-    // Hook up the strategy that will control the button's appearance.
-    const buttonAppearanceStrategy = new options.buttonAppearanceStrategy( button, interactionStateProperty,
-      this.baseColorProperty, options );
+    super( buttonModel, buttonBackground, interactionStateProperty, options );
 
     // Add the content to the button.
     if ( content ) {
@@ -109,20 +102,6 @@ class RoundButton extends ButtonNode {
     // PDOM - focus highlight is circular for round buttons, with a little bit of padding
     // between button shape and inner edge of highlight
     this.focusHighlight = Shape.circle( 0, 0, buttonRadius + 5 );
-
-    // @private
-    this.disposeRoundButton = () => {
-      buttonAppearanceStrategy.dispose && buttonAppearanceStrategy.dispose();
-    };
-  }
-
-  /**
-   * @public
-   * @override
-   */
-  dispose() {
-    this.disposeRoundButton();
-    super.dispose();
   }
 }
 
