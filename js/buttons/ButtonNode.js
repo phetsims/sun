@@ -140,10 +140,10 @@ class ButtonNode extends Node {
 
     // @private - define a dispose function
     this.disposeButtonNode = () => {
-      this.baseColorProperty.dispose();
-      this._pressListener.dispose();
-      buttonAppearanceStrategy.dispose && buttonAppearanceStrategy.dispose();
       alignBox && alignBox.dispose();
+      buttonAppearanceStrategy.dispose && buttonAppearanceStrategy.dispose();
+      this._pressListener.dispose();
+      this.baseColorProperty.dispose();
     };
   }
 
