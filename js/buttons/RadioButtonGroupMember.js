@@ -174,12 +174,12 @@ class RadioButtonGroupMember extends RectangularButton {
 class FlatAppearanceStrategy {
 
   /**
-   * @param {Node} button - the Node for the button's shape, sans content
+   * @param {Node} buttonBackground - the Node for the button's background, sans content
    * @param {Property} interactionStateProperty
    * @param {Property} baseColorProperty
    * @param {Object} [options]
    */
-  constructor( button, interactionStateProperty, baseColorProperty, options ) {
+  constructor( buttonBackground, interactionStateProperty, baseColorProperty, options ) {
 
     // Dynamic fills and strokes
     const overFill = new PaintColorProperty( options.overFill || baseColorProperty, {
@@ -193,7 +193,7 @@ class FlatAppearanceStrategy {
     } );
 
     // Cache colors
-    button.cachedPaints = [
+    buttonBackground.cachedPaints = [
       baseColorProperty, overFill, pressedFill, overStroke, options.selectedStroke, options.deselectedStroke
     ];
 
@@ -203,33 +203,33 @@ class FlatAppearanceStrategy {
 
         case RadioButtonInteractionState.SELECTED:
         case RadioButtonInteractionState.DISABLED_SELECTED:
-          button.fill = baseColorProperty;
-          button.stroke = options.selectedStroke;
-          button.lineWidth = options.selectedLineWidth;
-          button.opacity = options.selectedButtonOpacity;
+          buttonBackground.fill = baseColorProperty;
+          buttonBackground.stroke = options.selectedStroke;
+          buttonBackground.lineWidth = options.selectedLineWidth;
+          buttonBackground.opacity = options.selectedButtonOpacity;
           break;
 
         case RadioButtonInteractionState.DESELECTED:
         case RadioButtonInteractionState.DISABLED_DESELECTED:
-          button.fill = baseColorProperty;
-          button.stroke = options.deselectedStroke;
-          button.lineWidth = options.deselectedLineWidth;
-          button.opacity = options.deselectedButtonOpacity;
+          buttonBackground.fill = baseColorProperty;
+          buttonBackground.stroke = options.deselectedStroke;
+          buttonBackground.lineWidth = options.deselectedLineWidth;
+          buttonBackground.opacity = options.deselectedButtonOpacity;
           break;
 
         // mouseover for deselected buttons
         case RadioButtonInteractionState.OVER:
-          button.fill = overFill;
-          button.stroke = overStroke;
-          button.lineWidth = ( options.overLineWidth ) ? options.overLineWidth : options.deselectedLineWidth;
-          button.opacity = options.overButtonOpacity;
+          buttonBackground.fill = overFill;
+          buttonBackground.stroke = overStroke;
+          buttonBackground.lineWidth = ( options.overLineWidth ) ? options.overLineWidth : options.deselectedLineWidth;
+          buttonBackground.opacity = options.overButtonOpacity;
           break;
 
         case RadioButtonInteractionState.PRESSED:
-          button.fill = pressedFill;
-          button.stroke = options.deselectedStroke;
-          button.lineWidth = options.deselectedLineWidth;
-          button.opacity = options.selectedButtonOpacity;
+          buttonBackground.fill = pressedFill;
+          buttonBackground.stroke = options.deselectedStroke;
+          buttonBackground.lineWidth = options.deselectedLineWidth;
+          buttonBackground.opacity = options.selectedButtonOpacity;
           break;
 
         default:
