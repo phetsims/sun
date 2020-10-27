@@ -32,6 +32,7 @@ class RectangularRadioButton extends RectangularButton {
   constructor( property, value, options ) {
 
     options = merge( {
+
       // The fill for the rectangle behind the radio buttons.  Default color is bluish color, as in the other button library.
       baseColor: ColorConstants.LIGHT_BLUE,
       disabledBaseColor: ColorConstants.LIGHT_GRAY,
