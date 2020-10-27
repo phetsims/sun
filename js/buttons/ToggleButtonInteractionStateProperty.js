@@ -14,12 +14,19 @@ class ToggleButtonInteractionStateProperty extends DerivedProperty {
    * @param {ButtonModel} buttonModel
    */
   constructor( buttonModel ) {
-    super( [ buttonModel.overProperty, buttonModel.looksPressedProperty ],
+
+    const options = {
+      isValidValue: value => ButtonInteractionState.includes( value )
+    };
+
+    super(
+      [ buttonModel.overProperty, buttonModel.looksPressedProperty ],
       ( over, looksPressed ) => {
         return over && !looksPressed ? ButtonInteractionState.OVER :
                looksPressed ? ButtonInteractionState.PRESSED :
                ButtonInteractionState.IDLE;
-      }
+      },
+      options
     );
   }
 }

@@ -5,6 +5,7 @@
  */
 
 import DerivedProperty from '../../../axon/js/DerivedProperty.js';
+import merge from '../../../phet-core/js/merge.js';
 import sun from '../sun.js';
 import ButtonInteractionState from './ButtonInteractionState.js';
 
@@ -15,12 +16,20 @@ class PushButtonInteractionStateProperty extends DerivedProperty {
    * @param {Object} [options]
    */
   constructor( buttonModel, options ) {
-    super( [ buttonModel.overProperty, buttonModel.looksPressedProperty ],
+
+    options = merge( {
+      isValidValue: value => ButtonInteractionState.includes( value )
+    }, options );
+
+    super(
+      [ buttonModel.overProperty, buttonModel.looksPressedProperty ],
       ( over, looksPressed ) => {
         return over && !looksPressed ? ButtonInteractionState.OVER :
                over && looksPressed ? ButtonInteractionState.PRESSED :
                ButtonInteractionState.IDLE;
-      }, options );
+      },
+      options
+    );
   }
 }
 

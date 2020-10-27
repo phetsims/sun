@@ -16,12 +16,20 @@ class MomentaryButtonInteractionStateProperty extends DerivedProperty {
    * @param {ButtonModel} buttonModel
    */
   constructor( buttonModel ) {
-    super( [ buttonModel.overProperty, buttonModel.looksPressedProperty ],
+
+    const options = {
+      isValidValue: value => ButtonInteractionState.includes( value )
+    };
+
+    super(
+      [ buttonModel.overProperty, buttonModel.looksPressedProperty ],
       ( over, looksPressed ) => {
         return over && !looksPressed ? ButtonInteractionState.OVER :
                looksPressed ? ButtonInteractionState.PRESSED :  // remain pressed regardless of whether 'over' is true
                ButtonInteractionState.IDLE;
-      } );
+      },
+      options
+    );
   }
 }
 

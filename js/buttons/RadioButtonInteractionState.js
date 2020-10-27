@@ -5,25 +5,23 @@
  * @author John Blanco
  */
 
+import Enumeration from '../../../phet-core/js/Enumeration.js';
 import sun from '../sun.js';
 
-const RadioButtonInteractionState = {
+const RadioButtonInteractionState = Enumeration.byKeys( [
 
   // the button is selected
-  SELECTED: 'SELECTED',
+  'SELECTED',
 
   // the button is deselected
-  DESELECTED: 'DESELECTED',
+  'DESELECTED',
 
   // a pointer is over the button, but it is not being pressed and is not selected
-  OVER: 'OVER',
+  'OVER',
 
   // the button is being pressed by the user
-  PRESSED: 'PRESSED'
-};
-
-// verify that enum is immutable, without the runtime penalty in production code
-if ( assert ) { Object.freeze( RadioButtonInteractionState ); }
+  'PRESSED'
+] );
 
 sun.register( 'RadioButtonInteractionState', RadioButtonInteractionState );
 

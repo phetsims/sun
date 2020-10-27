@@ -200,8 +200,8 @@ class FlatAppearanceStrategy {
 
   /*
    * @param {Node} buttonBackground - the Node for the button's background, sans content
-   * @param {Property.<boolean>} interactionStateProperty
-   * @param {Property.<Color>} baseColorProperty
+   * @param {Property.<ButtonInteractionState>} interactionStateProperty
+   * @param {Property.<ColorDef>} baseColorProperty
    * @param {Object} [options]
    */
   constructor( buttonBackground, interactionStateProperty, baseColorProperty, options ) {

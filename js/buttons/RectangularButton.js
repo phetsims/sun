@@ -127,7 +127,7 @@ class ThreeDAppearanceStrategy {
 
   /**
    * @param {Node} buttonBackground - the Node for the button's background, sans content
-   * @param {Property.<String>} interactionStateProperty
+   * @param {Property.<ButtonInteractionState>} interactionStateProperty
    * @param {Property.<Color>} baseColorProperty
    * @param {Object} [options]
    */
