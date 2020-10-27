@@ -216,7 +216,6 @@ class FlatAppearanceStrategy {
           buttonBackground.opacity = options.deselectedButtonOpacity;
           break;
 
-        // mouseover for deselected buttons
         case RadioButtonInteractionState.OVER:
           buttonBackground.fill = overFill;
           buttonBackground.stroke = overStroke;
