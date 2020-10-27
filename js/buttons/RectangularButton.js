@@ -126,15 +126,15 @@ function createButtonShape( width, height, config ) {
 class ThreeDAppearanceStrategy {
 
   /**
-   * @param {Node} button - the Node for the button's shape, sans content
+   * @param {Node} buttonBackground - the Node for the button's background, sans content
    * @param {Property.<String>} interactionStateProperty
    * @param {Property.<Color>} baseColorProperty
    * @param {Object} [options]
    */
-  constructor( button, interactionStateProperty, baseColorProperty, options ) {
+  constructor( buttonBackground, interactionStateProperty, baseColorProperty, options ) {
 
-    const buttonWidth = button.width;
-    const buttonHeight = button.height;
+    const buttonWidth = buttonBackground.width;
+    const buttonHeight = buttonBackground.height;
 
     // compute color stops for gradient, see issue #148
     assert && assert( buttonWidth >= HORIZONTAL_HIGHLIGHT_GRADIENT_LENGTH + SHADE_GRADIENT_LENGTH );
@@ -192,10 +192,10 @@ class ThreeDAppearanceStrategy {
       lineWidth: options.lineWidth,
       pickable: false
     } );
-    button.addChild( horizontalShadingPath );
+    buttonBackground.addChild( horizontalShadingPath );
 
     // Cache gradients
-    button.cachedPaints = [ upFillVertical, overFillVertical, downFillVertical ];
+    buttonBackground.cachedPaints = [ upFillVertical, overFillVertical, downFillVertical ];
     horizontalShadingPath.cachedPaints = [ upFillHorizontal, overFillHorizontal ];
 
     // Change colors to match interactionState
@@ -205,18 +205,18 @@ class ThreeDAppearanceStrategy {
 
         case ButtonInteractionState.IDLE:
         case ButtonInteractionState.DISABLED:
-          button.fill = upFillVertical;
+          buttonBackground.fill = upFillVertical;
           horizontalShadingPath.fill = upFillHorizontal;
           break;
 
         case ButtonInteractionState.OVER:
-          button.fill = overFillVertical;
+          buttonBackground.fill = overFillVertical;
           horizontalShadingPath.fill = overFillHorizontal;
           break;
 
         case ButtonInteractionState.PRESSED:
         case ButtonInteractionState.DISABLED_PRESSED:
-          button.fill = downFillVertical;
+          buttonBackground.fill = downFillVertical;
           horizontalShadingPath.fill = overFillHorizontal;
           break;
 

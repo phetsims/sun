@@ -199,12 +199,12 @@ class ButtonNode extends Node {
 class FlatAppearanceStrategy {
 
   /*
-   * @param {Node} button - the Node for the button's shape, sans content
+   * @param {Node} buttonBackground - the Node for the button's background, sans content
    * @param {Property.<boolean>} interactionStateProperty
    * @param {Property.<Color>} baseColorProperty
    * @param {Object} [options]
    */
-  constructor( button, interactionStateProperty, baseColorProperty, options ) {
+  constructor( buttonBackground, interactionStateProperty, baseColorProperty, options ) {
 
     // Dynamic colors
     const baseBrighter4 = new PaintColorProperty( baseColorProperty, { luminanceFactor: 0.4 } );
@@ -216,10 +216,10 @@ class FlatAppearanceStrategy {
     const downFill = baseDarker4;
 
     // If the stroke wasn't provided, set a default
-    button.stroke = ( typeof ( options.stroke ) === 'undefined' ) ? baseDarker4 : options.stroke;
+    buttonBackground.stroke = ( typeof ( options.stroke ) === 'undefined' ) ? baseDarker4 : options.stroke;
 
     // Cache colors
-    button.cachedPaints = [ upFill, overFill, downFill ];
+    buttonBackground.cachedPaints = [ upFill, overFill, downFill ];
 
     // Change colors to match interactionState
     function interactionStateListener( interactionState ) {
@@ -227,16 +227,16 @@ class FlatAppearanceStrategy {
 
         case ButtonInteractionState.IDLE:
         case ButtonInteractionState.DISABLED:
-          button.fill = upFill;
+          buttonBackground.fill = upFill;
           break;
 
         case ButtonInteractionState.OVER:
-          button.fill = overFill;
+          buttonBackground.fill = overFill;
           break;
 
         case ButtonInteractionState.PRESSED:
         case ButtonInteractionState.DISABLED_PRESSED:
-          button.fill = downFill;
+          buttonBackground.fill = downFill;
           break;
 
         default:

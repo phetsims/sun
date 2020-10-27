@@ -93,12 +93,12 @@ class RoundButton extends ButtonNode {
 class ThreeDAppearanceStrategy {
 
   /**
-   * @param {Node} button - the Node for the button's shape, sans content
+   * @param {Node} buttonBackground - the Node for the button's background, sans content
    * @param {Property.<boolean>} interactionStateProperty
    * @param {Property.<Color>} baseColorProperty
    * @param {Object} [options]
    */
-  constructor( button, interactionStateProperty, baseColorProperty, options ) {
+  constructor( buttonBackground, interactionStateProperty, baseColorProperty, options ) {
 
     // Dynamic colors
     // TODO https://github.com/phetsims/sun/issues/553 missing "Property" suffix for all PaintColorProperty names
@@ -112,7 +112,7 @@ class ThreeDAppearanceStrategy {
     const baseTransparent = new DerivedProperty( [ baseColorProperty ], color => color.withAlpha( 0 ) );
 
     // Set up variables needed to create the various gradient fills and otherwise modify the appearance
-    const buttonRadius = button.width / 2;
+    const buttonRadius = buttonBackground.width / 2;
     const innerGradientRadius = buttonRadius - HIGHLIGHT_GRADIENT_LENGTH / 2;
     const outerGradientRadius = buttonRadius + HIGHLIGHT_GRADIENT_LENGTH / 2;
     const gradientOffset = HIGHLIGHT_GRADIENT_LENGTH / 2;
@@ -145,10 +145,10 @@ class ThreeDAppearanceStrategy {
       lineWidth: options.lineWidth,
       pickable: false
     } );
-    button.addChild( shadowNode );
+    buttonBackground.addChild( shadowNode );
 
     // Cache gradients
-    button.cachedPaints = [ upFillHighlight, overFillHighlight, pressedFill ];
+    buttonBackground.cachedPaints = [ upFillHighlight, overFillHighlight, pressedFill ];
     shadowNode.cachedPaints = [ upFillShadow, overFillShadow ];
 
     // Change colors to match interactionState
@@ -158,18 +158,18 @@ class ThreeDAppearanceStrategy {
 
         case ButtonInteractionState.IDLE:
         case ButtonInteractionState.DISABLED:
-          button.fill = upFillHighlight;
+          buttonBackground.fill = upFillHighlight;
           shadowNode.fill = upFillShadow;
           break;
 
         case ButtonInteractionState.OVER:
-          button.fill = overFillHighlight;
+          buttonBackground.fill = overFillHighlight;
           shadowNode.fill = overFillShadow;
           break;
 
         case ButtonInteractionState.PRESSED:
         case ButtonInteractionState.DISABLED_PRESSED:
-          button.fill = pressedFill;
+          buttonBackground.fill = pressedFill;
           shadowNode.fill = overFillShadow;
           break;
 
