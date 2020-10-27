@@ -1,5 +1,5 @@
 ---
-components: [ VerticalAquaRadioButtonGroup, RadioButtonGroup ]
+components: [ VerticalAquaRadioButtonGroup, RectangularRadioButtonGroup ]
 title: Radio Button Groups
 category: other-ui
 ---
@@ -12,8 +12,8 @@ Here’s when and why we use radio button groups:
 * All other groups of radio buttons are generally made up of rectangular buttons with images or symbols. Their size, image style, and spacing are visually group the individual radio buttons.
 
 **Note this design pattern covers multiple PhET Component Types**
-* [RadioButtonGroup.js](https://github.com/phetsims/sun/blob/master/js/buttons/RadioButtonGroup.js) (non-traditional looking radio buttons)
-* [VerticalAquaRadioButtonGroup.js](../js/VerticalAquaRadioButtonGroup.js) (a convenient type style to display traditional-looking radio groups)
+* [RectangularRadioButtonGroup.js](https://github.com/phetsims/sun/blob/master/js/buttons/RectangularRadioButtonGroup.js) (rectangular radio buttons)
+* [VerticalAquaRadioButtonGroup.js](../js/VerticalAquaRadioButtonGroup.js) (radio buttons with the macOS Aqua look)
 
 ## Aesthetic Considerations
 * Label text is succinct and ideally sounds good when read as "selected". For example, in Area Model, the first Area Grid Size radio button might sound like, "10 by 10, selected". In Balloons and Static Electricity, a user may hear, "Show all charges, selected".
@@ -138,7 +138,7 @@ Example is based on the charge radio buttons in Balloons and Static Electricity.
 
 ### Design Doc Content Template Text
 **Light Sources, Radio Button Group**
-- PhET Component: RadioButtonGroup.js
+- PhET Component: RectangularRadioButtonGroup.js
 - Group Name via `h3` with `aria-labelledby`: Light Sources (e.g. Sample 1)
 - Radio button group: `fieldset` with `role="radiogroup"`
 - Radio buttons contained in an `ul` with list items, `li`
@@ -151,7 +151,7 @@ Example is based on the charge radio buttons in Balloons and Static Electricity.
 - (Optional) Help Text: (e.g. Change light source in observation window.)
 
 **Area Grid Size, Radio Button Group**
-- PhET Component: RadioButtonGroup.js
+- PhET Component: RectangularRadioButtonGroup.js
 - Group Name via `legend`: Area Grid Size (e.g. Sample 2)  
 - Radio button group: `fieldset` with `role="radiogroup"`
 - Radio buttons contained in an `ul` with list items, `li`

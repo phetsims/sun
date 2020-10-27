@@ -1,12 +1,8 @@
 // Copyright 2014-2020, University of Colorado Boulder
 
 /**
- * Radio buttons. See sun.ButtonsScreenView for example usage.
- *
- * This type creates a group of radio buttons in either a horizontal or vertical formation.
- * Each button inherits from RectangularButton, and can take a Scenery Node as its content.
- * A typical use case is when you want to have different modes of a view to select from. Typically,
- * RadioButtonGroup radio buttons display some kind of icon or image, but that is not mandatory.
+ * RectangularRadioButtonGroup is a group of rectangular radio buttons, in either horizontal or vertical orientation.
+ * See sun.ButtonsScreenView for example usage.
  *
  * @author Aaron Davis (PhET Interactive Simulations)
  */
@@ -29,14 +25,14 @@ import RectangularRadioButton from './RectangularRadioButton.js';
 // constants
 const BUTTON_CONTENT_X_ALIGN_VALUES = [ 'center', 'left', 'right' ];
 const BUTTON_CONTENT_Y_ALIGN_VALUES = [ 'center', 'top', 'bottom' ];
-const CLASS_NAME = 'RadioButtonGroup'; // to prefix instanceCount in case there are different kinds of "groups"
+const CLASS_NAME = 'RectangularRadioButtonGroup'; // to prefix instanceCount in case there are different kinds of "groups"
 
-// pdom - Unique ID for each instance of RadioButtonGroup, passed to individual buttons in the group. All buttons in
+// pdom - Unique ID for each instance of RectangularRadioButtonGroup, passed to individual buttons in the group. All buttons in
 // the  radio button group must have the same name or else the browser will treat all inputs of type radio in the
 // document as being in a single group.
 let instanceCount = 0;
 
-class RadioButtonGroup extends LayoutBox {
+class RectangularRadioButtonGroup extends LayoutBox {
 
   /**
    * @mixes EnabledNode
@@ -69,7 +65,7 @@ class RadioButtonGroup extends LayoutBox {
     // increment instance count
     instanceCount++;
 
-    assert && assert( !options.hasOwnProperty( 'children' ), 'Cannot pass in children to a RadioButtonGroup, ' +
+    assert && assert( !options.hasOwnProperty( 'children' ), 'Cannot pass in children to a RectangularRadioButtonGroup, ' +
                                                              'create siblings in the parent node instead' );
 
     // make sure every object in the content array has properties 'node' and 'value'
@@ -89,19 +85,19 @@ class RadioButtonGroup extends LayoutBox {
         uniqueValues.push( contentArray[ i ].value );
       }
       else {
-        throw new Error( 'Duplicate value: "' + contentArray[ i ].value + '" passed into RadioButtonGroup.js' );
+        throw new Error( 'Duplicate value: "' + contentArray[ i ].value + '" passed into RectangularRadioButtonGroup.js' );
       }
     }
 
     // make sure that the Property passed in currently has a value from the contentArray
     if ( uniqueValues.indexOf( property.get() ) === -1 ) {
-      throw new Error( 'The Property passed in to RadioButtonGroup has an illegal value "' + property.get() +
+      throw new Error( 'The Property passed in to RectangularRadioButtonGroup has an illegal value "' + property.get() +
                        '" that is not present in the contentArray' );
     }
 
     const defaultOptions = {
 
-      // LayoutBox options (super class of RadioButtonGroup)
+      // LayoutBox options (super class of RectangularRadioButtonGroup)
       spacing: 10,
       orientation: 'vertical',
 
@@ -181,7 +177,7 @@ class RadioButtonGroup extends LayoutBox {
 
       assert && assert( !currentContent.hasOwnProperty( 'phetioType' ), 'phetioType should be provided by ' +
                                                                         'the Property passed to the ' +
-                                                                        'RadioButtonGroup constructor' );
+                                                                        'RectangularRadioButtonGroup constructor' );
 
       assert && assert( !currentContent.tandem, 'content arrays should not have tandem instances, they should use ' +
                                                 'tandemName instead' );
@@ -286,7 +282,7 @@ class RadioButtonGroup extends LayoutBox {
       buttons.push( button );
     }
 
-    assert && assert( !options.children, 'RadioButtonGroup sets children' );
+    assert && assert( !options.children, 'RectangularRadioButtonGroup sets children' );
     options.children = buttons;
 
     super( options );
@@ -322,7 +318,7 @@ class RadioButtonGroup extends LayoutBox {
     };
 
     // pdom - register component for binder docs
-    assert && phet.chipper.queryParameters.binder && InstanceRegistry.registerDataURL( 'sun', 'RadioButtonGroup', this );
+    assert && phet.chipper.queryParameters.binder && InstanceRegistry.registerDataURL( 'sun', 'RectangularRadioButtonGroup', this );
   }
 
   /**
@@ -336,7 +332,7 @@ class RadioButtonGroup extends LayoutBox {
   }
 }
 
-EnabledNode.mixInto( RadioButtonGroup );
+EnabledNode.mixInto( RectangularRadioButtonGroup );
 
-sun.register( 'RadioButtonGroup', RadioButtonGroup );
-export default RadioButtonGroup;
+sun.register( 'RectangularRadioButtonGroup', RectangularRadioButtonGroup );
+export default RectangularRadioButtonGroup;

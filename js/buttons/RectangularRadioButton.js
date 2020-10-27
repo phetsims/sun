@@ -2,7 +2,7 @@
 
 /**
  * RectangularRadioButton is a single rectangular radio button. It typically appears as part of a
- * RadioButtonGroup, but can be used in other context.
+ * RectangularRadioButtonGroup, but can be used in other context.
  *
  * @author Aaron Davis (PhET Interactive Simulations)
  */
@@ -90,12 +90,12 @@ class RectangularRadioButton extends RectangularButton {
 
     super( buttonModel, interactionStateProperty, options );
 
-    // @public for use in RadioButtonGroup for managing the labels
+    // @public for use in RectangularRadioButtonGroup for managing the labels
     this.interactionStateProperty = interactionStateProperty;
 
     // pdom - Specify the default value for assistive technology, this attribute is needed in addition to
     // the 'checked' Property to mark this element as the default selection since 'checked' may be set before
-    // we are finished adding RectangularRadioButtons to the RadioButtonGroup.
+    // we are finished adding RectangularRadioButtons to the RectangularRadioButtonGroup.
     if ( property.value === value ) {
       this.setAccessibleAttribute( 'checked', 'checked' );
     }

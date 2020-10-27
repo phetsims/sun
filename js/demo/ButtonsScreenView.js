@@ -20,7 +20,7 @@ import Font from '../../../scenery/js/util/Font.js';
 import ArrowButton from '../buttons/ArrowButton.js';
 import BooleanRectangularStickyToggleButton from '../buttons/BooleanRectangularStickyToggleButton.js';
 import ButtonNode from '../buttons/ButtonNode.js';
-import RadioButtonGroup from '../buttons/RadioButtonGroup.js';
+import RectangularRadioButtonGroup from '../buttons/RectangularRadioButtonGroup.js';
 import RectangularMomentaryButton from '../buttons/RectangularMomentaryButton.js';
 import RectangularPushButton from '../buttons/RectangularPushButton.js';
 import RoundMomentaryButton from '../buttons/RoundMomentaryButton.js';
@@ -77,7 +77,7 @@ class ButtonsScreenView extends ScreenView {
       { value: 'THREE', node: new Text( 'THREE', { font: BUTTON_FONT } ), label: new Text( 'three' ) },
       { value: '4', node: new Text( '4', { font: BUTTON_FONT } ), label: new Text( 'four' ) }
     ];
-    const radioButtonGroup = new RadioButtonGroup( radioButtonProperty, radioButtonContent, {
+    const radioButtonGroup = new RectangularRadioButtonGroup( radioButtonProperty, radioButtonContent, {
       selectedLineWidth: 4,
 
       // change these to test various orientations and alignments
