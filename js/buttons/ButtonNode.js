@@ -1,7 +1,7 @@
 // Copyright 2020, University of Colorado Boulder
 
 /**
- * Central class for the sun button hierarchy. This type factors out logic that applies to all sun buttons.
+ * ButtonNode is the base class for the sun button hierarchy.
  *
  * @author John Blanco (PhET Interactive Simulations)
  * @author Sam Reid (PhET Interactive Simulations)
