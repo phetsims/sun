@@ -8,8 +8,6 @@
  * @author Michael Kauzmann (PhET Interactive Simulations)
  */
 
-import Bounds2 from '../../../dot/js/Bounds2.js';
-import Vector2 from '../../../dot/js/Vector2.js';
 import merge from '../../../phet-core/js/merge.js';
 import AlignBox from '../../../scenery/js/nodes/AlignBox.js';
 import Node from '../../../scenery/js/nodes/Node.js';
@@ -111,28 +109,26 @@ class ButtonNode extends Node {
     let alignBox = null;
     if ( options.content ) {
 
-      // TODO: there is likely a simpler way to support this content offset, https://github.com/phetsims/sun/issues/643
-      const contentContainer = new Node( {
-        children: [ options.content ],
-        center: new Vector2( options.xContentOffset, options.yContentOffset )
-      } );
-
       // Align content in the button rectangle. Must be disposed since it adds listener to content bounds.
-      alignBox = new AlignBox( contentContainer, {
+      alignBox = new AlignBox( options.content, {
+
+        alignBounds: buttonBackground.bounds,
+        xAlign: options.xAlign,
+        yAlign: options.yAlign,
 
         // TODO https://github.com/phetsims/sun/issues/643 Margins here would be broken for round buttons if they
         //  don't use the same value for x and y. Because they are used here differently from how they are used to
         //  calculate radius in RoundButton (as a minimum). Is that OK?
-        alignBounds: new Bounds2(
-          options.xMargin,
-          options.yMargin,
-          buttonBackground.width - options.xMargin,
-          buttonBackground.height - options.yMargin
-        ),
-        xAlign: options.xAlign,
-        yAlign: options.yAlign,
-        center: buttonBackground.center,
-        pickable: false // for performance
+
+        // Apply offsets via margins, so that bounds of the AlignBox doesn't unnecessarily extend past the
+        // buttonBackground. See https://github.com/phetsims/sun/issues/649
+        leftMargin: options.xMargin + options.xContentOffset,
+        rightMargin: options.xMargin - options.xContentOffset,
+        topMargin: options.yMargin + options.yContentOffset,
+        bottomMargin: options.yMargin - options.yContentOffset,
+
+        // for performance
+        pickable: false
       } );
       this.addChild( alignBox );
     }
