@@ -19,12 +19,10 @@ class RadioButtonInteractionStateProperty extends DerivedProperty {
    */
   constructor( buttonModel, property, value ) {
 
-    super( [ buttonModel.overProperty, buttonModel.looksPressedProperty, buttonModel.enabledProperty, property ],
-      ( over, looksPressed, enabled, propertyValue ) => {
+    super( [ buttonModel.overProperty, buttonModel.looksPressedProperty, property ],
+      ( over, looksPressed, propertyValue ) => {
         const isSelected = ( propertyValue === value );
-        return !enabled && isSelected ? RadioButtonInteractionState.DISABLED_SELECTED :
-               !enabled ? RadioButtonInteractionState.DISABLED_DESELECTED :
-               over && !( looksPressed || isSelected ) ? RadioButtonInteractionState.OVER :
+        return over && !( looksPressed || isSelected ) ? RadioButtonInteractionState.OVER :
                over && looksPressed ? RadioButtonInteractionState.PRESSED :
                isSelected ? RadioButtonInteractionState.SELECTED :
                RadioButtonInteractionState.DESELECTED;

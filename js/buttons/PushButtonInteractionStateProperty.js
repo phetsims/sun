@@ -15,10 +15,9 @@ class PushButtonInteractionStateProperty extends DerivedProperty {
    * @param {Object} [options]
    */
   constructor( buttonModel, options ) {
-    super( [ buttonModel.overProperty, buttonModel.looksPressedProperty, buttonModel.enabledProperty ],
-      ( over, looksPressed, enabled ) => {
-        return !enabled ? ButtonInteractionState.DISABLED :
-               over && !looksPressed ? ButtonInteractionState.OVER :
+    super( [ buttonModel.overProperty, buttonModel.looksPressedProperty ],
+      ( over, looksPressed ) => {
+        return over && !looksPressed ? ButtonInteractionState.OVER :
                over && looksPressed ? ButtonInteractionState.PRESSED :
                ButtonInteractionState.IDLE;
       }, options );

@@ -226,7 +226,6 @@ class FlatAppearanceStrategy {
       switch( interactionState ) {
 
         case ButtonInteractionState.IDLE:
-        case ButtonInteractionState.DISABLED:
           buttonBackground.fill = upFill;
           break;
 
@@ -235,7 +234,6 @@ class FlatAppearanceStrategy {
           break;
 
         case ButtonInteractionState.PRESSED:
-        case ButtonInteractionState.DISABLED_PRESSED:
           buttonBackground.fill = downFill;
           break;
 

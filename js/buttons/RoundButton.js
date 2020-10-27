@@ -157,7 +157,6 @@ class ThreeDAppearanceStrategy {
       switch( interactionState ) {
 
         case ButtonInteractionState.IDLE:
-        case ButtonInteractionState.DISABLED:
           buttonBackground.fill = upFillHighlight;
           shadowNode.fill = upFillShadow;
           break;
@@ -168,7 +167,6 @@ class ThreeDAppearanceStrategy {
           break;
 
         case ButtonInteractionState.PRESSED:
-        case ButtonInteractionState.DISABLED_PRESSED:
           buttonBackground.fill = pressedFill;
           shadowNode.fill = overFillShadow;
           break;

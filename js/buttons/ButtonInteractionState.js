@@ -12,17 +12,11 @@ const ButtonInteractionState = {
   // button is just sitting there, doing nothing
   IDLE: 'IDLE',
 
-  // a pointer is over the button, but not pressing it
+  // a pointer is over the button, but it is not being pressed
   OVER: 'OVER',
 
-  // the button is pressed, generally because the user has clicked on it or touched it
-  PRESSED: 'PRESSED',
-
-  // the button is disabled
-  DISABLED: 'DISABLED',
-
-  // the button is disabled, but was already pressed when that happened, so it is also pressed
-  DISABLED_PRESSED: 'DISABLED_PRESSED'
+  // the button is being pressed by the user
+  PRESSED: 'PRESSED'
 };
 
 // verify that enum is immutable, without the runtime penalty in production code

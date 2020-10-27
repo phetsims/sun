@@ -201,7 +201,6 @@ class FlatAppearanceStrategy {
       switch( interactionState ) {
 
         case RadioButtonInteractionState.SELECTED:
-        case RadioButtonInteractionState.DISABLED_SELECTED:
           buttonBackground.fill = baseColorProperty;
           buttonBackground.stroke = options.selectedStroke;
           buttonBackground.lineWidth = options.selectedLineWidth;
@@ -209,7 +208,6 @@ class FlatAppearanceStrategy {
           break;
 
         case RadioButtonInteractionState.DESELECTED:
-        case RadioButtonInteractionState.DISABLED_DESELECTED:
           buttonBackground.fill = baseColorProperty;
           buttonBackground.stroke = options.deselectedStroke;
           buttonBackground.lineWidth = options.deselectedLineWidth;

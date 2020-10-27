@@ -14,10 +14,9 @@ class ToggleButtonInteractionStateProperty extends DerivedProperty {
    * @param {ButtonModel} buttonModel
    */
   constructor( buttonModel ) {
-    super( [ buttonModel.overProperty, buttonModel.looksPressedProperty, buttonModel.enabledProperty ],
-      ( over, looksPressed, enabled ) => {
-        return !enabled ? ButtonInteractionState.DISABLED :
-               over && !( looksPressed ) ? ButtonInteractionState.OVER :
+    super( [ buttonModel.overProperty, buttonModel.looksPressedProperty ],
+      ( over, looksPressed ) => {
+        return over && !looksPressed ? ButtonInteractionState.OVER :
                looksPressed ? ButtonInteractionState.PRESSED :
                ButtonInteractionState.IDLE;
       }

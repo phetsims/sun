@@ -18,12 +18,10 @@ class StickyToggleButtonInteractionStateProperty extends DerivedProperty {
    */
   constructor( buttonModel ) {
 
-    super( [ buttonModel.overProperty, buttonModel.looksPressedProperty, buttonModel.enabledProperty, buttonModel.valueProperty ],
-      ( over, looksPressed, enabled, propertyValue ) => {
-        const isValueDown = propertyValue === buttonModel.valueDown;
-        return !enabled && isValueDown ? ButtonInteractionState.DISABLED_PRESSED :
-               !enabled ? ButtonInteractionState.DISABLED :
-               over && !( looksPressed || isValueDown ) ? ButtonInteractionState.OVER :
+    super( [ buttonModel.overProperty, buttonModel.looksPressedProperty, buttonModel.valueProperty ],
+      ( over, looksPressed, propertyValue ) => {
+        const isValueDown = ( propertyValue === buttonModel.valueDown );
+        return over && !( looksPressed || isValueDown ) ? ButtonInteractionState.OVER :
                over && ( looksPressed || isValueDown ) ? ButtonInteractionState.PRESSED :
                isValueDown ? ButtonInteractionState.PRESSED :
                ButtonInteractionState.IDLE;
