@@ -1,9 +1,8 @@
 // Copyright 2014-2020, University of Colorado Boulder
 
 /**
- * A single radio button. This class is designed to be part of a RadioButtonGroup and there should be no need to use it
- * outside of RadioButtonGroup. It is called RadioButtonGroupMember to differentiate from RadioButton, which already
- * exists.
+ * RectangularRadioButton is a single rectangular radio button. It typically appears as part of a
+ * RadioButtonGroup, but can be used in other context.
  *
  * @author Aaron Davis (PhET Interactive Simulations)
  */
@@ -23,11 +22,11 @@ import RadioButtonInteractionState from './RadioButtonInteractionState.js';
 import RadioButtonInteractionStateProperty from './RadioButtonInteractionStateProperty.js';
 import RectangularButton from './RectangularButton.js';
 
-class RadioButtonGroupMember extends RectangularButton {
+class RectangularRadioButton extends RectangularButton {
 
   /**
-   * @param {Property} property axon Property that can take on a set of values, one for each radio button in the group
-   * @param {Object} value value when this radio button is selected
+   * @param {Property} property - axon Property that can take on a set of values, one for each radio button in the group
+   * @param {Object} value - value when this radio button is selected
    * @param {Object} [options]
    */
   constructor( property, value, options ) {
@@ -57,8 +56,8 @@ class RadioButtonGroupMember extends RectangularButton {
       overLineWidth: null,
 
       // Class that determines the button's appearance for the values of interactionStateProperty.
-      // See RadioButtonGroupMember.FlatAppearanceStrategy for an example.
-      buttonAppearanceStrategy: RadioButtonGroupMember.FlatAppearanceStrategy,
+      // See RectangularRadioButton.FlatAppearanceStrategy for an example.
+      buttonAppearanceStrategy: RectangularRadioButton.FlatAppearanceStrategy,
 
       // {Playable|null} - sound generation - If set to null a default will be used that is based on this button's
       // position within the radio button group.  Can be set to Playable.NO_SOUND to disable.
@@ -79,7 +78,7 @@ class RadioButtonGroupMember extends RectangularButton {
 
     assert && assert( options.tandem instanceof Tandem, 'invalid tandem' );
     assert && assert( !options.tandem.supplied || options.tandem.name.endsWith( 'RadioButton' ),
-      `RadioButtonGroupMember tandem.name must end with RadioButton: ${options.tandem.phetioID}` );
+      `RectangularRadioButton tandem.name must end with RadioButton: ${options.tandem.phetioID}` );
 
     // @private
     // Note it shares a tandem with this, so the emitter will be instrumented as a child of the button
@@ -96,7 +95,7 @@ class RadioButtonGroupMember extends RectangularButton {
 
     // pdom - Specify the default value for assistive technology, this attribute is needed in addition to
     // the 'checked' Property to mark this element as the default selection since 'checked' may be set before
-    // we are finished adding RadioButtonGroupMembers to the RadioButtonGroup.
+    // we are finished adding RectangularRadioButtons to the RadioButtonGroup.
     if ( property.value === value ) {
       this.setAccessibleAttribute( 'checked', 'checked' );
     }
@@ -137,7 +136,7 @@ class RadioButtonGroupMember extends RectangularButton {
     buttonModel.produceSoundEmitter.addListener( playSound );
 
     // @private
-    this.disposeRadioButtonGroupMember = () => {
+    this.disposeRectangularRadioButton = () => {
       property.unlink( accessibleCheckedListener );
       this.firedEmitter.dispose();
       buttonModel.dispose();
@@ -150,7 +149,7 @@ class RadioButtonGroupMember extends RectangularButton {
    * @override
    */
   dispose() {
-    this.disposeRadioButtonGroupMember();
+    this.disposeRectangularRadioButton();
     super.dispose();
   }
 
@@ -168,7 +167,7 @@ class RadioButtonGroupMember extends RectangularButton {
 }
 
 /**
- * FlatAppearanceStrategy is a value for RadioButtonGroupMember options.buttonAppearanceStrategy. It makes radio buttons
+ * FlatAppearanceStrategy is a value for RectangularRadioButton options.buttonAppearanceStrategy. It makes radio buttons
  * that look flat, i.e. no shading or highlighting, but that change color on mouseover, press, selected, etc.
  */
 class FlatAppearanceStrategy {
@@ -252,7 +251,7 @@ class FlatAppearanceStrategy {
 }
 
 // @public
-RadioButtonGroupMember.FlatAppearanceStrategy = FlatAppearanceStrategy;
+RectangularRadioButton.FlatAppearanceStrategy = FlatAppearanceStrategy;
 
-sun.register( 'RadioButtonGroupMember', RadioButtonGroupMember );
-export default RadioButtonGroupMember;
+sun.register( 'RectangularRadioButton', RectangularRadioButton );
+export default RectangularRadioButton;

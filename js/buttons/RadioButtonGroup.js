@@ -24,7 +24,7 @@ import Tandem from '../../../tandem/js/Tandem.js';
 import ColorConstants from '../ColorConstants.js';
 import EnabledNode from '../EnabledNode.js';
 import sun from '../sun.js';
-import RadioButtonGroupMember from './RadioButtonGroupMember.js';
+import RectangularRadioButton from './RectangularRadioButton.js';
 
 // constants
 const BUTTON_CONTENT_X_ALIGN_VALUES = [ 'center', 'left', 'right' ];
@@ -45,7 +45,7 @@ class RadioButtonGroup extends LayoutBox {
    * key holds a scenery Node that is the content for a given radio button and the value key holds the value that the
    * Property takes on when the corresponding node is selected. Optionally, these objects can have an attribute 'label',
    * which is a {Node} used to label the button. You can also pass some specific a11y options.
-   * (labelContent/descriptionContent) through, see "new RadioButtonGroupMember" construction.
+   * (labelContent/descriptionContent) through, see "new RectangularRadioButton" construction.
    * @param {Object} [options]
    */
   constructor( property, contentArray, options ) {
@@ -215,7 +215,7 @@ class RadioButtonGroup extends LayoutBox {
         radioButtonGroupMemberOptions.descriptionContent = currentContent.descriptionContent;
       }
 
-      const radioButton = new RadioButtonGroupMember( property, currentContent.value, radioButtonGroupMemberOptions );
+      const radioButton = new RectangularRadioButton( property, currentContent.value, radioButtonGroupMemberOptions );
 
       // pdom - so the browser recognizes these buttons are in the same group, see instanceCount for more info
       radioButton.setAccessibleAttribute( 'name', CLASS_NAME + instanceCount );
