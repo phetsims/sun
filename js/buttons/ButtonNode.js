@@ -120,8 +120,9 @@ class ButtonNode extends Node {
       // Align content in the button rectangle. Must be disposed since it adds listener to content bounds.
       alignBox = new AlignBox( contentContainer, {
 
-        // TODO: margins here would be broken for round buttons if they don't use the same value for x and y.
-        // TODO: Because they are used here differently from how they are used to calculate radius in RoundButton (as a minimum). Is that OK? https://github.com/phetsims/sun/issues/643
+        // TODO https://github.com/phetsims/sun/issues/643 Margins here would be broken for round buttons if they
+        //  don't use the same value for x and y. Because they are used here differently from how they are used to
+        //  calculate radius in RoundButton (as a minimum). Is that OK?
         alignBounds: new Bounds2(
           options.xMargin,
           options.yMargin,
