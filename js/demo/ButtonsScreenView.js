@@ -99,49 +99,22 @@ class ButtonsScreenView extends ScreenView {
     // Aqua Radio buttons
     //===================================================================================
 
-    const firstOption = 'A';
-    const verticalAquaProperty = new Property( firstOption );
+    // Create and add an aqua radio button group in a panel with a heading.  In addition to demonstrating how the radio
+    // button group behaves, this code is an example of how to make the heading and group show up in the PDOM.
+    const verticalAquaProperty = new Property( 'A' );
     verticalAquaProperty.lazyLink( function( value ) {
       message( 'Aqua Radio Button ' + value + ' pressed' );
-    } );
-    const verticalAquaRadioButtonGroup1 = new VerticalAquaRadioButtonGroup( verticalAquaProperty, [
-      {
-        value: firstOption,
-        node: new Text( firstOption ),
-        labelContent: firstOption
-      }, {
-        value: 'B',
-        node: new Text( 'B' ),
-        labelContent: 'B'
-      }, {
-        value: 'C',
-        node: new Text( 'C' ),
-        labelContent: 'C'
-      }
-    ] );
-
-    this.addChild( new Panel( verticalAquaRadioButtonGroup1, {
-      stroke: 'black',
-      scale: 2,
-      x: 900,
-      y: 10
-    } ) );
-
-    // Different pattern for interactive descriptions when there is the presence of a visual heading
-    const verticalAquaPropertyWithGroup = new Property( firstOption );
-    verticalAquaProperty.lazyLink( function( value ) {
-      message( 'Aqua Radio Button in group with heading' + value + ' pressed' );
     } );
     const radioButtonsString = 'Radio Buttons';
     const radioButtonsHeading = new Text( radioButtonsString, {
       tagName: 'h3',
       innerContent: radioButtonsString
     } );
-    const verticalAquaRadioButtonGroup2 = new VerticalAquaRadioButtonGroup( verticalAquaPropertyWithGroup, [
+    const verticalAquaRadioButtonGroup = new VerticalAquaRadioButtonGroup( verticalAquaProperty, [
       {
-        value: firstOption,
-        node: new Text( firstOption ),
-        labelContent: firstOption
+        value: 'A',
+        node: new Text( 'A' ),
+        labelContent: 'A'
       }, {
         value: 'B',
         node: new Text( 'B' ),
@@ -154,14 +127,14 @@ class ButtonsScreenView extends ScreenView {
     ] );
 
     this.addChild( new Panel( new VBox( {
-      children: [ radioButtonsHeading, verticalAquaRadioButtonGroup2 ],
+      children: [ radioButtonsHeading, verticalAquaRadioButtonGroup ],
       align: 'left',
       spacing: 5
     } ), {
       stroke: 'black',
       scale: 2,
       right: this.layoutBounds.right - 20,
-      top: verticalAquaRadioButtonGroup1.bottom + 100
+      top: 100
     } ) );
 
     //===================================================================================
@@ -515,10 +488,9 @@ class ButtonsScreenView extends ScreenView {
     // buttonsEnabledProperty directly, synchronize their enabled state here.
     buttonsEnabledProperty.link( enabled => {
 
-      // Radio button groups
+      // radio button groups
       radioButtonGroup.enabled = enabled;
-      verticalAquaRadioButtonGroup1.enabled = enabled;
-      verticalAquaRadioButtonGroup2.enabled = enabled;
+      verticalAquaRadioButtonGroup.enabled = enabled;
 
       // Test the enabledProperty ES5 getter for these buttons, see https://github.com/phetsims/sun/issues/515
       buttonA.enabledProperty.value = enabled;
