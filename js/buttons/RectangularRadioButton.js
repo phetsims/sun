@@ -175,7 +175,7 @@ class RectangularRadioButton extends RectangularButton {
 class FlatAppearanceStrategy {
 
   /**
-   * @param {Node} buttonBackground - the Node for the button's background, sans content
+   * @param {Node,Paintable} buttonBackground - the Node for the button's background, sans content
    * @param {Property.<RadioButtonInteractionState>} interactionStateProperty
    * @param {Property.<ColorDef>} baseColorProperty
    * @param {Object} [options]
@@ -257,7 +257,7 @@ class FlatAppearanceStrategy {
 class ContentAppearanceStrategy {
 
   /**
-   * @param {Node} content
+   * @param {Node,Paintable} content
    * @param {Property.<RadioButtonInteractionState>} interactionStateProperty
    * @param {Object} [options]
    * @constructor

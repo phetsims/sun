@@ -93,7 +93,7 @@ class RoundButton extends ButtonNode {
 class ThreeDAppearanceStrategy {
 
   /**
-   * @param {Node} buttonBackground - the Node for the button's background, sans content
+   * @param {Node,Paintable} buttonBackground - the Node for the button's background, sans content
    * @param {Property.<ButtonInteractionState>} interactionStateProperty
    * @param {Property.<ColorDef>} baseColorProperty
    * @param {Object} [options]
