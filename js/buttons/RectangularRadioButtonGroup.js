@@ -103,7 +103,7 @@ class RectangularRadioButtonGroup extends LayoutBox {
       // The fill for the rectangle behind the radio buttons.  Default color is bluish color, as in the other button library.
       baseColor: ColorConstants.LIGHT_BLUE,
 
-      // Class that determines the content's appearance for the values of interactionStateProperty.
+      // {constructor|null} Class that determines the content's appearance for the values of interactionStateProperty.
       contentAppearanceStrategy: RectangularRadioButton.ContentAppearanceStrategy,
 
       // Options used by RectangularRadioButton.ContentAppearanceStrategy.
@@ -262,7 +262,9 @@ class RectangularRadioButtonGroup extends LayoutBox {
 
         // Use the same content appearance strategy for the labels that is used for the button content.
         // By default, this reduces opacity of the labels for the deselected radio buttons.
-        labelAppearanceStrategies.push( new options.contentAppearanceStrategy( label, radioButton.interactionStateProperty, options ) );
+        if ( options.contentAppearanceStrategy ) {
+          labelAppearanceStrategies.push( new options.contentAppearanceStrategy( label, radioButton.interactionStateProperty, options ) );
+        }
 
         // pdom - include label in focus highlight
         defaultHighlightBounds = radioButton.mouseArea.bounds.dilated( 5 );
