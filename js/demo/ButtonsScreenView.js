@@ -43,22 +43,7 @@ class ButtonsScreenView extends ScreenView {
     // For enabling/disabling all buttons
     const buttonsEnabledProperty = new Property( true );
 
-    // Message area, for outputting test messages
-    const messagePrefix = 'Message: ';
-    const messageText = new Text( messagePrefix, {
-      font: new Font( { size: 20 } ),
-      bottom: this.layoutBounds.height - 5,
-      left: this.layoutBounds.minX + 10
-    } );
-    this.addChild( messageText );
-    const message = function( text ) {
-      messageText.text = messagePrefix + text;
-    };
-
-    //===================================================================================
-    // Common colors
-    //===================================================================================
-
+    // Dynamic colors
     const alignBaseColor = new Property( new Color( 'red' ) );
     const roundBaseColor = new Property( new Color( 'blue' ) );
     const radioGroupBaseColor = new Property( 'green' );
@@ -68,9 +53,8 @@ class ButtonsScreenView extends ScreenView {
     //===================================================================================
 
     const radioButtonProperty = new Property( 'TWO' );
-    radioButtonProperty.lazyLink( function( value ) {
-      message( 'Radio button ' + value + ' pressed' );
-    } );
+    radioButtonProperty.lazyLink( value => console.log( `radioButtonProperty.value = ${value}` ) );
+
     const radioButtonContent = [
       { value: 'ONE', node: new Text( 'ONE', { font: new Font( { size: 32 } ) } ), label: new Text( 'one' ) }, // bigger than the others
       { value: 'TWO', node: new Text( 'TWO', { font: BUTTON_FONT } ), label: new Text( 'two' ) },
@@ -94,7 +78,6 @@ class ButtonsScreenView extends ScreenView {
     } );
     this.addChild( radioButtonPanel );
 
-
     //===================================================================================
     // Aqua Radio buttons
     //===================================================================================
@@ -102,9 +85,8 @@ class ButtonsScreenView extends ScreenView {
     // Create and add an aqua radio button group in a panel with a heading.  In addition to demonstrating how the radio
     // button group behaves, this code is an example of how to make the heading and group show up in the PDOM.
     const verticalAquaProperty = new Property( 'A' );
-    verticalAquaProperty.lazyLink( function( value ) {
-      message( 'Aqua Radio Button ' + value + ' pressed' );
-    } );
+    verticalAquaProperty.lazyLink( value => console.log( `verticalAquaProperty.value = ${value}` ) );
+
     const radioButtonsString = 'Radio Buttons';
     const radioButtonsHeading = new Text( radioButtonsString, {
       tagName: 'h3',
@@ -141,10 +123,9 @@ class ButtonsScreenView extends ScreenView {
     // Pseudo-3D buttons A, B, C, D, E
     //===================================================================================
 
-    let buttonAFireCount = 0;
     const buttonA = new RectangularPushButton( {
       content: new Text( '--- A ---', { font: BUTTON_FONT } ),
-      listener: function() { message( 'Button A pressed ' + ( ++buttonAFireCount ) + 'x' ); },
+      listener: () => console.log( 'buttonA fired' ),
 
       // demonstrate pointer areas, see https://github.com/phetsims/sun/issues/464
       touchAreaXDilation: 10,
@@ -155,37 +136,25 @@ class ButtonsScreenView extends ScreenView {
 
     const buttonB = new RectangularPushButton( {
       content: new Text( '--- B ---', { font: BUTTON_FONT } ),
-      listener: function() { message( 'Button B pressed' ); },
+      listener: () => console.log( 'buttonB fired' ),
       baseColor: new Color( 250, 0, 0 )
     } );
 
     const buttonC = new RectangularPushButton( {
       content: new Text( '--- C ---', { font: BUTTON_FONT } ),
-      listener: function() { message( 'Button C pressed' ); },
+      listener: () => console.log( 'buttonC fired' ),
       baseColor: 'rgb( 204, 102, 204 )'
-    } );
-
-    // Test for a button with different radii for each corner
-    const radiiTestButton = new RectangularPushButton( {
-      baseColor: 'orange',
-      minWidth: 50,
-      minHeight: 50,
-      leftTopCornerRadius: 20,
-      rightTopCornerRadius: 10,
-      rightBottomCornerRadius: 5,
-      leftBottomCornerRadius: 0,
-      listener: function() { message( 'Custom corner button pressed' ); }
     } );
 
     const buttonD = new RoundPushButton( {
       content: new Text( '--- D ---', { font: BUTTON_FONT } ),
-      listener: function() { message( 'Button D pressed' ); },
+      listener: () => console.log( 'buttonD fired' ),
       baseColor: roundBaseColor
     } );
 
     const buttonE = new RoundPushButton( {
       content: new Text( '--- E ---', { font: BUTTON_FONT } ),
-      listener: function() { message( 'Button E pressed' ); },
+      listener: () => console.log( 'buttonE fired' ),
       baseColor: 'yellow',
 
       // Demonstrate shifted pointer areas, https://github.com/phetsims/sun/issues/500
@@ -195,8 +164,20 @@ class ButtonsScreenView extends ScreenView {
       mouseAreaYShift: 10
     } );
 
+    // Test for a button with different radii for each corner
+    const customCornersButton = new RectangularPushButton( {
+      baseColor: 'orange',
+      minWidth: 50,
+      minHeight: 50,
+      leftTopCornerRadius: 20,
+      rightTopCornerRadius: 10,
+      rightBottomCornerRadius: 5,
+      leftBottomCornerRadius: 0,
+      listener: () => console.log( 'customCornersButton fired' )
+    } );
+
     const pseudo3DButtonsBox = new HBox( {
-      children: [ buttonA, buttonB, buttonC, radiiTestButton, buttonD, buttonE ],
+      children: [ buttonA, buttonB, buttonC, buttonD, buttonE, customCornersButton ],
       spacing: 10,
       left: radioButtonPanel.right + 25,
       top: this.layoutBounds.top + 15
@@ -209,14 +190,14 @@ class ButtonsScreenView extends ScreenView {
 
     const button1 = new RectangularPushButton( {
       content: new Text( '-- 1 --', { font: BUTTON_FONT } ),
-      listener: function() { message( 'Button 1 pressed' ); },
+      listener: () => console.log( 'button1 fired' ),
       baseColor: 'rgb( 204, 102, 204 )',
       buttonAppearanceStrategy: ButtonNode.FlatAppearanceStrategy
     } );
 
     const button2 = new RectangularPushButton( {
       content: new Text( '-- 2 --', { font: BUTTON_FONT } ),
-      listener: function() { message( 'Button 2 pressed' ); },
+      listener: () => console.log( 'button2 fired' ),
       baseColor: '#A0D022',
       buttonAppearanceStrategy: ButtonNode.FlatAppearanceStrategy,
       lineWidth: 1,
@@ -225,13 +206,13 @@ class ButtonsScreenView extends ScreenView {
 
     const button3 = new RoundPushButton( {
       content: new Text( '- 3 -', { font: BUTTON_FONT } ),
-      listener: function() { message( 'Button 3 pressed ' ); },
+      listener: () => console.log( 'button3 fired' ),
       buttonAppearanceStrategy: ButtonNode.FlatAppearanceStrategy
     } );
 
     const button4 = new RoundPushButton( {
       content: new Text( '-- 4 --', { font: BUTTON_FONT, fill: 'white' } ),
-      listener: function() { message( 'Button 4 pressed ' ); },
+      listener: () => console.log( 'button4 fired' ),
       baseColor: '#CC3300',
       buttonAppearanceStrategy: ButtonNode.FlatAppearanceStrategy
     } );
@@ -250,7 +231,7 @@ class ButtonsScreenView extends ScreenView {
 
     const fireButton = new RoundPushButton( {
       content: new Text( 'Fire!', { font: BUTTON_FONT } ),
-      listener: function() { message( 'Fire button pressed' ); },
+      listener: () => console.log( 'fireButton fired' ),
       baseColor: 'orange',
       stroke: 'black',
       lineWidth: 0.5
@@ -258,14 +239,14 @@ class ButtonsScreenView extends ScreenView {
 
     const goButton = new RoundPushButton( {
       content: new Text( 'Go!', { font: BUTTON_FONT } ),
-      listener: function() { message( 'Go button pressed' ); },
+      listener: () => console.log( 'goButton fired' ),
       baseColor: new Color( 0, 163, 0 ),
       minXPadding: 10
     } );
 
     const helpButton = new RoundPushButton( {
       content: new Text( 'Help', { font: BUTTON_FONT } ),
-      listener: function() { message( 'Help button pressed' ); },
+      listener: () => console.log( 'helpButton fired' ),
       baseColor: new Color( 244, 154, 194 ),
       minXPadding: 10
     } );
@@ -282,20 +263,18 @@ class ButtonsScreenView extends ScreenView {
     // Buttons with fire-on-hold turned on
     //===================================================================================
 
-    let fireOnHeldCount = 0;
     const fireQuicklyWhenHeldButton = new RectangularPushButton( {
       content: new Text( 'Press and hold to test (fast fire)', { font: BUTTON_CAPTION_FONT } ),
-      listener: function() { message( 'Fast held button fired ' + ( ++fireOnHeldCount ) + 'x' ); },
+      listener: () => console.log( 'fireQuicklyWhenHeldButton fired' ),
       baseColor: new Color( 114, 132, 62 ),
       fireOnHold: true,
       fireOnHoldDelay: 100,
       fireOnHoldInterval: 50
     } );
 
-    let fireSlowlyOnHoldCount = 0;
     const fireSlowlyWhenHeldButton = new RectangularPushButton( {
       content: new Text( 'Press and hold to test (slow fire)', { font: BUTTON_CAPTION_FONT } ),
-      listener: function() { message( 'Slow held button fired ' + ( ++fireSlowlyOnHoldCount ) + 'x' ); },
+      listener: () => console.log( 'fireSlowlyWhenHeldButton fired' ),
       baseColor: new Color( 147, 92, 120 ),
       fireOnHold: true,
       fireOnHoldDelay: 600,
@@ -315,7 +294,7 @@ class ButtonsScreenView extends ScreenView {
     const upperLeftAlignTextNode = new Text( 'upper left align test', { font: BUTTON_CAPTION_FONT } );
     const upperLeftContentButton = new RectangularPushButton( {
       content: upperLeftAlignTextNode,
-      listener: function() { message( 'Upper left alignment button fired ' ); },
+      listener: () => console.log( 'upperLeftContentButton fired' ),
       baseColor: alignBaseColor,
       xAlign: 'left',
       yAlign: 'top',
@@ -326,7 +305,7 @@ class ButtonsScreenView extends ScreenView {
     const lowerRightAlignTextNode = new Text( 'lower right align test', { font: BUTTON_CAPTION_FONT } );
     const lowerRightContentButton = new RectangularPushButton( {
       content: lowerRightAlignTextNode,
-      listener: function() { message( 'Lower right alignment button fired ' ); },
+      listener: () => console.log( 'lowerRightContentButton fired' ),
       baseColor: alignBaseColor,
       xAlign: 'right',
       yAlign: 'bottom',
@@ -348,10 +327,9 @@ class ButtonsScreenView extends ScreenView {
     // Miscellaneous other button examples
     //===================================================================================
 
-    let fireOnDownCount = 0;
     const fireOnDownButton = new RectangularPushButton( {
-      content: new Text( 'Fire on Down Button', { font: BUTTON_FONT } ),
-      listener: function() { message( 'Fire on down button pressed ' + ( ++fireOnDownCount ) + 'x' ); },
+      content: new Text( 'Fire on Down', { font: BUTTON_FONT } ),
+      listener: () => console.log( 'fireOnDownButton fired' ),
       baseColor: new Color( 255, 255, 61 ),
       fireOnDown: true,
       stroke: 'black',
@@ -362,13 +340,13 @@ class ButtonsScreenView extends ScreenView {
     const rectangleNode = new Rectangle( 0, 0, 25, 50, { fill: 'red' } );
     const transparentButton = new RectangularPushButton( {
       content: new Text( 'Transparent Button', { font: BUTTON_FONT } ),
-      listener: function() { message( 'Transparent button pressed' ); },
+      listener: () => console.log( 'transparentButton fired' ),
       baseColor: new Color( 255, 255, 0, 0.7 ),
       center: rectangleNode.center
     } );
     const transparentParent = new Node( { children: [ rectangleNode, transparentButton ] } );
 
-    const arrowButton = new ArrowButton( 'left', function() { message( 'ArrowButton pressed' ); }, {
+    const arrowButton = new ArrowButton( 'left', () => console.log( 'arrowButton fired' ), {
       enabledProperty: buttonsEnabledProperty
     } );
 
@@ -387,17 +365,13 @@ class ButtonsScreenView extends ScreenView {
     // Demonstrate using arbitrary values for toggle button.  Wrap in extra
     // quotes so it is clear that it is a string in the debugging UI.
     const roundToggleButtonProperty = new Property( 'off' );
-    roundToggleButtonProperty.lazyLink( function( value ) {
-      message( 'RoundStickyToggleButton state changed to: ' + value );
-    } );
+    roundToggleButtonProperty.lazyLink(value => console.log( `roundToggleButtonProperty.value = ${value}` ) );
     const roundStickyToggleButton = new RoundStickyToggleButton( 'off', 'on', roundToggleButtonProperty, {
       baseColor: new Color( 255, 0, 0 )
     } );
 
     const booleanRectangularToggleButtonProperty = new BooleanProperty( false );
-    booleanRectangularToggleButtonProperty.lazyLink( function( value ) {
-      message( 'BooleanRectangularStickyToggleButton state changed to: ' + value );
-    } );
+    booleanRectangularToggleButtonProperty.lazyLink( value => console.log( `booleanRectangularToggleButtonProperty.value = ${value}` ) );
     const booleanRectangularStickyToggleButton = new BooleanRectangularStickyToggleButton( booleanRectangularToggleButtonProperty, {
       baseColor: new Color( 0, 200, 200 ),
       centerX: roundStickyToggleButton.centerX,
@@ -419,18 +393,18 @@ class ButtonsScreenView extends ScreenView {
     //===================================================================================
 
     // round
-    const roundOnProperty = new Property( false );
-    roundOnProperty.lazyLink( function( on ) { message( 'RoundMomentaryButton on=' + on ); } );
-    const roundMomentaryButton = new RoundMomentaryButton( false, true, roundOnProperty, {
+    const roundMomentaryProperty = new Property( false );
+    roundMomentaryProperty.lazyLink( value => console.log( `roundMomentaryProperty.value = ${value}` ) );
+    const roundMomentaryButton = new RoundMomentaryButton( false, true, roundMomentaryProperty, {
       baseColor: '#D76958',
       left: roundStickyToggleButton.right + 10,
       centerY: roundStickyToggleButton.centerY
     } );
 
     // rectangular
-    const rectangularOnProperty = new Property( false );
-    rectangularOnProperty.lazyLink( function( on ) { message( 'RectangularMomentaryButton on=' + on ); } );
-    const rectangularMomentaryButton = new RectangularMomentaryButton( false, true, rectangularOnProperty, {
+    const rectangularMomentaryProperty = new Property( false );
+    rectangularMomentaryProperty.lazyLink( value => console.log( `rectangularMomentaryProperty.value = ${value}` ) );
+    const rectangularMomentaryButton = new RectangularMomentaryButton( false, true, rectangularMomentaryProperty, {
       baseColor: '#724C35',
       minWidth: 50,
       minHeight: 40,
@@ -453,7 +427,7 @@ class ButtonsScreenView extends ScreenView {
     // Add a button to set alternative color scheme.
     const changeButtonColorsButton = new RectangularPushButton( {
       content: new Text( 'Change Some Button Colors', { font: BUTTON_CAPTION_FONT } ),
-      listener: function() {
+      listener: () => {
 
         /* eslint-disable bad-sim-text */
         buttonA.baseColor = new Color( _.random( 0, 255 ), _.random( 0, 255 ), _.random( 0, 255 ) );
@@ -466,10 +440,10 @@ class ButtonsScreenView extends ScreenView {
         roundBaseColor.value = new Color( _.random( 0, 255 ), _.random( 0, 255 ), _.random( 0, 255 ) );
         /* eslint-enable bad-sim-text */
 
-        message( 'Button colors changed' );
+        console.log( 'changeButtonColorsButton fired' );
       },
-      left: messageText.left,
-      bottom: messageText.top - 15,
+      left: this.layoutBounds.left + 15,
+      bottom: this.layoutBounds.bottom - 15,
 
       // Demonstrate shifted pointer areas, https://github.com/phetsims/sun/issues/500
       touchAreaXShift: -20,
@@ -499,7 +473,7 @@ class ButtonsScreenView extends ScreenView {
       buttonE.enabledProperty.value = enabled;
 
       // Other buttons
-      radiiTestButton.enabled = enabled;
+      customCornersButton.enabled = enabled;
       button1.enabled = enabled;
       button2.enabled = enabled;
       button3.enabled = enabled;
@@ -520,7 +494,8 @@ class ButtonsScreenView extends ScreenView {
       changeButtonColorsButton.enabled = enabled;
     } );
 
-    const buttonsEnabledCheckbox = new Checkbox( new Text( 'buttons enabled', { font: new PhetFont( 20 ) } ), buttonsEnabledProperty, {
+    const buttonsEnabledText = new Text( 'buttons enabled', { font: new PhetFont( 20 ) } );
+    const buttonsEnabledCheckbox = new Checkbox( buttonsEnabledText, buttonsEnabledProperty, {
       right: this.layoutBounds.right - 15,
       bottom: this.layoutBounds.bottom - 15
     } );
