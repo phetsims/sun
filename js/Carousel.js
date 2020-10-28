@@ -107,7 +107,6 @@ class Carousel extends Node {
       yMargin: 5,
       cornerRadius: options.cornerRadius,
       baseColor: options.buttonColor,
-      disabledBaseColor: options.fill, // same as carousel background
       stroke: options.buttonStroke,
       lineWidth: options.buttonLineWidth,
       minWidth: isHorizontal ? 0 : maxItemWidth + ( 2 * options.margin ), // fill the width of a vertical carousel
