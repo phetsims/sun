@@ -60,12 +60,14 @@ class ButtonNode extends Node {
       cursor: 'pointer',
 
       // Class that determines the button's appearance for the values of interactionStateProperty.
-      // Constructor is {function( backgroundNode:Node, interactionStateProperty:Property, options:*)}
+      // Constructor is {function( backgroundNode:Node, interactionStateProperty:Property, options:*)},
+      // and the class has an optional dispose method.
       // See ButtonNode.FlatAppearanceStrategy for an example.
       buttonAppearanceStrategy: ButtonNode.FlatAppearanceStrategy,
 
       // Optional class that determines the content's appearance for the values of interactionStateProperty.
-      // Constructor is {function( content:Node, interactionStateProperty:Property, options:*)}
+      // Constructor is {function( content:Node, interactionStateProperty:Property, options:*)},
+      // and the class has an optional dispose method.
       // See RectangularRadioButton.ContentAppearanceStrategy for an example.
       contentAppearanceStrategy: null,
 
