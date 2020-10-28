@@ -14,6 +14,7 @@ import FocusHighlightPath from '../../../scenery/js/accessibility/FocusHighlight
 import PDOMPeer from '../../../scenery/js/accessibility/pdom/PDOMPeer.js';
 import LayoutBox from '../../../scenery/js/nodes/LayoutBox.js';
 import Rectangle from '../../../scenery/js/nodes/Rectangle.js';
+import Color from '../../../scenery/js/util/Color.js';
 import multiSelectionSoundPlayerFactory from '../../../tambo/js/multiSelectionSoundPlayerFactory.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import ColorConstants from '../ColorConstants.js';
@@ -115,6 +116,8 @@ class RectangularRadioButtonGroup extends LayoutBox {
       overButtonOpacity: 0.8,
       overContentOpacity: 0.8,
 
+      selectedStroke: 'black',
+      deselectedStroke: new Color( 50, 50, 50 ),
       selectedLineWidth: 1.5,
       deselectedLineWidth: 1,
 
