@@ -41,25 +41,25 @@ class RectangularRadioButton extends RectangularButton {
 
       // Options used by RectangularRadioButton.FlatAppearanceStrategy.
       // If you define your own buttonAppearanceStrategy, then you may need to add your own options.
-      selectedStroke: 'black',
-      deselectedStroke: new Color( 50, 50, 50 ),
-      selectedLineWidth: 1.5,
-      deselectedLineWidth: 1,
       overFill: null,
       overStroke: null,
       overLineWidth: null,
+      overButtonOpacity: 0.8,
+      selectedStroke: 'black',
+      selectedLineWidth: 1.5,
+      selectedButtonOpacity: 1,
+      deselectedStroke: new Color( 50, 50, 50 ),
+      deselectedLineWidth: 1,
+      deselectedButtonOpacity: 0.6,
 
       // Class that determines the content's appearance for the values of interactionStateProperty.
       contentAppearanceStrategy: RectangularRadioButton.ContentAppearanceStrategy,
 
       // Options used by RectangularRadioButton.ContentAppearanceStrategy.
       // If you define your own contentAppearanceStrategy, then you may need to add your own options.
-      selectedButtonOpacity: 1,
-      deselectedButtonOpacity: 0.6,
+      overContentOpacity: 0.8,
       selectedContentOpacity: 1,
       deselectedContentOpacity: 0.6,
-      overButtonOpacity: 0.8,
-      overContentOpacity: 0.8,
 
       // {Playable|null} - sound generation - If set to null a default will be used that is based on this button's
       // position within the radio button group.  Can be set to Playable.NO_SOUND to disable.

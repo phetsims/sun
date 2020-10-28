@@ -104,22 +104,26 @@ class RectangularRadioButtonGroup extends LayoutBox {
       // The fill for the rectangle behind the radio buttons.  Default color is bluish color, as in the other button library.
       baseColor: ColorConstants.LIGHT_BLUE,
 
+      // Options for buttonAppearanceStrategy.
+      //TODO https://github.com/phetsims/sun/issues/653 These are already specified in RectangularRadioButton, but
+      //  must to be included here due to the use of _.pick below
+      overButtonOpacity: 0.8,
+      selectedStroke: 'black',
+      selectedLineWidth: 1.5,
+      selectedButtonOpacity: 1,
+      deselectedStroke: new Color( 50, 50, 50 ),
+      deselectedLineWidth: 1,
+      deselectedButtonOpacity: 0.6,
+
       // {constructor|null} Class that determines the content's appearance for the values of interactionStateProperty.
       contentAppearanceStrategy: RectangularRadioButton.ContentAppearanceStrategy,
 
       // Options used by RectangularRadioButton.ContentAppearanceStrategy.
-      // If you define your own contentAppearanceStrategy, then you may need to add your own options.
-      selectedButtonOpacity: 1,
-      deselectedButtonOpacity: 0.6,
+      //TODO https://github.com/phetsims/sun/issues/653 These are already specified in RectangularRadioButton, but
+      //  must to be included here due to the use of _.pick below
+      overContentOpacity: 0.8,
       selectedContentOpacity: 1,
       deselectedContentOpacity: 0.6,
-      overButtonOpacity: 0.8,
-      overContentOpacity: 0.8,
-
-      selectedStroke: 'black',
-      deselectedStroke: new Color( 50, 50, 50 ),
-      selectedLineWidth: 1.5,
-      deselectedLineWidth: 1,
 
       // These margins are *within* each button
       buttonContentXMargin: 5,
