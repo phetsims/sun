@@ -14,7 +14,6 @@ import FocusHighlightPath from '../../../scenery/js/accessibility/FocusHighlight
 import PDOMPeer from '../../../scenery/js/accessibility/pdom/PDOMPeer.js';
 import LayoutBox from '../../../scenery/js/nodes/LayoutBox.js';
 import Rectangle from '../../../scenery/js/nodes/Rectangle.js';
-import Color from '../../../scenery/js/util/Color.js';
 import multiSelectionSoundPlayerFactory from '../../../tambo/js/multiSelectionSoundPlayerFactory.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import ColorConstants from '../ColorConstants.js';
@@ -103,9 +102,12 @@ class RectangularRadioButtonGroup extends LayoutBox {
 
       // The fill for the rectangle behind the radio buttons.  Default color is bluish color, as in the other button library.
       baseColor: ColorConstants.LIGHT_BLUE,
-      disabledBaseColor: ColorConstants.LIGHT_GRAY,
 
-      // Opacity can be set separately for the buttons and button content.
+      // Class that determines the content's appearance for the values of interactionStateProperty.
+      contentAppearanceStrategy: RectangularRadioButton.ContentAppearanceStrategy,
+
+      // Options used by RectangularRadioButton.ContentAppearanceStrategy.
+      // If you define your own contentAppearanceStrategy, then you may need to add your own options.
       selectedButtonOpacity: 1,
       deselectedButtonOpacity: 0.6,
       selectedContentOpacity: 1,
@@ -113,16 +115,8 @@ class RectangularRadioButtonGroup extends LayoutBox {
       overButtonOpacity: 0.8,
       overContentOpacity: 0.8,
 
-      selectedStroke: 'black',
-      deselectedStroke: new Color( 50, 50, 50 ),
       selectedLineWidth: 1.5,
       deselectedLineWidth: 1,
-
-      // The following options specify highlight behavior overrides, leave as null to get the default behavior
-      // Note that highlighting applies only to deselected buttons
-      overFill: null,
-      overStroke: null,
-      overLineWidth: null,
 
       // These margins are *within* each button
       buttonContentXMargin: 5,
@@ -171,7 +165,7 @@ class RectangularRadioButtonGroup extends LayoutBox {
 
     // make sure all radio buttons are the same size and create the RadioButtons
     const buttons = [];
-    let button;
+    const labelAppearanceStrategies = [];
     for ( i = 0; i < contentArray.length; i++ ) {
       const currentContent = contentArray[ i ];
 
@@ -229,8 +223,10 @@ class RectangularRadioButtonGroup extends LayoutBox {
       // default bounds for focus highlight, will include label if one exists
       let defaultHighlightBounds = null;
 
-      // if a label is given, the button becomes a LayoutBox with the label and button
+      let button;
       if ( currentContent.label ) {
+
+        // If a label is provided, the button becomes a LayoutBox with the label and radio button
         const label = currentContent.label;
         const labelOrientation = ( options.labelAlign === 'bottom' || options.labelAlign === 'top' ) ? 'vertical' : 'horizontal';
         const labelChildren = ( options.labelAlign === 'left' || options.labelAlign === 'top' ) ? [ label, radioButton ] : [ radioButton, label ];
@@ -243,9 +239,8 @@ class RectangularRadioButtonGroup extends LayoutBox {
         let xDilation = options.touchAreaXDilation;
         let yDilation = options.touchAreaYDilation;
 
-        // override the touch and mouse areas defined in RectangularButton
-        // extra width is added to the SingleRadioButtons so they don't change size if the line width changes,
-        // that is why lineWidth is subtracted from the width and height when calculating these new areas
+        // Set pointer areas. Extra width is added to the radio buttons so they don't change size if the line width
+        // changes. That is why lineWidth is subtracted from the width and height when calculating these new areas.
         radioButton.touchArea = Shape.rectangle(
           -xDilation,
           -yDilation,
@@ -262,24 +257,29 @@ class RectangularRadioButtonGroup extends LayoutBox {
           button.height + 2 * yDilation - maxLineWidth
         );
 
-        // make sure the label mouse and touch areas don't block the expanded button touch and mouse areas
+        // Make sure the label pointer areas don't block the expanded button pointer areas.
         label.pickable = false;
+
+        // Use the same content appearance strategy for the labels that is used for the button content.
+        // By default, this reduces opacity of the labels for the deselected radio buttons.
+        labelAppearanceStrategies.push( new options.contentAppearanceStrategy( label, radioButton.interactionStateProperty, options ) );
 
         // pdom - include label in focus highlight
         defaultHighlightBounds = radioButton.mouseArea.bounds.dilated( 5 );
       }
       else {
+
+        // The button has no label.
         button = radioButton;
         defaultHighlightBounds = button.bounds.dilated( FocusHighlightPath.getDilationCoefficient( button ) );
       }
+      buttons.push( button );
 
       // pdom - set the focus highlight, dilated by the optional expansion values
       const highlightBounds = defaultHighlightBounds
         .dilatedX( radioButtonGroupMemberOptions.a11yHighlightXDilation )
         .dilatedY( radioButtonGroupMemberOptions.a11yHighlightYDilation );
       radioButton.setFocusHighlight( Shape.bounds( highlightBounds ) );
-
-      buttons.push( button );
     }
 
     assert && assert( !options.children, 'RectangularRadioButtonGroup sets children' );
@@ -310,11 +310,8 @@ class RectangularRadioButtonGroup extends LayoutBox {
     // @private - remove listeners from buttons and make eligible for garbage collection
     this.disposeRadioButtonGroup = () => {
       this.removeInputListener( intentListener );
-
-      // dispose all buttons
-      for ( i = 0; i < contentArray.length; i++ ) {
-        buttons[ i ].dispose();
-      }
+      buttons.forEach( button => button.dispose() );
+      labelAppearanceStrategies.forEach( strategy => ( strategy.dispose && strategy.dispose() ) );
     };
 
     // pdom - register component for binder docs
