@@ -18,7 +18,7 @@ class PushButtonInteractionStateProperty extends DerivedProperty {
   constructor( buttonModel, options ) {
 
     options = merge( {
-      isValidValue: value => ButtonInteractionState.includes( value )
+      valueType: ButtonInteractionState
     }, options );
 
     super(

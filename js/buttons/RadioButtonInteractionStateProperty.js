@@ -19,9 +19,7 @@ class RadioButtonInteractionStateProperty extends DerivedProperty {
    */
   constructor( buttonModel, property, value ) {
 
-    const options = {
-      isValidValue: value => RadioButtonInteractionState.includes( value )
-    };
+    const options = { valueType: RadioButtonInteractionState };
 
     super(
       [ buttonModel.overProperty, buttonModel.looksPressedProperty, property ],

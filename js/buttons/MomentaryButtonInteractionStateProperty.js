@@ -17,9 +17,7 @@ class MomentaryButtonInteractionStateProperty extends DerivedProperty {
    */
   constructor( buttonModel ) {
 
-    const options = {
-      isValidValue: value => ButtonInteractionState.includes( value )
-    };
+    const options = { valueType: ButtonInteractionState };
 
     super(
       [ buttonModel.overProperty, buttonModel.looksPressedProperty ],
