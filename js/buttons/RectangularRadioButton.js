@@ -35,30 +35,31 @@ class RectangularRadioButton extends RectangularButton {
 
       // The fill for the rectangle behind the radio buttons.  Default color is bluish color, as in the other button library.
       baseColor: ColorConstants.LIGHT_BLUE,
-      disabledBaseColor: ColorConstants.LIGHT_GRAY,
 
-      // Opacity can be set separately for the buttons and button content.
+      // Class that determines the button's appearance for the values of interactionStateProperty.
+      buttonAppearanceStrategy: RectangularRadioButton.FlatAppearanceStrategy,
+
+      // Options used by RectangularRadioButton.FlatAppearanceStrategy.
+      // If you define your own buttonAppearanceStrategy, then you may need to add your own options.
+      selectedStroke: 'black',
+      deselectedStroke: new Color( 50, 50, 50 ),
+      selectedLineWidth: 1.5,
+      deselectedLineWidth: 1,
+      overFill: null,
+      overStroke: null,
+      overLineWidth: null,
+
+      // Class that determines the content's appearance for the values of interactionStateProperty.
+      contentAppearanceStrategy: RectangularRadioButton.ContentAppearanceStrategy,
+
+      // Options used by RectangularRadioButton.ContentAppearanceStrategy.
+      // If you define your own contentAppearanceStrategy, then you may need to add your own options.
       selectedButtonOpacity: 1,
       deselectedButtonOpacity: 0.6,
       selectedContentOpacity: 1,
       deselectedContentOpacity: 0.6,
       overButtonOpacity: 0.8,
       overContentOpacity: 0.8,
-
-      selectedStroke: 'black',
-      deselectedStroke: new Color( 50, 50, 50 ),
-      selectedLineWidth: 1.5,
-      deselectedLineWidth: 1,
-
-      // The following options specify highlight behavior overrides, leave as null to get the default behavior
-      // Note that highlighting applies only to deselected buttons
-      overFill: null,
-      overStroke: null,
-      overLineWidth: null,
-
-      // Class that determines the button's appearance for the values of interactionStateProperty.
-      // See RectangularRadioButton.FlatAppearanceStrategy for an example.
-      buttonAppearanceStrategy: RectangularRadioButton.FlatAppearanceStrategy,
 
       // {Playable|null} - sound generation - If set to null a default will be used that is based on this button's
       // position within the radio button group.  Can be set to Playable.NO_SOUND to disable.
@@ -248,8 +249,63 @@ class FlatAppearanceStrategy {
   }
 }
 
+
+/**
+ * ContentAppearanceStrategy is a value for RectangularRadioButton options.contentAppearanceStrategy. It changes
+ * their look based on the value of interactionStateProperty.
+ */
+class ContentAppearanceStrategy {
+
+  /**
+   * @param {Node} content
+   * @param {Property.<RadioButtonInteractionState>} interactionStateProperty
+   * @param {Object} [options]
+   * @constructor
+   * @public
+   */
+  constructor( content, interactionStateProperty, options ) {
+
+    // The button is not the parent of the content, therefore it is necessary to set the opacity on the content separately
+    function handleInteractionStateChanged( state ) {
+      if ( content !== null ) {
+        switch( state ) {
+
+          case RadioButtonInteractionState.DESELECTED:
+            content.opacity = options.deselectedContentOpacity;
+            break;
+
+          // mouseover for deselected buttons
+          case RadioButtonInteractionState.OVER:
+            content.opacity = options.overContentOpacity;
+            break;
+
+          case RadioButtonInteractionState.SELECTED:
+            content.opacity = options.selectedContentOpacity;
+            break;
+
+          case RadioButtonInteractionState.PRESSED:
+            content.opacity = options.deselectedContentOpacity;
+            break;
+
+          default:
+            throw new Error( 'unsupported state: ' + state );
+        }
+      }
+    }
+    interactionStateProperty.link( handleInteractionStateChanged );
+
+    // @public
+    this.dispose = () => {
+      if ( interactionStateProperty.hasListener( handleInteractionStateChanged ) ) {
+        interactionStateProperty.unlink( handleInteractionStateChanged );
+      }
+    };
+  }
+}
+
 // @public
 RectangularRadioButton.FlatAppearanceStrategy = FlatAppearanceStrategy;
+RectangularRadioButton.ContentAppearanceStrategy = ContentAppearanceStrategy;
 
 sun.register( 'RectangularRadioButton', RectangularRadioButton );
 export default RectangularRadioButton;

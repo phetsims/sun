@@ -60,8 +60,14 @@ class ButtonNode extends Node {
       cursor: 'pointer',
 
       // Class that determines the button's appearance for the values of interactionStateProperty.
-      // See ButtonNode.FlatAppearanceStrategy for an example of the interface required.
+      // Constructor is {function( backgroundNode:Node, interactionStateProperty:Property, options:*)}
+      // See ButtonNode.FlatAppearanceStrategy for an example.
       buttonAppearanceStrategy: ButtonNode.FlatAppearanceStrategy,
+
+      // Optional class that determines the content's appearance for the values of interactionStateProperty.
+      // Constructor is {function( content:Node, interactionStateProperty:Property, options:*)}
+      // See RectangularRadioButton.ContentAppearanceStrategy for an example.
+      contentAppearanceStrategy: null,
 
       // phet-io
       // TODO: workaround for difficulty in mutate/instrumentation order of sun buttons,
@@ -106,6 +112,12 @@ class ButtonNode extends Node {
     const buttonAppearanceStrategy = new options.buttonAppearanceStrategy( buttonBackground, interactionStateProperty,
       this.baseColorProperty, options );
 
+    // Optionally hook up the strategy that will control the content's appearance.
+    let contentAppearanceStrategy;
+    if ( options.contentAppearanceStrategy ) {
+      contentAppearanceStrategy = new options.contentAppearanceStrategy( options.content, interactionStateProperty, options );
+    }
+
     let alignBox = null;
     if ( options.content ) {
 
@@ -139,6 +151,7 @@ class ButtonNode extends Node {
     this.disposeButtonNode = () => {
       alignBox && alignBox.dispose();
       buttonAppearanceStrategy.dispose && buttonAppearanceStrategy.dispose();
+      contentAppearanceStrategy && contentAppearanceStrategy.dispose && contentAppearanceStrategy.dispose();
       this._pressListener.dispose();
       this.baseColorProperty.dispose();
     };
