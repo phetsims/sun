@@ -72,9 +72,6 @@ class ButtonNode extends Node {
       contentAppearanceStrategy: null,
 
       // phet-io
-      // TODO: workaround for difficulty in mutate/instrumentation order of sun buttons,
-      //  see https://github.com/phetsims/sun/issues/643 or https://github.com/phetsims/sun/issues/515
-      phetioLinkEnabledElement: false,
       tandem: Tandem.OPTIONAL,
       visiblePropertyOptions: { phetioFeatured: true }
     }, options );
@@ -92,8 +89,6 @@ class ButtonNode extends Node {
     assert && assert( _.includes( Y_ALIGN_VALUES, options.yAlign ), 'invalid yAlign: ' + options.yAlign );
 
     super();
-
-    this.initializeEnabledNode( options );
 
     // @protected
     this.buttonModel = buttonModel;
@@ -149,8 +144,11 @@ class ButtonNode extends Node {
 
     this.mutate( options );
 
+    this.initializeEnabledNode( options );
+
     // @private - define a dispose function
     this.disposeButtonNode = () => {
+      this.disposeEnabledNode();
       alignBox && alignBox.dispose();
       buttonAppearanceStrategy.dispose && buttonAppearanceStrategy.dispose();
       contentAppearanceStrategy && contentAppearanceStrategy.dispose && contentAppearanceStrategy.dispose();
