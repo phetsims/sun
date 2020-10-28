@@ -38,8 +38,7 @@ const EnabledPhetioObject = {
         assertHasProperties( this, [ 'isPhetioInstrumented', 'addLinkedElement', 'phetioFeatured' ] );
 
         options = merge( {
-          tandem: Tandem.OPTIONAL,
-          phetioLinkEnabledElement: true
+          tandem: Tandem.OPTIONAL
         }, options );
 
         // Does this trait own the enabledProperty? NOTE: enabledProperty cannot be defined in the above options merge because of existence
@@ -56,11 +55,17 @@ const EnabledPhetioObject = {
             assert && this.phetioFeatured && assert( options.enabledProperty.phetioFeatured, 'provided enabledProperty must be phetioFeatured if this PhetioObject is.' );
           }
 
-          // If enabledProperty was passed in, PhET-iO wrappers like Studio needs to know about that linkage
-          // This is supported in API.js types because in practice LinkedElementIO defer to their linked PhetioObject.
-          options.phetioLinkEnabledElement && this.addLinkedElement( options.enabledProperty, {
-            tandem: options.tandem.createTandem( EnabledComponent.ENABLED_PROPERTY_TANDEM_NAME )
-          } );
+          const enabledPropertyTandem = options.tandem.createTandem( EnabledComponent.ENABLED_PROPERTY_TANDEM_NAME );
+
+          // Support the case where the passed in Property actually fills the same phetioID as the LinkedElement would.
+          if ( options.enabledProperty.tandem !== enabledPropertyTandem ) {
+
+            // If enabledProperty was passed in, PhET-iO wrappers like Studio needs to know about that linkage
+            // This is supported in API.js types because in practice LinkedElementIO defer to their linked PhetioObject.
+            this.addLinkedElement( options.enabledProperty, {
+              tandem: enabledPropertyTandem
+            } );
+          }
         }
       },
 
