@@ -26,7 +26,7 @@ class ButtonNode extends Node {
 
   /**
    * @param {ButtonModel} buttonModel
-   * @param {Node} buttonBackground - the background of the button (like a circle or rectangle).
+   * @param {Paintable} buttonBackground - the background of the button (like a circle or rectangle).
    * @param {Property} interactionStateProperty - a Property that is used to drive the visual appearance of the button
    * @param {Object} [options] - this type does not mutate its options, but relies on the subtype to
    */
