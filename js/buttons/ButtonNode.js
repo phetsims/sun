@@ -125,10 +125,6 @@ class ButtonNode extends Node {
         xAlign: options.xAlign,
         yAlign: options.yAlign,
 
-        // TODO https://github.com/phetsims/sun/issues/643 Margins here would be broken for round buttons if they
-        //  don't use the same value for x and y. Because they are used here differently from how they are used to
-        //  calculate radius in RoundButton (as a minimum). Is that OK?
-
         // Apply offsets via margins, so that bounds of the AlignBox doesn't unnecessarily extend past the
         // buttonBackground. See https://github.com/phetsims/sun/issues/649
         leftMargin: options.xMargin + options.xContentOffset,
