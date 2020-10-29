@@ -19,6 +19,7 @@ import Font from '../../../scenery/js/util/Font.js';
 import ArrowButton from '../buttons/ArrowButton.js';
 import BooleanRectangularStickyToggleButton from '../buttons/BooleanRectangularStickyToggleButton.js';
 import ButtonNode from '../buttons/ButtonNode.js';
+import CarouselButton from '../buttons/CarouselButton.js';
 import RectangularMomentaryButton from '../buttons/RectangularMomentaryButton.js';
 import RectangularPushButton from '../buttons/RectangularPushButton.js';
 import RectangularRadioButtonGroup from '../buttons/RectangularRadioButtonGroup.js';
@@ -338,8 +339,12 @@ class ButtonsScreenView extends ScreenView {
       enabledProperty: buttonsEnabledProperty
     } );
 
+    const carouselButton = new CarouselButton( {
+      listener: () => console.log( 'carouselButton fired' )
+    } );
+
     const miscButtonsBox = new VBox( {
-      children: [ fireOnDownButton, transparentParent, arrowButton ],
+      children: [ fireOnDownButton, transparentParent, arrowButton, carouselButton ],
       spacing: 15,
       left: actionButtonsBox.left,
       top: actionButtonsBox.bottom + 25
