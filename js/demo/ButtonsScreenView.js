@@ -9,7 +9,6 @@
 import BooleanProperty from '../../../axon/js/BooleanProperty.js';
 import Property from '../../../axon/js/Property.js';
 import ScreenView from '../../../joist/js/ScreenView.js';
-import PhetFont from '../../../scenery-phet/js/PhetFont.js';
 import HBox from '../../../scenery/js/nodes/HBox.js';
 import Node from '../../../scenery/js/nodes/Node.js';
 import Rectangle from '../../../scenery/js/nodes/Rectangle.js';
@@ -20,9 +19,9 @@ import Font from '../../../scenery/js/util/Font.js';
 import ArrowButton from '../buttons/ArrowButton.js';
 import BooleanRectangularStickyToggleButton from '../buttons/BooleanRectangularStickyToggleButton.js';
 import ButtonNode from '../buttons/ButtonNode.js';
-import RectangularRadioButtonGroup from '../buttons/RectangularRadioButtonGroup.js';
 import RectangularMomentaryButton from '../buttons/RectangularMomentaryButton.js';
 import RectangularPushButton from '../buttons/RectangularPushButton.js';
+import RectangularRadioButtonGroup from '../buttons/RectangularRadioButtonGroup.js';
 import RoundMomentaryButton from '../buttons/RoundMomentaryButton.js';
 import RoundPushButton from '../buttons/RoundPushButton.js';
 import RoundStickyToggleButton from '../buttons/RoundStickyToggleButton.js';
@@ -32,8 +31,8 @@ import sun from '../sun.js';
 import VerticalAquaRadioButtonGroup from '../VerticalAquaRadioButtonGroup.js';
 
 // constants
-const BUTTON_FONT = new Font( { size: 24 } );
-const BUTTON_CAPTION_FONT = new Font( { size: 20 } );
+const BUTTON_FONT_SIZE = 20;
+const BUTTON_FONT = new Font( { size: BUTTON_FONT_SIZE } );
 
 class ButtonsScreenView extends ScreenView {
   constructor() {
@@ -52,72 +51,61 @@ class ButtonsScreenView extends ScreenView {
     // Radio buttons
     //===================================================================================
 
-    const radioButtonProperty = new Property( 'TWO' );
-    radioButtonProperty.lazyLink( value => console.log( `radioButtonProperty.value = ${value}` ) );
-
-    const radioButtonContent = [
-      { value: 'ONE', node: new Text( 'ONE', { font: new Font( { size: 32 } ) } ), label: new Text( 'one' ) }, // bigger than the others
-      { value: 'TWO', node: new Text( 'TWO', { font: BUTTON_FONT } ), label: new Text( 'two' ) },
-      { value: 'THREE', node: new Text( 'THREE', { font: BUTTON_FONT } ), label: new Text( 'three' ) },
-      { value: '4', node: new Text( '4', { font: BUTTON_FONT } ), label: new Text( 'four' ) }
-    ];
-    const radioButtonGroup = new RectangularRadioButtonGroup( radioButtonProperty, radioButtonContent, {
+    // demonstrate RectangularRadioButtonGroup
+    const rectangularRadioButtonValues = [ 'One', 'Two', 'Three', 'Four' ];
+    const rectangularRadioButtonProperty = new Property( rectangularRadioButtonValues[ 0 ] );
+    rectangularRadioButtonProperty.lazyLink( value => console.log( `rectangularRadioButtonProperty.value = ${value}` ) );
+    const radioButtonContent = _.map( rectangularRadioButtonValues, stringValue => {
+      return {
+        value: stringValue,
+        node: new Text( stringValue, { font: BUTTON_FONT } ),
+        label: new Text( stringValue )
+      };
+    } );
+    const rectangularRadioButtonGroup = new RectangularRadioButtonGroup( rectangularRadioButtonProperty, radioButtonContent, {
       selectedLineWidth: 4,
 
       // change these to test various orientations and alignments
       orientation: 'vertical',
-      buttonContentXAlign: 'left',
+      buttonContentXAlign: 'center',
       buttonContentYAlign: 'center',
 
       baseColor: radioGroupBaseColor
     } );
-    const radioButtonPanel = new Panel( radioButtonGroup, {
+    const rectangularRadioButtonPanel = new Panel( rectangularRadioButtonGroup, {
+      xMargin: 10,
+      yMargin: 10
+    } );
+
+    // demonstrate VerticalAquaRadioButtonGroup
+    const aquaRadioButtonValues = [ 'Small', 'Medium', 'Large' ];
+    const aquaRadioButtonProperty = new Property( aquaRadioButtonValues[ 0 ] );
+    aquaRadioButtonProperty.lazyLink( value => console.log( `aquaRadioButtonProperty.value = ${value}` ) );
+    const aquaRadioButtonGroupContent = _.map( aquaRadioButtonValues, stringValue => {
+      return {
+        value: stringValue,
+        node: new Text( stringValue, { font: BUTTON_FONT } ),
+        labelContent: stringValue
+      };
+    } );
+    const aquaRadioButtonGroup = new VerticalAquaRadioButtonGroup( aquaRadioButtonProperty, aquaRadioButtonGroupContent, {
+      spacing: 8
+    } );
+    const aquaRadioButtonGroupPanel = new Panel( aquaRadioButtonGroup, {
       stroke: 'black',
+      xMargin: 10,
+      yMargin: 10
+    } );
+
+    // Layout for all radio button demonstrations
+    const radioButtonsLayoutBox = new VBox( {
+      children: [ rectangularRadioButtonPanel, aquaRadioButtonGroupPanel ],
+      spacing: 15,
+      align: 'left',
       left: this.layoutBounds.left + 15,
       top: this.layoutBounds.top + 15
     } );
-    this.addChild( radioButtonPanel );
-
-    //===================================================================================
-    // Aqua Radio buttons
-    //===================================================================================
-
-    // Create and add an aqua radio button group in a panel with a heading.  In addition to demonstrating how the radio
-    // button group behaves, this code is an example of how to make the heading and group show up in the PDOM.
-    const verticalAquaProperty = new Property( 'A' );
-    verticalAquaProperty.lazyLink( value => console.log( `verticalAquaProperty.value = ${value}` ) );
-
-    const radioButtonsString = 'Radio Buttons';
-    const radioButtonsHeading = new Text( radioButtonsString, {
-      tagName: 'h3',
-      innerContent: radioButtonsString
-    } );
-    const verticalAquaRadioButtonGroup = new VerticalAquaRadioButtonGroup( verticalAquaProperty, [
-      {
-        value: 'A',
-        node: new Text( 'A' ),
-        labelContent: 'A'
-      }, {
-        value: 'B',
-        node: new Text( 'B' ),
-        labelContent: 'B'
-      }, {
-        value: 'C',
-        node: new Text( 'C' ),
-        labelContent: 'C'
-      }
-    ] );
-
-    this.addChild( new Panel( new VBox( {
-      children: [ radioButtonsHeading, verticalAquaRadioButtonGroup ],
-      align: 'left',
-      spacing: 5
-    } ), {
-      stroke: 'black',
-      scale: 2,
-      right: this.layoutBounds.right - 20,
-      top: 100
-    } ) );
+    this.addChild( radioButtonsLayoutBox );
 
     //===================================================================================
     // Pseudo-3D buttons A, B, C, D, E
@@ -179,7 +167,7 @@ class ButtonsScreenView extends ScreenView {
     const pseudo3DButtonsBox = new HBox( {
       children: [ buttonA, buttonB, buttonC, buttonD, buttonE, customCornersButton ],
       spacing: 10,
-      left: radioButtonPanel.right + 25,
+      left: radioButtonsLayoutBox.right + 25,
       top: this.layoutBounds.top + 15
     } );
     this.addChild( pseudo3DButtonsBox );
@@ -264,7 +252,7 @@ class ButtonsScreenView extends ScreenView {
     //===================================================================================
 
     const fireQuicklyWhenHeldButton = new RectangularPushButton( {
-      content: new Text( 'Press and hold to test (fast fire)', { font: BUTTON_CAPTION_FONT } ),
+      content: new Text( 'Press and hold to test (fast fire)', { font: BUTTON_FONT } ),
       listener: () => console.log( 'fireQuicklyWhenHeldButton fired' ),
       baseColor: new Color( 114, 132, 62 ),
       fireOnHold: true,
@@ -273,7 +261,7 @@ class ButtonsScreenView extends ScreenView {
     } );
 
     const fireSlowlyWhenHeldButton = new RectangularPushButton( {
-      content: new Text( 'Press and hold to test (slow fire)', { font: BUTTON_CAPTION_FONT } ),
+      content: new Text( 'Press and hold to test (slow fire)', { font: BUTTON_FONT } ),
       listener: () => console.log( 'fireSlowlyWhenHeldButton fired' ),
       baseColor: new Color( 147, 92, 120 ),
       fireOnHold: true,
@@ -291,7 +279,7 @@ class ButtonsScreenView extends ScreenView {
     } );
     this.addChild( heldButtonsBox );
 
-    const upperLeftAlignTextNode = new Text( 'upper left align test', { font: BUTTON_CAPTION_FONT } );
+    const upperLeftAlignTextNode = new Text( 'upper left align test', { font: BUTTON_FONT } );
     const upperLeftContentButton = new RectangularPushButton( {
       content: upperLeftAlignTextNode,
       listener: () => console.log( 'upperLeftContentButton fired' ),
@@ -302,7 +290,7 @@ class ButtonsScreenView extends ScreenView {
       minHeight: upperLeftAlignTextNode.height * 2
     } );
 
-    const lowerRightAlignTextNode = new Text( 'lower right align test', { font: BUTTON_CAPTION_FONT } );
+    const lowerRightAlignTextNode = new Text( 'lower right align test', { font: BUTTON_FONT } );
     const lowerRightContentButton = new RectangularPushButton( {
       content: lowerRightAlignTextNode,
       listener: () => console.log( 'lowerRightContentButton fired' ),
@@ -365,7 +353,7 @@ class ButtonsScreenView extends ScreenView {
     // Demonstrate using arbitrary values for toggle button.  Wrap in extra
     // quotes so it is clear that it is a string in the debugging UI.
     const roundToggleButtonProperty = new Property( 'off' );
-    roundToggleButtonProperty.lazyLink(value => console.log( `roundToggleButtonProperty.value = ${value}` ) );
+    roundToggleButtonProperty.lazyLink( value => console.log( `roundToggleButtonProperty.value = ${value}` ) );
     const roundStickyToggleButton = new RoundStickyToggleButton( 'off', 'on', roundToggleButtonProperty, {
       baseColor: new Color( 255, 0, 0 )
     } );
@@ -426,7 +414,7 @@ class ButtonsScreenView extends ScreenView {
 
     // Add a button to set alternative color scheme.
     const changeButtonColorsButton = new RectangularPushButton( {
-      content: new Text( 'Change Some Button Colors', { font: BUTTON_CAPTION_FONT } ),
+      content: new Text( 'Change Some Button Colors', { font: BUTTON_FONT } ),
       listener: () => {
 
         /* eslint-disable bad-sim-text */
@@ -462,8 +450,8 @@ class ButtonsScreenView extends ScreenView {
     buttonsEnabledProperty.link( enabled => {
 
       // radio button groups
-      radioButtonGroup.enabled = enabled;
-      verticalAquaRadioButtonGroup.enabled = enabled;
+      rectangularRadioButtonGroup.enabled = enabled;
+      aquaRadioButtonGroup.enabled = enabled;
 
       // Test the enabledProperty ES5 getter for these buttons, see https://github.com/phetsims/sun/issues/515
       buttonA.enabledProperty.value = enabled;
@@ -494,7 +482,9 @@ class ButtonsScreenView extends ScreenView {
       changeButtonColorsButton.enabled = enabled;
     } );
 
-    const buttonsEnabledText = new Text( 'buttons enabled', { font: new PhetFont( 20 ) } );
+    const buttonsEnabledText = new Text( 'buttons enabled', {
+      font: new Font( { size: 20 } )
+    } );
     const buttonsEnabledCheckbox = new Checkbox( buttonsEnabledText, buttonsEnabledProperty, {
       right: this.layoutBounds.right - 15,
       bottom: this.layoutBounds.bottom - 15
