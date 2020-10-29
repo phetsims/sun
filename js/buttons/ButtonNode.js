@@ -117,6 +117,10 @@ class ButtonNode extends Node {
     let alignBox = null;
     if ( options.content ) {
 
+      // For performance, in case content is a complicated icon or shape.
+      // See https://github.com/phetsims/sun/issues/654#issuecomment-718944669
+      options.content.pickable = false;
+
       // Align content in the button rectangle. Must be disposed since it adds listener to content bounds.
       alignBox = new AlignBox( options.content, {
 
