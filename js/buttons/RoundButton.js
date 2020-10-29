@@ -11,6 +11,7 @@ import DerivedProperty from '../../../axon/js/DerivedProperty.js';
 import Shape from '../../../kite/js/Shape.js';
 import merge from '../../../phet-core/js/merge.js';
 import Circle from '../../../scenery/js/nodes/Circle.js';
+import Node from '../../../scenery/js/nodes/Node.js';
 import PaintColorProperty from '../../../scenery/js/util/PaintColorProperty.js';
 import RadialGradient from '../../../scenery/js/util/RadialGradient.js';
 import sun from '../sun.js';
@@ -34,11 +35,13 @@ class RoundButton extends ButtonNode {
       // {Node|null} what appears on the button (icon, label, etc.)
       content: null,
 
-      radius: ( options && options.content ) ? undefined : 30,
+      radius: ( options && options.content ) ? null : 30,
       cursor: 'pointer',
 
+      // If these are not the same, the larger one will be used to calculate the size of the button
       xMargin: 5, // Minimum margin in x direction, i.e. on left and right
       yMargin: 5, // Minimum margin in y direction, i.e. on top and bottom
+
       fireOnDown: false,
 
       // pointer area dilation
@@ -62,9 +65,30 @@ class RoundButton extends ButtonNode {
       tagName: 'button'
     }, options );
 
+    if ( !options.content ) {
+      assert && assert( typeof options.radius === 'number' );
+    }
+
+    if ( options.radius ) {
+      assert && assert( options.xMargin < options.radius, 'xMargin cannot be larger than radius' );
+      assert && assert( options.yMargin < options.radius, 'yMargin cannot be larger than radius' );
+    }
+
     // Compute the radius of the button. radius will not be falsey if content is also falsey
     const buttonRadius = options.radius ||
                          Math.max( options.content.width + options.xMargin * 2, options.content.height + options.yMargin * 2 ) / 2;
+
+    if ( options.content && options.radius ) {
+      const previousContent = options.content;
+      const minScale = Math.min(
+        ( options.radius - options.xMargin ) * 2 / previousContent.width,
+        ( options.radius - options.yMargin ) * 2 / previousContent.height );
+
+      options.content = new Node( {
+        children: [ previousContent ],
+        scale: minScale
+      } );
+    }
 
     // Create the circular part of the button.
     const buttonBackground = new Circle( buttonRadius, {
