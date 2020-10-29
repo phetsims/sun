@@ -153,6 +153,16 @@ class ButtonsScreenView extends ScreenView {
       mouseAreaYShift: 10
     } );
 
+    const buttonF = new RoundPushButton( {
+      content: new Text( '--- F ---', { font: BUTTON_FONT, fill: 'white' } ),
+      listener: () => console.log( 'buttonF fired' ),
+      baseColor: 'purple',
+      xMargin: 20,
+      yMargin: 20,
+      xContentOffset: 8,
+      yContentOffset: 15
+    } );
+
     // Test for a button with different radii for each corner
     const customCornersButton = new RectangularPushButton( {
       baseColor: 'orange',
@@ -166,7 +176,7 @@ class ButtonsScreenView extends ScreenView {
     } );
 
     const pseudo3DButtonsBox = new HBox( {
-      children: [ buttonA, buttonB, buttonC, buttonD, buttonE, customCornersButton ],
+      children: [ buttonA, buttonB, buttonC, buttonD, buttonE, buttonF, customCornersButton ],
       spacing: 10,
       left: radioButtonsLayoutBox.right + 25,
       top: this.layoutBounds.top + 15
