@@ -101,7 +101,6 @@ class ButtonNode extends Node {
     this.addInputListener( this._pressListener );
 
     assert && assert( buttonBackground.fill === null, 'ButtonNode controls the fill for the buttonBackground' );
-    buttonBackground.pickable = false;
     buttonBackground.fill = this.baseColorProperty;
     this.addChild( buttonBackground );
 
@@ -130,10 +129,7 @@ class ButtonNode extends Node {
         leftMargin: options.xMargin + options.xContentOffset,
         rightMargin: options.xMargin - options.xContentOffset,
         topMargin: options.yMargin + options.yContentOffset,
-        bottomMargin: options.yMargin - options.yContentOffset,
-
-        // for performance
-        pickable: false
+        bottomMargin: options.yMargin - options.yContentOffset
       } );
       this.addChild( alignBox );
     }
