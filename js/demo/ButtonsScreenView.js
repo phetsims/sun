@@ -467,10 +467,10 @@ class ButtonsScreenView extends ScreenView {
     //===================================================================================
 
     // This button's stroke will look thicker, because content will be scaled up.
-    const roundButtonWithSize = new RoundPushButton( {
+    const roundButtonWithExplicitSize = new RoundPushButton( {
       radius: 25,
       content: new Circle( 5, { fill: 'red', stroke: 'black' } ),
-      listener: () => console.log( 'roundButtonWithSize pressed' ),
+      listener: () => console.log( 'roundButtonWithExplicitSize pressed' ),
       xMargin: 5,
       yMargin: 5
     } );
@@ -485,7 +485,7 @@ class ButtonsScreenView extends ScreenView {
 
     this.addChild( new HBox( {
       spacing: 20,
-      children: [ roundButtonWithSize, roundButtonWithDerivedSize ],
+      children: [ roundButtonWithExplicitSize, roundButtonWithDerivedSize ],
       left: changeButtonColorsButton.right + 20,
       bottom: changeButtonColorsButton.bottom
     } ) );
