@@ -220,7 +220,7 @@ class AccordionBox extends Node {
     if ( options.titleBarExpandCollapse ) {
       this.collapsedTitleBar.addInputListener( {
         down: () => {
-          if ( this.expandCollapseButton.getEnabled() ) {
+          if ( this.expandCollapseButton.isEnabled() ) {
             this.phetioStartEvent( 'expanded' );
             this.expandedProperty.value = true;
             options.expandedSoundPlayer.play();
@@ -235,7 +235,7 @@ class AccordionBox extends Node {
       if ( options.titleBarExpandCollapse ) {
         this.expandedTitleBar.addInputListener( {
           down: () => {
-            if ( this.expandCollapseButton.getEnabled() ) {
+            if ( this.expandCollapseButton.isEnabled() ) {
               this.phetioStartEvent( 'collapsed' );
               options.collapsedSoundPlayer.play();
               this.expandedProperty.value = false;

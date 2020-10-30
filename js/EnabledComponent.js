@@ -43,7 +43,7 @@ const EnabledComponent = {
 
     //TODO https://github.com/phetsims/sun/issues/638 boilerplate and does not detect inherited properties
     assert && assert( !proto.hasOwnProperty( 'setEnabled' ), 'do not want to overwrite setEnabled' );
-    assert && assert( !proto.hasOwnProperty( 'getEnabled' ), 'do not want to overwrite getEnabled' );
+    assert && assert( !proto.hasOwnProperty( 'isEnabled' ), 'do not want to overwrite isEnabled' );
     assert && assert( !proto.hasOwnProperty( 'enabled' ), 'do not want to overwrite enabled' );
 
     extend( proto, {
@@ -93,8 +93,8 @@ const EnabledComponent = {
        * @public
        * @returns {boolean}
        */
-      getEnabled: function() { return this.enabledProperty.value; },
-      get enabled() { return this.getEnabled(); }
+      isEnabled: function() { return this.enabledProperty.value; },
+      get enabled() { return this.isEnabled(); }
     } );
   }
 };
