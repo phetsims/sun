@@ -66,7 +66,7 @@ class RoundButton extends ButtonNode {
     }, options );
 
     if ( !options.content ) {
-      assert && assert( typeof options.radius === 'number' );
+      assert && assert( typeof options.radius === 'number', `invalid radius: ${options.radius}` );
     }
 
     if ( options.radius ) {
