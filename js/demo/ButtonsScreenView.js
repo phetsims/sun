@@ -463,6 +463,7 @@ class ButtonsScreenView extends ScreenView {
     // Test the 2 ways of specifying a button's size:
     // (1) If you provide size of the button, content is sized to fit the button.
     // (2) If you don't provide size, the button is sized to fit the content.
+    // See https://github.com/phetsims/sun/issues/657
     //===================================================================================
 
     // This button's stroke will look thicker, because content will be scaled up.
