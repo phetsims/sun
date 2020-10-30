@@ -7,7 +7,6 @@
  */
 
 import './EnabledComponentTests.js';
-import './EnabledNodeTests.js';
 import './EnabledPhetioObjectTests.js';
 import './SliderTests.js';
 import qunitStart from '../../chipper/js/sim-tests/qunitStart.js';
