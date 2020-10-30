@@ -475,7 +475,7 @@ class ButtonsScreenView extends ScreenView {
     } );
 
     // This button's content will look as specified, because button is sized to fit the content.
-    const roundButtonWidthDerivedSize = new RoundPushButton( {
+    const roundButtonWithDerivedSize = new RoundPushButton( {
       content: new Circle( 20, { fill: 'red', stroke: 'black' } ),
       listener: () => console.log( 'roundButtonWidthDerivedSize pressed' ),
       xMargin: 5,
@@ -484,7 +484,7 @@ class ButtonsScreenView extends ScreenView {
 
     this.addChild( new HBox( {
       spacing: 20,
-      children: [ roundButtonWithSize, roundButtonWidthDerivedSize ],
+      children: [ roundButtonWithSize, roundButtonWithDerivedSize ],
       left: changeButtonColorsButton.right + 20,
       bottom: changeButtonColorsButton.bottom
     } ) );
