@@ -9,6 +9,7 @@
 import BooleanProperty from '../../../axon/js/BooleanProperty.js';
 import Property from '../../../axon/js/Property.js';
 import ScreenView from '../../../joist/js/ScreenView.js';
+import Circle from '../../../scenery/js/nodes/Circle.js';
 import HBox from '../../../scenery/js/nodes/HBox.js';
 import Node from '../../../scenery/js/nodes/Node.js';
 import Rectangle from '../../../scenery/js/nodes/Rectangle.js';
@@ -457,6 +458,36 @@ class ButtonsScreenView extends ScreenView {
       mouseAreaYShift: -10
     } );
     this.addChild( changeButtonColorsButton );
+
+    //===================================================================================
+    // Test the 2 ways of specifying a button's size:
+    // (1) If you provide size of the button, content is sized to fit the button.
+    // (2) If you don't provide size, the button is sized to fit the content.
+    //===================================================================================
+
+    // This button's stroke will look thicker, because content will be scaled up.
+    const roundButtonWithSize = new RoundPushButton( {
+      radius: 25,
+      content: new Circle( 5, { fill: 'red', stroke: 'black' } ),
+      listener: () => console.log( 'roundButtonWithSize pressed' ),
+      xMargin: 5,
+      yMargin: 5
+    } );
+
+    // This button's content will look as specified, because button is sized to fit the content.
+    const roundButtonWidthDerivedSize = new RoundPushButton( {
+      content: new Circle( 20, { fill: 'red', stroke: 'black' } ),
+      listener: () => console.log( 'roundButtonWidthDerivedSize pressed' ),
+      xMargin: 5,
+      yMargin: 5
+    } );
+
+    this.addChild( new HBox( {
+      spacing: 20,
+      children: [ roundButtonWithSize, roundButtonWidthDerivedSize ],
+      left: changeButtonColorsButton.right + 20,
+      bottom: changeButtonColorsButton.bottom
+    } ) );
 
     //===================================================================================
     // Enable/Disable buttons
