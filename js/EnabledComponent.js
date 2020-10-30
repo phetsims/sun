@@ -7,7 +7,7 @@
  * @author Michael Kauzmann (PhET Interactive Simulations)
  */
 
-import BooleanProperty from '../../axon/js/BooleanProperty.js';
+import EnabledProperty from '../../axon/js/EnabledProperty.js';
 import extend from '../../phet-core/js/extend.js';
 import merge from '../../phet-core/js/merge.js';
 import Tandem from '../../tandem/js/Tandem.js';
@@ -28,8 +28,6 @@ const DEFAULT_OPTIONS = {
   // phet-io
   tandem: Tandem.OPTIONAL
 };
-
-const ENABLED_PROPERTY_TANDEM_NAME = 'enabledProperty';
 
 const EnabledComponent = {
 
@@ -63,10 +61,8 @@ const EnabledComponent = {
 
         // @public
         assert && assert( this.enabledProperty === undefined, 'enabledProperty already exists' );
-        this.enabledProperty = options.enabledProperty || new BooleanProperty( options.enabled, merge( {
-          tandem: options.tandem.createTandem( ENABLED_PROPERTY_TANDEM_NAME ),
-          phetioDocumentation: 'When disabled, the component is grayed out and cannot be interacted with.',
-          phetioFeatured: true
+        this.enabledProperty = options.enabledProperty || new EnabledProperty( options.enabled, merge( {
+          tandem: options.tandem.createTandem( EnabledProperty.TANDEM_NAME )
         }, options.enabledPropertyOptions ) );
 
         // @private called by dispose
@@ -98,9 +94,6 @@ const EnabledComponent = {
     } );
   }
 };
-
-// @protected - should not be needed outside of the mixin hierarchy
-EnabledComponent.ENABLED_PROPERTY_TANDEM_NAME = ENABLED_PROPERTY_TANDEM_NAME;
 
 sun.register( 'EnabledComponent', EnabledComponent );
 export default EnabledComponent;
