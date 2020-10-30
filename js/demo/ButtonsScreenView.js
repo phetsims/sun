@@ -477,7 +477,7 @@ class ButtonsScreenView extends ScreenView {
     // This button's content will look as specified, because button is sized to fit the content.
     const roundButtonWithDerivedSize = new RoundPushButton( {
       content: new Circle( 20, { fill: 'red', stroke: 'black' } ),
-      listener: () => console.log( 'roundButtonWidthDerivedSize pressed' ),
+      listener: () => console.log( 'roundButtonWithDerivedSize pressed' ),
       xMargin: 5,
       yMargin: 5
     } );
