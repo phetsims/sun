@@ -72,7 +72,7 @@ class Checkbox extends Node {
 
     // @private - sends out notifications when the checkbox is toggled.
     const toggleAction = new Action( () => {
-      property.toggle();
+      property.value = !property.value;
       validate( property.value, BOOLEAN_VALIDATOR );
       if ( property.value ) {
         options.checkedSoundPlayer.play();
