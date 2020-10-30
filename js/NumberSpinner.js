@@ -13,7 +13,6 @@ import Node from '../../scenery/js/nodes/Node.js';
 import Tandem from '../../tandem/js/Tandem.js';
 import AccessibleNumberSpinner from './accessibility/AccessibleNumberSpinner.js';
 import ArrowButton from './buttons/ArrowButton.js';
-import EnabledNode from './EnabledNode.js';
 import sun from './sun.js';
 
 // possible values for options.arrowsPosition
@@ -27,7 +26,6 @@ const ARROWS_POSITION_VALUES = [
 class NumberSpinner extends Node {
 
   /**
-   * @mixes EnabledNode
    * @param {Property.<number>} numberProperty value, must be an integer
    * @param {Property.<Range>} rangeProperty - Dynamic range of values, min and max must be integers
    * @param {Object} [options]
@@ -76,7 +74,8 @@ class NumberSpinner extends Node {
       mouseAreaYDilation: 0,
 
       // PhET-iO
-      tandem: Tandem.REQUIRED
+      tandem: Tandem.REQUIRED,
+      enabledPropertyPhetioInstrumented: true // opt into default PhET-iO instrumented enabledProperty
     }, options );
 
     // validate options
@@ -209,9 +208,6 @@ class NumberSpinner extends Node {
 
     super( options );
 
-    // Initialize the mixin, which defines this.enabledProperty.
-    this.initializeEnabledNode( options );
-
     // enable/disable arrow buttons
     const updateEnabled = () => {
       incrementButton.enabled = ( options.incrementFunction( numberProperty.value ) <= rangeProperty.value.max );
@@ -268,13 +264,11 @@ class NumberSpinner extends Node {
   // @public Ensures that this node is eligible for GC.
   dispose() {
     this.disposeNumberSpinner();
-    this.disposeEnabledNode();
     this.disposeAccessibleNumberSpinner();
     super.dispose();
   }
 }
 
-EnabledNode.mixInto( NumberSpinner );
 AccessibleNumberSpinner.mixInto( NumberSpinner );
 
 sun.register( 'NumberSpinner', NumberSpinner );

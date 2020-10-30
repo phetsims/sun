@@ -14,7 +14,6 @@ import PressListener from '../../scenery/js/listeners/PressListener.js';
 import Line from '../../scenery/js/nodes/Line.js';
 import Node from '../../scenery/js/nodes/Node.js';
 import Tandem from '../../tandem/js/Tandem.js';
-import EnabledNode from './EnabledNode.js';
 import sun from './sun.js';
 import SunConstants from './SunConstants.js';
 import ToggleSwitch from './ToggleSwitch.js';
@@ -26,9 +25,6 @@ const DEFAULT_SET_ENABLED = ( label, enabled ) => {
   label.opacity = enabled ? 1.0 : SunConstants.DISABLED_OPACITY;
 };
 
-/**
- * @mixes EnabledNode
- */
 class ABSwitch extends Node {
 
   /**
@@ -68,12 +64,11 @@ class ABSwitch extends Node {
 
       // phet-io
       tandem: Tandem.REQUIRED,
-      visiblePropertyOptions: { phetioFeatured: true }
+      visiblePropertyOptions: { phetioFeatured: true },
+      enabledPropertyPhetioInstrumented: true // opt into default PhET-iO instrumented enabledProperty
     }, options );
 
     super();
-
-    this.initializeEnabledNode( options );
 
     const toggleSwitch = new ToggleSwitch( property, valueA, valueB, merge( {
       tandem: options.tandem.createTandem( 'toggleSwitch' )
@@ -148,12 +143,9 @@ class ABSwitch extends Node {
    */
   dispose() {
     this.disposeABSwitch();
-    this.disposeEnabledNode();
     super.dispose();
   }
 }
-
-EnabledNode.mixInto( ABSwitch );
 
 sun.register( 'ABSwitch', ABSwitch );
 export default ABSwitch;

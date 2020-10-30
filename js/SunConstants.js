@@ -7,6 +7,7 @@
  */
 
 import sun from './sun.js';
+import Node from '../../scenery/js/nodes/Node.js';
 
 const SunConstants = {
 
@@ -24,7 +25,7 @@ const SunConstants = {
   VALUE_NUMBERED_PLACEHOLDER: '{0}',
 
   // Opacity that is typically applied to a UI component in its disabled state, to make it look grayed out.
-  DISABLED_OPACITY: 0.45
+  DISABLED_OPACITY: Node.DEFAULT_OPTIONS.disabledOpacity
 };
 
 sun.register( 'SunConstants', SunConstants );

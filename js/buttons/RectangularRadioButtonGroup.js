@@ -18,7 +18,6 @@ import Color from '../../../scenery/js/util/Color.js';
 import multiSelectionSoundPlayerFactory from '../../../tambo/js/multiSelectionSoundPlayerFactory.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import ColorConstants from '../ColorConstants.js';
-import EnabledNode from '../EnabledNode.js';
 import sun from '../sun.js';
 import RectangularRadioButton from './RectangularRadioButton.js';
 
@@ -35,7 +34,6 @@ let instanceCount = 0;
 class RectangularRadioButtonGroup extends LayoutBox {
 
   /**
-   * @mixes EnabledNode
    * @param {Property} property
    * @param {Object[]} contentArray - an array of objects that have two keys each: "value" and "node", where the node
    * key holds a scenery Node that is the content for a given radio button and the value key holds the value that the
@@ -50,6 +48,7 @@ class RectangularRadioButtonGroup extends LayoutBox {
       // phet-io
       tandem: Tandem.REQUIRED,
       visiblePropertyOptions: { phetioFeatured: true },
+      enabledPropertyPhetioInstrumented: true, // opt into default PhET-iO instrumented enabledProperty
 
       // {Playable[]|null} - sound generation for the radio buttons, null means to use the defaults, otherwise there
       // must be one for each element in contentArray
@@ -296,9 +295,6 @@ class RectangularRadioButtonGroup extends LayoutBox {
 
     super( options );
 
-    // Initialize the mixin, which defines this.enabledProperty.
-    this.initializeEnabledNode( options );
-
     // pdom - this node's primary sibling is aria-labelledby its own label so the label content is read whenever
     // a member of the group receives focus
     this.addAriaLabelledbyAssociation( {
@@ -333,12 +329,9 @@ class RectangularRadioButtonGroup extends LayoutBox {
    */
   dispose() {
     this.disposeRadioButtonGroup();
-    this.disposeEnabledNode();
     super.dispose();
   }
 }
-
-EnabledNode.mixInto( RectangularRadioButtonGroup );
 
 sun.register( 'RectangularRadioButtonGroup', RectangularRadioButtonGroup );
 export default RectangularRadioButtonGroup;

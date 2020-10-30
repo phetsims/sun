@@ -19,7 +19,6 @@ import checkboxUncheckedSoundPlayer from '../../tambo/js/shared-sound-players/ch
 import EventType from '../../tandem/js/EventType.js';
 import PhetioObject from '../../tandem/js/PhetioObject.js';
 import Tandem from '../../tandem/js/Tandem.js';
-import EnabledNode from './EnabledNode.js';
 import FontAwesomeNode from './FontAwesomeNode.js';
 import sun from './sun.js';
 import SunConstants from './SunConstants.js';
@@ -30,7 +29,6 @@ const BOOLEAN_VALIDATOR = { valueType: 'boolean' };
 class Checkbox extends Node {
 
   /**
-   * @mixes EnabledNode
    * @param {Node} content
    * @param {Property.<boolean>} property
    * @param {Object} [options]
@@ -54,6 +52,7 @@ class Checkbox extends Node {
       phetioEventType: EventType.USER,
       phetioLinkProperty: true, // whether a link to the checkbox's Property is created
       visiblePropertyOptions: { phetioFeatured: true },
+      enabledPropertyPhetioInstrumented: true, // opt into default PhET-iO instrumented enabledProperty
 
       // to support properly passing this to children, see https://github.com/phetsims/tandem/issues/60
       phetioReadOnly: PhetioObject.DEFAULT_OPTIONS.phetioReadOnly,
@@ -69,9 +68,6 @@ class Checkbox extends Node {
     }, options );
 
     super();
-
-    // Initialize the mixin, which defines this.enabledProperty.
-    this.initializeEnabledNode( options );
 
     // @private - sends out notifications when the checkbox is toggled.
     const toggleAction = new Action( () => {
@@ -153,7 +149,7 @@ class Checkbox extends Node {
       tandem: options.tandem.createTandem( 'property' )
     } );
 
-    //TODO https://github.com/phetsims/sun/issues/640 is 'onclick' specific to Checkbox, or should it be handled by EnabledNode?
+    //TODO https://github.com/phetsims/sun/issues/640 is 'onclick' specific to Checkbox, or should it be handled generally by Node?
     const enabledListener = enabled => {
       if ( enabled ) {
         this.setAccessibleAttribute( 'onclick', '' );
@@ -195,7 +191,6 @@ class Checkbox extends Node {
    */
   dispose() {
     this.disposeCheckbox();
-    this.disposeEnabledNode();
     super.dispose();
   }
 
@@ -235,8 +230,6 @@ class Checkbox extends Node {
 
   get checkboxColor() { return this.getCheckboxColor(); }
 }
-
-EnabledNode.mixInto( Checkbox );
 
 sun.register( 'Checkbox', Checkbox );
 export default Checkbox;

@@ -27,15 +27,11 @@ import LinearGradient from '../../scenery/js/util/LinearGradient.js';
 import EventType from '../../tandem/js/EventType.js';
 import PhetioObject from '../../tandem/js/PhetioObject.js';
 import Tandem from '../../tandem/js/Tandem.js';
-import EnabledNode from './EnabledNode.js';
 import sun from './sun.js';
 
 // constants
 const DEFAULT_SIZE = new Dimension2( 60, 30 );
 
-/**
- * @mixes EnabledNode
- */
 class ToggleSwitch extends Node {
 
   /**
@@ -80,7 +76,8 @@ class ToggleSwitch extends Node {
       tandem: Tandem.REQUIRED,
       phetioEventType: EventType.USER,
       phetioReadOnly: PhetioObject.DEFAULT_OPTIONS.phetioReadOnly,
-      visiblePropertyOptions: { phetioFeatured: true }
+      visiblePropertyOptions: { phetioFeatured: true },
+      enabledPropertyPhetioInstrumented: true // opt into default PhET-iO instrumented enabledProperty
     }, options );
 
     // Default track fills
@@ -100,8 +97,6 @@ class ToggleSwitch extends Node {
                           .addColorStop( 1, 'rgb( 200, 200, 200 )' );
 
     super();
-
-    this.initializeEnabledNode( options );
 
     const cornerRadius = options.size.height / 2;
 
@@ -258,12 +253,9 @@ class ToggleSwitch extends Node {
    */
   dispose() {
     this.disposeToggleSwitch();
-    this.disposeEnabledNode();
     super.dispose();
   }
 }
-
-EnabledNode.mixInto( ToggleSwitch );
 
 sun.register( 'ToggleSwitch', ToggleSwitch );
 export default ToggleSwitch;

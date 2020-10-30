@@ -28,7 +28,6 @@ import IOType from '../../tandem/js/types/IOType.js';
 import VoidIO from '../../tandem/js/types/VoidIO.js';
 import AccessibleSlider from './accessibility/AccessibleSlider.js';
 import DefaultSliderTrack from './DefaultSliderTrack.js';
-import EnabledNode from './EnabledNode.js';
 import SliderThumb from './SliderThumb.js';
 import sun from './sun.js';
 import SunConstants from './SunConstants.js';
@@ -43,7 +42,6 @@ class Slider extends Node {
    * @param {Range} range
    * @param {Object} [options]
    * @mixes AccessibleSlider
-   * @mixes EnabledNode
    */
   constructor( valueProperty, range, options ) {
 
@@ -113,15 +111,11 @@ class Slider extends Node {
       enabledRangeProperty: null, // {Property.<Range>|null} determine the portion of range that is enabled
       disabledOpacity: SunConstants.DISABLED_OPACITY, // opacity applied to the entire Slider when disabled
 
-      // EnabledNode options
-      enabledPropertyOptions: {
-        phetioFeatured: true
-      },
-
       // phet-io
       tandem: Tandem.REQUIRED,
       phetioType: Slider.SliderIO,
       visiblePropertyOptions: { phetioFeatured: true },
+      enabledPropertyPhetioInstrumented: true, // opt into default PhET-iO instrumented enabledProperty
 
       // {Property.<number>|null} - if provided, create a LinkedElement for this PhET-iO instrumented Property, instead
       // of using the passed in Property. This option was created to support passing DynamicProperty or "wrapping"
@@ -289,9 +283,6 @@ class Slider extends Node {
 
     this.mutate( options );
 
-    // must initialize after the Slider is instrumented
-    this.initializeEnabledNode( options );
-
     // @private {function} - Called by dispose
     this.disposeSlider = () => {
       thumb.dispose && thumb.dispose(); // in case a custom thumb is provided via options.thumbNode that doesn't implement dispose
@@ -340,7 +331,6 @@ class Slider extends Node {
   dispose() {
     this.disposeSlider();
     this.disposeAccessibleSlider();
-    this.disposeEnabledNode();
     super.dispose();
   }
 
@@ -426,9 +416,6 @@ class Slider extends Node {
     return this.minorTicksParent.visible;
   }
 }
-
-// mix enabledProperty into Slider
-EnabledNode.mixInto( Slider );
 
 // mix accessibility into Slider
 AccessibleSlider.mixInto( Slider );

@@ -14,7 +14,6 @@ import Node from '../../../scenery/js/nodes/Node.js';
 import PaintColorProperty from '../../../scenery/js/util/PaintColorProperty.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import ColorConstants from '../ColorConstants.js';
-import EnabledNode from '../EnabledNode.js';
 import sun from '../sun.js';
 import ButtonInteractionState from './ButtonInteractionState.js';
 
@@ -73,7 +72,8 @@ class ButtonNode extends Node {
 
       // phet-io
       tandem: Tandem.OPTIONAL,
-      visiblePropertyOptions: { phetioFeatured: true }
+      visiblePropertyOptions: { phetioFeatured: true },
+      enabledPropertyPhetioInstrumented: true // opt into default PhET-iO instrumented enabledProperty
     }, options );
 
     options.listenerOptions = merge( {
@@ -140,11 +140,8 @@ class ButtonNode extends Node {
 
     this.mutate( options );
 
-    this.initializeEnabledNode( options );
-
     // @private - define a dispose function
     this.disposeButtonNode = () => {
-      this.disposeEnabledNode();
       alignBox && alignBox.dispose();
       buttonAppearanceStrategy.dispose && buttonAppearanceStrategy.dispose();
       contentAppearanceStrategy && contentAppearanceStrategy.dispose && contentAppearanceStrategy.dispose();
@@ -268,8 +265,6 @@ class FlatAppearanceStrategy {
 }
 
 ButtonNode.FlatAppearanceStrategy = FlatAppearanceStrategy;
-
-EnabledNode.mixInto( ButtonNode );
 
 sun.register( 'ButtonNode', ButtonNode );
 export default ButtonNode;

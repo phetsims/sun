@@ -8,11 +8,11 @@
 
 import BooleanProperty from '../../axon/js/BooleanProperty.js';
 import Property from '../../axon/js/Property.js';
+import TinyProperty from '../../axon/js/TinyProperty.js';
 import Range from '../../dot/js/Range.js';
 import Display from '../../scenery/js/display/Display.js';
 import Node from '../../scenery/js/nodes/Node.js';
 import Tandem from '../../tandem/js/Tandem.js';
-import EnabledNode from './EnabledNode.js';
 import HSlider from './HSlider.js';
 
 QUnit.module( 'EnabledNode' );
@@ -20,12 +20,8 @@ QUnit.module( 'EnabledNode' );
 class EnabledNodeClass extends Node {
   constructor( options ) {
     super( options );
-    this.initializeEnabledNode( options );
   }
 }
-
-// mix in enabled component into a Node
-EnabledNode.mixInto( EnabledNodeClass );
 
 QUnit.test( 'EnabledNode', assert => {
 
@@ -42,7 +38,7 @@ QUnit.test( 'EnabledNode', assert => {
   node.enabled = false;
   assert.ok( node.opacity === disabledOpacity, 'test disabled opacity' );
 
-  node.disposeEnabledNode();
+  node.dispose();
   assert.ok( node.enabledProperty.isDisposed, 'should be disposed' );
 
   const myEnabledProperty = new BooleanProperty( true );
@@ -52,7 +48,7 @@ QUnit.test( 'EnabledNode', assert => {
   } );
   assert.ok( myEnabledProperty.changedEmitter.getListenerCount() > defaultListenerCount, 'listener count should be more since passing in enabledProperty' );
 
-  node2.disposeEnabledNode();
+  node2.dispose();
   assert.ok( myEnabledProperty.changedEmitter.getListenerCount() === defaultListenerCount, 'listener count should match original' );
 } );
 
@@ -69,7 +65,10 @@ QUnit.test( 'EnabledNode with PDOM', assert => {
   rootNode.addChild( a11yNode );
   assert.ok( a11yNode.accessibleInstances.length === 1, 'should have an instance when attached to display' );
   assert.ok( !!a11yNode.accessibleInstances[ 0 ].peer, 'should have a peer' );
-  assert.ok( a11yNode.accessibleInstances[ 0 ].peer.primarySibling.getAttribute( 'aria-disabled' ) === 'false', 'should be enabled' );
+
+  // TODO: is it important that aria-disabled is false on all enabled Nodes? See https://github.com/phetsims/scenery/issues/1100
+  // assert.ok( a11yNode.accessibleInstances[ 0 ].peer.primarySibling.getAttribute( 'aria-disabled' ) === 'false', 'should be enabled' );
+
   a11yNode.enabled = false;
   assert.ok( a11yNode.accessibleInstances[ 0 ].peer.primarySibling.getAttribute( 'aria-disabled' ) === 'true', 'should be enabled' );
   testEnabledNode( assert, a11yNode, 'For accessible Node' );
@@ -99,7 +98,7 @@ QUnit.test( 'EnabledNode in Slider', assert => {
  * @param {string} message - to tack onto assert messages
  */
 function testEnabledNode( assert, enabledNode, message ) {
-  assert.ok( enabledNode.enabledProperty instanceof Property, `${message}: enabledProperty should exist` );
+  assert.ok( enabledNode.enabledProperty instanceof Property || enabledNode.enabledProperty instanceof TinyProperty, `${message}: enabledProperty should exist` );
 
   assert.ok( enabledNode.enabledProperty.value === enabledNode.enabled, `${message}: test getter` );
 

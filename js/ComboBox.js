@@ -32,7 +32,6 @@ import Tandem from '../../tandem/js/Tandem.js';
 import IOType from '../../tandem/js/types/IOType.js';
 import ComboBoxButton from './ComboBoxButton.js';
 import ComboBoxListBox from './ComboBoxListBox.js';
-import EnabledNode from './EnabledNode.js';
 import sun from './sun.js';
 
 // const
@@ -57,7 +56,6 @@ const HELP_TEXT_BEHAVIOR = ( node, options, helpText, otherNodeCallbacks ) => {
 class ComboBox extends Node {
 
   /**
-   * @mixes EnabledNode
    * @param {ComboBoxItem[]} items
    * @param {Property} property
    * @param {Node} listParent node that will be used as the list's parent, use this to ensure that the list is in front of everything else
@@ -114,7 +112,8 @@ class ComboBox extends Node {
       tandem: Tandem.REQUIRED,
       phetioType: ComboBox.ComboBoxIO,
       phetioEventType: EventType.USER,
-      visiblePropertyOptions: { phetioFeatured: true }
+      visiblePropertyOptions: { phetioFeatured: true },
+      enabledPropertyPhetioInstrumented: true // opt into default PhET-iO instrumented enabledProperty
     }, options );
 
     // validate option values
@@ -128,9 +127,6 @@ class ComboBox extends Node {
       'invalid align: ' + options.align );
 
     super();
-
-    // Initialize the mixin, which defines this.enabledProperty.
-    this.initializeEnabledNode( options );
 
     this.items = items; // @private
     this.listPosition = options.listPosition; // @private
@@ -309,7 +305,6 @@ class ComboBox extends Node {
    */
   dispose() {
     this.disposeComboBox();
-    this.disposeEnabledNode();
     super.dispose();
   }
 
@@ -373,8 +368,6 @@ ComboBox.ComboBoxIO = new IOType( 'ComboBoxIO', {
   supertype: Node.NodeIO,
   events: [ 'listBoxShown', 'listBoxHidden' ]
 } );
-
-EnabledNode.mixInto( ComboBox );
 
 sun.register( 'ComboBox', ComboBox );
 export default ComboBox;

@@ -15,7 +15,6 @@ import Node from '../../scenery/js/nodes/Node.js';
 import multiSelectionSoundPlayerFactory from '../../tambo/js/multiSelectionSoundPlayerFactory.js';
 import Tandem from '../../tandem/js/Tandem.js';
 import AquaRadioButton from './AquaRadioButton.js';
-import EnabledNode from './EnabledNode.js';
 import sun from './sun.js';
 
 // pdom - An id for each instance of AquaRadioButtonGroup, passed to individual buttons in the group.
@@ -27,9 +26,6 @@ let instanceCount = 0;
 // to prefix instanceCount in case there are different kinds of "groups"
 const CLASS_NAME = 'AquaRadioButtonGroup';
 
-/**
- * @mixes EnabledNode
- */
 class AquaRadioButtonGroup extends LayoutBox {
 
   /**
@@ -67,6 +63,7 @@ class AquaRadioButtonGroup extends LayoutBox {
       // phet-io
       tandem: Tandem.REQUIRED,
       visiblePropertyOptions: { phetioFeatured: true },
+      enabledPropertyPhetioInstrumented: true, // opt into default PhET-iO instrumented enabledProperty
 
       // PDOM
       tagName: 'ul',
@@ -129,8 +126,6 @@ class AquaRadioButtonGroup extends LayoutBox {
     const intentListener = { keydown: event => event.pointer.reserveForKeyboardDrag() };
     this.addInputListener( intentListener );
 
-    this.initializeEnabledNode( options );
-
     // Add linked element after the radio button is instrumented
     this.addLinkedElement( property, {
       tandem: options.tandem.createTandem( 'property' )
@@ -155,7 +150,6 @@ class AquaRadioButtonGroup extends LayoutBox {
    */
   dispose() {
     this.disposeAquaRadioButtonGroup();
-    this.disposeEnabledNode();
     super.dispose();
   }
 
@@ -171,8 +165,6 @@ class AquaRadioButtonGroup extends LayoutBox {
     return button;
   }
 }
-
-EnabledNode.mixInto( AquaRadioButtonGroup );
 
 sun.register( 'AquaRadioButtonGroup', AquaRadioButtonGroup );
 export default AquaRadioButtonGroup;

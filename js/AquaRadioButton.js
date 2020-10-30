@@ -14,7 +14,6 @@ import Node from '../../scenery/js/nodes/Node.js';
 import Rectangle from '../../scenery/js/nodes/Rectangle.js';
 import multiSelectionSoundPlayerFactory from '../../tambo/js/multiSelectionSoundPlayerFactory.js';
 import Tandem from '../../tandem/js/Tandem.js';
-import EnabledNode from './EnabledNode.js';
 import sun from './sun.js';
 
 // constants
@@ -23,7 +22,6 @@ const DEFAULT_RADIUS = 7;
 class AquaRadioButton extends Node {
 
   /**
-   * @mixes EnabledNode
    * @param {Property} property
    * @param {*} value - the value that corresponds to this button, same type as property
    * @param {Node} labelNode - Node that will be vertically centered to the right of the button
@@ -43,6 +41,7 @@ class AquaRadioButton extends Node {
       // phet-io
       tandem: Tandem.REQUIRED,
       visiblePropertyOptions: { phetioFeatured: true },
+      enabledPropertyPhetioInstrumented: true, // opt into default PhET-iO instrumented enabledProperty
 
       // {Playable} - sound generator, usually overridden when creating a group of these
       soundPlayer: multiSelectionSoundPlayerFactory.getSelectionSoundPlayer( 0 ),
@@ -67,9 +66,6 @@ class AquaRadioButton extends Node {
 
     super();
     
-    // Initialize the mixin, which defines this.enabledProperty.
-    this.initializeEnabledNode( options );
-
     // @public (read-only)
     this.value = value;
 
@@ -171,14 +167,11 @@ class AquaRadioButton extends Node {
    */
   dispose() {
     this.disposeAquaRadioButton();
-    this.disposeEnabledNode();
     super.dispose();
   }
 }
 
 AquaRadioButton.DEFAULT_RADIUS = DEFAULT_RADIUS;
-
-EnabledNode.mixInto( AquaRadioButton );
 
 sun.register( 'AquaRadioButton', AquaRadioButton );
 export default AquaRadioButton;
