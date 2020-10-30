@@ -99,7 +99,7 @@ class RoundButton extends ButtonNode {
 
     // Get this after calling super, so that buttonAppearanceStrategy has applied stroke.
     // This accounts for stroke + lineWidth when setting pointer areas and focus highlight.
-    // See
+    // See https://github.com/phetsims/sun/issues/660
     const buttonBackgroundRadius = buttonBackground.localBounds.width / 2;
 
     // Set pointer areas.
