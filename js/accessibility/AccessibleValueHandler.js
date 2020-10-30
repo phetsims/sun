@@ -150,6 +150,19 @@ const AccessibleValueHandler = {
            */
           a11yCreateContextResponseAlert: null,
 
+          // This coefficient is multiplied by the number of times the value has been changed without the context response
+          // alerting. This number is meant to give the screen reader enough chance to finish reading the aria-valuetext,
+          // which could take longer the more time the value changes. We want to give enough time for VO to read
+          // aria-valuetext but don't want to have too much silence before the alert is spoken.
+          contextResponsePerValueChangeDelay: 700,
+
+          // {number} in ms, When the valueProperty changes repeatedly, what is the maximum time to set the
+          // alertStableDelay for the context response to. This value should be small enough that it feels like you are
+          // aiting for this alert after an interaction. This should be altered depending on how quickly you expect the
+          // value to change. We want to give enough time for VO to read aria-valuetext but don't want to have too much
+          // silence before the alert is spoken.
+          contextResponseMaxDelay: 2000,
+
           /**
            * List the dependencies this Node's PDOM descriptions have. This should not include the valueProperty, but
            * should list any Properties who's change should trigger description update for this Node.
@@ -232,6 +245,10 @@ const AccessibleValueHandler = {
         // receives many interactions before the utterance can be announced so that VoiceOver has time to read the
         // aria-valuetext (object response) before the alert (context response).
         this.contextResponseUtterance = new Utterance();
+
+        // @private {number} - in ms, see options for documentation.
+        this.contextResponsePerValueChangeDelay = options.contextResponsePerValueChangeDelay;
+        this.contextResponseMaxDelay = options.contextResponseMaxDelay;
 
         // @private (a11y) - whether or not an input event has been handled. If handled, we will not respond to the
         // change event. An AT (particularly VoiceOver) may send a change event (and not an input event) to the
@@ -380,9 +397,11 @@ const AccessibleValueHandler = {
               this.timesChangedBeforeAlerting = 1;
             }
 
-            // 700 and 2000 ms are arbitrary values but sound good with limited testing. We want to give enough time
-            // for VO to read aria-valuetext but don't want to have too much silence before the alert is spoken.
-            this.contextResponseUtterance.alertStableDelay = Math.min( this.timesChangedBeforeAlerting * 700, 2000 );
+            // Adjust the delay of the utterance based on number of times it has been re-added to the queue. Each
+            // time the aria-valuetext changes, this method is called, we want to make sure to give enough time for the
+            // aria-valuetext to fully complete before alerting this context response.
+            this.contextResponseUtterance.alertStableDelay = Math.min( this.contextResponseMaxDelay,
+              this.timesChangedBeforeAlerting * this.contextResponsePerValueChangeDelay );
 
             utteranceQueue.addToBack( this.contextResponseUtterance );
           }
