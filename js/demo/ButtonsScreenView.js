@@ -138,7 +138,9 @@ class ButtonsScreenView extends ScreenView {
     const buttonD = new RoundPushButton( {
       content: new Text( '--- D ---', { font: BUTTON_FONT } ),
       listener: () => console.log( 'buttonD fired' ),
-      baseColor: roundBaseColor
+      baseColor: roundBaseColor,
+      radius: 50,
+      lineWidth: 10 // a thick stroke, to test pointer areas and focus highlight
     } );
 
     const buttonE = new RoundPushButton( {

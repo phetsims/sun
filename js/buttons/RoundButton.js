@@ -97,15 +97,20 @@ class RoundButton extends ButtonNode {
 
     super( buttonModel, buttonBackground, interactionStateProperty, options );
 
+    // Get this after calling super, so that buttonAppearanceStrategy has applied stroke.
+    // This accounts for stroke + lineWidth when setting pointer areas and focus highlight.
+    // See
+    const buttonBackgroundRadius = buttonBackground.localBounds.width / 2;
+
     // Set pointer areas.
     this.touchArea = Shape.circle( options.touchAreaXShift, options.touchAreaYShift,
-      buttonRadius + options.touchAreaDilation );
+      buttonBackgroundRadius + options.touchAreaDilation );
     this.mouseArea = Shape.circle( options.mouseAreaXShift, options.mouseAreaYShift,
-      buttonRadius + options.mouseAreaDilation );
+      buttonBackgroundRadius + options.mouseAreaDilation );
 
     // PDOM - focus highlight is circular for round buttons, with a little bit of padding
     // between button shape and inner edge of highlight
-    this.focusHighlight = Shape.circle( 0, 0, buttonRadius + 5 );
+    this.focusHighlight = Shape.circle( 0, 0, buttonBackgroundRadius + 5 );
   }
 }
 
