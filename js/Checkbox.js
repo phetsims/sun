@@ -8,6 +8,7 @@
 
 import Action from '../../axon/js/Action.js';
 import Property from '../../axon/js/Property.js';
+import TinyProperty from '../../axon/js/TinyProperty.js';
 import validate from '../../axon/js/validate.js';
 import InstanceRegistry from '../../phet-core/js/documentation/InstanceRegistry.js';
 import merge from '../../phet-core/js/merge.js';
@@ -36,7 +37,7 @@ class Checkbox extends Node {
   constructor( content, property, options ) {
 
     assert && assert( content instanceof Node, 'invalid content' );
-    assert && assert( property instanceof Property, 'invalid property' );
+    assert && assert( property instanceof Property || property instanceof TinyProperty, 'invalid property' );
     validate( property.value, BOOLEAN_VALIDATOR );
 
     options = merge( {
