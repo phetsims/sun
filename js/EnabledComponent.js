@@ -38,7 +38,6 @@ class EnabledComponent {
   constructor( options ) {
     options = merge( {}, DEFAULT_OPTIONS, options );
 
-    // does this mixin own the enabledProperty?
     const ownsEnabledProperty = !options.enabledProperty;
 
     // @public
