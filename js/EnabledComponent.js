@@ -1,14 +1,15 @@
 // Copyright 2020, University of Colorado Boulder
 
 /**
- * Mixin that adds a settable Property that determines whether the Object is enabled or not. This includes support for
- * phet-io instrumentation and a variety of options to customize the enabled Property as well as how it is created.
+ * Base class that defines a settable Property that determines whether the Object is enabled or not. This includes
+ * support for phet-io instrumentation and a variety of options to customize the enabled Property as well as how it is
+ * created.
  *
  * @author Michael Kauzmann (PhET Interactive Simulations)
+ * @author Sam Reid (PhET Interactive Simulations)
  */
 
 import EnabledProperty from '../../axon/js/EnabledProperty.js';
-import extend from '../../phet-core/js/extend.js';
 import merge from '../../phet-core/js/merge.js';
 import Tandem from '../../tandem/js/Tandem.js';
 import sun from './sun.js';
@@ -29,71 +30,51 @@ const DEFAULT_OPTIONS = {
   tandem: Tandem.OPTIONAL
 };
 
-const EnabledComponent = {
+class EnabledComponent {
+
+  /**
+   * @param {Object} [options]
+   */
+  constructor( options ) {
+    options = merge( {}, DEFAULT_OPTIONS, options );
+
+    // does this mixin own the enabledProperty?
+    const ownsEnabledProperty = !options.enabledProperty;
+
+    // @public
+    this.enabledProperty = options.enabledProperty || new EnabledProperty( options.enabled, merge( {
+      tandem: options.tandem.createTandem( EnabledProperty.TANDEM_NAME )
+    }, options.enabledPropertyOptions ) );
+
+    // @private - called by dispose
+    this.disposeEnabledComponent = () => {
+      ownsEnabledProperty && this.enabledProperty.dispose();
+    };
+  }
 
   /**
    * @public
-   *
-   * @param {function} type - The type (constructor) whose prototype we'll modify.
+   * @param {boolean} enabled
    */
-  mixInto: function( type ) {
-    const proto = type.prototype;
+  setEnabled( enabled ) { this.enabledProperty.value = enabled; }
 
-    //TODO https://github.com/phetsims/sun/issues/638 boilerplate and does not detect inherited properties
-    assert && assert( !proto.hasOwnProperty( 'setEnabled' ), 'do not want to overwrite setEnabled' );
-    assert && assert( !proto.hasOwnProperty( 'isEnabled' ), 'do not want to overwrite isEnabled' );
-    assert && assert( !proto.hasOwnProperty( 'enabled' ), 'do not want to overwrite enabled' );
+  // @public
+  set enabled( value ) { this.setEnabled( value ); }
 
-    extend( proto, {
+  /**
+   * @public
+   * @returns {boolean}
+   */
+  isEnabled() { return this.enabledProperty.value; }
 
-      /**
-       * IMPORTANT: This must be called after the supertype constructor has been called. In es6 classes this is forced behavior, but
-       * for older `inherit` style hierarchy, the developer must manually ensure this behavior.
-       *
-       * @param {Object} [options]
-       */
-      initializeEnabledComponent: function( options ) {
+  // @public
+  get enabled() { return this.isEnabled(); }
 
-        options = merge( {}, DEFAULT_OPTIONS, options );
-
-        // does this mixin own the enabledProperty?
-        const ownsEnabledProperty = !options.enabledProperty;
-
-        // @public
-        assert && assert( this.enabledProperty === undefined, 'enabledProperty already exists' );
-        this.enabledProperty = options.enabledProperty || new EnabledProperty( options.enabled, merge( {
-          tandem: options.tandem.createTandem( EnabledProperty.TANDEM_NAME )
-        }, options.enabledPropertyOptions ) );
-
-        // @private called by dispose
-        this._disposeEnabledComponent = () => {
-          ownsEnabledProperty && this.enabledProperty.dispose();
-        };
-      },
-
-      /**
-       * @public
-       */
-      disposeEnabledComponent: function() {
-        this._disposeEnabledComponent();
-      },
-
-      /**
-       * @public
-       * @param {boolean} enabled
-       */
-      setEnabled: function( enabled ) { this.enabledProperty.value = enabled; },
-      set enabled( value ) { this.setEnabled( value ); },
-
-      /**
-       * @public
-       * @returns {boolean}
-       */
-      isEnabled: function() { return this.enabledProperty.value; },
-      get enabled() { return this.isEnabled(); }
-    } );
+  // @public
+  dispose() {
+    this.disposeEnabledComponent();
   }
-};
+}
 
 sun.register( 'EnabledComponent', EnabledComponent );
 export default EnabledComponent;

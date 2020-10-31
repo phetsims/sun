@@ -14,14 +14,11 @@ QUnit.module( 'EnabledComponent' );
 
 QUnit.test( 'EnabledComponent into Object', assert => {
 
-  class EnabledObject {
+  class EnabledObject extends EnabledComponent {
     constructor( options ) {
-      this.initializeEnabledComponent( options );
+      super( options );
     }
   }
-
-  // mix in enabled component into a Node
-  EnabledComponent.mixInto( EnabledObject );
 
   const object = new EnabledObject();
   testEnabledComponent( assert, object, 'default enabledProperty created' );
@@ -40,14 +37,13 @@ QUnit.test( 'EnabledComponent into Object', assert => {
 } );
 
 /**
- * Test basic functionality for an object that mixes in EnabledComponent
+ * Test basic functionality for an object that uses EnabledComponent
  * @param {Object} assert - from QUnit
- * @param {Object} enabledObject - mixed in with EnabledComponent
+ * @param {Object} enabledObject - subtype of EnabledComponent
  * @param {string} message - to tack onto assert messages
  */
 function testEnabledComponent( assert, enabledObject, message ) {
   assert.ok( enabledObject.enabledProperty instanceof Property, `${message}: enabledProperty should exist` );
-
   assert.ok( enabledObject.enabledProperty.value === enabledObject.enabled, `${message}: test getter` );
 
   enabledObject.enabled = false;

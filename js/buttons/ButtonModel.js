@@ -15,10 +15,9 @@ import Tandem from '../../../tandem/js/Tandem.js';
 import EnabledComponent from '../EnabledComponent.js';
 import sun from '../sun.js';
 
-class ButtonModel {
+class ButtonModel extends EnabledComponent {
 
   /**
-   * @mixes EnabledComponent
    * @param {Object} [options]
    */
   constructor( options ) {
@@ -46,8 +45,7 @@ class ButtonModel {
       phetioFeatured: true
     }, options.enabledPropertyOptions );
 
-    // Initialize the mixin, which defines this.enabledProperty.
-    this.initializeEnabledComponent( options );
+    super( options );
 
     // model Properties
     this.overProperty = new BooleanProperty( false ); // @public - Is the pointer over the button?
@@ -113,7 +111,7 @@ class ButtonModel {
    */
   dispose() {
     this.disposeButtonModel();
-    this.disposeEnabledComponent();
+    super.dispose();
   }
 
 
@@ -160,8 +158,6 @@ class ButtonModel {
     return pressListener;
   }
 }
-
-EnabledComponent.mixInto( ButtonModel );
 
 sun.register( 'ButtonModel', ButtonModel );
 export default ButtonModel;
