@@ -361,13 +361,15 @@ const AccessibleValueHandler = {
         let newAriaValueText = this.a11yCreateAriaValueText( mappedValue, this._valueProperty.value, oldPropertyValue );
         assert && assert( typeof newAriaValueText === 'string' );
 
-        if ( this._a11yRepeatEqualValueText && newAriaValueText === this.ariaValueText ) {
-
-          // use a "hair space" because it won't be spoken by a screen reader when appended to the valuetext string
-          newAriaValueText += '\u200A';
+        // Make sure that the new aria-valuetext is different from the previous one, so that if they are the same
+        // the screen reader will still read the new text - adding a hairSpace registers as a new string, but the
+        // screen reader won't read that character.
+        const hairSpace = '\u200A';
+        if ( this._a11yRepeatEqualValueText && this.ariaValueText && newAriaValueText === this.ariaValueText.replaceAll( hairSpace, '' ) ) {
+          newAriaValueText = this.ariaValueText + hairSpace;
         }
 
-        this.ariaValueText = newAriaValueText + '';
+        this.ariaValueText = newAriaValueText;
       },
 
       /**
