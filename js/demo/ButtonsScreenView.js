@@ -159,6 +159,7 @@ class ButtonsScreenView extends ScreenView {
     const buttonF = new RoundPushButton( {
       content: new Text( '--- F ---', { font: BUTTON_FONT, fill: 'white' } ),
       listener: () => console.log( 'buttonF fired' ),
+      enabledProperty: buttonsEnabledProperty,
       baseColor: 'purple',
       xMargin: 20,
       yMargin: 20,
@@ -353,7 +354,8 @@ class ButtonsScreenView extends ScreenView {
     } );
 
     const carouselButton = new CarouselButton( {
-      listener: () => console.log( 'carouselButton fired' )
+      listener: () => console.log( 'carouselButton fired' ),
+      enabledProperty: buttonsEnabledProperty
     } );
 
     const miscButtonsBox = new VBox( {
@@ -468,6 +470,7 @@ class ButtonsScreenView extends ScreenView {
 
     // This button's stroke will look thicker, because content will be scaled up.
     const roundButtonWithExplicitSize = new RoundPushButton( {
+      enabledProperty: buttonsEnabledProperty,
       radius: 25,
       content: new Circle( 5, { fill: 'red', stroke: 'black' } ),
       listener: () => console.log( 'roundButtonWithExplicitSize pressed' ),
@@ -477,6 +480,7 @@ class ButtonsScreenView extends ScreenView {
 
     // This button's content will look as specified, because button is sized to fit the content.
     const roundButtonWithDerivedSize = new RoundPushButton( {
+      enabledProperty: buttonsEnabledProperty,
       content: new Circle( 20, { fill: 'red', stroke: 'black' } ),
       listener: () => console.log( 'roundButtonWithDerivedSize pressed' ),
       xMargin: 5,
