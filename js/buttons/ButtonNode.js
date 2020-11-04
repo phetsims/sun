@@ -11,6 +11,7 @@
 import merge from '../../../phet-core/js/merge.js';
 import AlignBox from '../../../scenery/js/nodes/AlignBox.js';
 import Node from '../../../scenery/js/nodes/Node.js';
+import Grayscale from '../../../scenery/js/util/Grayscale.js';
 import PaintColorProperty from '../../../scenery/js/util/PaintColorProperty.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import ColorConstants from '../ColorConstants.js';
@@ -194,6 +195,19 @@ class ButtonNode extends Node {
    */
   isPDOMClicking() {
     return this._pressListener.pdomClickingProperty.get();
+  }
+
+  /**
+   * @protected
+   * @override
+   *
+   * @param {boolean} enabled
+   */
+  onEnabledPropertyChange( enabled ) {
+    super.onEnabledPropertyChange( enabled );
+
+    this.opacity = 1.0;
+    this.filters = enabled ? [] : [ Grayscale.FULL ];
   }
 }
 
