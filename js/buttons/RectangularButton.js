@@ -74,10 +74,7 @@ class RectangularButton extends ButtonNode {
 
       // Class that determines the button's appearance for the values of interactionStateProperty.
       // See RectangularButton.ThreeDAppearanceStrategy for an example of the interface required.
-      buttonAppearanceStrategy: RectangularButton.ThreeDAppearanceStrategy,
-
-      // pdom
-      tagName: 'button'
+      buttonAppearanceStrategy: RectangularButton.ThreeDAppearanceStrategy
     }, options );
 
     // Compute the size of the button.

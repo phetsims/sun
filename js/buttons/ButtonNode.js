@@ -71,6 +71,9 @@ class ButtonNode extends Node {
       // See RectangularRadioButton.ContentAppearanceStrategy for an example.
       contentAppearanceStrategy: null,
 
+      // pdom
+      tagName: 'button',
+
       // phet-io
       tandem: Tandem.OPTIONAL,
       visiblePropertyOptions: { phetioFeatured: true },

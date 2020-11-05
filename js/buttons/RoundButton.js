@@ -59,10 +59,7 @@ class RoundButton extends ButtonNode {
 
       // Class that determines the button's appearance for the values of interactionStateProperty.
       // See RoundButton.ThreeDAppearanceStrategy for an example of the interface required.
-      buttonAppearanceStrategy: RoundButton.ThreeDAppearanceStrategy,
-
-      // pdom
-      tagName: 'button'
+      buttonAppearanceStrategy: RoundButton.ThreeDAppearanceStrategy
     }, options );
 
     if ( !options.content ) {
