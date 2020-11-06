@@ -283,6 +283,9 @@ class Slider extends Node {
 
     this.mutate( options );
 
+    // No need to dispose because enabledProperty is disposed in Node
+    this.enabledProperty.link( SunConstants.getComponentEnabledListener( this, { disabledOpacity: options.disabledOpacity } ) );
+
     // @private {function} - Called by dispose
     this.disposeSlider = () => {
       thumb.dispose && thumb.dispose(); // in case a custom thumb is provided via options.thumbNode that doesn't implement dispose

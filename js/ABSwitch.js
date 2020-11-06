@@ -132,6 +132,9 @@ class ABSwitch extends Node {
 
     this.mutate( options );
 
+    // No need to dispose because enabledProperty is disposed in Node
+    this.enabledProperty.link( SunConstants.getComponentEnabledListener( this ) );
+
     // support for binder documentation, stripped out in builds and only runs when ?binder is specified
     assert && phet.chipper.queryParameters.binder && InstanceRegistry.registerDataURL( 'sun', 'ABSwitch', this );
   }

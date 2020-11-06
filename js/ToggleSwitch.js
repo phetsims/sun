@@ -28,6 +28,7 @@ import EventType from '../../tandem/js/EventType.js';
 import PhetioObject from '../../tandem/js/PhetioObject.js';
 import Tandem from '../../tandem/js/Tandem.js';
 import sun from './sun.js';
+import SunConstants from './SunConstants.js';
 
 // constants
 const DEFAULT_SIZE = new Dimension2( 60, 30 );
@@ -233,6 +234,9 @@ class ToggleSwitch extends Node {
     this.addInputListener( dragListener );
 
     this.mutate( options );
+
+    // No need to dispose because enabledProperty is disposed in Node
+    this.enabledProperty.link( SunConstants.getComponentEnabledListener( this ) );
 
     // Add a link to the Property that this switch controls
     this.addLinkedElement( property, {

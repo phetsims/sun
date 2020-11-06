@@ -33,6 +33,7 @@ import IOType from '../../tandem/js/types/IOType.js';
 import ComboBoxButton from './ComboBoxButton.js';
 import ComboBoxListBox from './ComboBoxListBox.js';
 import sun from './sun.js';
+import SunConstants from './SunConstants.js';
 
 // const
 const LIST_POSITION_VALUES = [ 'above', 'below' ]; // where the list pops up relative to the button
@@ -199,6 +200,9 @@ class ComboBox extends Node {
     this.opacityProperty.link( opacity => { this.listBox.opacityProperty.value = opacity; } );
 
     this.mutate( options );
+
+    // No need to dispose because enabledProperty is disposed in Node
+    this.enabledProperty.link( SunConstants.getComponentEnabledListener( this, { disabledOpacity: options.disabledOpacity } ) );
 
     // Clicking on the button toggles visibility of the list box
     this.button.addListener( () => {

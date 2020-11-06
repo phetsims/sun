@@ -16,6 +16,7 @@ import PaintColorProperty from '../../../scenery/js/util/PaintColorProperty.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import ColorConstants from '../ColorConstants.js';
 import sun from '../sun.js';
+import SunConstants from '../SunConstants.js';
 import ButtonInteractionState from './ButtonInteractionState.js';
 
 // constants
@@ -144,6 +145,17 @@ class ButtonNode extends Node {
 
     this.mutate( options );
 
+    const defaultEnabledListener = SunConstants.getComponentEnabledListener( this );
+
+    // No need to dispose because enabledProperty is disposed in Node
+    this.enabledProperty.link( enabled => {
+      defaultEnabledListener( enabled );
+
+      // additional behavior specific for buttons.
+      this.opacity = 1.0;
+      this.filters = enabled ? [] : [ Grayscale.FULL ];
+    } );
+
     // @private - define a dispose function
     this.disposeButtonNode = () => {
       alignBox && alignBox.dispose();
@@ -198,19 +210,6 @@ class ButtonNode extends Node {
    */
   isPDOMClicking() {
     return this._pressListener.pdomClickingProperty.get();
-  }
-
-  /**
-   * @protected
-   * @override
-   *
-   * @param {boolean} enabled
-   */
-  onEnabledPropertyChange( enabled ) {
-    super.onEnabledPropertyChange( enabled );
-
-    this.opacity = 1.0;
-    this.filters = enabled ? [] : [ Grayscale.FULL ];
   }
 }
 

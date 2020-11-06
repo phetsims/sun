@@ -6,8 +6,8 @@
  * @author Chris Malley (PixelZoom, Inc.)
  */
 
+import merge from '../../phet-core/js/merge.js';
 import sun from './sun.js';
-import Node from '../../scenery/js/nodes/Node.js';
 
 const SunConstants = {
 
@@ -25,7 +25,26 @@ const SunConstants = {
   VALUE_NUMBERED_PLACEHOLDER: '{0}',
 
   // Opacity that is typically applied to a UI component in its disabled state, to make it look grayed out.
-  DISABLED_OPACITY: Node.DEFAULT_OPTIONS.disabledOpacity
+  DISABLED_OPACITY: .45,
+
+  /**
+   * The basic PhET enabled/disabled look and feel for interactive components.
+   * @public
+   * @param {Node} node
+   * @param {Object} [options]
+   * @returns {function(boolean):void}
+   */
+  getComponentEnabledListener( node, options ) {
+    options = merge( {
+      disabledOpacity: SunConstants.DISABLED_OPACITY
+    }, options );
+
+    return enabled => {
+      !enabled && node.interruptSubtreeInput();
+      node.pickable = enabled;
+      node.opacity = enabled ? 1.0 : options.disabledOpacity;
+    };
+  }
 };
 
 sun.register( 'SunConstants', SunConstants );

@@ -19,6 +19,7 @@ import multiSelectionSoundPlayerFactory from '../../../tambo/js/multiSelectionSo
 import Tandem from '../../../tandem/js/Tandem.js';
 import ColorConstants from '../ColorConstants.js';
 import sun from '../sun.js';
+import SunConstants from '../SunConstants.js';
 import RectangularRadioButton from './RectangularRadioButton.js';
 
 // constants
@@ -294,6 +295,9 @@ class RectangularRadioButtonGroup extends LayoutBox {
     options.children = buttons;
 
     super( options );
+
+    // No need to dispose because enabledProperty is disposed in Node
+    this.enabledProperty.link( SunConstants.getComponentEnabledListener( this ) );
 
     // pdom - this node's primary sibling is aria-labelledby its own label so the label content is read whenever
     // a member of the group receives focus

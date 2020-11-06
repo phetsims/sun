@@ -15,6 +15,7 @@ import Rectangle from '../../scenery/js/nodes/Rectangle.js';
 import multiSelectionSoundPlayerFactory from '../../tambo/js/multiSelectionSoundPlayerFactory.js';
 import Tandem from '../../tandem/js/Tandem.js';
 import sun from './sun.js';
+import SunConstants from './SunConstants.js';
 
 // constants
 const DEFAULT_RADIUS = 7;
@@ -145,6 +146,9 @@ class AquaRadioButton extends Node {
     }
 
     this.mutate( options );
+
+    // No need to dispose because enabledProperty is disposed in Node
+    this.enabledProperty.link( SunConstants.getComponentEnabledListener( this ) );
 
     // @private
     this.disposeAquaRadioButton = () => {

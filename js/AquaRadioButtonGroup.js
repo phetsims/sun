@@ -16,6 +16,7 @@ import multiSelectionSoundPlayerFactory from '../../tambo/js/multiSelectionSound
 import Tandem from '../../tandem/js/Tandem.js';
 import AquaRadioButton from './AquaRadioButton.js';
 import sun from './sun.js';
+import SunConstants from './SunConstants.js';
 
 // pdom - An id for each instance of AquaRadioButtonGroup, passed to individual buttons in the group.
 // Each button in a radio button group must have the same "name" attribute to be considered in a group, otherwise
@@ -130,6 +131,9 @@ class AquaRadioButtonGroup extends LayoutBox {
     this.addLinkedElement( property, {
       tandem: options.tandem.createTandem( 'property' )
     } );
+
+    // No need to dispose because enabledProperty is disposed in Node
+    this.enabledProperty.link( SunConstants.getComponentEnabledListener( this ) );
 
     // @private
     this.disposeAquaRadioButtonGroup = () => {

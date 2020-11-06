@@ -14,6 +14,7 @@ import Tandem from '../../tandem/js/Tandem.js';
 import AccessibleNumberSpinner from './accessibility/AccessibleNumberSpinner.js';
 import ArrowButton from './buttons/ArrowButton.js';
 import sun from './sun.js';
+import SunConstants from './SunConstants.js';
 
 // possible values for options.arrowsPosition
 const ARROWS_POSITION_VALUES = [
@@ -207,6 +208,9 @@ class NumberSpinner extends Node {
     options.children = [ numberDisplay, incrementButton, decrementButton ];
 
     super( options );
+
+    // No need to dispose because enabledProperty is disposed in Node
+    this.enabledProperty.link( SunConstants.getComponentEnabledListener( this ) );
 
     // enable/disable arrow buttons
     const updateEnabled = () => {
