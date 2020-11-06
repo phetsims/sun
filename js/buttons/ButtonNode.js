@@ -8,15 +8,18 @@
  * @author Michael Kauzmann (PhET Interactive Simulations)
  */
 
+import DerivedProperty from '../../../axon/js/DerivedProperty.js';
 import merge from '../../../phet-core/js/merge.js';
 import AlignBox from '../../../scenery/js/nodes/AlignBox.js';
 import Node from '../../../scenery/js/nodes/Node.js';
+import Brightness from '../../../scenery/js/util/Brightness.js';
+import Contrast from '../../../scenery/js/util/Contrast.js';
 import Grayscale from '../../../scenery/js/util/Grayscale.js';
 import PaintColorProperty from '../../../scenery/js/util/PaintColorProperty.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import ColorConstants from '../ColorConstants.js';
-import sun from '../sun.js';
 import SunConstants from '../SunConstants.js';
+import sun from '../sun.js';
 import ButtonInteractionState from './ButtonInteractionState.js';
 
 // constants
@@ -99,7 +102,9 @@ class ButtonNode extends Node {
     this.buttonModel = buttonModel;
 
     // Make the base color into a Property so that the appearance strategy can update itself if changes occur.
-    this.baseColorProperty = new PaintColorProperty( options.baseColor ); // @private
+    this.baseColorProperty = new DerivedProperty( [ new PaintColorProperty( options.baseColor ), this.enabledProperty ], ( color, enabled ) => {
+      return enabled ? color : ColorConstants.LIGHT_GRAY;
+    } ); // @private
 
     // @private {PressListener}
     this._pressListener = buttonModel.createPressListener( options.listenerOptions );
@@ -153,7 +158,15 @@ class ButtonNode extends Node {
 
       // additional behavior specific for buttons.
       this.opacity = 1.0;
-      this.filters = enabled ? [] : [ Grayscale.FULL ];
+      buttonBackground.filters = enabled ? [] : [
+        new Contrast( 0.7 ),
+        new Brightness( 1.2 )
+      ];
+
+      if ( alignBox ) {
+        alignBox.filters = enabled ? [] : [ Grayscale.FULL ];
+        alignBox.opacity = enabled ? 1 : SunConstants.DISABLED_OPACITY;
+      }
     } );
 
     // @private - define a dispose function
