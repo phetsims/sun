@@ -77,6 +77,21 @@ class ButtonNode extends Node {
       // See RectangularRadioButton.ContentAppearanceStrategy for an example.
       contentAppearanceStrategy: null,
 
+      /**
+       * Alter the appearance when changing the enabled of the button.
+       * @param {boolean} enabled
+       * @param {Node} background
+       * @param {Node|null} content - if there is content, style can be applied to a containing Node around it.
+       */
+      enabledAppearanceStrategy: ( enabled, background, content ) => {
+        background.filters = enabled ? [] : [ CONTRAST_FILTER, BRIGHTNESS_FILTER ];
+
+        if ( content ) {
+          content.filters = enabled ? [] : [ Grayscale.FULL ];
+          content.opacity = enabled ? 1 : SunConstants.DISABLED_OPACITY;
+        }
+      },
+
       // pdom
       tagName: 'button',
 
@@ -155,24 +170,8 @@ class ButtonNode extends Node {
 
     this.mutate( options );
 
-    const defaultEnabledListener = SunConstants.getComponentEnabledListener( this );
-
     // No need to dispose because enabledProperty is disposed in Node
-    this.enabledProperty.link( enabled => {
-      defaultEnabledListener( enabled );
-
-      // additional behavior specific for buttons.
-      this.opacity = 1.0;
-      buttonBackground.filters = enabled ? [] : [
-        CONTRAST_FILTER,
-        BRIGHTNESS_FILTER
-      ];
-
-      if ( alignBox ) {
-        alignBox.filters = enabled ? [] : [ Grayscale.FULL ];
-        alignBox.opacity = enabled ? 1 : SunConstants.DISABLED_OPACITY;
-      }
-    } );
+    this.enabledProperty.link( enabled => options.enabledAppearanceStrategy( enabled, buttonBackground, alignBox ) );
 
     // @private - define a dispose function
     this.disposeButtonNode = () => {

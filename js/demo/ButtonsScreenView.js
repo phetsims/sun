@@ -340,14 +340,23 @@ class ButtonsScreenView extends ScreenView {
     } );
 
     // transparent button with something behind it
-    const rectangleNode = new Rectangle( 0, 0, 25, 50, { fill: 'red' } );
-    const transparentButton = new RectangularPushButton( {
-      content: new Text( 'Transparent Button', { font: BUTTON_FONT } ),
-      listener: () => console.log( 'transparentButton fired' ),
+    const rectangleNode = new Rectangle( 0, 0, 25, 100, { fill: 'red' } );
+    const transparentAlphaButton = new RectangularPushButton( {
+      content: new Text( 'Transparent Button via alpha', { font: BUTTON_FONT } ),
+      listener: () => console.log( 'transparentAlphaButton fired' ),
       baseColor: new Color( 255, 255, 0, 0.7 ),
-      center: rectangleNode.center
+      centerX: rectangleNode.centerX,
+      top: rectangleNode.top + 10
     } );
-    const transparentParent = new Node( { children: [ rectangleNode, transparentButton ] } );
+    const transparentOpacityButton = new RectangularPushButton( {
+      content: new Text( 'Transparent Button via opacity', { font: BUTTON_FONT } ),
+      listener: () => console.log( 'transparentOpacityButton fired' ),
+      baseColor: new Color( 255, 255, 0 ),
+      opacity: .6,
+      centerX: rectangleNode.centerX,
+      bottom: rectangleNode.bottom - 10
+    } );
+    const transparentParent = new Node( { children: [ rectangleNode, transparentAlphaButton, transparentOpacityButton ] } );
 
     const arrowButton = new ArrowButton( 'left', () => console.log( 'arrowButton fired' ), {
       enabledProperty: buttonsEnabledProperty
@@ -523,7 +532,8 @@ class ButtonsScreenView extends ScreenView {
       goButton.enabled = enabled;
       helpButton.enabled = enabled;
       fireOnDownButton.enabled = enabled;
-      transparentButton.enabled = enabled;
+      transparentAlphaButton.enabled = enabled;
+      transparentOpacityButton.enabled = enabled;
       roundStickyToggleButton.enabled = enabled;
       booleanRectangularStickyToggleButton.enabled = enabled;
       fireQuicklyWhenHeldButton.enabled = enabled;
