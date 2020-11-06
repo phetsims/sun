@@ -18,8 +18,8 @@ import Grayscale from '../../../scenery/js/util/Grayscale.js';
 import PaintColorProperty from '../../../scenery/js/util/PaintColorProperty.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import ColorConstants from '../ColorConstants.js';
-import SunConstants from '../SunConstants.js';
 import sun from '../sun.js';
+import SunConstants from '../SunConstants.js';
 import ButtonInteractionState from './ButtonInteractionState.js';
 
 // constants
@@ -101,8 +101,11 @@ class ButtonNode extends Node {
     // @protected
     this.buttonModel = buttonModel;
 
+    // @private - Support baseColor being effected by enabled, while still allowing setting the base color.
+    this._settableBaseColorProperty = new PaintColorProperty( options.baseColor );
+
     // Make the base color into a Property so that the appearance strategy can update itself if changes occur.
-    this.baseColorProperty = new DerivedProperty( [ new PaintColorProperty( options.baseColor ), this.enabledProperty ], ( color, enabled ) => {
+    this.baseColorProperty = new DerivedProperty( [ this._settableBaseColorProperty, this.enabledProperty ], ( color, enabled ) => {
       return enabled ? color : ColorConstants.LIGHT_GRAY;
     } ); // @private
 
@@ -190,19 +193,19 @@ class ButtonNode extends Node {
 
   /**
    * Sets the base color, which is the main background fill color used for the button.
-   * @param {Color|String} baseColor
+   * @param {ColorDef} baseColor
    * @public
    */
-  setBaseColor( baseColor ) { this.baseColorProperty.paint = baseColor; }
+  setBaseColor( baseColor ) { this._settableBaseColorProperty.paint = baseColor; }
 
   set baseColor( baseColor ) { this.setBaseColor( baseColor ); }
 
   /**
    * Gets the base color for this button.
-   * @returns {Color}
+   * @returns {ColorDef}
    * @public
    */
-  getBaseColor() { return this.baseColorProperty.paint; }
+  getBaseColor() { return this._settableBaseColorProperty.paint; }
 
   get baseColor() { return this.getBaseColor(); }
 
