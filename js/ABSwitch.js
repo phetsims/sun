@@ -62,6 +62,9 @@ class ABSwitch extends Node {
       // {function( Node, boolean )} method of making the labels look disabled
       setEnabled: DEFAULT_SET_ENABLED,
 
+      // {function(boolean, Node, Object:options):void} - function for controlling the appearance when toggling enabled.
+      enabledAppearanceStrategy: SunConstants.componentEnabledListener,
+
       // phet-io
       tandem: Tandem.REQUIRED,
       visiblePropertyOptions: { phetioFeatured: true },
@@ -133,7 +136,7 @@ class ABSwitch extends Node {
     this.mutate( options );
 
     // No need to dispose because enabledProperty is disposed in Node
-    this.enabledProperty.link( SunConstants.getComponentEnabledListener( this ) );
+    this.enabledProperty.link( enabled => options.enabledAppearanceStrategy( enabled, this ) );
 
     // support for binder documentation, stripped out in builds and only runs when ?binder is specified
     assert && phet.chipper.queryParameters.binder && InstanceRegistry.registerDataURL( 'sun', 'ABSwitch', this );

@@ -46,6 +46,9 @@ class RectangularRadioButtonGroup extends LayoutBox {
   constructor( property, contentArray, options ) {
     options = merge( {
 
+      // {function(boolean, Node, Object:options):void} - function for controlling the appearance when toggling enabled.
+      enabledAppearanceStrategy: SunConstants.componentEnabledListener,
+
       // phet-io
       tandem: Tandem.REQUIRED,
       visiblePropertyOptions: { phetioFeatured: true },
@@ -297,7 +300,7 @@ class RectangularRadioButtonGroup extends LayoutBox {
     super( options );
 
     // No need to dispose because enabledProperty is disposed in Node
-    this.enabledProperty.link( SunConstants.getComponentEnabledListener( this ) );
+    this.enabledProperty.link( enabled => options.enabledAppearanceStrategy( enabled, this ) );
 
     // pdom - this node's primary sibling is aria-labelledby its own label so the label content is read whenever
     // a member of the group receives focus

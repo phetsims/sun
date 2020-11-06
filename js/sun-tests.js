@@ -23,7 +23,7 @@ QUnit.test( 'Node.enabledProperty', assert => {
       }, options );
       super( options );
 
-      this.enabledProperty.link( SunConstants.getComponentEnabledListener( this, { disabledOpacity: options.disabledOpacity } ) );
+      this.enabledProperty.link( enabled => SunConstants.componentEnabledListener( enabled, this, { disabledOpacity: options.disabledOpacity } ) );
     }
   }
 

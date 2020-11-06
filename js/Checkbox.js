@@ -48,6 +48,9 @@ class Checkbox extends Node {
       checkboxColorBackground: 'white',
       disabledOpacity: SunConstants.DISABLED_OPACITY,
 
+      // {function(boolean, Node, Object:options):void} - function for controlling the appearance when toggling enabled.
+      enabledAppearanceStrategy: SunConstants.componentEnabledListener,
+
       // phet-io
       tandem: Tandem.REQUIRED,
       phetioEventType: EventType.USER,
@@ -166,7 +169,7 @@ class Checkbox extends Node {
     this.enabledProperty.link( enabledListener );
 
     // No need to dispose because enabledProperty is disposed in Node
-    this.enabledProperty.link( SunConstants.getComponentEnabledListener( this, { disabledOpacity: options.disabledOpacity } ) );
+    this.enabledProperty.link( enabled => options.enabledAppearanceStrategy( enabled, this, { disabledOpacity: options.disabledOpacity } ) );
 
     // support for binder documentation, stripped out in builds and only runs when ?binder is specified
     assert && phet.chipper.queryParameters.binder && InstanceRegistry.registerDataURL( 'sun', 'Checkbox', this );

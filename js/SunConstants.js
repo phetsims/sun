@@ -30,19 +30,18 @@ const SunConstants = {
   /**
    * The basic PhET enabled/disabled look and feel for interactive components.
    * @public
+   * @param {boolean} enabled
    * @param {Node} node
    * @param {Object} [options]
    * @returns {function(boolean):void}
    */
-  getComponentEnabledListener( node, options ) {
+  componentEnabledListener( enabled, node, options ) {
     options = merge( {
       disabledOpacity: SunConstants.DISABLED_OPACITY
     }, options );
 
-    return enabled => {
-      node.pickable = enabled;
-      node.opacity = enabled ? 1.0 : options.disabledOpacity;
-    };
+    node.pickable = enabled;
+    node.opacity = enabled ? 1.0 : options.disabledOpacity;
   }
 };
 

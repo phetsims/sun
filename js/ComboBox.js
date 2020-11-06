@@ -79,6 +79,9 @@ class ComboBox extends Node {
       cornerRadius: 4, // applied to button, listBox, and item highlights
       highlightFill: 'rgb( 245, 245, 245 )', // {Color|string} highlight behind items in the list
 
+      // {function(boolean, Node, Object:options):void} - function for controlling the appearance when toggling enabled.
+      enabledAppearanceStrategy: SunConstants.componentEnabledListener,
+
       // Margins around the edges of the button and listbox when highlight is invisible.
       // Highlight margins around the items in the list are set to 1/2 of these values.
       // These values must be > 0.
@@ -202,7 +205,7 @@ class ComboBox extends Node {
     this.mutate( options );
 
     // No need to dispose because enabledProperty is disposed in Node
-    this.enabledProperty.link( SunConstants.getComponentEnabledListener( this, { disabledOpacity: options.disabledOpacity } ) );
+    this.enabledProperty.link( enabled => options.enabledAppearanceStrategy( enabled, this, { disabledOpacity: options.disabledOpacity } ) );
 
     // Clicking on the button toggles visibility of the list box
     this.button.addListener( () => {
