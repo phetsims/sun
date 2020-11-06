@@ -40,7 +40,6 @@ const SunConstants = {
     }, options );
 
     return enabled => {
-      !enabled && node.interruptSubtreeInput();
       node.pickable = enabled;
       node.opacity = enabled ? 1.0 : options.disabledOpacity;
     };
