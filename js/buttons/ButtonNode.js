@@ -25,6 +25,8 @@ import ButtonInteractionState from './ButtonInteractionState.js';
 // constants
 const X_ALIGN_VALUES = [ 'center', 'left', 'right' ];
 const Y_ALIGN_VALUES = [ 'center', 'top', 'bottom' ];
+const CONTRAST_FILTER = new Contrast( 0.7 );
+const BRIGHTNESS_FILTER = new Brightness( 1.2 );
 
 class ButtonNode extends Node {
 
@@ -162,8 +164,8 @@ class ButtonNode extends Node {
       // additional behavior specific for buttons.
       this.opacity = 1.0;
       buttonBackground.filters = enabled ? [] : [
-        new Contrast( 0.7 ),
-        new Brightness( 1.2 )
+        CONTRAST_FILTER,
+        BRIGHTNESS_FILTER
       ];
 
       if ( alignBox ) {
