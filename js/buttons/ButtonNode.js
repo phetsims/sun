@@ -23,8 +23,6 @@ import SunConstants from '../SunConstants.js';
 import ButtonInteractionState from './ButtonInteractionState.js';
 
 // constants
-const X_ALIGN_VALUES = [ 'center', 'left', 'right' ];
-const Y_ALIGN_VALUES = [ 'center', 'top', 'bottom' ];
 const CONTRAST_FILTER = new Contrast( 0.7 );
 const BRIGHTNESS_FILTER = new Brightness( 1.2 );
 
@@ -108,10 +106,6 @@ class ButtonNode extends Node {
     assert && options.enabledProperty && assert( options.enabledProperty === buttonModel.enabledProperty,
       'if options.enabledProperty is provided, it must === buttonModel.enabledProperty' );
     options.enabledProperty = buttonModel.enabledProperty;
-
-    // validate options - TODO: are these needed? Won't AlignBox handle this validation? https://github.com/phetsims/sun/issues/643
-    assert && assert( _.includes( X_ALIGN_VALUES, options.xAlign ), 'invalid xAlign: ' + options.xAlign );
-    assert && assert( _.includes( Y_ALIGN_VALUES, options.yAlign ), 'invalid yAlign: ' + options.yAlign );
 
     super();
 
