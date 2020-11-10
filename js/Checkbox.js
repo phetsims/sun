@@ -153,21 +153,6 @@ class Checkbox extends Node {
       tandem: options.tandem.createTandem( 'property' )
     } );
 
-    //TODO https://github.com/phetsims/sun/issues/640 is 'onclick' specific to Checkbox, or should it be handled generally by Node?
-    const enabledListener = enabled => {
-      if ( enabled ) {
-        this.setAccessibleAttribute( 'onclick', '' );
-      }
-      else {
-
-        // By returning false, we prevent the a11y checkbox from toggling when the enabledProperty is false. This way
-        // we can keep the checkbox in tab order and don't need to add the `disabled` attribute. See https://github.com/phetsims/sun/issues/519
-        // This solution was found at https://stackoverflow.com/a/12267350/3408502
-        this.setAccessibleAttribute( 'onclick', 'return false' );
-      }
-    };
-    this.enabledProperty.link( enabledListener );
-
     // No need to dispose because enabledProperty is disposed in Node
     this.enabledProperty.link( enabled => options.enabledAppearanceStrategy( enabled, this, { disabledOpacity: options.disabledOpacity } ) );
 
@@ -181,10 +166,6 @@ class Checkbox extends Node {
 
       if ( property.hasListener( checkboxCheckedListener ) ) {
         property.unlink( checkboxCheckedListener );
-      }
-
-      if ( this.enabledProperty.hasListener( enabledListener ) ) {
-        this.enabledProperty.unlink( enabledListener );
       }
 
       // Private to Checkbox, but we need to clean up tandem.
