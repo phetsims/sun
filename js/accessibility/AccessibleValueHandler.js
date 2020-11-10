@@ -80,6 +80,8 @@ const AccessibleValueHandler = {
           // hold". This function will still be called once per input in those cases.
           change: _.noop,
 
+          // {function(number):number} - takes two parameters, 1. the current value, and if the shift key is down.
+          // It should return the constrained value
           constrainValue: _.identity, // called before valueProperty is set
 
           // keyboard steps for various keys/interactions
@@ -207,7 +209,7 @@ const AccessibleValueHandler = {
         // @private {function} - called when value change input ends
         this._endChange = options.endChange;
 
-        // @private {function} - called before valueProperty is set
+        // @private {function(number):number} - called before valueProperty is set
         this._constrainValue = options.constrainValue;
 
         // @private (a11y) - delta for the valueProperty when using keyboard to interact with slider,
