@@ -27,6 +27,7 @@ import Tandem from '../../tandem/js/Tandem.js';
 import Animation from '../../twixt/js/Animation.js';
 import Easing from '../../twixt/js/Easing.js';
 import CarouselButton from './buttons/CarouselButton.js';
+import ColorConstants from './ColorConstants.js';
 import HSeparator from './HSeparator.js';
 import sun from './sun.js';
 import SunConstants from './SunConstants.js';
@@ -54,6 +55,7 @@ const DEFAULT_OPTIONS = {
   // next/previous buttons
   buttonColor: 'rgba( 200, 200, 200, 0.5 )', // {Color|string} base color for the buttons
   buttonStroke: undefined, // {Color|string|null|undefined} stroke around the buttons (null is no stroke, undefined derives color from buttonColor)
+  buttonDisabledColor: ColorConstants.LIGHT_GRAY, // same default as from ButtonNode.js
   buttonLineWidth: 1, // {number} lineWidth of borders on buttons
   arrowSize: new Dimension2( 20, 7 ), // {Dimension2} size of the arrow, in 'up' directions
   arrowStroke: 'black', // {Color|string} color used for the arrow icons
@@ -111,6 +113,7 @@ class Carousel extends Node {
       yMargin: 5,
       cornerRadius: options.cornerRadius,
       baseColor: options.buttonColor,
+      disabledColor: options.buttonDisabledColor,
       stroke: options.buttonStroke,
       lineWidth: options.buttonLineWidth,
       minWidth: isHorizontal ? 0 : maxItemWidth + ( 2 * options.margin ), // fill the width of a vertical carousel

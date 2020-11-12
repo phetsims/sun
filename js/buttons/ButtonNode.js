@@ -94,6 +94,9 @@ class ButtonNode extends Node {
         }
       },
 
+      // Color when disabled
+      disabledColor: ColorConstants.LIGHT_GRAY,
+
       // pdom
       tagName: 'button',
 
@@ -121,7 +124,7 @@ class ButtonNode extends Node {
 
     // Make the base color into a Property so that the appearance strategy can update itself if changes occur.
     this.baseColorProperty = new DerivedProperty( [ this._settableBaseColorProperty, this.enabledProperty ], ( color, enabled ) => {
-      return enabled ? color : ColorConstants.LIGHT_GRAY;
+      return enabled ? color : options.disabledColor;
     } ); // @private
 
     // @private {PressListener}
