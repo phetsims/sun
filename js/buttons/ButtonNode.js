@@ -78,11 +78,15 @@ class ButtonNode extends Node {
       /**
        * Alter the appearance when changing the enabled of the button.
        * @param {boolean} enabled
+       * @param {Node} button
        * @param {Node} background
        * @param {Node|null} content - if there is content, style can be applied to a containing Node around it.
        */
-      enabledAppearanceStrategy: ( enabled, background, content ) => {
+      enabledAppearanceStrategy: ( enabled, button, background, content ) => {
         background.filters = enabled ? [] : [ CONTRAST_FILTER, BRIGHTNESS_FILTER ];
+
+        // TODO: this is a workaround until we can use Node.interactive, see https://github.com/phetsims/scenery/issues/1116
+        button.pickable = enabled ? null : false;
 
         if ( content ) {
           content.filters = enabled ? [] : [ Grayscale.FULL ];
@@ -165,7 +169,7 @@ class ButtonNode extends Node {
     this.mutate( options );
 
     // No need to dispose because enabledProperty is disposed in Node
-    this.enabledProperty.link( enabled => options.enabledAppearanceStrategy( enabled, buttonBackground, alignBox ) );
+    this.enabledProperty.link( enabled => options.enabledAppearanceStrategy( enabled, this, buttonBackground, alignBox ) );
 
     // @private - define a dispose function
     this.disposeButtonNode = () => {
