@@ -30,7 +30,6 @@ import CarouselButton from './buttons/CarouselButton.js';
 import ColorConstants from './ColorConstants.js';
 import HSeparator from './HSeparator.js';
 import sun from './sun.js';
-import SunConstants from './SunConstants.js';
 import VSeparator from './VSeparator.js';
 
 // constants
@@ -43,9 +42,6 @@ const DEFAULT_OPTIONS = {
   lineWidth: 1, // {number} width of the border around the carousel
   cornerRadius: 4, // {number} radius applied to the carousel and next/previous buttons
   defaultPageNumber: 0, // {number} page that is initially visible
-
-  // {function(boolean, Node, Object:options):void} - function for controlling the appearance when toggling enabled.
-  enabledAppearanceStrategy: SunConstants.componentEnabledListener,
 
   // items
   itemsPerPage: 4, // {number} number of items per page, or how many items are visible at a time in the carousel
@@ -344,9 +340,6 @@ class Carousel extends Node {
     };
 
     this.mutate( options );
-
-    // No need to dispose because enabledProperty is disposed in Node
-    this.enabledProperty.link( enabled => options.enabledAppearanceStrategy( enabled, this ) );
 
     // support for binder documentation, stripped out in builds and only runs when ?binder is specified
     assert && phet.chipper.queryParameters.binder && InstanceRegistry.registerDataURL( 'sun', 'Carousel', this );

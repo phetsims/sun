@@ -10,7 +10,6 @@
  */
 
 import BooleanProperty from '../../../axon/js/BooleanProperty.js';
-import EnabledProperty from '../../../axon/js/EnabledProperty.js';
 import Property from '../../../axon/js/Property.js';
 import stepTimer from '../../../axon/js/stepTimer.js';
 import StringProperty from '../../../axon/js/StringProperty.js';
@@ -137,8 +136,6 @@ function demoCarousel( layoutBounds ) {
     hItems.push( new Circle( 30, { fill: color, stroke: 'black' } ) );
   } );
 
-  const enabledProperty = new EnabledProperty( true );
-
   // vertical carousel
   const vCarousel = new Carousel( vItems, {
     orientation: 'vertical',
@@ -146,10 +143,8 @@ function demoCarousel( layoutBounds ) {
     buttonTouchAreaXDilation: 5,
     buttonTouchAreaYDilation: 15,
     buttonMouseAreaXDilation: 2,
-    buttonMouseAreaYDilation: 7,
-    enabledProperty: enabledProperty
+    buttonMouseAreaYDilation: 7
   } );
-
 
   // horizontal carousel
   const hCarousel = new Carousel( hItems, {
@@ -158,7 +153,6 @@ function demoCarousel( layoutBounds ) {
     buttonTouchAreaYDilation: 5,
     buttonMouseAreaXDilation: 7,
     buttonMouseAreaYDilation: 2,
-    enabledProperty: enabledProperty,
     centerX: vCarousel.centerX,
     top: vCarousel.bottom + 50
   } );
@@ -181,13 +175,9 @@ function demoCarousel( layoutBounds ) {
     }
   } );
 
-  const enabledCheckbox = new Checkbox( new Text( 'enabled', {
-    font: new PhetFont( 20 )
-  } ), enabledProperty );
-
   // group the buttons
   const buttonGroup = new VBox( {
-    children: [ hScrollToItemButton, hScrollToPageButton, enabledCheckbox ],
+    children: [ hScrollToItemButton, hScrollToPageButton ],
     align: 'left',
     spacing: 7,
     left: hCarousel.right + 30,
@@ -281,7 +271,7 @@ function demoSlider( layoutBounds, orientation ) {
     thumbMouseAreaYDilation: 5,
     center: layoutBounds.center,
     tandem: Tandem.GENERAL.createTandem( 'demoSlider' ),
-    enabledProperty: new BooleanProperty( true, { tandem: Tandem.GENERAL.createTandem( 'demoSliderEnabledProperty' ) } )
+    enabledProperty: new BooleanProperty( true, {tandem: Tandem.GENERAL.createTandem( 'demoSliderEnabledProperty' )} )
   };
 
   let slider = null;
