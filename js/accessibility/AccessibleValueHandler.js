@@ -367,7 +367,7 @@ const AccessibleValueHandler = {
         // the screen reader will still read the new text - adding a hairSpace registers as a new string, but the
         // screen reader won't read that character.
         const hairSpace = '\u200A';
-        if ( this._a11yRepeatEqualValueText && this.ariaValueText && newAriaValueText === this.ariaValueText.replaceAll( hairSpace, '' ) ) {
+        if ( this._a11yRepeatEqualValueText && this.ariaValueText && newAriaValueText === this.ariaValueText.replace( new RegExp( hairSpace, 'g' ), '' ) ) {
           newAriaValueText = this.ariaValueText + hairSpace;
         }
 
