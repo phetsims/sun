@@ -98,9 +98,9 @@ const AccessibleValueHandler = {
           roundToStepSize: false,
 
           /**
-           * Map the valueProperty value to another number that will be read by the assistive device on
-           * valueProperty changes. This is used to set the values for aria-valuetext and the on change alert, as well
-           * as the following attributes on the PDOM input:
+           * Map the valueProperty value to another number that will be read by assistive devices on
+           * valueProperty changes from the PDOM values. This is used to set the values for aria-valuetext and the on
+           * change alert, as well as the following attributes on the PDOM input:
            *    value
            *    aria-valuenow
            *    min
@@ -112,7 +112,7 @@ const AccessibleValueHandler = {
            *
            * @type {function(number):number}
            */
-          a11yMapValue: _.identity,
+          a11yMapPDOMValue: _.identity,
 
           /**
            * If true, the aria-valuetext will be spoken every value change, even if the aria-valuetext doesn't
@@ -270,7 +270,7 @@ const AccessibleValueHandler = {
         this.roundToStepSize = options.roundToStepSize;
 
         // @private {function}
-        this.a11yMapValue = options.a11yMapValue;
+        this.a11yMapPDOMValue = options.a11yMapPDOMValue;
 
         // @private {function}
         this.a11yCreateAriaValueText = options.a11yCreateAriaValueText;
@@ -426,13 +426,13 @@ const AccessibleValueHandler = {
       },
 
       /**
-       * Set the a11yMapValueFunction
+       * Set the a11yMapPDOMValueFunction
        * @param {function(number):number} mapValueFunction
        * @public
        */
       setMapValueFunction( mapValueFunction ) {
-        assert && assert( typeof mapValueFunction === 'function', 'a11yMapValue function must be a function' );
-        this.a11yMapValue = mapValueFunction;
+        assert && assert( typeof mapValueFunction === 'function', 'a11yMapPDOMValue function must be a function' );
+        this.a11yMapPDOMValue = mapValueFunction;
       },
 
       /**
@@ -442,8 +442,8 @@ const AccessibleValueHandler = {
        * @private
        */
       getMappedValue( value = this._valueProperty.value ) {
-        const mappedValue = this.a11yMapValue( value );
-        assert && assert( typeof mappedValue === 'number', 'a11yMapValue must return a number' );
+        const mappedValue = this.a11yMapPDOMValue( value );
+        assert && assert( typeof mappedValue === 'number', 'a11yMapPDOMValue must return a number' );
 
         return mappedValue;
       },
