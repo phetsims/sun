@@ -80,9 +80,8 @@ const AccessibleValueHandler = {
           // hold". This function will still be called once per input in those cases.
           change: _.noop,
 
-          // {function(number):number} - takes two parameters, 1. the current value, and if the shift key is down.
-          // It should return the constrained value
-          constrainValue: _.identity, // called before valueProperty is set
+          // {function(number):number} - It should return the constrained value, called before valueProperty is set
+          constrainValue: _.identity,
 
           // keyboard steps for various keys/interactions
           keyboardStep: ( rangeProperty.get().max - rangeProperty.get().min ) / 20,
@@ -115,6 +114,17 @@ const AccessibleValueHandler = {
           a11yMapPDOMValue: _.identity,
 
           /**
+           * Called before constraining and setting the Property. This is useful in rare cases where the value being set
+           * by AccessibleValueHandler may change based on outside logic. This is for mapping value changes from input listeners
+           * assigned in this type (keyboard/alt-input) to a new value before the value is set.
+           * @type {Function}
+           * @param {number} newValue - the new value, unformatted
+           * @param {number} previousValue - just the "oldValue" like the Property listener
+           * @returns {number} - the mapped value, ready to be constrained
+           */
+          a11yMapValue: _.identity,
+
+          /**
            * If true, the aria-valuetext will be spoken every value change, even if the aria-valuetext doesn't
            * actually change. By default, screen readers won't speak aria-valuetext if it remains the same for
            * multiple values.
@@ -127,10 +137,10 @@ const AccessibleValueHandler = {
            * This string is read by AT every time the slider value changes. This is often called the "object response"
            * for this interaction.
            * @type {Function}
-           * @param {number} mappedValue
+           * @param {number} pdomMappedValue - see
            * @param {number} newValue - the new value, unformatted
-           * @param {number} previousValue - just the "oldValue" from the property listener
-           * @property {function} reset - if this function needs resetting, include a `reset` field on this function
+           * @param {number} previousValue - just the "oldValue" from the Property listener
+           * @property {function} [reset] - if this function needs resetting, include a `reset` field on this function
            *                              to be called when the AccessibleValueHandler is reset.
            * @returns {string} - aria-valuetext to be set to the primarySibling
            */
@@ -211,6 +221,9 @@ const AccessibleValueHandler = {
 
         // @private {function(number):number} - called before valueProperty is set
         this._constrainValue = options.constrainValue;
+
+        // @private {function(number,number):number} - called before constrainValue called and valueProperty is set
+        this._a11yMapValue = options.a11yMapValue;
 
         // @private (a11y) - delta for the valueProperty when using keyboard to interact with slider,
         // initialized with setKeyboardStep which does some validating
@@ -353,7 +366,7 @@ const AccessibleValueHandler = {
       },
 
       /**
-       * @param {*} oldPropertyValue - the old value of the valueProperty, can be null
+       * @param {number|null} oldPropertyValue - the old value of the valueProperty
        * @private
        */
       updateAriaValueText( oldPropertyValue ) {
@@ -550,7 +563,7 @@ const AccessibleValueHandler = {
             }
 
             // optionally constrain the value further
-            this._valueProperty.set( this._constrainValue( newValue ) );
+            this._valueProperty.set( this._constrainValue( this._a11yMapValue( newValue, this._valueProperty.get() ) ) );
 
             // optional change callback after the valueProperty is set so that the listener can use the new value
             this._change( event );
@@ -657,7 +670,7 @@ const AccessibleValueHandler = {
           newValue = Utils.clamp( newValue, this._rangeProperty.get().min, this._rangeProperty.get().max );
 
           // optionally constrain value
-          this._valueProperty.set( this._constrainValue( newValue ) );
+          this._valueProperty.set( this._constrainValue( this._a11yMapValue( newValue, this._valueProperty.get() ) ) );
 
           // only one change per input, but still call optional change function - after valueProperty is set so
           // listener can use new value
