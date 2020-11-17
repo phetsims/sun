@@ -31,6 +31,7 @@ class PushButtonModel extends ButtonModel {
       listener: null, // {function} convenience for adding 1 listener, no args
 
       // fire-on-hold feature
+      // TODO: these options are not supported with PDOM interaction, see https://github.com/phetsims/scenery/issues/1117
       fireOnHold: false, // is the fire-on-hold feature enabled?
       fireOnHoldDelay: 400, // start to fire continuously after pressing for this long (milliseconds)
       fireOnHoldInterval: 100, // fire continuously at this interval (milliseconds), same default as in ButtonModel
