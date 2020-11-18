@@ -14,7 +14,6 @@ import Tandem from '../../tandem/js/Tandem.js';
 import ButtonsScreenView from './demo/ButtonsScreenView.js';
 import ComponentsScreenView from './demo/ComponentsScreenView.js';
 import DialogsScreenView from './demo/DialogsScreenView.js';
-import MemoryTestsScreenView from './demo/MemoryTestsScreenView.js';
 import sunStrings from './sunStrings.js';
 import sunQueryParameters from './sunQueryParameters.js';
 
@@ -76,18 +75,6 @@ simLauncher.launch( function() {
         backgroundColorProperty: new Property( sunQueryParameters.backgroundColor ),
         homeScreenIcon: createScreenIcon( 'purple' ),
         tandem: Tandem.ROOT.createTandem( 'dialogsScreen' )
-      }
-    ),
-
-    // Memory Test screen
-    new Screen(
-      () => MODEL,
-      () => new MemoryTestsScreenView(),
-      {
-        name: 'Memory Tests',
-        backgroundColorProperty: new Property( sunQueryParameters.backgroundColor ),
-        homeScreenIcon: createScreenIcon( 'blue' ),
-        tandem: Tandem.ROOT.createTandem( 'memoryTestsScreen' )
       }
     )
   ], simOptions ).start();
