@@ -56,24 +56,35 @@ function testEnabledNode( assert, enabledNode, message ) {
 
 QUnit.test( 'Slider PhET-iO API validation', assert => {
   phetioAPITest( assert, new SliderAPI(), 'slider',
-    tandem => {
-      return new HSlider( new Property( 0, {
-          phetioType: Property.PropertyIO( NumberIO ),
-          tandem: tandem.createTandem( 'otherValueProperty' )
-        } ),
-        new Range( 0, 10 ), { tandem: tandem } );
+    ( tandem, disposeEmitter ) => {
+      const valueProperty = new Property( 0, {
+        phetioType: Property.PropertyIO( NumberIO ),
+        tandem: tandem.createTandem( 'myValueProperty' )
+      } );
+      disposeEmitter.addListener( () => valueProperty.dispose() );
+      return new HSlider( valueProperty, new Range( 0, 10 ), { tandem: tandem } );
     } );
 } );
 
 QUnit.test( 'Slider PhET-iO API validation, provided enabledProperty', assert => {
   phetioAPITest( assert, new SliderAPI(), 'slider',
 
-    tandem => new HSlider( new Property( 0, {
+    ( tandem, disposeEmitter ) => {
+      const valueProperty = new Property( 0, {
         phetioType: Property.PropertyIO( NumberIO ),
-        tandem: tandem.createTandem( 'otherValue2Property' )
-      } ),
-      new Range( 0, 10 ), {
+        tandem: tandem.createTandem( 'myValueProperty' )
+      } );
+      disposeEmitter.addListener( () => valueProperty.dispose() );
+
+      const enabledProperty = new BooleanProperty( false, {
+        tandem: tandem.createTandem( 'otherEnabled2Property' ),
+        phetioFeatured: true
+      } );
+      disposeEmitter.addListener( () => enabledProperty.dispose() );
+
+      return new HSlider( valueProperty, new Range( 0, 10 ), {
         tandem: tandem,
-        enabledProperty: new BooleanProperty( false, { tandem: tandem.createTandem( 'otherEnabled2Property' ), phetioFeatured: true } )
-      } ) );
+        enabledProperty: enabledProperty
+      } );
+    } );
 } );

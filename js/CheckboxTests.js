@@ -17,7 +17,11 @@ QUnit.module( 'Checkbox' );
 QUnit.test( 'Checkbox PhET-iO API validation', assert => {
   phetioAPITest( assert, new CheckboxAPI(), 'checkbox',
 
-    tandem => new Checkbox( new Node(), new BooleanProperty( false, {
-      tandem: tandem.createTandem( 'checkboxValueProperty' )
-    } ), { tandem: tandem } ) );
+    ( tandem, disposeEmitter ) => {
+      const booleanProperty = new BooleanProperty( false, {
+        tandem: tandem.createTandem( 'checkboxValueProperty' )
+      } );
+      disposeEmitter.addListener( () => booleanProperty.dispose() );
+      return new Checkbox( new Node(), booleanProperty, { tandem: tandem } );
+    } );
 } );
