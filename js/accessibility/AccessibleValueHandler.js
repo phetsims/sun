@@ -557,13 +557,13 @@ const AccessibleValueHandler = {
                   newValue = roundValue( newValue, this._valueProperty.get(), stepSize );
                 }
               }
-
-              // limit the value to the enabled range
-              newValue = Utils.clamp( newValue, this._rangeProperty.get().min, this._rangeProperty.get().max );
             }
 
-            // optionally constrain the value further
-            this._valueProperty.set( this._constrainValue( this._a11yMapValue( newValue, this._valueProperty.get() ) ) );
+            // optionally constrain and map the value
+            const constrainedAndMapped = this._constrainValue( this._a11yMapValue( newValue, this._valueProperty.get() ) );
+
+            // limit the value to the enabled range
+            this._valueProperty.set( Utils.clamp( constrainedAndMapped, this._rangeProperty.get().min, this._rangeProperty.get().max ) );
 
             // optional change callback after the valueProperty is set so that the listener can use the new value
             this._change( event );
