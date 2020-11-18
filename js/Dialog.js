@@ -34,9 +34,6 @@ import Popupable from './Popupable.js';
 import sun from './sun.js';
 import sunStrings from './sunStrings.js';
 
-// constants
-const CLOSE_BUTTON_WIDTH = 18.2;
-
 class Dialog extends Popupable( Panel ) {
 
   /**
@@ -90,6 +87,7 @@ class Dialog extends Popupable( Panel ) {
       // the same margins on the left and right of the content.
       maxWidthMargin: 12, // {number} the margin between the left/right of the layoutBounds and the dialog, ignored if maxWidth is specified
       maxHeightMargin: 12, // {number} the margin between the top/bottom of the layoutBounds and the dialog, ignored if maxHeight is specified
+      closeButtonLength: 18.2, // {number} width of the close button
       closeButtonTopMargin: 10, // {number} margin above the close button
       closeButtonRightMargin: 10, // {number} margin to the right of the close button
 
@@ -160,7 +158,7 @@ class Dialog extends Popupable( Panel ) {
 
     // if left margin is specified in options, use it. otherwise, set it to make the left right gutters symmetrical
     if ( options.leftMargin === null ) {
-      options.leftMargin = options.xSpacing + CLOSE_BUTTON_WIDTH + options.closeButtonRightMargin;
+      options.leftMargin = options.xSpacing + options.closeButtonLength + options.closeButtonRightMargin;
     }
 
     // see https://github.com/phetsims/joist/issues/293
@@ -179,7 +177,7 @@ class Dialog extends Popupable( Panel ) {
 
     // create close button - a flat "X"
     const closeButton = new CloseButton( {
-      iconLength: CLOSE_BUTTON_WIDTH,
+      iconLength: options.closeButtonLength,
       baseColor: 'transparent',
       buttonAppearanceStrategy: ButtonNode.FlatAppearanceStrategy,
 
