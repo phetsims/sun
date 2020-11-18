@@ -30,7 +30,7 @@ class TrackAPI extends NodeAPI {
 
     super( options );
 
-
+    // @public (read-only)
     this.dragListener = new DragListenerAPI( options.dragListenerOptions );
   }
 }
@@ -49,7 +49,7 @@ class ThumbAPI extends NodeAPI {
 
     super( options );
 
-
+    // @public (read-only)
     this.dragListener = new DragListenerAPI( options.dragListenerOptions );
   }
 }
@@ -71,6 +71,7 @@ class SliderAPI extends NodeAPI {
 
     super( options );
 
+    // @public (read-only)
     this.track = new TrackAPI();
     this.thumb = new ThumbAPI();
     this.enabledRangeProperty = new PropertyAPI( { phetioType: Property.PropertyIO( Range.RangeIO ) } );

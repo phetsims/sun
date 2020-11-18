@@ -10,6 +10,7 @@ import BooleanProperty from '../../axon/js/BooleanProperty.js';
 import qunitStart from '../../chipper/js/sim-tests/qunitStart.js';
 import merge from '../../phet-core/js/merge.js';
 import Node from '../../scenery/js/nodes/Node.js';
+import './CheckboxTests.js';
 import './EnabledComponentTests.js';
 import './SliderTests.js';
 import SunConstants from './SunConstants.js';
