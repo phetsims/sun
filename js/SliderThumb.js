@@ -29,7 +29,7 @@ class SliderThumb extends Rectangle {
       stroke: 'black',
       lineWidth: 1,
       centerLineStroke: 'white',
-      tandem: Tandem.REQUIRED
+      tandem: Tandem.REQUIRED // Slider.js adds to this tandem to nest its dragListener under the thumb.
     }, options );
 
     // Set a default corner radius

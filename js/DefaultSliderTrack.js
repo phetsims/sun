@@ -14,7 +14,6 @@ import Dimension2 from '../../dot/js/Dimension2.js';
 import merge from '../../phet-core/js/merge.js';
 import Node from '../../scenery/js/nodes/Node.js';
 import Rectangle from '../../scenery/js/nodes/Rectangle.js';
-import Tandem from '../../tandem/js/Tandem.js';
 import SliderTrack from './SliderTrack.js';
 import sun from './sun.js';
 
@@ -38,10 +37,7 @@ class DefaultSliderTrack extends SliderTrack {
       drag: _.noop, // called at the beginning of a drag event, before any other drag work happens
       endDrag: _.noop, // called when a drag sequence ends
       constrainValue: _.identity, // called before valueProperty is set
-      enabledRangeProperty: null,
-
-      // phet-io
-      tandem: Tandem.REQUIRED
+      enabledRangeProperty: null
     }, options );
 
     // @private - Represents the disabled range of the slider, always visible and always the full range
