@@ -8,8 +8,10 @@
  */
 
 import DerivedProperty from '../../../axon/js/DerivedProperty.js';
+import Dimension2 from '../../../dot/js/Dimension2.js';
 import Shape from '../../../kite/js/Shape.js';
 import merge from '../../../phet-core/js/merge.js';
+import Node from '../../../scenery/js/nodes/Node.js';
 import Path from '../../../scenery/js/nodes/Path.js';
 import Color from '../../../scenery/js/util/Color.js';
 import LinearGradient from '../../../scenery/js/util/LinearGradient.js';
@@ -37,8 +39,13 @@ class RectangularButton extends ButtonNode {
       // {Node|null} what appears on the button (icon, label, etc.)
       content: null,
 
+      // {Dimension2} - if specified, this will be the size of the button. minWidth and minHeight will be ignored, and
+      // content will be scaled down to fit inside, accounting for margins.
+      size: null,
+
       minWidth: HORIZONTAL_HIGHLIGHT_GRADIENT_LENGTH + SHADE_GRADIENT_LENGTH,
       minHeight: VERTICAL_HIGHLIGHT_GRADIENT_LENGTH + SHADE_GRADIENT_LENGTH,
+
       xMargin: 8, // should be visibly greater than yMargin, see issue #109
       yMargin: 5,
 
@@ -77,14 +84,44 @@ class RectangularButton extends ButtonNode {
       buttonAppearanceStrategy: RectangularButton.ThreeDAppearanceStrategy
     }, options );
 
+    if ( !options.content ) {
+      assert && assert( options.size instanceof Dimension2, 'button dimensions needed if no content is supplied.' );
+    }
+
+    if ( options.size ) {
+      assert && assert( options.xMargin < options.size.width, 'xMargin cannot be larger than width' );
+      assert && assert( options.yMargin < options.size.height, 'yMargin cannot be larger than height' );
+    }
+
     // Compute the size of the button.
-    const buttonWidth = Math.max( options.content ? options.content.width + options.xMargin * 2 : 0, options.minWidth );
-    const buttonHeight = Math.max( options.content ? options.content.height + options.yMargin * 2 : 0, options.minHeight );
+    let buttonWidth;
+    let buttonHeight;
+
+    if ( options.size ) {
+      buttonWidth = options.size.width;
+      buttonHeight = options.size.height;
+    }
+    else {
+      buttonWidth = Math.max( options.content ? options.content.width + options.xMargin * 2 : 0, options.minWidth );
+      buttonHeight = Math.max( options.content ? options.content.height + options.yMargin * 2 : 0, options.minHeight );
+    }
 
     // Create the rectangular part of the button.
     const buttonBackground = new Path( createButtonShape( buttonWidth, buttonHeight, options ), {
       lineWidth: options.lineWidth
     } );
+
+    if ( options.size && options.content ) {
+      const previousContent = options.content;
+      const minScale = Math.min(
+        ( options.size.width - options.xMargin * 2 ) / previousContent.width,
+        ( options.size.height - options.yMargin * 2 ) / previousContent.height );
+
+      options.content = new Node( {
+        children: [ previousContent ],
+        scale: minScale
+      } );
+    }
 
     super( buttonModel, buttonBackground, interactionStateProperty, options );
 

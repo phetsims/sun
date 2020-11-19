@@ -8,6 +8,7 @@
 
 import BooleanProperty from '../../../axon/js/BooleanProperty.js';
 import Property from '../../../axon/js/Property.js';
+import Dimension2 from '../../../dot/js/Dimension2.js';
 import ScreenView from '../../../joist/js/ScreenView.js';
 import Circle from '../../../scenery/js/nodes/Circle.js';
 import HBox from '../../../scenery/js/nodes/HBox.js';
@@ -170,8 +171,7 @@ class ButtonsScreenView extends ScreenView {
     // Test for a button with different radii for each corner
     const customCornersButton = new RectangularPushButton( {
       baseColor: 'orange',
-      minWidth: 50,
-      minHeight: 50,
+      size: new Dimension2( 50, 50 ),
       leftTopCornerRadius: 20,
       rightTopCornerRadius: 10,
       rightBottomCornerRadius: 5,
@@ -393,8 +393,7 @@ class ButtonsScreenView extends ScreenView {
       baseColor: new Color( 0, 200, 200 ),
       centerX: roundStickyToggleButton.centerX,
       top: roundStickyToggleButton.bottom + 10,
-      minWidth: 50,
-      minHeight: 35
+      size: new Dimension2( 50, 35 )
     } );
 
     const toggleButtonsBox = new VBox( {
@@ -423,8 +422,7 @@ class ButtonsScreenView extends ScreenView {
     rectangularMomentaryProperty.lazyLink( value => console.log( `rectangularMomentaryProperty.value = ${value}` ) );
     const rectangularMomentaryButton = new RectangularMomentaryButton( false, true, rectangularMomentaryProperty, {
       baseColor: '#724C35',
-      minWidth: 50,
-      minHeight: 40,
+      size: new Dimension2( 50, 40 ),
       centerX: roundMomentaryButton.centerX,
       top: roundMomentaryButton.bottom + 10
     } );
@@ -496,9 +494,33 @@ class ButtonsScreenView extends ScreenView {
       yMargin: 5
     } );
 
+    // The total size of this one, should be the same as the content of the one below. This button's stroke will look
+    // thicker, because content will be scaled up.
+    const rectangularButtonWithExplicitSize = new RectangularPushButton( {
+      enabledProperty: buttonsEnabledProperty,
+      size: new Dimension2( 40, 25 ),
+      content: new Rectangle( 0, 0, 5, 3, { fill: 'red', stroke: 'black' } ),
+      listener: () => console.log( 'rectangularButtonWithExplicitSize pressed' ),
+      xMargin: 5,
+      yMargin: 5
+    } );
+
+    // This button's content will look as specified, because button is sized to fit around the content.
+    const rectangularButtonWithDerivedSize = new RectangularPushButton( {
+      enabledProperty: buttonsEnabledProperty,
+      content: new Rectangle( 0, 0, 40, 25, { fill: 'blue', stroke: 'black' } ),
+      listener: () => console.log( 'rectangularButtonWithDerivedSize pressed' ),
+      xMargin: 5,
+      yMargin: 5
+    } );
+
     this.addChild( new HBox( {
       spacing: 20,
-      children: [ roundButtonWithExplicitSize, roundButtonWithDerivedSize ],
+      children: [ rectangularButtonWithExplicitSize,
+        rectangularButtonWithDerivedSize,
+        roundButtonWithExplicitSize,
+        roundButtonWithDerivedSize
+      ],
       left: changeButtonColorsButton.right + 20,
       bottom: changeButtonColorsButton.bottom
     } ) );
