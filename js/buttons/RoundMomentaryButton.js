@@ -11,9 +11,7 @@
  */
 
 import merge from '../../../phet-core/js/merge.js';
-import Node from '../../../scenery/js/nodes/Node.js';
 import Tandem from '../../../tandem/js/Tandem.js';
-import IOType from '../../../tandem/js/types/IOType.js';
 import sun from '../sun.js';
 import MomentaryButtonInteractionStateProperty from './MomentaryButtonInteractionStateProperty.js';
 import MomentaryButtonModel from './MomentaryButtonModel.js';
@@ -30,8 +28,7 @@ class RoundMomentaryButton extends RoundButton {
   constructor( valueOff, valueOn, property, options ) {
 
     options = merge( {
-      tandem: Tandem.REQUIRED,
-      phetioType: RoundMomentaryButton.RoundMomentaryButtonIO
+      tandem: Tandem.REQUIRED
     }, options );
 
     // Note it shares a tandem with this, so the emitter will be instrumented as a child of the button
@@ -54,13 +51,6 @@ class RoundMomentaryButton extends RoundButton {
     super.dispose();
   }
 }
-
-RoundMomentaryButton.RoundMomentaryButtonIO = new IOType( 'RoundMomentaryButtonIO', {
-  valueType: RoundMomentaryButton,
-  supertype: Node.NodeIO,
-  documentation: 'Button that performs an action while it is being pressed, and stops the action when released',
-  events: [ 'pressed', 'released', 'releasedDisabled' ]
-} );
 
 sun.register( 'RoundMomentaryButton', RoundMomentaryButton );
 export default RoundMomentaryButton;
