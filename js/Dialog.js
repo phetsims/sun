@@ -28,6 +28,7 @@ import generalOpenSoundPlayer from '../../tambo/js/shared-sound-players/generalO
 import PhetioObject from '../../tandem/js/PhetioObject.js';
 import Tandem from '../../tandem/js/Tandem.js';
 import IOType from '../../tandem/js/types/IOType.js';
+import ReferenceIO from '../../tandem/js/types/ReferenceIO.js';
 import ButtonNode from './buttons/ButtonNode.js';
 import Panel from './Panel.js';
 import Popupable from './Popupable.js';
@@ -428,13 +429,11 @@ function applyDoubleMargin( dimension, margin ) {
 
 Dialog.DialogIO = new IOType( 'DialogIO', {
   valueType: Dialog,
-  supertype: Node.NodeIO,
 
   // Since many Dialogs are dynamic elements, these need to be in the state. The value of the state object doesn't
   // matter, but it instead just serves as a marker to tell the state engine to recreate the Dialog (if dynamic) when
   // setting state.
-  // TODO: Should this use ReferenceIO or other shared code? https://github.com/phetsims/tandem/issues/215
-  toStateObject: dialog => dialog.tandem.phetioID
+  supertype: ReferenceIO(Node.NodeIO)
 } );
 
 sun.register( 'Dialog', Dialog );
