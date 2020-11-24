@@ -78,7 +78,7 @@ const AccessibleValueHandler = {
           // Called after any change to valueProperty. Useful for "press and hold" keyboard input. However, be aware
           // that other some devices as switch will only trigger one change per input, and no concept of "press and
           // hold". This function will still be called once per input in those cases.
-          change: _.noop,
+          onChange: _.noop,
 
           // {function(number):number} - It should return the constrained value, called before valueProperty is set
           constrainValue: _.identity,
@@ -214,7 +214,7 @@ const AccessibleValueHandler = {
         this._startChange = options.startChange;
 
         // @private {function}
-        this._change = options.change;
+        this._onChange = options.onChange;
 
         // @private {function} - called when value change input ends
         this._endChange = options.endChange;
@@ -566,7 +566,7 @@ const AccessibleValueHandler = {
             this._valueProperty.set( Utils.clamp( constrainedAndMapped, this._rangeProperty.get().min, this._rangeProperty.get().max ) );
 
             // optional change callback after the valueProperty is set so that the listener can use the new value
-            this._change( event );
+            this._onChange( event );
           }
         }
       },
@@ -674,7 +674,7 @@ const AccessibleValueHandler = {
 
           // only one change per input, but still call optional change function - after valueProperty is set so
           // listener can use new value
-          this._change( event );
+          this._onChange( event );
 
           // end of change is the end of a drag
           this.onInteractionEnd( event );

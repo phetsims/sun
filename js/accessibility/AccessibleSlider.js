@@ -71,8 +71,8 @@ const AccessibleSlider = {
         assert && assert( options.endChange === undefined, 'AccessibleSlider sets endChange through options.endDrag' );
         options.endChange = options.endDrag;
 
-        assert && assert( options.change === undefined, 'AccessibleSlider sets change through options.drag' );
-        options.change = options.drag;
+        assert && assert( options.onChange === undefined, 'AccessibleSlider sets onChange through options.drag' );
+        options.onChange = options.drag;
 
         // initialize "parent" mixin
         this.initializeAccessibleValueHandler( valueProperty, enabledRangeProperty, enabledProperty, options );
