@@ -1,7 +1,7 @@
 // Copyright 2020, University of Colorado Boulder
 
 /**
- * PhET-iO API type for Slider
+ * PhET-iO API type for Checkbox
  *
  * @author Michael Kauzmann (PhET Interactive Simulations)
  */
