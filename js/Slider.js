@@ -292,7 +292,7 @@ class Slider extends Node {
     // @private {function} - Called by dispose
     this.disposeSlider = () => {
       thumb.dispose && thumb.dispose(); // in case a custom thumb is provided via options.thumbNode that doesn't implement dispose
-      this.track.dispose();
+      this.track.dispose && this.track.dispose();
 
       valueProperty.unlink( valueObserver );
       ownsEnabledRangeProperty && this.enabledRangeProperty.dispose();
