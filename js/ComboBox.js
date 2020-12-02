@@ -65,6 +65,8 @@ class ComboBox extends Node {
    */
   constructor( items, property, listParent, options ) {
 
+    assert && assert( _.uniqBy( items, item => item.value ).length === items.length, 'items must have unique values' );
+
     // See https://github.com/phetsims/sun/issues/542
     assert && assert( listParent.maxWidth === null,
       'ComboBox is responsible for scaling listBox. Setting maxWidth for listParent may result in buggy behavior.' );
