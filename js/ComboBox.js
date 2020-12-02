@@ -386,8 +386,8 @@ class ComboBox extends Node {
    * @returns {boolean}
    * @public
    */
-  getItemVisible( value ) {
-    return this.listBox.getItemVisible( value );
+  isItemVisible( value ) {
+    return this.listBox.isItemVisible( value );
   }
 }
 

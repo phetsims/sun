@@ -289,7 +289,7 @@ class ComboBoxListBox extends Panel {
    * @returns {boolean}
    * @public
    */
-  getItemVisible( value ) {
+  isItemVisible( value ) {
     return this.getListItemNode( value ).visible;
   }
 
