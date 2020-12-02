@@ -253,6 +253,9 @@ class ComboBoxListBox extends Panel {
     } );
 
     // @private
+    this.listItemNodes = listItemNodes;
+
+    // @private
     this.disposeComboBoxListBox = () => {
       for ( let i = 0; i < listItemNodes; i++ ) {
         listItemNodes[ i ].dispose(); // to unregister tandem
@@ -267,6 +270,40 @@ class ComboBoxListBox extends Panel {
   dispose() {
     this.disposeComboBoxListBox();
     super.dispose();
+  }
+
+  /**
+   * Sets the visibility of one or more items in the listbox that correspond to a value. Assumes that each item
+   * in the listbox has a unique value.
+   * @param {*} value - the value associated with the ComboBoxItem
+   * @param {boolean} visible
+   * @public
+   */
+  setItemVisible( value, visible ) {
+    this.getListItemNode( value ).visible = visible;
+  }
+
+  /**
+   * Is the item that corresponds to a value visible when the listbox is popped up?
+   * @param {*} value
+   * @returns {boolean}
+   * @public
+   */
+  getItemVisible( value ) {
+    return this.getListItemNode( value ).visible;
+  }
+
+  /**
+   * Gets the ComboBoxListItemNode that corresponds to a specified value. Assumes that values are unique.
+   * @param {*} value
+   * @returns {ComboBoxListItemNode}
+   * @private
+   */
+  getListItemNode( value ) {
+    const listItemNode = _.find( this.listItemNodes, listItemNode => listItemNode.item.value === value );
+    assert && assert( listItemNode, `no item found for value: ${value}` );
+    assert && assert( listItemNode instanceof ComboBoxListItemNode, 'invalid listItemNode' );
+    return listItemNode;
   }
 }
 

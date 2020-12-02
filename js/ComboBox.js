@@ -365,6 +365,28 @@ class ComboBox extends Node {
       this.listBox.top = pButtonLocal.y;
     }
   }
+
+  /**
+   * Sets the visibility of items that correspond to a value. If the selected item has this value, it's your
+   * responsibility to change the Property value to something else. Otherwise the combo box button will continue
+   * to display this value.
+   * @param {*} value - the value associated with the ComboBoxItem
+   * @param {boolean} visible
+   * @public
+   */
+  setItemVisible( value, visible ) {
+    this.listBox.setItemVisible( value, visible );
+  }
+
+  /**
+   * Is the item that corresponds to a value visible when the listbox is popped up?
+   * @param {*} value
+   * @returns {boolean}
+   * @public
+   */
+  getItemVisible( value ) {
+    return this.listBox.getItemVisible( value );
+  }
 }
 
 ComboBox.ComboBoxIO = new IOType( 'ComboBoxIO', {
