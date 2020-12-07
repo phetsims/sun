@@ -43,6 +43,9 @@ class RectangularButton extends ButtonNode {
       // content will be scaled down to fit inside, accounting for margins.
       size: null,
 
+      // {number} If you want complete control of a button's dimensions, use options.size. If you want to specify
+      // one dimensions while having the other dimension determined by content and margin, then use one of these
+      // options.
       minWidth: HORIZONTAL_HIGHLIGHT_GRADIENT_LENGTH + SHADE_GRADIENT_LENGTH,
       minHeight: VERTICAL_HIGHLIGHT_GRADIENT_LENGTH + SHADE_GRADIENT_LENGTH,
 
