@@ -82,8 +82,8 @@ class AquaRadioButtonGroup extends LayoutBox {
     // Create a radio button for each item
     const radioButtons = [];
     for ( let i = 0; i < items.length; i++ ) {
-
       const item = items[ i ];
+      assert && assert( !item.tandem, 'content arrays should not have tandem instances, they should use tandemName' );
 
       // Content for the radio button.
       // For vertical orientation, add an invisible strut, so that buttons have uniform width.
