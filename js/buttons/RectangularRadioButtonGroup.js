@@ -36,14 +36,17 @@ class RectangularRadioButtonGroup extends LayoutBox {
 
   /**
    * @param {Property} property
-   * @param {Object[]} contentArray - an array of objects that have two keys each: "value" and "node", where the node
-   * key holds a scenery Node that is the content for a given radio button and the value key holds the value that the
-   * Property takes on when the corresponding node is selected. Optionally, these objects can have an attribute 'label',
-   * which is a {Node} used to label the button. You can also pass some specific a11y options.
-   * (labelContent/descriptionContent) through, see "new RectangularRadioButton" construction.
+   * @param {Object[]} items - Each item describes a radio button, and is an object with these properties:
+   *   node: Node, // primary depiction for the button
+   *   value: *, // value associated with the button
+   *   [label: Node], // If a label is provided, the button becomes a LayoutBox with the label and radio button
+   *   [tandemName: Tandem], // optional tandem for PhET-iO
+   *   [phetioDocumentation: string], // optional documentation for PhET-iO
+   *   [labelContent: string] // optional label for a11y
+   *   [descriptionContent: string] // optional label for a11y
    * @param {Object} [options]
    */
-  constructor( property, contentArray, options ) {
+  constructor( property, items, options ) {
     options = merge( {
 
       // {function(boolean, Node, Object:options):void} - function for controlling the appearance when toggling enabled.
@@ -72,23 +75,23 @@ class RectangularRadioButtonGroup extends LayoutBox {
                                                              'create siblings in the parent node instead' );
 
     // make sure every object in the content array has properties 'node' and 'value'
-    assert && assert( _.every( contentArray, obj => {
-      return obj.hasOwnProperty( 'node' ) && obj.hasOwnProperty( 'value' );
+    assert && assert( _.every( items, item => {
+      return item.hasOwnProperty( 'node' ) && item.hasOwnProperty( 'value' );
     } ), 'contentArray must be an array of objects with properties "node" and "value"' );
 
     // make sure that if sound players are provided, there is one per radio button
-    assert && assert( options.soundPlayers === null || options.soundPlayers.length === contentArray.length );
+    assert && assert( options.soundPlayers === null || options.soundPlayers.length === items.length );
 
     let i; // for loops
 
     // make sure that each value passed into the contentArray is unique
     const uniqueValues = [];
-    for ( i = 0; i < contentArray.length; i++ ) {
-      if ( uniqueValues.indexOf( contentArray[ i ].value ) < 0 ) {
-        uniqueValues.push( contentArray[ i ].value );
+    for ( i = 0; i < items.length; i++ ) {
+      if ( uniqueValues.indexOf( items[ i ].value ) < 0 ) {
+        uniqueValues.push( items[ i ].value );
       }
       else {
-        throw new Error( 'Duplicate value: "' + contentArray[ i ].value + '" passed into RectangularRadioButtonGroup.js' );
+        throw new Error( 'Duplicate value: "' + items[ i ].value + '" passed into RectangularRadioButtonGroup.js' );
       }
     }
 
@@ -170,52 +173,51 @@ class RectangularRadioButtonGroup extends LayoutBox {
     const buttonOptions = _.pick( options, _.keys( defaultOptions ) );
 
     // calculate the maximum width and height of the content so we can make all radio buttons the same size
-    const widestContentWidth = _.maxBy( contentArray, content => content.node.width ).node.width;
-    const tallestContentHeight = _.maxBy( contentArray, content => content.node.height ).node.height;
+    const widestContentWidth = _.maxBy( items, item => item.node.width ).node.width;
+    const tallestContentHeight = _.maxBy( items, item => item.node.height ).node.height;
 
     // make sure all radio buttons are the same size and create the RadioButtons
     const buttons = [];
     const labelAppearanceStrategies = [];
-    for ( i = 0; i < contentArray.length; i++ ) {
-      const currentContent = contentArray[ i ];
+    for ( i = 0; i < items.length; i++ ) {
+      const item = items[ i ];
 
-      assert && assert( !currentContent.hasOwnProperty( 'phetioType' ), 'phetioType should be provided by ' +
-                                                                        'the Property passed to the ' +
-                                                                        'RectangularRadioButtonGroup constructor' );
+      assert && assert( !item.hasOwnProperty( 'phetioType' ), 'phetioType should be provided by ' +
+                                                              'the Property passed to the ' +
+                                                              'RectangularRadioButtonGroup constructor' );
 
-      assert && assert( !currentContent.tandem, 'content arrays should not have tandem instances, they should use ' +
-                                                'tandemName instead' );
+      assert && assert( !item.tandem, 'content arrays should not have tandem instances, they should use tandemName' );
 
       const radioButtonGroupMemberOptions = merge( {
-        content: currentContent.node,
+        content: item.node,
         xMargin: options.buttonContentXMargin,
         yMargin: options.buttonContentYMargin,
         xAlign: options.buttonContentXAlign,
         yAlign: options.buttonContentYAlign,
         minWidth: widestContentWidth + 2 * options.buttonContentXMargin,
         minHeight: tallestContentHeight + 2 * options.buttonContentYMargin,
-        phetioDocumentation: currentContent.phetioDocumentation || '',
+        phetioDocumentation: item.phetioDocumentation || '',
         soundPlayer: options.soundPlayers ? options.soundPlayers[ i ] :
                      multiSelectionSoundPlayerFactory.getSelectionSoundPlayer( i )
       }, buttonOptions );
 
       // Pass through the tandem given the tandemName, but also support uninstrumented simulations
-      if ( currentContent.tandemName ) {
-        radioButtonGroupMemberOptions.tandem = options.tandem.createTandem( currentContent.tandemName );
+      if ( item.tandemName ) {
+        radioButtonGroupMemberOptions.tandem = options.tandem.createTandem( item.tandemName );
       }
 
       // pdom create the label for the radio button
-      if ( currentContent.labelContent ) {
-        radioButtonGroupMemberOptions.labelContent = currentContent.labelContent;
+      if ( item.labelContent ) {
+        radioButtonGroupMemberOptions.labelContent = item.labelContent;
       }
 
       // pdom create description for radio button
       // use if block to prevent empty 'p' tag being added when no option is present
-      if ( currentContent.descriptionContent ) {
-        radioButtonGroupMemberOptions.descriptionContent = currentContent.descriptionContent;
+      if ( item.descriptionContent ) {
+        radioButtonGroupMemberOptions.descriptionContent = item.descriptionContent;
       }
 
-      const radioButton = new RectangularRadioButton( property, currentContent.value, radioButtonGroupMemberOptions );
+      const radioButton = new RectangularRadioButton( property, item.value, radioButtonGroupMemberOptions );
 
       // pdom - so the browser recognizes these buttons are in the same group, see instanceCount for more info
       radioButton.setAccessibleAttribute( 'name', CLASS_NAME + instanceCount );
@@ -234,10 +236,10 @@ class RectangularRadioButtonGroup extends LayoutBox {
       let defaultHighlightBounds = null;
 
       let button;
-      if ( currentContent.label ) {
+      if ( item.label ) {
 
         // If a label is provided, the button becomes a LayoutBox with the label and radio button
-        const label = currentContent.label;
+        const label = item.label;
         const labelOrientation = ( options.labelAlign === 'bottom' || options.labelAlign === 'top' ) ? 'vertical' : 'horizontal';
         const labelChildren = ( options.labelAlign === 'left' || options.labelAlign === 'top' ) ? [ label, radioButton ] : [ radioButton, label ];
         button = new LayoutBox( {
