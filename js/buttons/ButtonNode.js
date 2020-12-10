@@ -125,7 +125,7 @@ class ButtonNode extends Node {
     // @private
     this._disabledColorProperty = new PaintColorProperty( options.disabledColor );
 
-    // Make the base color into a Property so that the appearance strategy can update itself if changes occur.
+    // {Property.<Color>} - Make the base color into a Property so that the appearance strategy can update itself if changes occur.
     this.baseColorProperty = new DerivedProperty( [
       this._settableBaseColorProperty,
       this.enabledProperty,
