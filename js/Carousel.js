@@ -234,7 +234,8 @@ class Carousel extends Node {
 
     // Foreground - displays the carousel's outline, created as a separate node so that it can be placed on top of everything, for a clean look.
     const foregroundNode = new Rectangle( 0, 0, this.backgroundWidth, this.backgroundHeight, options.cornerRadius, options.cornerRadius, {
-      stroke: options.stroke
+      stroke: options.stroke,
+      pickable: false
     } );
 
     // Layout
