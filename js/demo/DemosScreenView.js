@@ -93,8 +93,8 @@ class DemosScreenView extends ScreenView {
       cornerRadius: options.comboBoxCornerRadius,
       xMargin: options.comboBoxItemXMargin,
       yMargin: options.comboBoxItemYMargin,
-      top: options.comboBoxPosition.x,
-      left: options.comboBoxPosition.y,
+      left: options.comboBoxPosition.x,
+      top: options.comboBoxPosition.y,
       tandem: options.tandem.createTandem( 'comboBox' )
     } );
     this.addChild( comboBox );
