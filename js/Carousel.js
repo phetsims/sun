@@ -16,7 +16,6 @@
 import Property from '../../axon/js/Property.js';
 import stepTimer from '../../axon/js/stepTimer.js';
 import Dimension2 from '../../dot/js/Dimension2.js';
-import Utils from '../../dot/js/Utils.js';
 import Shape from '../../kite/js/Shape.js';
 import InstanceRegistry from '../../phet-core/js/documentation/InstanceRegistry.js';
 import merge from '../../phet-core/js/merge.js';
@@ -254,7 +253,7 @@ class Carousel extends Node {
 
     // Number of pages
     let numberOfPages = items.length / options.itemsPerPage;
-    if ( !Utils.isInteger( numberOfPages ) ) {
+    if ( !Number.isInteger( numberOfPages ) ) {
       numberOfPages = Math.floor( numberOfPages + 1 );
     }
 
