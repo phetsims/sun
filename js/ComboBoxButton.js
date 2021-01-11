@@ -9,6 +9,7 @@
 
 import Shape from '../../kite/js/Shape.js';
 import merge from '../../phet-core/js/merge.js';
+import AriaHasPopUpMutator from '../../scenery/js/accessibility/pdom/AriaHasPopUpMutator.js';
 import PDOMPeer from '../../scenery/js/accessibility/pdom/PDOMPeer.js';
 import HStrut from '../../scenery/js/nodes/HStrut.js';
 import Node from '../../scenery/js/nodes/Node.js';
@@ -202,7 +203,7 @@ class ComboBoxButton extends RectangularPushButton {
     ];
 
     // signify to AT that this button opens a menu
-    this.setAccessibleAttribute( 'aria-haspopup', 'listbox' );
+    AriaHasPopUpMutator.mutateNode( this, 'listbox' );
 
     // @private
     this.disposeComboBoxButton = () => {
