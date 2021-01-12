@@ -191,7 +191,7 @@ class Dialog extends Popupable( Panel ) {
 
         // if listener was fired because of accessibility
         if ( closeButton.isPDOMClicking() ) {
-          this.focusOnCloseNode && this.focusOnCloseNode.focus();
+          this.restoreFocus();
         }
       },
 
@@ -271,11 +271,18 @@ class Dialog extends Popupable( Panel ) {
     // {Node|null} see setFocusOnCloseNode
     this.focusOnCloseNode = null;
 
+    // {Node|null} - Either focusOnCloseNode (if defined) or the Node that has focus
+    // before the Dialog is opened, so focus can be restored to this Node when the
+    // Dialog is closed.
+    this.nodeToReturnFocus = null;
+
     // The Dialog's display runs on this Property, so add the listener that controls show/hide.
     this.isShowingProperty.lazyLink( isShowing => {
       if ( isShowing ) {
         // sound generation
         options.openedSoundPlayer.play();
+
+        this.nodeToReturnFocus = this.focusOnCloseNode || Display.focusedNode;
 
         // pdom - modal dialogs should be the only readable content in the sim
         // TODO: https://github.com/phetsims/joist/issues/293 non-modal dialogs shouldn't hide other accessible content,
@@ -401,9 +408,8 @@ class Dialog extends Popupable( Panel ) {
    * @private
    */
   restoreFocus() {
-    const focusNode = this.focusOnCloseNode || Display.focusedNode;
-    if ( focusNode ) {
-      focusNode.focus();
+    if ( this.nodeToReturnFocus ) {
+      this.nodeToReturnFocus.focus();
     }
   }
 
