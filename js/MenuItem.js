@@ -80,7 +80,11 @@ class MenuItem extends Node {
       containerTagName: 'li',
       containerAriaRole: 'none', // this is required for JAWS to handle focus correctly, see https://github.com/phetsims/john-travoltage/issues/225
       innerContent: text,
-      ariaRole: 'menuitem'
+      ariaRole: 'menuitem',
+
+      // 'menuitem' role does not get click events on iOS VoiceOver, position siblings so that
+      // we get Pointer events instead
+      positionSiblings: true
     }, options );
 
     super();

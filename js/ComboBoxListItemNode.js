@@ -42,6 +42,10 @@ class ComboBoxListItemNode extends Node {
       focusable: true,
       ariaRole: 'option',
 
+      // the `li` with ariaRole `option` does not get click events on iOS VoiceOver, so position
+      // elements so they receive pointer events
+      positionSiblings: true,
+
       // phet-io
       tandem: Tandem.REQUIRED,
 
