@@ -173,7 +173,7 @@ const AccessibleValueHandler = {
           // aiting for this alert after an interaction. This should be altered depending on how quickly you expect the
           // value to change. We want to give enough time for VO to read aria-valuetext but don't want to have too much
           // silence before the alert is spoken.
-          contextResponseMaxDelay: 2000,
+          contextResponseMaxDelay: 1500,
 
           /**
            * List the dependencies this Node's PDOM descriptions have. This should not include the valueProperty, but
