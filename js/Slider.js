@@ -305,7 +305,7 @@ class Slider extends Node {
     assert && assert( !options.ariaOrientation, 'Slider sets its own ariaOrientation' );
 
     this.initializeAccessibleSlider( valueProperty, this.enabledRangeProperty, this.enabledProperty,
-      merge( { ariaOrientation: options.orientation }, options ) );
+      merge( { ariaOrientation: options.orientation, panTargetNode: thumb }, options ) );
 
     assert && Tandem.VALIDATION && assert( !options.phetioLinkedProperty || options.phetioLinkedProperty.isPhetioInstrumented(),
       'If provided, phetioLinkedProperty should be PhET-iO instrumented' );

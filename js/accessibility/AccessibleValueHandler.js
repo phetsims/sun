@@ -24,6 +24,7 @@ import inheritance from '../../../phet-core/js/inheritance.js';
 import merge from '../../../phet-core/js/merge.js';
 import Orientation from '../../../phet-core/js/Orientation.js';
 import KeyboardUtils from '../../../scenery/js/accessibility/KeyboardUtils.js';
+import animatedPanZoomSingleton from '../../../scenery/js/listeners/animatedPanZoomSingleton.js';
 import Node from '../../../scenery/js/nodes/Node.js';
 import Utterance from '../../../utterance-queue/js/Utterance.js';
 import sun from '../sun.js';
@@ -89,6 +90,10 @@ const AccessibleValueHandler = {
           pageKeyboardStep: ( rangeProperty.get().max - rangeProperty.get().min ) / 10,
 
           ariaOrientation: Orientation.HORIZONTAL, // specify orientation, read by assistive technology
+
+          // {Node|null} Upon accessible input, we will try to keep this Node in view of the animatedPanZoomSingleton.
+          // If null, 'this' is used (the Node mixing AccessibleValueHandler)
+          panTargetNode: null,
 
           // {boolean} - When setting the Property value from the PDOM input, this option controls whether or not to
           // round the value to a multiple of the keyboardStep. This will only round the value on normal key presses,
@@ -224,6 +229,9 @@ const AccessibleValueHandler = {
 
         // @private {function(number,number):number} - called before constrainValue called and valueProperty is set
         this._a11yMapValue = options.a11yMapValue;
+
+        // @private {null|Node}
+        this._panTargetNode = options.panTargetNode;
 
         // @private (a11y) - delta for the valueProperty when using keyboard to interact with slider,
         // initialized with setKeyboardStep which does some validating
@@ -567,6 +575,9 @@ const AccessibleValueHandler = {
 
             // optional change callback after the valueProperty is set so that the listener can use the new value
             this._onChange( event );
+
+            // after any keyboard input, make sure that the Node stays in view
+            animatedPanZoomSingleton.initialized && animatedPanZoomSingleton.listener.keepNodeInView( this._panTargetNode || this );
           }
         }
       },
@@ -675,6 +686,9 @@ const AccessibleValueHandler = {
           // only one change per input, but still call optional change function - after valueProperty is set so
           // listener can use new value
           this._onChange( event );
+
+          // after any keyboard input, make sure that the Node stays in view
+          animatedPanZoomSingleton.initialized && animatedPanZoomSingleton.listener.keepNodeInView( this._panTargetNode || this );
 
           // end of change is the end of a drag
           this.onInteractionEnd( event );
