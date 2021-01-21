@@ -231,9 +231,14 @@ class ComboBox extends Node {
     this.clickToDismissListener = {
       down: event => {
 
-        // Ignore if we click over the button, since the button will handle hiding the list.
-        if ( !( event.trail.containsNode( this.button ) || event.trail.containsNode( this.listBox ) ) ) {
-          this.hideListBox();
+        // Ignore if fuzzing is enabled, so that listbox and Property choices will be exercised.
+        // See https://github.com/phetsims/sun/issues/677
+        if ( !phet.chipper.isFuzzEnabled() ) {
+
+          // Ignore if we click over the button, since the button will handle hiding the list.
+          if ( !( event.trail.containsNode( this.button ) || event.trail.containsNode( this.listBox ) ) ) {
+            this.hideListBox();
+          }
         }
       }
     };
