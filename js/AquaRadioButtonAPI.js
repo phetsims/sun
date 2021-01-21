@@ -6,11 +6,9 @@
  * @author Michael Kauzmann (PhET Interactive Simulations)
  */
 
-import Property from '../../axon/js/Property.js';
 import merge from '../../phet-core/js/merge.js';
 import FireListenerAPI from '../../scenery/js/listeners/FireListenerAPI.js';
 import NodeAPI from '../../scenery/js/nodes/NodeAPI.js';
-import IOType from '../../tandem/js/types/IOType.js';
 import sun from './sun.js';
 
 class AquaRadioButtonAPI extends NodeAPI {
@@ -27,7 +25,7 @@ class AquaRadioButtonAPI extends NodeAPI {
     super( options );
 
     // @public (read-only)
-    this.fireListener = new FireListenerAPI( { phetioType: Property.PropertyIO( IOType.ObjectIO ) } );
+    this.fireListener = new FireListenerAPI();
   }
 }
 
