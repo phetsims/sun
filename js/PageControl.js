@@ -19,7 +19,7 @@ class PageControl extends Node {
 
   /**
    * @param {number} numberOfPages - number of pages
-   * @param {Property<number>} pageNumberProperty - which page is currently visible
+   * @param {Property.<number>} pageNumberProperty - which page is currently visible
    * @param {Object} [options]
    */
   constructor( numberOfPages, pageNumberProperty, options ) {

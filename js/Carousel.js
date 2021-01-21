@@ -331,7 +331,7 @@ class Carousel extends Node {
     this.items = items; // @private
     this.itemsPerPage = options.itemsPerPage; // @private
     this.numberOfPages = numberOfPages; // @public (read-only) {number} number of pages in the carousel
-    this.pageNumberProperty = pageNumberProperty; // @public {Property<number>} page number that is currently visible
+    this.pageNumberProperty = pageNumberProperty; // @public {Property.<number>} page number that is currently visible
 
     assert && assert( !options.children, 'Carousel sets children' );
     options.children = [ backgroundNode, windowNode, nextButton, previousButton, foregroundNode ];
