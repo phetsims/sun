@@ -14,6 +14,7 @@ import Property from '../../../axon/js/Property.js';
 import stepTimer from '../../../axon/js/stepTimer.js';
 import StringProperty from '../../../axon/js/StringProperty.js';
 import Dimension2 from '../../../dot/js/Dimension2.js';
+import dotRandom from '../../../dot/js/dotRandom.js';
 import Range from '../../../dot/js/Range.js';
 import merge from '../../../phet-core/js/merge.js';
 import PhetFont from '../../../scenery-phet/js/PhetFont.js';
@@ -498,13 +499,13 @@ function demoAlignGroup( layoutBounds ) {
   const iconRow = new HBox( {
     spacing: 10,
     children: _.range( 1, 10 ).map( function() {
-      const randomRect = new Rectangle( 0, 0, phet.joist.random.nextDouble() * 60 + 10, phet.joist.random.nextDouble() * 60 + 10, {
+      const randomRect = new Rectangle( 0, 0, dotRandom.nextDouble() * 60 + 10, dotRandom.nextDouble() * 60 + 10, {
         fill: 'black'
       } );
       stepTimer.addListener( function() {
-        if ( phet.joist.random.nextDouble() < 0.02 ) {
-          randomRect.rectWidth = phet.joist.random.nextDouble() * 60 + 10;
-          randomRect.rectHeight = phet.joist.random.nextDouble() * 60 + 10;
+        if ( dotRandom.nextDouble() < 0.02 ) {
+          randomRect.rectWidth = dotRandom.nextDouble() * 60 + 10;
+          randomRect.rectHeight = dotRandom.nextDouble() * 60 + 10;
         }
       } );
       return new AlignBox( randomRect, {
@@ -519,10 +520,10 @@ function demoAlignGroup( layoutBounds ) {
   function randomText() {
     const text = new Text( 'Test', { fontSize: 20 } );
     stepTimer.addListener( function() {
-      if ( phet.joist.random.nextDouble() < 0.03 ) {
+      if ( dotRandom.nextDouble() < 0.03 ) {
         let string = '';
-        while ( phet.joist.random.nextDouble() < 0.94 && string.length < 20 ) {
-          string += ( phet.joist.random.nextDouble() + '' ).slice( -1 );
+        while ( dotRandom.nextDouble() < 0.94 && string.length < 20 ) {
+          string += ( dotRandom.nextDouble() + '' ).slice( -1 );
         }
         text.text = string;
       }
@@ -557,8 +558,8 @@ function demoAccordionBox( layoutBounds ) {
   const resizeButton = new RectangularPushButton( {
     content: new Text( 'Resize', { font: new PhetFont( 20 ) } ),
     listener: function() {
-      randomRect.rectWidth = 50 + phet.joist.random.nextDouble() * 150;
-      randomRect.rectHeight = 50 + phet.joist.random.nextDouble() * 150;
+      randomRect.rectWidth = 50 + dotRandom.nextDouble() * 150;
+      randomRect.rectHeight = 50 + dotRandom.nextDouble() * 150;
       box.center = layoutBounds.center;
     }
   } );

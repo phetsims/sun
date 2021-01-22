@@ -6,6 +6,7 @@
  * @author Chris Malley (PixelZoom, Inc.)
  */
 
+import dotRandom from '../../../dot/js/dotRandom.js';
 import ScreenView from '../../../joist/js/ScreenView.js';
 import Node from '../../../scenery/js/nodes/Node.js';
 import Rectangle from '../../../scenery/js/nodes/Rectangle.js';
@@ -61,8 +62,8 @@ function createDialog( modal ) {
   resizeButton.center = randomRect.center;
 
   resizeButton.addListener( () => {
-    randomRect.rectWidth = minWidth + phet.joist.random.nextDouble() * 200;
-    randomRect.rectHeight = minHeight + phet.joist.random.nextDouble() * 100;
+    randomRect.rectWidth = minWidth + dotRandom.nextDouble() * 200;
+    randomRect.rectHeight = minHeight + dotRandom.nextDouble() * 100;
     resizeButton.center = randomRect.center;
   } );
 
