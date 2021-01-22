@@ -158,16 +158,17 @@ class AccordionBox extends Node {
     // @private {Node}
     this.titleNode = options.titleNode;
 
-    // Allow touches to go through to the collapsedTitleBar which handles the input event
-    // Note: This mutates the titleNode, so if it is used in multiple places it will become unpickable
-    // in those places as well.
-    this.titleNode.pickable = false;
 
     // If there is no titleNode specified, we'll provide our own, and handle disposal.
     if ( !this.titleNode ) {
       this.titleNode = new Text( '', { tandem: options.tandem.createTandem( 'titleNode' ) } );
       this.disposeEmitterAccordionBox.addListener( () => this.titleNode.dispose() );
     }
+
+    // Allow touches to go through to the collapsedTitleBar which handles the input event
+    // Note: This mutates the titleNode, so if it is used in multiple places it will become unpickable
+    // in those places as well.
+    this.titleNode.pickable = false;
 
     // @public {Property.<boolean>}
     this.expandedProperty = options.expandedProperty;
