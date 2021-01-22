@@ -27,6 +27,10 @@ const Popupable = type => {
       super( ...args );
 
       options = merge( {
+
+        showPopup: _.hasIn( window, 'phet.joist.sim' ) && phet.joist.sim.showPopup.bind( phet.joist.sim ),
+        hidePopup: _.hasIn( window, 'phet.joist.sim' ) && phet.joist.sim.hidePopup.bind( phet.joist.sim ),
+
         isModal: true, // {boolean} modal popups prevent interaction with the rest of the sim while open
 
         // {Bounds2|null} - If desired, the layoutBounds that should be used for layout
@@ -35,6 +39,9 @@ const Popupable = type => {
         tandem: Tandem.OPTIONAL,
         phetioState: PhetioObject.DEFAULT_OPTIONS.phetioState
       }, options );
+
+      assert && assert( typeof options.showPopup === 'function', 'showPopup is a required, and must be provided if phet.joist.sim is not available.' );
+      assert && assert( typeof options.hidePopup === 'function', 'hidePopup is a required, and must be provided if phet.joist.sim is not available.' );
 
       // see https://github.com/phetsims/joist/issues/293
       assert && assert( options.isModal, 'Non-modal popups not currently supported' );
@@ -59,10 +66,10 @@ const Popupable = type => {
 
       this.isShowingProperty.lazyLink( isShowing => {
         if ( isShowing ) {
-          window.phet.joist.sim.showPopup( this.popupParent, options.isModal );
+          options.showPopup( this.popupParent, options.isModal );
         }
         else {
-          window.phet.joist.sim.hidePopup( this.popupParent, options.isModal );
+          options.hidePopup( this.popupParent, options.isModal );
         }
       } );
     }
