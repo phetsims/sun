@@ -141,6 +141,7 @@ class RectangularRadioButton extends RectangularButton {
     this.disposeRectangularRadioButton = () => {
       property.unlink( accessibleCheckedListener );
       this.firedEmitter.dispose();
+      buttonModel.produceSoundEmitter.removeListener( playSound );
       buttonModel.dispose();
       this.interactionStateProperty.dispose();
     };

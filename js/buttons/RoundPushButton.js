@@ -56,6 +56,7 @@ class RoundPushButton extends RoundButton {
 
     // @private - dispose function
     this.disposeRoundPushButton = () => {
+      buttonModel.produceSoundEmitter.removeListener( playSound );
       buttonModel.dispose();
     };
 
