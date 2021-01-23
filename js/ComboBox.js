@@ -212,16 +212,7 @@ class ComboBox extends Node {
     // Clicking on the button toggles visibility of the list box
     this.button.addListener( () => {
       this.listBox.visibleProperty.value = !this.listBox.visibleProperty.value;
-    } );
-
-    //TODO sun#462 integrate this with above button listener, to eliminate order dependency
-    // Handle button clicks, for a11y
-    this.button.addInputListener( {
-      click: () => {
-        if ( this.listBox.visible ) {
-          this.listBox.focus();
-        }
-      }
+      this.listBox.visibleProperty.value && this.listBox.focus();
     } );
 
     // @private the display that clickToDismissListener is added to, because the scene may change, see sun#14

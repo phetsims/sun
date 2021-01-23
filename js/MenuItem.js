@@ -71,7 +71,7 @@ class MenuItem extends Node {
       // @param {SceneryEvent} - Only called after PDOM interaction and called AFTER closeCallback, use this to move
       // focus to a particular Node in the document. By default focus is moved to the top of the document after a
       // MenuItem action since the PhET Menu closes after activation
-      handleFocusCallback: event => {
+      handleFocusCallback: () => {
 
         // limit search of next focusable to root accessible HTML element
         const rootElement = phet.joist.display.accessibleDOMElement;
@@ -118,11 +118,7 @@ class MenuItem extends Node {
         closeCallback( event );
         callback( event );
 
-        // send focus to a custom spot, but focus should only be placed if the fire event
-        // came from the PDOM
-        if ( event.isFromPDOM() ) {
-          options.handleFocusCallback( event );
-        }
+        options.handleFocusCallback( event );
       }
     } ) );
 

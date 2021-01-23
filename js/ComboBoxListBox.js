@@ -76,6 +76,8 @@ class ComboBoxListBox extends Panel {
 
       // prevent nodes (eg, controls) behind the list from receiving the event
       event.abort();
+
+      focusButtonCallback();
     }, {
       parameters: [ { phetioPrivate: true, valueType: SceneryEvent } ],
 
@@ -97,14 +99,12 @@ class ComboBoxListBox extends Panel {
       keyup: event => {
         if ( KeyboardUtils.KEY_ENTER === event.domEvent.keyCode || KeyboardUtils.KEY_SPACE === event.domEvent.keyCode ) {
           fireAction.execute( event );
-          focusButtonCallback();
         }
       },
 
       // handle activation from an assistive device that may not use a keyboard (such as mobile VoiceOver)
       click: event => {
         fireAction.execute( event );
-        focusButtonCallback();
       }
     };
 

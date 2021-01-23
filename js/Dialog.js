@@ -439,7 +439,7 @@ Dialog.DialogIO = new IOType( 'DialogIO', {
   // Since many Dialogs are dynamic elements, these need to be in the state. The value of the state object doesn't
   // matter, but it instead just serves as a marker to tell the state engine to recreate the Dialog (if dynamic) when
   // setting state.
-  supertype: ReferenceIO(Node.NodeIO)
+  supertype: ReferenceIO( Node.NodeIO )
 } );
 
 sun.register( 'Dialog', Dialog );

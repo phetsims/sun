@@ -64,7 +64,8 @@ class StickyToggleButtonModel extends ButtonModel {
     // released, pop up the button (unless it was part of the same action that pressed the button down in the first
     // place).
     const downListener = down => {
-      if ( this.enabledProperty.get() && this.overProperty.get() && !this.interrupted ) {
+      const overOrFocused = this.overProperty.get() || this.focusedProperty.get();
+      if ( this.enabledProperty.get() && overOrFocused && !this.interrupted ) {
         if ( down && valueProperty.value === valueUp ) {
           this.toggle();
           this.pressedWhileDownProperty.set( false );
@@ -79,8 +80,8 @@ class StickyToggleButtonModel extends ButtonModel {
         }
       }
 
-      //Handle the case where the pointer moved out then up over a toggle button, so it will respond to the next press
-      if ( !down && !this.overProperty.get() ) {
+      // Handle the case where the pointer moved out then up over a toggle button, so it will respond to the next press
+      if ( !down && !overOrFocused ) {
         this.pressedWhileDownProperty.set( true );
       }
     };
