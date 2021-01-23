@@ -37,7 +37,7 @@ class ToggleButtonModel extends ButtonModel {
 
     // Behaves like a push button (with fireOnDown:false), but toggles its state when the button is released.
     const downListener = down => {
-      if ( this.enabledProperty.get() && this.overProperty.get() && !this.interrupted ) {
+      if ( ( this.overProperty.get() || this.focusedProperty.get() ) && this.enabledProperty.get() && !this.interrupted ) {
         if ( !down ) {
           this.toggle();
         }

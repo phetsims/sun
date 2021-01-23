@@ -127,7 +127,7 @@ class RectangularRadioButton extends RectangularButton {
 
     // When the button model triggers an event, fire from the radio button
     buttonModel.downProperty.link( down => {
-      if ( !down && buttonModel.overProperty.get() && !buttonModel.interrupted ) {
+      if ( !down && ( buttonModel.overProperty.get() || buttonModel.focusedProperty.get() ) && !buttonModel.interrupted ) {
         this.fire();
       }
     } );
@@ -141,6 +141,7 @@ class RectangularRadioButton extends RectangularButton {
     this.disposeRectangularRadioButton = () => {
       property.unlink( accessibleCheckedListener );
       this.firedEmitter.dispose();
+      buttonModel.produceSoundEmitter.removeListener( playSound );
       buttonModel.dispose();
       this.interactionStateProperty.dispose();
     };
@@ -292,6 +293,7 @@ class ContentAppearanceStrategy {
         }
       }
     }
+
     interactionStateProperty.link( handleInteractionStateChanged );
 
     // @public

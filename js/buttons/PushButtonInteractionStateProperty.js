@@ -22,10 +22,10 @@ class PushButtonInteractionStateProperty extends DerivedProperty {
     }, options );
 
     super(
-      [ buttonModel.overProperty, buttonModel.looksPressedProperty ],
-      ( over, looksPressed ) => {
-        return over && !looksPressed ? ButtonInteractionState.OVER :
-               over && looksPressed ? ButtonInteractionState.PRESSED :
+      [ buttonModel.focusedProperty, buttonModel.overProperty, buttonModel.looksOverProperty, buttonModel.looksPressedProperty ],
+      ( focused, over, looksOver, looksPressed ) => {
+        return looksOver && !looksPressed ? ButtonInteractionState.OVER :
+               ( over || focused ) && looksPressed ? ButtonInteractionState.PRESSED :
                ButtonInteractionState.IDLE;
       },
       options

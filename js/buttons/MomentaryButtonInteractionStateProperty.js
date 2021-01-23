@@ -20,9 +20,9 @@ class MomentaryButtonInteractionStateProperty extends DerivedProperty {
     const options = { valueType: ButtonInteractionState };
 
     super(
-      [ buttonModel.overProperty, buttonModel.looksPressedProperty ],
-      ( over, looksPressed ) => {
-        return over && !looksPressed ? ButtonInteractionState.OVER :
+      [ buttonModel.looksOverProperty, buttonModel.looksPressedProperty ],
+      ( looksOver, looksPressed ) => {
+        return looksOver && !looksPressed ? ButtonInteractionState.OVER :
                looksPressed ? ButtonInteractionState.PRESSED :  // remain pressed regardless of whether 'over' is true
                ButtonInteractionState.IDLE;
       },

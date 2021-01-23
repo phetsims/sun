@@ -22,11 +22,11 @@ class RadioButtonInteractionStateProperty extends DerivedProperty {
     const options = { valueType: RadioButtonInteractionState };
 
     super(
-      [ buttonModel.overProperty, buttonModel.looksPressedProperty, property ],
-      ( over, looksPressed, propertyValue ) => {
+      [ buttonModel.focusedProperty, buttonModel.overProperty, buttonModel.looksOverProperty, buttonModel.looksPressedProperty, property ],
+      ( focused, over, looksOver, looksPressed, propertyValue ) => {
         const isSelected = ( propertyValue === value );
-        return over && !( looksPressed || isSelected ) ? RadioButtonInteractionState.OVER :
-               over && looksPressed ? RadioButtonInteractionState.PRESSED :
+        return looksOver && !( looksPressed || isSelected ) ? RadioButtonInteractionState.OVER :
+               ( over || focused ) && looksPressed ? RadioButtonInteractionState.PRESSED :
                isSelected ? RadioButtonInteractionState.SELECTED :
                RadioButtonInteractionState.DESELECTED;
       },

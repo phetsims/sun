@@ -50,12 +50,17 @@ class ButtonModel extends EnabledComponent {
     // model Properties
     this.overProperty = new BooleanProperty( false ); // @public - Is the pointer over the button?
     this.downProperty = new BooleanProperty( false, { reentrant: true } ); // @public - Is the pointer down?
+    this.focusedProperty = new BooleanProperty( false ); // @public - Is the button focused from the PDOM?
 
     // @public - This Property was added for a11y. It tracks whether or not the button should "look" down. This
     // will be true if downProperty is true or if an a11y click is in progress. For an a11y click, the listeners
     // are fired right away but the button will look down for as long as PressListener.a11yLooksPressedInterval.
     // See PressListener.click for more details.
     this.looksPressedProperty = new BooleanProperty( false );
+
+    // @public - This Property was added for a11y. It tracks whether or not the button should "look" over. This
+    // will be true if and PressListeners' looksOverProperty is true, see PressListener for that definition.
+    this.looksOverProperty = new BooleanProperty( false );
 
     // @public (read-only by users, read-write in subclasses) - emitter that is fired when sound should be produced
     this.produceSoundEmitter = new Emitter();
@@ -71,13 +76,18 @@ class ButtonModel extends EnabledComponent {
     // first listener is created. See this.createPressListener.
     this.looksPressedMultilink = null;
 
+    // @private {Multilink|null} - Links all of the looksOverProperties from the listeners that were created
+    // by this ButtonModel, and updates the looksOverProperty accordingly. First Multilink is added when the
+    // first listener is created. See this.createPressListener.
+    this.looksOverMultilink = null;
+
     // startCallback on pointer down, endCallback on pointer up. lazyLink so they aren't called immediately.
     this.downProperty.lazyLink( down => {
       if ( down ) {
         options.startCallback();
       }
       else {
-        options.endCallback( this.overProperty.get() );
+        options.endCallback( this.looksOverProperty.get() );
       }
     } );
 
@@ -101,6 +111,7 @@ class ButtonModel extends EnabledComponent {
       this.produceSoundEmitter.dispose();
 
       this.looksPressedMultilink && this.looksPressedMultilink.dispose();
+      this.looksOverMultilink && this.looksOverMultilink.dispose();
 
       this.listeners = [];
     };
@@ -140,12 +151,14 @@ class ButtonModel extends EnabledComponent {
       this.downProperty.set( isPressed );
     } );
     pressListener.isOverProperty.lazyLink( this.overProperty.set.bind( this.overProperty ) );
+    pressListener.isFocusedProperty.lazyLink( this.focusedProperty.set.bind( this.focusedProperty ) );
 
     // dispose the previous multilink in case we already created a PressListener with this model
     this.looksPressedMultilink && this.looksPressedMultilink.dispose();
+    this.looksOverMultilink && this.looksOverMultilink.dispose();
 
-    const looksPressedProperties = this.listeners.map( function( listener ) { return listener.looksPressedProperty; } );
-    looksPressedProperties.push( this.downProperty );
+    const looksPressedProperties = this.listeners.map( listener => listener.looksPressedProperty );
+    looksPressedProperties.push( this.downProperty ); // MK is not sure why this is needed.
 
     // assign a new Multilink (for disposal), and make sure that the button looks pressed when any of the
     // PressListeners created by this ButtonModel look pressed. Note that this cannot be an arrow function
@@ -153,6 +166,15 @@ class ButtonModel extends EnabledComponent {
     const self = this;
     this.looksPressedMultilink = Property.multilink( looksPressedProperties, function() {
       self.looksPressedProperty.value = _.reduce( arguments, ( sum, newValue ) => sum || newValue, false );
+    } );
+
+    const looksOverProperties = this.listeners.map( listener => listener.looksOverProperty );
+
+    // assign a new Multilink (for disposal), and make sure that the button looks over when any of the
+    // PressListeners created by this ButtonModel look over. Note that this cannot be an arrow function
+    // because its implementation relies on arguments.
+    this.looksOverMultilink = Property.multilink( looksOverProperties, function() {
+      self.looksOverProperty.value = _.reduce( arguments, ( sum, newValue ) => sum || newValue, false );
     } );
 
     return pressListener;
