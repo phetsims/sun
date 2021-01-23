@@ -40,8 +40,8 @@ const Popupable = type => {
         phetioState: PhetioObject.DEFAULT_OPTIONS.phetioState
       }, options );
 
-      assert && assert( typeof options.showPopup === 'function', 'showPopup is a required, and must be provided if phet.joist.sim is not available.' );
-      assert && assert( typeof options.hidePopup === 'function', 'hidePopup is a required, and must be provided if phet.joist.sim is not available.' );
+      assert && assert( typeof options.showPopup === 'function', 'showPopup is required, and must be provided if phet.joist.sim is not available.' );
+      assert && assert( typeof options.hidePopup === 'function', 'hidePopup is required, and must be provided if phet.joist.sim is not available.' );
 
       // see https://github.com/phetsims/joist/issues/293
       assert && assert( options.isModal, 'Non-modal popups not currently supported' );
