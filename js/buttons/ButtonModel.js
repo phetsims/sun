@@ -48,9 +48,9 @@ class ButtonModel extends EnabledComponent {
     super( options );
 
     // model Properties
-    this.overProperty = new BooleanProperty( false ); // @public - Is the pointer over the button?
+    this.overProperty = new BooleanProperty( false ); // @public (read-only) - Is the pointer over the button?
     this.downProperty = new BooleanProperty( false, { reentrant: true } ); // @public - Is the pointer down?
-    this.focusedProperty = new BooleanProperty( false ); // @public - Is the button focused from the PDOM?
+    this.focusedProperty = new BooleanProperty( false ); // @public (read-only) - Is the button focused from the PDOM?
 
     // @public - This Property was added for a11y. It tracks whether or not the button should "look" down. This
     // will be true if downProperty is true or if an a11y click is in progress. For an a11y click, the listeners
@@ -157,8 +157,9 @@ class ButtonModel extends EnabledComponent {
     this.looksPressedMultilink && this.looksPressedMultilink.dispose();
     this.looksOverMultilink && this.looksOverMultilink.dispose();
 
+    // the downProperty is included because it can be set externally, looksPressedProperty should update in this case
     const looksPressedProperties = this.listeners.map( listener => listener.looksPressedProperty );
-    looksPressedProperties.push( this.downProperty ); // MK is not sure why this is needed.
+    looksPressedProperties.push( this.downProperty );
 
     // assign a new Multilink (for disposal), and make sure that the button looks pressed when any of the
     // PressListeners created by this ButtonModel look pressed. Note that this cannot be an arrow function
