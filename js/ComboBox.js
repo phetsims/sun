@@ -20,6 +20,7 @@
 
 import BooleanProperty from '../../axon/js/BooleanProperty.js';
 import Vector2 from '../../dot/js/Vector2.js';
+import dotRandom from '../../dot/js/dotRandom.js';
 import InstanceRegistry from '../../phet-core/js/documentation/InstanceRegistry.js';
 import merge from '../../phet-core/js/merge.js';
 import PDOMPeer from '../../scenery/js/accessibility/pdom/PDOMPeer.js';
@@ -32,8 +33,8 @@ import Tandem from '../../tandem/js/Tandem.js';
 import IOType from '../../tandem/js/types/IOType.js';
 import ComboBoxButton from './ComboBoxButton.js';
 import ComboBoxListBox from './ComboBoxListBox.js';
-import sun from './sun.js';
 import SunConstants from './SunConstants.js';
+import sun from './sun.js';
 
 // const
 const LIST_POSITION_VALUES = [ 'above', 'below' ]; // where the list pops up relative to the button
@@ -225,7 +226,7 @@ class ComboBox extends Node {
         // If fuzzing is enabled, exercise this listener some percentage of the time, so that this listener is tested.
         // The rest of the time, ignore this listener, so that the listbox remains popped up, and we test making
         // choices from the listbox. See https://github.com/phetsims/sun/issues/677
-        if ( !phet.chipper.isFuzzEnabled() && phet.dot.dotRandom.nextDouble() < 0.25 ) {
+        if ( !phet.chipper.isFuzzEnabled() && dotRandom.nextDouble() < 0.25 ) {
 
           // Ignore if we click over the button, since the button will handle hiding the list.
           if ( !( event.trail.containsNode( this.button ) || event.trail.containsNode( this.listBox ) ) ) {
