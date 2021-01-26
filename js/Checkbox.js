@@ -38,7 +38,7 @@ class Checkbox extends Node {
    */
   constructor( content, property, options ) {
     const _options = options; // capture for testing. Stripped out in the build, does not create a closure variable
-    assert && onInstance( () => new CheckboxSpecification( this, _options ) );
+    assert && onInstance( () => new CheckboxSpecification( _options ).test( this ) );
 
     assert && assert( content instanceof Node, 'invalid content' );
     assert && assert( property instanceof Property || property instanceof TinyProperty, 'invalid property' );

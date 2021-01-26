@@ -19,28 +19,38 @@ import sun from './sun.js';
 
 class CheckboxSpecification extends NodeSpecification {
 
-  constructor( checkbox, options ) {
+  constructor( options ) {
     options = merge( {
       phetioEventType: EventType.USER,
       visiblePropertyOptions: { phetioFeatured: true },
       enabledPropertyPhetioInstrumented: true,
       tandem: Tandem.REQUIRED
     }, options );
-    super( checkbox, options );
+    super( options );
 
     // Only way to get some variables is through PhET-iO, since it is a private closure variable
     if ( Tandem.VALIDATION && options.tandem.supplied ) {
-      const toggleAction = phet.phetio.phetioEngine.getPhetioObject( options.tandem.createTandem( 'toggleAction' ).phetioID );
 
       // @public (read-only)
-      this.toggleAction = new ActionSpecification( toggleAction, {
+      this.toggleAction = new ActionSpecification( {
         phetioReadOnly: true,
         phetioEventType: EventType.USER
       } );
 
-      const property = phet.phetio.phetioEngine.getPhetioObject( options.tandem.createTandem( 'property' ).phetioID );
-      this.property = new PropertySpecification( property, { phetioType: Property.PropertyIO( BooleanIO ) } );
+      this.property = new PropertySpecification( { phetioType: Property.PropertyIO( BooleanIO ) } );
     }
+
+    // Are *Specification only to be called from their constructors?  Nope, check out toggleAction=new ActionSpecification() above
+    this.fireListener = new FireListenerSpecification( {
+      tandem: options.tandem.createTandem( 'fireListener' )
+    } );
+  }
+
+  // @public
+  test( checkbox ) {
+    super.test(checkbox);
+    this.toggleAction && this.toggleAction.test( phet.phetio.phetioEngine.getPhetioObject( this.options.tandem.createTandem( 'toggleAction' ).phetioID ) );
+    this.property && this.property.test( phet.phetio.phetioEngine.getPhetioObject( this.options.tandem.createTandem( 'property' ).phetioID ) );
 
     // FireListenerSpecification is exercised through the checkbox creation (if it is created)
     // But we have to make sure it was created somehow, and with the right options.  Maybe the one tested through main creation
@@ -54,10 +64,7 @@ class CheckboxSpecification extends NodeSpecification {
     const nodeWithFireListener = checkbox.getLeafTrails( getFireListener ).map( t => t.lastNode() );
     const fireListener = getFireListener( nodeWithFireListener[ 0 ] );
 
-    // Are *Specification only to be called from their constructors?  Nope, check out toggleAction=new ActionSpecification() above
-    this.fireListener = new FireListenerSpecification( fireListener, {
-      tandem: options.tandem.createTandem( 'fireListener' )
-    } );
+    this.fireListener.test( fireListener );
   }
 }
 
