@@ -48,23 +48,25 @@ class CheckboxSpecification extends NodeSpecification {
 
   // @public
   test( checkbox ) {
-    super.test(checkbox);
-    this.toggleAction && this.toggleAction.test( phet.phetio.phetioEngine.getPhetioObject( this.options.tandem.createTandem( 'toggleAction' ).phetioID ) );
-    this.property && this.property.test( phet.phetio.phetioEngine.getPhetioObject( this.options.tandem.createTandem( 'property' ).phetioID ) );
+    super.test( checkbox );
+    if ( Tandem.VALIDATION && this.options.tandem.supplied ) {
+      this.toggleAction && this.toggleAction.test( phet.phetio.phetioEngine.getPhetioObject( this.options.tandem.createTandem( 'toggleAction' ).phetioID ) );
+      this.property && this.property.test( phet.phetio.phetioEngine.getPhetioObject( this.options.tandem.createTandem( 'property' ).phetioID ) );
 
-    // FireListenerSpecification is exercised through the checkbox creation (if it is created)
-    // But we have to make sure it was created somehow, and with the right options.  Maybe the one tested through main creation
-    // tests generic parameters, and in this case, we test it against our specific requirements
-    // TODO: https://github.com/phetsims/phet-io/issues/1657 this is sloppy--what if there are 2 FireListeners.
-    // Is there a more direct way to do this?  How was it done in phetioAPIValidation?  Should we create a temporary "fake"
-    // tandem, and make sure its concrete leaves match?
+      // FireListenerSpecification is exercised through the checkbox creation (if it is created)
+      // But we have to make sure it was created somehow, and with the right options.  Maybe the one tested through main creation
+      // tests generic parameters, and in this case, we test it against our specific requirements
+      // TODO: https://github.com/phetsims/phet-io/issues/1657 this is sloppy--what if there are 2 FireListeners.
+      // Is there a more direct way to do this?  How was it done in phetioAPIValidation?  Should we create a temporary "fake"
+      // tandem, and make sure its concrete leaves match?
 
-    // for phet-io, checkboxes should have an instrumented fireListener.  This search also checks the self-node (not just children)
-    const getFireListener = node => _.find( node.getInputListeners(), listener => listener instanceof FireListener );
-    const nodeWithFireListener = checkbox.getLeafTrails( getFireListener ).map( t => t.lastNode() );
-    const fireListener = getFireListener( nodeWithFireListener[ 0 ] );
+      // for phet-io, checkboxes should have an instrumented fireListener.  This search also checks the self-node (not just children)
+      const getFireListener = node => _.find( node.getInputListeners(), listener => listener instanceof FireListener );
+      const nodeWithFireListener = checkbox.getLeafTrails( getFireListener ).map( t => t.lastNode() );
+      const fireListener = getFireListener( nodeWithFireListener[ 0 ] );
 
-    this.fireListener.test( fireListener );
+      this.fireListener.test( fireListener );
+    }
   }
 }
 
