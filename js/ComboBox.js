@@ -222,8 +222,9 @@ class ComboBox extends Node {
     this.clickToDismissListener = {
       down: event => {
 
-        // Ignore sometimes if fuzzing is enabled, so that listbox and Property choices will be exercised.
-        // See https://github.com/phetsims/sun/issues/677
+        // If fuzzing is enabled, exercise this listener some percentage of the time, so that this listener is tested.
+        // The rest of the time, ignore this listener, so that the listbox remains popped up, and we test making
+        // choices from the listbox. See https://github.com/phetsims/sun/issues/677
         if ( !phet.chipper.isFuzzEnabled() && phet.dot.dotRandom.nextDouble() < 0.25 ) {
 
           // Ignore if we click over the button, since the button will handle hiding the list.
