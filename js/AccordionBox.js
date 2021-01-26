@@ -396,8 +396,11 @@ class AccordionBox extends Node {
 
     const expandedBounds = this.expandedBox.selfBounds;
 
-    this.expandedBoxOutline.rectWidth = boxWidth;
-    this.expandedBoxOutline.rectHeight = expandedBoxHeight;
+    // expandedBoxOutline exists only if options.stroke is truthy
+    if ( this.expandedBoxOutline ) {
+      this.expandedBoxOutline.rectWidth = boxWidth;
+      this.expandedBoxOutline.rectHeight = expandedBoxHeight;
+    }
 
     this.expandedTitleBar.shape = this.getTitleBarShape();
 
@@ -409,8 +412,11 @@ class AccordionBox extends Node {
     this.collapsedTitleBar.rectWidth = boxWidth;
     this.collapsedTitleBar.rectHeight = collapsedBoxHeight;
 
-    this.collapsedBoxOutline.rectWidth = boxWidth;
-    this.collapsedBoxOutline.rectHeight = collapsedBoxHeight;
+    // collapsedBoxOutline exists only if options.stroke is truthy
+    if ( this.collapsedBoxOutline ) {
+      this.collapsedBoxOutline.rectWidth = boxWidth;
+      this.collapsedBoxOutline.rectHeight = collapsedBoxHeight;
+    }
 
     // content layout
     this._contentNode.bottom = expandedBounds.bottom - this._contentYMargin;
