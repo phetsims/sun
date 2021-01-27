@@ -89,7 +89,10 @@ class SliderTrack extends Node {
     };
   }
 
-  // @public - ensures that this object is eligible for GC
+  /**
+   * @public
+   * @override
+   */
   dispose() {
     this.disposeSliderTrack();
     super.dispose();
