@@ -11,6 +11,7 @@
 
 import BooleanProperty from '../../axon/js/BooleanProperty.js';
 import ScreenView from '../../joist/js/ScreenView.js';
+import gracefulBind from '../../phet-core/js/gracefulBind.js';
 import inheritance from '../../phet-core/js/inheritance.js';
 import merge from '../../phet-core/js/merge.js';
 import Node from '../../scenery/js/nodes/Node.js';
@@ -28,8 +29,8 @@ const Popupable = type => {
 
       options = merge( {
 
-        showPopup: _.hasIn( window, 'phet.joist.sim' ) && phet.joist.sim.showPopup.bind( phet.joist.sim ),
-        hidePopup: _.hasIn( window, 'phet.joist.sim' ) && phet.joist.sim.hidePopup.bind( phet.joist.sim ),
+        showPopup: gracefulBind( 'phet.joist.sim.showPopup' ),
+        hidePopup: gracefulBind( 'phet.joist.sim.hidePopup' ),
 
         isModal: true, // {boolean} modal popups prevent interaction with the rest of the sim while open
 
