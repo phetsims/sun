@@ -60,7 +60,9 @@ class SliderTrack extends Node {
 
     this.addChild( trackNode );
 
-    const dragListener = new DragListener( {
+    // @public (read-only) so that clients can access Properties of the DragListener that tell us about its state
+    // See https://github.com/phetsims/sun/issues/680
+    this.dragListener = new DragListener( {
       tandem: options.tandem.createTandem( 'dragListener' ),
 
       start: ( event, listener ) => {
@@ -79,13 +81,13 @@ class SliderTrack extends Node {
         options.endDrag( event );
       }
     } );
-    trackNode.addInputListener( dragListener );
+    trackNode.addInputListener( this.dragListener );
 
     this.mutate( options );
 
     // @private Called by dispose
     this.disposeSliderTrack = () => {
-      dragListener.dispose();
+      this.dragListener.dispose();
     };
   }
 

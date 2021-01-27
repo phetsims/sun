@@ -270,6 +270,11 @@ class Slider extends Node {
     } );
     thumb.addInputListener( thumbDragListener );
 
+    // @public (read-only) so that clients can access Properties of these DragListeners that tell us about its state
+    // See https://github.com/phetsims/sun/issues/680
+    this.thumbDragListener = thumbDragListener;
+    this.trackDragListener = this.track.dragListener;
+
     // update thumb position when value changes
     const valueObserver = value => {
       thumb.centerX = this.track.valueToPosition( value );
