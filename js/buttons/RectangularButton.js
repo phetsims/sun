@@ -131,10 +131,10 @@ class RectangularButton extends ButtonNode {
     // Set pointer areas.
     this.touchArea = buttonBackground.localBounds
       .dilatedXY( options.touchAreaXDilation, options.touchAreaYDilation )
-      .shifted( options.touchAreaXShift, options.touchAreaYShift );
+      .shiftedXY( options.touchAreaXShift, options.touchAreaYShift );
     this.mouseArea = buttonBackground.localBounds
       .dilatedXY( options.mouseAreaXDilation, options.mouseAreaYDilation )
-      .shifted( options.mouseAreaXShift, options.mouseAreaYShift );
+      .shiftedXY( options.mouseAreaXShift, options.mouseAreaYShift );
   }
 }
 
