@@ -447,16 +447,6 @@ const AccessibleValueHandler = {
       },
 
       /**
-       * Set the a11yMapPDOMValueFunction
-       * @param {function(number):number} mapValueFunction
-       * @public
-       */
-      setMapValueFunction( mapValueFunction ) {
-        assert && assert( typeof mapValueFunction === 'function', 'a11yMapPDOMValue function must be a function' );
-        this.a11yMapPDOMValue = mapValueFunction;
-      },
-
-      /**
        * get the formatted value based on the current value of the Property.
        * @param {number} [value] - if not provided, will use the current value of the valueProperty
        * @returns {number}
