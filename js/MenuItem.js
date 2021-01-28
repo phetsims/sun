@@ -7,9 +7,11 @@
  * @author Michael Kauzmann (PhET Interactive Simulations)
  */
 
+import getGlobal from '../../phet-core/js/getGlobal.js';
 import merge from '../../phet-core/js/merge.js';
 import PhetFont from '../../scenery-phet/js/PhetFont.js';
 import PDOMUtils from '../../scenery/js/accessibility/pdom/PDOMUtils.js';
+import Display from '../../scenery/js/display/Display.js';
 import FireListener from '../../scenery/js/listeners/FireListener.js';
 import Node from '../../scenery/js/nodes/Node.js';
 import Rectangle from '../../scenery/js/nodes/Rectangle.js';
@@ -60,6 +62,9 @@ class MenuItem extends Node {
       // {Property.<boolean>} - if provided add a checkmark next to the MenuItem text whenever this Property is true.
       checkedProperty: null,
 
+      // {Display|null}
+      display: getGlobal( 'phet.joist.display' ),
+
       // phet-io
       tandem: Tandem.OPTIONAL,
       phetioDocumentation: 'Item buttons shown in a popup menu',
@@ -68,15 +73,6 @@ class MenuItem extends Node {
       // pdom
       tagName: 'button',
 
-      // @param {SceneryEvent} - Only called after PDOM interaction and called AFTER closeCallback, use this to move
-      // focus to a particular Node in the document. By default focus is moved to the top of the document after a
-      // MenuItem action since the PhET Menu closes after activation
-      handleFocusCallback: () => {
-
-        // limit search of next focusable to root accessible HTML element
-        const rootElement = phet.joist.display.accessibleDOMElement;
-        PDOMUtils.getNextFocusable( rootElement ).focus();
-      },
       containerTagName: 'li',
       containerAriaRole: 'none', // this is required for JAWS to handle focus correctly, see https://github.com/phetsims/john-travoltage/issues/225
       innerContent: text,
@@ -85,6 +81,22 @@ class MenuItem extends Node {
       // 'menuitem' role does not get click events on iOS VoiceOver, position siblings so that
       // we get Pointer events instead
       positionSiblings: true
+    }, options );
+
+    // Options that depend on other options for their defaults
+    options = merge( {
+
+      // pdom
+      // @param {SceneryEvent} - Only called after PDOM interaction and called AFTER closeCallback, use this to move
+      // focus to a particular Node in the document. By default focus is moved to the top of the document after a
+      // MenuItem action since the PhET Menu closes after activation
+      handleFocusCallback: () => {
+
+        assert && assert( options.display instanceof Display, 'display must be provided to support this handlFocusCallback' );
+
+        // limit search of next focusable to root accessible HTML element
+        PDOMUtils.getNextFocusable( options.display.accessibleDOMElement ).focus();
+      }
     }, options );
 
     super();
