@@ -133,7 +133,7 @@ const AccessibleNumberSpinner = {
           blur: function() {
 
             // if a key is currently down when focus leaves the spinner, stop callbacks and emit that the
-            // keycode is up
+            // keyCode is up
             if ( downCallback ) {
               assert && assert( runningTimerCallbackKeyCode !== null, 'key should be down if running downCallback' );
 
