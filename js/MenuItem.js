@@ -80,7 +80,7 @@ class MenuItem extends Node {
 
       // 'menuitem' role does not get click events on iOS VoiceOver, position siblings so that
       // we get Pointer events instead
-      positionSiblings: true
+      positionInPDOM: true
     }, options );
 
     // Options that depend on other options for their defaults
