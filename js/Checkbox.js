@@ -18,10 +18,8 @@ import Rectangle from '../../scenery/js/nodes/Rectangle.js';
 import checkboxCheckedSoundPlayer from '../../tambo/js/shared-sound-players/checkboxCheckedSoundPlayer.js';
 import checkboxUncheckedSoundPlayer from '../../tambo/js/shared-sound-players/checkboxUncheckedSoundPlayer.js';
 import EventType from '../../tandem/js/EventType.js';
-import onInstance from '../../tandem/js/onInstance.js';
 import PhetioObject from '../../tandem/js/PhetioObject.js';
 import Tandem from '../../tandem/js/Tandem.js';
-import CheckboxSpecification from './CheckboxSpecification.js';
 import FontAwesomeNode from './FontAwesomeNode.js';
 import sun from './sun.js';
 import SunConstants from './SunConstants.js';
@@ -37,8 +35,6 @@ class Checkbox extends Node {
    * @param {Object} [options]
    */
   constructor( content, property, options ) {
-    const _options = options; // capture for testing. Stripped out in the build, does not create a closure variable
-    assert && onInstance( () => new CheckboxSpecification( _options ).test( this ) );
 
     assert && assert( content instanceof Node, 'invalid content' );
     assert && assert( property instanceof Property || property instanceof TinyProperty, 'invalid property' );
