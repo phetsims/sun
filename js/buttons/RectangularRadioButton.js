@@ -104,10 +104,10 @@ class RectangularRadioButton extends RectangularButton {
 
     // pdom - when the Property changes, make sure the correct radio button is marked as 'checked' so that this button
     // receives focus on 'tab'
-    const accessibleCheckedListener = newValue => {
-      this.accessibleChecked = ( newValue === value );
+    const pdomCheckedListener = newValue => {
+      this.pdomChecked = ( newValue === value );
     };
-    property.link( accessibleCheckedListener );
+    property.link( pdomCheckedListener );
 
     // @private - the Property this button changes
     this.property = property;
@@ -139,7 +139,7 @@ class RectangularRadioButton extends RectangularButton {
 
     // @private
     this.disposeRectangularRadioButton = () => {
-      property.unlink( accessibleCheckedListener );
+      property.unlink( pdomCheckedListener );
       this.firedEmitter.dispose();
       buttonModel.produceSoundEmitter.removeListener( playSound );
       buttonModel.dispose();

@@ -138,10 +138,10 @@ class AquaRadioButton extends Node {
 
     // pdom - when the Property changes, make sure the correct radio button is marked as 'checked' so that this button
     // receives focus on 'tab'
-    const accessibleCheckedListener = newValue => {
-      this.accessibleChecked = newValue === value;
+    const pdomCheckedListener = newValue => {
+      this.pdomChecked = newValue === value;
     };
-    property.link( accessibleCheckedListener );
+    property.link( pdomCheckedListener );
 
     // pdom - every button in a group of radio buttons should have the same name, see options for more info
     if ( options.a11yNameAttribute !== null ) {
@@ -157,7 +157,7 @@ class AquaRadioButton extends Node {
     this.disposeAquaRadioButton = () => {
       this.removeInputListener( fireListener );
       this.removeInputListener( changeListener );
-      property.unlink( accessibleCheckedListener );
+      property.unlink( pdomCheckedListener );
       property.unlink( syncWithModel );
 
       // phet-io: Unregister listener

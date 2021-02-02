@@ -137,7 +137,7 @@ class Checkbox extends Node {
     const checkboxCheckedListener = checked => {
       this.checkedNode.visible = checked;
       this.uncheckedNode.visible = !checked;
-      this.accessibleChecked = checked;
+      this.pdomChecked = checked;
     };
     property.link( checkboxCheckedListener );
 
