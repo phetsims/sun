@@ -68,7 +68,7 @@ const AccessibleValueHandler = {
         }
 
         // members of the Node API that are used by this trait
-        assertHasProperties( this, [ 'mutate', 'inputValue', 'setAccessibleAttribute' ] );
+        assertHasProperties( this, [ 'mutate', 'inputValue', 'setPDOMAttribute' ] );
 
         const defaults = {
 
@@ -314,8 +314,8 @@ const AccessibleValueHandler = {
           // assert && assert( mappedMin <= mappedMax, 'min should be less than max' );
 
           // pdom - update enabled slider range for AT, required for screen reader events to behave correctly
-          this.setAccessibleAttribute( 'min', mappedMin );
-          this.setAccessibleAttribute( 'max', mappedMax );
+          this.setPDOMAttribute( 'min', mappedMin );
+          this.setPDOMAttribute( 'max', mappedMax );
 
           // update the step attribute slider element - this attribute is only added because it is required to
           // receive accessibility events on all browsers, and is totally separate from the step values above that
@@ -333,7 +333,7 @@ const AccessibleValueHandler = {
           // set the aria-valuenow attribute in case the AT requires it to read the value correctly, some may
           // fall back on this from aria-valuetext see
           // https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/ARIA_Techniques/Using_the_aria-valuetext_attribute#Possible_effects_on_user_agents_and_assistive_technology
-          this.setAccessibleAttribute( 'aria-valuenow', mappedValue );
+          this.setPDOMAttribute( 'aria-valuenow', mappedValue );
 
           // update the PDOM input value on Property change
           this.inputValue = mappedValue;
@@ -809,7 +809,7 @@ const AccessibleValueHandler = {
         assert && assert( Orientation.includes( orientation ) );
 
         this._ariaOrientation = orientation;
-        this.setAccessibleAttribute( 'aria-orientation', orientation.ariaOrientation );
+        this.setPDOMAttribute( 'aria-orientation', orientation.ariaOrientation );
       },
       set ariaOrientation( orientation ) { this.setAriaOrientation( orientation ); },
 
@@ -894,7 +894,7 @@ const AccessibleValueHandler = {
           stepValue = mappedMax / 100;
         }
 
-        this.setAccessibleAttribute( 'step', stepValue );
+        this.setPDOMAttribute( 'step', stepValue );
       }
     } );
   }

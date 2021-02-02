@@ -99,7 +99,7 @@ class RectangularRadioButton extends RectangularButton {
     // the 'checked' Property to mark this element as the default selection since 'checked' may be set before
     // we are finished adding RectangularRadioButtons to the RectangularRadioButtonGroup.
     if ( property.value === value ) {
-      this.setAccessibleAttribute( 'checked', 'checked' );
+      this.setPDOMAttribute( 'checked', 'checked' );
     }
 
     // pdom - when the Property changes, make sure the correct radio button is marked as 'checked' so that this button

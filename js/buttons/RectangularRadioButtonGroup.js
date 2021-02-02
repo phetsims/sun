@@ -220,7 +220,7 @@ class RectangularRadioButtonGroup extends LayoutBox {
       const radioButton = new RectangularRadioButton( property, item.value, radioButtonGroupMemberOptions );
 
       // pdom - so the browser recognizes these buttons are in the same group, see instanceCount for more info
-      radioButton.setAccessibleAttribute( 'name', CLASS_NAME + instanceCount );
+      radioButton.setPDOMAttribute( 'name', CLASS_NAME + instanceCount );
 
       // ensure the buttons don't resize when selected vs unselected by adding a rectangle with the max size
       const maxLineWidth = Math.max( options.selectedLineWidth, options.deselectedLineWidth );

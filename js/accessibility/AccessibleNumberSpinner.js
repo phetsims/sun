@@ -93,7 +93,7 @@ const AccessibleNumberSpinner = {
         this.incrementDownEmitter = new Emitter( { parameters: [ { valueType: 'boolean' } ] } );
         this.decrementDownEmitter = new Emitter( { parameters: [ { valueType: 'boolean' } ] } );
 
-        this.setAccessibleAttribute( 'aria-roledescription', numberSpinnerRoleDescriptionString );
+        this.setPDOMAttribute( 'aria-roledescription', numberSpinnerRoleDescriptionString );
 
         // a callback that is added and removed from the timer depending on keystate
         let downCallback = null;

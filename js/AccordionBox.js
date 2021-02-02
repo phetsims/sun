@@ -345,7 +345,7 @@ class AccordionBox extends Node {
 
       this.titleNode.visible = ( expanded && options.showTitleWhenExpanded ) || !expanded;
 
-      pdomContainerNode.setAccessibleAttribute( 'aria-hidden', !expanded );
+      pdomContainerNode.setPDOMAttribute( 'aria-hidden', !expanded );
     };
     this.expandedProperty.link( expandedPropertyObserver );
     this.disposeEmitterAccordionBox.addListener( () => this.expandedProperty.unlink( expandedPropertyObserver ) );

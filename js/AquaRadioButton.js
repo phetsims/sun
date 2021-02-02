@@ -133,7 +133,7 @@ class AquaRadioButton extends Node {
     // we are finished adding RadioButtons to the containing group, and the browser will remove the boolean
     // 'checked' flag when new buttons are added.
     if ( property.value === value ) {
-      this.setAccessibleAttribute( 'checked', 'checked' );
+      this.setPDOMAttribute( 'checked', 'checked' );
     }
 
     // pdom - when the Property changes, make sure the correct radio button is marked as 'checked' so that this button
@@ -145,7 +145,7 @@ class AquaRadioButton extends Node {
 
     // pdom - every button in a group of radio buttons should have the same name, see options for more info
     if ( options.a11yNameAttribute !== null ) {
-      this.setAccessibleAttribute( 'name', options.a11yNameAttribute );
+      this.setPDOMAttribute( 'name', options.a11yNameAttribute );
     }
 
     this.mutate( options );
