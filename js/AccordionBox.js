@@ -152,7 +152,11 @@ class AccordionBox extends Node {
     this._showTitleWhenExpanded = options.showTitleWhenExpanded;
     this._buttonAlign = options.buttonAlign;
 
-    // @private Add listeners to handle dispose
+    // @private Fires when this instance is disposed.
+    // AccordionBox does not use the {function} this.disposeAccordionBox pattern used in other PhET components.
+    // Instead, this Emitter will fire in the dispose method, and a listener must be added to this Emitter for anything
+    // that needs to be cleaned up.  This simplifies conditional disposal, but distributes disposal throughout the
+    // constructor.
     this.disposeEmitterAccordionBox = new Emitter();
 
     // @private {Node}
