@@ -158,7 +158,6 @@ class AccordionBox extends Node {
     // @private {Node}
     this.titleNode = options.titleNode;
 
-
     // If there is no titleNode specified, we'll provide our own, and handle disposal.
     if ( !this.titleNode ) {
       this.titleNode = new Text( '', { tandem: options.tandem.createTandem( 'titleNode' ) } );
@@ -349,6 +348,15 @@ class AccordionBox extends Node {
 
     this.mutate( _.omit( options, 'cursor' ) );
 
+    // @private reset things that are owned by AccordionBox
+    this.resetAccordionBox = () => {
+
+      // If expandedProperty wasn't provided via options, we own it and therefore need to reset it.
+      if ( !options.expandedProperty ) {
+        this.expandedProperty.reset();
+      }
+    };
+
     // support for binder documentation, stripped out in builds and only runs when ?binder is specified
     assert && phet.chipper.queryParameters.binder && InstanceRegistry.registerDataURL( 'sun', 'AccordionBox', this );
   }
@@ -366,7 +374,7 @@ class AccordionBox extends Node {
    * @public
    */
   reset() {
-    this.expandedProperty.reset();
+    this.resetAccordionBox();
   }
 
   /**
