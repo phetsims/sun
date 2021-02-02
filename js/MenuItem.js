@@ -95,7 +95,7 @@ class MenuItem extends Node {
         assert && assert( options.display instanceof Display, 'display must be provided to support this handlFocusCallback' );
 
         // limit search of next focusable to root accessible HTML element
-        PDOMUtils.getNextFocusable( options.display.accessibleDOMElement ).focus();
+        PDOMUtils.getNextFocusable( options.display.pdomRootElement ).focus();
       }
     }, options );
 
