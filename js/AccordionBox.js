@@ -301,7 +301,7 @@ class AccordionBox extends Node {
     const pdomContentNode = new Node( {
       tagName: 'div',
       ariaRole: 'region',
-      accessibleOrder: [ this._contentNode ],
+      pdomOrder: [ this._contentNode ],
       ariaLabelledbyAssociations: [ {
         otherNode: this.expandCollapseButton,
         otherElementName: PDOMPeer.PRIMARY_SIBLING,
@@ -310,7 +310,7 @@ class AccordionBox extends Node {
     } );
     const pdomHeading = new Node( {
       tagName: options.headingTagName,
-      accessibleOrder: [ this.expandCollapseButton ]
+      pdomOrder: [ this.expandCollapseButton ]
     } );
 
     const pdomContainerNode = new Node( {

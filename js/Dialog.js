@@ -329,7 +329,7 @@ class Dialog extends Popupable( Panel ) {
 
     // pdom - set the order of content, close button first so remaining content can be read from top to bottom
     // with virtual cursor
-    this.accessibleOrder = [ closeButton, options.title, content ].filter( node => node !== undefined );
+    this.pdomOrder = [ closeButton, options.title, content ].filter( node => node !== undefined );
 
     // pdom - set the aria-labelledby relation so that whenever focus enters the dialog the title is read
     if ( options.title && options.title.tagName && options.addAriaLabelledByFromTitle ) {
