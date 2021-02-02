@@ -20,7 +20,7 @@ class ComboBoxItem {
   constructor( node, value, options ) {
 
     assert && assert( node instanceof Node, 'invalid node: ' + node );
-    assert && assert( !node.hasPDOMContent, 'accessibleContent is set by ComboBox, use options.a11yLabel' );
+    assert && assert( !node.hasPDOMContent, 'pdomContent is set by ComboBox, use options.a11yLabel' );
 
     options = merge( {
 
