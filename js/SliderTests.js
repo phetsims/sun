@@ -22,14 +22,14 @@ QUnit.module( 'Slider' );
 
 QUnit.test( 'Node.enabledProperty in Slider', assert => {
   let slider = new HSlider( new Property( 0 ), new Range( 0, 10 ), {
-    tandem: Tandem.GENERAL.createTandem( 'mySlider' )
+    tandem: Tandem.ROOT_TEST.createTandem( 'mySlider' )
   } );
   testEnabledNode( assert, slider, 'For Slider' );
   slider.dispose();
 
-  const myEnabledProperty = new BooleanProperty( true, { tandem: Tandem.GENERAL.createTandem( 'myEnabledProperty' ) } );
+  const myEnabledProperty = new BooleanProperty( true, { tandem: Tandem.ROOT_TEST.createTandem( 'myEnabledProperty' ) } );
   slider = new HSlider( new Property( 0 ), new Range( 0, 10 ), {
-    tandem: Tandem.GENERAL.createTandem( 'mySlider' ),
+    tandem: Tandem.ROOT_TEST.createTandem( 'mySlider' ),
     enabledProperty: myEnabledProperty
   } );
   testEnabledNode( assert, slider, 'For Slider' );
