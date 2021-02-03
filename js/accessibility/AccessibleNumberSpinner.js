@@ -97,20 +97,21 @@ const AccessibleNumberSpinner = {
 
         // a callback that is added and removed from the timer depending on keystate
         let downCallback = null;
-        let runningTimerCallbackKeyCode = null;
+        let runningTimerCallbackKey = null;
 
         // handle all accessible event input
         const accessibleInputListener = {
           keydown: function( event ) {
             if ( enabledProperty.get() ) {
+              const key = event.domEvent.key.toLowerCase();
 
               // check for relevant keys here
-              if ( KeyboardUtils.isRangeKey( event.domEvent.keyCode ) ) {
+              if ( KeyboardUtils.isRangeKey( key ) ) {
                 if ( !self._callbackTimer.isRunning() ) {
                   self.accessibleNumberSpinnerHandleKeyDown( event );
 
                   downCallback = self.accessibleNumberSpinnerHandleKeyDown.bind( self, event );
-                  runningTimerCallbackKeyCode = event.domEvent.keyCode;
+                  runningTimerCallbackKey = key;
                   self._callbackTimer.addCallback( downCallback );
                   self._callbackTimer.start();
                 }
@@ -118,13 +119,15 @@ const AccessibleNumberSpinner = {
             }
           },
           keyup: function( event ) {
-            if ( KeyboardUtils.isRangeKey( event.domEvent.keyCode ) ) {
-              if ( event.domEvent.keyCode === runningTimerCallbackKeyCode ) {
-                self.emitKeyState( event.domEvent.keyCode, false );
+            const key = event.domEvent.key.toLowerCase();
+
+            if ( KeyboardUtils.isRangeKey( key ) ) {
+              if ( key === runningTimerCallbackKey ) {
+                self.emitKeyState( key, false );
                 self._callbackTimer.stop( false );
                 self._callbackTimer.removeCallback( downCallback );
                 downCallback = null;
-                runningTimerCallbackKeyCode = null;
+                runningTimerCallbackKey = null;
               }
 
               self.handleKeyUp( event );
@@ -133,11 +136,11 @@ const AccessibleNumberSpinner = {
           blur: function() {
 
             // if a key is currently down when focus leaves the spinner, stop callbacks and emit that the
-            // keyCode is up
+            // key is up
             if ( downCallback ) {
-              assert && assert( runningTimerCallbackKeyCode !== null, 'key should be down if running downCallback' );
+              assert && assert( runningTimerCallbackKey !== null, 'key should be down if running downCallback' );
 
-              self.emitKeyState( runningTimerCallbackKeyCode, false );
+              self.emitKeyState( runningTimerCallbackKey, false );
               self._callbackTimer.stop( false );
               self._callbackTimer.removeCallback( downCallback );
             }
@@ -171,7 +174,7 @@ const AccessibleNumberSpinner = {
        */
       accessibleNumberSpinnerHandleKeyDown: function( event ) {
         this.handleKeyDown( event );
-        this.emitKeyState( event.domEvent.keyCode, true );
+        this.emitKeyState( event.domEvent.key.toLowerCase(), true );
       },
 
       /**
@@ -179,14 +182,14 @@ const AccessibleNumberSpinner = {
        * interaction.
        * @private
        *
-       * @param {number} keyCode - the code of the key changing state
+       * @param {KeyDef} key - the code of the key changing state
        * @param {boolean} isDown - whether or not event was triggered from down or up keys
        */
-      emitKeyState: function( keyCode, isDown ) {
-        if ( keyCode === KeyboardUtils.KEY_UP_ARROW || keyCode === KeyboardUtils.KEY_RIGHT_ARROW ) {
+      emitKeyState: function( key, isDown ) {
+        if ( key === KeyboardUtils.KEY_UP_ARROW || key === KeyboardUtils.KEY_RIGHT_ARROW ) {
           this.incrementDownEmitter.emit( isDown );
         }
-        else if ( keyCode === KeyboardUtils.KEY_DOWN_ARROW || keyCode === KeyboardUtils.KEY_LEFT_ARROW ) {
+        else if ( key === KeyboardUtils.KEY_DOWN_ARROW || key === KeyboardUtils.KEY_LEFT_ARROW ) {
           this.decrementDownEmitter.emit( isDown );
         }
       },

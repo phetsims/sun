@@ -489,7 +489,7 @@ const AccessibleValueHandler = {
        */
       handleKeyDown( event ) {
         const domEvent = event.domEvent;
-        const code = domEvent.keyCode;
+        const key = domEvent.key.toLowerCase();
         this._shiftKey = domEvent.shiftKey;
 
         // if we receive a keydown event, we shouldn't handle any input events (which should only be provided
@@ -499,7 +499,7 @@ const AccessibleValueHandler = {
         if ( this._enabledProperty.get() ) {
 
           // Prevent default so browser doesn't change input value automatically
-          if ( KeyboardUtils.isRangeKey( code ) ) {
+          if ( KeyboardUtils.isRangeKey( key ) ) {
             domEvent.preventDefault(); // this should do the same thing as this.a11yInputHandled for "change" and "input"
 
             // signify that this listener is reserved for dragging so that other listeners can change
@@ -512,42 +512,42 @@ const AccessibleValueHandler = {
             }
 
             // track that a new key is being held down
-            this.rangeKeysDown[ code ] = true;
+            this.rangeKeysDown[ key ] = true;
 
             let newValue = this._valueProperty.get();
-            if ( code === KeyboardUtils.KEY_END || code === KeyboardUtils.KEY_HOME ) {
+            if ( key === KeyboardUtils.KEY_END || key === KeyboardUtils.KEY_HOME ) {
 
               // on 'end' and 'home' snap to max and min of enabled range respectively (this is typical browser
               // behavior for sliders)
-              if ( code === KeyboardUtils.KEY_END ) {
+              if ( key === KeyboardUtils.KEY_END ) {
                 newValue = this._rangeProperty.get().max;
               }
-              else if ( code === KeyboardUtils.KEY_HOME ) {
+              else if ( key === KeyboardUtils.KEY_HOME ) {
                 newValue = this._rangeProperty.get().min;
               }
             }
             else {
               let stepSize;
-              if ( code === KeyboardUtils.KEY_PAGE_UP || code === KeyboardUtils.KEY_PAGE_DOWN ) {
+              if ( key === KeyboardUtils.KEY_PAGE_UP || key === KeyboardUtils.KEY_PAGE_DOWN ) {
                 // on page up and page down, the default step size is 1/10 of the range (this is typical browser behavior)
                 stepSize = this.pageKeyboardStep;
 
-                if ( code === KeyboardUtils.KEY_PAGE_UP ) {
+                if ( key === KeyboardUtils.KEY_PAGE_UP ) {
                   newValue = this._valueProperty.get() + stepSize;
                 }
-                else if ( code === KeyboardUtils.KEY_PAGE_DOWN ) {
+                else if ( key === KeyboardUtils.KEY_PAGE_DOWN ) {
                   newValue = this._valueProperty.get() - stepSize;
                 }
               }
-              else if ( KeyboardUtils.isArrowKey( code ) ) {
+              else if ( KeyboardUtils.isArrowKey( key ) ) {
 
                 // if the shift key is pressed down, modify the step size (this is atypical browser behavior for sliders)
                 stepSize = domEvent.shiftKey ? this.shiftKeyboardStep : this.keyboardStep;
 
-                if ( code === KeyboardUtils.KEY_RIGHT_ARROW || code === KeyboardUtils.KEY_UP_ARROW ) {
+                if ( key === KeyboardUtils.KEY_RIGHT_ARROW || key === KeyboardUtils.KEY_UP_ARROW ) {
                   newValue = this._valueProperty.get() + stepSize;
                 }
-                else if ( code === KeyboardUtils.KEY_LEFT_ARROW || code === KeyboardUtils.KEY_DOWN_ARROW ) {
+                else if ( key === KeyboardUtils.KEY_LEFT_ARROW || key === KeyboardUtils.KEY_DOWN_ARROW ) {
                   newValue = this._valueProperty.get() - stepSize;
                 }
 
@@ -581,6 +581,7 @@ const AccessibleValueHandler = {
        */
       handleKeyUp( event ) {
         const domEvent = event.domEvent;
+        const key = domEvent.key.toLowerCase();
 
         // handle case where user tabbed to this input while an arrow key might have been held down
         if ( this.allKeysUp() ) {
@@ -588,13 +589,13 @@ const AccessibleValueHandler = {
         }
 
         // reset shift key flag when we release it
-        if ( domEvent.keyCode === KeyboardUtils.KEY_SHIFT ) {
+        if ( key === KeyboardUtils.KEY_SHIFT ) {
           this._shiftKey = false;
         }
 
         if ( this._enabledProperty.get() ) {
-          if ( KeyboardUtils.isRangeKey( domEvent.keyCode ) ) {
-            this.rangeKeysDown[ domEvent.keyCode ] = false;
+          if ( KeyboardUtils.isRangeKey( key ) ) {
+            this.rangeKeysDown[ key ] = false;
 
             // when all range keys are released, we are done dragging
             if ( this.allKeysUp() ) {
