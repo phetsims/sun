@@ -12,7 +12,7 @@ import Shape from '../../kite/js/Shape.js';
 import merge from '../../phet-core/js/merge.js';
 import Path from '../../scenery/js/nodes/Path.js';
 import sun from './sun.js';
-import ICONS from '../../sherpa/js/font-awesome/FontAwesomeIcons4_5.js';
+import ICONS from '../../sherpa/js/fontawesome-4/FontAwesomeIcons4_5.js';
 
 /*
  * The ICONS data structure contains SVG descriptions of Font Awesome icons used in PhET simulations.
