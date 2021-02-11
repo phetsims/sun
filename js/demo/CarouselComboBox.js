@@ -57,7 +57,7 @@ class CarouselComboBox extends Node {
       itemXMargin: 6, // {number} x margin for backgrounds on the items in the carousel
       itemYMargin: 2, // {number} y margin for backgrounds on the items in the carousel
 
-      // Options passed to carousel
+      // Options passed to Carousel
       carouselOptions: {
         arrowSize: new Dimension2( 20, 4 ),
 
