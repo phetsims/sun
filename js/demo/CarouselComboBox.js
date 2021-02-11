@@ -12,7 +12,7 @@
  *
  * FUTURE WORK:
  * - make CarouselComboBox pop up the Carousel in front of everything else
- * - a11y support for CarouselComboBox
+ * - a11y support in CarouselComboBox
  * - Modify ComboBox so that it can use different types of popups (ComboBoxListBox, Carousel,...)
  *
  * @author Chris Malley (PixelZoom, Inc.)
