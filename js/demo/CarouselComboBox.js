@@ -41,9 +41,9 @@ import sun from '../sun.js';
 class CarouselComboBox extends Node {
 
   /**
-   * @param {Property.<*>} property
-   * @param {ComboBoxItem[]} comboBoxItems
-   * @param options
+   * @param {Property.<*>} property - the Property that is set when an item is selected
+   * @param {ComboBoxItem[]} comboBoxItems - the items that appear in the carousel
+   * @param {Object} [options]
    */
   constructor( property, comboBoxItems, options ) {
 
@@ -63,7 +63,7 @@ class CarouselComboBox extends Node {
       carouselOptions: {
         arrowSize: new Dimension2( 20, 4 ),
 
-        // Like combo box, 'vertical' is the only orientation supported (verified below).
+        // Like ComboBox, 'vertical' is the only orientation supported (verified below).
         orientation: 'vertical',
 
         // Spacing and margins will be built into the backgrounds that are add to the item Nodes,
@@ -79,7 +79,7 @@ class CarouselComboBox extends Node {
       buttonOptions: {
         arrowDirection: 'down', // 'up' is not currently supported (verified below)
         baseColor: 'rgb( 218, 236, 255 )',
-        xMargin: 6, // You'll typically want this to be the same as itemXMargin.
+        xMargin: 6, // You'll typically want this to be the same as itemXMargin, but we're not going to force you :)
         yMargin: 4
       },
 
@@ -130,7 +130,8 @@ class CarouselComboBox extends Node {
       const itemNode = itemNodes[ i ];
 
       const backgroundNode = new Rectangle( 0, 0, backgroundSize.width, backgroundSize.height, {
-        center: itemNode.center // Actual alignment of the items on the background is handled by AlignBox above.
+        // Actual alignment of an item on the background is determined by AlignBox xAlign, above.
+        center: itemNode.center
       } );
 
       const carouselItemNode = new Node( {
@@ -192,13 +193,13 @@ class CarouselComboBox extends Node {
     property.link( propertyListener );
 
     // Clicking anywhere other than the button or carousel will hide the carousel.
-    // NOTE: This was adapted from ComboBox.
+    // NOTE: adapted from ComboBox.
     const clickToDismissListener = {
       down: event => {
 
         // If fuzzing is enabled, exercise this listener some percentage of the time, so that this listener is tested.
-        // The rest of the time, ignore this listener, so that the listbox remains popped up, and we test making
-        // choices from the listbox. See https://github.com/phetsims/sun/issues/677
+        // The rest of the time, ignore this listener, so that the carousel remains popped up, and we test making
+        // choices from the carousel. See https://github.com/phetsims/sun/issues/677
         if ( !phet.chipper.isFuzzEnabled() || dotRandom.nextDouble() < 0.25 ) {
 
           // Ignore if we click over the button, since the button will handle hiding the list.
@@ -210,7 +211,7 @@ class CarouselComboBox extends Node {
     };
 
     // Add clickToDismissListener only when the carousel is visible. unlink is not needed.
-    // NOTE: This was adapted from ComboBox.
+    // NOTE: adapted from ComboBox.
     let display = null; // {Display}
     carousel.visibleProperty.link( visible => {
       if ( visible ) {
