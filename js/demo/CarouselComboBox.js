@@ -11,8 +11,9 @@
  * It was written to be fairly general, so should be relatively easy to relocated if it's needed for wider use.
  *
  * FUTURE WORK:
- * - Modify ComboBox so that it can use different types of popups (ComboBoxListBox, Carousel,...)
+ * - make CarouselComboBox pop up the Carousel in front of everything else
  * - a11y support for CarouselComboBox
+ * - Modify ComboBox so that it can use different types of popups (ComboBoxListBox, Carousel,...)
  *
  * @author Chris Malley (PixelZoom, Inc.)
  */
