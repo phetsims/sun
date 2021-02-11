@@ -1,13 +1,18 @@
 // Copyright 2021, University of Colorado Boulder
 
 /**
- * CarouselComboBox behaves like a combo box, but its listbox is a carousel.
+ * CarouselComboBox behaves like a combo box, but its listbox is a carousel. It reuses ComboBoxItem, ComboBoxButton, and
+ * Carousel.
  *
  * NOTE! This was created as a quick way to address situations where the listbox gets too long, for example
  * https://github.com/phetsims/sun/issues/673. This tends to happen in internal 'demo' applications
  * (sun, scenery-phet,... ) that have long lists of demos. And as a design best-practice, we tend to avoid
  * longs lists of things in sims. So that's why CarouselComboBox currently lives in sun/demo/.
  * It was written to be fairly general, so should be relatively easy to relocated if it's needed for wider use.
+ *
+ * FUTURE WORK:
+ * - Modify ComboBox so that it can use different types of popups (ComboBoxListBox, Carousel,...)
+ * - a11y support for CarouselComboBox
  *
  * @author Chris Malley (PixelZoom, Inc.)
  */
@@ -16,29 +21,25 @@ import Multilink from '../../../axon/js/Multilink.js';
 import Property from '../../../axon/js/Property.js';
 import Dimension2 from '../../../dot/js/Dimension2.js';
 import dotRandom from '../../../dot/js/dotRandom.js';
-import Shape from '../../../kite/js/Shape.js';
 import merge from '../../../phet-core/js/merge.js';
 import AssertUtils from '../../../phetcommon/js/AssertUtils.js';
 import PressListener from '../../../scenery/js/listeners/PressListener.js';
 import AlignBox from '../../../scenery/js/nodes/AlignBox.js';
 import AlignGroup from '../../../scenery/js/nodes/AlignGroup.js';
-import HBox from '../../../scenery/js/nodes/HBox.js';
 import Node from '../../../scenery/js/nodes/Node.js';
-import Path from '../../../scenery/js/nodes/Path.js';
 import Rectangle from '../../../scenery/js/nodes/Rectangle.js';
 import VBox from '../../../scenery/js/nodes/VBox.js';
 import Color from '../../../scenery/js/util/Color.js';
 import Tandem from '../../../tandem/js/Tandem.js';
-import RectangularPushButton from '../buttons/RectangularPushButton.js';
 import Carousel from '../Carousel.js';
+import ComboBoxButton from '../ComboBoxButton.js';
 import ComboBoxItem from '../ComboBoxItem.js';
 import sun from '../sun.js';
-import VSeparator from '../VSeparator.js';
 
 class CarouselComboBox extends Node {
 
   /**
-   * @param {Property.<*>}property
+   * @param {Property.<*>} property
    * @param {ComboBoxItem[]} comboBoxItems
    * @param options
    */
@@ -72,8 +73,9 @@ class CarouselComboBox extends Node {
         itemsPerPage: 15
       },
 
-      // Options passed to RectangularPushButton
+      // Options passed to ComboBoxButton
       buttonOptions: {
+        arrowDirection: 'down', // 'up' is not currently supported (verified below)
         baseColor: 'rgb( 218, 236, 255 )',
         xMargin: 6, // You'll typically want this to be the same as itemXMargin.
         yMargin: 4
@@ -85,6 +87,7 @@ class CarouselComboBox extends Node {
 
     // Validate options
     assert && assert( options.carouselOptions.orientation === 'vertical', 'orientation must be vertical' );
+    assert && assert( options.buttonOptions.arrowDirection === 'down', 'arrowDirection must be down' );
 
     // Check for options that are not settable by the client
     assert && assert( !options.children, 'CarouselComboBox sets children' );
@@ -142,6 +145,7 @@ class CarouselComboBox extends Node {
 
       // Selecting an item sets its background to the selected color.
       // Pointer over an item sets its background to the highlighted color.
+      // Must be disposed because we do not own property.
       const multilink = new Multilink(
         [ property, pressListener.isOverProperty ],
         ( propertyValue, isOver ) => {
@@ -164,37 +168,10 @@ class CarouselComboBox extends Node {
     // Create the carousel.
     const carousel = new Carousel( carouselItemNodes, options.carouselOptions );
 
-    // Parent for the Node associated with the selected item, shown on the push button.
-    const itemNodeParent = new Node( {
-      children: [ itemNodes[ 0 ] ] // any itemNode so that we have correct bounds, proper itemNode set below
-    } );
-
-    // Arrow node, like ComboBoxButton
-    const arrowHeight = 0.65 * itemNodeParent.height;
-    const arrowWidth = 2 * arrowHeight * Math.sqrt( 3 ) / 3; // side of equilateral triangle
-    const downArrowShape = new Shape()
-      .moveTo( 0, 0 )
-      .lineTo( arrowWidth, 0 )
-      .lineTo( arrowWidth / 2, arrowHeight )
-      .close();
-    const downArrowNode = new Path( downArrowShape, { fill: 'black' } );
-
-    // Content for the push button.
-    // We'll be swapping out the children of itemNodeParent depending on which item is selected.
-    const buttonContent = new HBox( {
-      spacing: 6,
-      children: [
-        itemNodeParent,
-        new VSeparator( itemNodeParent.height, { stroke: 'black' } ),
-        downArrowNode
-      ]
-    } );
-
-    // Pressing the push button toggles visibility of the carousel.
-    const button = new RectangularPushButton( merge( {}, {
-      content: buttonContent,
+    // Pressing this button pops up the carousel
+    const button = new ComboBoxButton( property, comboBoxItems, merge( {}, {
       listener: () => { carousel.visible = !carousel.visible; }
-    } ) );
+    }, options.buttonOptions ) );
 
     // Put the button above the carousel, left aligned.
     const vBox = new VBox( {
@@ -208,10 +185,8 @@ class CarouselComboBox extends Node {
 
     super( options );
 
-    const propertyListener = propertyValue => {
-      itemNodeParent.children = [ _.find( itemNodes, itemNode => propertyValue === itemNode.itemValue ) ];
-      carousel.visible = false;
-    };
+    // If the Property changes, hide the carousel. unlink is needed on disposed.
+    const propertyListener = () => { carousel.visible = false; };
     property.link( propertyListener );
 
     // Clicking anywhere other than the button or carousel will hide the carousel.
@@ -232,7 +207,7 @@ class CarouselComboBox extends Node {
       }
     };
 
-    // Add clickToDismissListener only when the carousel is visible.
+    // Add clickToDismissListener only when the carousel is visible. unlink is not needed.
     // NOTE: This was adapted from ComboBox.
     let display = null; // {Display}
     carousel.visibleProperty.link( visible => {
@@ -250,13 +225,13 @@ class CarouselComboBox extends Node {
     } );
 
     // @private
-    this.disposedCarouselComboBox = () => {
+    this.disposeCarouselComboBox = () => {
 
       // Deregister observers
       property.unlink( propertyListener );
       multilinks.forEach( multilink => multilink.dispose() );
 
-      // dispose of PhET-iO instrumented subcomponents
+      // Dispose of PhET-iO instrumented subcomponents
       carousel.dispose();
       button.dispose();
     };
@@ -267,7 +242,7 @@ class CarouselComboBox extends Node {
    * @override
    */
   dispose() {
-    this.disposedCarouselComboBox();
+    this.disposeCarouselComboBox();
     super.dispose();
   }
 }
