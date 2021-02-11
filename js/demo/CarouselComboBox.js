@@ -11,7 +11,7 @@
  * longs lists of things in sims. So that's why CarouselComboBox currently lives in sun/demo/.
  * It was written to be fairly general, so should be relatively easy to relocate if it's needed for wider use.
  *
- * Possibilities for future work:
+ * Possible future work:
  * - Modify ComboBox so that it can use different types of popups (ComboBoxListBox, Carousel,...), or
  * - Make CarouselComboBox pop up the Carousel in front of everything else
  * - a11y support in CarouselComboBox
