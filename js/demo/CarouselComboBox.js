@@ -9,7 +9,7 @@
  * https://github.com/phetsims/sun/issues/673. This tends to happen in internal 'demo' applications
  * (sun, scenery-phet,... ) that have long lists of demos. And as a design best-practice, we tend to avoid
  * longs lists of things in sims. So that's why CarouselComboBox currently lives in sun/demo/.
- * It was written to be fairly general, so should be relatively easy to relocated if it's needed for wider use.
+ * It was written to be fairly general, so should be relatively easy to relocate if it's needed for wider use.
  *
  * Possibilities for future work:
  * - Modify ComboBox so that it can use different types of popups (ComboBoxListBox, Carousel,...), or
