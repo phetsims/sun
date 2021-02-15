@@ -20,26 +20,26 @@
  * @author Chris Malley (PixelZoom, Inc.)
  */
 
-import Multilink from '../../../axon/js/Multilink.js';
-import Property from '../../../axon/js/Property.js';
-import Dimension2 from '../../../dot/js/Dimension2.js';
-import dotRandom from '../../../dot/js/dotRandom.js';
-import merge from '../../../phet-core/js/merge.js';
-import AssertUtils from '../../../phetcommon/js/AssertUtils.js';
-import PressListener from '../../../scenery/js/listeners/PressListener.js';
-import AlignBox from '../../../scenery/js/nodes/AlignBox.js';
-import AlignGroup from '../../../scenery/js/nodes/AlignGroup.js';
-import HBox from '../../../scenery/js/nodes/HBox.js';
-import Node from '../../../scenery/js/nodes/Node.js';
-import Rectangle from '../../../scenery/js/nodes/Rectangle.js';
-import VBox from '../../../scenery/js/nodes/VBox.js';
-import Color from '../../../scenery/js/util/Color.js';
-import Tandem from '../../../tandem/js/Tandem.js';
-import Carousel from '../Carousel.js';
-import ComboBoxButton from '../ComboBoxButton.js';
-import ComboBoxItem from '../ComboBoxItem.js';
-import PageControl from '../PageControl.js';
-import sun from '../sun.js';
+import Multilink from '../../axon/js/Multilink.js';
+import Property from '../../axon/js/Property.js';
+import Dimension2 from '../../dot/js/Dimension2.js';
+import dotRandom from '../../dot/js/dotRandom.js';
+import merge from '../../phet-core/js/merge.js';
+import AssertUtils from '../../phetcommon/js/AssertUtils.js';
+import PressListener from '../../scenery/js/listeners/PressListener.js';
+import AlignBox from '../../scenery/js/nodes/AlignBox.js';
+import AlignGroup from '../../scenery/js/nodes/AlignGroup.js';
+import HBox from '../../scenery/js/nodes/HBox.js';
+import Node from '../../scenery/js/nodes/Node.js';
+import Rectangle from '../../scenery/js/nodes/Rectangle.js';
+import VBox from '../../scenery/js/nodes/VBox.js';
+import Color from '../../scenery/js/util/Color.js';
+import Tandem from '../../tandem/js/Tandem.js';
+import Carousel from './Carousel.js';
+import ComboBoxButton from './ComboBoxButton.js';
+import ComboBoxItem from './ComboBoxItem.js';
+import PageControl from './PageControl.js';
+import sun from './sun.js';
 
 class CarouselComboBox extends Node {
 

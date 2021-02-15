@@ -13,9 +13,9 @@ import PhetFont from '../../../scenery-phet/js/PhetFont.js';
 import Node from '../../../scenery/js/nodes/Node.js';
 import Text from '../../../scenery/js/nodes/Text.js';
 import Tandem from '../../../tandem/js/Tandem.js';
+import CarouselComboBox from '../CarouselComboBox.js';
 import ComboBoxItem from '../ComboBoxItem.js';
 import sun from '../sun.js';
-import CarouselComboBox from './CarouselComboBox.js';
 
 // constants
 const ITEM_FONT = new PhetFont( 14 );
