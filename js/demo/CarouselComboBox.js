@@ -54,12 +54,14 @@ class CarouselComboBox extends Node {
 
     options = merge( {
 
-      // Options specific to CarouselComboBox
-      align: 'left', // {string} alignment of items in the carousel, 'left'|'right'|'center'
-      overColor: Color.grayColor( 245 ), // {ColorDef} background color of the item that the pointer is over
-      selectedColor: 'yellow', // {ColorDef} background color of the selected item
-      itemXMargin: 6, // {number} x margin for backgrounds on the items in the carousel
-      itemYMargin: 2, // {number} y margin for backgrounds on the items in the carousel
+      // Options passed to CarouselItemNode
+      itemNodeOptions: {
+        align: 'left', // {string} alignment of item nodes on backgrounds, 'left'|'center'|'right'
+        overColor: Color.grayColor( 245 ), // {ColorDef} background color of the item that the pointer is over
+        selectedColor: 'yellow', // {ColorDef} background color of the selected item
+        itemXMargin: 6, // {number} x margin for backgrounds on the items in the carousel
+        itemYMargin: 2 // {number} y margin for backgrounds on the items in the carousel
+      },
 
       // Options passed to Carousel
       carouselOptions: {
@@ -113,69 +115,13 @@ class CarouselComboBox extends Node {
     options.carouselOptions.tandem = options.carouselOptions.tandem || options.tandem.createTandem( 'carousel' );
     options.buttonOptions.tandem = options.buttonOptions.tandem || options.tandem.createTandem( 'button' );
 
-    // Make all Nodes for the comboBoxItems have the same width and height, left justified.
+    // Make items in the carousel have the same width and height.
     const alignGroup = new AlignGroup();
-    const itemNodes = _.map( comboBoxItems, item => {
-      const node = new AlignBox( item.node, {
-        group: alignGroup,
-        xAlign: options.align
-      } );
-      node.itemValue = item.value; // attach the item's value to the Node, we'll need it later
-      return node;
-    } );
 
-    // Size of the background that we'll put behind all item Nodes. Since we made all of the Nodes have the same
-    // dimensions using AlignBox above, we can simply inspect the first Node.
-    const backgroundSize = new Dimension2(
-      itemNodes[ 0 ].width + 2 * options.itemXMargin,
-      itemNodes[ 0 ].height + 2 * options.itemYMargin
+    // Create items for the carousel, whose API for 'items' is different than ComboBox.
+    const carouselItemNodes = _.map( comboBoxItems,
+      comboBoxItem => new CarouselItemNode( property, comboBoxItem, alignGroup, options.itemNodeOptions )
     );
-
-    // Create items for the carousel, whose API for 'items' is different than ComboBox. The Node for each item is a
-    // label on a background. The background changes color when the item is selected or the pointer is over the item.
-    const carouselItemNodes = [];
-    const multilinks = [];
-    for ( let i = 0; i < itemNodes.length; i++ ) {
-
-      const itemNode = itemNodes[ i ];
-
-      const backgroundNode = new Rectangle( 0, 0, backgroundSize.width, backgroundSize.height, {
-        // Actual alignment of an item on the background is determined by AlignBox xAlign, above.
-        center: itemNode.center
-      } );
-
-      const carouselItemNode = new Node( {
-        children: [ backgroundNode, itemNode ]
-      } );
-
-      // Press on an item to select its associated value.
-      const pressListener = new PressListener( {
-        press: () => {
-          property.value = itemNode.itemValue;
-        }
-      } );
-      carouselItemNode.addInputListener( pressListener );
-
-      // Selecting an item sets its background to the selected color.
-      // Pointer over an item sets its background to the highlighted color.
-      // Must be disposed because we do not own property.
-      const multilink = new Multilink(
-        [ property, pressListener.isOverProperty ],
-        ( propertyValue, isOver ) => {
-          if ( propertyValue === itemNode.itemValue ) {
-            backgroundNode.fill = options.selectedColor;
-          }
-          else if ( isOver ) {
-            backgroundNode.fill = options.overColor;
-          }
-          else {
-            backgroundNode.fill = 'transparent';
-          }
-        } );
-      multilinks.push( multilink );
-
-      carouselItemNodes.push( carouselItemNode );
-    }
     assert && assert( carouselItemNodes.length === comboBoxItems.length, 'expected a carouselItem for each comboBoxItem' );
 
     // Create the carousel.
@@ -253,12 +199,12 @@ class CarouselComboBox extends Node {
 
       // Deregister observers
       property.unlink( propertyListener );
-      multilinks.forEach( multilink => multilink.dispose() );
 
       // Dispose of subcomponents
       button.dispose();
       pageControl.dispose();
       carousel.dispose();
+      carouselItemNodes.forEach( node => node.dispose() );
     };
   }
 
@@ -268,6 +214,88 @@ class CarouselComboBox extends Node {
    */
   dispose() {
     this.disposeCarouselComboBox();
+    super.dispose();
+  }
+}
+
+/**
+ * CarouselItemNode is an item this UI component's carousel. Carousel and ComboBox have different APIs for 'items'.
+ * This class adapts a ComboBoxItem by making the Node have uniform dimensions, and putting a background behind the
+ * Node. The background changes color when the item is selected or the pointer is over the item.
+ */
+class CarouselItemNode extends Node {
+
+  /**
+   * @param {Property.<*>} property
+   * @param {ComboBoxItem} comboBoxItem
+   * @param {AlignGroup} alignGroup - used to make all item Nodes have uniform dimensions
+   * @param {Object} [options]
+   */
+  constructor( property, comboBoxItem, alignGroup, options ) {
+
+    options = merge( {
+      align: 'left', // {string} alignment of node on background, 'left'|'center'|'right'
+      xMargin: 6, // {number} x margin for backgrounds on the items in the carousel
+      yMargin: 2, // {number} y margin for backgrounds on the items in the carousel
+      overColor: Color.grayColor( 245 ), // {ColorDef} background color of the item that the pointer is over
+      selectedColor: 'yellow' // {ColorDef} background color of the selected item
+    }, options );
+
+    const uniformNode = new AlignBox( comboBoxItem.node, {
+      xAlign: options.align,
+      group: alignGroup
+    } );
+
+    const backgroundNode = new Rectangle( 0, 0, 1, 1 );
+
+    // Size backgroundNode to fit uniformNode. Note that uniformNode's bounds may change when additional Nodes are
+    // added to alignGroup.
+    uniformNode.boundsProperty.link( bounds => {
+      backgroundNode.setRectBounds( bounds.dilatedXY( options.xMargin, options.yMargin ) );
+    } );
+
+    assert && assert( !options.children, 'CarouselItemNode sets children' );
+    options.children = [ backgroundNode, uniformNode ];
+
+    super( options );
+
+    // Press on an item to select its associated value.
+    const pressListener = new PressListener( {
+      press: () => {
+        property.value = comboBoxItem.value;
+      }
+    } );
+    this.addInputListener( pressListener );
+
+    // Selecting an item sets its background to the selected color.
+    // Pointer over an item sets its background to the highlighted color.
+    // Must be disposed because we do not own property.
+    const multilink = new Multilink(
+      [ property, pressListener.isOverProperty ],
+      ( propertyValue, isOver ) => {
+        if ( propertyValue === comboBoxItem.value ) {
+          backgroundNode.fill = options.selectedColor;
+        }
+        else if ( isOver ) {
+          backgroundNode.fill = options.overColor;
+        }
+        else {
+          backgroundNode.fill = 'transparent';
+        }
+      } );
+
+    // @private
+    this.disposeCarouselItemNode = () => {
+      multilink.dispose();
+    };
+  }
+
+  /**
+   * @public
+   * @override
+   */
+  dispose() {
+    this.disposeCarouselItemNode();
     super.dispose();
   }
 }
