@@ -55,6 +55,9 @@ function demoRadioButtons( layoutBounds ) {
 
   // For enabling/disabling all buttons
   const buttonsEnabledProperty = new Property( true );
+  const buttonsEnabledCheckbox = new Checkbox( new Text( 'buttons enabled', {
+      font: new Font( { size: 20 } )
+    } ), buttonsEnabledProperty );
 
   const radioGroupBaseColor = new Property( 'green' );
 
@@ -77,7 +80,8 @@ function demoRadioButtons( layoutBounds ) {
     buttonContentXAlign: 'center',
     buttonContentYAlign: 'center',
 
-    baseColor: radioGroupBaseColor
+    baseColor: radioGroupBaseColor,
+    enabledProperty: buttonsEnabledProperty
   } );
   const rectangularRadioButtonPanel = new Panel( rectangularRadioButtonGroup, {
     xMargin: 10,
@@ -96,22 +100,13 @@ function demoRadioButtons( layoutBounds ) {
     };
   } );
   const aquaRadioButtonGroup = new VerticalAquaRadioButtonGroup( aquaRadioButtonProperty, aquaRadioButtonGroupContent, {
-    spacing: 8
+    spacing: 8,
+    enabledProperty: buttonsEnabledProperty
   } );
   const aquaRadioButtonGroupPanel = new Panel( aquaRadioButtonGroup, {
     stroke: 'black',
     xMargin: 10,
     yMargin: 10
-  } );
-
-  const buttonsEnabledText = new Text( 'buttons enabled', {
-    font: new Font( { size: 20 } )
-  } );
-  const buttonsEnabledCheckbox = new Checkbox( buttonsEnabledText, buttonsEnabledProperty );
-
-  buttonsEnabledProperty.link( enabled => {
-    rectangularRadioButtonGroup.enabled = enabled;
-    aquaRadioButtonGroup.enabled = enabled;
   } );
 
   return new VBox( {
@@ -131,30 +126,25 @@ function demoToggleButtons( layoutBounds ) {
 
   // For enabling/disabling all buttons
   const buttonsEnabledProperty = new Property( true );
+  const buttonsEnabledCheckbox = new Checkbox( new Text( 'buttons enabled', {
+      font: new Font( { size: 20 } )
+    } ), buttonsEnabledProperty );
 
   // Demonstrate using arbitrary values for toggle button.  Wrap in extra
   // quotes so it is clear that it is a string in the debugging UI.
   const roundToggleButtonProperty = new Property( 'off' );
   roundToggleButtonProperty.lazyLink( value => console.log( `roundToggleButtonProperty.value = ${value}` ) );
   const roundStickyToggleButton = new RoundStickyToggleButton( 'off', 'on', roundToggleButtonProperty, {
-    baseColor: new Color( 255, 0, 0 )
+    baseColor: new Color( 255, 0, 0 ),
+    enabledProperty: buttonsEnabledProperty
   } );
 
   const booleanRectangularToggleButtonProperty = new BooleanProperty( false );
   booleanRectangularToggleButtonProperty.lazyLink( value => console.log( `booleanRectangularToggleButtonProperty.value = ${value}` ) );
   const booleanRectangularStickyToggleButton = new BooleanRectangularStickyToggleButton( booleanRectangularToggleButtonProperty, {
     baseColor: new Color( 0, 200, 200 ),
+    enabledProperty: buttonsEnabledProperty,
     size: new Dimension2( 50, 35 )
-  } );
-
-  const buttonsEnabledText = new Text( 'buttons enabled', {
-    font: new Font( { size: 20 } )
-  } );
-  const buttonsEnabledCheckbox = new Checkbox( buttonsEnabledText, buttonsEnabledProperty );
-
-  buttonsEnabledProperty.link( enabled => {
-    roundStickyToggleButton.enabled = enabled;
-    booleanRectangularStickyToggleButton.enabled = enabled;
   } );
 
   return new VBox( {
@@ -174,12 +164,16 @@ function demoMomentaryButtons( layoutBounds ) {
 
   // For enabling/disabling all buttons
   const buttonsEnabledProperty = new Property( true );
+  const buttonsEnabledCheckbox = new Checkbox( new Text( 'buttons enabled', {
+      font: new Font( { size: 20 } )
+    } ), buttonsEnabledProperty );
 
   // round
   const roundMomentaryProperty = new Property( false );
   roundMomentaryProperty.lazyLink( value => console.log( `roundMomentaryProperty.value = ${value}` ) );
   const roundMomentaryButton = new RoundMomentaryButton( false, true, roundMomentaryProperty, {
-    baseColor: '#D76958'
+    baseColor: '#D76958',
+    enabledProperty: buttonsEnabledProperty
   } );
 
   // rectangular
@@ -187,17 +181,8 @@ function demoMomentaryButtons( layoutBounds ) {
   rectangularMomentaryProperty.lazyLink( value => console.log( `rectangularMomentaryProperty.value = ${value}` ) );
   const rectangularMomentaryButton = new RectangularMomentaryButton( false, true, rectangularMomentaryProperty, {
     baseColor: '#724C35',
+    enabledProperty: buttonsEnabledProperty,
     size: new Dimension2( 50, 40 )
-  } );
-
-  const buttonsEnabledText = new Text( 'buttons enabled', {
-    font: new Font( { size: 20 } )
-  } );
-  const buttonsEnabledCheckbox = new Checkbox( buttonsEnabledText, buttonsEnabledProperty );
-
-  buttonsEnabledProperty.link( enabled => {
-    roundMomentaryButton.enabled = enabled;
-    rectangularMomentaryButton.enabled = enabled;
   } );
 
   return new VBox( {
@@ -217,10 +202,9 @@ function demoPushButtons( layoutBounds ) {
 
   // For enabling/disabling all buttons
   const buttonsEnabledProperty = new Property( true );
-
-  // Dynamic colors
-  const alignBaseColor = new Property( new Color( 'red' ) );
-  const roundBaseColor = new Property( new Color( 'blue' ) );
+  const buttonsEnabledCheckbox = new Checkbox( new Text( 'buttons enabled', {
+      font: new Font( { size: 20 } )
+    } ), buttonsEnabledProperty );
 
   //===================================================================================
   // Pseudo-3D buttons A, B, C, D, E
@@ -229,6 +213,7 @@ function demoPushButtons( layoutBounds ) {
   const buttonA = new RectangularPushButton( {
     content: new Text( '--- A ---', { font: BUTTON_FONT } ),
     listener: () => console.log( 'buttonA fired' ),
+    enabledProperty: buttonsEnabledProperty,
 
     // demonstrate pointer areas, see https://github.com/phetsims/sun/issues/464
     touchAreaXDilation: 10,
@@ -240,19 +225,21 @@ function demoPushButtons( layoutBounds ) {
   const buttonB = new RectangularPushButton( {
     content: new Text( '--- B ---', { font: BUTTON_FONT } ),
     listener: () => console.log( 'buttonB fired' ),
-    baseColor: new Color( 250, 0, 0 )
+    baseColor: new Color( 250, 0, 0 ),
+    enabledProperty: buttonsEnabledProperty
   } );
 
   const buttonC = new RectangularPushButton( {
     content: new Text( '--- C ---', { font: BUTTON_FONT } ),
     listener: () => console.log( 'buttonC fired' ),
-    baseColor: 'rgb( 204, 102, 204 )'
+    baseColor: 'rgb( 204, 102, 204 )',
+    enabledProperty: buttonsEnabledProperty
   } );
 
   const buttonD = new RoundPushButton( {
     content: new Text( '--- D ---', { font: BUTTON_FONT } ),
     listener: () => console.log( 'buttonD fired' ),
-    baseColor: roundBaseColor,
+    enabledProperty: buttonsEnabledProperty,
     radius: 30,
     lineWidth: 20 // a thick stroke, to test pointer areas and focus highlight
   } );
@@ -261,6 +248,7 @@ function demoPushButtons( layoutBounds ) {
     content: new Text( '--- E ---', { font: BUTTON_FONT } ),
     listener: () => console.log( 'buttonE fired' ),
     baseColor: 'yellow',
+    enabledProperty: buttonsEnabledProperty,
 
     // Demonstrate shifted pointer areas, https://github.com/phetsims/sun/issues/500
     touchAreaXShift: 20,
@@ -272,8 +260,8 @@ function demoPushButtons( layoutBounds ) {
   const buttonF = new RoundPushButton( {
     content: new Text( '--- F ---', { font: BUTTON_FONT, fill: 'white' } ),
     listener: () => console.log( 'buttonF fired' ),
-    enabledProperty: buttonsEnabledProperty,
     baseColor: 'purple',
+    enabledProperty: buttonsEnabledProperty,
     xMargin: 20,
     yMargin: 20,
     xContentOffset: 8,
@@ -283,6 +271,7 @@ function demoPushButtons( layoutBounds ) {
   // Test for a button with different radii for each corner
   const customCornersButton = new RectangularPushButton( {
     baseColor: 'orange',
+    enabledProperty: buttonsEnabledProperty,
     size: new Dimension2( 50, 50 ),
     leftTopCornerRadius: 20,
     rightTopCornerRadius: 10,
@@ -304,6 +293,7 @@ function demoPushButtons( layoutBounds ) {
     content: new Text( '-- 1 --', { font: BUTTON_FONT } ),
     listener: () => console.log( 'button1 fired' ),
     baseColor: 'rgb( 204, 102, 204 )',
+    enabledProperty: buttonsEnabledProperty,
     buttonAppearanceStrategy: ButtonNode.FlatAppearanceStrategy
   } );
 
@@ -311,6 +301,7 @@ function demoPushButtons( layoutBounds ) {
     content: new Text( '-- 2 --', { font: BUTTON_FONT } ),
     listener: () => console.log( 'button2 fired' ),
     baseColor: '#A0D022',
+    enabledProperty: buttonsEnabledProperty,
     buttonAppearanceStrategy: ButtonNode.FlatAppearanceStrategy,
     lineWidth: 1,
     stroke: '#202020'
@@ -319,6 +310,7 @@ function demoPushButtons( layoutBounds ) {
   const button3 = new RoundPushButton( {
     content: new Text( '- 3 -', { font: BUTTON_FONT } ),
     listener: () => console.log( 'button3 fired' ),
+    enabledProperty: buttonsEnabledProperty,
     buttonAppearanceStrategy: ButtonNode.FlatAppearanceStrategy
   } );
 
@@ -326,6 +318,7 @@ function demoPushButtons( layoutBounds ) {
     content: new Text( '-- 4 --', { font: BUTTON_FONT, fill: 'white' } ),
     listener: () => console.log( 'button4 fired' ),
     baseColor: '#CC3300',
+    enabledProperty: buttonsEnabledProperty,
     buttonAppearanceStrategy: ButtonNode.FlatAppearanceStrategy
   } );
 
@@ -341,6 +334,7 @@ function demoPushButtons( layoutBounds ) {
   const fireButton = new RoundPushButton( {
     content: new Text( 'Fire!', { font: BUTTON_FONT } ),
     listener: () => console.log( 'fireButton fired' ),
+    enabledProperty: buttonsEnabledProperty,
     baseColor: 'orange',
     stroke: 'black',
     lineWidth: 0.5
@@ -350,6 +344,7 @@ function demoPushButtons( layoutBounds ) {
     content: new Text( 'Go!', { font: BUTTON_FONT } ),
     listener: () => console.log( 'goButton fired' ),
     baseColor: new Color( 0, 163, 0 ),
+    enabledProperty: buttonsEnabledProperty,
     minXPadding: 10
   } );
 
@@ -357,6 +352,7 @@ function demoPushButtons( layoutBounds ) {
     content: new Text( 'Help', { font: BUTTON_FONT } ),
     listener: () => console.log( 'helpButton fired' ),
     baseColor: new Color( 244, 154, 194 ),
+    enabledProperty: buttonsEnabledProperty,
     minXPadding: 10
   } );
 
@@ -373,6 +369,7 @@ function demoPushButtons( layoutBounds ) {
     content: new Text( 'Press and hold to test (fast fire)', { font: BUTTON_FONT } ),
     listener: () => console.log( 'fireQuicklyWhenHeldButton fired' ),
     baseColor: new Color( 114, 132, 62 ),
+    enabledProperty: buttonsEnabledProperty,
     fireOnHold: true,
     fireOnHoldDelay: 100,
     fireOnHoldInterval: 50
@@ -382,6 +379,7 @@ function demoPushButtons( layoutBounds ) {
     content: new Text( 'Press and hold to test (slow fire)', { font: BUTTON_FONT } ),
     listener: () => console.log( 'fireSlowlyWhenHeldButton fired' ),
     baseColor: new Color( 147, 92, 120 ),
+    enabledProperty: buttonsEnabledProperty,
     fireOnHold: true,
     fireOnHoldDelay: 600,
     fireOnHoldInterval: 300,
@@ -398,7 +396,7 @@ function demoPushButtons( layoutBounds ) {
   const upperLeftContentButton = new RectangularPushButton( {
     content: upperLeftAlignTextNode,
     listener: () => console.log( 'upperLeftContentButton fired' ),
-    baseColor: alignBaseColor,
+    enabledProperty: buttonsEnabledProperty,
     xAlign: 'left',
     yAlign: 'top',
     minWidth: upperLeftAlignTextNode.width * 1.5,
@@ -409,7 +407,7 @@ function demoPushButtons( layoutBounds ) {
   const lowerRightContentButton = new RectangularPushButton( {
     content: lowerRightAlignTextNode,
     listener: () => console.log( 'lowerRightContentButton fired' ),
-    baseColor: alignBaseColor,
+    enabledProperty: buttonsEnabledProperty,
     xAlign: 'right',
     yAlign: 'bottom',
     minWidth: lowerRightAlignTextNode.width * 1.5,
@@ -431,6 +429,7 @@ function demoPushButtons( layoutBounds ) {
     content: new Text( 'Fire on Down', { font: BUTTON_FONT } ),
     listener: () => console.log( 'fireOnDownButton fired' ),
     baseColor: new Color( 255, 255, 61 ),
+    enabledProperty: buttonsEnabledProperty,
     fireOnDown: true,
     stroke: 'black',
     lineWidth: 1
@@ -442,6 +441,7 @@ function demoPushButtons( layoutBounds ) {
     content: new Text( 'Transparent Button via alpha', { font: BUTTON_FONT } ),
     listener: () => console.log( 'transparentAlphaButton fired' ),
     baseColor: new Color( 255, 255, 0, 0.7 ),
+    enabledProperty: buttonsEnabledProperty,
     centerX: rectangleNode.centerX,
     top: rectangleNode.top + 10
   } );
@@ -449,6 +449,7 @@ function demoPushButtons( layoutBounds ) {
     content: new Text( 'Transparent Button via opacity', { font: BUTTON_FONT } ),
     listener: () => console.log( 'transparentOpacityButton fired' ),
     baseColor: new Color( 255, 255, 0 ),
+    enabledProperty: buttonsEnabledProperty,
     opacity: .6,
     centerX: rectangleNode.centerX,
     bottom: rectangleNode.bottom - 10
@@ -546,43 +547,8 @@ function demoPushButtons( layoutBounds ) {
   } );
 
   //===================================================================================
-  // Enable/Disable buttons
+  // Layout
   //===================================================================================
-
-  // For all of the button instances that do not use options.enabledProperty to observe
-  // buttonsEnabledProperty directly, synchronize their enabled state here.
-  buttonsEnabledProperty.link( enabled => {
-
-    // Test the enabledProperty ES5 getter for these buttons, see https://github.com/phetsims/sun/issues/515
-    buttonA.enabledProperty.value = enabled;
-    buttonB.enabledProperty.value = enabled;
-    buttonC.enabledProperty.value = enabled;
-    buttonD.enabledProperty.value = enabled;
-    buttonE.enabledProperty.value = enabled;
-
-    // Other buttons
-    customCornersButton.enabled = enabled;
-    button1.enabled = enabled;
-    button2.enabled = enabled;
-    button3.enabled = enabled;
-    button4.enabled = enabled;
-    fireButton.enabled = enabled;
-    goButton.enabled = enabled;
-    helpButton.enabled = enabled;
-    fireOnDownButton.enabled = enabled;
-    transparentAlphaButton.enabled = enabled;
-    transparentOpacityButton.enabled = enabled;
-    fireQuicklyWhenHeldButton.enabled = enabled;
-    fireSlowlyWhenHeldButton.enabled = enabled;
-    upperLeftContentButton.enabled = enabled;
-    lowerRightContentButton.enabled = enabled;
-    changeButtonColorsButton.enabled = enabled;
-  } );
-
-  const buttonsEnabledText = new Text( 'buttons enabled', {
-    font: new Font( { size: 20 } )
-  } );
-  const buttonsEnabledCheckbox = new Checkbox( buttonsEnabledText, buttonsEnabledProperty );
 
   const xSpacing = 50;
   return new VBox( {
