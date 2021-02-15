@@ -256,9 +256,9 @@ class CarouselComboBox extends Node {
       multilinks.forEach( multilink => multilink.dispose() );
 
       // Dispose of subcomponents
-      carousel.dispose();
-      pageControl.dispose();
       button.dispose();
+      pageControl.dispose();
+      carousel.dispose();
     };
   }
 
