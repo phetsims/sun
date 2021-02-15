@@ -5,12 +5,13 @@
  * long list of items, a feature that ComboBoxListBox does not support. ComboBoxItem, ComboBoxButton, and
  * Carousel are reused.
  *
- * NOTE! This was created as a quick way to address situations where ComboBox's listbox gets too long, for example
- * https://github.com/phetsims/sun/issues/673. This tends to happen in internal 'demo' applications
- * (sun, scenery-phet,... ) that have long lists of demos. And as a design best-practice, we tend to avoid
- * longs lists of things in sims. So that's why CarouselComboBox currently lives in sun/demo/.
- * It was written to be fairly general, so should be relatively easy to relocate if it's needed for wider use.
- *
+ * THINK TWICE BEFORE USING THIS IN A SIM!
+ * CarouselComboBox was created as a quick way to address situations where ComboBox's listbox gets too long,
+ * for example https://github.com/phetsims/sun/issues/673. This tends to happen in internal 'demo' applications
+ * (sun, scenery-phet,... ) that have long lists of demos. And as a design best-practice, PhET tends to avoid
+ * longs lists of things in sims. So if you find yourself reaching for CarouselComboBox, consider whether a
+ * different UI component might provide a better UX.
+ *                                                                                     
  * Possible future work:
  * - Modify ComboBox so that it can use different types of popups (ComboBoxListBox, Carousel,...), or
  * - Make CarouselComboBox pop up the Carousel in front of everything else
