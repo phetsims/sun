@@ -28,6 +28,7 @@ import AssertUtils from '../../../phetcommon/js/AssertUtils.js';
 import PressListener from '../../../scenery/js/listeners/PressListener.js';
 import AlignBox from '../../../scenery/js/nodes/AlignBox.js';
 import AlignGroup from '../../../scenery/js/nodes/AlignGroup.js';
+import HBox from '../../../scenery/js/nodes/HBox.js';
 import Node from '../../../scenery/js/nodes/Node.js';
 import Rectangle from '../../../scenery/js/nodes/Rectangle.js';
 import VBox from '../../../scenery/js/nodes/VBox.js';
@@ -36,6 +37,7 @@ import Tandem from '../../../tandem/js/Tandem.js';
 import Carousel from '../Carousel.js';
 import ComboBoxButton from '../ComboBoxButton.js';
 import ComboBoxItem from '../ComboBoxItem.js';
+import PageControl from '../PageControl.js';
 import sun from '../sun.js';
 
 class CarouselComboBox extends Node {
@@ -75,6 +77,10 @@ class CarouselComboBox extends Node {
         itemsPerPage: 15
       },
 
+      pageControlOptions: {
+        interactive: true
+      },
+
       // Options passed to ComboBoxButton
       buttonOptions: {
         arrowDirection: 'down', // 'up' is not currently supported (verified below)
@@ -98,6 +104,10 @@ class CarouselComboBox extends Node {
 
     // Don't create pages that are longer than the number of items
     options.carouselOptions.itemsPerPage = Math.min( options.carouselOptions.itemsPerPage, comboBoxItems.length );
+
+    // Orientations must be the same.
+    assert && assert( !options.pageControlOptions.orientation, 'use carouselOptions.orientation' );
+    options.pageControlOptions.orientation = options.carouselOptions.orientation;
 
     // Create tandems for subcomponents, if they were not provided
     options.carouselOptions.tandem = options.carouselOptions.tandem || options.tandem.createTandem( 'carousel' );
@@ -171,16 +181,27 @@ class CarouselComboBox extends Node {
     // Create the carousel.
     const carousel = new Carousel( carouselItemNodes, options.carouselOptions );
 
-    // Pressing this button pops up the carousel
+    // page control
+    const pageControl = new PageControl( carousel.numberOfPages, carousel.pageNumberProperty, options.pageControlOptions );
+
+    // Page control to the left of carousel
+    const carouselAndPageControl = new HBox( {
+      spacing: 4,
+      children: [ carousel, pageControl ]
+    } );
+
+    // Pressing this button pops the carousel up and down
     const button = new ComboBoxButton( property, comboBoxItems, merge( {}, {
-      listener: () => { carousel.visible = !carousel.visible; }
+      listener: () => {
+        carouselAndPageControl.visible = !carouselAndPageControl.visible;
+      }
     }, options.buttonOptions ) );
 
     // Put the button above the carousel, left aligned.
     const vBox = new VBox( {
       spacing: 0,
       align: 'left',
-      children: [ button, carousel ]
+      children: [ button, carouselAndPageControl ]
     } );
 
     // Wrap everything with Node, to hide VBox's API.
@@ -189,31 +210,31 @@ class CarouselComboBox extends Node {
     super( options );
 
     // If the Property changes, hide the carousel. unlink is needed on disposed.
-    const propertyListener = () => { carousel.visible = false; };
+    const propertyListener = () => { carouselAndPageControl.visible = false; };
     property.link( propertyListener );
 
-    // Clicking anywhere other than the button or carousel will hide the carousel.
+    // Clicking outside this UI component will hide the carousel and page control.
     // NOTE: adapted from ComboBox.
     const clickToDismissListener = {
       down: event => {
+        assert && assert( carousel.visible, 'this listener should be registered only when carousel is visible' );
 
         // If fuzzing is enabled, exercise this listener some percentage of the time, so that this listener is tested.
         // The rest of the time, ignore this listener, so that the carousel remains popped up, and we test making
         // choices from the carousel. See https://github.com/phetsims/sun/issues/677
         if ( !phet.chipper.isFuzzEnabled() || dotRandom.nextDouble() < 0.25 ) {
-
-          // Ignore if we click over the button, since the button will handle hiding the list.
-          if ( !( event.trail.containsNode( button ) || event.trail.containsNode( carousel ) ) ) {
-            carousel.visible = false;
+          const trail = event.trail;
+          if ( !trail.containsNode( button ) && !trail.containsNode( carousel ) && !trail.containsNode( pageControl ) ) {
+            carouselAndPageControl.visible = false;
           }
         }
       }
     };
 
-    // Add clickToDismissListener only when the carousel is visible. unlink is not needed.
+    // Add clickToDismissListener only when the carousel & page control are visible. unlink is not needed.
     // NOTE: adapted from ComboBox.
     let display = null; // {Display}
-    carousel.visibleProperty.link( visible => {
+    carouselAndPageControl.visibleProperty.link( visible => {
       if ( visible ) {
         assert && assert( !display, 'unexpected display' );
         display = this.getUniqueTrail().rootNode().getRootedDisplays()[ 0 ];
@@ -234,8 +255,9 @@ class CarouselComboBox extends Node {
       property.unlink( propertyListener );
       multilinks.forEach( multilink => multilink.dispose() );
 
-      // Dispose of PhET-iO instrumented subcomponents
+      // Dispose of subcomponents
       carousel.dispose();
+      pageControl.dispose();
       button.dispose();
     };
   }
