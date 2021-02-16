@@ -133,7 +133,7 @@ const AccessibleNumberSpinner = {
               self.handleKeyUp( event );
             }
           },
-          blur: function() {
+          blur: function( event ) {
 
             // if a key is currently down when focus leaves the spinner, stop callbacks and emit that the
             // key is up
