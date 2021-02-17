@@ -23,6 +23,7 @@
 
 import CallbackTimer from '../../../axon/js/CallbackTimer.js';
 import Emitter from '../../../axon/js/Emitter.js';
+import validate from '../../../axon/js/validate.js';
 import assertHasProperties from '../../../phet-core/js/assertHasProperties.js';
 import extend from '../../../phet-core/js/extend.js';
 import inheritance from '../../../phet-core/js/inheritance.js';
@@ -97,13 +98,12 @@ const AccessibleNumberSpinner = {
 
         // a callback that is added and removed from the timer depending on keystate
         let downCallback = null;
-        let runningTimerCallbackKey = null; // {KeyDef|null}
+        let runningTimerCallbackEvent = null; // {Event|null}
 
         // handle all accessible event input
         const accessibleInputListener = {
           keydown: function( event ) {
             if ( enabledProperty.get() ) {
-              const key = KeyboardUtils.getKeyDef( event.domEvent );
 
               // check for relevant keys here
               if ( KeyboardUtils.isRangeKey( event.domEvent ) ) {
@@ -111,7 +111,7 @@ const AccessibleNumberSpinner = {
                   self.accessibleNumberSpinnerHandleKeyDown( event );
 
                   downCallback = self.accessibleNumberSpinnerHandleKeyDown.bind( self, event );
-                  runningTimerCallbackKey = key;
+                  runningTimerCallbackEvent = event.domEvent;
                   self._callbackTimer.addCallback( downCallback );
                   self._callbackTimer.start();
                 }
@@ -123,12 +123,12 @@ const AccessibleNumberSpinner = {
             const key = KeyboardUtils.getKeyDef( event.domEvent );
 
             if ( KeyboardUtils.isRangeKey( event.domEvent ) ) {
-              if ( key === runningTimerCallbackKey ) {
+              if ( runningTimerCallbackEvent && key === KeyboardUtils.getKeyDef( runningTimerCallbackEvent ) ) {
                 self.emitKeyState( event.domEvent, false );
                 self._callbackTimer.stop( false );
                 self._callbackTimer.removeCallback( downCallback );
                 downCallback = null;
-                runningTimerCallbackKey = null;
+                runningTimerCallbackEvent = null;
               }
 
               self.handleKeyUp( event );
@@ -139,9 +139,9 @@ const AccessibleNumberSpinner = {
             // if a key is currently down when focus leaves the spinner, stop callbacks and emit that the
             // key is up
             if ( downCallback ) {
-              assert && assert( runningTimerCallbackKey !== null, 'key should be down if running downCallback' );
+              assert && assert( runningTimerCallbackEvent !== null, 'key should be down if running downCallback' );
 
-              self.emitKeyState( runningTimerCallbackKey, false );
+              self.emitKeyState( runningTimerCallbackEvent, false );
               self._callbackTimer.stop( false );
               self._callbackTimer.removeCallback( downCallback );
             }
@@ -175,7 +175,7 @@ const AccessibleNumberSpinner = {
        */
       accessibleNumberSpinnerHandleKeyDown: function( event ) {
         this.handleKeyDown( event );
-        this.emitKeyState( event.domEvent.key.toLowerCase(), true );
+        this.emitKeyState( event.domEvent, true );
       },
 
       /**
@@ -187,6 +187,7 @@ const AccessibleNumberSpinner = {
        * @param {boolean} isDown - whether or not event was triggered from down or up keys
        */
       emitKeyState: function( domEvent, isDown ) {
+        validate( domEvent, { valueType: Event } );
         if ( KeyboardUtils.isAnyKeyEvent( domEvent, [ KeyboardUtils.KEY_UP_ARROW, KeyboardUtils.KEY_RIGHT_ARROW ] ) ) {
           this.incrementDownEmitter.emit( isDown );
         }

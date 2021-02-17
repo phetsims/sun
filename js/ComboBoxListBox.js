@@ -97,8 +97,7 @@ class ComboBoxListBox extends Panel {
       // Handle keyup on each item in the list box, for a11y.
       //TODO sun#447, scenery#931 we're using keyup because keydown fires continuously
       keyup: event => {
-        const key = event.domEvent.key.toLowerCase();
-        if ( KeyboardUtils.KEY_ENTER === key || KeyboardUtils.KEY_SPACE === key ) {
+        if ( KeyboardUtils.isAnyKeyEvent( event.domEvent, [ KeyboardUtils.KEY_ENTER, KeyboardUtils.KEY_SPACE ] ) ) {
           fireAction.execute( event );
         }
       },
@@ -207,21 +206,20 @@ class ComboBoxListBox extends Panel {
 
       // Handle keydown
       keydown: event => {
-        const key = event.domEvent.key.toLowerCase();
-        if ( key === KeyboardUtils.KEY_ESCAPE || key === KeyboardUtils.KEY_TAB ) {
+        if ( KeyboardUtils.isAnyKeyEvent( event.domEvent, [ KeyboardUtils.KEY_ESCAPE, KeyboardUtils.KEY_TAB ] ) ) {
 
           // Escape and Tab hide the list box and return focus to the button
           hideListBoxCallback();
           focusButtonCallback();
         }
-        else if ( key === KeyboardUtils.KEY_DOWN_ARROW || key === KeyboardUtils.KEY_UP_ARROW ) {
+        else if ( KeyboardUtils.isAnyKeyEvent( event.domEvent, [ KeyboardUtils.KEY_DOWN_ARROW, KeyboardUtils.KEY_UP_ARROW ] ) ) {
 
           // prevent "native" behavior so that Safari doesn't make an error sound with arrow keys in
           // full screen mode, see #210
           event.domEvent.preventDefault();
 
           // Up/down arrow keys move the focus between items in the list box
-          const direction = ( key === KeyboardUtils.KEY_DOWN_ARROW ) ? 1 : -1;
+          const direction = ( KeyboardUtils.isKeyEvent( event.domEvent, KeyboardUtils.KEY_DOWN_ARROW ) ) ? 1 : -1;
           for ( let i = 0; i < listItemNodes.length; i++ ) {
             if ( this.focusedItemNode === listItemNodes[ i ] ) {
               const nextListItemNode = listItemNodes[ i + direction ];
@@ -240,11 +238,11 @@ class ComboBoxListBox extends Panel {
           // on the pointer
           event.pointer.reserveForKeyboardDrag();
         }
-        else if ( key === KeyboardUtils.KEY_HOME ) {
+        else if ( KeyboardUtils.isKeyEvent( event.domEvent, KeyboardUtils.KEY_HOME ) ) {
           this.focusedItemNode = listItemNodes[ 0 ];
           this.focusedItemNode.focus();
         }
-        else if ( key === KeyboardUtils.KEY_END ) {
+        else if ( KeyboardUtils.isKeyEvent( event.domEvent, KeyboardUtils.KEY_END ) ) {
           this.focusedItemNode = listItemNodes[ listItemNodes.length - 1 ];
           this.focusedItemNode.focus();
         }

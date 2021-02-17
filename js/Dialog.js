@@ -347,14 +347,13 @@ class Dialog extends Popupable( Panel ) {
     const escapeListener = {
       keydown: event => {
         const domEvent = event.domEvent;
-        const key = event.domEvent.key.toLowerCase();
 
-        if ( key === KeyboardUtils.KEY_ESCAPE ) {
+        if ( KeyboardUtils.isKeyEvent( event.domEvent, KeyboardUtils.KEY_ESCAPE ) ) {
           domEvent.preventDefault();
           this.hide();
           this.restoreFocus();
         }
-        else if ( key === KeyboardUtils.KEY_TAB && FullScreen.isFullScreen() ) {
+        else if ( KeyboardUtils.isKeyEvent( event.domEvent, KeyboardUtils.KEY_TAB ) && FullScreen.isFullScreen() ) {
 
           // prevent a particular bug in Windows 7/8.1 Firefox where focus gets trapped in the document
           // when the navigation bar is hidden and there is only one focusable element in the DOM
