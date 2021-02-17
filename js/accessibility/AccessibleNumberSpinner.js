@@ -97,16 +97,16 @@ const AccessibleNumberSpinner = {
 
         // a callback that is added and removed from the timer depending on keystate
         let downCallback = null;
-        let runningTimerCallbackKey = null;
+        let runningTimerCallbackKey = null; // {KeyDef|null}
 
         // handle all accessible event input
         const accessibleInputListener = {
           keydown: function( event ) {
             if ( enabledProperty.get() ) {
-              const key = event.domEvent.key.toLowerCase();
+              const key = KeyboardUtils.getKeyDef( event.domEvent );
 
               // check for relevant keys here
-              if ( KeyboardUtils.isRangeKey( key ) ) {
+              if ( KeyboardUtils.isRangeKey( event.domEvent ) ) {
                 if ( !self._callbackTimer.isRunning() ) {
                   self.accessibleNumberSpinnerHandleKeyDown( event );
 
@@ -119,11 +119,12 @@ const AccessibleNumberSpinner = {
             }
           },
           keyup: function( event ) {
-            const key = event.domEvent.key.toLowerCase();
 
-            if ( KeyboardUtils.isRangeKey( key ) ) {
+            const key = KeyboardUtils.getKeyDef( event.domEvent );
+
+            if ( KeyboardUtils.isRangeKey( event.domEvent ) ) {
               if ( key === runningTimerCallbackKey ) {
-                self.emitKeyState( key, false );
+                self.emitKeyState( event.domEvent, false );
                 self._callbackTimer.stop( false );
                 self._callbackTimer.removeCallback( downCallback );
                 downCallback = null;
@@ -182,14 +183,14 @@ const AccessibleNumberSpinner = {
        * interaction.
        * @private
        *
-       * @param {KeyDef} key - the code of the key changing state
+       * @param {Event} domEvent - the code of the key changing state
        * @param {boolean} isDown - whether or not event was triggered from down or up keys
        */
-      emitKeyState: function( key, isDown ) {
-        if ( key === KeyboardUtils.KEY_UP_ARROW || key === KeyboardUtils.KEY_RIGHT_ARROW ) {
+      emitKeyState: function( domEvent, isDown ) {
+        if ( KeyboardUtils.isAnyKeyEvent( domEvent, [ KeyboardUtils.KEY_UP_ARROW, KeyboardUtils.KEY_RIGHT_ARROW ] ) ) {
           this.incrementDownEmitter.emit( isDown );
         }
-        else if ( key === KeyboardUtils.KEY_DOWN_ARROW || key === KeyboardUtils.KEY_LEFT_ARROW ) {
+        else if ( KeyboardUtils.isAnyKeyEvent( domEvent, [ KeyboardUtils.KEY_DOWN_ARROW, KeyboardUtils.KEY_LEFT_ARROW ] ) ) {
           this.decrementDownEmitter.emit( isDown );
         }
       },
