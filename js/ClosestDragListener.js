@@ -15,13 +15,12 @@
  */
 
 import Mouse from '../../scenery/js/input/Mouse.js';
-import Touch from '../../scenery/js/input/Touch.js';
 import sun from './sun.js';
 
 class ClosestDragListener {
 
   /**
-   * @param {number} touchThreshold - The maximum distance from an item that will cause a touch to start a drag
+   * @param {number} touchThreshold - The maximum distance from an item that will cause a touch-like (includes pen) to start a drag
    * @param {number} mouseThreshold - The maximum distance from an item that will cause a mouse down event to start a drag
    */
   constructor( touchThreshold, mouseThreshold ) {
@@ -66,7 +65,7 @@ class ClosestDragListener {
     // If there was nothing else in the way
     if ( event.target === event.currentTarget ) {
       let threshold = 0;
-      if ( event.pointer instanceof Touch ) {
+      if ( event.pointer.isTouchLike() ) {
         threshold = this.touchThreshold;
       }
       if ( event.pointer instanceof Mouse ) {
