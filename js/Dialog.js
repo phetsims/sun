@@ -11,6 +11,7 @@
 
 import Property from '../../axon/js/Property.js';
 import ScreenView from '../../joist/js/ScreenView.js';
+import getGlobal from '../../phet-core/js/getGlobal.js';
 import merge from '../../phet-core/js/merge.js';
 import CloseButton from '../../scenery-phet/js/buttons/CloseButton.js';
 import KeyboardUtils from '../../scenery/js/accessibility/KeyboardUtils.js';
@@ -137,6 +138,8 @@ class Dialog extends Popupable( Panel ) {
       openedSoundPlayer: generalOpenSoundPlayer,
       closedSoundPlayer: generalCloseSoundPlayer,
 
+      sim: getGlobal( 'phet.joist.sim' ),
+
       // pdom options
       tagName: 'div',
       ariaRole: 'dialog',
@@ -151,6 +154,8 @@ class Dialog extends Popupable( Panel ) {
     options.visiblePropertyOptions = merge( {
       phetioState: options.phetioState
     }, options.visiblePropertyOptions );
+
+    assert && assert( options.sim, 'sim must be provided, as Dialog needs a Sim instance' );
 
     assert && assert( options.xMargin === undefined, 'Dialog sets xMargin' );
     options.xMargin = 0;
@@ -310,22 +315,20 @@ class Dialog extends Popupable( Panel ) {
     // @private (a11y)
     this.closeButton = closeButton;
 
-    const sim = window.phet.joist.sim;
+    // @private {Sim}
+    this.sim = options.sim;
 
     this.updateLayoutMultilink = Property.multilink( [
-      sim.boundsProperty,
-      sim.screenBoundsProperty,
-      sim.scaleProperty,
-      sim.screenProperty,
+      this.sim.boundsProperty,
+      this.sim.screenBoundsProperty,
+      this.sim.scaleProperty,
+      this.sim.screenProperty,
       this.isShowingProperty
     ], ( bounds, screenBounds, scale, screen ) => {
       if ( bounds && screenBounds && scale ) {
         options.layoutStrategy( this, bounds, screenBounds, scale );
       }
     } );
-
-    // @private {Sim}
-    this.sim = sim;
 
     // pdom - set the order of content, close button first so remaining content can be read from top to bottom
     // with virtual cursor
