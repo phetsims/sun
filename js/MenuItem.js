@@ -62,7 +62,7 @@ class MenuItem extends Node {
       // {Property.<boolean>} - if provided add a checkmark next to the MenuItem text whenever this Property is true.
       checkedProperty: null,
 
-      // {Display|null}
+      // {Display}
       display: getGlobal( 'phet.joist.display' ),
 
       // @param {SceneryEvent} - Only called after PDOM interaction and called AFTER closeCallback, use this to move
