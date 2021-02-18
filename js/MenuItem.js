@@ -65,6 +65,17 @@ class MenuItem extends Node {
       // {Display|null}
       display: getGlobal( 'phet.joist.display' ),
 
+      // @param {SceneryEvent} - Only called after PDOM interaction and called AFTER closeCallback, use this to move
+      // focus to a particular Node in the document. By default focus is moved to the top of the document after a
+      // MenuItem action since the PhET Menu closes after activation
+      handleFocusCallback: () => {
+
+        assert && assert( options.display instanceof Display, 'display must be provided to support this handlFocusCallback' );
+
+        // limit search of next focusable to root accessible HTML element
+        PDOMUtils.getNextFocusable( options.display.pdomRootElement ).focus();
+      },
+
       // phet-io
       tandem: Tandem.OPTIONAL,
       phetioDocumentation: 'Item buttons shown in a popup menu',
@@ -81,22 +92,6 @@ class MenuItem extends Node {
       // 'menuitem' role does not get click events on iOS VoiceOver, position siblings so that
       // we get Pointer events instead
       positionInPDOM: true
-    }, options );
-
-    // Options that depend on other options for their defaults
-    options = merge( {
-
-      // pdom
-      // @param {SceneryEvent} - Only called after PDOM interaction and called AFTER closeCallback, use this to move
-      // focus to a particular Node in the document. By default focus is moved to the top of the document after a
-      // MenuItem action since the PhET Menu closes after activation
-      handleFocusCallback: () => {
-
-        assert && assert( options.display instanceof Display, 'display must be provided to support this handlFocusCallback' );
-
-        // limit search of next focusable to root accessible HTML element
-        PDOMUtils.getNextFocusable( options.display.pdomRootElement ).focus();
-      }
     }, options );
 
     super();
