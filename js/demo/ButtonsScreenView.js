@@ -56,8 +56,8 @@ function demoRadioButtons( layoutBounds ) {
   // For enabling/disabling all buttons
   const buttonsEnabledProperty = new Property( true );
   const buttonsEnabledCheckbox = new Checkbox( new Text( 'buttons enabled', {
-      font: new Font( { size: 20 } )
-    } ), buttonsEnabledProperty );
+    font: new Font( { size: 20 } )
+  } ), buttonsEnabledProperty );
 
   const radioGroupBaseColor = new Property( 'green' );
 
@@ -127,8 +127,8 @@ function demoToggleButtons( layoutBounds ) {
   // For enabling/disabling all buttons
   const buttonsEnabledProperty = new Property( true );
   const buttonsEnabledCheckbox = new Checkbox( new Text( 'buttons enabled', {
-      font: new Font( { size: 20 } )
-    } ), buttonsEnabledProperty );
+    font: new Font( { size: 20 } )
+  } ), buttonsEnabledProperty );
 
   // Demonstrate using arbitrary values for toggle button.  Wrap in extra
   // quotes so it is clear that it is a string in the debugging UI.
@@ -165,8 +165,8 @@ function demoMomentaryButtons( layoutBounds ) {
   // For enabling/disabling all buttons
   const buttonsEnabledProperty = new Property( true );
   const buttonsEnabledCheckbox = new Checkbox( new Text( 'buttons enabled', {
-      font: new Font( { size: 20 } )
-    } ), buttonsEnabledProperty );
+    font: new Font( { size: 20 } )
+  } ), buttonsEnabledProperty );
 
   // round
   const roundMomentaryProperty = new Property( false );
@@ -203,8 +203,8 @@ function demoPushButtons( layoutBounds ) {
   // For enabling/disabling all buttons
   const buttonsEnabledProperty = new Property( true );
   const buttonsEnabledCheckbox = new Checkbox( new Text( 'buttons enabled', {
-      font: new Font( { size: 20 } )
-    } ), buttonsEnabledProperty );
+    font: new Font( { size: 20 } )
+  } ), buttonsEnabledProperty );
 
   //===================================================================================
   // Pseudo-3D buttons A, B, C, D, E

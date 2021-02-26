@@ -272,7 +272,7 @@ function demoSlider( layoutBounds, orientation ) {
     thumbMouseAreaYDilation: 5,
     center: layoutBounds.center,
     tandem: Tandem.ROOT_TEST.createTandem( 'demoSlider' ),
-    enabledProperty: new BooleanProperty( true, {tandem: Tandem.ROOT_TEST.createTandem( 'demoSliderEnabledProperty' )} )
+    enabledProperty: new BooleanProperty( true, { tandem: Tandem.ROOT_TEST.createTandem( 'demoSliderEnabledProperty' ) } )
   };
 
   let slider = null;

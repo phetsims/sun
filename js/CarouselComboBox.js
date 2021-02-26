@@ -11,7 +11,7 @@
  * (sun, scenery-phet,... ) that have long lists of demos. And as a design best-practice, PhET tends to avoid
  * longs lists of things in sims. So if you find yourself reaching for CarouselComboBox, consider whether a
  * different UI component might provide a better UX.
- *                                                                                     
+ *
  * Possible future work:
  * - Modify ComboBox so that it can use different types of popups (ComboBoxListBox, Carousel,...), or
  * - Make CarouselComboBox pop up the Carousel in front of everything else

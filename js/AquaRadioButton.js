@@ -69,7 +69,7 @@ class AquaRadioButton extends Node {
       `AquaRadioButton tandem.name must end with RadioButton: ${options.tandem.phetioID}` );
 
     super();
-    
+
     // @public (read-only)
     this.value = value;
 
