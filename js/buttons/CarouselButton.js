@@ -115,7 +115,7 @@ function computePointerArea( button, arrowDirection, x, y ) {
       case 'left':
         pointerArea = button.localBounds.dilatedXY( x / 2, y ).shiftedX( -x / 2 );
         break;
-      case 'right' :
+      case 'right':
         pointerArea = button.localBounds.dilatedXY( x / 2, y ).shiftedX( x / 2 );
         break;
       default:
