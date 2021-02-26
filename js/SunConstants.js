@@ -40,7 +40,7 @@ const SunConstants = {
       disabledOpacity: SunConstants.DISABLED_OPACITY
     }, options );
 
-    node.inputEnabled = enabled;
+    node.pickable = enabled;
     node.opacity = enabled ? 1.0 : options.disabledOpacity;
   }
 };
