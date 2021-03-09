@@ -103,10 +103,10 @@ class Slider extends Node {
 
       // other
       cursor: 'pointer',
-      startDrag: _.noop, // called when a drag sequence starts
-      drag: _.noop, // called at the end of a drag event, after the valueProperty changes
-      endDrag: _.noop, // called when a drag sequence ends
-      constrainValue: _.identity, // called before valueProperty is set
+      startDrag: _.noop, // called when a drag sequence starts, passed to AccessibleSlider as well
+      drag: _.noop, // called at the end of a drag event, after the valueProperty changes, passed to AccessibleSlider as well
+      endDrag: _.noop, // called when a drag sequence ends, passed to AccessibleSlider as well
+      constrainValue: _.identity, // called before valueProperty is set, passed to AccessibleValueHandler as well
 
       enabledRangeProperty: null, // {Property.<Range>|null} determine the portion of range that is enabled
       disabledOpacity: SunConstants.DISABLED_OPACITY, // opacity applied to the entire Slider when disabled
