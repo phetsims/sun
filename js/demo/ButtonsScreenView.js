@@ -450,7 +450,7 @@ function demoPushButtons( layoutBounds ) {
     listener: () => console.log( 'transparentOpacityButton fired' ),
     baseColor: new Color( 255, 255, 0 ),
     enabledProperty: buttonsEnabledProperty,
-    opacity: .6,
+    opacity: 0.6,
     centerX: rectangleNode.centerX,
     bottom: rectangleNode.bottom - 10
   } );

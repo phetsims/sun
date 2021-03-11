@@ -25,7 +25,7 @@ const SunConstants = {
   VALUE_NUMBERED_PLACEHOLDER: '{0}',
 
   // Opacity that is typically applied to a UI component in its disabled state, to make it look grayed out.
-  DISABLED_OPACITY: .45,
+  DISABLED_OPACITY: 0.45,
 
   /**
    * The basic PhET enabled/disabled look and feel for interactive components.

@@ -32,7 +32,7 @@ QUnit.test( 'Node.enabledProperty', assert => {
 
   let node = new SunComponentNode();
 
-  const disabledOpacity = .2;
+  const disabledOpacity = 0.2;
   node = new SunComponentNode( {
     disabledOpacity: disabledOpacity
   } );
