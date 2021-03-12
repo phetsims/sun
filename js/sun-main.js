@@ -39,7 +39,7 @@ function createScreenIcon( color ) {
   );
 }
 
-simLauncher.launch( function() {
+simLauncher.launch( () => {
   new Sim( sunStrings.sun.title, [
 
     // Buttons screen

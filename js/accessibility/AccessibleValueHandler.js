@@ -838,7 +838,7 @@ const AccessibleValueHandler = {
        * @private
        */
       allKeysUp() {
-        return _.every( this.rangeKeysDown, function( entry ) { return !entry; } );
+        return _.every( this.rangeKeysDown, entry => !entry );
       },
 
       /**
@@ -849,7 +849,7 @@ const AccessibleValueHandler = {
        * @private
        */
       anyKeysDown() {
-        return !!_.find( this.rangeKeysDown, function( entry ) { return entry; } );
+        return !!_.find( this.rangeKeysDown, entry => entry );
       },
 
       /**

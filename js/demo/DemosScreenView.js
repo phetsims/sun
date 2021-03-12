@@ -57,14 +57,14 @@ class DemosScreenView extends ScreenView {
     this.addChild( demosParent );
 
     // Sort the demos by label, so that they appear in the combo box in alphabetical order
-    demos = _.sortBy( demos, function( demo ) {
+    demos = _.sortBy( demos, demo => {
       return demo.label;
     } );
 
     // The initial demo that is selected
     let selectedDemo = demos[ 0 ];
     if ( options.selectedDemoLabel ) {
-      selectedDemo = _.find( demos, function( demo ) {
+      selectedDemo = _.find( demos, demo => {
         return ( demo.label === options.selectedDemoLabel );
       } );
       if ( !selectedDemo ) {

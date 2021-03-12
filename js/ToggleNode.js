@@ -24,7 +24,7 @@ class ToggleNode extends Node {
 
     assert && assert( Array.isArray( elements ), 'elements should be an array' );
     if ( assert ) {
-      elements.forEach( function( element ) {
+      elements.forEach( element => {
         const keys = _.keys( element );
         assert( keys.length === 2, 'each element should have two keys' );
         assert( keys[ 0 ] === 'value' || keys[ 1 ] === 'value', 'element should have a value key' );

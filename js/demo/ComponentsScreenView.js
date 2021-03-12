@@ -132,7 +132,7 @@ function demoCarousel( layoutBounds ) {
   const colors = [ 'red', 'blue', 'green', 'yellow', 'pink', 'white', 'orange', 'magenta', 'purple', 'pink' ];
   const vItems = [];
   const hItems = [];
-  colors.forEach( function( color ) {
+  colors.forEach( color => {
     vItems.push( new Rectangle( 0, 0, 60, 60, { fill: color, stroke: 'black' } ) );
     hItems.push( new Circle( 30, { fill: color, stroke: 'black' } ) );
   } );
@@ -219,7 +219,7 @@ function demoComboBox( layoutBounds ) {
 
   const labels = [ 'one', 'two', 'three', 'four', 'five', 'six' ];
   const items = [];
-  labels.forEach( function( label ) {
+  labels.forEach( label => {
     items.push( new ComboBoxItem( new Text( label, { font: new PhetFont( { size: 20 } ) } ), label ) );
   } );
 
@@ -295,7 +295,7 @@ function demoSlider( layoutBounds, orientation ) {
 
   // show/hide major ticks
   const majorTicksVisibleProperty = new Property( true );
-  majorTicksVisibleProperty.link( function( visible ) {
+  majorTicksVisibleProperty.link( visible => {
     slider.majorTicksVisible = visible;
   } );
   const majorTicksCheckbox = new Checkbox( new Text( 'Major ticks visible', { font: new PhetFont( 20 ) } ),
@@ -306,7 +306,7 @@ function demoSlider( layoutBounds, orientation ) {
 
   // show/hide minor ticks
   const minorTicksVisibleProperty = new Property( true );
-  minorTicksVisibleProperty.link( function( visible ) {
+  minorTicksVisibleProperty.link( visible => {
     slider.minorTicksVisible = visible;
   } );
   const minorTicksCheckbox = new Checkbox( new Text( 'Minor ticks visible', { font: new PhetFont( 20 ) } ),
@@ -317,7 +317,7 @@ function demoSlider( layoutBounds, orientation ) {
 
   // enable/disable slider
   const enabledProperty = new Property( true );
-  enabledProperty.link( function( enabled ) {
+  enabledProperty.link( enabled => {
     slider.enabled = enabled;
   } );
   const enabledCheckbox = new Checkbox( new Text( 'Enable slider', { font: new PhetFont( 20 ) } ),
@@ -329,10 +329,10 @@ function demoSlider( layoutBounds, orientation ) {
   // restrict enabled range of slider
   const restrictedRangeProperty = new Property( false );
   const enabledRangeProperty = new Property( new Range( 0, 100 ) );
-  restrictedRangeProperty.link( function( restrictedRange ) {
+  restrictedRangeProperty.link( restrictedRange => {
     enabledRangeProperty.value = restrictedRange ? new Range( 25, 75 ) : new Range( 0, 100 );
   } );
-  enabledRangeProperty.link( function( enabledRange ) {
+  enabledRangeProperty.link( enabledRange => {
     slider.enabledRange = enabledRange;
   } );
   const enabledRangeCheckbox = new Checkbox( new Text( 'Enable Range [25, 75]', { font: new PhetFont( 20 ) } ),
@@ -384,7 +384,7 @@ function demoPageControl( layoutBounds ) {
   // create items
   const colors = [ 'red', 'blue', 'green', 'yellow', 'pink', 'white', 'orange', 'magenta', 'purple', 'pink' ];
   const items = [];
-  colors.forEach( function( color ) {
+  colors.forEach( color => {
     items.push( new Rectangle( 0, 0, 100, 100, { fill: color, stroke: 'black' } ) );
   } );
 
@@ -484,7 +484,7 @@ function demoNumberSpinner( layoutBounds ) {
 function demoAlignGroup( layoutBounds ) {
   function highlightWrap( node ) {
     const rect = Rectangle.bounds( node.bounds, { fill: 'rgba(0,0,0,0.25)' } );
-    node.boundsProperty.lazyLink( function() {
+    node.boundsProperty.lazyLink( () => {
       rect.setRectBounds( node.bounds );
     } );
     return new Node( {
@@ -498,11 +498,11 @@ function demoAlignGroup( layoutBounds ) {
   const iconGroup = new AlignGroup();
   const iconRow = new HBox( {
     spacing: 10,
-    children: _.range( 1, 10 ).map( function() {
+    children: _.range( 1, 10 ).map( () => {
       const randomRect = new Rectangle( 0, 0, dotRandom.nextDouble() * 60 + 10, dotRandom.nextDouble() * 60 + 10, {
         fill: 'black'
       } );
-      stepTimer.addListener( function() {
+      stepTimer.addListener( () => {
         if ( dotRandom.nextDouble() < 0.02 ) {
           randomRect.rectWidth = dotRandom.nextDouble() * 60 + 10;
           randomRect.rectHeight = dotRandom.nextDouble() * 60 + 10;
@@ -519,7 +519,7 @@ function demoAlignGroup( layoutBounds ) {
 
   function randomText() {
     const text = new Text( 'Test', { fontSize: 20 } );
-    stepTimer.addListener( function() {
+    stepTimer.addListener( () => {
       if ( dotRandom.nextDouble() < 0.03 ) {
         let string = '';
         while ( dotRandom.nextDouble() < 0.94 && string.length < 20 ) {
