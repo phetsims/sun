@@ -49,7 +49,7 @@ class ToggleNode extends Node {
           matchCount++;
         }
       }
-      assert && assert( matchCount === 1, 'Wrong number of matches: ' + matchCount );
+      assert && assert( matchCount === 1, `Wrong number of matches: ${matchCount}` );
     };
     valueProperty.link( valueListener );
 

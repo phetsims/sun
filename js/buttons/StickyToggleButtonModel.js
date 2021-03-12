@@ -46,7 +46,7 @@ class StickyToggleButtonModel extends ButtonModel {
 
     const toggleListener = () => {
       assert && assert( this.valueProperty.value === this.valueUp || this.valueProperty.value === this.valueDown,
-        'unrecognized value: ' + this.valueProperty.value );
+        `unrecognized value: ${this.valueProperty.value}` );
 
       this.valueProperty.value = this.valueProperty.value === this.valueUp ? this.valueDown : this.valueUp;
     };

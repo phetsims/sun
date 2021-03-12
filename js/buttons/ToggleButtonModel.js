@@ -54,7 +54,7 @@ class ToggleButtonModel extends ButtonModel {
 
     const toggleListener = () => {
       assert && assert( this.valueProperty.value === this.valueOff || this.valueProperty.value === this.valueOn,
-        'unrecognized value: ' + this.valueProperty.value );
+        `unrecognized value: ${this.valueProperty.value}` );
 
       this.valueProperty.value = this.valueProperty.value === this.valueOff ? this.valueOn : this.valueOff;
     };

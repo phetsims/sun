@@ -91,14 +91,14 @@ class RectangularRadioButtonGroup extends LayoutBox {
         uniqueValues.push( items[ i ].value );
       }
       else {
-        throw new Error( 'Duplicate value: "' + items[ i ].value + '" passed into RectangularRadioButtonGroup.js' );
+        throw new Error( `Duplicate value: "${items[ i ].value}" passed into RectangularRadioButtonGroup.js` );
       }
     }
 
     // make sure that the Property passed in currently has a value from the contentArray
     if ( uniqueValues.indexOf( property.get() ) === -1 ) {
-      throw new Error( 'The Property passed in to RectangularRadioButtonGroup has an illegal value "' + property.get() +
-                       '" that is not present in the contentArray' );
+      throw new Error( `The Property passed in to RectangularRadioButtonGroup has an illegal value "${property.get()
+                       }" that is not present in the contentArray` );
     }
 
     const defaultOptions = {
@@ -165,9 +165,9 @@ class RectangularRadioButtonGroup extends LayoutBox {
     options = merge( _.clone( defaultOptions ), options );
 
     assert && assert( _.includes( BUTTON_CONTENT_X_ALIGN_VALUES, options.buttonContentXAlign ),
-      'invalid buttonContentXAlign: ' + options.buttonContentXAlign );
+      `invalid buttonContentXAlign: ${options.buttonContentXAlign}` );
     assert && assert( _.includes( BUTTON_CONTENT_Y_ALIGN_VALUES, options.buttonContentYAlign ),
-      'invalid buttonContentYAlign: ' + options.buttonContentYAlign );
+      `invalid buttonContentYAlign: ${options.buttonContentYAlign}` );
 
     // make a copy of the options to pass to individual buttons that includes all default options but not scenery options
     const buttonOptions = _.pick( options, _.keys( defaultOptions ) );

@@ -73,9 +73,9 @@ class ComboBoxButton extends RectangularPushButton {
     }, options );
 
     assert && assert( _.includes( ALIGN_VALUES, options.align ),
-      'invalid align: ' + options.align );
+      `invalid align: ${options.align}` );
     assert && assert( _.includes( ARROW_DIRECTION_VALUES, options.arrowDirection ),
-      'invalid arrowDirection: ' + options.arrowDirection );
+      `invalid arrowDirection: ${options.arrowDirection}` );
 
     // To improve readability
     const itemXMargin = options.xMargin;
@@ -170,7 +170,7 @@ class ComboBoxButton extends RectangularPushButton {
 
       // find the ComboBoxItem whose value matches the property's value
       item = _.find( items, item => item.value === value );
-      assert && assert( item, 'no item found for value: ' + value );
+      assert && assert( item, `no item found for value: ${value}` );
 
       // add the associated node
       itemNodeWrapper.addChild( item.node );

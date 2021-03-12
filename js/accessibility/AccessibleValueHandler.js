@@ -31,7 +31,7 @@ import sun from '../sun.js';
 
 // constants
 const DEFAULT_TAG_NAME = 'input';
-const toString = v => v + '';
+const toString = v => `${v}`;
 
 const AccessibleValueHandler = {
 
@@ -191,7 +191,7 @@ const AccessibleValueHandler = {
         options = merge( {}, defaults, options );
 
         assert && assert( Orientation.includes( options.ariaOrientation ),
-          'invalid ariaOrientation: ' + options.ariaOrientation );
+          `invalid ariaOrientation: ${options.ariaOrientation}` );
 
         // Some options were already mutated in the constructor, only apply the accessibility-specific options here
         // so options are not doubled up, see https://github.com/phetsims/sun/issues/330

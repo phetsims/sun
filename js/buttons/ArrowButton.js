@@ -81,7 +81,7 @@ class ArrowButton extends RectangularPushButton {
         arrowShape.moveTo( arrowOffset, 0 ).lineTo( options.arrowWidth + arrowOffset, options.arrowHeight / 2 ).lineTo( arrowOffset, options.arrowHeight ).close();
       }
       else {
-        throw new Error( 'unsupported direction: ' + direction );
+        throw new Error( `unsupported direction: ${direction}` );
       }
     }
 

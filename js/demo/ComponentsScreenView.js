@@ -161,7 +161,7 @@ function demoCarousel( layoutBounds ) {
   // button that scrolls the horizontal carousel to a specific item
   const itemIndex = 4;
   const hScrollToItemButton = new RectangularPushButton( {
-    content: new Text( 'scroll to item ' + itemIndex, { font: new PhetFont( 20 ) } ),
+    content: new Text( `scroll to item ${itemIndex}`, { font: new PhetFont( 20 ) } ),
     listener: function() {
       hCarousel.scrollToItem( hItems[ itemIndex ] );
     }
@@ -170,7 +170,7 @@ function demoCarousel( layoutBounds ) {
   // button that sets the horizontal carousel to a specific page number
   const pageNumber = 0;
   const hScrollToPageButton = new RectangularPushButton( {
-    content: new Text( 'scroll to page ' + pageNumber, { font: new PhetFont( 20 ) } ),
+    content: new Text( `scroll to page ${pageNumber}`, { font: new PhetFont( 20 ) } ),
     listener: function() {
       hCarousel.pageNumberProperty.set( pageNumber );
     }
@@ -523,7 +523,7 @@ function demoAlignGroup( layoutBounds ) {
       if ( dotRandom.nextDouble() < 0.03 ) {
         let string = '';
         while ( dotRandom.nextDouble() < 0.94 && string.length < 20 ) {
-          string += ( dotRandom.nextDouble() + '' ).slice( -1 );
+          string += ( `${dotRandom.nextDouble()}` ).slice( -1 );
         }
         text.text = string;
       }

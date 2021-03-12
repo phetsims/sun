@@ -35,7 +35,7 @@ class NumberSpinner extends Node {
   constructor( numberProperty, rangeProperty, options ) {
 
     assert && assert( rangeProperty.value.contains( numberProperty.get() ),
-      'value ' + numberProperty.get() + ' is out of range ' + rangeProperty.value.toString() );
+      `value ${numberProperty.get()} is out of range ${rangeProperty.value.toString()}` );
 
     options = merge( {
 
@@ -83,7 +83,7 @@ class NumberSpinner extends Node {
     }, options );
 
     // validate options
-    assert && assert( _.includes( ARROWS_POSITION_VALUES, options.arrowsPosition ), 'invalid arrowsPosition: ' + options.arrowsPosition );
+    assert && assert( _.includes( ARROWS_POSITION_VALUES, options.arrowsPosition ), `invalid arrowsPosition: ${options.arrowsPosition}` );
     assert && assert( options.numberDisplayOptions.tandem === undefined, 'NumberSpinner sets tandem for NumberDisplay' );
 
     // Defaults for incrementFunction and decrementFunction
@@ -223,7 +223,7 @@ class NumberSpinner extends Node {
 
     // synchronize with number value
     const numberPropertyObserver = value => {
-      assert && assert( rangeProperty.value.contains( value ), 'value out of range: ' + value );
+      assert && assert( rangeProperty.value.contains( value ), `value out of range: ${value}` );
       updateEnabled();
     };
     numberProperty.link( numberPropertyObserver ); // must be unlinked in dispose

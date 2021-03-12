@@ -68,7 +68,7 @@ class DemosScreenView extends ScreenView {
         return ( demo.label === options.selectedDemoLabel );
       } );
       if ( !selectedDemo ) {
-        throw new Error( 'demo not found: ' + options.selectedDemoLabel );
+        throw new Error( `demo not found: ${options.selectedDemoLabel}` );
       }
     }
 
@@ -122,7 +122,7 @@ class DemosScreenView extends ScreenView {
 
         // If the selected demo doesn't doesn't have an associated node, create it.
         demo.node = demo.createNode( layoutBounds, {
-          tandem: options.tandem.createTandem( 'demo' + demo.label )
+          tandem: options.tandem.createTandem( `demo${demo.label}` )
         } );
         demosParent.addChild( demo.node );
       }

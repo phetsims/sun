@@ -289,7 +289,7 @@ class ContentAppearanceStrategy {
             break;
 
           default:
-            throw new Error( 'unsupported state: ' + state );
+            throw new Error( `unsupported state: ${state}` );
         }
       }
     }

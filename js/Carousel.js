@@ -90,7 +90,7 @@ class Carousel extends Node {
     options = merge( {}, DEFAULT_OPTIONS, options );
 
     // Validate options
-    assert && assert( _.includes( [ 'horizontal', 'vertical' ], options.orientation ), 'invalid orientation=' + options.orientation );
+    assert && assert( _.includes( [ 'horizontal', 'vertical' ], options.orientation ), `invalid orientation=${options.orientation}` );
 
     // To improve readability
     const isHorizontal = ( options.orientation === 'horizontal' );
@@ -259,7 +259,7 @@ class Carousel extends Node {
 
     // Number of the page that is visible in the carousel.
     assert && assert( options.defaultPageNumber >= 0 && options.defaultPageNumber <= numberOfPages - 1,
-      'defaultPageNumber is out of range: ' + options.defaultPageNumber );
+      `defaultPageNumber is out of range: ${options.defaultPageNumber}` );
     const pageNumberProperty = new Property( options.defaultPageNumber );
 
     // Change pages
@@ -267,7 +267,7 @@ class Carousel extends Node {
 
     const pageNumberListener = pageNumber => {
 
-      assert && assert( pageNumber >= 0 && pageNumber <= numberOfPages - 1, 'pageNumber out of range: ' + pageNumber );
+      assert && assert( pageNumber >= 0 && pageNumber <= numberOfPages - 1, `pageNumber out of range: ${pageNumber}` );
 
       // button state
       nextButton.enabled = pageNumber < ( numberOfPages - 1 );
@@ -432,7 +432,7 @@ class Carousel extends Node {
    * @public
    */
   itemIndexToPageNumber( itemIndex ) {
-    assert && assert( itemIndex >= 0 && itemIndex < this.items.length, 'itemIndex out of range: ' + itemIndex );
+    assert && assert( itemIndex >= 0 && itemIndex < this.items.length, `itemIndex out of range: ${itemIndex}` );
     return Math.floor( itemIndex / this.itemsPerPage );
   }
 }

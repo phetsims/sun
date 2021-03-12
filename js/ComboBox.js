@@ -125,13 +125,13 @@ class ComboBox extends Node {
 
     // validate option values
     assert && assert( options.xMargin > 0 && options.yMargin > 0,
-      'margins must be > 0, xMargin=' + options.xMargin + ', yMargin=' + options.yMargin );
+      `margins must be > 0, xMargin=${options.xMargin}, yMargin=${options.yMargin}` );
     assert && assert( options.disabledOpacity > 0 && options.disabledOpacity < 1,
-      'invalid disabledOpacity: ' + options.disabledOpacity );
+      `invalid disabledOpacity: ${options.disabledOpacity}` );
     assert && assert( _.includes( LIST_POSITION_VALUES, options.listPosition ),
-      'invalid listPosition: ' + options.listPosition );
+      `invalid listPosition: ${options.listPosition}` );
     assert && assert( _.includes( ALIGN_VALUES, options.align ),
-      'invalid align: ' + options.align );
+      `invalid align: ${options.align}` );
 
     super();
 

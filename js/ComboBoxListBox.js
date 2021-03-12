@@ -59,7 +59,7 @@ class ComboBoxListBox extends Panel {
     }, options );
 
     assert && assert( options.xMargin > 0 && options.yMargin > 0,
-      'margins must be > 0, xMargin=' + options.xMargin + ', yMargin=' + options.yMargin );
+      `margins must be > 0, xMargin=${options.xMargin}, yMargin=${options.yMargin}` );
 
     //TODO sun#462 replace fireEmitter and selectionListener with a standard scenery listener
     // Pops down the list box and sets the property.value to match the chosen item.

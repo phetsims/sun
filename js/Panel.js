@@ -50,7 +50,7 @@ class Panel extends Node {
 
     options = merge( {}, DEFAULT_OPTIONS, options );
 
-    assert && assert( _.includes( ALIGN_VALUES, options.align ), 'invalid align: ' + options.align );
+    assert && assert( _.includes( ALIGN_VALUES, options.align ), `invalid align: ${options.align}` );
 
     super();
 

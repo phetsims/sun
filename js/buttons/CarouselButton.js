@@ -57,7 +57,7 @@ class CarouselButton extends RectangularPushButton {
     }, options );
 
     // validate options
-    assert && assert( ANGLES.hasOwnProperty( options.arrowDirection ), 'invalid direction: ' + options.direction );
+    assert && assert( ANGLES.hasOwnProperty( options.arrowDirection ), `invalid direction: ${options.direction}` );
 
     // Generic arrow shape, points 'up'
     let arrowShape = new Shape()
@@ -119,7 +119,7 @@ function computePointerArea( button, arrowDirection, x, y ) {
         pointerArea = button.localBounds.dilatedXY( x / 2, y ).shiftedX( x / 2 );
         break;
       default:
-        throw new Error( 'unsupported arrowDirection: ' + arrowDirection );
+        throw new Error( `unsupported arrowDirection: ${arrowDirection}` );
     }
   }
   return pointerArea;

@@ -48,7 +48,7 @@ class PageControl extends Node {
     }, options );
 
     // validate options
-    assert && assert( _.includes( [ 'horizontal', 'vertical' ], options.orientation ), 'invalid orientation=' + options.orientation );
+    assert && assert( _.includes( [ 'horizontal', 'vertical' ], options.orientation ), `invalid orientation=${options.orientation}` );
 
     // To improve readability
     const isHorizontal = ( options.orientation === 'horizontal' );

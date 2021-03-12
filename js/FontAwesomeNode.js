@@ -91,7 +91,7 @@ class FontAwesomeNode extends Path {
    * @public
    */
   static createShape( iconName ) {
-    assert && assert( ICONS[ iconName ], 'unsupported iconName: ' + iconName );
+    assert && assert( ICONS[ iconName ], `unsupported iconName: ${iconName}` );
     return new Shape( ICONS[ iconName ] ).transformed( SHAPE_MATRIX ).makeImmutable();
   }
 }

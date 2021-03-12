@@ -127,9 +127,9 @@ class Slider extends Node {
       phetioLinkedProperty: null
     }, options );
 
-    assert && assert( range instanceof Range, 'range must be of type Range:' + range );
+    assert && assert( range instanceof Range, `range must be of type Range:${range}` );
     assert && assert( Orientation.includes( options.orientation ),
-      'invalid orientation: ' + options.orientation );
+      `invalid orientation: ${options.orientation}` );
 
     super();
 
