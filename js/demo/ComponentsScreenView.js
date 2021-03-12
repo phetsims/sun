@@ -564,7 +564,7 @@ function demoAccordionBox( layoutBounds ) {
     }
   } );
 
-  var box = new AccordionBox( new VBox( {
+  const box = new AccordionBox( new VBox( {
     spacing: 10,
     children: [
       resizeButton,

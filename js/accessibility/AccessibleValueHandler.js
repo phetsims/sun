@@ -911,7 +911,7 @@ sun.register( 'AccessibleValueHandler', AccessibleValueHandler );
  *
  * @returns {number}
  */
-var roundValue = function( newValue, currentValue, stepSize ) {
+const roundValue = function( newValue, currentValue, stepSize ) {
   let roundValue = newValue;
   if ( stepSize !== 0 ) {
 
@@ -934,7 +934,7 @@ var roundValue = function( newValue, currentValue, stepSize ) {
  *
  * @returns {number}
  */
-var correctRounding = function( newValue, currentValue, stepSize ) {
+const correctRounding = function( newValue, currentValue, stepSize ) {
   let correctedValue = newValue;
 
   const proposedStep = Math.abs( newValue - currentValue );

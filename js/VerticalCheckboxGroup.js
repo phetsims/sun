@@ -47,14 +47,14 @@ class VerticalCheckboxGroup extends VBox {
 
     // Determine the max item width
     let maxItemWidth = 0;
-    for ( var i = 0; i < items.length; i++ ) {
+    for ( let i = 0; i < items.length; i++ ) {
       maxItemWidth = Math.max( maxItemWidth, items[ i ].node.width );
     }
 
     // Create a checkbox for each item
     assert && assert( !options.children, 'VerticalCheckboxGroup sets children' );
     options.children = [];
-    for ( i = 0; i < items.length; i++ ) {
+    for ( let i = 0; i < items.length; i++ ) {
 
       const item = items[ i ];
 
