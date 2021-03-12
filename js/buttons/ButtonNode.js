@@ -85,8 +85,7 @@ class ButtonNode extends Node {
       enabledAppearanceStrategy: ( enabled, button, background, content ) => {
         background.filters = enabled ? [] : [ CONTRAST_FILTER, BRIGHTNESS_FILTER ];
 
-        // TODO: this is a workaround until we can use Node.interactive, see https://github.com/phetsims/scenery/issues/1116
-        button.pickable = enabled ? null : false;
+        button.inputEnabled = enabled;
 
         if ( content ) {
           content.filters = enabled ? [] : [ Grayscale.FULL ];
