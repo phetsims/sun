@@ -98,7 +98,7 @@ class RectangularRadioButtonGroup extends LayoutBox {
     // make sure that the Property passed in currently has a value from the contentArray
     if ( uniqueValues.indexOf( property.get() ) === -1 ) {
       throw new Error( `The Property passed in to RectangularRadioButtonGroup has an illegal value "${property.get()
-                       }" that is not present in the contentArray` );
+      }" that is not present in the contentArray` );
     }
 
     const defaultOptions = {
