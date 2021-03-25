@@ -531,6 +531,7 @@ function demoPushButtons( layoutBounds ) {
 
   // Change colors of all of the buttons in pseudo3DButtonsBox
   const changeButtonColorsButton = new RectangularPushButton( {
+    enabledProperty: buttonsEnabledProperty,
     content: new Text( '\u21e6 Change button colors', { font: BUTTON_FONT } ),
     listener: () => {
       console.log( 'changeButtonColorsButton fired' );
