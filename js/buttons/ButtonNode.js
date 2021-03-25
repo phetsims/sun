@@ -85,8 +85,6 @@ class ButtonNode extends Node {
       enabledAppearanceStrategy: ( enabled, button, background, content ) => {
         background.filters = enabled ? [] : [ CONTRAST_FILTER, BRIGHTNESS_FILTER ];
 
-        button.inputEnabled = enabled;
-
         if ( content ) {
           content.filters = enabled ? [] : [ Grayscale.FULL ];
           content.opacity = enabled ? 1 : SunConstants.DISABLED_OPACITY;
