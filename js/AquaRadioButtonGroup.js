@@ -57,9 +57,8 @@ class AquaRadioButtonGroup extends LayoutBox {
       mouseAreaXDilation: 0,
       mouseAreaYDilation: 0,
 
-      // {function(boolean, Node, Object:options):void} - function for controlling the appearance when toggling enabled.
-      enabledAppearanceStrategy: SunConstants.componentEnabledListener,
-
+      // {number} - opt into Node's disabled opacity when enabled:false
+      disabledOpacity: SunConstants.DISABLED_OPACITY,
       // supertype options
       orientation: 'vertical', // Aqua radio buttons are typically vertical, rarely horizontal
       spacing: 3, // space between each button, perpendicular to options.orientation
@@ -134,9 +133,6 @@ class AquaRadioButtonGroup extends LayoutBox {
     this.addLinkedElement( property, {
       tandem: options.tandem.createTandem( 'property' )
     } );
-
-    // No need to dispose because enabledProperty is disposed in Node
-    this.enabledProperty.link( enabled => options.enabledAppearanceStrategy( enabled, this ) );
 
     // @private
     this.disposeAquaRadioButtonGroup = () => {

@@ -60,8 +60,8 @@ class ToggleSwitch extends Node {
       // number of thumb-widths outside the normal range past where the model value will change
       toggleThreshold: 1,
 
-      // {function(boolean, Node, Object:options):void} - function for controlling the appearance when toggling enabled.
-      enabledAppearanceStrategy: SunConstants.componentEnabledListener,
+      // {number} - opt into Node's disabled opacity when enabled:false
+      disabledOpacity: SunConstants.DISABLED_OPACITY,
 
       // thumb
       thumbFill: null, // {Color|string} thumb fill, default computed below
@@ -237,9 +237,6 @@ class ToggleSwitch extends Node {
     this.addInputListener( dragListener );
 
     this.mutate( options );
-
-    // No need to dispose because enabledProperty is disposed in Node
-    this.enabledProperty.link( enabled => options.enabledAppearanceStrategy( enabled, this ) );
 
     // Add a link to the Property that this switch controls
     this.addLinkedElement( property, {

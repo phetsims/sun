@@ -17,7 +17,10 @@ import './EnabledComponentTests.js';
 import './SliderTests.js';
 import SunConstants from './SunConstants.js';
 
-QUnit.test( 'Node.enabledProperty', assert => {
+
+QUnit.module( 'sun' );
+
+QUnit.test( 'enabled/disabled appearance', assert => {
 
   class SunComponentNode extends Node {
     constructor( options ) {
@@ -25,8 +28,6 @@ QUnit.test( 'Node.enabledProperty', assert => {
         disabledOpacity: SunConstants.DISABLED_OPACITY
       }, options );
       super( options );
-
-      this.enabledProperty.link( enabled => SunConstants.componentEnabledListener( enabled, this, { disabledOpacity: options.disabledOpacity } ) );
     }
   }
 
@@ -37,9 +38,9 @@ QUnit.test( 'Node.enabledProperty', assert => {
     disabledOpacity: disabledOpacity
   } );
 
-  assert.ok( node.opacity === new SunComponentNode().opacity, 'opacity should default to Node default' );
+  assert.ok( node.effectiveOpacity === new SunComponentNode().opacity, 'opacity should default to Node default' );
   node.enabled = false;
-  assert.ok( node.opacity === disabledOpacity, 'test disabled opacity' );
+  assert.ok( node.effectiveOpacity === disabledOpacity, 'test disabled opacity' );
 
   node.dispose();
 

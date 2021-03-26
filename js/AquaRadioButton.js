@@ -39,8 +39,8 @@ class AquaRadioButton extends Node {
       xSpacing: 8, // horizontal space between the button and the labelNode
       stroke: 'black', // color used to stroke the outer edge of the button
 
-      // {function(boolean, Node, Object:options):void} - function for controlling the appearance when toggling enabled.
-      enabledAppearanceStrategy: SunConstants.componentEnabledListener,
+      // {number} - opt into Node's disabled opacity when enabled:false
+      disabledOpacity: SunConstants.DISABLED_OPACITY,
 
       // phet-io
       tandem: Tandem.REQUIRED,
@@ -149,9 +149,6 @@ class AquaRadioButton extends Node {
     }
 
     this.mutate( options );
-
-    // No need to dispose because enabledProperty is disposed in Node
-    this.enabledProperty.link( enabled => options.enabledAppearanceStrategy( enabled, this ) );
 
     // @private
     this.disposeAquaRadioButton = () => {

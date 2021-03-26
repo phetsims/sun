@@ -19,8 +19,8 @@
  */
 
 import BooleanProperty from '../../axon/js/BooleanProperty.js';
-import Vector2 from '../../dot/js/Vector2.js';
 import dotRandom from '../../dot/js/dotRandom.js';
+import Vector2 from '../../dot/js/Vector2.js';
 import InstanceRegistry from '../../phet-core/js/documentation/InstanceRegistry.js';
 import merge from '../../phet-core/js/merge.js';
 import PDOMPeer from '../../scenery/js/accessibility/pdom/PDOMPeer.js';
@@ -33,7 +33,6 @@ import Tandem from '../../tandem/js/Tandem.js';
 import IOType from '../../tandem/js/types/IOType.js';
 import ComboBoxButton from './ComboBoxButton.js';
 import ComboBoxListBox from './ComboBoxListBox.js';
-import SunConstants from './SunConstants.js';
 import sun from './sun.js';
 
 // const
@@ -82,9 +81,6 @@ class ComboBox extends Node {
       cornerRadius: 4, // applied to button, listBox, and item highlights
       highlightFill: 'rgb( 245, 245, 245 )', // {Color|string} highlight behind items in the list
 
-      // {function(boolean, Node, Object:options):void} - function for controlling the appearance when toggling enabled.
-      enabledAppearanceStrategy: SunConstants.componentEnabledListener,
-
       // Margins around the edges of the button and listbox when highlight is invisible.
       // Highlight margins around the items in the list are set to 1/2 of these values.
       // These values must be > 0.
@@ -126,8 +122,6 @@ class ComboBox extends Node {
     // validate option values
     assert && assert( options.xMargin > 0 && options.yMargin > 0,
       `margins must be > 0, xMargin=${options.xMargin}, yMargin=${options.yMargin}` );
-    assert && assert( options.disabledOpacity > 0 && options.disabledOpacity < 1,
-      `invalid disabledOpacity: ${options.disabledOpacity}` );
     assert && assert( _.includes( LIST_POSITION_VALUES, options.listPosition ),
       `invalid listPosition: ${options.listPosition}` );
     assert && assert( _.includes( ALIGN_VALUES, options.align ),
@@ -206,9 +200,6 @@ class ComboBox extends Node {
     this.opacityProperty.link( opacity => { this.listBox.opacityProperty.value = opacity; } );
 
     this.mutate( options );
-
-    // No need to dispose because enabledProperty is disposed in Node
-    this.enabledProperty.link( enabled => options.enabledAppearanceStrategy( enabled, this, { disabledOpacity: options.disabledOpacity } ) );
 
     // Clicking on the button toggles visibility of the list box
     this.button.addListener( () => {

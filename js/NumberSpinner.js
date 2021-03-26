@@ -59,9 +59,8 @@ class NumberSpinner extends Node {
       // may be ignored if incrementFunction and decrementFunction are provided
       deltaValue: 1,
 
-      // {function(boolean, Node, Object:options):void} - function for controlling the appearance when toggling enabled.
-      enabledAppearanceStrategy: SunConstants.componentEnabledListener,
-
+      // {number} - opt into Node's disabled opacity when enabled:false
+      disabledOpacity: SunConstants.DISABLED_OPACITY,
       xSpacing: 5,
       ySpacing: 3,
 
@@ -211,9 +210,6 @@ class NumberSpinner extends Node {
     options.children = [ numberDisplay, incrementButton, decrementButton ];
 
     super( options );
-
-    // No need to dispose because enabledProperty is disposed in Node
-    this.enabledProperty.link( enabled => options.enabledAppearanceStrategy( enabled, this ) );
 
     // enable/disable arrow buttons
     const updateEnabled = () => {
