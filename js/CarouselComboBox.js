@@ -125,16 +125,23 @@ class CarouselComboBox extends Node {
     );
     assert && assert( carouselItemNodes.length === comboBoxItems.length, 'expected a carouselItem for each comboBoxItem' );
 
+    const hBoxChildren = [];
+
     // Create the carousel.
     const carousel = new Carousel( carouselItemNodes, options.carouselOptions );
+    hBoxChildren.push( carousel );
 
     // page control
-    const pageControl = new PageControl( carousel.numberOfPages, carousel.pageNumberProperty, options.pageControlOptions );
+    let pageControl;
+    if ( carousel.numberOfPages > 1 ) {
+      pageControl = new PageControl( carousel.numberOfPages, carousel.pageNumberProperty, options.pageControlOptions );
+      hBoxChildren.push( pageControl );
+    }
 
     // Page control to the left of carousel
     const carouselAndPageControl = new HBox( {
       spacing: 4,
-      children: [ carousel, pageControl ]
+      children: hBoxChildren
     } );
 
     // Pressing this button pops the carousel up and down
@@ -171,7 +178,7 @@ class CarouselComboBox extends Node {
         // choices from the carousel. See https://github.com/phetsims/sun/issues/677
         if ( !phet.chipper.isFuzzEnabled() || dotRandom.nextDouble() < 0.25 ) {
           const trail = event.trail;
-          if ( !trail.containsNode( button ) && !trail.containsNode( carousel ) && !trail.containsNode( pageControl ) ) {
+          if ( !trail.containsNode( button ) && !trail.containsNode( carousel ) && ( !pageControl || !trail.containsNode( pageControl ) ) ) {
             carouselAndPageControl.visible = false;
           }
         }
