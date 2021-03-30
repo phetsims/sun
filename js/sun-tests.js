@@ -48,14 +48,14 @@ QUnit.test( 'enabled/disabled appearance', assert => {
   window.assert && assert.ok( node.enabledProperty.isDisposed, 'should be disposed' );
 
   const myEnabledProperty = new BooleanProperty( true );
-  const defaultListenerCount = myEnabledProperty.changedEmitter.getListenerCount();
+  const defaultListenerCount = myEnabledProperty.getListenerCount();
   const node2 = new SunComponentNode( {
     enabledProperty: myEnabledProperty
   } );
-  assert.ok( myEnabledProperty.changedEmitter.getListenerCount() > defaultListenerCount, 'listener count should be more since passing in enabledProperty' );
+  assert.ok( myEnabledProperty.getListenerCount() > defaultListenerCount, 'listener count should be more since passing in enabledProperty' );
 
   node2.dispose();
-  assert.ok( myEnabledProperty.changedEmitter.getListenerCount() === defaultListenerCount, 'listener count should match original' );
+  assert.ok( myEnabledProperty.getListenerCount() === defaultListenerCount, 'listener count should match original' );
 } );
 
 qunitStart();
