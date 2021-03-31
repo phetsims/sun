@@ -24,6 +24,8 @@ class TextPushButton extends RectangularPushButton {
       textFill: 'black',
       maxTextWidth: null,
 
+      textNodeOptions: {},
+
       // phet-io
       tandem: Tandem.REQUIRED,
 
@@ -31,12 +33,12 @@ class TextPushButton extends RectangularPushButton {
       innerContent: text
     }, options );
 
-    const textNode = new Text( text, {
+    const textNode = new Text( text, merge( {
       font: options.font,
       fill: options.textFill,
       maxWidth: options.maxTextWidth,
       tandem: options.tandem.createTandem( 'textNode' )
-    } );
+    }, options.textNodeOptions ) );
 
     assert && assert( !options.content, 'TextPushButton sets content' );
     options.content = textNode;
