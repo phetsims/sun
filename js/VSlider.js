@@ -29,15 +29,15 @@ class VSlider extends Slider {
       orientation: Orientation.VERTICAL
     }, options );
 
-    // Swap dimensions because Slider.js expects dimensions for a horizontal slider.
-    // These aren't specified in options above, because we want to check against undefined and to use Slider.js defaults.
+    // The client should provide dimensions that are specific to a vertical slider. But Slider.js expects dimensions
+    // for a horizontal slider, and then creates the vertical orientation using rotation.  So if the client provides
+    // any dimensions for a vertical slider, swap those dimensions to horizontal.
     if ( options.trackSize !== undefined ) {
       options.trackSize = options.trackSize.swapped();
     }
     if ( options.thumbSize !== undefined ) {
       options.thumbSize = options.thumbSize.swapped();
     }
-
     swapObjectKeys( options, 'thumbTouchAreaXDilation', 'thumbTouchAreaYDilation' );
     swapObjectKeys( options, 'thumbMouseAreaXDilation', 'thumbMouseAreaYDilation' );
 

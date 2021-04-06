@@ -265,23 +265,35 @@ function demoSlider( layoutBounds, orientation ) {
   const range = new Range( 0, 100 );
   const tickLabelOptions = { font: new PhetFont( 16 ) };
   const sliderOptions = {
-    trackSize: new Dimension2( 300, 5 ),
-    thumbTouchAreaXDilation: 15,
-    thumbTouchAreaYDilation: 15,
-    thumbMouseAreaXDilation: 5,
-    thumbMouseAreaYDilation: 5,
     center: layoutBounds.center,
     tandem: Tandem.ROOT_TEST.createTandem( 'demoSlider' ),
-    enabledProperty: new BooleanProperty( true, { tandem: Tandem.ROOT_TEST.createTandem( 'demoSliderEnabledProperty' ) } )
+    enabledProperty: new BooleanProperty( true, {
+      tandem: Tandem.ROOT_TEST.createTandem( 'demoSliderEnabledProperty' )
+    } )
   };
 
   let slider = null;
   if ( orientation === 'horizontal' ) {
-    slider = new HSlider( property, range, sliderOptions );
+    slider = new HSlider( property, range, merge( {}, sliderOptions, {
+      trackSize: new Dimension2( 300, 5 ),
+
+      // Demonstrate larger x dilation.
+      thumbTouchAreaXDilation: 30,
+      thumbTouchAreaYDilation: 15,
+      thumbMouseAreaXDilation: 10,
+      thumbMouseAreaYDilation: 5
+    } ) );
   }
   else {
-    sliderOptions.trackSize = sliderOptions.trackSize.swapped();
-    slider = new VSlider( property, range, sliderOptions );
+    slider = new VSlider( property, range, merge( {}, sliderOptions, {
+      trackSize: new Dimension2( 5, 300 ),
+
+      // Demonstrate larger y dilation, to verify that VSlider is handling things correctly.
+      thumbTouchAreaXDilation: 15,
+      thumbTouchAreaYDilation: 30,
+      thumbMouseAreaXDilation: 5,
+      thumbMouseAreaYDilation: 10
+    } ) );
   }
 
   // major ticks
