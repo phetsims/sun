@@ -32,6 +32,10 @@ class ExpandCollapseButton extends BooleanRectangularToggleButton {
       stroke: 'black',
       sideLength: 25,  // length of one side of the square button
 
+      // pointer areas
+      touchAreaXDilation: 5,
+      touchAreaYDilation: 5,
+
       // phet-io
       tandem: Tandem.REQUIRED
     }, options );
