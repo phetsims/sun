@@ -280,7 +280,7 @@ function demoSlider( layoutBounds, orientation ) {
     slider = new HSlider( property, range, sliderOptions );
   }
   else {
-    sliderOptions.trackSize = sliderOptions.trackSize.flipped();
+    sliderOptions.trackSize = sliderOptions.trackSize.swapped();
     slider = new VSlider( property, range, sliderOptions );
   }
 
