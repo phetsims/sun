@@ -29,7 +29,7 @@ class VSlider extends Slider {
       orientation: Orientation.VERTICAL
     }, options );
 
-    // Swap dimensions because Slider.js expects these set up as dimensions for a horizontal slider.
+    // Swap dimensions because Slider.js expects dimensions for a horizontal slider.
     // These aren't specified in options above, because we want to check against undefined and to use Slider.js defaults.
     if ( options.trackSize !== undefined ) {
       options.trackSize = options.trackSize.swapped();
