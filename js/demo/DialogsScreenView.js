@@ -12,6 +12,7 @@ import Node from '../../../scenery/js/nodes/Node.js';
 import Rectangle from '../../../scenery/js/nodes/Rectangle.js';
 import Text from '../../../scenery/js/nodes/Text.js';
 import Font from '../../../scenery/js/util/Font.js';
+import Tandem from '../../../tandem/js/Tandem.js';
 import RectangularPushButton from '../buttons/RectangularPushButton.js';
 import Dialog from '../Dialog.js';
 import sun from '../sun.js';
@@ -22,7 +23,9 @@ const BUTTON_FONT = new Font( { size: 20 } );
 class DialogsScreenView extends ScreenView {
   constructor() {
 
-    super();
+    super( {
+      tandem: Tandem.OPT_OUT
+    } );
 
     // dialog will be created the first time the button is pressed, lazily because Dialog
     // requires sim bounds during Dialog construction
@@ -37,7 +40,8 @@ class DialogsScreenView extends ScreenView {
         dialog.show();
       },
       left: this.layoutBounds.left + 100,
-      top: this.layoutBounds.top + 100
+      top: this.layoutBounds.top + 100,
+      tandem: Tandem.OPT_OUT
     } );
     this.addChild( modalDialogButton );
   }

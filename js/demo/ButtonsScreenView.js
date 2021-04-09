@@ -19,6 +19,7 @@ import VBox from '../../../scenery/js/nodes/VBox.js';
 import VStrut from '../../../scenery/js/nodes/VStrut.js';
 import Color from '../../../scenery/js/util/Color.js';
 import Font from '../../../scenery/js/util/Font.js';
+import Tandem from '../../../tandem/js/Tandem.js';
 import ArrowButton from '../buttons/ArrowButton.js';
 import BooleanRectangularStickyToggleButton from '../buttons/BooleanRectangularStickyToggleButton.js';
 import ButtonNode from '../buttons/ButtonNode.js';
@@ -40,14 +41,13 @@ const BUTTON_FONT_SIZE = 16;
 const BUTTON_FONT = new Font( { size: BUTTON_FONT_SIZE } );
 
 class ButtonsScreenView extends DemosScreenView {
-  constructor() {
-
+  constructor( options ) {
     super( [
+      { label: 'MomentaryButtons', createNode: demoMomentaryButtons },
       { label: 'PushButtons', createNode: demoPushButtons },
       { label: 'RadioButtons', createNode: demoRadioButtons },
-      { label: 'ToggleButtons', createNode: demoToggleButtons },
-      { label: 'MomentaryButtons', createNode: demoMomentaryButtons }
-    ] );
+      { label: 'ToggleButtons', createNode: demoToggleButtons }
+    ], options );
   }
 }
 
@@ -166,14 +166,17 @@ function demoMomentaryButtons( layoutBounds ) {
   const buttonsEnabledProperty = new Property( true );
   const buttonsEnabledCheckbox = new Checkbox( new Text( 'buttons enabled', {
     font: new Font( { size: 20 } )
-  } ), buttonsEnabledProperty );
+  } ), buttonsEnabledProperty, {
+    tandem: Tandem.OPT_OUT
+  } );
 
   // round
   const roundMomentaryProperty = new Property( false );
   roundMomentaryProperty.lazyLink( value => console.log( `roundMomentaryProperty.value = ${value}` ) );
   const roundMomentaryButton = new RoundMomentaryButton( false, true, roundMomentaryProperty, {
     baseColor: '#D76958',
-    enabledProperty: buttonsEnabledProperty
+    enabledProperty: buttonsEnabledProperty,
+    tandem: Tandem.OPT_OUT
   } );
 
   // rectangular
@@ -182,7 +185,8 @@ function demoMomentaryButtons( layoutBounds ) {
   const rectangularMomentaryButton = new RectangularMomentaryButton( false, true, rectangularMomentaryProperty, {
     baseColor: '#724C35',
     enabledProperty: buttonsEnabledProperty,
-    size: new Dimension2( 50, 40 )
+    size: new Dimension2( 50, 40 ),
+    tandem: Tandem.OPT_OUT
   } );
 
   return new VBox( {

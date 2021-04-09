@@ -246,7 +246,8 @@ class CarouselItemNode extends Node {
       xMargin: 6, // {number} x margin for backgrounds on the items in the carousel
       yMargin: 2, // {number} y margin for backgrounds on the items in the carousel
       overColor: Color.grayColor( 245 ), // {ColorDef} background color of the item that the pointer is over
-      selectedColor: 'yellow' // {ColorDef} background color of the selected item
+      selectedColor: 'yellow', // {ColorDef} background color of the selected item
+      tandem: Tandem.OPTIONAL
     }, options );
 
     const uniformNode = new AlignBox( comboBoxItem.node, {
@@ -271,7 +272,8 @@ class CarouselItemNode extends Node {
     const pressListener = new PressListener( {
       press: () => {
         property.value = comboBoxItem.value;
-      }
+      },
+      tandem: options.tandem.createTandem( 'pressListener' )
     } );
     this.addInputListener( pressListener );
 

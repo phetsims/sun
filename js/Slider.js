@@ -29,6 +29,7 @@ import VoidIO from '../../tandem/js/types/VoidIO.js';
 import AccessibleSlider from './accessibility/AccessibleSlider.js';
 import DefaultSliderTrack from './DefaultSliderTrack.js';
 import SliderThumb from './SliderThumb.js';
+import SliderTrack from './SliderTrack.js';
 import sun from './sun.js';
 import SunConstants from './SunConstants.js';
 
@@ -125,8 +126,9 @@ class Slider extends Node {
     }, options );
 
     assert && assert( range instanceof Range, `range must be of type Range:${range}` );
-    assert && assert( Orientation.includes( options.orientation ),
-      `invalid orientation: ${options.orientation}` );
+    assert && assert( Orientation.includes( options.orientation ), `invalid orientation: ${options.orientation}` );
+    assert && assert( options.trackNode === null || options.trackNode instanceof SliderTrack, 'trackNode must be of type SliderTrack' );
+    assert && assert( options.thumbNode === null || options.thumbNode instanceof Node, 'thumbNode must be of type Node' );
 
     super();
 
@@ -161,7 +163,16 @@ class Slider extends Node {
     sliderParts.push( this.majorTicksParent );
     sliderParts.push( this.minorTicksParent );
 
+    const trackTandem = options.tandem.createTandem( 'track' );
+
+    if ( Tandem.VALIDATION && options.trackNode ) {
+      assert && assert( options.trackNode.tandem.equals( trackTandem ),
+        `Passed-in trackNode must have the correct tandem. Expected: ${trackTandem.phetioID}, actual: ${options.trackNode.tandem.phetioID}`
+      );
+    }
+
     // @private {Node} track
+
     this.track = options.trackNode || new DefaultSliderTrack( valueProperty, range, {
 
       // propagate options that are specific to SliderTrack
@@ -178,11 +189,18 @@ class Slider extends Node {
       enabledRangeProperty: this.enabledRangeProperty,
 
       // phet-io
-      tandem: options.tandem.createTandem( 'track' )
+      tandem: trackTandem
     } );
 
     // Position the track horizontally
     this.track.centerX = this.track.valueToPosition( ( range.max + range.min ) / 2 );
+
+    const thumbTandem = options.tandem.createTandem( 'thumb' );
+    if ( Tandem.VALIDATION && options.thumbNode ) {
+      assert && assert( options.thumbNode.tandem.equals( thumbTandem ),
+        `Passed-in thumbNode must have the correct tandem. Expected: ${thumbTandem.phetioID}, actual: ${options.thumbNode.tandem.phetioID}`
+      );
+    }
 
     // The thumb of the slider
     const thumb = options.thumbNode || new SliderThumb( {
@@ -194,7 +212,7 @@ class Slider extends Node {
       stroke: options.thumbStroke,
       lineWidth: options.thumbLineWidth,
       centerLineStroke: options.thumbCenterLineStroke,
-      tandem: options.tandem.createTandem( 'thumb' )
+      tandem: thumbTandem
     } );
 
     // Dilate the local bounds horizontally so that it extends beyond where the thumb can reach.  This prevents layout

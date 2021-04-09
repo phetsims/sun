@@ -45,15 +45,29 @@ class DemosScreenView extends ScreenView {
       // false = keeps only the Node for the selected demo in memory
       cacheDemos: false,
 
-      tandem: Tandem.REQUIRED
+      tandem: Tandem.OPTIONAL
     }, options );
 
     super( options );
 
+    const demosParent = new Node();
     const layoutBounds = this.layoutBounds;
 
+    // Support PhET-iO API instrumentation and API tracking
+    if ( Tandem.PHET_IO_ENABLED ) {
+      options.cacheDemos = true;
+
+      demos.forEach( demo => {
+        demo.node = demo.createNode( layoutBounds, {
+          tandem: options.tandem.createTandem( `demo${demo.label}` )
+        } );
+        demo.node.visible = false;
+        demosParent.addChild( demo.node );
+      } );
+    }
+
     // All demos will be children of this node, to maintain rendering order with combo box list
-    const demosParent = new Node();
+
     this.addChild( demosParent );
 
     // Sort the demos by label, so that they appear in the combo box in alphabetical order

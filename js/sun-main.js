@@ -40,12 +40,15 @@ function createScreenIcon( color ) {
 }
 
 simLauncher.launch( () => {
+  const componentsScreenTandem = Tandem.ROOT.createTandem( 'componentsScreen' );
   new Sim( sunStrings.sun.title, [
 
     // Buttons screen
     new Screen(
       () => MODEL,
-      () => new ButtonsScreenView(),
+      () => new ButtonsScreenView( {
+        tandem: Tandem.OPT_OUT
+      } ),
       {
         name: 'Buttons',
         backgroundColorProperty: new Property( sunQueryParameters.backgroundColor ),
@@ -57,19 +60,23 @@ simLauncher.launch( () => {
     // Components screen
     new Screen(
       () => MODEL,
-      () => new ComponentsScreenView(),
+      () => new ComponentsScreenView( {
+        tandem: componentsScreenTandem.createTandem( 'view' )
+      } ),
       {
         name: 'Components',
         backgroundColorProperty: new Property( sunQueryParameters.backgroundColor ),
         homeScreenIcon: createScreenIcon( 'yellow' ),
-        tandem: Tandem.ROOT.createTandem( 'componentsScreen' )
+        tandem: componentsScreenTandem
       }
     ),
 
     // Dialogs screen
     new Screen(
       () => MODEL,
-      () => new DialogsScreenView(),
+      () => new DialogsScreenView( {
+        tandem: Tandem.OPT_OUT
+      } ),
       {
         name: 'Dialogs',
         backgroundColorProperty: new Property( sunQueryParameters.backgroundColor ),

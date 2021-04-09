@@ -47,7 +47,13 @@ import VSlider from '../VSlider.js';
 import DemosScreenView from './DemosScreenView.js';
 
 class ComponentsScreenView extends DemosScreenView {
-  constructor() {
+  constructor( options ) {
+
+    options = merge( {
+      tandem: Tandem.REQUIRED,
+      selectedDemoLabel: sunQueryParameters.component
+    }, options );
+
     super( [
 
       /**
@@ -69,9 +75,7 @@ class ComponentsScreenView extends DemosScreenView {
       { label: 'AlignGroup', createNode: demoAlignGroup },
       { label: 'AccordionBox', createNode: demoAccordionBox },
       { label: 'ToggleSwitch', createNode: demoToggleSwitch }
-    ], {
-      selectedDemoLabel: sunQueryParameters.component
-    } );
+    ], options );
   }
 }
 
@@ -83,7 +87,8 @@ function demoABSwitch( layoutBounds ) {
   const labelB = new Text( 'B', { font: new PhetFont( 24 ) } );
 
   return new ABSwitch( property, 'A', labelA, 'B', labelB, {
-    center: layoutBounds.center
+    center: layoutBounds.center,
+    tandem: Tandem.OPT_OUT
   } );
 }
 
@@ -244,37 +249,41 @@ function demoComboBox( layoutBounds ) {
 }
 
 // Creates a demo for HSlider
-function demoHSlider( layoutBounds ) {
-  return demoSlider( layoutBounds, 'horizontal' );
+function demoHSlider( layoutBounds, options ) {
+  return demoSlider( layoutBounds, 'horizontal', options );
 }
 
 // Creates a demo for VSlider
-function demoVSlider( layoutBounds ) {
-  return demoSlider( layoutBounds, 'vertical' );
+function demoVSlider( layoutBounds, options ) {
+  return demoSlider( layoutBounds, 'vertical', options );
 }
 
 /**
  * Used by demoHSlider and demoVSlider
  * @param {Bounds2} layoutBounds
  * @param {string} orientation - see Slider orientation option
+ * @param {Object} [options]
  * @returns {Node}
  */
-function demoSlider( layoutBounds, orientation ) {
+function demoSlider( layoutBounds, orientation, options ) {
+
+  options = merge( {
+    tandem: Tandem.REQUIRED
+  }, options );
 
   const property = new Property( 0 );
   const range = new Range( 0, 100 );
   const tickLabelOptions = { font: new PhetFont( 16 ) };
-  const sliderOptions = {
+  options = merge( {
     center: layoutBounds.center,
-    tandem: Tandem.ROOT_TEST.createTandem( 'demoSlider' ),
     enabledProperty: new BooleanProperty( true, {
-      tandem: Tandem.ROOT_TEST.createTandem( 'demoSliderEnabledProperty' )
+      tandem: options.tandem.createTandem( 'enabledProperty' )
     } )
-  };
+  }, options );
 
   let slider = null;
   if ( orientation === 'horizontal' ) {
-    slider = new HSlider( property, range, merge( {}, sliderOptions, {
+    slider = new HSlider( property, range, merge( {}, options, {
       trackSize: new Dimension2( 300, 5 ),
 
       // Demonstrate larger x dilation.
@@ -285,7 +294,7 @@ function demoSlider( layoutBounds, orientation ) {
     } ) );
   }
   else {
-    slider = new VSlider( property, range, merge( {}, sliderOptions, {
+    slider = new VSlider( property, range, merge( {}, options, {
       trackSize: new Dimension2( 5, 300 ),
 
       // Demonstrate larger y dilation, to verify that VSlider is handling things correctly.
@@ -312,6 +321,7 @@ function demoSlider( layoutBounds, orientation ) {
   } );
   const majorTicksCheckbox = new Checkbox( new Text( 'Major ticks visible', { font: new PhetFont( 20 ) } ),
     majorTicksVisibleProperty, {
+      tandem: Tandem.OPT_OUT,
       left: slider.left,
       top: slider.bottom + 40
     } );
@@ -323,6 +333,7 @@ function demoSlider( layoutBounds, orientation ) {
   } );
   const minorTicksCheckbox = new Checkbox( new Text( 'Minor ticks visible', { font: new PhetFont( 20 ) } ),
     minorTicksVisibleProperty, {
+      tandem: Tandem.OPT_OUT,
       left: slider.left,
       top: majorTicksCheckbox.bottom + 40
     } );
@@ -334,6 +345,7 @@ function demoSlider( layoutBounds, orientation ) {
   } );
   const enabledCheckbox = new Checkbox( new Text( 'Enable slider', { font: new PhetFont( 20 ) } ),
     enabledProperty, {
+      tandem: Tandem.OPT_OUT,
       left: slider.left,
       top: minorTicksCheckbox.bottom + 40
     } );
@@ -349,6 +361,7 @@ function demoSlider( layoutBounds, orientation ) {
   } );
   const enabledRangeCheckbox = new Checkbox( new Text( 'Enable Range [25, 75]', { font: new PhetFont( 20 ) } ),
     restrictedRangeProperty, {
+      tandem: Tandem.OPT_OUT,
       left: slider.left,
       top: enabledCheckbox.bottom + 40
     } );
