@@ -62,7 +62,7 @@ class Slider extends Node {
       // {SliderTrack} optional track, replaces the default.
       // Client is responsible for highlighting, disable and pointer areas.
       // For instrumented Sliders, a supplied trackNode must be instrumented.
-      // The tandem component name must be 'trackNode' and it must be nested under the Slider tandem.
+      // The tandem component name must be Slider.TRACK_NODE_TANDEM_NAME and it must be nested under the Slider tandem.
       trackNode: null,
 
       // track - options to create a SliderTrack if trackNode not supplied
@@ -77,7 +77,8 @@ class Slider extends Node {
       // Client is responsible for highlighting, disabling and pointer areas.
       // The thumb is positioned based on its center and hence can have its origin anywhere
       // Note for PhET-IO: This thumbNode should be instrumented. The thumb's dragListener is instrumented underneath
-      // this thumbNode.  The tandem component name must be 'thumbNode' and it must be nested under the Slider tandem.
+      // this thumbNode. The tandem component name must be Slider.THUMB_NODE_TANDEM_NAME and it must be nested under
+      // the Slider tandem.
       thumbNode: null,
 
       // Options for the default thumb, ignored if thumbNode is set
@@ -165,7 +166,7 @@ class Slider extends Node {
     sliderParts.push( this.majorTicksParent );
     sliderParts.push( this.minorTicksParent );
 
-    const trackTandem = options.tandem.createTandem( 'trackNode' );
+    const trackTandem = options.tandem.createTandem( Slider.TRACK_NODE_TANDEM_NAME );
 
     if ( Tandem.VALIDATION && options.trackNode ) {
       assert && assert( options.trackNode.tandem.equals( trackTandem ),
@@ -197,7 +198,7 @@ class Slider extends Node {
     // Position the track horizontally
     this.track.centerX = this.track.valueToPosition( ( range.max + range.min ) / 2 );
 
-    const thumbTandem = options.tandem.createTandem( 'thumbNode' );
+    const thumbTandem = options.tandem.createTandem( Slider.THUMB_NODE_TANDEM_NAME );
     if ( Tandem.VALIDATION && options.thumbNode ) {
       assert && assert( options.thumbNode.tandem.equals( thumbTandem ),
         `Passed-in thumbNode must have the correct tandem. Expected: ${thumbTandem.phetioID}, actual: ${options.thumbNode.tandem.phetioID}`
@@ -444,6 +445,10 @@ class Slider extends Node {
 
 // mix accessibility into Slider
 AccessibleSlider.mixInto( Slider );
+
+// @public standardized tandem names, see https://github.com/phetsims/sun/issues/694
+Slider.THUMB_NODE_TANDEM_NAME = 'thumbNode';
+Slider.TRACK_NODE_TANDEM_NAME = 'trackNode';
 
 Slider.SliderIO = new IOType( 'SliderIO', {
   valueType: Slider,
