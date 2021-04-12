@@ -61,8 +61,8 @@ class Slider extends Node {
 
       // {SliderTrack} optional track, replaces the default.
       // Client is responsible for highlighting, disable and pointer areas.
-      // For instrumented Sliders, a supplied trackNode must be instrumented. The tandem component name must be 'trackNode'
-      // and it must be nested under the Slider tandem.
+      // For instrumented Sliders, a supplied trackNode must be instrumented.
+      // The tandem component name must be 'trackNode' and it must be nested under the Slider tandem.
       trackNode: null,
 
       // track - options to create a SliderTrack if trackNode not supplied
