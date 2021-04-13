@@ -520,6 +520,11 @@ function demoAlignGroup( layoutBounds ) {
     } );
   }
 
+  // Scheduling randomness in stepTimer on startup leads to a different number of calls in the upstream and downstream
+  // sim in the playback wrapper.  This workaround uses Math.random() to avoid a mismatch in the number of dotRandom calls.
+  const stepRand = () => {
+    return Math.random(); // eslint-disable-line bad-sim-text
+  };
   const iconGroup = new AlignGroup();
   const iconRow = new HBox( {
     spacing: 10,
@@ -528,9 +533,9 @@ function demoAlignGroup( layoutBounds ) {
         fill: 'black'
       } );
       stepTimer.addListener( () => {
-        if ( dotRandom.nextDouble() < 0.02 ) {
-          randomRect.rectWidth = dotRandom.nextDouble() * 60 + 10;
-          randomRect.rectHeight = dotRandom.nextDouble() * 60 + 10;
+        if ( stepRand() < 0.02 ) {
+          randomRect.rectWidth = stepRand() * 60 + 10;
+          randomRect.rectHeight = stepRand() * 60 + 10;
         }
       } );
       return new AlignBox( randomRect, {
@@ -545,10 +550,10 @@ function demoAlignGroup( layoutBounds ) {
   function randomText() {
     const text = new Text( 'Test', { fontSize: 20 } );
     stepTimer.addListener( () => {
-      if ( dotRandom.nextDouble() < 0.03 ) {
+      if ( stepRand() < 0.03 ) {
         let string = '';
-        while ( dotRandom.nextDouble() < 0.94 && string.length < 20 ) {
-          string += ( `${dotRandom.nextDouble()}` ).slice( -1 );
+        while ( stepRand() < 0.94 && string.length < 20 ) {
+          string += ( `${stepRand()}` ).slice( -1 );
         }
         text.text = string;
       }
