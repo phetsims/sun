@@ -81,7 +81,11 @@ class ToggleSwitch extends Node {
       phetioEventType: EventType.USER,
       phetioReadOnly: PhetioObject.DEFAULT_OPTIONS.phetioReadOnly,
       visiblePropertyOptions: { phetioFeatured: true },
-      enabledPropertyPhetioInstrumented: true // opt into default PhET-iO instrumented enabledProperty
+      enabledPropertyPhetioInstrumented: true, // opt into default PhET-iO instrumented enabledProperty
+
+      // pdom
+      tagName: 'button',
+      ariaRole: 'switch'
     }, options );
 
     // Default track fills
@@ -144,6 +148,11 @@ class ToggleSwitch extends Node {
         thumbNode.right = options.size.width;
         trackNode.fill = options.trackFillRight;
       }
+
+      // pdom - Signify to screen readers that the toggle is pressed. Both aria-pressed and aria-checked
+      // are used because using both sounds best with NVDA.
+      this.setPDOMAttribute( 'aria-pressed', value !== leftValue );
+      this.setPDOMAttribute( 'aria-checked', value !== leftValue );
     };
 
     // sync with property, must be unlinked in dispose
@@ -175,7 +184,7 @@ class ToggleSwitch extends Node {
       // Only touch to snag when moving the thumb (don't snag on the track itself),
       // but still support presses in the track to toggle the value.
       canStartPress: event => {
-        if ( event.type === 'move' || event.type === 'enter' ) {
+        if ( event && ( event.type === 'move' || event.type === 'enter' ) ) {
           return _.includes( event.trail.nodes, thumbNode );
         }
         else {
@@ -232,7 +241,10 @@ class ToggleSwitch extends Node {
 
         // update the thumb position (sanity check that it's here, only needs to be run if passedDragThreshold===true)
         update( value );
-      }
+      },
+
+      // pdom - allow click events to toggle the ToggleSwitch, even though it uses DragListener
+      allowClick: true
     } );
     this.addInputListener( dragListener );
 
