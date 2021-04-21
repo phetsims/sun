@@ -116,7 +116,7 @@ class ComboBox extends Node {
       phetioType: ComboBox.ComboBoxIO,
       phetioEventType: EventType.USER,
       visiblePropertyOptions: { phetioFeatured: true },
-      enabledPropertyPhetioInstrumented: true // opt into default PhET-iO instrumented enabledProperty
+      phetioEnabledPropertyInstrumented: true // opt into default PhET-iO instrumented enabledProperty
     }, options );
 
     // validate option values

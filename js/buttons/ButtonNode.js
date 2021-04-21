@@ -100,7 +100,7 @@ class ButtonNode extends Node {
       // phet-io
       tandem: Tandem.OPTIONAL,
       visiblePropertyOptions: { phetioFeatured: true },
-      enabledPropertyPhetioInstrumented: true // opt into default PhET-iO instrumented enabledProperty
+      phetioEnabledPropertyInstrumented: true // opt into default PhET-iO instrumented enabledProperty
     }, options );
 
     options.listenerOptions = merge( {

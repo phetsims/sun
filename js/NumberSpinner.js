@@ -78,7 +78,7 @@ class NumberSpinner extends Node {
 
       // PhET-iO
       tandem: Tandem.REQUIRED,
-      enabledPropertyPhetioInstrumented: true // opt into default PhET-iO instrumented enabledProperty
+      phetioEnabledPropertyInstrumented: true // opt into default PhET-iO instrumented enabledProperty
     }, options );
 
     // validate options

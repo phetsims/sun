@@ -45,7 +45,7 @@ class AquaRadioButton extends Node {
       // phet-io
       tandem: Tandem.REQUIRED,
       visiblePropertyOptions: { phetioFeatured: true },
-      enabledPropertyPhetioInstrumented: true, // opt into default PhET-iO instrumented enabledProperty
+      phetioEnabledPropertyInstrumented: true, // opt into default PhET-iO instrumented enabledProperty
 
       // {Playable} - sound generator, usually overridden when creating a group of these
       soundPlayer: multiSelectionSoundPlayerFactory.getSelectionSoundPlayer( 0 ),

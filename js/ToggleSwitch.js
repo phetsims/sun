@@ -81,7 +81,7 @@ class ToggleSwitch extends Node {
       phetioEventType: EventType.USER,
       phetioReadOnly: PhetioObject.DEFAULT_OPTIONS.phetioReadOnly,
       visiblePropertyOptions: { phetioFeatured: true },
-      enabledPropertyPhetioInstrumented: true, // opt into default PhET-iO instrumented enabledProperty
+      phetioEnabledPropertyInstrumented: true, // opt into default PhET-iO instrumented enabledProperty
 
       // pdom
       tagName: 'button',
