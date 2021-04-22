@@ -104,10 +104,7 @@ class ComboBoxListItemNode extends Node {
     // Change fill instead of visibility so that we don't end up with vertical pointer gaps in the list
     this.addInputListener( {
       enter() { highlightRectangle.fill = options.highlightFill; },
-      focus() { highlightRectangle.fill = options.highlightFill; },
-
-      exit() { highlightRectangle.fill = null; },
-      blur() { highlightRectangle.fill = null; }
+      exit() { highlightRectangle.fill = null; }
     } );
   }
 }
