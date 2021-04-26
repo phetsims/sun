@@ -84,9 +84,13 @@ const AccessibleValueHandler = {
           // {function(number):number} - It should return the constrained value, called before valueProperty is set
           constrainValue: _.identity,
 
-          // keyboard steps for various keys/interactions
+          // {number} - delta for the valueProperty for each press of the arrow keys
           keyboardStep: ( rangeProperty.get().max - rangeProperty.get().min ) / 20,
+
+          // {number} - delta for the valueProperty for each press of the arrow keys while the shift modifier is down
           shiftKeyboardStep: ( rangeProperty.get().max - rangeProperty.get().min ) / 100,
+
+          // {number} - delta for the valueProperty for each press of "Page Up" and "Page Down"
           pageKeyboardStep: ( rangeProperty.get().max - rangeProperty.get().min ) / 10,
 
           ariaOrientation: Orientation.HORIZONTAL, // specify orientation, read by assistive technology
