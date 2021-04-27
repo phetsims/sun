@@ -175,7 +175,6 @@ class Slider extends Node {
     }
 
     // @private {Node} track
-
     this.track = options.trackNode || new DefaultSliderTrack( valueProperty, range, {
 
       // propagate options that are specific to SliderTrack
