@@ -25,7 +25,6 @@
       "phet-io"
     ],
     "phet-io": {
-      "compareBreakingAPIChanges": true,
       "compareDesignedAPIChanges": true,
       "validation": false
     }
