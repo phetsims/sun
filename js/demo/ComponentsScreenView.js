@@ -268,7 +268,8 @@ function demoVSlider( layoutBounds, options ) {
 function demoSlider( layoutBounds, orientation, options ) {
 
   options = merge( {
-    tandem: Tandem.REQUIRED
+    tandem: Tandem.REQUIRED,
+    phetioDesigned: true
   }, options );
 
   const property = new Property( 0 );

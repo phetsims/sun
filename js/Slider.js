@@ -120,6 +120,7 @@ class Slider extends Node {
       phetioType: Slider.SliderIO,
       visiblePropertyOptions: { phetioFeatured: true },
       phetioEnabledPropertyInstrumented: true, // opt into default PhET-iO instrumented enabledProperty
+      phetioDesigned: true,
 
       // {Property.<number>|null} - if provided, create a LinkedElement for this PhET-iO instrumented Property, instead
       // of using the passed in Property. This option was created to support passing DynamicProperty or "wrapping"
