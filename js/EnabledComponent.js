@@ -45,7 +45,7 @@ class EnabledComponent {
     const ownsEnabledProperty = !options.enabledProperty;
 
     assert && options.enabledPropertyOptions && assert( !( !options.phetioEnabledPropertyInstrumented && options.enabledPropertyOptions.tandem ),
-      'incompatible options. Cannot specify phetioEnabledPropertyInstrumented opt out and a Tandem' );
+      'incompatible options. Cannot specify phetioEnabledPropertyInstrumented opt out and a Tandem via enabledPropertyOptions.' );
 
     // @public
     this.enabledProperty = options.enabledProperty || new EnabledProperty( options.enabled, merge( {
