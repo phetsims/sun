@@ -23,8 +23,12 @@ const DEFAULT_OPTIONS = {
   // {boolean} initial value of enabledProperty if we create it, ignored if enabledProperty is provided
   enabled: true,
 
-  // {*} options to enabledProperty if we create it, ignored if enabledProperty is provided
+  // {Object|null} options to enabledProperty if we create it, ignored if enabledProperty is provided
   enabledPropertyOptions: null,
+
+  // {boolean} - Whether or not the default-created enabledProperty should be instrumented for PhET-iO. Ignored if
+  // options.enabledProperty is provided.
+  phetioEnabledPropertyInstrumented: true,
 
   // phet-io
   tandem: Tandem.OPTIONAL
@@ -40,9 +44,12 @@ class EnabledComponent {
 
     const ownsEnabledProperty = !options.enabledProperty;
 
+    assert && options.enabledPropertyOptions && assert( !( !options.phetioEnabledPropertyInstrumented && options.enabledPropertyOptions.tandem ),
+      'incompatible options. Cannot specify phetioEnabledPropertyInstrumented opt out and a Tandem' );
+
     // @public
     this.enabledProperty = options.enabledProperty || new EnabledProperty( options.enabled, merge( {
-      tandem: options.tandem.createTandem( EnabledProperty.TANDEM_NAME )
+      tandem: options.phetioEnabledPropertyInstrumented ? options.tandem.createTandem( EnabledProperty.TANDEM_NAME ) : Tandem.OPT_OUT
     }, options.enabledPropertyOptions ) );
 
     // @private - called by dispose
