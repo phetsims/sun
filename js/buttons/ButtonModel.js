@@ -12,7 +12,7 @@ import merge from '../../../phet-core/js/merge.js';
 import PressListener from '../../../scenery/js/listeners/PressListener.js';
 import PhetioObject from '../../../tandem/js/PhetioObject.js';
 import Tandem from '../../../tandem/js/Tandem.js';
-import EnabledComponent from '../EnabledComponent.js';
+import EnabledComponent from '../../../axon/js/EnabledComponent.js';
 import sun from '../sun.js';
 
 class ButtonModel extends EnabledComponent {
