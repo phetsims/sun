@@ -75,7 +75,6 @@ const Popupable = type => {
       } );
     }
 
-
     /**
      * @public
      *
