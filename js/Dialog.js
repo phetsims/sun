@@ -20,7 +20,6 @@ import PDOMUtils from '../../scenery/js/accessibility/pdom/PDOMUtils.js';
 import Display from '../../scenery/js/display/Display.js';
 import AlignBox from '../../scenery/js/nodes/AlignBox.js';
 import HBox from '../../scenery/js/nodes/HBox.js';
-import Node from '../../scenery/js/nodes/Node.js';
 import VBox from '../../scenery/js/nodes/VBox.js';
 import FullScreen from '../../scenery/js/util/FullScreen.js';
 import Playable from '../../tambo/js/Playable.js';
@@ -28,8 +27,8 @@ import generalCloseSoundPlayer from '../../tambo/js/shared-sound-players/general
 import generalOpenSoundPlayer from '../../tambo/js/shared-sound-players/generalOpenSoundPlayer.js';
 import PhetioObject from '../../tandem/js/PhetioObject.js';
 import Tandem from '../../tandem/js/Tandem.js';
+import DynamicMarkerIO from '../../tandem/js/types/DynamicMarkerIO.js';
 import IOType from '../../tandem/js/types/IOType.js';
-import ReferenceIO from '../../tandem/js/types/ReferenceIO.js';
 import ButtonNode from './buttons/ButtonNode.js';
 import Panel from './Panel.js';
 import Popupable from './Popupable.js';
@@ -132,7 +131,7 @@ class Dialog extends Popupable( Panel ) {
       tandem: Tandem.OPTIONAL,
       phetioType: Dialog.DialogIO,
       phetioReadOnly: PhetioObject.DEFAULT_OPTIONS.phetioReadOnly, // default to false so it can pass it through to the close button
-      phetioState: false, // ReferenceIO instances don't need to be stateful
+      phetioState: PhetioObject.DEFAULT_OPTIONS.phetioState,
 
       // {Playable} - sound generation
       openedSoundPlayer: generalOpenSoundPlayer,
@@ -437,7 +436,7 @@ Dialog.DialogIO = new IOType( 'DialogIO', {
   // Since many Dialogs are dynamic elements, these need to be in the state. The value of the state object doesn't
   // matter, but it instead just serves as a marker to tell the state engine to recreate the Dialog (if dynamic) when
   // setting state.
-  supertype: ReferenceIO( Node.NodeIO )
+  supertype: DynamicMarkerIO
 } );
 
 sun.register( 'Dialog', Dialog );

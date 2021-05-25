@@ -36,8 +36,7 @@ const Popupable = type => {
         // {Bounds2|null} - If desired, the layoutBounds that should be used for layout
         layoutBounds: null,
 
-        tandem: Tandem.OPTIONAL,
-        phetioState: false // ReferenceIO instances don't need to be stateful
+        tandem: Tandem.OPTIONAL
       }, options );
 
       assert && assert( typeof options.showPopup === 'function', 'showPopup is required, and must be provided if phet.joist.sim is not available.' );
