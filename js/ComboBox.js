@@ -1,4 +1,4 @@
-// Copyright 2013-2020, University of Colorado Boulder
+// Copyright 2013-2021, University of Colorado Boulder
 
 /**
  * Scenery-based combo box. Composed of a button and a popup 'list box' of items. ComboBox has no interaction of its

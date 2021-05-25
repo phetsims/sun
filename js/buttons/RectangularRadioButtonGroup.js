@@ -1,4 +1,4 @@
-// Copyright 2014-2020, University of Colorado Boulder
+// Copyright 2014-2021, University of Colorado Boulder
 
 /**
  * RectangularRadioButtonGroup is a group of rectangular radio buttons, in either horizontal or vertical orientation.
