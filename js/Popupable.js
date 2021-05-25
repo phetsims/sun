@@ -15,7 +15,6 @@ import gracefulBind from '../../phet-core/js/gracefulBind.js';
 import inheritance from '../../phet-core/js/inheritance.js';
 import merge from '../../phet-core/js/merge.js';
 import Node from '../../scenery/js/nodes/Node.js';
-import PhetioObject from '../../tandem/js/PhetioObject.js';
 import Tandem from '../../tandem/js/Tandem.js';
 import sun from './sun.js';
 
@@ -38,7 +37,7 @@ const Popupable = type => {
         layoutBounds: null,
 
         tandem: Tandem.OPTIONAL,
-        phetioState: PhetioObject.DEFAULT_OPTIONS.phetioState
+        phetioState: false // ReferenceIO instances don't need to be stateful
       }, options );
 
       assert && assert( typeof options.showPopup === 'function', 'showPopup is required, and must be provided if phet.joist.sim is not available.' );
@@ -61,8 +60,7 @@ const Popupable = type => {
       // @public {Property.<boolean>} - Whether the popup is being shown
       this.isShowingProperty = new BooleanProperty( false, {
         tandem: options.tandem.createTandem( 'isShowingProperty' ),
-        phetioReadOnly: true,
-        phetioState: options.phetioState // match the state transfer of the Popup
+        phetioReadOnly: true
       } );
 
       this.isShowingProperty.lazyLink( isShowing => {

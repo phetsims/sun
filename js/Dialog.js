@@ -132,7 +132,7 @@ class Dialog extends Popupable( Panel ) {
       tandem: Tandem.OPTIONAL,
       phetioType: Dialog.DialogIO,
       phetioReadOnly: PhetioObject.DEFAULT_OPTIONS.phetioReadOnly, // default to false so it can pass it through to the close button
-      phetioState: PhetioObject.DEFAULT_OPTIONS.phetioState,
+      phetioState: false, // ReferenceIO instances don't need to be stateful
 
       // {Playable} - sound generation
       openedSoundPlayer: generalOpenSoundPlayer,
@@ -149,11 +149,6 @@ class Dialog extends Popupable( Panel ) {
       // themselves, for example see KeyboardHelpDialog and https://github.com/phetsims/scenery-phet/issues/494
       addAriaLabelledByFromTitle: true
     }, options );
-
-    // Wait until merge complete to determine this value
-    options.visiblePropertyOptions = merge( {
-      phetioState: options.phetioState
-    }, options.visiblePropertyOptions );
 
     assert && assert( options.sim, 'sim must be provided, as Dialog needs a Sim instance' );
 
