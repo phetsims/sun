@@ -44,7 +44,7 @@ class RoundStickyToggleButton extends RoundButton {
     const playSound = () => soundPlayer.play();
     toggleButtonModel.produceSoundEmitter.addListener( playSound );
 
-    // PDOM - signify button is 'pressed' when down
+    // pdom - signify button is 'pressed' when down
     const setAriaPressed = value => this.setPDOMAttribute( 'aria-pressed', property.value === valueDown );
     property.link( setAriaPressed );
 

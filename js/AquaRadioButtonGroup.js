@@ -68,7 +68,7 @@ class AquaRadioButtonGroup extends LayoutBox {
       visiblePropertyOptions: { phetioFeatured: true },
       phetioEnabledPropertyInstrumented: true, // opt into default PhET-iO instrumented enabledProperty
 
-      // PDOM
+      // pdom
       tagName: 'ul',
       labelTagName: 'h3',
       ariaRole: 'radiogroup',
@@ -117,7 +117,7 @@ class AquaRadioButtonGroup extends LayoutBox {
 
     super( options );
 
-    // PDOM - this node's primary sibling is aria-labelledby its own label so the label content is read whenever
+    // pdom - this node's primary sibling is aria-labelledby its own label so the label content is read whenever
     // a member of the group receives focus
     this.addAriaLabelledbyAssociation( {
       thisElementName: PDOMPeer.PRIMARY_SIBLING,

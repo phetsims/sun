@@ -105,7 +105,7 @@ class RoundButton extends ButtonNode {
     this.mouseArea = Shape.circle( options.mouseAreaXShift, options.mouseAreaYShift,
       buttonBackgroundRadius + options.mouseAreaDilation );
 
-    // PDOM - focus highlight is circular for round buttons, with a little bit of padding
+    // pdom - focus highlight is circular for round buttons, with a little bit of padding
     // between button shape and inner edge of highlight
     this.focusHighlight = Shape.circle( 0, 0, buttonBackgroundRadius + 5 );
   }
