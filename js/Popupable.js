@@ -21,7 +21,7 @@ import sun from './sun.js';
 const Popupable = type => {
   assert && assert( _.includes( inheritance( type ), Node ), 'Only Node subtypes should mix Popupable' );
 
-  class Popupable extends type {
+  return class extends type {
 
     constructor( options, ...args ) {
       super( ...args );
@@ -110,9 +110,7 @@ const Popupable = type => {
 
       super.dispose();
     }
-  }
-
-  return Popupable;
+  };
 };
 
 sun.register( 'Popupable', Popupable );
