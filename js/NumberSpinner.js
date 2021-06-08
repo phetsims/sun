@@ -234,14 +234,19 @@ class NumberSpinner extends Node {
     };
     rangeProperty.link( rangeObserver );
 
-    // pdom - initialize accessibility features
-    assert && assert( !options.keyboardStep, 'keyboardStep supported by arrow buttons, do not pass value to NumberSpinner' );
-    assert && assert( !options.shiftKeyboardStep, 'shiftKeyboardStep handled by arrow buttons' );
+    // pdom - NumberSpinner uses AccessibleValueHandler for alternative input, but it was decided that keyboardStep
+    // and shiftKeyboardStep should have the same behavior as the NumberSpinner ArrowButtons AND the ArrowButtons
+    // should look depressed when interacting with those keys. To accomplish this we actually press the ArrowButtons
+    // in response to input with those keys. keyboardStep and shiftKeyboardStep are set to zero so the value isn't
+    // modified again by AccessibleValueHandler.
+    assert && assert( !options.keyboardStep, 'NumberSpinner sets keyboardStep, it will be the same as deltaValue' );
+    assert && assert( !options.shiftKeyboardStep, 'NumberSpinner sets shiftKeyboardStep, it will be the same as deltaValue' );
     options.keyboardStep = 0;
     options.shiftKeyboardStep = 0;
     this.initializeAccessibleNumberSpinner( numberProperty, rangeProperty, this.enabledProperty, options );
 
-    // pdom - click arrow buttons on keyboard increment/decrement; must be disposed
+    // pdom - click arrow buttons on press of arrow keys so that the Property value changes by deltaValue
+    // and the buttons look depressed
     const increasedListener = function( isDown ) { isDown && incrementButton.pdomClick(); };
     const decreasedListener = function( isDown ) { isDown && decrementButton.pdomClick(); };
     this.incrementDownEmitter.addListener( increasedListener );
