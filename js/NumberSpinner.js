@@ -234,7 +234,7 @@ class NumberSpinner extends Node {
     };
     rangeProperty.link( rangeObserver );
 
-    // pdom - NumberSpinner uses AccessibleValueHandler for alternative input, but it was decided that keyboardStep
+    // pdom - NumberSpinner uses AccessibleValueHandler for accessibility, but it was decided that keyboardStep
     // and shiftKeyboardStep should have the same behavior as the NumberSpinner ArrowButtons AND the ArrowButtons
     // should look depressed when interacting with those keys. To accomplish this we actually press the ArrowButtons
     // in response to input with those keys. keyboardStep and shiftKeyboardStep are set to zero so the value isn't
