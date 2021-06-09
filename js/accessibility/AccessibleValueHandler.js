@@ -561,7 +561,7 @@ const AccessibleValueHandler = {
               }
             }
 
-            // optionally map the value
+            // Map the value.
             const mappedValue = this._a11yMapValue( newValue, this._valueProperty.get() );
 
             // Optionally constrain the value. Only constrain if the shift key is not down because the shiftKeyboardStep
