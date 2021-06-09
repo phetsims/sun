@@ -561,11 +561,21 @@ const AccessibleValueHandler = {
               }
             }
 
-            // optionally constrain and map the value
-            const constrainedAndMapped = this._constrainValue( this._a11yMapValue( newValue, this._valueProperty.get() ) );
+            // optionally map the value
+            const mappedValue = this._a11yMapValue( newValue, this._valueProperty.get() );
+
+            // Optionally constrain the value. Only constrain if the shift key is not down because the shiftKeyboardStep
+            // may allow finer precision than constrainValue. This is a workaround for
+            // https://github.com/phetsims/sun/issues/698, and is actually a problem for all keyboard steps if they
+            // are smaller than values allowed by constrainValue. In https://github.com/phetsims/sun/issues/703 we
+            // will work to resolve this more generally.
+            let constrainedValue = mappedValue;
+            if ( !this.shiftKeyDown ) {
+              constrainedValue = this._constrainValue( mappedValue );
+            }
 
             // limit the value to the enabled range
-            this._valueProperty.set( Utils.clamp( constrainedAndMapped, this._rangeProperty.get().min, this._rangeProperty.get().max ) );
+            this._valueProperty.set( Utils.clamp( constrainedValue, this._rangeProperty.get().min, this._rangeProperty.get().max ) );
 
             // optional change callback after the valueProperty is set so that the listener can use the new value
             this._onChange( event );
