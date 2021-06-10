@@ -81,7 +81,9 @@ const AccessibleValueHandler = {
           // hold". This function will still be called once per input in those cases.
           onChange: _.noop,
 
-          // {function(number):number} - It should return the constrained value, called before valueProperty is set
+          // {function(number):number} - Constrains the value, returning a new value for the valueProperty instead.
+          // Called before the valueProperty is set. This is only called when the shift key is NOT down because
+          // it is often that shiftKeyboardStep is a smaller step size then what is allowed by constrainValue.
           constrainValue: _.identity,
 
           // {number} - delta for the valueProperty for each press of the arrow keys
@@ -228,10 +230,10 @@ const AccessibleValueHandler = {
         // @private {function} - called when value change input ends
         this._endChange = options.endChange;
 
-        // @private {function(number):number} - called before valueProperty is set
+        // @private {function(number):number} - see options for documentation
         this._constrainValue = options.constrainValue;
 
-        // @private {function(number,number):number} - called before constrainValue called and valueProperty is set
+        // @private {function(number,number):number} - see options for documentation
         this._a11yMapValue = options.a11yMapValue;
 
         // @private {null|Node}
