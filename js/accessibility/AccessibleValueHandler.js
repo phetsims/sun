@@ -512,6 +512,9 @@ const AccessibleValueHandler = {
             // their behavior during scenery event dispatch
             event.pointer.reserveForKeyboardDrag();
 
+            // whether or not we will use constrainValue to modify the proposed value, see usages below
+            let useConstrainValue = true;
+
             // if this is the first keydown this is the start of the drag interaction
             if ( !this.anyKeysDown() ) {
               this._startChange( event );
@@ -550,6 +553,11 @@ const AccessibleValueHandler = {
                 // if the shift key is pressed down, modify the step size (this is atypical browser behavior for sliders)
                 stepSize = domEvent.shiftKey ? this.shiftKeyboardStep : this.keyboardStep;
 
+                // Temporary workaround, if using shift key with arrow keys to use the shiftKeyboardStep, don't
+                // use constrainValue because the constrainValue is often smaller than the values allowed by
+                // constrainValue. See https://github.com/phetsims/sun/issues/698.
+                useConstrainValue = !domEvent.shiftKey;
+
                 if ( key === KeyboardUtils.KEY_RIGHT_ARROW || key === KeyboardUtils.KEY_UP_ARROW ) {
                   newValue = this._valueProperty.get() + stepSize;
                 }
@@ -566,13 +574,13 @@ const AccessibleValueHandler = {
             // Map the value.
             const mappedValue = this._a11yMapValue( newValue, this._valueProperty.get() );
 
-            // Optionally constrain the value. Only constrain if the shift key is not down because the shiftKeyboardStep
+            // Optionally constrain the value. Only constrain if modifying by shiftKeyboardStep because that step size
             // may allow finer precision than constrainValue. This is a workaround for
             // https://github.com/phetsims/sun/issues/698, and is actually a problem for all keyboard steps if they
             // are smaller than values allowed by constrainValue. In https://github.com/phetsims/sun/issues/703 we
             // will work to resolve this more generally.
             let constrainedValue = mappedValue;
-            if ( !this.shiftKeyDown ) {
+            if ( useConstrainValue ) {
               constrainedValue = this._constrainValue( mappedValue );
             }
 
