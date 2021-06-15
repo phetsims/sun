@@ -14,10 +14,10 @@ import ScreenView from '../../joist/js/ScreenView.js';
 import getGlobal from '../../phet-core/js/getGlobal.js';
 import merge from '../../phet-core/js/merge.js';
 import CloseButton from '../../scenery-phet/js/buttons/CloseButton.js';
+import FocusManager from '../../scenery/js/accessibility/FocusManager.js';
 import KeyboardUtils from '../../scenery/js/accessibility/KeyboardUtils.js';
 import PDOMPeer from '../../scenery/js/accessibility/pdom/PDOMPeer.js';
 import PDOMUtils from '../../scenery/js/accessibility/pdom/PDOMUtils.js';
-import Display from '../../scenery/js/display/Display.js';
 import AlignBox from '../../scenery/js/nodes/AlignBox.js';
 import HBox from '../../scenery/js/nodes/HBox.js';
 import VBox from '../../scenery/js/nodes/VBox.js';
@@ -281,7 +281,7 @@ class Dialog extends Popupable( Panel ) {
         // sound generation
         options.openedSoundPlayer.play();
 
-        this.nodeToReturnFocus = this.focusOnCloseNode || Display.focusedNode;
+        this.nodeToReturnFocus = this.focusOnCloseNode || FocusManager.pdomFocusedNode;
 
         // pdom - modal dialogs should be the only readable content in the sim
         // TODO: https://github.com/phetsims/joist/issues/293 non-modal dialogs shouldn't hide other accessible content,
@@ -355,7 +355,7 @@ class Dialog extends Popupable( Panel ) {
           // prevent a particular bug in Windows 7/8.1 Firefox where focus gets trapped in the document
           // when the navigation bar is hidden and there is only one focusable element in the DOM
           // see https://bugzilla.mozilla.org/show_bug.cgi?id=910136
-          const activeId = Display.focus.trail.getUniqueId();
+          const activeId = FocusManager.pdomFocus.trail.getUniqueId();
           const noNextFocusable = PDOMUtils.getNextFocusable().id === activeId;
           const noPreviousFocusable = PDOMUtils.getPreviousFocusable().id === activeId;
 

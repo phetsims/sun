@@ -23,8 +23,8 @@ import dotRandom from '../../dot/js/dotRandom.js';
 import Vector2 from '../../dot/js/Vector2.js';
 import InstanceRegistry from '../../phet-core/js/documentation/InstanceRegistry.js';
 import merge from '../../phet-core/js/merge.js';
+import FocusManager from '../../scenery/js/accessibility/FocusManager.js';
 import PDOMPeer from '../../scenery/js/accessibility/pdom/PDOMPeer.js';
-import Display from '../../scenery/js/display/Display.js';
 import Node from '../../scenery/js/nodes/Node.js';
 import generalCloseSoundPlayer from '../../tambo/js/shared-sound-players/generalCloseSoundPlayer.js';
 import generalOpenSoundPlayer from '../../tambo/js/shared-sound-players/generalOpenSoundPlayer.js';
@@ -234,7 +234,7 @@ class ComboBox extends Node {
         this.hideListBox();
       }
     };
-    Display.focusProperty.link( this.dismissWithFocusListener );
+    FocusManager.pdomFocusProperty.link( this.dismissWithFocusListener );
 
     this.listBox.localBoundsProperty.lazyLink( () => this.moveListBox() );
 
@@ -286,7 +286,7 @@ class ComboBox extends Node {
         this.display.removeInputListener( this.clickToDismissListener );
       }
 
-      Display.focusProperty.unlink( this.dismissWithFocusListener );
+      FocusManager.pdomFocusProperty.unlink( this.dismissWithFocusListener );
 
       // dispose of subcomponents
       this.listBox.dispose();
