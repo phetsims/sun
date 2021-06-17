@@ -83,7 +83,7 @@ const AccessibleValueHandler = {
 
           // {function(number):number} - Constrains the value, returning a new value for the valueProperty instead.
           // Called before the valueProperty is set. This is only called when the shift key is NOT down because
-          // it is often that shiftKeyboardStep is a smaller step size then what is allowed by constrainValue.
+          // it is often the case that shiftKeyboardStep is a smaller step size then what is allowed by constrainValue.
           constrainValue: _.identity,
 
           // {number} - delta for the valueProperty for each press of the arrow keys
