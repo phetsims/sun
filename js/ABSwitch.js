@@ -13,16 +13,16 @@ import merge from '../../phet-core/js/merge.js';
 import PressListener from '../../scenery/js/listeners/PressListener.js';
 import Line from '../../scenery/js/nodes/Line.js';
 import Node from '../../scenery/js/nodes/Node.js';
+import SceneryConstants from '../../scenery/js/SceneryConstants.js';
 import Tandem from '../../tandem/js/Tandem.js';
 import sun from './sun.js';
-import SunConstants from './SunConstants.js';
 import ToggleSwitch from './ToggleSwitch.js';
 
 // constants
 
 // Uses opacity as the default method of indicating whether a {Node} label is {boolean} enabled.
 const DEFAULT_SET_ENABLED = ( label, enabled ) => {
-  label.opacity = enabled ? 1.0 : SunConstants.DISABLED_OPACITY;
+  label.opacity = enabled ? 1.0 : SceneryConstants.DISABLED_OPACITY;
 };
 
 class ABSwitch extends Node {
@@ -63,7 +63,7 @@ class ABSwitch extends Node {
       setEnabled: DEFAULT_SET_ENABLED,
 
       // {number} - opt into Node's disabled opacity when enabled:false
-      disabledOpacity: SunConstants.DISABLED_OPACITY,
+      disabledOpacity: SceneryConstants.DISABLED_OPACITY,
 
       // phet-io
       tandem: Tandem.REQUIRED,

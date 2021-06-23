@@ -23,12 +23,12 @@ import merge from '../../phet-core/js/merge.js';
 import DragListener from '../../scenery/js/listeners/DragListener.js';
 import Node from '../../scenery/js/nodes/Node.js';
 import Rectangle from '../../scenery/js/nodes/Rectangle.js';
+import SceneryConstants from '../../scenery/js/SceneryConstants.js';
 import LinearGradient from '../../scenery/js/util/LinearGradient.js';
 import EventType from '../../tandem/js/EventType.js';
 import PhetioObject from '../../tandem/js/PhetioObject.js';
 import Tandem from '../../tandem/js/Tandem.js';
 import sun from './sun.js';
-import SunConstants from './SunConstants.js';
 
 // constants
 const DEFAULT_SIZE = new Dimension2( 60, 30 );
@@ -61,7 +61,7 @@ class ToggleSwitch extends Node {
       toggleThreshold: 1,
 
       // {number} - opt into Node's disabled opacity when enabled:false
-      disabledOpacity: SunConstants.DISABLED_OPACITY,
+      disabledOpacity: SceneryConstants.DISABLED_OPACITY,
 
       // thumb
       thumbFill: null, // {Color|string} thumb fill, default computed below

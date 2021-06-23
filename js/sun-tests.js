@@ -10,8 +10,8 @@ import BooleanProperty from '../../axon/js/BooleanProperty.js';
 import qunitStart from '../../chipper/js/sim-tests/qunitStart.js';
 import merge from '../../phet-core/js/merge.js';
 import Node from '../../scenery/js/nodes/Node.js';
+import SceneryConstants from '../../scenery/js/SceneryConstants.js';
 import './SliderTests.js';
-import SunConstants from './SunConstants.js';
 
 
 QUnit.module( 'sun' );
@@ -21,7 +21,7 @@ QUnit.test( 'enabled/disabled appearance', assert => {
   class SunComponentNode extends Node {
     constructor( options ) {
       options = merge( {
-        disabledOpacity: SunConstants.DISABLED_OPACITY
+        disabledOpacity: SceneryConstants.DISABLED_OPACITY
       }, options );
       super( options );
     }

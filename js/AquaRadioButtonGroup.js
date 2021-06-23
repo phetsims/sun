@@ -12,11 +12,11 @@ import PDOMPeer from '../../scenery/js/accessibility/pdom/PDOMPeer.js';
 import HStrut from '../../scenery/js/nodes/HStrut.js';
 import LayoutBox from '../../scenery/js/nodes/LayoutBox.js';
 import Node from '../../scenery/js/nodes/Node.js';
+import SceneryConstants from '../../scenery/js/SceneryConstants.js';
 import multiSelectionSoundPlayerFactory from '../../tambo/js/multiSelectionSoundPlayerFactory.js';
 import Tandem from '../../tandem/js/Tandem.js';
 import AquaRadioButton from './AquaRadioButton.js';
 import sun from './sun.js';
-import SunConstants from './SunConstants.js';
 
 // pdom - An id for each instance of AquaRadioButtonGroup, passed to individual buttons in the group.
 // Each button in a radio button group must have the same "name" attribute to be considered in a group, otherwise
@@ -58,7 +58,8 @@ class AquaRadioButtonGroup extends LayoutBox {
       mouseAreaYDilation: 0,
 
       // {number} - opt into Node's disabled opacity when enabled:false
-      disabledOpacity: SunConstants.DISABLED_OPACITY,
+      disabledOpacity: SceneryConstants.DISABLED_OPACITY,
+
       // supertype options
       orientation: 'vertical', // Aqua radio buttons are typically vertical, rarely horizontal
       spacing: 3, // space between each button, perpendicular to options.orientation

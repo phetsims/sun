@@ -14,12 +14,12 @@ import FocusHighlightPath from '../../../scenery/js/accessibility/FocusHighlight
 import PDOMPeer from '../../../scenery/js/accessibility/pdom/PDOMPeer.js';
 import LayoutBox from '../../../scenery/js/nodes/LayoutBox.js';
 import Rectangle from '../../../scenery/js/nodes/Rectangle.js';
+import SceneryConstants from '../../../scenery/js/SceneryConstants.js';
 import Color from '../../../scenery/js/util/Color.js';
 import multiSelectionSoundPlayerFactory from '../../../tambo/js/multiSelectionSoundPlayerFactory.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import ColorConstants from '../ColorConstants.js';
 import sun from '../sun.js';
-import SunConstants from '../SunConstants.js';
 import RectangularRadioButton from './RectangularRadioButton.js';
 
 // constants
@@ -50,7 +50,7 @@ class RectangularRadioButtonGroup extends LayoutBox {
     options = merge( {
 
       // {number} - opt into Node's disabled opacity when enabled:false
-      disabledOpacity: SunConstants.DISABLED_OPACITY,
+      disabledOpacity: SceneryConstants.DISABLED_OPACITY,
 
       // phet-io
       tandem: Tandem.REQUIRED,

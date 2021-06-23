@@ -22,6 +22,7 @@ import FocusHighlightFromNode from '../../scenery/js/accessibility/FocusHighligh
 import DragListener from '../../scenery/js/listeners/DragListener.js';
 import Node from '../../scenery/js/nodes/Node.js';
 import Path from '../../scenery/js/nodes/Path.js';
+import SceneryConstants from '../../scenery/js/SceneryConstants.js';
 import Tandem from '../../tandem/js/Tandem.js';
 import BooleanIO from '../../tandem/js/types/BooleanIO.js';
 import IOType from '../../tandem/js/types/IOType.js';
@@ -31,7 +32,6 @@ import DefaultSliderTrack from './DefaultSliderTrack.js';
 import SliderThumb from './SliderThumb.js';
 import SliderTrack from './SliderTrack.js';
 import sun from './sun.js';
-import SunConstants from './SunConstants.js';
 
 // constants
 const VERTICAL_ROTATION = -Math.PI / 2;
@@ -113,7 +113,7 @@ class Slider extends Node {
       constrainValue: _.identity, // called before valueProperty is set, passed to AccessibleValueHandler as well
 
       enabledRangeProperty: null, // {Property.<Range>|null} determine the portion of range that is enabled
-      disabledOpacity: SunConstants.DISABLED_OPACITY, // opacity applied to the entire Slider when disabled
+      disabledOpacity: SceneryConstants.DISABLED_OPACITY, // opacity applied to the entire Slider when disabled
 
       // phet-io
       tandem: Tandem.REQUIRED,

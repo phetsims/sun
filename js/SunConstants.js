@@ -21,10 +21,7 @@ const SunConstants = {
    * Typically appears in translated strings (e.g. "{0} nm") and used with StringUtils.format.
    * @deprecated - Named placeholders are the new standard, and numbered placeholders should not be used in new code.
    */
-  VALUE_NUMBERED_PLACEHOLDER: '{0}',
-
-  // Opacity that is typically applied to a UI component in its disabled state, to make it look grayed out.
-  DISABLED_OPACITY: 0.45
+  VALUE_NUMBERED_PLACEHOLDER: '{0}'
 };
 
 sun.register( 'SunConstants', SunConstants );

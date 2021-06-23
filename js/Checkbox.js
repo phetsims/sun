@@ -15,6 +15,7 @@ import merge from '../../phet-core/js/merge.js';
 import FireListener from '../../scenery/js/listeners/FireListener.js';
 import Node from '../../scenery/js/nodes/Node.js';
 import Rectangle from '../../scenery/js/nodes/Rectangle.js';
+import SceneryConstants from '../../scenery/js/SceneryConstants.js';
 import checkboxCheckedSoundPlayer from '../../tambo/js/shared-sound-players/checkboxCheckedSoundPlayer.js';
 import checkboxUncheckedSoundPlayer from '../../tambo/js/shared-sound-players/checkboxUncheckedSoundPlayer.js';
 import EventType from '../../tandem/js/EventType.js';
@@ -22,7 +23,6 @@ import PhetioObject from '../../tandem/js/PhetioObject.js';
 import Tandem from '../../tandem/js/Tandem.js';
 import FontAwesomeNode from './FontAwesomeNode.js';
 import sun from './sun.js';
-import SunConstants from './SunConstants.js';
 
 // constants
 const BOOLEAN_VALIDATOR = { valueType: 'boolean' };
@@ -46,7 +46,7 @@ class Checkbox extends Node {
       cursor: 'pointer',
       checkboxColor: 'black',
       checkboxColorBackground: 'white',
-      disabledOpacity: SunConstants.DISABLED_OPACITY,
+      disabledOpacity: SceneryConstants.DISABLED_OPACITY,
 
       // phet-io
       tandem: Tandem.REQUIRED,

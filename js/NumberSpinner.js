@@ -10,11 +10,11 @@
 import merge from '../../phet-core/js/merge.js';
 import NumberDisplay from '../../scenery-phet/js/NumberDisplay.js';
 import Node from '../../scenery/js/nodes/Node.js';
+import SceneryConstants from '../../scenery/js/SceneryConstants.js';
 import Tandem from '../../tandem/js/Tandem.js';
 import AccessibleNumberSpinner from './accessibility/AccessibleNumberSpinner.js';
 import ArrowButton from './buttons/ArrowButton.js';
 import sun from './sun.js';
-import SunConstants from './SunConstants.js';
 
 // possible values for options.arrowsPosition
 const ARROWS_POSITION_VALUES = [
@@ -60,7 +60,7 @@ class NumberSpinner extends Node {
       deltaValue: 1,
 
       // {number} - opt into Node's disabled opacity when enabled:false
-      disabledOpacity: SunConstants.DISABLED_OPACITY,
+      disabledOpacity: SceneryConstants.DISABLED_OPACITY,
       xSpacing: 5,
       ySpacing: 3,
 

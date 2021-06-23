@@ -12,10 +12,10 @@ import FireListener from '../../scenery/js/listeners/FireListener.js';
 import Circle from '../../scenery/js/nodes/Circle.js';
 import Node from '../../scenery/js/nodes/Node.js';
 import Rectangle from '../../scenery/js/nodes/Rectangle.js';
+import SceneryConstants from '../../scenery/js/SceneryConstants.js';
 import multiSelectionSoundPlayerFactory from '../../tambo/js/multiSelectionSoundPlayerFactory.js';
 import Tandem from '../../tandem/js/Tandem.js';
 import sun from './sun.js';
-import SunConstants from './SunConstants.js';
 
 // constants
 const DEFAULT_RADIUS = 7;
@@ -40,7 +40,7 @@ class AquaRadioButton extends Node {
       stroke: 'black', // color used to stroke the outer edge of the button
 
       // {number} - opt into Node's disabled opacity when enabled:false
-      disabledOpacity: SunConstants.DISABLED_OPACITY,
+      disabledOpacity: SceneryConstants.DISABLED_OPACITY,
 
       // phet-io
       tandem: Tandem.REQUIRED,

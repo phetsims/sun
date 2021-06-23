@@ -12,6 +12,7 @@ import DerivedProperty from '../../../axon/js/DerivedProperty.js';
 import merge from '../../../phet-core/js/merge.js';
 import AlignBox from '../../../scenery/js/nodes/AlignBox.js';
 import Node from '../../../scenery/js/nodes/Node.js';
+import SceneryConstants from '../../../scenery/js/SceneryConstants.js';
 import Brightness from '../../../scenery/js/util/Brightness.js';
 import Contrast from '../../../scenery/js/util/Contrast.js';
 import Grayscale from '../../../scenery/js/util/Grayscale.js';
@@ -19,7 +20,6 @@ import PaintColorProperty from '../../../scenery/js/util/PaintColorProperty.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import ColorConstants from '../ColorConstants.js';
 import sun from '../sun.js';
-import SunConstants from '../SunConstants.js';
 import ButtonInteractionState from './ButtonInteractionState.js';
 
 // constants
@@ -87,7 +87,7 @@ class ButtonNode extends Node {
 
         if ( content ) {
           content.filters = enabled ? [] : [ Grayscale.FULL ];
-          content.opacity = enabled ? 1 : SunConstants.DISABLED_OPACITY;
+          content.opacity = enabled ? 1 : SceneryConstants.DISABLED_OPACITY;
         }
       },
 
