@@ -75,12 +75,11 @@ const Popupable = type => {
     /**
      * @public
      *
-     * @param {number} width
-     * @param {number} height
+     * @param {Bounds2} bounds
      */
-    layout( width, height ) {
+    layout( bounds ) {
       if ( this.layoutBounds ) {
-        this.popupParent.matrix = ScreenView.getLayoutMatrix( this.layoutBounds, width, height );
+        this.popupParent.matrix = ScreenView.getLayoutMatrix( this.layoutBounds, bounds );
       }
     }
 
