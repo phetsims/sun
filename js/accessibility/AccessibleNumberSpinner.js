@@ -120,10 +120,10 @@ const AccessibleNumberSpinner = {
           },
           keyup: function( event ) {
 
-            const key = KeyboardUtils.getKeyDef( event.domEvent );
+            const key = KeyboardUtils.getEventCode( event.domEvent );
 
             if ( KeyboardUtils.isRangeKey( event.domEvent ) ) {
-              if ( runningTimerCallbackEvent && key === KeyboardUtils.getKeyDef( runningTimerCallbackEvent ) ) {
+              if ( runningTimerCallbackEvent && key === KeyboardUtils.getEventCode( runningTimerCallbackEvent ) ) {
                 self.emitKeyState( event.domEvent, false );
                 self._callbackTimer.stop( false );
                 self._callbackTimer.removeCallback( downCallback );

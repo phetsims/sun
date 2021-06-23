@@ -290,7 +290,7 @@ const AccessibleValueHandler = {
         // block input event after handling the keydown event
         this.blockInput = false;
 
-        // @private {Object.<KeyDef, boolean>} - key is range key, value is whether it is down
+        // @private {Object.<string, boolean>} - key is the event.code for the range key, value is whether it is down
         this.rangeKeysDown = {};
 
         // @private - setting to enable/disable rounding to the step size
@@ -495,7 +495,7 @@ const AccessibleValueHandler = {
        */
       handleKeyDown( event ) {
         const domEvent = event.domEvent;
-        const key = KeyboardUtils.getKeyDef( domEvent );
+        const key = KeyboardUtils.getEventCode( domEvent );
         this._shiftKey = domEvent.shiftKey;
 
         // if we receive a keydown event, we shouldn't handle any input events (which should only be provided
@@ -604,7 +604,7 @@ const AccessibleValueHandler = {
        * @param {SceneryEvent} event
        */
       handleKeyUp( event ) {
-        const key = KeyboardUtils.getKeyDef( event.domEvent );
+        const key = KeyboardUtils.getEventCode( event.domEvent );
 
         // handle case where user tabbed to this input while an arrow key might have been held down
         if ( this.allKeysUp() ) {
@@ -612,7 +612,7 @@ const AccessibleValueHandler = {
         }
 
         // reset shift key flag when we release it
-        if ( key === KeyboardUtils.KEY_SHIFT ) {
+        if ( key === KeyboardUtils.KEY_SHIFT_LEFT ) {
           this._shiftKey = false;
         }
 
