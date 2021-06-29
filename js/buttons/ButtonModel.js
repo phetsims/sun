@@ -165,8 +165,8 @@ class ButtonModel extends EnabledComponent {
     // PressListeners created by this ButtonModel look pressed. Note that this cannot be an arrow function
     // because its implementation relies on arguments.
     const self = this;
-    this.looksPressedMultilink = Property.multilink( looksPressedProperties, function() {
-      self.looksPressedProperty.value = _.reduce( arguments, ( sum, newValue ) => sum || newValue, false );
+    this.looksPressedMultilink = Property.multilink( looksPressedProperties, ( ...args ) => {
+      self.looksPressedProperty.value = _.reduce( args, ( sum, newValue ) => sum || newValue, false );
     } );
 
     const looksOverProperties = this.listeners.map( listener => listener.looksOverProperty );
@@ -174,8 +174,8 @@ class ButtonModel extends EnabledComponent {
     // assign a new Multilink (for disposal), and make sure that the button looks over when any of the
     // PressListeners created by this ButtonModel look over. Note that this cannot be an arrow function
     // because its implementation relies on arguments.
-    this.looksOverMultilink = Property.multilink( looksOverProperties, function() {
-      self.looksOverProperty.value = _.reduce( arguments, ( sum, newValue ) => sum || newValue, false );
+    this.looksOverMultilink = Property.multilink( looksOverProperties, ( ...args ) => {
+      self.looksOverProperty.value = _.reduce( args, ( sum, newValue ) => sum || newValue, false );
     } );
 
     return pressListener;
