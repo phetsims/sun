@@ -12,6 +12,7 @@ import TinyProperty from '../../axon/js/TinyProperty.js';
 import validate from '../../axon/js/validate.js';
 import InstanceRegistry from '../../phet-core/js/documentation/InstanceRegistry.js';
 import merge from '../../phet-core/js/merge.js';
+import Voicing from '../../scenery/js/accessibility/voicing/Voicing.js';
 import FireListener from '../../scenery/js/listeners/FireListener.js';
 import Node from '../../scenery/js/nodes/Node.js';
 import Rectangle from '../../scenery/js/nodes/Rectangle.js';
@@ -33,6 +34,7 @@ class Checkbox extends Node {
    * @param {Node} content
    * @param {Property.<boolean>} property
    * @param {Object} [options]
+   * @mixes {Voicing}
    */
   constructor( content, property, options ) {
 
@@ -69,6 +71,9 @@ class Checkbox extends Node {
     }, options );
 
     super();
+
+    // voicing - initialize the Trait
+    this.initializeVoicing();
 
     // @private - sends out notifications when the checkbox is toggled.
     const toggleAction = new Action( () => {
@@ -212,6 +217,8 @@ class Checkbox extends Node {
 
   get checkboxColor() { return this.getCheckboxColor(); }
 }
+
+Voicing.compose( Checkbox );
 
 sun.register( 'Checkbox', Checkbox );
 export default Checkbox;
