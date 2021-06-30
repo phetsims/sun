@@ -10,6 +10,7 @@
 
 import DerivedProperty from '../../../axon/js/DerivedProperty.js';
 import merge from '../../../phet-core/js/merge.js';
+import Voicing from '../../../scenery/js/accessibility/voicing/Voicing.js';
 import AlignBox from '../../../scenery/js/nodes/AlignBox.js';
 import Node from '../../../scenery/js/nodes/Node.js';
 import SceneryConstants from '../../../scenery/js/SceneryConstants.js';
@@ -29,6 +30,8 @@ const BRIGHTNESS_FILTER = new Brightness( 1.2 );
 class ButtonNode extends Node {
 
   /**
+   * @mixes {Voicing}
+   *
    * @param {ButtonModel} buttonModel
    * @param {Node,Paintable} buttonBackground - the background of the button (like a circle or rectangle).
    * @param {Property} interactionStateProperty - a Property that is used to drive the visual appearance of the button
@@ -113,6 +116,9 @@ class ButtonNode extends Node {
 
     super();
 
+    // voicing - initialize the voicing feature to work with
+    this.initializeVoicing();
+
     // @protected
     this.buttonModel = buttonModel;
 
@@ -180,6 +186,7 @@ class ButtonNode extends Node {
 
     // @private - define a dispose function
     this.disposeButtonNode = () => {
+      this.disposeVoicing();
       alignBox && alignBox.dispose();
       buttonAppearanceStrategy.dispose && buttonAppearanceStrategy.dispose();
       contentAppearanceStrategy && contentAppearanceStrategy.dispose && contentAppearanceStrategy.dispose();
@@ -303,6 +310,8 @@ class FlatAppearanceStrategy {
 }
 
 ButtonNode.FlatAppearanceStrategy = FlatAppearanceStrategy;
+
+Voicing.compose( ButtonNode );
 
 sun.register( 'ButtonNode', ButtonNode );
 export default ButtonNode;
