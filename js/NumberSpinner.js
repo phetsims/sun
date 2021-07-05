@@ -153,7 +153,6 @@ class NumberSpinner extends Node {
     // Because range may change via rangeProperty, the size of numberDisplay may change, in which case layout will need
     // to be revised. See https://github.com/phetsims/sun/issues/709
     const updateLayout = () => {
-      console.log( 'NumberSpinner.updateLayout' );
       if ( options.arrowsPosition === 'leftRight' ) {
         incrementButton.left = numberDisplay.right + options.xSpacing;
         decrementButton.right = numberDisplay.left - options.xSpacing;
