@@ -150,27 +150,32 @@ class NumberSpinner extends Node {
     incrementButton.setScaleMagnitude( arrowsScale );
     decrementButton.setScaleMagnitude( arrowsScale );
 
-    // layout
-    if ( options.arrowsPosition === 'leftRight' ) {
-      incrementButton.left = numberDisplay.right + options.xSpacing;
-      decrementButton.right = numberDisplay.left - options.xSpacing;
-      incrementButton.centerY = decrementButton.centerY = numberDisplay.centerY;
-    }
-    else if ( options.arrowsPosition === 'topBottom' ) {
-      incrementButton.centerX = decrementButton.centerX = numberDisplay.centerX;
-      incrementButton.bottom = numberDisplay.top - options.ySpacing;
-      decrementButton.top = numberDisplay.bottom + options.ySpacing;
-    }
-    else if ( options.arrowsPosition === 'bothRight' ) {
-      incrementButton.left = decrementButton.left = numberDisplay.right + options.xSpacing;
-      incrementButton.bottom = numberDisplay.centerY - ( options.ySpacing / 2 );
-      decrementButton.top = numberDisplay.centerY + ( options.ySpacing / 2 );
-    }
-    else { // 'bothBottom'
-      incrementButton.left = numberDisplay.centerX + ( options.xSpacing / 2 );
-      decrementButton.right = numberDisplay.centerX - ( options.xSpacing / 2 );
-      incrementButton.top = decrementButton.top = numberDisplay.bottom + options.ySpacing;
-    }
+    // Because range may change via rangeProperty, the size of numberDisplay may change, in which case layout will need
+    // to be revised. See https://github.com/phetsims/sun/issues/709
+    const updateLayout = () => {
+      console.log( 'NumberSpinner.updateLayout' );
+      if ( options.arrowsPosition === 'leftRight' ) {
+        incrementButton.left = numberDisplay.right + options.xSpacing;
+        decrementButton.right = numberDisplay.left - options.xSpacing;
+        incrementButton.centerY = decrementButton.centerY = numberDisplay.centerY;
+      }
+      else if ( options.arrowsPosition === 'topBottom' ) {
+        incrementButton.centerX = decrementButton.centerX = numberDisplay.centerX;
+        incrementButton.bottom = numberDisplay.top - options.ySpacing;
+        decrementButton.top = numberDisplay.bottom + options.ySpacing;
+      }
+      else if ( options.arrowsPosition === 'bothRight' ) {
+        incrementButton.left = decrementButton.left = numberDisplay.right + options.xSpacing;
+        incrementButton.bottom = numberDisplay.centerY - ( options.ySpacing / 2 );
+        decrementButton.top = numberDisplay.centerY + ( options.ySpacing / 2 );
+      }
+      else { // 'bothBottom'
+        incrementButton.left = numberDisplay.centerX + ( options.xSpacing / 2 );
+        decrementButton.right = numberDisplay.centerX - ( options.xSpacing / 2 );
+        incrementButton.top = decrementButton.top = numberDisplay.bottom + options.ySpacing;
+      }
+    };
+    numberDisplay.boundsProperty.link( () => updateLayout() );
 
     // touch areas
     if ( options.touchAreaXDilation || options.touchAreaYDilation ) {
