@@ -264,6 +264,11 @@ class NumberSpinner extends Node {
     // @private
     this.disposeNumberSpinner = () => {
 
+      // dispose of subcomponents
+      numberDisplay.dispose();
+      incrementButton.dispose();
+      decrementButton.dispose();
+
       // dispose a11y features
       this.incrementDownEmitter.removeListener( increasedListener );
       this.decrementDownEmitter.removeListener( decreasedListener );
