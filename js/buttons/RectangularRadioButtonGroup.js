@@ -172,9 +172,6 @@ class RectangularRadioButtonGroup extends LayoutBox {
     // make a copy of the options to pass to individual buttons that includes all default options but not scenery options
     const buttonOptions = _.pick( options, _.keys( defaultOptions ) );
 
-    // Maximum width of the line that strokes the button.
-    const maxLineWidth = Math.max( options.selectedLineWidth, options.deselectedLineWidth );
-
     // calculate the maximum width and height of the content so we can make all radio buttons the same size
     const widestContentWidth = _.maxBy( items, item => item.node.width ).node.width;
     const tallestContentHeight = _.maxBy( items, item => item.node.height ).node.height;
@@ -226,6 +223,7 @@ class RectangularRadioButtonGroup extends LayoutBox {
       radioButton.setPDOMAttribute( 'name', CLASS_NAME + instanceCount );
 
       // ensure the buttons don't resize when selected vs unselected by adding a rectangle with the max size
+      const maxLineWidth = Math.max( options.selectedLineWidth, options.deselectedLineWidth );
       const maxButtonWidth = maxLineWidth + widestContentWidth + options.buttonContentXMargin * 2;
       const maxButtonHeight = maxLineWidth + tallestContentHeight + options.buttonContentYMargin * 2;
       const boundingRect = new Rectangle( 0, 0, maxButtonWidth, maxButtonHeight, {
@@ -249,6 +247,27 @@ class RectangularRadioButtonGroup extends LayoutBox {
           spacing: options.labelSpacing,
           orientation: labelOrientation
         } );
+
+        let xDilation = options.touchAreaXDilation;
+        let yDilation = options.touchAreaYDilation;
+
+        // Set pointer areas. Extra width is added to the radio buttons so they don't change size if the line width
+        // changes. That is why lineWidth is subtracted from the width and height when calculating these new areas.
+        radioButton.touchArea = Shape.rectangle(
+          -xDilation,
+          -yDilation,
+          button.width + 2 * xDilation - maxLineWidth,
+          button.height + 2 * yDilation - maxLineWidth
+        );
+
+        xDilation = options.mouseAreaXDilation;
+        yDilation = options.mouseAreaYDilation;
+        radioButton.mouseArea = Shape.rectangle(
+          -xDilation,
+          -yDilation,
+          button.width + 2 * xDilation - maxLineWidth,
+          button.height + 2 * yDilation - maxLineWidth
+        );
 
         // Make sure the label pointer areas don't block the expanded button pointer areas.
         label.pickable = false;
@@ -279,26 +298,6 @@ class RectangularRadioButtonGroup extends LayoutBox {
 
     assert && assert( !options.children, 'RectangularRadioButtonGroup sets children' );
     options.children = buttons;
-
-    // Pointer areas, sized to fit the largest button. See https://github.com/phetsims/sun/issues/708.
-    const maxButtonWidth = _.max( buttons, button => button.width ).width;
-    const maxButtonHeight = _.max( buttons, button => button.height ).height;
-    buttons.forEach( button => {
-
-      button.touchArea = Shape.rectangle(
-        -options.touchAreaXDilation - maxLineWidth / 2,
-        -options.touchAreaYDilation - maxLineWidth / 2,
-        maxButtonWidth + 2 * options.touchAreaXDilation,
-        maxButtonHeight + 2 * options.touchAreaYDilation
-      );
-
-      button.mouseArea = Shape.rectangle(
-        -options.mouseAreaXDilation - maxLineWidth / 2,
-        -options.mouseAreaYDilation - maxLineWidth / 2,
-        maxButtonWidth + 2 * options.mouseAreaXDilation,
-        maxButtonHeight + 2 * options.mouseAreaYDilation
-      );
-    } );
 
     super( options );
 
