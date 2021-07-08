@@ -172,12 +172,20 @@ class RectangularRadioButtonGroup extends LayoutBox {
     // make a copy of the options to pass to individual buttons that includes all default options but not scenery options
     const buttonOptions = _.pick( options, _.keys( defaultOptions ) );
 
+    // Maximum width of the line that strokes the button.
+    const maxLineWidth = Math.max( options.selectedLineWidth, options.deselectedLineWidth );
+
     // calculate the maximum width and height of the content so we can make all radio buttons the same size
     const widestContentWidth = _.maxBy( items, item => item.node.width ).node.width;
     const tallestContentHeight = _.maxBy( items, item => item.node.height ).node.height;
 
     // make sure all radio buttons are the same size and create the RadioButtons
     const buttons = [];
+
+    // {ButtonWithLayoutNode[]} - Collection of both RadioButton and its layout manager, if one is created to support
+    // a visual button label
+    const buttonsWithLayoutNodes = [];
+
     const labelAppearanceStrategies = [];
     for ( i = 0; i < items.length; i++ ) {
       const item = items[ i ];
@@ -223,7 +231,6 @@ class RectangularRadioButtonGroup extends LayoutBox {
       radioButton.setPDOMAttribute( 'name', CLASS_NAME + instanceCount );
 
       // ensure the buttons don't resize when selected vs unselected by adding a rectangle with the max size
-      const maxLineWidth = Math.max( options.selectedLineWidth, options.deselectedLineWidth );
       const maxButtonWidth = maxLineWidth + widestContentWidth + options.buttonContentXMargin * 2;
       const maxButtonHeight = maxLineWidth + tallestContentHeight + options.buttonContentYMargin * 2;
       const boundingRect = new Rectangle( 0, 0, maxButtonWidth, maxButtonHeight, {
@@ -231,9 +238,6 @@ class RectangularRadioButtonGroup extends LayoutBox {
         center: radioButton.center
       } );
       radioButton.addChild( boundingRect );
-
-      // default bounds for focus highlight, will include label if one exists
-      let defaultHighlightBounds = null;
 
       let button;
       if ( item.label ) {
@@ -248,27 +252,6 @@ class RectangularRadioButtonGroup extends LayoutBox {
           orientation: labelOrientation
         } );
 
-        let xDilation = options.touchAreaXDilation;
-        let yDilation = options.touchAreaYDilation;
-
-        // Set pointer areas. Extra width is added to the radio buttons so they don't change size if the line width
-        // changes. That is why lineWidth is subtracted from the width and height when calculating these new areas.
-        radioButton.touchArea = Shape.rectangle(
-          -xDilation,
-          -yDilation,
-          button.width + 2 * xDilation - maxLineWidth,
-          button.height + 2 * yDilation - maxLineWidth
-        );
-
-        xDilation = options.mouseAreaXDilation;
-        yDilation = options.mouseAreaYDilation;
-        radioButton.mouseArea = Shape.rectangle(
-          -xDilation,
-          -yDilation,
-          button.width + 2 * xDilation - maxLineWidth,
-          button.height + 2 * yDilation - maxLineWidth
-        );
-
         // Make sure the label pointer areas don't block the expanded button pointer areas.
         label.pickable = false;
 
@@ -277,27 +260,46 @@ class RectangularRadioButtonGroup extends LayoutBox {
         if ( options.contentAppearanceStrategy ) {
           labelAppearanceStrategies.push( new options.contentAppearanceStrategy( label, radioButton.interactionStateProperty, options ) );
         }
-
-        // pdom - include label in focus highlight
-        defaultHighlightBounds = radioButton.mouseArea.bounds.dilated( 5 );
       }
       else {
 
         // The button has no label.
         button = radioButton;
-        defaultHighlightBounds = button.bounds.dilated( FocusHighlightPath.getDilationCoefficient( button ) );
       }
       buttons.push( button );
-
-      // pdom - set the focus highlight, dilated by the optional expansion values
-      const highlightBounds = defaultHighlightBounds
-        .dilatedX( radioButtonGroupMemberOptions.a11yHighlightXDilation )
-        .dilatedY( radioButtonGroupMemberOptions.a11yHighlightYDilation );
-      radioButton.setFocusHighlight( Shape.bounds( highlightBounds ) );
+      buttonsWithLayoutNodes.push( new ButtonWithLayoutNode( radioButton, button ) );
     }
 
     assert && assert( !options.children, 'RectangularRadioButtonGroup sets children' );
     options.children = buttons;
+
+    // Pointer areas and focus highlight, sized to fit the largest button. See https://github.com/phetsims/sun/issues/708.
+    const maxButtonWidth = _.max( buttonsWithLayoutNodes, buttonWithLayoutParent => buttonWithLayoutParent.layoutNode.width ).layoutNode.width;
+    const maxButtonHeight = _.max( buttonsWithLayoutNodes, buttonWithLayoutParent => buttonWithLayoutParent.layoutNode.height ).layoutNode.height;
+    buttonsWithLayoutNodes.forEach( buttonWithLayoutParent => {
+
+      buttonWithLayoutParent.radioButton.touchArea = Shape.rectangle(
+        -options.touchAreaXDilation - maxLineWidth / 2,
+        -options.touchAreaYDilation - maxLineWidth / 2,
+        maxButtonWidth + 2 * options.touchAreaXDilation,
+        maxButtonHeight + 2 * options.touchAreaYDilation
+      );
+
+      buttonWithLayoutParent.radioButton.mouseArea = Shape.rectangle(
+        -options.mouseAreaXDilation - maxLineWidth / 2,
+        -options.mouseAreaYDilation - maxLineWidth / 2,
+        maxButtonWidth + 2 * options.mouseAreaXDilation,
+        maxButtonHeight + 2 * options.mouseAreaYDilation
+      );
+
+      const defaultDilationCoefficient = FocusHighlightPath.getDilationCoefficient( buttonWithLayoutParent.layoutNode );
+      buttonWithLayoutParent.radioButton.focusHighlight = Shape.rectangle(
+        -options.a11yHighlightXDilation - maxLineWidth / 2 - defaultDilationCoefficient,
+        -options.a11yHighlightYDilation - maxLineWidth / 2 - defaultDilationCoefficient,
+        maxButtonWidth + 2 * ( options.a11yHighlightXDilation + defaultDilationCoefficient ),
+        maxButtonHeight + 2 * ( options.a11yHighlightYDilation + defaultDilationCoefficient )
+      );
+    } );
 
     super( options );
 
@@ -336,6 +338,25 @@ class RectangularRadioButtonGroup extends LayoutBox {
   dispose() {
     this.disposeRadioButtonGroup();
     super.dispose();
+  }
+}
+
+/**
+ * An inner class that collects the radio button and its layout parent. The mouse/touch areas and focus highlight
+ * need to be set on the button, but need to surround the layout manager containing both the button and
+ * its graphical label (if there is one).
+ */
+class ButtonWithLayoutNode {
+
+  /**
+   * @param {RectangularRadioButton} radioButton
+   * @param {Node} layoutNode - May be the same Node as the radioButton if no layout manager is needed
+   */
+  constructor( radioButton, layoutNode ) {
+
+    // @public
+    this.radioButton = radioButton;
+    this.layoutNode = layoutNode;
   }
 }
 
