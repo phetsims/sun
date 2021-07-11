@@ -278,7 +278,6 @@ function demoSlider( layoutBounds, orientation, options ) {
   options = merge( {
     center: layoutBounds.center,
     enabledProperty: new BooleanProperty( true, {
-      phetioReadOnly: true,
       tandem: options.tandem.createTandem( 'enabledProperty' )
     } )
   }, options );
