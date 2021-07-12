@@ -10,23 +10,29 @@ import Action from '../../axon/js/Action.js';
 import Property from '../../axon/js/Property.js';
 import TinyProperty from '../../axon/js/TinyProperty.js';
 import validate from '../../axon/js/validate.js';
+import Matrix3 from '../../dot/js/Matrix3.js';
 import InstanceRegistry from '../../phet-core/js/documentation/InstanceRegistry.js';
 import merge from '../../phet-core/js/merge.js';
 import Voicing from '../../scenery/js/accessibility/voicing/Voicing.js';
 import FireListener from '../../scenery/js/listeners/FireListener.js';
 import Node from '../../scenery/js/nodes/Node.js';
+import Path from '../../scenery/js/nodes/Path.js';
 import Rectangle from '../../scenery/js/nodes/Rectangle.js';
 import SceneryConstants from '../../scenery/js/SceneryConstants.js';
+import checkEmptySolidShape from '../../sherpa/js/fontawesome-4/checkEmptySolidShape.js';
+import checkSquareOSolidShape from '../../sherpa/js/fontawesome-4/checkSquareOSolidShape.js';
 import checkboxCheckedSoundPlayer from '../../tambo/js/shared-sound-players/checkboxCheckedSoundPlayer.js';
 import checkboxUncheckedSoundPlayer from '../../tambo/js/shared-sound-players/checkboxUncheckedSoundPlayer.js';
 import EventType from '../../tandem/js/EventType.js';
 import PhetioObject from '../../tandem/js/PhetioObject.js';
 import Tandem from '../../tandem/js/Tandem.js';
-import FontAwesomeNode from './FontAwesomeNode.js';
 import sun from './sun.js';
 
 // constants
 const BOOLEAN_VALIDATOR = { valueType: 'boolean' };
+const SHAPE_MATRIX = Matrix3.createFromPool( 0.025, 0, 0, 0, -0.025, 0, 0, 0, 1 ); // to create a unity-scale icon
+const uncheckedShape = checkEmptySolidShape.transformed( SHAPE_MATRIX );
+const checkedShape = checkSquareOSolidShape.transformed( SHAPE_MATRIX );
 
 class Checkbox extends Node {
 
@@ -102,14 +108,14 @@ class Checkbox extends Node {
       } );
 
     // @private
-    this.uncheckedNode = new FontAwesomeNode( 'check_empty', {
+    this.uncheckedNode = new Path( uncheckedShape, {
       fill: options.checkboxColor
     } );
     const iconScale = options.boxWidth / this.uncheckedNode.width;
     this.uncheckedNode.scale( iconScale );
 
     // @private
-    this.checkedNode = new FontAwesomeNode( 'check_square_o', {
+    this.checkedNode = new Path( checkedShape, {
       scale: iconScale,
       fill: options.checkboxColor
     } );
