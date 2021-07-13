@@ -11,6 +11,7 @@ import getGlobal from '../../phet-core/js/getGlobal.js';
 import merge from '../../phet-core/js/merge.js';
 import PhetFont from '../../scenery-phet/js/PhetFont.js';
 import PDOMUtils from '../../scenery/js/accessibility/pdom/PDOMUtils.js';
+import Voicing from '../../scenery/js/accessibility/voicing/Voicing.js';
 import Display from '../../scenery/js/display/Display.js';
 import FireListener from '../../scenery/js/listeners/FireListener.js';
 import Node from '../../scenery/js/nodes/Node.js';
@@ -84,7 +85,6 @@ class MenuItem extends Node {
 
       // pdom
       tagName: 'button',
-
       containerTagName: 'li',
       containerAriaRole: 'none', // this is required for JAWS to handle focus correctly, see https://github.com/phetsims/john-travoltage/issues/225
       innerContent: text,
@@ -92,10 +92,15 @@ class MenuItem extends Node {
 
       // 'menuitem' role does not get click events on iOS VoiceOver, position siblings so that
       // we get Pointer events instead
-      positionInPDOM: true
+      positionInPDOM: true,
+
+      // voicing
+      voicingNameResponse: text
     }, options );
 
     super();
+
+    this.initializeVoicing();
 
     // @public (read-only) {boolean}
     this.present = present;
@@ -155,6 +160,7 @@ class MenuItem extends Node {
       if ( options.checkedProperty ) {
         options.checkedProperty.unlink( checkListener );
       }
+      this.disposeVoicing();
     };
   }
 
@@ -167,6 +173,8 @@ class MenuItem extends Node {
     super.dispose();
   }
 }
+
+Voicing.compose( MenuItem );
 
 sun.register( 'MenuItem', MenuItem );
 export default MenuItem;
