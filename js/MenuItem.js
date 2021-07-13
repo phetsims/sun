@@ -14,17 +14,18 @@ import PDOMUtils from '../../scenery/js/accessibility/pdom/PDOMUtils.js';
 import Display from '../../scenery/js/display/Display.js';
 import FireListener from '../../scenery/js/listeners/FireListener.js';
 import Node from '../../scenery/js/nodes/Node.js';
+import Path from '../../scenery/js/nodes/Path.js';
 import Rectangle from '../../scenery/js/nodes/Rectangle.js';
 import Text from '../../scenery/js/nodes/Text.js';
+import checkSolidShape from '../../sherpa/js/fontawesome-5/checkSolidShape.js';
 import EventType from '../../tandem/js/EventType.js';
 import Tandem from '../../tandem/js/Tandem.js';
-import FontAwesomeNode from './FontAwesomeNode.js';
 import sun from './sun.js';
 
 // the check mark used for toggle-able menu items
-const CHECK_MARK_NODE = new FontAwesomeNode( 'check', {
+const CHECK_MARK_NODE = new Path( checkSolidShape, {
   fill: 'rgba(0,0,0,0.7)',
-  scale: 0.4
+  maxWidth: 15.5
 } );
 
 // constants
