@@ -8,6 +8,7 @@
 
 import InstanceRegistry from '../../phet-core/js/documentation/InstanceRegistry.js';
 import merge from '../../phet-core/js/merge.js';
+import Voicing from '../../scenery/js/accessibility/voicing/Voicing.js';
 import FireListener from '../../scenery/js/listeners/FireListener.js';
 import Circle from '../../scenery/js/nodes/Circle.js';
 import Node from '../../scenery/js/nodes/Node.js';
@@ -23,6 +24,7 @@ const DEFAULT_RADIUS = 7;
 class AquaRadioButton extends Node {
 
   /**
+   * @mixes {Voicing}
    * @param {Property} property
    * @param {*} value - the value that corresponds to this button, same type as property
    * @param {Node} labelNode - Node that will be vertically centered to the right of the button
@@ -69,6 +71,9 @@ class AquaRadioButton extends Node {
       `AquaRadioButton tandem.name must end with RadioButton: ${options.tandem.phetioID}` );
 
     super();
+
+    // voicing - initialize the trait
+    this.initializeVoicing();
 
     // @public (read-only)
     this.value = value;
@@ -152,6 +157,7 @@ class AquaRadioButton extends Node {
 
     // @private
     this.disposeAquaRadioButton = () => {
+      this.disposeVoicing();
       this.removeInputListener( fireListener );
       this.removeInputListener( changeListener );
       property.unlink( pdomCheckedListener );
@@ -176,6 +182,8 @@ class AquaRadioButton extends Node {
 }
 
 AquaRadioButton.DEFAULT_RADIUS = DEFAULT_RADIUS;
+
+Voicing.compose( AquaRadioButton );
 
 sun.register( 'AquaRadioButton', AquaRadioButton );
 export default AquaRadioButton;
