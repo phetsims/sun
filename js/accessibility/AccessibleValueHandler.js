@@ -612,7 +612,7 @@ const AccessibleValueHandler = {
         }
 
         // reset shift key flag when we release it
-        if ( key === KeyboardUtils.KEY_SHIFT_LEFT || key === KeyboardUtils.KEY_SHIFT_RIGHT ) {
+        if ( KeyboardUtils.SHIFT_KEYS.includes( key ) ) {
           this._shiftKey = false;
         }
 
