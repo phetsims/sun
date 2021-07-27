@@ -22,7 +22,7 @@ import AlignBox from '../../scenery/js/nodes/AlignBox.js';
 import HBox from '../../scenery/js/nodes/HBox.js';
 import VBox from '../../scenery/js/nodes/VBox.js';
 import FullScreen from '../../scenery/js/util/FullScreen.js';
-import Playable from '../../tambo/js/Playable.js';
+import SoundPlayer from '../../tambo/js/SoundPlayer.js';
 import generalCloseSoundPlayer from '../../tambo/js/shared-sound-players/generalCloseSoundPlayer.js';
 import generalOpenSoundPlayer from '../../tambo/js/shared-sound-players/generalOpenSoundPlayer.js';
 import PhetioObject from '../../tandem/js/PhetioObject.js';
@@ -133,7 +133,7 @@ class Dialog extends Popupable( Panel ) {
       phetioReadOnly: PhetioObject.DEFAULT_OPTIONS.phetioReadOnly, // default to false so it can pass it through to the close button
       phetioState: PhetioObject.DEFAULT_OPTIONS.phetioState,
 
-      // {Playable} - sound generation
+      // {SoundPlayer} - sound generation
       openedSoundPlayer: generalOpenSoundPlayer,
       closedSoundPlayer: generalCloseSoundPlayer,
 
@@ -214,7 +214,7 @@ class Dialog extends Popupable( Panel ) {
       enabledPropertyOptions: { phetioFeatured: false },
 
       // turn off default sound generation, Dialog will create its own sounds
-      soundPlayer: Playable.NO_SOUND,
+      soundPlayer: SoundPlayer.NO_SOUND,
 
       // pdom
       tagName: 'button',

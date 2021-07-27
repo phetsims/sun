@@ -24,7 +24,7 @@ class RectangularPushButton extends RectangularButton {
 
     options = merge( {
 
-      // {Playable} - sound generation
+      // {SoundPlayer} - sound generation
       soundPlayer: pushButtonSoundPlayer,
 
       // {function} listener called when button is pushed.

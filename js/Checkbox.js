@@ -66,7 +66,7 @@ class Checkbox extends Node {
       // to support properly passing this to children, see https://github.com/phetsims/tandem/issues/60
       phetioReadOnly: PhetioObject.DEFAULT_OPTIONS.phetioReadOnly,
 
-      // {Playable} - sound generators
+      // {SoundPlayer} - sound generators
       checkedSoundPlayer: checkboxCheckedSoundPlayer,
       uncheckedSoundPlayer: checkboxUncheckedSoundPlayer,
 

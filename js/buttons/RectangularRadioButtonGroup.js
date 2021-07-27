@@ -57,7 +57,7 @@ class RectangularRadioButtonGroup extends LayoutBox {
       visiblePropertyOptions: { phetioFeatured: true },
       phetioEnabledPropertyInstrumented: true, // opt into default PhET-iO instrumented enabledProperty
 
-      // {Playable[]|null} - sound generation for the radio buttons, null means to use the defaults, otherwise there
+      // {SoundPlayer[]|null} - sound generation for the radio buttons, null means to use the defaults, otherwise there
       // must be one for each element in contentArray
       soundPlayers: null,
 

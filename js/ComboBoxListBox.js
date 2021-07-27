@@ -48,7 +48,7 @@ class ComboBoxListBox extends Panel {
       groupFocusHighlight: true,
       focusable: true,
 
-      // {Playable} - Sound generators for when combo box is opened and when it is closed with no change. Closing *with*
+      // {SoundPlayer} - Sound generators for when combo box is opened and when it is closed with no change. Closing *with*
       // a change is covered by individual combo box items.
       openedSoundPlayer: generalOpenSoundPlayer,
       closedNoChangeSoundPlayer: generalCloseSoundPlayer,

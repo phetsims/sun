@@ -30,7 +30,7 @@ class RectangularToggleButton extends RectangularButton {
 
     options = merge( {
 
-      // {Playable} - sounds to be played on toggle transitions
+      // {SoundPlayer} - sounds to be played on toggle transitions
       valueOffSoundPlayer: toggleOffSoundPlayer,
       valueOnSoundPlayer: toggleOnSoundPlayer,
 

@@ -56,7 +56,7 @@ const DEFAULT_OPTIONS = {
   arrowStroke: 'black', // {Color|string} color used for the arrow icons
   arrowLineWidth: 3, // {number} line width used to stroke the arrow icons
   hideDisabledButtons: false, // {boolean} whether to hide buttons when they are disabled
-  buttonSoundPlayer: pushButtonSoundPlayer, // {Playable} sound played when carousel button is pressed
+  buttonSoundPlayer: pushButtonSoundPlayer, // {SoundPlayer} sound played when carousel button is pressed
 
   // for dilating pointer areas of next/previous buttons such that they do not overlap with Carousel content
   buttonTouchAreaXDilation: 0, // {number} horizontal touchArea dilation

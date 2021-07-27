@@ -61,8 +61,8 @@ class RectangularRadioButton extends RectangularButton {
       selectedContentOpacity: 1,
       deselectedContentOpacity: 0.6,
 
-      // {Playable|null} - sound generation - If set to null a default will be used that is based on this button's
-      // position within the radio button group.  Can be set to Playable.NO_SOUND to disable.
+      // {SoundPlayer|null} - sound generation - If set to null a default will be used that is based on this button's
+      // position within the radio button group.  Can be set to SoundPlayer.NO_SOUND to disable.
       soundPlayer: null,
 
       // pdom

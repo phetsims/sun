@@ -25,7 +25,7 @@ class RoundPushButton extends RoundButton {
 
     options = merge( {
 
-      // {Playable} - sound generation
+      // {SoundPlayer} - sound generation
       soundPlayer: pushButtonSoundPlayer,
 
       // {function} listener called when button is pushed.
