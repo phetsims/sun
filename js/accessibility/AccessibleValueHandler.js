@@ -286,8 +286,7 @@ const AccessibleValueHandler = {
         this.a11yInputHandled = false;
 
         // @private (a11y) - some browsers will receive `input` events when the user tabs away from the slider or
-        // on some key presses - if we receive a keydown event, we do not want the value to change twice, so we
-        // block input event after handling the keydown event
+        // on some key presses - if we receive a keydown event for a tab key, do not allow input or change events
         this.blockInput = false;
 
         // @private {Object.<string, boolean>} - key is the event.code for the range key, value is whether it is down
@@ -498,15 +497,22 @@ const AccessibleValueHandler = {
         const key = KeyboardUtils.getEventCode( domEvent );
         this._shiftKey = domEvent.shiftKey;
 
-        // if we receive a keydown event, we shouldn't handle any input events (which should only be provided
-        // directly by an assistive device)
-        this.blockInput = true;
+
+        // if we receive a 'tab' keydown event, do not allow the browser to react to this like a submission and
+        // prevent responding to the `input` event
+        if ( KeyboardUtils.isKeyEvent( domEvent, KeyboardUtils.KEY_TAB ) ) {
+          this.blockInput = true;
+        }
 
         if ( this._enabledProperty.get() ) {
 
           // Prevent default so browser doesn't change input value automatically
           if ( KeyboardUtils.isRangeKey( domEvent ) ) {
-            domEvent.preventDefault(); // this should do the same thing as this.a11yInputHandled for "change" and "input"
+
+            // this should prevent any "change" and "input" events so we don't change the value twice, but it also
+            // prevents a VoiceOver issue where pressing arrow keys both changes the slider value AND moves the
+            // virtual cursor
+            domEvent.preventDefault();
 
             // signify that this listener is reserved for dragging so that other listeners can change
             // their behavior during scenery event dispatch
@@ -707,6 +713,10 @@ const AccessibleValueHandler = {
           // end of change is the end of a drag
           this.onInteractionEnd( event );
         }
+
+        // don't block the next input after receiving one, some AT may send either `keydown` or `input` events
+        // depending on modifier keys so we need to be ready to receive either on next interaction
+        this.blockInput = false;
       },
 
       /**
@@ -726,6 +736,9 @@ const AccessibleValueHandler = {
 
         // reset flag in case we shift-tabbed away from slider
         this._shiftKey = false;
+
+        // when focus leaves this element stop blocking input events
+        this.blockInput = false;
 
         // reset counter for range keys down
         this.rangeKeysDown = {};
