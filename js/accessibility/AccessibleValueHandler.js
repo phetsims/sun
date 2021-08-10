@@ -411,8 +411,6 @@ const AccessibleValueHandler = {
         if ( this.a11yCreateContextResponseAlert ) {
           const utteranceQueue = phet.joist.sim.utteranceQueue;
 
-          this.contextResponseUtterance.resetTimingVariables();
-
           const mappedValue = this.getMappedValue();
           const endInteractionAlert = this.a11yCreateContextResponseAlert( mappedValue, this._valueProperty.value, this.oldValue );
 
