@@ -408,8 +408,11 @@ const AccessibleValueHandler = {
        * @public
        */
       alertContextResponse() {
+
+        // Alerting will occur to each connected display's UtteranceQueue, but we should only increment delay once per
+        // time this function is called.
+        let timesChangedBeforeAlertingIncremented = false;
         if ( this.a11yCreateContextResponseAlert ) {
-          const utteranceQueue = phet.joist.sim.utteranceQueue;
 
           const mappedValue = this.getMappedValue();
           const endInteractionAlert = this.a11yCreateContextResponseAlert( mappedValue, this._valueProperty.value, this.oldValue );
@@ -417,21 +420,29 @@ const AccessibleValueHandler = {
           // only if it returned an alert
           if ( endInteractionAlert ) {
             this.contextResponseUtterance.alert = endInteractionAlert;
+            this.forEachUtteranceQueue( utteranceQueue => {
 
-            if ( utteranceQueue.hasUtterance( this.contextResponseUtterance ) ) {
-              this.timesChangedBeforeAlerting++;
-            }
-            else {
-              this.timesChangedBeforeAlerting = 1;
-            }
+              // Only increment a single time, this has the constraint that if different utteranceQueues move this
+              // alert through at a different time, the delay could be inconsistent, but in general it should work well.
+              if ( timesChangedBeforeAlertingIncremented ) {
+                // use the current value for this.timesChangedBeforeAlerting
+              }
+              else if ( utteranceQueue.hasUtterance( this.contextResponseUtterance ) ) {
+                timesChangedBeforeAlertingIncremented = true;
+                this.timesChangedBeforeAlerting++;
+              }
+              else {
+                this.timesChangedBeforeAlerting = 1;
+              }
 
-            // Adjust the delay of the utterance based on number of times it has been re-added to the queue. Each
-            // time the aria-valuetext changes, this method is called, we want to make sure to give enough time for the
-            // aria-valuetext to fully complete before alerting this context response.
-            this.contextResponseUtterance.alertStableDelay = Math.min( this.contextResponseMaxDelay,
-              this.timesChangedBeforeAlerting * this.contextResponsePerValueChangeDelay );
+              // Adjust the delay of the utterance based on number of times it has been re-added to the queue. Each
+              // time the aria-valuetext changes, this method is called, we want to make sure to give enough time for the
+              // aria-valuetext to fully complete before alerting this context response.
+              this.contextResponseUtterance.alertStableDelay = Math.min( this.contextResponseMaxDelay,
+                this.timesChangedBeforeAlerting * this.contextResponsePerValueChangeDelay );
 
-            utteranceQueue.addToBack( this.contextResponseUtterance );
+              utteranceQueue.addToBack( this.contextResponseUtterance );
+            } );
           }
         }
       },
