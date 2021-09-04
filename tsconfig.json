@@ -1,0 +1,37 @@
+{
+  "extends": "../chipper/tsconfig-core.json",
+  "references": [
+    {
+      "path": "../tambo"
+    },{
+      "path": "../twixt"
+    },{
+      "path": "../phetcommon"
+    },{
+      "path": "../sherpa"
+    }
+  ],
+  "include": [
+    "js/**/*",
+
+    // Unfortunately, these are borrowed from scenery-phet
+    "../scenery-phet/js/NumberDisplay.js",
+    "../scenery-phet/js/PhetFont.js",
+    "../scenery-phet/js/MathSymbols.js",
+    "../scenery-phet/js/sceneryPhetStrings.js",
+    "../scenery-phet/js/sceneryPhet.js"
+  ],
+  "exclude": [
+    "js/**/*test*",
+    "js/sun-main.js",
+    "js/demo/**/*",
+
+    // has to wait for joist layer
+    "js/Popupable.js",
+    "js/Dialog.js",
+
+    // Included in scenery for now
+    "js/SunConstants.js",
+    "js/sun.js"
+  ]
+}
