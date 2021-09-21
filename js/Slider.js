@@ -18,6 +18,7 @@ import assertMutuallyExclusiveOptions from '../../phet-core/js/assertMutuallyExc
 import InstanceRegistry from '../../phet-core/js/documentation/InstanceRegistry.js';
 import merge from '../../phet-core/js/merge.js';
 import Orientation from '../../phet-core/js/Orientation.js';
+import swapObjectKeys from '../../phet-core/js/swapObjectKeys.js';
 import FocusHighlightFromNode from '../../scenery/js/accessibility/FocusHighlightFromNode.js';
 import DragListener from '../../scenery/js/listeners/DragListener.js';
 import Node from '../../scenery/js/nodes/Node.js';
@@ -132,6 +133,20 @@ class Slider extends Node {
     assert && assert( Orientation.includes( options.orientation ), `invalid orientation: ${options.orientation}` );
     assert && assert( options.trackNode === null || options.trackNode instanceof SliderTrack, 'trackNode must be of type SliderTrack' );
     assert && assert( options.thumbNode === null || options.thumbNode instanceof Node, 'thumbNode must be of type Node' );
+
+    // For a vertical slider, the client should provide dimensions that are specific to a vertical slider.
+    // But Slider expects dimensions for a horizontal slider, and then creates the vertical orientation using rotation.
+    // So if the client provides any dimensions for a vertical slider, swap those dimensions to horizontal.
+    if ( options.orientation === Orientation.VERTICAL ) {
+      if ( options.trackSize !== undefined ) {
+        options.trackSize = options.trackSize.swapped();
+      }
+      if ( options.thumbSize !== undefined ) {
+        options.thumbSize = options.thumbSize.swapped();
+      }
+      swapObjectKeys( options, 'thumbTouchAreaXDilation', 'thumbTouchAreaYDilation' );
+      swapObjectKeys( options, 'thumbMouseAreaXDilation', 'thumbMouseAreaYDilation' );
+    }
 
     super();
 

@@ -10,7 +10,6 @@
 import InstanceRegistry from '../../phet-core/js/documentation/InstanceRegistry.js';
 import merge from '../../phet-core/js/merge.js';
 import Orientation from '../../phet-core/js/Orientation.js';
-import swapObjectKeys from '../../phet-core/js/swapObjectKeys.js';
 import Slider from './Slider.js';
 import sun from './sun.js';
 
@@ -28,18 +27,6 @@ class VSlider extends Slider {
     options = merge( {
       orientation: Orientation.VERTICAL
     }, options );
-
-    // The client should provide dimensions that are specific to a vertical slider. But Slider.js expects dimensions
-    // for a horizontal slider, and then creates the vertical orientation using rotation.  So if the client provides
-    // any dimensions for a vertical slider, swap those dimensions to horizontal.
-    if ( options.trackSize !== undefined ) {
-      options.trackSize = options.trackSize.swapped();
-    }
-    if ( options.thumbSize !== undefined ) {
-      options.thumbSize = options.thumbSize.swapped();
-    }
-    swapObjectKeys( options, 'thumbTouchAreaXDilation', 'thumbTouchAreaYDilation' );
-    swapObjectKeys( options, 'thumbMouseAreaXDilation', 'thumbMouseAreaYDilation' );
 
     super( valueProperty, range, options );
 
