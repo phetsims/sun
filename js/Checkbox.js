@@ -56,6 +56,12 @@ class Checkbox extends Node {
       checkboxColorBackground: 'white',
       disabledOpacity: SceneryConstants.DISABLED_OPACITY,
 
+      // pointer areas
+      touchAreaXDilation: 0,
+      touchAreaYDilation: 0,
+      mouseAreaXDilation: 0,
+      mouseAreaYDilation: 0,
+
       // phet-io
       tandem: Tandem.REQUIRED,
       phetioEventType: EventType.USER,
@@ -151,6 +157,10 @@ class Checkbox extends Node {
 
     // Apply additional options
     this.mutate( options );
+
+    // pointer areas
+    this.touchArea = this.localBounds.dilatedXY( options.touchAreaXDilation, options.touchAreaYDilation );
+    this.mouseArea = this.localBounds.dilatedXY( options.mouseAreaXDilation, options.mouseAreaYDilation );
 
     // pdom - to prevent a bug with NVDA and Firefox where the label sibling receives two click events, see
     // https://github.com/phetsims/gravity-force-lab/issues/257
