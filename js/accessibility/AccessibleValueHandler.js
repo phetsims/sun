@@ -507,95 +507,102 @@ const AccessibleValueHandler = {
           // Prevent default so browser doesn't change input value automatically
           if ( KeyboardUtils.isRangeKey( domEvent ) ) {
 
-            // this should prevent any "change" and "input" events so we don't change the value twice, but it also
+            // This should prevent any "change" and "input" events so we don't change the value twice, but it also
             // prevents a VoiceOver issue where pressing arrow keys both changes the slider value AND moves the
-            // virtual cursor
+            // virtual cursor. This needs to be done every range key event so that we don't change the value with
+            // an 'input' or 'change' event, even when the meta key is down.
             domEvent.preventDefault();
 
-            // signify that this listener is reserved for dragging so that other listeners can change
-            // their behavior during scenery event dispatch
-            event.pointer.reserveForKeyboardDrag();
+            // On Mac, we don't get a keyup event when the meta key is down so don't change the value or do
+            // anything that assumes we will get a corresponding keyup event, see
+            // https://stackoverflow.com/questions/11818637/why-does-javascript-drop-keyup-events-when-the-metakey-is-pressed-on-mac-browser
+            if ( !domEvent.metaKey ) {
 
-            // whether or not we will use constrainValue to modify the proposed value, see usages below
-            let useConstrainValue = true;
+              // signify that this listener is reserved for dragging so that other listeners can change
+              // their behavior during scenery event dispatch
+              event.pointer.reserveForKeyboardDrag();
 
-            // if this is the first keydown this is the start of the drag interaction
-            if ( !this.anyKeysDown() ) {
-              this._startChange( event );
-            }
+              // whether or not we will use constrainValue to modify the proposed value, see usages below
+              let useConstrainValue = true;
 
-            // track that a new key is being held down
-            this.rangeKeysDown[ key ] = true;
-
-            let newValue = this._valueProperty.get();
-            if ( KeyboardUtils.isAnyKeyEvent( domEvent, [ KeyboardUtils.KEY_END, KeyboardUtils.KEY_HOME ] ) ) {
-
-              // on 'end' and 'home' snap to max and min of enabled range respectively (this is typical browser
-              // behavior for sliders)
-              if ( key === KeyboardUtils.KEY_END ) {
-                newValue = this._rangeProperty.get().max;
+              // if this is the first keydown this is the start of the drag interaction
+              if ( !this.anyKeysDown() ) {
+                this._startChange( event );
               }
-              else if ( key === KeyboardUtils.KEY_HOME ) {
-                newValue = this._rangeProperty.get().min;
-              }
-            }
-            else {
-              let stepSize;
-              if ( key === KeyboardUtils.KEY_PAGE_UP || key === KeyboardUtils.KEY_PAGE_DOWN ) {
-                // on page up and page down, the default step size is 1/10 of the range (this is typical browser behavior)
-                stepSize = this.pageKeyboardStep;
 
-                if ( key === KeyboardUtils.KEY_PAGE_UP ) {
-                  newValue = this._valueProperty.get() + stepSize;
+              // track that a new key is being held down
+              this.rangeKeysDown[ key ] = true;
+
+              let newValue = this._valueProperty.get();
+              if ( KeyboardUtils.isAnyKeyEvent( domEvent, [ KeyboardUtils.KEY_END, KeyboardUtils.KEY_HOME ] ) ) {
+
+                // on 'end' and 'home' snap to max and min of enabled range respectively (this is typical browser
+                // behavior for sliders)
+                if ( key === KeyboardUtils.KEY_END ) {
+                  newValue = this._rangeProperty.get().max;
                 }
-                else if ( key === KeyboardUtils.KEY_PAGE_DOWN ) {
-                  newValue = this._valueProperty.get() - stepSize;
+                else if ( key === KeyboardUtils.KEY_HOME ) {
+                  newValue = this._rangeProperty.get().min;
                 }
               }
-              else if ( KeyboardUtils.isArrowKey( domEvent ) ) {
+              else {
+                let stepSize;
+                if ( key === KeyboardUtils.KEY_PAGE_UP || key === KeyboardUtils.KEY_PAGE_DOWN ) {
+                  // on page up and page down, the default step size is 1/10 of the range (this is typical browser behavior)
+                  stepSize = this.pageKeyboardStep;
 
-                // if the shift key is pressed down, modify the step size (this is atypical browser behavior for sliders)
-                stepSize = domEvent.shiftKey ? this.shiftKeyboardStep : this.keyboardStep;
-
-                // Temporary workaround, if using shift key with arrow keys to use the shiftKeyboardStep, don't
-                // use constrainValue because the constrainValue is often smaller than the values allowed by
-                // constrainValue. See https://github.com/phetsims/sun/issues/698.
-                useConstrainValue = !domEvent.shiftKey;
-
-                if ( key === KeyboardUtils.KEY_RIGHT_ARROW || key === KeyboardUtils.KEY_UP_ARROW ) {
-                  newValue = this._valueProperty.get() + stepSize;
+                  if ( key === KeyboardUtils.KEY_PAGE_UP ) {
+                    newValue = this._valueProperty.get() + stepSize;
+                  }
+                  else if ( key === KeyboardUtils.KEY_PAGE_DOWN ) {
+                    newValue = this._valueProperty.get() - stepSize;
+                  }
                 }
-                else if ( key === KeyboardUtils.KEY_LEFT_ARROW || key === KeyboardUtils.KEY_DOWN_ARROW ) {
-                  newValue = this._valueProperty.get() - stepSize;
-                }
+                else if ( KeyboardUtils.isArrowKey( domEvent ) ) {
 
-                if ( this.roundToStepSize ) {
-                  newValue = roundValue( newValue, this._valueProperty.get(), stepSize );
+                  // if the shift key is pressed down, modify the step size (this is atypical browser behavior for sliders)
+                  stepSize = domEvent.shiftKey ? this.shiftKeyboardStep : this.keyboardStep;
+
+                  // Temporary workaround, if using shift key with arrow keys to use the shiftKeyboardStep, don't
+                  // use constrainValue because the constrainValue is often smaller than the values allowed by
+                  // constrainValue. See https://github.com/phetsims/sun/issues/698.
+                  useConstrainValue = !domEvent.shiftKey;
+
+                  if ( key === KeyboardUtils.KEY_RIGHT_ARROW || key === KeyboardUtils.KEY_UP_ARROW ) {
+                    newValue = this._valueProperty.get() + stepSize;
+                  }
+                  else if ( key === KeyboardUtils.KEY_LEFT_ARROW || key === KeyboardUtils.KEY_DOWN_ARROW ) {
+                    newValue = this._valueProperty.get() - stepSize;
+                  }
+
+                  if ( this.roundToStepSize ) {
+                    newValue = roundValue( newValue, this._valueProperty.get(), stepSize );
+                  }
                 }
               }
+
+              // Map the value.
+              const mappedValue = this._a11yMapValue( newValue, this._valueProperty.get() );
+
+              // Optionally constrain the value. Only constrain if modifying by shiftKeyboardStep because that step size
+              // may allow finer precision than constrainValue. This is a workaround for
+              // https://github.com/phetsims/sun/issues/698, and is actually a problem for all keyboard steps if they
+              // are smaller than values allowed by constrainValue. In https://github.com/phetsims/sun/issues/703 we
+              // will work to resolve this more generally.
+              let constrainedValue = mappedValue;
+              if ( useConstrainValue ) {
+                constrainedValue = this._constrainValue( mappedValue );
+              }
+
+              // limit the value to the enabled range
+              this._valueProperty.set( Utils.clamp( constrainedValue, this._rangeProperty.get().min, this._rangeProperty.get().max ) );
+
+              // optional change callback after the valueProperty is set so that the listener can use the new value
+              this._onChange( event );
+
+              // after any keyboard input, make sure that the Node stays in view
+              animatedPanZoomSingleton.initialized && animatedPanZoomSingleton.listener.keepNodeInView( this._panTargetNode || this );
             }
-
-            // Map the value.
-            const mappedValue = this._a11yMapValue( newValue, this._valueProperty.get() );
-
-            // Optionally constrain the value. Only constrain if modifying by shiftKeyboardStep because that step size
-            // may allow finer precision than constrainValue. This is a workaround for
-            // https://github.com/phetsims/sun/issues/698, and is actually a problem for all keyboard steps if they
-            // are smaller than values allowed by constrainValue. In https://github.com/phetsims/sun/issues/703 we
-            // will work to resolve this more generally.
-            let constrainedValue = mappedValue;
-            if ( useConstrainValue ) {
-              constrainedValue = this._constrainValue( mappedValue );
-            }
-
-            // limit the value to the enabled range
-            this._valueProperty.set( Utils.clamp( constrainedValue, this._rangeProperty.get().min, this._rangeProperty.get().max ) );
-
-            // optional change callback after the valueProperty is set so that the listener can use the new value
-            this._onChange( event );
-
-            // after any keyboard input, make sure that the Node stays in view
-            animatedPanZoomSingleton.initialized && animatedPanZoomSingleton.listener.keepNodeInView( this._panTargetNode || this );
           }
         }
       },
