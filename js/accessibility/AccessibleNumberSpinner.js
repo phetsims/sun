@@ -107,13 +107,24 @@ const AccessibleNumberSpinner = {
 
               // check for relevant keys here
               if ( KeyboardUtils.isRangeKey( event.domEvent ) ) {
-                if ( !self._callbackTimer.isRunning() ) {
-                  self.accessibleNumberSpinnerHandleKeyDown( event );
 
-                  downCallback = self.accessibleNumberSpinnerHandleKeyDown.bind( self, event );
-                  runningTimerCallbackEvent = event.domEvent;
-                  self._callbackTimer.addCallback( downCallback );
-                  self._callbackTimer.start();
+                // If the meta key is down we will not even call the keydown listener of the supertype, so we need
+                // to be sure that default behavior is prevented so we don't receive `input` and `change` events.
+                // See AccessibleValueHandler.handleInput for information on these events and why we don't want
+                // to change in response to them.
+                event.domEvent.preventDefault();
+
+                // When the meta key is down Mac will not send keyup events so do not change values or add timer
+                // listeners because they will never be removed since we fail to get a keyup event. See
+                if ( !event.domEvent.metaKey ) {
+                  if ( !self._callbackTimer.isRunning() ) {
+                    self.accessibleNumberSpinnerHandleKeyDown( event );
+
+                    downCallback = self.accessibleNumberSpinnerHandleKeyDown.bind( self, event );
+                    runningTimerCallbackEvent = event.domEvent;
+                    self._callbackTimer.addCallback( downCallback );
+                    self._callbackTimer.start();
+                  }
                 }
               }
             }
