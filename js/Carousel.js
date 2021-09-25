@@ -13,7 +13,7 @@
  * @author Chris Malley (PixelZoom, Inc.)
  */
 
-import Property from '../../axon/js/Property.js';
+import NumberProperty from '../../axon/js/NumberProperty.js';
 import stepTimer from '../../axon/js/stepTimer.js';
 import Dimension2 from '../../dot/js/Dimension2.js';
 import Shape from '../../kite/js/Shape.js';
@@ -260,7 +260,10 @@ class Carousel extends Node {
     // Number of the page that is visible in the carousel.
     assert && assert( options.defaultPageNumber >= 0 && options.defaultPageNumber <= numberOfPages - 1,
       `defaultPageNumber is out of range: ${options.defaultPageNumber}` );
-    const pageNumberProperty = new Property( options.defaultPageNumber );
+    const pageNumberProperty = new NumberProperty( options.defaultPageNumber, {
+      tandem: options.tandem.createTandem( 'pageNumberProperty' ),
+      numberType: 'Integer'
+    } );
 
     // Change pages
     let scrollAnimation = null;
