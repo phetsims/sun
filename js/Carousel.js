@@ -262,7 +262,8 @@ class Carousel extends Node {
       `defaultPageNumber is out of range: ${options.defaultPageNumber}` );
     const pageNumberProperty = new NumberProperty( options.defaultPageNumber, {
       tandem: options.tandem.createTandem( 'pageNumberProperty' ),
-      numberType: 'Integer'
+      numberType: 'Integer',
+      validValues: _.range( numberOfPages )
     } );
 
     // Change pages
