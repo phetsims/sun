@@ -22,9 +22,9 @@ import AlignBox from '../../scenery/js/nodes/AlignBox.js';
 import HBox from '../../scenery/js/nodes/HBox.js';
 import VBox from '../../scenery/js/nodes/VBox.js';
 import FullScreen from '../../scenery/js/util/FullScreen.js';
-import SoundPlayer from '../../tambo/js/SoundPlayer.js';
 import generalCloseSoundPlayer from '../../tambo/js/shared-sound-players/generalCloseSoundPlayer.js';
 import generalOpenSoundPlayer from '../../tambo/js/shared-sound-players/generalOpenSoundPlayer.js';
+import SoundPlayer from '../../tambo/js/SoundPlayer.js';
 import PhetioObject from '../../tandem/js/PhetioObject.js';
 import Tandem from '../../tandem/js/Tandem.js';
 import DynamicMarkerIO from '../../tandem/js/types/DynamicMarkerIO.js';
@@ -142,6 +142,14 @@ class Dialog extends Popupable( Panel ) {
       // pdom options
       tagName: 'div',
       ariaRole: 'dialog',
+
+      // {Node|null} - The Node that receives focus when the Dialog is closed. If null, focus will return to the
+      // Node that had focus when the Dialog was opened.
+      focusOnCloseNode: null,
+
+      // {Node|null} - The Node that receives focus when the Dialog is opened. If null, focus will be placed on
+      // the closeButton.
+      focusOnOpenNode: null,
 
       // By default set the accessible name of this dialog to be the content of the title. Some dialogs want to opt out
       // of providing the default accessible name for the dialog, opting to instead manage the accessible name
@@ -267,12 +275,16 @@ class Dialog extends Popupable( Panel ) {
       phetioState: options.phetioState
     }, dialogContent, options );
 
-    // {Node|null} see setFocusOnCloseNode
-    this.focusOnCloseNode = null;
+    // @private {Node|null} - The Node that receives focus when the Dialog is opened. Can be set after construction
+    // with setFocusOnOpenNode. If null, focus is moved to the close button.
+    this.focusOnOpenNode = options.focusOnOpenNode;
 
-    // {Node|null} - Either focusOnCloseNode (if defined) or the Node that has focus
-    // before the Dialog is opened, so focus can be restored to this Node when the
-    // Dialog is closed.
+    // @private {Node|null} - The Node that receives focus when the Dialog is closed. Can be set after construction
+    // with setFocusOnCloseNode. If null, focus is moved to the Node that had focus when the Dialog was opened.
+    this.focusOnCloseNode = options.focusOnCloseNode;
+
+    // @private {Node|null} - Either focusOnCloseNode (if defined) or the Node that has focus before the Dialog is
+    // opened, so focus can be restored to this Node when the Dialog is closed.
     this.nodeToReturnFocus = null;
 
     // The Dialog's display runs on this Property, so add the listener that controls show/hide.
@@ -287,6 +299,10 @@ class Dialog extends Popupable( Panel ) {
         // TODO: https://github.com/phetsims/joist/issues/293 non-modal dialogs shouldn't hide other accessible content,
         // and this should be dependant on other things in the sim modalNodeStack
         this.sim.setAccessibleViewsVisible( false );
+
+        // move focus into the Dialog
+        const nodeToFocus = this.focusOnOpenNode ? this.focusOnOpenNode : this.closeButton;
+        nodeToFocus.focus();
 
         // Do this last
         options.showCallback && options.showCallback();
@@ -393,11 +409,23 @@ class Dialog extends Popupable( Panel ) {
   /**
    * Set the Node that receives focus when the Dialog is closed. If null, focus returns to the element that had focus
    * when the Dialog was opened.
-   * @param {Node|null} node
    * @public
+   *
+   * @param {Node|null} node
    */
   setFocusOnCloseNode( node ) {
     this.focusOnCloseNode = node;
+  }
+
+  /**
+   * Set the Node that receives focus when the Dialog is opened. If null, focus returns to the Close button of the
+   * Dialog.
+   * @public
+   *
+   * @param {Node|null} node
+   */
+  setFocusOnOpenNode( node ) {
+    this.focusOnOpenNode = node;
   }
 
   /**
