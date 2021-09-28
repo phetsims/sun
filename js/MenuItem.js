@@ -7,12 +7,9 @@
  * @author Michael Kauzmann (PhET Interactive Simulations)
  */
 
-import getGlobal from '../../phet-core/js/getGlobal.js';
 import merge from '../../phet-core/js/merge.js';
 import PhetFont from '../../scenery-phet/js/PhetFont.js';
-import PDOMUtils from '../../scenery/js/accessibility/pdom/PDOMUtils.js';
 import Voicing from '../../scenery/js/accessibility/voicing/Voicing.js';
-import Display from '../../scenery/js/display/Display.js';
 import FireListener from '../../scenery/js/listeners/FireListener.js';
 import Node from '../../scenery/js/nodes/Node.js';
 import Path from '../../scenery/js/nodes/Path.js';
@@ -64,19 +61,10 @@ class MenuItem extends Node {
       // {Property.<boolean>} - if provided add a checkmark next to the MenuItem text whenever this Property is true.
       checkedProperty: null,
 
-      // {Display}
-      display: getGlobal( 'phet.joist.display' ),
-
-      // @param {SceneryEvent} - Only called after PDOM interaction and called AFTER closeCallback, use this to move
-      // focus to a particular Node in the document. By default focus is moved to the top of the document after a
-      // MenuItem action since the PhET Menu closes after activation
-      handleFocusCallback: () => {
-
-        assert && assert( options.display instanceof Display, 'display must be provided to support this handlFocusCallback' );
-
-        // limit search of next focusable to root accessible HTML element
-        PDOMUtils.getNextFocusable( options.display.pdomRootElement ).focus();
-      },
+      // @param {function} - Called AFTER closeCallback, use this to move focus to a particular Node after all the
+      // work of selecting the MenuItem is done. Often focus needs to move to the PhetButton, but that may not be
+      // the case if the MenuItem opens a popup (for example).
+      handleFocusCallback: () => {},
 
       // phet-io
       tandem: Tandem.OPTIONAL,
