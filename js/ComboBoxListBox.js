@@ -184,23 +184,13 @@ class ComboBoxListBox extends Panel {
       }
     } );
 
-    // @public {ComboBoxListItemNode|null} the ComboBoxListItemNode that has focus
-    this.focusedItemNode = null;
-
     // pdom listener for the entire list box
     this.addInputListener( {
 
       // When the list box gets focus, transfer focus to the ComboBoxListItemNode that matches property.value.
       focus: event => {
         if ( this.visible ) {
-          for ( let i = 0; i < listItemNodes.length; i++ ) {
-            const listItemNode = listItemNodes[ i ];
-            if ( property.value === listItemNode.item.value ) {
-              this.focusedItemNode = listItemNode;
-              this.focusedItemNode.focus();
-              break;
-            }
-          }
+          this.getListItemNode( property.value ).focus();
         }
       },
 
@@ -220,37 +210,27 @@ class ComboBoxListBox extends Panel {
 
           // Up/down arrow keys move the focus between items in the list box
           const direction = ( KeyboardUtils.isKeyEvent( event.domEvent, KeyboardUtils.KEY_DOWN_ARROW ) ) ? 1 : -1;
-          for ( let i = 0; i < listItemNodes.length; i++ ) {
-            if ( this.focusedItemNode === listItemNodes[ i ] ) {
-              const nextListItemNode = listItemNodes[ i + direction ];
-              if ( nextListItemNode ) {
+          const focusedItemIndex = this.visibleListItemNodes.indexOf( this.getFocusedItemNode() );
+          assert && assert( focusedItemIndex > -1, 'how could we receive keydown without a focused list item?' );
 
-                // set focus for next item
-                this.focusedItemNode = nextListItemNode;
-                this.focusedItemNode.focus();
+          const nextIndex = focusedItemIndex + direction;
+          this.visibleListItemNodes[ nextIndex ] && this.visibleListItemNodes[ nextIndex ].focus();
 
-                break;
-              }
-            }
-          }
-
-          // reserve for drag after focus has moved, as the change in focus will clear the intent
-          // on the pointer
+          // reserve for drag after focus has moved, as the change in focus will clear the intent on the pointer
           event.pointer.reserveForKeyboardDrag();
         }
         else if ( KeyboardUtils.isKeyEvent( event.domEvent, KeyboardUtils.KEY_HOME ) ) {
-          this.focusedItemNode = listItemNodes[ 0 ];
-          this.focusedItemNode.focus();
+          this.visibleListItemNodes[ 0 ].focus();
         }
         else if ( KeyboardUtils.isKeyEvent( event.domEvent, KeyboardUtils.KEY_END ) ) {
-          this.focusedItemNode = listItemNodes[ listItemNodes.length - 1 ];
-          this.focusedItemNode.focus();
+          this.visibleListItemNodes[ this.visibleListItemNodes.length - 1 ].focus();
         }
       }
     } );
 
     // @private
     this.listItemNodes = listItemNodes;
+    this.visibleListItemNodes = listItemNodes.slice();
 
     // @private
     this.disposeComboBoxListBox = () => {
@@ -278,6 +258,7 @@ class ComboBoxListBox extends Panel {
    */
   setItemVisible( value, visible ) {
     this.getListItemNode( value ).visible = visible;
+    this.visibleListItemNodes = _.filter( this.listItemNodes, itemNode => itemNode.visible );
   }
 
   /**
@@ -299,6 +280,18 @@ class ComboBoxListBox extends Panel {
   getListItemNode( value ) {
     const listItemNode = _.find( this.listItemNodes, listItemNode => listItemNode.item.value === value );
     assert && assert( listItemNode, `no item found for value: ${value}` );
+    assert && assert( listItemNode instanceof ComboBoxListItemNode, 'invalid listItemNode' );
+    return listItemNode;
+  }
+
+  /**
+   * Gets the item in the ComboBox that currently has focus.
+   * @returns {ComboBoxListItemNode}
+   * @private
+   */
+  getFocusedItemNode() {
+    const listItemNode = _.find( this.listItemNodes, listItemNode => listItemNode.focused );
+    assert && assert( listItemNode, 'no item found that has focus' );
     assert && assert( listItemNode instanceof ComboBoxListItemNode, 'invalid listItemNode' );
     return listItemNode;
   }
