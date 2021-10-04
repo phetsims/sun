@@ -68,6 +68,9 @@ class ComboBoxListBox extends Panel {
       const listItemNode = event.currentTarget;
       assert && assert( listItemNode instanceof ComboBoxListItemNode, 'expected a ComboBoxListItemNode' );
 
+      // So that something related to the ComboBox has focus before changing Property value.
+      focusButtonCallback();
+
       // set value based on which item was chosen in the list box
       property.value = listItemNode.item.value;
 
@@ -76,8 +79,6 @@ class ComboBoxListBox extends Panel {
 
       // prevent nodes (eg, controls) behind the list from receiving the event
       event.abort();
-
-      focusButtonCallback();
     }, {
       parameters: [ { phetioPrivate: true, valueType: SceneryEvent } ],
 
