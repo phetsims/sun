@@ -112,7 +112,7 @@ const Popupable = type => {
       this.isShowingProperty.value = true;
 
       // after it is shown, move focus to the focusOnShownNode, presumably moving focus into the Popupable content
-      if ( this.focusOnShowNode.focusable ) {
+      if ( this.focusOnShowNode && this.focusOnShowNode.focusable ) {
         this.focusOnShowNode.focus();
       }
     }
