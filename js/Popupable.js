@@ -14,6 +14,7 @@ import ScreenView from '../../joist/js/ScreenView.js';
 import gracefulBind from '../../phet-core/js/gracefulBind.js';
 import inheritance from '../../phet-core/js/inheritance.js';
 import merge from '../../phet-core/js/merge.js';
+import FocusManager from '../../scenery/js/accessibility/FocusManager.js';
 import Node from '../../scenery/js/nodes/Node.js';
 import Tandem from '../../tandem/js/Tandem.js';
 import sun from './sun.js';
@@ -36,7 +37,15 @@ const Popupable = type => {
         // {Bounds2|null} - If desired, the layoutBounds that should be used for layout
         layoutBounds: null,
 
-        tandem: Tandem.OPTIONAL
+        tandem: Tandem.OPTIONAL,
+
+        // pdom
+        // {Node|null} - The Node that receives focus when the Popupable is shown. If null, focus is not set.
+        focusOnShowNode: null,
+
+        // {Node|null} - The Node that receives focus when the Popupable is closed. If null, focus will return
+        // to the Node that had focus when the Dialog opened.
+        focusOnHideNode: null
       }, options );
 
       assert && assert( typeof options.showPopup === 'function', 'showPopup is required, and must be provided if phet.joist.sim is not available.' );
@@ -47,6 +56,15 @@ const Popupable = type => {
 
       // @public {Bounds2|null}
       this.layoutBounds = options.layoutBounds;
+
+      // @private {Node|null}
+      this.focusOnShowNode = options.focusOnShowNode;
+      this.focusOnHideNode = options.focusOnHideNode;
+
+      // @private {Node|null} - The Node to return focus to after the Popupable has been hidden. A reference
+      // to this Node is saved when the Popupable is shown. By default focus is returned to Node that has focus
+      // when the Popupable is open but can be overridden with focusOnHideNode.
+      this.nodeWithFocusOnShow = null;
 
       // @public {Node} - The node provided to showPopup, with the transform applied
       this.popupParent = new Node( {
@@ -87,7 +105,16 @@ const Popupable = type => {
      * @public
      */
     show() {
+
+      // save a reference before setting isShowingProperty because listeners on the isShowingProperty may modify or
+      // clear focus from FocusManager.pdomFocusedNode.
+      this.nodeWithFocusOnShow = this.focusOnHideNode || FocusManager.pdomFocusedNode;
       this.isShowingProperty.value = true;
+
+      // after it is shown, move focus to the focusOnShownNode, presumably moving focus into the Popupable content
+      if ( this.focusOnShowNode.focusable ) {
+        this.focusOnShowNode.focus();
+      }
     }
 
     /**
@@ -96,6 +123,35 @@ const Popupable = type => {
      */
     hide() {
       this.isShowingProperty.value = false;
+
+      // return focus to the Node that had focus when the Popupable was opened (or the focusOnHideNode if provided)
+      if ( this.nodeWithFocusOnShow && this.nodeWithFocusOnShow.focusable ) {
+        this.nodeWithFocusOnShow.focus();
+      }
+    }
+
+    /**
+     * Set the Node that receives focus when the Popupable is shown. If null, focus will not be placed on any
+     * Node.
+     * @public
+     *
+     * @param {Node|null} node
+     */
+    setFocusOnShowNode( node ) {
+      assert && assert( node === null || node instanceof Node, 'setFocusOnShowNode requires an instance of a Node.' );
+      this.focusOnShowNode = node;
+    }
+
+    /**
+     * Set the Node that receives focus when the Popupable is hidden. If null, focus will not be set and
+     * traversal will start over from the top of the document.
+     * @public
+     *
+     * @param {Node|null} node
+     */
+    setFocusOnHideNode( node ) {
+      assert && assert( node === null || node instanceof Node, 'setFocusOnHideNode requires an instance of a Node' );
+      this.focusOnHideNode = node;
     }
 
     /**

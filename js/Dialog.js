@@ -143,13 +143,9 @@ class Dialog extends Popupable( Panel ) {
       tagName: 'div',
       ariaRole: 'dialog',
 
-      // {Node|null} - The Node that receives focus when the Dialog is closed. If null, focus will return to the
-      // Node that had focus when the Dialog was opened.
-      focusOnCloseNode: null,
-
       // {Node|null} - The Node that receives focus when the Dialog is opened. If null, focus will be placed on
       // the closeButton.
-      focusOnOpenNode: null,
+      focusOnShowNode: null,
 
       // By default set the accessible name of this dialog to be the content of the title. Some dialogs want to opt out
       // of providing the default accessible name for the dialog, opting to instead manage the accessible name
@@ -195,11 +191,6 @@ class Dialog extends Popupable( Panel ) {
 
       listener: () => {
         options.closeButtonListener();
-
-        // if listener was fired because of accessibility
-        if ( closeButton.isPDOMClicking() ) {
-          this.restoreFocus();
-        }
       },
 
       pathOptions: {
@@ -271,21 +262,10 @@ class Dialog extends Popupable( Panel ) {
     super( {
       isModal: options.isModal,
       layoutBounds: options.layoutBounds,
+      focusOnShowNode: options.focusOnShowNode || closeButton,
       tandem: options.tandem,
       phetioState: options.phetioState
     }, dialogContent, options );
-
-    // @private {Node|null} - The Node that receives focus when the Dialog is opened. Can be set after construction
-    // with setFocusOnOpenNode. If null, focus is moved to the close button.
-    this.focusOnOpenNode = options.focusOnOpenNode;
-
-    // @private {Node|null} - The Node that receives focus when the Dialog is closed. Can be set after construction
-    // with setFocusOnCloseNode. If null, focus is moved to the Node that had focus when the Dialog was opened.
-    this.focusOnCloseNode = options.focusOnCloseNode;
-
-    // @private {Node|null} - Either focusOnCloseNode (if defined) or the Node that has focus before the Dialog is
-    // opened, so focus can be restored to this Node when the Dialog is closed.
-    this.nodeToReturnFocus = null;
 
     // The Dialog's display runs on this Property, so add the listener that controls show/hide.
     this.isShowingProperty.lazyLink( isShowing => {
@@ -293,16 +273,10 @@ class Dialog extends Popupable( Panel ) {
         // sound generation
         options.openedSoundPlayer.play();
 
-        this.nodeToReturnFocus = this.focusOnCloseNode || FocusManager.pdomFocusedNode;
-
         // pdom - modal dialogs should be the only readable content in the sim
         // TODO: https://github.com/phetsims/joist/issues/293 non-modal dialogs shouldn't hide other accessible content,
         // and this should be dependant on other things in the sim modalNodeStack
         this.sim.setAccessibleViewsVisible( false );
-
-        // move focus into the Dialog
-        const nodeToFocus = this.focusOnOpenNode ? this.focusOnOpenNode : this.closeButton;
-        nodeToFocus.focus();
 
         // Do this last
         options.showCallback && options.showCallback();
@@ -353,9 +327,6 @@ class Dialog extends Popupable( Panel ) {
       } );
     }
 
-    // @private (a11y) {Node|null} see setFocusOnCloseNode
-    this.focusOnCloseNode = null;
-
     // pdom - close the dialog when pressing "escape"
     const escapeListener = {
       keydown: event => {
@@ -364,7 +335,6 @@ class Dialog extends Popupable( Panel ) {
         if ( KeyboardUtils.isKeyEvent( event.domEvent, KeyboardUtils.KEY_ESCAPE ) ) {
           domEvent.preventDefault();
           this.hide();
-          this.restoreFocus();
         }
         else if ( KeyboardUtils.isKeyEvent( event.domEvent, KeyboardUtils.KEY_TAB ) && FullScreen.isFullScreen() ) {
 
@@ -404,38 +374,6 @@ class Dialog extends Popupable( Panel ) {
   dispose() {
     this.disposeDialog();
     super.dispose();
-  }
-
-  /**
-   * Set the Node that receives focus when the Dialog is closed. If null, focus returns to the element that had focus
-   * when the Dialog was opened.
-   * @public
-   *
-   * @param {Node|null} node
-   */
-  setFocusOnCloseNode( node ) {
-    this.focusOnCloseNode = node;
-  }
-
-  /**
-   * Set the Node that receives focus when the Dialog is opened. If null, focus returns to the Close button of the
-   * Dialog.
-   * @public
-   *
-   * @param {Node|null} node
-   */
-  setFocusOnOpenNode( node ) {
-    this.focusOnOpenNode = node;
-  }
-
-  /**
-   * Restores focus to either focusOnCloseNode, or the element that had focus when the menu was opened.
-   * @private
-   */
-  restoreFocus() {
-    if ( this.nodeToReturnFocus ) {
-      this.nodeToReturnFocus.focus();
-    }
   }
 
   /**
