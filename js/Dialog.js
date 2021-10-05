@@ -143,14 +143,15 @@ class Dialog extends Popupable( Panel ) {
       tagName: 'div',
       ariaRole: 'dialog',
 
-      // {Node|null} - The Node that receives focus when the Dialog is opened. If null, focus will be placed on
-      // the closeButton.
-      focusOnShowNode: null,
-
       // By default set the accessible name of this dialog to be the content of the title. Some dialogs want to opt out
       // of providing the default accessible name for the dialog, opting to instead manage the accessible name
       // themselves, for example see KeyboardHelpDialog and https://github.com/phetsims/scenery-phet/issues/494
-      addAriaLabelledByFromTitle: true
+      addAriaLabelledByFromTitle: true,
+
+
+      // To be passed to Popupable, see there for documentation
+      focusOnShowNode: null,
+      focusOnHideNode: null
     }, options );
 
     assert && assert( options.sim, 'sim must be provided, as Dialog needs a Sim instance' );
@@ -263,6 +264,7 @@ class Dialog extends Popupable( Panel ) {
       isModal: options.isModal,
       layoutBounds: options.layoutBounds,
       focusOnShowNode: options.focusOnShowNode || closeButton,
+      focusOnHideNode: options.focusOnHideNode,
       tandem: options.tandem,
       phetioState: options.phetioState
     }, dialogContent, options );
