@@ -375,14 +375,6 @@ class Dialog extends Popupable( Panel ) {
     this.disposeDialog();
     super.dispose();
   }
-
-  /**
-   * Place keyboard focus on the close button, useful when opening the dialog with an accessibility interaction.
-   * @public
-   */
-  focusCloseButton() {
-    this.closeButton.focus();
-  }
 }
 
 // Default value for options.layoutStrategy, centers the Dialog in the layoutBounds
