@@ -131,30 +131,6 @@ const Popupable = type => {
     }
 
     /**
-     * Set the Node that receives focus when the Popupable is shown. If null, focus will not be placed on any
-     * Node.
-     * @public
-     *
-     * @param {Node|null} node
-     */
-    setFocusOnShowNode( node ) {
-      assert && assert( node === null || node instanceof Node, 'setFocusOnShowNode requires an instance of a Node.' );
-      this.focusOnShowNode = node;
-    }
-
-    /**
-     * Set the Node that receives focus when the Popupable is hidden. If null, focus will not be set and
-     * traversal will start over from the top of the document.
-     * @public
-     *
-     * @param {Node|null} node
-     */
-    setFocusOnHideNode( node ) {
-      assert && assert( node === null || node instanceof Node, 'setFocusOnHideNode requires an instance of a Node' );
-      this.focusOnHideNode = node;
-    }
-
-    /**
      * Releases references
      * @public
      */
