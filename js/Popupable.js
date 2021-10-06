@@ -64,7 +64,7 @@ const Popupable = type => {
       // @private {Node|null} - The Node to return focus to after the Popupable has been hidden. A reference
       // to this Node is saved when the Popupable is shown. By default focus is returned to Node that has focus
       // when the Popupable is open but can be overridden with focusOnHideNode.
-      this.nodeWithFocusOnShow = null;
+      this.nodeToFocusOnHide = null;
 
       // @public {Node} - The node provided to showPopup, with the transform applied
       this.popupParent = new Node( {
@@ -108,7 +108,7 @@ const Popupable = type => {
 
       // save a reference before setting isShowingProperty because listeners on the isShowingProperty may modify or
       // clear focus from FocusManager.pdomFocusedNode.
-      this.nodeWithFocusOnShow = this.focusOnHideNode || FocusManager.pdomFocusedNode;
+      this.nodeToFocusOnHide = this.focusOnHideNode || FocusManager.pdomFocusedNode;
       this.isShowingProperty.value = true;
 
       // after it is shown, move focus to the focusOnShownNode, presumably moving focus into the Popupable content
@@ -125,8 +125,8 @@ const Popupable = type => {
       this.isShowingProperty.value = false;
 
       // return focus to the Node that had focus when the Popupable was opened (or the focusOnHideNode if provided)
-      if ( this.nodeWithFocusOnShow && this.nodeWithFocusOnShow.focusable ) {
-        this.nodeWithFocusOnShow.focus();
+      if ( this.nodeToFocusOnHide && this.nodeToFocusOnHide.focusable ) {
+        this.nodeToFocusOnHide.focus();
       }
     }
 
