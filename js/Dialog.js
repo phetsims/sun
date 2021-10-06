@@ -96,8 +96,6 @@ class Dialog extends Popupable( Panel ) {
       layoutBounds: ScreenView.DEFAULT_LAYOUT_BOUNDS,
 
       // more Dialog-specific options
-      isModal: true, // {boolean} modal dialogs prevent interaction with the rest of the sim while open
-
       // {Node|null} Title to be displayed at top. For a11y, make sure that its primary sibling has an accessible name
       title: null,
       titleAlign: 'center', // horizontal alignment of the title: {string} left, right or center
@@ -119,6 +117,14 @@ class Dialog extends Popupable( Panel ) {
 
       // {function|null} called after the dialog is hidden, see https://github.com/phetsims/joist/issues/478
       hideCallback: null,
+
+      // {Object} - Options passed along to the Popupable which is mixed into Dialog
+      popupableOptions: {
+
+        // {Node|null} - The Node that receives focus when the Dialog is shown. If null then Dialog will focus
+        // the CloseButton.
+        focusOnShowNode: null
+      },
 
       // pass through to Panel options
       cornerRadius: 10, // {number} radius of the dialog's corners
@@ -146,12 +152,7 @@ class Dialog extends Popupable( Panel ) {
       // By default set the accessible name of this dialog to be the content of the title. Some dialogs want to opt out
       // of providing the default accessible name for the dialog, opting to instead manage the accessible name
       // themselves, for example see KeyboardHelpDialog and https://github.com/phetsims/scenery-phet/issues/494
-      addAriaLabelledByFromTitle: true,
-
-
-      // To be passed to Popupable, see there for documentation
-      focusOnShowNode: null,
-      focusOnHideNode: null
+      addAriaLabelledByFromTitle: true
     }, options );
 
     assert && assert( options.sim, 'sim must be provided, as Dialog needs a Sim instance' );
@@ -161,13 +162,19 @@ class Dialog extends Popupable( Panel ) {
     assert && assert( options.yMargin === undefined, 'Dialog sets yMargin' );
     options.yMargin = 0;
 
+    assert && assert( options.popupableOptions.layoutBounds === undefined, 'Dialog sets layoutBounds for Popupable' );
+    options.popupableOptions.layoutBounds = options.layoutBounds;
+
+    assert && assert( options.popupableOptions.tandem === undefined, 'Dialog sets Tandem for Popupable' );
+    options.popupableOptions.tandem = options.tandem;
+
+    assert && assert( options.popupableOptions.phetioState === undefined, 'Dialog sets phetioState for Popupable' );
+    options.popupableOptions.phetioState = options.phetioState;
+
     // if left margin is specified in options, use it. otherwise, set it to make the left right gutters symmetrical
     if ( options.leftMargin === null ) {
       options.leftMargin = options.xSpacing + options.closeButtonLength + options.closeButtonRightMargin;
     }
-
-    // see https://github.com/phetsims/joist/issues/293
-    assert && assert( options.isModal, 'Non-modal dialogs not currently supported' );
 
     assert && assert( options.maxHeight === null || typeof options.maxHeight === 'number' );
     assert && assert( options.maxWidth === null || typeof options.maxWidth === 'number' );
@@ -231,6 +238,9 @@ class Dialog extends Popupable( Panel ) {
       options.closeButtonMouseAreaYDilation
     );
 
+    // pdom - focus the CloseButton when the Dialog is open, unless another focusOnShowNode is provided
+    options.popupableOptions.focusOnShowNode = options.popupableOptions.focusOnShowNode || closeButton;
+
     // Align content, title, and close button using spacing and margin options
 
     // align content and title (if provided) vertically
@@ -260,14 +270,7 @@ class Dialog extends Popupable( Panel ) {
       align: 'top'
     } );
 
-    super( {
-      isModal: options.isModal,
-      layoutBounds: options.layoutBounds,
-      focusOnShowNode: options.focusOnShowNode || closeButton,
-      focusOnHideNode: options.focusOnHideNode,
-      tandem: options.tandem,
-      phetioState: options.phetioState
-    }, dialogContent, options );
+    super( options.popupableOptions, dialogContent, options );
 
     // The Dialog's display runs on this Property, so add the listener that controls show/hide.
     this.isShowingProperty.lazyLink( isShowing => {
