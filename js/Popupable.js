@@ -112,8 +112,7 @@ const Popupable = type => {
       this.isShowingProperty.value = true;
 
       // after it is shown, move focus to the focusOnShownNode, presumably moving focus into the Popupable content
-      if ( this.focusOnShowNode ) {
-        assert && assert( this.focusOnShowNode.focusable, 'focusOnShowNode is not focusable.' );
+      if ( this.focusOnShowNode && this.focusOnShowNode.focusable ) {
         this.focusOnShowNode.focus();
       }
     }
@@ -126,8 +125,7 @@ const Popupable = type => {
       this.isShowingProperty.value = false;
 
       // return focus to the Node that had focus when the Popupable was opened (or the focusOnHideNode if provided)
-      if ( this.nodeToFocusOnHide ) {
-        assert && assert( this.nodeToFocusOnHide, 'nodeToFocusOnHide is not focusable' );
+      if ( this.nodeToFocusOnHide && this.nodeToFocusOnHide.focusable ) {
         this.nodeToFocusOnHide.focus();
       }
     }
