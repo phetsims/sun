@@ -20,6 +20,7 @@ import PDOMPeer from '../../scenery/js/accessibility/pdom/PDOMPeer.js';
 import PDOMUtils from '../../scenery/js/accessibility/pdom/PDOMUtils.js';
 import AlignBox from '../../scenery/js/nodes/AlignBox.js';
 import HBox from '../../scenery/js/nodes/HBox.js';
+import Node from '../../scenery/js/nodes/Node.js';
 import VBox from '../../scenery/js/nodes/VBox.js';
 import FullScreen from '../../scenery/js/util/FullScreen.js';
 import generalCloseSoundPlayer from '../../tambo/js/shared-sound-players/generalCloseSoundPlayer.js';
@@ -149,6 +150,10 @@ class Dialog extends Popupable( Panel ) {
       tagName: 'div',
       ariaRole: 'dialog',
 
+      // {boolean} - By default, the close button is placed first in the PDOMOrder (and thus the focus order), set this if you want
+      // the close button to be the last element in the focus order for the Dialog.
+      closeButtonLastInPDOM: false,
+
       // By default set the accessible name of this dialog to be the content of the title. Some dialogs want to opt out
       // of providing the default accessible name for the dialog, opting to instead manage the accessible name
       // themselves, for example see KeyboardHelpDialog and https://github.com/phetsims/scenery-phet/issues/494
@@ -238,8 +243,19 @@ class Dialog extends Popupable( Panel ) {
       options.closeButtonMouseAreaYDilation
     );
 
+    // pdom - set the order of content, close button first so remaining content can be read from top to bottom
+    // with virtual cursor
+    let pdomOrder = [ options.title, content ];
+    options.closeButtonLastInPDOM ? pdomOrder.push( closeButton ) : pdomOrder.unshift( closeButton );
+    pdomOrder = pdomOrder.filter( node => node !== undefined && node !== null );
+
     // pdom - focus the CloseButton when the Dialog is open, unless another focusOnShowNode is provided
-    options.popupableOptions.focusOnShowNode = options.popupableOptions.focusOnShowNode || closeButton;
+    options.popupableOptions.focusOnShowNode = options.popupableOptions.focusOnShowNode || pdomOrder[ 0 ];
+
+    assert && assert( options.popupableOptions.focusOnShowNode instanceof Node, 'should be non-null and defined' );
+    assert && assert( options.popupableOptions.focusOnShowNode.focusable,
+      'focusOnShowNode. This may mean that the first item in pdomOrder is not focusable. In this case please adjust ' +
+      'closeButtonLastInPDOM or provide a custom focusOnShowNode.' );
 
     // Align content, title, and close button using spacing and margin options
 
@@ -319,9 +335,8 @@ class Dialog extends Popupable( Panel ) {
       }
     } );
 
-    // pdom - set the order of content, close button first so remaining content can be read from top to bottom
-    // with virtual cursor
-    this.pdomOrder = [ closeButton, options.title, content ].filter( node => node !== undefined );
+    // Setter after the super call
+    this.pdomOrder = pdomOrder;
 
     // pdom - set the aria-labelledby relation so that whenever focus enters the dialog the title is read
     if ( options.title && options.title.tagName && options.addAriaLabelledByFromTitle ) {
