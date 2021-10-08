@@ -119,13 +119,9 @@ class Dialog extends Popupable( Panel ) {
       // {function|null} called after the dialog is hidden, see https://github.com/phetsims/joist/issues/478
       hideCallback: null,
 
-      // {Object} - Options passed along to the Popupable which is mixed into Dialog
-      popupableOptions: {
-
-        // {Node|null} - The Node that receives focus when the Dialog is shown. If null then Dialog will focus
-        // the CloseButton.
-        focusOnShowNode: null
-      },
+      // {Node|null} - The Node that receives focus when the Dialog is shown. If null then Dialog will focus
+      // the CloseButton.
+      focusOnShowNode: null,
 
       // pass through to Panel options
       cornerRadius: 10, // {number} radius of the dialog's corners
@@ -166,15 +162,6 @@ class Dialog extends Popupable( Panel ) {
     options.xMargin = 0;
     assert && assert( options.yMargin === undefined, 'Dialog sets yMargin' );
     options.yMargin = 0;
-
-    assert && assert( options.popupableOptions.layoutBounds === undefined, 'Dialog sets layoutBounds for Popupable' );
-    options.popupableOptions.layoutBounds = options.layoutBounds;
-
-    assert && assert( options.popupableOptions.tandem === undefined, 'Dialog sets Tandem for Popupable' );
-    options.popupableOptions.tandem = options.tandem;
-
-    assert && assert( options.popupableOptions.phetioState === undefined, 'Dialog sets phetioState for Popupable' );
-    options.popupableOptions.phetioState = options.phetioState;
 
     // if left margin is specified in options, use it. otherwise, set it to make the left right gutters symmetrical
     if ( options.leftMargin === null ) {
@@ -250,10 +237,10 @@ class Dialog extends Popupable( Panel ) {
     pdomOrder = pdomOrder.filter( node => node !== undefined && node !== null );
 
     // pdom - focus the CloseButton when the Dialog is open, unless another focusOnShowNode is provided
-    options.popupableOptions.focusOnShowNode = options.popupableOptions.focusOnShowNode || pdomOrder[ 0 ];
+    options.focusOnShowNode = options.focusOnShowNode || pdomOrder[ 0 ];
 
-    assert && assert( options.popupableOptions.focusOnShowNode instanceof Node, 'should be non-null and defined' );
-    assert && assert( options.popupableOptions.focusOnShowNode.focusable,
+    assert && assert( options.focusOnShowNode instanceof Node, 'should be non-null and defined' );
+    assert && assert( options.focusOnShowNode.focusable,
       'focusOnShowNode. This may mean that the first item in pdomOrder is not focusable. In this case please adjust ' +
       'closeButtonLastInPDOM or provide a custom focusOnShowNode.' );
 
@@ -286,7 +273,7 @@ class Dialog extends Popupable( Panel ) {
       align: 'top'
     } );
 
-    super( options.popupableOptions, dialogContent, options );
+    super( dialogContent, options );
 
     // The Dialog's display runs on this Property, so add the listener that controls show/hide.
     this.isShowingProperty.lazyLink( isShowing => {

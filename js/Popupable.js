@@ -24,10 +24,12 @@ const Popupable = type => {
 
   return class extends type {
 
-    constructor( options, ...args ) {
+    // Support the same signature as the type we mix into.  However, we also have our own options, which we assume
+    // are passed in the last arg.
+    constructor( ...args ) {
       super( ...args );
 
-      options = merge( {
+      const config = merge( {
 
         showPopup: gracefulBind( 'phet.joist.sim.showPopup' ),
         hidePopup: gracefulBind( 'phet.joist.sim.hidePopup' ),
@@ -46,20 +48,20 @@ const Popupable = type => {
         // {Node|null} - The Node that receives focus when the Popupable is closed. If null, focus will return
         // to the Node that had focus when the Dialog opened.
         focusOnHideNode: null
-      }, options );
+      }, args[ args.length - 1 ] );
 
-      assert && assert( typeof options.showPopup === 'function', 'showPopup is required, and must be provided if phet.joist.sim is not available.' );
-      assert && assert( typeof options.hidePopup === 'function', 'hidePopup is required, and must be provided if phet.joist.sim is not available.' );
+      assert && assert( typeof config.showPopup === 'function', 'showPopup is required, and must be provided if phet.joist.sim is not available.' );
+      assert && assert( typeof config.hidePopup === 'function', 'hidePopup is required, and must be provided if phet.joist.sim is not available.' );
 
       // see https://github.com/phetsims/joist/issues/293
-      assert && assert( options.isModal, 'Non-modal popups not currently supported' );
+      assert && assert( config.isModal, 'Non-modal popups not currently supported' );
 
       // @public {Bounds2|null}
-      this.layoutBounds = options.layoutBounds;
+      this.layoutBounds = config.layoutBounds;
 
       // @private {Node|null}
-      this.focusOnShowNode = options.focusOnShowNode;
-      this.focusOnHideNode = options.focusOnHideNode;
+      this.focusOnShowNode = config.focusOnShowNode;
+      this.focusOnHideNode = config.focusOnHideNode;
 
       // @private {Node|null} - The Node to return focus to after the Popupable has been hidden. A reference
       // to this Node is saved when the Popupable is shown. By default focus is returned to Node that has focus
@@ -76,16 +78,16 @@ const Popupable = type => {
 
       // @public {Property.<boolean>} - Whether the popup is being shown
       this.isShowingProperty = new BooleanProperty( false, {
-        tandem: options.tandem.createTandem( 'isShowingProperty' ),
+        tandem: config.tandem.createTandem( 'isShowingProperty' ),
         phetioReadOnly: true
       } );
 
       this.isShowingProperty.lazyLink( isShowing => {
         if ( isShowing ) {
-          options.showPopup( this.popupParent, options.isModal );
+          config.showPopup( this.popupParent, config.isModal );
         }
         else {
-          options.hidePopup( this.popupParent, options.isModal );
+          config.hidePopup( this.popupParent, config.isModal );
         }
       } );
     }
