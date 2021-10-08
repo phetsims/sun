@@ -201,6 +201,12 @@ class ComboBox extends Node {
 
     this.mutate( options );
 
+    if ( assert && Tandem.VALIDATION && this.isPhetioInstrumented() ) {
+      items.forEach( item => {
+        assert && assert( item.tandemName !== null, `PhET-iO instrumented ComboBoxes require ComboBoxItems to have tandemName: ${item.value}` );
+      } );
+    }
+
     // Clicking on the button toggles visibility of the list box
     this.button.addListener( () => {
       this.listBox.visibleProperty.value = !this.listBox.visibleProperty.value;
