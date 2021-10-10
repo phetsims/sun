@@ -7,6 +7,8 @@
  * @author Chris Malley (PixelZoom, Inc.)
  */
 
+// The following line fixes some TypeScript import
+import Range from '../../dot/js/Range.js'; // eslint-disable-line no-unused-vars
 import InstanceRegistry from '../../phet-core/js/documentation/InstanceRegistry.js';
 import merge from '../../phet-core/js/merge.js';
 import Orientation from '../../phet-core/js/Orientation.js';
