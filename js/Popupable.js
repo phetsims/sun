@@ -29,6 +29,10 @@ const Popupable = type => {
     constructor( ...args ) {
       super( ...args );
 
+      // `config` is required for Popupable, to work well with ...args but all fields of the config are optional
+      const requiredConfig = args[ args.length - 1 ];
+      assert && assert( requiredConfig !== undefined, 'config object is required for Popupable.' );
+
       const config = merge( {
 
         showPopup: gracefulBind( 'phet.joist.sim.showPopup' ),
@@ -48,7 +52,7 @@ const Popupable = type => {
         // {Node|null} - The Node that receives focus when the Popupable is closed. If null, focus will return
         // to the Node that had focus when the Dialog opened.
         focusOnHideNode: null
-      }, args[ args.length - 1 ] );
+      }, requiredConfig );
 
       assert && assert( typeof config.showPopup === 'function', 'showPopup is required, and must be provided if phet.joist.sim is not available.' );
       assert && assert( typeof config.hidePopup === 'function', 'hidePopup is required, and must be provided if phet.joist.sim is not available.' );
