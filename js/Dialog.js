@@ -237,12 +237,13 @@ class Dialog extends Popupable( Panel ) {
     pdomOrder = pdomOrder.filter( node => node !== undefined && node !== null );
 
     // pdom - focus the CloseButton when the Dialog is open, unless another focusOnShowNode is provided
-    options.focusOnShowNode = options.focusOnShowNode || pdomOrder[ 0 ];
+    options.focusOnShowNode = options.focusOnShowNode ? options.focusOnShowNode :
+                              pdomOrder[ 0 ].focusable ? pdomOrder[ 0 ] :
+                              closeButton;
+
 
     assert && assert( options.focusOnShowNode instanceof Node, 'should be non-null and defined' );
-    assert && assert( options.focusOnShowNode.focusable,
-      'focusOnShowNode. This may mean that the first item in pdomOrder is not focusable. In this case please adjust ' +
-      'closeButtonLastInPDOM or provide a custom focusOnShowNode.' );
+    assert && assert( options.focusOnShowNode.focusable, 'focusOnShowNode must be focusable.' );
 
     // Align content, title, and close button using spacing and margin options
 
