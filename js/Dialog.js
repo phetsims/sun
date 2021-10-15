@@ -236,7 +236,8 @@ class Dialog extends Popupable( Panel ) {
     options.closeButtonLastInPDOM ? pdomOrder.push( closeButton ) : pdomOrder.unshift( closeButton );
     pdomOrder = pdomOrder.filter( node => node !== undefined && node !== null );
 
-    // pdom - focus the CloseButton when the Dialog is open, unless another focusOnShowNode is provided
+    // pdom - fall back to focusing the closeButton by default if there is no focusOnShowNode or the
+    // content is not focusable
     options.focusOnShowNode = options.focusOnShowNode ? options.focusOnShowNode :
                               pdomOrder[ 0 ].focusable ? pdomOrder[ 0 ] :
                               closeButton;
