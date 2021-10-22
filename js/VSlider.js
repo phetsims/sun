@@ -17,7 +17,7 @@ class VSlider extends Slider {
 
   /**
    * @param {Property.<number>} valueProperty
-   * @param {Range} range
+   * @param {../../dot/js/Range} range
    * @param {Object} [options]
    */
   constructor( valueProperty, range, options ) {
