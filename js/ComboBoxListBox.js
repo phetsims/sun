@@ -26,7 +26,7 @@ class ComboBoxListBox extends Panel {
    * @param {Property} property
    * @param {ComboBoxItem[]} items
    * @param {function} hideListBoxCallback - called to hide the list box
-   * @param {function} focusButtonCallback - called to transfer focus to the combo box's button
+   * @param {function(ComboBoxItem):} focusButtonCallback - called to transfer focus to the combo box's button
    * @param {Tandem} tandem
    * @param {Object} [options]
    */
@@ -69,7 +69,7 @@ class ComboBoxListBox extends Panel {
       assert && assert( listItemNode instanceof ComboBoxListItemNode, 'expected a ComboBoxListItemNode' );
 
       // So that something related to the ComboBox has focus before changing Property value.
-      focusButtonCallback();
+      focusButtonCallback( listItemNode.item );
 
       // set value based on which item was chosen in the list box
       property.value = listItemNode.item.value;
@@ -201,7 +201,7 @@ class ComboBoxListBox extends Panel {
 
           // Escape and Tab hide the list box and return focus to the button
           hideListBoxCallback();
-          focusButtonCallback();
+          focusButtonCallback( this.getListItemNode( property.value ).item );
         }
         else if ( KeyboardUtils.isAnyKeyEvent( event.domEvent, [ KeyboardUtils.KEY_DOWN_ARROW, KeyboardUtils.KEY_UP_ARROW ] ) ) {
 

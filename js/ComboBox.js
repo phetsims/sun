@@ -168,7 +168,14 @@ class ComboBox extends Node {
     // @private the popup list box
     this.listBox = new ComboBoxListBox( property, items,
       this.hideListBox.bind( this ), // callback to hide the list box
-      this.button.focus.bind( this.button ), // callback to transfer focus to button
+      selectedItem => {
+
+        // ComboBoxListBox will focus the button before setting the new Property value so we need to update
+        // the voicingNameResponse BEFORE moving focus to the button. This workaround makes sure that the correct
+        // name is ready before the button receives focus. See https://github.com/phetsims/friction/issues/268.
+        this.button.voicingNameResponse = selectedItem.a11yLabel;
+        this.button.focus();
+      },
       options.tandem.createTandem( 'listBox' ), {
         align: options.align,
         highlightFill: options.highlightFill,

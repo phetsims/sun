@@ -10,6 +10,7 @@
 
 import Shape from '../../kite/js/Shape.js';
 import merge from '../../phet-core/js/merge.js';
+import Voicing from '../../scenery/js/accessibility/voicing/Voicing.js';
 import IndexedNodeIO from '../../scenery/js/nodes/IndexedNodeIO.js';
 import Node from '../../scenery/js/nodes/Node.js';
 import Rectangle from '../../scenery/js/nodes/Rectangle.js';
@@ -24,6 +25,8 @@ class ComboBoxListItemNode extends Node {
    * @param {number} highlightWidth
    * @param {number} highlightHeight
    * @param {Object} [options]
+   *
+   * @mixes {Voicing}
    */
   constructor( item, highlightWidth, highlightHeight, options ) {
 
@@ -59,6 +62,7 @@ class ComboBoxListItemNode extends Node {
     // pdom: get innerContent from the item
     assert && assert( options.innerContent === undefined, 'ComboBoxListItemNode sets innerContent' );
     options.innerContent = item.a11yLabel;
+    options.voicingNameResponse = item.a11yLabel;
 
     // Highlight that is shown when the pointer is over this item. This is not the a11y focus rectangle.
     const highlightRectangle = new Rectangle( 0, 0, highlightWidth, highlightHeight, {
@@ -92,10 +96,17 @@ class ComboBoxListItemNode extends Node {
     assert && assert( !options.children, 'ComboBoxListItemNode sets children' );
     options.children = [ highlightRectangle, itemNodeWrapper ];
 
-    super( options );
+    super();
+
+    // voicing - initialize the Voicing trait
+    this.initializeVoicing();
 
     // @public (read-only)
     this.item = item;
+
+    // mutate after initializing the Voicing trait, but must come before setting the focusHighlight so that bounds
+    // are defined
+    this.mutate( options );
 
     // pdom focus highlight is fitted to this Node's bounds, so that it doesn't overlap other items in the list box
     this.focusHighlight = Shape.bounds( this.localBounds );
@@ -108,6 +119,8 @@ class ComboBoxListItemNode extends Node {
     } );
   }
 }
+
+Voicing.compose( ComboBoxListItemNode );
 
 sun.register( 'ComboBoxListItemNode', ComboBoxListItemNode );
 export default ComboBoxListItemNode;

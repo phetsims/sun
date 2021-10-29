@@ -182,6 +182,7 @@ class ComboBoxButton extends RectangularPushButton {
 
       // pdom
       this.innerContent = item.a11yLabel;
+      this.voicingNameResponse = item.a11yLabel;
     };
     property.link( propertyObserver );
 
