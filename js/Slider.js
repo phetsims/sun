@@ -210,7 +210,7 @@ class Slider extends Node {
     } );
 
     // Position the track horizontally
-    this.track.centerX = this.track.valueToPosition( ( range.max + range.min ) / 2 );
+    this.track.centerX = this.track.valueToPosition.evaluate( ( range.max + range.min ) / 2 );
 
     const thumbTandem = options.tandem.createTandem( Slider.THUMB_NODE_TANDEM_NAME );
     if ( Tandem.VALIDATION && options.thumbNode ) {
@@ -309,7 +309,7 @@ class Slider extends Node {
 
     // update thumb position when value changes
     const valueObserver = value => {
-      thumb.centerX = this.track.valueToPosition( value );
+      thumb.centerX = this.track.valueToPosition.evaluate( value );
     };
     valueProperty.link( valueObserver ); // must be unlinked in disposeSlider
 
@@ -407,7 +407,7 @@ class Slider extends Node {
    * @private
    */
   addTick( parent, value, label, length, stroke, lineWidth ) {
-    const labelX = this.track.valueToPosition( value );
+    const labelX = this.track.valueToPosition.evaluate( value );
 
     // ticks
     const tick = new Path( new Shape()

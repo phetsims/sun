@@ -70,8 +70,8 @@ class DefaultSliderTrack extends SliderTrack {
 
     // when the enabled range changes gray out the unusable parts of the slider
     const enabledRangeObserver = enabledRange => {
-      const minViewCoordinate = this.valueToPosition( enabledRange.min );
-      const maxViewCoordinate = this.valueToPosition( enabledRange.max );
+      const minViewCoordinate = this.valueToPosition.evaluate( enabledRange.min );
+      const maxViewCoordinate = this.valueToPosition.evaluate( enabledRange.max );
 
       // update the geometry of the enabled track
       const enabledWidth = maxViewCoordinate - minViewCoordinate;
