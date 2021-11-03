@@ -1,4 +1,4 @@
-// Copyright 2019-2020, University of Colorado Boulder
+// Copyright 2019-2021, University of Colorado Boulder
 
 /**
  * DefaultSliderTrack is composed of two rectangles, one for the enabled section of the track and one for the disabled
