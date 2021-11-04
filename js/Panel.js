@@ -10,6 +10,8 @@
  */
 
 import merge from '../../phet-core/js/merge.js';
+import HeightSizable from '../../scenery/js/layout/HeightSizable.js';
+import WidthSizable from '../../scenery/js/layout/WidthSizable.js';
 import Node from '../../scenery/js/nodes/Node.js';
 import Rectangle from '../../scenery/js/nodes/Rectangle.js';
 import Tandem from '../../tandem/js/Tandem.js';
@@ -35,12 +37,12 @@ const DEFAULT_OPTIONS = {
   // Left is the default alignment so when there are multiple panels, their content will left align, see #252
   align: 'left',
 
-  minWidth: 0, // minimum width of the panel
+  minWidth: 0, // minimum width of the panel (lineWidth will add to this)
   tandem: Tandem.OPTIONAL
 };
 assert && Object.freeze( DEFAULT_OPTIONS );
 
-class Panel extends Node {
+class Panel extends WidthSizable( HeightSizable( Node ) ) {
 
   /**
    * @param {Node} content
@@ -87,14 +89,31 @@ class Panel extends Node {
       backgroundContainer.children = hasValidContent ? [ this.background ] : [];
       if ( !hasValidContent ) {
         // Bail out (and make the background invisible) if our bounds are invalid
+        this.minimumWidth = null;
+        this.minimumHeight = null;
         return;
       }
 
       backgroundUpdateInProgress = true;
 
-      // size the background to fit the content
-      const backgroundWidth = Math.max( options.minWidth, content.width + ( 2 * options.xMargin ) );
-      this.background.setRect( 0, 0, backgroundWidth, content.height + ( 2 * options.yMargin ) );
+      // Our minimum dimensions are directly determined by the content, margins and lineWidth
+      // NOTE: options.minWidth does NOT include the stroke (e.g. lineWidth), left for backward compatibility.
+      this.minimumWidth = Math.max( options.minWidth, content.width + ( 2 * options.xMargin ) ) + options.lineWidth;
+      this.minimumHeight = content.height + ( 2 * options.yMargin ) + options.lineWidth;
+
+      // Our resulting sizes (allow setting preferred width/height on the panel)
+      const preferredWidth = this.preferredWidth === null ? this.minimumWidth : this.preferredWidth;
+      const preferredHeight = this.preferredHeight === null ? this.minimumHeight : this.preferredHeight;
+
+      // Determine the size available to our content
+      if ( content.widthSizable ) {
+        content.preferredWidth = preferredWidth - options.lineWidth - 2 * options.xMargin;
+      }
+      if ( content.heightSizable ) {
+        content.preferredHeight = preferredHeight - options.lineWidth - 2 * options.yMargin;
+      }
+
+      this.background.setRect( 0, 0, preferredWidth - options.lineWidth, preferredHeight - options.lineWidth );
 
       // Align the content within the background. If the content width >= minWidth, then all alignments are equivalent.
       if ( options.align === 'center' ) {
@@ -102,14 +121,14 @@ class Panel extends Node {
       }
       else if ( options.align === 'left' ) {
 
-        // Use backgroundWidth instead of background.width because they differ by the background lineWidth
-        content.left = this.background.centerX - backgroundWidth / 2 + options.xMargin;
+        // Use this.background.rectWidth instead of background.width because they differ by the background lineWidth
+        content.left = this.background.centerX - this.background.rectWidth / 2 + options.xMargin;
         content.centerY = this.background.centerY;
       }
       else { /* right */
 
-        // Use backgroundWidth instead of background.width because they differ by the background lineWidth
-        content.right = this.background.centerX + backgroundWidth / 2 - options.xMargin;
+        // Use this.background.rectWidth instead of background.width because they differ by the background lineWidth
+        content.right = this.background.centerX + this.background.rectWidth / 2 - options.xMargin;
         content.centerY = this.background.centerY;
       }
 
@@ -121,6 +140,8 @@ class Panel extends Node {
       content.boundsProperty.lazyLink( updateBackground );
       content.visibleProperty.lazyLink( updateBackground );
     }
+    this.preferredWidthProperty.lazyLink( updateBackground );
+    this.preferredHeightProperty.lazyLink( updateBackground );
     updateBackground();
 
     // @private
