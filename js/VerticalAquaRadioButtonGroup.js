@@ -10,11 +10,12 @@ import merge from '../../phet-core/js/merge.js';
 import AquaRadioButtonGroup from './AquaRadioButtonGroup.js';
 import sun from './sun.js';
 
+/** @template T */
 class VerticalAquaRadioButtonGroup extends AquaRadioButtonGroup {
 
   /**
-   * @param {Property} property
-   * @param {Object[]} items - see AquaRadioButtonGroup
+   * @param {Property<T>} property
+   * @param { {node:Node,value:T,tandemName?:string,labelContent?:string}[]} items - see AquaRadioButtonGroup
    * @param {Object} [options]
    */
   constructor( property, items, options ) {

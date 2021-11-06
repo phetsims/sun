@@ -27,11 +27,12 @@ let instanceCount = 0;
 // to prefix instanceCount in case there are different kinds of "groups"
 const CLASS_NAME = 'AquaRadioButtonGroup';
 
+/** @template T */
 class AquaRadioButtonGroup extends LayoutBox {
 
   /**
-   * @param {Property} property
-   * @param {Object[]} items - Each item describes a radio button, and is an object with these properties:
+   * @param {Property<T>} property
+   * @param { {node:Node,value:T,tandemName?:string,labelContent?:string}[]} items - Each item describes a radio button, and is an object with these properties:
    *    node: Node, // label for the button
    *    value: *, // value associated with the button
    *    [tandemName: Tandem], // optional tandem for PhET-iO
@@ -159,7 +160,7 @@ class AquaRadioButtonGroup extends LayoutBox {
 
   /**
    * Gets the radio button that corresponds to the specified value.
-   * @param {*} value
+   * @param {T} value
    * @returns {AquaRadioButton}
    * @public
    */
