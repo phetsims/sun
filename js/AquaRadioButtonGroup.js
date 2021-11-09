@@ -32,7 +32,8 @@ class AquaRadioButtonGroup extends LayoutBox {
 
   /**
    * @param {Property<T>} property
-   * @param { {node:Node,value:T,tandemName?:string,labelContent?:string}[]} items - Each item describes a radio button, and is an object with these properties:
+   * @param { {node:Node,value:T,tandemName?:string,labelContent?:string}[]} items
+   *   Each item describes a radio button, and is an object with these properties:
    *    node: Node, // label for the button
    *    value: *, // value associated with the button
    *    [tandemName: Tandem], // optional tandem for PhET-iO
