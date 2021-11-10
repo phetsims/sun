@@ -21,6 +21,8 @@ import Tandem from '../../../tandem/js/Tandem.js';
 import ColorConstants from '../ColorConstants.js';
 import sun from '../sun.js';
 import RectangularRadioButton from './RectangularRadioButton.js';
+// For TypeScript support
+import Node from '../nodes/Node.js'; // eslint-disable-line no-unused-vars
 
 // constants
 const BUTTON_CONTENT_X_ALIGN_VALUES = [ 'center', 'left', 'right' ];
@@ -32,11 +34,12 @@ const CLASS_NAME = 'RectangularRadioButtonGroup'; // to prefix instanceCount in 
 // document as being in a single group.
 let instanceCount = 0;
 
+/** @template T */
 class RectangularRadioButtonGroup extends LayoutBox {
 
   /**
-   * @param {Property} property
-   * @param {Object[]} items - Each item describes a radio button, and is an object with these properties:
+   * @param {Property<T>>} property
+   * @param { readonly {node:Node,value:T,label?:Node,tandemName?:string,phetioDocumentation?:string,labelContent?:string,descriptionContent?:string}[] } items - Each item describes a radio button, and is an object with these properties:
    *   node: Node, // primary depiction for the button
    *   value: *, // value associated with the button
    *   [label: Node], // If a label is provided, the button becomes a LayoutBox with the label and radio button
