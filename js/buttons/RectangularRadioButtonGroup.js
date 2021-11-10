@@ -22,7 +22,7 @@ import ColorConstants from '../ColorConstants.js';
 import sun from '../sun.js';
 import RectangularRadioButton from './RectangularRadioButton.js';
 // For TypeScript support
-import Node from '../nodes/Node.js'; // eslint-disable-line no-unused-vars
+import Node from '../../../scenery/js/nodes/Node.js'; // eslint-disable-line no-unused-vars
 
 // constants
 const BUTTON_CONTENT_X_ALIGN_VALUES = [ 'center', 'left', 'right' ];
