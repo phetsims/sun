@@ -96,10 +96,13 @@ class Panel extends WidthSizable( HeightSizable( Node ) ) {
 
       backgroundUpdateInProgress = true;
 
+      const contentWidth = content.widthSizable ? content.minimumWidth : content.width;
+      const contentHeight = content.heightSizable ? content.minimumHeight : content.height;
+
       // Our minimum dimensions are directly determined by the content, margins and lineWidth
       // NOTE: options.minWidth does NOT include the stroke (e.g. lineWidth), left for backward compatibility.
-      this.minimumWidth = Math.max( options.minWidth, content.width + ( 2 * options.xMargin ) ) + options.lineWidth;
-      this.minimumHeight = content.height + ( 2 * options.yMargin ) + options.lineWidth;
+      this.minimumWidth = Math.max( options.minWidth, contentWidth + ( 2 * options.xMargin ) ) + options.lineWidth;
+      this.minimumHeight = contentHeight + ( 2 * options.yMargin ) + options.lineWidth;
 
       // Our resulting sizes (allow setting preferred width/height on the panel)
       const preferredWidth = this.preferredWidth === null ? this.minimumWidth : this.preferredWidth;
@@ -139,6 +142,12 @@ class Panel extends WidthSizable( HeightSizable( Node ) ) {
     if ( options.resize ) {
       content.boundsProperty.lazyLink( updateBackground );
       content.visibleProperty.lazyLink( updateBackground );
+      if ( content.widthSizable ) {
+        content.minimumWidthProperty.lazyLink( updateBackground );
+      }
+      if ( content.heightSizable ) {
+        content.minimumHeightProperty.lazyLink( updateBackground );
+      }
     }
     this.preferredWidthProperty.lazyLink( updateBackground );
     this.preferredHeightProperty.lazyLink( updateBackground );
@@ -149,6 +158,12 @@ class Panel extends WidthSizable( HeightSizable( Node ) ) {
       if ( options.resize ) {
         content.boundsProperty.unlink( updateBackground );
         content.visibleProperty.unlink( updateBackground );
+        if ( content.widthSizable ) {
+          content.minimumWidthProperty.unlink( updateBackground );
+        }
+        if ( content.heightSizable ) {
+          content.minimumHeightProperty.unlink( updateBackground );
+        }
       }
     };
 
