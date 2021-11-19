@@ -3,11 +3,21 @@
 /**
  * Auto-generated from modulify, DO NOT manually modify.
  */
-
+/* eslint-disable */
 import getStringModule from '../../chipper/js/getStringModule.js';
 import sun from './sun.js';
 
-const sunStrings = getStringModule( 'SUN' );
+type StringsType = {
+  'sun': {
+    'title': string
+  },
+  'a11y': {
+    'numberSpinnerRoleDescription': string,
+    'close': string
+  }
+};
+
+const sunStrings = getStringModule( 'SUN' ) as StringsType;
 
 sun.register( 'sunStrings', sunStrings );
 

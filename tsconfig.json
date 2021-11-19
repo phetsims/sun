@@ -18,7 +18,7 @@
     "../scenery-phet/js/NumberDisplay.js",
     "../scenery-phet/js/PhetFont.js",
     "../scenery-phet/js/MathSymbols.js",
-    "../scenery-phet/js/sceneryPhetStrings.js",
+    "../scenery-phet/js/sceneryPhetStrings.ts",
     "../scenery-phet/js/sceneryPhet.js"
   ],
   "exclude": [
