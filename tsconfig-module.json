@@ -11,7 +11,7 @@
       "path": "../phetcommon/tsconfig-module.json"
     },
     {
-      "path": "../sherpa"
+      "path": "../sherpa/tsconfig-module.json"
     }
   ],
   "include": [
