@@ -8,7 +8,7 @@
       "path": "../twixt/tsconfig-module.json"
     },
     {
-      "path": "../phetcommon"
+      "path": "../phetcommon/tsconfig-module.json"
     },
     {
       "path": "../sherpa"
