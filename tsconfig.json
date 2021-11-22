@@ -6,6 +6,8 @@
     }
   ],
   "include": [
+    "js/sun-main.js",
+    "js/demo/**/*",
     "js/**/*test*",
     "js/**/*Test*"
   ]
