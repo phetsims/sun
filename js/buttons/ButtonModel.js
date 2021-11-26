@@ -9,7 +9,7 @@ import BooleanProperty from '../../../axon/js/BooleanProperty.js';
 import Emitter from '../../../axon/js/Emitter.js';
 import Property from '../../../axon/js/Property.js';
 import merge from '../../../phet-core/js/merge.js';
-import PressListener from '../../../scenery/js/listeners/PressListener.js';
+import { PressListener } from '../../../scenery/js/imports.js';
 import PhetioObject from '../../../tandem/js/PhetioObject.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import EnabledComponent from '../../../axon/js/EnabledComponent.js';

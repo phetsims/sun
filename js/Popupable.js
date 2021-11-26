@@ -14,8 +14,8 @@ import ScreenView from '../../joist/js/ScreenView.js';
 import gracefulBind from '../../phet-core/js/gracefulBind.js';
 import inheritance from '../../phet-core/js/inheritance.js';
 import merge from '../../phet-core/js/merge.js';
-import FocusManager from '../../scenery/js/accessibility/FocusManager.js';
-import Node from '../../scenery/js/nodes/Node.js';
+import { FocusManager } from '../../scenery/js/imports.js';
+import { Node } from '../../scenery/js/imports.js';
 import Tandem from '../../tandem/js/Tandem.js';
 import sun from './sun.js';
 

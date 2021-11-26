@@ -9,12 +9,12 @@
 
 import merge from '../../phet-core/js/merge.js';
 import PhetFont from '../../scenery-phet/js/PhetFont.js';
-import Voicing from '../../scenery/js/accessibility/voicing/Voicing.js';
-import FireListener from '../../scenery/js/listeners/FireListener.js';
-import Node from '../../scenery/js/nodes/Node.js';
-import Path from '../../scenery/js/nodes/Path.js';
-import Rectangle from '../../scenery/js/nodes/Rectangle.js';
-import Text from '../../scenery/js/nodes/Text.js';
+import { Voicing } from '../../scenery/js/imports.js';
+import { FireListener } from '../../scenery/js/imports.js';
+import { Node } from '../../scenery/js/imports.js';
+import { Path } from '../../scenery/js/imports.js';
+import { Rectangle } from '../../scenery/js/imports.js';
+import { Text } from '../../scenery/js/imports.js';
 import checkSolidShape from '../../sherpa/js/fontawesome-5/checkSolidShape.js';
 import EventType from '../../tandem/js/EventType.js';
 import Tandem from '../../tandem/js/Tandem.js';

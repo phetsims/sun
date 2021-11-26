@@ -1,8 +1,8 @@
 // Copyright 2021, University of Colorado Boulder
 
-import Node from '../../scenery/js/nodes/Node.js';
-import HeightSizable from '../../scenery/js/layout/HeightSizable.js';
-import WidthSizable from '../../scenery/js/layout/WidthSizable.js';
+import { Node } from '../../scenery/js/imports.js';
+import { HeightSizable } from '../../scenery/js/imports.js';
+import { WidthSizable } from '../../scenery/js/imports.js';
 
 declare class Panel extends WidthSizable( HeightSizable( Node ) ) {
   constructor( content: Node, options?: Object | undefined );

@@ -9,8 +9,8 @@
 
 import Emitter from '../../../axon/js/Emitter.js';
 import merge from '../../../phet-core/js/merge.js';
-import Color from '../../../scenery/js/util/Color.js';
-import PaintColorProperty from '../../../scenery/js/util/PaintColorProperty.js';
+import { Color } from '../../../scenery/js/imports.js';
+import { PaintColorProperty } from '../../../scenery/js/imports.js';
 import pushButtonSoundPlayer from '../../../tambo/js/shared-sound-players/pushButtonSoundPlayer.js';
 import EventType from '../../../tandem/js/EventType.js';
 import PhetioObject from '../../../tandem/js/PhetioObject.js';

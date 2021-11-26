@@ -23,9 +23,9 @@ import extend from '../../../phet-core/js/extend.js';
 import inheritance from '../../../phet-core/js/inheritance.js';
 import merge from '../../../phet-core/js/merge.js';
 import Orientation from '../../../phet-core/js/Orientation.js';
-import KeyboardUtils from '../../../scenery/js/accessibility/KeyboardUtils.js';
-import animatedPanZoomSingleton from '../../../scenery/js/listeners/animatedPanZoomSingleton.js';
-import Node from '../../../scenery/js/nodes/Node.js';
+import { KeyboardUtils } from '../../../scenery/js/imports.js';
+import { animatedPanZoomSingleton } from '../../../scenery/js/imports.js';
+import { Node } from '../../../scenery/js/imports.js';
 import Utterance from '../../../utterance-queue/js/Utterance.js';
 import sun from '../sun.js';
 

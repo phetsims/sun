@@ -7,7 +7,7 @@
  */
 
 import merge from '../../../phet-core/js/merge.js';
-import Text from '../../../scenery/js/nodes/Text.js';
+import { Text } from '../../../scenery/js/imports.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import sun from '../sun.js';
 import RectangularPushButton from './RectangularPushButton.js';

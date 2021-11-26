@@ -9,11 +9,11 @@
 
 import Shape from '../../kite/js/Shape.js';
 import merge from '../../phet-core/js/merge.js';
-import AriaHasPopUpMutator from '../../scenery/js/accessibility/pdom/AriaHasPopUpMutator.js';
-import PDOMPeer from '../../scenery/js/accessibility/pdom/PDOMPeer.js';
-import HStrut from '../../scenery/js/nodes/HStrut.js';
-import Node from '../../scenery/js/nodes/Node.js';
-import Path from '../../scenery/js/nodes/Path.js';
+import { AriaHasPopUpMutator } from '../../scenery/js/imports.js';
+import { PDOMPeer } from '../../scenery/js/imports.js';
+import { HStrut } from '../../scenery/js/imports.js';
+import { Node } from '../../scenery/js/imports.js';
+import { Path } from '../../scenery/js/imports.js';
 import SoundPlayer from '../../tambo/js/SoundPlayer.js';
 import Tandem from '../../tandem/js/Tandem.js';
 import ButtonNode from './buttons/ButtonNode.js';

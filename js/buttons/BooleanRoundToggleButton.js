@@ -9,7 +9,7 @@ import Tandem from '../../../tandem/js/Tandem.js';
 import BooleanToggleNode from '../BooleanToggleNode.js';
 import sun from '../sun.js';
 import RoundToggleButton from './RoundToggleButton.js';
-import Node from '../../../scenery/js/nodes/Node.js'; // eslint-disable-line no-unused-vars
+import { Node } from '../../../scenery/js/imports.js'; // eslint-disable-line no-unused-vars
 
 class BooleanRoundToggleButton extends RoundToggleButton {
 

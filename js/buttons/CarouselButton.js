@@ -11,7 +11,7 @@ import Dimension2 from '../../../dot/js/Dimension2.js';
 import Matrix3 from '../../../dot/js/Matrix3.js';
 import Shape from '../../../kite/js/Shape.js';
 import merge from '../../../phet-core/js/merge.js';
-import Path from '../../../scenery/js/nodes/Path.js';
+import { Path } from '../../../scenery/js/imports.js';
 import sun from '../sun.js';
 import ButtonNode from './ButtonNode.js';
 import RectangularPushButton from './RectangularPushButton.js';

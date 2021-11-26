@@ -13,8 +13,8 @@ import Dimension2 from '../../dot/js/Dimension2.js';
 import LinearFunction from '../../dot/js/LinearFunction.js';
 import Range from '../../dot/js/Range.js';
 import merge from '../../phet-core/js/merge.js';
-import DragListener from '../../scenery/js/listeners/DragListener.js';
-import Node from '../../scenery/js/nodes/Node.js';
+import { DragListener } from '../../scenery/js/imports.js';
+import { Node } from '../../scenery/js/imports.js';
 import Tandem from '../../tandem/js/Tandem.js';
 import sun from './sun.js';
 

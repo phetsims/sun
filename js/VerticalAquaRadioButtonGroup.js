@@ -9,7 +9,7 @@
 import merge from '../../phet-core/js/merge.js';
 import AquaRadioButtonGroup from './AquaRadioButtonGroup.js';
 import sun from './sun.js';
-import Node from '../../scenery/js/nodes/Node.js'; // eslint-disable-line no-unused-vars
+import { Node } from '../../scenery/js/imports.js'; // eslint-disable-line no-unused-vars
 
 /** @template T */
 class VerticalAquaRadioButtonGroup extends AquaRadioButtonGroup {

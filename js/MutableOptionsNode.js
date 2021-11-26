@@ -32,7 +32,7 @@
 
 import Property from '../../axon/js/Property.js';
 import merge from '../../phet-core/js/merge.js';
-import Node from '../../scenery/js/nodes/Node.js';
+import { Node } from '../../scenery/js/imports.js';
 import sun from './sun.js';
 
 class MutableOptionsNode extends Node {

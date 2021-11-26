@@ -10,19 +10,19 @@
 import Shape from '../../../kite/js/Shape.js';
 import InstanceRegistry from '../../../phet-core/js/documentation/InstanceRegistry.js';
 import merge from '../../../phet-core/js/merge.js';
-import FocusHighlightPath from '../../../scenery/js/accessibility/FocusHighlightPath.js';
-import PDOMPeer from '../../../scenery/js/accessibility/pdom/PDOMPeer.js';
-import LayoutBox from '../../../scenery/js/nodes/LayoutBox.js';
-import Rectangle from '../../../scenery/js/nodes/Rectangle.js';
-import SceneryConstants from '../../../scenery/js/SceneryConstants.js';
-import Color from '../../../scenery/js/util/Color.js';
+import { FocusHighlightPath } from '../../../scenery/js/imports.js';
+import { PDOMPeer } from '../../../scenery/js/imports.js';
+import { LayoutBox } from '../../../scenery/js/imports.js';
+import { Rectangle } from '../../../scenery/js/imports.js';
+import { SceneryConstants } from '../../../scenery/js/imports.js';
+import { Color } from '../../../scenery/js/imports.js';
 import multiSelectionSoundPlayerFactory from '../../../tambo/js/multiSelectionSoundPlayerFactory.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import ColorConstants from '../ColorConstants.js';
 import sun from '../sun.js';
 import RectangularRadioButton from './RectangularRadioButton.js';
 // For TypeScript support
-import Node from '../../../scenery/js/nodes/Node.js'; // eslint-disable-line no-unused-vars
+import { Node } from '../../../scenery/js/imports.js'; // eslint-disable-line no-unused-vars
 
 // constants
 const BUTTON_CONTENT_X_ALIGN_VALUES = [ 'center', 'left', 'right' ];

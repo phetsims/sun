@@ -10,10 +10,10 @@
 
 import Shape from '../../kite/js/Shape.js';
 import merge from '../../phet-core/js/merge.js';
-import Voicing from '../../scenery/js/accessibility/voicing/Voicing.js';
-import IndexedNodeIO from '../../scenery/js/nodes/IndexedNodeIO.js';
-import Node from '../../scenery/js/nodes/Node.js';
-import Rectangle from '../../scenery/js/nodes/Rectangle.js';
+import { Voicing } from '../../scenery/js/imports.js';
+import { IndexedNodeIO } from '../../scenery/js/imports.js';
+import { Node } from '../../scenery/js/imports.js';
+import { Rectangle } from '../../scenery/js/imports.js';
 import Tandem from '../../tandem/js/Tandem.js';
 import ComboBoxItem from './ComboBoxItem.js';
 import sun from './sun.js';

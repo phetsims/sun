@@ -10,10 +10,10 @@
 
 import InstanceRegistry from '../../phet-core/js/documentation/InstanceRegistry.js';
 import merge from '../../phet-core/js/merge.js';
-import PressListener from '../../scenery/js/listeners/PressListener.js';
-import Line from '../../scenery/js/nodes/Line.js';
-import Node from '../../scenery/js/nodes/Node.js';
-import SceneryConstants from '../../scenery/js/SceneryConstants.js';
+import { PressListener } from '../../scenery/js/imports.js';
+import { Line } from '../../scenery/js/imports.js';
+import { Node } from '../../scenery/js/imports.js';
+import { SceneryConstants } from '../../scenery/js/imports.js';
 import Tandem from '../../tandem/js/Tandem.js';
 import sun from './sun.js';
 import ToggleSwitch from './ToggleSwitch.js';

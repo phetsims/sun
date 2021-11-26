@@ -7,7 +7,7 @@
  * @author Andrew Adare (PhET Interactive Simulations)
  */
 
-import Node from '../../../scenery/js/nodes/Node.js';
+import { Node } from '../../../scenery/js/imports.js';
 import IOType from '../../../tandem/js/types/IOType.js';
 import sun from '../sun.js';
 

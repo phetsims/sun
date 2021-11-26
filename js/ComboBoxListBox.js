@@ -8,9 +8,9 @@
 
 import Action from '../../axon/js/Action.js';
 import merge from '../../phet-core/js/merge.js';
-import KeyboardUtils from '../../scenery/js/accessibility/KeyboardUtils.js';
-import SceneryEvent from '../../scenery/js/input/SceneryEvent.js';
-import VBox from '../../scenery/js/nodes/VBox.js';
+import { KeyboardUtils } from '../../scenery/js/imports.js';
+import { SceneryEvent } from '../../scenery/js/imports.js';
+import { VBox } from '../../scenery/js/imports.js';
 import multiSelectionSoundPlayerFactory from '../../tambo/js/multiSelectionSoundPlayerFactory.js';
 import generalCloseSoundPlayer from '../../tambo/js/shared-sound-players/generalCloseSoundPlayer.js';
 import generalOpenSoundPlayer from '../../tambo/js/shared-sound-players/generalOpenSoundPlayer.js';

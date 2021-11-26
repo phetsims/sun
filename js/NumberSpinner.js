@@ -9,8 +9,8 @@
 
 import merge from '../../phet-core/js/merge.js';
 import NumberDisplay from '../../scenery-phet/js/NumberDisplay.js';
-import Node from '../../scenery/js/nodes/Node.js';
-import SceneryConstants from '../../scenery/js/SceneryConstants.js';
+import { Node } from '../../scenery/js/imports.js';
+import { SceneryConstants } from '../../scenery/js/imports.js';
 import Tandem from '../../tandem/js/Tandem.js';
 import AccessibleNumberSpinner from './accessibility/AccessibleNumberSpinner.js';
 import ArrowButton from './buttons/ArrowButton.js';

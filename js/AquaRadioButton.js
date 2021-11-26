@@ -8,12 +8,12 @@
 
 import InstanceRegistry from '../../phet-core/js/documentation/InstanceRegistry.js';
 import merge from '../../phet-core/js/merge.js';
-import Voicing from '../../scenery/js/accessibility/voicing/Voicing.js';
-import FireListener from '../../scenery/js/listeners/FireListener.js';
-import Circle from '../../scenery/js/nodes/Circle.js';
-import Node from '../../scenery/js/nodes/Node.js';
-import Rectangle from '../../scenery/js/nodes/Rectangle.js';
-import SceneryConstants from '../../scenery/js/SceneryConstants.js';
+import { Voicing } from '../../scenery/js/imports.js';
+import { FireListener } from '../../scenery/js/imports.js';
+import { Circle } from '../../scenery/js/imports.js';
+import { Node } from '../../scenery/js/imports.js';
+import { Rectangle } from '../../scenery/js/imports.js';
+import { SceneryConstants } from '../../scenery/js/imports.js';
 import multiSelectionSoundPlayerFactory from '../../tambo/js/multiSelectionSoundPlayerFactory.js';
 import Tandem from '../../tandem/js/Tandem.js';
 import sun from './sun.js';

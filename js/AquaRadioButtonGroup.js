@@ -8,11 +8,11 @@
  */
 
 import merge from '../../phet-core/js/merge.js';
-import PDOMPeer from '../../scenery/js/accessibility/pdom/PDOMPeer.js';
-import HStrut from '../../scenery/js/nodes/HStrut.js';
-import LayoutBox from '../../scenery/js/nodes/LayoutBox.js';
-import Node from '../../scenery/js/nodes/Node.js';
-import SceneryConstants from '../../scenery/js/SceneryConstants.js';
+import { PDOMPeer } from '../../scenery/js/imports.js';
+import { HStrut } from '../../scenery/js/imports.js';
+import { LayoutBox } from '../../scenery/js/imports.js';
+import { Node } from '../../scenery/js/imports.js';
+import { SceneryConstants } from '../../scenery/js/imports.js';
 import multiSelectionSoundPlayerFactory from '../../tambo/js/multiSelectionSoundPlayerFactory.js';
 import Tandem from '../../tandem/js/Tandem.js';
 import AquaRadioButton from './AquaRadioButton.js';

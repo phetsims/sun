@@ -9,8 +9,8 @@
 import BooleanProperty from '../../axon/js/BooleanProperty.js';
 import qunitStart from '../../chipper/js/sim-tests/qunitStart.js';
 import merge from '../../phet-core/js/merge.js';
-import Node from '../../scenery/js/nodes/Node.js';
-import SceneryConstants from '../../scenery/js/SceneryConstants.js';
+import { Node } from '../../scenery/js/imports.js';
+import { SceneryConstants } from '../../scenery/js/imports.js';
 import './SliderTests.js';
 
 

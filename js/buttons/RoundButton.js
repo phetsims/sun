@@ -10,10 +10,10 @@
 import DerivedProperty from '../../../axon/js/DerivedProperty.js';
 import Shape from '../../../kite/js/Shape.js';
 import merge from '../../../phet-core/js/merge.js';
-import Circle from '../../../scenery/js/nodes/Circle.js';
-import Node from '../../../scenery/js/nodes/Node.js';
-import PaintColorProperty from '../../../scenery/js/util/PaintColorProperty.js';
-import RadialGradient from '../../../scenery/js/util/RadialGradient.js';
+import { Circle } from '../../../scenery/js/imports.js';
+import { Node } from '../../../scenery/js/imports.js';
+import { PaintColorProperty } from '../../../scenery/js/imports.js';
+import { RadialGradient } from '../../../scenery/js/imports.js';
 import sun from '../sun.js';
 import ButtonInteractionState from './ButtonInteractionState.js';
 import ButtonNode from './ButtonNode.js';

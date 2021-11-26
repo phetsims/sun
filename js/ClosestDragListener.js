@@ -14,7 +14,7 @@
  * @author Jonathan Olson (PhET Interactive Simulations)
  */
 
-import Mouse from '../../scenery/js/input/Mouse.js';
+import { Mouse } from '../../scenery/js/imports.js';
 import sun from './sun.js';
 
 class ClosestDragListener {

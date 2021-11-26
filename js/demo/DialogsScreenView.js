@@ -8,10 +8,10 @@
 
 import dotRandom from '../../../dot/js/dotRandom.js';
 import ScreenView from '../../../joist/js/ScreenView.js';
-import Node from '../../../scenery/js/nodes/Node.js';
-import Rectangle from '../../../scenery/js/nodes/Rectangle.js';
-import Text from '../../../scenery/js/nodes/Text.js';
-import Font from '../../../scenery/js/util/Font.js';
+import { Node } from '../../../scenery/js/imports.js';
+import { Rectangle } from '../../../scenery/js/imports.js';
+import { Text } from '../../../scenery/js/imports.js';
+import { Font } from '../../../scenery/js/imports.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import RectangularPushButton from '../buttons/RectangularPushButton.js';
 import Dialog from '../Dialog.js';

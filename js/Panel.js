@@ -10,11 +10,11 @@
  */
 
 import merge from '../../phet-core/js/merge.js';
-import HeightSizable from '../../scenery/js/layout/HeightSizable.js';
-import LayoutConstraint from '../../scenery/js/layout/LayoutConstraint.js';
-import WidthSizable from '../../scenery/js/layout/WidthSizable.js';
-import Node from '../../scenery/js/nodes/Node.js';
-import Rectangle from '../../scenery/js/nodes/Rectangle.js';
+import { HeightSizable } from '../../scenery/js/imports.js';
+import { LayoutConstraint } from '../../scenery/js/imports.js';
+import { WidthSizable } from '../../scenery/js/imports.js';
+import { Node } from '../../scenery/js/imports.js';
+import { Rectangle } from '../../scenery/js/imports.js';
 import Tandem from '../../tandem/js/Tandem.js';
 import sun from './sun.js';
 

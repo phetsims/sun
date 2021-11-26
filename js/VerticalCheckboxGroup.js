@@ -8,9 +8,9 @@
  */
 
 import merge from '../../phet-core/js/merge.js';
-import HStrut from '../../scenery/js/nodes/HStrut.js';
-import Node from '../../scenery/js/nodes/Node.js';
-import VBox from '../../scenery/js/nodes/VBox.js';
+import { HStrut } from '../../scenery/js/imports.js';
+import { Node } from '../../scenery/js/imports.js';
+import { VBox } from '../../scenery/js/imports.js';
 import Tandem from '../../tandem/js/Tandem.js';
 import Checkbox from './Checkbox.js';
 import sun from './sun.js';
