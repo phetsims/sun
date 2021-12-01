@@ -166,7 +166,7 @@ const AccessibleValueHandler = {
            * This alert is often called the "context response" because it is timed to only alert after an interaction
            * end, instead of each time the value changes.
            * @type {Function}
-           * @param {number} mappedValue
+           * @param {number} mappedValue - The value returned by option a11yMapPDOMValue if used, see that option
            * @param {number} newValue - the new value, unformatted
            * @param {number} previousValue - just the "oldValue" from the property listener
            * @returns {string|null} - if null, then no alert will be sent to utteranceQueue for alerting
@@ -261,6 +261,10 @@ const AccessibleValueHandler = {
 
         // @private - track previous values for callbacks outside of Property listeners
         this.oldValue = null;
+
+        // @private - The Property value when an interaction starts, so it can be used as the "old" value
+        // when generating a context response at the end of an interaction with a11yCreateContextResponseAlert.
+        this.valueOnStart = valueProperty.value;
 
         // @private {null|function} see options for doc
         this.a11yCreateContextResponseAlert = options.a11yCreateContextResponseAlert;
@@ -415,7 +419,7 @@ const AccessibleValueHandler = {
         if ( this.a11yCreateContextResponseAlert ) {
 
           const mappedValue = this.getMappedValue();
-          const endInteractionAlert = this.a11yCreateContextResponseAlert( mappedValue, this._valueProperty.value, this.oldValue );
+          const endInteractionAlert = this.a11yCreateContextResponseAlert( mappedValue, this._valueProperty.value, this.valueOnStart );
 
           // only if it returned an alert
           if ( endInteractionAlert ) {
@@ -538,7 +542,7 @@ const AccessibleValueHandler = {
 
               // if this is the first keydown this is the start of the drag interaction
               if ( !this.anyKeysDown() ) {
-                this._startChange( event );
+                this.onInteractionStart( event );
               }
 
               // track that a new key is being held down
@@ -700,7 +704,7 @@ const AccessibleValueHandler = {
           const mappedValue = this.getMappedValue();
 
           // start of change event is start of drag
-          this._startChange( event );
+          this.onInteractionStart( event );
 
           if ( inputValue > mappedValue ) {
             newValue = this._valueProperty.get() + stepSize;
@@ -758,6 +762,18 @@ const AccessibleValueHandler = {
 
         // reset counter for range keys down
         this.rangeKeysDown = {};
+      },
+
+      /**
+       * Interaction with this input has started, save the value on start so that it can be used as an "old" value
+       * when generating the context response with option a11yCreateContextResponse.
+       * @private
+       *
+       * @param {SceneryEvent} event
+       */
+      onInteractionStart( event ) {
+        this.valueOnStart = this._valueProperty.value;
+        this._startChange( event );
       },
 
       /**
