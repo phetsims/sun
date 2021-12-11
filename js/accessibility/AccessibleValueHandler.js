@@ -196,7 +196,7 @@ const AccessibleValueHandler = {
 
         options = merge( {}, defaults, options );
 
-        assert && assert( Orientation.includes( options.ariaOrientation ),
+        assert && assert( options.ariaOrientation instanceof Orientation,
           `invalid ariaOrientation: ${options.ariaOrientation}` );
 
         // Some options were already mutated in the constructor, only apply the accessibility-specific options here
@@ -875,7 +875,7 @@ const AccessibleValueHandler = {
        * @param {Orientation} orientation
        */
       setAriaOrientation: function( orientation ) {
-        assert && assert( Orientation.includes( orientation ) );
+        assert && assert( orientation instanceof Orientation );
 
         this._ariaOrientation = orientation;
         this.setPDOMAttribute( 'aria-orientation', orientation.ariaOrientation );

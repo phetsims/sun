@@ -130,7 +130,7 @@ class Slider extends Node {
     }, options );
 
     assert && assert( range instanceof Range, `range must be of type Range:${range}` );
-    assert && assert( Orientation.includes( options.orientation ), `invalid orientation: ${options.orientation}` );
+    assert && assert( options.orientation instanceof Orientation, `invalid orientation: ${options.orientation}` );
     assert && assert( options.trackNode === null || options.trackNode instanceof SliderTrack, 'trackNode must be of type SliderTrack' );
     assert && assert( options.thumbNode === null || options.thumbNode instanceof Node, 'thumbNode must be of type Node' );
 
