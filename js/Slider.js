@@ -19,11 +19,7 @@ import InstanceRegistry from '../../phet-core/js/documentation/InstanceRegistry.
 import merge from '../../phet-core/js/merge.js';
 import Orientation from '../../phet-core/js/Orientation.js';
 import swapObjectKeys from '../../phet-core/js/swapObjectKeys.js';
-import { FocusHighlightFromNode } from '../../scenery/js/imports.js';
-import { DragListener } from '../../scenery/js/imports.js';
-import { Node } from '../../scenery/js/imports.js';
-import { Path } from '../../scenery/js/imports.js';
-import { SceneryConstants } from '../../scenery/js/imports.js';
+import { DragListener, FocusHighlightFromNode, Node, Path, SceneryConstants } from '../../scenery/js/imports.js';
 import Tandem from '../../tandem/js/Tandem.js';
 import BooleanIO from '../../tandem/js/types/BooleanIO.js';
 import IOType from '../../tandem/js/types/IOType.js';
@@ -321,8 +317,6 @@ class Slider extends Node {
     };
     this.enabledRangeProperty.link( enabledRangeObserver ); // needs to be unlinked in dispose function
 
-    this.mutate( options );
-
     // @private {function} - Called by dispose
     this.disposeSlider = () => {
       thumb.dispose && thumb.dispose(); // in case a custom thumb is provided via options.thumbNode that doesn't implement dispose
@@ -343,6 +337,8 @@ class Slider extends Node {
 
     assert && Tandem.VALIDATION && assert( !options.phetioLinkedProperty || options.phetioLinkedProperty.isPhetioInstrumented(),
       'If provided, phetioLinkedProperty should be PhET-iO instrumented' );
+
+    this.mutate( options );
 
     this.addLinkedElement( options.phetioLinkedProperty || valueProperty, {
       tandem: options.tandem.createTandem( 'valueProperty' )

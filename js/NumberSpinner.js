@@ -7,10 +7,10 @@
  * @author Andrea Lin (PhET Interactive Simulations)
  */
 
+import InstanceRegistry from '../../phet-core/js/documentation/InstanceRegistry.js';
 import merge from '../../phet-core/js/merge.js';
 import NumberDisplay from '../../scenery-phet/js/NumberDisplay.js';
-import { Node } from '../../scenery/js/imports.js';
-import { SceneryConstants } from '../../scenery/js/imports.js';
+import { Node, SceneryConstants } from '../../scenery/js/imports.js';
 import Tandem from '../../tandem/js/Tandem.js';
 import AccessibleNumberSpinner from './accessibility/AccessibleNumberSpinner.js';
 import ArrowButton from './buttons/ArrowButton.js';
@@ -213,7 +213,7 @@ class NumberSpinner extends Node {
     assert && assert( !options.children, 'decoration not supported' );
     options.children = [ numberDisplay, incrementButton, decrementButton ];
 
-    super( options );
+    super();
 
     // enable/disable arrow buttons
     const updateEnabled = () => {
@@ -256,11 +256,6 @@ class NumberSpinner extends Node {
     this.incrementDownEmitter.addListener( increasedListener );
     this.decrementDownEmitter.addListener( decreasedListener );
 
-    // Create a link to associated Property, so it's easier to find in Studio.
-    this.addLinkedElement( numberProperty, {
-      tandem: options.tandem.createTandem( 'property' )
-    } );
-
     // @private
     this.disposeNumberSpinner = () => {
 
@@ -276,6 +271,16 @@ class NumberSpinner extends Node {
       numberProperty.unlink( numberPropertyObserver );
       rangeProperty.unlink( rangeObserver );
     };
+
+    this.mutate( options );
+
+    // Create a link to associated Property, so it's easier to find in Studio. Must be after instrumentation
+    this.addLinkedElement( numberProperty, {
+      tandem: options.tandem.createTandem( 'property' )
+    } );
+
+    // support for binder documentation, stripped out in builds and only runs when ?binder is specified
+    assert && phet.chipper.queryParameters.binder && InstanceRegistry.registerDataURL( 'sun', 'NumberSpinner', this );
   }
 
   // @public Ensures that this node is eligible for GC.
