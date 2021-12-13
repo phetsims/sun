@@ -20,11 +20,7 @@ import Utils from '../../dot/js/Utils.js';
 import Vector2 from '../../dot/js/Vector2.js';
 import Shape from '../../kite/js/Shape.js';
 import merge from '../../phet-core/js/merge.js';
-import { DragListener } from '../../scenery/js/imports.js';
-import { Node } from '../../scenery/js/imports.js';
-import { Rectangle } from '../../scenery/js/imports.js';
-import { SceneryConstants } from '../../scenery/js/imports.js';
-import { LinearGradient } from '../../scenery/js/imports.js';
+import { DragListener, LinearGradient, Node, Rectangle, SceneryConstants, Voicing } from '../../scenery/js/imports.js';
 import EventType from '../../tandem/js/EventType.js';
 import PhetioObject from '../../tandem/js/PhetioObject.js';
 import Tandem from '../../tandem/js/Tandem.js';
@@ -105,6 +101,8 @@ class ToggleSwitch extends Node {
                           .addColorStop( 1, 'rgb( 200, 200, 200 )' );
 
     super();
+
+    this.initializeVoicing();
 
     const cornerRadius = options.size.height / 2;
 
@@ -272,6 +270,8 @@ class ToggleSwitch extends Node {
     super.dispose();
   }
 }
+
+Voicing.compose( ToggleSwitch );
 
 sun.register( 'ToggleSwitch', ToggleSwitch );
 export default ToggleSwitch;
