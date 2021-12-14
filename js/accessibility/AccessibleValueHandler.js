@@ -219,7 +219,7 @@ const AccessibleValueHandler = {
         this._rangeProperty = rangeProperty;
 
         // @private{Property.<boolean>}
-        this._enabledProperty = enabledProperty;
+        this._accessibleValueHandlerEnabledProperty = enabledProperty;
 
         // @private {function} - called when value change input is starts
         this._startChange = options.startChange;
@@ -517,7 +517,7 @@ const AccessibleValueHandler = {
           this.blockInput = true;
         }
 
-        if ( this._enabledProperty.get() ) {
+        if ( this._accessibleValueHandlerEnabledProperty.get() ) {
 
           // Prevent default so browser doesn't change input value automatically
           if ( KeyboardUtils.isRangeKey( domEvent ) ) {
@@ -642,7 +642,7 @@ const AccessibleValueHandler = {
           this._shiftKey = false;
         }
 
-        if ( this._enabledProperty.get() ) {
+        if ( this._accessibleValueHandlerEnabledProperty.get() ) {
           if ( KeyboardUtils.isRangeKey( event.domEvent ) ) {
             this.rangeKeysDown[ key ] = false;
 
@@ -692,7 +692,7 @@ const AccessibleValueHandler = {
        * @param {SceneryEvent} event
        */
       handleInput( event ) {
-        if ( this._enabledProperty.get() && !this.blockInput ) {
+        if ( this._accessibleValueHandlerEnabledProperty.get() && !this.blockInput ) {
 
           // don't handle again on "change" event
           this.a11yInputHandled = true;
