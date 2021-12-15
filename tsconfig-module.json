@@ -16,22 +16,25 @@
   ],
   "include": [
     "js/**/*",
-    // Unfortunately, these are borrowed from scenery-phet
+    "../chipper/phet-types.d.ts",
+    "../chipper/node_modules/@types/lodash/index.d.ts",
+    "../chipper/node_modules/@types/qunit/index.d.ts",
+    // sun shouldn't depend on scenery-phet, but these are used from scenery-phet
     "../scenery-phet/js/NumberDisplay.js",
     "../scenery-phet/js/PhetFont.js",
     "../scenery-phet/js/MathSymbols.js",
     "../scenery-phet/js/sceneryPhetStrings.ts",
-    "../scenery-phet/js/sceneryPhet.js"
+    "../scenery-phet/js/sceneryPhet.js",
   ],
   "exclude": [
     "js/**/*test*",
     "js/**/*Test*",
     "js/sun-main.js",
     "js/demo/**/*",
-    // has to wait for joist layer
+    // sun shouldn't depend on joist, but these are used from joist
     "js/Popupable.js",
     "js/Dialog.js",
-    // Included in scenery for now
+    // scenery/tsconfig-modules.json includes these for now, so don't include them again
     "js/SunConstants.js",
     "js/sun.js"
   ]
