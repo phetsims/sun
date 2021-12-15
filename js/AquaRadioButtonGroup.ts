@@ -7,8 +7,9 @@
  * @author Chris Malley (PixelZoom, Inc.)
  */
 
+import Property from '../../axon/js/Property.js';
 import merge from '../../phet-core/js/merge.js';
-import { PDOMPeer } from '../../scenery/js/imports.js';
+import { PDOMPeer, SceneryEvent } from '../../scenery/js/imports.js';
 import { HStrut } from '../../scenery/js/imports.js';
 import { LayoutBox } from '../../scenery/js/imports.js';
 import { Node } from '../../scenery/js/imports.js';
@@ -27,21 +28,26 @@ let instanceCount = 0;
 // to prefix instanceCount in case there are different kinds of "groups"
 const CLASS_NAME = 'AquaRadioButtonGroup';
 
-/** @template T */
-class AquaRadioButtonGroup extends LayoutBox {
+type AquaRadioButtonGroupOptions = Omit< any, 'children' >;
+
+type AquaRadioButtonGroupItem<T> = {
+  value: T, // value associated with the button
+  node: Node, // label for the button
+  tandemName?: string, // name of the tandem for PhET-iO
+  labelContent?: string // label for a11y
+};
+
+class AquaRadioButtonGroup<T> extends LayoutBox {
+
+  private readonly radioButtons: AquaRadioButton[];
+  private readonly disposeAquaRadioButtonGroup: () => void;
 
   /**
-   * @param {Property<T>} property
-   * @param { {node:Node,value:T,tandemName?:string,labelContent?:string}[]} items
-   *   Each item describes a radio button, and is an object with these properties:
-   *    node: Node, // label for the button
-   *    value: *, // value associated with the button
-   *    [tandemName: Tandem], // optional tandem for PhET-iO
-   *    [labelContent: string] // optional label for a11y
-   * @param {Object} [options]
-   * @constructor
+   * @param property
+   * @param items
+   * @param options
    */
-  constructor( property, items, options ) {
+  constructor( property: Property<T>, items: AquaRadioButtonGroupItem<T>[], options?: AquaRadioButtonGroupOptions ) {
 
     instanceCount++;
 
@@ -59,12 +65,13 @@ class AquaRadioButtonGroup extends LayoutBox {
       mouseAreaXDilation: 0,
       mouseAreaYDilation: 0,
 
-      // {number} - opt into Node's disabled opacity when enabled:false
-      disabledOpacity: SceneryConstants.DISABLED_OPACITY,
-
-      // supertype options
+      // LayoutBox options
       orientation: 'vertical', // Aqua radio buttons are typically vertical, rarely horizontal
       spacing: 3, // space between each button, perpendicular to options.orientation
+
+      // Node options
+      // {number} - opt into Node's disabled opacity when enabled:false
+      disabledOpacity: SceneryConstants.DISABLED_OPACITY,
 
       // phet-io
       tandem: Tandem.REQUIRED,
@@ -79,13 +86,12 @@ class AquaRadioButtonGroup extends LayoutBox {
     }, options );
 
     // Determine the max item width
-    const maxItemWidth = _.maxBy( items, item => item.node.width ).node.width;
+    const maxItemWidth = _.maxBy( items, ( item: AquaRadioButtonGroupItem<T> ) => item.node.width )!.node.width;
 
     // Create a radio button for each item
-    const radioButtons = [];
+    const radioButtons: AquaRadioButton[] = [];
     for ( let i = 0; i < items.length; i++ ) {
       const item = items[ i ];
-      assert && assert( !item.tandem, 'content arrays should not have tandem instances, they should use tandemName' );
 
       // Content for the radio button.
       // For vertical orientation, add an invisible strut, so that buttons have uniform width.
@@ -113,9 +119,6 @@ class AquaRadioButtonGroup extends LayoutBox {
 
       radioButtons.push( radioButton );
     }
-
-    // Verify that the client hasn't set options that we will be overwriting.
-    assert && assert( !options.children, 'AquaRadioButtonGroup sets children' );
     options.children = radioButtons;
 
     super( options );
@@ -129,7 +132,7 @@ class AquaRadioButtonGroup extends LayoutBox {
     } );
 
     // zoom - signify that key input is reserved and we should not pan when user presses arrow keys
-    const intentListener = { keydown: event => event.pointer.reserveForKeyboardDrag() };
+    const intentListener = { keydown: ( event: SceneryEvent ) => event.pointer.reserveForKeyboardDrag() };
     this.addInputListener( intentListener );
 
     // Add linked element after the radio button is instrumented
@@ -137,7 +140,6 @@ class AquaRadioButtonGroup extends LayoutBox {
       tandem: options.tandem.createTandem( 'property' )
     } );
 
-    // @private
     this.disposeAquaRadioButtonGroup = () => {
       this.removeInputListener( intentListener );
 
@@ -146,31 +148,25 @@ class AquaRadioButtonGroup extends LayoutBox {
       }
     };
 
-    // @private
     this.radioButtons = radioButtons;
   }
 
-  /**
-   * @public
-   * @override
-   */
-  dispose() {
+  public dispose() {
     this.disposeAquaRadioButtonGroup();
     super.dispose();
   }
 
   /**
    * Gets the radio button that corresponds to the specified value.
-   * @param {T} value
-   * @returns {AquaRadioButton}
-   * @public
+   * @param value
    */
-  getButton( value ) {
-    const button = _.find( this.radioButtons, radioButton => radioButton.value === value );
+  getButton( value: T ): AquaRadioButton {
+    const button = _.find( this.radioButtons, ( radioButton: AquaRadioButton ) => radioButton.value === value );
     assert && assert( button, `no radio button found for value ${value}` );
-    return button;
+    return button!;
   }
 }
 
 sun.register( 'AquaRadioButtonGroup', AquaRadioButtonGroup );
 export default AquaRadioButtonGroup;
+export type { AquaRadioButtonGroupOptions, AquaRadioButtonGroupItem };
