@@ -188,7 +188,7 @@ const AccessibleValueHandler = {
 
           /**
            * List the dependencies this Node's PDOM descriptions have. This should not include the valueProperty, but
-           * should list any Properties who's change should trigger description update for this Node.
+           * should list any Properties whose change should trigger a description update for this Node.
            * @type {Property[]}
            */
           a11yDependencies: []
