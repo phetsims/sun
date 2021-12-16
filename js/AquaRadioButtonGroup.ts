@@ -28,7 +28,7 @@ let instanceCount = 0;
 // to prefix instanceCount in case there are different kinds of "groups"
 const CLASS_NAME = 'AquaRadioButtonGroup';
 
-type AquaRadioButtonGroupOptions = Omit<any, 'children'>;
+type AquaRadioButtonGroupOptions = Omit< any, 'children' >;
 
 type AquaRadioButtonGroupItem<T> = {
   value: T, // value associated with the button
@@ -123,19 +123,19 @@ class AquaRadioButtonGroup<T> extends LayoutBox {
 
     super( options );
 
-// pdom - this node's primary sibling is aria-labelledby its own label so the label content is read whenever
-// a member of the group receives focus
+    // pdom - this node's primary sibling is aria-labelledby its own label so the label content is read whenever
+    // a member of the group receives focus
     this.addAriaLabelledbyAssociation( {
       thisElementName: PDOMPeer.PRIMARY_SIBLING,
       otherNode: this,
       otherElementName: PDOMPeer.LABEL_SIBLING
     } );
 
-// zoom - signify that key input is reserved and we should not pan when user presses arrow keys
+    // zoom - signify that key input is reserved and we should not pan when user presses arrow keys
     const intentListener = { keydown: ( event: SceneryEvent ) => event.pointer.reserveForKeyboardDrag() };
     this.addInputListener( intentListener );
 
-// Add linked element after the radio button is instrumented
+    // Add linked element after the radio button is instrumented
     this.addLinkedElement( property, {
       tandem: options.tandem.createTandem( 'property' )
     } );
