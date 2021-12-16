@@ -6,23 +6,21 @@
  * @author Chris Malley (PixelZoom, Inc.)
  */
 
+import Property from '../../axon/js/Property.js';
 import merge from '../../phet-core/js/merge.js';
-import AquaRadioButtonGroup from './AquaRadioButtonGroup.js';
+import AquaRadioButtonGroup, { AquaRadioButtonGroupItem, AquaRadioButtonGroupOptions } from './AquaRadioButtonGroup.js';
 import sun from './sun.js';
-import { Node } from '../../scenery/js/imports.js'; // eslint-disable-line no-unused-vars
 
-/** @template T */
-class VerticalAquaRadioButtonGroup extends AquaRadioButtonGroup {
+type VerticalAquaRadioButtonGroupOptions = Omit< AquaRadioButtonGroupOptions, 'orientation' >;
+
+class VerticalAquaRadioButtonGroup<T> extends AquaRadioButtonGroup<T> {
 
   /**
-   * @param {Property<T>} property
-   * @param { {node:Node,value:T,tandemName?:string,labelContent?:string}[]} items - see AquaRadioButtonGroup
-   * @param {Object} [options]
+   * @param property
+   * @param items
+   * @param options
    */
-  constructor( property, items, options ) {
-
-    assert && assert( !options || options.orientation === undefined, 'VerticalAquaRadioButtonGroup sets orientation' );
-
+  constructor( property: Property<T>, items: AquaRadioButtonGroupItem<T>[], options?: VerticalAquaRadioButtonGroupOptions ) {
     super( property, items, merge( {
       orientation: 'vertical'
     }, options ) );
@@ -31,3 +29,4 @@ class VerticalAquaRadioButtonGroup extends AquaRadioButtonGroup {
 
 sun.register( 'VerticalAquaRadioButtonGroup', VerticalAquaRadioButtonGroup );
 export default VerticalAquaRadioButtonGroup;
+export type { VerticalAquaRadioButtonGroupOptions };
