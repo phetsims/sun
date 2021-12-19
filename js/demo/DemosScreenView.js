@@ -24,7 +24,7 @@ const ITEM_FONT = new PhetFont( 14 );
  * @typedef Demo - specification for a 'demo', the demonstration of some component or functionality
  * @property {string} label - label in the carousel
  * @property {function(layoutBounds:Bounds2): Node} createNode - creates the Node for the demo
- * @property {Node|null} node - the Node for the demo, created by DemosScreenView
+ * @property {Node} [node] - the Node for the demo, created by DemosScreenView
  */
 
 class DemosScreenView extends ScreenView {
