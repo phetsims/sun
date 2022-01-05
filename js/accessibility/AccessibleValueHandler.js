@@ -23,9 +23,7 @@ import extend from '../../../phet-core/js/extend.js';
 import inheritance from '../../../phet-core/js/inheritance.js';
 import merge from '../../../phet-core/js/merge.js';
 import Orientation from '../../../phet-core/js/Orientation.js';
-import { KeyboardUtils } from '../../../scenery/js/imports.js';
-import { animatedPanZoomSingleton } from '../../../scenery/js/imports.js';
-import { Node } from '../../../scenery/js/imports.js';
+import { animatedPanZoomSingleton, KeyboardUtils, Node, Voicing } from '../../../scenery/js/imports.js';
 import Utterance from '../../../utterance-queue/js/Utterance.js';
 import sun from '../sun.js';
 
@@ -46,6 +44,9 @@ const AccessibleValueHandler = {
     assert && assert( _.includes( inheritance( type ), Node ), 'must be mixed into a Node' );
 
     const proto = type.prototype;
+
+    // compose with Interactive Highlights, all Nodes with Voicing features highlight as they are interactive
+    Voicing.compose( type );
 
     extend( proto, {
 
@@ -191,7 +192,11 @@ const AccessibleValueHandler = {
            * should list any Properties whose change should trigger a description update for this Node.
            * @type {Property[]}
            */
-          a11yDependencies: []
+          a11yDependencies: [],
+
+          // Returning null signifies that there is no response
+          voicingCreateObjectResponse: () => null,
+          voicingCreateContextResponse: () => null
         };
 
         options = merge( {}, defaults, options );
@@ -209,6 +214,9 @@ const AccessibleValueHandler = {
 
         assert && assert( options.inputType === undefined, 'AccessibleValueHandler sets inputType' );
         optionsToMutate.inputType = 'range';
+
+        // Should occur before mutate to support mutating Voicing options.
+        this.initializeVoicing();
 
         this.mutate( optionsToMutate );
 
@@ -312,6 +320,10 @@ const AccessibleValueHandler = {
         this._a11yRepeatEqualValueText = options.a11yRepeatEqualValueText;
 
         this.setA11yDependencies( options.a11yDependencies );
+
+        // @private {function():string} - create object/context responses on demand.
+        this._voicingCreateObjectResponse = options.voicingCreateObjectResponse;
+        this._voicingCreateContextResponse = options.voicingCreateContextResponse;
 
         // listeners, must be unlinked in dispose
         const enabledRangeObserver = enabledRange => {
@@ -785,6 +797,7 @@ const AccessibleValueHandler = {
        */
       onInteractionEnd( event ) {
         this.alertContextResponse();
+        this.voicingOnEndResponse();
         this._endChange( event );
       },
 
@@ -964,6 +977,54 @@ const AccessibleValueHandler = {
         }
 
         this.setPDOMAttribute( 'step', stepValue );
+      },
+
+      /**
+       * Call this to trigger the voicing response spoken when an interaction ends.
+       * @public
+       */
+      voicingOnEndResponse( options ) {
+
+        options = merge( {
+          withObjectResponse: true, // speak the object response
+          onlyOnValueChange: true // don't speak if the value is the same as valueOnStart
+        }, options );
+
+        if ( !options.onlyOnValueChange || this.valueOnStart !== this._valueProperty.value ) {
+
+          // @ts-ignore
+          this.voicingObjectResponse = this._voicingCreateObjectResponse();
+          // @ts-ignore
+          this.voicingContextResponse = this._voicingCreateContextResponse();
+
+          // @ts-ignore
+          this.voicingSpeakResponse( {
+            nameResponse: null,
+            objectResponse: options.withObjectResponse ? this.voicingObjectResponse : null,
+            contextResponse: this.voicingContextResponse,
+            hintResponse: null // no hint, there was just a successful interaction
+          } );
+        }
+      },
+
+      /**
+       * Most often called from a drag, when speaking many times. Call with an `utterance` option to utilize the Utterance
+       * timing variables for proper speaking
+       * @param {Object} [options]
+       */
+      voicingOnChangeResponse( options ) {
+
+        // @ts-ignore
+        this.voicingObjectResponse = this._voicingCreateObjectResponse();
+
+        options = merge( {
+          objectResponse: this.voicingObjectResponse
+        }, options );
+
+        // no context response because we don't need it during the interaction, just after it
+        // TODO: likely we do need some sort of context response support, https://github.com/phetsims/ratio-and-proportion/issues/413
+        this.voicingSpeakResponse( options );
+
       }
     } );
   }
