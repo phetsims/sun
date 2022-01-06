@@ -28,7 +28,7 @@ let instanceCount = 0;
 // to prefix instanceCount in case there are different kinds of "groups"
 const CLASS_NAME = 'AquaRadioButtonGroup';
 
-//TODO https://github.com/phetsims/chipper/issues/1128 should include LayoutBoxOptions here
+//TODO https://github.com/phetsims/chipper/issues/1128 replace any with LayoutBoxOptions, when it exists
 type AquaRadioButtonGroupOptions = Omit< any, 'children' >;
 
 type AquaRadioButtonGroupItem<T> = {
