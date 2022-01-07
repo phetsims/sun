@@ -5,10 +5,10 @@
  * @author John Blanco
  */
 
-import Enumeration from '../../../phet-core/js/Enumeration.js';
+import EnumerationDeprecated from '../../../phet-core/js/EnumerationDeprecated.js';
 import sun from '../sun.js';
 
-const RadioButtonInteractionState = Enumeration.byKeys( [
+const RadioButtonInteractionState = EnumerationDeprecated.byKeys( [
 
   // the button is selected
   'SELECTED',

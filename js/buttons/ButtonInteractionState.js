@@ -6,10 +6,10 @@
  * @author John Blanco
  */
 
-import Enumeration from '../../../phet-core/js/Enumeration.js';
+import EnumerationDeprecated from '../../../phet-core/js/EnumerationDeprecated.js';
 import sun from '../sun.js';
 
-const ButtonInteractionState = Enumeration.byKeys( [
+const ButtonInteractionState = EnumerationDeprecated.byKeys( [
 
   // button is just sitting there, doing nothing
   'IDLE',
