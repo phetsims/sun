@@ -19,7 +19,7 @@ class HSlider extends Slider {
 
   /**
    * @param {Property.<number>} valueProperty
-   * @param {Range} range
+   * @param {Range|null} range
    * @param {Object} [options]
    */
   constructor( valueProperty, range, options ) {
