@@ -32,6 +32,8 @@ import sun from './sun.js';
 
 // constants
 const VERTICAL_ROTATION = -Math.PI / 2;
+const DEFAULT_HORIZONTAL_TRACK_SIZE = new Dimension2( 100, 5 );
+const DEFAULT_HORIZONTAL_THUMB_SIZE = new Dimension2( 17, 34 );
 
 class Slider extends Node {
 
@@ -63,7 +65,7 @@ class Slider extends Node {
       trackNode: null,
 
       // track - options to create a SliderTrack if trackNode not supplied
-      trackSize: new Dimension2( 100, 5 ),
+      trackSize: null, // {Dimension2} specific to orientation, will be filled in with a default if not provided
       trackFillEnabled: 'white',
       trackFillDisabled: 'gray',
       trackStroke: 'black',
@@ -79,12 +81,14 @@ class Slider extends Node {
       thumbNode: null,
 
       // Options for the default thumb, ignored if thumbNode is set
-      thumbSize: new Dimension2( 17, 34 ),
+      thumbSize: null, // {Dimension2} specific to orientation, will be filled in with a default if not provided
       thumbFill: 'rgb(50,145,184)',
       thumbFillHighlighted: 'rgb(71,207,255)',
       thumbStroke: 'black',
       thumbLineWidth: 1,
       thumbCenterLineStroke: 'white',
+
+      // dilations are specific to orientation
       thumbTouchAreaXDilation: 11,
       thumbTouchAreaYDilation: 11,
       thumbMouseAreaXDilation: 0,
@@ -130,19 +134,24 @@ class Slider extends Node {
     assert && assert( options.trackNode === null || options.trackNode instanceof SliderTrack, 'trackNode must be of type SliderTrack' );
     assert && assert( options.thumbNode === null || options.thumbNode instanceof Node, 'thumbNode must be of type Node' );
 
-    // For a vertical slider, the client should provide dimensions that are specific to a vertical slider.
-    // But Slider expects dimensions for a horizontal slider, and then creates the vertical orientation using rotation.
-    // So if the client provides any dimensions for a vertical slider, swap those dimensions to horizontal.
     if ( options.orientation === Orientation.VERTICAL ) {
-      if ( options.trackSize !== undefined ) {
+
+      // For a vertical slider, the client should provide dimensions that are specific to a vertical slider.
+      // But Slider expects dimensions for a horizontal slider, and then creates the vertical orientation using rotation.
+      // So if the client provides any dimensions for a vertical slider, swap those dimensions to horizontal.
+      if ( options.trackSize ) {
         options.trackSize = options.trackSize.swapped();
       }
-      if ( options.thumbSize !== undefined ) {
+      if ( options.thumbSize ) {
         options.thumbSize = options.thumbSize.swapped();
       }
       swapObjectKeys( options, 'thumbTouchAreaXDilation', 'thumbTouchAreaYDilation' );
       swapObjectKeys( options, 'thumbMouseAreaXDilation', 'thumbMouseAreaYDilation' );
     }
+    options.trackSize = options.trackSize || DEFAULT_HORIZONTAL_TRACK_SIZE;
+    options.thumbSize = options.thumbSize || DEFAULT_HORIZONTAL_THUMB_SIZE;
+    assert && assert( options.trackSize );
+    assert && assert( options.thumbSize );
 
     super();
 
