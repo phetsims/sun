@@ -9,6 +9,7 @@ import Tandem from '../../../tandem/js/Tandem.js';
 import BooleanToggleNode from '../BooleanToggleNode.js';
 import sun from '../sun.js';
 import RectangularToggleButton from './RectangularToggleButton.js';
+import { Node } from '../../../scenery/js/imports.js'; // eslint-disable-line
 
 class BooleanRectangularToggleButton extends RectangularToggleButton {
 
