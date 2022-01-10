@@ -150,8 +150,6 @@ class Slider extends Node {
     }
     options.trackSize = options.trackSize || DEFAULT_HORIZONTAL_TRACK_SIZE;
     options.thumbSize = options.thumbSize || DEFAULT_HORIZONTAL_THUMB_SIZE;
-    assert && assert( options.trackSize );
-    assert && assert( options.thumbSize );
 
     super();
 
