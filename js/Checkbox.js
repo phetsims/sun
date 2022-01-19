@@ -79,7 +79,11 @@ class Checkbox extends Node {
       // pdom
       tagName: 'input',
       inputType: 'checkbox',
-      appendDescription: true
+      appendDescription: true,
+
+      // {Utterance|null} - Utterances to be spoken with a screen reader after the checkbox is pressed.
+      checkedContextResponseUtterance: null,
+      uncheckedContextResponseUtterance: null
     }, options );
 
     super();
@@ -93,9 +97,11 @@ class Checkbox extends Node {
       validate( property.value, BOOLEAN_VALIDATOR );
       if ( property.value ) {
         options.checkedSoundPlayer.play();
+        options.checkedContextResponseUtterance && this.alertDescriptionUtterance( options.checkedContextResponseUtterance );
       }
       else {
         options.uncheckedSoundPlayer.play();
+        options.uncheckedContextResponseUtterance && this.alertDescriptionUtterance( options.uncheckedContextResponseUtterance );
       }
     }, {
       parameters: [],
