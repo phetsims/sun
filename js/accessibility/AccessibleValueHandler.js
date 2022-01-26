@@ -23,7 +23,7 @@ import extend from '../../../phet-core/js/extend.js';
 import inheritance from '../../../phet-core/js/inheritance.js';
 import merge from '../../../phet-core/js/merge.js';
 import Orientation from '../../../phet-core/js/Orientation.js';
-import { animatedPanZoomSingleton, KeyboardUtils, Node, Voicing } from '../../../scenery/js/imports.js';
+import { animatedPanZoomSingleton, KeyboardUtils, Node } from '../../../scenery/js/imports.js';
 import Utterance from '../../../utterance-queue/js/Utterance.js';
 import sun from '../sun.js';
 
@@ -46,7 +46,8 @@ const AccessibleValueHandler = {
     const proto = type.prototype;
 
     // compose with Interactive Highlights, all Nodes with Voicing features highlight as they are interactive
-    Voicing.compose( type );
+    // TODO: handle this case, https://github.com/phetsims/scenery/issues/1340
+    // Voicing.compose( type );
 
     extend( proto, {
 
@@ -216,7 +217,8 @@ const AccessibleValueHandler = {
         optionsToMutate.inputType = 'range';
 
         // Should occur before mutate to support mutating Voicing options.
-        this.initializeVoicing();
+        // TODO: handle this case, https://github.com/phetsims/scenery/issues/1340
+        // this.initializeVoicing();
 
         this.mutate( optionsToMutate );
 

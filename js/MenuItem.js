@@ -37,7 +37,7 @@ const RIGHT_X_MARGIN = 5;
 const Y_MARGIN = 3;
 const CORNER_RADIUS = 5;
 
-class MenuItem extends Node {
+class MenuItem extends Voicing( Node ) {
   /**
    * @param {Number} width - the width of the menu item
    * @param {Number} height - the height of the menu item
@@ -87,8 +87,6 @@ class MenuItem extends Node {
     }, options );
 
     super();
-
-    this.initializeVoicing();
 
     // @public (read-only) {boolean}
     this.present = present;
@@ -161,8 +159,6 @@ class MenuItem extends Node {
     super.dispose();
   }
 }
-
-Voicing.compose( MenuItem );
 
 sun.register( 'MenuItem', MenuItem );
 export default MenuItem;

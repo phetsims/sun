@@ -29,7 +29,7 @@ import sun from './sun.js';
 // constants
 const DEFAULT_SIZE = new Dimension2( 60, 30 );
 
-class ToggleSwitch extends Node {
+class ToggleSwitch extends Voicing( Node ) {
 
   /**
    * @param {Property.<*>} property
@@ -101,8 +101,6 @@ class ToggleSwitch extends Node {
                           .addColorStop( 1, 'rgb( 200, 200, 200 )' );
 
     super();
-
-    this.initializeVoicing();
 
     const cornerRadius = options.size.height / 2;
 
@@ -270,8 +268,6 @@ class ToggleSwitch extends Node {
     super.dispose();
   }
 }
-
-Voicing.compose( ToggleSwitch );
 
 sun.register( 'ToggleSwitch', ToggleSwitch );
 export default ToggleSwitch;

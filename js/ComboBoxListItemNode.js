@@ -18,7 +18,7 @@ import Tandem from '../../tandem/js/Tandem.js';
 import ComboBoxItem from './ComboBoxItem.js';
 import sun from './sun.js';
 
-class ComboBoxListItemNode extends Node {
+class ComboBoxListItemNode extends Voicing( Node ) {
 
   /**
    * @param {ComboBoxItem} item
@@ -98,9 +98,6 @@ class ComboBoxListItemNode extends Node {
 
     super();
 
-    // voicing - initialize the Voicing trait
-    this.initializeVoicing();
-
     // @public (read-only)
     this.item = item;
 
@@ -119,8 +116,6 @@ class ComboBoxListItemNode extends Node {
     } );
   }
 }
-
-Voicing.compose( ComboBoxListItemNode );
 
 sun.register( 'ComboBoxListItemNode', ComboBoxListItemNode );
 export default ComboBoxListItemNode;

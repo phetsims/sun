@@ -21,7 +21,10 @@ import sun from './sun.js';
 // constants
 const DEFAULT_RADIUS = 7;
 
-class AquaRadioButton extends Node {
+/**
+ * @extends Node
+ */
+class AquaRadioButton extends Voicing( Node ) {
 
   /**
    * @mixes {Voicing}
@@ -71,9 +74,6 @@ class AquaRadioButton extends Node {
       `AquaRadioButton tandem.name must end with RadioButton: ${options.tandem.phetioID}` );
 
     super();
-
-    // voicing - initialize the trait
-    this.initializeVoicing();
 
     // @public (read-only)
     this.value = value;
@@ -182,8 +182,6 @@ class AquaRadioButton extends Node {
 }
 
 AquaRadioButton.DEFAULT_RADIUS = DEFAULT_RADIUS;
-
-Voicing.compose( AquaRadioButton );
 
 sun.register( 'AquaRadioButton', AquaRadioButton );
 export default AquaRadioButton;

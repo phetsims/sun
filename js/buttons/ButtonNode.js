@@ -27,7 +27,10 @@ import ButtonInteractionState from './ButtonInteractionState.js';
 const CONTRAST_FILTER = new Contrast( 0.7 );
 const BRIGHTNESS_FILTER = new Brightness( 1.2 );
 
-class ButtonNode extends Node {
+/**
+ * @extends Node
+ */
+class ButtonNode extends Voicing( Node ) {
 
   /**
    * @mixes {Voicing}
@@ -115,9 +118,6 @@ class ButtonNode extends Node {
     options.enabledProperty = buttonModel.enabledProperty;
 
     super();
-
-    // voicing - initialize the voicing feature to work with
-    this.initializeVoicing();
 
     // @protected
     this.buttonModel = buttonModel;
@@ -310,8 +310,6 @@ class FlatAppearanceStrategy {
 }
 
 ButtonNode.FlatAppearanceStrategy = FlatAppearanceStrategy;
-
-Voicing.compose( ButtonNode );
 
 sun.register( 'ButtonNode', ButtonNode );
 export default ButtonNode;

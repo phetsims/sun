@@ -34,7 +34,10 @@ const SHAPE_MATRIX = Matrix3.createFromPool( 0.025, 0, 0, 0, -0.025, 0, 0, 0, 1 
 const uncheckedShape = checkEmptySolidShape.transformed( SHAPE_MATRIX );
 const checkedShape = checkSquareOSolidShape.transformed( SHAPE_MATRIX );
 
-class Checkbox extends Node {
+/**
+ * @extends Node
+ */
+class Checkbox extends Voicing( Node ) {
 
   /**
    * @param {Node} content
@@ -87,9 +90,6 @@ class Checkbox extends Node {
     }, options );
 
     super();
-
-    // voicing - initialize the Trait
-    this.initializeVoicing();
 
     // @private - sends out notifications when the checkbox is toggled.
     const toggleAction = new Action( () => {
@@ -239,8 +239,6 @@ class Checkbox extends Node {
 
   get checkboxColor() { return this.getCheckboxColor(); }
 }
-
-Voicing.compose( Checkbox );
 
 sun.register( 'Checkbox', Checkbox );
 export default Checkbox;
