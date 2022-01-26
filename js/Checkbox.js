@@ -84,9 +84,9 @@ class Checkbox extends Voicing( Node ) {
       inputType: 'checkbox',
       appendDescription: true,
 
-      // {Utterance|null} - Utterances to be spoken with a screen reader after the checkbox is pressed.
-      checkedContextResponseUtterance: null,
-      uncheckedContextResponseUtterance: null
+      // {AlertableDef|null} - Utterances to be spoken with a screen reader after the checkbox is pressed.
+      checkedContextResponse: null,
+      uncheckedContextResponse: null
     }, options );
 
     super();
@@ -97,11 +97,11 @@ class Checkbox extends Voicing( Node ) {
       validate( property.value, BOOLEAN_VALIDATOR );
       if ( property.value ) {
         options.checkedSoundPlayer.play();
-        options.checkedContextResponseUtterance && this.alertDescriptionUtterance( options.checkedContextResponseUtterance );
+        options.checkedContextResponse && this.alertDescriptionUtterance( options.checkedContextResponse );
       }
       else {
         options.uncheckedSoundPlayer.play();
-        options.uncheckedContextResponseUtterance && this.alertDescriptionUtterance( options.uncheckedContextResponseUtterance );
+        options.uncheckedContextResponse && this.alertDescriptionUtterance( options.uncheckedContextResponse );
       }
     }, {
       parameters: [],
