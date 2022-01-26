@@ -27,9 +27,6 @@ import ButtonInteractionState from './ButtonInteractionState.js';
 const CONTRAST_FILTER = new Contrast( 0.7 );
 const BRIGHTNESS_FILTER = new Brightness( 1.2 );
 
-/**
- * @extends Node
- */
 class ButtonNode extends Voicing( Node ) {
 
   /**

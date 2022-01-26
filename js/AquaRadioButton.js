@@ -21,9 +21,6 @@ import sun from './sun.js';
 // constants
 const DEFAULT_RADIUS = 7;
 
-/**
- * @extends Node
- */
 class AquaRadioButton extends Voicing( Node ) {
 
   /**
