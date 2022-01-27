@@ -130,24 +130,23 @@ const AccessibleValueHandler = <SuperType extends Constructor>( Type: SuperType 
     _voicingCreateObjectResponse: ( () => void );
     _disposeAccessibleValueHandler: () => void;
 
-    /**
-     *
-     * @param valueProperty
-     * @param enabledRangeProperty
-     * @param enabledProperty
-     * @param providedOptions - these options should be the same as options for supertypes, as they will be mutated in AccessibleValueHandler
-     * @param args
-     */
-    constructor( valueProperty: Property<number>, enabledRangeProperty: Property<Range>, enabledProperty: Property<boolean>, providedOptions: AccessibleValueHandlerOptions, ...args: any[] ) {
+    constructor( ...args: any[] ) {
 
-      // TODO: pass the same options block here? oh boy. . https://github.com/phetsims/scenery/issues/1340
-      super( ...args );
+      const valueProperty = args[ 0 ] as Property<number>;
+      assert && assert( valueProperty instanceof Property );
+      const enabledRangeProperty = args[ 1 ] as Property<Range>;
+      assert && assert( enabledRangeProperty instanceof Property );
+      const enabledProperty = args[ 2 ] as Property<boolean>;
+      assert && assert( enabledProperty instanceof Property );
+      const providedOptions = args[ 3 ] as AccessibleValueHandlerOptions | undefined;
+
+      super( ...args.slice( 4 ) as any[] );
 
       const thisNode = this as unknown as Node;
 
       // if rounding to keyboard step, keyboardStep must be defined so values aren't skipped and the slider
       // doesn't get stuck while rounding to the nearest value, see https://github.com/phetsims/sun/issues/410
-      if ( assert && providedOptions.roundToStepSize ) {
+      if ( assert && providedOptions && providedOptions.roundToStepSize ) {
         assert( providedOptions.keyboardStep, 'rounding to keyboardStep, define appropriate keyboardStep to round to' );
       }
 

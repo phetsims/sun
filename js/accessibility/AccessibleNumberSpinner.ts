@@ -24,7 +24,6 @@
 import CallbackTimer from '../../../axon/js/CallbackTimer.js';
 import Emitter from '../../../axon/js/Emitter.js';
 import Property from '../../../axon/js/Property.js';
-import Range from '../../../dot/js/Range.js';
 import validate from '../../../axon/js/validate.js';
 import assertHasProperties from '../../../phet-core/js/assertHasProperties.js';
 import inheritance from '../../../phet-core/js/inheritance.js';
@@ -61,7 +60,11 @@ const AccessibleNumberSpinner = <SuperType extends Constructor>( Type: SuperType
     decrementDownEmitter: Emitter<[ boolean ]>; // TODO: we want this to be @protected, https://github.com/phetsims/scenery/issues/1340
     _disposeAccessibleNumberSpinner: () => void;
 
-    constructor( valueProperty: Property<number>, enabledRangeProperty: Property<Range>, enabledProperty: Property<boolean>, providedOptions: AccessibleNumberSpinnerOptions, ...args: any[] ) {
+    constructor( ...args: any[] ) {
+
+      const enabledProperty = args[ 2 ] as Property<boolean>;
+      assert && assert( enabledProperty instanceof Property ); // TODO: how to allow a runtime assertion plus using IProperty type case? https://github.com/phetsims/scenery/issues/1340
+      const providedOptions = args[ 3 ] as AccessibleValueHandlerOptions | undefined;
 
       const options = optionize<AccessibleNumberSpinnerOptions, AccessibleNumberSpinnerSelfOptions, AccessibleValueHandlerOptions>( {
         timerDelay: 400, // start to fire continuously after pressing for this long (milliseconds)
@@ -70,7 +73,7 @@ const AccessibleNumberSpinner = <SuperType extends Constructor>( Type: SuperType
         ariaOrientation: Orientation.VERTICAL // by default, number spinners should be oriented vertically
       }, providedOptions );
 
-      super( valueProperty, enabledRangeProperty, enabledProperty, options, ...args );
+      super( ...args );
 
       const thisNode = this as unknown as Node;
 

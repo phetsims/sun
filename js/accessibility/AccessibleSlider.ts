@@ -13,8 +13,6 @@
  * @author Jesse Greenberg (PhET Interactive Simulations)
  */
 
-import Property from '../../../axon/js/Property.js';
-import Range from '../../../dot/js/Range.js';
 import assertHasProperties from '../../../phet-core/js/assertHasProperties.js';
 import inheritance from '../../../phet-core/js/inheritance.js';
 import optionize from '../../../phet-core/js/optionize.js';
@@ -45,8 +43,11 @@ const AccessibleSlider = <SuperType extends Constructor>( Type: SuperType ) => {
   return class extends AccessibleValueHandlerClass {
     _disposeAccessibleSlider: () => void;
 
-    constructor( valueProperty: Property<number>, rangeProperty: Property<Range>, enabledProperty: Property<boolean>,
-                 providedOptions?: AccessibleSliderOptions, ...args: any[] ) {
+    constructor( ...args: any[] ) {
+
+      assert && assert( args.length >= 3, 'three args needed, then options as the fourth' );
+      const providedOptions = args[ 3 ] as AccessibleSliderOptions;
+
 
       const options = optionize<AccessibleSliderOptions, AccessibleSliderSelfOptions, AccessibleValueHandlerOptions>( {
         startDrag: _.noop, // called when a drag sequence starts
@@ -54,7 +55,7 @@ const AccessibleSlider = <SuperType extends Constructor>( Type: SuperType ) => {
         drag: _.noop // called once per drag event, before other modifications to the valueProperty
       }, providedOptions );
 
-      super( valueProperty, rangeProperty, enabledProperty, options, ...args );
+      super( ...args );
 
       // members of the Node API that are used by this trait
       assertHasProperties( this, [ 'addInputListener', 'removeInputListener' ] );
