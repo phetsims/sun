@@ -183,7 +183,6 @@ class ButtonNode extends Voicing( Node ) {
 
     // @private - define a dispose function
     this.disposeButtonNode = () => {
-      this.disposeVoicing();
       alignBox && alignBox.dispose();
       buttonAppearanceStrategy.dispose && buttonAppearanceStrategy.dispose();
       contentAppearanceStrategy && contentAppearanceStrategy.dispose && contentAppearanceStrategy.dispose();

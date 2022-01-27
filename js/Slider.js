@@ -9,6 +9,7 @@
  * @author Chris Malley (PixelZoom, Inc.)
  */
 
+import EnabledProperty from '../../axon/js/EnabledProperty.js';
 import Property from '../../axon/js/Property.js';
 import Dimension2 from '../../dot/js/Dimension2.js';
 import Range from '../../dot/js/Range.js';
@@ -35,7 +36,7 @@ const VERTICAL_ROTATION = -Math.PI / 2;
 const DEFAULT_HORIZONTAL_TRACK_SIZE = new Dimension2( 100, 5 );
 const DEFAULT_HORIZONTAL_THUMB_SIZE = new Dimension2( 17, 34 );
 
-class Slider extends Node {
+class Slider extends AccessibleSlider( Node ) {
 
   /**
    * @param {Property.<number>} valueProperty
@@ -116,6 +117,9 @@ class Slider extends Node {
       enabledRangeProperty: null, // {Property.<Range>|null} determine the portion of range that is enabled
       disabledOpacity: SceneryConstants.DISABLED_OPACITY, // opacity applied to the entire Slider when disabled
 
+      // TODO: could this blow away some enabledPropertyOptions somewhere? https://github.com/phetsims/scenery/issues/1340
+      enabledProperty: new EnabledProperty( true ),
+
       // phet-io
       tandem: Tandem.REQUIRED,
       phetioType: Slider.SliderIO,
@@ -127,6 +131,10 @@ class Slider extends Node {
       // Property that are "implementation  details" to the PhET-iO API, and still support having a LinkedElement that
       // points to the underlying model Property.
       phetioLinkedProperty: null
+    }, options );
+
+    options = merge( {
+      ariaOrientation: options.orientation
     }, options );
 
     assert && assert( range instanceof Range, `range must be of type Range:${range}` );
@@ -151,10 +159,27 @@ class Slider extends Node {
     options.trackSize = options.trackSize || DEFAULT_HORIZONTAL_TRACK_SIZE;
     options.thumbSize = options.thumbSize || DEFAULT_HORIZONTAL_THUMB_SIZE;
 
-    super();
 
-    // @private {Orientation}
-    this.orientation = options.orientation;
+    const thumbTandem = options.tandem.createTandem( Slider.THUMB_NODE_TANDEM_NAME );
+    if ( Tandem.VALIDATION && options.thumbNode ) {
+      assert && assert( options.thumbNode.tandem.equals( thumbTandem ),
+        `Passed-in thumbNode must have the correct tandem. Expected: ${thumbTandem.phetioID}, actual: ${options.thumbNode.tandem.phetioID}`
+      );
+    }
+
+    // The thumb of the slider
+    const thumb = options.thumbNode || new SliderThumb( {
+
+      // propagate options that are specific to SliderThumb
+      size: options.thumbSize,
+      fill: options.thumbFill,
+      fillHighlighted: options.thumbFillHighlighted,
+      stroke: options.thumbStroke,
+      lineWidth: options.thumbLineWidth,
+      centerLineStroke: options.thumbCenterLineStroke,
+      tandem: thumbTandem
+    } );
+
 
     const ownsEnabledRangeProperty = !options.enabledRangeProperty;
 
@@ -167,6 +192,14 @@ class Slider extends Node {
       phetioDocumentation: 'Sliders support two ranges: the outer range which specifies the min and max of the track and ' +
                            'the enabledRangeProperty, which determines how low and high the thumb can be dragged within the track.'
     } );
+
+    assert && assert( !options.panTargetNode, 'Slider sets its own panTargetNode' );
+    options.panTargetNode = thumb;
+
+    super( valueProperty, options.enabledRangeProperty, options.enabledProperty, options );
+
+    // @private {Orientation}
+    this.orientation = options.orientation;
 
     // @public {Property.<Range>|null}
     this.enabledRangeProperty = options.enabledRangeProperty;
@@ -215,25 +248,6 @@ class Slider extends Node {
     // Position the track horizontally
     this.track.centerX = this.track.valueToPosition.evaluate( ( range.max + range.min ) / 2 );
 
-    const thumbTandem = options.tandem.createTandem( Slider.THUMB_NODE_TANDEM_NAME );
-    if ( Tandem.VALIDATION && options.thumbNode ) {
-      assert && assert( options.thumbNode.tandem.equals( thumbTandem ),
-        `Passed-in thumbNode must have the correct tandem. Expected: ${thumbTandem.phetioID}, actual: ${options.thumbNode.tandem.phetioID}`
-      );
-    }
-
-    // The thumb of the slider
-    const thumb = options.thumbNode || new SliderThumb( {
-
-      // propagate options that are specific to SliderThumb
-      size: options.thumbSize,
-      fill: options.thumbFill,
-      fillHighlighted: options.thumbFillHighlighted,
-      stroke: options.thumbStroke,
-      lineWidth: options.thumbLineWidth,
-      centerLineStroke: options.thumbCenterLineStroke,
-      tandem: thumbTandem
-    } );
 
     // Dilate the local bounds horizontally so that it extends beyond where the thumb can reach.  This prevents layout
     // asymmetry when the slider thumb is off the edges of the track.  See https://github.com/phetsims/sun/issues/282
@@ -337,15 +351,8 @@ class Slider extends Node {
     // pdom - custom focus highlight that surrounds and moves with the thumb
     this.focusHighlight = new FocusHighlightFromNode( thumb );
 
-    assert && assert( !options.ariaOrientation, 'Slider sets its own ariaOrientation' );
-
-    this.initializeAccessibleSlider( valueProperty, this.enabledRangeProperty, this.enabledProperty,
-      merge( { ariaOrientation: options.orientation, panTargetNode: thumb }, options ) );
-
     assert && Tandem.VALIDATION && assert( !options.phetioLinkedProperty || options.phetioLinkedProperty.isPhetioInstrumented(),
       'If provided, phetioLinkedProperty should be PhET-iO instrumented' );
-
-    this.mutate( options );
 
     this.addLinkedElement( options.phetioLinkedProperty || valueProperty, {
       tandem: options.tandem.createTandem( 'valueProperty' )
@@ -373,7 +380,6 @@ class Slider extends Node {
    */
   dispose() {
     this.disposeSlider();
-    this.disposeAccessibleSlider();
     super.dispose();
   }
 
@@ -459,9 +465,6 @@ class Slider extends Node {
     return this.minorTicksParent.visible;
   }
 }
-
-// mix accessibility into Slider
-AccessibleSlider.mixInto( Slider );
 
 // @public standardized tandem names, see https://github.com/phetsims/sun/issues/694
 Slider.THUMB_NODE_TANDEM_NAME = 'thumbNode';

@@ -13,98 +13,82 @@
  * @author Jesse Greenberg (PhET Interactive Simulations)
  */
 
+import Property from '../../../axon/js/Property.js';
+import Range from '../../../dot/js/Range.js';
 import assertHasProperties from '../../../phet-core/js/assertHasProperties.js';
-import extend from '../../../phet-core/js/extend.js';
 import inheritance from '../../../phet-core/js/inheritance.js';
-import merge from '../../../phet-core/js/merge.js';
-import { Node } from '../../../scenery/js/imports.js';
+import optionize from '../../../phet-core/js/optionize.js';
+import { Node, SceneryEvent } from '../../../scenery/js/imports.js';
 import sun from '../sun.js';
-import AccessibleValueHandler from './AccessibleValueHandler.js';
+import AccessibleValueHandler, { AccessibleValueHandlerOptions } from './AccessibleValueHandler.js';
 
-const AccessibleSlider = {
+type SceneryListenerFunction = ( event?: SceneryEvent ) => void;
+type Constructor<T = {}> = new ( ...args: any[] ) => T;
 
-  /**
-   * Implement functionality for a slider.
-   * @public
-   * @trait {Node}
-   * @mixes AccessibleValueHandler
-   *
-   * @param {function} type - The type (constructor) whose prototype we'll modify.
-   */
-  mixInto: function( type ) {
-    assert && assert( _.includes( inheritance( type ), Node ) );
+type AccessibleSliderSelfOptions = {
+  startDrag?: SceneryListenerFunction;
+  endDrag?: SceneryListenerFunction;
+  drag?: SceneryListenerFunction;
+}
 
-    const proto = type.prototype;
+type AccessibleSliderOptions = AccessibleSliderSelfOptions & AccessibleValueHandlerOptions;
 
-    // mixin general value handling
-    AccessibleValueHandler.mixInto( type );
+// This pattern follows Paintable, and has the downside that typescript doesn't know that Type is a Node, but we can't
+// get that type safety because anonymous classes can't have private or protected members. See https://github.com/phetsims/scenery/issues/1340#issuecomment-1020692592
+const AccessibleSlider = <SuperType extends Constructor>( Type: SuperType ) => {
 
-    extend( proto, {
+  assert && assert( _.includes( inheritance( Type ), Node ), 'Only Node subtypes should compose Voicing' );
 
-      /**
-       * This should be called in the constructor to initialize the accessible slider features for the node.
-       *
-       * @param {Property.<number>} valueProperty
-       * @param {Property.<Range>} enabledRangeProperty
-       * @param {Property.<boolean>} enabledProperty
-       * @param {Object} [options]
-       *
-       * @protected
-       */
-      initializeAccessibleSlider: function( valueProperty, enabledRangeProperty, enabledProperty, options ) {
-        const self = this;
+  const AccessibleValueHandlerClass = AccessibleValueHandler( Type );
 
-        // members of the Node API that are used by this trait
-        assertHasProperties( this, [ 'addInputListener', 'removeInputListener' ] );
+  // Unfortunately, nothing can be private or protected in this class, see https://github.com/phetsims/scenery/issues/1340#issuecomment-1020692592
+  return class extends AccessibleValueHandlerClass {
+    _disposeAccessibleSlider: () => void;
 
-        options = merge( {
-          startDrag: _.noop, // called when a drag sequence starts
-          endDrag: _.noop, // called when a drag sequence ends
-          drag: _.noop // called once per drag event, before other modifications to the valueProperty
-        }, options );
+    constructor( valueProperty: Property<number>, rangeProperty: Property<Range>, enabledProperty: Property<boolean>,
+                 providedOptions?: AccessibleSliderOptions, ...args: any[] ) {
 
-        // AccessibleSlider uses 'drag' terminology rather than 'change' for consistency with Slider
-        assert && assert( options.startChange === undefined, 'AccessibleSlider sets startChange through options.startDrag' );
-        options.startChange = options.startDrag;
+      const options = optionize<AccessibleSliderOptions, AccessibleSliderSelfOptions, AccessibleValueHandlerOptions>( {
+        startDrag: _.noop, // called when a drag sequence starts
+        endDrag: _.noop, // called when a drag sequence ends
+        drag: _.noop // called once per drag event, before other modifications to the valueProperty
+      }, providedOptions );
 
-        assert && assert( options.endChange === undefined, 'AccessibleSlider sets endChange through options.endDrag' );
-        options.endChange = options.endDrag;
+      super( valueProperty, rangeProperty, enabledProperty, options, ...args );
 
-        assert && assert( options.onChange === undefined, 'AccessibleSlider sets onChange through options.drag' );
-        options.onChange = options.drag;
+      // members of the Node API that are used by this trait
+      assertHasProperties( this, [ 'addInputListener', 'removeInputListener' ] );
 
-        // initialize "parent" mixin
-        this.initializeAccessibleValueHandler( valueProperty, enabledRangeProperty, enabledProperty, options );
+      // AccessibleSlider uses 'drag' terminology rather than 'change' for consistency with Slider
+      assert && assert( options.startChange === undefined, 'AccessibleSlider sets startChange through options.startDrag' );
+      options.startChange = options.startDrag;
 
-        // handle all accessible event input
-        const accessibleInputListener = this.getAccessibleValueHandlerInputListener();
-        this.addInputListener( accessibleInputListener );
+      assert && assert( options.endChange === undefined, 'AccessibleSlider sets endChange through options.endDrag' );
+      options.endChange = options.endDrag;
 
-        // @private - called by disposeAccessibleSlider to prevent memory leaks
-        this._disposeAccessibleSlider = function() {
-          self.removeInputListener( accessibleInputListener );
-          self.disposeAccessibleValueHandler();
-        };
-      },
+      assert && assert( options.onChange === undefined, 'AccessibleSlider sets onChange through options.drag' );
+      options.onChange = options.drag;
 
-      /**
-       * Make the accessible slider portions of this node eligible for garbage collection. Call when disposing
-       * the type that this trait is mixed into.
-       * @public
-       */
-      disposeAccessibleSlider: function() {
-        this._disposeAccessibleSlider();
-      },
+      // handle all accessible event input
+      const accessibleInputListener = this.getAccessibleValueHandlerInputListener();
+      ( this as unknown as Node ).addInputListener( accessibleInputListener );
 
-      /**
-       * This should be called after the appropriate model dependencies have been reset.
-       * @public
-       */
-      resetAccessibleSlider: function() {
-        this.resetAccessibleValueHandler();
-      }
-    } );
-  }
+      // @private - called by disposeAccessibleSlider to prevent memory leaks
+      this._disposeAccessibleSlider = () => {
+        ( this as unknown as Node ).removeInputListener( accessibleInputListener );
+      };
+    }
+
+    /**
+     * Make the accessible slider portions of this node eligible for garbage collection. Call when disposing
+     * the type that this trait is mixed into.
+     * @public
+     */
+    dispose() {
+      this._disposeAccessibleSlider();
+      super.dispose();
+    }
+  };
 };
 
 sun.register( 'AccessibleSlider', AccessibleSlider );

@@ -154,7 +154,6 @@ class AquaRadioButton extends Voicing( Node ) {
 
     // @private
     this.disposeAquaRadioButton = () => {
-      this.disposeVoicing();
       this.removeInputListener( fireListener );
       this.removeInputListener( changeListener );
       property.unlink( pdomCheckedListener );

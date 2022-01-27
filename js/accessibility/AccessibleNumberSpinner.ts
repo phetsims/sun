@@ -23,200 +23,189 @@
 
 import CallbackTimer from '../../../axon/js/CallbackTimer.js';
 import Emitter from '../../../axon/js/Emitter.js';
+import Property from '../../../axon/js/Property.js';
+import Range from '../../../dot/js/Range.js';
 import validate from '../../../axon/js/validate.js';
 import assertHasProperties from '../../../phet-core/js/assertHasProperties.js';
-import extend from '../../../phet-core/js/extend.js';
 import inheritance from '../../../phet-core/js/inheritance.js';
-import merge from '../../../phet-core/js/merge.js';
+import optionize from '../../../phet-core/js/optionize.js';
 import Orientation from '../../../phet-core/js/Orientation.js';
-import { KeyboardUtils } from '../../../scenery/js/imports.js';
-import { Node } from '../../../scenery/js/imports.js';
+import { IInputListener, KeyboardUtils, Node, SceneryEvent } from '../../../scenery/js/imports.js';
 import sun from '../sun.js';
 import sunStrings from '../sunStrings.js';
-import AccessibleValueHandler from './AccessibleValueHandler.js';
+import AccessibleValueHandler, { AccessibleValueHandlerOptions } from './AccessibleValueHandler.js';
 
 const numberSpinnerRoleDescriptionString = sunStrings.a11y.numberSpinnerRoleDescription;
+type SceneryListenerFunction = ( event?: SceneryEvent ) => void;
+type Constructor<T = {}> = new ( ...args: any[] ) => T;
 
-const AccessibleNumberSpinner = {
+type AccessibleNumberSpinnerSelfOptions = {
+  timerDelay?: number,
+  timerInterval?: number
+}
 
-  /**
-   * Implement functionality for a number spinner.
-   * @public
-   * @trait {Node}
-   * @mixes AccessibleValueHandler
-   *
-   * @param {function} type - The type (constructor) whose prototype we'll modify.
-   */
-  mixInto: function( type ) {
-    assert && assert( _.includes( inheritance( type ), Node ) );
+type AccessibleNumberSpinnerOptions = AccessibleNumberSpinnerSelfOptions & AccessibleValueHandlerOptions;
 
-    const proto = type.prototype;
+// This pattern follows Paintable, and has the downside that typescript doesn't know that Type is a Node, but we can't
+// get that type safety because anonymous classes can't have private or protected members. See https://github.com/phetsims/scenery/issues/1340#issuecomment-1020692592
+const AccessibleNumberSpinner = <SuperType extends Constructor>( Type: SuperType ) => {
 
-    // mixin general value handling
-    AccessibleValueHandler.mixInto( type );
+  assert && assert( _.includes( inheritance( Type ), Node ), 'Only Node subtypes should compose Voicing' );
 
-    extend( proto, {
+  const AccessibleValueHandlerClass = AccessibleValueHandler( Type );
 
-      /**
-       * This should be called in the constructor to initialize the accessible input features for the node.
-       *
-       * @param {Property.<number>} valueProperty
-       * @param {Property.<Range>} enabledRangeProperty
-       * @param {Property.<boolean>} enabledProperty
-       * @param {Object} [options]
-       *
-       * @protected
-       */
-      initializeAccessibleNumberSpinner: function( valueProperty, enabledRangeProperty, enabledProperty, options ) {
-        const self = this;
+  // Unfortunately, nothing can be private or protected in this class, see https://github.com/phetsims/scenery/issues/1340#issuecomment-1020692592
+  return class extends AccessibleValueHandlerClass {
+    _callbackTimer: CallbackTimer;
+    incrementDownEmitter: Emitter<[ boolean ]>; // TODO: we want this to be @protected, https://github.com/phetsims/scenery/issues/1340
+    decrementDownEmitter: Emitter<[ boolean ]>; // TODO: we want this to be @protected, https://github.com/phetsims/scenery/issues/1340
+    _disposeAccessibleNumberSpinner: () => void;
 
-        // members of the Node API that are used by this trait
-        assertHasProperties( this, [ 'addInputListener' ] );
+    constructor( valueProperty: Property<number>, enabledRangeProperty: Property<Range>, enabledProperty: Property<boolean>, providedOptions: AccessibleNumberSpinnerOptions, ...args: any[] ) {
 
-        options = merge( {
-          timerDelay: 400, // start to fire continuously after pressing for this long (milliseconds)
-          timerInterval: 100, // fire continuously at this frequency (milliseconds),
+      const options = optionize<AccessibleNumberSpinnerOptions, AccessibleNumberSpinnerSelfOptions, AccessibleValueHandlerOptions>( {
+        timerDelay: 400, // start to fire continuously after pressing for this long (milliseconds)
+        timerInterval: 100, // fire continuously at this frequency (milliseconds),
 
-          ariaOrientation: Orientation.VERTICAL // by default, number spinners should be oriented vertically
-        }, options );
+        ariaOrientation: Orientation.VERTICAL // by default, number spinners should be oriented vertically
+      }, providedOptions );
 
-        // initialize "parent" mixin
-        this.initializeAccessibleValueHandler( valueProperty, enabledRangeProperty, enabledProperty, options );
+      super( valueProperty, enabledRangeProperty, enabledProperty, options, ...args );
 
-        // @private - manages timing must be disposed
-        this._callbackTimer = new CallbackTimer( {
-          delay: options.timerDelay,
-          interval: options.timerInterval
-        } );
+      const thisNode = this as unknown as Node;
 
-        // @protected {Emitter} emits events when increment and decrement actions occur, but only for changes
-        // of keyboardStep (not pageKeyboardStep or shiftKeyboardStep)
-        this.incrementDownEmitter = new Emitter( { parameters: [ { valueType: 'boolean' } ] } );
-        this.decrementDownEmitter = new Emitter( { parameters: [ { valueType: 'boolean' } ] } );
+      // members of the Node API that are used by this trait
+      assertHasProperties( this, [ 'addInputListener' ] );
 
-        this.setPDOMAttribute( 'aria-roledescription', numberSpinnerRoleDescriptionString );
+      // @private - manages timing must be disposed
+      this._callbackTimer = new CallbackTimer( {
+        delay: options.timerDelay,
+        interval: options.timerInterval
+      } );
 
-        // a callback that is added and removed from the timer depending on keystate
-        let downCallback = null;
-        let runningTimerCallbackEvent = null; // {Event|null}
+      // @protected {Emitter} emits events when increment and decrement actions occur, but only for changes
+      // of keyboardStep (not pageKeyboardStep or shiftKeyboardStep)
+      this.incrementDownEmitter = new Emitter( { parameters: [ { valueType: 'boolean' } ] } );
+      this.decrementDownEmitter = new Emitter( { parameters: [ { valueType: 'boolean' } ] } );
 
-        // handle all accessible event input
-        const accessibleInputListener = {
-          keydown: function( event ) {
-            if ( enabledProperty.get() ) {
+      thisNode.setPDOMAttribute( 'aria-roledescription', numberSpinnerRoleDescriptionString );
 
-              // check for relevant keys here
-              if ( KeyboardUtils.isRangeKey( event.domEvent ) ) {
+      // a callback that is added and removed from the timer depending on keystate
+      let downCallback: SceneryListenerFunction | null = null;
+      let runningTimerCallbackEvent: Event | null = null; // {Event|null}
 
-                // If the meta key is down we will not even call the keydown listener of the supertype, so we need
-                // to be sure that default behavior is prevented so we don't receive `input` and `change` events.
-                // See AccessibleValueHandler.handleInput for information on these events and why we don't want
-                // to change in response to them.
-                event.domEvent.preventDefault();
+      // handle all accessible event input
+      const accessibleInputListener: IInputListener = {
+        keydown: ( event: SceneryEvent ) => {
+          if ( enabledProperty.get() ) {
 
-                // When the meta key is down Mac will not send keyup events so do not change values or add timer
-                // listeners because they will never be removed since we fail to get a keyup event. See
-                if ( !event.domEvent.metaKey ) {
-                  if ( !self._callbackTimer.isRunning() ) {
-                    self.accessibleNumberSpinnerHandleKeyDown( event );
+            // check for relevant keys here
+            if ( KeyboardUtils.isRangeKey( event.domEvent ) ) {
 
-                    downCallback = self.accessibleNumberSpinnerHandleKeyDown.bind( self, event );
-                    runningTimerCallbackEvent = event.domEvent;
-                    self._callbackTimer.addCallback( downCallback );
-                    self._callbackTimer.start();
-                  }
+              // TODO: How to specify subtypes of DOMEvents, https://github.com/phetsims/scenery/issues/1340
+              const domEvent = event.domEvent! as Event & { metaKey: boolean };
+
+              // If the meta key is down we will not even call the keydown listener of the supertype, so we need
+              // to be sure that default behavior is prevented so we don't receive `input` and `change` events.
+              // See AccessibleValueHandler.handleInput for information on these events and why we don't want
+              // to change in response to them.
+              domEvent.preventDefault();
+
+              // When the meta key is down Mac will not send keyup events so do not change values or add timer
+              // listeners because they will never be removed since we fail to get a keyup event. See
+              if ( !domEvent.metaKey ) {
+                if ( !this._callbackTimer.isRunning() ) {
+                  this.accessibleNumberSpinnerHandleKeyDown( event );
+
+                  downCallback = this.accessibleNumberSpinnerHandleKeyDown.bind( this, event );
+                  runningTimerCallbackEvent = domEvent;
+                  this._callbackTimer.addCallback( downCallback );
+                  this._callbackTimer.start();
                 }
               }
             }
-          },
-          keyup: function( event ) {
+          }
+        },
+        keyup: ( event: SceneryEvent ) => {
 
-            const key = KeyboardUtils.getEventCode( event.domEvent );
+          const key = KeyboardUtils.getEventCode( event.domEvent );
 
-            if ( KeyboardUtils.isRangeKey( event.domEvent ) ) {
-              if ( runningTimerCallbackEvent && key === KeyboardUtils.getEventCode( runningTimerCallbackEvent ) ) {
-                self.emitKeyState( event.domEvent, false );
-                self._callbackTimer.stop( false );
-                self._callbackTimer.removeCallback( downCallback );
-                downCallback = null;
-                runningTimerCallbackEvent = null;
-              }
-
-              self.handleKeyUp( event );
-            }
-          },
-          blur: function( event ) {
-
-            // if a key is currently down when focus leaves the spinner, stop callbacks and emit that the
-            // key is up
-            if ( downCallback ) {
-              assert && assert( runningTimerCallbackEvent !== null, 'key should be down if running downCallback' );
-
-              self.emitKeyState( runningTimerCallbackEvent, false );
-              self._callbackTimer.stop( false );
-              self._callbackTimer.removeCallback( downCallback );
+          if ( KeyboardUtils.isRangeKey( event.domEvent ) ) {
+            if ( runningTimerCallbackEvent && key === KeyboardUtils.getEventCode( runningTimerCallbackEvent ) ) {
+              this.emitKeyState( event.domEvent!, false );
+              this._callbackTimer.stop( false );
+              this._callbackTimer.removeCallback( downCallback );
+              downCallback = null;
+              runningTimerCallbackEvent = null;
             }
 
-            self.handleBlur( event );
-          },
-          input: this.handleInput.bind( this ),
-          change: this.handleChange.bind( this )
-        };
-        this.addInputListener( accessibleInputListener );
+            this.handleKeyUp( event );
+          }
+        },
+        blur: ( event: SceneryEvent ) => {
 
-        // @private - called by disposeAccessibleNumberSpinner to prevent memory leaks
-        this._disposeAccessibleNumberSpinner = function() {
-          self._callbackTimer.dispose();
+          // if a key is currently down when focus leaves the spinner, stop callbacks and emit that the
+          // key is up
+          if ( downCallback ) {
+            assert && assert( runningTimerCallbackEvent !== null, 'key should be down if running downCallback' );
 
-          // emitters owned by this instance, can be disposed here
-          self.incrementDownEmitter.dispose();
-          self.decrementDownEmitter.dispose();
+            this.emitKeyState( runningTimerCallbackEvent!, false );
+            this._callbackTimer.stop( false );
+            this._callbackTimer.removeCallback( downCallback );
+          }
 
-          self.removeInputListener( accessibleInputListener );
-          self.disposeAccessibleValueHandler();
-        };
-      },
+          this.handleBlur( event );
+        },
+        input: this.handleInput.bind( this ),
+        change: this.handleChange.bind( this )
+      };
+      thisNode.addInputListener( accessibleInputListener );
 
-      /**
-       * Handle the keydown event and emit events related to the user interaction. Ideally, this would
-       * override AccessibleValueHandler.handleKeyDown, but overriding is not supported with PhET Trait pattern.
-       * @private
-       *
-       * @param {Event} event
-       */
-      accessibleNumberSpinnerHandleKeyDown: function( event ) {
-        this.handleKeyDown( event );
-        this.emitKeyState( event.domEvent, true );
-      },
+      this._disposeAccessibleNumberSpinner = () => {
+        this._callbackTimer.dispose();
 
-      /**
-       * Emit events related to the keystate of the spinner. Typically used to style the spinner during keyboard
-       * interaction.
-       * @private
-       *
-       * @param {Event} domEvent - the code of the key changing state
-       * @param {boolean} isDown - whether or not event was triggered from down or up keys
-       */
-      emitKeyState: function( domEvent, isDown ) {
-        validate( domEvent, { valueType: Event } );
-        if ( KeyboardUtils.isAnyKeyEvent( domEvent, [ KeyboardUtils.KEY_UP_ARROW, KeyboardUtils.KEY_RIGHT_ARROW ] ) ) {
-          this.incrementDownEmitter.emit( isDown );
-        }
-        else if ( KeyboardUtils.isAnyKeyEvent( domEvent, [ KeyboardUtils.KEY_DOWN_ARROW, KeyboardUtils.KEY_LEFT_ARROW ] ) ) {
-          this.decrementDownEmitter.emit( isDown );
-        }
-      },
+        // emitters owned by this instance, can be disposed here
+        this.incrementDownEmitter.dispose();
+        this.decrementDownEmitter.dispose();
 
-      /**
-       * Make the accessibility related aspects of this node eligible for garbage collection. Call when disposing
-       * the type that this trait is mixed into.
-       * @public
-       */
-      disposeAccessibleNumberSpinner: function() {
-        this._disposeAccessibleNumberSpinner();
+        thisNode.removeInputListener( accessibleInputListener );
+      };
+    }
+
+    /**
+     * Handle the keydown event and emit events related to the user interaction. Ideally, this would
+     * override AccessibleValueHandler.handleKeyDown, but overriding is not supported with PhET Trait pattern.
+     * TODO: we want this to be @private, https://github.com/phetsims/scenery/issues/1340
+     */
+    accessibleNumberSpinnerHandleKeyDown( event: SceneryEvent ) {
+      assert && assert( event.domEvent, 'must have a domEvent' );
+      this.handleKeyDown( event );
+      this.emitKeyState( event.domEvent!, true );
+    }
+
+    /**
+     * Emit events related to the keystate of the spinner. Typically used to style the spinner during keyboard
+     * interaction.
+     * TODO: we want this to be @private, https://github.com/phetsims/scenery/issues/1340
+     *
+     * @param domEvent - the code of the key changing state
+     * @param isDown - whether or not event was triggered from down or up keys
+     */
+    emitKeyState( domEvent: Event, isDown: boolean ) {
+      validate( domEvent, { valueType: Event } );
+      if ( KeyboardUtils.isAnyKeyEvent( domEvent, [ KeyboardUtils.KEY_UP_ARROW, KeyboardUtils.KEY_RIGHT_ARROW ] ) ) {
+        this.incrementDownEmitter.emit( isDown );
       }
-    } );
-  }
+      else if ( KeyboardUtils.isAnyKeyEvent( domEvent, [ KeyboardUtils.KEY_DOWN_ARROW, KeyboardUtils.KEY_LEFT_ARROW ] ) ) {
+        this.decrementDownEmitter.emit( isDown );
+      }
+    }
+
+    dispose() {
+      this._disposeAccessibleNumberSpinner();
+      super.dispose && super.dispose();
+    }
+  };
 };
 
 sun.register( 'AccessibleNumberSpinner', AccessibleNumberSpinner );

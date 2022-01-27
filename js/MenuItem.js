@@ -146,7 +146,6 @@ class MenuItem extends Voicing( Node ) {
       if ( options.checkedProperty ) {
         options.checkedProperty.unlink( checkListener );
       }
-      this.disposeVoicing();
     };
   }
 

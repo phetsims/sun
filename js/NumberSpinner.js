@@ -9,6 +9,7 @@
 
 import InstanceRegistry from '../../phet-core/js/documentation/InstanceRegistry.js';
 import merge from '../../phet-core/js/merge.js';
+import EnabledProperty from '../../axon/js/EnabledProperty.js';
 import NumberDisplay from '../../scenery-phet/js/NumberDisplay.js';
 import { Node, SceneryConstants } from '../../scenery/js/imports.js';
 import Tandem from '../../tandem/js/Tandem.js';
@@ -24,7 +25,7 @@ const ARROWS_POSITION_VALUES = [
   'bothBottom' // both arrow buttons below the value
 ];
 
-class NumberSpinner extends Node {
+class NumberSpinner extends AccessibleNumberSpinner( Node ) {
 
   /**
    * @param {Property.<number>} numberProperty value, must be an integer
@@ -63,6 +64,9 @@ class NumberSpinner extends Node {
       disabledOpacity: SceneryConstants.DISABLED_OPACITY,
       xSpacing: 5,
       ySpacing: 3,
+
+      // TODO: could this blow away some enabledPropertyOptions somewhere? https://github.com/phetsims/scenery/issues/1340
+      enabledProperty: new EnabledProperty( true ),
 
       // NumberDisplay options
       numberDisplayOptions: {
@@ -213,7 +217,16 @@ class NumberSpinner extends Node {
     assert && assert( !options.children, 'decoration not supported' );
     options.children = [ numberDisplay, incrementButton, decrementButton ];
 
-    super();
+    // pdom - NumberSpinner uses AccessibleValueHandler for accessibility, but it was decided that keyboardStep
+    // and shiftKeyboardStep should have the same behavior as the NumberSpinner ArrowButtons AND the ArrowButtons
+    // should look depressed when interacting with those keys. To accomplish this we actually press the ArrowButtons
+    // in response to input with those keys. keyboardStep and shiftKeyboardStep are set to zero so the value isn't
+    // modified again by AccessibleValueHandler.
+    assert && assert( !options.keyboardStep, 'NumberSpinner sets keyboardStep, it will be the same as deltaValue' );
+    assert && assert( !options.shiftKeyboardStep, 'NumberSpinner sets shiftKeyboardStep, it will be the same as deltaValue' );
+    options.keyboardStep = 0;
+    options.shiftKeyboardStep = 0;
+    super( numberProperty, rangeProperty, options.enabledProperty, options );
 
     // enable/disable arrow buttons
     const updateEnabled = () => {
@@ -238,17 +251,6 @@ class NumberSpinner extends Node {
     };
     rangeProperty.link( rangeObserver );
 
-    // pdom - NumberSpinner uses AccessibleValueHandler for accessibility, but it was decided that keyboardStep
-    // and shiftKeyboardStep should have the same behavior as the NumberSpinner ArrowButtons AND the ArrowButtons
-    // should look depressed when interacting with those keys. To accomplish this we actually press the ArrowButtons
-    // in response to input with those keys. keyboardStep and shiftKeyboardStep are set to zero so the value isn't
-    // modified again by AccessibleValueHandler.
-    assert && assert( !options.keyboardStep, 'NumberSpinner sets keyboardStep, it will be the same as deltaValue' );
-    assert && assert( !options.shiftKeyboardStep, 'NumberSpinner sets shiftKeyboardStep, it will be the same as deltaValue' );
-    options.keyboardStep = 0;
-    options.shiftKeyboardStep = 0;
-    this.initializeAccessibleNumberSpinner( numberProperty, rangeProperty, this.enabledProperty, options );
-
     // pdom - click arrow buttons on press of arrow keys so that the Property value changes by deltaValue
     // and the buttons look depressed
     const increasedListener = function( isDown ) { isDown && incrementButton.pdomClick(); };
@@ -272,8 +274,6 @@ class NumberSpinner extends Node {
       rangeProperty.unlink( rangeObserver );
     };
 
-    this.mutate( options );
-
     // Create a link to associated Property, so it's easier to find in Studio. Must be after instrumentation
     this.addLinkedElement( numberProperty, {
       tandem: options.tandem.createTandem( 'property' )
@@ -286,12 +286,9 @@ class NumberSpinner extends Node {
   // @public Ensures that this node is eligible for GC.
   dispose() {
     this.disposeNumberSpinner();
-    this.disposeAccessibleNumberSpinner();
     super.dispose();
   }
 }
-
-AccessibleNumberSpinner.mixInto( NumberSpinner );
 
 sun.register( 'NumberSpinner', NumberSpinner );
 export default NumberSpinner;
