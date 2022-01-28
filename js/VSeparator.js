@@ -19,7 +19,8 @@ class VSeparator extends Line {
   constructor( height, options ) {
 
     options = merge( {
-      stroke: 'rgb( 100, 100, 100 )'
+      stroke: 'rgb( 100, 100, 100 )',
+      strokePickable: true
     }, options );
 
     super( 0, 0, 0, height, options );

@@ -29,7 +29,7 @@ const DEFAULT_OPTIONS = {
   yMargin: 5,
   cornerRadius: 10, // radius of the rounded corners on the background
   resize: true, // dynamically resize when content bounds change
-  backgroundPickable: false,
+  backgroundPickable: true,
 
   excludeInvisibleChildrenFromBounds: true,
 
