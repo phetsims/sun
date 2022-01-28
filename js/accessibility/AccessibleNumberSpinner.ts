@@ -23,7 +23,6 @@
 
 import CallbackTimer from '../../../axon/js/CallbackTimer.js';
 import Emitter from '../../../axon/js/Emitter.js';
-import Property from '../../../axon/js/Property.js';
 import validate from '../../../axon/js/validate.js';
 import assertHasProperties from '../../../phet-core/js/assertHasProperties.js';
 import inheritance from '../../../phet-core/js/inheritance.js';
@@ -62,9 +61,10 @@ const AccessibleNumberSpinner = <SuperType extends Constructor>( Type: SuperType
 
     constructor( ...args: any[] ) {
 
-      const enabledProperty = args[ 2 ] as Property<boolean>;
-      assert && assert( enabledProperty instanceof Property ); // TODO: how to allow a runtime assertion plus using IProperty type case? https://github.com/phetsims/scenery/issues/1340
-      const providedOptions = args[ 3 ] as AccessibleValueHandlerOptions | undefined;
+      const providedOptions = args[ 0 ] as AccessibleValueHandlerOptions;
+
+      assert && providedOptions && assert( Object.getPrototypeOf( providedOptions ) === Object.prototype,
+        'Extra prototype on AccessibleSlider options object is a code smell (or probably a bug)' );
 
       const options = optionize<AccessibleNumberSpinnerOptions, AccessibleNumberSpinnerSelfOptions, AccessibleValueHandlerOptions>( {
         timerDelay: 400, // start to fire continuously after pressing for this long (milliseconds)
@@ -100,7 +100,7 @@ const AccessibleNumberSpinner = <SuperType extends Constructor>( Type: SuperType
       // handle all accessible event input
       const accessibleInputListener: IInputListener = {
         keydown: ( event: SceneryEvent ) => {
-          if ( enabledProperty.get() ) {
+          if ( ( this as unknown as Node ).enabledProperty.get() ) {
 
             // check for relevant keys here
             if ( KeyboardUtils.isRangeKey( event.domEvent ) ) {

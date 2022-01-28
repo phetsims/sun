@@ -9,7 +9,6 @@
 
 import InstanceRegistry from '../../phet-core/js/documentation/InstanceRegistry.js';
 import merge from '../../phet-core/js/merge.js';
-import EnabledProperty from '../../axon/js/EnabledProperty.js';
 import NumberDisplay from '../../scenery-phet/js/NumberDisplay.js';
 import { Node, SceneryConstants } from '../../scenery/js/imports.js';
 import Tandem from '../../tandem/js/Tandem.js';
@@ -65,14 +64,15 @@ class NumberSpinner extends AccessibleNumberSpinner( Node ) {
       xSpacing: 5,
       ySpacing: 3,
 
-      // TODO: could this blow away some enabledPropertyOptions somewhere? https://github.com/phetsims/scenery/issues/1340
-      enabledProperty: new EnabledProperty( true ),
-
       // NumberDisplay options
       numberDisplayOptions: {
         cornerRadius: 5,
         backgroundStroke: 'black'
       },
+
+      // AccessibleNumberSpinner options
+      valueProperty: numberProperty,
+      enabledRangeProperty: rangeProperty,
 
       // arrow button pointer areas
       touchAreaXDilation: 0,
@@ -226,7 +226,7 @@ class NumberSpinner extends AccessibleNumberSpinner( Node ) {
     assert && assert( !options.shiftKeyboardStep, 'NumberSpinner sets shiftKeyboardStep, it will be the same as deltaValue' );
     options.keyboardStep = 0;
     options.shiftKeyboardStep = 0;
-    super( numberProperty, rangeProperty, options.enabledProperty, options );
+    super( options );
 
     // enable/disable arrow buttons
     const updateEnabled = () => {

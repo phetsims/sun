@@ -28,6 +28,7 @@ import sun from '../sun.js';
 import optionize, { Defaults } from '../../../phet-core/js/optionize.js';
 import Multilink from '../../../axon/js/Multilink.js';
 import UtteranceQueue from '../../../utterance-queue/js/UtteranceQueue.js';
+import IProperty from '../../../axon/js/IProperty.js';
 
 // constants
 const DEFAULT_TAG_NAME = 'input';
@@ -59,6 +60,8 @@ type VoicingOnChangeResponseOptions = {
 };
 
 type AccessibleValueHandlerSelfOptions = {
+  valueProperty: IProperty<number>;
+  enabledRangeProperty: IProperty<Range>;
 
   startChange?: SceneryListenerFunction;
   endChange?: SceneryListenerFunction;
@@ -96,9 +99,9 @@ const AccessibleValueHandler = <SuperType extends Constructor>( Type: SuperType 
 
   // Unfortunately, nothing can be private or protected in this class, see https://github.com/phetsims/scenery/issues/1340#issuecomment-1020692592
   return class extends VoicingClass {
-    _valueProperty: Property<number>;
-    _enabledRangeProperty: Property<Range>;
-    _accessibleValueHandlerEnabledProperty: Property<boolean>;
+    _valueProperty: IProperty<number>;
+    _enabledRangeProperty: IProperty<Range>;
+    _accessibleValueHandlerEnabledProperty: IProperty<boolean>;
     _startChange: SceneryListenerFunction;
     _onChange: SceneryListenerFunction;
     _endChange: SceneryListenerFunction;
@@ -132,17 +135,11 @@ const AccessibleValueHandler = <SuperType extends Constructor>( Type: SuperType 
 
     constructor( ...args: any[] ) {
 
-      const valueProperty = args[ 0 ] as Property<number>;
-      assert && assert( valueProperty instanceof Property );
-      const enabledRangeProperty = args[ 1 ] as Property<Range>;
-      assert && assert( enabledRangeProperty instanceof Property );
-      const enabledProperty = args[ 2 ] as Property<boolean>;
-      assert && assert( enabledProperty instanceof Property );
-      const providedOptions = args[ 3 ] as AccessibleValueHandlerOptions | undefined;
+      const providedOptions = args[ 0 ] as AccessibleValueHandlerOptions;
 
-      super( ...args.slice( 4 ) as any[] );
-
-      const thisNode = this as unknown as Node;
+      assert && assert( providedOptions.enabledRangeProperty, 'enabledRangeProperty is a required option' );
+      assert && assert( providedOptions.valueProperty, 'valueProperty is a required option' );
+      const enabledRangeProperty = providedOptions.enabledRangeProperty;
 
       // if rounding to keyboard step, keyboardStep must be defined so values aren't skipped and the slider
       // doesn't get stuck while rounding to the nearest value, see https://github.com/phetsims/sun/issues/410
@@ -150,8 +147,6 @@ const AccessibleValueHandler = <SuperType extends Constructor>( Type: SuperType 
         assert( providedOptions.keyboardStep, 'rounding to keyboardStep, define appropriate keyboardStep to round to' );
       }
 
-      // members of the Node API that are used by this trait
-      assertHasProperties( this, [ 'mutate', 'inputValue', 'setPDOMAttribute' ] );
 
       const defaults: Defaults<AccessibleValueHandlerSelfOptions, NodeOptions> = {
 
@@ -270,18 +265,25 @@ const AccessibleValueHandler = <SuperType extends Constructor>( Type: SuperType 
       // TODO: how to handle voicingOptions, https://github.com/phetsims/scenery/issues/1340
       const options = optionize<AccessibleValueHandlerOptions, AccessibleValueHandlerSelfOptions, NodeOptions>( {}, defaults, providedOptions );
 
+      // TODO: is typescript actually preventing this from being provided in a mixin? https://github.com/phetsims/scenery/issues/1340
       // cannot be set by client
       options.tagName = DEFAULT_TAG_NAME;
       options.inputType = 'range';
 
-      // TODO: does accessibleValueHandler have the right to do this? https://github.com/phetsims/scenery/issues/1340
-      ( this as unknown as Node ).mutate( options );
+      args[ 0 ] = options;
+      super( ...args );
 
-      this._valueProperty = valueProperty;
+      const thisNode = this as unknown as Node;
+
+      // members of the Node API that are used by this trait
+      assertHasProperties( this, [ 'inputValue', 'setPDOMAttribute' ] );
+
+      this._valueProperty = options.valueProperty;
 
       this._enabledRangeProperty = enabledRangeProperty;
 
-      this._accessibleValueHandlerEnabledProperty = enabledProperty;
+      // TODO: remove this pointer, https://github.com/phetsims/scenery/issues/1340
+      this._accessibleValueHandlerEnabledProperty = thisNode.enabledProperty;
 
       this._startChange = options.startChange;
 
@@ -315,7 +317,7 @@ const AccessibleValueHandler = <SuperType extends Constructor>( Type: SuperType 
 
       // The Property value when an interaction starts, so it can be used as the "old" value
       // when generating a context response at the end of an interaction with a11yCreateContextResponseAlert.
-      this.valueOnStart = valueProperty.value;
+      this.valueOnStart = this._valueProperty.value;
 
       this.a11yCreateContextResponseAlert = options.a11yCreateContextResponseAlert;
 
@@ -414,7 +416,7 @@ const AccessibleValueHandler = <SuperType extends Constructor>( Type: SuperType 
      * changes. Use this method to set the dependency Properties for this value handler. This will blow away the
      * previous list (like Node.children).
      */
-    setA11yDependencies( dependencies: Property<any>[] ) {
+    setA11yDependencies( dependencies: IProperty<any>[] ) {
       assert && assert( Array.isArray( dependencies ) );
       assert && assert( dependencies.indexOf( this._valueProperty ) === -1,
         'The value Property is already a dependency, and does not need to be added to this list' );

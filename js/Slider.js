@@ -196,7 +196,10 @@ class Slider extends AccessibleSlider( Node ) {
     assert && assert( !options.panTargetNode, 'Slider sets its own panTargetNode' );
     options.panTargetNode = thumb;
 
-    super( valueProperty, options.enabledRangeProperty, options.enabledProperty, options );
+    assert && assert( !options.valueProperty, 'Slider sets its own valueProperty' );
+    options.valueProperty = valueProperty;
+
+    super( options );
 
     // @private {Orientation}
     this.orientation = options.orientation;

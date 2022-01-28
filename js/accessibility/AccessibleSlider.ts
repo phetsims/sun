@@ -45,9 +45,10 @@ const AccessibleSlider = <SuperType extends Constructor>( Type: SuperType ) => {
 
     constructor( ...args: any[] ) {
 
-      assert && assert( args.length >= 3, 'three args needed, then options as the fourth' );
-      const providedOptions = args[ 3 ] as AccessibleSliderOptions;
+      const providedOptions = args[ 0 ] as AccessibleSliderOptions;
 
+      assert && providedOptions && assert( Object.getPrototypeOf( providedOptions ) === Object.prototype,
+        'Extra prototype on AccessibleSlider options object is a code smell (or probably a bug)' );
 
       const options = optionize<AccessibleSliderOptions, AccessibleSliderSelfOptions, AccessibleValueHandlerOptions>( {
         startDrag: _.noop, // called when a drag sequence starts
