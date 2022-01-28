@@ -31,13 +31,15 @@ type AccessibleSliderSelfOptions = {
 
 type AccessibleSliderOptions = AccessibleSliderSelfOptions & AccessibleValueHandlerOptions;
 
-// This pattern follows Paintable, and has the downside that typescript doesn't know that Type is a Node, but we can't
-// get that type safety because anonymous classes can't have private or protected members. See https://github.com/phetsims/scenery/issues/1340#issuecomment-1020692592
-const AccessibleSlider = <SuperType extends Constructor>( Type: SuperType ) => {
+/**
+ * @param Type
+ * @param optionsArgPosition - zero-indexed number that the options argument is provided at
+ */
+const AccessibleSlider = <SuperType extends Constructor>( Type: SuperType, optionsArgPosition: number ) => {
 
   assert && assert( _.includes( inheritance( Type ), Node ), 'Only Node subtypes should compose Voicing' );
 
-  const AccessibleValueHandlerClass = AccessibleValueHandler( Type );
+  const AccessibleValueHandlerClass = AccessibleValueHandler( Type, optionsArgPosition );
 
   // Unfortunately, nothing can be private or protected in this class, see https://github.com/phetsims/scenery/issues/1340#issuecomment-1020692592
   return class extends AccessibleValueHandlerClass {
@@ -45,7 +47,7 @@ const AccessibleSlider = <SuperType extends Constructor>( Type: SuperType ) => {
 
     constructor( ...args: any[] ) {
 
-      const providedOptions = args[ 0 ] as AccessibleSliderOptions;
+      const providedOptions = args[ optionsArgPosition ] as AccessibleSliderOptions;
 
       assert && providedOptions && assert( Object.getPrototypeOf( providedOptions ) === Object.prototype,
         'Extra prototype on AccessibleSlider options object is a code smell (or probably a bug)' );

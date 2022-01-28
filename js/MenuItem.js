@@ -37,7 +37,7 @@ const RIGHT_X_MARGIN = 5;
 const Y_MARGIN = 3;
 const CORNER_RADIUS = 5;
 
-class MenuItem extends Voicing( Node ) {
+class MenuItem extends Voicing( Node, 0 ) {
   /**
    * @param {Number} width - the width of the menu item
    * @param {Number} height - the height of the menu item

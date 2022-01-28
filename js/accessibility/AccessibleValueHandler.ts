@@ -90,12 +90,14 @@ type AccessibleValueHandlerOptions = AccessibleValueHandlerSelfOptions & Omit<No
 // TODO: factor this out somewhere, https://github.com/phetsims/scenery/issues/1340
 type Constructor<T = {}> = new ( ...args: any[] ) => T;
 
-// This pattern follows Paintable, and has the downside that typescript doesn't know that Type is a Node, but we can't
-// get that type safety because anonymous classes can't have private or protected members. See https://github.com/phetsims/scenery/issues/1340#issuecomment-1020692592
-const AccessibleValueHandler = <SuperType extends Constructor>( Type: SuperType ) => {
+/**
+ * @param Type
+ * @param optionsArgPosition - zero-indexed number that the options argument is provided at
+ */
+const AccessibleValueHandler = <SuperType extends Constructor>( Type: SuperType, optionsArgPosition: number ) => {
   assert && assert( _.includes( inheritance( Type ), Node ), 'Only Node subtypes should compose AccessibleValueHandler' );
 
-  const VoicingClass = Voicing( Type );
+  const VoicingClass = Voicing( Type, optionsArgPosition );
 
   // Unfortunately, nothing can be private or protected in this class, see https://github.com/phetsims/scenery/issues/1340#issuecomment-1020692592
   return class extends VoicingClass {
@@ -135,8 +137,9 @@ const AccessibleValueHandler = <SuperType extends Constructor>( Type: SuperType 
 
     constructor( ...args: any[] ) {
 
-      const providedOptions = args[ 0 ] as AccessibleValueHandlerOptions;
+      const providedOptions = args[ optionsArgPosition ] as AccessibleValueHandlerOptions;
 
+      assert && assert( providedOptions, 'providedOptions has required options' );
       assert && assert( providedOptions.enabledRangeProperty, 'enabledRangeProperty is a required option' );
       assert && assert( providedOptions.valueProperty, 'valueProperty is a required option' );
       const enabledRangeProperty = providedOptions.enabledRangeProperty;
@@ -270,7 +273,7 @@ const AccessibleValueHandler = <SuperType extends Constructor>( Type: SuperType 
       options.tagName = DEFAULT_TAG_NAME;
       options.inputType = 'range';
 
-      args[ 0 ] = options;
+      args[ optionsArgPosition ] = options;
       super( ...args );
 
       const thisNode = this as unknown as Node;
@@ -557,9 +560,9 @@ const AccessibleValueHandler = <SuperType extends Constructor>( Type: SuperType 
 
       // TODO: How to specify subtypes of DOMEvents, https://github.com/phetsims/scenery/issues/1340
       const domEvent = event.domEvent as Event & { shiftKey: boolean, metaKey: boolean };
-      const key = KeyboardUtils.getEventCode( domEvent )!;
 
-      assert && assert( key, 'should not be null on this type of domEvent' );
+      // TODO: What if key is null? https://github.com/phetsims/scenery/issues/1340
+      const key = KeyboardUtils.getEventCode( domEvent )!;
 
       this._shiftKey = domEvent.shiftKey;
 

@@ -18,7 +18,7 @@ import Tandem from '../../tandem/js/Tandem.js';
 import ComboBoxItem from './ComboBoxItem.js';
 import sun from './sun.js';
 
-class ComboBoxListItemNode extends Voicing( Node ) {
+class ComboBoxListItemNode extends Voicing( Node, 0 ) {
 
   /**
    * @param {ComboBoxItem} item

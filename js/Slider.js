@@ -36,7 +36,7 @@ const VERTICAL_ROTATION = -Math.PI / 2;
 const DEFAULT_HORIZONTAL_TRACK_SIZE = new Dimension2( 100, 5 );
 const DEFAULT_HORIZONTAL_THUMB_SIZE = new Dimension2( 17, 34 );
 
-class Slider extends AccessibleSlider( Node ) {
+class Slider extends AccessibleSlider( Node, 0 ) {
 
   /**
    * @param {Property.<number>} valueProperty

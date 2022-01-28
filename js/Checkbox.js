@@ -34,7 +34,7 @@ const SHAPE_MATRIX = Matrix3.createFromPool( 0.025, 0, 0, 0, -0.025, 0, 0, 0, 1 
 const uncheckedShape = checkEmptySolidShape.transformed( SHAPE_MATRIX );
 const checkedShape = checkSquareOSolidShape.transformed( SHAPE_MATRIX );
 
-class Checkbox extends Voicing( Node ) {
+class Checkbox extends Voicing( Node, 0 ) {
 
   /**
    * @param {Node} content

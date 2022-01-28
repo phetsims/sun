@@ -24,7 +24,7 @@ const ARROWS_POSITION_VALUES = [
   'bothBottom' // both arrow buttons below the value
 ];
 
-class NumberSpinner extends AccessibleNumberSpinner( Node ) {
+class NumberSpinner extends AccessibleNumberSpinner( Node, 0 ) {
 
   /**
    * @param {Property.<number>} numberProperty value, must be an integer

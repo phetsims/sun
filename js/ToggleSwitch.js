@@ -29,7 +29,7 @@ import sun from './sun.js';
 // constants
 const DEFAULT_SIZE = new Dimension2( 60, 30 );
 
-class ToggleSwitch extends Voicing( Node ) {
+class ToggleSwitch extends Voicing( Node, 0 ) {
 
   /**
    * @param {Property.<*>} property
