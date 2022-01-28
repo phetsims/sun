@@ -81,8 +81,8 @@ type AccessibleValueHandlerSelfOptions = {
   contextResponsePerValueChangeDelay?: number;
   contextResponseMaxDelay?: number;
   a11yDependencies?: Property<any>[];
-  voicingCreateObjectResponse?: () => void;
-  voicingCreateContextResponse?: () => void;
+  voicingCreateObjectResponse?: ( () => null | string ) | null;
+  voicingCreateContextResponse?: ( () => null | string ) | null;
 };
 
 type AccessibleValueHandlerOptions = AccessibleValueHandlerSelfOptions & Omit<NodeOptions, 'tagName' | 'inputType'>;
@@ -131,8 +131,8 @@ const AccessibleValueHandler = <SuperType extends Constructor>( Type: SuperType,
     _dependenciesMultilink: Multilink<any[]> | null;
     _a11yRepeatEqualValueText: boolean;
     timesChangedBeforeAlerting: number; // TODO: use underscore so that there is a "private" convention. https://github.com/phetsims/scenery/issues/1340
-    _voicingCreateContextResponse: ( () => void );
-    _voicingCreateObjectResponse: ( () => void );
+    _voicingCreateContextResponse: ( () => null | string ) | null;
+    _voicingCreateObjectResponse: ( () => null | string ) | null;
     _disposeAccessibleValueHandler: () => void;
 
     constructor( ...args: any[] ) {
@@ -257,8 +257,8 @@ const AccessibleValueHandler = <SuperType extends Constructor>( Type: SuperType,
         a11yDependencies: [],
 
         // Returning null signifies that there is no response
-        voicingCreateObjectResponse: () => null,
-        voicingCreateContextResponse: () => null,
+        voicingCreateObjectResponse: null,
+        voicingCreateContextResponse: null,
 
         // parent options that we must provide a default to use
         tagName: null,
@@ -366,10 +366,11 @@ const AccessibleValueHandler = <SuperType extends Constructor>( Type: SuperType,
       // same response.
       this.timesChangedBeforeAlerting = 0;
 
-      this.setA11yDependencies( options.a11yDependencies );
-
       this._voicingCreateObjectResponse = options.voicingCreateObjectResponse;
       this._voicingCreateContextResponse = options.voicingCreateContextResponse;
+
+      // be called last, after options have been set to `this`.
+      this.setA11yDependencies( options.a11yDependencies );
 
       // listeners, must be unlinked in dispose
       const enabledRangeObserver = ( enabledRange: Range ) => {
@@ -433,6 +434,10 @@ const AccessibleValueHandler = <SuperType extends Constructor>( Type: SuperType,
       this._dependenciesMultilink = Property.multilink<any[]>( dependencies.concat( [ this._valueProperty ] ), () => {
 
         this.updateAriaValueText( this.oldValue );
+
+        if ( this._voicingCreateObjectResponse ) {
+          this.voicingObjectResponse = this._voicingCreateObjectResponse();
+        }
         this.oldValue = this._valueProperty.value;
       } );
     }
@@ -517,6 +522,10 @@ const AccessibleValueHandler = <SuperType extends Constructor>( Type: SuperType,
       this.timesChangedBeforeAlerting = 0;
       // on reset, make sure that the PDOM descriptions are completely up to date.
       this.updateAriaValueText( null );
+
+      if ( this._voicingCreateObjectResponse ) {
+        this.voicingObjectResponse = this._voicingCreateObjectResponse();
+      }
     }
 
     /**
@@ -1002,18 +1011,21 @@ const AccessibleValueHandler = <SuperType extends Constructor>( Type: SuperType,
 
       if ( !options.onlyOnValueChange || this.valueOnStart !== this._valueProperty.value ) {
 
-        // @ts-ignore
-        this.voicingObjectResponse = this._voicingCreateObjectResponse();
-        // @ts-ignore
-        this.voicingContextResponse = this._voicingCreateContextResponse();
+        if ( this._voicingCreateObjectResponse && this._voicingCreateContextResponse ) {
 
-        // @ts-ignore
-        this.voicingSpeakResponse( {
-          nameResponse: null,
-          objectResponse: options.withObjectResponse ? this.voicingObjectResponse : null,
-          contextResponse: this.voicingContextResponse,
-          hintResponse: null // no hint, there was just a successful interaction
-        } );
+          // @ts-ignore
+          this.voicingObjectResponse = this._voicingCreateObjectResponse();
+          // @ts-ignore
+          this.voicingContextResponse = this._voicingCreateContextResponse();
+
+          // @ts-ignore
+          this.voicingSpeakResponse( {
+            nameResponse: null,
+            objectResponse: options.withObjectResponse ? this.voicingObjectResponse : null,
+            contextResponse: this.voicingContextResponse,
+            hintResponse: null // no hint, there was just a successful interaction
+          } );
+        }
       }
     }
 
@@ -1023,16 +1035,18 @@ const AccessibleValueHandler = <SuperType extends Constructor>( Type: SuperType,
      */
     voicingOnChangeResponse( providedOptions?: VoicingOnChangeResponseOptions ) {
 
-      // @ts-ignore
-      this.voicingObjectResponse = this._voicingCreateObjectResponse();
+      if ( this._voicingCreateObjectResponse ) {
+        // @ts-ignore
+        this.voicingObjectResponse = this._voicingCreateObjectResponse();
 
-      const options = optionize<VoicingOnChangeResponseOptions, VoicingOnChangeResponseOptions>( {
-        objectResponse: this.voicingObjectResponse
-      }, providedOptions );
+        const options = optionize<VoicingOnChangeResponseOptions, VoicingOnChangeResponseOptions>( {
+          objectResponse: this.voicingObjectResponse
+        }, providedOptions );
 
-      // no context response because we don't need it during the interaction, just after it
-      // TODO: likely we do need some sort of context response support, https://github.com/phetsims/ratio-and-proportion/issues/413
-      this.voicingSpeakResponse( options );
+        // no context response because we don't need it during the interaction, just after it
+        // TODO: likely we do need some sort of context response support, https://github.com/phetsims/ratio-and-proportion/issues/413
+        this.voicingSpeakResponse( options );
+      }
     }
 
     dispose() {
