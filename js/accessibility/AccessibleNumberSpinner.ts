@@ -25,17 +25,16 @@ import CallbackTimer from '../../../axon/js/CallbackTimer.js';
 import Emitter from '../../../axon/js/Emitter.js';
 import validate from '../../../axon/js/validate.js';
 import assertHasProperties from '../../../phet-core/js/assertHasProperties.js';
+import Constructor from '../../../phet-core/js/Constructor.js';
 import inheritance from '../../../phet-core/js/inheritance.js';
 import optionize from '../../../phet-core/js/optionize.js';
 import Orientation from '../../../phet-core/js/Orientation.js';
-import { IInputListener, KeyboardUtils, Node, SceneryEvent } from '../../../scenery/js/imports.js';
+import { IInputListener, KeyboardUtils, Node, SceneryEvent, SceneryListenerFunction } from '../../../scenery/js/imports.js';
 import sun from '../sun.js';
 import sunStrings from '../sunStrings.js';
 import AccessibleValueHandler, { AccessibleValueHandlerOptions } from './AccessibleValueHandler.js';
 
 const numberSpinnerRoleDescriptionString = sunStrings.a11y.numberSpinnerRoleDescription;
-type SceneryListenerFunction = ( event?: SceneryEvent ) => void;
-type Constructor<T = {}> = new ( ...args: any[] ) => T;
 
 type AccessibleNumberSpinnerSelfOptions = {
   timerDelay?: number,

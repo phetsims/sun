@@ -22,18 +22,18 @@ import Range from '../../../dot/js/Range.js';
 import assertHasProperties from '../../../phet-core/js/assertHasProperties.js';
 import inheritance from '../../../phet-core/js/inheritance.js';
 import Orientation from '../../../phet-core/js/Orientation.js';
-import { animatedPanZoomSingleton, IInputListener, KeyboardUtils, Node, NodeOptions, SceneryEvent, Voicing } from '../../../scenery/js/imports.js';
+import { animatedPanZoomSingleton, IInputListener, KeyboardUtils, Node, NodeOptions, SceneryEvent, SceneryListenerFunction, Voicing } from '../../../scenery/js/imports.js';
 import Utterance from '../../../utterance-queue/js/Utterance.js';
 import sun from '../sun.js';
 import optionize, { Defaults } from '../../../phet-core/js/optionize.js';
 import Multilink from '../../../axon/js/Multilink.js';
 import UtteranceQueue from '../../../utterance-queue/js/UtteranceQueue.js';
 import IProperty from '../../../axon/js/IProperty.js';
+import Constructor from '../../../phet-core/js/Constructor.js';
 
 // constants
 const DEFAULT_TAG_NAME = 'input';
 const toString = ( v: any ) => `${v}`;
-type SceneryListenerFunction = ( event?: SceneryEvent ) => void;
 
 
 type CreateTextFunction = {
@@ -86,9 +86,6 @@ type AccessibleValueHandlerSelfOptions = {
 };
 
 type AccessibleValueHandlerOptions = AccessibleValueHandlerSelfOptions & Omit<NodeOptions, 'tagName' | 'inputType'>;
-
-// TODO: factor this out somewhere, https://github.com/phetsims/scenery/issues/1340
-type Constructor<T = {}> = new ( ...args: any[] ) => T;
 
 /**
  * @param Type
