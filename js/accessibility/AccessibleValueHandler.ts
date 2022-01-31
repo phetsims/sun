@@ -103,7 +103,6 @@ const AccessibleValueHandler = <SuperType extends Constructor>( Type: SuperType,
   return class extends VoicingClass {
     _valueProperty: IProperty<number>;
     _enabledRangeProperty: IProperty<Range>;
-    _accessibleValueHandlerEnabledProperty: IProperty<boolean>;
     _startChange: SceneryListenerFunction;
     _onChange: SceneryListenerFunction;
     _endChange: SceneryListenerFunction;
@@ -270,8 +269,9 @@ const AccessibleValueHandler = <SuperType extends Constructor>( Type: SuperType,
       // TODO: how to handle voicingOptions, https://github.com/phetsims/scenery/issues/1340
       const options = optionize<AccessibleValueHandlerOptions, AccessibleValueHandlerSelfOptions, NodeOptions>( {}, defaults, providedOptions );
 
-      // TODO: is typescript actually preventing this from being provided in a mixin? https://github.com/phetsims/scenery/issues/1340
       // cannot be set by client
+      assert && providedOptions && assert( !providedOptions.hasOwnProperty( 'tagName' ), 'AccessibleValueHandler sets its own tagName.' );
+      assert && providedOptions && assert( !providedOptions.hasOwnProperty( 'inputType' ), 'AccessibleValueHandler sets its own inputType.' );
       options.tagName = DEFAULT_TAG_NAME;
       options.inputType = 'range';
 
@@ -286,9 +286,6 @@ const AccessibleValueHandler = <SuperType extends Constructor>( Type: SuperType,
       this._valueProperty = options.valueProperty;
 
       this._enabledRangeProperty = enabledRangeProperty;
-
-      // TODO: remove this pointer, https://github.com/phetsims/scenery/issues/1340
-      this._accessibleValueHandlerEnabledProperty = thisNode.enabledProperty;
 
       this._startChange = options.startChange;
 
@@ -585,7 +582,7 @@ const AccessibleValueHandler = <SuperType extends Constructor>( Type: SuperType,
         this.blockInput = true;
       }
 
-      if ( this._accessibleValueHandlerEnabledProperty.get() ) {
+      if ( ( this as unknown as Node ).enabledProperty.get() ) {
 
         // Prevent default so browser doesn't change input value automatically
         if ( KeyboardUtils.isRangeKey( domEvent ) ) {
@@ -708,7 +705,7 @@ const AccessibleValueHandler = <SuperType extends Constructor>( Type: SuperType,
         this._shiftKey = false;
       }
 
-      if ( this._accessibleValueHandlerEnabledProperty.get() ) {
+      if ( ( this as unknown as Node ).enabledProperty.get() ) {
         if ( KeyboardUtils.isRangeKey( event.domEvent ) ) {
           this.rangeKeysDown[ key ] = false;
 
@@ -754,7 +751,7 @@ const AccessibleValueHandler = <SuperType extends Constructor>( Type: SuperType,
      * TODO: we want this to be @private, https://github.com/phetsims/scenery/issues/1340
      */
     handleInput( event: SceneryEvent ) {
-      if ( this._accessibleValueHandlerEnabledProperty.get() && !this.blockInput ) {
+      if ( ( this as unknown as Node ).enabledProperty.get() && !this.blockInput ) {
 
         // don't handle again on "change" event
         this.a11yInputHandled = true;
