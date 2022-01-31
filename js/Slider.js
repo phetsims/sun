@@ -9,7 +9,6 @@
  * @author Chris Malley (PixelZoom, Inc.)
  */
 
-import EnabledProperty from '../../axon/js/EnabledProperty.js';
 import Property from '../../axon/js/Property.js';
 import Dimension2 from '../../dot/js/Dimension2.js';
 import Range from '../../dot/js/Range.js';
@@ -116,9 +115,6 @@ class Slider extends AccessibleSlider( Node, 0 ) {
 
       enabledRangeProperty: null, // {Property.<Range>|null} determine the portion of range that is enabled
       disabledOpacity: SceneryConstants.DISABLED_OPACITY, // opacity applied to the entire Slider when disabled
-
-      // TODO: could this blow away some enabledPropertyOptions somewhere? https://github.com/phetsims/scenery/issues/1340
-      enabledProperty: new EnabledProperty( true ),
 
       // phet-io
       tandem: Tandem.REQUIRED,
