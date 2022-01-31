@@ -138,6 +138,9 @@ class Slider extends AccessibleSlider( Node, 0 ) {
     assert && assert( options.trackNode === null || options.trackNode instanceof SliderTrack, 'trackNode must be of type SliderTrack' );
     assert && assert( options.thumbNode === null || options.thumbNode instanceof Node, 'thumbNode must be of type Node' );
 
+    const boundsRequiredOptionKeys = _.pick( options, Node.REQUIRES_BOUNDS_OPTION_KEYS );
+    options = _.omit( options, Node.REQUIRES_BOUNDS_OPTION_KEYS );
+
     if ( options.orientation === Orientation.VERTICAL ) {
 
       // For a vertical slider, the client should provide dimensions that are specific to a vertical slider.
@@ -353,9 +356,12 @@ class Slider extends AccessibleSlider( Node, 0 ) {
     assert && Tandem.VALIDATION && assert( !options.phetioLinkedProperty || options.phetioLinkedProperty.isPhetioInstrumented(),
       'If provided, phetioLinkedProperty should be PhET-iO instrumented' );
 
+    // Must happen after instrumentation (in super call)
     this.addLinkedElement( options.phetioLinkedProperty || valueProperty, {
       tandem: options.tandem.createTandem( 'valueProperty' )
     } );
+
+    this.mutate( boundsRequiredOptionKeys );
 
     // support for binder documentation, stripped out in builds and only runs when ?binder is specified
     assert && phet.chipper.queryParameters.binder && InstanceRegistry.registerDataURL( 'sun', 'Slider', this );
