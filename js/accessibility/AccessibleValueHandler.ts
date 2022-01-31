@@ -77,7 +77,7 @@ type AccessibleValueHandlerSelfOptions = {
   a11yMapValue?: ( newValue: number, previousValue: number ) => number;
   a11yRepeatEqualValueText?: boolean;
   a11yCreateAriaValueText?: CreateTextFunction;
-  a11yCreateContextResponseAlert?: CreateTextFunction | null; // TODO: doesn't support reset right now, https://github.com/phetsims/scenery/issues/1340
+  a11yCreateContextResponseAlert?: CreateTextFunction | null;
   contextResponsePerValueChangeDelay?: number;
   contextResponseMaxDelay?: number;
   a11yDependencies?: Property<any>[];
@@ -234,6 +234,8 @@ const AccessibleValueHandler = <SuperType extends Constructor>( Type: SuperType,
          * end, instead of each time the value changes.
          *
          * If function returns null, then no alert will be sent to utteranceQueue for alerting.
+         *
+         * This function can also support a `reset` function on it, to be called when the AccessibleValueHandler is reset
          */
         a11yCreateContextResponseAlert: null,
 
@@ -518,6 +520,7 @@ const AccessibleValueHandler = <SuperType extends Constructor>( Type: SuperType,
 
       // reset the aria-valuetext creator if it supports that
       this.a11yCreateAriaValueText.reset && this.a11yCreateAriaValueText.reset();
+      this.a11yCreateContextResponseAlert && this.a11yCreateContextResponseAlert.reset && this.a11yCreateContextResponseAlert.reset();
 
       this.timesChangedBeforeAlerting = 0;
       // on reset, make sure that the PDOM descriptions are completely up to date.
