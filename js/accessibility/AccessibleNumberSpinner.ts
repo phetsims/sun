@@ -74,6 +74,8 @@ const AccessibleNumberSpinner = <SuperType extends Constructor>( Type: SuperType
         ariaOrientation: Orientation.VERTICAL // by default, number spinners should be oriented vertically
       }, providedOptions );
 
+      args[ optionsArgPosition ] = options;
+
       super( ...args );
 
       const thisNode = this as unknown as Node;

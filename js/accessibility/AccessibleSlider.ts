@@ -56,11 +56,6 @@ const AccessibleSlider = <SuperType extends Constructor>( Type: SuperType, optio
         drag: _.noop // called once per drag event, before other modifications to the valueProperty
       }, providedOptions );
 
-      super( ...args );
-
-      // members of the Node API that are used by this trait
-      assertHasProperties( this, [ 'addInputListener', 'removeInputListener' ] );
-
       // AccessibleSlider uses 'drag' terminology rather than 'change' for consistency with Slider
       assert && assert( options.startChange === undefined, 'AccessibleSlider sets startChange through options.startDrag' );
       options.startChange = options.startDrag;
@@ -70,6 +65,13 @@ const AccessibleSlider = <SuperType extends Constructor>( Type: SuperType, optio
 
       assert && assert( options.onChange === undefined, 'AccessibleSlider sets onChange through options.drag' );
       options.onChange = options.drag;
+
+      args[ optionsArgPosition ] = options;
+
+      super( ...args );
+
+      // members of the Node API that are used by this trait
+      assertHasProperties( this, [ 'addInputListener', 'removeInputListener' ] );
 
       // handle all accessible event input
       const accessibleInputListener = this.getAccessibleValueHandlerInputListener();
