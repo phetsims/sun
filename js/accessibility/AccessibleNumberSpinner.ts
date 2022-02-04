@@ -56,8 +56,8 @@ const AccessibleNumberSpinner = <SuperType extends Constructor>( Type: SuperType
   // Unfortunately, nothing can be private or protected in this class, see https://github.com/phetsims/scenery/issues/1340#issuecomment-1020692592
   return class extends AccessibleValueHandlerClass {
     _callbackTimer: CallbackTimer;
-    incrementDownEmitter: Emitter<[ boolean ]>; // TODO: we want this to be @protected, https://github.com/phetsims/scenery/issues/1340
-    decrementDownEmitter: Emitter<[ boolean ]>; // TODO: we want this to be @protected, https://github.com/phetsims/scenery/issues/1340
+    incrementDownEmitter: Emitter<[ boolean ]>; // @protected
+    decrementDownEmitter: Emitter<[ boolean ]>; // @protected
     _disposeAccessibleNumberSpinner: () => void;
 
     constructor( ...args: any[] ) {
@@ -87,7 +87,7 @@ const AccessibleNumberSpinner = <SuperType extends Constructor>( Type: SuperType
         interval: options.timerInterval
       } );
 
-      // @protected {Emitter} emits events when increment and decrement actions occur, but only for changes
+      // @protected - emits events when increment and decrement actions occur, but only for changes
       // of keyboardStep (not pageKeyboardStep or shiftKeyboardStep)
       this.incrementDownEmitter = new Emitter( { parameters: [ { valueType: 'boolean' } ] } );
       this.decrementDownEmitter = new Emitter( { parameters: [ { valueType: 'boolean' } ] } );
@@ -179,7 +179,7 @@ const AccessibleNumberSpinner = <SuperType extends Constructor>( Type: SuperType
     /**
      * Handle the keydown event and emit events related to the user interaction. Ideally, this would
      * override AccessibleValueHandler.handleKeyDown, but overriding is not supported with PhET Trait pattern.
-     * TODO: we want this to be @private, https://github.com/phetsims/scenery/issues/1340
+     * TODO: we want this to be @private, https://github.com/phetsims/scenery/issues/1348
      */
     accessibleNumberSpinnerHandleKeyDown( event: SceneryEvent ) {
       assert && assert( event.domEvent, 'must have a domEvent' );
@@ -190,7 +190,7 @@ const AccessibleNumberSpinner = <SuperType extends Constructor>( Type: SuperType
     /**
      * Emit events related to the keystate of the spinner. Typically used to style the spinner during keyboard
      * interaction.
-     * TODO: we want this to be @private, https://github.com/phetsims/scenery/issues/1340
+     * TODO: we want this to be @private, https://github.com/phetsims/scenery/issues/1348
      *
      * @param domEvent - the code of the key changing state
      * @param isDown - whether or not event was triggered from down or up keys

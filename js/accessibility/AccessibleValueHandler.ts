@@ -111,22 +111,22 @@ const AccessibleValueHandler = <SuperType extends Constructor>( Type: SuperType,
     _pageKeyboardStep: number;
     _ariaOrientation: Orientation;
     _shiftKey: boolean;
-    oldValue: number | null; // TODO: use underscore so that there is a "private" convention. https://github.com/phetsims/scenery/issues/1340
-    a11yCreateContextResponseAlert: CreateTextFunction | null; // TODO: use underscore so that there is a "private" convention. https://github.com/phetsims/scenery/issues/1340
-    valueOnStart: number; // TODO: use underscore so that there is a "private" convention. https://github.com/phetsims/scenery/issues/1340
-    contextResponseUtterance: Utterance; // TODO: use underscore so that there is a "private" convention. https://github.com/phetsims/scenery/issues/1340
-    timesValueTextChangedBeforeAlerting: number; // TODO: use underscore so that there is a "private" convention. https://github.com/phetsims/scenery/issues/1340
-    contextResponsePerValueChangeDelay: number; // TODO: use underscore so that there is a "private" convention. https://github.com/phetsims/scenery/issues/1340
-    contextResponseMaxDelay: number; // TODO: use underscore so that there is a "private" convention. https://github.com/phetsims/scenery/issues/1340
-    a11yInputHandled: boolean; // TODO: use underscore so that there is a "private" convention. https://github.com/phetsims/scenery/issues/1340
-    blockInput: boolean; // TODO: use underscore so that there is a "private" convention. https://github.com/phetsims/scenery/issues/1340
-    roundToStepSize: boolean; // TODO: use underscore so that there is a "private" convention. https://github.com/phetsims/scenery/issues/1340
-    rangeKeysDown: { [ key: string ]: boolean }; // TODO: use underscore so that there is a "private" convention. https://github.com/phetsims/scenery/issues/1340
-    a11yMapPDOMValue: ( ( value: number ) => number ); // TODO: use underscore so that there is a "private" convention. https://github.com/phetsims/scenery/issues/1340
-    a11yCreateAriaValueText: CreateTextFunction; // TODO: use underscore so that there is a "private" convention. https://github.com/phetsims/scenery/issues/1340
+    oldValue: number | null; // TODO: use underscore so that there is a "private" convention. https://github.com/phetsims/scenery/issues/1348
+    a11yCreateContextResponseAlert: CreateTextFunction | null; // TODO: use underscore so that there is a "private" convention. https://github.com/phetsims/scenery/issues/1348
+    valueOnStart: number; // TODO: use underscore so that there is a "private" convention. https://github.com/phetsims/scenery/issues/1348
+    contextResponseUtterance: Utterance; // TODO: use underscore so that there is a "private" convention. https://github.com/phetsims/scenery/issues/1348
+    timesValueTextChangedBeforeAlerting: number; // TODO: use underscore so that there is a "private" convention. https://github.com/phetsims/scenery/issues/1348
+    contextResponsePerValueChangeDelay: number; // TODO: use underscore so that there is a "private" convention. https://github.com/phetsims/scenery/issues/1348
+    contextResponseMaxDelay: number; // TODO: use underscore so that there is a "private" convention. https://github.com/phetsims/scenery/issues/1348
+    a11yInputHandled: boolean; // TODO: use underscore so that there is a "private" convention. https://github.com/phetsims/scenery/issues/1348
+    blockInput: boolean; // TODO: use underscore so that there is a "private" convention. https://github.com/phetsims/scenery/issues/1348
+    roundToStepSize: boolean; // TODO: use underscore so that there is a "private" convention. https://github.com/phetsims/scenery/issues/1348
+    rangeKeysDown: { [ key: string ]: boolean }; // TODO: use underscore so that there is a "private" convention. https://github.com/phetsims/scenery/issues/1348
+    a11yMapPDOMValue: ( ( value: number ) => number ); // TODO: use underscore so that there is a "private" convention. https://github.com/phetsims/scenery/issues/1348
+    a11yCreateAriaValueText: CreateTextFunction; // TODO: use underscore so that there is a "private" convention. https://github.com/phetsims/scenery/issues/1348
     _dependenciesMultilink: Multilink<any[]> | null;
     _a11yRepeatEqualValueText: boolean;
-    timesChangedBeforeAlerting: number; // TODO: use underscore so that there is a "private" convention. https://github.com/phetsims/scenery/issues/1340
+    timesChangedBeforeAlerting: number; // TODO: use underscore so that there is a "private" convention. https://github.com/phetsims/scenery/issues/1348
     _voicingCreateContextResponse: ( () => null | string ) | null;
     _voicingCreateObjectResponse: ( () => null | string ) | null;
     _disposeAccessibleValueHandler: () => void;
@@ -439,7 +439,7 @@ const AccessibleValueHandler = <SuperType extends Constructor>( Type: SuperType,
     }
 
     /**
-     * TODO: we want this to be @private, https://github.com/phetsims/scenery/issues/1340
+     * TODO: we want this to be @private, https://github.com/phetsims/scenery/issues/1348
      */
     updateAriaValueText( oldPropertyValue: number | null ) {
       const mappedValue = this.getMappedValue();
@@ -528,7 +528,7 @@ const AccessibleValueHandler = <SuperType extends Constructor>( Type: SuperType,
     /**
      * get the formatted value based on the current value of the Property.
      * @param [value] - if not provided, will use the current value of the valueProperty
-     * TODO: we want this to be @private, https://github.com/phetsims/scenery/issues/1340
+     * TODO: we want this to be @private, https://github.com/phetsims/scenery/issues/1348
      */
     getMappedValue( value = this._valueProperty.value ): number {
       const mappedValue = this.a11yMapPDOMValue( value );
@@ -687,7 +687,7 @@ const AccessibleValueHandler = <SuperType extends Constructor>( Type: SuperType,
     /**
      * Handle key up event on this accessible slider, managing the shift key, and calling an optional endDrag
      * function on release. Add this as an input listener to the node mixing in AccessibleValueHandler.
-     * TODO: we want this to be @private, https://github.com/phetsims/scenery/issues/1340
+     * TODO: we want this to be @private, https://github.com/phetsims/scenery/issues/1348
      */
     handleKeyUp( event: SceneryEvent ) {
       const key = KeyboardUtils.getEventCode( event.domEvent )!;
@@ -721,7 +721,7 @@ const AccessibleValueHandler = <SuperType extends Constructor>( Type: SuperType,
      *
      * Add this as a listener to the 'change' input event on the Node that is mixing in AccessibleValueHandler.
      *
-     * TODO: we want this to be @private, https://github.com/phetsims/scenery/issues/1340
+     * TODO: we want this to be @private, https://github.com/phetsims/scenery/issues/1348
      */
     handleChange( event: SceneryEvent ) {
 
@@ -745,7 +745,7 @@ const AccessibleValueHandler = <SuperType extends Constructor>( Type: SuperType,
      *
      * Add this as a listener to the `input` event on the Node that is mixing in AccessibleValueHandler.
      *
-     * TODO: we want this to be @private, https://github.com/phetsims/scenery/issues/1340
+     * TODO: we want this to be @private, https://github.com/phetsims/scenery/issues/1348
      */
     handleInput( event: SceneryEvent ) {
       if ( ( this as unknown as Node ).enabledProperty.get() && !this.blockInput ) {
@@ -799,7 +799,7 @@ const AccessibleValueHandler = <SuperType extends Constructor>( Type: SuperType,
      * Fires when the accessible slider loses focus.
      *
      * Add this as a listener on the `blur` event to the Node that is mixing in AccessibleValueHandler.
-     * TODO: we want this to be @private, https://github.com/phetsims/scenery/issues/1340
+     * TODO: we want this to be @private, https://github.com/phetsims/scenery/issues/1348
      */
     handleBlur( event: SceneryEvent ) {
 
@@ -821,7 +821,7 @@ const AccessibleValueHandler = <SuperType extends Constructor>( Type: SuperType,
     /**
      * Interaction with this input has started, save the value on start so that it can be used as an "old" value
      * when generating the context response with option a11yCreateContextResponse.
-     * TODO: we want this to be @private, https://github.com/phetsims/scenery/issues/1340
+     * TODO: we want this to be @private, https://github.com/phetsims/scenery/issues/1348
      */
     onInteractionStart( event: SceneryEvent ) {
       this.valueOnStart = this._valueProperty.value;
@@ -831,7 +831,7 @@ const AccessibleValueHandler = <SuperType extends Constructor>( Type: SuperType,
     /**
      * Interaction with this input has completed, generate an utterance describing changes if necessary and call
      * optional "end" function.
-     * TODO: we want this to be @private, https://github.com/phetsims/scenery/issues/1340
+     * TODO: we want this to be @private, https://github.com/phetsims/scenery/issues/1348
      */
     onInteractionEnd( event: SceneryEvent ) {
       this.alertContextResponse();
@@ -935,7 +935,7 @@ const AccessibleValueHandler = <SuperType extends Constructor>( Type: SuperType,
 
     /**
      * Returns true if all range keys are currently up (not held down).
-     * TODO: we want this to be @private, https://github.com/phetsims/scenery/issues/1340
+     * TODO: we want this to be @private, https://github.com/phetsims/scenery/issues/1348
      */
     allKeysUp() {
       return _.every( this.rangeKeysDown, entry => !entry );
@@ -945,7 +945,7 @@ const AccessibleValueHandler = <SuperType extends Constructor>( Type: SuperType,
      * Returns true if any range keys are currently down on this slider. Useful for determining when to call
      * startDrag or endDrag based on interaction.
      *
-     * TODO: we want this to be @private, https://github.com/phetsims/scenery/issues/1340
+     * TODO: we want this to be @private, https://github.com/phetsims/scenery/issues/1348
      */
     anyKeysDown() {
       return !!_.find( this.rangeKeysDown, entry => entry );
@@ -977,7 +977,7 @@ const AccessibleValueHandler = <SuperType extends Constructor>( Type: SuperType,
      * by the client so that all values are allowed. If we encounter the VoiceOver case described above we fall
      * back to setting the step size at 1/100th of the max value since the keyboard step generally evenly divides
      * the max value rather than the full range.
-     * TODO: we want this to be @private, https://github.com/phetsims/scenery/issues/1340
+     * TODO: we want this to be @private, https://github.com/phetsims/scenery/issues/1348
      */
     updateSiblingStepAttribute() {
       const smallestStep = Math.min( Math.min( this.keyboardStep, this.shiftKeyboardStep ), this.pageKeyboardStep );
