@@ -226,6 +226,10 @@ class NumberSpinner extends AccessibleNumberSpinner( Node, 0 ) {
     assert && assert( !options.shiftKeyboardStep, 'NumberSpinner sets shiftKeyboardStep, it will be the same as deltaValue' );
     options.keyboardStep = 0;
     options.shiftKeyboardStep = 0;
+
+    const boundsRequiredOptionKeys = _.pick( options, Node.REQUIRES_BOUNDS_OPTION_KEYS );
+    options = _.omit( options, Node.REQUIRES_BOUNDS_OPTION_KEYS );
+
     super( options );
 
     // enable/disable arrow buttons
@@ -273,6 +277,8 @@ class NumberSpinner extends AccessibleNumberSpinner( Node, 0 ) {
       numberProperty.unlink( numberPropertyObserver );
       rangeProperty.unlink( rangeObserver );
     };
+
+    this.mutate( boundsRequiredOptionKeys );
 
     // Create a link to associated Property, so it's easier to find in Studio. Must be after instrumentation
     this.addLinkedElement( numberProperty, {
