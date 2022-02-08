@@ -22,6 +22,7 @@ import sun from '../sun.js';
 import AccessibleValueHandler, { AccessibleValueHandlerOptions } from './AccessibleValueHandler.js';
 
 type AccessibleSliderSelfOptions = {
+
   // called when a drag sequence starts
   startDrag?: SceneryListenerFunction;
 
@@ -42,10 +43,8 @@ const AccessibleSlider = <SuperType extends Constructor>( Type: SuperType, optio
 
   assert && assert( _.includes( inheritance( Type ), Node ), 'Only Node subtypes should compose Voicing' );
 
-  const AccessibleValueHandlerClass = AccessibleValueHandler( Type, optionsArgPosition );
-
   // Unfortunately, nothing can be private or protected in this class, see https://github.com/phetsims/scenery/issues/1340#issuecomment-1020692592
-  return class extends AccessibleValueHandlerClass {
+  return class extends AccessibleValueHandler( Type, optionsArgPosition ) {
     _disposeAccessibleSlider: () => void;
 
     constructor( ...args: any[] ) {
@@ -82,7 +81,7 @@ const AccessibleSlider = <SuperType extends Constructor>( Type: SuperType, optio
       const accessibleInputListener = this.getAccessibleValueHandlerInputListener();
       ( this as unknown as Node ).addInputListener( accessibleInputListener );
 
-      // @private - called by disposeAccessibleSlider to prevent memory leaks
+      // called by disposeAccessibleSlider to prevent memory leaks
       this._disposeAccessibleSlider = () => {
         ( this as unknown as Node ).removeInputListener( accessibleInputListener );
       };

@@ -51,10 +51,9 @@ const AccessibleNumberSpinner = <SuperType extends Constructor>( Type: SuperType
 
   assert && assert( _.includes( inheritance( Type ), Node ), 'Only Node subtypes should compose Voicing' );
 
-  const AccessibleValueHandlerClass = AccessibleValueHandler( Type, optionsArgPosition );
-
   // Unfortunately, nothing can be private or protected in this class, see https://github.com/phetsims/scenery/issues/1340#issuecomment-1020692592
-  return class extends AccessibleValueHandlerClass {
+  return class extends AccessibleValueHandler( Type, optionsArgPosition ) {
+
     // Manages timing must be disposed
     _callbackTimer: CallbackTimer;
 

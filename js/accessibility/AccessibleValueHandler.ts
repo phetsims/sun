@@ -22,7 +22,7 @@ import Range from '../../../dot/js/Range.js';
 import assertHasProperties from '../../../phet-core/js/assertHasProperties.js';
 import inheritance from '../../../phet-core/js/inheritance.js';
 import Orientation from '../../../phet-core/js/Orientation.js';
-import { animatedPanZoomSingleton, IInputListener, KeyboardUtils, Node, NodeOptions, SceneryEvent, SceneryListenerFunction, Voicing } from '../../../scenery/js/imports.js';
+import { animatedPanZoomSingleton, IInputListener, KeyboardUtils, Node, NodeOptions, SceneryEvent, SceneryListenerFunction, Voicing, VoicingOptions } from '../../../scenery/js/imports.js';
 import Utterance from '../../../utterance-queue/js/Utterance.js';
 import sun from '../sun.js';
 import optionize, { Defaults } from '../../../phet-core/js/optionize.js';
@@ -175,7 +175,7 @@ type AccessibleValueHandlerSelfOptions = {
   voicingCreateContextResponse?: ( () => null | string ) | null;
 };
 
-type AccessibleValueHandlerOptions = AccessibleValueHandlerSelfOptions & Omit<NodeOptions, 'tagName' | 'inputType'>;
+type AccessibleValueHandlerOptions = AccessibleValueHandlerSelfOptions & Omit<VoicingOptions, 'tagName' | 'inputType'>;
 
 /**
  * @param Type
@@ -184,10 +184,8 @@ type AccessibleValueHandlerOptions = AccessibleValueHandlerSelfOptions & Omit<No
 const AccessibleValueHandler = <SuperType extends Constructor>( Type: SuperType, optionsArgPosition: number ) => {
   assert && assert( _.includes( inheritance( Type ), Node ), 'Only Node subtypes should compose AccessibleValueHandler' );
 
-  const VoicingClass = Voicing( Type, optionsArgPosition );
-
   // Unfortunately, nothing can be private or protected in this class, see https://github.com/phetsims/scenery/issues/1340#issuecomment-1020692592
-  return class extends VoicingClass {
+  return class extends Voicing( Type, optionsArgPosition ) {
     _valueProperty: IProperty<number>;
     _enabledRangeProperty: IProperty<Range>;
     _startChange: SceneryListenerFunction;
@@ -297,7 +295,6 @@ const AccessibleValueHandler = <SuperType extends Constructor>( Type: SuperType,
         inputType: null
       };
 
-      // TODO: how to handle voicingOptions, https://github.com/phetsims/scenery/issues/1340
       const options = optionize<AccessibleValueHandlerOptions, AccessibleValueHandlerSelfOptions, NodeOptions>( {}, defaults, providedOptions );
 
       // cannot be set by client
@@ -363,8 +360,8 @@ const AccessibleValueHandler = <SuperType extends Constructor>( Type: SuperType,
       // listeners, must be unlinked in dispose
       const enabledRangeObserver = ( enabledRange: Range ) => {
 
-        const mappedMin = this.getMappedValue( enabledRange.min );
-        const mappedMax = this.getMappedValue( enabledRange.max );
+        const mappedMin = this._getMappedValue( enabledRange.min );
+        const mappedMax = this._getMappedValue( enabledRange.max );
 
         // TODO: should this assert be added back in? Right now area model fails it, see https://github.com/phetsims/sun/issues/530
         // assert && assert( mappedMin <= mappedMax, 'min should be less than max' );
@@ -384,7 +381,7 @@ const AccessibleValueHandler = <SuperType extends Constructor>( Type: SuperType,
       // by assistive technology when the value changes
       const valuePropertyListener = () => {
 
-        const mappedValue = this.getMappedValue();
+        const mappedValue = this._getMappedValue();
 
         // set the aria-valuenow attribute in case the AT requires it to read the value correctly, some may
         // fall back on this from aria-valuetext see
@@ -431,7 +428,7 @@ const AccessibleValueHandler = <SuperType extends Constructor>( Type: SuperType,
     }
 
     _updateAriaValueText( oldPropertyValue: number | null ): void {
-      const mappedValue = this.getMappedValue();
+      const mappedValue = this._getMappedValue();
 
       const thisNode = this as unknown as Node;
 
@@ -463,7 +460,7 @@ const AccessibleValueHandler = <SuperType extends Constructor>( Type: SuperType,
       let timesChangedBeforeAlertingIncremented = false;
       if ( this._a11yCreateContextResponseAlert ) {
 
-        const mappedValue = this.getMappedValue();
+        const mappedValue = this._getMappedValue();
         const endInteractionAlert = this._a11yCreateContextResponseAlert( mappedValue, this._valueProperty.value, this._valueOnStart );
 
         // only if it returned an alert
@@ -517,9 +514,8 @@ const AccessibleValueHandler = <SuperType extends Constructor>( Type: SuperType,
     /**
      * get the formatted value based on the current value of the Property.
      * @param [value] - if not provided, will use the current value of the valueProperty
-     * TODO: we want this to be @private, https://github.com/phetsims/scenery/issues/1348
      */
-    getMappedValue( value: number = this._valueProperty.value ): number {
+    _getMappedValue( value: number = this._valueProperty.value ): number {
       const mappedValue = this._a11yMapPDOMValue( value );
       assert && assert( typeof mappedValue === 'number', 'a11yMapPDOMValue must return a number' );
 
@@ -556,8 +552,11 @@ const AccessibleValueHandler = <SuperType extends Constructor>( Type: SuperType,
       // TODO: How to specify subtypes of DOMEvents, https://github.com/phetsims/scenery/issues/1340
       const domEvent = event.domEvent as Event & { shiftKey: boolean, metaKey: boolean };
 
-      // TODO: What if key is null? https://github.com/phetsims/scenery/issues/1340
-      const key = KeyboardUtils.getEventCode( domEvent )!;
+      const key = KeyboardUtils.getEventCode( domEvent );
+
+      if ( !key ) {
+        return;
+      }
 
       this._shiftKey = domEvent.shiftKey;
 
@@ -676,8 +675,7 @@ const AccessibleValueHandler = <SuperType extends Constructor>( Type: SuperType,
     /**
      * Handle key up event on this accessible slider, managing the shift key, and calling an optional endDrag
      * function on release. Add this as an input listener to the node mixing in AccessibleValueHandler.
-     * TODO: we want this to be @private, https://github.com/phetsims/scenery/issues/1348
-     * REVIEW: AccessibleNumberSpinner uses this, shouldn't be private or that should be refactored
+     * @protected
      */
     handleKeyUp( event: SceneryEvent ) {
       const key = KeyboardUtils.getEventCode( event.domEvent )!;
@@ -711,8 +709,7 @@ const AccessibleValueHandler = <SuperType extends Constructor>( Type: SuperType,
      *
      * Add this as a listener to the 'change' input event on the Node that is mixing in AccessibleValueHandler.
      *
-     * TODO: we want this to be @private, https://github.com/phetsims/scenery/issues/1348
-     * REVIEW: AccessibleNumberSpinner uses this, shouldn't be private or that should be refactored
+     * @protected
      */
     handleChange( event: SceneryEvent ) {
 
@@ -736,8 +733,7 @@ const AccessibleValueHandler = <SuperType extends Constructor>( Type: SuperType,
      *
      * Add this as a listener to the `input` event on the Node that is mixing in AccessibleValueHandler.
      *
-     * TODO: we want this to be @private, https://github.com/phetsims/scenery/issues/1348
-     * REVIEW: AccessibleNumberSpinner uses this, shouldn't be private or that should be refactored
+     * @protected
      */
     handleInput( event: SceneryEvent ) {
       if ( ( this as unknown as Node ).enabledProperty.get() && !this._blockInput ) {
@@ -749,7 +745,7 @@ const AccessibleValueHandler = <SuperType extends Constructor>( Type: SuperType,
 
         const inputValue = parseFloat( ( event.domEvent!.target as HTMLInputElement ).value );
         const stepSize = this._shiftKey ? this.shiftKeyboardStep : this.keyboardStep;
-        const mappedValue = this.getMappedValue();
+        const mappedValue = this._getMappedValue();
 
         // start of change event is start of drag
         this._onInteractionStart( event );
@@ -791,8 +787,7 @@ const AccessibleValueHandler = <SuperType extends Constructor>( Type: SuperType,
      * Fires when the accessible slider loses focus.
      *
      * Add this as a listener on the `blur` event to the Node that is mixing in AccessibleValueHandler.
-     * TODO: we want this to be @private, https://github.com/phetsims/scenery/issues/1348
-     * REVIEW: AccessibleNumberSpinner uses this, shouldn't be private or that should be refactored
+     * @protected
      */
     handleBlur( event: SceneryEvent ) {
 
@@ -968,8 +963,8 @@ const AccessibleValueHandler = <SuperType extends Constructor>( Type: SuperType,
       const smallestStep = Math.min( Math.min( this.keyboardStep, this.shiftKeyboardStep ), this.pageKeyboardStep );
       let stepValue = Math.pow( 10, -Utils.numberOfDecimalPlaces( smallestStep ) );
 
-      const mappedMin = this.getMappedValue( this._enabledRangeProperty.get().min );
-      const mappedMax = this.getMappedValue( this._enabledRangeProperty.get().max );
+      const mappedMin = this._getMappedValue( this._enabledRangeProperty.get().min );
+      const mappedMax = this._getMappedValue( this._enabledRangeProperty.get().max );
       const mappedLength = mappedMax - mappedMin;
 
       // step is too small relative to full range for VoiceOver to receive input, fall back to portion of
