@@ -81,7 +81,7 @@ class Checkbox extends Voicing( Node, 0 ) {
       inputType: 'checkbox',
       appendDescription: true,
 
-      // {AlertableDef|null} - Utterances to be spoken with a screen reader after the checkbox is pressed.
+      // {TAlertableDef|null} - Utterances to be spoken with a screen reader after the checkbox is pressed.
       checkedContextResponse: null,
       uncheckedContextResponse: null
     }, options );
