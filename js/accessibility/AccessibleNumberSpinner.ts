@@ -109,8 +109,7 @@ const AccessibleNumberSpinner = <SuperType extends Constructor>( Type: SuperType
             // check for relevant keys here
             if ( KeyboardUtils.isRangeKey( event.domEvent ) ) {
 
-              // TODO: How to specify subtypes of DOMEvents, https://github.com/phetsims/scenery/issues/1340
-              const domEvent = event.domEvent! as Event & { metaKey: boolean };
+              const domEvent = event.domEvent! as KeyboardEvent;
 
               // If the meta key is down we will not even call the keydown listener of the supertype, so we need
               // to be sure that default behavior is prevented so we don't receive `input` and `change` events.

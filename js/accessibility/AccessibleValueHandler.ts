@@ -549,8 +549,7 @@ const AccessibleValueHandler = <SuperType extends Constructor>( Type: SuperType,
      */
     handleKeyDown( event: SceneryEvent ) {
 
-      // TODO: How to specify subtypes of DOMEvents, https://github.com/phetsims/scenery/issues/1340
-      const domEvent = event.domEvent as Event & { shiftKey: boolean, metaKey: boolean };
+      const domEvent = event.domEvent as KeyboardEvent;
 
       const key = KeyboardUtils.getEventCode( domEvent );
 
