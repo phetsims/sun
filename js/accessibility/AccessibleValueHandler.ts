@@ -35,7 +35,6 @@ import Constructor from '../../../phet-core/js/Constructor.js';
 const DEFAULT_TAG_NAME = 'input';
 const toString = ( v: any ) => `${v}`;
 
-
 type CreateTextFunction = {
 
   /**
@@ -63,24 +62,115 @@ type AccessibleValueHandlerSelfOptions = {
   valueProperty: IProperty<number>;
   enabledRangeProperty: IProperty<Range>;
 
+  // called when a value change sequence starts
   startChange?: SceneryListenerFunction;
+
+  // called when a value change sequence ends
   endChange?: SceneryListenerFunction;
+
+  // Called after any change to valueProperty. Useful for input devices that support "press and hold" input.
+  // However, beware that some input devices, such as a switch, have no concept of "press and hold" and will
+  // trigger once per input. In those cases, this function will be called once per input.
   onChange?: SceneryListenerFunction;
+
+  // Constrains the value, returning a new value for the valueProperty instead.
+  // Called before the valueProperty is set. This is only called when the shift key is NOT down because
+  // it is often the case that shiftKeyboardStep is a smaller step size then what is allowed by constrainValue.
   constrainValue?: ( value: number ) => number;
+
+  // delta for the valueProperty for each press of the arrow keys
   keyboardStep?: number;
+
+  // delta for the valueProperty for each press of the arrow keys while the shift modifier is down
   shiftKeyboardStep?: number;
+
+  // delta for the valueProperty for each press of "Page Up" and "Page Down"
   pageKeyboardStep?: number;
+
+  // specify orientation, read by assistive technology
   ariaOrientation?: Orientation;
+
+  // Upon accessible input, we will try to keep this Node in view of the animatedPanZoomSingleton.
+  // If null, 'this' is used (the Node mixing AccessibleValueHandler)
   panTargetNode?: null | Node;
+
+  // When setting the Property value from the PDOM input, this option controls whether or not to
+  // round the value to a multiple of the keyboardStep. This will only round the value on normal key presses,
+  // rounding will not occur on large jumps like page up/page down/home/end.
+  // see https://github.com/phetsims/gravity-force-lab-basics/issues/72
   roundToStepSize?: boolean;
+
+  /**
+   * Map the valueProperty value to another number that will be read by assistive devices on
+   * valueProperty changes from the PDOM values. This is used to set the values for aria-valuetext and the on
+   * change alert, as well as the following attributes on the PDOM input:
+   *    value
+   *    aria-valuenow
+   *    min
+   *    max
+   *    step
+   *
+   * For this reason, it is important that the mapped "min" would not be bigger than the mapped "max" from the
+   * enabledRangeProperty.
+   */
   a11yMapPDOMValue?: ( value: number ) => number;
+
+  /**
+   * Called before constraining and setting the Property. This is useful in rare cases where the value being set
+   * by AccessibleValueHandler may change based on outside logic. This is for mapping value changes from input listeners
+   * assigned in this type (keyboard/alt-input) to a new value before the value is set.
+   */
   a11yMapValue?: ( newValue: number, previousValue: number ) => number;
+
+  /**
+   * If true, the aria-valuetext will be spoken every value change, even if the aria-valuetext doesn't
+   * actually change. By default, screen readers won't speak aria-valuetext if it remains the same for
+   * multiple values.
+   */
   a11yRepeatEqualValueText?: boolean;
+
+  /**
+   * aria-valuetext creation function, called when the valueProperty changes.
+   * This string is read by AT every time the slider value changes. This is often called the "object response"
+   * for this interaction.
+   */
   a11yCreateAriaValueText?: CreateTextFunction;
+
+  /**
+   * Create content for an alert that will be sent to the utteranceQueue when the user finishes interacting
+   * with the input. Is not generated every change, but on every "drag" interaction, this is called with
+   * endChange. With a keyboard, this will be called even with no value change (on the key up event ending the
+   * interaction), On a touch system like iOS with Voice Over however, input and change events will only fire
+   * when there is a Property value change, so "edge" alerts will not fire, see https://github.com/phetsims/gravity-force-lab-basics/issues/185.
+   * This alert is often called the "context response" because it is timed to only alert after an interaction
+   * end, instead of each time the value changes.
+   *
+   * If function returns null, then no alert will be sent to utteranceQueue for alerting.
+   *
+   * This function can also support a `reset` function on it, to be called when the AccessibleValueHandler is reset
+   */
   a11yCreateContextResponseAlert?: CreateTextFunction | null;
+
+  // This coefficient is multiplied by the number of times the value has been changed without the context response
+  // alerting. This number is meant to give the screen reader enough chance to finish reading the aria-valuetext,
+  // which could take longer the more time the value changes. We want to give enough time for VO to read
+  // aria-valuetext but don't want to have too much silence before the alert is spoken.
   contextResponsePerValueChangeDelay?: number;
+
+  // in ms, When the valueProperty changes repeatedly, what is the maximum time to set the
+  // alertStableDelay for the context response to. This value should be small enough that it feels like you are
+  // aiting for this alert after an interaction. This should be altered depending on how quickly you expect the
+  // value to change. We want to give enough time for VO to read aria-valuetext but don't want to have too much
+  // silence before the alert is spoken.
   contextResponseMaxDelay?: number;
+
+  /**
+   * List the dependencies this Node's PDOM descriptions have. This should not include the valueProperty, but
+   * should list any Properties whose change should trigger a description update for this Node.
+   */
   a11yDependencies?: Property<any>[];
+
+  // Returning null signifies that there is no response
   voicingCreateObjectResponse?: ( () => null | string ) | null;
   voicingCreateContextResponse?: ( () => null | string ) | null;
 };
@@ -111,22 +201,54 @@ const AccessibleValueHandler = <SuperType extends Constructor>( Type: SuperType,
     _pageKeyboardStep: number;
     _ariaOrientation: Orientation;
     _shiftKey: boolean;
-    oldValue: number | null; // TODO: use underscore so that there is a "private" convention. https://github.com/phetsims/scenery/issues/1348
-    a11yCreateContextResponseAlert: CreateTextFunction | null; // TODO: use underscore so that there is a "private" convention. https://github.com/phetsims/scenery/issues/1348
-    valueOnStart: number; // TODO: use underscore so that there is a "private" convention. https://github.com/phetsims/scenery/issues/1348
-    contextResponseUtterance: Utterance; // TODO: use underscore so that there is a "private" convention. https://github.com/phetsims/scenery/issues/1348
-    timesValueTextChangedBeforeAlerting: number; // TODO: use underscore so that there is a "private" convention. https://github.com/phetsims/scenery/issues/1348
-    contextResponsePerValueChangeDelay: number; // TODO: use underscore so that there is a "private" convention. https://github.com/phetsims/scenery/issues/1348
-    contextResponseMaxDelay: number; // TODO: use underscore so that there is a "private" convention. https://github.com/phetsims/scenery/issues/1348
-    a11yInputHandled: boolean; // TODO: use underscore so that there is a "private" convention. https://github.com/phetsims/scenery/issues/1348
-    blockInput: boolean; // TODO: use underscore so that there is a "private" convention. https://github.com/phetsims/scenery/issues/1348
-    roundToStepSize: boolean; // TODO: use underscore so that there is a "private" convention. https://github.com/phetsims/scenery/issues/1348
-    rangeKeysDown: { [ key: string ]: boolean }; // TODO: use underscore so that there is a "private" convention. https://github.com/phetsims/scenery/issues/1348
-    a11yMapPDOMValue: ( ( value: number ) => number ); // TODO: use underscore so that there is a "private" convention. https://github.com/phetsims/scenery/issues/1348
-    a11yCreateAriaValueText: CreateTextFunction; // TODO: use underscore so that there is a "private" convention. https://github.com/phetsims/scenery/issues/1348
+
+    // track previous values for callbacks outside of Property listeners
+    _oldValue: number | null;
+
+    _a11yCreateContextResponseAlert: CreateTextFunction | null;
+
+    // The Property value when an interaction starts, so it can be used as the "old" value
+    // when generating a context response at the end of an interaction with a11yCreateContextResponseAlert.
+    _valueOnStart: number;
+
+    // The utterance sent to the utteranceQueue when the value changes, alert content generated by
+    // optional a11yCreateContextResponseAlert. The alertStableDelay on this utterance will increase if the input
+    // receives many interactions before the utterance can be announced so that VoiceOver has time to read the
+    // aria-valuetext (object response) before the alert (context response).
+    _contextResponseUtterance: Utterance;
+
+    // Number of times the input has changed in value before the utterance made was able to be spoken, only applicable
+    // if using a11yCreateContextResponseAlert
+    _timesValueTextChangedBeforeAlerting: number;
+
+    // in ms, see options for documentation.
+    _contextResponsePerValueChangeDelay: number;
+    _contextResponseMaxDelay: number;
+
+    // Whether an input event has been handled. If handled, we will not respond to the
+    // change event. An AT (particularly VoiceOver) may send a change event (and not an input event) to the
+    // browser in response to a user gesture. We need to handle that change event, without also handling the
+    // input event in case a device sends both events to the browser.
+    _a11yInputHandled: boolean;
+
+    // Some browsers will receive `input` events when the user tabs away from the slider or
+    // on some key presses - if we receive a keydown event for a tab key, do not allow input or change events
+    _blockInput: boolean;
+
+    // setting to enable/disable rounding to the step size
+    _roundToStepSize: boolean;
+
+    // key is the event.code for the range key, value is whether it is down
+    _rangeKeysDown: { [ key: string ]: boolean };
+    _a11yMapPDOMValue: ( ( value: number ) => number );
+    _a11yCreateAriaValueText: CreateTextFunction;
     _dependenciesMultilink: Multilink<any[]> | null;
     _a11yRepeatEqualValueText: boolean;
-    timesChangedBeforeAlerting: number; // TODO: use underscore so that there is a "private" convention. https://github.com/phetsims/scenery/issues/1348
+
+    // When context responses are supported, this counter is used to determine a mutable delay between hearing the
+    // same response.
+    _timesChangedBeforeAlerting: number;
+
     _voicingCreateContextResponse: ( () => null | string ) | null;
     _voicingCreateObjectResponse: ( () => null | string ) | null;
     _disposeAccessibleValueHandler: () => void;
@@ -146,115 +268,27 @@ const AccessibleValueHandler = <SuperType extends Constructor>( Type: SuperType,
         assert( providedOptions.keyboardStep, 'rounding to keyboardStep, define appropriate keyboardStep to round to' );
       }
 
-
       const defaults: Defaults<AccessibleValueHandlerSelfOptions, NodeOptions> = {
 
         // other
-        startChange: _.noop, // called when a value change sequence starts
-        endChange: _.noop, // called when a value change sequence ends
-
-        // Called after any change to valueProperty. Useful for input devices that support "press and hold" input.
-        // However, beware that some input devices, such as a switch, have no concept of "press and hold" and will
-        // trigger once per input. In those cases, this function will be called once per input.
+        startChange: _.noop,
+        endChange: _.noop,
         onChange: _.noop,
-
-        // Constrains the value, returning a new value for the valueProperty instead.
-        // Called before the valueProperty is set. This is only called when the shift key is NOT down because
-        // it is often the case that shiftKeyboardStep is a smaller step size then what is allowed by constrainValue.
         constrainValue: _.identity,
-
-        // delta for the valueProperty for each press of the arrow keys
         keyboardStep: ( enabledRangeProperty.get().max - enabledRangeProperty.get().min ) / 20,
-
-        // delta for the valueProperty for each press of the arrow keys while the shift modifier is down
         shiftKeyboardStep: ( enabledRangeProperty.get().max - enabledRangeProperty.get().min ) / 100,
-
-        // delta for the valueProperty for each press of "Page Up" and "Page Down"
         pageKeyboardStep: ( enabledRangeProperty.get().max - enabledRangeProperty.get().min ) / 10,
-
-        ariaOrientation: Orientation.HORIZONTAL, // specify orientation, read by assistive technology
-
-        // Upon accessible input, we will try to keep this Node in view of the animatedPanZoomSingleton.
-        // If null, 'this' is used (the Node mixing AccessibleValueHandler)
+        ariaOrientation: Orientation.HORIZONTAL,
         panTargetNode: null,
-
-        // When setting the Property value from the PDOM input, this option controls whether or not to
-        // round the value to a multiple of the keyboardStep. This will only round the value on normal key presses,
-        // rounding will not occur on large jumps like page up/page down/home/end.
-        // see https://github.com/phetsims/gravity-force-lab-basics/issues/72
         roundToStepSize: false,
-
-        /**
-         * Map the valueProperty value to another number that will be read by assistive devices on
-         * valueProperty changes from the PDOM values. This is used to set the values for aria-valuetext and the on
-         * change alert, as well as the following attributes on the PDOM input:
-         *    value
-         *    aria-valuenow
-         *    min
-         *    max
-         *    step
-         *
-         * For this reason, it is important that the mapped "min" would not be bigger than the mapped "max" from the
-         * enabledRangeProperty.
-         */
         a11yMapPDOMValue: _.identity,
-
-        /**
-         * Called before constraining and setting the Property. This is useful in rare cases where the value being set
-         * by AccessibleValueHandler may change based on outside logic. This is for mapping value changes from input listeners
-         * assigned in this type (keyboard/alt-input) to a new value before the value is set.
-         */
         a11yMapValue: _.identity,
-
-        /**
-         * If true, the aria-valuetext will be spoken every value change, even if the aria-valuetext doesn't
-         * actually change. By default, screen readers won't speak aria-valuetext if it remains the same for
-         * multiple values.
-         */
         a11yRepeatEqualValueText: true,
-
-        /**
-         * aria-valuetext creation function, called when the valueProperty changes.
-         * This string is read by AT every time the slider value changes. This is often called the "object response"
-         * for this interaction.
-         */
         a11yCreateAriaValueText: toString, // by default make sure it returns a string
-
-        /**
-         * Create content for an alert that will be sent to the utteranceQueue when the user finishes interacting
-         * with the input. Is not generated every change, but on every "drag" interaction, this is called with
-         * endChange. With a keyboard, this will be called even with no value change (on the key up event ending the
-         * interaction), On a touch system like iOS with Voice Over however, input and change events will only fire
-         * when there is a Property value change, so "edge" alerts will not fire, see https://github.com/phetsims/gravity-force-lab-basics/issues/185.
-         * This alert is often called the "context response" because it is timed to only alert after an interaction
-         * end, instead of each time the value changes.
-         *
-         * If function returns null, then no alert will be sent to utteranceQueue for alerting.
-         *
-         * This function can also support a `reset` function on it, to be called when the AccessibleValueHandler is reset
-         */
         a11yCreateContextResponseAlert: null,
-
-        // This coefficient is multiplied by the number of times the value has been changed without the context response
-        // alerting. This number is meant to give the screen reader enough chance to finish reading the aria-valuetext,
-        // which could take longer the more time the value changes. We want to give enough time for VO to read
-        // aria-valuetext but don't want to have too much silence before the alert is spoken.
         contextResponsePerValueChangeDelay: 700,
-
-        // in ms, When the valueProperty changes repeatedly, what is the maximum time to set the
-        // alertStableDelay for the context response to. This value should be small enough that it feels like you are
-        // aiting for this alert after an interaction. This should be altered depending on how quickly you expect the
-        // value to change. We want to give enough time for VO to read aria-valuetext but don't want to have too much
-        // silence before the alert is spoken.
         contextResponseMaxDelay: 1500,
-
-        /**
-         * List the dependencies this Node's PDOM descriptions have. This should not include the valueProperty, but
-         * should list any Properties whose change should trigger a description update for this Node.
-         */
         a11yDependencies: [],
-
-        // Returning null signifies that there is no response
         voicingCreateObjectResponse: null,
         voicingCreateContextResponse: null,
 
@@ -281,19 +315,12 @@ const AccessibleValueHandler = <SuperType extends Constructor>( Type: SuperType,
       assertHasProperties( this, [ 'inputValue', 'setPDOMAttribute' ] );
 
       this._valueProperty = options.valueProperty;
-
       this._enabledRangeProperty = enabledRangeProperty;
-
       this._startChange = options.startChange;
-
       this._onChange = options.onChange;
-
       this._endChange = options.endChange;
-
       this._constrainValue = options.constrainValue;
-
       this._a11yMapValue = options.a11yMapValue;
-
       this._panTargetNode = options.panTargetNode;
 
       // initialized with setKeyboardStep which does some validating
@@ -311,57 +338,22 @@ const AccessibleValueHandler = <SuperType extends Constructor>( Type: SuperType,
       this._ariaOrientation = defaults.ariaOrientation;
       this.ariaOrientation = options.ariaOrientation;
 
-      // track previous values for callbacks outside of Property listeners
-      this.oldValue = null;
-
-      // The Property value when an interaction starts, so it can be used as the "old" value
-      // when generating a context response at the end of an interaction with a11yCreateContextResponseAlert.
-      this.valueOnStart = this._valueProperty.value;
-
-      this.a11yCreateContextResponseAlert = options.a11yCreateContextResponseAlert;
-
-      // Number of times the input has changed in value before the utterance made
-      // was able to be spoken, only applicable if using a11yCreateContextResponseAlert
-      this.timesValueTextChangedBeforeAlerting = 0;
-
-      // The utterance sent to the utteranceQueue when the value changes, alert content generated by
-      // optional a11yCreateContextResponseAlert. The alertStableDelay on this utterance will increase if the input
-      // receives many interactions before the utterance can be announced so that VoiceOver has time to read the
-      // aria-valuetext (object response) before the alert (context response).
-      this.contextResponseUtterance = new Utterance();
-
-      // in ms, see options for documentation.
-      this.contextResponsePerValueChangeDelay = options.contextResponsePerValueChangeDelay;
-      this.contextResponseMaxDelay = options.contextResponseMaxDelay;
-
-      // Whether or not an input event has been handled. If handled, we will not respond to the
-      // change event. An AT (particularly VoiceOver) may send a change event (and not an input event) to the
-      // browser in response to a user gesture. We need to handle that change event, whithout also handling the
-      // input event in case a device sends both events to the browser.
-      this.a11yInputHandled = false;
-
-      // Some browsers will receive `input` events when the user tabs away from the slider or
-      // on some key presses - if we receive a keydown event for a tab key, do not allow input or change events
-      this.blockInput = false;
-
-      // key is the event.code for the range key, value is whether it is down
-      this.rangeKeysDown = {};
-
-      // setting to enable/disable rounding to the step size
-      this.roundToStepSize = options.roundToStepSize;
-
-      this.a11yMapPDOMValue = options.a11yMapPDOMValue;
-
-      this.a11yCreateAriaValueText = options.a11yCreateAriaValueText;
-
+      this._oldValue = null;
+      this._valueOnStart = this._valueProperty.value;
+      this._a11yCreateContextResponseAlert = options.a11yCreateContextResponseAlert;
+      this._timesValueTextChangedBeforeAlerting = 0;
+      this._contextResponseUtterance = new Utterance();
+      this._contextResponsePerValueChangeDelay = options.contextResponsePerValueChangeDelay;
+      this._contextResponseMaxDelay = options.contextResponseMaxDelay;
+      this._a11yInputHandled = false;
+      this._blockInput = false;
+      this._rangeKeysDown = {};
+      this._roundToStepSize = options.roundToStepSize;
+      this._a11yMapPDOMValue = options.a11yMapPDOMValue;
+      this._a11yCreateAriaValueText = options.a11yCreateAriaValueText;
       this._dependenciesMultilink = null;
-
       this._a11yRepeatEqualValueText = options.a11yRepeatEqualValueText;
-
-      // When context responses are supported, this counter is used to determine a mutable delay between hearing the
-      // same response.
-      this.timesChangedBeforeAlerting = 0;
-
+      this._timesChangedBeforeAlerting = 0;
       this._voicingCreateObjectResponse = options.voicingCreateObjectResponse;
       this._voicingCreateContextResponse = options.voicingCreateContextResponse;
 
@@ -384,7 +376,7 @@ const AccessibleValueHandler = <SuperType extends Constructor>( Type: SuperType,
         // update the step attribute slider element - this attribute is only added because it is required to
         // receive accessibility events on all browsers, and is totally separate from the step values above that
         // will modify the valueProperty. See function for more information.
-        this.updateSiblingStepAttribute();
+        this._updateSiblingStepAttribute();
       };
       this._enabledRangeProperty.link( enabledRangeObserver );
 
@@ -429,25 +421,22 @@ const AccessibleValueHandler = <SuperType extends Constructor>( Type: SuperType,
 
       this._dependenciesMultilink = Property.multilink<any[]>( dependencies.concat( [ this._valueProperty ] ), () => {
 
-        this.updateAriaValueText( this.oldValue );
+        this._updateAriaValueText( this._oldValue );
 
         if ( this._voicingCreateObjectResponse ) {
           this.voicingObjectResponse = this._voicingCreateObjectResponse();
         }
-        this.oldValue = this._valueProperty.value;
+        this._oldValue = this._valueProperty.value;
       } );
     }
 
-    /**
-     * TODO: we want this to be @private, https://github.com/phetsims/scenery/issues/1348
-     */
-    updateAriaValueText( oldPropertyValue: number | null ) {
+    _updateAriaValueText( oldPropertyValue: number | null ): void {
       const mappedValue = this.getMappedValue();
 
       const thisNode = this as unknown as Node;
 
       // create the dynamic aria-valuetext from a11yCreateAriaValueText.
-      let newAriaValueText = this.a11yCreateAriaValueText( mappedValue, this._valueProperty.value, oldPropertyValue );
+      let newAriaValueText = this._a11yCreateAriaValueText( mappedValue, this._valueProperty.value, oldPropertyValue );
       assert && assert( typeof newAriaValueText === 'string' );
 
       // Make sure that the new aria-valuetext is different from the previous one, so that if they are the same
@@ -463,7 +452,7 @@ const AccessibleValueHandler = <SuperType extends Constructor>( Type: SuperType,
 
     /**
      * If generating an alert when the user changes the slider value, create the alert content and send it
-     * to the utterancQueue. For VoiceOver, it is important that if the value is changed multiple times before
+     * to the utteranceQueue. For VoiceOver, it is important that if the value is changed multiple times before
      * the alert can be spoken, we provide more time for the AT to finish speaking aria-valuetext. Otherwise, the
      * alert may be lost. See https://github.com/phetsims/gravity-force-lab-basics/issues/146.
      */
@@ -472,36 +461,36 @@ const AccessibleValueHandler = <SuperType extends Constructor>( Type: SuperType,
       // Alerting will occur to each connected display's UtteranceQueue, but we should only increment delay once per
       // time this function is called.
       let timesChangedBeforeAlertingIncremented = false;
-      if ( this.a11yCreateContextResponseAlert ) {
+      if ( this._a11yCreateContextResponseAlert ) {
 
         const mappedValue = this.getMappedValue();
-        const endInteractionAlert = this.a11yCreateContextResponseAlert( mappedValue, this._valueProperty.value, this.valueOnStart );
+        const endInteractionAlert = this._a11yCreateContextResponseAlert( mappedValue, this._valueProperty.value, this._valueOnStart );
 
         // only if it returned an alert
         if ( endInteractionAlert ) {
-          this.contextResponseUtterance.alert = endInteractionAlert;
+          this._contextResponseUtterance.alert = endInteractionAlert;
           ( this as unknown as Node ).forEachUtteranceQueue( ( utteranceQueue: UtteranceQueue ) => {
 
             // Only increment a single time, this has the constraint that if different utteranceQueues move this
             // alert through at a different time, the delay could be inconsistent, but in general it should work well.
             if ( timesChangedBeforeAlertingIncremented ) {
-              // use the current value for this.timesChangedBeforeAlerting
+              // use the current value for this._timesChangedBeforeAlerting
             }
-            else if ( utteranceQueue.hasUtterance( this.contextResponseUtterance ) ) {
+            else if ( utteranceQueue.hasUtterance( this._contextResponseUtterance ) ) {
               timesChangedBeforeAlertingIncremented = true;
-              this.timesChangedBeforeAlerting++;
+              this._timesChangedBeforeAlerting++;
             }
             else {
-              this.timesChangedBeforeAlerting = 1;
+              this._timesChangedBeforeAlerting = 1;
             }
 
             // Adjust the delay of the utterance based on number of times it has been re-added to the queue. Each
             // time the aria-valuetext changes, this method is called, we want to make sure to give enough time for the
             // aria-valuetext to fully complete before alerting this context response.
-            this.contextResponseUtterance.alertStableDelay = Math.min( this.contextResponseMaxDelay,
-              this.timesChangedBeforeAlerting * this.contextResponsePerValueChangeDelay );
+            this._contextResponseUtterance.alertStableDelay = Math.min( this._contextResponseMaxDelay,
+              this._timesChangedBeforeAlerting * this._contextResponsePerValueChangeDelay );
 
-            utteranceQueue.addToBack( this.contextResponseUtterance );
+            utteranceQueue.addToBack( this._contextResponseUtterance );
           } );
         }
       }
@@ -513,12 +502,12 @@ const AccessibleValueHandler = <SuperType extends Constructor>( Type: SuperType,
     reset() {
 
       // reset the aria-valuetext creator if it supports that
-      this.a11yCreateAriaValueText.reset && this.a11yCreateAriaValueText.reset();
-      this.a11yCreateContextResponseAlert && this.a11yCreateContextResponseAlert.reset && this.a11yCreateContextResponseAlert.reset();
+      this._a11yCreateAriaValueText.reset && this._a11yCreateAriaValueText.reset();
+      this._a11yCreateContextResponseAlert && this._a11yCreateContextResponseAlert.reset && this._a11yCreateContextResponseAlert.reset();
 
-      this.timesChangedBeforeAlerting = 0;
+      this._timesChangedBeforeAlerting = 0;
       // on reset, make sure that the PDOM descriptions are completely up to date.
-      this.updateAriaValueText( null );
+      this._updateAriaValueText( null );
 
       if ( this._voicingCreateObjectResponse ) {
         this.voicingObjectResponse = this._voicingCreateObjectResponse();
@@ -530,8 +519,8 @@ const AccessibleValueHandler = <SuperType extends Constructor>( Type: SuperType,
      * @param [value] - if not provided, will use the current value of the valueProperty
      * TODO: we want this to be @private, https://github.com/phetsims/scenery/issues/1348
      */
-    getMappedValue( value = this._valueProperty.value ): number {
-      const mappedValue = this.a11yMapPDOMValue( value );
+    getMappedValue( value: number = this._valueProperty.value ): number {
+      const mappedValue = this._a11yMapPDOMValue( value );
       assert && assert( typeof mappedValue === 'number', 'a11yMapPDOMValue must return a number' );
 
       return mappedValue;
@@ -576,7 +565,7 @@ const AccessibleValueHandler = <SuperType extends Constructor>( Type: SuperType,
       // if we receive a 'tab' keydown event, do not allow the browser to react to this like a submission and
       // prevent responding to the `input` event
       if ( KeyboardUtils.isKeyEvent( domEvent, KeyboardUtils.KEY_TAB ) ) {
-        this.blockInput = true;
+        this._blockInput = true;
       }
 
       if ( ( this as unknown as Node ).enabledProperty.get() ) {
@@ -599,16 +588,16 @@ const AccessibleValueHandler = <SuperType extends Constructor>( Type: SuperType,
             // their behavior during scenery event dispatch
             event.pointer.reserveForKeyboardDrag();
 
-            // whether or not we will use constrainValue to modify the proposed value, see usages below
+            // whether we will use constrainValue to modify the proposed value, see usages below
             let useConstrainValue = true;
 
             // if this is the first keydown this is the start of the drag interaction
-            if ( !this.anyKeysDown() ) {
-              this.onInteractionStart( event );
+            if ( !this._anyKeysDown() ) {
+              this._onInteractionStart( event );
             }
 
             // track that a new key is being held down
-            this.rangeKeysDown[ key ] = true;
+            this._rangeKeysDown[ key ] = true;
 
             let newValue = this._valueProperty.get();
             if ( KeyboardUtils.isAnyKeyEvent( domEvent, [ KeyboardUtils.KEY_END, KeyboardUtils.KEY_HOME ] ) ) {
@@ -652,7 +641,7 @@ const AccessibleValueHandler = <SuperType extends Constructor>( Type: SuperType,
                   newValue = this._valueProperty.get() - stepSize;
                 }
 
-                if ( this.roundToStepSize ) {
+                if ( this._roundToStepSize ) {
                   newValue = roundValue( newValue, this._valueProperty.get(), stepSize );
                 }
               }
@@ -688,12 +677,13 @@ const AccessibleValueHandler = <SuperType extends Constructor>( Type: SuperType,
      * Handle key up event on this accessible slider, managing the shift key, and calling an optional endDrag
      * function on release. Add this as an input listener to the node mixing in AccessibleValueHandler.
      * TODO: we want this to be @private, https://github.com/phetsims/scenery/issues/1348
+     * REVIEW: AccessibleNumberSpinner uses this, shouldn't be private or that should be refactored
      */
     handleKeyUp( event: SceneryEvent ) {
       const key = KeyboardUtils.getEventCode( event.domEvent )!;
 
       // handle case where user tabbed to this input while an arrow key might have been held down
-      if ( this.allKeysUp() ) {
+      if ( this._allKeysUp() ) {
         return;
       }
 
@@ -704,11 +694,11 @@ const AccessibleValueHandler = <SuperType extends Constructor>( Type: SuperType,
 
       if ( ( this as unknown as Node ).enabledProperty.get() ) {
         if ( KeyboardUtils.isRangeKey( event.domEvent ) ) {
-          this.rangeKeysDown[ key ] = false;
+          this._rangeKeysDown[ key ] = false;
 
           // when all range keys are released, we are done dragging
-          if ( this.allKeysUp() ) {
-            this.onInteractionEnd( event );
+          if ( this._allKeysUp() ) {
+            this._onInteractionEnd( event );
           }
         }
       }
@@ -722,14 +712,15 @@ const AccessibleValueHandler = <SuperType extends Constructor>( Type: SuperType,
      * Add this as a listener to the 'change' input event on the Node that is mixing in AccessibleValueHandler.
      *
      * TODO: we want this to be @private, https://github.com/phetsims/scenery/issues/1348
+     * REVIEW: AccessibleNumberSpinner uses this, shouldn't be private or that should be refactored
      */
     handleChange( event: SceneryEvent ) {
 
-      if ( !this.a11yInputHandled ) {
+      if ( !this._a11yInputHandled ) {
         this.handleInput( event );
       }
 
-      this.a11yInputHandled = false;
+      this._a11yInputHandled = false;
     }
 
     /**
@@ -746,12 +737,13 @@ const AccessibleValueHandler = <SuperType extends Constructor>( Type: SuperType,
      * Add this as a listener to the `input` event on the Node that is mixing in AccessibleValueHandler.
      *
      * TODO: we want this to be @private, https://github.com/phetsims/scenery/issues/1348
+     * REVIEW: AccessibleNumberSpinner uses this, shouldn't be private or that should be refactored
      */
     handleInput( event: SceneryEvent ) {
-      if ( ( this as unknown as Node ).enabledProperty.get() && !this.blockInput ) {
+      if ( ( this as unknown as Node ).enabledProperty.get() && !this._blockInput ) {
 
         // don't handle again on "change" event
-        this.a11yInputHandled = true;
+        this._a11yInputHandled = true;
 
         let newValue = this._valueProperty.get();
 
@@ -760,7 +752,7 @@ const AccessibleValueHandler = <SuperType extends Constructor>( Type: SuperType,
         const mappedValue = this.getMappedValue();
 
         // start of change event is start of drag
-        this.onInteractionStart( event );
+        this._onInteractionStart( event );
 
         if ( inputValue > mappedValue ) {
           newValue = this._valueProperty.get() + stepSize;
@@ -769,7 +761,7 @@ const AccessibleValueHandler = <SuperType extends Constructor>( Type: SuperType,
           newValue = this._valueProperty.get() - stepSize;
         }
 
-        if ( this.roundToStepSize ) {
+        if ( this._roundToStepSize ) {
           newValue = roundValue( newValue, this._valueProperty.get(), stepSize );
         }
 
@@ -787,12 +779,12 @@ const AccessibleValueHandler = <SuperType extends Constructor>( Type: SuperType,
         animatedPanZoomSingleton.initialized && animatedPanZoomSingleton.listener!.keepNodeInView( this._panTargetNode || ( this as unknown as Node ) );
 
         // end of change is the end of a drag
-        this.onInteractionEnd( event );
+        this._onInteractionEnd( event );
       }
 
       // don't block the next input after receiving one, some AT may send either `keydown` or `input` events
       // depending on modifier keys so we need to be ready to receive either on next interaction
-      this.blockInput = false;
+      this._blockInput = false;
     }
 
     /**
@@ -800,40 +792,39 @@ const AccessibleValueHandler = <SuperType extends Constructor>( Type: SuperType,
      *
      * Add this as a listener on the `blur` event to the Node that is mixing in AccessibleValueHandler.
      * TODO: we want this to be @private, https://github.com/phetsims/scenery/issues/1348
+     * REVIEW: AccessibleNumberSpinner uses this, shouldn't be private or that should be refactored
      */
     handleBlur( event: SceneryEvent ) {
 
       // if any range keys are currently down, call end drag because user has stopped dragging to do something else
-      if ( this.anyKeysDown() ) {
-        this.onInteractionEnd( event );
+      if ( this._anyKeysDown() ) {
+        this._onInteractionEnd( event );
       }
 
       // reset flag in case we shift-tabbed away from slider
       this._shiftKey = false;
 
       // when focus leaves this element stop blocking input events
-      this.blockInput = false;
+      this._blockInput = false;
 
       // reset counter for range keys down
-      this.rangeKeysDown = {};
+      this._rangeKeysDown = {};
     }
 
     /**
      * Interaction with this input has started, save the value on start so that it can be used as an "old" value
      * when generating the context response with option a11yCreateContextResponse.
-     * TODO: we want this to be @private, https://github.com/phetsims/scenery/issues/1348
      */
-    onInteractionStart( event: SceneryEvent ) {
-      this.valueOnStart = this._valueProperty.value;
+    _onInteractionStart( event: SceneryEvent ) {
+      this._valueOnStart = this._valueProperty.value;
       this._startChange( event );
     }
 
     /**
      * Interaction with this input has completed, generate an utterance describing changes if necessary and call
      * optional "end" function.
-     * TODO: we want this to be @private, https://github.com/phetsims/scenery/issues/1348
      */
-    onInteractionEnd( event: SceneryEvent ) {
+    _onInteractionEnd( event: SceneryEvent ) {
       this.alertContextResponse();
       this.voicingOnEndResponse();
       this._endChange( event );
@@ -848,16 +839,16 @@ const AccessibleValueHandler = <SuperType extends Constructor>( Type: SuperType,
       this._keyboardStep = keyboardStep;
     }
 
-    set keyboardStep( keyboardStep ) { this.setKeyboardStep( keyboardStep ); }
+    set keyboardStep( keyboardStep: number ) { this.setKeyboardStep( keyboardStep ); }
 
     /**
      * Get the delta for value Property when using arrow keys.
      */
-    getKeyboardStep() {
+    getKeyboardStep(): number {
       return this._keyboardStep;
     }
 
-    get keyboardStep() { return this.getKeyboardStep(); }
+    get keyboardStep(): number { return this.getKeyboardStep(); }
 
     /**
      * Set the delta for value Property when using arrow keys with shift to interact with the Node.
@@ -868,26 +859,25 @@ const AccessibleValueHandler = <SuperType extends Constructor>( Type: SuperType,
       this._shiftKeyboardStep = shiftKeyboardStep;
     }
 
-    set shiftKeyboardStep( shiftKeyboardStep ) { this.setShiftKeyboardStep( shiftKeyboardStep ); }
+    set shiftKeyboardStep( shiftKeyboardStep: number ) { this.setShiftKeyboardStep( shiftKeyboardStep ); }
 
     /**
      * Get the delta for value Property when using arrow keys with shift to interact with the Node.
      */
-    getShiftKeyboardStep() {
+    getShiftKeyboardStep(): number {
       return this._shiftKeyboardStep;
     }
 
-    get shiftKeyboardStep() { return this.getShiftKeyboardStep(); }
+    get shiftKeyboardStep(): number { return this.getShiftKeyboardStep(); }
 
     /**
      * Returns whether the shift key is currently held down on this slider, changing the size of step.
-     *
      */
-    getShiftKeyDown() {
+    getShiftKeyDown(): boolean {
       return this._shiftKey;
     }
 
-    get shiftKeyDown() { return this.getShiftKeyDown(); }
+    get shiftKeyDown(): boolean { return this.getShiftKeyDown(); }
 
     /**
      * Set the delta for value Property when using page up/page down to interact with the Node.
@@ -898,16 +888,16 @@ const AccessibleValueHandler = <SuperType extends Constructor>( Type: SuperType,
       this._pageKeyboardStep = pageKeyboardStep;
     }
 
-    set pageKeyboardStep( pageKeyboardStep ) { this.setPageKeyboardStep( pageKeyboardStep ); }
+    set pageKeyboardStep( pageKeyboardStep: number ) { this.setPageKeyboardStep( pageKeyboardStep ); }
 
     /**
      * Get the delta for value Property when using page up/page down to interact with the Node.
      */
-    getPageKeyboardStep() {
+    getPageKeyboardStep(): number {
       return this._pageKeyboardStep;
     }
 
-    get pageKeyboardStep() { return this.getPageKeyboardStep(); }
+    get pageKeyboardStep(): number { return this.getPageKeyboardStep(); }
 
     /**
      * Set the orientation for the slider as specified by https://www.w3.org/TR/wai-aria-1.1/#aria-orientation.
@@ -925,30 +915,26 @@ const AccessibleValueHandler = <SuperType extends Constructor>( Type: SuperType,
     /**
      * Get the orientation of the accessible slider, see setAriaOrientation for information on the behavior of this
      * attribute.
-     *
      */
-    getAriaOrientation() {
+    getAriaOrientation(): Orientation {
       return this._ariaOrientation;
     }
 
-    get ariaOrientation() { return this._ariaOrientation; }
+    get ariaOrientation(): Orientation { return this._ariaOrientation; }
 
     /**
      * Returns true if all range keys are currently up (not held down).
-     * TODO: we want this to be @private, https://github.com/phetsims/scenery/issues/1348
      */
-    allKeysUp() {
-      return _.every( this.rangeKeysDown, entry => !entry );
+    _allKeysUp(): boolean {
+      return _.every( this._rangeKeysDown, entry => !entry );
     }
 
     /**
      * Returns true if any range keys are currently down on this slider. Useful for determining when to call
      * startDrag or endDrag based on interaction.
-     *
-     * TODO: we want this to be @private, https://github.com/phetsims/scenery/issues/1348
      */
-    anyKeysDown() {
-      return !!_.find( this.rangeKeysDown, entry => entry );
+    _anyKeysDown(): boolean {
+      return !!_.find( this._rangeKeysDown, entry => entry );
     }
 
     /**
@@ -977,9 +963,8 @@ const AccessibleValueHandler = <SuperType extends Constructor>( Type: SuperType,
      * by the client so that all values are allowed. If we encounter the VoiceOver case described above we fall
      * back to setting the step size at 1/100th of the max value since the keyboard step generally evenly divides
      * the max value rather than the full range.
-     * TODO: we want this to be @private, https://github.com/phetsims/scenery/issues/1348
      */
-    updateSiblingStepAttribute() {
+    _updateSiblingStepAttribute() {
       const smallestStep = Math.min( Math.min( this.keyboardStep, this.shiftKeyboardStep ), this.pageKeyboardStep );
       let stepValue = Math.pow( 10, -Utils.numberOfDecimalPlaces( smallestStep ) );
 
@@ -1006,16 +991,12 @@ const AccessibleValueHandler = <SuperType extends Constructor>( Type: SuperType,
         onlyOnValueChange: true // don't speak if the value is the same as valueOnStart
       }, providedOptions );
 
-      if ( !options.onlyOnValueChange || this.valueOnStart !== this._valueProperty.value ) {
+      if ( !options.onlyOnValueChange || this._valueOnStart !== this._valueProperty.value ) {
 
         if ( this._voicingCreateObjectResponse && this._voicingCreateContextResponse ) {
-
-          // @ts-ignore
           this.voicingObjectResponse = this._voicingCreateObjectResponse();
-          // @ts-ignore
           this.voicingContextResponse = this._voicingCreateContextResponse();
 
-          // @ts-ignore
           this.voicingSpeakResponse( {
             nameResponse: null,
             objectResponse: options.withObjectResponse ? this.voicingObjectResponse : null,
@@ -1033,7 +1014,6 @@ const AccessibleValueHandler = <SuperType extends Constructor>( Type: SuperType,
     voicingOnChangeResponse( providedOptions?: VoicingOnChangeResponseOptions ) {
 
       if ( this._voicingCreateObjectResponse ) {
-        // @ts-ignore
         this.voicingObjectResponse = this._voicingCreateObjectResponse();
 
         const options = optionize<VoicingOnChangeResponseOptions, VoicingOnChangeResponseOptions>( {

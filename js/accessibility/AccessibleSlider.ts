@@ -22,8 +22,13 @@ import sun from '../sun.js';
 import AccessibleValueHandler, { AccessibleValueHandlerOptions } from './AccessibleValueHandler.js';
 
 type AccessibleSliderSelfOptions = {
+  // called when a drag sequence starts
   startDrag?: SceneryListenerFunction;
+
+  // called when a drag sequence ends
   endDrag?: SceneryListenerFunction;
+
+  // called once per drag event, before other modifications to the valueProperty
   drag?: SceneryListenerFunction;
 }
 
@@ -51,9 +56,9 @@ const AccessibleSlider = <SuperType extends Constructor>( Type: SuperType, optio
         'Extra prototype on AccessibleSlider options object is a code smell (or probably a bug)' );
 
       const options = optionize<AccessibleSliderOptions, AccessibleSliderSelfOptions, AccessibleValueHandlerOptions>( {
-        startDrag: _.noop, // called when a drag sequence starts
-        endDrag: _.noop, // called when a drag sequence ends
-        drag: _.noop // called once per drag event, before other modifications to the valueProperty
+        startDrag: _.noop,
+        endDrag: _.noop,
+        drag: _.noop
       }, providedOptions );
 
       // AccessibleSlider uses 'drag' terminology rather than 'change' for consistency with Slider
@@ -86,10 +91,10 @@ const AccessibleSlider = <SuperType extends Constructor>( Type: SuperType, optio
     /**
      * Make the accessible slider portions of this node eligible for garbage collection. Call when disposing
      * the type that this trait is mixed into.
-     * @public
      */
     dispose() {
       this._disposeAccessibleSlider();
+
       super.dispose();
     }
   };
