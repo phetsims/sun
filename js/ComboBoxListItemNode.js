@@ -96,14 +96,10 @@ class ComboBoxListItemNode extends Voicing( Node, 0 ) {
     assert && assert( !options.children, 'ComboBoxListItemNode sets children' );
     options.children = [ highlightRectangle, itemNodeWrapper ];
 
-    super();
+    super( options );
 
     // @public (read-only)
     this.item = item;
-
-    // mutate after initializing the Voicing trait, but must come before setting the focusHighlight so that bounds
-    // are defined
-    this.mutate( options );
 
     // pdom focus highlight is fitted to this Node's bounds, so that it doesn't overlap other items in the list box
     this.focusHighlight = Shape.bounds( this.localBounds );
