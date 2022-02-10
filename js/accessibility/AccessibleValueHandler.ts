@@ -30,10 +30,11 @@ import Multilink from '../../../axon/js/Multilink.js';
 import UtteranceQueue from '../../../utterance-queue/js/UtteranceQueue.js';
 import IProperty from '../../../axon/js/IProperty.js';
 import Constructor from '../../../phet-core/js/Constructor.js';
+import IntentionalAny from '../../../phet-core/js/IntentionalAny.js';
 
 // constants
 const DEFAULT_TAG_NAME = 'input';
-const toString = ( v: any ) => `${v}`;
+const toString = ( v: IntentionalAny ) => `${v}`;
 
 type CreateTextFunction = {
 
@@ -168,7 +169,7 @@ type AccessibleValueHandlerSelfOptions = {
    * List the dependencies this Node's PDOM descriptions have. This should not include the valueProperty, but
    * should list any Properties whose change should trigger a description update for this Node.
    */
-  a11yDependencies?: Property<any>[];
+  a11yDependencies?: Property<IntentionalAny>[];
 
   // Returning null signifies that there is no response
   voicingCreateObjectResponse?: ( () => null | string ) | null;
@@ -240,7 +241,7 @@ const AccessibleValueHandler = <SuperType extends Constructor>( Type: SuperType,
     _rangeKeysDown: { [ key: string ]: boolean };
     _a11yMapPDOMValue: ( ( value: number ) => number );
     _a11yCreateAriaValueText: CreateTextFunction;
-    _dependenciesMultilink: Multilink<any[]> | null;
+    _dependenciesMultilink: Multilink<IntentionalAny[]> | null;
     _a11yRepeatEqualValueText: boolean;
 
     // When context responses are supported, this counter is used to determine a mutable delay between hearing the
@@ -251,7 +252,7 @@ const AccessibleValueHandler = <SuperType extends Constructor>( Type: SuperType,
     _voicingCreateObjectResponse: ( () => null | string ) | null;
     _disposeAccessibleValueHandler: () => void;
 
-    constructor( ...args: any[] ) {
+    constructor( ...args: IntentionalAny[] ) {
 
       const providedOptions = args[ optionsArgPosition ] as AccessibleValueHandlerOptions;
 
@@ -405,7 +406,7 @@ const AccessibleValueHandler = <SuperType extends Constructor>( Type: SuperType,
      * changes. Use this method to set the dependency Properties for this value handler. This will blow away the
      * previous list (like Node.children).
      */
-    setA11yDependencies( dependencies: IProperty<any>[] ) {
+    setA11yDependencies( dependencies: IProperty<IntentionalAny>[] ) {
       assert && assert( Array.isArray( dependencies ) );
       assert && assert( dependencies.indexOf( this._valueProperty ) === -1,
         'The value Property is already a dependency, and does not need to be added to this list' );
@@ -416,7 +417,7 @@ const AccessibleValueHandler = <SuperType extends Constructor>( Type: SuperType,
       // dispose the previous multilink, there is only one set of dependencies, though they can be overwritten.
       this._dependenciesMultilink && this._dependenciesMultilink.dispose();
 
-      this._dependenciesMultilink = Property.multilink<any[]>( dependencies.concat( [ this._valueProperty ] ), () => {
+      this._dependenciesMultilink = Property.multilink<IntentionalAny[]>( dependencies.concat( [ this._valueProperty ] ), () => {
 
         this._updateAriaValueText( this._oldValue );
 

@@ -27,6 +27,7 @@ import validate from '../../../axon/js/validate.js';
 import assertHasProperties from '../../../phet-core/js/assertHasProperties.js';
 import Constructor from '../../../phet-core/js/Constructor.js';
 import inheritance from '../../../phet-core/js/inheritance.js';
+import IntentionalAny from '../../../phet-core/js/IntentionalAny.js';
 import optionize from '../../../phet-core/js/optionize.js';
 import Orientation from '../../../phet-core/js/Orientation.js';
 import { IInputListener, KeyboardUtils, Node, SceneryEvent, SceneryListenerFunction } from '../../../scenery/js/imports.js';
@@ -64,7 +65,7 @@ const AccessibleNumberSpinner = <SuperType extends Constructor>( Type: SuperType
 
     _disposeAccessibleNumberSpinner: () => void;
 
-    constructor( ...args: any[] ) {
+    constructor( ...args: IntentionalAny[] ) {
 
       const providedOptions = args[ optionsArgPosition ] as AccessibleValueHandlerOptions;
 
