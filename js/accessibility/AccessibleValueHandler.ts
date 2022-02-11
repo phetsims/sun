@@ -170,10 +170,6 @@ type AccessibleValueHandlerSelfOptions = {
    * should list any Properties whose change should trigger a description update for this Node.
    */
   a11yDependencies?: Property<IntentionalAny>[];
-
-  // Returning null signifies that there is no response
-  voicingCreateObjectResponse?: ( () => null | string ) | null;
-  voicingCreateContextResponse?: ( () => null | string ) | null;
 };
 
 type AccessibleValueHandlerOptions = AccessibleValueHandlerSelfOptions & Omit<VoicingOptions, 'tagName' | 'inputType'>;
@@ -248,8 +244,6 @@ const AccessibleValueHandler = <SuperType extends Constructor>( Type: SuperType,
     // same response.
     _timesChangedBeforeAlerting: number;
 
-    _voicingCreateContextResponse: ( () => null | string ) | null;
-    _voicingCreateObjectResponse: ( () => null | string ) | null;
     _disposeAccessibleValueHandler: () => void;
 
     constructor( ...args: IntentionalAny[] ) {
@@ -288,8 +282,6 @@ const AccessibleValueHandler = <SuperType extends Constructor>( Type: SuperType,
         contextResponsePerValueChangeDelay: 700,
         contextResponseMaxDelay: 1500,
         a11yDependencies: [],
-        voicingCreateObjectResponse: null,
-        voicingCreateContextResponse: null,
 
         // parent options that we must provide a default to use
         tagName: null,
@@ -352,8 +344,6 @@ const AccessibleValueHandler = <SuperType extends Constructor>( Type: SuperType,
       this._dependenciesMultilink = null;
       this._a11yRepeatEqualValueText = options.a11yRepeatEqualValueText;
       this._timesChangedBeforeAlerting = 0;
-      this._voicingCreateObjectResponse = options.voicingCreateObjectResponse;
-      this._voicingCreateContextResponse = options.voicingCreateContextResponse;
 
       // be called last, after options have been set to `this`.
       this.setA11yDependencies( options.a11yDependencies );
@@ -421,9 +411,6 @@ const AccessibleValueHandler = <SuperType extends Constructor>( Type: SuperType,
 
         this._updateAriaValueText( this._oldValue );
 
-        if ( this._voicingCreateObjectResponse ) {
-          this.voicingObjectResponse = this._voicingCreateObjectResponse();
-        }
         this._oldValue = this._valueProperty.value;
       } );
     }
@@ -506,10 +493,6 @@ const AccessibleValueHandler = <SuperType extends Constructor>( Type: SuperType,
       this._timesChangedBeforeAlerting = 0;
       // on reset, make sure that the PDOM descriptions are completely up to date.
       this._updateAriaValueText( null );
-
-      if ( this._voicingCreateObjectResponse ) {
-        this.voicingObjectResponse = this._voicingCreateObjectResponse();
-      }
     }
 
     /**
@@ -988,14 +971,12 @@ const AccessibleValueHandler = <SuperType extends Constructor>( Type: SuperType,
 
       if ( !options.onlyOnValueChange || this._valueOnStart !== this._valueProperty.value ) {
 
-        if ( this._voicingCreateObjectResponse && this._voicingCreateContextResponse ) {
-          this.voicingObjectResponse = this._voicingCreateObjectResponse();
-          this.voicingContextResponse = this._voicingCreateContextResponse();
+        if ( this.voicingCreateObjectResponse && this.voicingCreateContextResponse ) {
 
           this.voicingSpeakResponse( {
             nameResponse: null,
-            objectResponse: options.withObjectResponse ? this.voicingObjectResponse : null,
-            contextResponse: this.voicingContextResponse,
+            objectResponse: options.withObjectResponse ? this.voicingCreateObjectResponse() : null,
+            contextResponse: this.voicingCreateContextResponse(),
             hintResponse: null // no hint, there was just a successful interaction
           } );
         }
@@ -1008,11 +989,10 @@ const AccessibleValueHandler = <SuperType extends Constructor>( Type: SuperType,
      */
     voicingOnChangeResponse( providedOptions?: VoicingOnChangeResponseOptions ) {
 
-      if ( this._voicingCreateObjectResponse ) {
-        this.voicingObjectResponse = this._voicingCreateObjectResponse();
+      if ( this.voicingCreateObjectResponse ) {
 
         const options = optionize<VoicingOnChangeResponseOptions, VoicingOnChangeResponseOptions>( {
-          objectResponse: this.voicingObjectResponse
+          objectResponse: this.voicingCreateObjectResponse()
         }, providedOptions );
 
         // no context response because we don't need it during the interaction, just after it
