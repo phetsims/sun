@@ -8,6 +8,9 @@
     },
     "close": {
       "value": "Close"
+    },
+    "comboBoxVoicingNameResponsePattern": {
+      "value": "{{value}}"
     }
   }
 }

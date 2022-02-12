@@ -10,13 +10,12 @@
 
 import Shape from '../../kite/js/Shape.js';
 import merge from '../../phet-core/js/merge.js';
-import { Voicing } from '../../scenery/js/imports.js';
-import { IndexedNodeIO } from '../../scenery/js/imports.js';
-import { Node } from '../../scenery/js/imports.js';
-import { Rectangle } from '../../scenery/js/imports.js';
+import StringUtils from '../../phetcommon/js/util/StringUtils.js';
+import { IndexedNodeIO, Node, Rectangle, Voicing } from '../../scenery/js/imports.js';
 import Tandem from '../../tandem/js/Tandem.js';
 import ComboBoxItem from './ComboBoxItem.js';
 import sun from './sun.js';
+import sunStrings from './sunStrings.js';
 
 class ComboBoxListItemNode extends Voicing( Node, 0 ) {
 
@@ -49,6 +48,10 @@ class ComboBoxListItemNode extends Voicing( Node, 0 ) {
       // elements so they receive pointer events
       positionInPDOM: true,
 
+      // voicing
+      voicingFocusListener: null,
+      comboBoxVoicingNameResponsePattern: sunStrings.a11y.comboBoxVoicingNameResponsePattern,
+
       // phet-io
       tandem: Tandem.REQUIRED,
 
@@ -59,10 +62,15 @@ class ComboBoxListItemNode extends Voicing( Node, 0 ) {
       visiblePropertyOptions: { phetioFeatured: true }
     }, options );
 
+    assert && assert( options.comboBoxVoicingNameResponsePattern.includes( '{{value}}' ), 'value needs to be filled in' );
+
     // pdom: get innerContent from the item
     assert && assert( options.innerContent === undefined, 'ComboBoxListItemNode sets innerContent' );
     options.innerContent = item.a11yLabel;
-    options.voicingNameResponse = item.a11yLabel;
+    options.voicingNameResponse = StringUtils.fillIn( options.comboBoxVoicingNameResponsePattern, {
+      value: item.a11yLabel
+    } );
+    options.voicingObjectResponse = item.a11yLabel;
 
     // Highlight that is shown when the pointer is over this item. This is not the a11y focus rectangle.
     const highlightRectangle = new Rectangle( 0, 0, highlightWidth, highlightHeight, {
@@ -98,6 +106,19 @@ class ComboBoxListItemNode extends Voicing( Node, 0 ) {
 
     super( options );
 
+    // @private
+    this._supplyHintResponseOnNextFocus = false;
+
+    // Handle Voicing on focus in a more custom way
+    this.addInputListener( {
+      focus: () => {
+        this.voicingSpeakNameResponse( {
+          hintResponse: this._supplyHintResponseOnNextFocus ? this.voicingHintResponse : null
+        } );
+        this._supplyHintResponseOnNextFocus = false;
+      }
+    } );
+
     // @public (read-only)
     this.item = item;
 
@@ -110,6 +131,15 @@ class ComboBoxListItemNode extends Voicing( Node, 0 ) {
       enter() { highlightRectangle.fill = options.highlightFill; },
       exit() { highlightRectangle.fill = null; }
     } );
+
+  }
+
+  /**
+   * This will only provide the hint for the very next voicing on focus.
+   * @public
+   */
+  supplyHintResponseOnNextFocus() {
+    this._supplyHintResponseOnNextFocus = true;
   }
 }
 

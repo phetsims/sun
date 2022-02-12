@@ -23,9 +23,7 @@ import dotRandom from '../../dot/js/dotRandom.js';
 import Vector2 from '../../dot/js/Vector2.js';
 import InstanceRegistry from '../../phet-core/js/documentation/InstanceRegistry.js';
 import merge from '../../phet-core/js/merge.js';
-import { FocusManager } from '../../scenery/js/imports.js';
-import { PDOMPeer } from '../../scenery/js/imports.js';
-import { Node } from '../../scenery/js/imports.js';
+import { FocusManager, Node, PDOMPeer } from '../../scenery/js/imports.js';
 import generalCloseSoundPlayer from '../../tambo/js/shared-sound-players/generalCloseSoundPlayer.js';
 import generalOpenSoundPlayer from '../../tambo/js/shared-sound-players/generalOpenSoundPlayer.js';
 import EventType from '../../tandem/js/EventType.js';
@@ -34,6 +32,7 @@ import IOType from '../../tandem/js/types/IOType.js';
 import ComboBoxButton from './ComboBoxButton.js';
 import ComboBoxListBox from './ComboBoxListBox.js';
 import sun from './sun.js';
+import sunStrings from './sunStrings.js';
 
 // const
 const LIST_POSITION_VALUES = [ 'above', 'below' ]; // where the list pops up relative to the button
@@ -111,6 +110,19 @@ class ComboBox extends Node {
       accessibleNameBehavior: ACCESSIBLE_NAME_BEHAVIOR,
       helpTextBehavior: HELP_TEXT_BEHAVIOR,
 
+      // Voicing
+      // ComboBox does not mix Voicing, so it create custom options to pass to composed Voicing Nodes.
+      // {string} - the pattern for the name response string, must include `{{value}}` so that the selected value string can
+      // be filled in.
+      comboBoxVoicingNameResponsePattern: sunStrings.a11y.comboBoxVoicingNameResponsePattern,
+
+      // {null|function():string|null} - most context responses are dynamic to the current state of the sim, so lazily
+      // create them when needed.
+      comboBoxVoicingContextResponse: null,
+
+      // {string|null} - string for the voicing response
+      comboBoxVoicingHintResponse: null,
+
       // phet-io
       tandem: Tandem.REQUIRED,
       phetioType: ComboBox.ComboBoxIO,
@@ -152,6 +164,8 @@ class ComboBox extends Node {
       mouseAreaXDilation: options.buttonMouseAreaXDilation,
       mouseAreaYDilation: options.buttonMouseAreaYDilation,
 
+      comboBoxVoicingNameResponsePattern: options.comboBoxVoicingNameResponsePattern,
+
       // pdom - accessibleName and helpText are set via behavior functions on the ComboBox
 
       // phet-io
@@ -168,12 +182,8 @@ class ComboBox extends Node {
     // @private the popup list box
     this.listBox = new ComboBoxListBox( property, items,
       this.hideListBox.bind( this ), // callback to hide the list box
-      selectedItem => {
-
-        // ComboBoxListBox will focus the button before setting the new Property value so we need to update
-        // the voicingNameResponse BEFORE moving focus to the button. This workaround makes sure that the correct
-        // name is ready before the button receives focus. See https://github.com/phetsims/friction/issues/268.
-        this.button.voicingNameResponse = selectedItem.a11yLabel;
+      () => {
+        this.button.blockNextVoicingFocusListener();
         this.button.focus();
       },
       options.tandem.createTandem( 'listBox' ), {
@@ -186,6 +196,12 @@ class ComboBox extends Node {
         stroke: options.listStroke,
         lineWidth: options.listLineWidth,
         visible: false,
+
+        comboBoxListItemNodeOptions: {
+          comboBoxVoicingNameResponsePattern: options.comboBoxVoicingNameResponsePattern,
+          voicingContextResponse: options.comboBoxVoicingContextResponse,
+          voicingHintResponse: options.comboBoxVoicingHintResponse
+        },
 
         // sound generation
         openedSoundPlayer: options.openedSoundPlayer,
@@ -265,6 +281,10 @@ class ComboBox extends Node {
         this.display.addInputListener( this.clickToDismissListener );
       }
       else {
+
+        // When the listBox is hidden, the button will be focused as the next item in the focus order. Make sure we
+        // don't get a response here.
+        this.button.blockNextVoicingFocusListener();
 
         // manage clickToDismissListener
         if ( this.display && this.display.hasInputListener( this.clickToDismissListener ) ) {

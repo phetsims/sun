@@ -26,7 +26,7 @@ class ComboBoxListBox extends Panel {
    * @param {Property} property
    * @param {ComboBoxItem[]} items
    * @param {function} hideListBoxCallback - called to hide the list box
-   * @param {function(ComboBoxItem):} focusButtonCallback - called to transfer focus to the combo box's button
+   * @param {function():} focusButtonCallback - called to transfer focus to the combo box's button
    * @param {Tandem} tandem
    * @param {Object} [options]
    */
@@ -41,6 +41,9 @@ class ComboBoxListBox extends Panel {
       xMargin: 12,
       yMargin: 8,
       backgroundPickable: true,
+
+      // Options that apply to every item Node created in the list
+      comboBoxListItemNodeOptions: {},
 
       // pdom
       tagName: 'ul',
@@ -65,17 +68,21 @@ class ComboBoxListBox extends Panel {
     // Pops down the list box and sets the property.value to match the chosen item.
     const fireAction = new Action( event => {
 
+      const oldValue = property.value;
+
       const listItemNode = event.currentTarget;
       assert && assert( listItemNode instanceof ComboBoxListItemNode, 'expected a ComboBoxListItemNode' );
 
       // So that something related to the ComboBox has focus before changing Property value.
-      focusButtonCallback( listItemNode.item );
+      focusButtonCallback();
 
       // set value based on which item was chosen in the list box
       property.value = listItemNode.item.value;
 
       // hide the list
       hideListBoxCallback();
+
+      this.voiceOnNewSelection( property.value, oldValue, listItemNode );
 
       // prevent nodes (eg, controls) behind the list from receiving the event
       event.abort();
@@ -122,7 +129,7 @@ class ComboBoxListBox extends Panel {
     items.forEach( ( item, index ) => {
 
       // Create the list item node
-      const listItemNode = new ComboBoxListItemNode( item, highlightWidth, highlightHeight, {
+      const listItemNode = new ComboBoxListItemNode( item, highlightWidth, highlightHeight, merge( {
         align: options.align,
         highlightFill: options.highlightFill,
         highlightCornerRadius: options.cornerRadius,
@@ -132,7 +139,7 @@ class ComboBoxListBox extends Panel {
         left: 0.5 * options.xMargin,
         top: ( 0.5 * options.yMargin ) + ( index * highlightHeight ),
         tandem: item.tandemName ? tandem.createTandem( item.tandemName ) : Tandem.OPTIONAL
-      } );
+      }, options.comboBoxListItemNodeOptions ) );
       listItemNodes.push( listItemNode );
 
       listItemNode.addInputListener( selectionListener );
@@ -189,9 +196,11 @@ class ComboBoxListBox extends Panel {
     this.addInputListener( {
 
       // When the list box gets focus, transfer focus to the ComboBoxListItemNode that matches property.value.
-      focus: event => {
+      focus: () => {
         if ( this.visible ) {
-          this.getListItemNode( property.value ).focus();
+          const listItemNode = this.getListItemNode( property.value );
+          listItemNode.supplyHintResponseOnNextFocus();
+          listItemNode.focus();
         }
       },
 
@@ -201,7 +210,7 @@ class ComboBoxListBox extends Panel {
 
           // Escape and Tab hide the list box and return focus to the button
           hideListBoxCallback();
-          focusButtonCallback( this.getListItemNode( property.value ).item );
+          focusButtonCallback();
         }
         else if ( KeyboardUtils.isAnyKeyEvent( event.domEvent, [ KeyboardUtils.KEY_DOWN_ARROW, KeyboardUtils.KEY_UP_ARROW ] ) ) {
 
@@ -295,6 +304,25 @@ class ComboBoxListBox extends Panel {
     assert && assert( listItemNode, 'no item found that has focus' );
     assert && assert( listItemNode instanceof ComboBoxListItemNode, 'invalid listItemNode' );
     return listItemNode;
+  }
+
+  /**
+   * @private
+   * @param {*} newValue
+   * @param {*} oldValue
+   * @param {ComboBoxListItemNode} listItemNode
+   */
+  voiceOnNewSelection( newValue, oldValue, listItemNode ) {
+    const responseOptions = {
+      nameResponse: null,
+      hintResponse: null
+    };
+    if ( oldValue === newValue ) {
+
+      // If there is no change in value, then there is no context response
+      responseOptions.contextResponse = null;
+    }
+    this.getListItemNode( newValue ).voicingSpeakFullResponse( responseOptions );
   }
 }
 

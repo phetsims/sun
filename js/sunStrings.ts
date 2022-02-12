@@ -13,7 +13,8 @@ type StringsType = {
   },
   'a11y': {
     'numberSpinnerRoleDescription': string,
-    'close': string
+    'close': string,
+    'comboBoxVoicingNameResponsePattern': string
   }
 };
 

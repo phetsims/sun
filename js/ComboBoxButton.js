@@ -9,6 +9,7 @@
 
 import Shape from '../../kite/js/Shape.js';
 import merge from '../../phet-core/js/merge.js';
+import StringUtils from '../../phetcommon/js/util/StringUtils.js';
 import { AriaHasPopUpMutator } from '../../scenery/js/imports.js';
 import { PDOMPeer } from '../../scenery/js/imports.js';
 import { HStrut } from '../../scenery/js/imports.js';
@@ -57,6 +58,8 @@ class ComboBoxButton extends RectangularPushButton {
       stroke: 'black',
       lineWidth: 1,
       soundPlayer: SoundPlayer.NO_SOUND, // disable default sound generation
+
+      comboBoxVoicingNameResponsePattern: '',
 
       // PushButtonModel options
       enabledPropertyOptions: {
@@ -143,6 +146,16 @@ class ComboBoxButton extends RectangularPushButton {
 
     super( options );
 
+    // @private {boolean} - set to true to block voicing to occur upon this Button's next focus
+    this._blockNextVoicingFocusListener = false;
+
+    this.voicingFocusListener = () => {
+      if ( !this._blockNextVoicingFocusListener ) {
+        this.defaultFocusListener();
+      }
+      this._blockNextVoicingFocusListener = false;
+    };
+
     const updateItemLayout = () => {
       if ( options.align === 'left' ) {
         itemNodeWrapper.left = itemAreaStrut.left + itemXMargin;
@@ -182,7 +195,9 @@ class ComboBoxButton extends RectangularPushButton {
 
       // pdom
       this.innerContent = item.a11yLabel;
-      this.voicingNameResponse = item.a11yLabel;
+      this.voicingNameResponse = StringUtils.fillIn( options.comboBoxVoicingNameResponsePattern, {
+        value: item.a11yLabel
+      } );
     };
     property.link( propertyObserver );
 
@@ -225,6 +240,14 @@ class ComboBoxButton extends RectangularPushButton {
   setDisplayOnly( displayOnly ) {
     this.arrow.visible = !displayOnly;
     this.vSeparator.visible = !displayOnly;
+  }
+
+  /**
+   * Call to block voicing from occurring upon this Button's next focus.
+   * @public
+   */
+  blockNextVoicingFocusListener() {
+    this._blockNextVoicingFocusListener = true;
   }
 
   /**
