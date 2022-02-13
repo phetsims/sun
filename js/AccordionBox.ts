@@ -9,10 +9,12 @@
 
 import BooleanProperty from '../../axon/js/BooleanProperty.js';
 import Emitter from '../../axon/js/Emitter.js';
+import Property from '../../axon/js/Property.js';
 import Shape from '../../kite/js/Shape.js';
 import InstanceRegistry from '../../phet-core/js/documentation/InstanceRegistry.js';
 import merge from '../../phet-core/js/merge.js';
-import { FocusHighlightFromNode } from '../../scenery/js/imports.js';
+import optionize from '../../phet-core/js/optionize.js';
+import { FocusHighlightFromNode, NodeOptions } from '../../scenery/js/imports.js';
 import { PDOMPeer } from '../../scenery/js/imports.js';
 import { Node } from '../../scenery/js/imports.js';
 import { Path } from '../../scenery/js/imports.js';
@@ -20,7 +22,9 @@ import { Rectangle } from '../../scenery/js/imports.js';
 import { Text } from '../../scenery/js/imports.js';
 import accordionBoxClosedSoundPlayer from '../../tambo/js/shared-sound-players/accordionBoxClosedSoundPlayer.js';
 import accordionBoxOpenedSoundPlayer from '../../tambo/js/shared-sound-players/accordionBoxOpenedSoundPlayer.js';
+import SoundClipPlayer from '../../tambo/js/sound-generators/SoundClipPlayer.js';
 import EventType from '../../tandem/js/EventType.js';
+import { PhetioObjectOptions } from '../../tandem/js/PhetioObject.js';
 import Tandem from '../../tandem/js/Tandem.js';
 import IOType from '../../tandem/js/types/IOType.js';
 import ExpandCollapseButton from './ExpandCollapseButton.js';
@@ -28,34 +32,124 @@ import sun from './sun.js';
 
 // The definition for how AccordionBox sets its accessibleName in the PDOM. Forward it onto its expandCollapseButton.
 // See AccordionBox.md for further style guide and documentation on the pattern.
-const ACCESSIBLE_NAME_BEHAVIOR = ( node, options, accessibleName, callbacksForOtherNodes ) => {
+const ACCESSIBLE_NAME_BEHAVIOR = ( node: any, options: any, accessibleName: string, callbacksForOtherNodes: any ) => {
   callbacksForOtherNodes.push( () => {
     node.expandCollapseButton.accessibleName = accessibleName;
   } );
   return options;
 };
 
+// Options documented in optionize
+type AccordionBoxSelfOptions = {
+  titleNode?: Node;
+  expandedProperty?: Property<boolean>;
+  resize?: boolean;
+  lineWidth?: number;
+  cornerRadius?: number;
+
+  stroke?: ColorDef;
+  fill?: ColorDef;
+  minWidth?: number;
+
+  titleAlignX?: 'center' | 'left' | 'right';
+  titleAlignY?: 'top' | 'center';
+  titleXMargin?: number;
+  titleYMargin?: number;
+  titleXSpacing?: number;
+  showTitleWhenExpanded?: boolean;
+  titleBarExpandCollapse?: boolean;
+
+  // {*|null} options passed to ExpandCollapseButton constructor
+  expandCollapseButtonOptions?: any;
+
+  // expand/collapse button layout
+  buttonAlign?: 'left' | 'right';
+  buttonXMargin?: number;
+  buttonYMargin?: number;
+
+  // content
+  contentAlign?: 'left' | 'center' | 'right'
+  contentXMargin?: number;
+  contentYMargin?: number;
+  contentXSpacing?: number;
+  contentYSpacing?: number;
+
+  // {*|null} options for the title bar, defaults filled in below
+  titleBarOptions?: any;
+
+  // Sound
+  expandedSoundPlayer?: SoundClipPlayer;
+  collapsedSoundPlayer?: SoundClipPlayer;
+
+  // pdom
+  tagName?: string;
+  headingTagName?: string;
+  accessibleNameBehavior?: any;
+
+  // phet-io support
+  tandem?: Tandem;
+  phetioType?: IOType;
+  phetioEventType?: any;
+  visiblePropertyOptions?: PhetioObjectOptions;
+};
+export type AccordionBoxOptions = AccordionBoxSelfOptions & NodeOptions;
+
 class AccordionBox extends Node {
 
+  readonly expandedProperty: Property<boolean>;
+
+  private readonly _contentAlign;
+  private readonly _contentNode;
+  private readonly _cornerRadius;
+  private readonly _buttonXMargin;
+  private readonly _buttonYMargin;
+  private readonly _contentXMargin;
+  private readonly _contentYMargin;
+  private readonly _contentXSpacing;
+  private readonly _contentYSpacing;
+  private readonly _titleAlignX;
+  private readonly _titleAlignY;
+  private readonly _titleXMargin;
+  private readonly _titleYMargin;
+  private readonly _titleXSpacing;
+  private readonly _minWidth;
+  private readonly _showTitleWhenExpanded;
+  private readonly _buttonAlign;
+  private readonly disposeEmitterAccordionBox: any;
+  private readonly titleNode: Node;
+  private readonly expandCollapseButton: ExpandCollapseButton;
+  private readonly expandedBox: Rectangle;
+  private readonly collapsedBox: Rectangle;
+  private readonly workaroundBox: Rectangle;
+  private readonly expandedTitleBar: Path;
+  private readonly collapsedTitleBar: Rectangle;
+  private readonly containerNode: Node;
+  private readonly resetAccordionBox: () => void;
+
+  // Only defined if there is a stroke
+  private readonly expandedBoxOutline?: Rectangle;
+  private readonly collapsedBoxOutline?: Rectangle;
+
+  static AccordionBoxIO: IOType;
+
   /**
-   * @param {Node} contentNode - Content that will be shown or hidden as the accordion box is expanded/collapsed.
-   * @param {Object} [options] - Various key-value pairs that control the appearance and behavior.  Some options are
+   * @param contentNode - Content that will be shown or hidden as the accordion box is expanded/collapsed.
+   * @param [providedOptions] - Various key-value pairs that control the appearance and behavior.  Some options are
    *                             specific to this class while some are passed to the superclass.  See the code where
    *                             the options are set in the early portion of the constructor for details.
    */
-  constructor( contentNode, options ) {
+  constructor( contentNode: Node, providedOptions?: AccordionBoxOptions ) {
 
-    options = merge( {
+    const options = optionize<AccordionBoxOptions, AccordionBoxSelfOptions, NodeOptions>( {
 
-      // {Node} - If not provided, a Text node will be supplied. Should have and maintain well-defined bounds if passed
-      //          in.
-      titleNode: null,
+      // If not provided, a Text node will be supplied. Should have and maintain well-defined bounds if passed in
+      titleNode: null as unknown as Node,
 
       // {Property.<boolean>} - If not provided, a BooleanProperty will be created, defaulting to true.
-      expandedProperty: null,
+      expandedProperty: null as unknown as BooleanProperty,
 
-      // {boolean} - If true, the AccordionBox will resize itself as needed when the title/content resizes.
-      //             See https://github.com/phetsims/sun/issues/304
+      // If true, the AccordionBox will resize itself as needed when the title/content resizes.
+      // See https://github.com/phetsims/sun/issues/304
       resize: false,
 
       // applied to multiple parts of this UI component
@@ -106,9 +200,11 @@ class AccordionBox extends Node {
       // phet-io support
       tandem: Tandem.REQUIRED,
       phetioType: AccordionBox.AccordionBoxIO,
+
+      // @ts-ignore
       phetioEventType: EventType.USER,
       visiblePropertyOptions: { phetioFeatured: true }
-    }, options );
+    }, providedOptions );
 
     // titleBarOptions defaults
     options.titleBarOptions = merge( {
@@ -125,15 +221,8 @@ class AccordionBox extends Node {
       tandem: options.tandem.createTandem( 'expandCollapseButton' )
     }, options.expandCollapseButtonOptions );
 
-    // verify string options
-    assert && assert( options.buttonAlign === 'left' || options.buttonAlign === 'right' );
-    assert && assert( options.contentAlign === 'left' || options.contentAlign === 'right' || options.contentAlign === 'center' );
-    assert && assert( options.titleAlignX === 'left' || options.titleAlignX === 'right' || options.titleAlignX === 'center' );
-    assert && assert( options.titleAlignY === 'top' || options.titleAlignY === 'center' );
-
     super();
 
-    // @private
     this._contentAlign = options.contentAlign;
     this._contentNode = contentNode;
     this._cornerRadius = options.cornerRadius;
@@ -152,14 +241,13 @@ class AccordionBox extends Node {
     this._showTitleWhenExpanded = options.showTitleWhenExpanded;
     this._buttonAlign = options.buttonAlign;
 
-    // @private - Fires when this instance is disposed.
+    // Fires when this instance is disposed.
     // AccordionBox does not use the {function} this.disposeAccordionBox pattern used in other PhET components.
     // Instead, this Emitter will fire in the dispose method, and a listener must be added to this Emitter for anything
     // that needs to be cleaned up.  This simplifies conditional disposal, but distributes disposal throughout the
     // constructor.
     this.disposeEmitterAccordionBox = new Emitter();
 
-    // @private {Node}
     this.titleNode = options.titleNode;
 
     // If there is no titleNode specified, we'll provide our own, and handle disposal.
@@ -173,7 +261,6 @@ class AccordionBox extends Node {
     // in those places as well.
     this.titleNode.pickable = false;
 
-    // @public {Property.<boolean>}
     this.expandedProperty = options.expandedProperty;
     if ( !this.expandedProperty ) {
       this.expandedProperty = new BooleanProperty( true, {
@@ -182,7 +269,7 @@ class AccordionBox extends Node {
       this.disposeEmitterAccordionBox.addListener( () => this.expandedProperty.dispose() );
     }
 
-    // @private - expand/collapse button, links to expandedProperty, must be disposed of
+    // expand/collapse button, links to expandedProperty, must be disposed of
     this.expandCollapseButton = new ExpandCollapseButton( this.expandedProperty, options.expandCollapseButtonOptions );
     this.disposeEmitterAccordionBox.addListener( () => this.expandCollapseButton.dispose() );
 
@@ -192,24 +279,20 @@ class AccordionBox extends Node {
       cornerRadius: options.cornerRadius
     };
 
-    // @private {Rectangle} - Expanded box
     this.expandedBox = new Rectangle( boxOptions );
-
-    // @private {Rectangle} - Collapsed box
     this.collapsedBox = new Rectangle( boxOptions );
 
-    // @private {Rectangle} - Transparent rectangle for working around issues like
-    // https://github.com/phetsims/graphing-quadratics/issues/86. The current hypothesis is that browsers (in this case,
-    // IE11) sometimes don't compute the correct region of the screen that needs to get redrawn when something changes.
-    // This means that old content can be left in regions where it has since disappeared in the SVG.
-    // Adding transparent objects that are a bit larger seems to generally work (since browsers don't get the region
-    // wrong by more than a few pixels generally), and in the past has resolved the issues.
+    // Transparent rectangle for working around issues like https://github.com/phetsims/graphing-quadratics/issues/86.
+    // The current hypothesis is that browsers (in this case, IE11) sometimes don't compute the correct region of the
+    // screen that needs to get redrawn when something changes. This means that old content can be left in regions where
+    // it has since disappeared in the SVG. Adding transparent objects that are a bit larger seems to generally work
+    // (since browsers don't get the region wrong by more than a few pixels generally), and in the past has resolved the
+    // issues.
     this.workaroundBox = new Rectangle( {
       fill: 'transparent',
       pickable: false
     } );
 
-    // @private {Path}
     this.expandedTitleBar = new Path( null, merge( {
       lineWidth: options.lineWidth, // use same lineWidth as box, for consistent look
       cursor: options.cursor
@@ -217,8 +300,7 @@ class AccordionBox extends Node {
     this.disposeEmitterAccordionBox.addListener( () => this.expandedTitleBar.dispose() );
     this.expandedBox.addChild( this.expandedTitleBar );
 
-    // @private {Rectangle} - Collapsed title bar has corners that match the box. Clicking it operates like
-    //                        expand/collapse button.
+    // Collapsed title bar has corners that match the box. Clicking it operates like expand/collapse button.
     this.collapsedTitleBar = new Rectangle( merge( {
       cornerRadius: options.cornerRadius,
       cursor: options.cursor
@@ -266,8 +348,8 @@ class AccordionBox extends Node {
     this.expandCollapseButton.pickableProperty.lazyLink( pickableListener );
 
     this.expandCollapseButton.enabledProperty.link( enabled => {
-      this.collapsedTitleBar.cursor = enabled ? options.cursor : null;
-      this.expandedTitleBar.cursor = enabled ? options.cursor : null;
+      this.collapsedTitleBar.cursor = enabled ? ( options.cursor || null ) : null;
+      this.expandedTitleBar.cursor = enabled ? ( options.cursor || null ) : null;
     } );
 
     // Set the focusHighlight for the interactive PDOM element based on the dimensions of the whole title bar.
@@ -285,18 +367,16 @@ class AccordionBox extends Node {
         pickable: false
       };
 
-      // @private
       this.expandedBoxOutline = new Rectangle( outlineOptions );
       this.expandedBox.addChild( this.expandedBoxOutline );
 
-      // @private
       this.collapsedBoxOutline = new Rectangle( outlineOptions );
       this.collapsedBox.addChild( this.collapsedBoxOutline );
     }
 
     this.expandedBox.addChild( this._contentNode );
 
-    // @private {Node} - Holds the main components when the content's bounds are valid
+    // Holds the main components when the content's bounds are valid
     this.containerNode = new Node();
     this.addChild( this.containerNode );
 
@@ -335,7 +415,7 @@ class AccordionBox extends Node {
     }
 
     // expand/collapse the box
-    const expandedPropertyObserver = expanded => {
+    const expandedPropertyObserver = ( expanded: boolean ) => {
       this.expandedBox.visible = expanded;
       this.collapsedBox.visible = !expanded;
 
@@ -352,7 +432,7 @@ class AccordionBox extends Node {
 
     this.mutate( _.omit( options, 'cursor' ) );
 
-    // @private - reset things that are owned by AccordionBox
+    // reset things that are owned by AccordionBox
     this.resetAccordionBox = () => {
 
       // If expandedProperty wasn't provided via options, we own it and therefore need to reset it.
@@ -365,27 +445,19 @@ class AccordionBox extends Node {
     assert && phet.chipper.queryParameters.binder && InstanceRegistry.registerDataURL( 'sun', 'AccordionBox', this );
   }
 
-  /**
-   * @public
-   * @override
-   */
-  dispose() {
+  dispose(): void {
     this.disposeEmitterAccordionBox.emit();
     super.dispose();
   }
 
-  /**
-   * @public
-   */
-  reset() {
+  reset(): void {
     this.resetAccordionBox();
   }
 
   /**
    * Performs layout that positions everything that can change.
-   * @private
    */
-  layout() {
+  private layout(): void {
     const hasValidBounds = this._contentNode.bounds.isValid();
     this.containerNode.children = hasValidBounds ? [
       this.expandedBox,
@@ -489,14 +561,11 @@ class AccordionBox extends Node {
 
   /**
    * Returns the Shape of the title bar.
-   * @private
    *
    * Expanded title bar has (optional) rounded top corners, square bottom corners. Clicking it operates like
    * expand/collapse button.
-   *
-   * @returns {Shape}
    */
-  getTitleBarShape() {
+  private getTitleBarShape(): Shape {
     return Shape.roundedRectangleWithRadii( 0, 0, this.getBoxWidth(), this.getCollapsedBoxHeight(), {
       topLeft: this._cornerRadius,
       topRight: this._cornerRadius
@@ -505,11 +574,8 @@ class AccordionBox extends Node {
 
   /**
    * Returns the computed width of the box (ignoring things like stroke width)
-   * @private
-   *
-   * @returns {number}
    */
-  getBoxWidth() {
+  private getBoxWidth(): number {
 
     // Initial width is dependent on width of title section of the accordion box
     let width = Math.max( this._minWidth, this._buttonXMargin + this.expandCollapseButton.width + this._titleXSpacing + this.titleNode.width + this._titleXMargin );
@@ -536,21 +602,15 @@ class AccordionBox extends Node {
 
   /**
    * Returns the ideal height of the collapsed box (ignoring things like stroke width)
-   * @private
-   *
-   * @returns {number}
    */
-  getCollapsedBoxHeight() {
+  private getCollapsedBoxHeight(): number {
     return Math.max( this.expandCollapseButton.height + ( 2 * this._buttonYMargin ), this.titleNode.height + ( 2 * this._titleYMargin ) );
   }
 
   /**
    * Returns the ideal height of the expanded box (ignoring things like stroke width)
-   * @private
-   *
-   * @returns {number}
    */
-  getExpandedBoxHeight() {
+  private getExpandedBoxHeight(): number {
     // content is below button+title
     if ( this._showTitleWhenExpanded ) {
       return this.getCollapsedBoxHeight() + this._contentNode.height + this._contentYMargin + this._contentYSpacing;
