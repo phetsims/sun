@@ -7,27 +7,35 @@
  * @author Chris Malley (PixelZoom, Inc.)
  */
 
+import Property from '../../axon/js/Property.js';
 import merge from '../../phet-core/js/merge.js';
-import { HStrut } from '../../scenery/js/imports.js';
+import optionize from '../../phet-core/js/optionize.js';
+import { HStrut, VBoxOptions } from '../../scenery/js/imports.js';
 import { Node } from '../../scenery/js/imports.js';
 import { VBox } from '../../scenery/js/imports.js';
 import Tandem from '../../tandem/js/Tandem.js';
 import Checkbox from './Checkbox.js';
 import sun from './sun.js';
 
+type Item = {
+  node: Node; // Label for the button
+  property: Property<boolean>; // Property associated with the button
+  options?: any; // Item-specific options to be passed to the checkbox
+  tandem?: Tandem; // optional tandem for PhET-iO
+};
+
+type VerticalCheckboxGroupSelfOptions = {
+  checkboxOptions?: any;
+  touchAreaXDilation?: number;
+  mouseAreaXDilation?: number;
+};
+export type VerticalCheckboxGroupOptions = VerticalCheckboxGroupSelfOptions & Omit<VBoxOptions, 'children'>;
+
 class VerticalCheckboxGroup extends VBox {
 
-  /**
-   * @param {Object[]} items - Each item describes a checkbox, and is an object with these properties:
-   *    node: {Node}, // label for the button
-   *    property: {Property.<boolean>}, // Property associated with the button
-   *    [options]: {Object}, // Item specific options to be passed to the checkbox
-   *    [tandem]: {Tandem} // optional tandem for PhET-iO
-   * @param {Object} [options]
-   */
-  constructor( items, options ) {
+  constructor( items: Item[], providedOptions?: VerticalCheckboxGroupOptions ) {
 
-    options = merge( {
+    const options = optionize<VerticalCheckboxGroupOptions, VerticalCheckboxGroupSelfOptions, VBoxOptions, 'spacing'>( {
 
       // {Object|null} options passed to constructor of the Checkbox
       checkboxOptions: null,
@@ -40,10 +48,7 @@ class VerticalCheckboxGroup extends VBox {
       spacing: 10, // vertical spacing
       align: 'left',
       tandem: Tandem.OPTIONAL
-    }, options );
-
-    // Verify that the client hasn't set options that we will be overwriting.
-    assert && assert( !options.children, 'VerticalCheckboxGroup sets children' );
+    }, providedOptions );
 
     // Determine the max item width
     let maxItemWidth = 0;
@@ -52,7 +57,6 @@ class VerticalCheckboxGroup extends VBox {
     }
 
     // Create a checkbox for each item
-    assert && assert( !options.children, 'VerticalCheckboxGroup sets children' );
     options.children = [];
     for ( let i = 0; i < items.length; i++ ) {
 
