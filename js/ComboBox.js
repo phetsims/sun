@@ -32,7 +32,7 @@ import IOType from '../../tandem/js/types/IOType.js';
 import ComboBoxButton from './ComboBoxButton.js';
 import ComboBoxListBox from './ComboBoxListBox.js';
 import sun from './sun.js';
-import sunStrings from './sunStrings.js';
+import SunConstants from './SunConstants.js';
 
 // const
 const LIST_POSITION_VALUES = [ 'above', 'below' ]; // where the list pops up relative to the button
@@ -114,7 +114,7 @@ class ComboBox extends Node {
       // ComboBox does not mix Voicing, so it create custom options to pass to composed Voicing Nodes.
       // {string} - the pattern for the name response string, must include `{{value}}` so that the selected value string can
       // be filled in.
-      comboBoxVoicingNameResponsePattern: sunStrings.a11y.comboBoxVoicingNameResponsePattern,
+      comboBoxVoicingNameResponsePattern: SunConstants.VALUE_NAMED_PLACEHOLDER,
 
       // {null|function():string|null} - most context responses are dynamic to the current state of the sim, so lazily
       // create them when needed.
