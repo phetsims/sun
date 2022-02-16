@@ -361,6 +361,11 @@ class Slider extends AccessibleSlider( Node, 0 ) {
       tandem: options.tandem.createTandem( 'valueProperty' )
     } );
 
+    // must be after the button is instrumented
+    !ownsEnabledRangeProperty && this.addLinkedElement( this.enabledRangeProperty, {
+      tandem: options.tandem.createTandem( 'enabledRangeProperty' )
+    } );
+
     this.mutate( boundsRequiredOptionKeys );
 
     // support for binder documentation, stripped out in builds and only runs when ?binder is specified
