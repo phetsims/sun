@@ -20,6 +20,7 @@ import Tandem from '../../tandem/js/Tandem.js';
 import ButtonNode from './buttons/ButtonNode.js';
 import RectangularPushButton from './buttons/RectangularPushButton.js';
 import sun from './sun.js';
+import SunConstants from './SunConstants.js';
 import VSeparator from './VSeparator.js';
 
 // constants
@@ -59,7 +60,7 @@ class ComboBoxButton extends RectangularPushButton {
       lineWidth: 1,
       soundPlayer: SoundPlayer.NO_SOUND, // disable default sound generation
 
-      comboBoxVoicingNameResponsePattern: '',
+      comboBoxVoicingNameResponsePattern: SunConstants.VALUE_NAMED_PLACEHOLDER,
 
       // PushButtonModel options
       enabledPropertyOptions: {

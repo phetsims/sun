@@ -15,7 +15,7 @@ import { IndexedNodeIO, Node, Rectangle, Voicing } from '../../scenery/js/import
 import Tandem from '../../tandem/js/Tandem.js';
 import ComboBoxItem from './ComboBoxItem.js';
 import sun from './sun.js';
-import sunStrings from './sunStrings.js';
+import SunConstants from './SunConstants.js';
 
 class ComboBoxListItemNode extends Voicing( Node, 0 ) {
 
@@ -50,7 +50,7 @@ class ComboBoxListItemNode extends Voicing( Node, 0 ) {
 
       // voicing
       voicingFocusListener: null,
-      comboBoxVoicingNameResponsePattern: sunStrings.a11y.comboBoxVoicingNameResponsePattern,
+      comboBoxVoicingNameResponsePattern: SunConstants.VALUE_NAMED_PLACEHOLDER,
 
       // phet-io
       tandem: Tandem.REQUIRED,
