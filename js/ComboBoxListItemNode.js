@@ -115,7 +115,7 @@ class ComboBoxListItemNode extends Voicing( Node, 0 ) {
     // Handle Voicing on focus in a more custom way
     this.addInputListener( {
       focus: () => {
-        this.voicingSpeakNameResponse( {
+        this.voicingSpeakObjectResponse( {
           hintResponse: this._supplyHintResponseOnNextFocus ? this.voicingHintResponse : null
         } );
         this._supplyHintResponseOnNextFocus = false;

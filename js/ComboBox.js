@@ -282,10 +282,6 @@ class ComboBox extends Node {
       }
       else {
 
-        // When the listBox is hidden, the button will be focused as the next item in the focus order. Make sure we
-        // don't get a response here.
-        this.button.blockNextVoicingFocusListener();
-
         // manage clickToDismissListener
         if ( this.display && this.display.hasInputListener( this.clickToDismissListener ) ) {
           this.display.removeInputListener( this.clickToDismissListener );

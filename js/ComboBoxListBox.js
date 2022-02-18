@@ -314,7 +314,7 @@ class ComboBoxListBox extends Panel {
    */
   voiceOnNewSelection( newValue, oldValue, listItemNode ) {
     const responseOptions = {
-      nameResponse: null,
+      objectResponse: null,
       hintResponse: null
     };
     if ( oldValue === newValue ) {
