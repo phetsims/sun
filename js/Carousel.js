@@ -284,7 +284,9 @@ class Carousel extends Node {
       // stop any animation that's in progress
       scrollAnimation && scrollAnimation.stop();
 
-      if ( this._animationEnabled ) {
+      // Only animate if animation is enabled and PhET-iO state is not being set.  When PhET-iO state is being set (as
+      // in loading a customized state), the carousel should immediately reflect the desired page
+      if ( this._animationEnabled && !phet.joist.sim.isSettingPhetioStateProperty.value ) {
 
         // options that are independent of orientation
         let animationOptions = {
