@@ -18,6 +18,7 @@ import sun from '../sun.js';
 import RectangularRadioButton from './RectangularRadioButton.js';
 import TButtonAppearanceStrategy from './TButtonAppearanceStrategy.js';
 import Property from '../../../axon/js/Property.js';
+import { VoicingResponse } from '../../../utterance-queue/js/ResponsePacket.js';
 
 // constants
 const BUTTON_CONTENT_X_ALIGN_VALUES = [ 'center', 'left', 'right' ];
@@ -31,7 +32,8 @@ type RadioButtonItem<T> = {
   phetioDocumentation?: string, // optional documentation for PhET-iO
   tandemName?: string, // optional tandem for PhET-iO
   tandem?: never, // use tandemName instead of a Tandem instance
-  labelContent?: string // optional label for a11y
+  labelContent?: string // optional label for a11y (description and voicing)
+  voicingContextResponse?: VoicingResponse;
   descriptionContent?: string // optional label for a11y
 }
 
@@ -211,15 +213,20 @@ class RectangularRadioButtonGroup<T> extends LayoutBox {
         radioButtonGroupMemberOptions.tandem = options.tandem.createTandem( item.tandemName );
       }
 
-      // pdom create the label for the radio button
+      // create the label and voicing response for the radio button
       if ( item.labelContent ) {
         radioButtonGroupMemberOptions.labelContent = item.labelContent;
+        radioButtonGroupMemberOptions.voicingNameResponse = item.labelContent;
       }
 
       // pdom create description for radio button
       // use if block to prevent empty 'p' tag being added when no option is present
       if ( item.descriptionContent ) {
         radioButtonGroupMemberOptions.descriptionContent = item.descriptionContent;
+      }
+
+      if ( item.voicingContextResponse ) {
+        radioButtonGroupMemberOptions.voicingContextResponse = item.voicingContextResponse;
       }
 
       const radioButton = new RectangularRadioButton( property, item.value, radioButtonGroupMemberOptions );
