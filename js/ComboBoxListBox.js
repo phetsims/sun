@@ -42,7 +42,7 @@ class ComboBoxListBox extends Panel {
       yMargin: 8,
       backgroundPickable: true,
 
-      // Options that apply to every item Node created in the list
+      // Options that apply to every ComboBoxItemNode created in the list
       comboBoxListItemNodeOptions: {},
 
       // pdom
@@ -307,6 +307,8 @@ class ComboBoxListBox extends Panel {
   }
 
   /**
+   * voice the response from selecting a new item Node. The response will differ depending on if the selection
+   * changed the Property.
    * @private
    * @param {*} newValue
    * @param {*} oldValue

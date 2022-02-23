@@ -60,6 +60,8 @@ class ComboBoxButton extends RectangularPushButton {
       lineWidth: 1,
       soundPlayer: SoundPlayer.NO_SOUND, // disable default sound generation
 
+      // {string} - The pattern for the voicingNameResponse, with "{{value}}" provided to be filled in with
+      // ComboBoxItem.a11yLabel.
       comboBoxVoicingNameResponsePattern: SunConstants.VALUE_NAMED_PLACEHOLDER,
 
       // PushButtonModel options
@@ -147,13 +149,13 @@ class ComboBoxButton extends RectangularPushButton {
 
     super( options );
 
-    // @private {boolean} - set to true to block voicing to occur upon this Button's next focus
+    // @private {boolean} - set to true to block voicing to occur upon this button's next focus event.
     this._blockNextVoicingFocusListener = false;
 
     this.voicingFocusListener = () => {
-      if ( !this._blockNextVoicingFocusListener ) {
-        this.defaultFocusListener();
-      }
+
+      // fire the listener only if we are not blocking the focus listener
+      !this._blockNextVoicingFocusListener && this.defaultFocusListener();
       this._blockNextVoicingFocusListener = false;
     };
 
@@ -244,7 +246,7 @@ class ComboBoxButton extends RectangularPushButton {
   }
 
   /**
-   * Call to block voicing from occurring upon this Button's next focus.
+   * Call to block voicing from occurring upon this button's next focus event.
    * @public
    */
   blockNextVoicingFocusListener() {

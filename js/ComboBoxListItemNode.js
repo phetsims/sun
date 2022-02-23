@@ -49,7 +49,7 @@ class ComboBoxListItemNode extends Voicing( Node, 0 ) {
       positionInPDOM: true,
 
       // voicing
-      voicingFocusListener: null,
+      voicingFocusListener: () => this.comboBoxListItemNodeVoicingFocusListener(),
       comboBoxVoicingNameResponsePattern: SunConstants.VALUE_NAMED_PLACEHOLDER,
 
       // phet-io
@@ -70,10 +70,10 @@ class ComboBoxListItemNode extends Voicing( Node, 0 ) {
     // pdom: get innerContent from the item
     assert && assert( options.innerContent === undefined, 'ComboBoxListItemNode sets innerContent' );
     options.innerContent = item.a11yLabel;
+    options.voicingObjectResponse = item.a11yLabel;
     options.voicingNameResponse = StringUtils.fillIn( options.comboBoxVoicingNameResponsePattern, {
       value: item.a11yLabel
     } );
-    options.voicingObjectResponse = item.a11yLabel;
 
     // Highlight that is shown when the pointer is over this item. This is not the a11y focus rectangle.
     const highlightRectangle = new Rectangle( 0, 0, highlightWidth, highlightHeight, {
@@ -109,18 +109,9 @@ class ComboBoxListItemNode extends Voicing( Node, 0 ) {
 
     super( options );
 
-    // @private
+    // @private {boolean} - when true, the next voicing focus listener will supply the hint response in addition to
+    // the object response. It will then set this back to false.
     this._supplyHintResponseOnNextFocus = false;
-
-    // Handle Voicing on focus in a more custom way
-    this.addInputListener( {
-      focus: () => {
-        this.voicingSpeakObjectResponse( {
-          hintResponse: this._supplyHintResponseOnNextFocus ? this.voicingHintResponse : null
-        } );
-        this._supplyHintResponseOnNextFocus = false;
-      }
-    } );
 
     // @public (read-only)
     this.item = item;
@@ -138,11 +129,22 @@ class ComboBoxListItemNode extends Voicing( Node, 0 ) {
   }
 
   /**
-   * This will only provide the hint for the very next voicing on focus.
+   * Ask for the voicing hint response upon next focus, but only for the very next focus event.
    * @public
    */
   supplyHintResponseOnNextFocus() {
     this._supplyHintResponseOnNextFocus = true;
+  }
+
+  /**
+   * A custom focus listener for this type, with conditional support for providing hint responses.
+   * @private
+   */
+  comboBoxListItemNodeVoicingFocusListener() {
+    this.voicingSpeakObjectResponse( {
+      hintResponse: this._supplyHintResponseOnNextFocus ? this.voicingHintResponse : null
+    } );
+    this._supplyHintResponseOnNextFocus = false;
   }
 }
 
