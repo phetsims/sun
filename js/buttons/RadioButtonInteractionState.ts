@@ -5,23 +5,26 @@
  * @author John Blanco
  */
 
-import EnumerationDeprecated from '../../../phet-core/js/EnumerationDeprecated.js';
+import Enumeration from '../../../phet-core/js/Enumeration.js';
+import EnumerationValue from '../../../phet-core/js/EnumerationValue.js';
 import sun from '../sun.js';
 
-const RadioButtonInteractionState = EnumerationDeprecated.byKeys( [
+class RadioButtonInteractionState extends EnumerationValue {
 
   // the button is selected
-  'SELECTED',
+  static SELECTED = new RadioButtonInteractionState();
 
   // the button is deselected
-  'DESELECTED',
+  static DESELECTED = new RadioButtonInteractionState();
 
   // a pointer is over the button, but it is not being pressed and is not selected
-  'OVER',
+  static OVER = new RadioButtonInteractionState();
 
   // the button is being pressed by the user
-  'PRESSED'
-] );
+  static PRESSED = new RadioButtonInteractionState();
+
+  static enumeration = new Enumeration( RadioButtonInteractionState );
+}
 
 sun.register( 'RadioButtonInteractionState', RadioButtonInteractionState );
 

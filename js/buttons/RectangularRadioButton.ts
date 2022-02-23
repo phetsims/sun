@@ -8,8 +8,9 @@
  */
 
 import Emitter from '../../../axon/js/Emitter.js';
+import IProperty from '../../../axon/js/IProperty.js';
 import merge from '../../../phet-core/js/merge.js';
-import { Color } from '../../../scenery/js/imports.js';
+import { Color, Path } from '../../../scenery/js/imports.js';
 import { PaintColorProperty } from '../../../scenery/js/imports.js';
 import pushButtonSoundPlayer from '../../../tambo/js/shared-sound-players/pushButtonSoundPlayer.js';
 import EventType from '../../../tandem/js/EventType.js';
@@ -21,15 +22,29 @@ import ButtonModel from './ButtonModel.js';
 import RadioButtonInteractionState from './RadioButtonInteractionState.js';
 import RadioButtonInteractionStateProperty from './RadioButtonInteractionStateProperty.js';
 import RectangularButton from './RectangularButton.js';
+import TButtonAppearanceStrategy from './TButtonAppearanceStrategy.js';
+import TContentAppearanceStrategy from './TContentAppearanceStrategy.js';
 
-class RectangularRadioButton extends RectangularButton {
+
+class RectangularRadioButton<T> extends RectangularButton {
+  interactionStateProperty: RadioButtonInteractionStateProperty;
+
+  // the Property this button changes
+  property: IProperty<T>;
+
+  // the value that is set to the Property when this button is pressed
+  value: T;
+
+  private firedEmitter: any;
+
+  private disposeRectangularRadioButton: () => void;
 
   /**
-   * @param {Property} property - axon Property that can take on a set of values, one for each radio button in the group
-   * @param {Object} value - value when this radio button is selected
-   * @param {Object} [options]
+   * @param property - axon Property that can take on a set of values, one for each radio button in the group
+   * @param value - value when this radio button is selected
+   * @param [options]
    */
-  constructor( property, value, options ) {
+  constructor( property: IProperty<T>, value: T, options?: any ) {
 
     options = merge( {
 
@@ -82,7 +97,6 @@ class RectangularRadioButton extends RectangularButton {
     assert && assert( !options.tandem.supplied || options.tandem.name.endsWith( 'RadioButton' ),
       `RectangularRadioButton tandem.name must end with RadioButton: ${options.tandem.phetioID}` );
 
-    // @private
     // Note it shares a tandem with this, so the emitter will be instrumented as a child of the button
     const buttonModel = new ButtonModel( {
       tandem: options.tandem
@@ -92,7 +106,7 @@ class RectangularRadioButton extends RectangularButton {
 
     super( buttonModel, interactionStateProperty, options );
 
-    // @public for use in RectangularRadioButtonGroup for managing the labels
+    // for use in RectangularRadioButtonGroup for managing the labels
     this.interactionStateProperty = interactionStateProperty;
 
     // pdom - Specify the default value for assistive technology, this attribute is needed in addition to
@@ -104,18 +118,13 @@ class RectangularRadioButton extends RectangularButton {
 
     // pdom - when the Property changes, make sure the correct radio button is marked as 'checked' so that this button
     // receives focus on 'tab'
-    const pdomCheckedListener = newValue => {
+    const pdomCheckedListener = ( newValue: T ) => {
       this.pdomChecked = ( newValue === value );
     };
     property.link( pdomCheckedListener );
 
-    // @private - the Property this button changes
     this.property = property;
-
-    // @private - the value that is set to the Property when this button is pressed
     this.value = value;
-
-    // @private
     this.firedEmitter = new Emitter( {
       tandem: options.tandem.createTandem( 'firedEmitter' ),
       phetioDocumentation: 'Emits when the radio button is pressed',
@@ -137,7 +146,6 @@ class RectangularRadioButton extends RectangularButton {
     const playSound = () => { soundPlayer.play(); };
     buttonModel.produceSoundEmitter.addListener( playSound );
 
-    // @private
     this.disposeRectangularRadioButton = () => {
       property.unlink( pdomCheckedListener );
       this.firedEmitter.dispose();
@@ -147,17 +155,13 @@ class RectangularRadioButton extends RectangularButton {
     };
   }
 
-  /**
-   * @public
-   * @override
-   */
-  dispose() {
+  override dispose() {
     this.disposeRectangularRadioButton();
     super.dispose();
   }
 
   /**
-   * @public (read-only) - fire on up if the button is enabled, public for use in the accessibility tree
+   * fire on up if the button is enabled, public for use in the accessibility tree
    */
   fire() {
 
@@ -167,147 +171,138 @@ class RectangularRadioButton extends RectangularButton {
       this.buttonModel.produceSoundEmitter.emit();
     }
   }
-}
-
-/**
- * FlatAppearanceStrategy is a value for RectangularRadioButton options.buttonAppearanceStrategy. It makes radio buttons
- * that look flat, i.e. no shading or highlighting, but that change color on mouseover, press, selected, etc.
- */
-class FlatAppearanceStrategy {
 
   /**
-   * @param {Node,Paintable} buttonBackground - the Node for the button's background, sans content
-   * @param {Property.<RadioButtonInteractionState>} interactionStateProperty
-   * @param {Property.<ColorDef>} baseColorProperty
-   * @param {Object} [options]
+   * FlatAppearanceStrategy is a value for RectangularRadioButton options.buttonAppearanceStrategy. It makes radio buttons
+   * that look flat, i.e. no shading or highlighting, but that change color on mouseover, press, selected, etc.
    */
-  constructor( buttonBackground, interactionStateProperty, baseColorProperty, options ) {
 
-    // Dynamic fills and strokes
-    const overFill = new PaintColorProperty( options.overFill || baseColorProperty, {
-      luminanceFactor: options.overFill ? 0 : 0.4
-    } );
-    const pressedFill = new PaintColorProperty( baseColorProperty, {
-      luminanceFactor: -0.4
-    } );
-    const overStroke = new PaintColorProperty( options.overStroke || options.deselectedStroke, {
-      luminanceFactor: options.overStroke ? 0 : -0.4
-    } );
+  static FlatAppearanceStrategy: TButtonAppearanceStrategy = class FlatAppearanceStrategy {
 
-    // Cache colors
-    buttonBackground.cachedPaints = [
-      baseColorProperty, overFill, pressedFill, overStroke, options.selectedStroke, options.deselectedStroke
-    ];
+    dispose: () => void;
 
-    // Change colors and opacity to match interactionState
-    function interactionStateListener( interactionState ) {
-      switch( interactionState ) {
+    /**
+     * buttonBackground is the Node for the button's background, sans content
+     */
+    constructor( buttonBackground: Path, interactionStateProperty: IProperty<RadioButtonInteractionState>,
+                 baseColorProperty: IProperty<ColorDef>, options: any ) {
 
-        case RadioButtonInteractionState.SELECTED:
-          buttonBackground.fill = baseColorProperty;
-          buttonBackground.stroke = options.selectedStroke;
-          buttonBackground.lineWidth = options.selectedLineWidth;
-          buttonBackground.opacity = options.selectedButtonOpacity;
-          break;
+      // Dynamic fills and strokes
+      const overFill = new PaintColorProperty( options.overFill || baseColorProperty, {
+        luminanceFactor: options.overFill ? 0 : 0.4
+      } );
+      const pressedFill = new PaintColorProperty( baseColorProperty, {
+        luminanceFactor: -0.4
+      } );
+      const overStroke = new PaintColorProperty( options.overStroke || options.deselectedStroke, {
+        luminanceFactor: options.overStroke ? 0 : -0.4
+      } );
 
-        case RadioButtonInteractionState.DESELECTED:
-          buttonBackground.fill = baseColorProperty;
-          buttonBackground.stroke = options.deselectedStroke;
-          buttonBackground.lineWidth = options.deselectedLineWidth;
-          buttonBackground.opacity = options.deselectedButtonOpacity;
-          break;
+      // Cache colors
+      buttonBackground.cachedPaints = [
+        baseColorProperty, overFill, pressedFill, overStroke, options.selectedStroke, options.deselectedStroke
+      ];
 
-        case RadioButtonInteractionState.OVER:
-          buttonBackground.fill = overFill;
-          buttonBackground.stroke = overStroke;
-          buttonBackground.lineWidth = ( options.overLineWidth ) ? options.overLineWidth : options.deselectedLineWidth;
-          buttonBackground.opacity = options.overButtonOpacity;
-          break;
-
-        case RadioButtonInteractionState.PRESSED:
-          buttonBackground.fill = pressedFill;
-          buttonBackground.stroke = options.deselectedStroke;
-          buttonBackground.lineWidth = options.deselectedLineWidth;
-          buttonBackground.opacity = options.selectedButtonOpacity;
-          break;
-
-        default:
-          throw new Error( `unsupported interactionState: ${interactionState}` );
-      }
-    }
-
-    interactionStateProperty.link( interactionStateListener );
-
-    // @public
-    this.dispose = () => {
-      if ( interactionStateProperty.hasListener( interactionStateListener ) ) {
-        interactionStateProperty.unlink( interactionStateListener );
-      }
-      overStroke.dispose();
-      overFill.dispose();
-      pressedFill.dispose();
-    };
-  }
-}
-
-
-/**
- * ContentAppearanceStrategy is a value for RectangularRadioButton options.contentAppearanceStrategy. It changes
- * their look based on the value of interactionStateProperty.
- */
-class ContentAppearanceStrategy {
-
-  /**
-   * @param {Node,Paintable} content
-   * @param {Property.<RadioButtonInteractionState>} interactionStateProperty
-   * @param {Object} [options]
-   * @constructor
-   * @public
-   */
-  constructor( content, interactionStateProperty, options ) {
-
-    // The button is not the parent of the content, therefore it is necessary to set the opacity on the content separately
-    function handleInteractionStateChanged( state ) {
-      if ( content !== null ) {
-        switch( state ) {
-
-          case RadioButtonInteractionState.DESELECTED:
-            content.opacity = options.deselectedContentOpacity;
-            break;
-
-          // mouseover for deselected buttons
-          case RadioButtonInteractionState.OVER:
-            content.opacity = options.overContentOpacity;
-            break;
+      // Change colors and opacity to match interactionState
+      function interactionStateListener( interactionState: RadioButtonInteractionState ) {
+        switch( interactionState ) {
 
           case RadioButtonInteractionState.SELECTED:
-            content.opacity = options.selectedContentOpacity;
+            buttonBackground.fill = baseColorProperty;
+            buttonBackground.stroke = options.selectedStroke;
+            buttonBackground.lineWidth = options.selectedLineWidth;
+            buttonBackground.opacity = options.selectedButtonOpacity;
+            break;
+
+          case RadioButtonInteractionState.DESELECTED:
+            buttonBackground.fill = baseColorProperty;
+            buttonBackground.stroke = options.deselectedStroke;
+            buttonBackground.lineWidth = options.deselectedLineWidth;
+            buttonBackground.opacity = options.deselectedButtonOpacity;
+            break;
+
+          case RadioButtonInteractionState.OVER:
+            buttonBackground.fill = overFill;
+            buttonBackground.stroke = overStroke;
+            buttonBackground.lineWidth = ( options.overLineWidth ) ? options.overLineWidth : options.deselectedLineWidth;
+            buttonBackground.opacity = options.overButtonOpacity;
             break;
 
           case RadioButtonInteractionState.PRESSED:
-            content.opacity = options.deselectedContentOpacity;
+            buttonBackground.fill = pressedFill;
+            buttonBackground.stroke = options.deselectedStroke;
+            buttonBackground.lineWidth = options.deselectedLineWidth;
+            buttonBackground.opacity = options.selectedButtonOpacity;
             break;
 
           default:
-            throw new Error( `unsupported state: ${state}` );
+            throw new Error( `unsupported interactionState: ${interactionState}` );
         }
       }
+
+      interactionStateProperty.link( interactionStateListener );
+
+      this.dispose = () => {
+        if ( interactionStateProperty.hasListener( interactionStateListener ) ) {
+          interactionStateProperty.unlink( interactionStateListener );
+        }
+        overStroke.dispose();
+        overFill.dispose();
+        pressedFill.dispose();
+      };
     }
-
-    interactionStateProperty.link( handleInteractionStateChanged );
-
-    // @public
-    this.dispose = () => {
-      if ( interactionStateProperty.hasListener( handleInteractionStateChanged ) ) {
-        interactionStateProperty.unlink( handleInteractionStateChanged );
-      }
-    };
   }
-}
 
-// @public
-RectangularRadioButton.FlatAppearanceStrategy = FlatAppearanceStrategy;
-RectangularRadioButton.ContentAppearanceStrategy = ContentAppearanceStrategy;
+
+  /**
+   * ContentAppearanceStrategy is a value for RectangularRadioButton options.contentAppearanceStrategy. It changes
+   * their look based on the value of interactionStateProperty.
+   */
+  static ContentAppearanceStrategy: TContentAppearanceStrategy = class ContentAppearanceStrategy {
+
+    dispose: () => void;
+
+    constructor( content: Path, interactionStateProperty: IProperty<RadioButtonInteractionState>, options: any ) {
+
+      // The button is not the parent of the content, therefore it is necessary to set the opacity on the content separately
+      function handleInteractionStateChanged( state: RadioButtonInteractionState ) {
+        if ( content !== null ) {
+          switch( state ) {
+
+            case RadioButtonInteractionState.DESELECTED:
+              content.opacity = options.deselectedContentOpacity;
+              break;
+
+            // mouseover for deselected buttons
+            case RadioButtonInteractionState.OVER:
+              content.opacity = options.overContentOpacity;
+              break;
+
+            case RadioButtonInteractionState.SELECTED:
+              content.opacity = options.selectedContentOpacity;
+              break;
+
+            case RadioButtonInteractionState.PRESSED:
+              content.opacity = options.deselectedContentOpacity;
+              break;
+
+            default:
+              throw new Error( `unsupported state: ${state}` );
+          }
+        }
+      }
+
+      interactionStateProperty.link( handleInteractionStateChanged );
+
+      this.dispose = () => {
+        if ( interactionStateProperty.hasListener( handleInteractionStateChanged ) ) {
+          interactionStateProperty.unlink( handleInteractionStateChanged );
+        }
+      };
+    }
+  }
+
+}
 
 sun.register( 'RectangularRadioButton', RectangularRadioButton );
 export default RectangularRadioButton;

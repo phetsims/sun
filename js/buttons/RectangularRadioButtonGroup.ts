@@ -10,46 +10,42 @@
 import Shape from '../../../kite/js/Shape.js';
 import InstanceRegistry from '../../../phet-core/js/documentation/InstanceRegistry.js';
 import merge from '../../../phet-core/js/merge.js';
-import { FocusHighlightPath } from '../../../scenery/js/imports.js';
-import { PDOMPeer } from '../../../scenery/js/imports.js';
-import { LayoutBox } from '../../../scenery/js/imports.js';
-import { Rectangle } from '../../../scenery/js/imports.js';
-import { SceneryConstants } from '../../../scenery/js/imports.js';
-import { Color } from '../../../scenery/js/imports.js';
+import { Color, FocusHighlightPath, IInputListener, LayoutBox, Node, PDOMPeer, Rectangle, SceneryConstants } from '../../../scenery/js/imports.js';
 import multiSelectionSoundPlayerFactory from '../../../tambo/js/multiSelectionSoundPlayerFactory.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import ColorConstants from '../ColorConstants.js';
 import sun from '../sun.js';
 import RectangularRadioButton from './RectangularRadioButton.js';
-// For TypeScript support
-import { Node } from '../../../scenery/js/imports.js'; // eslint-disable-line no-unused-vars
+import TButtonAppearanceStrategy from './TButtonAppearanceStrategy.js';
+import Property from '../../../axon/js/Property.js';
 
 // constants
 const BUTTON_CONTENT_X_ALIGN_VALUES = [ 'center', 'left', 'right' ];
 const BUTTON_CONTENT_Y_ALIGN_VALUES = [ 'center', 'top', 'bottom' ];
 const CLASS_NAME = 'RectangularRadioButtonGroup'; // to prefix instanceCount in case there are different kinds of "groups"
 
+type RadioButtonItem<T> = {
+  node: Node, // primary depiction for the button
+  value: T, // value associated with the button
+  label?: Node, // If a label is provided, the button becomes a LayoutBox with the label and radio button
+  phetioDocumentation?: string, // optional documentation for PhET-iO
+  tandemName?: string, // optional tandem for PhET-iO
+  tandem?: never, // use tandemName instead of a Tandem instance
+  labelContent?: string // optional label for a11y
+  descriptionContent?: string // optional label for a11y
+}
+
+
 // pdom - Unique ID for each instance of RectangularRadioButtonGroup, passed to individual buttons in the group. All buttons in
 // the  radio button group must have the same name or else the browser will treat all inputs of type radio in the
 // document as being in a single group.
 let instanceCount = 0;
 
-/** @template T */
-class RectangularRadioButtonGroup extends LayoutBox {
+class RectangularRadioButtonGroup<T> extends LayoutBox {
 
-  /**
-   * @param {Property<T>>} property
-   * @param { readonly {node:Node,value:T,label?:Node,tandemName?:string,phetioDocumentation?:string,labelContent?:string,descriptionContent?:string}[] } items - Each item describes a radio button, and is an object with these properties:
-   *   node: Node, // primary depiction for the button
-   *   value: *, // value associated with the button
-   *   [label: Node], // If a label is provided, the button becomes a LayoutBox with the label and radio button
-   *   [tandemName: Tandem], // optional tandem for PhET-iO
-   *   [phetioDocumentation: string], // optional documentation for PhET-iO
-   *   [labelContent: string] // optional label for a11y
-   *   [descriptionContent: string] // optional label for a11y
-   * @param {Object} [options]
-   */
-  constructor( property, items, options ) {
+  private disposeRadioButtonGroup: () => void;
+
+  constructor( property: Property<T>, items: RadioButtonItem<T>[], options?: any ) {
     options = merge( {
 
       // {number} - opt into Node's disabled opacity when enabled:false
@@ -179,25 +175,23 @@ class RectangularRadioButtonGroup extends LayoutBox {
     const maxLineWidth = Math.max( options.selectedLineWidth, options.deselectedLineWidth );
 
     // calculate the maximum width and height of the content so we can make all radio buttons the same size
-    const widestContentWidth = _.maxBy( items, item => item.node.width ).node.width;
-    const tallestContentHeight = _.maxBy( items, item => item.node.height ).node.height;
+    const widestContentWidth = _.maxBy( items, item => item.node.width )!.node.width;
+    const tallestContentHeight = _.maxBy( items, item => item.node.height )!.node.height;
 
     // make sure all radio buttons are the same size and create the RadioButtons
-    const buttons = [];
+    const buttons: Array<RectangularRadioButton<T> | LayoutBox> = [];
 
     // {ButtonWithLayoutNode[]} - Collection of both RadioButton and its layout manager, if one is created to support
     // a visual button label
-    const buttonsWithLayoutNodes = [];
+    const buttonsWithLayoutNodes: ButtonWithLayoutNode<T>[] = [];
 
-    const labelAppearanceStrategies = [];
+    const labelAppearanceStrategies: TButtonAppearanceStrategy[] = [];
     for ( i = 0; i < items.length; i++ ) {
       const item = items[ i ];
 
       assert && assert( !item.hasOwnProperty( 'phetioType' ), 'phetioType should be provided by ' +
                                                               'the Property passed to the ' +
                                                               'RectangularRadioButtonGroup constructor' );
-
-      assert && assert( !item.tandem, 'content arrays should not have tandem instances, they should use tandemName' );
 
       const radioButtonGroupMemberOptions = merge( {
         content: item.node,
@@ -277,10 +271,11 @@ class RectangularRadioButtonGroup extends LayoutBox {
     options.children = buttons;
 
     // Pointer areas and focus highlight, sized to fit the largest button. See https://github.com/phetsims/sun/issues/708.
-    const maxButtonWidth = _.max( buttonsWithLayoutNodes, buttonWithLayoutParent => buttonWithLayoutParent.layoutNode.width ).layoutNode.width;
-    const maxButtonHeight = _.max( buttonsWithLayoutNodes, buttonWithLayoutParent => buttonWithLayoutParent.layoutNode.height ).layoutNode.height;
-    buttonsWithLayoutNodes.forEach( buttonWithLayoutParent => {
+    const maxButtonWidth = _.maxBy( buttonsWithLayoutNodes, ( buttonWithLayoutParent: ButtonWithLayoutNode<T> ) => buttonWithLayoutParent.layoutNode.width )!.layoutNode.width;
+    const maxButtonHeight = _.maxBy( buttonsWithLayoutNodes, ( buttonWithLayoutParent: ButtonWithLayoutNode<T> ) => buttonWithLayoutParent.layoutNode.height )!.layoutNode.height;
+    buttonsWithLayoutNodes.forEach( ( buttonWithLayoutParent: ButtonWithLayoutNode<T> ) => {
 
+      // @ts-ignore - JO and MK think this can be removed once Shape.js is converted to typescript.
       buttonWithLayoutParent.radioButton.touchArea = Shape.rectangle(
         -options.touchAreaXDilation - maxLineWidth / 2,
         -options.touchAreaYDilation - maxLineWidth / 2,
@@ -288,6 +283,7 @@ class RectangularRadioButtonGroup extends LayoutBox {
         maxButtonHeight + 2 * options.touchAreaYDilation
       );
 
+      // @ts-ignore - JO and MK think this can be removed once Shape.js is converted to typescript.
       buttonWithLayoutParent.radioButton.mouseArea = Shape.rectangle(
         -options.mouseAreaXDilation - maxLineWidth / 2,
         -options.mouseAreaYDilation - maxLineWidth / 2,
@@ -315,7 +311,7 @@ class RectangularRadioButtonGroup extends LayoutBox {
     } );
 
     // zoom - signify that key input is reserved and we should not pan when user presses arrow keys
-    const intentListener = { keydown: event => event.pointer.reserveForKeyboardDrag() };
+    const intentListener: IInputListener = { keydown: event => event.pointer.reserveForKeyboardDrag() };
     this.addInputListener( intentListener );
 
     // must be done after this instance is instrumented
@@ -323,7 +319,7 @@ class RectangularRadioButtonGroup extends LayoutBox {
       tandem: options.tandem.createTandem( 'property' )
     } );
 
-    // @private - remove listeners from buttons and make eligible for garbage collection
+    // remove listeners from buttons and make eligible for garbage collection
     this.disposeRadioButtonGroup = () => {
       this.removeInputListener( intentListener );
       buttons.forEach( button => button.dispose() );
@@ -334,11 +330,7 @@ class RectangularRadioButtonGroup extends LayoutBox {
     assert && phet.chipper.queryParameters.binder && InstanceRegistry.registerDataURL( 'sun', 'RectangularRadioButtonGroup', this );
   }
 
-  /**
-   * @public
-   * @override
-   */
-  dispose() {
+  override dispose() {
     this.disposeRadioButtonGroup();
     super.dispose();
   }
@@ -349,15 +341,15 @@ class RectangularRadioButtonGroup extends LayoutBox {
  * need to be set on the button, but need to surround the layout manager containing both the button and
  * its graphical label (if there is one).
  */
-class ButtonWithLayoutNode {
+class ButtonWithLayoutNode<T> {
+  radioButton: RectangularRadioButton<T>;
+  layoutNode: Node;
 
   /**
-   * @param {RectangularRadioButton} radioButton
-   * @param {Node} layoutNode - May be the same Node as the radioButton if no layout manager is needed
+   * @param radioButton
+   * @param layoutNode - May be the same Node as the radioButton if no layout manager is needed
    */
-  constructor( radioButton, layoutNode ) {
-
-    // @public
+  constructor( radioButton: RectangularRadioButton<T>, layoutNode: Node ) {
     this.radioButton = radioButton;
     this.layoutNode = layoutNode;
   }
