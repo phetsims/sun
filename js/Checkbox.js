@@ -81,7 +81,8 @@ class Checkbox extends Voicing( Node, 0 ) {
       inputType: 'checkbox',
       appendDescription: true,
 
-      // {TAlertableDef|null} - Utterances to be spoken with a screen reader after the checkbox is pressed.
+      // {TAlertableDef|null} - Utterances to be spoken with a screen reader after the checkbox is pressed. Also used for
+      // the voicingContextResponse
       checkedContextResponse: null,
       uncheckedContextResponse: null
     }, options );
@@ -95,10 +96,12 @@ class Checkbox extends Voicing( Node, 0 ) {
       if ( property.value ) {
         options.checkedSoundPlayer.play();
         options.checkedContextResponse && this.alertDescriptionUtterance( options.checkedContextResponse );
+        this.voicingSpeakNameResponse( { contextResponse: options.checkedContextResponse } );
       }
       else {
         options.uncheckedSoundPlayer.play();
         options.uncheckedContextResponse && this.alertDescriptionUtterance( options.uncheckedContextResponse );
+        this.voicingSpeakNameResponse( { contextResponse: options.uncheckedContextResponse } );
       }
     }, {
       parameters: [],
