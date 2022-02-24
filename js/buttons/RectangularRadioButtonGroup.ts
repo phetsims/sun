@@ -25,7 +25,7 @@ const BUTTON_CONTENT_X_ALIGN_VALUES = [ 'center', 'left', 'right' ];
 const BUTTON_CONTENT_Y_ALIGN_VALUES = [ 'center', 'top', 'bottom' ];
 const CLASS_NAME = 'RectangularRadioButtonGroup'; // to prefix instanceCount in case there are different kinds of "groups"
 
-type RadioButtonItem<T> = {
+type RectangularRadioButtonItem<T> = {
   node: Node, // primary depiction for the button
   value: T, // value associated with the button
   label?: Node, // If a label is provided, the button becomes a LayoutBox with the label and radio button
@@ -47,7 +47,7 @@ class RectangularRadioButtonGroup<T> extends LayoutBox {
 
   private disposeRadioButtonGroup: () => void;
 
-  constructor( property: Property<T>, items: RadioButtonItem<T>[], options?: any ) {
+  constructor( property: Property<T>, items: RectangularRadioButtonItem<T>[], options?: any ) {
     options = merge( {
 
       // {number} - opt into Node's disabled opacity when enabled:false
