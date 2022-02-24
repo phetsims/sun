@@ -138,7 +138,9 @@ class RectangularRadioButton<T> extends RectangularButton {
     buttonModel.downProperty.link( down => {
       if ( !down && ( buttonModel.overProperty.get() || buttonModel.focusedProperty.get() ) && !buttonModel.interrupted ) {
         this.fire();
-        this.voicingSpeakFullResponse();
+        this.voicingSpeakFullResponse( {
+          hintResponse: null
+        } );
       }
     } );
 
