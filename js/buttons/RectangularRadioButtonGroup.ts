@@ -102,6 +102,7 @@ class RectangularRadioButtonGroup<T> extends LayoutBox {
       }" that is not present in the contentArray` );
     }
 
+    // These options are passed to each RectangularRadioButton created in this group.
     const defaultOptions = {
 
       // LayoutBox options (super class of RectangularRadioButtonGroup)
@@ -160,7 +161,10 @@ class RectangularRadioButtonGroup<T> extends LayoutBox {
 
       // pdom - focus highlight expansion
       a11yHighlightXDilation: 0,
-      a11yHighlightYDilation: 0
+      a11yHighlightYDilation: 0,
+
+      // voicing - hint response added to the focus response, and nowhere else.
+      voicingHintResponse: null
     };
 
     options = merge( _.clone( defaultOptions ), options );
