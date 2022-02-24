@@ -17,7 +17,7 @@ import Tandem from '../../tandem/js/Tandem.js';
 import Checkbox from './Checkbox.js';
 import sun from './sun.js';
 
-type Item = {
+type VerticalCheckboxGroupItem = {
   node: Node; // Label for the button
   property: Property<boolean>; // Property associated with the button
   options?: any; // Item-specific options to be passed to the checkbox
@@ -29,11 +29,11 @@ type VerticalCheckboxGroupSelfOptions = {
   touchAreaXDilation?: number;
   mouseAreaXDilation?: number;
 };
-export type VerticalCheckboxGroupOptions = VerticalCheckboxGroupSelfOptions & Omit<VBoxOptions, 'children'>;
+type VerticalCheckboxGroupOptions = VerticalCheckboxGroupSelfOptions & Omit<VBoxOptions, 'children'>;
 
 class VerticalCheckboxGroup extends VBox {
 
-  constructor( items: Item[], providedOptions?: VerticalCheckboxGroupOptions ) {
+  constructor( items: VerticalCheckboxGroupItem[], providedOptions?: VerticalCheckboxGroupOptions ) {
 
     const options = optionize<VerticalCheckboxGroupOptions, VerticalCheckboxGroupSelfOptions, VBoxOptions, 'spacing'>( {
 
@@ -85,3 +85,4 @@ class VerticalCheckboxGroup extends VBox {
 
 sun.register( 'VerticalCheckboxGroup', VerticalCheckboxGroup );
 export default VerticalCheckboxGroup;
+export type { VerticalCheckboxGroupItem, VerticalCheckboxGroupOptions };
