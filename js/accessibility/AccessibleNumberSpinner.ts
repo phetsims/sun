@@ -104,7 +104,7 @@ const AccessibleNumberSpinner = <SuperType extends Constructor>( Type: SuperType
 
       // handle all accessible event input
       const accessibleInputListener: IInputListener = {
-        keydown: ( event: SceneryEvent ) => {
+        keydown: ( event: SceneryEvent<KeyboardEvent> ) => {
           if ( ( this as unknown as Node ).enabledProperty.get() ) {
 
             // check for relevant keys here
@@ -133,7 +133,7 @@ const AccessibleNumberSpinner = <SuperType extends Constructor>( Type: SuperType
             }
           }
         },
-        keyup: ( event: SceneryEvent ) => {
+        keyup: ( event: SceneryEvent<KeyboardEvent> ) => {
 
           const key = KeyboardUtils.getEventCode( event.domEvent );
 
@@ -149,7 +149,7 @@ const AccessibleNumberSpinner = <SuperType extends Constructor>( Type: SuperType
             this.handleKeyUp( event );
           }
         },
-        blur: ( event: SceneryEvent ) => {
+        blur: ( event: SceneryEvent<FocusEvent> ) => {
 
           // if a key is currently down when focus leaves the spinner, stop callbacks and emit that the
           // key is up
@@ -183,7 +183,7 @@ const AccessibleNumberSpinner = <SuperType extends Constructor>( Type: SuperType
      * Handle the keydown event and emit events related to the user interaction. Ideally, this would
      * override AccessibleValueHandler.handleKeyDown, but overriding is not supported with PhET Trait pattern.
      */
-    _accessibleNumberSpinnerHandleKeyDown( event: SceneryEvent ) {
+    _accessibleNumberSpinnerHandleKeyDown( event: SceneryEvent<KeyboardEvent> ) {
       assert && assert( event.domEvent, 'must have a domEvent' );
       this.handleKeyDown( event );
       this._emitKeyState( event.domEvent!, true );

@@ -133,7 +133,7 @@ class AquaRadioButtonGroup<T> extends LayoutBox {
     } );
 
     // zoom - signify that key input is reserved and we should not pan when user presses arrow keys
-    const intentListener = { keydown: ( event: SceneryEvent ) => event.pointer.reserveForKeyboardDrag() };
+    const intentListener = { keydown: ( event: SceneryEvent<KeyboardEvent> ) => event.pointer.reserveForKeyboardDrag() };
     this.addInputListener( intentListener );
 
     // Add linked element after the radio button is instrumented

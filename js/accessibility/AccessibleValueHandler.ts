@@ -538,9 +538,9 @@ const AccessibleValueHandler = <SuperType extends Constructor>( Type: SuperType,
      *
      * Add this as an input listener to the `keydown` event to the Node mixing in AccessibleValueHandler.
      */
-    handleKeyDown( event: SceneryEvent ) {
+    handleKeyDown( event: SceneryEvent<KeyboardEvent> ) {
 
-      const domEvent = event.domEvent as KeyboardEvent;
+      const domEvent = event.domEvent!;
 
       const key = KeyboardUtils.getEventCode( domEvent );
 
@@ -667,7 +667,7 @@ const AccessibleValueHandler = <SuperType extends Constructor>( Type: SuperType,
      * function on release. Add this as an input listener to the node mixing in AccessibleValueHandler.
      * @protected
      */
-    handleKeyUp( event: SceneryEvent ) {
+    handleKeyUp( event: SceneryEvent<KeyboardEvent> ) {
       const key = KeyboardUtils.getEventCode( event.domEvent )!;
 
       // handle case where user tabbed to this input while an arrow key might have been held down
@@ -725,7 +725,7 @@ const AccessibleValueHandler = <SuperType extends Constructor>( Type: SuperType,
      *
      * @protected
      */
-    handleInput( event: SceneryEvent ) {
+    handleInput( event: SceneryEvent<Event> ) {
       if ( ( this as unknown as Node ).enabledProperty.get() && !this._blockInput ) {
 
         // don't handle again on "change" event
@@ -779,7 +779,7 @@ const AccessibleValueHandler = <SuperType extends Constructor>( Type: SuperType,
      * Add this as a listener on the `blur` event to the Node that is mixing in AccessibleValueHandler.
      * @protected
      */
-    handleBlur( event: SceneryEvent ) {
+    handleBlur( event: SceneryEvent<FocusEvent> ) {
 
       // if any range keys are currently down, call end drag because user has stopped dragging to do something else
       if ( this._anyKeysDown() ) {
@@ -800,7 +800,7 @@ const AccessibleValueHandler = <SuperType extends Constructor>( Type: SuperType,
      * Interaction with this input has started, save the value on start so that it can be used as an "old" value
      * when generating the context response with option a11yCreateContextResponse.
      */
-    _onInteractionStart( event: SceneryEvent ) {
+    _onInteractionStart( event: SceneryEvent<Event> ) {
       this._valueOnStart = this._valueProperty.value;
       this._startChange( event );
     }
@@ -809,7 +809,7 @@ const AccessibleValueHandler = <SuperType extends Constructor>( Type: SuperType,
      * Interaction with this input has completed, generate an utterance describing changes if necessary and call
      * optional "end" function.
      */
-    _onInteractionEnd( event: SceneryEvent ) {
+    _onInteractionEnd( event: SceneryEvent<Event> ) {
       this.alertContextResponse();
       this.voicingOnEndResponse();
       this._endChange( event );
