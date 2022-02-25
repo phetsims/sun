@@ -25,7 +25,7 @@ import CallbackTimer from '../../../axon/js/CallbackTimer.js';
 import Emitter from '../../../axon/js/Emitter.js';
 import validate from '../../../axon/js/validate.js';
 import assertHasProperties from '../../../phet-core/js/assertHasProperties.js';
-import Constructor from '../../../phet-core/js/Constructor.js';
+import Constructor from '../../../phet-core/js/types/Constructor.js';
 import inheritance from '../../../phet-core/js/inheritance.js';
 import IntentionalAny from '../../../phet-core/js/IntentionalAny.js';
 import optionize from '../../../phet-core/js/optionize.js';
