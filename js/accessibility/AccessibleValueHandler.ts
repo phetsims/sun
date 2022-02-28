@@ -25,7 +25,7 @@ import Orientation from '../../../phet-core/js/Orientation.js';
 import { animatedPanZoomSingleton, IInputListener, KeyboardUtils, Node, NodeOptions, SceneryEvent, SceneryListenerFunction, Voicing, VoicingOptions } from '../../../scenery/js/imports.js';
 import Utterance from '../../../utterance-queue/js/Utterance.js';
 import sun from '../sun.js';
-import optionize, { Defaults } from '../../../phet-core/js/optionize.js';
+import optionize, { OptionizeDefaults } from '../../../phet-core/js/optionize.js';
 import Multilink from '../../../axon/js/Multilink.js';
 import UtteranceQueue from '../../../utterance-queue/js/UtteranceQueue.js';
 import IProperty from '../../../axon/js/IProperty.js';
@@ -265,7 +265,7 @@ const AccessibleValueHandler = <SuperType extends Constructor>( Type: SuperType,
         assert( providedOptions.keyboardStep, 'rounding to keyboardStep, define appropriate keyboardStep to round to' );
       }
 
-      const defaults: Defaults<AccessibleValueHandlerSelfOptions, NodeOptions> = {
+      const defaults: OptionizeDefaults<AccessibleValueHandlerSelfOptions, NodeOptions> = {
 
         // other
         startChange: _.noop,
