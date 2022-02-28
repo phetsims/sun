@@ -217,3 +217,4 @@ const AccessibleNumberSpinner = <SuperType extends Constructor>( Type: SuperType
 sun.register( 'AccessibleNumberSpinner', AccessibleNumberSpinner );
 
 export default AccessibleNumberSpinner;
+export type { AccessibleNumberSpinnerOptions };

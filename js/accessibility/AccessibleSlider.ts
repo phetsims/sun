@@ -103,3 +103,4 @@ const AccessibleSlider = <SuperType extends Constructor>( Type: SuperType, optio
 sun.register( 'AccessibleSlider', AccessibleSlider );
 
 export default AccessibleSlider;
+export type { AccessibleSliderOptions };
