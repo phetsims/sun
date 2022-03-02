@@ -230,6 +230,11 @@ class AccordionBox extends Node {
       voicingContextResponse: options.voicingContextResponse,
       voicingHintResponse: options.voicingHintResponse,
 
+      // non-default focus listener that includes the object response
+      voicingFocusListener: () => {
+        this.expandCollapseButton.voicingSpeakFullResponse( { contextResponse: null } );
+      },
+
       // phet-io
       tandem: options.tandem.createTandem( 'expandCollapseButton' )
     }, options.expandCollapseButtonOptions );
