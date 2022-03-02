@@ -27,6 +27,7 @@ import SoundClipPlayer from '../../tambo/js/sound-generators/SoundClipPlayer.js'
 import EventType from '../../tandem/js/EventType.js';
 import Tandem from '../../tandem/js/Tandem.js';
 import IOType from '../../tandem/js/types/IOType.js';
+import { VoicingResponse } from '../../utterance-queue/js/ResponsePacket.js';
 import ExpandCollapseButton from './ExpandCollapseButton.js';
 import sun from './sun.js';
 
@@ -81,6 +82,13 @@ type SelfOptions = {
   // Sound
   expandedSoundPlayer?: SoundClipPlayer;
   collapsedSoundPlayer?: SoundClipPlayer;
+
+  // voicing - These are defined here in AccordionBox (duplicated from Voicing) so that they can be passed to the
+  // expandCollapse button, which handles voicing for AccordionBox, without AccordionBox mixing Voicing itself.
+  voicingNameResponse?: VoicingResponse,
+  voicingObjectResponse?: VoicingResponse,
+  voicingContextResponse?: VoicingResponse,
+  voicingHintResponse?: VoicingResponse,
 
   // pdom
   headingTagName?: string
@@ -190,6 +198,12 @@ class AccordionBox extends Node {
       headingTagName: 'h3', // specify the heading that this AccordionBox will be, TODO: use this.headingLevel when no longer experimental https://github.com/phetsims/scenery/issues/855
       accessibleNameBehavior: ACCESSIBLE_NAME_BEHAVIOR,
 
+      // voicing
+      voicingNameResponse: null,
+      voicingObjectResponse: null,
+      voicingContextResponse: null,
+      voicingHintResponse: null,
+
       // phet-io support
       tandem: Tandem.REQUIRED,
       phetioType: AccordionBox.AccordionBoxIO,
@@ -209,6 +223,14 @@ class AccordionBox extends Node {
       cursor: options.cursor,
       valueOnSoundPlayer: options.expandedSoundPlayer,
       valueOffSoundPlayer: options.collapsedSoundPlayer,
+
+      // voicing
+      voicingNameResponse: options.voicingNameResponse,
+      voicingObjectResponse: options.voicingObjectResponse,
+      voicingContextResponse: options.voicingContextResponse,
+      voicingHintResponse: options.voicingHintResponse,
+
+      // phet-io
       tandem: options.tandem.createTandem( 'expandCollapseButton' )
     }, options.expandCollapseButtonOptions );
 
@@ -427,6 +449,8 @@ class AccordionBox extends Node {
       this.titleNode.visible = ( expanded && options.showTitleWhenExpanded ) || !expanded;
 
       pdomContainerNode.setPDOMAttribute( 'aria-hidden', !expanded );
+
+      this.expandCollapseButton.voicingSpeakFullResponse();
     };
     this.expandedProperty.link( expandedPropertyObserver );
     this.disposeEmitterAccordionBox.addListener( () => this.expandedProperty.unlink( expandedPropertyObserver ) );
