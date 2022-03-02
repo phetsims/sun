@@ -14,7 +14,7 @@ import Shape from '../../kite/js/Shape.js';
 import InstanceRegistry from '../../phet-core/js/documentation/InstanceRegistry.js';
 import merge from '../../phet-core/js/merge.js';
 import optionize from '../../phet-core/js/optionize.js';
-import { FocusHighlightFromNode, NodeOptions } from '../../scenery/js/imports.js';
+import { FocusHighlightFromNode, InteractiveHighlighting, NodeOptions } from '../../scenery/js/imports.js';
 import { PDOMPeer } from '../../scenery/js/imports.js';
 import { Node } from '../../scenery/js/imports.js';
 import { Path } from '../../scenery/js/imports.js';
@@ -121,8 +121,8 @@ class AccordionBox extends Node {
   private readonly expandedBox: Rectangle;
   private readonly collapsedBox: Rectangle;
   private readonly workaroundBox: Rectangle;
-  private readonly expandedTitleBar: Path;
-  private readonly collapsedTitleBar: Rectangle;
+  private readonly expandedTitleBar: InteractiveHighlightPath;
+  private readonly collapsedTitleBar: InteractiveHighlightRectangle;
   private readonly containerNode: Node;
   private readonly resetAccordionBox: () => void;
 
@@ -293,7 +293,7 @@ class AccordionBox extends Node {
       pickable: false
     } );
 
-    this.expandedTitleBar = new Path( null, merge( {
+    this.expandedTitleBar = new InteractiveHighlightPath( null, merge( {
       lineWidth: options.lineWidth, // use same lineWidth as box, for consistent look
       cursor: options.cursor
     }, options.titleBarOptions ) );
@@ -301,7 +301,7 @@ class AccordionBox extends Node {
     this.expandedBox.addChild( this.expandedTitleBar );
 
     // Collapsed title bar has corners that match the box. Clicking it operates like expand/collapse button.
-    this.collapsedTitleBar = new Rectangle( merge( {
+    this.collapsedTitleBar = new InteractiveHighlightRectangle( merge( {
       cornerRadius: options.cornerRadius,
       cursor: options.cursor
     }, options.titleBarOptions ) );
@@ -319,6 +319,12 @@ class AccordionBox extends Node {
           }
         }
       } );
+    }
+    else {
+
+      // When titleBar doesn't expand or collapse, don't show interactive highlights for them
+      this.expandedTitleBar.focusHighlight = 'invisible';
+      this.collapsedTitleBar.focusHighlight = 'invisible';
     }
 
     // Set the input listeners for the expandedTitleBar
@@ -348,8 +354,12 @@ class AccordionBox extends Node {
     this.expandCollapseButton.pickableProperty.lazyLink( pickableListener );
 
     this.expandCollapseButton.enabledProperty.link( enabled => {
-      this.collapsedTitleBar.cursor = enabled ? ( options.cursor || null ) : null;
-      this.expandedTitleBar.cursor = enabled ? ( options.cursor || null ) : null;
+
+      // Since there are listeners on the titleBars from InteractiveHighlighting, setting pickable: false isn't enough
+      // to hide pointer cursor.
+      const showCursor = options.titleBarExpandCollapse && enabled;
+      this.collapsedTitleBar.cursor = showCursor ? ( options.cursor || null ) : null;
+      this.expandedTitleBar.cursor = showCursor ? ( options.cursor || null ) : null;
     } );
 
     // Set the focusHighlight for the interactive PDOM element based on the dimensions of the whole title bar.
@@ -621,6 +631,10 @@ class AccordionBox extends Node {
     }
   }
 }
+
+class InteractiveHighlightPath extends InteractiveHighlighting( Path, 1 ) {}
+
+class InteractiveHighlightRectangle extends InteractiveHighlighting( Rectangle, 0 ) {}
 
 AccordionBox.AccordionBoxIO = new IOType( 'AccordionBoxIO', {
   valueType: AccordionBox,
