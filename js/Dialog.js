@@ -55,20 +55,20 @@ class Dialog extends Popupable( Panel ) {
       |                                     topMargin                  TopMargin   |
       |                                     |                         _|___        |
       |                  ___________________|____________________    |     |       |
-     m|--------l--------|                                        |-x-|  X  |---c---|m
-     a|        e        |   Title                                | S |_____|   l   |a
-     x|        f        |________________________________________| P           o   |x
-     W|        t        |   |                                    | a           s   |W
-     i|        M        |   ySpacing                             | c           e   |i
-     d|        a        |___|____________________________________| i           B   |d
-     t|        r        |                                        | n           u   |t
-     h|        g        |   Content                              | g           t   |h
-     M|        i        |                                        |             t   |M
-     a|        n        |                                        |             o   |a
-     r|                 |                                        |             n   |r
-     g|                 |                                        |             R   |g
-     i|                 |                                        |             i   |i
-     n|                 |                                        |             g   |n
+    m |--------l--------|                                        |-x-|  X  |---c---| m
+    a |        e        |   Title                                | S |_____|   l   | a
+    x |        f        |________________________________________| P           o   | x
+    W |        t        |   |                                    | a           s   | W
+    i |        M        |   ySpacing                             | c           e   | i
+    d |        a        |___|____________________________________| i           B   | d
+    t |        r        |                                        | n           u   | t
+    h |        g        |   Content                              | g           t   | h
+    M |        i        |                                        |             t   | M
+    a |        n        |                                        |             o   | a
+    r |                 |                                        |             n   | r
+    g |                 |                                        |             R   | g
+    i |                 |                                        |             i   | i
+    n |                 |                                        |             g   | n
       |                 |                                        |             h   |
       |                 |                                        |             M   |
       |                 |________________________________________|             a   |
