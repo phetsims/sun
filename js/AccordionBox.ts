@@ -62,7 +62,7 @@ type SelfOptions = {
   titleBarExpandCollapse?: boolean;
 
   // {*|null} options passed to ExpandCollapseButton constructor
-  expandCollapseButtonOptions?: any;
+  expandCollapseButtonOptions?: ExpandCollapseButtonOptions;
 
   // expand/collapse button layout
   buttonAlign?: 'left' | 'right';
