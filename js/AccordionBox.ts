@@ -14,6 +14,7 @@ import Shape from '../../kite/js/Shape.js';
 import InstanceRegistry from '../../phet-core/js/documentation/InstanceRegistry.js';
 import merge from '../../phet-core/js/merge.js';
 import optionize from '../../phet-core/js/optionize.js';
+import { PathOptions, PDOMBehaviorFunction } from '../../scenery/js/imports.js';
 import { FocusHighlightFromNode, InteractiveHighlighting, NodeOptions } from '../../scenery/js/imports.js';
 import { PDOMPeer } from '../../scenery/js/imports.js';
 import { Node } from '../../scenery/js/imports.js';
@@ -24,7 +25,6 @@ import accordionBoxClosedSoundPlayer from '../../tambo/js/shared-sound-players/a
 import accordionBoxOpenedSoundPlayer from '../../tambo/js/shared-sound-players/accordionBoxOpenedSoundPlayer.js';
 import SoundClipPlayer from '../../tambo/js/sound-generators/SoundClipPlayer.js';
 import EventType from '../../tandem/js/EventType.js';
-import { PhetioObjectOptions } from '../../tandem/js/PhetioObject.js';
 import Tandem from '../../tandem/js/Tandem.js';
 import IOType from '../../tandem/js/types/IOType.js';
 import ExpandCollapseButton from './ExpandCollapseButton.js';
@@ -32,15 +32,17 @@ import sun from './sun.js';
 
 // The definition for how AccordionBox sets its accessibleName in the PDOM. Forward it onto its expandCollapseButton.
 // See AccordionBox.md for further style guide and documentation on the pattern.
-const ACCESSIBLE_NAME_BEHAVIOR = ( node: any, options: any, accessibleName: string, callbacksForOtherNodes: any ) => {
+const ACCESSIBLE_NAME_BEHAVIOR: PDOMBehaviorFunction = ( node, options, accessibleName: string, callbacksForOtherNodes ) => {
   callbacksForOtherNodes.push( () => {
-    node.expandCollapseButton.accessibleName = accessibleName;
+
+    // @ts-ignore TODO: private in the same file, but not private in the same class, https://github.com/phetsims/sun/issues/738
+    ( node as AccordionBox ).expandCollapseButton.accessibleName = accessibleName;
   } );
   return options;
 };
 
 // Options documented in optionize
-type AccordionBoxSelfOptions = {
+type SelfOptions = {
   titleNode?: Node;
   expandedProperty?: Property<boolean>;
   resize?: boolean;
@@ -74,25 +76,16 @@ type AccordionBoxSelfOptions = {
   contentXSpacing?: number;
   contentYSpacing?: number;
 
-  // {*|null} options for the title bar, defaults filled in below
-  titleBarOptions?: any;
+  titleBarOptions?: PathOptions | null;
 
   // Sound
   expandedSoundPlayer?: SoundClipPlayer;
   collapsedSoundPlayer?: SoundClipPlayer;
 
   // pdom
-  tagName?: string;
-  headingTagName?: string;
-  accessibleNameBehavior?: any;
-
-  // phet-io support
-  tandem?: Tandem;
-  phetioType?: IOType;
-  phetioEventType?: any;
-  visiblePropertyOptions?: PhetioObjectOptions;
+  headingTagName?: string
 };
-export type AccordionBoxOptions = AccordionBoxSelfOptions & NodeOptions;
+export type AccordionBoxOptions = SelfOptions & NodeOptions;
 
 class AccordionBox extends Node {
 
@@ -115,7 +108,7 @@ class AccordionBox extends Node {
   private readonly _minWidth;
   private readonly _showTitleWhenExpanded;
   private readonly _buttonAlign;
-  private readonly disposeEmitterAccordionBox: any;
+  private readonly disposeEmitterAccordionBox: Emitter;
   private readonly titleNode: Node;
   private readonly expandCollapseButton: ExpandCollapseButton;
   private readonly expandedBox: Rectangle;
@@ -140,7 +133,7 @@ class AccordionBox extends Node {
    */
   constructor( contentNode: Node, providedOptions?: AccordionBoxOptions ) {
 
-    const options = optionize<AccordionBoxOptions, AccordionBoxSelfOptions, NodeOptions>( {
+    const options = optionize<AccordionBoxOptions, SelfOptions, NodeOptions, 'tandem'>( {
 
       // If not provided, a Text node will be supplied. Should have and maintain well-defined bounds if passed in
       titleNode: null as unknown as Node,
