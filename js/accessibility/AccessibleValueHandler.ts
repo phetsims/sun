@@ -55,9 +55,6 @@ type VoicingOnEndResponseOptions = {
   onlyOnValueChange?: boolean;
   withObjectResponse?: boolean;
 };
-type VoicingOnChangeResponseOptions = {
-  objectResponse?: string | null;
-};
 
 type AccessibleValueHandlerSelfOptions = {
   valueProperty: IProperty<number>;
@@ -170,9 +167,6 @@ type AccessibleValueHandlerSelfOptions = {
    * should list any Properties whose change should trigger a description update for this Node.
    */
   a11yDependencies?: Property<IntentionalAny>[];
-
-  // Provide voicing support with an opt-in strategy, TODO: perhaps remove this as part of https://github.com/phetsims/sun/issues/730
-  provideVoicing?: boolean
 };
 
 type AccessibleValueHandlerOptions = AccessibleValueHandlerSelfOptions & Omit<VoicingOptions, 'tagName' | 'inputType'>;
@@ -199,7 +193,6 @@ const AccessibleValueHandler = <SuperType extends Constructor>( Type: SuperType,
     _pageKeyboardStep: number;
     _ariaOrientation: Orientation;
     _shiftKey: boolean;
-    _provideVoicing: boolean
 
     // track previous values for callbacks outside of Property listeners
     _oldValue: number | null;
@@ -286,7 +279,6 @@ const AccessibleValueHandler = <SuperType extends Constructor>( Type: SuperType,
         contextResponsePerValueChangeDelay: 700,
         contextResponseMaxDelay: 1500,
         a11yDependencies: [],
-        provideVoicing: false,
 
         // parent options that we must provide a default to use
         tagName: null,
@@ -329,8 +321,6 @@ const AccessibleValueHandler = <SuperType extends Constructor>( Type: SuperType,
       this.setPageKeyboardStep( options.pageKeyboardStep );
 
       this._shiftKey = false;
-
-      this._provideVoicing = options.provideVoicing;
 
       this._ariaOrientation = defaults.ariaOrientation;
       this.ariaOrientation = options.ariaOrientation;
@@ -978,27 +968,12 @@ const AccessibleValueHandler = <SuperType extends Constructor>( Type: SuperType,
 
       if ( !options.onlyOnValueChange || this._valueOnStart !== this._valueProperty.value ) {
 
-        this._provideVoicing && this.voicingSpeakFullResponse( {
+        this.voicingSpeakFullResponse( {
           nameResponse: null,
           objectResponse: options.withObjectResponse ? this.voicingObjectResponse : null,
           hintResponse: null // no hint, there was just a successful interaction
         } );
       }
-    }
-
-    /**
-     * Most often called from a drag, when speaking many times. Call with an `utterance` option to utilize the Utterance
-     * timing variables for proper speaking
-     */
-    voicingOnChangeResponse( providedOptions?: VoicingOnChangeResponseOptions ) {
-
-      const options = optionize<VoicingOnChangeResponseOptions, VoicingOnChangeResponseOptions>( {
-        objectResponse: this.voicingObjectResponse
-      }, providedOptions );
-
-      // no context response because we don't need it during the interaction, just after it
-      // TODO: likely we do need some sort of context response support, https://github.com/phetsims/ratio-and-proportion/issues/413
-      this._provideVoicing && this.voicingSpeakResponse( options );
     }
 
     dispose() {
