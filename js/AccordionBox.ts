@@ -193,8 +193,6 @@ class AccordionBox extends Node {
       // phet-io support
       tandem: Tandem.REQUIRED,
       phetioType: AccordionBox.AccordionBoxIO,
-
-      // @ts-ignore
       phetioEventType: EventType.USER,
       visiblePropertyOptions: { phetioFeatured: true }
     }, providedOptions );
