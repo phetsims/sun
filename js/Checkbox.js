@@ -30,7 +30,7 @@ import sun from './sun.js';
 
 // constants
 const BOOLEAN_VALIDATOR = { valueType: 'boolean' };
-const SHAPE_MATRIX = Matrix3.createFromPool( 0.025, 0, 0, 0, -0.025, 0, 0, 0, 1 ); // to create a unity-scale icon
+const SHAPE_MATRIX = Matrix3.pool.create( 0.025, 0, 0, 0, -0.025, 0, 0, 0, 1 ); // to create a unity-scale icon
 const uncheckedShape = checkEmptySolidShape.transformed( SHAPE_MATRIX );
 const checkedShape = checkSquareOSolidShape.transformed( SHAPE_MATRIX );
 
