@@ -7,7 +7,7 @@
  * @author Aaron Davis (PhET Interactive Simulations)
  */
 
-import Shape from '../../../kite/js/Shape.js';
+import { Shape } from '../../../kite/js/imports.js';
 import InstanceRegistry from '../../../phet-core/js/documentation/InstanceRegistry.js';
 import merge from '../../../phet-core/js/merge.js';
 import { Color, FocusHighlightPath, IInputListener, LayoutBox, Node, PDOMPeer, Rectangle, SceneryConstants } from '../../../scenery/js/imports.js';

@@ -7,7 +7,7 @@
  * @author Chris Malley (PixelZoom, Inc.)
  */
 
-import Shape from '../../kite/js/Shape.js';
+import { Shape } from '../../kite/js/imports.js';
 import merge from '../../phet-core/js/merge.js';
 import { PressListener } from '../../scenery/js/imports.js';
 import { Circle } from '../../scenery/js/imports.js';

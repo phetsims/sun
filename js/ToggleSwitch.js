@@ -18,7 +18,7 @@ import Action from '../../axon/js/Action.js';
 import Dimension2 from '../../dot/js/Dimension2.js';
 import Utils from '../../dot/js/Utils.js';
 import Vector2 from '../../dot/js/Vector2.js';
-import Shape from '../../kite/js/Shape.js';
+import { Shape } from '../../kite/js/imports.js';
 import merge from '../../phet-core/js/merge.js';
 import { DragListener, LinearGradient, Node, Rectangle, SceneryConstants, Voicing } from '../../scenery/js/imports.js';
 import EventType from '../../tandem/js/EventType.js';

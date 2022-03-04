@@ -10,7 +10,7 @@
 import BooleanProperty from '../../axon/js/BooleanProperty.js';
 import Emitter from '../../axon/js/Emitter.js';
 import Property from '../../axon/js/Property.js';
-import Shape from '../../kite/js/Shape.js';
+import { Shape } from '../../kite/js/imports.js';
 import InstanceRegistry from '../../phet-core/js/documentation/InstanceRegistry.js';
 import merge from '../../phet-core/js/merge.js';
 import optionize from '../../phet-core/js/optionize.js';

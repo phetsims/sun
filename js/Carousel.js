@@ -16,7 +16,7 @@
 import NumberProperty from '../../axon/js/NumberProperty.js';
 import stepTimer from '../../axon/js/stepTimer.js';
 import Dimension2 from '../../dot/js/Dimension2.js';
-import Shape from '../../kite/js/Shape.js';
+import { Shape } from '../../kite/js/imports.js';
 import InstanceRegistry from '../../phet-core/js/documentation/InstanceRegistry.js';
 import merge from '../../phet-core/js/merge.js';
 import { Node } from '../../scenery/js/imports.js';
