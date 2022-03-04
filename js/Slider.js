@@ -24,6 +24,7 @@ import Tandem from '../../tandem/js/Tandem.js';
 import BooleanIO from '../../tandem/js/types/BooleanIO.js';
 import IOType from '../../tandem/js/types/IOType.js';
 import VoidIO from '../../tandem/js/types/VoidIO.js';
+import ValueChangeSoundGenerator from '../../tambo/js/sound-generators/ValueChangeSoundGenerator.js';
 import AccessibleSlider from './accessibility/AccessibleSlider.js';
 import DefaultSliderTrack from './DefaultSliderTrack.js';
 import SliderThumb from './SliderThumb.js';
@@ -116,6 +117,14 @@ class Slider extends AccessibleSlider( Node, 0 ) {
       enabledRangeProperty: null, // {Property.<Range>|null} determine the portion of range that is enabled
       disabledOpacity: SceneryConstants.DISABLED_OPACITY, // opacity applied to the entire Slider when disabled
 
+      // {ValueChangeSoundGenerator|null} soundGenerator - This is used to generate sounds as the slider is moved by
+      // the user.  If set to null, the default sound generator will be created.  Set to
+      // ValueChangeSoundGenerator.NO_SOUND to disable sound generation for this slider.
+      soundGenerator: null,
+
+      // {Object} - Options for the default sound generator.  These should only be provided when using the default.
+      soundGeneratorOptions: {},
+
       // phet-io
       tandem: Tandem.REQUIRED,
       phetioType: Slider.SliderIO,
@@ -137,6 +146,7 @@ class Slider extends AccessibleSlider( Node, 0 ) {
     assert && assert( options.orientation instanceof Orientation, `invalid orientation: ${options.orientation}` );
     assert && assert( options.trackNode === null || options.trackNode instanceof SliderTrack, 'trackNode must be of type SliderTrack' );
     assert && assert( options.thumbNode === null || options.thumbNode instanceof Node, 'thumbNode must be of type Node' );
+    assert && assert( options.soundGenerator === null || _.isEmpty( options.soundGeneratorOptions ), 'options should only be supplied when using default sound generator' );
 
     const boundsRequiredOptionKeys = _.pick( options, Node.REQUIRES_BOUNDS_OPTION_KEYS );
     options = _.omit( options, Node.REQUIRES_BOUNDS_OPTION_KEYS );
@@ -158,7 +168,6 @@ class Slider extends AccessibleSlider( Node, 0 ) {
     options.trackSize = options.trackSize || DEFAULT_HORIZONTAL_TRACK_SIZE;
     options.thumbSize = options.thumbSize || DEFAULT_HORIZONTAL_THUMB_SIZE;
 
-
     const thumbTandem = options.tandem.createTandem( Slider.THUMB_NODE_TANDEM_NAME );
     if ( Tandem.VALIDATION && options.thumbNode ) {
       assert && assert( options.thumbNode.tandem.equals( thumbTandem ),
@@ -179,6 +188,32 @@ class Slider extends AccessibleSlider( Node, 0 ) {
       tandem: thumbTandem
     } );
 
+    // If no sound generator was provided, create the default.
+    if ( options.soundGenerator === null ) {
+      options.soundGenerator = new ValueChangeSoundGenerator( range, options.soundGeneratorOptions || {} );
+    }
+
+    // Set up the drag handler to generate sound when drag events cause changes.
+    if ( options.soundGenerator !== ValueChangeSoundGenerator.NO_SOUND ) {
+
+      // variable to keep track of the value at the start of user drag interactions
+      let previousValue = valueProperty.value;
+
+      // Enhance the drag handler to perform sound generation.
+      const providedDrag = options.drag;
+      options.drag = event => {
+
+        // TODO: Is this a reasonable way to distinguish pointer events from key events?  See https://github.com/phetsims/sun/issues/697.
+        if ( event.pointer.type === 'pdom' ) {
+          options.soundGenerator.playSoundForValueChange( valueProperty.value, previousValue );
+        }
+        else {
+          options.soundGenerator.playSoundIfThresholdReached( valueProperty.value, previousValue );
+        }
+        providedDrag( event );
+        previousValue = valueProperty.value;
+      };
+    }
 
     const ownsEnabledRangeProperty = !options.enabledRangeProperty;
 
@@ -242,6 +277,7 @@ class Slider extends AccessibleSlider( Node, 0 ) {
       endDrag: options.endDrag,
       constrainValue: options.constrainValue,
       enabledRangeProperty: this.enabledRangeProperty,
+      soundGenerator: options.soundGenerator,
 
       // phet-io
       tandem: trackTandem
@@ -249,7 +285,6 @@ class Slider extends AccessibleSlider( Node, 0 ) {
 
     // Position the track horizontally
     this.track.centerX = this.track.valueToPosition.evaluate( ( range.max + range.min ) / 2 );
-
 
     // Dilate the local bounds horizontally so that it extends beyond where the thumb can reach.  This prevents layout
     // asymmetry when the slider thumb is off the edges of the track.  See https://github.com/phetsims/sun/issues/282

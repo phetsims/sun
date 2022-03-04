@@ -13,8 +13,8 @@ import Dimension2 from '../../dot/js/Dimension2.js';
 import LinearFunction from '../../dot/js/LinearFunction.js';
 import Range from '../../dot/js/Range.js';
 import merge from '../../phet-core/js/merge.js';
-import { DragListener } from '../../scenery/js/imports.js';
-import { Node } from '../../scenery/js/imports.js';
+import { DragListener, Node } from '../../scenery/js/imports.js';
+import ValueChangeSoundGenerator from '../../tambo/js/sound-generators/ValueChangeSoundGenerator.js';
 import Tandem from '../../tandem/js/Tandem.js';
 import sun from './sun.js';
 
@@ -37,6 +37,9 @@ class SliderTrack extends Node {
       constrainValue: _.identity, // called before valueProperty is set
       enabledRangeProperty: new Property( new Range( range.min, range.max ) ), // Defaults to a constant range
 
+      // {ValueChangeSoundGenerator} - sound generation
+      soundGenerator: ValueChangeSoundGenerator.NO_SOUND,
+
       // phet-io
       tandem: Tandem.REQUIRED
     }, options );
@@ -50,12 +53,18 @@ class SliderTrack extends Node {
     // click in the track to change the value, continue dragging if desired
     const handleTrackEvent = ( event, trail ) => {
       assert && assert( this.valueToPosition, 'valueToPosition should be defined' );
+      const oldValue = valueProperty.value;
       const transform = trail.subtrailTo( this ).getTransform();
       const x = transform.inversePosition2( event.pointer.point ).x;
       const value = this.valueToPosition.inverse( x );
       const valueInRange = options.enabledRangeProperty.value.constrainValue( value );
       const newValue = options.constrainValue( valueInRange );
       valueProperty.set( newValue );
+
+      // Down events on the track can cause value changes.  If that's what just happened, play a sound.
+      if ( event.type === 'down' ) {
+        options.soundGenerator.playSoundIfThresholdReached( newValue, oldValue );
+      }
     };
 
     this.addChild( trackNode );
