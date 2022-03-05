@@ -9,8 +9,8 @@
  * @author John Blanco (PhET Interactive Simulations)
  */
 
-import merge from '../../phet-core/js/merge.js';
-import { HeightSizable } from '../../scenery/js/imports.js';
+import optionize from '../../phet-core/js/optionize.js';
+import { HeightSizable, HeightSizableSelfOptions, IPaint, isHeightSizable, isWidthSizable, NodeOptions, WidthSizableSelfOptions } from '../../scenery/js/imports.js';
 import { LayoutConstraint } from '../../scenery/js/imports.js';
 import { WidthSizable } from '../../scenery/js/imports.js';
 import { Node } from '../../scenery/js/imports.js';
@@ -19,49 +19,75 @@ import Tandem from '../../tandem/js/Tandem.js';
 import sun from './sun.js';
 
 // valid values for options.align
-const ALIGN_VALUES = [ 'left', 'center', 'right' ];
+const ALIGN_VALUES = [ 'left', 'center', 'right' ] as const;
+
+export type PanelAlign = typeof ALIGN_VALUES[number];
 
 const DEFAULT_OPTIONS = {
   fill: 'white',
   stroke: 'black',
-  lineWidth: 1, // width of the background border
+  lineWidth: 1,
   xMargin: 5,
   yMargin: 5,
-  cornerRadius: 10, // radius of the rounded corners on the background
-  resize: true, // dynamically resize when content bounds change
+  cornerRadius: 10,
+  resize: true,
   backgroundPickable: true,
-
   excludeInvisibleChildrenFromBounds: true,
+  align: 'left',
+  minWidth: 0,
+  tandem: Tandem.OPTIONAL
+} as const;
+assert && Object.freeze( DEFAULT_OPTIONS );
 
-  // {string} horizontal alignment of content in the pane, see ALIGN_VALUES
+type SelfOptions = {
+  fill?: IPaint;
+  stroke?: IPaint;
+
+  // width of the background border
+  lineWidth?: number;
+
+  xMargin?: number;
+  yMargin?: number;
+
+  // radius of the rounded corners on the background
+  cornerRadius?: number;
+
+  // dynamically resize when content bounds change
+  resize?: boolean;
+
+  backgroundPickable?: boolean;
+
+  // horizontal alignment of content in the pane, see ALIGN_VALUES
   // All alignments are equal when the content width >= minWidth
   // Left is the default alignment so when there are multiple panels, their content will left align, see #252
-  align: 'left',
+  align?: PanelAlign;
 
-  minWidth: 0, // minimum width of the panel (lineWidth will add to this)
-  tandem: Tandem.OPTIONAL
+  // minimum width of the panel (lineWidth will add to this)
+  minWidth?: number;
 };
-assert && Object.freeze( DEFAULT_OPTIONS );
+
+type SuperOptions = WidthSizableSelfOptions & HeightSizableSelfOptions & NodeOptions;
+export type PanelOptions = SelfOptions & SuperOptions;
 
 class Panel extends WidthSizable( HeightSizable( Node ) ) {
 
-  /**
-   * @param {Node} content
-   * @param {Object} [options]
-   */
-  constructor( content, options ) {
+  _content: Node; // (internal)
+  _backgroundContainer: Node; // (internal)
+  background: Rectangle; // (internal)
+  private _constraint: PanelConstraint;
 
-    options = merge( {}, DEFAULT_OPTIONS, options );
+  constructor( content: Node, providedOptions?: PanelOptions ) {
+
+    const options = optionize<PanelOptions, SelfOptions, SuperOptions>( {}, DEFAULT_OPTIONS, providedOptions );
 
     assert && assert( _.includes( ALIGN_VALUES, options.align ), `invalid align: ${options.align}` );
 
     super();
 
-    // @private {Node}
     this._content = content;
     this._backgroundContainer = new Node();
 
-    // @private {Rectangle} - correct size will be set by layout
+    // correct size will be set by layout
     this.background = new Rectangle( 0, 0, 1, 1, {
       lineWidth: options.lineWidth,
       pickable: options.backgroundPickable,
@@ -76,7 +102,6 @@ class Panel extends WidthSizable( HeightSizable( Node ) ) {
     this.addChild( this._backgroundContainer );
     this.addChild( content );
 
-    // @private {PanelConstraint}
     this._constraint = new PanelConstraint( this, options );
     this._constraint.updateLayout();
 
@@ -89,59 +114,41 @@ class Panel extends WidthSizable( HeightSizable( Node ) ) {
 
   /**
    * Get the background rectangle's stroke (can be overridden)
-   * @public
-   *
-   * @returns {PaintDef}
    */
-  getStroke() {
+  getStroke(): IPaint {
     return this.background.stroke;
   }
 
-  get stroke() { return this.getStroke(); }
+  get stroke(): IPaint { return this.getStroke(); }
 
   /**
    * Change the background rectangle's stroke (can be overridden)
-   * @public
-   *
-   * @param {PaintDef} stroke
    */
-  setStroke( stroke ) {
+  setStroke( stroke: IPaint ) {
     this.background.stroke = stroke;
   }
 
-  set stroke( value ) { this.setStroke( value ); }
+  set stroke( value: IPaint ) { this.setStroke( value ); }
 
   /**
    * Get the background rectangle's fill (can be overridden)
-   * @public
-   *
-   * @returns {PaintDef}
    */
-  getFill() {
+  getFill(): IPaint {
     return this.background.fill;
   }
 
-  get fill() { return this.getFill(); }
+  get fill(): IPaint { return this.getFill(); }
 
   /**
    * Change the background rectangle's fill (can be overridden)
-   * @public
-   *
-   * @param {PaintDef} fill
    */
-  setFill( fill ) {
+  setFill( fill: IPaint ) {
     this.background.fill = fill;
   }
 
-  set fill( value ) { this.setFill( value ); }
+  set fill( value: IPaint ) { this.setFill( value ); }
 
-  /**
-   * @public
-   * @override
-   *
-   * @param {boolean} excludeInvisibleChildrenFromBounds
-   */
-  setExcludeInvisibleChildrenFromBounds( excludeInvisibleChildrenFromBounds ) {
+  setExcludeInvisibleChildrenFromBounds( excludeInvisibleChildrenFromBounds: boolean ) {
     super.setExcludeInvisibleChildrenFromBounds( excludeInvisibleChildrenFromBounds );
 
     this._constraint.updateLayoutAutomatically();
@@ -149,25 +156,28 @@ class Panel extends WidthSizable( HeightSizable( Node ) ) {
 
   /**
    * Releases references
-   * @public
-   * @override
    */
   dispose() {
     this._constraint.dispose();
 
     super.dispose();
   }
+
+  static DEFAULT_OPTIONS = DEFAULT_OPTIONS;
 }
 
 class PanelConstraint extends LayoutConstraint {
-  /**
-   * @param {Panel} panel
-   * @param {Object} [options]
-   */
-  constructor( panel, options ) {
+
+  private panel: Panel;
+  private minWidth: number;
+  private xMargin: number;
+  private yMargin: number;
+  private lineWidth: number;
+  private align: PanelAlign;
+
+  constructor( panel: Panel, options: Required<SelfOptions> ) {
     super( panel );
 
-    // @private
     this.panel = panel;
 
     assert && assert( typeof options.minWidth === 'number', 'Panel minWidth should be a number' );
@@ -176,7 +186,6 @@ class PanelConstraint extends LayoutConstraint {
     assert && assert( typeof options.lineWidth === 'number', 'Panel lineWidth should be a number' );
     assert && assert( ALIGN_VALUES.includes( options.align ), `Panel align should be one of ${ALIGN_VALUES}` );
 
-    // @private {number}
     this.minWidth = options.minWidth;
     this.xMargin = options.xMargin;
     this.yMargin = options.yMargin;
@@ -189,11 +198,7 @@ class PanelConstraint extends LayoutConstraint {
     this.addNode( panel._content );
   }
 
-  /**
-   * @protected
-   * @override
-   */
-  layout() {
+  protected layout() {
     super.layout();
 
     const panel = this.panel;
@@ -210,8 +215,8 @@ class PanelConstraint extends LayoutConstraint {
       return;
     }
 
-    const contentWidth = ( content.widthSizable && content.minimumWidth !== null ) ? content.minimumWidth : content.width;
-    const contentHeight = ( content.heightSizable && content.minimumHeight !== null ) ? content.minimumHeight : content.height;
+    const contentWidth = ( isWidthSizable( content ) && content.minimumWidth !== null ) ? content.minimumWidth : content.width;
+    const contentHeight = ( isHeightSizable( content ) && content.minimumHeight !== null ) ? content.minimumHeight : content.height;
 
     // Our minimum dimensions are directly determined by the content, margins and lineWidth
     // NOTE: options.minWidth does NOT include the stroke (e.g. lineWidth), left for backward compatibility.
@@ -223,10 +228,10 @@ class PanelConstraint extends LayoutConstraint {
     const preferredHeight = panel.preferredHeight === null ? minimumHeight : panel.preferredHeight;
 
     // Determine the size available to our content
-    if ( content.widthSizable ) {
+    if ( isWidthSizable( content ) ) {
       content.preferredWidth = preferredWidth - this.lineWidth - 2 * this.xMargin;
     }
-    if ( content.heightSizable ) {
+    if ( isHeightSizable( content ) ) {
       content.preferredHeight = preferredHeight - this.lineWidth - 2 * this.yMargin;
     }
 
@@ -256,8 +261,6 @@ class PanelConstraint extends LayoutConstraint {
 
   /**
    * Releases references
-   * @public
-   * @override
    */
   dispose() {
     this.panel.preferredWidthProperty.unlink( this._updateLayoutListener );
@@ -266,9 +269,6 @@ class PanelConstraint extends LayoutConstraint {
     super.dispose();
   }
 }
-
-// @public {Object} (read-only)
-Panel.DEFAULT_OPTIONS = DEFAULT_OPTIONS;
 
 sun.register( 'Panel', Panel );
 export default Panel;

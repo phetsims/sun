@@ -7,10 +7,11 @@
  * @author Chris Malley (PixelZoom, Inc.)
  */
 
+import Property from '../../axon/js/Property.js';
 import { Shape } from '../../kite/js/imports.js';
-import merge from '../../phet-core/js/merge.js';
+import optionize from '../../phet-core/js/optionize.js';
 import StringUtils from '../../phetcommon/js/util/StringUtils.js';
-import { AriaHasPopUpMutator } from '../../scenery/js/imports.js';
+import { AriaHasPopUpMutator, IPaint, PDOMBehaviorFunction } from '../../scenery/js/imports.js';
 import { PDOMPeer } from '../../scenery/js/imports.js';
 import { HStrut } from '../../scenery/js/imports.js';
 import { Node } from '../../scenery/js/imports.js';
@@ -18,37 +19,59 @@ import { Path } from '../../scenery/js/imports.js';
 import SoundPlayer from '../../tambo/js/SoundPlayer.js';
 import Tandem from '../../tandem/js/Tandem.js';
 import ButtonNode from './buttons/ButtonNode.js';
-import RectangularPushButton from './buttons/RectangularPushButton.js';
+import RectangularPushButton, { RectangularPushButtonOptions } from './buttons/RectangularPushButton.js';
 import sun from './sun.js';
 import SunConstants from './SunConstants.js';
 import VSeparator from './VSeparator.js';
+import ComboBoxItem from './ComboBoxItem.js';
 
 // constants
-const ALIGN_VALUES = [ 'left', 'center', 'right' ];
-const ARROW_DIRECTION_VALUES = [ 'up', 'down' ];
+const ALIGN_VALUES = [ 'left', 'center', 'right' ] as const;
+const ARROW_DIRECTION_VALUES = [ 'up', 'down' ] as const;
+
+export type ComboBoxButtonAlign = typeof ALIGN_VALUES[number];
+export type ComboBoxButtonArrowDirection = typeof ARROW_DIRECTION_VALUES[number];
 
 // The definition for how ComboBoxButton sets its accessibleName in the PDOM. See ComboBox.md for further style guide
 // and documentation on the pattern.
-const ACCESSIBLE_NAME_BEHAVIOR = ( node, options, accessibleName ) => {
+const ACCESSIBLE_NAME_BEHAVIOR: PDOMBehaviorFunction = ( node, options, accessibleName ) => {
   options.labelTagName = 'span';
   options.labelContent = accessibleName;
   return options;
 };
 
-class ComboBoxButton extends RectangularPushButton {
+type SelfOptions = {
+  align?: ComboBoxButtonAlign;
+  arrowDirection?: ComboBoxButtonArrowDirection;
+  arrowFill?: IPaint;
 
-  /**
-   * @param {Property} property
-   * @param {ComboBoxItem[]} items
-   * @param {Object} [options]
-   */
-  constructor( property, items, options ) {
+  // The pattern for the voicingNameResponse, with "{{value}}" provided to be filled in with
+  // ComboBoxItem.a11yLabel.
+  comboBoxVoicingNameResponsePattern?: string;
+};
 
-    options = merge( {
+export type ComboBoxButtonOptions = SelfOptions & RectangularPushButtonOptions;
 
-      align: 'left', // see ALIGN_VALUES
-      arrowDirection: 'down', // see ARROW_DIRECTION_VALUES
+class ComboBoxButton<T> extends RectangularPushButton {
+
+  // set to true to block voicing to occur upon this button's next focus event.
+  private _blockNextVoicingFocusListener: boolean;
+
+  private disposeComboBoxButton: () => void;
+
+  // needed by methods
+  private arrow: Path;
+  private vSeparator: VSeparator;
+
+  constructor( property: Property<T>, items: ComboBoxItem<T>[], providedOptions?: ComboBoxButtonOptions ) {
+
+    const options = optionize<ComboBoxButtonOptions, SelfOptions, RectangularPushButtonOptions, 'xMargin' | 'yMargin'>( {
+
+      align: 'left',
+      arrowDirection: 'down',
       arrowFill: 'black',
+
+      comboBoxVoicingNameResponsePattern: SunConstants.VALUE_NAMED_PLACEHOLDER,
 
       // RectangularPushButton options
       cursor: 'pointer',
@@ -59,10 +82,6 @@ class ComboBoxButton extends RectangularPushButton {
       stroke: 'black',
       lineWidth: 1,
       soundPlayer: SoundPlayer.NO_SOUND, // disable default sound generation
-
-      // {string} - The pattern for the voicingNameResponse, with "{{value}}" provided to be filled in with
-      // ComboBoxItem.a11yLabel.
-      comboBoxVoicingNameResponsePattern: SunConstants.VALUE_NAMED_PLACEHOLDER,
 
       // PushButtonModel options
       enabledPropertyOptions: {
@@ -76,7 +95,7 @@ class ComboBoxButton extends RectangularPushButton {
       // pdom
       containerTagName: 'div',
       accessibleNameBehavior: ACCESSIBLE_NAME_BEHAVIOR
-    }, options );
+    }, providedOptions );
 
     assert && assert( _.includes( ALIGN_VALUES, options.align ),
       `invalid align: ${options.align}` );
@@ -87,8 +106,8 @@ class ComboBoxButton extends RectangularPushButton {
     const itemXMargin = options.xMargin;
 
     // Compute max item size
-    const maxItemWidth = _.maxBy( items, item => item.node.width ).node.width;
-    const maxItemHeight = _.maxBy( items, item => item.node.height ).node.height;
+    const maxItemWidth = _.maxBy( items, ( item: ComboBoxItem<T> ) => item.node.width )!.node.width;
+    const maxItemHeight = _.maxBy( items, ( item: ComboBoxItem<T> ) => item.node.height )!.node.height;
 
     // We want the arrow area to be square, see https://github.com/phetsims/sun/issues/453
     const arrowAreaSize = ( maxItemHeight + 2 * options.yMargin );
@@ -149,7 +168,6 @@ class ComboBoxButton extends RectangularPushButton {
 
     super( options );
 
-    // @private {boolean} - set to true to block voicing to occur upon this button's next focus event.
     this._blockNextVoicingFocusListener = false;
 
     this.voicingFocusListener = () => {
@@ -173,8 +191,8 @@ class ComboBoxButton extends RectangularPushButton {
     };
 
     // When Property's value changes, show the corresponding item's Node on the button.
-    let item = null;
-    const propertyObserver = value => {
+    let item: ComboBoxItem<T> | null = null;
+    const propertyObserver = ( value: T ) => {
 
       // Remove bounds listener from previous item.node
       if ( item && item.node.boundsProperty.hasListener( updateItemLayout ) ) {
@@ -185,21 +203,21 @@ class ComboBoxButton extends RectangularPushButton {
       itemNodeWrapper.removeAllChildren();
 
       // find the ComboBoxItem whose value matches the property's value
-      item = _.find( items, item => item.value === value );
+      item = _.find( items, ( item: ComboBoxItem<T> ) => item.value === value )!;
       assert && assert( item, `no item found for value: ${value}` );
 
       // add the associated node
-      itemNodeWrapper.addChild( item.node );
+      itemNodeWrapper.addChild( item!.node );
 
       // Update layout if bounds change, see https://github.com/phetsims/scenery-phet/issues/482
-      item.node.boundsProperty.lazyLink( updateItemLayout );
+      item!.node.boundsProperty.lazyLink( updateItemLayout );
 
       updateItemLayout();
 
       // pdom
-      this.innerContent = item.a11yLabel;
+      this.innerContent = item!.a11yLabel;
       this.voicingNameResponse = StringUtils.fillIn( options.comboBoxVoicingNameResponsePattern, {
-        value: item.a11yLabel
+        value: item!.a11yLabel
       } );
     };
     property.link( propertyObserver );
@@ -224,12 +242,10 @@ class ComboBoxButton extends RectangularPushButton {
     // signify to AT that this button opens a menu
     AriaHasPopUpMutator.mutateNode( this, 'listbox' );
 
-    // @private
     this.disposeComboBoxButton = () => {
       property.unlink( propertyObserver );
     };
 
-    // @private needed by methods
     this.arrow = arrow;
     this.vSeparator = vSeparator;
   }
@@ -237,26 +253,19 @@ class ComboBoxButton extends RectangularPushButton {
   /**
    * Sets the button to look like a value display instead of a combo box button.
    * See https://github.com/phetsims/sun/issues/451
-   * @param {boolean} displayOnly
-   * @public
    */
-  setDisplayOnly( displayOnly ) {
+  setDisplayOnly( displayOnly: boolean ) {
     this.arrow.visible = !displayOnly;
     this.vSeparator.visible = !displayOnly;
   }
 
   /**
    * Call to block voicing from occurring upon this button's next focus event.
-   * @public
    */
   blockNextVoicingFocusListener() {
     this._blockNextVoicingFocusListener = true;
   }
 
-  /**
-   * @public
-   * @override
-   */
   dispose() {
     this.disposeComboBoxButton();
     super.dispose();

@@ -22,8 +22,8 @@ import BooleanProperty from '../../axon/js/BooleanProperty.js';
 import dotRandom from '../../dot/js/dotRandom.js';
 import Vector2 from '../../dot/js/Vector2.js';
 import InstanceRegistry from '../../phet-core/js/documentation/InstanceRegistry.js';
-import merge from '../../phet-core/js/merge.js';
-import { FocusManager, Node, PDOMPeer } from '../../scenery/js/imports.js';
+import optionize from '../../phet-core/js/optionize.js';
+import { Display, Focus, FocusManager, IColor, IInputListener, IPaint, Node, NodeOptions, PDOMBehaviorFunction, PDOMPeer } from '../../scenery/js/imports.js';
 import generalCloseSoundPlayer from '../../tambo/js/shared-sound-players/generalCloseSoundPlayer.js';
 import generalOpenSoundPlayer from '../../tambo/js/shared-sound-players/generalOpenSoundPlayer.js';
 import EventType from '../../tandem/js/EventType.js';
@@ -33,62 +33,149 @@ import ComboBoxButton from './ComboBoxButton.js';
 import ComboBoxListBox from './ComboBoxListBox.js';
 import sun from './sun.js';
 import SunConstants from './SunConstants.js';
+import ComboBoxItem from './ComboBoxItem.js';
+import Property from '../../axon/js/Property.js';
+import ISoundPlayer from '../../tambo/js/ISoundPlayer.js';
 
 // const
-const LIST_POSITION_VALUES = [ 'above', 'below' ]; // where the list pops up relative to the button
-const ALIGN_VALUES = [ 'left', 'right', 'center' ]; // alignment of item on button and in list
+const LIST_POSITION_VALUES = [ 'above', 'below' ] as const; // where the list pops up relative to the button
+const ALIGN_VALUES = [ 'left', 'right', 'center' ] as const; // alignment of item on button and in list
+
+export type ComboBoxListPosition = typeof LIST_POSITION_VALUES[number];
+export type ComboBoxAlign = typeof ALIGN_VALUES[number];
 
 // The definition for how ComboBox sets its accessibleName and helpText in the PDOM. Forward it onto its button. See
 // ComboBox.md for further style guide and documentation on the pattern.
-const ACCESSIBLE_NAME_BEHAVIOR = ( node, options, accessibleName, otherNodeCallbacks ) => {
+const ACCESSIBLE_NAME_BEHAVIOR: PDOMBehaviorFunction = ( node, options, accessibleName, otherNodeCallbacks ) => {
   otherNodeCallbacks.push( () => {
-    node.button.accessibleName = accessibleName;
+    ( node as ComboBox<any> ).button.accessibleName = accessibleName;
   } );
   return options;
 };
-const HELP_TEXT_BEHAVIOR = ( node, options, helpText, otherNodeCallbacks ) => {
+const HELP_TEXT_BEHAVIOR: PDOMBehaviorFunction = ( node, options, helpText, otherNodeCallbacks ) => {
   otherNodeCallbacks.push( () => {
-    node.button.helpText = helpText;
+    ( node as ComboBox<any> ).button.helpText = helpText;
   } );
   return options;
 };
 
-class ComboBox extends Node {
+type SelfOptions = {
+  align?: ComboBoxAlign;
+  listPosition?: ComboBoxListPosition;
+
+  // optional label, placed to the left of the combo box
+  labelNode?: Node | null;
+
+  // horizontal space between label and combo box
+  labelXSpacing?: number;
+
+  // opacity used to make the control look disabled, 0-1
+  disabledOpacity?: number;
+
+  // applied to button, listBox, and item highlights
+  cornerRadius?: number;
+
+  // highlight behind items in the list
+  highlightFill?: IPaint;
+
+  // Margins around the edges of the button and listbox when highlight is invisible.
+  // Highlight margins around the items in the list are set to 1/2 of these values.
+  // These values must be > 0.
+  xMargin?: number;
+  yMargin?: number;
+
+  // button
+  buttonFill?: IColor;
+  buttonStroke?: IPaint;
+  buttonLineWidth?: number;
+  buttonTouchAreaXDilation?: number;
+  buttonTouchAreaYDilation?: number;
+  buttonMouseAreaXDilation?: number;
+  buttonMouseAreaYDilation?: number;
+
+  // list
+  listFill?: IPaint;
+  listStroke?: IPaint;
+  listLineWidth?: number;
+
+  // Sound generators for when combo box is opened and for when it is closed with no change (closing
+  // *with* a change is handled elsewhere).
+  openedSoundPlayer?: ISoundPlayer;
+  closedNoChangeSoundPlayer?: ISoundPlayer;
+
+  // Voicing
+  // ComboBox does not mix Voicing, so it create custom options to pass to composed Voicing Nodes.
+  // The pattern for the name response string, must include `{{value}}` so that the selected value string can
+  // be filled in.
+  comboBoxVoicingNameResponsePattern?: string;
+
+  // most context responses are dynamic to the current state of the sim, so lazily create them when needed.
+  comboBoxVoicingContextResponse?: ( () => string | null ) | null;
+
+  // string for the voicing response
+  comboBoxVoicingHintResponse?: string | null;
+};
+
+export type ComboBoxOptions = SelfOptions & NodeOptions;
+
+class ComboBox<T> extends Node {
+
+  private items: ComboBoxItem<T>[];
+  private listPosition: ComboBoxListPosition;
+
+  // button that shows the current selection (internal)
+  button: ComboBoxButton<T>;
+
+  // the popup list box
+  private listBox: ComboBoxListBox<T>;
+
+  private listParent: Node;
+
+  // the display that clickToDismissListener is added to, because the scene may change, see sun#14
+  private display: Display | null;
+
+  // Clicking anywhere other than the button or list box will hide the list box.
+  private clickToDismissListener: IInputListener;
+
+  // (PDOM) when focus leaves the ComboBoxListBox, it should be closed. This could happen from keyboard
+  // or from other screen reader controls (like VoiceOver gestures)
+  private dismissWithFocusListener: ( focus: Focus | null ) => void;
+
+  // For use via PhET-iO, see https://github.com/phetsims/sun/issues/451
+  // This is not generally controlled by the user, so it is not reset when the Reset All button is pressed.
+  private displayOnlyProperty: Property<boolean>;
+
+  private disposeComboBox: () => void;
 
   /**
-   * @param {ComboBoxItem[]} items
-   * @param {Property} property
-   * @param {Node} listParent node that will be used as the list's parent, use this to ensure that the list is in front of everything else
-   * @param {Object} [options] object with optional properties
-   * @constructor
+   * @param items
+   * @param property
+   * @param listParent node that will be used as the list's parent, use this to ensure that the list is in front of everything else
+   * @param [options] object with optional properties
    */
-  constructor( items, property, listParent, options ) {
+  constructor( items: ComboBoxItem<T>[], property: Property<T>, listParent: Node, providedOptions?: ComboBoxOptions ) {
 
-    assert && assert( _.uniqBy( items, item => item.value ).length === items.length, 'items must have unique values' );
+    assert && assert( _.uniqBy( items, ( item: ComboBoxItem<T> ) => item.value ).length === items.length, 'items must have unique values' );
 
     // See https://github.com/phetsims/sun/issues/542
     assert && assert( listParent.maxWidth === null,
       'ComboBox is responsible for scaling listBox. Setting maxWidth for listParent may result in buggy behavior.' );
 
-    options = merge( {
+    const options = optionize<ComboBoxOptions, SelfOptions, NodeOptions, 'tandem'>( {
 
-      align: 'left', // see ALIGN_VALUES
-      listPosition: 'below', // see LIST_POSITION_VALUES
-      labelNode: null, // {Node|null} optional label, placed to the left of the combo box
-      labelXSpacing: 10, // horizontal space between label and combo box
-      disabledOpacity: 0.5, // {number} opacity used to make the control look disabled, 0-1
-      cornerRadius: 4, // applied to button, listBox, and item highlights
-      highlightFill: 'rgb( 245, 245, 245 )', // {Color|string} highlight behind items in the list
-
-      // Margins around the edges of the button and listbox when highlight is invisible.
-      // Highlight margins around the items in the list are set to 1/2 of these values.
-      // These values must be > 0.
+      align: 'left',
+      listPosition: 'below',
+      labelNode: null,
+      labelXSpacing: 10,
+      disabledOpacity: 0.5,
+      cornerRadius: 4,
+      highlightFill: 'rgb( 245, 245, 245 )',
       xMargin: 12,
       yMargin: 8,
 
       // button
-      buttonFill: 'white', // {Color|string}
-      buttonStroke: 'black', // {Color|string}
+      buttonFill: 'white',
+      buttonStroke: 'black',
       buttonLineWidth: 1,
       buttonTouchAreaXDilation: 0,
       buttonTouchAreaYDilation: 0,
@@ -96,12 +183,10 @@ class ComboBox extends Node {
       buttonMouseAreaYDilation: 0,
 
       // list
-      listFill: 'white', // {Color|string}
-      listStroke: 'black', // {Color|string}
+      listFill: 'white',
+      listStroke: 'black',
       listLineWidth: 1,
 
-      // {SoundPlayer} - Sound generators for when combo box is opened and for when it is closed with no change (closing
-      // *with* a change is handled elsewhere).
       openedSoundPlayer: generalOpenSoundPlayer,
       closedNoChangeSoundPlayer: generalCloseSoundPlayer,
 
@@ -110,17 +195,8 @@ class ComboBox extends Node {
       accessibleNameBehavior: ACCESSIBLE_NAME_BEHAVIOR,
       helpTextBehavior: HELP_TEXT_BEHAVIOR,
 
-      // Voicing
-      // ComboBox does not mix Voicing, so it create custom options to pass to composed Voicing Nodes.
-      // {string} - the pattern for the name response string, must include `{{value}}` so that the selected value string can
-      // be filled in.
       comboBoxVoicingNameResponsePattern: SunConstants.VALUE_NAMED_PLACEHOLDER,
-
-      // {null|function():string|null} - most context responses are dynamic to the current state of the sim, so lazily
-      // create them when needed.
       comboBoxVoicingContextResponse: null,
-
-      // {string|null} - string for the voicing response
       comboBoxVoicingHintResponse: null,
 
       // phet-io
@@ -129,7 +205,7 @@ class ComboBox extends Node {
       phetioEventType: EventType.USER,
       visiblePropertyOptions: { phetioFeatured: true },
       phetioEnabledPropertyInstrumented: true // opt into default PhET-iO instrumented enabledProperty
-    }, options );
+    }, providedOptions );
 
     // validate option values
     assert && assert( options.xMargin > 0 && options.yMargin > 0,
@@ -141,15 +217,14 @@ class ComboBox extends Node {
 
     super();
 
-    this.items = items; // @private
-    this.listPosition = options.listPosition; // @private
+    this.items = items;
+    this.listPosition = options.listPosition;
 
     // optional label
     if ( options.labelNode !== null ) {
       this.addChild( options.labelNode );
     }
 
-    // @private button that shows the current selection
     this.button = new ComboBoxButton( property, items, {
       align: options.align,
       arrowDirection: ( options.listPosition === 'below' ) ? 'down' : 'up',
@@ -179,7 +254,6 @@ class ComboBox extends Node {
       this.button.centerY = options.labelNode.centerY;
     }
 
-    // @private the popup list box
     this.listBox = new ComboBoxListBox( property, items,
       this.hideListBox.bind( this ), // callback to hide the list box
       () => {
@@ -216,7 +290,7 @@ class ComboBox extends Node {
         } ]
       } );
     listParent.addChild( this.listBox );
-    this.listParent = listParent; // @private
+    this.listParent = listParent;
 
     // The listBox is not a child Node of ComboBox and, as a result, listen to opacity of the ComboBox and keep
     // the listBox in sync with them. See https://github.com/phetsims/sun/issues/587
@@ -236,16 +310,15 @@ class ComboBox extends Node {
       this.listBox.visibleProperty.value && this.listBox.focus();
     } );
 
-    // @private the display that clickToDismissListener is added to, because the scene may change, see sun#14
     this.display = null;
 
-    // @private Clicking anywhere other than the button or list box will hide the list box.
     this.clickToDismissListener = {
       down: event => {
 
         // If fuzzing is enabled, exercise this listener some percentage of the time, so that this listener is tested.
         // The rest of the time, ignore this listener, so that the listbox remains popped up, and we test making
         // choices from the listbox. See https://github.com/phetsims/sun/issues/677
+        // @ts-ignore chipper
         if ( !phet.chipper.isFuzzEnabled() || dotRandom.nextDouble() < 0.25 ) {
 
           // Ignore if we click over the button, since the button will handle hiding the list.
@@ -256,8 +329,6 @@ class ComboBox extends Node {
       }
     };
 
-    // @private - (PDOM) when focus leaves the ComboBoxListBox, it should be closed. This could happen from keyboard
-    // or from other screen reader controls (like VoiceOver gestures)
     this.dismissWithFocusListener = focus => {
       if ( focus && !focus.trail.containsNode( this.listBox ) ) {
         this.hideListBox();
@@ -290,8 +361,6 @@ class ComboBox extends Node {
       }
     } );
 
-    // @private for use via PhET-iO, see https://github.com/phetsims/sun/issues/451
-    // This is not generally controlled by the user, so it is not reset when the Reset All button is pressed.
     this.displayOnlyProperty = new BooleanProperty( false, {
       tandem: options.tandem.createTandem( 'displayOnlyProperty' ),
       phetioFeatured: true,
@@ -308,7 +377,6 @@ class ComboBox extends Node {
       tandem: options.tandem.createTandem( 'property' )
     } );
 
-    // @private called by dispose
     this.disposeComboBox = () => {
 
       if ( this.display && this.display.hasInputListener( this.clickToDismissListener ) ) {
@@ -323,13 +391,10 @@ class ComboBox extends Node {
     };
 
     // support for binder documentation, stripped out in builds and only runs when ?binder is specified
+    // @ts-ignore chipper query parameters
     assert && phet.chipper.queryParameters.binder && InstanceRegistry.registerDataURL( 'sun', 'ComboBox', this );
   }
 
-  /**
-   * @public
-   * @override
-   */
   dispose() {
     this.disposeComboBox();
     super.dispose();
@@ -337,7 +402,6 @@ class ComboBox extends Node {
 
   /**
    * Shows the list box.
-   * @public
    */
   showListBox() {
     this.listBox.visibleProperty.value = true;
@@ -345,7 +409,6 @@ class ComboBox extends Node {
 
   /**
    * Hides the list box.
-   * @public
    */
   hideListBox() {
     this.listBox.visibleProperty.value = false;
@@ -355,9 +418,8 @@ class ComboBox extends Node {
    * Because the button and list box have different parents (and therefore different coordinate frames)
    * they may be scaled differently. This method scales the list box so that items on the button and in
    * the list appear to be the same size.
-   * @private
    */
-  scaleListBox() {
+  private scaleListBox() {
 
     // To support an empty list box due to PhET-iO customization, see https://github.com/phetsims/sun/issues/606
     if ( !this.listBox.localBounds.isEmpty() ) {
@@ -369,9 +431,8 @@ class ComboBox extends Node {
 
   /**
    * Handles the coordinate transform required to make the list box pop up near the button.
-   * @private
    */
-  moveListBox() {
+  private moveListBox() {
     if ( this.listPosition === 'above' ) {
       const pButtonGlobal = this.localToGlobalPoint( new Vector2( this.button.left, this.button.top ) );
       const pButtonLocal = this.listParent.globalToLocalPoint( pButtonGlobal );
@@ -390,33 +451,29 @@ class ComboBox extends Node {
    * Sets the visibility of items that correspond to a value. If the selected item has this value, it's your
    * responsibility to change the Property value to something else. Otherwise the combo box button will continue
    * to display this value.
-   * @param {*} value - the value associated with the ComboBoxItem
-   * @param {boolean} visible
-   * @public
+   * @param  value - the value associated with the ComboBoxItem
+   * @param  visible
    */
-  setItemVisible( value, visible ) {
+  setItemVisible( value: T, visible: boolean ) {
     this.listBox.setItemVisible( value, visible );
   }
 
   /**
    * Is the item that corresponds to a value visible when the listbox is popped up?
-   * @param {*} value
-   * @returns {boolean}
-   * @public
    */
-  isItemVisible( value ) {
+  isItemVisible( value: T ): boolean {
     return this.listBox.isItemVisible( value );
   }
-}
 
-ComboBox.ComboBoxIO = new IOType( 'ComboBoxIO', {
-  valueType: ComboBox,
-  documentation: 'A combo box is composed of a push button and a listbox. The listbox contains items that represent ' +
-                 'choices. Pressing the button pops up the listbox. Selecting from an item in the listbox sets the ' +
-                 'value of an associated Property. The button shows the item that is currently selected.',
-  supertype: Node.NodeIO,
-  events: [ 'listBoxShown', 'listBoxHidden' ]
-} );
+  static ComboBoxIO = new IOType( 'ComboBoxIO', {
+    valueType: ComboBox,
+    documentation: 'A combo box is composed of a push button and a listbox. The listbox contains items that represent ' +
+                   'choices. Pressing the button pops up the listbox. Selecting from an item in the listbox sets the ' +
+                   'value of an associated Property. The button shows the item that is currently selected.',
+    supertype: Node.NodeIO,
+    events: [ 'listBoxShown', 'listBoxHidden' ]
+  } );
+}
 
 sun.register( 'ComboBox', ComboBox );
 export default ComboBox;

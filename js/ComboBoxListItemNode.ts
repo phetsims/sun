@@ -9,35 +9,50 @@
  */
 
 import { Shape } from '../../kite/js/imports.js';
-import merge from '../../phet-core/js/merge.js';
+import optionize from '../../phet-core/js/optionize.js';
 import StringUtils from '../../phetcommon/js/util/StringUtils.js';
-import { IndexedNodeIO, Node, Rectangle, Voicing } from '../../scenery/js/imports.js';
+import { IndexedNodeIO, IPaint, Node, Rectangle, Voicing, VoicingOptions } from '../../scenery/js/imports.js';
 import Tandem from '../../tandem/js/Tandem.js';
 import ComboBoxItem from './ComboBoxItem.js';
 import sun from './sun.js';
 import SunConstants from './SunConstants.js';
 
-class ComboBoxListItemNode extends Voicing( Node, 0 ) {
+type SelfOptions = {
+  align?: 'left' | 'right' | 'center';
 
-  /**
-   * @param {ComboBoxItem} item
-   * @param {number} highlightWidth
-   * @param {number} highlightHeight
-   * @param {Object} [options]
-   *
-   * @mixes {Voicing}
-   */
-  constructor( item, highlightWidth, highlightHeight, options ) {
+  // margin between the item and the highlight edge
+  xMargin?: number;
+
+  // highlight behind the item
+  highlightFill?: IPaint;
+
+  // corner radius for the highlight
+  highlightCornerRadius?: number;
+
+  comboBoxVoicingNameResponsePattern?: string;
+};
+
+export type ComboBoxListItemNodeOptions = SelfOptions & VoicingOptions;
+
+class ComboBoxListItemNode<T> extends Voicing( Node, 0 ) {
+
+  // when true, the next voicing focus listener will supply the hint response in addition to
+  // the object response. It will then set this back to false.
+  private _supplyHintResponseOnNextFocus: boolean;
+
+  readonly item: ComboBoxItem<T>;
+
+  constructor( item: ComboBoxItem<T>, highlightWidth: number, highlightHeight: number, providedOptions?: ComboBoxListItemNodeOptions ) {
 
     assert && assert( item instanceof ComboBoxItem );
 
-    options = merge( {
+    const options = optionize<ComboBoxListItemNodeOptions, SelfOptions, VoicingOptions>( {
 
       cursor: 'pointer',
       align: 'left',
-      xMargin: 6, // margin between the item and the highlight edge
-      highlightFill: 'rgb( 245, 245, 245 )', // {Color|string} highlight behind the item
-      highlightCornerRadius: 4, // {number} corner radius for the highlight
+      xMargin: 6,
+      highlightFill: 'rgb( 245, 245, 245 )',
+      highlightCornerRadius: 4,
 
       // pdom
       tagName: 'li',
@@ -60,9 +75,10 @@ class ComboBoxListItemNode extends Voicing( Node, 0 ) {
       phetioType: IndexedNodeIO,
       phetioState: true,
       visiblePropertyOptions: { phetioFeatured: true }
-    }, options );
+    }, providedOptions );
 
     // Don't test the contents of strings when ?stringTest is enabled
+    // @ts-ignore chipper query parameters
     assert && assert( !!phet.chipper.queryParameters.stringTest ||
                       options.comboBoxVoicingNameResponsePattern.includes( '{{value}}' ),
       'value needs to be filled in' );
@@ -130,7 +146,6 @@ class ComboBoxListItemNode extends Voicing( Node, 0 ) {
 
   /**
    * Ask for the voicing hint response upon next focus, but only for the very next focus event.
-   * @public
    */
   supplyHintResponseOnNextFocus() {
     this._supplyHintResponseOnNextFocus = true;
@@ -138,9 +153,8 @@ class ComboBoxListItemNode extends Voicing( Node, 0 ) {
 
   /**
    * A custom focus listener for this type, with conditional support for providing hint responses.
-   * @private
    */
-  comboBoxListItemNodeVoicingFocusListener() {
+  private comboBoxListItemNodeVoicingFocusListener() {
     this.voicingSpeakObjectResponse( {
       hintResponse: this._supplyHintResponseOnNextFocus ? this.voicingHintResponse : null
     } );
