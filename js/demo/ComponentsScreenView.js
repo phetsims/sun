@@ -282,6 +282,8 @@ function demoSlider( layoutBounds, orientation, options ) {
     } )
   }, options );
 
+  const enabledRangeProperty = new Property( new Range( 0, 100 ) );
+
   let slider = null;
   if ( orientation === 'horizontal' ) {
     slider = new HSlider( property, range, merge( {}, options, {
@@ -291,7 +293,8 @@ function demoSlider( layoutBounds, orientation, options ) {
       thumbTouchAreaXDilation: 30,
       thumbTouchAreaYDilation: 15,
       thumbMouseAreaXDilation: 10,
-      thumbMouseAreaYDilation: 5
+      thumbMouseAreaYDilation: 5,
+      enabledRangeProperty: enabledRangeProperty
     } ) );
   }
   else {
@@ -302,7 +305,8 @@ function demoSlider( layoutBounds, orientation, options ) {
       thumbTouchAreaXDilation: 15,
       thumbTouchAreaYDilation: 30,
       thumbMouseAreaXDilation: 5,
-      thumbMouseAreaYDilation: 10
+      thumbMouseAreaYDilation: 10,
+      enabledRangeProperty: enabledRangeProperty
     } ) );
   }
 
@@ -353,12 +357,8 @@ function demoSlider( layoutBounds, orientation, options ) {
 
   // restrict enabled range of slider
   const restrictedRangeProperty = new Property( false );
-  const enabledRangeProperty = new Property( new Range( 0, 100 ) );
   restrictedRangeProperty.link( restrictedRange => {
     enabledRangeProperty.value = restrictedRange ? new Range( 25, 75 ) : new Range( 0, 100 );
-  } );
-  enabledRangeProperty.link( enabledRange => {
-    slider.enabledRange = enabledRange;
   } );
   const enabledRangeCheckbox = new Checkbox( new Text( 'Enable Range [25, 75]', { font: new PhetFont( 20 ) } ),
     restrictedRangeProperty, {

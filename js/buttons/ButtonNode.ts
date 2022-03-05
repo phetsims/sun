@@ -9,82 +9,108 @@
  */
 
 import DerivedProperty from '../../../axon/js/DerivedProperty.js';
+import IProperty from '../../../axon/js/IProperty.js';
+import IReadOnlyProperty from '../../../axon/js/IReadOnlyProperty.js';
+import Property from '../../../axon/js/Property.js';
 import merge from '../../../phet-core/js/merge.js';
-import { Voicing } from '../../../scenery/js/imports.js';
-import { AlignBox } from '../../../scenery/js/imports.js';
-import { Node } from '../../../scenery/js/imports.js';
-import { SceneryConstants } from '../../../scenery/js/imports.js';
-import { Brightness } from '../../../scenery/js/imports.js';
-import { Contrast } from '../../../scenery/js/imports.js';
-import { Grayscale } from '../../../scenery/js/imports.js';
-import { PaintColorProperty } from '../../../scenery/js/imports.js';
+import optionize from '../../../phet-core/js/optionize.js';
+import { AlignBox, Brightness, Color, Contrast, Grayscale, IColor, Node, PaintableNode, PaintColorProperty, PressListener, PressListenerOptions, SceneryConstants, Voicing, VoicingOptions } from '../../../scenery/js/imports.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import ColorConstants from '../ColorConstants.js';
 import sun from '../sun.js';
 import ButtonInteractionState from './ButtonInteractionState.js';
+import ButtonModel from './ButtonModel.js';
+import TButtonAppearanceStrategy from './TButtonAppearanceStrategy.js';
+import TContentAppearanceStrategy from './TContentAppearanceStrategy.js';
 
 // constants
 const CONTRAST_FILTER = new Contrast( 0.7 );
 const BRIGHTNESS_FILTER = new Brightness( 1.2 );
 
+// if there is content, style can be applied to a containing Node around it.
+type EnabledAppearanceStrategy = ( enabled: boolean, button: Node, background: Node, content: Node | null ) => void;
+
+type SelfOptions = {
+  // what appears on the button (icon, label, etc.)
+  content?: Node | null;
+
+  // margin in x direction, i.e. on left and right
+  xMargin?: number;
+
+  // margin in y direction, i.e. on top and bottom
+  yMargin?: number;
+
+  // Alignment, relevant only when options minWidth or minHeight are greater than the size of options.content
+  xAlign?: 'left' | 'center' | 'right';
+  yAlign?: 'top' | 'center' | 'bottom';
+
+  // By default, icons are centered in the button, but icons with odd
+  // shapes that are not wrapped in a normalizing parent node may need to
+  // specify offsets to line things up properly
+  xContentOffset?: number;
+  yContentOffset?: number;
+
+  // Options that will be passed through to the main input listener (PressListener)
+  listenerOptions?: PressListenerOptions | null;
+
+  // initial color of the button's background
+  baseColor?: IColor;
+
+  // Color when disabled
+  disabledColor?: IColor;
+
+  // default cursor
+  cursor?: string;
+
+  // Class that determines the button's appearance for the values of interactionStateProperty.
+  // Constructor is {function( backgroundNode:Node, interactionStateProperty:Property, options:*)},
+  // and the class has an optional dispose method.
+  // See ButtonNode.FlatAppearanceStrategy for an example.
+  buttonAppearanceStrategy?: TButtonAppearanceStrategy;
+
+  // Optional class that determines the content's appearance for the values of interactionStateProperty.
+  // Constructor is {function( content:Node, interactionStateProperty:Property, options:*)},
+  // and the class has an optional dispose method.
+  // See RectangularRadioButton.ContentAppearanceStrategy for an example.
+  contentAppearanceStrategy?: TContentAppearanceStrategy | null;
+
+  // Alter the appearance when changing the enabled of the button.
+  enabledAppearanceStrategy?: EnabledAppearanceStrategy;
+};
+
+export type ButtonNodeOptions = SelfOptions & VoicingOptions;
+
 class ButtonNode extends Voicing( Node, 0 ) {
 
+  protected buttonModel: ButtonModel;
+  private _settableBaseColorProperty: PaintColorProperty;
+  private _disabledColorProperty: PaintColorProperty;
+  private baseColorProperty: Property<Color>;
+  private _pressListener: PressListener;
+  private disposeButtonNode: () => void;
+
   /**
-   * @mixes {Voicing}
-   *
-   * @param {ButtonModel} buttonModel
-   * @param {Node,Paintable} buttonBackground - the background of the button (like a circle or rectangle).
-   * @param {Property} interactionStateProperty - a Property that is used to drive the visual appearance of the button
-   * @param {Object} [options] - this type does not mutate its options, but relies on the subtype to
+   * @param buttonModel
+   * @param buttonBackground - the background of the button (like a circle or rectangle).
+   * @param interactionStateProperty - a Property that is used to drive the visual appearance of the button
+   * @param [options] - this type does not mutate its options, but relies on the subtype to
    */
-  constructor( buttonModel, buttonBackground, interactionStateProperty, options ) {
+  constructor( buttonModel: ButtonModel, buttonBackground: PaintableNode, interactionStateProperty: IProperty<ButtonInteractionState>, providedOptions?: ButtonNodeOptions ) {
 
-    options = merge( {
+    const options = optionize<ButtonNodeOptions, SelfOptions, VoicingOptions, 'tandem'>( {
 
-      // {Node|null} what appears on the button (icon, label, etc.)
       content: null,
-
-      xMargin: 10, // margin in x direction, i.e. on left and right
-      yMargin: 5, // margin in y direction, i.e. on top and bottom
-
-      // Alignment, relevant only when options minWidth or minHeight are greater than the size of options.content
-      xAlign: 'center', // {string} see X_ALIGN_VALUES
-      yAlign: 'center', // {string} see Y_ALIGN_VALUES
-
-      // By default, icons are centered in the button, but icons with odd
-      // shapes that are not wrapped in a normalizing parent node may need to
-      // specify offsets to line things up properly
+      xMargin: 10,
+      yMargin: 5,
+      xAlign: 'center',
+      yAlign: 'center',
       xContentOffset: 0,
       yContentOffset: 0,
-
-      // Options that will be passed through to the main input listener (PressListener)
       listenerOptions: null,
-
-      // {ColorDef} initial color of the button's background
       baseColor: ColorConstants.LIGHT_BLUE,
-
-      // {string} default cursor
       cursor: 'pointer',
-
-      // Class that determines the button's appearance for the values of interactionStateProperty.
-      // Constructor is {function( backgroundNode:Node, interactionStateProperty:Property, options:*)},
-      // and the class has an optional dispose method.
-      // See ButtonNode.FlatAppearanceStrategy for an example.
       buttonAppearanceStrategy: ButtonNode.FlatAppearanceStrategy,
-
-      // Optional class that determines the content's appearance for the values of interactionStateProperty.
-      // Constructor is {function( content:Node, interactionStateProperty:Property, options:*)},
-      // and the class has an optional dispose method.
-      // See RectangularRadioButton.ContentAppearanceStrategy for an example.
       contentAppearanceStrategy: null,
-
-      /**
-       * Alter the appearance when changing the enabled of the button.
-       * @param {boolean} enabled
-       * @param {Node} button
-       * @param {Node} background
-       * @param {Node|null} content - if there is content, style can be applied to a containing Node around it.
-       */
       enabledAppearanceStrategy: ( enabled, button, background, content ) => {
         background.filters = enabled ? [] : [ CONTRAST_FILTER, BRIGHTNESS_FILTER ];
 
@@ -93,8 +119,6 @@ class ButtonNode extends Voicing( Node, 0 ) {
           content.opacity = enabled ? 1 : SceneryConstants.DISABLED_OPACITY;
         }
       },
-
-      // {ColorDef} - Color when disabled
       disabledColor: ColorConstants.LIGHT_GRAY,
 
       // pdom
@@ -104,7 +128,7 @@ class ButtonNode extends Voicing( Node, 0 ) {
       tandem: Tandem.OPTIONAL,
       visiblePropertyOptions: { phetioFeatured: true },
       phetioEnabledPropertyInstrumented: true // opt into default PhET-iO instrumented enabledProperty
-    }, options );
+    }, providedOptions );
 
     options.listenerOptions = merge( {
       tandem: options.tandem.createTandem( 'pressListener' )
@@ -116,25 +140,19 @@ class ButtonNode extends Voicing( Node, 0 ) {
 
     super();
 
-    // @protected
     this.buttonModel = buttonModel;
 
-    // @private - Support baseColor being effected by enabled, while still allowing setting the base color.
     this._settableBaseColorProperty = new PaintColorProperty( options.baseColor );
-
-    // @private
     this._disabledColorProperty = new PaintColorProperty( options.disabledColor );
 
-    // {Property.<Color>} - Make the base color into a Property so that the appearance strategy can update itself if changes occur.
     this.baseColorProperty = new DerivedProperty( [
       this._settableBaseColorProperty,
       this.enabledProperty,
       this._disabledColorProperty
-    ], ( color, enabled, disabledColor ) => {
+    ], ( color: Color, enabled: boolean, disabledColor: Color ) => {
       return enabled ? color : disabledColor;
-    } ); // @private
+    } );
 
-    // @private {PressListener}
     this._pressListener = buttonModel.createPressListener( options.listenerOptions );
     this.addInputListener( this._pressListener );
 
@@ -147,12 +165,12 @@ class ButtonNode extends Voicing( Node, 0 ) {
       this.baseColorProperty, options );
 
     // Optionally hook up the strategy that will control the content's appearance.
-    let contentAppearanceStrategy;
-    if ( options.contentAppearanceStrategy ) {
+    let contentAppearanceStrategy: TContentAppearanceStrategy;
+    if ( options.contentAppearanceStrategy && options.content ) {
       contentAppearanceStrategy = new options.contentAppearanceStrategy( options.content, interactionStateProperty, options );
     }
 
-    let alignBox = null;
+    let alignBox: AlignBox | null = null;
     if ( options.content ) {
 
       // For performance, in case content is a complicated icon or shape.
@@ -191,10 +209,6 @@ class ButtonNode extends Voicing( Node, 0 ) {
     };
   }
 
-  /**
-   * @public
-   * @override
-   */
   dispose() {
     this.disposeButtonNode();
     super.dispose();
@@ -202,40 +216,35 @@ class ButtonNode extends Voicing( Node, 0 ) {
 
   /**
    * Sets the base color, which is the main background fill color used for the button.
-   * @param {ColorDef} baseColor
-   * @public
    */
-  setBaseColor( baseColor ) { this._settableBaseColorProperty.paint = baseColor; }
+  setBaseColor( baseColor: IColor ) { this._settableBaseColorProperty.paint = baseColor; }
 
-  set baseColor( baseColor ) { this.setBaseColor( baseColor ); }
+  set baseColor( baseColor: IColor ) { this.setBaseColor( baseColor ); }
 
   /**
    * Gets the base color for this button.
-   * @returns {ColorDef}
-   * @public
    */
-  getBaseColor() { return this._settableBaseColorProperty.paint; }
+  getBaseColor(): IColor { return this._settableBaseColorProperty.paint as IColor; }
 
-  get baseColor() { return this.getBaseColor(); }
+  get baseColor(): IColor { return this.getBaseColor(); }
 
   /**
    * Manually click the button, as it would be clicked in response to alternative input. Recommended only for
    * accessibility usages. For the most part, PDOM button functionality should be managed by PressListener, this should
    * rarely be used.
-   * @public
    */
   pdomClick() {
-    this._pressListener.click();
+    this._pressListener.click( null );
   }
 
   /**
    * Is the button currently firing because of accessibility input coming from the PDOM?
-   * @public (pdom)
-   * @returns {boolean}
    */
-  isPDOMClicking() {
+  isPDOMClicking(): boolean {
     return this._pressListener.pdomClickingProperty.get();
   }
+
+  static FlatAppearanceStrategy: typeof FlatAppearanceStrategy;
 }
 
 
@@ -243,7 +252,7 @@ class ButtonNode extends Voicing( Node, 0 ) {
  * FlatAppearanceStrategy is a value for ButtonNode options.buttonAppearanceStrategy. It makes a
  * button look flat, i.e. no shading or highlighting, with color changes on mouseover, press, etc.
  */
-class FlatAppearanceStrategy {
+export class FlatAppearanceStrategy {
 
   /*
    * @param {Node,Paintable} buttonBackground - the Node for the button's background, sans content
@@ -251,7 +260,7 @@ class FlatAppearanceStrategy {
    * @param {Property.<ColorDef>} baseColorProperty
    * @param {Object} [options]
    */
-  constructor( buttonBackground, interactionStateProperty, baseColorProperty, options ) {
+  constructor( buttonBackground: PaintableNode, interactionStateProperty: IProperty<ButtonInteractionState>, baseColorProperty: IReadOnlyProperty<Color>, options?: any ) {
 
     // Dynamic colors
     const baseBrighter4 = new PaintColorProperty( baseColorProperty, { luminanceFactor: 0.4 } );
@@ -269,7 +278,7 @@ class FlatAppearanceStrategy {
     buttonBackground.cachedPaints = [ upFill, overFill, downFill ];
 
     // Change colors to match interactionState
-    function interactionStateListener( interactionState ) {
+    function interactionStateListener( interactionState: ButtonInteractionState ) {
       switch( interactionState ) {
 
         case ButtonInteractionState.IDLE:
@@ -293,7 +302,6 @@ class FlatAppearanceStrategy {
     // a minimum and allows us to update some optimization flags the first time the base color is actually changed.
     interactionStateProperty.link( interactionStateListener );
 
-    // @public
     this.dispose = () => {
       if ( interactionStateProperty.hasListener( interactionStateListener ) ) {
         interactionStateProperty.unlink( interactionStateListener );
@@ -303,6 +311,8 @@ class FlatAppearanceStrategy {
       baseDarker4.dispose();
     };
   }
+
+  dispose: () => void;
 }
 
 ButtonNode.FlatAppearanceStrategy = FlatAppearanceStrategy;

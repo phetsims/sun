@@ -11,33 +11,54 @@
 import BooleanProperty from '../../../axon/js/BooleanProperty.js';
 import CallbackTimer from '../../../axon/js/CallbackTimer.js';
 import Emitter from '../../../axon/js/Emitter.js';
-import merge from '../../../phet-core/js/merge.js';
+import Property from '../../../axon/js/Property.js';
+import optionize from '../../../phet-core/js/optionize.js';
 import EventType from '../../../tandem/js/EventType.js';
 import PhetioObject from '../../../tandem/js/PhetioObject.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import sun from '../sun.js';
-import ButtonModel from './ButtonModel.js';
+import ButtonModel, { ButtonModelOptions } from './ButtonModel.js';
+
+type SelfOptions = {
+  // true: fire on pointer down; false: fire on pointer up if pointer is over button
+  fireOnDown?: boolean;
+
+  // convenience for adding 1 listener, no args
+  listener?: ( () => void ) | null;
+
+
+  // fire-on-hold feature
+  // TODO: these options are not supported with PDOM interaction, see https://github.com/phetsims/scenery/issues/1117
+  fireOnHold?: boolean; // is the fire-on-hold feature enabled?
+  fireOnHoldDelay?: number; // start to fire continuously after pressing for this long (milliseconds)
+  fireOnHoldInterval?: number; // fire continuously at this interval (milliseconds), same default as in ButtonModel
+
+  // to support properly passing this to children, see https://github.com/phetsims/tandem/issues/60
+  phetioReadOnly?: boolean;
+};
+
+export type PushButtonModelOptions = SelfOptions & ButtonModelOptions;
 
 class PushButtonModel extends ButtonModel {
 
-  /**
-   * @param {Object} [options]
-   */
-  constructor( options ) {
+  firedEmitter: Emitter;
+  isFiringProperty: Property<boolean>;
+  private timer?: CallbackTimer | null;
+  private disposePushButtonModel: () => void;
 
-    options = merge( {
+  constructor( providedOptions?: PushButtonModelOptions ) {
 
-      fireOnDown: false, // true: fire on pointer down; false: fire on pointer up if pointer is over button
-      listener: null, // {function} convenience for adding 1 listener, no args
+    const options = optionize<PushButtonModelOptions, SelfOptions, ButtonModelOptions, 'tandem'>( {
 
-      // fire-on-hold feature
-      // TODO: these options are not supported with PDOM interaction, see https://github.com/phetsims/scenery/issues/1117
-      fireOnHold: false, // is the fire-on-hold feature enabled?
-      fireOnHoldDelay: 400, // start to fire continuously after pressing for this long (milliseconds)
-      fireOnHoldInterval: 100, // fire continuously at this interval (milliseconds), same default as in ButtonModel
+      fireOnDown: false,
+      listener: null,
+      fireOnHold: false,
+      fireOnHoldDelay: 400,
+      fireOnHoldInterval: 100,
+
       tandem: Tandem.REQUIRED,
-      phetioReadOnly: PhetioObject.DEFAULT_OPTIONS.phetioReadOnly // to support properly passing this to children, see https://github.com/phetsims/tandem/issues/60
-    }, options );
+      phetioReadOnly: PhetioObject.DEFAULT_OPTIONS.phetioReadOnly
+    }, providedOptions );
 
     super( options );
 
@@ -66,7 +87,7 @@ class PushButtonModel extends ButtonModel {
     }
 
     // Point down
-    const downPropertyObserver = down => {
+    const downPropertyObserver = ( down: boolean ) => {
       if ( down ) {
         if ( this.enabledProperty.get() ) {
           if ( options.fireOnDown ) {
@@ -98,7 +119,7 @@ class PushButtonModel extends ButtonModel {
     this.downProperty.link( downPropertyObserver );
 
     // Stop the timer when the button is disabled.
-    const enabledPropertyObserver = enabled => {
+    const enabledPropertyObserver = ( enabled: boolean ) => {
       if ( !enabled && this.timer ) {
         this.timer.stop( false ); // Stop the timer, don't fire if we haven't already
       }
@@ -121,10 +142,6 @@ class PushButtonModel extends ButtonModel {
     };
   }
 
-  /**
-   * @public
-   * @override
-   */
   dispose() {
     this.disposePushButtonModel();
     super.dispose();
@@ -132,25 +149,22 @@ class PushButtonModel extends ButtonModel {
 
   /**
    * Adds a listener. If already a listener, this is a no-op.
-   * @param {function} listener - function called when the button is pressed, no args
-   * @public
+   * @param listener - function called when the button is pressed, no args
    */
-  addListener( listener ) {
+  addListener( listener: () => void ) {
     this.firedEmitter.addListener( listener );
   }
 
   /**
    * Removes a listener. If not a listener, this is a no-op.
-   * @param {function} listener
-   * @public
    */
-  removeListener( listener ) {
+  removeListener( listener: () => void ) {
     this.firedEmitter.removeListener( listener );
   }
 
   /**
    * Fires all listeners.
-   * @public (phet-io, a11y)
+   * (phet-io, a11y)
    */
   fire() {
 

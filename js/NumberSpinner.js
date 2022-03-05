@@ -9,6 +9,7 @@
 
 import InstanceRegistry from '../../phet-core/js/documentation/InstanceRegistry.js';
 import merge from '../../phet-core/js/merge.js';
+// @ts-ignore FIX DEPENDENCY ON SCENERY-PHET
 import NumberDisplay from '../../scenery-phet/js/NumberDisplay.js';
 import { Node, SceneryConstants } from '../../scenery/js/imports.js';
 import Tandem from '../../tandem/js/Tandem.js';

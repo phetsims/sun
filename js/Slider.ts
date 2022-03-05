@@ -9,6 +9,8 @@
  * @author Chris Malley (PixelZoom, Inc.)
  */
 
+import IProperty from '../../axon/js/IProperty.js';
+import IReadOnlyProperty from '../../axon/js/IReadOnlyProperty.js';
 import Property from '../../axon/js/Property.js';
 import Dimension2 from '../../dot/js/Dimension2.js';
 import Range from '../../dot/js/Range.js';
@@ -17,15 +19,16 @@ import { Shape } from '../../kite/js/imports.js';
 import assertMutuallyExclusiveOptions from '../../phet-core/js/assertMutuallyExclusiveOptions.js';
 import InstanceRegistry from '../../phet-core/js/documentation/InstanceRegistry.js';
 import merge from '../../phet-core/js/merge.js';
+import optionize from '../../phet-core/js/optionize.js';
 import Orientation from '../../phet-core/js/Orientation.js';
 import swapObjectKeys from '../../phet-core/js/swapObjectKeys.js';
-import { DragListener, FocusHighlightFromNode, Node, Path, SceneryConstants } from '../../scenery/js/imports.js';
+import { DragListener, FocusHighlightFromNode, IPaint, Node, Path, SceneryConstants, SceneryEvent } from '../../scenery/js/imports.js';
 import Tandem from '../../tandem/js/Tandem.js';
 import BooleanIO from '../../tandem/js/types/BooleanIO.js';
 import IOType from '../../tandem/js/types/IOType.js';
 import VoidIO from '../../tandem/js/types/VoidIO.js';
-import ValueChangeSoundGenerator from '../../tambo/js/sound-generators/ValueChangeSoundGenerator.js';
-import AccessibleSlider from './accessibility/AccessibleSlider.js';
+import ValueChangeSoundGenerator, { ValueChangeSoundGeneratorOptions } from '../../tambo/js/sound-generators/ValueChangeSoundGenerator.js';
+import AccessibleSlider, { AccessibleSliderOptions } from './accessibility/AccessibleSlider.js';
 import DefaultSliderTrack from './DefaultSliderTrack.js';
 import SliderThumb from './SliderThumb.js';
 import SliderTrack from './SliderTrack.js';
@@ -36,69 +39,158 @@ const VERTICAL_ROTATION = -Math.PI / 2;
 const DEFAULT_HORIZONTAL_TRACK_SIZE = new Dimension2( 100, 5 );
 const DEFAULT_HORIZONTAL_THUMB_SIZE = new Dimension2( 17, 34 );
 
+type SelfOptions = {
+  orientation?: Orientation;
+
+  // optional track, replaces the default.
+  // Client is responsible for highlighting, disable and pointer areas.
+  // For instrumented Sliders, a supplied trackNode must be instrumented.
+  // The tandem component name must be Slider.TRACK_NODE_TANDEM_NAME and it must be nested under the Slider tandem.
+  trackNode?: SliderTrack | null;
+
+  // track - options to create a SliderTrack if trackNode not supplied
+  trackSize?: Dimension2 | null; // specific to orientation, will be filled in with a default if not provided
+  trackFillEnabled?: IPaint;
+  trackFillDisabled?: IPaint;
+  trackStroke?: IPaint;
+  trackLineWidth?: number;
+  trackCornerRadius?: number;
+
+  // optional thumb, replaces the default.
+  // Client is responsible for highlighting, disabling and pointer areas.
+  // The thumb is positioned based on its center and hence can have its origin anywhere
+  // Note for PhET-IO: This thumbNode should be instrumented. The thumb's dragListener is instrumented underneath
+  // this thumbNode. The tandem component name must be Slider.THUMB_NODE_TANDEM_NAME and it must be nested under
+  // the Slider tandem.
+  thumbNode?: Node | null;
+
+  // Options for the default thumb, ignored if thumbNode is set
+  thumbSize?: Dimension2 | null; // specific to orientation, will be filled in with a default if not provided
+  thumbFill?: IPaint;
+  thumbFillHighlighted?: IPaint;
+  thumbStroke?: IPaint;
+  thumbLineWidth?: number;
+  thumbCenterLineStroke?: IPaint;
+
+  // dilations are specific to orientation
+  thumbTouchAreaXDilation?: number;
+  thumbTouchAreaYDilation?: number;
+  thumbMouseAreaXDilation?: number;
+  thumbMouseAreaYDilation?: number;
+
+  // Applied to default or supplied thumb
+  thumbYOffset?: number; // center of the thumb is vertically offset by this amount from the center of the track
+
+  // ticks - if adding an option here, make sure it ends up in this.tickOptions
+  tickLabelSpacing?: number;
+  majorTickLength?: number;
+  majorTickStroke?: IPaint;
+  majorTickLineWidth?: number;
+  minorTickLength?: number;
+  minorTickStroke?: IPaint;
+  minorTickLineWidth?: number;
+
+  cursor?: string;
+
+  // called when a drag sequence starts, passed to AccessibleSlider as well
+  startDrag?: ( event: SceneryEvent ) => void;
+
+  // called at the end of a drag event, after the valueProperty changes, passed to AccessibleSlider as well
+  drag?: ( event: SceneryEvent ) => void;
+
+  // called when a drag sequence ends, passed to AccessibleSlider as well
+  endDrag?: () => void;
+
+  // called before valueProperty is set, passed to AccessibleValueHandler as well
+  constrainValue?: ( n: number ) => number;
+
+  // determine the portion of range that is enabled
+  enabledRangeProperty?: IReadOnlyProperty<Range> | null;
+
+  // opacity applied to the entire Slider when disabled
+  disabledOpacity?: number;
+
+  // If provided, create a LinkedElement for this PhET-iO instrumented Property, instead
+  // of using the passed in Property. This option was created to support passing DynamicProperty or "wrapping"
+  // Property that are "implementation  details" to the PhET-iO API, and still support having a LinkedElement that
+  // points to the underlying model Property.
+  phetioLinkedProperty?: Property<number> | null;
+
+  // This is used to generate sounds as the slider is moved by the user.  If set to null, the default sound generator
+  // will be created.  Set to ValueChangeSoundGenerator.NO_SOUND to disable sound generation for this slider.
+  soundGenerator?: ValueChangeSoundGenerator | null;
+
+  // Options for the default sound generator.  These should only be provided when using the default.
+  soundGeneratorOptions?: ValueChangeSoundGeneratorOptions,
+
+};
+
+// We provide these options to the super
+export type SliderOptions = SelfOptions & Omit<AccessibleSliderOptions, 'valueProperty' | 'enabledRangeProperty'>;
+
+type TickOptions = Pick<SelfOptions, 'tickLabelSpacing' | 'majorTickLength' | 'majorTickStroke' | 'majorTickLineWidth' | 'minorTickLength' | 'minorTickStroke' | 'minorTickLineWidth'>;
+
 class Slider extends AccessibleSlider( Node, 0 ) {
 
-  /**
-   * @param {Property.<number>} valueProperty
-   * @param {Range} range
-   * @param {Object} [options]
-   * @mixes AccessibleSlider
-   */
-  constructor( valueProperty, range, options ) {
+  enabledRangeProperty: IReadOnlyProperty<Range>;
+
+  // public so that clients can access Properties of these DragListeners that tell us about its state
+  // See https://github.com/phetsims/sun/issues/680
+  readonly thumbDragListener: DragListener;
+  readonly trackDragListener: DragListener;
+
+  private orientation: Orientation;
+
+  // options needed by prototype functions that add ticks
+  private tickOptions: Required<TickOptions>;
+
+  // ticks are added to these parents, so they are behind the knob
+  private majorTicksParent: Node;
+  private minorTicksParent: Node;
+
+  private track: SliderTrack;
+
+  private disposeSlider: () => void;
+
+  constructor( valueProperty: IProperty<number>, range: Range, providedOptions?: SliderOptions ) {
 
     // Guard against mutually exclusive options before defaults are filled in.
-    assert && assertMutuallyExclusiveOptions( options, [ 'thumbNode' ], [
+    assert && assertMutuallyExclusiveOptions( providedOptions, [ 'thumbNode' ], [
       'thumbSize', 'thumbFill', 'thumbFillHighlighted', 'thumbStroke', 'thumbLineWidth', 'thumbCenterLineStroke',
       'thumbTouchAreaXDilation', 'thumbTouchAreaYDilation', 'thumbMouseAreaXDilation', 'thumbMouseAreaYDilation'
     ] );
 
-    assert && assertMutuallyExclusiveOptions( options, [ 'trackNode' ], [
+    assert && assertMutuallyExclusiveOptions( providedOptions, [ 'trackNode' ], [
       'trackSize', 'trackFillEnabled', 'trackFillDisabled', 'trackStroke', 'trackLineWidth', 'trackCornerRadius' ] );
 
-    options = merge( {
+    let options = optionize<SliderOptions, Omit<SelfOptions, 'enabledRangeProperty'>, AccessibleSliderOptions, 'tandem'>( {
 
-      orientation: Orientation.HORIZONTAL, // {Orientation}
-
-      // {SliderTrack} optional track, replaces the default.
-      // Client is responsible for highlighting, disable and pointer areas.
-      // For instrumented Sliders, a supplied trackNode must be instrumented.
-      // The tandem component name must be Slider.TRACK_NODE_TANDEM_NAME and it must be nested under the Slider tandem.
+      orientation: Orientation.HORIZONTAL,
       trackNode: null,
 
-      // track - options to create a SliderTrack if trackNode not supplied
-      trackSize: null, // {Dimension2} specific to orientation, will be filled in with a default if not provided
+      trackSize: null,
       trackFillEnabled: 'white',
       trackFillDisabled: 'gray',
       trackStroke: 'black',
       trackLineWidth: 1,
       trackCornerRadius: 0,
 
-      // {Node} optional thumb, replaces the default.
-      // Client is responsible for highlighting, disabling and pointer areas.
-      // The thumb is positioned based on its center and hence can have its origin anywhere
-      // Note for PhET-IO: This thumbNode should be instrumented. The thumb's dragListener is instrumented underneath
-      // this thumbNode. The tandem component name must be Slider.THUMB_NODE_TANDEM_NAME and it must be nested under
-      // the Slider tandem.
       thumbNode: null,
 
-      // Options for the default thumb, ignored if thumbNode is set
-      thumbSize: null, // {Dimension2} specific to orientation, will be filled in with a default if not provided
+      thumbSize: null,
       thumbFill: 'rgb(50,145,184)',
       thumbFillHighlighted: 'rgb(71,207,255)',
       thumbStroke: 'black',
       thumbLineWidth: 1,
       thumbCenterLineStroke: 'white',
 
-      // dilations are specific to orientation
       thumbTouchAreaXDilation: 11,
       thumbTouchAreaYDilation: 11,
       thumbMouseAreaXDilation: 0,
       thumbMouseAreaYDilation: 0,
 
-      // Applied to default or supplied thumb
-      thumbYOffset: 0, // center of the thumb is vertically offset by this amount from the center of the track
+      thumbYOffset: 0,
 
-      // ticks - if adding an option here, make sure it ends up in this.tickOptions
       tickLabelSpacing: 6,
       majorTickLength: 25,
       majorTickStroke: 'black',
@@ -107,36 +199,26 @@ class Slider extends AccessibleSlider( Node, 0 ) {
       minorTickStroke: 'black',
       minorTickLineWidth: 1,
 
-      // other
       cursor: 'pointer',
-      startDrag: _.noop, // called when a drag sequence starts, passed to AccessibleSlider as well
-      drag: _.noop, // called at the end of a drag event, after the valueProperty changes, passed to AccessibleSlider as well
-      endDrag: _.noop, // called when a drag sequence ends, passed to AccessibleSlider as well
-      constrainValue: _.identity, // called before valueProperty is set, passed to AccessibleValueHandler as well
+      startDrag: _.noop,
+      drag: _.noop,
+      endDrag: _.noop,
+      constrainValue: _.identity,
 
-      enabledRangeProperty: null, // {Property.<Range>|null} determine the portion of range that is enabled
-      disabledOpacity: SceneryConstants.DISABLED_OPACITY, // opacity applied to the entire Slider when disabled
+      disabledOpacity: SceneryConstants.DISABLED_OPACITY,
 
-      // {ValueChangeSoundGenerator|null} soundGenerator - This is used to generate sounds as the slider is moved by
-      // the user.  If set to null, the default sound generator will be created.  Set to
-      // ValueChangeSoundGenerator.NO_SOUND to disable sound generation for this slider.
       soundGenerator: null,
-
-      // {Object} - Options for the default sound generator.  These should only be provided when using the default.
       soundGeneratorOptions: {},
 
       // phet-io
+      phetioLinkedProperty: null,
+
+      // Supertype options
       tandem: Tandem.REQUIRED,
       phetioType: Slider.SliderIO,
       visiblePropertyOptions: { phetioFeatured: true },
-      phetioEnabledPropertyInstrumented: true, // opt into default PhET-iO instrumented enabledProperty
-
-      // {Property.<number>|null} - if provided, create a LinkedElement for this PhET-iO instrumented Property, instead
-      // of using the passed in Property. This option was created to support passing DynamicProperty or "wrapping"
-      // Property that are "implementation  details" to the PhET-iO API, and still support having a LinkedElement that
-      // points to the underlying model Property.
-      phetioLinkedProperty: null
-    }, options );
+      phetioEnabledPropertyInstrumented: true // opt into default PhET-iO instrumented enabledProperty
+    }, providedOptions );
 
     options = merge( {
       ariaOrientation: options.orientation
@@ -149,42 +231,42 @@ class Slider extends AccessibleSlider( Node, 0 ) {
     assert && assert( options.soundGenerator === null || _.isEmpty( options.soundGeneratorOptions ), 'options should only be supplied when using default sound generator' );
 
     const boundsRequiredOptionKeys = _.pick( options, Node.REQUIRES_BOUNDS_OPTION_KEYS );
-    options = _.omit( options, Node.REQUIRES_BOUNDS_OPTION_KEYS );
+    const superOptions = _.omit( options, Node.REQUIRES_BOUNDS_OPTION_KEYS );
 
-    if ( options.orientation === Orientation.VERTICAL ) {
+    if ( superOptions.orientation === Orientation.VERTICAL ) {
 
       // For a vertical slider, the client should provide dimensions that are specific to a vertical slider.
       // But Slider expects dimensions for a horizontal slider, and then creates the vertical orientation using rotation.
       // So if the client provides any dimensions for a vertical slider, swap those dimensions to horizontal.
-      if ( options.trackSize ) {
-        options.trackSize = options.trackSize.swapped();
+      if ( superOptions.trackSize ) {
+        superOptions.trackSize = superOptions.trackSize.swapped();
       }
-      if ( options.thumbSize ) {
-        options.thumbSize = options.thumbSize.swapped();
+      if ( superOptions.thumbSize ) {
+        superOptions.thumbSize = superOptions.thumbSize.swapped();
       }
-      swapObjectKeys( options, 'thumbTouchAreaXDilation', 'thumbTouchAreaYDilation' );
-      swapObjectKeys( options, 'thumbMouseAreaXDilation', 'thumbMouseAreaYDilation' );
+      swapObjectKeys( superOptions, 'thumbTouchAreaXDilation', 'thumbTouchAreaYDilation' );
+      swapObjectKeys( superOptions, 'thumbMouseAreaXDilation', 'thumbMouseAreaYDilation' );
     }
-    options.trackSize = options.trackSize || DEFAULT_HORIZONTAL_TRACK_SIZE;
-    options.thumbSize = options.thumbSize || DEFAULT_HORIZONTAL_THUMB_SIZE;
+    superOptions.trackSize = superOptions.trackSize || DEFAULT_HORIZONTAL_TRACK_SIZE;
+    superOptions.thumbSize = superOptions.thumbSize || DEFAULT_HORIZONTAL_THUMB_SIZE;
 
     const thumbTandem = options.tandem.createTandem( Slider.THUMB_NODE_TANDEM_NAME );
-    if ( Tandem.VALIDATION && options.thumbNode ) {
-      assert && assert( options.thumbNode.tandem.equals( thumbTandem ),
-        `Passed-in thumbNode must have the correct tandem. Expected: ${thumbTandem.phetioID}, actual: ${options.thumbNode.tandem.phetioID}`
+    if ( Tandem.VALIDATION && superOptions.thumbNode ) {
+      assert && assert( superOptions.thumbNode.tandem.equals( thumbTandem ),
+        `Passed-in thumbNode must have the correct tandem. Expected: ${thumbTandem.phetioID}, actual: ${superOptions.thumbNode.tandem.phetioID}`
       );
     }
 
     // The thumb of the slider
-    const thumb = options.thumbNode || new SliderThumb( {
+    const thumb = superOptions.thumbNode || new SliderThumb( {
 
-      // propagate options that are specific to SliderThumb
-      size: options.thumbSize,
-      fill: options.thumbFill,
-      fillHighlighted: options.thumbFillHighlighted,
-      stroke: options.thumbStroke,
-      lineWidth: options.thumbLineWidth,
-      centerLineStroke: options.thumbCenterLineStroke,
+      // propagate superOptions that are specific to SliderThumb
+      size: superOptions.thumbSize,
+      fill: superOptions.thumbFill,
+      fillHighlighted: superOptions.thumbFillHighlighted,
+      stroke: superOptions.thumbStroke,
+      lineWidth: superOptions.thumbLineWidth,
+      centerLineStroke: superOptions.thumbCenterLineStroke,
       tandem: thumbTandem
     } );
 
@@ -205,50 +287,46 @@ class Slider extends AccessibleSlider( Node, 0 ) {
 
         // TODO: Is this a reasonable way to distinguish pointer events from key events?  See https://github.com/phetsims/sun/issues/697.
         if ( event.pointer.type === 'pdom' ) {
-          options.soundGenerator.playSoundForValueChange( valueProperty.value, previousValue );
+          options.soundGenerator!.playSoundForValueChange( valueProperty.value, previousValue );
         }
         else {
-          options.soundGenerator.playSoundIfThresholdReached( valueProperty.value, previousValue );
+          options.soundGenerator!.playSoundIfThresholdReached( valueProperty.value, previousValue );
         }
         providedDrag( event );
         previousValue = valueProperty.value;
       };
     }
 
-    const ownsEnabledRangeProperty = !options.enabledRangeProperty;
+    const ownsEnabledRangeProperty = !superOptions.enabledRangeProperty;
 
     // controls the portion of the slider that is enabled
-    options.enabledRangeProperty = options.enabledRangeProperty || new Property( range, {
+    superOptions.enabledRangeProperty = superOptions.enabledRangeProperty || new Property( range, {
       valueType: Range,
-      isValidValue: value => ( value.min >= range.min && value.max <= range.max ),
+      isValidValue: ( value: Range ) => ( value.min >= range.min && value.max <= range.max ),
       tandem: options.tandem.createTandem( 'enabledRangeProperty' ),
       phetioType: Property.PropertyIO( Range.RangeIO ),
       phetioDocumentation: 'Sliders support two ranges: the outer range which specifies the min and max of the track and ' +
                            'the enabledRangeProperty, which determines how low and high the thumb can be dragged within the track.'
     } );
 
-    assert && assert( !options.panTargetNode, 'Slider sets its own panTargetNode' );
-    options.panTargetNode = thumb;
+    assert && assert( !superOptions.panTargetNode, 'Slider sets its own panTargetNode' );
+    superOptions.panTargetNode = thumb;
 
-    assert && assert( !options.valueProperty, 'Slider sets its own valueProperty' );
-    options.valueProperty = valueProperty;
+    assert && assert( !superOptions.valueProperty, 'Slider sets its own valueProperty' );
+    superOptions.valueProperty = valueProperty;
 
-    super( options );
+    super( superOptions );
 
-    // @private {Orientation}
-    this.orientation = options.orientation;
+    this.orientation = superOptions.orientation!;
+    this.enabledRangeProperty = superOptions.enabledRangeProperty;
 
-    // @public {Property.<Range>|null}
-    this.enabledRangeProperty = options.enabledRangeProperty;
-
-    // @private {Object} - options needed by prototype functions that add ticks
     this.tickOptions = _.pick( options, 'tickLabelSpacing',
       'majorTickLength', 'majorTickStroke', 'majorTickLineWidth',
       'minorTickLength', 'minorTickStroke', 'minorTickLineWidth' );
 
     const sliderParts = [];
 
-    // @private {Node} ticks are added to these parents, so they are behind the knob
+    // ticks are added to these parents, so they are behind the knob
     this.majorTicksParent = new Node();
     this.minorTicksParent = new Node();
     sliderParts.push( this.majorTicksParent );
@@ -262,20 +340,19 @@ class Slider extends AccessibleSlider( Node, 0 ) {
       );
     }
 
-    // @private {Node} track
     this.track = options.trackNode || new DefaultSliderTrack( valueProperty, range, {
 
       // propagate options that are specific to SliderTrack
-      size: options.trackSize,
-      fillEnabled: options.trackFillEnabled,
-      fillDisabled: options.trackFillDisabled,
-      stroke: options.trackStroke,
-      lineWidth: options.trackLineWidth,
-      cornerRadius: options.trackCornerRadius,
-      startDrag: options.startDrag,
-      drag: options.drag,
-      endDrag: options.endDrag,
-      constrainValue: options.constrainValue,
+      size: superOptions.trackSize,
+      fillEnabled: superOptions.trackFillEnabled,
+      fillDisabled: superOptions.trackFillDisabled,
+      stroke: superOptions.trackStroke,
+      lineWidth: superOptions.trackLineWidth,
+      cornerRadius: superOptions.trackCornerRadius,
+      startDrag: superOptions.startDrag,
+      drag: superOptions.drag,
+      endDrag: superOptions.endDrag,
+      constrainValue: superOptions.constrainValue,
       enabledRangeProperty: this.enabledRangeProperty,
       soundGenerator: options.soundGenerator,
 
@@ -348,9 +425,9 @@ class Slider extends AccessibleSlider( Node, 0 ) {
         }
       },
 
-      end: event => {
+      end: () => {
         if ( this.enabledProperty.get() ) {
-          options.endDrag( event );
+          options.endDrag();
         }
       }
     } );
@@ -362,20 +439,19 @@ class Slider extends AccessibleSlider( Node, 0 ) {
     this.trackDragListener = this.track.dragListener;
 
     // update thumb position when value changes
-    const valueObserver = value => {
+    const valueObserver = ( value: number ) => {
       thumb.centerX = this.track.valueToPosition.evaluate( value );
     };
     valueProperty.link( valueObserver ); // must be unlinked in disposeSlider
 
     // when the enabled range changes, the value to position linear function must change as well
-    const enabledRangeObserver = function( enabledRange ) {
+    const enabledRangeObserver = function( enabledRange: Range ) {
 
       // clamp the value to the enabled range if it changes
       valueProperty.set( Utils.clamp( valueProperty.value, enabledRange.min, enabledRange.max ) );
     };
     this.enabledRangeProperty.link( enabledRangeObserver ); // needs to be unlinked in dispose function
 
-    // @private {function} - Called by dispose
     this.disposeSlider = () => {
       thumb.dispose && thumb.dispose(); // in case a custom thumb is provided via options.thumbNode that doesn't implement dispose
       this.track.dispose && this.track.dispose();
@@ -392,37 +468,34 @@ class Slider extends AccessibleSlider( Node, 0 ) {
       'If provided, phetioLinkedProperty should be PhET-iO instrumented' );
 
     // Must happen after instrumentation (in super call)
-    this.addLinkedElement( options.phetioLinkedProperty || valueProperty, {
-      tandem: options.tandem.createTandem( 'valueProperty' )
-    } );
+    const linkedProperty = options.phetioLinkedProperty || ( valueProperty instanceof Property ? valueProperty : null );
+    if ( linkedProperty ) {
+      this.addLinkedElement( linkedProperty, {
+        tandem: options.tandem.createTandem( 'valueProperty' )
+      } );
+    }
 
     // must be after the button is instrumented
-    !ownsEnabledRangeProperty && this.addLinkedElement( this.enabledRangeProperty, {
+    // assert && assert( !this.isPhetioInstrumented() || this.enabledRangeProperty.isPhetioInstrumented() );
+    !ownsEnabledRangeProperty && this.enabledRangeProperty instanceof Property && this.addLinkedElement( this.enabledRangeProperty, {
       tandem: options.tandem.createTandem( 'enabledRangeProperty' )
     } );
 
     this.mutate( boundsRequiredOptionKeys );
 
     // support for binder documentation, stripped out in builds and only runs when ?binder is specified
+    // @ts-ignore chipper query parameters
     assert && phet.chipper.queryParameters.binder && InstanceRegistry.registerDataURL( 'sun', 'Slider', this );
   }
 
-  get enabledRange() { return this.getEnabledRange(); }
+  get majorTicksVisible(): boolean { return this.getMajorTicksVisible(); }
 
-  set enabledRange( range ) { this.setEnabledRange( range ); }
+  set majorTicksVisible( value: boolean ) { this.setMajorTicksVisible( value ); }
 
-  get majorTicksVisible() { return this.getMajorTicksVisible(); }
+  get minorTicksVisible(): boolean { return this.getMinorTicksVisible(); }
 
-  set majorTicksVisible( value ) { this.setMajorTicksVisible( value ); }
+  set minorTicksVisible( value: boolean ) { this.setMinorTicksVisible( value ); }
 
-  get minorTicksVisible() { return this.getMinorTicksVisible(); }
-
-  set minorTicksVisible( value ) { this.setMinorTicksVisible( value ); }
-
-  /**
-   * @public
-   * @override
-   */
   dispose() {
     this.disposeSlider();
     super.dispose();
@@ -430,37 +503,24 @@ class Slider extends AccessibleSlider( Node, 0 ) {
 
   /**
    * Adds a major tick mark.
-   * @param {number} value
-   * @param {Node} [label] optional
-   * @public
    */
-  addMajorTick( value, label ) {
+  addMajorTick( value: number, label?: Node ) {
     this.addTick( this.majorTicksParent, value, label,
       this.tickOptions.majorTickLength, this.tickOptions.majorTickStroke, this.tickOptions.majorTickLineWidth );
   }
 
   /**
    * Adds a minor tick mark.
-   * @param {number} value
-   * @param {Node} [label] optional
-   * @public
    */
-  addMinorTick( value, label ) {
+  addMinorTick( value: number, label?: Node ) {
     this.addTick( this.minorTicksParent, value, label,
       this.tickOptions.minorTickLength, this.tickOptions.minorTickStroke, this.tickOptions.minorTickLineWidth );
   }
 
-  /*
+  /**
    * Adds a tick mark above the track.
-   * @param {Node} parent
-   * @param {number} value
-   * @param {Node} [label] optional
-   * @param {number} length
-   * @param {number} stroke
-   * @param {number} lineWidth
-   * @private
    */
-  addTick( parent, value, label, length, stroke, lineWidth ) {
+  private addTick( parent: Node, value: number, label: Node | undefined, length: number, stroke: IPaint, lineWidth: number ) {
     const labelX = this.track.valueToPosition.evaluate( value );
 
     // ticks
@@ -484,36 +544,32 @@ class Slider extends AccessibleSlider( Node, 0 ) {
     }
   }
 
-  // @public
-  setEnabledRange( enabledRange ) { this.enabledRangeProperty.value = enabledRange; }
-
-  // @public
-  getEnabledRange() { return this.enabledRangeProperty.value; }
-
-  // @public - Sets visibility of major ticks.
-  setMajorTicksVisible( visible ) {
+  // Sets visibility of major ticks.
+  setMajorTicksVisible( visible: boolean ) {
     this.majorTicksParent.visible = visible;
   }
 
-  // @public - Gets visibility of major ticks.
-  getMajorTicksVisible() {
+  // Gets visibility of major ticks.
+  getMajorTicksVisible(): boolean {
     return this.majorTicksParent.visible;
   }
 
-  // @public - Sets visibility of minor ticks.
-  setMinorTicksVisible( visible ) {
+  // Sets visibility of minor ticks.
+  setMinorTicksVisible( visible: boolean ) {
     this.minorTicksParent.visible = visible;
   }
 
-  // @public - Gets visibility of minor ticks.
-  getMinorTicksVisible() {
+  // Gets visibility of minor ticks.
+  getMinorTicksVisible(): boolean {
     return this.minorTicksParent.visible;
   }
-}
 
-// @public standardized tandem names, see https://github.com/phetsims/sun/issues/694
-Slider.THUMB_NODE_TANDEM_NAME = 'thumbNode';
-Slider.TRACK_NODE_TANDEM_NAME = 'trackNode';
+  // standardized tandem names, see https://github.com/phetsims/sun/issues/694
+  static THUMB_NODE_TANDEM_NAME = 'thumbNode' as const;
+  static TRACK_NODE_TANDEM_NAME = 'trackNode' as const;
+
+  static SliderIO: IOType;
+}
 
 Slider.SliderIO = new IOType( 'SliderIO', {
   valueType: Slider,
@@ -523,7 +579,7 @@ Slider.SliderIO = new IOType( 'SliderIO', {
     setMajorTicksVisible: {
       returnType: VoidIO,
       parameterTypes: [ BooleanIO ],
-      implementation: function( visible ) {
+      implementation: function( this: Slider, visible: boolean ) {
         this.setMajorTicksVisible( visible );
       },
       documentation: 'Set whether the major tick marks should be shown',
@@ -533,7 +589,7 @@ Slider.SliderIO = new IOType( 'SliderIO', {
     setMinorTicksVisible: {
       returnType: VoidIO,
       parameterTypes: [ BooleanIO ],
-      implementation: function( visible ) {
+      implementation: function( this: Slider, visible: boolean ) {
         this.setMinorTicksVisible( visible );
       },
       documentation: 'Set whether the minor tick marks should be shown',

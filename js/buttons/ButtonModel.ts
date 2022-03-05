@@ -9,31 +9,87 @@ import BooleanProperty from '../../../axon/js/BooleanProperty.js';
 import Emitter from '../../../axon/js/Emitter.js';
 import Property from '../../../axon/js/Property.js';
 import merge from '../../../phet-core/js/merge.js';
-import { PressListener } from '../../../scenery/js/imports.js';
+import optionize from '../../../phet-core/js/optionize.js';
+import { PressListener, PressListenerOptions } from '../../../scenery/js/imports.js';
 import PhetioObject from '../../../tandem/js/PhetioObject.js';
 import Tandem from '../../../tandem/js/Tandem.js';
-import EnabledComponent from '../../../axon/js/EnabledComponent.js';
+import EnabledComponent, { EnabledComponentOptions } from '../../../axon/js/EnabledComponent.js';
 import sun from '../sun.js';
+import Multilink from '../../../axon/js/Multilink.js';
+
+type SelfOptions = {
+  // {function()} called on pointer down
+  startCallback?: () => void;
+
+  // {function(over:boolean)} called on pointer up, @param {boolean} over - indicates whether the pointer was released over the button
+  endCallback?: ( over: boolean ) => void;
+
+  // to support properly passing this to children, see https://github.com/phetsims/tandem/issues/60
+  phetioState?: boolean;
+
+  // to support properly passing this to children, see https://github.com/phetsims/tandem/issues/60
+  phetioReadOnly?: boolean;
+
+  // to support properly passing this to children, see https://github.com/phetsims/tandem/issues/60
+  phetioFeatured?: boolean;
+};
+
+export type ButtonModelOptions = SelfOptions & EnabledComponentOptions;
 
 class ButtonModel extends EnabledComponent {
 
-  /**
-   * @param {Object} [options]
-   */
-  constructor( options ) {
+  // (read-only) - Is the pointer over the button?
+  overProperty: Property<boolean>;
 
-    options = merge( {
-      // {function()} called on pointer down
+  // Is the pointer down?
+  downProperty: Property<boolean>;
+
+  // Is the button focused from the PDOM?
+  focusedProperty: Property<boolean>;
+
+  // This Property was added for a11y. It tracks whether or not the button should "look" down. This
+  // will be true if downProperty is true or if an a11y click is in progress. For an a11y click, the listeners
+  // are fired right away but the button will look down for as long as PressListener.a11yLooksPressedInterval.
+  // See PressListener.click for more details.
+  looksPressedProperty: Property<boolean>;
+
+  // This Property was added for a11y. It tracks whether or not the button should "look" over. This
+  // will be true if and PressListeners' looksOverProperty is true, see PressListener for that definition.
+  looksOverProperty: Property<boolean>;
+
+  // (read-only by users, read-write in subclasses) - emitter that is fired when sound should be produced
+  produceSoundEmitter: Emitter;
+
+  // indicates that interaction was interrupted during a press. Valid until next press.
+  interrupted: boolean;
+
+  // keep track of and store all listeners this model creates
+  private listeners: PressListener[];
+
+  // Links all of the looksPressedProperties from the listeners that were created
+  // by this ButtonModel, and updates the looksPressedProperty accordingly. First Multilink is added when the
+  // first listener is created. See this.createPressListener.
+  looksPressedMultilink: Multilink<boolean[]> | null;
+
+  // Links all of the looksOverProperties from the listeners that were created
+  // by this ButtonModel, and updates the looksOverProperty accordingly. First Multilink is added when the
+  // first listener is created. See this.createPressListener.
+  looksOverMultilink: Multilink<boolean[]> | null;
+
+  private disposeButtonModel: () => void;
+
+  constructor( providedOptions?: ButtonModelOptions ) {
+
+    const options = optionize<ButtonModelOptions, SelfOptions, EnabledComponentOptions>( {
       startCallback: _.noop,
-      // {function(over:boolean)} called on pointer up, @param {boolean} over - indicates whether the pointer was released over the button
       endCallback: _.noop,
 
       // phet-io
       tandem: Tandem.REQUIRED,
-      phetioState: PhetioObject.DEFAULT_OPTIONS.phetioState, // to support properly passing this to children, see https://github.com/phetsims/tandem/issues/60
-      phetioReadOnly: PhetioObject.DEFAULT_OPTIONS.phetioReadOnly, // to support properly passing this to children, see https://github.com/phetsims/tandem/issues/60
-      phetioFeatured: PhetioObject.DEFAULT_OPTIONS.phetioFeatured // to support properly passing this to children, see https://github.com/phetsims/tandem/issues/60
-    }, options );
+      phetioState: PhetioObject.DEFAULT_OPTIONS.phetioState,
+      phetioReadOnly: PhetioObject.DEFAULT_OPTIONS.phetioReadOnly,
+      phetioFeatured: PhetioObject.DEFAULT_OPTIONS.phetioFeatured
+    }, providedOptions );
 
     // Set up enabledPropertyOptions for the enabledProperty that the mixin might create
     options.enabledPropertyOptions = merge( {
@@ -48,27 +104,14 @@ class ButtonModel extends EnabledComponent {
     super( options );
 
     // model Properties
-    this.overProperty = new BooleanProperty( false ); // @public (read-only) - Is the pointer over the button?
-    this.downProperty = new BooleanProperty( false, { reentrant: true } ); // @public - Is the pointer down?
-    this.focusedProperty = new BooleanProperty( false ); // @public (read-only) - Is the button focused from the PDOM?
-
-    // @public - This Property was added for a11y. It tracks whether or not the button should "look" down. This
-    // will be true if downProperty is true or if an a11y click is in progress. For an a11y click, the listeners
-    // are fired right away but the button will look down for as long as PressListener.a11yLooksPressedInterval.
-    // See PressListener.click for more details.
+    this.overProperty = new BooleanProperty( false );
+    this.downProperty = new BooleanProperty( false, { reentrant: true } );
+    this.focusedProperty = new BooleanProperty( false );
     this.looksPressedProperty = new BooleanProperty( false );
-
-    // @public - This Property was added for a11y. It tracks whether or not the button should "look" over. This
-    // will be true if and PressListeners' looksOverProperty is true, see PressListener for that definition.
     this.looksOverProperty = new BooleanProperty( false );
 
-    // @public (read-only by users, read-write in subclasses) - emitter that is fired when sound should be produced
     this.produceSoundEmitter = new Emitter();
-
-    // @public (read-only) - indicates that interaction was interrupted during a press. Valid until next press.
     this.interrupted = false;
-
-    // @private - keep track of and store all listeners this model creates
     this.listeners = [];
 
     // @private {Multilink|null} - Links all of the looksPressedProperties from the listeners that were created
@@ -117,23 +160,16 @@ class ButtonModel extends EnabledComponent {
     };
   }
 
-  /**
-   * @public
-   */
   dispose() {
     this.disposeButtonModel();
     super.dispose();
   }
 
-
   /**
    * Creates a PressListener that will handle changes to ButtonModel when the associated button Node is pressed.
    * The client is responsible for adding this PressListener to the associated button Node.
-   * @param {Object} [options]
-   * @returns {PressListener}
-   * @public
    */
-  createPressListener( options ) {
+  createPressListener( options?: PressListenerOptions ): PressListener {
 
     options = merge( {
       phetioDocumentation: 'Indicates when the button has been pressed or released',
@@ -165,8 +201,8 @@ class ButtonModel extends EnabledComponent {
     // PressListeners created by this ButtonModel look pressed. Note that this cannot be an arrow function
     // because its implementation relies on arguments.
     const self = this;
-    this.looksPressedMultilink = Property.multilink( looksPressedProperties, ( ...args ) => {
-      self.looksPressedProperty.value = _.reduce( args, ( sum, newValue ) => sum || newValue, false );
+    this.looksPressedMultilink = Property.multilink( looksPressedProperties, ( ...args: boolean[] ) => {
+      self.looksPressedProperty.value = _.reduce( args, ( sum: boolean, newValue: boolean ) => sum || newValue, false );
     } );
 
     const looksOverProperties = this.listeners.map( listener => listener.looksOverProperty );
@@ -174,8 +210,8 @@ class ButtonModel extends EnabledComponent {
     // assign a new Multilink (for disposal), and make sure that the button looks over when any of the
     // PressListeners created by this ButtonModel look over. Note that this cannot be an arrow function
     // because its implementation relies on arguments.
-    this.looksOverMultilink = Property.multilink( looksOverProperties, ( ...args ) => {
-      self.looksOverProperty.value = _.reduce( args, ( sum, newValue ) => sum || newValue, false );
+    this.looksOverMultilink = Property.multilink( looksOverProperties, ( ...args: boolean[] ) => {
+      self.looksOverProperty.value = _.reduce( args, ( sum: boolean, newValue: boolean ) => sum || newValue, false );
     } );
 
     return pressListener;

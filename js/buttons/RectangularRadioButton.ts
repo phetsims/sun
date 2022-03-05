@@ -10,8 +10,7 @@
 import Emitter from '../../../axon/js/Emitter.js';
 import IProperty from '../../../axon/js/IProperty.js';
 import merge from '../../../phet-core/js/merge.js';
-import { Color, Path } from '../../../scenery/js/imports.js';
-import { PaintColorProperty } from '../../../scenery/js/imports.js';
+import { Color, Node, PaintableNode, PaintColorProperty } from '../../../scenery/js/imports.js';
 import pushButtonSoundPlayer from '../../../tambo/js/shared-sound-players/pushButtonSoundPlayer.js';
 import EventType from '../../../tandem/js/EventType.js';
 import PhetioObject from '../../../tandem/js/PhetioObject.js';
@@ -24,7 +23,6 @@ import RadioButtonInteractionStateProperty from './RadioButtonInteractionStatePr
 import RectangularButton from './RectangularButton.js';
 import TButtonAppearanceStrategy from './TButtonAppearanceStrategy.js';
 import TContentAppearanceStrategy from './TContentAppearanceStrategy.js';
-
 
 class RectangularRadioButton<T> extends RectangularButton {
   interactionStateProperty: RadioButtonInteractionStateProperty;
@@ -187,7 +185,7 @@ class RectangularRadioButton<T> extends RectangularButton {
     /**
      * buttonBackground is the Node for the button's background, sans content
      */
-    constructor( buttonBackground: Path, interactionStateProperty: IProperty<RadioButtonInteractionState>,
+    constructor( buttonBackground: PaintableNode, interactionStateProperty: IProperty<RadioButtonInteractionState>,
                  baseColorProperty: IProperty<ColorDef>, options: any ) {
 
       // Dynamic fills and strokes
@@ -265,7 +263,7 @@ class RectangularRadioButton<T> extends RectangularButton {
 
     dispose: () => void;
 
-    constructor( content: Path, interactionStateProperty: IProperty<RadioButtonInteractionState>, options: any ) {
+    constructor( content: Node, interactionStateProperty: IProperty<RadioButtonInteractionState>, options: any ) {
 
       // The button is not the parent of the content, therefore it is necessary to set the opacity on the content separately
       function handleInteractionStateChanged( state: RadioButtonInteractionState ) {

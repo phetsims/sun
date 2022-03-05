@@ -7,45 +7,51 @@
  */
 
 import InstanceRegistry from '../../../phet-core/js/documentation/InstanceRegistry.js';
-import merge from '../../../phet-core/js/merge.js';
+import optionize from '../../../phet-core/js/optionize.js';
 import pushButtonSoundPlayer from '../../../tambo/js/shared-sound-players/pushButtonSoundPlayer.js';
+import ISoundPlayer from '../../../tambo/js/ISoundPlayer.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import sun from '../sun.js';
 import PushButtonInteractionStateProperty from './PushButtonInteractionStateProperty.js';
-import PushButtonModel from './PushButtonModel.js';
-import RectangularButton from './RectangularButton.js';
+import PushButtonModel, { PushButtonModelOptions } from './PushButtonModel.js';
+import RectangularButton, { RectangularButtonOptions } from './RectangularButton.js';
+
+type SelfOptions = {
+  soundPlayer?: ISoundPlayer;
+  listener?: () => void;
+};
+
+// NOTE: Let's not create PushButtonModel with these options?
+export type RectangularPushButtonOptions = SelfOptions & RectangularButtonOptions & PushButtonModelOptions;
 
 class RectangularPushButton extends RectangularButton {
 
-  /**
-   * @param {Object} [options]
-   */
-  constructor( options ) {
+  // So we have a more accurate subtyped field
+  private pushButtonModel: PushButtonModel;
 
-    options = merge( {
+  private disposeRectangularPushButton: () => void;
 
-      // {SoundPlayer} - sound generation
+  constructor( providedOptions?: RectangularPushButtonOptions ) {
+
+    const options = optionize<RectangularPushButtonOptions, SelfOptions, RectangularButtonOptions>( {
       soundPlayer: pushButtonSoundPlayer,
-
-      // {function} listener called when button is pushed.
       listener: _.noop,
-
-      // tandem support
       tandem: Tandem.REQUIRED
-
-    }, options );
+    }, providedOptions );
 
     // Save the listener and add it after creating the button model.  This is done so that
     // the same code path is always used for adding listener, thus guaranteeing a consistent code path if addListener is
     // overridden, see https://github.com/phetsims/sun/issues/284.
     const listener = options.listener;
-    options = _.omit( options, [ 'listener' ] );
+    const superOptions = _.omit( options, [ 'listener' ] );
 
     // Safe to pass through options to the PushButtonModel like "fireOnDown".  Other scenery options will be safely ignored.
     // Note it shares a tandem with this, so the emitter will be instrumented as a child of the button
-    const buttonModel = new PushButtonModel( options ); // @public, listen only
+    const buttonModel = new PushButtonModel( superOptions ); // @public, listen only
 
-    super( buttonModel, new PushButtonInteractionStateProperty( buttonModel ), options );
+    super( buttonModel, new PushButtonInteractionStateProperty( buttonModel ), superOptions );
+
+    this.pushButtonModel = buttonModel;
 
     // add the listener that was potentially saved above
     listener && this.addListener( listener );
@@ -61,10 +67,10 @@ class RectangularPushButton extends RectangularButton {
     };
 
     // support for binder documentation, stripped out in builds and only runs when ?binder is specified
+    // @ts-ignore chipper query parameters
     assert && phet.chipper.queryParameters.binder && InstanceRegistry.registerDataURL( 'sun', 'RectangularPushButton', this );
   }
 
-  // @public
   dispose() {
 
     // The order of operations here is important - the view needs to be disposed first so that it is unhooked from
@@ -76,20 +82,16 @@ class RectangularPushButton extends RectangularButton {
 
   /**
    * Adds a listener that will be notified when the button fires.
-   * @param {function} listener
-   * @public
    */
-  addListener( listener ) {
-    this.buttonModel.addListener( listener );
+  addListener( listener: () => void ) {
+    this.pushButtonModel.addListener( listener );
   }
 
   /**
    * Removes a listener.
-   * @param {function} listener
-   * @public
    */
-  removeListener( listener ) {
-    this.buttonModel.removeListener( listener );
+  removeListener( listener: () => void ) {
+    this.pushButtonModel.removeListener( listener );
   }
 }
 

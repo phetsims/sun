@@ -6,12 +6,12 @@
  */
 
 import IProperty from '../../../axon/js/IProperty.js';
-import { Path } from '../../../scenery/js/imports.js';
+import { Node } from '../../../scenery/js/imports.js';
 import RadioButtonInteractionState from './RadioButtonInteractionState.js';
 
 type TContentAppearanceStrategy = {
   dispose?: () => void,
-  new( content: Path,
+  new( content: Node,
        interactionStateProperty: IProperty<RadioButtonInteractionState>,
        options: any ): any
 };

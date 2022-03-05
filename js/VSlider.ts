@@ -8,21 +8,21 @@
  */
 
 import InstanceRegistry from '../../phet-core/js/documentation/InstanceRegistry.js';
+import IProperty from '../../axon/js/IProperty.js';
+import Range from '../../dot/js/Range.js';
 import merge from '../../phet-core/js/merge.js';
 import Orientation from '../../phet-core/js/Orientation.js';
-import Slider from './Slider.js';
+import { default as Slider, SliderOptions } from './Slider.js';
 import sun from './sun.js';
+import IntentionalAny from '../../phet-core/js/IntentionalAny.js';
+
+export type VSliderOptions = Omit<SliderOptions, 'orientation'>;
 
 class VSlider extends Slider {
 
-  /**
-   * @param {Property.<number>} valueProperty
-   * @param {../../dot/js/Range} range
-   * @param {Object} [options]
-   */
-  constructor( valueProperty, range, options ) {
+  constructor( valueProperty: IProperty<number>, range: Range, options?: VSliderOptions ) {
 
-    assert && assert( !options || options.orientation === undefined, 'VSlider sets orientation' );
+    assert && assert( !options || ( options as IntentionalAny ).orientation === undefined, 'VSlider sets orientation' );
 
     options = merge( {
       orientation: Orientation.VERTICAL
@@ -31,6 +31,7 @@ class VSlider extends Slider {
     super( valueProperty, range, options );
 
     // support for binder documentation, stripped out in builds and only runs when ?binder is specified
+    // @ts-ignore chipper query parameters
     assert && phet.chipper.queryParameters.binder && InstanceRegistry.registerDataURL( 'sun', 'VSlider', this );
   }
 }

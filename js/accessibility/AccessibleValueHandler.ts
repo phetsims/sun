@@ -31,6 +31,7 @@ import UtteranceQueue from '../../../utterance-queue/js/UtteranceQueue.js';
 import IProperty from '../../../axon/js/IProperty.js';
 import Constructor from '../../../phet-core/js/types/Constructor.js';
 import IntentionalAny from '../../../phet-core/js/IntentionalAny.js';
+import IReadOnlyProperty from '../../../axon/js/IReadOnlyProperty.js';
 
 // constants
 const DEFAULT_TAG_NAME = 'input';
@@ -58,7 +59,7 @@ type VoicingOnEndResponseOptions = {
 
 type AccessibleValueHandlerSelfOptions = {
   valueProperty: IProperty<number>;
-  enabledRangeProperty: IProperty<Range>;
+  enabledRangeProperty: IReadOnlyProperty<Range>;
 
   // called when a value change sequence starts
   startChange?: SceneryListenerFunction;
@@ -181,7 +182,7 @@ const AccessibleValueHandler = <SuperType extends Constructor>( Type: SuperType,
   // Unfortunately, nothing can be private or protected in this class, see https://github.com/phetsims/scenery/issues/1340#issuecomment-1020692592
   return class extends Voicing( Type, optionsArgPosition ) {
     _valueProperty: IProperty<number>;
-    _enabledRangeProperty: IProperty<Range>;
+    _enabledRangeProperty: IReadOnlyProperty<Range>;
     _startChange: SceneryListenerFunction;
     _onChange: SceneryListenerFunction;
     _endChange: SceneryListenerFunction;

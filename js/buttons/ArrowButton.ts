@@ -9,24 +9,41 @@
  */
 
 import { Shape } from '../../../kite/js/imports.js';
-import merge from '../../../phet-core/js/merge.js';
-import { Path } from '../../../scenery/js/imports.js';
+import optionize from '../../../phet-core/js/optionize.js';
+import { IPaint, Path } from '../../../scenery/js/imports.js';
 import sun from '../sun.js';
-import RectangularPushButton from './RectangularPushButton.js';
+import RectangularPushButton, { RectangularPushButtonOptions } from './RectangularPushButton.js';
 
 // constants
 const DEFAULT_ARROW_HEIGHT = 20;
 
+export type ArrowButtonDirection = 'up' | 'down' | 'left' | 'right';
+
+type SelfOptions = {
+   // from tip to base
+  arrowHeight?: number;
+
+  // width of base
+  arrowWidth?: number;
+
+  arrowFill?: IPaint;
+  arrowStroke?: IPaint;
+  arrowLineWidth?: number;
+
+  // each arrow will have the same shape and styling
+  numberOfArrows?: number;
+
+  // spacing for each arrow such that they overlap slightly
+  arrowSpacing?: number;
+};
+
+export type ArrowButtonOptions = SelfOptions & RectangularPushButtonOptions;
+
 class ArrowButton extends RectangularPushButton {
 
-  /**
-   * @param {string} direction 'up'|'down'|'left'|'right'
-   * @param {function} callback
-   * @param {Object} [options]
-   */
-  constructor( direction, callback, options ) {
+  constructor( direction: ArrowButtonDirection, callback: () => void, providedOptions?: ArrowButtonOptions ) {
 
-    options = merge( {
+    const options = optionize<ArrowButtonOptions, SelfOptions, RectangularPushButtonOptions>( {
 
       // options for the button
       cursor: 'pointer',
@@ -57,7 +74,7 @@ class ArrowButton extends RectangularPushButton {
       startCallback: _.noop, // {function()} called when the pointer is pressed
       endCallback: _.noop // {function(over:boolean)} called when the pointer is released, {boolean} over indicates whether the pointer was over when released
 
-    }, options );
+    }, providedOptions );
 
     assert && assert( !options.listener, 'ArrowButton sets listener' );
     options.listener = callback;

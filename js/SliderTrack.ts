@@ -8,51 +8,78 @@
  * @author Jesse Greenberg (PhET Interactive Simulations)
  */
 
+import IProperty from '../../axon/js/IProperty.js';
+import IReadOnlyProperty from '../../axon/js/IReadOnlyProperty.js';
 import Property from '../../axon/js/Property.js';
 import Dimension2 from '../../dot/js/Dimension2.js';
 import LinearFunction from '../../dot/js/LinearFunction.js';
 import Range from '../../dot/js/Range.js';
-import merge from '../../phet-core/js/merge.js';
-import { DragListener, Node } from '../../scenery/js/imports.js';
 import ValueChangeSoundGenerator from '../../tambo/js/sound-generators/ValueChangeSoundGenerator.js';
+import optionize from '../../phet-core/js/optionize.js';
+import { DragListener, Node, NodeOptions, SceneryEvent, Trail } from '../../scenery/js/imports.js';
 import Tandem from '../../tandem/js/Tandem.js';
 import sun from './sun.js';
 
+type SelfOptions = {
+  size?: Dimension2;
+
+  // called when a drag sequence starts
+  startDrag?: ( e: SceneryEvent ) => void;
+
+  // called at the beginning of a drag event, before any other drag work happens
+  drag?: ( e: SceneryEvent ) => void;
+
+  // called when a drag sequence ends
+  endDrag?: () => void;
+
+  // called before valueProperty is set
+  constrainValue?: ( n: number ) => number;
+
+  // Defaults to a constant range
+  enabledRangeProperty?: IReadOnlyProperty<Range>;
+
+  // sound generation
+  soundGenerator?: ValueChangeSoundGenerator;
+};
+
+export type SliderTrackOptions = SelfOptions & NodeOptions;
+
 class SliderTrack extends Node {
 
-  /**
-   * @param {Node} trackNode
-   * @param {Property.<number>} valueProperty
-   * @param {Range} range
-   * @param {Object} [options]
-   */
-  constructor( trackNode, valueProperty, range, options ) {
+  readonly size: Dimension2;
+
+  // maps the value along the range of the track to the position along the width of the track
+  readonly valueToPosition: LinearFunction;
+
+  // public so that clients can access Properties of the DragListener that tell us about its state
+  // See https://github.com/phetsims/sun/issues/680
+  readonly dragListener: DragListener;
+
+  private disposeSliderTrack: () => void;
+
+  constructor( trackNode: Node, valueProperty: IProperty<number>, range: Range, providedOptions?: SliderTrackOptions ) {
     super();
 
-    options = merge( {
+    const options = optionize<SliderTrackOptions, SelfOptions, NodeOptions, 'tandem'>( {
       size: new Dimension2( 100, 5 ),
       startDrag: _.noop, // called when a drag sequence starts
       drag: _.noop, // called at the beginning of a drag event, before any other drag work happens
       endDrag: _.noop, // called when a drag sequence ends
       constrainValue: _.identity, // called before valueProperty is set
       enabledRangeProperty: new Property( new Range( range.min, range.max ) ), // Defaults to a constant range
-
-      // {ValueChangeSoundGenerator} - sound generation
       soundGenerator: ValueChangeSoundGenerator.NO_SOUND,
 
       // phet-io
       tandem: Tandem.REQUIRED
-    }, options );
+    }, providedOptions );
 
-    // @public (read-only)
     this.size = options.size;
-
-    // @public (read-only) - maps the value along the range of the track to the position along the width of the track
     this.valueToPosition = new LinearFunction( range.min, range.max, 0, this.size.width, true /* clamp */ );
 
     // click in the track to change the value, continue dragging if desired
-    const handleTrackEvent = ( event, trail ) => {
+    const handleTrackEvent = ( event: SceneryEvent, trail: Trail ) => {
       assert && assert( this.valueToPosition, 'valueToPosition should be defined' );
+
       const oldValue = valueProperty.value;
       const transform = trail.subtrailTo( this ).getTransform();
       const x = transform.inversePosition2( event.pointer.point ).x;
@@ -69,8 +96,6 @@ class SliderTrack extends Node {
 
     this.addChild( trackNode );
 
-    // @public (read-only) so that clients can access Properties of the DragListener that tell us about its state
-    // See https://github.com/phetsims/sun/issues/680
     this.dragListener = new DragListener( {
       tandem: options.tandem.createTandem( 'dragListener' ),
 
@@ -86,24 +111,20 @@ class SliderTrack extends Node {
         handleTrackEvent( event, listener.pressedTrail );
       },
 
-      end: event => {
-        options.endDrag( event );
+      end: () => {
+        options.endDrag();
       }
     } );
     trackNode.addInputListener( this.dragListener );
 
     this.mutate( options );
 
-    // @private Called by dispose
+    // Called by dispose
     this.disposeSliderTrack = () => {
       this.dragListener.dispose();
     };
   }
 
-  /**
-   * @public
-   * @override
-   */
   dispose() {
     this.disposeSliderTrack();
     super.dispose();

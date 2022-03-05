@@ -8,22 +8,63 @@
  */
 
 import DerivedProperty from '../../../axon/js/DerivedProperty.js';
+import IProperty from '../../../axon/js/IProperty.js';
+import Property from '../../../axon/js/Property.js';
 import Dimension2 from '../../../dot/js/Dimension2.js';
 import { Shape } from '../../../kite/js/imports.js';
-import merge from '../../../phet-core/js/merge.js';
-import { Node } from '../../../scenery/js/imports.js';
-import { Path } from '../../../scenery/js/imports.js';
-import { Color } from '../../../scenery/js/imports.js';
-import { LinearGradient } from '../../../scenery/js/imports.js';
-import { PaintColorProperty } from '../../../scenery/js/imports.js';
+import optionize from '../../../phet-core/js/optionize.js';
+import { PickRequired } from '../../../phet-core/js/types/PickRequired.js';
+import { Color, IPaint, LinearGradient, Node, PaintableNode, PaintColorProperty, Path } from '../../../scenery/js/imports.js';
 import sun from '../sun.js';
 import ButtonInteractionState from './ButtonInteractionState.js';
-import ButtonNode from './ButtonNode.js';
+import ButtonModel from './ButtonModel.js';
+import ButtonNode, { ButtonNodeOptions } from './ButtonNode.js';
+import RadioButtonInteractionState from './RadioButtonInteractionState.js';
 
 // constants
 const VERTICAL_HIGHLIGHT_GRADIENT_LENGTH = 7; // In screen coords, which are roughly pixels.
 const HORIZONTAL_HIGHLIGHT_GRADIENT_LENGTH = 7; // In screen coords, which are roughly pixels.
 const SHADE_GRADIENT_LENGTH = 3; // In screen coords, which are roughly pixels.
+
+type SelfOptions = {
+  // If specified, this will be the size of the button. minWidth and minHeight will be ignored, and
+  // content will be scaled down to fit inside, accounting for margins.
+  size?: Dimension2 | null;
+
+  // If you want complete control of a button's dimensions, use options.size. If you want to specify
+  // one dimensions while having the other dimension determined by content and margin, then use one of these
+  // options.
+  minWidth?: number;
+  minHeight?: number;
+
+  // pointer area dilation
+  touchAreaXDilation?: number;
+  touchAreaYDilation?: number;
+  mouseAreaXDilation?: number;
+  mouseAreaYDilation?: number;
+
+  // pointer area shift, see https://github.com/phetsims/sun/issues/500
+  touchAreaXShift?: number;
+  touchAreaYShift?: number;
+  mouseAreaXShift?: number;
+  mouseAreaYShift?: number;
+
+  stroke?: IPaint | undefined; // undefined by default, which will cause a stroke to be derived from the base color
+  lineWidth?: number; // Only meaningful if stroke is non-null
+
+  // radius applied to all corners unless a corner-specific value is provided
+  cornerRadius?: number;
+
+  // {number|null} corner-specific radii
+  // If null, the option is ignored.
+  // If non-null, it overrides cornerRadius for the associated corner of the button.
+  leftTopCornerRadius?: number | null;
+  rightTopCornerRadius?: number | null;
+  leftBottomCornerRadius?: number | null;
+  rightBottomCornerRadius?: number | null;
+};
+
+export type RectangularButtonOptions = SelfOptions & ButtonNodeOptions;
 
 class RectangularButton extends ButtonNode {
 
@@ -32,51 +73,33 @@ class RectangularButton extends ButtonNode {
    * @param {Property} interactionStateProperty - a Property that is used to drive the visual appearance of the button
    * @param {Object} [options]
    */
-  constructor( buttonModel, interactionStateProperty, options ) {
+  constructor( buttonModel: ButtonModel, interactionStateProperty: IProperty<ButtonInteractionState>, providedOptions?: RectangularButtonOptions ) {
 
-    options = merge( {
-
-      // {Node|null} what appears on the button (icon, label, etc.)
-      content: null,
-
-      // {Dimension2} - if specified, this will be the size of the button. minWidth and minHeight will be ignored, and
-      // content will be scaled down to fit inside, accounting for margins.
+    const options = optionize<RectangularButtonOptions, SelfOptions, ButtonNodeOptions, 'xMargin' | 'yMargin'>( {
       size: null,
 
-      // {number} If you want complete control of a button's dimensions, use options.size. If you want to specify
-      // one dimensions while having the other dimension determined by content and margin, then use one of these
-      // options.
       minWidth: HORIZONTAL_HIGHLIGHT_GRADIENT_LENGTH + SHADE_GRADIENT_LENGTH,
       minHeight: VERTICAL_HIGHLIGHT_GRADIENT_LENGTH + SHADE_GRADIENT_LENGTH,
 
       xMargin: 8, // should be visibly greater than yMargin, see issue #109
       yMargin: 5,
 
-      // pointer area dilation
       touchAreaXDilation: 0,
       touchAreaYDilation: 0,
       mouseAreaXDilation: 0,
       mouseAreaYDilation: 0,
 
-      // pointer area shift, see https://github.com/phetsims/sun/issues/500
       touchAreaXShift: 0,
       touchAreaYShift: 0,
       mouseAreaXShift: 0,
       mouseAreaYShift: 0,
 
-      stroke: undefined, // undefined by default, which will cause a stroke to be derived from the base color
-      lineWidth: 0.5, // Only meaningful if stroke is non-null
+      // NOTE: any used here, because optionize is excluding undefined
+      stroke: undefined as any, // undefined by default, which will cause a stroke to be derived from the base color
+      lineWidth: 0.5,
 
-      // Alignment, relevant only when options minWidth or minHeight are greater than the size of options.content
-      xAlign: 'center', // {string} see X_ALIGN_VALUES
-      yAlign: 'center', // {string} see Y_ALIGN_VALUES
-
-      // radius applied to all corners unless a corner-specific value is provided
       cornerRadius: 4,
 
-      // {number|null} corner-specific radii
-      // If null, the option is ignored.
-      // If non-null, it overrides cornerRadius for the associated corner of the button.
       leftTopCornerRadius: null,
       rightTopCornerRadius: null,
       leftBottomCornerRadius: null,
@@ -85,7 +108,7 @@ class RectangularButton extends ButtonNode {
       // Class that determines the button's appearance for the values of interactionStateProperty.
       // See RectangularButton.ThreeDAppearanceStrategy for an example of the interface required.
       buttonAppearanceStrategy: RectangularButton.ThreeDAppearanceStrategy
-    }, options );
+    }, providedOptions );
 
     if ( !options.content ) {
       assert && assert( options.size instanceof Dimension2, 'button dimensions needed if no content is supplied.' );
@@ -136,16 +159,17 @@ class RectangularButton extends ButtonNode {
       .dilatedXY( options.mouseAreaXDilation, options.mouseAreaYDilation )
       .shiftedXY( options.mouseAreaXShift, options.mouseAreaYShift );
   }
+
+  static ThreeDAppearanceStrategy: typeof ThreeDAppearanceStrategy;
 }
 
 /**
  * Convenience function for creating the shape of the button, done to avoid code duplication
- * @param {number} width
- * @param {number} height
- * @param {Object} config - RectangularButton config, containing values related to radii of button corners
- * @returns {Shape}
+ * @param width
+ * @param height
+ * @param config - RectangularButton config, containing values related to radii of button corners
  */
-function createButtonShape( width, height, config ) {
+function createButtonShape( width: number, height: number, config: PickRequired<RectangularButtonOptions, 'cornerRadius' | 'leftTopCornerRadius' | 'rightTopCornerRadius' | 'leftBottomCornerRadius' | 'rightBottomCornerRadius'> ): Shape {
   assert && assert( typeof config.cornerRadius === 'number', 'cornerRadius is required' );
   return Shape.roundedRectangleWithRadii( 0, 0, width, height, {
     topLeft: config.leftTopCornerRadius !== null ? config.leftTopCornerRadius : config.cornerRadius,
@@ -163,12 +187,12 @@ function createButtonShape( width, height, config ) {
 class ThreeDAppearanceStrategy {
 
   /**
-   * @param {Node,Paintable} buttonBackground - the Node for the button's background, sans content
-   * @param {Property.<ButtonInteractionState>} interactionStateProperty
-   * @param {Property.<Color>} baseColorProperty
-   * @param {Object} [options]
+   * @param buttonBackground - the Node for the button's background, sans content
+   * @param interactionStateProperty
+   * @param baseColorProperty
+   * @param [options]
    */
-  constructor( buttonBackground, interactionStateProperty, baseColorProperty, options ) {
+  constructor( buttonBackground: PaintableNode, interactionStateProperty: IProperty<ButtonInteractionState | RadioButtonInteractionState>, baseColorProperty: Property<Color>, options?: any ) {
 
     const buttonWidth = buttonBackground.width;
     const buttonHeight = buttonBackground.height;
@@ -236,7 +260,7 @@ class ThreeDAppearanceStrategy {
     horizontalShadingPath.cachedPaints = [ upFillHorizontal, overFillHorizontal ];
 
     // Change colors to match interactionState
-    function interactionStateListener( interactionState ) {
+    function interactionStateListener( interactionState: ButtonInteractionState ) {
 
       switch( interactionState ) {
 
@@ -262,7 +286,6 @@ class ThreeDAppearanceStrategy {
 
     interactionStateProperty.link( interactionStateListener );
 
-    // @public
     this.dispose = () => {
       if ( interactionStateProperty.hasListener( interactionStateListener ) ) {
         interactionStateProperty.unlink( interactionStateListener );
@@ -277,6 +300,8 @@ class ThreeDAppearanceStrategy {
       baseTransparent.dispose();
     };
   }
+
+  dispose: () => void;
 }
 
 // @public
