@@ -20,8 +20,8 @@
     "../chipper/node_modules/@types/lodash/index.d.ts",
     "../chipper/node_modules/@types/qunit/index.d.ts",
     // sun shouldn't depend on scenery-phet, but these are used from scenery-phet
-    "../scenery-phet/js/NumberDisplay.js",
-    "../scenery-phet/js/PhetFont.js",
+    "../scenery-phet/js/NumberDisplay.ts",
+    "../scenery-phet/js/PhetFont.ts",
     "../scenery-phet/js/MathSymbols.js",
     "../scenery-phet/js/sceneryPhetStrings.ts",
     "../scenery-phet/js/sceneryPhet.js",
