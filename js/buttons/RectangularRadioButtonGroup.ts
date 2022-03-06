@@ -10,7 +10,7 @@
 import { Shape } from '../../../kite/js/imports.js';
 import InstanceRegistry from '../../../phet-core/js/documentation/InstanceRegistry.js';
 import merge from '../../../phet-core/js/merge.js';
-import { Color, FocusHighlightPath, IInputListener, LayoutBox, Node, PDOMPeer, Rectangle, SceneryConstants } from '../../../scenery/js/imports.js';
+import { Color, FocusHighlightPath, IColor, IInputListener, IPaint, LayoutBox, LayoutBoxOptions, Node, PDOMPeer, Rectangle, SceneryConstants } from '../../../scenery/js/imports.js';
 import multiSelectionSoundPlayerFactory from '../../../tambo/js/multiSelectionSoundPlayerFactory.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import ColorConstants from '../ColorConstants.js';
@@ -19,11 +19,17 @@ import RectangularRadioButton from './RectangularRadioButton.js';
 import TButtonAppearanceStrategy from './TButtonAppearanceStrategy.js';
 import Property from '../../../axon/js/Property.js';
 import { VoicingResponse } from '../../../utterance-queue/js/ResponsePacket.js';
+import ISoundPlayer from '../../../tambo/js/ISoundPlayer.js';
+import TContentAppearanceStrategy from './TContentAppearanceStrategy.js';
 
 // constants
-const BUTTON_CONTENT_X_ALIGN_VALUES = [ 'center', 'left', 'right' ];
-const BUTTON_CONTENT_Y_ALIGN_VALUES = [ 'center', 'top', 'bottom' ];
+const BUTTON_CONTENT_X_ALIGN_VALUES = [ 'center', 'left', 'right' ] as const;
+const BUTTON_CONTENT_Y_ALIGN_VALUES = [ 'center', 'top', 'bottom' ] as const;
 const CLASS_NAME = 'RectangularRadioButtonGroup'; // to prefix instanceCount in case there are different kinds of "groups"
+
+export type RectangularRadioButtonContentXAlign = typeof BUTTON_CONTENT_X_ALIGN_VALUES[number];
+export type RectangularRadioButtonContentYAlign = typeof BUTTON_CONTENT_Y_ALIGN_VALUES[number];
+export type RectangularRadioButtonLabelAlign = 'top' | 'bottom' | 'left' | 'right';
 
 type RectangularRadioButtonItem<T> = {
   node: Node, // primary depiction for the button
@@ -37,70 +43,81 @@ type RectangularRadioButtonItem<T> = {
   descriptionContent?: string // optional label for a11y
 }
 
-
 // pdom - Unique ID for each instance of RectangularRadioButtonGroup, passed to individual buttons in the group. All buttons in
 // the  radio button group must have the same name or else the browser will treat all inputs of type radio in the
 // document as being in a single group.
 let instanceCount = 0;
 
+type SelfOptions = {
+  // Sound generation for the radio buttons, null means to use the defaults, otherwise there
+  // must be one for each element in contentArray
+  soundPlayers?: ISoundPlayer[] | null;
+
+  // The fill for the rectangle behind the radio buttons.  Default color is bluish color, as in the other button library.
+  baseColor?: IColor;
+
+  // Options for buttonAppearanceStrategy.
+  //TODO https://github.com/phetsims/sun/issues/653 These are already specified in RectangularRadioButton, but
+  //  must to be included here due to the use of _.pick below
+  overButtonOpacity?: number;
+  selectedStroke?: IPaint;
+  selectedLineWidth?: number;
+  selectedButtonOpacity?: number;
+  deselectedStroke?: IPaint;
+  deselectedLineWidth?: number;
+  deselectedButtonOpacity?: number;
+
+  // Class that determines the content's appearance for the values of interactionStateProperty.
+  contentAppearanceStrategy?: TContentAppearanceStrategy | null,
+
+  // Options used by RectangularRadioButton.ContentAppearanceStrategy.
+  //TODO https://github.com/phetsims/sun/issues/653 These are already specified in RectangularRadioButton, but
+  //  must to be included here due to the use of _.pick below
+  overContentOpacity?: number;
+  selectedContentOpacity?: number;
+  deselectedContentOpacity?: number;
+
+  // These margins are *within* each button
+  buttonContentXMargin?: number;
+  buttonContentYMargin?: number;
+
+  // alignment of the content nodes *within* each button
+  buttonContentXAlign?: RectangularRadioButtonContentXAlign;
+  buttonContentYAlign?: RectangularRadioButtonContentYAlign;
+
+  // TouchArea expansion
+  touchAreaXDilation?: number;
+  touchAreaYDilation?: number;
+
+  // MouseArea expansion
+  mouseAreaXDilation?: number;
+  mouseAreaYDilation?: number;
+
+  //The radius for each button
+  cornerRadius?: number;
+
+  // How far from the button the text label is (only applies if labels are passed in)
+  labelSpacing?: number;
+
+  // Which side of the button the label will appear, options are 'top', 'bottom', 'left', 'right'
+  // (only applies if labels are passed in)
+  labelAlign?: RectangularRadioButtonLabelAlign;
+
+  // pdom - focus highlight expansion
+  a11yHighlightXDilation?: number;
+  a11yHighlightYDilation?: number;
+
+  // voicing - hint response added to the focus response, and nowhere else.
+  voicingHintResponse?: VoicingResponse;
+};
+
+export type RectangularRadioButtonGroupOptions = SelfOptions & LayoutBoxOptions;
+
 class RectangularRadioButtonGroup<T> extends LayoutBox {
 
   private disposeRadioButtonGroup: () => void;
 
-  constructor( property: Property<T>, items: RectangularRadioButtonItem<T>[], options?: any ) {
-    options = merge( {
-
-      // {number} - opt into Node's disabled opacity when enabled:false
-      disabledOpacity: SceneryConstants.DISABLED_OPACITY,
-
-      // phet-io
-      tandem: Tandem.REQUIRED,
-      visiblePropertyOptions: { phetioFeatured: true },
-      phetioEnabledPropertyInstrumented: true, // opt into default PhET-iO instrumented enabledProperty
-
-      // {SoundPlayer[]|null} - sound generation for the radio buttons, null means to use the defaults, otherwise there
-      // must be one for each element in contentArray
-      soundPlayers: null,
-
-      // pdom
-      tagName: 'ul',
-      labelTagName: 'h3',
-      ariaRole: 'radiogroup',
-      groupFocusHighlight: true
-    }, options );
-
-    // increment instance count
-    instanceCount++;
-
-    assert && assert( !options.hasOwnProperty( 'children' ), 'Cannot pass in children to a RectangularRadioButtonGroup, ' +
-                                                             'create siblings in the parent node instead' );
-
-    // make sure every object in the content array has properties 'node' and 'value'
-    assert && assert( _.every( items, item => {
-      return item.hasOwnProperty( 'node' ) && item.hasOwnProperty( 'value' );
-    } ), 'contentArray must be an array of objects with properties "node" and "value"' );
-
-    // make sure that if sound players are provided, there is one per radio button
-    assert && assert( options.soundPlayers === null || options.soundPlayers.length === items.length );
-
-    let i; // for loops
-
-    // make sure that each value passed into the contentArray is unique
-    const uniqueValues = [];
-    for ( i = 0; i < items.length; i++ ) {
-      if ( uniqueValues.indexOf( items[ i ].value ) < 0 ) {
-        uniqueValues.push( items[ i ].value );
-      }
-      else {
-        throw new Error( `Duplicate value: "${items[ i ].value}" passed into RectangularRadioButtonGroup.js` );
-      }
-    }
-
-    // make sure that the Property passed in currently has a value from the contentArray
-    if ( uniqueValues.indexOf( property.get() ) === -1 ) {
-      throw new Error( `The Property passed in to RectangularRadioButtonGroup has an illegal value "${property.get()
-      }" that is not present in the contentArray` );
-    }
+  constructor( property: Property<T>, items: RectangularRadioButtonItem<T>[], providedOptions?: RectangularRadioButtonGroupOptions ) {
 
     // These options are passed to each RectangularRadioButton created in this group.
     const defaultOptions = {
@@ -167,7 +184,60 @@ class RectangularRadioButtonGroup<T> extends LayoutBox {
       voicingHintResponse: null
     };
 
-    options = merge( _.clone( defaultOptions ), options );
+    const normalOptions = {
+
+      // {number} - opt into Node's disabled opacity when enabled:false
+      disabledOpacity: SceneryConstants.DISABLED_OPACITY,
+
+      // phet-io
+      tandem: Tandem.REQUIRED,
+      visiblePropertyOptions: { phetioFeatured: true },
+      phetioEnabledPropertyInstrumented: true, // opt into default PhET-iO instrumented enabledProperty
+
+      soundPlayers: null,
+
+      // pdom
+      tagName: 'ul',
+      labelTagName: 'h3',
+      ariaRole: 'radiogroup',
+      groupFocusHighlight: true
+    };
+
+    // NOTE: The separation of a bunch of the options makes this complicated. Ideally use optionize in the future
+    const options = merge( _.clone( defaultOptions ), normalOptions, providedOptions ) as Required<SelfOptions> & RectangularRadioButtonGroupOptions & { tandem: Tandem };
+
+    // increment instance count
+    instanceCount++;
+
+    assert && assert( !options.hasOwnProperty( 'children' ), 'Cannot pass in children to a RectangularRadioButtonGroup, ' +
+                                                             'create siblings in the parent node instead' );
+
+    // make sure every object in the content array has properties 'node' and 'value'
+    assert && assert( _.every( items, item => {
+      return item.hasOwnProperty( 'node' ) && item.hasOwnProperty( 'value' );
+    } ), 'contentArray must be an array of objects with properties "node" and "value"' );
+
+    // make sure that if sound players are provided, there is one per radio button
+    assert && assert( options.soundPlayers === null || options.soundPlayers.length === items.length );
+
+    let i; // for loops
+
+    // make sure that each value passed into the contentArray is unique
+    const uniqueValues = [];
+    for ( i = 0; i < items.length; i++ ) {
+      if ( uniqueValues.indexOf( items[ i ].value ) < 0 ) {
+        uniqueValues.push( items[ i ].value );
+      }
+      else {
+        throw new Error( `Duplicate value: "${items[ i ].value}" passed into RectangularRadioButtonGroup.js` );
+      }
+    }
+
+    // make sure that the Property passed in currently has a value from the contentArray
+    if ( uniqueValues.indexOf( property.get() ) === -1 ) {
+      throw new Error( `The Property passed in to RectangularRadioButtonGroup has an illegal value "${property.get()
+      }" that is not present in the contentArray` );
+    }
 
     assert && assert( _.includes( BUTTON_CONTENT_X_ALIGN_VALUES, options.buttonContentXAlign ),
       `invalid buttonContentXAlign: ${options.buttonContentXAlign}` );
@@ -210,7 +280,7 @@ class RectangularRadioButtonGroup<T> extends LayoutBox {
         phetioDocumentation: item.phetioDocumentation || '',
         soundPlayer: options.soundPlayers ? options.soundPlayers[ i ] :
                      multiSelectionSoundPlayerFactory.getSelectionSoundPlayer( i )
-      }, buttonOptions );
+      }, buttonOptions ) as any;
 
       // Pass through the tandem given the tandemName, but also support uninstrumented simulations
       if ( item.tandemName ) {
