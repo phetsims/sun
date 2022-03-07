@@ -230,6 +230,33 @@ class Slider extends AccessibleSlider( Node, 0 ) {
     assert && assert( options.thumbNode === null || options.thumbNode instanceof Node, 'thumbNode must be of type Node' );
     assert && assert( options.soundGenerator === null || _.isEmpty( options.soundGeneratorOptions ), 'options should only be supplied when using default sound generator' );
 
+    // If no sound generator was provided, create the default.
+    if ( options.soundGenerator === null ) {
+      options.soundGenerator = new ValueChangeSoundGenerator( range, options.soundGeneratorOptions || {} );
+    }
+
+    // Set up the drag handler to generate sound when drag events cause changes.
+    if ( options.soundGenerator !== ValueChangeSoundGenerator.NO_SOUND ) {
+
+      // variable to keep track of the value at the start of user drag interactions
+      let previousValue = valueProperty.value;
+
+      // Enhance the drag handler to perform sound generation.
+      const providedDrag = options.drag;
+      options.drag = event => {
+
+        // TODO: Is this a reasonable way to distinguish pointer events from key events?  See https://github.com/phetsims/sun/issues/697.
+        if ( event.pointer.type === 'pdom' ) {
+          options.soundGenerator!.playSoundForValueChange( valueProperty.value, previousValue );
+        }
+        else {
+          options.soundGenerator!.playSoundIfThresholdReached( valueProperty.value, previousValue );
+        }
+        providedDrag( event );
+        previousValue = valueProperty.value;
+      };
+    }
+
     const boundsRequiredOptionKeys = _.pick( options, Node.REQUIRES_BOUNDS_OPTION_KEYS );
     const superOptions = _.omit( options, Node.REQUIRES_BOUNDS_OPTION_KEYS );
 
@@ -269,33 +296,6 @@ class Slider extends AccessibleSlider( Node, 0 ) {
       centerLineStroke: superOptions.thumbCenterLineStroke,
       tandem: thumbTandem
     } );
-
-    // If no sound generator was provided, create the default.
-    if ( options.soundGenerator === null ) {
-      options.soundGenerator = new ValueChangeSoundGenerator( range, options.soundGeneratorOptions || {} );
-    }
-
-    // Set up the drag handler to generate sound when drag events cause changes.
-    if ( options.soundGenerator !== ValueChangeSoundGenerator.NO_SOUND ) {
-
-      // variable to keep track of the value at the start of user drag interactions
-      let previousValue = valueProperty.value;
-
-      // Enhance the drag handler to perform sound generation.
-      const providedDrag = options.drag;
-      options.drag = event => {
-
-        // TODO: Is this a reasonable way to distinguish pointer events from key events?  See https://github.com/phetsims/sun/issues/697.
-        if ( event.pointer.type === 'pdom' ) {
-          options.soundGenerator!.playSoundForValueChange( valueProperty.value, previousValue );
-        }
-        else {
-          options.soundGenerator!.playSoundIfThresholdReached( valueProperty.value, previousValue );
-        }
-        providedDrag( event );
-        previousValue = valueProperty.value;
-      };
-    }
 
     const ownsEnabledRangeProperty = !superOptions.enabledRangeProperty;
 
