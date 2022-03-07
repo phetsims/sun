@@ -22,7 +22,7 @@ import merge from '../../phet-core/js/merge.js';
 import optionize from '../../phet-core/js/optionize.js';
 import Orientation from '../../phet-core/js/Orientation.js';
 import swapObjectKeys from '../../phet-core/js/swapObjectKeys.js';
-import { DragListener, FocusHighlightFromNode, IPaint, Node, Path, SceneryConstants, SceneryEvent } from '../../scenery/js/imports.js';
+import { DragListener, FocusHighlightFromNode, IPaint, Node, Path, PDOMPointer, SceneryConstants, SceneryEvent } from '../../scenery/js/imports.js';
 import Tandem from '../../tandem/js/Tandem.js';
 import BooleanIO from '../../tandem/js/types/BooleanIO.js';
 import IOType from '../../tandem/js/types/IOType.js';
@@ -246,7 +246,7 @@ class Slider extends AccessibleSlider( Node, 0 ) {
       options.drag = event => {
 
         // TODO: Is this a reasonable way to distinguish pointer events from key events?  See https://github.com/phetsims/sun/issues/697.
-        if ( event.pointer.type === 'pdom' ) {
+        if ( event.pointer instanceof PDOMPointer ) {
           options.soundGenerator!.playSoundForValueChange( valueProperty.value, previousValue );
         }
         else {
