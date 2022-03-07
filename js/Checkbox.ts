@@ -119,13 +119,13 @@ class Checkbox extends Voicing( Node, 0 ) {
       if ( property.value ) {
         options.checkedSoundPlayer.play();
         options.checkedContextResponse && this.alertDescriptionUtterance( options.checkedContextResponse );
-        // @ts-ignore https://github.com/phetsims/sun/issues/742
+        // @ts-ignore TODO https://github.com/phetsims/sun/issues/742
         this.voicingSpeakNameResponse( { contextResponse: options.checkedContextResponse } );
       }
       else {
         options.uncheckedSoundPlayer.play();
         options.uncheckedContextResponse && this.alertDescriptionUtterance( options.uncheckedContextResponse );
-        // @ts-ignore https://github.com/phetsims/sun/issues/742
+        // @ts-ignore TODO https://github.com/phetsims/sun/issues/742
         this.voicingSpeakNameResponse( { contextResponse: options.uncheckedContextResponse } );
       }
     }, {
