@@ -1,5 +1,5 @@
 // Copyright 2013-2022, University of Colorado Boulder
-
+// @ts-nocheck
 /**
  * Checkbox is a typical checkbox UI component.
  *
