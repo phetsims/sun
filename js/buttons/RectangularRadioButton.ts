@@ -186,7 +186,7 @@ class RectangularRadioButton<T> extends RectangularButton {
      * buttonBackground is the Node for the button's background, sans content
      */
     constructor( buttonBackground: PaintableNode, interactionStateProperty: IProperty<RadioButtonInteractionState>,
-                 baseColorProperty: IProperty<ColorDef>, options: any ) {
+                 baseColorProperty: IProperty<Color>, options: any ) {
 
       // Dynamic fills and strokes
       const overFill = new PaintColorProperty( options.overFill || baseColorProperty, {

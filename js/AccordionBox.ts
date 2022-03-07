@@ -14,7 +14,7 @@ import { Shape } from '../../kite/js/imports.js';
 import InstanceRegistry from '../../phet-core/js/documentation/InstanceRegistry.js';
 import merge from '../../phet-core/js/merge.js';
 import optionize from '../../phet-core/js/optionize.js';
-import { PathOptions, PDOMBehaviorFunction } from '../../scenery/js/imports.js';
+import { IColor, PathOptions, PDOMBehaviorFunction } from '../../scenery/js/imports.js';
 import { FocusHighlightFromNode, InteractiveHighlighting, NodeOptions } from '../../scenery/js/imports.js';
 import { PDOMPeer } from '../../scenery/js/imports.js';
 import { Node } from '../../scenery/js/imports.js';
@@ -50,8 +50,8 @@ type SelfOptions = {
   lineWidth?: number;
   cornerRadius?: number;
 
-  stroke?: ColorDef;
-  fill?: ColorDef;
+  stroke?: IColor;
+  fill?: IColor;
   minWidth?: number;
 
   titleAlignX?: 'center' | 'left' | 'right';
