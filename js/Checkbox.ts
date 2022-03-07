@@ -1,5 +1,5 @@
 // Copyright 2013-2022, University of Colorado Boulder
-// @ts-nocheck
+
 /**
  * Checkbox is a typical checkbox UI component.
  *
@@ -8,17 +8,10 @@
 
 import Action from '../../axon/js/Action.js';
 import Property from '../../axon/js/Property.js';
-import TinyProperty from '../../axon/js/TinyProperty.js';
 import validate from '../../axon/js/validate.js';
 import Matrix3 from '../../dot/js/Matrix3.js';
 import InstanceRegistry from '../../phet-core/js/documentation/InstanceRegistry.js';
-import merge from '../../phet-core/js/merge.js';
-import { Voicing } from '../../scenery/js/imports.js';
-import { FireListener } from '../../scenery/js/imports.js';
-import { Node } from '../../scenery/js/imports.js';
-import { Path } from '../../scenery/js/imports.js';
-import { Rectangle } from '../../scenery/js/imports.js';
-import { SceneryConstants } from '../../scenery/js/imports.js';
+import { FireListener, IPaint, Node, Path, Rectangle, SceneryConstants, Voicing, VoicingOptions } from '../../scenery/js/imports.js';
 import checkEmptySolidShape from '../../sherpa/js/fontawesome-4/checkEmptySolidShape.js';
 import checkSquareOSolidShape from '../../sherpa/js/fontawesome-4/checkSquareOSolidShape.js';
 import checkboxCheckedSoundPlayer from '../../tambo/js/shared-sound-players/checkboxCheckedSoundPlayer.js';
@@ -26,7 +19,10 @@ import checkboxUncheckedSoundPlayer from '../../tambo/js/shared-sound-players/ch
 import EventType from '../../tandem/js/EventType.js';
 import PhetioObject from '../../tandem/js/PhetioObject.js';
 import Tandem from '../../tandem/js/Tandem.js';
+import optionize from '../../phet-core/js/optionize.js';
 import sun from './sun.js';
+import ISoundPlayer from '../../tambo/js/ISoundPlayer.js';
+import { TAlertableDef } from '../../utterance-queue/js/AlertableDef.js';
 
 // constants
 const BOOLEAN_VALIDATOR = { valueType: 'boolean' };
@@ -34,58 +30,85 @@ const SHAPE_MATRIX = Matrix3.pool.create( 0.025, 0, 0, 0, -0.025, 0, 0, 0, 1 ); 
 const uncheckedShape = checkEmptySolidShape.transformed( SHAPE_MATRIX );
 const checkedShape = checkSquareOSolidShape.transformed( SHAPE_MATRIX );
 
+type SelfOptions = {
+  spacing?: number,  // spacing between box and content
+  boxWidth?: number, // width (and height) of the box
+  checkboxColor?: IPaint,
+  checkboxColorBackground?: IPaint,
+
+  // pointer areas
+  touchAreaXDilation?: number,
+  touchAreaYDilation?: number,
+  mouseAreaXDilation?: number,
+  mouseAreaYDilation?: number,
+
+  // sounds
+  checkedSoundPlayer?: ISoundPlayer,
+  uncheckedSoundPlayer?: ISoundPlayer,
+
+  // Utterances to be spoken with a screen reader after the checkbox is pressed. Also used for the voicingContextResponse.
+  checkedContextResponse?: TAlertableDef | null,
+  uncheckedContextResponse?: TAlertableDef | null,
+
+  // whether a PhET-iO link to the checkbox's Property is created
+  phetioLinkProperty?: boolean
+};
+
+type CheckboxOptions = SelfOptions & VoicingOptions;
+
 class Checkbox extends Voicing( Node, 0 ) {
+
+  private readonly backgroundNode: Rectangle;
+  private readonly checkedNode: Path;
+  private readonly uncheckedNode: Path;
+  private readonly disposeCheckbox: () => void;
 
   /**
    * @param {Node} content
    * @param {Property.<boolean>} property
-   * @param {Object} [options]
+   * @param providedOptions
    * @mixes {Voicing}
    */
-  constructor( content, property, options ) {
+  constructor( content: Node, property: Property<boolean>, providedOptions?: CheckboxOptions ) {
 
-    assert && assert( content instanceof Node, 'invalid content' );
-    assert && assert( property instanceof Property || property instanceof TinyProperty, 'invalid property' );
-    validate( property.value, BOOLEAN_VALIDATOR );
+    const options = optionize<CheckboxOptions, SelfOptions, VoicingOptions, 'tandem'>( {
 
-    options = merge( {
+      // CheckboxOptions
       spacing: 5,
       boxWidth: 21,
-      cursor: 'pointer',
       checkboxColor: 'black',
       checkboxColorBackground: 'white',
-      disabledOpacity: SceneryConstants.DISABLED_OPACITY,
-
-      // pointer areas
       touchAreaXDilation: 0,
       touchAreaYDilation: 0,
       mouseAreaXDilation: 0,
       mouseAreaYDilation: 0,
+      checkedSoundPlayer: checkboxCheckedSoundPlayer,
+      uncheckedSoundPlayer: checkboxUncheckedSoundPlayer,
+      phetioLinkProperty: true,
+
+      // NodeOptions
+      cursor: 'pointer',
+      disabledOpacity: SceneryConstants.DISABLED_OPACITY,
 
       // phet-io
       tandem: Tandem.REQUIRED,
       phetioEventType: EventType.USER,
-      phetioLinkProperty: true, // whether a link to the checkbox's Property is created
       visiblePropertyOptions: { phetioFeatured: true },
       phetioEnabledPropertyInstrumented: true, // opt into default PhET-iO instrumented enabledProperty
 
       // to support properly passing this to children, see https://github.com/phetsims/tandem/issues/60
       phetioReadOnly: PhetioObject.DEFAULT_OPTIONS.phetioReadOnly,
 
-      // {SoundPlayer} - sound generators
-      checkedSoundPlayer: checkboxCheckedSoundPlayer,
-      uncheckedSoundPlayer: checkboxUncheckedSoundPlayer,
-
       // pdom
       tagName: 'input',
       inputType: 'checkbox',
       appendDescription: true,
 
-      // {TAlertableDef|null} - Utterances to be spoken with a screen reader after the checkbox is pressed. Also used for
+      // Utterances to be spoken with a screen reader after the checkbox is pressed. Also used for
       // the voicingContextResponse
       checkedContextResponse: null,
       uncheckedContextResponse: null
-    }, options );
+    }, providedOptions );
 
     super();
 
@@ -96,11 +119,13 @@ class Checkbox extends Voicing( Node, 0 ) {
       if ( property.value ) {
         options.checkedSoundPlayer.play();
         options.checkedContextResponse && this.alertDescriptionUtterance( options.checkedContextResponse );
+        // @ts-ignore https://github.com/phetsims/sun/issues/742
         this.voicingSpeakNameResponse( { contextResponse: options.checkedContextResponse } );
       }
       else {
         options.uncheckedSoundPlayer.play();
         options.uncheckedContextResponse && this.alertDescriptionUtterance( options.uncheckedContextResponse );
+        // @ts-ignore https://github.com/phetsims/sun/issues/742
         this.voicingSpeakNameResponse( { contextResponse: options.uncheckedContextResponse } );
       }
     }, {
@@ -112,30 +137,27 @@ class Checkbox extends Voicing( Node, 0 ) {
       phetioEventType: EventType.USER
     } );
 
-    // @private - Create the background.  Until we are creating our own shapes, just put a rectangle behind the font
-    // awesome checkbox icons.
+    // Create the background.
+    // Until we are creating our own shapes, just put a rectangle behind the font awesome checkbox icons.
     this.backgroundNode = new Rectangle( 0, -options.boxWidth, options.boxWidth * 0.95, options.boxWidth * 0.95,
       options.boxWidth * 0.2, options.boxWidth * 0.2, {
         fill: options.checkboxColorBackground
       } );
 
-    // @private
     this.uncheckedNode = new Path( uncheckedShape, {
       fill: options.checkboxColor
     } );
     const iconScale = options.boxWidth / this.uncheckedNode.width;
     this.uncheckedNode.scale( iconScale );
 
-    // @private
     this.checkedNode = new Path( checkedShape, {
       scale: iconScale,
       fill: options.checkboxColor
     } );
 
-    // @private
-    this.checkboxNode = new Node( { children: [ this.backgroundNode, this.checkedNode, this.uncheckedNode ] } );
+    const checkboxNode = new Node( { children: [ this.backgroundNode, this.checkedNode, this.uncheckedNode ] } );
 
-    this.addChild( this.checkboxNode );
+    this.addChild( checkboxNode );
     this.addChild( content );
 
     content.left = this.checkedNode.right + options.spacing;
@@ -154,7 +176,7 @@ class Checkbox extends Voicing( Node, 0 ) {
     this.addInputListener( fireListener );
 
     // sync with property
-    const checkboxCheckedListener = checked => {
+    const checkboxCheckedListener = ( checked: boolean ) => {
       this.checkedNode.visible = checked;
       this.uncheckedNode.visible = !checked;
       this.pdomChecked = checked;
@@ -205,39 +227,33 @@ class Checkbox extends Voicing( Node, 0 ) {
 
   /**
    * Sets the background color of the checkbox.
-   * @param {Color|String} value
-   * @public
+   * @param value
    */
-  setCheckboxColorBackground( value ) { this.backgroundNode.fill = value; }
+  public setCheckboxColorBackground( value: IPaint ): void { this.backgroundNode.fill = value; }
 
-  set checkboxColorBackground( value ) { this.setCheckboxColorBackground( value ); }
+  public set checkboxColorBackground( value: IPaint ) { this.setCheckboxColorBackground( value ); }
 
   /**
    * Gets the background color of the checkbox.
-   * @returns {Color|String}
-   * @public
    */
-  getCheckboxColorBackground() { return this.backgroundNode.fill; }
+  public getCheckboxColorBackground(): IPaint { return this.backgroundNode.fill; }
 
-  get checkboxColorBackground() { return this.getCheckboxColorBackground(); }
+  public get checkboxColorBackground(): IPaint { return this.getCheckboxColorBackground(); }
 
   /**
    * Sets the color of the checkbox.
-   * @param {Color|String} value
-   * @public
+   * @param value
    */
-  setCheckboxColor( value ) { this.checkedNode.fill = this.uncheckedNode.fill = value; }
+  public setCheckboxColor( value: IPaint ): void { this.checkedNode.fill = this.uncheckedNode.fill = value; }
 
-  set checkboxColor( value ) { this.setCheckboxColor( value ); }
+  public set checkboxColor( value: IPaint ) { this.setCheckboxColor( value ); }
 
   /**
    * Gets the color of the checkbox.
-   * @returns {Color|String}
-   * @public
    */
-  getCheckboxColor() { return this.checkedNode.fill; }
+  public getCheckboxColor(): IPaint { return this.checkedNode.fill; }
 
-  get checkboxColor() { return this.getCheckboxColor(); }
+  public get checkboxColor(): IPaint { return this.getCheckboxColor(); }
 }
 
 sun.register( 'Checkbox', Checkbox );
