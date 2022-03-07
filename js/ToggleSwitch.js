@@ -14,7 +14,7 @@
  * @author Jonathan Olson (PhET Interactive Simulations)
  */
 
-import Action from '../../axon/js/Action.js';
+import PhetioAction from '../../tandem/js/PhetioAction.js';
 import Dimension2 from '../../dot/js/Dimension2.js';
 import Utils from '../../dot/js/Utils.js';
 import Vector2 from '../../dot/js/Vector2.js';
@@ -161,7 +161,7 @@ class ToggleSwitch extends Voicing( Node, 0 ) {
 
     // Action that is performed when the switch is toggled.
     // Toggles the Property value and sends a phet-io message with the old and new values.
-    const toggleAction = new Action( value => {
+    const toggleAction = new PhetioAction( value => {
       property.value = value;
     }, {
       parameters: [ { validValues: [ leftValue, rightValue ], phetioPrivate: true } ],

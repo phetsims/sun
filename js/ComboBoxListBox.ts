@@ -6,7 +6,7 @@
  * @author Chris Malley (PixelZoom, Inc.)
  */
 
-import Action from '../../axon/js/Action.js';
+import PhetioAction from '../../tandem/js/PhetioAction.js';
 import Property from '../../axon/js/Property.js';
 import merge from '../../phet-core/js/merge.js';
 import optionize from '../../phet-core/js/optionize.js';
@@ -83,7 +83,7 @@ class ComboBoxListBox<T> extends Panel {
 
     //TODO sun#462 replace fireEmitter and selectionListener with a standard scenery listener
     // Pops down the list box and sets the property.value to match the chosen item.
-    const fireAction = new Action( event => {
+    const fireAction = new PhetioAction( event => {
 
       const oldValue = property.value;
 

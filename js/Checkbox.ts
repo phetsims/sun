@@ -6,7 +6,7 @@
  * @author Chris Malley (PixelZoom, Inc.)
  */
 
-import Action from '../../axon/js/Action.js';
+import PhetioAction from '../../tandem/js/PhetioAction.js';
 import Property from '../../axon/js/Property.js';
 import validate from '../../axon/js/validate.js';
 import Matrix3 from '../../dot/js/Matrix3.js';
@@ -113,7 +113,7 @@ class Checkbox extends Voicing( Node, 0 ) {
     super();
 
     // @private - sends out notifications when the checkbox is toggled.
-    const toggleAction = new Action( () => {
+    const toggleAction = new PhetioAction( () => {
       property.value = !property.value;
       validate( property.value, BOOLEAN_VALIDATOR );
       if ( property.value ) {
