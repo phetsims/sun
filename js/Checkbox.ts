@@ -54,7 +54,7 @@ type SelfOptions = {
   phetioLinkProperty?: boolean
 };
 
-type CheckboxOptions = SelfOptions & VoicingOptions;
+export type CheckboxOptions = SelfOptions & VoicingOptions;
 
 class Checkbox extends Voicing( Node, 0 ) {
 
