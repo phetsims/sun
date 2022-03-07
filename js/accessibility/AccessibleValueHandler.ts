@@ -167,7 +167,7 @@ type AccessibleValueHandlerSelfOptions = {
    * List the dependencies this Node's PDOM descriptions have. This should not include the valueProperty, but
    * should list any Properties whose change should trigger a description update for this Node.
    */
-  a11yDependencies?: Property<IntentionalAny>[];
+  a11yDependencies?: IReadOnlyProperty<IntentionalAny>[];
 };
 
 type AccessibleValueHandlerOptions = AccessibleValueHandlerSelfOptions & Omit<VoicingOptions, 'tagName' | 'inputType'>;
@@ -394,7 +394,7 @@ const AccessibleValueHandler = <SuperType extends Constructor>( Type: SuperType,
      * changes. Use this method to set the dependency Properties for this value handler. This will blow away the
      * previous list (like Node.children).
      */
-    setA11yDependencies( dependencies: IProperty<IntentionalAny>[] ) {
+    setA11yDependencies( dependencies: IReadOnlyProperty<IntentionalAny>[] ) {
       assert && assert( Array.isArray( dependencies ) );
       assert && assert( dependencies.indexOf( this._valueProperty ) === -1,
         'The value Property is already a dependency, and does not need to be added to this list' );
