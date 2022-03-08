@@ -1,5 +1,5 @@
 // Copyright 2014-2021, University of Colorado Boulder
-// @ts-nocheck
+
 /**
  * RectangularToggleButton is a rectangular toggle button that toggles the value of a Property between 2 values.
  * It has the same look for both values.
@@ -8,27 +8,40 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
-import merge from '../../../phet-core/js/merge.js';
+import optionize from '../../../phet-core/js/optionize.js';
+import Property from '../../../axon/js/Property.js';
 import toggleOffSoundPlayer from '../../../tambo/js/shared-sound-players/toggleOffSoundPlayer.js';
 import toggleOnSoundPlayer from '../../../tambo/js/shared-sound-players/toggleOnSoundPlayer.js';
+import ISoundPlayer from '../../../tambo/js/ISoundPlayer.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import sun from '../sun.js';
-import RectangularButton from './RectangularButton.js';
+import RectangularButton, { RectangularButtonOptions } from './RectangularButton.js';
 import ToggleButtonInteractionStateProperty from './ToggleButtonInteractionStateProperty.js';
 import ToggleButtonIO from './ToggleButtonIO.js';
 import ToggleButtonModel from './ToggleButtonModel.js';
 
+type SelfOptions = {
+
+  // sounds to be played on toggle transitions
+  valueOffSoundPlayer?: ISoundPlayer;
+  valueOnSoundPlayer?: ISoundPlayer;
+};
+
+export type RectangularToggleButtonOptions = SelfOptions & RectangularButtonOptions;
+
 class RectangularToggleButton extends RectangularButton {
 
-  /**
-   * @param {Object} valueOff - value when the button is in the off state
-   * @param {Object} valueOn - value when the button is in the on state
-   * @param {Property} property - axon Property that can be either valueOff or valueOn
-   * @param {Object} [options]
-   */
-  constructor( valueOff, valueOn, property, options ) {
+  private readonly disposeRectangularToggleButton: () => void;
 
-    options = merge( {
+  /**
+   * @param valueOff - value when the button is in the off state
+   * @param valueOn - value when the button is in the on state
+   * @param property - axon Property that can be either valueOff or valueOn
+   * @param providedOptions
+   */
+  constructor( valueOff: Object, valueOn: Object, property: Property<any>, providedOptions?: RectangularButtonOptions ) {
+
+    const options = optionize<RectangularToggleButtonOptions, SelfOptions, RectangularButtonOptions, 'tandem'>( {
 
       // {SoundPlayer} - sounds to be played on toggle transitions
       valueOffSoundPlayer: toggleOffSoundPlayer,
@@ -37,7 +50,7 @@ class RectangularToggleButton extends RectangularButton {
       // phet-io support
       tandem: Tandem.REQUIRED,
       phetioType: ToggleButtonIO
-    }, options );
+    }, providedOptions );
 
     // Note it shares a tandem with this, so the emitter will be instrumented as a child of the button
     const toggleButtonModel = new ToggleButtonModel( valueOff, valueOn, property, options );
