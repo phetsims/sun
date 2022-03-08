@@ -1,5 +1,5 @@
 // Copyright 2018-2020, University of Colorado Boulder
-
+// @ts-nocheck
 /**
  * Shows one node if the property is true or another node if the property is false. Used to indicate boolean state.
  * This is a convenience API for true/false nodes, see SelectedNode for the general case.

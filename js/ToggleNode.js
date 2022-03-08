@@ -1,5 +1,5 @@
 // Copyright 2013-2021, University of Colorado Boulder
-
+// @ts-nocheck
 /**
  * Display one of N nodes based on a given Property.  Maintains the bounds of the union of children for layout.
  * Supports null and undefined as possible values.  Will not work correctly if the children are changed externally
