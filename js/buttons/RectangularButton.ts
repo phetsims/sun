@@ -71,7 +71,7 @@ class RectangularButton extends ButtonNode {
   /**
    * @param {ButtonModel} buttonModel - Model that defines the button's behavior.
    * @param {Property} interactionStateProperty - a Property that is used to drive the visual appearance of the button
-   * @param {Object} [options]
+   * @param {Object} providedOptions
    */
   constructor( buttonModel: ButtonModel, interactionStateProperty: IProperty<ButtonInteractionState>, providedOptions?: RectangularButtonOptions ) {
 
