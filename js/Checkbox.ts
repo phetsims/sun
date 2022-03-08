@@ -31,27 +31,27 @@ const uncheckedShape = checkEmptySolidShape.transformed( SHAPE_MATRIX );
 const checkedShape = checkSquareOSolidShape.transformed( SHAPE_MATRIX );
 
 type SelfOptions = {
-  spacing?: number,  // spacing between box and content
-  boxWidth?: number, // width (and height) of the box
-  checkboxColor?: IPaint,
-  checkboxColorBackground?: IPaint,
+  spacing?: number;  // spacing between box and content
+  boxWidth?: number; // width (and height) of the box
+  checkboxColor?: IPaint;
+  checkboxColorBackground?: IPaint;
 
   // pointer areas
-  touchAreaXDilation?: number,
-  touchAreaYDilation?: number,
-  mouseAreaXDilation?: number,
-  mouseAreaYDilation?: number,
+  touchAreaXDilation?: number;
+  touchAreaYDilation?: number;
+  mouseAreaXDilation?: number;
+  mouseAreaYDilation?: number;
 
   // sounds
-  checkedSoundPlayer?: ISoundPlayer,
-  uncheckedSoundPlayer?: ISoundPlayer,
+  checkedSoundPlayer?: ISoundPlayer;
+  uncheckedSoundPlayer?: ISoundPlayer;
 
   // Utterances to be spoken with a screen reader after the checkbox is pressed. Also used for the voicingContextResponse.
-  checkedContextResponse?: TAlertableDef | null,
-  uncheckedContextResponse?: TAlertableDef | null,
+  checkedContextResponse?: TAlertableDef | null;
+  uncheckedContextResponse?: TAlertableDef | null;
 
   // whether a PhET-iO link to the checkbox's Property is created
-  phetioLinkProperty?: boolean
+  phetioLinkProperty?: boolean;
 };
 
 export type CheckboxOptions = SelfOptions & VoicingOptions;
