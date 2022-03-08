@@ -1,5 +1,5 @@
 // Copyright 2018-2020, University of Colorado Boulder
-// @ts-nocheck
+
 /**
  * Shows one node if the property is true or another node if the property is false. Used to indicate boolean state.
  * This is a convenience API for true/false nodes, see SelectedNode for the general case.
@@ -9,21 +9,25 @@
  */
 
 import sun from './sun.js';
-import ToggleNode from './ToggleNode.js';
+import ToggleNode, { ToggleNodeOptions } from './ToggleNode.js';
+import { Node } from '../../scenery/js/imports.js';
+import Property from '../../axon/js/Property.js';
 
-class BooleanToggleNode extends ToggleNode {
+export type BooleanToggleNodeOptions = ToggleNodeOptions;
+
+class BooleanToggleNode extends ToggleNode<boolean> {
 
   /**
-   * @param {Node} trueNode
-   * @param {Node} falseNode
-   * @param {Property.<boolean>} booleanProperty
-   * @param {Object} [options]
+   * @param trueNode
+   * @param falseNode
+   * @param booleanProperty
+   * @param providedOptions
    */
-  constructor( trueNode, falseNode, booleanProperty, options ) {
+  constructor( trueNode: Node, falseNode: Node, booleanProperty: Property<boolean>, providedOptions?: BooleanToggleNodeOptions ) {
     super( booleanProperty, [
       { value: true, node: trueNode },
       { value: false, node: falseNode }
-    ], options );
+    ], providedOptions );
   }
 }
 

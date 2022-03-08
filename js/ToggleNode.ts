@@ -1,5 +1,5 @@
 // Copyright 2013-2021, University of Colorado Boulder
-// @ts-nocheck
+
 /**
  * Display one of N nodes based on a given Property.  Maintains the bounds of the union of children for layout.
  * Supports null and undefined as possible values.  Will not work correctly if the children are changed externally
@@ -8,38 +8,47 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
+import Property from '../../axon/js/Property.js';
 import merge from '../../phet-core/js/merge.js';
-import { Node } from '../../scenery/js/imports.js';
+import { Node, NodeOptions } from '../../scenery/js/imports.js';
 import Tandem from '../../tandem/js/Tandem.js';
 import sun from './sun.js';
 
-class ToggleNode extends Node {
+export type ToggleNodeElement<T> = {
+  value: T;  // a value
+  node: Node; // the Node associated with the value, to be shown by the ToggleNode
+}
+
+export type ToggleNodeOptions = NodeOptions;
+
+class ToggleNode<T> extends Node {
+
+  private readonly disposeToggleNode: () => void;
 
   /**
-   * @param {Property.<Object>} valueProperty
-   * @param {Object[]} elements - each element has {value:{*}, node:{Node}}
-   * @param {Object} [options]
+   * @param valueProperty
+   * @param elements
+   * @param providedOptions
    */
-  constructor( valueProperty, elements, options ) {
+  constructor( valueProperty: Property<T>, elements: ToggleNodeElement<T>[], providedOptions?: ToggleNodeOptions ) {
 
     assert && assert( Array.isArray( elements ), 'elements should be an array' );
     if ( assert ) {
       elements.forEach( element => {
         const keys = _.keys( element );
-        assert( keys.length === 2, 'each element should have two keys' );
-        assert( keys[ 0 ] === 'value' || keys[ 1 ] === 'value', 'element should have a value key' );
-        assert( element.node instanceof Node, 'element.node should be a node' );
+        assert && assert( keys.length === 2, 'each element should have two keys' );
+        assert && assert( keys[ 0 ] === 'value' || keys[ 1 ] === 'value', 'element should have a value key' );
       } );
     }
 
-    options = merge( {
+    const options = merge( {
 
       // {function} determines the relative layout of element Nodes. See below for pre-defined layout.
       alignChildren: ToggleNode.CENTER,
       tandem: Tandem.OPTIONAL
-    }, options );
+    }, providedOptions );
 
-    const valueListener = function( value ) {
+    const valueListener = ( value: T ) => {
       let matchCount = 0;
       for ( let i = 0; i < elements.length; i++ ) {
         const element = elements[ i ];
@@ -83,11 +92,9 @@ class ToggleNode extends Node {
   /**
    * A value for the alignChildren option.
    * Centers the latter nodes on the x,y center of the first node.
-   * @param {Node[]} children
-   * @public
-   * @static
+   * @param children
    */
-  static CENTER( children ) {
+  public static CENTER( children: Node[] ): void {
     for ( let i = 1; i < children.length; i++ ) {
       children[ i ].center = children[ 0 ].center;
     }
@@ -96,11 +103,9 @@ class ToggleNode extends Node {
   /**
    * A value for the alignChildren option.
    * Centers the latter nodes on the x center of the first node.
-   * @param {Node[]} children
-   * @public
-   * @static
+   * @param children
    */
-  static CENTER_X( children ) {
+  public static CENTER_X( children: Node[] ): void {
     for ( let i = 1; i < children.length; i++ ) {
       children[ i ].centerX = children[ 0 ].centerX;
     }
@@ -109,11 +114,9 @@ class ToggleNode extends Node {
   /**
    * A value for the alignChildren option.
    * Centers the latter nodes on the y center of the first node.
-   * @param {Node[]} children
-   * @public
-   * @static
+   * @param children
    */
-  static CENTER_Y( children ) {
+  public static CENTER_Y( children: Node[] ): void {
     for ( let i = 1; i < children.length; i++ ) {
       children[ i ].centerY = children[ 0 ].centerY;
     }
@@ -122,11 +125,9 @@ class ToggleNode extends Node {
   /**
    * A value for the alignChildren option.
    * Left aligns nodes on the left of the first node.
-   * @param {Node[]} children
-   * @public
-   * @static
+   * @param children
    */
-  static LEFT( children ) {
+  public static LEFT( children: Node[] ): void {
     for ( let i = 1; i < children.length; i++ ) {
       children[ i ].left = children[ 0 ].left;
     }
@@ -135,11 +136,9 @@ class ToggleNode extends Node {
   /**
    * A value for the alignChildren option.
    * Aligns nodes on the bottom of the first node.
-   * @param {Node[]} children
-   * @public
-   * @static
+   * @param children
    */
-  static BOTTOM( children ) {
+  public static BOTTOM( children: Node[] ): void {
     for ( let i = 1; i < children.length; i++ ) {
       children[ i ].bottom = children[ 0 ].bottom;
     }
@@ -148,11 +147,9 @@ class ToggleNode extends Node {
   /**
    * A value for the alignChildren option.
    * Aligns nodes on the bottom of the first node.
-   * @param {Node[]} children
-   * @public
-   * @static
+   * @param children
    */
-  static CENTER_BOTTOM( children ) {
+  public static CENTER_BOTTOM( children: Node[] ): void {
     for ( let i = 1; i < children.length; i++ ) {
       children[ i ].centerBottom = children[ 0 ].centerBottom;
     }
@@ -161,11 +158,9 @@ class ToggleNode extends Node {
   /**
    * A value for the alignChildren option.
    * Right aligns nodes on the right of the first node.
-   * @param {Node[]} children
-   * @public
-   * @static
+   * @param children
    */
-  static RIGHT( children ) {
+  public static RIGHT( children: Node[] ): void {
     for ( let i = 1; i < children.length; i++ ) {
       children[ i ].right = children[ 0 ].right;
     }
@@ -174,12 +169,9 @@ class ToggleNode extends Node {
   /**
    * A value for the alignChildren option.
    * No alignment is performed.
-   * @param {Node[]} children
-   * @public
-   * @static
+   * @param children
    */
-  static NONE( children ) {
-  }
+  public static NONE( children: Node[] ): void {}
 }
 
 sun.register( 'ToggleNode', ToggleNode );
