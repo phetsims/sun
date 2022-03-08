@@ -14,11 +14,12 @@ import Property from '../../axon/js/Property.js';
 import Dimension2 from '../../dot/js/Dimension2.js';
 import LinearFunction from '../../dot/js/LinearFunction.js';
 import Range from '../../dot/js/Range.js';
-import ValueChangeSoundGenerator from '../../tambo/js/sound-generators/ValueChangeSoundGenerator.js';
+import ValueChangeSoundGenerator, { ValueChangeSoundGeneratorOptions } from '../../tambo/js/sound-generators/ValueChangeSoundGenerator.js';
 import optionize from '../../phet-core/js/optionize.js';
 import { DragListener, Node, NodeOptions, SceneryEvent, Trail } from '../../scenery/js/imports.js';
 import Tandem from '../../tandem/js/Tandem.js';
 import sun from './sun.js';
+import Slider from './Slider.js';
 
 type SelfOptions = {
   size?: Dimension2;
@@ -38,8 +39,12 @@ type SelfOptions = {
   // Defaults to a constant range
   enabledRangeProperty?: IReadOnlyProperty<Range>;
 
-  // sound generation
-  soundGenerator?: ValueChangeSoundGenerator;
+  // This is used to generate sounds when clicking in the track.  If not provided, the default sound generator
+  // will be created. If set to null, the slider will generate no sound.
+  soundGenerator?: ValueChangeSoundGenerator | null;
+
+  // Options for the default sound generator.  These should only be provided when using the default.
+  soundGeneratorOptions?: ValueChangeSoundGeneratorOptions,
 };
 
 export type SliderTrackOptions = SelfOptions & NodeOptions;
@@ -67,11 +72,20 @@ class SliderTrack extends Node {
       endDrag: _.noop, // called when a drag sequence ends
       constrainValue: _.identity, // called before valueProperty is set
       enabledRangeProperty: new Property( new Range( range.min, range.max ) ), // Defaults to a constant range
-      soundGenerator: ValueChangeSoundGenerator.NO_SOUND,
+      soundGenerator: Slider.DEFAULT_SOUND,
+      soundGeneratorOptions: {},
 
       // phet-io
       tandem: Tandem.REQUIRED
     }, providedOptions );
+
+    // If no sound generator was provided, create the default.
+    if ( options.soundGenerator === Slider.DEFAULT_SOUND ) {
+      options.soundGenerator = new ValueChangeSoundGenerator( range, options.soundGeneratorOptions || {} );
+    }
+    else if ( options.soundGenerator === null ) {
+      options.soundGenerator = ValueChangeSoundGenerator.NO_SOUND;
+    }
 
     this.size = options.size;
     this.valueToPosition = new LinearFunction( range.min, range.max, 0, this.size.width, true /* clamp */ );
@@ -90,7 +104,7 @@ class SliderTrack extends Node {
 
       // Down events on the track can cause value changes.  If that's what just happened, play a sound.
       if ( event.type === 'down' ) {
-        options.soundGenerator.playSoundIfThresholdReached( newValue, oldValue );
+        options.soundGenerator!.playSoundIfThresholdReached( newValue, oldValue );
       }
     };
 

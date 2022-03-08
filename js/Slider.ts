@@ -116,8 +116,8 @@ type SelfOptions = {
   // points to the underlying model Property.
   phetioLinkedProperty?: Property<number> | null;
 
-  // This is used to generate sounds as the slider is moved by the user.  If set to null, the default sound generator
-  // will be created.  Set to ValueChangeSoundGenerator.NO_SOUND to disable sound generation for this slider.
+  // This is used to generate sounds as the slider is moved by the user.  If not provided, the default sound generator
+  // will be created. If set to null, the slider will generate no sound.
   soundGenerator?: ValueChangeSoundGenerator | null;
 
   // Options for the default sound generator.  These should only be provided when using the default.
@@ -151,6 +151,9 @@ class Slider extends AccessibleSlider( Node, 0 ) {
   private track: SliderTrack;
 
   private disposeSlider: () => void;
+
+  // This is a marker to indicate that we should create the actual default slider sound.
+  public static DEFAULT_SOUND = new ValueChangeSoundGenerator( new Range( 0, 1 ) );
 
   constructor( valueProperty: IProperty<number>, range: Range, providedOptions?: SliderOptions ) {
 
@@ -207,7 +210,7 @@ class Slider extends AccessibleSlider( Node, 0 ) {
 
       disabledOpacity: SceneryConstants.DISABLED_OPACITY,
 
-      soundGenerator: null,
+      soundGenerator: Slider.DEFAULT_SOUND,
       soundGeneratorOptions: {},
 
       // phet-io
@@ -228,11 +231,15 @@ class Slider extends AccessibleSlider( Node, 0 ) {
     assert && assert( options.orientation instanceof Orientation, `invalid orientation: ${options.orientation}` );
     assert && assert( options.trackNode === null || options.trackNode instanceof SliderTrack, 'trackNode must be of type SliderTrack' );
     assert && assert( options.thumbNode === null || options.thumbNode instanceof Node, 'thumbNode must be of type Node' );
-    assert && assert( options.soundGenerator === null || _.isEmpty( options.soundGeneratorOptions ), 'options should only be supplied when using default sound generator' );
+    assert && assert( options.soundGenerator === Slider.DEFAULT_SOUND || _.isEmpty( options.soundGeneratorOptions ),
+      'options should only be supplied when using default sound generator' );
 
     // If no sound generator was provided, create the default.
-    if ( options.soundGenerator === null ) {
+    if ( options.soundGenerator === Slider.DEFAULT_SOUND ) {
       options.soundGenerator = new ValueChangeSoundGenerator( range, options.soundGeneratorOptions || {} );
+    }
+    else if ( options.soundGenerator === null ) {
+      options.soundGenerator = ValueChangeSoundGenerator.NO_SOUND;
     }
 
     // Set up the drag handler to generate sound when drag events cause changes.
