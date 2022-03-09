@@ -168,9 +168,13 @@ type AccessibleValueHandlerSelfOptions = {
    * should list any Properties whose change should trigger a description update for this Node.
    */
   a11yDependencies?: IReadOnlyProperty<IntentionalAny>[];
+
+  // Only provide tagName to AccessibleValueHandler to remove it from the PDOM, otherwise, AccessibleValueHandler
+  // sets its own tagName.
+  tagName?: null;
 };
 
-type AccessibleValueHandlerOptions = AccessibleValueHandlerSelfOptions & Omit<VoicingOptions, 'tagName' | 'inputType'>;
+type AccessibleValueHandlerOptions = AccessibleValueHandlerSelfOptions & Omit<VoicingOptions, 'inputType'>;
 
 /**
  * @param Type
@@ -281,17 +285,20 @@ const AccessibleValueHandler = <SuperType extends Constructor>( Type: SuperType,
         contextResponseMaxDelay: 1500,
         a11yDependencies: [],
 
+        // @ts-ignore - TODO: we should be able to have the public API be just null, and internally set to string, Limitation (IV), see https://github.com/phetsims/chipper/issues/1128
+        tagName: DEFAULT_TAG_NAME,
+
         // parent options that we must provide a default to use
-        tagName: null,
         inputType: null
       };
 
       const options = optionize<AccessibleValueHandlerOptions, AccessibleValueHandlerSelfOptions, NodeOptions>( {}, defaults, providedOptions );
 
+      assert && providedOptions && assert( !providedOptions.hasOwnProperty( 'tagName' ) || providedOptions.tagName === null,
+        'AccessibleValueHandler sets its own tagName. Only provide tagName to clear accessible content from the PDOM' );
+
       // cannot be set by client
-      assert && providedOptions && assert( !providedOptions.hasOwnProperty( 'tagName' ), 'AccessibleValueHandler sets its own tagName.' );
       assert && providedOptions && assert( !providedOptions.hasOwnProperty( 'inputType' ), 'AccessibleValueHandler sets its own inputType.' );
-      options.tagName = DEFAULT_TAG_NAME;
       options.inputType = 'range';
 
       args[ optionsArgPosition ] = options;
