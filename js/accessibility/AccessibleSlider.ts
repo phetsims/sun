@@ -16,7 +16,7 @@
 import assertHasProperties from '../../../phet-core/js/assertHasProperties.js';
 import Constructor from '../../../phet-core/js/types/Constructor.js';
 import inheritance from '../../../phet-core/js/inheritance.js';
-import IntentionalAny from '../../../phet-core/js/IntentionalAny.js';
+import IntentionalAny from '../../../phet-core/js/types/IntentionalAny.js';
 import optionize from '../../../phet-core/js/optionize.js';
 import { Node, SceneryListenerFunction } from '../../../scenery/js/imports.js';
 import sun from '../sun.js';

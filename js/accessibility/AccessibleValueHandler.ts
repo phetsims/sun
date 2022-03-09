@@ -30,7 +30,7 @@ import Multilink from '../../../axon/js/Multilink.js';
 import UtteranceQueue from '../../../utterance-queue/js/UtteranceQueue.js';
 import IProperty from '../../../axon/js/IProperty.js';
 import Constructor from '../../../phet-core/js/types/Constructor.js';
-import IntentionalAny from '../../../phet-core/js/IntentionalAny.js';
+import IntentionalAny from '../../../phet-core/js/types/IntentionalAny.js';
 import IReadOnlyProperty from '../../../axon/js/IReadOnlyProperty.js';
 
 // constants

@@ -10,7 +10,7 @@
 import IProperty from '../../axon/js/IProperty.js';
 import Range from '../../dot/js/Range.js';
 import InstanceRegistry from '../../phet-core/js/documentation/InstanceRegistry.js';
-import IntentionalAny from '../../phet-core/js/IntentionalAny.js';
+import IntentionalAny from '../../phet-core/js/types/IntentionalAny.js';
 import merge from '../../phet-core/js/merge.js';
 import Orientation from '../../phet-core/js/Orientation.js';
 import Slider, { SliderOptions } from './Slider.js';

@@ -14,7 +14,7 @@ import merge from '../../phet-core/js/merge.js';
 import Orientation from '../../phet-core/js/Orientation.js';
 import { default as Slider, SliderOptions } from './Slider.js';
 import sun from './sun.js';
-import IntentionalAny from '../../phet-core/js/IntentionalAny.js';
+import IntentionalAny from '../../phet-core/js/types/IntentionalAny.js';
 
 export type VSliderOptions = Omit<SliderOptions, 'orientation'>;
 
