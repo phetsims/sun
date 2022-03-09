@@ -13,7 +13,7 @@ import Property from '../../../axon/js/Property.js';
 import Dimension2 from '../../../dot/js/Dimension2.js';
 import { Shape } from '../../../kite/js/imports.js';
 import optionize from '../../../phet-core/js/optionize.js';
-import { PickRequired } from '../../../phet-core/js/types/PickRequired.js';
+import PickRequired from '../../../phet-core/js/types/PickRequired.js';
 import { Color, IPaint, LinearGradient, Node, PaintableNode, PaintColorProperty, Path } from '../../../scenery/js/imports.js';
 import sun from '../sun.js';
 import ButtonInteractionState from './ButtonInteractionState.js';
