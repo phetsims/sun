@@ -14,7 +14,7 @@ import { Node } from '../../../scenery/js/imports.js';
 
 export type BooleanRectangularToggleButtonOptions = Omit<RectangularToggleButtonOptions, 'content'>;
 
-class BooleanRectangularToggleButton extends RectangularToggleButton {
+class BooleanRectangularToggleButton extends RectangularToggleButton<boolean> {
 
   private readonly disposeBooleanRectangularToggleButton: () => void;
 
@@ -27,7 +27,6 @@ class BooleanRectangularToggleButton extends RectangularToggleButton {
   constructor( trueNode: Node, falseNode: Node, booleanProperty: Property<boolean>, providedOptions?: BooleanRectangularToggleButtonOptions ) {
 
     const options = merge( {
-      // @ts-ignore
       content: new BooleanToggleNode( trueNode, falseNode, booleanProperty ),
       tandem: Tandem.REQUIRED
     }, providedOptions );

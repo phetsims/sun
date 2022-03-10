@@ -29,7 +29,7 @@ type SelfOptions = {
 
 export type RectangularToggleButtonOptions = SelfOptions & RectangularButtonOptions;
 
-class RectangularToggleButton extends RectangularButton {
+class RectangularToggleButton<T> extends RectangularButton {
 
   private readonly disposeRectangularToggleButton: () => void;
 
@@ -39,7 +39,7 @@ class RectangularToggleButton extends RectangularButton {
    * @param property - axon Property that can be either valueOff or valueOn
    * @param providedOptions
    */
-  constructor( valueOff: Object, valueOn: Object, property: Property<any>, providedOptions?: RectangularButtonOptions ) {
+  constructor( valueOff: T, valueOn: T, property: Property<T>, providedOptions?: RectangularButtonOptions ) {
 
     const options = optionize<RectangularToggleButtonOptions, SelfOptions, RectangularButtonOptions, 'tandem'>( {
 
