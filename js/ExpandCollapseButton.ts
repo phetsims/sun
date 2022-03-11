@@ -1,6 +1,5 @@
 // Copyright 2013-2022, University of Colorado Boulder
 
-// @ts-nocheck
 /**
  * Button for expanding/collapsing something.
  *
@@ -8,12 +7,13 @@
  * @author Jesse Greenberg (PhET Interactive Simulations)
  */
 
+import Property from '../../axon/js/Property.js';
 import { Shape } from '../../kite/js/imports.js';
 import InstanceRegistry from '../../phet-core/js/documentation/InstanceRegistry.js';
-import merge from '../../phet-core/js/merge.js';
+import optionize from '../../phet-core/js/optionize.js';
 import { Path } from '../../scenery/js/imports.js';
 import Tandem from '../../tandem/js/Tandem.js';
-import BooleanRectangularToggleButton from './buttons/BooleanRectangularToggleButton.js';
+import BooleanRectangularToggleButton, { BooleanRectangularToggleButtonOptions } from './buttons/BooleanRectangularToggleButton.js';
 import ButtonNode from './buttons/ButtonNode.js';
 import sun from './sun.js';
 
@@ -21,36 +21,41 @@ import sun from './sun.js';
 const SYMBOL_RELATIVE_WIDTH = 0.6; // width of +/- symbols relative to button sideLength (see options)
 const RELATIVE_X_MARGIN = ( 1 - SYMBOL_RELATIVE_WIDTH ) / 2; // margin to produce a button of specified sideLength
 
+type SelfOptions = {
+  sideLength?: number; // length of one side of the square button
+};
+
+export type ExpandCollapseButtonOptions = SelfOptions &
+  Omit<BooleanRectangularToggleButtonOptions, 'cornerRadius' | 'xMargin' | 'yMargin' | 'buttonAppearanceStrategy'>;
+
 class ExpandCollapseButton extends BooleanRectangularToggleButton {
 
+  private readonly disposeExpandCollapseButton: () => void;
+
   /**
-   * @param  {Property.<boolean>} expandedProperty
-   * @param  {Object} options
+   * @param expandedProperty
+   * @param providedOptions
    */
-  constructor( expandedProperty, options ) {
+  constructor( expandedProperty: Property<boolean>, providedOptions?: ExpandCollapseButtonOptions ) {
 
-    options = merge( {
+    const options = optionize<ExpandCollapseButtonOptions, SelfOptions, BooleanRectangularToggleButtonOptions>( {
+
+      // SelfOptions
+      sideLength: 25,
+
+      // BooleanRectangularToggleButtonOptions
       stroke: 'black',
-      sideLength: 25,  // length of one side of the square button
-
-      // pointer areas
       touchAreaXDilation: 5,
       touchAreaYDilation: 5,
 
       // phet-io
       tandem: Tandem.REQUIRED
-    }, options );
+    }, providedOptions );
 
-    assert && assert( options.cornerRadius === undefined, 'ExpandCollapseButton sets cornerRadius' );
+    // BooleanRectangularToggleButtonOptions that are controlled by ExpandCollapseButton
     options.cornerRadius = 0.1 * options.sideLength;
-
-    assert && assert( options.xMargin === undefined, 'ExpandCollapseButton sets xMargin' );
     options.xMargin = RELATIVE_X_MARGIN * options.sideLength;
-
-    assert && assert( options.yMargin === undefined, 'ExpandCollapseButton sets yMargin' );
     options.yMargin = options.xMargin;
-
-    assert && assert( options.buttonAppearanceStrategy === undefined, 'ExpandCollapseButton sets buttonAppearanceStrategy' );
     options.buttonAppearanceStrategy = ButtonNode.FlatAppearanceStrategy;
 
     // configure the +/- symbol on the button
@@ -81,7 +86,7 @@ class ExpandCollapseButton extends BooleanRectangularToggleButton {
     super( collapseNode, expandNode, expandedProperty, options );
 
     // listeners must be removed in dispose
-    const expandedPropertyObserver = expanded => {
+    const expandedPropertyObserver = ( expanded: boolean ) => {
 
       //TODO use PhetColorScheme.RED_COLORBLIND, see https://github.com/phetsims/sun/issues/485
       this.baseColor = expanded ? 'rgb( 255, 85, 0 )' : 'rgb( 0, 179, 0 )';

@@ -28,7 +28,7 @@ import EventType from '../../tandem/js/EventType.js';
 import Tandem from '../../tandem/js/Tandem.js';
 import IOType from '../../tandem/js/types/IOType.js';
 import { VoicingResponse } from '../../utterance-queue/js/ResponsePacket.js';
-import ExpandCollapseButton from './ExpandCollapseButton.js';
+import ExpandCollapseButton, { ExpandCollapseButtonOptions } from './ExpandCollapseButton.js';
 import sun from './sun.js';
 
 // The definition for how AccordionBox sets its accessibleName in the PDOM. Forward it onto its expandCollapseButton.
@@ -62,8 +62,8 @@ type SelfOptions = {
   showTitleWhenExpanded?: boolean;
   titleBarExpandCollapse?: boolean;
 
-  // {*|null} options passed to ExpandCollapseButton constructor
-  expandCollapseButtonOptions?: ExpandCollapseButtonOptions;
+  // options passed to ExpandCollapseButton constructor
+  expandCollapseButtonOptions?: ExpandCollapseButtonOptions | null;
 
   // expand/collapse button layout
   buttonAlign?: 'left' | 'right';
@@ -134,7 +134,7 @@ class AccordionBox extends Node {
   static AccordionBoxIO: IOType;
 
   /**
-   * @param contentNode - Content that will be shown or hidden as the accordion box is expanded/collapsed.
+   * @param contentNode - Content that  will be shown or hidden as the accordion box is expanded/collapsed.
    * @param [providedOptions] - Various key-value pairs that control the appearance and behavior.  Some options are
    *                             specific to this class while some are passed to the superclass.  See the code where
    *                             the options are set in the early portion of the constructor for details.
