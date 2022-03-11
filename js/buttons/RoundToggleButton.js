@@ -1,5 +1,5 @@
 // Copyright 2014-2021, University of Colorado Boulder
-
+// @ts-nocheck
 /**
  * RoundToggleButton is a round toggle button that toggles the value of a Property between 2 values.
  * It has the same look for both values.

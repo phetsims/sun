@@ -1,5 +1,5 @@
 // Copyright 2014-2022, University of Colorado Boulder
-
+// @ts-nocheck
 /**
  * RoundButton is the base class for round buttons.
  *
