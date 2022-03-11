@@ -16,7 +16,6 @@ import ButtonInteractionState from './ButtonInteractionState.js';
 import ButtonModel from './ButtonModel.js';
 import ButtonNode, { ButtonNodeOptions } from './ButtonNode.js';
 import optionize from '../../../phet-core/js/optionize.js';
-import PickRequired from '../../../phet-core/js/types/PickRequired.js';
 import RadioButtonInteractionState from './RadioButtonInteractionState.js';
 import Property from '../../../axon/js/Property.js';
 
@@ -40,7 +39,7 @@ type SelfOptions = {
   mouseAreaYShift?: number;
 };
 
-export type RoundButtonOptions = ButtonNodeOptions & PickRequired<ButtonNodeOptions, 'content'>;
+export type RoundButtonOptions = SelfOptions & ButtonNodeOptions;
 
 class RoundButton extends ButtonNode {
 
