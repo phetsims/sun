@@ -1,5 +1,5 @@
 // Copyright 2014-2021, University of Colorado Boulder
-// @ts-nocheck
+
 /**
  * RoundToggleButton is a round toggle button that toggles the value of a Property between 2 values.
  * It has the same look for both values.
@@ -8,36 +8,49 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
-import merge from '../../../phet-core/js/merge.js';
+import Property from '../../../axon/js/Property.js';
+import optionize from '../../../phet-core/js/optionize.js';
+import ISoundPlayer from '../../../tambo/js/ISoundPlayer.js';
 import toggleOffSoundPlayer from '../../../tambo/js/shared-sound-players/toggleOffSoundPlayer.js';
 import toggleOnSoundPlayer from '../../../tambo/js/shared-sound-players/toggleOnSoundPlayer.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import sun from '../sun.js';
-import RoundButton from './RoundButton.js';
+import RoundButton, { RoundButtonOptions } from './RoundButton.js';
 import ToggleButtonInteractionStateProperty from './ToggleButtonInteractionStateProperty.js';
 import ToggleButtonIO from './ToggleButtonIO.js';
 import ToggleButtonModel from './ToggleButtonModel.js';
 
-class RoundToggleButton extends RoundButton {
+type SelfOptions = {
+
+  // sounds to be played on toggle transitions
+  valueOffSoundPlayer?: ISoundPlayer;
+  valueOnSoundPlayer?: ISoundPlayer;
+};
+
+export type RoundToggleButtonOptions = SelfOptions & RoundButtonOptions;
+
+class RoundToggleButton<T> extends RoundButton {
+
+  private readonly disposeRoundToggleButton: () => void;
 
   /**
-   * @param {Object} valueOff - value when the button is in the off state
-   * @param {Object} valueOn - value when the button is in the on state
-   * @param {Property} property - axon Property that can be either valueOff or valueOn
-   * @param {Object} [options]
+   * @param valueOff - value when the button is in the off state
+   * @param valueOn - value when the button is in the on state
+   * @param property - axon Property that can be either valueOff or valueOn
+   * @param providedOptions
    */
-  constructor( valueOff, valueOn, property, options ) {
+  constructor( valueOff: T, valueOn: T, property: Property<T>, providedOptions?: RoundToggleButtonOptions ) {
 
-    options = merge( {
+    const options = optionize<RoundToggleButtonOptions, SelfOptions, RoundButtonOptions, 'tandem'>( {
 
-      // {SoundPlayer} - sounds to be played on toggle transitions
+      // SelfOptions
       valueOffSoundPlayer: toggleOffSoundPlayer,
       valueOnSoundPlayer: toggleOnSoundPlayer,
 
       // phet-io support
       tandem: Tandem.REQUIRED,
       phetioType: ToggleButtonIO
-    }, options );
+    }, providedOptions );
 
     // Note it shares a tandem with this, so the emitter will be instrumented as a child of the button
     const toggleButtonModel = new ToggleButtonModel( valueOff, valueOn, property, options );
@@ -60,7 +73,6 @@ class RoundToggleButton extends RoundButton {
     };
     this.buttonModel.produceSoundEmitter.addListener( playSounds );
 
-    // @private
     this.disposeRoundToggleButton = () => {
       this.buttonModel.produceSoundEmitter.removeListener( playSounds );
       toggleButtonModel.dispose();

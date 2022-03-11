@@ -1,40 +1,45 @@
 // Copyright 2013-2021, University of Colorado Boulder
-// @ts-nocheck
+
 /**
  * This toggle button uses a boolean Property and a trueNode and falseNode to display its content.
  */
 
-import merge from '../../../phet-core/js/merge.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import BooleanToggleNode from '../BooleanToggleNode.js';
 import sun from '../sun.js';
-import RoundToggleButton from './RoundToggleButton.js';
+import RoundToggleButton, { RoundToggleButtonOptions } from './RoundToggleButton.js';
 import { Node } from '../../../scenery/js/imports.js'; // eslint-disable-line no-unused-vars
+import Property from '../../../axon/js/Property.js';
+import optionize from '../../../phet-core/js/optionize.js';
 
-class BooleanRoundToggleButton extends RoundToggleButton {
+export type BooleanRoundToggleButtonOptions = Omit<RoundToggleButtonOptions, 'content'>;
+
+class BooleanRoundToggleButton extends RoundToggleButton<boolean> {
+
+  private readonly disposeBooleanRoundToggleButton: () => void;
 
   /**
-   * @param {Node} trueNode
-   * @param {Node} falseNode
-   * @param {Property.<boolean>} booleanProperty
-   * @param {Object} [options]
+   * @param trueNode
+   * @param falseNode
+   * @param booleanProperty
+   * @param providedOptions
    */
-  constructor( trueNode, falseNode, booleanProperty, options ) {
+  constructor( trueNode: Node, falseNode: Node, booleanProperty: Property<boolean>, providedOptions: BooleanRoundToggleButtonOptions ) {
 
-    options = merge( {
+    const options = optionize<BooleanRoundToggleButtonOptions, {}, RoundToggleButtonOptions, 'tandem' | 'content'>( {
+      content: null,
       tandem: Tandem.REQUIRED
-    }, options );
+    }, providedOptions );
 
-    assert && assert( !options.content, 'BooleanRoundToggleButton sets content' );
-    options.content = new BooleanToggleNode( trueNode, falseNode, booleanProperty, {
+    const content = new BooleanToggleNode( trueNode, falseNode, booleanProperty, {
       tandem: options.tandem.createTandem( 'toggleNode' )
     } );
+    options.content = content;
 
     super( false, true, booleanProperty, options );
 
-    // @private
     this.disposeBooleanRoundToggleButton = function() {
-      options.content.dispose();
+      content.dispose();
     };
   }
 
