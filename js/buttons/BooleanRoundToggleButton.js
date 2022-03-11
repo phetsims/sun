@@ -1,5 +1,5 @@
 // Copyright 2013-2021, University of Colorado Boulder
-
+// @ts-nocheck
 /**
  * This toggle button uses a boolean Property and a trueNode and falseNode to display its content.
  */
