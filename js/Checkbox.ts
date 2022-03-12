@@ -22,7 +22,7 @@ import Tandem from '../../tandem/js/Tandem.js';
 import optionize from '../../phet-core/js/optionize.js';
 import sun from './sun.js';
 import ISoundPlayer from '../../tambo/js/ISoundPlayer.js';
-import { TAlertableDef } from '../../utterance-queue/js/AlertableDef.js';
+import Utterance, { IAlertable } from '../../utterance-queue/js/Utterance.js';
 
 // constants
 const BOOLEAN_VALIDATOR = { valueType: 'boolean' };
@@ -47,8 +47,8 @@ type SelfOptions = {
   uncheckedSoundPlayer?: ISoundPlayer;
 
   // Utterances to be spoken with a screen reader after the checkbox is pressed. Also used for the voicingContextResponse.
-  checkedContextResponse?: TAlertableDef | null;
-  uncheckedContextResponse?: TAlertableDef | null;
+  checkedContextResponse?: IAlertable;
+  uncheckedContextResponse?: IAlertable;
 
   // whether a PhET-iO link to the checkbox's Property is created
   phetioLinkProperty?: boolean;
@@ -119,14 +119,12 @@ class Checkbox extends Voicing( Node, 0 ) {
       if ( property.value ) {
         options.checkedSoundPlayer.play();
         options.checkedContextResponse && this.alertDescriptionUtterance( options.checkedContextResponse );
-        // @ts-ignore TODO https://github.com/phetsims/sun/issues/742
-        this.voicingSpeakNameResponse( { contextResponse: options.checkedContextResponse } );
+        this.voicingSpeakNameResponse( { contextResponse: Utterance.alertableToText( options.checkedContextResponse ) } );
       }
       else {
         options.uncheckedSoundPlayer.play();
         options.uncheckedContextResponse && this.alertDescriptionUtterance( options.uncheckedContextResponse );
-        // @ts-ignore TODO https://github.com/phetsims/sun/issues/742
-        this.voicingSpeakNameResponse( { contextResponse: options.uncheckedContextResponse } );
+        this.voicingSpeakNameResponse( { contextResponse: Utterance.alertableToText( options.uncheckedContextResponse ) } );
       }
     }, {
       parameters: [],
