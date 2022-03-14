@@ -336,8 +336,8 @@ class AccordionBox extends Node {
     else {
 
       // When titleBar doesn't expand or collapse, don't show interactive highlights for them
-      this.expandedTitleBar.focusHighlight = 'invisible';
-      this.collapsedTitleBar.focusHighlight = 'invisible';
+      this.expandedTitleBar.interactiveHighlight = 'invisible';
+      this.collapsedTitleBar.interactiveHighlight = 'invisible';
     }
 
     // Set the input listeners for the expandedTitleBar
