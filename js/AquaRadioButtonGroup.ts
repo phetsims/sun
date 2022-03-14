@@ -29,16 +29,16 @@ let instanceCount = 0;
 const CLASS_NAME = 'AquaRadioButtonGroup';
 
 //TODO https://github.com/phetsims/chipper/issues/1128 replace any with LayoutBoxOptions, when it exists
-type AquaRadioButtonGroupOptions = Omit< any, 'children' >;
+export type AquaRadioButtonGroupOptions = Omit< any, 'children' >;
 
-type AquaRadioButtonGroupItem<T> = {
+export type AquaRadioButtonGroupItem<T> = {
   value: T, // value associated with the button
   node: Node, // label for the button
   tandemName?: string, // name of the tandem for PhET-iO
   labelContent?: string // label for a11y
 };
 
-class AquaRadioButtonGroup<T> extends LayoutBox {
+export default class AquaRadioButtonGroup<T> extends LayoutBox {
 
   private readonly radioButtons: AquaRadioButton[];
   private readonly disposeAquaRadioButtonGroup: () => void;
@@ -169,5 +169,3 @@ class AquaRadioButtonGroup<T> extends LayoutBox {
 }
 
 sun.register( 'AquaRadioButtonGroup', AquaRadioButtonGroup );
-export default AquaRadioButtonGroup;
-export type { AquaRadioButtonGroupOptions, AquaRadioButtonGroupItem };

@@ -24,7 +24,7 @@ type SelfOptions = {
 // NOTE: Let's not create PushButtonModel with these options?
 export type RectangularPushButtonOptions = SelfOptions & RectangularButtonOptions & PushButtonModelOptions;
 
-class RectangularPushButton extends RectangularButton {
+export default class RectangularPushButton extends RectangularButton {
 
   // So we have a more accurate subtyped field
   private pushButtonModel: PushButtonModel;
@@ -96,4 +96,3 @@ class RectangularPushButton extends RectangularButton {
 }
 
 sun.register( 'RectangularPushButton', RectangularPushButton );
-export default RectangularPushButton;

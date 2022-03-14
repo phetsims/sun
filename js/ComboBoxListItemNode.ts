@@ -34,7 +34,7 @@ type SelfOptions = {
 
 export type ComboBoxListItemNodeOptions = SelfOptions & VoicingOptions;
 
-class ComboBoxListItemNode<T> extends Voicing( Node, 0 ) {
+export default class ComboBoxListItemNode<T> extends Voicing( Node, 0 ) {
 
   // when true, the next voicing focus listener will supply the hint response in addition to
   // the object response. It will then set this back to false.
@@ -163,4 +163,3 @@ class ComboBoxListItemNode<T> extends Voicing( Node, 0 ) {
 }
 
 sun.register( 'ComboBoxListItemNode', ComboBoxListItemNode );
-export default ComboBoxListItemNode;

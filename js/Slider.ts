@@ -130,7 +130,7 @@ export type SliderOptions = SelfOptions & Omit<AccessibleSliderOptions, 'valuePr
 
 type TickOptions = Pick<SelfOptions, 'tickLabelSpacing' | 'majorTickLength' | 'majorTickStroke' | 'majorTickLineWidth' | 'minorTickLength' | 'minorTickStroke' | 'minorTickLineWidth'>;
 
-class Slider extends AccessibleSlider( Node, 0 ) {
+export default class Slider extends AccessibleSlider( Node, 0 ) {
 
   enabledRangeProperty: IReadOnlyProperty<Range>;
 
@@ -604,4 +604,3 @@ Slider.SliderIO = new IOType( 'SliderIO', {
 } );
 
 sun.register( 'Slider', Slider );
-export default Slider;

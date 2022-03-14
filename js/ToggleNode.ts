@@ -21,7 +21,7 @@ export type ToggleNodeElement<T> = {
 
 export type ToggleNodeOptions = NodeOptions;
 
-class ToggleNode<T> extends Node {
+export default class ToggleNode<T> extends Node {
 
   private readonly disposeToggleNode: () => void;
 
@@ -175,4 +175,3 @@ class ToggleNode<T> extends Node {
 }
 
 sun.register( 'ToggleNode', ToggleNode );
-export default ToggleNode;

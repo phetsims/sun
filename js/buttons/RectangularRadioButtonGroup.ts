@@ -113,7 +113,7 @@ type SelfOptions = {
 
 export type RectangularRadioButtonGroupOptions = SelfOptions & LayoutBoxOptions;
 
-class RectangularRadioButtonGroup<T> extends LayoutBox {
+export default class RectangularRadioButtonGroup<T> extends LayoutBox {
 
   private disposeRadioButtonGroup: () => void;
 
@@ -437,4 +437,3 @@ class ButtonWithLayoutNode<T> {
 }
 
 sun.register( 'RectangularRadioButtonGroup', RectangularRadioButtonGroup );
-export default RectangularRadioButtonGroup;

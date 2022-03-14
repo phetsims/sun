@@ -39,7 +39,7 @@ type SelfOptions = {
 
 export type PushButtonModelOptions = SelfOptions & ButtonModelOptions;
 
-class PushButtonModel extends ButtonModel {
+export default class PushButtonModel extends ButtonModel {
 
   firedEmitter: Emitter;
   isFiringProperty: Property<boolean>;
@@ -177,4 +177,3 @@ class PushButtonModel extends ButtonModel {
 }
 
 sun.register( 'PushButtonModel', PushButtonModel );
-export default PushButtonModel;

@@ -39,7 +39,7 @@ type SelfOptions = {
 
 export type ComboBoxListBoxOptions = SelfOptions & PanelOptions;
 
-class ComboBoxListBox<T> extends Panel {
+export default class ComboBoxListBox<T> extends Panel {
 
   private listItemNodes: ComboBoxListItemNode<T>[];
   private visibleListItemNodes: ComboBoxListItemNode<T>[];
@@ -329,4 +329,3 @@ class ComboBoxListBox<T> extends Panel {
 }
 
 sun.register( 'ComboBoxListBox', ComboBoxListBox );
-export default ComboBoxListBox;

@@ -49,7 +49,7 @@ type SelfOptions = {
 
 export type SliderTrackOptions = SelfOptions & NodeOptions;
 
-class SliderTrack extends Node {
+export default class SliderTrack extends Node {
 
   readonly size: Dimension2;
 
@@ -146,4 +146,3 @@ class SliderTrack extends Node {
 }
 
 sun.register( 'SliderTrack', SliderTrack );
-export default SliderTrack;

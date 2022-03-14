@@ -14,7 +14,7 @@ import { Node } from '../../../scenery/js/imports.js';
 
 export type BooleanRectangularToggleButtonOptions = Omit<RectangularToggleButtonOptions, 'content'>;
 
-class BooleanRectangularToggleButton extends RectangularToggleButton<boolean> {
+export default class BooleanRectangularToggleButton extends RectangularToggleButton<boolean> {
 
   private readonly disposeBooleanRectangularToggleButton: () => void;
 
@@ -33,16 +33,11 @@ class BooleanRectangularToggleButton extends RectangularToggleButton<boolean> {
 
     super( false, true, booleanProperty, options );
 
-    // @private
     this.disposeBooleanRectangularToggleButton = () => {
       options.content && options.content.dispose();
     };
   }
 
-  /**
-   * @public
-   * @override
-   */
   dispose() {
     this.disposeBooleanRectangularToggleButton();
     super.dispose();
@@ -50,4 +45,3 @@ class BooleanRectangularToggleButton extends RectangularToggleButton<boolean> {
 }
 
 sun.register( 'BooleanRectangularToggleButton', BooleanRectangularToggleButton );
-export default BooleanRectangularToggleButton;

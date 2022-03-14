@@ -118,7 +118,7 @@ type SelfOptions = {
 
 export type ComboBoxOptions = SelfOptions & NodeOptions;
 
-class ComboBox<T> extends Node {
+export default class ComboBox<T> extends Node {
 
   private items: ComboBoxItem<T>[];
   private listPosition: ComboBoxListPosition;
@@ -476,4 +476,3 @@ class ComboBox<T> extends Node {
 }
 
 sun.register( 'ComboBox', ComboBox );
-export default ComboBox;

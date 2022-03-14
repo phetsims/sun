@@ -18,7 +18,7 @@ import sun from './sun.js';
 
 export type HSliderOptions = Omit<SliderOptions, 'orientation'>;
 
-class HSlider extends Slider {
+export default class HSlider extends Slider {
 
   constructor( valueProperty: IProperty<number>, range: Range, options?: HSliderOptions ) {
 
@@ -35,4 +35,3 @@ class HSlider extends Slider {
 }
 
 sun.register( 'HSlider', HSlider );
-export default HSlider;

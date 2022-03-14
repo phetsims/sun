@@ -29,7 +29,7 @@ type SelfOptions = {
 
 export type RoundToggleButtonOptions = SelfOptions & RoundButtonOptions;
 
-class RoundToggleButton<T> extends RoundButton {
+export default class RoundToggleButton<T> extends RoundButton {
 
   private readonly disposeRoundToggleButton: () => void;
 
@@ -89,4 +89,3 @@ class RoundToggleButton<T> extends RoundButton {
 }
 
 sun.register( 'RoundToggleButton', RoundToggleButton );
-export default RoundToggleButton;

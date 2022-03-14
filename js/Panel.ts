@@ -69,7 +69,7 @@ type SelfOptions = {
 type SuperOptions = WidthSizableSelfOptions & HeightSizableSelfOptions & NodeOptions;
 export type PanelOptions = SelfOptions & SuperOptions;
 
-class Panel extends WidthSizable( HeightSizable( Node ) ) {
+export default class Panel extends WidthSizable( HeightSizable( Node ) ) {
 
   _content: Node; // (internal)
   _backgroundContainer: Node; // (internal)
@@ -271,4 +271,3 @@ class PanelConstraint extends LayoutConstraint {
 }
 
 sun.register( 'Panel', Panel );
-export default Panel;

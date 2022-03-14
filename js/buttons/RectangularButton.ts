@@ -66,7 +66,7 @@ type SelfOptions = {
 
 export type RectangularButtonOptions = SelfOptions & ButtonNodeOptions;
 
-class RectangularButton extends ButtonNode {
+export default class RectangularButton extends ButtonNode {
 
   /**
    * @param {ButtonModel} buttonModel - Model that defines the button's behavior.
@@ -308,4 +308,3 @@ class ThreeDAppearanceStrategy {
 RectangularButton.ThreeDAppearanceStrategy = ThreeDAppearanceStrategy;
 
 sun.register( 'RectangularButton', RectangularButton );
-export default RectangularButton;

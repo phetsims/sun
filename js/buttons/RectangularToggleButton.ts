@@ -29,7 +29,7 @@ type SelfOptions = {
 
 export type RectangularToggleButtonOptions = SelfOptions & RectangularButtonOptions;
 
-class RectangularToggleButton<T> extends RectangularButton {
+export default class RectangularToggleButton<T> extends RectangularButton {
 
   private readonly disposeRectangularToggleButton: () => void;
 
@@ -91,4 +91,3 @@ class RectangularToggleButton<T> extends RectangularButton {
 }
 
 sun.register( 'RectangularToggleButton', RectangularToggleButton );
-export default RectangularToggleButton;

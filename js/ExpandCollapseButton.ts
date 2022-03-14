@@ -28,7 +28,7 @@ type SelfOptions = {
 export type ExpandCollapseButtonOptions = SelfOptions &
   Omit<BooleanRectangularToggleButtonOptions, 'cornerRadius' | 'xMargin' | 'yMargin' | 'buttonAppearanceStrategy'>;
 
-class ExpandCollapseButton extends BooleanRectangularToggleButton {
+export default class ExpandCollapseButton extends BooleanRectangularToggleButton {
 
   private readonly disposeExpandCollapseButton: () => void;
 
@@ -115,4 +115,3 @@ class ExpandCollapseButton extends BooleanRectangularToggleButton {
 }
 
 sun.register( 'ExpandCollapseButton', ExpandCollapseButton );
-export default ExpandCollapseButton;

@@ -39,7 +39,7 @@ type SelfOptions = {
 
 export type ArrowButtonOptions = SelfOptions & RectangularPushButtonOptions;
 
-class ArrowButton extends RectangularPushButton {
+export default class ArrowButton extends RectangularPushButton {
 
   constructor( direction: ArrowButtonDirection, callback: () => void, providedOptions?: ArrowButtonOptions ) {
 
@@ -115,4 +115,3 @@ class ArrowButton extends RectangularPushButton {
 }
 
 sun.register( 'ArrowButton', ArrowButton );
-export default ArrowButton;

@@ -95,7 +95,7 @@ type SelfOptions = {
 };
 export type AccordionBoxOptions = SelfOptions & NodeOptions;
 
-class AccordionBox extends Node {
+export default class AccordionBox extends Node {
 
   readonly expandedProperty: Property<boolean>;
 
@@ -658,4 +658,3 @@ AccordionBox.AccordionBoxIO = new IOType( 'AccordionBoxIO', {
 } );
 
 sun.register( 'AccordionBox', AccordionBox );
-export default AccordionBox;

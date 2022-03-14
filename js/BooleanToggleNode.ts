@@ -15,7 +15,7 @@ import Property from '../../axon/js/Property.js';
 
 export type BooleanToggleNodeOptions = ToggleNodeOptions;
 
-class BooleanToggleNode extends ToggleNode<boolean> {
+export default class BooleanToggleNode extends ToggleNode<boolean> {
 
   /**
    * @param trueNode
@@ -32,4 +32,3 @@ class BooleanToggleNode extends ToggleNode<boolean> {
 }
 
 sun.register( 'BooleanToggleNode', BooleanToggleNode );
-export default BooleanToggleNode;

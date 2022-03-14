@@ -41,7 +41,7 @@ type SelfOptions = {
 
 export type RoundButtonOptions = SelfOptions & ButtonNodeOptions;
 
-class RoundButton extends ButtonNode {
+export default class RoundButton extends ButtonNode {
 
   /**
    * @param buttonModel
@@ -134,7 +134,7 @@ class RoundButton extends ButtonNode {
  * look 3D-ish by using gradients that create the appearance of highlighted and shaded edges. The gradients are
  * set up to make the light source appear to be in the upper left.
  */
-class ThreeDAppearanceStrategy {
+export class ThreeDAppearanceStrategy {
 
   public readonly dispose: () => void;
 
@@ -248,5 +248,3 @@ class ThreeDAppearanceStrategy {
 RoundButton.ThreeDAppearanceStrategy = ThreeDAppearanceStrategy;
 
 sun.register( 'RoundButton', RoundButton );
-export default RoundButton;
-export { ThreeDAppearanceStrategy };

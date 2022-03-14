@@ -80,7 +80,7 @@ type SelfOptions = {
 
 export type ButtonNodeOptions = SelfOptions & VoicingOptions;
 
-class ButtonNode extends Voicing( Node, 0 ) {
+export default class ButtonNode extends Voicing( Node, 0 ) {
 
   protected buttonModel: ButtonModel;
   private _settableBaseColorProperty: PaintColorProperty;
@@ -318,4 +318,3 @@ export class FlatAppearanceStrategy {
 ButtonNode.FlatAppearanceStrategy = FlatAppearanceStrategy;
 
 sun.register( 'ButtonNode', ButtonNode );
-export default ButtonNode;

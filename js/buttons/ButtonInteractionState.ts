@@ -10,7 +10,7 @@ import Enumeration from '../../../phet-core/js/Enumeration.js';
 import EnumerationValue from '../../../phet-core/js/EnumerationValue.js';
 import sun from '../sun.js';
 
-class ButtonInteractionState extends EnumerationValue {
+export default class ButtonInteractionState extends EnumerationValue {
   // button is just sitting there, doing nothing
   static IDLE = new ButtonInteractionState();
 
@@ -24,5 +24,3 @@ class ButtonInteractionState extends EnumerationValue {
 }
 
 sun.register( 'ButtonInteractionState', ButtonInteractionState );
-
-export default ButtonInteractionState;

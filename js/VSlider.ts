@@ -18,7 +18,7 @@ import IntentionalAny from '../../phet-core/js/types/IntentionalAny.js';
 
 export type VSliderOptions = Omit<SliderOptions, 'orientation'>;
 
-class VSlider extends Slider {
+export default class VSlider extends Slider {
 
   constructor( valueProperty: IProperty<number>, range: Range, options?: VSliderOptions ) {
 
@@ -37,4 +37,3 @@ class VSlider extends Slider {
 }
 
 sun.register( 'VSlider', VSlider );
-export default VSlider;

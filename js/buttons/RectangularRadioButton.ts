@@ -24,7 +24,7 @@ import RectangularButton from './RectangularButton.js';
 import TButtonAppearanceStrategy from './TButtonAppearanceStrategy.js';
 import TContentAppearanceStrategy from './TContentAppearanceStrategy.js';
 
-class RectangularRadioButton<T> extends RectangularButton {
+export default class RectangularRadioButton<T> extends RectangularButton {
   interactionStateProperty: RadioButtonInteractionStateProperty;
 
   // the Property this button changes
@@ -306,4 +306,3 @@ class RectangularRadioButton<T> extends RectangularButton {
 }
 
 sun.register( 'RectangularRadioButton', RectangularRadioButton );
-export default RectangularRadioButton;

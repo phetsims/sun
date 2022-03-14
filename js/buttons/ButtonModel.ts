@@ -36,7 +36,7 @@ type SelfOptions = {
 
 export type ButtonModelOptions = SelfOptions & EnabledComponentOptions;
 
-class ButtonModel extends EnabledComponent {
+export default class ButtonModel extends EnabledComponent {
 
   // (read-only) - Is the pointer over the button?
   overProperty: Property<boolean>;
@@ -219,4 +219,3 @@ class ButtonModel extends EnabledComponent {
 }
 
 sun.register( 'ButtonModel', ButtonModel );
-export default ButtonModel;

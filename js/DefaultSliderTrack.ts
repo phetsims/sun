@@ -30,7 +30,7 @@ type SelfOptions = {
 // We require size/enabledRangeProperty instead of leaving it optional for the supertype
 export type DefaultSliderTrackOptions = SelfOptions & SliderTrackOptions & PickRequired<SliderTrackOptions, 'size' | 'enabledRangeProperty'>;
 
-class DefaultSliderTrack extends SliderTrack {
+export default class DefaultSliderTrack extends SliderTrack {
 
   private enabledTrack: Rectangle;
   private disposeDefaultSliderTrack: () => void;
@@ -94,4 +94,3 @@ class DefaultSliderTrack extends SliderTrack {
 }
 
 sun.register( 'DefaultSliderTrack', DefaultSliderTrack );
-export default DefaultSliderTrack;

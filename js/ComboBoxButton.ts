@@ -52,7 +52,7 @@ type SelfOptions = {
 
 export type ComboBoxButtonOptions = SelfOptions & RectangularPushButtonOptions;
 
-class ComboBoxButton<T> extends RectangularPushButton {
+export default class ComboBoxButton<T> extends RectangularPushButton {
 
   // set to true to block voicing to occur upon this button's next focus event.
   private _blockNextVoicingFocusListener: boolean;
@@ -273,4 +273,3 @@ class ComboBoxButton<T> extends RectangularPushButton {
 }
 
 sun.register( 'ComboBoxButton', ComboBoxButton );
-export default ComboBoxButton;

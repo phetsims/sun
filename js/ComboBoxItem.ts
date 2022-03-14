@@ -25,7 +25,7 @@ export type ComboBoxItemOptions = {
 
 };
 
-class ComboBoxItem<T> {
+export default class ComboBoxItem<T> {
 
   readonly node: Node;
   readonly value: T;
@@ -66,4 +66,3 @@ class ComboBoxItem<T> {
 }
 
 sun.register( 'ComboBoxItem', ComboBoxItem );
-export default ComboBoxItem;

@@ -56,7 +56,7 @@ type SelfOptions = {
 
 export type CheckboxOptions = SelfOptions & VoicingOptions;
 
-class Checkbox extends Voicing( Node, 0 ) {
+export default class Checkbox extends Voicing( Node, 0 ) {
 
   private readonly backgroundNode: Rectangle;
   private readonly checkedNode: Path;
@@ -255,4 +255,3 @@ class Checkbox extends Voicing( Node, 0 ) {
 }
 
 sun.register( 'Checkbox', Checkbox );
-export default Checkbox;
