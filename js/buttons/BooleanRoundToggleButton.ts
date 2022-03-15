@@ -8,7 +8,7 @@ import Tandem from '../../../tandem/js/Tandem.js';
 import BooleanToggleNode from '../BooleanToggleNode.js';
 import sun from '../sun.js';
 import RoundToggleButton, { RoundToggleButtonOptions } from './RoundToggleButton.js';
-import { Node } from '../../../scenery/js/imports.js'; // eslint-disable-line no-unused-vars
+import { Node } from '../../../scenery/js/imports.js';
 import Property from '../../../axon/js/Property.js';
 import optionize from '../../../phet-core/js/optionize.js';
 
