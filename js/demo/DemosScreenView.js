@@ -1,5 +1,6 @@
 // Copyright 2015-2021, University of Colorado Boulder
 
+// @ts-nocheck
 /**
  * Base type for ScreenViews that use a carousel to select a demo.
  *
