@@ -1,5 +1,6 @@
 // Copyright 2015-2022, University of Colorado Boulder
 
+// @ts-nocheck
 /**
  * An iOS-style page control. See the 'Navigation' section of the iOS Human Interface Guidelines.
  * A page control indicates the number of pages and which one is currently visible.
