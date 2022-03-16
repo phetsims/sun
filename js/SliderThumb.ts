@@ -1,6 +1,5 @@
 // Copyright 2016-2022, University of Colorado Boulder
 
-// @ts-nocheck
 /**
  * A default slider thumb, currently intended for use only in HSlider. It's a rectangle with a vertical white line down
  * the center.  The origin is at the top left (HSlider uses the thumb center for positioning).
@@ -10,35 +9,45 @@
 
 import Dimension2 from '../../dot/js/Dimension2.js';
 import { Shape } from '../../kite/js/imports.js';
-import merge from '../../phet-core/js/merge.js';
-import { PressListener } from '../../scenery/js/imports.js';
-import { Path } from '../../scenery/js/imports.js';
-import { Rectangle } from '../../scenery/js/imports.js';
+import optionize from '../../phet-core/js/optionize.js';
+import { IPaint, Path, PressListener, Rectangle, RectangleOptions } from '../../scenery/js/imports.js';
 import Tandem from '../../tandem/js/Tandem.js';
 import sun from './sun.js';
 
-class SliderThumb extends Rectangle {
-  /**
-   * @param {Object} [options] see HSlider constructor
-   */
-  constructor( options ) {
+type SelfOptions = {
+  size?: Dimension2;
+  fillHighlighted?: IPaint;
+  centerLineStroke?: IPaint;
+};
 
-    options = merge( {
+type SliderThumbOptions = SelfOptions & Omit<RectangleOptions, 'cachedPaints'>;
+
+class SliderThumb extends Rectangle {
+
+  /**
+   * @param providedOptions
+   */
+  constructor( providedOptions: SliderThumbOptions ) {
+
+    const options = optionize<SliderThumbOptions, SelfOptions, RectangleOptions, 'fill'>( {
+
+      // SelfOptions
       size: new Dimension2( 22, 45 ),
-      fill: 'rgb(50,145,184)',
-      fillHighlighted: 'rgb(71,207,255)',
+      fillHighlighted: 'rgb( 71, 207, 255 )',
+      centerLineStroke: 'white',
+
+      // RectangleOptions
+      fill: 'rgb( 50, 145, 184 )',
       stroke: 'black',
       lineWidth: 1,
-      centerLineStroke: 'white',
       tandem: Tandem.REQUIRED // Slider.js adds to this tandem to nest its dragListener under the thumb.
-    }, options );
+    }, providedOptions );
 
     // Set a default corner radius
     if ( options.cornerRadius === undefined ) {
       options.cornerRadius = 0.25 * options.size.width;
     }
 
-    assert && assert( options.cachedPaints === undefined, 'SliderThumb sets cachedPaints' );
     options.cachedPaints = [ options.fill, options.fillHighlighted ];
 
     super( 0, 0, options.size.width, options.size.height, options );
