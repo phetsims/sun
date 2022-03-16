@@ -1,6 +1,5 @@
 // Copyright 2014-2022, University of Colorado Boulder
 
-// @ts-nocheck
 /**
  * ToggleSwitch is a switch for toggling between 2 values, similar to iOS' UISwitch, used in iOS `'Settings' app.
  *
@@ -20,58 +19,81 @@ import Dimension2 from '../../dot/js/Dimension2.js';
 import Utils from '../../dot/js/Utils.js';
 import Vector2 from '../../dot/js/Vector2.js';
 import { Shape } from '../../kite/js/imports.js';
-import merge from '../../phet-core/js/merge.js';
-import { DragListener, LinearGradient, Node, Rectangle, SceneryConstants, Voicing } from '../../scenery/js/imports.js';
+import optionize from '../../phet-core/js/optionize.js';
+import { DragListener, IPaint, LinearGradient, Node, Rectangle, SceneryConstants, Voicing, VoicingOptions } from '../../scenery/js/imports.js';
 import EventType from '../../tandem/js/EventType.js';
 import PhetioObject from '../../tandem/js/PhetioObject.js';
 import Tandem from '../../tandem/js/Tandem.js';
 import sun from './sun.js';
+import Property from '../../axon/js/Property.js';
 
 // constants
 const DEFAULT_SIZE = new Dimension2( 60, 30 );
 
-class ToggleSwitch extends Voicing( Node, 0 ) {
+type SelfOptions = {
+
+  // if you want the thumb to be a circle, use width that is 2x height
+  size?: Dimension2;
+
+  // controls the behavior of when model value changes occur during dragging (if any)
+  // null: triggers model changes when thumb is dragged far enough to the side, similar to iOS
+  // true: triggers model changes whenever the thumb crosses sides
+  // false: only trigger model changes until release
+  toggleWhileDragging?: null | boolean;
+
+  // number of view-space units the drag needs to cover to be considered a "drag" instead of a "click/tap"
+  dragThreshold?: number;
+
+  // number of thumb-widths outside the normal range past where the model value will change
+  toggleThreshold?: number;
+
+  // thumb
+  thumbFill?: IPaint;
+  thumbStroke?: IPaint;
+  thumbTouchAreaXDilation?: number;
+  thumbTouchAreaYDilation?: number;
+  thumbMouseAreaXDilation?: number;
+  thumbMouseAreaYDilation?: number;
+
+  // track
+  trackFillLeft?: IPaint; // track fill when property.value == leftValue, default computed below
+  trackFillRight?: IPaint; // track fill when property.value == rightValue, default computed below
+  trackStroke?: IPaint;
+};
+
+export type ToggleSwitchOptions = SelfOptions & VoicingOptions;
+
+class ToggleSwitch<T> extends Voicing( Node, 0 ) {
+
+  private readonly disposeToggleSwitch: () => void;
 
   /**
-   * @param {Property.<*>} property
-   * @param {*} leftValue - value when the switch is in the left position
-   * @param {*} rightValue - value when the switch is in the right position
-   * @param {Object} [options]
+   * @param property
+   * @param leftValue - value when the switch is in the left position
+   * @param rightValue - value when the switch is in the right position
+   * @param providedOptions
    */
-  constructor( property, leftValue, rightValue, options ) {
+  constructor( property: Property<T>, leftValue: T, rightValue: T, providedOptions?: ToggleSwitchOptions ) {
 
-    options = merge( {
+    const options = optionize<ToggleSwitchOptions, SelfOptions, VoicingOptions, 'tandem'>( {
 
-      size: DEFAULT_SIZE, // if you want the thumb to be a circle, use width that is 2x height
-      cursor: 'pointer',
-
-      // controls the behavior of when model value changes occur during dragging (if any)
-      // null (default: triggers model changes when thumb is dragged far enough to the side, similar to iOS)
-      // true: triggers model changes whenever the thumb crosses sides
-      // false: only trigger model changes until release
+      size: DEFAULT_SIZE,
       toggleWhileDragging: null,
-
-      // number of view-space units the drag needs to cover to be considered a "drag" instead of a "click/tap"
       dragThreshold: 3,
-
-      // number of thumb-widths outside the normal range past where the model value will change
       toggleThreshold: 1,
-
-      // {number} - opt into Node's disabled opacity when enabled:false
-      disabledOpacity: SceneryConstants.DISABLED_OPACITY,
-
-      // thumb
       thumbFill: null, // {Color|string} thumb fill, default computed below
       thumbStroke: 'black',
       thumbTouchAreaXDilation: 8,
       thumbTouchAreaYDilation: 8,
       thumbMouseAreaXDilation: 0,
       thumbMouseAreaYDilation: 0,
-
-      // track
-      trackFillLeft: null, // {Color|string} track fill when property.value == leftValue, default computed below
-      trackFillRight: null, // {Color|string} track fill when property.value == rightValue, default computed below
+      trackFillLeft: null,
+      trackFillRight: null,
       trackStroke: 'black',
+
+      // VoicingOptions
+      cursor: 'pointer',
+      disabledOpacity: SceneryConstants.DISABLED_OPACITY,
 
       // phet-io
       tandem: Tandem.REQUIRED,
@@ -83,7 +105,7 @@ class ToggleSwitch extends Voicing( Node, 0 ) {
       // pdom
       tagName: 'button',
       ariaRole: 'switch'
-    }, options );
+    }, providedOptions );
 
     // Default track fills
     let defaultTrackFill = null;
@@ -136,7 +158,7 @@ class ToggleSwitch extends Voicing( Node, 0 ) {
     }
 
     // move thumb and fill track
-    const update = value => {
+    const update = ( value: T ) => {
       if ( value === leftValue ) {
         thumbNode.left = 0;
         trackNode.fill = options.trackFillLeft;

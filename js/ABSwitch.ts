@@ -1,6 +1,5 @@
 // Copyright 2014-2021, University of Colorado Boulder
 
-// @ts-nocheck
 /**
  * ABSwitch is a control for switching between 2 choices, referred to as 'A' & 'B'.
  * Choice 'A' is to the left of the switch, choice 'B' is to the right.
@@ -9,24 +8,42 @@
  * @author Chris Malley (PixelZoom, Inc.)
  */
 
+import Property from '../../axon/js/Property.js';
 import InstanceRegistry from '../../phet-core/js/documentation/InstanceRegistry.js';
 import merge from '../../phet-core/js/merge.js';
-import { PressListener } from '../../scenery/js/imports.js';
-import { Line } from '../../scenery/js/imports.js';
-import { Node } from '../../scenery/js/imports.js';
-import { SceneryConstants } from '../../scenery/js/imports.js';
+import optionize from '../../phet-core/js/optionize.js';
+import { Line, Node, NodeOptions, PressListener, SceneryConstants } from '../../scenery/js/imports.js';
 import Tandem from '../../tandem/js/Tandem.js';
 import sun from './sun.js';
-import ToggleSwitch from './ToggleSwitch.js';
+import ToggleSwitch, { ToggleSwitchOptions } from './ToggleSwitch.js';
 
 // constants
 
 // Uses opacity as the default method of indicating whether a {Node} label is {boolean} enabled.
-const DEFAULT_SET_ENABLED = ( label, enabled ) => {
+const DEFAULT_SET_ENABLED = ( label: Node, enabled: boolean ) => {
   label.opacity = enabled ? 1.0 : SceneryConstants.DISABLED_OPACITY;
 };
 
-class ABSwitch extends Node {
+type SelfOptions = {
+
+  // options passed to ToggleSwitch
+  toggleSwitchOptions?: ToggleSwitchOptions;
+
+  // space between labels and switch
+  xSpacing?: number;
+
+  // method of making the labels look disabled
+  setEnabled?: ( labelNode: Node, enabled: boolean ) => void;
+
+  // if true, centerX will be at the centerX of the ToggleSwitch
+  centerOnButton?: boolean;
+};
+
+export type ABSwitchOptions = SelfOptions & NodeOptions;
+
+class ABSwitch<T> extends Node {
+
+  private readonly disposeABSwitch: () => void;
 
   /**
    * @param {Property.<*>} property stores the value of the current choice
@@ -34,47 +51,40 @@ class ABSwitch extends Node {
    * @param {Node} labelA label for choice 'A'
    * @param {*} valueB value for choice 'B'
    * @param {Node} labelB label for choice 'B'
-   * @param {Object} [options]
+   * @param providedOptions
    */
-  constructor( property, valueA, labelA, valueB, labelB, options ) {
+  constructor( property: Property<T>, valueA: T, labelA: Node, valueB: T, labelB: Node, providedOptions?: ABSwitchOptions ) {
 
     // PhET-iO requirements
     assert && assert( labelA.tandem, 'labelA must have a tandem' );
     assert && assert( labelB.tandem, 'labelB must have a tandem' );
 
     // default option values
-    options = merge( {
+    const options = optionize<ABSwitchOptions, SelfOptions, NodeOptions, 'tandem'>( {
 
-      // options passed to ToggleSwitch
+      // SelfOptions
       toggleSwitchOptions: {
         enabledPropertyOptions: {
           phetioFeatured: false // ABSwitch has an enabledProperty that is preferred to the sub-component's
         }
       },
-
-      cursor: 'pointer',
-
-      // {number} space between labels and switch
       xSpacing: 8,
-
-      // if true, centerX will be at the centerX of the ToggleSwitch
+      setEnabled: DEFAULT_SET_ENABLED,
       centerOnButton: false,
 
-      // {function( Node, boolean )} method of making the labels look disabled
-      setEnabled: DEFAULT_SET_ENABLED,
-
-      // {number} - opt into Node's disabled opacity when enabled:false
+      // NodeOptions
+      cursor: 'pointer',
       disabledOpacity: SceneryConstants.DISABLED_OPACITY,
 
       // phet-io
       tandem: Tandem.REQUIRED,
       visiblePropertyOptions: { phetioFeatured: true },
       phetioEnabledPropertyInstrumented: true // opt into default PhET-iO instrumented enabledProperty
-    }, options );
+    }, providedOptions );
 
     super();
 
-    const toggleSwitch = new ToggleSwitch( property, valueA, valueB, merge( {
+    const toggleSwitch = new ToggleSwitch<T>( property, valueA, valueB, merge( {
       tandem: options.tandem.createTandem( 'toggleSwitch' )
     }, options.toggleSwitchOptions ) );
 
@@ -103,7 +113,7 @@ class ABSwitch extends Node {
       }
     }
 
-    const propertyListener = value => {
+    const propertyListener = ( value: T ) => {
       if ( options.setEnabled ) {
         options.setEnabled( labelA, value === valueA );
         options.setEnabled( labelB, value === valueB );
