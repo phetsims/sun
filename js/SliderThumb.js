@@ -1,5 +1,6 @@
 // Copyright 2016-2022, University of Colorado Boulder
 
+// @ts-nocheck
 /**
  * A default slider thumb, currently intended for use only in HSlider. It's a rectangle with a vertical white line down
  * the center.  The origin is at the top left (HSlider uses the thumb center for positioning).
