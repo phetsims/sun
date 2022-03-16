@@ -121,7 +121,7 @@ type SelfOptions = {
   soundGenerator?: ValueChangeSoundGenerator | null;
 
   // Options for the default sound generator.  These should only be provided when using the default.
-  soundGeneratorOptions?: ValueChangeSoundGeneratorOptions,
+  valueChangeSoundGeneratorOptions?: ValueChangeSoundGeneratorOptions,
 
 };
 
@@ -211,7 +211,7 @@ export default class Slider extends AccessibleSlider( Node, 0 ) {
       disabledOpacity: SceneryConstants.DISABLED_OPACITY,
 
       soundGenerator: Slider.DEFAULT_SOUND,
-      soundGeneratorOptions: {},
+      valueChangeSoundGeneratorOptions: {},
 
       // phet-io
       phetioLinkedProperty: null,
@@ -231,12 +231,12 @@ export default class Slider extends AccessibleSlider( Node, 0 ) {
     assert && assert( options.orientation instanceof Orientation, `invalid orientation: ${options.orientation}` );
     assert && assert( options.trackNode === null || options.trackNode instanceof SliderTrack, 'trackNode must be of type SliderTrack' );
     assert && assert( options.thumbNode === null || options.thumbNode instanceof Node, 'thumbNode must be of type Node' );
-    assert && assert( options.soundGenerator === Slider.DEFAULT_SOUND || _.isEmpty( options.soundGeneratorOptions ),
+    assert && assert( options.soundGenerator === Slider.DEFAULT_SOUND || _.isEmpty( options.valueChangeSoundGeneratorOptions ),
       'options should only be supplied when using default sound generator' );
 
     // If no sound generator was provided, create the default.
     if ( options.soundGenerator === Slider.DEFAULT_SOUND ) {
-      options.soundGenerator = new ValueChangeSoundGenerator( range, options.soundGeneratorOptions || {} );
+      options.soundGenerator = new ValueChangeSoundGenerator( range, options.valueChangeSoundGeneratorOptions || {} );
     }
     else if ( options.soundGenerator === null ) {
       options.soundGenerator = ValueChangeSoundGenerator.NO_SOUND;

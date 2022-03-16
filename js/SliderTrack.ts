@@ -44,7 +44,7 @@ type SelfOptions = {
   soundGenerator?: ValueChangeSoundGenerator | null;
 
   // Options for the default sound generator.  These should only be provided when using the default.
-  soundGeneratorOptions?: ValueChangeSoundGeneratorOptions,
+  valueChangeSoundGeneratorOptions?: ValueChangeSoundGeneratorOptions,
 };
 
 export type SliderTrackOptions = SelfOptions & NodeOptions;
@@ -73,7 +73,7 @@ export default class SliderTrack extends Node {
       constrainValue: _.identity, // called before valueProperty is set
       enabledRangeProperty: new Property( new Range( range.min, range.max ) ), // Defaults to a constant range
       soundGenerator: Slider.DEFAULT_SOUND,
-      soundGeneratorOptions: {},
+      valueChangeSoundGeneratorOptions: {},
 
       // phet-io
       tandem: Tandem.REQUIRED
@@ -81,7 +81,7 @@ export default class SliderTrack extends Node {
 
     // If no sound generator was provided, create the default.
     if ( options.soundGenerator === Slider.DEFAULT_SOUND ) {
-      options.soundGenerator = new ValueChangeSoundGenerator( range, options.soundGeneratorOptions || {} );
+      options.soundGenerator = new ValueChangeSoundGenerator( range, options.valueChangeSoundGeneratorOptions || {} );
     }
     else if ( options.soundGenerator === null ) {
       options.soundGenerator = ValueChangeSoundGenerator.NO_SOUND;
