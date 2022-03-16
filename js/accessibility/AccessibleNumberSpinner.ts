@@ -59,7 +59,7 @@ const AccessibleNumberSpinner = <SuperType extends Constructor>( Type: SuperType
     _callbackTimer: CallbackTimer;
 
     // @protected - emits events when increment and decrement actions occur, but only for changes
-    // of keyboardStep (not pageKeyboardStep or shiftKeyboardStep)
+    // of keyboardStep and shiftKeyboardStep (not pageKeyboardStep)
     incrementDownEmitter: Emitter<[ boolean ]>; // @protected
     decrementDownEmitter: Emitter<[ boolean ]>; // @protected
 
