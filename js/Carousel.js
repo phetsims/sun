@@ -1,5 +1,6 @@
 // Copyright 2015-2022, University of Colorado Boulder
 
+// @ts-nocheck
 /**
  * A carousel UI component.
  * A set of N items is divided into M 'pages', based on how many items are visible in the carousel.
