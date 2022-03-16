@@ -1,5 +1,6 @@
 // Copyright 2015-2022, University of Colorado Boulder
 
+// @ts-nocheck
 //TODO sun#197 ideally, only 2 corners of the button should be rounded (the corners in the direction of the arrow)
 /**
  * Next/previous button in a Carousel.
