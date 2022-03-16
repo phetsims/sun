@@ -1,5 +1,6 @@
 // Copyright 2014-2021, University of Colorado Boulder
 
+// @ts-nocheck
 /**
  * ABSwitch is a control for switching between 2 choices, referred to as 'A' & 'B'.
  * Choice 'A' is to the left of the switch, choice 'B' is to the right.
