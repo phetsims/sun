@@ -1,6 +1,5 @@
 // Copyright 2015-2022, University of Colorado Boulder
 
-// @ts-nocheck
 //TODO sun#197 ideally, only 2 corners of the button should be rounded (the corners in the direction of the arrow)
 /**
  * Next/previous button in a Carousel.
@@ -8,14 +7,15 @@
  * @author Chris Malley (PixelZoom, Inc.)
  */
 
+import Bounds2 from '../../../dot/js/Bounds2.js';
 import Dimension2 from '../../../dot/js/Dimension2.js';
 import Matrix3 from '../../../dot/js/Matrix3.js';
 import { Shape } from '../../../kite/js/imports.js';
-import merge from '../../../phet-core/js/merge.js';
-import { Path } from '../../../scenery/js/imports.js';
+import optionize from '../../../phet-core/js/optionize.js';
+import { IColor, Path } from '../../../scenery/js/imports.js';
 import sun from '../sun.js';
 import ButtonNode from './ButtonNode.js';
-import RectangularPushButton from './RectangularPushButton.js';
+import RectangularPushButton, { RectangularPushButtonOptions } from './RectangularPushButton.js';
 
 // maps options.arrowDirection to rotation angles, in radians
 const ANGLES = {
@@ -25,40 +25,59 @@ const ANGLES = {
   right: Math.PI / 2
 };
 
+type ArrowDirection = 'up' | 'down' | 'left' | 'right';
+type LineCap = 'round' | 'square' | 'butt';
+
+type SelfOptions = {
+
+  // arrow
+  arrowDirection?: ArrowDirection; // direction that the arrow points
+  arrowSize?: Dimension2; // size of the arrow, in 'up' directions
+  arrowStroke?: IColor; // {color used for the arrow icons
+  arrowLineWidth?: number; // line width used to stroke the arrow icons
+  arrowLineCap?: LineCap;
+
+  // Convenience options for dilating pointer areas such that they do not overlap with Carousel content.
+  // See computePointerArea.
+  touchAreaXDilation?: number;
+  touchAreaYDilation?: number;
+  mouseAreaXDilation?: number;
+  mouseAreaYDilation?: number;
+};
+
+export type CarouselButtonOptions = SelfOptions & RectangularPushButtonOptions;
+
 class CarouselButton extends RectangularPushButton {
 
   /**
-   * @param {Object} [options]
+   * @param providedOptions
    */
-  constructor( options ) {
+  constructor( providedOptions?: RectangularPushButtonOptions ) {
 
     // see supertype for additional options
-    options = merge( {
+    const options = optionize<CarouselButtonOptions, SelfOptions, RectangularPushButtonOptions>( {
 
-      // button
-      baseColor: 'rgba( 200, 200, 200, 0.5 )', // {Color|string} button fill color
-      stroke: 'black', // {Color|string|null} button stroke
-      buttonAppearanceStrategy: ButtonNode.FlatAppearanceStrategy,
-      cornerRadius: 4, // {number} radius for the two potentially rounded corners
-
-      // arrow
-      arrowDirection: 'up', // {string} direction that the arrow points, 'up'|'down'|'left'|'right'
-      arrowSize: new Dimension2( 20, 7 ), // {Dimension2} size of the arrow, in 'up' directions
-      arrowStroke: 'black', // {Color|string} color used for the arrow icons
-      arrowLineWidth: 3, // {number} line width used to stroke the arrow icons
-      arrowLineCap: 'round', // {string} 'butt'|'round'|'square'
-
-      // Convenience options for dilating pointer areas such that they do not overlap with Carousel content.
-      // See computePointerArea.
+      // CarouselButtonOptions
+      arrowDirection: 'up',
+      arrowSize: new Dimension2( 20, 7 ),
+      arrowStroke: 'black',
+      arrowLineWidth: 3,
+      arrowLineCap: 'round',
       touchAreaXDilation: 0,
       touchAreaYDilation: 0,
       mouseAreaXDilation: 0,
-      mouseAreaYDilation: 0
+      mouseAreaYDilation: 0,
 
-    }, options );
+      // RectangularPushButtonOptions
+      baseColor: 'rgba( 200, 200, 200, 0.5 )',
+      stroke: 'black',
+      buttonAppearanceStrategy: ButtonNode.FlatAppearanceStrategy,
+      cornerRadius: 4
+
+    }, providedOptions );
 
     // validate options
-    assert && assert( ANGLES.hasOwnProperty( options.arrowDirection ), `invalid direction: ${options.direction}` );
+    assert && assert( ANGLES.hasOwnProperty( options.arrowDirection ), `invalid direction: ${options.arrowDirection}` );
 
     // Generic arrow shape, points 'up'
     let arrowShape = new Shape()
@@ -97,13 +116,13 @@ class CarouselButton extends RectangularPushButton {
  * The button is not dilated in the direction that is opposite to the arrow's direction.
  * This ensures that the pointer area will not overlap with the contents of a Carousel.
  *
- * @param {CarouselButton} button
- * @param {string} arrowDirection - direction that the arrow points, 'up'|'down'|'left'|'right'
- * @param {number} x - horizontal dilation
- * @param {number} y - vertical dilation
- * @returns {Bounds2} - null if no dilation is necessary, i.e. x === 0 && y === 0
+ * @param button
+ * @param arrowDirection - direction that the arrow points
+ * @param x - horizontal dilation
+ * @param y - vertical dilation
+ * @returns the pointer area, null if no dilation is necessary, i.e. x === 0 && y === 0
  */
-function computePointerArea( button, arrowDirection, x, y ) {
+function computePointerArea( button: CarouselButton, arrowDirection: ArrowDirection, x: number, y: number ): Bounds2 | null {
   let pointerArea = null;
   if ( x || y ) {
     switch( arrowDirection ) {

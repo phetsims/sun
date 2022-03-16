@@ -1,6 +1,5 @@
 // Copyright 2015-2022, University of Colorado Boulder
 
-// @ts-nocheck
 /**
  * A carousel UI component.
  * A set of N items is divided into M 'pages', based on how many items are visible in the carousel.
@@ -15,65 +14,113 @@
  */
 
 import NumberProperty from '../../axon/js/NumberProperty.js';
+import Property from '../../axon/js/Property.js';
 import stepTimer from '../../axon/js/stepTimer.js';
+import Timer from '../../axon/js/Timer.js';
 import Dimension2 from '../../dot/js/Dimension2.js';
 import { Shape } from '../../kite/js/imports.js';
 import InstanceRegistry from '../../phet-core/js/documentation/InstanceRegistry.js';
 import merge from '../../phet-core/js/merge.js';
-import { Node } from '../../scenery/js/imports.js';
-import { Rectangle } from '../../scenery/js/imports.js';
+import optionize from '../../phet-core/js/optionize.js';
+import { IColor, Node, NodeOptions, Rectangle } from '../../scenery/js/imports.js';
+import ISoundPlayer from '../../tambo/js/ISoundPlayer.js';
 import pushButtonSoundPlayer from '../../tambo/js/shared-sound-players/pushButtonSoundPlayer.js';
 import Tandem from '../../tandem/js/Tandem.js';
 import Animation from '../../twixt/js/Animation.js';
 import Easing from '../../twixt/js/Easing.js';
-import CarouselButton from './buttons/CarouselButton.js';
+import CarouselButton, { CarouselButtonOptions } from './buttons/CarouselButton.js';
 import ColorConstants from './ColorConstants.js';
 import HSeparator from './HSeparator.js';
 import sun from './sun.js';
 import VSeparator from './VSeparator.js';
 
+type SelfOptions = {
+
+  // container
+  orientation?: string; // 'horizontal' | 'vertical'
+  fill?: IColor; // background color of the carousel
+  stroke?: IColor; // color used to stroke the border of the carousel
+  lineWidth?: number; // width of the border around the carousel
+  cornerRadius?: number; // radius applied to the carousel and next/previous buttons
+  defaultPageNumber?: number; // page that is initially visible
+
+  // items
+  itemsPerPage?: number; // number of items per page, or how many items are visible at a time in the carousel
+  spacing?: number; // spacing between items, between items and optional separators, and between items and buttons
+  margin?: number; // margin between items and the edges of the carousel
+
+  // next/previous buttons
+  buttonColor?: IColor; // base color for the buttons
+  buttonStroke?: IColor | 'derived'; // stroke around the buttons, 'derived' derives a stroke from buttonColor
+  buttonDisabledColor?: IColor; // same default as from ButtonNode.js
+  buttonLineWidth?: number; // lineWidth of borders on buttons
+  arrowSize?: Dimension2; // size of the arrow, in 'up' directions
+  arrowStroke?: IColor; // color used for the arrow icons
+  arrowLineWidth?: number; // line width used to stroke the arrow icons
+  hideDisabledButtons?: boolean; // whether to hide buttons when they are disabled
+  buttonSoundPlayer?: ISoundPlayer; // sound played when carousel button is pressed
+
+  // for dilating pointer areas of next/previous buttons such that they do not overlap with Carousel content
+  buttonTouchAreaXDilation?: number; // horizontal touchArea dilation
+  buttonTouchAreaYDilation?: number; // vertical touchArea dilation
+  buttonMouseAreaXDilation?: number; // horizontal mouseArea dilation
+  buttonMouseAreaYDilation?: number; // vertical mouseArea dilation
+
+  // item separators
+  separatorsVisible?: boolean; // whether to put separators between items
+  separatorColor?: IColor; // color for separators
+  separatorLineWidth?: number; // lineWidth for separators
+
+  // animation, scrolling between pages
+  animationEnabled?: boolean; // is animation enabled when scrolling between pages?
+  animationDuration?: number; // seconds
+  stepEmitter?: Timer; // see Animation options.stepEmitter
+};
+
+export type CarouselOptions = SelfOptions & NodeOptions;
+
 // constants
 const DEFAULT_OPTIONS = {
 
   // container
-  orientation: 'horizontal', // {string} 'horizontal'|'vertical'
-  fill: 'white', // {Color|string} background color of the carousel
-  stroke: 'black', // {Color|string|null} color used to stroke the border of the carousel
-  lineWidth: 1, // {number} width of the border around the carousel
-  cornerRadius: 4, // {number} radius applied to the carousel and next/previous buttons
-  defaultPageNumber: 0, // {number} page that is initially visible
+  orientation: 'horizontal',
+  fill: 'white',
+  stroke: 'black',
+  lineWidth: 1,
+  cornerRadius: 4,
+  defaultPageNumber: 0,
 
   // items
-  itemsPerPage: 4, // {number} number of items per page, or how many items are visible at a time in the carousel
-  spacing: 10, // {number} spacing between items, between items and optional separators, and between items and buttons
-  margin: 10, // {number} margin between items and the edges of the carousel
+  itemsPerPage: 4,
+  spacing: 10,
+  margin: 10,
 
   // next/previous buttons
-  buttonColor: 'rgba( 200, 200, 200, 0.5 )', // {Color|string} base color for the buttons
-  buttonStroke: undefined, // {Color|string|null|undefined} stroke around the buttons (null is no stroke, undefined derives color from buttonColor)
-  buttonDisabledColor: ColorConstants.LIGHT_GRAY, // same default as from ButtonNode.js
-  buttonLineWidth: 1, // {number} lineWidth of borders on buttons
-  arrowSize: new Dimension2( 20, 7 ), // {Dimension2} size of the arrow, in 'up' directions
-  arrowStroke: 'black', // {Color|string} color used for the arrow icons
-  arrowLineWidth: 3, // {number} line width used to stroke the arrow icons
-  hideDisabledButtons: false, // {boolean} whether to hide buttons when they are disabled
-  buttonSoundPlayer: pushButtonSoundPlayer, // {SoundPlayer} sound played when carousel button is pressed
+  buttonColor: 'rgba( 200, 200, 200, 0.5 )',
+  buttonStroke: 'derived',
+  buttonDisabledColor: ColorConstants.LIGHT_GRAY,
+  buttonLineWidth: 1,
+  arrowSize: new Dimension2( 20, 7 ),
+  arrowStroke: 'black',
+  arrowLineWidth: 3,
+  hideDisabledButtons: false,
+  buttonSoundPlayer: pushButtonSoundPlayer,
 
   // for dilating pointer areas of next/previous buttons such that they do not overlap with Carousel content
-  buttonTouchAreaXDilation: 0, // {number} horizontal touchArea dilation
-  buttonTouchAreaYDilation: 0, // {number} vertical touchArea dilation
-  buttonMouseAreaXDilation: 0, // {number} horizontal mouseArea dilation
-  buttonMouseAreaYDilation: 0, // {number} vertical mouseArea dilation
+  buttonTouchAreaXDilation: 0,
+  buttonTouchAreaYDilation: 0,
+  buttonMouseAreaXDilation: 0,
+  buttonMouseAreaYDilation: 0,
 
   // item separators
-  separatorsVisible: false, // {boolean} whether to put separators between items
-  separatorColor: 'rgb( 180, 180, 180 )', // {Color|string} color for separators
-  separatorLineWidth: 0.5, // {number} lineWidth for separators
+  separatorsVisible: false,
+  separatorColor: 'rgb( 180, 180, 180 )',
+  separatorLineWidth: 0.5,
 
   // animation, scrolling between pages
-  animationEnabled: true, // {boolean} is animation enabled when scrolling between pages?,
-  animationDuration: 0.4, // {number} seconds
-  stepEmitter: stepTimer, // {string} see Animation options.stepEmitter
+  animationEnabled: true,
+  animationDuration: 0.4,
+  stepEmitter: stepTimer,
 
   // phet-io
   tandem: Tandem.OPTIONAL
@@ -81,24 +128,40 @@ const DEFAULT_OPTIONS = {
 assert && Object.freeze( DEFAULT_OPTIONS );
 
 class Carousel extends Node {
+
+  private readonly items: Node[];
+
+  private readonly itemsPerPage: number;
+
+  // number of pages in the carousel
+  public readonly numberOfPages: number;
+
+  // page number that is currently visible
+  public readonly pageNumberProperty: Property<number>;
+
+  // enables animation when scrolling between pages
+  public animationEnabled: boolean;
+
+  public readonly backgroundWidth: number;
+  private readonly backgroundHeight: number;
+
+  private readonly disposeCarousel: () => void;
+
   /**
-   * @param {Node[]} items - items in the carousel
-   * @param {Object} [options]
+   * @param items - items in the carousel
+   * @param providedOptions
    */
-  constructor( items, options ) {
+  constructor( items: Node[], providedOptions?: CarouselOptions ) {
 
     // Override defaults with specified options
-    options = merge( {}, DEFAULT_OPTIONS, options );
-
-    // Validate options
-    assert && assert( _.includes( [ 'horizontal', 'vertical' ], options.orientation ), `invalid orientation=${options.orientation}` );
+    const options = optionize<CarouselOptions, SelfOptions, NodeOptions, 'tandem'>( {}, DEFAULT_OPTIONS, providedOptions );
 
     // To improve readability
     const isHorizontal = ( options.orientation === 'horizontal' );
 
     // Dimensions of largest item
-    const maxItemWidth = _.maxBy( items, item => item.width ).width;
-    const maxItemHeight = _.maxBy( items, item => item.height ).height;
+    const maxItemWidth = _.maxBy( items, ( item: Node ) => item.width )!.width;
+    const maxItemHeight = _.maxBy( items, ( item: Node ) => item.height )!.height;
 
     // This quantity is used make some other computations independent of orientation.
     const maxItemLength = isHorizontal ? maxItemWidth : maxItemHeight;
@@ -110,7 +173,7 @@ class Carousel extends Node {
       cornerRadius: options.cornerRadius,
       baseColor: options.buttonColor,
       disabledColor: options.buttonDisabledColor,
-      stroke: options.buttonStroke,
+      stroke: ( options.buttonStroke === 'derived' ) ? undefined : options.buttonStroke,
       lineWidth: options.buttonLineWidth,
       minWidth: isHorizontal ? 0 : maxItemWidth + ( 2 * options.margin ), // fill the width of a vertical carousel
       minHeight: isHorizontal ? maxItemHeight + ( 2 * options.margin ) : 0, // fill the height of a horizontal carousel
@@ -125,11 +188,11 @@ class Carousel extends Node {
     };
 
     // Next/previous buttons
-    const nextButton = new CarouselButton( merge( {
+    const nextButton = new CarouselButton( optionize<CarouselButtonOptions, {}, CarouselButtonOptions>( {
       arrowDirection: isHorizontal ? 'right' : 'down',
       tandem: options.tandem.createTandem( 'nextButton' )
     }, buttonOptions ) );
-    const previousButton = new CarouselButton( merge( {
+    const previousButton = new CarouselButton( optionize<CarouselButtonOptions, {}, CarouselButtonOptions>( {
       arrowDirection: isHorizontal ? 'left' : 'up',
       tandem: options.tandem.createTandem( 'previousButton' )
     }, buttonOptions ) );
@@ -150,7 +213,7 @@ class Carousel extends Node {
     super();
 
     // @private enables animation when scrolling between pages
-    this._animationEnabled = options.animationEnabled;
+    this.animationEnabled = options.animationEnabled;
 
     // All items, arranged in the proper orientation, with margins and spacing.
     // Horizontal carousel arrange items left-to-right, vertical is top-to-bottom.
@@ -268,9 +331,9 @@ class Carousel extends Node {
     } );
 
     // Change pages
-    let scrollAnimation = null;
+    let scrollAnimation: Animation | null = null;
 
-    const pageNumberListener = pageNumber => {
+    const pageNumberListener = ( pageNumber: number ) => {
 
       assert && assert( pageNumber >= 0 && pageNumber <= numberOfPages - 1, `pageNumber out of range: ${pageNumber}` );
 
@@ -287,7 +350,7 @@ class Carousel extends Node {
 
       // Only animate if animation is enabled and PhET-iO state is not being set.  When PhET-iO state is being set (as
       // in loading a customized state), the carousel should immediately reflect the desired page
-      if ( this._animationEnabled && !phet.joist.sim.isSettingPhetioStateProperty.value ) {
+      if ( this.animationEnabled && !phet.joist.sim.isSettingPhetioStateProperty.value ) {
 
         // options that are independent of orientation
         let animationOptions = {
@@ -300,14 +363,14 @@ class Carousel extends Node {
         if ( isHorizontal ) {
           animationOptions = merge( {
             getValue: () => scrollingNode.left,
-            setValue: value => { scrollingNode.left = value; },
+            setValue: ( value: number ) => { scrollingNode.left = value; },
             to: -pageNumber * scrollingDelta
           }, animationOptions );
         }
         else {
           animationOptions = merge( {
             getValue: () => scrollingNode.top,
-            setValue: value => { scrollingNode.top = value; },
+            setValue: ( value: number ) => { scrollingNode.top = value; },
             to: -pageNumber * scrollingDelta
           }, animationOptions );
         }
@@ -334,11 +397,10 @@ class Carousel extends Node {
     nextButton.addListener( () => pageNumberProperty.set( pageNumberProperty.get() + 1 ) );
     previousButton.addListener( () => pageNumberProperty.set( pageNumberProperty.get() - 1 ) );
 
-    // fields
-    this.items = items; // @private
-    this.itemsPerPage = options.itemsPerPage; // @private
-    this.numberOfPages = numberOfPages; // @public (read-only) {number} number of pages in the carousel
-    this.pageNumberProperty = pageNumberProperty; // @public {Property.<number>} page number that is currently visible
+    this.items = items;
+    this.itemsPerPage = options.itemsPerPage;
+    this.numberOfPages = numberOfPages;
+    this.pageNumberProperty = pageNumberProperty;
 
     assert && assert( !options.children, 'Carousel sets children' );
     options.children = [ backgroundNode, windowNode, nextButton, previousButton, foregroundNode ];
@@ -353,10 +415,6 @@ class Carousel extends Node {
     assert && phet.chipper.queryParameters.binder && InstanceRegistry.registerDataURL( 'sun', 'Carousel', this );
   }
 
-  get animationEnabled() { return this.getAnimationEnabled(); }
-
-  set animationEnabled( value ) { this.setAnimationEnabled( value ); }
-
   /**
    * @public
    * @override
@@ -368,65 +426,36 @@ class Carousel extends Node {
 
   /**
    * Resets the carousel to its initial state.
-   *
-   * @param {Object} [options]
-   * @public
+   * @param animationEnabled - whether to enable animation during reset
    */
-  reset( options ) {
-
-    options = merge( {
-      animationEnabled: this.animationEnabled // {boolean} whether to enable animation during reset
-    }, options );
-
+  public reset( animationEnabled = false ): void {
     const saveAnimationEnabled = this.animationEnabled;
-    this.animationEnabled = options.animationEnabled;
+    this.animationEnabled = animationEnabled;
     this.pageNumberProperty.reset();
     this.animationEnabled = saveAnimationEnabled;
   }
 
   /**
-   * Determines whether animation is enabled for scrolling between pages.
-   * @param {boolean} animationEnabled
-   * @public
-   */
-  setAnimationEnabled( animationEnabled ) {
-    this._animationEnabled = animationEnabled;
-  }
-
-  /**
-   * Is animation enabled for scrolling between pages?
-   * @returns {boolean}
-   * @public
-   */
-  getAnimationEnabled() {
-    return this._animationEnabled;
-  }
-
-  /**
    * Given an item's index, scrolls the carousel to the page that contains that item.
-   * @param {number} itemIndex
-   * @public
+   * @param itemIndex
    */
-  scrollToItemIndex( itemIndex ) {
+  public scrollToItemIndex( itemIndex: number ): void {
     this.pageNumberProperty.set( this.itemIndexToPageNumber( itemIndex ) );
   }
 
   /**
    * Given an item, scrolls the carousel to the page that contains that item.
-   * @param {Node} item
-   * @public
+   * @param item
    */
-  scrollToItem( item ) {
+  public scrollToItem( item: Node ): void {
     this.scrollToItemIndex( this.items.indexOf( item ) );
   }
 
   /**
    * Is the specified item currently visible in the carousel?
-   * @param {Node} item
-   * @returns {boolean}
-   * @public
+   * @param item
    */
-  isItemVisible( item ) {
+  public isItemVisible( item: Node ): boolean {
     const itemIndex = this.items.indexOf( item );
     assert && assert( itemIndex !== -1, 'item not found' );
     return ( this.pageNumberProperty.get() === this.itemIndexToPageNumber( itemIndex ) );
@@ -434,11 +463,9 @@ class Carousel extends Node {
 
   /**
    * Converts an item index to a page number.
-   * @param {number} itemIndex
-   * @returns {number}
-   * @public
+   * @param itemIndex
    */
-  itemIndexToPageNumber( itemIndex ) {
+  public itemIndexToPageNumber( itemIndex: number ): number {
     assert && assert( itemIndex >= 0 && itemIndex < this.items.length, `itemIndex out of range: ${itemIndex}` );
     return Math.floor( itemIndex / this.itemsPerPage );
   }
