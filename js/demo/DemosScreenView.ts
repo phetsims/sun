@@ -109,7 +109,7 @@ class DemosScreenView extends ScreenView {
     this.addChild( selectADemoLabel );
 
     // {ComboBoxItem[]}
-    const items = _.map( demos, ( demo: SunDemo ) => new ComboBoxItem( new Text( demo.label, { font: ITEM_FONT } ), demo ) );
+    const items = demos.map( ( demo: SunDemo ) => new ComboBoxItem( new Text( demo.label, { font: ITEM_FONT } ), demo ) );
 
     const carouselComboBox = new CarouselComboBox( selectedDemoProperty, items, {
       tandem: options.tandem.createTandem( 'carouselComboBox' )
