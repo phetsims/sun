@@ -1,5 +1,6 @@
 // Copyright 2014-2020, University of Colorado Boulder
 
+// @ts-nocheck
 /**
  * OnOffSwitch is a switch for toggling between true (on) and false (off).
  * The off position is on the left, the on position is on the right.
