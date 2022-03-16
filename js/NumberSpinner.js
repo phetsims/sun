@@ -223,10 +223,12 @@ class NumberSpinner extends AccessibleNumberSpinner( Node, 0 ) {
     // should look depressed when interacting with those keys. To accomplish this we actually press the ArrowButtons
     // in response to input with those keys. keyboardStep and shiftKeyboardStep are set to zero so the value isn't
     // modified again by AccessibleValueHandler.
-    assert && assert( !options.keyboardStep, 'NumberSpinner sets keyboardStep, it will be the same as deltaValue' );
-    assert && assert( !options.shiftKeyboardStep, 'NumberSpinner sets shiftKeyboardStep, it will be the same as deltaValue' );
+    assert && assert( options.keyboardStep === undefined, 'NumberSpinner sets keyboardStep, it will be the same as deltaValue' );
+    assert && assert( options.shiftKeyboardStep === undefined, 'NumberSpinner sets shiftKeyboardStep, it will be the same as deltaValue' );
+    assert && assert( options.pageKeyboardStep === undefined, 'NumberSpinner sets pageKeyboardStep, it should not be used with NumberSpinner' );
     options.keyboardStep = 0;
     options.shiftKeyboardStep = 0;
+    options.pageKeyboardStep = 0;
 
     const boundsRequiredOptionKeys = _.pick( options, Node.REQUIRES_BOUNDS_OPTION_KEYS );
     options = _.omit( options, Node.REQUIRES_BOUNDS_OPTION_KEYS );
