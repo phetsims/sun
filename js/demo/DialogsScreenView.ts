@@ -1,6 +1,5 @@
 // Copyright 2018-2021, University of Colorado Boulder
 
-// @ts-nocheck
 /**
  * View for demonstrating dialogs.
  *
@@ -30,7 +29,7 @@ class DialogsScreenView extends ScreenView {
 
     // dialog will be created the first time the button is pressed, lazily because Dialog
     // requires sim bounds during Dialog construction
-    let dialog = null;
+    let dialog: Dialog | null = null;
 
     const modalDialogButton = new RectangularPushButton( {
       content: new Text( 'modal dialog', { font: BUTTON_FONT } ),
@@ -53,7 +52,7 @@ class DialogsScreenView extends ScreenView {
  * @param {boolean} modal
  * @returns {Dialog}
  */
-function createDialog( modal ) {
+function createDialog( modal: boolean ) {
 
   const resizeButton = new RectangularPushButton( {
     content: new Text( 'Resize', { font: new Font( { size: 18 } ) } )

@@ -1,6 +1,5 @@
 // Copyright 2015-2022, University of Colorado Boulder
 
-// @ts-nocheck
 /**
  * Demonstration of misc sun UI components.
  * Demos are selected from a combo box, and are instantiated on demand.
@@ -14,10 +13,12 @@ import BooleanProperty from '../../../axon/js/BooleanProperty.js';
 import Property from '../../../axon/js/Property.js';
 import stepTimer from '../../../axon/js/stepTimer.js';
 import StringProperty from '../../../axon/js/StringProperty.js';
+import Bounds2 from '../../../dot/js/Bounds2.js';
 import Dimension2 from '../../../dot/js/Dimension2.js';
 import dotRandom from '../../../dot/js/dotRandom.js';
 import Range from '../../../dot/js/Range.js';
 import merge from '../../../phet-core/js/merge.js';
+import optionize from '../../../phet-core/js/optionize.js';
 import PhetFont from '../../../scenery-phet/js/PhetFont.js';
 import { AlignBox } from '../../../scenery/js/imports.js';
 import { AlignGroup } from '../../../scenery/js/imports.js';
@@ -41,19 +42,21 @@ import NumberSpinner from '../NumberSpinner.js';
 import OnOffSwitch from '../OnOffSwitch.js';
 import PageControl from '../PageControl.js';
 import Panel from '../Panel.js';
+import Slider from '../Slider.js';
 import sun from '../sun.js';
 import sunQueryParameters from '../sunQueryParameters.js';
 import ToggleSwitch from '../ToggleSwitch.js';
 import VSlider from '../VSlider.js';
-import DemosScreenView from './DemosScreenView.js';
+import DemosScreenView, { DemosScreenViewOptions } from './DemosScreenView.js';
 
 class ComponentsScreenView extends DemosScreenView {
-  constructor( options ) {
 
-    options = merge( {
-      tandem: Tandem.REQUIRED,
-      selectedDemoLabel: sunQueryParameters.component
-    }, options );
+  constructor( providedOptions: DemosScreenViewOptions ) {
+
+    const options = optionize<DemosScreenViewOptions, {}, DemosScreenViewOptions>( {
+      selectedDemoLabel: sunQueryParameters.component,
+      tandem: Tandem.REQUIRED
+    }, providedOptions );
 
     super( [
 
@@ -81,7 +84,7 @@ class ComponentsScreenView extends DemosScreenView {
 }
 
 // Creates a demo for ABSwitch
-function demoABSwitch( layoutBounds ) {
+function demoABSwitch( layoutBounds: Bounds2 ) {
 
   const property = new StringProperty( 'A' );
   const labelA = new Text( 'A', { font: new PhetFont( 24 ) } );
@@ -94,7 +97,7 @@ function demoABSwitch( layoutBounds ) {
 }
 
 // Creates a demo for AquaRadioButtonGroup
-function demoAquaRadioButtonGroup( layoutBounds ) {
+function demoAquaRadioButtonGroup( layoutBounds: Bounds2 ) {
 
   const font = new PhetFont( 20 );
 
@@ -132,12 +135,12 @@ function demoAquaRadioButtonGroup( layoutBounds ) {
 }
 
 // Creates a demo for Carousel
-function demoCarousel( layoutBounds ) {
+function demoCarousel( layoutBounds: Bounds2 ) {
 
   // create items
   const colors = [ 'red', 'blue', 'green', 'yellow', 'pink', 'white', 'orange', 'magenta', 'purple', 'pink' ];
-  const vItems = [];
-  const hItems = [];
+  const vItems: Node[] = [];
+  const hItems: Node[] = [];
   colors.forEach( color => {
     vItems.push( new Rectangle( 0, 0, 60, 60, { fill: color, stroke: 'black' } ) );
     hItems.push( new Circle( 30, { fill: color, stroke: 'black' } ) );
@@ -198,7 +201,7 @@ function demoCarousel( layoutBounds ) {
 }
 
 // Creates a demo for Checkbox
-function demoCheckbox( layoutBounds ) {
+function demoCheckbox( layoutBounds: Bounds2 ) {
 
   const property = new BooleanProperty( true );
   const enabledProperty = new BooleanProperty( true, { phetioFeatured: true } );
@@ -221,24 +224,27 @@ function demoCheckbox( layoutBounds ) {
 }
 
 // Creates a demo of ComboBox
-function demoComboBox( layoutBounds ) {
+function demoComboBox( layoutBounds: Bounds2 ) {
 
   const labels = [ 'one', 'two', 'three', 'four', 'five', 'six' ];
-  const items = [];
+  const items: ComboBoxItem<string>[] = [];
   labels.forEach( label => {
-    items.push( new ComboBoxItem( new Text( label, { font: new PhetFont( { size: 20 } ) } ), label ) );
+    items.push( new ComboBoxItem<string>( new Text( label, { font: new PhetFont( { size: 20 } ) } ), label ) );
   } );
 
   const selectedItemProperty = new Property( labels[ 0 ] );
 
   const listParent = new Node();
 
+  const enabledProperty = new BooleanProperty( true );
+
   const comboBox = new ComboBox( items, selectedItemProperty, listParent, {
     highlightFill: 'yellow',
-    listPosition: 'above'
+    listPosition: 'above',
+    enabledProperty: enabledProperty
   } );
 
-  const enabledCheckbox = new Checkbox( new Text( 'enabled', { font: new PhetFont( 20 ) } ), comboBox.enabledProperty );
+  const enabledCheckbox = new Checkbox( new Text( 'enabled', { font: new PhetFont( 20 ) } ), enabledProperty );
 
   const uiComponents = new VBox( {
     children: [ comboBox, enabledCheckbox ],
@@ -250,12 +256,12 @@ function demoComboBox( layoutBounds ) {
 }
 
 // Creates a demo for HSlider
-function demoHSlider( layoutBounds, options ) {
+function demoHSlider( layoutBounds: Bounds2, options: any ) {
   return demoSlider( layoutBounds, 'horizontal', options );
 }
 
 // Creates a demo for VSlider
-function demoVSlider( layoutBounds, options ) {
+function demoVSlider( layoutBounds: Bounds2, options: any ) {
   return demoSlider( layoutBounds, 'vertical', options );
 }
 
@@ -266,7 +272,7 @@ function demoVSlider( layoutBounds, options ) {
  * @param {Object} [options]
  * @returns {Node}
  */
-function demoSlider( layoutBounds, orientation, options ) {
+function demoSlider( layoutBounds: Bounds2, orientation: 'horizontal' | 'vertical', options: any ) {
 
   options = merge( {
     tandem: Tandem.REQUIRED,
@@ -285,7 +291,7 @@ function demoSlider( layoutBounds, orientation, options ) {
 
   const enabledRangeProperty = new Property( new Range( 0, 100 ) );
 
-  let slider = null;
+  let slider: Slider;
   if ( orientation === 'horizontal' ) {
     slider = new HSlider( property, range, merge( {}, options, {
       trackSize: new Dimension2( 300, 5 ),
@@ -392,25 +398,25 @@ function demoSlider( layoutBounds, orientation, options ) {
   return layoutBox;
 }
 
-function demoToggleSwitch( layoutBounds ) {
+function demoToggleSwitch( layoutBounds: Bounds2 ) {
   return new ToggleSwitch( new StringProperty( 'left' ), 'left', 'right', {
     center: layoutBounds.center
   } );
 }
 
 // Creates a demo for OnOffSwitch
-function demoOnOffSwitch( layoutBounds ) {
+function demoOnOffSwitch( layoutBounds: Bounds2 ) {
   return new OnOffSwitch( new BooleanProperty( true ), {
     center: layoutBounds.center
   } );
 }
 
 // Creates a demo for PageControl
-function demoPageControl( layoutBounds ) {
+function demoPageControl( layoutBounds: Bounds2 ) {
 
   // create items
   const colors = [ 'red', 'blue', 'green', 'yellow', 'pink', 'white', 'orange', 'magenta', 'purple', 'pink' ];
-  const items = [];
+  const items: Node[] = [];
   colors.forEach( color => {
     items.push( new Rectangle( 0, 0, 100, 100, { fill: color, stroke: 'black' } ) );
   } );
@@ -442,7 +448,7 @@ function demoPageControl( layoutBounds ) {
 }
 
 // Creates a demo for NumberSpinner
-function demoNumberSpinner( layoutBounds ) {
+function demoNumberSpinner( layoutBounds: Bounds2 ) {
 
   const valueProperty = new Property( 0 );
   const valueRangeProperty = new Property( new Range( -5, 5 ) );
@@ -508,8 +514,8 @@ function demoNumberSpinner( layoutBounds ) {
   } );
 }
 
-function demoAlignGroup( layoutBounds ) {
-  function highlightWrap( node ) {
+function demoAlignGroup( layoutBounds: Bounds2 ) {
+  function highlightWrap( node: Node ) {
     const rect = Rectangle.bounds( node.bounds, { fill: 'rgba(0,0,0,0.25)' } );
     node.boundsProperty.lazyLink( () => {
       rect.setRectBounds( node.bounds );
@@ -584,7 +590,7 @@ function demoAlignGroup( layoutBounds ) {
   } );
 }
 
-function demoAccordionBox( layoutBounds ) {
+function demoAccordionBox( layoutBounds: Bounds2 ) {
   const randomRect = new Rectangle( 0, 0, 100, 50, { fill: 'red' } );
 
   const resizeButton = new RectangularPushButton( {

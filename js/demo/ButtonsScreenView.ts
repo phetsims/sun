@@ -1,6 +1,5 @@
 // Copyright 2014-2021, University of Colorado Boulder
 
-// @ts-nocheck
 /**
  * Main ScreenView container for demonstrating and testing the various buttons.
  *
@@ -9,6 +8,7 @@
 
 import BooleanProperty from '../../../axon/js/BooleanProperty.js';
 import Property from '../../../axon/js/Property.js';
+import Bounds2 from '../../../dot/js/Bounds2.js';
 import Dimension2 from '../../../dot/js/Dimension2.js';
 import dotRandom from '../../../dot/js/dotRandom.js';
 import { Circle } from '../../../scenery/js/imports.js';
@@ -35,24 +35,24 @@ import Checkbox from '../Checkbox.js';
 import Panel from '../Panel.js';
 import sun from '../sun.js';
 import VerticalAquaRadioButtonGroup from '../VerticalAquaRadioButtonGroup.js';
-import DemosScreenView from './DemosScreenView.js';
+import DemosScreenView, { DemosScreenViewOptions } from './DemosScreenView.js';
 
 // constants
 const BUTTON_FONT_SIZE = 16;
 const BUTTON_FONT = new Font( { size: BUTTON_FONT_SIZE } );
 
 class ButtonsScreenView extends DemosScreenView {
-  constructor( options ) {
+  constructor( providedOptions: DemosScreenViewOptions ) {
     super( [
       { label: 'MomentaryButtons', createNode: demoMomentaryButtons },
       { label: 'PushButtons', createNode: demoPushButtons },
       { label: 'RadioButtons', createNode: demoRadioButtons },
       { label: 'ToggleButtons', createNode: demoToggleButtons }
-    ], options );
+    ], providedOptions );
   }
 }
 
-function demoRadioButtons( layoutBounds ) {
+function demoRadioButtons( layoutBounds: Bounds2 ) {
 
   // For enabling/disabling all buttons
   const buttonsEnabledProperty = new Property( true );
@@ -123,7 +123,7 @@ function demoRadioButtons( layoutBounds ) {
   } );
 }
 
-function demoToggleButtons( layoutBounds ) {
+function demoToggleButtons( layoutBounds: Bounds2 ) {
 
   // For enabling/disabling all buttons
   const buttonsEnabledProperty = new Property( true );
@@ -161,7 +161,7 @@ function demoToggleButtons( layoutBounds ) {
   } );
 }
 
-function demoMomentaryButtons( layoutBounds ) {
+function demoMomentaryButtons( layoutBounds: Bounds2 ) {
 
   // For enabling/disabling all buttons
   const buttonsEnabledProperty = new Property( true );
@@ -203,7 +203,7 @@ function demoMomentaryButtons( layoutBounds ) {
   } );
 }
 
-function demoPushButtons( layoutBounds ) {
+function demoPushButtons( layoutBounds: Bounds2 ) {
 
   // For enabling/disabling all buttons
   const buttonsEnabledProperty = new Property( true );
@@ -534,14 +534,14 @@ function demoPushButtons( layoutBounds ) {
   // Demonstrate dynamic colors for some buttons
   //===================================================================================
 
-  // Change colors of all of the buttons in pseudo3DButtonsBox
+  // Change colors of all buttons in pseudo3DButtonsBox
   const changeButtonColorsButton = new RectangularPushButton( {
     enabledProperty: buttonsEnabledProperty,
     content: new Text( '\u21e6 Change button colors', { font: BUTTON_FONT } ),
     listener: () => {
       console.log( 'changeButtonColorsButton fired' );
       pseudo3DButtonsBox.children.forEach( child => {
-        if ( child.baseColor !== undefined ) {
+        if ( child instanceof ButtonNode ) {
           child.baseColor = new Color(
             dotRandom.nextDoubleBetween( 0, 255 ),
             dotRandom.nextDoubleBetween( 0, 255 ),

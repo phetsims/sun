@@ -9,6 +9,7 @@
     "js/sun-main.js",
     "js/demo/**/*",
     "js/**/*test*",
-    "js/**/*Test*"
+    "js/**/*Test*",
+    "../chipper/node_modules/@types/lodash/index.d.ts"
   ]
 }
