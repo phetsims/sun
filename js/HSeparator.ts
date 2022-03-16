@@ -1,27 +1,29 @@
 // Copyright 2014-2022, University of Colorado Boulder
 
-// @ts-nocheck
 /**
  * HSeparator is a horizontal separator, typically used to separate a panel into logical sections.
  *
  * @author Chris Malley (PixelZoom, Inc.)
  */
 
-import merge from '../../phet-core/js/merge.js';
-import { Line } from '../../scenery/js/imports.js';
+import optionize from '../../phet-core/js/optionize.js';
+import { Line, LineOptions } from '../../scenery/js/imports.js';
 import sun from './sun.js';
+
+type HSeparatorOptions = LineOptions;
 
 class HSeparator extends Line {
 
   /**
-   * @param {number} width
-   * @param {Object} [options]
+   * @param width
+   * @param providedOptions
    */
-  constructor( width, options ) {
+  constructor( width: number, providedOptions?: HSeparatorOptions ) {
+    assert && assert( isFinite( width ) && width > 0 );
 
-    options = merge( {
+    const options = optionize<HSeparatorOptions, {}, LineOptions>( {
       stroke: 'rgb( 100, 100, 100 )'
-    }, options );
+    }, providedOptions );
 
     super( 0, 0, width, 0, options );
   }
