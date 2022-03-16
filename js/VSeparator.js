@@ -1,5 +1,6 @@
 // Copyright 2014-2022, University of Colorado Boulder
 
+// @ts-nocheck
 /**
  * VSeparator is a vertical separator, typically used to separate a panel into logical sections.
  *
