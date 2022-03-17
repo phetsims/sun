@@ -1,4 +1,4 @@
-// Copyright 2014-2022, University of Colorado Boulder
+// Copyright 2022, University of Colorado Boulder
 
 /**
  * HSeparator is a horizontal separator, typically used to separate a panel into logical sections.
