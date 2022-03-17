@@ -19,7 +19,7 @@ class HSeparator extends Line {
    * @param providedOptions
    */
   constructor( width: number, providedOptions?: HSeparatorOptions ) {
-    assert && assert( isFinite( width ) && width > 0 );
+    assert && assert( isFinite( width ) && width > 0, `invalid width=${width}` );
 
     const options = optionize<HSeparatorOptions, {}, LineOptions>( {
       stroke: 'rgb( 100, 100, 100 )'
