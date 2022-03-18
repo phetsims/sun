@@ -36,9 +36,9 @@ export type ComboBoxListItemNodeOptions = SelfOptions & VoicingOptions;
 
 export default class ComboBoxListItemNode<T> extends Voicing( Node, 0 ) {
 
-  // when true, the next voicing focus listener will supply the hint response in addition to
-  // the object response. It will then set this back to false.
-  private _supplyHintResponseOnNextFocus: boolean;
+  // when true, the next voicing focus listener will supply the response needed when opening the comboBox.
+  // It will then set this back to false.
+  private _supplyOpenResponseOnNextFocus: boolean;
 
   readonly item: ComboBoxItem<T>;
 
@@ -124,10 +124,7 @@ export default class ComboBoxListItemNode<T> extends Voicing( Node, 0 ) {
     options.children = [ highlightRectangle, itemNodeWrapper ];
 
     super( options );
-
-    // @private {boolean} - when true, the next voicing focus listener will supply the hint response in addition to
-    // the object response. It will then set this back to false.
-    this._supplyHintResponseOnNextFocus = false;
+    this._supplyOpenResponseOnNextFocus = false;
 
     // @public (read-only)
     this.item = item;
@@ -145,20 +142,23 @@ export default class ComboBoxListItemNode<T> extends Voicing( Node, 0 ) {
   }
 
   /**
-   * Ask for the voicing hint response upon next focus, but only for the very next focus event.
+   * Ask for the voicing response for opening the ComboBox upon next focus, but only for the very next focus event.
    */
-  supplyHintResponseOnNextFocus() {
-    this._supplyHintResponseOnNextFocus = true;
+  supplyOpenResponseOnNextFocus() {
+    this._supplyOpenResponseOnNextFocus = true;
   }
 
   /**
-   * A custom focus listener for this type, with conditional support for providing hint responses.
+   * A custom focus listener for this type, with conditional support for providing a normal focus vs an "open" response.
    */
   private comboBoxListItemNodeVoicingFocusListener() {
-    this.voicingSpeakObjectResponse( {
-      hintResponse: this._supplyHintResponseOnNextFocus ? this.voicingHintResponse : null
+    this.voicingSpeakFullResponse( {
+      nameResponse: this._supplyOpenResponseOnNextFocus ? this.voicingNameResponse : null,
+      objectResponse: this._supplyOpenResponseOnNextFocus ? null : this.voicingObjectResponse,
+      contextResponse: null,
+      hintResponse: this._supplyOpenResponseOnNextFocus ? this.voicingHintResponse : null
     } );
-    this._supplyHintResponseOnNextFocus = false;
+    this._supplyOpenResponseOnNextFocus = false;
   }
 }
 

@@ -216,7 +216,7 @@ export default class ComboBoxListBox<T> extends Panel {
       focus: () => {
         if ( this.visible ) {
           const listItemNode = this.getListItemNode( property.value );
-          listItemNode.supplyHintResponseOnNextFocus();
+          listItemNode.supplyOpenResponseOnNextFocus();
           listItemNode.focus();
         }
       },
