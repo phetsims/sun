@@ -22,7 +22,7 @@ import Range from '../../../dot/js/Range.js';
 import assertHasProperties from '../../../phet-core/js/assertHasProperties.js';
 import inheritance from '../../../phet-core/js/inheritance.js';
 import Orientation from '../../../phet-core/js/Orientation.js';
-import { animatedPanZoomSingleton, IInputListener, KeyboardUtils, Node, NodeOptions, SceneryEvent, SceneryListenerFunction, Voicing, VoicingOptions } from '../../../scenery/js/imports.js';
+import { IInputListener, KeyboardUtils, Node, NodeOptions, SceneryEvent, SceneryListenerFunction, Voicing, VoicingOptions } from '../../../scenery/js/imports.js';
 import Utterance from '../../../utterance-queue/js/Utterance.js';
 import sun from '../sun.js';
 import optionize, { OptionizeDefaults } from '../../../phet-core/js/optionize.js';
@@ -652,9 +652,6 @@ const AccessibleValueHandler = <SuperType extends Constructor>( Type: SuperType,
 
             // optional change callback after the valueProperty is set so that the listener can use the new value
             this._onChange( event );
-
-            // after any keyboard input, make sure that the Node stays in view
-            animatedPanZoomSingleton.initialized && animatedPanZoomSingleton.listener!.keepNodeInView( this._panTargetNode || ( this as unknown as Node ) );
           }
         }
       }
@@ -758,9 +755,6 @@ const AccessibleValueHandler = <SuperType extends Constructor>( Type: SuperType,
         // only one change per input, but still call optional change function - after valueProperty is set so
         // listener can use new value
         this._onChange( event );
-
-        // after any keyboard input, make sure that the Node stays in view
-        animatedPanZoomSingleton.initialized && animatedPanZoomSingleton.listener!.keepNodeInView( this._panTargetNode || ( this as unknown as Node ) );
 
         // end of change is the end of a drag
         this._onInteractionEnd( event );
