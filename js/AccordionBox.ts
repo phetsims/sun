@@ -134,7 +134,8 @@ export default class AccordionBox extends Node {
   static AccordionBoxIO: IOType;
 
   /**
-   * @param contentNode - Content that  will be shown or hidden as the accordion box is expanded/collapsed.
+   * @param contentNode - Content that  will be shown or hidden as the accordion box is expanded/collapsed. NOTE: AccordionBox
+   *                      places this Node in a pdomOrder, so you should not do that yourself.
    * @param [providedOptions] - Various key-value pairs that control the appearance and behavior.  Some options are
    *                             specific to this class while some are passed to the superclass.  See the code where
    *                             the options are set in the early portion of the constructor for details.
