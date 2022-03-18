@@ -14,13 +14,7 @@ import { Shape } from '../../kite/js/imports.js';
 import InstanceRegistry from '../../phet-core/js/documentation/InstanceRegistry.js';
 import merge from '../../phet-core/js/merge.js';
 import optionize from '../../phet-core/js/optionize.js';
-import { IColor, PathOptions, PDOMBehaviorFunction } from '../../scenery/js/imports.js';
-import { FocusHighlightFromNode, InteractiveHighlighting, NodeOptions } from '../../scenery/js/imports.js';
-import { PDOMPeer } from '../../scenery/js/imports.js';
-import { Node } from '../../scenery/js/imports.js';
-import { Path } from '../../scenery/js/imports.js';
-import { Rectangle } from '../../scenery/js/imports.js';
-import { Text } from '../../scenery/js/imports.js';
+import { FocusHighlightFromNode, IColor, InteractiveHighlighting, Node, NodeOptions, Path, PathOptions, PDOMBehaviorFunction, PDOMPeer, Rectangle, Text } from '../../scenery/js/imports.js';
 import accordionBoxClosedSoundPlayer from '../../tambo/js/shared-sound-players/accordionBoxClosedSoundPlayer.js';
 import accordionBoxOpenedSoundPlayer from '../../tambo/js/shared-sound-players/accordionBoxOpenedSoundPlayer.js';
 import SoundClipPlayer from '../../tambo/js/sound-generators/SoundClipPlayer.js';
@@ -451,7 +445,9 @@ export default class AccordionBox extends Node {
 
       pdomContainerNode.setPDOMAttribute( 'aria-hidden', !expanded );
 
-      this.expandCollapseButton.voicingSpeakFullResponse();
+      this.expandCollapseButton.voicingSpeakFullResponse( {
+        hintResponse: null
+      } );
     };
     this.expandedProperty.link( expandedPropertyObserver );
     this.disposeEmitterAccordionBox.addListener( () => this.expandedProperty.unlink( expandedPropertyObserver ) );
