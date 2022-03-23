@@ -12,11 +12,11 @@ import RadioButtonInteractionState from './RadioButtonInteractionState.js';
 import ButtonInteractionState from './ButtonInteractionState.js';
 
 type TButtonAppearanceStrategy = {
-  dispose?: () => void,
+  dispose?: () => void;
   new( content: PaintableNode,
        interactionStateProperty: IProperty<ButtonInteractionState | RadioButtonInteractionState>,
        baseColorProperty: Property<Color>,
-       options?: any ): any
+       options?: any ): any;
 }
 
 export default TButtonAppearanceStrategy;

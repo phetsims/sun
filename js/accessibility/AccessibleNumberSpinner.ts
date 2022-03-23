@@ -38,8 +38,8 @@ import AccessibleValueHandler, { AccessibleValueHandlerOptions } from './Accessi
 const numberSpinnerRoleDescriptionString = sunStrings.a11y.numberSpinnerRoleDescription;
 
 type AccessibleNumberSpinnerSelfOptions = {
-  timerDelay?: number,
-  timerInterval?: number
+  timerDelay?: number;
+  timerInterval?: number;
 }
 
 type AccessibleNumberSpinnerOptions = AccessibleNumberSpinnerSelfOptions & AccessibleValueHandlerOptions;

@@ -34,12 +34,12 @@ type SunDemo = {
 type SelfOptions = {
 
   // label field of the {SunDemo} to be selected initially, defaults to the first demo after sorting
-  selectedDemoLabel?: string | null,
+  selectedDemoLabel?: string | null;
 
   // See https://github.com/phetsims/sun/issues/386
   // true = caches Nodes for all demos that have been selected
   // false = keeps only the Node for the selected demo in memory
-  cacheDemos?: boolean,
+  cacheDemos?: boolean;
 };
 
 export type DemosScreenViewOptions = SelfOptions & ScreenViewOptions;
