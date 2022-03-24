@@ -93,7 +93,7 @@ export default class ButtonNode extends Voicing( Node, 0 ) {
    * @param buttonModel
    * @param buttonBackground - the background of the button (like a circle or rectangle).
    * @param interactionStateProperty - a Property that is used to drive the visual appearance of the button
-   * @param [options] - this type does not mutate its options, but relies on the subtype to
+   * @param providedOptions - this type does not mutate its options, but relies on the subtype to
    */
   constructor( buttonModel: ButtonModel, buttonBackground: PaintableNode, interactionStateProperty: IProperty<ButtonInteractionState>, providedOptions?: ButtonNodeOptions ) {
 
