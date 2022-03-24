@@ -9,7 +9,7 @@
  */
 
 import Property from '../../axon/js/Property.js';
-import merge from '../../phet-core/js/merge.js';
+import optionize from '../../phet-core/js/optionize.js';
 import { Node, NodeOptions } from '../../scenery/js/imports.js';
 import Tandem from '../../tandem/js/Tandem.js';
 import sun from './sun.js';
@@ -19,7 +19,13 @@ export type ToggleNodeElement<T> = {
   node: Node; // the Node associated with the value, to be shown by the ToggleNode
 }
 
-export type ToggleNodeOptions = NodeOptions;
+type SelfOptions = {
+
+  // {function} determines the relative layout of element Nodes. See below for pre-defined layout.
+  alignChildren?: ( children: Node[] ) => void;
+};
+
+export type ToggleNodeOptions = SelfOptions & NodeOptions;
 
 export default class ToggleNode<T> extends Node {
 
@@ -41,10 +47,12 @@ export default class ToggleNode<T> extends Node {
       } );
     }
 
-    const options = merge( {
+    const options = optionize<ToggleNodeOptions, SelfOptions, NodeOptions>( {
 
-      // {function} determines the relative layout of element Nodes. See below for pre-defined layout.
+      // SelfOptions
       alignChildren: ToggleNode.CENTER,
+
+      // NodeOptions
       tandem: Tandem.OPTIONAL
     }, providedOptions );
 

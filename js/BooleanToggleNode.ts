@@ -13,7 +13,9 @@ import ToggleNode, { ToggleNodeOptions } from './ToggleNode.js';
 import { Node } from '../../scenery/js/imports.js';
 import Property from '../../axon/js/Property.js';
 
-export type BooleanToggleNodeOptions = ToggleNodeOptions;
+type SelfOptions = {};
+
+export type BooleanToggleNodeOptions = SelfOptions & ToggleNodeOptions;
 
 export default class BooleanToggleNode extends ToggleNode<boolean> {
 
