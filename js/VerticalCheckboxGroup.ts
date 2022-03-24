@@ -24,18 +24,19 @@ type VerticalCheckboxGroupItem = {
   tandem?: Tandem; // optional tandem for PhET-iO
 };
 
-type VerticalCheckboxGroupSelfOptions = {
+type SelfOptions = {
   checkboxOptions?: any;
   touchAreaXDilation?: number;
   mouseAreaXDilation?: number;
 };
-type VerticalCheckboxGroupOptions = VerticalCheckboxGroupSelfOptions & Omit<VBoxOptions, 'children'>;
+
+type VerticalCheckboxGroupOptions = SelfOptions & Omit<VBoxOptions, 'children'>;
 
 class VerticalCheckboxGroup extends VBox {
 
   constructor( items: VerticalCheckboxGroupItem[], providedOptions?: VerticalCheckboxGroupOptions ) {
 
-    const options = optionize<VerticalCheckboxGroupOptions, VerticalCheckboxGroupSelfOptions, VBoxOptions, 'spacing'>( {
+    const options = optionize<VerticalCheckboxGroupOptions, SelfOptions, VBoxOptions, 'spacing'>( {
 
       // {Object|null} options passed to constructor of the Checkbox
       checkboxOptions: null,
