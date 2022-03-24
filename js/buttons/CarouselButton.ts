@@ -47,7 +47,7 @@ type SelfOptions = {
 
 export type CarouselButtonOptions = SelfOptions & RectangularPushButtonOptions;
 
-class CarouselButton extends RectangularPushButton {
+export default class CarouselButton extends RectangularPushButton {
 
   /**
    * @param providedOptions
@@ -146,4 +146,3 @@ function computePointerArea( button: CarouselButton, arrowDirection: ArrowDirect
 }
 
 sun.register( 'CarouselButton', CarouselButton );
-export default CarouselButton;
