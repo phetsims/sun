@@ -4,15 +4,17 @@
  * This toggle button uses a boolean Property and a trueNode and falseNode to display its content.
  */
 
-import merge from '../../../phet-core/js/merge.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import BooleanToggleNode from '../BooleanToggleNode.js';
 import sun from '../sun.js';
 import RectangularToggleButton, { RectangularToggleButtonOptions } from './RectangularToggleButton.js';
 import Property from '../../../axon/js/Property.js';
 import { Node } from '../../../scenery/js/imports.js';
+import optionize from '../../../phet-core/js/optionize.js';
 
-export type BooleanRectangularToggleButtonOptions = Omit<RectangularToggleButtonOptions, 'content'>;
+type SelfOptions = {};
+
+export type BooleanRectangularToggleButtonOptions = SelfOptions & Omit<RectangularToggleButtonOptions, 'content'>;
 
 export default class BooleanRectangularToggleButton extends RectangularToggleButton<boolean> {
 
@@ -26,7 +28,7 @@ export default class BooleanRectangularToggleButton extends RectangularToggleBut
    */
   constructor( trueNode: Node, falseNode: Node, booleanProperty: Property<boolean>, providedOptions?: BooleanRectangularToggleButtonOptions ) {
 
-    const options = merge( {
+    const options = optionize<BooleanRectangularToggleButtonOptions, SelfOptions, RectangularToggleButtonOptions>( {
       content: new BooleanToggleNode( trueNode, falseNode, booleanProperty ),
       tandem: Tandem.REQUIRED
     }, providedOptions );
