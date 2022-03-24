@@ -1,5 +1,6 @@
 // Copyright 2013-2022, University of Colorado Boulder
 
+// @ts-nocheck
 /**
  * Radio button with a pseudo-Aqua (Mac OS) look. See "options" comment for list of options.
  *
