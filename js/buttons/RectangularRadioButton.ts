@@ -9,8 +9,9 @@
 
 import Emitter from '../../../axon/js/Emitter.js';
 import IProperty from '../../../axon/js/IProperty.js';
-import merge from '../../../phet-core/js/merge.js';
-import { Color, Node, PaintableNode, PaintColorProperty } from '../../../scenery/js/imports.js';
+import optionize from '../../../phet-core/js/optionize.js';
+import { Color, IColor, Node, PaintableNode, PaintColorProperty } from '../../../scenery/js/imports.js';
+import ISoundPlayer from '../../../tambo/js/ISoundPlayer.js';
 import pushButtonSoundPlayer from '../../../tambo/js/shared-sound-players/pushButtonSoundPlayer.js';
 import EventType from '../../../tandem/js/EventType.js';
 import PhetioObject from '../../../tandem/js/PhetioObject.js';
@@ -20,40 +21,62 @@ import sun from '../sun.js';
 import ButtonModel from './ButtonModel.js';
 import RadioButtonInteractionState from './RadioButtonInteractionState.js';
 import RadioButtonInteractionStateProperty from './RadioButtonInteractionStateProperty.js';
-import RectangularButton from './RectangularButton.js';
+import RectangularButton, { RectangularButtonOptions } from './RectangularButton.js';
 import TButtonAppearanceStrategy from './TButtonAppearanceStrategy.js';
 import TContentAppearanceStrategy from './TContentAppearanceStrategy.js';
 
+type SelfOptions = {
+
+  // Options used by RectangularRadioButton.FlatAppearanceStrategy.
+  // If you define your own buttonAppearanceStrategy, then you may need to add your own options.
+  overFill?: IColor;
+  overStroke?: IColor;
+  overLineWidth?: number | null;
+  overButtonOpacity?: number;
+  selectedStroke?: IColor;
+  selectedLineWidth?: number;
+  selectedButtonOpacity?: number;
+  deselectedStroke?: IColor;
+  deselectedLineWidth?: number;
+  deselectedButtonOpacity?: number;
+
+  // Options used by RectangularRadioButton.ContentAppearanceStrategy.
+  // If you define your own contentAppearanceStrategy, then you may need to add your own options.
+  overContentOpacity?: number;
+  selectedContentOpacity?: number;
+  deselectedContentOpacity?: number;
+
+  // Sound generation - If set to null a default will be used that is based on this button's
+  // position within the radio button group.  Can be set to SoundPlayer.NO_SOUND to disable.
+  soundPlayer?: ISoundPlayer | null;
+};
+
+export type RectangularRadioButtonOptions = SelfOptions & RectangularButtonOptions;
+
 export default class RectangularRadioButton<T> extends RectangularButton {
-  interactionStateProperty: RadioButtonInteractionStateProperty;
+
+  readonly interactionStateProperty: RadioButtonInteractionStateProperty;
 
   // the Property this button changes
-  property: IProperty<T>;
+  readonly property: IProperty<T>;
 
   // the value that is set to the Property when this button is pressed
-  value: T;
+  readonly value: T;
 
-  private firedEmitter: any;
+  private firedEmitter: Emitter<[]>;
 
   private disposeRectangularRadioButton: () => void;
 
   /**
    * @param property - axon Property that can take on a set of values, one for each radio button in the group
    * @param value - value when this radio button is selected
-   * @param [options]
+   * @param providedOptions
    */
-  constructor( property: IProperty<T>, value: T, options?: any ) {
+  constructor( property: IProperty<T>, value: T, providedOptions?: RectangularRadioButtonOptions ) {
 
-    options = merge( {
+    const options = optionize<RectangularRadioButtonOptions, SelfOptions, RectangularButtonOptions, 'tandem'>( {
 
-      // The fill for the rectangle behind the radio buttons.  Default color is bluish color, as in the other button library.
-      baseColor: ColorConstants.LIGHT_BLUE,
-
-      // Class that determines the button's appearance for the values of interactionStateProperty.
-      buttonAppearanceStrategy: RectangularRadioButton.FlatAppearanceStrategy,
-
-      // Options used by RectangularRadioButton.FlatAppearanceStrategy.
-      // If you define your own buttonAppearanceStrategy, then you may need to add your own options.
+      // SelfOptions
       overFill: null,
       overStroke: null,
       overLineWidth: null,
@@ -64,19 +87,15 @@ export default class RectangularRadioButton<T> extends RectangularButton {
       deselectedStroke: new Color( 50, 50, 50 ),
       deselectedLineWidth: 1,
       deselectedButtonOpacity: 0.6,
-
-      // Class that determines the content's appearance for the values of interactionStateProperty.
-      contentAppearanceStrategy: RectangularRadioButton.ContentAppearanceStrategy,
-
-      // Options used by RectangularRadioButton.ContentAppearanceStrategy.
-      // If you define your own contentAppearanceStrategy, then you may need to add your own options.
       overContentOpacity: 0.8,
       selectedContentOpacity: 1,
       deselectedContentOpacity: 0.6,
-
-      // {SoundPlayer|null} - sound generation - If set to null a default will be used that is based on this button's
-      // position within the radio button group.  Can be set to SoundPlayer.NO_SOUND to disable.
       soundPlayer: null,
+
+      // RectangularButtonOptions
+      baseColor: ColorConstants.LIGHT_BLUE,
+      buttonAppearanceStrategy: RectangularRadioButton.FlatAppearanceStrategy,
+      contentAppearanceStrategy: RectangularRadioButton.ContentAppearanceStrategy,
 
       // pdom
       tagName: 'input',
@@ -89,9 +108,8 @@ export default class RectangularRadioButton<T> extends RectangularButton {
       // phet-io
       tandem: Tandem.REQUIRED,
       phetioReadOnly: PhetioObject.DEFAULT_OPTIONS.phetioReadOnly // to support properly passing this to children, see https://github.com/phetsims/tandem/issues/60
-    }, options );
+    }, providedOptions );
 
-    assert && assert( options.tandem instanceof Tandem, 'invalid tandem' );
     assert && assert( !options.tandem.supplied || options.tandem.name.endsWith( 'RadioButton' ),
       `RectangularRadioButton tandem.name must end with RadioButton: ${options.tandem.phetioID}` );
 
@@ -156,7 +174,7 @@ export default class RectangularRadioButton<T> extends RectangularButton {
     };
   }
 
-  override dispose() {
+  override dispose(): void {
     this.disposeRectangularRadioButton();
     super.dispose();
   }
@@ -164,7 +182,7 @@ export default class RectangularRadioButton<T> extends RectangularButton {
   /**
    * fire on up if the button is enabled, public for use in the accessibility tree
    */
-  fire() {
+  fire(): void {
 
     // Note that @protected this.buttonModel is defined in superclass
     if ( this.buttonModel.enabledProperty.get() ) {
@@ -177,7 +195,6 @@ export default class RectangularRadioButton<T> extends RectangularButton {
    * FlatAppearanceStrategy is a value for RectangularRadioButton options.buttonAppearanceStrategy. It makes radio buttons
    * that look flat, i.e. no shading or highlighting, but that change color on mouseover, press, selected, etc.
    */
-
   static FlatAppearanceStrategy: TButtonAppearanceStrategy = class FlatAppearanceStrategy {
 
     dispose: () => void;
