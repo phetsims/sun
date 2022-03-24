@@ -8,15 +8,11 @@
  */
 
 import Property from '../../axon/js/Property.js';
-import merge from '../../phet-core/js/merge.js';
-import { PDOMPeer, SceneryEvent } from '../../scenery/js/imports.js';
-import { HStrut } from '../../scenery/js/imports.js';
-import { LayoutBox } from '../../scenery/js/imports.js';
-import { Node } from '../../scenery/js/imports.js';
-import { SceneryConstants } from '../../scenery/js/imports.js';
+import optionize from '../../phet-core/js/optionize.js';
+import { HStrut, LayoutBox, LayoutBoxOptions, Node, PDOMPeer, SceneryConstants, SceneryEvent } from '../../scenery/js/imports.js';
 import multiSelectionSoundPlayerFactory from '../../tambo/js/multiSelectionSoundPlayerFactory.js';
 import Tandem from '../../tandem/js/Tandem.js';
-import AquaRadioButton from './AquaRadioButton.js';
+import AquaRadioButton, { AquaRadioButtonOptions } from './AquaRadioButton.js';
 import sun from './sun.js';
 
 // pdom - An id for each instance of AquaRadioButtonGroup, passed to individual buttons in the group.
@@ -28,8 +24,25 @@ let instanceCount = 0;
 // to prefix instanceCount in case there are different kinds of "groups"
 const CLASS_NAME = 'AquaRadioButtonGroup';
 
-//TODO https://github.com/phetsims/chipper/issues/1128 replace any with LayoutBoxOptions, when it exists
-export type AquaRadioButtonGroupOptions = Omit< any, 'children' >;
+// a subset of AquaRadioButtonOptions is allowed
+type RadioButtonOptions = Omit<AquaRadioButtonOptions, 'a11yNameAttribute' | 'labelContent' | 'soundPlayer' | 'tandem'>;
+
+type SelfOptions = {
+
+  // options propagated to AquaRadioButton instances
+  radioButtonOptions?: RadioButtonOptions | null;
+
+  // Dilation of pointer areas for each radio button.
+  // These are not part of radioButtonOptions because AquaRadioButton has no pointerArea options.
+  // X dilation is ignored for orientation === 'horizontal'.
+  // Y dilation is ignored for orientation === 'vertical'.
+  touchAreaXDilation?: number;
+  touchAreaYDilation?: number;
+  mouseAreaXDilation?: number;
+  mouseAreaYDilation?: number;
+};
+
+export type AquaRadioButtonGroupOptions = SelfOptions & Omit<LayoutBoxOptions, 'children'>;
 
 export type AquaRadioButtonGroupItem<T> = {
   value: T; // value associated with the button
@@ -40,38 +53,30 @@ export type AquaRadioButtonGroupItem<T> = {
 
 export default class AquaRadioButtonGroup<T> extends LayoutBox {
 
-  private readonly radioButtons: AquaRadioButton[];
+  private readonly radioButtons: AquaRadioButton<T>[];
   private readonly disposeAquaRadioButtonGroup: () => void;
 
   /**
    * @param property
    * @param items
-   * @param options
+   * @param providedOptions
    */
-  constructor( property: Property<T>, items: AquaRadioButtonGroupItem<T>[], options?: AquaRadioButtonGroupOptions ) {
+  constructor( property: Property<T>, items: AquaRadioButtonGroupItem<T>[], providedOptions?: AquaRadioButtonGroupOptions ) {
 
     instanceCount++;
 
-    options = merge( {
+    const options = optionize<AquaRadioButtonGroupOptions, SelfOptions, LayoutBoxOptions, 'tandem' | 'spacing'>( {
 
-      // {Object|null} options passed to constructor of the AquaRadioButtons
+      // AquaRadioButtonGroupOptions
       radioButtonOptions: null,
-
-      // Dilation of pointer areas for each radio button.
-      // These are not part of radioButtonOptions because AquaRadioButton has no pointerArea options.
-      // X dilation is ignored for orientation === 'horizontal'.
-      // Y dilation is ignored for orientation === 'vertical'.
       touchAreaXDilation: 0,
       touchAreaYDilation: 0,
       mouseAreaXDilation: 0,
       mouseAreaYDilation: 0,
 
-      // LayoutBox options
+      // LayoutBoxOptions
       orientation: 'vertical', // Aqua radio buttons are typically vertical, rarely horizontal
       spacing: 3, // space between each button, perpendicular to options.orientation
-
-      // Node options
-      // {number} - opt into Node's disabled opacity when enabled:false
       disabledOpacity: SceneryConstants.DISABLED_OPACITY,
 
       // phet-io
@@ -84,13 +89,13 @@ export default class AquaRadioButtonGroup<T> extends LayoutBox {
       labelTagName: 'h3',
       ariaRole: 'radiogroup',
       groupFocusHighlight: true
-    }, options );
+    }, providedOptions );
 
     // Determine the max item width
     const maxItemWidth = _.maxBy( items, ( item: AquaRadioButtonGroupItem<T> ) => item.node.width )!.node.width;
 
     // Create a radio button for each item
-    const radioButtons: AquaRadioButton[] = [];
+    const radioButtons: AquaRadioButton<T>[] = [];
     for ( let i = 0; i < items.length; i++ ) {
       const item = items[ i ];
 
@@ -101,12 +106,12 @@ export default class AquaRadioButtonGroup<T> extends LayoutBox {
                       item.node;
 
       const radioButton = new AquaRadioButton( property, item.value, content,
-        merge( {}, options.radioButtonOptions, {
-          tandem: item.tandemName ? options.tandem.createTandem( item.tandemName ) : Tandem.REQUIRED,
+        optionize<RadioButtonOptions, {}, AquaRadioButtonOptions>( {
+          a11yNameAttribute: CLASS_NAME + instanceCount,
           labelContent: item.labelContent || null,
           soundPlayer: multiSelectionSoundPlayerFactory.getSelectionSoundPlayer( i ),
-          a11yNameAttribute: CLASS_NAME + instanceCount
-        } ) );
+          tandem: item.tandemName ? options.tandem.createTandem( item.tandemName ) : Tandem.REQUIRED
+        }, options.radioButtonOptions! ) );
 
       // set pointer areas
       if ( options.orientation === 'vertical' ) {
@@ -161,8 +166,8 @@ export default class AquaRadioButtonGroup<T> extends LayoutBox {
    * Gets the radio button that corresponds to the specified value.
    * @param value
    */
-  getButton( value: T ): AquaRadioButton {
-    const button = _.find( this.radioButtons, ( radioButton: AquaRadioButton ) => radioButton.value === value );
+  getButton( value: T ): AquaRadioButton<T> {
+    const button = _.find( this.radioButtons, ( radioButton: AquaRadioButton<T> ) => radioButton.value === value );
     assert && assert( button, `no radio button found for value ${value}` );
     return button!;
   }

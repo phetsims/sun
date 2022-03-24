@@ -1,46 +1,82 @@
 // Copyright 2013-2022, University of Colorado Boulder
 
-// @ts-nocheck
 /**
  * Radio button with a pseudo-Aqua (Mac OS) look. See "options" comment for list of options.
  *
  * @author Chris Malley (PixelZoom, Inc.)
  */
 
+import Property from '../../axon/js/Property.js';
 import InstanceRegistry from '../../phet-core/js/documentation/InstanceRegistry.js';
-import merge from '../../phet-core/js/merge.js';
-import { Voicing } from '../../scenery/js/imports.js';
-import { FireListener } from '../../scenery/js/imports.js';
-import { Circle } from '../../scenery/js/imports.js';
-import { Node } from '../../scenery/js/imports.js';
-import { Rectangle } from '../../scenery/js/imports.js';
-import { SceneryConstants } from '../../scenery/js/imports.js';
+import optionize from '../../phet-core/js/optionize.js';
+import { Circle, FireListener, IColor, Node, Rectangle, SceneryConstants, Voicing, VoicingOptions } from '../../scenery/js/imports.js';
+import ISoundPlayer from '../../tambo/js/ISoundPlayer.js';
 import multiSelectionSoundPlayerFactory from '../../tambo/js/multiSelectionSoundPlayerFactory.js';
 import Tandem from '../../tandem/js/Tandem.js';
 import sun from './sun.js';
 
-// constants
-const DEFAULT_RADIUS = 7;
+type SelfOptions = {
 
-class AquaRadioButton extends Voicing( Node, 0 ) {
+  // color used to fill the center of the button when it's selected
+  centerColor?: IColor;
+
+  // radius of the button
+  radius?: number;
+
+  // color used to fill the button when it's selected
+  selectedColor?: IColor;
+
+  // color used to fill the button when it's deselected
+  deselectedColor?: IColor;
+
+  // horizontal space between the button and the labelNode
+  xSpacing?: number;
+
+  // color used to stroke the outer edge of the button
+  stroke?: IColor;
+
+  // sound generator, usually overridden when creating a group of these
+  soundPlayer?: ISoundPlayer;
+
+  // Each button in a group of radio buttons must have the same 'name' attribute to be considered a 'group' by the
+  // browser. Otherwise, arrow keys will navigate through all inputs of type radio in the document.
+  a11yNameAttribute?: string | number | null;
+};
+
+export type AquaRadioButtonOptions = SelfOptions & VoicingOptions;
+
+export default class AquaRadioButton<T> extends Voicing( Node, 0 ) {
+
+  // the value associated with this radio button
+  public readonly value: T;
+
+  private readonly disposeAquaRadioButton: () => void;
+
+  public static DEFAULT_RADIUS = 7;
 
   /**
    * @mixes {Voicing}
-   * @param {Property} property
-   * @param {*} value - the value that corresponds to this button, same type as property
-   * @param {Node} labelNode - Node that will be vertically centered to the right of the button
-   * @param {Object} [options]
+   * @param property
+   * @param value - the value that corresponds to this button, same type as property
+   * @param labelNode - Node that will be vertically centered to the right of the button
+   * @param providedOptions
    */
-  constructor( property, value, labelNode, options ) {
+  constructor( property: Property<T>, value: T, labelNode: Node, providedOptions?: AquaRadioButtonOptions ) {
 
-    options = merge( {
+    const options = optionize<AquaRadioButtonOptions, SelfOptions, VoicingOptions, 'tandem'>( {
+
+      // SelfOptions
+      centerColor: 'black',
+      radius: AquaRadioButton.DEFAULT_RADIUS,
+      selectedColor: 'rgb( 143, 197, 250 )',
+      deselectedColor: 'white',
+      xSpacing: 8,
+      stroke: 'black',
+      soundPlayer: multiSelectionSoundPlayerFactory.getSelectionSoundPlayer( 0 ),
+      a11yNameAttribute: null,
+
+      // NodeOptions
       cursor: 'pointer',
-      selectedColor: 'rgb( 143, 197, 250 )', // color used to fill the button when it's selected
-      deselectedColor: 'white', // color used to fill the button when it's deselected
-      centerColor: 'black', // color used to fill the center of teh button when it's selected
-      radius: DEFAULT_RADIUS, // radius of the button
-      xSpacing: 8, // horizontal space between the button and the labelNode
-      stroke: 'black', // color used to stroke the outer edge of the button
 
       // {number} - opt into Node's disabled opacity when enabled:false
       disabledOpacity: SceneryConstants.DISABLED_OPACITY,
@@ -50,24 +86,16 @@ class AquaRadioButton extends Voicing( Node, 0 ) {
       visiblePropertyOptions: { phetioFeatured: true },
       phetioEnabledPropertyInstrumented: true, // opt into default PhET-iO instrumented enabledProperty
 
-      // {SoundPlayer} - sound generator, usually overridden when creating a group of these
-      soundPlayer: multiSelectionSoundPlayerFactory.getSelectionSoundPlayer( 0 ),
-
       // pdom
       tagName: 'input',
       inputType: 'radio',
       containerTagName: 'li',
       labelTagName: 'label',
       appendLabel: true,
-      appendDescription: true,
+      appendDescription: true
 
-      // {string|number|null} - Each button in a group of radio buttons must have the same 'name' attribute to be
-      // considered a 'group' by the browser. Otherwise, arrow keys will navigate through all inputs of type radio in
-      // the document
-      a11yNameAttribute: null
-    }, options );
+    }, providedOptions );
 
-    assert && assert( options.tandem instanceof Tandem, 'invalid tandem' );
     assert && assert( !options.tandem.supplied || options.tandem.name.endsWith( 'RadioButton' ),
       `AquaRadioButton tandem.name must end with RadioButton: ${options.tandem.phetioID}` );
 
@@ -108,7 +136,7 @@ class AquaRadioButton extends Voicing( Node, 0 ) {
     this.addChild( deselectedNode );
 
     // sync control with model
-    const syncWithModel = newValue => {
+    const syncWithModel = ( newValue: T ) => {
       selectedNode.visible = ( newValue === value );
       deselectedNode.visible = !selectedNode.visible;
     };
@@ -141,8 +169,8 @@ class AquaRadioButton extends Voicing( Node, 0 ) {
 
     // pdom - when the Property changes, make sure the correct radio button is marked as 'checked' so that this button
     // receives focus on 'tab'
-    const pdomCheckedListener = newValue => {
-      this.pdomChecked = newValue === value;
+    const pdomCheckedListener = ( newValue: T ) => {
+      this.pdomChecked = ( newValue === value );
     };
     property.link( pdomCheckedListener );
 
@@ -178,7 +206,4 @@ class AquaRadioButton extends Voicing( Node, 0 ) {
   }
 }
 
-AquaRadioButton.DEFAULT_RADIUS = DEFAULT_RADIUS;
-
 sun.register( 'AquaRadioButton', AquaRadioButton );
-export default AquaRadioButton;
