@@ -10,10 +10,10 @@ import { Node } from '../../../scenery/js/imports.js';
 import RadioButtonInteractionState from './RadioButtonInteractionState.js';
 
 type TContentAppearanceStrategy = {
-  dispose?: () => void,
+  dispose?: () => void;
   new( content: Node,
        interactionStateProperty: IProperty<RadioButtonInteractionState>,
-       options: any ): any
+       options: any ): any;
 };
 
 export default TContentAppearanceStrategy;

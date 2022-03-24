@@ -32,10 +32,10 @@ const CLASS_NAME = 'AquaRadioButtonGroup';
 export type AquaRadioButtonGroupOptions = Omit< any, 'children' >;
 
 export type AquaRadioButtonGroupItem<T> = {
-  value: T, // value associated with the button
-  node: Node, // label for the button
-  tandemName?: string, // name of the tandem for PhET-iO
-  labelContent?: string // label for a11y
+  value: T; // value associated with the button
+  node: Node; // label for the button
+  tandemName?: string; // name of the tandem for PhET-iO
+  labelContent?: string; // label for a11y
 };
 
 export default class AquaRadioButtonGroup<T> extends LayoutBox {

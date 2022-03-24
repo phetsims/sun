@@ -65,7 +65,7 @@ type SelfOptions = {
   buttonYMargin?: number;
 
   // content
-  contentAlign?: 'left' | 'center' | 'right'
+  contentAlign?: 'left' | 'center' | 'right';
   contentXMargin?: number;
   contentYMargin?: number;
   contentXSpacing?: number;
@@ -79,13 +79,13 @@ type SelfOptions = {
 
   // voicing - These are defined here in AccordionBox (duplicated from Voicing) so that they can be passed to the
   // expandCollapse button, which handles voicing for AccordionBox, without AccordionBox mixing Voicing itself.
-  voicingNameResponse?: VoicingResponse,
-  voicingObjectResponse?: VoicingResponse,
-  voicingContextResponse?: VoicingResponse,
-  voicingHintResponse?: VoicingResponse,
+  voicingNameResponse?: VoicingResponse;
+  voicingObjectResponse?: VoicingResponse;
+  voicingContextResponse?: VoicingResponse;
+  voicingHintResponse?: VoicingResponse;
 
   // pdom
-  headingTagName?: string
+  headingTagName?: string;
 };
 export type AccordionBoxOptions = SelfOptions & NodeOptions;
 

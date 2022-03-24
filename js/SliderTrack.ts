@@ -44,7 +44,7 @@ type SelfOptions = {
   soundGenerator?: ValueChangeSoundGenerator | null;
 
   // Options for the default sound generator.  These should only be provided when using the default.
-  valueChangeSoundGeneratorOptions?: ValueChangeSoundGeneratorOptions,
+  valueChangeSoundGeneratorOptions?: ValueChangeSoundGeneratorOptions;
 };
 
 export type SliderTrackOptions = SelfOptions & NodeOptions;

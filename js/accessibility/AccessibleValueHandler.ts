@@ -45,11 +45,11 @@ type CreateTextFunction = {
    * @param previousValue - just the "oldValue" from the Property listener
    * @returns - text/response/string to be set to the primarySibling, null means nothing will happen
    * */
-  ( pdomMappedValue: number, newValue: number, previousValue: number | null ): string | null,
+  ( pdomMappedValue: number, newValue: number, previousValue: number | null ): string | null;
 
   // if this function needs resetting, include a `reset` field on this function to be called when the
   // AccessibleValueHandler is reset.
-  reset?: () => void
+  reset?: () => void;
 }
 
 type VoicingOnEndResponseOptions = {

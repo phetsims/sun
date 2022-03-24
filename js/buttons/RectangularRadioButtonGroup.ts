@@ -32,15 +32,15 @@ export type RectangularRadioButtonContentYAlign = typeof BUTTON_CONTENT_Y_ALIGN_
 export type RectangularRadioButtonLabelAlign = 'top' | 'bottom' | 'left' | 'right';
 
 type RectangularRadioButtonItem<T> = {
-  node: Node, // primary depiction for the button
-  value: T, // value associated with the button
-  label?: Node, // If a label is provided, the button becomes a LayoutBox with the label and radio button
-  phetioDocumentation?: string, // optional documentation for PhET-iO
-  tandemName?: string, // optional tandem for PhET-iO
-  tandem?: never, // use tandemName instead of a Tandem instance
-  labelContent?: string // optional label for a11y (description and voicing)
+  node: Node; // primary depiction for the button
+  value: T; // value associated with the button
+  label?: Node; // If a label is provided, the button becomes a LayoutBox with the label and radio button
+  phetioDocumentation?: string; // optional documentation for PhET-iO
+  tandemName?: string; // optional tandem for PhET-iO
+  tandem?: never; // use tandemName instead of a Tandem instance
+  labelContent?: string; // optional label for a11y (description and voicing)
   voicingContextResponse?: VoicingResponse;
-  descriptionContent?: string // optional label for a11y
+  descriptionContent?: string; // optional label for a11y
 }
 
 // pdom - Unique ID for each instance of RectangularRadioButtonGroup, passed to individual buttons in the group. All buttons in
@@ -68,7 +68,7 @@ type SelfOptions = {
   deselectedButtonOpacity?: number;
 
   // Class that determines the content's appearance for the values of interactionStateProperty.
-  contentAppearanceStrategy?: TContentAppearanceStrategy | null,
+  contentAppearanceStrategy?: TContentAppearanceStrategy | null;
 
   // Options used by RectangularRadioButton.ContentAppearanceStrategy.
   //TODO https://github.com/phetsims/sun/issues/653 These are already specified in RectangularRadioButton, but
