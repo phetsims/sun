@@ -11,9 +11,11 @@ import merge from '../../phet-core/js/merge.js';
 import AquaRadioButtonGroup, { AquaRadioButtonGroupItem, AquaRadioButtonGroupOptions } from './AquaRadioButtonGroup.js';
 import sun from './sun.js';
 
-type VerticalAquaRadioButtonGroupOptions = Omit< AquaRadioButtonGroupOptions, 'orientation' >;
+type SelfOptions = {};
 
-class VerticalAquaRadioButtonGroup<T> extends AquaRadioButtonGroup<T> {
+export type VerticalAquaRadioButtonGroupOptions = SelfOptions & Omit<AquaRadioButtonGroupOptions, 'orientation'>;
+
+export default class VerticalAquaRadioButtonGroup<T> extends AquaRadioButtonGroup<T> {
 
   /**
    * @param property
@@ -28,5 +30,3 @@ class VerticalAquaRadioButtonGroup<T> extends AquaRadioButtonGroup<T> {
 }
 
 sun.register( 'VerticalAquaRadioButtonGroup', VerticalAquaRadioButtonGroup );
-export default VerticalAquaRadioButtonGroup;
-export type { VerticalAquaRadioButtonGroupOptions };

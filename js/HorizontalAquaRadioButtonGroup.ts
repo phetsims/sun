@@ -11,7 +11,9 @@ import merge from '../../phet-core/js/merge.js';
 import AquaRadioButtonGroup, { AquaRadioButtonGroupItem, AquaRadioButtonGroupOptions } from './AquaRadioButtonGroup.js';
 import sun from './sun.js';
 
-export type HorizontalAquaRadioButtonGroupOptions = Omit<AquaRadioButtonGroupOptions, 'orientation'>;
+type SelfOptions = {};
+
+export type HorizontalAquaRadioButtonGroupOptions = SelfOptions & Omit<AquaRadioButtonGroupOptions, 'orientation'>;
 
 export default class HorizontalAquaRadioButtonGroup<T> extends AquaRadioButtonGroup<T> {
 
