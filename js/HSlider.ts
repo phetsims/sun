@@ -16,6 +16,7 @@ import sun from './sun.js';
 import optionize from '../../phet-core/js/optionize.js';
 
 type SelfOptions = {};
+
 export type HSliderOptions = SelfOptions & Omit<SliderOptions, 'orientation'>;
 
 export default class HSlider extends Slider {

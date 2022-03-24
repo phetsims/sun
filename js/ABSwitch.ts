@@ -41,7 +41,7 @@ type SelfOptions = {
 
 export type ABSwitchOptions = SelfOptions & NodeOptions;
 
-class ABSwitch<T> extends Node {
+export default class ABSwitch<T> extends Node {
 
   private readonly disposeABSwitch: () => void;
 
@@ -162,4 +162,3 @@ class ABSwitch<T> extends Node {
 }
 
 sun.register( 'ABSwitch', ABSwitch );
-export default ABSwitch;

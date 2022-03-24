@@ -127,7 +127,7 @@ const DEFAULT_OPTIONS = {
 };
 assert && Object.freeze( DEFAULT_OPTIONS );
 
-class Carousel extends Node {
+export default class Carousel extends Node {
 
   private readonly items: Node[];
 
@@ -475,4 +475,3 @@ class Carousel extends Node {
 Carousel.DEFAULT_OPTIONS = DEFAULT_OPTIONS;
 
 sun.register( 'Carousel', Carousel );
-export default Carousel;

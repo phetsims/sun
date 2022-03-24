@@ -13,7 +13,7 @@ import sun from './sun.js';
 type SelfOptions = {};
 type HSeparatorOptions = SelfOptions & LineOptions;
 
-class HSeparator extends Line {
+export default class HSeparator extends Line {
 
   /**
    * @param width
@@ -31,4 +31,3 @@ class HSeparator extends Line {
 }
 
 sun.register( 'HSeparator', HSeparator );
-export default HSeparator;

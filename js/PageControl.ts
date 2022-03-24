@@ -36,7 +36,7 @@ type SelfOptions = {
 
 export type PageControlOptions = SelfOptions & Omit<NodeOptions, 'children'>;
 
-class PageControl extends Node {
+export default class PageControl extends Node {
 
   private readonly disposePageControl: () => void;
 
@@ -166,4 +166,3 @@ class DotNode extends Circle {
 }
 
 sun.register( 'PageControl', PageControl );
-export default PageControl;

@@ -63,7 +63,7 @@ type SelfOptions = {
 
 export type ToggleSwitchOptions = SelfOptions & VoicingOptions;
 
-class ToggleSwitch<T> extends Voicing( Node, 0 ) {
+export default class ToggleSwitch<T> extends Voicing( Node, 0 ) {
 
   private readonly disposeToggleSwitch: () => void;
 
@@ -293,4 +293,3 @@ class ToggleSwitch<T> extends Voicing( Node, 0 ) {
 }
 
 sun.register( 'ToggleSwitch', ToggleSwitch );
-export default ToggleSwitch;

@@ -11,9 +11,10 @@ import { Line, LineOptions } from '../../scenery/js/imports.js';
 import sun from './sun.js';
 
 type SelfOptions = {};
+
 export type VSeparatorOptions = SelfOptions & LineOptions;
 
-class VSeparator extends Line {
+export default class VSeparator extends Line {
 
   /**
    * @param {number} height
@@ -31,4 +32,3 @@ class VSeparator extends Line {
 }
 
 sun.register( 'VSeparator', VSeparator );
-export default VSeparator;

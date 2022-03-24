@@ -14,7 +14,7 @@ import ToggleSwitch, { ToggleSwitchOptions } from './ToggleSwitch.js';
 
 export type OnOffSwitchOptions = ToggleSwitchOptions;
 
-class OnOffSwitch extends ToggleSwitch<boolean> {
+export default class OnOffSwitch extends ToggleSwitch<boolean> {
 
   /**
    * @param property
@@ -32,4 +32,3 @@ class OnOffSwitch extends ToggleSwitch<boolean> {
 }
 
 sun.register( 'OnOffSwitch', OnOffSwitch );
-export default OnOffSwitch;

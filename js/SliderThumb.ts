@@ -22,7 +22,7 @@ type SelfOptions = {
 
 type SliderThumbOptions = SelfOptions & Omit<RectangleOptions, 'cachedPaints'>;
 
-class SliderThumb extends Rectangle {
+export default class SliderThumb extends Rectangle {
 
   /**
    * @param providedOptions
@@ -82,4 +82,3 @@ class SliderThumb extends Rectangle {
 }
 
 sun.register( 'SliderThumb', SliderThumb );
-export default SliderThumb;

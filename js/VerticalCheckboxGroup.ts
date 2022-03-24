@@ -32,7 +32,7 @@ type SelfOptions = {
 
 export type VerticalCheckboxGroupOptions = SelfOptions & Omit<VBoxOptions, 'children'>;
 
-class VerticalCheckboxGroup extends VBox {
+export default class VerticalCheckboxGroup extends VBox {
 
   constructor( items: VerticalCheckboxGroupItem[], providedOptions?: VerticalCheckboxGroupOptions ) {
 
@@ -85,4 +85,3 @@ class VerticalCheckboxGroup extends VBox {
 }
 
 sun.register( 'VerticalCheckboxGroup', VerticalCheckboxGroup );
-export default VerticalCheckboxGroup;
