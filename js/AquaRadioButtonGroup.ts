@@ -25,12 +25,12 @@ let instanceCount = 0;
 const CLASS_NAME = 'AquaRadioButtonGroup';
 
 // a subset of AquaRadioButtonOptions is allowed
-type RadioButtonOptions = Omit<AquaRadioButtonOptions, 'a11yNameAttribute' | 'labelContent' | 'soundPlayer' | 'tandem'>;
+type SubsetOfAquaRadioButtonOptions = Omit<AquaRadioButtonOptions, 'a11yNameAttribute' | 'labelContent' | 'soundPlayer' | 'tandem'>;
 
 type SelfOptions = {
 
   // options propagated to AquaRadioButton instances
-  radioButtonOptions?: RadioButtonOptions | null;
+  radioButtonOptions?: SubsetOfAquaRadioButtonOptions | null;
 
   // Dilation of pointer areas for each radio button.
   // These are not part of radioButtonOptions because AquaRadioButton has no pointerArea options.
@@ -106,7 +106,7 @@ export default class AquaRadioButtonGroup<T> extends LayoutBox {
                       item.node;
 
       const radioButton = new AquaRadioButton( property, item.value, content,
-        optionize<RadioButtonOptions, {}, AquaRadioButtonOptions>( {
+        optionize<SubsetOfAquaRadioButtonOptions, {}, AquaRadioButtonOptions>( {
           a11yNameAttribute: CLASS_NAME + instanceCount,
           labelContent: item.labelContent || null,
           soundPlayer: multiSelectionSoundPlayerFactory.getSelectionSoundPlayer( i ),
