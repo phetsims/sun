@@ -20,7 +20,7 @@ import sun from '../sun.js';
 // constants
 const ITEM_FONT = new PhetFont( 14 );
 
-type SunDemo = {
+export type SunDemo = {
 
   // string used to label the demo in ComboBox
   label: string;
