@@ -10,7 +10,8 @@ import optionize from '../../phet-core/js/optionize.js';
 import { Line, LineOptions } from '../../scenery/js/imports.js';
 import sun from './sun.js';
 
-type HSeparatorOptions = LineOptions;
+type SelfOptions = {};
+type HSeparatorOptions = SelfOptions & LineOptions;
 
 class HSeparator extends Line {
 
@@ -21,7 +22,7 @@ class HSeparator extends Line {
   constructor( width: number, providedOptions?: HSeparatorOptions ) {
     assert && assert( isFinite( width ) && width >= 0, `invalid width=${width}` );
 
-    const options = optionize<HSeparatorOptions, {}, LineOptions>( {
+    const options = optionize<HSeparatorOptions, SelfOptions, LineOptions>( {
       stroke: 'rgb( 100, 100, 100 )'
     }, providedOptions );
 
