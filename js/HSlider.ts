@@ -10,7 +10,6 @@
 import IProperty from '../../axon/js/IProperty.js';
 import Range from '../../dot/js/Range.js';
 import InstanceRegistry from '../../phet-core/js/documentation/InstanceRegistry.js';
-import IntentionalAny from '../../phet-core/js/types/IntentionalAny.js';
 import Orientation from '../../phet-core/js/Orientation.js';
 import Slider, { SliderOptions } from './Slider.js';
 import sun from './sun.js';
@@ -22,8 +21,6 @@ export type HSliderOptions = SelfOptions & Omit<SliderOptions, 'orientation'>;
 export default class HSlider extends Slider {
 
   constructor( valueProperty: IProperty<number>, range: Range, options?: HSliderOptions ) {
-
-    assert && assert( !options || ( options as IntentionalAny ).orientation === undefined, 'HSlider sets orientation' );
 
     super( valueProperty, range, optionize<HSliderOptions, SelfOptions, SliderOptions>( {
       orientation: Orientation.HORIZONTAL

@@ -13,7 +13,6 @@ import Range from '../../dot/js/Range.js';
 import Orientation from '../../phet-core/js/Orientation.js';
 import { default as Slider, SliderOptions } from './Slider.js';
 import sun from './sun.js';
-import IntentionalAny from '../../phet-core/js/types/IntentionalAny.js';
 import optionize from '../../phet-core/js/optionize.js';
 
 type SelfOptions = {};
@@ -22,8 +21,6 @@ export type VSliderOptions = SelfOptions & Omit<SliderOptions, 'orientation'>;
 export default class VSlider extends Slider {
 
   constructor( valueProperty: IProperty<number>, range: Range, options?: VSliderOptions ) {
-
-    assert && assert( !options || ( options as IntentionalAny ).orientation === undefined, 'VSlider sets orientation' );
 
     options = optionize<VSliderOptions, SelfOptions, SliderOptions>( {
       orientation: Orientation.VERTICAL
