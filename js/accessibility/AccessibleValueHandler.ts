@@ -968,14 +968,19 @@ const AccessibleValueHandler = <SuperType extends Constructor>( Type: SuperType,
         onlyOnValueChange: true // don't speak if the value is the same as valueOnStart
       }, providedOptions );
 
-      if ( !options.onlyOnValueChange || this._valueOnStart !== this._valueProperty.value ) {
+      const valueChanged = this._valueOnStart !== this._valueProperty.value;
+      const valueAtMinMax = this._valueProperty.value !== this._enabledRangeProperty.value.min ||
+                            this._valueProperty.value !== this._enabledRangeProperty.value.max;
 
-        this.voicingSpeakFullResponse( {
-          nameResponse: null,
-          objectResponse: options.withObjectResponse ? this.voicingObjectResponse : null,
-          hintResponse: null // no hint, there was just a successful interaction
-        } );
-      }
+      const shouldSpeak = !options.onlyOnValueChange || // speak each time if onlyOnValueChange is false.
+                          valueAtMinMax || // always speak at edges, for "go beyond" responses
+                          valueChanged; // If the value changed
+
+      shouldSpeak && this.voicingSpeakFullResponse( {
+        nameResponse: null,
+        objectResponse: options.withObjectResponse ? this.voicingObjectResponse : null,
+        hintResponse: null // no hint, there was just a successful interaction
+      } );
     }
 
     dispose() {
