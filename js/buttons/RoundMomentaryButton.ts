@@ -32,7 +32,7 @@ export default class RoundMomentaryButton<T> extends RoundButton {
    * @param property
    * @param providedOptions
    */
-  constructor( valueOff: T, valueOn: T, property: Property<T>, providedOptions: RoundMomentaryButtonOptions ) {
+  constructor( valueOff: T, valueOn: T, property: Property<T>, providedOptions?: RoundMomentaryButtonOptions ) {
 
     const options = optionize<RoundMomentaryButtonOptions, SelfOptions, RoundButtonOptions>( {
       tandem: Tandem.REQUIRED
