@@ -63,7 +63,7 @@ class ToggleButtonModel extends ButtonModel {
     // @private - dispose items specific to this instance
     this.disposeToggleButtonModel = () => {
       this.downProperty.unlink( downListener );
-      this.toggledEmitter.removeListener( toggleListener );
+      this.toggledEmitter.dispose();
     };
   }
 

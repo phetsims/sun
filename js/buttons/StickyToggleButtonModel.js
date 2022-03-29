@@ -108,7 +108,7 @@ class StickyToggleButtonModel extends ButtonModel {
       this.downProperty.unlink( downListener );
       this.enabledProperty.unlink( enabledPropertyOnListener );
       valueProperty.unlink( valuePropertyListener );
-      this.toggledEmitter.removeListener( toggleListener );
+      this.toggledEmitter.dispose();
     };
   }
 
