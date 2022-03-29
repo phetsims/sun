@@ -151,7 +151,7 @@ export default class ComboBox<T> extends Node {
    * @param items
    * @param property
    * @param listParent node that will be used as the list's parent, use this to ensure that the list is in front of everything else
-   * @param [options] object with optional properties
+   * @param [providedOptions]
    */
   constructor( items: ComboBoxItem<T>[], property: Property<T>, listParent: Node, providedOptions?: ComboBoxOptions ) {
 
