@@ -1,6 +1,5 @@
 // Copyright 2015-2020, University of Colorado Boulder
 
-// @ts-nocheck
 /**
  * RoundMomentaryButton is a round momentary button that toggles a Property between 2 values.
  * The 'off value' is the value when the button is not pressed.
@@ -11,26 +10,33 @@
  * @author Chris Malley (PixelZoom, Inc.)
  */
 
-import merge from '../../../phet-core/js/merge.js';
+import Property from '../../../axon/js/Property.js';
+import optionize from '../../../phet-core/js/optionize.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import sun from '../sun.js';
 import MomentaryButtonInteractionStateProperty from './MomentaryButtonInteractionStateProperty.js';
 import MomentaryButtonModel from './MomentaryButtonModel.js';
-import RoundButton from './RoundButton.js';
+import RoundButton, { RoundButtonOptions } from './RoundButton.js';
 
-class RoundMomentaryButton extends RoundButton {
+type SelfOptions = {};
+
+export type RoundMomentaryButtonOptions = SelfOptions & RoundButtonOptions;
+
+export default class RoundMomentaryButton<T> extends RoundButton {
+
+  private readonly disposeRoundMomentaryButton: () => void;
 
   /**
-   * @param {Object} valueOff - value when the button is in the off state
-   * @param {Object} valueOn - value when the button is in the on state
-   * @param {Property} property
-   * @param {Object} [options]
+   * @param valueOff - value when the button is in the off state
+   * @param valueOn - value when the button is in the on state
+   * @param property
+   * @param providedOptions
    */
-  constructor( valueOff, valueOn, property, options ) {
+  constructor( valueOff: T, valueOn: T, property: Property<T>, providedOptions: RoundMomentaryButtonOptions ) {
 
-    options = merge( {
+    const options = optionize<RoundMomentaryButtonOptions, SelfOptions, RoundButtonOptions>( {
       tandem: Tandem.REQUIRED
-    }, options );
+    }, providedOptions );
 
     // Note it shares a tandem with this, so the emitter will be instrumented as a child of the button
     const buttonModel = new MomentaryButtonModel( valueOff, valueOn, property, options );
@@ -54,4 +60,3 @@ class RoundMomentaryButton extends RoundButton {
 }
 
 sun.register( 'RoundMomentaryButton', RoundMomentaryButton );
-export default RoundMomentaryButton;
