@@ -8,6 +8,7 @@
  */
 
 import Property from '../../axon/js/Property.js';
+import dotRandom from '../../dot/js/dotRandom.js';
 import optionize from '../../phet-core/js/optionize.js';
 import { HStrut, LayoutBox, LayoutBoxOptions, Node, PDOMPeer, SceneryConstants, SceneryEvent } from '../../scenery/js/imports.js';
 import multiSelectionSoundPlayerFactory from '../../tambo/js/multiSelectionSoundPlayerFactory.js';
@@ -110,7 +111,9 @@ export default class AquaRadioButtonGroup<T> extends LayoutBox {
           a11yNameAttribute: CLASS_NAME + instanceCount,
           labelContent: item.labelContent || null,
           soundPlayer: multiSelectionSoundPlayerFactory.getSelectionSoundPlayer( i ),
-          tandem: item.tandemName ? options.tandem.createTandem( item.tandemName ) : Tandem.REQUIRED
+
+          // Instead of using Tandem.REQUIRED, use the same tandem that is passed into the group, helping to support Tandem.OPT_OUT
+          tandem: options.tandem.createTandem( item.tandemName || 'placeHolder' + dotRandom.nextInt( 1000000 ) )
         }, options.radioButtonOptions! ) );
 
       // set pointer areas
