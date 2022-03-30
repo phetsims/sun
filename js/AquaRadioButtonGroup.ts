@@ -113,7 +113,7 @@ export default class AquaRadioButtonGroup<T> extends LayoutBox {
           soundPlayer: multiSelectionSoundPlayerFactory.getSelectionSoundPlayer( i ),
 
           // Instead of using Tandem.REQUIRED, use the same tandem that is passed into the group, helping to support Tandem.OPT_OUT
-          tandem: options.tandem.createTandem( item.tandemName || 'placeHolder' + dotRandom.nextInt( 1000000 ) )
+          tandem: options.tandem.createTandem( item.tandemName || `placeHolder${dotRandom.nextInt( 1000000 )}RadioButton` )
         }, options.radioButtonOptions! ) );
 
       // set pointer areas
