@@ -7,7 +7,6 @@
  */
 
 import PhetioAction from '../../tandem/js/PhetioAction.js';
-import Property from '../../axon/js/Property.js';
 import validate from '../../axon/js/validate.js';
 import Matrix3 from '../../dot/js/Matrix3.js';
 import InstanceRegistry from '../../phet-core/js/documentation/InstanceRegistry.js';
@@ -23,6 +22,7 @@ import optionize from '../../phet-core/js/optionize.js';
 import sun from './sun.js';
 import ISoundPlayer from '../../tambo/js/ISoundPlayer.js';
 import Utterance, { IAlertable } from '../../utterance-queue/js/Utterance.js';
+import IProperty from '../../axon/js/IProperty.js';
 
 // constants
 const BOOLEAN_VALIDATOR = { valueType: 'boolean' };
@@ -69,7 +69,7 @@ export default class Checkbox extends Voicing( Node, 0 ) {
    * @param providedOptions
    * @mixes {Voicing}
    */
-  constructor( content: Node, property: Property<boolean>, providedOptions?: CheckboxOptions ) {
+  constructor( content: Node, property: IProperty<boolean>, providedOptions?: CheckboxOptions ) {
 
     const options = optionize<CheckboxOptions, SelfOptions, VoicingOptions, 'tandem'>( {
 
