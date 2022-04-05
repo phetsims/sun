@@ -1,5 +1,6 @@
 // Copyright 2014-2022, University of Colorado Boulder
 
+// @ts-nocheck
 /**
  * Model for a toggle button that sticks when pushed down and pops up when pushed a second time. Unlike other general
  * sun models, 'sticky' implies a specific type of user-interface component, a button that is either popped up or
