@@ -206,7 +206,7 @@ const AccessibleNumberSpinner = <SuperType extends Constructor>( Type: SuperType
       }
     }
 
-    dispose() {
+    public override dispose(): void {
       this._disposeAccessibleNumberSpinner();
 
       super.dispose();

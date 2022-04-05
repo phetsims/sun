@@ -282,11 +282,7 @@ export default class ToggleSwitch<T> extends Voicing( Node, 0 ) {
     };
   }
 
-  /**
-   * @public
-   * @override
-   */
-  dispose() {
+  public override dispose(): void {
     this.disposeToggleSwitch();
     super.dispose();
   }

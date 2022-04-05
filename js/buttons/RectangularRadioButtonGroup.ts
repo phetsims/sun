@@ -411,7 +411,7 @@ export default class RectangularRadioButtonGroup<T> extends LayoutBox {
     assert && phet.chipper.queryParameters.binder && InstanceRegistry.registerDataURL( 'sun', 'RectangularRadioButtonGroup', this );
   }
 
-  override dispose() {
+  override dispose(): void {
     this.disposeRadioButtonGroup();
     super.dispose();
   }

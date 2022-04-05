@@ -214,11 +214,7 @@ export default class Checkbox extends Voicing( Node, 0 ) {
     };
   }
 
-  /**
-   * @public
-   * @override
-   */
-  dispose() {
+  public override dispose(): void {
     this.disposeCheckbox();
     super.dispose();
   }

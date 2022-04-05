@@ -144,7 +144,7 @@ export default class PushButtonModel extends ButtonModel {
     };
   }
 
-  dispose() {
+  public override dispose(): void {
     this.disposePushButtonModel();
     super.dispose();
   }

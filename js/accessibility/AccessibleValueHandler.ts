@@ -983,7 +983,7 @@ const AccessibleValueHandler = <SuperType extends Constructor>( Type: SuperType,
       } );
     }
 
-    dispose() {
+    public override dispose(): void {
       this._disposeAccessibleValueHandler();
 
       super.dispose();

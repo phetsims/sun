@@ -262,7 +262,7 @@ export default class ComboBoxButton<T> extends RectangularPushButton {
     this._blockNextVoicingFocusListener = true;
   }
 
-  dispose() {
+  public override dispose(): void {
     this.disposeComboBoxButton();
     super.dispose();
   }

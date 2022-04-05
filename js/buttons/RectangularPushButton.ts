@@ -71,7 +71,7 @@ export default class RectangularPushButton extends RectangularButton {
     assert && phet.chipper.queryParameters.binder && InstanceRegistry.registerDataURL( 'sun', 'RectangularPushButton', this );
   }
 
-  dispose() {
+  public override dispose(): void {
 
     // The order of operations here is important - the view needs to be disposed first so that it is unhooked from
     // the model before the model is disposed.  If the model is disposed first, the view ends up trying to change some

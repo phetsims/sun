@@ -415,11 +415,7 @@ export default class Carousel extends Node {
     assert && phet.chipper.queryParameters.binder && InstanceRegistry.registerDataURL( 'sun', 'Carousel', this );
   }
 
-  /**
-   * @public
-   * @override
-   */
-  dispose() {
+  public override dispose(): void {
     this.disposeCarousel();
     super.dispose();
   }

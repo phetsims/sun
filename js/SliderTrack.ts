@@ -139,7 +139,7 @@ export default class SliderTrack extends Node {
     };
   }
 
-  dispose() {
+  public override dispose(): void {
     this.disposeSliderTrack();
     super.dispose();
   }

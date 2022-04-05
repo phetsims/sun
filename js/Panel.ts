@@ -148,18 +148,14 @@ export default class Panel extends WidthSizable( HeightSizable( Node ) ) {
 
   set fill( value: IPaint ) { this.setFill( value ); }
 
-  setExcludeInvisibleChildrenFromBounds( excludeInvisibleChildrenFromBounds: boolean ) {
+  override setExcludeInvisibleChildrenFromBounds( excludeInvisibleChildrenFromBounds: boolean ) {
     super.setExcludeInvisibleChildrenFromBounds( excludeInvisibleChildrenFromBounds );
 
     this._constraint.updateLayoutAutomatically();
   }
 
-  /**
-   * Releases references
-   */
-  dispose() {
+  public override dispose(): void {
     this._constraint.dispose();
-
     super.dispose();
   }
 
@@ -198,7 +194,7 @@ class PanelConstraint extends LayoutConstraint {
     this.addNode( panel._content );
   }
 
-  protected layout() {
+  protected override layout(): void {
     super.layout();
 
     const panel = this.panel;
@@ -259,13 +255,9 @@ class PanelConstraint extends LayoutConstraint {
     panel.minimumHeight = minimumHeight;
   }
 
-  /**
-   * Releases references
-   */
-  dispose() {
+  public override dispose(): void {
     this.panel.preferredWidthProperty.unlink( this._updateLayoutListener );
     this.panel.preferredHeightProperty.unlink( this._updateLayoutListener );
-
     super.dispose();
   }
 }

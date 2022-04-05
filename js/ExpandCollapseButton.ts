@@ -104,11 +104,7 @@ export default class ExpandCollapseButton extends BooleanRectangularToggleButton
     };
   }
 
-  /**
-   * Ensures that this node is eligible for GC.
-   * @public
-   */
-  dispose() {
+  public override dispose(): void {
     this.disposeExpandCollapseButton();
     super.dispose();
   }

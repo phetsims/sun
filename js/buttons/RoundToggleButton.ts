@@ -79,10 +79,7 @@ export default class RoundToggleButton<T> extends RoundButton {
     };
   }
 
-  /**
-   * @public
-   */
-  dispose() {
+  public override dispose(): void {
     this.disposeRoundToggleButton();
     super.dispose();
   }

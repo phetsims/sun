@@ -196,11 +196,7 @@ export default class AquaRadioButton<T> extends Voicing( Node, 0 ) {
     assert && phet.chipper.queryParameters.binder && InstanceRegistry.registerDataURL( 'sun', 'AquaRadioButton', this );
   }
 
-  /**
-   * @public
-   * @override
-   */
-  dispose() {
+  public override dispose(): void {
     this.disposeAquaRadioButton();
     super.dispose();
   }

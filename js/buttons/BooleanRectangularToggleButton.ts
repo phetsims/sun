@@ -41,7 +41,7 @@ export default class BooleanRectangularToggleButton extends RectangularToggleBut
     };
   }
 
-  dispose() {
+  public override dispose(): void {
     this.disposeBooleanRectangularToggleButton();
     super.dispose();
   }

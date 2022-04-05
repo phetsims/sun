@@ -150,12 +150,7 @@ export default class ABSwitch<T> extends Node {
     assert && phet.chipper.queryParameters.binder && InstanceRegistry.registerDataURL( 'sun', 'ABSwitch', this );
   }
 
-  /**
-   * Make eligible for garbage collection.
-   * @public
-   * @override
-   */
-  dispose() {
+  public override dispose(): void {
     this.disposeABSwitch();
     super.dispose();
   }

@@ -46,7 +46,7 @@ class BooleanRoundToggleButton extends RoundToggleButton<boolean> {
     };
   }
 
-  dispose() {
+  public override dispose(): void {
     this.disposeBooleanRoundToggleButton();
     super.dispose();
   }

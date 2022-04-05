@@ -92,7 +92,7 @@ const AccessibleSlider = <SuperType extends Constructor>( Type: SuperType, optio
      * Make the accessible slider portions of this node eligible for garbage collection. Call when disposing
      * the type that this trait is mixed into.
      */
-    dispose() {
+    public override dispose(): void {
       this._disposeAccessibleSlider();
 
       super.dispose();

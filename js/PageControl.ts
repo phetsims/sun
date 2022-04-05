@@ -136,11 +136,7 @@ export default class PageControl extends Node {
     };
   }
 
-  /**
-   * @public
-   * @override
-   */
-  dispose() {
+  public override dispose(): void {
     this.disposePageControl();
     super.dispose();
   }

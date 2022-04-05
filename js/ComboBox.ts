@@ -396,7 +396,7 @@ export default class ComboBox<T> extends Node {
     assert && phet.chipper.queryParameters.binder && InstanceRegistry.registerDataURL( 'sun', 'ComboBox', this );
   }
 
-  dispose() {
+  public override dispose(): void {
     this.disposeComboBox();
     super.dispose();
   }

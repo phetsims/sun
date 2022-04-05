@@ -49,11 +49,7 @@ export default class RoundMomentaryButton<T> extends RoundButton {
     };
   }
 
-  /**
-   * @public
-   * @override
-   */
-  dispose() {
+  public override dispose(): void {
     this.disposeRoundMomentaryButton();
     super.dispose();
   }

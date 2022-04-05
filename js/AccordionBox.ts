@@ -467,12 +467,12 @@ export default class AccordionBox extends Node {
     assert && phet.chipper.queryParameters.binder && InstanceRegistry.registerDataURL( 'sun', 'AccordionBox', this );
   }
 
-  dispose(): void {
+  public override dispose(): void {
     this.disposeEmitterAccordionBox.emit();
     super.dispose();
   }
 
-  reset(): void {
+  public reset(): void {
     this.resetAccordionBox();
   }
 

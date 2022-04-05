@@ -160,7 +160,7 @@ export default class ButtonModel extends EnabledComponent {
     };
   }
 
-  dispose() {
+  public override dispose(): void {
     this.disposeButtonModel();
     super.dispose();
   }

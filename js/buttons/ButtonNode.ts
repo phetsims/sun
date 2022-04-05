@@ -210,7 +210,7 @@ export default class ButtonNode extends Voicing( Node, 0 ) {
     };
   }
 
-  dispose() {
+  public override dispose(): void {
     this.disposeButtonNode();
     super.dispose();
   }

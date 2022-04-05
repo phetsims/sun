@@ -87,7 +87,7 @@ export default class DefaultSliderTrack extends SliderTrack {
     this.disposeDefaultSliderTrack = () => options.enabledRangeProperty.unlink( enabledRangeObserver );
   }
 
-  dispose() {
+  public override dispose(): void {
     this.disposeDefaultSliderTrack();
     super.dispose();
   }

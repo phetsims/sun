@@ -160,7 +160,7 @@ export default class AquaRadioButtonGroup<T> extends LayoutBox {
     this.radioButtons = radioButtons;
   }
 
-  public dispose() {
+  public override dispose(): void {
     this.disposeAquaRadioButtonGroup();
     super.dispose();
   }

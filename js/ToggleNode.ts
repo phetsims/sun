@@ -88,11 +88,7 @@ export default class ToggleNode<T> extends Node {
     };
   }
 
-  /**
-   * @public
-   * @override
-   */
-  dispose() {
+  public override dispose(): void {
     this.disposeToggleNode();
     super.dispose();
   }

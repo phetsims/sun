@@ -501,7 +501,7 @@ export default class Slider extends AccessibleSlider( Node, 0 ) {
 
   set minorTicksVisible( value: boolean ) { this.setMinorTicksVisible( value ); }
 
-  dispose() {
+  public override dispose(): void {
     this.disposeSlider();
     super.dispose();
   }

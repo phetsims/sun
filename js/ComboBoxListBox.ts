@@ -265,7 +265,7 @@ export default class ComboBoxListBox<T> extends Panel {
     };
   }
 
-  dispose() {
+  public override dispose(): void {
     this.disposeComboBoxListBox();
     super.dispose();
   }

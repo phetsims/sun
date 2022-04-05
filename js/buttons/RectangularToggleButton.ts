@@ -80,11 +80,7 @@ export default class RectangularToggleButton<T> extends RectangularButton {
     };
   }
 
-  /**
-   * @public
-   * @override
-   */
-  dispose() {
+  public override dispose(): void {
     this.disposeRectangularToggleButton();
     super.dispose();
   }
