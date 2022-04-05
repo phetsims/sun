@@ -1,5 +1,6 @@
 // Copyright 2014-2020, University of Colorado Boulder
 
+// @ts-nocheck
 /**
  * A rectangular toggle button that switches the value of a boolean Property.  It sticks in the down position when
  * pressed, popping back up when pressed again.
