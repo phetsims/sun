@@ -7,12 +7,9 @@
  */
 
 import PhetioAction from '../../tandem/js/PhetioAction.js';
-import Property from '../../axon/js/Property.js';
 import merge from '../../phet-core/js/merge.js';
 import optionize from '../../phet-core/js/optionize.js';
-import { IInputListener, IPaint, KeyboardUtils, SpeakingOptions } from '../../scenery/js/imports.js';
-import { SceneryEvent } from '../../scenery/js/imports.js';
-import { VBox } from '../../scenery/js/imports.js';
+import { IInputListener, IPaint, KeyboardUtils, SceneryEvent, SpeakingOptions, VBox } from '../../scenery/js/imports.js';
 import multiSelectionSoundPlayerFactory from '../../tambo/js/multiSelectionSoundPlayerFactory.js';
 import generalCloseSoundPlayer from '../../tambo/js/shared-sound-players/generalCloseSoundPlayer.js';
 import generalOpenSoundPlayer from '../../tambo/js/shared-sound-players/generalOpenSoundPlayer.js';
@@ -23,6 +20,7 @@ import Panel, { PanelOptions } from './Panel.js';
 import sun from './sun.js';
 import ComboBoxItem from './ComboBoxItem.js';
 import ISoundPlayer from '../../tambo/js/ISoundPlayer.js';
+import IProperty from '../../axon/js/IProperty.js';
 
 type SelfOptions = {
   // fill for the highlight behind items in the list
@@ -51,9 +49,9 @@ export default class ComboBoxListBox<T> extends Panel {
    * @param hideListBoxCallback - called to hide the list box
    * @param focusButtonCallback - called to transfer focus to the combo box's button
    * @param tandem
-   * @param [options]
+   * @param providedOptions
    */
-  constructor( property: Property<T>, items: ComboBoxItem<T>[], hideListBoxCallback: () => void, focusButtonCallback: () => void, tandem: Tandem, providedOptions?: ComboBoxListBoxOptions ) {
+  constructor( property: IProperty<T>, items: ComboBoxItem<T>[], hideListBoxCallback: () => void, focusButtonCallback: () => void, tandem: Tandem, providedOptions?: ComboBoxListBoxOptions ) {
 
     const options = optionize<ComboBoxListBoxOptions, SelfOptions, PanelOptions, 'xMargin' | 'yMargin'>( {
       highlightFill: 'rgb( 245, 245, 245 )',

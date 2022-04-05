@@ -17,7 +17,6 @@ import ButtonModel from './ButtonModel.js';
 import ButtonNode, { ButtonNodeOptions } from './ButtonNode.js';
 import optionize from '../../../phet-core/js/optionize.js';
 import RadioButtonInteractionState from './RadioButtonInteractionState.js';
-import Property from '../../../axon/js/Property.js';
 
 // constants
 const HIGHLIGHT_GRADIENT_LENGTH = 5; // In screen coords, which are roughly pixels.
@@ -48,7 +47,9 @@ export default class RoundButton extends ButtonNode {
    * @param interactionStateProperty
    * @param providedOptions
    */
-  constructor( buttonModel: ButtonModel, interactionStateProperty: IProperty<ButtonInteractionState>, providedOptions?: RoundButtonOptions ) {
+  constructor( buttonModel: ButtonModel,
+               interactionStateProperty: IProperty<ButtonInteractionState>,
+               providedOptions?: RoundButtonOptions ) {
 
     const options = optionize<RoundButtonOptions, SelfOptions, ButtonNodeOptions,
       'content' | 'xMargin' | 'yMargin'>( {
@@ -146,7 +147,7 @@ export class ThreeDAppearanceStrategy {
    */
   constructor( buttonBackground: PaintableNode,
                interactionStateProperty: IProperty<ButtonInteractionState | RadioButtonInteractionState>,
-               baseColorProperty: Property<Color>,
+               baseColorProperty: IProperty<Color>,
                options?: any ) {
 
     // Dynamic colors

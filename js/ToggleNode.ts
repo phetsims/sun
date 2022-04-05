@@ -8,7 +8,7 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
-import Property from '../../axon/js/Property.js';
+import IProperty from '../../axon/js/IProperty.js';
 import optionize from '../../phet-core/js/optionize.js';
 import { Node, NodeOptions } from '../../scenery/js/imports.js';
 import Tandem from '../../tandem/js/Tandem.js';
@@ -36,7 +36,7 @@ export default class ToggleNode<T> extends Node {
    * @param elements
    * @param providedOptions
    */
-  constructor( valueProperty: Property<T>, elements: ToggleNodeElement<T>[], providedOptions?: ToggleNodeOptions ) {
+  constructor( valueProperty: IProperty<T>, elements: ToggleNodeElement<T>[], providedOptions?: ToggleNodeOptions ) {
 
     assert && assert( Array.isArray( elements ), 'elements should be an array' );
     if ( assert ) {

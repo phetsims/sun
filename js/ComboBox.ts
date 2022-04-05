@@ -36,6 +36,7 @@ import SunConstants from './SunConstants.js';
 import ComboBoxItem from './ComboBoxItem.js';
 import Property from '../../axon/js/Property.js';
 import ISoundPlayer from '../../tambo/js/ISoundPlayer.js';
+import IProperty from '../../axon/js/IProperty.js';
 
 // const
 const LIST_POSITION_VALUES = [ 'above', 'below' ] as const; // where the list pops up relative to the button
@@ -153,7 +154,7 @@ export default class ComboBox<T> extends Node {
    * @param listParent node that will be used as the list's parent, use this to ensure that the list is in front of everything else
    * @param [providedOptions]
    */
-  constructor( items: ComboBoxItem<T>[], property: Property<T>, listParent: Node, providedOptions?: ComboBoxOptions ) {
+  constructor( items: ComboBoxItem<T>[], property: IProperty<T>, listParent: Node, providedOptions?: ComboBoxOptions ) {
 
     assert && assert( _.uniqBy( items, ( item: ComboBoxItem<T> ) => item.value ).length === items.length, 'items must have unique values' );
 

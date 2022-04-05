@@ -9,7 +9,6 @@
  */
 
 import optionize from '../../../phet-core/js/optionize.js';
-import Property from '../../../axon/js/Property.js';
 import toggleOffSoundPlayer from '../../../tambo/js/shared-sound-players/toggleOffSoundPlayer.js';
 import toggleOnSoundPlayer from '../../../tambo/js/shared-sound-players/toggleOnSoundPlayer.js';
 import ISoundPlayer from '../../../tambo/js/ISoundPlayer.js';
@@ -19,6 +18,7 @@ import RectangularButton, { RectangularButtonOptions } from './RectangularButton
 import ToggleButtonInteractionStateProperty from './ToggleButtonInteractionStateProperty.js';
 import ToggleButtonIO from './ToggleButtonIO.js';
 import ToggleButtonModel from './ToggleButtonModel.js';
+import IProperty from '../../../axon/js/IProperty.js';
 
 type SelfOptions = {
 
@@ -39,7 +39,7 @@ export default class RectangularToggleButton<T> extends RectangularButton {
    * @param property - axon Property that can be either valueOff or valueOn
    * @param providedOptions
    */
-  constructor( valueOff: T, valueOn: T, property: Property<T>, providedOptions?: RectangularButtonOptions ) {
+  constructor( valueOff: T, valueOn: T, property: IProperty<T>, providedOptions?: RectangularButtonOptions ) {
 
     const options = optionize<RectangularToggleButtonOptions, SelfOptions, RectangularButtonOptions, 'tandem'>( {
 

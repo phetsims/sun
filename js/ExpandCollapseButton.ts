@@ -7,7 +7,7 @@
  * @author Jesse Greenberg (PhET Interactive Simulations)
  */
 
-import Property from '../../axon/js/Property.js';
+import IProperty from '../../axon/js/IProperty.js';
 import { Shape } from '../../kite/js/imports.js';
 import InstanceRegistry from '../../phet-core/js/documentation/InstanceRegistry.js';
 import optionize from '../../phet-core/js/optionize.js';
@@ -36,7 +36,7 @@ export default class ExpandCollapseButton extends BooleanRectangularToggleButton
    * @param expandedProperty
    * @param providedOptions
    */
-  constructor( expandedProperty: Property<boolean>, providedOptions?: ExpandCollapseButtonOptions ) {
+  constructor( expandedProperty: IProperty<boolean>, providedOptions?: ExpandCollapseButtonOptions ) {
 
     const options = optionize<ExpandCollapseButtonOptions, SelfOptions, BooleanRectangularToggleButtonOptions>( {
 

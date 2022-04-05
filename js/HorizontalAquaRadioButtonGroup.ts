@@ -6,7 +6,7 @@
  * @author Chris Malley (PixelZoom, Inc.)
  */
 
-import Property from '../../axon/js/Property.js';
+import IProperty from '../../axon/js/IProperty.js';
 import optionize from '../../phet-core/js/optionize.js';
 import AquaRadioButtonGroup, { AquaRadioButtonGroupItem, AquaRadioButtonGroupOptions } from './AquaRadioButtonGroup.js';
 import sun from './sun.js';
@@ -22,7 +22,7 @@ export default class HorizontalAquaRadioButtonGroup<T> extends AquaRadioButtonGr
    * @param items
    * @param options
    */
-  constructor( property: Property<T>, items: AquaRadioButtonGroupItem<T>[], options?: HorizontalAquaRadioButtonGroupOptions ) {
+  constructor( property: IProperty<T>, items: AquaRadioButtonGroupItem<T>[], options?: HorizontalAquaRadioButtonGroupOptions ) {
     super( property, items, optionize<HorizontalAquaRadioButtonGroupOptions, SelfOptions, AquaRadioButtonGroupOptions>( {
       orientation: 'horizontal'
     }, options ) );

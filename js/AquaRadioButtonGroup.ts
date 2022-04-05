@@ -7,7 +7,7 @@
  * @author Chris Malley (PixelZoom, Inc.)
  */
 
-import Property from '../../axon/js/Property.js';
+import IProperty from '../../axon/js/IProperty.js';
 import dotRandom from '../../dot/js/dotRandom.js';
 import optionize from '../../phet-core/js/optionize.js';
 import { HStrut, LayoutBox, LayoutBoxOptions, Node, PDOMPeer, SceneryConstants, SceneryEvent } from '../../scenery/js/imports.js';
@@ -62,7 +62,7 @@ export default class AquaRadioButtonGroup<T> extends LayoutBox {
    * @param items
    * @param providedOptions
    */
-  constructor( property: Property<T>, items: AquaRadioButtonGroupItem<T>[], providedOptions?: AquaRadioButtonGroupOptions ) {
+  constructor( property: IProperty<T>, items: AquaRadioButtonGroupItem<T>[], providedOptions?: AquaRadioButtonGroupOptions ) {
 
     instanceCount++;
 

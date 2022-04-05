@@ -8,9 +8,9 @@ import Tandem from '../../../tandem/js/Tandem.js';
 import BooleanToggleNode from '../BooleanToggleNode.js';
 import sun from '../sun.js';
 import RectangularToggleButton, { RectangularToggleButtonOptions } from './RectangularToggleButton.js';
-import Property from '../../../axon/js/Property.js';
 import { Node } from '../../../scenery/js/imports.js';
 import optionize from '../../../phet-core/js/optionize.js';
+import IProperty from '../../../axon/js/IProperty.js';
 
 type SelfOptions = {};
 
@@ -26,7 +26,8 @@ export default class BooleanRectangularToggleButton extends RectangularToggleBut
    * @param booleanProperty
    * @param providedOptions
    */
-  constructor( trueNode: Node, falseNode: Node, booleanProperty: Property<boolean>, providedOptions?: BooleanRectangularToggleButtonOptions ) {
+  constructor( trueNode: Node, falseNode: Node, booleanProperty: IProperty<boolean>,
+               providedOptions?: BooleanRectangularToggleButtonOptions ) {
 
     const options = optionize<BooleanRectangularToggleButtonOptions, SelfOptions, RectangularToggleButtonOptions>( {
       content: new BooleanToggleNode( trueNode, falseNode, booleanProperty ),

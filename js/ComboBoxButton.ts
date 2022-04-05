@@ -7,15 +7,10 @@
  * @author Chris Malley (PixelZoom, Inc.)
  */
 
-import Property from '../../axon/js/Property.js';
 import { Shape } from '../../kite/js/imports.js';
 import optionize from '../../phet-core/js/optionize.js';
 import StringUtils from '../../phetcommon/js/util/StringUtils.js';
-import { AriaHasPopUpMutator, IPaint, PDOMBehaviorFunction } from '../../scenery/js/imports.js';
-import { PDOMPeer } from '../../scenery/js/imports.js';
-import { HStrut } from '../../scenery/js/imports.js';
-import { Node } from '../../scenery/js/imports.js';
-import { Path } from '../../scenery/js/imports.js';
+import { AriaHasPopUpMutator, HStrut, IPaint, Node, Path, PDOMBehaviorFunction, PDOMPeer } from '../../scenery/js/imports.js';
 import SoundPlayer from '../../tambo/js/SoundPlayer.js';
 import Tandem from '../../tandem/js/Tandem.js';
 import ButtonNode from './buttons/ButtonNode.js';
@@ -24,6 +19,7 @@ import sun from './sun.js';
 import SunConstants from './SunConstants.js';
 import VSeparator from './VSeparator.js';
 import ComboBoxItem from './ComboBoxItem.js';
+import IProperty from '../../axon/js/IProperty.js';
 
 // constants
 const ALIGN_VALUES = [ 'left', 'center', 'right' ] as const;
@@ -63,7 +59,7 @@ export default class ComboBoxButton<T> extends RectangularPushButton {
   private arrow: Path;
   private vSeparator: VSeparator;
 
-  constructor( property: Property<T>, items: ComboBoxItem<T>[], providedOptions?: ComboBoxButtonOptions ) {
+  constructor( property: IProperty<T>, items: ComboBoxItem<T>[], providedOptions?: ComboBoxButtonOptions ) {
 
     const options = optionize<ComboBoxButtonOptions, SelfOptions, RectangularPushButtonOptions, 'xMargin' | 'yMargin'>( {
 

@@ -11,7 +11,7 @@
 import sun from './sun.js';
 import ToggleNode, { ToggleNodeOptions } from './ToggleNode.js';
 import { Node } from '../../scenery/js/imports.js';
-import Property from '../../axon/js/Property.js';
+import IProperty from '../../axon/js/IProperty.js';
 
 type SelfOptions = {};
 
@@ -25,7 +25,7 @@ export default class BooleanToggleNode extends ToggleNode<boolean> {
    * @param booleanProperty
    * @param providedOptions
    */
-  constructor( trueNode: Node, falseNode: Node, booleanProperty: Property<boolean>, providedOptions?: BooleanToggleNodeOptions ) {
+  constructor( trueNode: Node, falseNode: Node, booleanProperty: IProperty<boolean>, providedOptions?: BooleanToggleNodeOptions ) {
     super( booleanProperty, [
       { value: true, node: trueNode },
       { value: false, node: falseNode }

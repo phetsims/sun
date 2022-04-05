@@ -8,7 +8,7 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
-import Property from '../../../axon/js/Property.js';
+import IProperty from '../../../axon/js/IProperty.js';
 import optionize from '../../../phet-core/js/optionize.js';
 import ISoundPlayer from '../../../tambo/js/ISoundPlayer.js';
 import toggleOffSoundPlayer from '../../../tambo/js/shared-sound-players/toggleOffSoundPlayer.js';
@@ -39,7 +39,7 @@ export default class RoundToggleButton<T> extends RoundButton {
    * @param property - axon Property that can be either valueOff or valueOn
    * @param providedOptions
    */
-  constructor( valueOff: T, valueOn: T, property: Property<T>, providedOptions?: RoundToggleButtonOptions ) {
+  constructor( valueOff: T, valueOn: T, property: IProperty<T>, providedOptions?: RoundToggleButtonOptions ) {
 
     const options = optionize<RoundToggleButtonOptions, SelfOptions, RoundButtonOptions, 'tandem'>( {
 

@@ -95,7 +95,8 @@ export default class ButtonNode extends Voicing( Node, 0 ) {
    * @param interactionStateProperty - a Property that is used to drive the visual appearance of the button
    * @param providedOptions - this type does not mutate its options, but relies on the subtype to
    */
-  constructor( buttonModel: ButtonModel, buttonBackground: PaintableNode, interactionStateProperty: IProperty<ButtonInteractionState>, providedOptions?: ButtonNodeOptions ) {
+  constructor( buttonModel: ButtonModel, buttonBackground: PaintableNode,
+               interactionStateProperty: IProperty<ButtonInteractionState>, providedOptions?: ButtonNodeOptions ) {
 
     const options = optionize<ButtonNodeOptions, SelfOptions, VoicingOptions, 'tandem'>( {
 

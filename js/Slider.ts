@@ -114,7 +114,7 @@ type SelfOptions = {
   // of using the passed in Property. This option was created to support passing DynamicProperty or "wrapping"
   // Property that are "implementation  details" to the PhET-iO API, and still support having a LinkedElement that
   // points to the underlying model Property.
-  phetioLinkedProperty?: Property<number> | null;
+  phetioLinkedProperty?: IProperty<number> | null;
 
   // This is used to generate sounds as the slider is moved by the user.  If not provided, the default sound generator
   // will be created. If set to null, the slider will generate no sound.

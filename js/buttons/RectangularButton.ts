@@ -9,7 +9,6 @@
 
 import DerivedProperty from '../../../axon/js/DerivedProperty.js';
 import IProperty from '../../../axon/js/IProperty.js';
-import Property from '../../../axon/js/Property.js';
 import Dimension2 from '../../../dot/js/Dimension2.js';
 import { Shape } from '../../../kite/js/imports.js';
 import optionize from '../../../phet-core/js/optionize.js';
@@ -73,7 +72,8 @@ export default class RectangularButton extends ButtonNode {
    * @param {Property} interactionStateProperty - a Property that is used to drive the visual appearance of the button
    * @param {Object} providedOptions
    */
-  constructor( buttonModel: ButtonModel, interactionStateProperty: IProperty<ButtonInteractionState>, providedOptions?: RectangularButtonOptions ) {
+  constructor( buttonModel: ButtonModel, interactionStateProperty: IProperty<ButtonInteractionState>,
+               providedOptions?: RectangularButtonOptions ) {
 
     const options = optionize<RectangularButtonOptions, SelfOptions, ButtonNodeOptions, 'xMargin' | 'yMargin'>( {
       size: null,
@@ -192,7 +192,10 @@ class ThreeDAppearanceStrategy {
    * @param baseColorProperty
    * @param [options]
    */
-  constructor( buttonBackground: PaintableNode, interactionStateProperty: IProperty<ButtonInteractionState | RadioButtonInteractionState>, baseColorProperty: Property<Color>, options?: any ) {
+  constructor( buttonBackground: PaintableNode,
+               interactionStateProperty: IProperty<ButtonInteractionState | RadioButtonInteractionState>,
+               baseColorProperty: IProperty<Color>,
+               options?: any ) {
 
     const buttonWidth = buttonBackground.width;
     const buttonHeight = buttonBackground.height;
