@@ -26,7 +26,6 @@ type SelfOptions = {
   // convenience for adding 1 listener, no args
   listener?: ( () => void ) | null;
 
-
   // fire-on-hold feature
   // TODO: these options are not supported with PDOM interaction, see https://github.com/phetsims/scenery/issues/1117
   fireOnHold?: boolean; // is the fire-on-hold feature enabled?
@@ -41,10 +40,15 @@ export type PushButtonModelOptions = SelfOptions & ButtonModelOptions;
 
 export default class PushButtonModel extends ButtonModel {
 
-  firedEmitter: Emitter;
-  isFiringProperty: Property<boolean>;
+  // used by ResetAllButton to call functions during reset start/end
+  public readonly isFiringProperty: Property<boolean>;
+
+  // sends out notifications when the button is released.
+  private readonly firedEmitter: Emitter;
+
   private timer?: CallbackTimer | null;
-  private disposePushButtonModel: () => void;
+
+  private readonly disposePushButtonModel: () => void;
 
   constructor( providedOptions?: PushButtonModelOptions ) {
 
@@ -62,10 +66,8 @@ export default class PushButtonModel extends ButtonModel {
 
     super( options );
 
-    // @public (read-only) - used by ResetAllButton to call functions during reset start/end
     this.isFiringProperty = new BooleanProperty( false );
 
-    // @private - sends out notifications when the button is released.
     this.firedEmitter = new Emitter( {
       tandem: options.tandem.createTandem( 'firedEmitter' ),
       phetioDocumentation: 'Emits when the button is fired',
