@@ -1,5 +1,6 @@
 // Copyright 2014-2020, University of Colorado Boulder
 
+// @ts-nocheck
 /**
  * RectangularStickyToggleButton is a rectangular toggle button that toggles the value of a Property between 2 values.
  * It has a different look (referred to as 'up' and 'down') for the 2 values.
