@@ -1,6 +1,5 @@
-// Copyright 2014-2021, University of Colorado Boulder
+// Copyright 2014-2022, University of Colorado Boulder
 
-// @ts-nocheck
 /**
  * RoundStickyToggleButton is a round toggle button that toggles the value of a Property between 2 values.
  * It has a different look (referred to as 'up' and 'down') for the 2 values.
@@ -9,63 +8,71 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
-import merge from '../../../phet-core/js/merge.js';
+import IProperty from '../../../axon/js/IProperty.js';
+import optionize from '../../../phet-core/js/optionize.js';
+import ISoundPlayer from '../../../tambo/js/ISoundPlayer.js';
 import pushButtonSoundPlayer from '../../../tambo/js/shared-sound-players/pushButtonSoundPlayer.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import sun from '../sun.js';
-import RoundButton from './RoundButton.js';
+import RoundButton, { RoundButtonOptions } from './RoundButton.js';
 import StickyToggleButtonInteractionStateProperty from './StickyToggleButtonInteractionStateProperty.js';
 import StickyToggleButtonModel from './StickyToggleButtonModel.js';
 import ToggleButtonIO from './ToggleButtonIO.js';
 
-class RoundStickyToggleButton extends RoundButton {
+type SelfOptions = {
+  soundPlayer?: ISoundPlayer;
+};
+
+export type RoundStickyToggleButtonOptions = SelfOptions & RoundButtonOptions;
+
+export default class RoundStickyToggleButton<T> extends RoundButton {
+
+  private readonly disposeRoundStickyToggleButton: () => void;
 
   /**
-   * @param {Object} valueUp value when the toggle is in the 'up' position
-   * @param {Object} valueDown value when the toggle is in the 'down' position
-   * @param {Property} property axon Property that can be either valueUp or valueDown.
-   * @param {Object} [options]
+   * @param valueUp - value when the toggle is in the 'up' position
+   * @param valueDown - value when the toggle is in the 'down' position
+   * @param valueProperty - axon Property that can be either valueUp or valueDown.
+   * @param providedOptions
    */
-  constructor( valueUp, valueDown, property, options ) {
+  constructor( valueUp: T, valueDown: T, valueProperty: IProperty<T>, providedOptions?: RoundStickyToggleButtonOptions ) {
 
-    options = merge( {
+    const options = optionize<RoundStickyToggleButtonOptions, SelfOptions, RoundButtonOptions>( {
+
+      // SelfOptions
+      soundPlayer: pushButtonSoundPlayer,
+
+      // RoundButtonOptions
       tandem: Tandem.REQUIRED,
       phetioType: ToggleButtonIO
-    }, options );
+    }, providedOptions );
 
-    // @private (read-only)
     // Note it shares a tandem with this, so the emitter will be instrumented as a child of the button
-    const toggleButtonModel = new StickyToggleButtonModel( valueUp, valueDown, property, options );
+    // @ts-ignore
+    const toggleButtonModel = new StickyToggleButtonModel( valueUp, valueDown, valueProperty, options );
     const stickyToggleButtonInteractionStateProperty = new StickyToggleButtonInteractionStateProperty( toggleButtonModel );
 
     super( toggleButtonModel, stickyToggleButtonInteractionStateProperty, options );
 
     // sound generation
-    const soundPlayer = options.soundPlayer || pushButtonSoundPlayer;
-    const playSound = () => soundPlayer.play();
+    const playSound = () => options.soundPlayer.play();
     toggleButtonModel.produceSoundEmitter.addListener( playSound );
 
     // pdom - signify button is 'pressed' when down
-    const setAriaPressed = value => this.setPDOMAttribute( 'aria-pressed', property.value === valueDown );
-    property.link( setAriaPressed );
+    const setAriaPressed = ( value: T ) => this.setPDOMAttribute( 'aria-pressed', valueProperty.value === valueDown );
+    valueProperty.link( setAriaPressed );
 
-    // @private - dispose items specific to this instance
     this.disposeRoundStickyToggleButton = () => {
-      property.unlink( setAriaPressed );
+      valueProperty.unlink( setAriaPressed );
       toggleButtonModel.produceSoundEmitter.removeListener( playSound );
       toggleButtonModel.dispose();
     };
   }
 
-  /**
-   * @public
-   * @override
-   */
-  dispose() {
+  public override dispose(): void {
     this.disposeRoundStickyToggleButton();
     super.dispose();
   }
 }
 
 sun.register( 'RoundStickyToggleButton', RoundStickyToggleButton );
-export default RoundStickyToggleButton;

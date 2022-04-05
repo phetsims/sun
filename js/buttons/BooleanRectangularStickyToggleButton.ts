@@ -1,6 +1,5 @@
-// Copyright 2014-2020, University of Colorado Boulder
+// Copyright 2014-2022, University of Colorado Boulder
 
-// @ts-nocheck
 /**
  * A rectangular toggle button that switches the value of a boolean Property.  It sticks in the down position when
  * pressed, popping back up when pressed again.
@@ -11,20 +10,18 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
+import IProperty from '../../../axon/js/IProperty.js';
 import sun from '../sun.js';
-import RectangularStickyToggleButton from './RectangularStickyToggleButton.js';
+import RectangularStickyToggleButton, { RectangularStickyToggleButtonOptions } from './RectangularStickyToggleButton.js';
 
-class BooleanRectangularStickyToggleButton extends RectangularStickyToggleButton {
+type SelfOptions = {};
 
-  /**
-   * @param {Property.<boolean>} booleanProperty
-   * @param {Object} [options]
-   * @constructor
-   */
-  constructor( booleanProperty, options ) {
-    super( false, true, booleanProperty, options );
+export type BooleanRectangularStickyToggleButtonOptions = SelfOptions & RectangularStickyToggleButtonOptions;
+
+export default class BooleanRectangularStickyToggleButton extends RectangularStickyToggleButton<boolean> {
+  constructor( booleanProperty: IProperty<boolean>, providedOptions?: BooleanRectangularStickyToggleButtonOptions ) {
+    super( false, true, booleanProperty, providedOptions );
   }
 }
 
 sun.register( 'BooleanRectangularStickyToggleButton', BooleanRectangularStickyToggleButton );
-export default BooleanRectangularStickyToggleButton;
