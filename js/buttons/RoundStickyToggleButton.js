@@ -1,5 +1,6 @@
 // Copyright 2014-2021, University of Colorado Boulder
 
+// @ts-nocheck
 /**
  * RoundStickyToggleButton is a round toggle button that toggles the value of a Property between 2 values.
  * It has a different look (referred to as 'up' and 'down') for the 2 values.
