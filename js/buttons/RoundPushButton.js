@@ -1,4 +1,4 @@
-// Copyright 2014-2021, University of Colorado Boulder
+// Copyright 2014-2022, University of Colorado Boulder
 
 /**
  * RoundPushButton is a round push button, used to initiate some action.
@@ -43,21 +43,24 @@ class RoundPushButton extends RoundButton {
 
     // @public - listening only
     // Note it shares a tandem with this, so the emitter will be instrumented as a child of the button
-    const buttonModel = new PushButtonModel( options );
+    const pushButtonModel = new PushButtonModel( options );
 
-    super( buttonModel, new PushButtonInteractionStateProperty( buttonModel ), options );
+    super( pushButtonModel, new PushButtonInteractionStateProperty( pushButtonModel ), options );
+
+    // @public RoundButton has this.buttonModel, but we also need this.pushButtonModel, because it has additional methods.
+    this.pushButtonModel = pushButtonModel;
 
     // add the listener that was potentially saved above
     this.addListener( listener );
 
     // sound generation
     const playSound = () => { options.soundPlayer.play(); };
-    buttonModel.produceSoundEmitter.addListener( playSound );
+    pushButtonModel.produceSoundEmitter.addListener( playSound );
 
     // @private - dispose function
     this.disposeRoundPushButton = () => {
-      buttonModel.produceSoundEmitter.removeListener( playSound );
-      buttonModel.dispose();
+      pushButtonModel.produceSoundEmitter.removeListener( playSound );
+      pushButtonModel.dispose();
     };
 
     // support for binder documentation, stripped out in builds and only runs when ?binder is specified
