@@ -195,7 +195,7 @@ export default class RectangularRadioButton<T> extends RectangularButton {
    * FlatAppearanceStrategy is a value for RectangularRadioButton options.buttonAppearanceStrategy. It makes radio buttons
    * that look flat, i.e. no shading or highlighting, but that change color on mouseover, press, selected, etc.
    */
-  static FlatAppearanceStrategy: TButtonAppearanceStrategy = class FlatAppearanceStrategy {
+  static override FlatAppearanceStrategy: TButtonAppearanceStrategy = class FlatAppearanceStrategy {
 
     dispose: () => void;
 

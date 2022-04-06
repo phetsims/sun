@@ -159,7 +159,7 @@ export default class Panel extends WidthSizable( HeightSizable( Node ) ) {
     super.dispose();
   }
 
-  static DEFAULT_OPTIONS = DEFAULT_OPTIONS;
+  static override DEFAULT_OPTIONS = DEFAULT_OPTIONS;
 }
 
 class PanelConstraint extends LayoutConstraint {
