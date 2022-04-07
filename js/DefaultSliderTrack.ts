@@ -32,8 +32,8 @@ export type DefaultSliderTrackOptions = SelfOptions & SliderTrackOptions & PickR
 
 export default class DefaultSliderTrack extends SliderTrack {
 
-  private enabledTrack: Rectangle;
-  private disposeDefaultSliderTrack: () => void;
+  private readonly enabledTrack: Rectangle;
+  private readonly disposeDefaultSliderTrack: () => void;
 
   constructor( valueProperty: IProperty<number>, range: Range, providedOptions?: DefaultSliderTrackOptions ) {
 

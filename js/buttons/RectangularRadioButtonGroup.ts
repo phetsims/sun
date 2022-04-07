@@ -115,7 +115,7 @@ export type RectangularRadioButtonGroupOptions = SelfOptions & LayoutBoxOptions;
 
 export default class RectangularRadioButtonGroup<T> extends LayoutBox {
 
-  private disposeRadioButtonGroup: () => void;
+  private readonly disposeRadioButtonGroup: () => void;
 
   constructor( property: IProperty<T>, items: RectangularRadioButtonItem<T>[], providedOptions?: RectangularRadioButtonGroupOptions ) {
 

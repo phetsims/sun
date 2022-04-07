@@ -41,7 +41,7 @@ export default class ComboBoxListBox<T> extends Panel {
 
   private listItemNodes: ComboBoxListItemNode<T>[];
   private visibleListItemNodes: ComboBoxListItemNode<T>[];
-  private disposeComboBoxListBox: () => void;
+  private readonly disposeComboBoxListBox: () => void;
 
   /**
    * @param property

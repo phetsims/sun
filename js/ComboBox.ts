@@ -122,13 +122,13 @@ export type ComboBoxOptions = SelfOptions & NodeOptions;
 export default class ComboBox<T> extends Node {
 
   private items: ComboBoxItem<T>[];
-  private listPosition: ComboBoxListPosition;
+  private readonly listPosition: ComboBoxListPosition;
 
   // button that shows the current selection (internal)
   button: ComboBoxButton<T>;
 
   // the popup list box
-  private listBox: ComboBoxListBox<T>;
+  private readonly listBox: ComboBoxListBox<T>;
 
   private listParent: Node;
 
@@ -136,17 +136,17 @@ export default class ComboBox<T> extends Node {
   private display: Display | null;
 
   // Clicking anywhere other than the button or list box will hide the list box.
-  private clickToDismissListener: IInputListener;
+  private readonly clickToDismissListener: IInputListener;
 
   // (PDOM) when focus leaves the ComboBoxListBox, it should be closed. This could happen from keyboard
   // or from other screen reader controls (like VoiceOver gestures)
-  private dismissWithFocusListener: ( focus: Focus | null ) => void;
+  private readonly dismissWithFocusListener: ( focus: Focus | null ) => void;
 
   // For use via PhET-iO, see https://github.com/phetsims/sun/issues/451
   // This is not generally controlled by the user, so it is not reset when the Reset All button is pressed.
-  private displayOnlyProperty: Property<boolean>;
+  private readonly displayOnlyProperty: Property<boolean>;
 
-  private disposeComboBox: () => void;
+  private readonly disposeComboBox: () => void;
 
   /**
    * @param items

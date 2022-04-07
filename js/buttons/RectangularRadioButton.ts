@@ -63,9 +63,9 @@ export default class RectangularRadioButton<T> extends RectangularButton {
   // the value that is set to the Property when this button is pressed
   readonly value: T;
 
-  private firedEmitter: Emitter<[]>;
+  private readonly firedEmitter: Emitter<[]>;
 
-  private disposeRectangularRadioButton: () => void;
+  private readonly disposeRectangularRadioButton: () => void;
 
   /**
    * @param property - axon Property that can take on a set of values, one for each radio button in the group

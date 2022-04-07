@@ -132,25 +132,25 @@ type TickOptions = Pick<SelfOptions, 'tickLabelSpacing' | 'majorTickLength' | 'm
 
 export default class Slider extends AccessibleSlider( Node, 0 ) {
 
-  enabledRangeProperty: IReadOnlyProperty<Range>;
+  readonly enabledRangeProperty: IReadOnlyProperty<Range>;
 
   // public so that clients can access Properties of these DragListeners that tell us about its state
   // See https://github.com/phetsims/sun/issues/680
   readonly thumbDragListener: DragListener;
   readonly trackDragListener: DragListener;
 
-  private orientation: Orientation;
+  private readonly orientation: Orientation;
 
   // options needed by prototype functions that add ticks
-  private tickOptions: Required<TickOptions>;
+  private readonly tickOptions: Required<TickOptions>;
 
   // ticks are added to these parents, so they are behind the knob
-  private majorTicksParent: Node;
-  private minorTicksParent: Node;
+  private readonly majorTicksParent: Node;
+  private readonly minorTicksParent: Node;
 
-  private track: SliderTrack;
+  private readonly track: SliderTrack;
 
-  private disposeSlider: () => void;
+  private readonly disposeSlider: () => void;
 
   // This is a marker to indicate that we should create the actual default slider sound.
   public static DEFAULT_SOUND = new ValueChangeSoundGenerator( new Range( 0, 1 ) );

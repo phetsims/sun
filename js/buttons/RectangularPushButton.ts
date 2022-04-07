@@ -27,9 +27,9 @@ export type RectangularPushButtonOptions = SelfOptions & RectangularButtonOption
 export default class RectangularPushButton extends RectangularButton {
 
   // So we have a more accurate subtyped field
-  private pushButtonModel: PushButtonModel;
+  private readonly pushButtonModel: PushButtonModel;
 
-  private disposeRectangularPushButton: () => void;
+  private readonly disposeRectangularPushButton: () => void;
 
   constructor( providedOptions?: RectangularPushButtonOptions ) {
 

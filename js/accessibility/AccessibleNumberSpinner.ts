@@ -56,14 +56,14 @@ const AccessibleNumberSpinner = <SuperType extends Constructor>( Type: SuperType
   return class extends AccessibleValueHandler( Type, optionsArgPosition ) {
 
     // Manages timing must be disposed
-    _callbackTimer: CallbackTimer;
+    readonly _callbackTimer: CallbackTimer;
 
     // @protected - emits events when increment and decrement actions occur, but only for changes
     // of keyboardStep and shiftKeyboardStep (not pageKeyboardStep)
-    incrementDownEmitter: Emitter<[ boolean ]>; // @protected
-    decrementDownEmitter: Emitter<[ boolean ]>; // @protected
+    readonly incrementDownEmitter: Emitter<[ boolean ]>; // @protected
+    readonly decrementDownEmitter: Emitter<[ boolean ]>; // @protected
 
-    _disposeAccessibleNumberSpinner: () => void;
+    readonly _disposeAccessibleNumberSpinner: () => void;
 
     constructor( ...args: IntentionalAny[] ) {
 

@@ -53,7 +53,7 @@ export default class ComboBoxButton<T> extends RectangularPushButton {
   // set to true to block voicing to occur upon this button's next focus event.
   private _blockNextVoicingFocusListener: boolean;
 
-  private disposeComboBoxButton: () => void;
+  private readonly disposeComboBoxButton: () => void;
 
   // needed by methods
   private arrow: Path;

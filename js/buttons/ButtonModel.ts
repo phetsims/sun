@@ -76,7 +76,7 @@ export default class ButtonModel extends EnabledComponent {
   // first listener is created. See this.createPressListener.
   looksOverMultilink: Multilink<boolean[]> | null;
 
-  private disposeButtonModel: () => void;
+  private readonly disposeButtonModel: () => void;
 
   constructor( providedOptions?: ButtonModelOptions ) {
 

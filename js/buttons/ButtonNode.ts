@@ -83,11 +83,11 @@ export type ButtonNodeOptions = SelfOptions & VoicingOptions;
 export default class ButtonNode extends Voicing( Node, 0 ) {
 
   protected buttonModel: ButtonModel;
-  private _settableBaseColorProperty: PaintColorProperty;
-  private _disabledColorProperty: PaintColorProperty;
-  private baseColorProperty: Property<Color>;
-  private _pressListener: PressListener;
-  private disposeButtonNode: () => void;
+  private readonly _settableBaseColorProperty: PaintColorProperty;
+  private readonly _disabledColorProperty: PaintColorProperty;
+  private readonly baseColorProperty: Property<Color>;
+  private readonly _pressListener: PressListener;
+  private readonly disposeButtonNode: () => void;
 
   /**
    * @param buttonModel

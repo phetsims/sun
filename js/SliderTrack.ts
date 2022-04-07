@@ -60,7 +60,7 @@ export default class SliderTrack extends Node {
   // See https://github.com/phetsims/sun/issues/680
   readonly dragListener: DragListener;
 
-  private disposeSliderTrack: () => void;
+  private readonly disposeSliderTrack: () => void;
 
   constructor( trackNode: Node, valueProperty: IProperty<number>, range: Range, providedOptions?: SliderTrackOptions ) {
     super();
