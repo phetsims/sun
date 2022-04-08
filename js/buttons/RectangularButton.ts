@@ -169,8 +169,8 @@ export default class RectangularButton extends ButtonNode {
  * @param height
  * @param config - RectangularButton config, containing values related to radii of button corners
  */
-function createButtonShape( width: number, height: number, config: PickRequired<RectangularButtonOptions, 'cornerRadius' | 'leftTopCornerRadius' | 'rightTopCornerRadius' | 'leftBottomCornerRadius' | 'rightBottomCornerRadius'> ): Shape {
-  assert && assert( typeof config.cornerRadius === 'number', 'cornerRadius is required' );
+function createButtonShape( width: number, height: number,
+                            config: PickRequired<RectangularButtonOptions, 'cornerRadius' | 'leftTopCornerRadius' | 'rightTopCornerRadius' | 'leftBottomCornerRadius' | 'rightBottomCornerRadius'> ): Shape {
   return Shape.roundedRectangleWithRadii( 0, 0, width, height, {
     topLeft: config.leftTopCornerRadius !== null ? config.leftTopCornerRadius : config.cornerRadius,
     topRight: config.rightTopCornerRadius !== null ? config.rightTopCornerRadius : config.cornerRadius,
