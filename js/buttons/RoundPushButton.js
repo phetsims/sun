@@ -86,7 +86,7 @@ class RoundPushButton extends RoundButton {
    * @public
    */
   addListener( listener ) {
-    this.buttonModel.addListener( listener );
+    this.pushButtonModel.addListener( listener );
   }
 
   /**
@@ -95,7 +95,7 @@ class RoundPushButton extends RoundButton {
    * @public
    */
   removeListener( listener ) {
-    this.buttonModel.removeListener( listener );
+    this.pushButtonModel.removeListener( listener );
   }
 }
 
