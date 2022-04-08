@@ -1,5 +1,6 @@
 // Copyright 2014-2021, University of Colorado Boulder
 
+// @ts-nocheck
 /**
  * A DerivedProperty the maps sticky toggle button model states to the values needed by the button view.
  *
