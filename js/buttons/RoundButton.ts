@@ -42,6 +42,8 @@ export type RoundButtonOptions = SelfOptions & ButtonNodeOptions;
 
 export default class RoundButton extends ButtonNode {
 
+  public static ThreeDAppearanceStrategy: typeof ThreeDAppearanceStrategy;
+
   /**
    * @param buttonModel
    * @param interactionStateProperty
@@ -126,8 +128,6 @@ export default class RoundButton extends ButtonNode {
     // between button shape and inner edge of highlight
     this.focusHighlight = Shape.circle( 0, 0, buttonBackgroundRadius + 5 );
   }
-
-  public static ThreeDAppearanceStrategy: typeof ThreeDAppearanceStrategy;
 }
 
 /**
@@ -137,7 +137,7 @@ export default class RoundButton extends ButtonNode {
  */
 export class ThreeDAppearanceStrategy {
 
-  public readonly dispose: () => void;
+  private readonly disposeThreeDAppearanceStrategy: () => void;
 
   /**
    * @param {Node,Paintable} buttonBackground - the Node for the button's background, sans content
@@ -228,8 +228,7 @@ export class ThreeDAppearanceStrategy {
 
     interactionStateProperty.link( interactionStateListener );
 
-    // @public
-    this.dispose = () => {
+    this.disposeThreeDAppearanceStrategy = () => {
       if ( interactionStateProperty.hasListener( interactionStateListener ) ) {
         interactionStateProperty.unlink( interactionStateListener );
       }
@@ -244,8 +243,10 @@ export class ThreeDAppearanceStrategy {
       baseTransparent.dispose();
     };
   }
-}
 
-RoundButton.ThreeDAppearanceStrategy = ThreeDAppearanceStrategy;
+  public dispose(): void {
+    this.disposeThreeDAppearanceStrategy();
+  }
+}
 
 sun.register( 'RoundButton', RoundButton );
