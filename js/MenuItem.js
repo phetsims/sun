@@ -1,5 +1,6 @@
 // Copyright 2017-2022, University of Colorado Boulder
 
+// @ts-nocheck
 /**
  * Class for an item that is listed in the PhetMenu
  * See PhetMenu.js for more information
