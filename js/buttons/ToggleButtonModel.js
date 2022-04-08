@@ -1,5 +1,6 @@
 // Copyright 2014-2022, University of Colorado Boulder
 
+// @ts-nocheck
 /**
  * Model for a toggle button that changes value on each "up" event when the button is released.
  *

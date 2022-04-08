@@ -1,5 +1,6 @@
 // Copyright 2015-2020, University of Colorado Boulder
 
+// @ts-nocheck
 /**
  * Model for a momentary button: on when pressed, off when released.
  *
