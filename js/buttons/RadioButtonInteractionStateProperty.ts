@@ -12,7 +12,7 @@ import RadioButtonInteractionState from './RadioButtonInteractionState.js';
 import IProperty from '../../../axon/js/IProperty.js';
 import ButtonModel from './ButtonModel.js';
 
-class RadioButtonInteractionStateProperty<T> extends DerivedProperty<RadioButtonInteractionState, [ boolean, boolean, boolean, boolean, T ]> {
+export default class RadioButtonInteractionStateProperty<T> extends DerivedProperty<RadioButtonInteractionState, [ boolean, boolean, boolean, boolean, T ]> {
 
   /**
    * @param buttonModel
@@ -35,4 +35,3 @@ class RadioButtonInteractionStateProperty<T> extends DerivedProperty<RadioButton
 }
 
 sun.register( 'RadioButtonInteractionStateProperty', RadioButtonInteractionStateProperty );
-export default RadioButtonInteractionStateProperty;

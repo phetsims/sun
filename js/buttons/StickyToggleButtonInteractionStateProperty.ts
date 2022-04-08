@@ -11,7 +11,7 @@ import sun from '../sun.js';
 import ButtonInteractionState from './ButtonInteractionState.js';
 import StickyToggleButtonModel from './StickyToggleButtonModel.js';
 
-class StickyToggleButtonInteractionStateProperty<T> extends DerivedProperty<ButtonInteractionState, [ boolean, boolean, boolean, boolean, T ]> {
+export default class StickyToggleButtonInteractionStateProperty<T> extends DerivedProperty<ButtonInteractionState, [ boolean, boolean, boolean, boolean, T ]> {
   constructor( buttonModel: StickyToggleButtonModel<T> ) {
     super(
       [ buttonModel.focusedProperty, buttonModel.overProperty, buttonModel.looksOverProperty,
@@ -29,4 +29,3 @@ class StickyToggleButtonInteractionStateProperty<T> extends DerivedProperty<Butt
 }
 
 sun.register( 'StickyToggleButtonInteractionStateProperty', StickyToggleButtonInteractionStateProperty );
-export default StickyToggleButtonInteractionStateProperty;
