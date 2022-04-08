@@ -24,9 +24,10 @@ export type StickyToggleButtonModelOptions = SelfOptions & ButtonModelOptions;
 
 export default class StickyToggleButtonModel<T> extends ButtonModel {
 
-  private readonly valueUp: T;
-  private readonly valueDown: T;
-  private readonly valueProperty: IProperty<T>;
+  public readonly valueProperty: IProperty<T>;
+  public readonly valueUp: T;
+  public readonly valueDown: T;
+
   private readonly toggledEmitter: Emitter<[]>;
   private readonly pressedWhileDownProperty: IProperty<boolean>;
   private readonly disposeToggleButtonModel: () => void;

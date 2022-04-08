@@ -21,9 +21,10 @@ export type ToggleButtonModelOptions = SelfOptions & ButtonModelOptions;
 
 export default class ToggleButtonModel<T> extends ButtonModel {
 
-  private readonly valueOff: T;
-  private readonly valueOn: T;
-  private readonly valueProperty: IProperty<T>;
+  public readonly valueProperty: IProperty<T>;
+  public readonly valueOff: T;
+  public readonly valueOn: T;
+
   private readonly toggledEmitter: Emitter<[]>;
   private readonly disposeToggleButtonModel: () => void;
 

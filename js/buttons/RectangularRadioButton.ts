@@ -55,7 +55,7 @@ export type RectangularRadioButtonOptions = SelfOptions & RectangularButtonOptio
 
 export default class RectangularRadioButton<T> extends RectangularButton {
 
-  readonly interactionStateProperty: RadioButtonInteractionStateProperty;
+  readonly interactionStateProperty: RadioButtonInteractionStateProperty<T>;
 
   // the Property this button changes
   readonly property: IProperty<T>;

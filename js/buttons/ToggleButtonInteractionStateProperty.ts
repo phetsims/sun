@@ -1,34 +1,26 @@
 // Copyright 2014-2021, University of Colorado Boulder
 
-// @ts-nocheck
 /**
- * A DerivedProperty that maps sticky toggle button model states to the values needed by the button view.
+ * A DerivedProperty that maps ToggleButtonModel states to the states needed by the button view.
  */
 
 import DerivedProperty from '../../../axon/js/DerivedProperty.js';
 import sun from '../sun.js';
 import ButtonInteractionState from './ButtonInteractionState.js';
+import ToggleButtonModel from './ToggleButtonModel.js';
 
-class ToggleButtonInteractionStateProperty extends DerivedProperty {
-
-  /**
-   * @param {ButtonModel} buttonModel
-   */
-  constructor( buttonModel ) {
-
-    const options = { valueType: ButtonInteractionState };
-
+export default class ToggleButtonInteractionStateProperty<T> extends DerivedProperty<ButtonInteractionState, [ boolean, boolean ]> {
+  constructor( toggleButtonModel: ToggleButtonModel<T> ) {
     super(
-      [ buttonModel.looksOverProperty, buttonModel.looksPressedProperty ],
-      ( looksOver, looksPressed ) => {
+      [ toggleButtonModel.looksOverProperty, toggleButtonModel.looksPressedProperty ],
+      ( looksOver: boolean, looksPressed: boolean ) => {
         return looksOver && !looksPressed ? ButtonInteractionState.OVER :
                looksPressed ? ButtonInteractionState.PRESSED :
                ButtonInteractionState.IDLE;
       },
-      options
+      { valueType: ButtonInteractionState }
     );
   }
 }
 
 sun.register( 'ToggleButtonInteractionStateProperty', ToggleButtonInteractionStateProperty );
-export default ToggleButtonInteractionStateProperty;

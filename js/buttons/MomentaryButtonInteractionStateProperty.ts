@@ -1,8 +1,7 @@
 // Copyright 2014-2021, University of Colorado Boulder
 
-// @ts-nocheck
 /**
- * A DerivedProperty that maps momentary button model states to the values needed by the button view.
+ * A DerivedProperty that MomentaryButtonModel states to the states needed by the button view.
  *
  * @author Chris Malley (PixelZoom, Inc.)
  */
@@ -10,16 +9,10 @@
 import DerivedProperty from '../../../axon/js/DerivedProperty.js';
 import sun from '../sun.js';
 import ButtonInteractionState from './ButtonInteractionState.js';
+import MomentaryButtonModel from './MomentaryButtonModel.js';
 
-class MomentaryButtonInteractionStateProperty extends DerivedProperty {
-
-  /**
-   * @param {ButtonModel} buttonModel
-   */
-  constructor( buttonModel ) {
-
-    const options = { valueType: ButtonInteractionState };
-
+export default class MomentaryButtonInteractionStateProperty<T> extends DerivedProperty<ButtonInteractionState, [ boolean, boolean ]> {
+  constructor( buttonModel: MomentaryButtonModel<T> ) {
     super(
       [ buttonModel.looksOverProperty, buttonModel.looksPressedProperty ],
       ( looksOver, looksPressed ) => {
@@ -27,10 +20,9 @@ class MomentaryButtonInteractionStateProperty extends DerivedProperty {
                looksPressed ? ButtonInteractionState.PRESSED :  // remain pressed regardless of whether 'over' is true
                ButtonInteractionState.IDLE;
       },
-      options
+      { valueType: ButtonInteractionState }
     );
   }
 }
 
 sun.register( 'MomentaryButtonInteractionStateProperty', MomentaryButtonInteractionStateProperty );
-export default MomentaryButtonInteractionStateProperty;
