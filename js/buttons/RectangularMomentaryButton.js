@@ -1,5 +1,6 @@
 // Copyright 2015-2020, University of Colorado Boulder
 
+// @ts-nocheck
 /**
  * RectangularMomentaryButton is a rectangular momentary button that toggles a Property between 2 values.
  * The 'off value' is the value when the button is not pressed.
