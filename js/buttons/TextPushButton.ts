@@ -1,38 +1,45 @@
-// Copyright 2014-2021, University of Colorado Boulder
+// Copyright 2014-2022, University of Colorado Boulder
 
-// @ts-nocheck
 /**
- * Push button with text on a rectangle.
+ * TextPushButton is a convenience class for creating a rectangular push button with a text label.
  *
  * @author John Blanco (PhET Interactive Simulations)
  */
 
 import merge from '../../../phet-core/js/merge.js';
-import { Text } from '../../../scenery/js/imports.js';
+import optionize from '../../../phet-core/js/optionize.js';
+import { Font, IPaint, Text, TextOptions } from '../../../scenery/js/imports.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import sun from '../sun.js';
-import RectangularPushButton from './RectangularPushButton.js';
+import RectangularPushButton, { RectangularPushButtonOptions } from './RectangularPushButton.js';
 
-class TextPushButton extends RectangularPushButton {
+type SelfOptions = {
+  font?: Font;
+  textFill?: IPaint;
+  maxTextWidth?: number | null;
+  textNodeOptions?: TextOptions;
+};
 
-  /**
-   * @param {string} text
-   * @param {Object} [options]
-   */
-  constructor( text, options ) {
+export type TextPushButtonOptions = SelfOptions & Omit<RectangularPushButtonOptions, 'content'>;
 
-    options = merge( {
+export default class TextPushButton extends RectangularPushButton {
+
+  private readonly disposeTextPushButton: () => void;
+
+  constructor( text: string, providedOptions?: TextPushButtonOptions ) {
+
+    const options = optionize<TextPushButtonOptions, SelfOptions, RectangularPushButtonOptions, 'tandem'>( {
+
+      // TextPushButtonOptions
+      font: Font.DEFAULT,
       textFill: 'black',
       maxTextWidth: null,
-
       textNodeOptions: {},
 
-      // phet-io
+      // RectangularPushButtonOptions
       tandem: Tandem.REQUIRED,
-
-      // pdom
       innerContent: text
-    }, options );
+    }, providedOptions );
 
     const textNode = new Text( text, merge( {
       font: options.font,
@@ -46,21 +53,15 @@ class TextPushButton extends RectangularPushButton {
 
     super( options );
 
-    // @private
     this.disposeTextPushButton = () => {
       textNode.dispose();
     };
   }
 
-  /**
-   * @public
-   * @override
-   */
-  dispose() {
+  public override dispose(): void {
     this.disposeTextPushButton();
     super.dispose();
   }
 }
 
 sun.register( 'TextPushButton', TextPushButton );
-export default TextPushButton;
