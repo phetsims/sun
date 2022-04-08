@@ -19,12 +19,14 @@ import Tandem from '../../../tandem/js/Tandem.js';
 import sun from '../sun.js';
 import ButtonModel, { ButtonModelOptions } from './ButtonModel.js';
 
+export type PushButtonListener = () => void;
+
 type SelfOptions = {
   // true: fire on pointer down; false: fire on pointer up if pointer is over button
   fireOnDown?: boolean;
 
   // convenience for adding 1 listener, no args
-  listener?: ( () => void ) | null;
+  listener?: PushButtonListener | null;
 
   // fire-on-hold feature
   // TODO: these options are not supported with PDOM interaction, see https://github.com/phetsims/scenery/issues/1117
@@ -153,14 +155,14 @@ export default class PushButtonModel extends ButtonModel {
    * Adds a listener. If already a listener, this is a no-op.
    * @param listener - function called when the button is pressed, no args
    */
-  addListener( listener: () => void ) {
+  addListener( listener: PushButtonListener ) {
     this.firedEmitter.addListener( listener );
   }
 
   /**
    * Removes a listener. If not a listener, this is a no-op.
    */
-  removeListener( listener: () => void ) {
+  removeListener( listener: PushButtonListener ) {
     this.firedEmitter.removeListener( listener );
   }
 

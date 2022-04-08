@@ -1,6 +1,5 @@
 // Copyright 2014-2022, University of Colorado Boulder
 
-// @ts-nocheck
 /**
  * RoundPushButton is a round push button, used to initiate some action.
  *
@@ -9,56 +8,59 @@
  */
 
 import InstanceRegistry from '../../../phet-core/js/documentation/InstanceRegistry.js';
-import merge from '../../../phet-core/js/merge.js';
 import pushButtonSoundPlayer from '../../../tambo/js/shared-sound-players/pushButtonSoundPlayer.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import sun from '../sun.js';
 import PushButtonInteractionStateProperty from './PushButtonInteractionStateProperty.js';
-import PushButtonModel from './PushButtonModel.js';
-import RoundButton from './RoundButton.js';
+import PushButtonModel, { PushButtonListener, PushButtonModelOptions } from './PushButtonModel.js';
+import RoundButton, { RoundButtonOptions } from './RoundButton.js';
+import optionize from '../../../phet-core/js/optionize.js';
+import ISoundPlayer from '../../../tambo/js/ISoundPlayer.js';
 
-class RoundPushButton extends RoundButton {
+type SelfOptions = {
+  soundPlayer?: ISoundPlayer;
+};
 
-  /**
-   * @param {Object} [options]
-   */
-  constructor( options ) {
+//TODO https://github.com/phetsims/sun/issues/749 Let's not create PushButtonModel with these options?
+type SuperOptions = RoundButtonOptions & PushButtonModelOptions;
 
-    options = merge( {
+export type RoundPushButtonOptions = SelfOptions & SuperOptions;
 
-      // {SoundPlayer} - sound generation
+export default class RoundPushButton extends RoundButton {
+
+  // RoundButton has this.buttonModel, but we also need this.pushButtonModel, because it has additional methods
+  protected readonly pushButtonModel: PushButtonModel;
+
+  private readonly disposeRoundPushButton: () => void;
+
+  constructor( providedOptions?: RoundPushButtonOptions ) {
+
+    const options = optionize<RoundPushButtonOptions, SelfOptions, SuperOptions>( {
       soundPlayer: pushButtonSoundPlayer,
-
-      // {function} listener called when button is pushed.
-      listener: _.noop,
-
-      // tandem support
       tandem: Tandem.REQUIRED
-    }, options );
+    }, providedOptions );
 
     // Save the listener and add it after creating the button model. This is done so that
     // the same code path is always used for adding listener, thus guaranteeing a consistent code path if addListener is
     // overridden, see https://github.com/phetsims/sun/issues/284.
     const listener = options.listener;
-    options = _.omit( options, [ 'listener' ] );
+    const superOptions = _.omit( options, [ 'listener' ] );
 
-    // @public - listening only
     // Note it shares a tandem with this, so the emitter will be instrumented as a child of the button
-    const pushButtonModel = new PushButtonModel( options );
+    //TODO https://github.com/phetsims/sun/issues/749 its surprising that we can pass superOptions with irrelevant fields to PushButtonModel without TS errors
+    const pushButtonModel = new PushButtonModel( superOptions );
 
-    super( pushButtonModel, new PushButtonInteractionStateProperty( pushButtonModel ), options );
+    super( pushButtonModel, new PushButtonInteractionStateProperty( pushButtonModel ), superOptions );
 
-    // @public RoundButton has this.buttonModel, but we also need this.pushButtonModel, because it has additional methods.
     this.pushButtonModel = pushButtonModel;
 
     // add the listener that was potentially saved above
-    this.addListener( listener );
+    listener && this.addListener( listener );
 
     // sound generation
     const playSound = () => { options.soundPlayer.play(); };
     pushButtonModel.produceSoundEmitter.addListener( playSound );
 
-    // @private - dispose function
     this.disposeRoundPushButton = () => {
       pushButtonModel.produceSoundEmitter.removeListener( playSound );
       pushButtonModel.dispose();
@@ -68,11 +70,7 @@ class RoundPushButton extends RoundButton {
     assert && phet.chipper.queryParameters.binder && InstanceRegistry.registerDataURL( 'sun', 'RoundPushButton', this );
   }
 
-  /**
-   * @public
-   * @override
-   */
-  dispose() {
+  public override dispose(): void {
 
     // The order of operations here is important - the view needs to be disposed first so that it is unhooked from
     // the model before the model is disposed.  If the model is disposed first, the view ends up trying to change some
@@ -83,22 +81,17 @@ class RoundPushButton extends RoundButton {
 
   /**
    * Adds a listener that will be notified when the button fires.
-   * @param {function} listener
-   * @public
    */
-  addListener( listener ) {
+  public addListener( listener: PushButtonListener ): void {
     this.pushButtonModel.addListener( listener );
   }
 
   /**
    * Removes a listener.
-   * @param {function} listener
-   * @public
    */
-  removeListener( listener ) {
+  public removeListener( listener: PushButtonListener ): void {
     this.pushButtonModel.removeListener( listener );
   }
 }
 
 sun.register( 'RoundPushButton', RoundPushButton );
-export default RoundPushButton;

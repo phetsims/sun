@@ -11,15 +11,7 @@ import Property from '../../../axon/js/Property.js';
 import Bounds2 from '../../../dot/js/Bounds2.js';
 import Dimension2 from '../../../dot/js/Dimension2.js';
 import dotRandom from '../../../dot/js/dotRandom.js';
-import { Circle } from '../../../scenery/js/imports.js';
-import { HBox } from '../../../scenery/js/imports.js';
-import { Node } from '../../../scenery/js/imports.js';
-import { Rectangle } from '../../../scenery/js/imports.js';
-import { Text } from '../../../scenery/js/imports.js';
-import { VBox } from '../../../scenery/js/imports.js';
-import { VStrut } from '../../../scenery/js/imports.js';
-import { Color } from '../../../scenery/js/imports.js';
-import { Font } from '../../../scenery/js/imports.js';
+import { Circle, Color, Font, HBox, Node, Rectangle, Text, VBox, VStrut } from '../../../scenery/js/imports.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import ArrowButton from '../buttons/ArrowButton.js';
 import BooleanRectangularStickyToggleButton from '../buttons/BooleanRectangularStickyToggleButton.js';
@@ -349,16 +341,14 @@ function demoPushButtons( layoutBounds: Bounds2 ) {
     content: new Text( 'Go!', { font: BUTTON_FONT } ),
     listener: () => console.log( 'goButton fired' ),
     baseColor: new Color( 0, 163, 0 ),
-    enabledProperty: buttonsEnabledProperty,
-    minXPadding: 10
+    enabledProperty: buttonsEnabledProperty
   } );
 
   const helpButton = new RoundPushButton( {
     content: new Text( 'Help', { font: BUTTON_FONT } ),
     listener: () => console.log( 'helpButton fired' ),
     baseColor: new Color( 244, 154, 194 ),
-    enabledProperty: buttonsEnabledProperty,
-    minXPadding: 10
+    enabledProperty: buttonsEnabledProperty
   } );
 
   const actionButtonsBox = new HBox( {

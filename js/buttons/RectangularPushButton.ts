@@ -13,29 +13,29 @@ import ISoundPlayer from '../../../tambo/js/ISoundPlayer.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import sun from '../sun.js';
 import PushButtonInteractionStateProperty from './PushButtonInteractionStateProperty.js';
-import PushButtonModel, { PushButtonModelOptions } from './PushButtonModel.js';
+import PushButtonModel, { PushButtonListener, PushButtonModelOptions } from './PushButtonModel.js';
 import RectangularButton, { RectangularButtonOptions } from './RectangularButton.js';
 
 type SelfOptions = {
   soundPlayer?: ISoundPlayer;
-  listener?: () => void;
 };
 
 //TODO https://github.com/phetsims/sun/issues/749 Let's not create PushButtonModel with these options?
-export type RectangularPushButtonOptions = SelfOptions & RectangularButtonOptions & PushButtonModelOptions;
+type SuperOptions = RectangularButtonOptions & PushButtonModelOptions;
+
+export type RectangularPushButtonOptions = SelfOptions & SuperOptions;
 
 export default class RectangularPushButton extends RectangularButton {
 
-  // So we have a more accurate subtyped field
-  private readonly pushButtonModel: PushButtonModel;
+  // RectangularButton has this.buttonModel, but we also need this.pushButtonModel, because it has additional methods
+  protected readonly pushButtonModel: PushButtonModel;
 
   private readonly disposeRectangularPushButton: () => void;
 
   constructor( providedOptions?: RectangularPushButtonOptions ) {
 
-    const options = optionize<RectangularPushButtonOptions, SelfOptions, RectangularButtonOptions>( {
+    const options = optionize<RectangularPushButtonOptions, SelfOptions, SuperOptions>( {
       soundPlayer: pushButtonSoundPlayer,
-      listener: _.noop,
       tandem: Tandem.REQUIRED
     }, providedOptions );
 
@@ -45,8 +45,8 @@ export default class RectangularPushButton extends RectangularButton {
     const listener = options.listener;
     const superOptions = _.omit( options, [ 'listener' ] );
 
-    // Safe to pass through options to the PushButtonModel like "fireOnDown".  Other scenery options will be safely ignored.
     // Note it shares a tandem with this, so the emitter will be instrumented as a child of the button
+    //TODO https://github.com/phetsims/sun/issues/749 its surprising that we can pass superOptions with irrelevant fields to PushButtonModel without TS errors
     const buttonModel = new PushButtonModel( superOptions ); // @public, listen only
 
     super( buttonModel, new PushButtonInteractionStateProperty( buttonModel ), superOptions );
@@ -83,14 +83,14 @@ export default class RectangularPushButton extends RectangularButton {
   /**
    * Adds a listener that will be notified when the button fires.
    */
-  addListener( listener: () => void ) {
+  addListener( listener: PushButtonListener ) {
     this.pushButtonModel.addListener( listener );
   }
 
   /**
    * Removes a listener.
    */
-  removeListener( listener: () => void ) {
+  removeListener( listener: PushButtonListener ) {
     this.pushButtonModel.removeListener( listener );
   }
 }
