@@ -21,7 +21,7 @@ type SelfOptions = {
   listener?: () => void;
 };
 
-// NOTE: Let's not create PushButtonModel with these options?
+//TODO https://github.com/phetsims/sun/issues/749 Let's not create PushButtonModel with these options?
 export type RectangularPushButtonOptions = SelfOptions & RectangularButtonOptions & PushButtonModelOptions;
 
 export default class RectangularPushButton extends RectangularButton {
