@@ -1,6 +1,5 @@
 // Copyright 2014-2022, University of Colorado Boulder
 
-// @ts-nocheck
 /**
  * Model for a toggle button that changes value on each "up" event when the button is released.
  *
@@ -9,44 +8,53 @@
  */
 
 import Emitter from '../../../axon/js/Emitter.js';
+import IProperty from '../../../axon/js/IProperty.js';
 import merge from '../../../phet-core/js/merge.js';
 import EventType from '../../../tandem/js/EventType.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import sun from '../sun.js';
-import ButtonModel from './ButtonModel.js';
+import ButtonModel, { ButtonModelOptions } from './ButtonModel.js';
 
-class ToggleButtonModel extends ButtonModel {
+type SelfOptions = {};
+
+export type ToggleButtonModelOptions = SelfOptions & ButtonModelOptions;
+
+export default class ToggleButtonModel<T> extends ButtonModel {
+
+  private readonly valueOff: T;
+  private readonly valueOn: T;
+  private readonly valueProperty: IProperty<T>;
+  private readonly toggledEmitter: Emitter<[]>;
+  private readonly disposeToggleButtonModel: () => void;
 
   /**
    * @param {Object} valueOff - value when the button is in the off state
    * @param {Object} valueOn - value when the button is in the on state
    * @param {Property} property - axon Property that can be either valueOff or valueOn.
-   * @param {Object} [options]
+   * @param {Object} [providedOptions]
    */
-  constructor( valueOff, valueOn, property, options ) {
+  constructor( valueOff: T, valueOn: T, property: IProperty<T>, providedOptions?: ToggleButtonModelOptions ) {
 
-    options = merge( {
+    const options = merge( {
       tandem: Tandem.REQUIRED
-    }, options );
+    }, providedOptions );
 
     super( options );
 
-    // @private
     this.valueOff = valueOff;
     this.valueOn = valueOn;
     this.valueProperty = property;
 
     // Behaves like a push button (with fireOnDown:false), but toggles its state when the button is released.
-    const downListener = down => {
+    const downListener = ( down: boolean ) => {
       if ( ( this.overProperty.get() || this.focusedProperty.get() ) && this.enabledProperty.get() && !this.interrupted ) {
         if ( !down ) {
           this.toggle();
         }
       }
     };
-    this.downProperty.link( downListener ); // @private
+    this.downProperty.link( downListener );
 
-    // @private
     this.toggledEmitter = new Emitter( {
       tandem: options.tandem.createTandem( 'toggledEmitter' ),
       phetioDocumentation: 'Emits when the button is toggled',
@@ -61,28 +69,21 @@ class ToggleButtonModel extends ButtonModel {
     };
     this.toggledEmitter.addListener( toggleListener );
 
-    // @private - dispose items specific to this instance
     this.disposeToggleButtonModel = () => {
       this.downProperty.unlink( downListener );
       this.toggledEmitter.dispose();
     };
   }
 
-  /**
-   * @public
-   * @override
-   */
-  dispose() {
+  public override dispose(): void {
     this.disposeToggleButtonModel();
     super.dispose();
   }
 
-  // @public
-  toggle() {
+  private toggle(): void {
     this.toggledEmitter.emit();
     this.produceSoundEmitter.emit();
   }
 }
 
 sun.register( 'ToggleButtonModel', ToggleButtonModel );
-export default ToggleButtonModel;
