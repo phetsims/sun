@@ -210,49 +210,48 @@ class ThreeDAppearanceStrategy {
     const transparentWhite = new Color( 255, 255, 255, 0.7 );
 
     // Dynamic colors
-    // TODO https://github.com/phetsims/sun/issues/553 missing "Property" suffix for all PaintColorProperty names
-    const baseBrighter7 = new PaintColorProperty( baseColorProperty, { luminanceFactor: 0.7 } );
-    const baseBrighter5 = new PaintColorProperty( baseColorProperty, { luminanceFactor: 0.5 } );
-    const baseBrighter2 = new PaintColorProperty( baseColorProperty, { luminanceFactor: 0.2 } );
-    const baseDarker3 = new PaintColorProperty( baseColorProperty, { luminanceFactor: -0.3 } );
-    const baseDarker4 = new PaintColorProperty( baseColorProperty, { luminanceFactor: -0.4 } );
-    const baseDarker5 = new PaintColorProperty( baseColorProperty, { luminanceFactor: -0.5 } );
-    const baseTransparent = new DerivedProperty( [ baseColorProperty ], color => color.withAlpha( 0 ) );
+    const baseBrighter7Property = new PaintColorProperty( baseColorProperty, { luminanceFactor: 0.7 } );
+    const baseBrighter5Property = new PaintColorProperty( baseColorProperty, { luminanceFactor: 0.5 } );
+    const baseBrighter2Property = new PaintColorProperty( baseColorProperty, { luminanceFactor: 0.2 } );
+    const baseDarker3Property = new PaintColorProperty( baseColorProperty, { luminanceFactor: -0.3 } );
+    const baseDarker4Property = new PaintColorProperty( baseColorProperty, { luminanceFactor: -0.4 } );
+    const baseDarker5Property = new PaintColorProperty( baseColorProperty, { luminanceFactor: -0.5 } );
+    const baseTransparentProperty = new DerivedProperty( [ baseColorProperty ], color => color.withAlpha( 0 ) );
 
     // Gradient fills for button states
     const upFillVertical = new LinearGradient( 0, 0, 0, buttonHeight )
-      .addColorStop( 0, baseBrighter7 )
+      .addColorStop( 0, baseBrighter7Property )
       .addColorStop( verticalHighlightStop, baseColorProperty )
       .addColorStop( verticalShadowStop, baseColorProperty )
-      .addColorStop( 1, baseDarker5 );
+      .addColorStop( 1, baseDarker5Property );
 
     const upFillHorizontal = new LinearGradient( 0, 0, buttonWidth, 0 )
       .addColorStop( 0, transparentWhite )
-      .addColorStop( horizontalHighlightStop, baseTransparent )
-      .addColorStop( horizontalShadowStop, baseTransparent )
-      .addColorStop( 1, baseDarker5 );
+      .addColorStop( horizontalHighlightStop, baseTransparentProperty )
+      .addColorStop( horizontalShadowStop, baseTransparentProperty )
+      .addColorStop( 1, baseDarker5Property );
 
     const overFillVertical = new LinearGradient( 0, 0, 0, buttonHeight )
-      .addColorStop( 0, baseBrighter7 )
-      .addColorStop( verticalHighlightStop, baseBrighter5 )
-      .addColorStop( verticalShadowStop, baseBrighter5 )
-      .addColorStop( 1, baseDarker5 );
+      .addColorStop( 0, baseBrighter7Property )
+      .addColorStop( verticalHighlightStop, baseBrighter5Property )
+      .addColorStop( verticalShadowStop, baseBrighter5Property )
+      .addColorStop( 1, baseDarker5Property );
 
     const overFillHorizontal = new LinearGradient( 0, 0, buttonWidth, 0 )
       .addColorStop( 0, transparentWhite )
       .addColorStop( horizontalHighlightStop / 2, new Color( 255, 255, 255, 0 ) )
-      .addColorStop( horizontalShadowStop, baseTransparent )
-      .addColorStop( 1, baseDarker3 );
+      .addColorStop( horizontalShadowStop, baseTransparentProperty )
+      .addColorStop( 1, baseDarker3Property );
 
     const downFillVertical = new LinearGradient( 0, 0, 0, buttonHeight )
-      .addColorStop( 0, baseBrighter7 )
-      .addColorStop( verticalHighlightStop * 0.67, baseDarker3 )
-      .addColorStop( verticalShadowStop, baseBrighter2 )
-      .addColorStop( 1, baseDarker5 );
+      .addColorStop( 0, baseBrighter7Property )
+      .addColorStop( verticalHighlightStop * 0.67, baseDarker3Property )
+      .addColorStop( verticalShadowStop, baseBrighter2Property )
+      .addColorStop( 1, baseDarker5Property );
 
     // Adds shading to left and right edges of the button.
     const horizontalShadingPath = new Path( createButtonShape( buttonWidth, buttonHeight, options ), {
-      stroke: ( typeof ( options.stroke ) === 'undefined' ) ? baseDarker4 : options.stroke,
+      stroke: ( typeof ( options.stroke ) === 'undefined' ) ? baseDarker4Property : options.stroke,
       lineWidth: options.lineWidth,
       pickable: false
     } );
@@ -294,13 +293,13 @@ class ThreeDAppearanceStrategy {
         interactionStateProperty.unlink( interactionStateListener );
       }
 
-      baseBrighter7.dispose();
-      baseBrighter5.dispose();
-      baseBrighter2.dispose();
-      baseDarker3.dispose();
-      baseDarker4.dispose();
-      baseDarker5.dispose();
-      baseTransparent.dispose();
+      baseBrighter7Property.dispose();
+      baseBrighter5Property.dispose();
+      baseBrighter2Property.dispose();
+      baseDarker3Property.dispose();
+      baseDarker4Property.dispose();
+      baseDarker5Property.dispose();
+      baseTransparentProperty.dispose();
     };
   }
 
