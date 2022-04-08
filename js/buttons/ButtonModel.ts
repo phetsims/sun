@@ -18,10 +18,11 @@ import sun from '../sun.js';
 import Multilink from '../../../axon/js/Multilink.js';
 
 type SelfOptions = {
-  // {function()} called on pointer down
+
+  // called on pointer down
   startCallback?: () => void;
 
-  // {function(over:boolean)} called on pointer up, @param {boolean} over - indicates whether the pointer was released over the button
+  // called on pointer up, indicates whether the pointer was released over the button
   endCallback?: ( over: boolean ) => void;
 
   // to support properly passing this to children, see https://github.com/phetsims/tandem/issues/60
@@ -38,27 +39,27 @@ export type ButtonModelOptions = SelfOptions & EnabledComponentOptions;
 
 export default class ButtonModel extends EnabledComponent {
 
-  // (read-only) - Is the pointer over the button?
-  overProperty: Property<boolean>;
+  // Is the pointer over the button? Value is read-only.
+  readonly overProperty: Property<boolean>;
 
   // Is the pointer down?
-  downProperty: Property<boolean>;
+  readonly downProperty: Property<boolean>;
 
   // Is the button focused from the PDOM?
-  focusedProperty: Property<boolean>;
+  readonly focusedProperty: Property<boolean>;
 
   // This Property was added for a11y. It tracks whether or not the button should "look" down. This
   // will be true if downProperty is true or if an a11y click is in progress. For an a11y click, the listeners
   // are fired right away but the button will look down for as long as PressListener.a11yLooksPressedInterval.
   // See PressListener.click for more details.
-  looksPressedProperty: Property<boolean>;
+  readonly looksPressedProperty: Property<boolean>;
 
   // This Property was added for a11y. It tracks whether or not the button should "look" over. This
   // will be true if and PressListeners' looksOverProperty is true, see PressListener for that definition.
-  looksOverProperty: Property<boolean>;
+  readonly looksOverProperty: Property<boolean>;
 
   // (read-only by users, read-write in subclasses) - emitter that is fired when sound should be produced
-  produceSoundEmitter: Emitter;
+  readonly produceSoundEmitter: Emitter;
 
   // indicates that interaction was interrupted during a press. Valid until next press.
   interrupted: boolean;
@@ -69,12 +70,12 @@ export default class ButtonModel extends EnabledComponent {
   // Links all of the looksPressedProperties from the listeners that were created
   // by this ButtonModel, and updates the looksPressedProperty accordingly. First Multilink is added when the
   // first listener is created. See this.createPressListener.
-  looksPressedMultilink: Multilink<boolean[]> | null;
+  private looksPressedMultilink: Multilink<boolean[]> | null;
 
   // Links all of the looksOverProperties from the listeners that were created
   // by this ButtonModel, and updates the looksOverProperty accordingly. First Multilink is added when the
   // first listener is created. See this.createPressListener.
-  looksOverMultilink: Multilink<boolean[]> | null;
+  private looksOverMultilink: Multilink<boolean[]> | null;
 
   private readonly disposeButtonModel: () => void;
 
@@ -114,12 +115,12 @@ export default class ButtonModel extends EnabledComponent {
     this.interrupted = false;
     this.listeners = [];
 
-    // @private {Multilink|null} - Links all of the looksPressedProperties from the listeners that were created
+    // Links all of the looksPressedProperties from the listeners that were created
     // by this ButtonModel, and updates the looksPressedProperty accordingly. First Multilink is added when the
     // first listener is created. See this.createPressListener.
     this.looksPressedMultilink = null;
 
-    // @private {Multilink|null} - Links all of the looksOverProperties from the listeners that were created
+    // Links all of the looksOverProperties from the listeners that were created
     // by this ButtonModel, and updates the looksOverProperty accordingly. First Multilink is added when the
     // first listener is created. See this.createPressListener.
     this.looksOverMultilink = null;
@@ -145,7 +146,6 @@ export default class ButtonModel extends EnabledComponent {
       }
     } );
 
-    // @private
     this.disposeButtonModel = () => {
 
       // This will unlink all listeners, causing potential issues if listeners try to unlink Properties afterwards
