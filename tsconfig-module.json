@@ -35,7 +35,6 @@
     "js/Popupable.js",
     "js/Dialog.js",
     // scenery/tsconfig-modules.json includes these for now, so don't include them again
-    "js/SunConstants.js",
     "js/sun.js"
   ]
 }
