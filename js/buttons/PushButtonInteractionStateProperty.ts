@@ -1,35 +1,28 @@
 // Copyright 2014-2021, University of Colorado Boulder
 
-// @ts-nocheck
 /**
- * A DerivedProperty that maps push button model states to the values needed by the button view.
+ * A DerivedProperty that maps PushButtonModel states to the states needed by the button view.
  */
 
-import DerivedProperty from '../../../axon/js/DerivedProperty.js';
-import merge from '../../../phet-core/js/merge.js';
+import DerivedProperty, { DerivedPropertyOptions } from '../../../axon/js/DerivedProperty.js';
 import sun from '../sun.js';
 import ButtonInteractionState from './ButtonInteractionState.js';
+import PushButtonModel from './PushButtonModel.js';
 
-class PushButtonInteractionStateProperty extends DerivedProperty {
+type SelfOptions = {};
 
-  /**
-   * @param {ButtonModel} buttonModel
-   * @param {Object} [options]
-   */
-  constructor( buttonModel, options ) {
+export type PushButtonInteractionStatePropertyOptions = SelfOptions & DerivedPropertyOptions<ButtonInteractionState>;
 
-    options = merge( {
-      valueType: ButtonInteractionState
-    }, options );
-
+class PushButtonInteractionStateProperty extends DerivedProperty<ButtonInteractionState, [ boolean, boolean, boolean, boolean ]> {
+  constructor( buttonModel: PushButtonModel ) {
     super(
       [ buttonModel.focusedProperty, buttonModel.overProperty, buttonModel.looksOverProperty, buttonModel.looksPressedProperty ],
-      ( focused, over, looksOver, looksPressed ) => {
+      ( focused: boolean, over: boolean, looksOver: boolean, looksPressed: boolean ) => {
         return looksOver && !looksPressed ? ButtonInteractionState.OVER :
                ( over || focused ) && looksPressed ? ButtonInteractionState.PRESSED :
                ButtonInteractionState.IDLE;
       },
-      options
+      { valueType: ButtonInteractionState }
     );
   }
 }
