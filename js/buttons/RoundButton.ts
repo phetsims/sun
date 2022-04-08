@@ -151,15 +151,14 @@ export class ThreeDAppearanceStrategy {
                options?: any ) {
 
     // Dynamic colors
-    // TODO https://github.com/phetsims/sun/issues/553 missing "Property" suffix for all PaintColorProperty names
-    const baseBrighter8 = new PaintColorProperty( baseColorProperty, { luminanceFactor: 0.8 } );
-    const baseBrighter7 = new PaintColorProperty( baseColorProperty, { luminanceFactor: 0.7 } );
-    const baseBrighter3 = new PaintColorProperty( baseColorProperty, { luminanceFactor: 0.3 } );
-    const baseDarker1 = new PaintColorProperty( baseColorProperty, { luminanceFactor: -0.1 } );
-    const baseDarker2 = new PaintColorProperty( baseColorProperty, { luminanceFactor: -0.2 } );
-    const baseDarker4 = new PaintColorProperty( baseColorProperty, { luminanceFactor: -0.4 } );
-    const baseDarker5 = new PaintColorProperty( baseColorProperty, { luminanceFactor: -0.5 } );
-    const baseTransparent = new DerivedProperty( [ baseColorProperty ], color => color.withAlpha( 0 ) );
+    const baseBrighter8Property = new PaintColorProperty( baseColorProperty, { luminanceFactor: 0.8 } );
+    const baseBrighter7Property = new PaintColorProperty( baseColorProperty, { luminanceFactor: 0.7 } );
+    const baseBrighter3Property = new PaintColorProperty( baseColorProperty, { luminanceFactor: 0.3 } );
+    const baseDarker1Property = new PaintColorProperty( baseColorProperty, { luminanceFactor: -0.1 } );
+    const baseDarker2Property = new PaintColorProperty( baseColorProperty, { luminanceFactor: -0.2 } );
+    const baseDarker4Property = new PaintColorProperty( baseColorProperty, { luminanceFactor: -0.4 } );
+    const baseDarker5Property = new PaintColorProperty( baseColorProperty, { luminanceFactor: -0.5 } );
+    const baseTransparentProperty = new DerivedProperty( [ baseColorProperty ], color => color.withAlpha( 0 ) );
 
     // Set up variables needed to create the various gradient fills and otherwise modify the appearance
     const buttonRadius = buttonBackground.width / 2;
@@ -169,29 +168,29 @@ export class ThreeDAppearanceStrategy {
 
     const upFillHighlight = new RadialGradient( gradientOffset, gradientOffset, innerGradientRadius, gradientOffset, gradientOffset, outerGradientRadius )
       .addColorStop( 0, baseColorProperty )
-      .addColorStop( 1, baseBrighter7 );
+      .addColorStop( 1, baseBrighter7Property );
 
     const upFillShadow = new RadialGradient( -gradientOffset, -gradientOffset, innerGradientRadius, -gradientOffset, -gradientOffset, outerGradientRadius )
-      .addColorStop( 0, baseTransparent )
-      .addColorStop( 1, baseDarker5 );
+      .addColorStop( 0, baseTransparentProperty )
+      .addColorStop( 1, baseDarker5Property );
 
     const overFillHighlight = new RadialGradient( gradientOffset, gradientOffset, innerGradientRadius, gradientOffset, gradientOffset, outerGradientRadius )
-      .addColorStop( 0, baseBrighter3 )
-      .addColorStop( 1, baseBrighter8 );
+      .addColorStop( 0, baseBrighter3Property )
+      .addColorStop( 1, baseBrighter8Property );
 
     const overFillShadow = new RadialGradient( -gradientOffset, -gradientOffset, innerGradientRadius, -gradientOffset, -gradientOffset, outerGradientRadius )
-      .addColorStop( 0, baseTransparent )
-      .addColorStop( 1, baseDarker5 );
+      .addColorStop( 0, baseTransparentProperty )
+      .addColorStop( 1, baseDarker5Property );
 
     const pressedFill = new RadialGradient( -gradientOffset, -gradientOffset, 0, 0, 0, outerGradientRadius )
-      .addColorStop( 0, baseDarker1 )
-      .addColorStop( 0.6, baseDarker2 )
+      .addColorStop( 0, baseDarker1Property )
+      .addColorStop( 0.6, baseDarker2Property )
       .addColorStop( 0.8, baseColorProperty )
-      .addColorStop( 1, baseBrighter8 );
+      .addColorStop( 1, baseBrighter8Property );
 
     // Create and add the overlay that is used to add shading.
     const shadowNode = new Circle( buttonRadius, {
-      stroke: ( typeof ( options.stroke ) === 'undefined' ) ? baseDarker4 : options.stroke,
+      stroke: ( typeof ( options.stroke ) === 'undefined' ) ? baseDarker4Property : options.stroke,
       lineWidth: options.lineWidth,
       pickable: false
     } );
@@ -233,14 +232,14 @@ export class ThreeDAppearanceStrategy {
         interactionStateProperty.unlink( interactionStateListener );
       }
 
-      baseBrighter8.dispose();
-      baseBrighter7.dispose();
-      baseBrighter3.dispose();
-      baseDarker1.dispose();
-      baseDarker2.dispose();
-      baseDarker4.dispose();
-      baseDarker5.dispose();
-      baseTransparent.dispose();
+      baseBrighter8Property.dispose();
+      baseBrighter7Property.dispose();
+      baseBrighter3Property.dispose();
+      baseDarker1Property.dispose();
+      baseDarker2Property.dispose();
+      baseDarker4Property.dispose();
+      baseDarker5Property.dispose();
+      baseTransparentProperty.dispose();
     };
   }
 
