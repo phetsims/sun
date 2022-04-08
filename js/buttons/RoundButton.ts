@@ -248,4 +248,6 @@ export class ThreeDAppearanceStrategy {
   }
 }
 
+RoundButton.ThreeDAppearanceStrategy = ThreeDAppearanceStrategy;
+
 sun.register( 'RoundButton', RoundButton );
