@@ -7,96 +7,113 @@
  * @author Andrea Lin (PhET Interactive Simulations)
  */
 
+import IProperty from '../../axon/js/IProperty.js';
+import Range from '../../dot/js/Range.js';
 import InstanceRegistry from '../../phet-core/js/documentation/InstanceRegistry.js';
 import merge from '../../phet-core/js/merge.js';
+import optionize from '../../phet-core/js/optionize.js';
 // @ts-ignore FIX DEPENDENCY ON SCENERY-PHET
-import NumberDisplay from '../../scenery-phet/js/NumberDisplay.js';
-import { Node, SceneryConstants } from '../../scenery/js/imports.js';
+import NumberDisplay, { NumberDisplayOptions } from '../../scenery-phet/js/NumberDisplay.js';
+import { IColor, Node, SceneryConstants } from '../../scenery/js/imports.js';
 import Tandem from '../../tandem/js/Tandem.js';
-import AccessibleNumberSpinner from './accessibility/AccessibleNumberSpinner.js';
-import ArrowButton from './buttons/ArrowButton.js';
+import AccessibleNumberSpinner, { AccessibleNumberSpinnerOptions } from './accessibility/AccessibleNumberSpinner.js';
+import ArrowButton, { ArrowButtonOptions } from './buttons/ArrowButton.js';
+
 import sun from './sun.js';
 
-// possible values for options.arrowsPosition
-const ARROWS_POSITION_VALUES = [
-  'leftRight', // arrow buttons on left and right of value
-  'topBottom', // arrow buttons on top and bottom of value
-  'bothRight', // both arrow buttons to the right of the value
-  'bothBottom' // both arrow buttons below the value
-];
+type NumberSpinnerArrowsPosition =
+  'leftRight' | // arrow buttons on left and right of value
+  'topBottom' | // arrow buttons on top and bottom of value
+  'bothRight' |// both arrow buttons to the right of the value
+  'bothBottom'; // both arrow buttons below the value;
 
-class NumberSpinner extends AccessibleNumberSpinner( Node, 0 ) {
+type SelfOptions = {
+
+  // where to place the arrow buttons
+  arrowsPosition?: NumberSpinnerArrowsPosition;
+
+  // By default, arrows are scaled to fit dimensions of value background. This is an additional scale factor.
+  arrowsScale?: number | null;
+  arrowButtonFill?: IColor;
+  arrowButtonStroke?: IColor;
+  arrowButtonLineWidth?: number;
+
+  // Function called when the increment button is pressed. Defaults to adding options.deltaValue.
+  incrementFunction?: ( ( value: number ) => number );
+
+  // Function called when the decrement button is pressed. Defaults to subtracting options.deltaValue.
+  decrementFunction?: ( ( value: number ) => number );
+
+  // may be ignored if incrementFunction and decrementFunction are provided
+  deltaValue?: number;
+
+  // opt into Node's disabled opacity when enabled:false
+  xSpacing?: number;
+  ySpacing?: number;
+
+  // NumberDisplay options
+  numberDisplayOptions?: Omit<NumberDisplayOptions, 'tandem'>;
+
+  // arrow button pointer areas
+  touchAreaXDilation?: number;
+  touchAreaYDilation?: number;
+  mouseAreaXDilation?: number;
+  mouseAreaYDilation?: number;
+};
+
+export type NumberSpinnerOptions = SelfOptions &
+  Omit<AccessibleNumberSpinnerOptions, 'children' | 'valueProperty' | 'enabledRangeProperty'>;
+
+export default class NumberSpinner extends AccessibleNumberSpinner( Node, 0 ) {
+
+  private readonly disposeNumberSpinner: () => void;
 
   /**
-   * @param {Property.<number>} numberProperty value, must be an integer
-   * @param {Property.<Range>} rangeProperty - Dynamic range of values, min and max must be integers
-   * @param {Object} [options]
+   * @param numberProperty - value, must be an integer
+   * @param rangeProperty - dynamic range of values, min and max must be integers
+   * @param [providedOptions]
    * @mixes AccessibleNumberSpinner
    */
-  constructor( numberProperty, rangeProperty, options ) {
+  constructor( numberProperty: IProperty<number>, rangeProperty: IProperty<Range>, providedOptions?: NumberSpinnerOptions ) {
 
     assert && assert( rangeProperty.value.contains( numberProperty.get() ),
       `value ${numberProperty.get()} is out of range ${rangeProperty.value.toString()}` );
 
-    options = merge( {
+    const options = optionize<NumberSpinnerOptions,
+      Omit<SelfOptions, 'incrementFunction' | 'decrementFunction'>,
+      AccessibleNumberSpinnerOptions, 'tandem'>( {
 
-      // {string} where to place the arrow buttons, see ARROWS_POSITION_VALUES
+      // SelfOptions
       arrowsPosition: 'bothRight',
-
-      // {number|null} By default, arrows are scaled to fit dimensions of value background. This is an additional scale factor.
       arrowsScale: null,
       arrowButtonFill: 'white',
       arrowButtonStroke: 'black',
       arrowButtonLineWidth: 1,
-
-      // {function(number):number|null} function called when the increment button is pressed.
-      // Parameter is the current value, returns the new value. Defaults to adding options.deltaValue.
-      incrementFunction: null,
-
-      // {function(number):number|null} function called when the decrement button is pressed.
-      // Parameter is the current value, returns the new value. Defaults to subtracting options.deltaValue.
-      decrementFunction: null,
-
-      // may be ignored if incrementFunction and decrementFunction are provided
       deltaValue: 1,
-
-      // {number} - opt into Node's disabled opacity when enabled:false
-      disabledOpacity: SceneryConstants.DISABLED_OPACITY,
       xSpacing: 5,
       ySpacing: 3,
-
-      // NumberDisplay options
       numberDisplayOptions: {
         cornerRadius: 5,
         backgroundStroke: 'black'
       },
-
-      // AccessibleNumberSpinner options
-      valueProperty: numberProperty,
-      enabledRangeProperty: rangeProperty,
-
-      // arrow button pointer areas
       touchAreaXDilation: 0,
       touchAreaYDilation: 0,
       mouseAreaXDilation: 0,
       mouseAreaYDilation: 0,
 
+      // AccessibleNumberSpinnerOptions
+      valueProperty: numberProperty,
+      enabledRangeProperty: rangeProperty,
+      disabledOpacity: SceneryConstants.DISABLED_OPACITY,
+
       // PhET-iO
       tandem: Tandem.REQUIRED,
       phetioEnabledPropertyInstrumented: true // opt into default PhET-iO instrumented enabledProperty
-    }, options );
-
-    // validate options
-    assert && assert( _.includes( ARROWS_POSITION_VALUES, options.arrowsPosition ), `invalid arrowsPosition: ${options.arrowsPosition}` );
-    assert && assert( options.numberDisplayOptions.tandem === undefined, 'NumberSpinner sets tandem for NumberDisplay' );
+    }, providedOptions );
 
     // Defaults for incrementFunction and decrementFunction
-    if ( !options.incrementFunction ) {
-      options.incrementFunction = value => value + options.deltaValue;
-    }
-    if ( !options.decrementFunction ) {
-      options.decrementFunction = value => value - options.deltaValue;
-    }
+    const incrementFunction = options.incrementFunction || ( ( value: number ) => value + options.deltaValue );
+    const decrementFunction = options.decrementFunction || ( ( value: number ) => value - options.deltaValue );
 
     const numberDisplay = new NumberDisplay( numberProperty, rangeProperty.value, merge( {},
       options.numberDisplayOptions, {
@@ -104,7 +121,7 @@ class NumberSpinner extends AccessibleNumberSpinner( Node, 0 ) {
       } ) );
 
     // buttons
-    const arrowButtonOptions = {
+    const arrowButtonOptions: ArrowButtonOptions = {
       baseColor: options.arrowButtonFill,
       stroke: options.arrowButtonStroke,
       lineWidth: options.arrowButtonLineWidth,
@@ -118,20 +135,22 @@ class NumberSpinner extends AccessibleNumberSpinner( Node, 0 ) {
     };
 
     // increment button
-    const incrementDirection = ( options.arrowsPosition === 'topBottom' || options.arrowsPosition === 'bothRight' ) ? 'up' : 'right';
-    const incrementButton = new ArrowButton( incrementDirection,
-      () => incrementButton.enabled && numberProperty.set( options.incrementFunction( numberProperty.get() ) ),
-      merge( {
+    const incrementButton = new ArrowButton(
+      ( options.arrowsPosition === 'topBottom' || options.arrowsPosition === 'bothRight' ) ? 'up' : 'right',
+      () => numberProperty.set( incrementFunction( numberProperty.get() ) ),
+      optionize<ArrowButtonOptions, {}, ArrowButtonOptions>( {
         tandem: options.tandem.createTandem( 'incrementButton' )
-      }, arrowButtonOptions ) );
+      }, arrowButtonOptions )
+    );
 
     // decrement button
-    const decrementDirection = ( options.arrowsPosition === 'topBottom' || options.arrowsPosition === 'bothRight' ) ? 'down' : 'left';
-    const decrementButton = new ArrowButton( decrementDirection,
-      () => decrementButton.enabled && numberProperty.set( options.decrementFunction( numberProperty.get() ) ),
-      merge( {
+    const decrementButton = new ArrowButton(
+      ( options.arrowsPosition === 'topBottom' || options.arrowsPosition === 'bothRight' ) ? 'down' : 'left',
+      () => numberProperty.set( decrementFunction( numberProperty.get() ) ),
+      optionize<ArrowButtonOptions, {}, ArrowButtonOptions>( {
         tandem: options.tandem.createTandem( 'decrementButton' )
-      }, arrowButtonOptions ) );
+      }, arrowButtonOptions )
+    );
 
     // arrow button scaling
     let arrowsScale;
@@ -230,26 +249,26 @@ class NumberSpinner extends AccessibleNumberSpinner( Node, 0 ) {
     options.shiftKeyboardStep = 0;
     options.pageKeyboardStep = 0;
 
+    // Call super without the options that require valid bounds. Call mutate later with those options.
     const boundsRequiredOptionKeys = _.pick( options, Node.REQUIRES_BOUNDS_OPTION_KEYS );
-    options = _.omit( options, Node.REQUIRES_BOUNDS_OPTION_KEYS );
-
-    super( options );
+    super( _.omit( options, Node.REQUIRES_BOUNDS_OPTION_KEYS ) );
 
     // enable/disable arrow buttons
     const updateEnabled = () => {
-      incrementButton.enabled = ( options.incrementFunction( numberProperty.value ) <= rangeProperty.value.max );
-      decrementButton.enabled = ( options.decrementFunction( numberProperty.value ) >= rangeProperty.value.min );
+      incrementButton.enabled = ( incrementFunction( numberProperty.value ) <= rangeProperty.value.max );
+      decrementButton.enabled = ( decrementFunction( numberProperty.value ) >= rangeProperty.value.min );
     };
 
     // synchronize with number value
-    const numberPropertyObserver = value => {
+    const numberPropertyObserver = ( value: number ) => {
       assert && assert( rangeProperty.value.contains( value ), `value out of range: ${value}` );
       updateEnabled();
     };
     numberProperty.link( numberPropertyObserver ); // must be unlinked in dispose
 
     // Dynamic range changes, see https://github.com/phetsims/scenery-phet/issues/305
-    const rangeObserver = range => {
+    const rangeObserver = ( range: Range ) => {
+
       // If our value is outside our new range, adjust it to be within the range.
       numberProperty.value = range.constrainValue( numberProperty.value );
 
@@ -260,12 +279,11 @@ class NumberSpinner extends AccessibleNumberSpinner( Node, 0 ) {
 
     // pdom - click arrow buttons on press of arrow keys so that the Property value changes by deltaValue
     // and the buttons look depressed
-    const increasedListener = function( isDown ) { isDown && incrementButton.pdomClick(); };
-    const decreasedListener = function( isDown ) { isDown && decrementButton.pdomClick(); };
+    const increasedListener = ( isDown: boolean ) => ( isDown && incrementButton.pdomClick() );
+    const decreasedListener = ( isDown: boolean ) => ( isDown && decrementButton.pdomClick() );
     this.incrementDownEmitter.addListener( increasedListener );
     this.decrementDownEmitter.addListener( decreasedListener );
 
-    // @private
     this.disposeNumberSpinner = () => {
 
       // dispose of subcomponents
@@ -292,12 +310,10 @@ class NumberSpinner extends AccessibleNumberSpinner( Node, 0 ) {
     assert && phet.chipper.queryParameters.binder && InstanceRegistry.registerDataURL( 'sun', 'NumberSpinner', this );
   }
 
-  // @public Ensures that this node is eligible for GC.
-  dispose() {
+  public override dispose(): void {
     this.disposeNumberSpinner();
     super.dispose();
   }
 }
 
 sun.register( 'NumberSpinner', NumberSpinner );
-export default NumberSpinner;

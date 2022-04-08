@@ -38,7 +38,7 @@ import Checkbox from '../Checkbox.js';
 import ComboBox from '../ComboBox.js';
 import ComboBoxItem from '../ComboBoxItem.js';
 import HSlider from '../HSlider.js';
-import NumberSpinner from '../NumberSpinner.js';
+import NumberSpinner, { NumberSpinnerOptions } from '../NumberSpinner.js';
 import OnOffSwitch from '../OnOffSwitch.js';
 import PageControl from '../PageControl.js';
 import Panel from '../Panel.js';
@@ -455,7 +455,7 @@ function demoNumberSpinner( layoutBounds: Bounds2 ) {
   const enabledProperty = new Property( true );
 
   // options for all spinners
-  const spinnerOptions = {
+  const spinnerOptions: NumberSpinnerOptions = {
     enabledProperty: enabledProperty,
     deltaValue: 0.1,
     touchAreaXDilation: 20,
@@ -475,35 +475,42 @@ function demoNumberSpinner( layoutBounds: Bounds2 ) {
   };
 
   // Demonstrate each value of options.arrowsPosition
-  const spinnerLeftRight = new NumberSpinner( valueProperty, valueRangeProperty, merge( {}, spinnerOptions, {
-    arrowsPosition: 'leftRight',
-    numberDisplayOptions: {
-      valuePattern: '{{value}} bottles of beer on the wall'
-    }
-  } ) );
-  const spinnerTopBottom = new NumberSpinner( valueProperty, valueRangeProperty, merge( {}, spinnerOptions, {
-    arrowsPosition: 'topBottom',
-    arrowsScale: 0.65
-  } ) );
-  const spinnerBothRight = new NumberSpinner( valueProperty, valueRangeProperty, merge( {}, spinnerOptions, {
-    arrowsPosition: 'bothRight',
-    numberDisplayOptions: {
-      yMargin: 10,
-      align: 'right'
-    }
-  } ) );
-  const spinnerBothBottom = new NumberSpinner( valueProperty, valueRangeProperty, merge( {}, spinnerOptions, {
-    arrowsPosition: 'bothBottom',
-    numberDisplayOptions: {
-      backgroundFill: 'pink',
-      backgroundStroke: 'red',
-      backgroundLineWidth: 3,
-      align: 'left'
-    },
-    arrowButtonFill: 'lightblue',
-    arrowButtonStroke: 'blue',
-    arrowButtonLineWidth: 0.2
-  } ) );
+  const spinnerLeftRight = new NumberSpinner( valueProperty, valueRangeProperty,
+    optionize<NumberSpinnerOptions, {}, NumberSpinnerOptions>( {}, spinnerOptions, {
+      arrowsPosition: 'leftRight',
+      numberDisplayOptions: {
+        valuePattern: '{{value}} bottles of beer on the wall'
+      }
+    } ) );
+
+  const spinnerTopBottom = new NumberSpinner( valueProperty, valueRangeProperty,
+    optionize<NumberSpinnerOptions, {}, NumberSpinnerOptions>( {}, spinnerOptions, {
+      arrowsPosition: 'topBottom',
+      arrowsScale: 0.65
+    } ) );
+
+  const spinnerBothRight = new NumberSpinner( valueProperty, valueRangeProperty,
+    optionize<NumberSpinnerOptions, {}, NumberSpinnerOptions>( {}, spinnerOptions, {
+      arrowsPosition: 'bothRight',
+      numberDisplayOptions: {
+        yMargin: 10,
+        align: 'right'
+      }
+    } ) );
+
+  const spinnerBothBottom = new NumberSpinner( valueProperty, valueRangeProperty,
+    optionize<NumberSpinnerOptions, {}, NumberSpinnerOptions>( {}, spinnerOptions, {
+      arrowsPosition: 'bothBottom',
+      numberDisplayOptions: {
+        backgroundFill: 'pink',
+        backgroundStroke: 'red',
+        backgroundLineWidth: 3,
+        align: 'left'
+      },
+      arrowButtonFill: 'lightblue',
+      arrowButtonStroke: 'blue',
+      arrowButtonLineWidth: 0.2
+    } ) );
 
   const enabledCheckbox = new Checkbox( new Text( 'enabled', { font: new PhetFont( 20 ) } ), enabledProperty );
 
