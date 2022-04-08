@@ -17,7 +17,6 @@ import sun from '../sun.js';
 import RoundButton, { RoundButtonOptions } from './RoundButton.js';
 import StickyToggleButtonInteractionStateProperty from './StickyToggleButtonInteractionStateProperty.js';
 import StickyToggleButtonModel from './StickyToggleButtonModel.js';
-import ToggleButtonIO from './ToggleButtonIO.js';
 
 type SelfOptions = {
   soundPlayer?: ISoundPlayer;
@@ -43,8 +42,7 @@ export default class RoundStickyToggleButton<T> extends RoundButton {
       soundPlayer: pushButtonSoundPlayer,
 
       // RoundButtonOptions
-      tandem: Tandem.REQUIRED,
-      phetioType: ToggleButtonIO
+      tandem: Tandem.REQUIRED
     }, providedOptions );
 
     // Note it shares a tandem with this, so the emitter will be instrumented as a child of the button

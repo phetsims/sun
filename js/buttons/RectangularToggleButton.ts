@@ -16,7 +16,6 @@ import Tandem from '../../../tandem/js/Tandem.js';
 import sun from '../sun.js';
 import RectangularButton, { RectangularButtonOptions } from './RectangularButton.js';
 import ToggleButtonInteractionStateProperty from './ToggleButtonInteractionStateProperty.js';
-import ToggleButtonIO from './ToggleButtonIO.js';
 import ToggleButtonModel from './ToggleButtonModel.js';
 import IProperty from '../../../axon/js/IProperty.js';
 
@@ -48,8 +47,7 @@ export default class RectangularToggleButton<T> extends RectangularButton {
       valueOnSoundPlayer: toggleOnSoundPlayer,
 
       // phet-io support
-      tandem: Tandem.REQUIRED,
-      phetioType: ToggleButtonIO
+      tandem: Tandem.REQUIRED
     }, providedOptions );
 
     // Note it shares a tandem with this, so the emitter will be instrumented as a child of the button

@@ -17,7 +17,6 @@ import Tandem from '../../../tandem/js/Tandem.js';
 import sun from '../sun.js';
 import RoundButton, { RoundButtonOptions } from './RoundButton.js';
 import ToggleButtonInteractionStateProperty from './ToggleButtonInteractionStateProperty.js';
-import ToggleButtonIO from './ToggleButtonIO.js';
 import ToggleButtonModel from './ToggleButtonModel.js';
 
 type SelfOptions = {
@@ -48,8 +47,7 @@ export default class RoundToggleButton<T> extends RoundButton {
       valueOnSoundPlayer: toggleOnSoundPlayer,
 
       // phet-io support
-      tandem: Tandem.REQUIRED,
-      phetioType: ToggleButtonIO
+      tandem: Tandem.REQUIRED
     }, providedOptions );
 
     // Note it shares a tandem with this, so the emitter will be instrumented as a child of the button
