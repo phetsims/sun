@@ -1,6 +1,5 @@
-// Copyright 2014-2020, University of Colorado Boulder
+// Copyright 2014-2022, University of Colorado Boulder
 
-// @ts-nocheck
 /**
  * A round toggle button that toggles the value of a boolean Property.
  *
@@ -8,19 +7,18 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
+import IProperty from '../../../axon/js/IProperty.js';
 import sun from '../sun.js';
-import RoundStickyToggleButton from './RoundStickyToggleButton.js';
+import RoundStickyToggleButton, { RoundStickyToggleButtonOptions } from './RoundStickyToggleButton.js';
 
-class BooleanRoundStickyToggleButton extends RoundStickyToggleButton {
+type SelfOptions = {};
 
-  /**
-   * @param {Property.<boolean>} booleanProperty
-   * @param {Object} [options]
-   */
-  constructor( booleanProperty, options ) {
-    super( false, true, booleanProperty, options );
+export type BooleanRoundStickyToggleButtonOptions = SelfOptions & RoundStickyToggleButtonOptions;
+
+export default class BooleanRoundStickyToggleButton extends RoundStickyToggleButton<boolean> {
+  constructor( booleanProperty: IProperty<boolean>, providedOptions?: BooleanRoundStickyToggleButtonOptions ) {
+    super( false, true, booleanProperty, providedOptions );
   }
 }
 
 sun.register( 'BooleanRoundStickyToggleButton', BooleanRoundStickyToggleButton );
-export default BooleanRoundStickyToggleButton;
