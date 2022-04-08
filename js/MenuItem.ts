@@ -1,25 +1,19 @@
 // Copyright 2017-2022, University of Colorado Boulder
 
-// @ts-nocheck
 /**
- * Class for an item that is listed in the PhetMenu
- * See PhetMenu.js for more information
+ * MenuItem is an item in the PhetMenu.
  *
  * @author Michael Kauzmann (PhET Interactive Simulations)
  */
 
-import merge from '../../phet-core/js/merge.js';
+import IProperty from '../../axon/js/IProperty.js';
 import PhetFont from '../../scenery-phet/js/PhetFont.js';
-import { Voicing } from '../../scenery/js/imports.js';
-import { FireListener } from '../../scenery/js/imports.js';
-import { Node } from '../../scenery/js/imports.js';
-import { Path } from '../../scenery/js/imports.js';
-import { Rectangle } from '../../scenery/js/imports.js';
-import { Text } from '../../scenery/js/imports.js';
+import { FireListener, IPaint, Node, Path, Rectangle, SceneryEvent, Text, Voicing, VoicingOptions } from '../../scenery/js/imports.js';
 import checkSolidShape from '../../sherpa/js/fontawesome-5/checkSolidShape.js';
 import EventType from '../../tandem/js/EventType.js';
 import Tandem from '../../tandem/js/Tandem.js';
 import sun from './sun.js';
+import optionize from '../../phet-core/js/optionize.js';
 
 // the check mark used for toggle-able menu items
 const CHECK_MARK_NODE = new Path( checkSolidShape, {
@@ -38,34 +32,58 @@ const RIGHT_X_MARGIN = 5;
 const Y_MARGIN = 3;
 const CORNER_RADIUS = 5;
 
-class MenuItem extends Voicing( Node, 0 ) {
+type SelfOptions = {
+
+  // if there should be a horizontal separator between this MenuItem and the one immediately previous
+  separatorBefore?: boolean;
+
+  // if provided add a checkmark next to the MenuItem text whenever this Property is true.
+  checkedProperty?: IProperty<boolean> | null;
+
+  // Called AFTER closeCallback, use this to move focus to a particular Node after all the
+  // work of selecting the MenuItem is done. Often focus needs to move to the PhetButton, but that may not be
+  // the case if the MenuItem opens a popup (for example).
+  handleFocusCallback?: ( ( event: SceneryEvent ) => void ) | null;
+
+  textFill?: IPaint;
+};
+
+export type MenuItemOptions = SelfOptions & VoicingOptions;
+
+export default class MenuItem extends Voicing( Node, 0 ) {
+
+  // if this MenuItem will be shown in the menu. Some items are just created to maintain a
+  // consistent PhET-iO API for all sim runtimes, see https://github.com/phetsims/phet-io/issues/1457
+  public readonly present: boolean;
+
+  // if there should be a horizontal separator between this MenuItem and the one above it
+  public readonly separatorBefore: boolean;
+
+  private readonly disposeMenuItem: () => void;
+
   /**
-   * @param {Number} width - the width of the menu item
-   * @param {Number} height - the height of the menu item
-   * @param {Function} closeCallback - called when closing the dialog that the menu item opened
-   * @param {String} text
-   * @param {Function} callback
-   * @param {boolean} present - if this MenuItem will be shown in the menu. Some items are just created to maintain a
-   *                              consistent PhET-iO API for all sim runtimes, see https://github.com/phetsims/phet-io/issues/1457
-   * @param {Object} [options]
+   * @param width - the width of the menu item
+   * @param height - the height of the menu item
+   * @param closeCallback - called when closing the dialog that the menu item opened
+   * @param text - label for the menu item
+   * @param callback - called when the menu item is selected
+   * @param present - see present field
+   * @param [providedOptions]
    */
-  constructor( width, height, closeCallback, text, callback, present, options ) {
+  constructor( width: number, height: number, closeCallback: ( event: SceneryEvent ) => void, text: string,
+               callback: ( event: SceneryEvent ) => void, present: boolean, providedOptions?: MenuItemOptions ) {
 
     // Extend the object with defaults.
-    options = merge( {
-      cursor: 'pointer',
+    const options = optionize<MenuItemOptions, SelfOptions, VoicingOptions, 'tandem'>( {
+
+      // SelfOptions
+      separatorBefore: false,
+      checkedProperty: null,
+      handleFocusCallback: null,
       textFill: 'black',
 
-      // if there should be a horizontal separator between this MenuItem and the one immediately previous
-      separatorBefore: false,
-
-      // {Property.<boolean>} - if provided add a checkmark next to the MenuItem text whenever this Property is true.
-      checkedProperty: null,
-
-      // @param {function} - Called AFTER closeCallback, use this to move focus to a particular Node after all the
-      // work of selecting the MenuItem is done. Often focus needs to move to the PhetButton, but that may not be
-      // the case if the MenuItem opens a popup (for example).
-      handleFocusCallback: () => {},
+      // VoicingOptions
+      cursor: 'pointer',
 
       // phet-io
       tandem: Tandem.OPTIONAL,
@@ -85,11 +103,10 @@ class MenuItem extends Voicing( Node, 0 ) {
 
       // voicing
       voicingNameResponse: text
-    }, options );
+    }, providedOptions );
 
     super();
 
-    // @public (read-only) {boolean}
     this.present = present;
 
     const textNode = new Text( text, {
@@ -114,26 +131,24 @@ class MenuItem extends Voicing( Node, 0 ) {
 
     this.addInputListener( new FireListener( {
       tandem: options.tandem.createTandem( 'inputListener' ),
-      fire: event => {
+      fire: ( event: SceneryEvent ) => {
         closeCallback( event );
         callback( event );
-
-        options.handleFocusCallback( event );
+        options.handleFocusCallback && options.handleFocusCallback( event );
       }
     } ) );
 
-    // @public (sun)
     this.separatorBefore = options.separatorBefore;
 
-    // if there is a check-mark property, add the check mark and hook up visibility changes
-    let checkListener;
+    // Optionally add a check mark and hook up visibility changes.
+    let checkListener: ( ( isChecked: boolean ) => void ) | null = null;
     if ( options.checkedProperty ) {
       const checkMarkWrapper = new Node( {
         children: [ CHECK_MARK_NODE ],
         right: textNode.left - CHECK_PADDING,
         centerY: textNode.centerY
       } );
-      checkListener = isChecked => {
+      checkListener = ( isChecked: boolean ) => {
         checkMarkWrapper.visible = isChecked;
       };
       options.checkedProperty.link( checkListener );
@@ -142,23 +157,17 @@ class MenuItem extends Voicing( Node, 0 ) {
 
     this.mutate( options );
 
-    // @private - dispose the menu item
     this.disposeMenuItem = () => {
-      if ( options.checkedProperty ) {
+      if ( options.checkedProperty && checkListener ) {
         options.checkedProperty.unlink( checkListener );
       }
     };
   }
 
-  /**
-   * @public
-   * @override
-   */
-  dispose() {
+  public override dispose(): void {
     this.disposeMenuItem();
     super.dispose();
   }
 }
 
 sun.register( 'MenuItem', MenuItem );
-export default MenuItem;
