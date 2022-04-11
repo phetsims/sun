@@ -45,7 +45,7 @@ type SelfOptions = {
 
 export type CarouselComboBoxOptions = SelfOptions & Omit<NodeOptions, 'children'>;
 
-class CarouselComboBox<T> extends Node {
+export default class CarouselComboBox<T> extends Node {
 
   private readonly disposeCarouselComboBox: () => void;
 
@@ -307,4 +307,3 @@ class CarouselItemNode<T> extends Node {
 }
 
 sun.register( 'CarouselComboBox', CarouselComboBox );
-export default CarouselComboBox;
