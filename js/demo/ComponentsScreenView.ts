@@ -20,14 +20,7 @@ import Range from '../../../dot/js/Range.js';
 import merge from '../../../phet-core/js/merge.js';
 import optionize from '../../../phet-core/js/optionize.js';
 import PhetFont from '../../../scenery-phet/js/PhetFont.js';
-import { AlignBox } from '../../../scenery/js/imports.js';
-import { AlignGroup } from '../../../scenery/js/imports.js';
-import { Circle } from '../../../scenery/js/imports.js';
-import { HBox } from '../../../scenery/js/imports.js';
-import { Node } from '../../../scenery/js/imports.js';
-import { Rectangle } from '../../../scenery/js/imports.js';
-import { Text } from '../../../scenery/js/imports.js';
-import { VBox } from '../../../scenery/js/imports.js';
+import { AlignBox, AlignGroup, Circle, HBox, Node, Rectangle, Text, VBox } from '../../../scenery/js/imports.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import ABSwitch from '../ABSwitch.js';
 import AccordionBox from '../AccordionBox.js';
@@ -279,10 +272,7 @@ function demoSlider( layoutBounds: Bounds2, orientation: 'horizontal' | 'vertica
   const range = new Range( 0, 100 );
   const tickLabelOptions = { font: new PhetFont( 16 ) };
   options = merge( {
-    center: layoutBounds.center,
-    enabledProperty: new BooleanProperty( true, {
-      tandem: options.tandem.createTandem( 'enabledProperty' )
-    } )
+    center: layoutBounds.center
   }, options );
 
   const enabledRangeProperty = new Property( new Range( 0, 100 ) );
@@ -346,13 +336,9 @@ function demoSlider( layoutBounds: Bounds2, orientation: 'horizontal' | 'vertica
       top: majorTicksCheckbox.bottom + 40
     } );
 
-  // enable/disable slider
-  const enabledProperty = new Property( true );
-  enabledProperty.link( enabled => {
-    slider.enabled = enabled;
-  } );
+  // Checkbox to enable/disable slider
   const enabledCheckbox = new Checkbox( new Text( 'Enable slider', { font: new PhetFont( 20 ) } ),
-    enabledProperty, {
+    slider.enabledProperty, {
       tandem: Tandem.OPT_OUT,
       left: slider.left,
       top: minorTicksCheckbox.bottom + 40
