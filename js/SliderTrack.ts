@@ -51,14 +51,14 @@ export type SliderTrackOptions = SelfOptions & NodeOptions;
 
 export default class SliderTrack extends Node {
 
-  readonly size: Dimension2;
+  public readonly size: Dimension2;
 
-  // maps the value along the range of the track to the position along the width of the track
-  readonly valueToPosition: LinearFunction;
+  // For use by Slider, maps the value along the range of the track to the position along the width of the track
+  public readonly valueToPosition: LinearFunction;
 
   // public so that clients can access Properties of the DragListener that tell us about its state
   // See https://github.com/phetsims/sun/issues/680
-  readonly dragListener: DragListener;
+  public readonly dragListener: DragListener;
 
   private readonly disposeSliderTrack: () => void;
 
