@@ -1,5 +1,6 @@
-// Copyright 2021, University of Colorado Boulder
+// Copyright 2021-2022, University of Colorado Boulder
 
+// @ts-nocheck
 /**
  * CarouselComboBox behaves like a combo box, but its listbox is a carousel. This allows you to scroll through a
  * long list of items, a feature that ComboBoxListBox does not support. ComboBoxItem, ComboBoxButton, and
