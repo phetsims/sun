@@ -44,7 +44,6 @@ export default class RectangularMomentaryButton<T> extends RectangularButton {
 
     super( buttonModel, new MomentaryButtonInteractionStateProperty( buttonModel ), options );
 
-    // @private
     this.disposeRectangularMomentaryButton = () => {
       buttonModel.dispose();
     };

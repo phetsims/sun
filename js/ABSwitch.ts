@@ -134,7 +134,6 @@ export default class ABSwitch<T> extends Node {
     } );
     labelB.addInputListener( pressListenerB ); // removeInputListener on dispose
 
-    // @private - for dispose
     this.disposeABSwitch = () => {
       property.unlink( propertyListener );
       toggleSwitch.dispose();

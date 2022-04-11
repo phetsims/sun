@@ -142,6 +142,7 @@ export default class Carousel extends Node {
   // enables animation when scrolling between pages
   public animationEnabled: boolean;
 
+  // These are public for layout
   public readonly backgroundWidth: number;
   private readonly backgroundHeight: number;
 
@@ -212,7 +213,7 @@ export default class Carousel extends Node {
 
     super();
 
-    // @private enables animation when scrolling between pages
+    // enables animation when scrolling between pages
     this.animationEnabled = options.animationEnabled;
 
     // All items, arranged in the proper orientation, with margins and spacing.
@@ -288,7 +289,6 @@ export default class Carousel extends Node {
     } );
 
     // Background - displays the carousel's fill color
-    // @public (read-only) - for layout
     this.backgroundWidth = isHorizontal ? ( windowWidth + nextButton.width + previousButton.width ) : windowWidth;
     this.backgroundHeight = isHorizontal ? windowHeight : ( windowHeight + nextButton.height + previousButton.height );
     const backgroundNode = new Rectangle( 0, 0, this.backgroundWidth, this.backgroundHeight, options.cornerRadius, options.cornerRadius, {
@@ -463,7 +463,6 @@ export default class Carousel extends Node {
   }
 }
 
-// @public
 Carousel.DEFAULT_OPTIONS = DEFAULT_OPTIONS;
 
 sun.register( 'Carousel', Carousel );

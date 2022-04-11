@@ -126,7 +126,6 @@ export default class ComboBoxListItemNode<T> extends Voicing( Node, 0 ) {
     super( options );
     this._supplyOpenResponseOnNextFocus = false;
 
-    // @public (read-only)
     this.item = item;
 
     // pdom focus highlight is fitted to this Node's bounds, so that it doesn't overlap other items in the list box

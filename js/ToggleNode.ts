@@ -77,7 +77,6 @@ export default class ToggleNode<T> extends Node {
     //   tandem: options.tandem.createTandem( 'valueProperty' )
     // } );
 
-    // @private
     this.disposeToggleNode = function() {
       valueProperty.unlink( valueListener );
     };

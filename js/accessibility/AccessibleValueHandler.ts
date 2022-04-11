@@ -1033,7 +1033,6 @@ const correctRounding = function( newValue: number, currentValue: number, stepSi
   return correctedValue;
 };
 
-// @public {string}
 AccessibleValueHandler.DEFAULT_TAG_NAME = DEFAULT_TAG_NAME;
 
 export default AccessibleValueHandler;

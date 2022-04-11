@@ -130,7 +130,6 @@ export default class PageControl extends Node {
 
     super( options );
 
-    // @private
     this.disposePageControl = () => {
       pageNumberProperty.unlink( pageNumberObserver );
     };
@@ -157,7 +156,7 @@ class DotNode extends Circle {
    */
   constructor( pageNumber: number, radius: number, options: CircleOptions ) {
     super( radius, options );
-    this.pageNumber = pageNumber; // @public (read-only)
+    this.pageNumber = pageNumber;
   }
 }
 

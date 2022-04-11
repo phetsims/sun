@@ -257,7 +257,6 @@ export default class ComboBoxListBox<T> extends Panel {
     this.listItemNodes = listItemNodes;
     this.visibleListItemNodes = listItemNodes.slice();
 
-    // @private
     this.disposeComboBoxListBox = () => {
       for ( let i = 0; i < listItemNodes.length; i++ ) {
         listItemNodes[ i ].dispose(); // to unregister tandem

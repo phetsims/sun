@@ -274,7 +274,6 @@ export default class ToggleSwitch<T> extends Voicing( Node, 0 ) {
       tandem: options.tandem.createTandem( 'property' )
     } );
 
-    // @private
     this.disposeToggleSwitch = () => {
       property.unlink( update );
       toggleAction.dispose();

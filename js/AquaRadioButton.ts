@@ -101,7 +101,6 @@ export default class AquaRadioButton<T> extends Voicing( Node, 0 ) {
 
     super();
 
-    // @public (read-only)
     this.value = value;
 
     // selected Node
@@ -181,7 +180,6 @@ export default class AquaRadioButton<T> extends Voicing( Node, 0 ) {
 
     this.mutate( options );
 
-    // @private
     this.disposeAquaRadioButton = () => {
       this.removeInputListener( fireListener );
       this.removeInputListener( changeListener );

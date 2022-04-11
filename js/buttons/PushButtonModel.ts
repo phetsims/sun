@@ -168,8 +168,7 @@ export default class PushButtonModel extends ButtonModel {
   }
 
   /**
-   * Fires all listeners.
-   * @public (phet-io, a11y)
+   * Fires all listeners.  Public for phet-io and a11y use.
    */
   public fire(): void {
 

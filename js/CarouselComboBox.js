@@ -202,7 +202,6 @@ class CarouselComboBox extends Node {
       }
     } );
 
-    // @private
     this.disposeCarouselComboBox = () => {
 
       // Deregister observers
@@ -294,7 +293,6 @@ class CarouselItemNode extends Node {
         }
       } );
 
-    // @private
     this.disposeCarouselItemNode = () => {
       multilink.dispose();
     };

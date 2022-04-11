@@ -47,7 +47,7 @@ export default class RectangularPushButton extends RectangularButton {
 
     // Note it shares a tandem with this, so the emitter will be instrumented as a child of the button
     //TODO https://github.com/phetsims/sun/issues/749 its surprising that we can pass superOptions with irrelevant fields to PushButtonModel without TS errors
-    const pushButtonModel = new PushButtonModel( superOptions ); // @public, listen only
+    const pushButtonModel = new PushButtonModel( superOptions );
 
     super( pushButtonModel, new PushButtonInteractionStateProperty( pushButtonModel ), superOptions );
 
@@ -60,7 +60,6 @@ export default class RectangularPushButton extends RectangularButton {
     const playSound = () => { options.soundPlayer.play(); };
     pushButtonModel.produceSoundEmitter.addListener( playSound );
 
-    // @private
     this.disposeRectangularPushButton = function() {
       pushButtonModel.produceSoundEmitter.removeListener( playSound );
       pushButtonModel.dispose(); //TODO this fails when assertions are enabled, see sun#212

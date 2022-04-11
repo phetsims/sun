@@ -311,7 +311,6 @@ class ThreeDAppearanceStrategy {
   }
 }
 
-// @public
 RectangularButton.ThreeDAppearanceStrategy = ThreeDAppearanceStrategy;
 
 sun.register( 'RectangularButton', RectangularButton );

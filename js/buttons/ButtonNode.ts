@@ -203,7 +203,6 @@ export default class ButtonNode extends Voicing( Node, 0 ) {
     // No need to dispose because enabledProperty is disposed in Node
     this.enabledProperty.link( enabled => options.enabledAppearanceStrategy( enabled, this, buttonBackground, alignBox ) );
 
-    // @private - define a dispose function
     this.disposeButtonNode = () => {
       alignBox && alignBox.dispose();
       buttonAppearanceStrategy.dispose && buttonAppearanceStrategy.dispose();
