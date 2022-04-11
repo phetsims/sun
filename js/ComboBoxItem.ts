@@ -27,11 +27,11 @@ export type ComboBoxItemOptions = {
 
 export default class ComboBoxItem<T> {
 
-  readonly node: Node;
-  readonly value: T;
-  readonly soundPlayer: ISoundPlayer | null;
-  readonly tandemName: string | null;
-  readonly a11yLabel: string | null;
+  public readonly node: Node;
+  public readonly value: T;
+  public readonly soundPlayer: ISoundPlayer | null;
+  public readonly tandemName: string | null;
+  public readonly a11yLabel: string | null;
 
   constructor( node: Node, value: T, providedOptions?: ComboBoxItemOptions ) {
 
