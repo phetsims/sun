@@ -2,6 +2,7 @@
 
 /**
  * A carousel UI component.
+ *
  * A set of N items is divided into M 'pages', based on how many items are visible in the carousel.
  * Pressing the next and previous buttons moves through the pages.
  * Movement through the pages is animated, so that items appear to scroll by.
@@ -34,10 +35,12 @@ import HSeparator from './HSeparator.js';
 import sun from './sun.js';
 import VSeparator from './VSeparator.js';
 
+const DEFAULT_ARROW_SIZE = new Dimension2( 20, 7 );
+
 type SelfOptions = {
 
   // container
-  orientation?: string; // 'horizontal' | 'vertical'
+  orientation?: 'horizontal' | 'vertical';
   fill?: IColor; // background color of the carousel
   stroke?: IColor; // color used to stroke the border of the carousel
   lineWidth?: number; // width of the border around the carousel
@@ -79,54 +82,6 @@ type SelfOptions = {
 
 export type CarouselOptions = SelfOptions & NodeOptions;
 
-// constants
-const DEFAULT_OPTIONS = {
-
-  // container
-  orientation: 'horizontal',
-  fill: 'white',
-  stroke: 'black',
-  lineWidth: 1,
-  cornerRadius: 4,
-  defaultPageNumber: 0,
-
-  // items
-  itemsPerPage: 4,
-  spacing: 10,
-  margin: 10,
-
-  // next/previous buttons
-  buttonColor: 'rgba( 200, 200, 200, 0.5 )',
-  buttonStroke: 'derived',
-  buttonDisabledColor: ColorConstants.LIGHT_GRAY,
-  buttonLineWidth: 1,
-  arrowSize: new Dimension2( 20, 7 ),
-  arrowStroke: 'black',
-  arrowLineWidth: 3,
-  hideDisabledButtons: false,
-  buttonSoundPlayer: pushButtonSoundPlayer,
-
-  // for dilating pointer areas of next/previous buttons such that they do not overlap with Carousel content
-  buttonTouchAreaXDilation: 0,
-  buttonTouchAreaYDilation: 0,
-  buttonMouseAreaXDilation: 0,
-  buttonMouseAreaYDilation: 0,
-
-  // item separators
-  separatorsVisible: false,
-  separatorColor: 'rgb( 180, 180, 180 )',
-  separatorLineWidth: 0.5,
-
-  // animation, scrolling between pages
-  animationEnabled: true,
-  animationDuration: 0.4,
-  stepEmitter: stepTimer,
-
-  // phet-io
-  tandem: Tandem.OPTIONAL
-};
-assert && Object.freeze( DEFAULT_OPTIONS );
-
 export default class Carousel extends Node {
 
   private readonly items: Node[];
@@ -155,7 +110,51 @@ export default class Carousel extends Node {
   constructor( items: Node[], providedOptions?: CarouselOptions ) {
 
     // Override defaults with specified options
-    const options = optionize<CarouselOptions, SelfOptions, NodeOptions, 'tandem'>( {}, DEFAULT_OPTIONS, providedOptions );
+    const options = optionize<CarouselOptions, SelfOptions, NodeOptions, 'tandem'>( {
+
+      // container
+      orientation: 'horizontal',
+      fill: 'white',
+      stroke: 'black',
+      lineWidth: 1,
+      cornerRadius: 4,
+      defaultPageNumber: 0,
+
+      // items
+      itemsPerPage: 4,
+      spacing: 10,
+      margin: 10,
+
+      // next/previous buttons
+      buttonColor: 'rgba( 200, 200, 200, 0.5 )',
+      buttonStroke: 'derived',
+      buttonDisabledColor: ColorConstants.LIGHT_GRAY,
+      buttonLineWidth: 1,
+      arrowSize: DEFAULT_ARROW_SIZE,
+      arrowStroke: 'black',
+      arrowLineWidth: 3,
+      hideDisabledButtons: false,
+      buttonSoundPlayer: pushButtonSoundPlayer,
+
+      // for dilating pointer areas of next/previous buttons such that they do not overlap with Carousel content
+      buttonTouchAreaXDilation: 0,
+      buttonTouchAreaYDilation: 0,
+      buttonMouseAreaXDilation: 0,
+      buttonMouseAreaYDilation: 0,
+
+      // item separators
+      separatorsVisible: false,
+      separatorColor: 'rgb( 180, 180, 180 )',
+      separatorLineWidth: 0.5,
+
+      // animation, scrolling between pages
+      animationEnabled: true,
+      animationDuration: 0.4,
+      stepEmitter: stepTimer,
+
+      // phet-io
+      tandem: Tandem.OPTIONAL
+    }, providedOptions );
 
     // To improve readability
     const isHorizontal = ( options.orientation === 'horizontal' );
@@ -462,7 +461,5 @@ export default class Carousel extends Node {
     return Math.floor( itemIndex / this.itemsPerPage );
   }
 }
-
-Carousel.DEFAULT_OPTIONS = DEFAULT_OPTIONS;
 
 sun.register( 'Carousel', Carousel );
