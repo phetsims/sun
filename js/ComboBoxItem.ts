@@ -35,7 +35,6 @@ export default class ComboBoxItem<T> {
 
   constructor( node: Node, value: T, providedOptions?: ComboBoxItemOptions ) {
 
-    assert && assert( node instanceof Node, `invalid node: ${node}` );
     assert && assert( !node.hasPDOMContent, 'pdomContent is set by ComboBox, use options.a11yLabel' );
 
     const options = optionize<ComboBoxItemOptions, ComboBoxItemOptions>( {

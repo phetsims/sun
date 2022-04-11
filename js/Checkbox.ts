@@ -63,12 +63,6 @@ export default class Checkbox extends Voicing( Node, 0 ) {
   private readonly uncheckedNode: Path;
   private readonly disposeCheckbox: () => void;
 
-  /**
-   * @param {Node} content
-   * @param {Property.<boolean>} property
-   * @param providedOptions
-   * @mixes {Voicing}
-   */
   constructor( content: Node, property: IProperty<boolean>, providedOptions?: CheckboxOptions ) {
 
     const options = optionize<CheckboxOptions, SelfOptions, VoicingOptions, 'tandem'>( {
@@ -112,7 +106,7 @@ export default class Checkbox extends Voicing( Node, 0 ) {
 
     super();
 
-    // @private - sends out notifications when the checkbox is toggled.
+    // sends out notifications when the checkbox is toggled.
     const toggleAction = new PhetioAction( () => {
       property.value = !property.value;
       validate( property.value, BOOLEAN_VALIDATOR );
@@ -200,7 +194,6 @@ export default class Checkbox extends Voicing( Node, 0 ) {
     // support for binder documentation, stripped out in builds and only runs when ?binder is specified
     assert && phet.chipper.queryParameters.binder && InstanceRegistry.registerDataURL( 'sun', 'Checkbox', this );
 
-    // @private
     this.disposeCheckbox = () => {
 
       fireListener.dispose();
@@ -221,7 +214,6 @@ export default class Checkbox extends Voicing( Node, 0 ) {
 
   /**
    * Sets the background color of the checkbox.
-   * @param value
    */
   public setCheckboxColorBackground( value: IPaint ): void { this.backgroundNode.fill = value; }
 

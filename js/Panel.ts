@@ -75,6 +75,7 @@ export default class Panel extends WidthSizable( HeightSizable( Node ) ) {
   _backgroundContainer: Node; // (internal)
   background: Rectangle; // (internal)
   private _constraint: PanelConstraint;
+  public static override DEFAULT_OPTIONS = DEFAULT_OPTIONS;
 
   constructor( content: Node, providedOptions?: PanelOptions ) {
 
@@ -115,42 +116,41 @@ export default class Panel extends WidthSizable( HeightSizable( Node ) ) {
   /**
    * Get the background rectangle's stroke (can be overridden)
    */
-  getStroke(): IPaint {
+  public getStroke(): IPaint {
     return this.background.stroke;
   }
 
-  get stroke(): IPaint { return this.getStroke(); }
+  public get stroke(): IPaint { return this.getStroke(); }
 
   /**
    * Change the background rectangle's stroke (can be overridden)
    */
-  setStroke( stroke: IPaint ) {
+  public setStroke( stroke: IPaint ): void {
     this.background.stroke = stroke;
   }
 
-  set stroke( value: IPaint ) { this.setStroke( value ); }
+  public set stroke( value: IPaint ) { this.setStroke( value ); }
 
   /**
    * Get the background rectangle's fill (can be overridden)
    */
-  getFill(): IPaint {
+  public getFill(): IPaint {
     return this.background.fill;
   }
 
-  get fill(): IPaint { return this.getFill(); }
+  public get fill(): IPaint { return this.getFill(); }
 
   /**
    * Change the background rectangle's fill (can be overridden)
    */
-  setFill( fill: IPaint ) {
+  public setFill( fill: IPaint ): void {
     this.background.fill = fill;
   }
 
-  set fill( value: IPaint ) { this.setFill( value ); }
+  public set fill( value: IPaint ) { this.setFill( value ); }
 
-  override setExcludeInvisibleChildrenFromBounds( excludeInvisibleChildrenFromBounds: boolean ) {
+  public override setExcludeInvisibleChildrenFromBounds( excludeInvisibleChildrenFromBounds: boolean ) {
     super.setExcludeInvisibleChildrenFromBounds( excludeInvisibleChildrenFromBounds );
-
     this._constraint.updateLayoutAutomatically();
   }
 
@@ -158,8 +158,6 @@ export default class Panel extends WidthSizable( HeightSizable( Node ) ) {
     this._constraint.dispose();
     super.dispose();
   }
-
-  static override DEFAULT_OPTIONS = DEFAULT_OPTIONS;
 }
 
 class PanelConstraint extends LayoutConstraint {

@@ -250,15 +250,16 @@ export default class ComboBoxButton<T> extends RectangularPushButton {
    * Sets the button to look like a value display instead of a combo box button.
    * See https://github.com/phetsims/sun/issues/451
    */
-  setDisplayOnly( displayOnly: boolean ) {
+  public setDisplayOnly( displayOnly: boolean ): void {
     this.arrow.visible = !displayOnly;
     this.vSeparator.visible = !displayOnly;
   }
 
   /**
    * Call to block voicing from occurring upon this button's next focus event.
+   * For use by ComboBox.
    */
-  blockNextVoicingFocusListener() {
+  public blockNextVoicingFocusListener(): void {
     this._blockNextVoicingFocusListener = true;
   }
 

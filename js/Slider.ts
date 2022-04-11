@@ -132,12 +132,12 @@ type TickOptions = Pick<SelfOptions, 'tickLabelSpacing' | 'majorTickLength' | 'm
 
 export default class Slider extends AccessibleSlider( Node, 0 ) {
 
-  readonly enabledRangeProperty: IReadOnlyProperty<Range>;
+  public readonly enabledRangeProperty: IReadOnlyProperty<Range>;
 
   // public so that clients can access Properties of these DragListeners that tell us about its state
   // See https://github.com/phetsims/sun/issues/680
-  readonly thumbDragListener: DragListener;
-  readonly trackDragListener: DragListener;
+  public readonly thumbDragListener: DragListener;
+  public readonly trackDragListener: DragListener;
 
   private readonly orientation: Orientation;
 
@@ -509,7 +509,7 @@ export default class Slider extends AccessibleSlider( Node, 0 ) {
   /**
    * Adds a major tick mark.
    */
-  addMajorTick( value: number, label?: Node ) {
+  public addMajorTick( value: number, label?: Node ): void {
     this.addTick( this.majorTicksParent, value, label,
       this.tickOptions.majorTickLength, this.tickOptions.majorTickStroke, this.tickOptions.majorTickLineWidth );
   }
@@ -517,7 +517,7 @@ export default class Slider extends AccessibleSlider( Node, 0 ) {
   /**
    * Adds a minor tick mark.
    */
-  addMinorTick( value: number, label?: Node ) {
+  public addMinorTick( value: number, label?: Node ): void {
     this.addTick( this.minorTicksParent, value, label,
       this.tickOptions.minorTickLength, this.tickOptions.minorTickStroke, this.tickOptions.minorTickLineWidth );
   }
@@ -525,7 +525,7 @@ export default class Slider extends AccessibleSlider( Node, 0 ) {
   /**
    * Adds a tick mark above the track.
    */
-  private addTick( parent: Node, value: number, label: Node | undefined, length: number, stroke: IPaint, lineWidth: number ) {
+  private addTick( parent: Node, value: number, label: Node | undefined, length: number, stroke: IPaint, lineWidth: number ): void {
     const labelX = this.track.valueToPosition.evaluate( value );
 
     // ticks
@@ -550,30 +550,30 @@ export default class Slider extends AccessibleSlider( Node, 0 ) {
   }
 
   // Sets visibility of major ticks.
-  setMajorTicksVisible( visible: boolean ) {
+  public setMajorTicksVisible( visible: boolean ): void {
     this.majorTicksParent.visible = visible;
   }
 
   // Gets visibility of major ticks.
-  getMajorTicksVisible(): boolean {
+  public getMajorTicksVisible(): boolean {
     return this.majorTicksParent.visible;
   }
 
   // Sets visibility of minor ticks.
-  setMinorTicksVisible( visible: boolean ) {
+  public setMinorTicksVisible( visible: boolean ): void {
     this.minorTicksParent.visible = visible;
   }
 
   // Gets visibility of minor ticks.
-  getMinorTicksVisible(): boolean {
+  public getMinorTicksVisible(): boolean {
     return this.minorTicksParent.visible;
   }
 
   // standardized tandem names, see https://github.com/phetsims/sun/issues/694
-  static THUMB_NODE_TANDEM_NAME = 'thumbNode' as const;
-  static TRACK_NODE_TANDEM_NAME = 'trackNode' as const;
+  public static THUMB_NODE_TANDEM_NAME = 'thumbNode' as const;
+  public static TRACK_NODE_TANDEM_NAME = 'trackNode' as const;
 
-  static SliderIO: IOType;
+  public static SliderIO: IOType;
 }
 
 Slider.SliderIO = new IOType( 'SliderIO', {

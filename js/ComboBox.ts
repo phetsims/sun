@@ -125,7 +125,7 @@ export default class ComboBox<T> extends Node {
   private readonly listPosition: ComboBoxListPosition;
 
   // button that shows the current selection (internal)
-  button: ComboBoxButton<T>;
+  public button: ComboBoxButton<T>;
 
   // the popup list box
   private readonly listBox: ComboBoxListBox<T>;
@@ -149,7 +149,7 @@ export default class ComboBox<T> extends Node {
   private readonly disposeComboBox: () => void;
 
   /**
-   * @param items
+   * @param items - items, in the order that they appear in the listbox
    * @param property
    * @param listParent node that will be used as the list's parent, use this to ensure that the list is in front of everything else
    * @param [providedOptions]
@@ -404,14 +404,14 @@ export default class ComboBox<T> extends Node {
   /**
    * Shows the list box.
    */
-  showListBox() {
+  public showListBox(): void {
     this.listBox.visibleProperty.value = true;
   }
 
   /**
    * Hides the list box.
    */
-  hideListBox() {
+  public hideListBox(): void {
     this.listBox.visibleProperty.value = false;
   }
 
@@ -420,7 +420,7 @@ export default class ComboBox<T> extends Node {
    * they may be scaled differently. This method scales the list box so that items on the button and in
    * the list appear to be the same size.
    */
-  private scaleListBox() {
+  private scaleListBox(): void {
 
     // To support an empty list box due to PhET-iO customization, see https://github.com/phetsims/sun/issues/606
     if ( !this.listBox.localBounds.isEmpty() ) {
@@ -433,7 +433,7 @@ export default class ComboBox<T> extends Node {
   /**
    * Handles the coordinate transform required to make the list box pop up near the button.
    */
-  private moveListBox() {
+  private moveListBox(): void {
     if ( this.listPosition === 'above' ) {
       const pButtonGlobal = this.localToGlobalPoint( new Vector2( this.button.left, this.button.top ) );
       const pButtonLocal = this.listParent.globalToLocalPoint( pButtonGlobal );
@@ -452,21 +452,22 @@ export default class ComboBox<T> extends Node {
    * Sets the visibility of items that correspond to a value. If the selected item has this value, it's your
    * responsibility to change the Property value to something else. Otherwise the combo box button will continue
    * to display this value.
-   * @param  value - the value associated with the ComboBoxItem
-   * @param  visible
+   * @param value - the value associated with the ComboBoxItem
+   * @param visible
    */
-  setItemVisible( value: T, visible: boolean ) {
+  public setItemVisible( value: T, visible: boolean ): void {
     this.listBox.setItemVisible( value, visible );
   }
 
   /**
    * Is the item that corresponds to a value visible when the listbox is popped up?
+   * @param value - the value associated with the ComboBoxItem
    */
-  isItemVisible( value: T ): boolean {
+  public isItemVisible( value: T ): boolean {
     return this.listBox.isItemVisible( value );
   }
 
-  static ComboBoxIO = new IOType( 'ComboBoxIO', {
+  public static ComboBoxIO = new IOType( 'ComboBoxIO', {
     valueType: ComboBox,
     documentation: 'A combo box is composed of a push button and a listbox. The listbox contains items that represent ' +
                    'choices. Pressing the button pops up the listbox. Selecting from an item in the listbox sets the ' +

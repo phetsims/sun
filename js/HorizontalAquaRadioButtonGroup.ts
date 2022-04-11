@@ -16,12 +16,6 @@ type SelfOptions = {};
 export type HorizontalAquaRadioButtonGroupOptions = SelfOptions & Omit<AquaRadioButtonGroupOptions, 'orientation'>;
 
 export default class HorizontalAquaRadioButtonGroup<T> extends AquaRadioButtonGroup<T> {
-
-  /**
-   * @param property
-   * @param items
-   * @param options
-   */
   constructor( property: IProperty<T>, items: AquaRadioButtonGroupItem<T>[], options?: HorizontalAquaRadioButtonGroupOptions ) {
     super( property, items, optionize<HorizontalAquaRadioButtonGroupOptions, SelfOptions, AquaRadioButtonGroupOptions>( {
       orientation: 'horizontal'

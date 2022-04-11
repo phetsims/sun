@@ -31,11 +31,6 @@ export default class ToggleNode<T> extends Node {
 
   private readonly disposeToggleNode: () => void;
 
-  /**
-   * @param valueProperty
-   * @param elements
-   * @param providedOptions
-   */
   constructor( valueProperty: IProperty<T>, elements: ToggleNodeElement<T>[], providedOptions?: ToggleNodeOptions ) {
 
     assert && assert( Array.isArray( elements ), 'elements should be an array' );
@@ -96,7 +91,6 @@ export default class ToggleNode<T> extends Node {
   /**
    * A value for the alignChildren option.
    * Centers the latter nodes on the x,y center of the first node.
-   * @param children
    */
   public static CENTER( children: Node[] ): void {
     for ( let i = 1; i < children.length; i++ ) {
@@ -107,7 +101,6 @@ export default class ToggleNode<T> extends Node {
   /**
    * A value for the alignChildren option.
    * Centers the latter nodes on the x center of the first node.
-   * @param children
    */
   public static CENTER_X( children: Node[] ): void {
     for ( let i = 1; i < children.length; i++ ) {
@@ -118,7 +111,6 @@ export default class ToggleNode<T> extends Node {
   /**
    * A value for the alignChildren option.
    * Centers the latter nodes on the y center of the first node.
-   * @param children
    */
   public static CENTER_Y( children: Node[] ): void {
     for ( let i = 1; i < children.length; i++ ) {
@@ -129,7 +121,6 @@ export default class ToggleNode<T> extends Node {
   /**
    * A value for the alignChildren option.
    * Left aligns nodes on the left of the first node.
-   * @param children
    */
   public static LEFT( children: Node[] ): void {
     for ( let i = 1; i < children.length; i++ ) {
@@ -140,7 +131,6 @@ export default class ToggleNode<T> extends Node {
   /**
    * A value for the alignChildren option.
    * Aligns nodes on the bottom of the first node.
-   * @param children
    */
   public static BOTTOM( children: Node[] ): void {
     for ( let i = 1; i < children.length; i++ ) {
@@ -151,7 +141,6 @@ export default class ToggleNode<T> extends Node {
   /**
    * A value for the alignChildren option.
    * Aligns nodes on the bottom of the first node.
-   * @param children
    */
   public static CENTER_BOTTOM( children: Node[] ): void {
     for ( let i = 1; i < children.length; i++ ) {
@@ -162,7 +151,6 @@ export default class ToggleNode<T> extends Node {
   /**
    * A value for the alignChildren option.
    * Right aligns nodes on the right of the first node.
-   * @param children
    */
   public static RIGHT( children: Node[] ): void {
     for ( let i = 1; i < children.length; i++ ) {
@@ -173,7 +161,6 @@ export default class ToggleNode<T> extends Node {
   /**
    * A value for the alignChildren option.
    * No alignment is performed.
-   * @param children
    */
   public static NONE( children: Node[] ): void {}
 }

@@ -167,9 +167,8 @@ export default class AquaRadioButtonGroup<T> extends LayoutBox {
 
   /**
    * Gets the radio button that corresponds to the specified value.
-   * @param value
    */
-  getButton( value: T ): AquaRadioButton<T> {
+  public getButton( value: T ): AquaRadioButton<T> {
     const button = _.find( this.radioButtons, ( radioButton: AquaRadioButton<T> ) => radioButton.value === value );
     assert && assert( button, `no radio button found for value ${value}` );
     return button!;

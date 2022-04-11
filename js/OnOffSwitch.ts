@@ -16,10 +16,6 @@ export type OnOffSwitchOptions = ToggleSwitchOptions;
 
 export default class OnOffSwitch extends ToggleSwitch<boolean> {
 
-  /**
-   * @param property
-   * @param providedOptions
-   */
   constructor( property: IProperty<boolean>, providedOptions: OnOffSwitchOptions ) {
 
     const options = optionize<OnOffSwitchOptions, {}, ToggleSwitchOptions>( {

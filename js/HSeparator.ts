@@ -14,11 +14,6 @@ type SelfOptions = {};
 type HSeparatorOptions = SelfOptions & LineOptions;
 
 export default class HSeparator extends Line {
-
-  /**
-   * @param width
-   * @param providedOptions
-   */
   constructor( width: number, providedOptions?: HSeparatorOptions ) {
     assert && assert( isFinite( width ) && width >= 0, `invalid width=${width}` );
 

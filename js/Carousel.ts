@@ -148,7 +148,7 @@ export default class Carousel extends Node {
   private readonly disposeCarousel: () => void;
 
   /**
-   * @param items - items in the carousel
+   * @param items - Nodes shown in the carousel
    * @param providedOptions
    */
   constructor( items: Node[], providedOptions?: CarouselOptions ) {
@@ -433,7 +433,6 @@ export default class Carousel extends Node {
 
   /**
    * Given an item's index, scrolls the carousel to the page that contains that item.
-   * @param itemIndex
    */
   public scrollToItemIndex( itemIndex: number ): void {
     this.pageNumberProperty.set( this.itemIndexToPageNumber( itemIndex ) );
@@ -441,7 +440,6 @@ export default class Carousel extends Node {
 
   /**
    * Given an item, scrolls the carousel to the page that contains that item.
-   * @param item
    */
   public scrollToItem( item: Node ): void {
     this.scrollToItemIndex( this.items.indexOf( item ) );
@@ -449,7 +447,6 @@ export default class Carousel extends Node {
 
   /**
    * Is the specified item currently visible in the carousel?
-   * @param item
    */
   public isItemVisible( item: Node ): boolean {
     const itemIndex = this.items.indexOf( item );
@@ -459,7 +456,6 @@ export default class Carousel extends Node {
 
   /**
    * Converts an item index to a page number.
-   * @param itemIndex
    */
   public itemIndexToPageNumber( itemIndex: number ): number {
     assert && assert( itemIndex >= 0 && itemIndex < this.items.length, `itemIndex out of range: ${itemIndex}` );

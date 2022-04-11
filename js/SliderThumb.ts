@@ -24,9 +24,6 @@ type SliderThumbOptions = SelfOptions & Omit<RectangleOptions, 'cachedPaints'>;
 
 export default class SliderThumb extends Rectangle {
 
-  /**
-   * @param providedOptions
-   */
   constructor( providedOptions: SliderThumbOptions ) {
 
     const options = optionize<SliderThumbOptions, SelfOptions, RectangleOptions, 'fill'>( {

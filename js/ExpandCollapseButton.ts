@@ -32,10 +32,6 @@ export default class ExpandCollapseButton extends BooleanRectangularToggleButton
 
   private readonly disposeExpandCollapseButton: () => void;
 
-  /**
-   * @param expandedProperty
-   * @param providedOptions
-   */
   constructor( expandedProperty: IProperty<boolean>, providedOptions?: ExpandCollapseButtonOptions ) {
 
     const options = optionize<ExpandCollapseButtonOptions, SelfOptions, BooleanRectangularToggleButtonOptions>( {

@@ -46,11 +46,11 @@ export default class ABSwitch<T> extends Node {
   private readonly disposeABSwitch: () => void;
 
   /**
-   * @param {Property.<*>} property stores the value of the current choice
-   * @param {*} valueA value for choice 'A'
-   * @param {Node} labelA label for choice 'A'
-   * @param {*} valueB value for choice 'B'
-   * @param {Node} labelB label for choice 'B'
+   * @param property - value of the current choice
+   * @param valueA - value for choice 'A'
+   * @param labelA - label for choice 'A'
+   * @param valueB - value for choice 'B'
+   * @param labelB - label for choice 'B'
    * @param providedOptions
    */
   constructor( property: IProperty<T>, valueA: T, labelA: Node, valueB: T, labelB: Node, providedOptions?: ABSwitchOptions ) {

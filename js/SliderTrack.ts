@@ -133,7 +133,6 @@ export default class SliderTrack extends Node {
 
     this.mutate( options );
 
-    // Called by dispose
     this.disposeSliderTrack = () => {
       this.dragListener.dispose();
     };

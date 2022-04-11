@@ -23,6 +23,7 @@ import ISoundPlayer from '../../tambo/js/ISoundPlayer.js';
 import IProperty from '../../axon/js/IProperty.js';
 
 type SelfOptions = {
+
   // fill for the highlight behind items in the list
   highlightFill?: IPaint;
 
@@ -39,7 +40,7 @@ export type ComboBoxListBoxOptions = SelfOptions & PanelOptions;
 
 export default class ComboBoxListBox<T> extends Panel {
 
-  private listItemNodes: ComboBoxListItemNode<T>[];
+  private readonly listItemNodes: ComboBoxListItemNode<T>[];
   private visibleListItemNodes: ComboBoxListItemNode<T>[];
   private readonly disposeComboBoxListBox: () => void;
 
@@ -253,7 +254,6 @@ export default class ComboBoxListBox<T> extends Panel {
       }
     } );
 
-    // @private
     this.listItemNodes = listItemNodes;
     this.visibleListItemNodes = listItemNodes.slice();
 
@@ -276,15 +276,16 @@ export default class ComboBoxListBox<T> extends Panel {
    * @param value - the value associated with the ComboBoxItem
    * @param visible
    */
-  setItemVisible( value: T, visible: boolean ) {
+  public setItemVisible( value: T, visible: boolean ): void {
     this.getListItemNode( value ).visible = visible;
     this.visibleListItemNodes = _.filter( this.listItemNodes, itemNode => itemNode.visible );
   }
 
   /**
    * Is the item that corresponds to a value visible when the listbox is popped up?
+   * @param value - the value associated with the ComboBoxItem
    */
-  isItemVisible( value: T ): boolean {
+  public isItemVisible( value: T ): boolean {
     return this.getListItemNode( value ).visible;
   }
 
@@ -312,7 +313,7 @@ export default class ComboBoxListBox<T> extends Panel {
    * voice the response from selecting a new item Node. The response will differ depending on if the selection
    * changed the Property.
    */
-  private voiceOnNewSelection( newValue: T, oldValue: T, listItemNode: ComboBoxListItemNode<T> ) {
+  private voiceOnNewSelection( newValue: T, oldValue: T, listItemNode: ComboBoxListItemNode<T> ): void {
     const responseOptions: SpeakingOptions = {
       objectResponse: null,
       hintResponse: null

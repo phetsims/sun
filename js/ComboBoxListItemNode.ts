@@ -40,7 +40,7 @@ export default class ComboBoxListItemNode<T> extends Voicing( Node, 0 ) {
   // It will then set this back to false.
   private _supplyOpenResponseOnNextFocus: boolean;
 
-  readonly item: ComboBoxItem<T>;
+  public readonly item: ComboBoxItem<T>;
 
   constructor( item: ComboBoxItem<T>, highlightWidth: number, highlightHeight: number, providedOptions?: ComboBoxListItemNodeOptions ) {
 
@@ -144,14 +144,14 @@ export default class ComboBoxListItemNode<T> extends Voicing( Node, 0 ) {
   /**
    * Ask for the voicing response for opening the ComboBox upon next focus, but only for the very next focus event.
    */
-  supplyOpenResponseOnNextFocus() {
+  public supplyOpenResponseOnNextFocus(): void {
     this._supplyOpenResponseOnNextFocus = true;
   }
 
   /**
    * A custom focus listener for this type, with conditional support for providing a normal focus vs an "open" response.
    */
-  private comboBoxListItemNodeVoicingFocusListener() {
+  private comboBoxListItemNodeVoicingFocusListener(): void {
     this.voicingSpeakFullResponse( {
       nameResponse: this._supplyOpenResponseOnNextFocus ? this.voicingNameResponse : null,
       objectResponse: this._supplyOpenResponseOnNextFocus ? null : this.voicingObjectResponse,

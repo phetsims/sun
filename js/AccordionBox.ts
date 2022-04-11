@@ -87,11 +87,12 @@ type SelfOptions = {
   // pdom
   headingTagName?: string;
 };
+
 export type AccordionBoxOptions = SelfOptions & NodeOptions;
 
 export default class AccordionBox extends Node {
 
-  readonly expandedProperty: Property<boolean>;
+  public readonly expandedProperty: Property<boolean>;
 
   private readonly _contentAlign;
   private readonly _contentNode;
