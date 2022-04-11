@@ -44,7 +44,7 @@ class ButtonsScreenView extends DemosScreenView {
   }
 }
 
-function demoRadioButtons( layoutBounds: Bounds2 ) {
+function demoRadioButtons( layoutBounds: Bounds2 ): Node {
 
   // For enabling/disabling all buttons
   const buttonsEnabledProperty = new Property( true );
@@ -115,7 +115,7 @@ function demoRadioButtons( layoutBounds: Bounds2 ) {
   } );
 }
 
-function demoToggleButtons( layoutBounds: Bounds2 ) {
+function demoToggleButtons( layoutBounds: Bounds2 ): Node {
 
   // For enabling/disabling all buttons
   const buttonsEnabledProperty = new Property( true );
@@ -153,7 +153,7 @@ function demoToggleButtons( layoutBounds: Bounds2 ) {
   } );
 }
 
-function demoMomentaryButtons( layoutBounds: Bounds2 ) {
+function demoMomentaryButtons( layoutBounds: Bounds2 ): Node {
 
   // For enabling/disabling all buttons
   const buttonsEnabledProperty = new Property( true );
@@ -195,7 +195,7 @@ function demoMomentaryButtons( layoutBounds: Bounds2 ) {
   } );
 }
 
-function demoPushButtons( layoutBounds: Bounds2 ) {
+function demoPushButtons( layoutBounds: Bounds2 ): Node {
 
   // For enabling/disabling all buttons
   const buttonsEnabledProperty = new Property( true );

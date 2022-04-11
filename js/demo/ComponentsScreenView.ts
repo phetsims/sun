@@ -84,7 +84,7 @@ class ComponentsScreenView extends DemosScreenView {
 }
 
 // Creates a demo for ABSwitch
-function demoABSwitch( layoutBounds: Bounds2 ) {
+function demoABSwitch( layoutBounds: Bounds2 ): Node {
 
   const property = new StringProperty( 'A' );
   const labelA = new Text( 'A', { font: new PhetFont( 24 ) } );
@@ -97,7 +97,7 @@ function demoABSwitch( layoutBounds: Bounds2 ) {
 }
 
 // Creates a demo for AquaRadioButtonGroup
-function demoAquaRadioButtonGroup( layoutBounds: Bounds2 ) {
+function demoAquaRadioButtonGroup( layoutBounds: Bounds2 ): Node {
 
   const font = new PhetFont( 20 );
 
@@ -135,7 +135,7 @@ function demoAquaRadioButtonGroup( layoutBounds: Bounds2 ) {
 }
 
 // Creates a demo for Carousel
-function demoCarousel( layoutBounds: Bounds2 ) {
+function demoCarousel( layoutBounds: Bounds2 ): Node {
 
   // create items
   const colors = [ 'red', 'blue', 'green', 'yellow', 'pink', 'white', 'orange', 'magenta', 'purple', 'pink' ];
@@ -171,18 +171,14 @@ function demoCarousel( layoutBounds: Bounds2 ) {
   const itemIndex = 4;
   const hScrollToItemButton = new RectangularPushButton( {
     content: new Text( `scroll to item ${itemIndex}`, { font: new PhetFont( 20 ) } ),
-    listener: function() {
-      hCarousel.scrollToItem( hItems[ itemIndex ] );
-    }
+    listener: () => hCarousel.scrollToItem( hItems[ itemIndex ] )
   } );
 
   // button that sets the horizontal carousel to a specific page number
   const pageNumber = 0;
   const hScrollToPageButton = new RectangularPushButton( {
     content: new Text( `scroll to page ${pageNumber}`, { font: new PhetFont( 20 ) } ),
-    listener: function() {
-      hCarousel.pageNumberProperty.set( pageNumber );
-    }
+    listener: () => hCarousel.pageNumberProperty.set( pageNumber )
   } );
 
   // group the buttons
@@ -201,7 +197,7 @@ function demoCarousel( layoutBounds: Bounds2 ) {
 }
 
 // Creates a demo for Checkbox
-function demoCheckbox( layoutBounds: Bounds2 ) {
+function demoCheckbox( layoutBounds: Bounds2 ): Node {
 
   const property = new BooleanProperty( true );
   const enabledProperty = new BooleanProperty( true, { phetioFeatured: true } );
@@ -224,7 +220,7 @@ function demoCheckbox( layoutBounds: Bounds2 ) {
 }
 
 // Creates a demo of ComboBox
-function demoComboBox( layoutBounds: Bounds2 ) {
+function demoComboBox( layoutBounds: Bounds2 ): Node {
 
   const labels = [ 'one', 'two', 'three', 'four', 'five', 'six' ];
   const items: ComboBoxItem<string>[] = [];
@@ -256,12 +252,12 @@ function demoComboBox( layoutBounds: Bounds2 ) {
 }
 
 // Creates a demo for HSlider
-function demoHSlider( layoutBounds: Bounds2, options: any ) {
+function demoHSlider( layoutBounds: Bounds2, options: any ): Node {
   return demoSlider( layoutBounds, 'horizontal', options );
 }
 
 // Creates a demo for VSlider
-function demoVSlider( layoutBounds: Bounds2, options: any ) {
+function demoVSlider( layoutBounds: Bounds2, options: any ): Node {
   return demoSlider( layoutBounds, 'vertical', options );
 }
 
@@ -272,7 +268,7 @@ function demoVSlider( layoutBounds: Bounds2, options: any ) {
  * @param {Object} [options]
  * @returns {Node}
  */
-function demoSlider( layoutBounds: Bounds2, orientation: 'horizontal' | 'vertical', options: any ) {
+function demoSlider( layoutBounds: Bounds2, orientation: 'horizontal' | 'vertical', options: any ): Node {
 
   options = merge( {
     tandem: Tandem.REQUIRED,
@@ -398,21 +394,21 @@ function demoSlider( layoutBounds: Bounds2, orientation: 'horizontal' | 'vertica
   return layoutBox;
 }
 
-function demoToggleSwitch( layoutBounds: Bounds2 ) {
+function demoToggleSwitch( layoutBounds: Bounds2 ): Node {
   return new ToggleSwitch( new StringProperty( 'left' ), 'left', 'right', {
     center: layoutBounds.center
   } );
 }
 
 // Creates a demo for OnOffSwitch
-function demoOnOffSwitch( layoutBounds: Bounds2 ) {
+function demoOnOffSwitch( layoutBounds: Bounds2 ): Node {
   return new OnOffSwitch( new BooleanProperty( true ), {
     center: layoutBounds.center
   } );
 }
 
 // Creates a demo for PageControl
-function demoPageControl( layoutBounds: Bounds2 ) {
+function demoPageControl( layoutBounds: Bounds2 ): Node {
 
   // create items
   const colors = [ 'red', 'blue', 'green', 'yellow', 'pink', 'white', 'orange', 'magenta', 'purple', 'pink' ];
@@ -448,7 +444,7 @@ function demoPageControl( layoutBounds: Bounds2 ) {
 }
 
 // Creates a demo for NumberSpinner
-function demoNumberSpinner( layoutBounds: Bounds2 ) {
+function demoNumberSpinner( layoutBounds: Bounds2 ): Node {
 
   const valueProperty = new Property( 0 );
   const valueRangeProperty = new Property( new Range( -5, 5 ) );
@@ -521,8 +517,9 @@ function demoNumberSpinner( layoutBounds: Bounds2 ) {
   } );
 }
 
-function demoAlignGroup( layoutBounds: Bounds2 ) {
-  function highlightWrap( node: Node ) {
+function demoAlignGroup( layoutBounds: Bounds2 ): Node {
+
+  function highlightWrap( node: Node ): Node {
     const rect = Rectangle.bounds( node.bounds, { fill: 'rgba(0,0,0,0.25)' } );
     node.boundsProperty.lazyLink( () => {
       rect.setRectBounds( node.bounds );
@@ -562,7 +559,7 @@ function demoAlignGroup( layoutBounds: Bounds2 ) {
 
   const panelGroup = new AlignGroup( { matchVertical: false } );
 
-  function randomText() {
+  function randomText(): Text {
     const text = new Text( 'Test', { fontSize: 20 } );
     stepTimer.addListener( () => {
       if ( stepRand() < 0.03 ) {
@@ -597,12 +594,12 @@ function demoAlignGroup( layoutBounds: Bounds2 ) {
   } );
 }
 
-function demoAccordionBox( layoutBounds: Bounds2 ) {
+function demoAccordionBox( layoutBounds: Bounds2 ): Node {
   const randomRect = new Rectangle( 0, 0, 100, 50, { fill: 'red' } );
 
   const resizeButton = new RectangularPushButton( {
     content: new Text( 'Resize', { font: new PhetFont( 20 ) } ),
-    listener: function() {
+    listener: () => {
       randomRect.rectWidth = 50 + dotRandom.nextDouble() * 150;
       randomRect.rectHeight = 50 + dotRandom.nextDouble() * 150;
       box.center = layoutBounds.center;

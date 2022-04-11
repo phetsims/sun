@@ -8,10 +8,7 @@
 
 import dotRandom from '../../../dot/js/dotRandom.js';
 import ScreenView from '../../../joist/js/ScreenView.js';
-import { Node } from '../../../scenery/js/imports.js';
-import { Rectangle } from '../../../scenery/js/imports.js';
-import { Text } from '../../../scenery/js/imports.js';
-import { Font } from '../../../scenery/js/imports.js';
+import { Font, Node, Rectangle, Text } from '../../../scenery/js/imports.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import RectangularPushButton from '../buttons/RectangularPushButton.js';
 import Dialog from '../Dialog.js';
@@ -47,12 +44,7 @@ class DialogsScreenView extends ScreenView {
   }
 }
 
-/**
- * Creates a model or non-modal dialog
- * @param {boolean} modal
- * @returns {Dialog}
- */
-function createDialog( modal: boolean ) {
+function createDialog( modal: boolean ): Dialog {
 
   const resizeButton = new RectangularPushButton( {
     content: new Text( 'Resize', { font: new Font( { size: 18 } ) } )
