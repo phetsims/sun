@@ -26,6 +26,7 @@ const HORIZONTAL_HIGHLIGHT_GRADIENT_LENGTH = 7; // In screen coords, which are r
 const SHADE_GRADIENT_LENGTH = 3; // In screen coords, which are roughly pixels.
 
 type SelfOptions = {
+
   // If specified, this will be the size of the button. minWidth and minHeight will be ignored, and
   // content will be scaled down to fit inside, accounting for margins.
   size?: Dimension2 | null;
@@ -66,6 +67,8 @@ type SelfOptions = {
 export type RectangularButtonOptions = SelfOptions & ButtonNodeOptions;
 
 export default class RectangularButton extends ButtonNode {
+
+  public static ThreeDAppearanceStrategy: typeof ThreeDAppearanceStrategy;
 
   /**
    * @param {ButtonModel} buttonModel - Model that defines the button's behavior.
@@ -159,8 +162,6 @@ export default class RectangularButton extends ButtonNode {
       .dilatedXY( options.mouseAreaXDilation, options.mouseAreaYDilation )
       .shiftedXY( options.mouseAreaXShift, options.mouseAreaYShift );
   }
-
-  static ThreeDAppearanceStrategy: typeof ThreeDAppearanceStrategy;
 }
 
 /**
@@ -185,6 +186,8 @@ function createButtonShape( width: number, height: number,
  * set up to make the light source appear to be in the upper left.
  */
 class ThreeDAppearanceStrategy {
+
+  private readonly disposeThreeDAppearanceStrategy: () => void;
 
   /**
    * @param buttonBackground - the Node for the button's background, sans content
@@ -288,7 +291,7 @@ class ThreeDAppearanceStrategy {
 
     interactionStateProperty.link( interactionStateListener );
 
-    this.dispose = () => {
+    this.disposeThreeDAppearanceStrategy = () => {
       if ( interactionStateProperty.hasListener( interactionStateListener ) ) {
         interactionStateProperty.unlink( interactionStateListener );
       }
@@ -303,7 +306,9 @@ class ThreeDAppearanceStrategy {
     };
   }
 
-  dispose: () => void;
+  public dispose(): void {
+    this.disposeThreeDAppearanceStrategy();
+  }
 }
 
 // @public

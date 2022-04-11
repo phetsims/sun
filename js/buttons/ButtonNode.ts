@@ -31,6 +31,7 @@ const BRIGHTNESS_FILTER = new Brightness( 1.2 );
 type EnabledAppearanceStrategy = ( enabled: boolean, button: Node, background: Node, content: Node | null ) => void;
 
 type SelfOptions = {
+
   // what appears on the button (icon, label, etc.)
   content?: Node | null;
 
@@ -88,6 +89,8 @@ export default class ButtonNode extends Voicing( Node, 0 ) {
   private readonly baseColorProperty: Property<Color>;
   private readonly _pressListener: PressListener;
   private readonly disposeButtonNode: () => void;
+
+  public static FlatAppearanceStrategy: typeof FlatAppearanceStrategy;
 
   /**
    * @param buttonModel
@@ -218,14 +221,14 @@ export default class ButtonNode extends Voicing( Node, 0 ) {
   /**
    * Sets the base color, which is the main background fill color used for the button.
    */
-  setBaseColor( baseColor: IColor ) { this._settableBaseColorProperty.paint = baseColor; }
+  public setBaseColor( baseColor: IColor ): void { this._settableBaseColorProperty.paint = baseColor; }
 
   set baseColor( baseColor: IColor ) { this.setBaseColor( baseColor ); }
 
   /**
    * Gets the base color for this button.
    */
-  getBaseColor(): IColor { return this._settableBaseColorProperty.paint as IColor; }
+  public getBaseColor(): IColor { return this._settableBaseColorProperty.paint as IColor; }
 
   get baseColor(): IColor { return this.getBaseColor(); }
 
@@ -234,20 +237,17 @@ export default class ButtonNode extends Voicing( Node, 0 ) {
    * accessibility usages. For the most part, PDOM button functionality should be managed by PressListener, this should
    * rarely be used.
    */
-  pdomClick() {
+  public pdomClick(): void {
     this._pressListener.click( null );
   }
 
   /**
    * Is the button currently firing because of accessibility input coming from the PDOM?
    */
-  isPDOMClicking(): boolean {
+  public isPDOMClicking(): boolean {
     return this._pressListener.pdomClickingProperty.get();
   }
-
-  static FlatAppearanceStrategy: typeof FlatAppearanceStrategy;
 }
-
 
 /**
  * FlatAppearanceStrategy is a value for ButtonNode options.buttonAppearanceStrategy. It makes a
@@ -255,11 +255,13 @@ export default class ButtonNode extends Voicing( Node, 0 ) {
  */
 export class FlatAppearanceStrategy {
 
+  private readonly disposeFlatAppearanceStrategy: () => void;
+
   /*
-   * @param {Node,Paintable} buttonBackground - the Node for the button's background, sans content
-   * @param {Property.<ButtonInteractionState>} interactionStateProperty
-   * @param {Property.<ColorDef>} baseColorProperty
-   * @param {Object} [options]
+   * @param buttonBackground - the Node for the button's background, sans content
+   * @param interactionStateProperty
+   * @param baseColorProperty
+   * @param options
    */
   constructor( buttonBackground: PaintableNode, interactionStateProperty: IProperty<ButtonInteractionState>, baseColorProperty: IReadOnlyProperty<Color>, options?: any ) {
 
@@ -303,7 +305,7 @@ export class FlatAppearanceStrategy {
     // a minimum and allows us to update some optimization flags the first time the base color is actually changed.
     interactionStateProperty.link( interactionStateListener );
 
-    this.dispose = () => {
+    this.disposeFlatAppearanceStrategy = () => {
       if ( interactionStateProperty.hasListener( interactionStateListener ) ) {
         interactionStateProperty.unlink( interactionStateListener );
       }
@@ -313,7 +315,9 @@ export class FlatAppearanceStrategy {
     };
   }
 
-  dispose: () => void;
+  public dispose(): void {
+    this.disposeFlatAppearanceStrategy();
+  }
 }
 
 ButtonNode.FlatAppearanceStrategy = FlatAppearanceStrategy;

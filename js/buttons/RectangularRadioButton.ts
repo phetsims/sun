@@ -55,13 +55,13 @@ export type RectangularRadioButtonOptions = SelfOptions & RectangularButtonOptio
 
 export default class RectangularRadioButton<T> extends RectangularButton {
 
-  readonly interactionStateProperty: RadioButtonInteractionStateProperty<T>;
-
   // the Property this button changes
-  readonly property: IProperty<T>;
+  public readonly property: IProperty<T>;
 
   // the value that is set to the Property when this button is pressed
-  readonly value: T;
+  public readonly value: T;
+
+  public readonly interactionStateProperty: RadioButtonInteractionStateProperty<T>;
 
   private readonly firedEmitter: Emitter<[]>;
 
@@ -182,7 +182,7 @@ export default class RectangularRadioButton<T> extends RectangularButton {
   /**
    * fire on up if the button is enabled, public for use in the accessibility tree
    */
-  fire(): void {
+  public fire(): void {
 
     // Note that @protected this.buttonModel is defined in superclass
     if ( this.buttonModel.enabledProperty.get() ) {
@@ -197,7 +197,7 @@ export default class RectangularRadioButton<T> extends RectangularButton {
    */
   static override FlatAppearanceStrategy: TButtonAppearanceStrategy = class FlatAppearanceStrategy {
 
-    dispose: () => void;
+    private readonly disposeFlatAppearanceStrategy: () => void;
 
     /**
      * buttonBackground is the Node for the button's background, sans content
@@ -260,7 +260,7 @@ export default class RectangularRadioButton<T> extends RectangularButton {
 
       interactionStateProperty.link( interactionStateListener );
 
-      this.dispose = () => {
+      this.disposeFlatAppearanceStrategy = () => {
         if ( interactionStateProperty.hasListener( interactionStateListener ) ) {
           interactionStateProperty.unlink( interactionStateListener );
         }
@@ -268,6 +268,10 @@ export default class RectangularRadioButton<T> extends RectangularButton {
         overFill.dispose();
         pressedFill.dispose();
       };
+    }
+
+    public dispose(): void {
+      this.disposeFlatAppearanceStrategy();
     }
   }
 
@@ -278,7 +282,7 @@ export default class RectangularRadioButton<T> extends RectangularButton {
    */
   static ContentAppearanceStrategy: TContentAppearanceStrategy = class ContentAppearanceStrategy {
 
-    dispose: () => void;
+    private readonly disposeContentAppearanceStrategy: () => void;
 
     constructor( content: Node, interactionStateProperty: IProperty<RadioButtonInteractionState>, options: any ) {
 
@@ -312,14 +316,17 @@ export default class RectangularRadioButton<T> extends RectangularButton {
 
       interactionStateProperty.link( handleInteractionStateChanged );
 
-      this.dispose = () => {
+      this.disposeContentAppearanceStrategy = () => {
         if ( interactionStateProperty.hasListener( handleInteractionStateChanged ) ) {
           interactionStateProperty.unlink( handleInteractionStateChanged );
         }
       };
     }
-  }
 
+    public dispose(): void {
+      this.disposeContentAppearanceStrategy();
+    }
+  }
 }
 
 sun.register( 'RectangularRadioButton', RectangularRadioButton );
