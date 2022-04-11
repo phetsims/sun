@@ -11,6 +11,7 @@ import EnumerationValue from '../../../phet-core/js/EnumerationValue.js';
 import sun from '../sun.js';
 
 export default class ButtonInteractionState extends EnumerationValue {
+
   // button is just sitting there, doing nothing
   static IDLE = new ButtonInteractionState();
 

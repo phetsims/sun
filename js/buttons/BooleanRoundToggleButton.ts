@@ -21,8 +21,8 @@ class BooleanRoundToggleButton extends RoundToggleButton<boolean> {
   private readonly disposeBooleanRoundToggleButton: () => void;
 
   /**
-   * @param trueNode
-   * @param falseNode
+   * @param trueNode - shown when booleanProperty is true
+   * @param falseNode - shown when booleanProperty is false
    * @param booleanProperty
    * @param providedOptions
    */
