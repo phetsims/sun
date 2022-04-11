@@ -11,7 +11,7 @@ import Bounds2 from '../../../dot/js/Bounds2.js';
 import ScreenView, { ScreenViewOptions } from '../../../joist/js/ScreenView.js';
 import optionize from '../../../phet-core/js/optionize.js';
 import PhetFont from '../../../scenery-phet/js/PhetFont.js';
-import { Node, Text } from '../../../scenery/js/imports.js';
+import { Node, NodeOptions, Text } from '../../../scenery/js/imports.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import CarouselComboBox from '../CarouselComboBox.js';
 import ComboBoxItem from '../ComboBoxItem.js';
@@ -26,7 +26,7 @@ export type SunDemo = {
   label: string;
 
   // creates the Node for the demo
-  createNode: ( layoutBounds: Bounds2, options?: any ) => Node;
+  createNode: ( layoutBounds: Bounds2, options?: NodeOptions ) => Node;
 
   node?: Node | null | undefined;
 }

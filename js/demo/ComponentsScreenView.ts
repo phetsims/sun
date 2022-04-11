@@ -17,10 +17,10 @@ import Bounds2 from '../../../dot/js/Bounds2.js';
 import Dimension2 from '../../../dot/js/Dimension2.js';
 import dotRandom from '../../../dot/js/dotRandom.js';
 import Range from '../../../dot/js/Range.js';
-import merge from '../../../phet-core/js/merge.js';
 import optionize from '../../../phet-core/js/optionize.js';
 import PhetFont from '../../../scenery-phet/js/PhetFont.js';
 import { AlignBox, AlignGroup, Circle, HBox, Node, Rectangle, Text, VBox } from '../../../scenery/js/imports.js';
+import { PhetioObjectOptions } from '../../../tandem/js/PhetioObject.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import ABSwitch from '../ABSwitch.js';
 import AccordionBox from '../AccordionBox.js';
@@ -35,7 +35,7 @@ import NumberSpinner, { NumberSpinnerOptions } from '../NumberSpinner.js';
 import OnOffSwitch from '../OnOffSwitch.js';
 import PageControl from '../PageControl.js';
 import Panel from '../Panel.js';
-import Slider from '../Slider.js';
+import Slider, { SliderOptions } from '../Slider.js';
 import sun from '../sun.js';
 import sunQueryParameters from '../sunQueryParameters.js';
 import ToggleSwitch from '../ToggleSwitch.js';
@@ -245,41 +245,35 @@ function demoComboBox( layoutBounds: Bounds2 ): Node {
 }
 
 // Creates a demo for HSlider
-function demoHSlider( layoutBounds: Bounds2, options: any ): Node {
+function demoHSlider( layoutBounds: Bounds2, options?: PhetioObjectOptions ): Node {
   return demoSlider( layoutBounds, 'horizontal', options );
 }
 
 // Creates a demo for VSlider
-function demoVSlider( layoutBounds: Bounds2, options: any ): Node {
+function demoVSlider( layoutBounds: Bounds2, options?: PhetioObjectOptions ): Node {
   return demoSlider( layoutBounds, 'vertical', options );
 }
 
 /**
  * Used by demoHSlider and demoVSlider
- * @param {Bounds2} layoutBounds
- * @param {string} orientation - see Slider orientation option
- * @param {Object} [options]
- * @returns {Node}
  */
-function demoSlider( layoutBounds: Bounds2, orientation: 'horizontal' | 'vertical', options: any ): Node {
+function demoSlider( layoutBounds: Bounds2, orientation: 'horizontal' | 'vertical', providedOptions?: SliderOptions ): Node {
 
-  options = merge( {
+  const options = optionize<SliderOptions, {}, SliderOptions>( {
+    center: layoutBounds.center,
     tandem: Tandem.REQUIRED,
     phetioDesigned: true
-  }, options );
+  }, providedOptions );
 
   const property = new Property( 0 );
   const range = new Range( 0, 100 );
   const tickLabelOptions = { font: new PhetFont( 16 ) };
-  options = merge( {
-    center: layoutBounds.center
-  }, options );
 
   const enabledRangeProperty = new Property( new Range( 0, 100 ) );
 
   let slider: Slider;
   if ( orientation === 'horizontal' ) {
-    slider = new HSlider( property, range, merge( {}, options, {
+    slider = new HSlider( property, range, optionize<SliderOptions, {}, SliderOptions>( options, {
       trackSize: new Dimension2( 300, 5 ),
 
       // Demonstrate larger x dilation.
@@ -291,7 +285,7 @@ function demoSlider( layoutBounds: Bounds2, orientation: 'horizontal' | 'vertica
     } ) );
   }
   else {
-    slider = new VSlider( property, range, merge( {}, options, {
+    slider = new VSlider( property, range, optionize<SliderOptions, {}, SliderOptions>( options, {
       trackSize: new Dimension2( 5, 300 ),
 
       // Demonstrate larger y dilation, to verify that VSlider is handling things correctly.
