@@ -52,7 +52,9 @@ const AccessibleNumberSpinner = <SuperType extends Constructor>( Type: SuperType
 
   assert && assert( _.includes( inheritance( Type ), Node ), 'Only Node subtypes should compose Voicing' );
 
-  // Unfortunately, nothing can be private or protected in this class, see https://github.com/phetsims/scenery/issues/1340#issuecomment-1020692592
+  // Unfortunately, private and protected modifiers cannot be used in this trait, due to a limitation of how Typescript
+  // mixins/traits work. If you do that, you get an error in which anonymous classes cannot have private or protected
+  // members. See https://github.com/phetsims/scenery/issues/1340#issuecomment-1020692592
   return class extends AccessibleValueHandler( Type, optionsArgPosition ) {
 
     // Manages timing must be disposed
