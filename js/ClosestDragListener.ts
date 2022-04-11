@@ -1,6 +1,5 @@
 // Copyright 2016-2021, University of Colorado Boulder
 
-// @ts-nocheck
 /**
  * A Scenery input listener that is able to find the closest in a list of items to a "down" event and trigger an action
  * (usually a drag) on that item. Usually this will be a drag listener start/press (e.g. SimpleDragHandler/DragListener),
@@ -15,54 +14,52 @@
  * @author Jonathan Olson (PhET Interactive Simulations)
  */
 
-import { Mouse } from '../../scenery/js/imports.js';
+import Vector2 from '../../dot/js/Vector2.js';
+import { Mouse, PressListenerEvent } from '../../scenery/js/imports.js';
 import sun from './sun.js';
 
-class ClosestDragListener {
+type DraggableItem = {
+  startDrag: ( event: PressListenerEvent ) => void;
+  computeDistance: ( globalPoint: Vector2 ) => number;
+};
 
-  /**
-   * @param {number} touchThreshold - The maximum distance from an item that will cause a touch-like (includes pen) to start a drag
-   * @param {number} mouseThreshold - The maximum distance from an item that will cause a mouse down event to start a drag
-   */
-  constructor( touchThreshold, mouseThreshold ) {
+export default class ClosestDragListener {
 
-    // @private
+  // The maximum distance from an item that will cause a touch-like (includes pen) to start a drag
+  private readonly touchThreshold: number;
+
+  // The maximum distance from an item that will cause a mouse down event to start a drag
+  private readonly mouseThreshold: number;
+
+  private readonly items: DraggableItem[];
+
+  constructor( touchThreshold: number, mouseThreshold: number ) {
     this.touchThreshold = touchThreshold;
     this.mouseThreshold = mouseThreshold;
-
-    // @private
     this.items = [];
   }
 
   /**
    * Adds an item that can be dragged.
-   * @public
-   *
-   * @param {item} item
    */
-  addDraggableItem( item ) {
-    assert && assert( !!item.startDrag && !!item.computeDistance, 'Added an invalid item for ClosestDragListener' );
+  public addDraggableItem( item: DraggableItem ): void {
     this.items.push( item );
   }
 
   /**
    * Removes a previously-added item.
-   * @public
-   *
-   * @param {item} item
    */
-  removeDraggableItem( item ) {
+  public removeDraggableItem( item: DraggableItem ): void {
     const index = _.indexOf( this.items, item );
     assert && assert( index >= 0 );
     this.items.splice( index, 1 );
   }
 
   /**
-   * @public
-   *
-   * @param {SceneryEvent} event
+   * Called on pointer down.
    */
-  down( event ) {
+  public down( event: PressListenerEvent ) {
+
     // If there was nothing else in the way
     if ( event.target === event.currentTarget ) {
       let threshold = 0;
@@ -73,6 +70,7 @@ class ClosestDragListener {
         threshold = this.mouseThreshold;
       }
       if ( threshold ) {
+
         // search for the closest item
         let currentItem = null;
         let currentDistance = Number.POSITIVE_INFINITY;
@@ -98,4 +96,3 @@ class ClosestDragListener {
 }
 
 sun.register( 'ClosestDragListener', ClosestDragListener );
-export default ClosestDragListener;
