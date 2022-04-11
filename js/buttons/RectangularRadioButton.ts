@@ -275,7 +275,6 @@ export default class RectangularRadioButton<T> extends RectangularButton {
     }
   }
 
-
   /**
    * ContentAppearanceStrategy is a value for RectangularRadioButton options.contentAppearanceStrategy. It changes
    * their look based on the value of interactionStateProperty.

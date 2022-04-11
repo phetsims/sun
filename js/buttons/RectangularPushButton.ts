@@ -83,14 +83,14 @@ export default class RectangularPushButton extends RectangularButton {
   /**
    * Adds a listener that will be notified when the button fires.
    */
-  addListener( listener: PushButtonListener ) {
+  public addListener( listener: PushButtonListener ): void {
     this.pushButtonModel.addListener( listener );
   }
 
   /**
    * Removes a listener.
    */
-  removeListener( listener: PushButtonListener ) {
+  public removeListener( listener: PushButtonListener ): void {
     this.pushButtonModel.removeListener( listener );
   }
 }

@@ -22,6 +22,7 @@ import ButtonModel, { ButtonModelOptions } from './ButtonModel.js';
 export type PushButtonListener = () => void;
 
 type SelfOptions = {
+
   // true: fire on pointer down; false: fire on pointer up if pointer is over button
   fireOnDown?: boolean;
 
@@ -155,22 +156,22 @@ export default class PushButtonModel extends ButtonModel {
    * Adds a listener. If already a listener, this is a no-op.
    * @param listener - function called when the button is pressed, no args
    */
-  addListener( listener: PushButtonListener ) {
+  public addListener( listener: PushButtonListener ): void {
     this.firedEmitter.addListener( listener );
   }
 
   /**
    * Removes a listener. If not a listener, this is a no-op.
    */
-  removeListener( listener: PushButtonListener ) {
+  public removeListener( listener: PushButtonListener ): void {
     this.firedEmitter.removeListener( listener );
   }
 
   /**
    * Fires all listeners.
-   * (phet-io, a11y)
+   * @public (phet-io, a11y)
    */
-  fire() {
+  public fire(): void {
 
     // Make sure the button is not already firing, see https://github.com/phetsims/energy-skate-park-basics/issues/380
     assert && assert( !this.isFiringProperty.value, 'Cannot fire when already firing' );

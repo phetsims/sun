@@ -71,7 +71,6 @@ export default class RectangularToggleButton<T> extends RectangularButton {
     };
     this.buttonModel.produceSoundEmitter.addListener( playSounds );
 
-    // @private
     this.disposeRectangularToggleButton = () => {
       this.buttonModel.produceSoundEmitter.removeListener( playSounds );
       toggleButtonModel.dispose();

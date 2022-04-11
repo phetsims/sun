@@ -44,11 +44,6 @@ export default class RoundButton extends ButtonNode {
 
   public static ThreeDAppearanceStrategy: typeof ThreeDAppearanceStrategy;
 
-  /**
-   * @param buttonModel
-   * @param interactionStateProperty
-   * @param providedOptions
-   */
   constructor( buttonModel: ButtonModel,
                interactionStateProperty: IProperty<ButtonInteractionState>,
                providedOptions?: RoundButtonOptions ) {
@@ -140,10 +135,10 @@ export class ThreeDAppearanceStrategy {
   private readonly disposeThreeDAppearanceStrategy: () => void;
 
   /**
-   * @param {Node,Paintable} buttonBackground - the Node for the button's background, sans content
-   * @param {Property.<ButtonInteractionState>} interactionStateProperty
-   * @param {Property.<ColorDef>} baseColorProperty
-   * @param {Object} [options]
+   * @param buttonBackground - the Node for the button's background, sans content
+   * @param interactionStateProperty
+   * @param baseColorProperty
+   * @param options
    */
   constructor( buttonBackground: PaintableNode,
                interactionStateProperty: IProperty<ButtonInteractionState | RadioButtonInteractionState>,

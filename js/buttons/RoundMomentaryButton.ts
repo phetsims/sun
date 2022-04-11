@@ -43,7 +43,6 @@ export default class RoundMomentaryButton<T> extends RoundButton {
 
     super( buttonModel, new MomentaryButtonInteractionStateProperty( buttonModel ), options );
 
-    // @private
     this.disposeRoundMomentaryButton = () => {
       buttonModel.dispose();
     };

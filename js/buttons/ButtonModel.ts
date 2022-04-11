@@ -40,29 +40,29 @@ export type ButtonModelOptions = SelfOptions & EnabledComponentOptions;
 export default class ButtonModel extends EnabledComponent {
 
   // Is the pointer over the button? Value is read-only.
-  readonly overProperty: Property<boolean>;
+  public readonly overProperty: Property<boolean>;
 
   // Is the pointer down?
-  readonly downProperty: Property<boolean>;
+  public readonly downProperty: Property<boolean>;
 
   // Is the button focused from the PDOM?
-  readonly focusedProperty: Property<boolean>;
+  public readonly focusedProperty: Property<boolean>;
 
   // This Property was added for a11y. It tracks whether or not the button should "look" down. This
   // will be true if downProperty is true or if an a11y click is in progress. For an a11y click, the listeners
   // are fired right away but the button will look down for as long as PressListener.a11yLooksPressedInterval.
   // See PressListener.click for more details.
-  readonly looksPressedProperty: Property<boolean>;
+  public readonly looksPressedProperty: Property<boolean>;
 
   // This Property was added for a11y. It tracks whether or not the button should "look" over. This
   // will be true if and PressListeners' looksOverProperty is true, see PressListener for that definition.
-  readonly looksOverProperty: Property<boolean>;
+  public readonly looksOverProperty: Property<boolean>;
 
   // (read-only by users, read-write in subclasses) - emitter that is fired when sound should be produced
-  readonly produceSoundEmitter: Emitter;
+  public readonly produceSoundEmitter: Emitter;
 
   // indicates that interaction was interrupted during a press. Valid until next press.
-  interrupted: boolean;
+  public interrupted: boolean;
 
   // keep track of and store all listeners this model creates
   private listeners: PressListener[];
@@ -169,7 +169,7 @@ export default class ButtonModel extends EnabledComponent {
    * Creates a PressListener that will handle changes to ButtonModel when the associated button Node is pressed.
    * The client is responsible for adding this PressListener to the associated button Node.
    */
-  createPressListener( options?: PressListenerOptions ): PressListener {
+  public createPressListener( options?: PressListenerOptions ): PressListener {
 
     options = merge( {
       phetioDocumentation: 'Indicates when the button has been pressed or released',
