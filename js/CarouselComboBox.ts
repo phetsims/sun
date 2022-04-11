@@ -1,6 +1,5 @@
 // Copyright 2021-2022, University of Colorado Boulder
 
-// @ts-nocheck
 /**
  * CarouselComboBox behaves like a combo box, but its listbox is a carousel. This allows you to scroll through a
  * long list of items, a feature that ComboBoxListBox does not support. ComboBoxItem, ComboBoxButton, and
@@ -21,51 +20,52 @@
  * @author Chris Malley (PixelZoom, Inc.)
  */
 
+import IProperty from '../../axon/js/IProperty.js';
 import Multilink from '../../axon/js/Multilink.js';
-import Property from '../../axon/js/Property.js';
 import Dimension2 from '../../dot/js/Dimension2.js';
 import dotRandom from '../../dot/js/dotRandom.js';
 import merge from '../../phet-core/js/merge.js';
-import AssertUtils from '../../phetcommon/js/AssertUtils.js';
-import { PressListener } from '../../scenery/js/imports.js';
-import { AlignBox } from '../../scenery/js/imports.js';
-import { AlignGroup } from '../../scenery/js/imports.js';
-import { HBox } from '../../scenery/js/imports.js';
-import { Node } from '../../scenery/js/imports.js';
-import { Rectangle } from '../../scenery/js/imports.js';
-import { VBox } from '../../scenery/js/imports.js';
-import { Color } from '../../scenery/js/imports.js';
+import optionize from '../../phet-core/js/optionize.js';
+import { AlignBox, AlignGroup, Color, Display, HBox, IColor, Node, NodeOptions, PressListener, Rectangle, SceneryEvent, VBox } from '../../scenery/js/imports.js';
 import Tandem from '../../tandem/js/Tandem.js';
-import Carousel from './Carousel.js';
-import ComboBoxButton from './ComboBoxButton.js';
+import Carousel, { CarouselOptions } from './Carousel.js';
+import ComboBoxButton, { ComboBoxButtonOptions } from './ComboBoxButton.js';
 import ComboBoxItem from './ComboBoxItem.js';
-import PageControl from './PageControl.js';
+import PageControl, { PageControlOptions } from './PageControl.js';
 import sun from './sun.js';
 
-class CarouselComboBox extends Node {
+type SelfOptions = {
+
+  // Nested options passed to subcomponents
+  itemNodeOptions?: CarouselItemNodeOptions;
+  carouselOptions?: CarouselOptions;
+  pageControlOptions?: Omit<PageControlOptions, 'orientation'>;
+  buttonOptions?: Omit<ComboBoxButtonOptions, 'content' | 'listener'>;
+};
+
+export type CarouselComboBoxOptions = SelfOptions & Omit<NodeOptions, 'children'>;
+
+class CarouselComboBox<T> extends Node {
+
+  private readonly disposeCarouselComboBox: () => void;
 
   /**
-   * @param {Property.<*>} property - the Property that is set when an item is selected
-   * @param {ComboBoxItem[]} comboBoxItems - the items that appear in the carousel
-   * @param {Object} [options]
+   * @param property - the Property that is set when an item is selected
+   * @param comboBoxItems - the items that appear in the carousel
+   * @param providedOptions
    */
-  constructor( property, comboBoxItems, options ) {
+  constructor( property: IProperty<T>, comboBoxItems: ComboBoxItem<T>[], providedOptions?: CarouselComboBoxOptions ) {
 
-    assert && assert( property instanceof Property, 'invalid property' );
-    assert && AssertUtils.assertArrayOf( comboBoxItems, ComboBoxItem );
+    const options = optionize<CarouselComboBoxOptions, SelfOptions, NodeOptions, 'tandem'>( {
 
-    options = merge( {
-
-      // Options passed to CarouselItemNode
       itemNodeOptions: {
         align: 'left', // {string} alignment of item nodes on backgrounds, 'left'|'center'|'right'
         overColor: Color.grayColor( 245 ), // {ColorDef} background color of the item that the pointer is over
         selectedColor: 'yellow', // {ColorDef} background color of the selected item
-        itemXMargin: 6, // {number} x margin for backgrounds on the items in the carousel
-        itemYMargin: 2 // {number} y margin for backgrounds on the items in the carousel
+        xMargin: 6, // {number} x margin for backgrounds on the items in the carousel
+        yMargin: 2 // {number} y margin for backgrounds on the items in the carousel
       },
 
-      // Options passed to Carousel
       carouselOptions: {
         arrowSize: new Dimension2( 20, 4 ),
 
@@ -85,33 +85,23 @@ class CarouselComboBox extends Node {
         interactive: true
       },
 
-      // Options passed to ComboBoxButton
       buttonOptions: {
         arrowDirection: 'down', // 'up' is not currently supported (verified below)
         baseColor: 'rgb( 218, 236, 255 )',
-        xMargin: 6, // You'll typically want this to be the same as itemXMargin, but we're not going to force you :)
+        xMargin: 6, // You'll typically want this to be the same as itemNodeOptions.xMargin, but we're not going to force you :)
         yMargin: 4
       },
 
       // phet-io
       tandem: Tandem.OPTIONAL
-    }, options );
+    }, providedOptions );
 
     // Validate options
     assert && assert( options.carouselOptions.orientation === 'vertical', 'orientation must be vertical' );
     assert && assert( options.buttonOptions.arrowDirection === 'down', 'arrowDirection must be down' );
 
-    // Check for options that are not settable by the client
-    assert && assert( !options.children, 'CarouselComboBox sets children' );
-    assert && assert( !options.buttonOptions.content, 'CarouselComboBox sets buttonOptions.content' );
-    assert && assert( !options.buttonOptions.listener, 'CarouselComboBox sets buttonOptions.listener' );
-
     // Don't create pages that are longer than the number of items
-    options.carouselOptions.itemsPerPage = Math.min( options.carouselOptions.itemsPerPage, comboBoxItems.length );
-
-    // Orientations must be the same.
-    assert && assert( !options.pageControlOptions.orientation, 'use carouselOptions.orientation' );
-    options.pageControlOptions.orientation = options.carouselOptions.orientation;
+    options.carouselOptions.itemsPerPage = Math.min( options.carouselOptions.itemsPerPage!, comboBoxItems.length );
 
     // Create tandems for subcomponents, if they were not provided
     options.carouselOptions.tandem = options.carouselOptions.tandem || options.tandem.createTandem( 'carousel' );
@@ -133,24 +123,29 @@ class CarouselComboBox extends Node {
     hBoxChildren.push( carousel );
 
     // page control
-    let pageControl;
+    let pageControl: PageControl | null = null;
     if ( carousel.numberOfPages > 1 ) {
-      pageControl = new PageControl( carousel.numberOfPages, carousel.pageNumberProperty, options.pageControlOptions );
+      pageControl = new PageControl( carousel.numberOfPages, carousel.pageNumberProperty,
+        optionize<PageControlOptions, {}, PageControlOptions>( {
+          orientation: options.carouselOptions.orientation
+        }, options.pageControlOptions )
+      );
       hBoxChildren.push( pageControl );
     }
 
-    // Page control to the left of carousel
+    // pageControl to the left of carousel
     const carouselAndPageControl = new HBox( {
       spacing: 4,
       children: hBoxChildren
     } );
 
     // Pressing this button pops the carousel up and down
-    const button = new ComboBoxButton( property, comboBoxItems, merge( {}, {
-      listener: () => {
-        carouselAndPageControl.visible = !carouselAndPageControl.visible;
-      }
-    }, options.buttonOptions ) );
+    const button = new ComboBoxButton( property, comboBoxItems,
+      optionize<ComboBoxButtonOptions, {}, ComboBoxButtonOptions>( {}, {
+        listener: () => {
+          carouselAndPageControl.visible = !carouselAndPageControl.visible;
+        }
+      }, options.buttonOptions ) );
 
     // Put the button above the carousel, left aligned.
     const vBox = new VBox( {
@@ -171,7 +166,7 @@ class CarouselComboBox extends Node {
     // Clicking outside this UI component will hide the carousel and page control.
     // NOTE: adapted from ComboBox.
     const clickToDismissListener = {
-      down: event => {
+      down: ( event: SceneryEvent ) => {
         assert && assert( carousel.visible, 'this listener should be registered only when carousel is visible' );
 
         // If fuzzing is enabled, exercise this listener some percentage of the time, so that this listener is tested.
@@ -188,7 +183,7 @@ class CarouselComboBox extends Node {
 
     // Add clickToDismissListener only when the carousel & page control are visible. unlink is not needed.
     // NOTE: adapted from ComboBox.
-    let display = null; // {Display}
+    let display: Display | null = null;
     carouselAndPageControl.visibleProperty.link( visible => {
       if ( visible ) {
         assert && assert( !display, 'unexpected display' );
@@ -210,45 +205,51 @@ class CarouselComboBox extends Node {
 
       // Dispose of subcomponents
       button.dispose();
-      pageControl.dispose();
+      pageControl && pageControl.dispose();
       carousel.dispose();
       carouselItemNodes.forEach( node => node.dispose() );
     };
   }
 
-  /**
-   * @public
-   * @override
-   */
-  dispose() {
+  public override dispose(): void {
     this.disposeCarouselComboBox();
     super.dispose();
   }
 }
+
+type CarouselItemNodeSelfOptions = {
+  align?: 'left' | 'right' | 'center'; // alignment of node on background
+  xMargin?: number; // x margin for backgrounds on the items in the carousel
+  yMargin?: number; // y margin for backgrounds on the items in the carousel
+  overColor?: IColor; // background color of the item that the pointer is over
+  selectedColor?: IColor; // background color of the selected item
+};
+
+type CarouselItemNodeOptions = CarouselItemNodeSelfOptions & NodeOptions;
 
 /**
  * CarouselItemNode is an item this UI component's carousel. Carousel and ComboBox have different APIs for 'items'.
  * This class adapts a ComboBoxItem by making the Node have uniform dimensions, and putting a background behind the
  * Node. The background changes color when the item is selected or the pointer is over the item.
  */
-class CarouselItemNode extends Node {
+class CarouselItemNode<T> extends Node {
 
-  /**
-   * @param {Property.<*>} property
-   * @param {ComboBoxItem} comboBoxItem
-   * @param {AlignGroup} alignGroup - used to make all item Nodes have uniform dimensions
-   * @param {Object} [options]
-   */
-  constructor( property, comboBoxItem, alignGroup, options ) {
+  private readonly disposeCarouselItemNode: () => void;
 
-    options = merge( {
-      align: 'left', // {string} alignment of node on background, 'left'|'center'|'right'
-      xMargin: 6, // {number} x margin for backgrounds on the items in the carousel
-      yMargin: 2, // {number} y margin for backgrounds on the items in the carousel
-      overColor: Color.grayColor( 245 ), // {ColorDef} background color of the item that the pointer is over
-      selectedColor: 'yellow', // {ColorDef} background color of the selected item
+  constructor( property: IProperty<T>, comboBoxItem: ComboBoxItem<T>, alignGroup: AlignGroup, providedOptions?: CarouselItemNodeOptions ) {
+
+    const options = merge( {
+
+      // CarouselItemNodeSelfOptions
+      align: 'left',
+      xMargin: 6,
+      yMargin: 2,
+      overColor: Color.grayColor( 245 ),
+      selectedColor: 'yellow',
+
+      // NodeOptions
       tandem: Tandem.OPTIONAL
-    }, options );
+    }, providedOptions );
 
     const uniformNode = new AlignBox( comboBoxItem.node, {
       xAlign: options.align,
@@ -299,11 +300,7 @@ class CarouselItemNode extends Node {
     };
   }
 
-  /**
-   * @public
-   * @override
-   */
-  dispose() {
+  public override dispose(): void {
     this.disposeCarouselItemNode();
     super.dispose();
   }
