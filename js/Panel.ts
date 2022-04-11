@@ -71,10 +71,13 @@ export type PanelOptions = SelfOptions & SuperOptions;
 
 export default class Panel extends WidthSizable( HeightSizable( Node ) ) {
 
-  _content: Node; // (internal)
-  _backgroundContainer: Node; // (internal)
-  background: Rectangle; // (internal)
-  private _constraint: PanelConstraint;
+  private constraint: PanelConstraint;
+
+  // These are public for use by PanelConstraint only. They should otherwise be considered private.
+  public readonly _content: Node;
+  public readonly _backgroundContainer: Node;
+  public readonly _background: Rectangle; // (internal)
+
   public static override DEFAULT_OPTIONS = DEFAULT_OPTIONS;
 
   constructor( content: Node, providedOptions?: PanelOptions ) {
@@ -89,7 +92,7 @@ export default class Panel extends WidthSizable( HeightSizable( Node ) ) {
     this._backgroundContainer = new Node();
 
     // correct size will be set by layout
-    this.background = new Rectangle( 0, 0, 1, 1, {
+    this._background = new Rectangle( 0, 0, 1, 1, {
       lineWidth: options.lineWidth,
       pickable: options.backgroundPickable,
       lineDash: options.lineDash,
@@ -103,11 +106,11 @@ export default class Panel extends WidthSizable( HeightSizable( Node ) ) {
     this.addChild( this._backgroundContainer );
     this.addChild( content );
 
-    this._constraint = new PanelConstraint( this, options );
-    this._constraint.updateLayout();
+    this.constraint = new PanelConstraint( this, options );
+    this.constraint.updateLayout();
 
     // Don't update automatically if resize:false
-    this._constraint.enabled = options.resize;
+    this.constraint.enabled = options.resize;
 
     // Apply options after the layout is done, so that options that use the bounds will work properly.
     this.mutate( options );
@@ -117,7 +120,7 @@ export default class Panel extends WidthSizable( HeightSizable( Node ) ) {
    * Get the background rectangle's stroke (can be overridden)
    */
   public getStroke(): IPaint {
-    return this.background.stroke;
+    return this._background.stroke;
   }
 
   public get stroke(): IPaint { return this.getStroke(); }
@@ -126,7 +129,7 @@ export default class Panel extends WidthSizable( HeightSizable( Node ) ) {
    * Change the background rectangle's stroke (can be overridden)
    */
   public setStroke( stroke: IPaint ): void {
-    this.background.stroke = stroke;
+    this._background.stroke = stroke;
   }
 
   public set stroke( value: IPaint ) { this.setStroke( value ); }
@@ -135,7 +138,7 @@ export default class Panel extends WidthSizable( HeightSizable( Node ) ) {
    * Get the background rectangle's fill (can be overridden)
    */
   public getFill(): IPaint {
-    return this.background.fill;
+    return this._background.fill;
   }
 
   public get fill(): IPaint { return this.getFill(); }
@@ -144,18 +147,18 @@ export default class Panel extends WidthSizable( HeightSizable( Node ) ) {
    * Change the background rectangle's fill (can be overridden)
    */
   public setFill( fill: IPaint ): void {
-    this.background.fill = fill;
+    this._background.fill = fill;
   }
 
   public set fill( value: IPaint ) { this.setFill( value ); }
 
   public override setExcludeInvisibleChildrenFromBounds( excludeInvisibleChildrenFromBounds: boolean ) {
     super.setExcludeInvisibleChildrenFromBounds( excludeInvisibleChildrenFromBounds );
-    this._constraint.updateLayoutAutomatically();
+    this.constraint.updateLayoutAutomatically();
   }
 
   public override dispose(): void {
-    this._constraint.dispose();
+    this.constraint.dispose();
     super.dispose();
   }
 }
@@ -197,7 +200,7 @@ class PanelConstraint extends LayoutConstraint {
 
     const panel = this.panel;
     const content = panel._content;
-    const background = panel.background;
+    const background = panel._background;
 
     const hasValidContent = panel.isChildIncludedInLayout( content );
     panel._backgroundContainer.children = hasValidContent ? [ background ] : [];
