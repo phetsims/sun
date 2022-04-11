@@ -21,23 +21,25 @@ export default class BooleanRectangularToggleButton extends RectangularToggleBut
   private readonly disposeBooleanRectangularToggleButton: () => void;
 
   /**
-   * @param trueNode
-   * @param falseNode
+   * @param trueNode - shown when booleanProperty is true
+   * @param falseNode - shown when booleanProperty is false
    * @param booleanProperty
    * @param providedOptions
    */
   constructor( trueNode: Node, falseNode: Node, booleanProperty: IProperty<boolean>,
                providedOptions?: BooleanRectangularToggleButtonOptions ) {
 
+    const content = new BooleanToggleNode( trueNode, falseNode, booleanProperty );
+
     const options = optionize<BooleanRectangularToggleButtonOptions, SelfOptions, RectangularToggleButtonOptions>( {
-      content: new BooleanToggleNode( trueNode, falseNode, booleanProperty ),
+      content: content,
       tandem: Tandem.REQUIRED
     }, providedOptions );
 
     super( false, true, booleanProperty, options );
 
     this.disposeBooleanRectangularToggleButton = () => {
-      options.content && options.content.dispose();
+      content.dispose();
     };
   }
 
