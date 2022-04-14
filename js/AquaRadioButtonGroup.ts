@@ -141,6 +141,7 @@ export default class AquaRadioButtonGroup<T> extends LayoutBox {
     } );
 
     // zoom - signify that key input is reserved and we should not pan when user presses arrow keys
+    // See https://github.com/phetsims/scenery/issues/974
     const intentListener = { keydown: ( event: SceneryEvent<KeyboardEvent> ) => event.pointer.reserveForKeyboardDrag() };
     this.addInputListener( intentListener );
 
