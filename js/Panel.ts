@@ -76,7 +76,7 @@ export default class Panel extends WidthSizable( HeightSizable( Node ) ) {
   // These are public for use by PanelConstraint only. They should otherwise be considered private.
   public readonly _content: Node;
   public readonly _backgroundContainer: Node;
-  public readonly _background: Rectangle; // (internal)
+  public readonly _background: Rectangle;
 
   public static override DEFAULT_OPTIONS = DEFAULT_OPTIONS;
 
