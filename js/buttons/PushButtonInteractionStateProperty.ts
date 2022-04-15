@@ -2,6 +2,8 @@
 
 /**
  * A DerivedProperty that maps PushButtonModel states to the states needed by the button view.
+ *
+ * @author John Blanco (PhET Interactive Simulations)
  */
 
 import DerivedProperty, { DerivedPropertyOptions } from '../../../axon/js/DerivedProperty.js';
@@ -13,7 +15,7 @@ type SelfOptions = {};
 
 export type PushButtonInteractionStatePropertyOptions = SelfOptions & DerivedPropertyOptions<ButtonInteractionState>;
 
-class PushButtonInteractionStateProperty extends DerivedProperty<ButtonInteractionState, [ boolean, boolean, boolean, boolean ]> {
+export default class PushButtonInteractionStateProperty extends DerivedProperty<ButtonInteractionState, [ boolean, boolean, boolean, boolean ]> {
   constructor( buttonModel: PushButtonModel ) {
     super(
       [ buttonModel.focusedProperty, buttonModel.overProperty, buttonModel.looksOverProperty, buttonModel.looksPressedProperty ],
@@ -28,4 +30,3 @@ class PushButtonInteractionStateProperty extends DerivedProperty<ButtonInteracti
 }
 
 sun.register( 'PushButtonInteractionStateProperty', PushButtonInteractionStateProperty );
-export default PushButtonInteractionStateProperty;
