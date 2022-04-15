@@ -14,18 +14,10 @@ import ScreenView from '../../joist/js/ScreenView.js';
 import getGlobal from '../../phet-core/js/getGlobal.js';
 import merge from '../../phet-core/js/merge.js';
 import CloseButton from '../../scenery-phet/js/buttons/CloseButton.js';
-import { FocusManager } from '../../scenery/js/imports.js';
-import { KeyboardUtils } from '../../scenery/js/imports.js';
-import { PDOMPeer } from '../../scenery/js/imports.js';
-import { PDOMUtils } from '../../scenery/js/imports.js';
-import { AlignBox } from '../../scenery/js/imports.js';
-import { HBox } from '../../scenery/js/imports.js';
-import { Node } from '../../scenery/js/imports.js';
-import { VBox } from '../../scenery/js/imports.js';
-import { FullScreen } from '../../scenery/js/imports.js';
+import { AlignBox, FocusManager, FullScreen, HBox, KeyboardUtils, Node, PDOMPeer, PDOMUtils, VBox } from '../../scenery/js/imports.js';
 import generalCloseSoundPlayer from '../../tambo/js/shared-sound-players/generalCloseSoundPlayer.js';
 import generalOpenSoundPlayer from '../../tambo/js/shared-sound-players/generalOpenSoundPlayer.js';
-import SoundPlayer from '../../tambo/js/SoundPlayer.js';
+import nullSoundPlayer from '../../tambo/js/shared-sound-players/nullSoundPlayer.js';
 import PhetioObject from '../../tandem/js/PhetioObject.js';
 import Tandem from '../../tandem/js/Tandem.js';
 import DynamicMarkerIO from '../../tandem/js/types/DynamicMarkerIO.js';
@@ -136,7 +128,7 @@ class Dialog extends Popupable( Panel ) {
       phetioReadOnly: PhetioObject.DEFAULT_OPTIONS.phetioReadOnly, // default to false so it can pass it through to the close button
       phetioState: PhetioObject.DEFAULT_OPTIONS.phetioState,
 
-      // {SoundPlayer} - sound generation
+      // {ISoundPlayer} - sound generation
       openedSoundPlayer: generalOpenSoundPlayer,
       closedSoundPlayer: generalCloseSoundPlayer,
 
@@ -213,7 +205,7 @@ class Dialog extends Popupable( Panel ) {
       enabledPropertyOptions: { phetioFeatured: false },
 
       // turn off default sound generation, Dialog will create its own sounds
-      soundPlayer: SoundPlayer.NO_SOUND,
+      soundPlayer: nullSoundPlayer,
 
       // pdom
       tagName: 'button',

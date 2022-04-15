@@ -13,8 +13,8 @@ import sun from './sun.js';
 
 export type ComboBoxItemOptions = {
 
-  // Sound that will be played when this item is selected.  If set to `null` a default sound will
-  // be used that is based on this item's position in the combo box list.  SoundPlayer.NO_SOUND can be used to disable.
+  // Sound that will be played when this item is selected.  If set to `null` a default sound will be used that is based
+  // on this item's position in the combo box list.  A value of `nullSoundPlayer` can be used to disable.
   soundPlayer?: ISoundPlayer | null;
 
   // phet-io - the tandem name for this item's associated Node in the combo box
@@ -39,8 +39,9 @@ export default class ComboBoxItem<T> {
 
     const options = optionize<ComboBoxItemOptions, ComboBoxItemOptions>( {
 
-      // {SoundPlayer|null} - Sound that will be played when this item is selected.  If set to `null` a default sound will
-      // be used that is based on this item's position in the combo box list.  SoundPlayer.NO_SOUND can be used to disable.
+      // {ISoundPlayer|null} - Sound that will be played when this item is selected.  If set to `null` a default sound
+      // will be used that is based on this item's position in the combo box list.  The value `nullSoundPlayer` can be
+      // used to turn off sound production entirely.
       soundPlayer: null,
 
       // phet-io

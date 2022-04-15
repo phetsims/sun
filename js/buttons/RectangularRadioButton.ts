@@ -47,7 +47,7 @@ type SelfOptions = {
   deselectedContentOpacity?: number;
 
   // Sound generation - If set to null a default will be used that is based on this button's
-  // position within the radio button group.  Can be set to SoundPlayer.NO_SOUND to disable.
+  // position within the radio button group.  Can be set to nullSoundPlayer to disable.
   soundPlayer?: ISoundPlayer | null;
 };
 

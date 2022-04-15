@@ -11,7 +11,6 @@ import { Shape } from '../../kite/js/imports.js';
 import optionize from '../../phet-core/js/optionize.js';
 import StringUtils from '../../phetcommon/js/util/StringUtils.js';
 import { AriaHasPopUpMutator, HStrut, IPaint, Node, Path, PDOMBehaviorFunction, PDOMPeer } from '../../scenery/js/imports.js';
-import SoundPlayer from '../../tambo/js/SoundPlayer.js';
 import Tandem from '../../tandem/js/Tandem.js';
 import ButtonNode from './buttons/ButtonNode.js';
 import RectangularPushButton, { RectangularPushButtonOptions } from './buttons/RectangularPushButton.js';
@@ -20,6 +19,7 @@ import SunConstants from './SunConstants.js';
 import VSeparator from './VSeparator.js';
 import ComboBoxItem from './ComboBoxItem.js';
 import IProperty from '../../axon/js/IProperty.js';
+import nullSoundPlayer from '../../tambo/js/shared-sound-players/nullSoundPlayer.js';
 
 // constants
 const ALIGN_VALUES = [ 'left', 'center', 'right' ] as const;
@@ -77,7 +77,7 @@ export default class ComboBoxButton<T> extends RectangularPushButton {
       yMargin: 8,
       stroke: 'black',
       lineWidth: 1,
-      soundPlayer: SoundPlayer.NO_SOUND, // disable default sound generation
+      soundPlayer: nullSoundPlayer, // disable default sound generation
 
       // PushButtonModel options
       enabledPropertyOptions: {

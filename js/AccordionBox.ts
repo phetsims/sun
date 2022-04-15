@@ -185,7 +185,7 @@ export default class AccordionBox extends Node {
       // {*|null} options for the title bar, defaults filled in below
       titleBarOptions: null,
 
-      // {SoundPlayer} - sound generators for expand and collapse
+      // {ISoundPlayer} - sound generators for expand and collapse
       expandedSoundPlayer: accordionBoxOpenedSoundPlayer,
       collapsedSoundPlayer: accordionBoxClosedSoundPlayer,
 
