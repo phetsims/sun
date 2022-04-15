@@ -1,7 +1,7 @@
 // Copyright 2014-2022, University of Colorado Boulder
 
 /**
- * A DerivedProperty that MomentaryButtonModel states to the states needed by the button view.
+ * A DerivedProperty that maps MomentaryButtonModel states to the states needed by the button view.
  *
  * @author Chris Malley (PixelZoom, Inc.)
  */

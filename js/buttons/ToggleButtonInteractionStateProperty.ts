@@ -2,6 +2,8 @@
 
 /**
  * A DerivedProperty that maps ToggleButtonModel states to the states needed by the button view.
+ *
+ * @author Sam Reid (PhET Interactive Simulations)
  */
 
 import DerivedProperty from '../../../axon/js/DerivedProperty.js';

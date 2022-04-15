@@ -1,9 +1,9 @@
 // Copyright 2014-2022, University of Colorado Boulder
 
 /**
- * A DerivedProperty the maps StickyToggleButtonModel states to the states needed by the button view.
+ * A DerivedProperty that maps StickyToggleButtonModel states to the states needed by the button view.
  *
- * @author John Blanco
+ * @author John Blanco (PhET Interactive Simulations)
  */
 
 import DerivedProperty from '../../../axon/js/DerivedProperty.js';
