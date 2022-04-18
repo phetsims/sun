@@ -183,8 +183,6 @@ export default class RectangularRadioButton<T> extends RectangularButton {
    * fire on up if the button is enabled, public for use in the accessibility tree
    */
   public fire(): void {
-
-    // Note that @protected this.buttonModel is defined in superclass
     if ( this.buttonModel.enabledProperty.get() ) {
       this.firedEmitter.emit();
       this.buttonModel.produceSoundEmitter.emit();
