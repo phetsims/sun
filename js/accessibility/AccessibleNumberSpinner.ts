@@ -21,7 +21,7 @@
  * @author Michael Barlow (PhET Interactive Simulations)
  */
 
-import CallbackTimer from '../../../axon/js/CallbackTimer.js';
+import CallbackTimer, { CallbackTimerCallback } from '../../../axon/js/CallbackTimer.js';
 import Emitter from '../../../axon/js/Emitter.js';
 import validate from '../../../axon/js/validate.js';
 import assertHasProperties from '../../../phet-core/js/assertHasProperties.js';
@@ -30,7 +30,7 @@ import inheritance from '../../../phet-core/js/inheritance.js';
 import IntentionalAny from '../../../phet-core/js/types/IntentionalAny.js';
 import optionize from '../../../phet-core/js/optionize.js';
 import Orientation from '../../../phet-core/js/Orientation.js';
-import { IInputListener, KeyboardUtils, Node, SceneryEvent, SceneryListenerFunction } from '../../../scenery/js/imports.js';
+import { IInputListener, KeyboardUtils, Node, SceneryEvent } from '../../../scenery/js/imports.js';
 import sun from '../sun.js';
 import sunStrings from '../sunStrings.js';
 import AccessibleValueHandler, { AccessibleValueHandlerOptions } from './AccessibleValueHandler.js';
@@ -101,7 +101,7 @@ const AccessibleNumberSpinner = <SuperType extends Constructor>( Type: SuperType
       thisNode.setPDOMAttribute( 'aria-roledescription', numberSpinnerRoleDescriptionString );
 
       // a callback that is added and removed from the timer depending on keystate
-      let downCallback: SceneryListenerFunction | null = null;
+      let downCallback: CallbackTimerCallback | null = null;
       let runningTimerCallbackEvent: Event | null = null; // {Event|null}
 
       // handle all accessible event input
@@ -128,7 +128,7 @@ const AccessibleNumberSpinner = <SuperType extends Constructor>( Type: SuperType
 
                   downCallback = this._accessibleNumberSpinnerHandleKeyDown.bind( this, event );
                   runningTimerCallbackEvent = domEvent;
-                  this._callbackTimer.addCallback( downCallback );
+                  this._callbackTimer.addCallback( downCallback! );
                   this._callbackTimer.start();
                 }
               }
@@ -143,7 +143,8 @@ const AccessibleNumberSpinner = <SuperType extends Constructor>( Type: SuperType
             if ( runningTimerCallbackEvent && key === KeyboardUtils.getEventCode( runningTimerCallbackEvent ) ) {
               this._emitKeyState( event.domEvent!, false );
               this._callbackTimer.stop( false );
-              this._callbackTimer.removeCallback( downCallback );
+              assert && assert( downCallback );
+              this._callbackTimer.removeCallback( downCallback! );
               downCallback = null;
               runningTimerCallbackEvent = null;
             }
