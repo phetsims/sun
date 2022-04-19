@@ -35,7 +35,7 @@ export default class RectangularMomentaryButton<T> extends RectangularButton {
    */
   constructor( valueOff: T, valueOn: T, property: IProperty<T>, providedOptions?: RectangularMomentaryButtonOptions ) {
 
-    const options = optionize<RectangularMomentaryButtonOptions, SelfOptions, RectangularButtonOptions>( {
+    const options = optionize<RectangularMomentaryButtonOptions, SelfOptions, RectangularButtonOptions>()( {
       tandem: Tandem.REQUIRED
     }, providedOptions );
 

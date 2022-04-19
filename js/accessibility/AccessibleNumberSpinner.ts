@@ -74,7 +74,7 @@ const AccessibleNumberSpinner = <SuperType extends Constructor>( Type: SuperType
       assert && providedOptions && assert( Object.getPrototypeOf( providedOptions ) === Object.prototype,
         'Extra prototype on AccessibleSlider options object is a code smell (or probably a bug)' );
 
-      const options = optionize<AccessibleNumberSpinnerOptions, AccessibleNumberSpinnerSelfOptions, AccessibleValueHandlerOptions>( {
+      const options = optionize<AccessibleNumberSpinnerOptions, AccessibleNumberSpinnerSelfOptions, AccessibleValueHandlerOptions>()( {
         timerDelay: 400, // start to fire continuously after pressing for this long (milliseconds)
         timerInterval: 100, // fire continuously at this frequency (milliseconds),
 

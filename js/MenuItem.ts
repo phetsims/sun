@@ -74,7 +74,7 @@ export default class MenuItem extends Voicing( Node, 0 ) {
                callback: ( event: SceneryEvent ) => void, present: boolean, providedOptions?: MenuItemOptions ) {
 
     // Extend the object with defaults.
-    const options = optionize<MenuItemOptions, SelfOptions, VoicingOptions, 'tandem'>( {
+    const options = optionize<MenuItemOptions, SelfOptions, VoicingOptions>()( {
 
       // SelfOptions
       separatorBefore: false,

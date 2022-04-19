@@ -137,7 +137,7 @@ export default class AccordionBox extends Node {
    */
   constructor( contentNode: Node, providedOptions?: AccordionBoxOptions ) {
 
-    const options = optionize<AccordionBoxOptions, SelfOptions, NodeOptions, 'tandem'>( {
+    const options = optionize<AccordionBoxOptions, SelfOptions, NodeOptions>()( {
 
       // If not provided, a Text node will be supplied. Should have and maintain well-defined bounds if passed in
       titleNode: null as unknown as Node,

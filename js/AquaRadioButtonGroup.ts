@@ -66,7 +66,7 @@ export default class AquaRadioButtonGroup<T> extends LayoutBox {
 
     instanceCount++;
 
-    const options = optionize<AquaRadioButtonGroupOptions, SelfOptions, LayoutBoxOptions, 'tandem' | 'spacing'>( {
+    const options = optionize<AquaRadioButtonGroupOptions, SelfOptions, LayoutBoxOptions>()( {
 
       // AquaRadioButtonGroupOptions
       radioButtonOptions: null,
@@ -107,7 +107,7 @@ export default class AquaRadioButtonGroup<T> extends LayoutBox {
                       item.node;
 
       const radioButton = new AquaRadioButton( property, item.value, content,
-        optionize<SubsetOfAquaRadioButtonOptions, {}, AquaRadioButtonOptions>( {
+        optionize<SubsetOfAquaRadioButtonOptions, {}, AquaRadioButtonOptions>()( {
           a11yNameAttribute: CLASS_NAME + instanceCount,
           labelContent: item.labelContent || null,
           soundPlayer: multiSelectionSoundPlayerFactory.getSelectionSoundPlayer( i ),

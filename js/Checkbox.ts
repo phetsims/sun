@@ -65,7 +65,7 @@ export default class Checkbox extends Voicing( Node, 0 ) {
 
   constructor( content: Node, property: IProperty<boolean>, providedOptions?: CheckboxOptions ) {
 
-    const options = optionize<CheckboxOptions, SelfOptions, VoicingOptions, 'tandem'>( {
+    const options = optionize<CheckboxOptions, SelfOptions, VoicingOptions>()( {
 
       // CheckboxOptions
       spacing: 5,

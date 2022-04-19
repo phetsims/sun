@@ -61,7 +61,7 @@ export default class ComboBoxButton<T> extends RectangularPushButton {
 
   constructor( property: IProperty<T>, items: ComboBoxItem<T>[], providedOptions?: ComboBoxButtonOptions ) {
 
-    const options = optionize<ComboBoxButtonOptions, SelfOptions, RectangularPushButtonOptions, 'xMargin' | 'yMargin'>( {
+    const options = optionize<ComboBoxButtonOptions, SelfOptions, RectangularPushButtonOptions>()( {
 
       align: 'left',
       arrowDirection: 'down',

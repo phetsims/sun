@@ -101,7 +101,7 @@ export default class ButtonNode extends Voicing( Node, 0 ) {
   constructor( buttonModel: ButtonModel, buttonBackground: PaintableNode,
                interactionStateProperty: IProperty<ButtonInteractionState>, providedOptions?: ButtonNodeOptions ) {
 
-    const options = optionize<ButtonNodeOptions, SelfOptions, VoicingOptions, 'tandem'>( {
+    const options = optionize<ButtonNodeOptions, SelfOptions, VoicingOptions>()( {
 
       content: null,
       xMargin: 10,

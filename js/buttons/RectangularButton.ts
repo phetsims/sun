@@ -78,7 +78,7 @@ export default class RectangularButton extends ButtonNode {
   constructor( buttonModel: ButtonModel, interactionStateProperty: IProperty<ButtonInteractionState>,
                providedOptions?: RectangularButtonOptions ) {
 
-    const options = optionize<RectangularButtonOptions, SelfOptions, ButtonNodeOptions, 'xMargin' | 'yMargin'>( {
+    const options = optionize<RectangularButtonOptions, SelfOptions, ButtonNodeOptions>()( {
       size: null,
 
       minWidth: HORIZONTAL_HIGHLIGHT_GRADIENT_LENGTH + SHADE_GRADIENT_LENGTH,

@@ -40,7 +40,7 @@ export default class RectangularToggleButton<T> extends RectangularButton {
    */
   constructor( valueOff: T, valueOn: T, property: IProperty<T>, providedOptions?: RectangularButtonOptions ) {
 
-    const options = optionize<RectangularToggleButtonOptions, SelfOptions, RectangularButtonOptions, 'tandem'>( {
+    const options = optionize<RectangularToggleButtonOptions, SelfOptions, RectangularButtonOptions>()( {
 
       // {ISoundPlayer} - sounds to be played on toggle transitions
       valueOffSoundPlayer: toggleOffSoundPlayer,

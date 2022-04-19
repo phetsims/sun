@@ -34,7 +34,7 @@ export default class ExpandCollapseButton extends BooleanRectangularToggleButton
 
   constructor( expandedProperty: IProperty<boolean>, providedOptions?: ExpandCollapseButtonOptions ) {
 
-    const options = optionize<ExpandCollapseButtonOptions, SelfOptions, BooleanRectangularToggleButtonOptions>( {
+    const options = optionize<ExpandCollapseButtonOptions, SelfOptions, BooleanRectangularToggleButtonOptions>()( {
 
       // SelfOptions
       sideLength: 25,

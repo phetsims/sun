@@ -19,7 +19,7 @@ export default class VSeparator extends Line {
   constructor( height: number, providedOptions?: VSeparatorOptions ) {
     assert && assert( isFinite( height ) && height >= 0, `invalid height=${height}` );
 
-    const options = optionize<VSeparatorOptions, SelfOptions, LineOptions>( {
+    const options = optionize<VSeparatorOptions, SelfOptions, LineOptions>()( {
       stroke: 'rgb( 100, 100, 100 )'
     }, providedOptions );
 

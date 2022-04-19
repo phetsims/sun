@@ -48,8 +48,7 @@ export default class RoundButton extends ButtonNode {
                interactionStateProperty: IProperty<ButtonInteractionState>,
                providedOptions?: RoundButtonOptions ) {
 
-    const options = optionize<RoundButtonOptions, SelfOptions, ButtonNodeOptions,
-      'content' | 'xMargin' | 'yMargin'>( {
+    const options = optionize<RoundButtonOptions, SelfOptions, ButtonNodeOptions>()( {
 
       // SelfOptions
       radius: ( providedOptions && providedOptions.content ) ? null : 30,

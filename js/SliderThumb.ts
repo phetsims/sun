@@ -26,7 +26,7 @@ export default class SliderThumb extends Rectangle {
 
   constructor( providedOptions: SliderThumbOptions ) {
 
-    const options = optionize<SliderThumbOptions, SelfOptions, RectangleOptions, 'fill'>( {
+    const options = optionize<SliderThumbOptions, SelfOptions, RectangleOptions>()( {
 
       // SelfOptions
       size: new Dimension2( 22, 45 ),

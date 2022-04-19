@@ -42,7 +42,7 @@ export default class ToggleNode<T> extends Node {
       } );
     }
 
-    const options = optionize<ToggleNodeOptions, SelfOptions, NodeOptions>( {
+    const options = optionize<ToggleNodeOptions, SelfOptions, NodeOptions>()( {
 
       // SelfOptions
       alignChildren: ToggleNode.CENTER,

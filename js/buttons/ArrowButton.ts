@@ -43,7 +43,7 @@ export default class ArrowButton extends RectangularPushButton {
 
   constructor( direction: ArrowButtonDirection, callback: () => void, providedOptions?: ArrowButtonOptions ) {
 
-    const options = optionize<ArrowButtonOptions, SelfOptions, RectangularPushButtonOptions>( {
+    const options = optionize<ArrowButtonOptions, SelfOptions, RectangularPushButtonOptions>()( {
 
       // options for the button
       cursor: 'pointer',

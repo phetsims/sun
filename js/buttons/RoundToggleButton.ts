@@ -40,7 +40,7 @@ export default class RoundToggleButton<T> extends RoundButton {
    */
   constructor( valueOff: T, valueOn: T, property: IProperty<T>, providedOptions?: RoundToggleButtonOptions ) {
 
-    const options = optionize<RoundToggleButtonOptions, SelfOptions, RoundButtonOptions, 'tandem'>( {
+    const options = optionize<RoundToggleButtonOptions, SelfOptions, RoundButtonOptions>()( {
 
       // SelfOptions
       valueOffSoundPlayer: toggleOffSoundPlayer,

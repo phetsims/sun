@@ -34,7 +34,7 @@ export default class VerticalCheckboxGroup extends VBox {
 
   constructor( items: VerticalCheckboxGroupItem[], providedOptions?: VerticalCheckboxGroupOptions ) {
 
-    const options = optionize<VerticalCheckboxGroupOptions, SelfOptions, VBoxOptions, 'spacing'>( {
+    const options = optionize<VerticalCheckboxGroupOptions, SelfOptions, VBoxOptions>()( {
 
       // {Object|null} options passed to constructor of the Checkbox
       checkboxOptions: null,

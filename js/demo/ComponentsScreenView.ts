@@ -17,7 +17,7 @@ import Bounds2 from '../../../dot/js/Bounds2.js';
 import Dimension2 from '../../../dot/js/Dimension2.js';
 import dotRandom from '../../../dot/js/dotRandom.js';
 import Range from '../../../dot/js/Range.js';
-import optionize from '../../../phet-core/js/optionize.js';
+import optionize, { optionize3 } from '../../../phet-core/js/optionize.js';
 import PhetFont from '../../../scenery-phet/js/PhetFont.js';
 import { AlignBox, AlignGroup, Circle, HBox, Node, Rectangle, Text, VBox } from '../../../scenery/js/imports.js';
 import { PhetioObjectOptions } from '../../../tandem/js/PhetioObject.js';
@@ -46,7 +46,7 @@ class ComponentsScreenView extends DemosScreenView {
 
   constructor( providedOptions: DemosScreenViewOptions ) {
 
-    const options = optionize<DemosScreenViewOptions, {}, DemosScreenViewOptions>( {
+    const options = optionize<DemosScreenViewOptions, {}, DemosScreenViewOptions>()( {
       selectedDemoLabel: sunQueryParameters.component,
       tandem: Tandem.REQUIRED
     }, providedOptions );
@@ -259,7 +259,7 @@ function demoVSlider( layoutBounds: Bounds2, options?: PhetioObjectOptions ): No
  */
 function demoSlider( layoutBounds: Bounds2, orientation: 'horizontal' | 'vertical', providedOptions?: SliderOptions ): Node {
 
-  const options = optionize<SliderOptions, {}, SliderOptions>( {
+  const options = optionize<SliderOptions, {}, SliderOptions>()( {
     center: layoutBounds.center,
     tandem: Tandem.REQUIRED,
     phetioDesigned: true
@@ -273,7 +273,7 @@ function demoSlider( layoutBounds: Bounds2, orientation: 'horizontal' | 'vertica
 
   let slider: Slider;
   if ( orientation === 'horizontal' ) {
-    slider = new HSlider( property, range, optionize<SliderOptions, {}, SliderOptions>( options, {
+    slider = new HSlider( property, range, optionize<SliderOptions, {}, SliderOptions>()( options, {
       trackSize: new Dimension2( 300, 5 ),
 
       // Demonstrate larger x dilation.
@@ -285,7 +285,7 @@ function demoSlider( layoutBounds: Bounds2, orientation: 'horizontal' | 'vertica
     } ) );
   }
   else {
-    slider = new VSlider( property, range, optionize<SliderOptions, {}, SliderOptions>( options, {
+    slider = new VSlider( property, range, optionize<SliderOptions, {}, SliderOptions>()( options, {
       trackSize: new Dimension2( 5, 300 ),
 
       // Demonstrate larger y dilation, to verify that VSlider is handling things correctly.
@@ -452,7 +452,7 @@ function demoNumberSpinner( layoutBounds: Bounds2 ): Node {
 
   // Demonstrate each value of options.arrowsPosition
   const spinnerLeftRight = new NumberSpinner( valueProperty, valueRangeProperty,
-    optionize<NumberSpinnerOptions, {}, NumberSpinnerOptions>( {}, spinnerOptions, {
+    optionize3<NumberSpinnerOptions, {}, NumberSpinnerOptions>()( {}, spinnerOptions, {
       arrowsPosition: 'leftRight',
       numberDisplayOptions: {
         valuePattern: '{{value}} bottles of beer on the wall'
@@ -460,13 +460,13 @@ function demoNumberSpinner( layoutBounds: Bounds2 ): Node {
     } ) );
 
   const spinnerTopBottom = new NumberSpinner( valueProperty, valueRangeProperty,
-    optionize<NumberSpinnerOptions, {}, NumberSpinnerOptions>( {}, spinnerOptions, {
+    optionize3<NumberSpinnerOptions, {}, NumberSpinnerOptions>()( {}, spinnerOptions, {
       arrowsPosition: 'topBottom',
       arrowsScale: 0.65
     } ) );
 
   const spinnerBothRight = new NumberSpinner( valueProperty, valueRangeProperty,
-    optionize<NumberSpinnerOptions, {}, NumberSpinnerOptions>( {}, spinnerOptions, {
+    optionize3<NumberSpinnerOptions, {}, NumberSpinnerOptions>()( {}, spinnerOptions, {
       arrowsPosition: 'bothRight',
       numberDisplayOptions: {
         yMargin: 10,
@@ -475,7 +475,7 @@ function demoNumberSpinner( layoutBounds: Bounds2 ): Node {
     } ) );
 
   const spinnerBothBottom = new NumberSpinner( valueProperty, valueRangeProperty,
-    optionize<NumberSpinnerOptions, {}, NumberSpinnerOptions>( {}, spinnerOptions, {
+    optionize3<NumberSpinnerOptions, {}, NumberSpinnerOptions>()( {}, spinnerOptions, {
       arrowsPosition: 'bothBottom',
       numberDisplayOptions: {
         backgroundFill: 'pink',

@@ -9,7 +9,7 @@
  * @author John Blanco (PhET Interactive Simulations)
  */
 
-import optionize from '../../phet-core/js/optionize.js';
+import { optionize3, OptionizeDefaults } from '../../phet-core/js/optionize.js';
 import { HeightSizable, HeightSizableSelfOptions, IPaint, isHeightSizable, isWidthSizable, NodeOptions, WidthSizableSelfOptions } from '../../scenery/js/imports.js';
 import { LayoutConstraint } from '../../scenery/js/imports.js';
 import { WidthSizable } from '../../scenery/js/imports.js';
@@ -23,28 +23,13 @@ const ALIGN_VALUES = [ 'left', 'center', 'right' ] as const;
 
 export type PanelAlign = typeof ALIGN_VALUES[number];
 
-const DEFAULT_OPTIONS = {
-  fill: 'white',
-  stroke: 'black',
-  lineWidth: 1,
-  xMargin: 5,
-  yMargin: 5,
-  cornerRadius: 10,
-  resize: true,
-  backgroundPickable: true,
-  excludeInvisibleChildrenFromBounds: true,
-  align: 'left',
-  minWidth: 0,
-  tandem: Tandem.OPTIONAL
-} as const;
-assert && Object.freeze( DEFAULT_OPTIONS );
-
 type SelfOptions = {
   fill?: IPaint;
   stroke?: IPaint;
 
   // width of the background border
   lineWidth?: number;
+  lineDash?: number[];
 
   xMargin?: number;
   yMargin?: number;
@@ -69,6 +54,23 @@ type SelfOptions = {
 type SuperOptions = WidthSizableSelfOptions & HeightSizableSelfOptions & NodeOptions;
 export type PanelOptions = SelfOptions & SuperOptions;
 
+const DEFAULT_OPTIONS: OptionizeDefaults<SelfOptions, SuperOptions> = {
+  fill: 'white',
+  stroke: 'black',
+  lineWidth: 1,
+  lineDash: [],
+  xMargin: 5,
+  yMargin: 5,
+  cornerRadius: 10,
+  resize: true,
+  backgroundPickable: true,
+  excludeInvisibleChildrenFromBounds: true,
+  align: 'left',
+  minWidth: 0,
+  tandem: Tandem.OPTIONAL
+};
+assert && Object.freeze( DEFAULT_OPTIONS );
+
 export default class Panel extends WidthSizable( HeightSizable( Node ) ) {
 
   private constraint: PanelConstraint;
@@ -82,7 +84,7 @@ export default class Panel extends WidthSizable( HeightSizable( Node ) ) {
 
   constructor( content: Node, providedOptions?: PanelOptions ) {
 
-    const options = optionize<PanelOptions, SelfOptions, SuperOptions>( {}, DEFAULT_OPTIONS, providedOptions );
+    const options = optionize3<PanelOptions, SelfOptions, SuperOptions>()( {}, DEFAULT_OPTIONS, providedOptions );
 
     assert && assert( _.includes( ALIGN_VALUES, options.align ), `invalid align: ${options.align}` );
 

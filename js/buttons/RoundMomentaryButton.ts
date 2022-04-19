@@ -34,7 +34,7 @@ export default class RoundMomentaryButton<T> extends RoundButton {
    */
   constructor( valueOff: T, valueOn: T, property: IProperty<T>, providedOptions?: RoundMomentaryButtonOptions ) {
 
-    const options = optionize<RoundMomentaryButtonOptions, SelfOptions, RoundButtonOptions>( {
+    const options = optionize<RoundMomentaryButtonOptions, SelfOptions, RoundButtonOptions>()( {
       tandem: Tandem.REQUIRED
     }, providedOptions );
 

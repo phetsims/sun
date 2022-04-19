@@ -65,7 +65,7 @@ export default class SliderTrack extends Node {
   constructor( trackNode: Node, valueProperty: IProperty<number>, range: Range, providedOptions?: SliderTrackOptions ) {
     super();
 
-    const options = optionize<SliderTrackOptions, SelfOptions, NodeOptions, 'tandem'>( {
+    const options = optionize<SliderTrackOptions, SelfOptions, NodeOptions>()( {
       size: new Dimension2( 100, 5 ),
       startDrag: _.noop, // called when a drag sequence starts
       drag: _.noop, // called at the beginning of a drag event, before any other drag work happens

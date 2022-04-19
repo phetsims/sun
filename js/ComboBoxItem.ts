@@ -37,7 +37,7 @@ export default class ComboBoxItem<T> {
 
     assert && assert( !node.hasPDOMContent, 'pdomContent is set by ComboBox, use options.a11yLabel' );
 
-    const options = optionize<ComboBoxItemOptions, ComboBoxItemOptions>( {
+    const options = optionize<ComboBoxItemOptions, ComboBoxItemOptions>()( {
 
       // {ISoundPlayer|null} - Sound that will be played when this item is selected.  If set to `null` a default sound
       // will be used that is based on this item's position in the combo box list.  The value `nullSoundPlayer` can be

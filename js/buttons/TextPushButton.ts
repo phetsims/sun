@@ -28,7 +28,7 @@ export default class TextPushButton extends RectangularPushButton {
 
   constructor( text: string, providedOptions?: TextPushButtonOptions ) {
 
-    const options = optionize<TextPushButtonOptions, SelfOptions, RectangularPushButtonOptions, 'tandem'>( {
+    const options = optionize<TextPushButtonOptions, SelfOptions, RectangularPushButtonOptions>()( {
 
       // TextPushButtonOptions
       font: Font.DEFAULT,

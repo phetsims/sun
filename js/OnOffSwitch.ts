@@ -18,7 +18,7 @@ export default class OnOffSwitch extends ToggleSwitch<boolean> {
 
   constructor( property: IProperty<boolean>, providedOptions: OnOffSwitchOptions ) {
 
-    const options = optionize<OnOffSwitchOptions, {}, ToggleSwitchOptions>( {
+    const options = optionize<OnOffSwitchOptions, {}, ToggleSwitchOptions>()( {
       trackFillLeft: 'white', // track fill when property.value === false
       trackFillRight: 'rgb( 0, 200, 0 )' // track fill when property.value === true
     }, providedOptions );

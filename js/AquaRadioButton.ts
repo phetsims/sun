@@ -63,7 +63,7 @@ export default class AquaRadioButton<T> extends Voicing( Node, 0 ) {
    */
   constructor( property: IProperty<T>, value: T, labelNode: Node, providedOptions?: AquaRadioButtonOptions ) {
 
-    const options = optionize<AquaRadioButtonOptions, SelfOptions, VoicingOptions, 'tandem'>( {
+    const options = optionize<AquaRadioButtonOptions, SelfOptions, VoicingOptions>()( {
 
       // SelfOptions
       centerColor: 'black',

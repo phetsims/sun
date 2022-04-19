@@ -55,7 +55,7 @@ export default class PushButtonModel extends ButtonModel {
 
   constructor( providedOptions?: PushButtonModelOptions ) {
 
-    const options = optionize<PushButtonModelOptions, SelfOptions, ButtonModelOptions, 'tandem'>( {
+    const options = optionize<PushButtonModelOptions, SelfOptions, ButtonModelOptions>()( {
 
       fireOnDown: false,
       listener: null,

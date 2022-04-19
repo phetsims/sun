@@ -34,7 +34,7 @@ export default class RectangularPushButton extends RectangularButton {
 
   constructor( providedOptions?: RectangularPushButtonOptions ) {
 
-    const options = optionize<RectangularPushButtonOptions, SelfOptions, SuperOptions>( {
+    const options = optionize<RectangularPushButtonOptions, SelfOptions, SuperOptions>()( {
       soundPlayer: pushButtonSoundPlayer,
       tandem: Tandem.REQUIRED
     }, providedOptions );

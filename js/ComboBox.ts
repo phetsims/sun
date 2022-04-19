@@ -162,7 +162,7 @@ export default class ComboBox<T> extends Node {
     assert && assert( listParent.maxWidth === null,
       'ComboBox is responsible for scaling listBox. Setting maxWidth for listParent may result in buggy behavior.' );
 
-    const options = optionize<ComboBoxOptions, SelfOptions, NodeOptions, 'tandem'>( {
+    const options = optionize<ComboBoxOptions, SelfOptions, NodeOptions>()( {
 
       align: 'left',
       listPosition: 'below',

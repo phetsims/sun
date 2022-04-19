@@ -23,7 +23,7 @@ export default class HSlider extends Slider {
 
   constructor( valueProperty: IProperty<number>, range: Range, options?: HSliderOptions ) {
 
-    super( valueProperty, range, optionize<HSliderOptions, SelfOptions, SliderOptions>( {
+    super( valueProperty, range, optionize<HSliderOptions, SelfOptions, SliderOptions>()( {
       orientation: Orientation.HORIZONTAL
     }, options ) );
 

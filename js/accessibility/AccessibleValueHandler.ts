@@ -25,7 +25,7 @@ import Orientation from '../../../phet-core/js/Orientation.js';
 import { IInputListener, KeyboardUtils, Node, NodeOptions, SceneryEvent, SceneryListenerFunction, Voicing, VoicingOptions } from '../../../scenery/js/imports.js';
 import Utterance from '../../../utterance-queue/js/Utterance.js';
 import sun from '../sun.js';
-import optionize, { OptionizeDefaults } from '../../../phet-core/js/optionize.js';
+import optionize, { optionize3, OptionizeDefaults } from '../../../phet-core/js/optionize.js';
 import Multilink from '../../../axon/js/Multilink.js';
 import UtteranceQueue from '../../../utterance-queue/js/UtteranceQueue.js';
 import IProperty from '../../../axon/js/IProperty.js';
@@ -294,7 +294,7 @@ const AccessibleValueHandler = <SuperType extends Constructor>( Type: SuperType,
         inputType: null
       };
 
-      const options = optionize<AccessibleValueHandlerOptions, AccessibleValueHandlerSelfOptions, NodeOptions>( {}, defaults, providedOptions );
+      const options = optionize3<AccessibleValueHandlerOptions, AccessibleValueHandlerSelfOptions, NodeOptions>()( {}, defaults, providedOptions );
 
       assert && providedOptions && assert( !providedOptions.hasOwnProperty( 'tagName' ) || providedOptions.tagName === null,
         'AccessibleValueHandler sets its own tagName. Only provide tagName to clear accessible content from the PDOM' );
@@ -965,7 +965,7 @@ const AccessibleValueHandler = <SuperType extends Constructor>( Type: SuperType,
      */
     voicingOnEndResponse( providedOptions?: VoicingOnEndResponseOptions ) {
 
-      const options = optionize<VoicingOnEndResponseOptions, VoicingOnEndResponseOptions>( {
+      const options = optionize<VoicingOnEndResponseOptions, VoicingOnEndResponseOptions>()( {
         withObjectResponse: true, // speak the object response
         onlyOnValueChange: true // don't speak if the value is the same as valueOnStart
       }, providedOptions );

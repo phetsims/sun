@@ -110,7 +110,7 @@ export default class Carousel extends Node {
   constructor( items: Node[], providedOptions?: CarouselOptions ) {
 
     // Override defaults with specified options
-    const options = optionize<CarouselOptions, SelfOptions, NodeOptions, 'tandem'>( {
+    const options = optionize<CarouselOptions, SelfOptions, NodeOptions>()( {
 
       // container
       orientation: 'horizontal',
@@ -188,11 +188,11 @@ export default class Carousel extends Node {
     };
 
     // Next/previous buttons
-    const nextButton = new CarouselButton( optionize<CarouselButtonOptions, {}, CarouselButtonOptions>( {
+    const nextButton = new CarouselButton( optionize<CarouselButtonOptions, {}, CarouselButtonOptions>()( {
       arrowDirection: isHorizontal ? 'right' : 'down',
       tandem: options.tandem.createTandem( 'nextButton' )
     }, buttonOptions ) );
-    const previousButton = new CarouselButton( optionize<CarouselButtonOptions, {}, CarouselButtonOptions>( {
+    const previousButton = new CarouselButton( optionize<CarouselButtonOptions, {}, CarouselButtonOptions>()( {
       arrowDirection: isHorizontal ? 'left' : 'up',
       tandem: options.tandem.createTandem( 'previousButton' )
     }, buttonOptions ) );

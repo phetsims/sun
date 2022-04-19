@@ -31,7 +31,7 @@ export default class BooleanRectangularToggleButton extends RectangularToggleBut
 
     const content = new BooleanToggleNode( trueNode, falseNode, booleanProperty );
 
-    const options = optionize<BooleanRectangularToggleButtonOptions, SelfOptions, RectangularToggleButtonOptions>( {
+    const options = optionize<BooleanRectangularToggleButtonOptions, SelfOptions, RectangularToggleButtonOptions>()( {
       content: content,
       tandem: Tandem.REQUIRED
     }, providedOptions );

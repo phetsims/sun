@@ -36,7 +36,7 @@ export default class RoundStickyToggleButton<T> extends RoundButton {
    */
   constructor( valueUp: T, valueDown: T, valueProperty: IProperty<T>, providedOptions?: RoundStickyToggleButtonOptions ) {
 
-    const options = optionize<RoundStickyToggleButtonOptions, SelfOptions, RoundButtonOptions>( {
+    const options = optionize<RoundStickyToggleButtonOptions, SelfOptions, RoundButtonOptions>()( {
 
       // SelfOptions
       soundPlayer: pushButtonSoundPlayer,

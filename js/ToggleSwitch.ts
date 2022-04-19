@@ -75,7 +75,7 @@ export default class ToggleSwitch<T> extends Voicing( Node, 0 ) {
    */
   constructor( property: IProperty<T>, leftValue: T, rightValue: T, providedOptions?: ToggleSwitchOptions ) {
 
-    const options = optionize<ToggleSwitchOptions, SelfOptions, VoicingOptions, 'tandem'>( {
+    const options = optionize<ToggleSwitchOptions, SelfOptions, VoicingOptions>()( {
 
       size: DEFAULT_SIZE,
       toggleWhileDragging: null,

@@ -166,7 +166,7 @@ export default class Slider extends AccessibleSlider( Node, 0 ) {
     assert && assertMutuallyExclusiveOptions( providedOptions, [ 'trackNode' ], [
       'trackSize', 'trackFillEnabled', 'trackFillDisabled', 'trackStroke', 'trackLineWidth', 'trackCornerRadius' ] );
 
-    let options = optionize<SliderOptions, Omit<SelfOptions, 'enabledRangeProperty'>, AccessibleSliderOptions, 'tandem'>( {
+    let options = optionize<SliderOptions, Omit<SelfOptions, 'enabledRangeProperty'>, AccessibleSliderOptions>()( {
 
       orientation: Orientation.HORIZONTAL,
       trackNode: null,

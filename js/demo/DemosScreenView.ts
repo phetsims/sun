@@ -52,7 +52,7 @@ class DemosScreenView extends ScreenView {
    */
   constructor( demos: SunDemo[], providedOptions?: DemosScreenViewOptions ) {
 
-    const options = optionize<DemosScreenViewOptions, SelfOptions, ScreenViewOptions, 'tandem'>( {
+    const options = optionize<DemosScreenViewOptions, SelfOptions, ScreenViewOptions>()( {
 
       // DemosScreenViewOptions
       selectedDemoLabel: null,

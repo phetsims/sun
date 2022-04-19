@@ -74,7 +74,7 @@ export default class RectangularRadioButton<T> extends RectangularButton {
    */
   constructor( property: IProperty<T>, value: T, providedOptions?: RectangularRadioButtonOptions ) {
 
-    const options = optionize<RectangularRadioButtonOptions, SelfOptions, RectangularButtonOptions, 'tandem'>( {
+    const options = optionize<RectangularRadioButtonOptions, SelfOptions, RectangularButtonOptions>()( {
 
       // SelfOptions
       overFill: null,

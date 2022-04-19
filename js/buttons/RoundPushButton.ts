@@ -35,7 +35,7 @@ export default class RoundPushButton extends RoundButton {
 
   constructor( providedOptions?: RoundPushButtonOptions ) {
 
-    const options = optionize<RoundPushButtonOptions, SelfOptions, SuperOptions>( {
+    const options = optionize<RoundPushButtonOptions, SelfOptions, SuperOptions>()( {
       soundPlayer: pushButtonSoundPlayer,
       tandem: Tandem.REQUIRED
     }, providedOptions );

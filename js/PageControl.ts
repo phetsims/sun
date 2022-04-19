@@ -47,7 +47,7 @@ export default class PageControl extends Node {
    */
   constructor( numberOfPages: number, pageNumberProperty: IProperty<number>, providedOptions: PageControlOptions ) {
 
-    const options = optionize<PageControlOptions, SelfOptions, NodeOptions, 'tandem'>( {
+    const options = optionize<PageControlOptions, SelfOptions, NodeOptions>()( {
 
       // SelfOptions
       interactive: false,

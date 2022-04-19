@@ -81,7 +81,7 @@ export default class NumberSpinner extends AccessibleNumberSpinner( Node, 0 ) {
 
     const options = optionize<NumberSpinnerOptions,
       Omit<SelfOptions, 'incrementFunction' | 'decrementFunction'>,
-      AccessibleNumberSpinnerOptions, 'tandem'>( {
+      AccessibleNumberSpinnerOptions>()( {
 
       // SelfOptions
       arrowsPosition: 'bothRight',
@@ -138,7 +138,7 @@ export default class NumberSpinner extends AccessibleNumberSpinner( Node, 0 ) {
     const incrementButton = new ArrowButton(
       ( options.arrowsPosition === 'topBottom' || options.arrowsPosition === 'bothRight' ) ? 'up' : 'right',
       () => numberProperty.set( incrementFunction( numberProperty.get() ) ),
-      optionize<ArrowButtonOptions, {}, ArrowButtonOptions>( {
+      optionize<ArrowButtonOptions, {}, ArrowButtonOptions>()( {
         tandem: options.tandem.createTandem( 'incrementButton' )
       }, arrowButtonOptions )
     );
@@ -147,7 +147,7 @@ export default class NumberSpinner extends AccessibleNumberSpinner( Node, 0 ) {
     const decrementButton = new ArrowButton(
       ( options.arrowsPosition === 'topBottom' || options.arrowsPosition === 'bothRight' ) ? 'down' : 'left',
       () => numberProperty.set( decrementFunction( numberProperty.get() ) ),
-      optionize<ArrowButtonOptions, {}, ArrowButtonOptions>( {
+      optionize<ArrowButtonOptions, {}, ArrowButtonOptions>()( {
         tandem: options.tandem.createTandem( 'decrementButton' )
       }, arrowButtonOptions )
     );

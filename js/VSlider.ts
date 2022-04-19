@@ -23,7 +23,7 @@ export default class VSlider extends Slider {
 
   constructor( valueProperty: IProperty<number>, range: Range, options?: VSliderOptions ) {
 
-    options = optionize<VSliderOptions, SelfOptions, SliderOptions>( {
+    options = optionize<VSliderOptions, SelfOptions, SliderOptions>()( {
       orientation: Orientation.VERTICAL
     }, options );
 

@@ -17,7 +17,7 @@ export default class HSeparator extends Line {
   constructor( width: number, providedOptions?: HSeparatorOptions ) {
     assert && assert( isFinite( width ) && width >= 0, `invalid width=${width}` );
 
-    const options = optionize<HSeparatorOptions, SelfOptions, LineOptions>( {
+    const options = optionize<HSeparatorOptions, SelfOptions, LineOptions>()( {
       stroke: 'rgb( 100, 100, 100 )'
     }, providedOptions );
 

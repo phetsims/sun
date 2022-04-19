@@ -41,7 +41,7 @@ export default class StickyToggleButtonModel<T> extends ButtonModel {
    */
   constructor( valueUp: T, valueDown: T, valueProperty: IProperty<T>, providedOptions?: StickyToggleButtonModelOptions ) {
 
-    const options = optionize<StickyToggleButtonModelOptions, SelfOptions, ButtonModelOptions, 'tandem'>( {
+    const options = optionize<StickyToggleButtonModelOptions, SelfOptions, ButtonModelOptions>()( {
       tandem: Tandem.REQUIRED
     }, providedOptions );
 

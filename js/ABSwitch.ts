@@ -60,7 +60,7 @@ export default class ABSwitch<T> extends Node {
     assert && assert( labelB.tandem, 'labelB must have a tandem' );
 
     // default option values
-    const options = optionize<ABSwitchOptions, SelfOptions, NodeOptions, 'tandem'>( {
+    const options = optionize<ABSwitchOptions, SelfOptions, NodeOptions>()( {
 
       // SelfOptions
       toggleSwitchOptions: {

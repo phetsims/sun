@@ -57,7 +57,7 @@ const AccessibleSlider = <SuperType extends Constructor>( Type: SuperType, optio
       assert && providedOptions && assert( Object.getPrototypeOf( providedOptions ) === Object.prototype,
         'Extra prototype on AccessibleSlider options object is a code smell (or probably a bug)' );
 
-      const options = optionize<AccessibleSliderOptions, AccessibleSliderSelfOptions, AccessibleValueHandlerOptions>( {
+      const options = optionize<AccessibleSliderOptions, AccessibleSliderSelfOptions, AccessibleValueHandlerOptions>()( {
         startDrag: _.noop,
         endDrag: _.noop,
         drag: _.noop

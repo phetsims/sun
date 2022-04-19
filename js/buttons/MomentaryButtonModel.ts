@@ -29,7 +29,7 @@ export default class MomentaryButtonModel<T> extends ButtonModel {
    */
   constructor( valueOff: T, valueOn: T, valueProperty: IProperty<T>, providedOptions?: MomentaryButtonModelOptions ) {
 
-    const options = optionize<MomentaryButtonModelOptions, {}, ButtonModelOptions>( {
+    const options = optionize<MomentaryButtonModelOptions, {}, ButtonModelOptions>()( {
 
       // phet-io
       tandem: Tandem.REQUIRED,

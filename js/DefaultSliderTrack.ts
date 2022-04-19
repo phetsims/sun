@@ -37,7 +37,7 @@ export default class DefaultSliderTrack extends SliderTrack {
 
   constructor( valueProperty: IProperty<number>, range: Range, providedOptions?: DefaultSliderTrackOptions ) {
 
-    const options = optionize<DefaultSliderTrackOptions, SelfOptions, SliderTrackOptions>( {
+    const options = optionize<DefaultSliderTrackOptions, SelfOptions, SliderTrackOptions>()( {
       fillEnabled: 'white',
       fillDisabled: 'gray',
       stroke: 'black',

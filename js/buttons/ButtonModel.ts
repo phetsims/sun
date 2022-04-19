@@ -81,7 +81,7 @@ export default class ButtonModel extends EnabledComponent {
 
   constructor( providedOptions?: ButtonModelOptions ) {
 
-    const options = optionize<ButtonModelOptions, SelfOptions, EnabledComponentOptions>( {
+    const options = optionize<ButtonModelOptions, SelfOptions, EnabledComponentOptions>()( {
       startCallback: _.noop,
       endCallback: _.noop,
 
