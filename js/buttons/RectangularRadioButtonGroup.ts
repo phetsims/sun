@@ -10,7 +10,7 @@
 import { Shape } from '../../../kite/js/imports.js';
 import InstanceRegistry from '../../../phet-core/js/documentation/InstanceRegistry.js';
 import merge from '../../../phet-core/js/merge.js';
-import { Color, FocusHighlightPath, IColor, IInputListener, IPaint, LayoutBox, LayoutBoxOptions, Node, PDOMPeer, Rectangle, SceneryConstants } from '../../../scenery/js/imports.js';
+import { Color, FocusHighlightPath, IInputListener, IPaint, LayoutBox, LayoutBoxOptions, Node, PDOMPeer, Rectangle, SceneryConstants } from '../../../scenery/js/imports.js';
 import multiSelectionSoundPlayerFactory from '../../../tambo/js/multiSelectionSoundPlayerFactory.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import ColorConstants from '../ColorConstants.js';
@@ -31,7 +31,7 @@ export type RectangularRadioButtonContentXAlign = typeof BUTTON_CONTENT_X_ALIGN_
 export type RectangularRadioButtonContentYAlign = typeof BUTTON_CONTENT_Y_ALIGN_VALUES[number];
 export type RectangularRadioButtonLabelAlign = 'top' | 'bottom' | 'left' | 'right';
 
-type RectangularRadioButtonItem<T> = {
+export type RectangularRadioButtonItem<T> = {
   node: Node; // primary depiction for the button
   value: T; // value associated with the button
   label?: Node; // If a label is provided, the button becomes a LayoutBox with the label and radio button
@@ -54,7 +54,7 @@ type SelfOptions = {
   soundPlayers?: ISoundPlayer[] | null;
 
   // The fill for the rectangle behind the radio buttons.  Default color is bluish color, as in the other button library.
-  baseColor?: IColor;
+  baseColor?: IPaint;
 
   // Options for buttonAppearanceStrategy.
   //TODO https://github.com/phetsims/sun/issues/653 These are already specified in RectangularRadioButton, but
