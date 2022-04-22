@@ -21,6 +21,9 @@
  * @author Michael Barlow (PhET Interactive Simulations)
  */
 
+// Disable for the whole file
+/* eslint-disable no-protected-jsdoc */
+
 import CallbackTimer, { CallbackTimerCallback } from '../../../axon/js/CallbackTimer.js';
 import Emitter from '../../../axon/js/Emitter.js';
 import validate from '../../../axon/js/validate.js';
@@ -60,7 +63,7 @@ const AccessibleNumberSpinner = <SuperType extends Constructor>( Type: SuperType
     // Manages timing must be disposed
     readonly _callbackTimer: CallbackTimer;
 
-    // @protected - emits events when increment and decrement actions occur, but only for changes
+    // emits events when increment and decrement actions occur, but only for changes
     // of keyboardStep and shiftKeyboardStep (not pageKeyboardStep)
     readonly incrementDownEmitter: Emitter<[ boolean ]>; // @protected
     readonly decrementDownEmitter: Emitter<[ boolean ]>; // @protected

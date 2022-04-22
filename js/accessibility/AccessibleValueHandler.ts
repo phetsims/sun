@@ -16,6 +16,9 @@
  * @author Jesse Greenberg (PhET Interactive Simulations)
  */
 
+// Disable for the whole file
+/* eslint-disable no-protected-jsdoc */
+
 import Property from '../../../axon/js/Property.js';
 import Utils from '../../../dot/js/Utils.js';
 import Range from '../../../dot/js/Range.js';
