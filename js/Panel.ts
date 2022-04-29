@@ -154,7 +154,7 @@ export default class Panel extends WidthSizable( HeightSizable( Node ) ) {
 
   public set fill( value: IPaint ) { this.setFill( value ); }
 
-  public override setExcludeInvisibleChildrenFromBounds( excludeInvisibleChildrenFromBounds: boolean ) {
+  public override setExcludeInvisibleChildrenFromBounds( excludeInvisibleChildrenFromBounds: boolean ): void {
     super.setExcludeInvisibleChildrenFromBounds( excludeInvisibleChildrenFromBounds );
     this.constraint.updateLayoutAutomatically();
   }

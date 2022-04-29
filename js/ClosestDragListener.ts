@@ -58,7 +58,7 @@ export default class ClosestDragListener {
   /**
    * Called on pointer down.
    */
-  public down( event: PressListenerEvent ) {
+  public down( event: PressListenerEvent ): void {
 
     // If there was nothing else in the way
     if ( event.target === event.currentTarget ) {

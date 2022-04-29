@@ -406,7 +406,7 @@ const AccessibleValueHandler = <SuperType extends Constructor>( Type: SuperType,
      * changes. Use this method to set the dependency Properties for this value handler. This will blow away the
      * previous list (like Node.children).
      */
-    setA11yDependencies( dependencies: IReadOnlyProperty<IntentionalAny>[] ) {
+    setA11yDependencies( dependencies: IReadOnlyProperty<IntentionalAny>[] ): void {
       assert && assert( Array.isArray( dependencies ) );
       assert && assert( dependencies.indexOf( this._valueProperty ) === -1,
         'The value Property is already a dependency, and does not need to be added to this list' );
@@ -451,7 +451,7 @@ const AccessibleValueHandler = <SuperType extends Constructor>( Type: SuperType,
      * the alert can be spoken, we provide more time for the AT to finish speaking aria-valuetext. Otherwise, the
      * alert may be lost. See https://github.com/phetsims/gravity-force-lab-basics/issues/146.
      */
-    alertContextResponse() {
+    alertContextResponse(): void {
 
       // Alerting will occur to each connected display's UtteranceQueue, but we should only increment delay once per
       // time this function is called.
@@ -494,7 +494,7 @@ const AccessibleValueHandler = <SuperType extends Constructor>( Type: SuperType,
     /**
      * Should be called after the model dependencies have been reset
      */
-    reset() {
+    reset(): void {
 
       // reset the aria-valuetext creator if it supports that
       this._a11yCreateAriaValueText.reset && this._a11yCreateAriaValueText.reset();
@@ -541,7 +541,7 @@ const AccessibleValueHandler = <SuperType extends Constructor>( Type: SuperType,
      *
      * Add this as an input listener to the `keydown` event to the Node mixing in AccessibleValueHandler.
      */
-    handleKeyDown( event: SceneryEvent<KeyboardEvent> ) {
+    handleKeyDown( event: SceneryEvent<KeyboardEvent> ): void {
 
       const domEvent = event.domEvent!;
 
@@ -667,7 +667,7 @@ const AccessibleValueHandler = <SuperType extends Constructor>( Type: SuperType,
      * function on release. Add this as an input listener to the node mixing in AccessibleValueHandler.
      * @protected
      */
-    handleKeyUp( event: SceneryEvent<KeyboardEvent> ) {
+    handleKeyUp( event: SceneryEvent<KeyboardEvent> ): void {
       const key = KeyboardUtils.getEventCode( event.domEvent )!;
 
       // handle case where user tabbed to this input while an arrow key might have been held down
@@ -701,7 +701,7 @@ const AccessibleValueHandler = <SuperType extends Constructor>( Type: SuperType,
      *
      * @protected
      */
-    handleChange( event: SceneryEvent ) {
+    handleChange( event: SceneryEvent ): void {
 
       if ( !this._a11yInputHandled ) {
         this.handleInput( event );
@@ -725,7 +725,7 @@ const AccessibleValueHandler = <SuperType extends Constructor>( Type: SuperType,
      *
      * @protected
      */
-    handleInput( event: SceneryEvent<Event> ) {
+    handleInput( event: SceneryEvent<Event> ): void {
       if ( ( this as unknown as Node ).enabledProperty.get() && !this._blockInput ) {
 
         // don't handle again on "change" event
@@ -776,7 +776,7 @@ const AccessibleValueHandler = <SuperType extends Constructor>( Type: SuperType,
      * Add this as a listener on the `blur` event to the Node that is mixing in AccessibleValueHandler.
      * @protected
      */
-    handleBlur( event: SceneryEvent<FocusEvent> ) {
+    handleBlur( event: SceneryEvent<FocusEvent> ): void {
 
       // if any range keys are currently down, call end drag because user has stopped dragging to do something else
       if ( this._anyKeysDown() ) {
@@ -797,7 +797,7 @@ const AccessibleValueHandler = <SuperType extends Constructor>( Type: SuperType,
      * Interaction with this input has started, save the value on start so that it can be used as an "old" value
      * when generating the context response with option a11yCreateContextResponse.
      */
-    _onInteractionStart( event: SceneryEvent<Event> ) {
+    _onInteractionStart( event: SceneryEvent<Event> ): void {
       this._valueOnStart = this._valueProperty.value;
       this._startChange( event );
     }
@@ -806,7 +806,7 @@ const AccessibleValueHandler = <SuperType extends Constructor>( Type: SuperType,
      * Interaction with this input has completed, generate an utterance describing changes if necessary and call
      * optional "end" function.
      */
-    _onInteractionEnd( event: SceneryEvent<Event> ) {
+    _onInteractionEnd( event: SceneryEvent<Event> ): void {
       this.alertContextResponse();
       this.voicingOnEndResponse();
       this._endChange( event );
@@ -815,7 +815,7 @@ const AccessibleValueHandler = <SuperType extends Constructor>( Type: SuperType,
     /**
      * Set the delta for the value Property when using arrow keys to interact with the Node.
      */
-    setKeyboardStep( keyboardStep: number ) {
+    setKeyboardStep( keyboardStep: number ): void {
       assert && assert( keyboardStep >= 0, 'keyboard step must be non-negative' );
 
       this._keyboardStep = keyboardStep;
@@ -835,7 +835,7 @@ const AccessibleValueHandler = <SuperType extends Constructor>( Type: SuperType,
     /**
      * Set the delta for value Property when using arrow keys with shift to interact with the Node.
      */
-    setShiftKeyboardStep( shiftKeyboardStep: number ) {
+    setShiftKeyboardStep( shiftKeyboardStep: number ): void {
       assert && assert( shiftKeyboardStep >= 0, 'shift keyboard step must be non-negative' );
 
       this._shiftKeyboardStep = shiftKeyboardStep;
@@ -864,7 +864,7 @@ const AccessibleValueHandler = <SuperType extends Constructor>( Type: SuperType,
     /**
      * Set the delta for value Property when using page up/page down to interact with the Node.
      */
-    setPageKeyboardStep( pageKeyboardStep: number ) {
+    setPageKeyboardStep( pageKeyboardStep: number ): void {
       assert && assert( pageKeyboardStep >= 0, 'page keyboard step must be non-negative' );
 
       this._pageKeyboardStep = pageKeyboardStep;
@@ -886,7 +886,7 @@ const AccessibleValueHandler = <SuperType extends Constructor>( Type: SuperType,
      * Depending on the value of this attribute, a screen reader will give different indications about which
      * arrow keys should be used
      */
-    setAriaOrientation( orientation: Orientation ) {
+    setAriaOrientation( orientation: Orientation ): void {
 
       this._ariaOrientation = orientation;
       ( this as unknown as Node ).setPDOMAttribute( 'aria-orientation', orientation.ariaOrientation );
@@ -946,7 +946,7 @@ const AccessibleValueHandler = <SuperType extends Constructor>( Type: SuperType,
      * back to setting the step size at 1/100th of the max value since the keyboard step generally evenly divides
      * the max value rather than the full range.
      */
-    _updateSiblingStepAttribute() {
+    _updateSiblingStepAttribute(): void {
       const smallestStep = Math.min( Math.min( this.keyboardStep, this.shiftKeyboardStep ), this.pageKeyboardStep );
       let stepValue = Math.pow( 10, -Utils.numberOfDecimalPlaces( smallestStep ) );
 
@@ -966,7 +966,7 @@ const AccessibleValueHandler = <SuperType extends Constructor>( Type: SuperType,
     /**
      * Call this to trigger the voicing response spoken when an interaction ends.
      */
-    voicingOnEndResponse( providedOptions?: VoicingOnEndResponseOptions ) {
+    voicingOnEndResponse( providedOptions?: VoicingOnEndResponseOptions ): void {
 
       const options = optionize<VoicingOnEndResponseOptions, VoicingOnEndResponseOptions>()( {
         withObjectResponse: true, // speak the object response
