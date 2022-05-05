@@ -20,6 +20,12 @@ const sunQueryParameters = QueryStringMachine.getAll( {
   component: {
     type: 'string',
     defaultValue: null
+  },
+
+  // initial selection on the Layout screen, values are the same as the labels on combo box items
+  layout: {
+    type: 'string',
+    defaultValue: 'Width of multiple panels'
   }
 } );
 

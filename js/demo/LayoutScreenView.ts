@@ -12,11 +12,12 @@ import Bounds2 from '../../../dot/js/Bounds2.js';
 import optionize from '../../../phet-core/js/optionize.js';
 import Constructor from '../../../phet-core/js/types/Constructor.js';
 import PhetFont from '../../../scenery-phet/js/PhetFont.js';
-import { AlignBox, FlowBox, Node, Rectangle, Text } from '../../../scenery/js/imports.js';
+import { AlignBox, FlowBox, Node, Rectangle, Text, VDivider } from '../../../scenery/js/imports.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import Checkbox from '../Checkbox.js';
 import Panel from '../Panel.js';
 import sun from '../sun.js';
+import sunQueryParameters from '../sunQueryParameters.js';
 import DemosScreenView, { DemosScreenViewOptions } from './DemosScreenView.js';
 
 class LayoutScreenView extends DemosScreenView {
@@ -24,6 +25,7 @@ class LayoutScreenView extends DemosScreenView {
   constructor( providedOptions: DemosScreenViewOptions ) {
 
     const options = optionize<DemosScreenViewOptions, {}, DemosScreenViewOptions>()( {
+      selectedDemoLabel: sunQueryParameters.layout,
       tandem: Tandem.REQUIRED
     }, providedOptions );
 
@@ -35,7 +37,8 @@ class LayoutScreenView extends DemosScreenView {
        * {string} label - label in the combo box
        * {function(Bounds2): Node} createNode - creates the scene graph for the demo
        */
-      { label: 'Multiple Panels', createNode: demoMultiplePanels, tandemName: 'multiplePanels' }
+      { label: 'Width of multiple panels', createNode: demoMultiplePanels, tandemName: 'multiplePanels' },
+      { label: 'Separators', createNode: demoSeparators, tandemName: 'separators' }
     ], options );
   }
 }
@@ -54,6 +57,21 @@ const overrideDispose = <T extends Constructor<Node>>( node: InstanceType<T>, Ty
   return node;
 };
 
+const onElapsed = ( callback: ( elapsedTime: number ) => void ): ( () => void ) => {
+  let elapsedTime = 0;
+
+  const step = ( dt: number ) => {
+    elapsedTime += dt;
+    callback( elapsedTime );
+  };
+
+  callback( elapsedTime );
+
+  stepTimer.addListener( step );
+
+  return () => stepTimer.removeListener( step );
+};
+
 const createCheckbox = ( str: string, checked = false ): Node => {
   return new Checkbox( new Text( str, {
     font: COPY_FONT
@@ -68,17 +86,21 @@ const createHorizontalResizer = ( height: number, minWidth: number, maxWidth: nu
     rectHeight: height
   } );
 
-  let elapsedTime = 0;
-
-  const step = ( dt: number ) => {
-    elapsedTime += dt;
+  return overrideDispose( result, Rectangle, onElapsed( ( elapsedTime: number ) => {
     result.rectWidth = ( minWidth + maxWidth ) / 2 + Math.cos( elapsedTime ) * ( maxWidth - minWidth ) / 2;
-  };
+  } ) );
+};
 
-  step( 0 );
-  stepTimer.addListener( step );
+const createDisappearing = ( width: number, height: number ): Node => {
+  const result = new Rectangle( {
+    fill: 'green',
+    rectWidth: width,
+    rectHeight: height
+  } );
 
-  return overrideDispose( result, Rectangle, () => stepTimer.removeListener( step ) );
+  return overrideDispose( result, Rectangle, onElapsed( ( elapsedTime: number ) => {
+    result.visible = Math.floor( elapsedTime ) % 2 === 0;
+  } ) );
 };
 
 function demoMultiplePanels( layoutBounds: Bounds2 ): Node {
@@ -120,9 +142,28 @@ function demoMultiplePanels( layoutBounds: Bounds2 ): Node {
 
   const alignBox = new AlignBox( panelsNode, { alignBounds: layoutBounds, margin: MARGIN, xAlign: 'right', yAlign: 'top' } );
 
-  return overrideDispose( alignBox, AlignBox, () => {
-    resizer.dispose();
-  } );
+  return overrideDispose( alignBox, AlignBox, () => resizer.dispose() );
+}
+
+function demoSeparators( layoutBounds: Bounds2 ): Node {
+  const disappearing = createDisappearing( 150, 100 );
+
+  const panel = new Panel( new FlowBox( {
+    orientation: 'vertical',
+    align: 'left',
+    spacing: 5,
+    children: [
+      new VDivider(),
+      new Text( 'Disappearing Node?:', { font: SECTION_FONT } ),
+      new VDivider(),
+      disappearing,
+      new VDivider()
+    ]
+  } ) );
+
+  const alignBox = new AlignBox( panel, { alignBounds: layoutBounds, margin: MARGIN, xAlign: 'right', yAlign: 'top' } );
+
+  return overrideDispose( alignBox, AlignBox, () => disappearing.dispose() );
 }
 
 sun.register( 'LayoutScreenView', LayoutScreenView );
