@@ -29,6 +29,8 @@ export type SunDemo = {
   createNode: ( layoutBounds: Bounds2, options?: NodeOptions ) => Node;
 
   node?: Node | null | undefined;
+
+  tandemName?: string;
 }
 
 type SelfOptions = {
@@ -153,7 +155,7 @@ class DemosScreenView extends ScreenView {
 
         // If the selected demo doesn't doesn't have an associated node, create it.
         demo.node = demo.createNode( layoutBounds, {
-          tandem: options.tandem.createTandem( `demo${demo.label}` )
+          tandem: options.tandem.createTandem( `demo${demo.tandemName ? demo.tandemName : demo.label}` )
         } );
         demosParent.addChild( demo.node );
       }

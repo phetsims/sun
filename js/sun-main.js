@@ -14,6 +14,7 @@ import Tandem from '../../tandem/js/Tandem.js';
 import ButtonsScreenView from './demo/ButtonsScreenView.js';
 import ComponentsScreenView from './demo/ComponentsScreenView.js';
 import DialogsScreenView from './demo/DialogsScreenView.js';
+import LayoutScreenView from './demo/LayoutScreenView.js';
 import sunStrings from './sunStrings.js';
 import sunQueryParameters from './sunQueryParameters.js';
 
@@ -82,6 +83,20 @@ simLauncher.launch( () => {
         backgroundColorProperty: new Property( sunQueryParameters.backgroundColor ),
         homeScreenIcon: createScreenIcon( 'purple' ),
         tandem: Tandem.ROOT.createTandem( 'dialogsScreen' )
+      }
+    ),
+
+    // Layout screen
+    new Screen(
+      () => MODEL,
+      () => new LayoutScreenView( {
+        tandem: Tandem.OPT_OUT
+      } ),
+      {
+        name: 'Layout',
+        backgroundColorProperty: new Property( sunQueryParameters.backgroundColor ),
+        homeScreenIcon: createScreenIcon( 'green' ),
+        tandem: Tandem.ROOT.createTandem( 'layoutScreen' )
       }
     )
   ], simOptions ).start();
