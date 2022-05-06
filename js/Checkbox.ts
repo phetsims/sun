@@ -263,6 +263,8 @@ class CheckboxConstraint extends LayoutConstraint {
     this.options = options;
 
     this.checkbox.preferredWidthProperty.lazyLink( this._updateLayoutListener );
+
+    this.addNode( content );
   }
 
   protected override layout(): void {
