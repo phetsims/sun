@@ -75,7 +75,7 @@ class DemosScreenView extends ScreenView {
 
       demos.forEach( ( demo: SunDemo ) => {
         demo.node = demo.createNode( layoutBounds, {
-          tandem: options.tandem.createTandem( `demo${demo.label}` )
+          tandem: options.tandem.createTandem( `demo${demo.tandemName ? demo.tandemName : demo.label}` )
         } );
         demo.node.visible = false;
         demosParent.addChild( demo.node );
