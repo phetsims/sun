@@ -38,14 +38,17 @@ class LayoutScreenView extends DemosScreenView {
        * {function(Bounds2): Node} createNode - creates the scene graph for the demo
        */
       { label: 'Width of multiple panels', createNode: demoMultiplePanels, tandemName: 'multiplePanels' },
-      { label: 'Separators', createNode: demoSeparators, tandemName: 'separators' }
+      { label: 'Separators', createNode: demoSeparators, tandemName: 'separators' },
+      { label: 'Checkboxes with icons', createNode: demoCheckboxesWithIcons, tandemName: 'checkboxesWithIcons' }
     ], options );
   }
 }
 
 const MARGIN = 10;
-const COPY_FONT = new PhetFont( 12 );
-const SECTION_FONT = new PhetFont( { size: 14, weight: 'bold' } );
+const BOX_WIDTH = 14;
+
+const normalText = ( str: string ) => new Text( str, { font: new PhetFont( 12 ) } );
+const sectionText = ( str: string ) => new Text( str, { font: new PhetFont( { size: 14, weight: 'bold' } ) } );
 
 const overrideDispose = <T extends Constructor<Node>>( node: InstanceType<T>, Type: T, callback: () => void ) => {
   node.dispose = function( this: InstanceType<T> ) {
@@ -72,12 +75,8 @@ const onElapsed = ( callback: ( elapsedTime: number ) => void ): ( () => void ) 
   return () => stepTimer.removeListener( step );
 };
 
-const createCheckbox = ( str: string, checked = false ): Node => {
-  return new Checkbox( new Text( str, {
-    font: COPY_FONT
-  } ), new BooleanProperty( checked, { tandem: Tandem.OPT_OUT } ), {
-    boxWidth: 14
-  } );
+const createBooleanProperty = ( value = false ) => {
+  return new BooleanProperty( value, { tandem: Tandem.OPT_OUT } );
 };
 
 const createHorizontalResizer = ( height: number, minWidth: number, maxWidth: number ): Node => {
@@ -111,9 +110,15 @@ function demoMultiplePanels( layoutBounds: Bounds2 ): Node {
     align: 'left',
     spacing: 5,
     children: [
-      new Text( 'Checkboxes', { font: SECTION_FONT } ),
-      createCheckbox( 'First Checkbox' ),
-      createCheckbox( 'Second Checkbox' )
+      sectionText( 'Checkboxes' ),
+      new Checkbox( normalText( 'First checkbox' ), createBooleanProperty( false ), {
+        boxWidth: BOX_WIDTH,
+        layoutOptions: { align: 'stretch' }
+      } ),
+      new Checkbox( normalText( 'Second checkbox' ), createBooleanProperty( false ), {
+        boxWidth: BOX_WIDTH,
+        layoutOptions: { align: 'stretch' }
+      } )
     ]
   } ) );
 
@@ -122,7 +127,7 @@ function demoMultiplePanels( layoutBounds: Bounds2 ): Node {
     align: 'left',
     spacing: 5,
     children: [
-      new Text( 'Resizing', { font: SECTION_FONT } ),
+      sectionText( 'Resizing' ),
       resizer
     ]
   } ) );
@@ -154,7 +159,7 @@ function demoSeparators( layoutBounds: Bounds2 ): Node {
     spacing: 5,
     children: [
       new VDivider(),
-      new Text( 'Disappearing Node?:', { font: SECTION_FONT } ),
+      sectionText( 'Disappearing node?:' ),
       new VDivider(),
       disappearing,
       new VDivider()
@@ -164,6 +169,55 @@ function demoSeparators( layoutBounds: Bounds2 ): Node {
   const alignBox = new AlignBox( panel, { alignBounds: layoutBounds, margin: MARGIN, xAlign: 'right', yAlign: 'top' } );
 
   return overrideDispose( alignBox, AlignBox, () => disappearing.dispose() );
+}
+
+function demoCheckboxesWithIcons( layoutBounds: Bounds2 ): Node {
+  const resizer = createHorizontalResizer( 15, 30, 200 );
+
+  const panel = new Panel( new FlowBox( {
+    orientation: 'vertical',
+    align: 'stretch',
+    spacing: 5,
+    children: [
+      sectionText( 'Checks' ),
+      new Checkbox( new FlowBox( {
+        spacing: 10,
+        children: [
+          normalText( 'First' ),
+          new Rectangle( 0, 0, 14, 14, { fill: 'red' } )
+        ]
+      } ), createBooleanProperty(), {
+        boxWidth: BOX_WIDTH
+      } ),
+      new Checkbox( new FlowBox( {
+        spacing: 10,
+        children: [
+          normalText( 'Second' ),
+          new Rectangle( 0, 0, 14, 14, { fill: 'magenta' } )
+        ]
+      } ), createBooleanProperty(), {
+        boxWidth: BOX_WIDTH
+      } ),
+      new Checkbox( new FlowBox( {
+        spacing: 10,
+        children: [
+          normalText( 'Indent' ),
+          new Rectangle( 0, 0, 14, 14, { fill: 'blue' } )
+        ]
+      } ), createBooleanProperty(), {
+        boxWidth: BOX_WIDTH,
+        layoutOptions: {
+          leftMargin: 20
+        }
+      } ),
+      sectionText( 'Resizing' ),
+      resizer
+    ]
+  } ) );
+
+  const alignBox = new AlignBox( panel, { alignBounds: layoutBounds, margin: MARGIN, xAlign: 'right', yAlign: 'top' } );
+
+  return overrideDispose( alignBox, AlignBox, () => resizer.dispose() );
 }
 
 sun.register( 'LayoutScreenView', LayoutScreenView );

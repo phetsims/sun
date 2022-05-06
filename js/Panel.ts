@@ -261,6 +261,7 @@ class PanelConstraint extends LayoutConstraint {
   public override dispose(): void {
     this.panel.preferredWidthProperty.unlink( this._updateLayoutListener );
     this.panel.preferredHeightProperty.unlink( this._updateLayoutListener );
+
     super.dispose();
   }
 }

@@ -10,7 +10,7 @@ import PhetioAction from '../../tandem/js/PhetioAction.js';
 import validate from '../../axon/js/validate.js';
 import Matrix3 from '../../dot/js/Matrix3.js';
 import InstanceRegistry from '../../phet-core/js/documentation/InstanceRegistry.js';
-import { FireListener, IPaint, Node, Path, Rectangle, SceneryConstants, Voicing, VoicingOptions } from '../../scenery/js/imports.js';
+import { FireListener, IPaint, isWidthSizable, LayoutConstraint, Node, Path, Rectangle, SceneryConstants, Voicing, VoicingOptions, WidthSizable } from '../../scenery/js/imports.js';
 import checkEmptySolidShape from '../../sherpa/js/fontawesome-4/checkEmptySolidShape.js';
 import checkSquareOSolidShape from '../../sherpa/js/fontawesome-4/checkSquareOSolidShape.js';
 import checkboxCheckedSoundPlayer from '../../tambo/js/shared-sound-players/checkboxCheckedSoundPlayer.js';
@@ -56,12 +56,15 @@ type SelfOptions = {
 
 export type CheckboxOptions = SelfOptions & VoicingOptions;
 
-export default class Checkbox extends Voicing( Node, 0 ) {
+export default class Checkbox extends WidthSizable( Voicing( Node, 0 ) ) {
 
   private readonly backgroundNode: Rectangle;
   private readonly checkedNode: Path;
   private readonly uncheckedNode: Path;
   private readonly disposeCheckbox: () => void;
+
+  // Handles layout of the content, rectangles and mouse/touch areas
+  private readonly constraint: CheckboxConstraint;
 
   constructor( content: Node, property: IProperty<boolean>, providedOptions?: CheckboxOptions ) {
 
@@ -149,14 +152,17 @@ export default class Checkbox extends Voicing( Node, 0 ) {
 
     const checkboxNode = new Node( { children: [ this.backgroundNode, this.checkedNode, this.uncheckedNode ] } );
 
-    this.addChild( checkboxNode );
-    this.addChild( content );
-
-    content.left = this.checkedNode.right + options.spacing;
-    content.centerY = this.checkedNode.centerY;
-
     // put a rectangle on top of everything to prevent dead zones when clicking
-    this.addChild( new Rectangle( this.left, this.top, this.width, this.height ) );
+    const rectangle = new Rectangle( {} );
+
+    this.children = [
+      checkboxNode,
+      content,
+      rectangle
+    ];
+
+    this.constraint = new CheckboxConstraint( this, checkboxNode, this.checkedNode, content, rectangle, options );
+    this.constraint.updateLayout();
 
     content.pickable = false; // since there's a pickable rectangle on top of content
 
@@ -177,10 +183,6 @@ export default class Checkbox extends Voicing( Node, 0 ) {
 
     // Apply additional options
     this.mutate( options );
-
-    // pointer areas
-    this.touchArea = this.localBounds.dilatedXY( options.touchAreaXDilation, options.touchAreaYDilation );
-    this.mouseArea = this.localBounds.dilatedXY( options.mouseAreaXDilation, options.mouseAreaYDilation );
 
     // pdom - to prevent a bug with NVDA and Firefox where the label sibling receives two click events, see
     // https://github.com/phetsims/gravity-force-lab/issues/257
@@ -240,6 +242,73 @@ export default class Checkbox extends Voicing( Node, 0 ) {
   public getCheckboxColor(): IPaint { return this.checkedNode.fill; }
 
   public get checkboxColor(): IPaint { return this.getCheckboxColor(); }
+}
+
+class CheckboxConstraint extends LayoutConstraint {
+  private readonly checkbox: Checkbox;
+  private readonly checkboxNode: Node;
+  private readonly checkedNode: Node;
+  private readonly content: Node;
+  private readonly rectangle: Rectangle;
+  private readonly options: Required<SelfOptions>;
+
+  constructor( checkbox: Checkbox, checkboxNode: Node, checkedNode: Node, content: Node, rectangle: Rectangle, options: Required<SelfOptions> ) {
+    super( checkbox );
+
+    this.checkbox = checkbox;
+    this.checkboxNode = checkboxNode;
+    this.checkedNode = checkedNode;
+    this.content = content;
+    this.rectangle = rectangle;
+    this.options = options;
+
+    this.checkbox.preferredWidthProperty.lazyLink( this._updateLayoutListener );
+  }
+
+  protected override layout(): void {
+    super.layout();
+
+    // LayoutProxy helps with some layout operations, and will support a non-child content.
+    const contentProxy = this.createLayoutProxy( this.content );
+
+    const contentWidth = contentProxy.minimumWidth;
+
+    // Our bounds are based on checkboxNode, but our layout is relative to checkedNode
+    const checkboxWithoutSpacingWidth = ( this.checkedNode.right - this.checkboxNode.left );
+    const minimumWidth = checkboxWithoutSpacingWidth + this.options.spacing + contentWidth;
+
+    const preferredWidth = this.checkbox.preferredWidth === null ? minimumWidth : this.checkbox.preferredWidth;
+
+    // Attempt to set a preferredWidth
+    if ( isWidthSizable( this.content ) ) {
+      contentProxy.preferredWidth = preferredWidth - checkboxWithoutSpacingWidth - this.options.spacing;
+    }
+
+    // For now just position content. Future updates could include widthResizable content?
+    contentProxy.left = this.checkedNode.right + this.options.spacing;
+    contentProxy.centerY = this.checkedNode.centerY;
+
+    // Our rectangle bounds will cover the checkboxNode and content, and if necessary expand to include the full
+    // preferredWidth
+    this.rectangle.rectBounds = this.checkboxNode.bounds.union( contentProxy.bounds ).withMaxX(
+      Math.max( this.checkboxNode.left + preferredWidth, contentProxy.right )
+    );
+
+    // Update pointer areas
+    this.checkbox.touchArea = this.checkbox.localBounds.dilatedXY( this.options.touchAreaXDilation, this.options.touchAreaYDilation );
+    this.checkbox.mouseArea = this.checkbox.localBounds.dilatedXY( this.options.mouseAreaXDilation, this.options.mouseAreaYDilation );
+
+    contentProxy.dispose();
+
+    // Set the minimumWidth last, since this may trigger a relayout
+    this.checkbox.minimumWidth = minimumWidth;
+  }
+
+  public override dispose(): void {
+    this.checkbox.preferredWidthProperty.unlink( this._updateLayoutListener );
+
+    super.dispose();
+  }
 }
 
 sun.register( 'Checkbox', Checkbox );
