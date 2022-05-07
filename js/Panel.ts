@@ -205,32 +205,33 @@ class PanelConstraint extends LayoutConstraint {
     const background = panel._background;
 
     const hasValidContent = panel.isChildIncludedInLayout( content );
-    panel._backgroundContainer.children = hasValidContent ? [ background ] : [];
 
+    // Bail out (and make the background invisible) if our bounds are invalid
+    panel._backgroundContainer.children = hasValidContent ? [ background ] : [];
     if ( !hasValidContent ) {
-      // Bail out (and make the background invisible) if our bounds are invalid
       panel.minimumWidth = null;
       panel.minimumHeight = null;
       return;
     }
 
-    const contentWidth = ( isWidthSizable( content ) && content.minimumWidth !== null ) ? content.minimumWidth : content.width;
-    const contentHeight = ( isHeightSizable( content ) && content.minimumHeight !== null ) ? content.minimumHeight : content.height;
+    const minimumContentWidth = ( isWidthSizable( content ) && content.minimumWidth !== null ) ? content.minimumWidth : content.width;
+    const minimumContentHeight = ( isHeightSizable( content ) && content.minimumHeight !== null ) ? content.minimumHeight : content.height;
 
     // Our minimum dimensions are directly determined by the content, margins and lineWidth
     // NOTE: options.minWidth does NOT include the stroke (e.g. lineWidth), left for backward compatibility.
-    const minimumWidth = Math.max( this.minWidth, contentWidth + ( 2 * this.xMargin ) ) + this.lineWidth;
-    const minimumHeight = contentHeight + ( 2 * this.yMargin ) + this.lineWidth;
+    const minimumWidth = Math.max( this.minWidth, minimumContentWidth + ( 2 * this.xMargin ) ) + this.lineWidth;
+    const minimumHeight = minimumContentHeight + ( 2 * this.yMargin ) + this.lineWidth;
 
     // Our resulting sizes (allow setting preferred width/height on the panel)
-    const preferredWidth = panel.preferredWidth === null ? minimumWidth : panel.preferredWidth;
-    const preferredHeight = panel.preferredHeight === null ? minimumHeight : panel.preferredHeight;
+    const preferredWidth: number = panel.preferredWidth === null ? minimumWidth : panel.preferredWidth;
+    const preferredHeight: number = panel.preferredHeight === null ? minimumHeight : panel.preferredHeight;
 
     // Determine the size available to our content
-    if ( isWidthSizable( content ) ) {
+    // NOTE: We do NOT set preferred sizes of our content if we don't have a preferred size ourself!
+    if ( isWidthSizable( content ) && panel.preferredWidth !== null ) {
       content.preferredWidth = preferredWidth - this.lineWidth - 2 * this.xMargin;
     }
-    if ( isHeightSizable( content ) ) {
+    if ( isHeightSizable( content ) && panel.preferredWidth !== null ) {
       content.preferredHeight = preferredHeight - this.lineWidth - 2 * this.yMargin;
     }
 

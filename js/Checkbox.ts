@@ -210,6 +210,8 @@ export default class Checkbox extends WidthSizable( Voicing( Node, 0 ) ) {
   }
 
   public override dispose(): void {
+    this.constraint.dispose();
+
     this.disposeCheckbox();
     super.dispose();
   }
