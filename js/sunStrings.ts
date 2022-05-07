@@ -9,11 +9,11 @@ import sun from './sun.js';
 
 type StringsType = {
   'sun': {
-    'title': string
-  },
+    'title': string;
+  };
   'a11y': {
-    'numberSpinnerRoleDescription': string,
-    'close': string
+    'numberSpinnerRoleDescription': string;
+    'close': string;
   }
 };
 
