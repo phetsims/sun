@@ -108,16 +108,15 @@ function demoMultiplePanels( layoutBounds: Bounds2 ): Node {
   const panelA = new Panel( new FlowBox( {
     orientation: 'vertical',
     align: 'left',
+    stretch: true,
     spacing: 5,
     children: [
       sectionText( 'Checkboxes' ),
       new Checkbox( normalText( 'First checkbox' ), createBooleanProperty( false ), {
-        boxWidth: BOX_WIDTH,
-        layoutOptions: { align: 'stretch' }
+        boxWidth: BOX_WIDTH
       } ),
       new Checkbox( normalText( 'Second checkbox' ), createBooleanProperty( false ), {
-        boxWidth: BOX_WIDTH,
-        layoutOptions: { align: 'stretch' }
+        boxWidth: BOX_WIDTH
       } )
     ]
   } ) );
@@ -136,7 +135,7 @@ function demoMultiplePanels( layoutBounds: Bounds2 ): Node {
     orientation: 'vertical',
 
     // This sets the default alignment to stretch (NOTE: this could also be provided in panelA/panelB's layoutOptions)
-    align: 'stretch',
+    stretch: true,
 
     spacing: MARGIN,
     children: [
@@ -176,7 +175,8 @@ function demoCheckboxesWithIcons( layoutBounds: Bounds2 ): Node {
 
   const panel = new Panel( new FlowBox( {
     orientation: 'vertical',
-    align: 'stretch',
+    stretch: true,
+    align: 'left',
     spacing: 5,
     children: [
       sectionText( 'Checks' ),
