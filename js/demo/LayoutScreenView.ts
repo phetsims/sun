@@ -212,6 +212,33 @@ function demoCheckboxesWithIcons( layoutBounds: Bounds2 ): Node {
           leftMargin: 20
         }
       } ),
+      new FlowBox( {
+        orientation: 'vertical',
+        spacing: 5,
+        stretch: true,
+        layoutOptions: { leftMargin: 20 },
+        children: [
+          new Checkbox( new FlowBox( {
+            stretch: true,
+            spacing: 10,
+            children: [
+              normalText( 'Nested 1' ),
+              new Rectangle( 0, 0, 14, 14, { fill: 'black' } )
+            ]
+          } ), createBooleanProperty(), {
+            boxWidth: BOX_WIDTH
+          } ),
+          new Checkbox( new FlowBox( {
+            spacing: 10,
+            children: [
+              normalText( 'Nested 2' ),
+              new Rectangle( 0, 0, 14, 14, { fill: 'black' } )
+            ]
+          } ), createBooleanProperty(), {
+            boxWidth: BOX_WIDTH
+          } )
+        ]
+      } ),
       sectionText( 'Resizing' ),
       resizer
     ]
@@ -239,14 +266,15 @@ function demoManualConstraint( layoutBounds: Bounds2 ): Node {
 
   const alignBox = new AlignBox( panel, { alignBounds: layoutBounds, margin: MARGIN, xAlign: 'right', yAlign: 'top' } );
 
-  const node = new Node( {
-    children: [ leftText, alignBox ]
-  } );
+  const node = new Node();
 
+  // Can create the constraint before things are connected (it will listen)
   ManualConstraint.create( node, [ leftText, rightText, panel ], ( leftProxy, rightProxy, panelProxy ) => {
     leftProxy.centerY = rightProxy.centerY;
     leftProxy.right = panelProxy.left - 10;
   } );
+
+  node.children = [ leftText, alignBox ];
 
   return overrideDispose( node, Node, () => resizer.dispose() );
 }
