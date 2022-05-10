@@ -12,7 +12,7 @@ import Bounds2 from '../../../dot/js/Bounds2.js';
 import optionize from '../../../phet-core/js/optionize.js';
 import Constructor from '../../../phet-core/js/types/Constructor.js';
 import PhetFont from '../../../scenery-phet/js/PhetFont.js';
-import { AlignBox, FlowBox, Node, Rectangle, Text, VDivider } from '../../../scenery/js/imports.js';
+import { AlignBox, FlowBox, ManualConstraint, Node, Rectangle, RectangleOptions, Text, VDivider } from '../../../scenery/js/imports.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import Checkbox from '../Checkbox.js';
 import Panel from '../Panel.js';
@@ -39,6 +39,7 @@ class LayoutScreenView extends DemosScreenView {
        */
       { label: 'Width of multiple panels', createNode: demoMultiplePanels, tandemName: 'multiplePanels' },
       { label: 'Separators', createNode: demoSeparators, tandemName: 'separators' },
+      { label: 'Manual constraint', createNode: demoManualConstraint, tandemName: 'manualConstraint' },
       { label: 'Checkboxes with icons', createNode: demoCheckboxesWithIcons, tandemName: 'checkboxesWithIcons' }
     ], options );
   }
@@ -79,11 +80,11 @@ const createBooleanProperty = ( value = false ) => {
   return new BooleanProperty( value, { tandem: Tandem.OPT_OUT } );
 };
 
-const createHorizontalResizer = ( height: number, minWidth: number, maxWidth: number ): Node => {
-  const result = new Rectangle( {
+const createHorizontalResizer = ( height: number, minWidth: number, maxWidth: number, providedOptions?: RectangleOptions ): Node => {
+  const result = new Rectangle( optionize<RectangleOptions, {}, RectangleOptions>()( {
     fill: 'green',
     rectHeight: height
-  } );
+  }, providedOptions ) );
 
   return overrideDispose( result, Rectangle, onElapsed( ( elapsedTime: number ) => {
     result.rectWidth = ( minWidth + maxWidth ) / 2 + Math.cos( elapsedTime ) * ( maxWidth - minWidth ) / 2;
@@ -218,6 +219,35 @@ function demoCheckboxesWithIcons( layoutBounds: Bounds2 ): Node {
   const alignBox = new AlignBox( panel, { alignBounds: layoutBounds, margin: MARGIN, xAlign: 'right', yAlign: 'top' } );
 
   return overrideDispose( alignBox, AlignBox, () => resizer.dispose() );
+}
+
+function demoManualConstraint( layoutBounds: Bounds2 ): Node {
+  const rightText = normalText( 'Text aligned on right' );
+  const leftText = normalText( 'Text aligned on left' );
+  const resizer = createHorizontalResizer( 30, 50, 200, { rotation: Math.PI / 2 } );
+  const panel = new Panel( new FlowBox( {
+    orientation: 'vertical',
+    align: 'left',
+    spacing: 5,
+    children: [
+      resizer,
+      rightText
+    ]
+  } ) );
+
+
+  const alignBox = new AlignBox( panel, { alignBounds: layoutBounds, margin: MARGIN, xAlign: 'right', yAlign: 'top' } );
+
+  const node = new Node( {
+    children: [ leftText, alignBox ]
+  } );
+
+  ManualConstraint.create( node, [ leftText, rightText, panel ], ( leftProxy, rightProxy, panelProxy ) => {
+    leftProxy.centerY = rightProxy.centerY;
+    leftProxy.right = panelProxy.left - 10;
+  } );
+
+  return overrideDispose( node, Node, () => resizer.dispose() );
 }
 
 sun.register( 'LayoutScreenView', LayoutScreenView );
