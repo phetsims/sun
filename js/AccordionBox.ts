@@ -25,17 +25,6 @@ import { VoicingResponse } from '../../utterance-queue/js/ResponsePacket.js';
 import ExpandCollapseButton, { ExpandCollapseButtonOptions } from './ExpandCollapseButton.js';
 import sun from './sun.js';
 
-// The definition for how AccordionBox sets its accessibleName in the PDOM. Forward it onto its expandCollapseButton.
-// See AccordionBox.md for further style guide and documentation on the pattern.
-const ACCESSIBLE_NAME_BEHAVIOR: PDOMBehaviorFunction = ( node, options, accessibleName: string, callbacksForOtherNodes ) => {
-  callbacksForOtherNodes.push( () => {
-
-    // @ts-ignore TODO: private in the same file, but not private in the same class, https://github.com/phetsims/sun/issues/738
-    ( node as AccordionBox ).expandCollapseButton.accessibleName = accessibleName;
-  } );
-  return options;
-};
-
 // Options documented in optionize
 type SelfOptions = {
   titleNode?: Node;
@@ -192,7 +181,7 @@ export default class AccordionBox extends Node {
       // pdom
       tagName: 'div',
       headingTagName: 'h3', // specify the heading that this AccordionBox will be, TODO: use this.headingLevel when no longer experimental https://github.com/phetsims/scenery/issues/855
-      accessibleNameBehavior: ACCESSIBLE_NAME_BEHAVIOR,
+      accessibleNameBehavior: AccordionBox.ACCORDION_BOX_ACCESSIBLE_NAME_BEHAVIOR,
 
       // voicing
       voicingNameResponse: null,
@@ -643,6 +632,15 @@ export default class AccordionBox extends Node {
       return Math.max( this.expandCollapseButton.height + ( 2 * this._buttonYMargin ), this._contentNode.height + ( 2 * this._contentYMargin ) );
     }
   }
+
+  // The definition for how AccordionBox sets its accessibleName in the PDOM. Forward it onto its expandCollapseButton.
+  // See AccordionBox.md for further style guide and documentation on the pattern.
+  static ACCORDION_BOX_ACCESSIBLE_NAME_BEHAVIOR: PDOMBehaviorFunction = ( node, options, accessibleName: string, callbacksForOtherNodes ) => {
+    callbacksForOtherNodes.push( () => {
+      ( node as AccordionBox ).expandCollapseButton.accessibleName = accessibleName;
+    } );
+    return options;
+  };
 }
 
 class InteractiveHighlightPath extends InteractiveHighlighting( Path, 1 ) {}
