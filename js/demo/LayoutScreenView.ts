@@ -12,7 +12,7 @@ import Bounds2 from '../../../dot/js/Bounds2.js';
 import optionize from '../../../phet-core/js/optionize.js';
 import Constructor from '../../../phet-core/js/types/Constructor.js';
 import PhetFont from '../../../scenery-phet/js/PhetFont.js';
-import { AlignBox, FlowBox, ManualConstraint, Node, Rectangle, RectangleOptions, Text, VDivider } from '../../../scenery/js/imports.js';
+import { AlignBox, FlowBox, FlowCell, FlowConstraint, IPaint, ManualConstraint, Node, Rectangle, RectangleOptions, Text, VDivider } from '../../../scenery/js/imports.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import Checkbox from '../Checkbox.js';
 import Panel from '../Panel.js';
@@ -40,7 +40,8 @@ class LayoutScreenView extends DemosScreenView {
       { label: 'Width of multiple panels', createNode: demoMultiplePanels, tandemName: 'multiplePanels' },
       { label: 'Separators', createNode: demoSeparators, tandemName: 'separators' },
       { label: 'Manual constraint', createNode: demoManualConstraint, tandemName: 'manualConstraint' },
-      { label: 'Checkboxes with icons', createNode: demoCheckboxesWithIcons, tandemName: 'checkboxesWithIcons' }
+      { label: 'Checkboxes with icons', createNode: demoCheckboxesWithIcons, tandemName: 'checkboxesWithIcons' },
+      { label: 'Disconnected flow', createNode: demoDisconnectedFlow, tandemName: 'disconnectedFlow' }
     ], options );
   }
 }
@@ -248,6 +249,67 @@ function demoManualConstraint( layoutBounds: Bounds2 ): Node {
   } );
 
   return overrideDispose( node, Node, () => resizer.dispose() );
+}
+
+function demoDisconnectedFlow( layoutBounds: Bounds2 ): Node {
+  const createLabeledBox = ( label: string, fill: IPaint, width: number, height: number ) => {
+    return new Rectangle( 0, 0, width, height, {
+      stroke: 'black',
+      fill: fill,
+      children: [
+        new Text( label, { font: new PhetFont( 14 ), left: 7, bottom: height - 7 } )
+      ]
+    } );
+  };
+
+  const firstChild = createLabeledBox( 'First child', '#faa', 150, 30 );
+  const secondChild = createLabeledBox( 'Second child', '#afa', 150, 30 );
+  const thirdChild = createLabeledBox( 'Third child', '#aaf', 150, 30 );
+
+  firstChild.y = 50;
+
+  const firstParent = new Node( {
+    children: [
+      firstChild,
+      createLabeledBox( 'First parent', null, 400, 400 )
+    ]
+  } );
+  const secondParent = new Node( {
+    children: [
+      secondChild,
+      createLabeledBox( 'Second parent', null, 400, 400 )
+    ],
+    scale: 0.75
+  } );
+  const thirdParent = new Node( {
+    children: [
+      thirdChild,
+      createLabeledBox( 'Third parent', null, 400, 400 )
+    ],
+    scale: 0.5
+  } );
+
+  const scene = new Node( {
+    children: [ firstParent, secondParent, thirdParent ]
+  } );
+
+  const cleanup = onElapsed( elapsedTime => {
+    secondParent.x = layoutBounds.centerX;
+    secondParent.y = layoutBounds.centerY;
+    firstParent.x = layoutBounds.centerX - 410;
+    firstParent.y = layoutBounds.centerY - 200 + Math.cos( elapsedTime ) * 100;
+    thirdParent.x = secondParent.centerX + 300 + Math.cos( elapsedTime ) * 100;
+    thirdParent.y = secondParent.centerY + Math.sin( elapsedTime ) * 100;
+  } );
+
+  const constraint = new FlowConstraint( scene );
+  constraint.spacing = 10;
+  constraint.insertCell( 0, new FlowCell( constraint, firstChild ) );
+  constraint.insertCell( 1, new FlowCell( constraint, secondChild ) );
+  constraint.insertCell( 2, new FlowCell( constraint, thirdChild ) );
+  constraint.updateLayout();
+
+  return overrideDispose( scene, Node, cleanup );
 }
 
 sun.register( 'LayoutScreenView', LayoutScreenView );

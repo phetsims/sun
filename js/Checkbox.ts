@@ -273,7 +273,7 @@ class CheckboxConstraint extends LayoutConstraint {
     super.layout();
 
     // LayoutProxy helps with some layout operations, and will support a non-child content.
-    const contentProxy = this.createLayoutProxy( this.content );
+    const contentProxy = this.createLayoutProxy( this.content )!;
 
     const contentWidth = contentProxy.minimumWidth;
 
