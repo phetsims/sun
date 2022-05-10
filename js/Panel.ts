@@ -191,8 +191,8 @@ class PanelConstraint extends LayoutConstraint {
     this.lineWidth = options.lineWidth;
     this.align = options.align;
 
-    this.panel.preferredWidthProperty.lazyLink( this._updateLayoutListener );
-    this.panel.preferredHeightProperty.lazyLink( this._updateLayoutListener );
+    this.panel.localPreferredWidthProperty.lazyLink( this._updateLayoutListener );
+    this.panel.localPreferredHeightProperty.lazyLink( this._updateLayoutListener );
 
     this.addNode( panel._content );
   }
@@ -209,8 +209,8 @@ class PanelConstraint extends LayoutConstraint {
     // Bail out (and make the background invisible) if our bounds are invalid
     panel._backgroundContainer.children = hasValidContent ? [ background ] : [];
     if ( !hasValidContent ) {
-      panel.minimumWidth = null;
-      panel.minimumHeight = null;
+      panel.localMinimumWidth = null;
+      panel.localMinimumHeight = null;
       return;
     }
 
@@ -223,15 +223,15 @@ class PanelConstraint extends LayoutConstraint {
     const minimumHeight = minimumContentHeight + ( 2 * this.yMargin ) + this.lineWidth;
 
     // Our resulting sizes (allow setting preferred width/height on the panel)
-    const preferredWidth: number = panel.preferredWidth === null ? minimumWidth : panel.preferredWidth;
-    const preferredHeight: number = panel.preferredHeight === null ? minimumHeight : panel.preferredHeight;
+    const preferredWidth: number = panel.localPreferredWidth === null ? minimumWidth : panel.localPreferredWidth;
+    const preferredHeight: number = panel.localPreferredHeight === null ? minimumHeight : panel.localPreferredHeight;
 
     // Determine the size available to our content
     // NOTE: We do NOT set preferred sizes of our content if we don't have a preferred size ourself!
-    if ( isWidthSizable( content ) && panel.preferredWidth !== null ) {
+    if ( isWidthSizable( content ) && panel.localPreferredWidth !== null ) {
       content.preferredWidth = preferredWidth - this.lineWidth - 2 * this.xMargin;
     }
-    if ( isHeightSizable( content ) && panel.preferredWidth !== null ) {
+    if ( isHeightSizable( content ) && panel.localPreferredWidth !== null ) {
       content.preferredHeight = preferredHeight - this.lineWidth - 2 * this.yMargin;
     }
 
@@ -255,13 +255,13 @@ class PanelConstraint extends LayoutConstraint {
     }
 
     // Set minimums at the end
-    panel.minimumWidth = minimumWidth;
-    panel.minimumHeight = minimumHeight;
+    panel.localMinimumWidth = minimumWidth;
+    panel.localMinimumHeight = minimumHeight;
   }
 
   public override dispose(): void {
-    this.panel.preferredWidthProperty.unlink( this._updateLayoutListener );
-    this.panel.preferredHeightProperty.unlink( this._updateLayoutListener );
+    this.panel.localPreferredWidthProperty.unlink( this._updateLayoutListener );
+    this.panel.localPreferredHeightProperty.unlink( this._updateLayoutListener );
 
     super.dispose();
   }
