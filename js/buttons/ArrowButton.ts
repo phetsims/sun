@@ -37,7 +37,7 @@ type SelfOptions = {
   arrowSpacing?: number;
 };
 
-export type ArrowButtonOptions = SelfOptions & RectangularPushButtonOptions;
+export type ArrowButtonOptions = SelfOptions & Omit<RectangularPushButtonOptions, 'content' | 'listener'>;
 
 export default class ArrowButton extends RectangularPushButton {
 
@@ -76,7 +76,6 @@ export default class ArrowButton extends RectangularPushButton {
 
     }, providedOptions );
 
-    assert && assert( !options.listener, 'ArrowButton sets listener' );
     options.listener = callback;
 
     // arrow node
@@ -102,7 +101,6 @@ export default class ArrowButton extends RectangularPushButton {
       }
     }
 
-    assert && assert( !options.content, 'ArrowButton sets content' );
     options.content = new Path( arrowShape, {
       fill: options.arrowFill,
       stroke: options.arrowStroke,

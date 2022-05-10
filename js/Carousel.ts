@@ -80,7 +80,7 @@ type SelfOptions = {
   stepEmitter?: Timer; // see Animation options.stepEmitter
 };
 
-export type CarouselOptions = SelfOptions & NodeOptions;
+export type CarouselOptions = SelfOptions & Omit<NodeOptions, 'children'>;
 
 export default class Carousel extends Node {
 
@@ -401,7 +401,6 @@ export default class Carousel extends Node {
     this.numberOfPages = numberOfPages;
     this.pageNumberProperty = pageNumberProperty;
 
-    assert && assert( !options.children, 'Carousel sets children' );
     options.children = [ backgroundNode, windowNode, nextButton, previousButton, foregroundNode ];
 
     this.disposeCarousel = () => {

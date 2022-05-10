@@ -126,7 +126,7 @@ type SelfOptions = {
 };
 
 // We provide these options to the super
-export type SliderOptions = SelfOptions & Omit<AccessibleSliderOptions, 'valueProperty' | 'enabledRangeProperty'>;
+export type SliderOptions = SelfOptions & Omit<AccessibleSliderOptions, 'panTargetNode' | 'valueProperty' | 'enabledRangeProperty'>;
 
 type TickOptions = Pick<SelfOptions, 'tickLabelSpacing' | 'majorTickLength' | 'majorTickStroke' | 'majorTickLineWidth' | 'minorTickLength' | 'minorTickStroke' | 'minorTickLineWidth'>;
 
@@ -227,10 +227,6 @@ export default class Slider extends AccessibleSlider( Node, 0 ) {
       ariaOrientation: options.orientation
     }, options );
 
-    assert && assert( range instanceof Range, `range must be of type Range:${range}` );
-    assert && assert( options.orientation instanceof Orientation, `invalid orientation: ${options.orientation}` );
-    assert && assert( options.trackNode === null || options.trackNode instanceof SliderTrack, 'trackNode must be of type SliderTrack' );
-    assert && assert( options.thumbNode === null || options.thumbNode instanceof Node, 'thumbNode must be of type Node' );
     assert && assert( options.soundGenerator === Slider.DEFAULT_SOUND || _.isEmpty( options.valueChangeSoundGeneratorOptions ),
       'options should only be supplied when using default sound generator' );
 
@@ -314,10 +310,8 @@ export default class Slider extends AccessibleSlider( Node, 0 ) {
                            'the enabledRangeProperty, which determines how low and high the thumb can be dragged within the track.'
     } );
 
-    assert && assert( !superOptions.panTargetNode, 'Slider sets its own panTargetNode' );
     superOptions.panTargetNode = thumb;
 
-    assert && assert( !superOptions.valueProperty, 'Slider sets its own valueProperty' );
     superOptions.valueProperty = valueProperty;
 
     super( superOptions );

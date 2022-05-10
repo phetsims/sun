@@ -54,7 +54,7 @@ type SelfOptions = {
   phetioLinkProperty?: boolean;
 };
 
-export type CheckboxOptions = SelfOptions & VoicingOptions;
+export type CheckboxOptions = SelfOptions & Omit<VoicingOptions, 'children'>;
 
 export default class Checkbox extends WidthSizable( Voicing( Node, 0 ) ) {
 

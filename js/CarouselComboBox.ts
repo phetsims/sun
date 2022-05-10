@@ -24,7 +24,6 @@ import IProperty from '../../axon/js/IProperty.js';
 import Multilink from '../../axon/js/Multilink.js';
 import Dimension2 from '../../dot/js/Dimension2.js';
 import dotRandom from '../../dot/js/dotRandom.js';
-import merge from '../../phet-core/js/merge.js';
 import optionize, { optionize3 } from '../../phet-core/js/optionize.js';
 import { AlignBox, AlignGroup, Color, Display, HBox, IColor, Node, NodeOptions, PressListener, Rectangle, SceneryEvent, VBox } from '../../scenery/js/imports.js';
 import Tandem from '../../tandem/js/Tandem.js';
@@ -225,7 +224,7 @@ type CarouselItemNodeSelfOptions = {
   selectedColor?: IColor; // background color of the selected item
 };
 
-type CarouselItemNodeOptions = CarouselItemNodeSelfOptions & NodeOptions;
+type CarouselItemNodeOptions = CarouselItemNodeSelfOptions & Omit<NodeOptions, 'children'>;
 
 /**
  * CarouselItemNode is an item this UI component's carousel. Carousel and ComboBox have different APIs for 'items'.
@@ -238,7 +237,7 @@ class CarouselItemNode<T> extends Node {
 
   constructor( property: IProperty<T>, comboBoxItem: ComboBoxItem<T>, alignGroup: AlignGroup, providedOptions?: CarouselItemNodeOptions ) {
 
-    const options = merge( {
+    const options = optionize<CarouselItemNodeOptions, CarouselItemNodeSelfOptions, NodeOptions>()( {
 
       // CarouselItemNodeSelfOptions
       align: 'left',
@@ -264,7 +263,6 @@ class CarouselItemNode<T> extends Node {
       backgroundNode.setRectBounds( bounds.dilatedXY( options.xMargin, options.yMargin ) );
     } );
 
-    assert && assert( !options.children, 'CarouselItemNode sets children' );
     options.children = [ backgroundNode, uniformNode ];
 
     super( options );

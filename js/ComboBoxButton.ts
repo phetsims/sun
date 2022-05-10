@@ -46,7 +46,7 @@ type SelfOptions = {
   comboBoxVoicingNameResponsePattern?: string;
 };
 
-export type ComboBoxButtonOptions = SelfOptions & RectangularPushButtonOptions;
+export type ComboBoxButtonOptions = SelfOptions & Omit<RectangularPushButtonOptions, 'children' | 'ariaLabelledbyAssociations'>;
 
 export default class ComboBoxButton<T> extends RectangularPushButton {
 
@@ -157,7 +157,6 @@ export default class ComboBoxButton<T> extends RectangularPushButton {
     options.xMargin = 0;
     options.yMargin = 0;
 
-    assert && assert( !options.content, 'ComboBoxButton sets content' );
     options.content = new Node( {
       children: [ itemAreaStrut, arrowAreaStrut, itemNodeWrapper, vSeparator, arrow ]
     } );
@@ -221,7 +220,6 @@ export default class ComboBoxButton<T> extends RectangularPushButton {
     // Add aria-labelledby attribute to the button.
     // The button is aria-labelledby its own label sibling, and then (second) its primary sibling in the PDOM.
     // Order matters!
-    assert && assert( !options.ariaLabelledbyAssociations, 'ComboBoxButton sets ariaLabelledbyAssociations' );
     this.ariaLabelledbyAssociations = [
       {
         otherNode: this,
