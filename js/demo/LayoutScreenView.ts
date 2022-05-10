@@ -304,9 +304,9 @@ function demoDisconnectedFlow( layoutBounds: Bounds2 ): Node {
 
   const constraint = new FlowConstraint( scene );
   constraint.spacing = 10;
-  constraint.insertCell( 0, new FlowCell( constraint, firstChild ) );
-  constraint.insertCell( 1, new FlowCell( constraint, secondChild ) );
-  constraint.insertCell( 2, new FlowCell( constraint, thirdChild ) );
+  constraint.insertCell( 0, new FlowCell( constraint, firstChild, null ) );
+  constraint.insertCell( 1, new FlowCell( constraint, secondChild, null ) );
+  constraint.insertCell( 2, new FlowCell( constraint, thirdChild, null ) );
   constraint.updateLayout();
 
   return overrideDispose( scene, Node, cleanup );
