@@ -167,12 +167,12 @@ export default class Panel extends WidthSizable( HeightSizable( Node ) ) {
 
 class PanelConstraint extends LayoutConstraint {
 
-  private panel: Panel;
-  private minWidth: number;
-  private xMargin: number;
-  private yMargin: number;
-  private lineWidth: number;
-  private align: PanelAlign;
+  private readonly panel: Panel;
+  private readonly minWidth: number;
+  private readonly xMargin: number;
+  private readonly yMargin: number;
+  private readonly lineWidth: number;
+  private readonly align: PanelAlign;
 
   constructor( panel: Panel, options: Required<SelfOptions> ) {
     super( panel );
