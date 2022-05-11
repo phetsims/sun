@@ -10,10 +10,11 @@ import BooleanProperty from '../../../axon/js/BooleanProperty.js';
 import stepTimer from '../../../axon/js/stepTimer.js';
 import Bounds2 from '../../../dot/js/Bounds2.js';
 import Vector2 from '../../../dot/js/Vector2.js';
+import { Shape } from '../../../kite/js/imports.js';
 import optionize from '../../../phet-core/js/optionize.js';
 import Constructor from '../../../phet-core/js/types/Constructor.js';
 import PhetFont from '../../../scenery-phet/js/PhetFont.js';
-import { AlignBox, FlowBox, FlowCell, FlowConstraint, IPaint, ManualConstraint, Node, Rectangle, RectangleOptions, Text, VDivider } from '../../../scenery/js/imports.js';
+import { AlignBox, Circle, FlowBox, FlowCell, FlowConstraint, GridBackgroundNode, GridBox, IPaint, ManualConstraint, Node, Path, Rectangle, RectangleOptions, Text, TextOptions, VDivider } from '../../../scenery/js/imports.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import Checkbox from '../Checkbox.js';
 import Panel from '../Panel.js';
@@ -42,7 +43,8 @@ class LayoutScreenView extends DemosScreenView {
       { label: 'Separators', createNode: demoSeparators, tandemName: 'separators' },
       { label: 'Manual constraint', createNode: demoManualConstraint, tandemName: 'manualConstraint' },
       { label: 'Checkboxes with icons', createNode: demoCheckboxesWithIcons, tandemName: 'checkboxesWithIcons' },
-      { label: 'Disconnected flow', createNode: demoDisconnectedFlow, tandemName: 'disconnectedFlow' }
+      { label: 'Disconnected flow', createNode: demoDisconnectedFlow, tandemName: 'disconnectedFlow' },
+      { label: 'Origin', createNode: demoOrigin, tandemName: 'origin' }
     ], options );
   }
 }
@@ -50,8 +52,15 @@ class LayoutScreenView extends DemosScreenView {
 const MARGIN = 10;
 const BOX_WIDTH = 14;
 
-const normalText = ( str: string ) => new Text( str, { font: new PhetFont( 12 ) } );
-const sectionText = ( str: string ) => new Text( str, { font: new PhetFont( { size: 14, weight: 'bold' } ) } );
+const normalText = ( str: string, options?: TextOptions ) => new Text( str, optionize<TextOptions, {}, TextOptions>()( {
+  font: new PhetFont( 12 )
+}, options ) );
+const sectionText = ( str: string, options?: TextOptions ) => new Text( str, optionize<TextOptions, {}, TextOptions>()( {
+  font: new PhetFont( { size: 14, weight: 'bold' } )
+}, options ) );
+const bigText = ( str: string, options?: TextOptions ) => new Text( str, optionize<TextOptions, {}, TextOptions>()( {
+  font: new PhetFont( { size: 18, weight: 'bold' } )
+}, options ) );
 
 const overrideDispose = <T extends Constructor<Node>>( node: InstanceType<T>, Type: T, callback: () => void ) => {
   node.dispose = function( this: InstanceType<T> ) {
@@ -369,6 +378,73 @@ function demoDisconnectedFlow( layoutBounds: Bounds2 ): Node {
   constraint.updateLayout();
 
   return overrideDispose( scene, Node, cleanup );
+}
+
+function demoOrigin( layoutBounds: Bounds2 ): Node {
+  const originSize = 50;
+  const originNode = new Path( new Shape().moveTo( -originSize, 0 ).lineTo( originSize, 0 ).moveTo( 0, originSize ).lineTo( 0, -originSize ), {
+    stroke: 'rgba(0,0,0,0.3)'
+  } );
+
+  const flowBox = new FlowBox( {
+    orientation: 'horizontal',
+    align: 'origin',
+    spacing: 5,
+    lineSpacing: 5,
+    children: [
+      new Circle( 20, { fill: 'rgba(255,0,0,0.3)' } ),
+      bigText( 'Text' ),
+      normalText( 'Text' ),
+      new Circle( 20, { fill: 'rgba(255,0,0,0.3)' } ),
+      bigText( 'Text' ),
+      normalText( 'text' ),
+      new Circle( 20, { fill: 'rgba(255,0,0,0.3)' } ),
+      bigText( 'Text' ),
+      normalText( 'text' ),
+      new Circle( 20, { fill: 'rgba(255,0,0,0.3)' } ),
+      bigText( 'Text' ),
+      normalText( 'text' )
+    ],
+    wrap: true,
+    preferredWidth: 170,
+    justify: 'left'
+  } );
+
+  const gridBox = new GridBox( {
+    xAlign: 'origin',
+    yAlign: 'origin',
+    children: [
+      new Circle( 20, { fill: 'rgba(255,0,0,0.3)', layoutOptions: { x: 0, y: 0 } } ),
+      new Circle( 10, { fill: 'rgba(255,0,0,0.3)', layoutOptions: { x: 1, y: 0 } } ),
+      new Circle( 15, { fill: 'rgba(255,0,0,0.3)', layoutOptions: { x: 0, y: 1 } } ),
+      new Circle( 25, { fill: 'rgba(255,0,0,0.3)', layoutOptions: { x: 1, y: 1 } } )
+    ]
+  } );
+
+  const content = new GridBox( {
+    spacing: 15,
+    children: [
+      sectionText( 'FlowBox', { layoutOptions: { x: 0, y: 0 } } ),
+      sectionText( 'GridBox', { layoutOptions: { x: 1, y: 0 } } ),
+      new Node( {
+        children: [
+          originNode,
+          flowBox
+        ],
+        layoutOptions: { x: 0, y: 1, yAlign: 'origin' }
+      } ),
+      new Node( {
+        children: [
+          new GridBackgroundNode( gridBox.constraint ),
+          originNode,
+          gridBox
+        ],
+        layoutOptions: { x: 1, y: 1, yAlign: 'origin' }
+      } )
+    ]
+  } );
+
+  return new AlignBox( content, { alignBounds: layoutBounds, xAlign: 'center', yAlign: 'center' } );
 }
 
 sun.register( 'LayoutScreenView', LayoutScreenView );
