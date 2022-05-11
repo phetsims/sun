@@ -123,10 +123,15 @@ class Dialog extends Popupable( Panel ) {
       backgroundPickable: true,
       maxHeight: null, // if not provided, then dynamically calculate based on the layoutBounds of the current screen, see updateLayoutMultilink
       maxWidth: null, // if not provided, then dynamically calculate based on the layoutBounds of the current screen, see updateLayoutMultilink
+
+      // phet-io
       tandem: Tandem.OPTIONAL,
       phetioType: Dialog.DialogIO,
       phetioReadOnly: PhetioObject.DEFAULT_OPTIONS.phetioReadOnly, // default to false so it can pass it through to the close button
       phetioState: PhetioObject.DEFAULT_OPTIONS.phetioState,
+      visiblePropertyOptions: {
+        phetioReadOnly: false // Dialog's visibility is controlled by Popupable.isShowingProperty
+      },
 
       // {ISoundPlayer} - sound generation
       openedSoundPlayer: generalOpenSoundPlayer,
