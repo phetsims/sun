@@ -48,7 +48,6 @@ export default class TextPushButton extends RectangularPushButton {
       tandem: options.tandem.createTandem( 'textNode' )
     }, options.textNodeOptions ) );
 
-    assert && assert( !options.content, 'TextPushButton sets content' );
     options.content = textNode;
 
     super( options );

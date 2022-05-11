@@ -54,7 +54,7 @@ type SelfOptions = {
   phetioLinkProperty?: boolean;
 };
 
-export type CheckboxOptions = SelfOptions & VoicingOptions;
+export type CheckboxOptions = SelfOptions & Omit<VoicingOptions, 'children'>;
 
 export default class Checkbox extends WidthSizable( Voicing( Node, 0 ) ) {
 
@@ -264,7 +264,7 @@ class CheckboxConstraint extends LayoutConstraint {
     this.rectangle = rectangle;
     this.options = options;
 
-    this.checkbox.preferredWidthProperty.lazyLink( this._updateLayoutListener );
+    this.checkbox.localPreferredWidthProperty.lazyLink( this._updateLayoutListener );
 
     this.addNode( content );
   }
@@ -281,7 +281,7 @@ class CheckboxConstraint extends LayoutConstraint {
     const checkboxWithoutSpacingWidth = ( this.checkedNode.right - this.checkboxNode.left );
     const minimumWidth = checkboxWithoutSpacingWidth + this.options.spacing + contentWidth;
 
-    const preferredWidth = this.checkbox.preferredWidth === null ? minimumWidth : this.checkbox.preferredWidth;
+    const preferredWidth = this.checkbox.localPreferredWidth === null ? minimumWidth : this.checkbox.localPreferredWidth;
 
     // Attempt to set a preferredWidth
     if ( isWidthSizable( this.content ) ) {
@@ -305,11 +305,11 @@ class CheckboxConstraint extends LayoutConstraint {
     contentProxy.dispose();
 
     // Set the minimumWidth last, since this may trigger a relayout
-    this.checkbox.minimumWidth = minimumWidth;
+    this.checkbox.localMinimumWidth = minimumWidth;
   }
 
   public override dispose(): void {
-    this.checkbox.preferredWidthProperty.unlink( this._updateLayoutListener );
+    this.checkbox.localPreferredWidthProperty.unlink( this._updateLayoutListener );
 
     super.dispose();
   }

@@ -234,7 +234,6 @@ export default class NumberSpinner extends AccessibleNumberSpinner( Node, 0 ) {
       }
     }
 
-    assert && assert( !options.children, 'decoration not supported' );
     options.children = [ numberDisplay, incrementButton, decrementButton ];
 
     // pdom - NumberSpinner uses AccessibleValueHandler for accessibility, but it was decided that keyboardStep

@@ -32,7 +32,7 @@ type SelfOptions = {
   comboBoxVoicingNameResponsePattern?: string;
 };
 
-export type ComboBoxListItemNodeOptions = SelfOptions & VoicingOptions;
+export type ComboBoxListItemNodeOptions = SelfOptions & Omit<VoicingOptions, 'children' | 'innerContent'>;
 
 export default class ComboBoxListItemNode<T> extends Voicing( Node, 0 ) {
 
@@ -84,7 +84,6 @@ export default class ComboBoxListItemNode<T> extends Voicing( Node, 0 ) {
       'value needs to be filled in' );
 
     // pdom: get innerContent from the item
-    assert && assert( options.innerContent === undefined, 'ComboBoxListItemNode sets innerContent' );
     options.innerContent = item.a11yLabel;
     options.voicingObjectResponse = item.a11yLabel;
     options.voicingNameResponse = StringUtils.fillIn( options.comboBoxVoicingNameResponsePattern, {
@@ -120,7 +119,6 @@ export default class ComboBoxListItemNode<T> extends Voicing( Node, 0 ) {
     itemNodeWrapper.boundsProperty.lazyLink( updateItemLayout );
     updateItemLayout();
 
-    assert && assert( !options.children, 'ComboBoxListItemNode sets children' );
     options.children = [ highlightRectangle, itemNodeWrapper ];
 
     super( options );

@@ -25,7 +25,7 @@ type SelfOptions = {
   alignChildren?: ( children: Node[] ) => void;
 };
 
-export type ToggleNodeOptions = SelfOptions & NodeOptions;
+export type ToggleNodeOptions = SelfOptions & Omit<NodeOptions, 'children'>;
 
 export default class ToggleNode<T> extends Node {
 
@@ -65,7 +65,6 @@ export default class ToggleNode<T> extends Node {
     };
     valueProperty.link( valueListener );
 
-    assert && assert( !options.children, 'ToggleNode sets children' );
     options.children = _.map( elements, 'node' );
 
     options.alignChildren( options.children );

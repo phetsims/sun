@@ -125,7 +125,6 @@ export default class PageControl extends Node {
     };
     pageNumberProperty.link( pageNumberObserver );
 
-    assert && assert( !options.children, 'PageControl sets children' );
     options.children = dotNodes;
 
     super( options );

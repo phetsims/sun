@@ -9,6 +9,7 @@
 import BooleanProperty from '../../../axon/js/BooleanProperty.js';
 import stepTimer from '../../../axon/js/stepTimer.js';
 import Bounds2 from '../../../dot/js/Bounds2.js';
+import Vector2 from '../../../dot/js/Vector2.js';
 import optionize from '../../../phet-core/js/optionize.js';
 import Constructor from '../../../phet-core/js/types/Constructor.js';
 import PhetFont from '../../../scenery-phet/js/PhetFont.js';
@@ -211,6 +212,36 @@ function demoCheckboxesWithIcons( layoutBounds: Bounds2 ): Node {
         layoutOptions: {
           leftMargin: 20
         }
+      } ),
+      new Checkbox( new FlowBox( {
+        spacing: 10,
+        scale: 0.7,
+        children: [
+          normalText( 'Scaled 1' ),
+          new Rectangle( 0, 0, 14, 14, { fill: 'orange' } )
+        ]
+      } ), createBooleanProperty(), {
+        boxWidth: BOX_WIDTH
+      } ),
+      new Checkbox( new FlowBox( {
+        spacing: 10,
+        children: [
+          normalText( 'Scaled 2' ),
+          new Rectangle( 0, 0, 14, 14, { fill: 'orange' } )
+        ]
+      } ), createBooleanProperty(), {
+        boxWidth: BOX_WIDTH,
+        scale: 0.7
+      } ),
+      new Checkbox( new FlowBox( {
+        spacing: 10,
+        children: [
+          normalText( 'Reflected' ),
+          new Rectangle( 0, 0, 14, 14, { fill: 'orange' } )
+        ]
+      } ), createBooleanProperty(), {
+        boxWidth: BOX_WIDTH,
+        scale: new Vector2( -1, 1 )
       } ),
       new FlowBox( {
         orientation: 'vertical',
