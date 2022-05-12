@@ -17,7 +17,7 @@ import Bounds2 from '../../../dot/js/Bounds2.js';
 import Dimension2 from '../../../dot/js/Dimension2.js';
 import dotRandom from '../../../dot/js/dotRandom.js';
 import Range from '../../../dot/js/Range.js';
-import optionize, { optionize3 } from '../../../phet-core/js/optionize.js';
+import { combineOptions, combineOptions3 } from '../../../phet-core/js/optionize.js';
 import PhetFont from '../../../scenery-phet/js/PhetFont.js';
 import { AlignBox, AlignGroup, Circle, HBox, Node, Rectangle, Text, VBox } from '../../../scenery/js/imports.js';
 import { PhetioObjectOptions } from '../../../tandem/js/PhetioObject.js';
@@ -30,7 +30,7 @@ import Carousel from '../Carousel.js';
 import Checkbox from '../Checkbox.js';
 import ComboBox from '../ComboBox.js';
 import ComboBoxItem from '../ComboBoxItem.js';
-import HSlider from '../HSlider.js';
+import HSlider, { HSliderOptions } from '../HSlider.js';
 import NumberSpinner, { NumberSpinnerOptions } from '../NumberSpinner.js';
 import OnOffSwitch from '../OnOffSwitch.js';
 import PageControl from '../PageControl.js';
@@ -39,14 +39,14 @@ import Slider, { SliderOptions } from '../Slider.js';
 import sun from '../sun.js';
 import sunQueryParameters from '../sunQueryParameters.js';
 import ToggleSwitch from '../ToggleSwitch.js';
-import VSlider from '../VSlider.js';
+import VSlider, { VSliderOptions } from '../VSlider.js';
 import DemosScreenView, { DemosScreenViewOptions } from './DemosScreenView.js';
 
 class ComponentsScreenView extends DemosScreenView {
 
   constructor( providedOptions: DemosScreenViewOptions ) {
 
-    const options = optionize<DemosScreenViewOptions, {}, DemosScreenViewOptions>()( {
+    const options = combineOptions<DemosScreenViewOptions>( {
       selectedDemoLabel: sunQueryParameters.component,
       tandem: Tandem.REQUIRED
     }, providedOptions );
@@ -259,7 +259,7 @@ function demoVSlider( layoutBounds: Bounds2, options?: PhetioObjectOptions ): No
  */
 function demoSlider( layoutBounds: Bounds2, orientation: 'horizontal' | 'vertical', providedOptions?: SliderOptions ): Node {
 
-  const options = optionize<SliderOptions, {}, SliderOptions>()( {
+  const options = combineOptions<SliderOptions>( {
     center: layoutBounds.center,
     tandem: Tandem.REQUIRED,
     phetioDesigned: true
@@ -273,7 +273,7 @@ function demoSlider( layoutBounds: Bounds2, orientation: 'horizontal' | 'vertica
 
   let slider: Slider;
   if ( orientation === 'horizontal' ) {
-    slider = new HSlider( property, range, optionize<SliderOptions, {}, SliderOptions>()( options, {
+    slider = new HSlider( property, range, combineOptions<HSliderOptions>( options, {
       trackSize: new Dimension2( 300, 5 ),
 
       // Demonstrate larger x dilation.
@@ -285,7 +285,7 @@ function demoSlider( layoutBounds: Bounds2, orientation: 'horizontal' | 'vertica
     } ) );
   }
   else {
-    slider = new VSlider( property, range, optionize<SliderOptions, {}, SliderOptions>()( options, {
+    slider = new VSlider( property, range, combineOptions<VSliderOptions>( options, {
       trackSize: new Dimension2( 5, 300 ),
 
       // Demonstrate larger y dilation, to verify that VSlider is handling things correctly.
@@ -452,7 +452,7 @@ function demoNumberSpinner( layoutBounds: Bounds2 ): Node {
 
   // Demonstrate each value of options.arrowsPosition
   const spinnerLeftRight = new NumberSpinner( valueProperty, valueRangeProperty,
-    optionize3<NumberSpinnerOptions, {}, NumberSpinnerOptions>()( {}, spinnerOptions, {
+    combineOptions3<NumberSpinnerOptions>( {}, spinnerOptions, {
       arrowsPosition: 'leftRight',
       numberDisplayOptions: {
         valuePattern: '{{value}} bottles of beer on the wall'
@@ -460,13 +460,13 @@ function demoNumberSpinner( layoutBounds: Bounds2 ): Node {
     } ) );
 
   const spinnerTopBottom = new NumberSpinner( valueProperty, valueRangeProperty,
-    optionize3<NumberSpinnerOptions, {}, NumberSpinnerOptions>()( {}, spinnerOptions, {
+    combineOptions3<NumberSpinnerOptions>( {}, spinnerOptions, {
       arrowsPosition: 'topBottom',
       arrowsScale: 0.65
     } ) );
 
   const spinnerBothRight = new NumberSpinner( valueProperty, valueRangeProperty,
-    optionize3<NumberSpinnerOptions, {}, NumberSpinnerOptions>()( {}, spinnerOptions, {
+    combineOptions3<NumberSpinnerOptions>( {}, spinnerOptions, {
       arrowsPosition: 'bothRight',
       numberDisplayOptions: {
         yMargin: 10,
@@ -475,7 +475,7 @@ function demoNumberSpinner( layoutBounds: Bounds2 ): Node {
     } ) );
 
   const spinnerBothBottom = new NumberSpinner( valueProperty, valueRangeProperty,
-    optionize3<NumberSpinnerOptions, {}, NumberSpinnerOptions>()( {}, spinnerOptions, {
+    combineOptions3<NumberSpinnerOptions>( {}, spinnerOptions, {
       arrowsPosition: 'bothBottom',
       numberDisplayOptions: {
         backgroundFill: 'pink',

@@ -22,7 +22,7 @@ import Dimension2 from '../../dot/js/Dimension2.js';
 import { Shape } from '../../kite/js/imports.js';
 import InstanceRegistry from '../../phet-core/js/documentation/InstanceRegistry.js';
 import merge from '../../phet-core/js/merge.js';
-import optionize from '../../phet-core/js/optionize.js';
+import optionize, { combineOptions } from '../../phet-core/js/optionize.js';
 import { IColor, Node, NodeOptions, Rectangle } from '../../scenery/js/imports.js';
 import ISoundPlayer from '../../tambo/js/ISoundPlayer.js';
 import pushButtonSoundPlayer from '../../tambo/js/shared-sound-players/pushButtonSoundPlayer.js';
@@ -188,11 +188,11 @@ export default class Carousel extends Node {
     };
 
     // Next/previous buttons
-    const nextButton = new CarouselButton( optionize<CarouselButtonOptions, {}, CarouselButtonOptions>()( {
+    const nextButton = new CarouselButton( combineOptions<CarouselButtonOptions>( {
       arrowDirection: isHorizontal ? 'right' : 'down',
       tandem: options.tandem.createTandem( 'nextButton' )
     }, buttonOptions ) );
-    const previousButton = new CarouselButton( optionize<CarouselButtonOptions, {}, CarouselButtonOptions>()( {
+    const previousButton = new CarouselButton( combineOptions<CarouselButtonOptions>( {
       arrowDirection: isHorizontal ? 'left' : 'up',
       tandem: options.tandem.createTandem( 'previousButton' )
     }, buttonOptions ) );

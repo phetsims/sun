@@ -12,13 +12,15 @@ import optionize from '../../phet-core/js/optionize.js';
 import sun from './sun.js';
 import ToggleSwitch, { ToggleSwitchOptions } from './ToggleSwitch.js';
 
-export type OnOffSwitchOptions = ToggleSwitchOptions;
+type SelfOptions = {};
+
+export type OnOffSwitchOptions = SelfOptions & ToggleSwitchOptions;
 
 export default class OnOffSwitch extends ToggleSwitch<boolean> {
 
   constructor( property: IProperty<boolean>, providedOptions: OnOffSwitchOptions ) {
 
-    const options = optionize<OnOffSwitchOptions, {}, ToggleSwitchOptions>()( {
+    const options = optionize<OnOffSwitchOptions, SelfOptions, ToggleSwitchOptions>()( {
       trackFillLeft: 'white', // track fill when property.value === false
       trackFillRight: 'rgb( 0, 200, 0 )' // track fill when property.value === true
     }, providedOptions );

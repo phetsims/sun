@@ -11,7 +11,7 @@ import IProperty from '../../axon/js/IProperty.js';
 import Range from '../../dot/js/Range.js';
 import InstanceRegistry from '../../phet-core/js/documentation/InstanceRegistry.js';
 import merge from '../../phet-core/js/merge.js';
-import optionize from '../../phet-core/js/optionize.js';
+import optionize, { combineOptions } from '../../phet-core/js/optionize.js';
 // @ts-ignore FIX DEPENDENCY ON SCENERY-PHET
 import NumberDisplay, { NumberDisplayOptions } from '../../scenery-phet/js/NumberDisplay.js';
 import { IColor, Node, SceneryConstants } from '../../scenery/js/imports.js';
@@ -138,7 +138,7 @@ export default class NumberSpinner extends AccessibleNumberSpinner( Node, 0 ) {
     const incrementButton = new ArrowButton(
       ( options.arrowsPosition === 'topBottom' || options.arrowsPosition === 'bothRight' ) ? 'up' : 'right',
       () => numberProperty.set( incrementFunction( numberProperty.get() ) ),
-      optionize<ArrowButtonOptions, {}, ArrowButtonOptions>()( {
+      combineOptions<ArrowButtonOptions>( {
         tandem: options.tandem.createTandem( 'incrementButton' )
       }, arrowButtonOptions )
     );
@@ -147,7 +147,7 @@ export default class NumberSpinner extends AccessibleNumberSpinner( Node, 0 ) {
     const decrementButton = new ArrowButton(
       ( options.arrowsPosition === 'topBottom' || options.arrowsPosition === 'bothRight' ) ? 'down' : 'left',
       () => numberProperty.set( decrementFunction( numberProperty.get() ) ),
-      optionize<ArrowButtonOptions, {}, ArrowButtonOptions>()( {
+      combineOptions<ArrowButtonOptions>( {
         tandem: options.tandem.createTandem( 'decrementButton' )
       }, arrowButtonOptions )
     );

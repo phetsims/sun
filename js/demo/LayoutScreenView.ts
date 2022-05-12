@@ -11,7 +11,7 @@ import stepTimer from '../../../axon/js/stepTimer.js';
 import Bounds2 from '../../../dot/js/Bounds2.js';
 import Vector2 from '../../../dot/js/Vector2.js';
 import { Shape } from '../../../kite/js/imports.js';
-import optionize from '../../../phet-core/js/optionize.js';
+import { combineOptions } from '../../../phet-core/js/optionize.js';
 import Constructor from '../../../phet-core/js/types/Constructor.js';
 import PhetFont from '../../../scenery-phet/js/PhetFont.js';
 import { AlignBox, Circle, Color, FlowBox, FlowCell, FlowConstraint, GridBackgroundNode, GridBox, HDivider, IPaint, ManualConstraint, Node, Path, Rectangle, RectangleOptions, Text, TextOptions, VDivider } from '../../../scenery/js/imports.js';
@@ -26,7 +26,7 @@ class LayoutScreenView extends DemosScreenView {
 
   constructor( providedOptions: DemosScreenViewOptions ) {
 
-    const options = optionize<DemosScreenViewOptions, {}, DemosScreenViewOptions>()( {
+    const options = combineOptions<DemosScreenViewOptions>( {
       selectedDemoLabel: sunQueryParameters.layout,
       tandem: Tandem.REQUIRED
     }, providedOptions );
@@ -66,13 +66,13 @@ const colors = [
 const MARGIN = 10;
 const BOX_WIDTH = 14;
 
-const normalText = ( str: string, options?: TextOptions ) => new Text( str, optionize<TextOptions, {}, TextOptions>()( {
+const normalText = ( str: string, options?: TextOptions ) => new Text( str, combineOptions<TextOptions>( {
   font: new PhetFont( 12 )
 }, options ) );
-const sectionText = ( str: string, options?: TextOptions ) => new Text( str, optionize<TextOptions, {}, TextOptions>()( {
+const sectionText = ( str: string, options?: TextOptions ) => new Text( str, combineOptions<TextOptions>( {
   font: new PhetFont( { size: 14, weight: 'bold' } )
 }, options ) );
-const bigText = ( str: string, options?: TextOptions ) => new Text( str, optionize<TextOptions, {}, TextOptions>()( {
+const bigText = ( str: string, options?: TextOptions ) => new Text( str, combineOptions<TextOptions>( {
   font: new PhetFont( { size: 18, weight: 'bold' } )
 }, options ) );
 
@@ -106,7 +106,7 @@ const createBooleanProperty = ( value = false ) => {
 };
 
 const createHorizontalResizer = ( height: number, minWidth: number, maxWidth: number, providedOptions?: RectangleOptions ): Node => {
-  const result = new Rectangle( optionize<RectangleOptions, {}, RectangleOptions>()( {
+  const result = new Rectangle( combineOptions<RectangleOptions>( {
     fill: 'green',
     rectHeight: height
   }, providedOptions ) );

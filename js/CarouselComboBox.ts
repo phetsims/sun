@@ -24,7 +24,7 @@ import IProperty from '../../axon/js/IProperty.js';
 import Multilink from '../../axon/js/Multilink.js';
 import Dimension2 from '../../dot/js/Dimension2.js';
 import dotRandom from '../../dot/js/dotRandom.js';
-import optionize, { optionize3 } from '../../phet-core/js/optionize.js';
+import optionize, { combineOptions } from '../../phet-core/js/optionize.js';
 import { AlignBox, AlignGroup, Color, Display, HBox, IColor, Node, NodeOptions, PressListener, Rectangle, SceneryEvent, VBox } from '../../scenery/js/imports.js';
 import Tandem from '../../tandem/js/Tandem.js';
 import Carousel, { CarouselOptions } from './Carousel.js';
@@ -125,7 +125,7 @@ export default class CarouselComboBox<T> extends Node {
     let pageControl: PageControl | null = null;
     if ( carousel.numberOfPages > 1 ) {
       pageControl = new PageControl( carousel.numberOfPages, carousel.pageNumberProperty,
-        optionize<PageControlOptions, {}, PageControlOptions>()( {
+        combineOptions<PageControlOptions>( {
           orientation: options.carouselOptions.orientation
         }, options.pageControlOptions )
       );
@@ -139,12 +139,11 @@ export default class CarouselComboBox<T> extends Node {
     } );
 
     // Pressing this button pops the carousel up and down
-    const button = new ComboBoxButton( property, comboBoxItems,
-      optionize3<ComboBoxButtonOptions, {}, ComboBoxButtonOptions>()( {}, {
-        listener: () => {
-          carouselAndPageControl.visible = !carouselAndPageControl.visible;
-        }
-      }, options.buttonOptions ) );
+    const button = new ComboBoxButton( property, comboBoxItems, combineOptions<ComboBoxButtonOptions>( {
+      listener: () => {
+        carouselAndPageControl.visible = !carouselAndPageControl.visible;
+      }
+    }, options.buttonOptions ) );
 
     // Put the button above the carousel, left aligned.
     const vBox = new VBox( {
