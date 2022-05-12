@@ -35,6 +35,9 @@ import merge from '../../phet-core/js/merge.js';
 import { Node } from '../../scenery/js/imports.js';
 import sun from './sun.js';
 
+/**
+ * @deprecated Not a good fit for PhET-iO. Please design your component so that the item is mutable.
+ */
 class MutableOptionsNode extends Node {
 
   /**
