@@ -14,7 +14,7 @@ import { Shape } from '../../../kite/js/imports.js';
 import optionize from '../../../phet-core/js/optionize.js';
 import Constructor from '../../../phet-core/js/types/Constructor.js';
 import PhetFont from '../../../scenery-phet/js/PhetFont.js';
-import { AlignBox, Circle, FlowBox, FlowCell, FlowConstraint, GridBackgroundNode, GridBox, IPaint, ManualConstraint, Node, Path, Rectangle, RectangleOptions, Text, TextOptions, VDivider } from '../../../scenery/js/imports.js';
+import { AlignBox, Circle, Color, FlowBox, FlowCell, FlowConstraint, GridBackgroundNode, GridBox, HDivider, IPaint, ManualConstraint, Node, Path, Rectangle, RectangleOptions, Text, TextOptions, VDivider } from '../../../scenery/js/imports.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import Checkbox from '../Checkbox.js';
 import Panel from '../Panel.js';
@@ -44,10 +44,24 @@ class LayoutScreenView extends DemosScreenView {
       { label: 'Manual constraint', createNode: demoManualConstraint, tandemName: 'manualConstraint' },
       { label: 'Checkboxes with icons', createNode: demoCheckboxesWithIcons, tandemName: 'checkboxesWithIcons' },
       { label: 'Disconnected flow', createNode: demoDisconnectedFlow, tandemName: 'disconnectedFlow' },
-      { label: 'Origin', createNode: demoOrigin, tandemName: 'origin' }
+      { label: 'Origin', createNode: demoOrigin, tandemName: 'origin' },
+      { label: 'Test', createNode: demoTest, tandemName: 'test' }
     ], options );
   }
 }
+
+const colors = [
+  new Color( 62, 171, 3 ),
+  new Color( 23, 180, 77 ),
+  new Color( 24, 183, 138 ),
+  new Color( 23, 178, 194 ),
+  new Color( 20, 163, 238 ),
+  new Color( 71, 136, 255 ),
+  new Color( 171, 101, 255 ),
+  new Color( 228, 72, 235 ),
+  new Color( 252, 66, 186 ),
+  new Color( 252, 82, 127 )
+];
 
 const MARGIN = 10;
 const BOX_WIDTH = 14;
@@ -445,6 +459,23 @@ function demoOrigin( layoutBounds: Bounds2 ): Node {
   } );
 
   return new AlignBox( content, { alignBounds: layoutBounds, xAlign: 'center', yAlign: 'center' } );
+}
+
+function demoTest( layoutBounds: Bounds2 ): Node {
+  return new Panel( new FlowBox( {
+    margin: 5,
+    children: [
+      new HDivider(),
+      new Rectangle( 0, 0, 50, 50, { fill: colors[ 2 ] } ),
+      new HDivider(),
+      new HDivider(),
+      new Rectangle( 0, 0, 50, 50, { fill: colors[ 4 ] } ),
+      new Circle( 25, { fill: colors[ 6 ] } ),
+      new HDivider(),
+      new Rectangle( 0, 0, 50, 50, { fill: colors[ 8 ] } ),
+      new HDivider()
+    ]
+  } ), { center: layoutBounds.center } );
 }
 
 sun.register( 'LayoutScreenView', LayoutScreenView );
