@@ -1,15 +1,9 @@
 {
   "extends": "../chipper/tsconfig-core.json",
-  "references": [
-    {
-      "path": "../joist/tsconfig-module.json"
-    }
-  ],
   "include": [
-    "js/sun-main.js",
-    "js/demo/**/*",
-    "js/**/*test*",
-    "js/**/*Test*",
-    "../chipper/node_modules/@types/lodash/index.d.ts"
+    "js/**/*",
+    "images/**/*",
+    "mipmaps/**/*",
+    "sounds/**/*"
   ]
 }
