@@ -14,7 +14,7 @@ import { Shape } from '../../../kite/js/imports.js';
 import { combineOptions } from '../../../phet-core/js/optionize.js';
 import Constructor from '../../../phet-core/js/types/Constructor.js';
 import PhetFont from '../../../scenery-phet/js/PhetFont.js';
-import { AlignBox, Circle, Color, FlowBox, FlowCell, FlowConstraint, GridBackgroundNode, GridBox, HDivider, IPaint, ManualConstraint, Node, Path, Rectangle, RectangleOptions, Text, TextOptions, VDivider } from '../../../scenery/js/imports.js';
+import { AlignBox, Circle, Color, FlowBox, FlowCell, FlowConstraint, GridBackgroundNode, GridBox, IPaint, ManualConstraint, Node, Path, Rectangle, RectangleOptions, Text, TextOptions, VDivider } from '../../../scenery/js/imports.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import Checkbox from '../Checkbox.js';
 import Panel from '../Panel.js';
@@ -463,19 +463,15 @@ function demoOrigin( layoutBounds: Bounds2 ): Node {
 
 function demoTest( layoutBounds: Bounds2 ): Node {
   return new Panel( new FlowBox( {
-    margin: 5,
+    lineSpacing: 10,
+    wrap: true,
     children: [
-      new HDivider(),
       new Rectangle( 0, 0, 50, 50, { fill: colors[ 2 ] } ),
-      new HDivider(),
-      new HDivider(),
       new Rectangle( 0, 0, 50, 50, { fill: colors[ 4 ] } ),
       new Circle( 25, { fill: colors[ 6 ] } ),
-      new HDivider(),
-      new Rectangle( 0, 0, 50, 50, { fill: colors[ 8 ] } ),
-      new HDivider()
+      new Rectangle( 0, 0, 50, 50, { fill: colors[ 8 ] } )
     ]
-  } ), { center: layoutBounds.center } );
+  } ), { center: layoutBounds.center, preferredWidth: 125 } );
 }
 
 sun.register( 'LayoutScreenView', LayoutScreenView );
