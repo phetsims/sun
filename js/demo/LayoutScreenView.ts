@@ -486,6 +486,7 @@ function demoTest( layoutBounds: Bounds2 ): Node {
     lineSpacing: 10,
     wrap: true,
     justifyLines: null,
+    stretch: true,
     children: [
       new ExampleExpandingRectangle( 0, 0, 50, 50, { fill: colors[ 2 ] } ),
       new Rectangle( 0, 0, 50, 50, { fill: colors[ 4 ] } ),
