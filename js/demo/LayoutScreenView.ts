@@ -512,19 +512,18 @@ function demoGridStressTest( layoutBounds: Bounds2 ): Node {
 }
 
 function demoTest( layoutBounds: Bounds2 ): Node {
-  return new Panel( new FlowBox( {
-    lineSpacing: 10,
-    wrap: true,
-    justifyLines: null,
-    stretch: true,
-    orientation: 'horizontal',
-    children: [
-      new ExampleExpandingRectangle( 0, 0, 50, 50, { fill: colors[ 2 ] } ),
-      new Rectangle( 0, 0, 50, 50, { fill: colors[ 4 ] } ),
-      new Circle( 25, { fill: colors[ 6 ] } ),
-      new Rectangle( 0, 0, 50, 50, { fill: colors[ 8 ] } )
+  return new Panel( new GridBox( {
+    rows: [
+      [
+        new ExampleExpandingRectangle( 0, 0, 50, 50, { fill: colors[ 2 ] } ),
+        new Rectangle( 0, 0, 50, 50, { fill: colors[ 4 ] } )
+      ],
+      [
+        new Circle( 25, { fill: colors[ 6 ] } ),
+        new Rectangle( 0, 0, 50, 50, { fill: colors[ 8 ] } )
+      ]
     ]
-  } ), { center: layoutBounds.center, preferredWidth: 125, preferredHeight: 500 } );
+  } ), { center: layoutBounds.center } );
 }
 
 sun.register( 'LayoutScreenView', LayoutScreenView );
