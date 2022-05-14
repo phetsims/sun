@@ -9,6 +9,7 @@
 import BooleanProperty from '../../../axon/js/BooleanProperty.js';
 import stepTimer from '../../../axon/js/stepTimer.js';
 import Bounds2 from '../../../dot/js/Bounds2.js';
+import dotRandom from '../../../dot/js/dotRandom.js';
 import Vector2 from '../../../dot/js/Vector2.js';
 import { Shape } from '../../../kite/js/imports.js';
 import { combineOptions } from '../../../phet-core/js/optionize.js';
@@ -45,6 +46,8 @@ class LayoutScreenView extends DemosScreenView {
       { label: 'Checkboxes with icons', createNode: demoCheckboxesWithIcons, tandemName: 'checkboxesWithIcons' },
       { label: 'Disconnected flow', createNode: demoDisconnectedFlow, tandemName: 'disconnectedFlow' },
       { label: 'Origin', createNode: demoOrigin, tandemName: 'origin' },
+      { label: 'Flow stress test', createNode: demoFlowStressTest, tandemName: 'flowStressTest' },
+      { label: 'Grid stress test', createNode: demoGridStressTest, tandemName: 'gridStressTest' },
       { label: 'Test', createNode: demoTest, tandemName: 'test' }
     ], options );
   }
@@ -481,12 +484,40 @@ function demoOrigin( layoutBounds: Bounds2 ): Node {
   return new AlignBox( content, { alignBounds: layoutBounds, xAlign: 'center', yAlign: 'center' } );
 }
 
+function demoFlowStressTest( layoutBounds: Bounds2 ): Node {
+  return new FlowBox( {
+    orientation: 'horizontal',
+    wrap: true,
+    justify: 'left',
+    children: _.range( 0, 300 ).map( n => new Rectangle( 0, 0, dotRandom.nextDoubleBetween( 2, 20 ), dotRandom.nextDoubleBetween( 10, 50 ), {
+      fill: colors[ dotRandom.nextIntBetween( 2, 8 ) ]
+    } ) ),
+    preferredWidth: 500,
+    center: layoutBounds.center
+  } );
+}
+
+function demoGridStressTest( layoutBounds: Bounds2 ): Node {
+  return new GridBox( {
+    children: _.flatten( _.range( 0, 30 ).map( i => {
+      return _.range( 0, 30 ).map( j => {
+        return new Rectangle( 0, 0, dotRandom.nextDoubleBetween( 2, 20 ), dotRandom.nextDoubleBetween( 2, 20 ), {
+          fill: colors[ dotRandom.nextIntBetween( 2, 8 ) ],
+          layoutOptions: { x: i, y: j }
+        } );
+      } );
+    } ) ),
+    center: layoutBounds.center
+  } );
+}
+
 function demoTest( layoutBounds: Bounds2 ): Node {
   return new Panel( new FlowBox( {
     lineSpacing: 10,
     wrap: true,
     justifyLines: null,
     stretch: true,
+    orientation: 'horizontal',
     children: [
       new ExampleExpandingRectangle( 0, 0, 50, 50, { fill: colors[ 2 ] } ),
       new Rectangle( 0, 0, 50, 50, { fill: colors[ 4 ] } ),
