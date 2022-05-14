@@ -499,31 +499,27 @@ function demoFlowStressTest( layoutBounds: Bounds2 ): Node {
 
 function demoGridStressTest( layoutBounds: Bounds2 ): Node {
   return new GridBox( {
-    children: _.flatten( _.range( 0, 30 ).map( i => {
-      return _.range( 0, 30 ).map( j => {
-        return new Rectangle( 0, 0, dotRandom.nextDoubleBetween( 2, 20 ), dotRandom.nextDoubleBetween( 2, 20 ), {
-          fill: colors[ dotRandom.nextIntBetween( 2, 8 ) ],
-          layoutOptions: { x: i, y: j }
-        } );
+    autoColumns: 30,
+    children: _.range( 0, 30 * 30 ).map( () => {
+      return new Rectangle( 0, 0, dotRandom.nextDoubleBetween( 2, 20 ), dotRandom.nextDoubleBetween( 2, 20 ), {
+        fill: colors[ dotRandom.nextIntBetween( 2, 8 ) ]
       } );
-    } ) ),
+    } ),
     center: layoutBounds.center
   } );
 }
 
 function demoTest( layoutBounds: Bounds2 ): Node {
-  return new Panel( new GridBox( {
-    rows: [
-      [
-        new ExampleExpandingRectangle( 0, 0, 50, 50, { fill: colors[ 2 ] } ),
-        new Rectangle( 0, 0, 50, 50, { fill: colors[ 4 ] } )
-      ],
-      [
-        new Circle( 25, { fill: colors[ 6 ] } ),
-        new Rectangle( 0, 0, 50, 50, { fill: colors[ 8 ] } )
-      ]
+  const box = new GridBox( {
+    autoColumns: 3,
+    children: [
+      new ExampleExpandingRectangle( 0, 0, 50, 50, { fill: colors[ 2 ] } ),
+      new Rectangle( 0, 0, 50, 50, { fill: colors[ 4 ] } ),
+      new Circle( 25, { fill: colors[ 6 ] } ),
+      new Rectangle( 0, 0, 50, 50, { fill: colors[ 8 ] } )
     ]
-  } ), { center: layoutBounds.center } );
+  } );
+  return new Panel( box, { center: layoutBounds.center } );
 }
 
 sun.register( 'LayoutScreenView', LayoutScreenView );
