@@ -153,7 +153,7 @@ export default class ButtonNode extends Voicing( Node, 0 ) {
       this._settableBaseColorProperty,
       this.enabledProperty,
       this._disabledColorProperty
-    ], ( color: Color, enabled: boolean, disabledColor: Color ) => {
+    ], ( color, enabled, disabledColor ) => {
       return enabled ? color : disabledColor;
     } );
 

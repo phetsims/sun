@@ -6,12 +6,12 @@
  * @author Chris Malley (PixelZoom, Inc.)
  */
 
-import DerivedProperty from '../../../axon/js/DerivedProperty.js';
+import { DerivedProperty2 } from '../../../axon/js/DerivedProperty.js';
 import sun from '../sun.js';
 import ButtonInteractionState from './ButtonInteractionState.js';
 import MomentaryButtonModel from './MomentaryButtonModel.js';
 
-export default class MomentaryButtonInteractionStateProperty<T> extends DerivedProperty<ButtonInteractionState, [ boolean, boolean ]> {
+export default class MomentaryButtonInteractionStateProperty<T> extends DerivedProperty2<ButtonInteractionState, boolean, boolean> {
   constructor( buttonModel: MomentaryButtonModel<T> ) {
     super(
       [ buttonModel.looksOverProperty, buttonModel.looksPressedProperty ],

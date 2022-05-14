@@ -6,16 +6,16 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
-import DerivedProperty from '../../../axon/js/DerivedProperty.js';
+import { DerivedProperty2 } from '../../../axon/js/DerivedProperty.js';
 import sun from '../sun.js';
 import ButtonInteractionState from './ButtonInteractionState.js';
 import ToggleButtonModel from './ToggleButtonModel.js';
 
-export default class ToggleButtonInteractionStateProperty<T> extends DerivedProperty<ButtonInteractionState, [ boolean, boolean ]> {
+export default class ToggleButtonInteractionStateProperty<T> extends DerivedProperty2<ButtonInteractionState, boolean, boolean> {
   constructor( toggleButtonModel: ToggleButtonModel<T> ) {
     super(
       [ toggleButtonModel.looksOverProperty, toggleButtonModel.looksPressedProperty ],
-      ( looksOver: boolean, looksPressed: boolean ) => {
+      ( looksOver, looksPressed ) => {
         return looksOver && !looksPressed ? ButtonInteractionState.OVER :
                looksPressed ? ButtonInteractionState.PRESSED :
                ButtonInteractionState.IDLE;

@@ -6,13 +6,13 @@
  * @author Aaron Davis (PhET Interactive Simulations)
  */
 
-import DerivedProperty from '../../../axon/js/DerivedProperty.js';
+import { DerivedProperty5 } from '../../../axon/js/DerivedProperty.js';
 import sun from '../sun.js';
 import RadioButtonInteractionState from './RadioButtonInteractionState.js';
 import IProperty from '../../../axon/js/IProperty.js';
 import ButtonModel from './ButtonModel.js';
 
-export default class RadioButtonInteractionStateProperty<T> extends DerivedProperty<RadioButtonInteractionState, [ boolean, boolean, boolean, boolean, T ]> {
+export default class RadioButtonInteractionStateProperty<T> extends DerivedProperty5<RadioButtonInteractionState, boolean, boolean, boolean, boolean, T> {
 
   /**
    * @param buttonModel

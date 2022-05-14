@@ -6,7 +6,7 @@
  * @author John Blanco (PhET Interactive Simulations)
  */
 
-import DerivedProperty, { DerivedPropertyOptions } from '../../../axon/js/DerivedProperty.js';
+import { DerivedProperty4, DerivedPropertyOptions } from '../../../axon/js/DerivedProperty.js';
 import sun from '../sun.js';
 import ButtonInteractionState from './ButtonInteractionState.js';
 import PushButtonModel from './PushButtonModel.js';
@@ -15,11 +15,11 @@ type SelfOptions = {};
 
 export type PushButtonInteractionStatePropertyOptions = SelfOptions & DerivedPropertyOptions<ButtonInteractionState>;
 
-export default class PushButtonInteractionStateProperty extends DerivedProperty<ButtonInteractionState, [ boolean, boolean, boolean, boolean ]> {
+export default class PushButtonInteractionStateProperty extends DerivedProperty4<ButtonInteractionState, boolean, boolean, boolean, boolean> {
   constructor( buttonModel: PushButtonModel ) {
     super(
       [ buttonModel.focusedProperty, buttonModel.overProperty, buttonModel.looksOverProperty, buttonModel.looksPressedProperty ],
-      ( focused: boolean, over: boolean, looksOver: boolean, looksPressed: boolean ) => {
+      ( focused, over, looksOver, looksPressed ) => {
         return looksOver && !looksPressed ? ButtonInteractionState.OVER :
                ( over || focused ) && looksPressed ? ButtonInteractionState.PRESSED :
                ButtonInteractionState.IDLE;
