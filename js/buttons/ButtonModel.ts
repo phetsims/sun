@@ -8,6 +8,7 @@
 import BooleanProperty from '../../../axon/js/BooleanProperty.js';
 import Emitter from '../../../axon/js/Emitter.js';
 import Property from '../../../axon/js/Property.js';
+import DerivedProperty from '../../../axon/js/DerivedProperty.js';
 import merge from '../../../phet-core/js/merge.js';
 import optionize from '../../../phet-core/js/optionize.js';
 import { PressListener, PressListenerOptions } from '../../../scenery/js/imports.js';
@@ -15,7 +16,7 @@ import PhetioObject from '../../../tandem/js/PhetioObject.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import EnabledComponent, { EnabledComponentOptions } from '../../../axon/js/EnabledComponent.js';
 import sun from '../sun.js';
-import Multilink from '../../../axon/js/Multilink.js';
+import IReadOnlyProperty from '../../../axon/js/IReadOnlyProperty.js';
 
 type SelfOptions = {
 
@@ -70,12 +71,12 @@ export default class ButtonModel extends EnabledComponent {
   // Links all of the looksPressedProperties from the listeners that were created
   // by this ButtonModel, and updates the looksPressedProperty accordingly. First Multilink is added when the
   // first listener is created. See this.createPressListener.
-  private looksPressedMultilink: Multilink<boolean[]> | null;
+  private looksPressedDerivedProperty: IReadOnlyProperty<boolean> | null;
 
   // Links all of the looksOverProperties from the listeners that were created
   // by this ButtonModel, and updates the looksOverProperty accordingly. First Multilink is added when the
   // first listener is created. See this.createPressListener.
-  private looksOverMultilink: Multilink<boolean[]> | null;
+  private looksOverDerivedProperty: IReadOnlyProperty<boolean> | null;
 
   private readonly disposeButtonModel: () => void;
 
@@ -118,12 +119,12 @@ export default class ButtonModel extends EnabledComponent {
     // Links all of the looksPressedProperties from the listeners that were created
     // by this ButtonModel, and updates the looksPressedProperty accordingly. First Multilink is added when the
     // first listener is created. See this.createPressListener.
-    this.looksPressedMultilink = null;
+    this.looksPressedDerivedProperty = null;
 
     // Links all of the looksOverProperties from the listeners that were created
     // by this ButtonModel, and updates the looksOverProperty accordingly. First Multilink is added when the
     // first listener is created. See this.createPressListener.
-    this.looksOverMultilink = null;
+    this.looksOverDerivedProperty = null;
 
     // startCallback on pointer down, endCallback on pointer up. lazyLink so they aren't called immediately.
     this.downProperty.lazyLink( down => {
@@ -153,8 +154,8 @@ export default class ButtonModel extends EnabledComponent {
       this.downProperty.dispose();
       this.produceSoundEmitter.dispose();
 
-      this.looksPressedMultilink && this.looksPressedMultilink.dispose();
-      this.looksOverMultilink && this.looksOverMultilink.dispose();
+      this.looksPressedDerivedProperty && this.looksPressedDerivedProperty.dispose();
+      this.looksOverDerivedProperty && this.looksOverDerivedProperty.dispose();
 
       this.listeners = [];
     };
@@ -190,8 +191,8 @@ export default class ButtonModel extends EnabledComponent {
     pressListener.isFocusedProperty.lazyLink( this.focusedProperty.set.bind( this.focusedProperty ) );
 
     // dispose the previous multilink in case we already created a PressListener with this model
-    this.looksPressedMultilink && this.looksPressedMultilink.dispose();
-    this.looksOverMultilink && this.looksOverMultilink.dispose();
+    this.looksPressedDerivedProperty && this.looksPressedDerivedProperty.dispose();
+    this.looksOverDerivedProperty && this.looksOverDerivedProperty.dispose();
 
     // the downProperty is included because it can be set externally, looksPressedProperty should update in this case
     const looksPressedProperties = this.listeners.map( listener => listener.looksPressedProperty );
@@ -199,18 +200,16 @@ export default class ButtonModel extends EnabledComponent {
 
     // assign a new Multilink (for disposal), and make sure that the button looks pressed when any of the
     // PressListeners created by this ButtonModel look pressed.
-    this.looksPressedMultilink = Property.multilink( looksPressedProperties, ( ...args: boolean[] ) => {
-      this.looksPressedProperty.value = _.reduce( args, ( sum: boolean, newValue: boolean ) => sum || newValue, false );
-    } );
+    this.looksPressedDerivedProperty = DerivedProperty.or( looksPressedProperties );
+    this.looksPressedDerivedProperty.link( looksPressed => this.looksPressedProperty.set( looksPressed ) );
 
     const looksOverProperties = this.listeners.map( listener => listener.looksOverProperty );
 
     // assign a new Multilink (for disposal), and make sure that the button looks over when any of the
     // PressListeners created by this ButtonModel look over. Note that this cannot be an arrow function
     // because its implementation relies on arguments.
-    this.looksOverMultilink = Property.multilink( looksOverProperties, ( ...args: boolean[] ) => {
-      this.looksOverProperty.value = _.reduce( args, ( sum: boolean, newValue: boolean ) => sum || newValue, false );
-    } );
+    this.looksOverDerivedProperty = DerivedProperty.or( looksOverProperties );
+    this.looksOverDerivedProperty.link( looksOver => this.looksOverProperty.set( looksOver ) );
 
     return pressListener;
   }
