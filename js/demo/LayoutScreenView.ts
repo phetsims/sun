@@ -512,6 +512,8 @@ function demoGridStressTest( layoutBounds: Bounds2 ): Node {
 function demoTest( layoutBounds: Bounds2 ): Node {
   const box = new GridBox( {
     autoColumns: 3,
+    grow: 1,
+    heightSizable: false,
     children: [
       new ExampleExpandingRectangle( 0, 0, 50, 50, { fill: colors[ 2 ] } ),
       new Rectangle( 0, 0, 50, 50, { fill: colors[ 4 ] } ),
@@ -519,7 +521,7 @@ function demoTest( layoutBounds: Bounds2 ): Node {
       new Rectangle( 0, 0, 50, 50, { fill: colors[ 8 ] } )
     ]
   } );
-  return new Panel( box, { center: layoutBounds.center } );
+  return new Panel( box, { center: layoutBounds.center, preferredWidth: 512, preferredHeight: 512 } );
 }
 
 sun.register( 'LayoutScreenView', LayoutScreenView );
