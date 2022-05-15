@@ -15,7 +15,7 @@ import { Shape } from '../../../kite/js/imports.js';
 import { combineOptions } from '../../../phet-core/js/optionize.js';
 import Constructor from '../../../phet-core/js/types/Constructor.js';
 import PhetFont from '../../../scenery-phet/js/PhetFont.js';
-import { AlignBox, Circle, Color, FlowBox, FlowCell, FlowConstraint, GridBackgroundNode, GridBox, HeightSizable, HeightSizableSelfOptions, IPaint, ManualConstraint, Node, Path, Rectangle, RectangleOptions, Text, TextOptions, VDivider, WidthSizable, WidthSizableSelfOptions } from '../../../scenery/js/imports.js';
+import { AlignBox, Circle, Color, FlowBox, FlowCell, FlowConstraint, GridBackgroundNode, GridBox, IPaint, ManualConstraint, Node, Path, Rectangle, RectangleOptions, Text, TextOptions, VDivider } from '../../../scenery/js/imports.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import Checkbox from '../Checkbox.js';
 import Panel from '../Panel.js';
@@ -69,27 +69,27 @@ const colors = [
 const MARGIN = 10;
 const BOX_WIDTH = 14;
 
-class ExampleExpandingRectangle extends WidthSizable( HeightSizable( Rectangle ) ) {
-  constructor( options?: RectangleOptions & WidthSizableSelfOptions & HeightSizableSelfOptions ) {
-    super( {} );
-
-    this.localMinimumWidth = 50;
-    this.localMinimumHeight = 50;
-
-    this.localPreferredWidthProperty.lazyLink( width => {
-      if ( width ) {
-        this.rectWidth = Math.max( this.localMinimumWidth || 0, width );
-      }
-    } );
-    this.localPreferredHeightProperty.lazyLink( height => {
-      if ( height ) {
-        this.rectHeight = Math.max( this.localMinimumHeight || 0, height );
-      }
-    } );
-
-    this.mutate( options );
-  }
-}
+// class ExampleExpandingRectangle extends WidthSizable( HeightSizable( Rectangle ) ) {
+//   constructor( options?: RectangleOptions & WidthSizableSelfOptions & HeightSizableSelfOptions ) {
+//     super( {} );
+//
+//     this.localMinimumWidth = 50;
+//     this.localMinimumHeight = 50;
+//
+//     this.localPreferredWidthProperty.lazyLink( width => {
+//       if ( width ) {
+//         this.rectWidth = Math.max( this.localMinimumWidth || 0, width );
+//       }
+//     } );
+//     this.localPreferredHeightProperty.lazyLink( height => {
+//       if ( height ) {
+//         this.rectHeight = Math.max( this.localMinimumHeight || 0, height );
+//       }
+//     } );
+//
+//     this.mutate( options );
+//   }
+// }
 
 const normalText = ( str: string, options?: TextOptions ) => new Text( str, combineOptions<TextOptions>( {
   font: new PhetFont( 12 )
@@ -446,6 +446,7 @@ function demoOrigin( layoutBounds: Bounds2 ): Node {
     ],
     wrap: true,
     preferredWidth: 170,
+    widthSizable: false,
     justify: 'left'
   } );
 
@@ -512,36 +513,38 @@ function demoGridStressTest( layoutBounds: Bounds2 ): Node {
 }
 
 function demoTest( layoutBounds: Bounds2 ): Node {
-  // const box = new GridBox( {
-  //   autoColumns: 3,
-  //   grow: 1,
-  //   heightSizable: false,
-  //   children: [
-  //     new ExampleExpandingRectangle( 0, 0, 50, 50, { fill: colors[ 2 ] } ),
-  //     new Rectangle( 0, 0, 50, 50, { fill: colors[ 4 ] } ),
-  //     new Circle( 25, { fill: colors[ 6 ] } ),
-  //     new Rectangle( 0, 0, 50, 50, { fill: colors[ 8 ] } )
-  //   ]
-  // } );
-  const box = new FlowBox( {
-    children: [
-      new Rectangle( 0, 0, 50, 50, { fill: colors[ 2 ] } ),
-      new ExampleExpandingRectangle( {
-        fill: 'gray',
-        layoutOptions: { grow: 1, minContentWidth: 50 }
-      } ),
-      new Rectangle( 0, 0, 50, 50, { fill: colors[ 4 ] } ),
-      new ExampleExpandingRectangle( {
-        preferredWidth: 50,
-        fill: 'gray',
-        widthSizable: false,
-        layoutOptions: { grow: 1 }
-      } ),
-      new Circle( 25, { fill: colors[ 6 ] } ),
-      new Rectangle( 0, 0, 50, 50, { fill: colors[ 8 ] } )
-    ]
+  const originSize = 50;
+  const originNode = new Path( new Shape().moveTo( -originSize, 0 ).lineTo( originSize, 0 ).moveTo( 0, originSize ).lineTo( 0, -originSize ), {
+    stroke: 'rgba(0,0,0,0.3)'
   } );
-  return new Panel( box, { center: layoutBounds.center, preferredWidth: 512, preferredHeight: 512 } );
+  const box = new FlowBox( {
+    orientation: 'horizontal',
+    align: 'origin',
+    spacing: 5,
+    lineSpacing: 5,
+    children: [
+      new Circle( 20, { fill: 'rgba(255,0,0,0.3)' } ),
+      bigText( 'Text' ),
+      normalText( 'Text' ),
+      new Circle( 20, { fill: 'rgba(255,0,0,0.3)' } ),
+      bigText( 'Text' ),
+      normalText( 'text' ),
+      new Circle( 20, { fill: 'rgba(255,0,0,0.3)' } ),
+      bigText( 'Text' ),
+      normalText( 'text' ),
+      new Circle( 20, { fill: 'rgba(255,0,0,0.3)' } ),
+      bigText( 'Text' ),
+      normalText( 'text' )
+    ],
+    wrap: true,
+    preferredWidth: 170,
+    widthSizable: false,
+    justify: 'left'
+  } );
+  const alignBox = new AlignBox( new Node( {
+    children: [ originNode, box ]
+  } ) );
+  return new Panel( alignBox, { center: layoutBounds.center } );
 }
 
 sun.register( 'LayoutScreenView', LayoutScreenView );
