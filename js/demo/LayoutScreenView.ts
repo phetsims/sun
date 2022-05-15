@@ -11,6 +11,7 @@ import stepTimer from '../../../axon/js/stepTimer.js';
 import Bounds2 from '../../../dot/js/Bounds2.js';
 import dotRandom from '../../../dot/js/dotRandom.js';
 import Vector2 from '../../../dot/js/Vector2.js';
+import Vector2Property from '../../../dot/js/Vector2Property.js';
 import { Shape } from '../../../kite/js/imports.js';
 import { combineOptions } from '../../../phet-core/js/optionize.js';
 import Constructor from '../../../phet-core/js/types/Constructor.js';
@@ -409,7 +410,9 @@ function demoDisconnectedFlow( layoutBounds: Bounds2 ): Node {
     thirdParent.y = secondParent.centerY + Math.sin( elapsedTime ) * 100;
   } );
 
-  const constraint = new FlowConstraint( scene );
+  const constraint = new FlowConstraint( scene, {
+    layoutOriginProperty: new Vector2Property( new Vector2( 300, 100 ) )
+  } );
   constraint.spacing = 10;
   constraint.insertCell( 0, new FlowCell( constraint, firstChild, null ) );
   constraint.insertCell( 1, new FlowCell( constraint, secondChild, null ) );
