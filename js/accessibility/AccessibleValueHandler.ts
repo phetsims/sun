@@ -29,7 +29,7 @@ import { IInputListener, KeyboardUtils, Node, NodeOptions, SceneryEvent, Scenery
 import Utterance from '../../../utterance-queue/js/Utterance.js';
 import sun from '../sun.js';
 import optionize, { optionize3, OptionizeDefaults } from '../../../phet-core/js/optionize.js';
-import Multilink from '../../../axon/js/Multilink.js';
+import { UnknownMultilink } from '../../../axon/js/Multilink.js';
 import UtteranceQueue from '../../../utterance-queue/js/UtteranceQueue.js';
 import IProperty from '../../../axon/js/IProperty.js';
 import Constructor from '../../../phet-core/js/types/Constructor.js';
@@ -244,7 +244,7 @@ const AccessibleValueHandler = <SuperType extends Constructor>( Type: SuperType,
     _rangeKeysDown: { [ key: string ]: boolean };
     _a11yMapPDOMValue: ( ( value: number ) => number );
     _a11yCreateAriaValueText: CreateTextFunction;
-    _dependenciesMultilink: Multilink<IntentionalAny[]> | null;
+    _dependenciesMultilink: UnknownMultilink | null;
     _a11yRepeatEqualValueText: boolean;
 
     // When context responses are supported, this counter is used to determine a mutable delay between hearing the
@@ -417,7 +417,7 @@ const AccessibleValueHandler = <SuperType extends Constructor>( Type: SuperType,
       // dispose the previous multilink, there is only one set of dependencies, though they can be overwritten.
       this._dependenciesMultilink && this._dependenciesMultilink.dispose();
 
-      this._dependenciesMultilink = Property.multilink<IntentionalAny[]>( dependencies.concat( [ this._valueProperty ] ), () => {
+      this._dependenciesMultilink = Property.multilinkAny( dependencies.concat( [ this._valueProperty ] ), () => {
 
         this._updateAriaValueText( this._oldValue );
 
