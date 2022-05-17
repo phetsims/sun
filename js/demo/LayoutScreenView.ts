@@ -70,28 +70,6 @@ const colors = [
 const MARGIN = 10;
 const BOX_WIDTH = 14;
 
-// class ExampleExpandingRectangle extends WidthSizable( HeightSizable( Rectangle ) ) {
-//   constructor( options?: RectangleOptions & WidthSizableSelfOptions & HeightSizableSelfOptions ) {
-//     super( {} );
-//
-//     this.localMinimumWidth = 50;
-//     this.localMinimumHeight = 50;
-//
-//     this.localPreferredWidthProperty.lazyLink( width => {
-//       if ( width ) {
-//         this.rectWidth = Math.max( this.localMinimumWidth || 0, width );
-//       }
-//     } );
-//     this.localPreferredHeightProperty.lazyLink( height => {
-//       if ( height ) {
-//         this.rectHeight = Math.max( this.localMinimumHeight || 0, height );
-//       }
-//     } );
-//
-//     this.mutate( options );
-//   }
-// }
-
 const normalText = ( str: string, options?: TextOptions ) => new Text( str, combineOptions<TextOptions>( {
   font: new PhetFont( 12 )
 }, options ) );
