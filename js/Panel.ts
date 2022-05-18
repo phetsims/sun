@@ -132,6 +132,9 @@ export default class Panel extends WidthSizable( HeightSizable( Node ) ) {
    */
   public setStroke( stroke: IPaint ): void {
     this._background.stroke = stroke;
+
+    // Since it depends on the stroke (if it's null, our minimum bounds get reduced)
+    this.constraint && this.constraint.updateLayoutAutomatically();
   }
 
   public set stroke( value: IPaint ) { this.setStroke( value ); }
@@ -204,6 +207,9 @@ class PanelConstraint extends LayoutConstraint {
     const content = panel._content;
     const background = panel._background;
 
+    // We only have to account for the lineWidth in our layout if we have a stroke
+    const lineWidth = panel.stroke === null ? 0 : this.lineWidth;
+
     const hasValidContent = panel.isChildIncludedInLayout( content );
 
     // Bail out (and make the background invisible) if our bounds are invalid
@@ -219,8 +225,8 @@ class PanelConstraint extends LayoutConstraint {
 
     // Our minimum dimensions are directly determined by the content, margins and lineWidth
     // NOTE: options.minWidth does NOT include the stroke (e.g. lineWidth), left for backward compatibility.
-    const minimumWidth = Math.max( this.minWidth, minimumContentWidth + ( 2 * this.xMargin ) ) + this.lineWidth;
-    const minimumHeight = minimumContentHeight + ( 2 * this.yMargin ) + this.lineWidth;
+    const minimumWidth = Math.max( this.minWidth, minimumContentWidth + ( 2 * this.xMargin ) ) + lineWidth;
+    const minimumHeight = minimumContentHeight + ( 2 * this.yMargin ) + lineWidth;
 
     // Our resulting sizes (allow setting preferred width/height on the panel)
     const preferredWidth: number = panel.localPreferredWidth === null ? minimumWidth : panel.localPreferredWidth;
@@ -229,13 +235,13 @@ class PanelConstraint extends LayoutConstraint {
     // Determine the size available to our content
     // NOTE: We do NOT set preferred sizes of our content if we don't have a preferred size ourself!
     if ( isWidthSizable( content ) && panel.localPreferredWidth !== null ) {
-      content.preferredWidth = preferredWidth - this.lineWidth - 2 * this.xMargin;
+      content.preferredWidth = preferredWidth - lineWidth - 2 * this.xMargin;
     }
     if ( isHeightSizable( content ) && panel.localPreferredWidth !== null ) {
-      content.preferredHeight = preferredHeight - this.lineWidth - 2 * this.yMargin;
+      content.preferredHeight = preferredHeight - lineWidth - 2 * this.yMargin;
     }
 
-    background.setRect( 0, 0, preferredWidth - this.lineWidth, preferredHeight - this.lineWidth );
+    background.setRect( 0, 0, preferredWidth - lineWidth, preferredHeight - lineWidth );
 
     // Align the content within the background. If the content width >= minWidth, then all alignments are equivalent.
     if ( this.align === 'center' ) {
