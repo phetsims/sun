@@ -64,14 +64,14 @@ const AccessibleSlider = <SuperType extends Constructor>( Type: SuperType, optio
       }, providedOptions );
 
       // AccessibleSlider uses 'drag' terminology rather than 'change' for consistency with Slider
-      assert && assert( options.startChange === undefined, 'AccessibleSlider sets startChange through options.startDrag' );
-      options.startChange = options.startDrag;
+      assert && assert( options.startInput === undefined, 'AccessibleSlider sets startInput through options.startDrag' );
+      options.startInput = options.startDrag;
 
-      assert && assert( options.endChange === undefined, 'AccessibleSlider sets endChange through options.endDrag' );
-      options.endChange = options.endDrag;
+      assert && assert( options.endInput === undefined, 'AccessibleSlider sets endInput through options.endDrag' );
+      options.endInput = options.endDrag;
 
-      assert && assert( options.onChange === undefined, 'AccessibleSlider sets onChange through options.drag' );
-      options.onChange = options.drag;
+      assert && assert( options.onInput === undefined, 'AccessibleSlider sets onInput through options.drag' );
+      options.onInput = options.drag;
 
       args[ optionsArgPosition ] = options;
 

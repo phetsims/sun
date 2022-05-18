@@ -64,16 +64,18 @@ type AccessibleValueHandlerSelfOptions = {
   valueProperty: IProperty<number>;
   enabledRangeProperty: IReadOnlyProperty<Range>;
 
-  // called when a value change sequence starts
-  startChange?: SceneryListenerFunction;
+  // called when input begins from user interaction
+  startInput?: SceneryListenerFunction;
 
-  // called when a value change sequence ends
-  endChange?: SceneryListenerFunction;
+  // called when input ends from user interaction
+  endInput?: SceneryListenerFunction;
 
-  // Called after any change to valueProperty. Useful for input devices that support "press and hold" input.
-  // However, beware that some input devices, such as a switch, have no concept of "press and hold" and will
-  // trigger once per input. In those cases, this function will be called once per input.
-  onChange?: SceneryListenerFunction;
+  // Called after any user input onto this component. The value will most likely change as a result of this input,
+  // but doesn't have to, like when at the min/max of the value range. Useful for input devices that support "press
+  // and hold" input. However, beware that some input devices, such as a switch, have no concept of "press and hold"
+  // and will trigger once per input. In those cases, this function will be called once per input (each input will look
+  // like startInput->onInput->endInput all from one browser event).
+  onInput?: SceneryListenerFunction;
 
   // Constrains the value, returning a new value for the valueProperty instead.
   // Called before the valueProperty is set. This is only called when the shift key is NOT down because
@@ -141,7 +143,7 @@ type AccessibleValueHandlerSelfOptions = {
   /**
    * Create content for an alert that will be sent to the utteranceQueue when the user finishes interacting
    * with the input. Is not generated every change, but on every "drag" interaction, this is called with
-   * endChange. With a keyboard, this will be called even with no value change (on the key up event ending the
+   * endInput. With a keyboard, this will be called even with no value change (on the key up event ending the
    * interaction), On a touch system like iOS with Voice Over however, input and change events will only fire
    * when there is a Property value change, so "edge" alerts will not fire, see https://github.com/phetsims/gravity-force-lab-basics/issues/185.
    * This alert is often called the "context response" because it is timed to only alert after an interaction
@@ -192,9 +194,9 @@ const AccessibleValueHandler = <SuperType extends Constructor>( Type: SuperType,
   return class extends Voicing( Type, optionsArgPosition ) {
     _valueProperty: IProperty<number>;
     _enabledRangeProperty: IReadOnlyProperty<Range>;
-    _startChange: SceneryListenerFunction;
-    _onChange: SceneryListenerFunction;
-    _endChange: SceneryListenerFunction;
+    _startInput: SceneryListenerFunction;
+    _onInput: SceneryListenerFunction;
+    _endInput: SceneryListenerFunction;
     _constrainValue: ( ( value: number ) => number );
     _a11yMapValue: ( ( newValue: number, previousValue: number ) => number );
     _panTargetNode: Node | null;
@@ -271,9 +273,9 @@ const AccessibleValueHandler = <SuperType extends Constructor>( Type: SuperType,
       const defaults: OptionizeDefaults<AccessibleValueHandlerSelfOptions, NodeOptions> = {
 
         // other
-        startChange: _.noop,
-        endChange: _.noop,
-        onChange: _.noop,
+        startInput: _.noop,
+        endInput: _.noop,
+        onInput: _.noop,
         constrainValue: _.identity,
         keyboardStep: ( enabledRangeProperty.get().max - enabledRangeProperty.get().min ) / 20,
         shiftKeyboardStep: ( enabledRangeProperty.get().max - enabledRangeProperty.get().min ) / 100,
@@ -316,9 +318,9 @@ const AccessibleValueHandler = <SuperType extends Constructor>( Type: SuperType,
 
       this._valueProperty = options.valueProperty;
       this._enabledRangeProperty = enabledRangeProperty;
-      this._startChange = options.startChange;
-      this._onChange = options.onChange;
-      this._endChange = options.endChange;
+      this._startInput = options.startInput;
+      this._onInput = options.onInput;
+      this._endInput = options.endInput;
       this._constrainValue = options.constrainValue;
       this._a11yMapValue = options.a11yMapValue;
       this._panTargetNode = options.panTargetNode;
@@ -655,8 +657,9 @@ const AccessibleValueHandler = <SuperType extends Constructor>( Type: SuperType,
             // limit the value to the enabled range
             this._valueProperty.set( Utils.clamp( constrainedValue, this._enabledRangeProperty.get().min, this._enabledRangeProperty.get().max ) );
 
-            // optional change callback after the valueProperty is set so that the listener can use the new value
-            this._onChange( event );
+            // optional callback after the valueProperty is set (even if set to the same value) so that the listener
+            // can use the new value.
+            this._onInput( event );
           }
         }
       }
@@ -757,9 +760,9 @@ const AccessibleValueHandler = <SuperType extends Constructor>( Type: SuperType,
         // optionally constrain value
         this._valueProperty.set( this._constrainValue( this._a11yMapValue( newValue, this._valueProperty.get() ) ) );
 
-        // only one change per input, but still call optional change function - after valueProperty is set so
-        // listener can use new value
-        this._onChange( event );
+        // only one change per input, but still call optional onInput function - after valueProperty is set (even if
+        // set to the same value) so listener can use new value.
+        this._onInput( event );
 
         // end of change is the end of a drag
         this._onInteractionEnd( event );
@@ -799,7 +802,7 @@ const AccessibleValueHandler = <SuperType extends Constructor>( Type: SuperType,
      */
     _onInteractionStart( event: SceneryEvent<Event> ): void {
       this._valueOnStart = this._valueProperty.value;
-      this._startChange( event );
+      this._startInput( event );
     }
 
     /**
@@ -809,7 +812,7 @@ const AccessibleValueHandler = <SuperType extends Constructor>( Type: SuperType,
     _onInteractionEnd( event: SceneryEvent<Event> ): void {
       this.alertContextResponse();
       this.voicingOnEndResponse();
-      this._endChange( event );
+      this._endInput( event );
     }
 
     /**
