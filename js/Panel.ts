@@ -10,11 +10,7 @@
  */
 
 import { optionize3, OptionizeDefaults } from '../../phet-core/js/optionize.js';
-import { HeightSizable, HeightSizableSelfOptions, IPaint, isHeightSizable, isWidthSizable, NodeOptions, WidthSizableSelfOptions } from '../../scenery/js/imports.js';
-import { LayoutConstraint } from '../../scenery/js/imports.js';
-import { WidthSizable } from '../../scenery/js/imports.js';
-import { Node } from '../../scenery/js/imports.js';
-import { Rectangle } from '../../scenery/js/imports.js';
+import { IPaint, isHeightSizable, isWidthSizable, LayoutConstraint, Node, NodeOptions, Rectangle, Sizable, SizableOptions } from '../../scenery/js/imports.js';
 import Tandem from '../../tandem/js/Tandem.js';
 import sun from './sun.js';
 
@@ -51,7 +47,7 @@ type SelfOptions = {
   minWidth?: number;
 };
 
-type SuperOptions = WidthSizableSelfOptions & HeightSizableSelfOptions & NodeOptions;
+type SuperOptions = SizableOptions & NodeOptions;
 export type PanelOptions = SelfOptions & SuperOptions;
 
 const DEFAULT_OPTIONS: OptionizeDefaults<SelfOptions, SuperOptions> = {
@@ -71,7 +67,7 @@ const DEFAULT_OPTIONS: OptionizeDefaults<SelfOptions, SuperOptions> = {
 };
 assert && Object.freeze( DEFAULT_OPTIONS );
 
-export default class Panel extends WidthSizable( HeightSizable( Node ) ) {
+export default class Panel extends Sizable( Node ) {
 
   private constraint: PanelConstraint;
 
