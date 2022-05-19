@@ -16,7 +16,7 @@ import { Shape } from '../../../kite/js/imports.js';
 import { combineOptions } from '../../../phet-core/js/optionize.js';
 import Constructor from '../../../phet-core/js/types/Constructor.js';
 import PhetFont from '../../../scenery-phet/js/PhetFont.js';
-import { AlignBox, Circle, Color, FlowBox, FlowCell, FlowConstraint, GridBackgroundNode, GridBox, IPaint, ManualConstraint, Node, Path, Rectangle, RectangleOptions, Sizable, Text, TextOptions, VDivider } from '../../../scenery/js/imports.js';
+import { AlignBox, Circle, Color, FlowBox, FlowCell, FlowConstraint, GridBackgroundNode, GridBox, IPaint, ManualConstraint, Node, Path, Rectangle, RectangleOptions, Text, TextOptions, VDivider } from '../../../scenery/js/imports.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import Checkbox from '../Checkbox.js';
 import Panel from '../Panel.js';
@@ -494,70 +494,81 @@ function demoGridStressTest( layoutBounds: Bounds2 ): Node {
 }
 
 function demoTest( layoutBounds: Bounds2 ): Node {
-  // Doesn't respect its preferred size
-  class LyingNode1 extends Sizable( Node ) {
-    constructor() {
-      super();
+  // // Doesn't respect its preferred size
+  // class LyingNode1 extends Sizable( Node ) {
+  //   constructor() {
+  //     super();
+  //
+  //     this.minimumWidth = 50;
+  //     this.minimumHeight = 50;
+  //
+  //     this.addChild( new Rectangle( 0, 0, 100, 50, { fill: 'gray' } ) );
+  //   }
+  // }
+  // class LyingNode2 extends Sizable( Node ) {
+  //   constructor() {
+  //     super();
+  //
+  //     this.minimumWidth = 100;
+  //     this.minimumHeight = 50;
+  //
+  //     this.addChild( new Rectangle( 0, 0, 50, 50, { fill: 'gray' } ) );
+  //   }
+  // }
+  // const box = new FlowBox( {
+  //   orientation: 'vertical',
+  //   spacing: 50,
+  //   children: [
+  //     new FlowBox( {
+  //       orientation: 'horizontal',
+  //       spacing: 5,
+  //       children: [
+  //         new Rectangle( 0, 0, 50, 50, { fill: colors[ 2 ] } ),
+  //         new Rectangle( 0, 0, 50, 50, { fill: colors[ 4 ] } ),
+  //         new LyingNode1(),
+  //         new Rectangle( 0, 0, 50, 50, { fill: colors[ 6 ] } ),
+  //         new Rectangle( 0, 0, 50, 50, { fill: colors[ 8 ] } )
+  //       ]
+  //     } ),
+  //     new FlowBox( {
+  //       orientation: 'horizontal',
+  //       spacing: 5,
+  //       children: [
+  //         new Rectangle( 0, 0, 50, 50, { fill: colors[ 2 ] } ),
+  //         new Rectangle( 0, 0, 50, 50, { fill: colors[ 4 ] } ),
+  //         new LyingNode2(),
+  //         new Rectangle( 0, 0, 50, 50, { fill: colors[ 6 ] } ),
+  //         new Rectangle( 0, 0, 50, 50, { fill: colors[ 8 ] } )
+  //       ]
+  //     } ),
+  //     new GridBox( {
+  //       spacing: 5,
+  //       rows: [
+  //         [
+  //           new Rectangle( 0, 0, 50, 50, { fill: colors[ 6 ] } ),
+  //           new Rectangle( 0, 0, 50, 50, { fill: colors[ 2 ] } ),
+  //           new LyingNode2()
+  //         ],
+  //         [
+  //           new Rectangle( 0, 0, 50, 50, { fill: colors[ 8 ] } ),
+  //           new LyingNode1(),
+  //           new Rectangle( 0, 0, 50, 50, { fill: colors[ 4 ] } )
+  //         ]
+  //       ]
+  //     } )
+  //   ]
+  // } );
 
-      this.minimumWidth = 50;
-      this.minimumHeight = 50;
+  const box = new GridBox();
+  box.addRow( [
+    new Rectangle( 0, 0, 50, 50, { fill: colors[ 2 ] } ),
+    new Rectangle( 0, 0, 50, 50, { fill: colors[ 4 ] } )
+  ] );
+  box.addRow( [
+    new Rectangle( 0, 0, 50, 50, { fill: colors[ 6 ] } ),
+    new Rectangle( 0, 0, 50, 50, { fill: colors[ 8 ] } )
+  ] );
 
-      this.addChild( new Rectangle( 0, 0, 100, 50, { fill: 'gray' } ) );
-    }
-  }
-  class LyingNode2 extends Sizable( Node ) {
-    constructor() {
-      super();
-
-      this.minimumWidth = 100;
-      this.minimumHeight = 50;
-
-      this.addChild( new Rectangle( 0, 0, 50, 50, { fill: 'gray' } ) );
-    }
-  }
-  const box = new FlowBox( {
-    orientation: 'vertical',
-    spacing: 50,
-    children: [
-      new FlowBox( {
-        orientation: 'horizontal',
-        spacing: 5,
-        children: [
-          new Rectangle( 0, 0, 50, 50, { fill: colors[ 2 ] } ),
-          new Rectangle( 0, 0, 50, 50, { fill: colors[ 4 ] } ),
-          new LyingNode1(),
-          new Rectangle( 0, 0, 50, 50, { fill: colors[ 6 ] } ),
-          new Rectangle( 0, 0, 50, 50, { fill: colors[ 8 ] } )
-        ]
-      } ),
-      new FlowBox( {
-        orientation: 'horizontal',
-        spacing: 5,
-        children: [
-          new Rectangle( 0, 0, 50, 50, { fill: colors[ 2 ] } ),
-          new Rectangle( 0, 0, 50, 50, { fill: colors[ 4 ] } ),
-          new LyingNode2(),
-          new Rectangle( 0, 0, 50, 50, { fill: colors[ 6 ] } ),
-          new Rectangle( 0, 0, 50, 50, { fill: colors[ 8 ] } )
-        ]
-      } ),
-      new GridBox( {
-        spacing: 5,
-        rows: [
-          [
-            new Rectangle( 0, 0, 50, 50, { fill: colors[ 6 ] } ),
-            new Rectangle( 0, 0, 50, 50, { fill: colors[ 2 ] } ),
-            new LyingNode2()
-          ],
-          [
-            new Rectangle( 0, 0, 50, 50, { fill: colors[ 8 ] } ),
-            new LyingNode1(),
-            new Rectangle( 0, 0, 50, 50, { fill: colors[ 4 ] } )
-          ]
-        ]
-      } )
-    ]
-  } );
   return new Panel( box, { center: layoutBounds.center } );
 }
 
