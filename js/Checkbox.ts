@@ -23,6 +23,8 @@ import sun from './sun.js';
 import ISoundPlayer from '../../tambo/js/ISoundPlayer.js';
 import Utterance, { IAlertable } from '../../utterance-queue/js/Utterance.js';
 import IProperty from '../../axon/js/IProperty.js';
+import Bounds2 from '../../dot/js/Bounds2.js';
+import { Shape } from '../../kite/js/imports.js';
 
 // constants
 const BOOLEAN_VALIDATOR = { valueType: 'boolean' };
@@ -54,7 +56,7 @@ type SelfOptions = {
   phetioLinkProperty?: boolean;
 };
 
-export type CheckboxOptions = SelfOptions & Omit<VoicingOptions, 'children'>;
+export type CheckboxOptions = SelfOptions & Omit<VoicingOptions, 'children' | 'mouseArea' | 'touchArea'>;
 
 export default class Checkbox extends WidthSizable( Voicing( Node, 0 ) ) {
 
@@ -62,6 +64,11 @@ export default class Checkbox extends WidthSizable( Voicing( Node, 0 ) ) {
   private readonly checkedNode: Path;
   private readonly uncheckedNode: Path;
   private readonly disposeCheckbox: () => void;
+
+  // We need to record if the mouse/touch areas are customized, so that we can avoid overwriting them.
+  isMouseAreaCustomized = false;
+  isTouchAreaCustomized = false;
+  isSettingAreas = false;
 
   // Handles layout of the content, rectangles and mouse/touch areas
   private readonly constraint: CheckboxConstraint;
@@ -244,6 +251,20 @@ export default class Checkbox extends WidthSizable( Voicing( Node, 0 ) ) {
   public getCheckboxColor(): IPaint { return this.checkedNode.fill; }
 
   public get checkboxColor(): IPaint { return this.getCheckboxColor(); }
+
+  override setMouseArea( area: Shape | Bounds2 | null ): this {
+    if ( !this.isSettingAreas ) {
+      this.isMouseAreaCustomized = true;
+    }
+    return super.setMouseArea( area );
+  }
+
+  override setTouchArea( area: Shape | Bounds2 | null ): this {
+    if ( !this.isSettingAreas ) {
+      this.isTouchAreaCustomized = true;
+    }
+    return super.setTouchArea( area );
+  }
 }
 
 class CheckboxConstraint extends LayoutConstraint {
@@ -298,9 +319,15 @@ class CheckboxConstraint extends LayoutConstraint {
       Math.max( this.checkboxNode.left + preferredWidth, contentProxy.right )
     );
 
-    // Update pointer areas
-    this.checkbox.touchArea = this.checkbox.localBounds.dilatedXY( this.options.touchAreaXDilation, this.options.touchAreaYDilation );
-    this.checkbox.mouseArea = this.checkbox.localBounds.dilatedXY( this.options.mouseAreaXDilation, this.options.mouseAreaYDilation );
+    // Update pointer areas (if the client hasn't customized them)
+    this.checkbox.isSettingAreas = true;
+    if ( !this.checkbox.isTouchAreaCustomized ) {
+      this.checkbox.touchArea = this.checkbox.localBounds.dilatedXY( this.options.touchAreaXDilation, this.options.touchAreaYDilation );
+    }
+    if ( !this.checkbox.isMouseAreaCustomized ) {
+      this.checkbox.mouseArea = this.checkbox.localBounds.dilatedXY( this.options.mouseAreaXDilation, this.options.mouseAreaYDilation );
+    }
+    this.checkbox.isSettingAreas = false;
 
     contentProxy.dispose();
 
