@@ -15,7 +15,7 @@ import PhetioObject from '../../../tandem/js/PhetioObject.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import EnabledComponent, { EnabledComponentOptions } from '../../../axon/js/EnabledComponent.js';
 import sun from '../sun.js';
-import { UnknownMultilink } from '../../../axon/js/Multilink.js';
+import Multilink, { UnknownMultilink } from '../../../axon/js/Multilink.js';
 
 type SelfOptions = {
 
@@ -199,7 +199,7 @@ export default class ButtonModel extends EnabledComponent {
 
     // assign a new Multilink (for disposal), and make sure that the button looks pressed when any of the
     // PressListeners created by this ButtonModel look pressed.
-    this.looksPressedMultilink = Property.multilinkAny( looksPressedProperties, ( ...args: boolean[] ) => {
+    this.looksPressedMultilink = Multilink.multilinkAny( looksPressedProperties, ( ...args: boolean[] ) => {
       this.looksPressedProperty.value = _.reduce( args, ( sum: boolean, newValue: boolean ) => sum || newValue, false );
     } );
 
@@ -208,7 +208,7 @@ export default class ButtonModel extends EnabledComponent {
     // assign a new Multilink (for disposal), and make sure that the button looks over when any of the
     // PressListeners created by this ButtonModel look over. Note that this cannot be an arrow function
     // because its implementation relies on arguments.
-    this.looksOverMultilink = Property.multilinkAny( looksOverProperties, ( ...args: boolean[] ) => {
+    this.looksOverMultilink = Multilink.multilinkAny( looksOverProperties, ( ...args: boolean[] ) => {
       this.looksOverProperty.value = _.reduce( args, ( sum: boolean, newValue: boolean ) => sum || newValue, false );
     } );
 

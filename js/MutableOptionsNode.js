@@ -31,6 +31,7 @@
  */
 
 import Property from '../../axon/js/Property.js';
+import Multilink from '../../axon/js/Multilink.js';
 import merge from '../../phet-core/js/merge.js';
 import { Node } from '../../scenery/js/imports.js';
 import sun from './sun.js';
@@ -62,7 +63,7 @@ class MutableOptionsNode extends Node {
     ] );
 
     // @private {Multilink} - Make a copy, and replace it when one of our dyanmic options changes.
-    this.multilink = Property.multilink( _.values( dynamicOptions ), this.replaceCopy.bind( this ) );
+    this.multilink = Multilink.multilink( _.values( dynamicOptions ), this.replaceCopy.bind( this ) );
 
     // Apply any options that make more sense on the wrapper (typically like positioning)
     this.mutate( wrapperOptions );

@@ -9,7 +9,7 @@
  * @author Chris Malley (PixelZoom, Inc.)
  */
 
-import Property from '../../axon/js/Property.js';
+import Multilink from '../../axon/js/Multilink.js';
 import ScreenView from '../../joist/js/ScreenView.js';
 import getGlobal from '../../phet-core/js/getGlobal.js';
 import merge from '../../phet-core/js/merge.js';
@@ -309,7 +309,7 @@ class Dialog extends Popupable( Panel ) {
     // @private {Sim}
     this.sim = options.sim;
 
-    this.updateLayoutMultilink = Property.multilink( [
+    this.updateLayoutMultilink = Multilink.multilink( [
       this.sim.boundsProperty,
       this.sim.screenBoundsProperty,
       this.sim.scaleProperty,
