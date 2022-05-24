@@ -444,8 +444,13 @@ export default class Slider extends AccessibleSlider( Node, 0 ) {
     // when the enabled range changes, the value to position linear function must change as well
     const enabledRangeObserver = function( enabledRange: Range ) {
 
-      // clamp the value to the enabled range if it changes
-      valueProperty.set( Utils.clamp( valueProperty.value, enabledRange.min, enabledRange.max ) );
+      // When restoring PhET-iO state, prevent the clamp from setting a stale, incorrect value to a deferred Property
+      // (which may have already restored the correct value from phet-io state), see https://github.com/phetsims/mean-share-and-balance/issues/21
+      if ( !valueProperty.isPhetioInstrumented() || !phet.joist.sim.isSettingPhetioStateProperty.value ) {
+
+        // clamp the value to the enabled range if it changes
+        valueProperty.set( Utils.clamp( valueProperty.value, enabledRange.min, enabledRange.max ) );
+      }
     };
     this.enabledRangeProperty.link( enabledRangeObserver ); // needs to be unlinked in dispose function
 
