@@ -366,6 +366,8 @@ class Dialog extends Popupable( Panel ) {
 
       closeButton.dispose();
 
+      contentAndTitle.dispose();
+
       // remove dialog content from scene graph, but don't dispose because Panel
       // needs to remove listeners on the content in its dispose()
       dialogContent.removeAllChildren();
