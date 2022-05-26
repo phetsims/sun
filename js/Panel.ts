@@ -123,6 +123,8 @@ export default class Panel extends Sizable( Node ) {
 
   public get stroke(): IPaint { return this.getStroke(); }
 
+  public set stroke( value: IPaint ) { this.setStroke( value ); }
+
   /**
    * Change the background rectangle's stroke (can be overridden)
    */
@@ -133,8 +135,6 @@ export default class Panel extends Sizable( Node ) {
     this.constraint && this.constraint.updateLayoutAutomatically();
   }
 
-  public set stroke( value: IPaint ) { this.setStroke( value ); }
-
   /**
    * Get the background rectangle's fill (can be overridden)
    */
@@ -144,14 +144,14 @@ export default class Panel extends Sizable( Node ) {
 
   public get fill(): IPaint { return this.getFill(); }
 
+  public set fill( value: IPaint ) { this.setFill( value ); }
+
   /**
    * Change the background rectangle's fill (can be overridden)
    */
   public setFill( fill: IPaint ): void {
     this._background.fill = fill;
   }
-
-  public set fill( value: IPaint ) { this.setFill( value ); }
 
   public override setExcludeInvisibleChildrenFromBounds( excludeInvisibleChildrenFromBounds: boolean ): void {
     super.setExcludeInvisibleChildrenFromBounds( excludeInvisibleChildrenFromBounds );

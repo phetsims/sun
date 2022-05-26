@@ -230,12 +230,12 @@ export default class Checkbox extends WidthSizable( Voicing( Node, 0 ) ) {
 
   public set checkboxColorBackground( value: IPaint ) { this.setCheckboxColorBackground( value ); }
 
+  public get checkboxColorBackground(): IPaint { return this.getCheckboxColorBackground(); }
+
   /**
    * Gets the background color of the checkbox.
    */
   public getCheckboxColorBackground(): IPaint { return this.backgroundNode.fill; }
-
-  public get checkboxColorBackground(): IPaint { return this.getCheckboxColorBackground(); }
 
   /**
    * Sets the color of the checkbox.
@@ -245,12 +245,12 @@ export default class Checkbox extends WidthSizable( Voicing( Node, 0 ) ) {
 
   public set checkboxColor( value: IPaint ) { this.setCheckboxColor( value ); }
 
+  public get checkboxColor(): IPaint { return this.getCheckboxColor(); }
+
   /**
    * Gets the color of the checkbox.
    */
   public getCheckboxColor(): IPaint { return this.checkedNode.fill; }
-
-  public get checkboxColor(): IPaint { return this.getCheckboxColor(); }
 
   override setMouseArea( area: Shape | Bounds2 | null ): this {
     if ( !this.isSettingAreas ) {

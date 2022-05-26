@@ -224,12 +224,12 @@ export default class ButtonNode extends Voicing( Node, 0 ) {
 
   set baseColor( baseColor: IColor ) { this.setBaseColor( baseColor ); }
 
+  get baseColor(): IColor { return this.getBaseColor(); }
+
   /**
    * Gets the base color for this button.
    */
   public getBaseColor(): IColor { return this._settableBaseColorProperty.paint as IColor; }
-
-  get baseColor(): IColor { return this.getBaseColor(); }
 
   /**
    * Manually click the button, as it would be clicked in response to alternative input. Recommended only for

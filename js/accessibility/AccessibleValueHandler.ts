@@ -826,14 +826,14 @@ const AccessibleValueHandler = <SuperType extends Constructor>( Type: SuperType,
 
     set keyboardStep( keyboardStep: number ) { this.setKeyboardStep( keyboardStep ); }
 
+    get keyboardStep(): number { return this.getKeyboardStep(); }
+
     /**
      * Get the delta for value Property when using arrow keys.
      */
     getKeyboardStep(): number {
       return this._keyboardStep;
     }
-
-    get keyboardStep(): number { return this.getKeyboardStep(); }
 
     /**
      * Set the delta for value Property when using arrow keys with shift to interact with the Node.
@@ -846,14 +846,14 @@ const AccessibleValueHandler = <SuperType extends Constructor>( Type: SuperType,
 
     set shiftKeyboardStep( shiftKeyboardStep: number ) { this.setShiftKeyboardStep( shiftKeyboardStep ); }
 
+    get shiftKeyboardStep(): number { return this.getShiftKeyboardStep(); }
+
     /**
      * Get the delta for value Property when using arrow keys with shift to interact with the Node.
      */
     getShiftKeyboardStep(): number {
       return this._shiftKeyboardStep;
     }
-
-    get shiftKeyboardStep(): number { return this.getShiftKeyboardStep(); }
 
     /**
      * Returns whether the shift key is currently held down on this slider, changing the size of step.
@@ -875,14 +875,14 @@ const AccessibleValueHandler = <SuperType extends Constructor>( Type: SuperType,
 
     set pageKeyboardStep( pageKeyboardStep: number ) { this.setPageKeyboardStep( pageKeyboardStep ); }
 
+    get pageKeyboardStep(): number { return this.getPageKeyboardStep(); }
+
     /**
      * Get the delta for value Property when using page up/page down to interact with the Node.
      */
     getPageKeyboardStep(): number {
       return this._pageKeyboardStep;
     }
-
-    get pageKeyboardStep(): number { return this.getPageKeyboardStep(); }
 
     /**
      * Set the orientation for the slider as specified by https://www.w3.org/TR/wai-aria-1.1/#aria-orientation.
@@ -897,6 +897,8 @@ const AccessibleValueHandler = <SuperType extends Constructor>( Type: SuperType,
 
     set ariaOrientation( orientation: Orientation ) { this.setAriaOrientation( orientation ); }
 
+    get ariaOrientation(): Orientation { return this._ariaOrientation; }
+
     /**
      * Get the orientation of the accessible slider, see setAriaOrientation for information on the behavior of this
      * attribute.
@@ -904,8 +906,6 @@ const AccessibleValueHandler = <SuperType extends Constructor>( Type: SuperType,
     getAriaOrientation(): Orientation {
       return this._ariaOrientation;
     }
-
-    get ariaOrientation(): Orientation { return this._ariaOrientation; }
 
     /**
      * Returns true if all range keys are currently up (not held down).
