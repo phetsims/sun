@@ -14,7 +14,7 @@ import Property from '../../axon/js/Property.js';
 import Dimension2 from '../../dot/js/Dimension2.js';
 import LinearFunction from '../../dot/js/LinearFunction.js';
 import Range from '../../dot/js/Range.js';
-import ValueChangeSoundGenerator, { ValueChangeSoundGeneratorOptions } from '../../tambo/js/sound-generators/ValueChangeSoundGenerator.js';
+import ValueChangeSoundPlayer, { ValueChangeSoundPlayerOptions } from '../../tambo/js/sound-generators/ValueChangeSoundPlayer.js';
 import optionize from '../../phet-core/js/optionize.js';
 import { DragListener, Node, NodeOptions, SceneryEvent, Trail } from '../../scenery/js/imports.js';
 import Tandem from '../../tandem/js/Tandem.js';
@@ -41,10 +41,10 @@ type SelfOptions = {
 
   // This is used to generate sounds when clicking in the track.  If not provided, the default sound generator
   // will be created. If set to null, the slider will generate no sound.
-  soundGenerator?: ValueChangeSoundGenerator | null;
+  soundGenerator?: ValueChangeSoundPlayer | null;
 
   // Options for the default sound generator.  These should only be provided when using the default.
-  valueChangeSoundGeneratorOptions?: ValueChangeSoundGeneratorOptions;
+  valueChangeSoundGeneratorOptions?: ValueChangeSoundPlayerOptions;
 };
 
 export type SliderTrackOptions = SelfOptions & NodeOptions;
@@ -81,10 +81,10 @@ export default class SliderTrack extends Node {
 
     // If no sound generator was provided, create the default.
     if ( options.soundGenerator === Slider.DEFAULT_SOUND ) {
-      options.soundGenerator = new ValueChangeSoundGenerator( range, options.valueChangeSoundGeneratorOptions || {} );
+      options.soundGenerator = new ValueChangeSoundPlayer( range, options.valueChangeSoundGeneratorOptions || {} );
     }
     else if ( options.soundGenerator === null ) {
-      options.soundGenerator = ValueChangeSoundGenerator.NO_SOUND;
+      options.soundGenerator = ValueChangeSoundPlayer.NO_SOUND;
     }
 
     this.size = options.size;

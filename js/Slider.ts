@@ -27,7 +27,7 @@ import Tandem from '../../tandem/js/Tandem.js';
 import BooleanIO from '../../tandem/js/types/BooleanIO.js';
 import IOType from '../../tandem/js/types/IOType.js';
 import VoidIO from '../../tandem/js/types/VoidIO.js';
-import ValueChangeSoundGenerator, { ValueChangeSoundGeneratorOptions } from '../../tambo/js/sound-generators/ValueChangeSoundGenerator.js';
+import ValueChangeSoundPlayer, { ValueChangeSoundPlayerOptions } from '../../tambo/js/sound-generators/ValueChangeSoundPlayer.js';
 import AccessibleSlider, { AccessibleSliderOptions } from './accessibility/AccessibleSlider.js';
 import DefaultSliderTrack from './DefaultSliderTrack.js';
 import SliderThumb from './SliderThumb.js';
@@ -118,11 +118,10 @@ type SelfOptions = {
 
   // This is used to generate sounds as the slider is moved by the user.  If not provided, the default sound generator
   // will be created. If set to null, the slider will generate no sound.
-  soundGenerator?: ValueChangeSoundGenerator | null;
+  soundGenerator?: ValueChangeSoundPlayer | null;
 
   // Options for the default sound generator.  These should only be provided when using the default.
-  valueChangeSoundGeneratorOptions?: ValueChangeSoundGeneratorOptions;
-
+  valueChangeSoundGeneratorOptions?: ValueChangeSoundPlayerOptions;
 };
 
 // We provide these options to the super
@@ -153,7 +152,7 @@ export default class Slider extends AccessibleSlider( Node, 0 ) {
   private readonly disposeSlider: () => void;
 
   // This is a marker to indicate that we should create the actual default slider sound.
-  public static DEFAULT_SOUND = new ValueChangeSoundGenerator( new Range( 0, 1 ) );
+  public static DEFAULT_SOUND = new ValueChangeSoundPlayer( new Range( 0, 1 ) );
 
   constructor( valueProperty: IProperty<number>, range: Range, providedOptions?: SliderOptions ) {
 
@@ -232,14 +231,14 @@ export default class Slider extends AccessibleSlider( Node, 0 ) {
 
     // If no sound generator was provided, create the default.
     if ( options.soundGenerator === Slider.DEFAULT_SOUND ) {
-      options.soundGenerator = new ValueChangeSoundGenerator( range, options.valueChangeSoundGeneratorOptions || {} );
+      options.soundGenerator = new ValueChangeSoundPlayer( range, options.valueChangeSoundGeneratorOptions || {} );
     }
     else if ( options.soundGenerator === null ) {
-      options.soundGenerator = ValueChangeSoundGenerator.NO_SOUND;
+      options.soundGenerator = ValueChangeSoundPlayer.NO_SOUND;
     }
 
     // Set up the drag handler to generate sound when drag events cause changes.
-    if ( options.soundGenerator !== ValueChangeSoundGenerator.NO_SOUND ) {
+    if ( options.soundGenerator !== ValueChangeSoundPlayer.NO_SOUND ) {
 
       // variable to keep track of the value at the start of user drag interactions
       let previousValue = valueProperty.value;
