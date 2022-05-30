@@ -17,7 +17,7 @@ import Bounds2 from '../../../dot/js/Bounds2.js';
 import Dimension2 from '../../../dot/js/Dimension2.js';
 import merge from '../../../phet-core/js/merge.js';
 import optionize from '../../../phet-core/js/optionize.js';
-import { AlignBox, AlignBoxXAlign, AlignBoxYAlign, Brightness, Color, Contrast, Grayscale, IColor, Node, PaintableNode, PaintColorProperty, Path, PressListener, PressListenerOptions, SceneryConstants, Sizable, SizableOptions, Voicing, VoicingOptions } from '../../../scenery/js/imports.js';
+import { AlignBox, AlignBoxXAlign, AlignBoxYAlign, Brightness, Color, Contrast, Grayscale, IColor, isHeightSizable, isWidthSizable, Node, PaintableNode, PaintColorProperty, Path, PressListener, PressListenerOptions, SceneryConstants, Sizable, SizableOptions, Voicing, VoicingOptions } from '../../../scenery/js/imports.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import ColorConstants from '../ColorConstants.js';
 import sun from '../sun.js';
@@ -249,7 +249,7 @@ export default class ButtonNode extends Sizable( Voicing( Node, 0 ) ) {
       if ( !hasUpdated || this.widthSizable ) {
         this.minimumWidth = Math.max(
           // If we have content, we can't be smaller than that + margins
-          options.content ? options.content.width + options.xMargin * 2 : 0,
+          options.content ? ( isWidthSizable( options.content ) ? options.content.minimumWidth || 0 : options.content.width ) + options.xMargin * 2 : 0,
           // If we have specified a buttonSize, we can't be smaller than that (but RectangularButton's size does NOT
           // include the stroke, so we actually have to compensate for that here.
           options.buttonSize !== null ? options.buttonSize.width + this.maxLineWidth : 0 );
@@ -257,7 +257,7 @@ export default class ButtonNode extends Sizable( Voicing( Node, 0 ) ) {
       if ( !hasUpdated || this.heightSizable ) {
         this.minimumHeight = Math.max(
           // If we have content, we can't be smaller than that + margins
-          options.content ? options.content.height + options.yMargin * 2 : 0,
+          options.content ? ( isHeightSizable( options.content ) ? options.content.minimumHeight || 0 : options.content.height ) + options.yMargin * 2 : 0,
           // If we have specified a buttonSize, we can't be smaller than that (but RectangularButton's size does NOT
           // include the stroke, so we actually have to compensate for that here.
           options.buttonSize !== null ? options.buttonSize.height + this.maxLineWidth : 0 );
