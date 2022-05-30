@@ -6,12 +6,12 @@
  */
 
 import IProperty from '../../../axon/js/IProperty.js';
-import { Color, PaintableNode } from '../../../scenery/js/imports.js';
+import { Color, Path } from '../../../scenery/js/imports.js';
 import RadioButtonInteractionState from './RadioButtonInteractionState.js';
 import ButtonInteractionState from './ButtonInteractionState.js';
 
 type TButtonAppearanceStrategy = {
-  new( content: PaintableNode,
+  new( content: Path,
        interactionStateProperty: IProperty<ButtonInteractionState | RadioButtonInteractionState>,
        baseColorProperty: IProperty<Color>,
        options?: any ): {

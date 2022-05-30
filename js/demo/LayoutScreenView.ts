@@ -24,7 +24,6 @@ import sun from '../sun.js';
 import sunQueryParameters from '../sunQueryParameters.js';
 import DemosScreenView, { DemosScreenViewOptions } from './DemosScreenView.js';
 import RectangularPushButton from '../buttons/RectangularPushButton.js';
-import ButtonNode from '../buttons/ButtonNode.js';
 
 class LayoutScreenView extends DemosScreenView {
 
@@ -51,6 +50,7 @@ class LayoutScreenView extends DemosScreenView {
       { label: 'Origin', createNode: demoOrigin, tandemName: 'origin' },
       { label: 'Flow stress test', createNode: demoFlowStressTest, tandemName: 'flowStressTest' },
       { label: 'Grid stress test', createNode: demoGridStressTest, tandemName: 'gridStressTest' },
+      { label: 'Sizable buttons', createNode: demoSizableButtons, tandemName: 'sizableButtons' },
       { label: 'Test', createNode: demoTest, tandemName: 'test' }
     ], options );
   }
@@ -495,6 +495,41 @@ function demoGridStressTest( layoutBounds: Bounds2 ): Node {
   } );
 }
 
+function demoSizableButtons( layoutBounds: Bounds2 ): Node {
+  const resizer = createHorizontalResizer( 15, 30, 150 );
+
+  const box = new GridBox( {
+    spacing: 5,
+    stretch: true,
+    rows: [
+      [
+        new RectangularPushButton( {
+          content: new Rectangle( 0, 0, 50, 50, { fill: 'red' } ),
+          sizable: true
+        } ),
+        new RectangularPushButton( {
+          content: new Rectangle( 0, 0, 50, 100, { fill: 'red' } ),
+          sizable: true
+        } )
+      ],
+      [
+        new RectangularPushButton( {
+          content: resizer,
+          sizable: true
+        } ),
+        new RectangularPushButton( {
+          content: new Rectangle( 0, 0, 100, 100, { fill: 'red' } ),
+          sizable: true
+        } )
+      ]
+    ],
+    center: layoutBounds.center
+  } );
+
+  const alignBox = new AlignBox( box, { alignBounds: layoutBounds, margin: MARGIN } );
+  return overrideDispose( alignBox, AlignBox, () => resizer.dispose() );
+}
+
 function demoTest( layoutBounds: Bounds2 ): Node {
   const box = new GridBox( {
     spacing: 5,
@@ -503,24 +538,20 @@ function demoTest( layoutBounds: Bounds2 ): Node {
       [
         new RectangularPushButton( {
           content: new Rectangle( 0, 0, 50, 50, { fill: 'red' } ),
-          buttonAppearanceStrategy: ButtonNode.FlatAppearanceStrategy,
           sizable: true
         } ),
         new RectangularPushButton( {
           content: new Rectangle( 0, 0, 50, 100, { fill: 'red' } ),
-          buttonAppearanceStrategy: ButtonNode.FlatAppearanceStrategy,
           sizable: true
         } )
       ],
       [
         new RectangularPushButton( {
           content: new Rectangle( 0, 0, 100, 50, { fill: 'red' } ),
-          buttonAppearanceStrategy: ButtonNode.FlatAppearanceStrategy,
           sizable: true
         } ),
         new RectangularPushButton( {
           content: new Rectangle( 0, 0, 100, 100, { fill: 'red' } ),
-          buttonAppearanceStrategy: ButtonNode.FlatAppearanceStrategy,
           sizable: true
         } )
       ]

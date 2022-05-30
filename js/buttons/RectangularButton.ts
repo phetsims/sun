@@ -14,7 +14,7 @@ import Dimension2 from '../../../dot/js/Dimension2.js';
 import { Shape } from '../../../kite/js/imports.js';
 import optionize from '../../../phet-core/js/optionize.js';
 import PickRequired from '../../../phet-core/js/types/PickRequired.js';
-import { Color, IPaint, LinearGradient, Node, PaintableNode, PaintColorProperty, Path } from '../../../scenery/js/imports.js';
+import { Color, IPaint, LinearGradient, Node, PaintColorProperty, Path } from '../../../scenery/js/imports.js';
 import sun from '../sun.js';
 import ButtonInteractionState from './ButtonInteractionState.js';
 import ButtonModel from './ButtonModel.js';
@@ -215,7 +215,7 @@ class ThreeDAppearanceStrategy {
    * @param baseColorProperty
    * @param [options]
    */
-  constructor( buttonBackground: PaintableNode,
+  constructor( buttonBackground: Path,
                interactionStateProperty: IProperty<ButtonInteractionState | RadioButtonInteractionState>,
                baseColorProperty: IProperty<Color>,
                options?: any ) {
@@ -228,52 +228,10 @@ class ThreeDAppearanceStrategy {
     const baseDarker4Property = new PaintColorProperty( baseColorProperty, { luminanceFactor: -0.4 } );
     const baseDarker5Property = new PaintColorProperty( baseColorProperty, { luminanceFactor: -0.5 } );
     const baseTransparentProperty = new DerivedProperty( [ baseColorProperty ], color => color.withAlpha( 0 ) );
-
-    const buttonWidth = buttonBackground.width;
-    const buttonHeight = buttonBackground.height;
-
-    // compute color stops for gradient, see issue #148
-    assert && assert( buttonWidth >= HORIZONTAL_HIGHLIGHT_GRADIENT_LENGTH + SHADE_GRADIENT_LENGTH );
-    assert && assert( buttonHeight >= VERTICAL_HIGHLIGHT_GRADIENT_LENGTH + SHADE_GRADIENT_LENGTH );
-    const verticalHighlightStop = Math.min( VERTICAL_HIGHLIGHT_GRADIENT_LENGTH / buttonHeight, 1 );
-    const verticalShadowStop = Math.max( 1 - SHADE_GRADIENT_LENGTH / buttonHeight, 0 );
-    const horizontalHighlightStop = Math.min( HORIZONTAL_HIGHLIGHT_GRADIENT_LENGTH / buttonWidth, 1 );
-    const horizontalShadowStop = Math.max( 1 - SHADE_GRADIENT_LENGTH / buttonWidth, 0 );
     const transparentWhite = new Color( 255, 255, 255, 0.7 );
 
-    // Gradient fills for button states
-    const upFillVertical = new LinearGradient( 0, 0, 0, buttonHeight )
-      .addColorStop( 0, baseBrighter7Property )
-      .addColorStop( verticalHighlightStop, baseColorProperty )
-      .addColorStop( verticalShadowStop, baseColorProperty )
-      .addColorStop( 1, baseDarker5Property );
-
-    const upFillHorizontal = new LinearGradient( 0, 0, buttonWidth, 0 )
-      .addColorStop( 0, transparentWhite )
-      .addColorStop( horizontalHighlightStop, baseTransparentProperty )
-      .addColorStop( horizontalShadowStop, baseTransparentProperty )
-      .addColorStop( 1, baseDarker5Property );
-
-    const overFillVertical = new LinearGradient( 0, 0, 0, buttonHeight )
-      .addColorStop( 0, baseBrighter7Property )
-      .addColorStop( verticalHighlightStop, baseBrighter5Property )
-      .addColorStop( verticalShadowStop, baseBrighter5Property )
-      .addColorStop( 1, baseDarker5Property );
-
-    const overFillHorizontal = new LinearGradient( 0, 0, buttonWidth, 0 )
-      .addColorStop( 0, transparentWhite )
-      .addColorStop( horizontalHighlightStop / 2, new Color( 255, 255, 255, 0 ) )
-      .addColorStop( horizontalShadowStop, baseTransparentProperty )
-      .addColorStop( 1, baseDarker3Property );
-
-    const downFillVertical = new LinearGradient( 0, 0, 0, buttonHeight )
-      .addColorStop( 0, baseBrighter7Property )
-      .addColorStop( verticalHighlightStop * 0.67, baseDarker3Property )
-      .addColorStop( verticalShadowStop, baseBrighter2Property )
-      .addColorStop( 1, baseDarker5Property );
-
     // Adds shading to left and right edges of the button.
-    const horizontalShadingPath = new Path( createButtonShape( buttonWidth, buttonHeight, options ), {
+    const horizontalShadingPath = new Path( null, {
       stroke: ( typeof ( options.stroke ) === 'undefined' ) ? baseDarker4Property : options.stroke,
       lineWidth: options.lineWidth,
       pickable: false
@@ -282,38 +240,93 @@ class ThreeDAppearanceStrategy {
 
     this.maxLineWidth = horizontalShadingPath.hasStroke() && options && typeof options.lineWidth === 'number' ? options.lineWidth : 0;
 
-    // Cache gradients
-    buttonBackground.cachedPaints = [ upFillVertical, overFillVertical, downFillVertical ];
-    horizontalShadingPath.cachedPaints = [ upFillHorizontal, overFillHorizontal ];
+    let interactionStateListener: ( interactionState: ButtonInteractionState ) => void;
 
-    // Change colors to match interactionState
-    function interactionStateListener( interactionState: ButtonInteractionState ) {
+    // We'll need to listen to the shape changes in order to update our appearance.
+    const listener = () => {
 
-      switch( interactionState ) {
+      // Handle our gradients based on the path's actual shape, NOT including the stroked part
+      const buttonWidth = buttonBackground.shape!.bounds.width;
+      const buttonHeight = buttonBackground.shape!.bounds.height;
 
-        case ButtonInteractionState.IDLE:
-          buttonBackground.fill = upFillVertical;
-          horizontalShadingPath.fill = upFillHorizontal;
-          break;
+      horizontalShadingPath.shape = buttonBackground.shape;
 
-        case ButtonInteractionState.OVER:
-          buttonBackground.fill = overFillVertical;
-          horizontalShadingPath.fill = overFillHorizontal;
-          break;
+      // compute color stops for gradient, see issue #148
+      assert && assert( buttonWidth >= HORIZONTAL_HIGHLIGHT_GRADIENT_LENGTH + SHADE_GRADIENT_LENGTH );
+      assert && assert( buttonHeight >= VERTICAL_HIGHLIGHT_GRADIENT_LENGTH + SHADE_GRADIENT_LENGTH );
+      const verticalHighlightStop = Math.min( VERTICAL_HIGHLIGHT_GRADIENT_LENGTH / buttonHeight, 1 );
+      const verticalShadowStop = Math.max( 1 - SHADE_GRADIENT_LENGTH / buttonHeight, 0 );
+      const horizontalHighlightStop = Math.min( HORIZONTAL_HIGHLIGHT_GRADIENT_LENGTH / buttonWidth, 1 );
+      const horizontalShadowStop = Math.max( 1 - SHADE_GRADIENT_LENGTH / buttonWidth, 0 );
 
-        case ButtonInteractionState.PRESSED:
-          buttonBackground.fill = downFillVertical;
-          horizontalShadingPath.fill = overFillHorizontal;
-          break;
+      // Gradient fills for button states
+      const upFillVertical = new LinearGradient( 0, 0, 0, buttonHeight )
+        .addColorStop( 0, baseBrighter7Property )
+        .addColorStop( verticalHighlightStop, baseColorProperty )
+        .addColorStop( verticalShadowStop, baseColorProperty )
+        .addColorStop( 1, baseDarker5Property );
 
-        default:
-          throw new Error( `unsupported interactionState: ${interactionState}` );
-      }
-    }
+      const upFillHorizontal = new LinearGradient( 0, 0, buttonWidth, 0 )
+        .addColorStop( 0, transparentWhite )
+        .addColorStop( horizontalHighlightStop, baseTransparentProperty )
+        .addColorStop( horizontalShadowStop, baseTransparentProperty )
+        .addColorStop( 1, baseDarker5Property );
 
-    interactionStateProperty.link( interactionStateListener );
+      const overFillVertical = new LinearGradient( 0, 0, 0, buttonHeight )
+        .addColorStop( 0, baseBrighter7Property )
+        .addColorStop( verticalHighlightStop, baseBrighter5Property )
+        .addColorStop( verticalShadowStop, baseBrighter5Property )
+        .addColorStop( 1, baseDarker5Property );
+
+      const overFillHorizontal = new LinearGradient( 0, 0, buttonWidth, 0 )
+        .addColorStop( 0, transparentWhite )
+        .addColorStop( horizontalHighlightStop / 2, new Color( 255, 255, 255, 0 ) )
+        .addColorStop( horizontalShadowStop, baseTransparentProperty )
+        .addColorStop( 1, baseDarker3Property );
+
+      const downFillVertical = new LinearGradient( 0, 0, 0, buttonHeight )
+        .addColorStop( 0, baseBrighter7Property )
+        .addColorStop( verticalHighlightStop * 0.67, baseDarker3Property )
+        .addColorStop( verticalShadowStop, baseBrighter2Property )
+        .addColorStop( 1, baseDarker5Property );
+
+      // Cache gradients
+      buttonBackground.cachedPaints = [ upFillVertical, overFillVertical, downFillVertical ];
+      horizontalShadingPath.cachedPaints = [ upFillHorizontal, overFillHorizontal ];
+
+      interactionStateListener && interactionStateProperty.unlink( interactionStateListener );
+
+      // Change colors to match interactionState
+      interactionStateListener = ( interactionState: ButtonInteractionState ) => {
+
+        switch( interactionState ) {
+
+          case ButtonInteractionState.IDLE:
+            buttonBackground.fill = upFillVertical;
+            horizontalShadingPath.fill = upFillHorizontal;
+            break;
+
+          case ButtonInteractionState.OVER:
+            buttonBackground.fill = overFillVertical;
+            horizontalShadingPath.fill = overFillHorizontal;
+            break;
+
+          case ButtonInteractionState.PRESSED:
+            buttonBackground.fill = downFillVertical;
+            horizontalShadingPath.fill = overFillHorizontal;
+            break;
+
+          default:
+            throw new Error( `unsupported interactionState: ${interactionState}` );
+        }
+      };
+      interactionStateProperty.link( interactionStateListener );
+
+    };
+    buttonBackground.selfBoundsProperty.link( listener );
 
     this.disposeThreeDAppearanceStrategy = () => {
+      buttonBackground.selfBoundsProperty.unlink( listener );
       if ( interactionStateProperty.hasListener( interactionStateListener ) ) {
         interactionStateProperty.unlink( interactionStateListener );
       }
