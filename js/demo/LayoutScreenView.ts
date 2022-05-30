@@ -23,6 +23,8 @@ import Panel from '../Panel.js';
 import sun from '../sun.js';
 import sunQueryParameters from '../sunQueryParameters.js';
 import DemosScreenView, { DemosScreenViewOptions } from './DemosScreenView.js';
+import RectangularPushButton from '../buttons/RectangularPushButton.js';
+import ButtonNode from '../buttons/ButtonNode.js';
 
 class LayoutScreenView extends DemosScreenView {
 
@@ -494,80 +496,36 @@ function demoGridStressTest( layoutBounds: Bounds2 ): Node {
 }
 
 function demoTest( layoutBounds: Bounds2 ): Node {
-  // // Doesn't respect its preferred size
-  // class LyingNode1 extends Sizable( Node ) {
-  //   constructor() {
-  //     super();
-  //
-  //     this.minimumWidth = 50;
-  //     this.minimumHeight = 50;
-  //
-  //     this.addChild( new Rectangle( 0, 0, 100, 50, { fill: 'gray' } ) );
-  //   }
-  // }
-  // class LyingNode2 extends Sizable( Node ) {
-  //   constructor() {
-  //     super();
-  //
-  //     this.minimumWidth = 100;
-  //     this.minimumHeight = 50;
-  //
-  //     this.addChild( new Rectangle( 0, 0, 50, 50, { fill: 'gray' } ) );
-  //   }
-  // }
-  // const box = new FlowBox( {
-  //   orientation: 'vertical',
-  //   spacing: 50,
-  //   children: [
-  //     new FlowBox( {
-  //       orientation: 'horizontal',
-  //       spacing: 5,
-  //       children: [
-  //         new Rectangle( 0, 0, 50, 50, { fill: colors[ 2 ] } ),
-  //         new Rectangle( 0, 0, 50, 50, { fill: colors[ 4 ] } ),
-  //         new LyingNode1(),
-  //         new Rectangle( 0, 0, 50, 50, { fill: colors[ 6 ] } ),
-  //         new Rectangle( 0, 0, 50, 50, { fill: colors[ 8 ] } )
-  //       ]
-  //     } ),
-  //     new FlowBox( {
-  //       orientation: 'horizontal',
-  //       spacing: 5,
-  //       children: [
-  //         new Rectangle( 0, 0, 50, 50, { fill: colors[ 2 ] } ),
-  //         new Rectangle( 0, 0, 50, 50, { fill: colors[ 4 ] } ),
-  //         new LyingNode2(),
-  //         new Rectangle( 0, 0, 50, 50, { fill: colors[ 6 ] } ),
-  //         new Rectangle( 0, 0, 50, 50, { fill: colors[ 8 ] } )
-  //       ]
-  //     } ),
-  //     new GridBox( {
-  //       spacing: 5,
-  //       rows: [
-  //         [
-  //           new Rectangle( 0, 0, 50, 50, { fill: colors[ 6 ] } ),
-  //           new Rectangle( 0, 0, 50, 50, { fill: colors[ 2 ] } ),
-  //           new LyingNode2()
-  //         ],
-  //         [
-  //           new Rectangle( 0, 0, 50, 50, { fill: colors[ 8 ] } ),
-  //           new LyingNode1(),
-  //           new Rectangle( 0, 0, 50, 50, { fill: colors[ 4 ] } )
-  //         ]
-  //       ]
-  //     } )
-  //   ]
-  // } );
-
-  const box = new GridBox();
-  box.addRow( [
-    new Rectangle( 0, 0, 50, 50, { fill: colors[ 2 ] } ),
-    new Rectangle( 0, 0, 50, 50, { fill: colors[ 4 ] } )
-  ] );
-  box.addRow( [
-    new Rectangle( 0, 0, 50, 50, { fill: colors[ 6 ] } ),
-    new Rectangle( 0, 0, 50, 50, { fill: colors[ 8 ] } )
-  ] );
+  const box = new GridBox( {
+    spacing: 5,
+    stretch: true,
+    rows: [
+      [
+        new RectangularPushButton( {
+          content: new Rectangle( 0, 0, 50, 50, { fill: 'red' } ),
+          buttonAppearanceStrategy: ButtonNode.FlatAppearanceStrategy,
+          sizable: true
+        } ),
+        new RectangularPushButton( {
+          content: new Rectangle( 0, 0, 50, 100, { fill: 'red' } ),
+          buttonAppearanceStrategy: ButtonNode.FlatAppearanceStrategy,
+          sizable: true
+        } )
+      ],
+      [
+        new RectangularPushButton( {
+          content: new Rectangle( 0, 0, 100, 50, { fill: 'red' } ),
+          buttonAppearanceStrategy: ButtonNode.FlatAppearanceStrategy,
+          sizable: true
+        } ),
+        new RectangularPushButton( {
+          content: new Rectangle( 0, 0, 100, 100, { fill: 'red' } ),
+          buttonAppearanceStrategy: ButtonNode.FlatAppearanceStrategy,
+          sizable: true
+        } )
+      ]
+    ]
+  } );
 
   return new Panel( box, { center: layoutBounds.center } );
 }

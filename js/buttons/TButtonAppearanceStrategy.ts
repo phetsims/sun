@@ -11,11 +11,13 @@ import RadioButtonInteractionState from './RadioButtonInteractionState.js';
 import ButtonInteractionState from './ButtonInteractionState.js';
 
 type TButtonAppearanceStrategy = {
-  dispose?: () => void;
   new( content: PaintableNode,
        interactionStateProperty: IProperty<ButtonInteractionState | RadioButtonInteractionState>,
        baseColorProperty: IProperty<Color>,
-       options?: any ): any;
+       options?: any ): {
+    dispose?: () => void;
+    maxLineWidth: number;
+  };
 }
 
 export default TButtonAppearanceStrategy;

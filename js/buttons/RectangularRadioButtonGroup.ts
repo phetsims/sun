@@ -16,7 +16,6 @@ import Tandem from '../../../tandem/js/Tandem.js';
 import ColorConstants from '../ColorConstants.js';
 import sun from '../sun.js';
 import RectangularRadioButton from './RectangularRadioButton.js';
-import TButtonAppearanceStrategy from './TButtonAppearanceStrategy.js';
 import { VoicingResponse } from '../../../utterance-queue/js/ResponsePacket.js';
 import ISoundPlayer from '../../../tambo/js/ISoundPlayer.js';
 import TContentAppearanceStrategy from './TContentAppearanceStrategy.js';
@@ -261,7 +260,7 @@ export default class RectangularRadioButtonGroup<T> extends LayoutBox {
     // a visual button label
     const buttonsWithLayoutNodes: ButtonWithLayoutNode<T>[] = [];
 
-    const labelAppearanceStrategies: TButtonAppearanceStrategy[] = [];
+    const labelAppearanceStrategies: InstanceType<TContentAppearanceStrategy>[] = [];
     for ( i = 0; i < items.length; i++ ) {
       const item = items[ i ];
 

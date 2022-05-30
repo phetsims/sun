@@ -195,6 +195,8 @@ export default class RectangularRadioButton<T> extends RectangularButton {
    */
   static override FlatAppearanceStrategy: TButtonAppearanceStrategy = class FlatAppearanceStrategy {
 
+    public readonly maxLineWidth: number;
+
     private readonly disposeFlatAppearanceStrategy: () => void;
 
     /**
@@ -213,6 +215,8 @@ export default class RectangularRadioButton<T> extends RectangularButton {
       const overStroke = new PaintColorProperty( options.overStroke || options.deselectedStroke, {
         luminanceFactor: options.overStroke ? 0 : -0.4
       } );
+
+      this.maxLineWidth = Math.max( options.selectedLineWidth, options.deselectedLineWidth, options.overLineWidth );
 
       // Cache colors
       buttonBackground.cachedPaints = [

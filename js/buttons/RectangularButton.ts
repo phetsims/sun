@@ -9,6 +9,7 @@
 
 import DerivedProperty from '../../../axon/js/DerivedProperty.js';
 import IProperty from '../../../axon/js/IProperty.js';
+import Multilink from '../../../axon/js/Multilink.js';
 import Dimension2 from '../../../dot/js/Dimension2.js';
 import { Shape } from '../../../kite/js/imports.js';
 import optionize from '../../../phet-core/js/optionize.js';
@@ -29,6 +30,8 @@ type SelfOptions = {
 
   // If specified, this will be the size of the button. minWidth and minHeight will be ignored, and
   // content will be scaled down to fit inside, accounting for margins.
+  // NOTE: This will NOT be the size of the button. It does NOT account for the stroke/lineWidth, so the button will
+  // ALWAYS be larger than this.
   size?: Dimension2 | null;
 
   // If you want complete control of a button's dimensions, use options.size. If you want to specify
@@ -120,11 +123,13 @@ export default class RectangularButton extends ButtonNode {
     if ( options.size ) {
       assert && assert( options.xMargin < options.size.width, 'xMargin cannot be larger than width' );
       assert && assert( options.yMargin < options.size.height, 'yMargin cannot be larger than height' );
+
+      options.buttonSize = options.size;
     }
 
     // Compute the size of the button.
-    let buttonWidth;
-    let buttonHeight;
+    let buttonWidth: number;
+    let buttonHeight: number;
 
     if ( options.size ) {
       buttonWidth = options.size.width;
@@ -153,6 +158,19 @@ export default class RectangularButton extends ButtonNode {
     }
 
     super( buttonModel, buttonBackground, interactionStateProperty, options );
+
+    Multilink.multilink( [
+      this.isWidthResizableProperty,
+      this.isHeightResizableProperty,
+      this.layoutSizeProperty
+    ], ( isWidthSizable, isHeightSizable, layoutSize ) => {
+      if ( isWidthSizable || isHeightSizable ) {
+        buttonBackground.shape = createButtonShape(
+          isWidthSizable ? layoutSize.width - this.maxLineWidth : buttonWidth,
+          isHeightSizable ? layoutSize.height - this.maxLineWidth : buttonHeight,
+          options );
+      }
+    } );
 
     // Set pointer areas.
     this.touchArea = buttonBackground.localBounds
@@ -187,6 +205,8 @@ function createButtonShape( width: number, height: number,
  */
 class ThreeDAppearanceStrategy {
 
+  public readonly maxLineWidth: number;
+
   private readonly disposeThreeDAppearanceStrategy: () => void;
 
   /**
@@ -200,6 +220,15 @@ class ThreeDAppearanceStrategy {
                baseColorProperty: IProperty<Color>,
                options?: any ) {
 
+    // Dynamic colors
+    const baseBrighter7Property = new PaintColorProperty( baseColorProperty, { luminanceFactor: 0.7 } );
+    const baseBrighter5Property = new PaintColorProperty( baseColorProperty, { luminanceFactor: 0.5 } );
+    const baseBrighter2Property = new PaintColorProperty( baseColorProperty, { luminanceFactor: 0.2 } );
+    const baseDarker3Property = new PaintColorProperty( baseColorProperty, { luminanceFactor: -0.3 } );
+    const baseDarker4Property = new PaintColorProperty( baseColorProperty, { luminanceFactor: -0.4 } );
+    const baseDarker5Property = new PaintColorProperty( baseColorProperty, { luminanceFactor: -0.5 } );
+    const baseTransparentProperty = new DerivedProperty( [ baseColorProperty ], color => color.withAlpha( 0 ) );
+
     const buttonWidth = buttonBackground.width;
     const buttonHeight = buttonBackground.height;
 
@@ -211,15 +240,6 @@ class ThreeDAppearanceStrategy {
     const horizontalHighlightStop = Math.min( HORIZONTAL_HIGHLIGHT_GRADIENT_LENGTH / buttonWidth, 1 );
     const horizontalShadowStop = Math.max( 1 - SHADE_GRADIENT_LENGTH / buttonWidth, 0 );
     const transparentWhite = new Color( 255, 255, 255, 0.7 );
-
-    // Dynamic colors
-    const baseBrighter7Property = new PaintColorProperty( baseColorProperty, { luminanceFactor: 0.7 } );
-    const baseBrighter5Property = new PaintColorProperty( baseColorProperty, { luminanceFactor: 0.5 } );
-    const baseBrighter2Property = new PaintColorProperty( baseColorProperty, { luminanceFactor: 0.2 } );
-    const baseDarker3Property = new PaintColorProperty( baseColorProperty, { luminanceFactor: -0.3 } );
-    const baseDarker4Property = new PaintColorProperty( baseColorProperty, { luminanceFactor: -0.4 } );
-    const baseDarker5Property = new PaintColorProperty( baseColorProperty, { luminanceFactor: -0.5 } );
-    const baseTransparentProperty = new DerivedProperty( [ baseColorProperty ], color => color.withAlpha( 0 ) );
 
     // Gradient fills for button states
     const upFillVertical = new LinearGradient( 0, 0, 0, buttonHeight )
@@ -259,6 +279,8 @@ class ThreeDAppearanceStrategy {
       pickable: false
     } );
     buttonBackground.addChild( horizontalShadingPath );
+
+    this.maxLineWidth = horizontalShadingPath.hasStroke() && options && typeof options.lineWidth === 'number' ? options.lineWidth : 0;
 
     // Cache gradients
     buttonBackground.cachedPaints = [ upFillVertical, overFillVertical, downFillVertical ];

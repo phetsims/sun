@@ -131,6 +131,8 @@ export default class RoundButton extends ButtonNode {
  */
 export class ThreeDAppearanceStrategy {
 
+  public readonly maxLineWidth: number;
+
   private readonly disposeThreeDAppearanceStrategy: () => void;
 
   /**
@@ -189,6 +191,8 @@ export class ThreeDAppearanceStrategy {
       pickable: false
     } );
     buttonBackground.addChild( shadowNode );
+
+    this.maxLineWidth = shadowNode.hasStroke() && options && typeof options.lineWidth === 'number' ? options.lineWidth : 0;
 
     // Cache gradients
     buttonBackground.cachedPaints = [ upFillHighlight, overFillHighlight, pressedFill ];

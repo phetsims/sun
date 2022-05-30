@@ -11,10 +11,13 @@
 import DerivedProperty from '../../../axon/js/DerivedProperty.js';
 import IProperty from '../../../axon/js/IProperty.js';
 import IReadOnlyProperty from '../../../axon/js/IReadOnlyProperty.js';
+import Multilink from '../../../axon/js/Multilink.js';
 import Property from '../../../axon/js/Property.js';
+import Bounds2 from '../../../dot/js/Bounds2.js';
+import Dimension2 from '../../../dot/js/Dimension2.js';
 import merge from '../../../phet-core/js/merge.js';
 import optionize from '../../../phet-core/js/optionize.js';
-import { AlignBox, Brightness, Color, Contrast, Grayscale, IColor, Node, PaintableNode, PaintColorProperty, PressListener, PressListenerOptions, SceneryConstants, Voicing, VoicingOptions } from '../../../scenery/js/imports.js';
+import { AlignBox, AlignBoxXAlign, AlignBoxYAlign, Brightness, Color, Contrast, Grayscale, IColor, Node, PaintableNode, PaintColorProperty, Path, PressListener, PressListenerOptions, SceneryConstants, Sizable, SizableOptions, Voicing, VoicingOptions } from '../../../scenery/js/imports.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import ColorConstants from '../ColorConstants.js';
 import sun from '../sun.js';
@@ -42,8 +45,11 @@ type SelfOptions = {
   yMargin?: number;
 
   // Alignment, relevant only when options minWidth or minHeight are greater than the size of options.content
-  xAlign?: 'left' | 'center' | 'right';
-  yAlign?: 'top' | 'center' | 'bottom';
+  xAlign?: AlignBoxXAlign;
+  yAlign?: AlignBoxYAlign;
+
+  // When a button's non-stroked size is specified (used by RectangularButton etc., not for general use)
+  buttonSize?: Dimension2 | null;
 
   // By default, icons are centered in the button, but icons with odd
   // shapes that are not wrapped in a normalizing parent node may need to
@@ -79,9 +85,10 @@ type SelfOptions = {
   enabledAppearanceStrategy?: EnabledAppearanceStrategy;
 };
 
-export type ButtonNodeOptions = SelfOptions & VoicingOptions;
+type SuperOptions = VoicingOptions & SizableOptions;
+export type ButtonNodeOptions = SelfOptions & SuperOptions;
 
-export default class ButtonNode extends Voicing( Node, 0 ) {
+export default class ButtonNode extends Sizable( Voicing( Node, 0 ) ) {
 
   protected buttonModel: ButtonModel;
   private readonly _settableBaseColorProperty: PaintColorProperty;
@@ -89,8 +96,20 @@ export default class ButtonNode extends Voicing( Node, 0 ) {
   private readonly baseColorProperty: Property<Color>;
   private readonly _pressListener: PressListener;
   private readonly disposeButtonNode: () => void;
+  private readonly content: Node | null;
+  private readonly xMargin: number;
+  private readonly yMargin: number;
 
-  public static FlatAppearanceStrategy: typeof FlatAppearanceStrategy;
+  // The maximum lineWidth our buttonBackground can have. We'll lay things out so that if we adjust our lineWidth below
+  // this, the layout won't change
+  protected readonly maxLineWidth: number;
+
+  // The size we're taking up for layout
+  public readonly layoutWidthProperty: IProperty<number>;
+  public readonly layoutHeightProperty: IProperty<number>;
+  public readonly layoutSizeProperty: IProperty<Dimension2>;
+
+  public static FlatAppearanceStrategy: TButtonAppearanceStrategy;
 
   /**
    * @param buttonModel
@@ -98,12 +117,14 @@ export default class ButtonNode extends Voicing( Node, 0 ) {
    * @param interactionStateProperty - a Property that is used to drive the visual appearance of the button
    * @param providedOptions - this type does not mutate its options, but relies on the subtype to
    */
-  constructor( buttonModel: ButtonModel, buttonBackground: PaintableNode,
+  constructor( buttonModel: ButtonModel, buttonBackground: Path,
                interactionStateProperty: IProperty<ButtonInteractionState>, providedOptions?: ButtonNodeOptions ) {
 
-    const options = optionize<ButtonNodeOptions, SelfOptions, VoicingOptions>()( {
+    const options = optionize<ButtonNodeOptions, SelfOptions, SuperOptions>()( {
 
       content: null,
+      sizable: false,
+      buttonSize: null,
       xMargin: 10,
       yMargin: 5,
       xAlign: 'center',
@@ -144,6 +165,9 @@ export default class ButtonNode extends Voicing( Node, 0 ) {
 
     super();
 
+    this.content = options.content;
+    this.xMargin = options.xMargin;
+    this.yMargin = options.yMargin;
     this.buttonModel = buttonModel;
 
     this._settableBaseColorProperty = new PaintColorProperty( options.baseColor );
@@ -169,22 +193,91 @@ export default class ButtonNode extends Voicing( Node, 0 ) {
       this.baseColorProperty, options );
 
     // Optionally hook up the strategy that will control the content's appearance.
-    let contentAppearanceStrategy: TContentAppearanceStrategy;
+    let contentAppearanceStrategy: InstanceType<TContentAppearanceStrategy>;
     if ( options.contentAppearanceStrategy && options.content ) {
       contentAppearanceStrategy = new options.contentAppearanceStrategy( options.content, interactionStateProperty, options );
     }
 
+    // Get our maxLineWidth from the appearance strategy, as it's needed for layout (and in subtypes)
+    this.maxLineWidth = buttonAppearanceStrategy.maxLineWidth;
+
+    // Store initial values for when we aren't resizable
+    const initialBackgroundWidth = buttonBackground.width;
+    const initialBackgroundHeight = buttonBackground.height;
+
+    // Our layout sizes will need to handle treating the maxLineWidth so we have stable layout with lineWidth changes
+    this.layoutWidthProperty = new DerivedProperty( [
+      this.localPreferredWidthProperty,
+      this.isWidthResizableProperty,
+      buttonBackground.boundsProperty
+    ], ( localPreferredWidth, isWidthResizable, backgroundBounds ) => {
+      if ( isWidthResizable ) {
+        // If needed, use the size our max-stroked path will have
+        return localPreferredWidth !== null ? localPreferredWidth : buttonBackground.shape!.bounds.width + this.maxLineWidth;
+      }
+      else {
+        return initialBackgroundWidth;
+      }
+    }, { tandem: Tandem.OPT_OUT } );
+    this.layoutHeightProperty = new DerivedProperty( [
+      this.localPreferredHeightProperty,
+      this.isHeightResizableProperty,
+      buttonBackground.boundsProperty
+    ], ( localPreferredHeight, isHeightResizable, backgroundBounds ) => {
+      if ( isHeightResizable ) {
+        // If needed, use the size our max-stroked path will have
+        return localPreferredHeight !== null ? localPreferredHeight : buttonBackground.shape!.bounds.height + this.maxLineWidth;
+      }
+      else {
+        return initialBackgroundHeight;
+      }
+    }, { tandem: Tandem.OPT_OUT } );
+
+    // Combining each layout width/height into a dimension
+    this.layoutSizeProperty = new DerivedProperty( [
+      this.layoutWidthProperty,
+      this.layoutHeightProperty
+    ], ( width, height ) => {
+      return new Dimension2( width, height );
+    }, { tandem: Tandem.OPT_OUT } );
+
     let alignBox: AlignBox | null = null;
+
+    // Only allow an initial update if we are not sizable in that dimension
+    let hasUpdated = false;
+    const updateMinimumSize = () => {
+      if ( !hasUpdated || this.widthSizable ) {
+        this.minimumWidth = Math.max(
+          // If we have content, we can't be smaller than that + margins
+          options.content ? options.content.width + options.xMargin * 2 : 0,
+          // If we have specified a buttonSize, we can't be smaller than that (but RectangularButton's size does NOT
+          // include the stroke, so we actually have to compensate for that here.
+          options.buttonSize !== null ? options.buttonSize.width + this.maxLineWidth : 0 );
+      }
+      if ( !hasUpdated || this.heightSizable ) {
+        this.minimumHeight = Math.max(
+          // If we have content, we can't be smaller than that + margins
+          options.content ? options.content.height + options.yMargin * 2 : 0,
+          // If we have specified a buttonSize, we can't be smaller than that (but RectangularButton's size does NOT
+          // include the stroke, so we actually have to compensate for that here.
+          options.buttonSize !== null ? options.buttonSize.height + this.maxLineWidth : 0 );
+      }
+
+      hasUpdated = true;
+    };
+
     if ( options.content ) {
+
+      const content = options.content;
 
       // For performance, in case content is a complicated icon or shape.
       // See https://github.com/phetsims/sun/issues/654#issuecomment-718944669
-      options.content.pickable = false;
+      content.pickable = false;
+
+      options.content.boundsProperty.link( updateMinimumSize );
 
       // Align content in the button rectangle. Must be disposed since it adds listener to content bounds.
-      alignBox = new AlignBox( options.content, {
-
-        alignBounds: buttonBackground.bounds,
+      alignBox = new AlignBox( content, {
         xAlign: options.xAlign,
         yAlign: options.yAlign,
 
@@ -195,7 +288,15 @@ export default class ButtonNode extends Voicing( Node, 0 ) {
         topMargin: options.yMargin + options.yContentOffset,
         bottomMargin: options.yMargin - options.yContentOffset
       } );
+
+      // Dynamically adjust alignBounds
+      Multilink.multilink( [ buttonBackground.boundsProperty, this.layoutSizeProperty ], ( backgroundBounds, size ) => {
+        alignBox!.alignBounds = Bounds2.point( backgroundBounds.center ).dilatedXY( size.width / 2, size.height / 2 );
+      } );
       this.addChild( alignBox );
+    }
+    else {
+      updateMinimumSize();
     }
 
     this.mutate( options );
@@ -207,6 +308,7 @@ export default class ButtonNode extends Voicing( Node, 0 ) {
       alignBox && alignBox.dispose();
       buttonAppearanceStrategy.dispose && buttonAppearanceStrategy.dispose();
       contentAppearanceStrategy && contentAppearanceStrategy.dispose && contentAppearanceStrategy.dispose();
+      options.content && options.content.boundsProperty.unlink( updateMinimumSize );
       this._pressListener.dispose();
       this.baseColorProperty.dispose();
     };
@@ -254,6 +356,8 @@ export default class ButtonNode extends Voicing( Node, 0 ) {
  */
 export class FlatAppearanceStrategy {
 
+  public readonly maxLineWidth: number;
+
   private readonly disposeFlatAppearanceStrategy: () => void;
 
   /*
@@ -275,6 +379,8 @@ export class FlatAppearanceStrategy {
 
     // If the stroke wasn't provided, set a default
     buttonBackground.stroke = ( typeof ( options.stroke ) === 'undefined' ) ? baseDarker4 : options.stroke;
+
+    this.maxLineWidth = buttonBackground.hasStroke() && options && typeof options.lineWidth === 'number' ? options.lineWidth : 0;
 
     // Cache colors
     buttonBackground.cachedPaints = [ upFill, overFill, downFill ];
