@@ -159,6 +159,7 @@ export default class RectangularButton extends ButtonNode {
 
     super( buttonModel, buttonBackground, interactionStateProperty, options );
 
+    let isFirstlayout = true;
     Multilink.multilink( [
       this.isWidthResizableProperty,
       this.isHeightResizableProperty,
@@ -170,15 +171,19 @@ export default class RectangularButton extends ButtonNode {
           isHeightSizable ? layoutSize.height - this.maxLineWidth : buttonHeight,
           options );
       }
-    } );
 
-    // Set pointer areas.
-    this.touchArea = buttonBackground.localBounds
-      .dilatedXY( options.touchAreaXDilation, options.touchAreaYDilation )
-      .shiftedXY( options.touchAreaXShift, options.touchAreaYShift );
-    this.mouseArea = buttonBackground.localBounds
-      .dilatedXY( options.mouseAreaXDilation, options.mouseAreaYDilation )
-      .shiftedXY( options.mouseAreaXShift, options.mouseAreaYShift );
+      if ( isFirstlayout || isWidthSizable || isHeightSizable ) {
+        // Set pointer areas.
+        this.touchArea = buttonBackground.localBounds
+          .dilatedXY( options.touchAreaXDilation, options.touchAreaYDilation )
+          .shiftedXY( options.touchAreaXShift, options.touchAreaYShift );
+        this.mouseArea = buttonBackground.localBounds
+          .dilatedXY( options.mouseAreaXDilation, options.mouseAreaYDilation )
+          .shiftedXY( options.mouseAreaXShift, options.mouseAreaYShift );
+      }
+
+      isFirstlayout = false;
+    } );
   }
 }
 
