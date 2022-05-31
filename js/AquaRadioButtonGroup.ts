@@ -10,7 +10,7 @@
 import IProperty from '../../axon/js/IProperty.js';
 import dotRandom from '../../dot/js/dotRandom.js';
 import optionize from '../../phet-core/js/optionize.js';
-import { HStrut, LayoutBox, LayoutBoxOptions, Node, PDOMPeer, SceneryConstants, SceneryEvent } from '../../scenery/js/imports.js';
+import { FlowBox, FlowBoxOptions, HStrut, Node, PDOMPeer, SceneryConstants, SceneryEvent } from '../../scenery/js/imports.js';
 import multiSelectionSoundPlayerFactory from '../../tambo/js/multiSelectionSoundPlayerFactory.js';
 import Tandem from '../../tandem/js/Tandem.js';
 import AquaRadioButton, { AquaRadioButtonOptions } from './AquaRadioButton.js';
@@ -43,7 +43,7 @@ type SelfOptions = {
   mouseAreaYDilation?: number;
 };
 
-export type AquaRadioButtonGroupOptions = SelfOptions & Omit<LayoutBoxOptions, 'children'>;
+export type AquaRadioButtonGroupOptions = SelfOptions & Omit<FlowBoxOptions, 'children'>;
 
 export type AquaRadioButtonGroupItem<T> = {
   value: T; // value associated with the button
@@ -52,7 +52,7 @@ export type AquaRadioButtonGroupItem<T> = {
   labelContent?: string; // label for a11y
 };
 
-export default class AquaRadioButtonGroup<T> extends LayoutBox {
+export default class AquaRadioButtonGroup<T> extends FlowBox {
 
   private readonly radioButtons: AquaRadioButton<T>[];
   private readonly disposeAquaRadioButtonGroup: () => void;
@@ -66,7 +66,7 @@ export default class AquaRadioButtonGroup<T> extends LayoutBox {
 
     instanceCount++;
 
-    const options = optionize<AquaRadioButtonGroupOptions, SelfOptions, LayoutBoxOptions>()( {
+    const options = optionize<AquaRadioButtonGroupOptions, SelfOptions, FlowBoxOptions>()( {
 
       // AquaRadioButtonGroupOptions
       radioButtonOptions: null,
@@ -75,7 +75,7 @@ export default class AquaRadioButtonGroup<T> extends LayoutBox {
       mouseAreaXDilation: 0,
       mouseAreaYDilation: 0,
 
-      // LayoutBoxOptions
+      // FlowBoxOptions
       orientation: 'vertical', // Aqua radio buttons are typically vertical, rarely horizontal
       spacing: 3, // space between each button, perpendicular to options.orientation
       disabledOpacity: SceneryConstants.DISABLED_OPACITY,
