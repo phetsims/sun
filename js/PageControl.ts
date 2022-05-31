@@ -8,6 +8,7 @@
  */
 
 import IProperty from '../../axon/js/IProperty.js';
+import OmitStrict from '../../phet-core/js/types/OmitStrict.js';
 import { Shape } from '../../kite/js/imports.js';
 import optionize from '../../phet-core/js/optionize.js';
 import { Circle, CircleOptions, IColor, Node, NodeOptions, PressListener, PressListenerEvent } from '../../scenery/js/imports.js';
@@ -34,7 +35,7 @@ type SelfOptions = {
   pageStroke?: IColor;
 };
 
-export type PageControlOptions = SelfOptions & Omit<NodeOptions, 'children'>;
+export type PageControlOptions = SelfOptions & OmitStrict<NodeOptions, 'children'>;
 
 export default class PageControl extends Node {
 

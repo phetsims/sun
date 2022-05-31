@@ -14,10 +14,11 @@ import Orientation from '../../phet-core/js/Orientation.js';
 import { default as Slider, SliderOptions } from './Slider.js';
 import sun from './sun.js';
 import optionize from '../../phet-core/js/optionize.js';
+import OmitStrict from '../../phet-core/js/types/OmitStrict.js';
 
 type SelfOptions = {};
 
-export type VSliderOptions = SelfOptions & Omit<SliderOptions, 'orientation'>;
+export type VSliderOptions = SelfOptions & OmitStrict<SliderOptions, 'orientation'>;
 
 export default class VSlider extends Slider {
 

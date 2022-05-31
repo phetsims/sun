@@ -11,10 +11,11 @@ import RectangularToggleButton, { RectangularToggleButtonOptions } from './Recta
 import { Node } from '../../../scenery/js/imports.js';
 import optionize from '../../../phet-core/js/optionize.js';
 import IProperty from '../../../axon/js/IProperty.js';
+import OmitStrict from '../../../phet-core/js/types/OmitStrict.js';
 
 type SelfOptions = {};
 
-export type BooleanRectangularToggleButtonOptions = SelfOptions & Omit<RectangularToggleButtonOptions, 'content'>;
+export type BooleanRectangularToggleButtonOptions = SelfOptions & OmitStrict<RectangularToggleButtonOptions, 'content'>;
 
 export default class BooleanRectangularToggleButton extends RectangularToggleButton<boolean> {
 

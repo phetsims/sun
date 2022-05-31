@@ -15,6 +15,7 @@
  */
 
 import NumberProperty from '../../axon/js/NumberProperty.js';
+import OmitStrict from '../../phet-core/js/types/OmitStrict.js';
 import Property from '../../axon/js/Property.js';
 import stepTimer from '../../axon/js/stepTimer.js';
 import Timer from '../../axon/js/Timer.js';
@@ -80,7 +81,7 @@ type SelfOptions = {
   stepEmitter?: Timer; // see Animation options.stepEmitter
 };
 
-export type CarouselOptions = SelfOptions & Omit<NodeOptions, 'children'>;
+export type CarouselOptions = SelfOptions & OmitStrict<NodeOptions, 'children'>;
 
 export default class Carousel extends Node {
 

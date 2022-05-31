@@ -8,6 +8,7 @@
  */
 
 import IProperty from '../../axon/js/IProperty.js';
+import OmitStrict from '../../phet-core/js/types/OmitStrict.js';
 import merge from '../../phet-core/js/merge.js';
 import optionize from '../../phet-core/js/optionize.js';
 import { HStrut, Node, VBox, VBoxOptions } from '../../scenery/js/imports.js';
@@ -28,7 +29,7 @@ type SelfOptions = {
   mouseAreaXDilation?: number;
 };
 
-export type VerticalCheckboxGroupOptions = SelfOptions & Omit<VBoxOptions, 'children'>;
+export type VerticalCheckboxGroupOptions = SelfOptions & OmitStrict<VBoxOptions, 'children'>;
 
 export default class VerticalCheckboxGroup extends VBox {
 

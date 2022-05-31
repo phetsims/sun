@@ -9,6 +9,7 @@
  */
 
 import { Shape } from '../../kite/js/imports.js';
+import OmitStrict from '../../phet-core/js/types/OmitStrict.js';
 import optionize from '../../phet-core/js/optionize.js';
 import StringUtils from '../../phetcommon/js/util/StringUtils.js';
 import { IndexedNodeIO, IPaint, Node, Rectangle, Voicing, VoicingOptions } from '../../scenery/js/imports.js';
@@ -32,7 +33,7 @@ type SelfOptions = {
   comboBoxVoicingNameResponsePattern?: string;
 };
 
-export type ComboBoxListItemNodeOptions = SelfOptions & Omit<VoicingOptions, 'children' | 'innerContent'>;
+export type ComboBoxListItemNodeOptions = SelfOptions & OmitStrict<VoicingOptions, 'children' | 'innerContent'>;
 
 export default class ComboBoxListItemNode<T> extends Voicing( Node, 0 ) {
 

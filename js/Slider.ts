@@ -10,6 +10,7 @@
  */
 
 import IProperty from '../../axon/js/IProperty.js';
+import OmitStrict from '../../phet-core/js/types/OmitStrict.js';
 import IReadOnlyProperty from '../../axon/js/IReadOnlyProperty.js';
 import Property from '../../axon/js/Property.js';
 import Dimension2 from '../../dot/js/Dimension2.js';
@@ -125,7 +126,7 @@ type SelfOptions = {
 };
 
 // We provide these options to the super
-export type SliderOptions = SelfOptions & Omit<AccessibleSliderOptions, 'panTargetNode' | 'valueProperty' | 'enabledRangeProperty'>;
+export type SliderOptions = SelfOptions & OmitStrict<AccessibleSliderOptions, 'panTargetNode' | 'valueProperty' | 'enabledRangeProperty'>;
 
 type TickOptions = Pick<SelfOptions, 'tickLabelSpacing' | 'majorTickLength' | 'majorTickStroke' | 'majorTickLineWidth' | 'minorTickLength' | 'minorTickStroke' | 'minorTickLineWidth'>;
 
@@ -165,7 +166,7 @@ export default class Slider extends AccessibleSlider( Node, 0 ) {
     assert && assertMutuallyExclusiveOptions( providedOptions, [ 'trackNode' ], [
       'trackSize', 'trackFillEnabled', 'trackFillDisabled', 'trackStroke', 'trackLineWidth', 'trackCornerRadius' ] );
 
-    let options = optionize<SliderOptions, Omit<SelfOptions, 'enabledRangeProperty'>, AccessibleSliderOptions>()( {
+    let options = optionize<SliderOptions, OmitStrict<SelfOptions, 'enabledRangeProperty'>, AccessibleSliderOptions>()( {
 
       orientation: Orientation.HORIZONTAL,
       trackNode: null,

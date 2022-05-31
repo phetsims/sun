@@ -9,6 +9,7 @@
  */
 
 import { Shape } from '../../../kite/js/imports.js';
+import OmitStrict from '../../../phet-core/js/types/OmitStrict.js';
 import optionize from '../../../phet-core/js/optionize.js';
 import { IPaint, Path } from '../../../scenery/js/imports.js';
 import sun from '../sun.js';
@@ -37,7 +38,7 @@ type SelfOptions = {
   arrowSpacing?: number;
 };
 
-export type ArrowButtonOptions = SelfOptions & Omit<RectangularPushButtonOptions, 'content' | 'listener'>;
+export type ArrowButtonOptions = SelfOptions & OmitStrict<RectangularPushButtonOptions, 'content' | 'listener'>;
 
 export default class ArrowButton extends RectangularPushButton {
 

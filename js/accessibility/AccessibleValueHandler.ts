@@ -35,6 +35,7 @@ import IProperty from '../../../axon/js/IProperty.js';
 import Constructor from '../../../phet-core/js/types/Constructor.js';
 import IntentionalAny from '../../../phet-core/js/types/IntentionalAny.js';
 import IReadOnlyProperty from '../../../axon/js/IReadOnlyProperty.js';
+import OmitStrict from '../../../phet-core/js/types/OmitStrict.js';
 
 // constants
 const DEFAULT_TAG_NAME = 'input';
@@ -179,7 +180,7 @@ type AccessibleValueHandlerSelfOptions = {
   tagName?: null;
 };
 
-type AccessibleValueHandlerOptions = AccessibleValueHandlerSelfOptions & Omit<VoicingOptions, 'inputType'>;
+type AccessibleValueHandlerOptions = AccessibleValueHandlerSelfOptions & OmitStrict<VoicingOptions, 'inputType'>;
 
 /**
  * @param Type

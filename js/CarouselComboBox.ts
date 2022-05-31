@@ -21,6 +21,7 @@
  */
 
 import IProperty from '../../axon/js/IProperty.js';
+import OmitStrict from '../../phet-core/js/types/OmitStrict.js';
 import Multilink from '../../axon/js/Multilink.js';
 import Dimension2 from '../../dot/js/Dimension2.js';
 import dotRandom from '../../dot/js/dotRandom.js';
@@ -38,12 +39,12 @@ type SelfOptions = {
   // Nested options passed to subcomponents
   itemNodeOptions?: CarouselItemNodeOptions;
   carouselOptions?: CarouselOptions;
-  pageControlOptions?: Omit<PageControlOptions, 'orientation'>;
-  buttonOptions?: Omit<ComboBoxButtonOptions, 'content' | 'listener'>;
+  pageControlOptions?: OmitStrict<PageControlOptions, 'orientation'>;
+  buttonOptions?: OmitStrict<ComboBoxButtonOptions, 'content' | 'listener'>;
 };
 
 type SuperOptions = NodeOptions & WidthSizableOptions;
-export type CarouselComboBoxOptions = SelfOptions & Omit<SuperOptions, 'children'>;
+export type CarouselComboBoxOptions = SelfOptions & OmitStrict<SuperOptions, 'children'>;
 
 export default class CarouselComboBox<T> extends WidthSizable( Node ) {
 
@@ -232,7 +233,7 @@ type CarouselItemNodeSelfOptions = {
   selectedColor?: IColor; // background color of the selected item
 };
 
-type CarouselItemNodeOptions = CarouselItemNodeSelfOptions & Omit<NodeOptions, 'children'>;
+type CarouselItemNodeOptions = CarouselItemNodeSelfOptions & OmitStrict<NodeOptions, 'children'>;
 
 /**
  * CarouselItemNode is an item this UI component's carousel. Carousel and ComboBox have different APIs for 'items'.

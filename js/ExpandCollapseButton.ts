@@ -8,6 +8,7 @@
  */
 
 import IProperty from '../../axon/js/IProperty.js';
+import OmitStrict from '../../phet-core/js/types/OmitStrict.js';
 import { Shape } from '../../kite/js/imports.js';
 import InstanceRegistry from '../../phet-core/js/documentation/InstanceRegistry.js';
 import optionize from '../../phet-core/js/optionize.js';
@@ -26,7 +27,7 @@ type SelfOptions = {
 };
 
 export type ExpandCollapseButtonOptions = SelfOptions &
-  Omit<BooleanRectangularToggleButtonOptions, 'cornerRadius' | 'xMargin' | 'yMargin' | 'buttonAppearanceStrategy'>;
+  OmitStrict<BooleanRectangularToggleButtonOptions, 'cornerRadius' | 'xMargin' | 'yMargin' | 'buttonAppearanceStrategy'>;
 
 export default class ExpandCollapseButton extends BooleanRectangularToggleButton {
 
