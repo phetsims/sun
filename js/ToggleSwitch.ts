@@ -26,6 +26,9 @@ import PhetioObject from '../../tandem/js/PhetioObject.js';
 import Tandem from '../../tandem/js/Tandem.js';
 import sun from './sun.js';
 import IProperty from '../../axon/js/IProperty.js';
+import ISoundPlayer from '../../tambo/js/ISoundPlayer.js';
+import switchToASoundPlayer from '../../tambo/js/shared-sound-players/switchToASoundPlayer.js';
+import switchToBSoundPlayer from '../../tambo/js/shared-sound-players/switchToBSoundPlayer.js';
 
 // constants
 const DEFAULT_SIZE = new Dimension2( 60, 30 );
@@ -59,6 +62,10 @@ type SelfOptions = {
   trackFillLeft?: IPaint; // track fill when property.value == leftValue, default computed below
   trackFillRight?: IPaint; // track fill when property.value == rightValue, default computed below
   trackStroke?: IPaint;
+
+  // sound
+  switchToLeftSoundPlayer?: ISoundPlayer;
+  switchToRightSoundPlayer?: ISoundPlayer;
 };
 
 export type ToggleSwitchOptions = SelfOptions & VoicingOptions;
@@ -66,6 +73,8 @@ export type ToggleSwitchOptions = SelfOptions & VoicingOptions;
 export default class ToggleSwitch<T> extends Voicing( Node, 0 ) {
 
   private readonly disposeToggleSwitch: () => void;
+  public readonly switchToLeftSoundPlayer: ISoundPlayer;
+  public readonly switchToRightSoundPlayer: ISoundPlayer;
 
   /**
    * @param property
@@ -94,6 +103,10 @@ export default class ToggleSwitch<T> extends Voicing( Node, 0 ) {
       // VoicingOptions
       cursor: 'pointer',
       disabledOpacity: SceneryConstants.DISABLED_OPACITY,
+
+      // sound generation
+      switchToLeftSoundPlayer: switchToASoundPlayer,
+      switchToRightSoundPlayer: switchToBSoundPlayer,
 
       // phet-io
       tandem: Tandem.REQUIRED,
@@ -186,6 +199,7 @@ export default class ToggleSwitch<T> extends Voicing( Node, 0 ) {
     // Toggles the Property value and sends a phet-io message with the old and new values.
     const toggleAction = new PhetioAction( value => {
       property.value = value;
+      value === leftValue ? options.switchToLeftSoundPlayer.play() : options.switchToRightSoundPlayer.play();
     }, {
       parameters: [ { validValues: [ leftValue, rightValue ], phetioPrivate: true } ],
       tandem: options.tandem.createTandem( 'toggleAction' ),
@@ -273,6 +287,11 @@ export default class ToggleSwitch<T> extends Voicing( Node, 0 ) {
     this.addLinkedElement( property, {
       tandem: options.tandem.createTandem( 'property' )
     } );
+
+    // Make the sound players available to external clients that directly set the property and thus should play the
+    // corresponding sound.
+    this.switchToLeftSoundPlayer = options.switchToLeftSoundPlayer;
+    this.switchToRightSoundPlayer = options.switchToRightSoundPlayer;
 
     this.disposeToggleSwitch = () => {
       property.unlink( update );

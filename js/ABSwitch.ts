@@ -13,6 +13,9 @@ import InstanceRegistry from '../../phet-core/js/documentation/InstanceRegistry.
 import merge from '../../phet-core/js/merge.js';
 import optionize from '../../phet-core/js/optionize.js';
 import { Line, Node, NodeOptions, PressListener, SceneryConstants } from '../../scenery/js/imports.js';
+import ISoundPlayer from '../../tambo/js/ISoundPlayer.js';
+import switchToASoundPlayer from '../../tambo/js/shared-sound-players/switchToASoundPlayer.js';
+import switchToBSoundPlayer from '../../tambo/js/shared-sound-players/switchToBSoundPlayer.js';
 import Tandem from '../../tandem/js/Tandem.js';
 import sun from './sun.js';
 import ToggleSwitch, { ToggleSwitchOptions } from './ToggleSwitch.js';
@@ -37,6 +40,10 @@ type SelfOptions = {
 
   // if true, centerX will be at the centerX of the ToggleSwitch
   centerOnButton?: boolean;
+
+  // sound generation, use nullSoundPlayer to turn off
+  switchToASoundPlayer?: ISoundPlayer;
+  switchToBSoundPlayer?: ISoundPlayer;
 };
 
 export type ABSwitchOptions = SelfOptions & NodeOptions;
@@ -76,11 +83,19 @@ export default class ABSwitch<T> extends Node {
       cursor: 'pointer',
       disabledOpacity: SceneryConstants.DISABLED_OPACITY,
 
+      // sound generation
+      switchToASoundPlayer: switchToASoundPlayer,
+      switchToBSoundPlayer: switchToBSoundPlayer,
+
       // phet-io
       tandem: Tandem.REQUIRED,
       visiblePropertyOptions: { phetioFeatured: true },
       phetioEnabledPropertyInstrumented: true // opt into default PhET-iO instrumented enabledProperty
     }, providedOptions );
+
+    // If no sound players were explicitly specified for the ToggleSwitch, use the ones for the ABSwitch.
+    options.toggleSwitchOptions.switchToLeftSoundPlayer ||= options.switchToASoundPlayer;
+    options.toggleSwitchOptions.switchToRightSoundPlayer ||= options.switchToBSoundPlayer;
 
     super();
 
@@ -123,13 +138,23 @@ export default class ABSwitch<T> extends Node {
 
     // click on labels to select
     const pressListenerA = new PressListener( {
-      release: () => { property.value = valueA; },
+      release: () => {
+        if ( property.value !== valueA ) {
+          options.switchToASoundPlayer.play();
+        }
+        property.value = valueA;
+      },
       tandem: labelA.tandem.createTandem( 'pressListener' )
     } );
     labelA.addInputListener( pressListenerA ); // removeInputListener on dispose
 
     const pressListenerB = new PressListener( {
-      release: () => { property.value = valueB; },
+      release: () => {
+        if ( property.value !== valueB ) {
+          options.switchToBSoundPlayer.play();
+        }
+        property.value = valueB;
+      },
       tandem: labelB.tandem.createTandem( 'pressListener' )
     } );
     labelB.addInputListener( pressListenerB ); // removeInputListener on dispose
