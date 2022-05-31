@@ -69,7 +69,7 @@ assert && Object.freeze( DEFAULT_OPTIONS );
 
 export default class Panel extends Sizable( Node ) {
 
-  private constraint: PanelConstraint;
+  private readonly constraint: PanelConstraint;
 
   // These are public for use by PanelConstraint only. They should otherwise be considered private.
   public readonly _content: Node;
