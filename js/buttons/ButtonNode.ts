@@ -243,8 +243,6 @@ export default class ButtonNode extends Sizable( Voicing( Node, 0 ) ) {
       return new Dimension2( width, height );
     }, { tandem: Tandem.OPT_OUT } );
 
-    let alignBox: AlignBox | null = null;
-
     // Only allow an initial update if we are not sizable in that dimension
     let hasUpdated = false;
     const updateMinimumSize = () => {
@@ -267,6 +265,8 @@ export default class ButtonNode extends Sizable( Voicing( Node, 0 ) ) {
 
       hasUpdated = true;
     };
+
+    let alignBox: AlignBox | null = null;
 
     if ( options.content ) {
 

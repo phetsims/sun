@@ -10,7 +10,7 @@
 import { Shape } from '../../kite/js/imports.js';
 import optionize from '../../phet-core/js/optionize.js';
 import StringUtils from '../../phetcommon/js/util/StringUtils.js';
-import { AriaHasPopUpMutator, HStrut, IPaint, isWidthSizable, Node, Path, PDOMBehaviorFunction, PDOMPeer } from '../../scenery/js/imports.js';
+import { AriaHasPopUpMutator, GridBox, IPaint, isWidthSizable, Node, Path, PDOMBehaviorFunction, PDOMPeer } from '../../scenery/js/imports.js';
 import Tandem from '../../tandem/js/Tandem.js';
 import ButtonNode from './buttons/ButtonNode.js';
 import RectangularPushButton, { RectangularPushButtonOptions } from './buttons/RectangularPushButton.js';
@@ -107,55 +107,82 @@ export default class ComboBoxButton<T> extends RectangularPushButton {
 
     // To improve readability
     const itemXMargin = options.xMargin;
+    const itemYMargin = options.yMargin;
 
     // Compute max item size
     const maxItemWidth = _.maxBy( items, ( item: ComboBoxItem<T> ) => isWidthSizable( item.node ) ? item.node.minimumWidth || 0 : item.node.width )!.node.width;
     const maxItemHeight = _.maxBy( items, ( item: ComboBoxItem<T> ) => item.node.height )!.node.height;
 
+    const fullHeight = maxItemHeight + 2 * itemYMargin;
+
     // We want the arrow area to be square, see https://github.com/phetsims/sun/issues/453
-    const arrowAreaSize = ( maxItemHeight + 2 * options.yMargin );
+    const arrowAreaSize = fullHeight;
 
     // The arrow is sized to fit in the arrow area, empirically determined to be visually pleasing.
     const arrowHeight = 0.35 * arrowAreaSize; // height of equilateral triangle
     const arrowWidth = 2 * arrowHeight * Math.sqrt( 3 ) / 3; // side of equilateral triangle
 
-    // Invisible horizontal struts that span the item area and arrow area. Makes layout more straightforward.
-    const itemAreaStrut = new HStrut( maxItemWidth + 2 * itemXMargin );
-    const arrowAreaStrut = new HStrut( arrowAreaSize, {
-      left: itemAreaStrut.right
-    } );
+    const leftMargin = itemXMargin;
+    const middleMargin = itemXMargin - options.lineWidth / 2; // Compensation for the separator having width
+    const rightMargin = -options.lineWidth / 2; // Compensation for the separator having width
 
     // arrow that points up or down, to indicate which way the list pops up
-    let arrowShape = null;
-    if ( options.arrowDirection === 'up' ) {
-      arrowShape = new Shape()
-        .moveTo( 0, arrowHeight )
-        .lineTo( arrowWidth / 2, 0 )
-        .lineTo( arrowWidth, arrowHeight )
-        .close();
-    }
-    else {
-      arrowShape = new Shape()
-        .moveTo( 0, 0 )
-        .lineTo( arrowWidth, 0 )
-        .lineTo( arrowWidth / 2, arrowHeight )
-        .close();
-    }
-    const arrow = new Path( arrowShape, {
+    const createArrowShape = ( direction: 'up' | 'down', width: number, height: number ) => {
+      if ( direction === 'up' ) {
+        return new Shape()
+          .moveTo( 0, height )
+          .lineTo( width / 2, 0 )
+          .lineTo( width, height )
+          .close();
+      }
+      else {
+        return new Shape()
+          .moveTo( 0, 0 )
+          .lineTo( width, 0 )
+          .lineTo( width / 2, height )
+          .close();
+      }
+    };
+    const arrow = new Path( createArrowShape( options.arrowDirection, arrowWidth, arrowHeight ), {
       fill: options.arrowFill,
-      center: arrowAreaStrut.center
+      layoutOptions: {
+        minContentWidth: arrowAreaSize,
+        minContentHeight: arrowAreaSize
+      }
     } );
 
     // Wrapper for the selected item's Node.
     // Do not transform ComboBoxItem.node because it is shared with ComboBoxListItemNode.
-    const itemNodeWrapper = new Node();
+    const itemNodeWrapper = new Node( {
+      layoutOptions: {
+        minContentWidth: maxItemWidth,
+        minContentHeight: maxItemHeight,
+        yMargin: itemYMargin,
+        leftMargin: leftMargin,
+        rightMargin: middleMargin,
+        grow: 1,
+        xAlign: options.align
+      },
+      children: [
+        _.find( items, item => item.value === property.value )!.node
+      ]
+    } );
 
     // Vertical separator between the item and arrow that is the full height of the button.
-    const vSeparator = new VSeparator( maxItemHeight + 2 * options.yMargin, {
+    const vSeparator = new VSeparator( fullHeight, {
       stroke: 'black',
       lineWidth: options.lineWidth,
-      centerX: itemAreaStrut.right,
-      centerY: itemAreaStrut.centerY
+      layoutOptions: {
+        rightMargin: rightMargin
+      }
+    } );
+
+    options.content = new GridBox( {
+      rows: [ [
+        itemNodeWrapper,
+        vSeparator,
+        arrow
+      ] ]
     } );
 
     // Margins are different in the item and button areas. And we want the vertical separator to extend
@@ -163,10 +190,6 @@ export default class ComboBoxButton<T> extends RectangularPushButton {
     // need to be zero.
     options.xMargin = 0;
     options.yMargin = 0;
-
-    options.content = new Node( {
-      children: [ itemAreaStrut, arrowAreaStrut, itemNodeWrapper, vSeparator, arrow ]
-    } );
 
     super( options );
 
@@ -190,42 +213,18 @@ export default class ComboBoxButton<T> extends RectangularPushButton {
       this._blockNextVoicingFocusListener = false;
     };
 
-    const updateItemLayout = () => {
-      if ( options.align === 'left' ) {
-        itemNodeWrapper.left = itemAreaStrut.left + itemXMargin;
-      }
-      else if ( options.align === 'right' ) {
-        itemNodeWrapper.right = itemAreaStrut.right - itemXMargin;
-      }
-      else {
-        itemNodeWrapper.centerX = itemAreaStrut.centerX;
-      }
-      itemNodeWrapper.centerY = itemAreaStrut.centerY;
-    };
-
     // When Property's value changes, show the corresponding item's Node on the button.
     let item: ComboBoxItem<T> | null = null;
     const propertyObserver = ( value: T ) => {
-
-      // Remove bounds listener from previous item.node
-      if ( item && item.node.boundsProperty.hasListener( updateItemLayout ) ) {
-        item.node.boundsProperty.unlink( updateItemLayout );
-      }
-
       // remove the node for the previous item
       itemNodeWrapper.removeAllChildren();
 
       // find the ComboBoxItem whose value matches the property's value
-      item = _.find( items, ( item: ComboBoxItem<T> ) => item.value === value )!;
+      item = _.find( items, item => item.value === value )!;
       assert && assert( item, `no item found for value: ${value}` );
 
       // add the associated node
-      itemNodeWrapper.addChild( item!.node );
-
-      // Update layout if bounds change, see https://github.com/phetsims/scenery-phet/issues/482
-      item!.node.boundsProperty.lazyLink( updateItemLayout );
-
-      updateItemLayout();
+      itemNodeWrapper.addChild( item.node );
 
       // pdom
       this.innerContent = item!.a11yLabel;
