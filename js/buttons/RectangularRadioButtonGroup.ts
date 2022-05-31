@@ -10,7 +10,7 @@
 import { Shape } from '../../../kite/js/imports.js';
 import InstanceRegistry from '../../../phet-core/js/documentation/InstanceRegistry.js';
 import merge from '../../../phet-core/js/merge.js';
-import { Color, FocusHighlightPath, IInputListener, IPaint, LayoutBox, LayoutBoxOptions, Node, PDOMPeer, Rectangle, SceneryConstants } from '../../../scenery/js/imports.js';
+import { Color, FocusHighlightPath, IInputListener, IPaint, FlowBox, FlowBoxOptions, Node, PDOMPeer, Rectangle, SceneryConstants } from '../../../scenery/js/imports.js';
 import multiSelectionSoundPlayerFactory from '../../../tambo/js/multiSelectionSoundPlayerFactory.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import ColorConstants from '../ColorConstants.js';
@@ -33,7 +33,7 @@ export type RectangularRadioButtonLabelAlign = 'top' | 'bottom' | 'left' | 'righ
 export type RectangularRadioButtonItem<T> = {
   node: Node; // primary depiction for the button
   value: T; // value associated with the button
-  label?: Node; // If a label is provided, the button becomes a LayoutBox with the label and radio button
+  label?: Node; // If a label is provided, the button becomes a FlowBox with the label and radio button
   phetioDocumentation?: string; // optional documentation for PhET-iO
   tandemName?: string; // optional tandem for PhET-iO
   tandem?: never; // use tandemName instead of a Tandem instance
@@ -110,9 +110,9 @@ type SelfOptions = {
   voicingHintResponse?: VoicingResponse;
 };
 
-export type RectangularRadioButtonGroupOptions = SelfOptions & LayoutBoxOptions;
+export type RectangularRadioButtonGroupOptions = SelfOptions & FlowBoxOptions;
 
-export default class RectangularRadioButtonGroup<T> extends LayoutBox {
+export default class RectangularRadioButtonGroup<T> extends FlowBox {
 
   private readonly disposeRadioButtonGroup: () => void;
 
@@ -121,7 +121,7 @@ export default class RectangularRadioButtonGroup<T> extends LayoutBox {
     // These options are passed to each RectangularRadioButton created in this group.
     const defaultOptions = {
 
-      // LayoutBox options (super class of RectangularRadioButtonGroup)
+      // FlowBox options (super class of RectangularRadioButtonGroup)
       spacing: 10,
       orientation: 'vertical',
 
@@ -254,7 +254,7 @@ export default class RectangularRadioButtonGroup<T> extends LayoutBox {
     const tallestContentHeight = _.maxBy( items, item => item.node.height )!.node.height;
 
     // make sure all radio buttons are the same size and create the RadioButtons
-    const buttons: Array<RectangularRadioButton<T> | LayoutBox> = [];
+    const buttons: Array<RectangularRadioButton<T> | FlowBox> = [];
 
     // {ButtonWithLayoutNode[]} - Collection of both RadioButton and its layout manager, if one is created to support
     // a visual button label
@@ -319,11 +319,11 @@ export default class RectangularRadioButtonGroup<T> extends LayoutBox {
       let button;
       if ( item.label ) {
 
-        // If a label is provided, the button becomes a LayoutBox with the label and radio button
+        // If a label is provided, the button becomes a FlowBox with the label and radio button
         const label = item.label;
         const labelOrientation = ( options.labelAlign === 'bottom' || options.labelAlign === 'top' ) ? 'vertical' : 'horizontal';
         const labelChildren = ( options.labelAlign === 'left' || options.labelAlign === 'top' ) ? [ label, radioButton ] : [ radioButton, label ];
-        button = new LayoutBox( {
+        button = new FlowBox( {
           children: labelChildren,
           spacing: options.labelSpacing,
           orientation: labelOrientation
