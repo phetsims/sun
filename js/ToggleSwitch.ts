@@ -288,7 +288,7 @@ export default class ToggleSwitch<T> extends Voicing( Node, 0 ) {
       tandem: options.tandem.createTandem( 'property' )
     } );
 
-    // Make the sound players available to external clients that directly set the property and thus should play the
+    // Make the sound players available to external clients that directly set the Property and thus should play the
     // corresponding sound.
     this.switchToLeftSoundPlayer = options.switchToLeftSoundPlayer;
     this.switchToRightSoundPlayer = options.switchToRightSoundPlayer;
