@@ -123,7 +123,6 @@ export default class ButtonNode extends Sizable( Voicing( Node, 0 ) ) {
     const options = optionize<ButtonNodeOptions, SelfOptions, SuperOptions>()( {
 
       content: null,
-      sizable: false,
       buttonSize: null,
       xMargin: 10,
       yMargin: 5,
@@ -164,6 +163,9 @@ export default class ButtonNode extends Sizable( Voicing( Node, 0 ) ) {
     options.enabledProperty = buttonModel.enabledProperty;
 
     super();
+
+    // Provide sizability here, so that clients can turn on/off sizability without hitting exclusive options
+    this.sizable = false;
 
     this.content = options.content;
     this.xMargin = options.xMargin;
@@ -247,7 +249,7 @@ export default class ButtonNode extends Sizable( Voicing( Node, 0 ) ) {
     let hasUpdated = false;
     const updateMinimumSize = () => {
       if ( !hasUpdated || this.widthSizable ) {
-        this.minimumWidth = Math.max(
+        this.localMinimumWidth = Math.max(
           // If we have content, we can't be smaller than that + margins
           options.content ? ( isWidthSizable( options.content ) ? options.content.minimumWidth || 0 : options.content.width ) + options.xMargin * 2 : 0,
           // If we have specified a buttonSize, we can't be smaller than that (but RectangularButton's size does NOT
@@ -255,7 +257,7 @@ export default class ButtonNode extends Sizable( Voicing( Node, 0 ) ) {
           options.buttonSize !== null ? options.buttonSize.width + this.maxLineWidth : 0 );
       }
       if ( !hasUpdated || this.heightSizable ) {
-        this.minimumHeight = Math.max(
+        this.localMinimumHeight = Math.max(
           // If we have content, we can't be smaller than that + margins
           options.content ? ( isHeightSizable( options.content ) ? options.content.minimumHeight || 0 : options.content.height ) + options.yMargin * 2 : 0,
           // If we have specified a buttonSize, we can't be smaller than that (but RectangularButton's size does NOT

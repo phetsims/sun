@@ -23,7 +23,7 @@ import dotRandom from '../../dot/js/dotRandom.js';
 import Vector2 from '../../dot/js/Vector2.js';
 import InstanceRegistry from '../../phet-core/js/documentation/InstanceRegistry.js';
 import optionize from '../../phet-core/js/optionize.js';
-import { Display, Focus, FocusManager, IColor, IInputListener, IPaint, Node, NodeOptions, PDOMBehaviorFunction, PDOMPeer } from '../../scenery/js/imports.js';
+import { Display, Focus, FocusManager, IColor, IInputListener, IPaint, Node, NodeOptions, PDOMBehaviorFunction, PDOMPeer, WidthSizable, WidthSizableOptions } from '../../scenery/js/imports.js';
 import generalCloseSoundPlayer from '../../tambo/js/shared-sound-players/generalCloseSoundPlayer.js';
 import generalOpenSoundPlayer from '../../tambo/js/shared-sound-players/generalOpenSoundPlayer.js';
 import EventType from '../../tandem/js/EventType.js';
@@ -117,9 +117,10 @@ type SelfOptions = {
   comboBoxVoicingHintResponse?: string | null;
 };
 
-export type ComboBoxOptions = SelfOptions & NodeOptions;
+type SuperOptions = NodeOptions & WidthSizableOptions;
+export type ComboBoxOptions = SelfOptions & SuperOptions;
 
-export default class ComboBox<T> extends Node {
+export default class ComboBox<T> extends WidthSizable( Node ) {
 
   private items: ComboBoxItem<T>[];
   private readonly listPosition: ComboBoxListPosition;
@@ -162,7 +163,7 @@ export default class ComboBox<T> extends Node {
     assert && assert( listParent.maxWidth === null,
       'ComboBox is responsible for scaling listBox. Setting maxWidth for listParent may result in buggy behavior.' );
 
-    const options = optionize<ComboBoxOptions, SelfOptions, NodeOptions>()( {
+    const options = optionize<ComboBoxOptions, SelfOptions, SuperOptions>()( {
 
       align: 'left',
       listPosition: 'below',
@@ -182,6 +183,7 @@ export default class ComboBox<T> extends Node {
       buttonTouchAreaYDilation: 0,
       buttonMouseAreaXDilation: 0,
       buttonMouseAreaYDilation: 0,
+      widthSizable: false, // Would manually need to turn on sizability
 
       // list
       listFill: 'white',
@@ -239,6 +241,9 @@ export default class ComboBox<T> extends Node {
       touchAreaYDilation: options.buttonTouchAreaYDilation,
       mouseAreaXDilation: options.buttonMouseAreaXDilation,
       mouseAreaYDilation: options.buttonMouseAreaYDilation,
+      widthSizable: options.widthSizable,
+      localPreferredWidthProperty: this.localPreferredWidthProperty,
+      localMinimumWidthProperty: this.localMinimumWidthProperty,
 
       comboBoxVoicingNameResponsePattern: options.comboBoxVoicingNameResponsePattern,
 

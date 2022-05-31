@@ -10,7 +10,7 @@
 import { Shape } from '../../kite/js/imports.js';
 import optionize from '../../phet-core/js/optionize.js';
 import StringUtils from '../../phetcommon/js/util/StringUtils.js';
-import { AriaHasPopUpMutator, HStrut, IPaint, Node, Path, PDOMBehaviorFunction, PDOMPeer } from '../../scenery/js/imports.js';
+import { AriaHasPopUpMutator, HStrut, IPaint, isWidthSizable, Node, Path, PDOMBehaviorFunction, PDOMPeer } from '../../scenery/js/imports.js';
 import Tandem from '../../tandem/js/Tandem.js';
 import ButtonNode from './buttons/ButtonNode.js';
 import RectangularPushButton, { RectangularPushButtonOptions } from './buttons/RectangularPushButton.js';
@@ -20,6 +20,7 @@ import VSeparator from './VSeparator.js';
 import ComboBoxItem from './ComboBoxItem.js';
 import IProperty from '../../axon/js/IProperty.js';
 import nullSoundPlayer from '../../tambo/js/shared-sound-players/nullSoundPlayer.js';
+import TinyProperty from '../../axon/js/TinyProperty.js';
 
 // constants
 const ALIGN_VALUES = [ 'left', 'center', 'right' ] as const;
@@ -44,6 +45,9 @@ type SelfOptions = {
   // The pattern for the voicingNameResponse, with "{{value}}" provided to be filled in with
   // ComboBoxItem.a11yLabel.
   comboBoxVoicingNameResponsePattern?: string;
+
+  localPreferredWidthProperty?: IProperty<number | null>;
+  localMinimumWidthProperty?: IProperty<number | null>;
 };
 
 export type ComboBoxButtonOptions = SelfOptions & Omit<RectangularPushButtonOptions, 'children' | 'ariaLabelledbyAssociations'>;
@@ -85,6 +89,9 @@ export default class ComboBoxButton<T> extends RectangularPushButton {
       },
       visiblePropertyOptions: { phetioFeatured: false },
 
+      localPreferredWidthProperty: new TinyProperty( null ),
+      localMinimumWidthProperty: new TinyProperty( null ),
+
       // phet-io
       tandem: Tandem.OPTIONAL,
 
@@ -102,7 +109,7 @@ export default class ComboBoxButton<T> extends RectangularPushButton {
     const itemXMargin = options.xMargin;
 
     // Compute max item size
-    const maxItemWidth = _.maxBy( items, ( item: ComboBoxItem<T> ) => item.node.width )!.node.width;
+    const maxItemWidth = _.maxBy( items, ( item: ComboBoxItem<T> ) => isWidthSizable( item.node ) ? item.node.minimumWidth || 0 : item.node.width )!.node.width;
     const maxItemHeight = _.maxBy( items, ( item: ComboBoxItem<T> ) => item.node.height )!.node.height;
 
     // We want the arrow area to be square, see https://github.com/phetsims/sun/issues/453
@@ -162,6 +169,17 @@ export default class ComboBoxButton<T> extends RectangularPushButton {
     } );
 
     super( options );
+
+    // Provide our minimum width back up to the ComboBox (or creator)
+    this.minimumWidthProperty.link( minimumWidth => {
+      options.localMinimumWidthProperty.value = minimumWidth;
+    } );
+
+    // Hook our ComboBox's preferredWidth up to ours
+    const preferredWidthListener = ( preferredWidth: number | null ) => {
+      this.preferredWidth = preferredWidth;
+    };
+    options.localPreferredWidthProperty.link( preferredWidthListener );
 
     this._blockNextVoicingFocusListener = false;
 
@@ -238,6 +256,7 @@ export default class ComboBoxButton<T> extends RectangularPushButton {
 
     this.disposeComboBoxButton = () => {
       property.unlink( propertyObserver );
+      options.localPreferredWidthProperty.unlink( preferredWidthListener );
     };
 
     this.arrow = arrow;

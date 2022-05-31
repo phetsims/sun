@@ -25,7 +25,7 @@ import Multilink from '../../axon/js/Multilink.js';
 import Dimension2 from '../../dot/js/Dimension2.js';
 import dotRandom from '../../dot/js/dotRandom.js';
 import optionize, { combineOptions } from '../../phet-core/js/optionize.js';
-import { AlignBox, AlignGroup, Color, Display, HBox, IColor, Node, NodeOptions, PressListener, Rectangle, SceneryEvent, VBox } from '../../scenery/js/imports.js';
+import { AlignBox, AlignGroup, Color, Display, HBox, IColor, Node, NodeOptions, PressListener, Rectangle, SceneryEvent, VBox, WidthSizable, WidthSizableOptions } from '../../scenery/js/imports.js';
 import Tandem from '../../tandem/js/Tandem.js';
 import Carousel, { CarouselOptions } from './Carousel.js';
 import ComboBoxButton, { ComboBoxButtonOptions } from './ComboBoxButton.js';
@@ -42,9 +42,10 @@ type SelfOptions = {
   buttonOptions?: Omit<ComboBoxButtonOptions, 'content' | 'listener'>;
 };
 
-export type CarouselComboBoxOptions = SelfOptions & Omit<NodeOptions, 'children'>;
+type SuperOptions = NodeOptions & WidthSizableOptions;
+export type CarouselComboBoxOptions = SelfOptions & Omit<SuperOptions, 'children'>;
 
-export default class CarouselComboBox<T> extends Node {
+export default class CarouselComboBox<T> extends WidthSizable( Node ) {
 
   private readonly disposeCarouselComboBox: () => void;
 
@@ -55,7 +56,7 @@ export default class CarouselComboBox<T> extends Node {
    */
   constructor( property: IProperty<T>, comboBoxItems: ComboBoxItem<T>[], providedOptions?: CarouselComboBoxOptions ) {
 
-    const options = optionize<CarouselComboBoxOptions, SelfOptions, NodeOptions>()( {
+    const options = optionize<CarouselComboBoxOptions, SelfOptions, SuperOptions>()( {
 
       itemNodeOptions: {
         align: 'left', // {string} alignment of item nodes on backgrounds, 'left'|'center'|'right'
@@ -91,6 +92,9 @@ export default class CarouselComboBox<T> extends Node {
         yMargin: 4
       },
 
+      // The default, can be triggered to be sizable
+      widthSizable: false,
+
       // phet-io
       tandem: Tandem.OPTIONAL
     }, providedOptions );
@@ -105,6 +109,8 @@ export default class CarouselComboBox<T> extends Node {
     // Create tandems for subcomponents, if they were not provided
     options.carouselOptions.tandem = options.carouselOptions.tandem || options.tandem.createTandem( 'carousel' );
     options.buttonOptions.tandem = options.buttonOptions.tandem || options.tandem.createTandem( 'button' );
+
+    super();
 
     // Make items in the carousel have the same width and height.
     const alignGroup = new AlignGroup();
@@ -142,7 +148,10 @@ export default class CarouselComboBox<T> extends Node {
     const button = new ComboBoxButton( property, comboBoxItems, combineOptions<ComboBoxButtonOptions>( {
       listener: () => {
         carouselAndPageControl.visible = !carouselAndPageControl.visible;
-      }
+      },
+      widthSizable: options.widthSizable,
+      localPreferredWidthProperty: this.localPreferredWidthProperty,
+      localMinimumWidthProperty: this.localMinimumWidthProperty
     }, options.buttonOptions ) );
 
     // Put the button above the carousel, left aligned.
@@ -155,7 +164,7 @@ export default class CarouselComboBox<T> extends Node {
     // Wrap everything with Node, to hide VBox's API.
     options.children = [ vBox ];
 
-    super( options );
+    this.mutate( options );
 
     // If the Property changes, hide the carousel. unlink is needed on disposed.
     const propertyListener = () => { carouselAndPageControl.visible = false; };
