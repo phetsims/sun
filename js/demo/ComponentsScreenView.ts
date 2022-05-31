@@ -358,20 +358,20 @@ function demoSlider( layoutBounds: Bounds2, orientation: 'horizontal' | 'vertica
   } );
 
   // Position the control based on the orientation of the slider
-  const layoutBoxOptions = {
+  const boxOptions = {
     spacing: 60,
     children: [ slider, controls ],
     center: layoutBounds.center
   };
-  let layoutBox = null;
+  let box = null;
   if ( orientation === 'horizontal' ) {
-    layoutBox = new VBox( layoutBoxOptions );
+    box = new VBox( boxOptions );
   }
   else {
-    layoutBox = new HBox( layoutBoxOptions );
+    box = new HBox( boxOptions );
   }
 
-  return layoutBox;
+  return box;
 }
 
 function demoToggleSwitch( layoutBounds: Bounds2 ): Node {
