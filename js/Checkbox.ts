@@ -25,7 +25,7 @@ import Utterance, { IAlertable } from '../../utterance-queue/js/Utterance.js';
 import IProperty from '../../axon/js/IProperty.js';
 import Bounds2 from '../../dot/js/Bounds2.js';
 import { Shape } from '../../kite/js/imports.js';
-import OmitStrict from '../../phet-core/js/types/OmitStrict.js';
+import StrictOmit from '../../phet-core/js/types/StrictOmit.js';
 
 // constants
 const BOOLEAN_VALIDATOR = { valueType: 'boolean' };
@@ -57,7 +57,7 @@ type SelfOptions = {
   phetioLinkProperty?: boolean;
 };
 
-export type CheckboxOptions = SelfOptions & OmitStrict<VoicingOptions, 'children' | 'mouseArea' | 'touchArea'>;
+export type CheckboxOptions = SelfOptions & StrictOmit<VoicingOptions, 'children' | 'mouseArea' | 'touchArea'>;
 
 export default class Checkbox extends WidthSizable( Voicing( Node, 0 ) ) {
 

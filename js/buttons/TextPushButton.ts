@@ -7,7 +7,7 @@
  */
 
 import merge from '../../../phet-core/js/merge.js';
-import OmitStrict from '../../../phet-core/js/types/OmitStrict.js';
+import StrictOmit from '../../../phet-core/js/types/StrictOmit.js';
 import optionize from '../../../phet-core/js/optionize.js';
 import { Font, IPaint, Text, TextOptions } from '../../../scenery/js/imports.js';
 import Tandem from '../../../tandem/js/Tandem.js';
@@ -21,7 +21,7 @@ type SelfOptions = {
   textNodeOptions?: TextOptions;
 };
 
-export type TextPushButtonOptions = SelfOptions & OmitStrict<RectangularPushButtonOptions, 'content'>;
+export type TextPushButtonOptions = SelfOptions & StrictOmit<RectangularPushButtonOptions, 'content'>;
 
 export default class TextPushButton extends RectangularPushButton {
 

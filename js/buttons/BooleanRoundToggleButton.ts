@@ -11,11 +11,11 @@ import RoundToggleButton, { RoundToggleButtonOptions } from './RoundToggleButton
 import { Node } from '../../../scenery/js/imports.js';
 import optionize from '../../../phet-core/js/optionize.js';
 import IProperty from '../../../axon/js/IProperty.js';
-import OmitStrict from '../../../phet-core/js/types/OmitStrict.js';
+import StrictOmit from '../../../phet-core/js/types/StrictOmit.js';
 
 type SelfOptions = {};
 
-export type BooleanRoundToggleButtonOptions = SelfOptions & OmitStrict<RoundToggleButtonOptions, 'content'>;
+export type BooleanRoundToggleButtonOptions = SelfOptions & StrictOmit<RoundToggleButtonOptions, 'content'>;
 
 class BooleanRoundToggleButton extends RoundToggleButton<boolean> {
 

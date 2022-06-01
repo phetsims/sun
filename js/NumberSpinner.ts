@@ -8,7 +8,7 @@
  */
 
 import IProperty from '../../axon/js/IProperty.js';
-import OmitStrict from '../../phet-core/js/types/OmitStrict.js';
+import StrictOmit from '../../phet-core/js/types/StrictOmit.js';
 import Range from '../../dot/js/Range.js';
 import InstanceRegistry from '../../phet-core/js/documentation/InstanceRegistry.js';
 import merge from '../../phet-core/js/merge.js';
@@ -53,7 +53,7 @@ type SelfOptions = {
   ySpacing?: number;
 
   // NumberDisplay options
-  numberDisplayOptions?: OmitStrict<NumberDisplayOptions, 'tandem'>;
+  numberDisplayOptions?: StrictOmit<NumberDisplayOptions, 'tandem'>;
 
   // arrow button pointer areas
   touchAreaXDilation?: number;
@@ -63,7 +63,7 @@ type SelfOptions = {
 };
 
 export type NumberSpinnerOptions = SelfOptions &
-  OmitStrict<AccessibleNumberSpinnerOptions, 'children' | 'valueProperty' | 'enabledRangeProperty'>;
+  StrictOmit<AccessibleNumberSpinnerOptions, 'children' | 'valueProperty' | 'enabledRangeProperty'>;
 
 export default class NumberSpinner extends AccessibleNumberSpinner( Node, 0 ) {
 
@@ -81,7 +81,7 @@ export default class NumberSpinner extends AccessibleNumberSpinner( Node, 0 ) {
       `value ${numberProperty.get()} is out of range ${rangeProperty.value.toString()}` );
 
     const options = optionize<NumberSpinnerOptions,
-      OmitStrict<SelfOptions, 'incrementFunction' | 'decrementFunction'>,
+      StrictOmit<SelfOptions, 'incrementFunction' | 'decrementFunction'>,
       AccessibleNumberSpinnerOptions>()( {
 
       // SelfOptions

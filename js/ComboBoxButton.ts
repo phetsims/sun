@@ -21,7 +21,7 @@ import ComboBoxItem from './ComboBoxItem.js';
 import IProperty from '../../axon/js/IProperty.js';
 import nullSoundPlayer from '../../tambo/js/shared-sound-players/nullSoundPlayer.js';
 import TinyProperty from '../../axon/js/TinyProperty.js';
-import OmitStrict from '../../phet-core/js/types/OmitStrict.js';
+import StrictOmit from '../../phet-core/js/types/StrictOmit.js';
 
 // constants
 const ALIGN_VALUES = [ 'left', 'center', 'right' ] as const;
@@ -51,7 +51,7 @@ type SelfOptions = {
   localMinimumWidthProperty?: IProperty<number | null>;
 };
 
-export type ComboBoxButtonOptions = SelfOptions & OmitStrict<RectangularPushButtonOptions, 'children' | 'ariaLabelledbyAssociations'>;
+export type ComboBoxButtonOptions = SelfOptions & StrictOmit<RectangularPushButtonOptions, 'children' | 'ariaLabelledbyAssociations'>;
 
 export default class ComboBoxButton<T> extends RectangularPushButton {
 

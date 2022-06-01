@@ -8,7 +8,7 @@
  */
 
 import Dimension2 from '../../dot/js/Dimension2.js';
-import OmitStrict from '../../phet-core/js/types/OmitStrict.js';
+import StrictOmit from '../../phet-core/js/types/StrictOmit.js';
 import { Shape } from '../../kite/js/imports.js';
 import optionize from '../../phet-core/js/optionize.js';
 import { IPaint, Path, PressListener, Rectangle, RectangleOptions } from '../../scenery/js/imports.js';
@@ -21,7 +21,7 @@ type SelfOptions = {
   centerLineStroke?: IPaint;
 };
 
-type SliderThumbOptions = SelfOptions & OmitStrict<RectangleOptions, 'cachedPaints'>;
+type SliderThumbOptions = SelfOptions & StrictOmit<RectangleOptions, 'cachedPaints'>;
 
 export default class SliderThumb extends Rectangle {
 

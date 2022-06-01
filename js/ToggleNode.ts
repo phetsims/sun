@@ -9,7 +9,7 @@
  */
 
 import IProperty from '../../axon/js/IProperty.js';
-import OmitStrict from '../../phet-core/js/types/OmitStrict.js';
+import StrictOmit from '../../phet-core/js/types/StrictOmit.js';
 import optionize from '../../phet-core/js/optionize.js';
 import { Node, NodeOptions } from '../../scenery/js/imports.js';
 import Tandem from '../../tandem/js/Tandem.js';
@@ -26,7 +26,7 @@ type SelfOptions = {
   alignChildren?: ( children: Node[] ) => void;
 };
 
-export type ToggleNodeOptions = SelfOptions & OmitStrict<NodeOptions, 'children'>;
+export type ToggleNodeOptions = SelfOptions & StrictOmit<NodeOptions, 'children'>;
 
 export default class ToggleNode<T> extends Node {
 

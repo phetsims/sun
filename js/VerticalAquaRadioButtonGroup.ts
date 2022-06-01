@@ -7,14 +7,14 @@
  */
 
 import IProperty from '../../axon/js/IProperty.js';
-import OmitStrict from '../../phet-core/js/types/OmitStrict.js';
+import StrictOmit from '../../phet-core/js/types/StrictOmit.js';
 import optionize from '../../phet-core/js/optionize.js';
 import AquaRadioButtonGroup, { AquaRadioButtonGroupItem, AquaRadioButtonGroupOptions } from './AquaRadioButtonGroup.js';
 import sun from './sun.js';
 
 type SelfOptions = {};
 
-export type VerticalAquaRadioButtonGroupOptions = SelfOptions & OmitStrict<AquaRadioButtonGroupOptions, 'orientation'>;
+export type VerticalAquaRadioButtonGroupOptions = SelfOptions & StrictOmit<AquaRadioButtonGroupOptions, 'orientation'>;
 
 export default class VerticalAquaRadioButtonGroup<T> extends AquaRadioButtonGroup<T> {
 

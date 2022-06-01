@@ -8,7 +8,7 @@
  */
 
 import IProperty from '../../axon/js/IProperty.js';
-import OmitStrict from '../../phet-core/js/types/OmitStrict.js';
+import StrictOmit from '../../phet-core/js/types/StrictOmit.js';
 import dotRandom from '../../dot/js/dotRandom.js';
 import optionize from '../../phet-core/js/optionize.js';
 import { FlowBox, FlowBoxOptions, HStrut, Node, PDOMPeer, SceneryConstants, SceneryEvent } from '../../scenery/js/imports.js';
@@ -27,7 +27,7 @@ let instanceCount = 0;
 const CLASS_NAME = 'AquaRadioButtonGroup';
 
 // a subset of AquaRadioButtonOptions is allowed
-type SubsetOfAquaRadioButtonOptions = OmitStrict<AquaRadioButtonOptions, 'a11yNameAttribute' | 'labelContent' | 'soundPlayer' | 'tandem'>;
+type SubsetOfAquaRadioButtonOptions = StrictOmit<AquaRadioButtonOptions, 'a11yNameAttribute' | 'labelContent' | 'soundPlayer' | 'tandem'>;
 
 type SelfOptions = {
 
@@ -44,7 +44,7 @@ type SelfOptions = {
   mouseAreaYDilation?: number;
 };
 
-export type AquaRadioButtonGroupOptions = SelfOptions & OmitStrict<FlowBoxOptions, 'children'>;
+export type AquaRadioButtonGroupOptions = SelfOptions & StrictOmit<FlowBoxOptions, 'children'>;
 
 export type AquaRadioButtonGroupItem<T> = {
   value: T; // value associated with the button
