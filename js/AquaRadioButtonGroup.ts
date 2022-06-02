@@ -58,11 +58,6 @@ export default class AquaRadioButtonGroup<T> extends FlowBox {
   private readonly radioButtons: AquaRadioButton<T>[];
   private readonly disposeAquaRadioButtonGroup: () => void;
 
-  /**
-   * @param property
-   * @param items
-   * @param providedOptions
-   */
   constructor( property: IProperty<T>, items: AquaRadioButtonGroupItem<T>[], providedOptions?: AquaRadioButtonGroupOptions ) {
 
     instanceCount++;

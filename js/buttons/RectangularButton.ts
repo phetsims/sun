@@ -74,9 +74,9 @@ export default class RectangularButton extends ButtonNode {
   public static ThreeDAppearanceStrategy: typeof ThreeDAppearanceStrategy;
 
   /**
-   * @param {ButtonModel} buttonModel - Model that defines the button's behavior.
-   * @param {Property} interactionStateProperty - a Property that is used to drive the visual appearance of the button
-   * @param {Object} providedOptions
+   * @param buttonModel - Model that defines the button's behavior.
+   * @param interactionStateProperty - a Property that is used to drive the visual appearance of the button
+   * @param providedOptions
    */
   constructor( buttonModel: ButtonModel, interactionStateProperty: IReadOnlyProperty<ButtonInteractionState>,
                providedOptions?: RectangularButtonOptions ) {

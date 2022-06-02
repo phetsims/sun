@@ -150,9 +150,9 @@ class DotNode extends Circle {
   public readonly pageNumber: number;
 
   /**
-   * @param {number} pageNumber - page number that the dot is associated with
-   * @param {number} radius
-   * @param {Object} [options]
+   * @param pageNumber - page number that the dot is associated with
+   * @param radius
+   * @param [options]
    */
   constructor( pageNumber: number, radius: number, options: CircleOptions ) {
     super( radius, options );

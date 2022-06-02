@@ -29,10 +29,10 @@ export default class ToggleButtonModel<T> extends ButtonModel {
   private readonly disposeToggleButtonModel: () => void;
 
   /**
-   * @param {Object} valueOff - value when the button is in the off state
-   * @param {Object} valueOn - value when the button is in the on state
-   * @param {Property} property - axon Property that can be either valueOff or valueOn.
-   * @param {Object} [providedOptions]
+   * @param valueOff - value when the button is in the off state
+   * @param valueOn - value when the button is in the on state
+   * @param property - axon Property that can be either valueOff or valueOn.
+   * @param [providedOptions]
    */
   constructor( valueOff: T, valueOn: T, property: IProperty<T>, providedOptions?: ToggleButtonModelOptions ) {
 

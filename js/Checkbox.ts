@@ -240,7 +240,6 @@ export default class Checkbox extends WidthSizable( Voicing( Node, 0 ) ) {
 
   /**
    * Sets the color of the checkbox.
-   * @param value
    */
   public setCheckboxColor( value: IPaint ): void { this.checkedNode.fill = this.uncheckedNode.fill = value; }
 
