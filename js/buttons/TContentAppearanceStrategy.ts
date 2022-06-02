@@ -5,13 +5,13 @@
  * @author Michael Kauzmann (PhET Interactive Simulations)
  */
 
-import IProperty from '../../../axon/js/IProperty.js';
+import IReadOnlyProperty from '../../../axon/js/IReadOnlyProperty.js';
 import { Node } from '../../../scenery/js/imports.js';
 import RadioButtonInteractionState from './RadioButtonInteractionState.js';
 
 type TContentAppearanceStrategy = {
   new( content: Node,
-       interactionStateProperty: IProperty<RadioButtonInteractionState>,
+       interactionStateProperty: IReadOnlyProperty<RadioButtonInteractionState>,
        options: any ): {
     dispose?: () => void;
   };

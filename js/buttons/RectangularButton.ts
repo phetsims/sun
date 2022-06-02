@@ -8,7 +8,7 @@
  */
 
 import DerivedProperty from '../../../axon/js/DerivedProperty.js';
-import IProperty from '../../../axon/js/IProperty.js';
+import IReadOnlyProperty from '../../../axon/js/IReadOnlyProperty.js';
 import Multilink from '../../../axon/js/Multilink.js';
 import Dimension2 from '../../../dot/js/Dimension2.js';
 import { Shape } from '../../../kite/js/imports.js';
@@ -78,7 +78,7 @@ export default class RectangularButton extends ButtonNode {
    * @param {Property} interactionStateProperty - a Property that is used to drive the visual appearance of the button
    * @param {Object} providedOptions
    */
-  constructor( buttonModel: ButtonModel, interactionStateProperty: IProperty<ButtonInteractionState>,
+  constructor( buttonModel: ButtonModel, interactionStateProperty: IReadOnlyProperty<ButtonInteractionState>,
                providedOptions?: RectangularButtonOptions ) {
 
     const options = optionize<RectangularButtonOptions, SelfOptions, ButtonNodeOptions>()( {
@@ -221,8 +221,8 @@ class ThreeDAppearanceStrategy {
    * @param [options]
    */
   constructor( buttonBackground: Path,
-               interactionStateProperty: IProperty<ButtonInteractionState | RadioButtonInteractionState>,
-               baseColorProperty: IProperty<Color>,
+               interactionStateProperty: IReadOnlyProperty<ButtonInteractionState | RadioButtonInteractionState>,
+               baseColorProperty: IReadOnlyProperty<Color>,
                options?: any ) {
 
     // Dynamic colors

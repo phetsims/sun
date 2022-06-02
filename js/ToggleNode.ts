@@ -8,12 +8,12 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
-import IProperty from '../../axon/js/IProperty.js';
 import StrictOmit from '../../phet-core/js/types/StrictOmit.js';
 import optionize from '../../phet-core/js/optionize.js';
 import { Node, NodeOptions } from '../../scenery/js/imports.js';
 import Tandem from '../../tandem/js/Tandem.js';
 import sun from './sun.js';
+import IReadOnlyProperty from '../../axon/js/IReadOnlyProperty.js';
 
 export type ToggleNodeElement<T> = {
   value: T;  // a value
@@ -32,7 +32,7 @@ export default class ToggleNode<T> extends Node {
 
   private readonly disposeToggleNode: () => void;
 
-  constructor( valueProperty: IProperty<T>, elements: ToggleNodeElement<T>[], providedOptions?: ToggleNodeOptions ) {
+  constructor( valueProperty: IReadOnlyProperty<T>, elements: ToggleNodeElement<T>[], providedOptions?: ToggleNodeOptions ) {
 
     assert && assert( Array.isArray( elements ), 'elements should be an array' );
     if ( assert ) {

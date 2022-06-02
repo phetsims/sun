@@ -9,6 +9,7 @@
 
 import Emitter from '../../../axon/js/Emitter.js';
 import IProperty from '../../../axon/js/IProperty.js';
+import IReadOnlyProperty from '../../../axon/js/IReadOnlyProperty.js';
 import optionize from '../../../phet-core/js/optionize.js';
 import { Color, IColor, Node, PaintableNode, PaintColorProperty } from '../../../scenery/js/imports.js';
 import ISoundPlayer from '../../../tambo/js/ISoundPlayer.js';
@@ -202,8 +203,8 @@ export default class RectangularRadioButton<T> extends RectangularButton {
     /**
      * buttonBackground is the Node for the button's background, sans content
      */
-    constructor( buttonBackground: PaintableNode, interactionStateProperty: IProperty<RadioButtonInteractionState>,
-                 baseColorProperty: IProperty<Color>, options: any ) {
+    constructor( buttonBackground: PaintableNode, interactionStateProperty: IReadOnlyProperty<RadioButtonInteractionState>,
+                 baseColorProperty: IReadOnlyProperty<Color>, options: any ) {
 
       // Dynamic fills and strokes
       const overFill = new PaintColorProperty( options.overFill || baseColorProperty, {
@@ -285,7 +286,7 @@ export default class RectangularRadioButton<T> extends RectangularButton {
 
     private readonly disposeContentAppearanceStrategy: () => void;
 
-    constructor( content: Node, interactionStateProperty: IProperty<RadioButtonInteractionState>, options: any ) {
+    constructor( content: Node, interactionStateProperty: IReadOnlyProperty<RadioButtonInteractionState>, options: any ) {
 
       // The button is not the parent of the content, therefore it is necessary to set the opacity on the content separately
       function handleInteractionStateChanged( state: RadioButtonInteractionState ) {

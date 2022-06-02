@@ -9,10 +9,8 @@
  */
 
 import DerivedProperty from '../../../axon/js/DerivedProperty.js';
-import IProperty from '../../../axon/js/IProperty.js';
 import IReadOnlyProperty from '../../../axon/js/IReadOnlyProperty.js';
 import Multilink from '../../../axon/js/Multilink.js';
-import Property from '../../../axon/js/Property.js';
 import Bounds2 from '../../../dot/js/Bounds2.js';
 import Dimension2 from '../../../dot/js/Dimension2.js';
 import merge from '../../../phet-core/js/merge.js';
@@ -93,7 +91,7 @@ export default class ButtonNode extends Sizable( Voicing( Node, 0 ) ) {
   protected buttonModel: ButtonModel;
   private readonly _settableBaseColorProperty: PaintColorProperty;
   private readonly _disabledColorProperty: PaintColorProperty;
-  private readonly baseColorProperty: Property<Color>;
+  private readonly baseColorProperty: IReadOnlyProperty<Color>;
   private readonly _pressListener: PressListener;
   private readonly disposeButtonNode: () => void;
   private readonly content: Node | null;
@@ -105,9 +103,9 @@ export default class ButtonNode extends Sizable( Voicing( Node, 0 ) ) {
   protected readonly maxLineWidth: number;
 
   // The size we're taking up for layout
-  public readonly layoutWidthProperty: IProperty<number>;
-  public readonly layoutHeightProperty: IProperty<number>;
-  public readonly layoutSizeProperty: IProperty<Dimension2>;
+  public readonly layoutWidthProperty: IReadOnlyProperty<number>;
+  public readonly layoutHeightProperty: IReadOnlyProperty<number>;
+  public readonly layoutSizeProperty: IReadOnlyProperty<Dimension2>;
 
   public static FlatAppearanceStrategy: TButtonAppearanceStrategy;
 
@@ -118,7 +116,7 @@ export default class ButtonNode extends Sizable( Voicing( Node, 0 ) ) {
    * @param providedOptions - this type does not mutate its options, but relies on the subtype to
    */
   constructor( buttonModel: ButtonModel, buttonBackground: Path,
-               interactionStateProperty: IProperty<ButtonInteractionState>, providedOptions?: ButtonNodeOptions ) {
+               interactionStateProperty: IReadOnlyProperty<ButtonInteractionState>, providedOptions?: ButtonNodeOptions ) {
 
     const options = optionize<ButtonNodeOptions, SelfOptions, SuperOptions>()( {
 
@@ -368,7 +366,7 @@ export class FlatAppearanceStrategy {
    * @param baseColorProperty
    * @param options
    */
-  constructor( buttonBackground: PaintableNode, interactionStateProperty: IProperty<ButtonInteractionState>, baseColorProperty: IReadOnlyProperty<Color>, options?: any ) {
+  constructor( buttonBackground: PaintableNode, interactionStateProperty: IReadOnlyProperty<ButtonInteractionState>, baseColorProperty: IReadOnlyProperty<Color>, options?: any ) {
 
     // Dynamic colors
     const baseBrighter4 = new PaintColorProperty( baseColorProperty, { luminanceFactor: 0.4 } );

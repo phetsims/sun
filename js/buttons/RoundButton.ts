@@ -8,7 +8,6 @@
  */
 
 import DerivedProperty from '../../../axon/js/DerivedProperty.js';
-import IProperty from '../../../axon/js/IProperty.js';
 import { Shape } from '../../../kite/js/imports.js';
 import { Circle, Color, IPaint, Node, PaintableNode, PaintColorProperty, RadialGradient } from '../../../scenery/js/imports.js';
 import sun from '../sun.js';
@@ -17,6 +16,7 @@ import ButtonModel from './ButtonModel.js';
 import ButtonNode, { ButtonNodeOptions } from './ButtonNode.js';
 import optionize from '../../../phet-core/js/optionize.js';
 import RadioButtonInteractionState from './RadioButtonInteractionState.js';
+import IReadOnlyProperty from '../../../axon/js/IReadOnlyProperty.js';
 
 // constants
 const HIGHLIGHT_GRADIENT_LENGTH = 5; // In screen coords, which are roughly pixels.
@@ -45,7 +45,7 @@ export default class RoundButton extends ButtonNode {
   public static ThreeDAppearanceStrategy: typeof ThreeDAppearanceStrategy;
 
   constructor( buttonModel: ButtonModel,
-               interactionStateProperty: IProperty<ButtonInteractionState>,
+               interactionStateProperty: IReadOnlyProperty<ButtonInteractionState>,
                providedOptions?: RoundButtonOptions ) {
 
     const options = optionize<RoundButtonOptions, SelfOptions, ButtonNodeOptions>()( {
@@ -142,8 +142,8 @@ export class ThreeDAppearanceStrategy {
    * @param options
    */
   constructor( buttonBackground: PaintableNode,
-               interactionStateProperty: IProperty<ButtonInteractionState | RadioButtonInteractionState>,
-               baseColorProperty: IProperty<Color>,
+               interactionStateProperty: IReadOnlyProperty<ButtonInteractionState | RadioButtonInteractionState>,
+               baseColorProperty: IReadOnlyProperty<Color>,
                options?: any ) {
 
     // Dynamic colors

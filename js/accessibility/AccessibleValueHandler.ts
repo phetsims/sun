@@ -19,7 +19,7 @@
 // Disable for the whole file
 /* eslint-disable no-protected-jsdoc */
 
-import Property from '../../../axon/js/Property.js';
+import { AbstractProperty } from '../../../axon/js/Property.js';
 import Utils from '../../../dot/js/Utils.js';
 import Range from '../../../dot/js/Range.js';
 import assertHasProperties from '../../../phet-core/js/assertHasProperties.js';
@@ -414,7 +414,7 @@ const AccessibleValueHandler = <SuperType extends Constructor>( Type: SuperType,
       assert && assert( dependencies.indexOf( this._valueProperty ) === -1,
         'The value Property is already a dependency, and does not need to be added to this list' );
       assert && dependencies.forEach( property => {
-        assert && assert( property instanceof Property, `${property} is not an instance of Property` );
+        assert && assert( property instanceof AbstractProperty, `${property} is not an instance of Property` );
       } );
 
       // dispose the previous multilink, there is only one set of dependencies, though they can be overwritten.
