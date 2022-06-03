@@ -17,7 +17,7 @@ import Bounds2 from '../../../dot/js/Bounds2.js';
 import Dimension2 from '../../../dot/js/Dimension2.js';
 import dotRandom from '../../../dot/js/dotRandom.js';
 import Range from '../../../dot/js/Range.js';
-import { combineOptions, combineOptions3 } from '../../../phet-core/js/optionize.js';
+import { combineOptions } from '../../../phet-core/js/optionize.js';
 import PhetFont from '../../../scenery-phet/js/PhetFont.js';
 import { AlignBox, AlignGroup, Circle, HBox, Node, Rectangle, Text, VBox } from '../../../scenery/js/imports.js';
 import { PhetioObjectOptions } from '../../../tandem/js/PhetioObject.js';
@@ -452,7 +452,7 @@ function demoNumberSpinner( layoutBounds: Bounds2 ): Node {
 
   // Demonstrate each value of options.arrowsPosition
   const spinnerLeftRight = new NumberSpinner( valueProperty, valueRangeProperty,
-    combineOptions3<NumberSpinnerOptions>( {}, spinnerOptions, {
+    combineOptions<NumberSpinnerOptions>( {}, spinnerOptions, {
       arrowsPosition: 'leftRight',
       numberDisplayOptions: {
         valuePattern: '{{value}} bottles of beer on the wall'
@@ -460,13 +460,13 @@ function demoNumberSpinner( layoutBounds: Bounds2 ): Node {
     } ) );
 
   const spinnerTopBottom = new NumberSpinner( valueProperty, valueRangeProperty,
-    combineOptions3<NumberSpinnerOptions>( {}, spinnerOptions, {
+    combineOptions<NumberSpinnerOptions>( {}, spinnerOptions, {
       arrowsPosition: 'topBottom',
       arrowsScale: 0.65
     } ) );
 
   const spinnerBothRight = new NumberSpinner( valueProperty, valueRangeProperty,
-    combineOptions3<NumberSpinnerOptions>( {}, spinnerOptions, {
+    combineOptions<NumberSpinnerOptions>( {}, spinnerOptions, {
       arrowsPosition: 'bothRight',
       numberDisplayOptions: {
         yMargin: 10,
@@ -475,7 +475,7 @@ function demoNumberSpinner( layoutBounds: Bounds2 ): Node {
     } ) );
 
   const spinnerBothBottom = new NumberSpinner( valueProperty, valueRangeProperty,
-    combineOptions3<NumberSpinnerOptions>( {}, spinnerOptions, {
+    combineOptions<NumberSpinnerOptions>( {}, spinnerOptions, {
       arrowsPosition: 'bothBottom',
       numberDisplayOptions: {
         backgroundFill: 'pink',
