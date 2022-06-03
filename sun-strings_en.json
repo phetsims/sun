@@ -8,6 +8,12 @@
     },
     "close": {
       "value": "Close"
+    },
+    "closed": {
+      "value": "Closed"
+    },
+    "titleClosePattern": {
+      "value": "{{title}}, Close"
     }
   }
 }

@@ -14,6 +14,8 @@ type StringsType = {
   'a11y': {
     'numberSpinnerRoleDescription': string;
     'close': string;
+    'closed': string;
+    'titleClosePattern': string;
   }
 };
 

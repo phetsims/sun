@@ -13,6 +13,7 @@ import Multilink from '../../axon/js/Multilink.js';
 import ScreenView from '../../joist/js/ScreenView.js';
 import getGlobal from '../../phet-core/js/getGlobal.js';
 import merge from '../../phet-core/js/merge.js';
+import StringUtils from '../../phetcommon/js/util/StringUtils.js';
 import CloseButton from '../../scenery-phet/js/buttons/CloseButton.js';
 import { AlignBox, FocusManager, FullScreen, HBox, KeyboardUtils, Node, PDOMPeer, PDOMUtils, VBox } from '../../scenery/js/imports.js';
 import generalCloseSoundPlayer from '../../tambo/js/shared-sound-players/generalCloseSoundPlayer.js';
@@ -22,6 +23,7 @@ import PhetioObject from '../../tandem/js/PhetioObject.js';
 import Tandem from '../../tandem/js/Tandem.js';
 import DynamicMarkerIO from '../../tandem/js/types/DynamicMarkerIO.js';
 import IOType from '../../tandem/js/types/IOType.js';
+import Utterance from '../../utterance-queue/js/Utterance.js';
 import ButtonNode from './buttons/ButtonNode.js';
 import Panel from './Panel.js';
 import Popupable from './Popupable.js';
@@ -105,6 +107,10 @@ class Dialog extends Popupable( Panel ) {
       closeButtonMouseAreaXDilation: 0,
       closeButtonMouseAreaYDilation: 0,
 
+      // {string} - If provided use this dialog title in the Close button voicingNameResponse. This should be provided
+      // for proper Dialog Voicing design.
+      closeButtonVoicingDialogTitle: null,
+
       // {function|null} called after the dialog is shown, see https://github.com/phetsims/joist/issues/478
       showCallback: null,
 
@@ -176,6 +182,11 @@ class Dialog extends Popupable( Panel ) {
       options.maxHeight = applyDoubleMargin( options.layoutBounds.height, options.maxHeightMargin );
     }
 
+    // We need an "unattached" utterance so that when the close button fires, hiding the close button, we still hear the context response.
+    const contextResponseUtterance = new Utterance( {
+      priority: Utterance.MEDIUM_PRIORITY
+    } );
+
     // create close button - a flat "X"
     const closeButton = new CloseButton( {
       iconLength: options.closeButtonLength,
@@ -187,6 +198,12 @@ class Dialog extends Popupable( Panel ) {
       yMargin: 0,
 
       listener: () => {
+
+        // Context response first, before potentially changing focus with the callback listener
+        closeButton.voicingSpeakContextResponse( {
+          utterance: contextResponseUtterance
+        } );
+
         options.closeButtonListener();
       },
 
@@ -214,8 +231,17 @@ class Dialog extends Popupable( Panel ) {
 
       // pdom
       tagName: 'button',
-      innerContent: sunStrings.a11y.close
+      innerContent: sunStrings.a11y.close,
+
+      // voicing
+      voicingContextResponse: sunStrings.a11y.closed
     } );
+
+    if ( options.closeButtonVoicingDialogTitle ) {
+      closeButton.voicingNameResponse = StringUtils.fillIn( sunStrings.a11y.titleClosePattern, {
+        title: options.closeButtonVoicingDialogTitle
+      } );
+    }
 
     // touch/mouse areas for the close button
     closeButton.touchArea = closeButton.bounds.dilatedXY(
