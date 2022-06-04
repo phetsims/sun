@@ -160,10 +160,13 @@ export default class ButtonNode extends Sizable( Voicing( Node, 0 ) ) {
       'if options.enabledProperty is provided, it must === buttonModel.enabledProperty' );
     options.enabledProperty = buttonModel.enabledProperty;
 
-    super();
-
-    // Provide sizability here, so that clients can turn on/off sizability without hitting exclusive options
-    this.sizable = false;
+    // We'll want to default to sizable:false, but allow clients to pass in something conflicting like widthSizable:true
+    // in the super mutate. To avoid the exclusive options, we isolate this out here.
+    const initialOptions: ButtonNodeOptions = {
+      // Buttons should be sizable:false by default, for maintaining backward compatibility
+      sizable: false
+    };
+    super( initialOptions );
 
     this.content = options.content;
     this.xMargin = options.xMargin;
