@@ -56,6 +56,10 @@ type SelfOptions = {
   trackStroke?: IPaint;
   trackLineWidth?: number;
   trackCornerRadius?: number;
+  trackPickable?: boolean;
+
+  // Whether the track bounds should be dilated for layout issues, see details at the instantiation site.
+  trackBoundsDilation?: boolean;
 
   // optional thumb, replaces the default.
   // Client is responsible for highlighting, disabling and pointer areas.
@@ -177,6 +181,10 @@ export default class Slider extends AccessibleSlider( Node, 0 ) {
       trackStroke: 'black',
       trackLineWidth: 1,
       trackCornerRadius: 0,
+      trackPickable: true,
+
+      // By default, tracks dilate the bounds of the track to accommodate layout issues
+      trackBoundsDilation: true,
 
       thumbNode: null,
 
@@ -354,6 +362,7 @@ export default class Slider extends AccessibleSlider( Node, 0 ) {
       constrainValue: superOptions.constrainValue,
       enabledRangeProperty: this.enabledRangeProperty,
       soundGenerator: options.soundGenerator,
+      pickable: superOptions.trackPickable,
 
       // phet-io
       tandem: trackTandem
@@ -364,7 +373,9 @@ export default class Slider extends AccessibleSlider( Node, 0 ) {
 
     // Dilate the local bounds horizontally so that it extends beyond where the thumb can reach.  This prevents layout
     // asymmetry when the slider thumb is off the edges of the track.  See https://github.com/phetsims/sun/issues/282
-    this.track.localBounds = this.track.localBounds.dilatedX( thumb.width / 2 );
+    if ( options.trackBoundsDilation ) {
+      this.track.localBounds = this.track.localBounds.dilatedX( thumb.width / 2 );
+    }
 
     // Add the track
     sliderParts.push( this.track );
