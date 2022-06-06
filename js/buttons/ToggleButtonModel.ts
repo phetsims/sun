@@ -9,7 +9,7 @@
 
 import Emitter from '../../../axon/js/Emitter.js';
 import IProperty from '../../../axon/js/IProperty.js';
-import merge from '../../../phet-core/js/merge.js';
+import optionize from '../../../phet-core/js/optionize.js';
 import EventType from '../../../tandem/js/EventType.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import sun from '../sun.js';
@@ -36,7 +36,7 @@ export default class ToggleButtonModel<T> extends ButtonModel {
    */
   constructor( valueOff: T, valueOn: T, property: IProperty<T>, providedOptions?: ToggleButtonModelOptions ) {
 
-    const options = merge( {
+    const options = optionize<ToggleButtonModelOptions, SelfOptions, ButtonModelOptions>()( {
       tandem: Tandem.REQUIRED
     }, providedOptions );
 
