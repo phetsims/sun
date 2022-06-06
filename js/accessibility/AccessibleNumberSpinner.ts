@@ -40,12 +40,12 @@ import AccessibleValueHandler, { AccessibleValueHandlerOptions } from './Accessi
 
 const numberSpinnerRoleDescriptionString = sunStrings.a11y.numberSpinnerRoleDescription;
 
-type AccessibleNumberSpinnerSelfOptions = {
+type SelfOptions = {
   timerDelay?: number;
   timerInterval?: number;
 }
 
-type AccessibleNumberSpinnerOptions = AccessibleNumberSpinnerSelfOptions & AccessibleValueHandlerOptions;
+type AccessibleNumberSpinnerOptions = SelfOptions & AccessibleValueHandlerOptions;
 
 /**
  * @param Type
@@ -77,7 +77,7 @@ const AccessibleNumberSpinner = <SuperType extends Constructor>( Type: SuperType
       assert && providedOptions && assert( Object.getPrototypeOf( providedOptions ) === Object.prototype,
         'Extra prototype on AccessibleSlider options object is a code smell (or probably a bug)' );
 
-      const options = optionize<AccessibleNumberSpinnerOptions, AccessibleNumberSpinnerSelfOptions, AccessibleValueHandlerOptions>()( {
+      const options = optionize<AccessibleNumberSpinnerOptions, SelfOptions, AccessibleValueHandlerOptions>()( {
         timerDelay: 400, // start to fire continuously after pressing for this long (milliseconds)
         timerInterval: 100, // fire continuously at this frequency (milliseconds),
 

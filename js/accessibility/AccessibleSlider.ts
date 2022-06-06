@@ -22,7 +22,7 @@ import { Node, SceneryListenerFunction } from '../../../scenery/js/imports.js';
 import sun from '../sun.js';
 import AccessibleValueHandler, { AccessibleValueHandlerOptions } from './AccessibleValueHandler.js';
 
-type AccessibleSliderSelfOptions = {
+type SelfOptions = {
 
   // called when a drag sequence starts
   startDrag?: SceneryListenerFunction;
@@ -34,7 +34,7 @@ type AccessibleSliderSelfOptions = {
   drag?: SceneryListenerFunction;
 }
 
-type AccessibleSliderOptions = AccessibleSliderSelfOptions & AccessibleValueHandlerOptions;
+type AccessibleSliderOptions = SelfOptions & AccessibleValueHandlerOptions;
 
 /**
  * @param Type
@@ -57,7 +57,7 @@ const AccessibleSlider = <SuperType extends Constructor>( Type: SuperType, optio
       assert && providedOptions && assert( Object.getPrototypeOf( providedOptions ) === Object.prototype,
         'Extra prototype on AccessibleSlider options object is a code smell (or probably a bug)' );
 
-      const options = optionize<AccessibleSliderOptions, AccessibleSliderSelfOptions, AccessibleValueHandlerOptions>()( {
+      const options = optionize<AccessibleSliderOptions, SelfOptions, AccessibleValueHandlerOptions>()( {
         startDrag: _.noop,
         endDrag: _.noop,
         drag: _.noop

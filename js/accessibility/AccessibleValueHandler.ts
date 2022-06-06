@@ -61,7 +61,7 @@ type VoicingOnEndResponseOptions = {
   withObjectResponse?: boolean;
 };
 
-type AccessibleValueHandlerSelfOptions = {
+type SelfOptions = {
   valueProperty: IProperty<number>;
   enabledRangeProperty: IReadOnlyProperty<Range>;
 
@@ -180,7 +180,7 @@ type AccessibleValueHandlerSelfOptions = {
   tagName?: null;
 };
 
-type AccessibleValueHandlerOptions = AccessibleValueHandlerSelfOptions & StrictOmit<VoicingOptions, 'inputType'>;
+type AccessibleValueHandlerOptions = SelfOptions & StrictOmit<VoicingOptions, 'inputType'>;
 
 /**
  * @param Type
@@ -271,7 +271,7 @@ const AccessibleValueHandler = <SuperType extends Constructor>( Type: SuperType,
         assert( providedOptions.keyboardStep, 'rounding to keyboardStep, define appropriate keyboardStep to round to' );
       }
 
-      const defaults: OptionizeDefaults<AccessibleValueHandlerSelfOptions, NodeOptions> = {
+      const defaults: OptionizeDefaults<SelfOptions, NodeOptions> = {
 
         // other
         startInput: _.noop,
@@ -300,7 +300,7 @@ const AccessibleValueHandler = <SuperType extends Constructor>( Type: SuperType,
         inputType: null
       };
 
-      const options = optionize3<AccessibleValueHandlerOptions, AccessibleValueHandlerSelfOptions, NodeOptions>()( {}, defaults, providedOptions );
+      const options = optionize3<AccessibleValueHandlerOptions, SelfOptions, NodeOptions>()( {}, defaults, providedOptions );
 
       assert && providedOptions && assert( !providedOptions.hasOwnProperty( 'tagName' ) || providedOptions.tagName === null,
         'AccessibleValueHandler sets its own tagName. Only provide tagName to clear accessible content from the PDOM' );
