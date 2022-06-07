@@ -17,7 +17,8 @@ import Bounds2 from '../../../dot/js/Bounds2.js';
 import Dimension2 from '../../../dot/js/Dimension2.js';
 import dotRandom from '../../../dot/js/dotRandom.js';
 import Range from '../../../dot/js/Range.js';
-import { combineOptions } from '../../../phet-core/js/optionize.js';
+import optionize, { combineOptions } from '../../../phet-core/js/optionize.js';
+import PickRequired from '../../../phet-core/js/types/PickRequired.js';
 import PhetFont from '../../../scenery-phet/js/PhetFont.js';
 import { AlignBox, AlignGroup, Circle, HBox, Node, Rectangle, Text, VBox } from '../../../scenery/js/imports.js';
 import { PhetioObjectOptions } from '../../../tandem/js/PhetioObject.js';
@@ -42,13 +43,15 @@ import ToggleSwitch from '../ToggleSwitch.js';
 import VSlider, { VSliderOptions } from '../VSlider.js';
 import DemosScreenView, { DemosScreenViewOptions } from './DemosScreenView.js';
 
-class ComponentsScreenView extends DemosScreenView {
+type SelfOptions = {};
+type ButtonsScreenViewOptions = SelfOptions & PickRequired<DemosScreenViewOptions, 'tandem'>;
 
-  constructor( providedOptions: DemosScreenViewOptions ) {
+export default class ComponentsScreenView extends DemosScreenView {
 
-    const options = combineOptions<DemosScreenViewOptions>( {
-      selectedDemoLabel: sunQueryParameters.component,
-      tandem: Tandem.REQUIRED
+  constructor( providedOptions: ButtonsScreenViewOptions ) {
+
+    const options = optionize<ButtonsScreenViewOptions, SelfOptions, DemosScreenViewOptions>()( {
+      selectedDemoLabel: sunQueryParameters.component
     }, providedOptions );
 
     super( [
@@ -601,4 +604,3 @@ function demoAccordionBox( layoutBounds: Bounds2 ): Node {
 }
 
 sun.register( 'ComponentsScreenView', ComponentsScreenView );
-export default ComponentsScreenView;

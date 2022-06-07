@@ -11,6 +11,7 @@ import Property from '../../../axon/js/Property.js';
 import Bounds2 from '../../../dot/js/Bounds2.js';
 import Dimension2 from '../../../dot/js/Dimension2.js';
 import dotRandom from '../../../dot/js/dotRandom.js';
+import PickRequired from '../../../phet-core/js/types/PickRequired.js';
 import { Circle, Color, Font, HBox, Node, Rectangle, Text, VBox, VStrut } from '../../../scenery/js/imports.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import ArrowButton from '../buttons/ArrowButton.js';
@@ -33,8 +34,11 @@ import DemosScreenView, { DemosScreenViewOptions } from './DemosScreenView.js';
 const BUTTON_FONT_SIZE = 16;
 const BUTTON_FONT = new Font( { size: BUTTON_FONT_SIZE } );
 
-class ButtonsScreenView extends DemosScreenView {
-  constructor( providedOptions: DemosScreenViewOptions ) {
+type SelfOptions = {};
+type ButtonsScreenViewOptions = SelfOptions & PickRequired<DemosScreenViewOptions, 'tandem'>;
+
+export default class ButtonsScreenView extends DemosScreenView {
+  constructor( providedOptions: ButtonsScreenViewOptions ) {
     super( [
       { label: 'MomentaryButtons', createNode: demoMomentaryButtons },
       { label: 'PushButtons', createNode: demoPushButtons },
@@ -563,4 +567,3 @@ function demoPushButtons( layoutBounds: Bounds2 ): Node {
 }
 
 sun.register( 'ButtonsScreenView', ButtonsScreenView );
-export default ButtonsScreenView;

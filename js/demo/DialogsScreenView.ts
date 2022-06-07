@@ -13,16 +13,20 @@ import Tandem from '../../../tandem/js/Tandem.js';
 import RectangularPushButton from '../buttons/RectangularPushButton.js';
 import Dialog from '../Dialog.js';
 import sun from '../sun.js';
+import { DemosScreenViewOptions } from './DemosScreenView.js';
+import PickRequired from '../../../phet-core/js/types/PickRequired.js';
 
 // constants
 const BUTTON_FONT = new Font( { size: 20 } );
 
-class DialogsScreenView extends ScreenView {
-  constructor() {
+type SelfOptions = {};
+type DialogsScreenViewOptions = SelfOptions & PickRequired<DemosScreenViewOptions, 'tandem'>;
 
-    super( {
-      tandem: Tandem.OPT_OUT
-    } );
+class DialogsScreenView extends ScreenView {
+
+  constructor( providedOptions: DialogsScreenViewOptions ) {
+
+    super( providedOptions );
 
     // dialog will be created the first time the button is pressed, lazily because Dialog
     // requires sim bounds during Dialog construction

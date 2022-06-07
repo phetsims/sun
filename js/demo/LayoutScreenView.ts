@@ -13,7 +13,7 @@ import dotRandom from '../../../dot/js/dotRandom.js';
 import Vector2 from '../../../dot/js/Vector2.js';
 import Vector2Property from '../../../dot/js/Vector2Property.js';
 import { Shape } from '../../../kite/js/imports.js';
-import { combineOptions } from '../../../phet-core/js/optionize.js';
+import optionize, { combineOptions } from '../../../phet-core/js/optionize.js';
 import Constructor from '../../../phet-core/js/types/Constructor.js';
 import PhetFont from '../../../scenery-phet/js/PhetFont.js';
 import { AlignBox, Circle, Color, FlowBox, FlowCell, FlowConstraint, GridBackgroundNode, GridBox, IPaint, ManualConstraint, Node, Path, Rectangle, RectangleOptions, Text, TextOptions, VDivider } from '../../../scenery/js/imports.js';
@@ -24,14 +24,17 @@ import sun from '../sun.js';
 import sunQueryParameters from '../sunQueryParameters.js';
 import DemosScreenView, { DemosScreenViewOptions } from './DemosScreenView.js';
 import RectangularPushButton from '../buttons/RectangularPushButton.js';
+import PickRequired from '../../../phet-core/js/types/PickRequired.js';
 
-class LayoutScreenView extends DemosScreenView {
+type SelfOptions = {};
+type LayoutScreenViewOptions = SelfOptions & PickRequired<DemosScreenViewOptions, 'tandem'>;
 
-  constructor( providedOptions: DemosScreenViewOptions ) {
+export default class LayoutScreenView extends DemosScreenView {
 
-    const options = combineOptions<DemosScreenViewOptions>( {
-      selectedDemoLabel: sunQueryParameters.layout,
-      tandem: Tandem.REQUIRED
+  constructor( providedOptions: LayoutScreenViewOptions ) {
+
+    const options = optionize<LayoutScreenViewOptions, SelfOptions, DemosScreenViewOptions>()( {
+      selectedDemoLabel: sunQueryParameters.layout
     }, providedOptions );
 
     super( [
@@ -590,4 +593,3 @@ function demoTest( layoutBounds: Bounds2 ): Node {
 }
 
 sun.register( 'LayoutScreenView', LayoutScreenView );
-export default LayoutScreenView;
