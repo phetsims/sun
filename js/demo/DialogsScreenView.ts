@@ -44,7 +44,7 @@ class DialogsScreenView extends ScreenView {
   }
 }
 
-function createDialog( modal: boolean ): Dialog {
+function createDialog( isModal: boolean ): Dialog {
 
   const resizeButton = new RectangularPushButton( {
     content: new Text( 'Resize', { font: new Font( { size: 18 } ) } )
@@ -67,8 +67,7 @@ function createDialog( modal: boolean ): Dialog {
 
   return new Dialog( contentNode, {
     titleAlign: 'center',
-    modal: modal,
-    hasCloseButton: !modal,
+    isModal: isModal,
     title: new Text( 'Title', { font: new Font( { size: 32 } ) } )
   } );
 }
