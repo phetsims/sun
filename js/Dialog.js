@@ -30,7 +30,7 @@ import Popupable from './Popupable.js';
 import sun from './sun.js';
 import sunStrings from './sunStrings.js';
 
-class Dialog extends Popupable( Panel ) {
+class Dialog extends Popupable( Panel, 1 ) {
 
   /**
    * @param {Node} content - The content to display inside the dialog (not including the title)
