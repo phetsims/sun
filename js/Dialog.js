@@ -1,5 +1,6 @@
 // Copyright 2018-2022, University of Colorado Boulder
 
+// @ts-nocheck
 /**
  * General dialog type. Migrated from Joist on 4/10/2018
  *
