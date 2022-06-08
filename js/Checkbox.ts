@@ -10,7 +10,7 @@ import PhetioAction from '../../tandem/js/PhetioAction.js';
 import validate from '../../axon/js/validate.js';
 import Matrix3 from '../../dot/js/Matrix3.js';
 import InstanceRegistry from '../../phet-core/js/documentation/InstanceRegistry.js';
-import { FireListener, IPaint, isWidthSizable, LayoutConstraint, Node, Path, Rectangle, SceneryConstants, Voicing, VoicingOptions, WidthSizable } from '../../scenery/js/imports.js';
+import { FireListener, IPaint, isWidthSizable, LayoutConstraint, Node, Path, Rectangle, SceneryConstants, Voicing, VoicingOptions, WidthSizable, WidthSizableOptions } from '../../scenery/js/imports.js';
 import checkEmptySolidShape from '../../sherpa/js/fontawesome-4/checkEmptySolidShape.js';
 import checkSquareOSolidShape from '../../sherpa/js/fontawesome-4/checkSquareOSolidShape.js';
 import checkboxCheckedSoundPlayer from '../../tambo/js/shared-sound-players/checkboxCheckedSoundPlayer.js';
@@ -57,7 +57,9 @@ type SelfOptions = {
   phetioLinkProperty?: boolean;
 };
 
-export type CheckboxOptions = SelfOptions & StrictOmit<VoicingOptions, 'children' | 'mouseArea' | 'touchArea'>;
+type SuperOptions = VoicingOptions & WidthSizableOptions;
+
+export type CheckboxOptions = SelfOptions & StrictOmit<SuperOptions, 'children' | 'mouseArea' | 'touchArea'>;
 
 export default class Checkbox extends WidthSizable( Voicing( Node, 0 ) ) {
 
@@ -67,16 +69,17 @@ export default class Checkbox extends WidthSizable( Voicing( Node, 0 ) ) {
   private readonly disposeCheckbox: () => void;
 
   // We need to record if the mouse/touch areas are customized, so that we can avoid overwriting them.
-  isMouseAreaCustomized = false;
-  isTouchAreaCustomized = false;
-  isSettingAreas = false;
+  // For use by CheckboxConstraint only
+  _isMouseAreaCustomized = false;
+  _isTouchAreaCustomized = false;
+  _isSettingAreas = false;
 
   // Handles layout of the content, rectangles and mouse/touch areas
   private readonly constraint: CheckboxConstraint;
 
   constructor( content: Node, property: IProperty<boolean>, providedOptions?: CheckboxOptions ) {
 
-    const options = optionize<CheckboxOptions, SelfOptions, VoicingOptions>()( {
+    const options = optionize<CheckboxOptions, SelfOptions, SuperOptions>()( {
 
       // CheckboxOptions
       spacing: 5,
@@ -253,15 +256,15 @@ export default class Checkbox extends WidthSizable( Voicing( Node, 0 ) ) {
   public getCheckboxColor(): IPaint { return this.checkedNode.fill; }
 
   override setMouseArea( area: Shape | Bounds2 | null ): this {
-    if ( !this.isSettingAreas ) {
-      this.isMouseAreaCustomized = true;
+    if ( !this._isSettingAreas ) {
+      this._isMouseAreaCustomized = true;
     }
     return super.setMouseArea( area );
   }
 
   override setTouchArea( area: Shape | Bounds2 | null ): this {
-    if ( !this.isSettingAreas ) {
-      this.isTouchAreaCustomized = true;
+    if ( !this._isSettingAreas ) {
+      this._isTouchAreaCustomized = true;
     }
     return super.setTouchArea( area );
   }
@@ -320,14 +323,14 @@ class CheckboxConstraint extends LayoutConstraint {
     );
 
     // Update pointer areas (if the client hasn't customized them)
-    this.checkbox.isSettingAreas = true;
-    if ( !this.checkbox.isTouchAreaCustomized ) {
+    this.checkbox._isSettingAreas = true;
+    if ( !this.checkbox._isTouchAreaCustomized ) {
       this.checkbox.touchArea = this.checkbox.localBounds.dilatedXY( this.options.touchAreaXDilation, this.options.touchAreaYDilation );
     }
-    if ( !this.checkbox.isMouseAreaCustomized ) {
+    if ( !this.checkbox._isMouseAreaCustomized ) {
       this.checkbox.mouseArea = this.checkbox.localBounds.dilatedXY( this.options.mouseAreaXDilation, this.options.mouseAreaYDilation );
     }
-    this.checkbox.isSettingAreas = false;
+    this.checkbox._isSettingAreas = false;
 
     contentProxy.dispose();
 
