@@ -48,9 +48,11 @@ const AccessibleSlider = <SuperType extends Constructor>( Type: SuperType, optio
   // mixins/traits work. If you do that, you get an error in which anonymous classes cannot have private or protected
   // members. See https://github.com/phetsims/scenery/issues/1340#issuecomment-1020692592
   return class extends AccessibleValueHandler( Type, optionsArgPosition ) {
-    _disposeAccessibleSlider: () => void;
 
-    constructor( ...args: IntentionalAny[] ) {
+    /* private */
+    public _disposeAccessibleSlider: () => void;
+
+    public constructor( ...args: IntentionalAny[] ) {
 
       const providedOptions = args[ optionsArgPosition ] as AccessibleSliderOptions;
 

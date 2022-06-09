@@ -25,7 +25,7 @@ type SliderThumbOptions = SelfOptions & StrictOmit<RectangleOptions, 'cachedPain
 
 export default class SliderThumb extends Rectangle {
 
-  constructor( providedOptions: SliderThumbOptions ) {
+  public constructor( providedOptions: SliderThumbOptions ) {
 
     const options = optionize<SliderThumbOptions, SelfOptions, RectangleOptions>()( {
 

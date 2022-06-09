@@ -31,7 +31,7 @@ type LayoutScreenViewOptions = SelfOptions & PickRequired<DemosScreenViewOptions
 
 export default class LayoutScreenView extends DemosScreenView {
 
-  constructor( providedOptions: LayoutScreenViewOptions ) {
+  public constructor( providedOptions: LayoutScreenViewOptions ) {
 
     const options = optionize<LayoutScreenViewOptions, SelfOptions, DemosScreenViewOptions>()( {
       selectedDemoLabel: sunQueryParameters.layout

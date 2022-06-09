@@ -49,7 +49,7 @@ export type CarouselButtonOptions = SelfOptions & RectangularPushButtonOptions;
 
 export default class CarouselButton extends RectangularPushButton {
 
-  constructor( providedOptions?: RectangularPushButtonOptions ) {
+  public constructor( providedOptions?: RectangularPushButtonOptions ) {
 
     // see supertype for additional options
     const options = optionize<CarouselButtonOptions, SelfOptions, RectangularPushButtonOptions>()( {

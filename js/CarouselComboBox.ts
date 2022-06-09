@@ -55,7 +55,7 @@ export default class CarouselComboBox<T> extends WidthSizable( Node ) {
    * @param comboBoxItems - the items that appear in the carousel
    * @param providedOptions
    */
-  constructor( property: IProperty<T>, comboBoxItems: ComboBoxItem<T>[], providedOptions?: CarouselComboBoxOptions ) {
+  public constructor( property: IProperty<T>, comboBoxItems: ComboBoxItem<T>[], providedOptions?: CarouselComboBoxOptions ) {
 
     const options = optionize<CarouselComboBoxOptions, SelfOptions, SuperOptions>()( {
 
@@ -244,7 +244,7 @@ class CarouselItemNode<T> extends Node {
 
   private readonly disposeCarouselItemNode: () => void;
 
-  constructor( property: IProperty<T>, comboBoxItem: ComboBoxItem<T>, alignGroup: AlignGroup, providedOptions?: CarouselItemNodeOptions ) {
+  public constructor( property: IProperty<T>, comboBoxItem: ComboBoxItem<T>, alignGroup: AlignGroup, providedOptions?: CarouselItemNodeOptions ) {
 
     const options = optionize<CarouselItemNodeOptions, CarouselItemNodeSelfOptions, NodeOptions>()( {
 

@@ -43,7 +43,7 @@ export default class ComboBoxListItemNode<T> extends Voicing( Node, 0 ) {
 
   public readonly item: ComboBoxItem<T>;
 
-  constructor( item: ComboBoxItem<T>, highlightWidth: number, highlightHeight: number, providedOptions?: ComboBoxListItemNodeOptions ) {
+  public constructor( item: ComboBoxItem<T>, highlightWidth: number, highlightHeight: number, providedOptions?: ComboBoxListItemNodeOptions ) {
 
     assert && assert( item instanceof ComboBoxItem );
 

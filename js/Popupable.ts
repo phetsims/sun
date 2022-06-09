@@ -52,13 +52,16 @@ const Popupable = <SuperType extends Constructor>( type: SuperType, optionsArgPo
     public readonly layoutBounds: Bounds2 | null;
 
     // Should be private, but can't be because of mixins
-    readonly _focusOnShowNode: Node | null;
-    readonly _focusOnHideNode: Node | null;
+    /* private */
+    public readonly _focusOnShowNode: Node | null;
+    /* private */
+    public readonly _focusOnHideNode: Node | null;
 
     // Should be private, but can't be because of mixins - The Node to return focus to after the Popupable has been
     // hidden. A reference to this Node is saved when the Popupable is shown. By default focus is returned to Node that
     // has focus when the Popupable is open but can be overridden with focusOnHideNode.
-    _nodeToFocusOnHide: Node | null;
+    /* private */
+    public _nodeToFocusOnHide: Node | null;
 
     // The node provided to showPopup, with the transform applied
     public readonly popupParent: Node;
@@ -68,7 +71,7 @@ const Popupable = <SuperType extends Constructor>( type: SuperType, optionsArgPo
 
     // Support the same signature as the type we mix into.  However, we also have our own options, which we assume
     // are passed in the last arg.
-    constructor( ...args: any[] ) {
+    public constructor( ...args: any[] ) {
       super( ...args );
 
       const providedOptions = ( args[ optionsArgPosition ] || {} ) as PopupableOptions;
@@ -175,11 +178,11 @@ type PopupableParentNodeOptions = PopupableParentNodeSelfOptions & NodeOptions;
 
 class PopupParentNode extends Node {
 
-  show: PopupableParentNodeSelfOptions[ 'show' ];
-  hide: PopupableParentNodeSelfOptions[ 'hide' ];
-  layout: PopupableParentNodeSelfOptions[ 'layout' ];
+  public readonly show: PopupableParentNodeSelfOptions[ 'show' ];
+  public readonly hide: PopupableParentNodeSelfOptions[ 'hide' ];
+  public readonly layout: PopupableParentNodeSelfOptions[ 'layout' ];
 
-  constructor( popupableNode: Node, providedOptions: PopupableParentNodeOptions ) {
+  public constructor( popupableNode: Node, providedOptions: PopupableParentNodeOptions ) {
 
     const options = optionize<PopupableParentNodeOptions, PopupableParentNodeSelfOptions, NodeOptions>()( {
       children: [ popupableNode ]

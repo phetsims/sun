@@ -12,18 +12,18 @@ import sun from '../sun.js';
 export default class RadioButtonInteractionState extends EnumerationValue {
 
   // the button is selected
-  static SELECTED = new RadioButtonInteractionState();
+  public static SELECTED = new RadioButtonInteractionState();
 
   // the button is deselected
-  static DESELECTED = new RadioButtonInteractionState();
+  public static DESELECTED = new RadioButtonInteractionState();
 
   // a pointer is over the button, but it is not being pressed and is not selected
-  static OVER = new RadioButtonInteractionState();
+  public static OVER = new RadioButtonInteractionState();
 
   // the button is being pressed by the user
-  static PRESSED = new RadioButtonInteractionState();
+  public static PRESSED = new RadioButtonInteractionState();
 
-  static enumeration = new Enumeration( RadioButtonInteractionState );
+  public static enumeration = new Enumeration( RadioButtonInteractionState );
 }
 
 sun.register( 'RadioButtonInteractionState', RadioButtonInteractionState );

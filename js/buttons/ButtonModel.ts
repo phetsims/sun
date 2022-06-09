@@ -79,7 +79,7 @@ export default class ButtonModel extends EnabledComponent {
 
   private readonly disposeButtonModel: () => void;
 
-  constructor( providedOptions?: ButtonModelOptions ) {
+  public constructor( providedOptions?: ButtonModelOptions ) {
 
     const options = optionize<ButtonModelOptions, SelfOptions, EnabledComponentOptions>()( {
       startCallback: _.noop,

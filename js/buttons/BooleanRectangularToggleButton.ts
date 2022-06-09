@@ -27,8 +27,8 @@ export default class BooleanRectangularToggleButton extends RectangularToggleBut
    * @param booleanProperty
    * @param providedOptions
    */
-  constructor( trueNode: Node, falseNode: Node, booleanProperty: IProperty<boolean>,
-               providedOptions?: BooleanRectangularToggleButtonOptions ) {
+  public constructor( trueNode: Node, falseNode: Node, booleanProperty: IProperty<boolean>,
+                      providedOptions?: BooleanRectangularToggleButtonOptions ) {
 
     const content = new BooleanToggleNode( trueNode, falseNode, booleanProperty );
 

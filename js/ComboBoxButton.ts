@@ -64,7 +64,7 @@ export default class ComboBoxButton<T> extends RectangularPushButton {
   private arrow: Path;
   private vSeparator: VSeparator;
 
-  constructor( property: IProperty<T>, items: ComboBoxItem<T>[], providedOptions?: ComboBoxButtonOptions ) {
+  public constructor( property: IProperty<T>, items: ComboBoxItem<T>[], providedOptions?: ComboBoxButtonOptions ) {
 
     const options = optionize<ComboBoxButtonOptions, SelfOptions, RectangularPushButtonOptions>()( {
 

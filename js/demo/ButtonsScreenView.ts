@@ -38,7 +38,7 @@ type SelfOptions = {};
 type ButtonsScreenViewOptions = SelfOptions & PickRequired<DemosScreenViewOptions, 'tandem'>;
 
 export default class ButtonsScreenView extends DemosScreenView {
-  constructor( providedOptions: ButtonsScreenViewOptions ) {
+  public constructor( providedOptions: ButtonsScreenViewOptions ) {
     super( [
       { label: 'MomentaryButtons', createNode: demoMomentaryButtons },
       { label: 'PushButtons', createNode: demoPushButtons },

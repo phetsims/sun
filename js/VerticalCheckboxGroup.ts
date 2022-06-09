@@ -33,7 +33,7 @@ export type VerticalCheckboxGroupOptions = SelfOptions & StrictOmit<VBoxOptions,
 
 export default class VerticalCheckboxGroup extends VBox {
 
-  constructor( items: VerticalCheckboxGroupItem[], providedOptions?: VerticalCheckboxGroupOptions ) {
+  public constructor( items: VerticalCheckboxGroupItem[], providedOptions?: VerticalCheckboxGroupOptions ) {
 
     const options = optionize<VerticalCheckboxGroupOptions, SelfOptions, VBoxOptions>()( {
 

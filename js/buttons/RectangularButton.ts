@@ -1,7 +1,7 @@
 // Copyright 2014-2022, University of Colorado Boulder
 
 /**
- * Visual representation of a rectangular button.
+ * RectangularButton is the base class for rectangular buttons.
  *
  * @author John Blanco (PhET Interactive Simulations)
  * @author Sam Reid (PhET Interactive Simulations)
@@ -78,8 +78,8 @@ export default class RectangularButton extends ButtonNode {
    * @param interactionStateProperty - a Property that is used to drive the visual appearance of the button
    * @param providedOptions
    */
-  constructor( buttonModel: ButtonModel, interactionStateProperty: IReadOnlyProperty<ButtonInteractionState>,
-               providedOptions?: RectangularButtonOptions ) {
+  protected constructor( buttonModel: ButtonModel, interactionStateProperty: IReadOnlyProperty<ButtonInteractionState>,
+                         providedOptions?: RectangularButtonOptions ) {
 
     const options = optionize<RectangularButtonOptions, SelfOptions, ButtonNodeOptions>()( {
       size: null,
@@ -220,10 +220,10 @@ class ThreeDAppearanceStrategy {
    * @param baseColorProperty
    * @param [options]
    */
-  constructor( buttonBackground: Path,
-               interactionStateProperty: IReadOnlyProperty<ButtonInteractionState | RadioButtonInteractionState>,
-               baseColorProperty: IReadOnlyProperty<Color>,
-               options?: any ) {
+  public constructor( buttonBackground: Path,
+                      interactionStateProperty: IReadOnlyProperty<ButtonInteractionState | RadioButtonInteractionState>,
+                      baseColorProperty: IReadOnlyProperty<Color>,
+                      options?: any ) {
 
     // Dynamic colors
     const baseBrighter7Property = new PaintColorProperty( baseColorProperty, { luminanceFactor: 0.7 } );

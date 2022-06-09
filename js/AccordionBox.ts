@@ -115,7 +115,7 @@ export default class AccordionBox extends Node {
   private readonly expandedBoxOutline?: Rectangle;
   private readonly collapsedBoxOutline?: Rectangle;
 
-  static AccordionBoxIO: IOType;
+  public static AccordionBoxIO: IOType;
 
   /**
    * @param contentNode - Content that  will be shown or hidden as the accordion box is expanded/collapsed. NOTE: AccordionBox
@@ -124,7 +124,7 @@ export default class AccordionBox extends Node {
    *                             specific to this class while some are passed to the superclass.  See the code where
    *                             the options are set in the early portion of the constructor for details.
    */
-  constructor( contentNode: Node, providedOptions?: AccordionBoxOptions ) {
+  public constructor( contentNode: Node, providedOptions?: AccordionBoxOptions ) {
 
     const options = optionize<AccordionBoxOptions, SelfOptions, NodeOptions>()( {
 
@@ -635,12 +635,13 @@ export default class AccordionBox extends Node {
 
   // The definition for how AccordionBox sets its accessibleName in the PDOM. Forward it onto its expandCollapseButton.
   // See AccordionBox.md for further style guide and documentation on the pattern.
-  static ACCORDION_BOX_ACCESSIBLE_NAME_BEHAVIOR: PDOMBehaviorFunction = ( node, options, accessibleName: string, callbacksForOtherNodes ) => {
-    callbacksForOtherNodes.push( () => {
-      ( node as AccordionBox ).expandCollapseButton.accessibleName = accessibleName;
-    } );
-    return options;
-  };
+  public static ACCORDION_BOX_ACCESSIBLE_NAME_BEHAVIOR: PDOMBehaviorFunction =
+    ( node, options, accessibleName: string, callbacksForOtherNodes ) => {
+      callbacksForOtherNodes.push( () => {
+        ( node as AccordionBox ).expandCollapseButton.accessibleName = accessibleName;
+      } );
+      return options;
+    };
 }
 
 class InteractiveHighlightPath extends InteractiveHighlighting( Path, 1 ) {}

@@ -27,7 +27,7 @@ export default class TextPushButton extends RectangularPushButton {
 
   private readonly disposeTextPushButton: () => void;
 
-  constructor( text: string, providedOptions?: TextPushButtonOptions ) {
+  public constructor( text: string, providedOptions?: TextPushButtonOptions ) {
 
     const options = optionize<TextPushButtonOptions, SelfOptions, RectangularPushButtonOptions>()( {
 

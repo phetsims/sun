@@ -159,7 +159,7 @@ export default class Slider extends AccessibleSlider( Node, 0 ) {
   // This is a marker to indicate that we should create the actual default slider sound.
   public static DEFAULT_SOUND = new ValueChangeSoundPlayer( new Range( 0, 1 ) );
 
-  constructor( valueProperty: IProperty<number>, range: Range, providedOptions?: SliderOptions ) {
+  public constructor( valueProperty: IProperty<number>, range: Range, providedOptions?: SliderOptions ) {
 
     // Guard against mutually exclusive options before defaults are filled in.
     assert && assertMutuallyExclusiveOptions( providedOptions, [ 'thumbNode' ], [
@@ -501,13 +501,13 @@ export default class Slider extends AccessibleSlider( Node, 0 ) {
     assert && phet.chipper.queryParameters.binder && InstanceRegistry.registerDataURL( 'sun', 'Slider', this );
   }
 
-  get majorTicksVisible(): boolean { return this.getMajorTicksVisible(); }
+  public get majorTicksVisible(): boolean { return this.getMajorTicksVisible(); }
 
-  set majorTicksVisible( value: boolean ) { this.setMajorTicksVisible( value ); }
+  public set majorTicksVisible( value: boolean ) { this.setMajorTicksVisible( value ); }
 
-  get minorTicksVisible(): boolean { return this.getMinorTicksVisible(); }
+  public get minorTicksVisible(): boolean { return this.getMinorTicksVisible(); }
 
-  set minorTicksVisible( value: boolean ) { this.setMinorTicksVisible( value ); }
+  public set minorTicksVisible( value: boolean ) { this.setMinorTicksVisible( value ); }
 
   public override dispose(): void {
     this.disposeSlider();

@@ -115,8 +115,9 @@ export default class ButtonNode extends Sizable( Voicing( Node, 0 ) ) {
    * @param interactionStateProperty - a Property that is used to drive the visual appearance of the button
    * @param providedOptions - this type does not mutate its options, but relies on the subtype to
    */
-  constructor( buttonModel: ButtonModel, buttonBackground: Path,
-               interactionStateProperty: IReadOnlyProperty<ButtonInteractionState>, providedOptions?: ButtonNodeOptions ) {
+  protected constructor( buttonModel: ButtonModel, buttonBackground: Path,
+                         interactionStateProperty: IReadOnlyProperty<ButtonInteractionState>,
+                         providedOptions?: ButtonNodeOptions ) {
 
     const options = optionize<ButtonNodeOptions, SelfOptions, SuperOptions>()( {
 
@@ -327,9 +328,9 @@ export default class ButtonNode extends Sizable( Voicing( Node, 0 ) ) {
    */
   public setBaseColor( baseColor: IColor ): void { this._settableBaseColorProperty.paint = baseColor; }
 
-  set baseColor( baseColor: IColor ) { this.setBaseColor( baseColor ); }
+  public set baseColor( baseColor: IColor ) { this.setBaseColor( baseColor ); }
 
-  get baseColor(): IColor { return this.getBaseColor(); }
+  public get baseColor(): IColor { return this.getBaseColor(); }
 
   /**
    * Gets the base color for this button.
@@ -369,7 +370,7 @@ export class FlatAppearanceStrategy {
    * @param baseColorProperty
    * @param options
    */
-  constructor( buttonBackground: PaintableNode, interactionStateProperty: IReadOnlyProperty<ButtonInteractionState>, baseColorProperty: IReadOnlyProperty<Color>, options?: any ) {
+  public constructor( buttonBackground: PaintableNode, interactionStateProperty: IReadOnlyProperty<ButtonInteractionState>, baseColorProperty: IReadOnlyProperty<Color>, options?: any ) {
 
     // Dynamic colors
     const baseBrighter4 = new PaintColorProperty( baseColorProperty, { luminanceFactor: 0.4 } );

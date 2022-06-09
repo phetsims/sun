@@ -73,7 +73,7 @@ export default class RectangularRadioButton<T> extends RectangularButton {
    * @param value - value when this radio button is selected
    * @param providedOptions
    */
-  constructor( property: IProperty<T>, value: T, providedOptions?: RectangularRadioButtonOptions ) {
+  public constructor( property: IProperty<T>, value: T, providedOptions?: RectangularRadioButtonOptions ) {
 
     const options = optionize<RectangularRadioButtonOptions, SelfOptions, RectangularButtonOptions>()( {
 
@@ -175,7 +175,7 @@ export default class RectangularRadioButton<T> extends RectangularButton {
     };
   }
 
-  override dispose(): void {
+  public override dispose(): void {
     this.disposeRectangularRadioButton();
     super.dispose();
   }
@@ -194,7 +194,7 @@ export default class RectangularRadioButton<T> extends RectangularButton {
    * FlatAppearanceStrategy is a value for RectangularRadioButton options.buttonAppearanceStrategy. It makes radio buttons
    * that look flat, i.e. no shading or highlighting, but that change color on mouseover, press, selected, etc.
    */
-  static override FlatAppearanceStrategy: TButtonAppearanceStrategy = class FlatAppearanceStrategy {
+  public static override FlatAppearanceStrategy: TButtonAppearanceStrategy = class FlatAppearanceStrategy {
 
     public readonly maxLineWidth: number;
 
@@ -203,8 +203,8 @@ export default class RectangularRadioButton<T> extends RectangularButton {
     /**
      * buttonBackground is the Node for the button's background, sans content
      */
-    constructor( buttonBackground: PaintableNode, interactionStateProperty: IReadOnlyProperty<RadioButtonInteractionState>,
-                 baseColorProperty: IReadOnlyProperty<Color>, options: any ) {
+    public constructor( buttonBackground: PaintableNode, interactionStateProperty: IReadOnlyProperty<RadioButtonInteractionState>,
+                        baseColorProperty: IReadOnlyProperty<Color>, options: any ) {
 
       // Dynamic fills and strokes
       const overFill = new PaintColorProperty( options.overFill || baseColorProperty, {
@@ -282,11 +282,11 @@ export default class RectangularRadioButton<T> extends RectangularButton {
    * ContentAppearanceStrategy is a value for RectangularRadioButton options.contentAppearanceStrategy. It changes
    * their look based on the value of interactionStateProperty.
    */
-  static ContentAppearanceStrategy: TContentAppearanceStrategy = class ContentAppearanceStrategy {
+  public static ContentAppearanceStrategy: TContentAppearanceStrategy = class ContentAppearanceStrategy {
 
     private readonly disposeContentAppearanceStrategy: () => void;
 
-    constructor( content: Node, interactionStateProperty: IReadOnlyProperty<RadioButtonInteractionState>, options: any ) {
+    public constructor( content: Node, interactionStateProperty: IReadOnlyProperty<RadioButtonInteractionState>, options: any ) {
 
       // The button is not the parent of the content, therefore it is necessary to set the opacity on the content separately
       function handleInteractionStateChanged( state: RadioButtonInteractionState ) {

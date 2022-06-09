@@ -27,7 +27,7 @@ export default class MomentaryButtonModel<T> extends ButtonModel {
    * @param valueProperty
    * @param [providedOptions]
    */
-  constructor( valueOff: T, valueOn: T, valueProperty: IProperty<T>, providedOptions?: MomentaryButtonModelOptions ) {
+  public constructor( valueOff: T, valueOn: T, valueProperty: IProperty<T>, providedOptions?: MomentaryButtonModelOptions ) {
 
     const options = optionize<MomentaryButtonModelOptions, SelfOptions, ButtonModelOptions>()( {
 

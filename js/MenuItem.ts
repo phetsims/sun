@@ -70,8 +70,8 @@ export default class MenuItem extends Voicing( Node, 0 ) {
    * @param present - see present field
    * @param [providedOptions]
    */
-  constructor( width: number, height: number, closeCallback: ( event: SceneryEvent ) => void, text: string,
-               callback: ( event: SceneryEvent ) => void, present: boolean, providedOptions?: MenuItemOptions ) {
+  public constructor( width: number, height: number, closeCallback: ( event: SceneryEvent ) => void, text: string,
+                      callback: ( event: SceneryEvent ) => void, present: boolean, providedOptions?: MenuItemOptions ) {
 
     // Extend the object with defaults.
     const options = optionize<MenuItemOptions, SelfOptions, VoicingOptions>()( {

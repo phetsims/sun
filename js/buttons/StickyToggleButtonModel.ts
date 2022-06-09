@@ -39,7 +39,7 @@ export default class StickyToggleButtonModel<T> extends ButtonModel {
    *   Would have preferred to call this `property` but it would clash with the Property function name.
    * @param providedOptions
    */
-  constructor( valueUp: T, valueDown: T, valueProperty: IProperty<T>, providedOptions?: StickyToggleButtonModelOptions ) {
+  public constructor( valueUp: T, valueDown: T, valueProperty: IProperty<T>, providedOptions?: StickyToggleButtonModelOptions ) {
 
     const options = optionize<StickyToggleButtonModelOptions, SelfOptions, ButtonModelOptions>()( {
       tandem: Tandem.REQUIRED

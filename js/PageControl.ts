@@ -46,7 +46,7 @@ export default class PageControl extends Node {
    * @param pageNumberProperty - which page is currently visible
    * @param providedOptions
    */
-  constructor( numberOfPages: number, pageNumberProperty: IProperty<number>, providedOptions: PageControlOptions ) {
+  public constructor( numberOfPages: number, pageNumberProperty: IProperty<number>, providedOptions: PageControlOptions ) {
 
     const options = optionize<PageControlOptions, SelfOptions, NodeOptions>()( {
 
@@ -154,7 +154,7 @@ class DotNode extends Circle {
    * @param radius
    * @param [options]
    */
-  constructor( pageNumber: number, radius: number, options: CircleOptions ) {
+  public constructor( pageNumber: number, radius: number, options: CircleOptions ) {
     super( radius, options );
     this.pageNumber = pageNumber;
   }

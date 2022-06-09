@@ -19,7 +19,7 @@ export default class RadioButtonInteractionStateProperty<T> extends DerivedPrope
    * @param property - the axon Property set by the button
    * @param value - the value set by the button
    */
-  constructor( buttonModel: ButtonModel, property: IProperty<T>, value: T ) {
+  public constructor( buttonModel: ButtonModel, property: IProperty<T>, value: T ) {
     super(
       [ buttonModel.focusedProperty, buttonModel.overProperty, buttonModel.looksOverProperty, buttonModel.looksPressedProperty, property ],
       ( focused, over, looksOver, looksPressed, propertyValue ) => {

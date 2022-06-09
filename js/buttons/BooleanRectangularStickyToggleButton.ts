@@ -19,7 +19,7 @@ type SelfOptions = {};
 export type BooleanRectangularStickyToggleButtonOptions = SelfOptions & RectangularStickyToggleButtonOptions;
 
 export default class BooleanRectangularStickyToggleButton extends RectangularStickyToggleButton<boolean> {
-  constructor( booleanProperty: IProperty<boolean>, providedOptions?: BooleanRectangularStickyToggleButtonOptions ) {
+  public constructor( booleanProperty: IProperty<boolean>, providedOptions?: BooleanRectangularStickyToggleButtonOptions ) {
     super( false, true, booleanProperty, providedOptions );
   }
 }

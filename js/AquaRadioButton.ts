@@ -61,7 +61,7 @@ export default class AquaRadioButton<T> extends Voicing( Node, 0 ) {
    * @param labelNode - Node that will be vertically centered to the right of the button
    * @param providedOptions
    */
-  constructor( property: IProperty<T>, value: T, labelNode: Node, providedOptions?: AquaRadioButtonOptions ) {
+  public constructor( property: IProperty<T>, value: T, labelNode: Node, providedOptions?: AquaRadioButtonOptions ) {
 
     const options = optionize<AquaRadioButtonOptions, SelfOptions, VoicingOptions>()( {
 

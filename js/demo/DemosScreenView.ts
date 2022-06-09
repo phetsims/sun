@@ -48,7 +48,7 @@ export type DemosScreenViewOptions = SelfOptions & ScreenViewOptions;
 
 class DemosScreenView extends ScreenView {
 
-  constructor( demos: SunDemo[], providedOptions?: DemosScreenViewOptions ) {
+  public constructor( demos: SunDemo[], providedOptions?: DemosScreenViewOptions ) {
 
     const options = optionize<DemosScreenViewOptions, SelfOptions, ScreenViewOptions>()( {
 

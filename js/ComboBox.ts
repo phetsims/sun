@@ -155,7 +155,7 @@ export default class ComboBox<T> extends WidthSizable( Node ) {
    * @param listParent node that will be used as the list's parent, use this to ensure that the list is in front of everything else
    * @param [providedOptions]
    */
-  constructor( items: ComboBoxItem<T>[], property: IProperty<T>, listParent: Node, providedOptions?: ComboBoxOptions ) {
+  public constructor( items: ComboBoxItem<T>[], property: IProperty<T>, listParent: Node, providedOptions?: ComboBoxOptions ) {
 
     assert && assert( _.uniqBy( items, ( item: ComboBoxItem<T> ) => item.value ).length === items.length, 'items must have unique values' );
 

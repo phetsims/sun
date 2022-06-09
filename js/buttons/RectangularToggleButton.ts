@@ -38,7 +38,7 @@ export default class RectangularToggleButton<T> extends RectangularButton {
    * @param property - axon Property that can be either valueOff or valueOn
    * @param providedOptions
    */
-  constructor( valueOff: T, valueOn: T, property: IProperty<T>, providedOptions?: RectangularButtonOptions ) {
+  public constructor( valueOff: T, valueOn: T, property: IProperty<T>, providedOptions?: RectangularButtonOptions ) {
 
     const options = optionize<RectangularToggleButtonOptions, SelfOptions, RectangularButtonOptions>()( {
 

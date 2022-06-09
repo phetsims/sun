@@ -42,7 +42,7 @@ export type ArrowButtonOptions = SelfOptions & StrictOmit<RectangularPushButtonO
 
 export default class ArrowButton extends RectangularPushButton {
 
-  constructor( direction: ArrowButtonDirection, callback: () => void, providedOptions?: ArrowButtonOptions ) {
+  public constructor( direction: ArrowButtonDirection, callback: () => void, providedOptions?: ArrowButtonOptions ) {
 
     const options = optionize<ArrowButtonOptions, SelfOptions, RectangularPushButtonOptions>()( {
 

@@ -82,7 +82,7 @@ export default class ToggleSwitch<T> extends Voicing( Node, 0 ) {
    * @param rightValue - value when the switch is in the right position
    * @param providedOptions
    */
-  constructor( property: IProperty<T>, leftValue: T, rightValue: T, providedOptions?: ToggleSwitchOptions ) {
+  public constructor( property: IProperty<T>, leftValue: T, rightValue: T, providedOptions?: ToggleSwitchOptions ) {
 
     const options = optionize<ToggleSwitchOptions, SelfOptions, VoicingOptions>()( {
 

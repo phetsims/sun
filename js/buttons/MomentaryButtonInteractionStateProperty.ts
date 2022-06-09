@@ -12,7 +12,7 @@ import ButtonInteractionState from './ButtonInteractionState.js';
 import MomentaryButtonModel from './MomentaryButtonModel.js';
 
 export default class MomentaryButtonInteractionStateProperty<T> extends DerivedProperty2<ButtonInteractionState, boolean, boolean> {
-  constructor( buttonModel: MomentaryButtonModel<T> ) {
+  public constructor( buttonModel: MomentaryButtonModel<T> ) {
     super(
       [ buttonModel.looksOverProperty, buttonModel.looksPressedProperty ],
       ( looksOver, looksPressed ) => {

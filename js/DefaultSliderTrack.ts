@@ -35,7 +35,7 @@ export default class DefaultSliderTrack extends SliderTrack {
   private readonly enabledTrack: Rectangle;
   private readonly disposeDefaultSliderTrack: () => void;
 
-  constructor( valueProperty: IProperty<number>, range: Range, providedOptions?: DefaultSliderTrackOptions ) {
+  public constructor( valueProperty: IProperty<number>, range: Range, providedOptions?: DefaultSliderTrackOptions ) {
 
     const options = optionize<DefaultSliderTrackOptions, SelfOptions, SliderTrackOptions>()( {
       fillEnabled: 'white',

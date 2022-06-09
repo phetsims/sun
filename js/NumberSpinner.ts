@@ -75,7 +75,7 @@ export default class NumberSpinner extends AccessibleNumberSpinner( Node, 0 ) {
    * @param [providedOptions]
    * @mixes AccessibleNumberSpinner
    */
-  constructor( numberProperty: IProperty<number>, rangeProperty: IProperty<Range>, providedOptions?: NumberSpinnerOptions ) {
+  public constructor( numberProperty: IProperty<number>, rangeProperty: IProperty<Range>, providedOptions?: NumberSpinnerOptions ) {
 
     assert && assert( rangeProperty.value.contains( numberProperty.get() ),
       `value ${numberProperty.get()} is out of range ${rangeProperty.value.toString()}` );

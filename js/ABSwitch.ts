@@ -53,7 +53,7 @@ export default class ABSwitch<T> extends Node {
    * @param labelB - label for choice 'B'
    * @param providedOptions
    */
-  constructor( property: IProperty<T>, valueA: T, labelA: Node, valueB: T, labelB: Node, providedOptions?: ABSwitchOptions ) {
+  public constructor( property: IProperty<T>, valueA: T, labelA: Node, valueB: T, labelB: Node, providedOptions?: ABSwitchOptions ) {
 
     // PhET-iO requirements
     assert && assert( labelA.tandem, 'labelA must have a tandem' );

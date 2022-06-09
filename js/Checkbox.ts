@@ -69,15 +69,15 @@ export default class Checkbox extends WidthSizable( Voicing( Node, 0 ) ) {
   private readonly disposeCheckbox: () => void;
 
   // We need to record if the mouse/touch areas are customized, so that we can avoid overwriting them.
-  // For use by CheckboxConstraint only
-  _isMouseAreaCustomized = false;
-  _isTouchAreaCustomized = false;
-  _isSettingAreas = false;
+  // public for use by CheckboxConstraint only!
+  public _isMouseAreaCustomized = false;
+  public _isTouchAreaCustomized = false;
+  public _isSettingAreas = false;
 
   // Handles layout of the content, rectangles and mouse/touch areas
   private readonly constraint: CheckboxConstraint;
 
-  constructor( content: Node, property: IProperty<boolean>, providedOptions?: CheckboxOptions ) {
+  public constructor( content: Node, property: IProperty<boolean>, providedOptions?: CheckboxOptions ) {
 
     const options = optionize<CheckboxOptions, SelfOptions, SuperOptions>()( {
 
@@ -255,14 +255,14 @@ export default class Checkbox extends WidthSizable( Voicing( Node, 0 ) ) {
    */
   public getCheckboxColor(): IPaint { return this.checkedNode.fill; }
 
-  override setMouseArea( area: Shape | Bounds2 | null ): this {
+  public override setMouseArea( area: Shape | Bounds2 | null ): this {
     if ( !this._isSettingAreas ) {
       this._isMouseAreaCustomized = true;
     }
     return super.setMouseArea( area );
   }
 
-  override setTouchArea( area: Shape | Bounds2 | null ): this {
+  public override setTouchArea( area: Shape | Bounds2 | null ): this {
     if ( !this._isSettingAreas ) {
       this._isTouchAreaCustomized = true;
     }
@@ -278,7 +278,7 @@ class CheckboxConstraint extends LayoutConstraint {
   private readonly rectangle: Rectangle;
   private readonly options: Required<SelfOptions>;
 
-  constructor( checkbox: Checkbox, checkboxNode: Node, checkedNode: Node, content: Node, rectangle: Rectangle, options: Required<SelfOptions> ) {
+  public constructor( checkbox: Checkbox, checkboxNode: Node, checkedNode: Node, content: Node, rectangle: Rectangle, options: Required<SelfOptions> ) {
     super( checkbox );
 
     this.checkbox = checkbox;

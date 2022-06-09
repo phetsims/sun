@@ -32,7 +32,7 @@ export default class ToggleNode<T> extends Node {
 
   private readonly disposeToggleNode: () => void;
 
-  constructor( valueProperty: IReadOnlyProperty<T>, elements: ToggleNodeElement<T>[], providedOptions?: ToggleNodeOptions ) {
+  public constructor( valueProperty: IReadOnlyProperty<T>, elements: ToggleNodeElement<T>[], providedOptions?: ToggleNodeOptions ) {
 
     assert && assert( Array.isArray( elements ), 'elements should be an array' );
     if ( assert ) {

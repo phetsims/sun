@@ -33,7 +33,7 @@ export default class ClosestDragListener {
 
   private readonly items: DraggableItem[];
 
-  constructor( touchThreshold: number, mouseThreshold: number ) {
+  public constructor( touchThreshold: number, mouseThreshold: number ) {
     this.touchThreshold = touchThreshold;
     this.mouseThreshold = mouseThreshold;
     this.items = [];

@@ -48,7 +48,7 @@ type ButtonsScreenViewOptions = SelfOptions & PickRequired<DemosScreenViewOption
 
 export default class ComponentsScreenView extends DemosScreenView {
 
-  constructor( providedOptions: ButtonsScreenViewOptions ) {
+  public constructor( providedOptions: ButtonsScreenViewOptions ) {
 
     const options = optionize<ButtonsScreenViewOptions, SelfOptions, DemosScreenViewOptions>()( {
       selectedDemoLabel: sunQueryParameters.component

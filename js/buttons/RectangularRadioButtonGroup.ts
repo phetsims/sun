@@ -116,7 +116,7 @@ export default class RectangularRadioButtonGroup<T> extends FlowBox {
 
   private readonly disposeRadioButtonGroup: () => void;
 
-  constructor( property: IProperty<T>, items: RectangularRadioButtonItem<T>[], providedOptions?: RectangularRadioButtonGroupOptions ) {
+  public constructor( property: IProperty<T>, items: RectangularRadioButtonItem<T>[], providedOptions?: RectangularRadioButtonGroupOptions ) {
 
     // These options are passed to each RectangularRadioButton created in this group.
     const defaultOptions = {
@@ -410,7 +410,7 @@ export default class RectangularRadioButtonGroup<T> extends FlowBox {
     assert && phet.chipper.queryParameters.binder && InstanceRegistry.registerDataURL( 'sun', 'RectangularRadioButtonGroup', this );
   }
 
-  override dispose(): void {
+  public override dispose(): void {
     this.disposeRadioButtonGroup();
     super.dispose();
   }
@@ -422,14 +422,14 @@ export default class RectangularRadioButtonGroup<T> extends FlowBox {
  * its graphical label (if there is one).
  */
 class ButtonWithLayoutNode<T> {
-  radioButton: RectangularRadioButton<T>;
-  layoutNode: Node;
+  public readonly radioButton: RectangularRadioButton<T>;
+  public readonly layoutNode: Node;
 
   /**
    * @param radioButton
    * @param layoutNode - May be the same Node as the radioButton if no layout manager is needed
    */
-  constructor( radioButton: RectangularRadioButton<T>, layoutNode: Node ) {
+  public constructor( radioButton: RectangularRadioButton<T>, layoutNode: Node ) {
     this.radioButton = radioButton;
     this.layoutNode = layoutNode;
   }

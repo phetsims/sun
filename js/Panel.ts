@@ -78,7 +78,7 @@ export default class Panel extends Sizable( Node ) {
 
   public static override DEFAULT_OPTIONS = DEFAULT_OPTIONS;
 
-  constructor( content: Node, providedOptions?: PanelOptions ) {
+  public constructor( content: Node, providedOptions?: PanelOptions ) {
 
     const options = optionize3<PanelOptions, SelfOptions, SuperOptions>()( {}, DEFAULT_OPTIONS, providedOptions );
 
@@ -173,7 +173,7 @@ class PanelConstraint extends LayoutConstraint {
   private readonly lineWidth: number;
   private readonly align: PanelAlign;
 
-  constructor( panel: Panel, options: Required<SelfOptions> ) {
+  public constructor( panel: Panel, options: Required<SelfOptions> ) {
     super( panel );
 
     this.panel = panel;

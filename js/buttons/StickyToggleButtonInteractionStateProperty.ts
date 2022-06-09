@@ -12,7 +12,7 @@ import ButtonInteractionState from './ButtonInteractionState.js';
 import StickyToggleButtonModel from './StickyToggleButtonModel.js';
 
 export default class StickyToggleButtonInteractionStateProperty<T> extends DerivedProperty5<ButtonInteractionState, boolean, boolean, boolean, boolean, T> {
-  constructor( buttonModel: StickyToggleButtonModel<T> ) {
+  public constructor( buttonModel: StickyToggleButtonModel<T> ) {
     super(
       [ buttonModel.focusedProperty, buttonModel.overProperty, buttonModel.looksOverProperty,
         buttonModel.looksPressedProperty, buttonModel.valueProperty ],

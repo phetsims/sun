@@ -24,7 +24,7 @@ type DialogsScreenViewOptions = SelfOptions & PickRequired<DemosScreenViewOption
 
 class DialogsScreenView extends ScreenView {
 
-  constructor( providedOptions: DialogsScreenViewOptions ) {
+  public constructor( providedOptions: DialogsScreenViewOptions ) {
 
     super( providedOptions );
 

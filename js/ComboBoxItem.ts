@@ -33,7 +33,7 @@ export default class ComboBoxItem<T> {
   public readonly tandemName: string | null;
   public readonly a11yLabel: string | null;
 
-  constructor( node: Node, value: T, providedOptions?: ComboBoxItemOptions ) {
+  public constructor( node: Node, value: T, providedOptions?: ComboBoxItemOptions ) {
 
     assert && assert( !node.hasPDOMContent, 'pdomContent is set by ComboBox, use options.a11yLabel' );
 

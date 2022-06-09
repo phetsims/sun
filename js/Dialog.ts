@@ -150,7 +150,7 @@ export default class Dialog extends Popupable( Panel, 1 ) {
    * @param content - The content to display inside the dialog (not including the title)
    * @param providedOptions
    */
-  constructor( content: Node, providedOptions?: DialogOptions ) {
+  public constructor( content: Node, providedOptions?: DialogOptions ) {
 
     const options = optionize<DialogOptions, SelfOptions, ParentOptions>()( {
 

@@ -12,7 +12,7 @@ import ButtonInteractionState from './ButtonInteractionState.js';
 import ToggleButtonModel from './ToggleButtonModel.js';
 
 export default class ToggleButtonInteractionStateProperty<T> extends DerivedProperty2<ButtonInteractionState, boolean, boolean> {
-  constructor( toggleButtonModel: ToggleButtonModel<T> ) {
+  public constructor( toggleButtonModel: ToggleButtonModel<T> ) {
     super(
       [ toggleButtonModel.looksOverProperty, toggleButtonModel.looksPressedProperty ],
       ( looksOver, looksPressed ) => {

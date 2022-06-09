@@ -52,7 +52,7 @@ export default class ComboBoxListBox<T> extends Panel {
    * @param tandem
    * @param providedOptions
    */
-  constructor( property: IProperty<T>, items: ComboBoxItem<T>[], hideListBoxCallback: () => void, focusButtonCallback: () => void, tandem: Tandem, providedOptions?: ComboBoxListBoxOptions ) {
+  public constructor( property: IProperty<T>, items: ComboBoxItem<T>[], hideListBoxCallback: () => void, focusButtonCallback: () => void, tandem: Tandem, providedOptions?: ComboBoxListBoxOptions ) {
 
     const options = optionize<ComboBoxListBoxOptions, SelfOptions, PanelOptions>()( {
       highlightFill: 'rgb( 245, 245, 245 )',

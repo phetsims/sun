@@ -40,7 +40,7 @@ simLauncher.launch( () => {
 } );
 
 class ButtonScreen extends Screen<typeof MODEL, ButtonsScreenView> {
-  constructor( tandem: Tandem ) {
+  public constructor( tandem: Tandem ) {
     super(
       () => MODEL,
       () => new ButtonsScreenView( { tandem: tandem.createTandem( 'view' ) } ),
@@ -55,7 +55,7 @@ class ButtonScreen extends Screen<typeof MODEL, ButtonsScreenView> {
 }
 
 class ComponentsScreen extends Screen<typeof MODEL, ComponentsScreenView> {
-  constructor( tandem: Tandem ) {
+  public constructor( tandem: Tandem ) {
     super(
       () => MODEL,
       () => new ComponentsScreenView( { tandem: tandem.createTandem( 'view' ) } ),
@@ -70,7 +70,7 @@ class ComponentsScreen extends Screen<typeof MODEL, ComponentsScreenView> {
 }
 
 class DialogsScreen extends Screen<typeof MODEL, DialogsScreenView> {
-  constructor( tandem: Tandem ) {
+  public constructor( tandem: Tandem ) {
     super(
       () => MODEL,
       () => new DialogsScreenView( { tandem: tandem.createTandem( 'view' ) } ),
@@ -85,7 +85,7 @@ class DialogsScreen extends Screen<typeof MODEL, DialogsScreenView> {
 }
 
 class LayoutScreen extends Screen<typeof MODEL, DialogsScreenView> {
-  constructor( tandem: Tandem ) {
+  public constructor( tandem: Tandem ) {
     super(
       () => MODEL,
       () => new LayoutScreenView( { tandem: tandem.createTandem( 'view' ) } ),

@@ -44,9 +44,9 @@ export default class RoundButton extends ButtonNode {
 
   public static ThreeDAppearanceStrategy: typeof ThreeDAppearanceStrategy;
 
-  constructor( buttonModel: ButtonModel,
-               interactionStateProperty: IReadOnlyProperty<ButtonInteractionState>,
-               providedOptions?: RoundButtonOptions ) {
+  protected constructor( buttonModel: ButtonModel,
+                         interactionStateProperty: IReadOnlyProperty<ButtonInteractionState>,
+                         providedOptions?: RoundButtonOptions ) {
 
     const options = optionize<RoundButtonOptions, SelfOptions, ButtonNodeOptions>()( {
 
@@ -141,10 +141,10 @@ export class ThreeDAppearanceStrategy {
    * @param baseColorProperty
    * @param options
    */
-  constructor( buttonBackground: PaintableNode,
-               interactionStateProperty: IReadOnlyProperty<ButtonInteractionState | RadioButtonInteractionState>,
-               baseColorProperty: IReadOnlyProperty<Color>,
-               options?: any ) {
+  public constructor( buttonBackground: PaintableNode,
+                      interactionStateProperty: IReadOnlyProperty<ButtonInteractionState | RadioButtonInteractionState>,
+                      baseColorProperty: IReadOnlyProperty<Color>,
+                      options?: any ) {
 
     // Dynamic colors
     const baseBrighter8Property = new PaintColorProperty( baseColorProperty, { luminanceFactor: 0.8 } );

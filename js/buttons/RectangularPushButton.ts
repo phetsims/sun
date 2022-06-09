@@ -32,7 +32,7 @@ export default class RectangularPushButton extends RectangularButton {
 
   private readonly disposeRectangularPushButton: () => void;
 
-  constructor( providedOptions?: RectangularPushButtonOptions ) {
+  public constructor( providedOptions?: RectangularPushButtonOptions ) {
 
     const options = optionize<RectangularPushButtonOptions, SelfOptions, SuperOptions>()( {
       soundPlayer: pushButtonSoundPlayer,

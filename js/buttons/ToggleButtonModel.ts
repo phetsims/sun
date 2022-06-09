@@ -34,7 +34,7 @@ export default class ToggleButtonModel<T> extends ButtonModel {
    * @param property - axon Property that can be either valueOff or valueOn.
    * @param [providedOptions]
    */
-  constructor( valueOff: T, valueOn: T, property: IProperty<T>, providedOptions?: ToggleButtonModelOptions ) {
+  public constructor( valueOff: T, valueOn: T, property: IProperty<T>, providedOptions?: ToggleButtonModelOptions ) {
 
     const options = optionize<ToggleButtonModelOptions, SelfOptions, ButtonModelOptions>()( {
       tandem: Tandem.REQUIRED

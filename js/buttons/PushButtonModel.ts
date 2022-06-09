@@ -53,7 +53,7 @@ export default class PushButtonModel extends ButtonModel {
 
   private readonly disposePushButtonModel: () => void;
 
-  constructor( providedOptions?: PushButtonModelOptions ) {
+  public constructor( providedOptions?: PushButtonModelOptions ) {
 
     const options = optionize<PushButtonModelOptions, SelfOptions, ButtonModelOptions>()( {
 

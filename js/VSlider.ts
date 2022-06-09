@@ -22,7 +22,7 @@ export type VSliderOptions = SelfOptions & StrictOmit<SliderOptions, 'orientatio
 
 export default class VSlider extends Slider {
 
-  constructor( valueProperty: IProperty<number>, range: Range, options?: VSliderOptions ) {
+  public constructor( valueProperty: IProperty<number>, range: Range, options?: VSliderOptions ) {
 
     options = optionize<VSliderOptions, SelfOptions, SliderOptions>()( {
       orientation: Orientation.VERTICAL

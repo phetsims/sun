@@ -38,7 +38,7 @@ export default class RoundToggleButton<T> extends RoundButton {
    * @param property - axon Property that can be either valueOff or valueOn
    * @param providedOptions
    */
-  constructor( valueOff: T, valueOn: T, property: IProperty<T>, providedOptions?: RoundToggleButtonOptions ) {
+  public constructor( valueOff: T, valueOn: T, property: IProperty<T>, providedOptions?: RoundToggleButtonOptions ) {
 
     const options = optionize<RoundToggleButtonOptions, SelfOptions, RoundButtonOptions>()( {
 

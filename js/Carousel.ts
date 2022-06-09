@@ -108,7 +108,7 @@ export default class Carousel extends Node {
    * @param items - Nodes shown in the carousel
    * @param providedOptions
    */
-  constructor( items: Node[], providedOptions?: CarouselOptions ) {
+  public constructor( items: Node[], providedOptions?: CarouselOptions ) {
 
     // Override defaults with specified options
     const options = optionize<CarouselOptions, SelfOptions, NodeOptions>()( {

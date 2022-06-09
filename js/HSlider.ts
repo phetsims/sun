@@ -22,7 +22,7 @@ export type HSliderOptions = SelfOptions & StrictOmit<SliderOptions, 'orientatio
 
 export default class HSlider extends Slider {
 
-  constructor( valueProperty: IProperty<number>, range: Range, options?: HSliderOptions ) {
+  public constructor( valueProperty: IProperty<number>, range: Range, options?: HSliderOptions ) {
 
     super( valueProperty, range, optionize<HSliderOptions, SelfOptions, SliderOptions>()( {
       orientation: Orientation.HORIZONTAL
