@@ -12,7 +12,7 @@
 import IProperty from '../../axon/js/IProperty.js';
 import StrictOmit from '../../phet-core/js/types/StrictOmit.js';
 import IReadOnlyProperty from '../../axon/js/IReadOnlyProperty.js';
-import Property, { AbstractProperty } from '../../axon/js/Property.js';
+import Property, { ReadOnlyProperty } from '../../axon/js/Property.js';
 import Dimension2 from '../../dot/js/Dimension2.js';
 import Range from '../../dot/js/Range.js';
 import Utils from '../../dot/js/Utils.js';
@@ -481,7 +481,7 @@ export default class Slider extends AccessibleSlider( Node, 0 ) {
       'If provided, phetioLinkedProperty should be PhET-iO instrumented' );
 
     // Must happen after instrumentation (in super call)
-    const linkedProperty = options.phetioLinkedProperty || ( valueProperty instanceof AbstractProperty ? valueProperty : null );
+    const linkedProperty = options.phetioLinkedProperty || ( valueProperty instanceof ReadOnlyProperty ? valueProperty : null );
     if ( linkedProperty ) {
       this.addLinkedElement( linkedProperty, {
         tandem: options.tandem.createTandem( 'valueProperty' )
@@ -490,7 +490,7 @@ export default class Slider extends AccessibleSlider( Node, 0 ) {
 
     // must be after the button is instrumented
     // assert && assert( !this.isPhetioInstrumented() || this.enabledRangeProperty.isPhetioInstrumented() );
-    !ownsEnabledRangeProperty && this.enabledRangeProperty instanceof AbstractProperty && this.addLinkedElement( this.enabledRangeProperty, {
+    !ownsEnabledRangeProperty && this.enabledRangeProperty instanceof ReadOnlyProperty && this.addLinkedElement( this.enabledRangeProperty, {
       tandem: options.tandem.createTandem( 'enabledRangeProperty' )
     } );
 
