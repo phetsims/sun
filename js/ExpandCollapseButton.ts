@@ -7,7 +7,6 @@
  * @author Jesse Greenberg (PhET Interactive Simulations)
  */
 
-import IProperty from '../../axon/js/IProperty.js';
 import StrictOmit from '../../phet-core/js/types/StrictOmit.js';
 import { Shape } from '../../kite/js/imports.js';
 import InstanceRegistry from '../../phet-core/js/documentation/InstanceRegistry.js';
@@ -17,6 +16,7 @@ import Tandem from '../../tandem/js/Tandem.js';
 import BooleanRectangularToggleButton, { BooleanRectangularToggleButtonOptions } from './buttons/BooleanRectangularToggleButton.js';
 import ButtonNode from './buttons/ButtonNode.js';
 import sun from './sun.js';
+import Property from '../../axon/js/Property.js';
 
 // constants
 const SYMBOL_RELATIVE_WIDTH = 0.6; // width of +/- symbols relative to button sideLength (see options)
@@ -33,7 +33,7 @@ export default class ExpandCollapseButton extends BooleanRectangularToggleButton
 
   private readonly disposeExpandCollapseButton: () => void;
 
-  public constructor( expandedProperty: IProperty<boolean>, providedOptions?: ExpandCollapseButtonOptions ) {
+  public constructor( expandedProperty: Property<boolean>, providedOptions?: ExpandCollapseButtonOptions ) {
 
     const options = optionize<ExpandCollapseButtonOptions, SelfOptions, BooleanRectangularToggleButtonOptions>()( {
 

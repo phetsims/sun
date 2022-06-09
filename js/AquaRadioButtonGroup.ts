@@ -7,7 +7,6 @@
  * @author Chris Malley (PixelZoom, Inc.)
  */
 
-import IProperty from '../../axon/js/IProperty.js';
 import StrictOmit from '../../phet-core/js/types/StrictOmit.js';
 import dotRandom from '../../dot/js/dotRandom.js';
 import optionize from '../../phet-core/js/optionize.js';
@@ -16,6 +15,7 @@ import multiSelectionSoundPlayerFactory from '../../tambo/js/multiSelectionSound
 import Tandem from '../../tandem/js/Tandem.js';
 import AquaRadioButton, { AquaRadioButtonOptions } from './AquaRadioButton.js';
 import sun from './sun.js';
+import Property from '../../axon/js/Property.js';
 
 // pdom - An id for each instance of AquaRadioButtonGroup, passed to individual buttons in the group.
 // Each button in a radio button group must have the same "name" attribute to be considered in a group, otherwise
@@ -58,7 +58,7 @@ export default class AquaRadioButtonGroup<T> extends FlowBox {
   private readonly radioButtons: AquaRadioButton<T>[];
   private readonly disposeAquaRadioButtonGroup: () => void;
 
-  public constructor( property: IProperty<T>, items: AquaRadioButtonGroupItem<T>[], providedOptions?: AquaRadioButtonGroupOptions ) {
+  public constructor( property: Property<T>, items: AquaRadioButtonGroupItem<T>[], providedOptions?: AquaRadioButtonGroupOptions ) {
 
     instanceCount++;
 

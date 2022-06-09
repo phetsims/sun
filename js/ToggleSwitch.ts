@@ -25,10 +25,10 @@ import EventType from '../../tandem/js/EventType.js';
 import PhetioObject from '../../tandem/js/PhetioObject.js';
 import Tandem from '../../tandem/js/Tandem.js';
 import sun from './sun.js';
-import IProperty from '../../axon/js/IProperty.js';
 import ISoundPlayer from '../../tambo/js/ISoundPlayer.js';
 import switchToLeftSoundPlayer from '../../tambo/js/shared-sound-players/switchToLeftSoundPlayer.js';
 import switchToRightSoundPlayer from '../../tambo/js/shared-sound-players/switchToRightSoundPlayer.js';
+import Property from '../../axon/js/Property.js';
 
 // constants
 const DEFAULT_SIZE = new Dimension2( 60, 30 );
@@ -82,7 +82,7 @@ export default class ToggleSwitch<T> extends Voicing( Node, 0 ) {
    * @param rightValue - value when the switch is in the right position
    * @param providedOptions
    */
-  public constructor( property: IProperty<T>, leftValue: T, rightValue: T, providedOptions?: ToggleSwitchOptions ) {
+  public constructor( property: Property<T>, leftValue: T, rightValue: T, providedOptions?: ToggleSwitchOptions ) {
 
     const options = optionize<ToggleSwitchOptions, SelfOptions, VoicingOptions>()( {
 

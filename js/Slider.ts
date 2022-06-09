@@ -9,7 +9,6 @@
  * @author Chris Malley (PixelZoom, Inc.)
  */
 
-import IProperty from '../../axon/js/IProperty.js';
 import StrictOmit from '../../phet-core/js/types/StrictOmit.js';
 import IReadOnlyProperty from '../../axon/js/IReadOnlyProperty.js';
 import Property, { ReadOnlyProperty } from '../../axon/js/Property.js';
@@ -119,7 +118,7 @@ type SelfOptions = {
   // of using the passed in Property. This option was created to support passing DynamicProperty or "wrapping"
   // Property that are "implementation  details" to the PhET-iO API, and still support having a LinkedElement that
   // points to the underlying model Property.
-  phetioLinkedProperty?: IProperty<number> | null;
+  phetioLinkedProperty?: Property<number> | null;
 
   // This is used to generate sounds as the slider is moved by the user.  If not provided, the default sound generator
   // will be created. If set to null, the slider will generate no sound.
@@ -159,7 +158,7 @@ export default class Slider extends AccessibleSlider( Node, 0 ) {
   // This is a marker to indicate that we should create the actual default slider sound.
   public static DEFAULT_SOUND = new ValueChangeSoundPlayer( new Range( 0, 1 ) );
 
-  public constructor( valueProperty: IProperty<number>, range: Range, providedOptions?: SliderOptions ) {
+  public constructor( valueProperty: Property<number>, range: Range, providedOptions?: SliderOptions ) {
 
     // Guard against mutually exclusive options before defaults are filled in.
     assert && assertMutuallyExclusiveOptions( providedOptions, [ 'thumbNode' ], [

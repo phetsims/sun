@@ -21,6 +21,7 @@ import AccessibleNumberSpinner, { AccessibleNumberSpinnerOptions } from './acces
 import ArrowButton, { ArrowButtonOptions } from './buttons/ArrowButton.js';
 
 import sun from './sun.js';
+import Property from '../../axon/js/Property.js';
 
 type NumberSpinnerArrowsPosition =
   'leftRight' | // arrow buttons on left and right of value
@@ -75,7 +76,7 @@ export default class NumberSpinner extends AccessibleNumberSpinner( Node, 0 ) {
    * @param [providedOptions]
    * @mixes AccessibleNumberSpinner
    */
-  public constructor( numberProperty: IProperty<number>, rangeProperty: IProperty<Range>, providedOptions?: NumberSpinnerOptions ) {
+  public constructor( numberProperty: Property<number>, rangeProperty: IProperty<Range>, providedOptions?: NumberSpinnerOptions ) {
 
     assert && assert( rangeProperty.value.contains( numberProperty.get() ),
       `value ${numberProperty.get()} is out of range ${rangeProperty.value.toString()}` );

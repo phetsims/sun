@@ -10,8 +10,8 @@ import sun from '../sun.js';
 import RectangularToggleButton, { RectangularToggleButtonOptions } from './RectangularToggleButton.js';
 import { Node } from '../../../scenery/js/imports.js';
 import optionize from '../../../phet-core/js/optionize.js';
-import IProperty from '../../../axon/js/IProperty.js';
 import StrictOmit from '../../../phet-core/js/types/StrictOmit.js';
+import Property from '../../../axon/js/Property.js';
 
 type SelfOptions = {};
 
@@ -27,7 +27,7 @@ export default class BooleanRectangularToggleButton extends RectangularToggleBut
    * @param booleanProperty
    * @param providedOptions
    */
-  public constructor( trueNode: Node, falseNode: Node, booleanProperty: IProperty<boolean>,
+  public constructor( trueNode: Node, falseNode: Node, booleanProperty: Property<boolean>,
                       providedOptions?: BooleanRectangularToggleButtonOptions ) {
 
     const content = new BooleanToggleNode( trueNode, falseNode, booleanProperty );

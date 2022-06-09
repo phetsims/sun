@@ -7,7 +7,6 @@
  * @author Chris Malley (PixelZoom, Inc.)
  */
 
-import IProperty from '../../axon/js/IProperty.js';
 import Range from '../../dot/js/Range.js';
 import InstanceRegistry from '../../phet-core/js/documentation/InstanceRegistry.js';
 import Orientation from '../../phet-core/js/Orientation.js';
@@ -15,6 +14,7 @@ import Slider, { SliderOptions } from './Slider.js';
 import sun from './sun.js';
 import optionize from '../../phet-core/js/optionize.js';
 import StrictOmit from '../../phet-core/js/types/StrictOmit.js';
+import Property from '../../axon/js/Property.js';
 
 type SelfOptions = {};
 
@@ -22,7 +22,7 @@ export type HSliderOptions = SelfOptions & StrictOmit<SliderOptions, 'orientatio
 
 export default class HSlider extends Slider {
 
-  public constructor( valueProperty: IProperty<number>, range: Range, options?: HSliderOptions ) {
+  public constructor( valueProperty: Property<number>, range: Range, options?: HSliderOptions ) {
 
     super( valueProperty, range, optionize<HSliderOptions, SelfOptions, SliderOptions>()( {
       orientation: Orientation.HORIZONTAL

@@ -300,6 +300,10 @@ function demoSlider( layoutBounds: Bounds2, orientation: 'horizontal' | 'vertica
     } ) );
   }
 
+  // Settable
+  const enabledProperty = new BooleanProperty( true );
+  slider.enabledProperty = enabledProperty;
+
   // major ticks
   slider.addMajorTick( range.min, new Text( range.min, tickLabelOptions ) );
   slider.addMajorTick( range.getCenter(), new Text( range.getCenter(), tickLabelOptions ) );
@@ -335,7 +339,7 @@ function demoSlider( layoutBounds: Bounds2, orientation: 'horizontal' | 'vertica
 
   // Checkbox to enable/disable slider
   const enabledCheckbox = new Checkbox( new Text( 'Enable slider', { font: new PhetFont( 20 ) } ),
-    slider.enabledProperty, {
+    enabledProperty, {
       tandem: Tandem.OPT_OUT,
       left: slider.left,
       top: minorTicksCheckbox.bottom + 40

@@ -7,7 +7,6 @@
  * @author Chris Malley (PixelZoom, Inc.)
  */
 
-import IProperty from '../../axon/js/IProperty.js';
 import StrictOmit from '../../phet-core/js/types/StrictOmit.js';
 import merge from '../../phet-core/js/merge.js';
 import optionize from '../../phet-core/js/optionize.js';
@@ -15,10 +14,11 @@ import { HStrut, Node, VBox, VBoxOptions } from '../../scenery/js/imports.js';
 import Tandem from '../../tandem/js/Tandem.js';
 import Checkbox from './Checkbox.js';
 import sun from './sun.js';
+import Property from '../../axon/js/Property.js';
 
 export type VerticalCheckboxGroupItem = {
   node: Node; // Label for the button
-  property: IProperty<boolean>; // Property associated with the button
+  property: Property<boolean>; // Property associated with the button
   options?: any; // Item-specific options to be passed to the checkbox
   tandem?: Tandem; // optional tandem for PhET-iO
 };

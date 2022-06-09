@@ -22,10 +22,10 @@ import optionize from '../../phet-core/js/optionize.js';
 import sun from './sun.js';
 import ISoundPlayer from '../../tambo/js/ISoundPlayer.js';
 import Utterance, { IAlertable } from '../../utterance-queue/js/Utterance.js';
-import IProperty from '../../axon/js/IProperty.js';
 import Bounds2 from '../../dot/js/Bounds2.js';
 import { Shape } from '../../kite/js/imports.js';
 import StrictOmit from '../../phet-core/js/types/StrictOmit.js';
+import Property from '../../axon/js/Property.js';
 
 // constants
 const BOOLEAN_VALIDATOR = { valueType: 'boolean' };
@@ -77,7 +77,7 @@ export default class Checkbox extends WidthSizable( Voicing( Node, 0 ) ) {
   // Handles layout of the content, rectangles and mouse/touch areas
   private readonly constraint: CheckboxConstraint;
 
-  public constructor( content: Node, property: IProperty<boolean>, providedOptions?: CheckboxOptions ) {
+  public constructor( content: Node, property: Property<boolean>, providedOptions?: CheckboxOptions ) {
 
     const options = optionize<CheckboxOptions, SelfOptions, SuperOptions>()( {
 

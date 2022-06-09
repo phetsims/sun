@@ -8,13 +8,13 @@
  */
 
 import InstanceRegistry from '../../phet-core/js/documentation/InstanceRegistry.js';
-import IProperty from '../../axon/js/IProperty.js';
 import Range from '../../dot/js/Range.js';
 import Orientation from '../../phet-core/js/Orientation.js';
 import { default as Slider, SliderOptions } from './Slider.js';
 import sun from './sun.js';
 import optionize from '../../phet-core/js/optionize.js';
 import StrictOmit from '../../phet-core/js/types/StrictOmit.js';
+import Property from '../../axon/js/Property.js';
 
 type SelfOptions = {};
 
@@ -22,7 +22,7 @@ export type VSliderOptions = SelfOptions & StrictOmit<SliderOptions, 'orientatio
 
 export default class VSlider extends Slider {
 
-  public constructor( valueProperty: IProperty<number>, range: Range, options?: VSliderOptions ) {
+  public constructor( valueProperty: Property<number>, range: Range, options?: VSliderOptions ) {
 
     options = optionize<VSliderOptions, SelfOptions, SliderOptions>()( {
       orientation: Orientation.VERTICAL

@@ -10,8 +10,8 @@ import sun from '../sun.js';
 import RoundToggleButton, { RoundToggleButtonOptions } from './RoundToggleButton.js';
 import { Node } from '../../../scenery/js/imports.js';
 import optionize from '../../../phet-core/js/optionize.js';
-import IProperty from '../../../axon/js/IProperty.js';
 import StrictOmit from '../../../phet-core/js/types/StrictOmit.js';
+import Property from '../../../axon/js/Property.js';
 
 type SelfOptions = {};
 
@@ -27,7 +27,7 @@ class BooleanRoundToggleButton extends RoundToggleButton<boolean> {
    * @param booleanProperty
    * @param providedOptions
    */
-  public constructor( trueNode: Node, falseNode: Node, booleanProperty: IProperty<boolean>,
+  public constructor( trueNode: Node, falseNode: Node, booleanProperty: Property<boolean>,
                       providedOptions?: BooleanRoundToggleButtonOptions ) {
 
     const options = optionize<BooleanRoundToggleButtonOptions, SelfOptions, RoundToggleButtonOptions>()( {

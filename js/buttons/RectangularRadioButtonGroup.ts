@@ -19,7 +19,7 @@ import RectangularRadioButton from './RectangularRadioButton.js';
 import { VoicingResponse } from '../../../utterance-queue/js/ResponsePacket.js';
 import ISoundPlayer from '../../../tambo/js/ISoundPlayer.js';
 import TContentAppearanceStrategy from './TContentAppearanceStrategy.js';
-import IProperty from '../../../axon/js/IProperty.js';
+import Property from '../../../axon/js/Property.js';
 
 // constants
 const BUTTON_CONTENT_X_ALIGN_VALUES = [ 'center', 'left', 'right' ] as const;
@@ -116,7 +116,7 @@ export default class RectangularRadioButtonGroup<T> extends FlowBox {
 
   private readonly disposeRadioButtonGroup: () => void;
 
-  public constructor( property: IProperty<T>, items: RectangularRadioButtonItem<T>[], providedOptions?: RectangularRadioButtonGroupOptions ) {
+  public constructor( property: Property<T>, items: RectangularRadioButtonItem<T>[], providedOptions?: RectangularRadioButtonGroupOptions ) {
 
     // These options are passed to each RectangularRadioButton created in this group.
     const defaultOptions = {

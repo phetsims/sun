@@ -17,7 +17,7 @@ import sun from '../sun.js';
 import RectangularButton, { RectangularButtonOptions } from './RectangularButton.js';
 import ToggleButtonInteractionStateProperty from './ToggleButtonInteractionStateProperty.js';
 import ToggleButtonModel from './ToggleButtonModel.js';
-import IProperty from '../../../axon/js/IProperty.js';
+import Property from '../../../axon/js/Property.js';
 
 type SelfOptions = {
 
@@ -38,7 +38,7 @@ export default class RectangularToggleButton<T> extends RectangularButton {
    * @param property - axon Property that can be either valueOff or valueOn
    * @param providedOptions
    */
-  public constructor( valueOff: T, valueOn: T, property: IProperty<T>, providedOptions?: RectangularButtonOptions ) {
+  public constructor( valueOff: T, valueOn: T, property: Property<T>, providedOptions?: RectangularButtonOptions ) {
 
     const options = optionize<RectangularToggleButtonOptions, SelfOptions, RectangularButtonOptions>()( {
 

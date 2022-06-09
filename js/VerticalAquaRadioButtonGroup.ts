@@ -6,11 +6,11 @@
  * @author Chris Malley (PixelZoom, Inc.)
  */
 
-import IProperty from '../../axon/js/IProperty.js';
 import StrictOmit from '../../phet-core/js/types/StrictOmit.js';
 import optionize from '../../phet-core/js/optionize.js';
 import AquaRadioButtonGroup, { AquaRadioButtonGroupItem, AquaRadioButtonGroupOptions } from './AquaRadioButtonGroup.js';
 import sun from './sun.js';
+import Property from '../../axon/js/Property.js';
 
 type SelfOptions = {};
 
@@ -18,7 +18,7 @@ export type VerticalAquaRadioButtonGroupOptions = SelfOptions & StrictOmit<AquaR
 
 export default class VerticalAquaRadioButtonGroup<T> extends AquaRadioButtonGroup<T> {
 
-  public constructor( property: IProperty<T>, items: AquaRadioButtonGroupItem<T>[], options?: VerticalAquaRadioButtonGroupOptions ) {
+  public constructor( property: Property<T>, items: AquaRadioButtonGroupItem<T>[], options?: VerticalAquaRadioButtonGroupOptions ) {
     super( property, items, optionize<VerticalAquaRadioButtonGroupOptions, SelfOptions, AquaRadioButtonGroupOptions>()( {
       orientation: 'vertical'
     }, options ) );
