@@ -43,8 +43,8 @@ type SelfOptions = {
   buttonOptions?: StrictOmit<ComboBoxButtonOptions, 'content' | 'listener'>;
 };
 
-type SuperOptions = NodeOptions & WidthSizableOptions;
-export type CarouselComboBoxOptions = SelfOptions & StrictOmit<SuperOptions, 'children'>;
+type ParentOptions = NodeOptions & WidthSizableOptions;
+export type CarouselComboBoxOptions = SelfOptions & StrictOmit<ParentOptions, 'children'>;
 
 export default class CarouselComboBox<T> extends WidthSizable( Node ) {
 
@@ -57,7 +57,7 @@ export default class CarouselComboBox<T> extends WidthSizable( Node ) {
    */
   public constructor( property: IProperty<T>, comboBoxItems: ComboBoxItem<T>[], providedOptions?: CarouselComboBoxOptions ) {
 
-    const options = optionize<CarouselComboBoxOptions, SelfOptions, SuperOptions>()( {
+    const options = optionize<CarouselComboBoxOptions, SelfOptions, ParentOptions>()( {
 
       itemNodeOptions: {
         align: 'left', // {string} alignment of item nodes on backgrounds, 'left'|'center'|'right'

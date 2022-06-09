@@ -83,7 +83,7 @@ type SelfOptions = {
   enabledAppearanceStrategy?: EnabledAppearanceStrategy;
 };
 
-type SuperOptions = VoicingOptions & SizableOptions;
+type SuperOptions = SizableOptions & VoicingOptions;
 export type ButtonNodeOptions = SelfOptions & SuperOptions;
 
 export default class ButtonNode extends Sizable( Voicing( Node, 0 ) ) {

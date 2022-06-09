@@ -57,9 +57,9 @@ type SelfOptions = {
   phetioLinkProperty?: boolean;
 };
 
-type SuperOptions = VoicingOptions & WidthSizableOptions;
+type ParentOptions = VoicingOptions & WidthSizableOptions;
 
-export type CheckboxOptions = SelfOptions & StrictOmit<SuperOptions, 'children' | 'mouseArea' | 'touchArea'>;
+export type CheckboxOptions = SelfOptions & StrictOmit<ParentOptions, 'children' | 'mouseArea' | 'touchArea'>;
 
 export default class Checkbox extends WidthSizable( Voicing( Node, 0 ) ) {
 
@@ -79,7 +79,7 @@ export default class Checkbox extends WidthSizable( Voicing( Node, 0 ) ) {
 
   public constructor( content: Node, property: Property<boolean>, providedOptions?: CheckboxOptions ) {
 
-    const options = optionize<CheckboxOptions, SelfOptions, SuperOptions>()( {
+    const options = optionize<CheckboxOptions, SelfOptions, ParentOptions>()( {
 
       // CheckboxOptions
       spacing: 5,

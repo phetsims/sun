@@ -116,8 +116,8 @@ type SelfOptions = {
   comboBoxVoicingHintResponse?: string | null;
 };
 
-type SuperOptions = NodeOptions & WidthSizableOptions;
-export type ComboBoxOptions = SelfOptions & SuperOptions;
+type ParentOptions = NodeOptions & WidthSizableOptions;
+export type ComboBoxOptions = SelfOptions & ParentOptions;
 
 export default class ComboBox<T> extends WidthSizable( Node ) {
 
@@ -162,7 +162,7 @@ export default class ComboBox<T> extends WidthSizable( Node ) {
     assert && assert( listParent.maxWidth === null,
       'ComboBox is responsible for scaling listBox. Setting maxWidth for listParent may result in buggy behavior.' );
 
-    const options = optionize<ComboBoxOptions, SelfOptions, SuperOptions>()( {
+    const options = optionize<ComboBoxOptions, SelfOptions, ParentOptions>()( {
 
       align: 'left',
       listPosition: 'below',
