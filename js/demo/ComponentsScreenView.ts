@@ -284,7 +284,9 @@ function demoSlider( layoutBounds: Bounds2, orientation: 'horizontal' | 'vertica
       thumbTouchAreaYDilation: 15,
       thumbMouseAreaXDilation: 10,
       thumbMouseAreaYDilation: 5,
-      enabledRangeProperty: enabledRangeProperty
+      enabledRangeProperty: enabledRangeProperty,
+
+      phetioEnabledPropertyInstrumented: false
     } ) );
   }
   else {
@@ -296,7 +298,9 @@ function demoSlider( layoutBounds: Bounds2, orientation: 'horizontal' | 'vertica
       thumbTouchAreaYDilation: 30,
       thumbMouseAreaXDilation: 5,
       thumbMouseAreaYDilation: 10,
-      enabledRangeProperty: enabledRangeProperty
+      enabledRangeProperty: enabledRangeProperty,
+
+      phetioEnabledPropertyInstrumented: false
     } ) );
   }
 
