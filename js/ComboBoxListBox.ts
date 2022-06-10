@@ -9,7 +9,7 @@
 import PhetioAction from '../../tandem/js/PhetioAction.js';
 import merge from '../../phet-core/js/merge.js';
 import optionize from '../../phet-core/js/optionize.js';
-import { IInputListener, IPaint, KeyboardUtils, SceneryEvent, SpeakingOptions, VBox } from '../../scenery/js/imports.js';
+import { IInputListener, IPaint, KeyboardUtils, SceneryEvent, SpeakingOptions, VBox, VoicingNode } from '../../scenery/js/imports.js';
 import multiSelectionSoundPlayerFactory from '../../tambo/js/multiSelectionSoundPlayerFactory.js';
 import generalCloseSoundPlayer from '../../tambo/js/shared-sound-players/generalCloseSoundPlayer.js';
 import generalOpenSoundPlayer from '../../tambo/js/shared-sound-players/generalOpenSoundPlayer.js';
@@ -44,15 +44,22 @@ export default class ComboBoxListBox<T> extends Panel {
   private visibleListItemNodes: ComboBoxListItemNode<T>[];
   private readonly disposeComboBoxListBox: () => void;
 
+  // We need a separate node to voice through because when a selection occurs, the list box is hidden, silencing any
+  // voicing responses occurring through Nodes within this class. This selection node should be visible when a combo
+  // box selection occurs, see https://github.com/phetsims/ratio-and-proportion/issues/474
+  private readonly voiceOnSelectionNode: VoicingNode;
+
   /**
    * @param property
    * @param items
    * @param hideListBoxCallback - called to hide the list box
    * @param focusButtonCallback - called to transfer focus to the combo box's button
+   * @param voiceOnSelectionNode - Node to voice the response when selecting a combo box item.
    * @param tandem
    * @param providedOptions
    */
-  public constructor( property: IProperty<T>, items: ComboBoxItem<T>[], hideListBoxCallback: () => void, focusButtonCallback: () => void, tandem: Tandem, providedOptions?: ComboBoxListBoxOptions ) {
+  public constructor( property: IProperty<T>, items: ComboBoxItem<T>[], hideListBoxCallback: () => void,
+                      focusButtonCallback: () => void, voiceOnSelectionNode: VoicingNode, tandem: Tandem, providedOptions?: ComboBoxListBoxOptions ) {
 
     const options = optionize<ComboBoxListBoxOptions, SelfOptions, PanelOptions>()( {
       highlightFill: 'rgb( 245, 245, 245 )',
@@ -172,6 +179,8 @@ export default class ComboBoxListBox<T> extends Panel {
     options.yMargin = options.yMargin / 2;
 
     super( content, options );
+
+    this.voiceOnSelectionNode = voiceOnSelectionNode;
 
     // variable for tracking whether the selected value was changed by the user
     let selectionWhenListBoxOpened: T;
@@ -322,7 +331,7 @@ export default class ComboBoxListBox<T> extends Panel {
       // If there is no change in value, then there is no context response
       responseOptions.contextResponse = null;
     }
-    this.getListItemNode( newValue ).voicingSpeakFullResponse( responseOptions );
+    this.voiceOnSelectionNode.voicingSpeakFullResponse( responseOptions );
   }
 }
 

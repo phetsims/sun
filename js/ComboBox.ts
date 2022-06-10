@@ -265,6 +265,7 @@ export default class ComboBox<T> extends WidthSizable( Node ) {
         this.button.blockNextVoicingFocusListener();
         this.button.focus();
       },
+      this.button,
       options.tandem.createTandem( 'listBox' ), {
         align: options.align,
         highlightFill: options.highlightFill,
