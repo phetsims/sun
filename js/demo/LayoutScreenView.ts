@@ -440,24 +440,24 @@ function demoOrigin( layoutBounds: Bounds2 ): Node {
     xAlign: 'origin',
     yAlign: 'origin',
     children: [
-      new Circle( 20, { fill: 'rgba(255,0,0,0.3)', layoutOptions: { x: 0, y: 0 } } ),
-      new Circle( 10, { fill: 'rgba(255,0,0,0.3)', layoutOptions: { x: 1, y: 0 } } ),
-      new Circle( 15, { fill: 'rgba(255,0,0,0.3)', layoutOptions: { x: 0, y: 1 } } ),
-      new Circle( 25, { fill: 'rgba(255,0,0,0.3)', layoutOptions: { x: 1, y: 1 } } )
+      new Circle( 20, { fill: 'rgba(255,0,0,0.3)', layoutOptions: { column: 0, row: 0 } } ),
+      new Circle( 10, { fill: 'rgba(255,0,0,0.3)', layoutOptions: { column: 1, row: 0 } } ),
+      new Circle( 15, { fill: 'rgba(255,0,0,0.3)', layoutOptions: { column: 0, row: 1 } } ),
+      new Circle( 25, { fill: 'rgba(255,0,0,0.3)', layoutOptions: { column: 1, row: 1 } } )
     ]
   } );
 
   const content = new GridBox( {
     spacing: 15,
     children: [
-      sectionText( 'FlowBox', { layoutOptions: { x: 0, y: 0 } } ),
-      sectionText( 'GridBox', { layoutOptions: { x: 1, y: 0 } } ),
+      sectionText( 'FlowBox', { layoutOptions: { column: 0, row: 0 } } ),
+      sectionText( 'GridBox', { layoutOptions: { column: 1, row: 0 } } ),
       new Node( {
         children: [
           originNode,
           flowBox
         ],
-        layoutOptions: { x: 0, y: 1, yAlign: 'origin' }
+        layoutOptions: { column: 0, row: 1, yAlign: 'origin' }
       } ),
       new Node( {
         children: [
@@ -465,7 +465,7 @@ function demoOrigin( layoutBounds: Bounds2 ): Node {
           originNode,
           gridBox
         ],
-        layoutOptions: { x: 1, y: 1, yAlign: 'origin' }
+        layoutOptions: { column: 1, row: 1, yAlign: 'origin' }
       } )
     ]
   } );
