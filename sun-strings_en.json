@@ -13,7 +13,7 @@
       "value": "Closed"
     },
     "titleClosePattern": {
-      "value": "{{title}}, Close"
+      "value": "{{title}}, Close."
     }
   }
 }
