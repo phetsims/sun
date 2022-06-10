@@ -47,8 +47,8 @@ type SelfOptions = {
 
   textFill?: IPaint;
 };
-
-export type MenuItemOptions = SelfOptions & VoicingOptions;
+type ParentOptions = VoicingOptions; // VoicingOptions includes NodeOptions
+export type MenuItemOptions = SelfOptions & ParentOptions;
 
 export default class MenuItem extends Voicing( Node, 0 ) {
 
@@ -74,7 +74,7 @@ export default class MenuItem extends Voicing( Node, 0 ) {
                       callback: ( event: SceneryEvent ) => void, present: boolean, providedOptions?: MenuItemOptions ) {
 
     // Extend the object with defaults.
-    const options = optionize<MenuItemOptions, SelfOptions, VoicingOptions>()( {
+    const options = optionize<MenuItemOptions, SelfOptions, ParentOptions>()( {
 
       // SelfOptions
       separatorBefore: false,

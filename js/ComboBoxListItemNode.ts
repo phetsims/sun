@@ -32,8 +32,8 @@ type SelfOptions = {
 
   comboBoxVoicingNameResponsePattern?: string;
 };
-
-export type ComboBoxListItemNodeOptions = SelfOptions & StrictOmit<VoicingOptions, 'children' | 'innerContent'>;
+type ParentOptions = VoicingOptions; // VoicingOptions includes NodeOptions
+export type ComboBoxListItemNodeOptions = SelfOptions & StrictOmit<ParentOptions, 'children' | 'innerContent'>;
 
 export default class ComboBoxListItemNode<T> extends Voicing( Node, 0 ) {
 
@@ -47,7 +47,7 @@ export default class ComboBoxListItemNode<T> extends Voicing( Node, 0 ) {
 
     assert && assert( item instanceof ComboBoxItem );
 
-    const options = optionize<ComboBoxListItemNodeOptions, SelfOptions, VoicingOptions>()( {
+    const options = optionize<ComboBoxListItemNodeOptions, SelfOptions, ParentOptions>()( {
 
       cursor: 'pointer',
       align: 'left',

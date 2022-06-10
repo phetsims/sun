@@ -82,9 +82,8 @@ type SelfOptions = {
   // Alter the appearance when changing the enabled of the button.
   enabledAppearanceStrategy?: EnabledAppearanceStrategy;
 };
-
-type SuperOptions = SizableOptions & VoicingOptions;
-export type ButtonNodeOptions = SelfOptions & SuperOptions;
+type ParentOptions = SizableOptions & VoicingOptions; // VoicingOptions includes NodeOptions
+export type ButtonNodeOptions = SelfOptions & ParentOptions;
 
 export default class ButtonNode extends Sizable( Voicing( Node, 0 ) ) {
 
@@ -119,7 +118,7 @@ export default class ButtonNode extends Sizable( Voicing( Node, 0 ) ) {
                          interactionStateProperty: IReadOnlyProperty<ButtonInteractionState>,
                          providedOptions?: ButtonNodeOptions ) {
 
-    const options = optionize<ButtonNodeOptions, SelfOptions, SuperOptions>()( {
+    const options = optionize<ButtonNodeOptions, SelfOptions, ParentOptions>()( {
 
       content: null,
       buttonSize: null,

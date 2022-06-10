@@ -42,8 +42,8 @@ type SelfOptions = {
   // browser. Otherwise, arrow keys will navigate through all inputs of type radio in the document.
   a11yNameAttribute?: string | number | null;
 };
-
-export type AquaRadioButtonOptions = SelfOptions & VoicingOptions;
+type ParentOptions = VoicingOptions; // VoicingOptions includes NodeOptions
+export type AquaRadioButtonOptions = SelfOptions & ParentOptions;
 
 export default class AquaRadioButton<T> extends Voicing( Node, 0 ) {
 
@@ -63,7 +63,7 @@ export default class AquaRadioButton<T> extends Voicing( Node, 0 ) {
    */
   public constructor( property: IProperty<T>, value: T, labelNode: Node, providedOptions?: AquaRadioButtonOptions ) {
 
-    const options = optionize<AquaRadioButtonOptions, SelfOptions, VoicingOptions>()( {
+    const options = optionize<AquaRadioButtonOptions, SelfOptions, ParentOptions>()( {
 
       // SelfOptions
       centerColor: 'black',

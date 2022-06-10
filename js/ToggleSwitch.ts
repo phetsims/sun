@@ -67,8 +67,8 @@ type SelfOptions = {
   switchToLeftSoundPlayer?: ISoundPlayer;
   switchToRightSoundPlayer?: ISoundPlayer;
 };
-
-export type ToggleSwitchOptions = SelfOptions & VoicingOptions;
+type ParentOptions = VoicingOptions; // VoicingOptions includes NodeOptions
+export type ToggleSwitchOptions = SelfOptions & ParentOptions;
 
 export default class ToggleSwitch<T> extends Voicing( Node, 0 ) {
 
@@ -84,7 +84,7 @@ export default class ToggleSwitch<T> extends Voicing( Node, 0 ) {
    */
   public constructor( property: Property<T>, leftValue: T, rightValue: T, providedOptions?: ToggleSwitchOptions ) {
 
-    const options = optionize<ToggleSwitchOptions, SelfOptions, VoicingOptions>()( {
+    const options = optionize<ToggleSwitchOptions, SelfOptions, ParentOptions>()( {
 
       size: DEFAULT_SIZE,
       toggleWhileDragging: null,

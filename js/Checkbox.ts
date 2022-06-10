@@ -57,7 +57,7 @@ type SelfOptions = {
   phetioLinkProperty?: boolean;
 };
 
-type ParentOptions = VoicingOptions & WidthSizableOptions;
+type ParentOptions = WidthSizableOptions & VoicingOptions; // VoicingOptions includes NodeOptions
 
 export type CheckboxOptions = SelfOptions & StrictOmit<ParentOptions, 'children' | 'mouseArea' | 'touchArea'>;
 
