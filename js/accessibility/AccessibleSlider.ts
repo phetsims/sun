@@ -44,13 +44,9 @@ const AccessibleSlider = <SuperType extends Constructor>( Type: SuperType, optio
 
   assert && assert( _.includes( inheritance( Type ), Node ), 'Only Node subtypes should compose Voicing' );
 
-  // Unfortunately, private and protected modifiers cannot be used in this trait, due to a limitation of how Typescript
-  // mixins/traits work. If you do that, you get an error in which anonymous classes cannot have private or protected
-  // members. See https://github.com/phetsims/scenery/issues/1340#issuecomment-1020692592
-  return class extends AccessibleValueHandler( Type, optionsArgPosition ) {
+  return class AccessibleSlider extends AccessibleValueHandler( Type, optionsArgPosition ) {
 
-    /* private */
-    public _disposeAccessibleSlider: () => void;
+    private readonly _disposeAccessibleSlider: () => void;
 
     public constructor( ...args: IntentionalAny[] ) {
 

@@ -21,9 +21,6 @@
  * @author Michael Barlow (PhET Interactive Simulations)
  */
 
-// Disable for the whole file
-/* eslint-disable no-protected-jsdoc */
-
 import CallbackTimer, { CallbackTimerCallback } from '../../../axon/js/CallbackTimer.js';
 import Emitter from '../../../axon/js/Emitter.js';
 import validate from '../../../axon/js/validate.js';
@@ -55,24 +52,17 @@ const AccessibleNumberSpinner = <SuperType extends Constructor>( Type: SuperType
 
   assert && assert( _.includes( inheritance( Type ), Node ), 'Only Node subtypes should compose Voicing' );
 
-  // Unfortunately, private and protected modifiers cannot be used in this trait, due to a limitation of how Typescript
-  // mixins/traits work. If you do that, you get an error in which anonymous classes cannot have private or protected
-  // members. See https://github.com/phetsims/scenery/issues/1340#issuecomment-1020692592
-  return class extends AccessibleValueHandler( Type, optionsArgPosition ) {
+  return class AccessibleNumberSpinner extends AccessibleValueHandler( Type, optionsArgPosition ) {
 
     // Manages timing must be disposed
-    /* private */
-    public readonly _callbackTimer: CallbackTimer;
+    private readonly _callbackTimer: CallbackTimer;
 
     // emits events when increment and decrement actions occur, but only for changes
     // of keyboardStep and shiftKeyboardStep (not pageKeyboardStep)
-    /* protected */
-    public readonly incrementDownEmitter: Emitter<[ boolean ]>;
-    /* protected */
-    public readonly decrementDownEmitter: Emitter<[ boolean ]>;
+    protected readonly incrementDownEmitter: Emitter<[ boolean ]>;
+    protected readonly decrementDownEmitter: Emitter<[ boolean ]>;
 
-    /* private */
-    public readonly _disposeAccessibleNumberSpinner: () => void;
+    private readonly _disposeAccessibleNumberSpinner: () => void;
 
     public constructor( ...args: IntentionalAny[] ) {
 
@@ -194,8 +184,7 @@ const AccessibleNumberSpinner = <SuperType extends Constructor>( Type: SuperType
      * override AccessibleValueHandler.handleKeyDown, but overriding is not supported with PhET Trait pattern.
      */
 
-    /* private */
-    public _accessibleNumberSpinnerHandleKeyDown( event: SceneryEvent<KeyboardEvent> ): void {
+    private _accessibleNumberSpinnerHandleKeyDown( event: SceneryEvent<KeyboardEvent> ): void {
       assert && assert( event.domEvent, 'must have a domEvent' );
       this.handleKeyDown( event );
       this._emitKeyState( event.domEvent!, true );
@@ -209,8 +198,7 @@ const AccessibleNumberSpinner = <SuperType extends Constructor>( Type: SuperType
      * @param isDown - whether or not event was triggered from down or up keys
      */
 
-    /* private */
-    public _emitKeyState( domEvent: Event, isDown: boolean ): void {
+    private _emitKeyState( domEvent: Event, isDown: boolean ): void {
       validate( domEvent, { valueType: Event } );
       if ( KeyboardUtils.isAnyKeyEvent( domEvent, [ KeyboardUtils.KEY_UP_ARROW, KeyboardUtils.KEY_RIGHT_ARROW ] ) ) {
         this.incrementDownEmitter.emit( isDown );
