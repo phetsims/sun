@@ -158,6 +158,11 @@ export default class Slider extends AccessibleSlider( Node, 0 ) {
   // This is a marker to indicate that we should create the actual default slider sound.
   public static DEFAULT_SOUND = new ValueChangeSoundPlayer( new Range( 0, 1 ) );
 
+  // If the user is holding down the thumb outside of the enabled range, and the enabled range expands, the value should
+  // adjust to the new extremum of the range, see https://github.com/phetsims/mean-share-and-balance/issues/29
+  // This value is set during thumb drag, or null if not currently being dragged.
+  private proposedValue: number | null = null;
+
   public constructor( valueProperty: Property<number>, range: Range, providedOptions?: SliderOptions ) {
 
     // Guard against mutually exclusive options before defaults are filled in.
@@ -424,9 +429,9 @@ export default class Slider extends AccessibleSlider( Node, 0 ) {
         if ( this.enabledProperty.get() ) {
           const transform = listener.pressedTrail.subtrailTo( sliderPartsNode ).getTransform(); // we only want the transform to our parent
           const x = transform.inversePosition2( event.pointer.point ).x - clickXOffset;
-          const newValue = this.track.valueToPosition.inverse( x );
-          const valueInRange = this.enabledRangeProperty.get().constrainValue( newValue );
+          this.proposedValue = this.track.valueToPosition.inverse( x );
 
+          const valueInRange = this.enabledRangeProperty.get().constrainValue( this.proposedValue );
           valueProperty.set( options.constrainValue( valueInRange ) );
 
           // after valueProperty is set so listener can use the new value
@@ -438,6 +443,7 @@ export default class Slider extends AccessibleSlider( Node, 0 ) {
         if ( this.enabledProperty.get() ) {
           options.endDrag();
         }
+        this.proposedValue = null;
       }
     } );
     thumb.addInputListener( thumbDragListener );
@@ -452,14 +458,26 @@ export default class Slider extends AccessibleSlider( Node, 0 ) {
     valueProperty.link( valueObserver ); // must be unlinked in disposeSlider
 
     // when the enabled range changes, the value to position linear function must change as well
-    const enabledRangeObserver = function( enabledRange: Range ) {
+    const enabledRangeObserver = ( enabledRange: Range ) => {
 
       // When restoring PhET-iO state, prevent the clamp from setting a stale, incorrect value to a deferred Property
       // (which may have already restored the correct value from phet-io state), see https://github.com/phetsims/mean-share-and-balance/issues/21
       if ( !valueProperty.isPhetioInstrumented() || !phet.joist.sim.isSettingPhetioStateProperty.value ) {
 
-        // clamp the value to the enabled range if it changes
-        valueProperty.set( Utils.clamp( valueProperty.value, enabledRange.min, enabledRange.max ) );
+
+        if ( this.proposedValue === null ) {
+
+          // clamp the current value to the enabled range if it changes
+          valueProperty.set( Utils.clamp( valueProperty.value, enabledRange.min, enabledRange.max ) );
+        }
+        else {
+
+          // The user is holding the thumb, which may be outside the enabledRange.  In that case, expanding the range
+          // could accommodate the outer value
+          const proposedValueInEnabledRange = Utils.clamp( this.proposedValue, enabledRange.min, enabledRange.max );
+          const proposedValueInConstrainedRange = options.constrainValue( proposedValueInEnabledRange );
+          valueProperty.set( proposedValueInConstrainedRange );
+        }
       }
     };
     this.enabledRangeProperty.link( enabledRangeObserver ); // needs to be unlinked in dispose function

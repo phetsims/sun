@@ -354,6 +354,7 @@ function demoSlider( layoutBounds: Bounds2, orientation: 'horizontal' | 'vertica
   restrictedRangeProperty.link( restrictedRange => {
     enabledRangeProperty.value = restrictedRange ? new Range( 25, 75 ) : new Range( 0, 100 );
   } );
+
   const enabledRangeCheckbox = new Checkbox( new Text( 'Enable Range [25, 75]', { font: new PhetFont( 20 ) } ),
     restrictedRangeProperty, {
       tandem: Tandem.OPT_OUT,
@@ -361,11 +362,27 @@ function demoSlider( layoutBounds: Bounds2, orientation: 'horizontal' | 'vertica
       top: enabledCheckbox.bottom + 40
     } );
 
+  // If the user is holding down the thumb outside of the enabled range, and the enabled range expands, the value should
+  // adjust to the new extremum of the range, see https://github.com/phetsims/mean-share-and-balance/issues/29
+  const animateEnabledRangeProperty = new BooleanProperty( false );
+  const animateEnabledRangeCheckbox = new Checkbox( new Text( 'Animate Enabled Range', { font: new PhetFont( 20 ) } ),
+    animateEnabledRangeProperty, {
+      tandem: Tandem.OPT_OUT,
+      left: slider.left,
+      top: enabledRangeCheckbox.bottom + 40
+    } );
+
+  stepTimer.addListener( () => {
+    if ( animateEnabledRangeProperty.value ) {
+      enabledRangeProperty.value = new Range( Math.max( enabledRangeProperty.value.min - 0.1, 0 ), 75 );
+    }
+  } );
+
   // All of the controls related to the slider
   const controls = new VBox( {
     align: 'left',
     spacing: 30,
-    children: [ majorTicksCheckbox, minorTicksCheckbox, enabledCheckbox, enabledRangeCheckbox ]
+    children: [ majorTicksCheckbox, minorTicksCheckbox, enabledCheckbox, enabledRangeCheckbox, animateEnabledRangeCheckbox ]
   } );
 
   // Position the control based on the orientation of the slider
