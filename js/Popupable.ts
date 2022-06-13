@@ -51,17 +51,14 @@ const Popupable = <SuperType extends Constructor>( type: SuperType, optionsArgPo
 
     public readonly layoutBounds: Bounds2 | null;
 
-    // Should be private, but can't be because of mixins
-    /* private */
-    public readonly _focusOnShowNode: Node | null;
-    /* private */
-    public readonly _focusOnHideNode: Node | null;
+    private readonly _focusOnShowNode: Node | null;
 
-    // Should be private, but can't be because of mixins - The Node to return focus to after the Popupable has been
-    // hidden. A reference to this Node is saved when the Popupable is shown. By default focus is returned to Node that
-    // has focus when the Popupable is open but can be overridden with focusOnHideNode.
-    /* private */
-    public _nodeToFocusOnHide: Node | null;
+    private readonly _focusOnHideNode: Node | null;
+
+    // The Node to return focus to after the Popupable has been hidden. A reference to this Node is saved when
+    // the Popupable is shown. By default focus is returned to Node that has focus when the Popupable is open
+    // but can be overridden with focusOnHideNode.
+    private _nodeToFocusOnHide: Node | null;
 
     // The node provided to showPopup, with the transform applied
     public readonly popupParent: Node;
