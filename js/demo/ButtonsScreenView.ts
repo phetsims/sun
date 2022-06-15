@@ -11,6 +11,7 @@ import Property from '../../../axon/js/Property.js';
 import Bounds2 from '../../../dot/js/Bounds2.js';
 import Dimension2 from '../../../dot/js/Dimension2.js';
 import dotRandom from '../../../dot/js/dotRandom.js';
+import EmptyObjectType from '../../../phet-core/js/types/EmptyObjectType.js';
 import PickRequired from '../../../phet-core/js/types/PickRequired.js';
 import { Circle, Color, Font, HBox, Node, Rectangle, Text, VBox, VStrut } from '../../../scenery/js/imports.js';
 import Tandem from '../../../tandem/js/Tandem.js';
@@ -34,7 +35,7 @@ import DemosScreenView, { DemosScreenViewOptions } from './DemosScreenView.js';
 const BUTTON_FONT_SIZE = 16;
 const BUTTON_FONT = new Font( { size: BUTTON_FONT_SIZE } );
 
-type SelfOptions = {};
+type SelfOptions = EmptyObjectType;
 type ButtonsScreenViewOptions = SelfOptions & PickRequired<DemosScreenViewOptions, 'tandem'>;
 
 export default class ButtonsScreenView extends DemosScreenView {

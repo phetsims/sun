@@ -7,10 +7,11 @@
  */
 
 import optionize from '../../phet-core/js/optionize.js';
+import EmptyObjectType from '../../phet-core/js/types/EmptyObjectType.js';
 import { Line, LineOptions } from '../../scenery/js/imports.js';
 import sun from './sun.js';
 
-type SelfOptions = {};
+type SelfOptions = EmptyObjectType;
 type HSeparatorOptions = SelfOptions & LineOptions;
 
 export default class HSeparator extends Line {

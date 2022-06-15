@@ -13,12 +13,13 @@ import BooleanProperty from '../../../axon/js/BooleanProperty.js';
 import Emitter from '../../../axon/js/Emitter.js';
 import IProperty from '../../../axon/js/IProperty.js';
 import optionize from '../../../phet-core/js/optionize.js';
+import EmptyObjectType from '../../../phet-core/js/types/EmptyObjectType.js';
 import EventType from '../../../tandem/js/EventType.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import sun from '../sun.js';
 import ButtonModel, { ButtonModelOptions } from './ButtonModel.js';
 
-type SelfOptions = {};
+type SelfOptions = EmptyObjectType;
 
 export type StickyToggleButtonModelOptions = SelfOptions & ButtonModelOptions;
 

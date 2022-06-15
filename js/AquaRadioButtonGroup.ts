@@ -8,6 +8,7 @@
  */
 
 import StrictOmit from '../../phet-core/js/types/StrictOmit.js';
+import EmptyObjectType from '../../phet-core/js/types/EmptyObjectType.js';
 import dotRandom from '../../dot/js/dotRandom.js';
 import optionize from '../../phet-core/js/optionize.js';
 import { FlowBox, FlowBoxOptions, HStrut, Node, PDOMPeer, SceneryConstants, SceneryEvent } from '../../scenery/js/imports.js';
@@ -103,7 +104,7 @@ export default class AquaRadioButtonGroup<T> extends FlowBox {
                       item.node;
 
       const radioButton = new AquaRadioButton( property, item.value, content,
-        optionize<SubsetOfAquaRadioButtonOptions, {}, AquaRadioButtonOptions>()( {
+        optionize<SubsetOfAquaRadioButtonOptions, EmptyObjectType, AquaRadioButtonOptions>()( {
           a11yNameAttribute: CLASS_NAME + instanceCount,
           labelContent: item.labelContent || null,
           soundPlayer: multiSelectionSoundPlayerFactory.getSelectionSoundPlayer( i ),

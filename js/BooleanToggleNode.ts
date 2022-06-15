@@ -12,8 +12,9 @@ import sun from './sun.js';
 import ToggleNode, { ToggleNodeOptions } from './ToggleNode.js';
 import { Node } from '../../scenery/js/imports.js';
 import IProperty from '../../axon/js/IProperty.js';
+import EmptyObjectType from '../../phet-core/js/types/EmptyObjectType.js';
 
-type SelfOptions = {};
+type SelfOptions = EmptyObjectType;
 
 export type BooleanToggleNodeOptions = SelfOptions & ToggleNodeOptions;
 

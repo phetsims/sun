@@ -18,6 +18,7 @@ import Dimension2 from '../../../dot/js/Dimension2.js';
 import dotRandom from '../../../dot/js/dotRandom.js';
 import Range from '../../../dot/js/Range.js';
 import optionize, { combineOptions } from '../../../phet-core/js/optionize.js';
+import EmptyObjectType from '../../../phet-core/js/types/EmptyObjectType.js';
 import PickRequired from '../../../phet-core/js/types/PickRequired.js';
 import PhetFont from '../../../scenery-phet/js/PhetFont.js';
 import { AlignBox, AlignGroup, Circle, HBox, Node, Rectangle, Text, VBox } from '../../../scenery/js/imports.js';
@@ -43,7 +44,7 @@ import ToggleSwitch from '../ToggleSwitch.js';
 import VSlider, { VSliderOptions } from '../VSlider.js';
 import DemosScreenView, { DemosScreenViewOptions } from './DemosScreenView.js';
 
-type SelfOptions = {};
+type SelfOptions = EmptyObjectType;
 type ButtonsScreenViewOptions = SelfOptions & PickRequired<DemosScreenViewOptions, 'tandem'>;
 
 export default class ComponentsScreenView extends DemosScreenView {

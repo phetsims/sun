@@ -12,13 +12,14 @@
 
 import IProperty from '../../../axon/js/IProperty.js';
 import optionize from '../../../phet-core/js/optionize.js';
+import EmptyObjectType from '../../../phet-core/js/types/EmptyObjectType.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import sun from '../sun.js';
 import MomentaryButtonInteractionStateProperty from './MomentaryButtonInteractionStateProperty.js';
 import MomentaryButtonModel from './MomentaryButtonModel.js';
 import RoundButton, { RoundButtonOptions } from './RoundButton.js';
 
-type SelfOptions = {};
+type SelfOptions = EmptyObjectType;
 
 export type RoundMomentaryButtonOptions = SelfOptions & RoundButtonOptions;
 

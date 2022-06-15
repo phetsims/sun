@@ -8,10 +8,11 @@
  */
 
 import IProperty from '../../../axon/js/IProperty.js';
+import EmptyObjectType from '../../../phet-core/js/types/EmptyObjectType.js';
 import sun from '../sun.js';
 import RoundStickyToggleButton, { RoundStickyToggleButtonOptions } from './RoundStickyToggleButton.js';
 
-type SelfOptions = {};
+type SelfOptions = EmptyObjectType;
 
 export type BooleanRoundStickyToggleButtonOptions = SelfOptions & RoundStickyToggleButtonOptions;
 

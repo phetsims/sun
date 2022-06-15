@@ -25,8 +25,9 @@ import sunQueryParameters from '../sunQueryParameters.js';
 import DemosScreenView, { DemosScreenViewOptions } from './DemosScreenView.js';
 import RectangularPushButton from '../buttons/RectangularPushButton.js';
 import PickRequired from '../../../phet-core/js/types/PickRequired.js';
+import EmptyObjectType from '../../../phet-core/js/types/EmptyObjectType.js';
 
-type SelfOptions = {};
+type SelfOptions = EmptyObjectType;
 type LayoutScreenViewOptions = SelfOptions & PickRequired<DemosScreenViewOptions, 'tandem'>;
 
 export default class LayoutScreenView extends DemosScreenView {

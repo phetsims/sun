@@ -10,10 +10,11 @@ import sun from '../sun.js';
 import RoundToggleButton, { RoundToggleButtonOptions } from './RoundToggleButton.js';
 import { Node } from '../../../scenery/js/imports.js';
 import optionize from '../../../phet-core/js/optionize.js';
+import EmptyObjectType from '../../../phet-core/js/types/EmptyObjectType.js';
 import StrictOmit from '../../../phet-core/js/types/StrictOmit.js';
 import Property from '../../../axon/js/Property.js';
 
-type SelfOptions = {};
+type SelfOptions = EmptyObjectType;
 
 export type BooleanRoundToggleButtonOptions = SelfOptions & StrictOmit<RoundToggleButtonOptions, 'content'>;
 

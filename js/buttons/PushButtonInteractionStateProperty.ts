@@ -7,11 +7,12 @@
  */
 
 import { DerivedProperty4, DerivedPropertyOptions } from '../../../axon/js/DerivedProperty.js';
+import EmptyObjectType from '../../../phet-core/js/types/EmptyObjectType.js';
 import sun from '../sun.js';
 import ButtonInteractionState from './ButtonInteractionState.js';
 import PushButtonModel from './PushButtonModel.js';
 
-type SelfOptions = {};
+type SelfOptions = EmptyObjectType;
 
 export type PushButtonInteractionStatePropertyOptions = SelfOptions & DerivedPropertyOptions<ButtonInteractionState>;
 
