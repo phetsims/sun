@@ -323,7 +323,8 @@ export default class ComboBox<T> extends WidthSizable( Node ) {
 
         // If fuzzing is enabled, exercise this listener some percentage of the time, so that this listener is tested.
         // The rest of the time, ignore this listener, so that the listbox remains popped up, and we test making
-        // choices from the listbox. See https://github.com/phetsims/sun/issues/677
+        // choices from the listbox. See https://github.com/phetsims/sun/issues/677 for the initial implementation,
+        // and See https://github.com/phetsims/aqua/issues/136 for the probability value chosen.
         // @ts-ignore chipper
         if ( !phet.chipper.isFuzzEnabled() || dotRandom.nextDouble() < 0.005 ) {
 
