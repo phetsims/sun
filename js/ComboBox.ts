@@ -325,7 +325,7 @@ export default class ComboBox<T> extends WidthSizable( Node ) {
         // The rest of the time, ignore this listener, so that the listbox remains popped up, and we test making
         // choices from the listbox. See https://github.com/phetsims/sun/issues/677
         // @ts-ignore chipper
-        if ( !phet.chipper.isFuzzEnabled() || dotRandom.nextDouble() < 0.25 ) {
+        if ( !phet.chipper.isFuzzEnabled() || dotRandom.nextDouble() < 0.005 ) {
 
           // Ignore if we click over the button, since the button will handle hiding the list.
           if ( !( event.trail.containsNode( this.button ) || event.trail.containsNode( this.listBox ) ) ) {
