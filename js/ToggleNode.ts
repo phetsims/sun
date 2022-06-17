@@ -161,7 +161,9 @@ export default class ToggleNode<T> extends Node {
    * A value for the alignChildren option.
    * No alignment is performed.
    */
-  public static NONE( children: Node[] ): void {}
+  public static NONE( children: Node[] ): void {
+    // Nothing to do
+  }
 }
 
 sun.register( 'ToggleNode', ToggleNode );
