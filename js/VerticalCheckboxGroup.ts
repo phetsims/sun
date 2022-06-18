@@ -18,7 +18,7 @@ import Property from '../../axon/js/Property.js';
 
 export type VerticalCheckboxGroupItem = {
   node: Node; // Label for the button
-  property: Property<boolean>; // Property associated with the button
+  property: Property<boolean>; // Property associated with the checkbox
   options?: any; // Item-specific options to be passed to the checkbox
   tandem?: Tandem; // optional tandem for PhET-iO
 };
