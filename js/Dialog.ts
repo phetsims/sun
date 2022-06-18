@@ -460,6 +460,7 @@ export default class Dialog extends Popupable( Panel, 1 ) {
     // Since many Dialogs are dynamic elements, these need to be in the state. The value of the state object doesn't
     // matter, but it instead just serves as a marker to tell the state engine to recreate the Dialog (if dynamic) when
     // setting state.
+    // @ts-ignore
     supertype: DynamicMarkerIO
   } );
 }
