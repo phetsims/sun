@@ -12,7 +12,7 @@ import Property from '../../axon/js/Property.js';
 import InstanceRegistry from '../../phet-core/js/documentation/InstanceRegistry.js';
 import merge from '../../phet-core/js/merge.js';
 import optionize from '../../phet-core/js/optionize.js';
-import { Line, Node, NodeOptions, PressListener, SceneryConstants } from '../../scenery/js/imports.js';
+import { AlignBox, AlignGroup, HBox, HBoxOptions, Node, PressListener, SceneryConstants } from '../../scenery/js/imports.js';
 import Tandem from '../../tandem/js/Tandem.js';
 import sun from './sun.js';
 import ToggleSwitch, { ToggleSwitchOptions } from './ToggleSwitch.js';
@@ -29,19 +29,16 @@ type SelfOptions = {
   // options passed to ToggleSwitch
   toggleSwitchOptions?: ToggleSwitchOptions;
 
-  // space between labels and switch
-  xSpacing?: number;
-
   // method of making the labels look disabled
   setEnabled?: ( labelNode: Node, enabled: boolean ) => void;
 
-  // if true, centerX will be at the centerX of the ToggleSwitch
-  centerOnButton?: boolean;
+  // if true, this.center will be at the center of the ToggleSwitch
+  centerOnSwitch?: boolean;
 };
 
-export type ABSwitchOptions = SelfOptions & NodeOptions;
+export type ABSwitchOptions = SelfOptions & HBoxOptions;
 
-export default class ABSwitch<T> extends Node {
+export default class ABSwitch<T> extends HBox {
 
   private readonly disposeABSwitch: () => void;
 
@@ -54,13 +51,18 @@ export default class ABSwitch<T> extends Node {
    * @param providedOptions
    */
   public constructor( property: Property<T>, valueA: T, labelA: Node, valueB: T, labelB: Node, providedOptions?: ABSwitchOptions ) {
+    // @ts-ignore
+    assert && assert( !providedOptions || providedOptions.xSpacing === undefined );//XXX
+
+    // @ts-ignore
+    assert && assert( !providedOptions || providedOptions.centerOnButton === undefined );//XXX
 
     // PhET-iO requirements
     assert && assert( labelA.tandem, 'labelA must have a tandem' );
     assert && assert( labelB.tandem, 'labelB must have a tandem' );
 
     // default option values
-    const options = optionize<ABSwitchOptions, SelfOptions, NodeOptions>()( {
+    const options = optionize<ABSwitchOptions, SelfOptions, HBoxOptions>()( {
 
       // SelfOptions
       toggleSwitchOptions: {
@@ -68,13 +70,13 @@ export default class ABSwitch<T> extends Node {
           phetioFeatured: false // ABSwitch has an enabledProperty that is preferred to the sub-component's
         }
       },
-      xSpacing: 8,
       setEnabled: DEFAULT_SET_ENABLED,
-      centerOnButton: false,
+      centerOnSwitch: false,
 
-      // NodeOptions
+      // HBoxOptions
       cursor: 'pointer',
       disabledOpacity: SceneryConstants.DISABLED_OPACITY,
+      spacing: 8,
 
       // phet-io
       tandem: Tandem.REQUIRED,
@@ -82,36 +84,29 @@ export default class ABSwitch<T> extends Node {
       phetioEnabledPropertyInstrumented: true // opt into default PhET-iO instrumented enabledProperty
     }, providedOptions );
 
-    super();
-
     const toggleSwitch = new ToggleSwitch<T>( property, valueA, valueB, merge( {
       tandem: options.tandem.createTandem( 'toggleSwitch' )
     }, options.toggleSwitchOptions ) );
 
-    // rendering order
-    this.addChild( toggleSwitch );
-    this.addChild( labelA );
-    this.addChild( labelB );
+    let nodeA = labelA;
+    let nodeB = labelB;
+    if ( options.centerOnSwitch ) {
 
-    // layout: 'A' on the left, 'B' on the right
-    labelA.right = toggleSwitch.left - options.xSpacing;
-    labelA.centerY = toggleSwitch.centerY;
-    labelB.left = toggleSwitch.right + options.xSpacing;
-    labelB.centerY = toggleSwitch.centerY;
-
-    // add a horizontal strut that will cause the 'centerX' of this node to be at the center of the button
-    if ( options.centerOnButton ) {
-      const additionalWidth = Math.abs( labelA.width - labelB.width );
-      const strut = new Line( 0, 0, this.width + additionalWidth, 0 );
-      this.addChild( strut );
-      strut.moveToBack();
-      if ( labelA.width < labelB.width ) {
-        strut.left = labelA.left - ( additionalWidth / 2 );
-      }
-      else {
-        strut.left = labelA.left;
-      }
+      // Make both labels have the same effective size, so that this.center is at the center of toggleSwitch.
+      const alignGroup = new AlignGroup();
+      nodeA = new AlignBox( labelA, {
+        group: alignGroup,
+        xAlign: 'right'
+      } );
+      nodeB = new AlignBox( labelB, {
+        group: alignGroup,
+        xAlign: 'left'
+      } );
     }
+
+    options.children = [ nodeA, toggleSwitch, nodeB ];
+
+    super( options );
 
     const propertyListener = ( value: T ) => {
       if ( options.setEnabled ) {
@@ -152,8 +147,6 @@ export default class ABSwitch<T> extends Node {
       pressListenerA.dispose();
       pressListenerB.dispose();
     };
-
-    this.mutate( options );
 
     // support for binder documentation, stripped out in builds and only runs when ?binder is specified
     assert && phet.chipper.queryParameters.binder && InstanceRegistry.registerDataURL( 'sun', 'ABSwitch', this );
