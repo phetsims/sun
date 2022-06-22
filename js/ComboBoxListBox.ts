@@ -323,7 +323,9 @@ export default class ComboBoxListBox<T> extends Panel {
    */
   private voiceOnNewSelection( newValue: T, oldValue: T, listItemNode: ComboBoxListItemNode<T> ): void {
     const responseOptions: SpeakingOptions = {
+      nameResponse: listItemNode.voicingNameResponse,
       objectResponse: null,
+      contextResponse: listItemNode.voicingContextResponse,
       hintResponse: null
     };
     if ( oldValue === newValue ) {
@@ -331,7 +333,9 @@ export default class ComboBoxListBox<T> extends Panel {
       // If there is no change in value, then there is no context response
       responseOptions.contextResponse = null;
     }
-    this.voiceOnSelectionNode.voicingSpeakFullResponse( responseOptions );
+
+    // Voice through this node since the listItemNode is about to be hidden (setting it to voicingVisible:false). See https://github.com/phetsims/ratio-and-proportion/issues/474
+    this.voiceOnSelectionNode.voicingSpeakResponse( responseOptions );
   }
 }
 
