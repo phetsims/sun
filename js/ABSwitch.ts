@@ -51,11 +51,6 @@ export default class ABSwitch<T> extends HBox {
    * @param providedOptions
    */
   public constructor( property: Property<T>, valueA: T, labelA: Node, valueB: T, labelB: Node, providedOptions?: ABSwitchOptions ) {
-    // @ts-ignore
-    assert && assert( !providedOptions || providedOptions.xSpacing === undefined );//XXX
-
-    // @ts-ignore
-    assert && assert( !providedOptions || providedOptions.centerOnButton === undefined );//XXX
 
     // PhET-iO requirements
     assert && assert( labelA.tandem, 'labelA must have a tandem' );
