@@ -20,7 +20,7 @@ import Utils from '../../dot/js/Utils.js';
 import Vector2 from '../../dot/js/Vector2.js';
 import { Shape } from '../../kite/js/imports.js';
 import optionize from '../../phet-core/js/optionize.js';
-import { DragListener, IPaint, LinearGradient, Node, Rectangle, SceneryConstants, Voicing, VoicingOptions } from '../../scenery/js/imports.js';
+import { DragListener, IPaint, LinearGradient, Node, NodeOptions, Rectangle, SceneryConstants, Voicing, VoicingOptions } from '../../scenery/js/imports.js';
 import EventType from '../../tandem/js/EventType.js';
 import PhetioObject from '../../tandem/js/PhetioObject.js';
 import Tandem from '../../tandem/js/Tandem.js';
@@ -67,7 +67,7 @@ type SelfOptions = {
   switchToLeftSoundPlayer?: ISoundPlayer;
   switchToRightSoundPlayer?: ISoundPlayer;
 };
-type ParentOptions = VoicingOptions; // VoicingOptions includes NodeOptions
+type ParentOptions = VoicingOptions & NodeOptions;
 export type ToggleSwitchOptions = SelfOptions & ParentOptions;
 
 export default class ToggleSwitch<T> extends Voicing( Node, 0 ) {

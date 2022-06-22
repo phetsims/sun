@@ -22,7 +22,7 @@ import merge from '../../phet-core/js/merge.js';
 import optionize from '../../phet-core/js/optionize.js';
 import Orientation from '../../phet-core/js/Orientation.js';
 import swapObjectKeys from '../../phet-core/js/swapObjectKeys.js';
-import { DragListener, FocusHighlightFromNode, IPaint, Node, Path, SceneryConstants, SceneryEvent } from '../../scenery/js/imports.js';
+import { DragListener, FocusHighlightFromNode, IPaint, Node, NodeOptions, Path, SceneryConstants, SceneryEvent } from '../../scenery/js/imports.js';
 import Tandem from '../../tandem/js/Tandem.js';
 import BooleanIO from '../../tandem/js/types/BooleanIO.js';
 import IOType from '../../tandem/js/types/IOType.js';
@@ -128,8 +128,10 @@ type SelfOptions = {
   valueChangeSoundGeneratorOptions?: ValueChangeSoundPlayerOptions;
 };
 
+type ParentOptions = AccessibleSliderOptions & NodeOptions;
+
 // We provide these options to the super
-export type SliderOptions = SelfOptions & StrictOmit<AccessibleSliderOptions, 'panTargetNode' | 'valueProperty' | 'enabledRangeProperty'>;
+export type SliderOptions = SelfOptions & StrictOmit<ParentOptions, 'panTargetNode' | 'valueProperty' | 'enabledRangeProperty'>;
 
 type TickOptions = Pick<SelfOptions, 'tickLabelSpacing' | 'majorTickLength' | 'majorTickStroke' | 'majorTickLineWidth' | 'minorTickLength' | 'minorTickStroke' | 'minorTickLineWidth'>;
 
@@ -174,7 +176,7 @@ export default class Slider extends AccessibleSlider( Node, 0 ) {
     assert && assertMutuallyExclusiveOptions( providedOptions, [ 'trackNode' ], [
       'trackSize', 'trackFillEnabled', 'trackFillDisabled', 'trackStroke', 'trackLineWidth', 'trackCornerRadius' ] );
 
-    let options = optionize<SliderOptions, StrictOmit<SelfOptions, 'enabledRangeProperty'>, AccessibleSliderOptions>()( {
+    let options = optionize<SliderOptions, StrictOmit<SelfOptions, 'enabledRangeProperty'>, ParentOptions>()( {
 
       orientation: Orientation.HORIZONTAL,
       trackNode: null,

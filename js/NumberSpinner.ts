@@ -15,7 +15,7 @@ import merge from '../../phet-core/js/merge.js';
 import optionize, { combineOptions } from '../../phet-core/js/optionize.js';
 // @ts-ignore FIX DEPENDENCY ON SCENERY-PHET
 import NumberDisplay, { NumberDisplayOptions } from '../../scenery-phet/js/NumberDisplay.js';
-import { IColor, Node, SceneryConstants } from '../../scenery/js/imports.js';
+import { IColor, Node, NodeOptions, SceneryConstants } from '../../scenery/js/imports.js';
 import Tandem from '../../tandem/js/Tandem.js';
 import AccessibleNumberSpinner, { AccessibleNumberSpinnerOptions } from './accessibility/AccessibleNumberSpinner.js';
 import ArrowButton, { ArrowButtonOptions } from './buttons/ArrowButton.js';
@@ -62,9 +62,9 @@ type SelfOptions = {
   mouseAreaXDilation?: number;
   mouseAreaYDilation?: number;
 };
-
+type ParentOptions = AccessibleNumberSpinnerOptions & NodeOptions;
 export type NumberSpinnerOptions = SelfOptions &
-  StrictOmit<AccessibleNumberSpinnerOptions, 'children' | 'valueProperty' | 'enabledRangeProperty'>;
+  StrictOmit<ParentOptions, 'children' | 'valueProperty' | 'enabledRangeProperty'>;
 
 export default class NumberSpinner extends AccessibleNumberSpinner( Node, 0 ) {
 
@@ -83,7 +83,7 @@ export default class NumberSpinner extends AccessibleNumberSpinner( Node, 0 ) {
 
     const options = optionize<NumberSpinnerOptions,
       StrictOmit<SelfOptions, 'incrementFunction' | 'decrementFunction'>,
-      AccessibleNumberSpinnerOptions>()( {
+      ParentOptions>()( {
 
       // SelfOptions
       arrowsPosition: 'bothRight',

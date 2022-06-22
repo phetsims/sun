@@ -17,11 +17,13 @@ import gracefulBind from '../../phet-core/js/gracefulBind.js';
 import inheritance from '../../phet-core/js/inheritance.js';
 import optionize from '../../phet-core/js/optionize.js';
 import Constructor from '../../phet-core/js/types/Constructor.js';
+import PickOptional from '../../phet-core/js/types/PickOptional.js';
 import { FocusManager, Node, NodeOptions } from '../../scenery/js/imports.js';
 import Tandem from '../../tandem/js/Tandem.js';
 import sun from './sun.js';
 
-export type PopupableOptions = {
+type SelfOptions = {
+
   // Don't use PopupableNode here (it creates... a lot of type issues and circularity)
   showPopup?: ( popup: Node, isModal: boolean ) => void;
   hidePopup?: ( popup: Node, isModal: boolean ) => void;
@@ -32,17 +34,14 @@ export type PopupableOptions = {
   // If desired, the layoutBounds that should be used for layout
   layoutBounds?: Bounds2 | null;
 
-  tandem?: Tandem;
-
-  // pdom
-
   // The Node that receives focus when the Popupable is shown. If null, focus is not set.
   focusOnShowNode?: Node | null;
 
   // The Node that receives focus when the Popupable is closed. If null, focus will return
   // to the Node that had focus when the Dialog opened.
   focusOnHideNode?: Node | null;
-};
+}
+export type PopupableOptions = SelfOptions & PickOptional<NodeOptions, 'tandem'>;
 
 const Popupable = <SuperType extends Constructor>( type: SuperType, optionsArgPosition: number ) => {
   assert && assert( _.includes( inheritance( type ), Node ), 'Only Node subtypes should mix Popupable' );

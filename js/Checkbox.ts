@@ -10,7 +10,7 @@ import PhetioAction from '../../tandem/js/PhetioAction.js';
 import validate from '../../axon/js/validate.js';
 import Matrix3 from '../../dot/js/Matrix3.js';
 import InstanceRegistry from '../../phet-core/js/documentation/InstanceRegistry.js';
-import { FireListener, IPaint, isWidthSizable, LayoutConstraint, Node, Path, Rectangle, SceneryConstants, Voicing, VoicingOptions, WidthSizable, WidthSizableOptions } from '../../scenery/js/imports.js';
+import { FireListener, IPaint, isWidthSizable, LayoutConstraint, Node, NodeOptions, Path, Rectangle, SceneryConstants, Voicing, VoicingOptions, WidthSizable, WidthSizableOptions } from '../../scenery/js/imports.js';
 import checkEmptySolidShape from '../../sherpa/js/fontawesome-4/checkEmptySolidShape.js';
 import checkSquareOSolidShape from '../../sherpa/js/fontawesome-4/checkSquareOSolidShape.js';
 import checkboxCheckedSoundPlayer from '../../tambo/js/shared-sound-players/checkboxCheckedSoundPlayer.js';
@@ -57,7 +57,7 @@ type SelfOptions = {
   phetioLinkProperty?: boolean;
 };
 
-type ParentOptions = WidthSizableOptions & VoicingOptions; // VoicingOptions includes NodeOptions
+type ParentOptions = WidthSizableOptions & VoicingOptions & NodeOptions;
 
 export type CheckboxOptions = SelfOptions & StrictOmit<ParentOptions, 'children' | 'mouseArea' | 'touchArea'>;
 

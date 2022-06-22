@@ -8,7 +8,7 @@
 
 import IProperty from '../../axon/js/IProperty.js';
 import PhetFont from '../../scenery-phet/js/PhetFont.js';
-import { FireListener, IPaint, Node, Path, Rectangle, SceneryEvent, Text, Voicing, VoicingOptions } from '../../scenery/js/imports.js';
+import { FireListener, IPaint, Node, NodeOptions, Path, Rectangle, SceneryEvent, Text, Voicing, VoicingOptions } from '../../scenery/js/imports.js';
 import checkSolidShape from '../../sherpa/js/fontawesome-5/checkSolidShape.js';
 import EventType from '../../tandem/js/EventType.js';
 import Tandem from '../../tandem/js/Tandem.js';
@@ -47,7 +47,7 @@ type SelfOptions = {
 
   textFill?: IPaint;
 };
-type ParentOptions = VoicingOptions; // VoicingOptions includes NodeOptions
+type ParentOptions = VoicingOptions & NodeOptions;
 export type MenuItemOptions = SelfOptions & ParentOptions;
 
 export default class MenuItem extends Voicing( Node, 0 ) {

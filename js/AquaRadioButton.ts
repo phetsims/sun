@@ -9,7 +9,7 @@
 import IProperty from '../../axon/js/IProperty.js';
 import InstanceRegistry from '../../phet-core/js/documentation/InstanceRegistry.js';
 import optionize from '../../phet-core/js/optionize.js';
-import { Circle, FireListener, IColor, Node, Rectangle, SceneryConstants, Voicing, VoicingOptions } from '../../scenery/js/imports.js';
+import { Circle, FireListener, IColor, Node, NodeOptions, Rectangle, SceneryConstants, Voicing, VoicingOptions } from '../../scenery/js/imports.js';
 import ISoundPlayer from '../../tambo/js/ISoundPlayer.js';
 import multiSelectionSoundPlayerFactory from '../../tambo/js/multiSelectionSoundPlayerFactory.js';
 import Tandem from '../../tandem/js/Tandem.js';
@@ -42,7 +42,7 @@ type SelfOptions = {
   // browser. Otherwise, arrow keys will navigate through all inputs of type radio in the document.
   a11yNameAttribute?: string | number | null;
 };
-type ParentOptions = VoicingOptions; // VoicingOptions includes NodeOptions
+type ParentOptions = VoicingOptions & NodeOptions;
 export type AquaRadioButtonOptions = SelfOptions & ParentOptions;
 
 export default class AquaRadioButton<T> extends Voicing( Node, 0 ) {

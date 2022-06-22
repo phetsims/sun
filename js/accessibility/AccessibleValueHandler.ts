@@ -25,14 +25,13 @@ import Orientation from '../../../phet-core/js/Orientation.js';
 import { IInputListener, KeyboardUtils, Node, NodeOptions, SceneryEvent, SceneryListenerFunction, Voicing, VoicingOptions } from '../../../scenery/js/imports.js';
 import Utterance from '../../../utterance-queue/js/Utterance.js';
 import sun from '../sun.js';
-import optionize, { optionize3, OptionizeDefaults } from '../../../phet-core/js/optionize.js';
+import optionize, { OptionizeDefaults } from '../../../phet-core/js/optionize.js';
 import Multilink, { UnknownMultilink } from '../../../axon/js/Multilink.js';
 import UtteranceQueue from '../../../utterance-queue/js/UtteranceQueue.js';
 import IProperty from '../../../axon/js/IProperty.js';
 import Constructor from '../../../phet-core/js/types/Constructor.js';
 import IntentionalAny from '../../../phet-core/js/types/IntentionalAny.js';
 import IReadOnlyProperty from '../../../axon/js/IReadOnlyProperty.js';
-import StrictOmit from '../../../phet-core/js/types/StrictOmit.js';
 
 // constants
 const DEFAULT_TAG_NAME = 'input';
@@ -177,7 +176,9 @@ type SelfOptions = {
   tagName?: null;
 };
 
-type AccessibleValueHandlerOptions = SelfOptions & StrictOmit<VoicingOptions, 'inputType'>;
+type ParentOptions = VoicingOptions & NodeOptions;
+
+export type AccessibleValueHandlerOptions = SelfOptions & VoicingOptions; // do not use ParentOptions here!
 
 /**
  * @param Type
@@ -265,7 +266,7 @@ const AccessibleValueHandler = <SuperType extends Constructor>( Type: SuperType,
         assert( providedOptions.keyboardStep, 'rounding to keyboardStep, define appropriate keyboardStep to round to' );
       }
 
-      const defaults: OptionizeDefaults<SelfOptions, NodeOptions> = {
+      const defaults: OptionizeDefaults<SelfOptions, ParentOptions> = {
 
         // other
         startInput: _.noop,
@@ -294,7 +295,7 @@ const AccessibleValueHandler = <SuperType extends Constructor>( Type: SuperType,
         inputType: null
       };
 
-      const options = optionize3<AccessibleValueHandlerOptions, SelfOptions, NodeOptions>()( {}, defaults, providedOptions );
+      const options = optionize<AccessibleValueHandlerOptions, SelfOptions, ParentOptions>()( defaults, providedOptions );
 
       assert && providedOptions && assert( !providedOptions.hasOwnProperty( 'tagName' ) || providedOptions.tagName === null,
         'AccessibleValueHandler sets its own tagName. Only provide tagName to clear accessible content from the PDOM' );
@@ -1033,4 +1034,3 @@ const correctRounding = function( newValue: number, currentValue: number, stepSi
 AccessibleValueHandler.DEFAULT_TAG_NAME = DEFAULT_TAG_NAME;
 
 export default AccessibleValueHandler;
-export type { AccessibleValueHandlerOptions };

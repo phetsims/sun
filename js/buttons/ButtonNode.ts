@@ -15,7 +15,7 @@ import Bounds2 from '../../../dot/js/Bounds2.js';
 import Dimension2 from '../../../dot/js/Dimension2.js';
 import merge from '../../../phet-core/js/merge.js';
 import optionize from '../../../phet-core/js/optionize.js';
-import { AlignBox, AlignBoxXAlign, AlignBoxYAlign, Brightness, Color, Contrast, Grayscale, IColor, isHeightSizable, isWidthSizable, Node, PaintableNode, PaintColorProperty, Path, PressListener, PressListenerOptions, SceneryConstants, Sizable, SizableOptions, Voicing, VoicingOptions } from '../../../scenery/js/imports.js';
+import { AlignBox, AlignBoxXAlign, AlignBoxYAlign, Brightness, Color, Contrast, Grayscale, IColor, isHeightSizable, isWidthSizable, Node, NodeOptions, PaintableNode, PaintColorProperty, Path, PressListener, PressListenerOptions, SceneryConstants, Sizable, SizableOptions, Voicing, VoicingOptions } from '../../../scenery/js/imports.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import ColorConstants from '../ColorConstants.js';
 import sun from '../sun.js';
@@ -82,7 +82,7 @@ type SelfOptions = {
   // Alter the appearance when changing the enabled of the button.
   enabledAppearanceStrategy?: EnabledAppearanceStrategy;
 };
-type ParentOptions = SizableOptions & VoicingOptions; // VoicingOptions includes NodeOptions
+type ParentOptions = SizableOptions & VoicingOptions & NodeOptions;
 export type ButtonNodeOptions = SelfOptions & ParentOptions;
 
 export default class ButtonNode extends Sizable( Voicing( Node, 0 ) ) {
