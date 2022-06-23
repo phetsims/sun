@@ -237,7 +237,7 @@ export default class Slider extends AccessibleSlider( Node, 0 ) {
       phetioEnabledPropertyInstrumented: true // opt into default PhET-iO instrumented enabledProperty
     }, providedOptions );
 
-    options = merge( {
+    options = merge( { // eslint-disable-line bad-typescript-text
       ariaOrientation: options.orientation
     }, options );
 
