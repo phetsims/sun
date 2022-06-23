@@ -148,10 +148,10 @@ function demoMultiplePanels( layoutBounds: Bounds2 ): Node {
     spacing: 5,
     children: [
       sectionText( 'Checkboxes' ),
-      new Checkbox( normalText( 'First checkbox' ), createBooleanProperty( false ), {
+      new Checkbox( createBooleanProperty( false ), normalText( 'First checkbox' ), {
         boxWidth: BOX_WIDTH
       } ),
-      new Checkbox( normalText( 'Second checkbox' ), createBooleanProperty( false ), {
+      new Checkbox( createBooleanProperty( false ), normalText( 'Second checkbox' ), {
         boxWidth: BOX_WIDTH
       } )
     ]
@@ -216,63 +216,63 @@ function demoCheckboxesWithIcons( layoutBounds: Bounds2 ): Node {
     spacing: 5,
     children: [
       sectionText( 'Checks' ),
-      new Checkbox( new FlowBox( {
+      new Checkbox( createBooleanProperty(), new FlowBox( {
         spacing: 10,
         children: [
           normalText( 'First' ),
           new Rectangle( 0, 0, 14, 14, { fill: 'red' } )
         ]
-      } ), createBooleanProperty(), {
+      } ), {
         boxWidth: BOX_WIDTH
       } ),
-      new Checkbox( new FlowBox( {
+      new Checkbox( createBooleanProperty(), new FlowBox( {
         spacing: 10,
         children: [
           normalText( 'Second' ),
           new Rectangle( 0, 0, 14, 14, { fill: 'magenta' } )
         ]
-      } ), createBooleanProperty(), {
+      } ), {
         boxWidth: BOX_WIDTH
       } ),
-      new Checkbox( new FlowBox( {
+      new Checkbox( createBooleanProperty(), new FlowBox( {
         spacing: 10,
         children: [
           normalText( 'Indent' ),
           new Rectangle( 0, 0, 14, 14, { fill: 'blue' } )
         ]
-      } ), createBooleanProperty(), {
+      } ), {
         boxWidth: BOX_WIDTH,
         layoutOptions: {
           leftMargin: 20
         }
       } ),
-      new Checkbox( new FlowBox( {
+      new Checkbox( createBooleanProperty(), new FlowBox( {
         spacing: 10,
         scale: 0.7,
         children: [
           normalText( 'Scaled 1' ),
           new Rectangle( 0, 0, 14, 14, { fill: 'orange' } )
         ]
-      } ), createBooleanProperty(), {
+      } ), {
         boxWidth: BOX_WIDTH
       } ),
-      new Checkbox( new FlowBox( {
+      new Checkbox( createBooleanProperty(), new FlowBox( {
         spacing: 10,
         children: [
           normalText( 'Scaled 2' ),
           new Rectangle( 0, 0, 14, 14, { fill: 'orange' } )
         ]
-      } ), createBooleanProperty(), {
+      } ), {
         boxWidth: BOX_WIDTH,
         scale: 0.7
       } ),
-      new Checkbox( new FlowBox( {
+      new Checkbox( createBooleanProperty(), new FlowBox( {
         spacing: 10,
         children: [
           normalText( 'Reflected' ),
           new Rectangle( 0, 0, 14, 14, { fill: 'orange' } )
         ]
-      } ), createBooleanProperty(), {
+      } ), {
         boxWidth: BOX_WIDTH,
         scale: new Vector2( -1, 1 )
       } ),
@@ -282,23 +282,23 @@ function demoCheckboxesWithIcons( layoutBounds: Bounds2 ): Node {
         stretch: true,
         layoutOptions: { leftMargin: 20 },
         children: [
-          new Checkbox( new FlowBox( {
+          new Checkbox( createBooleanProperty(), new FlowBox( {
             stretch: true,
             spacing: 10,
             children: [
               normalText( 'Nested 1' ),
               new Rectangle( 0, 0, 14, 14, { fill: 'black' } )
             ]
-          } ), createBooleanProperty(), {
+          } ), {
             boxWidth: BOX_WIDTH
           } ),
-          new Checkbox( new FlowBox( {
+          new Checkbox( createBooleanProperty(), new FlowBox( {
             spacing: 10,
             children: [
               normalText( 'Nested 2' ),
               new Rectangle( 0, 0, 14, 14, { fill: 'black' } )
             ]
-          } ), createBooleanProperty(), {
+          } ), {
             boxWidth: BOX_WIDTH
           } )
         ]

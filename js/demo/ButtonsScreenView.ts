@@ -53,9 +53,9 @@ function demoRadioButtons( layoutBounds: Bounds2 ): Node {
 
   // For enabling/disabling all buttons
   const buttonsEnabledProperty = new Property( true );
-  const buttonsEnabledCheckbox = new Checkbox( new Text( 'buttons enabled', {
+  const buttonsEnabledCheckbox = new Checkbox( buttonsEnabledProperty, new Text( 'buttons enabled', {
     font: new Font( { size: 20 } )
-  } ), buttonsEnabledProperty );
+  } ) );
 
   const radioGroupBaseColor = new Property( 'green' );
 
@@ -124,9 +124,9 @@ function demoToggleButtons( layoutBounds: Bounds2 ): Node {
 
   // For enabling/disabling all buttons
   const buttonsEnabledProperty = new Property( true );
-  const buttonsEnabledCheckbox = new Checkbox( new Text( 'buttons enabled', {
+  const buttonsEnabledCheckbox = new Checkbox( buttonsEnabledProperty, new Text( 'buttons enabled', {
     font: new Font( { size: 20 } )
-  } ), buttonsEnabledProperty );
+  } ) );
 
   // Demonstrate using arbitrary values for toggle button.  Wrap in extra
   // quotes so it is clear that it is a string in the debugging UI.
@@ -162,9 +162,9 @@ function demoMomentaryButtons( layoutBounds: Bounds2 ): Node {
 
   // For enabling/disabling all buttons
   const buttonsEnabledProperty = new Property( true );
-  const buttonsEnabledCheckbox = new Checkbox( new Text( 'buttons enabled', {
+  const buttonsEnabledCheckbox = new Checkbox( buttonsEnabledProperty, new Text( 'buttons enabled', {
     font: new Font( { size: 20 } )
-  } ), buttonsEnabledProperty, {
+  } ), {
     tandem: Tandem.OPT_OUT
   } );
 
@@ -204,9 +204,9 @@ function demoPushButtons( layoutBounds: Bounds2 ): Node {
 
   // For enabling/disabling all buttons
   const buttonsEnabledProperty = new Property( true );
-  const buttonsEnabledCheckbox = new Checkbox( new Text( 'buttons enabled', {
+  const buttonsEnabledCheckbox = new Checkbox( buttonsEnabledProperty, new Text( 'buttons enabled', {
     font: new Font( { size: 20 } )
-  } ), buttonsEnabledProperty );
+  } ) );
 
   //===================================================================================
   // Pseudo-3D buttons A, B, C, D, E

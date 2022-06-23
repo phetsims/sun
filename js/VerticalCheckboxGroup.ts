@@ -67,7 +67,7 @@ export default class VerticalCheckboxGroup extends VBox {
         children: [ new HStrut( maxItemWidth ), item.node ]
       } );
 
-      const checkbox = new Checkbox( content, item.property, merge( {}, options.checkboxOptions, item.options, {
+      const checkbox = new Checkbox( item.property, content, merge( {}, options.checkboxOptions, item.options, {
         tandem: item.tandem || Tandem.OPTIONAL
       } ) );
 

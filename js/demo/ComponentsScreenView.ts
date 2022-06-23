@@ -199,15 +199,15 @@ function demoCheckbox( layoutBounds: Bounds2 ): Node {
   const property = new BooleanProperty( true );
   const enabledProperty = new BooleanProperty( true, { phetioFeatured: true } );
 
-  const checkbox = new Checkbox( new Text( 'My Awesome Checkbox', {
+  const checkbox = new Checkbox( property, new Text( 'My Awesome Checkbox', {
     font: new PhetFont( 30 )
-  } ), property, {
+  } ), {
     enabledProperty: enabledProperty
   } );
 
-  const enabledCheckbox = new Checkbox( new Text( 'enabled', {
+  const enabledCheckbox = new Checkbox( enabledProperty, new Text( 'enabled', {
     font: new PhetFont( 20 )
-  } ), enabledProperty );
+  } ) );
 
   return new VBox( {
     children: [ checkbox, enabledCheckbox ],
@@ -237,7 +237,7 @@ function demoComboBox( layoutBounds: Bounds2 ): Node {
     enabledProperty: enabledProperty
   } );
 
-  const enabledCheckbox = new Checkbox( new Text( 'enabled', { font: new PhetFont( 20 ) } ), enabledProperty );
+  const enabledCheckbox = new Checkbox( enabledProperty, new Text( 'enabled', { font: new PhetFont( 20 ) } ) );
 
   const uiComponents = new VBox( {
     children: [ comboBox, enabledCheckbox ],
@@ -323,32 +323,29 @@ function demoSlider( layoutBounds: Bounds2, orientation: 'horizontal' | 'vertica
   majorTicksVisibleProperty.link( visible => {
     slider.majorTicksVisible = visible;
   } );
-  const majorTicksCheckbox = new Checkbox( new Text( 'Major ticks visible', { font: new PhetFont( 20 ) } ),
-    majorTicksVisibleProperty, {
-      tandem: Tandem.OPT_OUT,
-      left: slider.left,
-      top: slider.bottom + 40
-    } );
+  const majorTicksCheckbox = new Checkbox( majorTicksVisibleProperty, new Text( 'Major ticks visible', { font: new PhetFont( 20 ) } ), {
+    tandem: Tandem.OPT_OUT,
+    left: slider.left,
+    top: slider.bottom + 40
+  } );
 
   // show/hide minor ticks
   const minorTicksVisibleProperty = new Property( true );
   minorTicksVisibleProperty.link( visible => {
     slider.minorTicksVisible = visible;
   } );
-  const minorTicksCheckbox = new Checkbox( new Text( 'Minor ticks visible', { font: new PhetFont( 20 ) } ),
-    minorTicksVisibleProperty, {
-      tandem: Tandem.OPT_OUT,
-      left: slider.left,
-      top: majorTicksCheckbox.bottom + 40
-    } );
+  const minorTicksCheckbox = new Checkbox( minorTicksVisibleProperty, new Text( 'Minor ticks visible', { font: new PhetFont( 20 ) } ), {
+    tandem: Tandem.OPT_OUT,
+    left: slider.left,
+    top: majorTicksCheckbox.bottom + 40
+  } );
 
   // Checkbox to enable/disable slider
-  const enabledCheckbox = new Checkbox( new Text( 'Enable slider', { font: new PhetFont( 20 ) } ),
-    enabledProperty, {
-      tandem: Tandem.OPT_OUT,
-      left: slider.left,
-      top: minorTicksCheckbox.bottom + 40
-    } );
+  const enabledCheckbox = new Checkbox( enabledProperty, new Text( 'Enable slider', { font: new PhetFont( 20 ) } ), {
+    tandem: Tandem.OPT_OUT,
+    left: slider.left,
+    top: minorTicksCheckbox.bottom + 40
+  } );
 
   // restrict enabled range of slider
   const restrictedRangeProperty = new Property( false );
@@ -356,22 +353,20 @@ function demoSlider( layoutBounds: Bounds2, orientation: 'horizontal' | 'vertica
     enabledRangeProperty.value = restrictedRange ? new Range( 25, 75 ) : new Range( 0, 100 );
   } );
 
-  const enabledRangeCheckbox = new Checkbox( new Text( 'Enable Range [25, 75]', { font: new PhetFont( 20 ) } ),
-    restrictedRangeProperty, {
-      tandem: Tandem.OPT_OUT,
-      left: slider.left,
-      top: enabledCheckbox.bottom + 40
-    } );
+  const enabledRangeCheckbox = new Checkbox( restrictedRangeProperty, new Text( 'Enable Range [25, 75]', { font: new PhetFont( 20 ) } ), {
+    tandem: Tandem.OPT_OUT,
+    left: slider.left,
+    top: enabledCheckbox.bottom + 40
+  } );
 
   // If the user is holding down the thumb outside of the enabled range, and the enabled range expands, the value should
   // adjust to the new extremum of the range, see https://github.com/phetsims/mean-share-and-balance/issues/29
   const animateEnabledRangeProperty = new BooleanProperty( false );
-  const animateEnabledRangeCheckbox = new Checkbox( new Text( 'Animate Enabled Range', { font: new PhetFont( 20 ) } ),
-    animateEnabledRangeProperty, {
-      tandem: Tandem.OPT_OUT,
-      left: slider.left,
-      top: enabledRangeCheckbox.bottom + 40
-    } );
+  const animateEnabledRangeCheckbox = new Checkbox( animateEnabledRangeProperty, new Text( 'Animate Enabled Range', { font: new PhetFont( 20 ) } ), {
+    tandem: Tandem.OPT_OUT,
+    left: slider.left,
+    top: enabledRangeCheckbox.bottom + 40
+  } );
 
   stepTimer.addListener( () => {
     if ( animateEnabledRangeProperty.value ) {
@@ -517,7 +512,7 @@ function demoNumberSpinner( layoutBounds: Bounds2 ): Node {
       arrowButtonLineWidth: 0.2
     } ) );
 
-  const enabledCheckbox = new Checkbox( new Text( 'enabled', { font: new PhetFont( 20 ) } ), enabledProperty );
+  const enabledCheckbox = new Checkbox( enabledProperty, new Text( 'enabled', { font: new PhetFont( 20 ) } ) );
 
   return new VBox( {
     children: [ spinnerTopBottom, spinnerBothRight, spinnerBothBottom, spinnerLeftRight, enabledCheckbox ],
