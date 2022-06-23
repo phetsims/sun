@@ -430,6 +430,8 @@ const AccessibleValueHandler = <SuperType extends Constructor>( Type: SuperType,
 
       // create the dynamic aria-valuetext from a11yCreateAriaValueText.
       let newAriaValueText = this._a11yCreateAriaValueText( mappedValue, this._valueProperty.value, oldPropertyValue );
+
+      // eslint-disable-next-line no-simple-type-checking-assertions
       assert && assert( typeof newAriaValueText === 'string' );
 
       // Make sure that the new aria-valuetext is different from the previous one, so that if they are the same

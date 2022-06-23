@@ -45,8 +45,6 @@ export default class ComboBoxListItemNode<T> extends Voicing( Node, 0 ) {
 
   public constructor( item: ComboBoxItem<T>, highlightWidth: number, highlightHeight: number, providedOptions?: ComboBoxListItemNodeOptions ) {
 
-    assert && assert( item instanceof ComboBoxItem );
-
     const options = optionize<ComboBoxListItemNodeOptions, SelfOptions, ParentOptions>()( {
 
       cursor: 'pointer',
