@@ -24,12 +24,12 @@ export default class RectangularStickyToggleButton<T> extends RectangularButton 
   private readonly disposeRectangularStickyToggleButton: () => void;
 
   /**
+   * @param valueProperty - axon Property that can be either valueUp or valueDown.
    * @param valueUp - value when the toggle is in the 'up' position
    * @param valueDown - value when the toggle is in the 'down' position
-   * @param valueProperty - axon Property that can be either valueUp or valueDown.
-   * @param providedOptions
+   * @param providedOptions?
    */
-  public constructor( valueUp: T, valueDown: T, valueProperty: IProperty<T>, providedOptions?: RectangularStickyToggleButtonOptions ) {
+  public constructor( valueProperty: IProperty<T>, valueUp: T, valueDown: T, providedOptions?: RectangularStickyToggleButtonOptions ) {
 
     // Note it shares a tandem with this, so the emitter will be instrumented as a child of the button
     const buttonModel = new StickyToggleButtonModel( valueUp, valueDown, valueProperty, providedOptions );

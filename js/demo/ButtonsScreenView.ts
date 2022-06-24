@@ -132,7 +132,7 @@ function demoToggleButtons( layoutBounds: Bounds2 ): Node {
   // quotes so it is clear that it is a string in the debugging UI.
   const roundToggleButtonProperty = new Property( 'off' );
   roundToggleButtonProperty.lazyLink( value => console.log( `roundToggleButtonProperty.value = ${value}` ) );
-  const roundStickyToggleButton = new RoundStickyToggleButton( 'off', 'on', roundToggleButtonProperty, {
+  const roundStickyToggleButton = new RoundStickyToggleButton( roundToggleButtonProperty, 'off', 'on', {
     baseColor: new Color( 255, 0, 0 ),
     enabledProperty: buttonsEnabledProperty
   } );

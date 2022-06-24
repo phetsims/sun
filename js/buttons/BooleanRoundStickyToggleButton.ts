@@ -18,7 +18,7 @@ export type BooleanRoundStickyToggleButtonOptions = SelfOptions & RoundStickyTog
 
 export default class BooleanRoundStickyToggleButton extends RoundStickyToggleButton<boolean> {
   public constructor( booleanProperty: IProperty<boolean>, providedOptions?: BooleanRoundStickyToggleButtonOptions ) {
-    super( false, true, booleanProperty, providedOptions );
+    super( booleanProperty, false, true, providedOptions );
   }
 }
 

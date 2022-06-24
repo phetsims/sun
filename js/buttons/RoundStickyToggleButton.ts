@@ -29,12 +29,12 @@ export default class RoundStickyToggleButton<T> extends RoundButton {
   private readonly disposeRoundStickyToggleButton: () => void;
 
   /**
+   * @param valueProperty - axon Property that can be either valueUp or valueDown.
    * @param valueUp - value when the toggle is in the 'up' position
    * @param valueDown - value when the toggle is in the 'down' position
-   * @param valueProperty - axon Property that can be either valueUp or valueDown.
-   * @param providedOptions
+   * @param providedOptions?
    */
-  public constructor( valueUp: T, valueDown: T, valueProperty: IProperty<T>, providedOptions?: RoundStickyToggleButtonOptions ) {
+  public constructor( valueProperty: IProperty<T>, valueUp: T, valueDown: T, providedOptions?: RoundStickyToggleButtonOptions ) {
 
     const options = optionize<RoundStickyToggleButtonOptions, SelfOptions, RoundButtonOptions>()( {
 
