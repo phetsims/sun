@@ -38,7 +38,7 @@ export default class BooleanRectangularToggleButton extends RectangularToggleBut
       tandem: Tandem.REQUIRED
     }, providedOptions );
 
-    super( false, true, booleanProperty, options );
+    super( booleanProperty, false, true, options );
 
     this.disposeBooleanRectangularToggleButton = () => {
       content.dispose();

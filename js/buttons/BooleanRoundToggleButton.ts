@@ -41,7 +41,7 @@ class BooleanRoundToggleButton extends RoundToggleButton<boolean> {
     } );
     options.content = content;
 
-    super( false, true, booleanProperty, options );
+    super( booleanProperty, false, true, options );
 
     this.disposeBooleanRoundToggleButton = function() {
       content.dispose();

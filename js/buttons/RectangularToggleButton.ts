@@ -33,12 +33,12 @@ export default class RectangularToggleButton<T> extends RectangularButton {
   private readonly disposeRectangularToggleButton: () => void;
 
   /**
+   * @param property - axon Property that can be either valueOff or valueOn
    * @param valueOff - value when the button is in the off state
    * @param valueOn - value when the button is in the on state
-   * @param property - axon Property that can be either valueOff or valueOn
-   * @param providedOptions
+   * @param providedOptions?
    */
-  public constructor( valueOff: T, valueOn: T, property: Property<T>, providedOptions?: RectangularButtonOptions ) {
+  public constructor( property: Property<T>, valueOff: T, valueOn: T, providedOptions?: RectangularButtonOptions ) {
 
     const options = optionize<RectangularToggleButtonOptions, SelfOptions, RectangularButtonOptions>()( {
 
