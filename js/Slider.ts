@@ -96,9 +96,6 @@ type SelfOptions = {
 
   cursor?: string;
 
-  // called before valueProperty is set, passed to AccessibleValueHandler as well
-  constrainValue?: ( n: number ) => number;
-
   // Determine the portion of range that is enabled. AccessibleSlider requires this but it is optional for Slider.
   enabledRangeProperty?: AccessibleSliderOptions[ 'enabledRangeProperty' ];
 
