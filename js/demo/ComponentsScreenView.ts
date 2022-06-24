@@ -231,7 +231,7 @@ function demoComboBox( layoutBounds: Bounds2 ): Node {
 
   const enabledProperty = new BooleanProperty( true );
 
-  const comboBox = new ComboBox( items, selectedItemProperty, listParent, {
+  const comboBox = new ComboBox( selectedItemProperty, items, listParent, {
     highlightFill: 'yellow',
     listPosition: 'above',
     enabledProperty: enabledProperty

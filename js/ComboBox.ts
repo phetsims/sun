@@ -149,12 +149,12 @@ export default class ComboBox<T> extends WidthSizable( Node ) {
   private readonly disposeComboBox: () => void;
 
   /**
-   * @param items - items, in the order that they appear in the listbox
    * @param property
+   * @param items - items, in the order that they appear in the listbox
    * @param listParent node that will be used as the list's parent, use this to ensure that the list is in front of everything else
-   * @param [providedOptions]
+   * @param [providedOptions?]
    */
-  public constructor( items: ComboBoxItem<T>[], property: Property<T>, listParent: Node, providedOptions?: ComboBoxOptions ) {
+  public constructor( property: Property<T>, items: ComboBoxItem<T>[], listParent: Node, providedOptions?: ComboBoxOptions ) {
 
     assert && assert( _.uniqBy( items, ( item: ComboBoxItem<T> ) => item.value ).length === items.length, 'items must have unique values' );
 
