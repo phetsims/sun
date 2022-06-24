@@ -23,12 +23,12 @@ class BooleanRoundToggleButton extends RoundToggleButton<boolean> {
   private readonly disposeBooleanRoundToggleButton: () => void;
 
   /**
+   * @param booleanProperty
    * @param trueNode - shown when booleanProperty is true
    * @param falseNode - shown when booleanProperty is false
-   * @param booleanProperty
-   * @param providedOptions
+   * @param providedOptions?
    */
-  public constructor( trueNode: Node, falseNode: Node, booleanProperty: Property<boolean>,
+  public constructor( booleanProperty: Property<boolean>, trueNode: Node, falseNode: Node,
                       providedOptions?: BooleanRoundToggleButtonOptions ) {
 
     const options = optionize<BooleanRoundToggleButtonOptions, SelfOptions, RoundToggleButtonOptions>()( {
@@ -36,7 +36,7 @@ class BooleanRoundToggleButton extends RoundToggleButton<boolean> {
       tandem: Tandem.REQUIRED
     }, providedOptions );
 
-    const content = new BooleanToggleNode( trueNode, falseNode, booleanProperty, {
+    const content = new BooleanToggleNode( booleanProperty, trueNode, falseNode, {
       tandem: options.tandem.createTandem( 'toggleNode' )
     } );
     options.content = content;

@@ -80,7 +80,7 @@ export default class ExpandCollapseButton extends BooleanRectangularToggleButton
       .lineTo( symbolLength / 2, 0 );
     const collapseNode = new Path( minusSymbolShape, symbolOptions );
 
-    super( collapseNode, expandNode, expandedProperty, options );
+    super( expandedProperty, collapseNode, expandNode, options );
 
     // listeners must be removed in dispose
     const expandedPropertyObserver = ( expanded: boolean ) => {
