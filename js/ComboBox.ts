@@ -121,7 +121,6 @@ export type ComboBoxOptions = SelfOptions & ParentOptions;
 
 export default class ComboBox<T> extends WidthSizable( Node ) {
 
-  private items: ComboBoxItem<T>[];
   private readonly listPosition: ComboBoxListPosition;
 
   // button that shows the current selection (internal)
@@ -219,7 +218,6 @@ export default class ComboBox<T> extends WidthSizable( Node ) {
 
     super();
 
-    this.items = items;
     this.listPosition = options.listPosition;
 
     // optional label
