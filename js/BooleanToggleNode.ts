@@ -21,12 +21,15 @@ export type BooleanToggleNodeOptions = SelfOptions & ToggleNodeOptions;
 export default class BooleanToggleNode extends ToggleNode<boolean> {
 
   /**
+   * @param booleanProperty
    * @param trueNode - shown when booleanProperty is true
    * @param falseNode - shown when booleanProperty is false
-   * @param booleanProperty
-   * @param providedOptions
+   * @param providedOptions?
    */
-  public constructor( trueNode: Node, falseNode: Node, booleanProperty: IProperty<boolean>, providedOptions?: BooleanToggleNodeOptions ) {
+  public constructor( booleanProperty: IProperty<boolean>,
+                      trueNode: Node,
+                      falseNode: Node,
+                      providedOptions?: BooleanToggleNodeOptions ) {
     super( booleanProperty, [
       { value: true, node: trueNode },
       { value: false, node: falseNode }
