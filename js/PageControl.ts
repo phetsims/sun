@@ -42,11 +42,11 @@ export default class PageControl extends Node {
   private readonly disposePageControl: () => void;
 
   /**
-   * @param numberOfPages - number of pages
    * @param pageNumberProperty - which page is currently visible
+   * @param numberOfPages - number of pages
    * @param providedOptions
    */
-  public constructor( numberOfPages: number, pageNumberProperty: IProperty<number>, providedOptions: PageControlOptions ) {
+  public constructor( pageNumberProperty: IProperty<number>, numberOfPages: number, providedOptions: PageControlOptions ) {
 
     const options = optionize<PageControlOptions, SelfOptions, NodeOptions>()( {
 

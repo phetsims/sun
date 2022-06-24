@@ -428,7 +428,7 @@ function demoPageControl( layoutBounds: Bounds2 ): Node {
   } );
 
   // page control
-  const pageControl = new PageControl( carousel.numberOfPages, carousel.pageNumberProperty, {
+  const pageControl = new PageControl( carousel.pageNumberProperty, carousel.numberOfPages, {
     orientation: 'horizontal',
     interactive: true,
     dotRadius: 10,
