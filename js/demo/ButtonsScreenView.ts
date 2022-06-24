@@ -171,7 +171,7 @@ function demoMomentaryButtons( layoutBounds: Bounds2 ): Node {
   // round
   const roundMomentaryProperty = new Property( false );
   roundMomentaryProperty.lazyLink( value => console.log( `roundMomentaryProperty.value = ${value}` ) );
-  const roundMomentaryButton = new RoundMomentaryButton( false, true, roundMomentaryProperty, {
+  const roundMomentaryButton = new RoundMomentaryButton( roundMomentaryProperty, false, true, {
     baseColor: '#D76958',
     enabledProperty: buttonsEnabledProperty,
     tandem: Tandem.OPT_OUT
@@ -180,7 +180,7 @@ function demoMomentaryButtons( layoutBounds: Bounds2 ): Node {
   // rectangular
   const rectangularMomentaryProperty = new Property( false );
   rectangularMomentaryProperty.lazyLink( value => console.log( `rectangularMomentaryProperty.value = ${value}` ) );
-  const rectangularMomentaryButton = new RectangularMomentaryButton( false, true, rectangularMomentaryProperty, {
+  const rectangularMomentaryButton = new RectangularMomentaryButton( rectangularMomentaryProperty, false, true, {
     baseColor: '#724C35',
     enabledProperty: buttonsEnabledProperty,
     size: new Dimension2( 50, 40 ),

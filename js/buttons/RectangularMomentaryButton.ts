@@ -29,12 +29,12 @@ export default class RectangularMomentaryButton<T> extends RectangularButton {
   private readonly disposeRectangularMomentaryButton: () => void;
 
   /**
+   * @param property
    * @param valueOff - value when the button is in the off state
    * @param valueOn - value when the button is in the on state
-   * @param property
-   * @param [providedOptions]
+   * @param [providedOptions?]
    */
-  public constructor( valueOff: T, valueOn: T, property: IProperty<T>, providedOptions?: RectangularMomentaryButtonOptions ) {
+  public constructor( property: IProperty<T>, valueOff: T, valueOn: T, providedOptions?: RectangularMomentaryButtonOptions ) {
 
     const options = optionize<RectangularMomentaryButtonOptions, SelfOptions, RectangularButtonOptions>()( {
       tandem: Tandem.REQUIRED
