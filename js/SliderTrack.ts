@@ -62,7 +62,7 @@ export default class SliderTrack extends Node {
 
   private readonly disposeSliderTrack: () => void;
 
-  public constructor( trackNode: Node, valueProperty: IProperty<number>, range: Range, providedOptions?: SliderTrackOptions ) {
+  public constructor( valueProperty: IProperty<number>, trackNode: Node, range: Range, providedOptions?: SliderTrackOptions ) {
     super();
 
     const options = optionize<SliderTrackOptions, SelfOptions, NodeOptions>()( {

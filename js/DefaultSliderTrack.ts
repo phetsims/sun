@@ -69,7 +69,7 @@ export default class DefaultSliderTrack extends SliderTrack {
     const trackNode = new Node( {
       children: [ disabledTrack, enabledTrack ]
     } );
-    super( trackNode, valueProperty, range, options );
+    super( valueProperty, trackNode, range, options );
 
     this.enabledTrack = enabledTrack;
 
