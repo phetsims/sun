@@ -62,17 +62,17 @@ type SelfOptions = {
   enabledRangeProperty: IReadOnlyProperty<Range>;
 
   // called when input begins from user interaction
-  startInput?: SceneryListenerFunction;
+  startInput?: ( event: SceneryEvent ) => void;
 
   // called when input ends from user interaction
-  endInput?: SceneryListenerFunction;
+  endInput?: ( event: SceneryEvent | null ) => void;
 
   // Called after any user input onto this component. The value will most likely change as a result of this input,
   // but doesn't have to, like when at the min/max of the value range. Useful for input devices that support "press
   // and hold" input. However, beware that some input devices, such as a switch, have no concept of "press and hold"
   // and will trigger once per input. In those cases, this function will be called once per input (each input will look
   // like startInput->onInput->endInput all from one browser event).
-  onInput?: SceneryListenerFunction;
+  onInput?: ( event: SceneryEvent ) => void;
 
   // Constrains the value, returning a new value for the valueProperty instead.
   // Called before the valueProperty is set. This is only called when the shift key is NOT down because

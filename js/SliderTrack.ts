@@ -31,7 +31,7 @@ type SelfOptions = {
   drag?: ( e: SceneryEvent ) => void;
 
   // called when a drag sequence ends
-  endDrag?: () => void;
+  endDrag?: ( e: SceneryEvent | null ) => void;
 
   // called before valueProperty is set
   constrainValue?: ( n: number ) => number;
@@ -125,8 +125,8 @@ export default class SliderTrack extends Node {
         handleTrackEvent( event, listener.pressedTrail );
       },
 
-      end: () => {
-        options.endDrag();
+      end: event => {
+        options.endDrag( event );
       }
     } );
     trackNode.addInputListener( this.dragListener );

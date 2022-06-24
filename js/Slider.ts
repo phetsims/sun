@@ -22,7 +22,7 @@ import merge from '../../phet-core/js/merge.js';
 import optionize from '../../phet-core/js/optionize.js';
 import Orientation from '../../phet-core/js/Orientation.js';
 import swapObjectKeys from '../../phet-core/js/swapObjectKeys.js';
-import { DragListener, FocusHighlightFromNode, IPaint, Node, NodeOptions, Path, SceneryConstants, SceneryEvent } from '../../scenery/js/imports.js';
+import { DragListener, FocusHighlightFromNode, IPaint, Node, NodeOptions, Path, SceneryConstants } from '../../scenery/js/imports.js';
 import Tandem from '../../tandem/js/Tandem.js';
 import BooleanIO from '../../tandem/js/types/BooleanIO.js';
 import IOType from '../../tandem/js/types/IOType.js';
@@ -96,20 +96,11 @@ type SelfOptions = {
 
   cursor?: string;
 
-  // called when a drag sequence starts, passed to AccessibleSlider as well
-  startDrag?: ( event: SceneryEvent ) => void;
-
-  // called at the end of a drag event, after the valueProperty changes, passed to AccessibleSlider as well
-  drag?: ( event: SceneryEvent ) => void;
-
-  // called when a drag sequence ends, passed to AccessibleSlider as well
-  endDrag?: () => void;
-
   // called before valueProperty is set, passed to AccessibleValueHandler as well
   constrainValue?: ( n: number ) => number;
 
-  // determine the portion of range that is enabled
-  enabledRangeProperty?: IReadOnlyProperty<Range> | null;
+  // Determine the portion of range that is enabled. AccessibleSlider requires this but it is optional for Slider.
+  enabledRangeProperty?: AccessibleSliderOptions[ 'enabledRangeProperty' ];
 
   // opacity applied to the entire Slider when disabled
   disabledOpacity?: number;
@@ -441,9 +432,9 @@ export default class Slider extends AccessibleSlider( Node, 0 ) {
         }
       },
 
-      end: () => {
+      end: event => {
         if ( this.enabledProperty.get() ) {
-          options.endDrag();
+          options.endDrag( event );
         }
         this.proposedValue = null;
       }
