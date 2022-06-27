@@ -30,8 +30,7 @@ import AquaRadioButtonGroup from '../AquaRadioButtonGroup.js';
 import RectangularPushButton from '../buttons/RectangularPushButton.js';
 import Carousel from '../Carousel.js';
 import Checkbox from '../Checkbox.js';
-import ComboBox from '../ComboBox.js';
-import ComboBoxItem from '../ComboBoxItem.js';
+import ComboBox, { ComboBoxItem } from '../ComboBox.js';
 import HSlider, { HSliderOptions } from '../HSlider.js';
 import NumberSpinner, { NumberSpinnerOptions } from '../NumberSpinner.js';
 import OnOffSwitch from '../OnOffSwitch.js';
@@ -219,13 +218,16 @@ function demoCheckbox( layoutBounds: Bounds2 ): Node {
 // Creates a demo of ComboBox
 function demoComboBox( layoutBounds: Bounds2 ): Node {
 
-  const labels = [ 'one', 'two', 'three', 'four', 'five', 'six' ];
+  const values = [ 'one', 'two', 'three', 'four', 'five', 'six' ];
   const items: ComboBoxItem<string>[] = [];
-  labels.forEach( label => {
-    items.push( new ComboBoxItem<string>( new Text( label, { font: new PhetFont( { size: 20 } ) } ), label ) );
+  values.forEach( value => {
+    items.push( {
+      value: value,
+      node: new Text( value, { font: new PhetFont( { size: 20 } ) } )
+    } );
   } );
 
-  const selectedItemProperty = new Property( labels[ 0 ] );
+  const selectedItemProperty = new Property( values[ 0 ] );
 
   const listParent = new Node();
 

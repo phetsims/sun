@@ -14,9 +14,9 @@ import optionize from '../../phet-core/js/optionize.js';
 import StringUtils from '../../phetcommon/js/util/StringUtils.js';
 import { IndexedNodeIO, IPaint, Node, NodeOptions, Rectangle, Voicing, VoicingOptions } from '../../scenery/js/imports.js';
 import Tandem from '../../tandem/js/Tandem.js';
-import ComboBoxItem from './ComboBoxItem.js';
 import sun from './sun.js';
 import SunConstants from './SunConstants.js';
+import { ComboBoxItem } from './ComboBox.js';
 
 type SelfOptions = {
   align?: 'left' | 'right' | 'center';
@@ -83,8 +83,8 @@ export default class ComboBoxListItemNode<T> extends Voicing( Node, 0 ) {
       'value needs to be filled in' );
 
     // pdom: get innerContent from the item
-    options.innerContent = item.a11yLabel;
-    options.voicingObjectResponse = item.a11yLabel;
+    options.innerContent = ( item.a11yLabel || null );
+    options.voicingObjectResponse = ( item.a11yLabel || null );
     options.voicingNameResponse = StringUtils.fillIn( options.comboBoxVoicingNameResponsePattern, {
       value: item.a11yLabel
     } );

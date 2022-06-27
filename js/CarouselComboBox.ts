@@ -30,9 +30,9 @@ import { AlignBox, AlignGroup, Color, Display, HBox, IColor, Node, NodeOptions, 
 import Tandem from '../../tandem/js/Tandem.js';
 import Carousel, { CarouselOptions } from './Carousel.js';
 import ComboBoxButton, { ComboBoxButtonOptions } from './ComboBoxButton.js';
-import ComboBoxItem from './ComboBoxItem.js';
 import PageControl, { PageControlOptions } from './PageControl.js';
 import sun from './sun.js';
+import { ComboBoxItem } from './ComboBox.js';
 
 type SelfOptions = {
 

@@ -18,9 +18,9 @@ import Tandem from '../../tandem/js/Tandem.js';
 import ComboBoxListItemNode, { ComboBoxListItemNodeOptions } from './ComboBoxListItemNode.js';
 import Panel, { PanelOptions } from './Panel.js';
 import sun from './sun.js';
-import ComboBoxItem from './ComboBoxItem.js';
 import ISoundPlayer from '../../tambo/js/ISoundPlayer.js';
 import IProperty from '../../axon/js/IProperty.js';
+import { ComboBoxItem } from './ComboBox.js';
 
 type SelfOptions = {
 

@@ -33,13 +33,31 @@ import ComboBoxButton from './ComboBoxButton.js';
 import ComboBoxListBox from './ComboBoxListBox.js';
 import sun from './sun.js';
 import SunConstants from './SunConstants.js';
-import ComboBoxItem from './ComboBoxItem.js';
 import Property from '../../axon/js/Property.js';
 import ISoundPlayer from '../../tambo/js/ISoundPlayer.js';
 
 // const
 const LIST_POSITION_VALUES = [ 'above', 'below' ] as const; // where the list pops up relative to the button
 const ALIGN_VALUES = [ 'left', 'right', 'center' ] as const; // alignment of item on button and in list
+
+export type ComboBoxItem<T> = {
+
+  // the value associated with the item
+  value: T;
+
+  // the node displayed in the combo box for the item
+  node: Node;
+
+  // Sound that will be played when this item is selected.  If set to `null` a default sound will be used that is based
+  // on this item's position in the combo box list.  A value of `nullSoundPlayer` can be used to disable.
+  soundPlayer?: ISoundPlayer | null;
+
+  // phet-io - the tandem name for this item's associated Node in the combo box
+  tandemName?: string | null;
+
+  // pdom - the label for this item's associated Node in the combo box
+  a11yLabel?: string | null;
+};
 
 export type ComboBoxListPosition = typeof LIST_POSITION_VALUES[number];
 export type ComboBoxAlign = typeof ALIGN_VALUES[number];
@@ -147,6 +165,8 @@ export default class ComboBox<T> extends WidthSizable( Node ) {
 
   private readonly disposeComboBox: () => void;
 
+  public static readonly ITEM_TANDEM_NAME_SUFFIX = 'Item';
+
   /**
    * @param property
    * @param items - items, in the order that they appear in the listbox
@@ -155,7 +175,13 @@ export default class ComboBox<T> extends WidthSizable( Node ) {
    */
   public constructor( property: Property<T>, items: ComboBoxItem<T>[], listParent: Node, providedOptions?: ComboBoxOptions ) {
 
-    assert && assert( _.uniqBy( items, ( item: ComboBoxItem<T> ) => item.value ).length === items.length, 'items must have unique values' );
+    assert && assert( _.uniqBy( items, ( item: ComboBoxItem<T> ) => item.value ).length === items.length,
+      'items must have unique values' );
+    assert && items.forEach( item => {
+      assert && assert( !item.node.hasPDOMContent, 'pdomContent is set by ComboBox, use options.a11yLabel' );
+      assert && assert( !item.tandemName || item.tandemName.endsWith( ComboBox.ITEM_TANDEM_NAME_SUFFIX ),
+        `ComboBoxItem tandemName must end with '${ComboBox.ITEM_TANDEM_NAME_SUFFIX}': ${item.tandemName}` );
+    } );
 
     // See https://github.com/phetsims/sun/issues/542
     assert && assert( listParent.maxWidth === null,

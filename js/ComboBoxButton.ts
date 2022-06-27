@@ -17,11 +17,11 @@ import RectangularPushButton, { RectangularPushButtonOptions } from './buttons/R
 import sun from './sun.js';
 import SunConstants from './SunConstants.js';
 import VSeparator from './VSeparator.js';
-import ComboBoxItem from './ComboBoxItem.js';
 import IProperty from '../../axon/js/IProperty.js';
 import nullSoundPlayer from '../../tambo/js/shared-sound-players/nullSoundPlayer.js';
 import TinyProperty from '../../axon/js/TinyProperty.js';
 import StrictOmit from '../../phet-core/js/types/StrictOmit.js';
+import { ComboBoxItem } from './ComboBox.js';
 
 // constants
 const ALIGN_VALUES = [ 'left', 'center', 'right' ] as const;
@@ -228,7 +228,7 @@ export default class ComboBoxButton<T> extends RectangularPushButton {
       itemNodeWrapper.addChild( item.node );
 
       // pdom
-      this.innerContent = item!.a11yLabel;
+      this.innerContent = ( item.a11yLabel || null );
       this.voicingNameResponse = StringUtils.fillIn( options.comboBoxVoicingNameResponsePattern, {
         value: item!.a11yLabel
       } );

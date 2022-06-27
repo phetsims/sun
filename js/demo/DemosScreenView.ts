@@ -14,7 +14,6 @@ import PhetFont from '../../../scenery-phet/js/PhetFont.js';
 import { Node, NodeOptions, Text } from '../../../scenery/js/imports.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import CarouselComboBox from '../CarouselComboBox.js';
-import ComboBoxItem from '../ComboBoxItem.js';
 import sun from '../sun.js';
 
 // constants
@@ -107,7 +106,12 @@ class DemosScreenView extends ScreenView {
     this.addChild( selectADemoLabel );
 
     // {ComboBoxItem[]}
-    const items = demos.map( ( demo: SunDemo ) => new ComboBoxItem( new Text( demo.label, { font: ITEM_FONT } ), demo ) );
+    const items = demos.map( ( demo: SunDemo ) => {
+      return {
+        value: demo,
+        node: new Text( demo.label, { font: ITEM_FONT } )
+      };
+    } );
 
     const carouselComboBox = new CarouselComboBox( selectedDemoProperty, items, {
       tandem: options.tandem.createTandem( 'carouselComboBox' )
