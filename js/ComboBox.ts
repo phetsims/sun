@@ -6,7 +6,7 @@
  * dismissed when an item is selected, the user clicks on the button, or the user clicks outside the list. The list
  * can be displayed either above or below the button.
  *
- * The supporting classes are:
+ * The supporting types and classes are:
  *
  * ComboBoxItem - items provided to ComboBox constructor
  * ComboBoxButton - the button
