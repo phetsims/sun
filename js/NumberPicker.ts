@@ -24,14 +24,14 @@ import generalBoundaryBoopSoundPlayer from '../../tambo/js/shared-sound-players/
 import generalSoftClickSoundPlayer from '../../tambo/js/shared-sound-players/generalSoftClickSoundPlayer.js';
 import PhetioObject from '../../tandem/js/PhetioObject.js';
 import Tandem from '../../tandem/js/Tandem.js';
-import MathSymbols from './MathSymbols.js';
-import PhetFont from './PhetFont.js';
-import sceneryPhet from './sceneryPhet.js';
 import IReadOnlyProperty from '../../axon/js/IReadOnlyProperty.js';
 import ISoundPlayer from '../../tambo/js/ISoundPlayer.js';
 import StrictOmit from '../../phet-core/js/types/StrictOmit.js';
 import optionize from '../../phet-core/js/optionize.js';
 import EmptyObjectType from '../../phet-core/js/types/EmptyObjectType.js';
+import sun from './sun.js';
+import PhetFont from '../../scenery-phet/js/PhetFont.js';
+import MathSymbols from '../../scenery-phet/js/MathSymbols.js';
 
 const ButtonStateValues = [ 'up', 'down', 'over', 'out' ] as const;
 type ButtonState = ( typeof ButtonStateValues )[number];
@@ -636,4 +636,4 @@ function updateColors( buttonState: ButtonState, enabled: boolean, backgroundNod
   }
 }
 
-sceneryPhet.register( 'NumberPicker', NumberPicker );
+sun.register( 'NumberPicker', NumberPicker );
