@@ -42,6 +42,7 @@ import sunQueryParameters from '../sunQueryParameters.js';
 import ToggleSwitch from '../ToggleSwitch.js';
 import VSlider, { VSliderOptions } from '../VSlider.js';
 import DemosScreenView, { DemosScreenViewOptions } from './DemosScreenView.js';
+import NumberPicker from '../NumberPicker.js';
 
 type SelfOptions = EmptyObjectType;
 type ButtonsScreenViewOptions = SelfOptions & PickRequired<DemosScreenViewOptions, 'tandem'>;
@@ -72,6 +73,7 @@ export default class ComponentsScreenView extends DemosScreenView {
       { label: 'OnOffSwitch', createNode: demoOnOffSwitch },
       { label: 'PageControl', createNode: demoPageControl },
       { label: 'NumberSpinner', createNode: demoNumberSpinner },
+      { label: 'NumberPicker', createNode: demoNumberPicker },
       { label: 'AlignGroup', createNode: demoAlignGroup },
       { label: 'AccordionBox', createNode: demoAccordionBox },
       { label: 'ToggleSwitch', createNode: demoToggleSwitch }
@@ -519,6 +521,25 @@ function demoNumberSpinner( layoutBounds: Bounds2 ): Node {
   return new VBox( {
     children: [ spinnerTopBottom, spinnerBothRight, spinnerBothBottom, spinnerLeftRight, enabledCheckbox ],
     spacing: 40,
+    center: layoutBounds.center
+  } );
+}
+
+// Creates a demo for NumberPicker
+function demoNumberPicker( layoutBounds: Bounds2 ): Node {
+
+  const enabledProperty = new BooleanProperty( true );
+
+  const numberPicker = new NumberPicker( new Property( 0 ), new Property( new Range( -10, 10 ) ), {
+    font: new PhetFont( 40 ),
+    enabledProperty: enabledProperty
+  } );
+
+  const enabledCheckbox = new Checkbox( enabledProperty, new Text( 'enabled', { font: new PhetFont( 20 ) } ) );
+
+  return new VBox( {
+    spacing: 40,
+    children: [ numberPicker, enabledCheckbox ],
     center: layoutBounds.center
   } );
 }
