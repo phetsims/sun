@@ -270,6 +270,9 @@ export default class ComboBoxListBox<T> extends Panel {
       for ( let i = 0; i < listItemNodes.length; i++ ) {
         listItemNodes[ i ].dispose(); // to unregister tandem
       }
+
+      // Private to ComboBoxListBox, but we need to clean up tandem.
+      fireAction.dispose();
     };
   }
 

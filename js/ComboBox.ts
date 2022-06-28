@@ -417,6 +417,7 @@ export default class ComboBox<T> extends WidthSizable( Node ) {
       FocusManager.pdomFocusProperty.unlink( this.dismissWithFocusListener );
 
       // dispose of subcomponents
+      this.displayOnlyProperty.dispose(); // tandems must be cleaned up
       this.listBox.dispose();
       this.button.dispose();
     };
