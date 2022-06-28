@@ -62,6 +62,10 @@ export default class VerticalCheckboxGroup extends VBox {
 
       const item = items[ i ];
 
+      assert && assert( !item.node.hasPDOMContent,
+        'Accessibility is provided by Checkbox and VerticalCheckboxGroupItem.options. ' +
+        'Additional PDOM content in the provided Node could break accessibility.' );
+
       // Content for the checkbox. Add an invisible strut, so that checkboxes have uniform width.
       const content = new Node( {
         children: [ new HStrut( maxItemWidth ), item.node ]
