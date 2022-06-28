@@ -97,6 +97,10 @@ export default class AquaRadioButtonGroup<T> extends FlowBox {
     for ( let i = 0; i < items.length; i++ ) {
       const item = items[ i ];
 
+      assert && assert( !item.node.hasPDOMContent,
+        'Accessibility is provided by AquaRadioButton and AquaRadioButtonGroupItem.labelContent. ' +
+        'Additional PDOM content in the provided Node could break accessibility.' );
+
       // Content for the radio button.
       // For vertical orientation, add an invisible strut, so that buttons have uniform width.
       const content = ( options.orientation === 'vertical' ) ?

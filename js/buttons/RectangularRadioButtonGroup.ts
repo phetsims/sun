@@ -10,7 +10,7 @@
 import { Shape } from '../../../kite/js/imports.js';
 import InstanceRegistry from '../../../phet-core/js/documentation/InstanceRegistry.js';
 import merge from '../../../phet-core/js/merge.js';
-import { Color, FocusHighlightPath, IInputListener, IPaint, FlowBox, FlowBoxOptions, Node, PDOMPeer, Rectangle, SceneryConstants } from '../../../scenery/js/imports.js';
+import { Color, FlowBox, FlowBoxOptions, FocusHighlightPath, IInputListener, IPaint, Node, PDOMPeer, Rectangle, SceneryConstants } from '../../../scenery/js/imports.js';
 import multiSelectionSoundPlayerFactory from '../../../tambo/js/multiSelectionSoundPlayerFactory.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import ColorConstants from '../ColorConstants.js';
@@ -285,6 +285,10 @@ export default class RectangularRadioButtonGroup<T> extends FlowBox {
       if ( item.tandemName ) {
         radioButtonGroupMemberOptions.tandem = options.tandem.createTandem( item.tandemName );
       }
+
+      assert && assert( !item.node.hasPDOMContent,
+        'Accessibility is provided by RectangularRadioButton and RectangularRadioButtonItem.labelContent. ' +
+        'Additional PDOM content in the provided Node could break accessibility.' );
 
       // create the label and voicing response for the radio button
       if ( item.labelContent ) {
