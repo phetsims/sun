@@ -2,6 +2,8 @@
 
 /**
  * Demo for ABSwitch.
+ *
+ * @author Chris Malley (PixelZoom, Inc.)
  */
 
 import StringProperty from '../../../../axon/js/StringProperty.js';
