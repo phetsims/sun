@@ -2,6 +2,8 @@
 
 /**
  * Demo for various toggle buttons.
+ *
+ * @author various contributors
  */
 
 import Checkbox from '../../Checkbox.js';
