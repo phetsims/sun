@@ -1,7 +1,7 @@
 // Copyright 2015-2022, University of Colorado Boulder
 
 /**
- * Base type for ScreenViews that use a carousel to select a demo.
+ * DemosScreenView is the base class for ScreenViews that use a carousel to select a demo.
  *
  * @author Chris Malley (PixelZoom, Inc.)
  */
