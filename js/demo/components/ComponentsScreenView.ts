@@ -24,7 +24,6 @@ import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
 import { AlignBox, AlignGroup, Circle, HBox, Node, Rectangle, Text, VBox } from '../../../../scenery/js/imports.js';
 import { PhetioObjectOptions } from '../../../../tandem/js/PhetioObject.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
-import ABSwitch from '../../ABSwitch.js';
 import AccordionBox from '../../AccordionBox.js';
 import AquaRadioButtonGroup from '../../AquaRadioButtonGroup.js';
 import RectangularPushButton from '../../buttons/RectangularPushButton.js';
@@ -43,6 +42,7 @@ import ToggleSwitch from '../../ToggleSwitch.js';
 import VSlider, { VSliderOptions } from '../../VSlider.js';
 import DemosScreenView, { DemosScreenViewOptions } from '../DemosScreenView.js';
 import NumberPicker from '../../NumberPicker.js';
+import { demoABSwitch } from './demoABSwitch.js';
 
 type SelfOptions = EmptyObjectType;
 type ButtonsScreenViewOptions = SelfOptions & PickRequired<DemosScreenViewOptions, 'tandem'>;
@@ -79,19 +79,6 @@ export default class ComponentsScreenView extends DemosScreenView {
       { label: 'ToggleSwitch', createNode: demoToggleSwitch }
     ], options );
   }
-}
-
-// Creates a demo for ABSwitch
-function demoABSwitch( layoutBounds: Bounds2 ): Node {
-
-  const property = new StringProperty( 'A' );
-  const labelA = new Text( 'A', { font: new PhetFont( 24 ) } );
-  const labelB = new Text( 'B', { font: new PhetFont( 24 ) } );
-
-  return new ABSwitch( property, 'A', labelA, 'B', labelB, {
-    center: layoutBounds.center,
-    tandem: Tandem.OPT_OUT
-  } );
 }
 
 // Creates a demo for AquaRadioButtonGroup
