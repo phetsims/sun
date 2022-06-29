@@ -178,7 +178,9 @@ export default class ComboBox<T> extends WidthSizable( Node ) {
     assert && assert( _.uniqBy( items, ( item: ComboBoxItem<T> ) => item.value ).length === items.length,
       'items must have unique values' );
     assert && items.forEach( item => {
-      assert && assert( !item.node.hasPDOMContent, 'pdomContent is set by ComboBox, use options.a11yLabel' );
+      assert && assert( !item.node.hasPDOMContent, 'Accessibility is provided by ComboBoxItemNode and ' +
+                                                   'ComboBoxItem.a11yLabel. Additional PDOM content in the provided ' +
+                                                   'Node could break accessibility.' );
       assert && assert( !item.tandemName || item.tandemName.endsWith( ComboBox.ITEM_TANDEM_NAME_SUFFIX ),
         `ComboBoxItem tandemName must end with '${ComboBox.ITEM_TANDEM_NAME_SUFFIX}': ${item.tandemName}` );
     } );
