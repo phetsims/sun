@@ -6,26 +6,26 @@
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 
-import BooleanProperty from '../../../axon/js/BooleanProperty.js';
-import stepTimer from '../../../axon/js/stepTimer.js';
-import Bounds2 from '../../../dot/js/Bounds2.js';
-import dotRandom from '../../../dot/js/dotRandom.js';
-import Vector2 from '../../../dot/js/Vector2.js';
-import Vector2Property from '../../../dot/js/Vector2Property.js';
-import { Shape } from '../../../kite/js/imports.js';
-import optionize, { combineOptions } from '../../../phet-core/js/optionize.js';
-import Constructor from '../../../phet-core/js/types/Constructor.js';
-import PhetFont from '../../../scenery-phet/js/PhetFont.js';
-import { AlignBox, Circle, Color, FlowBox, FlowCell, FlowConstraint, GridBackgroundNode, GridBox, IPaint, ManualConstraint, Node, Path, Rectangle, RectangleOptions, Text, TextOptions, VDivider } from '../../../scenery/js/imports.js';
-import Tandem from '../../../tandem/js/Tandem.js';
-import Checkbox from '../Checkbox.js';
-import Panel from '../Panel.js';
-import sun from '../sun.js';
-import sunQueryParameters from '../sunQueryParameters.js';
-import DemosScreenView, { DemosScreenViewOptions } from './DemosScreenView.js';
-import RectangularPushButton from '../buttons/RectangularPushButton.js';
-import PickRequired from '../../../phet-core/js/types/PickRequired.js';
-import EmptyObjectType from '../../../phet-core/js/types/EmptyObjectType.js';
+import BooleanProperty from '../../../../axon/js/BooleanProperty.js';
+import stepTimer from '../../../../axon/js/stepTimer.js';
+import Bounds2 from '../../../../dot/js/Bounds2.js';
+import dotRandom from '../../../../dot/js/dotRandom.js';
+import Vector2 from '../../../../dot/js/Vector2.js';
+import Vector2Property from '../../../../dot/js/Vector2Property.js';
+import { Shape } from '../../../../kite/js/imports.js';
+import optionize, { combineOptions } from '../../../../phet-core/js/optionize.js';
+import Constructor from '../../../../phet-core/js/types/Constructor.js';
+import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
+import { AlignBox, Circle, Color, FlowBox, FlowCell, FlowConstraint, GridBackgroundNode, GridBox, IPaint, ManualConstraint, Node, Path, Rectangle, RectangleOptions, Text, TextOptions, VDivider } from '../../../../scenery/js/imports.js';
+import Tandem from '../../../../tandem/js/Tandem.js';
+import Checkbox from '../../Checkbox.js';
+import Panel from '../../Panel.js';
+import sun from '../../sun.js';
+import sunQueryParameters from '../../sunQueryParameters.js';
+import DemosScreenView, { DemosScreenViewOptions } from '../DemosScreenView.js';
+import RectangularPushButton from '../../buttons/RectangularPushButton.js';
+import PickRequired from '../../../../phet-core/js/types/PickRequired.js';
+import EmptyObjectType from '../../../../phet-core/js/types/EmptyObjectType.js';
 
 type SelfOptions = EmptyObjectType;
 type LayoutScreenViewOptions = SelfOptions & PickRequired<DemosScreenViewOptions, 'tandem'>;

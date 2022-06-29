@@ -6,30 +6,30 @@
  * @author John Blanco (PhET Interactive Simulations)
  */
 
-import BooleanProperty from '../../../axon/js/BooleanProperty.js';
-import Property from '../../../axon/js/Property.js';
-import Bounds2 from '../../../dot/js/Bounds2.js';
-import Dimension2 from '../../../dot/js/Dimension2.js';
-import dotRandom from '../../../dot/js/dotRandom.js';
-import EmptyObjectType from '../../../phet-core/js/types/EmptyObjectType.js';
-import PickRequired from '../../../phet-core/js/types/PickRequired.js';
-import { Circle, Color, Font, HBox, Node, Rectangle, Text, VBox, VStrut } from '../../../scenery/js/imports.js';
-import Tandem from '../../../tandem/js/Tandem.js';
-import ArrowButton from '../buttons/ArrowButton.js';
-import BooleanRectangularStickyToggleButton from '../buttons/BooleanRectangularStickyToggleButton.js';
-import ButtonNode from '../buttons/ButtonNode.js';
-import CarouselButton from '../buttons/CarouselButton.js';
-import RectangularMomentaryButton from '../buttons/RectangularMomentaryButton.js';
-import RectangularPushButton from '../buttons/RectangularPushButton.js';
-import RectangularRadioButtonGroup from '../buttons/RectangularRadioButtonGroup.js';
-import RoundMomentaryButton from '../buttons/RoundMomentaryButton.js';
-import RoundPushButton from '../buttons/RoundPushButton.js';
-import RoundStickyToggleButton from '../buttons/RoundStickyToggleButton.js';
-import Checkbox from '../Checkbox.js';
-import Panel from '../Panel.js';
-import sun from '../sun.js';
-import VerticalAquaRadioButtonGroup from '../VerticalAquaRadioButtonGroup.js';
-import DemosScreenView, { DemosScreenViewOptions } from './DemosScreenView.js';
+import BooleanProperty from '../../../../axon/js/BooleanProperty.js';
+import Property from '../../../../axon/js/Property.js';
+import Bounds2 from '../../../../dot/js/Bounds2.js';
+import Dimension2 from '../../../../dot/js/Dimension2.js';
+import dotRandom from '../../../../dot/js/dotRandom.js';
+import EmptyObjectType from '../../../../phet-core/js/types/EmptyObjectType.js';
+import PickRequired from '../../../../phet-core/js/types/PickRequired.js';
+import { Circle, Color, Font, HBox, Node, Rectangle, Text, VBox, VStrut } from '../../../../scenery/js/imports.js';
+import Tandem from '../../../../tandem/js/Tandem.js';
+import ArrowButton from '../../buttons/ArrowButton.js';
+import BooleanRectangularStickyToggleButton from '../../buttons/BooleanRectangularStickyToggleButton.js';
+import ButtonNode from '../../buttons/ButtonNode.js';
+import CarouselButton from '../../buttons/CarouselButton.js';
+import RectangularMomentaryButton from '../../buttons/RectangularMomentaryButton.js';
+import RectangularPushButton from '../../buttons/RectangularPushButton.js';
+import RectangularRadioButtonGroup from '../../buttons/RectangularRadioButtonGroup.js';
+import RoundMomentaryButton from '../../buttons/RoundMomentaryButton.js';
+import RoundPushButton from '../../buttons/RoundPushButton.js';
+import RoundStickyToggleButton from '../../buttons/RoundStickyToggleButton.js';
+import Checkbox from '../../Checkbox.js';
+import Panel from '../../Panel.js';
+import sun from '../../sun.js';
+import VerticalAquaRadioButtonGroup from '../../VerticalAquaRadioButtonGroup.js';
+import DemosScreenView, { DemosScreenViewOptions } from '../DemosScreenView.js';
 
 // constants
 const BUTTON_FONT_SIZE = 16;

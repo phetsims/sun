@@ -11,10 +11,10 @@ import Sim from '../../joist/js/Sim.js';
 import simLauncher from '../../joist/js/simLauncher.js';
 import { IColor, Rectangle } from '../../scenery/js/imports.js';
 import Tandem from '../../tandem/js/Tandem.js';
-import ButtonsScreenView from './demo/ButtonsScreenView.js';
-import ComponentsScreenView from './demo/ComponentsScreenView.js';
-import DialogsScreenView from './demo/DialogsScreenView.js';
-import LayoutScreenView from './demo/LayoutScreenView.js';
+import ButtonsScreenView from './demo/buttons/ButtonsScreenView.js';
+import ComponentsScreenView from './demo/components/ComponentsScreenView.js';
+import DialogsScreenView from './demo/dialogs/DialogsScreenView.js';
+import LayoutScreenView from './demo/layout/LayoutScreenView.js';
 import sunStrings from './sunStrings.js';
 import sunQueryParameters from './sunQueryParameters.js';
 

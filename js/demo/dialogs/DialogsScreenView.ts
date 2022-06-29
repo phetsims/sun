@@ -6,16 +6,16 @@
  * @author Chris Malley (PixelZoom, Inc.)
  */
 
-import dotRandom from '../../../dot/js/dotRandom.js';
-import ScreenView from '../../../joist/js/ScreenView.js';
-import { Font, Node, Rectangle, Text } from '../../../scenery/js/imports.js';
-import Tandem from '../../../tandem/js/Tandem.js';
-import RectangularPushButton from '../buttons/RectangularPushButton.js';
-import Dialog from '../Dialog.js';
-import sun from '../sun.js';
-import { DemosScreenViewOptions } from './DemosScreenView.js';
-import PickRequired from '../../../phet-core/js/types/PickRequired.js';
-import EmptyObjectType from '../../../phet-core/js/types/EmptyObjectType.js';
+import dotRandom from '../../../../dot/js/dotRandom.js';
+import ScreenView from '../../../../joist/js/ScreenView.js';
+import { Font, Node, Rectangle, Text } from '../../../../scenery/js/imports.js';
+import Tandem from '../../../../tandem/js/Tandem.js';
+import RectangularPushButton from '../../buttons/RectangularPushButton.js';
+import Dialog from '../../Dialog.js';
+import sun from '../../sun.js';
+import { DemosScreenViewOptions } from '../DemosScreenView.js';
+import PickRequired from '../../../../phet-core/js/types/PickRequired.js';
+import EmptyObjectType from '../../../../phet-core/js/types/EmptyObjectType.js';
 
 // constants
 const BUTTON_FONT = new Font( { size: 20 } );
