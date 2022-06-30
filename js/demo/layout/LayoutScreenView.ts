@@ -547,41 +547,19 @@ function demoSizableButtons( layoutBounds: Bounds2 ): Node {
 function demoTest( layoutBounds: Bounds2 ): Node {
   const box = new GridBox( {
     spacing: 5,
-    stretch: true,
     rows: [
       [
-        new RectangularPushButton( {
-          xAlign: 'stretch',
-          yAlign: 'stretch',
-          content: new GridBox( {
-            grow: 1,
-            rows: [
-              [
-                new Rectangle( 0, 0, 20, 20, { fill: colors[ 2 ] } ),
-                new Rectangle( 0, 0, 20, 20, { fill: colors[ 4 ] } )
-              ],
-              [
-                new Rectangle( 0, 0, 20, 20, { fill: colors[ 6 ] } ),
-                new Rectangle( 0, 0, 20, 20, { fill: colors[ 8 ] } )
-              ]
-            ]
-          } ),
-          sizable: true
-        } ),
-        new RectangularPushButton( {
-          content: new Rectangle( 0, 0, 50, 100, { fill: 'red' } ),
-          sizable: true
-        } )
-      ],
-      [
-        new RectangularPushButton( {
-          content: new Rectangle( 0, 0, 100, 50, { fill: 'red' } ),
-          sizable: true
-        } ),
-        new RectangularPushButton( {
-          content: new Rectangle( 0, 0, 100, 100, { fill: 'red' } ),
-          sizable: true
-        } )
+        new Rectangle( 0, 0, 20, 20, { fill: 'black' } ),
+        new Rectangle( 0, 0, 20, 20, { fill: colors[ 1 ] } ),
+        new Rectangle( 0, 0, 20, 20, { fill: colors[ 2 ] } ),
+        new Rectangle( 0, 0, 20, 20, { fill: colors[ 3 ] } ),
+        new Rectangle( 0, 0, 20, 20, { fill: colors[ 4 ], visible: false } ),
+        new Rectangle( 0, 0, 20, 20, { fill: colors[ 5 ] } ),
+        new Rectangle( 0, 0, 20, 20, { fill: colors[ 6 ], visible: false } ),
+        new Rectangle( 0, 0, 20, 20, { fill: colors[ 7 ] } ),
+        new Rectangle( 0, 0, 20, 20, { fill: colors[ 8 ] } ),
+        new Rectangle( 0, 0, 20, 20, { fill: colors[ 9 ] } ),
+        new Rectangle( 0, 0, 20, 20, { fill: 'black' } )
       ]
     ]
   } );
