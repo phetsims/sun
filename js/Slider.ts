@@ -33,6 +33,7 @@ import DefaultSliderTrack from './DefaultSliderTrack.js';
 import SliderThumb from './SliderThumb.js';
 import SliderTrack from './SliderTrack.js';
 import sun from './sun.js';
+import PickOptional from '../../phet-core/js/types/PickOptional.js';
 
 // constants
 const VERTICAL_ROTATION = -Math.PI / 2;
@@ -96,9 +97,6 @@ type SelfOptions = {
 
   cursor?: string;
 
-  // Determine the portion of range that is enabled. AccessibleSlider requires this but it is optional for Slider.
-  enabledRangeProperty?: AccessibleSliderOptions[ 'enabledRangeProperty' ];
-
   // opacity applied to the entire Slider when disabled
   disabledOpacity?: number;
 
@@ -119,7 +117,9 @@ type SelfOptions = {
 type ParentOptions = AccessibleSliderOptions & NodeOptions;
 
 // We provide these options to the super
-export type SliderOptions = SelfOptions & StrictOmit<ParentOptions, 'panTargetNode' | 'valueProperty' | 'enabledRangeProperty'>;
+export type SliderOptions = SelfOptions &
+  StrictOmit<ParentOptions, 'panTargetNode' | 'valueProperty' | 'enabledRangeProperty'> &
+  PickOptional<ParentOptions, 'enabledRangeProperty'>;
 
 type TickOptions = Pick<SelfOptions, 'tickLabelSpacing' | 'majorTickLength' | 'majorTickStroke' | 'majorTickLineWidth' | 'minorTickLength' | 'minorTickStroke' | 'minorTickLineWidth'>;
 
@@ -164,7 +164,7 @@ export default class Slider extends AccessibleSlider( Node, 0 ) {
     assert && assertMutuallyExclusiveOptions( providedOptions, [ 'trackNode' ], [
       'trackSize', 'trackFillEnabled', 'trackFillDisabled', 'trackStroke', 'trackLineWidth', 'trackCornerRadius' ] );
 
-    let options = optionize<SliderOptions, StrictOmit<SelfOptions, 'enabledRangeProperty'>, ParentOptions>()( {
+    let options = optionize<SliderOptions, SelfOptions, ParentOptions>()( {
 
       orientation: Orientation.HORIZONTAL,
       trackNode: null,
