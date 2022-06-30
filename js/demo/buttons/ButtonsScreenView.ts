@@ -10,6 +10,7 @@ import EmptyObjectType from '../../../../phet-core/js/types/EmptyObjectType.js';
 import PickRequired from '../../../../phet-core/js/types/PickRequired.js';
 import sun from '../../sun.js';
 import DemosScreenView, { DemosScreenViewOptions } from '../DemosScreenView.js';
+import demoAquaRadioButtonGroup from './demoAquaRadioButtonGroup.js';
 import demoRadioButtons from './demoRadioButtons.js';
 import demoToggleButtons from './demoToggleButtons.js';
 import demoMomentaryButtons from './demoMomentaryButtons.js';
@@ -21,6 +22,7 @@ type ButtonsScreenViewOptions = SelfOptions & PickRequired<DemosScreenViewOption
 export default class ButtonsScreenView extends DemosScreenView {
   public constructor( providedOptions: ButtonsScreenViewOptions ) {
     super( [
+      { label: 'AquaRadioButtonGroup', createNode: demoAquaRadioButtonGroup },
       { label: 'MomentaryButtons', createNode: demoMomentaryButtons },
       { label: 'PushButtons', createNode: demoPushButtons },
       { label: 'RadioButtons', createNode: demoRadioButtons },

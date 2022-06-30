@@ -42,7 +42,6 @@ import VSlider, { VSliderOptions } from '../../VSlider.js';
 import DemosScreenView, { DemosScreenViewOptions } from '../DemosScreenView.js';
 import NumberPicker from '../../NumberPicker.js';
 import demoABSwitch from './demoABSwitch.js';
-import demoAquaRadioButtonGroup from './demoAquaRadioButtonGroup.js';
 import demoCarousel from './demoCarousel.js';
 import demoCheckbox from './demoCheckbox.js';
 
@@ -66,7 +65,6 @@ export default class ComponentsScreenView extends DemosScreenView {
        * {function(Bounds2): Node} createNode - creates the scene graph for the demo
        */
       { label: 'ABSwitch', createNode: demoABSwitch },
-      { label: 'AquaRadioButtonGroup', createNode: demoAquaRadioButtonGroup },
       { label: 'Carousel', createNode: demoCarousel },
       { label: 'Checkbox', createNode: demoCheckbox },
       { label: 'ComboBox', createNode: demoComboBox },
