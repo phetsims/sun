@@ -12,7 +12,7 @@ import { Font, Node, Text } from '../../../../scenery/js/imports.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
 import ABSwitch from '../../ABSwitch.js';
 
-export function demoABSwitch( layoutBounds: Bounds2 ): Node {
+export default function demoABSwitch( layoutBounds: Bounds2 ): Node {
 
   const property = new StringProperty( 'A' );
 

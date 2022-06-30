@@ -21,11 +21,10 @@ import optionize, { combineOptions } from '../../../../phet-core/js/optionize.js
 import EmptyObjectType from '../../../../phet-core/js/types/EmptyObjectType.js';
 import PickRequired from '../../../../phet-core/js/types/PickRequired.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
-import { AlignBox, AlignGroup, Circle, HBox, Node, Rectangle, Text, VBox } from '../../../../scenery/js/imports.js';
+import { AlignBox, AlignGroup, HBox, Node, Rectangle, Text, VBox } from '../../../../scenery/js/imports.js';
 import { PhetioObjectOptions } from '../../../../tandem/js/PhetioObject.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
 import AccordionBox from '../../AccordionBox.js';
-import AquaRadioButtonGroup from '../../AquaRadioButtonGroup.js';
 import RectangularPushButton from '../../buttons/RectangularPushButton.js';
 import Carousel from '../../Carousel.js';
 import Checkbox from '../../Checkbox.js';
@@ -42,7 +41,10 @@ import ToggleSwitch from '../../ToggleSwitch.js';
 import VSlider, { VSliderOptions } from '../../VSlider.js';
 import DemosScreenView, { DemosScreenViewOptions } from '../DemosScreenView.js';
 import NumberPicker from '../../NumberPicker.js';
-import { demoABSwitch } from './demoABSwitch.js';
+import demoABSwitch from './demoABSwitch.js';
+import demoAquaRadioButtonGroup from './demoAquaRadioButtonGroup.js';
+import demoCarousel from './demoCarousel.js';
+import demoCheckbox from './demoCheckbox.js';
 
 type SelfOptions = EmptyObjectType;
 type ButtonsScreenViewOptions = SelfOptions & PickRequired<DemosScreenViewOptions, 'tandem'>;
@@ -79,129 +81,6 @@ export default class ComponentsScreenView extends DemosScreenView {
       { label: 'ToggleSwitch', createNode: demoToggleSwitch }
     ], options );
   }
-}
-
-// Creates a demo for AquaRadioButtonGroup
-function demoAquaRadioButtonGroup( layoutBounds: Bounds2 ): Node {
-
-  const font = new PhetFont( 20 );
-
-  const horizontalChoices = [ 'left', 'center', 'right' ];
-  const horizontalProperty = new StringProperty( horizontalChoices[ 0 ] );
-  const horizontalItems = _.map( horizontalChoices,
-    choice => {
-      return {
-        node: new Text( choice, { font: font } ),
-        value: choice
-      };
-    } );
-  const horizontalGroup = new AquaRadioButtonGroup( horizontalProperty, horizontalItems, {
-    orientation: 'horizontal'
-  } );
-
-  const verticalChoices = [ 'top', 'center', 'bottom' ];
-  const verticalProperty = new StringProperty( verticalChoices[ 0 ] );
-  const verticalItems = _.map( verticalChoices,
-    choice => {
-      return {
-        node: new Text( choice, { font: font } ),
-        value: choice
-      };
-    } );
-  const verticalGroup = new AquaRadioButtonGroup( verticalProperty, verticalItems, {
-    orientation: 'vertical'
-  } );
-
-  return new VBox( {
-    children: [ horizontalGroup, verticalGroup ],
-    spacing: 40,
-    center: layoutBounds.center
-  } );
-}
-
-// Creates a demo for Carousel
-function demoCarousel( layoutBounds: Bounds2 ): Node {
-
-  // create items
-  const colors = [ 'red', 'blue', 'green', 'yellow', 'pink', 'white', 'orange', 'magenta', 'purple', 'pink' ];
-  const vItems: Node[] = [];
-  const hItems: Node[] = [];
-  colors.forEach( color => {
-    vItems.push( new Rectangle( 0, 0, 60, 60, { fill: color, stroke: 'black' } ) );
-    hItems.push( new Circle( 30, { fill: color, stroke: 'black' } ) );
-  } );
-
-  // vertical carousel
-  const vCarousel = new Carousel( vItems, {
-    orientation: 'vertical',
-    separatorsVisible: true,
-    buttonTouchAreaXDilation: 5,
-    buttonTouchAreaYDilation: 15,
-    buttonMouseAreaXDilation: 2,
-    buttonMouseAreaYDilation: 7
-  } );
-
-  // horizontal carousel
-  const hCarousel = new Carousel( hItems, {
-    orientation: 'horizontal',
-    buttonTouchAreaXDilation: 15,
-    buttonTouchAreaYDilation: 5,
-    buttonMouseAreaXDilation: 7,
-    buttonMouseAreaYDilation: 2,
-    centerX: vCarousel.centerX,
-    top: vCarousel.bottom + 50
-  } );
-
-  // button that scrolls the horizontal carousel to a specific item
-  const itemIndex = 4;
-  const hScrollToItemButton = new RectangularPushButton( {
-    content: new Text( `scroll to item ${itemIndex}`, { font: new PhetFont( 20 ) } ),
-    listener: () => hCarousel.scrollToItem( hItems[ itemIndex ] )
-  } );
-
-  // button that sets the horizontal carousel to a specific page number
-  const pageNumber = 0;
-  const hScrollToPageButton = new RectangularPushButton( {
-    content: new Text( `scroll to page ${pageNumber}`, { font: new PhetFont( 20 ) } ),
-    listener: () => hCarousel.pageNumberProperty.set( pageNumber )
-  } );
-
-  // group the buttons
-  const buttonGroup = new VBox( {
-    children: [ hScrollToItemButton, hScrollToPageButton ],
-    align: 'left',
-    spacing: 7,
-    left: hCarousel.right + 30,
-    centerY: hCarousel.centerY
-  } );
-
-  return new Node( {
-    children: [ vCarousel, hCarousel, buttonGroup ],
-    center: layoutBounds.center
-  } );
-}
-
-// Creates a demo for Checkbox
-function demoCheckbox( layoutBounds: Bounds2 ): Node {
-
-  const property = new BooleanProperty( true );
-  const enabledProperty = new BooleanProperty( true, { phetioFeatured: true } );
-
-  const checkbox = new Checkbox( property, new Text( 'My Awesome Checkbox', {
-    font: new PhetFont( 30 )
-  } ), {
-    enabledProperty: enabledProperty
-  } );
-
-  const enabledCheckbox = new Checkbox( enabledProperty, new Text( 'enabled', {
-    font: new PhetFont( 20 )
-  } ) );
-
-  return new VBox( {
-    children: [ checkbox, enabledCheckbox ],
-    spacing: 30,
-    center: layoutBounds.center
-  } );
 }
 
 // Creates a demo of ComboBox
