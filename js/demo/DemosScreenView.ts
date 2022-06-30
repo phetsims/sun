@@ -17,7 +17,7 @@ import CarouselComboBox from '../CarouselComboBox.js';
 import sun from '../sun.js';
 
 // constants
-const ITEM_FONT = new PhetFont( 14 );
+const COMBO_BOX_ITEM_FONT = new PhetFont( 14 );
 
 export type SunDemoOptions = NodeOptions;
 
@@ -110,7 +110,7 @@ class DemosScreenView extends ScreenView {
     const items = demos.map( ( demo: SunDemo ) => {
       return {
         value: demo,
-        node: new Text( demo.label, { font: ITEM_FONT } )
+        node: new Text( demo.label, { font: COMBO_BOX_ITEM_FONT } )
       };
     } );
 
