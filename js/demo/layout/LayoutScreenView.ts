@@ -38,14 +38,8 @@ export default class LayoutScreenView extends DemosScreenView {
       selectedDemoLabel: sunQueryParameters.layout
     }, providedOptions );
 
-    super( [
-
-      /**
-       * To add a demo, add an object literal here. Each object has these properties:
-       *
-       * {string} label - label in the combo box
-       * {function(Bounds2): Node} createNode - creates the scene graph for the demo
-       */
+    // To add a demo, add an entry here.
+    const demos = [
       { label: 'Width of multiple panels', createNode: demoMultiplePanels, tandemName: 'multiplePanels' },
       { label: 'Separators', createNode: demoSeparators, tandemName: 'separators' },
       { label: 'Manual constraint', createNode: demoManualConstraint, tandemName: 'manualConstraint' },
@@ -56,7 +50,9 @@ export default class LayoutScreenView extends DemosScreenView {
       { label: 'Grid stress test', createNode: demoGridStressTest, tandemName: 'gridStressTest' },
       { label: 'Sizable buttons', createNode: demoSizableButtons, tandemName: 'sizableButtons' },
       { label: 'Test', createNode: demoTest, tandemName: 'test' }
-    ], options );
+    ];
+
+    super( demos, options );
   }
 }
 

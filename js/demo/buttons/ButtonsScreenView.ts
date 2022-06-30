@@ -21,13 +21,17 @@ type ButtonsScreenViewOptions = SelfOptions & PickRequired<DemosScreenViewOption
 
 export default class ButtonsScreenView extends DemosScreenView {
   public constructor( providedOptions: ButtonsScreenViewOptions ) {
-    super( [
+
+    // To add a demo, add an entry here.
+    const demos = [
       { label: 'AquaRadioButtonGroup', createNode: demoAquaRadioButtonGroup },
       { label: 'MomentaryButtons', createNode: demoMomentaryButtons },
       { label: 'PushButtons', createNode: demoPushButtons },
       { label: 'RadioButtons', createNode: demoRadioButtons },
       { label: 'ToggleButtons', createNode: demoToggleButtons }
-    ], providedOptions );
+    ];
+
+    super( demos, providedOptions );
   }
 }
 
