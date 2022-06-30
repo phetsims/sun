@@ -135,9 +135,10 @@ function demoSlider( layoutBounds: Bounds2, orientation: 'horizontal' | 'vertica
     top: enabledRangeCheckbox.bottom + 40
   } );
 
+  const enabledRangeStep = 0.1;
   stepTimer.addListener( () => {
-    if ( animateEnabledRangeProperty.value ) {
-      enabledRangeProperty.value = new Range( Math.max( enabledRangeProperty.value.min - 0.1, 0 ), 75 );
+    if ( animateEnabledRangeProperty.value && enabledRangeProperty.value.min < enabledRangeProperty.value.max - enabledRangeStep ) {
+      enabledRangeProperty.value = new Range( Math.max( enabledRangeProperty.value.min + enabledRangeStep, 0 ), 75 );
     }
   } );
 
