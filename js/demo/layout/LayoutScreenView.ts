@@ -38,7 +38,7 @@ export default class LayoutScreenView extends DemosScreenView {
       selectedDemoLabel: sunQueryParameters.layout
     }, providedOptions );
 
-    // To add a demo, add an entry here.
+    // To add a demo, add an entry here of type SunDemo.
     const demos = [
       { label: 'Width of multiple panels', createNode: demoMultiplePanels, tandemName: 'multiplePanels' },
       { label: 'Separators', createNode: demoSeparators, tandemName: 'separators' },

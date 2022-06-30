@@ -6,27 +6,28 @@
  * @author Chris Malley (PixelZoom, Inc.)
  */
 
-import Slider, { SliderOptions } from '../../Slider.js';
+import Slider from '../../Slider.js';
 import HSlider, { HSliderOptions } from '../../HSlider.js';
-import VSlider, { VSliderOptions } from '../../VSlider.js';
+import VSlider from '../../VSlider.js';
 import Checkbox from '../../Checkbox.js';
 import Bounds2 from '../../../../dot/js/Bounds2.js';
 import Range from '../../../../dot/js/Range.js';
-import { PhetioObjectOptions } from '../../../../tandem/js/PhetioObject.js';
-import { combineOptions } from '../../../../phet-core/js/optionize.js';
+import optionize, { combineOptions } from '../../../../phet-core/js/optionize.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
 import Property from '../../../../axon/js/Property.js';
 import Dimension2 from '../../../../dot/js/Dimension2.js';
 import { Font, HBox, Node, Text, VBox } from '../../../../scenery/js/imports.js';
 import BooleanProperty from '../../../../axon/js/BooleanProperty.js';
 import stepTimer from '../../../../axon/js/stepTimer.js';
+import { SunDemoOptions } from '../DemosScreenView.js';
+import EmptyObjectType from '../../../../phet-core/js/types/EmptyObjectType.js';
 
 const CHECKBOX_FONT = new Font( { size: 20 } );
 
 // Used by demoHSlider and demoVSlider
-function demoSlider( layoutBounds: Bounds2, orientation: 'horizontal' | 'vertical', providedOptions?: SliderOptions ): Node {
+function demoSlider( layoutBounds: Bounds2, orientation: 'horizontal' | 'vertical', providedOptions?: SunDemoOptions ): Node {
 
-  const options = combineOptions<SliderOptions>( {
+  const options = combineOptions<SunDemoOptions>( {
     center: layoutBounds.center,
     tandem: Tandem.REQUIRED,
     phetioDesigned: true
@@ -40,7 +41,7 @@ function demoSlider( layoutBounds: Bounds2, orientation: 'horizontal' | 'vertica
 
   let slider: Slider;
   if ( orientation === 'horizontal' ) {
-    slider = new HSlider( property, range, combineOptions<HSliderOptions>( options, {
+    slider = new HSlider( property, range, optionize<SunDemoOptions, EmptyObjectType, HSliderOptions>()( {
       trackSize: new Dimension2( 300, 5 ),
 
       // Demonstrate larger x dilation.
@@ -51,10 +52,10 @@ function demoSlider( layoutBounds: Bounds2, orientation: 'horizontal' | 'vertica
       enabledRangeProperty: enabledRangeProperty,
 
       phetioEnabledPropertyInstrumented: false
-    } ) );
+    }, options ) );
   }
   else {
-    slider = new VSlider( property, range, combineOptions<VSliderOptions>( options, {
+    slider = new VSlider( property, range, optionize<SunDemoOptions, EmptyObjectType, HSliderOptions>()( {
       trackSize: new Dimension2( 5, 300 ),
 
       // Demonstrate larger y dilation, to verify that VSlider is handling things correctly.
@@ -65,7 +66,7 @@ function demoSlider( layoutBounds: Bounds2, orientation: 'horizontal' | 'vertica
       enabledRangeProperty: enabledRangeProperty,
 
       phetioEnabledPropertyInstrumented: false
-    } ) );
+    }, options ) );
   }
 
   // Settable
@@ -155,23 +156,15 @@ function demoSlider( layoutBounds: Bounds2, orientation: 'horizontal' | 'vertica
     children: [ slider, controls ],
     center: layoutBounds.center
   };
-  let box = null;
-  if ( orientation === 'horizontal' ) {
-    box = new VBox( boxOptions );
-  }
-  else {
-    box = new HBox( boxOptions );
-  }
-
-  return box;
+  return ( orientation === 'horizontal' ) ? new VBox( boxOptions ) : new HBox( boxOptions );
 }
 
 // Creates a demo for HSlider
-export function demoHSlider( layoutBounds: Bounds2, options?: PhetioObjectOptions ): Node {
+export function demoHSlider( layoutBounds: Bounds2, options?: SunDemoOptions ): Node {
   return demoSlider( layoutBounds, 'horizontal', options );
 }
 
 // Creates a demo for VSlider
-export function demoVSlider( layoutBounds: Bounds2, options?: PhetioObjectOptions ): Node {
+export function demoVSlider( layoutBounds: Bounds2, options?: SunDemoOptions ): Node {
   return demoSlider( layoutBounds, 'vertical', options );
 }

@@ -19,13 +19,15 @@ import sun from '../sun.js';
 // constants
 const ITEM_FONT = new PhetFont( 14 );
 
+export type SunDemoOptions = NodeOptions;
+
 export type SunDemo = {
 
   // string used to label the demo in ComboBox
   label: string;
 
   // creates the Node for the demo
-  createNode: ( layoutBounds: Bounds2, options?: NodeOptions ) => Node;
+  createNode: ( layoutBounds: Bounds2, options?: SunDemoOptions ) => Node;
 
   node?: Node | null | undefined;
 
