@@ -80,7 +80,6 @@ class DemosScreenView extends ScreenView {
     }
 
     // All demos will be children of this node, to maintain rendering order with combo box list
-
     this.addChild( demosParent );
 
     // Sort the demos by label, so that they appear in the combo box in alphabetical order
