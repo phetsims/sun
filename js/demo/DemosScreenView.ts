@@ -27,7 +27,7 @@ export type SunDemo = {
   label: string;
 
   // creates the Node for the demo
-  createNode: ( layoutBounds: Bounds2, options?: SunDemoOptions ) => Node;
+  createNode: ( layoutBounds: Bounds2, options: SunDemoOptions ) => Node;
 
   node?: Node | null | undefined;
 

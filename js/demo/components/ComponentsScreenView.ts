@@ -29,13 +29,13 @@ import demoAlignGroup from './demoAlignGroup.js';
 import demoAccordionBox from './demoAccordionBox.js';
 
 type SelfOptions = EmptyObjectType;
-type ButtonsScreenViewOptions = SelfOptions & PickRequired<DemosScreenViewOptions, 'tandem'>;
+type ComponentsScreenViewOptions = SelfOptions & PickRequired<DemosScreenViewOptions, 'tandem'>;
 
 export default class ComponentsScreenView extends DemosScreenView {
 
-  public constructor( providedOptions: ButtonsScreenViewOptions ) {
+  public constructor( providedOptions: ComponentsScreenViewOptions ) {
 
-    const options = optionize<ButtonsScreenViewOptions, SelfOptions, DemosScreenViewOptions>()( {
+    const options = optionize<ComponentsScreenViewOptions, SelfOptions, DemosScreenViewOptions>()( {
       selectedDemoLabel: sunQueryParameters.component
     }, providedOptions );
 
