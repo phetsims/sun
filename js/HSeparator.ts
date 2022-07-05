@@ -12,7 +12,7 @@ import { Line, LineOptions } from '../../scenery/js/imports.js';
 import sun from './sun.js';
 
 type SelfOptions = EmptyObjectType;
-type HSeparatorOptions = SelfOptions & LineOptions;
+export type HSeparatorOptions = SelfOptions & LineOptions;
 
 export default class HSeparator extends Line {
   public constructor( width: number, providedOptions?: HSeparatorOptions ) {

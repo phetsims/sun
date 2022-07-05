@@ -6,9 +6,8 @@
  * @author John Blanco (PhET Interactive Simulations)
  */
 
-import merge from '../../../phet-core/js/merge.js';
 import StrictOmit from '../../../phet-core/js/types/StrictOmit.js';
-import optionize from '../../../phet-core/js/optionize.js';
+import optionize, { combineOptions } from '../../../phet-core/js/optionize.js';
 import { Font, IPaint, Text, TextOptions } from '../../../scenery/js/imports.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import sun from '../sun.js';
@@ -29,20 +28,19 @@ export default class TextPushButton extends RectangularPushButton {
 
   public constructor( text: string, providedOptions?: TextPushButtonOptions ) {
 
-    const options = optionize<TextPushButtonOptions, SelfOptions, RectangularPushButtonOptions>()( {
+    const options = optionize<TextPushButtonOptions, StrictOmit<SelfOptions, 'textNodeOptions'>, RectangularPushButtonOptions>()( {
 
       // TextPushButtonOptions
       font: Font.DEFAULT,
       textFill: 'black',
       maxTextWidth: null,
-      textNodeOptions: {},
 
       // RectangularPushButtonOptions
       tandem: Tandem.REQUIRED,
       innerContent: text
     }, providedOptions );
 
-    const textNode = new Text( text, merge( {
+    const textNode = new Text( text, combineOptions<TextOptions>( {
       font: options.font,
       fill: options.textFill,
       maxWidth: options.maxTextWidth,

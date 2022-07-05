@@ -13,8 +13,8 @@ import IReadOnlyProperty from '../../../axon/js/IReadOnlyProperty.js';
 import Multilink from '../../../axon/js/Multilink.js';
 import Bounds2 from '../../../dot/js/Bounds2.js';
 import Dimension2 from '../../../dot/js/Dimension2.js';
-import merge from '../../../phet-core/js/merge.js';
-import optionize from '../../../phet-core/js/optionize.js';
+import optionize, { combineOptions } from '../../../phet-core/js/optionize.js';
+import StrictOmit from '../../../phet-core/js/types/StrictOmit.js';
 import { AlignBox, AlignBoxXAlign, AlignBoxYAlign, Brightness, Color, Contrast, Grayscale, IColor, isHeightSizable, isWidthSizable, Node, NodeOptions, PaintableNode, PaintColorProperty, Path, PressListener, PressListenerOptions, SceneryConstants, Sizable, SizableOptions, Voicing, VoicingOptions } from '../../../scenery/js/imports.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import ColorConstants from '../ColorConstants.js';
@@ -56,7 +56,7 @@ type SelfOptions = {
   yContentOffset?: number;
 
   // Options that will be passed through to the main input listener (PressListener)
-  listenerOptions?: PressListenerOptions | null;
+  listenerOptions?: PressListenerOptions;
 
   // initial color of the button's background
   baseColor?: IColor;
@@ -115,7 +115,7 @@ export default class ButtonNode extends Sizable( Voicing( Node, 0 ) ) {
                          interactionStateProperty: IReadOnlyProperty<ButtonInteractionState>,
                          providedOptions?: ButtonNodeOptions ) {
 
-    const options = optionize<ButtonNodeOptions, SelfOptions, ParentOptions>()( {
+    const options = optionize<ButtonNodeOptions, StrictOmit<SelfOptions, 'listenerOptions'>, ParentOptions>()( {
 
       content: null,
       buttonSize: null,
@@ -125,7 +125,6 @@ export default class ButtonNode extends Sizable( Voicing( Node, 0 ) ) {
       yAlign: 'center',
       xContentOffset: 0,
       yContentOffset: 0,
-      listenerOptions: null,
       baseColor: ColorConstants.LIGHT_BLUE,
       cursor: 'pointer',
       buttonAppearanceStrategy: ButtonNode.FlatAppearanceStrategy,
@@ -149,7 +148,7 @@ export default class ButtonNode extends Sizable( Voicing( Node, 0 ) ) {
       phetioEnabledPropertyInstrumented: true // opt into default PhET-iO instrumented enabledProperty
     }, providedOptions );
 
-    options.listenerOptions = merge( {
+    options.listenerOptions = combineOptions<PressListenerOptions>( {
       tandem: options.tandem.createTandem( 'pressListener' )
     }, options.listenerOptions );
 

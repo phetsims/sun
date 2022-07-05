@@ -18,7 +18,6 @@ import Utils from '../../dot/js/Utils.js';
 import { Shape } from '../../kite/js/imports.js';
 import assertMutuallyExclusiveOptions from '../../phet-core/js/assertMutuallyExclusiveOptions.js';
 import InstanceRegistry from '../../phet-core/js/documentation/InstanceRegistry.js';
-import merge from '../../phet-core/js/merge.js';
 import optionize from '../../phet-core/js/optionize.js';
 import Orientation from '../../phet-core/js/Orientation.js';
 import swapObjectKeys from '../../phet-core/js/swapObjectKeys.js';
@@ -118,7 +117,7 @@ type ParentOptions = AccessibleSliderOptions & NodeOptions;
 
 // We provide these options to the super
 export type SliderOptions = SelfOptions &
-  StrictOmit<ParentOptions, 'panTargetNode' | 'valueProperty' | 'enabledRangeProperty'> &
+  StrictOmit<ParentOptions, 'panTargetNode' | 'valueProperty' | 'enabledRangeProperty' | 'ariaOrientation'> &
   PickOptional<ParentOptions, 'enabledRangeProperty'>;
 
 type TickOptions = Pick<SelfOptions, 'tickLabelSpacing' | 'majorTickLength' | 'majorTickStroke' | 'majorTickLineWidth' | 'minorTickLength' | 'minorTickStroke' | 'minorTickLineWidth'>;
@@ -164,7 +163,7 @@ export default class Slider extends AccessibleSlider( Node, 0 ) {
     assert && assertMutuallyExclusiveOptions( providedOptions, [ 'trackNode' ], [
       'trackSize', 'trackFillEnabled', 'trackFillDisabled', 'trackStroke', 'trackLineWidth', 'trackCornerRadius' ] );
 
-    let options = optionize<SliderOptions, SelfOptions, ParentOptions>()( {
+    const options = optionize<SliderOptions, SelfOptions, ParentOptions>()( {
 
       orientation: Orientation.HORIZONTAL,
       trackNode: null,
@@ -225,9 +224,8 @@ export default class Slider extends AccessibleSlider( Node, 0 ) {
       phetioEnabledPropertyInstrumented: true // opt into default PhET-iO instrumented enabledProperty
     }, providedOptions );
 
-    options = merge( { // eslint-disable-line bad-typescript-text
-      ariaOrientation: options.orientation
-    }, options );
+    // ariaOrientation is omitted from ParentOptions, so we can fill it in here.
+    options.ariaOrientation = options.orientation;
 
     assert && assert( options.soundGenerator === Slider.DEFAULT_SOUND || _.isEmpty( options.valueChangeSoundGeneratorOptions ),
       'options should only be supplied when using default sound generator' );

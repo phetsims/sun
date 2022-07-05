@@ -7,8 +7,7 @@
  */
 
 import PhetioAction from '../../tandem/js/PhetioAction.js';
-import merge from '../../phet-core/js/merge.js';
-import optionize from '../../phet-core/js/optionize.js';
+import optionize, { combineOptions } from '../../phet-core/js/optionize.js';
 import { IInputListener, IPaint, KeyboardUtils, SceneryEvent, SpeakingOptions, VBox, VoicingNode } from '../../scenery/js/imports.js';
 import multiSelectionSoundPlayerFactory from '../../tambo/js/multiSelectionSoundPlayerFactory.js';
 import generalCloseSoundPlayer from '../../tambo/js/shared-sound-players/generalCloseSoundPlayer.js';
@@ -152,17 +151,18 @@ export default class ComboBoxListBox<T> extends Panel {
     items.forEach( ( item, index ) => {
 
       // Create the list item node
-      const listItemNode = new ComboBoxListItemNode( item, highlightWidth, highlightHeight, merge( {
-        align: options.align,
-        highlightFill: options.highlightFill,
-        highlightCornerRadius: options.cornerRadius,
+      const listItemNode = new ComboBoxListItemNode( item, highlightWidth, highlightHeight,
+        combineOptions<ComboBoxListItemNodeOptions>( {
+          align: options.align,
+          highlightFill: options.highlightFill,
+          highlightCornerRadius: options.cornerRadius,
 
-        // highlight overlaps half of margins
-        xMargin: 0.5 * options.xMargin,
-        left: 0.5 * options.xMargin,
-        top: ( 0.5 * options.yMargin ) + ( index * highlightHeight ),
-        tandem: item.tandemName ? tandem.createTandem( item.tandemName ) : Tandem.OPTIONAL
-      }, options.comboBoxListItemNodeOptions ) );
+          // highlight overlaps half of margins
+          xMargin: 0.5 * options.xMargin,
+          left: 0.5 * options.xMargin,
+          top: ( 0.5 * options.yMargin ) + ( index * highlightHeight ),
+          tandem: item.tandemName ? tandem.createTandem( item.tandemName ) : Tandem.OPTIONAL
+        }, options.comboBoxListItemNodeOptions ) );
       listItemNodes.push( listItemNode );
 
       listItemNode.addInputListener( selectionListener );

@@ -11,7 +11,6 @@ import IProperty from '../../axon/js/IProperty.js';
 import StrictOmit from '../../phet-core/js/types/StrictOmit.js';
 import Range from '../../dot/js/Range.js';
 import InstanceRegistry from '../../phet-core/js/documentation/InstanceRegistry.js';
-import merge from '../../phet-core/js/merge.js';
 import optionize, { combineOptions } from '../../phet-core/js/optionize.js';
 // @ts-ignore FIX DEPENDENCY ON SCENERY-PHET
 import NumberDisplay, { NumberDisplayOptions } from '../../scenery-phet/js/NumberDisplay.js';
@@ -117,10 +116,10 @@ export default class NumberSpinner extends AccessibleNumberSpinner( Node, 0 ) {
     const incrementFunction = options.incrementFunction || ( ( value: number ) => value + options.deltaValue );
     const decrementFunction = options.decrementFunction || ( ( value: number ) => value - options.deltaValue );
 
-    const numberDisplay = new NumberDisplay( numberProperty, rangeProperty.value, merge( {},
-      options.numberDisplayOptions, {
+    const numberDisplay = new NumberDisplay( numberProperty, rangeProperty.value,
+      combineOptions<NumberDisplayOptions>( {
         tandem: options.tandem.createTandem( 'numberDisplay' )
-      } ) );
+      }, options.numberDisplayOptions ) );
 
     // buttons
     const arrowButtonOptions: ArrowButtonOptions = {

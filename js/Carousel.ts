@@ -32,9 +32,9 @@ import Animation from '../../twixt/js/Animation.js';
 import Easing from '../../twixt/js/Easing.js';
 import CarouselButton, { CarouselButtonOptions } from './buttons/CarouselButton.js';
 import ColorConstants from './ColorConstants.js';
-import HSeparator from './HSeparator.js';
+import HSeparator, { HSeparatorOptions } from './HSeparator.js';
 import sun from './sun.js';
-import VSeparator from './VSeparator.js';
+import VSeparator, { VSeparatorOptions } from './VSeparator.js';
 
 const DEFAULT_ARROW_SIZE = new Dimension2( 20, 7 );
 
@@ -242,7 +242,7 @@ export default class Carousel extends Node {
         if ( isHorizontal ) {
 
           // vertical separator, to the left of the item
-          separator = new VSeparator( scrollingHeight, merge( {
+          separator = new VSeparator( scrollingHeight, combineOptions<VSeparatorOptions>( {
             centerX: item.centerX + ( maxItemLength / 2 ) + options.spacing,
             centerY: item.centerY
           }, separatorOptions ) );
@@ -254,7 +254,7 @@ export default class Carousel extends Node {
         else {
 
           // horizontal separator, below the item
-          separator = new HSeparator( scrollingWidth, merge( {
+          separator = new HSeparator( scrollingWidth, combineOptions<HSeparatorOptions>( {
             centerX: item.centerX,
             centerY: item.centerY + ( maxItemLength / 2 ) + options.spacing
           }, separatorOptions ) );
