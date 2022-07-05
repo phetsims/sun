@@ -64,9 +64,6 @@ type SelfOptions = {
   // Color when disabled
   disabledColor?: IColor;
 
-  // default cursor
-  cursor?: string;
-
   // Class that determines the button's appearance for the values of interactionStateProperty.
   // Constructor is {function( backgroundNode:Node, interactionStateProperty:Property, options:*)},
   // and the class has an optional dispose method.
