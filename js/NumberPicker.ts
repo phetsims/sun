@@ -17,7 +17,6 @@ import Range from '../../dot/js/Range.js';
 import Utils from '../../dot/js/Utils.js';
 import { Shape } from '../../kite/js/imports.js';
 import InstanceRegistry from '../../phet-core/js/documentation/InstanceRegistry.js';
-import merge from '../../phet-core/js/merge.js';
 import { Color, FireListener, FireListenerOptions, FocusHighlightPath, Font, IColor, LinearGradient, Node, NodeOptions, PaintColorProperty, Path, Rectangle, SceneryConstants, SceneryEvent, Text } from '../../scenery/js/imports.js';
 import AccessibleNumberSpinner, { AccessibleNumberSpinnerOptions } from '../../sun/js/accessibility/AccessibleNumberSpinner.js';
 import generalBoundaryBoopSoundPlayer from '../../tambo/js/shared-sound-players/generalBoundaryBoopSoundPlayer.js';
@@ -27,7 +26,7 @@ import Tandem from '../../tandem/js/Tandem.js';
 import IReadOnlyProperty from '../../axon/js/IReadOnlyProperty.js';
 import ISoundPlayer from '../../tambo/js/ISoundPlayer.js';
 import StrictOmit from '../../phet-core/js/types/StrictOmit.js';
-import optionize from '../../phet-core/js/optionize.js';
+import optionize, { combineOptions } from '../../phet-core/js/optionize.js';
 import EmptyObjectType from '../../phet-core/js/types/EmptyObjectType.js';
 import sun from './sun.js';
 import PhetFont from '../../scenery-phet/js/PhetFont.js';
@@ -406,28 +405,30 @@ export default class NumberPicker extends AccessibleNumberSpinner( Node, 0 ) {
       fireOnHoldInterval: options.timerInterval
     };
 
-    this.incrementInputListener = new NumberPickerInputListener( incrementButtonStateProperty, merge( {
-      tandem: options.tandem.createTandem( 'incrementInputListener' ),
-      fire: ( event: SceneryEvent ) => {
-        valueProperty.set( Math.min( options.incrementFunction( valueProperty.get() ), rangeProperty.get().max ) );
-        options.onInput( event );
+    this.incrementInputListener = new NumberPickerInputListener( incrementButtonStateProperty,
+      combineOptions<NumberPickerInputListenerOptions>( {
+        tandem: options.tandem.createTandem( 'incrementInputListener' ),
+        fire: ( event: SceneryEvent ) => {
+          valueProperty.set( Math.min( options.incrementFunction( valueProperty.get() ), rangeProperty.get().max ) );
+          options.onInput( event );
 
-        // voicing - speak the object/context responses on value change from user input
-        this.voicingSpeakFullResponse( { nameResponse: null, hintResponse: null } );
-      }
-    }, inputListenerOptions ) );
+          // voicing - speak the object/context responses on value change from user input
+          this.voicingSpeakFullResponse( { nameResponse: null, hintResponse: null } );
+        }
+      }, inputListenerOptions ) );
     incrementParent.addInputListener( this.incrementInputListener );
 
-    this.decrementInputListener = new NumberPickerInputListener( decrementButtonStateProperty, merge( {
-      tandem: options.tandem.createTandem( 'decrementInputListener' ),
-      fire: ( event: SceneryEvent ) => {
-        valueProperty.set( Math.max( options.decrementFunction( valueProperty.get() ), rangeProperty.get().min ) );
-        options.onInput( event );
+    this.decrementInputListener = new NumberPickerInputListener( decrementButtonStateProperty,
+      combineOptions<NumberPickerInputListenerOptions>( {
+        tandem: options.tandem.createTandem( 'decrementInputListener' ),
+        fire: ( event: SceneryEvent ) => {
+          valueProperty.set( Math.max( options.decrementFunction( valueProperty.get() ), rangeProperty.get().min ) );
+          options.onInput( event );
 
-        // voicing - speak the object/context responses on value change from user input
-        this.voicingSpeakFullResponse( { nameResponse: null, hintResponse: null } );
-      }
-    }, inputListenerOptions ) );
+          // voicing - speak the object/context responses on value change from user input
+          this.voicingSpeakFullResponse( { nameResponse: null, hintResponse: null } );
+        }
+      }, inputListenerOptions ) );
     decrementParent.addInputListener( this.decrementInputListener );
 
     // enable/disable listeners and interaction: unlink unnecessary, Properties are owned by this instance
@@ -572,12 +573,15 @@ export default class NumberPicker extends AccessibleNumberSpinner( Node, 0 ) {
   }
 }
 
+type NumberPickerInputListenerSelfOptions = EmptyObjectType;
+type NumberPickerInputListenerOptions = NumberPickerInputListenerSelfOptions & FireListenerOptions<FireListener>;
+
 /**
  * Converts FireListener events to state changes.
  */
 class NumberPickerInputListener extends FireListener {
 
-  public constructor( buttonStateProperty: StringEnumerationProperty<ButtonState>, options: FireListenerOptions<FireListener> ) {
+  public constructor( buttonStateProperty: StringEnumerationProperty<ButtonState>, options: NumberPickerInputListenerOptions ) {
     super( options );
     Multilink.multilink(
       [ this.isOverProperty, this.isPressedProperty ],
