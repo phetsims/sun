@@ -12,9 +12,9 @@ import Emitter from '../../axon/js/Emitter.js';
 import Property from '../../axon/js/Property.js';
 import { Shape } from '../../kite/js/imports.js';
 import InstanceRegistry from '../../phet-core/js/documentation/InstanceRegistry.js';
-import merge from '../../phet-core/js/merge.js';
-import optionize from '../../phet-core/js/optionize.js';
-import { FocusHighlightFromNode, IColor, InteractiveHighlighting, Node, NodeOptions, Path, PathOptions, PDOMBehaviorFunction, PDOMPeer, Rectangle, Text } from '../../scenery/js/imports.js';
+import optionize, { combineOptions } from '../../phet-core/js/optionize.js';
+import StrictOmit from '../../phet-core/js/types/StrictOmit.js';
+import { FocusHighlightFromNode, IColor, InteractiveHighlighting, Node, NodeOptions, Path, PDOMBehaviorFunction, PDOMPeer, Rectangle, RectangleOptions, Text } from '../../scenery/js/imports.js';
 import accordionBoxClosedSoundPlayer from '../../tambo/js/shared-sound-players/accordionBoxClosedSoundPlayer.js';
 import accordionBoxOpenedSoundPlayer from '../../tambo/js/shared-sound-players/accordionBoxOpenedSoundPlayer.js';
 import SoundClipPlayer from '../../tambo/js/sound-generators/SoundClipPlayer.js';
@@ -46,7 +46,7 @@ type SelfOptions = {
   titleBarExpandCollapse?: boolean;
 
   // options passed to ExpandCollapseButton constructor
-  expandCollapseButtonOptions?: ExpandCollapseButtonOptions | null;
+  expandCollapseButtonOptions?: ExpandCollapseButtonOptions;
 
   // expand/collapse button layout
   buttonAlign?: 'left' | 'right';
@@ -60,7 +60,7 @@ type SelfOptions = {
   contentXSpacing?: number;
   contentYSpacing?: number;
 
-  titleBarOptions?: PathOptions | null;
+  titleBarOptions?: RectangleOptions;
 
   // Sound
   expandedSoundPlayer?: SoundClipPlayer;
@@ -126,7 +126,7 @@ export default class AccordionBox extends Node {
    */
   public constructor( contentNode: Node, providedOptions?: AccordionBoxOptions ) {
 
-    const options = optionize<AccordionBoxOptions, SelfOptions, NodeOptions>()( {
+    const options = optionize<AccordionBoxOptions, StrictOmit<SelfOptions, 'expandCollapseButtonOptions' | 'titleBarOptions'>, NodeOptions>()( {
 
       // If not provided, a Text node will be supplied. Should have and maintain well-defined bounds if passed in
       titleNode: null as unknown as Node,
@@ -156,9 +156,6 @@ export default class AccordionBox extends Node {
       showTitleWhenExpanded: true, // true = title is visible when expanded, false = title is hidden when expanded
       titleBarExpandCollapse: true, // {boolean} clicking on the title bar expands/collapses the accordion box
 
-      // {*|null} options passed to ExpandCollapseButton constructor, defaults filled in below
-      expandCollapseButtonOptions: null,
-
       // expand/collapse button layout
       buttonAlign: 'left',  // {string} button alignment, 'left'|'right'
       buttonXMargin: 4, // horizontal space between button and left|right edge of box
@@ -170,9 +167,6 @@ export default class AccordionBox extends Node {
       contentYMargin: 8,  // vertical space between content and bottom edge of box
       contentXSpacing: 5, // horizontal space between content and button, ignored if showTitleWhenExpanded is true
       contentYSpacing: 8, // vertical space between content and title+button, ignored if showTitleWhenExpanded is false
-
-      // {*|null} options for the title bar, defaults filled in below
-      titleBarOptions: null,
 
       // {ISoundPlayer} - sound generators for expand and collapse
       expandedSoundPlayer: accordionBoxOpenedSoundPlayer,
@@ -197,13 +191,13 @@ export default class AccordionBox extends Node {
     }, providedOptions );
 
     // titleBarOptions defaults
-    options.titleBarOptions = merge( {
+    options.titleBarOptions = combineOptions<RectangleOptions>( {
       fill: null, // {Color|string|null} title bar fill
       stroke: null // {Color|string|null} title bar stroke, used only for the expanded title bar
     }, options.titleBarOptions );
 
     // expandCollapseButtonOptions defaults
-    options.expandCollapseButtonOptions = merge( {
+    options.expandCollapseButtonOptions = combineOptions<ExpandCollapseButtonOptions>( {
       sideLength: 16, // button is a square, this is the length of one side
       cursor: options.cursor,
       valueOnSoundPlayer: options.expandedSoundPlayer,
@@ -291,7 +285,7 @@ export default class AccordionBox extends Node {
       pickable: false
     } );
 
-    this.expandedTitleBar = new InteractiveHighlightPath( null, merge( {
+    this.expandedTitleBar = new InteractiveHighlightPath( null, combineOptions<ExpandCollapseButtonOptions>( {
       lineWidth: options.lineWidth, // use same lineWidth as box, for consistent look
       cursor: options.cursor
     }, options.titleBarOptions ) );
@@ -299,7 +293,7 @@ export default class AccordionBox extends Node {
     this.expandedBox.addChild( this.expandedTitleBar );
 
     // Collapsed title bar has corners that match the box. Clicking it operates like expand/collapse button.
-    this.collapsedTitleBar = new InteractiveHighlightRectangle( merge( {
+    this.collapsedTitleBar = new InteractiveHighlightRectangle( combineOptions<RectangleOptions>( {
       cornerRadius: options.cornerRadius,
       cursor: options.cursor
     }, options.titleBarOptions ) );

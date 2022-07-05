@@ -10,8 +10,7 @@
 
 import Property from '../../axon/js/Property.js';
 import InstanceRegistry from '../../phet-core/js/documentation/InstanceRegistry.js';
-import merge from '../../phet-core/js/merge.js';
-import optionize from '../../phet-core/js/optionize.js';
+import optionize, { combineOptions } from '../../phet-core/js/optionize.js';
 import { AlignBox, AlignGroup, HBox, HBoxOptions, Node, PressListener, SceneryConstants } from '../../scenery/js/imports.js';
 import Tandem from '../../tandem/js/Tandem.js';
 import sun from './sun.js';
@@ -79,9 +78,10 @@ export default class ABSwitch<T> extends HBox {
       phetioEnabledPropertyInstrumented: true // opt into default PhET-iO instrumented enabledProperty
     }, providedOptions );
 
-    const toggleSwitch = new ToggleSwitch<T>( property, valueA, valueB, merge( {
-      tandem: options.tandem.createTandem( 'toggleSwitch' )
-    }, options.toggleSwitchOptions ) );
+    const toggleSwitch = new ToggleSwitch<T>( property, valueA, valueB,
+      combineOptions<ToggleSwitchOptions>( {
+        tandem: options.tandem.createTandem( 'toggleSwitch' )
+      }, options.toggleSwitchOptions ) );
 
     let nodeA = labelA;
     let nodeB = labelB;
