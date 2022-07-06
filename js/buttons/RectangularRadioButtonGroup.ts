@@ -157,9 +157,6 @@ export default class RectangularRadioButtonGroup<T> extends FlowBox {
     //TODO https://github.com/phetsims/sun/issues/740 simplify, use optionize, remove any
     const options = merge( _.clone( defaultRadioButtonOptions ), defaultGroupOptions, providedOptions ) as Required<SelfOptions> & RectangularRadioButtonGroupOptions & { tandem: Tandem };
 
-    // increment instance count
-    instanceCount++;
-
     assert && assert( !options.hasOwnProperty( 'children' ), 'Cannot pass in children to a RectangularRadioButtonGroup, ' +
                                                              'create siblings in the parent node instead' );
 
@@ -249,6 +246,7 @@ export default class RectangularRadioButtonGroup<T> extends FlowBox {
       const radioButton = new RectangularRadioButton( property, item.value, radioButtonOptions );
 
       // pdom - so the browser recognizes these buttons are in the same group, see instanceCount for more info
+      instanceCount++;
       radioButton.setPDOMAttribute( 'name', CLASS_NAME + instanceCount );
 
       // ensure the buttons don't resize when selected vs unselected by adding a rectangle with the max size
