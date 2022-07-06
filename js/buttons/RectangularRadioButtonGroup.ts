@@ -162,11 +162,8 @@ export default class RectangularRadioButtonGroup<T> extends FlowBox {
     //TODO https://github.com/phetsims/sun/issues/740 simplify, use optionize, remove any
     const options = merge( _.clone( defaultRadioButtonOptions ), defaultGroupOptions, providedOptions ) as Required<SelfOptions> & RectangularRadioButtonGroupOptions & { tandem: Tandem };
 
-    assert && assert( !options.hasOwnProperty( 'children' ), 'Cannot pass in children to a RectangularRadioButtonGroup, ' +
-                                                             'create siblings in the parent node instead' );
-
-    // make sure that if sound players are provided, there is one per radio button
-    assert && assert( options.soundPlayers === null || options.soundPlayers.length === items.length );
+    assert && assert( options.soundPlayers === null || options.soundPlayers.length === items.length,
+      'If soundPlayers is provided, there must be one per radio button.' );
 
     let i; // for loops
 
