@@ -92,6 +92,7 @@ type SelfOptions = {
   buttonContentYAlign?: AlignBoxYAlign;
 };
 
+//TODO https://github.com/phetsims/sun/issues/740 omit some FlowBoxOptions for pdom defaults that caller should not change
 export type RectangularRadioButtonGroupOptions = SelfOptions & FlowBoxOptions;
 
 export default class RectangularRadioButtonGroup<T> extends FlowBox {
