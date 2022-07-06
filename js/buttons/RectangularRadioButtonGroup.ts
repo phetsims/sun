@@ -112,6 +112,10 @@ export default class RectangularRadioButtonGroup<T> extends FlowBox {
 
   public constructor( property: Property<T>, items: RectangularRadioButtonItem<T>[], providedOptions?: RectangularRadioButtonGroupOptions ) {
 
+    assert && assert( _.uniqBy( items, item => item.value ).length === items.length,
+      'items must have unique values' );
+    assert && assert( _.find( items, item => ( item.value === property.value ) ),
+      'one radio button must be associated with property.value' );
     assert && assert( _.every( items, item => !item.node.hasPDOMContent ),
       'Accessibility is provided by RectangularRadioButton and RectangularRadioButtonItem.labelContent. ' +
       'Additional PDOM content in the provided Node could break accessibility.' );
@@ -178,23 +182,6 @@ export default class RectangularRadioButtonGroup<T> extends FlowBox {
       'If soundPlayers is provided, there must be one per radio button.' );
 
     instanceCount++;
-
-    // Make sure that each button has a unique value associated with it.
-    const uniqueValues = [];
-    for ( let i = 0; i < items.length; i++ ) {
-      if ( uniqueValues.indexOf( items[ i ].value ) < 0 ) {
-        uniqueValues.push( items[ i ].value );
-      }
-      else {
-        throw new Error( `Duplicate value: "${items[ i ].value}" passed into RectangularRadioButtonGroup.js` );
-      }
-    }
-
-    // Make sure that the Property passed in currently has a value from items.
-    if ( uniqueValues.indexOf( property.get() ) === -1 ) {
-      throw new Error( `The Property passed in to RectangularRadioButtonGroup has an illegal value "${property.get()
-      }" that is not present in the items` );
-    }
 
     // Maximum width of the line that strokes the button.
     const maxLineWidth = Math.max( options.selectedLineWidth, options.deselectedLineWidth );
