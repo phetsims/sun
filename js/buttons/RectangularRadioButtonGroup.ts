@@ -66,6 +66,7 @@ type SelfOptions = {
   voicingHintResponse?: VoicingResponse;
 
   //TODO https://github.com/phetsims/sun/issues/740 these are duplicated from RectangularRadioButtonOptions, and should be nested in radioButtonOptions?: RectangularRadioButtonOptions
+  //TODO https://github.com/phetsims/sun/issues/772 some of these should be in RectangularRadioButton.FlatAppearanceStrategyOptions and ContentAppearanceStrategyOptions, which do not exist
   baseColor?: IPaint;
   cornerRadius?: number;
   overButtonOpacity?: number;
@@ -91,6 +92,7 @@ type SelfOptions = {
   buttonContentYAlign?: AlignBoxYAlign;
 };
 
+//TODO https://github.com/phetsims/sun/issues/740 omit some FlowBoxOptions for pdom defaults that caller should not change
 export type RectangularRadioButtonGroupOptions = SelfOptions & FlowBoxOptions;
 
 export default class RectangularRadioButtonGroup<T> extends FlowBox {
@@ -98,6 +100,10 @@ export default class RectangularRadioButtonGroup<T> extends FlowBox {
   private readonly disposeRadioButtonGroup: () => void;
 
   public constructor( property: Property<T>, items: RectangularRadioButtonItem<T>[], providedOptions?: RectangularRadioButtonGroupOptions ) {
+
+    assert && assert( _.every( items, item => !item.node.hasPDOMContent ),
+      'Accessibility is provided by RectangularRadioButton and RectangularRadioButtonItem.labelContent. ' +
+      'Additional PDOM content in the provided Node could break accessibility.' );
 
     // These options are passed to each RectangularRadioButton created in this group.
     const defaultRadioButtonOptions: RectangularRadioButtonOptions = {
@@ -157,17 +163,16 @@ export default class RectangularRadioButtonGroup<T> extends FlowBox {
     //TODO https://github.com/phetsims/sun/issues/740 simplify, use optionize, remove any
     const options = merge( _.clone( defaultRadioButtonOptions ), defaultGroupOptions, providedOptions ) as Required<SelfOptions> & RectangularRadioButtonGroupOptions & { tandem: Tandem };
 
-    assert && assert( !options.hasOwnProperty( 'children' ), 'Cannot pass in children to a RectangularRadioButtonGroup, ' +
-                                                             'create siblings in the parent node instead' );
-
-    // make sure that if sound players are provided, there is one per radio button
-    assert && assert( options.soundPlayers === null || options.soundPlayers.length === items.length );
+    assert && assert( options.soundPlayers === null || options.soundPlayers.length === items.length,
+      'If soundPlayers is provided, there must be one per radio button.' );
 
     instanceCount++;
 
+    let i; // for loops
+
     // Make sure that each button has a unique value associated with it.
     const uniqueValues = [];
-    for ( let i = 0; i < items.length; i++ ) {
+    for ( i = 0; i < items.length; i++ ) {
       if ( uniqueValues.indexOf( items[ i ].value ) < 0 ) {
         uniqueValues.push( items[ i ].value );
       }
@@ -192,17 +197,12 @@ export default class RectangularRadioButtonGroup<T> extends FlowBox {
     // make sure all radio buttons are the same size and create the RadioButtons
     const buttons: Array<RectangularRadioButton<T> | FlowBox> = [];
 
-    // {ButtonWithLayoutNode[]} - Collection of both RadioButton and its layout manager, if one is created to support
-    // a visual button label
+    // Collection of both RadioButton and its layout manager, if one is created to support a visual button label
     const buttonsWithLayoutNodes: ButtonWithLayoutNode<T>[] = [];
 
     const labelAppearanceStrategies: InstanceType<TContentAppearanceStrategy>[] = [];
-    for ( let i = 0; i < items.length; i++ ) {
+    for ( i = 0; i < items.length; i++ ) {
       const item = items[ i ];
-
-      assert && assert( !item.hasOwnProperty( 'phetioType' ), 'phetioType should be provided by ' +
-                                                              'the Property passed to the ' +
-                                                              'RectangularRadioButtonGroup constructor' );
 
       //TODO https://github.com/phetsims/sun/issues/740 use optionize
       const radioButtonOptions = merge( {
@@ -222,10 +222,6 @@ export default class RectangularRadioButtonGroup<T> extends FlowBox {
       if ( item.tandemName ) {
         radioButtonOptions.tandem = options.tandem.createTandem( item.tandemName );
       }
-
-      assert && assert( !item.node.hasPDOMContent,
-        'Accessibility is provided by RectangularRadioButton and RectangularRadioButtonItem.labelContent. ' +
-        'Additional PDOM content in the provided Node could break accessibility.' );
 
       // create the label and voicing response for the radio button
       if ( item.labelContent ) {
@@ -296,7 +292,6 @@ export default class RectangularRadioButtonGroup<T> extends FlowBox {
     const maxButtonHeight = _.maxBy( buttonsWithLayoutNodes, ( buttonWithLayoutParent: ButtonWithLayoutNode<T> ) => buttonWithLayoutParent.layoutNode.height )!.layoutNode.height;
     buttonsWithLayoutNodes.forEach( ( buttonWithLayoutParent: ButtonWithLayoutNode<T> ) => {
 
-      // @ts-ignore - JO and MK think this can be removed once Shape.js is converted to typescript.
       buttonWithLayoutParent.radioButton.touchArea = Shape.rectangle(
         -options.touchAreaXDilation - maxLineWidth / 2,
         -options.touchAreaYDilation - maxLineWidth / 2,
@@ -304,7 +299,6 @@ export default class RectangularRadioButtonGroup<T> extends FlowBox {
         maxButtonHeight + 2 * options.touchAreaYDilation
       );
 
-      // @ts-ignore - JO and MK think this can be removed once Shape.js is converted to typescript.
       buttonWithLayoutParent.radioButton.mouseArea = Shape.rectangle(
         -options.mouseAreaXDilation - maxLineWidth / 2,
         -options.mouseAreaYDilation - maxLineWidth / 2,
