@@ -15,7 +15,7 @@ import multiSelectionSoundPlayerFactory from '../../../tambo/js/multiSelectionSo
 import Tandem from '../../../tandem/js/Tandem.js';
 import ColorConstants from '../ColorConstants.js';
 import sun from '../sun.js';
-import RectangularRadioButton from './RectangularRadioButton.js';
+import RectangularRadioButton, { RectangularRadioButtonOptions } from './RectangularRadioButton.js';
 import { VoicingResponse } from '../../../utterance-queue/js/ResponsePacket.js';
 import ISoundPlayer from '../../../tambo/js/ISoundPlayer.js';
 import TContentAppearanceStrategy from './TContentAppearanceStrategy.js';
@@ -121,7 +121,7 @@ export default class RectangularRadioButtonGroup<T> extends FlowBox {
   public constructor( property: Property<T>, items: RectangularRadioButtonItem<T>[], providedOptions?: RectangularRadioButtonGroupOptions ) {
 
     // These options are passed to each RectangularRadioButton created in this group.
-    const defaultRadioButtonOptions = {
+    const defaultRadioButtonOptions: RectangularRadioButtonOptions = {
       baseColor: ColorConstants.LIGHT_BLUE,
       cornerRadius: 4,
       overButtonOpacity: 0.8,
@@ -138,10 +138,12 @@ export default class RectangularRadioButtonGroup<T> extends FlowBox {
       touchAreaXDilation: 0,
       touchAreaYDilation: 0,
       mouseAreaXDilation: 0,
-      mouseAreaYDilation: 0,
+      mouseAreaYDilation: 0
+    };
 
-      //TODO https://github.com/phetsims/sun/issues/740 everything below here does not belong in this object literal, not included in RectangularRadioButtonOptions
-      // FlowBox options (super class of RectangularRadioButtonGroup)
+    // These options apply to the group, not individual buttons.
+    const defaultGroupOptions: RectangularRadioButtonGroupOptions = {
+
       spacing: 10,
       orientation: 'vertical',
 
@@ -165,10 +167,7 @@ export default class RectangularRadioButtonGroup<T> extends FlowBox {
       a11yHighlightYDilation: 0,
 
       // voicing - hint response added to the focus response, and nowhere else.
-      voicingHintResponse: null
-    };
-
-    const normalOptions = {
+      voicingHintResponse: null,
 
       // {number} - opt into Node's disabled opacity when enabled:false
       disabledOpacity: SceneryConstants.DISABLED_OPACITY,
@@ -188,7 +187,7 @@ export default class RectangularRadioButtonGroup<T> extends FlowBox {
     };
 
     // NOTE: The separation of a bunch of the options makes this complicated. Ideally use optionize in the future
-    const options = merge( _.clone( defaultRadioButtonOptions ), normalOptions, providedOptions ) as Required<SelfOptions> & RectangularRadioButtonGroupOptions & { tandem: Tandem };
+    const options = merge( _.clone( defaultRadioButtonOptions ), defaultGroupOptions, providedOptions ) as Required<SelfOptions> & RectangularRadioButtonGroupOptions & { tandem: Tandem };
 
     // increment instance count
     instanceCount++;
