@@ -123,40 +123,29 @@ export default class RectangularRadioButtonGroup<T> extends FlowBox {
     // These options apply to the group, not individual buttons.
     const defaultGroupOptions: RectangularRadioButtonGroupOptions = {
 
-      spacing: 10,
-      orientation: 'vertical',
-
-      // These margins are *within* each button
+      //TODO https://github.com/phetsims/sun/issues/740 move these to defaults for nested radioButtonOptions
       buttonContentXMargin: 5,
       buttonContentYMargin: 5,
-
-      // alignment of the content nodes *within* each button
       buttonContentXAlign: 'center',
       buttonContentYAlign: 'center',
 
-      // How far from the button the text label is (only applies if labels are passed in)
-      labelSpacing: 0,
-
-      // Which side of the button the label will appear, options are 'top', 'bottom', 'left', 'right'
-      // (only applies if labels are passed in)
+      // SelfOptions
+      soundPlayers: null,
       labelAlign: 'bottom',
-
-      // pdom - focus highlight expansion
+      labelSpacing: 0,
       a11yHighlightXDilation: 0,
       a11yHighlightYDilation: 0,
-
-      // voicing - hint response added to the focus response, and nowhere else.
       voicingHintResponse: null,
 
-      // {number} - opt into Node's disabled opacity when enabled:false
+      // FlowBoxOptions
+      spacing: 10,
+      orientation: 'vertical',
       disabledOpacity: SceneryConstants.DISABLED_OPACITY,
 
       // phet-io
       tandem: Tandem.REQUIRED,
       visiblePropertyOptions: { phetioFeatured: true },
       phetioEnabledPropertyInstrumented: true, // opt into default PhET-iO instrumented enabledProperty
-
-      soundPlayers: null,
 
       // pdom
       tagName: 'ul',
@@ -165,7 +154,7 @@ export default class RectangularRadioButtonGroup<T> extends FlowBox {
       groupFocusHighlight: true
     };
 
-    // NOTE: The separation of a bunch of the options makes this complicated. Ideally use optionize in the future
+    //TODO https://github.com/phetsims/sun/issues/740 simplify, use optionize, remove any
     const options = merge( _.clone( defaultRadioButtonOptions ), defaultGroupOptions, providedOptions ) as Required<SelfOptions> & RectangularRadioButtonGroupOptions & { tandem: Tandem };
 
     // increment instance count
@@ -223,6 +212,7 @@ export default class RectangularRadioButtonGroup<T> extends FlowBox {
                                                               'the Property passed to the ' +
                                                               'RectangularRadioButtonGroup constructor' );
 
+      //TODO https://github.com/phetsims/sun/issues/740 use optionize
       const radioButtonOptions = merge( {
         content: item.node,
         xMargin: options.buttonContentXMargin,
