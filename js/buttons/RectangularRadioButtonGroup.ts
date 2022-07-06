@@ -112,58 +112,6 @@ export default class RectangularRadioButtonGroup<T> extends FlowBox {
       'Accessibility is provided by RectangularRadioButton and RectangularRadioButtonItem.labelContent. ' +
       'Additional PDOM content in the provided Node could break accessibility.' );
 
-    //TODO https://github.com/phetsims/sun/issues/740 delete this after identifying changes to call sites
-    if ( providedOptions ) {
-      // Catch any options that were not moved to radioButtonOptions
-
-      // @ts-ignore
-      assert && assert( providedOptions.baseColor === undefined );
-      // @ts-ignore
-      assert && assert( providedOptions.cornerRadius === undefined );
-      // @ts-ignore
-      assert && assert( providedOptions.overButtonOpacity === undefined );
-      // @ts-ignore
-      assert && assert( providedOptions.selectedStroke === undefined );
-      // @ts-ignore
-      assert && assert( providedOptions.selectedLineWidth === undefined );
-      // @ts-ignore
-      assert && assert( providedOptions.selectedButtonOpacity === undefined );
-      // @ts-ignore
-      assert && assert( providedOptions.deselectedStroke === undefined );
-      // @ts-ignore
-      assert && assert( providedOptions.deselectedLineWidth === undefined );
-      // @ts-ignore
-      assert && assert( providedOptions.deselectedButtonOpacity === undefined );
-      // @ts-ignore
-      assert && assert( providedOptions.contentAppearanceStrategy === undefined );
-      // @ts-ignore
-      assert && assert( providedOptions.overContentOpacity === undefined );
-      // @ts-ignore
-      assert && assert( providedOptions.selectedContentOpacity === undefined );
-      // @ts-ignore
-      assert && assert( providedOptions.deselectedContentOpacity === undefined );
-      // @ts-ignore
-      assert && assert( providedOptions.buttonContentXMargin === undefined );
-      // @ts-ignore
-      assert && assert( providedOptions.buttonContentYMargin === undefined );
-      // @ts-ignore
-      assert && assert( providedOptions.buttonContentXAlign === undefined );
-      // @ts-ignore
-      assert && assert( providedOptions.buttonContentYAlign === undefined );
-
-      // Catch any renames that were missed
-      if ( providedOptions.radioButtonOptions ) {
-        // @ts-ignore
-        assert && assert( providedOptions.buttonContentXMargin === undefined );
-        // @ts-ignore
-        assert && assert( providedOptions.buttonContentYMargin === undefined );
-        // @ts-ignore
-        assert && assert( providedOptions.buttonContentXAlign === undefined );
-        // @ts-ignore
-        assert && assert( providedOptions.buttonContentYAlign === undefined );
-      }
-    }
-
     const options = optionize<RectangularRadioButtonGroupOptions, SelfOptions, FlowBoxOptions>()( {
 
       // SelfOptions
