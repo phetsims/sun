@@ -188,6 +188,7 @@ export default class RectangularRadioButtonGroup<T> extends FlowBox {
     // Maximum width of the line that strokes the button.
     const maxLineWidth = Math.max( options.selectedLineWidth, options.deselectedLineWidth );
 
+    //TODO https://github.com/phetsims/sun/issues/740 replace with AlignBox and AlignGroup
     // calculate the maximum width and height of the content so we can make all radio buttons the same size
     const widestContentWidth = _.maxBy( items, item => item.node.width )!.node.width;
     const tallestContentHeight = _.maxBy( items, item => item.node.height )!.node.height;
