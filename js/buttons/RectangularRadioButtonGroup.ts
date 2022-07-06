@@ -48,11 +48,12 @@ export type RectangularRadioButtonItem<T> = {
 let instanceCount = 0;
 
 type SelfOptions = {
-  // Sound generation for the radio buttons, null means to use the defaults, otherwise there
-  // must be one for each element in contentArray
+
+  // Sound generation for the radio buttons.
+  // null means to use the defaults. Otherwise, there must be one for each button.
   soundPlayers?: ISoundPlayer[] | null;
 
-  // The fill for the rectangle behind the radio buttons.  Default color is bluish color, as in the other button library.
+  // The fill for the rectangle behind the radio buttons.
   baseColor?: IPaint;
 
   // Options for buttonAppearanceStrategy.
@@ -198,14 +199,14 @@ export default class RectangularRadioButtonGroup<T> extends FlowBox {
     // make sure every object in the content array has properties 'node' and 'value'
     assert && assert( _.every( items, item => {
       return item.hasOwnProperty( 'node' ) && item.hasOwnProperty( 'value' );
-    } ), 'contentArray must be an array of objects with properties "node" and "value"' );
+    } ), 'items must be an array of objects with properties "node" and "value"' );
 
     // make sure that if sound players are provided, there is one per radio button
     assert && assert( options.soundPlayers === null || options.soundPlayers.length === items.length );
 
     let i; // for loops
 
-    // make sure that each value passed into the contentArray is unique
+    // Make sure that each button has a unique value associated with it.
     const uniqueValues = [];
     for ( i = 0; i < items.length; i++ ) {
       if ( uniqueValues.indexOf( items[ i ].value ) < 0 ) {
@@ -216,10 +217,10 @@ export default class RectangularRadioButtonGroup<T> extends FlowBox {
       }
     }
 
-    // make sure that the Property passed in currently has a value from the contentArray
+    // Make sure that the Property passed in currently has a value from items.
     if ( uniqueValues.indexOf( property.get() ) === -1 ) {
       throw new Error( `The Property passed in to RectangularRadioButtonGroup has an illegal value "${property.get()
-      }" that is not present in the contentArray` );
+      }" that is not present in the items` );
     }
 
     assert && assert( _.includes( BUTTON_CONTENT_X_ALIGN_VALUES, options.buttonContentXAlign ),
