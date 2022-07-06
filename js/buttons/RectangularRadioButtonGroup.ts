@@ -75,7 +75,7 @@ type SelfOptions = {
   a11yHighlightXDilation?: number;
   a11yHighlightYDilation?: number;
 
-  //TODO https://github.com/phetsims/sun/issues/740 why is this a SelfOption? It's not used anywhere, just passed to super.
+  //TODO https://github.com/phetsims/sun/issues/773 should not be defined in SelfOptions, and is not used by super
   // voicing - hint response added to the focus response, and nowhere else.
   voicingHintResponse?: VoicingResponse;
 
@@ -111,6 +111,8 @@ export default class RectangularRadioButtonGroup<T> extends FlowBox {
     assert && assert( _.every( items, item => !item.node.hasPDOMContent ),
       'Accessibility is provided by RectangularRadioButton and RectangularRadioButtonItem.labelContent. ' +
       'Additional PDOM content in the provided Node could break accessibility.' );
+
+    assert && assert( !providedOptions || !providedOptions.voicingHintResponse, 'voicingHintResponse is not supported' );
 
     const options = optionize<RectangularRadioButtonGroupOptions, SelfOptions, FlowBoxOptions>()( {
 
