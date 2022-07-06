@@ -100,6 +100,10 @@ export default class RectangularRadioButtonGroup<T> extends FlowBox {
 
   public constructor( property: Property<T>, items: RectangularRadioButtonItem<T>[], providedOptions?: RectangularRadioButtonGroupOptions ) {
 
+    assert && assert( _.every( items, item => !item.node.hasPDOMContent ),
+      'Accessibility is provided by RectangularRadioButton and RectangularRadioButtonItem.labelContent. ' +
+      'Additional PDOM content in the provided Node could break accessibility.' );
+
     // These options are passed to each RectangularRadioButton created in this group.
     const defaultRadioButtonOptions: RectangularRadioButtonOptions = {
       baseColor: ColorConstants.LIGHT_BLUE,
@@ -193,8 +197,7 @@ export default class RectangularRadioButtonGroup<T> extends FlowBox {
     // make sure all radio buttons are the same size and create the RadioButtons
     const buttons: Array<RectangularRadioButton<T> | FlowBox> = [];
 
-    // {ButtonWithLayoutNode[]} - Collection of both RadioButton and its layout manager, if one is created to support
-    // a visual button label
+    // Collection of both RadioButton and its layout manager, if one is created to support a visual button label
     const buttonsWithLayoutNodes: ButtonWithLayoutNode<T>[] = [];
 
     const labelAppearanceStrategies: InstanceType<TContentAppearanceStrategy>[] = [];
@@ -219,10 +222,6 @@ export default class RectangularRadioButtonGroup<T> extends FlowBox {
       if ( item.tandemName ) {
         radioButtonOptions.tandem = options.tandem.createTandem( item.tandemName );
       }
-
-      assert && assert( !item.node.hasPDOMContent,
-        'Accessibility is provided by RectangularRadioButton and RectangularRadioButtonItem.labelContent. ' +
-        'Additional PDOM content in the provided Node could break accessibility.' );
 
       // create the label and voicing response for the radio button
       if ( item.labelContent ) {
