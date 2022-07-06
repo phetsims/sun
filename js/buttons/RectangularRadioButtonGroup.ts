@@ -201,10 +201,6 @@ export default class RectangularRadioButtonGroup<T> extends FlowBox {
     for ( i = 0; i < items.length; i++ ) {
       const item = items[ i ];
 
-      assert && assert( !item.hasOwnProperty( 'phetioType' ), 'phetioType should be provided by ' +
-                                                              'the Property passed to the ' +
-                                                              'RectangularRadioButtonGroup constructor' );
-
       //TODO https://github.com/phetsims/sun/issues/740 use optionize
       const radioButtonOptions = merge( {
         content: item.node,
