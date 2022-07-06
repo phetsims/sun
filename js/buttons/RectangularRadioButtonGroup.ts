@@ -297,7 +297,6 @@ export default class RectangularRadioButtonGroup<T> extends FlowBox {
     const maxButtonHeight = _.maxBy( buttonsWithLayoutNodes, ( buttonWithLayoutParent: ButtonWithLayoutNode<T> ) => buttonWithLayoutParent.layoutNode.height )!.layoutNode.height;
     buttonsWithLayoutNodes.forEach( ( buttonWithLayoutParent: ButtonWithLayoutNode<T> ) => {
 
-      // @ts-ignore - JO and MK think this can be removed once Shape.js is converted to typescript.
       buttonWithLayoutParent.radioButton.touchArea = Shape.rectangle(
         -options.touchAreaXDilation - maxLineWidth / 2,
         -options.touchAreaYDilation - maxLineWidth / 2,
@@ -305,7 +304,6 @@ export default class RectangularRadioButtonGroup<T> extends FlowBox {
         maxButtonHeight + 2 * options.touchAreaYDilation
       );
 
-      // @ts-ignore - JO and MK think this can be removed once Shape.js is converted to typescript.
       buttonWithLayoutParent.radioButton.mouseArea = Shape.rectangle(
         -options.mouseAreaXDilation - maxLineWidth / 2,
         -options.mouseAreaYDilation - maxLineWidth / 2,
