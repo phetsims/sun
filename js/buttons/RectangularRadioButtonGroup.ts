@@ -112,8 +112,6 @@ export default class RectangularRadioButtonGroup<T> extends FlowBox {
       'Accessibility is provided by RectangularRadioButton and RectangularRadioButtonItem.labelContent. ' +
       'Additional PDOM content in the provided Node could break accessibility.' );
 
-    assert && assert( !providedOptions || !providedOptions.voicingHintResponse, 'voicingHintResponse is not supported' );
-
     const options = optionize<RectangularRadioButtonGroupOptions, SelfOptions, FlowBoxOptions>()( {
 
       // SelfOptions
