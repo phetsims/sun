@@ -28,7 +28,7 @@ import Property from '../../../axon/js/Property.js';
 // in a single group.
 let instanceCount = 0;
 
-// Prefix for instanceCount, in case there are different kinds of "groups"
+// Prefix for instanceCount, because PhET sims have different types of "groups"
 const CLASS_NAME = 'RectangularRadioButtonGroup';
 
 // Describes one radio button
