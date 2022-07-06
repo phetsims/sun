@@ -106,6 +106,7 @@ type SelfOptions = {
   a11yHighlightXDilation?: number;
   a11yHighlightYDilation?: number;
 
+  //TODO https://github.com/phetsims/sun/issues/740 why is this a SelfOption? It's not used anywhere, just passed to super.
   // voicing - hint response added to the focus response, and nowhere else.
   voicingHintResponse?: VoicingResponse;
 };
@@ -119,18 +120,9 @@ export default class RectangularRadioButtonGroup<T> extends FlowBox {
   public constructor( property: Property<T>, items: RectangularRadioButtonItem<T>[], providedOptions?: RectangularRadioButtonGroupOptions ) {
 
     // These options are passed to each RectangularRadioButton created in this group.
-    const defaultOptions = {
-
-      // FlowBox options (super class of RectangularRadioButtonGroup)
-      spacing: 10,
-      orientation: 'vertical',
-
-      // The fill for the rectangle behind the radio buttons.  Default color is bluish color, as in the other button library.
+    const defaultRadioButtonOptions = {
       baseColor: ColorConstants.LIGHT_BLUE,
-
-      // Options for buttonAppearanceStrategy.
-      //TODO https://github.com/phetsims/sun/issues/653 These are already specified in RectangularRadioButton, but
-      //  must to be included here due to the use of _.pick below
+      cornerRadius: 4,
       overButtonOpacity: 0.8,
       selectedStroke: 'black',
       selectedLineWidth: 1.5,
@@ -138,16 +130,19 @@ export default class RectangularRadioButtonGroup<T> extends FlowBox {
       deselectedStroke: new Color( 50, 50, 50 ),
       deselectedLineWidth: 1,
       deselectedButtonOpacity: 0.6,
-
-      // {constructor|null} Class that determines the content's appearance for the values of interactionStateProperty.
       contentAppearanceStrategy: RectangularRadioButton.ContentAppearanceStrategy,
-
-      // Options used by RectangularRadioButton.ContentAppearanceStrategy.
-      //TODO https://github.com/phetsims/sun/issues/653 These are already specified in RectangularRadioButton, but
-      //  must to be included here due to the use of _.pick below
       overContentOpacity: 0.8,
       selectedContentOpacity: 1,
       deselectedContentOpacity: 0.6,
+      touchAreaXDilation: 0,
+      touchAreaYDilation: 0,
+      mouseAreaXDilation: 0,
+      mouseAreaYDilation: 0,
+
+      //TODO https://github.com/phetsims/sun/issues/740 everything below here does not belong in this object literal, not included in RectangularRadioButtonOptions
+      // FlowBox options (super class of RectangularRadioButtonGroup)
+      spacing: 10,
+      orientation: 'vertical',
 
       // These margins are *within* each button
       buttonContentXMargin: 5,
@@ -156,17 +151,6 @@ export default class RectangularRadioButtonGroup<T> extends FlowBox {
       // alignment of the content nodes *within* each button
       buttonContentXAlign: 'center', // {string} see BUTTON_CONTENT_X_ALIGN_VALUES
       buttonContentYAlign: 'center', // {string} see BUTTON_CONTENT_Y_ALIGN_VALUES
-
-      // TouchArea expansion
-      touchAreaXDilation: 0,
-      touchAreaYDilation: 0,
-
-      // MouseArea expansion
-      mouseAreaXDilation: 0,
-      mouseAreaYDilation: 0,
-
-      //The radius for each button
-      cornerRadius: 4,
 
       // How far from the button the text label is (only applies if labels are passed in)
       labelSpacing: 0,
@@ -203,7 +187,7 @@ export default class RectangularRadioButtonGroup<T> extends FlowBox {
     };
 
     // NOTE: The separation of a bunch of the options makes this complicated. Ideally use optionize in the future
-    const options = merge( _.clone( defaultOptions ), normalOptions, providedOptions ) as Required<SelfOptions> & RectangularRadioButtonGroupOptions & { tandem: Tandem };
+    const options = merge( _.clone( defaultRadioButtonOptions ), normalOptions, providedOptions ) as Required<SelfOptions> & RectangularRadioButtonGroupOptions & { tandem: Tandem };
 
     // increment instance count
     instanceCount++;
@@ -243,9 +227,6 @@ export default class RectangularRadioButtonGroup<T> extends FlowBox {
     assert && assert( _.includes( BUTTON_CONTENT_Y_ALIGN_VALUES, options.buttonContentYAlign ),
       `invalid buttonContentYAlign: ${options.buttonContentYAlign}` );
 
-    // make a copy of the options to pass to individual buttons that includes all default options but not scenery options
-    const buttonOptions = _.pick( options, _.keys( defaultOptions ) );
-
     // Maximum width of the line that strokes the button.
     const maxLineWidth = Math.max( options.selectedLineWidth, options.deselectedLineWidth );
 
@@ -268,7 +249,7 @@ export default class RectangularRadioButtonGroup<T> extends FlowBox {
                                                               'the Property passed to the ' +
                                                               'RectangularRadioButtonGroup constructor' );
 
-      const radioButtonGroupMemberOptions = merge( {
+      const radioButtonOptions = merge( {
         content: item.node,
         xMargin: options.buttonContentXMargin,
         yMargin: options.buttonContentYMargin,
@@ -279,11 +260,11 @@ export default class RectangularRadioButtonGroup<T> extends FlowBox {
         phetioDocumentation: item.phetioDocumentation || '',
         soundPlayer: options.soundPlayers ? options.soundPlayers[ i ] :
                      multiSelectionSoundPlayerFactory.getSelectionSoundPlayer( i )
-      }, buttonOptions ) as any;
+      }, _.pick( options, _.keys( defaultRadioButtonOptions ) ) ) as any;
 
       // Pass through the tandem given the tandemName, but also support uninstrumented simulations
       if ( item.tandemName ) {
-        radioButtonGroupMemberOptions.tandem = options.tandem.createTandem( item.tandemName );
+        radioButtonOptions.tandem = options.tandem.createTandem( item.tandemName );
       }
 
       assert && assert( !item.node.hasPDOMContent,
@@ -292,21 +273,21 @@ export default class RectangularRadioButtonGroup<T> extends FlowBox {
 
       // create the label and voicing response for the radio button
       if ( item.labelContent ) {
-        radioButtonGroupMemberOptions.labelContent = item.labelContent;
-        radioButtonGroupMemberOptions.voicingNameResponse = item.labelContent;
+        radioButtonOptions.labelContent = item.labelContent;
+        radioButtonOptions.voicingNameResponse = item.labelContent;
       }
 
       // pdom create description for radio button
       // use if block to prevent empty 'p' tag being added when no option is present
       if ( item.descriptionContent ) {
-        radioButtonGroupMemberOptions.descriptionContent = item.descriptionContent;
+        radioButtonOptions.descriptionContent = item.descriptionContent;
       }
 
       if ( item.voicingContextResponse ) {
-        radioButtonGroupMemberOptions.voicingContextResponse = item.voicingContextResponse;
+        radioButtonOptions.voicingContextResponse = item.voicingContextResponse;
       }
 
-      const radioButton = new RectangularRadioButton( property, item.value, radioButtonGroupMemberOptions );
+      const radioButton = new RectangularRadioButton( property, item.value, radioButtonOptions );
 
       // pdom - so the browser recognizes these buttons are in the same group, see instanceCount for more info
       radioButton.setPDOMAttribute( 'name', CLASS_NAME + instanceCount );
