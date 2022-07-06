@@ -168,11 +168,9 @@ export default class RectangularRadioButtonGroup<T> extends FlowBox {
 
     instanceCount++;
 
-    let i; // for loops
-
     // Make sure that each button has a unique value associated with it.
     const uniqueValues = [];
-    for ( i = 0; i < items.length; i++ ) {
+    for ( let i = 0; i < items.length; i++ ) {
       if ( uniqueValues.indexOf( items[ i ].value ) < 0 ) {
         uniqueValues.push( items[ i ].value );
       }
@@ -194,14 +192,12 @@ export default class RectangularRadioButtonGroup<T> extends FlowBox {
     const widestContentWidth = _.maxBy( items, item => item.node.width )!.node.width;
     const tallestContentHeight = _.maxBy( items, item => item.node.height )!.node.height;
 
-    // make sure all radio buttons are the same size and create the RadioButtons
+    // Populated for each radio button in for loop
     const buttons: Array<RectangularRadioButton<T> | FlowBox> = [];
-
-    // Collection of both RadioButton and its layout manager, if one is created to support a visual button label
     const buttonsWithLayoutNodes: ButtonWithLayoutNode<T>[] = [];
-
     const labelAppearanceStrategies: InstanceType<TContentAppearanceStrategy>[] = [];
-    for ( i = 0; i < items.length; i++ ) {
+
+    for ( let i = 0; i < items.length; i++ ) {
       const item = items[ i ];
 
       //TODO https://github.com/phetsims/sun/issues/740 use optionize
