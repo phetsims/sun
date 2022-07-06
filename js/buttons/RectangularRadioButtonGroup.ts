@@ -21,16 +21,13 @@ import ISoundPlayer from '../../../tambo/js/ISoundPlayer.js';
 import TContentAppearanceStrategy from './TContentAppearanceStrategy.js';
 import Property from '../../../axon/js/Property.js';
 
-// constants
-const CLASS_NAME = 'RectangularRadioButtonGroup'; // to prefix instanceCount in case there are different kinds of "groups"
-
-// pdom - Unique ID for each instance of RectangularRadioButtonGroup, passed to individual buttons in the group. All buttons in
-// the  radio button group must have the same name or else the browser will treat all inputs of type radio in the
-// document as being in a single group.
+// pdom - Unique ID for each instance of RectangularRadioButtonGroup, passed to individual buttons in the group.
+// All buttons in the radio button group must have the same name or else the browser will treat all inputs of
+// type 'radio' in the document as being in a single group.
 let instanceCount = 0;
 
-// Where the optional label appears, relative to the radio button
-export type RectangularRadioButtonLabelAlign = 'top' | 'bottom' | 'left' | 'right';
+// Prefix for instanceCount, in case there are different kinds of "groups"
+const CLASS_NAME = 'RectangularRadioButtonGroup';
 
 // Describes one radio button
 export type RectangularRadioButtonItem<T> = {
@@ -44,6 +41,9 @@ export type RectangularRadioButtonItem<T> = {
   voicingContextResponse?: VoicingResponse;
   descriptionContent?: string; // optional label for a11y
 }
+
+// Where the optional label appears, relative to the radio button
+export type RectangularRadioButtonLabelAlign = 'top' | 'bottom' | 'left' | 'right';
 
 type SelfOptions = {
 
