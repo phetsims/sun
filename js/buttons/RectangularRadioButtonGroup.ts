@@ -22,8 +22,6 @@ import TContentAppearanceStrategy from './TContentAppearanceStrategy.js';
 import Property from '../../../axon/js/Property.js';
 
 // constants
-const BUTTON_CONTENT_X_ALIGN_VALUES = [ 'center', 'left', 'right' ] as const;
-const BUTTON_CONTENT_Y_ALIGN_VALUES = [ 'center', 'top', 'bottom' ] as const;
 const CLASS_NAME = 'RectangularRadioButtonGroup'; // to prefix instanceCount in case there are different kinds of "groups"
 
 // pdom - Unique ID for each instance of RectangularRadioButtonGroup, passed to individual buttons in the group. All buttons in
@@ -133,8 +131,8 @@ export default class RectangularRadioButtonGroup<T> extends FlowBox {
       buttonContentYMargin: 5,
 
       // alignment of the content nodes *within* each button
-      buttonContentXAlign: 'center', // {string} see BUTTON_CONTENT_X_ALIGN_VALUES
-      buttonContentYAlign: 'center', // {string} see BUTTON_CONTENT_Y_ALIGN_VALUES
+      buttonContentXAlign: 'center',
+      buttonContentYAlign: 'center',
 
       // How far from the button the text label is (only applies if labels are passed in)
       labelSpacing: 0,
@@ -202,11 +200,6 @@ export default class RectangularRadioButtonGroup<T> extends FlowBox {
       throw new Error( `The Property passed in to RectangularRadioButtonGroup has an illegal value "${property.get()
       }" that is not present in the items` );
     }
-
-    assert && assert( _.includes( BUTTON_CONTENT_X_ALIGN_VALUES, options.buttonContentXAlign ),
-      `invalid buttonContentXAlign: ${options.buttonContentXAlign}` );
-    assert && assert( _.includes( BUTTON_CONTENT_Y_ALIGN_VALUES, options.buttonContentYAlign ),
-      `invalid buttonContentYAlign: ${options.buttonContentYAlign}` );
 
     // Maximum width of the line that strokes the button.
     const maxLineWidth = Math.max( options.selectedLineWidth, options.deselectedLineWidth );
