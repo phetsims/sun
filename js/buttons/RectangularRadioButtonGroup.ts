@@ -75,10 +75,6 @@ type SelfOptions = {
   a11yHighlightXDilation?: number;
   a11yHighlightYDilation?: number;
 
-  //TODO https://github.com/phetsims/sun/issues/773 should not be defined in SelfOptions, and is not used by super
-  // voicing - hint response added to the focus response, and nowhere else.
-  voicingHintResponse?: VoicingResponse;
-
   // Applied to each button, or each button + optional label.
   // This is not handled via radioButtonOptions because we may have an optional label in addition to the button.
   touchAreaXDilation?: number;
@@ -120,7 +116,6 @@ export default class RectangularRadioButtonGroup<T> extends FlowBox {
       labelSpacing: 0,
       a11yHighlightXDilation: 0,
       a11yHighlightYDilation: 0,
-      voicingHintResponse: null,
       touchAreaXDilation: 0,
       touchAreaYDilation: 0,
       mouseAreaXDilation: 0,
