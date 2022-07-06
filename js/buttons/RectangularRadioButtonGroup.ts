@@ -95,8 +95,8 @@ type SelfOptions = {
     >;
 };
 
-//TODO https://github.com/phetsims/sun/issues/740 omit some FlowBoxOptions for pdom defaults that caller should not change
-export type RectangularRadioButtonGroupOptions = SelfOptions & FlowBoxOptions;
+export type RectangularRadioButtonGroupOptions = SelfOptions & StrictOmit<FlowBoxOptions,
+  'children' | 'tagName' | 'labelTagName' | 'ariaRole' | 'groupFocusHighlight'>;
 
 export default class RectangularRadioButtonGroup<T> extends FlowBox {
 
@@ -314,7 +314,6 @@ export default class RectangularRadioButtonGroup<T> extends FlowBox {
       buttonsWithLayoutNodes.push( { radioButton: radioButton, layoutNode: button } );
     }
 
-    assert && assert( !options.children, 'RectangularRadioButtonGroup sets children' );
     options.children = buttons;
 
     // Pointer areas and focus highlight, sized to fit the largest button. See https://github.com/phetsims/sun/issues/708.
