@@ -28,6 +28,7 @@ import TContentAppearanceStrategy from './TContentAppearanceStrategy.js';
 
 type SelfOptions = {
 
+  //TODO https://github.com/phetsims/sun/issues/772 move these to FlatAppearanceStrategyOptions, consider nested options
   // Options used by RectangularRadioButton.FlatAppearanceStrategy.
   // If you define your own buttonAppearanceStrategy, then you may need to add your own options.
   overFill?: IColor;
@@ -41,6 +42,7 @@ type SelfOptions = {
   deselectedLineWidth?: number;
   deselectedButtonOpacity?: number;
 
+  //TODO https://github.com/phetsims/sun/issues/772 move these to ContentAppearanceStrategyOptions, consider nested options
   // Options used by RectangularRadioButton.ContentAppearanceStrategy.
   // If you define your own contentAppearanceStrategy, then you may need to add your own options.
   overContentOpacity?: number;
