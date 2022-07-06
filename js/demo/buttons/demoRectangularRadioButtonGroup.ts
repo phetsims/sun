@@ -7,9 +7,9 @@
 import StringProperty from '../../../../axon/js/StringProperty.js';
 import Bounds2 from '../../../../dot/js/Bounds2.js';
 import { Font, Node, Text, VBox } from '../../../../scenery/js/imports.js';
-import AquaRadioButtonGroup from '../../AquaRadioButtonGroup.js';
+import RectangularRadioButtonGroup from '../../buttons/RectangularRadioButtonGroup.js';
 
-export default function demoAquaRadioButtonGroup( layoutBounds: Bounds2 ): Node {
+export default function demoRectangularRadioButtonGroup( layoutBounds: Bounds2 ): Node {
 
   const font = new Font( { size: 20 } );
 
@@ -22,9 +22,8 @@ export default function demoAquaRadioButtonGroup( layoutBounds: Bounds2 ): Node 
         value: choice
       };
     } );
-  const horizontalGroup = new AquaRadioButtonGroup( horizontalProperty, horizontalItems, {
-    orientation: 'horizontal',
-    spacing: 20
+  const horizontalGroup = new RectangularRadioButtonGroup( horizontalProperty, horizontalItems, {
+    orientation: 'horizontal'
   } );
 
   const verticalChoices = [ 'top', 'center', 'bottom' ];
@@ -36,7 +35,7 @@ export default function demoAquaRadioButtonGroup( layoutBounds: Bounds2 ): Node 
         value: choice
       };
     } );
-  const verticalGroup = new AquaRadioButtonGroup( verticalProperty, verticalItems, {
+  const verticalGroup = new RectangularRadioButtonGroup( verticalProperty, verticalItems, {
     orientation: 'vertical'
   } );
 
