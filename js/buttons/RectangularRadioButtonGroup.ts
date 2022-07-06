@@ -10,7 +10,7 @@
 import { Shape } from '../../../kite/js/imports.js';
 import InstanceRegistry from '../../../phet-core/js/documentation/InstanceRegistry.js';
 import merge from '../../../phet-core/js/merge.js';
-import { Color, FlowBox, FlowBoxOptions, FocusHighlightPath, IInputListener, IPaint, Node, PDOMPeer, Rectangle, SceneryConstants } from '../../../scenery/js/imports.js';
+import { AlignBoxXAlign, AlignBoxYAlign, Color, FlowBox, FlowBoxOptions, FocusHighlightPath, IInputListener, IPaint, Node, PDOMPeer, Rectangle, SceneryConstants } from '../../../scenery/js/imports.js';
 import multiSelectionSoundPlayerFactory from '../../../tambo/js/multiSelectionSoundPlayerFactory.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import ColorConstants from '../ColorConstants.js';
@@ -31,8 +31,7 @@ const CLASS_NAME = 'RectangularRadioButtonGroup'; // to prefix instanceCount in 
 // document as being in a single group.
 let instanceCount = 0;
 
-export type RectangularRadioButtonContentXAlign = typeof BUTTON_CONTENT_X_ALIGN_VALUES[number];
-export type RectangularRadioButtonContentYAlign = typeof BUTTON_CONTENT_Y_ALIGN_VALUES[number];
+// Where the optional label appears, relative to the radio button
 export type RectangularRadioButtonLabelAlign = 'top' | 'bottom' | 'left' | 'right';
 
 // Describes one radio button
@@ -90,8 +89,8 @@ type SelfOptions = {
   //TODO https://github.com/phetsims/sun/issues/740 these are renamed and propagated to RectangularRadioButton instances, should be folded into radioButtonOptions?: RectangularRadioButtonOptions
   buttonContentXMargin?: number;
   buttonContentYMargin?: number;
-  buttonContentXAlign?: RectangularRadioButtonContentXAlign;
-  buttonContentYAlign?: RectangularRadioButtonContentYAlign;
+  buttonContentXAlign?: AlignBoxXAlign;
+  buttonContentYAlign?: AlignBoxYAlign;
 };
 
 export type RectangularRadioButtonGroupOptions = SelfOptions & FlowBoxOptions;
