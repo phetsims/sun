@@ -22,9 +22,10 @@ import ISoundPlayer from '../../../tambo/js/ISoundPlayer.js';
 import TContentAppearanceStrategy from './TContentAppearanceStrategy.js';
 import Property from '../../../axon/js/Property.js';
 
-// pdom - Unique ID for each instance of RectangularRadioButtonGroup, passed to individual buttons in the group.
-// All buttons in the radio button group must have the same name or else the browser will treat all inputs of
-// type 'radio' in the document as being in a single group.
+// pdom - Unique ID for each instance of RectangularRadioButtonGroup. Used to create the 'name' option that is passed
+// to each RectangularRadioButton in the group. All buttons in the group must have the same 'name', and that name
+// must be unique to the group. Otherwise, the browser will treat all inputs of type 'radio' in the document as being
+// in a single group.
 let instanceCount = 0;
 
 // Prefix for instanceCount, in case there are different kinds of "groups"
