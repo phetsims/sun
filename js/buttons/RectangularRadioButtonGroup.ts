@@ -42,6 +42,17 @@ export type RectangularRadioButtonItem<T> = {
   descriptionContent?: string; // optional label for a11y
 }
 
+/**
+ * Identifies a radio button and its layout manager. Pointer areas and focus highlight need to be set on
+ * the button, but need to surround the layout manager containing both the button and its optional label.
+ * This was formerly a class, converted to a type when PhET moved to TypeScript.
+ * See https://github.com/phetsims/sun/issues/708
+ */
+type ButtonWithLayoutNode<T> = {
+  radioButton: RectangularRadioButton<T>;
+  readonly layoutNode: Node;
+};
+
 // Where the optional label appears, relative to the radio button
 export type RectangularRadioButtonLabelAlign = 'top' | 'bottom' | 'left' | 'right';
 
@@ -241,7 +252,7 @@ export default class RectangularRadioButtonGroup<T> extends FlowBox {
       // pdom - so the browser recognizes these buttons are in the same group, see instanceCount for more info
       radioButton.setPDOMAttribute( 'name', CLASS_NAME + instanceCount );
 
-      // ensure the buttons don't resize when selected vs unselected by adding a rectangle with the max size
+      // ensure the buttons don't resize when selected vs unselected, by adding a rectangle with the max size
       const maxButtonWidth = maxLineWidth + widestContentWidth + options.buttonContentXMargin * 2;
       const maxButtonHeight = maxLineWidth + tallestContentHeight + options.buttonContentYMargin * 2;
       const boundingRect = new Rectangle( 0, 0, maxButtonWidth, maxButtonHeight, {
@@ -278,7 +289,7 @@ export default class RectangularRadioButtonGroup<T> extends FlowBox {
         button = radioButton;
       }
       buttons.push( button );
-      buttonsWithLayoutNodes.push( new ButtonWithLayoutNode( radioButton, button ) );
+      buttonsWithLayoutNodes.push( { radioButton: radioButton, layoutNode: button } );
     }
 
     assert && assert( !options.children, 'RectangularRadioButtonGroup sets children' );
@@ -345,25 +356,6 @@ export default class RectangularRadioButtonGroup<T> extends FlowBox {
   public override dispose(): void {
     this.disposeRadioButtonGroup();
     super.dispose();
-  }
-}
-
-/**
- * An inner class that collects the radio button and its layout parent. The mouse/touch areas and focus highlight
- * need to be set on the button, but need to surround the layout manager containing both the button and
- * its graphical label (if there is one).
- */
-class ButtonWithLayoutNode<T> {
-  public readonly radioButton: RectangularRadioButton<T>;
-  public readonly layoutNode: Node;
-
-  /**
-   * @param radioButton
-   * @param layoutNode - May be the same Node as the radioButton if no layout manager is needed
-   */
-  public constructor( radioButton: RectangularRadioButton<T>, layoutNode: Node ) {
-    this.radioButton = radioButton;
-    this.layoutNode = layoutNode;
   }
 }
 
