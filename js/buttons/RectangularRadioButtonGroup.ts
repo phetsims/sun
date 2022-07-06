@@ -165,11 +165,9 @@ export default class RectangularRadioButtonGroup<T> extends FlowBox {
 
     instanceCount++;
 
-    let i; // for loops
-
     // Make sure that each button has a unique value associated with it.
     const uniqueValues = [];
-    for ( i = 0; i < items.length; i++ ) {
+    for ( let i = 0; i < items.length; i++ ) {
       if ( uniqueValues.indexOf( items[ i ].value ) < 0 ) {
         uniqueValues.push( items[ i ].value );
       }
@@ -199,7 +197,7 @@ export default class RectangularRadioButtonGroup<T> extends FlowBox {
     const buttonsWithLayoutNodes: ButtonWithLayoutNode<T>[] = [];
 
     const labelAppearanceStrategies: InstanceType<TContentAppearanceStrategy>[] = [];
-    for ( i = 0; i < items.length; i++ ) {
+    for ( let i = 0; i < items.length; i++ ) {
       const item = items[ i ];
 
       assert && assert( !item.hasOwnProperty( 'phetioType' ), 'phetioType should be provided by ' +
