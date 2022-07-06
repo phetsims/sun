@@ -23,7 +23,6 @@ import Property from '../../axon/js/Property.js';
 // arrow keys will navigate all radio type inputs in the document.
 let instanceCount = 0;
 
-// constants
 // to prefix instanceCount in case there are different kinds of "groups"
 const CLASS_NAME = 'AquaRadioButtonGroup';
 
