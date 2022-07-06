@@ -5,6 +5,7 @@
  * See sun.ButtonsScreenView for example usage.
  *
  * @author Aaron Davis (PhET Interactive Simulations)
+ * @author Chris Malley (PixelZoom, Inc.)
  */
 
 import { Shape } from '../../../kite/js/imports.js';
