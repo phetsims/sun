@@ -170,8 +170,7 @@ export default class RectangularRadioButtonGroup<T> extends FlowBox {
     // Maximum width of the line that strokes the button.
     const maxLineWidth = Math.max( options.radioButtonOptions.selectedLineWidth!, options.radioButtonOptions.deselectedLineWidth! );
 
-    //TODO https://github.com/phetsims/sun/issues/740 replace with AlignBox and AlignGroup
-    // calculate the maximum width and height of the content so we can make all radio buttons the same size
+    // Calculate the maximum width and height of the content, so we can make all radio buttons the same size.
     const widestContentWidth = _.maxBy( items, item => item.node.width )!.node.width;
     const tallestContentHeight = _.maxBy( items, item => item.node.height )!.node.height;
 
@@ -190,17 +189,13 @@ export default class RectangularRadioButtonGroup<T> extends FlowBox {
         content: item.node,
         minWidth: widestContentWidth + 2 * xMargin,
         minHeight: tallestContentHeight + 2 * yMargin,
-        phetioDocumentation: item.phetioDocumentation || '',
         soundPlayer: options.soundPlayers ? options.soundPlayers[ i ] :
-                     multiSelectionSoundPlayerFactory.getSelectionSoundPlayer( i )
+                     multiSelectionSoundPlayerFactory.getSelectionSoundPlayer( i ),
+        tandem: item.tandemName ? options.tandem.createTandem( item.tandemName ) : Tandem.OPT_OUT,
+        phetioDocumentation: item.phetioDocumentation || ''
       }, options.radioButtonOptions );
 
-      // Pass through the tandem given the tandemName, but also support uninstrumented simulations
-      if ( item.tandemName ) {
-        radioButtonOptions.tandem = options.tandem.createTandem( item.tandemName );
-      }
-
-      // create the label and voicing response for the radio button
+      // Create the label and voicing response for the radio button.
       if ( item.labelContent ) {
         radioButtonOptions.labelContent = item.labelContent;
         radioButtonOptions.voicingNameResponse = item.labelContent;
@@ -218,10 +213,10 @@ export default class RectangularRadioButtonGroup<T> extends FlowBox {
 
       const radioButton = new RectangularRadioButton( property, item.value, radioButtonOptions );
 
-      // pdom - so the browser recognizes these buttons are in the same group, see instanceCount for more info
+      // pdom - so the browser recognizes these buttons are in the same group. See instanceCount for more info.
       radioButton.setPDOMAttribute( 'name', CLASS_NAME + instanceCount );
 
-      // ensure the buttons don't resize when selected vs unselected, by adding a rectangle with the max size
+      // Ensure the buttons don't resize when selected vs unselected, by adding a rectangle with the max size.
       const maxButtonWidth = maxLineWidth + widestContentWidth + 2 * xMargin;
       const maxButtonHeight = maxLineWidth + tallestContentHeight + 2 * yMargin;
       const boundingRect = new Rectangle( 0, 0, maxButtonWidth, maxButtonHeight, {
@@ -233,7 +228,7 @@ export default class RectangularRadioButtonGroup<T> extends FlowBox {
       let button;
       if ( item.label ) {
 
-        // If a label is provided, the button becomes a FlowBox with the label and radio button
+        // If a label is provided, the button becomes a FlowBox that manages layout of the button and label.
         const label = item.label;
         const labelOrientation = ( options.labelAlign === 'bottom' || options.labelAlign === 'top' ) ? 'vertical' : 'horizontal';
         const labelChildren = ( options.labelAlign === 'left' || options.labelAlign === 'top' ) ? [ label, radioButton ] : [ radioButton, label ];
@@ -294,15 +289,15 @@ export default class RectangularRadioButtonGroup<T> extends FlowBox {
 
     super( options );
 
-    // pdom - this node's primary sibling is aria-labelledby its own label so the label content is read whenever
-    // a member of the group receives focus
+    // pdom - This node's primary sibling is aria-labelledby its own label, so the label content is read whenever
+    // a member of the group receives focus.
     this.addAriaLabelledbyAssociation( {
       thisElementName: PDOMPeer.PRIMARY_SIBLING,
       otherNode: this,
       otherElementName: PDOMPeer.LABEL_SIBLING
     } );
 
-    // zoom - signify that key input is reserved and we should not pan when user presses arrow keys
+    // pan and zoom - Signify that key input is reserved, and we should not pan when user presses arrow keys.
     const intentListener: IInputListener = { keydown: event => event.pointer.reserveForKeyboardDrag() };
     this.addInputListener( intentListener );
 
@@ -311,7 +306,6 @@ export default class RectangularRadioButtonGroup<T> extends FlowBox {
       tandem: options.tandem.createTandem( 'property' )
     } );
 
-    // remove listeners from buttons and make eligible for garbage collection
     this.disposeRadioButtonGroup = () => {
       this.removeInputListener( intentListener );
       buttons.forEach( button => button.dispose() );
