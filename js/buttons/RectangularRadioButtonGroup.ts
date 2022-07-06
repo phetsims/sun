@@ -163,11 +163,6 @@ export default class RectangularRadioButtonGroup<T> extends FlowBox {
     assert && assert( !options.hasOwnProperty( 'children' ), 'Cannot pass in children to a RectangularRadioButtonGroup, ' +
                                                              'create siblings in the parent node instead' );
 
-    // make sure every object in the content array has properties 'node' and 'value'
-    assert && assert( _.every( items, item => {
-      return item.hasOwnProperty( 'node' ) && item.hasOwnProperty( 'value' );
-    } ), 'items must be an array of objects with properties "node" and "value"' );
-
     // make sure that if sound players are provided, there is one per radio button
     assert && assert( options.soundPlayers === null || options.soundPlayers.length === items.length );
 
