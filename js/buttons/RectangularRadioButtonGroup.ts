@@ -79,13 +79,13 @@ type SelfOptions = {
   // voicing - hint response added to the focus response, and nowhere else.
   voicingHintResponse?: VoicingResponse;
 
-  // Applied to each button, or each button + optional label
+  // Applied to each button, or each button + optional label.
+  // This is not handled via radioButtonOptions because we may have an optional label in addition to the button.
   touchAreaXDilation?: number;
   touchAreaYDilation?: number;
   mouseAreaXDilation?: number;
   mouseAreaYDilation?: number;
 
-  //TODO https://github.com/phetsims/sun/issues/740 omit some properties?
   radioButtonOptions?: StrictOmit<RectangularRadioButtonOptions,
     'soundPlayer' |        // use SelfOptions.soundPlayers
     'touchAreaXDilation' | // use SelfOptions.touchAreaXDilation
