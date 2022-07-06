@@ -15,7 +15,7 @@ import Bounds2 from '../../../dot/js/Bounds2.js';
 import Dimension2 from '../../../dot/js/Dimension2.js';
 import optionize, { combineOptions } from '../../../phet-core/js/optionize.js';
 import StrictOmit from '../../../phet-core/js/types/StrictOmit.js';
-import { AlignBox, AlignBoxXAlign, AlignBoxYAlign, Brightness, Color, Contrast, Grayscale, IColor, isHeightSizable, isWidthSizable, Node, NodeOptions, PaintableNode, PaintColorProperty, Path, PressListener, PressListenerOptions, SceneryConstants, Sizable, SizableOptions, Voicing, VoicingOptions } from '../../../scenery/js/imports.js';
+import { AlignBox, AlignBoxXAlign, AlignBoxYAlign, Brightness, Color, Contrast, Grayscale, IColor, IPaint, isHeightSizable, isWidthSizable, Node, NodeOptions, PaintableNode, PaintColorProperty, Path, PressListener, PressListenerOptions, SceneryConstants, Sizable, SizableOptions, Voicing, VoicingOptions } from '../../../scenery/js/imports.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import ColorConstants from '../ColorConstants.js';
 import sun from '../sun.js';
@@ -59,10 +59,10 @@ type SelfOptions = {
   listenerOptions?: PressListenerOptions;
 
   // initial color of the button's background
-  baseColor?: IColor;
+  baseColor?: IPaint;
 
   // Color when disabled
-  disabledColor?: IColor;
+  disabledColor?: IPaint;
 
   // Class that determines the button's appearance for the values of interactionStateProperty.
   // Constructor is {function( backgroundNode:Node, interactionStateProperty:Property, options:*)},
