@@ -38,15 +38,14 @@ export default function demoRadioButtons( layoutBounds: Bounds2 ): Node {
     };
   } );
   const rectangularRadioButtonGroup = new RectangularRadioButtonGroup( rectangularRadioButtonProperty, radioButtonContent, {
-    selectedLineWidth: 4,
-
-    // change these to test various orientations and alignments
     orientation: 'vertical',
-    buttonContentXAlign: 'center',
-    buttonContentYAlign: 'center',
-
-    baseColor: radioGroupBaseColor,
-    enabledProperty: buttonsEnabledProperty
+    enabledProperty: buttonsEnabledProperty,
+    radioButtonOptions: {
+      baseColor: radioGroupBaseColor,
+      selectedLineWidth: 4,
+      xAlign: 'center',
+      yAlign: 'center'
+    }
   } );
   const rectangularRadioButtonPanel = new Panel( rectangularRadioButtonGroup, {
     xMargin: 10,

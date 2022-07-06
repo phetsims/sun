@@ -10,8 +10,7 @@
 
 import { Shape } from '../../../kite/js/imports.js';
 import InstanceRegistry from '../../../phet-core/js/documentation/InstanceRegistry.js';
-import merge from '../../../phet-core/js/merge.js';
-import { AlignBoxXAlign, AlignBoxYAlign, Color, FlowBox, FlowBoxOptions, FocusHighlightPath, IInputListener, IPaint, Node, PDOMPeer, Rectangle, SceneryConstants } from '../../../scenery/js/imports.js';
+import { Color, FlowBox, FlowBoxOptions, FocusHighlightPath, IInputListener, Node, PDOMPeer, Rectangle, SceneryConstants } from '../../../scenery/js/imports.js';
 import multiSelectionSoundPlayerFactory from '../../../tambo/js/multiSelectionSoundPlayerFactory.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import ColorConstants from '../ColorConstants.js';
@@ -21,6 +20,8 @@ import { VoicingResponse } from '../../../utterance-queue/js/ResponsePacket.js';
 import ISoundPlayer from '../../../tambo/js/ISoundPlayer.js';
 import TContentAppearanceStrategy from './TContentAppearanceStrategy.js';
 import Property from '../../../axon/js/Property.js';
+import optionize, { combineOptions } from '../../../phet-core/js/optionize.js';
+import StrictOmit from '../../../phet-core/js/types/StrictOmit.js';
 
 // pdom - Unique ID for each instance of RectangularRadioButtonGroup. Used to create the 'name' option that is passed
 // to each RectangularRadioButton in the group. All buttons in the group must have the same 'name', and that name
@@ -78,31 +79,20 @@ type SelfOptions = {
   // voicing - hint response added to the focus response, and nowhere else.
   voicingHintResponse?: VoicingResponse;
 
-  //TODO https://github.com/phetsims/sun/issues/740 these are duplicated from RectangularRadioButtonOptions, and should be nested in radioButtonOptions?: RectangularRadioButtonOptions
-  //TODO https://github.com/phetsims/sun/issues/772 some of these should be in RectangularRadioButton.FlatAppearanceStrategyOptions and ContentAppearanceStrategyOptions, which do not exist
-  baseColor?: IPaint;
-  cornerRadius?: number;
-  overButtonOpacity?: number;
-  selectedStroke?: IPaint;
-  selectedLineWidth?: number;
-  selectedButtonOpacity?: number;
-  deselectedStroke?: IPaint;
-  deselectedLineWidth?: number;
-  deselectedButtonOpacity?: number;
-  contentAppearanceStrategy?: TContentAppearanceStrategy | null;
-  overContentOpacity?: number;
-  selectedContentOpacity?: number;
-  deselectedContentOpacity?: number;
+  // Applied to each button, or each button + optional label
   touchAreaXDilation?: number;
   touchAreaYDilation?: number;
   mouseAreaXDilation?: number;
   mouseAreaYDilation?: number;
 
-  //TODO https://github.com/phetsims/sun/issues/740 these are renamed and propagated to RectangularRadioButton instances, should be folded into radioButtonOptions?: RectangularRadioButtonOptions
-  buttonContentXMargin?: number;
-  buttonContentYMargin?: number;
-  buttonContentXAlign?: AlignBoxXAlign;
-  buttonContentYAlign?: AlignBoxYAlign;
+  //TODO https://github.com/phetsims/sun/issues/740 omit some properties?
+  radioButtonOptions?: StrictOmit<RectangularRadioButtonOptions,
+    'soundPlayer' |        // use SelfOptions.soundPlayers
+    'touchAreaXDilation' | // use SelfOptions.touchAreaXDilation
+    'touchAreaYDilation' | // use SelfOptions.touchAreaYDilation
+    'mouseAreaXDilation' | // use SelfOptions.mouseAreaXDilation
+    'mouseAreaYDilation'   // use SelfOptions.mouseAreaYDilation
+    >;
 };
 
 //TODO https://github.com/phetsims/sun/issues/740 omit some FlowBoxOptions for pdom defaults that caller should not change
@@ -122,35 +112,59 @@ export default class RectangularRadioButtonGroup<T> extends FlowBox {
       'Accessibility is provided by RectangularRadioButton and RectangularRadioButtonItem.labelContent. ' +
       'Additional PDOM content in the provided Node could break accessibility.' );
 
-    // These options are passed to each RectangularRadioButton created in this group.
-    const defaultRadioButtonOptions: RectangularRadioButtonOptions = {
-      baseColor: ColorConstants.LIGHT_BLUE,
-      cornerRadius: 4,
-      overButtonOpacity: 0.8,
-      selectedStroke: 'black',
-      selectedLineWidth: 1.5,
-      selectedButtonOpacity: 1,
-      deselectedStroke: new Color( 50, 50, 50 ),
-      deselectedLineWidth: 1,
-      deselectedButtonOpacity: 0.6,
-      contentAppearanceStrategy: RectangularRadioButton.ContentAppearanceStrategy,
-      overContentOpacity: 0.8,
-      selectedContentOpacity: 1,
-      deselectedContentOpacity: 0.6,
-      touchAreaXDilation: 0,
-      touchAreaYDilation: 0,
-      mouseAreaXDilation: 0,
-      mouseAreaYDilation: 0
-    };
+    //TODO https://github.com/phetsims/sun/issues/740 delete this after identifying changes to call sites
+    if ( providedOptions ) {
+      // Catch any options that were not moved to radioButtonOptions
 
-    // These options apply to the group, not individual buttons.
-    const defaultGroupOptions: RectangularRadioButtonGroupOptions = {
+      // @ts-ignore
+      assert && assert( providedOptions.baseColor === undefined );
+      // @ts-ignore
+      assert && assert( providedOptions.cornerRadius === undefined );
+      // @ts-ignore
+      assert && assert( providedOptions.overButtonOpacity === undefined );
+      // @ts-ignore
+      assert && assert( providedOptions.selectedStroke === undefined );
+      // @ts-ignore
+      assert && assert( providedOptions.selectedLineWidth === undefined );
+      // @ts-ignore
+      assert && assert( providedOptions.selectedButtonOpacity === undefined );
+      // @ts-ignore
+      assert && assert( providedOptions.deselectedStroke === undefined );
+      // @ts-ignore
+      assert && assert( providedOptions.deselectedLineWidth === undefined );
+      // @ts-ignore
+      assert && assert( providedOptions.deselectedButtonOpacity === undefined );
+      // @ts-ignore
+      assert && assert( providedOptions.contentAppearanceStrategy === undefined );
+      // @ts-ignore
+      assert && assert( providedOptions.overContentOpacity === undefined );
+      // @ts-ignore
+      assert && assert( providedOptions.selectedContentOpacity === undefined );
+      // @ts-ignore
+      assert && assert( providedOptions.deselectedContentOpacity === undefined );
+      // @ts-ignore
+      assert && assert( providedOptions.buttonContentXMargin === undefined );
+      // @ts-ignore
+      assert && assert( providedOptions.buttonContentYMargin === undefined );
+      // @ts-ignore
+      assert && assert( providedOptions.buttonContentXAlign === undefined );
+      // @ts-ignore
+      assert && assert( providedOptions.buttonContentYAlign === undefined );
 
-      //TODO https://github.com/phetsims/sun/issues/740 move these to defaults for nested radioButtonOptions
-      buttonContentXMargin: 5,
-      buttonContentYMargin: 5,
-      buttonContentXAlign: 'center',
-      buttonContentYAlign: 'center',
+      // Catch any renames that were missed
+      if ( providedOptions.radioButtonOptions ) {
+        // @ts-ignore
+        assert && assert( providedOptions.buttonContentXMargin === undefined );
+        // @ts-ignore
+        assert && assert( providedOptions.buttonContentYMargin === undefined );
+        // @ts-ignore
+        assert && assert( providedOptions.buttonContentXAlign === undefined );
+        // @ts-ignore
+        assert && assert( providedOptions.buttonContentYAlign === undefined );
+      }
+    }
+
+    const options = optionize<RectangularRadioButtonGroupOptions, SelfOptions, FlowBoxOptions>()( {
 
       // SelfOptions
       soundPlayers: null,
@@ -159,6 +173,29 @@ export default class RectangularRadioButtonGroup<T> extends FlowBox {
       a11yHighlightXDilation: 0,
       a11yHighlightYDilation: 0,
       voicingHintResponse: null,
+      touchAreaXDilation: 0,
+      touchAreaYDilation: 0,
+      mouseAreaXDilation: 0,
+      mouseAreaYDilation: 0,
+      radioButtonOptions: {
+        baseColor: ColorConstants.LIGHT_BLUE,
+        cornerRadius: 4,
+        selectedStroke: 'black',
+        selectedLineWidth: 1.5,
+        selectedButtonOpacity: 1,
+        deselectedStroke: new Color( 50, 50, 50 ),
+        deselectedLineWidth: 1,
+        deselectedButtonOpacity: 0.6,
+        contentAppearanceStrategy: RectangularRadioButton.ContentAppearanceStrategy,
+        overButtonOpacity: 0.8,
+        overContentOpacity: 0.8,
+        selectedContentOpacity: 1,
+        deselectedContentOpacity: 0.6,
+        xMargin: 5,
+        yMargin: 5,
+        xAlign: 'center',
+        yAlign: 'center'
+      },
 
       // FlowBoxOptions
       spacing: 10,
@@ -175,10 +212,7 @@ export default class RectangularRadioButtonGroup<T> extends FlowBox {
       labelTagName: 'h3',
       ariaRole: 'radiogroup',
       groupFocusHighlight: true
-    };
-
-    //TODO https://github.com/phetsims/sun/issues/740 simplify, use optionize, remove any
-    const options = merge( _.clone( defaultRadioButtonOptions ), defaultGroupOptions, providedOptions ) as Required<SelfOptions> & RectangularRadioButtonGroupOptions & { tandem: Tandem };
+    }, providedOptions );
 
     assert && assert( options.soundPlayers === null || options.soundPlayers.length === items.length,
       'If soundPlayers is provided, there must be one per radio button.' );
@@ -186,7 +220,7 @@ export default class RectangularRadioButtonGroup<T> extends FlowBox {
     instanceCount++;
 
     // Maximum width of the line that strokes the button.
-    const maxLineWidth = Math.max( options.selectedLineWidth, options.deselectedLineWidth );
+    const maxLineWidth = Math.max( options.radioButtonOptions.selectedLineWidth!, options.radioButtonOptions.deselectedLineWidth! );
 
     //TODO https://github.com/phetsims/sun/issues/740 replace with AlignBox and AlignGroup
     // calculate the maximum width and height of the content so we can make all radio buttons the same size
@@ -198,22 +232,20 @@ export default class RectangularRadioButtonGroup<T> extends FlowBox {
     const buttonsWithLayoutNodes: ButtonWithLayoutNode<T>[] = [];
     const labelAppearanceStrategies: InstanceType<TContentAppearanceStrategy>[] = [];
 
+    const xMargin: number = options.radioButtonOptions.xMargin!;
+    const yMargin: number = options.radioButtonOptions.yMargin!;
+
     for ( let i = 0; i < items.length; i++ ) {
       const item = items[ i ];
 
-      //TODO https://github.com/phetsims/sun/issues/740 use optionize
-      const radioButtonOptions = merge( {
+      const radioButtonOptions = combineOptions<RectangularRadioButtonOptions>( {
         content: item.node,
-        xMargin: options.buttonContentXMargin,
-        yMargin: options.buttonContentYMargin,
-        xAlign: options.buttonContentXAlign,
-        yAlign: options.buttonContentYAlign,
-        minWidth: widestContentWidth + 2 * options.buttonContentXMargin,
-        minHeight: tallestContentHeight + 2 * options.buttonContentYMargin,
+        minWidth: widestContentWidth + 2 * xMargin,
+        minHeight: tallestContentHeight + 2 * yMargin,
         phetioDocumentation: item.phetioDocumentation || '',
         soundPlayer: options.soundPlayers ? options.soundPlayers[ i ] :
                      multiSelectionSoundPlayerFactory.getSelectionSoundPlayer( i )
-      }, _.pick( options, _.keys( defaultRadioButtonOptions ) ) ) as any;
+      }, options.radioButtonOptions );
 
       // Pass through the tandem given the tandemName, but also support uninstrumented simulations
       if ( item.tandemName ) {
@@ -242,8 +274,8 @@ export default class RectangularRadioButtonGroup<T> extends FlowBox {
       radioButton.setPDOMAttribute( 'name', CLASS_NAME + instanceCount );
 
       // ensure the buttons don't resize when selected vs unselected, by adding a rectangle with the max size
-      const maxButtonWidth = maxLineWidth + widestContentWidth + options.buttonContentXMargin * 2;
-      const maxButtonHeight = maxLineWidth + tallestContentHeight + options.buttonContentYMargin * 2;
+      const maxButtonWidth = maxLineWidth + widestContentWidth + 2 * xMargin;
+      const maxButtonHeight = maxLineWidth + tallestContentHeight + 2 * yMargin;
       const boundingRect = new Rectangle( 0, 0, maxButtonWidth, maxButtonHeight, {
         fill: 'rgba(0,0,0,0)',
         center: radioButton.center
@@ -268,8 +300,9 @@ export default class RectangularRadioButtonGroup<T> extends FlowBox {
 
         // Use the same content appearance strategy for the labels that is used for the button content.
         // By default, this reduces opacity of the labels for the deselected radio buttons.
-        if ( options.contentAppearanceStrategy ) {
-          labelAppearanceStrategies.push( new options.contentAppearanceStrategy( label, radioButton.interactionStateProperty, options ) );
+        if ( options.radioButtonOptions.contentAppearanceStrategy ) {
+          labelAppearanceStrategies.push( new options.radioButtonOptions.contentAppearanceStrategy( label,
+            radioButton.interactionStateProperty, options.radioButtonOptions ) );
         }
       }
       else {
