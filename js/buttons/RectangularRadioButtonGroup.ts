@@ -26,14 +26,20 @@ const BUTTON_CONTENT_X_ALIGN_VALUES = [ 'center', 'left', 'right' ] as const;
 const BUTTON_CONTENT_Y_ALIGN_VALUES = [ 'center', 'top', 'bottom' ] as const;
 const CLASS_NAME = 'RectangularRadioButtonGroup'; // to prefix instanceCount in case there are different kinds of "groups"
 
+// pdom - Unique ID for each instance of RectangularRadioButtonGroup, passed to individual buttons in the group. All buttons in
+// the  radio button group must have the same name or else the browser will treat all inputs of type radio in the
+// document as being in a single group.
+let instanceCount = 0;
+
 export type RectangularRadioButtonContentXAlign = typeof BUTTON_CONTENT_X_ALIGN_VALUES[number];
 export type RectangularRadioButtonContentYAlign = typeof BUTTON_CONTENT_Y_ALIGN_VALUES[number];
 export type RectangularRadioButtonLabelAlign = 'top' | 'bottom' | 'left' | 'right';
 
+// Describes one radio button
 export type RectangularRadioButtonItem<T> = {
   node: Node; // primary depiction for the button
   value: T; // value associated with the button
-  label?: Node; // If a label is provided, the button becomes a FlowBox with the label and radio button
+  label?: Node; // optional label that appears outside the button
   phetioDocumentation?: string; // optional documentation for PhET-iO
   tandemName?: string; // optional tandem for PhET-iO
   tandem?: never; // use tandemName instead of a Tandem instance
@@ -42,66 +48,17 @@ export type RectangularRadioButtonItem<T> = {
   descriptionContent?: string; // optional label for a11y
 }
 
-// pdom - Unique ID for each instance of RectangularRadioButtonGroup, passed to individual buttons in the group. All buttons in
-// the  radio button group must have the same name or else the browser will treat all inputs of type radio in the
-// document as being in a single group.
-let instanceCount = 0;
-
 type SelfOptions = {
 
   // Sound generation for the radio buttons.
   // null means to use the defaults. Otherwise, there must be one for each button.
   soundPlayers?: ISoundPlayer[] | null;
 
-  // The fill for the rectangle behind the radio buttons.
-  baseColor?: IPaint;
-
-  // Options for buttonAppearanceStrategy.
-  //TODO https://github.com/phetsims/sun/issues/653 These are already specified in RectangularRadioButton, but
-  //  must to be included here due to the use of _.pick below
-  overButtonOpacity?: number;
-  selectedStroke?: IPaint;
-  selectedLineWidth?: number;
-  selectedButtonOpacity?: number;
-  deselectedStroke?: IPaint;
-  deselectedLineWidth?: number;
-  deselectedButtonOpacity?: number;
-
-  // Class that determines the content's appearance for the values of interactionStateProperty.
-  contentAppearanceStrategy?: TContentAppearanceStrategy | null;
-
-  // Options used by RectangularRadioButton.ContentAppearanceStrategy.
-  //TODO https://github.com/phetsims/sun/issues/653 These are already specified in RectangularRadioButton, but
-  //  must to be included here due to the use of _.pick below
-  overContentOpacity?: number;
-  selectedContentOpacity?: number;
-  deselectedContentOpacity?: number;
-
-  // These margins are *within* each button
-  buttonContentXMargin?: number;
-  buttonContentYMargin?: number;
-
-  // alignment of the content nodes *within* each button
-  buttonContentXAlign?: RectangularRadioButtonContentXAlign;
-  buttonContentYAlign?: RectangularRadioButtonContentYAlign;
-
-  // TouchArea expansion
-  touchAreaXDilation?: number;
-  touchAreaYDilation?: number;
-
-  // MouseArea expansion
-  mouseAreaXDilation?: number;
-  mouseAreaYDilation?: number;
-
-  //The radius for each button
-  cornerRadius?: number;
-
-  // How far from the button the text label is (only applies if labels are passed in)
-  labelSpacing?: number;
-
-  // Which side of the button the label will appear, options are 'top', 'bottom', 'left', 'right'
-  // (only applies if labels are passed in)
+  // Determines where the optional label appears, relative to the button
   labelAlign?: RectangularRadioButtonLabelAlign;
+
+  // Spacing between the optional label and the button
+  labelSpacing?: number;
 
   // pdom - focus highlight expansion
   a11yHighlightXDilation?: number;
@@ -110,6 +67,31 @@ type SelfOptions = {
   //TODO https://github.com/phetsims/sun/issues/740 why is this a SelfOption? It's not used anywhere, just passed to super.
   // voicing - hint response added to the focus response, and nowhere else.
   voicingHintResponse?: VoicingResponse;
+
+  //TODO https://github.com/phetsims/sun/issues/740 these are duplicated from RectangularRadioButtonOptions, and should be nested in radioButtonOptions?: RectangularRadioButtonOptions
+  baseColor?: IPaint;
+  cornerRadius?: number;
+  overButtonOpacity?: number;
+  selectedStroke?: IPaint;
+  selectedLineWidth?: number;
+  selectedButtonOpacity?: number;
+  deselectedStroke?: IPaint;
+  deselectedLineWidth?: number;
+  deselectedButtonOpacity?: number;
+  contentAppearanceStrategy?: TContentAppearanceStrategy | null;
+  overContentOpacity?: number;
+  selectedContentOpacity?: number;
+  deselectedContentOpacity?: number;
+  touchAreaXDilation?: number;
+  touchAreaYDilation?: number;
+  mouseAreaXDilation?: number;
+  mouseAreaYDilation?: number;
+
+  //TODO https://github.com/phetsims/sun/issues/740 these are renamed and propagated to RectangularRadioButton instances, should be folded into radioButtonOptions?: RectangularRadioButtonOptions
+  buttonContentXMargin?: number;
+  buttonContentYMargin?: number;
+  buttonContentXAlign?: RectangularRadioButtonContentXAlign;
+  buttonContentYAlign?: RectangularRadioButtonContentYAlign;
 };
 
 export type RectangularRadioButtonGroupOptions = SelfOptions & FlowBoxOptions;
