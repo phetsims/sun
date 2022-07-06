@@ -66,7 +66,7 @@ type SelfOptions = {
   voicingHintResponse?: VoicingResponse;
 
   //TODO https://github.com/phetsims/sun/issues/740 these are duplicated from RectangularRadioButtonOptions, and should be nested in radioButtonOptions?: RectangularRadioButtonOptions
-  //TODO https://github.com/phetsims/sun/issues/772 some of these should also be in RectangularRadioButton.FlatAppearanceStrategyOptions and ContentAppearanceStrategyOptions, which do not exist
+  //TODO https://github.com/phetsims/sun/issues/772 some of these should be in RectangularRadioButton.FlatAppearanceStrategyOptions and ContentAppearanceStrategyOptions, which do not exist
   baseColor?: IPaint;
   cornerRadius?: number;
   overButtonOpacity?: number;
