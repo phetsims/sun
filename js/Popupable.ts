@@ -107,7 +107,8 @@ const Popupable = <SuperType extends Constructor>( type: SuperType, optionsArgPo
 
       this.isShowingProperty = new BooleanProperty( false, {
         tandem: options.tandem.createTandem( 'isShowingProperty' ),
-        phetioReadOnly: true
+        phetioReadOnly: true,
+        phetioFeatured: true
       } );
 
       this.isShowingProperty.lazyLink( isShowing => {
