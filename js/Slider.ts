@@ -11,7 +11,8 @@
 
 import StrictOmit from '../../phet-core/js/types/StrictOmit.js';
 import IReadOnlyProperty from '../../axon/js/IReadOnlyProperty.js';
-import Property, { ReadOnlyProperty } from '../../axon/js/Property.js';
+import Property from '../../axon/js/Property.js';
+import ReadOnlyProperty from '../../axon/js/ReadOnlyProperty.js';
 import Dimension2 from '../../dot/js/Dimension2.js';
 import Range from '../../dot/js/Range.js';
 import Utils from '../../dot/js/Utils.js';

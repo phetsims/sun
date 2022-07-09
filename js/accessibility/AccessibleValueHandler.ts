@@ -16,7 +16,7 @@
  * @author Jesse Greenberg (PhET Interactive Simulations)
  */
 
-import { ReadOnlyProperty } from '../../../axon/js/Property.js';
+import ReadOnlyProperty from '../../../axon/js/ReadOnlyProperty.js';
 import Utils from '../../../dot/js/Utils.js';
 import Range from '../../../dot/js/Range.js';
 import assertHasProperties from '../../../phet-core/js/assertHasProperties.js';
