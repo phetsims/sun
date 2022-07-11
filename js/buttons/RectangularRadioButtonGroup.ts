@@ -43,7 +43,7 @@ export type RectangularRadioButtonItem<T> = {
   labelContent?: string; // optional label for a11y (description and voicing)
   voicingContextResponse?: VoicingResponse;
   descriptionContent?: string; // optional label for a11y
-}
+};
 
 /**
  * Identifies a radio button and its layout manager. Pointer areas and focus highlight need to be set on

@@ -18,7 +18,7 @@ import IReadOnlyProperty from '../../axon/js/IReadOnlyProperty.js';
 export type ToggleNodeElement<T> = {
   value: T;  // a value
   node: Node; // the Node associated with the value, to be shown by the ToggleNode
-}
+};
 
 type SelfOptions = {
 

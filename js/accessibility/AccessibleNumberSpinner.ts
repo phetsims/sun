@@ -40,7 +40,7 @@ const numberSpinnerRoleDescriptionString = sunStrings.a11y.numberSpinnerRoleDesc
 type SelfOptions = {
   timerDelay?: number;
   timerInterval?: number;
-}
+};
 
 type AccessibleNumberSpinnerOptions = SelfOptions & AccessibleValueHandlerOptions;
 

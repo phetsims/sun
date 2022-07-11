@@ -32,7 +32,7 @@ export type SunDemo = {
   node?: Node | null | undefined;
 
   tandemName?: string;
-}
+};
 
 type SelfOptions = {
 

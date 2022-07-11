@@ -50,7 +50,7 @@ type CreateTextFunction = {
   // if this function needs resetting, include a `reset` field on this function to be called when the
   // AccessibleValueHandler is reset.
   reset?: () => void;
-}
+};
 
 type VoicingOnEndResponseOptions = {
   onlyOnValueChange?: boolean;

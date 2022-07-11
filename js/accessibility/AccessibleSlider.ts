@@ -32,7 +32,7 @@ type SelfOptions = {
 
   // called when a drag sequence ends
   endDrag?: ( event: SceneryEvent | null ) => void;
-}
+};
 
 type AccessibleSliderOptions = SelfOptions & AccessibleValueHandlerOptions;
 

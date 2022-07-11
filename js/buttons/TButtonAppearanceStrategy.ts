@@ -18,6 +18,6 @@ type TButtonAppearanceStrategy = {
     dispose?: () => void;
     maxLineWidth: number;
   };
-}
+};
 
 export default TButtonAppearanceStrategy;

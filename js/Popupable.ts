@@ -40,7 +40,7 @@ type SelfOptions = {
   // The Node that receives focus when the Popupable is closed. If null, focus will return
   // to the Node that had focus when the Dialog opened.
   focusOnHideNode?: Node | null;
-}
+};
 export type PopupableOptions = SelfOptions & PickOptional<NodeOptions, 'tandem'>;
 
 const Popupable = <SuperType extends Constructor>( type: SuperType, optionsArgPosition: number ) => {
