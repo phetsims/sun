@@ -52,7 +52,9 @@ export default class AquaRadioButton<T> extends Voicing( Node, 0 ) {
 
   private readonly disposeAquaRadioButton: () => void;
 
-  public static DEFAULT_RADIUS = 7;
+  public static readonly DEFAULT_RADIUS = 7;
+
+  public static readonly TANDEM_NAME_SUFFIX = 'RadioButton';
 
   /**
    * @mixes {Voicing}
@@ -96,8 +98,8 @@ export default class AquaRadioButton<T> extends Voicing( Node, 0 ) {
 
     }, providedOptions );
 
-    assert && assert( !options.tandem.supplied || options.tandem.name.endsWith( 'RadioButton' ),
-      `AquaRadioButton tandem.name must end with RadioButton: ${options.tandem.phetioID}` );
+    assert && assert( !options.tandem.supplied || options.tandem.name.endsWith( AquaRadioButton.TANDEM_NAME_SUFFIX ),
+      `AquaRadioButton tandem.name must end with ${AquaRadioButton.TANDEM_NAME_SUFFIX}: ${options.tandem.phetioID}` );
 
     super();
 
