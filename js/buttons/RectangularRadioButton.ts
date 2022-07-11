@@ -278,7 +278,7 @@ export default class RectangularRadioButton<T> extends RectangularButton {
     public dispose(): void {
       this.disposeFlatAppearanceStrategy();
     }
-  }
+  };
 
   /**
    * ContentAppearanceStrategy is a value for RectangularRadioButton options.contentAppearanceStrategy. It changes
@@ -330,7 +330,7 @@ export default class RectangularRadioButton<T> extends RectangularButton {
     public dispose(): void {
       this.disposeContentAppearanceStrategy();
     }
-  }
+  };
 }
 
 sun.register( 'RectangularRadioButton', RectangularRadioButton );
