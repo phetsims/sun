@@ -70,6 +70,8 @@ export default class RectangularRadioButton<T> extends RectangularButton {
 
   private readonly disposeRectangularRadioButton: () => void;
 
+  public static readonly TANDEM_NAME_SUFFIX = 'RadioButton';
+
   /**
    * @param property - axon Property that can take on a set of values, one for each radio button in the group
    * @param value - value when this radio button is selected
@@ -113,8 +115,8 @@ export default class RectangularRadioButton<T> extends RectangularButton {
       phetioReadOnly: PhetioObject.DEFAULT_OPTIONS.phetioReadOnly // to support properly passing this to children, see https://github.com/phetsims/tandem/issues/60
     }, providedOptions );
 
-    assert && assert( !options.tandem.supplied || options.tandem.name.endsWith( 'RadioButton' ),
-      `RectangularRadioButton tandem.name must end with RadioButton: ${options.tandem.phetioID}` );
+    assert && assert( !options.tandem.supplied || options.tandem.name.endsWith( RectangularRadioButton.TANDEM_NAME_SUFFIX ),
+      `RectangularRadioButton tandem.name must end with ${RectangularRadioButton.TANDEM_NAME_SUFFIX}: ${options.tandem.phetioID}` );
 
     // Note it shares a tandem with this, so the emitter will be instrumented as a child of the button
     const buttonModel = new ButtonModel( {
