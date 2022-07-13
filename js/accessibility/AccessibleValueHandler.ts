@@ -240,7 +240,7 @@ const AccessibleValueHandler = <SuperType extends Constructor>( Type: SuperType,
     private readonly _roundToStepSize: boolean;
 
     // key is the event.code for the range key, value is whether it is down
-    private _rangeKeysDown: { [ key: string ]: boolean };
+    private _rangeKeysDown: Record<string, boolean>;
     private readonly _a11yMapPDOMValue: ( ( value: number ) => number );
     private readonly _a11yCreateAriaValueText: CreateTextFunction;
     private _dependenciesMultilink: UnknownMultilink | null;
