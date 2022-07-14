@@ -230,7 +230,7 @@ export default class ComboBoxButton<T> extends RectangularPushButton {
       // pdom
       this.innerContent = ( item.a11yLabel || null );
       this.voicingNameResponse = StringUtils.fillIn( options.comboBoxVoicingNameResponsePattern, {
-        value: item!.a11yLabel
+        value: item.a11yLabel
       } );
     };
     property.link( propertyObserver );

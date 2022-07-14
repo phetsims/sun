@@ -109,7 +109,7 @@ const AccessibleNumberSpinner = <SuperType extends Constructor>( Type: SuperType
             // check for relevant keys here
             if ( KeyboardUtils.isRangeKey( event.domEvent ) ) {
 
-              const domEvent = event.domEvent! as KeyboardEvent;
+              const domEvent = event.domEvent!;
 
               // If the meta key is down we will not even call the keydown listener of the supertype, so we need
               // to be sure that default behavior is prevented so we don't receive `input` and `change` events.
@@ -125,7 +125,7 @@ const AccessibleNumberSpinner = <SuperType extends Constructor>( Type: SuperType
 
                   downCallback = this._accessibleNumberSpinnerHandleKeyDown.bind( this, event );
                   runningTimerCallbackEvent = domEvent;
-                  this._callbackTimer.addCallback( downCallback! );
+                  this._callbackTimer.addCallback( downCallback );
                   this._callbackTimer.start();
                 }
               }
