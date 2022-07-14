@@ -599,9 +599,7 @@ Slider.SliderIO = new IOType( 'SliderIO', {
     setMajorTicksVisible: {
       returnType: VoidIO,
       parameterTypes: [ BooleanIO ],
-      implementation: function( this: Slider, visible: boolean ) {
-        this.setMajorTicksVisible( visible );
-      },
+      implementation: Slider.prototype.setMajorTicksVisible,
       documentation: 'Set whether the major tick marks should be shown',
       invocableForReadOnlyElements: false
     },
@@ -609,9 +607,7 @@ Slider.SliderIO = new IOType( 'SliderIO', {
     setMinorTicksVisible: {
       returnType: VoidIO,
       parameterTypes: [ BooleanIO ],
-      implementation: function( this: Slider, visible: boolean ) {
-        this.setMinorTicksVisible( visible );
-      },
+      implementation: Slider.prototype.setMinorTicksVisible,
       documentation: 'Set whether the minor tick marks should be shown',
       invocableForReadOnlyElements: false
     }
