@@ -407,7 +407,7 @@ const AccessibleValueHandler = <SuperType extends Constructor>( Type: SuperType,
      */
     public setA11yDependencies( dependencies: IReadOnlyProperty<IntentionalAny>[] ): void {
       assert && assert( Array.isArray( dependencies ) );
-      assert && assert( dependencies.indexOf( this._valueProperty ) === -1,
+      assert && assert( !dependencies.includes( this._valueProperty ),
         'The value Property is already a dependency, and does not need to be added to this list' );
       assert && dependencies.forEach( property => {
         assert && assert( property instanceof ReadOnlyProperty, `${property} is not an instance of Property` );
