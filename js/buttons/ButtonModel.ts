@@ -8,14 +8,14 @@
 import BooleanProperty from '../../../axon/js/BooleanProperty.js';
 import Emitter from '../../../axon/js/Emitter.js';
 import Property from '../../../axon/js/Property.js';
-import merge from '../../../phet-core/js/merge.js';
-import optionize from '../../../phet-core/js/optionize.js';
+import optionize, { combineOptions } from '../../../phet-core/js/optionize.js';
 import { PressListener, PressListenerOptions } from '../../../scenery/js/imports.js';
 import PhetioObject from '../../../tandem/js/PhetioObject.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import EnabledComponent, { EnabledComponentOptions } from '../../../axon/js/EnabledComponent.js';
 import sun from '../sun.js';
 import Multilink, { UnknownMultilink } from '../../../axon/js/Multilink.js';
+import { EnabledPropertyOptions } from '../../../axon/js/EnabledProperty.js';
 
 type SelfOptions = {
 
@@ -93,14 +93,14 @@ export default class ButtonModel extends EnabledComponent {
     }, providedOptions );
 
     // Set up enabledPropertyOptions for the enabledProperty that the mixin might create
-    options.enabledPropertyOptions = merge( {
+    options.enabledPropertyOptions = combineOptions<EnabledPropertyOptions>( {
 
       // phet-io
       phetioState: options.phetioState,
       phetioReadOnly: options.phetioReadOnly,
       phetioDocumentation: 'When disabled, the button is grayed out and cannot be pressed',
       phetioFeatured: true
-    }, options.enabledPropertyOptions );
+    }, options.enabledPropertyOptions! );
 
     super( options );
 
@@ -171,8 +171,7 @@ export default class ButtonModel extends EnabledComponent {
    */
   public createPressListener( options?: PressListenerOptions ): PressListener {
 
-    options = merge( {
-      phetioDocumentation: 'Indicates when the button has been pressed or released',
+    options = combineOptions<PressListenerOptions>( {
       canStartPress: () => this.enabledProperty.value
     }, options );
 
