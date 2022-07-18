@@ -19,11 +19,13 @@
  */
 
 import BooleanProperty from '../../axon/js/BooleanProperty.js';
+import Property from '../../axon/js/Property.js';
 import dotRandom from '../../dot/js/dotRandom.js';
 import Vector2 from '../../dot/js/Vector2.js';
 import InstanceRegistry from '../../phet-core/js/documentation/InstanceRegistry.js';
 import optionize from '../../phet-core/js/optionize.js';
 import { Display, Focus, FocusManager, IColor, IInputListener, IPaint, Node, NodeOptions, PDOMBehaviorFunction, PDOMPeer, WidthSizable, WidthSizableOptions } from '../../scenery/js/imports.js';
+import ISoundPlayer from '../../tambo/js/ISoundPlayer.js';
 import generalCloseSoundPlayer from '../../tambo/js/shared-sound-players/generalCloseSoundPlayer.js';
 import generalOpenSoundPlayer from '../../tambo/js/shared-sound-players/generalOpenSoundPlayer.js';
 import EventType from '../../tandem/js/EventType.js';
@@ -33,8 +35,6 @@ import ComboBoxButton from './ComboBoxButton.js';
 import ComboBoxListBox from './ComboBoxListBox.js';
 import sun from './sun.js';
 import SunConstants from './SunConstants.js';
-import Property from '../../axon/js/Property.js';
-import ISoundPlayer from '../../tambo/js/ISoundPlayer.js';
 
 // const
 const LIST_POSITION_VALUES = [ 'above', 'below' ] as const; // where the list pops up relative to the button
@@ -66,13 +66,13 @@ export type ComboBoxAlign = typeof ALIGN_VALUES[number];
 // ComboBox.md for further style guide and documentation on the pattern.
 const ACCESSIBLE_NAME_BEHAVIOR: PDOMBehaviorFunction = ( node, options, accessibleName, otherNodeCallbacks ) => {
   otherNodeCallbacks.push( () => {
-    ( node as ComboBox<any> ).button.accessibleName = accessibleName;
+    ( node as ComboBox<unknown> ).button.accessibleName = accessibleName;
   } );
   return options;
 };
 const HELP_TEXT_BEHAVIOR: PDOMBehaviorFunction = ( node, options, helpText, otherNodeCallbacks ) => {
   otherNodeCallbacks.push( () => {
-    ( node as ComboBox<any> ).button.helpText = helpText;
+    ( node as ComboBox<unknown> ).button.helpText = helpText;
   } );
   return options;
 };
@@ -122,7 +122,7 @@ type SelfOptions = {
   closedNoChangeSoundPlayer?: ISoundPlayer;
 
   // Voicing
-  // ComboBox does not mix Voicing, so it create custom options to pass to composed Voicing Nodes.
+  // ComboBox does not mix Voicing, so it creates custom options to pass to composed Voicing Nodes.
   // The pattern for the name response string, must include `{{value}}` so that the selected value string can
   // be filled in.
   comboBoxVoicingNameResponsePattern?: string;
@@ -371,7 +371,7 @@ export default class ComboBox<T> extends WidthSizable( Node ) {
 
     this.listBox.localBoundsProperty.lazyLink( () => this.moveListBox() );
 
-    this.listBox.visibleProperty.link( ( visible, wasVisible ) => {
+    this.listBox.visibleProperty.link( visible => {
       if ( visible ) {
 
         // show the list box
