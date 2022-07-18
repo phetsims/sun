@@ -24,9 +24,7 @@ import Orientation from '../../phet-core/js/Orientation.js';
 import swapObjectKeys from '../../phet-core/js/swapObjectKeys.js';
 import { DragListener, FocusHighlightFromNode, IPaint, Node, NodeOptions, Path, SceneryConstants } from '../../scenery/js/imports.js';
 import Tandem from '../../tandem/js/Tandem.js';
-import BooleanIO from '../../tandem/js/types/BooleanIO.js';
 import IOType from '../../tandem/js/types/IOType.js';
-import VoidIO from '../../tandem/js/types/VoidIO.js';
 import ValueChangeSoundPlayer, { ValueChangeSoundPlayerOptions } from '../../tambo/js/sound-generators/ValueChangeSoundPlayer.js';
 import AccessibleSlider, { AccessibleSliderOptions } from './accessibility/AccessibleSlider.js';
 import DefaultSliderTrack from './DefaultSliderTrack.js';
@@ -594,24 +592,7 @@ export default class Slider extends AccessibleSlider( Node, 0 ) {
 Slider.SliderIO = new IOType( 'SliderIO', {
   valueType: Slider,
   documentation: 'A traditional slider component, with a knob and possibly tick marks',
-  supertype: Node.NodeIO,
-  methods: {
-    setMajorTicksVisible: {
-      returnType: VoidIO,
-      parameterTypes: [ BooleanIO ],
-      implementation: Slider.prototype.setMajorTicksVisible,
-      documentation: 'Set whether the major tick marks should be shown',
-      invocableForReadOnlyElements: false
-    },
-
-    setMinorTicksVisible: {
-      returnType: VoidIO,
-      parameterTypes: [ BooleanIO ],
-      implementation: Slider.prototype.setMinorTicksVisible,
-      documentation: 'Set whether the minor tick marks should be shown',
-      invocableForReadOnlyElements: false
-    }
-  }
+  supertype: Node.NodeIO
 } );
 
 sun.register( 'Slider', Slider );
