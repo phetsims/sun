@@ -12,19 +12,19 @@ import merge from '../../phet-core/js/merge.js';
 import optionize from '../../phet-core/js/optionize.js';
 import { HStrut, Node, VBox, VBoxOptions } from '../../scenery/js/imports.js';
 import Tandem from '../../tandem/js/Tandem.js';
-import Checkbox from './Checkbox.js';
+import Checkbox, { CheckboxOptions } from './Checkbox.js';
 import sun from './sun.js';
 import Property from '../../axon/js/Property.js';
 
 export type VerticalCheckboxGroupItem = {
   node: Node; // Label for the button
   property: Property<boolean>; // Property associated with the checkbox
-  options?: any; // Item-specific options to be passed to the checkbox
+  options?: CheckboxOptions; // Item-specific options to be passed to the checkbox
   tandem?: Tandem; // optional tandem for PhET-iO
 };
 
 type SelfOptions = {
-  checkboxOptions?: any;
+  checkboxOptions?: CheckboxOptions;
   touchAreaXDilation?: number;
   mouseAreaXDilation?: number;
 };
@@ -38,7 +38,7 @@ export default class VerticalCheckboxGroup extends VBox {
     const options = optionize<VerticalCheckboxGroupOptions, SelfOptions, VBoxOptions>()( {
 
       // {Object|null} options passed to constructor of the Checkbox
-      checkboxOptions: null,
+      checkboxOptions: {},
 
       // dilation of pointer areas for each checkbox, y dimension is computed
       touchAreaXDilation: 5,
