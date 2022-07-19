@@ -19,7 +19,9 @@ import sunStrings from './sunStrings.js';
 import sunQueryParameters from './sunQueryParameters.js';
 
 // empty model used for all demo screens
-const MODEL = {};
+class Model {
+  public step(): void { /* no stepping here */ }
+}
 
 simLauncher.launch( () => {
 
@@ -39,10 +41,10 @@ simLauncher.launch( () => {
   sim.start();
 } );
 
-class ButtonScreen extends Screen<typeof MODEL, ButtonsScreenView> {
+class ButtonScreen extends Screen<Model, ButtonsScreenView> {
   public constructor( tandem: Tandem ) {
     super(
-      () => MODEL,
+      () => new Model(),
       () => new ButtonsScreenView( { tandem: tandem.createTandem( 'view' ) } ),
       {
         name: 'Buttons',
@@ -54,10 +56,10 @@ class ButtonScreen extends Screen<typeof MODEL, ButtonsScreenView> {
   }
 }
 
-class ComponentsScreen extends Screen<typeof MODEL, ComponentsScreenView> {
+class ComponentsScreen extends Screen<Model, ComponentsScreenView> {
   public constructor( tandem: Tandem ) {
     super(
-      () => MODEL,
+      () => new Model(),
       () => new ComponentsScreenView( { tandem: tandem.createTandem( 'view' ) } ),
       {
         name: 'Components',
@@ -69,10 +71,10 @@ class ComponentsScreen extends Screen<typeof MODEL, ComponentsScreenView> {
   }
 }
 
-class DialogsScreen extends Screen<typeof MODEL, DialogsScreenView> {
+class DialogsScreen extends Screen<Model, DialogsScreenView> {
   public constructor( tandem: Tandem ) {
     super(
-      () => MODEL,
+      () => new Model(),
       () => new DialogsScreenView( { tandem: tandem.createTandem( 'view' ) } ),
       {
         name: 'Dialogs',
@@ -84,10 +86,10 @@ class DialogsScreen extends Screen<typeof MODEL, DialogsScreenView> {
   }
 }
 
-class LayoutScreen extends Screen<typeof MODEL, DialogsScreenView> {
+class LayoutScreen extends Screen<Model, DialogsScreenView> {
   public constructor( tandem: Tandem ) {
     super(
-      () => MODEL,
+      () => new Model(),
       () => new LayoutScreenView( { tandem: tandem.createTandem( 'view' ) } ),
       {
         name: 'Layout',
