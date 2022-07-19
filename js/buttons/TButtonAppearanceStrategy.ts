@@ -13,6 +13,16 @@ import RadioButtonInteractionState from './RadioButtonInteractionState.js';
 export type TButtonAppearanceStrategyOptions = {
   stroke?: IPaint;
   lineWidth?: number;
+  overFill?: IPaint;
+  overStroke?: IPaint;
+  deselectedStroke?: IPaint;
+  selectedStroke?: IPaint;
+  selectedLineWidth?: number;
+  deselectedLineWidth?: number;
+  overLineWidth?: number;
+  deselectedButtonOpacity?: number;
+  overButtonOpacity?: number;
+  selectedButtonOpacity?: number;
 };
 
 type TButtonAppearanceStrategy = {
