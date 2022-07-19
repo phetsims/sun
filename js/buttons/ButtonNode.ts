@@ -21,7 +21,7 @@ import ColorConstants from '../ColorConstants.js';
 import sun from '../sun.js';
 import ButtonInteractionState from './ButtonInteractionState.js';
 import ButtonModel from './ButtonModel.js';
-import TButtonAppearanceStrategy from './TButtonAppearanceStrategy.js';
+import TButtonAppearanceStrategy, { TButtonAppearanceStrategyOptions } from './TButtonAppearanceStrategy.js';
 import TContentAppearanceStrategy from './TContentAppearanceStrategy.js';
 
 // constants
@@ -111,7 +111,8 @@ export default class ButtonNode extends Sizable( Voicing( Node, 0 ) ) {
    * @param interactionStateProperty - a Property that is used to drive the visual appearance of the button
    * @param providedOptions - this type does not mutate its options, but relies on the subtype to
    */
-  protected constructor( buttonModel: ButtonModel, buttonBackground: Path,
+  protected constructor( buttonModel: ButtonModel,
+                         buttonBackground: Path,
                          interactionStateProperty: IReadOnlyProperty<ButtonInteractionState>,
                          providedOptions?: ButtonNodeOptions ) {
 
@@ -188,8 +189,11 @@ export default class ButtonNode extends Sizable( Voicing( Node, 0 ) ) {
     this.addChild( buttonBackground );
 
     // Hook up the strategy that will control the button's appearance.
-    const buttonAppearanceStrategy = new options.buttonAppearanceStrategy( buttonBackground, interactionStateProperty,
-      this.baseColorProperty, options );
+    const buttonAppearanceStrategy = new options.buttonAppearanceStrategy(
+      buttonBackground,
+      interactionStateProperty,
+      this.baseColorProperty
+    );
 
     // Optionally hook up the strategy that will control the content's appearance.
     let contentAppearanceStrategy: InstanceType<TContentAppearanceStrategy>;
@@ -359,27 +363,34 @@ export class FlatAppearanceStrategy {
 
   private readonly disposeFlatAppearanceStrategy: () => void;
 
-  /*
+  /**
    * @param buttonBackground - the Node for the button's background, sans content
-   * @param interactionStateProperty
-   * @param baseColorProperty
-   * @param options
+   * @param interactionStateProperty - interaction state, used to trigger updates
+   * @param baseColorProperty - base color from which other colors are derived
+   * @param [providedOptions]
    */
-  public constructor( buttonBackground: PaintableNode, interactionStateProperty: IReadOnlyProperty<ButtonInteractionState>, baseColorProperty: IReadOnlyProperty<Color>, options?: any ) {
+  public constructor( buttonBackground: PaintableNode,
+                      interactionStateProperty: IReadOnlyProperty<ButtonInteractionState>,
+                      baseColorProperty: IReadOnlyProperty<Color>,
+                      providedOptions?: TButtonAppearanceStrategyOptions ) {
 
-    // Dynamic colors
+    // dynamic colors
     const baseBrighter4 = new PaintColorProperty( baseColorProperty, { luminanceFactor: 0.4 } );
     const baseDarker4 = new PaintColorProperty( baseColorProperty, { luminanceFactor: -0.4 } );
 
-    // Various fills that are used to alter the button's appearance
+    // various fills that are used to alter the button's appearance
     const upFill = baseColorProperty;
     const overFill = baseBrighter4;
     const downFill = baseDarker4;
 
-    // If the stroke wasn't provided, set a default
+    const options = combineOptions<TButtonAppearanceStrategyOptions>( {
+      stroke: baseDarker4
+    }, providedOptions );
+
+    // If the stroke wasn't provided, set a default.
     buttonBackground.stroke = ( typeof ( options.stroke ) === 'undefined' ) ? baseDarker4 : options.stroke;
 
-    this.maxLineWidth = buttonBackground.hasStroke() && options && typeof options.lineWidth === 'number' ? options.lineWidth : 0;
+    this.maxLineWidth = buttonBackground.hasStroke() && options.lineWidth ? options.lineWidth : 0;
 
     // Cache colors
     buttonBackground.cachedPaints = [ upFill, overFill, downFill ];
@@ -413,7 +424,6 @@ export class FlatAppearanceStrategy {
       if ( interactionStateProperty.hasListener( interactionStateListener ) ) {
         interactionStateProperty.unlink( interactionStateListener );
       }
-
       baseBrighter4.dispose();
       baseDarker4.dispose();
     };

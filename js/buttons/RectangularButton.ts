@@ -20,6 +20,7 @@ import ButtonInteractionState from './ButtonInteractionState.js';
 import ButtonModel from './ButtonModel.js';
 import ButtonNode, { ButtonNodeOptions } from './ButtonNode.js';
 import RadioButtonInteractionState from './RadioButtonInteractionState.js';
+import TButtonAppearanceStrategy from './TButtonAppearanceStrategy.js';
 
 // constants
 const VERTICAL_HIGHLIGHT_GRADIENT_LENGTH = 7; // In screen coords, which are roughly pixels.
@@ -71,7 +72,7 @@ export type RectangularButtonOptions = SelfOptions & ButtonNodeOptions;
 
 export default class RectangularButton extends ButtonNode {
 
-  public static ThreeDAppearanceStrategy: typeof ThreeDAppearanceStrategy;
+  public static ThreeDAppearanceStrategy: TButtonAppearanceStrategy;
 
   /**
    * @param buttonModel - Model that defines the button's behavior.
@@ -103,7 +104,6 @@ export default class RectangularButton extends ButtonNode {
       // NOTE: any used here, because optionize is excluding undefined
       stroke: undefined as any, // undefined by default, which will cause a stroke to be derived from the base color
       lineWidth: 0.5,
-
       cornerRadius: 4,
 
       leftTopCornerRadius: null,

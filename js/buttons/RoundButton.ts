@@ -17,6 +17,7 @@ import ButtonNode, { ButtonNodeOptions } from './ButtonNode.js';
 import optionize from '../../../phet-core/js/optionize.js';
 import RadioButtonInteractionState from './RadioButtonInteractionState.js';
 import IReadOnlyProperty from '../../../axon/js/IReadOnlyProperty.js';
+import TButtonAppearanceStrategy from './TButtonAppearanceStrategy.js';
 
 // constants
 const HIGHLIGHT_GRADIENT_LENGTH = 5; // In screen coords, which are roughly pixels.
@@ -42,7 +43,7 @@ export type RoundButtonOptions = SelfOptions & ButtonNodeOptions;
 
 export default class RoundButton extends ButtonNode {
 
-  public static ThreeDAppearanceStrategy: typeof ThreeDAppearanceStrategy;
+  public static ThreeDAppearanceStrategy: TButtonAppearanceStrategy;
 
   protected constructor( buttonModel: ButtonModel,
                          interactionStateProperty: IReadOnlyProperty<ButtonInteractionState>,
