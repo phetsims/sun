@@ -14,10 +14,10 @@ import sun from '../sun.js';
 import ButtonInteractionState from './ButtonInteractionState.js';
 import ButtonModel from './ButtonModel.js';
 import ButtonNode, { ButtonNodeOptions } from './ButtonNode.js';
-import optionize from '../../../phet-core/js/optionize.js';
+import optionize, { combineOptions } from '../../../phet-core/js/optionize.js';
 import RadioButtonInteractionState from './RadioButtonInteractionState.js';
 import IReadOnlyProperty from '../../../axon/js/IReadOnlyProperty.js';
-import TButtonAppearanceStrategy from './TButtonAppearanceStrategy.js';
+import TButtonAppearanceStrategy, { TButtonAppearanceStrategyOptions } from './TButtonAppearanceStrategy.js';
 
 // constants
 const HIGHLIGHT_GRADIENT_LENGTH = 5; // In screen coords, which are roughly pixels.
@@ -140,12 +140,12 @@ export class ThreeDAppearanceStrategy {
    * @param buttonBackground - the Node for the button's background, sans content
    * @param interactionStateProperty
    * @param baseColorProperty
-   * @param options
+   * @param [providedOptions]
    */
   public constructor( buttonBackground: PaintableNode,
                       interactionStateProperty: IReadOnlyProperty<ButtonInteractionState | RadioButtonInteractionState>,
                       baseColorProperty: IReadOnlyProperty<Color>,
-                      options?: any ) {
+                      providedOptions?: TButtonAppearanceStrategyOptions ) {
 
     // Dynamic colors
     const baseBrighter8Property = new PaintColorProperty( baseColorProperty, { luminanceFactor: 0.8 } );
@@ -156,6 +156,8 @@ export class ThreeDAppearanceStrategy {
     const baseDarker4Property = new PaintColorProperty( baseColorProperty, { luminanceFactor: -0.4 } );
     const baseDarker5Property = new PaintColorProperty( baseColorProperty, { luminanceFactor: -0.5 } );
     const baseTransparentProperty = new DerivedProperty( [ baseColorProperty ], color => color.withAlpha( 0 ) );
+
+    const options = combineOptions<TButtonAppearanceStrategyOptions>( {}, providedOptions );
 
     // Set up variables needed to create the various gradient fills and otherwise modify the appearance
     const buttonRadius = buttonBackground.width / 2;
@@ -187,7 +189,7 @@ export class ThreeDAppearanceStrategy {
 
     // Create and add the overlay that is used to add shading.
     const shadowNode = new Circle( buttonRadius, {
-      stroke: ( typeof ( options.stroke ) === 'undefined' ) ? baseDarker4Property : options.stroke,
+      stroke: options.stroke === null ? baseDarker4Property : options.stroke,
       lineWidth: options.lineWidth,
       pickable: false
     } );

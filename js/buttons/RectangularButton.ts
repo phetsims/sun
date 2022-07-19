@@ -12,7 +12,7 @@ import IReadOnlyProperty from '../../../axon/js/IReadOnlyProperty.js';
 import Multilink from '../../../axon/js/Multilink.js';
 import Dimension2 from '../../../dot/js/Dimension2.js';
 import { Shape } from '../../../kite/js/imports.js';
-import optionize from '../../../phet-core/js/optionize.js';
+import optionize, { combineOptions } from '../../../phet-core/js/optionize.js';
 import PickRequired from '../../../phet-core/js/types/PickRequired.js';
 import { Color, IPaint, LinearGradient, Node, PaintColorProperty, Path } from '../../../scenery/js/imports.js';
 import sun from '../sun.js';
@@ -20,7 +20,7 @@ import ButtonInteractionState from './ButtonInteractionState.js';
 import ButtonModel from './ButtonModel.js';
 import ButtonNode, { ButtonNodeOptions } from './ButtonNode.js';
 import RadioButtonInteractionState from './RadioButtonInteractionState.js';
-import TButtonAppearanceStrategy from './TButtonAppearanceStrategy.js';
+import TButtonAppearanceStrategy, { TButtonAppearanceStrategyOptions } from './TButtonAppearanceStrategy.js';
 
 // constants
 const VERTICAL_HIGHLIGHT_GRADIENT_LENGTH = 7; // In screen coords, which are roughly pixels.
@@ -53,7 +53,7 @@ type SelfOptions = {
   mouseAreaXShift?: number;
   mouseAreaYShift?: number;
 
-  stroke?: IPaint | undefined; // undefined by default, which will cause a stroke to be derived from the base color
+  stroke?: IPaint | null; // when null, a stroke will be derived from the base color
   lineWidth?: number; // Only meaningful if stroke is non-null
 
   // radius applied to all corners unless a corner-specific value is provided
@@ -102,7 +102,7 @@ export default class RectangularButton extends ButtonNode {
       mouseAreaYShift: 0,
 
       // NOTE: any used here, because optionize is excluding undefined
-      stroke: undefined as any, // undefined by default, which will cause a stroke to be derived from the base color
+      stroke: null, // null by default, which will cause a stroke to be derived from the base color
       lineWidth: 0.5,
       cornerRadius: 4,
 
@@ -218,12 +218,12 @@ class ThreeDAppearanceStrategy {
    * @param buttonBackground - the Node for the button's background, sans content
    * @param interactionStateProperty
    * @param baseColorProperty
-   * @param [options]
+   * @param [providedOptions]
    */
   public constructor( buttonBackground: Path,
                       interactionStateProperty: IReadOnlyProperty<ButtonInteractionState | RadioButtonInteractionState>,
                       baseColorProperty: IReadOnlyProperty<Color>,
-                      options?: any ) {
+                      providedOptions?: TButtonAppearanceStrategyOptions ) {
 
     // Dynamic colors
     const baseBrighter7Property = new PaintColorProperty( baseColorProperty, { luminanceFactor: 0.7 } );
@@ -235,9 +235,11 @@ class ThreeDAppearanceStrategy {
     const baseTransparentProperty = new DerivedProperty( [ baseColorProperty ], color => color.withAlpha( 0 ) );
     const transparentWhite = new Color( 255, 255, 255, 0.7 );
 
+    const options = combineOptions<TButtonAppearanceStrategyOptions>( {}, providedOptions );
+
     // Adds shading to left and right edges of the button.
     const horizontalShadingPath = new Path( null, {
-      stroke: ( typeof ( options.stroke ) === 'undefined' ) ? baseDarker4Property : options.stroke,
+      stroke: options.stroke === null ? baseDarker4Property : options.stroke,
       lineWidth: options.lineWidth,
       pickable: false
     } );
