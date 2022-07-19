@@ -9,7 +9,7 @@ import Screen from '../../joist/js/Screen.js';
 import ScreenIcon from '../../joist/js/ScreenIcon.js';
 import Sim from '../../joist/js/Sim.js';
 import simLauncher from '../../joist/js/simLauncher.js';
-import { IColor, Rectangle } from '../../scenery/js/imports.js';
+import { Color, IColor, Rectangle } from '../../scenery/js/imports.js';
 import Tandem from '../../tandem/js/Tandem.js';
 import ButtonsScreenView from './demo/buttons/ButtonsScreenView.js';
 import ComponentsScreenView from './demo/components/ComponentsScreenView.js';
@@ -46,7 +46,7 @@ class ButtonScreen extends Screen<typeof MODEL, ButtonsScreenView> {
       () => new ButtonsScreenView( { tandem: tandem.createTandem( 'view' ) } ),
       {
         name: 'Buttons',
-        backgroundColorProperty: new Property( sunQueryParameters.backgroundColor ),
+        backgroundColorProperty: new Property( Color.toColor( sunQueryParameters.backgroundColor ) ),
         homeScreenIcon: createScreenIcon( 'red' ),
         tandem: tandem
       }
@@ -61,7 +61,7 @@ class ComponentsScreen extends Screen<typeof MODEL, ComponentsScreenView> {
       () => new ComponentsScreenView( { tandem: tandem.createTandem( 'view' ) } ),
       {
         name: 'Components',
-        backgroundColorProperty: new Property( sunQueryParameters.backgroundColor ),
+        backgroundColorProperty: new Property( Color.toColor( sunQueryParameters.backgroundColor ) ),
         homeScreenIcon: createScreenIcon( 'yellow' ),
         tandem: tandem
       }
@@ -76,7 +76,7 @@ class DialogsScreen extends Screen<typeof MODEL, DialogsScreenView> {
       () => new DialogsScreenView( { tandem: tandem.createTandem( 'view' ) } ),
       {
         name: 'Dialogs',
-        backgroundColorProperty: new Property( sunQueryParameters.backgroundColor ),
+        backgroundColorProperty: new Property( Color.toColor( sunQueryParameters.backgroundColor ) ),
         homeScreenIcon: createScreenIcon( 'purple' ),
         tandem: tandem
       }
@@ -91,7 +91,7 @@ class LayoutScreen extends Screen<typeof MODEL, DialogsScreenView> {
       () => new LayoutScreenView( { tandem: tandem.createTandem( 'view' ) } ),
       {
         name: 'Layout',
-        backgroundColorProperty: new Property( sunQueryParameters.backgroundColor ),
+        backgroundColorProperty: new Property( Color.toColor( sunQueryParameters.backgroundColor ) ),
         homeScreenIcon: createScreenIcon( 'green' ),
         tandem: tandem
       }
