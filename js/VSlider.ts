@@ -12,8 +12,7 @@ import Range from '../../dot/js/Range.js';
 import Orientation from '../../phet-core/js/Orientation.js';
 import { default as Slider, SliderOptions } from './Slider.js';
 import sun from './sun.js';
-import optionize from '../../phet-core/js/optionize.js';
-import { EmptySelfOptions } from '../../phet-core/js/optionize.js';
+import optionize, { EmptySelfOptions } from '../../phet-core/js/optionize.js';
 import StrictOmit from '../../phet-core/js/types/StrictOmit.js';
 import Property from '../../axon/js/Property.js';
 

@@ -8,9 +8,8 @@
  */
 
 import StrictOmit from '../../phet-core/js/types/StrictOmit.js';
-import { EmptySelfOptions } from '../../phet-core/js/optionize.js';
+import optionize, { EmptySelfOptions } from '../../phet-core/js/optionize.js';
 import dotRandom from '../../dot/js/dotRandom.js';
-import optionize from '../../phet-core/js/optionize.js';
 import { FlowBox, FlowBoxOptions, HStrut, Node, PDOMPeer, SceneryConstants, SceneryEvent } from '../../scenery/js/imports.js';
 import multiSelectionSoundPlayerFactory from '../../tambo/js/multiSelectionSoundPlayerFactory.js';
 import Tandem from '../../tandem/js/Tandem.js';

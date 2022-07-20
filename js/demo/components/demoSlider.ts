@@ -12,7 +12,7 @@ import VSlider from '../../VSlider.js';
 import Checkbox from '../../Checkbox.js';
 import Bounds2 from '../../../../dot/js/Bounds2.js';
 import Range from '../../../../dot/js/Range.js';
-import optionize, { combineOptions } from '../../../../phet-core/js/optionize.js';
+import optionize, { combineOptions, EmptySelfOptions } from '../../../../phet-core/js/optionize.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
 import Property from '../../../../axon/js/Property.js';
 import Dimension2 from '../../../../dot/js/Dimension2.js';
@@ -20,7 +20,6 @@ import { Font, HBox, Node, Text, VBox } from '../../../../scenery/js/imports.js'
 import BooleanProperty from '../../../../axon/js/BooleanProperty.js';
 import stepTimer from '../../../../axon/js/stepTimer.js';
 import { SunDemoOptions } from '../DemosScreenView.js';
-import { EmptySelfOptions } from '../../../../phet-core/js/optionize.js';
 
 const CHECKBOX_FONT = new Font( { size: 20 } );
 

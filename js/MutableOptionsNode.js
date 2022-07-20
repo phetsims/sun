@@ -30,8 +30,8 @@
  * @author Jonathan Olson (PhET Interactive Simulations)
  */
 
-import Property from '../../axon/js/Property.js';
 import Multilink from '../../axon/js/Multilink.js';
+import Property from '../../axon/js/Property.js';
 import merge from '../../phet-core/js/merge.js';
 import { Node } from '../../scenery/js/imports.js';
 import sun from './sun.js';

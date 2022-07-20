@@ -13,7 +13,7 @@ import dotRandom from '../../../../dot/js/dotRandom.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
 import Vector2Property from '../../../../dot/js/Vector2Property.js';
 import { Shape } from '../../../../kite/js/imports.js';
-import optionize, { combineOptions } from '../../../../phet-core/js/optionize.js';
+import optionize, { combineOptions, EmptySelfOptions } from '../../../../phet-core/js/optionize.js';
 import Constructor from '../../../../phet-core/js/types/Constructor.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
 import { AlignBox, Circle, Color, FlowBox, FlowCell, FlowConstraint, GridBackgroundNode, GridBox, IPaint, ManualConstraint, Node, Path, Rectangle, RectangleOptions, Text, TextOptions, VDivider } from '../../../../scenery/js/imports.js';
@@ -25,7 +25,6 @@ import sunQueryParameters from '../../sunQueryParameters.js';
 import DemosScreenView, { DemosScreenViewOptions } from '../DemosScreenView.js';
 import RectangularPushButton from '../../buttons/RectangularPushButton.js';
 import PickRequired from '../../../../phet-core/js/types/PickRequired.js';
-import { EmptySelfOptions } from '../../../../phet-core/js/optionize.js';
 
 type SelfOptions = EmptySelfOptions;
 type LayoutScreenViewOptions = SelfOptions & PickRequired<DemosScreenViewOptions, 'tandem'>;

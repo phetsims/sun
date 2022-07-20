@@ -10,8 +10,7 @@
 import Emitter from '../../../axon/js/Emitter.js';
 import IEmitter from '../../../axon/js/IEmitter.js';
 import IProperty from '../../../axon/js/IProperty.js';
-import optionize from '../../../phet-core/js/optionize.js';
-import { EmptySelfOptions } from '../../../phet-core/js/optionize.js';
+import optionize, { EmptySelfOptions } from '../../../phet-core/js/optionize.js';
 import EventType from '../../../tandem/js/EventType.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import sun from '../sun.js';
