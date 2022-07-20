@@ -8,13 +8,13 @@
 
 import IProperty from '../../../axon/js/IProperty.js';
 import optionize from '../../../phet-core/js/optionize.js';
-import EmptyObjectType from '../../../phet-core/js/types/EmptyObjectType.js';
+import { EmptySelfOptions } from '../../../phet-core/js/optionize.js';
 import PhetioObject from '../../../tandem/js/PhetioObject.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import sun from '../sun.js';
 import ButtonModel, { ButtonModelOptions } from './ButtonModel.js';
 
-type SelfOptions = EmptyObjectType;
+type SelfOptions = EmptySelfOptions;
 
 export type MomentaryButtonModelOptions = SelfOptions & ButtonModelOptions;
 

@@ -15,12 +15,12 @@ import Dialog from '../../Dialog.js';
 import sun from '../../sun.js';
 import { DemosScreenViewOptions } from '../DemosScreenView.js';
 import PickRequired from '../../../../phet-core/js/types/PickRequired.js';
-import EmptyObjectType from '../../../../phet-core/js/types/EmptyObjectType.js';
+import { EmptySelfOptions } from '../../../../phet-core/js/optionize.js';
 
 // constants
 const BUTTON_FONT = new Font( { size: 20 } );
 
-type SelfOptions = EmptyObjectType;
+type SelfOptions = EmptySelfOptions;
 type DialogsScreenViewOptions = SelfOptions & PickRequired<DemosScreenViewOptions, 'tandem'>;
 
 class DialogsScreenView extends ScreenView {

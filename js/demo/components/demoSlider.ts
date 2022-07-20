@@ -20,7 +20,7 @@ import { Font, HBox, Node, Text, VBox } from '../../../../scenery/js/imports.js'
 import BooleanProperty from '../../../../axon/js/BooleanProperty.js';
 import stepTimer from '../../../../axon/js/stepTimer.js';
 import { SunDemoOptions } from '../DemosScreenView.js';
-import EmptyObjectType from '../../../../phet-core/js/types/EmptyObjectType.js';
+import { EmptySelfOptions } from '../../../../phet-core/js/optionize.js';
 
 const CHECKBOX_FONT = new Font( { size: 20 } );
 
@@ -41,7 +41,7 @@ function demoSlider( layoutBounds: Bounds2, orientation: 'horizontal' | 'vertica
 
   let slider: Slider;
   if ( orientation === 'horizontal' ) {
-    slider = new HSlider( property, range, optionize<SunDemoOptions, EmptyObjectType, HSliderOptions>()( {
+    slider = new HSlider( property, range, optionize<SunDemoOptions, EmptySelfOptions, HSliderOptions>()( {
       trackSize: new Dimension2( 300, 5 ),
 
       // Demonstrate larger x dilation.
@@ -55,7 +55,7 @@ function demoSlider( layoutBounds: Bounds2, orientation: 'horizontal' | 'vertica
     }, options ) );
   }
   else {
-    slider = new VSlider( property, range, optionize<SunDemoOptions, EmptyObjectType, HSliderOptions>()( {
+    slider = new VSlider( property, range, optionize<SunDemoOptions, EmptySelfOptions, HSliderOptions>()( {
       trackSize: new Dimension2( 5, 300 ),
 
       // Demonstrate larger y dilation, to verify that VSlider is handling things correctly.

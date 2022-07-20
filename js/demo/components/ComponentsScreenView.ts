@@ -10,7 +10,7 @@
  */
 
 import optionize from '../../../../phet-core/js/optionize.js';
-import EmptyObjectType from '../../../../phet-core/js/types/EmptyObjectType.js';
+import { EmptySelfOptions } from '../../../../phet-core/js/optionize.js';
 import PickRequired from '../../../../phet-core/js/types/PickRequired.js';
 import sun from '../../sun.js';
 import sunQueryParameters from '../../sunQueryParameters.js';
@@ -28,7 +28,7 @@ import demoToggleSwitch from './demoToggleSwitch.js';
 import demoAlignGroup from './demoAlignGroup.js';
 import demoAccordionBox from './demoAccordionBox.js';
 
-type SelfOptions = EmptyObjectType;
+type SelfOptions = EmptySelfOptions;
 type ComponentsScreenViewOptions = SelfOptions & PickRequired<DemosScreenViewOptions, 'tandem'>;
 
 export default class ComponentsScreenView extends DemosScreenView {

@@ -9,13 +9,13 @@
  */
 
 import IProperty from '../../../axon/js/IProperty.js';
-import EmptyObjectType from '../../../phet-core/js/types/EmptyObjectType.js';
+import { EmptySelfOptions } from '../../../phet-core/js/optionize.js';
 import sun from '../sun.js';
 import RectangularButton, { RectangularButtonOptions } from './RectangularButton.js';
 import StickyToggleButtonInteractionStateProperty from './StickyToggleButtonInteractionStateProperty.js';
 import StickyToggleButtonModel from './StickyToggleButtonModel.js';
 
-type SelfOptions = EmptyObjectType;
+type SelfOptions = EmptySelfOptions;
 
 export type RectangularStickyToggleButtonOptions = SelfOptions & RectangularButtonOptions;
 

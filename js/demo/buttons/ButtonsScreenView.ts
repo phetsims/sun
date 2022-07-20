@@ -6,7 +6,7 @@
  * @author John Blanco (PhET Interactive Simulations)
  */
 
-import EmptyObjectType from '../../../../phet-core/js/types/EmptyObjectType.js';
+import { EmptySelfOptions } from '../../../../phet-core/js/optionize.js';
 import PickRequired from '../../../../phet-core/js/types/PickRequired.js';
 import sun from '../../sun.js';
 import DemosScreenView, { DemosScreenViewOptions } from '../DemosScreenView.js';
@@ -17,7 +17,7 @@ import demoPushButtons from './demoPushButtons.js';
 import demoRectangularRadioButtonGroup from './demoRectangularRadioButtonGroup.js';
 import demoToggleButtons from './demoToggleButtons.js';
 
-type SelfOptions = EmptyObjectType;
+type SelfOptions = EmptySelfOptions;
 type ButtonsScreenViewOptions = SelfOptions & PickRequired<DemosScreenViewOptions, 'tandem'>;
 
 export default class ButtonsScreenView extends DemosScreenView {

@@ -27,7 +27,7 @@ import IReadOnlyProperty from '../../axon/js/IReadOnlyProperty.js';
 import ISoundPlayer from '../../tambo/js/ISoundPlayer.js';
 import StrictOmit from '../../phet-core/js/types/StrictOmit.js';
 import optionize, { combineOptions } from '../../phet-core/js/optionize.js';
-import EmptyObjectType from '../../phet-core/js/types/EmptyObjectType.js';
+import { EmptySelfOptions } from '../../phet-core/js/optionize.js';
 import sun from './sun.js';
 import PhetFont from '../../scenery-phet/js/PhetFont.js';
 import MathSymbols from '../../scenery-phet/js/MathSymbols.js';
@@ -524,7 +524,7 @@ export default class NumberPicker extends AccessibleNumberSpinner( Node, 0 ) {
 
   public static createIcon( value: number, providedOptions?: CreateIconOptions ): Node {
 
-    const options = optionize<CreateIconOptions, EmptyObjectType, CreateIconOptions>()( {
+    const options = optionize<CreateIconOptions, EmptySelfOptions, CreateIconOptions>()( {
 
       // Highlight the increment button
       highlightIncrement: false,
@@ -573,7 +573,7 @@ export default class NumberPicker extends AccessibleNumberSpinner( Node, 0 ) {
   }
 }
 
-type NumberPickerInputListenerSelfOptions = EmptyObjectType;
+type NumberPickerInputListenerSelfOptions = EmptySelfOptions;
 type NumberPickerInputListenerOptions = NumberPickerInputListenerSelfOptions & FireListenerOptions<FireListener>;
 
 /**

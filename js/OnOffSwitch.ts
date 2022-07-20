@@ -9,11 +9,11 @@
 
 import Property from '../../axon/js/Property.js';
 import optionize from '../../phet-core/js/optionize.js';
-import EmptyObjectType from '../../phet-core/js/types/EmptyObjectType.js';
+import { EmptySelfOptions } from '../../phet-core/js/optionize.js';
 import sun from './sun.js';
 import ToggleSwitch, { ToggleSwitchOptions } from './ToggleSwitch.js';
 
-type SelfOptions = EmptyObjectType;
+type SelfOptions = EmptySelfOptions;
 
 export type OnOffSwitchOptions = SelfOptions & ToggleSwitchOptions;
 
