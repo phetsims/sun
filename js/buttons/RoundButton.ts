@@ -189,7 +189,7 @@ export class ThreeDAppearanceStrategy {
 
     // Create and add the overlay that is used to add shading.
     const shadowNode = new Circle( buttonRadius, {
-      stroke: options.stroke === null ? baseDarker4Property : options.stroke,
+      stroke: !options.stroke ? baseDarker4Property : options.stroke,
       lineWidth: options.lineWidth,
       pickable: false
     } );

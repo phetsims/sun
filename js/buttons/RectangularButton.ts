@@ -239,7 +239,7 @@ class ThreeDAppearanceStrategy {
 
     // Adds shading to left and right edges of the button.
     const horizontalShadingPath = new Path( null, {
-      stroke: options.stroke === null ? baseDarker4Property : options.stroke,
+      stroke: !options.stroke ? baseDarker4Property : options.stroke,
       lineWidth: options.lineWidth,
       pickable: false
     } );
