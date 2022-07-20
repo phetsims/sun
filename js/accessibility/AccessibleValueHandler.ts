@@ -722,7 +722,7 @@ const AccessibleValueHandler = <SuperType extends Constructor>( Type: SuperType,
      *
      * Add this as a listener to the `input` event on the Node that is mixing in AccessibleValueHandler.
      */
-    protected handleInput( event: SceneryEvent<Event> ): void {
+    protected handleInput( event: SceneryEvent ): void {
       if ( ( this as unknown as Node ).enabledProperty.get() && !this._blockInput ) {
 
         // don't handle again on "change" event
@@ -793,7 +793,7 @@ const AccessibleValueHandler = <SuperType extends Constructor>( Type: SuperType,
      * Interaction with this input has started, save the value on start so that it can be used as an "old" value
      * when generating the context response with option a11yCreateContextResponse.
      */
-    private _onInteractionStart( event: SceneryEvent<Event> ): void {
+    private _onInteractionStart( event: SceneryEvent ): void {
       this._valueOnStart = this._valueProperty.value;
       this._startInput( event );
     }
@@ -802,7 +802,7 @@ const AccessibleValueHandler = <SuperType extends Constructor>( Type: SuperType,
      * Interaction with this input has completed, generate an utterance describing changes if necessary and call
      * optional "end" function.
      */
-    private _onInteractionEnd( event: SceneryEvent<Event> ): void {
+    private _onInteractionEnd( event: SceneryEvent ): void {
       this.alertContextResponse();
       this.voicingOnEndResponse();
       this._endInput( event );
