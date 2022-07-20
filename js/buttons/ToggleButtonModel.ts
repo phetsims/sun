@@ -8,6 +8,7 @@
  */
 
 import Emitter from '../../../axon/js/Emitter.js';
+import IEmitter from '../../../axon/js/IEmitter.js';
 import IProperty from '../../../axon/js/IProperty.js';
 import optionize from '../../../phet-core/js/optionize.js';
 import EmptyObjectType from '../../../phet-core/js/types/EmptyObjectType.js';
@@ -26,7 +27,7 @@ export default class ToggleButtonModel<T> extends ButtonModel {
   public readonly valueOff: T;
   public readonly valueOn: T;
 
-  private readonly toggledEmitter: Emitter<[]>;
+  private readonly toggledEmitter: IEmitter;
   private readonly disposeToggleButtonModel: () => void;
 
   /**

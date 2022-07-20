@@ -34,6 +34,7 @@ import { IInputListener, KeyboardUtils, Node, SceneryEvent } from '../../../scen
 import sun from '../sun.js';
 import sunStrings from '../sunStrings.js';
 import AccessibleValueHandler, { AccessibleValueHandlerOptions } from './AccessibleValueHandler.js';
+import IEmitter from '../../../axon/js/IEmitter.js';
 
 const numberSpinnerRoleDescriptionString = sunStrings.a11y.numberSpinnerRoleDescription;
 
@@ -59,8 +60,8 @@ const AccessibleNumberSpinner = <SuperType extends Constructor>( Type: SuperType
 
     // emits events when increment and decrement actions occur, but only for changes
     // of keyboardStep and shiftKeyboardStep (not pageKeyboardStep)
-    protected readonly incrementDownEmitter: Emitter<[ boolean ]>;
-    protected readonly decrementDownEmitter: Emitter<[ boolean ]>;
+    protected readonly incrementDownEmitter: IEmitter<[ boolean ]>;
+    protected readonly decrementDownEmitter: IEmitter<[ boolean ]>;
 
     private readonly _disposeAccessibleNumberSpinner: () => void;
 

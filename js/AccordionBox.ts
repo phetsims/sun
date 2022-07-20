@@ -9,6 +9,7 @@
 
 import BooleanProperty from '../../axon/js/BooleanProperty.js';
 import Emitter from '../../axon/js/Emitter.js';
+import IEmitter from '../../axon/js/IEmitter.js';
 import Property from '../../axon/js/Property.js';
 import { Shape } from '../../kite/js/imports.js';
 import InstanceRegistry from '../../phet-core/js/documentation/InstanceRegistry.js';
@@ -100,7 +101,7 @@ export default class AccordionBox extends Node {
   private readonly _minWidth;
   private readonly _showTitleWhenExpanded;
   private readonly _buttonAlign;
-  private readonly disposeEmitterAccordionBox: Emitter;
+  private readonly disposeEmitterAccordionBox: IEmitter;
   private readonly titleNode: Node;
   private readonly expandCollapseButton: ExpandCollapseButton;
   private readonly expandedBox: Rectangle;

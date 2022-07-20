@@ -11,6 +11,7 @@
 import BooleanProperty from '../../../axon/js/BooleanProperty.js';
 import CallbackTimer from '../../../axon/js/CallbackTimer.js';
 import Emitter from '../../../axon/js/Emitter.js';
+import IEmitter from '../../../axon/js/IEmitter.js';
 import Property from '../../../axon/js/Property.js';
 import optionize from '../../../phet-core/js/optionize.js';
 import EventType from '../../../tandem/js/EventType.js';
@@ -47,7 +48,7 @@ export default class PushButtonModel extends ButtonModel {
   public readonly isFiringProperty: Property<boolean>;
 
   // sends out notifications when the button is released.
-  private readonly firedEmitter: Emitter;
+  private readonly firedEmitter: IEmitter;
 
   private timer?: CallbackTimer | null;
 
