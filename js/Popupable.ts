@@ -67,6 +67,8 @@ const Popupable = <SuperType extends Constructor>( type: SuperType, optionsArgPo
 
     // Support the same signature as the type we mix into.  However, we also have our own options, which we assume
     // are passed in the last arg.
+    // TODO - We're trying not to use "any", so how can we specify the types more specifically?  See https://github.com/phetsims/sun/issues/777.
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     public constructor( ...args: any[] ) {
       super( ...args );
 
