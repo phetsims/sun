@@ -1,4 +1,4 @@
-// Copyright 2020-2021, University of Colorado Boulder
+// Copyright 2020-2022, University of Colorado Boulder
 
 /**
  * Unit tests for sun. Please run once in phet brand and once in brand=phet-io to cover all functionality.
