@@ -126,7 +126,7 @@ n |                 |                                        |             g   |
   openedSoundPlayer?: ISoundPlayer;
   closedSoundPlayer?: ISoundPlayer;
 
-  //TODO https://github.com/phetsims/chipper/issues/1253 type Sim will introduce a dependency on joist
+  // TODO - type Sim will introduce a dependency on joist, see https://github.com/phetsims/sun/issues/776
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   sim?: any;
 
@@ -145,7 +145,7 @@ export default class Dialog extends Popupable( Panel, 1 ) {
 
   private readonly closeButton: CloseButton;
 
-  //TODO https://github.com/phetsims/chipper/issues/1253 type Sim will introduce a dependency on joist
+  // TODO - type Sim will introduce a dependency on joist, see https://github.com/phetsims/sun/issues/776
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private readonly sim: any;
   private readonly disposeDialog: () => void;
