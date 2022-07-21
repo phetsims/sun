@@ -15,14 +15,14 @@ export type TButtonAppearanceStrategyOptions = {
   lineWidth?: number;
   overFill?: IPaint;
   overStroke?: IPaint;
-  deselectedStroke?: IPaint;
+  overLineWidth?: number;
+  overButtonOpacity?: number;
   selectedStroke?: IPaint;
   selectedLineWidth?: number;
-  deselectedLineWidth?: number;
-  overLineWidth?: number;
-  deselectedButtonOpacity?: number;
-  overButtonOpacity?: number;
   selectedButtonOpacity?: number;
+  deselectedStroke?: IPaint;
+  deselectedLineWidth?: number;
+  deselectedButtonOpacity?: number;
 };
 
 type TButtonAppearanceStrategy = {

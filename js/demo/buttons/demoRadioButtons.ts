@@ -42,9 +42,11 @@ export default function demoRadioButtons( layoutBounds: Bounds2 ): Node {
     enabledProperty: buttonsEnabledProperty,
     radioButtonOptions: {
       baseColor: radioGroupBaseColor,
-      selectedLineWidth: 4,
       xAlign: 'center',
-      yAlign: 'center'
+      yAlign: 'center',
+      buttonAppearanceStrategyOptions: {
+        selectedLineWidth: 4
+      }
     }
   } );
   const rectangularRadioButtonPanel = new Panel( rectangularRadioButtonGroup, {

@@ -22,7 +22,7 @@ import sun from '../sun.js';
 import ButtonInteractionState from './ButtonInteractionState.js';
 import ButtonModel from './ButtonModel.js';
 import TButtonAppearanceStrategy, { TButtonAppearanceStrategyOptions } from './TButtonAppearanceStrategy.js';
-import TContentAppearanceStrategy from './TContentAppearanceStrategy.js';
+import TContentAppearanceStrategy, { TContentAppearanceStrategyOptions } from './TContentAppearanceStrategy.js';
 
 // constants
 const CONTRAST_FILTER = new Contrast( 0.7 );
@@ -64,17 +64,15 @@ type SelfOptions = {
   // Color when disabled
   disabledColor?: IPaint;
 
-  // Class that determines the button's appearance for the values of interactionStateProperty.
-  // Constructor is {function( backgroundNode:Node, interactionStateProperty:Property, options:*)},
-  // and the class has an optional dispose method.
-  // See ButtonNode.FlatAppearanceStrategy for an example.
+  // Class and associated options that determine the button's appearance and the changes that occur when the button is
+  // pressed, hovered over, disabled, and so forth.
   buttonAppearanceStrategy?: TButtonAppearanceStrategy;
+  buttonAppearanceStrategyOptions?: TButtonAppearanceStrategyOptions;
 
-  // Optional class that determines the content's appearance for the values of interactionStateProperty.
-  // Constructor is {function( content:Node, interactionStateProperty:Property, options:*)},
-  // and the class has an optional dispose method.
-  // See RectangularRadioButton.ContentAppearanceStrategy for an example.
+  // Class and associated options that determine how the content node looks and the changes that occur when the button
+  // is pressed, hovered over, disabled, and so forth.
   contentAppearanceStrategy?: TContentAppearanceStrategy | null;
+  contentAppearanceStrategyOptions?: TContentAppearanceStrategyOptions;
 
   // Alter the appearance when changing the enabled of the button.
   enabledAppearanceStrategy?: EnabledAppearanceStrategy;
@@ -129,7 +127,9 @@ export default class ButtonNode extends Sizable( Voicing( Node, 0 ) ) {
       baseColor: ColorConstants.LIGHT_BLUE,
       cursor: 'pointer',
       buttonAppearanceStrategy: ButtonNode.FlatAppearanceStrategy,
+      buttonAppearanceStrategyOptions: {},
       contentAppearanceStrategy: null,
+      contentAppearanceStrategyOptions: {},
       enabledAppearanceStrategy: ( enabled, button, background, content ) => {
         background.filters = enabled ? [] : [ CONTRAST_FILTER, BRIGHTNESS_FILTER ];
 
@@ -192,13 +192,17 @@ export default class ButtonNode extends Sizable( Voicing( Node, 0 ) ) {
     const buttonAppearanceStrategy = new options.buttonAppearanceStrategy(
       buttonBackground,
       interactionStateProperty,
-      this.baseColorProperty
+      this.baseColorProperty,
+      options.buttonAppearanceStrategyOptions
     );
 
     // Optionally hook up the strategy that will control the content's appearance.
     let contentAppearanceStrategy: InstanceType<TContentAppearanceStrategy>;
     if ( options.contentAppearanceStrategy && options.content ) {
-      contentAppearanceStrategy = new options.contentAppearanceStrategy( options.content, interactionStateProperty, options );
+      contentAppearanceStrategy = new options.contentAppearanceStrategy(
+        options.content,
+        interactionStateProperty, options.contentAppearanceStrategyOptions
+      );
     }
 
     // Get our maxLineWidth from the appearance strategy, as it's needed for layout (and in subtypes)

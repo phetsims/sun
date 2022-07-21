@@ -11,8 +11,8 @@ import Emitter from '../../../axon/js/Emitter.js';
 import IEmitter from '../../../axon/js/IEmitter.js';
 import IProperty from '../../../axon/js/IProperty.js';
 import IReadOnlyProperty from '../../../axon/js/IReadOnlyProperty.js';
-import optionize, { combineOptions } from '../../../phet-core/js/optionize.js';
-import { Color, IColor, Node, PaintableNode, PaintColorProperty } from '../../../scenery/js/imports.js';
+import optionize from '../../../phet-core/js/optionize.js';
+import { Color, Node, PaintableNode, PaintColorProperty } from '../../../scenery/js/imports.js';
 import ISoundPlayer from '../../../tambo/js/ISoundPlayer.js';
 import pushButtonSoundPlayer from '../../../tambo/js/shared-sound-players/pushButtonSoundPlayer.js';
 import EventType from '../../../tandem/js/EventType.js';
@@ -25,33 +25,12 @@ import RadioButtonInteractionState from './RadioButtonInteractionState.js';
 import RadioButtonInteractionStateProperty from './RadioButtonInteractionStateProperty.js';
 import RectangularButton, { RectangularButtonOptions } from './RectangularButton.js';
 import TButtonAppearanceStrategy, { TButtonAppearanceStrategyOptions } from './TButtonAppearanceStrategy.js';
-import TContentAppearanceStrategy from './TContentAppearanceStrategy.js';
+import TContentAppearanceStrategy, { TContentAppearanceStrategyOptions } from './TContentAppearanceStrategy.js';
 
 type SelfOptions = {
 
-  //TODO https://github.com/phetsims/sun/issues/772 move these to FlatAppearanceStrategyOptions, consider nested options
-  // Options used by RectangularRadioButton.FlatAppearanceStrategy.
-  // If you define your own buttonAppearanceStrategy, then you may need to add your own options.
-  overFill?: IColor;
-  overStroke?: IColor;
-  overLineWidth?: number | null;
-  overButtonOpacity?: number;
-  selectedStroke?: IColor;
-  selectedLineWidth?: number;
-  selectedButtonOpacity?: number;
-  deselectedStroke?: IColor;
-  deselectedLineWidth?: number;
-  deselectedButtonOpacity?: number;
-
-  //TODO https://github.com/phetsims/sun/issues/772 move these to ContentAppearanceStrategyOptions, consider nested options
-  // Options used by RectangularRadioButton.ContentAppearanceStrategy.
-  // If you define your own contentAppearanceStrategy, then you may need to add your own options.
-  overContentOpacity?: number;
-  selectedContentOpacity?: number;
-  deselectedContentOpacity?: number;
-
-  // Sound generation - If set to null a default will be used that is based on this button's
-  // position within the radio button group.  Can be set to nullSoundPlayer to disable.
+  // Sound generation - If set to null a default will be used that is based on this button's position within the radio
+  // button group.  Can be set to nullSoundPlayer to turn off all sound generation.
   soundPlayer?: ISoundPlayer | null;
 };
 
@@ -83,25 +62,27 @@ export default class RectangularRadioButton<T> extends RectangularButton {
     const options = optionize<RectangularRadioButtonOptions, SelfOptions, RectangularButtonOptions>()( {
 
       // SelfOptions
-      overFill: null,
-      overStroke: null,
-      overLineWidth: null,
-      overButtonOpacity: 0.8,
-      selectedStroke: 'black',
-      selectedLineWidth: 1.5,
-      selectedButtonOpacity: 1,
-      deselectedStroke: new Color( 50, 50, 50 ),
-      deselectedLineWidth: 1,
-      deselectedButtonOpacity: 0.6,
-      overContentOpacity: 0.8,
-      selectedContentOpacity: 1,
-      deselectedContentOpacity: 0.6,
       soundPlayer: null,
 
       // RectangularButtonOptions
       baseColor: ColorConstants.LIGHT_BLUE,
       buttonAppearanceStrategy: RectangularRadioButton.FlatAppearanceStrategy,
+      buttonAppearanceStrategyOptions: {
+        overButtonOpacity: 0.8,
+        overStroke: new Color( 50, 50, 50 ),
+        selectedStroke: Color.BLACK,
+        selectedLineWidth: 1.5,
+        selectedButtonOpacity: 1,
+        deselectedStroke: new Color( 50, 50, 50 ),
+        deselectedLineWidth: 1,
+        deselectedButtonOpacity: 0.6
+      },
       contentAppearanceStrategy: RectangularRadioButton.ContentAppearanceStrategy,
+      contentAppearanceStrategyOptions: {
+        overContentOpacity: 0.8,
+        selectedContentOpacity: 1,
+        deselectedContentOpacity: 0.6
+      },
 
       // pdom
       tagName: 'input',
@@ -213,34 +194,37 @@ export default class RectangularRadioButton<T> extends RectangularButton {
                         baseColorProperty: IReadOnlyProperty<Color>,
                         providedOptions?: TButtonAppearanceStrategyOptions ) {
 
-      const options = combineOptions<TButtonAppearanceStrategyOptions>( {
-        overFill: baseColorProperty,
-        selectedLineWidth: 0,
-        deselectedLineWidth: 0,
-        overLineWidth: 0,
-        selectedStroke: 'black',
-        deselectedStroke: 'gray',
+      const options = optionize<TButtonAppearanceStrategyOptions>()( {
+        stroke: baseColorProperty,
+        lineWidth: 1,
         deselectedButtonOpacity: 1,
+        deselectedLineWidth: 1,
+        deselectedStroke: 'gray',
+        overButtonOpacity: 1,
+        overFill: baseColorProperty,
+        overLineWidth: 1,
+        overStroke: baseColorProperty,
         selectedButtonOpacity: 1,
-        overButtonOpacity: 1
+        selectedLineWidth: 1,
+        selectedStroke: 'black'
       }, providedOptions );
 
       // Dynamic fills and strokes
-      const overFill = new PaintColorProperty( options.overFill || baseColorProperty, {
+      const overFill = new PaintColorProperty( options.overFill, {
         luminanceFactor: options.overFill ? 0 : 0.4
       } );
       const pressedFill = new PaintColorProperty( baseColorProperty, {
         luminanceFactor: -0.4
       } );
-      const overStroke = new PaintColorProperty( options.overStroke || options.deselectedStroke || baseColorProperty, {
+      const overStroke = new PaintColorProperty( options.overStroke, {
         luminanceFactor: options.overStroke ? 0 : -0.4
       } );
 
-      this.maxLineWidth = Math.max( options.selectedLineWidth!, options.deselectedLineWidth!, options.overLineWidth! );
+      this.maxLineWidth = Math.max( options.selectedLineWidth, options.deselectedLineWidth, options.overLineWidth );
 
       // Cache colors
       buttonBackground.cachedPaints = [
-        baseColorProperty, overFill, pressedFill, overStroke, options.selectedStroke!, options.deselectedStroke!
+        baseColorProperty, overFill, pressedFill, overStroke, options.selectedStroke, options.deselectedStroke
       ];
 
       // Change colors and opacity to match interactionState
@@ -249,30 +233,30 @@ export default class RectangularRadioButton<T> extends RectangularButton {
 
           case RadioButtonInteractionState.SELECTED:
             buttonBackground.fill = baseColorProperty;
-            buttonBackground.stroke = options.selectedStroke!;
-            buttonBackground.lineWidth = options.selectedLineWidth!;
-            buttonBackground.opacity = options.selectedButtonOpacity!;
+            buttonBackground.stroke = options.selectedStroke;
+            buttonBackground.lineWidth = options.selectedLineWidth;
+            buttonBackground.opacity = options.selectedButtonOpacity;
             break;
 
           case RadioButtonInteractionState.DESELECTED:
             buttonBackground.fill = baseColorProperty;
-            buttonBackground.stroke = options.deselectedStroke!;
-            buttonBackground.lineWidth = options.deselectedLineWidth!;
-            buttonBackground.opacity = options.deselectedButtonOpacity!;
+            buttonBackground.stroke = options.deselectedStroke;
+            buttonBackground.lineWidth = options.deselectedLineWidth;
+            buttonBackground.opacity = options.deselectedButtonOpacity;
             break;
 
           case RadioButtonInteractionState.OVER:
             buttonBackground.fill = overFill;
             buttonBackground.stroke = overStroke;
-            buttonBackground.lineWidth = ( options.overLineWidth ) ? options.overLineWidth : options.deselectedLineWidth!;
-            buttonBackground.opacity = options.overButtonOpacity!;
+            buttonBackground.lineWidth = Math.max( options.overLineWidth, options.deselectedLineWidth );
+            buttonBackground.opacity = options.overButtonOpacity;
             break;
 
           case RadioButtonInteractionState.PRESSED:
             buttonBackground.fill = pressedFill;
-            buttonBackground.stroke = options.deselectedStroke!;
-            buttonBackground.lineWidth = options.deselectedLineWidth!;
-            buttonBackground.opacity = options.selectedButtonOpacity!;
+            buttonBackground.stroke = options.deselectedStroke;
+            buttonBackground.lineWidth = options.deselectedLineWidth;
+            buttonBackground.opacity = options.selectedButtonOpacity;
             break;
 
           default:
@@ -305,7 +289,15 @@ export default class RectangularRadioButton<T> extends RectangularButton {
 
     private readonly disposeContentAppearanceStrategy: () => void;
 
-    public constructor( content: Node, interactionStateProperty: IReadOnlyProperty<RadioButtonInteractionState>, options: any ) {
+    public constructor( content: Node,
+                        interactionStateProperty: IReadOnlyProperty<RadioButtonInteractionState>,
+                        providedOptions?: TContentAppearanceStrategyOptions ) {
+
+      const options = optionize<TContentAppearanceStrategyOptions>()( {
+        deselectedContentOpacity: 1,
+        overContentOpacity: 1,
+        selectedContentOpacity: 1
+      }, providedOptions );
 
       // The button is not the parent of the content, therefore it is necessary to set the opacity on the content separately
       function handleInteractionStateChanged( state: RadioButtonInteractionState ) {

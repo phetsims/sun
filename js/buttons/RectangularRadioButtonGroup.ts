@@ -123,21 +123,25 @@ export default class RectangularRadioButtonGroup<T> extends FlowBox {
       radioButtonOptions: {
         baseColor: ColorConstants.LIGHT_BLUE,
         cornerRadius: 4,
-        selectedStroke: 'black',
-        selectedLineWidth: 1.5,
-        selectedButtonOpacity: 1,
-        deselectedStroke: new Color( 50, 50, 50 ),
-        deselectedLineWidth: 1,
-        deselectedButtonOpacity: 0.6,
-        contentAppearanceStrategy: RectangularRadioButton.ContentAppearanceStrategy,
-        overButtonOpacity: 0.8,
-        overContentOpacity: 0.8,
-        selectedContentOpacity: 1,
-        deselectedContentOpacity: 0.6,
         xMargin: 5,
         yMargin: 5,
         xAlign: 'center',
-        yAlign: 'center'
+        yAlign: 'center',
+        buttonAppearanceStrategyOptions: {
+          selectedStroke: 'black',
+          selectedLineWidth: 1.5,
+          selectedButtonOpacity: 1,
+          deselectedStroke: new Color( 50, 50, 50 ),
+          deselectedLineWidth: 1,
+          deselectedButtonOpacity: 0.6,
+          overButtonOpacity: 0.8
+        },
+        contentAppearanceStrategy: RectangularRadioButton.ContentAppearanceStrategy,
+        contentAppearanceStrategyOptions: {
+          overContentOpacity: 0.8,
+          selectedContentOpacity: 1,
+          deselectedContentOpacity: 0.6
+        }
       },
 
       // FlowBoxOptions
@@ -163,7 +167,10 @@ export default class RectangularRadioButtonGroup<T> extends FlowBox {
     instanceCount++;
 
     // Maximum width of the line that strokes the button.
-    const maxLineWidth = Math.max( options.radioButtonOptions.selectedLineWidth!, options.radioButtonOptions.deselectedLineWidth! );
+    const maxLineWidth = Math.max(
+      options.radioButtonOptions.buttonAppearanceStrategyOptions!.selectedLineWidth!,
+      options.radioButtonOptions.buttonAppearanceStrategyOptions!.deselectedLineWidth!
+    );
 
     // Calculate the maximum width and height of the content, so we can make all radio buttons the same size.
     const widestContentWidth = _.maxBy( items, item => item.node.width )!.node.width;
@@ -239,8 +246,11 @@ export default class RectangularRadioButtonGroup<T> extends FlowBox {
         // Use the same content appearance strategy for the labels that is used for the button content.
         // By default, this reduces opacity of the labels for the deselected radio buttons.
         if ( options.radioButtonOptions.contentAppearanceStrategy ) {
-          labelAppearanceStrategies.push( new options.radioButtonOptions.contentAppearanceStrategy( label,
-            radioButton.interactionStateProperty, options.radioButtonOptions ) );
+          labelAppearanceStrategies.push( new options.radioButtonOptions.contentAppearanceStrategy(
+            label,
+            radioButton.interactionStateProperty,
+            options.radioButtonOptions.contentAppearanceStrategyOptions
+          ) );
         }
       }
       else {

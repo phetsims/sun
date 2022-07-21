@@ -9,10 +9,16 @@ import IReadOnlyProperty from '../../../axon/js/IReadOnlyProperty.js';
 import { Node } from '../../../scenery/js/imports.js';
 import RadioButtonInteractionState from './RadioButtonInteractionState.js';
 
+export type TContentAppearanceStrategyOptions = {
+  deselectedContentOpacity?: number;
+  overContentOpacity?: number;
+  selectedContentOpacity?: number;
+};
+
 type TContentAppearanceStrategy = {
   new( content: Node,
        interactionStateProperty: IReadOnlyProperty<RadioButtonInteractionState>,
-       options: any ): {
+       options?: TContentAppearanceStrategyOptions ): {
     dispose?: () => void;
   };
 };
