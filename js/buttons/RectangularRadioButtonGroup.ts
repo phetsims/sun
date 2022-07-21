@@ -92,7 +92,7 @@ type SelfOptions = {
 };
 
 export type RectangularRadioButtonGroupOptions = SelfOptions & StrictOmit<FlowBoxOptions,
-  'children' | 'tagName' | 'labelTagName' | 'ariaRole' | 'groupFocusHighlight'>;
+  'children' | 'tagName' | 'ariaRole' | 'groupFocusHighlight'>;
 
 export default class RectangularRadioButtonGroup<T> extends FlowBox {
 
