@@ -127,6 +127,7 @@ n |                 |                                        |             g   |
   closedSoundPlayer?: ISoundPlayer;
 
   //TODO https://github.com/phetsims/chipper/issues/1253 type Sim will introduce a dependency on joist
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   sim?: any;
 
   // Called after the dialog is shown, see https://github.com/phetsims/joist/issues/478
@@ -143,7 +144,10 @@ export type DialogOptions = SelfOptions & StrictOmit<ParentOptions, 'xMargin' | 
 export default class Dialog extends Popupable( Panel, 1 ) {
 
   private readonly closeButton: CloseButton;
-  private readonly sim: any; //TODO https://github.com/phetsims/chipper/issues/1253 type Sim will introduce a dependency on joist
+
+  //TODO https://github.com/phetsims/chipper/issues/1253 type Sim will introduce a dependency on joist
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  private readonly sim: any;
   private readonly disposeDialog: () => void;
 
   /**
@@ -151,6 +155,13 @@ export default class Dialog extends Popupable( Panel, 1 ) {
    * @param providedOptions
    */
   public constructor( content: Node, providedOptions?: DialogOptions ) {
+
+    if ( providedOptions ) {
+      console.log( `providedOptions.sim = ${providedOptions.sim}` );
+    }
+    else {
+      console.log( 'no provided options' );
+    }
 
     const options = optionize<DialogOptions, SelfOptions, ParentOptions>()( {
 
