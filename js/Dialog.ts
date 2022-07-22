@@ -156,13 +156,6 @@ export default class Dialog extends Popupable( Panel, 1 ) {
    */
   public constructor( content: Node, providedOptions?: DialogOptions ) {
 
-    if ( providedOptions ) {
-      console.log( `providedOptions.sim = ${providedOptions.sim}` );
-    }
-    else {
-      console.log( 'no provided options' );
-    }
-
     const options = optionize<DialogOptions, SelfOptions, ParentOptions>()( {
 
       // DialogOptions
