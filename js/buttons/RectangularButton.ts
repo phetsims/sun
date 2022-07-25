@@ -12,7 +12,7 @@ import IReadOnlyProperty from '../../../axon/js/IReadOnlyProperty.js';
 import Multilink from '../../../axon/js/Multilink.js';
 import Dimension2 from '../../../dot/js/Dimension2.js';
 import { Shape } from '../../../kite/js/imports.js';
-import optionize, { combineOptions } from '../../../phet-core/js/optionize.js';
+import optionize from '../../../phet-core/js/optionize.js';
 import PickRequired from '../../../phet-core/js/types/PickRequired.js';
 import { Color, IPaint, LinearGradient, Node, PaintColorProperty, Path } from '../../../scenery/js/imports.js';
 import sun from '../sun.js';
@@ -101,7 +101,6 @@ export default class RectangularButton extends ButtonNode {
       mouseAreaXShift: 0,
       mouseAreaYShift: 0,
 
-      // NOTE: any used here, because optionize is excluding undefined
       stroke: null, // null by default, which will cause a stroke to be derived from the base color
       lineWidth: 0.5,
       cornerRadius: 4,
@@ -117,7 +116,7 @@ export default class RectangularButton extends ButtonNode {
     }, providedOptions );
 
     if ( !options.content ) {
-      assert && assert( options.size instanceof Dimension2, 'button dimensions needed if no content is supplied.' );
+      assert && assert( options.size !== undefined, 'button dimensions needed if no content is supplied.' );
     }
 
     if ( options.size ) {
@@ -125,6 +124,15 @@ export default class RectangularButton extends ButtonNode {
       assert && assert( options.yMargin < options.size.height, 'yMargin cannot be larger than height' );
 
       options.buttonSize = options.size;
+    }
+
+    // If no options were explicitly passed in for the button appearance strategy, pass through the general appearance
+    // options.
+    if ( !options.buttonAppearanceStrategyOptions ) {
+      options.buttonAppearanceStrategyOptions = {
+        stroke: options.stroke,
+        lineWidth: options.lineWidth
+      };
     }
 
     // Compute the size of the button.
@@ -141,9 +149,7 @@ export default class RectangularButton extends ButtonNode {
     }
 
     // Create the rectangular part of the button.
-    const buttonBackground = new Path( createButtonShape( buttonWidth, buttonHeight, options ), {
-      lineWidth: options.lineWidth
-    } );
+    const buttonBackground = new Path( createButtonShape( buttonWidth, buttonHeight, options ) );
 
     if ( options.size && options.content ) {
       const previousContent = options.content;
@@ -225,7 +231,31 @@ class ThreeDAppearanceStrategy {
                       baseColorProperty: IReadOnlyProperty<Color>,
                       providedOptions?: TButtonAppearanceStrategyOptions ) {
 
-    // Dynamic colors
+    // If stroke and lineWidth exist in the provided options, they become the default for all strokes and line widths.
+    // If not, defaults are created.
+    const defaultStroke = ( providedOptions && providedOptions.stroke ) ?
+                          providedOptions.stroke :
+                          new PaintColorProperty( baseColorProperty, { luminanceFactor: -0.4 } );
+    const defaultLineWidth = ( providedOptions && providedOptions.lineWidth !== undefined ) ?
+                             providedOptions.lineWidth :
+                             0.5;
+
+    const options = optionize<TButtonAppearanceStrategyOptions>()( {
+      stroke: defaultStroke,
+      lineWidth: defaultLineWidth,
+      overStroke: defaultStroke,
+      overLineWidth: defaultLineWidth,
+      overFill: baseColorProperty,
+      overButtonOpacity: 1,
+      selectedStroke: defaultStroke,
+      selectedLineWidth: defaultLineWidth,
+      selectedButtonOpacity: 1,
+      deselectedStroke: defaultStroke,
+      deselectedLineWidth: defaultLineWidth,
+      deselectedButtonOpacity: 1
+    }, providedOptions );
+
+    // Create the colors that will be used to produce the gradients and shading needed for the 3D appearance.
     const baseBrighter7Property = new PaintColorProperty( baseColorProperty, { luminanceFactor: 0.7 } );
     const baseBrighter5Property = new PaintColorProperty( baseColorProperty, { luminanceFactor: 0.5 } );
     const baseBrighter2Property = new PaintColorProperty( baseColorProperty, { luminanceFactor: 0.2 } );
@@ -235,11 +265,9 @@ class ThreeDAppearanceStrategy {
     const baseTransparentProperty = new DerivedProperty( [ baseColorProperty ], color => color.withAlpha( 0 ) );
     const transparentWhite = new Color( 255, 255, 255, 0.7 );
 
-    const options = combineOptions<TButtonAppearanceStrategyOptions>( {}, providedOptions );
-
     // Adds shading to left and right edges of the button.
     const horizontalShadingPath = new Path( null, {
-      stroke: !options.stroke ? baseDarker4Property : options.stroke,
+      stroke: options.stroke,
       lineWidth: options.lineWidth,
       pickable: false
     } );
@@ -310,17 +338,29 @@ class ThreeDAppearanceStrategy {
 
           case ButtonInteractionState.IDLE:
             buttonBackground.fill = upFillVertical;
+            buttonBackground.stroke = options.deselectedStroke;
+            buttonBackground.lineWidth = options.deselectedLineWidth;
+            buttonBackground.opacity = options.deselectedButtonOpacity;
             horizontalShadingPath.fill = upFillHorizontal;
+            horizontalShadingPath.opacity = options.deselectedButtonOpacity;
             break;
 
           case ButtonInteractionState.OVER:
             buttonBackground.fill = overFillVertical;
+            buttonBackground.stroke = options.overStroke;
+            buttonBackground.lineWidth = options.overLineWidth;
+            buttonBackground.opacity = options.overButtonOpacity;
             horizontalShadingPath.fill = overFillHorizontal;
+            horizontalShadingPath.opacity = options.overButtonOpacity;
             break;
 
           case ButtonInteractionState.PRESSED:
             buttonBackground.fill = downFillVertical;
+            buttonBackground.stroke = options.selectedStroke;
+            buttonBackground.lineWidth = options.selectedLineWidth;
+            buttonBackground.opacity = options.selectedButtonOpacity;
             horizontalShadingPath.fill = overFillHorizontal;
+            horizontalShadingPath.opacity = options.selectedButtonOpacity;
             break;
 
           default:

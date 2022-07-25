@@ -211,13 +211,13 @@ export default class RectangularRadioButton<T> extends RectangularButton {
 
       // Dynamic fills and strokes
       const overFill = new PaintColorProperty( options.overFill, {
-        luminanceFactor: options.overFill ? 0 : 0.4
+        luminanceFactor: providedOptions && providedOptions.overFill ? 0 : 0.4
       } );
       const pressedFill = new PaintColorProperty( baseColorProperty, {
         luminanceFactor: -0.4
       } );
       const overStroke = new PaintColorProperty( options.overStroke, {
-        luminanceFactor: options.overStroke ? 0 : -0.4
+        luminanceFactor: providedOptions && providedOptions.overStroke ? 0 : -0.4
       } );
 
       this.maxLineWidth = Math.max( options.selectedLineWidth, options.deselectedLineWidth, options.overLineWidth );
