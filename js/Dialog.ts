@@ -12,6 +12,7 @@
 import Multilink from '../../axon/js/Multilink.js';
 import Bounds2 from '../../dot/js/Bounds2.js';
 import ScreenView from '../../joist/js/ScreenView.js';
+import Sim from '../../joist/js/Sim.js';
 import getGlobal from '../../phet-core/js/getGlobal.js';
 import optionize from '../../phet-core/js/optionize.js';
 import StrictOmit from '../../phet-core/js/types/StrictOmit.js';
@@ -126,9 +127,7 @@ n |                 |                                        |             g   |
   openedSoundPlayer?: ISoundPlayer;
   closedSoundPlayer?: ISoundPlayer;
 
-  // TODO - type Sim will introduce a dependency on joist, see https://github.com/phetsims/sun/issues/776
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  sim?: any;
+  sim?: Sim;
 
   // Called after the dialog is shown, see https://github.com/phetsims/joist/issues/478
   showCallback?: ( () => void ) | null;
@@ -144,10 +143,7 @@ export type DialogOptions = SelfOptions & StrictOmit<ParentOptions, 'xMargin' | 
 export default class Dialog extends Popupable( Panel, 1 ) {
 
   private readonly closeButton: CloseButton;
-
-  // TODO - type Sim will introduce a dependency on joist, see https://github.com/phetsims/sun/issues/776
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  private readonly sim: any;
+  private readonly sim: Sim;
   private readonly disposeDialog: () => void;
 
   /**
@@ -391,7 +387,7 @@ export default class Dialog extends Popupable( Panel, 1 ) {
       this.sim.scaleProperty,
       this.sim.screenProperty,
       this.isShowingProperty
-    ], ( bounds: Bounds2, screenBounds: Bounds2, scale: number ) => {
+    ], ( bounds: Bounds2 | null, screenBounds: Bounds2 | null, scale: number ) => {
       if ( bounds && screenBounds && scale ) {
         options.layoutStrategy( this, bounds, screenBounds, scale );
       }
