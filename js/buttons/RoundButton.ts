@@ -8,15 +8,15 @@
  */
 
 import DerivedProperty from '../../../axon/js/DerivedProperty.js';
+import IReadOnlyProperty from '../../../axon/js/IReadOnlyProperty.js';
 import { Shape } from '../../../kite/js/imports.js';
+import optionize from '../../../phet-core/js/optionize.js';
 import { Circle, Color, IPaint, Node, PaintableNode, PaintColorProperty, RadialGradient } from '../../../scenery/js/imports.js';
 import sun from '../sun.js';
 import ButtonInteractionState from './ButtonInteractionState.js';
 import ButtonModel from './ButtonModel.js';
 import ButtonNode, { ButtonNodeOptions } from './ButtonNode.js';
-import optionize, { combineOptions } from '../../../phet-core/js/optionize.js';
 import RadioButtonInteractionState from './RadioButtonInteractionState.js';
-import IReadOnlyProperty from '../../../axon/js/IReadOnlyProperty.js';
 import TButtonAppearanceStrategy, { TButtonAppearanceStrategyOptions } from './TButtonAppearanceStrategy.js';
 
 // constants
@@ -26,7 +26,7 @@ type SelfOptions = {
 
   radius?: number | null;
   lineWidth?: number;
-  stroke?: IPaint | undefined; // undefined by default, which will cause a stroke to be derived from the base color
+  stroke?: IPaint | null; // when null, a stroke will be derived from the base color
 
   // pointer area dilation
   touchAreaDilation?: number; // radius dilation for touch area
@@ -54,9 +54,7 @@ export default class RoundButton extends ButtonNode {
       // SelfOptions
       radius: ( providedOptions && providedOptions.content ) ? null : 30,
       lineWidth: 0.5, // Only meaningful if stroke is non-null
-
-      // @ts-ignore optionize is excluding undefined
-      stroke: undefined,
+      stroke: null,
       touchAreaDilation: 0,
       mouseAreaDilation: 0,
       touchAreaXShift: 0,
@@ -85,6 +83,15 @@ export default class RoundButton extends ButtonNode {
       assert && assert( options.yMargin < options.radius, 'yMargin cannot be larger than radius' );
     }
 
+    // If no options were explicitly passed in for the button appearance strategy, pass through the general appearance
+    // options.
+    if ( !options.buttonAppearanceStrategyOptions ) {
+      options.buttonAppearanceStrategyOptions = {
+        stroke: options.stroke,
+        lineWidth: options.lineWidth
+      };
+    }
+
     // Compute the radius of the button. radius will not be falsey if content is also falsey
     const buttonRadius = options.radius ||
                          Math.max( options.content!.width + options.xMargin * 2, options.content!.height + options.yMargin * 2 ) / 2;
@@ -102,9 +109,7 @@ export default class RoundButton extends ButtonNode {
     }
 
     // Create the circular part of the button.
-    const buttonBackground = new Circle( buttonRadius, {
-      lineWidth: options.lineWidth
-    } );
+    const buttonBackground = new Circle( buttonRadius );
 
     super( buttonModel, buttonBackground, interactionStateProperty, options );
 
@@ -147,6 +152,31 @@ export class ThreeDAppearanceStrategy {
                       baseColorProperty: IReadOnlyProperty<Color>,
                       providedOptions?: TButtonAppearanceStrategyOptions ) {
 
+    // If stroke and lineWidth exist in the provided options, they become the default for all strokes and line widths.
+    // If not, defaults are created.
+    const defaultStroke = ( providedOptions && providedOptions.stroke ) ?
+                          providedOptions.stroke :
+                          new PaintColorProperty( baseColorProperty, { luminanceFactor: -0.4 } );
+    const defaultLineWidth = ( providedOptions && providedOptions.lineWidth !== undefined ) ?
+                             providedOptions.lineWidth :
+                             0.3;
+
+    const options = optionize<TButtonAppearanceStrategyOptions>()( {
+      stroke: defaultStroke,
+      lineWidth: defaultLineWidth,
+      overStroke: defaultStroke,
+      overLineWidth: defaultLineWidth,
+      overButtonOpacity: 1,
+      selectedStroke: defaultStroke,
+      selectedLineWidth: defaultLineWidth,
+      selectedButtonOpacity: 1,
+      deselectedStroke: defaultStroke,
+      deselectedLineWidth: defaultLineWidth,
+      deselectedButtonOpacity: 1,
+
+      overFill: baseColorProperty
+    }, providedOptions );
+
     // Dynamic colors
     const baseBrighter8Property = new PaintColorProperty( baseColorProperty, { luminanceFactor: 0.8 } );
     const baseBrighter7Property = new PaintColorProperty( baseColorProperty, { luminanceFactor: 0.7 } );
@@ -156,8 +186,6 @@ export class ThreeDAppearanceStrategy {
     const baseDarker4Property = new PaintColorProperty( baseColorProperty, { luminanceFactor: -0.4 } );
     const baseDarker5Property = new PaintColorProperty( baseColorProperty, { luminanceFactor: -0.5 } );
     const baseTransparentProperty = new DerivedProperty( [ baseColorProperty ], color => color.withAlpha( 0 ) );
-
-    const options = combineOptions<TButtonAppearanceStrategyOptions>( {}, providedOptions );
 
     // Set up variables needed to create the various gradient fills and otherwise modify the appearance
     const buttonRadius = buttonBackground.width / 2;
@@ -208,17 +236,29 @@ export class ThreeDAppearanceStrategy {
 
         case ButtonInteractionState.IDLE:
           buttonBackground.fill = upFillHighlight;
+          buttonBackground.stroke = options.deselectedStroke;
+          buttonBackground.lineWidth = options.deselectedLineWidth;
+          buttonBackground.opacity = options.deselectedButtonOpacity;
           shadowNode.fill = upFillShadow;
+          shadowNode.opacity = options.deselectedButtonOpacity;
           break;
 
         case ButtonInteractionState.OVER:
           buttonBackground.fill = overFillHighlight;
+          buttonBackground.stroke = options.overStroke;
+          buttonBackground.lineWidth = options.overLineWidth;
+          buttonBackground.opacity = options.overButtonOpacity;
           shadowNode.fill = overFillShadow;
+          shadowNode.opacity = options.overButtonOpacity;
           break;
 
         case ButtonInteractionState.PRESSED:
           buttonBackground.fill = pressedFill;
+          buttonBackground.stroke = options.selectedStroke;
+          buttonBackground.lineWidth = options.selectedLineWidth;
+          buttonBackground.opacity = options.selectedButtonOpacity;
           shadowNode.fill = overFillShadow;
+          shadowNode.opacity = options.selectedButtonOpacity;
           break;
 
         default:

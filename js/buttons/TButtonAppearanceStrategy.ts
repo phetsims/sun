@@ -11,8 +11,12 @@ import ButtonInteractionState from './ButtonInteractionState.js';
 import RadioButtonInteractionState from './RadioButtonInteractionState.js';
 
 export type TButtonAppearanceStrategyOptions = {
+
+  // These two act as defaults for the other strokes and line widths when provided, as sort of "convenience options".
   stroke?: IPaint;
   lineWidth?: number;
+
+  // Fill, stroke, line width, and opacity values for the various button states.
   overFill?: IPaint;
   overStroke?: IPaint;
   overLineWidth?: number;
