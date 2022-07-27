@@ -34,8 +34,9 @@ simLauncher.launch( () => {
 
   const sim = new Sim( sunStrings.sun.title, screens, {
     credits: {
-      leadDesign: 'PhET'
-    }
+      leadDesign: 'PhET Interactive Simulations'
+    },
+    phetioDesigned: true
   } );
 
   sim.start();
