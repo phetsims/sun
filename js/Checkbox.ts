@@ -21,7 +21,7 @@ import Tandem from '../../tandem/js/Tandem.js';
 import optionize from '../../phet-core/js/optionize.js';
 import sun from './sun.js';
 import ISoundPlayer from '../../tambo/js/ISoundPlayer.js';
-import Utterance, { IAlertable } from '../../utterance-queue/js/Utterance.js';
+import Utterance, { TAlertable } from '../../utterance-queue/js/Utterance.js';
 import Bounds2 from '../../dot/js/Bounds2.js';
 import { Shape } from '../../kite/js/imports.js';
 import StrictOmit from '../../phet-core/js/types/StrictOmit.js';
@@ -50,8 +50,8 @@ type SelfOptions = {
   uncheckedSoundPlayer?: ISoundPlayer;
 
   // Utterances to be spoken with a screen reader after the checkbox is pressed. Also used for the voicingContextResponse.
-  checkedContextResponse?: IAlertable;
-  uncheckedContextResponse?: IAlertable;
+  checkedContextResponse?: TAlertable;
+  uncheckedContextResponse?: TAlertable;
 
   // whether a PhET-iO link to the checkbox's Property is created
   phetioLinkProperty?: boolean;
