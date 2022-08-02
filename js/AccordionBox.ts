@@ -15,7 +15,7 @@ import { Shape } from '../../kite/js/imports.js';
 import InstanceRegistry from '../../phet-core/js/documentation/InstanceRegistry.js';
 import optionize, { combineOptions } from '../../phet-core/js/optionize.js';
 import StrictOmit from '../../phet-core/js/types/StrictOmit.js';
-import { FocusHighlightFromNode, IColor, InteractiveHighlighting, Node, NodeOptions, Path, PDOMBehaviorFunction, PDOMPeer, Rectangle, RectangleOptions, Text } from '../../scenery/js/imports.js';
+import { FocusHighlightFromNode, TColor, InteractiveHighlighting, Node, NodeOptions, Path, PDOMBehaviorFunction, PDOMPeer, Rectangle, RectangleOptions, Text } from '../../scenery/js/imports.js';
 import accordionBoxClosedSoundPlayer from '../../tambo/js/shared-sound-players/accordionBoxClosedSoundPlayer.js';
 import accordionBoxOpenedSoundPlayer from '../../tambo/js/shared-sound-players/accordionBoxOpenedSoundPlayer.js';
 import SoundClipPlayer from '../../tambo/js/sound-generators/SoundClipPlayer.js';
@@ -34,8 +34,8 @@ type SelfOptions = {
   lineWidth?: number;
   cornerRadius?: number;
 
-  stroke?: IColor;
-  fill?: IColor;
+  stroke?: TColor;
+  fill?: TColor;
   minWidth?: number;
 
   titleAlignX?: 'center' | 'left' | 'right';

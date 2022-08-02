@@ -24,7 +24,7 @@ import { Shape } from '../../kite/js/imports.js';
 import InstanceRegistry from '../../phet-core/js/documentation/InstanceRegistry.js';
 import merge from '../../phet-core/js/merge.js';
 import optionize, { combineOptions } from '../../phet-core/js/optionize.js';
-import { IColor, Node, NodeOptions, Rectangle } from '../../scenery/js/imports.js';
+import { TColor, Node, NodeOptions, Rectangle } from '../../scenery/js/imports.js';
 import ISoundPlayer from '../../tambo/js/ISoundPlayer.js';
 import pushButtonSoundPlayer from '../../tambo/js/shared-sound-players/pushButtonSoundPlayer.js';
 import Tandem from '../../tandem/js/Tandem.js';
@@ -42,8 +42,8 @@ type SelfOptions = {
 
   // container
   orientation?: 'horizontal' | 'vertical';
-  fill?: IColor; // background color of the carousel
-  stroke?: IColor; // color used to stroke the border of the carousel
+  fill?: TColor; // background color of the carousel
+  stroke?: TColor; // color used to stroke the border of the carousel
   lineWidth?: number; // width of the border around the carousel
   cornerRadius?: number; // radius applied to the carousel and next/previous buttons
   defaultPageNumber?: number; // page that is initially visible
@@ -54,12 +54,12 @@ type SelfOptions = {
   margin?: number; // margin between items and the edges of the carousel
 
   // next/previous buttons
-  buttonColor?: IColor; // base color for the buttons
-  buttonStroke?: IColor | 'derived'; // stroke around the buttons, 'derived' derives a stroke from buttonColor
-  buttonDisabledColor?: IColor; // same default as from ButtonNode.js
+  buttonColor?: TColor; // base color for the buttons
+  buttonStroke?: TColor | 'derived'; // stroke around the buttons, 'derived' derives a stroke from buttonColor
+  buttonDisabledColor?: TColor; // same default as from ButtonNode.js
   buttonLineWidth?: number; // lineWidth of borders on buttons
   arrowSize?: Dimension2; // size of the arrow, in 'up' directions
-  arrowStroke?: IColor; // color used for the arrow icons
+  arrowStroke?: TColor; // color used for the arrow icons
   arrowLineWidth?: number; // line width used to stroke the arrow icons
   hideDisabledButtons?: boolean; // whether to hide buttons when they are disabled
   buttonSoundPlayer?: ISoundPlayer; // sound played when carousel button is pressed
@@ -72,7 +72,7 @@ type SelfOptions = {
 
   // item separators
   separatorsVisible?: boolean; // whether to put separators between items
-  separatorColor?: IColor; // color for separators
+  separatorColor?: TColor; // color for separators
   separatorLineWidth?: number; // lineWidth for separators
 
   // animation, scrolling between pages

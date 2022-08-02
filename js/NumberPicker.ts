@@ -17,7 +17,7 @@ import Range from '../../dot/js/Range.js';
 import Utils from '../../dot/js/Utils.js';
 import { Shape } from '../../kite/js/imports.js';
 import InstanceRegistry from '../../phet-core/js/documentation/InstanceRegistry.js';
-import { Color, FireListener, FireListenerOptions, FocusHighlightPath, Font, IColor, LinearGradient, Node, NodeOptions, PaintColorProperty, Path, Rectangle, SceneryConstants, SceneryEvent, Text } from '../../scenery/js/imports.js';
+import { Color, FireListener, FireListenerOptions, FocusHighlightPath, Font, TColor, LinearGradient, Node, NodeOptions, PaintColorProperty, Path, Rectangle, SceneryConstants, SceneryEvent, Text } from '../../scenery/js/imports.js';
 import AccessibleNumberSpinner, { AccessibleNumberSpinnerOptions } from '../../sun/js/accessibility/AccessibleNumberSpinner.js';
 import generalBoundaryBoopSoundPlayer from '../../tambo/js/shared-sound-players/generalBoundaryBoopSoundPlayer.js';
 import generalSoftClickSoundPlayer from '../../tambo/js/shared-sound-players/generalSoftClickSoundPlayer.js';
@@ -37,9 +37,9 @@ type ButtonState = ( typeof ButtonStateValues )[number];
 type Align = 'center' | 'left' | 'right';
 
 type SelfOptions = {
-  color?: IColor; // color of arrows and top/bottom gradient on pointer over
-  pressedColor?: IColor; // color of arrows and top/bottom gradient when pressed, derived if not provided
-  backgroundColor?: IColor; // color of the background when pointer is not over it
+  color?: TColor; // color of arrows and top/bottom gradient on pointer over
+  pressedColor?: TColor; // color of arrows and top/bottom gradient when pressed, derived if not provided
+  backgroundColor?: TColor; // color of the background when pointer is not over it
   cornerRadius?: number;
   xMargin?: number;
   yMargin?: number;
@@ -55,11 +55,11 @@ type SelfOptions = {
   touchAreaYDilation?: number;
   mouseAreaXDilation?: number;
   mouseAreaYDilation?: number;
-  backgroundStroke?: IColor;
+  backgroundStroke?: TColor;
   backgroundLineWidth?: number;
   arrowHeight?: number;
   arrowYSpacing?: number;
-  arrowStroke?: IColor;
+  arrowStroke?: TColor;
   arrowLineWidth?: number;
   valueMaxWidth?: number | null; // If non-null, it will cap the value's maxWidth to this value
 
@@ -101,19 +101,19 @@ type CreateIconOptions = {
 };
 
 type ArrowColors = {
-  up: IColor;
-  over: IColor;
-  down: IColor;
-  out: IColor;
-  disabled: IColor;
+  up: TColor;
+  over: TColor;
+  down: TColor;
+  out: TColor;
+  disabled: TColor;
 };
 
 type BackgroundColors = {
-  up: IColor;
+  up: TColor;
   over: LinearGradient;
   down: LinearGradient;
   out: LinearGradient;
-  disabled: IColor;
+  disabled: TColor;
 };
 
 export default class NumberPicker extends AccessibleNumberSpinner( Node, 0 ) {
@@ -598,7 +598,7 @@ class NumberPickerInputListener extends FireListener {
 /**
  * Creates a vertical gradient.
  */
-function createVerticalGradient( topColor: IColor, centerColor: IColor, bottomColor: IColor, height: number ): LinearGradient {
+function createVerticalGradient( topColor: TColor, centerColor: TColor, bottomColor: TColor, height: number ): LinearGradient {
   return new LinearGradient( 0, 0, 0, height )
     .addColorStop( 0, topColor )
     .addColorStop( 0.5, centerColor )

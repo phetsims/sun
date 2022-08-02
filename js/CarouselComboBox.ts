@@ -26,7 +26,7 @@ import Multilink from '../../axon/js/Multilink.js';
 import Dimension2 from '../../dot/js/Dimension2.js';
 import dotRandom from '../../dot/js/dotRandom.js';
 import optionize, { combineOptions } from '../../phet-core/js/optionize.js';
-import { AlignBox, AlignGroup, Color, Display, HBox, IColor, Node, NodeOptions, PressListener, Rectangle, SceneryEvent, VBox, WidthSizable, WidthSizableOptions } from '../../scenery/js/imports.js';
+import { AlignBox, AlignGroup, Color, Display, HBox, TColor, Node, NodeOptions, PressListener, Rectangle, SceneryEvent, VBox, WidthSizable, WidthSizableOptions } from '../../scenery/js/imports.js';
 import Tandem from '../../tandem/js/Tandem.js';
 import Carousel, { CarouselOptions } from './Carousel.js';
 import ComboBoxButton, { ComboBoxButtonOptions } from './ComboBoxButton.js';
@@ -227,8 +227,8 @@ type CarouselItemNodeSelfOptions = {
   align?: 'left' | 'right' | 'center'; // alignment of node on background
   xMargin?: number; // x margin for backgrounds on the items in the carousel
   yMargin?: number; // y margin for backgrounds on the items in the carousel
-  overColor?: IColor; // background color of the item that the pointer is over
-  selectedColor?: IColor; // background color of the selected item
+  overColor?: TColor; // background color of the item that the pointer is over
+  selectedColor?: TColor; // background color of the selected item
 };
 
 type CarouselItemNodeOptions = CarouselItemNodeSelfOptions & StrictOmit<NodeOptions, 'children'>;

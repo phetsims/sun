@@ -14,7 +14,7 @@ import InstanceRegistry from '../../phet-core/js/documentation/InstanceRegistry.
 import optionize, { combineOptions } from '../../phet-core/js/optionize.js';
 // @ts-ignore FIX DEPENDENCY ON SCENERY-PHET
 import NumberDisplay, { NumberDisplayOptions } from '../../scenery-phet/js/NumberDisplay.js';
-import { IColor, Node, NodeOptions, SceneryConstants } from '../../scenery/js/imports.js';
+import { TColor, Node, NodeOptions, SceneryConstants } from '../../scenery/js/imports.js';
 import Tandem from '../../tandem/js/Tandem.js';
 import AccessibleNumberSpinner, { AccessibleNumberSpinnerOptions } from './accessibility/AccessibleNumberSpinner.js';
 import ArrowButton, { ArrowButtonOptions } from './buttons/ArrowButton.js';
@@ -35,8 +35,8 @@ type SelfOptions = {
 
   // By default, arrows are scaled to fit dimensions of value background. This is an additional scale factor.
   arrowsScale?: number | null;
-  arrowButtonFill?: IColor;
-  arrowButtonStroke?: IColor;
+  arrowButtonFill?: TColor;
+  arrowButtonStroke?: TColor;
   arrowButtonLineWidth?: number;
 
   // Function called when the increment button is pressed. Defaults to adding options.deltaValue.

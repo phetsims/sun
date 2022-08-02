@@ -24,7 +24,7 @@ import dotRandom from '../../dot/js/dotRandom.js';
 import Vector2 from '../../dot/js/Vector2.js';
 import InstanceRegistry from '../../phet-core/js/documentation/InstanceRegistry.js';
 import optionize from '../../phet-core/js/optionize.js';
-import { Display, Focus, FocusManager, IColor, IInputListener, IPaint, Node, NodeOptions, PDOMBehaviorFunction, PDOMPeer, WidthSizable, WidthSizableOptions } from '../../scenery/js/imports.js';
+import { Display, Focus, FocusManager, TColor, IInputListener, IPaint, Node, NodeOptions, PDOMBehaviorFunction, PDOMPeer, WidthSizable, WidthSizableOptions } from '../../scenery/js/imports.js';
 import ISoundPlayer from '../../tambo/js/ISoundPlayer.js';
 import generalCloseSoundPlayer from '../../tambo/js/shared-sound-players/generalCloseSoundPlayer.js';
 import generalOpenSoundPlayer from '../../tambo/js/shared-sound-players/generalOpenSoundPlayer.js';
@@ -103,7 +103,7 @@ type SelfOptions = {
   yMargin?: number;
 
   // button
-  buttonFill?: IColor;
+  buttonFill?: TColor;
   buttonStroke?: IPaint;
   buttonLineWidth?: number;
   buttonTouchAreaXDilation?: number;

@@ -15,7 +15,7 @@ import Bounds2 from '../../../dot/js/Bounds2.js';
 import Dimension2 from '../../../dot/js/Dimension2.js';
 import optionize, { combineOptions } from '../../../phet-core/js/optionize.js';
 import StrictOmit from '../../../phet-core/js/types/StrictOmit.js';
-import { AlignBox, AlignBoxXAlign, AlignBoxYAlign, Brightness, Color, Contrast, Grayscale, IColor, IPaint, isHeightSizable, isWidthSizable, Node, NodeOptions, PaintableNode, PaintColorProperty, Path, PressListener, PressListenerOptions, SceneryConstants, Sizable, SizableOptions, Voicing, VoicingOptions } from '../../../scenery/js/imports.js';
+import { AlignBox, AlignBoxXAlign, AlignBoxYAlign, Brightness, Color, Contrast, Grayscale, TColor, IPaint, isHeightSizable, isWidthSizable, Node, NodeOptions, PaintableNode, PaintColorProperty, Path, PressListener, PressListenerOptions, SceneryConstants, Sizable, SizableOptions, Voicing, VoicingOptions } from '../../../scenery/js/imports.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import ColorConstants from '../ColorConstants.js';
 import sun from '../sun.js';
@@ -329,16 +329,16 @@ export default class ButtonNode extends Sizable( Voicing( Node, 0 ) ) {
   /**
    * Sets the base color, which is the main background fill color used for the button.
    */
-  public setBaseColor( baseColor: IColor ): void { this._settableBaseColorProperty.paint = baseColor; }
+  public setBaseColor( baseColor: TColor ): void { this._settableBaseColorProperty.paint = baseColor; }
 
-  public set baseColor( baseColor: IColor ) { this.setBaseColor( baseColor ); }
+  public set baseColor( baseColor: TColor ) { this.setBaseColor( baseColor ); }
 
-  public get baseColor(): IColor { return this.getBaseColor(); }
+  public get baseColor(): TColor { return this.getBaseColor(); }
 
   /**
    * Gets the base color for this button.
    */
-  public getBaseColor(): IColor { return this._settableBaseColorProperty.paint as IColor; }
+  public getBaseColor(): TColor { return this._settableBaseColorProperty.paint as TColor; }
 
   /**
    * Manually click the button, as it would be clicked in response to alternative input. Recommended only for

@@ -9,7 +9,7 @@
 import IProperty from '../../axon/js/IProperty.js';
 import InstanceRegistry from '../../phet-core/js/documentation/InstanceRegistry.js';
 import optionize from '../../phet-core/js/optionize.js';
-import { Circle, FireListener, IColor, Node, NodeOptions, Rectangle, SceneryConstants, Voicing, VoicingOptions } from '../../scenery/js/imports.js';
+import { Circle, FireListener, TColor, Node, NodeOptions, Rectangle, SceneryConstants, Voicing, VoicingOptions } from '../../scenery/js/imports.js';
 import ISoundPlayer from '../../tambo/js/ISoundPlayer.js';
 import multiSelectionSoundPlayerFactory from '../../tambo/js/multiSelectionSoundPlayerFactory.js';
 import Tandem from '../../tandem/js/Tandem.js';
@@ -18,22 +18,22 @@ import sun from './sun.js';
 type SelfOptions = {
 
   // color used to fill the center of the button when it's selected
-  centerColor?: IColor;
+  centerColor?: TColor;
 
   // radius of the button
   radius?: number;
 
   // color used to fill the button when it's selected
-  selectedColor?: IColor;
+  selectedColor?: TColor;
 
   // color used to fill the button when it's deselected
-  deselectedColor?: IColor;
+  deselectedColor?: TColor;
 
   // horizontal space between the button and the labelNode
   xSpacing?: number;
 
   // color used to stroke the outer edge of the button
-  stroke?: IColor;
+  stroke?: TColor;
 
   // sound generator, usually overridden when creating a group of these
   soundPlayer?: ISoundPlayer;

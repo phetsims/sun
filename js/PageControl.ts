@@ -11,7 +11,7 @@ import IProperty from '../../axon/js/IProperty.js';
 import StrictOmit from '../../phet-core/js/types/StrictOmit.js';
 import { Shape } from '../../kite/js/imports.js';
 import optionize from '../../phet-core/js/optionize.js';
-import { Circle, CircleOptions, IColor, Node, NodeOptions, PressListener, PressListenerEvent } from '../../scenery/js/imports.js';
+import { Circle, CircleOptions, TColor, Node, NodeOptions, PressListener, PressListenerEvent } from '../../scenery/js/imports.js';
 import Tandem from '../../tandem/js/Tandem.js';
 import sun from './sun.js';
 
@@ -27,12 +27,12 @@ type SelfOptions = {
   dotMouseAreaDilation?: number; // {number} how much to dilate the mouseArea beyond the radius of a dot
 
   // dots representing the current page
-  currentPageFill?: IColor;
-  currentPageStroke?: IColor;
+  currentPageFill?: TColor;
+  currentPageStroke?: TColor;
 
   // dots representing all pages except the current page
-  pageFill?: IColor;
-  pageStroke?: IColor;
+  pageFill?: TColor;
+  pageStroke?: TColor;
 };
 
 export type PageControlOptions = SelfOptions & StrictOmit<NodeOptions, 'children'>;

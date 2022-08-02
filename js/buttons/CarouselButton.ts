@@ -12,7 +12,7 @@ import Dimension2 from '../../../dot/js/Dimension2.js';
 import Matrix3 from '../../../dot/js/Matrix3.js';
 import { Shape } from '../../../kite/js/imports.js';
 import optionize from '../../../phet-core/js/optionize.js';
-import { IColor, Path } from '../../../scenery/js/imports.js';
+import { TColor, Path } from '../../../scenery/js/imports.js';
 import sun from '../sun.js';
 import ButtonNode from './ButtonNode.js';
 import RectangularPushButton, { RectangularPushButtonOptions } from './RectangularPushButton.js';
@@ -33,7 +33,7 @@ type SelfOptions = {
   // arrow
   arrowDirection?: ArrowDirection; // direction that the arrow points
   arrowSize?: Dimension2; // size of the arrow, in 'up' directions
-  arrowStroke?: IColor; // {color used for the arrow icons
+  arrowStroke?: TColor; // {color used for the arrow icons
   arrowLineWidth?: number; // line width used to stroke the arrow icons
   arrowLineCap?: LineCap;
 
