@@ -43,7 +43,7 @@ type SelfOptions = {
 };
 export type PopupableOptions = SelfOptions & PickOptional<NodeOptions, 'tandem'>;
 
-const Popupable = <SuperType extends Constructor>( type: SuperType, optionsArgPosition: number ) => {
+const Popupable = <SuperType extends Constructor>( type: SuperType, optionsArgPosition: number ) => { // eslint-disable-line @typescript-eslint/explicit-module-boundary-types
   assert && assert( _.includes( inheritance( type ), Node ), 'Only Node subtypes should mix Popupable' );
 
   return class extends type {

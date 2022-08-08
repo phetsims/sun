@@ -40,7 +40,7 @@ type AccessibleSliderOptions = SelfOptions & AccessibleValueHandlerOptions;
  * @param Type
  * @param optionsArgPosition - zero-indexed number that the options argument is provided at
  */
-const AccessibleSlider = <SuperType extends Constructor>( Type: SuperType, optionsArgPosition: number ) => {
+const AccessibleSlider = <SuperType extends Constructor>( Type: SuperType, optionsArgPosition: number ) => { // eslint-disable-line @typescript-eslint/explicit-module-boundary-types
 
   assert && assert( _.includes( inheritance( Type ), Node ), 'Only Node subtypes should compose Voicing' );
 

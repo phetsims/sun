@@ -185,7 +185,7 @@ export type AccessibleValueHandlerOptions = SelfOptions & VoicingOptions; // do 
  * @param Type
  * @param optionsArgPosition - zero-indexed number that the options argument is provided at
  */
-const AccessibleValueHandler = <SuperType extends Constructor>( Type: SuperType, optionsArgPosition: number ) => {
+const AccessibleValueHandler = <SuperType extends Constructor>( Type: SuperType, optionsArgPosition: number ) => { // eslint-disable-line @typescript-eslint/explicit-module-boundary-types
   assert && assert( _.includes( inheritance( Type ), Node ), 'Only Node subtypes should compose AccessibleValueHandler' );
 
   return class AccessibleValueHandler extends Voicing( Type, optionsArgPosition ) {
