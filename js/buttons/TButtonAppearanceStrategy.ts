@@ -5,8 +5,8 @@
  * @author Michael Kauzmann (PhET Interactive Simulations)
  */
 
-import IReadOnlyProperty from '../../../axon/js/IReadOnlyProperty.js';
 import { Color, TPaint, Path } from '../../../scenery/js/imports.js';
+import TReadOnlyProperty from '../../../axon/js/TReadOnlyProperty.js';
 import ButtonInteractionState from './ButtonInteractionState.js';
 import RadioButtonInteractionState from './RadioButtonInteractionState.js';
 
@@ -31,8 +31,8 @@ export type TButtonAppearanceStrategyOptions = {
 
 type TButtonAppearanceStrategy = {
   new( content: Path,
-       interactionStateProperty: IReadOnlyProperty<ButtonInteractionState | RadioButtonInteractionState>,
-       baseColorProperty: IReadOnlyProperty<Color>,
+       interactionStateProperty: TReadOnlyProperty<ButtonInteractionState | RadioButtonInteractionState>,
+       baseColorProperty: TReadOnlyProperty<Color>,
        options?: TButtonAppearanceStrategyOptions ): {
     dispose?: () => void;
     maxLineWidth: number;

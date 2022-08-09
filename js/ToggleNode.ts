@@ -13,7 +13,7 @@ import optionize from '../../phet-core/js/optionize.js';
 import { Node, NodeOptions } from '../../scenery/js/imports.js';
 import Tandem from '../../tandem/js/Tandem.js';
 import sun from './sun.js';
-import IReadOnlyProperty from '../../axon/js/IReadOnlyProperty.js';
+import TReadOnlyProperty from '../../axon/js/TReadOnlyProperty.js';
 
 export type ToggleNodeElement<T> = {
   value: T;  // a value
@@ -32,7 +32,7 @@ export default class ToggleNode<T> extends Node {
 
   private readonly disposeToggleNode: () => void;
 
-  public constructor( valueProperty: IReadOnlyProperty<T>, elements: ToggleNodeElement<T>[], providedOptions?: ToggleNodeOptions ) {
+  public constructor( valueProperty: TReadOnlyProperty<T>, elements: ToggleNodeElement<T>[], providedOptions?: ToggleNodeOptions ) {
 
     assert && assert( Array.isArray( elements ), 'elements should be an array' );
     if ( assert ) {

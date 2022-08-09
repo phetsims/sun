@@ -9,7 +9,7 @@
  */
 
 import IProperty from '../../axon/js/IProperty.js';
-import IReadOnlyProperty from '../../axon/js/IReadOnlyProperty.js';
+import TReadOnlyProperty from '../../axon/js/TReadOnlyProperty.js';
 import Property from '../../axon/js/Property.js';
 import Dimension2 from '../../dot/js/Dimension2.js';
 import LinearFunction from '../../dot/js/LinearFunction.js';
@@ -37,7 +37,7 @@ type SelfOptions = {
   constrainValue?: ( n: number ) => number;
 
   // Defaults to a constant range
-  enabledRangeProperty?: IReadOnlyProperty<Range>;
+  enabledRangeProperty?: TReadOnlyProperty<Range>;
 
   // This is used to generate sounds when clicking in the track.  If not provided, the default sound generator
   // will be created. If set to null, the slider will generate no sound.

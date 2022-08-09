@@ -10,7 +10,7 @@
 import Emitter from '../../../axon/js/Emitter.js';
 import IEmitter from '../../../axon/js/IEmitter.js';
 import IProperty from '../../../axon/js/IProperty.js';
-import IReadOnlyProperty from '../../../axon/js/IReadOnlyProperty.js';
+import TReadOnlyProperty from '../../../axon/js/TReadOnlyProperty.js';
 import optionize from '../../../phet-core/js/optionize.js';
 import { Color, Node, PaintableNode, PaintColorProperty } from '../../../scenery/js/imports.js';
 import ISoundPlayer from '../../../tambo/js/ISoundPlayer.js';
@@ -190,8 +190,8 @@ export default class RectangularRadioButton<T> extends RectangularButton {
      * buttonBackground is the Node for the button's background, sans content
      */
     public constructor( buttonBackground: PaintableNode,
-                        interactionStateProperty: IReadOnlyProperty<RadioButtonInteractionState>,
-                        baseColorProperty: IReadOnlyProperty<Color>,
+                        interactionStateProperty: TReadOnlyProperty<RadioButtonInteractionState>,
+                        baseColorProperty: TReadOnlyProperty<Color>,
                         providedOptions?: TButtonAppearanceStrategyOptions ) {
 
       const options = optionize<TButtonAppearanceStrategyOptions>()( {
@@ -290,7 +290,7 @@ export default class RectangularRadioButton<T> extends RectangularButton {
     private readonly disposeContentAppearanceStrategy: () => void;
 
     public constructor( content: Node,
-                        interactionStateProperty: IReadOnlyProperty<RadioButtonInteractionState>,
+                        interactionStateProperty: TReadOnlyProperty<RadioButtonInteractionState>,
                         providedOptions?: TContentAppearanceStrategyOptions ) {
 
       const options = optionize<TContentAppearanceStrategyOptions>()( {

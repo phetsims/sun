@@ -8,7 +8,7 @@
  */
 
 import DerivedProperty from '../../../axon/js/DerivedProperty.js';
-import IReadOnlyProperty from '../../../axon/js/IReadOnlyProperty.js';
+import TReadOnlyProperty from '../../../axon/js/TReadOnlyProperty.js';
 import { Shape } from '../../../kite/js/imports.js';
 import optionize from '../../../phet-core/js/optionize.js';
 import { Circle, Color, TPaint, Node, PaintableNode, PaintColorProperty, RadialGradient } from '../../../scenery/js/imports.js';
@@ -46,7 +46,7 @@ export default class RoundButton extends ButtonNode {
   public static ThreeDAppearanceStrategy: TButtonAppearanceStrategy;
 
   protected constructor( buttonModel: ButtonModel,
-                         interactionStateProperty: IReadOnlyProperty<ButtonInteractionState>,
+                         interactionStateProperty: TReadOnlyProperty<ButtonInteractionState>,
                          providedOptions?: RoundButtonOptions ) {
 
     const options = optionize<RoundButtonOptions, SelfOptions, ButtonNodeOptions>()( {
@@ -148,8 +148,8 @@ export class ThreeDAppearanceStrategy {
    * @param [providedOptions]
    */
   public constructor( buttonBackground: PaintableNode,
-                      interactionStateProperty: IReadOnlyProperty<ButtonInteractionState | RadioButtonInteractionState>,
-                      baseColorProperty: IReadOnlyProperty<Color>,
+                      interactionStateProperty: TReadOnlyProperty<ButtonInteractionState | RadioButtonInteractionState>,
+                      baseColorProperty: TReadOnlyProperty<Color>,
                       providedOptions?: TButtonAppearanceStrategyOptions ) {
 
     // If stroke and lineWidth exist in the provided options, they become the default for all strokes and line widths.

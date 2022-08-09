@@ -31,7 +31,7 @@ import UtteranceQueue from '../../../utterance-queue/js/UtteranceQueue.js';
 import IProperty from '../../../axon/js/IProperty.js';
 import Constructor from '../../../phet-core/js/types/Constructor.js';
 import IntentionalAny from '../../../phet-core/js/types/IntentionalAny.js';
-import IReadOnlyProperty from '../../../axon/js/IReadOnlyProperty.js';
+import TReadOnlyProperty from '../../../axon/js/TReadOnlyProperty.js';
 
 // constants
 const DEFAULT_TAG_NAME = 'input';
@@ -59,7 +59,7 @@ type VoicingOnEndResponseOptions = {
 
 type SelfOptions = {
   valueProperty: IProperty<number>;
-  enabledRangeProperty: IReadOnlyProperty<Range>;
+  enabledRangeProperty: TReadOnlyProperty<Range>;
 
   // called when input begins from user interaction
   startInput?: ( event: SceneryEvent ) => void;
@@ -170,7 +170,7 @@ type SelfOptions = {
    * List the dependencies this Node's PDOM descriptions have. This should not include the valueProperty, but
    * should list any Properties whose change should trigger a description update for this Node.
    */
-  a11yDependencies?: IReadOnlyProperty<IntentionalAny>[];
+  a11yDependencies?: TReadOnlyProperty<IntentionalAny>[];
 
   // Only provide tagName to AccessibleValueHandler to remove it from the PDOM, otherwise, AccessibleValueHandler
   // sets its own tagName.
@@ -190,7 +190,7 @@ const AccessibleValueHandler = <SuperType extends Constructor>( Type: SuperType,
 
   return class AccessibleValueHandler extends Voicing( Type, optionsArgPosition ) {
     private readonly _valueProperty: IProperty<number>;
-    private _enabledRangeProperty: IReadOnlyProperty<Range>;
+    private _enabledRangeProperty: TReadOnlyProperty<Range>;
     private readonly _startInput: SceneryListenerFunction;
     private readonly _onInput: SceneryListenerFunction;
     private readonly _endInput: SceneryListenerFunction;
@@ -405,7 +405,7 @@ const AccessibleValueHandler = <SuperType extends Constructor>( Type: SuperType,
      * changes. Use this method to set the dependency Properties for this value handler. This will blow away the
      * previous list (like Node.children).
      */
-    public setA11yDependencies( dependencies: IReadOnlyProperty<IntentionalAny>[] ): void {
+    public setA11yDependencies( dependencies: TReadOnlyProperty<IntentionalAny>[] ): void {
       assert && assert( Array.isArray( dependencies ) );
       assert && assert( !dependencies.includes( this._valueProperty ),
         'The value Property is already a dependency, and does not need to be added to this list' );

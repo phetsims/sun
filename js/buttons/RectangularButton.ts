@@ -8,7 +8,7 @@
  */
 
 import DerivedProperty from '../../../axon/js/DerivedProperty.js';
-import IReadOnlyProperty from '../../../axon/js/IReadOnlyProperty.js';
+import TReadOnlyProperty from '../../../axon/js/TReadOnlyProperty.js';
 import Multilink from '../../../axon/js/Multilink.js';
 import Dimension2 from '../../../dot/js/Dimension2.js';
 import { Shape } from '../../../kite/js/imports.js';
@@ -79,7 +79,7 @@ export default class RectangularButton extends ButtonNode {
    * @param interactionStateProperty - a Property that is used to drive the visual appearance of the button
    * @param providedOptions
    */
-  protected constructor( buttonModel: ButtonModel, interactionStateProperty: IReadOnlyProperty<ButtonInteractionState>,
+  protected constructor( buttonModel: ButtonModel, interactionStateProperty: TReadOnlyProperty<ButtonInteractionState>,
                          providedOptions?: RectangularButtonOptions ) {
 
     const options = optionize<RectangularButtonOptions, SelfOptions, ButtonNodeOptions>()( {
@@ -227,8 +227,8 @@ class ThreeDAppearanceStrategy {
    * @param [providedOptions]
    */
   public constructor( buttonBackground: Path,
-                      interactionStateProperty: IReadOnlyProperty<ButtonInteractionState | RadioButtonInteractionState>,
-                      baseColorProperty: IReadOnlyProperty<Color>,
+                      interactionStateProperty: TReadOnlyProperty<ButtonInteractionState | RadioButtonInteractionState>,
+                      baseColorProperty: TReadOnlyProperty<Color>,
                       providedOptions?: TButtonAppearanceStrategyOptions ) {
 
     // If stroke and lineWidth exist in the provided options, they become the default for all strokes and line widths.

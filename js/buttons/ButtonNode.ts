@@ -9,7 +9,7 @@
  */
 
 import DerivedProperty from '../../../axon/js/DerivedProperty.js';
-import IReadOnlyProperty from '../../../axon/js/IReadOnlyProperty.js';
+import TReadOnlyProperty from '../../../axon/js/TReadOnlyProperty.js';
 import Multilink from '../../../axon/js/Multilink.js';
 import Bounds2 from '../../../dot/js/Bounds2.js';
 import Dimension2 from '../../../dot/js/Dimension2.js';
@@ -85,7 +85,7 @@ export default class ButtonNode extends Sizable( Voicing( Node, 0 ) ) {
   protected buttonModel: ButtonModel;
   private readonly _settableBaseColorProperty: PaintColorProperty;
   private readonly _disabledColorProperty: PaintColorProperty;
-  private readonly baseColorProperty: IReadOnlyProperty<Color>;
+  private readonly baseColorProperty: TReadOnlyProperty<Color>;
   private readonly _pressListener: PressListener;
   private readonly disposeButtonNode: () => void;
   private readonly content: Node | null;
@@ -97,9 +97,9 @@ export default class ButtonNode extends Sizable( Voicing( Node, 0 ) ) {
   protected readonly maxLineWidth: number;
 
   // The size we're taking up for layout
-  public readonly layoutWidthProperty: IReadOnlyProperty<number>;
-  public readonly layoutHeightProperty: IReadOnlyProperty<number>;
-  public readonly layoutSizeProperty: IReadOnlyProperty<Dimension2>;
+  public readonly layoutWidthProperty: TReadOnlyProperty<number>;
+  public readonly layoutHeightProperty: TReadOnlyProperty<number>;
+  public readonly layoutSizeProperty: TReadOnlyProperty<Dimension2>;
 
   public static FlatAppearanceStrategy: TButtonAppearanceStrategy;
 
@@ -111,7 +111,7 @@ export default class ButtonNode extends Sizable( Voicing( Node, 0 ) ) {
    */
   protected constructor( buttonModel: ButtonModel,
                          buttonBackground: Path,
-                         interactionStateProperty: IReadOnlyProperty<ButtonInteractionState>,
+                         interactionStateProperty: TReadOnlyProperty<ButtonInteractionState>,
                          providedOptions?: ButtonNodeOptions ) {
 
     const options = optionize<ButtonNodeOptions, StrictOmit<SelfOptions, 'listenerOptions'>, ParentOptions>()( {
@@ -374,8 +374,8 @@ export class FlatAppearanceStrategy {
    * @param [providedOptions]
    */
   public constructor( buttonBackground: PaintableNode,
-                      interactionStateProperty: IReadOnlyProperty<ButtonInteractionState>,
-                      baseColorProperty: IReadOnlyProperty<Color>,
+                      interactionStateProperty: TReadOnlyProperty<ButtonInteractionState>,
+                      baseColorProperty: TReadOnlyProperty<Color>,
                       providedOptions?: TButtonAppearanceStrategyOptions ) {
 
     // dynamic colors

@@ -23,7 +23,7 @@ import generalBoundaryBoopSoundPlayer from '../../tambo/js/shared-sound-players/
 import generalSoftClickSoundPlayer from '../../tambo/js/shared-sound-players/generalSoftClickSoundPlayer.js';
 import PhetioObject from '../../tandem/js/PhetioObject.js';
 import Tandem from '../../tandem/js/Tandem.js';
-import IReadOnlyProperty from '../../axon/js/IReadOnlyProperty.js';
+import TReadOnlyProperty from '../../axon/js/TReadOnlyProperty.js';
 import ISoundPlayer from '../../tambo/js/ISoundPlayer.js';
 import StrictOmit from '../../phet-core/js/types/StrictOmit.js';
 import optionize, { combineOptions, EmptySelfOptions } from '../../phet-core/js/optionize.js';
@@ -131,7 +131,7 @@ export default class NumberPicker extends AccessibleNumberSpinner( Node, 0 ) {
    * the bounds of the labels.
    * @param [providedOptions]
    */
-  public constructor( valueProperty: Property<number>, rangeProperty: IReadOnlyProperty<Range>,
+  public constructor( valueProperty: Property<number>, rangeProperty: TReadOnlyProperty<Range>,
                       providedOptions?: NumberPickerOptions ) {
 
     const options = optionize<NumberPickerOptions, StrictOmit<SelfOptions, 'pressedColor' | 'formatValue'>, ParentOptions>()( {
@@ -245,11 +245,11 @@ export default class NumberPicker extends AccessibleNumberSpinner( Node, 0 ) {
     } );
 
     // must be disposed
-    const incrementEnabledProperty: IReadOnlyProperty<boolean> =
+    const incrementEnabledProperty: TReadOnlyProperty<boolean> =
       new DerivedProperty( [ valueProperty, rangeProperty ], options.incrementEnabledFunction );
 
     // must be disposed
-    const decrementEnabledProperty: IReadOnlyProperty<boolean> =
+    const decrementEnabledProperty: TReadOnlyProperty<boolean> =
       new DerivedProperty( [ valueProperty, rangeProperty ], options.decrementEnabledFunction );
 
     //------------------------------------------------------------

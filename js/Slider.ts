@@ -10,7 +10,7 @@
  */
 
 import StrictOmit from '../../phet-core/js/types/StrictOmit.js';
-import IReadOnlyProperty from '../../axon/js/IReadOnlyProperty.js';
+import TReadOnlyProperty from '../../axon/js/TReadOnlyProperty.js';
 import Property from '../../axon/js/Property.js';
 import ReadOnlyProperty from '../../axon/js/ReadOnlyProperty.js';
 import Dimension2 from '../../dot/js/Dimension2.js';
@@ -124,7 +124,7 @@ type TickOptions = Pick<SelfOptions, 'tickLabelSpacing' | 'majorTickLength' | 'm
 
 export default class Slider extends AccessibleSlider( Node, 0 ) {
 
-  public readonly enabledRangeProperty: IReadOnlyProperty<Range>;
+  public readonly enabledRangeProperty: TReadOnlyProperty<Range>;
 
   // public so that clients can access Properties of these DragListeners that tell us about its state
   // See https://github.com/phetsims/sun/issues/680
