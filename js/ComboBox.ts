@@ -25,7 +25,7 @@ import Vector2 from '../../dot/js/Vector2.js';
 import InstanceRegistry from '../../phet-core/js/documentation/InstanceRegistry.js';
 import optionize from '../../phet-core/js/optionize.js';
 import { Display, Focus, FocusManager, TColor, IInputListener, TPaint, Node, NodeOptions, PDOMBehaviorFunction, PDOMPeer, WidthSizable, WidthSizableOptions } from '../../scenery/js/imports.js';
-import ISoundPlayer from '../../tambo/js/ISoundPlayer.js';
+import TSoundPlayer from '../../tambo/js/TSoundPlayer.js';
 import generalCloseSoundPlayer from '../../tambo/js/shared-sound-players/generalCloseSoundPlayer.js';
 import generalOpenSoundPlayer from '../../tambo/js/shared-sound-players/generalOpenSoundPlayer.js';
 import EventType from '../../tandem/js/EventType.js';
@@ -50,7 +50,7 @@ export type ComboBoxItem<T> = {
 
   // Sound that will be played when this item is selected.  If set to `null` a default sound will be used that is based
   // on this item's position in the combo box list.  A value of `nullSoundPlayer` can be used to disable.
-  soundPlayer?: ISoundPlayer | null;
+  soundPlayer?: TSoundPlayer | null;
 
   // phet-io - the tandem name for this item's associated Node in the combo box
   tandemName?: string | null;
@@ -118,8 +118,8 @@ type SelfOptions = {
 
   // Sound generators for when combo box is opened and for when it is closed with no change (closing
   // *with* a change is handled elsewhere).
-  openedSoundPlayer?: ISoundPlayer;
-  closedNoChangeSoundPlayer?: ISoundPlayer;
+  openedSoundPlayer?: TSoundPlayer;
+  closedNoChangeSoundPlayer?: TSoundPlayer;
 
   // Voicing
   // ComboBox does not mix Voicing, so it creates custom options to pass to composed Voicing Nodes.

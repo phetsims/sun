@@ -13,7 +13,7 @@ import IProperty from '../../../axon/js/IProperty.js';
 import TReadOnlyProperty from '../../../axon/js/TReadOnlyProperty.js';
 import optionize from '../../../phet-core/js/optionize.js';
 import { Color, Node, PaintableNode, PaintColorProperty } from '../../../scenery/js/imports.js';
-import ISoundPlayer from '../../../tambo/js/ISoundPlayer.js';
+import TSoundPlayer from '../../../tambo/js/TSoundPlayer.js';
 import pushButtonSoundPlayer from '../../../tambo/js/shared-sound-players/pushButtonSoundPlayer.js';
 import EventType from '../../../tandem/js/EventType.js';
 import PhetioObject from '../../../tandem/js/PhetioObject.js';
@@ -31,7 +31,7 @@ type SelfOptions = {
 
   // Sound generation - If set to null a default will be used that is based on this button's position within the radio
   // button group.  Can be set to nullSoundPlayer to turn off all sound generation.
-  soundPlayer?: ISoundPlayer | null;
+  soundPlayer?: TSoundPlayer | null;
 };
 
 export type RectangularRadioButtonOptions = SelfOptions & RectangularButtonOptions;

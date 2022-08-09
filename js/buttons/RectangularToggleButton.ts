@@ -11,7 +11,7 @@
 import optionize from '../../../phet-core/js/optionize.js';
 import toggleOffSoundPlayer from '../../../tambo/js/shared-sound-players/toggleOffSoundPlayer.js';
 import toggleOnSoundPlayer from '../../../tambo/js/shared-sound-players/toggleOnSoundPlayer.js';
-import ISoundPlayer from '../../../tambo/js/ISoundPlayer.js';
+import TSoundPlayer from '../../../tambo/js/TSoundPlayer.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import sun from '../sun.js';
 import RectangularButton, { RectangularButtonOptions } from './RectangularButton.js';
@@ -22,8 +22,8 @@ import Property from '../../../axon/js/Property.js';
 type SelfOptions = {
 
   // sounds to be played on toggle transitions
-  valueOffSoundPlayer?: ISoundPlayer;
-  valueOnSoundPlayer?: ISoundPlayer;
+  valueOffSoundPlayer?: TSoundPlayer;
+  valueOnSoundPlayer?: TSoundPlayer;
 };
 
 export type RectangularToggleButtonOptions = SelfOptions & RectangularButtonOptions;
@@ -42,7 +42,7 @@ export default class RectangularToggleButton<T> extends RectangularButton {
 
     const options = optionize<RectangularToggleButtonOptions, SelfOptions, RectangularButtonOptions>()( {
 
-      // {ISoundPlayer} - sounds to be played on toggle transitions
+      // {TSoundPlayer} - sounds to be played on toggle transitions
       valueOffSoundPlayer: toggleOffSoundPlayer,
       valueOnSoundPlayer: toggleOnSoundPlayer,
 

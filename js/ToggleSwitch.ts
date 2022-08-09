@@ -25,7 +25,7 @@ import EventType from '../../tandem/js/EventType.js';
 import PhetioObject from '../../tandem/js/PhetioObject.js';
 import Tandem from '../../tandem/js/Tandem.js';
 import sun from './sun.js';
-import ISoundPlayer from '../../tambo/js/ISoundPlayer.js';
+import TSoundPlayer from '../../tambo/js/TSoundPlayer.js';
 import switchToLeftSoundPlayer from '../../tambo/js/shared-sound-players/switchToLeftSoundPlayer.js';
 import switchToRightSoundPlayer from '../../tambo/js/shared-sound-players/switchToRightSoundPlayer.js';
 import Property from '../../axon/js/Property.js';
@@ -64,8 +64,8 @@ type SelfOptions = {
   trackStroke?: TPaint;
 
   // sound
-  switchToLeftSoundPlayer?: ISoundPlayer;
-  switchToRightSoundPlayer?: ISoundPlayer;
+  switchToLeftSoundPlayer?: TSoundPlayer;
+  switchToRightSoundPlayer?: TSoundPlayer;
 };
 type ParentOptions = VoicingOptions & NodeOptions;
 export type ToggleSwitchOptions = SelfOptions & ParentOptions;
@@ -73,8 +73,8 @@ export type ToggleSwitchOptions = SelfOptions & ParentOptions;
 export default class ToggleSwitch<T> extends Voicing( Node, 0 ) {
 
   private readonly disposeToggleSwitch: () => void;
-  public readonly switchToLeftSoundPlayer: ISoundPlayer;
-  public readonly switchToRightSoundPlayer: ISoundPlayer;
+  public readonly switchToLeftSoundPlayer: TSoundPlayer;
+  public readonly switchToRightSoundPlayer: TSoundPlayer;
 
   /**
    * @param property

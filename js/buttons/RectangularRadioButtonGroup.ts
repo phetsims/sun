@@ -17,7 +17,7 @@ import ColorConstants from '../ColorConstants.js';
 import sun from '../sun.js';
 import RectangularRadioButton, { RectangularRadioButtonOptions } from './RectangularRadioButton.js';
 import { VoicingResponse } from '../../../utterance-queue/js/ResponsePacket.js';
-import ISoundPlayer from '../../../tambo/js/ISoundPlayer.js';
+import TSoundPlayer from '../../../tambo/js/TSoundPlayer.js';
 import TContentAppearanceStrategy from './TContentAppearanceStrategy.js';
 import Property from '../../../axon/js/Property.js';
 import optionize, { combineOptions } from '../../../phet-core/js/optionize.js';
@@ -63,7 +63,7 @@ type SelfOptions = {
 
   // Sound generation for the radio buttons.
   // null means to use the defaults. Otherwise, there must be one for each button.
-  soundPlayers?: ISoundPlayer[] | null;
+  soundPlayers?: TSoundPlayer[] | null;
 
   // Determines where the optional label appears, relative to the button
   labelAlign?: RectangularRadioButtonLabelAlign;

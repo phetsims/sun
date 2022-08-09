@@ -10,7 +10,7 @@
 
 import Property from '../../../axon/js/Property.js';
 import optionize from '../../../phet-core/js/optionize.js';
-import ISoundPlayer from '../../../tambo/js/ISoundPlayer.js';
+import TSoundPlayer from '../../../tambo/js/TSoundPlayer.js';
 import toggleOffSoundPlayer from '../../../tambo/js/shared-sound-players/toggleOffSoundPlayer.js';
 import toggleOnSoundPlayer from '../../../tambo/js/shared-sound-players/toggleOnSoundPlayer.js';
 import Tandem from '../../../tandem/js/Tandem.js';
@@ -22,8 +22,8 @@ import ToggleButtonModel from './ToggleButtonModel.js';
 type SelfOptions = {
 
   // sounds to be played on toggle transitions
-  valueOffSoundPlayer?: ISoundPlayer;
-  valueOnSoundPlayer?: ISoundPlayer;
+  valueOffSoundPlayer?: TSoundPlayer;
+  valueOnSoundPlayer?: TSoundPlayer;
 };
 
 export type RoundToggleButtonOptions = SelfOptions & RoundButtonOptions;

@@ -9,7 +9,7 @@
 import InstanceRegistry from '../../../phet-core/js/documentation/InstanceRegistry.js';
 import optionize from '../../../phet-core/js/optionize.js';
 import pushButtonSoundPlayer from '../../../tambo/js/shared-sound-players/pushButtonSoundPlayer.js';
-import ISoundPlayer from '../../../tambo/js/ISoundPlayer.js';
+import TSoundPlayer from '../../../tambo/js/TSoundPlayer.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import sun from '../sun.js';
 import PushButtonInteractionStateProperty from './PushButtonInteractionStateProperty.js';
@@ -17,7 +17,7 @@ import PushButtonModel, { PushButtonListener, PushButtonModelOptions } from './P
 import RectangularButton, { RectangularButtonOptions } from './RectangularButton.js';
 
 type SelfOptions = {
-  soundPlayer?: ISoundPlayer;
+  soundPlayer?: TSoundPlayer;
 };
 
 //TODO https://github.com/phetsims/sun/issues/749 Let's not create PushButtonModel with these options?

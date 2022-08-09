@@ -19,7 +19,7 @@ import StrictOmit from '../../phet-core/js/types/StrictOmit.js';
 import StringUtils from '../../phetcommon/js/util/StringUtils.js';
 import CloseButton from '../../scenery-phet/js/buttons/CloseButton.js';
 import { AlignBox, FocusManager, FullScreen, HBox, TColor, KeyboardUtils, Node, PDOMPeer, PDOMUtils, SceneryEvent, VBox } from '../../scenery/js/imports.js';
-import ISoundPlayer from '../../tambo/js/ISoundPlayer.js';
+import TSoundPlayer from '../../tambo/js/TSoundPlayer.js';
 import generalCloseSoundPlayer from '../../tambo/js/shared-sound-players/generalCloseSoundPlayer.js';
 import generalOpenSoundPlayer from '../../tambo/js/shared-sound-players/generalOpenSoundPlayer.js';
 import nullSoundPlayer from '../../tambo/js/shared-sound-players/nullSoundPlayer.js';
@@ -124,8 +124,8 @@ n |                 |                                        |             g   |
   closeButtonLastInPDOM?: boolean;
 
   // sound generation
-  openedSoundPlayer?: ISoundPlayer;
-  closedSoundPlayer?: ISoundPlayer;
+  openedSoundPlayer?: TSoundPlayer;
+  closedSoundPlayer?: TSoundPlayer;
 
   sim?: Sim;
 

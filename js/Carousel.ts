@@ -25,7 +25,7 @@ import InstanceRegistry from '../../phet-core/js/documentation/InstanceRegistry.
 import merge from '../../phet-core/js/merge.js';
 import optionize, { combineOptions } from '../../phet-core/js/optionize.js';
 import { TColor, Node, NodeOptions, Rectangle } from '../../scenery/js/imports.js';
-import ISoundPlayer from '../../tambo/js/ISoundPlayer.js';
+import TSoundPlayer from '../../tambo/js/TSoundPlayer.js';
 import pushButtonSoundPlayer from '../../tambo/js/shared-sound-players/pushButtonSoundPlayer.js';
 import Tandem from '../../tandem/js/Tandem.js';
 import Animation from '../../twixt/js/Animation.js';
@@ -62,7 +62,7 @@ type SelfOptions = {
   arrowStroke?: TColor; // color used for the arrow icons
   arrowLineWidth?: number; // line width used to stroke the arrow icons
   hideDisabledButtons?: boolean; // whether to hide buttons when they are disabled
-  buttonSoundPlayer?: ISoundPlayer; // sound played when carousel button is pressed
+  buttonSoundPlayer?: TSoundPlayer; // sound played when carousel button is pressed
 
   // for dilating pointer areas of next/previous buttons such that they do not overlap with Carousel content
   buttonTouchAreaXDilation?: number; // horizontal touchArea dilation

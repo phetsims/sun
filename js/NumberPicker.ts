@@ -24,7 +24,7 @@ import generalSoftClickSoundPlayer from '../../tambo/js/shared-sound-players/gen
 import PhetioObject from '../../tandem/js/PhetioObject.js';
 import Tandem from '../../tandem/js/Tandem.js';
 import TReadOnlyProperty from '../../axon/js/TReadOnlyProperty.js';
-import ISoundPlayer from '../../tambo/js/ISoundPlayer.js';
+import TSoundPlayer from '../../tambo/js/TSoundPlayer.js';
 import StrictOmit from '../../phet-core/js/types/StrictOmit.js';
 import optionize, { combineOptions, EmptySelfOptions } from '../../phet-core/js/optionize.js';
 import sun from './sun.js';
@@ -84,8 +84,8 @@ type SelfOptions = {
 
   // Sound generators for when the NumberPicker's value changes, and when it hits range extremities.
   // Use nullSoundPlayer to disable.
-  valueChangedSoundPlayer?: ISoundPlayer;
-  boundarySoundPlayer?: ISoundPlayer;
+  valueChangedSoundPlayer?: TSoundPlayer;
+  boundarySoundPlayer?: TSoundPlayer;
 };
 
 type ParentOptions = AccessibleNumberSpinnerOptions & NodeOptions;

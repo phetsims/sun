@@ -169,7 +169,7 @@ export default class AccordionBox extends Node {
       contentXSpacing: 5, // horizontal space between content and button, ignored if showTitleWhenExpanded is true
       contentYSpacing: 8, // vertical space between content and title+button, ignored if showTitleWhenExpanded is false
 
-      // {ISoundPlayer} - sound generators for expand and collapse
+      // {TSoundPlayer} - sound generators for expand and collapse
       expandedSoundPlayer: accordionBoxOpenedSoundPlayer,
       collapsedSoundPlayer: accordionBoxClosedSoundPlayer,
 

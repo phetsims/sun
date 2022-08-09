@@ -15,10 +15,10 @@ import PushButtonInteractionStateProperty from './PushButtonInteractionStateProp
 import PushButtonModel, { PushButtonListener, PushButtonModelOptions } from './PushButtonModel.js';
 import RoundButton, { RoundButtonOptions } from './RoundButton.js';
 import optionize from '../../../phet-core/js/optionize.js';
-import ISoundPlayer from '../../../tambo/js/ISoundPlayer.js';
+import TSoundPlayer from '../../../tambo/js/TSoundPlayer.js';
 
 type SelfOptions = {
-  soundPlayer?: ISoundPlayer;
+  soundPlayer?: TSoundPlayer;
 };
 
 //TODO https://github.com/phetsims/sun/issues/749 Let's not create PushButtonModel with these options?

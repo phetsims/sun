@@ -17,7 +17,7 @@ import Tandem from '../../tandem/js/Tandem.js';
 import ComboBoxListItemNode, { ComboBoxListItemNodeOptions } from './ComboBoxListItemNode.js';
 import Panel, { PanelOptions } from './Panel.js';
 import sun from './sun.js';
-import ISoundPlayer from '../../tambo/js/ISoundPlayer.js';
+import TSoundPlayer from '../../tambo/js/TSoundPlayer.js';
 import IProperty from '../../axon/js/IProperty.js';
 import { ComboBoxItem } from './ComboBox.js';
 
@@ -31,8 +31,8 @@ type SelfOptions = {
 
   // Sound generators for when combo box is opened and when it is closed with no change. Closing *with*
   // a change is covered by individual combo box items.
-  openedSoundPlayer?: ISoundPlayer;
-  closedNoChangeSoundPlayer?: ISoundPlayer;
+  openedSoundPlayer?: TSoundPlayer;
+  closedNoChangeSoundPlayer?: TSoundPlayer;
 };
 
 export type ComboBoxListBoxOptions = SelfOptions & PanelOptions;

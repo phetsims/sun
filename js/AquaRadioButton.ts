@@ -10,7 +10,7 @@ import IProperty from '../../axon/js/IProperty.js';
 import InstanceRegistry from '../../phet-core/js/documentation/InstanceRegistry.js';
 import optionize from '../../phet-core/js/optionize.js';
 import { Circle, FireListener, TColor, Node, NodeOptions, Rectangle, SceneryConstants, Voicing, VoicingOptions } from '../../scenery/js/imports.js';
-import ISoundPlayer from '../../tambo/js/ISoundPlayer.js';
+import TSoundPlayer from '../../tambo/js/TSoundPlayer.js';
 import multiSelectionSoundPlayerFactory from '../../tambo/js/multiSelectionSoundPlayerFactory.js';
 import Tandem from '../../tandem/js/Tandem.js';
 import sun from './sun.js';
@@ -36,7 +36,7 @@ type SelfOptions = {
   stroke?: TColor;
 
   // sound generator, usually overridden when creating a group of these
-  soundPlayer?: ISoundPlayer;
+  soundPlayer?: TSoundPlayer;
 
   // Each button in a group of radio buttons must have the same 'name' attribute to be considered a 'group' by the
   // browser. Otherwise, arrow keys will navigate through all inputs of type radio in the document.

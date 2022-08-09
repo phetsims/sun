@@ -20,7 +20,7 @@ import PhetioObject from '../../tandem/js/PhetioObject.js';
 import Tandem from '../../tandem/js/Tandem.js';
 import optionize from '../../phet-core/js/optionize.js';
 import sun from './sun.js';
-import ISoundPlayer from '../../tambo/js/ISoundPlayer.js';
+import TSoundPlayer from '../../tambo/js/TSoundPlayer.js';
 import Utterance, { TAlertable } from '../../utterance-queue/js/Utterance.js';
 import Bounds2 from '../../dot/js/Bounds2.js';
 import { Shape } from '../../kite/js/imports.js';
@@ -46,8 +46,8 @@ type SelfOptions = {
   mouseAreaYDilation?: number;
 
   // sounds
-  checkedSoundPlayer?: ISoundPlayer;
-  uncheckedSoundPlayer?: ISoundPlayer;
+  checkedSoundPlayer?: TSoundPlayer;
+  uncheckedSoundPlayer?: TSoundPlayer;
 
   // Utterances to be spoken with a screen reader after the checkbox is pressed. Also used for the voicingContextResponse.
   checkedContextResponse?: TAlertable;

@@ -10,7 +10,7 @@
 
 import IProperty from '../../../axon/js/IProperty.js';
 import optionize from '../../../phet-core/js/optionize.js';
-import ISoundPlayer from '../../../tambo/js/ISoundPlayer.js';
+import TSoundPlayer from '../../../tambo/js/TSoundPlayer.js';
 import pushButtonSoundPlayer from '../../../tambo/js/shared-sound-players/pushButtonSoundPlayer.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import sun from '../sun.js';
@@ -19,7 +19,7 @@ import StickyToggleButtonInteractionStateProperty from './StickyToggleButtonInte
 import StickyToggleButtonModel from './StickyToggleButtonModel.js';
 
 type SelfOptions = {
-  soundPlayer?: ISoundPlayer;
+  soundPlayer?: TSoundPlayer;
 };
 
 export type RoundStickyToggleButtonOptions = SelfOptions & RoundButtonOptions;
