@@ -8,7 +8,7 @@
 
 import PhetioAction from '../../tandem/js/PhetioAction.js';
 import optionize, { combineOptions } from '../../phet-core/js/optionize.js';
-import { IInputListener, TPaint, KeyboardUtils, SceneryEvent, SpeakingOptions, VBox, VoicingNode } from '../../scenery/js/imports.js';
+import { TInputListener, TPaint, KeyboardUtils, SceneryEvent, SpeakingOptions, VBox, VoicingNode } from '../../scenery/js/imports.js';
 import multiSelectionSoundPlayerFactory from '../../tambo/js/multiSelectionSoundPlayerFactory.js';
 import generalCloseSoundPlayer from '../../tambo/js/shared-sound-players/generalCloseSoundPlayer.js';
 import generalOpenSoundPlayer from '../../tambo/js/shared-sound-players/generalOpenSoundPlayer.js';
@@ -118,7 +118,7 @@ export default class ComboBoxListBox<T> extends Panel {
 
     //TODO sun#462 replace fireEmitter and selectionListener with a standard scenery listener
     // Handles selection from the list box.
-    const selectionListener: IInputListener = {
+    const selectionListener: TInputListener = {
 
       up( event ) {
         fireAction.execute( event );

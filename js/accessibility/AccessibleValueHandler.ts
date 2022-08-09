@@ -22,7 +22,7 @@ import Range from '../../../dot/js/Range.js';
 import assertHasProperties from '../../../phet-core/js/assertHasProperties.js';
 import inheritance from '../../../phet-core/js/inheritance.js';
 import Orientation from '../../../phet-core/js/Orientation.js';
-import { IInputListener, KeyboardUtils, Node, NodeOptions, SceneryEvent, SceneryListenerFunction, Voicing, VoicingOptions } from '../../../scenery/js/imports.js';
+import { TInputListener, KeyboardUtils, Node, NodeOptions, SceneryEvent, SceneryListenerFunction, Voicing, VoicingOptions } from '../../../scenery/js/imports.js';
 import Utterance from '../../../utterance-queue/js/Utterance.js';
 import sun from '../sun.js';
 import optionize, { OptionizeDefaults } from '../../../phet-core/js/optionize.js';
@@ -521,7 +521,7 @@ const AccessibleValueHandler = <SuperType extends Constructor>( Type: SuperType,
      * Return the input listener that could be attached to mixed in types of AccessibleValueHandler to support
      * interaction.
      */
-    public getAccessibleValueHandlerInputListener(): IInputListener {
+    public getAccessibleValueHandlerInputListener(): TInputListener {
       return {
         keydown: this.handleKeyDown.bind( this ),
         keyup: this.handleKeyUp.bind( this ),

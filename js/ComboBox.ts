@@ -24,7 +24,7 @@ import dotRandom from '../../dot/js/dotRandom.js';
 import Vector2 from '../../dot/js/Vector2.js';
 import InstanceRegistry from '../../phet-core/js/documentation/InstanceRegistry.js';
 import optionize from '../../phet-core/js/optionize.js';
-import { Display, Focus, FocusManager, TColor, IInputListener, TPaint, Node, NodeOptions, PDOMBehaviorFunction, PDOMPeer, WidthSizable, WidthSizableOptions } from '../../scenery/js/imports.js';
+import { Display, Focus, FocusManager, TColor, TInputListener, TPaint, Node, NodeOptions, PDOMBehaviorFunction, PDOMPeer, WidthSizable, WidthSizableOptions } from '../../scenery/js/imports.js';
 import TSoundPlayer from '../../tambo/js/TSoundPlayer.js';
 import generalCloseSoundPlayer from '../../tambo/js/shared-sound-players/generalCloseSoundPlayer.js';
 import generalOpenSoundPlayer from '../../tambo/js/shared-sound-players/generalOpenSoundPlayer.js';
@@ -153,7 +153,7 @@ export default class ComboBox<T> extends WidthSizable( Node ) {
   private display: Display | null;
 
   // Clicking anywhere other than the button or list box will hide the list box.
-  private readonly clickToDismissListener: IInputListener;
+  private readonly clickToDismissListener: TInputListener;
 
   // (PDOM) when focus leaves the ComboBoxListBox, it should be closed. This could happen from keyboard
   // or from other screen reader controls (like VoiceOver gestures)

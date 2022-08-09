@@ -30,7 +30,7 @@ import inheritance from '../../../phet-core/js/inheritance.js';
 import IntentionalAny from '../../../phet-core/js/types/IntentionalAny.js';
 import optionize from '../../../phet-core/js/optionize.js';
 import Orientation from '../../../phet-core/js/Orientation.js';
-import { IInputListener, KeyboardUtils, Node, SceneryEvent } from '../../../scenery/js/imports.js';
+import { TInputListener, KeyboardUtils, Node, SceneryEvent } from '../../../scenery/js/imports.js';
 import sun from '../sun.js';
 import sunStrings from '../sunStrings.js';
 import AccessibleValueHandler, { AccessibleValueHandlerOptions } from './AccessibleValueHandler.js';
@@ -103,7 +103,7 @@ const AccessibleNumberSpinner = <SuperType extends Constructor>( Type: SuperType
       let runningTimerCallbackEvent: Event | null = null; // {Event|null}
 
       // handle all accessible event input
-      const accessibleInputListener: IInputListener = {
+      const accessibleInputListener: TInputListener = {
         keydown: ( event: SceneryEvent<KeyboardEvent> ) => {
           if ( ( this as unknown as Node ).enabledProperty.get() ) {
 

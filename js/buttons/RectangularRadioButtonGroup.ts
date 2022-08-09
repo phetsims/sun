@@ -10,7 +10,7 @@
 
 import { Shape } from '../../../kite/js/imports.js';
 import InstanceRegistry from '../../../phet-core/js/documentation/InstanceRegistry.js';
-import { Color, FlowBox, FlowBoxOptions, FocusHighlightPath, IInputListener, Node, PDOMPeer, Rectangle, SceneryConstants } from '../../../scenery/js/imports.js';
+import { Color, FlowBox, FlowBoxOptions, FocusHighlightPath, TInputListener, Node, PDOMPeer, Rectangle, SceneryConstants } from '../../../scenery/js/imports.js';
 import multiSelectionSoundPlayerFactory from '../../../tambo/js/multiSelectionSoundPlayerFactory.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import ColorConstants from '../ColorConstants.js';
@@ -303,7 +303,7 @@ export default class RectangularRadioButtonGroup<T> extends FlowBox {
     } );
 
     // pan and zoom - Signify that key input is reserved, and we should not pan when user presses arrow keys.
-    const intentListener: IInputListener = { keydown: event => event.pointer.reserveForKeyboardDrag() };
+    const intentListener: TInputListener = { keydown: event => event.pointer.reserveForKeyboardDrag() };
     this.addInputListener( intentListener );
 
     // must be done after this instance is instrumented
