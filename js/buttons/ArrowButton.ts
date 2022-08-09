@@ -11,7 +11,7 @@
 import { Shape } from '../../../kite/js/imports.js';
 import StrictOmit from '../../../phet-core/js/types/StrictOmit.js';
 import optionize from '../../../phet-core/js/optionize.js';
-import { IPaint, Path } from '../../../scenery/js/imports.js';
+import { TPaint, Path } from '../../../scenery/js/imports.js';
 import sun from '../sun.js';
 import RectangularPushButton, { RectangularPushButtonOptions } from './RectangularPushButton.js';
 
@@ -27,8 +27,8 @@ type SelfOptions = {
   // width of base
   arrowWidth?: number;
 
-  arrowFill?: IPaint;
-  arrowStroke?: IPaint;
+  arrowFill?: TPaint;
+  arrowStroke?: TPaint;
   arrowLineWidth?: number;
 
   // each arrow will have the same shape and styling

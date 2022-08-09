@@ -8,7 +8,7 @@
 
 import IProperty from '../../axon/js/IProperty.js';
 import PhetFont from '../../scenery-phet/js/PhetFont.js';
-import { FireListener, IPaint, Node, NodeOptions, Path, Rectangle, SceneryEvent, Text, Voicing, VoicingOptions } from '../../scenery/js/imports.js';
+import { FireListener, TPaint, Node, NodeOptions, Path, Rectangle, SceneryEvent, Text, Voicing, VoicingOptions } from '../../scenery/js/imports.js';
 import checkSolidShape from '../../sherpa/js/fontawesome-5/checkSolidShape.js';
 import EventType from '../../tandem/js/EventType.js';
 import Tandem from '../../tandem/js/Tandem.js';
@@ -45,7 +45,7 @@ type SelfOptions = {
   // the case if the MenuItem opens a popup (for example).
   handleFocusCallback?: ( ( event: SceneryEvent ) => void ) | null;
 
-  textFill?: IPaint;
+  textFill?: TPaint;
 };
 type ParentOptions = VoicingOptions & NodeOptions;
 export type MenuItemOptions = SelfOptions & ParentOptions;

@@ -12,7 +12,7 @@ import { Shape } from '../../kite/js/imports.js';
 import StrictOmit from '../../phet-core/js/types/StrictOmit.js';
 import optionize from '../../phet-core/js/optionize.js';
 import StringUtils from '../../phetcommon/js/util/StringUtils.js';
-import { IndexedNodeIO, IPaint, Node, NodeOptions, Rectangle, Voicing, VoicingOptions } from '../../scenery/js/imports.js';
+import { IndexedNodeIO, TPaint, Node, NodeOptions, Rectangle, Voicing, VoicingOptions } from '../../scenery/js/imports.js';
 import Tandem from '../../tandem/js/Tandem.js';
 import sun from './sun.js';
 import SunConstants from './SunConstants.js';
@@ -25,7 +25,7 @@ type SelfOptions = {
   xMargin?: number;
 
   // highlight behind the item
-  highlightFill?: IPaint;
+  highlightFill?: TPaint;
 
   // corner radius for the highlight
   highlightCornerRadius?: number;

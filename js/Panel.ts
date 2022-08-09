@@ -10,7 +10,7 @@
  */
 
 import { optionize3, OptionizeDefaults } from '../../phet-core/js/optionize.js';
-import { IPaint, isHeightSizable, isWidthSizable, LayoutConstraint, Node, NodeOptions, Rectangle, Sizable, SizableOptions } from '../../scenery/js/imports.js';
+import { TPaint, isHeightSizable, isWidthSizable, LayoutConstraint, Node, NodeOptions, Rectangle, Sizable, SizableOptions } from '../../scenery/js/imports.js';
 import Tandem from '../../tandem/js/Tandem.js';
 import sun from './sun.js';
 
@@ -20,8 +20,8 @@ const ALIGN_VALUES = [ 'left', 'center', 'right' ] as const;
 export type PanelAlign = typeof ALIGN_VALUES[number];
 
 type SelfOptions = {
-  fill?: IPaint;
-  stroke?: IPaint;
+  fill?: TPaint;
+  stroke?: TPaint;
 
   // width of the background border
   lineWidth?: number;
@@ -117,18 +117,18 @@ export default class Panel extends Sizable( Node ) {
   /**
    * Get the background rectangle's stroke (can be overridden)
    */
-  public getStroke(): IPaint {
+  public getStroke(): TPaint {
     return this._background.stroke;
   }
 
-  public get stroke(): IPaint { return this.getStroke(); }
+  public get stroke(): TPaint { return this.getStroke(); }
 
-  public set stroke( value: IPaint ) { this.setStroke( value ); }
+  public set stroke( value: TPaint ) { this.setStroke( value ); }
 
   /**
    * Change the background rectangle's stroke (can be overridden)
    */
-  public setStroke( stroke: IPaint ): void {
+  public setStroke( stroke: TPaint ): void {
     this._background.stroke = stroke;
 
     // Since it depends on the stroke (if it's null, our minimum bounds get reduced)
@@ -138,18 +138,18 @@ export default class Panel extends Sizable( Node ) {
   /**
    * Get the background rectangle's fill (can be overridden)
    */
-  public getFill(): IPaint {
+  public getFill(): TPaint {
     return this._background.fill;
   }
 
-  public get fill(): IPaint { return this.getFill(); }
+  public get fill(): TPaint { return this.getFill(); }
 
-  public set fill( value: IPaint ) { this.setFill( value ); }
+  public set fill( value: TPaint ) { this.setFill( value ); }
 
   /**
    * Change the background rectangle's fill (can be overridden)
    */
-  public setFill( fill: IPaint ): void {
+  public setFill( fill: TPaint ): void {
     this._background.fill = fill;
   }
 

@@ -14,7 +14,7 @@ import Dimension2 from '../../../dot/js/Dimension2.js';
 import { Shape } from '../../../kite/js/imports.js';
 import optionize from '../../../phet-core/js/optionize.js';
 import PickRequired from '../../../phet-core/js/types/PickRequired.js';
-import { Color, IPaint, LinearGradient, Node, PaintColorProperty, Path } from '../../../scenery/js/imports.js';
+import { Color, TPaint, LinearGradient, Node, PaintColorProperty, Path } from '../../../scenery/js/imports.js';
 import sun from '../sun.js';
 import ButtonInteractionState from './ButtonInteractionState.js';
 import ButtonModel from './ButtonModel.js';
@@ -53,7 +53,7 @@ type SelfOptions = {
   mouseAreaXShift?: number;
   mouseAreaYShift?: number;
 
-  stroke?: IPaint | null; // when null, a stroke will be derived from the base color
+  stroke?: TPaint | null; // when null, a stroke will be derived from the base color
   lineWidth?: number; // Only meaningful if stroke is non-null
 
   // radius applied to all corners unless a corner-specific value is provided

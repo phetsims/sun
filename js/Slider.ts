@@ -22,7 +22,7 @@ import InstanceRegistry from '../../phet-core/js/documentation/InstanceRegistry.
 import optionize from '../../phet-core/js/optionize.js';
 import Orientation from '../../phet-core/js/Orientation.js';
 import swapObjectKeys from '../../phet-core/js/swapObjectKeys.js';
-import { DragListener, FocusHighlightFromNode, IPaint, Node, NodeOptions, Path, SceneryConstants } from '../../scenery/js/imports.js';
+import { DragListener, FocusHighlightFromNode, TPaint, Node, NodeOptions, Path, SceneryConstants } from '../../scenery/js/imports.js';
 import Tandem from '../../tandem/js/Tandem.js';
 import IOType from '../../tandem/js/types/IOType.js';
 import ValueChangeSoundPlayer, { ValueChangeSoundPlayerOptions } from '../../tambo/js/sound-generators/ValueChangeSoundPlayer.js';
@@ -50,9 +50,9 @@ type SelfOptions = {
 
   // track - options to create a SliderTrack if trackNode not supplied
   trackSize?: Dimension2 | null; // specific to orientation, will be filled in with a default if not provided
-  trackFillEnabled?: IPaint;
-  trackFillDisabled?: IPaint;
-  trackStroke?: IPaint;
+  trackFillEnabled?: TPaint;
+  trackFillDisabled?: TPaint;
+  trackStroke?: TPaint;
   trackLineWidth?: number;
   trackCornerRadius?: number;
   trackPickable?: boolean;
@@ -70,11 +70,11 @@ type SelfOptions = {
 
   // Options for the default thumb, ignored if thumbNode is set
   thumbSize?: Dimension2 | null; // specific to orientation, will be filled in with a default if not provided
-  thumbFill?: IPaint;
-  thumbFillHighlighted?: IPaint;
-  thumbStroke?: IPaint;
+  thumbFill?: TPaint;
+  thumbFillHighlighted?: TPaint;
+  thumbStroke?: TPaint;
   thumbLineWidth?: number;
-  thumbCenterLineStroke?: IPaint;
+  thumbCenterLineStroke?: TPaint;
 
   // dilations are specific to orientation
   thumbTouchAreaXDilation?: number;
@@ -88,10 +88,10 @@ type SelfOptions = {
   // ticks - if adding an option here, make sure it ends up in this.tickOptions
   tickLabelSpacing?: number;
   majorTickLength?: number;
-  majorTickStroke?: IPaint;
+  majorTickStroke?: TPaint;
   majorTickLineWidth?: number;
   minorTickLength?: number;
-  minorTickStroke?: IPaint;
+  minorTickStroke?: TPaint;
   minorTickLineWidth?: number;
 
   cursor?: string;
@@ -538,7 +538,7 @@ export default class Slider extends AccessibleSlider( Node, 0 ) {
   /**
    * Adds a tick mark above the track.
    */
-  private addTick( parent: Node, value: number, label: Node | undefined, length: number, stroke: IPaint, lineWidth: number ): void {
+  private addTick( parent: Node, value: number, label: Node | undefined, length: number, stroke: TPaint, lineWidth: number ): void {
     const labelX = this.track.valueToPosition.evaluate( value );
 
     // ticks

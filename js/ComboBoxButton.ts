@@ -10,7 +10,7 @@
 import { Shape } from '../../kite/js/imports.js';
 import optionize from '../../phet-core/js/optionize.js';
 import StringUtils from '../../phetcommon/js/util/StringUtils.js';
-import { AriaHasPopUpMutator, GridBox, IPaint, isWidthSizable, Node, Path, PDOMBehaviorFunction, PDOMPeer } from '../../scenery/js/imports.js';
+import { AriaHasPopUpMutator, GridBox, TPaint, isWidthSizable, Node, Path, PDOMBehaviorFunction, PDOMPeer } from '../../scenery/js/imports.js';
 import Tandem from '../../tandem/js/Tandem.js';
 import ButtonNode from './buttons/ButtonNode.js';
 import RectangularPushButton, { RectangularPushButtonOptions } from './buttons/RectangularPushButton.js';
@@ -41,7 +41,7 @@ const ACCESSIBLE_NAME_BEHAVIOR: PDOMBehaviorFunction = ( node, options, accessib
 type SelfOptions = {
   align?: ComboBoxButtonAlign;
   arrowDirection?: ComboBoxButtonArrowDirection;
-  arrowFill?: IPaint;
+  arrowFill?: TPaint;
 
   // The pattern for the voicingNameResponse, with "{{value}}" provided to be filled in with
   // ComboBoxItem.a11yLabel.

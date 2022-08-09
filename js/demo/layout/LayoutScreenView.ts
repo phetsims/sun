@@ -16,7 +16,7 @@ import { Shape } from '../../../../kite/js/imports.js';
 import optionize, { combineOptions, EmptySelfOptions } from '../../../../phet-core/js/optionize.js';
 import Constructor from '../../../../phet-core/js/types/Constructor.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
-import { AlignBox, Circle, Color, FlowBox, FlowCell, FlowConstraint, GridBackgroundNode, GridBox, IPaint, ManualConstraint, Node, Path, Rectangle, RectangleOptions, Text, TextOptions, VDivider } from '../../../../scenery/js/imports.js';
+import { AlignBox, Circle, Color, FlowBox, FlowCell, FlowConstraint, GridBackgroundNode, GridBox, TPaint, ManualConstraint, Node, Path, Rectangle, RectangleOptions, Text, TextOptions, VDivider } from '../../../../scenery/js/imports.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
 import Checkbox from '../../Checkbox.js';
 import Panel from '../../Panel.js';
@@ -339,7 +339,7 @@ function demoManualConstraint( layoutBounds: Bounds2 ): Node {
 }
 
 function demoDisconnectedFlow( layoutBounds: Bounds2 ): Node {
-  const createLabeledBox = ( label: string, fill: IPaint, width: number, height: number ) => {
+  const createLabeledBox = ( label: string, fill: TPaint, width: number, height: number ) => {
     return new Rectangle( 0, 0, width, height, {
       stroke: 'black',
       fill: fill,

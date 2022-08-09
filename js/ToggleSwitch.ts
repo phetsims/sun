@@ -20,7 +20,7 @@ import Utils from '../../dot/js/Utils.js';
 import Vector2 from '../../dot/js/Vector2.js';
 import { Shape } from '../../kite/js/imports.js';
 import optionize from '../../phet-core/js/optionize.js';
-import { DragListener, IPaint, LinearGradient, Node, NodeOptions, Rectangle, SceneryConstants, Voicing, VoicingOptions } from '../../scenery/js/imports.js';
+import { DragListener, TPaint, LinearGradient, Node, NodeOptions, Rectangle, SceneryConstants, Voicing, VoicingOptions } from '../../scenery/js/imports.js';
 import EventType from '../../tandem/js/EventType.js';
 import PhetioObject from '../../tandem/js/PhetioObject.js';
 import Tandem from '../../tandem/js/Tandem.js';
@@ -51,17 +51,17 @@ type SelfOptions = {
   toggleThreshold?: number;
 
   // thumb
-  thumbFill?: IPaint;
-  thumbStroke?: IPaint;
+  thumbFill?: TPaint;
+  thumbStroke?: TPaint;
   thumbTouchAreaXDilation?: number;
   thumbTouchAreaYDilation?: number;
   thumbMouseAreaXDilation?: number;
   thumbMouseAreaYDilation?: number;
 
   // track
-  trackFillLeft?: IPaint; // track fill when property.value == leftValue, default computed below
-  trackFillRight?: IPaint; // track fill when property.value == rightValue, default computed below
-  trackStroke?: IPaint;
+  trackFillLeft?: TPaint; // track fill when property.value == leftValue, default computed below
+  trackFillRight?: TPaint; // track fill when property.value == rightValue, default computed below
+  trackStroke?: TPaint;
 
   // sound
   switchToLeftSoundPlayer?: ISoundPlayer;

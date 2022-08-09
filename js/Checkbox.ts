@@ -10,7 +10,7 @@ import PhetioAction from '../../tandem/js/PhetioAction.js';
 import validate from '../../axon/js/validate.js';
 import Matrix3 from '../../dot/js/Matrix3.js';
 import InstanceRegistry from '../../phet-core/js/documentation/InstanceRegistry.js';
-import { FireListener, IPaint, isWidthSizable, LayoutConstraint, Node, NodeOptions, Path, Rectangle, SceneryConstants, Voicing, VoicingOptions, WidthSizable, WidthSizableOptions } from '../../scenery/js/imports.js';
+import { FireListener, TPaint, isWidthSizable, LayoutConstraint, Node, NodeOptions, Path, Rectangle, SceneryConstants, Voicing, VoicingOptions, WidthSizable, WidthSizableOptions } from '../../scenery/js/imports.js';
 import checkEmptySolidShape from '../../sherpa/js/fontawesome-4/checkEmptySolidShape.js';
 import checkSquareOSolidShape from '../../sherpa/js/fontawesome-4/checkSquareOSolidShape.js';
 import checkboxCheckedSoundPlayer from '../../tambo/js/shared-sound-players/checkboxCheckedSoundPlayer.js';
@@ -36,8 +36,8 @@ const checkedShape = checkSquareOSolidShape.transformed( SHAPE_MATRIX );
 type SelfOptions = {
   spacing?: number;  // spacing between box and content
   boxWidth?: number; // width (and height) of the box
-  checkboxColor?: IPaint;
-  checkboxColorBackground?: IPaint;
+  checkboxColor?: TPaint;
+  checkboxColorBackground?: TPaint;
 
   // pointer areas
   touchAreaXDilation?: number;
@@ -230,30 +230,30 @@ export default class Checkbox extends WidthSizable( Voicing( Node, 0 ) ) {
   /**
    * Sets the background color of the checkbox.
    */
-  public setCheckboxColorBackground( value: IPaint ): void { this.backgroundNode.fill = value; }
+  public setCheckboxColorBackground( value: TPaint ): void { this.backgroundNode.fill = value; }
 
-  public set checkboxColorBackground( value: IPaint ) { this.setCheckboxColorBackground( value ); }
+  public set checkboxColorBackground( value: TPaint ) { this.setCheckboxColorBackground( value ); }
 
-  public get checkboxColorBackground(): IPaint { return this.getCheckboxColorBackground(); }
+  public get checkboxColorBackground(): TPaint { return this.getCheckboxColorBackground(); }
 
   /**
    * Gets the background color of the checkbox.
    */
-  public getCheckboxColorBackground(): IPaint { return this.backgroundNode.fill; }
+  public getCheckboxColorBackground(): TPaint { return this.backgroundNode.fill; }
 
   /**
    * Sets the color of the checkbox.
    */
-  public setCheckboxColor( value: IPaint ): void { this.checkedNode.fill = this.uncheckedNode.fill = value; }
+  public setCheckboxColor( value: TPaint ): void { this.checkedNode.fill = this.uncheckedNode.fill = value; }
 
-  public set checkboxColor( value: IPaint ) { this.setCheckboxColor( value ); }
+  public set checkboxColor( value: TPaint ) { this.setCheckboxColor( value ); }
 
-  public get checkboxColor(): IPaint { return this.getCheckboxColor(); }
+  public get checkboxColor(): TPaint { return this.getCheckboxColor(); }
 
   /**
    * Gets the color of the checkbox.
    */
-  public getCheckboxColor(): IPaint { return this.checkedNode.fill; }
+  public getCheckboxColor(): TPaint { return this.checkedNode.fill; }
 
   public override setMouseArea( area: Shape | Bounds2 | null ): this {
     if ( !this._isSettingAreas ) {

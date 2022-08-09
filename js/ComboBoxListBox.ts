@@ -8,7 +8,7 @@
 
 import PhetioAction from '../../tandem/js/PhetioAction.js';
 import optionize, { combineOptions } from '../../phet-core/js/optionize.js';
-import { IInputListener, IPaint, KeyboardUtils, SceneryEvent, SpeakingOptions, VBox, VoicingNode } from '../../scenery/js/imports.js';
+import { IInputListener, TPaint, KeyboardUtils, SceneryEvent, SpeakingOptions, VBox, VoicingNode } from '../../scenery/js/imports.js';
 import multiSelectionSoundPlayerFactory from '../../tambo/js/multiSelectionSoundPlayerFactory.js';
 import generalCloseSoundPlayer from '../../tambo/js/shared-sound-players/generalCloseSoundPlayer.js';
 import generalOpenSoundPlayer from '../../tambo/js/shared-sound-players/generalOpenSoundPlayer.js';
@@ -24,7 +24,7 @@ import { ComboBoxItem } from './ComboBox.js';
 type SelfOptions = {
 
   // fill for the highlight behind items in the list
-  highlightFill?: IPaint;
+  highlightFill?: TPaint;
 
   // Options that apply to every ComboBoxItemNode created in the list
   comboBoxListItemNodeOptions?: ComboBoxListItemNodeOptions;

@@ -11,7 +11,7 @@ import DerivedProperty from '../../../axon/js/DerivedProperty.js';
 import IReadOnlyProperty from '../../../axon/js/IReadOnlyProperty.js';
 import { Shape } from '../../../kite/js/imports.js';
 import optionize from '../../../phet-core/js/optionize.js';
-import { Circle, Color, IPaint, Node, PaintableNode, PaintColorProperty, RadialGradient } from '../../../scenery/js/imports.js';
+import { Circle, Color, TPaint, Node, PaintableNode, PaintColorProperty, RadialGradient } from '../../../scenery/js/imports.js';
 import sun from '../sun.js';
 import ButtonInteractionState from './ButtonInteractionState.js';
 import ButtonModel from './ButtonModel.js';
@@ -26,7 +26,7 @@ type SelfOptions = {
 
   radius?: number | null;
   lineWidth?: number;
-  stroke?: IPaint | null; // when null, a stroke will be derived from the base color
+  stroke?: TPaint | null; // when null, a stroke will be derived from the base color
 
   // pointer area dilation
   touchAreaDilation?: number; // radius dilation for touch area

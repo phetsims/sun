@@ -8,14 +8,14 @@
 
 import StrictOmit from '../../../phet-core/js/types/StrictOmit.js';
 import optionize, { combineOptions } from '../../../phet-core/js/optionize.js';
-import { Font, IPaint, Text, TextOptions } from '../../../scenery/js/imports.js';
+import { Font, TPaint, Text, TextOptions } from '../../../scenery/js/imports.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import sun from '../sun.js';
 import RectangularPushButton, { RectangularPushButtonOptions } from './RectangularPushButton.js';
 
 type SelfOptions = {
   font?: Font;
-  textFill?: IPaint;
+  textFill?: TPaint;
   maxTextWidth?: number | null;
   textNodeOptions?: TextOptions;
 };
