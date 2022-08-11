@@ -385,7 +385,7 @@ export default class Dialog extends Popupable( Panel, 1 ) {
       this.sim.boundsProperty,
       this.sim.screenBoundsProperty,
       this.sim.scaleProperty,
-      this.sim.screenProperty,
+      this.sim.selectedScreenProperty,
       this.isShowingProperty
     ], ( bounds: Bounds2 | null, screenBounds: Bounds2 | null, scale: number ) => {
       if ( bounds && screenBounds && scale ) {
