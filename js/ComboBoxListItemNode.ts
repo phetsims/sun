@@ -35,7 +35,7 @@ type SelfOptions = {
 type ParentOptions = VoicingOptions & NodeOptions;
 export type ComboBoxListItemNodeOptions = SelfOptions & StrictOmit<ParentOptions, 'children' | 'innerContent'>;
 
-export default class ComboBoxListItemNode<T> extends Voicing( Node, 0 ) {
+export default class ComboBoxListItemNode<T> extends Voicing( Node ) {
 
   // when true, the next voicing focus listener will supply the response needed when opening the comboBox.
   // It will then set this back to false.

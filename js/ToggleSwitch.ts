@@ -70,7 +70,7 @@ type SelfOptions = {
 type ParentOptions = VoicingOptions & NodeOptions;
 export type ToggleSwitchOptions = SelfOptions & ParentOptions;
 
-export default class ToggleSwitch<T> extends Voicing( Node, 0 ) {
+export default class ToggleSwitch<T> extends Voicing( Node ) {
 
   private readonly disposeToggleSwitch: () => void;
   public readonly switchToLeftSoundPlayer: TSoundPlayer;

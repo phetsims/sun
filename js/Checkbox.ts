@@ -61,7 +61,7 @@ type ParentOptions = WidthSizableOptions & VoicingOptions & NodeOptions;
 
 export type CheckboxOptions = SelfOptions & StrictOmit<ParentOptions, 'children' | 'mouseArea' | 'touchArea'>;
 
-export default class Checkbox extends WidthSizable( Voicing( Node, 0 ) ) {
+export default class Checkbox extends WidthSizable( Voicing( Node ) ) {
 
   private readonly backgroundNode: Rectangle;
   private readonly checkedNode: Path;

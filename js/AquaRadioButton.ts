@@ -45,7 +45,7 @@ type SelfOptions = {
 type ParentOptions = VoicingOptions & NodeOptions;
 export type AquaRadioButtonOptions = SelfOptions & ParentOptions;
 
-export default class AquaRadioButton<T> extends Voicing( Node, 0 ) {
+export default class AquaRadioButton<T> extends Voicing( Node ) {
 
   // the value associated with this radio button
   public readonly value: T;

@@ -50,7 +50,7 @@ type SelfOptions = {
 type ParentOptions = VoicingOptions & NodeOptions;
 export type MenuItemOptions = SelfOptions & ParentOptions;
 
-export default class MenuItem extends Voicing( Node, 0 ) {
+export default class MenuItem extends Voicing( Node ) {
 
   // if this MenuItem will be shown in the menu. Some items are just created to maintain a
   // consistent PhET-iO API for all sim runtimes, see https://github.com/phetsims/phet-io/issues/1457

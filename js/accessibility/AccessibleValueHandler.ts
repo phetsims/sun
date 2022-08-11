@@ -22,7 +22,7 @@ import Range from '../../../dot/js/Range.js';
 import assertHasProperties from '../../../phet-core/js/assertHasProperties.js';
 import inheritance from '../../../phet-core/js/inheritance.js';
 import Orientation from '../../../phet-core/js/Orientation.js';
-import { TInputListener, KeyboardUtils, Node, NodeOptions, SceneryEvent, SceneryListenerFunction, Voicing, VoicingOptions } from '../../../scenery/js/imports.js';
+import { KeyboardUtils, Node, NodeOptions, SceneryEvent, SceneryListenerFunction, TInputListener, Voicing, VoicingOptions } from '../../../scenery/js/imports.js';
 import Utterance from '../../../utterance-queue/js/Utterance.js';
 import sun from '../sun.js';
 import optionize, { OptionizeDefaults } from '../../../phet-core/js/optionize.js';
@@ -188,7 +188,7 @@ export type AccessibleValueHandlerOptions = SelfOptions & VoicingOptions; // do 
 const AccessibleValueHandler = <SuperType extends Constructor>( Type: SuperType, optionsArgPosition: number ) => { // eslint-disable-line @typescript-eslint/explicit-module-boundary-types
   assert && assert( _.includes( inheritance( Type ), Node ), 'Only Node subtypes should compose AccessibleValueHandler' );
 
-  return class AccessibleValueHandler extends Voicing( Type, optionsArgPosition ) {
+  return class AccessibleValueHandler extends Voicing( Type ) {
     private readonly _valueProperty: IProperty<number>;
     private _enabledRangeProperty: TReadOnlyProperty<Range>;
     private readonly _startInput: SceneryListenerFunction;

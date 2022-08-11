@@ -80,7 +80,7 @@ type SelfOptions = {
 type ParentOptions = SizableOptions & VoicingOptions & NodeOptions;
 export type ButtonNodeOptions = SelfOptions & ParentOptions;
 
-export default class ButtonNode extends Sizable( Voicing( Node, 0 ) ) {
+export default class ButtonNode extends Sizable( Voicing( Node ) ) {
 
   protected buttonModel: ButtonModel;
   private readonly _settableBaseColorProperty: PaintColorProperty;
