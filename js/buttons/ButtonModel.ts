@@ -16,7 +16,7 @@ import EnabledComponent, { EnabledComponentOptions } from '../../../axon/js/Enab
 import sun from '../sun.js';
 import Multilink, { UnknownMultilink } from '../../../axon/js/Multilink.js';
 import { EnabledPropertyOptions } from '../../../axon/js/EnabledProperty.js';
-import IEmitter from '../../../axon/js/IEmitter.js';
+import TEmitter from '../../../axon/js/TEmitter.js';
 
 type SelfOptions = {
 
@@ -60,7 +60,7 @@ export default class ButtonModel extends EnabledComponent {
   public readonly looksOverProperty: Property<boolean>;
 
   // (read-only by users, read-write in subclasses) - emitter that is fired when sound should be produced
-  public readonly produceSoundEmitter: IEmitter;
+  public readonly produceSoundEmitter: TEmitter;
 
   // indicates that interaction was interrupted during a press. Valid until next press.
   public interrupted: boolean;

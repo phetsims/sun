@@ -11,7 +11,7 @@
 
 import BooleanProperty from '../../../axon/js/BooleanProperty.js';
 import Emitter from '../../../axon/js/Emitter.js';
-import IEmitter from '../../../axon/js/IEmitter.js';
+import TEmitter from '../../../axon/js/TEmitter.js';
 import IProperty from '../../../axon/js/IProperty.js';
 import optionize, { EmptySelfOptions } from '../../../phet-core/js/optionize.js';
 import EventType from '../../../tandem/js/EventType.js';
@@ -29,7 +29,7 @@ export default class StickyToggleButtonModel<T> extends ButtonModel {
   public readonly valueUp: T;
   public readonly valueDown: T;
 
-  private readonly toggledEmitter: IEmitter;
+  private readonly toggledEmitter: TEmitter;
   private readonly pressedWhileDownProperty: IProperty<boolean>;
   private readonly disposeToggleButtonModel: () => void;
 

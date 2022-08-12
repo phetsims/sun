@@ -8,7 +8,7 @@
  */
 
 import Emitter from '../../../axon/js/Emitter.js';
-import IEmitter from '../../../axon/js/IEmitter.js';
+import TEmitter from '../../../axon/js/TEmitter.js';
 import IProperty from '../../../axon/js/IProperty.js';
 import optionize, { EmptySelfOptions } from '../../../phet-core/js/optionize.js';
 import EventType from '../../../tandem/js/EventType.js';
@@ -26,7 +26,7 @@ export default class ToggleButtonModel<T> extends ButtonModel {
   public readonly valueOff: T;
   public readonly valueOn: T;
 
-  private readonly toggledEmitter: IEmitter;
+  private readonly toggledEmitter: TEmitter;
   private readonly disposeToggleButtonModel: () => void;
 
   /**

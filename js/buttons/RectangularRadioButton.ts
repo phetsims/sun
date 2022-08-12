@@ -8,7 +8,7 @@
  */
 
 import Emitter from '../../../axon/js/Emitter.js';
-import IEmitter from '../../../axon/js/IEmitter.js';
+import TEmitter from '../../../axon/js/TEmitter.js';
 import IProperty from '../../../axon/js/IProperty.js';
 import TReadOnlyProperty from '../../../axon/js/TReadOnlyProperty.js';
 import optionize from '../../../phet-core/js/optionize.js';
@@ -46,7 +46,7 @@ export default class RectangularRadioButton<T> extends RectangularButton {
 
   public readonly interactionStateProperty: RadioButtonInteractionStateProperty<T>;
 
-  private readonly firedEmitter: IEmitter;
+  private readonly firedEmitter: TEmitter;
 
   private readonly disposeRectangularRadioButton: () => void;
 
