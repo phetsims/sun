@@ -35,6 +35,8 @@ import ComboBoxButton from './ComboBoxButton.js';
 import ComboBoxListBox from './ComboBoxListBox.js';
 import sun from './sun.js';
 import SunConstants from './SunConstants.js';
+import IProperty from '../../axon/js/IProperty.js';
+import ReadOnlyProperty from '../../axon/js/ReadOnlyProperty.js';
 
 // const
 const LIST_POSITION_VALUES = [ 'above', 'below' ] as const; // where the list pops up relative to the button
@@ -168,12 +170,12 @@ export default class ComboBox<T> extends WidthSizable( Node ) {
   public static readonly ITEM_TANDEM_NAME_SUFFIX = 'Item';
 
   /**
-   * @param property
+   * @param property - must be settable and linkable, but needs to support Property, DerivedProperty and DynamicProperty
    * @param items - items, in the order that they appear in the listbox
    * @param listParent node that will be used as the list's parent, use this to ensure that the list is in front of everything else
    * @param [providedOptions?]
    */
-  public constructor( property: Property<T>, items: ComboBoxItem<T>[], listParent: Node, providedOptions?: ComboBoxOptions ) {
+  public constructor( property: IProperty<T> & ReadOnlyProperty<T>, items: ComboBoxItem<T>[], listParent: Node, providedOptions?: ComboBoxOptions ) {
 
     assert && assert( _.uniqBy( items, ( item: ComboBoxItem<T> ) => item.value ).length === items.length,
       'items must have unique values' );
