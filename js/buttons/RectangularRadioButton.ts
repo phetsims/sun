@@ -228,7 +228,7 @@ export default class RectangularRadioButton<T> extends RectangularButton {
       ];
 
       // Change colors and opacity to match interactionState
-      function interactionStateListener( interactionState: RadioButtonInteractionState ) {
+      function interactionStateListener( interactionState: RadioButtonInteractionState ): void {
         switch( interactionState ) {
 
           case RadioButtonInteractionState.SELECTED:
@@ -300,7 +300,7 @@ export default class RectangularRadioButton<T> extends RectangularButton {
       }, providedOptions );
 
       // The button is not the parent of the content, therefore it is necessary to set the opacity on the content separately
-      function handleInteractionStateChanged( state: RadioButtonInteractionState ) {
+      function handleInteractionStateChanged( state: RadioButtonInteractionState ): void {
         if ( content !== null ) {
           switch( state ) {
 

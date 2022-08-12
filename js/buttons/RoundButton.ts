@@ -230,7 +230,7 @@ export class ThreeDAppearanceStrategy {
     shadowNode.cachedPaints = [ upFillShadow, overFillShadow ];
 
     // Change colors to match interactionState
-    function interactionStateListener( interactionState: ButtonInteractionState ) {
+    function interactionStateListener( interactionState: ButtonInteractionState ): void {
 
       switch( interactionState ) {
 

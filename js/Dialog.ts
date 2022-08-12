@@ -466,7 +466,7 @@ export default class Dialog extends Popupable( Panel, 1 ) {
 }
 
 // Default value for options.layoutStrategy, centers the Dialog in the layoutBounds.
-function defaultLayoutStrategy( dialog: Dialog, simBounds: Bounds2, screenBounds: Bounds2, scale: number ) {
+function defaultLayoutStrategy( dialog: Dialog, simBounds: Bounds2, screenBounds: Bounds2, scale: number ): void {
   if ( dialog.layoutBounds ) {
     dialog.center = dialog.layoutBounds.center;
   }
@@ -476,7 +476,7 @@ function defaultLayoutStrategy( dialog: Dialog, simBounds: Bounds2, screenBounds
  * @param dimension - width or height dimension
  * @param margin - margin to be applied to the dimension
  */
-function applyDoubleMargin( dimension: number, margin: number ) {
+function applyDoubleMargin( dimension: number, margin: number ): number {
   return ( dimension > margin * 2 ) ? ( dimension - margin * 2 ) : dimension;
 }
 

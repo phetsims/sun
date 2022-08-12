@@ -400,7 +400,7 @@ export class FlatAppearanceStrategy {
     buttonBackground.cachedPaints = [ upFill, overFill, downFill ];
 
     // Change colors to match interactionState
-    function interactionStateListener( interactionState: ButtonInteractionState ) {
+    function interactionStateListener( interactionState: ButtonInteractionState ): void {
       switch( interactionState ) {
 
         case ButtonInteractionState.IDLE:
