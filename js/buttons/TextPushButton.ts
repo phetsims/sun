@@ -8,10 +8,11 @@
 
 import StrictOmit from '../../../phet-core/js/types/StrictOmit.js';
 import optionize, { combineOptions } from '../../../phet-core/js/optionize.js';
-import { Font, TPaint, Text, TextOptions } from '../../../scenery/js/imports.js';
+import { Font, Text, TextOptions, TPaint } from '../../../scenery/js/imports.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import sun from '../sun.js';
 import RectangularPushButton, { RectangularPushButtonOptions } from './RectangularPushButton.js';
+import IProperty from '../../../axon/js/IProperty.js';
 
 type SelfOptions = {
   font?: Font;
@@ -26,7 +27,9 @@ export default class TextPushButton extends RectangularPushButton {
 
   private readonly disposeTextPushButton: () => void;
 
-  public constructor( text: string, providedOptions?: TextPushButtonOptions ) {
+  public constructor( text: string | IProperty<string>, providedOptions?: TextPushButtonOptions ) {
+
+    const initialText = typeof text === 'string' ? text : text.value;
 
     const options = optionize<TextPushButtonOptions, StrictOmit<SelfOptions, 'textNodeOptions'>, RectangularPushButtonOptions>()( {
 
@@ -37,19 +40,26 @@ export default class TextPushButton extends RectangularPushButton {
 
       // RectangularPushButtonOptions
       tandem: Tandem.REQUIRED,
-      innerContent: text
+      innerContent: initialText
     }, providedOptions );
 
-    const textNode = new Text( text, combineOptions<TextOptions>( {
+    const textNode = new Text( initialText, combineOptions<TextOptions>( {
       font: options.font,
       fill: options.textFill,
       maxWidth: options.maxTextWidth,
-      tandem: options.tandem.createTandem( 'textNode' )
+      tandem: options.tandem.createTandem( 'textNode' ),
+      textProperty: typeof text === 'string' ? undefined : text
     }, options.textNodeOptions ) );
 
     options.content = textNode;
 
     super( options );
+
+    if ( typeof text !== 'string' ) {
+      text.lazyLink( string => {
+        this.innerContent = string;
+      } );
+    }
 
     this.disposeTextPushButton = () => {
       textNode.dispose();
