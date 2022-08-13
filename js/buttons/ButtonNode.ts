@@ -215,12 +215,19 @@ export default class ButtonNode extends Sizable( Voicing( Node ) ) {
     // Our layout sizes will need to handle treating the maxLineWidth so we have stable layout with lineWidth changes
     this.layoutWidthProperty = new DerivedProperty( [
       this.localPreferredWidthProperty,
+      this.localMinimumWidthProperty,
       this.isWidthResizableProperty,
       buttonBackground.boundsProperty
-    ], ( localPreferredWidth, isWidthResizable, backgroundBounds ) => {
+    ], ( localPreferredWidth, localMinimumWidth, isWidthResizable, backgroundBounds ) => {
       if ( isWidthResizable ) {
         // If needed, use the size our max-stroked path will have
-        return localPreferredWidth !== null ? localPreferredWidth : buttonBackground.shape!.bounds.width + this.maxLineWidth;
+        const result = localPreferredWidth !== null ? localPreferredWidth : buttonBackground.shape!.bounds.width + this.maxLineWidth;
+        if ( localMinimumWidth !== null ) {
+          return Math.max( localMinimumWidth, result );
+        }
+        else {
+          return result;
+        }
       }
       else {
         return initialBackgroundWidth;
@@ -228,12 +235,19 @@ export default class ButtonNode extends Sizable( Voicing( Node ) ) {
     }, { tandem: Tandem.OPT_OUT } );
     this.layoutHeightProperty = new DerivedProperty( [
       this.localPreferredHeightProperty,
+      this.localMinimumHeightProperty,
       this.isHeightResizableProperty,
       buttonBackground.boundsProperty
-    ], ( localPreferredHeight, isHeightResizable, backgroundBounds ) => {
+    ], ( localPreferredHeight, localMinimumHeight, isHeightResizable, backgroundBounds ) => {
       if ( isHeightResizable ) {
         // If needed, use the size our max-stroked path will have
-        return localPreferredHeight !== null ? localPreferredHeight : buttonBackground.shape!.bounds.height + this.maxLineWidth;
+        const result = localPreferredHeight !== null ? localPreferredHeight : buttonBackground.shape!.bounds.height + this.maxLineWidth;
+        if ( localMinimumHeight !== null ) {
+          return Math.max( localMinimumHeight, result );
+        }
+        else {
+          return result;
+        }
       }
       else {
         return initialBackgroundHeight;
