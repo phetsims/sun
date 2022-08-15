@@ -64,7 +64,10 @@ export default class PageControl extends Node {
       pageStroke: null,
 
       // NodeOptions
-      tandem: Tandem.REQUIRED
+      tandem: Tandem.REQUIRED,
+      visiblePropertyOptions: {
+        phetioFeatured: true
+      }
     }, providedOptions );
 
     // validate options

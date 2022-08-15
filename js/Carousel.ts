@@ -154,7 +154,10 @@ export default class Carousel extends Node {
       stepEmitter: stepTimer,
 
       // phet-io
-      tandem: Tandem.OPTIONAL
+      tandem: Tandem.OPTIONAL,
+      visiblePropertyOptions: {
+        phetioFeatured: true
+      }
     }, providedOptions );
 
     // To improve readability
@@ -185,8 +188,12 @@ export default class Carousel extends Node {
       touchAreaYDilation: options.buttonTouchAreaYDilation,
       mouseAreaXDilation: options.buttonMouseAreaXDilation,
       mouseAreaYDilation: options.buttonMouseAreaYDilation,
-      soundPlayer: options.buttonSoundPlayer
-    };
+      soundPlayer: options.buttonSoundPlayer,
+      enabledPropertyOptions: {
+        phetioReadOnly: true,
+        phetioFeatured: false
+      }
+    } as const;
 
     // Next/previous buttons
     const nextButton = new CarouselButton( combineOptions<CarouselButtonOptions>( {
@@ -327,7 +334,8 @@ export default class Carousel extends Node {
     const pageNumberProperty = new NumberProperty( options.defaultPageNumber, {
       tandem: options.tandem.createTandem( 'pageNumberProperty' ),
       numberType: 'Integer',
-      validValues: _.range( numberOfPages )
+      validValues: _.range( numberOfPages ),
+      phetioFeatured: true
     } );
 
     // Change pages
