@@ -33,6 +33,8 @@ import Panel, { PanelOptions } from './Panel.js';
 import Popupable, { PopupableOptions } from './Popupable.js';
 import sun from './sun.js';
 import sunStrings from './sunStrings.js';
+import IProperty from '../../axon/js/IProperty.js';
+import TinyProperty from '../../axon/js/TinyProperty.js';
 
 // see SelfOptions.titleAlign
 type DialogTitleAlign = 'left' | 'right' | 'center';
@@ -117,7 +119,7 @@ n |                 |                                        |             g   |
 
   // If provided use this dialog title in the Close button voicingNameResponse. This should be provided
   // for proper Dialog Voicing design.
-  closeButtonVoicingDialogTitle?: string | null;
+  closeButtonVoicingDialogTitle?: string | IProperty<string> | null;
 
   // By default, the close button is placed first in the PDOMOrder (and thus the focus order). Set this to true
   // if you want the close button to be the last element in the focus order for the Dialog.
@@ -289,8 +291,11 @@ export default class Dialog extends Popupable( Panel, 1 ) {
     } );
 
     if ( options.closeButtonVoicingDialogTitle ) {
-      closeButton.voicingNameResponse = StringUtils.fillIn( sunStrings.a11y.titleClosePattern, {
-        title: options.closeButtonVoicingDialogTitle
+      const titleProperty = typeof options.closeButtonVoicingDialogTitle === 'string' ? new TinyProperty( options.closeButtonVoicingDialogTitle ) : options.closeButtonVoicingDialogTitle;
+      Multilink.multilink( [ sunStrings.a11y.titleClosePatternProperty, titleProperty ], ( titleClosePattern, titleString ) => {
+        closeButton.voicingNameResponse = StringUtils.fillIn( titleClosePattern, {
+          title: titleString
+        } );
       } );
     }
 
@@ -386,7 +391,8 @@ export default class Dialog extends Popupable( Panel, 1 ) {
       this.sim.screenBoundsProperty,
       this.sim.scaleProperty,
       this.sim.selectedScreenProperty,
-      this.isShowingProperty
+      this.isShowingProperty,
+      this.localBoundsProperty
     ], ( bounds: Bounds2 | null, screenBounds: Bounds2 | null, scale: number ) => {
       if ( bounds && screenBounds && scale ) {
         options.layoutStrategy( this, bounds, screenBounds, scale );
