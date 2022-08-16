@@ -10,7 +10,7 @@
  * @author Jesse Greenberg (PhET Interactive Simulations)
  */
 
-import IProperty from '../../axon/js/IProperty.js';
+import TProperty from '../../axon/js/TProperty.js';
 import Range from '../../dot/js/Range.js';
 import optionize from '../../phet-core/js/optionize.js';
 import PickRequired from '../../phet-core/js/types/PickRequired.js';
@@ -35,7 +35,7 @@ export default class DefaultSliderTrack extends SliderTrack {
   private readonly enabledTrack: Rectangle;
   private readonly disposeDefaultSliderTrack: () => void;
 
-  public constructor( valueProperty: IProperty<number>, range: Range, providedOptions?: DefaultSliderTrackOptions ) {
+  public constructor( valueProperty: TProperty<number>, range: Range, providedOptions?: DefaultSliderTrackOptions ) {
 
     const options = optionize<DefaultSliderTrackOptions, SelfOptions, SliderTrackOptions>()( {
       fillEnabled: 'white',

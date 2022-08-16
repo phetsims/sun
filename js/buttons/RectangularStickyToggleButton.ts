@@ -8,7 +8,7 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
-import IProperty from '../../../axon/js/IProperty.js';
+import TProperty from '../../../axon/js/TProperty.js';
 import { EmptySelfOptions } from '../../../phet-core/js/optionize.js';
 import sun from '../sun.js';
 import RectangularButton, { RectangularButtonOptions } from './RectangularButton.js';
@@ -29,7 +29,7 @@ export default class RectangularStickyToggleButton<T> extends RectangularButton 
    * @param valueDown - value when the toggle is in the 'down' position
    * @param providedOptions?
    */
-  public constructor( valueProperty: IProperty<T>, valueUp: T, valueDown: T, providedOptions?: RectangularStickyToggleButtonOptions ) {
+  public constructor( valueProperty: TProperty<T>, valueUp: T, valueDown: T, providedOptions?: RectangularStickyToggleButtonOptions ) {
 
     // Note it shares a tandem with this, so the emitter will be instrumented as a child of the button
     const buttonModel = new StickyToggleButtonModel( valueUp, valueDown, valueProperty, providedOptions );

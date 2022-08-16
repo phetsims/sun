@@ -10,7 +10,7 @@
  * @author Chris Malley (PixelZoom, Inc.)
  */
 
-import IProperty from '../../../axon/js/IProperty.js';
+import TProperty from '../../../axon/js/TProperty.js';
 import InstanceRegistry from '../../../phet-core/js/documentation/InstanceRegistry.js';
 import optionize, { EmptySelfOptions } from '../../../phet-core/js/optionize.js';
 import Tandem from '../../../tandem/js/Tandem.js';
@@ -33,7 +33,7 @@ export default class RectangularMomentaryButton<T> extends RectangularButton {
    * @param valueOn - value when the button is in the on state
    * @param [providedOptions?]
    */
-  public constructor( property: IProperty<T>, valueOff: T, valueOn: T, providedOptions?: RectangularMomentaryButtonOptions ) {
+  public constructor( property: TProperty<T>, valueOff: T, valueOn: T, providedOptions?: RectangularMomentaryButtonOptions ) {
 
     const options = optionize<RectangularMomentaryButtonOptions, SelfOptions, RectangularButtonOptions>()( {
       tandem: Tandem.REQUIRED

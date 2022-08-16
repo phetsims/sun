@@ -9,7 +9,7 @@
 
 import Emitter from '../../../axon/js/Emitter.js';
 import TEmitter from '../../../axon/js/TEmitter.js';
-import IProperty from '../../../axon/js/IProperty.js';
+import TProperty from '../../../axon/js/TProperty.js';
 import TReadOnlyProperty from '../../../axon/js/TReadOnlyProperty.js';
 import optionize from '../../../phet-core/js/optionize.js';
 import { Color, Node, PaintableNode, PaintColorProperty } from '../../../scenery/js/imports.js';
@@ -39,7 +39,7 @@ export type RectangularRadioButtonOptions = SelfOptions & RectangularButtonOptio
 export default class RectangularRadioButton<T> extends RectangularButton {
 
   // the Property this button changes
-  public readonly property: IProperty<T>;
+  public readonly property: TProperty<T>;
 
   // the value that is set to the Property when this button is pressed
   public readonly value: T;
@@ -57,7 +57,7 @@ export default class RectangularRadioButton<T> extends RectangularButton {
    * @param value - value when this radio button is selected
    * @param providedOptions
    */
-  public constructor( property: IProperty<T>, value: T, providedOptions?: RectangularRadioButtonOptions ) {
+  public constructor( property: TProperty<T>, value: T, providedOptions?: RectangularRadioButtonOptions ) {
 
     const options = optionize<RectangularRadioButtonOptions, SelfOptions, RectangularButtonOptions>()( {
 

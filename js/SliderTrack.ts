@@ -8,7 +8,7 @@
  * @author Jesse Greenberg (PhET Interactive Simulations)
  */
 
-import IProperty from '../../axon/js/IProperty.js';
+import TProperty from '../../axon/js/TProperty.js';
 import TReadOnlyProperty from '../../axon/js/TReadOnlyProperty.js';
 import Property from '../../axon/js/Property.js';
 import Dimension2 from '../../dot/js/Dimension2.js';
@@ -62,7 +62,7 @@ export default class SliderTrack extends Node {
 
   private readonly disposeSliderTrack: () => void;
 
-  public constructor( valueProperty: IProperty<number>, trackNode: Node, range: Range, providedOptions?: SliderTrackOptions ) {
+  public constructor( valueProperty: TProperty<number>, trackNode: Node, range: Range, providedOptions?: SliderTrackOptions ) {
     super();
 
     const options = optionize<SliderTrackOptions, SelfOptions, NodeOptions>()( {

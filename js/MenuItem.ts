@@ -6,7 +6,7 @@
  * @author Michael Kauzmann (PhET Interactive Simulations)
  */
 
-import IProperty from '../../axon/js/IProperty.js';
+import TProperty from '../../axon/js/TProperty.js';
 import PhetFont from '../../scenery-phet/js/PhetFont.js';
 import { FireListener, ManualConstraint, Node, NodeOptions, Path, Rectangle, SceneryEvent, Text, TPaint, Voicing, VoicingOptions, WidthSizable } from '../../scenery/js/imports.js';
 import checkSolidShape from '../../sherpa/js/fontawesome-5/checkSolidShape.js';
@@ -39,7 +39,7 @@ type SelfOptions = {
   separatorBefore?: boolean;
 
   // if provided add a checkmark next to the MenuItem text whenever this Property is true.
-  checkedProperty?: IProperty<boolean> | null;
+  checkedProperty?: TProperty<boolean> | null;
 
   // Called AFTER closeCallback, use this to move focus to a particular Node after all the
   // work of selecting the MenuItem is done. Often focus needs to move to the PhetButton, but that may not be

@@ -9,7 +9,7 @@
 import { DerivedProperty5 } from '../../../axon/js/DerivedProperty.js';
 import sun from '../sun.js';
 import RadioButtonInteractionState from './RadioButtonInteractionState.js';
-import IProperty from '../../../axon/js/IProperty.js';
+import TProperty from '../../../axon/js/TProperty.js';
 import ButtonModel from './ButtonModel.js';
 
 export default class RadioButtonInteractionStateProperty<T> extends DerivedProperty5<RadioButtonInteractionState, boolean, boolean, boolean, boolean, T> {
@@ -19,7 +19,7 @@ export default class RadioButtonInteractionStateProperty<T> extends DerivedPrope
    * @param property - the axon Property set by the button
    * @param value - the value set by the button
    */
-  public constructor( buttonModel: ButtonModel, property: IProperty<T>, value: T ) {
+  public constructor( buttonModel: ButtonModel, property: TProperty<T>, value: T ) {
     super(
       [ buttonModel.focusedProperty, buttonModel.overProperty, buttonModel.looksOverProperty, buttonModel.looksPressedProperty, property ],
       ( focused, over, looksOver, looksPressed, propertyValue ) => {

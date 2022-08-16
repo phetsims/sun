@@ -17,7 +17,7 @@ import RectangularPushButton, { RectangularPushButtonOptions } from './buttons/R
 import sun from './sun.js';
 import SunConstants from './SunConstants.js';
 import VSeparator from './VSeparator.js';
-import IProperty from '../../axon/js/IProperty.js';
+import TProperty from '../../axon/js/TProperty.js';
 import nullSoundPlayer from '../../tambo/js/shared-sound-players/nullSoundPlayer.js';
 import TinyProperty from '../../axon/js/TinyProperty.js';
 import StrictOmit from '../../phet-core/js/types/StrictOmit.js';
@@ -47,8 +47,8 @@ type SelfOptions = {
   // ComboBoxItem.a11yLabel.
   comboBoxVoicingNameResponsePattern?: string;
 
-  localPreferredWidthProperty?: IProperty<number | null>;
-  localMinimumWidthProperty?: IProperty<number | null>;
+  localPreferredWidthProperty?: TProperty<number | null>;
+  localMinimumWidthProperty?: TProperty<number | null>;
 };
 
 export type ComboBoxButtonOptions = SelfOptions & StrictOmit<RectangularPushButtonOptions, 'children' | 'ariaLabelledbyAssociations'>;
@@ -64,7 +64,7 @@ export default class ComboBoxButton<T> extends RectangularPushButton {
   private arrow: Path;
   private vSeparator: VSeparator;
 
-  public constructor( property: IProperty<T>, items: ComboBoxItem<T>[], providedOptions?: ComboBoxButtonOptions ) {
+  public constructor( property: TProperty<T>, items: ComboBoxItem<T>[], providedOptions?: ComboBoxButtonOptions ) {
 
     const options = optionize<ComboBoxButtonOptions, SelfOptions, RectangularPushButtonOptions>()( {
 

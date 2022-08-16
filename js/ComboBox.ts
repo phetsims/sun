@@ -35,7 +35,7 @@ import ComboBoxButton from './ComboBoxButton.js';
 import ComboBoxListBox from './ComboBoxListBox.js';
 import sun from './sun.js';
 import SunConstants from './SunConstants.js';
-import IProperty from '../../axon/js/IProperty.js';
+import TProperty from '../../axon/js/TProperty.js';
 import ReadOnlyProperty from '../../axon/js/ReadOnlyProperty.js';
 
 // const
@@ -175,7 +175,7 @@ export default class ComboBox<T> extends WidthSizable( Node ) {
    * @param listParent node that will be used as the list's parent, use this to ensure that the list is in front of everything else
    * @param [providedOptions?]
    */
-  public constructor( property: IProperty<T> & ReadOnlyProperty<T>, items: ComboBoxItem<T>[], listParent: Node, providedOptions?: ComboBoxOptions ) {
+  public constructor( property: TProperty<T> & ReadOnlyProperty<T>, items: ComboBoxItem<T>[], listParent: Node, providedOptions?: ComboBoxOptions ) {
 
     assert && assert( _.uniqBy( items, ( item: ComboBoxItem<T> ) => item.value ).length === items.length,
       'items must have unique values' );

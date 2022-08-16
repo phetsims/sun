@@ -7,7 +7,7 @@
  * @author Chris Malley (PixelZoom, Inc.)
  */
 
-import IProperty from '../../axon/js/IProperty.js';
+import TProperty from '../../axon/js/TProperty.js';
 import StrictOmit from '../../phet-core/js/types/StrictOmit.js';
 import { Shape } from '../../kite/js/imports.js';
 import optionize from '../../phet-core/js/optionize.js';
@@ -46,7 +46,7 @@ export default class PageControl extends Node {
    * @param numberOfPages - number of pages
    * @param providedOptions
    */
-  public constructor( pageNumberProperty: IProperty<number>, numberOfPages: number, providedOptions: PageControlOptions ) {
+  public constructor( pageNumberProperty: TProperty<number>, numberOfPages: number, providedOptions: PageControlOptions ) {
 
     const options = optionize<PageControlOptions, SelfOptions, NodeOptions>()( {
 

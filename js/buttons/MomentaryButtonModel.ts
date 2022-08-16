@@ -6,7 +6,7 @@
  * @author Chris Malley (PixelZoom, Inc.)
  */
 
-import IProperty from '../../../axon/js/IProperty.js';
+import TProperty from '../../../axon/js/TProperty.js';
 import optionize, { EmptySelfOptions } from '../../../phet-core/js/optionize.js';
 import PhetioObject from '../../../tandem/js/PhetioObject.js';
 import Tandem from '../../../tandem/js/Tandem.js';
@@ -27,7 +27,7 @@ export default class MomentaryButtonModel<T> extends ButtonModel {
    * @param valueProperty
    * @param [providedOptions]
    */
-  public constructor( valueOff: T, valueOn: T, valueProperty: IProperty<T>, providedOptions?: MomentaryButtonModelOptions ) {
+  public constructor( valueOff: T, valueOn: T, valueProperty: TProperty<T>, providedOptions?: MomentaryButtonModelOptions ) {
 
     const options = optionize<MomentaryButtonModelOptions, SelfOptions, ButtonModelOptions>()( {
 

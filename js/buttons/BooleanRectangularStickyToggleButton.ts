@@ -10,7 +10,7 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
-import IProperty from '../../../axon/js/IProperty.js';
+import TProperty from '../../../axon/js/TProperty.js';
 import { EmptySelfOptions } from '../../../phet-core/js/optionize.js';
 import sun from '../sun.js';
 import RectangularStickyToggleButton, { RectangularStickyToggleButtonOptions } from './RectangularStickyToggleButton.js';
@@ -20,7 +20,7 @@ type SelfOptions = EmptySelfOptions;
 export type BooleanRectangularStickyToggleButtonOptions = SelfOptions & RectangularStickyToggleButtonOptions;
 
 export default class BooleanRectangularStickyToggleButton extends RectangularStickyToggleButton<boolean> {
-  public constructor( booleanProperty: IProperty<boolean>, providedOptions?: BooleanRectangularStickyToggleButtonOptions ) {
+  public constructor( booleanProperty: TProperty<boolean>, providedOptions?: BooleanRectangularStickyToggleButtonOptions ) {
     super( booleanProperty, false, true, providedOptions );
   }
 }

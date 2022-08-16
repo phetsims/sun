@@ -10,7 +10,7 @@
  * @author Chris Malley (PixelZoom, Inc.)
  */
 
-import IProperty from '../../../axon/js/IProperty.js';
+import TProperty from '../../../axon/js/TProperty.js';
 import optionize, { EmptySelfOptions } from '../../../phet-core/js/optionize.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import sun from '../sun.js';
@@ -32,7 +32,7 @@ export default class RoundMomentaryButton<T> extends RoundButton {
    * @param valueOn - value when the button is in the on state
    * @param providedOptions?
    */
-  public constructor( property: IProperty<T>, valueOff: T, valueOn: T, providedOptions?: RoundMomentaryButtonOptions ) {
+  public constructor( property: TProperty<T>, valueOff: T, valueOn: T, providedOptions?: RoundMomentaryButtonOptions ) {
 
     const options = optionize<RoundMomentaryButtonOptions, SelfOptions, RoundButtonOptions>()( {
       tandem: Tandem.REQUIRED

@@ -28,7 +28,7 @@ import sun from '../sun.js';
 import optionize, { OptionizeDefaults } from '../../../phet-core/js/optionize.js';
 import Multilink, { UnknownMultilink } from '../../../axon/js/Multilink.js';
 import UtteranceQueue from '../../../utterance-queue/js/UtteranceQueue.js';
-import IProperty from '../../../axon/js/IProperty.js';
+import TProperty from '../../../axon/js/TProperty.js';
 import Constructor from '../../../phet-core/js/types/Constructor.js';
 import IntentionalAny from '../../../phet-core/js/types/IntentionalAny.js';
 import TReadOnlyProperty from '../../../axon/js/TReadOnlyProperty.js';
@@ -58,7 +58,7 @@ type VoicingOnEndResponseOptions = {
 };
 
 type SelfOptions = {
-  valueProperty: IProperty<number>;
+  valueProperty: TProperty<number>;
   enabledRangeProperty: TReadOnlyProperty<Range>;
 
   // called when input begins from user interaction
@@ -189,7 +189,7 @@ const AccessibleValueHandler = <SuperType extends Constructor>( Type: SuperType,
   assert && assert( _.includes( inheritance( Type ), Node ), 'Only Node subtypes should compose AccessibleValueHandler' );
 
   return class AccessibleValueHandler extends Voicing( Type ) {
-    private readonly _valueProperty: IProperty<number>;
+    private readonly _valueProperty: TProperty<number>;
     private _enabledRangeProperty: TReadOnlyProperty<Range>;
     private readonly _startInput: SceneryListenerFunction;
     private readonly _onInput: SceneryListenerFunction;

@@ -18,7 +18,7 @@ import ComboBoxListItemNode, { ComboBoxListItemNodeOptions } from './ComboBoxLis
 import Panel, { PanelOptions } from './Panel.js';
 import sun from './sun.js';
 import TSoundPlayer from '../../tambo/js/TSoundPlayer.js';
-import IProperty from '../../axon/js/IProperty.js';
+import TProperty from '../../axon/js/TProperty.js';
 import { ComboBoxItem } from './ComboBox.js';
 
 type SelfOptions = {
@@ -57,7 +57,7 @@ export default class ComboBoxListBox<T> extends Panel {
    * @param tandem
    * @param providedOptions
    */
-  public constructor( property: IProperty<T>, items: ComboBoxItem<T>[], hideListBoxCallback: () => void,
+  public constructor( property: TProperty<T>, items: ComboBoxItem<T>[], hideListBoxCallback: () => void,
                       focusButtonCallback: () => void, voiceOnSelectionNode: VoicingNode, tandem: Tandem, providedOptions?: ComboBoxListBoxOptions ) {
 
     const options = optionize<ComboBoxListBoxOptions, SelfOptions, PanelOptions>()( {

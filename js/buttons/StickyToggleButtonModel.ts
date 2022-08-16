@@ -12,7 +12,7 @@
 import BooleanProperty from '../../../axon/js/BooleanProperty.js';
 import Emitter from '../../../axon/js/Emitter.js';
 import TEmitter from '../../../axon/js/TEmitter.js';
-import IProperty from '../../../axon/js/IProperty.js';
+import TProperty from '../../../axon/js/TProperty.js';
 import optionize, { EmptySelfOptions } from '../../../phet-core/js/optionize.js';
 import EventType from '../../../tandem/js/EventType.js';
 import Tandem from '../../../tandem/js/Tandem.js';
@@ -25,12 +25,12 @@ export type StickyToggleButtonModelOptions = SelfOptions & ButtonModelOptions;
 
 export default class StickyToggleButtonModel<T> extends ButtonModel {
 
-  public readonly valueProperty: IProperty<T>;
+  public readonly valueProperty: TProperty<T>;
   public readonly valueUp: T;
   public readonly valueDown: T;
 
   private readonly toggledEmitter: TEmitter;
-  private readonly pressedWhileDownProperty: IProperty<boolean>;
+  private readonly pressedWhileDownProperty: TProperty<boolean>;
   private readonly disposeToggleButtonModel: () => void;
 
   /**
@@ -40,7 +40,7 @@ export default class StickyToggleButtonModel<T> extends ButtonModel {
    *   Would have preferred to call this `property` but it would clash with the Property function name.
    * @param providedOptions
    */
-  public constructor( valueUp: T, valueDown: T, valueProperty: IProperty<T>, providedOptions?: StickyToggleButtonModelOptions ) {
+  public constructor( valueUp: T, valueDown: T, valueProperty: TProperty<T>, providedOptions?: StickyToggleButtonModelOptions ) {
 
     const options = optionize<StickyToggleButtonModelOptions, SelfOptions, ButtonModelOptions>()( {
       tandem: Tandem.REQUIRED

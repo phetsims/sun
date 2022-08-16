@@ -6,7 +6,7 @@
  * @author Chris Malley (PixelZoom, Inc.)
  */
 
-import IProperty from '../../axon/js/IProperty.js';
+import TProperty from '../../axon/js/TProperty.js';
 import InstanceRegistry from '../../phet-core/js/documentation/InstanceRegistry.js';
 import optionize from '../../phet-core/js/optionize.js';
 import { Circle, FireListener, TColor, Node, NodeOptions, Rectangle, SceneryConstants, Voicing, VoicingOptions } from '../../scenery/js/imports.js';
@@ -63,7 +63,7 @@ export default class AquaRadioButton<T> extends Voicing( Node ) {
    * @param labelNode - Node that will be vertically centered to the right of the button
    * @param providedOptions
    */
-  public constructor( property: IProperty<T>, value: T, labelNode: Node, providedOptions?: AquaRadioButtonOptions ) {
+  public constructor( property: TProperty<T>, value: T, labelNode: Node, providedOptions?: AquaRadioButtonOptions ) {
 
     const options = optionize<AquaRadioButtonOptions, SelfOptions, ParentOptions>()( {
 

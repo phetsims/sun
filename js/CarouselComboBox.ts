@@ -20,7 +20,7 @@
  * @author Chris Malley (PixelZoom, Inc.)
  */
 
-import IProperty from '../../axon/js/IProperty.js';
+import TProperty from '../../axon/js/TProperty.js';
 import StrictOmit from '../../phet-core/js/types/StrictOmit.js';
 import Multilink from '../../axon/js/Multilink.js';
 import Dimension2 from '../../dot/js/Dimension2.js';
@@ -55,7 +55,7 @@ export default class CarouselComboBox<T> extends WidthSizable( Node ) {
    * @param comboBoxItems - the items that appear in the carousel
    * @param providedOptions
    */
-  public constructor( property: IProperty<T>, comboBoxItems: ComboBoxItem<T>[], providedOptions?: CarouselComboBoxOptions ) {
+  public constructor( property: TProperty<T>, comboBoxItems: ComboBoxItem<T>[], providedOptions?: CarouselComboBoxOptions ) {
 
     const options = optionize<CarouselComboBoxOptions, SelfOptions, ParentOptions>()( {
 
@@ -242,7 +242,7 @@ class CarouselItemNode<T> extends Node {
 
   private readonly disposeCarouselItemNode: () => void;
 
-  public constructor( property: IProperty<T>, comboBoxItem: ComboBoxItem<T>, alignGroup: AlignGroup, providedOptions?: CarouselItemNodeOptions ) {
+  public constructor( property: TProperty<T>, comboBoxItem: ComboBoxItem<T>, alignGroup: AlignGroup, providedOptions?: CarouselItemNodeOptions ) {
 
     const options = optionize<CarouselItemNodeOptions, CarouselItemNodeSelfOptions, NodeOptions>()( {
 

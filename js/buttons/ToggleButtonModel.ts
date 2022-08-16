@@ -9,7 +9,7 @@
 
 import Emitter from '../../../axon/js/Emitter.js';
 import TEmitter from '../../../axon/js/TEmitter.js';
-import IProperty from '../../../axon/js/IProperty.js';
+import TProperty from '../../../axon/js/TProperty.js';
 import optionize, { EmptySelfOptions } from '../../../phet-core/js/optionize.js';
 import EventType from '../../../tandem/js/EventType.js';
 import Tandem from '../../../tandem/js/Tandem.js';
@@ -22,7 +22,7 @@ export type ToggleButtonModelOptions = SelfOptions & ButtonModelOptions;
 
 export default class ToggleButtonModel<T> extends ButtonModel {
 
-  public readonly valueProperty: IProperty<T>;
+  public readonly valueProperty: TProperty<T>;
   public readonly valueOff: T;
   public readonly valueOn: T;
 
@@ -35,7 +35,7 @@ export default class ToggleButtonModel<T> extends ButtonModel {
    * @param property - axon Property that can be either valueOff or valueOn.
    * @param [providedOptions]
    */
-  public constructor( valueOff: T, valueOn: T, property: IProperty<T>, providedOptions?: ToggleButtonModelOptions ) {
+  public constructor( valueOff: T, valueOn: T, property: TProperty<T>, providedOptions?: ToggleButtonModelOptions ) {
 
     const options = optionize<ToggleButtonModelOptions, SelfOptions, ButtonModelOptions>()( {
       tandem: Tandem.REQUIRED
