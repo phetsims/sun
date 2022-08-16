@@ -556,8 +556,10 @@ export default class Slider extends AccessibleSlider( Node, 0 ) {
         label.rotation = -VERTICAL_ROTATION;
       }
       parent.addChild( label );
-      label.centerX = tick.centerX;
-      label.bottom = tick.top - this.tickOptions.tickLabelSpacing;
+      label.localBoundsProperty.link( () => {
+        label.centerX = tick.centerX;
+        label.bottom = tick.top - this.tickOptions.tickLabelSpacing;
+      } );
       label.pickable = false;
     }
   }

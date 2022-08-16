@@ -115,15 +115,17 @@ export default class AquaRadioButtonGroup<T> extends FlowBox {
           tandem: options.tandem.createTandem( item.tandemName || `placeHolder${dotRandom.nextInt( 1000000 )}RadioButton` )
         }, options.radioButtonOptions! ) );
 
-      // set pointer areas
-      if ( options.orientation === 'vertical' ) {
-        radioButton.mouseArea = radioButton.localBounds.dilatedXY( options.mouseAreaXDilation, options.spacing / 2 );
-        radioButton.touchArea = radioButton.localBounds.dilatedXY( options.touchAreaXDilation, options.spacing / 2 );
-      }
-      else {
-        radioButton.mouseArea = radioButton.localBounds.dilatedXY( options.spacing / 2, options.mouseAreaYDilation );
-        radioButton.touchArea = radioButton.localBounds.dilatedXY( options.spacing / 2, options.touchAreaYDilation );
-      }
+      // set pointer areas - update them when the localBounds change
+      radioButton.localBoundsProperty.link( localBounds => {
+        if ( options.orientation === 'vertical' ) {
+          radioButton.mouseArea = localBounds.dilatedXY( options.mouseAreaXDilation, options.spacing / 2 );
+          radioButton.touchArea = localBounds.dilatedXY( options.touchAreaXDilation, options.spacing / 2 );
+        }
+        else {
+          radioButton.mouseArea = localBounds.dilatedXY( options.spacing / 2, options.mouseAreaYDilation );
+          radioButton.touchArea = localBounds.dilatedXY( options.spacing / 2, options.touchAreaYDilation );
+        }
+      } );
 
       radioButtons.push( radioButton );
     }

@@ -20,7 +20,8 @@ export default class VerticalAquaRadioButtonGroup<T> extends AquaRadioButtonGrou
 
   public constructor( property: Property<T>, items: AquaRadioButtonGroupItem<T>[], options?: VerticalAquaRadioButtonGroupOptions ) {
     super( property, items, optionize<VerticalAquaRadioButtonGroupOptions, SelfOptions, AquaRadioButtonGroupOptions>()( {
-      orientation: 'vertical'
+      orientation: 'vertical',
+      align: 'left'
     }, options ) );
   }
 }

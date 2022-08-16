@@ -8,10 +8,11 @@
 
 import StrictOmit from '../../../phet-core/js/types/StrictOmit.js';
 import optionize, { combineOptions } from '../../../phet-core/js/optionize.js';
-import { Font, TPaint, Text, TextOptions } from '../../../scenery/js/imports.js';
+import { Font, Text, TextOptions, TPaint } from '../../../scenery/js/imports.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import sun from '../sun.js';
 import RectangularPushButton, { RectangularPushButtonOptions } from './RectangularPushButton.js';
+import TReadOnlyProperty from '../../../axon/js/TReadOnlyProperty.js';
 
 type SelfOptions = {
   font?: Font;
@@ -26,7 +27,7 @@ export default class TextPushButton extends RectangularPushButton {
 
   private readonly disposeTextPushButton: () => void;
 
-  public constructor( text: string, providedOptions?: TextPushButtonOptions ) {
+  public constructor( text: string | TReadOnlyProperty<string>, providedOptions?: TextPushButtonOptions ) {
 
     const options = optionize<TextPushButtonOptions, StrictOmit<SelfOptions, 'textNodeOptions'>, RectangularPushButtonOptions>()( {
 
@@ -37,7 +38,7 @@ export default class TextPushButton extends RectangularPushButton {
 
       // RectangularPushButtonOptions
       tandem: Tandem.REQUIRED,
-      innerContent: text
+      innerContent: typeof text === 'string' ? text : text.value
     }, providedOptions );
 
     const textNode = new Text( text, combineOptions<TextOptions>( {
@@ -51,8 +52,20 @@ export default class TextPushButton extends RectangularPushButton {
 
     super( options );
 
+    let textListener: ( str: string ) => void;
+
+    if ( typeof text !== 'string' ) {
+      textListener = ( string => {
+        this.innerContent = string;
+      } );
+      text.lazyLink( textListener );
+    }
+
     this.disposeTextPushButton = () => {
       textNode.dispose();
+      if ( typeof text !== 'string' && textListener ) {
+        text.unlink( textListener );
+      }
     };
   }
 

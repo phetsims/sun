@@ -8,12 +8,13 @@
 
 import IProperty from '../../axon/js/IProperty.js';
 import PhetFont from '../../scenery-phet/js/PhetFont.js';
-import { FireListener, TPaint, Node, NodeOptions, Path, Rectangle, SceneryEvent, Text, Voicing, VoicingOptions } from '../../scenery/js/imports.js';
+import { FireListener, ManualConstraint, Node, NodeOptions, Path, Rectangle, SceneryEvent, Text, TPaint, Voicing, VoicingOptions, WidthSizable } from '../../scenery/js/imports.js';
 import checkSolidShape from '../../sherpa/js/fontawesome-5/checkSolidShape.js';
 import EventType from '../../tandem/js/EventType.js';
 import Tandem from '../../tandem/js/Tandem.js';
 import sun from './sun.js';
 import optionize from '../../phet-core/js/optionize.js';
+import TReadOnlyProperty from '../../axon/js/TReadOnlyProperty.js';
 
 // the check mark used for toggle-able menu items
 const CHECK_MARK_NODE = new Path( checkSolidShape, {
@@ -50,7 +51,7 @@ type SelfOptions = {
 type ParentOptions = VoicingOptions & NodeOptions;
 export type MenuItemOptions = SelfOptions & ParentOptions;
 
-export default class MenuItem extends Voicing( Node ) {
+export default class MenuItem extends WidthSizable( Voicing( Node ) ) {
 
   // if this MenuItem will be shown in the menu. Some items are just created to maintain a
   // consistent PhET-iO API for all sim runtimes, see https://github.com/phetsims/phet-io/issues/1457
@@ -62,15 +63,13 @@ export default class MenuItem extends Voicing( Node ) {
   private readonly disposeMenuItem: () => void;
 
   /**
-   * @param width - the width of the menu item
-   * @param height - the height of the menu item
    * @param closeCallback - called when closing the dialog that the menu item opened
    * @param text - label for the menu item
    * @param callback - called when the menu item is selected
    * @param present - see present field
    * @param [providedOptions]
    */
-  public constructor( width: number, height: number, closeCallback: ( event: SceneryEvent ) => void, text: string,
+  public constructor( closeCallback: ( event: SceneryEvent ) => void, text: TReadOnlyProperty<string>,
                       callback: ( event: SceneryEvent ) => void, present: boolean, providedOptions?: MenuItemOptions ) {
 
     // Extend the object with defaults.
@@ -94,18 +93,19 @@ export default class MenuItem extends Voicing( Node ) {
       tagName: 'button',
       containerTagName: 'li',
       containerAriaRole: 'none', // this is required for JAWS to handle focus correctly, see https://github.com/phetsims/john-travoltage/issues/225
-      innerContent: text,
       ariaRole: 'menuitem',
 
       // 'menuitem' role does not get click events on iOS VoiceOver, position siblings so that
       // we get Pointer events instead
-      positionInPDOM: true,
-
-      // voicing
-      voicingNameResponse: text
+      positionInPDOM: true
     }, providedOptions );
 
     super();
+
+    text.link( string => {
+      this.innerContent = string;
+      this.voicingNameResponse = string;
+    } );
 
     this.present = present;
 
@@ -115,14 +115,31 @@ export default class MenuItem extends Voicing( Node ) {
       maxWidth: MAX_ITEM_WIDTH
     } );
 
-    const highlight = new Rectangle( 0, 0, width + LEFT_X_MARGIN + RIGHT_X_MARGIN + CHECK_OFFSET,
-      height + Y_MARGIN + Y_MARGIN, CORNER_RADIUS, CORNER_RADIUS );
+    const highlight = new Rectangle( {
+      cornerRadius: CORNER_RADIUS
+    } );
+
+    textNode.boundsProperty.link( textBounds => {
+      this.localMinimumWidth = textBounds.width + LEFT_X_MARGIN + RIGHT_X_MARGIN + CHECK_OFFSET;
+      highlight.rectHeight = textBounds.height + Y_MARGIN + Y_MARGIN;
+    } );
+
+    this.localPreferredWidthProperty.link( preferredWidth => {
+      if ( preferredWidth === null ) {
+        preferredWidth = this.localMinimumWidth;
+      }
+      if ( preferredWidth ) {
+        highlight.rectWidth = preferredWidth;
+      }
+    } );
 
     this.addChild( highlight );
     this.addChild( textNode );
 
-    textNode.left = highlight.left + LEFT_X_MARGIN + CHECK_OFFSET; // text is left aligned
-    textNode.centerY = highlight.centerY;
+    ManualConstraint.create( this, [ highlight, textNode ], ( highlightProxy, textNodeProxy ) => {
+      textNodeProxy.left = highlightProxy.left + LEFT_X_MARGIN + CHECK_OFFSET; // text is left aligned
+      textNodeProxy.centerY = highlightProxy.centerY;
+    } );
 
     this.addInputListener( {
       enter: () => { highlight.fill = HIGHLIGHT_COLOR; },
