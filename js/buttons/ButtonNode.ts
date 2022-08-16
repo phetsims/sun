@@ -232,7 +232,7 @@ export default class ButtonNode extends Sizable( Voicing( Node ) ) {
       else {
         return initialBackgroundWidth;
       }
-    }, { tandem: Tandem.OPT_OUT } );
+    }, { tandem: Tandem.OPT_OUT, reentrant: true } );
     this.layoutHeightProperty = new DerivedProperty( [
       this.localPreferredHeightProperty,
       this.localMinimumHeightProperty,
@@ -252,7 +252,7 @@ export default class ButtonNode extends Sizable( Voicing( Node ) ) {
       else {
         return initialBackgroundHeight;
       }
-    }, { tandem: Tandem.OPT_OUT } );
+    }, { tandem: Tandem.OPT_OUT, reentrant: true } );
 
     // Combining each layout width/height into a dimension
     this.layoutSizeProperty = new DerivedProperty( [
@@ -260,7 +260,7 @@ export default class ButtonNode extends Sizable( Voicing( Node ) ) {
       this.layoutHeightProperty
     ], ( width, height ) => {
       return new Dimension2( width, height );
-    }, { tandem: Tandem.OPT_OUT } );
+    }, { tandem: Tandem.OPT_OUT, reentrant: true } );
 
     // Only allow an initial update if we are not sizable in that dimension
     let hasUpdated = false;
