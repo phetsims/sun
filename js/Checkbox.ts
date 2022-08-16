@@ -10,7 +10,7 @@ import PhetioAction from '../../tandem/js/PhetioAction.js';
 import validate from '../../axon/js/validate.js';
 import Matrix3 from '../../dot/js/Matrix3.js';
 import InstanceRegistry from '../../phet-core/js/documentation/InstanceRegistry.js';
-import { FireListener, TPaint, isWidthSizable, LayoutConstraint, Node, NodeOptions, Path, Rectangle, SceneryConstants, Voicing, VoicingOptions, WidthSizable, WidthSizableOptions } from '../../scenery/js/imports.js';
+import { FireListener, isWidthSizable, LayoutConstraint, Node, NodeOptions, Path, Rectangle, SceneryConstants, TPaint, Voicing, VoicingOptions, WidthSizable, WidthSizableOptions } from '../../scenery/js/imports.js';
 import checkEmptySolidShape from '../../sherpa/js/fontawesome-4/checkEmptySolidShape.js';
 import checkSquareOSolidShape from '../../sherpa/js/fontawesome-4/checkSquareOSolidShape.js';
 import checkboxCheckedSoundPlayer from '../../tambo/js/shared-sound-players/checkboxCheckedSoundPlayer.js';
@@ -52,6 +52,9 @@ type SelfOptions = {
   // Utterances to be spoken with a screen reader after the checkbox is pressed. Also used for the voicingContextResponse.
   checkedContextResponse?: TAlertable;
   uncheckedContextResponse?: TAlertable;
+
+  // By default voice the name response on checkbox change (with the context response), but optionally turn it off here.
+  voiceNameResponseOnSelection?: boolean;
 
   // whether a PhET-iO link to the checkbox's Property is created
   phetioLinkProperty?: boolean;
@@ -115,7 +118,8 @@ export default class Checkbox extends WidthSizable( Voicing( Node ) ) {
       // Utterances to be spoken with a screen reader after the checkbox is pressed. Also used for
       // the voicingContextResponse
       checkedContextResponse: null,
-      uncheckedContextResponse: null
+      uncheckedContextResponse: null,
+      voiceNameResponseOnSelection: true
     }, providedOptions );
 
     super();
@@ -127,12 +131,18 @@ export default class Checkbox extends WidthSizable( Voicing( Node ) ) {
       if ( property.value ) {
         options.checkedSoundPlayer.play();
         options.checkedContextResponse && this.alertDescriptionUtterance( options.checkedContextResponse );
-        this.voicingSpeakNameResponse( { contextResponse: Utterance.alertableToText( options.checkedContextResponse ) } );
+        this.voicingSpeakResponse( {
+          nameResponse: options.voiceNameResponseOnSelection ? this.voicingNameResponse : null,
+          contextResponse: Utterance.alertableToText( options.checkedContextResponse )
+        } );
       }
       else {
         options.uncheckedSoundPlayer.play();
         options.uncheckedContextResponse && this.alertDescriptionUtterance( options.uncheckedContextResponse );
-        this.voicingSpeakNameResponse( { contextResponse: Utterance.alertableToText( options.uncheckedContextResponse ) } );
+        this.voicingSpeakResponse( {
+          nameResponse: options.voiceNameResponseOnSelection ? this.voicingNameResponse : null,
+          contextResponse: Utterance.alertableToText( options.uncheckedContextResponse )
+        } );
       }
     }, {
       parameters: [],
