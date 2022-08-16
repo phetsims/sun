@@ -9,7 +9,7 @@
  * @author Chris Malley (PixelZoom, Inc.)
  */
 
-import Multilink from '../../axon/js/Multilink.js';
+import Multilink, { UnknownMultilink } from '../../axon/js/Multilink.js';
 import Bounds2 from '../../dot/js/Bounds2.js';
 import ScreenView from '../../joist/js/ScreenView.js';
 import Sim from '../../joist/js/Sim.js';
@@ -18,7 +18,7 @@ import optionize from '../../phet-core/js/optionize.js';
 import StrictOmit from '../../phet-core/js/types/StrictOmit.js';
 import StringUtils from '../../phetcommon/js/util/StringUtils.js';
 import CloseButton from '../../scenery-phet/js/buttons/CloseButton.js';
-import { AlignBox, FocusManager, FullScreen, HBox, TColor, KeyboardUtils, Node, PDOMPeer, PDOMUtils, SceneryEvent, VBox } from '../../scenery/js/imports.js';
+import { AlignBox, FocusManager, FullScreen, HBox, KeyboardUtils, Node, PDOMPeer, PDOMUtils, SceneryEvent, TColor, VBox } from '../../scenery/js/imports.js';
 import TSoundPlayer from '../../tambo/js/TSoundPlayer.js';
 import generalCloseSoundPlayer from '../../tambo/js/shared-sound-players/generalCloseSoundPlayer.js';
 import generalOpenSoundPlayer from '../../tambo/js/shared-sound-players/generalOpenSoundPlayer.js';
@@ -33,8 +33,8 @@ import Panel, { PanelOptions } from './Panel.js';
 import Popupable, { PopupableOptions } from './Popupable.js';
 import sun from './sun.js';
 import sunStrings from './sunStrings.js';
-import IProperty from '../../axon/js/IProperty.js';
 import TinyProperty from '../../axon/js/TinyProperty.js';
+import TReadOnlyProperty from '../../axon/js/TReadOnlyProperty.js';
 
 // see SelfOptions.titleAlign
 type DialogTitleAlign = 'left' | 'right' | 'center';
@@ -119,7 +119,7 @@ n |                 |                                        |             g   |
 
   // If provided use this dialog title in the Close button voicingNameResponse. This should be provided
   // for proper Dialog Voicing design.
-  closeButtonVoicingDialogTitle?: string | IProperty<string> | null;
+  closeButtonVoicingDialogTitle?: string | TReadOnlyProperty<string> | null;
 
   // By default, the close button is placed first in the PDOMOrder (and thus the focus order). Set this to true
   // if you want the close button to be the last element in the focus order for the Dialog.
@@ -290,9 +290,10 @@ export default class Dialog extends Popupable( Panel, 1 ) {
       voicingContextResponse: sunStrings.a11y.closed
     } );
 
+    let voicingNameMultilink: UnknownMultilink;
     if ( options.closeButtonVoicingDialogTitle ) {
       const titleProperty = typeof options.closeButtonVoicingDialogTitle === 'string' ? new TinyProperty( options.closeButtonVoicingDialogTitle ) : options.closeButtonVoicingDialogTitle;
-      Multilink.multilink( [ sunStrings.a11y.titleClosePatternProperty, titleProperty ], ( titleClosePattern, titleString ) => {
+      voicingNameMultilink = Multilink.multilink( [ sunStrings.a11y.titleClosePatternProperty, titleProperty ], ( titleClosePattern, titleString ) => {
         closeButton.voicingNameResponse = StringUtils.fillIn( titleClosePattern, {
           title: titleString
         } );
@@ -393,7 +394,7 @@ export default class Dialog extends Popupable( Panel, 1 ) {
       this.sim.selectedScreenProperty,
       this.isShowingProperty,
       this.localBoundsProperty
-    ], ( bounds: Bounds2 | null, screenBounds: Bounds2 | null, scale: number ) => {
+    ], ( bounds, screenBounds, scale ) => {
       if ( bounds && screenBounds && scale ) {
         options.layoutStrategy( this, bounds, screenBounds, scale );
       }
@@ -443,6 +444,8 @@ export default class Dialog extends Popupable( Panel, 1 ) {
     this.disposeDialog = () => {
       updateLayoutMultilink.dispose();
       this.removeInputListener( escapeListener );
+
+      voicingNameMultilink && voicingNameMultilink.dispose();
 
       closeButton.dispose();
 

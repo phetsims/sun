@@ -12,7 +12,7 @@ import { Font, Text, TextOptions, TPaint } from '../../../scenery/js/imports.js'
 import Tandem from '../../../tandem/js/Tandem.js';
 import sun from '../sun.js';
 import RectangularPushButton, { RectangularPushButtonOptions } from './RectangularPushButton.js';
-import IProperty from '../../../axon/js/IProperty.js';
+import TReadOnlyProperty from '../../../axon/js/TReadOnlyProperty.js';
 
 type SelfOptions = {
   font?: Font;
@@ -27,9 +27,7 @@ export default class TextPushButton extends RectangularPushButton {
 
   private readonly disposeTextPushButton: () => void;
 
-  public constructor( text: string | IProperty<string>, providedOptions?: TextPushButtonOptions ) {
-
-    const initialText = typeof text === 'string' ? text : text.value;
+  public constructor( text: string | TReadOnlyProperty<string>, providedOptions?: TextPushButtonOptions ) {
 
     const options = optionize<TextPushButtonOptions, StrictOmit<SelfOptions, 'textNodeOptions'>, RectangularPushButtonOptions>()( {
 
@@ -40,29 +38,34 @@ export default class TextPushButton extends RectangularPushButton {
 
       // RectangularPushButtonOptions
       tandem: Tandem.REQUIRED,
-      innerContent: initialText
+      innerContent: typeof text === 'string' ? text : text.value
     }, providedOptions );
 
-    const textNode = new Text( initialText, combineOptions<TextOptions>( {
+    const textNode = new Text( text, combineOptions<TextOptions>( {
       font: options.font,
       fill: options.textFill,
       maxWidth: options.maxTextWidth,
-      tandem: options.tandem.createTandem( 'textNode' ),
-      textProperty: typeof text === 'string' ? undefined : text
+      tandem: options.tandem.createTandem( 'textNode' )
     }, options.textNodeOptions ) );
 
     options.content = textNode;
 
     super( options );
 
+    let textListener: ( str: string ) => void;
+
     if ( typeof text !== 'string' ) {
-      text.lazyLink( string => {
+      textListener = ( string => {
         this.innerContent = string;
       } );
+      text.lazyLink( textListener );
     }
 
     this.disposeTextPushButton = () => {
       textNode.dispose();
+      if ( typeof text !== 'string' && textListener ) {
+        text.unlink( textListener );
+      }
     };
   }
 

@@ -8,12 +8,13 @@
 
 import IProperty from '../../axon/js/IProperty.js';
 import PhetFont from '../../scenery-phet/js/PhetFont.js';
-import { FireListener, TPaint, Node, NodeOptions, Path, Rectangle, SceneryEvent, Text, Voicing, VoicingOptions, WidthSizable, ManualConstraint } from '../../scenery/js/imports.js';
+import { FireListener, ManualConstraint, Node, NodeOptions, Path, Rectangle, SceneryEvent, Text, TPaint, Voicing, VoicingOptions, WidthSizable } from '../../scenery/js/imports.js';
 import checkSolidShape from '../../sherpa/js/fontawesome-5/checkSolidShape.js';
 import EventType from '../../tandem/js/EventType.js';
 import Tandem from '../../tandem/js/Tandem.js';
 import sun from './sun.js';
 import optionize from '../../phet-core/js/optionize.js';
+import TReadOnlyProperty from '../../axon/js/TReadOnlyProperty.js';
 
 // the check mark used for toggle-able menu items
 const CHECK_MARK_NODE = new Path( checkSolidShape, {
@@ -68,7 +69,7 @@ export default class MenuItem extends WidthSizable( Voicing( Node ) ) {
    * @param present - see present field
    * @param [providedOptions]
    */
-  public constructor( closeCallback: ( event: SceneryEvent ) => void, text: IProperty<string>,
+  public constructor( closeCallback: ( event: SceneryEvent ) => void, text: TReadOnlyProperty<string>,
                       callback: ( event: SceneryEvent ) => void, present: boolean, providedOptions?: MenuItemOptions ) {
 
     // Extend the object with defaults.
@@ -108,11 +109,10 @@ export default class MenuItem extends WidthSizable( Voicing( Node ) ) {
 
     this.present = present;
 
-    const textNode = new Text( text.value, {
+    const textNode = new Text( text, {
       font: new PhetFont( FONT_SIZE ),
       fill: options.textFill,
-      maxWidth: MAX_ITEM_WIDTH,
-      textProperty: text
+      maxWidth: MAX_ITEM_WIDTH
     } );
 
     const highlight = new Rectangle( {
