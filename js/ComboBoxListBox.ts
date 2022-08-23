@@ -8,7 +8,7 @@
 
 import PhetioAction from '../../tandem/js/PhetioAction.js';
 import optionize, { combineOptions } from '../../phet-core/js/optionize.js';
-import { TInputListener, TPaint, KeyboardUtils, SceneryEvent, SpeakingOptions, VBox, VoicingNode } from '../../scenery/js/imports.js';
+import { KeyboardUtils, SceneryEvent, SpeakingOptions, TInputListener, TPaint, VBox, VoicingNode } from '../../scenery/js/imports.js';
 import multiSelectionSoundPlayerFactory from '../../tambo/js/multiSelectionSoundPlayerFactory.js';
 import generalCloseSoundPlayer from '../../tambo/js/shared-sound-players/generalCloseSoundPlayer.js';
 import generalOpenSoundPlayer from '../../tambo/js/shared-sound-players/generalOpenSoundPlayer.js';
@@ -18,8 +18,9 @@ import ComboBoxListItemNode, { ComboBoxListItemNodeOptions } from './ComboBoxLis
 import Panel, { PanelOptions } from './Panel.js';
 import sun from './sun.js';
 import TSoundPlayer from '../../tambo/js/TSoundPlayer.js';
+import DerivedProperty from '../../axon/js/DerivedProperty.js';
 import TProperty from '../../axon/js/TProperty.js';
-import { ComboBoxItem } from './ComboBox.js';
+import ComboBox, { ComboBoxItem } from './ComboBox.js';
 
 type SelfOptions = {
 
@@ -138,20 +139,20 @@ export default class ComboBoxListBox<T> extends Panel {
       }
     };
 
-    // Compute max item dimensions
-    const maxItemWidth = _.maxBy( items, ( item: ComboBoxItem<T> ) => item.node.width )!.node.width;
-    const maxItemHeight = _.maxBy( items, ( item: ComboBoxItem<T> ) => item.node.height )!.node.height;
+    // Compute max item size
+    const maxItemWidthProperty = ComboBox.getMaxItemWidthProperty( items );
+    const maxItemHeightProperty = ComboBox.getMaxItemHeightProperty( items );
 
     // Uniform dimensions for all highlighted items in the list, highlight overlaps margin by 50%
-    const highlightWidth = maxItemWidth + options.xMargin;
-    const highlightHeight = maxItemHeight + options.yMargin;
+    const highlightWidthProperty = new DerivedProperty( [ maxItemWidthProperty ], width => width + options.xMargin );
+    const highlightHeightProperty = new DerivedProperty( [ maxItemHeightProperty ], width => width + options.yMargin );
 
     // Create a node for each item in the list, and attach a listener.
     const listItemNodes: ComboBoxListItemNode<T>[] = [];
     items.forEach( ( item, index ) => {
 
       // Create the list item node
-      const listItemNode = new ComboBoxListItemNode( item, highlightWidth, highlightHeight,
+      const listItemNode = new ComboBoxListItemNode( item, highlightWidthProperty, highlightHeightProperty,
         combineOptions<ComboBoxListItemNodeOptions>( {
           align: options.align,
           highlightFill: options.highlightFill,
@@ -159,8 +160,9 @@ export default class ComboBoxListBox<T> extends Panel {
 
           // highlight overlaps half of margins
           xMargin: 0.5 * options.xMargin,
+
+          // NOTE: This is used somehow to get correct layout. This is overwritten later
           left: 0.5 * options.xMargin,
-          top: ( 0.5 * options.yMargin ) + ( index * highlightHeight ),
           tandem: item.tandemName ? tandem.createTandem( item.tandemName ) : Tandem.OPTIONAL
         }, options.comboBoxListItemNodeOptions ) );
       listItemNodes.push( listItemNode );
@@ -273,6 +275,9 @@ export default class ComboBoxListBox<T> extends Panel {
 
       // Private to ComboBoxListBox, but we need to clean up tandem.
       fireAction.dispose();
+
+      maxItemWidthProperty.dispose();
+      maxItemHeightProperty.dispose();
     };
   }
 

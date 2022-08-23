@@ -10,7 +10,7 @@
 import { Shape } from '../../kite/js/imports.js';
 import optionize from '../../phet-core/js/optionize.js';
 import StringUtils from '../../phetcommon/js/util/StringUtils.js';
-import { AriaHasPopUpMutator, GridBox, TPaint, isWidthSizable, Node, Path, PDOMBehaviorFunction, PDOMPeer } from '../../scenery/js/imports.js';
+import { AriaHasPopUpMutator, GridBox, Node, Path, PDOMBehaviorFunction, PDOMPeer, TPaint } from '../../scenery/js/imports.js';
 import Tandem from '../../tandem/js/Tandem.js';
 import ButtonNode from './buttons/ButtonNode.js';
 import RectangularPushButton, { RectangularPushButtonOptions } from './buttons/RectangularPushButton.js';
@@ -21,7 +21,8 @@ import TProperty from '../../axon/js/TProperty.js';
 import nullSoundPlayer from '../../tambo/js/shared-sound-players/nullSoundPlayer.js';
 import TinyProperty from '../../axon/js/TinyProperty.js';
 import StrictOmit from '../../phet-core/js/types/StrictOmit.js';
-import { ComboBoxItem } from './ComboBox.js';
+import ComboBox, { ComboBoxItem } from './ComboBox.js';
+import Multilink from '../../axon/js/Multilink.js';
 
 // constants
 const ALIGN_VALUES = [ 'left', 'center', 'right' ] as const;
@@ -111,56 +112,18 @@ export default class ComboBoxButton<T> extends RectangularPushButton {
     const itemYMargin = options.yMargin;
 
     // Compute max item size
-    const maxItemWidth = _.maxBy( items, ( item: ComboBoxItem<T> ) => isWidthSizable( item.node ) ? item.node.minimumWidth || 0 : item.node.width )!.node.width;
-    const maxItemHeight = _.maxBy( items, ( item: ComboBoxItem<T> ) => item.node.height )!.node.height;
+    const maxItemWidthProperty = ComboBox.getMaxItemWidthProperty( items );
+    const maxItemHeightProperty = ComboBox.getMaxItemHeightProperty( items );
 
-    const fullHeight = maxItemHeight + 2 * itemYMargin;
-
-    // We want the arrow area to be square, see https://github.com/phetsims/sun/issues/453
-    const arrowAreaSize = fullHeight;
-
-    // The arrow is sized to fit in the arrow area, empirically determined to be visually pleasing.
-    const arrowHeight = 0.35 * arrowAreaSize; // height of equilateral triangle
-    const arrowWidth = 2 * arrowHeight * Math.sqrt( 3 ) / 3; // side of equilateral triangle
-
-    const leftMargin = itemXMargin;
-    const middleMargin = itemXMargin - options.lineWidth / 2; // Compensation for the separator having width
-    const rightMargin = -options.lineWidth / 2; // Compensation for the separator having width
-
-    // arrow that points up or down, to indicate which way the list pops up
-    const createArrowShape = ( direction: 'up' | 'down', width: number, height: number ) => {
-      if ( direction === 'up' ) {
-        return new Shape()
-          .moveTo( 0, height )
-          .lineTo( width / 2, 0 )
-          .lineTo( width, height )
-          .close();
-      }
-      else {
-        return new Shape()
-          .moveTo( 0, 0 )
-          .lineTo( width, 0 )
-          .lineTo( width / 2, height )
-          .close();
-      }
-    };
-    const arrow = new Path( createArrowShape( options.arrowDirection, arrowWidth, arrowHeight ), {
-      fill: options.arrowFill,
-      layoutOptions: {
-        minContentWidth: arrowAreaSize,
-        minContentHeight: arrowAreaSize
-      }
+    const arrow = new Path( null, {
+      fill: options.arrowFill
     } );
 
     // Wrapper for the selected item's Node.
     // Do not transform ComboBoxItem.node because it is shared with ComboBoxListItemNode.
     const itemNodeWrapper = new Node( {
       layoutOptions: {
-        minContentWidth: maxItemWidth,
-        minContentHeight: maxItemHeight,
         yMargin: itemYMargin,
-        leftMargin: leftMargin,
-        rightMargin: middleMargin,
         grow: 1,
         xAlign: options.align
       },
@@ -170,12 +133,9 @@ export default class ComboBoxButton<T> extends RectangularPushButton {
     } );
 
     // Vertical separator between the item and arrow that is the full height of the button.
-    const vSeparator = new VSeparator( fullHeight, {
+    const vSeparator = new VSeparator( 0, {
       stroke: 'black',
-      lineWidth: options.lineWidth,
-      layoutOptions: {
-        rightMargin: rightMargin
-      }
+      lineWidth: options.lineWidth
     } );
 
     options.content = new GridBox( {
@@ -184,6 +144,58 @@ export default class ComboBoxButton<T> extends RectangularPushButton {
         vSeparator,
         arrow
       ] ]
+    } );
+
+    Multilink.multilink( [ maxItemWidthProperty, maxItemHeightProperty ], ( maxItemWidth, maxItemHeight ) => {
+
+      const fullHeight = maxItemHeight + 2 * itemYMargin;
+
+      // We want the arrow area to be square, see https://github.com/phetsims/sun/issues/453
+      const arrowAreaSize = fullHeight;
+
+      // The arrow is sized to fit in the arrow area, empirically determined to be visually pleasing.
+      const arrowHeight = 0.35 * arrowAreaSize; // height of equilateral triangle
+      const arrowWidth = 2 * arrowHeight * Math.sqrt( 3 ) / 3; // side of equilateral triangle
+
+      const leftMargin = itemXMargin;
+      const middleMargin = itemXMargin - options.lineWidth / 2; // Compensation for the separator having width
+      const rightMargin = -options.lineWidth / 2; // Compensation for the separator having width
+
+      // arrow that points up or down, to indicate which way the list pops up
+      const createArrowShape = ( direction: 'up' | 'down', width: number, height: number ) => {
+        if ( direction === 'up' ) {
+          return new Shape()
+            .moveTo( 0, height )
+            .lineTo( width / 2, 0 )
+            .lineTo( width, height )
+            .close();
+        }
+        else {
+          return new Shape()
+            .moveTo( 0, 0 )
+            .lineTo( width, 0 )
+            .lineTo( width / 2, height )
+            .close();
+        }
+      };
+
+      arrow.shape = createArrowShape( options.arrowDirection, arrowWidth, arrowHeight );
+      arrow.mutateLayoutOptions( {
+        minContentWidth: arrowAreaSize,
+        minContentHeight: arrowAreaSize
+      } );
+
+      itemNodeWrapper.mutateLayoutOptions( {
+        minContentWidth: maxItemWidth,
+        minContentHeight: maxItemHeight,
+        leftMargin: leftMargin,
+        rightMargin: middleMargin
+      } );
+
+      vSeparator.y2 = fullHeight;
+      vSeparator.mutateLayoutOptions( {
+        rightMargin: rightMargin
+      } );
     } );
 
     // Margins are different in the item and button areas. And we want the vertical separator to extend
@@ -255,6 +267,9 @@ export default class ComboBoxButton<T> extends RectangularPushButton {
     AriaHasPopUpMutator.mutateNode( this, 'listbox' );
 
     this.disposeComboBoxButton = () => {
+      maxItemWidthProperty.dispose();
+      maxItemHeightProperty.dispose();
+
       property.unlink( propertyObserver );
       options.localPreferredWidthProperty.unlink( preferredWidthListener );
     };

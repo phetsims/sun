@@ -17,6 +17,7 @@ import Tandem from '../../tandem/js/Tandem.js';
 import sun from './sun.js';
 import SunConstants from './SunConstants.js';
 import { ComboBoxItem } from './ComboBox.js';
+import TReadOnlyProperty from '../../axon/js/TReadOnlyProperty.js';
 
 type SelfOptions = {
   align?: 'left' | 'right' | 'center';
@@ -43,7 +44,7 @@ export default class ComboBoxListItemNode<T> extends Voicing( Node ) {
 
   public readonly item: ComboBoxItem<T>;
 
-  public constructor( item: ComboBoxItem<T>, highlightWidth: number, highlightHeight: number, providedOptions?: ComboBoxListItemNodeOptions ) {
+  public constructor( item: ComboBoxItem<T>, highlightWidthProperty: TReadOnlyProperty<number>, highlightHeightProperty: TReadOnlyProperty<number>, providedOptions?: ComboBoxListItemNodeOptions ) {
 
     const options = optionize<ComboBoxListItemNodeOptions, SelfOptions, ParentOptions>()( {
 
@@ -90,15 +91,22 @@ export default class ComboBoxListItemNode<T> extends Voicing( Node ) {
     } );
 
     // Highlight that is shown when the pointer is over this item. This is not the a11y focus rectangle.
-    const highlightRectangle = new Rectangle( 0, 0, highlightWidth, highlightHeight, {
+    const highlightRectangle = new Rectangle( {
       cornerRadius: options.highlightCornerRadius
     } );
 
     // Wrapper for the item's Node. Do not transform item.node because it is shared with ComboBoxButton!
     const itemNodeWrapper = new Node( {
-      children: [ item.node ],
-      maxWidth: highlightWidth,
-      maxHeight: highlightHeight
+      children: [ item.node ]
+    } );
+
+    highlightWidthProperty.link( width => {
+      highlightRectangle.rectWidth = width;
+      itemNodeWrapper.maxWidth = width;
+    } );
+    highlightHeightProperty.link( height => {
+      highlightRectangle.rectHeight = height;
+      itemNodeWrapper.maxHeight = height;
     } );
 
     // Assume that item.node may change (as in ComboBoxDisplay) and adjust layout dynamically.

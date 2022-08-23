@@ -24,7 +24,7 @@ import dotRandom from '../../dot/js/dotRandom.js';
 import Vector2 from '../../dot/js/Vector2.js';
 import InstanceRegistry from '../../phet-core/js/documentation/InstanceRegistry.js';
 import optionize from '../../phet-core/js/optionize.js';
-import { Display, Focus, FocusManager, TColor, TInputListener, TPaint, Node, NodeOptions, PDOMBehaviorFunction, PDOMPeer, WidthSizable, WidthSizableOptions } from '../../scenery/js/imports.js';
+import { Display, Focus, FocusManager, isWidthSizable, mixesWidthSizable, Node, NodeOptions, PDOMBehaviorFunction, PDOMPeer, TColor, TInputListener, TPaint, WidthSizable, WidthSizableOptions } from '../../scenery/js/imports.js';
 import TSoundPlayer from '../../tambo/js/TSoundPlayer.js';
 import generalCloseSoundPlayer from '../../tambo/js/shared-sound-players/generalCloseSoundPlayer.js';
 import generalOpenSoundPlayer from '../../tambo/js/shared-sound-players/generalOpenSoundPlayer.js';
@@ -35,8 +35,11 @@ import ComboBoxButton from './ComboBoxButton.js';
 import ComboBoxListBox from './ComboBoxListBox.js';
 import sun from './sun.js';
 import SunConstants from './SunConstants.js';
+import DerivedProperty from '../../axon/js/DerivedProperty.js';
 import TProperty from '../../axon/js/TProperty.js';
+import IntentionalAny from '../../phet-core/js/types/IntentionalAny.js';
 import ReadOnlyProperty from '../../axon/js/ReadOnlyProperty.js';
+import TReadOnlyProperty from '../../axon/js/TReadOnlyProperty.js';
 
 // const
 const LIST_POSITION_VALUES = [ 'above', 'below' ] as const; // where the list pops up relative to the button
@@ -211,7 +214,6 @@ export default class ComboBox<T> extends WidthSizable( Node ) {
       buttonTouchAreaYDilation: 0,
       buttonMouseAreaXDilation: 0,
       buttonMouseAreaYDilation: 0,
-      widthSizable: false, // Would manually need to turn on sizability
 
       // list
       listFill: 'white',
@@ -268,7 +270,7 @@ export default class ComboBox<T> extends WidthSizable( Node ) {
       touchAreaYDilation: options.buttonTouchAreaYDilation,
       mouseAreaXDilation: options.buttonMouseAreaXDilation,
       mouseAreaYDilation: options.buttonMouseAreaYDilation,
-      widthSizable: options.widthSizable,
+      widthSizable: true,
       localPreferredWidthProperty: this.localPreferredWidthProperty,
       localMinimumWidthProperty: this.localMinimumWidthProperty,
 
@@ -500,6 +502,29 @@ export default class ComboBox<T> extends WidthSizable( Node ) {
    */
   public isItemVisible( value: T ): boolean {
     return this.listBox.isItemVisible( value );
+  }
+
+  public static getMaxItemWidthProperty<T>( items: ComboBoxItem<T>[] ): TReadOnlyProperty<number> {
+    const widthProperties = _.flatten( items.map( item => {
+      const properties: TReadOnlyProperty<IntentionalAny>[] = [ item.node.boundsProperty ];
+      if ( mixesWidthSizable( item.node ) ) {
+        properties.push( item.node.isWidthResizableProperty );
+        properties.push( item.node.minimumWidthProperty );
+      }
+      return properties;
+    } ) );
+    // @ts-ignore DerivedProperty isn't understanding the Property[]
+    return new DerivedProperty( widthProperties, () => {
+      return Math.max( ...items.map( item => isWidthSizable( item.node ) ? item.node.minimumWidth || 0 : item.node.width ) );
+    } );
+  }
+
+  public static getMaxItemHeightProperty<T>( items: ComboBoxItem<T>[] ): TReadOnlyProperty<number> {
+    const heightProperties = items.map( item => item.node.boundsProperty );
+    // @ts-ignore DerivedProperty isn't understanding the Property[]
+    return new DerivedProperty( heightProperties, () => {
+      return Math.max( ...items.map( item => item.node.height ) );
+    } );
   }
 
   public static ComboBoxIO = new IOType( 'ComboBoxIO', {
