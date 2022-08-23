@@ -161,8 +161,6 @@ export default class ComboBoxListBox<T> extends Panel {
           // highlight overlaps half of margins
           xMargin: 0.5 * options.xMargin,
 
-          // NOTE: This is used somehow to get correct layout. This is overwritten later
-          left: 0.5 * options.xMargin,
           tandem: item.tandemName ? tandem.createTandem( item.tandemName ) : Tandem.OPTIONAL
         }, options.comboBoxListItemNodeOptions ) );
       listItemNodes.push( listItemNode );
@@ -176,11 +174,11 @@ export default class ComboBoxListBox<T> extends Panel {
       children: listItemNodes
     } );
 
-    // Adjust margins to account for highlight overlap
-    options.xMargin = options.xMargin / 2;
-    options.yMargin = options.yMargin / 2;
-
-    super( content, options );
+    super( content, combineOptions<PanelOptions>( {}, options, {
+      // Adjust margins to account for highlight overlap
+      xMargin: options.xMargin / 2,
+      yMargin: options.yMargin / 2
+    } ) );
 
     this.voiceOnSelectionNode = voiceOnSelectionNode;
 
