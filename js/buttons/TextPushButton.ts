@@ -25,8 +25,6 @@ export type TextPushButtonOptions = SelfOptions & StrictOmit<RectangularPushButt
 
 export default class TextPushButton extends RectangularPushButton {
 
-  private readonly disposeTextPushButton: () => void;
-
   public constructor( text: string | TReadOnlyProperty<string>, providedOptions?: TextPushButtonOptions ) {
 
     const options = optionize<TextPushButtonOptions, StrictOmit<SelfOptions, 'textNodeOptions'>, RectangularPushButtonOptions>()( {
@@ -38,40 +36,17 @@ export default class TextPushButton extends RectangularPushButton {
 
       // RectangularPushButtonOptions
       tandem: Tandem.REQUIRED,
-      innerContent: typeof text === 'string' ? text : text.value
+      innerContent: text
     }, providedOptions );
 
-    const textNode = new Text( text, combineOptions<TextOptions>( {
+    options.content = new Text( text, combineOptions<TextOptions>( {
       font: options.font,
       fill: options.textFill,
       maxWidth: options.maxTextWidth,
       tandem: options.tandem.createTandem( 'textNode' )
     }, options.textNodeOptions ) );
 
-    options.content = textNode;
-
     super( options );
-
-    let textListener: ( str: string ) => void;
-
-    if ( typeof text !== 'string' ) {
-      textListener = ( string => {
-        this.innerContent = string;
-      } );
-      text.lazyLink( textListener );
-    }
-
-    this.disposeTextPushButton = () => {
-      textNode.dispose();
-      if ( typeof text !== 'string' && textListener ) {
-        text.unlink( textListener );
-      }
-    };
-  }
-
-  public override dispose(): void {
-    this.disposeTextPushButton();
-    super.dispose();
   }
 }
 
