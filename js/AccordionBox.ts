@@ -138,7 +138,7 @@ export default class AccordionBox extends Node {
 
       // If true, the AccordionBox will resize itself as needed when the title/content resizes.
       // See https://github.com/phetsims/sun/issues/304
-      resize: false,
+      resize: true,
 
       // applied to multiple parts of this UI component
       cursor: 'pointer', // {string} default cursor

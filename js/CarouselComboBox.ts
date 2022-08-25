@@ -93,9 +93,6 @@ export default class CarouselComboBox<T> extends WidthSizable( Node ) {
         yMargin: 4
       },
 
-      // The default, can be triggered to be sizable
-      widthSizable: false,
-
       // phet-io
       tandem: Tandem.OPTIONAL
     }, providedOptions );

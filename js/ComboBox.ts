@@ -269,7 +269,6 @@ export default class ComboBox<T> extends WidthSizable( Node ) {
       touchAreaYDilation: options.buttonTouchAreaYDilation,
       mouseAreaXDilation: options.buttonMouseAreaXDilation,
       mouseAreaYDilation: options.buttonMouseAreaYDilation,
-      widthSizable: true,
       localPreferredWidthProperty: this.localPreferredWidthProperty,
       localMinimumWidthProperty: this.localMinimumWidthProperty,
 
