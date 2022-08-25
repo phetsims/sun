@@ -36,10 +36,9 @@ import ComboBoxListBox from './ComboBoxListBox.js';
 import sun from './sun.js';
 import SunConstants from './SunConstants.js';
 import DerivedProperty from '../../axon/js/DerivedProperty.js';
-import TProperty from '../../axon/js/TProperty.js';
 import IntentionalAny from '../../phet-core/js/types/IntentionalAny.js';
-import ReadOnlyProperty from '../../axon/js/ReadOnlyProperty.js';
 import TReadOnlyProperty from '../../axon/js/TReadOnlyProperty.js';
+import LinkableProperty from '../../axon/js/LinkableProperty.js';
 
 // const
 const LIST_POSITION_VALUES = [ 'above', 'below' ] as const; // where the list pops up relative to the button
@@ -178,7 +177,7 @@ export default class ComboBox<T> extends WidthSizable( Node ) {
    * @param listParent node that will be used as the list's parent, use this to ensure that the list is in front of everything else
    * @param [providedOptions?]
    */
-  public constructor( property: TProperty<T> & ReadOnlyProperty<T>, items: ComboBoxItem<T>[], listParent: Node, providedOptions?: ComboBoxOptions ) {
+  public constructor( property: LinkableProperty<T>, items: ComboBoxItem<T>[], listParent: Node, providedOptions?: ComboBoxOptions ) {
 
     assert && assert( _.uniqBy( items, ( item: ComboBoxItem<T> ) => item.value ).length === items.length,
       'items must have unique values' );
