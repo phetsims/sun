@@ -10,7 +10,7 @@
 
 import { Shape } from '../../../kite/js/imports.js';
 import InstanceRegistry from '../../../phet-core/js/documentation/InstanceRegistry.js';
-import { Color, FlowBox, FlowBoxOptions, FocusHighlightPath, TInputListener, Node, PDOMPeer, Rectangle, SceneryConstants } from '../../../scenery/js/imports.js';
+import { Color, FlowBox, FlowBoxOptions, FocusHighlightPath, Node, PDOMPeer, PDOMValueType, Rectangle, SceneryConstants, TInputListener } from '../../../scenery/js/imports.js';
 import multiSelectionSoundPlayerFactory from '../../../tambo/js/multiSelectionSoundPlayerFactory.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import ColorConstants from '../ColorConstants.js';
@@ -40,9 +40,9 @@ export type RectangularRadioButtonItem<T> = {
   phetioDocumentation?: string; // optional documentation for PhET-iO
   tandemName?: string; // optional tandem for PhET-iO
   tandem?: never; // use tandemName instead of a Tandem instance
-  labelContent?: string; // optional label for a11y (description and voicing)
+  labelContent?: PDOMValueType; // optional label for a11y (description and voicing)
   voicingContextResponse?: VoicingResponse;
-  descriptionContent?: string; // optional label for a11y
+  descriptionContent?: PDOMValueType; // optional label for a11y
 };
 
 /**
