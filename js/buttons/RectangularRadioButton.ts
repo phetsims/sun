@@ -94,6 +94,7 @@ export default class RectangularRadioButton<T> extends RectangularButton {
 
       // phet-io
       tandem: Tandem.REQUIRED,
+      tandemSuffix: 'Button',
       phetioReadOnly: PhetioObject.DEFAULT_OPTIONS.phetioReadOnly // to support properly passing this to children, see https://github.com/phetsims/tandem/issues/60
     }, providedOptions );
 

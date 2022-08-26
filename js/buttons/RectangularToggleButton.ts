@@ -47,7 +47,8 @@ export default class RectangularToggleButton<T> extends RectangularButton {
       valueOnSoundPlayer: toggleOnSoundPlayer,
 
       // phet-io support
-      tandem: Tandem.REQUIRED
+      tandem: Tandem.REQUIRED,
+      tandemSuffix: 'Button'
     }, providedOptions );
 
     // Note it shares a tandem with this, so the emitter will be instrumented as a child of the button

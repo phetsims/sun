@@ -233,6 +233,7 @@ export default class ComboBox<T> extends WidthSizable( Node ) {
 
       // phet-io
       tandem: Tandem.REQUIRED,
+      tandemSuffix: 'ComboBox',
       phetioType: ComboBox.ComboBoxIO,
       phetioEventType: EventType.USER,
       visiblePropertyOptions: { phetioFeatured: true },

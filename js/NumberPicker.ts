@@ -177,6 +177,7 @@ export default class NumberPicker extends AccessibleNumberSpinner( Node, 0 ) {
 
       // phet-io
       tandem: Tandem.REQUIRED,
+      tandemSuffix: 'Picker',
       phetioReadOnly: PhetioObject.DEFAULT_OPTIONS.phetioReadOnly,
       visiblePropertyOptions: { phetioFeatured: true },
       phetioEnabledPropertyInstrumented: true

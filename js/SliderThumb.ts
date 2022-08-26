@@ -38,7 +38,8 @@ export default class SliderThumb extends Rectangle {
       fill: 'rgb( 50, 145, 184 )',
       stroke: 'black',
       lineWidth: 1,
-      tandem: Tandem.REQUIRED // Slider.js adds to this tandem to nest its dragListener under the thumb.
+      tandem: Tandem.REQUIRED, // Slider.js adds to this tandem to nest its dragListener under the thumb.
+      tandemSuffix: 'ThumbNode'
     }, providedOptions );
 
     // Set a default corner radius

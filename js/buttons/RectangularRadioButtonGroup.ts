@@ -151,6 +151,7 @@ export default class RectangularRadioButtonGroup<T> extends FlowBox {
 
       // phet-io
       tandem: Tandem.REQUIRED,
+      tandemSuffix: 'ButtonGroup',
       visiblePropertyOptions: { phetioFeatured: true },
       phetioEnabledPropertyInstrumented: true, // opt into default PhET-iO instrumented enabledProperty
 

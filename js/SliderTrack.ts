@@ -76,7 +76,8 @@ export default class SliderTrack extends Node {
       valueChangeSoundGeneratorOptions: {},
 
       // phet-io
-      tandem: Tandem.REQUIRED
+      tandem: Tandem.REQUIRED,
+      tandemSuffix: 'TrackNode'
     }, providedOptions );
 
     // If no sound generator was provided, create the default.

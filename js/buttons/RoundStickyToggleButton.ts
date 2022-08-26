@@ -42,7 +42,8 @@ export default class RoundStickyToggleButton<T> extends RoundButton {
       soundPlayer: pushButtonSoundPlayer,
 
       // RoundButtonOptions
-      tandem: Tandem.REQUIRED
+      tandem: Tandem.REQUIRED,
+      tandemSuffix: 'Button'
     }, providedOptions );
 
     // Note it shares a tandem with this, so the emitter will be instrumented as a child of the button

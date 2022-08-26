@@ -74,6 +74,7 @@ export default class ABSwitch<T> extends HBox {
 
       // phet-io
       tandem: Tandem.REQUIRED,
+      tandemSuffix: 'Switch',
       visiblePropertyOptions: { phetioFeatured: true },
       phetioEnabledPropertyInstrumented: true // opt into default PhET-iO instrumented enabledProperty
     }, providedOptions );

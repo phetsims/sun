@@ -69,6 +69,7 @@ export default class ComboBoxListItemNode<T> extends Voicing( Node ) {
 
       // phet-io
       tandem: Tandem.REQUIRED,
+      tandemSuffix: 'Item',
 
       // Together, these options make it possible to reorder the combo box items in studio, and save a customized
       // simulation with the new order.
