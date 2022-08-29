@@ -11,17 +11,17 @@ import sun from './sun.js';
 type StringsType = {
   'sun': {
     'title': string;
-    'titleProperty': TReadOnlyProperty<string>;
+    'titleStringProperty': TReadOnlyProperty<string>;
   };
   'a11y': {
     'numberSpinnerRoleDescription': string;
-    'numberSpinnerRoleDescriptionProperty': TReadOnlyProperty<string>;
+    'numberSpinnerRoleDescriptionStringProperty': TReadOnlyProperty<string>;
     'close': string;
-    'closeProperty': TReadOnlyProperty<string>;
+    'closeStringProperty': TReadOnlyProperty<string>;
     'closed': string;
-    'closedProperty': TReadOnlyProperty<string>;
+    'closedStringProperty': TReadOnlyProperty<string>;
     'titleClosePattern': string;
-    'titleClosePatternProperty': TReadOnlyProperty<string>;
+    'titleClosePatternStringProperty': TReadOnlyProperty<string>;
   }
 };
 

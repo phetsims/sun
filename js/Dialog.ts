@@ -293,7 +293,7 @@ export default class Dialog extends Popupable( Panel, 1 ) {
     let voicingNameMultilink: UnknownMultilink;
     if ( options.closeButtonVoicingDialogTitle ) {
       const titleProperty = typeof options.closeButtonVoicingDialogTitle === 'string' ? new TinyProperty( options.closeButtonVoicingDialogTitle ) : options.closeButtonVoicingDialogTitle;
-      voicingNameMultilink = Multilink.multilink( [ sunStrings.a11y.titleClosePatternProperty, titleProperty ], ( titleClosePattern, titleString ) => {
+      voicingNameMultilink = Multilink.multilink( [ sunStrings.a11y.titleClosePatternStringProperty, titleProperty ], ( titleClosePattern, titleString ) => {
         closeButton.voicingNameResponse = StringUtils.fillIn( titleClosePattern, {
           title: titleString
         } );
