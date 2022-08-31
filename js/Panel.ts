@@ -233,7 +233,7 @@ class PanelConstraint extends LayoutConstraint {
     if ( isWidthSizable( content ) && panel.localPreferredWidth !== null ) {
       content.preferredWidth = preferredWidth - lineWidth - 2 * this.xMargin;
     }
-    if ( isHeightSizable( content ) && panel.localPreferredWidth !== null ) {
+    if ( isHeightSizable( content ) && panel.localPreferredHeight !== null ) {
       content.preferredHeight = preferredHeight - lineWidth - 2 * this.yMargin;
     }
 

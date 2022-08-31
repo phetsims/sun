@@ -544,26 +544,15 @@ function demoSizableButtons( layoutBounds: Bounds2 ): Node {
 }
 
 function demoTest( layoutBounds: Bounds2 ): Node {
-  const box = new GridBox( {
-    spacing: 5,
-    rows: [
-      [
-        new Rectangle( 0, 0, 20, 20, { fill: 'black' } ),
-        new Rectangle( 0, 0, 20, 20, { fill: colors[ 1 ] } ),
-        new Rectangle( 0, 0, 20, 20, { fill: colors[ 2 ] } ),
-        new Rectangle( 0, 0, 20, 20, { fill: colors[ 3 ] } ),
-        new Rectangle( 0, 0, 20, 20, { fill: colors[ 4 ], visible: false } ),
-        new Rectangle( 0, 0, 20, 20, { fill: colors[ 5 ] } ),
-        new Rectangle( 0, 0, 20, 20, { fill: colors[ 6 ], visible: false } ),
-        new Rectangle( 0, 0, 20, 20, { fill: colors[ 7 ] } ),
-        new Rectangle( 0, 0, 20, 20, { fill: colors[ 8 ] } ),
-        new Rectangle( 0, 0, 20, 20, { fill: colors[ 9 ] } ),
-        new Rectangle( 0, 0, 20, 20, { fill: 'black' } )
-      ]
-    ]
-  } );
+  const resizer = createHorizontalResizer( 15, 30, 150 );
 
-  return new Panel( box, { center: layoutBounds.center } );
+  const button = new RectangularPushButton( {
+    content: resizer,
+    sizable: true
+  } );
+  button.translation = layoutBounds.center;
+
+  return overrideDispose( button, RectangularPushButton, () => resizer.dispose() );
 }
 
 sun.register( 'LayoutScreenView', LayoutScreenView );
