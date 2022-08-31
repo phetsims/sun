@@ -16,12 +16,24 @@ import Checkbox, { CheckboxOptions } from './Checkbox.js';
 import sun from './sun.js';
 import Property from '../../axon/js/Property.js';
 
+// Label for the button. Provide either a Node or a function that creates a Node from a Tandem (but not both)
+type LabelOptions = {
+  node: Node;
+  tandem: Tandem;
+  createNode?: never;
+  tandemName?: never;
+} | {
+  node?: never;
+  tandem?: never;
+  createNode: ( tandem: Tandem ) => Node;
+  tandemName: string;
+};
+
 export type VerticalCheckboxGroupItem = {
-  node: Node; // Label for the button
   property: Property<boolean>; // Property associated with the checkbox
   options?: CheckboxOptions; // Item-specific options to be passed to the checkbox
-  tandem?: Tandem; // optional tandem for PhET-iO
-};
+  tandemName?: string;
+} & LabelOptions;
 
 type SelfOptions = {
   checkboxOptions?: CheckboxOptions;
@@ -47,13 +59,22 @@ export default class VerticalCheckboxGroup extends VBox {
       // supertype options
       spacing: 10, // vertical spacing
       align: 'left',
-      tandem: Tandem.OPTIONAL
+      tandem: Tandem.REQUIRED
     }, providedOptions );
+
+    const nodes = items.map( ( item, index ) => {
+      if ( item.node ) {
+        return item.node;
+      }
+      else {
+        return item.createNode( options.tandem.createTandem( item.tandemName ) );
+      }
+    } );
 
     // Determine the max item width
     let maxItemWidth = 0;
-    for ( let i = 0; i < items.length; i++ ) {
-      maxItemWidth = Math.max( maxItemWidth, items[ i ].node.width );
+    for ( let i = 0; i < nodes.length; i++ ) {
+      maxItemWidth = Math.max( maxItemWidth, nodes[ i ].width );
     }
 
     // Create a checkbox for each item
@@ -61,18 +82,21 @@ export default class VerticalCheckboxGroup extends VBox {
     for ( let i = 0; i < items.length; i++ ) {
 
       const item = items[ i ];
+      const node = nodes[ i ];
 
-      assert && assert( !item.node.hasPDOMContent,
+      assert && assert( !node.hasPDOMContent,
         'Accessibility is provided by Checkbox and VerticalCheckboxGroupItem.options. ' +
         'Additional PDOM content in the provided Node could break accessibility.' );
 
       // Content for the checkbox. Add an invisible strut, so that checkboxes have uniform width.
       const content = new Node( {
-        children: [ new HStrut( maxItemWidth ), item.node ]
+        children: [ new HStrut( maxItemWidth ), node ]
       } );
 
       const checkbox = new Checkbox( item.property, content, merge( {}, options.checkboxOptions, item.options, {
-        tandem: item.tandem || Tandem.OPTIONAL
+        tandem: item.tandemName ? options.tandem.createTandem( item.tandemName ) :
+                item.tandem ? item.tandem :
+                Tandem.OPTIONAL
       } ) );
 
       // set pointer areas, y dimensions are computed
