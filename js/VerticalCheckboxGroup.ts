@@ -93,16 +93,18 @@ export default class VerticalCheckboxGroup extends VBox {
         children: [ new HStrut( maxItemWidth ), node ]
       } );
 
+      // set pointer areas, y dimensions are computed
+      const yDilation = options.spacing / 2;
+
       const checkbox = new Checkbox( item.property, content, merge( {}, options.checkboxOptions, item.options, {
         tandem: item.tandemName ? options.tandem.createTandem( item.tandemName ) :
                 item.tandem ? item.tandem :
-                Tandem.OPTIONAL
+                Tandem.OPTIONAL,
+        mouseAreaXDilation: options.mouseAreaXDilation,
+        touchAreaXDilation: options.touchAreaXDilation,
+        mouseAreaYDilation: yDilation,
+        touchAreaYDilation: yDilation
       } ) );
-
-      // set pointer areas, y dimensions are computed
-      const yDilation = options.spacing / 2;
-      checkbox.mouseArea = checkbox.localBounds.dilatedXY( options.mouseAreaXDilation, yDilation );
-      checkbox.touchArea = checkbox.localBounds.dilatedXY( options.touchAreaXDilation, yDilation );
 
       options.children.push( checkbox );
     }
