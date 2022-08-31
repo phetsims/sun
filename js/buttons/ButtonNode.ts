@@ -15,7 +15,7 @@ import Bounds2 from '../../../dot/js/Bounds2.js';
 import Dimension2 from '../../../dot/js/Dimension2.js';
 import optionize, { combineOptions } from '../../../phet-core/js/optionize.js';
 import StrictOmit from '../../../phet-core/js/types/StrictOmit.js';
-import { AlignBox, AlignBoxXAlign, AlignBoxYAlign, Brightness, Color, Contrast, Grayscale, TColor, TPaint, isHeightSizable, isWidthSizable, Node, NodeOptions, PaintableNode, PaintColorProperty, Path, PressListener, PressListenerOptions, SceneryConstants, Sizable, SizableOptions, Voicing, VoicingOptions } from '../../../scenery/js/imports.js';
+import { AlignBox, AlignBoxXAlign, AlignBoxYAlign, Brightness, Color, Contrast, Grayscale, TColor, TPaint, isHeightSizable, isWidthSizable, Node, NodeOptions, PaintableNode, PaintColorProperty, Path, PressListener, PressListenerOptions, SceneryConstants, Sizable, SizableOptions, Voicing, VoicingOptions, LayoutConstraint } from '../../../scenery/js/imports.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import ColorConstants from '../ColorConstants.js';
 import sun from '../sun.js';
@@ -23,6 +23,7 @@ import ButtonInteractionState from './ButtonInteractionState.js';
 import ButtonModel from './ButtonModel.js';
 import TButtonAppearanceStrategy, { TButtonAppearanceStrategyOptions } from './TButtonAppearanceStrategy.js';
 import TContentAppearanceStrategy, { TContentAppearanceStrategyOptions } from './TContentAppearanceStrategy.js';
+import TinyProperty from '../../../axon/js/TinyProperty.js';
 
 // constants
 const CONTRAST_FILTER = new Contrast( 0.7 );
@@ -91,15 +92,12 @@ export default class ButtonNode extends Sizable( Voicing( Node ) ) {
   private readonly content: Node | null;
   private readonly xMargin: number;
   private readonly yMargin: number;
+  private readonly buttonNodeConstraint: ButtonNodeConstraint | null = null;
+  protected readonly layoutSizeProperty: TinyProperty<Dimension2>;
 
   // The maximum lineWidth our buttonBackground can have. We'll lay things out so that if we adjust our lineWidth below
   // this, the layout won't change
   protected readonly maxLineWidth: number;
-
-  // The size we're taking up for layout
-  public readonly layoutWidthProperty: TReadOnlyProperty<number>;
-  public readonly layoutHeightProperty: TReadOnlyProperty<number>;
-  public readonly layoutSizeProperty: TReadOnlyProperty<Dimension2>;
 
   public static FlatAppearanceStrategy: TButtonAppearanceStrategy;
 
@@ -202,83 +200,6 @@ export default class ButtonNode extends Sizable( Voicing( Node ) ) {
     // Get our maxLineWidth from the appearance strategy, as it's needed for layout (and in subtypes)
     this.maxLineWidth = buttonAppearanceStrategy.maxLineWidth;
 
-    // Store initial values for when we aren't resizable
-    const initialBackgroundWidth = buttonBackground.width;
-    const initialBackgroundHeight = buttonBackground.height;
-
-    // Our layout sizes will need to handle treating the maxLineWidth so we have stable layout with lineWidth changes
-    this.layoutWidthProperty = new DerivedProperty( [
-      this.localPreferredWidthProperty,
-      this.localMinimumWidthProperty,
-      this.isWidthResizableProperty,
-      buttonBackground.boundsProperty
-    ], ( localPreferredWidth, localMinimumWidth, isWidthResizable, backgroundBounds ) => {
-      if ( isWidthResizable ) {
-        // If needed, use the size our max-stroked path will have
-        const result = localPreferredWidth !== null ? localPreferredWidth : buttonBackground.shape!.bounds.width + this.maxLineWidth;
-        if ( localMinimumWidth !== null ) {
-          return Math.max( localMinimumWidth, result );
-        }
-        else {
-          return result;
-        }
-      }
-      else {
-        return initialBackgroundWidth;
-      }
-    }, { tandem: Tandem.OPT_OUT, reentrant: true } );
-    this.layoutHeightProperty = new DerivedProperty( [
-      this.localPreferredHeightProperty,
-      this.localMinimumHeightProperty,
-      this.isHeightResizableProperty,
-      buttonBackground.boundsProperty
-    ], ( localPreferredHeight, localMinimumHeight, isHeightResizable, backgroundBounds ) => {
-      if ( isHeightResizable ) {
-        // If needed, use the size our max-stroked path will have
-        const result = localPreferredHeight !== null ? localPreferredHeight : buttonBackground.shape!.bounds.height + this.maxLineWidth;
-        if ( localMinimumHeight !== null ) {
-          return Math.max( localMinimumHeight, result );
-        }
-        else {
-          return result;
-        }
-      }
-      else {
-        return initialBackgroundHeight;
-      }
-    }, { tandem: Tandem.OPT_OUT, reentrant: true } );
-
-    // Combining each layout width/height into a dimension
-    this.layoutSizeProperty = new DerivedProperty( [
-      this.layoutWidthProperty,
-      this.layoutHeightProperty
-    ], ( width, height ) => {
-      return new Dimension2( width, height );
-    }, { tandem: Tandem.OPT_OUT, reentrant: true } );
-
-    // Only allow an initial update if we are not sizable in that dimension
-    let hasUpdated = false;
-    const updateMinimumSize = () => {
-      if ( !hasUpdated || this.widthSizable ) {
-        this.localMinimumWidth = Math.max(
-          // If we have content, we can't be smaller than that + margins
-          options.content ? ( isWidthSizable( options.content ) ? options.content.minimumWidth || 0 : options.content.width ) + options.xMargin * 2 : 0,
-          // If we have specified a buttonSize, we can't be smaller than that (but RectangularButton's size does NOT
-          // include the stroke, so we actually have to compensate for that here.
-          options.buttonSize !== null ? options.buttonSize.width + this.maxLineWidth : 0 );
-      }
-      if ( !hasUpdated || this.heightSizable ) {
-        this.localMinimumHeight = Math.max(
-          // If we have content, we can't be smaller than that + margins
-          options.content ? ( isHeightSizable( options.content ) ? options.content.minimumHeight || 0 : options.content.height ) + options.yMargin * 2 : 0,
-          // If we have specified a buttonSize, we can't be smaller than that (but RectangularButton's size does NOT
-          // include the stroke, so we actually have to compensate for that here.
-          options.buttonSize !== null ? options.buttonSize.height + this.maxLineWidth : 0 );
-      }
-
-      hasUpdated = true;
-    };
-
     let alignBox: AlignBox | null = null;
 
     if ( options.content ) {
@@ -289,7 +210,13 @@ export default class ButtonNode extends Sizable( Voicing( Node ) ) {
       // See https://github.com/phetsims/sun/issues/654#issuecomment-718944669
       content.pickable = false;
 
-      options.content.boundsProperty.link( updateMinimumSize );
+      this.buttonNodeConstraint = new ButtonNodeConstraint( this, {
+        content: options.content,
+        xMargin: options.xMargin,
+        yMargin: options.yMargin,
+        maxLineWidth: this.maxLineWidth
+      } );
+      this.layoutSizeProperty = this.buttonNodeConstraint.layoutSizeProperty;
 
       // Align content in the button rectangle. Must be disposed since it adds listener to content bounds.
       alignBox = new AlignBox( content, {
@@ -310,8 +237,14 @@ export default class ButtonNode extends Sizable( Voicing( Node ) ) {
       } );
       this.addChild( alignBox );
     }
+    else if ( options.buttonSize ) {
+      this.layoutSizeProperty = new TinyProperty( new Dimension2(
+        options.buttonSize.width + this.maxLineWidth,
+        options.buttonSize.height + this.maxLineWidth
+      ) );
+    }
     else {
-      updateMinimumSize();
+      throw new Error( 'Either content or buttonSize needs to be provided' );
     }
 
     this.mutate( options );
@@ -323,13 +256,14 @@ export default class ButtonNode extends Sizable( Voicing( Node ) ) {
       alignBox && alignBox.dispose();
       buttonAppearanceStrategy.dispose && buttonAppearanceStrategy.dispose();
       contentAppearanceStrategy && contentAppearanceStrategy.dispose && contentAppearanceStrategy.dispose();
-      options.content && options.content.boundsProperty.unlink( updateMinimumSize );
       this._pressListener.dispose();
       this.baseColorProperty.dispose();
     };
   }
 
   public override dispose(): void {
+    this.buttonNodeConstraint && this.buttonNodeConstraint.dispose();
+
     this.disposeButtonNode();
     super.dispose();
   }
@@ -443,6 +377,83 @@ export class FlatAppearanceStrategy {
 
   public dispose(): void {
     this.disposeFlatAppearanceStrategy();
+  }
+}
+
+type ButtonNodeConstraintOptions = {
+  content: Node;
+  xMargin: number;
+  yMargin: number;
+  maxLineWidth: number;
+};
+
+class ButtonNodeConstraint extends LayoutConstraint {
+
+  public readonly layoutSizeProperty: TinyProperty<Dimension2> = new TinyProperty<Dimension2>( new Dimension2( 0, 0 ) );
+
+  private readonly buttonNode: ButtonNode;
+  private readonly content: Node;
+  private readonly xMargin: number;
+  private readonly yMargin: number;
+  private readonly maxLineWidth: number;
+  private isFirstLayout = true;
+  private preferredWidth = 0;
+  private preferredHeight = 0;
+
+  public constructor( buttonNode: ButtonNode, options: ButtonNodeConstraintOptions ) {
+
+    super( buttonNode );
+
+    this.buttonNode = buttonNode;
+    this.content = options.content;
+    this.xMargin = options.xMargin;
+    this.yMargin = options.yMargin;
+    this.maxLineWidth = options.maxLineWidth;
+
+    this.buttonNode.localPreferredWidthProperty.lazyLink( this._updateLayoutListener );
+    this.buttonNode.localPreferredHeightProperty.lazyLink( this._updateLayoutListener );
+
+    this.addNode( this.content, false );
+
+    this.layout();
+  }
+
+  protected override layout(): void {
+    super.layout();
+
+    const buttonNode = this.buttonNode;
+    const content = this.content;
+
+    // Only allow an initial update if we are not sizable in that dimension
+    const minimumWidth = ( this.isFirstLayout || buttonNode.widthSizable )
+                         ? ( isWidthSizable( content ) ? content.minimumWidth || 0 : content.width ) + this.xMargin * 2
+                         : buttonNode.localMinimumWidth!;
+    const minimumHeight = ( this.isFirstLayout || buttonNode.heightSizable )
+                         ? ( isHeightSizable( content ) ? content.minimumHeight || 0 : content.height ) + this.yMargin * 2
+                         : buttonNode.localMinimumHeight!;
+
+    // Our resulting sizes (allow setting preferred width/height on the buttonNode)
+    this.preferredWidth = this.isFirstLayout || isWidthSizable( buttonNode )
+                          ? ( buttonNode.localPreferredWidth === null ? minimumWidth : buttonNode.localPreferredWidth )
+                          : this.preferredWidth;
+    this.preferredHeight = this.isFirstLayout || isHeightSizable( buttonNode )
+                           ? ( buttonNode.localPreferredHeight === null ? minimumHeight : buttonNode.localPreferredHeight )
+                           : this.preferredHeight;
+
+    this.isFirstLayout = false;
+
+    this.layoutSizeProperty.value = new Dimension2( this.preferredWidth, this.preferredHeight );
+
+    // Set minimums at the end
+    buttonNode.localMinimumWidth = minimumWidth;
+    buttonNode.localMinimumHeight = minimumHeight;
+  }
+
+  public override dispose(): void {
+    this.buttonNode.localPreferredWidthProperty.unlink( this._updateLayoutListener );
+    this.buttonNode.localPreferredHeightProperty.unlink( this._updateLayoutListener );
+
+    super.dispose();
   }
 }
 

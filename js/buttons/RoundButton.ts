@@ -9,6 +9,7 @@
 
 import DerivedProperty from '../../../axon/js/DerivedProperty.js';
 import TReadOnlyProperty from '../../../axon/js/TReadOnlyProperty.js';
+import Dimension2 from '../../../dot/js/Dimension2.js';
 import { Shape } from '../../../kite/js/imports.js';
 import optionize from '../../../phet-core/js/optionize.js';
 import { Circle, Color, TPaint, Node, PaintableNode, PaintColorProperty, RadialGradient } from '../../../scenery/js/imports.js';
@@ -81,6 +82,8 @@ export default class RoundButton extends ButtonNode {
     if ( options.radius ) {
       assert && assert( options.xMargin < options.radius, 'xMargin cannot be larger than radius' );
       assert && assert( options.yMargin < options.radius, 'yMargin cannot be larger than radius' );
+
+      options.buttonSize = new Dimension2( options.radius * 2, options.radius * 2 );
     }
 
     // If no options were explicitly passed in for the button appearance strategy, pass through the general appearance
