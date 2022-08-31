@@ -8,7 +8,7 @@
 
 import TProperty from '../../axon/js/TProperty.js';
 import PhetFont from '../../scenery-phet/js/PhetFont.js';
-import { FireListener, ManualConstraint, Node, NodeOptions, Path, Rectangle, SceneryEvent, Text, TPaint, Voicing, VoicingOptions, WidthSizable } from '../../scenery/js/imports.js';
+import { allowLinksProperty, FireListener, ManualConstraint, Node, NodeOptions, Path, Rectangle, SceneryEvent, Text, TPaint, Voicing, VoicingOptions, WidthSizable } from '../../scenery/js/imports.js';
 import checkSolidShape from '../../sherpa/js/fontawesome-5/checkSolidShape.js';
 import EventType from '../../tandem/js/EventType.js';
 import Tandem from '../../tandem/js/Tandem.js';
@@ -67,10 +67,11 @@ export default class MenuItem extends WidthSizable( Voicing( Node ) ) {
    * @param text - label for the menu item
    * @param callback - called when the menu item is selected
    * @param present - see present field
+   * @param shouldBeHiddenWhenLinksAreNotAllowed
    * @param [providedOptions]
    */
   public constructor( closeCallback: ( event: SceneryEvent ) => void, text: TReadOnlyProperty<string>,
-                      callback: ( event: SceneryEvent ) => void, present: boolean, providedOptions?: MenuItemOptions ) {
+                      callback: ( event: SceneryEvent ) => void, present: boolean, shouldBeHiddenWhenLinksAreNotAllowed: boolean, providedOptions?: MenuItemOptions ) {
 
     // Extend the object with defaults.
     const options = optionize<MenuItemOptions, SelfOptions, ParentOptions>()( {
@@ -101,6 +102,10 @@ export default class MenuItem extends WidthSizable( Voicing( Node ) ) {
     }, providedOptions );
 
     super();
+
+    if ( shouldBeHiddenWhenLinksAreNotAllowed ) {
+      this.setVisibleProperty( allowLinksProperty );
+    }
 
     text.link( string => {
       this.innerContent = string;
