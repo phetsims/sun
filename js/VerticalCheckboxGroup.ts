@@ -20,7 +20,6 @@ import ChildComponentOptions, { getNodes } from './ChildComponentOptions.js';
 export type VerticalCheckboxGroupItem = {
   property: Property<boolean>; // Property associated with the checkbox
   options?: CheckboxOptions; // Item-specific options to be passed to the checkbox
-  tandemName?: string;
 } & ChildComponentOptions;
 
 type SelfOptions = {
