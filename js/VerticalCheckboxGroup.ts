@@ -15,25 +15,13 @@ import Tandem from '../../tandem/js/Tandem.js';
 import Checkbox, { CheckboxOptions } from './Checkbox.js';
 import sun from './sun.js';
 import Property from '../../axon/js/Property.js';
-
-// Label for the button. Provide either a Node or a function that creates a Node from a Tandem (but not both)
-type LabelOptions = {
-  node: Node;
-  tandem: Tandem;
-  createNode?: never;
-  tandemName?: never;
-} | {
-  node?: never;
-  tandem?: never;
-  createNode: ( tandem: Tandem ) => Node;
-  tandemName: string;
-};
+import ChildComponentOptions, { getNodes } from './ChildComponentOptions.js';
 
 export type VerticalCheckboxGroupItem = {
   property: Property<boolean>; // Property associated with the checkbox
   options?: CheckboxOptions; // Item-specific options to be passed to the checkbox
   tandemName?: string;
-} & LabelOptions;
+} & ChildComponentOptions;
 
 type SelfOptions = {
   checkboxOptions?: CheckboxOptions;
@@ -62,14 +50,7 @@ export default class VerticalCheckboxGroup extends VBox {
       tandem: Tandem.REQUIRED
     }, providedOptions );
 
-    const nodes = items.map( ( item, index ) => {
-      if ( item.node ) {
-        return item.node;
-      }
-      else {
-        return item.createNode( options.tandem.createTandem( item.tandemName ) );
-      }
-    } );
+    const nodes = getNodes( items, options.tandem );
 
     // Determine the max item width
     let maxItemWidth = 0;

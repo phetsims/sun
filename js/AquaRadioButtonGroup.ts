@@ -16,6 +16,7 @@ import Tandem from '../../tandem/js/Tandem.js';
 import AquaRadioButton, { AquaRadioButtonOptions } from './AquaRadioButton.js';
 import sun from './sun.js';
 import Property from '../../axon/js/Property.js';
+import ChildComponentOptions, { getNodes } from './ChildComponentOptions.js';
 
 // pdom - An id for each instance of AquaRadioButtonGroup, passed to individual buttons in the group.
 // Each button in a radio button group must have the same "name" attribute to be considered in a group, otherwise
@@ -47,10 +48,8 @@ export type AquaRadioButtonGroupOptions = SelfOptions & StrictOmit<FlowBoxOption
 
 export type AquaRadioButtonGroupItem<T> = {
   value: T; // value associated with the button
-  node: Node; // label for the button
-  tandemName?: string; // name of the tandem for PhET-iO
   labelContent?: string; // label for a11y
-};
+} & ChildComponentOptions;
 
 export default class AquaRadioButtonGroup<T> extends FlowBox {
 
@@ -88,23 +87,26 @@ export default class AquaRadioButtonGroup<T> extends FlowBox {
       groupFocusHighlight: true
     }, providedOptions );
 
+    const nodes = getNodes( items, options.tandem );
+
     // Determine the max item width
-    const maxItemWidth = _.maxBy( items, ( item: AquaRadioButtonGroupItem<T> ) => item.node.width )!.node.width;
+    const maxItemWidth = _.maxBy( nodes, node => node.width )!.width;
 
     // Create a radio button for each item
     const radioButtons: AquaRadioButton<T>[] = [];
     for ( let i = 0; i < items.length; i++ ) {
       const item = items[ i ];
+      const node = nodes[ i ];
 
-      assert && assert( !item.node.hasPDOMContent,
+      assert && assert( !node.hasPDOMContent,
         'Accessibility is provided by AquaRadioButton and AquaRadioButtonGroupItem.labelContent. ' +
         'Additional PDOM content in the provided Node could break accessibility.' );
 
       // Content for the radio button.
       // For vertical orientation, add an invisible strut, so that buttons have uniform width.
       const content = ( options.orientation === 'vertical' ) ?
-                      new Node( { children: [ new HStrut( maxItemWidth ), item.node ] } ) :
-                      item.node;
+                      new Node( { children: [ new HStrut( maxItemWidth ), node ] } ) :
+                      node;
 
       const radioButton = new AquaRadioButton( property, item.value, content,
         optionize<SubsetOfAquaRadioButtonOptions, EmptySelfOptions, AquaRadioButtonOptions>()( {
@@ -157,6 +159,12 @@ export default class AquaRadioButtonGroup<T> extends FlowBox {
 
       for ( let i = 0; i < radioButtons.length; i++ ) {
         radioButtons[ i ].dispose();
+
+        // TODO: https://github.com/phetsims/sun/issues/746 what if these nodes are reused elsewhere?
+        // We may not have ownership, and hence maybe shouldn't dispose?
+        // We could (a) detect if the nodes[i] appears in multiple places in the scene graph (do this before dispose above)
+        // Or maybe (b) only dispose ones created with createNode() since we do have ownership of those
+        nodes[ i ].dispose();
       }
     };
 
