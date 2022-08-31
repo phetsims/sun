@@ -135,7 +135,9 @@ export default class ComboBoxListItemNode<T> extends Voicing( Node ) {
     this.item = item;
 
     // pdom focus highlight is fitted to this Node's bounds, so that it doesn't overlap other items in the list box
-    this.focusHighlight = Shape.bounds( this.localBounds );
+    this.localBoundsProperty.link( localBounds => {
+      this.focusHighlight = Shape.bounds( localBounds );
+    } );
 
     // Show highlight when pointer is over this item.
     // Change fill instead of visibility so that we don't end up with vertical pointer gaps in the list
