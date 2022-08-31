@@ -8,7 +8,8 @@
 import Tandem from '../../tandem/js/Tandem.js';
 import { Node } from '../../scenery/js/imports.js';
 
-// Provide either a Node or a function that creates a Node from a Tandem (but not both)
+// Provide either a Node or a function that creates a Node from a Tandem (but not both).
+// If you pass in a Node, you can also pass in a Tandem.  Or if you use `createNode` then you can specify `tandemName`
 type ChildComponentOptions = {
   node: Node;
 
