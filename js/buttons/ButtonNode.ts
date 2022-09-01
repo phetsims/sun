@@ -47,8 +47,10 @@ type SelfOptions = {
   xAlign?: AlignBoxXAlign;
   yAlign?: AlignBoxYAlign;
 
-  // When a button's non-stroked size is specified (used by RectangularButton etc., not for general use)
-  buttonSize?: Dimension2 | null;
+  // Handling minimum sizes for direct Subtypes (not for general use). The size of a button won't ever get down to these
+  // sizes, due to stroke size (they are left that way for compatibility reasons).
+  minUnstrokedWidth?: number | null;
+  minUnstrokedHeight?: number | null;
 
   // By default, icons are centered in the button, but icons with odd
   // shapes that are not wrapped in a normalizing parent node may need to
@@ -79,7 +81,13 @@ type SelfOptions = {
   enabledAppearanceStrategy?: EnabledAppearanceStrategy;
 };
 type ParentOptions = SizableOptions & VoicingOptions & NodeOptions;
+
+// Normal options, for use in optionize
 export type ButtonNodeOptions = SelfOptions & ParentOptions;
+
+// However we'll want subtypes to provide these options to their clients, since some options ideally should not be
+// used directly.
+export type ExternalButtonNodeOptions = StrictOmit<ButtonNodeOptions, 'minUnstrokedWidth' | 'minUnstrokedHeight'>;
 
 export default class ButtonNode extends Sizable( Voicing( Node ) ) {
 
@@ -90,8 +98,6 @@ export default class ButtonNode extends Sizable( Voicing( Node ) ) {
   private readonly _pressListener: PressListener;
   private readonly disposeButtonNode: () => void;
   private readonly content: Node | null;
-  private readonly xMargin: number;
-  private readonly yMargin: number;
   private readonly buttonNodeConstraint: ButtonNodeConstraint | null = null;
   protected readonly layoutSizeProperty: TinyProperty<Dimension2>;
 
@@ -115,7 +121,8 @@ export default class ButtonNode extends Sizable( Voicing( Node ) ) {
     const options = optionize<ButtonNodeOptions, StrictOmit<SelfOptions, 'listenerOptions'>, ParentOptions>()( {
 
       content: null,
-      buttonSize: null,
+      minUnstrokedWidth: null,
+      minUnstrokedHeight: null,
       xMargin: 10,
       yMargin: 5,
       xAlign: 'center',
@@ -158,8 +165,6 @@ export default class ButtonNode extends Sizable( Voicing( Node ) ) {
     super();
 
     this.content = options.content;
-    this.xMargin = options.xMargin;
-    this.yMargin = options.yMargin;
     this.buttonModel = buttonModel;
 
     this._settableBaseColorProperty = new PaintColorProperty( options.baseColor );
@@ -214,7 +219,9 @@ export default class ButtonNode extends Sizable( Voicing( Node ) ) {
         content: options.content,
         xMargin: options.xMargin,
         yMargin: options.yMargin,
-        maxLineWidth: this.maxLineWidth
+        maxLineWidth: this.maxLineWidth,
+        minUnstrokedWidth: options.minUnstrokedWidth,
+        minUnstrokedHeight: options.minUnstrokedHeight
       } );
       this.layoutSizeProperty = this.buttonNodeConstraint.layoutSizeProperty;
 
@@ -237,14 +244,14 @@ export default class ButtonNode extends Sizable( Voicing( Node ) ) {
       } );
       this.addChild( alignBox );
     }
-    else if ( options.buttonSize ) {
-      this.layoutSizeProperty = new TinyProperty( new Dimension2(
-        options.buttonSize.width + this.maxLineWidth,
-        options.buttonSize.height + this.maxLineWidth
-      ) );
-    }
     else {
-      throw new Error( 'Either content or buttonSize needs to be provided' );
+      assert && assert( options.minUnstrokedWidth !== null );
+      assert && assert( options.minUnstrokedHeight !== null );
+
+      this.layoutSizeProperty = new TinyProperty( new Dimension2(
+        options.minUnstrokedWidth! + this.maxLineWidth,
+        options.minUnstrokedHeight! + this.maxLineWidth
+      ) );
     }
 
     this.mutate( options );
@@ -385,6 +392,8 @@ type ButtonNodeConstraintOptions = {
   xMargin: number;
   yMargin: number;
   maxLineWidth: number;
+  minUnstrokedWidth: number | null;
+  minUnstrokedHeight: number | null;
 };
 
 class ButtonNodeConstraint extends LayoutConstraint {
@@ -396,7 +405,11 @@ class ButtonNodeConstraint extends LayoutConstraint {
   private readonly xMargin: number;
   private readonly yMargin: number;
   private readonly maxLineWidth: number;
+  private readonly minUnstrokedWidth: number | null;
+  private readonly minUnstrokedHeight: number | null;
   private isFirstLayout = true;
+
+  // Stored so that we can prevent updates if we're not marked sizable in a certain direction
   private preferredWidth = 0;
   private preferredHeight = 0;
 
@@ -404,11 +417,14 @@ class ButtonNodeConstraint extends LayoutConstraint {
 
     super( buttonNode );
 
+    // Save everything, so we can run things in the layout method
     this.buttonNode = buttonNode;
     this.content = options.content;
     this.xMargin = options.xMargin;
     this.yMargin = options.yMargin;
     this.maxLineWidth = options.maxLineWidth;
+    this.minUnstrokedWidth = options.minUnstrokedWidth;
+    this.minUnstrokedHeight = options.minUnstrokedHeight;
 
     this.buttonNode.localPreferredWidthProperty.lazyLink( this._updateLayoutListener );
     this.buttonNode.localPreferredHeightProperty.lazyLink( this._updateLayoutListener );
@@ -425,12 +441,18 @@ class ButtonNodeConstraint extends LayoutConstraint {
     const content = this.content;
 
     // Only allow an initial update if we are not sizable in that dimension
-    const minimumWidth = ( this.isFirstLayout || buttonNode.widthSizable )
-                         ? ( isWidthSizable( content ) ? content.minimumWidth || 0 : content.width ) + this.xMargin * 2
-                         : buttonNode.localMinimumWidth!;
-    const minimumHeight = ( this.isFirstLayout || buttonNode.heightSizable )
-                         ? ( isHeightSizable( content ) ? content.minimumHeight || 0 : content.height ) + this.yMargin * 2
-                         : buttonNode.localMinimumHeight!;
+    const minimumWidth = Math.max(
+      ( this.isFirstLayout || buttonNode.widthSizable )
+      ? ( isWidthSizable( content ) ? content.minimumWidth || 0 : content.width ) + this.xMargin * 2
+      : buttonNode.localMinimumWidth!,
+      ( this.minUnstrokedWidth === null ? 0 : this.minUnstrokedWidth + this.maxLineWidth )
+    );
+    const minimumHeight = Math.max(
+      ( this.isFirstLayout || buttonNode.heightSizable )
+      ? ( isHeightSizable( content ) ? content.minimumHeight || 0 : content.height ) + this.yMargin * 2
+      : buttonNode.localMinimumHeight!,
+      ( this.minUnstrokedHeight === null ? 0 : this.minUnstrokedHeight + this.maxLineWidth )
+    );
 
     // Our resulting sizes (allow setting preferred width/height on the buttonNode)
     this.preferredWidth = this.isFirstLayout || isWidthSizable( buttonNode )

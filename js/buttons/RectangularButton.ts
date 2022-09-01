@@ -18,7 +18,7 @@ import { Color, TPaint, LinearGradient, Node, PaintColorProperty, Path } from '.
 import sun from '../sun.js';
 import ButtonInteractionState from './ButtonInteractionState.js';
 import ButtonModel from './ButtonModel.js';
-import ButtonNode, { ButtonNodeOptions } from './ButtonNode.js';
+import ButtonNode, { ButtonNodeOptions, ExternalButtonNodeOptions } from './ButtonNode.js';
 import RadioButtonInteractionState from './RadioButtonInteractionState.js';
 import TButtonAppearanceStrategy, { TButtonAppearanceStrategyOptions } from './TButtonAppearanceStrategy.js';
 
@@ -33,11 +33,13 @@ type SelfOptions = {
   // content will be scaled down to fit inside, accounting for margins.
   // NOTE: This will NOT be the size of the button. It does NOT account for the stroke/lineWidth, so the button will
   // ALWAYS be larger than this.
+  // ADDITIONALLY: The button can be larger, if the content doesn't fit.
   size?: Dimension2 | null;
 
   // If you want complete control of a button's dimensions, use options.size. If you want to specify
   // one dimensions while having the other dimension determined by content and margin, then use one of these
   // options.
+  // NOTE: This minWidth/minHeight does NOT include the stroke
   minWidth?: number;
   minHeight?: number;
 
@@ -68,7 +70,7 @@ type SelfOptions = {
   rightBottomCornerRadius?: number | null;
 };
 
-export type RectangularButtonOptions = SelfOptions & ButtonNodeOptions;
+export type RectangularButtonOptions = SelfOptions & ExternalButtonNodeOptions;
 
 export default class RectangularButton extends ButtonNode {
 
@@ -123,7 +125,16 @@ export default class RectangularButton extends ButtonNode {
       assert && assert( options.xMargin < options.size.width, 'xMargin cannot be larger than width' );
       assert && assert( options.yMargin < options.size.height, 'yMargin cannot be larger than height' );
 
-      options.buttonSize = options.size;
+      options.minUnstrokedWidth = options.size.width;
+      options.minUnstrokedHeight = options.size.height;
+    }
+    else {
+      if ( options.minWidth !== undefined ) {
+        options.minUnstrokedWidth = options.minWidth;
+      }
+      if ( options.minHeight !== undefined ) {
+        options.minUnstrokedHeight = options.minHeight;
+      }
     }
 
     // If no options were explicitly passed in for the button appearance strategy, pass through the general appearance
