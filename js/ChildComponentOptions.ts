@@ -1,4 +1,4 @@
-// Copyright 2013-2022, University of Colorado Boulder
+// Copyright 2022, University of Colorado Boulder
 
 /**
  * Defines the type for when you can pass in a Node or a function that creates a Node from a Tandem.
