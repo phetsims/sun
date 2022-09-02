@@ -32,7 +32,7 @@ simLauncher.launch( () => {
     new LayoutScreen( Tandem.ROOT.createTandem( 'layoutScreen' ) )
   ];
 
-  const sim = new Sim( sunStrings.sun.title, screens, {
+  const sim = new Sim( sunStrings.sun.titleStringProperty, screens, {
     credits: {
       leadDesign: 'PhET Interactive Simulations'
     },
