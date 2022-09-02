@@ -24,7 +24,7 @@ import dotRandom from '../../dot/js/dotRandom.js';
 import Vector2 from '../../dot/js/Vector2.js';
 import InstanceRegistry from '../../phet-core/js/documentation/InstanceRegistry.js';
 import optionize from '../../phet-core/js/optionize.js';
-import { Display, Focus, FocusManager, isWidthSizable, mixesWidthSizable, Node, NodeOptions, PDOMBehaviorFunction, PDOMPeer, TColor, TInputListener, TPaint, WidthSizable, WidthSizableOptions } from '../../scenery/js/imports.js';
+import { Display, Focus, FocusManager, isWidthSizable, mixesWidthSizable, Node, NodeOptions, PDOMBehaviorFunction, PDOMPeer, PDOMValueType, TColor, TInputListener, TPaint, WidthSizable, WidthSizableOptions } from '../../scenery/js/imports.js';
 import TSoundPlayer from '../../tambo/js/TSoundPlayer.js';
 import generalCloseSoundPlayer from '../../tambo/js/shared-sound-players/generalCloseSoundPlayer.js';
 import generalOpenSoundPlayer from '../../tambo/js/shared-sound-players/generalOpenSoundPlayer.js';
@@ -60,7 +60,7 @@ export type ComboBoxItem<T> = {
   tandemName?: string | null;
 
   // pdom - the label for this item's associated Node in the combo box
-  a11yLabel?: string | null;
+  a11yLabel?: PDOMValueType | null;
 };
 
 export type ComboBoxListPosition = typeof LIST_POSITION_VALUES[number];
