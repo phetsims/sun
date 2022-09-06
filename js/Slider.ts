@@ -356,7 +356,7 @@ export default class Slider extends AccessibleSlider( Node, 0 ) {
       enabledRangeProperty: this.enabledRangeProperty,
       soundGenerator: options.soundGenerator,
       pickable: superOptions.trackPickable,
-      voicingOnEndResponse: () => this.voicingOnEndResponse.bind( this ),
+      voicingOnEndResponse: this.voicingOnEndResponse.bind( this ),
 
       // phet-io
       tandem: trackTandem
