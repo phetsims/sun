@@ -25,7 +25,7 @@ import Orientation from '../../../phet-core/js/Orientation.js';
 import { KeyboardUtils, Node, NodeOptions, SceneryEvent, SceneryListenerFunction, TInputListener, Voicing, VoicingOptions } from '../../../scenery/js/imports.js';
 import Utterance from '../../../utterance-queue/js/Utterance.js';
 import sun from '../sun.js';
-import optionize, { OptionizeDefaults } from '../../../phet-core/js/optionize.js';
+import optionize, { combineOptions, OptionizeDefaults } from '../../../phet-core/js/optionize.js';
 import Multilink, { UnknownMultilink } from '../../../axon/js/Multilink.js';
 import UtteranceQueue from '../../../utterance-queue/js/UtteranceQueue.js';
 import TProperty from '../../../axon/js/TProperty.js';
@@ -36,6 +36,12 @@ import TReadOnlyProperty from '../../../axon/js/TReadOnlyProperty.js';
 // constants
 const DEFAULT_TAG_NAME = 'input';
 const toString = ( v: IntentionalAny ) => `${v}`;
+
+// Options for the Voicing response that happens at the end of
+const DEFAULT_VOICING_ON_END_RESPONSE_OPTIONS = {
+  withObjectResponse: true, // speak the object response
+  onlyOnValueChange: true // don't speak if the value is the same as valueOnStart
+};
 
 type CreateTextFunction = {
 
@@ -52,10 +58,20 @@ type CreateTextFunction = {
   reset?: () => void;
 };
 
-type VoicingOnEndResponseOptions = {
+export type VoicingOnEndResponseOptions = {
+
+  // Should the Voicing response be spoken if the interaction does not change the value?
   onlyOnValueChange?: boolean;
+
+  // Should the Voicing response include the name response?
+  withNameResponse?: boolean;
+
+  // Should the Voicing response include the object response?
   withObjectResponse?: boolean;
 };
+
+// Function signature for voicingOnEndResponse.
+export type VoicingOnEndResponse = ( valueOnStart: number, providedOptions?: VoicingOnEndResponseOptions ) => void;
 
 type SelfOptions = {
   valueProperty: TProperty<number>;
@@ -175,6 +191,10 @@ type SelfOptions = {
   // Only provide tagName to AccessibleValueHandler to remove it from the PDOM, otherwise, AccessibleValueHandler
   // sets its own tagName.
   tagName?: null;
+
+  // Customizations for the voicingOnEndResponse function, which is used to voice content at the end
+  // of an interaction.
+  voicingOnEndResponseOptions?: VoicingOnEndResponseOptions;
 };
 
 type ParentOptions = VoicingOptions & NodeOptions;
@@ -250,6 +270,9 @@ const AccessibleValueHandler = <SuperType extends Constructor>( Type: SuperType,
     // same response.
     private _timesChangedBeforeAlerting: number;
 
+    // Options for the Voicing response at the end of interaction with this component.
+    private readonly _voicingOnEndResponseOptions: VoicingOnEndResponseOptions;
+
     private readonly _disposeAccessibleValueHandler: () => void;
 
     public constructor( ...args: IntentionalAny[] ) {
@@ -288,6 +311,7 @@ const AccessibleValueHandler = <SuperType extends Constructor>( Type: SuperType,
         contextResponsePerValueChangeDelay: 700,
         contextResponseMaxDelay: 1500,
         a11yDependencies: [],
+        voicingOnEndResponseOptions: DEFAULT_VOICING_ON_END_RESPONSE_OPTIONS,
 
         // @ts-ignore - TODO: we should be able to have the public API be just null, and internally set to string, Limitation (IV), see https://github.com/phetsims/chipper/issues/1128
         tagName: DEFAULT_TAG_NAME,
@@ -353,6 +377,7 @@ const AccessibleValueHandler = <SuperType extends Constructor>( Type: SuperType,
       this._dependenciesMultilink = null;
       this._a11yRepeatEqualValueText = options.a11yRepeatEqualValueText;
       this._timesChangedBeforeAlerting = 0;
+      this._voicingOnEndResponseOptions = options.voicingOnEndResponseOptions;
 
       // be called last, after options have been set to `this`.
       this.setA11yDependencies( options.a11yDependencies );
@@ -804,7 +829,7 @@ const AccessibleValueHandler = <SuperType extends Constructor>( Type: SuperType,
      */
     private _onInteractionEnd( event: SceneryEvent ): void {
       this.alertContextResponse();
-      this.voicingOnEndResponse();
+      this.voicingOnEndResponse( this._valueOnStart );
       this._endInput( event );
     }
 
@@ -960,25 +985,26 @@ const AccessibleValueHandler = <SuperType extends Constructor>( Type: SuperType,
     }
 
     /**
-     * Call this to trigger the voicing response spoken when an interaction ends.
+     * Call this to trigger the voicing response spoken when an interaction ends. Will speak the current
+     * name and object responses (according to options). Set those responses of Voicing.ts to hear up-to-date
+     * Voicing responses at the end of an interaction.
+     *
+     * @param valueOnStart - Property value at the start of the interaction.
+     * @param providedOptions
      */
-    public voicingOnEndResponse( providedOptions?: VoicingOnEndResponseOptions ): void {
+    public voicingOnEndResponse( valueOnStart: number, providedOptions?: VoicingOnEndResponseOptions ): void {
+      const options = combineOptions<VoicingOnEndResponseOptions>( {}, this._voicingOnEndResponseOptions, providedOptions );
 
-      const options = optionize<VoicingOnEndResponseOptions, VoicingOnEndResponseOptions>()( {
-        withObjectResponse: true, // speak the object response
-        onlyOnValueChange: true // don't speak if the value is the same as valueOnStart
-      }, providedOptions );
-
-      const valueChanged = this._valueOnStart !== this._valueProperty.value;
-      const valueAtMinMax = this._valueProperty.value !== this._enabledRangeProperty.value.min ||
-                            this._valueProperty.value !== this._enabledRangeProperty.value.max;
+      const valueChanged = valueOnStart !== this._valueProperty.value;
+      const valueAtMinMax = this._valueProperty.value === this._enabledRangeProperty.value.min ||
+                            this._valueProperty.value === this._enabledRangeProperty.value.max;
 
       const shouldSpeak = !options.onlyOnValueChange || // speak each time if onlyOnValueChange is false.
                           valueAtMinMax || // always speak at edges, for "go beyond" responses
                           valueChanged; // If the value changed
 
       shouldSpeak && this.voicingSpeakFullResponse( {
-        nameResponse: null,
+        nameResponse: options.withNameResponse ? this.voicingNameResponse : null,
         objectResponse: options.withObjectResponse ? this.voicingObjectResponse : null,
         hintResponse: null // no hint, there was just a successful interaction
       } );

@@ -22,7 +22,7 @@ import InstanceRegistry from '../../phet-core/js/documentation/InstanceRegistry.
 import optionize from '../../phet-core/js/optionize.js';
 import Orientation from '../../phet-core/js/Orientation.js';
 import swapObjectKeys from '../../phet-core/js/swapObjectKeys.js';
-import { DragListener, FocusHighlightFromNode, TPaint, Node, NodeOptions, Path, SceneryConstants } from '../../scenery/js/imports.js';
+import { DragListener, FocusHighlightFromNode, Node, NodeOptions, Path, SceneryConstants, TPaint } from '../../scenery/js/imports.js';
 import Tandem from '../../tandem/js/Tandem.js';
 import IOType from '../../tandem/js/types/IOType.js';
 import ValueChangeSoundPlayer, { ValueChangeSoundPlayerOptions } from '../../tambo/js/sound-generators/ValueChangeSoundPlayer.js';
@@ -356,6 +356,7 @@ export default class Slider extends AccessibleSlider( Node, 0 ) {
       enabledRangeProperty: this.enabledRangeProperty,
       soundGenerator: options.soundGenerator,
       pickable: superOptions.trackPickable,
+      voicingOnEndResponse: () => this.voicingOnEndResponse.bind( this ),
 
       // phet-io
       tandem: trackTandem
@@ -399,6 +400,7 @@ export default class Slider extends AccessibleSlider( Node, 0 ) {
 
     // update value when thumb is dragged
     let clickXOffset = 0; // x-offset between initial click and thumb's origin
+    let valueOnStart = valueProperty.value; // For description so we can describe value changes between interactions
     const thumbDragListener = new DragListener( {
 
       // Deviate from the variable name because we will nest this tandem under the thumb directly
@@ -406,6 +408,8 @@ export default class Slider extends AccessibleSlider( Node, 0 ) {
 
       start: ( event, listener ) => {
         if ( this.enabledProperty.get() ) {
+          valueOnStart = valueProperty.value;
+
           options.startDrag( event );
           const transform = listener.pressedTrail.subtrailTo( sliderPartsNode ).getTransform();
 
@@ -431,6 +435,10 @@ export default class Slider extends AccessibleSlider( Node, 0 ) {
       end: event => {
         if ( this.enabledProperty.get() ) {
           options.endDrag( event );
+
+          // voicing - Default behavior is to speak the new object response at the end of interaction. If you want to
+          // customize this response, you can modify supertype options VoicingOnEndResponseOptions.
+          this.voicingOnEndResponse( valueOnStart );
         }
         this.proposedValue = null;
       }

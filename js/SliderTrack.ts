@@ -20,6 +20,7 @@ import { DragListener, Node, NodeOptions, SceneryEvent, Trail } from '../../scen
 import Tandem from '../../tandem/js/Tandem.js';
 import sun from './sun.js';
 import Slider from './Slider.js';
+import { VoicingOnEndResponse } from './accessibility/AccessibleValueHandler.js';
 
 type SelfOptions = {
   size?: Dimension2;
@@ -45,6 +46,10 @@ type SelfOptions = {
 
   // Options for the default sound generator.  These should only be provided when using the default.
   valueChangeSoundGeneratorOptions?: ValueChangeSoundPlayerOptions;
+
+  // Announces the voicing response at the end of an interaction. Used by AccessibleValueHandler, see
+  // Slider for an example usage.
+  voicingOnEndResponse?: VoicingOnEndResponse;
 };
 
 export type SliderTrackOptions = SelfOptions & NodeOptions;
@@ -74,6 +79,7 @@ export default class SliderTrack extends Node {
       enabledRangeProperty: new Property( new Range( range.min, range.max ) ), // Defaults to a constant range
       soundGenerator: Slider.DEFAULT_SOUND,
       valueChangeSoundGeneratorOptions: {},
+      voicingOnEndResponse: _.noop,
 
       // phet-io
       tandem: Tandem.REQUIRED,
@@ -111,11 +117,13 @@ export default class SliderTrack extends Node {
 
     this.addChild( trackNode );
 
+    let valueOnStart = valueProperty.value;
     this.dragListener = new DragListener( {
       tandem: options.tandem.createTandem( 'dragListener' ),
 
       start: ( event, listener ) => {
         options.startDrag( event );
+        valueOnStart = valueProperty.value;
         handleTrackEvent( event, listener.pressedTrail );
       },
 
@@ -128,6 +136,7 @@ export default class SliderTrack extends Node {
 
       end: event => {
         options.endDrag( event );
+        options.voicingOnEndResponse( valueOnStart );
       }
     } );
     trackNode.addInputListener( this.dragListener );
