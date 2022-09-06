@@ -39,8 +39,9 @@ const toString = ( v: IntentionalAny ) => `${v}`;
 
 // Options for the Voicing response that happens at the end of
 const DEFAULT_VOICING_ON_END_RESPONSE_OPTIONS = {
-  withObjectResponse: true, // speak the object response
-  onlyOnValueChange: true // don't speak if the value is the same as valueOnStart
+  withNameResponse: false, // no need to repeat the name every change
+  withObjectResponse: true, // response for the new value
+  onlyOnValueChange: true // no response if value did not change
 };
 
 type CreateTextFunction = {
