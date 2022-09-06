@@ -15,12 +15,12 @@ import Tandem from '../../tandem/js/Tandem.js';
 import Checkbox, { CheckboxOptions } from './Checkbox.js';
 import sun from './sun.js';
 import Property from '../../axon/js/Property.js';
-import ChildComponentOptions, { getNodes } from './ChildComponentOptions.js';
+import GroupItemOptions, { getNodes } from './GroupItemOptions.js';
 
 export type VerticalCheckboxGroupItem = {
   property: Property<boolean>; // Property associated with the checkbox
   options?: CheckboxOptions; // Item-specific options to be passed to the checkbox
-} & ChildComponentOptions;
+} & GroupItemOptions;
 
 type SelfOptions = {
   checkboxOptions?: CheckboxOptions;

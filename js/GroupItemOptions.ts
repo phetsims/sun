@@ -10,7 +10,7 @@ import { Node } from '../../scenery/js/imports.js';
 
 // Provide either a Node or a function that creates a Node from a Tandem (but not both).
 // If you pass in a Node, you can also pass in a Tandem.  Or if you use `createNode` then you can specify `tandemName`
-type ChildComponentOptions = {
+type GroupItemOptions = {
   node: Node;
 
   // If PhET-iO information is provided here, it should be a fully complete Tandem. Optional to support
@@ -28,14 +28,14 @@ type ChildComponentOptions = {
   tandemName?: string;
 };
 
-export default ChildComponentOptions;
+export default GroupItemOptions;
 
 /**
- * Get the nodes for the ChildComponentOptions
+ * Get the nodes for the GroupItemOptions
  * TODO: https://github.com/phetsims/sun/issues/746 should this be renamed? Should it just be a top level `export function`,
  *       or does it belong elsewhere?
  */
-export function getNodes( array: ChildComponentOptions[], tandem: Tandem ): Node[] {
+export function getNodes( array: GroupItemOptions[], tandem: Tandem ): Node[] {
   return array.map( item => {
     if ( item.node ) {
       return item.node;

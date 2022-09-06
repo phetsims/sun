@@ -16,7 +16,7 @@ import Tandem from '../../tandem/js/Tandem.js';
 import AquaRadioButton, { AquaRadioButtonOptions } from './AquaRadioButton.js';
 import sun from './sun.js';
 import Property from '../../axon/js/Property.js';
-import ChildComponentOptions, { getNodes } from './ChildComponentOptions.js';
+import GroupItemOptions, { getNodes } from './GroupItemOptions.js';
 
 // pdom - An id for each instance of AquaRadioButtonGroup, passed to individual buttons in the group.
 // Each button in a radio button group must have the same "name" attribute to be considered in a group, otherwise
@@ -49,7 +49,7 @@ export type AquaRadioButtonGroupOptions = SelfOptions & StrictOmit<FlowBoxOption
 export type AquaRadioButtonGroupItem<T> = {
   value: T; // value associated with the button
   labelContent?: string; // label for a11y
-} & ChildComponentOptions;
+} & GroupItemOptions;
 
 export default class AquaRadioButtonGroup<T> extends FlowBox {
 
