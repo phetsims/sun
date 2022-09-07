@@ -25,8 +25,8 @@ type StringsType = {
   }
 };
 
-const sunStrings = getStringModule( 'SUN' ) as StringsType;
+const SunStrings = getStringModule( 'SUN' ) as StringsType;
 
-sun.register( 'sunStrings', sunStrings );
+sun.register( 'SunStrings', SunStrings );
 
-export default sunStrings;
+export default SunStrings;

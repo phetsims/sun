@@ -32,11 +32,11 @@ import optionize from '../../../phet-core/js/optionize.js';
 import Orientation from '../../../phet-core/js/Orientation.js';
 import { TInputListener, KeyboardUtils, Node, SceneryEvent } from '../../../scenery/js/imports.js';
 import sun from '../sun.js';
-import sunStrings from '../sunStrings.js';
+import SunStrings from '../SunStrings.js';
 import AccessibleValueHandler, { AccessibleValueHandlerOptions } from './AccessibleValueHandler.js';
 import TEmitter from '../../../axon/js/TEmitter.js';
 
-const numberSpinnerRoleDescriptionString = sunStrings.a11y.numberSpinnerRoleDescription;
+const numberSpinnerRoleDescriptionString = SunStrings.a11y.numberSpinnerRoleDescription;
 
 type SelfOptions = {
   timerDelay?: number;

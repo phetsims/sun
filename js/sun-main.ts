@@ -15,7 +15,7 @@ import ButtonsScreenView from './demo/buttons/ButtonsScreenView.js';
 import ComponentsScreenView from './demo/components/ComponentsScreenView.js';
 import DialogsScreenView from './demo/dialogs/DialogsScreenView.js';
 import LayoutScreenView from './demo/layout/LayoutScreenView.js';
-import sunStrings from './sunStrings.js';
+import SunStrings from './SunStrings.js';
 import sunQueryParameters from './sunQueryParameters.js';
 
 // empty model used for all demo screens
@@ -32,7 +32,7 @@ simLauncher.launch( () => {
     new LayoutScreen( Tandem.ROOT.createTandem( 'layoutScreen' ) )
   ];
 
-  const sim = new Sim( sunStrings.sun.titleStringProperty, screens, {
+  const sim = new Sim( SunStrings.sun.titleStringProperty, screens, {
     credits: {
       leadDesign: 'PhET Interactive Simulations'
     },

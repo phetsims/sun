@@ -32,7 +32,7 @@ import ButtonNode from './buttons/ButtonNode.js';
 import Panel, { PanelOptions } from './Panel.js';
 import Popupable, { PopupableOptions } from './Popupable.js';
 import sun from './sun.js';
-import sunStrings from './sunStrings.js';
+import SunStrings from './SunStrings.js';
 import TinyProperty from '../../axon/js/TinyProperty.js';
 import TReadOnlyProperty from '../../axon/js/TReadOnlyProperty.js';
 
@@ -284,16 +284,16 @@ export default class Dialog extends Popupable( Panel, 1 ) {
 
       // pdom
       tagName: 'button',
-      innerContent: sunStrings.a11y.close,
+      innerContent: SunStrings.a11y.close,
 
       // voicing
-      voicingContextResponse: sunStrings.a11y.closed
+      voicingContextResponse: SunStrings.a11y.closed
     } );
 
     let voicingNameMultilink: UnknownMultilink;
     if ( options.closeButtonVoicingDialogTitle ) {
       const titleProperty = typeof options.closeButtonVoicingDialogTitle === 'string' ? new TinyProperty( options.closeButtonVoicingDialogTitle ) : options.closeButtonVoicingDialogTitle;
-      voicingNameMultilink = Multilink.multilink( [ sunStrings.a11y.titleClosePatternStringProperty, titleProperty ], ( titleClosePattern, titleString ) => {
+      voicingNameMultilink = Multilink.multilink( [ SunStrings.a11y.titleClosePatternStringProperty, titleProperty ], ( titleClosePattern, titleString ) => {
         closeButton.voicingNameResponse = StringUtils.fillIn( titleClosePattern, {
           title: titleString
         } );
