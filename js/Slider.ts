@@ -33,6 +33,7 @@ import SliderTrack from './SliderTrack.js';
 import sun from './sun.js';
 import PickOptional from '../../phet-core/js/types/PickOptional.js';
 import { LinkableElement } from '../../tandem/js/PhetioObject.js';
+import LinkableProperty from '../../axon/js/LinkableProperty.js';
 
 // constants
 const VERTICAL_ROTATION = -Math.PI / 2;
@@ -152,7 +153,7 @@ export default class Slider extends AccessibleSlider( Node, 0 ) {
   // This value is set during thumb drag, or null if not currently being dragged.
   private proposedValue: number | null = null;
 
-  public constructor( valueProperty: Property<number>, range: Range, providedOptions?: SliderOptions ) {
+  public constructor( valueProperty: LinkableProperty<number>, range: Range, providedOptions?: SliderOptions ) {
 
     // Guard against mutually exclusive options before defaults are filled in.
     assert && assertMutuallyExclusiveOptions( providedOptions, [ 'thumbNode' ], [
