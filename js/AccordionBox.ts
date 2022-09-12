@@ -247,7 +247,7 @@ export default class AccordionBox extends Node {
 
     // If there is no titleNode specified, we'll provide our own, and handle disposal.
     if ( !this.titleNode ) {
-      this.titleNode = new Text( '', { tandem: options.tandem.createTandem( 'titleNode' ) } );
+      this.titleNode = new Text( '', { tandem: options.tandem.createTandem( 'titleText' ) } );
       this.disposeEmitterAccordionBox.addListener( () => this.titleNode.dispose() );
     }
 

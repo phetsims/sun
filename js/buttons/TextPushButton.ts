@@ -44,7 +44,7 @@ export default class TextPushButton extends RectangularPushButton {
       font: options.font,
       fill: options.textFill,
       maxWidth: options.maxTextWidth,
-      tandem: options.tandem.createTandem( 'textNode' )
+      tandem: options.tandem.createTandem( 'text' )
     }, options.textNodeOptions ) );
 
     super( options );
