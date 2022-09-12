@@ -187,7 +187,7 @@ export default class AccordionBox extends Node {
 
       // phet-io support
       tandem: Tandem.REQUIRED,
-      tandemSuffix: 'AccordionBox',
+      tandemNameSuffix: 'AccordionBox',
       phetioType: AccordionBox.AccordionBoxIO,
       phetioEventType: EventType.USER,
       visiblePropertyOptions: { phetioFeatured: true }

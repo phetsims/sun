@@ -37,7 +37,7 @@ export default class RectangularPushButton extends RectangularButton {
     const options = optionize<RectangularPushButtonOptions, SelfOptions, SuperOptions>()( {
       soundPlayer: pushButtonSoundPlayer,
       tandem: Tandem.REQUIRED,
-      tandemSuffix: 'Button'
+      tandemNameSuffix: 'Button'
     }, providedOptions );
 
     // Save the listener and add it after creating the button model.  This is done so that

@@ -103,7 +103,7 @@ export default class Checkbox extends WidthSizable( Voicing( Node ) ) {
 
       // phet-io
       tandem: Tandem.REQUIRED,
-      tandemSuffix: 'Checkbox',
+      tandemNameSuffix: 'Checkbox',
       phetioEventType: EventType.USER,
       visiblePropertyOptions: { phetioFeatured: true },
       phetioEnabledPropertyInstrumented: true, // opt into default PhET-iO instrumented enabledProperty

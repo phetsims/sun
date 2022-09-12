@@ -38,7 +38,7 @@ export default class RoundPushButton extends RoundButton {
     const options = optionize<RoundPushButtonOptions, SelfOptions, SuperOptions>()( {
       soundPlayer: pushButtonSoundPlayer,
       tandem: Tandem.REQUIRED,
-      tandemSuffix: 'Button'
+      tandemNameSuffix: 'Button'
     }, providedOptions );
 
     // Save the listener and add it after creating the button model. This is done so that

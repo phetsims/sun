@@ -47,7 +47,7 @@ export default class ExpandCollapseButton extends BooleanRectangularToggleButton
 
       // phet-io
       tandem: Tandem.REQUIRED,
-      tandemSuffix: 'Button'
+      tandemNameSuffix: 'Button'
     }, providedOptions );
 
     // BooleanRectangularToggleButtonOptions that are controlled by ExpandCollapseButton

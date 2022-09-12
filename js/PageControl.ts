@@ -65,7 +65,7 @@ export default class PageControl extends Node {
 
       // NodeOptions
       tandem: Tandem.REQUIRED,
-      tandemSuffix: 'PageControl',
+      tandemNameSuffix: 'PageControl',
       visiblePropertyOptions: {
         phetioFeatured: true
       }

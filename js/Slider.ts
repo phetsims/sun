@@ -220,7 +220,7 @@ export default class Slider extends AccessibleSlider( Node, 0 ) {
 
       // Supertype options
       tandem: Tandem.REQUIRED,
-      tandemSuffix: 'Slider',
+      tandemNameSuffix: 'Slider',
       phetioType: Slider.SliderIO,
       visiblePropertyOptions: { phetioFeatured: true },
       phetioEnabledPropertyInstrumented: true // opt into default PhET-iO instrumented enabledProperty

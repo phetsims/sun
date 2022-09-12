@@ -33,7 +33,7 @@ class BooleanRoundToggleButton extends RoundToggleButton<boolean> {
     const options = optionize<BooleanRoundToggleButtonOptions, SelfOptions, RoundToggleButtonOptions>()( {
       content: null,
       tandem: Tandem.REQUIRED,
-      tandemSuffix: 'Button'
+      tandemNameSuffix: 'Button'
     }, providedOptions );
 
     const content = new BooleanToggleNode( booleanProperty, trueNode, falseNode, {

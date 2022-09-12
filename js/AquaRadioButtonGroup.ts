@@ -76,7 +76,7 @@ export default class AquaRadioButtonGroup<T> extends FlowBox {
 
       // phet-io
       tandem: Tandem.REQUIRED,
-      tandemSuffix: 'RadioButtonGroup',
+      tandemNameSuffix: 'RadioButtonGroup',
       visiblePropertyOptions: { phetioFeatured: true },
       phetioEnabledPropertyInstrumented: true, // opt into default PhET-iO instrumented enabledProperty
 

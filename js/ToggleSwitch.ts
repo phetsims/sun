@@ -110,7 +110,7 @@ export default class ToggleSwitch<T> extends Voicing( Node ) {
 
       // phet-io
       tandem: Tandem.REQUIRED,
-      tandemSuffix: 'Switch',
+      tandemNameSuffix: 'Switch',
       phetioEventType: EventType.USER,
       phetioReadOnly: PhetioObject.DEFAULT_OPTIONS.phetioReadOnly,
       visiblePropertyOptions: { phetioFeatured: true },

@@ -85,7 +85,7 @@ export default class AquaRadioButton<T> extends Voicing( Node ) {
 
       // phet-io
       tandem: Tandem.REQUIRED,
-      tandemSuffix: 'RadioButton',
+      tandemNameSuffix: 'RadioButton',
       visiblePropertyOptions: { phetioFeatured: true },
       phetioEnabledPropertyInstrumented: true, // opt into default PhET-iO instrumented enabledProperty
 
