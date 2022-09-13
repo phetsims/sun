@@ -212,11 +212,16 @@ export default class RectangularButton extends ButtonNode {
  */
 function createButtonShape( width: number, height: number,
                             config: PickRequired<RectangularButtonOptions, 'cornerRadius' | 'leftTopCornerRadius' | 'rightTopCornerRadius' | 'leftBottomCornerRadius' | 'rightBottomCornerRadius'> ): Shape {
+
+  // Don't allow a corner radius that is larger than half the width or height, see
+  // https://github.com/phetsims/under-pressure/issues/151
+  const maxCorner = Math.min( width / 2, height / 2 );
+
   return Shape.roundedRectangleWithRadii( 0, 0, width, height, {
-    topLeft: config.leftTopCornerRadius !== null ? config.leftTopCornerRadius : config.cornerRadius,
-    topRight: config.rightTopCornerRadius !== null ? config.rightTopCornerRadius : config.cornerRadius,
-    bottomLeft: config.leftBottomCornerRadius !== null ? config.leftBottomCornerRadius : config.cornerRadius,
-    bottomRight: config.rightBottomCornerRadius !== null ? config.rightBottomCornerRadius : config.cornerRadius
+    topLeft: Math.min( maxCorner, config.leftTopCornerRadius !== null ? config.leftTopCornerRadius : config.cornerRadius ),
+    topRight: Math.min( maxCorner, config.rightTopCornerRadius !== null ? config.rightTopCornerRadius : config.cornerRadius ),
+    bottomLeft: Math.min( maxCorner, config.leftBottomCornerRadius !== null ? config.leftBottomCornerRadius : config.cornerRadius ),
+    bottomRight: Math.min( maxCorner, config.rightBottomCornerRadius !== null ? config.rightBottomCornerRadius : config.cornerRadius )
   } );
 }
 
