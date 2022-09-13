@@ -23,6 +23,7 @@ import TinyProperty from '../../axon/js/TinyProperty.js';
 import StrictOmit from '../../phet-core/js/types/StrictOmit.js';
 import ComboBox, { ComboBoxItem } from './ComboBox.js';
 import Multilink from '../../axon/js/Multilink.js';
+import TReadOnlyProperty from '../../axon/js/TReadOnlyProperty.js';
 
 // constants
 const ALIGN_VALUES = [ 'left', 'center', 'right' ] as const;
@@ -48,8 +49,8 @@ type SelfOptions = {
   // ComboBoxItem.a11yLabel.
   comboBoxVoicingNameResponsePattern?: string;
 
-  localPreferredWidthProperty?: TProperty<number | null>;
-  localMinimumWidthProperty?: TProperty<number | null>;
+  localPreferredWidthProperty?: TReadOnlyProperty<number | null>;
+  localMinimumWidthProperty?: TProperty<number | null>; // Will only be set
 };
 
 export type ComboBoxButtonOptions = SelfOptions & StrictOmit<RectangularPushButtonOptions, 'children' | 'ariaLabelledbyAssociations'>;
