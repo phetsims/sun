@@ -16,7 +16,7 @@ import ButtonNode from './buttons/ButtonNode.js';
 import RectangularPushButton, { RectangularPushButtonOptions } from './buttons/RectangularPushButton.js';
 import sun from './sun.js';
 import SunConstants from './SunConstants.js';
-import VSeparator from './VSeparator.js';
+import VSeparatorDeprecated from './VSeparatorDeprecated.js';
 import TProperty from '../../axon/js/TProperty.js';
 import nullSoundPlayer from '../../tambo/js/shared-sound-players/nullSoundPlayer.js';
 import TinyProperty from '../../axon/js/TinyProperty.js';
@@ -64,7 +64,7 @@ export default class ComboBoxButton<T> extends RectangularPushButton {
 
   // needed by methods
   private arrow: Path;
-  private vSeparator: VSeparator;
+  private vSeparator: VSeparatorDeprecated;
 
   public constructor( property: TProperty<T>, items: ComboBoxItem<T>[], providedOptions?: ComboBoxButtonOptions ) {
 
@@ -134,7 +134,7 @@ export default class ComboBoxButton<T> extends RectangularPushButton {
     } );
 
     // Vertical separator between the item and arrow that is the full height of the button.
-    const vSeparator = new VSeparator( 0, {
+    const vSeparator = new VSeparatorDeprecated( 0, {
       stroke: 'black',
       lineWidth: options.lineWidth
     } );

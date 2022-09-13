@@ -16,7 +16,7 @@ import { Shape } from '../../../../kite/js/imports.js';
 import optionize, { combineOptions, EmptySelfOptions } from '../../../../phet-core/js/optionize.js';
 import Constructor from '../../../../phet-core/js/types/Constructor.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
-import { AlignBox, Circle, Color, FlowBox, FlowCell, FlowConstraint, GridBackgroundNode, GridBox, TPaint, ManualConstraint, Node, Path, Rectangle, RectangleOptions, Text, TextOptions, VDivider } from '../../../../scenery/js/imports.js';
+import { AlignBox, Circle, Color, FlowBox, FlowCell, FlowConstraint, GridBackgroundNode, GridBox, TPaint, ManualConstraint, Node, Path, Rectangle, RectangleOptions, Text, TextOptions, HSeparator } from '../../../../scenery/js/imports.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
 import Checkbox from '../../Checkbox.js';
 import Panel from '../../Panel.js';
@@ -188,11 +188,11 @@ function demoSeparators( layoutBounds: Bounds2 ): Node {
     align: 'left',
     spacing: 5,
     children: [
-      new VDivider(),
+      new HSeparator(),
       sectionText( 'Disappearing node?:' ),
-      new VDivider(),
+      new HSeparator(),
       disappearing,
-      new VDivider()
+      new HSeparator()
     ]
   } ) );
 

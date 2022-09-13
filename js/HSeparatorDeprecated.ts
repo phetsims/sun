@@ -1,7 +1,7 @@
 // Copyright 2022, University of Colorado Boulder
 
 /**
- * HSeparator is a horizontal separator, typically used to separate a panel into logical sections.
+ * HSeparatorDeprecated is a horizontal separator, typically used to separate a panel into logical sections.
  *
  * @author Chris Malley (PixelZoom, Inc.)
  */
@@ -11,13 +11,15 @@ import { Line, LineOptions } from '../../scenery/js/imports.js';
 import sun from './sun.js';
 
 type SelfOptions = EmptySelfOptions;
-export type HSeparatorOptions = SelfOptions & LineOptions;
+export type HSeparatorDeprecatedOptions = SelfOptions & LineOptions;
 
-export default class HSeparator extends Line {
-  public constructor( width: number, providedOptions?: HSeparatorOptions ) {
+export default class HSeparatorDeprecated extends Line {
+
+  // @deprecated
+  public constructor( width: number, providedOptions?: HSeparatorDeprecatedOptions ) {
     assert && assert( isFinite( width ) && width >= 0, `invalid width=${width}` );
 
-    const options = optionize<HSeparatorOptions, SelfOptions, LineOptions>()( {
+    const options = optionize<HSeparatorDeprecatedOptions, SelfOptions, LineOptions>()( {
       stroke: 'rgb( 100, 100, 100 )'
     }, providedOptions );
 
@@ -25,4 +27,4 @@ export default class HSeparator extends Line {
   }
 }
 
-sun.register( 'HSeparator', HSeparator );
+sun.register( 'HSeparatorDeprecated', HSeparatorDeprecated );

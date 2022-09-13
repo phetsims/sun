@@ -1,7 +1,7 @@
 // Copyright 2022, University of Colorado Boulder
 
 /**
- * VSeparator is a vertical separator, typically used to separate a panel into logical sections.
+ * VSeparatorDeprecated is a vertical separator, typically used to separate a panel into logical sections.
  *
  * @author Chris Malley (PixelZoom, Inc.)
  */
@@ -12,14 +12,15 @@ import sun from './sun.js';
 
 type SelfOptions = EmptySelfOptions;
 
-export type VSeparatorOptions = SelfOptions & LineOptions;
+export type VSeparatorDeprecatedOptions = SelfOptions & LineOptions;
 
-export default class VSeparator extends Line {
+export default class VSeparatorDeprecated extends Line {
 
-  public constructor( height: number, providedOptions?: VSeparatorOptions ) {
+  // @deprecated
+  public constructor( height: number, providedOptions?: VSeparatorDeprecatedOptions ) {
     assert && assert( isFinite( height ) && height >= 0, `invalid height=${height}` );
 
-    const options = optionize<VSeparatorOptions, SelfOptions, LineOptions>()( {
+    const options = optionize<VSeparatorDeprecatedOptions, SelfOptions, LineOptions>()( {
       stroke: 'rgb( 100, 100, 100 )'
     }, providedOptions );
 
@@ -27,4 +28,4 @@ export default class VSeparator extends Line {
   }
 }
 
-sun.register( 'VSeparator', VSeparator );
+sun.register( 'VSeparatorDeprecated', VSeparatorDeprecated );
