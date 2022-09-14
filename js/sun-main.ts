@@ -46,9 +46,8 @@ class ButtonScreen extends Screen<Model, ButtonsScreenView> {
   public constructor( tandem: Tandem ) {
     super(
       () => new Model(),
-      () => new ButtonsScreenView( { tandem: tandem.createTandem( 'view' ) } ),
-      {
-        name: 'Buttons',
+      () => new ButtonsScreenView( { tandem: tandem.createTandem( 'view' ) } ), {
+        name: new Property( 'Buttons' ),
         backgroundColorProperty: new Property( Color.toColor( sunQueryParameters.backgroundColor ) ),
         homeScreenIcon: createScreenIcon( 'red' ),
         tandem: tandem
@@ -63,7 +62,7 @@ class ComponentsScreen extends Screen<Model, ComponentsScreenView> {
       () => new Model(),
       () => new ComponentsScreenView( { tandem: tandem.createTandem( 'view' ) } ),
       {
-        name: 'Components',
+        name: new Property( 'Components' ),
         backgroundColorProperty: new Property( Color.toColor( sunQueryParameters.backgroundColor ) ),
         homeScreenIcon: createScreenIcon( 'yellow' ),
         tandem: tandem
@@ -78,7 +77,7 @@ class DialogsScreen extends Screen<Model, DialogsScreenView> {
       () => new Model(),
       () => new DialogsScreenView( { tandem: tandem.createTandem( 'view' ) } ),
       {
-        name: 'Dialogs',
+        name: new Property( 'Dialogs' ),
         backgroundColorProperty: new Property( Color.toColor( sunQueryParameters.backgroundColor ) ),
         homeScreenIcon: createScreenIcon( 'purple' ),
         tandem: tandem
@@ -93,7 +92,7 @@ class LayoutScreen extends Screen<Model, DialogsScreenView> {
       () => new Model(),
       () => new LayoutScreenView( { tandem: tandem.createTandem( 'view' ) } ),
       {
-        name: 'Layout',
+        name: new Property( 'Layout' ),
         backgroundColorProperty: new Property( Color.toColor( sunQueryParameters.backgroundColor ) ),
         homeScreenIcon: createScreenIcon( 'green' ),
         tandem: tandem
