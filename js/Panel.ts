@@ -45,6 +45,7 @@ type SelfOptions = {
 
   // minimum width of the panel (lineWidth will add to this)
   minWidth?: number;
+  minHeight?: number;
 };
 
 type SuperOptions = SizableOptions & NodeOptions;
@@ -63,6 +64,7 @@ const DEFAULT_OPTIONS: OptionizeDefaults<SelfOptions, SuperOptions> = {
   excludeInvisibleChildrenFromBounds: true,
   align: 'left',
   minWidth: 0,
+  minHeight: 0,
   tandem: Tandem.OPTIONAL
 };
 assert && Object.freeze( DEFAULT_OPTIONS );
@@ -172,6 +174,7 @@ class PanelConstraint extends LayoutConstraint {
   private readonly yMargin: number;
   private readonly lineWidth: number;
   private readonly align: PanelAlign;
+  private readonly minHeight: number;
 
   public constructor( panel: Panel, options: Required<SelfOptions> ) {
     super( panel );
@@ -185,6 +188,7 @@ class PanelConstraint extends LayoutConstraint {
     assert && assert( ALIGN_VALUES.includes( options.align ), `Panel align should be one of ${ALIGN_VALUES}` );
 
     this.minWidth = options.minWidth;
+    this.minHeight = options.minHeight;
     this.xMargin = options.xMargin;
     this.yMargin = options.yMargin;
     this.lineWidth = options.lineWidth;
@@ -222,7 +226,7 @@ class PanelConstraint extends LayoutConstraint {
     // Our minimum dimensions are directly determined by the content, margins and lineWidth
     // NOTE: options.minWidth does NOT include the stroke (e.g. lineWidth), left for backward compatibility.
     const minimumWidth = Math.max( this.minWidth, minimumContentWidth + ( 2 * this.xMargin ) ) + lineWidth;
-    const minimumHeight = minimumContentHeight + ( 2 * this.yMargin ) + lineWidth;
+    const minimumHeight = Math.max( this.minHeight, minimumContentHeight + ( 2 * this.yMargin ) ) + lineWidth;
 
     // Our resulting sizes (allow setting preferred width/height on the panel)
     const preferredWidth: number = panel.localPreferredWidth === null ? minimumWidth : panel.localPreferredWidth;
