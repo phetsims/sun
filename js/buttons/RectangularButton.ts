@@ -187,6 +187,8 @@ export default class RectangularButton extends ButtonNode {
           isWidthSizable ? layoutSize.width - this.maxLineWidth : buttonWidth,
           isHeightSizable ? layoutSize.height - this.maxLineWidth : buttonHeight,
           options );
+        assert && assert( !isWidthSizable || buttonBackground.width <= layoutSize.width + 1e-7, 'button width cannot exceed layout width' );
+        assert && assert( !isHeightSizable || buttonBackground.height <= layoutSize.height + 1e-7, 'button width cannot exceed layout height' );
       }
 
       if ( isFirstlayout || isWidthSizable || isHeightSizable ) {
@@ -289,7 +291,7 @@ class ThreeDAppearanceStrategy {
     } );
     buttonBackground.addChild( horizontalShadingPath );
 
-    this.maxLineWidth = horizontalShadingPath.hasStroke() && options && typeof options.lineWidth === 'number' ? options.lineWidth : 0;
+    this.maxLineWidth = typeof options.lineWidth === 'number' ? options.lineWidth : 0;
 
     let interactionStateListener: ( interactionState: ButtonInteractionState ) => void;
 

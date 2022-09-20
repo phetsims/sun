@@ -340,10 +340,13 @@ export class FlatAppearanceStrategy {
       stroke: baseDarker4
     }, providedOptions );
 
+    const lineWidth = typeof options.lineWidth === 'number' ? options.lineWidth : 1;
+
     // If the stroke wasn't provided, set a default.
     buttonBackground.stroke = ( typeof ( options.stroke ) === 'undefined' ) ? baseDarker4 : options.stroke;
+    buttonBackground.lineWidth = lineWidth;
 
-    this.maxLineWidth = buttonBackground.hasStroke() && options.lineWidth ? options.lineWidth : 0;
+    this.maxLineWidth = buttonBackground.hasStroke() ? lineWidth : 0;
 
     // Cache colors
     buttonBackground.cachedPaints = [ upFill, overFill, downFill ];
@@ -410,8 +413,8 @@ class ButtonNodeConstraint extends LayoutConstraint {
   private isFirstLayout = true;
 
   // Stored so that we can prevent updates if we're not marked sizable in a certain direction
-  private preferredWidth = 0;
-  private preferredHeight = 0;
+  private localPreferredWidth = 0;
+  private localPreferredHeight = 0;
 
   public constructor( buttonNode: ButtonNode, options: ButtonNodeConstraintOptions ) {
 
@@ -455,16 +458,16 @@ class ButtonNodeConstraint extends LayoutConstraint {
     );
 
     // Our resulting sizes (allow setting preferred width/height on the buttonNode)
-    this.preferredWidth = this.isFirstLayout || isWidthSizable( buttonNode )
+    this.localPreferredWidth = this.isFirstLayout || isWidthSizable( buttonNode )
                           ? ( buttonNode.localPreferredWidth === null ? minimumWidth : buttonNode.localPreferredWidth )
-                          : this.preferredWidth;
-    this.preferredHeight = this.isFirstLayout || isHeightSizable( buttonNode )
+                          : this.localPreferredWidth;
+    this.localPreferredHeight = this.isFirstLayout || isHeightSizable( buttonNode )
                            ? ( buttonNode.localPreferredHeight === null ? minimumHeight : buttonNode.localPreferredHeight )
-                           : this.preferredHeight;
+                           : this.localPreferredHeight;
 
     this.isFirstLayout = false;
 
-    this.layoutSizeProperty.value = new Dimension2( this.preferredWidth, this.preferredHeight );
+    this.layoutSizeProperty.value = new Dimension2( this.localPreferredWidth, this.localPreferredHeight );
 
     // Set minimums at the end
     buttonNode.localMinimumWidth = minimumWidth;
