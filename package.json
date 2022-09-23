@@ -25,7 +25,6 @@
       "phet-io"
     ],
     "phet-io": {
-      "compareDesignedAPIChanges": true,
       "validation": false
     },
     "supportsOutputJS": true
