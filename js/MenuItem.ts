@@ -70,8 +70,11 @@ export default class MenuItem extends WidthSizable( Voicing( Node ) ) {
    * @param shouldBeHiddenWhenLinksAreNotAllowed
    * @param [providedOptions]
    */
-  public constructor( closeCallback: ( event: SceneryEvent ) => void, text: TReadOnlyProperty<string>,
-                      callback: ( event: SceneryEvent ) => void, present: boolean, shouldBeHiddenWhenLinksAreNotAllowed: boolean, providedOptions?: MenuItemOptions ) {
+  public constructor( closeCallback: ( event: SceneryEvent ) => void,
+                      text: TReadOnlyProperty<string>,
+                      callback: ( event: SceneryEvent ) => void, present: boolean,
+                      shouldBeHiddenWhenLinksAreNotAllowed: boolean,
+                      providedOptions?: MenuItemOptions ) {
 
     // Extend the object with defaults.
     const options = optionize<MenuItemOptions, SelfOptions, ParentOptions>()( {
