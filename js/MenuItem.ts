@@ -64,14 +64,14 @@ export default class MenuItem extends WidthSizable( Voicing( Node ) ) {
 
   /**
    * @param closeCallback - called when closing the dialog that the menu item opened
-   * @param text - label for the menu item
+   * @param labelStringProperty - label for the menu item
    * @param callback - called when the menu item is selected
    * @param present - see present field
    * @param shouldBeHiddenWhenLinksAreNotAllowed
    * @param [providedOptions]
    */
   public constructor( closeCallback: ( event: SceneryEvent ) => void,
-                      text: TReadOnlyProperty<string>,
+                      labelStringProperty: TReadOnlyProperty<string>,
                       callback: ( event: SceneryEvent ) => void, present: boolean,
                       shouldBeHiddenWhenLinksAreNotAllowed: boolean,
                       providedOptions?: MenuItemOptions ) {
@@ -110,14 +110,15 @@ export default class MenuItem extends WidthSizable( Voicing( Node ) ) {
       this.setVisibleProperty( allowLinksProperty );
     }
 
-    text.link( string => {
-      this.innerContent = string;
-      this.voicingNameResponse = string;
-    } );
+    const labelStringListener = ( labelString: string ) => {
+      this.innerContent = labelString;
+      this.voicingNameResponse = labelString;
+    };
+    labelStringProperty.link( labelStringListener );
 
     this.present = present;
 
-    const textNode = new Text( text, {
+    const labelText = new Text( labelStringProperty, {
       font: new PhetFont( FONT_SIZE ),
       fill: options.textFill,
       maxWidth: MAX_ITEM_WIDTH
@@ -127,7 +128,7 @@ export default class MenuItem extends WidthSizable( Voicing( Node ) ) {
       cornerRadius: CORNER_RADIUS
     } );
 
-    textNode.boundsProperty.link( textBounds => {
+    labelText.boundsProperty.link( textBounds => {
       this.localMinimumWidth = textBounds.width + LEFT_X_MARGIN + RIGHT_X_MARGIN + CHECK_OFFSET;
       highlight.rectHeight = textBounds.height + Y_MARGIN + Y_MARGIN;
     } );
@@ -142,11 +143,11 @@ export default class MenuItem extends WidthSizable( Voicing( Node ) ) {
     } );
 
     this.addChild( highlight );
-    this.addChild( textNode );
+    this.addChild( labelText );
 
-    ManualConstraint.create( this, [ highlight, textNode ], ( highlightProxy, textNodeProxy ) => {
-      textNodeProxy.left = highlightProxy.left + LEFT_X_MARGIN + CHECK_OFFSET; // text is left aligned
-      textNodeProxy.centerY = highlightProxy.centerY;
+    ManualConstraint.create( this, [ highlight, labelText ], ( highlightProxy, labelTextProxy ) => {
+      labelTextProxy.left = highlightProxy.left + LEFT_X_MARGIN + CHECK_OFFSET; // labelStringProperty is left aligned
+      labelTextProxy.centerY = highlightProxy.centerY;
     } );
 
     this.addInputListener( {
@@ -166,26 +167,32 @@ export default class MenuItem extends WidthSizable( Voicing( Node ) ) {
     this.separatorBefore = options.separatorBefore;
 
     // Optionally add a check mark and hook up visibility changes.
-    let checkListener: ( ( isChecked: boolean ) => void ) | null = null;
+    let checkedListener: ( ( isChecked: boolean ) => void ) | null = null;
     if ( options.checkedProperty ) {
       const checkMarkWrapper = new Node( {
         children: [ CHECK_MARK_NODE ],
-        right: textNode.left - CHECK_PADDING,
-        centerY: textNode.centerY
+        right: labelText.left - CHECK_PADDING,
+        centerY: labelText.centerY
       } );
-      checkListener = ( isChecked: boolean ) => {
+      checkedListener = ( isChecked: boolean ) => {
         checkMarkWrapper.visible = isChecked;
       };
-      options.checkedProperty.link( checkListener );
+      options.checkedProperty.link( checkedListener );
       this.addChild( checkMarkWrapper );
     }
 
     this.mutate( options );
 
     this.disposeMenuItem = () => {
-      if ( options.checkedProperty && checkListener ) {
-        options.checkedProperty.unlink( checkListener );
+      if ( options.checkedProperty && checkedListener && options.checkedProperty.hasListener( checkedListener ) ) {
+        options.checkedProperty.unlink( checkedListener );
       }
+
+      if ( labelStringProperty.hasListener( labelStringListener ) ) {
+        labelStringProperty.unlink( labelStringListener );
+      }
+
+      labelText.dispose();
     };
   }
 
