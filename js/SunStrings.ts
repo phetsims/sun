@@ -5,23 +5,23 @@
  */
 /* eslint-disable */
 import getStringModule from '../../chipper/js/getStringModule.js';
-import TReadOnlyProperty from '../../axon/js/TReadOnlyProperty.js';
+import LinkableProperty from '../../axon/js/LinkableProperty.js';
 import sun from './sun.js';
 
 type StringsType = {
   'sun': {
     'title': string;
-    'titleStringProperty': TReadOnlyProperty<string>;
+    'titleStringProperty': LinkableProperty<string>;
   };
   'a11y': {
     'numberSpinnerRoleDescription': string;
-    'numberSpinnerRoleDescriptionStringProperty': TReadOnlyProperty<string>;
+    'numberSpinnerRoleDescriptionStringProperty': LinkableProperty<string>;
     'close': string;
-    'closeStringProperty': TReadOnlyProperty<string>;
+    'closeStringProperty': LinkableProperty<string>;
     'closed': string;
-    'closedStringProperty': TReadOnlyProperty<string>;
+    'closedStringProperty': LinkableProperty<string>;
     'titleClosePattern': string;
-    'titleClosePatternStringProperty': TReadOnlyProperty<string>;
+    'titleClosePatternStringProperty': LinkableProperty<string>;
   }
 };
 
