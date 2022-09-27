@@ -9,7 +9,6 @@
 
 import StrictOmit from '../../phet-core/js/types/StrictOmit.js';
 import optionize, { EmptySelfOptions } from '../../phet-core/js/optionize.js';
-import dotRandom from '../../dot/js/dotRandom.js';
 import { FlowBox, FlowBoxOptions, HStrut, Node, PDOMPeer, SceneryConstants, SceneryEvent } from '../../scenery/js/imports.js';
 import multiSelectionSoundPlayerFactory from '../../tambo/js/multiSelectionSoundPlayerFactory.js';
 import Tandem from '../../tandem/js/Tandem.js';
@@ -113,9 +112,10 @@ export default class AquaRadioButtonGroup<T> extends FlowBox {
           a11yNameAttribute: CLASS_NAME + instanceCount,
           labelContent: item.labelContent || null,
           soundPlayer: multiSelectionSoundPlayerFactory.getSelectionSoundPlayer( i ),
-
-          // Instead of using Tandem.REQUIRED, use the same tandem that is passed into the group, helping to support Tandem.OPT_OUT
-          tandem: options.tandem.createTandem( item.tandemName || `placeHolder${dotRandom.nextInt( 1000000 )}RadioButton` )
+          tandem: item.tandem ? item.tandem :
+                  item.tandemName ? options.tandem.createTandem( item.tandemName ) :
+                  options.tandem === Tandem.OPT_OUT ? Tandem.OPT_OUT :
+                  Tandem.REQUIRED
         }, options.radioButtonOptions! ) );
 
       // set pointer areas - update them when the localBounds change
