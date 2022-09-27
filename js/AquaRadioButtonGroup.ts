@@ -95,6 +95,10 @@ export default class AquaRadioButtonGroup<T> extends FlowBox {
     const radioButtons: AquaRadioButton<T>[] = [];
     for ( let i = 0; i < items.length; i++ ) {
       const item = items[ i ];
+
+      // @ts-ignore - runtime check to prevent prior pattern, see https://github.com/phetsims/sun/issues/794
+      assert && assert( !item.tandem, 'Cannot specify tandem any more' );
+
       const node = nodes[ i ];
 
       assert && assert( !node.hasPDOMContent,
@@ -112,8 +116,7 @@ export default class AquaRadioButtonGroup<T> extends FlowBox {
           a11yNameAttribute: CLASS_NAME + instanceCount,
           labelContent: item.labelContent || null,
           soundPlayer: multiSelectionSoundPlayerFactory.getSelectionSoundPlayer( i ),
-          tandem: item.tandem ? item.tandem :
-                  item.tandemName ? options.tandem.createTandem( item.tandemName ) :
+          tandem: item.tandemName ? options.tandem.createTandem( item.tandemName ) :
                   options.tandem === Tandem.OPT_OUT ? Tandem.OPT_OUT :
                   Tandem.REQUIRED
         }, options.radioButtonOptions! ) );

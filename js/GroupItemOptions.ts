@@ -11,16 +11,6 @@ import { Node } from '../../scenery/js/imports.js';
 // Provide either a Node or a function that creates a Node from a Tandem (but not both).
 // If you pass in a Node, you can also pass in a Tandem.  Or if you use `createNode` then you can specify `tandemName`
 type GroupItemOptions = {
-  node: Node;
-
-  // If PhET-iO information is provided here, it should be a fully complete Tandem. Optional to support
-  // uninstrumented sims and demos
-  tandem?: Tandem;
-  createNode?: never;
-  tandemName?: never;
-} | {
-  node?: never;
-  tandem?: never;
   createNode: ( tandem: Tandem ) => Node;
 
   // If PhET-iO information is provided here, it should be tandemName that will be used to create the tandem for createNode. Optional to support
@@ -37,11 +27,10 @@ export default GroupItemOptions;
  */
 export function getNodes( array: GroupItemOptions[], tandem: Tandem ): Node[] {
   return array.map( item => {
-    if ( item.node ) {
-      return item.node;
-    }
-    else {
-      return item.createNode( item.tandemName ? tandem.createTandem( item.tandemName ) : Tandem.OPTIONAL );
-    }
+
+    // @ts-ignore - runtime check to prevent prior pattern, see https://github.com/phetsims/sun/issues/794
+    assert && assert( !item.node, 'Use createNode instead of node' );
+
+    return item.createNode( item.tandemName ? tandem.createTandem( item.tandemName ) : Tandem.OPTIONAL );
   } );
 }

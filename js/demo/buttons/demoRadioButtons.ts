@@ -13,6 +13,7 @@ import VerticalAquaRadioButtonGroup from '../../VerticalAquaRadioButtonGroup.js'
 import Bounds2 from '../../../../dot/js/Bounds2.js';
 import Property from '../../../../axon/js/Property.js';
 import { Font, HBox, Node, Text, VBox } from '../../../../scenery/js/imports.js';
+import Tandem from '../../../../tandem/js/Tandem.js';
 
 const BUTTON_FONT = new Font( { size: 16 } );
 
@@ -61,7 +62,7 @@ export default function demoRadioButtons( layoutBounds: Bounds2 ): Node {
   const aquaRadioButtonGroupContent = _.map( aquaRadioButtonValues, stringValue => {
     return {
       value: stringValue,
-      node: new Text( stringValue, { font: BUTTON_FONT } ),
+      createNode: ( tandem: Tandem ) => new Text( stringValue, { font: BUTTON_FONT } ),
       labelContent: stringValue
     };
   } );

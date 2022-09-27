@@ -76,9 +76,11 @@ export default class VerticalCheckboxGroup extends VBox {
       // set pointer areas, y dimensions are computed
       const yDilation = options.spacing / 2;
 
+      // @ts-ignore - runtime check to prevent prior pattern, see https://github.com/phetsims/sun/issues/794
+      assert && assert( !item.tandem, 'Cannot specify tandem on item, use tandemName instead' );
+
       const checkbox = new Checkbox( item.property, content, merge( {}, options.checkboxOptions, item.options, {
         tandem: item.tandemName ? options.tandem.createTandem( item.tandemName ) :
-                item.tandem ? item.tandem :
                 Tandem.OPTIONAL,
         mouseAreaXDilation: options.mouseAreaXDilation,
         touchAreaXDilation: options.touchAreaXDilation,
