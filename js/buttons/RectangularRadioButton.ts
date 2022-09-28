@@ -201,23 +201,23 @@ export default class RectangularRadioButton<T> extends RectangularButton {
         deselectedButtonOpacity: 1,
         deselectedLineWidth: 1,
         deselectedStroke: 'gray',
-        overButtonOpacity: 1,
-        overFill: baseColorProperty,
-        overLineWidth: 1,
-        overStroke: baseColorProperty,
+        overButtonOpacity: 0.8,
+        overFill: null,
+        overLineWidth: 0,
+        overStroke: null,
         selectedButtonOpacity: 1,
         selectedLineWidth: 1,
         selectedStroke: 'black'
       }, providedOptions );
 
       // Dynamic fills and strokes
-      const overFill = new PaintColorProperty( options.overFill, {
-        luminanceFactor: providedOptions && providedOptions.overFill ? 0 : 0.4
-      } );
       const pressedFill = new PaintColorProperty( baseColorProperty, {
         luminanceFactor: -0.4
       } );
-      const overStroke = new PaintColorProperty( options.overStroke, {
+      const overFill = new PaintColorProperty( options.overFill || baseColorProperty, {
+        luminanceFactor: providedOptions && providedOptions.overFill ? 0 : 0.4
+      } );
+      const overStroke = new PaintColorProperty( options.overStroke || options.deselectedStroke, {
         luminanceFactor: providedOptions && providedOptions.overStroke ? 0 : -0.4
       } );
 
