@@ -69,7 +69,7 @@ export default class RectangularRadioButton<T> extends RectangularButton {
       buttonAppearanceStrategy: RectangularRadioButton.FlatAppearanceStrategy,
       buttonAppearanceStrategyOptions: {
         overButtonOpacity: 0.8,
-        overStroke: new Color( 50, 50, 50 ),
+        overStroke: null,
         selectedStroke: Color.BLACK,
         selectedLineWidth: 1.5,
         selectedButtonOpacity: 1,
