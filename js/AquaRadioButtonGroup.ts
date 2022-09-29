@@ -48,7 +48,7 @@ export type AquaRadioButtonGroupOptions = SelfOptions & StrictOmit<FlowBoxOption
 export type AquaRadioButtonGroupItem<T> = {
   value: T; // value associated with the button
   labelContent?: string; // label for a11y
-} & GroupItemOptions;
+} & GroupItemOptions; // additional options that are common to 'group items'
 
 export default class AquaRadioButtonGroup<T> extends FlowBox {
 

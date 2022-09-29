@@ -20,7 +20,7 @@ import GroupItemOptions, { getNodes } from './GroupItemOptions.js';
 export type VerticalCheckboxGroupItem = {
   property: Property<boolean>; // Property associated with the checkbox
   options?: CheckboxOptions; // Item-specific options to be passed to the checkbox
-} & GroupItemOptions;
+} & GroupItemOptions; // additional options that are common to 'group items'
 
 type SelfOptions = {
   checkboxOptions?: CheckboxOptions;
