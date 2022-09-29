@@ -16,7 +16,6 @@
  * @author Jesse Greenberg (PhET Interactive Simulations)
  */
 
-import ReadOnlyProperty from '../../../axon/js/ReadOnlyProperty.js';
 import Utils from '../../../dot/js/Utils.js';
 import Range from '../../../dot/js/Range.js';
 import assertHasProperties from '../../../phet-core/js/assertHasProperties.js';
@@ -432,12 +431,8 @@ const AccessibleValueHandler = <SuperType extends Constructor>( Type: SuperType,
      * previous list (like Node.children).
      */
     public setA11yDependencies( dependencies: TReadOnlyProperty<IntentionalAny>[] ): void {
-      assert && assert( Array.isArray( dependencies ) );
       assert && assert( !dependencies.includes( this._valueProperty ),
         'The value Property is already a dependency, and does not need to be added to this list' );
-      assert && dependencies.forEach( property => {
-        assert && assert( property instanceof ReadOnlyProperty, `${property} is not an instance of Property` );
-      } );
 
       // dispose the previous multilink, there is only one set of dependencies, though they can be overwritten.
       this._dependenciesMultilink && this._dependenciesMultilink.dispose();
