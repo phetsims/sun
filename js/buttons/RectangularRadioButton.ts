@@ -217,6 +217,11 @@ export default class RectangularRadioButton<T> extends RectangularButton {
       const overFill = new PaintColorProperty( options.overFill || baseColorProperty, {
         luminanceFactor: providedOptions && providedOptions.overFill ? 0 : 0.4
       } );
+
+      // Editorial Note: The code below, where the deselected stroke is used as the value for the over stroke if no over
+      // stroke is provided, seems a bit odd.  However, I (jbphet) tried removing it when refactoring this to support
+      // TypeScript, and a number of sims broke.  The code was reviewed and discussed with some other devs, and we
+      // decided to leave it as is, despite it being a bit unintuitive.  See https://github.com/phetsims/sun/issues/772.
       const overStroke = new PaintColorProperty( options.overStroke || options.deselectedStroke, {
         luminanceFactor: providedOptions && providedOptions.overStroke ? 0 : -0.4
       } );
