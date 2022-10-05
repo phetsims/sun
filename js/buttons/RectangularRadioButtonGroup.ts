@@ -97,6 +97,7 @@ export type RectangularRadioButtonGroupOptions = SelfOptions & StrictOmit<FlowBo
 export default class RectangularRadioButtonGroup<T> extends FlowBox {
 
   private readonly disposeRadioButtonGroup: () => void;
+  private readonly radioButtonMap: Map<T, RectangularRadioButton<T>>;
 
   public constructor( property: Property<T>, items: RectangularRadioButtonItem<T>[], providedOptions?: RectangularRadioButtonGroupOptions ) {
 
@@ -167,6 +168,8 @@ export default class RectangularRadioButtonGroup<T> extends FlowBox {
 
     instanceCount++;
 
+    const radioButtonMap = new Map<T, RectangularRadioButton<T>>();
+
     // Maximum width of the line that strokes the button.
     const maxLineWidth = Math.max(
       options.radioButtonOptions.buttonAppearanceStrategyOptions!.selectedLineWidth!,
@@ -215,6 +218,8 @@ export default class RectangularRadioButtonGroup<T> extends FlowBox {
       }
 
       const radioButton = new RectangularRadioButton( property, item.value, radioButtonOptions );
+
+      radioButtonMap.set( item.value, radioButton );
 
       // pdom - so the browser recognizes these buttons are in the same group. See instanceCount for more info.
       radioButton.setPDOMAttribute( 'name', CLASS_NAME + instanceCount );
@@ -295,6 +300,8 @@ export default class RectangularRadioButtonGroup<T> extends FlowBox {
 
     super( options );
 
+    this.radioButtonMap = radioButtonMap;
+
     // pdom - This node's primary sibling is aria-labelledby its own label, so the label content is read whenever
     // a member of the group receives focus.
     this.addAriaLabelledbyAssociation( {
@@ -322,7 +329,20 @@ export default class RectangularRadioButtonGroup<T> extends FlowBox {
     assert && phet.chipper.queryParameters.binder && InstanceRegistry.registerDataURL( 'sun', 'RectangularRadioButtonGroup', this );
   }
 
+  /**
+   * Find the RectangularRadioButton corresponding to a value. Note that in the scene graph, the button may be nested
+   * under other layers, so use caution for coordinate transformations.
+   * @param value
+   * @returns the corresponding button
+   */
+  public getButtonForValue( value: T ): RectangularRadioButton<T> {
+    const result = this.radioButtonMap.get( value )!;
+    assert && assert( result, 'No button found for value: ' + value );
+    return result;
+  }
+
   public override dispose(): void {
+    this.radioButtonMap.clear();
     this.disposeRadioButtonGroup();
     super.dispose();
   }
