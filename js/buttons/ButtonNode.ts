@@ -343,7 +343,7 @@ export class FlatAppearanceStrategy {
     const lineWidth = typeof options.lineWidth === 'number' ? options.lineWidth : 1;
 
     // If the stroke wasn't provided, set a default.
-    buttonBackground.stroke = ( typeof ( options.stroke ) === 'undefined' ) ? baseDarker4 : options.stroke;
+    buttonBackground.stroke = options.stroke || baseDarker4;
     buttonBackground.lineWidth = lineWidth;
 
     this.maxLineWidth = buttonBackground.hasStroke() ? lineWidth : 0;
