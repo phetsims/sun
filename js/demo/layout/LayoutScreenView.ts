@@ -110,6 +110,7 @@ const createBooleanProperty = ( value = false ) => {
   return new BooleanProperty( value, { tandem: Tandem.OPT_OUT } );
 };
 
+// A rectangle whose width animates to grow and shrink to a provided max and min.
 const createHorizontalResizer = ( height: number, minWidth: number, maxWidth: number, providedOptions?: RectangleOptions ): Node => {
   const result = new Rectangle( combineOptions<RectangleOptions>( {
     fill: 'green',
@@ -121,6 +122,7 @@ const createHorizontalResizer = ( height: number, minWidth: number, maxWidth: nu
   } ) );
 };
 
+// A rectangle whose visibility is enabled/disabled according to a consistent elapsed time.
 const createDisappearing = ( width: number, height: number ): Node => {
   const result = new Rectangle( {
     fill: 'green',
@@ -133,6 +135,11 @@ const createDisappearing = ( width: number, height: number ): Node => {
   } ) );
 };
 
+/**
+ * A demonstration of dynamic layout applied to multiple panels. panelB contains a resizer that animates to
+ * adjust bounds of its parent FlowBox and Panel. panelA will stretch to match panelB's bounds accordingly.
+ * @param layoutBounds
+ */
 function demoMultiplePanels( layoutBounds: Bounds2 ): Node {
   const resizer = createHorizontalResizer( 15, 30, 200 );
 
@@ -180,6 +187,10 @@ function demoMultiplePanels( layoutBounds: Bounds2 ): Node {
   return overrideDispose( alignBox, AlignBox, () => resizer.dispose() );
 }
 
+/**
+ * A disappearing node demonstrates how separators dynamically react to content being added or removed in a panel.
+ * @param layoutBounds
+ */
 function demoSeparators( layoutBounds: Bounds2 ): Node {
   const disappearing = createDisappearing( 150, 100 );
 
@@ -201,6 +212,13 @@ function demoSeparators( layoutBounds: Bounds2 ): Node {
   return overrideDispose( alignBox, AlignBox, () => disappearing.dispose() );
 }
 
+/**
+ * Demonstrates how Checkboxes with icons will react when resizing of a panel occurs. Icons default to right align
+ * with the parent panel.
+ *
+ * Checkbox types included in demo: default, indented, scaled, reflected, and nested.
+ * @param layoutBounds
+ */
 function demoCheckboxesWithIcons( layoutBounds: Bounds2 ): Node {
   const resizer = createHorizontalResizer( 15, 30, 200 );
 
@@ -308,6 +326,11 @@ function demoCheckboxesWithIcons( layoutBounds: Bounds2 ): Node {
   return overrideDispose( alignBox, AlignBox, () => resizer.dispose() );
 }
 
+/**
+ * A resizer animates to demonstrate how Manual Constraint can connect the layout of two separate nodes. The
+ * position of the leftText stays aligned with the position of the rightText as the rightText's y coordinate changes.
+ * @param layoutBounds
+ */
 function demoManualConstraint( layoutBounds: Bounds2 ): Node {
   const rightText = normalText( 'Text aligned on right' );
   const leftText = normalText( 'Text aligned on left' );
@@ -338,6 +361,15 @@ function demoManualConstraint( layoutBounds: Bounds2 ): Node {
   return overrideDispose( node, Node, () => resizer.dispose() );
 }
 
+/**
+ * Demonstrates how flow constraint allows a parent and child to have disconnected position and bounds.
+ *   - firstParent animates while its child firstChild remains still. The child is sometimes inside the parent bounds
+ * and sometimes not.
+ *   - secondParent stay still and secondChild stays still. secondChild is not rendered inside secondParent.
+ *   - thirdParent animates while its child thirdChild remains still. The child is never inside the parent bounds.
+ *
+ * @param layoutBounds
+ */
 function demoDisconnectedFlow( layoutBounds: Bounds2 ): Node {
   const createLabeledBox = ( label: string, fill: TPaint, width: number, height: number ) => {
     return new Rectangle( 0, 0, width, height, {
@@ -401,6 +433,10 @@ function demoDisconnectedFlow( layoutBounds: Bounds2 ): Node {
   return overrideDispose( scene, Node, cleanup );
 }
 
+/**
+ * TODO: https://github.com/phetsims/scenery/issues/1418
+ * @param layoutBounds
+ */
 function demoOrigin( layoutBounds: Bounds2 ): Node {
   const originSize = 50;
   const originNode = new Path( new Shape().moveTo( -originSize, 0 ).lineTo( originSize, 0 ).moveTo( 0, originSize ).lineTo( 0, -originSize ), {
@@ -469,6 +505,12 @@ function demoOrigin( layoutBounds: Bounds2 ): Node {
   return new AlignBox( content, { alignBounds: layoutBounds, xAlign: 'center', yAlign: 'center' } );
 }
 
+/**
+ * 300 rectangles are created with random sizes inside a Flowbox to demonstrate a horizontal orientation with wrapping.
+ * Stress test demonstrates how layout successfully handles a variety of rectangle sizes while still aligning content
+ * as expected.
+ * @param layoutBounds
+ */
 function demoFlowStressTest( layoutBounds: Bounds2 ): Node {
   return new FlowBox( {
     orientation: 'horizontal',
@@ -482,6 +524,12 @@ function demoFlowStressTest( layoutBounds: Bounds2 ): Node {
   } );
 }
 
+/**
+ * 900 rectangles are created with random sizes inside a gridBox. Each rectangle is inside its own cell.
+ * Stress test demonstrates how layout successfully adjusts row and column sizes to accommodate a variety
+ * of rectangle sizes.
+ * @param layoutBounds
+ */
 function demoGridStressTest( layoutBounds: Bounds2 ): Node {
   return new GridBox( {
     autoColumns: 30,
@@ -494,6 +542,13 @@ function demoGridStressTest( layoutBounds: Bounds2 ): Node {
   } );
 }
 
+/**
+ * A resizer helps demonstrate how buttons can resize dynamically.
+ * The rectangular push buttons in column 0 of the GridBox will adjust their bounds as the resizer animates.
+ * The rectangular push buttons in column 1 of the GridBox maintain their bounds since their row height and
+ * column width is not being affected by the resizer.
+ * @param layoutBounds
+ */
 function demoSizableButtons( layoutBounds: Bounds2 ): Node {
   const resizer = createHorizontalResizer( 15, 30, 150 );
 
@@ -543,6 +598,10 @@ function demoSizableButtons( layoutBounds: Bounds2 ): Node {
   return overrideDispose( alignBox, AlignBox, () => resizer.dispose() );
 }
 
+/**
+ * Demonstrates and tests the functionality of the resizer.
+ * @param layoutBounds
+ */
 function demoTest( layoutBounds: Bounds2 ): Node {
   const resizer = createHorizontalResizer( 15, 30, 150 );
 
