@@ -197,7 +197,9 @@ export default class RectangularRadioButtonGroup<T> extends FlowBox {
         minHeight: tallestContentHeight + 2 * yMargin,
         soundPlayer: options.soundPlayers ? options.soundPlayers[ i ] :
                      multiSelectionSoundPlayerFactory.getSelectionSoundPlayer( i ),
-        tandem: item.tandemName ? options.tandem.createTandem( item.tandemName ) : Tandem.OPT_OUT,
+        tandem: item.tandemName ? options.tandem.createTandem( item.tandemName ) :
+                options.tandem === Tandem.OPT_OUT ? Tandem.OPT_OUT :
+                Tandem.REQUIRED,
         phetioDocumentation: item.phetioDocumentation || ''
       }, options.radioButtonOptions );
 
