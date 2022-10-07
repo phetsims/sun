@@ -20,7 +20,7 @@ import sunQueryParameters from './sunQueryParameters.js';
 
 // empty model used for all demo screens
 class Model {
-  public step(): void { /* no stepping here */ }
+  public reset(): void { /* nothing to do */ }
 }
 
 simLauncher.launch( () => {
