@@ -1,15 +1,13 @@
 // Copyright 2022, University of Colorado Boulder
 
 /**
- * Defines the type for when you can pass in a Node or a function that creates a Node from a Tandem.
+ * For groups like radio button groups or checkbox groups, where we need to flow the tandem through to the items.
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */
 import Tandem from '../../tandem/js/Tandem.js';
 import { Node } from '../../scenery/js/imports.js';
 
-// Provide either a Node or a function that creates a Node from a Tandem (but not both).
-// If you pass in a Node, you can also pass in a Tandem.  Or if you use `createNode` then you can specify `tandemName`
 type GroupItemOptions = {
   createNode: ( tandem: Tandem ) => Node;
 
