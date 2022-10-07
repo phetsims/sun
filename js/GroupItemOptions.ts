@@ -20,10 +20,8 @@ export default GroupItemOptions;
 
 /**
  * Get the nodes for the GroupItemOptions
- * TODO: https://github.com/phetsims/sun/issues/746 should this be renamed? Should it just be a top level `export function`,
- *       or does it belong elsewhere?
  */
-export function getNodes( array: GroupItemOptions[], tandem: Tandem ): Node[] {
+export function getGroupItemNodes( array: GroupItemOptions[], tandem: Tandem ): Node[] {
   return array.map( item => {
 
     // @ts-ignore - runtime check to prevent prior pattern, see https://github.com/phetsims/sun/issues/794

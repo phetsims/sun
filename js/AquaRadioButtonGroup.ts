@@ -15,7 +15,7 @@ import Tandem from '../../tandem/js/Tandem.js';
 import AquaRadioButton, { AquaRadioButtonOptions } from './AquaRadioButton.js';
 import sun from './sun.js';
 import Property from '../../axon/js/Property.js';
-import GroupItemOptions, { getNodes } from './GroupItemOptions.js';
+import GroupItemOptions, { getGroupItemNodes } from './GroupItemOptions.js';
 
 // pdom - An id for each instance of AquaRadioButtonGroup, passed to individual buttons in the group.
 // Each button in a radio button group must have the same "name" attribute to be considered in a group, otherwise
@@ -86,7 +86,7 @@ export default class AquaRadioButtonGroup<T> extends FlowBox {
       groupFocusHighlight: true
     }, providedOptions );
 
-    const nodes = getNodes( items, options.tandem );
+    const nodes = getGroupItemNodes( items, options.tandem );
 
     // Determine the max item width
     const maxItemWidth = _.maxBy( nodes, node => node.width )!.width;

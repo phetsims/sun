@@ -15,7 +15,7 @@ import Tandem from '../../tandem/js/Tandem.js';
 import Checkbox, { CheckboxOptions } from './Checkbox.js';
 import sun from './sun.js';
 import Property from '../../axon/js/Property.js';
-import GroupItemOptions, { getNodes } from './GroupItemOptions.js';
+import GroupItemOptions, { getGroupItemNodes } from './GroupItemOptions.js';
 
 export type VerticalCheckboxGroupItem = {
   property: Property<boolean>; // Property associated with the checkbox
@@ -49,7 +49,7 @@ export default class VerticalCheckboxGroup extends VBox {
       tandem: Tandem.REQUIRED
     }, providedOptions );
 
-    const nodes = getNodes( items, options.tandem );
+    const nodes = getGroupItemNodes( items, options.tandem );
 
     // Determine the max item width
     let maxItemWidth = 0;
