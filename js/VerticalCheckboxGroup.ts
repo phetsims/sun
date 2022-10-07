@@ -31,6 +31,7 @@ type SelfOptions = {
 export type VerticalCheckboxGroupOptions = SelfOptions & StrictOmit<VBoxOptions, 'children'>;
 
 export default class VerticalCheckboxGroup extends VBox {
+  private readonly disposeVerticalCheckboxGroup: () => void;
 
   public constructor( items: VerticalCheckboxGroupItem[], providedOptions?: VerticalCheckboxGroupOptions ) {
 
@@ -50,6 +51,7 @@ export default class VerticalCheckboxGroup extends VBox {
     }, providedOptions );
 
     const nodes = getGroupItemNodes( items, options.tandem );
+    const checkboxes: Checkbox[] = [];
 
     // Determine the max item width
     let maxItemWidth = 0;
@@ -88,10 +90,28 @@ export default class VerticalCheckboxGroup extends VBox {
         touchAreaYDilation: yDilation
       } ) );
 
+      // For disposal
+      checkboxes.push( checkbox );
+
       options.children.push( checkbox );
     }
 
     super( options );
+
+    this.disposeVerticalCheckboxGroup = () => {
+
+      for ( let i = 0; i < checkboxes.length; i++ ) {
+        checkboxes[ i ].dispose();
+
+        // We own the nodes since they were created with createNode, so we can dispose them here
+        nodes[ i ].dispose();
+      }
+    };
+  }
+
+  public override dispose(): void {
+    this.disposeVerticalCheckboxGroup();
+    super.dispose();
   }
 }
 

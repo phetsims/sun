@@ -163,10 +163,7 @@ export default class AquaRadioButtonGroup<T> extends FlowBox {
       for ( let i = 0; i < radioButtons.length; i++ ) {
         radioButtons[ i ].dispose();
 
-        // TODO: https://github.com/phetsims/sun/issues/746 what if these nodes are reused elsewhere?
-        // We may not have ownership, and hence maybe shouldn't dispose?
-        // We could (a) detect if the nodes[i] appears in multiple places in the scene graph (do this before dispose above)
-        // Or maybe (b) only dispose ones created with createNode() since we do have ownership of those
+        // We own the nodes since they were created with createNode, so we can dispose them here
         nodes[ i ].dispose();
       }
     };
