@@ -364,20 +364,12 @@ export default class Dialog extends Popupable( Panel, 1 ) {
         // sound generation
         options.openedSoundPlayer.play();
 
-        // pdom - modal dialogs should be the only readable content in the sim
-        // TODO: https://github.com/phetsims/joist/issues/293 non-modal dialogs shouldn't hide other accessible content,
-        // and this should be dependant on other things in the sim modalNodeStack
-        this.sim.setAccessibleViewsVisible( false );
-
         // Do this last
         options.showCallback && options.showCallback();
       }
       else {
         // sound generation
         options.closedSoundPlayer.play();
-
-        // pdom - when the dialog is hidden, make all ScreenView content visible to assistive technology
-        this.sim.setAccessibleViewsVisible( true );
 
         // Do this last
         options.hideCallback && options.hideCallback();
