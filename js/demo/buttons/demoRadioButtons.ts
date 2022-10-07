@@ -34,7 +34,7 @@ export default function demoRadioButtons( layoutBounds: Bounds2 ): Node {
   const radioButtonContent = _.map( rectangularRadioButtonValues, stringValue => {
     return {
       value: stringValue,
-      node: new Text( stringValue, { font: BUTTON_FONT } ),
+      createNode: ( tandem: Tandem ) => new Text( stringValue, { font: BUTTON_FONT } ),
       label: new Text( stringValue )
     };
   } );

@@ -7,6 +7,7 @@
 import StringProperty from '../../../../axon/js/StringProperty.js';
 import Bounds2 from '../../../../dot/js/Bounds2.js';
 import { Font, Node, Text, VBox } from '../../../../scenery/js/imports.js';
+import Tandem from '../../../../tandem/js/Tandem.js';
 import RectangularRadioButtonGroup from '../../buttons/RectangularRadioButtonGroup.js';
 
 export default function demoRectangularRadioButtonGroup( layoutBounds: Bounds2 ): Node {
@@ -18,7 +19,7 @@ export default function demoRectangularRadioButtonGroup( layoutBounds: Bounds2 )
   const horizontalItems = _.map( horizontalChoices,
     choice => {
       return {
-        node: new Text( choice, { font: font } ),
+        createNode: ( tandem: Tandem ) => new Text( choice, { font: font } ),
         value: choice
       };
     } );
@@ -31,7 +32,7 @@ export default function demoRectangularRadioButtonGroup( layoutBounds: Bounds2 )
   const verticalItems = _.map( verticalChoices,
     choice => {
       return {
-        node: new Text( choice, { font: font } ),
+        createNode: ( tandem: Tandem ) => new Text( choice, { font: font } ),
         value: choice
       };
     } );

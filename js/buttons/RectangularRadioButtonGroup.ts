@@ -22,6 +22,7 @@ import TContentAppearanceStrategy from './TContentAppearanceStrategy.js';
 import Property from '../../../axon/js/Property.js';
 import optionize, { combineOptions } from '../../../phet-core/js/optionize.js';
 import StrictOmit from '../../../phet-core/js/types/StrictOmit.js';
+import GroupItemOptions, { getGroupItemNodes } from '../GroupItemOptions.js';
 
 // pdom - Unique ID for each instance of RectangularRadioButtonGroup. Used to create the 'name' option that is passed
 // to each RectangularRadioButton in the group. All buttons in the group must have the same 'name', and that name
@@ -34,16 +35,13 @@ const CLASS_NAME = 'RectangularRadioButtonGroup';
 
 // Describes one radio button
 export type RectangularRadioButtonItem<T> = {
-  node: Node; // primary depiction for the button
   value: T; // value associated with the button
   label?: Node; // optional label that appears outside the button
   phetioDocumentation?: string; // optional documentation for PhET-iO
-  tandemName?: string; // optional tandem for PhET-iO
-  tandem?: never; // use tandemName instead of a Tandem instance
   labelContent?: PDOMValueType; // optional label for a11y (description and voicing)
   voicingContextResponse?: VoicingResponse;
   descriptionContent?: PDOMValueType; // optional label for a11y
-};
+} & GroupItemOptions;
 
 /**
  * Identifies a radio button and its layout manager. Pointer areas and focus highlight need to be set on
@@ -105,9 +103,6 @@ export default class RectangularRadioButtonGroup<T> extends FlowBox {
       'items must have unique values' );
     assert && assert( _.find( items, item => ( item.value === property.value ) ),
       'one radio button must be associated with property.value' );
-    assert && assert( _.every( items, item => !item.node.hasPDOMContent ),
-      'Accessibility is provided by RectangularRadioButton and RectangularRadioButtonItem.labelContent. ' +
-      'Additional PDOM content in the provided Node could break accessibility.' );
 
     const options = optionize<RectangularRadioButtonGroupOptions, SelfOptions, FlowBoxOptions>()( {
 
@@ -176,9 +171,14 @@ export default class RectangularRadioButtonGroup<T> extends FlowBox {
       options.radioButtonOptions.buttonAppearanceStrategyOptions!.deselectedLineWidth!
     );
 
+    const nodes = getGroupItemNodes( items, options.tandem );
+    assert && assert( _.every( nodes, node => !node.hasPDOMContent ),
+      'Accessibility is provided by RectangularRadioButton and RectangularRadioButtonItem.labelContent. ' +
+      'Additional PDOM content in the provided Node could break accessibility.' );
+
     // Calculate the maximum width and height of the content, so we can make all radio buttons the same size.
-    const widestContentWidth = _.maxBy( items, item => item.node.width )!.node.width;
-    const tallestContentHeight = _.maxBy( items, item => item.node.height )!.node.height;
+    const widestContentWidth = _.maxBy( nodes, node => node.width )!.width;
+    const tallestContentHeight = _.maxBy( nodes, node => node.height )!.height;
 
     // Populated for each radio button in for loop
     const buttons: Array<RectangularRadioButton<T> | FlowBox> = [];
@@ -190,15 +190,15 @@ export default class RectangularRadioButtonGroup<T> extends FlowBox {
 
     for ( let i = 0; i < items.length; i++ ) {
       const item = items[ i ];
+      const node = nodes[ i ];
 
       const radioButtonOptions = combineOptions<RectangularRadioButtonOptions>( {
-        content: item.node,
+        content: node,
         minWidth: widestContentWidth + 2 * xMargin,
         minHeight: tallestContentHeight + 2 * yMargin,
         soundPlayer: options.soundPlayers ? options.soundPlayers[ i ] :
                      multiSelectionSoundPlayerFactory.getSelectionSoundPlayer( i ),
-        tandem: item.tandem ? item.tandem :
-                item.tandemName ? options.tandem.createTandem( item.tandemName ) :
+        tandem: item.tandemName ? options.tandem.createTandem( item.tandemName ) :
                 options.tandem === Tandem.OPT_OUT ? Tandem.OPT_OUT :
                 Tandem.REQUIRED,
         phetioDocumentation: item.phetioDocumentation || ''
