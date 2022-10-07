@@ -434,7 +434,8 @@ function demoDisconnectedFlow( layoutBounds: Bounds2 ): Node {
 }
 
 /**
- * TODO: https://github.com/phetsims/scenery/issues/1418
+ * Demos the orientation feature for alignment in flow and grid layouts. Essentially the x=0 or y=0 point of the nodes
+ * are placed in the same vertical or horizontal line when 'origin' is used for alignment.
  * @param layoutBounds
  */
 function demoOrigin( layoutBounds: Bounds2 ): Node {
