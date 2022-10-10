@@ -14,7 +14,7 @@ import InstanceRegistry from '../../phet-core/js/documentation/InstanceRegistry.
 import optionize, { combineOptions } from '../../phet-core/js/optionize.js';
 // @ts-ignore FIX DEPENDENCY ON SCENERY-PHET
 import NumberDisplay, { NumberDisplayOptions } from '../../scenery-phet/js/NumberDisplay.js';
-import { TColor, Node, NodeOptions, SceneryConstants } from '../../scenery/js/imports.js';
+import { Node, NodeOptions, SceneryConstants, TColor } from '../../scenery/js/imports.js';
 import Tandem from '../../tandem/js/Tandem.js';
 import AccessibleNumberSpinner, { AccessibleNumberSpinnerOptions } from './accessibility/AccessibleNumberSpinner.js';
 import ArrowButton, { ArrowButtonOptions } from './buttons/ArrowButton.js';
@@ -106,6 +106,10 @@ export default class NumberSpinner extends AccessibleNumberSpinner( Node, 0 ) {
       valueProperty: numberProperty,
       enabledRangeProperty: rangeProperty,
       disabledOpacity: SceneryConstants.DISABLED_OPACITY,
+
+      // The focus highlight surrounds the entire component, but the spinner display is not interactive with
+      // mouse and touch events so this highlight is hidden. Instead, default highlights surround the arrow buttons.
+      interactiveHighlight: 'invisible',
 
       // PhET-iO
       tandem: Tandem.REQUIRED,
