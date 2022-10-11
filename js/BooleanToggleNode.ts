@@ -31,8 +31,8 @@ export default class BooleanToggleNode extends ToggleNode<boolean> {
                       falseNode: Node,
                       providedOptions?: BooleanToggleNodeOptions ) {
     super( booleanProperty, [
-      { value: true, node: trueNode },
-      { value: false, node: falseNode }
+      { value: true, createNode: tandem => trueNode },
+      { value: false, createNode: tandem => falseNode }
     ], providedOptions );
   }
 }

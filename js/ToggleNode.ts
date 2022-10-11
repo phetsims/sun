@@ -14,11 +14,11 @@ import { Node, NodeOptions } from '../../scenery/js/imports.js';
 import Tandem from '../../tandem/js/Tandem.js';
 import sun from './sun.js';
 import TReadOnlyProperty from '../../axon/js/TReadOnlyProperty.js';
+import GroupItemOptions, { getGroupItemNodes } from './GroupItemOptions.js';
 
 export type ToggleNodeElement<T> = {
   value: T;  // a value
-  node: Node; // the Node associated with the value, to be shown by the ToggleNode
-};
+} & GroupItemOptions;
 
 type SelfOptions = {
 
@@ -52,12 +52,14 @@ export default class ToggleNode<T> extends Node {
       tandem: Tandem.OPTIONAL
     }, providedOptions );
 
+    const nodes = getGroupItemNodes( elements, options.tandem.createTandem( 'elements' ) );
+
     const valueListener = ( value: T ) => {
       let matchCount = 0;
       for ( let i = 0; i < elements.length; i++ ) {
         const element = elements[ i ];
         const visible = element.value === value;
-        element.node.visible = visible;
+        nodes[ i ].visible = visible;
         if ( visible ) {
           matchCount++;
         }
@@ -66,7 +68,7 @@ export default class ToggleNode<T> extends Node {
     };
     valueProperty.link( valueListener );
 
-    options.children = _.map( elements, 'node' );
+    options.children = nodes;
 
     options.alignChildren( options.children );
 
