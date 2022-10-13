@@ -211,10 +211,10 @@ export default class RectangularRadioButton<T> extends RectangularButton {
       }, providedOptions );
 
       // Dynamic fills and strokes
-      const pressedFill = new PaintColorProperty( baseColorProperty, {
+      const pressedFillProperty = new PaintColorProperty( baseColorProperty, {
         luminanceFactor: -0.4
       } );
-      const overFill = new PaintColorProperty( options.overFill || baseColorProperty, {
+      const overFillProperty = new PaintColorProperty( options.overFill || baseColorProperty, {
         luminanceFactor: providedOptions && providedOptions.overFill ? 0 : 0.4
       } );
 
@@ -222,7 +222,7 @@ export default class RectangularRadioButton<T> extends RectangularButton {
       // stroke is provided, seems a bit odd.  However, I (jbphet) tried removing it when refactoring this to support
       // TypeScript, and a number of sims broke.  The code was reviewed and discussed with some other devs, and we
       // decided to leave it as is, despite it being a bit unintuitive.  See https://github.com/phetsims/sun/issues/772.
-      const overStroke = new PaintColorProperty( options.overStroke || options.deselectedStroke, {
+      const overStrokeProperty = new PaintColorProperty( options.overStroke || options.deselectedStroke, {
         luminanceFactor: providedOptions && providedOptions.overStroke ? 0 : -0.4
       } );
 
@@ -230,7 +230,7 @@ export default class RectangularRadioButton<T> extends RectangularButton {
 
       // Cache colors
       buttonBackground.cachedPaints = [
-        baseColorProperty, overFill, pressedFill, overStroke, options.selectedStroke, options.deselectedStroke
+        baseColorProperty, overFillProperty, pressedFillProperty, overStrokeProperty, options.selectedStroke, options.deselectedStroke
       ];
 
       // Change colors and opacity to match interactionState
@@ -252,14 +252,14 @@ export default class RectangularRadioButton<T> extends RectangularButton {
             break;
 
           case RadioButtonInteractionState.OVER:
-            buttonBackground.fill = overFill;
-            buttonBackground.stroke = overStroke;
+            buttonBackground.fill = overFillProperty;
+            buttonBackground.stroke = overStrokeProperty;
             buttonBackground.lineWidth = Math.max( options.overLineWidth, options.deselectedLineWidth );
             buttonBackground.opacity = options.overButtonOpacity;
             break;
 
           case RadioButtonInteractionState.PRESSED:
-            buttonBackground.fill = pressedFill;
+            buttonBackground.fill = pressedFillProperty;
             buttonBackground.stroke = options.deselectedStroke;
             buttonBackground.lineWidth = options.deselectedLineWidth;
             buttonBackground.opacity = options.selectedButtonOpacity;
@@ -276,9 +276,9 @@ export default class RectangularRadioButton<T> extends RectangularButton {
         if ( interactionStateProperty.hasListener( interactionStateListener ) ) {
           interactionStateProperty.unlink( interactionStateListener );
         }
-        overStroke.dispose();
-        overFill.dispose();
-        pressedFill.dispose();
+        overStrokeProperty.dispose();
+        overFillProperty.dispose();
+        pressedFillProperty.dispose();
       };
     }
 
