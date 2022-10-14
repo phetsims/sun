@@ -144,9 +144,16 @@ export default class ToggleSwitch<T> extends Voicing( Node ) {
     // track that the thumb slides in
     const trackNode = new Rectangle( 0, 0, options.size.width, options.size.height, cornerRadius, cornerRadius, {
       stroke: options.trackStroke,
-      cachedPaints: [ options.trackFillLeft, options.trackFillRight ]
+      fill: options.trackFillLeft
     } );
     this.addChild( trackNode );
+
+    // track that covers the background track when the thumbNode is in the right position
+    const rightTrackFillRectangle = new Rectangle( 0, 0, options.size.width, options.size.height, cornerRadius, cornerRadius, {
+      stroke: options.trackStroke,
+      fill: options.trackFillRight
+    } );
+    this.addChild( rightTrackFillRectangle );
 
     // thumb (aka knob)
     const thumbNode = new Rectangle( 0, 0, 0.5 * options.size.width, options.size.height, cornerRadius, cornerRadius, {
@@ -179,12 +186,11 @@ export default class ToggleSwitch<T> extends Voicing( Node ) {
       const halfLineWidth = trackNode.lineWidth / 2;
       if ( value === leftValue ) {
         thumbNode.left = -halfLineWidth;
-        trackNode.fill = options.trackFillLeft;
       }
       else {
         thumbNode.right = options.size.width + halfLineWidth;
-        trackNode.fill = options.trackFillRight;
       }
+      rightTrackFillRectangle.rectWidth = thumbNode.right - halfLineWidth;
 
       // pdom - Signify to screen readers that the toggle is pressed. Both aria-pressed and aria-checked
       // are used because using both sounds best with NVDA.
@@ -246,6 +252,7 @@ export default class ToggleSwitch<T> extends Voicing( Node ) {
         const halfThumbWidth = thumbNode.width / 2;
         const halfLineWidth = trackNode.lineWidth / 2;
         thumbNode.centerX = Utils.clamp( viewPoint.x, halfThumbWidth - halfLineWidth, options.size.width - halfThumbWidth + halfLineWidth );
+        rightTrackFillRectangle.rectWidth = thumbNode.right - halfLineWidth;
 
         // whether the thumb is dragged outside of the possible range far enough beyond our threshold to potentially
         // trigger an immediate model change
@@ -255,8 +262,6 @@ export default class ToggleSwitch<T> extends Voicing( Node ) {
         // value that corresponds to the current thumb position
         const value = thumbPositionToValue();
 
-        // track fill changes based on the thumb positions
-        trackNode.fill = ( value === leftValue ) ? options.trackFillLeft : options.trackFillRight;
 
         if ( options.toggleWhileDragging === true || ( isDraggedOutside && options.toggleWhileDragging === null ) ) {
 
