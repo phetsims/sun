@@ -173,12 +173,16 @@ export default class ToggleSwitch<T> extends Voicing( Node ) {
 
     // move thumb and fill track
     const update = ( value: T ) => {
+
+      // adjust by half a line width so the thumbNode's stroke is directly on top of the trackNode's stroke when at
+      // each end of the track
+      const halfLineWidth = trackNode.lineWidth / 2;
       if ( value === leftValue ) {
-        thumbNode.left = 0;
+        thumbNode.left = -halfLineWidth;
         trackNode.fill = options.trackFillLeft;
       }
       else {
-        thumbNode.right = options.size.width;
+        thumbNode.right = options.size.width + halfLineWidth;
         trackNode.fill = options.trackFillRight;
       }
 
@@ -240,7 +244,8 @@ export default class ToggleSwitch<T> extends Voicing( Node ) {
         // center the thumb on the pointer's x-coordinate if possible (but clamp to left and right ends)
         const viewPoint = listener.getCurrentTarget().globalToLocalPoint( event.pointer.point );
         const halfThumbWidth = thumbNode.width / 2;
-        thumbNode.centerX = Utils.clamp( viewPoint.x, halfThumbWidth, options.size.width - halfThumbWidth );
+        const halfLineWidth = trackNode.lineWidth / 2;
+        thumbNode.centerX = Utils.clamp( viewPoint.x, halfThumbWidth - halfLineWidth, options.size.width - halfThumbWidth + halfLineWidth );
 
         // whether the thumb is dragged outside of the possible range far enough beyond our threshold to potentially
         // trigger an immediate model change
