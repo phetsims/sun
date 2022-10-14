@@ -328,43 +328,43 @@ export class FlatAppearanceStrategy {
                       providedOptions?: TButtonAppearanceStrategyOptions ) {
 
     // dynamic colors
-    const baseBrighter4 = new PaintColorProperty( baseColorProperty, { luminanceFactor: 0.4 } );
-    const baseDarker4 = new PaintColorProperty( baseColorProperty, { luminanceFactor: -0.4 } );
+    const baseBrighter4Property = new PaintColorProperty( baseColorProperty, { luminanceFactor: 0.4 } );
+    const baseDarker4Property = new PaintColorProperty( baseColorProperty, { luminanceFactor: -0.4 } );
 
     // various fills that are used to alter the button's appearance
-    const upFill = baseColorProperty;
-    const overFill = baseBrighter4;
-    const downFill = baseDarker4;
+    const upFillProperty = baseColorProperty;
+    const overFillProperty = baseBrighter4Property;
+    const downFillProperty = baseDarker4Property;
 
     const options = combineOptions<TButtonAppearanceStrategyOptions>( {
-      stroke: baseDarker4
+      stroke: baseDarker4Property
     }, providedOptions );
 
     const lineWidth = typeof options.lineWidth === 'number' ? options.lineWidth : 1;
 
     // If the stroke wasn't provided, set a default.
-    buttonBackground.stroke = options.stroke || baseDarker4;
+    buttonBackground.stroke = options.stroke || baseDarker4Property;
     buttonBackground.lineWidth = lineWidth;
 
     this.maxLineWidth = buttonBackground.hasStroke() ? lineWidth : 0;
 
     // Cache colors
-    buttonBackground.cachedPaints = [ upFill, overFill, downFill ];
+    buttonBackground.cachedPaints = [ upFillProperty, overFillProperty, downFillProperty ];
 
     // Change colors to match interactionState
     function interactionStateListener( interactionState: ButtonInteractionState ): void {
       switch( interactionState ) {
 
         case ButtonInteractionState.IDLE:
-          buttonBackground.fill = upFill;
+          buttonBackground.fill = upFillProperty;
           break;
 
         case ButtonInteractionState.OVER:
-          buttonBackground.fill = overFill;
+          buttonBackground.fill = overFillProperty;
           break;
 
         case ButtonInteractionState.PRESSED:
-          buttonBackground.fill = downFill;
+          buttonBackground.fill = downFillProperty;
           break;
 
         default:
@@ -380,8 +380,8 @@ export class FlatAppearanceStrategy {
       if ( interactionStateProperty.hasListener( interactionStateListener ) ) {
         interactionStateProperty.unlink( interactionStateListener );
       }
-      baseBrighter4.dispose();
-      baseDarker4.dispose();
+      baseBrighter4Property.dispose();
+      baseDarker4Property.dispose();
     };
   }
 

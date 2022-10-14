@@ -25,7 +25,7 @@ export default function demoRadioButtons( layoutBounds: Bounds2 ): Node {
     font: new Font( { size: 20 } )
   } ) );
 
-  const radioGroupBaseColor = new Property( 'green' );
+  const radioGroupBaseColorProperty = new Property( 'green' );
 
   // demonstrate RectangularRadioButtonGroup
   const rectangularRadioButtonValues = [ 'One', 'Two', 'Three', 'Four' ];
@@ -42,7 +42,7 @@ export default function demoRadioButtons( layoutBounds: Bounds2 ): Node {
     orientation: 'vertical',
     enabledProperty: buttonsEnabledProperty,
     radioButtonOptions: {
-      baseColor: radioGroupBaseColor,
+      baseColor: radioGroupBaseColorProperty,
       xAlign: 'center',
       yAlign: 'center',
       buttonAppearanceStrategyOptions: {
