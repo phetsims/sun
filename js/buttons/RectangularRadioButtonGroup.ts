@@ -326,6 +326,7 @@ export default class RectangularRadioButtonGroup<T> extends FlowBox {
       this.removeInputListener( intentListener );
       buttons.forEach( button => button.dispose() );
       labelAppearanceStrategies.forEach( strategy => ( strategy.dispose && strategy.dispose() ) );
+      nodes.forEach( node => node.dispose() );
     };
 
     // pdom - register component for binder docs
