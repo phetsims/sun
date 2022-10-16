@@ -159,13 +159,8 @@ export default class AquaRadioButtonGroup<T> extends FlowBox {
 
     this.disposeAquaRadioButtonGroup = () => {
       this.removeInputListener( intentListener );
-
-      for ( let i = 0; i < radioButtons.length; i++ ) {
-        radioButtons[ i ].dispose();
-
-        // We own the nodes since they were created with createNode, so we can dispose them here
-        nodes[ i ].dispose();
-      }
+      radioButtons.forEach( radioButton => radioButton.dispose() );
+      nodes.forEach( node => node.dispose() );
     };
 
     this.radioButtons = radioButtons;

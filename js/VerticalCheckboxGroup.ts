@@ -99,13 +99,8 @@ export default class VerticalCheckboxGroup extends VBox {
     super( options );
 
     this.disposeVerticalCheckboxGroup = () => {
-
-      for ( let i = 0; i < checkboxes.length; i++ ) {
-        checkboxes[ i ].dispose();
-
-        // We own the nodes since they were created with createNode, so we can dispose them here
-        nodes[ i ].dispose();
-      }
+      checkboxes.forEach( checkbox => checkbox.dispose() );
+      nodes.forEach( node => node.dispose() );
     };
   }
 
