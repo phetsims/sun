@@ -81,6 +81,7 @@ export default class ToggleNode<T> extends Node {
 
     this.disposeToggleNode = function() {
       valueProperty.unlink( valueListener );
+      nodes.forEach( node => node.dispose() );
     };
   }
 
