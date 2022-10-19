@@ -81,9 +81,6 @@ const Popupable = <SuperType extends Constructor>( type: SuperType, optionsArgPo
       const showPopup = gracefulBind( 'phet.joist.sim.showPopup' ) as Exclude<PopupableOptions[ 'showPopup' ], undefined>;
       const hidePopup = gracefulBind( 'phet.joist.sim.hidePopup' ) as Exclude<PopupableOptions[ 'hidePopup' ], undefined>;
 
-      assert && assert( typeof showPopup === 'function', 'showPopup is required, and must be provided if phet.joist.sim is not available.' );
-      assert && assert( typeof hidePopup === 'function', 'hidePopup is required, and must be provided if phet.joist.sim is not available.' );
-
       const options = optionize<PopupableOptions>()( {
         showPopup: showPopup,
         hidePopup: hidePopup,

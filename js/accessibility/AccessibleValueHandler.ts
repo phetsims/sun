@@ -533,8 +533,6 @@ const AccessibleValueHandler = <SuperType extends Constructor>( Type: SuperType,
      */
     private _getMappedValue( value: number = this._valueProperty.value ): number {
       const mappedValue = this._a11yMapPDOMValue( value );
-      assert && assert( typeof mappedValue === 'number', 'a11yMapPDOMValue must return a number' );
-
       return mappedValue;
     }
 

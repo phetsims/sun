@@ -94,7 +94,7 @@ export default class ComboBoxListBox<T> extends Panel {
       const oldValue = property.value;
 
       const listItemNode = event.currentTarget;
-      assert && assert( listItemNode instanceof ComboBoxListItemNode, 'expected a ComboBoxListItemNode' );
+      assert && assert( listItemNode instanceof ComboBoxListItemNode, 'expected a ComboBoxListItemNode' ); // eslint-disable-line no-simple-type-checking-assertions
 
       // So that something related to the ComboBox has focus before changing Property value.
       focusButtonCallback();
@@ -309,7 +309,7 @@ export default class ComboBoxListBox<T> extends Panel {
   private getListItemNode( value: T ): ComboBoxListItemNode<T> {
     const listItemNode = _.find( this.listItemNodes, ( listItemNode: ComboBoxListItemNode<T> ) => listItemNode.item.value === value )!;
     assert && assert( listItemNode, `no item found for value: ${value}` );
-    assert && assert( listItemNode instanceof ComboBoxListItemNode, 'invalid listItemNode' );
+    assert && assert( listItemNode instanceof ComboBoxListItemNode, 'invalid listItemNode' ); // eslint-disable-line no-simple-type-checking-assertions
     return listItemNode;
   }
 
@@ -319,7 +319,7 @@ export default class ComboBoxListBox<T> extends Panel {
   private getFocusedItemNode(): ComboBoxListItemNode<T> {
     const listItemNode = _.find( this.listItemNodes, ( listItemNode: ComboBoxListItemNode<T> ) => listItemNode.focused )!;
     assert && assert( listItemNode, 'no item found that has focus' );
-    assert && assert( listItemNode instanceof ComboBoxListItemNode, 'invalid listItemNode' );
+    assert && assert( listItemNode instanceof ComboBoxListItemNode, 'invalid listItemNode' ); // eslint-disable-line no-simple-type-checking-assertions
     return listItemNode;
   }
 
