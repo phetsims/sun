@@ -47,7 +47,7 @@ type SelfOptions = {
 
   // The pattern for the voicingNameResponse, with "{{value}}" provided to be filled in with
   // ComboBoxItem.a11yLabel.
-  comboBoxVoicingNameResponsePattern?: string;
+  comboBoxVoicingNameResponsePattern?: TReadOnlyProperty<string> | string;
 
   localPreferredWidthProperty?: TReadOnlyProperty<number | null>;
   localMinimumWidthProperty?: TProperty<number | null>; // Will only be set

@@ -31,7 +31,7 @@ type SelfOptions = {
   // corner radius for the highlight
   highlightCornerRadius?: number;
 
-  comboBoxVoicingNameResponsePattern?: string;
+  comboBoxVoicingNameResponsePattern?: TReadOnlyProperty<string> | string;
 };
 type ParentOptions = VoicingOptions & NodeOptions;
 export type ComboBoxListItemNodeOptions = SelfOptions & StrictOmit<ParentOptions, 'children' | 'innerContent'>;
@@ -78,9 +78,16 @@ export default class ComboBoxListItemNode<T> extends Voicing( Node ) {
       visiblePropertyOptions: { phetioFeatured: true }
     }, providedOptions );
 
+    // @ts-ignore convert Property into string
+    options.comboBoxVoicingNameResponsePattern = options.comboBoxVoicingNameResponsePattern.get ?
+      // @ts-ignore convert Property into string
+                                                 options.comboBoxVoicingNameResponsePattern.get() :
+                                                 options.comboBoxVoicingNameResponsePattern;
+
     // Don't test the contents of strings when ?stringTest is enabled
     // @ts-ignore chipper query parameters
     assert && assert( !!phet.chipper.queryParameters.stringTest ||
+                      // @ts-ignore is a string now.
                       options.comboBoxVoicingNameResponsePattern.includes( '{{value}}' ),
       'value needs to be filled in' );
 
