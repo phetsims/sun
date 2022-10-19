@@ -41,6 +41,7 @@ import TReadOnlyProperty from '../../axon/js/TReadOnlyProperty.js';
 import LinkableProperty from '../../axon/js/LinkableProperty.js';
 import TinyProperty from '../../axon/js/TinyProperty.js';
 import Multilink, { UnknownMultilink } from '../../axon/js/Multilink.js';
+import { SpeakableResolvedResponse } from '../../utterance-queue/js/ResponsePacket.js';
 
 // const
 const LIST_POSITION_VALUES = [ 'above', 'below' ] as const; // where the list pops up relative to the button
@@ -131,13 +132,13 @@ type SelfOptions = {
   // ComboBox does not mix Voicing, so it creates custom options to pass to composed Voicing Nodes.
   // The pattern for the name response string, must include `{{value}}` so that the selected value string can
   // be filled in.
-  comboBoxVoicingNameResponsePattern?: string;
+  comboBoxVoicingNameResponsePattern?: TReadOnlyProperty<string> | string;
 
   // most context responses are dynamic to the current state of the sim, so lazily create them when needed.
   comboBoxVoicingContextResponse?: ( () => string | null ) | null;
 
   // string for the voicing response
-  comboBoxVoicingHintResponse?: string | null;
+  comboBoxVoicingHintResponse?: SpeakableResolvedResponse | null;
 };
 
 type ParentOptions = NodeOptions & WidthSizableOptions;
@@ -260,17 +261,19 @@ export default class ComboBox<T> extends WidthSizable( Node ) {
     }
 
     // We'll need to adjust our button's preferred width if we have a label
-    const buttonPreferredWidthProperty = options.labelNode
-      ? new DerivedProperty( [
-        this.localPreferredWidthProperty,
-        options.labelNode.boundsProperty
-      ], ( localPreferredWidth, labelBounds ) => {
-        // If we don't have a preferred width, we'll forward that to our button
-        return localPreferredWidth === null ? null : localPreferredWidth - labelBounds.width - options.labelXSpacing;
-      }, {
-        reentrant: true
-      } )
-      : this.localPreferredWidthProperty;
+    const buttonPreferredWidthProperty = options.labelNode ?
+                                         new DerivedProperty( [
+                                           this.localPreferredWidthProperty,
+                                           options.labelNode.boundsProperty
+                                         ], ( localPreferredWidth, labelBounds ) => {
+                                           // If we don't have a preferred width, we'll forward that to our button
+                                           return localPreferredWidth === null ?
+                                                  null :
+                                                  localPreferredWidth - labelBounds.width - options.labelXSpacing;
+                                         }, {
+                                           reentrant: true
+                                         } ) :
+                                         this.localPreferredWidthProperty;
 
     // We'll need to adjust our (incoming, from the button) minimum width if we have a label.
     let buttonMinimumWidthProperty = this.localMinimumWidthProperty;
