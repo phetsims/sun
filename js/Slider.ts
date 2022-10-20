@@ -38,6 +38,7 @@ import LinkableProperty from '../../axon/js/LinkableProperty.js';
 import Multilink from '../../axon/js/Multilink.js';
 import DerivedProperty from '../../axon/js/DerivedProperty.js';
 import TProperty from '../../axon/js/TProperty.js';
+import TinyProperty from '../../axon/js/TinyProperty.js';
 
 // constants
 const VERTICAL_ROTATION = -Math.PI / 2;
@@ -159,7 +160,7 @@ export default class Slider extends Sizable( AccessibleSlider( Node, 0 ) ) {
   // This value is set during thumb drag, or null if not currently being dragged.
   private proposedValue: number | null = null;
 
-  public constructor( valueProperty: LinkableProperty<number>, range: Range, providedOptions?: SliderOptions ) {
+  public constructor( valueProperty: LinkableProperty<number>, range: Range | TReadOnlyProperty<Range>, providedOptions?: SliderOptions ) {
 
     // Guard against mutually exclusive options before defaults are filled in.
     assert && assertMutuallyExclusiveOptions( providedOptions, [ 'thumbNode' ], [
@@ -232,6 +233,8 @@ export default class Slider extends Sizable( AccessibleSlider( Node, 0 ) ) {
       phetioEnabledPropertyInstrumented: true // opt into default PhET-iO instrumented enabledProperty
     }, providedOptions );
 
+    const rangeProperty = range instanceof Range ? new TinyProperty( range ) : range;
+
     // ariaOrientation is omitted from ParentOptions, so we can fill it in here.
     options.ariaOrientation = options.orientation;
 
@@ -240,7 +243,7 @@ export default class Slider extends Sizable( AccessibleSlider( Node, 0 ) ) {
 
     // If no sound generator was provided, create the default.
     if ( options.soundGenerator === Slider.DEFAULT_SOUND ) {
-      options.soundGenerator = new ValueChangeSoundPlayer( range, options.valueChangeSoundGeneratorOptions || {} );
+      options.soundGenerator = new ValueChangeSoundPlayer( rangeProperty.value, options.valueChangeSoundGeneratorOptions || {} );
     }
     else if ( options.soundGenerator === null ) {
       options.soundGenerator = ValueChangeSoundPlayer.NO_SOUND;
@@ -309,14 +312,14 @@ export default class Slider extends Sizable( AccessibleSlider( Node, 0 ) ) {
     const ownsEnabledRangeProperty = !superOptions.enabledRangeProperty;
 
     // controls the portion of the slider that is enabled
-    superOptions.enabledRangeProperty = superOptions.enabledRangeProperty || new Property( range, {
+    superOptions.enabledRangeProperty = superOptions.enabledRangeProperty || ( range instanceof Range ? new Property( range, {
       valueType: Range,
       isValidValue: ( value: Range ) => ( value.min >= range.min && value.max <= range.max ),
       tandem: options.tandem.createTandem( 'enabledRangeProperty' ),
       phetioValueType: Range.RangeIO,
       phetioDocumentation: 'Sliders support two ranges: the outer range which specifies the min and max of the track and ' +
                            'the enabledRangeProperty, which determines how low and high the thumb can be dragged within the track.'
-    } );
+    } ) : range );
 
     superOptions.panTargetNode = thumb;
 
