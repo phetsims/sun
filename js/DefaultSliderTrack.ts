@@ -10,9 +10,11 @@
  * @author Jesse Greenberg (PhET Interactive Simulations)
  */
 
+import Multilink from '../../axon/js/Multilink.js';
 import TProperty from '../../axon/js/TProperty.js';
+import TReadOnlyProperty from '../../axon/js/TReadOnlyProperty.js';
 import Range from '../../dot/js/Range.js';
-import optionize from '../../phet-core/js/optionize.js';
+import optionize, { combineOptions } from '../../phet-core/js/optionize.js';
 import PickRequired from '../../phet-core/js/types/PickRequired.js';
 import { TPaint, Node, Rectangle } from '../../scenery/js/imports.js';
 import { default as SliderTrack, SliderTrackOptions } from './SliderTrack.js';
@@ -32,10 +34,9 @@ export type DefaultSliderTrackOptions = SelfOptions & SliderTrackOptions & PickR
 
 export default class DefaultSliderTrack extends SliderTrack {
 
-  private readonly enabledTrack: Rectangle;
   private readonly disposeDefaultSliderTrack: () => void;
 
-  public constructor( valueProperty: TProperty<number>, range: Range, providedOptions?: DefaultSliderTrackOptions ) {
+  public constructor( valueProperty: TProperty<number>, range: Range | TReadOnlyProperty<Range>, providedOptions?: DefaultSliderTrackOptions ) {
 
     const options = optionize<DefaultSliderTrackOptions, SelfOptions, SliderTrackOptions>()( {
       fillEnabled: 'white',
@@ -48,7 +49,7 @@ export default class DefaultSliderTrack extends SliderTrack {
     // Represents the disabled range of the slider, always visible and always the full range
     // of the slider so that when the enabled range changes we see the enabled sub-range on top of the
     // full range of the slider.
-    const disabledTrack = new Rectangle( 0, 0, options.size.width, options.size.height, {
+    const disabledTrack = new Rectangle( {
       fill: options.fillDisabled,
       stroke: options.stroke,
       lineWidth: options.lineWidth,
@@ -59,7 +60,7 @@ export default class DefaultSliderTrack extends SliderTrack {
 
     // Will change size depending on the enabled range of the slider.  On top so that we can see
     // the enabled sub-range of the slider.
-    const enabledTrack = new Rectangle( 0, 0, options.size.width, options.size.height, {
+    const enabledTrack = new Rectangle( {
       fill: options.fillEnabled,
       stroke: options.stroke,
       lineWidth: options.lineWidth,
@@ -69,22 +70,28 @@ export default class DefaultSliderTrack extends SliderTrack {
     const trackNode = new Node( {
       children: [ disabledTrack, enabledTrack ]
     } );
-    super( valueProperty, trackNode, range, options );
-
-    this.enabledTrack = enabledTrack;
+    super( valueProperty, trackNode, range, combineOptions<SliderTrackOptions>( {
+      // Historically, our stroke will overflow
+      leftVisualOverflow: options.stroke !== null ? options.lineWidth / 2 : 0,
+      rightVisualOverflow: options.stroke !== null ? options.lineWidth / 2 : 0
+    }, options ) );
 
     // when the enabled range changes gray out the unusable parts of the slider
-    const enabledRangeObserver = ( enabledRange: Range ) => {
-      const minViewCoordinate = this.valueToPosition.evaluate( enabledRange.min );
-      const maxViewCoordinate = this.valueToPosition.evaluate( enabledRange.max );
+    const updateMultilink = Multilink.multilink( [
+      options.enabledRangeProperty,
+      this.valueToPositionProperty,
+      this.sizeProperty
+    ], ( enabledRange, valueToPosition, size ) => {
+      const enabledMinX = valueToPosition.evaluate( enabledRange.min );
+      const enabledMaxX = valueToPosition.evaluate( enabledRange.max );
 
-      // update the geometry of the enabled track
-      const enabledWidth = maxViewCoordinate - minViewCoordinate;
-      this.enabledTrack.setRect( minViewCoordinate, 0, enabledWidth, this.size.height );
+      disabledTrack.setRect( 0, 0, size.width, size.height );
+      enabledTrack.setRect( enabledMinX, 0, enabledMaxX - enabledMinX, size.height );
+    } );
+
+    this.disposeDefaultSliderTrack = () => {
+      updateMultilink.dispose();
     };
-    options.enabledRangeProperty.link( enabledRangeObserver ); // needs to be unlinked in dispose function
-
-    this.disposeDefaultSliderTrack = () => options.enabledRangeProperty.unlink( enabledRangeObserver );
   }
 
   public override dispose(): void {

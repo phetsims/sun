@@ -14,6 +14,7 @@ import TReadOnlyProperty from '../../axon/js/TReadOnlyProperty.js';
 import Property from '../../axon/js/Property.js';
 import ReadOnlyProperty from '../../axon/js/ReadOnlyProperty.js';
 import Dimension2 from '../../dot/js/Dimension2.js';
+import CompletePiecewiseLinearFunction from '../../dot/js/CompletePiecewiseLinearFunction.js';
 import Range from '../../dot/js/Range.js';
 import Utils from '../../dot/js/Utils.js';
 import { Shape } from '../../kite/js/imports.js';
@@ -22,7 +23,7 @@ import InstanceRegistry from '../../phet-core/js/documentation/InstanceRegistry.
 import optionize from '../../phet-core/js/optionize.js';
 import Orientation from '../../phet-core/js/Orientation.js';
 import swapObjectKeys from '../../phet-core/js/swapObjectKeys.js';
-import { DragListener, FocusHighlightFromNode, Node, NodeOptions, Path, SceneryConstants, TPaint } from '../../scenery/js/imports.js';
+import { DragListener, FocusHighlightFromNode, LayoutConstraint, ManualConstraint, Node, NodeOptions, Path, SceneryConstants, Sizable, TPaint } from '../../scenery/js/imports.js';
 import Tandem from '../../tandem/js/Tandem.js';
 import IOType from '../../tandem/js/types/IOType.js';
 import ValueChangeSoundPlayer, { ValueChangeSoundPlayerOptions } from '../../tambo/js/sound-generators/ValueChangeSoundPlayer.js';
@@ -34,6 +35,9 @@ import sun from './sun.js';
 import PickOptional from '../../phet-core/js/types/PickOptional.js';
 import { LinkableElement } from '../../tandem/js/PhetioObject.js';
 import LinkableProperty from '../../axon/js/LinkableProperty.js';
+import Multilink from '../../axon/js/Multilink.js';
+import DerivedProperty from '../../axon/js/DerivedProperty.js';
+import TProperty from '../../axon/js/TProperty.js';
 
 // constants
 const VERTICAL_ROTATION = -Math.PI / 2;
@@ -123,7 +127,7 @@ export type SliderOptions = SelfOptions &
 
 type TickOptions = Pick<SelfOptions, 'tickLabelSpacing' | 'majorTickLength' | 'majorTickStroke' | 'majorTickLineWidth' | 'minorTickLength' | 'minorTickStroke' | 'minorTickLineWidth'>;
 
-export default class Slider extends AccessibleSlider( Node, 0 ) {
+export default class Slider extends Sizable( AccessibleSlider( Node, 0 ) ) {
 
   public readonly enabledRangeProperty: TReadOnlyProperty<Range>;
 
@@ -144,6 +148,8 @@ export default class Slider extends AccessibleSlider( Node, 0 ) {
   private readonly track: SliderTrack;
 
   private readonly disposeSlider: () => void;
+
+  private readonly ticks: Tick[] = [];
 
   // This is a marker to indicate that we should create the actual default slider sound.
   public static DEFAULT_SOUND = new ValueChangeSoundPlayer( new Range( 0, 1 ) );
@@ -341,6 +347,9 @@ export default class Slider extends AccessibleSlider( Node, 0 ) {
       );
     }
 
+    const trackSpacer = new Node();
+    sliderParts.push( trackSpacer );
+
     this.track = options.trackNode || new DefaultSliderTrack( valueProperty, range, {
 
       // propagate options that are specific to SliderTrack
@@ -362,15 +371,6 @@ export default class Slider extends AccessibleSlider( Node, 0 ) {
       // phet-io
       tandem: trackTandem
     } );
-
-    // Position the track horizontally
-    this.track.centerX = this.track.valueToPosition.evaluate( ( range.max + range.min ) / 2 );
-
-    // Dilate the local bounds horizontally so that it extends beyond where the thumb can reach.  This prevents layout
-    // asymmetry when the slider thumb is off the edges of the track.  See https://github.com/phetsims/sun/issues/282
-    if ( options.trackBoundsDilation ) {
-      this.track.localBounds = this.track.localBounds.dilatedX( thumb.width / 2 );
-    }
 
     // Add the track
     sliderParts.push( this.track );
@@ -423,7 +423,7 @@ export default class Slider extends AccessibleSlider( Node, 0 ) {
         if ( this.enabledProperty.get() ) {
           const transform = listener.pressedTrail.subtrailTo( sliderPartsNode ).getTransform(); // we only want the transform to our parent
           const x = transform.inversePosition2( event.pointer.point ).x - clickXOffset;
-          this.proposedValue = this.track.valueToPosition.inverse( x );
+          this.proposedValue = this.track.valueToPositionProperty.value.inverse( x );
 
           const valueInRange = this.enabledRangeProperty.get().constrainValue( this.proposedValue );
           valueProperty.set( options.constrainValue( valueInRange ) );
@@ -450,10 +450,9 @@ export default class Slider extends AccessibleSlider( Node, 0 ) {
     this.trackDragListener = this.track.dragListener;
 
     // update thumb position when value changes
-    const valueObserver = ( value: number ) => {
-      thumb.centerX = this.track.valueToPosition.evaluate( value );
-    };
-    valueProperty.link( valueObserver ); // must be unlinked in disposeSlider
+    const valueMultilink = Multilink.multilink( [ valueProperty, this.track.valueToPositionProperty ], ( value, valueToPosition ) => {
+      thumb.centerX = valueToPosition.evaluate( value );
+    } );
 
     // when the enabled range changes, the value to position linear function must change as well
     const enabledRangeObserver = ( enabledRange: Range ) => {
@@ -480,11 +479,15 @@ export default class Slider extends AccessibleSlider( Node, 0 ) {
     };
     this.enabledRangeProperty.link( enabledRangeObserver ); // needs to be unlinked in dispose function
 
+    const constraint = new SliderConstraint( this, this.track, thumb, sliderPartsNode, options.orientation, trackSpacer, this.ticks );
+
     this.disposeSlider = () => {
+      constraint.dispose();
+
       thumb.dispose && thumb.dispose(); // in case a custom thumb is provided via options.thumbNode that doesn't implement dispose
       this.track.dispose && this.track.dispose();
 
-      valueProperty.unlink( valueObserver );
+      valueMultilink.dispose();
       ownsEnabledRangeProperty && this.enabledRangeProperty.dispose();
       thumbDragListener.dispose();
     };
@@ -526,6 +529,11 @@ export default class Slider extends AccessibleSlider( Node, 0 ) {
 
   public override dispose(): void {
     this.disposeSlider();
+
+    this.ticks.forEach( tick => {
+      tick.dispose();
+    } );
+
     super.dispose();
   }
 
@@ -549,29 +557,7 @@ export default class Slider extends AccessibleSlider( Node, 0 ) {
    * Adds a tick mark above the track.
    */
   private addTick( parent: Node, value: number, label: Node | undefined, length: number, stroke: TPaint, lineWidth: number ): void {
-    const labelX = this.track.valueToPosition.evaluate( value );
-
-    // ticks
-    const tick = new Path( new Shape()
-        .moveTo( labelX, this.track.top )
-        .lineTo( labelX, this.track.top - length ),
-      { stroke: stroke, lineWidth: lineWidth } );
-    parent.addChild( tick );
-
-    // label
-    if ( label ) {
-
-      // For a vertical slider, rotate labels opposite the rotation of the slider, so that they appear as expected.
-      if ( this.orientation === Orientation.VERTICAL ) {
-        label.rotation = -VERTICAL_ROTATION;
-      }
-      parent.addChild( label );
-      label.localBoundsProperty.link( () => {
-        label.centerX = tick.centerX;
-        label.bottom = tick.top - this.tickOptions.tickLabelSpacing;
-      } );
-      label.pickable = false;
-    }
+    this.ticks.push( new Tick( parent, value, label, length, stroke, lineWidth, this.tickOptions, this.orientation, this.track ) );
   }
 
   // Sets visibility of major ticks.
@@ -599,6 +585,276 @@ export default class Slider extends AccessibleSlider( Node, 0 ) {
   public static TRACK_NODE_TANDEM_NAME = 'trackNode' as const;
 
   public static SliderIO: IOType;
+}
+
+class Tick {
+
+  private readonly labelXProperty: TReadOnlyProperty<number>;
+
+  public readonly tickNode: Node;
+
+  private readonly manualConstraint?: ManualConstraint<Node[]>;
+
+  // NOTE: This could be cleaned up so we could remove ticks or do other nice things
+  public constructor(
+    private readonly parent: Node,
+    public readonly value: number,
+    private readonly label: Node | undefined,
+    length: number,
+    stroke: TPaint,
+    lineWidth: number,
+    tickOptions: Required<TickOptions>,
+    orientation: Orientation,
+    track: SliderTrack
+  ) {
+
+    this.labelXProperty = new DerivedProperty( [ track.valueToPositionProperty ], valueToPosition => valueToPosition.evaluate( value ) );
+
+    // ticks
+    this.tickNode = new Node();
+    parent.addChild( this.tickNode );
+
+    const tickPath = new Path( new Shape()
+        .moveTo( 0, track.top )
+        .lineTo( 0, track.top - length ),
+      { stroke: stroke, lineWidth: lineWidth } );
+
+    this.labelXProperty.link( x => {
+      tickPath.x = x;
+    } );
+
+    this.tickNode.addChild( tickPath );
+
+    // label
+    if ( label ) {
+
+      // For a vertical slider, rotate labels opposite the rotation of the slider, so that they appear as expected.
+      if ( orientation === Orientation.VERTICAL ) {
+        label.rotation = -VERTICAL_ROTATION;
+      }
+      this.tickNode.addChild( label );
+
+      this.manualConstraint = ManualConstraint.create( this.tickNode, [ tickPath, label ], ( tickProxy, labelProxy ) => {
+        labelProxy.centerX = tickProxy.centerX;
+        labelProxy.bottom = tickProxy.top - tickOptions.tickLabelSpacing;
+      } );
+
+      label.pickable = false;
+    }
+  }
+
+  public dispose(): void {
+    this.parent.removeChild( this.tickNode );
+
+    this.labelXProperty.dispose();
+    this.manualConstraint && this.manualConstraint.dispose();
+  }
+}
+
+class SliderConstraint extends LayoutConstraint {
+
+  private readonly preferredProperty: TProperty<number | null>;
+
+  public constructor(
+    private readonly slider: Slider,
+    private readonly track: SliderTrack,
+    private readonly thumb: Node,
+    private readonly sliderPartsNode: Node,
+    private readonly orientation: Orientation,
+    private readonly trackSpacer: Node,
+    private readonly ticks: Tick[]
+  ) {
+
+    super( slider );
+
+    // We need to make it sizable in both dimensions (VSlider vs HSlider), but we'll still want to make the opposite
+    // axis non-sizable (since it won't be sizable in both orientations at once).
+    if ( orientation === Orientation.HORIZONTAL ) {
+      slider.heightSizable = false;
+      this.preferredProperty = this.slider.localPreferredWidthProperty;
+    }
+    else {
+      slider.widthSizable = false;
+      this.preferredProperty = this.slider.localPreferredHeightProperty;
+    }
+    this.preferredProperty.lazyLink( this._updateLayoutListener );
+
+    // So range changes or minimum changes will trigger layouts (since they can move ticks)
+    this.track.rangeProperty.lazyLink( this._updateLayoutListener );
+
+    // Thumb size changes should trigger layout, since we check the width of the thumb
+    // NOTE: This is ignoring thumb scale changing, but for performance/correctness it makes sense to avoid that for now
+    // so we can rule out infinite loops of thumb movement.
+    this.thumb.localBoundsProperty.lazyLink( this._updateLayoutListener );
+
+    this.addNode( track );
+
+    this.layout();
+  }
+
+  protected override layout(): void {
+    super.layout();
+
+    const slider = this.slider;
+    const track = this.track;
+    const thumb = this.thumb;
+
+    // Dilate the local bounds horizontally so that it extends beyond where the thumb can reach.  This prevents layout
+    // asymmetry when the slider thumb is off the edges of the track.  See https://github.com/phetsims/sun/issues/282
+    this.trackSpacer.localBounds = track.localBounds.dilatedX( thumb.width / 2 );
+
+    assert && assert( track.minimumWidth !== null );
+
+    // Our track's (exterior) minimum width will INCLUDE "visual overflow" e.g. stroke. The actual range used for
+    // computation of where the thumb/ticks go will be the "interior" width (excluding the visual overflow), e.g.
+    // without the stroke. We'll need to track and handle these separately, and only handle tick positioning based on
+    // the interior width.
+    const totalOverflow = track.leftVisualOverflow + track.rightVisualOverflow;
+    const trackMinimumExteriorWidth = track.minimumWidth!;
+    const trackMinimumInteriorWidth = trackMinimumExteriorWidth - totalOverflow;
+
+    // Takes a tick's value into the [0,1] range. This should be multiplied times the potential INTERIOR track width
+    // in order to get the position the tick should be at.
+    const normalizeTickValue = ( value: number ) => {
+      return Utils.linear( track.rangeProperty.value.min, track.rangeProperty.value.max, 0, 1, value );
+    };
+
+    // NOTE: Due to visual overflow, our track's range (including the thumb extension) will actually go from
+    // ( -thumb.width / 2 - track.leftVisualOverflow ) on the left to
+    // ( trackExteriorWidth + thumb.width / 2 + track.rightVisualOverflow ) on the right.
+    // This is because our track's width is reduced to account for stroke, but the logical rectangle is still located
+    // at x=0, meaning the stroke (with lineWidth=1) will typically go out to -0.5 (negative left visual overflow).
+    // Our horizontal bounds are thus effectively offset by this left visual overflow amount.
+    // NOTE: This actually goes PAST where the thumb should go when there is visual overflow, but we actually also
+    // included this "imprecision" in the past (localBounds INCLUDING the stroke was dilated by the thum width), so we
+    // will actually have a slight bit of additional padding included here.
+    // NOTE: Documentation was added before for this (noting the extension BEYOND the bounds):
+    // > Dilate the local bounds horizontally so that it extends beyond where the thumb can reach.  This prevents layout
+    // > asymmetry when the slider thumb is off the edges of the track.  See https://github.com/phetsims/sun/issues/282
+    const leftExteriorOffset = -thumb.width / 2 - track.leftVisualOverflow;
+    const rightExteriorOffset = thumb.width / 2 - track.leftVisualOverflow;
+
+    // Start with the size our minimum track would be WITH the added spacing for the thumb
+    // NOTE: will be mutated below
+    const minimumRange = new Range( leftExteriorOffset, trackMinimumExteriorWidth + rightExteriorOffset );
+
+    // We'll need to consider where the ticks would be IF we had our minimum size (since the ticks would presumably
+    // potentially be spaced closer together). So we'll check the bounds of each tick if it was at that location, and
+    // ensure that ticks are included in our minimum range (since tick labels may stick out past the track).
+    this.ticks.forEach( tick => {
+      // Where the tick will be if we have our minimum size
+      const tickMinimumPosition = trackMinimumInteriorWidth * normalizeTickValue( tick.value );
+
+      // Adjust the minimum range to include it.
+      const halfTickWidth = tick.tickNode.width / 2;
+      // The tick will be centered
+      minimumRange.includeRange( new Range( -halfTickWidth, halfTickWidth ).shifted( tickMinimumPosition ) );
+    } );
+
+    if ( slider.widthSizable && this.preferredProperty.value !== null ) {
+      // Here's where things get complicated! Above, it's fairly easy to go from "track exterior width" => "slider width",
+      // however we need to do the opposite (when our horizontal slider has a preferred width, we need to compute what
+      // track width we'll have to make that happen). As I noted in the issue for this work:
+
+      // There's a fun linear optimization problem hiding in plain sight (perhaps a high-performance iterative solution will work):
+      // - We can compute a minimum size (given the minimum track size, see where the tick labels go, and include those).
+      // - HOWEVER adjusting the track size ALSO adjusts how much the tick labels stick out to the sides (the expansion
+      //   of the track will push the tick labels away from the edges).
+      // - Different ticks will be the limiting factor for the bounds at different track sizes (a tick label on the very
+      //   end should not vary the bounds offset, but a tick label that's larger but slightly offset from the edge WILL
+      //   vary the offset)
+      // - So it's easy to compute the resulting size from the track size, BUT the inverse problem is more difficult.
+      //   Essentially we have a convex piecewise-linear function mapping track size to output size (implicitly defined
+      //   by where tick labels swap being the limiting factor), and we need to invert it.
+
+      // Effectively the "track width" => "slider width" is a piecewise-linear function, where the line segments end at
+      // where ONE tick either becomes the limiting factor or stops being the limiting factor. Mathematically, this works
+      // out to be based on the following formulas:
+
+      // The LEFT x is the minimum of all the following:
+      //   -thumb.width / 2 - track.leftVisualOverflow
+      //   FOR EVERY TICK: -tickWidth / 2 + ( trackWidth - overflow ) * normalizedTickValue
+      // The RIGHT x is the maximum of all the following:
+      //   trackWidth + thumb.width / 2 - track.leftVisualOverflow
+      //   (for every tick) tickWidth / 2 + ( trackWidth - overflow ) * normalizedTickValue
+      // NOTE: the "trackWidth - overflow" is the INTERNAL width (not including the stroke) that we use for tick
+      // computation
+      // This effectively computes how far everything "sticks out" and would affect the bonuds.
+      //
+      // The TOTAL width of the slider will simply be the above RIGHT - LEFT.
+
+      // Instead of using numerical solutions, we're able to solve this analytically with piecewise-linear functions that
+      // implement the above functions. We'll consider each of those individual functions as a linear function where
+      // the input is the exterior track length, e.g. f(trackLength) = A * trackLength + B, for given A,B values.
+      // By min/max-ing these together and then taking the difference, we'll have an accurate function of
+      // f(trackLength) = sliderWidth. Then we'll invert that function, e.g. f^-1(sliderWidth) = trackLength, and then
+      // we'll be able to pass in our preferred slider width in order to compute the preferred track length.
+
+      // We'll need to factor the trackWidth out for the tick functions, so:
+      // LEFT tick computations:
+      //   -tickWidth / 2 + ( trackWidth - overflow ) * normalizedTickValue
+      // = -tickWidth / 2 + trackWidth * normalizedTickValue - overflow * normalizedTickValue
+      // = normalizedTickValue * trackWidth + ( -tickWidth / 2 - overflow * normalizedTickValue )
+      // So when we put it in the form of A * trackWidth + B, we get:
+      //   A = normalizedTickValue, B = -tickWidth / 2 - overflow * normalizedTickValue
+      // Similarly happens for the RIGHT tick computation.
+
+      const trackWidthToFullWidthFunction = CompletePiecewiseLinearFunction.max(
+        // Right side (track/thumb)
+        CompletePiecewiseLinearFunction.linear( 1, rightExteriorOffset ),
+        // Right side (ticks)
+        ...this.ticks.map( tick => {
+          const normalizedTickValue = normalizeTickValue( tick.value );
+          return CompletePiecewiseLinearFunction.linear( normalizedTickValue, tick.tickNode.width / 2 - totalOverflow * normalizedTickValue );
+        } )
+      ).minus( CompletePiecewiseLinearFunction.min(
+        // Left side (track/thumb)
+        CompletePiecewiseLinearFunction.constant( leftExteriorOffset ),
+        // Left side (ticks)
+        ...this.ticks.map( tick => {
+          const normalizedTickValue = normalizeTickValue( tick.value );
+          return CompletePiecewiseLinearFunction.linear( normalizedTickValue, -tick.tickNode.width / 2 - totalOverflow * normalizedTickValue );
+        }
+      ) ) );
+
+      // NOTE: This function is only monotonically increasing when trackWidth is positive! We'll drop the values
+      // underneath our minimum track width (they won't be needed), but we'll need to add an extra point below to ensure
+      // that the slope is maintained (due to how CompletePiecewiseLinearFunction works).
+      const fullWidthToTrackWidthFunction = trackWidthToFullWidthFunction.withXValues( [
+        trackMinimumExteriorWidth - 1,
+        trackMinimumExteriorWidth,
+        ...trackWidthToFullWidthFunction.points.map( point => point.x ).filter( x => x > trackMinimumExteriorWidth + 1e-10 )
+      ] ).inverted();
+
+      track.preferredWidth = Math.max(
+        // Ensure we're NOT dipping below the minimum track width (for some reason).
+        trackMinimumExteriorWidth,
+        fullWidthToTrackWidthFunction.evaluate( this.preferredProperty.value )
+      );
+    }
+    else {
+      track.preferredWidth = track.minimumWidth;
+    }
+
+    const minimumWidth = minimumRange.getLength();
+
+    // Set minimums at the end
+    if ( this.orientation === Orientation.HORIZONTAL ) {
+      slider.localMinimumWidth = minimumWidth;
+    }
+    else {
+      slider.localMinimumHeight = minimumWidth;
+    }
+  }
+
+  public override dispose(): void {
+    this.preferredProperty.unlink( this._updateLayoutListener );
+
+    this.track.rangeProperty.unlink( this._updateLayoutListener );
+    this.thumb.localBoundsProperty.unlink( this._updateLayoutListener );
+
+    super.dispose();
+  }
 }
 
 Slider.SliderIO = new IOType( 'SliderIO', {
