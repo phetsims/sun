@@ -188,6 +188,9 @@ export default class Checkbox extends WidthSizable( Voicing( Node ) ) {
 
     content.pickable = false; // since there's a pickable rectangle on top of content
 
+    // In case the content is an instance of a focusable Node. Checkbox icon should not be in the traversal order.
+    content.pdomVisible = false;
+
     // interactivity
     const fireListener = new FireListener( {
       fire: () => toggleAction.execute(),
