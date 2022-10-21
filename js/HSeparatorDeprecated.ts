@@ -13,9 +13,11 @@ import sun from './sun.js';
 type SelfOptions = EmptySelfOptions;
 export type HSeparatorDeprecatedOptions = SelfOptions & LineOptions;
 
+/**
+ * @deprecated please use HSeparator
+ */
 export default class HSeparatorDeprecated extends Line {
 
-  // @deprecated
   public constructor( width: number, providedOptions?: HSeparatorDeprecatedOptions ) {
     assert && assert( isFinite( width ) && width >= 0, `invalid width=${width}` );
 

@@ -14,9 +14,11 @@ type SelfOptions = EmptySelfOptions;
 
 export type VSeparatorDeprecatedOptions = SelfOptions & LineOptions;
 
+/**
+ * @deprecated please use VSeparator
+ */
 export default class VSeparatorDeprecated extends Line {
 
-  // @deprecated
   public constructor( height: number, providedOptions?: VSeparatorDeprecatedOptions ) {
     assert && assert( isFinite( height ) && height >= 0, `invalid height=${height}` );
 
