@@ -71,6 +71,7 @@ export default class DefaultSliderTrack extends SliderTrack {
       children: [ disabledTrack, enabledTrack ]
     } );
     super( valueProperty, trackNode, range, combineOptions<SliderTrackOptions>( {
+
       // Historically, our stroke will overflow
       leftVisualOverflow: options.stroke !== null ? options.lineWidth / 2 : 0,
       rightVisualOverflow: options.stroke !== null ? options.lineWidth / 2 : 0

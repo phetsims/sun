@@ -590,6 +590,7 @@ export default class Slider extends Sizable( AccessibleSlider( Node, 0 ) ) {
   public static SliderIO: IOType;
 }
 
+// REVIEW: Why is Tick not in its own file?
 class Tick {
 
   private readonly labelXProperty: TReadOnlyProperty<number>;
@@ -598,7 +599,7 @@ class Tick {
 
   private readonly manualConstraint?: ManualConstraint<Node[]>;
 
-  // NOTE: This could be cleaned up so we could remove ticks or do other nice things
+  // NOTE: This could be cleaned up, so we could remove ticks or do other nice things
   public constructor(
     private readonly parent: Node,
     public readonly value: number,
@@ -654,6 +655,7 @@ class Tick {
   }
 }
 
+// REVIEW: also SliderConstraint in its own file?
 class SliderConstraint extends LayoutConstraint {
 
   private readonly preferredProperty: TProperty<number | null>;
@@ -728,10 +730,12 @@ class SliderConstraint extends LayoutConstraint {
     // This is because our track's width is reduced to account for stroke, but the logical rectangle is still located
     // at x=0, meaning the stroke (with lineWidth=1) will typically go out to -0.5 (negative left visual overflow).
     // Our horizontal bounds are thus effectively offset by this left visual overflow amount.
-    // NOTE: This actually goes PAST where the thumb should go when there is visual overflow, but we actually also
-    // included this "imprecision" in the past (localBounds INCLUDING the stroke was dilated by the thum width), so we
-    // will actually have a slight bit of additional padding included here.
-    // NOTE: Documentation was added before for this (noting the extension BEYOND the bounds):
+
+    // NOTE: This actually goes PAST where the thumb should go when there is visual overflow, but we also
+    // included this "imprecision" in the past (localBounds INCLUDING the stroke was dilated by the thumb width), so we
+    // will have a slight bit of additional padding included here.
+
+    // NOTE: Documentation was added before dynamic layout integration (noting the extension BEYOND the bounds):
     // > Dilate the local bounds horizontally so that it extends beyond where the thumb can reach.  This prevents layout
     // > asymmetry when the slider thumb is off the edges of the track.  See https://github.com/phetsims/sun/issues/282
     const leftExteriorOffset = -thumb.width / 2 - track.leftVisualOverflow;
@@ -741,15 +745,17 @@ class SliderConstraint extends LayoutConstraint {
     // NOTE: will be mutated below
     const minimumRange = new Range( leftExteriorOffset, trackMinimumExteriorWidth + rightExteriorOffset );
 
-    // We'll need to consider where the ticks would be IF we had our minimum size (since the ticks would presumably
-    // potentially be spaced closer together). So we'll check the bounds of each tick if it was at that location, and
+    // We'll need to consider where the ticks would be IF we had our minimum size (since the ticks would potentially
+    // be spaced closer together). So we'll check the bounds of each tick if it was at that location, and
     // ensure that ticks are included in our minimum range (since tick labels may stick out past the track).
     this.ticks.forEach( tick => {
+
       // Where the tick will be if we have our minimum size
       const tickMinimumPosition = trackMinimumInteriorWidth * normalizeTickValue( tick.value );
 
-      // Adjust the minimum range to include it.
+      // Adjust the minimum range to include the tick.
       const halfTickWidth = tick.tickNode.width / 2;
+
       // The tick will be centered
       minimumRange.includeRange( new Range( -halfTickWidth, halfTickWidth ).shifted( tickMinimumPosition ) );
     } );
@@ -770,7 +776,7 @@ class SliderConstraint extends LayoutConstraint {
       //   Essentially we have a convex piecewise-linear function mapping track size to output size (implicitly defined
       //   by where tick labels swap being the limiting factor), and we need to invert it.
 
-      // Effectively the "track width" => "slider width" is a piecewise-linear function, where the line segments end at
+      // Effectively the "track width" => "slider width" is a piecewise-linear function, where the breakpoints occur
       // where ONE tick either becomes the limiting factor or stops being the limiting factor. Mathematically, this works
       // out to be based on the following formulas:
 
@@ -782,7 +788,7 @@ class SliderConstraint extends LayoutConstraint {
       //   (for every tick) tickWidth / 2 + ( trackWidth - overflow ) * normalizedTickValue
       // NOTE: the "trackWidth - overflow" is the INTERNAL width (not including the stroke) that we use for tick
       // computation
-      // This effectively computes how far everything "sticks out" and would affect the bonuds.
+      // This effectively computes how far everything "sticks out" and would affect the bounds.
       //
       // The TOTAL width of the slider will simply be the above RIGHT - LEFT.
 
@@ -830,6 +836,7 @@ class SliderConstraint extends LayoutConstraint {
       ] ).inverted();
 
       track.preferredWidth = Math.max(
+
         // Ensure we're NOT dipping below the minimum track width (for some reason).
         trackMinimumExteriorWidth,
         fullWidthToTrackWidthFunction.evaluate( this.preferredProperty.value )
