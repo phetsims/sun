@@ -11,7 +11,8 @@ import { Line, LineOptions } from '../../scenery/js/imports.js';
 import sun from './sun.js';
 
 type SelfOptions = EmptySelfOptions;
-export type HSeparatorDeprecatedOptions = SelfOptions & LineOptions;
+
+type HSeparatorDeprecatedOptions = SelfOptions & LineOptions;
 
 /**
  * @deprecated please use HSeparator

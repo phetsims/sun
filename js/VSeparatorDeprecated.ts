@@ -12,7 +12,7 @@ import sun from './sun.js';
 
 type SelfOptions = EmptySelfOptions;
 
-export type VSeparatorDeprecatedOptions = SelfOptions & LineOptions;
+type VSeparatorDeprecatedOptions = SelfOptions & LineOptions;
 
 /**
  * @deprecated please use VSeparator
