@@ -35,6 +35,7 @@ export default function demoCarousel( layoutBounds: Bounds2 ): Node {
   // horizontal carousel
   const hCarousel = new Carousel( hItems, {
     orientation: 'horizontal',
+    separatorsVisible: true,
     buttonTouchAreaXDilation: 15,
     buttonTouchAreaYDilation: 5,
     buttonMouseAreaXDilation: 7,

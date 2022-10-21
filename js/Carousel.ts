@@ -24,7 +24,7 @@ import { Shape } from '../../kite/js/imports.js';
 import InstanceRegistry from '../../phet-core/js/documentation/InstanceRegistry.js';
 import merge from '../../phet-core/js/merge.js';
 import optionize, { combineOptions } from '../../phet-core/js/optionize.js';
-import { TColor, Node, NodeOptions, Rectangle } from '../../scenery/js/imports.js';
+import { HSeparator, HSeparatorOptions, Node, NodeOptions, Rectangle, TColor, VSeparator, VSeparatorOptions } from '../../scenery/js/imports.js';
 import TSoundPlayer from '../../tambo/js/TSoundPlayer.js';
 import pushButtonSoundPlayer from '../../tambo/js/shared-sound-players/pushButtonSoundPlayer.js';
 import Tandem from '../../tandem/js/Tandem.js';
@@ -32,9 +32,7 @@ import Animation from '../../twixt/js/Animation.js';
 import Easing from '../../twixt/js/Easing.js';
 import CarouselButton, { CarouselButtonOptions } from './buttons/CarouselButton.js';
 import ColorConstants from './ColorConstants.js';
-import HSeparatorDeprecated, { HSeparatorDeprecatedOptions } from './HSeparatorDeprecated.js';
 import sun from './sun.js';
-import VSeparatorDeprecated, { VSeparatorDeprecatedOptions } from './VSeparatorDeprecated.js';
 
 const DEFAULT_ARROW_SIZE = new Dimension2( 20, 7 );
 
@@ -249,7 +247,8 @@ export default class Carousel extends Node {
         if ( isHorizontal ) {
 
           // vertical separator, to the left of the item
-          separator = new VSeparatorDeprecated( scrollingHeight, combineOptions<VSeparatorDeprecatedOptions>( {
+          separator = new VSeparator( combineOptions<VSeparatorOptions>( {
+            preferredHeight: scrollingHeight,
             centerX: item.centerX + ( maxItemLength / 2 ) + options.spacing,
             centerY: item.centerY
           }, separatorOptions ) );
@@ -261,7 +260,8 @@ export default class Carousel extends Node {
         else {
 
           // horizontal separator, below the item
-          separator = new HSeparatorDeprecated( scrollingWidth, combineOptions<HSeparatorDeprecatedOptions>( {
+          separator = new HSeparator( combineOptions<HSeparatorOptions>( {
+            preferredWidth: scrollingWidth,
             centerX: item.centerX,
             centerY: item.centerY + ( maxItemLength / 2 ) + options.spacing
           }, separatorOptions ) );
