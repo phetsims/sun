@@ -18,7 +18,7 @@ import optionize from '../../phet-core/js/optionize.js';
 import StrictOmit from '../../phet-core/js/types/StrictOmit.js';
 import StringUtils from '../../phetcommon/js/util/StringUtils.js';
 import CloseButton from '../../scenery-phet/js/buttons/CloseButton.js';
-import { AlignBox, FocusManager, FullScreen, HBox, KeyboardUtils, Node, PDOMPeer, PDOMUtils, SceneryEvent, TColor, VBox } from '../../scenery/js/imports.js';
+import { AlignBox, FocusManager, FullScreen, HBox, KeyboardUtils, Node, PDOMPeer, PDOMUtils, TColor, TInputListener, VBox } from '../../scenery/js/imports.js';
 import TSoundPlayer from '../../tambo/js/TSoundPlayer.js';
 import generalCloseSoundPlayer from '../../tambo/js/shared-sound-players/generalCloseSoundPlayer.js';
 import generalOpenSoundPlayer from '../../tambo/js/shared-sound-players/generalOpenSoundPlayer.js';
@@ -405,8 +405,8 @@ export default class Dialog extends Popupable( Panel, 1 ) {
     }
 
     // pdom - close the dialog when pressing "escape"
-    const escapeListener = {
-      keydown: ( event: SceneryEvent ) => {
+    const escapeListener: TInputListener = {
+      keydown: event => {
         const domEvent = event.domEvent; // {DOMEvent|null}
 
         if ( KeyboardUtils.isKeyEvent( event.domEvent, KeyboardUtils.KEY_ESCAPE ) ) {

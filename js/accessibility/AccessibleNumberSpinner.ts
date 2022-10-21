@@ -104,7 +104,7 @@ const AccessibleNumberSpinner = <SuperType extends Constructor>( Type: SuperType
 
       // handle all accessible event input
       const accessibleInputListener: TInputListener = {
-        keydown: ( event: SceneryEvent<KeyboardEvent> ) => {
+        keydown: event => {
           if ( ( this as unknown as Node ).enabledProperty.get() ) {
 
             // check for relevant keys here
@@ -133,7 +133,7 @@ const AccessibleNumberSpinner = <SuperType extends Constructor>( Type: SuperType
             }
           }
         },
-        keyup: ( event: SceneryEvent<KeyboardEvent> ) => {
+        keyup: event => {
 
           const key = KeyboardUtils.getEventCode( event.domEvent );
 
@@ -150,7 +150,7 @@ const AccessibleNumberSpinner = <SuperType extends Constructor>( Type: SuperType
             this.handleKeyUp( event );
           }
         },
-        blur: ( event: SceneryEvent<FocusEvent> ) => {
+        blur: event => {
 
           // if a key is currently down when focus leaves the spinner, stop callbacks and emit that the
           // key is up
