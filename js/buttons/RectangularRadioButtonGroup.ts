@@ -34,7 +34,7 @@ let instanceCount = 0;
 const CLASS_NAME = 'RectangularRadioButtonGroup';
 
 // Describes one radio button
-export type RectangularRadioButtonItem<T> = {
+export type RectangularRadioButtonGroupItem<T> = {
   value: T; // value associated with the button
   label?: Node; // optional label that appears outside the button
   phetioDocumentation?: string; // optional documentation for PhET-iO
@@ -97,7 +97,7 @@ export default class RectangularRadioButtonGroup<T> extends FlowBox {
   private readonly disposeRadioButtonGroup: () => void;
   private readonly radioButtonMap: Map<T, RectangularRadioButton<T>>;
 
-  public constructor( property: Property<T>, items: RectangularRadioButtonItem<T>[], providedOptions?: RectangularRadioButtonGroupOptions ) {
+  public constructor( property: Property<T>, items: RectangularRadioButtonGroupItem<T>[], providedOptions?: RectangularRadioButtonGroupOptions ) {
 
     assert && assert( _.uniqBy( items, item => item.value ).length === items.length,
       'items must have unique values' );
@@ -173,7 +173,7 @@ export default class RectangularRadioButtonGroup<T> extends FlowBox {
 
     const nodes = getGroupItemNodes( items, options.tandem );
     assert && assert( _.every( nodes, node => !node.hasPDOMContent ),
-      'Accessibility is provided by RectangularRadioButton and RectangularRadioButtonItem.labelContent. ' +
+      'Accessibility is provided by RectangularRadioButton and RectangularRadioButtonGroupItem.labelContent. ' +
       'Additional PDOM content in the provided Node could break accessibility.' );
 
     // Calculate the maximum width and height of the content, so we can make all radio buttons the same size.
