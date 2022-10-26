@@ -24,7 +24,7 @@ import dotRandom from '../../dot/js/dotRandom.js';
 import Vector2 from '../../dot/js/Vector2.js';
 import InstanceRegistry from '../../phet-core/js/documentation/InstanceRegistry.js';
 import optionize from '../../phet-core/js/optionize.js';
-import { Display, Focus, FocusManager, isWidthSizable, ManualConstraint, mixesWidthSizable, Node, NodeOptions, PDOMBehaviorFunction, PDOMPeer, PDOMValueType, TColor, TInputListener, TPaint, WidthSizable, WidthSizableOptions } from '../../scenery/js/imports.js';
+import { Display, Focus, FocusManager, isWidthSizable, ManualConstraint, extendsWidthSizable, Node, NodeOptions, PDOMBehaviorFunction, PDOMPeer, PDOMValueType, TColor, TInputListener, TPaint, WidthSizable, WidthSizableOptions } from '../../scenery/js/imports.js';
 import TSoundPlayer from '../../tambo/js/TSoundPlayer.js';
 import generalCloseSoundPlayer from '../../tambo/js/shared-sound-players/generalCloseSoundPlayer.js';
 import generalOpenSoundPlayer from '../../tambo/js/shared-sound-players/generalOpenSoundPlayer.js';
@@ -548,7 +548,7 @@ export default class ComboBox<T> extends WidthSizable( Node ) {
   public static getMaxItemWidthProperty<T>( items: ComboBoxItem<T>[] ): TReadOnlyProperty<number> {
     const widthProperties = _.flatten( items.map( item => {
       const properties: TReadOnlyProperty<IntentionalAny>[] = [ item.node.boundsProperty ];
-      if ( mixesWidthSizable( item.node ) ) {
+      if ( extendsWidthSizable( item.node ) ) {
         properties.push( item.node.isWidthResizableProperty );
         properties.push( item.node.minimumWidthProperty );
       }
