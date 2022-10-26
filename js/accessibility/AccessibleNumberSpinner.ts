@@ -30,13 +30,11 @@ import inheritance from '../../../phet-core/js/inheritance.js';
 import IntentionalAny from '../../../phet-core/js/types/IntentionalAny.js';
 import optionize from '../../../phet-core/js/optionize.js';
 import Orientation from '../../../phet-core/js/Orientation.js';
-import { TInputListener, KeyboardUtils, Node, SceneryEvent } from '../../../scenery/js/imports.js';
+import { KeyboardUtils, Node, SceneryEvent, TInputListener } from '../../../scenery/js/imports.js';
 import sun from '../sun.js';
 import SunStrings from '../SunStrings.js';
 import AccessibleValueHandler, { AccessibleValueHandlerOptions } from './AccessibleValueHandler.js';
 import TEmitter from '../../../axon/js/TEmitter.js';
-
-const numberSpinnerRoleDescriptionString = SunStrings.a11y.numberSpinnerRoleDescription;
 
 type SelfOptions = {
   timerDelay?: number;
@@ -96,7 +94,7 @@ const AccessibleNumberSpinner = <SuperType extends Constructor>( Type: SuperType
       this.incrementDownEmitter = new Emitter( { parameters: [ { valueType: 'boolean' } ] } );
       this.decrementDownEmitter = new Emitter( { parameters: [ { valueType: 'boolean' } ] } );
 
-      thisNode.setPDOMAttribute( 'aria-roledescription', numberSpinnerRoleDescriptionString );
+      thisNode.setPDOMAttribute( 'aria-roledescription', SunStrings.a11y.numberSpinnerRoleDescriptionStringProperty );
 
       // a callback that is added and removed from the timer depending on keystate
       let downCallback: CallbackTimerCallback | null = null;

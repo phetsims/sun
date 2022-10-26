@@ -284,10 +284,10 @@ export default class Dialog extends Popupable( Panel, 1 ) {
 
       // pdom
       tagName: 'button',
-      innerContent: SunStrings.a11y.close,
+      innerContent: SunStrings.a11y.closeStringProperty,
 
       // voicing
-      voicingContextResponse: SunStrings.a11y.closed
+      voicingContextResponse: SunStrings.a11y.closedStringProperty
     } );
 
     let voicingNameMultilink: UnknownMultilink;

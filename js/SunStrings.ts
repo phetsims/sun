@@ -10,17 +10,12 @@ import sun from './sun.js';
 
 type StringsType = {
   'sun': {
-    'title': string;
     'titleStringProperty': LinkableProperty<string>;
   };
   'a11y': {
-    'numberSpinnerRoleDescription': string;
     'numberSpinnerRoleDescriptionStringProperty': LinkableProperty<string>;
-    'close': string;
     'closeStringProperty': LinkableProperty<string>;
-    'closed': string;
     'closedStringProperty': LinkableProperty<string>;
-    'titleClosePattern': string;
     'titleClosePatternStringProperty': LinkableProperty<string>;
   }
 };
