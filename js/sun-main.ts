@@ -14,7 +14,6 @@ import Tandem from '../../tandem/js/Tandem.js';
 import ButtonsScreenView from './demo/buttons/ButtonsScreenView.js';
 import ComponentsScreenView from './demo/components/ComponentsScreenView.js';
 import DialogsScreenView from './demo/dialogs/DialogsScreenView.js';
-import LayoutScreenView from './demo/layout/LayoutScreenView.js';
 import SunStrings from './SunStrings.js';
 import sunQueryParameters from './sunQueryParameters.js';
 
@@ -28,8 +27,7 @@ simLauncher.launch( () => {
   const screens = [
     new ButtonScreen( Tandem.ROOT.createTandem( 'buttonsScreen' ) ),
     new ComponentsScreen( Tandem.ROOT.createTandem( 'componentsScreen' ) ),
-    new DialogsScreen( Tandem.ROOT.createTandem( 'dialogsScreen' ) ),
-    new LayoutScreen( Tandem.ROOT.createTandem( 'layoutScreen' ) )
+    new DialogsScreen( Tandem.ROOT.createTandem( 'dialogsScreen' ) )
   ];
 
   const sim = new Sim( SunStrings.sun.titleStringProperty, screens, {
@@ -80,21 +78,6 @@ class DialogsScreen extends Screen<Model, DialogsScreenView> {
         name: new Property( 'Dialogs' ),
         backgroundColorProperty: new Property( Color.toColor( sunQueryParameters.backgroundColor ) ),
         homeScreenIcon: createScreenIcon( 'purple' ),
-        tandem: tandem
-      }
-    );
-  }
-}
-
-class LayoutScreen extends Screen<Model, DialogsScreenView> {
-  public constructor( tandem: Tandem ) {
-    super(
-      () => new Model(),
-      () => new LayoutScreenView( { tandem: tandem.createTandem( 'view' ) } ),
-      {
-        name: new Property( 'Layout' ),
-        backgroundColorProperty: new Property( Color.toColor( sunQueryParameters.backgroundColor ) ),
-        homeScreenIcon: createScreenIcon( 'green' ),
         tandem: tandem
       }
     );
