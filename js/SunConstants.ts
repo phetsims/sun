@@ -21,7 +21,12 @@ const SunConstants = {
    * Typically appears in translated strings (e.g. "{0} nm") and used with StringUtils.format.
    * @deprecated - Named placeholders are the new standard, and numbered placeholders should not be used in new code.
    */
-  VALUE_NUMBERED_PLACEHOLDER: '{0}'
+  VALUE_NUMBERED_PLACEHOLDER: '{0}',
+
+  /**
+   * Vertical rotation for vertical sliders. Will rotate all the slider's parts accordingly.
+   */
+  SLIDER_VERTICAL_ROTATION: -Math.PI / 2
 };
 
 sun.register( 'SunConstants', SunConstants );

@@ -17,13 +17,12 @@ import Dimension2 from '../../dot/js/Dimension2.js';
 import CompletePiecewiseLinearFunction from '../../dot/js/CompletePiecewiseLinearFunction.js';
 import Range from '../../dot/js/Range.js';
 import Utils from '../../dot/js/Utils.js';
-import { Shape } from '../../kite/js/imports.js';
 import assertMutuallyExclusiveOptions from '../../phet-core/js/assertMutuallyExclusiveOptions.js';
 import InstanceRegistry from '../../phet-core/js/documentation/InstanceRegistry.js';
 import optionize from '../../phet-core/js/optionize.js';
 import Orientation from '../../phet-core/js/Orientation.js';
 import swapObjectKeys from '../../phet-core/js/swapObjectKeys.js';
-import { DragListener, FocusHighlightFromNode, LayoutConstraint, ManualConstraint, Node, NodeOptions, Path, SceneryConstants, Sizable, TPaint } from '../../scenery/js/imports.js';
+import { DragListener, FocusHighlightFromNode, LayoutConstraint, Node, NodeOptions, SceneryConstants, Sizable, TPaint } from '../../scenery/js/imports.js';
 import Tandem from '../../tandem/js/Tandem.js';
 import IOType from '../../tandem/js/types/IOType.js';
 import ValueChangeSoundPlayer, { ValueChangeSoundPlayerOptions } from '../../tambo/js/sound-generators/ValueChangeSoundPlayer.js';
@@ -31,17 +30,17 @@ import AccessibleSlider, { AccessibleSliderOptions } from './accessibility/Acces
 import DefaultSliderTrack from './DefaultSliderTrack.js';
 import SliderThumb from './SliderThumb.js';
 import SliderTrack from './SliderTrack.js';
+import SliderTick, { SliderTickOptions } from './SliderTick.js';
 import sun from './sun.js';
 import PickOptional from '../../phet-core/js/types/PickOptional.js';
 import { LinkableElement } from '../../tandem/js/PhetioObject.js';
 import LinkableProperty from '../../axon/js/LinkableProperty.js';
 import Multilink from '../../axon/js/Multilink.js';
-import DerivedProperty from '../../axon/js/DerivedProperty.js';
 import TProperty from '../../axon/js/TProperty.js';
 import TinyProperty from '../../axon/js/TinyProperty.js';
+import SunConstants from './SunConstants.js';
 
 // constants
-const VERTICAL_ROTATION = -Math.PI / 2;
 const DEFAULT_HORIZONTAL_TRACK_SIZE = new Dimension2( 100, 5 );
 const DEFAULT_HORIZONTAL_THUMB_SIZE = new Dimension2( 17, 34 );
 
@@ -91,15 +90,6 @@ type SelfOptions = {
   // Applied to default or supplied thumb
   thumbYOffset?: number; // center of the thumb is vertically offset by this amount from the center of the track
 
-  // ticks - if adding an option here, make sure it ends up in this.tickOptions
-  tickLabelSpacing?: number;
-  majorTickLength?: number;
-  majorTickStroke?: TPaint;
-  majorTickLineWidth?: number;
-  minorTickLength?: number;
-  minorTickStroke?: TPaint;
-  minorTickLineWidth?: number;
-
   cursor?: string;
 
   // opacity applied to the entire Slider when disabled
@@ -117,7 +107,7 @@ type SelfOptions = {
 
   // Options for the default sound generator.  These should only be provided when using the default.
   valueChangeSoundGeneratorOptions?: ValueChangeSoundPlayerOptions;
-};
+} & SliderTickOptions;
 
 type ParentOptions = AccessibleSliderOptions & NodeOptions;
 
@@ -125,8 +115,6 @@ type ParentOptions = AccessibleSliderOptions & NodeOptions;
 export type SliderOptions = SelfOptions &
   StrictOmit<ParentOptions, 'panTargetNode' | 'valueProperty' | 'enabledRangeProperty' | 'ariaOrientation'> &
   PickOptional<ParentOptions, 'enabledRangeProperty'>;
-
-type TickOptions = Pick<SelfOptions, 'tickLabelSpacing' | 'majorTickLength' | 'majorTickStroke' | 'majorTickLineWidth' | 'minorTickLength' | 'minorTickStroke' | 'minorTickLineWidth'>;
 
 export default class Slider extends Sizable( AccessibleSlider( Node, 0 ) ) {
 
@@ -140,7 +128,7 @@ export default class Slider extends Sizable( AccessibleSlider( Node, 0 ) ) {
   private readonly orientation: Orientation;
 
   // options needed by prototype functions that add ticks
-  private readonly tickOptions: Required<TickOptions>;
+  private readonly tickOptions: Required<SliderTickOptions>;
 
   // ticks are added to these parents, so they are behind the knob
   private readonly majorTicksParent: Node;
@@ -150,7 +138,7 @@ export default class Slider extends Sizable( AccessibleSlider( Node, 0 ) ) {
 
   private readonly disposeSlider: () => void;
 
-  private readonly ticks: Tick[] = [];
+  private readonly ticks: SliderTick[] = [];
 
   // This is a marker to indicate that we should create the actual default slider sound.
   public static DEFAULT_SOUND = new ValueChangeSoundPlayer( new Range( 0, 1 ) );
@@ -388,7 +376,7 @@ export default class Slider extends Sizable( AccessibleSlider( Node, 0 ) ) {
     // See https://github.com/phetsims/sun/issues/406
     const sliderPartsNode = new Node( { children: sliderParts } );
     if ( options.orientation === Orientation.VERTICAL ) {
-      sliderPartsNode.rotation = VERTICAL_ROTATION;
+      sliderPartsNode.rotation = SunConstants.SLIDER_VERTICAL_ROTATION;
     }
     this.addChild( sliderPartsNode );
 
@@ -560,7 +548,7 @@ export default class Slider extends Sizable( AccessibleSlider( Node, 0 ) ) {
    * Adds a tick mark above the track.
    */
   private addTick( parent: Node, value: number, label: Node | undefined, length: number, stroke: TPaint, lineWidth: number ): void {
-    this.ticks.push( new Tick( parent, value, label, length, stroke, lineWidth, this.tickOptions, this.orientation, this.track ) );
+    this.ticks.push( new SliderTick( parent, value, label, length, stroke, lineWidth, this.tickOptions, this.orientation, this.track ) );
   }
 
   // Sets visibility of major ticks.
@@ -590,72 +578,6 @@ export default class Slider extends Sizable( AccessibleSlider( Node, 0 ) ) {
   public static SliderIO: IOType;
 }
 
-// REVIEW: Why is Tick not in its own file?
-class Tick {
-
-  private readonly labelXProperty: TReadOnlyProperty<number>;
-
-  public readonly tickNode: Node;
-
-  private readonly manualConstraint?: ManualConstraint<Node[]>;
-
-  // NOTE: This could be cleaned up, so we could remove ticks or do other nice things
-  public constructor(
-    private readonly parent: Node,
-    public readonly value: number,
-    private readonly label: Node | undefined,
-    length: number,
-    stroke: TPaint,
-    lineWidth: number,
-    tickOptions: Required<TickOptions>,
-    orientation: Orientation,
-    track: SliderTrack
-  ) {
-
-    this.labelXProperty = new DerivedProperty( [ track.valueToPositionProperty ], valueToPosition => valueToPosition.evaluate( value ) );
-
-    // ticks
-    this.tickNode = new Node();
-    parent.addChild( this.tickNode );
-
-    const tickPath = new Path( new Shape()
-        .moveTo( 0, track.top )
-        .lineTo( 0, track.top - length ),
-      { stroke: stroke, lineWidth: lineWidth } );
-
-    this.labelXProperty.link( x => {
-      tickPath.x = x;
-    } );
-
-    this.tickNode.addChild( tickPath );
-
-    // label
-    if ( label ) {
-
-      // For a vertical slider, rotate labels opposite the rotation of the slider, so that they appear as expected.
-      if ( orientation === Orientation.VERTICAL ) {
-        label.rotation = -VERTICAL_ROTATION;
-      }
-      this.tickNode.addChild( label );
-
-      this.manualConstraint = ManualConstraint.create( this.tickNode, [ tickPath, label ], ( tickProxy, labelProxy ) => {
-        labelProxy.centerX = tickProxy.centerX;
-        labelProxy.bottom = tickProxy.top - tickOptions.tickLabelSpacing;
-      } );
-
-      label.pickable = false;
-    }
-  }
-
-  public dispose(): void {
-    this.parent.removeChild( this.tickNode );
-
-    this.labelXProperty.dispose();
-    this.manualConstraint && this.manualConstraint.dispose();
-  }
-}
-
-// REVIEW: also SliderConstraint in its own file?
 class SliderConstraint extends LayoutConstraint {
 
   private readonly preferredProperty: TProperty<number | null>;
@@ -667,7 +589,7 @@ class SliderConstraint extends LayoutConstraint {
     private readonly sliderPartsNode: Node,
     private readonly orientation: Orientation,
     private readonly trackSpacer: Node,
-    private readonly ticks: Tick[]
+    private readonly ticks: SliderTick[]
   ) {
 
     super( slider );
@@ -821,10 +743,10 @@ class SliderConstraint extends LayoutConstraint {
         CompletePiecewiseLinearFunction.constant( leftExteriorOffset ),
         // Left side (ticks)
         ...this.ticks.map( tick => {
-          const normalizedTickValue = normalizeTickValue( tick.value );
-          return CompletePiecewiseLinearFunction.linear( normalizedTickValue, -tick.tickNode.width / 2 - totalOverflow * normalizedTickValue );
-        }
-      ) ) );
+            const normalizedTickValue = normalizeTickValue( tick.value );
+            return CompletePiecewiseLinearFunction.linear( normalizedTickValue, -tick.tickNode.width / 2 - totalOverflow * normalizedTickValue );
+          }
+        ) ) );
 
       // NOTE: This function is only monotonically increasing when trackWidth is positive! We'll drop the values
       // underneath our minimum track width (they won't be needed), but we'll need to add an extra point below to ensure
@@ -836,7 +758,6 @@ class SliderConstraint extends LayoutConstraint {
       ] ).inverted();
 
       track.preferredWidth = Math.max(
-
         // Ensure we're NOT dipping below the minimum track width (for some reason).
         trackMinimumExteriorWidth,
         fullWidthToTrackWidthFunction.evaluate( this.preferredProperty.value )
