@@ -9,14 +9,13 @@
  * @author Chris Malley (PixelZoom, Inc.)
  */
 
-import Multilink, { UnknownMultilink } from '../../axon/js/Multilink.js';
+import Multilink from '../../axon/js/Multilink.js';
 import Bounds2 from '../../dot/js/Bounds2.js';
 import ScreenView from '../../joist/js/ScreenView.js';
 import Sim from '../../joist/js/Sim.js';
 import getGlobal from '../../phet-core/js/getGlobal.js';
 import optionize from '../../phet-core/js/optionize.js';
 import StrictOmit from '../../phet-core/js/types/StrictOmit.js';
-import StringUtils from '../../phetcommon/js/util/StringUtils.js';
 import CloseButton from '../../scenery-phet/js/buttons/CloseButton.js';
 import { AlignBox, FocusManager, FullScreen, HBox, KeyboardUtils, Node, PDOMPeer, PDOMUtils, TColor, TInputListener, VBox } from '../../scenery/js/imports.js';
 import TSoundPlayer from '../../tambo/js/TSoundPlayer.js';
@@ -35,6 +34,7 @@ import sun from './sun.js';
 import SunStrings from './SunStrings.js';
 import TinyProperty from '../../axon/js/TinyProperty.js';
 import TReadOnlyProperty from '../../axon/js/TReadOnlyProperty.js';
+import PatternStringProperty from '../../axon/js/PatternStringProperty.js';
 
 // see SelfOptions.titleAlign
 type DialogTitleAlign = 'left' | 'right' | 'center';
@@ -290,14 +290,11 @@ export default class Dialog extends Popupable( Panel, 1 ) {
       voicingContextResponse: SunStrings.a11y.closedStringProperty
     } );
 
-    let voicingNameMultilink: UnknownMultilink;
+
+    let closeButtonVoicingNameResponseProperty: PatternStringProperty<{ title: TReadOnlyProperty<string> }>;
     if ( options.closeButtonVoicingDialogTitle ) {
       const titleProperty = typeof options.closeButtonVoicingDialogTitle === 'string' ? new TinyProperty( options.closeButtonVoicingDialogTitle ) : options.closeButtonVoicingDialogTitle;
-      voicingNameMultilink = Multilink.multilink( [ SunStrings.a11y.titleClosePatternStringProperty, titleProperty ], ( titleClosePattern, titleString ) => {
-        closeButton.voicingNameResponse = StringUtils.fillIn( titleClosePattern, {
-          title: titleString
-        } );
-      } );
+      closeButtonVoicingNameResponseProperty = closeButton.voicingNameResponse = new PatternStringProperty( SunStrings.a11y.titleClosePatternStringProperty, { title: titleProperty } );
     }
 
     // touch/mouse areas for the close button
@@ -437,7 +434,7 @@ export default class Dialog extends Popupable( Panel, 1 ) {
       updateLayoutMultilink.dispose();
       this.removeInputListener( escapeListener );
 
-      voicingNameMultilink && voicingNameMultilink.dispose();
+      closeButtonVoicingNameResponseProperty && closeButtonVoicingNameResponseProperty.dispose();
 
       closeButton.dispose();
 
