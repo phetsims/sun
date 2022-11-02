@@ -222,7 +222,11 @@ export default class Checkbox extends WidthSizable( Voicing( Node ) ) {
     assert && phet.chipper.queryParameters.binder && InstanceRegistry.registerDataURL( 'sun', 'Checkbox', this );
 
     this.disposeCheckbox = () => {
-
+      rectangle.dispose();
+      this.backgroundNode.dispose();
+      this.uncheckedNode.dispose();
+      this.checkedNode.dispose();
+      checkboxNode.dispose();
       fireListener.dispose();
 
       if ( property.hasListener( checkboxCheckedListener ) ) {
