@@ -422,6 +422,7 @@ const AccessibleValueHandler = <SuperType extends Constructor>( Type: SuperType,
         this._enabledRangeProperty.unlink( enabledRangeObserver );
         this._valueProperty.unlink( valuePropertyListener );
         this._dependenciesMultilink && this._dependenciesMultilink.dispose();
+        this._panTargetNode = null;
       };
     }
 

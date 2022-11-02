@@ -432,6 +432,7 @@ export default class Dialog extends Popupable( Panel, 1 ) {
 
     this.disposeDialog = () => {
       updateLayoutMultilink.dispose();
+      closeButtonWithMargins.dispose();
       this.removeInputListener( escapeListener );
 
       closeButtonVoicingNameResponseProperty && closeButtonVoicingNameResponseProperty.dispose();

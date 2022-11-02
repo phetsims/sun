@@ -185,6 +185,7 @@ export default class SliderTrack extends WidthSizable( Node ) {
     this.mutate( options );
 
     this.disposeSliderTrack = () => {
+      trackNode.removeInputListener( this.dragListener );
       this.dragListener.dispose();
     };
   }

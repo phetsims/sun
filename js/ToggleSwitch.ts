@@ -20,7 +20,7 @@ import Utils from '../../dot/js/Utils.js';
 import Vector2 from '../../dot/js/Vector2.js';
 import { Shape } from '../../kite/js/imports.js';
 import optionize from '../../phet-core/js/optionize.js';
-import { DragListener, TPaint, LinearGradient, Node, NodeOptions, Rectangle, SceneryConstants, Voicing, VoicingOptions } from '../../scenery/js/imports.js';
+import { DragListener, LinearGradient, Node, NodeOptions, Rectangle, SceneryConstants, TPaint, Voicing, VoicingOptions } from '../../scenery/js/imports.js';
 import EventType from '../../tandem/js/EventType.js';
 import PhetioObject from '../../tandem/js/PhetioObject.js';
 import Tandem from '../../tandem/js/Tandem.js';
@@ -305,6 +305,8 @@ export default class ToggleSwitch<T> extends Voicing( Node ) {
     this.switchToRightSoundPlayer = options.switchToRightSoundPlayer;
 
     this.disposeToggleSwitch = () => {
+      trackNode.dispose();
+      rightTrackFillRectangle.dispose();
       property.unlink( update );
       toggleAction.dispose();
       dragListener.dispose();
