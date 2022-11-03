@@ -21,7 +21,7 @@ import Range from '../../../dot/js/Range.js';
 import assertHasProperties from '../../../phet-core/js/assertHasProperties.js';
 import inheritance from '../../../phet-core/js/inheritance.js';
 import Orientation from '../../../phet-core/js/Orientation.js';
-import { KeyboardUtils, Node, NodeOptions, SceneryEvent, SceneryListenerFunction, TInputListener, Voicing, VoicingOptions } from '../../../scenery/js/imports.js';
+import { KeyboardUtils, Node, NodeOptions, PDOMUtils, PDOMValueType, SceneryEvent, SceneryListenerFunction, TInputListener, Voicing, VoicingOptions } from '../../../scenery/js/imports.js';
 import Utterance from '../../../utterance-queue/js/Utterance.js';
 import sun from '../sun.js';
 import optionize, { combineOptions, OptionizeDefaults } from '../../../phet-core/js/optionize.js';
@@ -51,7 +51,7 @@ type CreateTextFunction = {
    * @param previousValue - just the "oldValue" from the Property listener
    * @returns - text/response/string to be set to the primarySibling, null means nothing will happen
    * */
-  ( pdomMappedValue: number, newValue: number, previousValue: number | null ): string | null;
+  ( pdomMappedValue: number, newValue: number, previousValue: number | null ): PDOMValueType | null;
 
   // if this function needs resetting, include a `reset` field on this function to be called when the
   // AccessibleValueHandler is reset.
@@ -452,7 +452,8 @@ const AccessibleValueHandler = <SuperType extends Constructor>( Type: SuperType,
       const thisNode = this as unknown as Node;
 
       // create the dynamic aria-valuetext from a11yCreateAriaValueText.
-      let newAriaValueText = this._a11yCreateAriaValueText( mappedValue, this._valueProperty.value, oldPropertyValue );
+      const newAriaValueTextValueType = this._a11yCreateAriaValueText( mappedValue, this._valueProperty.value, oldPropertyValue );
+      let newAriaValueText = PDOMUtils.unwrapStringProperty( newAriaValueTextValueType )!;
 
       // eslint-disable-next-line no-simple-type-checking-assertions
       assert && assert( typeof newAriaValueText === 'string' );
