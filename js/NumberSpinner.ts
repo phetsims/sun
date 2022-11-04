@@ -67,6 +67,7 @@ export type NumberSpinnerOptions = SelfOptions &
 
 export default class NumberSpinner extends AccessibleNumberSpinner( Node, 0 ) {
 
+  private readonly numberDisplay: NumberDisplay;
   private readonly disposeNumberSpinner: () => void;
 
   /**
@@ -306,6 +307,8 @@ export default class NumberSpinner extends AccessibleNumberSpinner( Node, 0 ) {
 
     this.mutate( boundsRequiredOptionKeys );
 
+    this.numberDisplay = numberDisplay;
+
     // Create a link to associated Property, so it's easier to find in Studio. Must be after instrumentation
     this.addLinkedElement( numberProperty, {
       tandem: options.tandem.createTandem( 'property' )
@@ -319,6 +322,14 @@ export default class NumberSpinner extends AccessibleNumberSpinner( Node, 0 ) {
     this.disposeNumberSpinner();
     super.dispose();
   }
+
+  /**
+   * Sets the numberFormatter for the NumberDisplay.
+   */
+  public setNumberFormatter( numberFormatter: ( n: number ) => string ): void {
+    this.numberDisplay.setNumberFormatter( numberFormatter );
+  }
+
 }
 
 sun.register( 'NumberSpinner', NumberSpinner );
