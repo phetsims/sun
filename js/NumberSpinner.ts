@@ -7,7 +7,6 @@
  * @author Andrea Lin (PhET Interactive Simulations)
  */
 
-import TProperty from '../../axon/js/TProperty.js';
 import StrictOmit from '../../phet-core/js/types/StrictOmit.js';
 import Range from '../../dot/js/Range.js';
 import InstanceRegistry from '../../phet-core/js/documentation/InstanceRegistry.js';
@@ -21,6 +20,7 @@ import ArrowButton, { ArrowButtonOptions } from './buttons/ArrowButton.js';
 
 import sun from './sun.js';
 import Property from '../../axon/js/Property.js';
+import TReadOnlyProperty from '../../axon/js/TReadOnlyProperty.js';
 
 type NumberSpinnerArrowsPosition =
   'leftRight' | // arrow buttons on left and right of value
@@ -76,7 +76,7 @@ export default class NumberSpinner extends AccessibleNumberSpinner( Node, 0 ) {
    * @param [providedOptions]
    * @mixes AccessibleNumberSpinner
    */
-  public constructor( numberProperty: Property<number>, rangeProperty: TProperty<Range>, providedOptions?: NumberSpinnerOptions ) {
+  public constructor( numberProperty: Property<number>, rangeProperty: TReadOnlyProperty<Range>, providedOptions?: NumberSpinnerOptions ) {
 
     assert && assert( rangeProperty.value.contains( numberProperty.get() ),
       `value ${numberProperty.get()} is out of range ${rangeProperty.value.toString()}` );
