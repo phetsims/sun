@@ -8,8 +8,6 @@
  */
 
 import BooleanProperty from '../../axon/js/BooleanProperty.js';
-import Emitter from '../../axon/js/Emitter.js';
-import TEmitter from '../../axon/js/TEmitter.js';
 import Property from '../../axon/js/Property.js';
 import { Shape } from '../../kite/js/imports.js';
 import InstanceRegistry from '../../phet-core/js/documentation/InstanceRegistry.js';
@@ -102,7 +100,6 @@ export default class AccordionBox extends Node {
   private readonly _minWidth;
   private readonly _showTitleWhenExpanded;
   private readonly _buttonAlign;
-  private readonly disposeEmitterAccordionBox: TEmitter;
   private readonly titleNode: Node;
   private readonly expandCollapseButton: ExpandCollapseButton;
   private readonly expandedBox: Rectangle;
@@ -236,19 +233,14 @@ export default class AccordionBox extends Node {
     this._showTitleWhenExpanded = options.showTitleWhenExpanded;
     this._buttonAlign = options.buttonAlign;
 
-    // Fires when this instance is disposed.
-    // AccordionBox does not use the {function} this.disposeAccordionBox pattern used in other PhET components.
-    // Instead, this Emitter will fire in the dispose method, and a listener must be added to this Emitter for anything
-    // that needs to be cleaned up.  This simplifies conditional disposal, but distributes disposal throughout the
-    // constructor.
-    this.disposeEmitterAccordionBox = new Emitter();
-
     this.titleNode = options.titleNode;
 
     // If there is no titleNode specified, we'll provide our own, and handle disposal.
     if ( !this.titleNode ) {
-      this.titleNode = new Text( '', { tandem: options.tandem.createTandem( 'titleText' ) } );
-      this.disposeEmitterAccordionBox.addListener( () => this.titleNode.dispose() );
+      this.titleNode = new Text( '', {
+        tandem: options.tandem.createTandem( 'titleText' ),
+        disposer: this
+      } );
     }
 
     // Allow touches to go through to the collapsedTitleBar which handles the input event
@@ -259,14 +251,14 @@ export default class AccordionBox extends Node {
     this.expandedProperty = options.expandedProperty;
     if ( !this.expandedProperty ) {
       this.expandedProperty = new BooleanProperty( true, {
-        tandem: options.tandem.createTandem( 'expandedProperty' )
+        tandem: options.tandem.createTandem( 'expandedProperty' ),
+        disposer: this
       } );
-      this.disposeEmitterAccordionBox.addListener( () => this.expandedProperty.dispose() );
     }
 
     // expand/collapse button, links to expandedProperty, must be disposed of
     this.expandCollapseButton = new ExpandCollapseButton( this.expandedProperty, options.expandCollapseButtonOptions );
-    this.disposeEmitterAccordionBox.addListener( () => this.expandCollapseButton.dispose() );
+    this.disposeEmitter.addListener( () => this.expandCollapseButton.dispose() );
 
     // Expanded box
     const boxOptions = {
@@ -290,17 +282,17 @@ export default class AccordionBox extends Node {
 
     this.expandedTitleBar = new InteractiveHighlightPath( null, combineOptions<ExpandCollapseButtonOptions>( {
       lineWidth: options.lineWidth, // use same lineWidth as box, for consistent look
-      cursor: options.cursor
+      cursor: options.cursor,
+      disposer: this
     }, options.titleBarOptions ) );
-    this.disposeEmitterAccordionBox.addListener( () => this.expandedTitleBar.dispose() );
     this.expandedBox.addChild( this.expandedTitleBar );
 
     // Collapsed title bar has corners that match the box. Clicking it operates like expand/collapse button.
     this.collapsedTitleBar = new InteractiveHighlightRectangle( combineOptions<RectangleOptions>( {
       cornerRadius: options.cornerRadius,
-      cursor: options.cursor
+      cursor: options.cursor,
+      disposer: this
     }, options.titleBarOptions ) );
-    this.disposeEmitterAccordionBox.addListener( () => this.collapsedTitleBar.dispose() );
     this.collapsedBox.addChild( this.collapsedTitleBar );
 
     if ( options.titleBarExpandCollapse ) {
@@ -413,7 +405,7 @@ export default class AccordionBox extends Node {
       const layoutListener = this.layout.bind( this );
       contentNode.boundsProperty.lazyLink( layoutListener );
       this.titleNode.boundsProperty.lazyLink( layoutListener );
-      this.disposeEmitterAccordionBox.addListener( () => {
+      this.disposeEmitter.addListener( () => {
         contentNode.boundsProperty.unlink( layoutListener );
         this.titleNode.boundsProperty.unlink( layoutListener );
       } );
@@ -437,7 +429,7 @@ export default class AccordionBox extends Node {
       } );
     };
     this.expandedProperty.link( expandedPropertyObserver );
-    this.disposeEmitterAccordionBox.addListener( () => this.expandedProperty.unlink( expandedPropertyObserver ) );
+    this.disposeEmitter.addListener( () => this.expandedProperty.unlink( expandedPropertyObserver ) );
 
     this.mutate( _.omit( options, 'cursor' ) );
 
@@ -452,11 +444,6 @@ export default class AccordionBox extends Node {
 
     // support for binder documentation, stripped out in builds and only runs when ?binder is specified
     assert && phet.chipper.queryParameters.binder && InstanceRegistry.registerDataURL( 'sun', 'AccordionBox', this );
-  }
-
-  public override dispose(): void {
-    this.disposeEmitterAccordionBox.emit();
-    super.dispose();
   }
 
   public reset(): void {
