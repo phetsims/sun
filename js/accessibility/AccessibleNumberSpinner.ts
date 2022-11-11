@@ -26,7 +26,6 @@ import Emitter from '../../../axon/js/Emitter.js';
 import validate from '../../../axon/js/validate.js';
 import assertHasProperties from '../../../phet-core/js/assertHasProperties.js';
 import Constructor from '../../../phet-core/js/types/Constructor.js';
-import inheritance from '../../../phet-core/js/inheritance.js';
 import IntentionalAny from '../../../phet-core/js/types/IntentionalAny.js';
 import optionize from '../../../phet-core/js/optionize.js';
 import Orientation from '../../../phet-core/js/Orientation.js';
@@ -47,9 +46,7 @@ type AccessibleNumberSpinnerOptions = SelfOptions & AccessibleValueHandlerOption
  * @param Type
  * @param optionsArgPosition - zero-indexed number that the options argument is provided at
  */
-const AccessibleNumberSpinner = <SuperType extends Constructor>( Type: SuperType, optionsArgPosition: number ) => { // eslint-disable-line @typescript-eslint/explicit-module-boundary-types
-
-  assert && assert( _.includes( inheritance( Type ), Node ), 'Only Node subtypes should compose Voicing' );
+const AccessibleNumberSpinner = <SuperType extends Constructor<Node>>( Type: SuperType, optionsArgPosition: number ) => { // eslint-disable-line @typescript-eslint/explicit-module-boundary-types
 
   return class AccessibleNumberSpinner extends AccessibleValueHandler( Type, optionsArgPosition ) {
 
@@ -81,8 +78,6 @@ const AccessibleNumberSpinner = <SuperType extends Constructor>( Type: SuperType
 
       super( ...args );
 
-      const thisNode = this as unknown as Node;
-
       // members of the Node API that are used by this trait
       assertHasProperties( this, [ 'addInputListener' ] );
 
@@ -94,7 +89,7 @@ const AccessibleNumberSpinner = <SuperType extends Constructor>( Type: SuperType
       this.incrementDownEmitter = new Emitter( { parameters: [ { valueType: 'boolean' } ] } );
       this.decrementDownEmitter = new Emitter( { parameters: [ { valueType: 'boolean' } ] } );
 
-      thisNode.setPDOMAttribute( 'aria-roledescription', SunStrings.a11y.numberSpinnerRoleDescriptionStringProperty );
+      this.setPDOMAttribute( 'aria-roledescription', SunStrings.a11y.numberSpinnerRoleDescriptionStringProperty );
 
       // a callback that is added and removed from the timer depending on keystate
       let downCallback: CallbackTimerCallback | null = null;
@@ -103,7 +98,7 @@ const AccessibleNumberSpinner = <SuperType extends Constructor>( Type: SuperType
       // handle all accessible event input
       const accessibleInputListener: TInputListener = {
         keydown: event => {
-          if ( ( this as unknown as Node ).enabledProperty.get() ) {
+          if ( this.enabledProperty.get() ) {
 
             // check for relevant keys here
             if ( KeyboardUtils.isRangeKey( event.domEvent ) ) {
@@ -165,7 +160,7 @@ const AccessibleNumberSpinner = <SuperType extends Constructor>( Type: SuperType
         input: this.handleInput.bind( this ),
         change: this.handleChange.bind( this )
       };
-      thisNode.addInputListener( accessibleInputListener );
+      this.addInputListener( accessibleInputListener );
 
       this._disposeAccessibleNumberSpinner = () => {
         this._callbackTimer.dispose();
@@ -174,7 +169,7 @@ const AccessibleNumberSpinner = <SuperType extends Constructor>( Type: SuperType
         this.incrementDownEmitter.dispose();
         this.decrementDownEmitter.dispose();
 
-        thisNode.removeInputListener( accessibleInputListener );
+        this.removeInputListener( accessibleInputListener );
       };
     }
 

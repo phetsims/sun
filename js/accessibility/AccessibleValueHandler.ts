@@ -19,7 +19,6 @@
 import Utils from '../../../dot/js/Utils.js';
 import Range from '../../../dot/js/Range.js';
 import assertHasProperties from '../../../phet-core/js/assertHasProperties.js';
-import inheritance from '../../../phet-core/js/inheritance.js';
 import Orientation from '../../../phet-core/js/Orientation.js';
 import { KeyboardUtils, Node, NodeOptions, PDOMUtils, PDOMValueType, SceneryEvent, SceneryListenerFunction, TInputListener, Voicing, VoicingOptions } from '../../../scenery/js/imports.js';
 import Utterance from '../../../utterance-queue/js/Utterance.js';
@@ -205,9 +204,7 @@ export type AccessibleValueHandlerOptions = SelfOptions & VoicingOptions; // do 
  * @param Type
  * @param optionsArgPosition - zero-indexed number that the options argument is provided at
  */
-const AccessibleValueHandler = <SuperType extends Constructor>( Type: SuperType, optionsArgPosition: number ) => { // eslint-disable-line @typescript-eslint/explicit-module-boundary-types
-  assert && assert( _.includes( inheritance( Type ), Node ), 'Only Node subtypes should compose AccessibleValueHandler' );
-
+const AccessibleValueHandler = <SuperType extends Constructor<Node>>( Type: SuperType, optionsArgPosition: number ) => { // eslint-disable-line @typescript-eslint/explicit-module-boundary-types
   return class AccessibleValueHandler extends Voicing( Type ) {
     private readonly _valueProperty: TProperty<number>;
     private _enabledRangeProperty: TReadOnlyProperty<Range>;
@@ -332,8 +329,6 @@ const AccessibleValueHandler = <SuperType extends Constructor>( Type: SuperType,
       args[ optionsArgPosition ] = options;
       super( ...args );
 
-      const thisNode = this as unknown as Node;
-
       // members of the Node API that are used by this trait
       assertHasProperties( this, [ 'inputValue', 'setPDOMAttribute' ] );
 
@@ -392,8 +387,8 @@ const AccessibleValueHandler = <SuperType extends Constructor>( Type: SuperType,
         // assert && assert( mappedMin <= mappedMax, 'min should be less than max' );
 
         // pdom - update enabled slider range for AT, required for screen reader events to behave correctly
-        thisNode.setPDOMAttribute( 'min', mappedMin );
-        thisNode.setPDOMAttribute( 'max', mappedMax );
+        this.setPDOMAttribute( 'min', mappedMin );
+        this.setPDOMAttribute( 'max', mappedMax );
 
         // update the step attribute slider element - this attribute is only added because it is required to
         // receive accessibility events on all browsers, and is totally separate from the step values above that
@@ -411,10 +406,10 @@ const AccessibleValueHandler = <SuperType extends Constructor>( Type: SuperType,
         // set the aria-valuenow attribute in case the AT requires it to read the value correctly, some may
         // fall back on this from aria-valuetext see
         // https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/ARIA_Techniques/Using_the_aria-valuetext_attribute#Possible_effects_on_user_agents_and_assistive_technology
-        thisNode.setPDOMAttribute( 'aria-valuenow', mappedValue );
+        this.setPDOMAttribute( 'aria-valuenow', mappedValue );
 
         // update the PDOM input value on Property change
-        thisNode.inputValue = mappedValue;
+        this.inputValue = mappedValue;
       };
       this._valueProperty.link( valuePropertyListener );
 
@@ -449,8 +444,6 @@ const AccessibleValueHandler = <SuperType extends Constructor>( Type: SuperType,
     private _updateAriaValueText( oldPropertyValue: number | null ): void {
       const mappedValue = this._getMappedValue();
 
-      const thisNode = this as unknown as Node;
-
       // create the dynamic aria-valuetext from a11yCreateAriaValueText.
       const newAriaValueTextValueType = this._a11yCreateAriaValueText( mappedValue, this._valueProperty.value, oldPropertyValue );
       let newAriaValueText = PDOMUtils.unwrapStringProperty( newAriaValueTextValueType )!;
@@ -462,11 +455,11 @@ const AccessibleValueHandler = <SuperType extends Constructor>( Type: SuperType,
       // the screen reader will still read the new text - adding a hairSpace registers as a new string, but the
       // screen reader won't read that character.
       const hairSpace = '\u200A';
-      if ( this._a11yRepeatEqualValueText && thisNode.ariaValueText && newAriaValueText === thisNode.ariaValueText.replace( new RegExp( hairSpace, 'g' ), '' ) ) {
-        newAriaValueText = thisNode.ariaValueText + hairSpace;
+      if ( this._a11yRepeatEqualValueText && this.ariaValueText && newAriaValueText === this.ariaValueText.replace( new RegExp( hairSpace, 'g' ), '' ) ) {
+        newAriaValueText = this.ariaValueText + hairSpace;
       }
 
-      thisNode.ariaValueText = newAriaValueText;
+      this.ariaValueText = newAriaValueText;
     }
 
     /**
@@ -488,7 +481,7 @@ const AccessibleValueHandler = <SuperType extends Constructor>( Type: SuperType,
         // only if it returned an alert
         if ( endInteractionAlert ) {
           this._contextResponseUtterance.alert = endInteractionAlert;
-          ( this as unknown as Node ).forEachUtteranceQueue( ( utteranceQueue: UtteranceQueue ) => {
+          this.forEachUtteranceQueue( ( utteranceQueue: UtteranceQueue ) => {
 
             // Only increment a single time, this has the constraint that if different utteranceQueues move this
             // alert through at a different time, the delay could be inconsistent, but in general it should work well.
@@ -582,7 +575,7 @@ const AccessibleValueHandler = <SuperType extends Constructor>( Type: SuperType,
         this._blockInput = true;
       }
 
-      if ( ( this as unknown as Node ).enabledProperty.get() ) {
+      if ( this.enabledProperty.get() ) {
 
         // Prevent default so browser doesn't change input value automatically
         if ( KeyboardUtils.isRangeKey( domEvent ) ) {
@@ -702,7 +695,7 @@ const AccessibleValueHandler = <SuperType extends Constructor>( Type: SuperType,
         this._shiftKey = false;
       }
 
-      if ( ( this as unknown as Node ).enabledProperty.get() ) {
+      if ( this.enabledProperty.get() ) {
         if ( KeyboardUtils.isRangeKey( event.domEvent ) ) {
           this._rangeKeysDown[ key ] = false;
 
@@ -744,7 +737,7 @@ const AccessibleValueHandler = <SuperType extends Constructor>( Type: SuperType,
      * Add this as a listener to the `input` event on the Node that is mixing in AccessibleValueHandler.
      */
     protected handleInput( event: SceneryEvent ): void {
-      if ( ( this as unknown as Node ).enabledProperty.get() && !this._blockInput ) {
+      if ( this.enabledProperty.get() && !this._blockInput ) {
 
         // don't handle again on "change" event
         this._a11yInputHandled = true;
@@ -906,7 +899,7 @@ const AccessibleValueHandler = <SuperType extends Constructor>( Type: SuperType,
     public setAriaOrientation( orientation: Orientation ): void {
 
       this._ariaOrientation = orientation;
-      ( this as unknown as Node ).setPDOMAttribute( 'aria-orientation', orientation.ariaOrientation );
+      this.setPDOMAttribute( 'aria-orientation', orientation.ariaOrientation );
     }
 
     public set ariaOrientation( orientation: Orientation ) { this.setAriaOrientation( orientation ); }
@@ -977,7 +970,7 @@ const AccessibleValueHandler = <SuperType extends Constructor>( Type: SuperType,
         stepValue = mappedMax / 100;
       }
 
-      ( this as unknown as Node ).setPDOMAttribute( 'step', stepValue );
+      this.setPDOMAttribute( 'step', stepValue );
     }
 
     /**

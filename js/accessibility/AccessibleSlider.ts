@@ -15,7 +15,6 @@
 
 import assertHasProperties from '../../../phet-core/js/assertHasProperties.js';
 import Constructor from '../../../phet-core/js/types/Constructor.js';
-import inheritance from '../../../phet-core/js/inheritance.js';
 import IntentionalAny from '../../../phet-core/js/types/IntentionalAny.js';
 import optionize from '../../../phet-core/js/optionize.js';
 import { Node, SceneryEvent } from '../../../scenery/js/imports.js';
@@ -40,10 +39,7 @@ type AccessibleSliderOptions = SelfOptions & AccessibleValueHandlerOptions;
  * @param Type
  * @param optionsArgPosition - zero-indexed number that the options argument is provided at
  */
-const AccessibleSlider = <SuperType extends Constructor>( Type: SuperType, optionsArgPosition: number ) => { // eslint-disable-line @typescript-eslint/explicit-module-boundary-types
-
-  assert && assert( _.includes( inheritance( Type ), Node ), 'Only Node subtypes should compose Voicing' );
-
+const AccessibleSlider = <SuperType extends Constructor<Node>>( Type: SuperType, optionsArgPosition: number ) => { // eslint-disable-line @typescript-eslint/explicit-module-boundary-types
   return class AccessibleSlider extends AccessibleValueHandler( Type, optionsArgPosition ) {
 
     private readonly _disposeAccessibleSlider: () => void;
@@ -80,11 +76,11 @@ const AccessibleSlider = <SuperType extends Constructor>( Type: SuperType, optio
 
       // handle all accessible event input
       const accessibleInputListener = this.getAccessibleValueHandlerInputListener();
-      ( this as unknown as Node ).addInputListener( accessibleInputListener );
+      this.addInputListener( accessibleInputListener );
 
       // called by disposeAccessibleSlider to prevent memory leaks
       this._disposeAccessibleSlider = () => {
-        ( this as unknown as Node ).removeInputListener( accessibleInputListener );
+        this.removeInputListener( accessibleInputListener );
       };
     }
 
