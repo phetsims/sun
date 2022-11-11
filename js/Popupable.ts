@@ -14,7 +14,6 @@ import Property from '../../axon/js/Property.js';
 import Bounds2 from '../../dot/js/Bounds2.js';
 import ScreenView from '../../joist/js/ScreenView.js';
 import gracefulBind from '../../phet-core/js/gracefulBind.js';
-import inheritance from '../../phet-core/js/inheritance.js';
 import optionize from '../../phet-core/js/optionize.js';
 import Constructor from '../../phet-core/js/types/Constructor.js';
 import PickOptional from '../../phet-core/js/types/PickOptional.js';
@@ -43,8 +42,7 @@ type SelfOptions = {
 };
 export type PopupableOptions = SelfOptions & PickOptional<NodeOptions, 'tandem'>;
 
-const Popupable = <SuperType extends Constructor>( type: SuperType, optionsArgPosition: number ) => { // eslint-disable-line @typescript-eslint/explicit-module-boundary-types
-  assert && assert( _.includes( inheritance( type ), Node ), 'Only Node subtypes should mix Popupable' );
+const Popupable = <SuperType extends Constructor<Node>>( type: SuperType, optionsArgPosition: number ) => { // eslint-disable-line @typescript-eslint/explicit-module-boundary-types
 
   return class extends type {
 
@@ -98,7 +96,7 @@ const Popupable = <SuperType extends Constructor>( type: SuperType, optionsArgPo
       this._focusOnShowNode = options.focusOnShowNode;
       this._focusOnHideNode = options.focusOnHideNode;
       this._nodeToFocusOnHide = null;
-      this.popupParent = new PopupParentNode( this as unknown as Node, {
+      this.popupParent = new PopupParentNode( this, {
         show: this.show.bind( this ),
         hide: this.hide.bind( this ),
         layout: this.layout.bind( this )
@@ -143,7 +141,7 @@ const Popupable = <SuperType extends Constructor>( type: SuperType, optionsArgPo
      * Hide the popup. If you create a new popup next time you show(), be sure to dispose this popup instead.
      */
     public hide(): void {
-      ( this as unknown as Node ).interruptSubtreeInput();
+      this.interruptSubtreeInput();
 
       this.isShowingProperty.value = false;
 
@@ -156,12 +154,11 @@ const Popupable = <SuperType extends Constructor>( type: SuperType, optionsArgPo
     /**
      * Releases references
      */
-    public dispose(): void {
+    public override dispose(): void {
       this.hide();
 
       this.isShowingProperty.dispose();
 
-      // @ts-ignore - No way to avoid this ignore to call the super currently
       super.dispose();
     }
   };
