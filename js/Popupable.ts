@@ -143,6 +143,8 @@ const Popupable = <SuperType extends Constructor>( type: SuperType, optionsArgPo
      * Hide the popup. If you create a new popup next time you show(), be sure to dispose this popup instead.
      */
     public hide(): void {
+      ( this as unknown as Node ).interruptSubtreeInput();
+
       this.isShowingProperty.value = false;
 
       // return focus to the Node that had focus when the Popupable was opened (or the focusOnHideNode if provided)
