@@ -1,7 +1,7 @@
 // Copyright 2020-2022, University of Colorado Boulder
 
 /**
- * Unit tests for sun. Please run once in phet brand and once in brand=phet-io to cover all functionality.
+ * Unit tests for sun. Please run once in ?brand=phet and once in ?brand=phet-io to cover all functionality.
  *
  * @author Michael Kauzmann (PhET Interactive Simulations)
  */
