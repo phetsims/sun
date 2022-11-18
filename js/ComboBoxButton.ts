@@ -132,7 +132,9 @@ export default class ComboBoxButton<T> extends RectangularPushButton {
       ]
     } );
 
-    // Vertical separator between the item and arrow that is the full height of the button.
+    // Line separator between the item and arrow that is the full height of the button.
+    // We cannot use VSeparator here, because it is incompatible with GridConstraints.
+    // y2 is set during a multilink according to the item height property.
     const separatorLine = new Line( 0, 0, 0, 0, {
       stroke: 'black',
       lineWidth: options.lineWidth
