@@ -10,13 +10,12 @@
 import { Shape } from '../../kite/js/imports.js';
 import optionize from '../../phet-core/js/optionize.js';
 import StringUtils from '../../phetcommon/js/util/StringUtils.js';
-import { AriaHasPopUpMutator, GridBox, Node, Path, PDOMBehaviorFunction, PDOMPeer, TPaint } from '../../scenery/js/imports.js';
+import { AriaHasPopUpMutator, GridBox, Line, Node, Path, PDOMBehaviorFunction, PDOMPeer, TPaint } from '../../scenery/js/imports.js';
 import Tandem from '../../tandem/js/Tandem.js';
 import ButtonNode from './buttons/ButtonNode.js';
 import RectangularPushButton, { RectangularPushButtonOptions } from './buttons/RectangularPushButton.js';
 import sun from './sun.js';
 import SunConstants from './SunConstants.js';
-import VSeparatorDeprecated from './VSeparatorDeprecated.js';
 import TProperty from '../../axon/js/TProperty.js';
 import nullSoundPlayer from '../../tambo/js/shared-sound-players/nullSoundPlayer.js';
 import TinyProperty from '../../axon/js/TinyProperty.js';
@@ -64,7 +63,7 @@ export default class ComboBoxButton<T> extends RectangularPushButton {
 
   // needed by methods
   private arrow: Path;
-  private vSeparator: VSeparatorDeprecated;
+  private separatorLine: Line;
 
   public constructor( property: TProperty<T>, items: ComboBoxItem<T>[], providedOptions?: ComboBoxButtonOptions ) {
 
@@ -134,7 +133,7 @@ export default class ComboBoxButton<T> extends RectangularPushButton {
     } );
 
     // Vertical separator between the item and arrow that is the full height of the button.
-    const vSeparator = new VSeparatorDeprecated( 0, {
+    const separatorLine = new Line( 0, 0, 0, 0, {
       stroke: 'black',
       lineWidth: options.lineWidth
     } );
@@ -142,7 +141,7 @@ export default class ComboBoxButton<T> extends RectangularPushButton {
     options.content = new GridBox( {
       rows: [ [
         itemNodeWrapper,
-        vSeparator,
+        separatorLine,
         arrow
       ] ]
     } );
@@ -193,8 +192,8 @@ export default class ComboBoxButton<T> extends RectangularPushButton {
         rightMargin: middleMargin
       } );
 
-      vSeparator.y2 = fullHeight;
-      vSeparator.mutateLayoutOptions( {
+      separatorLine.y2 = fullHeight;
+      separatorLine.mutateLayoutOptions( {
         rightMargin: rightMargin
       } );
     } );
@@ -276,7 +275,7 @@ export default class ComboBoxButton<T> extends RectangularPushButton {
     };
 
     this.arrow = arrow;
-    this.vSeparator = vSeparator;
+    this.separatorLine = separatorLine;
   }
 
   /**
@@ -285,7 +284,7 @@ export default class ComboBoxButton<T> extends RectangularPushButton {
    */
   public setDisplayOnly( displayOnly: boolean ): void {
     this.arrow.visible = !displayOnly;
-    this.vSeparator.visible = !displayOnly;
+    this.separatorLine.visible = !displayOnly;
   }
 
   /**
