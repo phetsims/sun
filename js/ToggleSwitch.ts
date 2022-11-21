@@ -30,6 +30,7 @@ import switchToLeftSoundPlayer from '../../tambo/js/shared-sound-players/switchT
 import switchToRightSoundPlayer from '../../tambo/js/shared-sound-players/switchToRightSoundPlayer.js';
 import Property from '../../axon/js/Property.js';
 import assertMutuallyExclusiveOptions from '../../phet-core/js/assertMutuallyExclusiveOptions.js';
+import Utterance, { TAlertable } from '../../utterance-queue/js/Utterance.js';
 
 // constants
 const DEFAULT_SIZE = new Dimension2( 60, 30 );
@@ -71,6 +72,11 @@ type SelfOptions = {
   // a11y (voicing and pdom) - If provided, this label will be used as the voicingNameResponse (Voicing)
   // and the innerContent (Interactive Description)
   a11yLabel?: null | PDOMValueType;
+
+  // If provided, these responses will be spoken to describe the change in context for both Voicing
+  // and Interactive Description features when value changes to either left or right value.
+  leftValueContextResponse?: TAlertable;
+  rightValueContextResponse?: TAlertable;
 };
 type ParentOptions = VoicingOptions & NodeOptions;
 export type ToggleSwitchOptions = SelfOptions & ParentOptions;
@@ -129,7 +135,9 @@ export default class ToggleSwitch<T> extends Voicing( Node ) {
       ariaRole: 'switch',
 
       // a11y (both voicing and pdom)
-      a11yLabel: null
+      a11yLabel: null,
+      leftValueContextResponse: null,
+      rightValueContextResponse: null
     }, providedOptions );
 
     // Default track fills
@@ -226,7 +234,18 @@ export default class ToggleSwitch<T> extends Voicing( Node ) {
     // Toggles the Property value and sends a phet-io message with the old and new values.
     const toggleAction = new PhetioAction( value => {
       property.value = value;
+
+      // sound
       value === leftValue ? options.switchToLeftSoundPlayer.play() : options.switchToRightSoundPlayer.play();
+
+      // voicing/interactive description
+      const alert = value === rightValue ? options.rightValueContextResponse : options.leftValueContextResponse;
+      if ( alert ) {
+        this.alertDescriptionUtterance( alert );
+        this.voicingSpeakResponse( {
+          contextResponse: Utterance.alertableToText( alert )
+        } );
+      }
     }, {
       parameters: [ { validValues: [ leftValue, rightValue ], phetioPrivate: true } ],
       tandem: options.tandem.createTandem( 'toggleAction' ),
