@@ -20,7 +20,7 @@ import Utils from '../../dot/js/Utils.js';
 import Vector2 from '../../dot/js/Vector2.js';
 import { Shape } from '../../kite/js/imports.js';
 import optionize from '../../phet-core/js/optionize.js';
-import { DragListener, LinearGradient, Node, NodeOptions, Rectangle, SceneryConstants, TPaint, Voicing, VoicingOptions } from '../../scenery/js/imports.js';
+import { DragListener, LinearGradient, Node, NodeOptions, PDOMValueType, Rectangle, SceneryConstants, TPaint, Voicing, VoicingOptions } from '../../scenery/js/imports.js';
 import EventType from '../../tandem/js/EventType.js';
 import PhetioObject from '../../tandem/js/PhetioObject.js';
 import Tandem from '../../tandem/js/Tandem.js';
@@ -29,6 +29,7 @@ import TSoundPlayer from '../../tambo/js/TSoundPlayer.js';
 import switchToLeftSoundPlayer from '../../tambo/js/shared-sound-players/switchToLeftSoundPlayer.js';
 import switchToRightSoundPlayer from '../../tambo/js/shared-sound-players/switchToRightSoundPlayer.js';
 import Property from '../../axon/js/Property.js';
+import assertMutuallyExclusiveOptions from '../../phet-core/js/assertMutuallyExclusiveOptions.js';
 
 // constants
 const DEFAULT_SIZE = new Dimension2( 60, 30 );
@@ -66,6 +67,10 @@ type SelfOptions = {
   // sound
   switchToLeftSoundPlayer?: TSoundPlayer;
   switchToRightSoundPlayer?: TSoundPlayer;
+
+  // a11y (voicing and pdom) - If provided, this label will be used as the voicingNameResponse (Voicing)
+  // and the innerContent (Interactive Description)
+  a11yLabel?: null | PDOMValueType;
 };
 type ParentOptions = VoicingOptions & NodeOptions;
 export type ToggleSwitchOptions = SelfOptions & ParentOptions;
@@ -83,6 +88,9 @@ export default class ToggleSwitch<T> extends Voicing( Node ) {
    * @param providedOptions
    */
   public constructor( property: Property<T>, leftValue: T, rightValue: T, providedOptions?: ToggleSwitchOptions ) {
+
+    // If you provide the a11yLabel option, both innerContent and voicingNameResponse will be filled in by its value.
+    assert && assertMutuallyExclusiveOptions( providedOptions, [ 'a11yLabel' ], [ 'innerContent', 'voicingNameResponse' ] );
 
     const options = optionize<ToggleSwitchOptions, SelfOptions, ParentOptions>()( {
 
@@ -118,7 +126,10 @@ export default class ToggleSwitch<T> extends Voicing( Node ) {
 
       // pdom
       tagName: 'button',
-      ariaRole: 'switch'
+      ariaRole: 'switch',
+
+      // a11y (both voicing and pdom)
+      a11yLabel: null
     }, providedOptions );
 
     // Default track fills
@@ -136,6 +147,11 @@ export default class ToggleSwitch<T> extends Voicing( Node ) {
                         new LinearGradient( 0, 0, 0, options.size.height )
                           .addColorStop( 0, 'white' )
                           .addColorStop( 1, 'rgb( 200, 200, 200 )' );
+
+    if ( options.a11yLabel ) {
+      options.voicingNameResponse = options.a11yLabel;
+      options.innerContent = options.a11yLabel;
+    }
 
     super();
 
