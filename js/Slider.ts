@@ -575,7 +575,11 @@ export default class Slider extends Sizable( AccessibleSlider( Node, 0 ) ) {
   public static THUMB_NODE_TANDEM_NAME = 'thumbNode' as const;
   public static TRACK_NODE_TANDEM_NAME = 'trackNode' as const;
 
-  public static SliderIO: IOType;
+  public static readonly SliderIO = new IOType( 'SliderIO', {
+    valueType: Slider,
+    documentation: 'A traditional slider component, with a knob and possibly tick marks',
+    supertype: Node.NodeIO
+  } );
 }
 
 class SliderConstraint extends LayoutConstraint {
@@ -787,11 +791,5 @@ class SliderConstraint extends LayoutConstraint {
     super.dispose();
   }
 }
-
-Slider.SliderIO = new IOType( 'SliderIO', {
-  valueType: Slider,
-  documentation: 'A traditional slider component, with a knob and possibly tick marks',
-  supertype: Node.NodeIO
-} );
 
 sun.register( 'Slider', Slider );

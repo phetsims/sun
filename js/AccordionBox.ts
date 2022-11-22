@@ -114,7 +114,11 @@ export default class AccordionBox extends Node {
   private readonly expandedBoxOutline?: Rectangle;
   private readonly collapsedBoxOutline?: Rectangle;
 
-  public static AccordionBoxIO: IOType;
+  public static readonly AccordionBoxIO = new IOType( 'AccordionBoxIO', {
+    valueType: AccordionBox,
+    supertype: Node.NodeIO,
+    events: [ 'expanded', 'collapsed' ]
+  } );
 
   /**
    * @param contentNode - Content that  will be shown or hidden as the accordion box is expanded/collapsed. NOTE: AccordionBox
@@ -631,11 +635,5 @@ export default class AccordionBox extends Node {
 class InteractiveHighlightPath extends InteractiveHighlighting( Path ) {}
 
 class InteractiveHighlightRectangle extends InteractiveHighlighting( Rectangle ) {}
-
-AccordionBox.AccordionBoxIO = new IOType( 'AccordionBoxIO', {
-  valueType: AccordionBox,
-  supertype: Node.NodeIO,
-  events: [ 'expanded', 'collapsed' ]
-} );
 
 sun.register( 'AccordionBox', AccordionBox );
