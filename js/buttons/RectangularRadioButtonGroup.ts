@@ -41,6 +41,7 @@ export type RectangularRadioButtonGroupItem<T> = {
   labelContent?: PDOMValueType; // optional label for a11y (description and voicing)
   voicingContextResponse?: VoicingResponse;
   descriptionContent?: PDOMValueType; // optional label for a11y
+  options?: StrictOmit<RectangularRadioButtonOptions, 'tandem'>; // options passed to RectangularRadioButton constructor
 } & GroupItemOptions;
 
 /**
@@ -202,7 +203,7 @@ export default class RectangularRadioButtonGroup<T> extends FlowBox {
                 options.tandem === Tandem.OPT_OUT ? Tandem.OPT_OUT :
                 Tandem.REQUIRED,
         phetioDocumentation: item.phetioDocumentation || ''
-      }, options.radioButtonOptions );
+      }, options.radioButtonOptions, item.options );
 
       // Create the label and voicing response for the radio button.
       if ( item.labelContent ) {

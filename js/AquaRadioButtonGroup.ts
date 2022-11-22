@@ -8,7 +8,7 @@
  */
 
 import StrictOmit from '../../phet-core/js/types/StrictOmit.js';
-import optionize, { EmptySelfOptions } from '../../phet-core/js/optionize.js';
+import optionize, { combineOptions } from '../../phet-core/js/optionize.js';
 import { FlowBox, FlowBoxOptions, HStrut, Node, PDOMPeer, SceneryConstants, SceneryEvent } from '../../scenery/js/imports.js';
 import multiSelectionSoundPlayerFactory from '../../tambo/js/multiSelectionSoundPlayerFactory.js';
 import Tandem from '../../tandem/js/Tandem.js';
@@ -25,13 +25,10 @@ let instanceCount = 0;
 // to prefix instanceCount in case there are different kinds of "groups"
 const CLASS_NAME = 'AquaRadioButtonGroup';
 
-// a subset of AquaRadioButtonOptions is allowed
-type SubsetOfAquaRadioButtonOptions = StrictOmit<AquaRadioButtonOptions, 'a11yNameAttribute' | 'labelContent' | 'soundPlayer' | 'tandem'>;
-
 type SelfOptions = {
 
   // options propagated to AquaRadioButton instances
-  radioButtonOptions?: SubsetOfAquaRadioButtonOptions | null;
+  radioButtonOptions?: StrictOmit<AquaRadioButtonOptions, 'a11yNameAttribute' | 'labelContent' | 'soundPlayer' | 'tandem'>;
 
   // Dilation of pointer areas for each radio button.
   // These are not part of radioButtonOptions because AquaRadioButton has no pointerArea options.
@@ -48,6 +45,7 @@ export type AquaRadioButtonGroupOptions = SelfOptions & StrictOmit<FlowBoxOption
 export type AquaRadioButtonGroupItem<T> = {
   value: T; // value associated with the button
   labelContent?: string; // label for a11y
+  options?: StrictOmit<AquaRadioButtonOptions, 'tandem'>; // options passed to AquaRadioButton constructor
 } & GroupItemOptions; // additional options that are common to 'group items'
 
 export default class AquaRadioButtonGroup<T> extends FlowBox {
@@ -59,10 +57,9 @@ export default class AquaRadioButtonGroup<T> extends FlowBox {
 
     instanceCount++;
 
-    const options = optionize<AquaRadioButtonGroupOptions, SelfOptions, FlowBoxOptions>()( {
+    const options = optionize<AquaRadioButtonGroupOptions, StrictOmit<SelfOptions, 'radioButtonOptions'>, FlowBoxOptions>()( {
 
       // AquaRadioButtonGroupOptions
-      radioButtonOptions: null,
       touchAreaXDilation: 0,
       touchAreaYDilation: 0,
       mouseAreaXDilation: 0,
@@ -112,14 +109,14 @@ export default class AquaRadioButtonGroup<T> extends FlowBox {
                       node;
 
       const radioButton = new AquaRadioButton( property, item.value, content,
-        optionize<SubsetOfAquaRadioButtonOptions, EmptySelfOptions, AquaRadioButtonOptions>()( {
+        combineOptions<AquaRadioButtonOptions>( {
           a11yNameAttribute: CLASS_NAME + instanceCount,
           labelContent: item.labelContent || null,
           soundPlayer: multiSelectionSoundPlayerFactory.getSelectionSoundPlayer( i ),
           tandem: item.tandemName ? options.tandem.createTandem( item.tandemName ) :
                   options.tandem === Tandem.OPT_OUT ? Tandem.OPT_OUT :
                   Tandem.REQUIRED
-        }, options.radioButtonOptions! ) );
+        }, options.radioButtonOptions, item.options ) );
 
       // set pointer areas - update them when the localBounds change
       radioButton.localBoundsProperty.link( localBounds => {
