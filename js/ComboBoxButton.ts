@@ -9,7 +9,6 @@
 
 import { Shape } from '../../kite/js/imports.js';
 import optionize from '../../phet-core/js/optionize.js';
-import StringUtils from '../../phetcommon/js/util/StringUtils.js';
 import { AriaHasPopUpMutator, GridBox, Node, Path, PDOMBehaviorFunction, PDOMPeer, TPaint } from '../../scenery/js/imports.js';
 import Tandem from '../../tandem/js/Tandem.js';
 import ButtonNode from './buttons/ButtonNode.js';
@@ -24,6 +23,8 @@ import StrictOmit from '../../phet-core/js/types/StrictOmit.js';
 import ComboBox, { ComboBoxItem } from './ComboBox.js';
 import Multilink from '../../axon/js/Multilink.js';
 import TReadOnlyProperty from '../../axon/js/TReadOnlyProperty.js';
+import PatternStringProperty from '../../axon/js/PatternStringProperty.js';
+import Property from '../../axon/js/Property.js';
 
 // constants
 const ALIGN_VALUES = [ 'left', 'center', 'right' ] as const;
@@ -242,7 +243,10 @@ export default class ComboBoxButton<T> extends RectangularPushButton {
 
       // pdom
       this.innerContent = ( item.a11yLabel || null );
-      this.voicingNameResponse = StringUtils.fillIn( options.comboBoxVoicingNameResponsePattern, {
+      const patternProperty = typeof options.comboBoxVoicingNameResponsePattern === 'string' ?
+                              new Property( options.comboBoxVoicingNameResponsePattern ) :
+                              options.comboBoxVoicingNameResponsePattern;
+      this.voicingNameResponse = new PatternStringProperty( patternProperty, {
         value: item.a11yLabel
       } );
     };

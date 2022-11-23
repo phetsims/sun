@@ -11,13 +11,14 @@
 import { Shape } from '../../kite/js/imports.js';
 import StrictOmit from '../../phet-core/js/types/StrictOmit.js';
 import optionize from '../../phet-core/js/optionize.js';
-import StringUtils from '../../phetcommon/js/util/StringUtils.js';
-import { IndexedNodeIO, TPaint, Node, NodeOptions, Rectangle, Voicing, VoicingOptions } from '../../scenery/js/imports.js';
+import { IndexedNodeIO, Node, NodeOptions, Rectangle, TPaint, Voicing, VoicingOptions } from '../../scenery/js/imports.js';
 import Tandem from '../../tandem/js/Tandem.js';
 import sun from './sun.js';
 import SunConstants from './SunConstants.js';
 import { ComboBoxItem } from './ComboBox.js';
 import TReadOnlyProperty from '../../axon/js/TReadOnlyProperty.js';
+import Property from '../../axon/js/Property.js';
+import PatternStringProperty from '../../axon/js/PatternStringProperty.js';
 
 type SelfOptions = {
   align?: 'left' | 'right' | 'center';
@@ -94,7 +95,10 @@ export default class ComboBoxListItemNode<T> extends Voicing( Node ) {
     // pdom: get innerContent from the item
     options.innerContent = ( item.a11yLabel || null );
     options.voicingObjectResponse = ( item.a11yLabel || null );
-    options.voicingNameResponse = StringUtils.fillIn( options.comboBoxVoicingNameResponsePattern, {
+    const patternProperty = typeof options.comboBoxVoicingNameResponsePattern === 'string' ?
+                            new Property( options.comboBoxVoicingNameResponsePattern ) :
+                            options.comboBoxVoicingNameResponsePattern;
+    options.voicingNameResponse = new PatternStringProperty( patternProperty, {
       value: item.a11yLabel
     } );
 
