@@ -45,6 +45,8 @@ export default class ComboBoxListItemNode<T> extends Voicing( Node ) {
 
   public readonly item: ComboBoxItem<T>;
 
+  private readonly disposeComboBoxListItemNode: () => void;
+
   public constructor( item: ComboBoxItem<T>, highlightWidthProperty: TReadOnlyProperty<number>, highlightHeightProperty: TReadOnlyProperty<number>, providedOptions?: ComboBoxListItemNodeOptions ) {
 
     const options = optionize<ComboBoxListItemNodeOptions, SelfOptions, ParentOptions>()( {
@@ -112,14 +114,17 @@ export default class ComboBoxListItemNode<T> extends Voicing( Node ) {
       children: [ item.node ]
     } );
 
-    highlightWidthProperty.link( width => {
+    // Adjust the size when the highlight size changes.
+    const highlightWidthListener = ( width: number ) => {
       highlightRectangle.rectWidth = width;
       itemNodeWrapper.maxWidth = width;
-    } );
-    highlightHeightProperty.link( height => {
+    };
+    highlightWidthProperty.link( highlightWidthListener );
+    const highlightHeightListener = ( height: number ) => {
       highlightRectangle.rectHeight = height;
       itemNodeWrapper.maxHeight = height;
-    } );
+    };
+    highlightHeightProperty.link( highlightHeightListener );
 
     // Assume that item.node may change (as in ComboBoxDisplay) and adjust layout dynamically.
     // See https://github.com/phetsims/scenery-phet/issues/482
@@ -157,6 +162,10 @@ export default class ComboBoxListItemNode<T> extends Voicing( Node ) {
       exit() { highlightRectangle.fill = null; }
     } );
 
+    this.disposeComboBoxListItemNode = () => {
+      highlightWidthProperty.unlink( highlightWidthListener );
+      highlightHeightProperty.unlink( highlightHeightListener );
+    };
   }
 
   /**
@@ -164,6 +173,14 @@ export default class ComboBoxListItemNode<T> extends Voicing( Node ) {
    */
   public supplyOpenResponseOnNextFocus(): void {
     this._supplyOpenResponseOnNextFocus = true;
+  }
+
+  /**
+   * Free memory references to avoid leaks.
+   */
+  public override dispose(): void {
+    this.disposeComboBoxListItemNode();
+    super.dispose();
   }
 
   /**
