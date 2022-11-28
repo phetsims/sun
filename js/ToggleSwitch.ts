@@ -71,7 +71,7 @@ type SelfOptions = {
 
   // a11y (voicing and pdom) - If provided, this label will be used as the voicingNameResponse (Voicing)
   // and the innerContent (Interactive Description)
-  a11yLabel?: null | PDOMValueType;
+  a11yName?: null | PDOMValueType;
 
   // If provided, these responses will be spoken to describe the change in context for both Voicing
   // and Interactive Description features when value changes to either left or right value.
@@ -95,8 +95,8 @@ export default class ToggleSwitch<T> extends Voicing( Node ) {
    */
   public constructor( property: Property<T>, leftValue: T, rightValue: T, providedOptions?: ToggleSwitchOptions ) {
 
-    // If you provide the a11yLabel option, both innerContent and voicingNameResponse will be filled in by its value.
-    assert && assertMutuallyExclusiveOptions( providedOptions, [ 'a11yLabel' ], [ 'innerContent', 'voicingNameResponse' ] );
+    // If you provide the a11yName option, both innerContent and voicingNameResponse will be filled in by its value.
+    assert && assertMutuallyExclusiveOptions( providedOptions, [ 'a11yName' ], [ 'innerContent', 'voicingNameResponse' ] );
 
     const options = optionize<ToggleSwitchOptions, SelfOptions, ParentOptions>()( {
 
@@ -135,7 +135,7 @@ export default class ToggleSwitch<T> extends Voicing( Node ) {
       ariaRole: 'switch',
 
       // a11y (both voicing and pdom)
-      a11yLabel: null,
+      a11yName: null,
       leftValueContextResponse: null,
       rightValueContextResponse: null
     }, providedOptions );
@@ -156,9 +156,9 @@ export default class ToggleSwitch<T> extends Voicing( Node ) {
                           .addColorStop( 0, 'white' )
                           .addColorStop( 1, 'rgb( 200, 200, 200 )' );
 
-    if ( options.a11yLabel ) {
-      options.voicingNameResponse = options.a11yLabel;
-      options.innerContent = options.a11yLabel;
+    if ( options.a11yName ) {
+      options.voicingNameResponse = options.a11yName;
+      options.innerContent = options.a11yName;
     }
 
     super();
