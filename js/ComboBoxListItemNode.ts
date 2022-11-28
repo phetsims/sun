@@ -93,13 +93,13 @@ export default class ComboBoxListItemNode<T> extends Voicing( Node ) {
       'value needs to be filled in' );
 
     // pdom: get innerContent from the item
-    options.innerContent = ( item.a11yLabel || null );
-    options.voicingObjectResponse = ( item.a11yLabel || null );
+    options.innerContent = ( item.a11yName || null );
+    options.voicingObjectResponse = ( item.a11yName || null );
     const patternProperty = typeof options.comboBoxVoicingNameResponsePattern === 'string' ?
                             new Property( options.comboBoxVoicingNameResponsePattern ) :
                             options.comboBoxVoicingNameResponsePattern;
     options.voicingNameResponse = new PatternStringProperty( patternProperty, {
-      value: item.a11yLabel
+      value: item.a11yName
     } );
 
     // Highlight that is shown when the pointer is over this item. This is not the a11y focus rectangle.

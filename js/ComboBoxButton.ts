@@ -46,7 +46,7 @@ type SelfOptions = {
   arrowFill?: TPaint;
 
   // The pattern for the voicingNameResponse, with "{{value}}" provided to be filled in with
-  // ComboBoxItem.a11yLabel.
+  // ComboBoxItem.a11yName.
   comboBoxVoicingNameResponsePattern?: TReadOnlyProperty<string> | string;
 
   localPreferredWidthProperty?: TReadOnlyProperty<number | null>;
@@ -243,12 +243,12 @@ export default class ComboBoxButton<T> extends RectangularPushButton {
       itemNodeWrapper.addChild( item.node );
 
       // pdom
-      this.innerContent = ( item.a11yLabel || null );
+      this.innerContent = ( item.a11yName || null );
       const patternProperty = typeof options.comboBoxVoicingNameResponsePattern === 'string' ?
                               new Property( options.comboBoxVoicingNameResponsePattern ) :
                               options.comboBoxVoicingNameResponsePattern;
       this.voicingNameResponse = new PatternStringProperty( patternProperty, {
-        value: item.a11yLabel
+        value: item.a11yName
       } );
     };
     property.link( propertyObserver );

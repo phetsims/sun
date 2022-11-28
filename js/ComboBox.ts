@@ -63,7 +63,7 @@ export type ComboBoxItem<T> = {
   tandemName?: string | null;
 
   // pdom - the label for this item's associated Node in the combo box
-  a11yLabel?: PDOMValueType | null;
+  a11yName?: PDOMValueType | null;
 };
 
 export type ComboBoxListPosition = typeof LIST_POSITION_VALUES[number];
@@ -186,7 +186,7 @@ export default class ComboBox<T> extends WidthSizable( Node ) {
       'items must have unique values' );
     assert && items.forEach( item => {
       assert && assert( !item.node.hasPDOMContent, 'Accessibility is provided by ComboBoxItemNode and ' +
-                                                   'ComboBoxItem.a11yLabel. Additional PDOM content in the provided ' +
+                                                   'ComboBoxItem.a11yName. Additional PDOM content in the provided ' +
                                                    'Node could break accessibility.' );
       assert && assert( !item.tandemName || item.tandemName.endsWith( ComboBox.ITEM_TANDEM_NAME_SUFFIX ),
         `ComboBoxItem tandemName must end with '${ComboBox.ITEM_TANDEM_NAME_SUFFIX}': ${item.tandemName}` );
