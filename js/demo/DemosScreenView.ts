@@ -140,7 +140,10 @@ class DemosScreenView extends ScreenView {
         }
         else {
 
-          // delete the old demo
+          // Delete the old demo.  Note that this will ONLY call the dispose function on the component being demoed if
+          // that component is the only thing provided as a demo node, or if the demo node is subclassed and provides
+          // its own dispose function.  If the demo node is a VBox or something of that nature, the dispose function of
+          // the demoed component(s) will not be invoked.  See https://github.com/phetsims/sun/issues/386.
           demosParent.removeChild( oldDemoNode );
           oldDemoNode.dispose();
           oldDemo.node = null;
