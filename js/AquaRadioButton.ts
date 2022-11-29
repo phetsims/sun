@@ -9,7 +9,7 @@
 import TProperty from '../../axon/js/TProperty.js';
 import InstanceRegistry from '../../phet-core/js/documentation/InstanceRegistry.js';
 import optionize from '../../phet-core/js/optionize.js';
-import { Circle, FireListener, TColor, Node, NodeOptions, Rectangle, SceneryConstants, Voicing, VoicingOptions } from '../../scenery/js/imports.js';
+import { Circle, FireListener, Node, NodeOptions, Rectangle, SceneryConstants, TColor, Voicing, VoicingOptions } from '../../scenery/js/imports.js';
 import TSoundPlayer from '../../tambo/js/TSoundPlayer.js';
 import multiSelectionSoundPlayerFactory from '../../tambo/js/multiSelectionSoundPlayerFactory.js';
 import Tandem from '../../tandem/js/Tandem.js';
@@ -115,8 +115,6 @@ export default class AquaRadioButton<T> extends Voicing( Node ) {
     } );
     selectedNode.addChild( selectedCircleButton );
     selectedNode.addChild( labelNode );
-    labelNode.left = outerCircleSelected.right + options.xSpacing;
-    labelNode.centerY = outerCircleSelected.centerY;
 
     // deselected Node
     const deselectedNode = new Node();
@@ -126,8 +124,12 @@ export default class AquaRadioButton<T> extends Voicing( Node ) {
     } );
     deselectedNode.addChild( deselectedCircleButton );
     deselectedNode.addChild( labelNode );
-    labelNode.left = deselectedCircleButton.right + options.xSpacing;
-    labelNode.centerY = deselectedCircleButton.centerY;
+
+    const labelBoundsListener = () => {
+      labelNode.left = deselectedCircleButton.right + options.xSpacing;
+      labelNode.centerY = deselectedCircleButton.centerY;
+    };
+    labelNode.boundsProperty.link( labelBoundsListener );
 
     // Add an invisible Node to make sure the layout for selected vs deselected is the same
     const background = new Rectangle( selectedNode.bounds.union( deselectedNode.bounds ) );
@@ -188,6 +190,10 @@ export default class AquaRadioButton<T> extends Voicing( Node ) {
       this.removeInputListener( changeListener );
       property.unlink( pdomCheckedListener );
       property.unlink( syncWithModel );
+
+      if ( labelNode.boundsProperty.hasListener( labelBoundsListener ) ) {
+        labelNode.boundsProperty.unlink( labelBoundsListener );
+      }
 
       // phet-io: Unregister listener
       fireListener.dispose();
