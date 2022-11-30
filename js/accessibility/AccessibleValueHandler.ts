@@ -957,7 +957,7 @@ const AccessibleValueHandler = <SuperType extends Constructor<Node>>( Type: Supe
      * the max value rather than the full range.
      */
     private _updateSiblingStepAttribute(): void {
-      const smallestStep = Math.min( Math.min( this.keyboardStep, this.shiftKeyboardStep ), this.pageKeyboardStep );
+      const smallestStep = Math.min( this.keyboardStep, this.shiftKeyboardStep, this.pageKeyboardStep );
       let stepValue = Math.pow( 10, -Utils.numberOfDecimalPlaces( smallestStep ) );
 
       const mappedMin = this._getMappedValue( this._enabledRangeProperty.get().min );
