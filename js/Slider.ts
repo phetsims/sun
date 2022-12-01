@@ -141,7 +141,7 @@ export default class Slider extends Sizable( AccessibleSlider( Node, 0 ) ) {
   private readonly ticks: SliderTick[] = [];
 
   // This is a marker to indicate that we should create the actual default slider sound.
-  public static DEFAULT_SOUND = new ValueChangeSoundPlayer( new Range( 0, 1 ) );
+  public static readonly DEFAULT_SOUND = new ValueChangeSoundPlayer( new Range( 0, 1 ) );
 
   // If the user is holding down the thumb outside of the enabled range, and the enabled range expands, the value should
   // adjust to the new extremum of the range, see https://github.com/phetsims/mean-share-and-balance/issues/29

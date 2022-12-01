@@ -78,7 +78,7 @@ export default class Panel extends Sizable( Node ) {
   public readonly _backgroundContainer: Node;
   public readonly _background: Rectangle;
 
-  public static DEFAULT_PANEL_OPTIONS = DEFAULT_OPTIONS;
+  public static readonly DEFAULT_PANEL_OPTIONS = DEFAULT_OPTIONS;
 
   public constructor( content: Node, providedOptions?: PanelOptions ) {
 

@@ -623,7 +623,7 @@ export default class AccordionBox extends Node {
 
   // The definition for how AccordionBox sets its accessibleName in the PDOM. Forward it onto its expandCollapseButton.
   // See AccordionBox.md for further style guide and documentation on the pattern.
-  public static ACCORDION_BOX_ACCESSIBLE_NAME_BEHAVIOR: PDOMBehaviorFunction =
+  public static readonly ACCORDION_BOX_ACCESSIBLE_NAME_BEHAVIOR: PDOMBehaviorFunction =
     ( node, options, accessibleName: string | TReadOnlyProperty<string>, callbacksForOtherNodes ) => {
       callbacksForOtherNodes.push( () => {
         ( node as AccordionBox ).expandCollapseButton.accessibleName = accessibleName;
