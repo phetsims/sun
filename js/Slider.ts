@@ -478,8 +478,13 @@ export default class Slider extends Sizable( AccessibleSlider( Node, 0 ) ) {
       thumb.dispose && thumb.dispose(); // in case a custom thumb is provided via options.thumbNode that doesn't implement dispose
       this.track.dispose && this.track.dispose();
 
+      if ( ownsEnabledRangeProperty ) {
+        this.enabledRangeProperty.dispose();
+      }
+      else {
+        this.enabledRangeProperty.unlink( enabledRangeObserver );
+      }
       valueMultilink.dispose();
-      ownsEnabledRangeProperty && this.enabledRangeProperty.dispose();
       thumbDragListener.dispose();
     };
 
