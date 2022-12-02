@@ -36,7 +36,7 @@ export type ComboBoxButtonArrowDirection = typeof ARROW_DIRECTION_VALUES[number]
 // The definition for how ComboBoxButton sets its accessibleName in the PDOM. See ComboBox.md for further style guide
 // and documentation on the pattern.
 const ACCESSIBLE_NAME_BEHAVIOR: PDOMBehaviorFunction = ( node, options, accessibleName ) => {
-  options.labelTagName = 'span';
+  options.labelTagName = 'p'; // NOTE: A `span` causes duplicate name-speaking with VO+safari in https://github.com/phetsims/ratio-and-proportion/issues/532
   options.labelContent = accessibleName;
   return options;
 };
