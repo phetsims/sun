@@ -229,6 +229,9 @@ export default class ComboBoxButton<T> extends RectangularPushButton {
       this._blockNextVoicingFocusListener = false;
     };
 
+    // Keep track for disposal
+    let voicingPatternstringProperty: TReadOnlyProperty<string> | null = null;
+
     // When Property's value changes, show the corresponding item's Node on the button.
     let item: ComboBoxItem<T> | null = null;
     const propertyObserver = ( value: T ) => {
@@ -244,10 +247,13 @@ export default class ComboBoxButton<T> extends RectangularPushButton {
 
       // pdom
       this.innerContent = ( item.a11yName || null );
+
       const patternProperty = typeof options.comboBoxVoicingNameResponsePattern === 'string' ?
                               new Property( options.comboBoxVoicingNameResponsePattern ) :
                               options.comboBoxVoicingNameResponsePattern;
-      this.voicingNameResponse = new PatternStringProperty( patternProperty, {
+
+      voicingPatternstringProperty && voicingPatternstringProperty.dispose();
+      this.voicingNameResponse = voicingPatternstringProperty = new PatternStringProperty( patternProperty, {
         value: item.a11yName
       } );
     };
@@ -278,6 +284,8 @@ export default class ComboBoxButton<T> extends RectangularPushButton {
 
       property.unlink( propertyObserver );
       options.localPreferredWidthProperty.unlink( preferredWidthListener );
+
+      voicingPatternstringProperty && voicingPatternstringProperty.dispose();
     };
 
     this.arrow = arrow;
