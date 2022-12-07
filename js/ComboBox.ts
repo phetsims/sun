@@ -24,7 +24,7 @@ import dotRandom from '../../dot/js/dotRandom.js';
 import Vector2 from '../../dot/js/Vector2.js';
 import InstanceRegistry from '../../phet-core/js/documentation/InstanceRegistry.js';
 import optionize from '../../phet-core/js/optionize.js';
-import { Display, Focus, FocusManager, isWidthSizable, ManualConstraint, extendsWidthSizable, Node, NodeOptions, PDOMBehaviorFunction, PDOMPeer, PDOMValueType, TColor, TInputListener, TPaint, WidthSizable, WidthSizableOptions } from '../../scenery/js/imports.js';
+import { Display, extendsWidthSizable, Focus, FocusManager, isWidthSizable, ManualConstraint, Node, NodeOptions, PDOMBehaviorFunction, PDOMPeer, PDOMValueType, TColor, TInputListener, TPaint, WidthSizable, WidthSizableOptions } from '../../scenery/js/imports.js';
 import TSoundPlayer from '../../tambo/js/TSoundPlayer.js';
 import generalCloseSoundPlayer from '../../tambo/js/shared-sound-players/generalCloseSoundPlayer.js';
 import generalOpenSoundPlayer from '../../tambo/js/shared-sound-players/generalOpenSoundPlayer.js';
@@ -554,16 +554,14 @@ export default class ComboBox<T> extends WidthSizable( Node ) {
       }
       return properties;
     } ) );
-    // @ts-ignore DerivedProperty isn't understanding the Property[]
-    return new DerivedProperty( widthProperties, () => {
+    return DerivedProperty.deriveAny( widthProperties, () => {
       return Math.max( ...items.map( item => isWidthSizable( item.node ) ? item.node.minimumWidth || 0 : item.node.width ) );
     } );
   }
 
   public static getMaxItemHeightProperty<T>( items: ComboBoxItem<T>[] ): TReadOnlyProperty<number> {
     const heightProperties = items.map( item => item.node.boundsProperty );
-    // @ts-ignore DerivedProperty isn't understanding the Property[]
-    return new DerivedProperty( heightProperties, () => {
+    return DerivedProperty.deriveAny( heightProperties, () => {
       return Math.max( ...items.map( item => item.node.height ) );
     } );
   }
