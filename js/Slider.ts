@@ -511,7 +511,6 @@ export default class Slider extends Sizable( AccessibleSlider( Node, 0 ) ) {
     this.mutate( boundsRequiredOptionKeys );
 
     // support for binder documentation, stripped out in builds and only runs when ?binder is specified
-    // @ts-ignore chipper query parameters
     assert && phet.chipper.queryParameters.binder && InstanceRegistry.registerDataURL( 'sun', 'Slider', this );
   }
 

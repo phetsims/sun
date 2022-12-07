@@ -390,7 +390,6 @@ export default class ComboBox<T> extends WidthSizable( Node ) {
         // The rest of the time, ignore this listener, so that the listbox remains popped up, and we test making
         // choices from the listbox. See https://github.com/phetsims/sun/issues/677 for the initial implementation,
         // and See https://github.com/phetsims/aqua/issues/136 for the probability value chosen.
-        // @ts-ignore chipper
         if ( !phet.chipper.isFuzzEnabled() || dotRandom.nextDouble() < 0.005 ) {
 
           // Ignore if we click over the button, since the button will handle hiding the list.
@@ -470,7 +469,6 @@ export default class ComboBox<T> extends WidthSizable( Node ) {
     };
 
     // support for binder documentation, stripped out in builds and only runs when ?binder is specified
-    // @ts-ignore chipper query parameters
     assert && phet.chipper.queryParameters.binder && InstanceRegistry.registerDataURL( 'sun', 'ComboBox', this );
   }
 

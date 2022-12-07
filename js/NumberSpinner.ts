@@ -11,7 +11,6 @@ import StrictOmit from '../../phet-core/js/types/StrictOmit.js';
 import Range from '../../dot/js/Range.js';
 import InstanceRegistry from '../../phet-core/js/documentation/InstanceRegistry.js';
 import optionize, { combineOptions } from '../../phet-core/js/optionize.js';
-// @ts-ignore FIX DEPENDENCY ON SCENERY-PHET
 import NumberDisplay, { NumberDisplayOptions } from '../../scenery-phet/js/NumberDisplay.js';
 import { Node, NodeOptions, SceneryConstants, TColor } from '../../scenery/js/imports.js';
 import Tandem from '../../tandem/js/Tandem.js';

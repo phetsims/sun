@@ -24,7 +24,7 @@ export default GroupItemOptions;
 export function getGroupItemNodes( array: GroupItemOptions[], tandem: Tandem ): Node[] {
   return array.map( item => {
 
-    // @ts-ignore - runtime check to prevent prior pattern, see https://github.com/phetsims/sun/issues/794
+    // @ts-expect-error - runtime check to prevent prior pattern, see https://github.com/phetsims/sun/issues/794
     assert && assert( !item.node, 'Use createNode instead of node' );
 
     return item.createNode( item.tandemName ? tandem.createTandem( item.tandemName ) : Tandem.OPTIONAL );

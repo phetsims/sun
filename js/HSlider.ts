@@ -29,7 +29,6 @@ export default class HSlider extends Slider {
     }, options ) );
 
     // support for binder documentation, stripped out in builds and only runs when ?binder is specified
-    // @ts-ignore chipper query parameters
     assert && phet.chipper.queryParameters.binder && InstanceRegistry.registerDataURL( 'sun', 'HSlider', this );
   }
 }

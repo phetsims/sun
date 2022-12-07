@@ -93,7 +93,7 @@ export default class AquaRadioButtonGroup<T> extends FlowBox {
     for ( let i = 0; i < items.length; i++ ) {
       const item = items[ i ];
 
-      // @ts-ignore - runtime check to prevent prior pattern, see https://github.com/phetsims/sun/issues/794
+      // @ts-expect-error - runtime check to prevent prior pattern, see https://github.com/phetsims/sun/issues/794
       assert && assert( !item.tandem, 'Cannot specify tandem any more' );
 
       const node = nodes[ i ];

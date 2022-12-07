@@ -47,7 +47,6 @@ export default class RoundStickyToggleButton<T> extends RoundButton {
     }, providedOptions );
 
     // Note it shares a tandem with this, so the emitter will be instrumented as a child of the button
-    // @ts-ignore
     const toggleButtonModel = new StickyToggleButtonModel( valueUp, valueDown, valueProperty, options );
     const stickyToggleButtonInteractionStateProperty = new StickyToggleButtonInteractionStateProperty( toggleButtonModel );
 

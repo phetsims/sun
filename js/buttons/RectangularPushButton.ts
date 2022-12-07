@@ -67,7 +67,6 @@ export default class RectangularPushButton extends RectangularButton {
     };
 
     // support for binder documentation, stripped out in builds and only runs when ?binder is specified
-    // @ts-ignore chipper query parameters
     assert && phet.chipper.queryParameters.binder && InstanceRegistry.registerDataURL( 'sun', 'RectangularPushButton', this );
   }
 
