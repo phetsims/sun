@@ -11,8 +11,9 @@ import DerivedProperty from '../../axon/js/DerivedProperty.js';
 import TReadOnlyProperty from '../../axon/js/TReadOnlyProperty.js';
 import { Shape } from '../../kite/js/imports.js';
 import Orientation from '../../phet-core/js/Orientation.js';
-import { TPaint, Node, Path, ManualConstraint } from '../../scenery/js/imports.js';
+import { ManualConstraint, Node, Path, TPaint } from '../../scenery/js/imports.js';
 import SliderTrack from './SliderTrack.js';
+import sun from './sun.js';
 import SunConstants from './SunConstants.js';
 
 export type SliderTickOptions = {
@@ -25,7 +26,7 @@ export type SliderTickOptions = {
   minorTickLineWidth?: number;
 };
 
-export default class Tick {
+export default class SliderTick {
 
   private readonly labelXProperty: TReadOnlyProperty<number>;
 
@@ -88,3 +89,5 @@ export default class Tick {
     this.manualConstraint && this.manualConstraint.dispose();
   }
 }
+
+sun.register( 'SliderTick', SliderTick );
