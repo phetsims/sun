@@ -24,7 +24,7 @@ import { Shape } from '../../kite/js/imports.js';
 import InstanceRegistry from '../../phet-core/js/documentation/InstanceRegistry.js';
 import merge from '../../phet-core/js/merge.js';
 import optionize, { combineOptions } from '../../phet-core/js/optionize.js';
-import { HSeparator, HSeparatorOptions, Node, NodeOptions, Rectangle, TColor, VSeparator, VSeparatorOptions } from '../../scenery/js/imports.js';
+import { HBox, HSeparator, HSeparatorOptions, Node, NodeOptions, Rectangle, TColor, VBox, VSeparator, VSeparatorOptions } from '../../scenery/js/imports.js';
 import TSoundPlayer from '../../tambo/js/TSoundPlayer.js';
 import pushButtonSoundPlayer from '../../tambo/js/shared-sound-players/pushButtonSoundPlayer.js';
 import Tandem from '../../tandem/js/Tandem.js';
@@ -45,6 +45,7 @@ type SelfOptions = {
   lineWidth?: number; // width of the border around the carousel
   cornerRadius?: number; // radius applied to the carousel and next/previous buttons
   defaultPageNumber?: number; // page that is initially visible
+  isScrollingNodeLayoutBox?: boolean; // if true, use HBox/VBox for the contents. If false, layout is managed by Carousel
 
   // items
   itemsPerPage?: number; // number of items per page, or how many items are visible at a time in the carousel
@@ -101,6 +102,7 @@ export default class Carousel extends Node {
   private readonly backgroundHeight: number;
 
   private readonly disposeCarousel: () => void;
+  private readonly isScrollingNodeLayoutBox: boolean;
 
   /**
    * @param items - Nodes shown in the carousel
@@ -118,6 +120,7 @@ export default class Carousel extends Node {
       lineWidth: 1,
       cornerRadius: 4,
       defaultPageNumber: 0,
+      isScrollingNodeLayoutBox: false,
 
       // items
       itemsPerPage: 4,
@@ -224,7 +227,17 @@ export default class Carousel extends Node {
     // All items, arranged in the proper orientation, with margins and spacing.
     // Horizontal carousel arrange items left-to-right, vertical is top-to-bottom.
     // Translation of this node will be animated to give the effect of scrolling through the items.
-    const scrollingNode = new Rectangle( 0, 0, scrollingWidth, scrollingHeight );
+    const scrollingNode = options.isScrollingNodeLayoutBox ?
+                          ( isHorizontal ? new HBox( {
+                            spacing: options.spacing,
+                            yMargin: options.margin
+                          } ) : new VBox( {
+                            spacing: options.spacing,
+                            xMargin: options.margin
+                          } ) ) :
+                          new Rectangle( 0, 0, scrollingWidth, scrollingHeight );
+
+    this.isScrollingNodeLayoutBox = options.isScrollingNodeLayoutBox;
     items.forEach( item => {
 
       // add the item
@@ -449,7 +462,11 @@ export default class Carousel extends Node {
    * Given an item, scrolls the carousel to the page that contains that item.
    */
   public scrollToItem( item: Node ): void {
-    this.scrollToItemIndex( this.items.indexOf( item ) );
+
+    // If the layout is dynamic, then only account for the visible items
+    const itemsInLayout = this.isScrollingNodeLayoutBox ? this.items.filter( item => item.visible ) : this.items;
+
+    this.scrollToItemIndex( itemsInLayout.indexOf( item ) );
   }
 
   /**
