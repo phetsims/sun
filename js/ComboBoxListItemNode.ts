@@ -99,9 +99,10 @@ export default class ComboBoxListItemNode<T> extends Voicing( Node ) {
     const patternProperty = typeof options.comboBoxVoicingNameResponsePattern === 'string' ?
                             new Property( options.comboBoxVoicingNameResponsePattern ) :
                             options.comboBoxVoicingNameResponsePattern;
-    options.voicingNameResponse = new PatternStringProperty( patternProperty, {
+    const patternStringProperty = new PatternStringProperty( patternProperty, {
       value: item.a11yName
     } );
+    options.voicingNameResponse = patternStringProperty;
 
     // Highlight that is shown when the pointer is over this item. This is not the a11y focus rectangle.
     const highlightRectangle = new Rectangle( {
@@ -162,6 +163,7 @@ export default class ComboBoxListItemNode<T> extends Voicing( Node ) {
     } );
 
     this.disposeComboBoxListItemNode = () => {
+      patternStringProperty.dispose();
       highlightWidthProperty.unlink( highlightWidthListener );
       highlightHeightProperty.unlink( highlightHeightListener );
     };
