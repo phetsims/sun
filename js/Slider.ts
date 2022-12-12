@@ -39,6 +39,8 @@ import Multilink from '../../axon/js/Multilink.js';
 import TProperty from '../../axon/js/TProperty.js';
 import TinyProperty from '../../axon/js/TinyProperty.js';
 import SunConstants from './SunConstants.js';
+import createObservableArray from '../../axon/js/createObservableArray.js';
+import { ObservableArray } from '../../axon/js/createObservableArray.js';
 
 // constants
 const DEFAULT_HORIZONTAL_TRACK_SIZE = new Dimension2( 100, 5 );
@@ -138,7 +140,7 @@ export default class Slider extends Sizable( AccessibleSlider( Node, 0 ) ) {
 
   private readonly disposeSlider: () => void;
 
-  private readonly ticks: SliderTick[] = [];
+  private readonly ticks: ObservableArray<SliderTick> = createObservableArray();
 
   // This is a marker to indicate that we should create the actual default slider sound.
   public static readonly DEFAULT_SOUND = new ValueChangeSoundPlayer( new Range( 0, 1 ) );
@@ -597,7 +599,7 @@ class SliderConstraint extends LayoutConstraint {
     private readonly sliderPartsNode: Node,
     private readonly orientation: Orientation,
     private readonly trackSpacer: Node,
-    private readonly ticks: SliderTick[]
+    private readonly ticks: ObservableArray<SliderTick>
   ) {
 
     super( slider );
@@ -621,6 +623,8 @@ class SliderConstraint extends LayoutConstraint {
     // NOTE: This is ignoring thumb scale changing, but for performance/correctness it makes sense to avoid that for now
     // so we can rule out infinite loops of thumb movement.
     this.thumb.localBoundsProperty.lazyLink( this._updateLayoutListener );
+
+    ticks.addItemAddedListener( tick => tick.tickNode.localBoundsProperty.lazyLink( this._updateLayoutListener ) );
 
     this.addNode( track );
 
