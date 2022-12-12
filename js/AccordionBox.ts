@@ -341,9 +341,11 @@ export default class AccordionBox extends Node {
       this.collapsedTitleBar.pickable = pickable;
       this.expandedTitleBar.pickable = pickable;
     };
+
+    // Add listeners to the expand/collapse button.  These do not need to be unlinked because this component owns the
+    // button.
     this.expandCollapseButton.visibleProperty.lazyLink( pickableListener );
     this.expandCollapseButton.pickableProperty.lazyLink( pickableListener );
-
     this.expandCollapseButton.enabledProperty.link( enabled => {
 
       // Since there are listeners on the titleBars from InteractiveHighlighting, setting pickable: false isn't enough
