@@ -7,7 +7,7 @@
  * @author Chris Malley (PixelZoom, Inc.)
  */
 
-import StringEnumerationProperty from '../../axon/js/StringEnumerationProperty.js';
+import StringUnionProperty from '../../axon/js/StringUnionProperty.js';
 import DerivedProperty from '../../axon/js/DerivedProperty.js';
 import Multilink from '../../axon/js/Multilink.js';
 import NumberProperty from '../../axon/js/NumberProperty.js';
@@ -238,10 +238,10 @@ export default class NumberPicker extends AccessibleNumberSpinner( Node, 0 ) {
     //------------------------------------------------------------
     // Properties
 
-    const incrementButtonStateProperty = new StringEnumerationProperty( 'up', {
+    const incrementButtonStateProperty = new StringUnionProperty( 'up', {
       validValues: ButtonStateValues
     } );
-    const decrementButtonStateProperty = new StringEnumerationProperty( 'down', {
+    const decrementButtonStateProperty = new StringUnionProperty( 'down', {
       validValues: ButtonStateValues
     } );
 
@@ -581,7 +581,7 @@ type NumberPickerInputListenerOptions = NumberPickerInputListenerSelfOptions & F
  */
 class NumberPickerInputListener extends FireListener {
 
-  public constructor( buttonStateProperty: StringEnumerationProperty<ButtonState>, options: NumberPickerInputListenerOptions ) {
+  public constructor( buttonStateProperty: StringUnionProperty<ButtonState>, options: NumberPickerInputListenerOptions ) {
     super( options );
     Multilink.multilink(
       [ this.isOverProperty, this.isPressedProperty ],
