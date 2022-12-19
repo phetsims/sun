@@ -366,6 +366,8 @@ export default class Carousel extends Node {
         previousButton.visible = previousButton.enabled;
       }
 
+      const scrollingNodeMargin = options.isScrollingNodeLayoutBox ? options.spacing / 2 : 0;
+
       // stop any animation that's in progress
       scrollAnimation && scrollAnimation.stop();
 
@@ -385,14 +387,14 @@ export default class Carousel extends Node {
           animationOptions = merge( {
             getValue: () => scrollingNode.left,
             setValue: ( value: number ) => { scrollingNode.left = value; },
-            to: -pageNumber * scrollingDelta
+            to: -pageNumber * scrollingDelta + scrollingNodeMargin
           }, animationOptions );
         }
         else {
           animationOptions = merge( {
             getValue: () => scrollingNode.top,
             setValue: ( value: number ) => { scrollingNode.top = value; },
-            to: -pageNumber * scrollingDelta
+            to: -pageNumber * scrollingDelta + scrollingNodeMargin
           }, animationOptions );
         }
 
@@ -404,10 +406,10 @@ export default class Carousel extends Node {
 
         // animation disabled, move immediate to new page
         if ( isHorizontal ) {
-          scrollingNode.left = -pageNumber * scrollingDelta;
+          scrollingNode.left = -pageNumber * scrollingDelta + scrollingNodeMargin;
         }
         else {
-          scrollingNode.top = -pageNumber * scrollingDelta;
+          scrollingNode.top = -pageNumber * scrollingDelta + scrollingNodeMargin;
         }
       }
     };
