@@ -47,7 +47,6 @@ type SelfOptions = {
   // may be ignored if incrementFunction and decrementFunction are provided
   deltaValue?: number;
 
-  // opt into Node's disabled opacity when enabled:false
   xSpacing?: number;
   ySpacing?: number;
 
