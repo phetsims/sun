@@ -62,10 +62,7 @@ type SelfOptions = {
   trackStroke?: TPaint;
   trackLineWidth?: number;
   trackCornerRadius?: number;
-  trackPickable?: boolean;
-
-  // Whether the track bounds should be dilated for layout issues, see details at the instantiation site.
-  trackBoundsDilation?: boolean;
+  trackPickable?: boolean; // May be set to false if a slider track is not visible and user interaction is therefore undesirable.
 
   // optional thumb, replaces the default.
   // Client is responsible for highlighting, disabling and pointer areas.
@@ -175,9 +172,6 @@ export default class Slider extends Sizable( AccessibleSlider( Node, 0 ) ) {
       trackLineWidth: 1,
       trackCornerRadius: 0,
       trackPickable: true,
-
-      // By default, tracks dilate the bounds of the track to accommodate layout issues
-      trackBoundsDilation: true,
 
       thumbNode: null,
 
