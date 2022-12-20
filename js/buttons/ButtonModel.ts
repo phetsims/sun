@@ -126,7 +126,8 @@ export default class ButtonModel extends EnabledComponent {
     // first listener is created. See this.createPressListener.
     this.looksOverMultilink = null;
 
-    // startCallback on pointer down, endCallback on pointer up. lazyLink so they aren't called immediately.
+    // Call startCallback on pointer down, endCallback on pointer up. Use lazyLink so they aren't called immediately.
+    // No unlink needed since this button model owns the Property.
     this.downProperty.lazyLink( down => {
       if ( down ) {
         options.startCallback();
@@ -179,7 +180,8 @@ export default class ButtonModel extends EnabledComponent {
     const pressListener = new PressListener( options );
     this.listeners.push( pressListener );
 
-    // link lazily in case client externally sets downProperty - don't update until the next press
+    // Link lazily in case client externally sets downProperty - don't update until the next press.  No unlink needed
+    // because the pressListener is local.
     pressListener.isPressedProperty.lazyLink( isPressed => {
 
       // determine interrupted first so listeners on downProperty have access
