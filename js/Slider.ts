@@ -150,7 +150,9 @@ export default class Slider extends Sizable( AccessibleSlider( Node, 0 ) ) {
   // This value is set during thumb drag, or null if not currently being dragged.
   private proposedValue: number | null = null;
 
-  public constructor( valueProperty: LinkableProperty<number>, range: Range | TReadOnlyProperty<Range>, providedOptions?: SliderOptions ) {
+  public constructor( valueProperty: LinkableProperty<number>,
+                      range: Range | TReadOnlyProperty<Range>,
+                      providedOptions?: SliderOptions ) {
 
     // Guard against mutually exclusive options before defaults are filled in.
     assert && assertMutuallyExclusiveOptions( providedOptions, [ 'thumbNode' ], [
@@ -591,6 +593,7 @@ export default class Slider extends Sizable( AccessibleSlider( Node, 0 ) ) {
 class SliderConstraint extends LayoutConstraint {
 
   private readonly preferredProperty: TProperty<number | null>;
+  private readonly disposeSliderConstraint: () => void;
 
   public constructor(
     private readonly slider: Slider,
@@ -624,11 +627,28 @@ class SliderConstraint extends LayoutConstraint {
     // so we can rule out infinite loops of thumb movement.
     this.thumb.localBoundsProperty.lazyLink( this._updateLayoutListener );
 
-    ticks.addItemAddedListener( tick => tick.tickNode.localBoundsProperty.lazyLink( this._updateLayoutListener ) );
+    // As ticks are added, add a listener to each that will update the layout if the tick's bounds changes.
+    const tickAddedListener = ( addedTick: SliderTick ) => {
+      addedTick.tickNode.localBoundsProperty.lazyLink( this._updateLayoutListener );
+      ticks.addItemRemovedListener( removedTick => {
+        if ( removedTick === addedTick &&
+             removedTick.tickNode.localBoundsProperty.hasListener( this._updateLayoutListener ) ) {
+          addedTick.tickNode.localBoundsProperty.unlink( this._updateLayoutListener );
+        }
+      } );
+    };
+    ticks.addItemAddedListener( tickAddedListener );
 
     this.addNode( track );
 
     this.layout();
+
+    this.disposeSliderConstraint = () => {
+      ticks.removeItemAddedListener( tickAddedListener );
+      this.preferredProperty.unlink( this._updateLayoutListener );
+      this.track.rangeProperty.unlink( this._updateLayoutListener );
+      this.thumb.localBoundsProperty.unlink( this._updateLayoutListener );
+    };
   }
 
   protected override layout(): void {
@@ -791,11 +811,7 @@ class SliderConstraint extends LayoutConstraint {
   }
 
   public override dispose(): void {
-    this.preferredProperty.unlink( this._updateLayoutListener );
-
-    this.track.rangeProperty.unlink( this._updateLayoutListener );
-    this.thumb.localBoundsProperty.unlink( this._updateLayoutListener );
-
+    this.disposeSliderConstraint();
     super.dispose();
   }
 }
