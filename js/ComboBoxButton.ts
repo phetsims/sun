@@ -149,6 +149,7 @@ export default class ComboBoxButton<T> extends RectangularPushButton {
       ] ]
     } );
 
+    // Update the drop-down arrow.  No dispose is needed since the dependencies are locally owned.
     Multilink.multilink( [ maxItemWidthProperty, maxItemHeightProperty ], ( maxItemWidth, maxItemHeight ) => {
 
       const fullHeight = maxItemHeight + 2 * itemYMargin;

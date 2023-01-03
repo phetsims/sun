@@ -10,7 +10,7 @@
 
 import DerivedProperty from '../../../axon/js/DerivedProperty.js';
 import TReadOnlyProperty from '../../../axon/js/TReadOnlyProperty.js';
-import Multilink from '../../../axon/js/Multilink.js';
+import Multilink, { UnknownMultilink } from '../../../axon/js/Multilink.js';
 import Bounds2 from '../../../dot/js/Bounds2.js';
 import Dimension2 from '../../../dot/js/Dimension2.js';
 import optionize, { combineOptions } from '../../../phet-core/js/optionize.js';
@@ -206,6 +206,7 @@ export default class ButtonNode extends Sizable( Voicing( Node ) ) {
     this.maxLineWidth = buttonAppearanceStrategy.maxLineWidth;
 
     let alignBox: AlignBox | null = null;
+    let updateAlignBounds: UnknownMultilink | null = null;
 
     if ( options.content ) {
 
@@ -238,10 +239,13 @@ export default class ButtonNode extends Sizable( Voicing( Node ) ) {
         bottomMargin: options.yMargin - options.yContentOffset
       } );
 
-      // Dynamically adjust alignBounds
-      Multilink.multilink( [ buttonBackground.boundsProperty, this.layoutSizeProperty ], ( backgroundBounds, size ) => {
-        alignBox!.alignBounds = Bounds2.point( backgroundBounds.center ).dilatedXY( size.width / 2, size.height / 2 );
-      } );
+      // Dynamically adjust alignBounds.
+      updateAlignBounds = Multilink.multilink(
+        [ buttonBackground.boundsProperty, this.layoutSizeProperty ],
+        ( backgroundBounds, size ) => {
+          alignBox!.alignBounds = Bounds2.point( backgroundBounds.center ).dilatedXY( size.width / 2, size.height / 2 );
+        }
+      );
       this.addChild( alignBox );
     }
     else {
@@ -261,6 +265,7 @@ export default class ButtonNode extends Sizable( Voicing( Node ) ) {
 
     this.disposeButtonNode = () => {
       alignBox && alignBox.dispose();
+      updateAlignBounds && updateAlignBounds.dispose();
       buttonAppearanceStrategy.dispose && buttonAppearanceStrategy.dispose();
       contentAppearanceStrategy && contentAppearanceStrategy.dispose && contentAppearanceStrategy.dispose();
       this._pressListener.dispose();
@@ -459,11 +464,11 @@ class ButtonNodeConstraint extends LayoutConstraint {
 
     // Our resulting sizes (allow setting preferred width/height on the buttonNode)
     this.localPreferredWidth = this.isFirstLayout || isWidthSizable( buttonNode )
-                          ? ( buttonNode.localPreferredWidth === null ? minimumWidth : buttonNode.localPreferredWidth )
-                          : this.localPreferredWidth;
+                               ? ( buttonNode.localPreferredWidth === null ? minimumWidth : buttonNode.localPreferredWidth )
+                               : this.localPreferredWidth;
     this.localPreferredHeight = this.isFirstLayout || isHeightSizable( buttonNode )
-                           ? ( buttonNode.localPreferredHeight === null ? minimumHeight : buttonNode.localPreferredHeight )
-                           : this.localPreferredHeight;
+                                ? ( buttonNode.localPreferredHeight === null ? minimumHeight : buttonNode.localPreferredHeight )
+                                : this.localPreferredHeight;
 
     this.isFirstLayout = false;
 

@@ -466,12 +466,12 @@ export default class NumberPicker extends AccessibleNumberSpinner( Node, 0 ) {
     };
     valueProperty.link( valueObserver ); // must be unlinked in dispose
 
-    // Update colors for increment components.
+    // Update colors for increment components.  No dispose is needed since dependencies are locally owned.
     Multilink.multilink( [ incrementButtonStateProperty, incrementEnabledProperty ], ( state, enabled ) => {
       updateColors( state, enabled, incrementBackgroundNode, this.incrementArrow, backgroundColors, arrowColors );
     } );
 
-    // Update colors for decrement components.
+    // Update colors for decrement components.  No dispose is needed since dependencies are locally owned.
     Multilink.multilink( [ decrementButtonStateProperty, decrementEnabledProperty ], ( state, enabled ) => {
       updateColors( state, enabled, decrementBackgroundNode, this.decrementArrow, backgroundColors, arrowColors );
     } );
@@ -583,6 +583,8 @@ class NumberPickerInputListener extends FireListener {
 
   public constructor( buttonStateProperty: StringUnionProperty<ButtonState>, options: NumberPickerInputListenerOptions ) {
     super( options );
+
+    // Update the button state.  No dispose is needed because the parent class disposes the dependencies.
     Multilink.multilink(
       [ this.isOverProperty, this.isPressedProperty ],
       ( isOver, isPressed ) => {
@@ -592,7 +594,8 @@ class NumberPickerInputListener extends FireListener {
           !isOver && !isPressed ? 'up' :
           'out'
         );
-      } );
+      }
+    );
   }
 }
 
