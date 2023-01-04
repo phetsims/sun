@@ -17,7 +17,7 @@ import getGlobal from '../../phet-core/js/getGlobal.js';
 import optionize from '../../phet-core/js/optionize.js';
 import StrictOmit from '../../phet-core/js/types/StrictOmit.js';
 import CloseButton from '../../scenery-phet/js/buttons/CloseButton.js';
-import { AlignBox, FocusManager, FullScreen, HBox, KeyboardUtils, Node, PDOMPeer, PDOMUtils, TColor, TInputListener, VBox } from '../../scenery/js/imports.js';
+import { AlignBox, FocusManager, FullScreen, HBox, KeyboardUtils, Node, PDOMPeer, PDOMUtils, TColor, TInputListener, VBox, voicingManager } from '../../scenery/js/imports.js';
 import TSoundPlayer from '../../tambo/js/TSoundPlayer.js';
 import generalCloseSoundPlayer from '../../tambo/js/shared-sound-players/generalCloseSoundPlayer.js';
 import generalOpenSoundPlayer from '../../tambo/js/shared-sound-players/generalOpenSoundPlayer.js';
@@ -235,9 +235,11 @@ export default class Dialog extends Popupable( Panel, 1 ) {
       options.maxHeight = applyDoubleMargin( options.layoutBounds.height, options.maxHeightMargin );
     }
 
-    // We need an "unattached" utterance so that when the close button fires, hiding the close button, we still hear the context response.
+    // We need an "unattached" utterance so that when the close button fires, hiding the close button, we still hear
+    // the context response. But we still should only hear this context response when "Sim Voicing" is enabled.
     const contextResponseUtterance = new Utterance( {
-      priority: Utterance.MEDIUM_PRIORITY
+      priority: Utterance.MEDIUM_PRIORITY,
+      voicingCanAnnounceProperties: [ voicingManager.voicingFullyEnabledProperty ]
     } );
 
     // create close button - a flat "X"
