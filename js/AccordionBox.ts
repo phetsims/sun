@@ -605,14 +605,14 @@ export default class AccordionBox extends Node {
   /**
    * Returns the ideal height of the collapsed box (ignoring things like stroke width)
    */
-  private getCollapsedBoxHeight(): number {
+  public getCollapsedBoxHeight(): number {
     return Math.max( this.expandCollapseButton.height + ( 2 * this._buttonYMargin ), this.titleNode.height + ( 2 * this._titleYMargin ) );
   }
 
   /**
    * Returns the ideal height of the expanded box (ignoring things like stroke width)
    */
-  private getExpandedBoxHeight(): number {
+  public getExpandedBoxHeight(): number {
     // content is below button+title
     if ( this._showTitleWhenExpanded ) {
       return this.getCollapsedBoxHeight() + this._contentNode.height + this._contentYMargin + this._contentYSpacing;
