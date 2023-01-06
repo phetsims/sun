@@ -56,6 +56,11 @@ type SelfOptions = {
   // By default voice the name response on checkbox change (with the context response), but optionally turn it off here.
   voiceNameResponseOnSelection?: boolean;
 
+  // Output describing the state of the Checkbox after it is pressed using the Voicing feature. Like "Checked" or
+  // "Locked". Not usually needed, default is null.
+  voicingCheckedObjectResponse?: TAlertable;
+  voicingUncheckedObjectResponse?: TAlertable;
+
   // whether a PhET-iO link to the checkbox's Property is created
   phetioLinkProperty?: boolean;
 };
@@ -116,6 +121,10 @@ export default class Checkbox extends WidthSizable( Voicing( Node ) ) {
       inputType: 'checkbox',
       appendDescription: true,
 
+      // voicing
+      voicingCheckedObjectResponse: null,
+      voicingUncheckedObjectResponse: null,
+
       // Utterances to be spoken with a screen reader after the checkbox is pressed. Also used for
       // the voicingContextResponse
       checkedContextResponse: null,
@@ -134,6 +143,7 @@ export default class Checkbox extends WidthSizable( Voicing( Node ) ) {
         options.checkedContextResponse && this.alertDescriptionUtterance( options.checkedContextResponse );
         this.voicingSpeakResponse( {
           nameResponse: options.voiceNameResponseOnSelection ? this.voicingNameResponse : null,
+          objectResponse: Utterance.alertableToText( options.voicingCheckedObjectResponse ),
           contextResponse: Utterance.alertableToText( options.checkedContextResponse )
         } );
       }
@@ -142,6 +152,7 @@ export default class Checkbox extends WidthSizable( Voicing( Node ) ) {
         options.uncheckedContextResponse && this.alertDescriptionUtterance( options.uncheckedContextResponse );
         this.voicingSpeakResponse( {
           nameResponse: options.voiceNameResponseOnSelection ? this.voicingNameResponse : null,
+          objectResponse: Utterance.alertableToText( options.voicingUncheckedObjectResponse ),
           contextResponse: Utterance.alertableToText( options.uncheckedContextResponse )
         } );
       }
