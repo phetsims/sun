@@ -25,7 +25,7 @@ export default function demoPageControl( layoutBounds: Bounds2 ): Node {
   } );
 
   // page control
-  const pageControl = new PageControl( carousel.pageNumberProperty, carousel.numberOfPages, {
+  const pageControl = new PageControl( carousel.pageNumberProperty, carousel.numberOfPagesProperty, {
     orientation: 'horizontal',
     interactive: true,
     dotRadius: 10,

@@ -127,8 +127,8 @@ export default class CarouselComboBox<T> extends WidthSizable( Node ) {
 
     // page control
     let pageControl: PageControl | null = null;
-    if ( carousel.numberOfPages > 1 ) {
-      pageControl = new PageControl( carousel.pageNumberProperty, carousel.numberOfPages, combineOptions<PageControlOptions>( {
+    if ( carousel.numberOfPagesProperty.value > 1 ) {
+      pageControl = new PageControl( carousel.pageNumberProperty, carousel.numberOfPagesProperty, combineOptions<PageControlOptions>( {
         orientation: options.carouselOptions.orientation
       }, options.pageControlOptions ) );
       hBoxChildren.push( pageControl );
