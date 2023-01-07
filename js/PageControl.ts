@@ -14,6 +14,7 @@ import optionize from '../../phet-core/js/optionize.js';
 import { Circle, CircleOptions, TColor, Node, NodeOptions, PressListener, PressListenerEvent } from '../../scenery/js/imports.js';
 import Tandem from '../../tandem/js/Tandem.js';
 import sun from './sun.js';
+import ReadOnlyProperty from '../../axon/js/ReadOnlyProperty.js';
 
 type SelfOptions = {
   interactive?: boolean; // {boolean} whether the control is interactive
@@ -43,10 +44,10 @@ export default class PageControl extends Node {
 
   /**
    * @param pageNumberProperty - which page is currently visible
-   * @param numberOfPages - number of pages
+   * @param numberOfPagesProperty - number of pages
    * @param providedOptions
    */
-  public constructor( pageNumberProperty: TProperty<number>, numberOfPages: number, providedOptions: PageControlOptions ) {
+  public constructor( pageNumberProperty: TProperty<number>, numberOfPagesProperty: ReadOnlyProperty<number>, providedOptions: PageControlOptions ) {
 
     const options = optionize<PageControlOptions, SelfOptions, NodeOptions>()( {
 
@@ -68,7 +69,10 @@ export default class PageControl extends Node {
       tandemNameSuffix: 'PageControl',
       visiblePropertyOptions: {
         phetioFeatured: true
-      }
+      },
+
+      // When placed in a VBox or HBox, it will re-center when the number of pages changes
+      excludeInvisibleChildrenFromBounds: true
     }, providedOptions );
 
     // validate options
@@ -91,7 +95,8 @@ export default class PageControl extends Node {
     // For horizontal orientation, pages are ordered left-to-right.
     // For vertical orientation, pages are ordered top-to-bottom.
     const dotNodes: DotNode[] = [];
-    for ( let pageNumber = 0; pageNumber < numberOfPages; pageNumber++ ) {
+    const dotListeners: ( ( numberOfPages: number ) => void )[] = [];
+    for ( let pageNumber = 0; pageNumber < numberOfPagesProperty.value; pageNumber++ ) {
 
       // dot
       const dotCenter = ( pageNumber * ( 2 * options.dotRadius + options.dotSpacing ) );
@@ -113,6 +118,12 @@ export default class PageControl extends Node {
         dotNode.cursor = 'pointer';
         dotNode.addInputListener( pressListener );
       }
+
+      const dotListener = ( numberOfPages: number ) => {
+        dotNode.visible = pageNumber < numberOfPages;
+      };
+      numberOfPagesProperty.link( dotListener );
+      dotListeners.push( dotListener );
     }
 
     // Indicate which page is selected
@@ -136,6 +147,7 @@ export default class PageControl extends Node {
 
     this.disposePageControl = () => {
       pageNumberProperty.unlink( pageNumberObserver );
+      dotListeners.forEach( dotListener => numberOfPagesProperty.unlink( dotListener ) );
     };
   }
 
