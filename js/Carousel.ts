@@ -117,11 +117,7 @@ export default class Carousel extends Node {
       const alignBox = alignGroup.createBox( item, {
 
         // The alignBoxes are in the HBox/VBox, so we must link their visibleProperties to relayout when item visibility changes
-        visibleProperty: item.visibleProperty,
-
-        tandem: item.tandem.createTandem( 'alignBox' ),
-        phetioType: IndexedNodeIO,
-        phetioState: true
+        visibleProperty: item.visibleProperty
       } );
       return alignBox;
     } );
