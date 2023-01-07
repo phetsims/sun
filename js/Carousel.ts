@@ -7,11 +7,10 @@
  * Pressing the next and previous buttons moves through the pages.
  * Movement through the pages is animated, so that items appear to scroll by.
  *
- * Note that Carousel performs layout directly on the items (Nodes) that it is provided.
- * If those Nodes appear in multiple places in the scenegraph, then it's the client's
- * responsibility to provide the Carousel with wrapped Nodes.
+ * Note that Carousel wraps each item (Node) in an alignBox to ensure all items have an equal "footprint" dimension.
  *
  * @author Chris Malley (PixelZoom, Inc.)
+ * @author Sam Reid (PhET Interactive Simulations)
  */
 
 import NumberProperty from '../../axon/js/NumberProperty.js';
@@ -24,7 +23,7 @@ import { Shape } from '../../kite/js/imports.js';
 import InstanceRegistry from '../../phet-core/js/documentation/InstanceRegistry.js';
 import merge from '../../phet-core/js/merge.js';
 import optionize, { combineOptions } from '../../phet-core/js/optionize.js';
-import { HBox, HSeparator, HSeparatorOptions, Node, NodeOptions, Rectangle, TColor, VBox, VSeparator, VSeparatorOptions } from '../../scenery/js/imports.js';
+import { AlignGroup, HBox, HSeparator, HSeparatorOptions, IndexedNodeIO, Node, NodeOptions, Rectangle, TColor, VBox, VSeparator, VSeparatorOptions } from '../../scenery/js/imports.js';
 import TSoundPlayer from '../../tambo/js/TSoundPlayer.js';
 import pushButtonSoundPlayer from '../../tambo/js/shared-sound-players/pushButtonSoundPlayer.js';
 import Tandem from '../../tandem/js/Tandem.js';
@@ -33,6 +32,8 @@ import Easing from '../../twixt/js/Easing.js';
 import CarouselButton, { CarouselButtonOptions } from './buttons/CarouselButton.js';
 import ColorConstants from './ColorConstants.js';
 import sun from './sun.js';
+import ReadOnlyProperty from '../../axon/js/ReadOnlyProperty.js';
+import DerivedProperty from '../../axon/js/DerivedProperty.js';
 
 const DEFAULT_ARROW_SIZE = new Dimension2( 20, 7 );
 
@@ -45,7 +46,6 @@ type SelfOptions = {
   lineWidth?: number; // width of the border around the carousel
   cornerRadius?: number; // radius applied to the carousel and next/previous buttons
   defaultPageNumber?: number; // page that is initially visible
-  isScrollingNodeLayoutBox?: boolean; // if true, use HBox/VBox for the contents. If false, layout is managed by Carousel
 
   // items
   itemsPerPage?: number; // number of items per page, or how many items are visible at a time in the carousel
@@ -89,7 +89,7 @@ export default class Carousel extends Node {
   private readonly itemsPerPage: number;
 
   // number of pages in the carousel
-  public readonly numberOfPages: number;
+  public readonly numberOfPagesProperty: ReadOnlyProperty<number>;
 
   // page number that is currently visible
   public readonly pageNumberProperty: Property<number>;
@@ -102,13 +102,29 @@ export default class Carousel extends Node {
   private readonly backgroundHeight: number;
 
   private readonly disposeCarousel: () => void;
-  private readonly isScrollingNodeLayoutBox: boolean;
 
   /**
    * @param items - Nodes shown in the carousel
    * @param providedOptions
    */
   public constructor( items: Node[], providedOptions?: CarouselOptions ) {
+
+    // Don't animate layout during initialization
+    let isInitialized = false;
+
+    const alignGroup = new AlignGroup();
+    const alignBoxes = items.map( item => {
+      const alignBox = alignGroup.createBox( item, {
+
+        // The alignBoxes are in the HBox/VBox, so we must link their visibleProperties to relayout when item visibility changes
+        visibleProperty: item.visibleProperty,
+
+        tandem: item.tandem.createTandem( 'alignBox' ),
+        phetioType: IndexedNodeIO,
+        phetioState: true
+      } );
+      return alignBox;
+    } );
 
     // Override defaults with specified options
     const options = optionize<CarouselOptions, SelfOptions, NodeOptions>()( {
@@ -120,7 +136,6 @@ export default class Carousel extends Node {
       lineWidth: 1,
       cornerRadius: 4,
       defaultPageNumber: 0,
-      isScrollingNodeLayoutBox: false,
 
       // items
       itemsPerPage: 4,
@@ -165,11 +180,8 @@ export default class Carousel extends Node {
     const isHorizontal = ( options.orientation === 'horizontal' );
 
     // Dimensions of largest item
-    const maxItemWidth = _.maxBy( items, ( item: Node ) => item.width )!.width;
-    const maxItemHeight = _.maxBy( items, ( item: Node ) => item.height )!.height;
-
-    // This quantity is used make some other computations independent of orientation.
-    const maxItemLength = isHorizontal ? maxItemWidth : maxItemHeight;
+    const maxItemWidth = _.maxBy( alignBoxes, ( item: Node ) => item.width )!.width;
+    const maxItemHeight = _.maxBy( alignBoxes, ( item: Node ) => item.height )!.height;
 
     // Options common to both buttons
     const buttonOptions = {
@@ -196,6 +208,9 @@ export default class Carousel extends Node {
       }
     } as const;
 
+    assert && assert( options.spacing >= options.margin, 'The spacing must be >= the margin, or you will see ' +
+                                                         'page 2 items at the end of page 1' );
+
     // Next/previous buttons
     const nextButton = new CarouselButton( combineOptions<CarouselButtonOptions>( {
       arrowDirection: isHorizontal ? 'right' : 'down',
@@ -205,13 +220,6 @@ export default class Carousel extends Node {
       arrowDirection: isHorizontal ? 'left' : 'up',
       tandem: options.tandem.createTandem( 'previousButton' )
     }, buttonOptions ) );
-
-    // Computations related to layout of items
-    const numberOfSeparators = ( options.separatorsVisible ) ? ( items.length - 1 ) : 0;
-    const scrollingLength = ( items.length * ( maxItemLength + options.spacing ) + ( numberOfSeparators * options.spacing ) + options.spacing );
-    const scrollingWidth = isHorizontal ? scrollingLength : ( maxItemWidth + 2 * options.margin );
-    const scrollingHeight = isHorizontal ? ( maxItemHeight + 2 * options.margin ) : scrollingLength;
-    let itemCenter = options.spacing + ( maxItemLength / 2 );
 
     // Options common to all separators
     const separatorOptions = {
@@ -224,85 +232,63 @@ export default class Carousel extends Node {
     // enables animation when scrolling between pages
     this.animationEnabled = options.animationEnabled;
 
-    // All items, arranged in the proper orientation, with margins and spacing.
-    // Horizontal carousel arrange items left-to-right, vertical is top-to-bottom.
-    // Translation of this node will be animated to give the effect of scrolling through the items.
-    const scrollingNode = options.isScrollingNodeLayoutBox ?
-                          ( isHorizontal ? new HBox( {
-                            spacing: options.spacing,
-                            yMargin: options.margin
-                          } ) : new VBox( {
-                            spacing: options.spacing,
-                            xMargin: options.margin
-                          } ) ) :
-                          new Rectangle( 0, 0, scrollingWidth, scrollingHeight );
+    const children: Node[] = [];
 
-    this.isScrollingNodeLayoutBox = options.isScrollingNodeLayoutBox;
-    items.forEach( item => {
+    alignBoxes.forEach( item => {
+      children.push( item );
 
-      // add the item
-      if ( isHorizontal ) {
-        item.centerX = itemCenter;
-        item.centerY = options.margin + ( maxItemHeight / 2 );
-      }
-      else {
-        item.centerX = options.margin + ( maxItemWidth / 2 );
-        item.centerY = itemCenter;
-      }
-      scrollingNode.addChild( item );
-
-      // center for the next item
-      itemCenter += ( options.spacing + maxItemLength );
-
-      // add optional separator
       if ( options.separatorsVisible ) {
-        let separator;
-        if ( isHorizontal ) {
-
-          // vertical separator, to the left of the item
-          separator = new VSeparator( combineOptions<VSeparatorOptions>( {
-            preferredHeight: scrollingHeight,
-            centerX: item.centerX + ( maxItemLength / 2 ) + options.spacing,
-            centerY: item.centerY
-          }, separatorOptions ) );
-          scrollingNode.addChild( separator );
-
-          // center for the next item
-          itemCenter = separator.centerX + options.spacing + ( maxItemLength / 2 );
-        }
-        else {
-
-          // horizontal separator, below the item
-          separator = new HSeparator( combineOptions<HSeparatorOptions>( {
-            preferredWidth: scrollingWidth,
-            centerX: item.centerX,
-            centerY: item.centerY + ( maxItemLength / 2 ) + options.spacing
-          }, separatorOptions ) );
-          scrollingNode.addChild( separator );
-
-          // center for the next item
-          itemCenter = separator.centerY + options.spacing + ( maxItemLength / 2 );
-        }
+        children.push( isHorizontal ? new VSeparator( combineOptions<VSeparatorOptions>( separatorOptions, {
+          localMinimumHeight: maxItemHeight + 2 * options.margin
+        } ) ) : new HSeparator( combineOptions<HSeparatorOptions>( separatorOptions, {
+          localMinimumWidth: maxItemWidth + 2 * options.margin
+        } ) ) );
       }
     } );
 
-    // How much to translate scrollingNode each time a next/previous button is pressed
-    let scrollingDelta = options.itemsPerPage * ( maxItemLength + options.spacing );
-    if ( options.separatorsVisible ) {
-      scrollingDelta += ( options.itemsPerPage * options.spacing );
-    }
+    // All items, arranged in the proper orientation, with margins and spacing.
+    // Horizontal carousel arrange items left-to-right, vertical is top-to-bottom.
+    // Translation of this node will be animated to give the effect of scrolling through the items.
+    const scrollingNode = isHorizontal ? new HBox( {
+      children: children,
+      spacing: options.spacing,
+      yMargin: options.separatorsVisible ? 0 : options.margin
+    } ) : new VBox( {
+      children: children,
+      spacing: options.spacing,
+      xMargin: options.separatorsVisible ? 0 : options.margin
+    } );
 
-    // Clipping window, to show one page at a time.
-    // Clips at the midpoint of spacing between items so that you don't see any stray bits of the items that shouldn't be visible.
-    let windowLength = ( scrollingDelta + options.spacing );
-    if ( options.separatorsVisible ) {
-      windowLength -= options.spacing;
-    }
+    // Number of pages
+    this.numberOfPagesProperty = DerivedProperty.deriveAny( alignBoxes.map( item => item.visibleProperty ), () => {
+      let numberOfPages = alignBoxes.filter( item => item.visible ).length / options.itemsPerPage;
+      if ( !Number.isInteger( numberOfPages ) ) {
+        numberOfPages = Math.floor( numberOfPages + 1 );
+      }
+
+      // Have to have at least one page, even if it is blank
+      return Math.max( numberOfPages, 1 );
+    }, {
+      isValidValue: v => v > 0
+    } );
+
+    // Number of the page that is visible in the carousel.
+    assert && assert( options.defaultPageNumber >= 0 && options.defaultPageNumber <= this.numberOfPagesProperty.value - 1,
+      `defaultPageNumber is out of range: ${options.defaultPageNumber}` );
+    const pageNumberProperty = new NumberProperty( options.defaultPageNumber, {
+      tandem: options.tandem.createTandem( 'pageNumberProperty' ),
+      numberType: 'Integer',
+      validValues: _.range( this.numberOfPagesProperty.value ),
+      phetioFeatured: true
+    } );
+
+    // Measure from the beginning of the first item to the end of the last item on the 1st page
+    const windowLength = isHorizontal ?
+                         alignBoxes[ options.itemsPerPage - 1 ].right - alignBoxes[ 0 ].left + options.margin * 2 :
+                         alignBoxes[ options.itemsPerPage - 1 ].bottom - alignBoxes[ 0 ].top + options.margin * 2;
     const windowWidth = isHorizontal ? windowLength : scrollingNode.width;
     const windowHeight = isHorizontal ? scrollingNode.height : windowLength;
-    const clipArea = isHorizontal ?
-                     Shape.rectangle( options.spacing / 2, 0, windowWidth - options.spacing, windowHeight ) :
-                     Shape.rectangle( 0, options.spacing / 2, windowWidth, windowHeight - options.spacing );
+    const clipArea = Shape.rectangle( 0, 0, windowWidth, windowHeight );
     const windowNode = new Node( {
       children: [ scrollingNode ],
       clipArea: clipArea
@@ -335,45 +321,38 @@ export default class Carousel extends Node {
       windowNode.centerY = backgroundNode.centerY;
     }
 
-    // Number of pages
-    let numberOfPages = items.length / options.itemsPerPage;
-    if ( !Number.isInteger( numberOfPages ) ) {
-      numberOfPages = Math.floor( numberOfPages + 1 );
-    }
-
-    // Number of the page that is visible in the carousel.
-    assert && assert( options.defaultPageNumber >= 0 && options.defaultPageNumber <= numberOfPages - 1,
-      `defaultPageNumber is out of range: ${options.defaultPageNumber}` );
-    const pageNumberProperty = new NumberProperty( options.defaultPageNumber, {
-      tandem: options.tandem.createTandem( 'pageNumberProperty' ),
-      numberType: 'Integer',
-      validValues: _.range( numberOfPages ),
-      phetioFeatured: true
-    } );
-
     // Change pages
     let scrollAnimation: Animation | null = null;
 
+    // This is called when pageNumberProperty changes AND when the total numberOfPagesProperty changes.
     const pageNumberListener = ( pageNumber: number ) => {
 
-      assert && assert( pageNumber >= 0 && pageNumber <= numberOfPages - 1, `pageNumber out of range: ${pageNumber}` );
+      assert && assert( pageNumber >= 0 && pageNumber <= this.numberOfPagesProperty.value - 1, `pageNumber out of range: ${pageNumber}` );
 
       // button state
-      nextButton.enabled = pageNumber < ( numberOfPages - 1 );
+      nextButton.enabled = pageNumber < ( this.numberOfPagesProperty.value - 1 );
       previousButton.enabled = pageNumber > 0;
-      if ( options.hideDisabledButtons ) {
+      if ( options.hideDisabledButtons || this.numberOfPagesProperty.value === 1 ) {
         nextButton.visible = nextButton.enabled;
         previousButton.visible = previousButton.enabled;
       }
-
-      const scrollingNodeMargin = options.isScrollingNodeLayoutBox ? options.spacing / 2 : 0;
 
       // stop any animation that's in progress
       scrollAnimation && scrollAnimation.stop();
 
       // Only animate if animation is enabled and PhET-iO state is not being set.  When PhET-iO state is being set (as
       // in loading a customized state), the carousel should immediately reflect the desired page
-      if ( this.animationEnabled && !phet.joist.sim.isSettingPhetioStateProperty.value ) {
+      const itemsInLayout = alignBoxes.filter( item => item.visible );
+
+      // Find the item at the top of pageNumber page
+      const firstItemOnPage = itemsInLayout[ pageNumber * options.itemsPerPage ];
+
+      // Place we want to scroll to
+      const targetValue = firstItemOnPage ? ( ( isHorizontal ? -firstItemOnPage.left : -firstItemOnPage.top ) + options.margin )
+                                          : 0;
+
+      // Do not animate during initialization.
+      if ( this.animationEnabled && !phet.joist.sim.isSettingPhetioStateProperty.value && isInitialized ) {
 
         // options that are independent of orientation
         let animationOptions = {
@@ -387,14 +366,14 @@ export default class Carousel extends Node {
           animationOptions = merge( {
             getValue: () => scrollingNode.left,
             setValue: ( value: number ) => { scrollingNode.left = value; },
-            to: -pageNumber * scrollingDelta + scrollingNodeMargin
+            to: targetValue
           }, animationOptions );
         }
         else {
           animationOptions = merge( {
             getValue: () => scrollingNode.top,
             setValue: ( value: number ) => { scrollingNode.top = value; },
-            to: -pageNumber * scrollingDelta + scrollingNodeMargin
+            to: targetValue
           }, animationOptions );
         }
 
@@ -406,15 +385,27 @@ export default class Carousel extends Node {
 
         // animation disabled, move immediate to new page
         if ( isHorizontal ) {
-          scrollingNode.left = -pageNumber * scrollingDelta + scrollingNodeMargin;
+          scrollingNode.left = targetValue;
         }
         else {
-          scrollingNode.top = -pageNumber * scrollingDelta + scrollingNodeMargin;
+          scrollingNode.top = targetValue;
         }
       }
     };
 
     pageNumberProperty.link( pageNumberListener );
+
+    const updatePageCount = () => {
+
+      if ( pageNumberProperty.value >= this.numberOfPagesProperty.value ) {
+        pageNumberProperty.value = this.numberOfPagesProperty.value - 1;
+      }
+
+      pageNumberListener( pageNumberProperty.value );
+    };
+
+    // NOTE: the alignBox visibleProperty is the same as the item Node visibleProperty
+    alignBoxes.forEach( alignBox => alignBox.visibleProperty.link( updatePageCount ) );
 
     // Buttons modify the page number
     nextButton.addListener( () => pageNumberProperty.set( pageNumberProperty.get() + 1 ) );
@@ -422,16 +413,25 @@ export default class Carousel extends Node {
 
     this.items = items;
     this.itemsPerPage = options.itemsPerPage;
-    this.numberOfPages = numberOfPages;
     this.pageNumberProperty = pageNumberProperty;
 
     options.children = [ backgroundNode, windowNode, nextButton, previousButton, foregroundNode ];
 
     this.disposeCarousel = () => {
       pageNumberProperty.unlink( pageNumberListener );
+
+      // There are 2 problems to be aware of for the alignBox disposal.
+      // 1. Each alignBox has a visibleProperty of the wrapped item Node, so that must be disconnected
+      // 2. We link to the updatePageCount method above, so we must unlink here anyways
+      alignBoxes.forEach( alignBox => {
+        alignBox.visibleProperty.unlink( updatePageCount );
+        alignBox.dispose();
+      } );
     };
 
     this.mutate( options );
+
+    isInitialized = true;
 
     // support for binder documentation, stripped out in builds and only runs when ?binder is specified
     assert && phet.chipper.queryParameters.binder && InstanceRegistry.registerDataURL( 'sun', 'Carousel', this );
@@ -466,7 +466,7 @@ export default class Carousel extends Node {
   public scrollToItem( item: Node ): void {
 
     // If the layout is dynamic, then only account for the visible items
-    const itemsInLayout = this.isScrollingNodeLayoutBox ? this.items.filter( item => item.visible ) : this.items;
+    const itemsInLayout = this.items.filter( item => item.visible );
 
     this.scrollToItemIndex( itemsInLayout.indexOf( item ) );
   }
@@ -475,7 +475,7 @@ export default class Carousel extends Node {
    * Is the specified item currently visible in the carousel?
    */
   public isItemVisible( item: Node ): boolean {
-    const itemIndex = this.items.indexOf( item );
+    const itemIndex = this.items.filter( item => item.visible ).indexOf( item );
     assert && assert( itemIndex !== -1, 'item not found' );
     return ( this.pageNumberProperty.get() === this.itemIndexToPageNumber( itemIndex ) );
   }
