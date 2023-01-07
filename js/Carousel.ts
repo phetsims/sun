@@ -23,7 +23,7 @@ import { Shape } from '../../kite/js/imports.js';
 import InstanceRegistry from '../../phet-core/js/documentation/InstanceRegistry.js';
 import merge from '../../phet-core/js/merge.js';
 import optionize, { combineOptions } from '../../phet-core/js/optionize.js';
-import { AlignGroup, HBox, HSeparator, HSeparatorOptions, IndexedNodeIO, Node, NodeOptions, Rectangle, TColor, VBox, VSeparator, VSeparatorOptions } from '../../scenery/js/imports.js';
+import { AlignGroup, HBox, HSeparator, HSeparatorOptions, Node, NodeOptions, Rectangle, TColor, VBox, VSeparator, VSeparatorOptions } from '../../scenery/js/imports.js';
 import TSoundPlayer from '../../tambo/js/TSoundPlayer.js';
 import pushButtonSoundPlayer from '../../tambo/js/shared-sound-players/pushButtonSoundPlayer.js';
 import Tandem from '../../tandem/js/Tandem.js';
