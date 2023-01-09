@@ -23,7 +23,7 @@ import { Shape } from '../../kite/js/imports.js';
 import InstanceRegistry from '../../phet-core/js/documentation/InstanceRegistry.js';
 import merge from '../../phet-core/js/merge.js';
 import optionize, { combineOptions } from '../../phet-core/js/optionize.js';
-import { AlignGroup, HBox, HSeparator, HSeparatorOptions, Node, NodeOptions, Rectangle, TColor, VBox, VSeparator, VSeparatorOptions } from '../../scenery/js/imports.js';
+import { AlignGroup, HBox, Line, Node, NodeOptions, Rectangle, TColor, VBox } from '../../scenery/js/imports.js';
 import TSoundPlayer from '../../tambo/js/TSoundPlayer.js';
 import pushButtonSoundPlayer from '../../tambo/js/shared-sound-players/pushButtonSoundPlayer.js';
 import Tandem from '../../tandem/js/Tandem.js';
@@ -135,8 +135,8 @@ export default class Carousel extends Node {
 
       // items
       itemsPerPage: 4,
-      spacing: 10,
-      margin: 10,
+      spacing: 12,
+      margin: 6,
 
       // next/previous buttons
       buttonColor: 'rgba( 200, 200, 200, 0.5 )',
@@ -217,43 +217,58 @@ export default class Carousel extends Node {
       tandem: options.tandem.createTandem( 'previousButton' )
     }, buttonOptions ) );
 
-    // Options common to all separators
-    const separatorOptions = {
-      stroke: options.separatorColor,
-      lineWidth: options.separatorLineWidth
-    };
-
     super();
 
     // enables animation when scrolling between pages
     this.animationEnabled = options.animationEnabled;
 
-    const children: Node[] = [];
-
-    alignBoxes.forEach( item => {
-      children.push( item );
-
-      if ( options.separatorsVisible ) {
-        children.push( isHorizontal ? new VSeparator( combineOptions<VSeparatorOptions>( separatorOptions, {
-          localMinimumHeight: maxItemHeight + 2 * options.margin
-        } ) ) : new HSeparator( combineOptions<HSeparatorOptions>( separatorOptions, {
-          localMinimumWidth: maxItemWidth + 2 * options.margin
-        } ) ) );
-      }
-    } );
-
     // All items, arranged in the proper orientation, with margins and spacing.
     // Horizontal carousel arrange items left-to-right, vertical is top-to-bottom.
     // Translation of this node will be animated to give the effect of scrolling through the items.
     const scrollingNode = isHorizontal ? new HBox( {
-      children: children,
+      children: alignBoxes,
       spacing: options.spacing,
-      yMargin: options.separatorsVisible ? 0 : options.margin
+      yMargin: options.margin
     } ) : new VBox( {
-      children: children,
+      children: alignBoxes,
       spacing: options.spacing,
-      xMargin: options.separatorsVisible ? 0 : options.margin
+      xMargin: options.margin
     } );
+
+    // In order to make it easy for phet-io to re-order items, the separators should not participate
+    // in the layout and have indices that get moved around.  Therefore, we add a separate layer to
+    // show the separators.
+    const separatorLayer = new Node( {
+      pickable: false
+    } );
+
+    // Cannot use VSeparator and HSeparator since they cannot participate in the index ordering.
+    const updateSeparators = () => {
+      const separators: Line[] = [];
+      const visibleChildren = scrollingNode.children.filter( child => child.visible );
+      for ( let i = 0; i < visibleChildren.length - 1; i++ ) {
+        const a = visibleChildren[ i ];
+        const b = visibleChildren[ i + 1 ];
+
+        const x1 = isHorizontal ? ( a.right + b.left ) / 2 : 0;
+        const y1 = isHorizontal ? 0 : ( a.bottom + b.top ) / 2;
+
+        const x2 = isHorizontal ? x1 : scrollingNode.width;
+        const y2 = isHorizontal ? scrollingNode.height : ( a.bottom + b.top ) / 2;
+
+        separators.push( new Line( x1, y1, x2, y2, {
+          stroke: options.separatorColor,
+          lineWidth: options.separatorLineWidth,
+          pickable: false
+        } ) );
+      }
+
+      separatorLayer.children = separators;
+    };
+
+    updateSeparators();
+
+    const powerNode = new Node( { children: options.separatorsVisible ? [ separatorLayer, scrollingNode ] : [ scrollingNode ] } );
 
     // Number of pages
     this.numberOfPagesProperty = DerivedProperty.deriveAny( alignBoxes.map( item => item.visibleProperty ), () => {
@@ -282,11 +297,11 @@ export default class Carousel extends Node {
     const windowLength = isHorizontal ?
                          alignBoxes[ options.itemsPerPage - 1 ].right - alignBoxes[ 0 ].left + options.margin * 2 :
                          alignBoxes[ options.itemsPerPage - 1 ].bottom - alignBoxes[ 0 ].top + options.margin * 2;
-    const windowWidth = isHorizontal ? windowLength : scrollingNode.width;
-    const windowHeight = isHorizontal ? scrollingNode.height : windowLength;
+    const windowWidth = isHorizontal ? windowLength : powerNode.width;
+    const windowHeight = isHorizontal ? powerNode.height : windowLength;
     const clipArea = Shape.rectangle( 0, 0, windowWidth, windowHeight );
     const windowNode = new Node( {
-      children: [ scrollingNode ],
+      children: [ powerNode ],
       clipArea: clipArea
     } );
 
@@ -338,10 +353,11 @@ export default class Carousel extends Node {
 
       // Only animate if animation is enabled and PhET-iO state is not being set.  When PhET-iO state is being set (as
       // in loading a customized state), the carousel should immediately reflect the desired page
-      const itemsInLayout = alignBoxes.filter( item => item.visible );
+      const itemsInLayout = scrollingNode.children.filter( item => item.visible );
 
       // Find the item at the top of pageNumber page
       const firstItemOnPage = itemsInLayout[ pageNumber * options.itemsPerPage ];
+
 
       // Place we want to scroll to
       const targetValue = firstItemOnPage ? ( ( isHorizontal ? -firstItemOnPage.left : -firstItemOnPage.top ) + options.margin )
@@ -360,15 +376,15 @@ export default class Carousel extends Node {
         // options that are specific to orientation
         if ( isHorizontal ) {
           animationOptions = merge( {
-            getValue: () => scrollingNode.left,
-            setValue: ( value: number ) => { scrollingNode.left = value; },
+            getValue: () => powerNode.left,
+            setValue: ( value: number ) => { powerNode.left = value; },
             to: targetValue
           }, animationOptions );
         }
         else {
           animationOptions = merge( {
-            getValue: () => scrollingNode.top,
-            setValue: ( value: number ) => { scrollingNode.top = value; },
+            getValue: () => powerNode.top,
+            setValue: ( value: number ) => { powerNode.top = value; },
             to: targetValue
           }, animationOptions );
         }
@@ -381,10 +397,10 @@ export default class Carousel extends Node {
 
         // animation disabled, move immediate to new page
         if ( isHorizontal ) {
-          scrollingNode.left = targetValue;
+          powerNode.left = targetValue;
         }
         else {
-          scrollingNode.top = targetValue;
+          powerNode.top = targetValue;
         }
       }
     };
@@ -398,6 +414,8 @@ export default class Carousel extends Node {
       }
 
       pageNumberListener( pageNumberProperty.value );
+
+      updateSeparators();
     };
 
     // NOTE: the alignBox visibleProperty is the same as the item Node visibleProperty
