@@ -212,7 +212,6 @@ export default class CarouselComboBox<T> extends WidthSizable( Node ) {
       button.dispose();
       pageControl && pageControl.dispose();
       carousel.dispose();
-      carousel.disposeCreatedNodes();
     };
   }
 

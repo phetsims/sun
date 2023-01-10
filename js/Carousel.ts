@@ -435,7 +435,7 @@ export default class Carousel extends Node {
     nextButton.addListener( () => pageNumberProperty.set( pageNumberProperty.get() + 1 ) );
     previousButton.addListener( () => pageNumberProperty.set( pageNumberProperty.get() - 1 ) );
 
-    // TODO: Items are not nodes
+    // TODO: Items are not nodes https://github.com/phetsims/sun/issues/814
     this.items = nodes;
     this.itemsPerPage = options.itemsPerPage;
     this.pageNumberProperty = pageNumberProperty;
@@ -452,6 +452,7 @@ export default class Carousel extends Node {
         alignBox.visibleProperty.unlink( updatePageCount );
         alignBox.dispose();
       } );
+      nodes.forEach( node => node.dispose() );
     };
 
     this.mutate( options );
@@ -465,10 +466,6 @@ export default class Carousel extends Node {
   public override dispose(): void {
     this.disposeCarousel();
     super.dispose();
-  }
-
-  public disposeCreatedNodes(): void {
-    this.items.forEach( node => node.dispose() );
   }
 
   /**
@@ -503,6 +500,7 @@ export default class Carousel extends Node {
 
   /**
    * Is the specified item currently visible in the carousel?
+   * TODO: function never used, delete?!! https://github.com/phetsims/sun/issues/814
    */
   // private isItemVisible( item: Node ): boolean {
   //   const itemIndex = this.items.filter( item => item.visible ).indexOf( item );
