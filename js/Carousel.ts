@@ -493,7 +493,8 @@ export default class Carousel extends Node {
   }
 
   /**
-   * Given an item, scrolls the carousel to the page that contains that item.
+   * Given an item, scrolls the carousel to the page that contains that item. This will only scroll if item is in the
+   * Carousel and visible.
    */
   public scrollToItem( item: CarouselItem ): void {
 
@@ -507,25 +508,21 @@ export default class Carousel extends Node {
     } );
     const alignBoxIndex = alignBoxesInLayout.indexOf( itemAlignBox );
 
+    assert && assert( alignBoxIndex >= 0, 'item not present or visible' );
+
     this.scrollToItemIndex( alignBoxIndex );
   }
 
+  /**
+   * Set the visibility of an item in the Carousel. This toggles visibility and will reflow the layout, such that hidden
+   * items do not leave a gap in the layout.
+   */
   public setItemVisibility( item: CarouselItem, visible: boolean ): void {
     const itemIndex = this.items.indexOf( item );
     const itemAlignBox = this.alignBoxes[ itemIndex ];
 
     itemAlignBox.visible = visible;
   }
-
-  /**
-   * Is the specified item currently visible in the carousel?
-   * TODO: function never used, delete?!! https://github.com/phetsims/sun/issues/814
-   */
-  // private isItemVisible( item: Node ): boolean {
-  //   const itemIndex = this.items.filter( item => item.visible ).indexOf( item );
-  //   assert && assert( itemIndex !== -1, 'item not found' );
-  //   return ( this.pageNumberProperty.get() === this.itemIndexToPageNumber( itemIndex ) );
-  // }
 
   /**
    * Converts an item index to a page number.
