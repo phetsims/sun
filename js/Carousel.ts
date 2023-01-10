@@ -23,7 +23,7 @@ import { Shape } from '../../kite/js/imports.js';
 import InstanceRegistry from '../../phet-core/js/documentation/InstanceRegistry.js';
 import merge from '../../phet-core/js/merge.js';
 import optionize, { combineOptions } from '../../phet-core/js/optionize.js';
-import { AlignGroup, HBox, Line, Node, NodeOptions, Rectangle, TColor, VBox } from '../../scenery/js/imports.js';
+import { AlignGroup, HBox, IndexedNodeIO, Line, Node, NodeOptions, Rectangle, TColor, VBox } from '../../scenery/js/imports.js';
 import TSoundPlayer from '../../tambo/js/TSoundPlayer.js';
 import pushButtonSoundPlayer from '../../tambo/js/shared-sound-players/pushButtonSoundPlayer.js';
 import Tandem from '../../tandem/js/Tandem.js';
@@ -34,7 +34,7 @@ import ColorConstants from './ColorConstants.js';
 import sun from './sun.js';
 import ReadOnlyProperty from '../../axon/js/ReadOnlyProperty.js';
 import DerivedProperty from '../../axon/js/DerivedProperty.js';
-import GroupItemOptions, { getGroupItemNodes } from './GroupItemOptions.js';
+import GroupItemOptions from './GroupItemOptions.js';
 
 const DEFAULT_ARROW_SIZE = new Dimension2( 20, 7 );
 
@@ -165,14 +165,14 @@ export default class Carousel extends Node {
       }
     }, providedOptions );
 
-    const nodes = getGroupItemNodes( items, options.tandem.createTandem( 'items' ) );
-
     const alignGroup = new AlignGroup();
-    const alignBoxes = nodes.map( item => {
-      const alignBox = alignGroup.createBox( item, {
+    const alignBoxes = items.map( item => {
+      const createdNode = item.createNode( Tandem.OPT_OUT );
 
-        // The alignBoxes are in the HBox/VBox, so we must link their visibleProperties to relayout when item visibility changes
-        visibleProperty: item.visibleProperty
+      const alignBox = alignGroup.createBox( createdNode, {
+        tandem: item.tandemName ? options.tandem.createTandem( 'items' ).createTandem( item.tandemName ) : Tandem.OPTIONAL,
+        phetioType: IndexedNodeIO(),
+        phetioState: true
       } );
       return alignBox;
     } );
@@ -436,7 +436,7 @@ export default class Carousel extends Node {
     previousButton.addListener( () => pageNumberProperty.set( pageNumberProperty.get() - 1 ) );
 
     // TODO: Items are not nodes https://github.com/phetsims/sun/issues/814
-    this.items = nodes;
+    this.items = alignBoxes.map( alignBox => alignBox.children[ 0 ] );
     this.itemsPerPage = options.itemsPerPage;
     this.pageNumberProperty = pageNumberProperty;
 
@@ -450,9 +450,9 @@ export default class Carousel extends Node {
       // 2. We link to the updatePageCount method above, so we must unlink here anyways
       alignBoxes.forEach( alignBox => {
         alignBox.visibleProperty.unlink( updatePageCount );
+        alignBox.children.forEach( child => child.dispose() );
         alignBox.dispose();
       } );
-      nodes.forEach( node => node.dispose() );
     };
 
     this.mutate( options );
@@ -489,6 +489,7 @@ export default class Carousel extends Node {
   /**
    * Given an item, scrolls the carousel to the page that contains that item.
    * TODO: we no longer pass in Node, we pass in a creator.  So how should we specify what to scroll to?
+   * See https://github.com/phetsims/sun/issues/814
    */
   public scrollToItem( item: Node ): void {
 
