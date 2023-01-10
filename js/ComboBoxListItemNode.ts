@@ -76,7 +76,7 @@ export default class ComboBoxListItemNode<T> extends Voicing( Node ) {
 
       // Together, these options make it possible to reorder the combo box items in studio, and save a customized
       // simulation with the new order.
-      phetioType: IndexedNodeIO(),
+      phetioType: IndexedNodeIO,
       phetioState: true,
       visiblePropertyOptions: { phetioFeatured: true }
     }, providedOptions );

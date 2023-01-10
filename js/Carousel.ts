@@ -171,7 +171,7 @@ export default class Carousel extends Node {
 
       const alignBox = alignGroup.createBox( createdNode, {
         tandem: item.tandemName ? options.tandem.createTandem( 'items' ).createTandem( item.tandemName ) : Tandem.OPTIONAL,
-        phetioType: IndexedNodeIO(),
+        phetioType: IndexedNodeIO,
         phetioState: true
       } );
       return alignBox;
