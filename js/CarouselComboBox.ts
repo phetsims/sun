@@ -115,7 +115,9 @@ export default class CarouselComboBox<T> extends WidthSizable( Node ) {
 
     // Create items for the carousel, whose API for 'items' is different than ComboBox.
     const carouselItemNodes = _.map( comboBoxItems,
-      comboBoxItem => new CarouselItemNode( property, comboBoxItem, alignGroup, options.itemNodeOptions )
+      comboBoxItem => {
+        return { createNode: ( tandem: Tandem ) => new CarouselItemNode( property, comboBoxItem, alignGroup, options.itemNodeOptions ) };
+      }
     );
     assert && assert( carouselItemNodes.length === comboBoxItems.length, 'expected a carouselItem for each comboBoxItem' );
 
@@ -210,7 +212,7 @@ export default class CarouselComboBox<T> extends WidthSizable( Node ) {
       button.dispose();
       pageControl && pageControl.dispose();
       carousel.dispose();
-      carouselItemNodes.forEach( node => node.dispose() );
+      carousel.disposeCreatedNodes();
     };
   }
 

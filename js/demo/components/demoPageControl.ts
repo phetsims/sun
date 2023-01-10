@@ -6,16 +6,19 @@
 
 import Bounds2 from '../../../../dot/js/Bounds2.js';
 import { Node, Rectangle } from '../../../../scenery/js/imports.js';
-import Carousel from '../../Carousel.js';
+import Tandem from '../../../../tandem/js/Tandem.js';
+import Carousel, { CarouselItem } from '../../Carousel.js';
 import PageControl from '../../PageControl.js';
 
 export default function demoPageControl( layoutBounds: Bounds2 ): Node {
 
   // create items
   const colors = [ 'red', 'blue', 'green', 'yellow', 'pink', 'white', 'orange', 'magenta', 'purple', 'pink' ];
-  const items: Node[] = [];
+  const items: CarouselItem[] = [];
   colors.forEach( color => {
-    items.push( new Rectangle( 0, 0, 100, 100, { fill: color, stroke: 'black' } ) );
+    items.push( {
+      createNode: ( tandem: Tandem ) => new Rectangle( 0, 0, 100, 100, { fill: color, stroke: 'black' } )
+    } );
   } );
 
   // carousel

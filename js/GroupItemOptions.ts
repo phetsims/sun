@@ -11,8 +11,7 @@ import { Node } from '../../scenery/js/imports.js';
 type GroupItemOptions = {
   createNode: ( tandem: Tandem ) => Node;
 
-  // If PhET-iO information is provided here, it should be tandemName that will be used to create the tandem for
-  // createNode. Optional to support uninstrumented sims and demos
+  // If PhET-iO instrumented, tandemName must be supplied to supply the instrumentation. Optional to support uninstrumented sims and demos
   tandemName?: string;
 };
 

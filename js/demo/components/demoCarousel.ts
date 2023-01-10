@@ -4,10 +4,11 @@
  * Demo for Carousel
  */
 
-import Carousel from '../../Carousel.js';
+import Carousel, { CarouselItem } from '../../Carousel.js';
 import RectangularPushButton from '../../buttons/RectangularPushButton.js';
 import { Circle, Font, Node, Rectangle, Text, VBox } from '../../../../scenery/js/imports.js';
 import Bounds2 from '../../../../dot/js/Bounds2.js';
+import Tandem from '../../../../tandem/js/Tandem.js';
 
 const FONT = new Font( { size: 20 } );
 
@@ -15,11 +16,11 @@ export default function demoCarousel( layoutBounds: Bounds2 ): Node {
 
   // create items
   const colors = [ 'red', 'blue', 'green', 'yellow', 'pink', 'white', 'orange', 'magenta', 'purple', 'pink' ];
-  const vItems: Node[] = [];
-  const hItems: Node[] = [];
+  const vItems: CarouselItem[] = [];
+  const hItems: CarouselItem[] = [];
   colors.forEach( color => {
-    vItems.push( new Rectangle( 0, 0, 60, 60, { fill: color, stroke: 'black' } ) );
-    hItems.push( new Circle( 30, { fill: color, stroke: 'black' } ) );
+    vItems.push( { createNode: ( tandem: Tandem ) => new Rectangle( 0, 0, 60, 60, { fill: color, stroke: 'black' } ) } );
+    hItems.push( { createNode: ( tandem: Tandem ) => new Circle( 30, { fill: color, stroke: 'black' } ) } );
   } );
 
   // vertical carousel

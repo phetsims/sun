@@ -34,8 +34,11 @@ import ColorConstants from './ColorConstants.js';
 import sun from './sun.js';
 import ReadOnlyProperty from '../../axon/js/ReadOnlyProperty.js';
 import DerivedProperty from '../../axon/js/DerivedProperty.js';
+import GroupItemOptions, { getGroupItemNodes } from './GroupItemOptions.js';
 
 const DEFAULT_ARROW_SIZE = new Dimension2( 20, 7 );
+
+export type CarouselItem = GroupItemOptions;
 
 type SelfOptions = {
 
@@ -107,20 +110,10 @@ export default class Carousel extends Node {
    * @param items - Nodes shown in the carousel
    * @param providedOptions
    */
-  public constructor( items: Node[], providedOptions?: CarouselOptions ) {
+  public constructor( items: CarouselItem[], providedOptions?: CarouselOptions ) {
 
     // Don't animate layout during initialization
     let isInitialized = false;
-
-    const alignGroup = new AlignGroup();
-    const alignBoxes = items.map( item => {
-      const alignBox = alignGroup.createBox( item, {
-
-        // The alignBoxes are in the HBox/VBox, so we must link their visibleProperties to relayout when item visibility changes
-        visibleProperty: item.visibleProperty
-      } );
-      return alignBox;
-    } );
 
     // Override defaults with specified options
     const options = optionize<CarouselOptions, SelfOptions, NodeOptions>()( {
@@ -171,6 +164,18 @@ export default class Carousel extends Node {
         phetioFeatured: true
       }
     }, providedOptions );
+
+    const nodes = getGroupItemNodes( items, options.tandem.createTandem( 'items' ) );
+
+    const alignGroup = new AlignGroup();
+    const alignBoxes = nodes.map( item => {
+      const alignBox = alignGroup.createBox( item, {
+
+        // The alignBoxes are in the HBox/VBox, so we must link their visibleProperties to relayout when item visibility changes
+        visibleProperty: item.visibleProperty
+      } );
+      return alignBox;
+    } );
 
     // To improve readability
     const isHorizontal = ( options.orientation === 'horizontal' );
@@ -294,9 +299,14 @@ export default class Carousel extends Node {
     } );
 
     // Measure from the beginning of the first item to the end of the last item on the 1st page
+
+    // This doesn't fill one page in number play preferences dialog when you forget locales=*,
+    // so take the last item, even if it is not a full page
+    const last = alignBoxes[ options.itemsPerPage - 1 ] || alignBoxes[ alignBoxes.length - 1 ];
+
     const windowLength = isHorizontal ?
-                         alignBoxes[ options.itemsPerPage - 1 ].right - alignBoxes[ 0 ].left + options.margin * 2 :
-                         alignBoxes[ options.itemsPerPage - 1 ].bottom - alignBoxes[ 0 ].top + options.margin * 2;
+                         last.right - alignBoxes[ 0 ].left + options.margin * 2 :
+                         last.bottom - alignBoxes[ 0 ].top + options.margin * 2;
     const windowWidth = isHorizontal ? windowLength : powerNode.width;
     const windowHeight = isHorizontal ? powerNode.height : windowLength;
     const clipArea = Shape.rectangle( 0, 0, windowWidth, windowHeight );
@@ -425,7 +435,8 @@ export default class Carousel extends Node {
     nextButton.addListener( () => pageNumberProperty.set( pageNumberProperty.get() + 1 ) );
     previousButton.addListener( () => pageNumberProperty.set( pageNumberProperty.get() - 1 ) );
 
-    this.items = items;
+    // TODO: Items are not nodes
+    this.items = nodes;
     this.itemsPerPage = options.itemsPerPage;
     this.pageNumberProperty = pageNumberProperty;
 
@@ -456,6 +467,10 @@ export default class Carousel extends Node {
     super.dispose();
   }
 
+  public disposeCreatedNodes(): void {
+    this.items.forEach( node => node.dispose() );
+  }
+
   /**
    * Resets the carousel to its initial state.
    * @param animationEnabled - whether to enable animation during reset
@@ -476,6 +491,7 @@ export default class Carousel extends Node {
 
   /**
    * Given an item, scrolls the carousel to the page that contains that item.
+   * TODO: we no longer pass in Node, we pass in a creator.  So how should we specify what to scroll to?
    */
   public scrollToItem( item: Node ): void {
 
@@ -488,16 +504,16 @@ export default class Carousel extends Node {
   /**
    * Is the specified item currently visible in the carousel?
    */
-  public isItemVisible( item: Node ): boolean {
-    const itemIndex = this.items.filter( item => item.visible ).indexOf( item );
-    assert && assert( itemIndex !== -1, 'item not found' );
-    return ( this.pageNumberProperty.get() === this.itemIndexToPageNumber( itemIndex ) );
-  }
+  // private isItemVisible( item: Node ): boolean {
+  //   const itemIndex = this.items.filter( item => item.visible ).indexOf( item );
+  //   assert && assert( itemIndex !== -1, 'item not found' );
+  //   return ( this.pageNumberProperty.get() === this.itemIndexToPageNumber( itemIndex ) );
+  // }
 
   /**
    * Converts an item index to a page number.
    */
-  public itemIndexToPageNumber( itemIndex: number ): number {
+  private itemIndexToPageNumber( itemIndex: number ): number {
     assert && assert( itemIndex >= 0 && itemIndex < this.items.length, `itemIndex out of range: ${itemIndex}` );
     return Math.floor( itemIndex / this.itemsPerPage );
   }
