@@ -23,7 +23,7 @@ import { Shape } from '../../kite/js/imports.js';
 import InstanceRegistry from '../../phet-core/js/documentation/InstanceRegistry.js';
 import merge from '../../phet-core/js/merge.js';
 import optionize, { combineOptions } from '../../phet-core/js/optionize.js';
-import { AlignGroup, HBox, IndexedNodeIO, Line, Node, NodeOptions, Rectangle, Separator, TColor, VBox } from '../../scenery/js/imports.js';
+import { AlignBox, AlignGroup, HBox, IndexedNodeIO, Line, Node, NodeOptions, Rectangle, Separator, TColor, VBox } from '../../scenery/js/imports.js';
 import TSoundPlayer from '../../tambo/js/TSoundPlayer.js';
 import pushButtonSoundPlayer from '../../tambo/js/shared-sound-players/pushButtonSoundPlayer.js';
 import Tandem from '../../tandem/js/Tandem.js';
@@ -87,7 +87,8 @@ export type CarouselOptions = SelfOptions & StrictOmit<NodeOptions, 'children'>;
 
 export default class Carousel extends Node {
 
-  private readonly items: Node[];
+  private readonly items: CarouselItem[];
+  private readonly alignBoxes: AlignBox[];
 
   private readonly itemsPerPage: number;
 
@@ -105,6 +106,7 @@ export default class Carousel extends Node {
   private readonly backgroundHeight: number;
 
   private readonly disposeCarousel: () => void;
+  private readonly scrollingNode: HBox | VBox;
 
   /**
    * @param items - Nodes shown in the carousel
@@ -224,6 +226,8 @@ export default class Carousel extends Node {
 
     super();
 
+    this.alignBoxes = alignBoxes;
+
     // enables animation when scrolling between pages
     this.animationEnabled = options.animationEnabled;
 
@@ -239,6 +243,8 @@ export default class Carousel extends Node {
       spacing: options.spacing,
       xMargin: options.margin
     } );
+
+    this.scrollingNode = scrollingNode;
 
     // In order to make it easy for phet-io to re-order items, the separators should not participate
     // in the layout and have indices that get moved around.  Therefore, we add a separate layer to
@@ -436,8 +442,7 @@ export default class Carousel extends Node {
     nextButton.addListener( () => pageNumberProperty.set( pageNumberProperty.get() + 1 ) );
     previousButton.addListener( () => pageNumberProperty.set( pageNumberProperty.get() - 1 ) );
 
-    // TODO: Items are not nodes https://github.com/phetsims/sun/issues/814
-    this.items = alignBoxes.map( alignBox => alignBox.children[ 0 ] );
+    this.items = items;
     this.itemsPerPage = options.itemsPerPage;
     this.pageNumberProperty = pageNumberProperty;
 
@@ -489,15 +494,27 @@ export default class Carousel extends Node {
 
   /**
    * Given an item, scrolls the carousel to the page that contains that item.
-   * TODO: we no longer pass in Node, we pass in a creator.  So how should we specify what to scroll to?
-   * See https://github.com/phetsims/sun/issues/814
    */
-  public scrollToItem( item: Node ): void {
+  public scrollToItem( item: CarouselItem ): void {
+
+    const itemIndex = this.items.indexOf( item );
+    const itemAlignBox = this.alignBoxes[ itemIndex ];
 
     // If the layout is dynamic, then only account for the visible items
-    const itemsInLayout = this.items.filter( item => item.visible );
+    const alignBoxesInLayout = this.scrollingNode.children.filter( alignBox => {
+      assert && assert( alignBox instanceof AlignBox ); // eslint-disable-line no-simple-type-checking-assertions
+      return alignBox.visible;
+    } );
+    const alignBoxIndex = alignBoxesInLayout.indexOf( itemAlignBox );
 
-    this.scrollToItemIndex( itemsInLayout.indexOf( item ) );
+    this.scrollToItemIndex( alignBoxIndex );
+  }
+
+  public setItemVisibility( item: CarouselItem, visible: boolean ): void {
+    const itemIndex = this.items.indexOf( item );
+    const itemAlignBox = this.alignBoxes[ itemIndex ];
+
+    itemAlignBox.visible = visible;
   }
 
   /**
