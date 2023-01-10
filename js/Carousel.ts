@@ -86,8 +86,14 @@ export type CarouselOptions = SelfOptions & StrictOmit<NodeOptions, 'children'>;
 
 export default class Carousel extends Node {
 
+  // Items hold the data to create the carouselItemNode
   private readonly items: CarouselItem[];
+
+  // each AlignBox holds a carouselItemNode and ensures proper sizing in the Carousel
   private readonly alignBoxes: AlignBox[];
+
+  // created from createNode() in CarouselItem
+  public readonly carouselItemNodes: Node[];
 
   private readonly itemsPerPage: number;
 
@@ -167,14 +173,11 @@ export default class Carousel extends Node {
 
     const alignGroup = new AlignGroup();
     const alignBoxes = items.map( item => {
-      const createdNode = item.createNode( Tandem.OPT_OUT );
-
-      const alignBox = alignGroup.createBox( createdNode, {
+      return alignGroup.createBox( item.createNode( Tandem.OPT_OUT ), {
         tandem: item.tandemName ? options.tandem.createTandem( 'items' ).createTandem( item.tandemName ) : Tandem.OPTIONAL,
         phetioType: IndexedNodeIO,
         phetioState: true
       } );
-      return alignBox;
     } );
 
     // To improve readability
@@ -225,6 +228,10 @@ export default class Carousel extends Node {
     super();
 
     this.alignBoxes = alignBoxes;
+    this.carouselItemNodes = alignBoxes.map( alignBox => {
+      assert && assert( alignBox.children.length === 1, 'only the created node should be the child' );
+      return alignBox.children[ 0 ];
+    } );
 
     // enables animation when scrolling between pages
     this.animationEnabled = options.animationEnabled;
@@ -520,6 +527,14 @@ export default class Carousel extends Node {
     const itemAlignBox = this.alignBoxes[ itemIndex ];
 
     itemAlignBox.visible = visible;
+  }
+
+  // Return the created node given a CarouselItem
+  public getCreatedNodeForItem( item: CarouselItem ): Node {
+    const itemIndex = this.items.indexOf( item );
+    const node = this.carouselItemNodes[ itemIndex ];
+    assert && assert( node, 'item does not have corresponding node' );
+    return node;
   }
 
   /**
