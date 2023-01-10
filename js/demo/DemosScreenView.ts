@@ -10,6 +10,8 @@ import Property from '../../../axon/js/Property.js';
 import Bounds2 from '../../../dot/js/Bounds2.js';
 import ScreenView, { ScreenViewOptions } from '../../../joist/js/ScreenView.js';
 import optionize from '../../../phet-core/js/optionize.js';
+import PickOptional from '../../../phet-core/js/types/PickOptional.js';
+import StrictOmit from '../../../phet-core/js/types/StrictOmit.js';
 import PhetFont from '../../../scenery-phet/js/PhetFont.js';
 import { Node, NodeOptions, Text } from '../../../scenery/js/imports.js';
 import Tandem from '../../../tandem/js/Tandem.js';
@@ -45,7 +47,8 @@ type SelfOptions = {
   cacheDemos?: boolean;
 };
 
-export type DemosScreenViewOptions = SelfOptions & ScreenViewOptions;
+export type DemosScreenViewOptions = SelfOptions & StrictOmit<ScreenViewOptions, 'tandem'> &
+  PickOptional<ScreenViewOptions, 'tandem'>;
 
 class DemosScreenView extends ScreenView {
 
