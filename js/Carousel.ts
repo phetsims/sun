@@ -23,7 +23,7 @@ import { Shape } from '../../kite/js/imports.js';
 import InstanceRegistry from '../../phet-core/js/documentation/InstanceRegistry.js';
 import merge from '../../phet-core/js/merge.js';
 import optionize, { combineOptions } from '../../phet-core/js/optionize.js';
-import { AlignGroup, HBox, IndexedNodeIO, Line, Node, NodeOptions, Rectangle, TColor, VBox } from '../../scenery/js/imports.js';
+import { AlignGroup, HBox, IndexedNodeIO, Line, Node, NodeOptions, Rectangle, Separator, TColor, VBox } from '../../scenery/js/imports.js';
 import TSoundPlayer from '../../tambo/js/TSoundPlayer.js';
 import pushButtonSoundPlayer from '../../tambo/js/shared-sound-players/pushButtonSoundPlayer.js';
 import Tandem from '../../tandem/js/Tandem.js';
@@ -261,7 +261,8 @@ export default class Carousel extends Node {
         const x2 = isHorizontal ? x1 : scrollingNode.width;
         const y2 = isHorizontal ? scrollingNode.height : ( a.bottom + b.top ) / 2;
 
-        separators.push( new Line( x1, y1, x2, y2, {
+        separators.push( new Separator( {
+          x1: x1, y1: y1, x2: x2, y2: y2,
           stroke: options.separatorColor,
           lineWidth: options.separatorLineWidth,
           pickable: false
