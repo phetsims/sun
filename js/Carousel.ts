@@ -63,7 +63,6 @@ type SelfOptions = {
   arrowSize?: Dimension2; // size of the arrow, in 'up' directions
   arrowStroke?: TColor; // color used for the arrow icons
   arrowLineWidth?: number; // line width used to stroke the arrow icons
-  hideDisabledButtons?: boolean; // whether to hide buttons when they are disabled
   buttonSoundPlayer?: TSoundPlayer; // sound played when carousel button is pressed
 
   // for dilating pointer areas of next/previous buttons such that they do not overlap with Carousel content
@@ -141,7 +140,6 @@ export default class Carousel extends Node {
       arrowSize: DEFAULT_ARROW_SIZE,
       arrowStroke: 'black',
       arrowLineWidth: 3,
-      hideDisabledButtons: false,
       buttonSoundPlayer: pushButtonSoundPlayer,
 
       // for dilating pointer areas of next/previous buttons such that they do not overlap with Carousel content
@@ -360,7 +358,7 @@ export default class Carousel extends Node {
       // button state
       nextButton.enabled = pageNumber < ( this.numberOfPagesProperty.value - 1 );
       previousButton.enabled = pageNumber > 0;
-      if ( options.hideDisabledButtons || this.numberOfPagesProperty.value === 1 ) {
+      if ( this.numberOfPagesProperty.value === 1 ) {
         nextButton.visible = nextButton.enabled;
         previousButton.visible = previousButton.enabled;
       }
