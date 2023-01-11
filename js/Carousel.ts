@@ -370,10 +370,11 @@ export default class Carousel extends Node {
       // button state
       nextButton.enabled = pageNumber < ( this.numberOfPagesProperty.value - 1 );
       previousButton.enabled = pageNumber > 0;
-      if ( this.numberOfPagesProperty.value === 1 ) {
-        nextButton.visible = nextButton.enabled;
-        previousButton.visible = previousButton.enabled;
-      }
+
+      // always show the buttons if there is more than one page, and always hide the buttons if there is only one page
+      const showButtons = this.numberOfPagesProperty.value > 1;
+      nextButton.visible = showButtons;
+      previousButton.visible = showButtons;
 
       // stop any animation that's in progress
       scrollAnimation && scrollAnimation.stop();
@@ -418,6 +419,7 @@ export default class Carousel extends Node {
 
     const updatePageCount = () => {
 
+      // if the only element in the last page is removed, remove the page and autoscroll to the new final page
       if ( pageNumberProperty.value >= this.numberOfPagesProperty.value ) {
         pageNumberProperty.value = this.numberOfPagesProperty.value - 1;
       }
