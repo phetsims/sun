@@ -455,10 +455,6 @@ export default class Carousel extends Node {
 
     this.disposeCarousel = () => {
       pageNumberProperty.unlink( pageNumberListener );
-
-      // There are 2 problems to be aware of for the alignBox disposal.
-      // 1. Each alignBox has a visibleProperty of the wrapped item Node, so that must be disconnected
-      // 2. We link to the updatePageCount method above, so we must unlink here anyways
       alignBoxes.forEach( alignBox => {
         alignBox.visibleProperty.unlink( updatePageCount );
         alignBox.children.forEach( child => child.dispose() );
