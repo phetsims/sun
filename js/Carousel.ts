@@ -254,9 +254,9 @@ export default class Carousel extends Node {
     // In order to make it easy for phet-io to re-order items, the separators should not participate
     // in the layout and have indices that get moved around.  Therefore, we add a separate layer to
     // show the separators.
-    const separatorLayer = new Node( {
+    const separatorLayer = options.separatorsVisible ? new Node( {
       pickable: false
-    } );
+    } ) : null;
 
     // Cannot use VSeparator and HSeparator since they cannot participate in the index ordering.
     const updateSeparators = () => {
@@ -280,13 +280,13 @@ export default class Carousel extends Node {
         } ) );
       }
 
-      separatorLayer.children = separators;
+      separatorLayer!.children = separators;
     };
 
-    updateSeparators();
+    options.separatorsVisible && updateSeparators();
 
     // Contains the scrolling node and the associated separators, if any
-    const scrollingNodeContainer = new Node( { children: options.separatorsVisible ? [ separatorLayer, scrollingNode ] : [ scrollingNode ] } );
+    const scrollingNodeContainer = new Node( { children: options.separatorsVisible ? [ separatorLayer!, scrollingNode ] : [ scrollingNode ] } );
 
     // Number of pages
     this.numberOfPagesProperty = DerivedProperty.deriveAny( alignBoxes.map( item => item.visibleProperty ), () => {
@@ -438,7 +438,7 @@ export default class Carousel extends Node {
 
       pageNumberListener( pageNumberProperty.value );
 
-      updateSeparators();
+      options.separatorsVisible && updateSeparators();
     };
 
     // NOTE: the alignBox visibleProperty is the same as the item Node visibleProperty
