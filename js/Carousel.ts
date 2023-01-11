@@ -285,7 +285,8 @@ export default class Carousel extends Node {
 
     updateSeparators();
 
-    const powerNode = new Node( { children: options.separatorsVisible ? [ separatorLayer, scrollingNode ] : [ scrollingNode ] } );
+    // Contains the scrolling node and the associated separators, if any
+    const scrollingNodeContainer = new Node( { children: options.separatorsVisible ? [ separatorLayer, scrollingNode ] : [ scrollingNode ] } );
 
     // Number of pages
     this.numberOfPagesProperty = DerivedProperty.deriveAny( alignBoxes.map( item => item.visibleProperty ), () => {
@@ -319,11 +320,11 @@ export default class Carousel extends Node {
     const windowLength = isHorizontal ?
                          last.right - alignBoxes[ 0 ].left + options.margin * 2 :
                          last.bottom - alignBoxes[ 0 ].top + options.margin * 2;
-    const windowWidth = isHorizontal ? windowLength : powerNode.width;
-    const windowHeight = isHorizontal ? powerNode.height : windowLength;
+    const windowWidth = isHorizontal ? windowLength : scrollingNodeContainer.width;
+    const windowHeight = isHorizontal ? scrollingNodeContainer.height : windowLength;
     const clipArea = Shape.rectangle( 0, 0, windowWidth, windowHeight );
     const windowNode = new Node( {
-      children: [ powerNode ],
+      children: [ scrollingNodeContainer ],
       clipArea: clipArea
     } );
 
@@ -398,15 +399,15 @@ export default class Carousel extends Node {
         // options that are specific to orientation
         if ( isHorizontal ) {
           animationOptions = merge( {
-            getValue: () => powerNode.left,
-            setValue: ( value: number ) => { powerNode.left = value; },
+            getValue: () => scrollingNodeContainer.left,
+            setValue: ( value: number ) => { scrollingNodeContainer.left = value; },
             to: targetValue
           }, animationOptions );
         }
         else {
           animationOptions = merge( {
-            getValue: () => powerNode.top,
-            setValue: ( value: number ) => { powerNode.top = value; },
+            getValue: () => scrollingNodeContainer.top,
+            setValue: ( value: number ) => { scrollingNodeContainer.top = value; },
             to: targetValue
           }, animationOptions );
         }
@@ -419,10 +420,10 @@ export default class Carousel extends Node {
 
         // animation disabled, move immediate to new page
         if ( isHorizontal ) {
-          powerNode.left = targetValue;
+          scrollingNodeContainer.left = targetValue;
         }
         else {
-          powerNode.top = targetValue;
+          scrollingNodeContainer.top = targetValue;
         }
       }
     };
