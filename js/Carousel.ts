@@ -22,7 +22,7 @@ import Dimension2 from '../../dot/js/Dimension2.js';
 import { Shape } from '../../kite/js/imports.js';
 import InstanceRegistry from '../../phet-core/js/documentation/InstanceRegistry.js';
 import optionize, { combineOptions } from '../../phet-core/js/optionize.js';
-import { AlignBox, AlignGroup, Color, HBox, IndexedNodeIO, Line, Node, NodeOptions, Path, Rectangle, Separator, TColor, VBox } from '../../scenery/js/imports.js';
+import { AlignBox, AlignGroup, HBox, IndexedNodeIO, Line, Node, NodeOptions, Rectangle, Separator, TColor, VBox } from '../../scenery/js/imports.js';
 import TSoundPlayer from '../../tambo/js/TSoundPlayer.js';
 import pushButtonSoundPlayer from '../../tambo/js/shared-sound-players/pushButtonSoundPlayer.js';
 import Tandem from '../../tandem/js/Tandem.js';
@@ -324,13 +324,12 @@ export default class Carousel extends Node {
     const windowHeight = isHorizontal ? scrollingNodeContainer.height : windowLength;
     const clipArea = Shape.rectangle( 0, 0, windowWidth, windowHeight );
     const windowNode = new Node( {
-      children: [
-        scrollingNodeContainer,
+      children: [ scrollingNodeContainer ],
+      clipArea: clipArea,
 
-        // TODO: https://github.com/phetsims/sun/issues/814 This centers the area in expression exchange. But why is it necessary?
-        new Path( clipArea, { lineWidth: 0.1, stroke: Color.TRANSPARENT, pickable: false } )
-      ],
-      clipArea: clipArea
+      // Specify the local bounds in order to ensure centering. For full pages, this is not necessary since the scrollingNodeContainer
+      // already spans the full area. But for a partial page, this is necessary so the window will be centered.
+      localBounds: clipArea.getBounds()
     } );
 
     // Background - displays the carousel's fill color
