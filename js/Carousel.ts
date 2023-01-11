@@ -21,7 +21,6 @@ import Timer from '../../axon/js/Timer.js';
 import Dimension2 from '../../dot/js/Dimension2.js';
 import { Shape } from '../../kite/js/imports.js';
 import InstanceRegistry from '../../phet-core/js/documentation/InstanceRegistry.js';
-import merge from '../../phet-core/js/merge.js';
 import optionize, { combineOptions } from '../../phet-core/js/optionize.js';
 import { AlignBox, AlignGroup, HBox, IndexedNodeIO, Line, Node, NodeOptions, Rectangle, Separator, TColor, VBox } from '../../scenery/js/imports.js';
 import TSoundPlayer from '../../tambo/js/TSoundPlayer.js';
@@ -263,14 +262,16 @@ export default class Carousel extends Node {
       const separators: Line[] = [];
       const visibleChildren = scrollingNode.children.filter( child => child.visible );
       for ( let i = 0; i < visibleChildren.length - 1; i++ ) {
-        const a = visibleChildren[ i ];
-        const b = visibleChildren[ i + 1 ];
 
-        const x1 = isHorizontal ? ( a.right + b.left ) / 2 : 0;
-        const y1 = isHorizontal ? 0 : ( a.bottom + b.top ) / 2;
+        // Get adjacent pairs of Nodes
+        const node1 = visibleChildren[ i ];
+        const node2 = visibleChildren[ i + 1 ];
+
+        const x1 = isHorizontal ? ( node1.right + node2.left ) / 2 : 0;
+        const y1 = isHorizontal ? 0 : ( node1.bottom + node2.top ) / 2;
 
         const x2 = isHorizontal ? x1 : scrollingNode.width;
-        const y2 = isHorizontal ? scrollingNode.height : ( a.bottom + b.top ) / 2;
+        const y2 = isHorizontal ? scrollingNode.height : ( node1.bottom + node2.top ) / 2;
 
         separators.push( new Separator( {
           x1: x1, y1: y1, x2: x2, y2: y2,
@@ -288,7 +289,7 @@ export default class Carousel extends Node {
     // Contains the scrolling node and the associated separators, if any
     const scrollingNodeContainer = new Node( { children: options.separatorsVisible ? [ separatorLayer!, scrollingNode ] : [ scrollingNode ] } );
 
-    // Number of pages
+    // Number of pages is derived from the total number of items and the number of items per page
     this.numberOfPagesProperty = DerivedProperty.deriveAny( alignBoxes.map( item => item.visibleProperty ), () => {
       let numberOfPages = alignBoxes.filter( item => item.visible ).length / options.itemsPerPage;
       if ( !Number.isInteger( numberOfPages ) ) {
@@ -311,12 +312,11 @@ export default class Carousel extends Node {
       phetioFeatured: true
     } );
 
-    // Measure from the beginning of the first item to the end of the last item on the 1st page
-
     // This doesn't fill one page in number play preferences dialog when you forget locales=*,
     // so take the last item, even if it is not a full page
     const last = alignBoxes[ options.itemsPerPage - 1 ] || alignBoxes[ alignBoxes.length - 1 ];
 
+    // Measure from the beginning of the first item to the end of the last item on the 1st page
     const windowLength = isHorizontal ?
                          last.right - alignBoxes[ 0 ].left + options.margin * 2 :
                          last.bottom - alignBoxes[ 0 ].top + options.margin * 2;
@@ -381,7 +381,6 @@ export default class Carousel extends Node {
       // Find the item at the top of pageNumber page
       const firstItemOnPage = itemsInLayout[ pageNumber * options.itemsPerPage ];
 
-
       // Place we want to scroll to
       const targetValue = firstItemOnPage ? ( ( isHorizontal ? -firstItemOnPage.left : -firstItemOnPage.top ) + options.margin )
                                           : 0;
@@ -389,42 +388,25 @@ export default class Carousel extends Node {
       // Do not animate during initialization.
       if ( this.animationEnabled && !phet.joist.sim.isSettingPhetioStateProperty.value && isInitialized ) {
 
-        // options that are independent of orientation
-        let animationOptions = {
+        // create and start the scroll animation
+        scrollAnimation = new Animation( {
+
+          // options not specific to orientation
           duration: options.animationDuration,
           stepEmitter: options.stepEmitter,
-          easing: Easing.CUBIC_IN_OUT
-        };
+          easing: Easing.CUBIC_IN_OUT,
+          to: targetValue,
 
-        // options that are specific to orientation
-        if ( isHorizontal ) {
-          animationOptions = merge( {
-            getValue: () => scrollingNodeContainer.left,
-            setValue: ( value: number ) => { scrollingNodeContainer.left = value; },
-            to: targetValue
-          }, animationOptions );
-        }
-        else {
-          animationOptions = merge( {
-            getValue: () => scrollingNodeContainer.top,
-            setValue: ( value: number ) => { scrollingNodeContainer.top = value; },
-            to: targetValue
-          }, animationOptions );
-        }
-
-        // create and start the scroll animation
-        scrollAnimation = new Animation( animationOptions );
+          // options that are specific to orientation
+          getValue: () => isHorizontal ? scrollingNodeContainer.left : scrollingNodeContainer.top,
+          setValue: ( value: number ) => { scrollingNodeContainer[ isHorizontal ? 'left' : 'top' ] = value; }
+        } );
         scrollAnimation.start();
       }
       else {
 
         // animation disabled, move immediate to new page
-        if ( isHorizontal ) {
-          scrollingNodeContainer.left = targetValue;
-        }
-        else {
-          scrollingNodeContainer.top = targetValue;
-        }
+        scrollingNodeContainer[ isHorizontal ? 'left' : 'top' ] = targetValue;
       }
     };
 
