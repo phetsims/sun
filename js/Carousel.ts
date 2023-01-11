@@ -119,7 +119,7 @@ export default class Carousel extends Node {
    */
   public constructor( items: CarouselItem[], providedOptions?: CarouselOptions ) {
 
-    // Don't animate layout during initialization
+    // Don't animate during initialization
     let isInitialized = false;
 
     // Override defaults with specified options
