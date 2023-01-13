@@ -143,6 +143,9 @@ export default class ComboBox<T> extends WidthSizable( Node ) {
 
   private readonly listPosition: ComboBoxListPosition;
 
+  // List of nodes created from ComboBoxItems to be displayed with their corresponding value. See ComboBoxItem.createNode().
+  public readonly nodes: Node[];
+
   // button that shows the current selection (internal)
   public button: ComboBoxButton<T>;
 
@@ -262,6 +265,8 @@ export default class ComboBox<T> extends WidthSizable( Node ) {
       `invalid align: ${options.align}` );
 
     super();
+
+    this.nodes = nodes;
 
     this.listPosition = options.listPosition;
 
