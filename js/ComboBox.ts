@@ -260,21 +260,6 @@ export default class ComboBox<T> extends WidthSizable( Node ) {
       this.addChild( options.labelNode );
     }
 
-    // We'll need to adjust our button's preferred width if we have a label
-    const buttonPreferredWidthProperty = options.labelNode ?
-                                         new DerivedProperty( [
-                                           this.localPreferredWidthProperty,
-                                           options.labelNode.boundsProperty
-                                         ], ( localPreferredWidth, labelBounds ) => {
-                                           // If we don't have a preferred width, we'll forward that to our button
-                                           return localPreferredWidth === null ?
-                                                  null :
-                                                  localPreferredWidth - labelBounds.width - options.labelXSpacing;
-                                         }, {
-                                           reentrant: true
-                                         } ) :
-                                         this.localPreferredWidthProperty;
-
     // We'll need to adjust our (incoming, from the button) minimum width if we have a label.
     let buttonMinimumWidthProperty = this.localMinimumWidthProperty;
     let buttonMinimumWidthMultilink: UnknownMultilink | null = null;
@@ -290,6 +275,21 @@ export default class ComboBox<T> extends WidthSizable( Node ) {
         this.localMinimumWidth = buttonMinimumWidth === null ? null : buttonMinimumWidth + options.labelXSpacing + labelBounds.width;
       } );
     }
+
+    // We'll need to adjust our button's preferred width if we have a label
+    const buttonPreferredWidthProperty = options.labelNode ?
+                                         new DerivedProperty( [
+                                           this.localPreferredWidthProperty,
+                                           options.labelNode.boundsProperty
+                                         ], ( localPreferredWidth, labelBounds ) => {
+                                           // If we don't have a preferred width, we'll forward that to our button
+                                           return localPreferredWidth === null ?
+                                                  null :
+                                                  localPreferredWidth - labelBounds.width - options.labelXSpacing;
+                                         }, {
+                                           reentrant: true
+                                         } ) :
+                                         this.localPreferredWidthProperty;
 
     this.button = new ComboBoxButton( property, items, {
       align: options.align,
