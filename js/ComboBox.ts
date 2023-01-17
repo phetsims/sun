@@ -24,7 +24,7 @@ import dotRandom from '../../dot/js/dotRandom.js';
 import Vector2 from '../../dot/js/Vector2.js';
 import InstanceRegistry from '../../phet-core/js/documentation/InstanceRegistry.js';
 import optionize from '../../phet-core/js/optionize.js';
-import { Display, extendsWidthSizable, Focus, FocusManager, isWidthSizable, ManualConstraint, Node, NodeOptions, PDOMBehaviorFunction, PDOMPeer, PDOMValueType, TColor, TInputListener, TPaint, WidthSizable, WidthSizableOptions } from '../../scenery/js/imports.js';
+import { Display, extendsWidthSizable, Focus, FocusManager, isWidthSizable, Node, NodeOptions, PDOMBehaviorFunction, PDOMPeer, PDOMValueType, TColor, TInputListener, TPaint, WidthSizable, WidthSizableOptions } from '../../scenery/js/imports.js';
 import TSoundPlayer from '../../tambo/js/TSoundPlayer.js';
 import generalCloseSoundPlayer from '../../tambo/js/shared-sound-players/generalCloseSoundPlayer.js';
 import generalOpenSoundPlayer from '../../tambo/js/shared-sound-players/generalOpenSoundPlayer.js';
@@ -39,8 +39,6 @@ import DerivedProperty from '../../axon/js/DerivedProperty.js';
 import IntentionalAny from '../../phet-core/js/types/IntentionalAny.js';
 import TReadOnlyProperty from '../../axon/js/TReadOnlyProperty.js';
 import LinkableProperty from '../../axon/js/LinkableProperty.js';
-import TinyProperty from '../../axon/js/TinyProperty.js';
-import Multilink, { UnknownMultilink } from '../../axon/js/Multilink.js';
 import { SpeakableResolvedResponse } from '../../utterance-queue/js/ResponsePacket.js';
 import GroupItemOptions, { getGroupItemNodes } from './GroupItemOptions.js';
 
@@ -82,9 +80,6 @@ const HELP_TEXT_BEHAVIOR: PDOMBehaviorFunction = ( node, options, helpText, othe
 type SelfOptions = {
   align?: ComboBoxAlign;
   listPosition?: ComboBoxListPosition;
-
-  // optional label, placed to the left of the combo box
-  labelNode?: Node | null;
 
   // horizontal space between label and combo box
   labelXSpacing?: number;
@@ -196,7 +191,6 @@ export default class ComboBox<T> extends WidthSizable( Node ) {
 
       align: 'left',
       listPosition: 'below',
-      labelNode: null,
       labelXSpacing: 10,
       disabledOpacity: 0.5,
       cornerRadius: 4,
@@ -270,43 +264,6 @@ export default class ComboBox<T> extends WidthSizable( Node ) {
 
     this.listPosition = options.listPosition;
 
-    // optional label
-    if ( options.labelNode !== null ) {
-      this.addChild( options.labelNode );
-    }
-
-    // We'll need to adjust our (incoming, from the button) minimum width if we have a label.
-    let buttonMinimumWidthProperty = this.localMinimumWidthProperty;
-    let buttonMinimumWidthMultilink: UnknownMultilink | null = null;
-    if ( options.labelNode ) {
-      buttonMinimumWidthProperty = new TinyProperty<number | null>( null );
-
-      buttonMinimumWidthMultilink = Multilink.lazyMultilink( [
-        buttonMinimumWidthProperty,
-        options.labelNode.boundsProperty
-      ], ( buttonMinimumWidth, labelBounds ) => {
-        // If we can't get a minimumWidth from our button, we can't apply that here (ButtonNode should be guaranteed to
-        // generate a numeric minimumWidth
-        this.localMinimumWidth = buttonMinimumWidth === null ? null : buttonMinimumWidth + options.labelXSpacing + labelBounds.width;
-      } );
-    }
-
-    // We'll need to adjust our button's preferred width if we have a label
-    const buttonPreferredWidthProperty =
-      options.labelNode ?
-      new DerivedProperty( [
-        this.localPreferredWidthProperty,
-        options.labelNode.boundsProperty
-      ], ( localPreferredWidth, labelBounds ) => {
-        // If we don't have a preferred width, we'll forward that to our button
-        return localPreferredWidth === null ?
-               null :
-               localPreferredWidth - labelBounds.width - options.labelXSpacing;
-      }, {
-        reentrant: true
-      } ) :
-      this.localPreferredWidthProperty;
-
     this.button = new ComboBoxButton( property, items, nodes, {
       align: options.align,
       arrowDirection: ( options.listPosition === 'below' ) ? 'down' : 'up',
@@ -320,8 +277,8 @@ export default class ComboBox<T> extends WidthSizable( Node ) {
       touchAreaYDilation: options.buttonTouchAreaYDilation,
       mouseAreaXDilation: options.buttonMouseAreaXDilation,
       mouseAreaYDilation: options.buttonMouseAreaYDilation,
-      localPreferredWidthProperty: buttonPreferredWidthProperty,
-      localMinimumWidthProperty: buttonMinimumWidthProperty,
+      localPreferredWidthProperty: this.localPreferredWidthProperty,
+      localMinimumWidthProperty: this.localMinimumWidthProperty,
 
       comboBoxVoicingNameResponsePattern: options.comboBoxVoicingNameResponsePattern,
 
@@ -331,14 +288,6 @@ export default class ComboBox<T> extends WidthSizable( Node ) {
       tandem: options.tandem.createTandem( 'button' )
     } );
     this.addChild( this.button );
-
-    // put optional label to left of button
-    if ( options.labelNode ) {
-      ManualConstraint.create( this, [ this.button, options.labelNode ], ( buttonProxy, labelProxy ) => {
-        buttonProxy.left = labelProxy.right + options.labelXSpacing;
-        buttonProxy.centerY = labelProxy.centerY;
-      } );
-    }
 
     // TODO: https://github.com/phetsims/sun/issues/797 don't forget dispose
     this.listBox = new ComboBoxListBox( property, items, nodes,
@@ -478,12 +427,6 @@ export default class ComboBox<T> extends WidthSizable( Node ) {
       this.displayOnlyProperty.dispose(); // tandems must be cleaned up
       this.listBox.dispose();
       this.button.dispose();
-
-      if ( options.labelNode ) {
-        buttonPreferredWidthProperty.dispose();
-        buttonMinimumWidthProperty.dispose();
-        buttonMinimumWidthMultilink && buttonMinimumWidthMultilink.dispose();
-      }
     };
 
     // support for binder documentation, stripped out in builds and only runs when ?binder is specified
