@@ -27,20 +27,24 @@ export default function demoCarousel( layoutBounds: Bounds2 ): Node {
   const vCarousel = new Carousel( vItems, {
     orientation: 'vertical',
     separatorsVisible: true,
-    buttonTouchAreaXDilation: 5,
-    buttonTouchAreaYDilation: 15,
-    buttonMouseAreaXDilation: 2,
-    buttonMouseAreaYDilation: 7
+    buttonOptions: {
+      touchAreaXDilation: 5,
+      touchAreaYDilation: 15,
+      mouseAreaXDilation: 2,
+      mouseAreaYDilation: 7
+    }
   } );
 
   // horizontal carousel
   const hCarousel = new Carousel( hItems, {
     orientation: 'horizontal',
     separatorsVisible: true,
-    buttonTouchAreaXDilation: 15,
-    buttonTouchAreaYDilation: 5,
-    buttonMouseAreaXDilation: 7,
-    buttonMouseAreaYDilation: 2,
+    buttonOptions: {
+      touchAreaXDilation: 15,
+      touchAreaYDilation: 5,
+      mouseAreaXDilation: 7,
+      mouseAreaYDilation: 2
+    },
     centerX: vCarousel.centerX,
     top: vCarousel.bottom + 50
   } );

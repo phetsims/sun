@@ -68,7 +68,9 @@ export default class CarouselComboBox<T> extends WidthSizable( Node ) {
       },
 
       carouselOptions: {
-        arrowSize: new Dimension2( 20, 4 ),
+        buttonOptions: {
+          arrowSize: new Dimension2( 20, 4 ),
+        },
 
         // Like ComboBox, 'vertical' is the only orientation supported (verified below).
         orientation: 'vertical',
