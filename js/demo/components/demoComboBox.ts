@@ -1,4 +1,4 @@
-// Copyright 2022, University of Colorado Boulder
+// Copyright 2022-2023, University of Colorado Boulder
 
 /**
  * Demo for ComboBox
@@ -20,7 +20,7 @@ export default function demoComboBox( layoutBounds: Bounds2 ): Node {
   values.forEach( value => {
     items.push( {
       value: value,
-      node: new Text( value, { font: FONT } )
+      createNode: () => new Text( value, { font: FONT } )
     } );
   } );
 

@@ -1,4 +1,4 @@
-// Copyright 2018-2022, University of Colorado Boulder
+// Copyright 2018-2023, University of Colorado Boulder
 
 /**
  * Shows one node if the property is true or another node if the property is false. Used to indicate boolean state.
@@ -31,8 +31,8 @@ export default class BooleanToggleNode extends ToggleNode<boolean> {
                       falseNode: Node,
                       providedOptions?: BooleanToggleNodeOptions ) {
     super( booleanProperty, [
-      { value: true, createNode: tandem => trueNode },
-      { value: false, createNode: tandem => falseNode }
+      { value: true, createNode: () => trueNode },
+      { value: false, createNode: () => falseNode }
     ], providedOptions );
   }
 }

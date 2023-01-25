@@ -1,4 +1,4 @@
-// Copyright 2021-2022, University of Colorado Boulder
+// Copyright 2021-2023, University of Colorado Boulder
 
 /**
  * CarouselComboBox behaves like a combo box, but its listbox is a carousel. This allows you to scroll through a
@@ -26,13 +26,14 @@ import Multilink from '../../axon/js/Multilink.js';
 import Dimension2 from '../../dot/js/Dimension2.js';
 import dotRandom from '../../dot/js/dotRandom.js';
 import optionize, { combineOptions } from '../../phet-core/js/optionize.js';
-import { AlignBox, AlignGroup, Color, Display, HBox, TColor, Node, NodeOptions, PressListener, Rectangle, SceneryEvent, VBox, WidthSizable, WidthSizableOptions } from '../../scenery/js/imports.js';
+import { AlignBox, AlignGroup, Color, Display, HBox, Node, NodeOptions, PressListener, Rectangle, SceneryEvent, TColor, VBox, WidthSizable, WidthSizableOptions } from '../../scenery/js/imports.js';
 import Tandem from '../../tandem/js/Tandem.js';
 import Carousel, { CarouselOptions } from './Carousel.js';
 import ComboBoxButton, { ComboBoxButtonOptions } from './ComboBoxButton.js';
 import PageControl, { PageControlOptions } from './PageControl.js';
 import sun from './sun.js';
 import { ComboBoxItem } from './ComboBox.js';
+import { getGroupItemNodes } from './GroupItemOptions.js';
 
 type SelfOptions = {
 
@@ -69,7 +70,7 @@ export default class CarouselComboBox<T> extends WidthSizable( Node ) {
 
       carouselOptions: {
         buttonOptions: {
-          arrowSize: new Dimension2( 20, 4 ),
+          arrowSize: new Dimension2( 20, 4 )
         },
 
         // Like ComboBox, 'vertical' is the only orientation supported (verified below).
@@ -115,10 +116,13 @@ export default class CarouselComboBox<T> extends WidthSizable( Node ) {
     // Make items in the carousel have the same width and height.
     const alignGroup = new AlignGroup();
 
+    // TODO: These are the nodes, not the ComboBoxItems, is this name best? https://github.com/phetsims/sun/issues/797
+    const nodes = getGroupItemNodes( comboBoxItems, options.tandem.createTandem( 'items' ) );
+
     // Create items for the carousel, whose API for 'items' is different than ComboBox.
     const carouselItemNodes = _.map( comboBoxItems,
-      comboBoxItem => {
-        return { createNode: ( tandem: Tandem ) => new CarouselItemNode( property, comboBoxItem, alignGroup, options.itemNodeOptions ) };
+      ( comboBoxItem, i ) => {
+        return { createNode: ( tandem: Tandem ) => new CarouselItemNode( property, comboBoxItem, nodes[ i ], alignGroup, options.itemNodeOptions ) };
       }
     );
     assert && assert( carouselItemNodes.length === comboBoxItems.length, 'expected a carouselItem for each comboBoxItem' );
@@ -145,7 +149,7 @@ export default class CarouselComboBox<T> extends WidthSizable( Node ) {
     } );
 
     // Pressing this button pops the carousel up and down
-    const button = new ComboBoxButton( property, comboBoxItems, combineOptions<ComboBoxButtonOptions>( {
+    const button = new ComboBoxButton( property, comboBoxItems, nodes, combineOptions<ComboBoxButtonOptions>( {
       listener: () => {
         carouselAndPageControl.visible = !carouselAndPageControl.visible;
       },
@@ -242,7 +246,7 @@ class CarouselItemNode<T> extends Node {
 
   private readonly disposeCarouselItemNode: () => void;
 
-  public constructor( property: TProperty<T>, comboBoxItem: ComboBoxItem<T>, alignGroup: AlignGroup, providedOptions?: CarouselItemNodeOptions ) {
+  public constructor( property: TProperty<T>, comboBoxItem: ComboBoxItem<T>, node: Node, alignGroup: AlignGroup, providedOptions?: CarouselItemNodeOptions ) {
 
     const options = optionize<CarouselItemNodeOptions, CarouselItemNodeSelfOptions, NodeOptions>()( {
 
@@ -257,7 +261,7 @@ class CarouselItemNode<T> extends Node {
       tandem: Tandem.OPTIONAL
     }, providedOptions );
 
-    const uniformNode = new AlignBox( comboBoxItem.node, {
+    const uniformNode = new AlignBox( node, {
       xAlign: options.align,
       group: alignGroup
     } );

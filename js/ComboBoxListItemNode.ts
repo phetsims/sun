@@ -1,4 +1,4 @@
-// Copyright 2019-2022, University of Colorado Boulder
+// Copyright 2019-2023, University of Colorado Boulder
 
 /**
  * Node for an item in a combo box list.
@@ -47,7 +47,7 @@ export default class ComboBoxListItemNode<T> extends Voicing( Node ) {
 
   private readonly disposeComboBoxListItemNode: () => void;
 
-  public constructor( item: ComboBoxItem<T>, highlightWidthProperty: TReadOnlyProperty<number>, highlightHeightProperty: TReadOnlyProperty<number>, providedOptions?: ComboBoxListItemNodeOptions ) {
+  public constructor( item: ComboBoxItem<T>, node: Node, highlightWidthProperty: TReadOnlyProperty<number>, highlightHeightProperty: TReadOnlyProperty<number>, providedOptions?: ComboBoxListItemNodeOptions ) {
 
     const options = optionize<ComboBoxListItemNodeOptions, SelfOptions, ParentOptions>()( {
 
@@ -111,7 +111,7 @@ export default class ComboBoxListItemNode<T> extends Voicing( Node ) {
 
     // Wrapper for the item's Node. Do not transform item.node because it is shared with ComboBoxButton!
     const itemNodeWrapper = new Node( {
-      children: [ item.node ]
+      children: [ node ]
     } );
 
     // Adjust the size when the highlight size changes.

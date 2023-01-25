@@ -1,4 +1,4 @@
-// Copyright 2013-2022, University of Colorado Boulder
+// Copyright 2013-2023, University of Colorado Boulder
 
 /**
  * Scenery-based combo box. Composed of a button and a popup 'list box' of items. ComboBox has no interaction of its
@@ -24,7 +24,7 @@ import dotRandom from '../../dot/js/dotRandom.js';
 import Vector2 from '../../dot/js/Vector2.js';
 import InstanceRegistry from '../../phet-core/js/documentation/InstanceRegistry.js';
 import optionize from '../../phet-core/js/optionize.js';
-import { Display, extendsWidthSizable, Focus, FocusManager, isWidthSizable, ManualConstraint, Node, NodeOptions, PDOMBehaviorFunction, PDOMPeer, PDOMValueType, TColor, TInputListener, TPaint, WidthSizable, WidthSizableOptions } from '../../scenery/js/imports.js';
+import { Display, extendsWidthSizable, Focus, FocusManager, isWidthSizable, Node, NodeOptions, PDOMBehaviorFunction, PDOMPeer, PDOMValueType, TColor, TInputListener, TPaint, WidthSizable, WidthSizableOptions } from '../../scenery/js/imports.js';
 import TSoundPlayer from '../../tambo/js/TSoundPlayer.js';
 import generalCloseSoundPlayer from '../../tambo/js/shared-sound-players/generalCloseSoundPlayer.js';
 import generalOpenSoundPlayer from '../../tambo/js/shared-sound-players/generalOpenSoundPlayer.js';
@@ -39,9 +39,8 @@ import DerivedProperty from '../../axon/js/DerivedProperty.js';
 import IntentionalAny from '../../phet-core/js/types/IntentionalAny.js';
 import TReadOnlyProperty from '../../axon/js/TReadOnlyProperty.js';
 import LinkableProperty from '../../axon/js/LinkableProperty.js';
-import TinyProperty from '../../axon/js/TinyProperty.js';
-import Multilink, { UnknownMultilink } from '../../axon/js/Multilink.js';
 import { SpeakableResolvedResponse } from '../../utterance-queue/js/ResponsePacket.js';
+import GroupItemOptions, { getGroupItemNodes } from './GroupItemOptions.js';
 
 // const
 const LIST_POSITION_VALUES = [ 'above', 'below' ] as const; // where the list pops up relative to the button
@@ -52,19 +51,13 @@ export type ComboBoxItem<T> = {
   // the value associated with the item
   value: T;
 
-  // the node displayed in the combo box for the item
-  node: Node;
-
   // Sound that will be played when this item is selected.  If set to `null` a default sound will be used that is based
   // on this item's position in the combo box list.  A value of `nullSoundPlayer` can be used to disable.
   soundPlayer?: TSoundPlayer | null;
 
-  // phet-io - the tandem name for this item's associated Node in the combo box
-  tandemName?: string | null;
-
   // pdom - the label for this item's associated Node in the combo box
   a11yName?: PDOMValueType | null;
-};
+} & GroupItemOptions;
 
 export type ComboBoxListPosition = typeof LIST_POSITION_VALUES[number];
 export type ComboBoxAlign = typeof ALIGN_VALUES[number];
@@ -87,9 +80,6 @@ const HELP_TEXT_BEHAVIOR: PDOMBehaviorFunction = ( node, options, helpText, othe
 type SelfOptions = {
   align?: ComboBoxAlign;
   listPosition?: ComboBoxListPosition;
-
-  // optional label, placed to the left of the combo box
-  labelNode?: Node | null;
 
   // horizontal space between label and combo box
   labelXSpacing?: number;
@@ -148,6 +138,9 @@ export default class ComboBox<T> extends WidthSizable( Node ) {
 
   private readonly listPosition: ComboBoxListPosition;
 
+  // List of nodes created from ComboBoxItems to be displayed with their corresponding value. See ComboBoxItem.createNode().
+  public readonly nodes: Node[];
+
   // button that shows the current selection (internal)
   public button: ComboBoxButton<T>;
 
@@ -185,9 +178,7 @@ export default class ComboBox<T> extends WidthSizable( Node ) {
     assert && assert( _.uniqBy( items, ( item: ComboBoxItem<T> ) => item.value ).length === items.length,
       'items must have unique values' );
     assert && items.forEach( item => {
-      assert && assert( !item.node.hasPDOMContent, 'Accessibility is provided by ComboBoxItemNode and ' +
-                                                   'ComboBoxItem.a11yName. Additional PDOM content in the provided ' +
-                                                   'Node could break accessibility.' );
+      // assert && assert( !item.hasOwnProperty( 'node' ), 'we use createNode now' );
       assert && assert( !item.tandemName || item.tandemName.endsWith( ComboBox.ITEM_TANDEM_NAME_SUFFIX ),
         `ComboBoxItem tandemName must end with '${ComboBox.ITEM_TANDEM_NAME_SUFFIX}': ${item.tandemName}` );
     } );
@@ -200,7 +191,6 @@ export default class ComboBox<T> extends WidthSizable( Node ) {
 
       align: 'left',
       listPosition: 'below',
-      labelNode: null,
       labelXSpacing: 10,
       disabledOpacity: 0.5,
       cornerRadius: 4,
@@ -243,6 +233,23 @@ export default class ComboBox<T> extends WidthSizable( Node ) {
       phetioEnabledPropertyInstrumented: true // opt into default PhET-iO instrumented enabledProperty
     }, providedOptions );
 
+    // @ts-expect-error TODO: remove as part of https://github.com/phetsims/sun/issues/797
+    const usesDeprecatedPattern = !!items[ 0 ].node;
+
+    // @ts-expect-error TODO: remove as part of https://github.com/phetsims/sun/issues/797
+    const nodes = usesDeprecatedPattern ? items.map( item => item.node ) :
+                  getGroupItemNodes( items, options.tandem.createTandem( 'items' ) );
+
+    assert && nodes.forEach( node => {
+      assert && assert( !node.hasPDOMContent, 'Accessibility is provided by ComboBoxItemNode and ' +
+                                              'ComboBoxItem.a11yLabel. Additional PDOM content in the provided ' +
+                                              'Node could break accessibility.' );
+    } );
+    const elements = [];
+    for ( let i = 0; i < items.length; i++ ) {
+      elements[ i ] = { item: items[ i ], node: nodes[ i ] };
+    }
+
     // validate option values
     assert && assert( options.xMargin > 0 && options.yMargin > 0,
       `margins must be > 0, xMargin=${options.xMargin}, yMargin=${options.yMargin}` );
@@ -253,45 +260,11 @@ export default class ComboBox<T> extends WidthSizable( Node ) {
 
     super();
 
+    this.nodes = nodes;
+
     this.listPosition = options.listPosition;
 
-    // optional label
-    if ( options.labelNode !== null ) {
-      this.addChild( options.labelNode );
-    }
-
-    // We'll need to adjust our button's preferred width if we have a label
-    const buttonPreferredWidthProperty = options.labelNode ?
-                                         new DerivedProperty( [
-                                           this.localPreferredWidthProperty,
-                                           options.labelNode.boundsProperty
-                                         ], ( localPreferredWidth, labelBounds ) => {
-                                           // If we don't have a preferred width, we'll forward that to our button
-                                           return localPreferredWidth === null ?
-                                                  null :
-                                                  localPreferredWidth - labelBounds.width - options.labelXSpacing;
-                                         }, {
-                                           reentrant: true
-                                         } ) :
-                                         this.localPreferredWidthProperty;
-
-    // We'll need to adjust our (incoming, from the button) minimum width if we have a label.
-    let buttonMinimumWidthProperty = this.localMinimumWidthProperty;
-    let buttonMinimumWidthMultilink: UnknownMultilink | null = null;
-    if ( options.labelNode ) {
-      buttonMinimumWidthProperty = new TinyProperty<number | null>( null );
-
-      buttonMinimumWidthMultilink = Multilink.lazyMultilink( [
-        buttonMinimumWidthProperty,
-        options.labelNode.boundsProperty
-      ], ( buttonMinimumWidth, labelBounds ) => {
-        // If we can't get a minimumWidth from our button, we can't apply that here (ButtonNode should be guaranteed to
-        // generate a numeric minimumWidth
-        this.localMinimumWidth = buttonMinimumWidth === null ? null : buttonMinimumWidth + options.labelXSpacing + labelBounds.width;
-      } );
-    }
-
-    this.button = new ComboBoxButton( property, items, {
+    this.button = new ComboBoxButton( property, items, nodes, {
       align: options.align,
       arrowDirection: ( options.listPosition === 'below' ) ? 'down' : 'up',
       cornerRadius: options.cornerRadius,
@@ -304,8 +277,8 @@ export default class ComboBox<T> extends WidthSizable( Node ) {
       touchAreaYDilation: options.buttonTouchAreaYDilation,
       mouseAreaXDilation: options.buttonMouseAreaXDilation,
       mouseAreaYDilation: options.buttonMouseAreaYDilation,
-      localPreferredWidthProperty: buttonPreferredWidthProperty,
-      localMinimumWidthProperty: buttonMinimumWidthProperty,
+      localPreferredWidthProperty: this.localPreferredWidthProperty,
+      localMinimumWidthProperty: this.localMinimumWidthProperty,
 
       comboBoxVoicingNameResponsePattern: options.comboBoxVoicingNameResponsePattern,
 
@@ -316,15 +289,8 @@ export default class ComboBox<T> extends WidthSizable( Node ) {
     } );
     this.addChild( this.button );
 
-    // put optional label to left of button
-    if ( options.labelNode ) {
-      ManualConstraint.create( this, [ this.button, options.labelNode ], ( buttonProxy, labelProxy ) => {
-        buttonProxy.left = labelProxy.right + options.labelXSpacing;
-        buttonProxy.centerY = labelProxy.centerY;
-      } );
-    }
-
-    this.listBox = new ComboBoxListBox( property, items,
+    // TODO: https://github.com/phetsims/sun/issues/797 don't forget dispose
+    this.listBox = new ComboBoxListBox( property, items, nodes,
       this.hideListBox.bind( this ), // callback to hide the list box
       () => {
         this.button.blockNextVoicingFocusListener();
@@ -449,6 +415,7 @@ export default class ComboBox<T> extends WidthSizable( Node ) {
     } );
 
     this.disposeComboBox = () => {
+      nodes.forEach( node => node.dispose() );
 
       if ( this.display && this.display.hasInputListener( this.clickToDismissListener ) ) {
         this.display.removeInputListener( this.clickToDismissListener );
@@ -460,12 +427,6 @@ export default class ComboBox<T> extends WidthSizable( Node ) {
       this.displayOnlyProperty.dispose(); // tandems must be cleaned up
       this.listBox.dispose();
       this.button.dispose();
-
-      if ( options.labelNode ) {
-        buttonPreferredWidthProperty.dispose();
-        buttonMinimumWidthProperty.dispose();
-        buttonMinimumWidthMultilink && buttonMinimumWidthMultilink.dispose();
-      }
     };
 
     // support for binder documentation, stripped out in builds and only runs when ?binder is specified
@@ -543,24 +504,24 @@ export default class ComboBox<T> extends WidthSizable( Node ) {
     return this.listBox.isItemVisible( value );
   }
 
-  public static getMaxItemWidthProperty<T>( items: ComboBoxItem<T>[] ): TReadOnlyProperty<number> {
-    const widthProperties = _.flatten( items.map( item => {
-      const properties: TReadOnlyProperty<IntentionalAny>[] = [ item.node.boundsProperty ];
-      if ( extendsWidthSizable( item.node ) ) {
-        properties.push( item.node.isWidthResizableProperty );
-        properties.push( item.node.minimumWidthProperty );
+  public static getMaxItemWidthProperty( nodes: Node[] ): TReadOnlyProperty<number> {
+    const widthProperties = _.flatten( nodes.map( node => {
+      const properties: TReadOnlyProperty<IntentionalAny>[] = [ node.boundsProperty ];
+      if ( extendsWidthSizable( node ) ) {
+        properties.push( node.isWidthResizableProperty );
+        properties.push( node.minimumWidthProperty );
       }
       return properties;
     } ) );
     return DerivedProperty.deriveAny( widthProperties, () => {
-      return Math.max( ...items.map( item => isWidthSizable( item.node ) ? item.node.minimumWidth || 0 : item.node.width ) );
+      return Math.max( ...nodes.map( node => isWidthSizable( node ) ? node.minimumWidth || 0 : node.width ) );
     } );
   }
 
-  public static getMaxItemHeightProperty<T>( items: ComboBoxItem<T>[] ): TReadOnlyProperty<number> {
-    const heightProperties = items.map( item => item.node.boundsProperty );
+  public static getMaxItemHeightProperty( nodes: Node[] ): TReadOnlyProperty<number> {
+    const heightProperties = nodes.map( node => node.boundsProperty );
     return DerivedProperty.deriveAny( heightProperties, () => {
-      return Math.max( ...items.map( item => item.node.height ) );
+      return Math.max( ...nodes.map( node => node.height ) );
     } );
   }
 

@@ -66,7 +66,7 @@ export default class ComboBoxButton<T> extends RectangularPushButton {
   private arrow: Path;
   private separatorLine: Line;
 
-  public constructor( property: TProperty<T>, items: ComboBoxItem<T>[], providedOptions?: ComboBoxButtonOptions ) {
+  public constructor( property: TProperty<T>, items: ComboBoxItem<T>[], nodes: Node[], providedOptions?: ComboBoxButtonOptions ) {
 
     const options = optionize<ComboBoxButtonOptions, SelfOptions, RectangularPushButtonOptions>()( {
 
@@ -113,8 +113,8 @@ export default class ComboBoxButton<T> extends RectangularPushButton {
     const itemYMargin = options.yMargin;
 
     // Compute max item size
-    const maxItemWidthProperty = ComboBox.getMaxItemWidthProperty( items );
-    const maxItemHeightProperty = ComboBox.getMaxItemHeightProperty( items );
+    const maxItemWidthProperty = ComboBox.getMaxItemWidthProperty( nodes );
+    const maxItemHeightProperty = ComboBox.getMaxItemHeightProperty( nodes );
 
     const arrow = new Path( null, {
       fill: options.arrowFill
@@ -122,6 +122,10 @@ export default class ComboBoxButton<T> extends RectangularPushButton {
 
     // Wrapper for the selected item's Node.
     // Do not transform ComboBoxItem.node because it is shared with ComboBoxListItemNode.
+
+
+    const matchingItem = _.find( items, item => item.value === property.value )!;
+    const index = items.indexOf( matchingItem );
     const itemNodeWrapper = new Node( {
       layoutOptions: {
         yMargin: itemYMargin,
@@ -129,7 +133,7 @@ export default class ComboBoxButton<T> extends RectangularPushButton {
         xAlign: options.align
       },
       children: [
-        _.find( items, item => item.value === property.value )!.node
+        nodes[ index ]
       ]
     } );
 
@@ -242,9 +246,11 @@ export default class ComboBoxButton<T> extends RectangularPushButton {
       // find the ComboBoxItem whose value matches the property's value
       item = _.find( items, item => item.value === value )!;
       assert && assert( item, `no item found for value: ${value}` );
+      const index = items.indexOf( item );
+      const node = nodes[ index ];
 
       // add the associated node
-      itemNodeWrapper.addChild( item.node );
+      itemNodeWrapper.addChild( node );
 
       // pdom
       this.innerContent = ( item.a11yName || null );

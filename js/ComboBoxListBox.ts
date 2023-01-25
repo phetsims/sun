@@ -1,4 +1,4 @@
-// Copyright 2019-2022, University of Colorado Boulder
+// Copyright 2019-2023, University of Colorado Boulder
 
 /**
  * The popup list box for a ComboBox.
@@ -8,7 +8,7 @@
 
 import PhetioAction from '../../tandem/js/PhetioAction.js';
 import optionize, { combineOptions } from '../../phet-core/js/optionize.js';
-import { KeyboardUtils, SceneryEvent, SpeakingOptions, TInputListener, TPaint, VBox, VoicingNode } from '../../scenery/js/imports.js';
+import { KeyboardUtils, SceneryEvent, SpeakingOptions, TInputListener, TPaint, VBox, VoicingNode, Node } from '../../scenery/js/imports.js';
 import multiSelectionSoundPlayerFactory from '../../tambo/js/multiSelectionSoundPlayerFactory.js';
 import generalCloseSoundPlayer from '../../tambo/js/shared-sound-players/generalCloseSoundPlayer.js';
 import generalOpenSoundPlayer from '../../tambo/js/shared-sound-players/generalOpenSoundPlayer.js';
@@ -52,13 +52,14 @@ export default class ComboBoxListBox<T> extends Panel {
   /**
    * @param property
    * @param items
+   * @param nodes
    * @param hideListBoxCallback - called to hide the list box
    * @param focusButtonCallback - called to transfer focus to the combo box's button
    * @param voiceOnSelectionNode - Node to voice the response when selecting a combo box item.
    * @param tandem
    * @param providedOptions
    */
-  public constructor( property: TProperty<T>, items: ComboBoxItem<T>[], hideListBoxCallback: () => void,
+  public constructor( property: TProperty<T>, items: ComboBoxItem<T>[], nodes: Node[], hideListBoxCallback: () => void,
                       focusButtonCallback: () => void, voiceOnSelectionNode: VoicingNode, tandem: Tandem, providedOptions?: ComboBoxListBoxOptions ) {
 
     const options = optionize<ComboBoxListBoxOptions, SelfOptions, PanelOptions>()( {
@@ -140,8 +141,8 @@ export default class ComboBoxListBox<T> extends Panel {
     };
 
     // Compute max item size
-    const maxItemWidthProperty = ComboBox.getMaxItemWidthProperty( items );
-    const maxItemHeightProperty = ComboBox.getMaxItemHeightProperty( items );
+    const maxItemWidthProperty = ComboBox.getMaxItemWidthProperty( nodes );
+    const maxItemHeightProperty = ComboBox.getMaxItemHeightProperty( nodes );
 
     // Uniform dimensions for all highlighted items in the list, highlight overlaps margin by 50%
     const highlightWidthProperty = new DerivedProperty( [ maxItemWidthProperty ], width => width + options.xMargin );
@@ -152,7 +153,7 @@ export default class ComboBoxListBox<T> extends Panel {
     items.forEach( ( item, index ) => {
 
       // Create the list item node
-      const listItemNode = new ComboBoxListItemNode( item, highlightWidthProperty, highlightHeightProperty,
+      const listItemNode = new ComboBoxListItemNode( item, nodes[ index ], highlightWidthProperty, highlightHeightProperty,
         combineOptions<ComboBoxListItemNodeOptions>( {
           align: options.align,
           highlightFill: options.highlightFill,
