@@ -418,7 +418,9 @@ export default class AccordionBox extends Node {
     }
 
     // expand/collapse the box
-    const expandedPropertyObserver = ( expanded: boolean ) => {
+    const expandedPropertyObserver = () => {
+      const expanded = this.expandedProperty.value;
+
       this.expandedBox.visible = expanded;
       this.collapsedBox.visible = !expanded;
 
@@ -435,6 +437,8 @@ export default class AccordionBox extends Node {
       } );
     };
     this.expandedProperty.link( expandedPropertyObserver );
+    this.expandedBox.boundsProperty.link( expandedPropertyObserver );
+    this.collapsedBox.boundsProperty.link( expandedPropertyObserver );
     this.disposeEmitter.addListener( () => this.expandedProperty.unlink( expandedPropertyObserver ) );
 
     this.mutate( _.omit( options, 'cursor' ) );
@@ -493,8 +497,6 @@ export default class AccordionBox extends Node {
     this.collapsedBox.rectWidth = boxWidth;
     this.collapsedBox.rectHeight = collapsedBoxHeight;
 
-    this.workaroundBox.localBounds = this.collapsedBox.bounds;
-
     this.collapsedTitleBar.rectWidth = boxWidth;
     this.collapsedTitleBar.rectHeight = collapsedBoxHeight;
 
@@ -503,6 +505,10 @@ export default class AccordionBox extends Node {
       this.collapsedBoxOutline.rectWidth = boxWidth;
       this.collapsedBoxOutline.rectHeight = collapsedBoxHeight;
     }
+
+    // IMPORTANT: The collapsedBox should now be fully laid out before this. Now we can use its bounds to set the
+    // workaroundBox
+    this.workaroundBox.localBounds = this.collapsedBox.bounds;
 
     // content layout
     this._contentNode.bottom = expandedBounds.bottom - this._contentYMargin;
