@@ -22,7 +22,7 @@ import Range from '../../dot/js/Range.js';
 import { Shape } from '../../kite/js/imports.js';
 import InstanceRegistry from '../../phet-core/js/documentation/InstanceRegistry.js';
 import optionize, { combineOptions } from '../../phet-core/js/optionize.js';
-import { AlignBox, AlignGroup, FlowBox, HBox, IndexedNodeIO, LayoutOrientation, Line, Node, NodeOptions, Rectangle, Separator, SeparatorOptions, TPaint, VBox } from '../../scenery/js/imports.js';
+import { AlignBox, AlignGroup, FlowBox, IndexedNodeIO, LayoutOrientation, Line, Node, NodeOptions, Rectangle, Separator, SeparatorOptions, TPaint } from '../../scenery/js/imports.js';
 import pushButtonSoundPlayer from '../../tambo/js/shared-sound-players/pushButtonSoundPlayer.js';
 import Tandem from '../../tandem/js/Tandem.js';
 import Animation, { AnimationOptions } from '../../twixt/js/Animation.js';
@@ -79,6 +79,7 @@ export default class Carousel extends Node {
   public readonly carouselItemNodes: Node[];
 
   private readonly itemsPerPage: number;
+  private readonly defaultPageNumber: number;
 
   // number of pages in the carousel
   public readonly numberOfPagesProperty: ReadOnlyProperty<number>;
@@ -218,16 +219,12 @@ export default class Carousel extends Node {
     // All items, arranged in the proper orientation, with margins and spacing.
     // Horizontal carousel arrange items left-to-right, vertical is top-to-bottom.
     // Translation of this node will be animated to give the effect of scrolling through the items.
-    const scrollingNode = isHorizontal ? new HBox( {
+    const scrollingNode = new FlowBox( {
+      orientation: options.orientation,
       children: alignBoxes,
       spacing: options.spacing,
-      yMargin: options.margin
-    } ) : new VBox( {
-      children: alignBoxes,
-      spacing: options.spacing,
-      xMargin: options.margin
+      [ options.orientation === 'horizontal' ? 'yMargin' : 'xMargin' ]: options.margin
     } );
-
     this.scrollingNode = scrollingNode;
 
     // In order to make it easy for phet-io to re-order items, the separators should not participate
@@ -267,14 +264,9 @@ export default class Carousel extends Node {
     const scrollingNodeContainer = new Node( { children: options.separatorsVisible ? [ separatorLayer!, scrollingNode ] : [ scrollingNode ] } );
 
     // Number of pages is derived from the total number of items and the number of items per page
-    this.numberOfPagesProperty = DerivedProperty.deriveAny( alignBoxes.map( item => item.visibleProperty ), () => {
-      let numberOfPages = alignBoxes.filter( item => item.visible ).length / options.itemsPerPage;
-      if ( !Number.isInteger( numberOfPages ) ) {
-        numberOfPages = Math.floor( numberOfPages + 1 );
-      }
-
+    this.numberOfPagesProperty = DerivedProperty.deriveAny( alignBoxes.map( alignBox => alignBox.visibleProperty ), () => {
       // Have to have at least one page, even if it is blank
-      return Math.max( numberOfPages, 1 );
+      return Math.max( Math.ceil( alignBoxes.filter( alignBox => alignBox.visible ).length / options.itemsPerPage ), 1 );
     }, {
       isValidValue: v => v > 0
     } );
@@ -282,10 +274,12 @@ export default class Carousel extends Node {
     // Number of the page that is visible in the carousel.
     assert && assert( options.defaultPageNumber >= 0 && options.defaultPageNumber <= this.numberOfPagesProperty.value - 1,
       `defaultPageNumber is out of range: ${options.defaultPageNumber}` );
+    assert && assert( _.every( alignBoxes, box => box.visible ), 'All alignBoxes should be visible for the logic below' );
     const pageNumberProperty = new NumberProperty( options.defaultPageNumber, {
       tandem: options.tandem.createTandem( 'pageNumberProperty' ),
       numberType: 'Integer',
       isValidValue: ( value: number ) => value < this.numberOfPagesProperty.value && value >= 0,
+      // NOTE: This is the maximum range (since all of the alignBoxes are visible currently)
       range: new Range( 0, this.numberOfPagesProperty.value - 1 ),
       phetioFeatured: true
     } );
@@ -369,7 +363,7 @@ export default class Carousel extends Node {
                                           : 0;
 
       // Do not animate during initialization.
-      if ( this.animationEnabled && !phet.joist.sim.isSettingPhetioStateProperty.value && isInitialized ) {
+      if ( this.animationEnabled && !window?.phet?.joist?.sim?.isSettingPhetioStateProperty?.value && isInitialized ) {
 
         // create and start the scroll animation
         scrollAnimation = new Animation( combineOptions<AnimationOptions<number>>( {}, options.animationOptions, {
@@ -411,6 +405,7 @@ export default class Carousel extends Node {
 
     this.items = items;
     this.itemsPerPage = options.itemsPerPage;
+    this.defaultPageNumber = options.defaultPageNumber;
     this.pageNumberProperty = pageNumberProperty;
 
     options.children = [ backgroundNode, windowNode, nextButton, previousButton, foregroundNode ];
@@ -444,7 +439,7 @@ export default class Carousel extends Node {
   public reset( animationEnabled = false ): void {
     const saveAnimationEnabled = this.animationEnabled;
     this.animationEnabled = animationEnabled;
-    this.pageNumberProperty.reset();
+    this.pageNumberProperty.value = Math.min( this.defaultPageNumber, this.numberOfPagesProperty.value - 1 );
     this.animationEnabled = saveAnimationEnabled;
   }
 
