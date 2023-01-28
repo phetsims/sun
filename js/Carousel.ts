@@ -22,7 +22,7 @@ import Range from '../../dot/js/Range.js';
 import { Shape } from '../../kite/js/imports.js';
 import InstanceRegistry from '../../phet-core/js/documentation/InstanceRegistry.js';
 import optionize, { combineOptions } from '../../phet-core/js/optionize.js';
-import { AlignBox, AlignGroup, FlowBox, IndexedNodeIO, LayoutOrientation, ManualConstraint, Node, NodeOptions, Rectangle, Separator, SeparatorOptions, TPaint } from '../../scenery/js/imports.js';
+import { AlignBox, AlignBoxOptions, AlignGroup, FlowBox, IndexedNodeIO, LayoutOrientation, ManualConstraint, Node, NodeOptions, Rectangle, Separator, SeparatorOptions, TPaint } from '../../scenery/js/imports.js';
 import pushButtonSoundPlayer from '../../tambo/js/shared-sound-players/pushButtonSoundPlayer.js';
 import Tandem from '../../tandem/js/Tandem.js';
 import Animation, { AnimationOptions } from '../../twixt/js/Animation.js';
@@ -55,6 +55,9 @@ type SelfOptions = {
   itemsPerPage?: number; // number of items per page, or how many items are visible at a time in the carousel
   spacing?: number; // spacing between items, between items and optional separators, and between items and buttons
   margin?: number; // margin between items and the edges of the carousel
+
+  // options for the AlignBoxes (particularly if alignment of items should be changed, or if specific margins are desired)
+  alignBoxOptions?: AlignBoxOptions;
 
   // next/previous button options
   buttonOptions?: CarouselButtonOptions;
@@ -124,6 +127,11 @@ export default class Carousel extends Node {
       spacing: 12,
       margin: 6,
 
+      alignBoxOptions: {
+        phetioType: IndexedNodeIO,
+        phetioState: true
+      },
+
       // next/previous buttons
       buttonOptions: {
         xMargin: 5,
@@ -175,11 +183,9 @@ export default class Carousel extends Node {
 
     const alignGroup = new AlignGroup();
     const alignBoxes = items.map( item => {
-      return alignGroup.createBox( item.createNode( Tandem.OPT_OUT ), {
-        tandem: item.tandemName ? options.tandem.createTandem( 'items' ).createTandem( item.tandemName ) : Tandem.OPTIONAL,
-        phetioType: IndexedNodeIO,
-        phetioState: true
-      } );
+      return alignGroup.createBox( item.createNode( Tandem.OPT_OUT ), combineOptions<AlignBoxOptions>( {
+        tandem: item.tandemName ? options.tandem.createTandem( 'items' ).createTandem( item.tandemName ) : Tandem.OPTIONAL
+      }, options.alignBoxOptions ) );
     } );
     this.visibleAlignBoxesProperty = DerivedProperty.deriveAny( alignBoxes.map( alignBox => alignBox.visibleProperty ), () => {
       return alignBoxes.filter( alignBox => alignBox.visible );
@@ -223,30 +229,6 @@ export default class Carousel extends Node {
     const separatorLayer = options.separatorsVisible ? new Node( {
       pickable: false
     } ) : null;
-
-    // Cannot use VSeparator and HSeparator since they cannot participate in the index ordering.
-    const updateSeparators = () => {
-      if ( separatorLayer ) {
-        if ( options.separatorsVisible ) {
-          const visibleChildren = this.visibleAlignBoxesProperty.value;
-          separatorLayer.children = _.range( 1, visibleChildren.length ).map( index => {
-            // Find the location between adjacent nodes
-            const inbetween = ( visibleChildren[ index - 1 ][ orientation.maxSide ] +
-                                visibleChildren[ index ][ orientation.minSide ] ) / 2;
-
-            return new Separator( combineOptions<SeparatorOptions>( {
-              [ `${orientation.coordinate}1` ]: inbetween,
-              [ `${orientation.coordinate}2` ]: inbetween,
-              [ `${orientation.opposite.coordinate}2` ]: scrollingNode[ orientation.opposite.size ]
-            }, options.separatorOptions ) );
-          } );
-        }
-        else {
-          separatorLayer.removeAllChildren();
-        }
-      }
-    };
-    updateSeparators();
 
     // Contains the scrolling node and the associated separators, if any
     const scrollingNodeContainer = new Node( {
@@ -419,9 +401,36 @@ export default class Carousel extends Node {
       }
     } );
 
-    this.visibleAlignBoxesProperty.link( () => {
-      updateSeparators();
+    // Cannot use VSeparator and HSeparator since they cannot participate in the index ordering.
+    const updateSeparators = () => {
+      if ( separatorLayer ) {
+        if ( options.separatorsVisible ) {
+          const visibleChildren = this.visibleAlignBoxesProperty.value;
+          separatorLayer.children = _.range( 1, visibleChildren.length ).map( index => {
+            // Find the location between adjacent nodes
+            const inbetween = ( visibleChildren[ index - 1 ][ orientation.maxSide ] +
+                                visibleChildren[ index ][ orientation.minSide ] ) / 2;
 
+            return new Separator( combineOptions<SeparatorOptions>( {
+              [ `${orientation.coordinate}1` ]: inbetween,
+              [ `${orientation.coordinate}2` ]: inbetween,
+              [ `${orientation.opposite.coordinate}2` ]: scrollingNode[ orientation.opposite.size ]
+            }, options.separatorOptions ) );
+          } );
+        }
+        else {
+          separatorLayer.removeAllChildren();
+        }
+      }
+    };
+
+    // Whenever layout happens in the scrolling node, it's the perfect time to update the separators
+    scrollingNode.constraint.finishedLayoutEmitter.addListener( () => {
+      updateSeparators();
+    } );
+    updateSeparators();
+
+    this.visibleAlignBoxesProperty.link( () => {
       // if the only element in the last page is removed, remove the page and autoscroll to the new final page
       this.pageNumberProperty.value = Math.min( this.pageNumberProperty.value, this.numberOfPagesProperty.value - 1 );
     } );
