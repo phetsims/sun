@@ -99,13 +99,16 @@ export default class Carousel extends Node {
   // enables animation when scrolling between pages
   public animationEnabled: boolean;
 
-  // These are public for layout
+  // These are public for layout - NOTE: These are mutated if the size changes after construction
   public backgroundWidth!: number;
   public backgroundHeight!: number;
 
   private readonly disposeCarousel: () => void;
   private readonly scrollingNode: FlowBox;
 
+  /**
+   * NOTE: This will dispose the item Nodes when the carousel is disposed
+   */
   public constructor( items: CarouselItem[], providedOptions?: CarouselOptions ) {
 
     // Don't animate during initialization
@@ -153,6 +156,11 @@ export default class Carousel extends Node {
         },
         arrowSize: DEFAULT_ARROW_SIZE,
 
+        enabledPropertyOptions: {
+          phetioReadOnly: true,
+          phetioFeatured: false
+        },
+
         soundPlayer: pushButtonSoundPlayer
       },
 
@@ -181,12 +189,22 @@ export default class Carousel extends Node {
 
     super();
 
+    this.animationEnabled = options.animationEnabled;
+    this.items = items;
+    this.itemsPerPage = options.itemsPerPage;
+    this.defaultPageNumber = options.defaultPageNumber;
+
+    // All items are wrapped in AlignBoxes to ensure consistent sizing
     const alignGroup = new AlignGroup();
+
+    // AlignBoxes
     this.alignBoxes = items.map( item => {
       return alignGroup.createBox( item.createNode( Tandem.OPT_OUT ), combineOptions<AlignBoxOptions>( {
         tandem: item.tandemName ? options.tandem.createTandem( 'items' ).createTandem( item.tandemName ) : Tandem.OPTIONAL
       }, options.alignBoxOptions ) );
     } );
+
+    // Visible AlignBoxes (these are the ones we lay out and base everything on)
     this.visibleAlignBoxesProperty = DerivedProperty.deriveAny( this.alignBoxes.map( alignBox => alignBox.visibleProperty ), () => {
       return this.alignBoxes.filter( alignBox => alignBox.visible );
     } );
@@ -197,19 +215,12 @@ export default class Carousel extends Node {
 
     // Options common to both buttons
     const buttonOptions = combineOptions<CarouselButtonOptions>( {
-      cornerRadius: options.cornerRadius,
-      enabledPropertyOptions: {
-        phetioReadOnly: true,
-        phetioFeatured: false
-      }
+      cornerRadius: options.cornerRadius
     }, options.buttonOptions );
 
     assert && assert( options.spacing >= options.margin, 'The spacing must be >= the margin, or you will see ' +
                                                          'page 2 items at the end of page 1' );
     this.carouselItemNodes = this.alignBoxes.map( alignBox => alignBox.content );
-
-    // enables animation when scrolling between pages
-    this.animationEnabled = options.animationEnabled;
 
     // All items, arranged in the proper orientation, with margins and spacing.
     // Horizontal carousel arrange items left-to-right, vertical is top-to-bottom.
@@ -241,15 +252,16 @@ export default class Carousel extends Node {
       isValidValue: v => v > 0
     } );
 
-    // Number of the page that is visible in the carousel.
     assert && assert( options.defaultPageNumber >= 0 && options.defaultPageNumber <= this.numberOfPagesProperty.value - 1,
       `defaultPageNumber is out of range: ${options.defaultPageNumber}` );
     assert && assert( _.every( this.alignBoxes, box => box.visible ), 'All alignBoxes should be visible for the logic below' );
+
+    // Number of the page that is visible in the carousel.
     this.pageNumberProperty = new NumberProperty( options.defaultPageNumber, {
       tandem: options.tandem.createTandem( 'pageNumberProperty' ),
       numberType: 'Integer',
       isValidValue: ( value: number ) => value < this.numberOfPagesProperty.value && value >= 0,
-      // NOTE: This is the maximum range (since all of the alignBoxes are visible currently)
+      // NOTE: This is the maximum range (since all the alignBoxes are visible currently)
       range: new Range( 0, this.numberOfPagesProperty.value - 1 ),
       phetioFeatured: true
     } );
@@ -259,7 +271,7 @@ export default class Carousel extends Node {
       return numberOfPages > 1;
     } );
 
-    // Next/previous buttons
+    // Next button
     const nextButton = new CarouselButton( combineOptions<CarouselButtonOptions>( {
       arrowDirection: isHorizontal ? 'right' : 'down',
       tandem: options.tandem.createTandem( 'nextButton' ),
@@ -270,6 +282,7 @@ export default class Carousel extends Node {
       visibleProperty: buttonsVisibleProperty
     }, buttonOptions ) );
 
+    // Previous button
     const previousButton = new CarouselButton( combineOptions<CarouselButtonOptions>( {
       arrowDirection: isHorizontal ? 'left' : 'up',
       tandem: options.tandem.createTandem( 'previousButton' ),
@@ -280,12 +293,14 @@ export default class Carousel extends Node {
       visibleProperty: buttonsVisibleProperty
     }, buttonOptions ) );
 
+    // Resize next/previous buttons dynamically
     alignGroup.getMaxSizeProperty( orientation.opposite ).link( maxOppositeSize => {
       const buttonOppositeSize = maxOppositeSize + ( 2 * options.margin );
       nextButton[ orientation.opposite.preferredSize ] = buttonOppositeSize;
       previousButton[ orientation.opposite.preferredSize ] = buttonOppositeSize;
     } );
 
+    // Window size (content + margins, DOES NOT include the buttons)
     const windowSizeProperty = new DerivedProperty( [
       this.visibleAlignBoxesProperty,
       scrollingNodeContainer.boundsProperty ], ( visibleAlignBoxes, scrollingNodeBounds ) => {
@@ -302,8 +317,8 @@ export default class Carousel extends Node {
       return isHorizontal ? horizontalSize : horizontalSize.swapped();
     } );
 
+    // Window with clipping area, so that the scrollingNodeContainer can be scrolled
     const windowNode = new Node( { children: [ scrollingNodeContainer ] } );
-
     windowSizeProperty.link( windowSize => {
       const bounds = windowSize.toBounds();
       windowNode.clipArea = Shape.bounds( bounds );
@@ -327,6 +342,7 @@ export default class Carousel extends Node {
       pickable: false
     } );
 
+    // Background size - includes the buttons
     const backgroundSizeProperty = new DerivedProperty( [ windowSizeProperty ], windowSize => {
       return new Dimension2(
         windowSize.width + ( isHorizontal ? nextButton.width + previousButton.width : 0 ),
@@ -334,6 +350,7 @@ export default class Carousel extends Node {
       );
     } );
 
+    // Resize the background/foreground dynamically
     backgroundSizeProperty.link( backgroundSize => {
       this.backgroundWidth = backgroundSize.width;
       this.backgroundHeight = backgroundSize.height;
@@ -343,7 +360,7 @@ export default class Carousel extends Node {
       foregroundNode.rectBounds = bounds;
     } );
 
-    // Layout (based on background changes)
+    // Top-level layout (based on background changes)
     ManualConstraint.create( this, [ backgroundNode, windowNode, previousButton, nextButton ], ( backgroundProxy, windowProxy, previousProxy, nextProxy ) => {
       nextProxy[ orientation.opposite.centerCoordinate ] = backgroundProxy[ orientation.opposite.centerCoordinate ];
       previousProxy[ orientation.opposite.centerCoordinate ] = backgroundProxy[ orientation.opposite.centerCoordinate ];
@@ -353,13 +370,12 @@ export default class Carousel extends Node {
       windowProxy[ orientation.centerCoordinate ] = backgroundProxy[ orientation.centerCoordinate ];
     } );
 
-    // Change pages
+    // Handle changing pages (or if the content changes)
     let scrollAnimation: Animation | null = null;
-
     const lastScrollBounds = new Bounds2( 0, 0, 0, 0 ); // used mutably
     Multilink.multilink( [ this.pageNumberProperty, scrollingNodeContainer.localBoundsProperty ], ( pageNumber, scrollBounds ) => {
 
-      // We might temporarily hit this value
+      // We might temporarily hit this value. Bail out now instead of an assertion (it will get fired again)
       if ( pageNumber >= this.numberOfPagesProperty.value ) {
         return;
       }
@@ -399,10 +415,10 @@ export default class Carousel extends Node {
       }
     } );
 
-    // Cannot use VSeparator and HSeparator since they cannot participate in the index ordering.
-    const updateSeparators = () => {
-      if ( separatorLayer ) {
-        if ( options.separatorsVisible ) {
+    if ( options.separatorsVisible ) {
+      // Cannot use VSeparator and HSeparator since they cannot participate in the index ordering.
+      const updateSeparators = () => {
+        if ( separatorLayer ) {
           const visibleChildren = this.visibleAlignBoxesProperty.value;
           separatorLayer.children = _.range( 1, visibleChildren.length ).map( index => {
             // Find the location between adjacent nodes
@@ -416,26 +432,20 @@ export default class Carousel extends Node {
             }, options.separatorOptions ) );
           } );
         }
-        else {
-          separatorLayer.removeAllChildren();
-        }
-      }
-    };
+      };
 
-    // Whenever layout happens in the scrolling node, it's the perfect time to update the separators
-    this.scrollingNode.constraint.finishedLayoutEmitter.addListener( () => {
+      // Whenever layout happens in the scrolling node, it's the perfect time to update the separators
+      this.scrollingNode.constraint.finishedLayoutEmitter.addListener( () => {
+        updateSeparators();
+      } );
       updateSeparators();
-    } );
-    updateSeparators();
+    }
 
+    // Don't stay on a page that doesn't exist
     this.visibleAlignBoxesProperty.link( () => {
       // if the only element in the last page is removed, remove the page and autoscroll to the new final page
       this.pageNumberProperty.value = Math.min( this.pageNumberProperty.value, this.numberOfPagesProperty.value - 1 );
     } );
-
-    this.items = items;
-    this.itemsPerPage = options.itemsPerPage;
-    this.defaultPageNumber = options.defaultPageNumber;
 
     options.children = [ backgroundNode, windowNode, nextButton, previousButton, foregroundNode ];
 
@@ -450,12 +460,16 @@ export default class Carousel extends Node {
 
     this.mutate( options );
 
+    // Will allow potential animation after this
     isInitialized = true;
 
     // support for binder documentation, stripped out in builds and only runs when ?binder is specified
     assert && phet.chipper.queryParameters.binder && InstanceRegistry.registerDataURL( 'sun', 'Carousel', this );
   }
 
+  /**
+   * NOTE: This will dispose the item Nodes
+   */
   public override dispose(): void {
     this.disposeCarousel();
     super.dispose();
