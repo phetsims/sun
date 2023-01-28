@@ -78,6 +78,9 @@ export default class Carousel extends Node {
   // each AlignBox holds a carouselItemNode and ensures proper sizing in the Carousel
   private readonly alignBoxes: AlignBox[];
 
+  // Stores the visible align boxes
+  private readonly visibleAlignBoxesProperty: ReadOnlyProperty<AlignBox[]>;
+
   // created from createNode() in CarouselItem
   public readonly carouselItemNodes: Node[];
 
@@ -168,6 +171,8 @@ export default class Carousel extends Node {
       }
     }, providedOptions );
 
+    super();
+
     const alignGroup = new AlignGroup();
     const alignBoxes = items.map( item => {
       return alignGroup.createBox( item.createNode( Tandem.OPT_OUT ), {
@@ -176,7 +181,7 @@ export default class Carousel extends Node {
         phetioState: true
       } );
     } );
-    const visibleAlignBoxesProperty = DerivedProperty.deriveAny( alignBoxes.map( alignBox => alignBox.visibleProperty ), () => {
+    this.visibleAlignBoxesProperty = DerivedProperty.deriveAny( alignBoxes.map( alignBox => alignBox.visibleProperty ), () => {
       return alignBoxes.filter( alignBox => alignBox.visible );
     } );
 
@@ -195,9 +200,6 @@ export default class Carousel extends Node {
 
     assert && assert( options.spacing >= options.margin, 'The spacing must be >= the margin, or you will see ' +
                                                          'page 2 items at the end of page 1' );
-
-    super();
-
     this.alignBoxes = alignBoxes;
     this.carouselItemNodes = alignBoxes.map( alignBox => alignBox.content );
 
@@ -226,7 +228,7 @@ export default class Carousel extends Node {
     const updateSeparators = () => {
       if ( separatorLayer ) {
         if ( options.separatorsVisible ) {
-          const visibleChildren = visibleAlignBoxesProperty.value;
+          const visibleChildren = this.visibleAlignBoxesProperty.value;
           separatorLayer.children = _.range( 1, visibleChildren.length ).map( index => {
             // Find the location between adjacent nodes
             const inbetween = ( visibleChildren[ index - 1 ][ orientation.maxSide ] +
@@ -252,7 +254,7 @@ export default class Carousel extends Node {
     } );
 
     // Number of pages is derived from the total number of items and the number of items per page
-    this.numberOfPagesProperty = new DerivedProperty( [ visibleAlignBoxesProperty ], visibleAlignBoxes => {
+    this.numberOfPagesProperty = new DerivedProperty( [ this.visibleAlignBoxesProperty ], visibleAlignBoxes => {
       // Have to have at least one page, even if it is blank
       return Math.max( Math.ceil( visibleAlignBoxes.length / options.itemsPerPage ), 1 );
     }, {
@@ -305,7 +307,7 @@ export default class Carousel extends Node {
     } );
 
     const windowSizeProperty = new DerivedProperty( [
-      visibleAlignBoxesProperty,
+      this.visibleAlignBoxesProperty,
       scrollingNodeContainer.boundsProperty ], ( visibleAlignBoxes, scrollingNodeBounds ) => {
 
       // This doesn't fill one page in number play preferences dialog when you forget locales=*,
@@ -386,7 +388,7 @@ export default class Carousel extends Node {
       scrollAnimation && scrollAnimation.stop();
 
       // Find the item at the top of pageNumber page
-      const firstItemOnPage = visibleAlignBoxesProperty.value[ pageNumber * options.itemsPerPage ];
+      const firstItemOnPage = this.visibleAlignBoxesProperty.value[ pageNumber * options.itemsPerPage ];
 
       // Place we want to scroll to
       const targetValue = firstItemOnPage ? ( ( -firstItemOnPage[ orientation.minSide ] ) + options.margin ) : 0;
@@ -405,19 +407,19 @@ export default class Carousel extends Node {
           to: targetValue,
 
           // options that are specific to orientation
-          getValue: () => scrollingNodeContainer[ orientation.minSide ],
-          setValue: ( value: number ) => { scrollingNodeContainer[ orientation.minSide ] = value; }
+          getValue: () => scrollingNodeContainer[ orientation.coordinate ],
+          setValue: ( value: number ) => { scrollingNodeContainer[ orientation.coordinate ] = value; }
         } ) );
         scrollAnimation.start();
       }
       else {
 
         // animation disabled, move immediate to new page
-        scrollingNodeContainer[ orientation.minSide ] = targetValue;
+        scrollingNodeContainer[ orientation.coordinate ] = targetValue;
       }
     } );
 
-    visibleAlignBoxesProperty.link( () => {
+    this.visibleAlignBoxesProperty.link( () => {
       updateSeparators();
 
       // if the only element in the last page is removed, remove the page and autoscroll to the new final page
@@ -431,7 +433,7 @@ export default class Carousel extends Node {
     options.children = [ backgroundNode, windowNode, nextButton, previousButton, foregroundNode ];
 
     this.disposeCarousel = () => {
-      visibleAlignBoxesProperty.dispose();
+      this.visibleAlignBoxesProperty.dispose();
       this.pageNumberProperty.dispose();
       alignBoxes.forEach( alignBox => {
         alignBox.children.forEach( child => child.dispose() );
@@ -480,11 +482,7 @@ export default class Carousel extends Node {
     const itemAlignBox = this.alignBoxes[ itemIndex ];
 
     // If the layout is dynamic, then only account for the visible items
-    const alignBoxesInLayout = this.scrollingNode.children.filter( alignBox => {
-      assert && assert( alignBox instanceof AlignBox ); // eslint-disable-line no-simple-type-checking-assertions
-      return alignBox.visible;
-    } );
-    const alignBoxIndex = alignBoxesInLayout.indexOf( itemAlignBox );
+    const alignBoxIndex = this.visibleAlignBoxesProperty.value.indexOf( itemAlignBox );
 
     assert && assert( alignBoxIndex >= 0, 'item not present or visible' );
 
