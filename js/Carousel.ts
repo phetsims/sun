@@ -22,7 +22,7 @@ import Range from '../../dot/js/Range.js';
 import { Shape } from '../../kite/js/imports.js';
 import InstanceRegistry from '../../phet-core/js/documentation/InstanceRegistry.js';
 import optionize, { combineOptions } from '../../phet-core/js/optionize.js';
-import { AlignBox, AlignGroup, FlowBox, IndexedNodeIO, LayoutOrientation, Line, Node, NodeOptions, Rectangle, Separator, SeparatorOptions, TPaint } from '../../scenery/js/imports.js';
+import { AlignBox, AlignGroup, FlowBox, IndexedNodeIO, LayoutOrientation, ManualConstraint, Node, NodeOptions, Rectangle, Separator, SeparatorOptions, TPaint } from '../../scenery/js/imports.js';
 import pushButtonSoundPlayer from '../../tambo/js/shared-sound-players/pushButtonSoundPlayer.js';
 import Tandem from '../../tandem/js/Tandem.js';
 import Animation, { AnimationOptions } from '../../twixt/js/Animation.js';
@@ -34,6 +34,8 @@ import ReadOnlyProperty from '../../axon/js/ReadOnlyProperty.js';
 import DerivedProperty from '../../axon/js/DerivedProperty.js';
 import GroupItemOptions from './GroupItemOptions.js';
 import Orientation from '../../phet-core/js/Orientation.js';
+import Multilink from '../../axon/js/Multilink.js';
+import Bounds2 from '../../dot/js/Bounds2.js';
 
 const DEFAULT_ARROW_SIZE = new Dimension2( 20, 7 );
 
@@ -92,8 +94,8 @@ export default class Carousel extends Node {
   public animationEnabled: boolean;
 
   // These are public for layout
-  public readonly backgroundWidth: number;
-  private readonly backgroundHeight: number;
+  public backgroundWidth!: number;
+  public backgroundHeight!: number;
 
   private readonly disposeCarousel: () => void;
   private readonly scrollingNode: FlowBox;
@@ -245,7 +247,9 @@ export default class Carousel extends Node {
     updateSeparators();
 
     // Contains the scrolling node and the associated separators, if any
-    const scrollingNodeContainer = new Node( { children: options.separatorsVisible ? [ separatorLayer!, scrollingNode ] : [ scrollingNode ] } );
+    const scrollingNodeContainer = new Node( {
+      children: options.separatorsVisible ? [ separatorLayer!, scrollingNode ] : [ scrollingNode ]
+    } );
 
     // Number of pages is derived from the total number of items and the number of items per page
     this.numberOfPagesProperty = new DerivedProperty( [ visibleAlignBoxesProperty ], visibleAlignBoxes => {
@@ -259,7 +263,7 @@ export default class Carousel extends Node {
     assert && assert( options.defaultPageNumber >= 0 && options.defaultPageNumber <= this.numberOfPagesProperty.value - 1,
       `defaultPageNumber is out of range: ${options.defaultPageNumber}` );
     assert && assert( _.every( alignBoxes, box => box.visible ), 'All alignBoxes should be visible for the logic below' );
-    const pageNumberProperty = new NumberProperty( options.defaultPageNumber, {
+    this.pageNumberProperty = new NumberProperty( options.defaultPageNumber, {
       tandem: options.tandem.createTandem( 'pageNumberProperty' ),
       numberType: 'Integer',
       isValidValue: ( value: number ) => value < this.numberOfPagesProperty.value && value >= 0,
@@ -277,8 +281,8 @@ export default class Carousel extends Node {
     const nextButton = new CarouselButton( combineOptions<CarouselButtonOptions>( {
       arrowDirection: isHorizontal ? 'right' : 'down',
       tandem: options.tandem.createTandem( 'nextButton' ),
-      listener: () => pageNumberProperty.set( pageNumberProperty.get() + 1 ),
-      enabledProperty: new DerivedProperty( [ pageNumberProperty, this.numberOfPagesProperty ], ( pageNumber, numberofPages ) => {
+      listener: () => this.pageNumberProperty.set( this.pageNumberProperty.get() + 1 ),
+      enabledProperty: new DerivedProperty( [ this.pageNumberProperty, this.numberOfPagesProperty ], ( pageNumber, numberofPages ) => {
         return pageNumber < numberofPages - 1;
       } ),
       visibleProperty: buttonsVisibleProperty
@@ -287,8 +291,8 @@ export default class Carousel extends Node {
     const previousButton = new CarouselButton( combineOptions<CarouselButtonOptions>( {
       arrowDirection: isHorizontal ? 'left' : 'up',
       tandem: options.tandem.createTandem( 'previousButton' ),
-      listener: () => pageNumberProperty.set( pageNumberProperty.get() - 1 ),
-      enabledProperty: new DerivedProperty( [ pageNumberProperty ], pageNumber => {
+      listener: () => this.pageNumberProperty.set( this.pageNumberProperty.get() - 1 ),
+      enabledProperty: new DerivedProperty( [ this.pageNumberProperty ], pageNumber => {
         return pageNumber > 0;
       } ),
       visibleProperty: buttonsVisibleProperty
@@ -300,59 +304,83 @@ export default class Carousel extends Node {
       previousButton[ orientation.opposite.preferredSize ] = buttonOppositeSize;
     } );
 
-    // This doesn't fill one page in number play preferences dialog when you forget locales=*,
-    // so take the last item, even if it is not a full page
-    const last = alignBoxes[ options.itemsPerPage - 1 ] || alignBoxes[ alignBoxes.length - 1 ];
+    const windowSizeProperty = new DerivedProperty( [
+      visibleAlignBoxesProperty,
+      scrollingNodeContainer.boundsProperty ], ( visibleAlignBoxes, scrollingNodeBounds ) => {
 
-    // Measure from the beginning of the first item to the end of the last item on the 1st page
-    const windowLength = isHorizontal ?
-                         last.right - alignBoxes[ 0 ].left + options.margin * 2 :
-                         last.bottom - alignBoxes[ 0 ].top + options.margin * 2;
-    const windowWidth = isHorizontal ? windowLength : scrollingNodeContainer.width;
-    const windowHeight = isHorizontal ? scrollingNodeContainer.height : windowLength;
-    const clipArea = Shape.rectangle( 0, 0, windowWidth, windowHeight );
-    const windowNode = new Node( {
-      children: [ scrollingNodeContainer ],
-      clipArea: clipArea,
+      // This doesn't fill one page in number play preferences dialog when you forget locales=*,
+      // so take the last item, even if it is not a full page
+      const lastBox = visibleAlignBoxes[ options.itemsPerPage - 1 ] || visibleAlignBoxes[ visibleAlignBoxes.length - 1 ];
+      const horizontalSize = new Dimension2(
+        // Measure from the beginning of the first item to the end of the last item on the 1st page
+        lastBox[ orientation.maxSide ] - visibleAlignBoxes[ 0 ][ orientation.minSide ] + ( 2 * options.margin ),
+
+        scrollingNodeBounds[ orientation.opposite.size ]
+      );
+      return isHorizontal ? horizontalSize : horizontalSize.swapped();
+    } );
+
+    const windowNode = new Node( { children: [ scrollingNodeContainer ] } );
+
+    windowSizeProperty.link( windowSize => {
+      const bounds = windowSize.toBounds();
+      windowNode.clipArea = Shape.bounds( bounds );
 
       // Specify the local bounds in order to ensure centering. For full pages, this is not necessary since the scrollingNodeContainer
       // already spans the full area. But for a partial page, this is necessary so the window will be centered.
-      localBounds: clipArea.getBounds()
+      windowNode.localBounds = bounds;
     } );
 
     // Background - displays the carousel's fill color
-    this.backgroundWidth = isHorizontal ? ( windowWidth + nextButton.width + previousButton.width ) : windowWidth;
-    this.backgroundHeight = isHorizontal ? windowHeight : ( windowHeight + nextButton.height + previousButton.height );
     const backgroundNode = new Rectangle( {
-      rectWidth: this.backgroundWidth,
-      rectHeight: this.backgroundHeight,
       cornerRadius: options.cornerRadius,
       fill: options.fill
     } );
 
-    // Foreground - displays the carousel's outline, created as a separate node so that it can be placed on top of everything, for a clean look.
+    // Foreground - displays the carousel's outline, created as a separate node so that it can be placed on top of
+    // everything, for a clean look.
     const foregroundNode = new Rectangle( {
-      rectWidth: this.backgroundWidth,
-      rectHeight: this.backgroundHeight,
       cornerRadius: options.cornerRadius,
       stroke: options.stroke,
       pickable: false
     } );
 
-    // Layout
-    nextButton[ orientation.opposite.centerCoordinate ] = backgroundNode[ orientation.opposite.centerCoordinate ];
-    previousButton[ orientation.opposite.centerCoordinate ] = backgroundNode[ orientation.opposite.centerCoordinate ];
-    windowNode[ orientation.opposite.centerCoordinate ] = backgroundNode[ orientation.opposite.centerCoordinate ];
-    previousButton[ orientation.minSide ] = backgroundNode[ orientation.minSide ];
-    nextButton[ orientation.maxSide ] = backgroundNode[ orientation.maxSide ];
-    windowNode[ orientation.centerCoordinate ] = backgroundNode[ orientation.centerCoordinate ];
+    const backgroundSizeProperty = new DerivedProperty( [ windowSizeProperty ], windowSize => {
+      return new Dimension2(
+        windowSize.width + ( isHorizontal ? nextButton.width + previousButton.width : 0 ),
+        windowSize.height + ( isHorizontal ? 0 : nextButton.height + previousButton.height )
+      );
+    } );
+
+    backgroundSizeProperty.link( backgroundSize => {
+      this.backgroundWidth = backgroundSize.width;
+      this.backgroundHeight = backgroundSize.height;
+
+      const bounds = backgroundSize.toBounds();
+      backgroundNode.rectBounds = bounds;
+      foregroundNode.rectBounds = bounds;
+    } );
+
+    // Layout (based on background changes)
+    ManualConstraint.create( this, [ backgroundNode, windowNode, previousButton, nextButton ], ( backgroundProxy, windowProxy, previousProxy, nextProxy ) => {
+      nextProxy[ orientation.opposite.centerCoordinate ] = backgroundProxy[ orientation.opposite.centerCoordinate ];
+      previousProxy[ orientation.opposite.centerCoordinate ] = backgroundProxy[ orientation.opposite.centerCoordinate ];
+      windowProxy[ orientation.opposite.centerCoordinate ] = backgroundProxy[ orientation.opposite.centerCoordinate ];
+      previousProxy[ orientation.minSide ] = backgroundProxy[ orientation.minSide ];
+      nextProxy[ orientation.maxSide ] = backgroundProxy[ orientation.maxSide ];
+      windowProxy[ orientation.centerCoordinate ] = backgroundProxy[ orientation.centerCoordinate ];
+    } );
 
     // Change pages
     let scrollAnimation: Animation | null = null;
 
-    pageNumberProperty.link( pageNumber => {
+    const lastScrollBounds = new Bounds2( 0, 0, 0, 0 ); // used mutably
+    Multilink.multilink( [ this.pageNumberProperty, scrollingNodeContainer.localBoundsProperty ], ( pageNumber, scrollBounds ) => {
 
-      assert && assert( pageNumber >= 0 && pageNumber <= this.numberOfPagesProperty.value - 1, `pageNumber out of range: ${pageNumber}` );
+      // We might temporarily hit this value
+      if ( pageNumber >= this.numberOfPagesProperty.value ) {
+        return;
+      }
 
       // stop any animation that's in progress
       scrollAnimation && scrollAnimation.stop();
@@ -361,12 +389,16 @@ export default class Carousel extends Node {
       const firstItemOnPage = visibleAlignBoxesProperty.value[ pageNumber * options.itemsPerPage ];
 
       // Place we want to scroll to
-      const targetValue = firstItemOnPage ? ( ( firstItemOnPage[ orientation.minSide ] ) + options.margin ) : 0;
+      const targetValue = firstItemOnPage ? ( ( -firstItemOnPage[ orientation.minSide ] ) + options.margin ) : 0;
+
+      const scrollBoundsChanged = lastScrollBounds === null || !lastScrollBounds.equals( scrollBounds );
+      lastScrollBounds.set( scrollBounds ); // scrollBounds is mutable, we get the same reference, don't store it
 
       // Only animate if animation is enabled and PhET-iO state is not being set.  When PhET-iO state is being set (as
       // in loading a customized state), the carousel should immediately reflect the desired page
       // Do not animate during initialization.
-      if ( this.animationEnabled && !window?.phet?.joist?.sim?.isSettingPhetioStateProperty?.value && isInitialized ) {
+      // Do not animate when our scrollBounds have changed (our content probably resized)
+      if ( this.animationEnabled && !window?.phet?.joist?.sim?.isSettingPhetioStateProperty?.value && isInitialized && !scrollBoundsChanged ) {
 
         // create and start the scroll animation
         scrollAnimation = new Animation( combineOptions<AnimationOptions<number>>( {}, options.animationOptions, {
@@ -386,22 +418,21 @@ export default class Carousel extends Node {
     } );
 
     visibleAlignBoxesProperty.link( () => {
-      // if the only element in the last page is removed, remove the page and autoscroll to the new final page
-      pageNumberProperty.value = Math.min( pageNumberProperty.value, this.numberOfPagesProperty.value - 1 );
-
       updateSeparators();
+
+      // if the only element in the last page is removed, remove the page and autoscroll to the new final page
+      this.pageNumberProperty.value = Math.min( this.pageNumberProperty.value, this.numberOfPagesProperty.value - 1 );
     } );
 
     this.items = items;
     this.itemsPerPage = options.itemsPerPage;
     this.defaultPageNumber = options.defaultPageNumber;
-    this.pageNumberProperty = pageNumberProperty;
 
     options.children = [ backgroundNode, windowNode, nextButton, previousButton, foregroundNode ];
 
     this.disposeCarousel = () => {
       visibleAlignBoxesProperty.dispose();
-      pageNumberProperty.dispose();
+      this.pageNumberProperty.dispose();
       alignBoxes.forEach( alignBox => {
         alignBox.children.forEach( child => child.dispose() );
         alignBox.dispose();
