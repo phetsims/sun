@@ -182,13 +182,13 @@ export default class Carousel extends Node {
     super();
 
     const alignGroup = new AlignGroup();
-    const alignBoxes = items.map( item => {
+    this.alignBoxes = items.map( item => {
       return alignGroup.createBox( item.createNode( Tandem.OPT_OUT ), combineOptions<AlignBoxOptions>( {
         tandem: item.tandemName ? options.tandem.createTandem( 'items' ).createTandem( item.tandemName ) : Tandem.OPTIONAL
       }, options.alignBoxOptions ) );
     } );
-    this.visibleAlignBoxesProperty = DerivedProperty.deriveAny( alignBoxes.map( alignBox => alignBox.visibleProperty ), () => {
-      return alignBoxes.filter( alignBox => alignBox.visible );
+    this.visibleAlignBoxesProperty = DerivedProperty.deriveAny( this.alignBoxes.map( alignBox => alignBox.visibleProperty ), () => {
+      return this.alignBoxes.filter( alignBox => alignBox.visible );
     } );
 
     // To improve readability
@@ -206,8 +206,7 @@ export default class Carousel extends Node {
 
     assert && assert( options.spacing >= options.margin, 'The spacing must be >= the margin, or you will see ' +
                                                          'page 2 items at the end of page 1' );
-    this.alignBoxes = alignBoxes;
-    this.carouselItemNodes = alignBoxes.map( alignBox => alignBox.content );
+    this.carouselItemNodes = this.alignBoxes.map( alignBox => alignBox.content );
 
     // enables animation when scrolling between pages
     this.animationEnabled = options.animationEnabled;
@@ -215,13 +214,12 @@ export default class Carousel extends Node {
     // All items, arranged in the proper orientation, with margins and spacing.
     // Horizontal carousel arrange items left-to-right, vertical is top-to-bottom.
     // Translation of this node will be animated to give the effect of scrolling through the items.
-    const scrollingNode = new FlowBox( {
+    this.scrollingNode = new FlowBox( {
       orientation: options.orientation,
-      children: alignBoxes,
+      children: this.alignBoxes,
       spacing: options.spacing,
       [ `${orientation.opposite.coordinate}Margin` ]: options.margin
     } );
-    this.scrollingNode = scrollingNode;
 
     // In order to make it easy for phet-io to re-order items, the separators should not participate
     // in the layout and have indices that get moved around.  Therefore, we add a separate layer to
@@ -232,7 +230,7 @@ export default class Carousel extends Node {
 
     // Contains the scrolling node and the associated separators, if any
     const scrollingNodeContainer = new Node( {
-      children: options.separatorsVisible ? [ separatorLayer!, scrollingNode ] : [ scrollingNode ]
+      children: options.separatorsVisible ? [ separatorLayer!, this.scrollingNode ] : [ this.scrollingNode ]
     } );
 
     // Number of pages is derived from the total number of items and the number of items per page
@@ -246,7 +244,7 @@ export default class Carousel extends Node {
     // Number of the page that is visible in the carousel.
     assert && assert( options.defaultPageNumber >= 0 && options.defaultPageNumber <= this.numberOfPagesProperty.value - 1,
       `defaultPageNumber is out of range: ${options.defaultPageNumber}` );
-    assert && assert( _.every( alignBoxes, box => box.visible ), 'All alignBoxes should be visible for the logic below' );
+    assert && assert( _.every( this.alignBoxes, box => box.visible ), 'All alignBoxes should be visible for the logic below' );
     this.pageNumberProperty = new NumberProperty( options.defaultPageNumber, {
       tandem: options.tandem.createTandem( 'pageNumberProperty' ),
       numberType: 'Integer',
@@ -414,7 +412,7 @@ export default class Carousel extends Node {
             return new Separator( combineOptions<SeparatorOptions>( {
               [ `${orientation.coordinate}1` ]: inbetween,
               [ `${orientation.coordinate}2` ]: inbetween,
-              [ `${orientation.opposite.coordinate}2` ]: scrollingNode[ orientation.opposite.size ]
+              [ `${orientation.opposite.coordinate}2` ]: this.scrollingNode[ orientation.opposite.size ]
             }, options.separatorOptions ) );
           } );
         }
@@ -425,7 +423,7 @@ export default class Carousel extends Node {
     };
 
     // Whenever layout happens in the scrolling node, it's the perfect time to update the separators
-    scrollingNode.constraint.finishedLayoutEmitter.addListener( () => {
+    this.scrollingNode.constraint.finishedLayoutEmitter.addListener( () => {
       updateSeparators();
     } );
     updateSeparators();
@@ -444,7 +442,7 @@ export default class Carousel extends Node {
     this.disposeCarousel = () => {
       this.visibleAlignBoxesProperty.dispose();
       this.pageNumberProperty.dispose();
-      alignBoxes.forEach( alignBox => {
+      this.alignBoxes.forEach( alignBox => {
         alignBox.children.forEach( child => child.dispose() );
         alignBox.dispose();
       } );
