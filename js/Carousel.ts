@@ -420,6 +420,8 @@ export default class Carousel extends Node {
       const updateSeparators = () => {
         if ( separatorLayer ) {
           const visibleChildren = this.visibleAlignBoxesProperty.value;
+
+          // Add separators between the visible children
           separatorLayer.children = _.range( 1, visibleChildren.length ).map( index => {
             // Find the location between adjacent nodes
             const inbetween = ( visibleChildren[ index - 1 ][ orientation.maxSide ] +
@@ -482,7 +484,10 @@ export default class Carousel extends Node {
   public reset( animationEnabled = false ): void {
     const saveAnimationEnabled = this.animationEnabled;
     this.animationEnabled = animationEnabled;
+
+    // Reset the page number to the default page number if possible (if things are hidden, it might not be possible)
     this.pageNumberProperty.value = Math.min( this.defaultPageNumber, this.numberOfPagesProperty.value - 1 );
+
     this.animationEnabled = saveAnimationEnabled;
   }
 
@@ -490,7 +495,7 @@ export default class Carousel extends Node {
    * Given an item's visible index, scrolls the carousel to the page that contains that item.
    */
   public scrollToItemVisibleIndex( itemIndex: number ): void {
-    this.pageNumberProperty.set( this.itemIndexToPageNumber( itemIndex ) );
+    this.pageNumberProperty.set( this.itemVisibleIndexToPageNumber( itemIndex ) );
   }
 
   /**
@@ -498,12 +503,8 @@ export default class Carousel extends Node {
    * Carousel and visible.
    */
   public scrollToItem( item: CarouselItem ): void {
-
-    const itemIndex = this.items.indexOf( item );
-    const itemAlignBox = this.alignBoxes[ itemIndex ];
-
     // If the layout is dynamic, then only account for the visible items
-    const alignBoxIndex = this.visibleAlignBoxesProperty.value.indexOf( itemAlignBox );
+    const alignBoxIndex = this.visibleAlignBoxesProperty.value.indexOf( this.getAlignBoxForItem( item ) );
 
     assert && assert( alignBoxIndex >= 0, 'item not present or visible' );
 
@@ -522,22 +523,23 @@ export default class Carousel extends Node {
    * Can control the visibility of this AlignBox to determine whether the space inside the carousel is maintained
    */
   public getAlignBoxForItem( item: CarouselItem ): AlignBox {
-    const itemIndex = this.items.indexOf( item );
-    const alignBox = this.alignBoxes[ itemIndex ];
+    const alignBox = this.alignBoxes[ this.items.indexOf( item ) ];
 
     assert && assert( alignBox, 'item does not have corresponding alignBox' );
     return alignBox;
   }
 
+  /**
+   * Returns the Node that was created for a given item.
+   */
   public getNodeForItem( item: CarouselItem ): Node {
-    const itemIndex = this.items.indexOf( item );
-    const node = this.carouselItemNodes[ itemIndex ];
+    const node = this.carouselItemNodes[ this.items.indexOf( item ) ];
 
     assert && assert( node, 'item does not have corresponding node' );
     return node;
   }
 
-  private itemIndexToPageNumber( itemIndex: number ): number {
+  private itemVisibleIndexToPageNumber( itemIndex: number ): number {
     assert && assert( itemIndex >= 0 && itemIndex < this.items.length, `itemIndex out of range: ${itemIndex}` );
     return Math.floor( itemIndex / this.itemsPerPage );
   }
