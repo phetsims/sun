@@ -473,9 +473,9 @@ export default class Carousel extends Node {
   }
 
   /**
-   * Given an item's index, scrolls the carousel to the page that contains that item.
+   * Given an item's visible index, scrolls the carousel to the page that contains that item.
    */
-  public scrollToItemIndex( itemIndex: number ): void {
+  public scrollToItemVisibleIndex( itemIndex: number ): void {
     this.pageNumberProperty.set( this.itemIndexToPageNumber( itemIndex ) );
   }
 
@@ -493,7 +493,7 @@ export default class Carousel extends Node {
 
     assert && assert( alignBoxIndex >= 0, 'item not present or visible' );
 
-    this.scrollToItemIndex( alignBoxIndex );
+    this.scrollToItemVisibleIndex( alignBoxIndex );
   }
 
   /**
