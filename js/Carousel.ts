@@ -504,6 +504,9 @@ export default class Carousel extends Node {
     this.getAlignBoxForItem( item ).visible = visible;
   }
 
+  /**
+   * Can control the visibility of this AlignBox to determine whether the space inside the carousel is maintained
+   */
   public getAlignBoxForItem( item: CarouselItem ): AlignBox {
     const itemIndex = this.items.indexOf( item );
     const alignBox = this.alignBoxes[ itemIndex ];
@@ -512,7 +515,7 @@ export default class Carousel extends Node {
     return alignBox;
   }
 
-  public getCreatedNodeForItem( item: CarouselItem ): Node {
+  public getNodeForItem( item: CarouselItem ): Node {
     const itemIndex = this.items.indexOf( item );
     const node = this.carouselItemNodes[ itemIndex ];
 
