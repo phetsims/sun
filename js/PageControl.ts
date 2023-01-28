@@ -11,29 +11,30 @@ import TProperty from '../../axon/js/TProperty.js';
 import StrictOmit from '../../phet-core/js/types/StrictOmit.js';
 import { Shape } from '../../kite/js/imports.js';
 import optionize from '../../phet-core/js/optionize.js';
-import { Circle, CircleOptions, TColor, Node, NodeOptions, PressListener, PressListenerEvent } from '../../scenery/js/imports.js';
+import { Circle, CircleOptions, FlowBox, LayoutOrientation, LayoutOrientationValues, Node, NodeOptions, PressListener, PressListenerEvent, TPaint } from '../../scenery/js/imports.js';
 import Tandem from '../../tandem/js/Tandem.js';
 import sun from './sun.js';
-import ReadOnlyProperty from '../../axon/js/ReadOnlyProperty.js';
+import TReadOnlyProperty from '../../axon/js/TReadOnlyProperty.js';
+import Vector2 from '../../dot/js/Vector2.js';
 
 type SelfOptions = {
-  interactive?: boolean; // {boolean} whether the control is interactive
+  interactive?: boolean; // whether the control is interactive
 
-  // all dots
-  orientation?: 'horizontal' | 'vertical';
-  dotRadius?: number; // {number} radius of the dots
+  orientation?: LayoutOrientation;
+
+  dotRadius?: number; // radius of the dots
   lineWidth?: number;
-  dotSpacing?: number; // {number} spacing between dots
-  dotTouchAreaDilation?: number; // {number} how much to dilate the touchArea beyond the radius of a dot
-  dotMouseAreaDilation?: number; // {number} how much to dilate the mouseArea beyond the radius of a dot
+  dotSpacing?: number; // spacing between dots
+  dotTouchAreaDilation?: number; // how much to dilate the touchArea beyond the radius of a dot
+  dotMouseAreaDilation?: number; // how much to dilate the mouseArea beyond the radius of a dot
 
   // dots representing the current page
-  currentPageFill?: TColor;
-  currentPageStroke?: TColor;
+  currentPageFill?: TPaint;
+  currentPageStroke?: TPaint;
 
   // dots representing all pages except the current page
-  pageFill?: TColor;
-  pageStroke?: TColor;
+  pageFill?: TPaint;
+  pageStroke?: TPaint;
 };
 
 export type PageControlOptions = SelfOptions & StrictOmit<NodeOptions, 'children'>;
@@ -47,7 +48,7 @@ export default class PageControl extends Node {
    * @param numberOfPagesProperty - number of pages
    * @param providedOptions
    */
-  public constructor( pageNumberProperty: TProperty<number>, numberOfPagesProperty: ReadOnlyProperty<number>, providedOptions: PageControlOptions ) {
+  public constructor( pageNumberProperty: TProperty<number>, numberOfPagesProperty: TReadOnlyProperty<number>, providedOptions?: PageControlOptions ) {
 
     const options = optionize<PageControlOptions, SelfOptions, NodeOptions>()( {
 
@@ -57,8 +58,8 @@ export default class PageControl extends Node {
       dotRadius: 3,
       lineWidth: 1,
       dotSpacing: 10,
-      dotTouchAreaDilation: 0,
-      dotMouseAreaDilation: 0,
+      dotTouchAreaDilation: 4,
+      dotMouseAreaDilation: 4,
       currentPageFill: 'black',
       currentPageStroke: null,
       pageFill: 'rgb( 200, 200, 200 )',
@@ -69,17 +70,11 @@ export default class PageControl extends Node {
       tandemNameSuffix: 'PageControl',
       visiblePropertyOptions: {
         phetioFeatured: true
-      },
-
-      // When placed in a VBox or HBox, it will re-center when the number of pages changes
-      excludeInvisibleChildrenFromBounds: true
+      }
     }, providedOptions );
 
     // validate options
-    assert && assert( _.includes( [ 'horizontal', 'vertical' ], options.orientation ), `invalid orientation=${options.orientation}` );
-
-    // To improve readability
-    const isHorizontal = ( options.orientation === 'horizontal' );
+    assert && assert( LayoutOrientationValues.includes( options.orientation ), `invalid orientation=${options.orientation}` );
 
     // Clicking on a dot goes to that page
     const pressListener = new PressListener( {
@@ -91,63 +86,54 @@ export default class PageControl extends Node {
       tandem: options.tandem.createTandem( 'pressListener' )
     } );
 
-    // Create a dot for each page.
-    // For horizontal orientation, pages are ordered left-to-right.
-    // For vertical orientation, pages are ordered top-to-bottom.
-    const dotNodes: DotNode[] = [];
-    const dotListeners: ( ( numberOfPages: number ) => void )[] = [];
-    for ( let pageNumber = 0; pageNumber < numberOfPagesProperty.value; pageNumber++ ) {
+    const dotOptions: CircleOptions = {
+      lineWidth: options.lineWidth,
+      mouseArea: ( options.dotMouseAreaDilation === 0 ) ? null : Shape.circle( 0, 0, options.dotRadius + options.dotMouseAreaDilation ),
+      touchArea: ( options.dotTouchAreaDilation === 0 ) ? null : Shape.circle( 0, 0, options.dotRadius + options.dotTouchAreaDilation ),
 
-      // dot
-      const dotCenter = ( pageNumber * ( 2 * options.dotRadius + options.dotSpacing ) );
-      const dotNode = new DotNode( pageNumber, options.dotRadius, {
-        fill: options.pageFill,
-        stroke: options.pageStroke,
-        lineWidth: options.lineWidth,
-        x: isHorizontal ? dotCenter : 0,
-        y: isHorizontal ? 0 : dotCenter
-      } );
-      dotNodes.push( dotNode );
-
-      // pointer areas
-      dotNode.touchArea = ( options.dotTouchAreaDilation === 0 ) ? null : Shape.circle( 0, 0, options.dotRadius + options.dotTouchAreaDilation );
-      dotNode.mouseArea = ( options.dotMouseAreaDilation === 0 ) ? null : Shape.circle( 0, 0, options.dotRadius + options.dotMouseAreaDilation );
+      boundsMethod: 'unstroked', // For layout purposes, so we don't have to adjust spacings when things become stroked
 
       // optional interactivity
-      if ( options.interactive ) {
-        dotNode.cursor = 'pointer';
-        dotNode.addInputListener( pressListener );
-      }
-
-      const dotListener = ( numberOfPages: number ) => {
-        dotNode.visible = pageNumber < numberOfPages;
-      };
-      numberOfPagesProperty.link( dotListener );
-      dotListeners.push( dotListener );
-    }
-
-    // Indicate which page is selected
-    const pageNumberObserver = ( pageNumber: number, oldPageNumber: number | null ) => {
-
-      // previous dot
-      if ( oldPageNumber !== null ) {
-        dotNodes[ oldPageNumber ].fill = options.pageFill;
-        dotNodes[ oldPageNumber ].stroke = options.pageStroke;
-      }
-
-      // current dot
-      dotNodes[ pageNumber ].fill = options.currentPageFill;
-      dotNodes[ pageNumber ].stroke = options.currentPageStroke;
+      cursor: options.interactive ? 'pointer' : null,
+      inputListeners: options.interactive ? [ pressListener ] : []
     };
-    pageNumberProperty.link( pageNumberObserver );
 
-    options.children = dotNodes;
+    const dotBox = new FlowBox( {
+      orientation: options.orientation, // horizontal pages ordered left-to-right, vertical pages ordered top-to-bottom
+      spacing: options.dotSpacing
+    } );
+    let dotNodes: DotNode[] = [];
+
+    // Keep it centered
+    dotBox.boundsProperty.link( () => { dotBox.center = Vector2.ZERO; } );
+
+    // Dot fill/stroke
+    const updateDotAppearance = ( pageNumber: number ) => {
+      dotNodes.forEach( dotNode => {
+        dotNode.fill = ( pageNumber === dotNode.pageNumber ) ? options.currentPageFill : options.pageFill;
+        dotNode.stroke = ( pageNumber === dotNode.pageNumber ) ? options.currentPageStroke : options.pageStroke;
+      } );
+    };
+    pageNumberProperty.link( updateDotAppearance );
+
+    // Recreate the dots when the number of pages changes
+    const recreateDotNodes = ( numberOfPages: number ) => {
+      assert && assert( numberOfPages >= 1 );
+
+      dotNodes = _.range( 0, numberOfPages ).map( pageNumber => new DotNode( pageNumber, options.dotRadius, dotOptions ) );
+      dotBox.children = dotNodes;
+      updateDotAppearance( pageNumberProperty.value ); // since they are recreated, update their appearance
+    };
+    numberOfPagesProperty.link( recreateDotNodes );
+
+    options.children = [ dotBox ];
 
     super( options );
 
     this.disposePageControl = () => {
-      pageNumberProperty.unlink( pageNumberObserver );
-      dotListeners.forEach( dotListener => numberOfPagesProperty.unlink( dotListener ) );
+      pressListener.dispose();
+      numberOfPagesProperty.unlink( recreateDotNodes );
+      pageNumberProperty.unlink( updateDotAppearance );
     };
   }
 
@@ -165,13 +151,9 @@ class DotNode extends Circle {
   // the page number associated with this dot
   public readonly pageNumber: number;
 
-  /**
-   * @param pageNumber - page number that the dot is associated with
-   * @param radius
-   * @param [options]
-   */
   public constructor( pageNumber: number, radius: number, options: CircleOptions ) {
     super( radius, options );
+
     this.pageNumber = pageNumber;
   }
 }
