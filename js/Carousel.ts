@@ -31,7 +31,7 @@ import CarouselButton, { CarouselButtonOptions } from './buttons/CarouselButton.
 import ColorConstants from './ColorConstants.js';
 import sun from './sun.js';
 import ReadOnlyProperty from '../../axon/js/ReadOnlyProperty.js';
-import DerivedProperty from '../../axon/js/DerivedProperty.js';
+import DerivedProperty, { UnknownDerivedProperty } from '../../axon/js/DerivedProperty.js';
 import GroupItemOptions, { getGroupItemNodes } from './GroupItemOptions.js';
 import Orientation from '../../phet-core/js/Orientation.js';
 import Multilink from '../../axon/js/Multilink.js';
@@ -82,7 +82,7 @@ export default class Carousel extends Node {
   private readonly alignBoxes: AlignBox[];
 
   // Stores the visible align boxes
-  private readonly visibleAlignBoxesProperty: ReadOnlyProperty<AlignBox[]>;
+  private readonly visibleAlignBoxesProperty: UnknownDerivedProperty<AlignBox[]>;
 
   // created from createNode() in CarouselItem
   public readonly carouselItemNodes: Node[];
@@ -194,26 +194,43 @@ export default class Carousel extends Node {
     this.itemsPerPage = options.itemsPerPage;
     this.defaultPageNumber = options.defaultPageNumber;
 
-    // All items are wrapped in AlignBoxes to ensure consistent sizing
+    // To improve readability
+    const isHorizontal = ( options.orientation === 'horizontal' );
+    const orientation = Orientation.fromLayoutOrientation( options.orientation );
+
     const alignGroup = new AlignGroup();
 
     const itemsTandem = options.tandem.createTandem( 'items' );
     this.carouselItemNodes = getGroupItemNodes( items, itemsTandem );
 
+    // All items are wrapped in AlignBoxes to ensure consistent sizing
     this.alignBoxes = items.map( ( item, index ) => {
       return alignGroup.createBox( this.carouselItemNodes[ index ], combineOptions<AlignBoxOptions>( {
         tandem: item.tandemName ? itemsTandem.createTandem( item.tandemName ) : Tandem.OPTIONAL
       }, options.alignBoxOptions ) );
     } );
 
-    // Visible AlignBoxes (these are the ones we lay out and base everything on)
-    this.visibleAlignBoxesProperty = DerivedProperty.deriveAny( this.alignBoxes.map( alignBox => alignBox.visibleProperty ), () => {
-      return this.alignBoxes.filter( alignBox => alignBox.visible );
+    // scrollingNode will contain all items, arranged in the proper orientation, with margins and spacing.
+    // NOTE: We'll need to handle updates to the order (for phet-io IndexedNodeIO).
+    // Horizontal carousel arrange items left-to-right, vertical is top-to-bottom.
+    // Translation of this node will be animated to give the effect of scrolling through the items.
+    this.scrollingNode = new FlowBox( {
+      children: this.alignBoxes,
+      orientation: options.orientation,
+      spacing: options.spacing,
+      [ `${orientation.opposite.coordinate}Margin` ]: options.margin
     } );
 
-    // To improve readability
-    const isHorizontal = ( options.orientation === 'horizontal' );
-    const orientation = Orientation.fromLayoutOrientation( options.orientation );
+    // Visible AlignBoxes (these are the ones we lay out and base everything on)
+    this.visibleAlignBoxesProperty = DerivedProperty.deriveAny( this.alignBoxes.map( alignBox => alignBox.visibleProperty ), () => {
+      // The order of alignBoxes might be tweaked in scrollingNode's children. We need to respect this order
+      return _.sortBy( this.alignBoxes.filter( alignBox => alignBox.visible ), alignBox => this.scrollingNode.children.indexOf( alignBox ) );
+    } );
+
+    // When the AlignBoxes are reordered, we need to recompute the visibleAlignBoxesProperty
+    this.scrollingNode.childrenReorderedEmitter.addListener( () => {
+      this.visibleAlignBoxesProperty.recomputeDerivation();
+    } );
 
     // Options common to both buttons
     const buttonOptions = combineOptions<CarouselButtonOptions>( {
@@ -222,16 +239,6 @@ export default class Carousel extends Node {
 
     assert && assert( options.spacing >= options.margin, 'The spacing must be >= the margin, or you will see ' +
                                                          'page 2 items at the end of page 1' );
-
-    // All items, arranged in the proper orientation, with margins and spacing.
-    // Horizontal carousel arrange items left-to-right, vertical is top-to-bottom.
-    // Translation of this node will be animated to give the effect of scrolling through the items.
-    this.scrollingNode = new FlowBox( {
-      orientation: options.orientation,
-      children: this.alignBoxes,
-      spacing: options.spacing,
-      [ `${orientation.opposite.coordinate}Margin` ]: options.margin
-    } );
 
     // In order to make it easy for phet-io to re-order items, the separators should not participate
     // in the layout and have indices that get moved around.  Therefore, we add a separate layer to
@@ -302,9 +309,12 @@ export default class Carousel extends Node {
     } );
 
     // Window size (content + margins, DOES NOT include the buttons)
-    const windowSizeProperty = new DerivedProperty( [
+    const windowSizeProperty = DerivedProperty.deriveAny( [
       this.visibleAlignBoxesProperty,
-      scrollingNodeContainer.boundsProperty ], ( visibleAlignBoxes, scrollingNodeBounds ) => {
+      scrollingNodeContainer.boundsProperty,
+      ...this.alignBoxes.map( alignBox => alignBox.boundsProperty )
+    ], () => {
+      const visibleAlignBoxes = this.visibleAlignBoxesProperty.value;
 
       // This doesn't fill one page in number play preferences dialog when you forget locales=*,
       // so take the last item, even if it is not a full page
@@ -313,9 +323,12 @@ export default class Carousel extends Node {
         // Measure from the beginning of the first item to the end of the last item on the 1st page
         lastBox[ orientation.maxSide ] - visibleAlignBoxes[ 0 ][ orientation.minSide ] + ( 2 * options.margin ),
 
-        scrollingNodeBounds[ orientation.opposite.size ]
+        scrollingNodeContainer.boundsProperty.value[ orientation.opposite.size ]
       );
       return isHorizontal ? horizontalSize : horizontalSize.swapped();
+    }, {
+      // So we don't needlessly toggle window sizes
+      useDeepEquality: true
     } );
 
     // Window with clipping area, so that the scrollingNodeContainer can be scrolled
@@ -441,6 +454,8 @@ export default class Carousel extends Node {
       this.scrollingNode.constraint.finishedLayoutEmitter.addListener( () => {
         updateSeparators();
       } );
+      // Additionally if we change visible alignBoxes, we need to update the separators
+      this.visibleAlignBoxesProperty.link( updateSeparators );
       updateSeparators();
     }
 
