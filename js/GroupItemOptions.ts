@@ -9,9 +9,13 @@ import Tandem from '../../tandem/js/Tandem.js';
 import { Node } from '../../scenery/js/imports.js';
 
 type GroupItemOptions = {
-  createNode: ( tandem: Tandem ) => Node;
+  createNode: ( contentTandem: Tandem ) => Node;
 
-  // If PhET-iO instrumented, tandemName must be supplied to supply the instrumentation. Optional to support uninstrumented sims and demos
+  // If PhET-iO instrumented, tandemName must be supplied to supply the instrumentation. Optional to support
+  // uninstrumented sims and demos.
+  //
+  // NOTE!!!: This is not necessarily the contentTandem passed to createNode. It depends on the implementation.
+  // There is sometimes a swap, where this tandemName will go to an AlignBox/Checkbox parent, etc. instead of the content.
   tandemName?: string;
 };
 

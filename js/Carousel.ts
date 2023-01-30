@@ -32,7 +32,7 @@ import ColorConstants from './ColorConstants.js';
 import sun from './sun.js';
 import ReadOnlyProperty from '../../axon/js/ReadOnlyProperty.js';
 import DerivedProperty from '../../axon/js/DerivedProperty.js';
-import GroupItemOptions from './GroupItemOptions.js';
+import GroupItemOptions, { getGroupItemNodes } from './GroupItemOptions.js';
 import Orientation from '../../phet-core/js/Orientation.js';
 import Multilink from '../../axon/js/Multilink.js';
 import Bounds2 from '../../dot/js/Bounds2.js';
@@ -197,10 +197,12 @@ export default class Carousel extends Node {
     // All items are wrapped in AlignBoxes to ensure consistent sizing
     const alignGroup = new AlignGroup();
 
-    // AlignBoxes
-    this.alignBoxes = items.map( item => {
-      return alignGroup.createBox( item.createNode( Tandem.OPT_OUT ), combineOptions<AlignBoxOptions>( {
-        tandem: item.tandemName ? options.tandem.createTandem( 'items' ).createTandem( item.tandemName ) : Tandem.OPTIONAL
+    const itemsTandem = options.tandem.createTandem( 'items' );
+    this.carouselItemNodes = getGroupItemNodes( items, itemsTandem );
+
+    this.alignBoxes = items.map( ( item, index ) => {
+      return alignGroup.createBox( this.carouselItemNodes[ index ], combineOptions<AlignBoxOptions>( {
+        tandem: item.tandemName ? itemsTandem.createTandem( item.tandemName ) : Tandem.OPTIONAL
       }, options.alignBoxOptions ) );
     } );
 
@@ -220,7 +222,6 @@ export default class Carousel extends Node {
 
     assert && assert( options.spacing >= options.margin, 'The spacing must be >= the margin, or you will see ' +
                                                          'page 2 items at the end of page 1' );
-    this.carouselItemNodes = this.alignBoxes.map( alignBox => alignBox.content );
 
     // All items, arranged in the proper orientation, with margins and spacing.
     // Horizontal carousel arrange items left-to-right, vertical is top-to-bottom.
