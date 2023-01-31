@@ -125,8 +125,8 @@ export default class AquaRadioButtonGroup<T> extends FlowBox {
           radioButton.touchArea = localBounds.dilatedXY( options.touchAreaXDilation, options.spacing / 2 );
         }
         else {
-          radioButton.mouseArea = localBounds.dilatedXY( options.spacing / 2, options.mouseAreaYDilation );
-          radioButton.touchArea = localBounds.dilatedXY( options.spacing / 2, options.touchAreaYDilation );
+          radioButton.mouseArea = localBounds.dilatedXY( options.mouseAreaXDilation, options.mouseAreaYDilation );
+          radioButton.touchArea = localBounds.dilatedXY( options.touchAreaXDilation, options.touchAreaYDilation );
         }
       } );
 
