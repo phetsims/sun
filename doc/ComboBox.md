@@ -78,7 +78,7 @@ The PhET combobox interaction, visually looks and behaves as a combobox; however
 	<p>Change a solute and observe differences.</p>
 ```
 ### Supporting Accessibility Resources
-* 2016 Adapted from [ARIA Practices Collapsible Listbox Example](https://www.w3.org/TR/wai-aria-practices-1.1/examples/listbox/listbox-collapsible.html)
+* Adapted from [ARIA Practices Collapsible Listbox Example](https://www.w3.org/TR/wai-aria-practices-1.1/examples/listbox/listbox-collapsible.html)(2016)
 * The above pattern has been adopted as the [1.2 Combobox design pattern](https://www.w3.org/TR/wai-aria-1.2/#combobox)(2022)
 
 ### Design Doc Content Template Text
