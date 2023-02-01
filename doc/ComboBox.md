@@ -84,7 +84,9 @@ The PhET combobox interaction, visually looks and behaves as a combobox; however
 **{{Name of combobox}}, combobox**
 Accessible Name (dynamic):  Text + {{Name of Selected list item}} (e.g. Solute: {{Drink Mix}})
 Interaction Type: Combobox (i.e., `Combobox.ts` composed of subcomponents `ComboBoxButton.ts (tagName: 'button')` and `ComboBoxListBox.ts (ariaRole: 'listbox')`
+
 Button Label with initial selection: 
+
 Listbox list items:
 * List Item 1 (e.g., Drink Mix)
 * List Item 2 (e.g., Cobalt (II) nitrate)
