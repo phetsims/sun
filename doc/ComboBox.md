@@ -83,6 +83,7 @@ The PhET combobox interaction, visually looks and behaves as a combobox; however
 ### Design Doc Content Template Text
 **{{Name of combobox}}, combobox**
 Accessible Name (dynamic):  Text + {{Name of Selected list item}} (e.g. Solute: {{Drink Mix}})
+
 Interaction Type: Combobox (i.e., `Combobox.ts` composed of subcomponents `ComboBoxButton.ts (tagName: 'button')` and `ComboBoxListBox.ts (ariaRole: 'listbox')`
 
 Button Label with initial selection: 
@@ -93,5 +94,7 @@ Listbox list items:
 * List Item 3
 
 (Optional) Help Text: 
+
 (Optional) Link to section with object & context responses
+
 (Optional) Design Note: Special things about this combobox, if any.
