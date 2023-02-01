@@ -19,7 +19,7 @@ category: other-ui
 * Mouse hover and focus highlights should be considered together
 
 ## Accessibility
-The PhET combobox interaction, visually looks and behaves as a `combobox` in the sense that a list hidden options can be revealed on demand; however, the accessible representation that we have found to work nicely is actually a button with a dynamic label that can pop-up `listbox` with a list of options. Design and interaction details are below.
+The PhET combobox interaction, visually looks and behaves as a `combobox` in the sense that a list of hidden options can be revealed on demand; however, the accessible representation that we have found to work nicely is actually a button, which may have a dynamic label (i.e., accessible name) that pops up a `listbox` with a list of options. Design and interaction details are below.
 
 ### Gesture Support
 ToDO.
