@@ -52,7 +52,7 @@ ToDO.
 
 
 ### Sample HTML for Combobox
-The PhET combobox interaction, visually looks and behaves as a combobox; however, the ARIA role combobox is not yet well supported. For the accessible representation in the Parallel DOM we implement this widget as a dynamic button and a popped-up listbox. The HTML example is below.
+The PhET combobox interaction, visually looks and behaves as a combobox; however, the ARIA 1.1 Combobox design pattern wasn't and will never be supported. For the accessible representation in the Parallel DOM we implemented this widget as a dynamic `button` and a popped-up `listbox` (Bryan Garanventa, 2016). The HTML example is below.
 
 **Note:** The HTML for this interaction may change when the ARIA role `combobox` has better support accross assitive technologies.
 
@@ -78,7 +78,8 @@ The PhET combobox interaction, visually looks and behaves as a combobox; however
 	<p>Change a solute and observe differences.</p>
 ```
 ### Supporting Accessibility Resources
-* Adapted from [ARIA Practices Collapsible Listbox Example](https://www.w3.org/TR/wai-aria-practices-1.1/examples/listbox/listbox-collapsible.html)
+* 2016 Adapted from [ARIA Practices Collapsible Listbox Example](https://www.w3.org/TR/wai-aria-practices-1.1/examples/listbox/listbox-collapsible.html)
+* The above pattern has been adopted as the [1.2 Combobox design pattern](https://www.w3.org/TR/wai-aria-1.2/#combobox)(2022)
 
 ### Design Doc Content Template Text
 **{{Name of combobox}}, combobox**
