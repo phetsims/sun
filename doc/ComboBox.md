@@ -52,7 +52,7 @@ ToDO.
 
 
 ### Sample HTML for Combobox
-The PhET combobox interaction, visually looks and behaves as a combobox; however, the ARIA role combobox is not yet well supported. Fo the accessible representation in the Parallel DOM we implement this widget as a dynamic button and a popped-up listbox. The HTML example is below.
+The PhET combobox interaction, visually looks and behaves as a combobox; however, the ARIA role combobox is not yet well supported. For the accessible representation in the Parallel DOM we implement this widget as a dynamic button and a popped-up listbox. The HTML example is below.
 
 **Note:** The HTML for this interaction may change when the ARIA role `combobox` has better support accross assitive technologies.
 
