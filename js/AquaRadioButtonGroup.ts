@@ -1,4 +1,4 @@
-// Copyright 2013-2022, University of Colorado Boulder
+// Copyright 2013-2023, University of Colorado Boulder
 
 /**
  * AquaRadioButtonGroup creates a group of AquaRadioButtons and manages their layout.
@@ -125,8 +125,8 @@ export default class AquaRadioButtonGroup<T> extends FlowBox {
           radioButton.touchArea = localBounds.dilatedXY( options.touchAreaXDilation, options.spacing / 2 );
         }
         else {
-          radioButton.mouseArea = localBounds.dilatedXY( options.spacing / 2, options.mouseAreaYDilation );
-          radioButton.touchArea = localBounds.dilatedXY( options.spacing / 2, options.touchAreaYDilation );
+          radioButton.mouseArea = localBounds.dilatedXY( options.mouseAreaXDilation, options.mouseAreaYDilation );
+          radioButton.touchArea = localBounds.dilatedXY( options.touchAreaXDilation, options.touchAreaYDilation );
         }
       } );
 

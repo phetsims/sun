@@ -19,7 +19,7 @@ category: other-ui
 * Mouse hover and focus highlights should be considered together
 
 ## Accessibility
-The PhET combobox interaction, visually looks and behaves as a `combobox` in the sense that a list hidden options can be revealed on demand; however, the accessible representation that we have found to work nicely is actually a button with a dynamic label that can pop-up `listbox` with a list of options. Design and interaction details are below.
+The PhET combobox interaction, visually looks and behaves as a `combobox` in the sense that a list of hidden options can be revealed on demand; however, the accessible representation that we have found to work nicely is actually a button, which may have a dynamic label (i.e., accessible name) that pops up a `listbox` with a list of options. Design and interaction details are below.
 
 ### Gesture Support
 ToDO.
@@ -52,7 +52,7 @@ ToDO.
 
 
 ### Sample HTML for Combobox
-The PhET combobox interaction, visually looks and behaves as a combobox; however, the ARIA role combobox is not yet well supported. Fo the accessible representation in the Parallel DOM we implement this widget as a dynamic button and a popped-up listbox. The HTML example is below.
+The PhET combobox interaction, visually looks and behaves as a combobox; however, the ARIA 1.1 Combobox design pattern wasn't and will never be supported. For the accessible representation in the Parallel DOM we implemented this widget as a dynamic `button` and a popped-up `listbox` (Bryan Garanventa, 2016). The HTML example is below.
 
 **Note:** The HTML for this interaction may change when the ARIA role `combobox` has better support accross assitive technologies.
 
@@ -78,17 +78,25 @@ The PhET combobox interaction, visually looks and behaves as a combobox; however
 	<p>Change a solute and observe differences.</p>
 ```
 ### Supporting Accessibility Resources
-* Adapted from [ARIA Practices Collapsible Listbox Example](https://www.w3.org/TR/wai-aria-practices-1.1/examples/listbox/listbox-collapsible.html)
+* Adapted from [ARIA Practices Collapsible Listbox Example](https://www.w3.org/TR/wai-aria-practices-1.1/examples/listbox/listbox-collapsible.html)(2016)
+* The above pattern has been adopted as the [1.2 Combobox design pattern](https://www.w3.org/TR/wai-aria-1.2/#combobox)(2022)
 
 ### Design Doc Content Template Text
-**Solute Combobox**
-* Accessible Name for combobox interaction (i.e., lisbox label): (e.g. Solute)
-* Accessible name for pop-up button is dynamic: {{Selected list item, e.g. Drink Mix}}
-* Listbox: ul with role="listbox"
-* Listbox items: li's with role="option"
+**{{Name of combobox}}, combobox**
+
+Accessible Name (dynamic):  Text + {{Name of Selected list item}} (e.g. Solute: {{Drink Mix}})
+
+Interaction Type: Combobox (i.e., `Combobox.ts` composed of subcomponents `ComboBoxButton.ts (tagName: 'button')` and `ComboBoxListBox.ts (ariaRole: 'listbox')`
+
+Button Label with initial selection: 
+
+Listbox list items:
 * List Item 1 (e.g., Drink Mix)
 * List Item 2 (e.g., Cobalt (II) nitrate)
 * List Item 3
-* Or as listed in simulation
-* (Optional) Help Text:
 
+(Optional) Help Text: 
+
+(Optional) Link to section with object & context responses
+
+(Optional) Design Note: Special things about this combobox, if any.
