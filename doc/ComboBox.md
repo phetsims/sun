@@ -81,14 +81,14 @@ The PhET combobox interaction, visually looks and behaves as a combobox; however
 * Adapted from [ARIA Practices Collapsible Listbox Example](https://www.w3.org/TR/wai-aria-practices-1.1/examples/listbox/listbox-collapsible.html)
 
 ### Design Doc Content Template Text
-**Solute Combobox**
-* Accessible Name for combobox interaction (i.e., lisbox label): (e.g. Solute)
-* Accessible name for pop-up button is dynamic: {{Selected list item, e.g. Drink Mix}}
-* Listbox: ul with role="listbox"
-* Listbox items: li's with role="option"
+**{{Name of combobox}}, combobox**
+Accessible Name (dynamic):  Text + {{Name of Selected list item}} (e.g. Solute: {{Drink Mix}})
+Interaction Type: Combobox (i.e., `Combobox.ts` composed of subcomponents `ComboBoxButton.ts (tagName: 'button')` and `ComboBoxListBox.ts (ariaRole: 'listbox')`
+Button Label with initial selection: 
+Listbox list items:
 * List Item 1 (e.g., Drink Mix)
 * List Item 2 (e.g., Cobalt (II) nitrate)
 * List Item 3
-* Or as listed in simulation
-* (Optional) Help Text:
-
+(Optional) Help Text: 
+(Optional) Link to section with object & context responses
+(Optional) Design Note: Special things about this combobox, if any.
