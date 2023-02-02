@@ -20,7 +20,7 @@ import PhetioObject from '../../../tandem/js/PhetioObject.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import ColorConstants from '../ColorConstants.js';
 import sun from '../sun.js';
-import ButtonModel from './ButtonModel.js';
+import ButtonModel, { ButtonModelOptions } from './ButtonModel.js';
 import RadioButtonInteractionState from './RadioButtonInteractionState.js';
 import RadioButtonInteractionStateProperty from './RadioButtonInteractionStateProperty.js';
 import RectangularButton, { RectangularButtonOptions } from './RectangularButton.js';
@@ -102,9 +102,18 @@ export default class RectangularRadioButton<T> extends RectangularButton {
       `RectangularRadioButton tandem.name must end with ${RectangularRadioButton.TANDEM_NAME_SUFFIX}: ${options.tandem.phetioID}` );
 
     // Note it shares a tandem with this, so the emitter will be instrumented as a child of the button
-    const buttonModel = new ButtonModel( {
+    const buttonModelOptions: ButtonModelOptions = {
       tandem: options.tandem
-    } );
+    };
+
+    // The ButtonModel implements the enabledProperty, so we must pass through
+    // any customizations to that instrumentation.  In particular, RectangularRadioButtons in a group of 2 or less
+    // cannot be disabled, because that would leave just one button enabled.  RectangularRadioButtons should not be
+    // used like a legend, and if they cannot be used to make selections, the group should be made invisible
+    if ( options.hasOwnProperty( 'phetioEnabledPropertyInstrumented' ) ) {
+      buttonModelOptions.phetioEnabledPropertyInstrumented = options.phetioEnabledPropertyInstrumented;
+    }
+    const buttonModel = new ButtonModel( buttonModelOptions );
 
     const interactionStateProperty = new RadioButtonInteractionStateProperty( buttonModel, property, value );
 
