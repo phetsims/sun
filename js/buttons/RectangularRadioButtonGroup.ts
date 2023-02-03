@@ -202,8 +202,7 @@ export default class RectangularRadioButtonGroup<T> extends FlowBox {
         tandem: item.tandemName ? options.tandem.createTandem( item.tandemName ) :
                 options.tandem === Tandem.OPT_OUT ? Tandem.OPT_OUT :
                 Tandem.REQUIRED,
-        phetioDocumentation: item.phetioDocumentation || '',
-        phetioEnabledPropertyInstrumented: items.length > 2
+        phetioDocumentation: item.phetioDocumentation || ''
       }, options.radioButtonOptions, item.options );
 
       // Create the label and voicing response for the radio button.
