@@ -132,7 +132,10 @@ export default class Carousel extends Node {
 
       alignBoxOptions: {
         phetioType: IndexedNodeIO,
-        phetioState: true
+        phetioState: true,
+        visiblePropertyOptions: {
+          phetioFeatured: true
+        }
       },
 
       // next/previous buttons
