@@ -328,7 +328,7 @@ export default class Carousel extends Node {
       return isHorizontal ? horizontalSize : horizontalSize.swapped();
     }, {
       // So we don't needlessly toggle window sizes
-      useDeepEquality: true
+      valueComparisonStrategy: 'equalsFunction'
     } );
 
     // Window with clipping area, so that the scrollingNodeContainer can be scrolled
