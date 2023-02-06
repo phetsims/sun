@@ -363,14 +363,25 @@ export default class Carousel extends Node {
     const backgroundSizeProperty = new DerivedProperty(
       [ windowSizeProperty, nextButton.visibleProperty, previousButton.visibleProperty ],
       ( windowSize, nextButtonVisible, previousButtonVisible ) => {
-        const nextButtonWidth = nextButtonVisible ? nextButton.width : 0;
-        const previousButtonWidth = previousButtonVisible ? previousButton.width : 0;
-        const nextButtonHeight = nextButtonVisible ? nextButton.height : 0;
-        const previousButtonHeight = previousButtonVisible ? previousButton.height : 0;
-        return new Dimension2(
-          windowSize.width + ( isHorizontal ? nextButtonWidth + previousButtonWidth : 0 ),
-          windowSize.height + ( isHorizontal ? 0 : nextButtonHeight + previousButtonHeight )
-        );
+        let backgroundWidth;
+        let backgroundHeight;
+        if ( isHorizontal ) {
+
+          // For horizontal orientation, buttons contribute to width, if they are visible.
+          const nextButtonWidth = nextButtonVisible ? nextButton.width : 0;
+          const previousButtonWidth = previousButtonVisible ? previousButton.width : 0;
+          backgroundWidth = windowSize.width + nextButtonWidth + previousButtonWidth;
+          backgroundHeight = windowSize.height;
+        }
+        else {
+
+          // For vertical orientation, buttons contribute to height, if they are visible.
+          const nextButtonHeight = nextButtonVisible ? nextButton.height : 0;
+          const previousButtonHeight = previousButtonVisible ? previousButton.height : 0;
+          backgroundWidth = windowSize.width;
+          backgroundHeight = windowSize.height + nextButtonHeight + previousButtonHeight;
+        }
+        return new Dimension2( backgroundWidth, backgroundHeight );
       } );
 
 
