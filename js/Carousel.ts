@@ -513,8 +513,8 @@ export default class Carousel extends Node {
   /**
    * Given an item's visible index, scrolls the carousel to the page that contains that item.
    */
-  public scrollToItemVisibleIndex( itemIndex: number ): void {
-    this.pageNumberProperty.set( this.itemVisibleIndexToPageNumber( itemIndex ) );
+  private scrollToItemVisibleIndex( itemVisibleIndex: number ): void {
+    this.pageNumberProperty.set( this.itemVisibleIndexToPageNumber( itemVisibleIndex ) );
   }
 
   /**
@@ -526,22 +526,23 @@ export default class Carousel extends Node {
     const alignBoxIndex = this.visibleAlignBoxesProperty.value.indexOf( this.getAlignBoxForItem( item ) );
 
     assert && assert( alignBoxIndex >= 0, 'item not present or visible' );
-
-    this.scrollToItemVisibleIndex( alignBoxIndex );
+    if ( alignBoxIndex >= 0 ) {
+      this.scrollToItemVisibleIndex( alignBoxIndex );
+    }
   }
 
   /**
    * Set the visibility of an item in the Carousel. This toggles visibility and will reflow the layout, such that hidden
    * items do not leave a gap in the layout.
    */
-  public setItemVisibility( item: CarouselItem, visible: boolean ): void {
+  public setItemVisible( item: CarouselItem, visible: boolean ): void {
     this.getAlignBoxForItem( item ).visible = visible;
   }
 
   /**
-   * Can control the visibility of this AlignBox to determine whether the space inside the carousel is maintained
+   * Gets the AlignBox that wraps an item's Node.
    */
-  public getAlignBoxForItem( item: CarouselItem ): AlignBox {
+  private getAlignBoxForItem( item: CarouselItem ): AlignBox {
     const alignBox = this.alignBoxes[ this.items.indexOf( item ) ];
 
     assert && assert( alignBox, 'item does not have corresponding alignBox' );
