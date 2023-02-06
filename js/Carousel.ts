@@ -359,13 +359,20 @@ export default class Carousel extends Node {
       pickable: false
     } );
 
-    // Background size - includes the buttons
-    const backgroundSizeProperty = new DerivedProperty( [ windowSizeProperty ], windowSize => {
-      return new Dimension2(
-        windowSize.width + ( isHorizontal ? nextButton.width + previousButton.width : 0 ),
-        windowSize.height + ( isHorizontal ? 0 : nextButton.height + previousButton.height )
-      );
-    } );
+    // Background size - includes the buttons, if they are visible.
+    const backgroundSizeProperty = new DerivedProperty(
+      [ windowSizeProperty, nextButton.visibleProperty, previousButton.visibleProperty ],
+      ( windowSize, nextButtonVisible, previousButtonVisible ) => {
+        const nextButtonWidth = nextButtonVisible ? nextButton.width : 0;
+        const previousButtonWidth = previousButtonVisible ? previousButton.width : 0;
+        const nextButtonHeight = nextButtonVisible ? nextButton.height : 0;
+        const previousButtonHeight = previousButtonVisible ? previousButton.height : 0;
+        return new Dimension2(
+          windowSize.width + ( isHorizontal ? nextButtonWidth + previousButtonWidth : 0 ),
+          windowSize.height + ( isHorizontal ? 0 : nextButtonHeight + previousButtonHeight )
+        );
+      } );
+
 
     // Resize the background/foreground dynamically
     backgroundSizeProperty.link( backgroundSize => {
