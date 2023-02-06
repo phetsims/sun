@@ -513,7 +513,7 @@ export default class Carousel extends Node {
   /**
    * Given an item's visible index, scrolls the carousel to the page that contains that item.
    */
-  public scrollToItemVisibleIndex( itemIndex: number ): void {
+  private scrollToItemVisibleIndex( itemIndex: number ): void {
     this.pageNumberProperty.set( this.itemVisibleIndexToPageNumber( itemIndex ) );
   }
 
