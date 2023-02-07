@@ -319,16 +319,23 @@ export default class Carousel extends Node {
     ], () => {
       const visibleAlignBoxes = this.visibleAlignBoxesProperty.value;
 
-      // This doesn't fill one page in number play preferences dialog when you forget locales=*,
-      // so take the last item, even if it is not a full page
-      const lastBox = visibleAlignBoxes[ options.itemsPerPage - 1 ] || visibleAlignBoxes[ visibleAlignBoxes.length - 1 ];
-      const horizontalSize = new Dimension2(
-        // Measure from the beginning of the first item to the end of the last item on the 1st page
-        lastBox[ orientation.maxSide ] - visibleAlignBoxes[ 0 ][ orientation.minSide ] + ( 2 * options.margin ),
+      if ( visibleAlignBoxes.length === 0 ) {
+        return new Dimension2( 0, 0 );
+      }
+      else {
 
-        scrollingNodeContainer.boundsProperty.value[ orientation.opposite.size ]
-      );
-      return isHorizontal ? horizontalSize : horizontalSize.swapped();
+        // This doesn't fill one page in number play preferences dialog when you forget locales=*,
+        // so take the last item, even if it is not a full page
+        const lastBox = visibleAlignBoxes[ options.itemsPerPage - 1 ] || visibleAlignBoxes[ visibleAlignBoxes.length - 1 ];
+
+        const horizontalSize = new Dimension2(
+          // Measure from the beginning of the first item to the end of the last item on the 1st page
+          lastBox[ orientation.maxSide ] - visibleAlignBoxes[ 0 ][ orientation.minSide ] + ( 2 * options.margin ),
+
+          scrollingNodeContainer.boundsProperty.value[ orientation.opposite.size ]
+        );
+        return isHorizontal ? horizontalSize : horizontalSize.swapped();
+      }
     }, {
       // So we don't needlessly toggle window sizes
       valueComparisonStrategy: 'equalsFunction'
@@ -457,7 +464,8 @@ export default class Carousel extends Node {
           const visibleChildren = this.visibleAlignBoxesProperty.value;
 
           // Add separators between the visible children
-          separatorLayer.children = _.range( 1, visibleChildren.length ).map( index => {
+          const range = visibleChildren.length >= 2 ? _.range( 1, visibleChildren.length ) : [];
+          const children = range.map( index => {
             // Find the location between adjacent nodes
             const inbetween = ( visibleChildren[ index - 1 ][ orientation.maxSide ] +
                                 visibleChildren[ index ][ orientation.minSide ] ) / 2;
@@ -468,6 +476,7 @@ export default class Carousel extends Node {
               [ `${orientation.opposite.coordinate}2` ]: this.scrollingNode[ orientation.opposite.size ]
             }, options.separatorOptions ) );
           } );
+          separatorLayer.children = children;
         }
       };
 
