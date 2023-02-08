@@ -39,7 +39,11 @@ import Bounds2 from '../../dot/js/Bounds2.js';
 
 const DEFAULT_ARROW_SIZE = new Dimension2( 20, 7 );
 
-export type CarouselItem = GroupItemOptions;
+export type CarouselItem = GroupItemOptions & {
+
+  // Item-specific options take precedence over general alignBoxOptions
+  alignBoxOptions?: AlignBoxOptions;
+};
 
 type SelfOptions = {
 
@@ -209,8 +213,11 @@ export default class Carousel extends Node {
     // All items are wrapped in AlignBoxes to ensure consistent sizing
     this.alignBoxes = items.map( ( item, index ) => {
       return alignGroup.createBox( this.carouselItemNodes[ index ], combineOptions<AlignBoxOptions>( {
-        tandem: item.tandemName ? itemsTandem.createTandem( item.tandemName ) : Tandem.OPTIONAL
-      }, options.alignBoxOptions ) );
+          tandem: item.tandemName ? itemsTandem.createTandem( item.tandemName ) : Tandem.OPTIONAL
+        }, options.alignBoxOptions,
+
+        // Item-specific options take precedence
+        item.alignBoxOptions ) );
     } );
 
     // scrollingNode will contain all items, arranged in the proper orientation, with margins and spacing.
@@ -255,25 +262,29 @@ export default class Carousel extends Node {
       children: options.separatorsVisible ? [ separatorLayer!, this.scrollingNode ] : [ this.scrollingNode ]
     } );
 
+    // Have to have at least one page, even if it is blank
+    const countPages = ( items: AlignBox[] ) => Math.max( Math.ceil( items.length / options.itemsPerPage ), 1 );
+
     // Number of pages is derived from the total number of items and the number of items per page
     this.numberOfPagesProperty = new DerivedProperty( [ this.visibleAlignBoxesProperty ], visibleAlignBoxes => {
-      // Have to have at least one page, even if it is blank
-      return Math.max( Math.ceil( visibleAlignBoxes.length / options.itemsPerPage ), 1 );
+      return countPages( visibleAlignBoxes );
     }, {
       isValidValue: v => v > 0
     } );
 
+    const maxPages = countPages( this.alignBoxes );
+
     assert && assert( options.defaultPageNumber >= 0 && options.defaultPageNumber <= this.numberOfPagesProperty.value - 1,
       `defaultPageNumber is out of range: ${options.defaultPageNumber}` );
-    assert && assert( _.every( this.alignBoxes, box => box.visible ), 'All alignBoxes should be visible for the logic below' );
 
     // Number of the page that is visible in the carousel.
     this.pageNumberProperty = new NumberProperty( options.defaultPageNumber, {
       tandem: options.tandem.createTandem( 'pageNumberProperty' ),
       numberType: 'Integer',
       isValidValue: ( value: number ) => value < this.numberOfPagesProperty.value && value >= 0,
-      // NOTE: This is the maximum range (since all the alignBoxes are visible currently)
-      range: new Range( 0, this.numberOfPagesProperty.value - 1 ),
+
+      // Based on the total number of possible alignBoxes, not just the ones visible on startup
+      range: new Range( 0, maxPages - 1 ),
       phetioFeatured: true
     } );
 
