@@ -33,7 +33,6 @@ import SliderTrack from './SliderTrack.js';
 import SliderTick, { SliderTickOptions } from './SliderTick.js';
 import sun from './sun.js';
 import PickOptional from '../../phet-core/js/types/PickOptional.js';
-import { LinkableElement } from '../../tandem/js/PhetioObject.js';
 import LinkableProperty from '../../axon/js/LinkableProperty.js';
 import Multilink from '../../axon/js/Multilink.js';
 import TProperty from '../../axon/js/TProperty.js';
@@ -41,6 +40,7 @@ import TinyProperty from '../../axon/js/TinyProperty.js';
 import SunConstants from './SunConstants.js';
 import createObservableArray from '../../axon/js/createObservableArray.js';
 import { ObservableArray } from '../../axon/js/createObservableArray.js';
+import LinkableElement from '../../tandem/js/LinkableElement.js';
 
 // constants
 const DEFAULT_HORIZONTAL_TRACK_SIZE = new Dimension2( 100, 5 );
