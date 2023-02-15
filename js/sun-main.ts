@@ -16,9 +16,10 @@ import ComponentsScreenView from './demo/components/ComponentsScreenView.js';
 import DialogsScreenView from './demo/dialogs/DialogsScreenView.js';
 import SunStrings from './SunStrings.js';
 import sunQueryParameters from './sunQueryParameters.js';
+import TModel from '../../joist/js/TModel.js';
 
 // empty model used for all demo screens
-class Model {
+class Model implements TModel {
   public reset(): void { /* nothing to do */ }
 }
 
