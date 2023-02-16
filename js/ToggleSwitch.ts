@@ -323,7 +323,7 @@ export default class ToggleSwitch<T> extends Voicing( Node ) {
       },
 
       // pdom - allow click events to toggle the ToggleSwitch, even though it uses DragListener
-      allowClick: true
+      canClick: true
     } );
     this.addInputListener( dragListener );
 
