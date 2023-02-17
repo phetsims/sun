@@ -109,10 +109,10 @@ Visual checkbox with different label
 
 ### Checkbox Snippet for Design Document
 **{{checkbox name}}, checkbox**
-Accessible Name:
-Interaction Type: checkbox or non-visual checkbox
-Initial State: checked/ not checked
-(Optional) Help Text: 
-(Optional) Context responses or link to section with context responses.
-(Optional) **Design Note:** Special things about this checkbox, if any. 
+- Accessible Name:
+- Interaction Type: checkbox or non-visual checkbox
+- Initial State: checked/ not checked
+- (Optional) Help Text: 
+- (Optional) Context responses or link to section with context responses.
+- (Optional) **Design Note:** Special things about this checkbox, if any. 
 
