@@ -57,7 +57,7 @@ Respecting the first rule of ARIA, "use a native HTML element whenever possible"
 
 ### Simplified HTML Examples for PDOM
 #### (Suggested) Options for Checkbox in the A11y API
-When creating the common code component, it would be useful to have options to use either a `label` element or an `aria-label` attribute to provide the accessible name for the checkbox. Using `aria-labelledby` is a possible option, but likely rarely the best choice for a native HTML input element.
+When creating the common code component, it would be useful to have options to use either a `label` element or an `aria-label` attribute to provide the accessible name for the checkbox.
 
 #### Checkbox with visual label text
 ##### Energy Forms and Changes
