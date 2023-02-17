@@ -113,5 +113,3 @@ Visual checkbox with different label
 - Accessible Name: Energy Symbols (e.g. Example 1)  
 - (Optional) Help Text: (e.g., Observe energy chunks move and change through system.)
 
-TO DO:
-- Group example, could use one from GFL series (no heading required)
