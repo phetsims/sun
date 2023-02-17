@@ -64,11 +64,15 @@ When creating the common code component, it would be useful to have options to u
 Visual checkbox with a text-based label:
 ![alt text "Sample unchecked checkbox for Engery Symbols"](images/efac-checkbox-energy-symbols.png "Energy Symbols, checkbox checked")
 
+###### State Descriptions
 ```html
 <input id=”energy-symbols” type=”checkbox”> <!-- not checked checkbox-->
 <label for=”energy-symbols”>Energy Symbols</label>
 <p>Observe energy chunks move and change through system.</p>
 ```
+###### Responsive Descriptions
+* When checked: Symbols flow with energies.
+* When unchecked: Energy symbols hidden.
 
 #### Checkbox without visual label text (option with aria-label)
 ##### Area Model Introduction
