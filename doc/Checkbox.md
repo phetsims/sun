@@ -56,7 +56,7 @@ Respecting the first rule of ARIA, "use a native HTML element whenever possible"
 
 
 ### Simplified HTML Examples for PDOM
-#### (Suggested) Options for Checkbox in the A11y API
+#### Options for Checkbox in the A11y API
 When creating the common code component, it would be useful to have options to use either a `label` element or an `aria-label` attribute to provide the accessible name for the checkbox.
 
 #### Checkbox with visual label text
@@ -107,9 +107,12 @@ Visual checkbox with different label
 * [HTML5.1, Section 4.10.5.1.15. Checkbox state](https://www.w3.org/TR/html51/sec-forms.html#checkbox-state-typecheckbox)
 * [ARIA Practices 1.1 Section 3.6 Checkbox](https://www.w3.org/TR/wai-aria-practices/)
 
-### Design Doc Content Template Text
-**Energy Symbols, Checkbox**
-- PhET Component: Checkbox.js
-- Accessible Name: Energy Symbols (e.g. Example 1)  
-- (Optional) Help Text: (e.g., Observe energy chunks move and change through system.)
+### Checkbox Snippet for Design Document
+**{{checkbox name}}, checkbox**
+Accessible Name:
+Interaction Type: checkbox or non-visual checkbox
+Initial State: checked/ not checked
+(Optional) Help Text: 
+(Optional) Context responses or link to section with context responses.
+(Optional) **Design Note:** Special things about this checkbox, if any. 
 
