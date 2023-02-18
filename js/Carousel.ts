@@ -22,7 +22,7 @@ import Range from '../../dot/js/Range.js';
 import { Shape } from '../../kite/js/imports.js';
 import InstanceRegistry from '../../phet-core/js/documentation/InstanceRegistry.js';
 import optionize, { combineOptions } from '../../phet-core/js/optionize.js';
-import { AlignBox, AlignBoxOptions, AlignGroup, FlowBox, IndexedNodeIO, LayoutOrientation, ManualConstraint, Node, NodeOptions, Rectangle, Separator, SeparatorOptions, TPaint } from '../../scenery/js/imports.js';
+import { AlignBox, AlignBoxOptions, AlignGroup, FlowBox, FlowBoxOptions, IndexedNodeIO, LayoutOrientation, ManualConstraint, Node, NodeOptions, Rectangle, Separator, SeparatorOptions, TPaint } from '../../scenery/js/imports.js';
 import pushButtonSoundPlayer from '../../tambo/js/shared-sound-players/pushButtonSoundPlayer.js';
 import Tandem from '../../tandem/js/Tandem.js';
 import Animation, { AnimationOptions } from '../../twixt/js/Animation.js';
@@ -224,7 +224,7 @@ export default class Carousel extends Node {
     // NOTE: We'll need to handle updates to the order (for phet-io IndexedNodeIO).
     // Horizontal carousel arrange items left-to-right, vertical is top-to-bottom.
     // Translation of this node will be animated to give the effect of scrolling through the items.
-    this.scrollingNode = new FlowBox( {
+    this.scrollingNode = new ScrollingFlowBox( this, {
       children: this.alignBoxes,
       orientation: options.orientation,
       spacing: options.spacing,
@@ -560,8 +560,16 @@ export default class Carousel extends Node {
    * Carousel and visible.
    */
   public scrollToItem( item: CarouselItem ): void {
+    this.scrollToAlignBox( this.getAlignBoxForItem( item ) );
+  }
+
+  /**
+   * Public for ScrollingFlowBox only
+   */
+  public scrollToAlignBox( alignBox: AlignBox ): void {
+
     // If the layout is dynamic, then only account for the visible items
-    const alignBoxIndex = this.visibleAlignBoxesProperty.value.indexOf( this.getAlignBoxForItem( item ) );
+    const alignBoxIndex = this.visibleAlignBoxesProperty.value.indexOf( alignBox );
 
     assert && assert( alignBoxIndex >= 0, 'item not present or visible' );
     if ( alignBoxIndex >= 0 ) {
@@ -600,6 +608,26 @@ export default class Carousel extends Node {
   private itemVisibleIndexToPageNumber( itemIndex: number ): number {
     assert && assert( itemIndex >= 0 && itemIndex < this.items.length, `itemIndex out of range: ${itemIndex}` );
     return Math.floor( itemIndex / this.itemsPerPage );
+  }
+}
+
+/**
+ * When moveChildToIndex is called, scrolls the Carousel to that item. For use in PhET-iO when the order of items is
+ * changed.
+ */
+class ScrollingFlowBox extends FlowBox {
+  private readonly carousel: Carousel;
+
+  public constructor( carousel: Carousel, options?: FlowBoxOptions ) {
+    super( options );
+    this.carousel = carousel;
+  }
+
+  public override moveChildToIndex( child: Node, index: number ): this {
+    super.moveChildToIndex( child, index );
+    this.carousel.scrollToAlignBox( child as AlignBox );
+
+    return this;
   }
 }
 
