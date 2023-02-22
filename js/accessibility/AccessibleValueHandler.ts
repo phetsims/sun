@@ -386,9 +386,6 @@ const AccessibleValueHandler = <SuperType extends Constructor<Node>>( Type: Supe
         const mappedMin = this._getMappedValue( enabledRange.min );
         const mappedMax = this._getMappedValue( enabledRange.max );
 
-        // TODO: should this assert be added back in? Right now area model fails it, see https://github.com/phetsims/sun/issues/530
-        // assert && assert( mappedMin <= mappedMax, 'min should be less than max' );
-
         // pdom - update enabled slider range for AT, required for screen reader events to behave correctly
         this.setPDOMAttribute( 'min', mappedMin );
         this.setPDOMAttribute( 'max', mappedMax );
