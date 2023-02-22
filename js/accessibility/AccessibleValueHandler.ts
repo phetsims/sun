@@ -42,9 +42,6 @@ const DEFAULT_VOICING_ON_END_RESPONSE_OPTIONS = {
   onlyOnValueChange: true // no response if value did not change
 };
 
-/// TESTING ONLY!!! REMOVE SOON TODO: REMOVE, https://github.com/phetsims/ratio-and-proportion/issues/530
-const isTesting = QueryStringMachine.containsKey( 'aFunTest' );
-
 type CreateTextFunction = {
 
   /**
@@ -308,8 +305,8 @@ const AccessibleValueHandler = <SuperType extends Constructor<Node>>( Type: Supe
         a11yRepeatEqualValueText: true,
         a11yCreateAriaValueText: toString, // by default make sure it returns a string
         a11yCreateContextResponseAlert: null,
-        contextResponsePerValueChangeDelay: isTesting ? 10000 : 700,
-        contextResponseMaxDelay: isTesting ? 5000 : 1500,
+        contextResponsePerValueChangeDelay: 700,
+        contextResponseMaxDelay: 1500,
         a11yDependencies: [],
         voicingOnEndResponseOptions: DEFAULT_VOICING_ON_END_RESPONSE_OPTIONS,
 
