@@ -441,6 +441,7 @@ export default class Dialog extends Popupable( Panel, 1 ) {
 
       closeButton.dispose();
 
+      contextResponseUtterance.dispose();
       contentAndTitle.dispose();
 
       // remove dialog content from scene graph, but don't dispose because Panel
