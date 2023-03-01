@@ -269,7 +269,7 @@ export default class NumberPicker extends AccessibleNumberSpinner( Node, 0 ) {
       assert && assert( sampleValues.length < 500000, 'Don\'t infinite loop here' );
     }
     let maxWidth = Math.max.apply( null, sampleValues.map( value => {
-      valueNode.text = options.formatValue!( value );
+      valueNode.string = options.formatValue!( value );
       return valueNode.width;
     } ) );
     // Cap the maxWidth if valueMaxWidth is provided, see https://github.com/phetsims/scenery-phet/issues/297
@@ -444,11 +444,11 @@ export default class NumberPicker extends AccessibleNumberSpinner( Node, 0 ) {
     // Update text to match the value
     const valueObserver = ( value: number | null | undefined ) => {
       if ( value === null || value === undefined ) {
-        valueNode.text = options.noValueString;
+        valueNode.string = options.noValueString;
         valueNode.x = ( backgroundWidth - valueNode.width ) / 2; // horizontally centered
       }
       else {
-        valueNode.text = options.formatValue!( value );
+        valueNode.string = options.formatValue!( value );
         if ( options.align === 'center' ) {
           valueNode.centerX = incrementBackgroundNode.centerX;
         }

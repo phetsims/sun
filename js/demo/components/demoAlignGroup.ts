@@ -60,7 +60,7 @@ export default function demoAlignGroup( layoutBounds: Bounds2 ): Node {
         while ( stepRand() < 0.94 && string.length < 20 ) {
           string += ( `${stepRand()}` ).slice( -1 );
         }
-        text.text = string;
+        text.string = string;
       }
     } );
     return text;
