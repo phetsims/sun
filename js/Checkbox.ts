@@ -8,7 +8,7 @@
 
 import PhetioAction from '../../tandem/js/PhetioAction.js';
 import validate from '../../axon/js/validate.js';
-import Matrix3 from '../../dot/js/Matrix3.js';
+import { m3 } from '../../dot/js/Matrix3.js';
 import InstanceRegistry from '../../phet-core/js/documentation/InstanceRegistry.js';
 import { FireListener, isWidthSizable, LayoutConstraint, Node, NodeOptions, Path, Rectangle, SceneryConstants, TPaint, Voicing, VoicingOptions, WidthSizable, WidthSizableOptions } from '../../scenery/js/imports.js';
 import checkEmptySolidShape from '../../sherpa/js/fontawesome-4/checkEmptySolidShape.js';
@@ -29,7 +29,7 @@ import LinkableProperty from '../../axon/js/LinkableProperty.js';
 
 // constants
 const BOOLEAN_VALIDATOR = { valueType: 'boolean' };
-const SHAPE_MATRIX = Matrix3.pool.create( 0.025, 0, 0, 0, -0.025, 0, 0, 0, 1 ); // to create a unity-scale icon
+const SHAPE_MATRIX = m3( 0.025, 0, 0, 0, -0.025, 0, 0, 0, 1 ); // to create a unity-scale icon
 const uncheckedShape = checkEmptySolidShape.transformed( SHAPE_MATRIX );
 const checkedShape = checkSquareOSolidShape.transformed( SHAPE_MATRIX );
 
