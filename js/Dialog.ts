@@ -203,9 +203,7 @@ export default class Dialog extends Popupable( Panel, 1 ) {
       phetioType: Dialog.DialogIO,
       phetioReadOnly: PhetioObject.DEFAULT_OPTIONS.phetioReadOnly, // default to false so it can pass it through to the close button
       phetioState: PhetioObject.DEFAULT_OPTIONS.phetioState,
-      visiblePropertyOptions: {
-        phetioReadOnly: true // Dialog's visibility is controlled by Popupable.isShowingProperty
-      },
+      phetioVisiblePropertyInstrumented: false, // visible isn't toggled when showing a Dialog
 
       // pdom options
       tagName: 'div',
