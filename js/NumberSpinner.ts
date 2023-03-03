@@ -24,8 +24,8 @@ import TReadOnlyProperty from '../../axon/js/TReadOnlyProperty.js';
 type NumberSpinnerArrowsPosition =
   'leftRight' | // arrow buttons on left and right of value
   'topBottom' | // arrow buttons on top and bottom of value
-  'bothRight' |// both arrow buttons to the right of the value
-  'bothBottom'; // both arrow buttons below the value;
+  'bothRight' | // both arrow buttons to the right of the value
+  'bothBottom'; // both arrow buttons below the value
 
 type SelfOptions = {
 
