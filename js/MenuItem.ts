@@ -156,7 +156,7 @@ export default class MenuItem extends WidthSizable( Voicing( Node ) ) {
     } );
 
     this.addInputListener( new FireListener( {
-      tandem: options.tandem.createTandem( 'inputListener' ),
+      tandem: options.tandem.createTandem( 'fireListener' ),
       fire: ( event: SceneryEvent ) => {
         closeCallback( event );
         callback( event );
