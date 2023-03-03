@@ -9,7 +9,7 @@
 
 import StrictOmit from '../../phet-core/js/types/StrictOmit.js';
 import optionize, { combineOptions } from '../../phet-core/js/optionize.js';
-import { FlowBox, FlowBoxOptions, HStrut, Node, PDOMPeer, SceneryConstants, SceneryEvent } from '../../scenery/js/imports.js';
+import { AlignBox, AlignBoxOptions, AlignGroup, FlowBox, FlowBoxOptions, PDOMPeer, SceneryConstants, SceneryEvent } from '../../scenery/js/imports.js';
 import multiSelectionSoundPlayerFactory from '../../tambo/js/multiSelectionSoundPlayerFactory.js';
 import Tandem from '../../tandem/js/Tandem.js';
 import AquaRadioButton, { AquaRadioButtonOptions } from './AquaRadioButton.js';
@@ -85,8 +85,11 @@ export default class AquaRadioButtonGroup<T> extends FlowBox {
 
     const nodes = getGroupItemNodes( items, options.tandem );
 
-    // Determine the max item width
-    const maxItemWidth = _.maxBy( nodes, node => node.width )!.width;
+    // To give labels that same effective with when the orientation is vertical.
+    const alignBoxOptions: AlignBoxOptions = {
+      group: new AlignGroup( { matchVertical: false } ),
+      xAlign: 'left'
+    };
 
     // Create a radio button for each item
     const radioButtons: AquaRadioButton<T>[] = [];
@@ -103,9 +106,10 @@ export default class AquaRadioButtonGroup<T> extends FlowBox {
         'Additional PDOM content in the provided Node could break accessibility.' );
 
       // Content for the radio button.
-      // For vertical orientation, add an invisible strut, so that buttons have uniform width.
+      // For vertical orientation, wrap in an AlignBox, so that button labels have uniform width.
+      // And this will result in buttons having uniform pointer-area width.
       const content = ( options.orientation === 'vertical' ) ?
-                      new Node( { children: [ new HStrut( maxItemWidth ), node ] } ) :
+                      new AlignBox( node, alignBoxOptions ) :
                       node;
 
       const radioButton = new AquaRadioButton( property, item.value, content,
