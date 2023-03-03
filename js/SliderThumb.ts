@@ -71,7 +71,7 @@ export default class SliderThumb extends Rectangle {
     // highlight thumb on pointer over
     const pressListener = new PressListener( {
       attach: false,
-      tandem: Tandem.OPT_OUT
+      tandem: Tandem.OPT_OUT // Highlighting doesn't need instrumentation
     } );
     pressListener.isHighlightedProperty.link( isHighlighted => {
       this.fill = isHighlighted ? options.fillHighlighted : options.fill;
