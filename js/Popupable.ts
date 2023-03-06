@@ -50,10 +50,10 @@ const Popupable = <SuperType extends Constructor<Node>>( type: SuperType, option
 
     private readonly _focusOnShowNode: Node | null;
 
-    private readonly _focusOnHideNode: Node | null;
+    protected _focusOnHideNode: Node | null;
 
     // The Node to return focus to after the Popupable has been hidden. A reference to this Node is saved when
-    // the Popupable is shown. By default focus is returned to Node that has focus when the Popupable is open
+    // the Popupable is shown. By default, focus is returned to Node that has focus when the Popupable is open
     // but can be overridden with focusOnHideNode.
     private _nodeToFocusOnHide: Node | null;
 
@@ -149,6 +149,14 @@ const Popupable = <SuperType extends Constructor<Node>>( type: SuperType, option
       if ( this._nodeToFocusOnHide && this._nodeToFocusOnHide.focusable ) {
         this._nodeToFocusOnHide.focus();
       }
+    }
+
+    /**
+     * Sets the Node that receives focus when the menu is closed. If null, focus returns to the element that had focus
+     * when the menu was opened.
+     */
+    public setFocusOnHideNode( node: Node | null ): void {
+      this._focusOnHideNode = node;
     }
 
     /**

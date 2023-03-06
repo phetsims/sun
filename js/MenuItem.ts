@@ -41,11 +41,6 @@ type SelfOptions = {
   // if provided add a checkmark next to the MenuItem text whenever this Property is true.
   checkedProperty?: TProperty<boolean> | null;
 
-  // Called AFTER closeCallback, use this to move focus to a particular Node after all the
-  // work of selecting the MenuItem is done. Often focus needs to move to the PhetButton, but that may not be
-  // the case if the MenuItem opens a popup (for example).
-  handleFocusCallback?: ( ( event: SceneryEvent ) => void ) | null;
-
   textFill?: TPaint;
 };
 type ParentOptions = VoicingOptions & NodeOptions;
@@ -63,7 +58,7 @@ export default class MenuItem extends WidthSizable( Voicing( Node ) ) {
   private readonly disposeMenuItem: () => void;
 
   /**
-   * @param closeCallback - called when closing the dialog that the menu item opened
+   * @param closeCallback - called when firing the menu item, most likely this should close the PhetMenu.
    * @param labelStringProperty - label for the menu item
    * @param callback - called when the menu item is selected
    * @param present - see present field
@@ -82,7 +77,6 @@ export default class MenuItem extends WidthSizable( Voicing( Node ) ) {
       // SelfOptions
       separatorBefore: false,
       checkedProperty: null,
-      handleFocusCallback: null,
       textFill: 'black',
 
       // VoicingOptions
@@ -160,7 +154,6 @@ export default class MenuItem extends WidthSizable( Voicing( Node ) ) {
       fire: ( event: SceneryEvent ) => {
         closeCallback( event );
         callback( event );
-        options.handleFocusCallback && options.handleFocusCallback( event );
       }
     } ) );
 
