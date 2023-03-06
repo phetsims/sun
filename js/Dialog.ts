@@ -22,7 +22,6 @@ import TSoundPlayer from '../../tambo/js/TSoundPlayer.js';
 import generalCloseSoundPlayer from '../../tambo/js/shared-sound-players/generalCloseSoundPlayer.js';
 import generalOpenSoundPlayer from '../../tambo/js/shared-sound-players/generalOpenSoundPlayer.js';
 import nullSoundPlayer from '../../tambo/js/shared-sound-players/nullSoundPlayer.js';
-import PhetioObject from '../../tandem/js/PhetioObject.js';
 import Tandem from '../../tandem/js/Tandem.js';
 import DynamicMarkerIO from '../../tandem/js/types/DynamicMarkerIO.js';
 import IOType from '../../tandem/js/types/IOType.js';
@@ -201,8 +200,7 @@ export default class Dialog extends Popupable( Panel, 1 ) {
       // phet-io
       tandem: Tandem.OPTIONAL,
       phetioType: Dialog.DialogIO,
-      phetioReadOnly: PhetioObject.DEFAULT_OPTIONS.phetioReadOnly, // default to false so it can pass it through to the close button
-      phetioState: PhetioObject.DEFAULT_OPTIONS.phetioState,
+      phetioState: true, // Dialog is often a dynamic element, and thus needs to be in state to trigger element creation.
       phetioVisiblePropertyInstrumented: false, // visible isn't toggled when showing a Dialog
 
       // pdom options
@@ -266,18 +264,12 @@ export default class Dialog extends Popupable( Panel, 1 ) {
 
       // phet-io
       tandem: options.tandem.createTandem( 'closeButton' ),
-      phetioReadOnly: options.phetioReadOnly, // match the readOnly of the Dialog
-
       phetioState: false, // close button should not be in state
 
-      // dialog close buttons by default do not have a featured visibleProperty
-      visiblePropertyOptions: {
-        phetioFeatured: false,
-        phetioState: false
-      },
-
-      // dialog close buttons by default do not have a featured enabledProperty
-      enabledPropertyOptions: { phetioFeatured: false },
+      // It is a usability concern to change either of these, also there are other ways to exit a Dialog, so using
+      // these is buggy.
+      phetioVisiblePropertyInstrumented: false,
+      phetioEnabledPropertyInstrumented: false,
 
       // turn off default sound generation, Dialog will create its own sounds
       soundPlayer: nullSoundPlayer,
