@@ -85,7 +85,7 @@ export default class AquaRadioButtonGroup<T> extends FlowBox {
 
     const nodes = getGroupItemNodes( items, options.tandem );
 
-    // To give labels that same effective with when the orientation is vertical.
+    // To give labels that same effective width when the orientation is vertical.
     const alignBoxOptions: AlignBoxOptions = {
       group: new AlignGroup( { matchVertical: false } ),
       xAlign: 'left'
