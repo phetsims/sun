@@ -21,10 +21,9 @@
 import BooleanProperty from '../../axon/js/BooleanProperty.js';
 import Property from '../../axon/js/Property.js';
 import dotRandom from '../../dot/js/dotRandom.js';
-import Vector2 from '../../dot/js/Vector2.js';
 import InstanceRegistry from '../../phet-core/js/documentation/InstanceRegistry.js';
 import optionize from '../../phet-core/js/optionize.js';
-import { Display, extendsWidthSizable, Focus, FocusManager, isWidthSizable, Node, NodeOptions, PDOMBehaviorFunction, PDOMPeer, PDOMValueType, TColor, TInputListener, TPaint, WidthSizable, WidthSizableOptions } from '../../scenery/js/imports.js';
+import { Display, extendsWidthSizable, Focus, FocusManager, isWidthSizable, MatrixBetweenProperty, Node, NodeOptions, PDOMBehaviorFunction, PDOMPeer, PDOMValueType, TColor, TInputListener, TPaint, WidthSizable, WidthSizableOptions } from '../../scenery/js/imports.js';
 import TSoundPlayer from '../../tambo/js/TSoundPlayer.js';
 import generalCloseSoundPlayer from '../../tambo/js/shared-sound-players/generalCloseSoundPlayer.js';
 import generalOpenSoundPlayer from '../../tambo/js/shared-sound-players/generalOpenSoundPlayer.js';
@@ -41,6 +40,7 @@ import TReadOnlyProperty from '../../axon/js/TReadOnlyProperty.js';
 import LinkableProperty from '../../axon/js/LinkableProperty.js';
 import { SpeakableResolvedResponse } from '../../utterance-queue/js/ResponsePacket.js';
 import GroupItemOptions, { getGroupItemNodes } from './GroupItemOptions.js';
+import Multilink from '../../axon/js/Multilink.js';
 
 // const
 const LIST_POSITION_VALUES = [ 'above', 'below' ] as const; // where the list pops up relative to the button
@@ -329,6 +329,23 @@ export default class ComboBox<T> extends WidthSizable( Node ) {
     listParent.addChild( this.listBox );
     this.listParent = listParent;
 
+    const listBoxMatrixProperty = new MatrixBetweenProperty( this.button, this.listParent, {
+      fromCoordinateFrame: 'parent',
+      toCoordinateFrame: 'local'
+    } );
+
+    Multilink.multilink( [ listBoxMatrixProperty, this.button.localBoundsProperty, this.listBox.localBoundsProperty ],
+      matrix => {
+        if ( matrix ) {
+          if ( this.listPosition === 'above' ) {
+            this.listBox.leftBottom = matrix.timesVector2( this.button.leftTop );
+          }
+          else {
+            this.listBox.leftTop = matrix.timesVector2( this.button.leftBottom );
+          }
+        }
+      } );
+
     // The listBox is not a child Node of ComboBox and, as a result, listen to opacity of the ComboBox and keep
     // the listBox in sync with them. See https://github.com/phetsims/sun/issues/587
     this.opacityProperty.link( opacity => { this.listBox.opacityProperty.value = opacity; } );
@@ -373,15 +390,12 @@ export default class ComboBox<T> extends WidthSizable( Node ) {
     };
     FocusManager.pdomFocusProperty.link( this.dismissWithFocusListener );
 
-    this.listBox.localBoundsProperty.lazyLink( () => this.moveListBox() );
-
     this.listBox.visibleProperty.link( visible => {
       if ( visible ) {
 
         // show the list box
         this.scaleListBox();
         this.listBox.moveToFront();
-        this.moveListBox();
 
         // manage clickToDismissListener
         assert && assert( !this.display, 'unexpected display' );
@@ -415,6 +429,8 @@ export default class ComboBox<T> extends WidthSizable( Node ) {
     } );
 
     this.disposeComboBox = () => {
+      listBoxMatrixProperty.dispose();
+
       nodes.forEach( node => node.dispose() );
 
       if ( this.display && this.display.hasInputListener( this.clickToDismissListener ) ) {
@@ -468,26 +484,8 @@ export default class ComboBox<T> extends WidthSizable( Node ) {
   }
 
   /**
-   * Handles the coordinate transform required to make the list box pop up near the button.
-   */
-  private moveListBox(): void {
-    if ( this.listPosition === 'above' ) {
-      const pButtonGlobal = this.localToGlobalPoint( new Vector2( this.button.left, this.button.top ) );
-      const pButtonLocal = this.listParent.globalToLocalPoint( pButtonGlobal );
-      this.listBox.left = pButtonLocal.x;
-      this.listBox.bottom = pButtonLocal.y;
-    }
-    else {
-      const pButtonGlobal = this.localToGlobalPoint( new Vector2( this.button.left, this.button.bottom ) );
-      const pButtonLocal = this.listParent.globalToLocalPoint( pButtonGlobal );
-      this.listBox.left = pButtonLocal.x;
-      this.listBox.top = pButtonLocal.y;
-    }
-  }
-
-  /**
    * Sets the visibility of items that correspond to a value. If the selected item has this value, it's your
-   * responsibility to change the Property value to something else. Otherwise the combo box button will continue
+   * responsibility to change the Property value to something else. Otherwise, the combo box button will continue
    * to display this value.
    * @param value - the value associated with the ComboBoxItem
    * @param visible
