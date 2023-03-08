@@ -334,16 +334,17 @@ export default class ComboBox<T> extends WidthSizable( Node ) {
       toCoordinateFrame: 'local'
     } );
 
-    Multilink.multilink( [ listBoxMatrixProperty, this.button.localBoundsProperty, this.listBox.localBoundsProperty ], ( matrix, buttonBounds, listBoxBounds ) => {
-      if ( matrix ) {
-        if ( this.listPosition === 'above' ) {
-          this.listBox.leftBottom = matrix.timesVector2( this.button.leftTop );
+    Multilink.multilink( [ listBoxMatrixProperty, this.button.localBoundsProperty, this.listBox.localBoundsProperty ],
+      matrix => {
+        if ( matrix ) {
+          if ( this.listPosition === 'above' ) {
+            this.listBox.leftBottom = matrix.timesVector2( this.button.leftTop );
+          }
+          else {
+            this.listBox.leftTop = matrix.timesVector2( this.button.leftBottom );
+          }
         }
-        else {
-          this.listBox.leftTop = matrix.timesVector2( this.button.leftBottom );
-        }
-      }
-    } );
+      } );
 
     // The listBox is not a child Node of ComboBox and, as a result, listen to opacity of the ComboBox and keep
     // the listBox in sync with them. See https://github.com/phetsims/sun/issues/587
