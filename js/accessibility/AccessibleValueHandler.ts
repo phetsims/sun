@@ -310,7 +310,7 @@ const AccessibleValueHandler = <SuperType extends Constructor<Node>>( Type: Supe
         a11yDependencies: [],
         voicingOnEndResponseOptions: DEFAULT_VOICING_ON_END_RESPONSE_OPTIONS,
 
-        // @ts-expect-error - TODO: we should be able to have the public API be just null, and internally set to string, Limitation (IV), see https://github.com/phetsims/chipper/issues/1128
+        // @ts-expect-error - TODO: we should be able to have the public API be just null, and internally set to string, Limitation (IV), see https://github.com/phetsims/phet-core/issues/128
         tagName: DEFAULT_TAG_NAME,
 
         // parent options that we must provide a default to use
