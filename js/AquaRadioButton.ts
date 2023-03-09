@@ -57,7 +57,6 @@ export default class AquaRadioButton<T> extends Voicing( Node ) {
   public static readonly TANDEM_NAME_SUFFIX = 'RadioButton';
 
   /**
-   * @mixes {Voicing}
    * @param property
    * @param value - the value that corresponds to this button, same type as property
    * @param labelNode - Node that will be vertically centered to the right of the button

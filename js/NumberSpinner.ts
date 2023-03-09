@@ -72,7 +72,6 @@ export default class NumberSpinner extends AccessibleNumberSpinner( Node, 0 ) {
    * @param numberProperty - value, must be an integer
    * @param rangeProperty - dynamic range of values, min and max must be integers
    * @param [providedOptions]
-   * @mixes AccessibleNumberSpinner
    */
   public constructor( numberProperty: Property<number>, rangeProperty: TReadOnlyProperty<Range>, providedOptions?: NumberSpinnerOptions ) {
 
