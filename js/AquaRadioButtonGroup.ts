@@ -9,7 +9,7 @@
 
 import StrictOmit from '../../phet-core/js/types/StrictOmit.js';
 import optionize, { combineOptions } from '../../phet-core/js/optionize.js';
-import { AlignBox, AlignBoxOptions, AlignGroup, FlowBox, FlowBoxOptions, PDOMPeer, SceneryConstants, SceneryEvent } from '../../scenery/js/imports.js';
+import { FlowBox, FlowBoxOptions, PDOMPeer, SceneryConstants, SceneryEvent } from '../../scenery/js/imports.js';
 import multiSelectionSoundPlayerFactory from '../../tambo/js/multiSelectionSoundPlayerFactory.js';
 import Tandem from '../../tandem/js/Tandem.js';
 import AquaRadioButton, { AquaRadioButtonOptions } from './AquaRadioButton.js';
@@ -31,7 +31,6 @@ type SelfOptions = {
   radioButtonOptions?: StrictOmit<AquaRadioButtonOptions, 'a11yNameAttribute' | 'labelContent' | 'soundPlayer' | 'tandem'>;
 
   // Dilation of pointer areas for each radio button.
-  // These are not part of radioButtonOptions because AquaRadioButton has no pointerArea options.
   // X dilation is ignored for orientation === 'horizontal'.
   // Y dilation is ignored for orientation === 'vertical'.
   touchAreaXDilation?: number;
@@ -68,6 +67,7 @@ export default class AquaRadioButtonGroup<T> extends FlowBox {
       // FlowBoxOptions
       orientation: 'vertical', // Aqua radio buttons are typically vertical, rarely horizontal
       spacing: 3, // space between each button, perpendicular to options.orientation
+      stretch: true,
       disabledOpacity: SceneryConstants.DISABLED_OPACITY,
 
       // phet-io
@@ -85,57 +85,37 @@ export default class AquaRadioButtonGroup<T> extends FlowBox {
 
     const nodes = getGroupItemNodes( items, options.tandem );
 
-    // To give labels that same effective width when the orientation is vertical.
-    const alignBoxOptions: AlignBoxOptions = {
-      group: new AlignGroup( { matchVertical: false } ),
-      xAlign: 'left'
-    };
+    // Default to a left alignment for vertical layout
+    if ( options.orientation === 'vertical' ) {
+      options.align = options.align || 'left';
+    }
 
     // Create a radio button for each item
-    const radioButtons: AquaRadioButton<T>[] = [];
-    for ( let i = 0; i < items.length; i++ ) {
-      const item = items[ i ];
+    const radioButtons = items.map( ( item, index ) => {
 
       // @ts-expect-error - runtime check to prevent prior pattern, see https://github.com/phetsims/sun/issues/794
       assert && assert( !item.tandem, 'Cannot specify tandem any more' );
 
-      const node = nodes[ i ];
+      const node = nodes[ index ];
 
       assert && assert( !node.hasPDOMContent,
         'Accessibility is provided by AquaRadioButton and AquaRadioButtonGroupItem.labelContent. ' +
         'Additional PDOM content in the provided Node could break accessibility.' );
 
-      // Content for the radio button.
-      // For vertical orientation, wrap in an AlignBox, so that button labels have uniform width.
-      // And this will result in buttons having uniform pointer-area width.
-      const content = ( options.orientation === 'vertical' ) ?
-                      new AlignBox( node, alignBoxOptions ) :
-                      node;
-
-      const radioButton = new AquaRadioButton( property, item.value, content,
+      return new AquaRadioButton( property, item.value, node,
         combineOptions<AquaRadioButtonOptions>( {
           a11yNameAttribute: CLASS_NAME + instanceCount,
           labelContent: item.labelContent || null,
-          soundPlayer: multiSelectionSoundPlayerFactory.getSelectionSoundPlayer( i ),
+          soundPlayer: multiSelectionSoundPlayerFactory.getSelectionSoundPlayer( index ),
           tandem: item.tandemName ? options.tandem.createTandem( item.tandemName ) :
                   options.tandem === Tandem.OPT_OUT ? Tandem.OPT_OUT :
-                  Tandem.REQUIRED
+                  Tandem.REQUIRED,
+          touchAreaXDilation: options.touchAreaXDilation,
+          touchAreaYDilation: options.orientation === 'vertical' ? options.spacing / 2 : options.touchAreaYDilation,
+          mouseAreaXDilation: options.mouseAreaXDilation,
+          mouseAreaYDilation: options.orientation === 'vertical' ? options.spacing / 2 : options.mouseAreaYDilation
         }, options.radioButtonOptions, item.options ) );
-
-      // set pointer areas - update them when the localBounds change
-      radioButton.localBoundsProperty.link( localBounds => {
-        if ( options.orientation === 'vertical' ) {
-          radioButton.mouseArea = localBounds.dilatedXY( options.mouseAreaXDilation, options.spacing / 2 );
-          radioButton.touchArea = localBounds.dilatedXY( options.touchAreaXDilation, options.spacing / 2 );
-        }
-        else {
-          radioButton.mouseArea = localBounds.dilatedXY( options.mouseAreaXDilation, options.mouseAreaYDilation );
-          radioButton.touchArea = localBounds.dilatedXY( options.touchAreaXDilation, options.touchAreaYDilation );
-        }
-      } );
-
-      radioButtons.push( radioButton );
-    }
+    } );
     options.children = radioButtons;
 
     super( options );

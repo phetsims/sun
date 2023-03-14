@@ -9,43 +9,50 @@
 import TProperty from '../../axon/js/TProperty.js';
 import InstanceRegistry from '../../phet-core/js/documentation/InstanceRegistry.js';
 import optionize from '../../phet-core/js/optionize.js';
-import { Circle, FireListener, Node, NodeOptions, Rectangle, SceneryConstants, TColor, Voicing, VoicingOptions } from '../../scenery/js/imports.js';
+import { Circle, FireListener, isWidthSizable, LayoutConstraint, Node, NodeOptions, Rectangle, SceneryConstants, TPaint, Voicing, VoicingOptions, WidthSizable } from '../../scenery/js/imports.js';
 import TSoundPlayer from '../../tambo/js/TSoundPlayer.js';
 import multiSelectionSoundPlayerFactory from '../../tambo/js/multiSelectionSoundPlayerFactory.js';
 import Tandem from '../../tandem/js/Tandem.js';
 import sun from './sun.js';
+import StrictOmit from '../../phet-core/js/types/StrictOmit.js';
 
 type SelfOptions = {
 
   // color used to fill the center of the button when it's selected
-  centerColor?: TColor;
+  centerColor?: TPaint;
 
   // radius of the button
   radius?: number;
 
   // color used to fill the button when it's selected
-  selectedColor?: TColor;
+  selectedColor?: TPaint;
 
   // color used to fill the button when it's deselected
-  deselectedColor?: TColor;
+  deselectedColor?: TPaint;
 
   // horizontal space between the button and the labelNode
   xSpacing?: number;
 
   // color used to stroke the outer edge of the button
-  stroke?: TColor;
+  stroke?: TPaint;
 
   // sound generator, usually overridden when creating a group of these
   soundPlayer?: TSoundPlayer;
+
+  // pointer areas
+  touchAreaXDilation?: number;
+  touchAreaYDilation?: number;
+  mouseAreaXDilation?: number;
+  mouseAreaYDilation?: number;
 
   // Each button in a group of radio buttons must have the same 'name' attribute to be considered a 'group' by the
   // browser. Otherwise, arrow keys will navigate through all inputs of type radio in the document.
   a11yNameAttribute?: string | number | null;
 };
-type ParentOptions = VoicingOptions & NodeOptions;
+type ParentOptions = VoicingOptions & StrictOmit<NodeOptions, 'children'>;
 export type AquaRadioButtonOptions = SelfOptions & ParentOptions;
 
-export default class AquaRadioButton<T> extends Voicing( Node ) {
+export default class AquaRadioButton<T> extends WidthSizable( Voicing( Node ) ) {
 
   // the value associated with this radio button
   public readonly value: T;
@@ -55,6 +62,15 @@ export default class AquaRadioButton<T> extends Voicing( Node ) {
   public static readonly DEFAULT_RADIUS = 7;
 
   public static readonly TANDEM_NAME_SUFFIX = 'RadioButton';
+
+  // Handles layout of the content, rectangles and mouse/touch areas
+  private readonly constraint: AquaRadioButtonConstraint<T>;
+
+  // We need to record if the mouse/touch areas are customized, so that we can avoid overwriting them.
+  // public for use by AquaRadioButtonConstraint only!
+  public _isMouseAreaCustomized = false;
+  public _isTouchAreaCustomized = false;
+  public _isSettingAreas = false;
 
   /**
    * @param property
@@ -75,6 +91,10 @@ export default class AquaRadioButton<T> extends Voicing( Node ) {
       stroke: 'black',
       soundPlayer: multiSelectionSoundPlayerFactory.getSelectionSoundPlayer( 0 ),
       a11yNameAttribute: null,
+      touchAreaXDilation: 0,
+      touchAreaYDilation: 0,
+      mouseAreaXDilation: 0,
+      mouseAreaYDilation: 0,
 
       // NodeOptions
       cursor: 'pointer',
@@ -113,7 +133,6 @@ export default class AquaRadioButton<T> extends Voicing( Node ) {
       children: [ outerCircleSelected, innerCircle ]
     } );
     selectedNode.addChild( selectedCircleButton );
-    selectedNode.addChild( labelNode );
 
     // deselected Node
     const deselectedNode = new Node();
@@ -122,7 +141,11 @@ export default class AquaRadioButton<T> extends Voicing( Node ) {
       stroke: options.stroke
     } );
     deselectedNode.addChild( deselectedCircleButton );
-    deselectedNode.addChild( labelNode );
+
+    const radioNode = new Node( {
+      children: [ selectedNode, deselectedNode ],
+      pickable: false // rectangle used for input
+    } );
 
     const labelBoundsListener = () => {
       labelNode.left = deselectedCircleButton.right + options.xSpacing;
@@ -131,12 +154,19 @@ export default class AquaRadioButton<T> extends Voicing( Node ) {
     labelNode.boundsProperty.link( labelBoundsListener );
 
     // Add an invisible Node to make sure the layout for selected vs deselected is the same
-    const background = new Rectangle( selectedNode.bounds.union( deselectedNode.bounds ) );
+    const rectangle = new Rectangle( {} );
     selectedNode.pickable = deselectedNode.pickable = false; // the background rectangle suffices
 
-    this.addChild( background );
-    this.addChild( selectedNode );
-    this.addChild( deselectedNode );
+    labelNode.pickable = false; // since there's a pickable rectangle on top of content
+
+    this.children = [
+      radioNode,
+      labelNode,
+      rectangle
+    ];
+
+    this.constraint = new AquaRadioButtonConstraint( this, radioNode, labelNode, rectangle, options );
+    this.constraint.updateLayout();
 
     // sync control with model
     const syncWithModel = ( newValue: T ) => {
@@ -204,6 +234,77 @@ export default class AquaRadioButton<T> extends Voicing( Node ) {
 
   public override dispose(): void {
     this.disposeAquaRadioButton();
+    super.dispose();
+  }
+}
+
+class AquaRadioButtonConstraint<T> extends LayoutConstraint {
+  private readonly radioButton: AquaRadioButton<T>;
+  private readonly radioNode: Node;
+  private readonly content: Node;
+  private readonly rectangle: Rectangle;
+  private readonly options: Required<SelfOptions>;
+
+  public constructor( radioButton: AquaRadioButton<T>, radioNode: Node, content: Node, rectangle: Rectangle, options: Required<SelfOptions> ) {
+    super( radioButton );
+
+    this.radioButton = radioButton;
+    this.radioNode = radioNode;
+    this.content = content;
+    this.rectangle = rectangle;
+    this.options = options;
+
+    this.radioButton.localPreferredWidthProperty.lazyLink( this._updateLayoutListener );
+
+    this.addNode( content );
+  }
+
+  protected override layout(): void {
+    super.layout();
+
+    // LayoutProxy helps with some layout operations, and will support a non-child content.
+    const contentProxy = this.createLayoutProxy( this.content )!;
+
+    const contentWidth = contentProxy.minimumWidth;
+
+    const minimumWidth = this.radioNode.width + this.options.xSpacing + contentWidth;
+
+    const preferredWidth = this.radioButton.localPreferredWidth === null ? minimumWidth : this.radioButton.localPreferredWidth;
+
+    // Attempt to set a preferredWidth
+    if ( isWidthSizable( this.content ) ) {
+      contentProxy.preferredWidth = preferredWidth - this.radioNode.width - this.options.xSpacing;
+    }
+
+    // For now just position content. Future updates could include widthResizable content?
+    contentProxy.left = this.radioNode.right + this.options.xSpacing;
+    contentProxy.centerY = this.radioNode.centerY;
+
+    // Our rectangle bounds will cover the radioNode and content, and if necessary expand to include the full
+    // preferredWidth
+    this.rectangle.rectBounds = this.radioNode.bounds.union( contentProxy.bounds ).withMaxX(
+      Math.max( this.radioNode.left + preferredWidth, contentProxy.right )
+    );
+
+    // Update pointer areas (if the client hasn't customized them)
+    this.radioButton._isSettingAreas = true;
+    if ( !this.radioButton._isTouchAreaCustomized ) {
+      this.radioButton.touchArea = this.radioButton.localBounds.dilatedXY( this.options.touchAreaXDilation, this.options.touchAreaYDilation );
+    }
+    if ( !this.radioButton._isMouseAreaCustomized ) {
+      this.radioButton.mouseArea = this.radioButton.localBounds.dilatedXY( this.options.mouseAreaXDilation, this.options.mouseAreaYDilation );
+    }
+    this.radioButton._isSettingAreas = false;
+
+    contentProxy.dispose();
+
+    // Set the minimumWidth last, since this may trigger a relayout
+    this.radioButton.localMinimumWidth = minimumWidth;
+  }
+
+  public override dispose(): void {
+    this.radioButton.localPreferredWidthProperty.unlink( this._updateLayoutListener );
+
     super.dispose();
   }
 }
