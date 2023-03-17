@@ -49,12 +49,11 @@ const Popupable = <SuperType extends Constructor<Node>>( type: SuperType, option
     public readonly layoutBounds: Bounds2 | null;
 
     private readonly _focusOnShowNode: Node | null;
-
-    private _focusOnHideNode: Node | null;
+    private readonly _focusOnHideNode: Node | null;
 
     // The Node to return focus to after the Popupable has been hidden. A reference to this Node is saved when
     // the Popupable is shown. By default, focus is returned to Node that has focus when the Popupable is open
-    // but can be overridden with focusOnHideNode.
+    // but can be overridden with `options.focusOnHideNode`.
     private _nodeToFocusOnHide: Node | null;
 
     // The node provided to showPopup, with the transform applied
