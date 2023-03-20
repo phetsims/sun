@@ -985,9 +985,13 @@ const AccessibleValueHandler = <SuperType extends Constructor<Node>>( Type: Supe
       const valueAtMinMax = this._valueProperty.value === this._enabledRangeProperty.value.min ||
                             this._valueProperty.value === this._enabledRangeProperty.value.max;
 
-      const shouldSpeak = !options.onlyOnValueChange || // speak each time if onlyOnValueChange is false.
-                          valueAtMinMax || // always speak at edges, for "go beyond" responses
-                          valueChanged; // If the value changed
+      // content required to speak a response and add to back of UtteranceQueue.
+      const responseContentExists = !!( options.withNameResponse && this.voicingNameResponse ) ||
+                                    !!( options.withObjectResponse && this.voicingObjectResponse );
+      const shouldSpeak = ( !options.onlyOnValueChange || // speak each time if onlyOnValueChange is false.
+                            valueAtMinMax || // always speak at edges, for "go beyond" responses
+                            valueChanged ) && // If the value changed
+                          responseContentExists;
 
       shouldSpeak && this.voicingSpeakFullResponse( {
         nameResponse: options.withNameResponse ? this.voicingNameResponse : null,
