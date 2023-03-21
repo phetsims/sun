@@ -215,6 +215,8 @@ export default class AquaRadioButton<T> extends WidthSizable( Voicing( Node ) ) 
     this.mutate( options );
 
     this.disposeAquaRadioButton = () => {
+      this.constraint.dispose();
+
       this.removeInputListener( fireListener );
       this.removeInputListener( changeListener );
       property.unlink( pdomCheckedListener );
