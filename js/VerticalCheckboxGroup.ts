@@ -9,7 +9,7 @@
 
 import StrictOmit from '../../phet-core/js/types/StrictOmit.js';
 import optionize, { combineOptions } from '../../phet-core/js/optionize.js';
-import { HStrut, Node, VBox, VBoxOptions } from '../../scenery/js/imports.js';
+import { VBox, VBoxOptions } from '../../scenery/js/imports.js';
 import Tandem from '../../tandem/js/Tandem.js';
 import Checkbox, { CheckboxOptions } from './Checkbox.js';
 import sun from './sun.js';
@@ -43,17 +43,12 @@ export default class VerticalCheckboxGroup extends VBox {
       // supertype options
       spacing: 10, // vertical spacing
       align: 'left',
+      stretch: true,
       tandem: Tandem.REQUIRED
     }, providedOptions );
 
     const nodes = getGroupItemNodes( items, options.tandem );
     const checkboxes: Checkbox[] = [];
-
-    // Determine the max item width
-    let maxItemWidth = 0;
-    for ( let i = 0; i < nodes.length; i++ ) {
-      maxItemWidth = Math.max( maxItemWidth, nodes[ i ].width );
-    }
 
     // Create a checkbox for each item
     options.children = [];
@@ -66,18 +61,13 @@ export default class VerticalCheckboxGroup extends VBox {
         'Accessibility is provided by Checkbox and VerticalCheckboxGroupItem.options. ' +
         'Additional PDOM content in the provided Node could break accessibility.' );
 
-      // Content for the checkbox. Add an invisible strut, so that checkboxes have uniform width.
-      const content = new Node( {
-        children: [ new HStrut( maxItemWidth ), node ]
-      } );
-
       // set pointer areas, y dimensions are computed
       const yDilation = options.spacing / 2;
 
       // @ts-expect-error - runtime check to prevent prior pattern, see https://github.com/phetsims/sun/issues/794
       assert && assert( !item.tandem, 'Cannot specify tandem on item, use tandemName instead' );
 
-      const checkbox = new Checkbox( item.property, content,
+      const checkbox = new Checkbox( item.property, node,
         combineOptions<CheckboxOptions>( {
           tandem: item.tandemName ? options.tandem.createTandem( item.tandemName ) :
                   Tandem.OPTIONAL,
