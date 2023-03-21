@@ -16,6 +16,7 @@ import { AlignBox, AlignGroup, HBox, HBoxOptions, Node, PressListener, SceneryCo
 import Tandem from '../../tandem/js/Tandem.js';
 import sun from './sun.js';
 import ToggleSwitch, { ToggleSwitchOptions } from './ToggleSwitch.js';
+import TEmitter from '../../axon/js/TEmitter.js';
 
 // constants
 
@@ -42,7 +43,7 @@ export default class ABSwitch<T> extends HBox {
 
   private readonly disposeABSwitch: () => void;
 
-  public readonly onInputEmitter = new Emitter();
+  public readonly onInputEmitter: TEmitter = new Emitter();
 
   /**
    * @param property - value of the current choice

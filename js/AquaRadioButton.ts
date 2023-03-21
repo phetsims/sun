@@ -16,6 +16,7 @@ import multiSelectionSoundPlayerFactory from '../../tambo/js/multiSelectionSound
 import Tandem from '../../tandem/js/Tandem.js';
 import sun from './sun.js';
 import StrictOmit from '../../phet-core/js/types/StrictOmit.js';
+import TEmitter from '../../axon/js/TEmitter.js';
 
 type SelfOptions = {
 
@@ -64,7 +65,7 @@ export default class AquaRadioButton<T> extends WidthSizable( Voicing( Node ) ) 
 
   public static readonly TANDEM_NAME_SUFFIX = 'RadioButton';
 
-  public readonly onInputEmitter = new Emitter();
+  public readonly onInputEmitter: TEmitter = new Emitter();
 
   // Handles layout of the content, rectangles and mouse/touch areas
   private readonly constraint: AquaRadioButtonConstraint<T>;

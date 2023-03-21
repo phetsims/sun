@@ -30,6 +30,7 @@ import TSoundPlayer from '../../tambo/js/TSoundPlayer.js';
 import switchToLeftSoundPlayer from '../../tambo/js/shared-sound-players/switchToLeftSoundPlayer.js';
 import switchToRightSoundPlayer from '../../tambo/js/shared-sound-players/switchToRightSoundPlayer.js';
 import Property from '../../axon/js/Property.js';
+import TEmitter from '../../axon/js/TEmitter.js';
 import assertMutuallyExclusiveOptions from '../../phet-core/js/assertMutuallyExclusiveOptions.js';
 import Utterance, { TAlertable } from '../../utterance-queue/js/Utterance.js';
 
@@ -87,7 +88,7 @@ export default class ToggleSwitch<T> extends Voicing( Node ) {
   private readonly disposeToggleSwitch: () => void;
   public readonly switchToLeftSoundPlayer: TSoundPlayer;
   public readonly switchToRightSoundPlayer: TSoundPlayer;
-  public readonly onInputEmitter = new Emitter();
+  public readonly onInputEmitter: TEmitter = new Emitter();
 
   /**
    * @param property
