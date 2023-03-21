@@ -15,6 +15,7 @@
  */
 
 import PhetioAction from '../../tandem/js/PhetioAction.js';
+import Emitter from '../../axon/js/Emitter.js';
 import Dimension2 from '../../dot/js/Dimension2.js';
 import Utils from '../../dot/js/Utils.js';
 import Vector2 from '../../dot/js/Vector2.js';
@@ -86,6 +87,7 @@ export default class ToggleSwitch<T> extends Voicing( Node ) {
   private readonly disposeToggleSwitch: () => void;
   public readonly switchToLeftSoundPlayer: TSoundPlayer;
   public readonly switchToRightSoundPlayer: TSoundPlayer;
+  public readonly onInputEmitter = new Emitter();
 
   /**
    * @param property
@@ -235,23 +237,28 @@ export default class ToggleSwitch<T> extends Voicing( Node ) {
     const toggleAction = new PhetioAction( value => {
       property.value = value;
 
-      // sound
-      value === leftValue ? options.switchToLeftSoundPlayer.play() : options.switchToRightSoundPlayer.play();
-
-      // voicing/interactive description
-      const alert = value === rightValue ? options.rightValueContextResponse : options.leftValueContextResponse;
-      if ( alert ) {
-        this.alertDescriptionUtterance( alert );
-        this.voicingSpeakResponse( {
-          contextResponse: Utterance.alertableToText( alert )
-        } );
-      }
+      this.onInputEmitter.emit();
     }, {
       parameters: [ { validValues: [ leftValue, rightValue ], phetioPrivate: true } ],
       tandem: options.tandem.createTandem( 'toggleAction' ),
       phetioDocumentation: 'Occurs when the switch is toggled via user interaction',
       phetioReadOnly: options.phetioReadOnly,
       phetioEventType: EventType.USER
+    } );
+
+    this.onInputEmitter.addListener( () => {
+
+      // sound
+      property.value === leftValue ? options.switchToLeftSoundPlayer.play() : options.switchToRightSoundPlayer.play();
+
+      // voicing/interactive description
+      const alert = property.value === rightValue ? options.rightValueContextResponse : options.leftValueContextResponse;
+      if ( alert ) {
+        this.alertDescriptionUtterance( alert );
+        this.voicingSpeakResponse( {
+          contextResponse: Utterance.alertableToText( alert )
+        } );
+      }
     } );
 
     // Gets the value that corresponds to the current thumb position.
@@ -345,6 +352,7 @@ export default class ToggleSwitch<T> extends Voicing( Node ) {
       property.unlink( update );
       toggleAction.dispose();
       dragListener.dispose();
+      this.onInputEmitter.dispose();
     };
   }
 

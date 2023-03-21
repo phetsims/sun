@@ -9,6 +9,7 @@
  */
 
 import Property from '../../axon/js/Property.js';
+import Emitter from '../../axon/js/Emitter.js';
 import InstanceRegistry from '../../phet-core/js/documentation/InstanceRegistry.js';
 import optionize, { combineOptions } from '../../phet-core/js/optionize.js';
 import { AlignBox, AlignGroup, HBox, HBoxOptions, Node, PressListener, SceneryConstants } from '../../scenery/js/imports.js';
@@ -40,6 +41,8 @@ export type ABSwitchOptions = SelfOptions & HBoxOptions;
 export default class ABSwitch<T> extends HBox {
 
   private readonly disposeABSwitch: () => void;
+
+  public readonly onInputEmitter = new Emitter();
 
   /**
    * @param property - value of the current choice
@@ -115,10 +118,11 @@ export default class ABSwitch<T> extends HBox {
     // click on labels to select
     const pressListenerA = new PressListener( {
       release: () => {
-        if ( property.value !== valueA ) {
-          toggleSwitch.switchToLeftSoundPlayer.play();
-        }
+        const oldValue = property.value;
         property.value = valueA;
+        if ( oldValue !== valueA ) {
+          this.onInputEmitter.emit();
+        }
       },
       tandem: labelA.tandem.createTandem( 'pressListener' )
     } );
@@ -126,18 +130,33 @@ export default class ABSwitch<T> extends HBox {
 
     const pressListenerB = new PressListener( {
       release: () => {
-        if ( property.value !== valueB ) {
-          toggleSwitch.switchToRightSoundPlayer.play();
-        }
+        const oldValue = property.value;
         property.value = valueB;
+        if ( oldValue !== valueB ) {
+          this.onInputEmitter.emit();
+        }
       },
       tandem: labelB.tandem.createTandem( 'pressListener' )
     } );
     labelB.addInputListener( pressListenerB ); // removeInputListener on dispose
 
+    // The toggleSwitch input triggers ABSwitch input.
+    toggleSwitch.onInputEmitter.addListener( () => this.onInputEmitter.emit() );
+
+    // Wire up sound on input
+    this.onInputEmitter.addListener( () => {
+      if ( property.value === valueB ) {
+        toggleSwitch.switchToRightSoundPlayer.play();
+      }
+      if ( property.value === valueA ) {
+        toggleSwitch.switchToLeftSoundPlayer.play();
+      }
+    } );
+
     this.disposeABSwitch = () => {
       property.unlink( propertyListener );
       toggleSwitch.dispose();
+      this.onInputEmitter.dispose();
       labelA.removeInputListener( pressListenerA );
       labelB.removeInputListener( pressListenerB );
       pressListenerA.dispose();
