@@ -7,6 +7,7 @@
  */
 
 import TProperty from '../../axon/js/TProperty.js';
+import Emitter from '../../axon/js/Emitter.js';
 import InstanceRegistry from '../../phet-core/js/documentation/InstanceRegistry.js';
 import optionize from '../../phet-core/js/optionize.js';
 import { Circle, FireListener, isWidthSizable, LayoutConstraint, Node, NodeOptions, Rectangle, SceneryConstants, TPaint, Voicing, VoicingOptions, WidthSizable } from '../../scenery/js/imports.js';
@@ -62,6 +63,8 @@ export default class AquaRadioButton<T> extends WidthSizable( Voicing( Node ) ) 
   public static readonly DEFAULT_RADIUS = 7;
 
   public static readonly TANDEM_NAME_SUFFIX = 'RadioButton';
+
+  public readonly onInputEmitter = new Emitter();
 
   // Handles layout of the content, rectangles and mouse/touch areas
   private readonly constraint: AquaRadioButtonConstraint<T>;
@@ -177,14 +180,20 @@ export default class AquaRadioButton<T> extends WidthSizable( Voicing( Node ) ) 
 
     // set Property value on fire
     const fire = () => {
+      const oldValue = property.value;
       property.set( value );
-      options.soundPlayer.play();
+      if ( oldValue !== property.value ) {
+        this.onInputEmitter.emit();
+      }
     };
     const fireListener = new FireListener( {
       fire: fire,
       tandem: options.tandem.createTandem( 'fireListener' )
     } );
     this.addInputListener( fireListener );
+
+    // sound support
+    this.onInputEmitter.addListener( () => options.soundPlayer.play() );
 
     // pdom - input listener so that updates the state of the radio button with keyboard interaction
     const changeListener = {
@@ -217,6 +226,7 @@ export default class AquaRadioButton<T> extends WidthSizable( Voicing( Node ) ) 
     this.disposeAquaRadioButton = () => {
       this.constraint.dispose();
 
+      this.onInputEmitter.dispose();
       this.removeInputListener( fireListener );
       this.removeInputListener( changeListener );
       property.unlink( pdomCheckedListener );

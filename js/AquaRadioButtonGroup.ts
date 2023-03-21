@@ -15,6 +15,8 @@ import Tandem from '../../tandem/js/Tandem.js';
 import AquaRadioButton, { AquaRadioButtonOptions } from './AquaRadioButton.js';
 import sun from './sun.js';
 import Property from '../../axon/js/Property.js';
+import Emitter from '../../axon/js/Emitter.js';
+import TEmitter from '../../axon/js/TEmitter.js';
 import GroupItemOptions, { getGroupItemNodes } from './GroupItemOptions.js';
 
 // pdom - An id for each instance of AquaRadioButtonGroup, passed to individual buttons in the group.
@@ -50,6 +52,7 @@ export type AquaRadioButtonGroupItem<T> = {
 export default class AquaRadioButtonGroup<T> extends FlowBox {
 
   private readonly radioButtons: AquaRadioButton<T>[];
+  public readonly onInputEmitter: TEmitter = new Emitter();
   private readonly disposeAquaRadioButtonGroup: () => void;
 
   public constructor( property: Property<T>, items: AquaRadioButtonGroupItem<T>[], providedOptions?: AquaRadioButtonGroupOptions ) {
@@ -133,6 +136,12 @@ export default class AquaRadioButtonGroup<T> extends FlowBox {
     const intentListener = { keydown: ( event: SceneryEvent<KeyboardEvent> ) => event.pointer.reserveForKeyboardDrag() };
     this.addInputListener( intentListener );
 
+    const boundOnRadioButtonInput = this.onRadioButtonInput.bind( this );
+    for ( let i = 0; i < radioButtons.length; i++ ) {
+      const radioButton = radioButtons[ i ];
+      radioButton.onInputEmitter.addListener( boundOnRadioButtonInput );
+    }
+
     // Add linked element after the radio button is instrumented
     this.addLinkedElement( property, {
       tandem: options.tandem.createTandem( 'property' )
@@ -141,10 +150,15 @@ export default class AquaRadioButtonGroup<T> extends FlowBox {
     this.disposeAquaRadioButtonGroup = () => {
       this.removeInputListener( intentListener );
       radioButtons.forEach( radioButton => radioButton.dispose() );
+      this.onInputEmitter.dispose();
       nodes.forEach( node => node.dispose() );
     };
 
     this.radioButtons = radioButtons;
+  }
+
+  private onRadioButtonInput(): void {
+    this.onInputEmitter.emit();
   }
 
   public override dispose(): void {
