@@ -43,6 +43,7 @@ export default class ABSwitch<T> extends HBox {
 
   private readonly disposeABSwitch: () => void;
 
+  // Emits on input that results in a change to the Property value, after the Property has changed.
   public readonly onInputEmitter: TEmitter = new Emitter();
 
   /**

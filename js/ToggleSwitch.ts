@@ -88,6 +88,8 @@ export default class ToggleSwitch<T> extends Voicing( Node ) {
   private readonly disposeToggleSwitch: () => void;
   public readonly switchToLeftSoundPlayer: TSoundPlayer;
   public readonly switchToRightSoundPlayer: TSoundPlayer;
+
+  // Emits on input that results in a change to the Property value, after the Property has changed.
   public readonly onInputEmitter: TEmitter = new Emitter();
 
   /**
