@@ -1045,7 +1045,7 @@ const correctRounding = function( newValue: number, currentValue: number, stepSi
   // constraints with floating point values, don't correct if that is the cases
   const stepsAboutEqual = Utils.equalsEpsilon( proposedStep, stepSize, 1e-14 );
   if ( stepToFar && !stepsAboutEqual ) {
-    correctedValue += ( newValue > currentValue ) ? ( -1 * stepSize ) : stepSize;
+    correctedValue += ( newValue > currentValue ) ? ( -stepSize ) : stepSize;
   }
   return correctedValue;
 };
