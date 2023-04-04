@@ -242,9 +242,9 @@ export default class AccordionBox extends Node {
     // If there is no titleNode specified, we'll provide our own, and handle disposal.
     if ( !this.titleNode ) {
       this.titleNode = new Text( '', {
-        tandem: options.tandem.createTandem( 'titleText' ),
-        disposer: this
+        tandem: options.tandem.createTandem( 'titleText' )
       } );
+      this.disposeEmitter.addListener( () => this.titleNode.dispose() );
     }
 
     // Allow touches to go through to the collapsedTitleBar which handles the input event
@@ -255,9 +255,9 @@ export default class AccordionBox extends Node {
     this.expandedProperty = options.expandedProperty;
     if ( !this.expandedProperty ) {
       this.expandedProperty = new BooleanProperty( true, {
-        tandem: options.tandem.createTandem( 'expandedProperty' ),
-        disposer: this
+        tandem: options.tandem.createTandem( 'expandedProperty' )
       } );
+      this.disposeEmitter.addListener( () => this.expandedProperty.dispose() );
     }
 
     // expand/collapse button, links to expandedProperty, must be disposed of
@@ -286,18 +286,21 @@ export default class AccordionBox extends Node {
 
     this.expandedTitleBar = new InteractiveHighlightPath( null, combineOptions<ExpandCollapseButtonOptions>( {
       lineWidth: options.lineWidth, // use same lineWidth as box, for consistent look
-      cursor: options.cursor,
-      disposer: this
+      cursor: options.cursor
     }, options.titleBarOptions ) );
     this.expandedBox.addChild( this.expandedTitleBar );
 
     // Collapsed title bar has corners that match the box. Clicking it operates like expand/collapse button.
     this.collapsedTitleBar = new InteractiveHighlightRectangle( combineOptions<RectangleOptions>( {
       cornerRadius: options.cornerRadius,
-      cursor: options.cursor,
-      disposer: this
+      cursor: options.cursor
     }, options.titleBarOptions ) );
     this.collapsedBox.addChild( this.collapsedTitleBar );
+
+    this.disposeEmitter.addListener( () => {
+      this.collapsedTitleBar.dispose();
+      this.expandedTitleBar.dispose();
+    } );
 
     if ( options.titleBarExpandCollapse ) {
       this.collapsedTitleBar.addInputListener( {
