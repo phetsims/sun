@@ -16,7 +16,7 @@
     ],
     "generatedUnitTests": true,
     "runnable": true,
-    "simFeatures":{
+    "simFeatures": {
       "supportsInteractiveDescription": true,
       "supportsDynamicLocale": true
     },
@@ -31,6 +31,6 @@
     "supportsOutputJS": true
   },
   "eslintConfig": {
-    "extends": "../chipper/eslint/sim_eslintrc.js"
+    "extends": "../chipper/eslint/phet-library_eslintrc.js"
   }
 }
