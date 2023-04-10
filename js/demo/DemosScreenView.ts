@@ -113,7 +113,7 @@ class DemosScreenView extends ScreenView {
     const items = demos.map( ( demo: SunDemo ) => {
       return {
         value: demo,
-        createNode: ( tandem: Tandem ) => new Text( demo.label, { font: COMBO_BOX_ITEM_FONT } )
+        createNode: () => new Text( demo.label, { font: COMBO_BOX_ITEM_FONT } )
       };
     } );
 

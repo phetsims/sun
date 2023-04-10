@@ -122,7 +122,7 @@ export default class CarouselComboBox<T> extends WidthSizable( Node ) {
     // Create items for the carousel, whose API for 'items' is different than ComboBox.
     const carouselItemNodes = _.map( comboBoxItems,
       ( comboBoxItem, i ) => {
-        return { createNode: ( tandem: Tandem ) => new CarouselItemNode( property, comboBoxItem, nodes[ i ], alignGroup, options.itemNodeOptions ) };
+        return { createNode: () => new CarouselItemNode( property, comboBoxItem, nodes[ i ], alignGroup, options.itemNodeOptions ) };
       }
     );
     assert && assert( carouselItemNodes.length === comboBoxItems.length, 'expected a carouselItem for each comboBoxItem' );
