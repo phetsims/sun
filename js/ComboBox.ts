@@ -289,7 +289,6 @@ export default class ComboBox<T> extends WidthSizable( Node ) {
     } );
     this.addChild( this.button );
 
-    // TODO: https://github.com/phetsims/sun/issues/797 don't forget dispose
     this.listBox = new ComboBoxListBox( property, items, nodes,
       this.hideListBox.bind( this ), // callback to hide the list box
       () => {
@@ -431,8 +430,6 @@ export default class ComboBox<T> extends WidthSizable( Node ) {
     this.disposeComboBox = () => {
       listBoxMatrixProperty.dispose();
 
-      nodes.forEach( node => node.dispose() );
-
       if ( this.display && this.display.hasInputListener( this.clickToDismissListener ) ) {
         this.display.removeInputListener( this.clickToDismissListener );
       }
@@ -443,6 +440,8 @@ export default class ComboBox<T> extends WidthSizable( Node ) {
       this.displayOnlyProperty.dispose(); // tandems must be cleaned up
       this.listBox.dispose();
       this.button.dispose();
+
+      !usesDeprecatedPattern && nodes.forEach( node => node.dispose() );
     };
 
     // support for binder documentation, stripped out in builds and only runs when ?binder is specified
