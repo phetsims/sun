@@ -19,7 +19,7 @@ import TProperty from '../../axon/js/TProperty.js';
 import nullSoundPlayer from '../../tambo/js/shared-sound-players/nullSoundPlayer.js';
 import TinyProperty from '../../axon/js/TinyProperty.js';
 import StrictOmit from '../../phet-core/js/types/StrictOmit.js';
-import ComboBox, { ComboBoxItem } from './ComboBox.js';
+import ComboBox, { ComboBoxItemNoNode } from './ComboBox.js';
 import Multilink from '../../axon/js/Multilink.js';
 import TReadOnlyProperty from '../../axon/js/TReadOnlyProperty.js';
 import PatternStringProperty from '../../axon/js/PatternStringProperty.js';
@@ -66,7 +66,7 @@ export default class ComboBoxButton<T> extends RectangularPushButton {
   private arrow: Path;
   private separatorLine: Line;
 
-  public constructor( property: TProperty<T>, items: ComboBoxItem<T>[], nodes: Node[], providedOptions?: ComboBoxButtonOptions ) {
+  public constructor( property: TProperty<T>, items: ComboBoxItemNoNode<T>[], nodes: Node[], providedOptions?: ComboBoxButtonOptions ) {
 
     const options = optionize<ComboBoxButtonOptions, SelfOptions, RectangularPushButtonOptions>()( {
 
@@ -238,7 +238,7 @@ export default class ComboBoxButton<T> extends RectangularPushButton {
     let voicingPatternstringProperty: TReadOnlyProperty<string> | null = null;
 
     // When Property's value changes, show the corresponding item's Node on the button.
-    let item: ComboBoxItem<T> | null = null;
+    let item: ComboBoxItemNoNode<T> | null = null;
     const propertyObserver = ( value: T ) => {
       // remove the node for the previous item
       itemNodeWrapper.removeAllChildren();

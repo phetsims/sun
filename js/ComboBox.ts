@@ -41,6 +41,7 @@ import LinkableProperty from '../../axon/js/LinkableProperty.js';
 import { SpeakableResolvedResponse } from '../../utterance-queue/js/ResponsePacket.js';
 import GroupItemOptions, { getGroupItemNodes } from './GroupItemOptions.js';
 import Multilink from '../../axon/js/Multilink.js';
+import StrictOmit from '../../phet-core/js/types/StrictOmit.js';
 
 // const
 const LIST_POSITION_VALUES = [ 'above', 'below' ] as const; // where the list pops up relative to the button
@@ -58,6 +59,9 @@ export type ComboBoxItem<T> = {
   // pdom - the label for this item's associated Node in the combo box
   a11yName?: PDOMValueType | null;
 } & GroupItemOptions;
+
+// Most usages of the items should not be able to create the Node, but rather should use the corresponding `nodes` array.
+export type ComboBoxItemNoNode<T> = StrictOmit<ComboBoxItem<T>, 'createNode'>;
 
 export type ComboBoxListPosition = typeof LIST_POSITION_VALUES[number];
 export type ComboBoxAlign = typeof ALIGN_VALUES[number];

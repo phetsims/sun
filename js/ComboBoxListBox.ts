@@ -8,7 +8,7 @@
 
 import PhetioAction from '../../tandem/js/PhetioAction.js';
 import optionize, { combineOptions } from '../../phet-core/js/optionize.js';
-import { KeyboardUtils, SceneryEvent, SpeakingOptions, TInputListener, TPaint, VBox, VoicingNode, Node } from '../../scenery/js/imports.js';
+import { KeyboardUtils, Node, SceneryEvent, SpeakingOptions, TInputListener, TPaint, VBox, VoicingNode } from '../../scenery/js/imports.js';
 import multiSelectionSoundPlayerFactory from '../../tambo/js/multiSelectionSoundPlayerFactory.js';
 import generalCloseSoundPlayer from '../../tambo/js/shared-sound-players/generalCloseSoundPlayer.js';
 import generalOpenSoundPlayer from '../../tambo/js/shared-sound-players/generalOpenSoundPlayer.js';
@@ -20,7 +20,7 @@ import sun from './sun.js';
 import TSoundPlayer from '../../tambo/js/TSoundPlayer.js';
 import DerivedProperty from '../../axon/js/DerivedProperty.js';
 import TProperty from '../../axon/js/TProperty.js';
-import ComboBox, { ComboBoxItem } from './ComboBox.js';
+import ComboBox, { ComboBoxItemNoNode } from './ComboBox.js';
 
 type SelfOptions = {
 
@@ -59,7 +59,7 @@ export default class ComboBoxListBox<T> extends Panel {
    * @param tandem
    * @param providedOptions
    */
-  public constructor( property: TProperty<T>, items: ComboBoxItem<T>[], nodes: Node[], hideListBoxCallback: () => void,
+  public constructor( property: TProperty<T>, items: ComboBoxItemNoNode<T>[], nodes: Node[], hideListBoxCallback: () => void,
                       focusButtonCallback: () => void, voiceOnSelectionNode: VoicingNode, tandem: Tandem, providedOptions?: ComboBoxListBoxOptions ) {
 
     const options = optionize<ComboBoxListBoxOptions, SelfOptions, PanelOptions>()( {

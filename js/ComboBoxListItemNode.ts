@@ -15,10 +15,10 @@ import { IndexedNodeIO, Node, NodeOptions, Rectangle, TPaint, Voicing, VoicingOp
 import Tandem from '../../tandem/js/Tandem.js';
 import sun from './sun.js';
 import SunConstants from './SunConstants.js';
-import { ComboBoxItem } from './ComboBox.js';
 import TReadOnlyProperty from '../../axon/js/TReadOnlyProperty.js';
 import Property from '../../axon/js/Property.js';
 import PatternStringProperty from '../../axon/js/PatternStringProperty.js';
+import { ComboBoxItemNoNode } from './ComboBox.js';
 
 type SelfOptions = {
   align?: 'left' | 'right' | 'center';
@@ -43,11 +43,11 @@ export default class ComboBoxListItemNode<T> extends Voicing( Node ) {
   // It will then set this back to false.
   private _supplyOpenResponseOnNextFocus: boolean;
 
-  public readonly item: ComboBoxItem<T>;
+  public readonly item: ComboBoxItemNoNode<T>;
 
   private readonly disposeComboBoxListItemNode: () => void;
 
-  public constructor( item: ComboBoxItem<T>, node: Node, highlightWidthProperty: TReadOnlyProperty<number>, highlightHeightProperty: TReadOnlyProperty<number>, providedOptions?: ComboBoxListItemNodeOptions ) {
+  public constructor( item: ComboBoxItemNoNode<T>, node: Node, highlightWidthProperty: TReadOnlyProperty<number>, highlightHeightProperty: TReadOnlyProperty<number>, providedOptions?: ComboBoxListItemNodeOptions ) {
 
     const options = optionize<ComboBoxListItemNodeOptions, SelfOptions, ParentOptions>()( {
 
