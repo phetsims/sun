@@ -245,10 +245,6 @@ export default class ComboBox<T> extends WidthSizable( Node ) {
                                               'ComboBoxItem.a11yLabel. Additional PDOM content in the provided ' +
                                               'Node could break accessibility.' );
     } );
-    const elements = [];
-    for ( let i = 0; i < items.length; i++ ) {
-      elements[ i ] = { item: items[ i ], node: nodes[ i ] };
-    }
 
     // validate option values
     assert && assert( options.xMargin > 0 && options.yMargin > 0,
