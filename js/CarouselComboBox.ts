@@ -116,13 +116,12 @@ export default class CarouselComboBox<T> extends WidthSizable( Node ) {
     // Make items in the carousel have the same width and height.
     const alignGroup = new AlignGroup();
 
-    // TODO: These are the nodes, not the ComboBoxItems, is this name best? https://github.com/phetsims/sun/issues/797
-    const nodes = getGroupItemNodes( comboBoxItems, options.tandem.createTandem( 'items' ) );
+    const contentNodes = getGroupItemNodes( comboBoxItems, options.tandem.createTandem( 'items' ) );
 
     // Create items for the carousel, whose API for 'items' is different than ComboBox.
     const carouselItemNodes = _.map( comboBoxItems,
       ( comboBoxItem, i ) => {
-        return { createNode: () => new CarouselItemNode( property, comboBoxItem, nodes[ i ], alignGroup, options.itemNodeOptions ) };
+        return { createNode: () => new CarouselItemNode( property, comboBoxItem, contentNodes[ i ], alignGroup, options.itemNodeOptions ) };
       }
     );
     assert && assert( carouselItemNodes.length === comboBoxItems.length, 'expected a carouselItem for each comboBoxItem' );
@@ -149,7 +148,7 @@ export default class CarouselComboBox<T> extends WidthSizable( Node ) {
     } );
 
     // Pressing this button pops the carousel up and down
-    const button = new ComboBoxButton( property, comboBoxItems, nodes, combineOptions<ComboBoxButtonOptions>( {
+    const button = new ComboBoxButton( property, comboBoxItems, contentNodes, combineOptions<ComboBoxButtonOptions>( {
       listener: () => {
         carouselAndPageControl.visible = !carouselAndPageControl.visible;
       },
@@ -218,6 +217,7 @@ export default class CarouselComboBox<T> extends WidthSizable( Node ) {
       button.dispose();
       pageControl && pageControl.dispose();
       carousel.dispose();
+      contentNodes.forEach( node => node.dispose() );
     };
   }
 
