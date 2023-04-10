@@ -22,7 +22,7 @@ import Range from '../../dot/js/Range.js';
 import { Shape } from '../../kite/js/imports.js';
 import InstanceRegistry from '../../phet-core/js/documentation/InstanceRegistry.js';
 import optionize, { combineOptions } from '../../phet-core/js/optionize.js';
-import { AlignBox, AlignBoxOptions, AlignGroup, FlowBox, IndexedNodeIO, IndexedNodeIOParent, FlowBoxOptions, LayoutConstraint, LayoutOrientation, Node, NodeOptions, Rectangle, Separator, SeparatorOptions, TPaint } from '../../scenery/js/imports.js';
+import { AlignBox, AlignBoxOptions, AlignGroup, FlowBox, FlowBoxOptions, IndexedNodeIO, IndexedNodeIOParent, LayoutConstraint, LayoutOrientation, Node, NodeOptions, Rectangle, Separator, SeparatorOptions, TPaint } from '../../scenery/js/imports.js';
 import pushButtonSoundPlayer from '../../tambo/js/shared-sound-players/pushButtonSoundPlayer.js';
 import Tandem from '../../tandem/js/Tandem.js';
 import Animation, { AnimationOptions } from '../../twixt/js/Animation.js';
@@ -408,6 +408,7 @@ export default class Carousel extends Node {
       } );
       this.scrollingNode.dispose();
       this.carouselConstraint.dispose();
+      this.carouselItemNodes.forEach( node => node.dispose() );
     };
 
     this.mutate( options );
@@ -604,7 +605,6 @@ class CarouselConstraint extends LayoutConstraint {
       const lastBox = visibleAlignBoxes[ this.itemsPerPage - 1 ] || visibleAlignBoxes[ visibleAlignBoxes.length - 1 ];
 
       const horizontalSize = new Dimension2(
-
         // Measure from the beginning of the first item to the end of the last item on the 1st page
         lastBox[ orientation.maxSide ] - visibleAlignBoxes[ 0 ][ orientation.minSide ] + ( 2 * this.margin ),
 
