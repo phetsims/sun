@@ -237,12 +237,7 @@ export default class ComboBox<T> extends WidthSizable( Node ) {
       phetioEnabledPropertyInstrumented: true // opt into default PhET-iO instrumented enabledProperty
     }, providedOptions );
 
-    // @ts-expect-error TODO: remove as part of https://github.com/phetsims/sun/issues/797
-    const usesDeprecatedPattern = !!items[ 0 ].node;
-
-    // @ts-expect-error TODO: remove as part of https://github.com/phetsims/sun/issues/797
-    const nodes = usesDeprecatedPattern ? items.map( item => item.node ) :
-                  getGroupItemNodes( items, options.tandem.createTandem( 'items' ) );
+    const nodes = getGroupItemNodes( items, options.tandem.createTandem( 'items' ) );
 
     assert && nodes.forEach( node => {
       assert && assert( !node.hasPDOMContent, 'Accessibility is provided by ComboBoxItemNode and ' +
@@ -440,8 +435,7 @@ export default class ComboBox<T> extends WidthSizable( Node ) {
       this.displayOnlyProperty.dispose(); // tandems must be cleaned up
       this.listBox.dispose();
       this.button.dispose();
-
-      !usesDeprecatedPattern && nodes.forEach( node => node.dispose() );
+      nodes.forEach( node => node.dispose() );
     };
 
     // support for binder documentation, stripped out in builds and only runs when ?binder is specified
