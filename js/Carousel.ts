@@ -403,11 +403,15 @@ export default class Carousel extends Node {
       this.visibleAlignBoxesProperty.dispose();
       this.pageNumberProperty.dispose();
       this.alignBoxes.forEach( alignBox => {
-        alignBox.children.forEach( child => child.dispose() );
+
+        assert && assert( alignBox.children.length === 1, 'Carousel AlignBox instances should have only one child' );
+        assert && assert( this.carouselItemNodes.includes( alignBox.children[ 0 ] ), 'Carousel AlignBox instances should wrap a content node' );
+
         alignBox.dispose();
       } );
       this.scrollingNode.dispose();
       this.carouselConstraint.dispose();
+      this.carouselItemNodes.forEach( node => node.dispose() );
     };
 
     this.mutate( options );
