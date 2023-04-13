@@ -182,7 +182,6 @@ export default class ComboBox<T> extends WidthSizable( Node ) {
     assert && assert( _.uniqBy( items, ( item: ComboBoxItem<T> ) => item.value ).length === items.length,
       'items must have unique values' );
     assert && items.forEach( item => {
-      // assert && assert( !item.hasOwnProperty( 'node' ), 'we use createNode now' );
       assert && assert( !item.tandemName || item.tandemName.endsWith( ComboBox.ITEM_TANDEM_NAME_SUFFIX ),
         `ComboBoxItem tandemName must end with '${ComboBox.ITEM_TANDEM_NAME_SUFFIX}': ${item.tandemName}` );
     } );
