@@ -45,7 +45,7 @@ import './BooleanToggleNode.js';
 import './Carousel.js';
 import './CarouselComboBox.js';
 import './Checkbox.js';
-import './ClosestDragListener.js';
+import './ClosestDragForwardingListener.js';
 import './ColorConstants.js';
 import './ComboBox.js';
 import './ComboBoxButton.js';

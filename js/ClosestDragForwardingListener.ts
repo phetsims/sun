@@ -23,7 +23,7 @@ type DraggableItem = {
   computeDistance: ( globalPoint: Vector2 ) => number;
 };
 
-export default class ClosestDragListener {
+export default class ClosestDragForwardingListener {
 
   // The maximum distance from an item that will cause a touch-like (includes pen) to start a drag
   private readonly touchThreshold: number;
@@ -95,4 +95,4 @@ export default class ClosestDragListener {
   }
 }
 
-sun.register( 'ClosestDragListener', ClosestDragListener );
+sun.register( 'ClosestDragForwardingListener', ClosestDragForwardingListener );
