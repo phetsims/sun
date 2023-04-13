@@ -1,4 +1,4 @@
-// Copyright 2016-2022, University of Colorado Boulder
+// Copyright 2016-2023, University of Colorado Boulder
 
 /**
  * A Scenery input listener that is able to find the closest in a list of items to a "down" event and trigger an action
