@@ -20,6 +20,8 @@ import ArrowButton, { ArrowButtonOptions } from './buttons/ArrowButton.js';
 import sun from './sun.js';
 import Property from '../../axon/js/Property.js';
 import TReadOnlyProperty from '../../axon/js/TReadOnlyProperty.js';
+import pushButtonSoundPlayer from '../../tambo/js/shared-sound-players/pushButtonSoundPlayer.js';
+import TSoundPlayer from '../../tambo/js/TSoundPlayer.js';
 
 type NumberSpinnerArrowsPosition =
   'leftRight' | // arrow buttons on left and right of value
@@ -37,6 +39,8 @@ type SelfOptions = {
   arrowButtonFill?: TColor;
   arrowButtonStroke?: TColor;
   arrowButtonLineWidth?: number;
+
+  arrowsSoundPlayer?: TSoundPlayer;
 
   // Function called when the increment button is pressed. Defaults to adding options.deltaValue.
   incrementFunction?: ( ( value: number ) => number );
@@ -83,6 +87,7 @@ export default class NumberSpinner extends AccessibleNumberSpinner( Node, 0 ) {
       ParentOptions>()( {
 
       // SelfOptions
+      arrowsSoundPlayer: pushButtonSoundPlayer,
       arrowsPosition: 'bothRight',
       arrowsScale: null,
       arrowButtonFill: 'white',
@@ -130,6 +135,7 @@ export default class NumberSpinner extends AccessibleNumberSpinner( Node, 0 ) {
       stroke: options.arrowButtonStroke,
       lineWidth: options.arrowButtonLineWidth,
       focusable: false,
+      soundPlayer: options.arrowsSoundPlayer,
 
       // as requested in https://github.com/phetsims/sun/issues/575
       enabledPropertyOptions: {
