@@ -159,7 +159,7 @@ export default class Slider extends Sizable( AccessibleSlider( Node, 0 ) ) {
     assert && assertMutuallyExclusiveOptions( providedOptions, [ 'trackNode' ], [
       'trackSize', 'trackFillEnabled', 'trackFillDisabled', 'trackStroke', 'trackLineWidth', 'trackCornerRadius' ] );
 
-    // @ts-expect-error - chip away for https://github.com/phetsims/center-and-variability/issues/142
+    // @ts-expect-error - chip away for https://github.com/phetsims/phet-core/issues/130
     const options = optionize<SliderOptions, SelfOptions, ParentOptions>()( {
 
       orientation: Orientation.HORIZONTAL,
