@@ -19,7 +19,7 @@ import Range from '../../dot/js/Range.js';
 import Utils from '../../dot/js/Utils.js';
 import assertMutuallyExclusiveOptions from '../../phet-core/js/assertMutuallyExclusiveOptions.js';
 import InstanceRegistry from '../../phet-core/js/documentation/InstanceRegistry.js';
-import optionize from '../../phet-core/js/optionize.js';
+import optionize, { combineOptions } from '../../phet-core/js/optionize.js';
 import Orientation from '../../phet-core/js/Orientation.js';
 import swapObjectKeys from '../../phet-core/js/swapObjectKeys.js';
 import { DragListener, FocusHighlightFromNode, LayoutConstraint, Node, NodeOptions, SceneryConstants, Sizable, TPaint } from '../../scenery/js/imports.js';
@@ -40,6 +40,7 @@ import TinyProperty from '../../axon/js/TinyProperty.js';
 import SunConstants from './SunConstants.js';
 import createObservableArray, { ObservableArray } from '../../axon/js/createObservableArray.js';
 import LinkableElement from '../../tandem/js/LinkableElement.js';
+import PickRequired from '../../phet-core/js/types/PickRequired.js';
 
 // constants
 const DEFAULT_HORIZONTAL_TRACK_SIZE = new Dimension2( 100, 5 );
@@ -109,10 +110,12 @@ type SelfOptions = {
 
 type ParentOptions = AccessibleSliderOptions & NodeOptions;
 
-// We provide these options to the super
-export type SliderOptions = SelfOptions &
-  StrictOmit<ParentOptions, 'panTargetNode' | 'valueProperty' | 'enabledRangeProperty' | 'ariaOrientation'> &
-  PickOptional<ParentOptions, 'enabledRangeProperty'>;
+
+type RequiredParentOptionsSuppliedBySlider = 'panTargetNode' | 'valueProperty' | 'enabledRangeProperty' | 'ariaOrientation';
+type OptionalParentOptions = StrictOmit<ParentOptions, RequiredParentOptionsSuppliedBySlider>;
+
+// We provide these options to the super, also enabledRangeProperty is turned from required to optional
+export type SliderOptions = SelfOptions & OptionalParentOptions & PickOptional<ParentOptions, 'enabledRangeProperty'>;
 
 export default class Slider extends Sizable( AccessibleSlider( Node, 0 ) ) {
 
@@ -159,8 +162,7 @@ export default class Slider extends Sizable( AccessibleSlider( Node, 0 ) ) {
     assert && assertMutuallyExclusiveOptions( providedOptions, [ 'trackNode' ], [
       'trackSize', 'trackFillEnabled', 'trackFillDisabled', 'trackStroke', 'trackLineWidth', 'trackCornerRadius' ] );
 
-    // @ts-expect-error see https://github.com/phetsims/sun/issues/842
-    const options = optionize<SliderOptions, SelfOptions, ParentOptions>()( {
+    const options = optionize<SliderOptions, SelfOptions, OptionalParentOptions>()( {
 
       orientation: Orientation.HORIZONTAL,
       trackNode: null,
@@ -221,9 +223,6 @@ export default class Slider extends Sizable( AccessibleSlider( Node, 0 ) ) {
 
     const rangeProperty = range instanceof Range ? new TinyProperty( range ) : range;
 
-    // ariaOrientation is omitted from ParentOptions, so we can fill it in here.
-    options.ariaOrientation = options.orientation;
-
     // assert && assert( options.soundGenerator === Slider.DEFAULT_SOUND || _.isEmpty( options.valueChangeSoundGeneratorOptions ),
     //   'options should only be supplied when using default sound generator' );
 
@@ -255,61 +254,64 @@ export default class Slider extends Sizable( AccessibleSlider( Node, 0 ) ) {
       };
     }
 
-    const boundsRequiredOptionKeys = _.pick( options, Node.REQUIRES_BOUNDS_OPTION_KEYS );
-    const superOptions = _.omit( options, Node.REQUIRES_BOUNDS_OPTION_KEYS );
-
-    if ( superOptions.orientation === Orientation.VERTICAL ) {
+    if ( options.orientation === Orientation.VERTICAL ) {
 
       // For a vertical slider, the client should provide dimensions that are specific to a vertical slider.
       // But Slider expects dimensions for a horizontal slider, and then creates the vertical orientation using rotation.
       // So if the client provides any dimensions for a vertical slider, swap those dimensions to horizontal.
-      if ( superOptions.trackSize ) {
-        superOptions.trackSize = superOptions.trackSize.swapped();
+      if ( options.trackSize ) {
+        options.trackSize = options.trackSize.swapped();
       }
-      if ( superOptions.thumbSize ) {
-        superOptions.thumbSize = superOptions.thumbSize.swapped();
+      if ( options.thumbSize ) {
+        options.thumbSize = options.thumbSize.swapped();
       }
-      swapObjectKeys( superOptions, 'thumbTouchAreaXDilation', 'thumbTouchAreaYDilation' );
-      swapObjectKeys( superOptions, 'thumbMouseAreaXDilation', 'thumbMouseAreaYDilation' );
+      swapObjectKeys( options, 'thumbTouchAreaXDilation', 'thumbTouchAreaYDilation' );
+      swapObjectKeys( options, 'thumbMouseAreaXDilation', 'thumbMouseAreaYDilation' );
     }
-    superOptions.trackSize = superOptions.trackSize || DEFAULT_HORIZONTAL_TRACK_SIZE;
-    superOptions.thumbSize = superOptions.thumbSize || DEFAULT_HORIZONTAL_THUMB_SIZE;
+    options.trackSize = options.trackSize || DEFAULT_HORIZONTAL_TRACK_SIZE;
+    options.thumbSize = options.thumbSize || DEFAULT_HORIZONTAL_THUMB_SIZE;
 
     const thumbTandem = options.tandem.createTandem( Slider.THUMB_NODE_TANDEM_NAME );
-    if ( Tandem.VALIDATION && superOptions.thumbNode ) {
-      assert && assert( superOptions.thumbNode.tandem.equals( thumbTandem ),
-        `Passed-in thumbNode must have the correct tandem. Expected: ${thumbTandem.phetioID}, actual: ${superOptions.thumbNode.tandem.phetioID}`
+    if ( Tandem.VALIDATION && options.thumbNode ) {
+      assert && assert( options.thumbNode.tandem.equals( thumbTandem ),
+        `Passed-in thumbNode must have the correct tandem. Expected: ${thumbTandem.phetioID}, actual: ${options.thumbNode.tandem.phetioID}`
       );
     }
 
     // The thumb of the slider
-    const thumb = superOptions.thumbNode || new SliderThumb( {
+    const thumb = options.thumbNode || new SliderThumb( {
 
       // propagate superOptions that are specific to SliderThumb
-      size: superOptions.thumbSize,
-      fill: superOptions.thumbFill,
-      fillHighlighted: superOptions.thumbFillHighlighted,
-      stroke: superOptions.thumbStroke,
-      lineWidth: superOptions.thumbLineWidth,
-      centerLineStroke: superOptions.thumbCenterLineStroke,
+      size: options.thumbSize,
+      fill: options.thumbFill,
+      fillHighlighted: options.thumbFillHighlighted,
+      stroke: options.thumbStroke,
+      lineWidth: options.thumbLineWidth,
+      centerLineStroke: options.thumbCenterLineStroke,
       tandem: thumbTandem
     } );
 
-    const ownsEnabledRangeProperty = !superOptions.enabledRangeProperty;
+    const ownsEnabledRangeProperty = !options.enabledRangeProperty;
 
-    // controls the portion of the slider that is enabled
-    superOptions.enabledRangeProperty = superOptions.enabledRangeProperty || ( range instanceof Range ? new Property( range, {
-      valueType: Range,
-      isValidValue: ( value: Range ) => ( value.min >= range.min && value.max <= range.max ),
-      tandem: options.tandem.createTandem( 'enabledRangeProperty' ),
-      phetioValueType: Range.RangeIO,
-      phetioDocumentation: 'Sliders support two ranges: the outer range which specifies the min and max of the track and ' +
-                           'the enabledRangeProperty, which determines how low and high the thumb can be dragged within the track.'
-    } ) : range );
+    const boundsRequiredOptionKeys = _.pick( options, Node.REQUIRES_BOUNDS_OPTION_KEYS );
 
-    superOptions.panTargetNode = thumb;
+    // Now add in the required options when passing to the super type
+    const superOptions = combineOptions<typeof options & PickRequired<ParentOptions, RequiredParentOptionsSuppliedBySlider>>( {
 
-    superOptions.valueProperty = valueProperty;
+      ariaOrientation: options.orientation,
+      valueProperty: valueProperty,
+      panTargetNode: thumb,
+
+      // controls the portion of the slider that is enabled
+      enabledRangeProperty: options.enabledRangeProperty || ( range instanceof Range ? new Property( range, {
+        valueType: Range,
+        isValidValue: ( value: Range ) => ( value.min >= range.min && value.max <= range.max ),
+        tandem: options.tandem.createTandem( 'enabledRangeProperty' ),
+        phetioValueType: Range.RangeIO,
+        phetioDocumentation: 'Sliders support two ranges: the outer range which specifies the min and max of the track and ' +
+                             'the enabledRangeProperty, which determines how low and high the thumb can be dragged within the track.'
+      } ) : range )
+    }, options );
 
     super( superOptions );
 
@@ -339,10 +341,13 @@ export default class Slider extends Sizable( AccessibleSlider( Node, 0 ) ) {
     const trackSpacer = new Node();
     sliderParts.push( trackSpacer );
 
+    // Assertion to get around mutating the null-default based on the slider orientation.
+    assert && assert( superOptions.trackSize, 'trackSize should not be null' );
+
     this.track = options.trackNode || new DefaultSliderTrack( valueProperty, range, {
 
       // propagate options that are specific to SliderTrack
-      size: superOptions.trackSize,
+      size: superOptions.trackSize!,
       fillEnabled: superOptions.trackFillEnabled,
       fillDisabled: superOptions.trackFillDisabled,
       stroke: superOptions.trackStroke,
