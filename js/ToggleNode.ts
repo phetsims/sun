@@ -34,14 +34,14 @@ export default class ToggleNode<T> extends Node {
 
   public constructor( valueProperty: TReadOnlyProperty<T>, elements: ToggleNodeElement<T>[], providedOptions?: ToggleNodeOptions ) {
 
-    assert && assert( Array.isArray( elements ), 'elements should be an array' );
-    if ( assert ) {
-      elements.forEach( element => {
-        const keys = _.keys( element );
-        assert && assert( keys.length === 2, 'each element should have two keys' );
-        assert && assert( keys[ 0 ] === 'value' || keys[ 1 ] === 'value', 'element should have a value key' );
-      } );
-    }
+    // assert && assert( Array.isArray( elements ), 'elements should be an array' );
+    // if ( assert ) {
+    //   elements.forEach( element => {
+    //     const keys = _.keys( element );
+    //     assert && assert( keys.length === 2, 'each element should have two keys' );
+    //     assert && assert( keys[ 0 ] === 'value' || keys[ 1 ] === 'value', 'element should have a value key' );
+    //   } );
+    // }
 
     const options = optionize<ToggleNodeOptions, SelfOptions, NodeOptions>()( {
 
