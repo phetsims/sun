@@ -220,16 +220,6 @@ export default class ComboBoxListBox<T> extends Panel {
 
     // pdom listener for the entire list box
     this.addInputListener( {
-
-      // When the list box gets focus, transfer focus to the ComboBoxListItemNode that matches property.value.
-      focus: () => {
-        if ( this.visible ) {
-          const listItemNode = this.getListItemNode( property.value );
-          listItemNode.supplyOpenResponseOnNextFocus();
-          listItemNode.focus();
-        }
-      },
-
       // Handle keydown
       keydown: event => {
         if ( event.domEvent && KeyboardUtils.isAnyKeyEvent( event.domEvent, [ KeyboardUtils.KEY_ESCAPE, KeyboardUtils.KEY_TAB ] ) ) {
@@ -322,6 +312,15 @@ export default class ComboBoxListBox<T> extends Panel {
     assert && assert( listItemNode, 'no item found that has focus' );
     assert && assert( listItemNode instanceof ComboBoxListItemNode, 'invalid listItemNode' ); // eslint-disable-line no-simple-type-checking-assertions
     return listItemNode;
+  }
+
+  /**
+   * Focuses the ComboBoxListItemNode that corresponds to a specified value
+   */
+  public focusListItemNode( value: T ): void {
+    const listItemNode = this.getListItemNode( value );
+    listItemNode.supplyOpenResponseOnNextFocus();
+    listItemNode.focus();
   }
 
   /**
