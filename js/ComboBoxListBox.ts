@@ -127,7 +127,6 @@ export default class ComboBoxListBox<T> extends Panel {
       },
 
       // Handle keyup on each item in the list box, for a11y.
-      //TODO sun#447, scenery#931 we're using keyup because keydown fires continuously
       keyup: event => {
         if ( event.domEvent && KeyboardUtils.isAnyKeyEvent( event.domEvent, [ KeyboardUtils.KEY_ENTER, KeyboardUtils.KEY_SPACE ] ) ) {
           fireAction.execute( event );
