@@ -110,7 +110,6 @@ type SelfOptions = {
 
 type ParentOptions = AccessibleSliderOptions & NodeOptions;
 
-
 type RequiredParentOptionsSuppliedBySlider = 'panTargetNode' | 'valueProperty' | 'enabledRangeProperty' | 'ariaOrientation';
 type OptionalParentOptions = StrictOmit<ParentOptions, RequiredParentOptionsSuppliedBySlider>;
 
@@ -281,7 +280,7 @@ export default class Slider extends Sizable( AccessibleSlider( Node, 0 ) ) {
     // The thumb of the slider
     const thumb = options.thumbNode || new SliderThumb( {
 
-      // propagate superOptions that are specific to SliderThumb
+      // propagate options that are specific to SliderThumb
       size: options.thumbSize,
       fill: options.thumbFill,
       fillHighlighted: options.thumbFillHighlighted,
