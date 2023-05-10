@@ -13,7 +13,7 @@ import { Shape } from '../../kite/js/imports.js';
 import InstanceRegistry from '../../phet-core/js/documentation/InstanceRegistry.js';
 import optionize, { combineOptions } from '../../phet-core/js/optionize.js';
 import StrictOmit from '../../phet-core/js/types/StrictOmit.js';
-import { FocusHighlightFromNode, InteractiveHighlighting, Node, NodeOptions, Path, PDOMBehaviorFunction, PDOMPeer, Rectangle, RectangleOptions, TColor, Text } from '../../scenery/js/imports.js';
+import { FocusHighlightFromNode, InteractiveHighlighting, Node, NodeOptions, PaintableOptions, Path, PathOptions, PDOMBehaviorFunction, PDOMPeer, Rectangle, RectangleOptions, Text } from '../../scenery/js/imports.js';
 import accordionBoxClosedSoundPlayer from '../../tambo/js/shared-sound-players/accordionBoxClosedSoundPlayer.js';
 import accordionBoxOpenedSoundPlayer from '../../tambo/js/shared-sound-players/accordionBoxOpenedSoundPlayer.js';
 import SoundClipPlayer from '../../tambo/js/sound-generators/SoundClipPlayer.js';
@@ -25,44 +25,66 @@ import ExpandCollapseButton, { ExpandCollapseButtonOptions } from './ExpandColla
 import sun from './sun.js';
 import TReadOnlyProperty from '../../axon/js/TReadOnlyProperty.js';
 
-// Options documented in optionize
 type SelfOptions = {
+  // If not provided, a Text node will be supplied. Should have and maintain well-defined bounds if passed in
   titleNode?: Node;
-  expandedProperty?: Property<boolean>;
-  resize?: boolean;
-  lineWidth?: number;
-  cornerRadius?: number;
 
-  stroke?: TColor;
-  fill?: TColor;
+  // If not provided, a BooleanProperty will be created, defaulting to true.
+  expandedProperty?: Property<boolean>;
+
+  // If true, the AccordionBox will resize itself as needed when the title/content resizes.
+  // See https://github.com/phetsims/sun/issues/304
+  resize?: boolean;
+
+  // applied to multiple parts of this UI component
+  cursor?: NodeOptions[ 'cursor' ];
+  lineWidth?: PathOptions[ 'lineWidth' ];
+  cornerRadius?: RectangleOptions[ 'cornerRadius' ];
+
+  // For the box
+  stroke?: PaintableOptions[ 'stroke' ];
+  fill?: PaintableOptions[ 'fill' ];
   minWidth?: number;
 
+  // horizontal alignment of the title, 'left'|'center'|'right'
   titleAlignX?: 'center' | 'left' | 'right';
+
+  // vertical alignment of the title, relative to expand/collapse button 'top'|'center'
   titleAlignY?: 'top' | 'center';
+
+  // horizontal space between title and left|right edge of box
   titleXMargin?: number;
+
+  // vertical space between title and top of box
   titleYMargin?: number;
+
+  // horizontal space between title and expand/collapse button
   titleXSpacing?: number;
+
+  // true = title is visible when expanded, false = title is hidden when expanded
   showTitleWhenExpanded?: boolean;
+
+  // clicking on the title bar expands/collapses the accordion box
   titleBarExpandCollapse?: boolean;
 
   // options passed to ExpandCollapseButton constructor
   expandCollapseButtonOptions?: ExpandCollapseButtonOptions;
 
   // expand/collapse button layout
-  buttonAlign?: 'left' | 'right';
-  buttonXMargin?: number;
-  buttonYMargin?: number;
+  buttonAlign?: 'left' | 'right'; // button alignment, 'left'|'right'
+  buttonXMargin?: number; // horizontal space between button and left|right edge of box
+  buttonYMargin?: number; // vertical space between button and top edge of box
 
   // content
-  contentAlign?: 'left' | 'center' | 'right';
-  contentXMargin?: number;
-  contentYMargin?: number;
-  contentXSpacing?: number;
-  contentYSpacing?: number;
+  contentAlign?: 'left' | 'center' | 'right'; // horizontal alignment of the content
+  contentXMargin?: number; // horizontal space between content and left/right edges of box
+  contentYMargin?: number; // vertical space between content and bottom edge of box
+  contentXSpacing?: number; // horizontal space between content and button, ignored if showTitleWhenExpanded is true
+  contentYSpacing?: number; // vertical space between content and title+button, ignored if showTitleWhenExpanded is false
 
   titleBarOptions?: RectangleOptions;
 
-  // Sound
+  // sound generators for expand and collapse
   expandedSoundPlayer?: SoundClipPlayer;
   collapsedSoundPlayer?: SoundClipPlayer;
 
@@ -129,20 +151,14 @@ export default class AccordionBox extends Node {
    */
   public constructor( contentNode: Node, providedOptions?: AccordionBoxOptions ) {
 
-    const options = optionize<AccordionBoxOptions, StrictOmit<SelfOptions, 'expandCollapseButtonOptions' | 'titleBarOptions'>, NodeOptions>()( {
+    const options = optionize<AccordionBoxOptions, StrictOmit<SelfOptions, 'expandCollapseButtonOptions'>, NodeOptions>()( {
 
-      // If not provided, a Text node will be supplied. Should have and maintain well-defined bounds if passed in
       titleNode: null as unknown as Node,
-
-      // {Property.<boolean>} - If not provided, a BooleanProperty will be created, defaulting to true.
       expandedProperty: null as unknown as BooleanProperty,
-
-      // If true, the AccordionBox will resize itself as needed when the title/content resizes.
-      // See https://github.com/phetsims/sun/issues/304
       resize: true,
 
       // applied to multiple parts of this UI component
-      cursor: 'pointer', // {string} default cursor
+      cursor: 'pointer',
       lineWidth: 1,
       cornerRadius: 10,
 
@@ -151,27 +167,27 @@ export default class AccordionBox extends Node {
       fill: 'rgb( 238, 238, 238 )',
       minWidth: 0,
 
-      titleAlignX: 'center', // {string} horizontal alignment of the title, 'left'|'center'|'right'
-      titleAlignY: 'center', // {string} vertical alignment of the title, relative to expand/collapse button 'top'|'center'
-      titleXMargin: 10, // horizontal space between title and left|right edge of box
-      titleYMargin: 2, // vertical space between title and top of box
-      titleXSpacing: 5, // horizontal space between title and expand/collapse button
-      showTitleWhenExpanded: true, // true = title is visible when expanded, false = title is hidden when expanded
-      titleBarExpandCollapse: true, // {boolean} clicking on the title bar expands/collapses the accordion box
+      titleAlignX: 'center',
+      titleAlignY: 'center',
+      titleXMargin: 10,
+      titleYMargin: 2,
+      titleXSpacing: 5,
+      showTitleWhenExpanded: true,
+      titleBarExpandCollapse: true,
 
       // expand/collapse button layout
-      buttonAlign: 'left',  // {string} button alignment, 'left'|'right'
-      buttonXMargin: 4, // horizontal space between button and left|right edge of box
-      buttonYMargin: 2, // vertical space between button and top edge of box
+      buttonAlign: 'left',
+      buttonXMargin: 4,
+      buttonYMargin: 2,
 
       // content
-      contentAlign: 'center', // {string} horizontal alignment of the content, 'left'|'center'|'right'
-      contentXMargin: 15, // horizontal space between content and left/right edges of box
-      contentYMargin: 8,  // vertical space between content and bottom edge of box
-      contentXSpacing: 5, // horizontal space between content and button, ignored if showTitleWhenExpanded is true
-      contentYSpacing: 8, // vertical space between content and title+button, ignored if showTitleWhenExpanded is false
+      contentAlign: 'center',
+      contentXMargin: 15,
+      contentYMargin: 8,
+      contentXSpacing: 5,
+      contentYSpacing: 8,
 
-      // {TSoundPlayer} - sound generators for expand and collapse
+      // sound
       expandedSoundPlayer: accordionBoxOpenedSoundPlayer,
       collapsedSoundPlayer: accordionBoxClosedSoundPlayer,
 
@@ -191,14 +207,13 @@ export default class AccordionBox extends Node {
       tandemNameSuffix: 'AccordionBox',
       phetioType: AccordionBox.AccordionBoxIO,
       phetioEventType: EventType.USER,
-      visiblePropertyOptions: { phetioFeatured: true }
-    }, providedOptions );
+      visiblePropertyOptions: { phetioFeatured: true },
 
-    // titleBarOptions defaults
-    options.titleBarOptions = combineOptions<RectangleOptions>( {
-      fill: null, // {Color|string|null} title bar fill
-      stroke: null // {Color|string|null} title bar stroke, used only for the expanded title bar
-    }, options.titleBarOptions );
+      titleBarOptions: {
+        fill: null, // title bar fill
+        stroke: null // title bar stroke, used only for the expanded title bar
+      }
+    }, providedOptions );
 
     // expandCollapseButtonOptions defaults
     options.expandCollapseButtonOptions = combineOptions<ExpandCollapseButtonOptions>( {
