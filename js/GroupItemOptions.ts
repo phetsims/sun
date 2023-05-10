@@ -8,8 +8,8 @@
 import Tandem from '../../tandem/js/Tandem.js';
 import { Node } from '../../scenery/js/imports.js';
 
-type GroupItemOptions = {
-  createNode: ( contentTandem: Tandem ) => Node;
+type GroupItemOptions<T extends Node = Node> = {
+  createNode: ( contentTandem: Tandem ) => T;
 
   // If PhET-iO instrumented, tandemName must be supplied to supply the instrumentation. Optional to support
   // uninstrumented sims and demos.
@@ -24,7 +24,7 @@ export default GroupItemOptions;
 /**
  * Get the nodes for the GroupItemOptions
  */
-export function getGroupItemNodes( array: GroupItemOptions[], tandem: Tandem ): Node[] {
+export function getGroupItemNodes<T extends Node = Node>( array: GroupItemOptions<T>[], tandem: Tandem ): T[] {
   return array.map( item => {
 
     // @ts-expect-error - runtime check to prevent prior pattern, see https://github.com/phetsims/sun/issues/794
