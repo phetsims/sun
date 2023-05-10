@@ -66,11 +66,6 @@ export default class ToggleNode<T, N extends Node = Node> extends Node {
 
     super( options );
 
-    //TODO https://github.com/phetsims/sun/issues/420 delete this dead code or explain why it's commented out
-    // this.addLinkedElement( valueProperty, {
-    //   tandem: options.tandem.createTandem( 'valueProperty' )
-    // } );
-
     this.nodes = nodes;
 
     this.disposeToggleNode = function() {
