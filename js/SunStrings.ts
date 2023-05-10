@@ -12,6 +12,11 @@ type StringsType = {
   'sun': {
     'titleStringProperty': LinkableProperty<string>;
   };
+  'screen': {
+    'buttonsStringProperty': LinkableProperty<string>;
+    'componentsStringProperty': LinkableProperty<string>;
+    'dialogsStringProperty': LinkableProperty<string>;
+  };
   'a11y': {
     'numberSpinnerRoleDescriptionStringProperty': LinkableProperty<string>;
     'closeStringProperty': LinkableProperty<string>;
