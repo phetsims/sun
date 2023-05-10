@@ -1,4 +1,4 @@
-// Copyright 2020-2022, University of Colorado Boulder
+// Copyright 2020-2023, University of Colorado Boulder
 
 /**
  * Auto-generated from modulify, DO NOT manually modify.
@@ -11,6 +11,11 @@ import sun from './sun.js';
 type StringsType = {
   'sun': {
     'titleStringProperty': LinkableProperty<string>;
+  };
+  'screen': {
+    'buttonsStringProperty': LinkableProperty<string>;
+    'componentsStringProperty': LinkableProperty<string>;
+    'dialogsStringProperty': LinkableProperty<string>;
   };
   'a11y': {
     'numberSpinnerRoleDescriptionStringProperty': LinkableProperty<string>;
