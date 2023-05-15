@@ -12,6 +12,7 @@ import Property from '../../axon/js/Property.js';
 import { Shape } from '../../kite/js/imports.js';
 import InstanceRegistry from '../../phet-core/js/documentation/InstanceRegistry.js';
 import optionize, { combineOptions } from '../../phet-core/js/optionize.js';
+import RequiredOption from '../../phet-core/js/types/RequiredOption.js';
 import StrictOmit from '../../phet-core/js/types/StrictOmit.js';
 import { FocusHighlightFromNode, InteractiveHighlighting, Node, NodeOptions, PaintableOptions, Path, PathOptions, PDOMBehaviorFunction, PDOMPeer, Rectangle, RectangleOptions, Text } from '../../scenery/js/imports.js';
 import accordionBoxClosedSoundPlayer from '../../tambo/js/shared-sound-players/accordionBoxClosedSoundPlayer.js';
@@ -32,11 +33,14 @@ type SelfOptions = {
   // If not provided, a BooleanProperty will be created, defaulting to true.
   expandedProperty?: Property<boolean>;
 
+  // If true (the default), we'll adjust the title so that it isn't pickable at all
+  overrideTitleNodePickable?: boolean;
+
   // If true, the AccordionBox will resize itself as needed when the title/content resizes.
   // See https://github.com/phetsims/sun/issues/304
   resize?: boolean;
 
-  // applied to multiple parts of this UI component
+  // applied to multiple parts of this UI component (NOTE: cursor is NOT applied to the main node!!)
   cursor?: NodeOptions[ 'cursor' ];
   lineWidth?: PathOptions[ 'lineWidth' ];
   cornerRadius?: RectangleOptions[ 'cornerRadius' ];
@@ -105,28 +109,28 @@ export default class AccordionBox extends Node {
 
   public readonly expandedProperty: Property<boolean>;
 
-  private readonly _contentAlign;
-  private readonly _contentNode;
-  private readonly _cornerRadius;
-  private readonly _buttonXMargin;
-  private readonly _buttonYMargin;
-  private readonly _contentXMargin;
-  private readonly _contentYMargin;
-  private readonly _contentXSpacing;
-  private readonly _contentYSpacing;
-  private readonly _titleAlignX;
-  private readonly _titleAlignY;
-  private readonly _titleXMargin;
-  private readonly _titleYMargin;
-  private readonly _titleXSpacing;
-  private readonly _minWidth;
-  private readonly _showTitleWhenExpanded;
-  private readonly _buttonAlign;
-  private readonly titleNode: Node;
+  private readonly _contentNode: Node;
+  private readonly _contentAlign: RequiredOption<AccordionBoxOptions, 'contentAlign'>;
+  private readonly _cornerRadius: RequiredOption<AccordionBoxOptions, 'cornerRadius'>;
+  private readonly _buttonXMargin: RequiredOption<AccordionBoxOptions, 'buttonXMargin'>;
+  private readonly _buttonYMargin: RequiredOption<AccordionBoxOptions, 'buttonYMargin'>;
+  private readonly _contentXMargin: RequiredOption<AccordionBoxOptions, 'contentXMargin'>;
+  private readonly _contentYMargin: RequiredOption<AccordionBoxOptions, 'contentYMargin'>;
+  private readonly _contentXSpacing: RequiredOption<AccordionBoxOptions, 'contentXSpacing'>;
+  private readonly _contentYSpacing: RequiredOption<AccordionBoxOptions, 'contentYSpacing'>;
+  private readonly _titleAlignX: RequiredOption<AccordionBoxOptions, 'titleAlignX'>;
+  private readonly _titleAlignY: RequiredOption<AccordionBoxOptions, 'titleAlignY'>;
+  private readonly _titleXMargin: RequiredOption<AccordionBoxOptions, 'titleXMargin'>;
+  private readonly _titleYMargin: RequiredOption<AccordionBoxOptions, 'titleYMargin'>;
+  private readonly _titleXSpacing: RequiredOption<AccordionBoxOptions, 'titleXSpacing'>;
+  private readonly _minWidth: RequiredOption<AccordionBoxOptions, 'minWidth'>;
+  private readonly _showTitleWhenExpanded: RequiredOption<AccordionBoxOptions, 'showTitleWhenExpanded'>;
+  private readonly _buttonAlign: RequiredOption<AccordionBoxOptions, 'buttonAlign'>;
+  private readonly titleNode: RequiredOption<AccordionBoxOptions, 'titleNode'>;
+
   private readonly expandCollapseButton: ExpandCollapseButton;
   private readonly expandedBox: Rectangle;
   private readonly collapsedBox: Rectangle;
-  private readonly workaroundBox: Rectangle;
   private readonly expandedTitleBar: InteractiveHighlightPath;
   private readonly collapsedTitleBar: InteractiveHighlightRectangle;
   private readonly containerNode: Node;
@@ -145,9 +149,7 @@ export default class AccordionBox extends Node {
   /**
    * @param contentNode - Content that  will be shown or hidden as the accordion box is expanded/collapsed. NOTE: AccordionBox
    *                      places this Node in a pdomOrder, so you should not do that yourself.
-   * @param [providedOptions] - Various key-value pairs that control the appearance and behavior.  Some options are
-   *                             specific to this class while some are passed to the superclass.  See the code where
-   *                             the options are set in the early portion of the constructor for details.
+   * @param [providedOptions]
    */
   public constructor( contentNode: Node, providedOptions?: AccordionBoxOptions ) {
 
@@ -156,6 +158,8 @@ export default class AccordionBox extends Node {
       titleNode: null as unknown as Node,
       expandedProperty: null as unknown as BooleanProperty,
       resize: true,
+
+      overrideTitleNodePickable: true,
 
       // applied to multiple parts of this UI component
       cursor: 'pointer',
@@ -234,8 +238,8 @@ export default class AccordionBox extends Node {
 
     super();
 
-    this._contentAlign = options.contentAlign;
     this._contentNode = contentNode;
+    this._contentAlign = options.contentAlign;
     this._cornerRadius = options.cornerRadius;
     this._buttonXMargin = options.buttonXMargin;
     this._buttonYMargin = options.buttonYMargin;
@@ -251,7 +255,6 @@ export default class AccordionBox extends Node {
     this._minWidth = options.minWidth;
     this._showTitleWhenExpanded = options.showTitleWhenExpanded;
     this._buttonAlign = options.buttonAlign;
-
     this.titleNode = options.titleNode;
 
     // If there is no titleNode specified, we'll provide our own, and handle disposal.
@@ -265,7 +268,9 @@ export default class AccordionBox extends Node {
     // Allow touches to go through to the collapsedTitleBar which handles the input event
     // Note: This mutates the titleNode, so if it is used in multiple places it will become unpickable
     // in those places as well.
-    this.titleNode.pickable = false;
+    if ( options.overrideTitleNodePickable ) {
+      this.titleNode.pickable = false;
+    }
 
     this.expandedProperty = options.expandedProperty;
     if ( !this.expandedProperty ) {
@@ -287,17 +292,6 @@ export default class AccordionBox extends Node {
 
     this.expandedBox = new Rectangle( boxOptions );
     this.collapsedBox = new Rectangle( boxOptions );
-
-    // Transparent rectangle for working around issues like https://github.com/phetsims/graphing-quadratics/issues/86.
-    // The current hypothesis is that browsers (in this case, IE11) sometimes don't compute the correct region of the
-    // screen that needs to get redrawn when something changes. This means that old content can be left in regions where
-    // it has since disappeared in the SVG. Adding transparent objects that are a bit larger seems to generally work
-    // (since browsers don't get the region wrong by more than a few pixels generally), and in the past has resolved the
-    // issues.
-    this.workaroundBox = new Rectangle( {
-      fill: 'transparent',
-      pickable: false
-    } );
 
     this.expandedTitleBar = new InteractiveHighlightPath( null, combineOptions<ExpandCollapseButtonOptions>( {
       lineWidth: options.lineWidth, // use same lineWidth as box, for consistent look
@@ -337,19 +331,17 @@ export default class AccordionBox extends Node {
     }
 
     // Set the input listeners for the expandedTitleBar
-    if ( options.showTitleWhenExpanded ) {
-      if ( options.titleBarExpandCollapse ) {
-        this.expandedTitleBar.addInputListener( {
-          down: () => {
-            if ( this.expandCollapseButton.isEnabled() ) {
-              this.phetioStartEvent( 'collapsed' );
-              options.collapsedSoundPlayer.play();
-              this.expandedProperty.value = false;
-              this.phetioEndEvent();
-            }
+    if ( options.showTitleWhenExpanded && options.titleBarExpandCollapse ) {
+      this.expandedTitleBar.addInputListener( {
+        down: () => {
+          if ( this.expandCollapseButton.isEnabled() ) {
+            this.phetioStartEvent( 'collapsed' );
+            options.collapsedSoundPlayer.play();
+            this.expandedProperty.value = false;
+            this.phetioEndEvent();
           }
-        } );
-      }
+        }
+      } );
     }
 
     // If we hide the button or make it unpickable, disable interactivity of the title bar,
@@ -442,10 +434,6 @@ export default class AccordionBox extends Node {
       this.expandedBox.visible = expanded;
       this.collapsedBox.visible = !expanded;
 
-      // NOTE: This does not increase the bounds of the AccordionBox, since the localBounds for the workaroundBox have
-      // been set elsewhere.
-      this.workaroundBox.rectBounds = ( expanded ? this.expandedBox : this.collapsedBox ).bounds.dilated( 10 );
-
       this.titleNode.visible = ( expanded && options.showTitleWhenExpanded ) || !expanded;
 
       pdomContainerNode.setPDOMAttribute( 'aria-hidden', !expanded );
@@ -486,7 +474,6 @@ export default class AccordionBox extends Node {
     this.containerNode.children = hasValidBounds ? [
       this.expandedBox,
       this.collapsedBox,
-      this.workaroundBox,
       this.titleNode,
       this.expandCollapseButton
     ] : [];
@@ -523,10 +510,6 @@ export default class AccordionBox extends Node {
       this.collapsedBoxOutline.rectWidth = boxWidth;
       this.collapsedBoxOutline.rectHeight = collapsedBoxHeight;
     }
-
-    // IMPORTANT: The collapsedBox should now be fully laid out before this. Now we can use its bounds to set the
-    // workaroundBox
-    this.workaroundBox.localBounds = this.collapsedBox.bounds;
 
     // content layout
     this._contentNode.bottom = expandedBounds.bottom - this._contentYMargin;
