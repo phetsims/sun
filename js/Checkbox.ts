@@ -337,7 +337,7 @@ class CheckboxConstraint extends LayoutConstraint {
     const preferredWidth = this.checkbox.localPreferredWidth === null ? minimumWidth : this.checkbox.localPreferredWidth;
 
     // Attempt to set a preferredWidth
-    if ( isWidthSizable( this.content ) ) {
+    if ( isWidthSizable( this.content ) && this.checkbox.localPreferredWidth !== null ) {
       contentProxy.preferredWidth = preferredWidth - checkboxWithoutSpacingWidth - this.options.spacing;
     }
 

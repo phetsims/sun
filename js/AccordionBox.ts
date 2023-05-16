@@ -12,9 +12,8 @@ import Property from '../../axon/js/Property.js';
 import { Shape } from '../../kite/js/imports.js';
 import InstanceRegistry from '../../phet-core/js/documentation/InstanceRegistry.js';
 import optionize, { combineOptions } from '../../phet-core/js/optionize.js';
-import RequiredOption from '../../phet-core/js/types/RequiredOption.js';
 import StrictOmit from '../../phet-core/js/types/StrictOmit.js';
-import { FocusHighlightFromNode, InteractiveHighlighting, Node, NodeOptions, PaintableOptions, Path, PathOptions, PDOMBehaviorFunction, PDOMPeer, Rectangle, RectangleOptions, Text } from '../../scenery/js/imports.js';
+import { FocusHighlightFromNode, InteractiveHighlighting, isHeightSizable, isWidthSizable, LayoutConstraint, Node, NodeOptions, PaintableOptions, Path, PathOptions, PDOMBehaviorFunction, PDOMPeer, Rectangle, RectangleOptions, Sizable, Text } from '../../scenery/js/imports.js';
 import accordionBoxClosedSoundPlayer from '../../tambo/js/shared-sound-players/accordionBoxClosedSoundPlayer.js';
 import accordionBoxOpenedSoundPlayer from '../../tambo/js/shared-sound-players/accordionBoxOpenedSoundPlayer.js';
 import SoundClipPlayer from '../../tambo/js/sound-generators/SoundClipPlayer.js';
@@ -66,7 +65,11 @@ type SelfOptions = {
   titleXSpacing?: number;
 
   // true = title is visible when expanded, false = title is hidden when expanded
+  // When true, the content is shown beneath the title. When false, the content is shown to the side of the title
   showTitleWhenExpanded?: boolean;
+
+  // If true, the expanded box will use the bounds of the content node when collapsed
+  useExpandedBoundsWhenCollapsed?: boolean;
 
   // clicking on the title bar expands/collapses the accordion box
   titleBarExpandCollapse?: boolean;
@@ -81,6 +84,7 @@ type SelfOptions = {
 
   // content
   contentAlign?: 'left' | 'center' | 'right'; // horizontal alignment of the content
+  contentVerticalAlign?: 'top' | 'center' | 'bottom'; // vertical alignment of the content (if the preferred size is larger)
   contentXMargin?: number; // horizontal space between content and left/right edges of box
   contentYMargin?: number; // vertical space between content and bottom edge of box
   contentXSpacing?: number; // horizontal space between content and button, ignored if showTitleWhenExpanded is true
@@ -105,41 +109,23 @@ type SelfOptions = {
 
 export type AccordionBoxOptions = SelfOptions & NodeOptions;
 
-export default class AccordionBox extends Node {
+export default class AccordionBox extends Sizable( Node ) {
 
   public readonly expandedProperty: Property<boolean>;
-
-  private readonly _contentNode: Node;
-  private readonly _contentAlign: RequiredOption<AccordionBoxOptions, 'contentAlign'>;
-  private readonly _cornerRadius: RequiredOption<AccordionBoxOptions, 'cornerRadius'>;
-  private readonly _buttonXMargin: RequiredOption<AccordionBoxOptions, 'buttonXMargin'>;
-  private readonly _buttonYMargin: RequiredOption<AccordionBoxOptions, 'buttonYMargin'>;
-  private readonly _contentXMargin: RequiredOption<AccordionBoxOptions, 'contentXMargin'>;
-  private readonly _contentYMargin: RequiredOption<AccordionBoxOptions, 'contentYMargin'>;
-  private readonly _contentXSpacing: RequiredOption<AccordionBoxOptions, 'contentXSpacing'>;
-  private readonly _contentYSpacing: RequiredOption<AccordionBoxOptions, 'contentYSpacing'>;
-  private readonly _titleAlignX: RequiredOption<AccordionBoxOptions, 'titleAlignX'>;
-  private readonly _titleAlignY: RequiredOption<AccordionBoxOptions, 'titleAlignY'>;
-  private readonly _titleXMargin: RequiredOption<AccordionBoxOptions, 'titleXMargin'>;
-  private readonly _titleYMargin: RequiredOption<AccordionBoxOptions, 'titleYMargin'>;
-  private readonly _titleXSpacing: RequiredOption<AccordionBoxOptions, 'titleXSpacing'>;
-  private readonly _minWidth: RequiredOption<AccordionBoxOptions, 'minWidth'>;
-  private readonly _showTitleWhenExpanded: RequiredOption<AccordionBoxOptions, 'showTitleWhenExpanded'>;
-  private readonly _buttonAlign: RequiredOption<AccordionBoxOptions, 'buttonAlign'>;
-  private readonly titleNode: RequiredOption<AccordionBoxOptions, 'titleNode'>;
 
   private readonly expandCollapseButton: ExpandCollapseButton;
   private readonly expandedBox: Rectangle;
   private readonly collapsedBox: Rectangle;
   private readonly expandedTitleBar: InteractiveHighlightPath;
   private readonly collapsedTitleBar: InteractiveHighlightRectangle;
-  private readonly containerNode: Node;
   private readonly resetAccordionBox: () => void;
 
   // Only defined if there is a stroke
-  private readonly expandedBoxOutline?: Rectangle;
-  private readonly collapsedBoxOutline?: Rectangle;
+  private readonly expandedBoxOutline: Rectangle | null = null;
+  private readonly collapsedBoxOutline: Rectangle | null = null;
 
+  private readonly constraint: AccordionBoxConstraint;
+  
   public static readonly AccordionBoxIO = new IOType( 'AccordionBoxIO', {
     valueType: AccordionBox,
     supertype: Node.NodeIO,
@@ -177,6 +163,7 @@ export default class AccordionBox extends Node {
       titleYMargin: 2,
       titleXSpacing: 5,
       showTitleWhenExpanded: true,
+      useExpandedBoundsWhenCollapsed: true,
       titleBarExpandCollapse: true,
 
       // expand/collapse button layout
@@ -186,6 +173,7 @@ export default class AccordionBox extends Node {
 
       // content
       contentAlign: 'center',
+      contentVerticalAlign: 'center',
       contentXMargin: 15,
       contentYMargin: 8,
       contentXSpacing: 5,
@@ -238,38 +226,21 @@ export default class AccordionBox extends Node {
 
     super();
 
-    this._contentNode = contentNode;
-    this._contentAlign = options.contentAlign;
-    this._cornerRadius = options.cornerRadius;
-    this._buttonXMargin = options.buttonXMargin;
-    this._buttonYMargin = options.buttonYMargin;
-    this._contentXMargin = options.contentXMargin;
-    this._contentYMargin = options.contentYMargin;
-    this._contentXSpacing = options.contentXSpacing;
-    this._contentYSpacing = options.contentYSpacing;
-    this._titleAlignX = options.titleAlignX;
-    this._titleAlignY = options.titleAlignY;
-    this._titleXMargin = options.titleXMargin;
-    this._titleYMargin = options.titleYMargin;
-    this._titleXSpacing = options.titleXSpacing;
-    this._minWidth = options.minWidth;
-    this._showTitleWhenExpanded = options.showTitleWhenExpanded;
-    this._buttonAlign = options.buttonAlign;
-    this.titleNode = options.titleNode;
+    let titleNode = options.titleNode;
 
     // If there is no titleNode specified, we'll provide our own, and handle disposal.
-    if ( !this.titleNode ) {
-      this.titleNode = new Text( '', {
+    if ( !titleNode ) {
+      titleNode = new Text( '', {
         tandem: options.tandem.createTandem( 'titleText' )
       } );
-      this.disposeEmitter.addListener( () => this.titleNode.dispose() );
+      this.disposeEmitter.addListener( () => titleNode.dispose() );
     }
 
     // Allow touches to go through to the collapsedTitleBar which handles the input event
     // Note: This mutates the titleNode, so if it is used in multiple places it will become unpickable
     // in those places as well.
     if ( options.overrideTitleNodePickable ) {
-      this.titleNode.pickable = false;
+      titleNode.pickable = false;
     }
 
     this.expandedProperty = options.expandedProperty;
@@ -387,17 +358,19 @@ export default class AccordionBox extends Node {
       this.collapsedBox.addChild( this.collapsedBoxOutline );
     }
 
-    this.expandedBox.addChild( this._contentNode );
+    this.expandedBox.addChild( contentNode );
 
     // Holds the main components when the content's bounds are valid
-    this.containerNode = new Node();
-    this.addChild( this.containerNode );
+    const containerNode = new Node( {
+      excludeInvisibleChildrenFromBounds: !options.useExpandedBoundsWhenCollapsed
+    } );
+    this.addChild( containerNode );
 
     // pdom display
     const pdomContentNode = new Node( {
       tagName: 'div',
       ariaRole: 'region',
-      pdomOrder: [ this._contentNode ],
+      pdomOrder: [ contentNode ],
       ariaLabelledbyAssociations: [ {
         otherNode: this.expandCollapseButton,
         otherElementName: PDOMPeer.PRIMARY_SIBLING,
@@ -414,18 +387,24 @@ export default class AccordionBox extends Node {
     } );
     this.addChild( pdomContainerNode );
 
-    this.layout();
+    this.constraint = new AccordionBoxConstraint(
+      this,
+      contentNode,
+      containerNode,
+      this.expandedBox,
+      this.collapsedBox,
+      this.expandedTitleBar,
+      this.collapsedTitleBar,
+      this.expandedBoxOutline,
+      this.collapsedBoxOutline,
+      titleNode,
+      this.expandCollapseButton,
+      options
+    );
+    this.constraint.updateLayout();
 
-    // Watch future changes for re-layout (don't want to trigger on our first layout and queue useless ones)
-    if ( options.resize ) {
-      const layoutListener = this.layout.bind( this );
-      contentNode.boundsProperty.lazyLink( layoutListener );
-      this.titleNode.boundsProperty.lazyLink( layoutListener );
-      this.disposeEmitter.addListener( () => {
-        contentNode.boundsProperty.unlink( layoutListener );
-        this.titleNode.boundsProperty.unlink( layoutListener );
-      } );
-    }
+    // Don't update automatically if resize:false
+    this.constraint.enabled = options.resize;
 
     // expand/collapse the box
     const expandedPropertyObserver = () => {
@@ -434,7 +413,7 @@ export default class AccordionBox extends Node {
       this.expandedBox.visible = expanded;
       this.collapsedBox.visible = !expanded;
 
-      this.titleNode.visible = ( expanded && options.showTitleWhenExpanded ) || !expanded;
+      titleNode.visible = ( expanded && options.showTitleWhenExpanded ) || !expanded;
 
       pdomContainerNode.setPDOMAttribute( 'aria-hidden', !expanded );
 
@@ -462,172 +441,30 @@ export default class AccordionBox extends Node {
     assert && phet.chipper.queryParameters.binder && InstanceRegistry.registerDataURL( 'sun', 'AccordionBox', this );
   }
 
-  public reset(): void {
-    this.resetAccordionBox();
-  }
-
-  /**
-   * Performs layout that positions everything that can change.
-   */
-  private layout(): void {
-    const hasValidBounds = this._contentNode.bounds.isValid();
-    this.containerNode.children = hasValidBounds ? [
-      this.expandedBox,
-      this.collapsedBox,
-      this.titleNode,
-      this.expandCollapseButton
-    ] : [];
-
-    if ( !hasValidBounds ) {
-      return;
-    }
-
-    const collapsedBoxHeight = this.getCollapsedBoxHeight();
-    const boxWidth = this.getBoxWidth();
-    const expandedBoxHeight = this.getExpandedBoxHeight();
-
-    this.expandedBox.rectWidth = boxWidth;
-    this.expandedBox.rectHeight = expandedBoxHeight;
-
-    const expandedBounds = this.expandedBox.selfBounds;
-
-    // expandedBoxOutline exists only if options.stroke is truthy
-    if ( this.expandedBoxOutline ) {
-      this.expandedBoxOutline.rectWidth = boxWidth;
-      this.expandedBoxOutline.rectHeight = expandedBoxHeight;
-    }
-
-    this.expandedTitleBar.shape = this.getTitleBarShape();
-
-    this.collapsedBox.rectWidth = boxWidth;
-    this.collapsedBox.rectHeight = collapsedBoxHeight;
-
-    this.collapsedTitleBar.rectWidth = boxWidth;
-    this.collapsedTitleBar.rectHeight = collapsedBoxHeight;
-
-    // collapsedBoxOutline exists only if options.stroke is truthy
-    if ( this.collapsedBoxOutline ) {
-      this.collapsedBoxOutline.rectWidth = boxWidth;
-      this.collapsedBoxOutline.rectHeight = collapsedBoxHeight;
-    }
-
-    // content layout
-    this._contentNode.bottom = expandedBounds.bottom - this._contentYMargin;
-    let contentSpanLeft = expandedBounds.left + this._contentXMargin;
-    let contentSpanRight = expandedBounds.right - this._contentXMargin;
-    if ( !this._showTitleWhenExpanded ) {
-      // content will be placed next to button
-      if ( this._buttonAlign === 'left' ) {
-        contentSpanLeft += this.expandCollapseButton.width + this._contentXSpacing;
-      }
-      else { // right on right
-        contentSpanRight -= this.expandCollapseButton.width + this._contentXSpacing;
-      }
-    }
-    if ( this._contentAlign === 'left' ) {
-      this._contentNode.left = contentSpanLeft;
-    }
-    else if ( this._contentAlign === 'right' ) {
-      this._contentNode.right = contentSpanRight;
-    }
-    else { // center
-      this._contentNode.centerX = ( contentSpanLeft + contentSpanRight ) / 2;
-    }
-
-    // button horizontal layout
-    let titleLeftSpan = expandedBounds.left + this._titleXMargin;
-    let titleRightSpan = expandedBounds.right - this._titleXMargin;
-    if ( this._buttonAlign === 'left' ) {
-      this.expandCollapseButton.left = expandedBounds.left + this._buttonXMargin;
-      titleLeftSpan = this.expandCollapseButton.right + this._titleXSpacing;
-    }
-    else {
-      this.expandCollapseButton.right = expandedBounds.right - this._buttonXMargin;
-      titleRightSpan = this.expandCollapseButton.left - this._titleXSpacing;
-    }
-
-    // title horizontal layout
-    if ( this._titleAlignX === 'left' ) {
-      this.titleNode.left = titleLeftSpan;
-    }
-    else if ( this._titleAlignX === 'right' ) {
-      this.titleNode.right = titleRightSpan;
-    }
-    else { // center
-      this.titleNode.centerX = expandedBounds.centerX;
-    }
-
-    // button & title vertical layout
-    if ( this._titleAlignY === 'top' ) {
-      this.expandCollapseButton.top = this.collapsedBox.top + Math.max( this._buttonYMargin, this._titleYMargin );
-      this.titleNode.top = this.expandCollapseButton.top;
-    }
-    else { // center
-      this.expandCollapseButton.centerY = this.collapsedBox.centerY;
-      this.titleNode.centerY = this.expandCollapseButton.centerY;
-    }
-  }
-
-  /**
-   * Returns the Shape of the title bar.
-   *
-   * Expanded title bar has (optional) rounded top corners, square bottom corners. Clicking it operates like
-   * expand/collapse button.
-   */
-  private getTitleBarShape(): Shape {
-    return Shape.roundedRectangleWithRadii( 0, 0, this.getBoxWidth(), this.getCollapsedBoxHeight(), {
-      topLeft: this._cornerRadius,
-      topRight: this._cornerRadius
-    } );
-  }
-
-  /**
-   * Returns the computed width of the box (ignoring things like stroke width)
-   */
-  private getBoxWidth(): number {
-
-    // Initial width is dependent on width of title section of the accordion box
-    let width = Math.max( this._minWidth, this._buttonXMargin + this.expandCollapseButton.width + this._titleXSpacing + this.titleNode.width + this._titleXMargin );
-
-    // Limit width by the necessary space for the title node
-    if ( this._titleAlignX === 'center' ) {
-      // Handles case where the spacing on the left side of the title is larger than the spacing on the right side.
-      width = Math.max( width, ( this._buttonXMargin + this.expandCollapseButton.width + this._titleXSpacing ) * 2 + this.titleNode.width );
-
-      // Handles case where the spacing on the right side of the title is larger than the spacing on the left side.
-      width = Math.max( width, ( this._titleXMargin ) * 2 + this.titleNode.width );
-    }
-
-    // Compare width of title section to content section of the accordion box
-    // content is below button+title
-    if ( this._showTitleWhenExpanded ) {
-      return Math.max( width, this._contentNode.width + ( 2 * this._contentXMargin ) );
-    }
-    // content is next to button
-    else {
-      return Math.max( width, this.expandCollapseButton.width + this._contentNode.width + this._buttonXMargin + this._contentXMargin + this._contentXSpacing );
-    }
-  }
-
   /**
    * Returns the ideal height of the collapsed box (ignoring things like stroke width)
    */
   public getCollapsedBoxHeight(): number {
-    return Math.max( this.expandCollapseButton.height + ( 2 * this._buttonYMargin ), this.titleNode.height + ( 2 * this._titleYMargin ) );
+    const result = this.constraint.lastCollapsedBoxHeight!;
+
+    assert && assert( result !== null );
+
+    return result;
   }
 
   /**
    * Returns the ideal height of the expanded box (ignoring things like stroke width)
    */
   public getExpandedBoxHeight(): number {
-    // content is below button+title
-    if ( this._showTitleWhenExpanded ) {
-      return this.getCollapsedBoxHeight() + this._contentNode.height + this._contentYMargin + this._contentYSpacing;
-    }
-    // content is next to button
-    else {
-      return Math.max( this.expandCollapseButton.height + ( 2 * this._buttonYMargin ), this._contentNode.height + ( 2 * this._contentYMargin ) );
-    }
+    const result = this.constraint.lastExpandedBoxHeight!;
+
+    assert && assert( result !== null );
+
+    return result;
+  }
+
+  public reset(): void {
+    this.resetAccordionBox();
   }
 
   // The definition for how AccordionBox sets its accessibleName in the PDOM. Forward it onto its expandCollapseButton.
@@ -644,5 +481,255 @@ export default class AccordionBox extends Node {
 class InteractiveHighlightPath extends InteractiveHighlighting( Path ) {}
 
 class InteractiveHighlightRectangle extends InteractiveHighlighting( Rectangle ) {}
+
+class AccordionBoxConstraint extends LayoutConstraint {
+
+  // Support public accessors
+  public lastCollapsedBoxHeight: number | null = null;
+  public lastExpandedBoxHeight: number | null = null;
+
+  public constructor( private readonly accordionBox: AccordionBox,
+                      private readonly contentNode: Node,
+                      private readonly containerNode: Node,
+                      private readonly expandedBox: Rectangle,
+                      private readonly collapsedBox: Rectangle,
+                      private readonly expandedTitleBar: Path,
+                      private readonly collapsedTitleBar: Rectangle,
+                      private readonly expandedBoxOutline: Rectangle | null,
+                      private readonly collapsedBoxOutline: Rectangle | null,
+                      private readonly titleNode: Node,
+                      private readonly expandCollapseButton: Node,
+                      private readonly options: StrictOmit<Required<SelfOptions>, 'expandCollapseButtonOptions'> ) {
+    super( accordionBox );
+
+    this.accordionBox.localPreferredWidthProperty.lazyLink( this._updateLayoutListener );
+    this.accordionBox.localPreferredHeightProperty.lazyLink( this._updateLayoutListener );
+    this.accordionBox.expandedProperty.lazyLink( this._updateLayoutListener );
+
+    this.addNode( contentNode );
+    this.addNode( titleNode );
+  }
+
+  protected override layout(): void {
+    super.layout();
+
+    const options = this.options;
+
+    if ( this.accordionBox.isChildIncludedInLayout( this.contentNode ) ) {
+      this.containerNode.children = [
+        this.expandedBox,
+        this.collapsedBox,
+        this.titleNode,
+        this.expandCollapseButton
+      ];
+    }
+    else {
+      this.containerNode.children = [];
+      return;
+    }
+
+    const expanded = this.accordionBox.expandedProperty.value;
+    const useExpandedBounds = expanded || options.useExpandedBoundsWhenCollapsed;
+
+    // We only have to account for the lineWidth in our layout if we have a stroke
+    const lineWidth = options.stroke === null ? 0 : options.lineWidth;
+
+    // LayoutProxy helps with some layout operations, and will support a non-child content.
+    const contentProxy = this.createLayoutProxy( this.contentNode )!;
+    const titleProxy = this.createLayoutProxy( this.titleNode )!;
+
+    const minimumContentWidth = contentProxy.minimumWidth;
+    const minimumContentHeight = contentProxy.minimumHeight;
+    const minumumTitleWidth = titleProxy.minimumWidth;
+
+    // The ideal height of the collapsed box (ignoring things like stroke width). Does not depend on title width
+    // OR content size, both of which could be changed depending on preferred sizes.
+    const collapsedBoxHeight = Math.max(
+      this.expandCollapseButton.height + ( 2 * options.buttonYMargin ),
+      this.titleNode.height + ( 2 * options.titleYMargin )
+    );
+
+    const minimumExpandedBoxHeight = options.showTitleWhenExpanded ?
+      // content is below button+title
+      collapsedBoxHeight + minimumContentHeight + options.contentYMargin + options.contentYSpacing :
+      // content is next to button
+      Math.max(
+        this.expandCollapseButton.height + ( 2 * options.buttonYMargin ),
+        minimumContentHeight + ( 2 * options.contentYMargin )
+      );
+
+    // The computed width of the box (ignoring things like stroke width)
+    // Initial width is dependent on width of title section of the accordion box
+    let minimumBoxWidth = Math.max(
+      options.minWidth,
+      options.buttonXMargin + this.expandCollapseButton.width + options.titleXSpacing + minumumTitleWidth + options.titleXMargin
+    );
+
+    // Limit width by the necessary space for the title node
+    if ( options.titleAlignX === 'center' ) {
+      // Handles case where the spacing on the left side of the title is larger than the spacing on the right side.
+      minimumBoxWidth = Math.max( minimumBoxWidth, ( options.buttonXMargin + this.expandCollapseButton.width + options.titleXSpacing ) * 2 + minumumTitleWidth );
+
+      // Handles case where the spacing on the right side of the title is larger than the spacing on the left side.
+      minimumBoxWidth = Math.max( minimumBoxWidth, ( options.titleXMargin ) * 2 + minumumTitleWidth );
+    }
+
+    // Compare width of title section to content section of the accordion box
+    // content is below button+title
+    if ( options.showTitleWhenExpanded ) {
+      minimumBoxWidth = Math.max( minimumBoxWidth, minimumContentWidth + ( 2 * options.contentXMargin ) );
+    }
+    // content is next to button
+    else {
+      minimumBoxWidth = Math.max( minimumBoxWidth, this.expandCollapseButton.width + minimumContentWidth + options.buttonXMargin + options.contentXMargin + options.contentXSpacing );
+    }
+
+    // Both of these use "half" the lineWidth on either side
+    const minimumWidth = minimumBoxWidth + lineWidth;
+    const minimumHeight = ( useExpandedBounds ? minimumExpandedBoxHeight : collapsedBoxHeight ) + lineWidth;
+
+    // Our resulting sizes (allow setting preferred width/height on the box)
+    const preferredWidth: number = this.accordionBox.localPreferredWidth === null ? minimumWidth : this.accordionBox.localPreferredWidth;
+    const preferredHeight: number = this.accordionBox.localPreferredHeight === null ? minimumHeight : this.accordionBox.localPreferredHeight;
+
+    const boxWidth = preferredWidth - lineWidth;
+    const boxHeight = preferredHeight - lineWidth;
+
+    this.lastCollapsedBoxHeight = collapsedBoxHeight;
+    if ( useExpandedBounds ) {
+      this.lastExpandedBoxHeight = boxHeight;
+    }
+
+    this.collapsedBox.rectWidth = boxWidth;
+    this.collapsedBox.rectHeight = collapsedBoxHeight;
+
+    const collapsedBounds = this.collapsedBox.selfBounds;
+
+    this.collapsedTitleBar.rectWidth = boxWidth;
+    this.collapsedTitleBar.rectHeight = collapsedBoxHeight;
+
+    // collapsedBoxOutline exists only if options.stroke is truthy
+    if ( this.collapsedBoxOutline ) {
+      this.collapsedBoxOutline.rectWidth = boxWidth;
+      this.collapsedBoxOutline.rectHeight = collapsedBoxHeight;
+    }
+
+    if ( useExpandedBounds ) {
+      this.expandedBox.rectWidth = boxWidth;
+      this.expandedBox.rectHeight = boxHeight;
+
+      const expandedBounds = this.expandedBox.selfBounds;
+
+      // expandedBoxOutline exists only if options.stroke is truthy
+      if ( this.expandedBoxOutline ) {
+        this.expandedBoxOutline.rectWidth = boxWidth;
+        this.expandedBoxOutline.rectHeight = boxHeight;
+      }
+
+      // Expanded title bar has (optional) rounded top corners, square bottom corners. Clicking it operates like
+      // expand/collapse button.
+      this.expandedTitleBar.shape = Shape.roundedRectangleWithRadii( 0, 0, boxWidth, collapsedBoxHeight, {
+        topLeft: options.cornerRadius,
+        topRight: options.cornerRadius
+      } );
+
+      let contentSpanLeft = expandedBounds.left + options.contentXMargin;
+      let contentSpanRight = expandedBounds.right - options.contentXMargin;
+      if ( !options.showTitleWhenExpanded ) {
+        // content will be placed next to button
+        if ( options.buttonAlign === 'left' ) {
+          contentSpanLeft += this.expandCollapseButton.width + options.contentXSpacing;
+        }
+        else { // right on right
+          contentSpanRight -= this.expandCollapseButton.width + options.contentXSpacing;
+        }
+      }
+
+      const availableContentWidth = contentSpanRight - contentSpanLeft;
+      const availableContentHeight = boxHeight - ( options.showTitleWhenExpanded ? collapsedBoxHeight + options.contentYMargin + options.contentYSpacing : 2 * options.contentYMargin );
+
+      // Determine the size available to our content
+      // NOTE: We do NOT set preferred sizes of our content if we don't have a preferred size ourself!
+      if ( isWidthSizable( this.contentNode ) && this.accordionBox.localPreferredWidth !== null ) {
+        this.contentNode.preferredWidth = availableContentWidth;
+      }
+      if ( isHeightSizable( this.contentNode ) && this.accordionBox.localPreferredHeight !== null ) {
+        this.contentNode.preferredHeight = availableContentHeight;
+      }
+
+      // content layout
+      if ( options.contentVerticalAlign === 'top' ) {
+        this.contentNode.top = expandedBounds.bottom - options.contentYMargin - availableContentHeight;
+      }
+      else if ( options.contentVerticalAlign === 'bottom' ) {
+        this.contentNode.bottom = expandedBounds.bottom - options.contentYMargin;
+      }
+      else { // center
+        this.contentNode.centerY = expandedBounds.bottom - options.contentYMargin - availableContentHeight / 2;
+      }
+
+      if ( options.contentAlign === 'left' ) {
+        this.contentNode.left = contentSpanLeft;
+      }
+      else if ( options.contentAlign === 'right' ) {
+        this.contentNode.right = contentSpanRight;
+      }
+      else { // center
+        this.contentNode.centerX = ( contentSpanLeft + contentSpanRight ) / 2;
+      }
+    }
+
+    // button horizontal layout
+    let titleLeftSpan = collapsedBounds.left + options.titleXMargin;
+    let titleRightSpan = collapsedBounds.right - options.titleXMargin;
+    if ( options.buttonAlign === 'left' ) {
+      this.expandCollapseButton.left = collapsedBounds.left + options.buttonXMargin;
+      titleLeftSpan = this.expandCollapseButton.right + options.titleXSpacing;
+    }
+    else {
+      this.expandCollapseButton.right = collapsedBounds.right - options.buttonXMargin;
+      titleRightSpan = this.expandCollapseButton.left - options.titleXSpacing;
+    }
+
+    // title horizontal layout
+    if ( isWidthSizable( this.titleNode ) ) {
+      this.titleNode.preferredWidth = titleRightSpan - titleLeftSpan;
+    }
+    if ( options.titleAlignX === 'left' ) {
+      this.titleNode.left = titleLeftSpan;
+    }
+    else if ( options.titleAlignX === 'right' ) {
+      this.titleNode.right = titleRightSpan;
+    }
+    else { // center
+      this.titleNode.centerX = collapsedBounds.centerX;
+    }
+
+    // button & title vertical layout
+    if ( options.titleAlignY === 'top' ) {
+      this.expandCollapseButton.top = this.collapsedBox.top + Math.max( options.buttonYMargin, options.titleYMargin );
+      this.titleNode.top = this.expandCollapseButton.top;
+    }
+    else { // center
+      this.expandCollapseButton.centerY = this.collapsedBox.centerY;
+      this.titleNode.centerY = this.expandCollapseButton.centerY;
+    }
+
+    contentProxy.dispose();
+    titleProxy.dispose();
+
+    // Set minimums at the end, since this may trigger a relayout
+    this.accordionBox.localMinimumWidth = minimumWidth;
+    this.accordionBox.localMinimumHeight = minimumHeight;
+  }
+
+  public override dispose(): void {
+    this.accordionBox.localPreferredWidthProperty.unlink( this._updateLayoutListener );
+    this.accordionBox.localPreferredHeightProperty.unlink( this._updateLayoutListener );
+    this.accordionBox.expandedProperty.unlink( this._updateLayoutListener );
+
+    super.dispose();
+  }
+}
 
 sun.register( 'AccordionBox', AccordionBox );
