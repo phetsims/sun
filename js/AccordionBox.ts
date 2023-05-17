@@ -74,6 +74,9 @@ type SelfOptions = {
   // clicking on the title bar expands/collapses the accordion box
   titleBarExpandCollapse?: boolean;
 
+  // if true, the content will overlap the title when expanded, and will use contentYMargin at the top
+  allowContentToOverlapTitle?: boolean;
+
   // options passed to ExpandCollapseButton constructor
   expandCollapseButtonOptions?: ExpandCollapseButtonOptions;
 
@@ -86,7 +89,7 @@ type SelfOptions = {
   contentAlign?: 'left' | 'center' | 'right'; // horizontal alignment of the content
   contentVerticalAlign?: 'top' | 'center' | 'bottom'; // vertical alignment of the content (if the preferred size is larger)
   contentXMargin?: number; // horizontal space between content and left/right edges of box
-  contentYMargin?: number; // vertical space between content and bottom edge of box
+  contentYMargin?: number; // vertical space between content and bottom edge of box (and top if allowContentToOverlapTitle is true)
   contentXSpacing?: number; // horizontal space between content and button, ignored if showTitleWhenExpanded is true
   contentYSpacing?: number; // vertical space between content and title+button, ignored if showTitleWhenExpanded is false
 
@@ -146,6 +149,7 @@ export default class AccordionBox extends Sizable( Node ) {
       resize: true,
 
       overrideTitleNodePickable: true,
+      allowContentToOverlapTitle: false,
 
       // applied to multiple parts of this UI component
       cursor: 'pointer',
@@ -551,12 +555,18 @@ class AccordionBoxConstraint extends LayoutConstraint {
 
     const minimumExpandedBoxHeight = options.showTitleWhenExpanded ?
       // content is below button+title
-      collapsedBoxHeight + minimumContentHeight + options.contentYMargin + options.contentYSpacing :
+      Math.max(
+        // content (with optional overlap)
+        ( options.allowContentToOverlapTitle ? options.contentYMargin : collapsedBoxHeight + options.contentYSpacing ) + minimumContentHeight + options.contentYMargin,
+        // the collapsed box height itself (if we overlap content, this could be larger)
+        collapsedBoxHeight
+      ) :
       // content is next to button
       Math.max(
         this.expandCollapseButton.height + ( 2 * options.buttonYMargin ),
         minimumContentHeight + ( 2 * options.contentYMargin )
       );
+
 
     // The computed width of the box (ignoring things like stroke width)
     // Initial width is dependent on width of title section of the accordion box
@@ -646,7 +656,9 @@ class AccordionBoxConstraint extends LayoutConstraint {
       }
 
       const availableContentWidth = contentSpanRight - contentSpanLeft;
-      const availableContentHeight = boxHeight - ( options.showTitleWhenExpanded ? collapsedBoxHeight + options.contentYMargin + options.contentYSpacing : 2 * options.contentYMargin );
+      const availableContentHeight = boxHeight - (
+        options.showTitleWhenExpanded && !options.allowContentToOverlapTitle ? collapsedBoxHeight + options.contentYMargin + options.contentYSpacing : 2 * options.contentYMargin
+      );
 
       // Determine the size available to our content
       // NOTE: We do NOT set preferred sizes of our content if we don't have a preferred size ourself!
