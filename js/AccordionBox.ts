@@ -343,6 +343,8 @@ export default class AccordionBox extends Sizable( Node ) {
     // Set the focusHighlight for the interactive PDOM element based on the dimensions of the whole title bar.
     this.expandCollapseButton.setFocusHighlight( new FocusHighlightFromNode( this.expandedTitleBar ) );
 
+    this.expandedBox.addChild( contentNode );
+
     // optional box outline, on top of everything else
     if ( options.stroke ) {
 
@@ -361,9 +363,6 @@ export default class AccordionBox extends Sizable( Node ) {
       this.collapsedBoxOutline = new Rectangle( outlineOptions );
       this.collapsedBox.addChild( this.collapsedBoxOutline );
     }
-
-    // REVIEW: Wouldn't this put the content node in front of the expanded stroke instead of behind?
-    this.expandedBox.addChild( contentNode );
 
     // Holds the main components when the content's bounds are valid
     const containerNode = new Node( {
@@ -428,9 +427,6 @@ export default class AccordionBox extends Sizable( Node ) {
     };
     this.expandedProperty.link( expandedPropertyObserver );
 
-    // REVIEW: Why is this linking to the boundsProperty?
-    this.expandedBox.boundsProperty.link( expandedPropertyObserver );
-    this.collapsedBox.boundsProperty.link( expandedPropertyObserver );
     this.disposeEmitter.addListener( () => this.expandedProperty.unlink( expandedPropertyObserver ) );
 
     this.mutate( _.omit( options, 'cursor' ) );
@@ -522,7 +518,6 @@ class AccordionBoxConstraint extends LayoutConstraint {
 
     const options = this.options;
 
-    // REVIEW: I don't think I understand this code block. It's probably an edge case I'm not identifying...
     if ( this.accordionBox.isChildIncludedInLayout( this.contentNode ) ) {
       this.containerNode.children = [
         this.expandedBox,
@@ -603,7 +598,7 @@ class AccordionBoxConstraint extends LayoutConstraint {
     const minimumHeight = ( useExpandedBounds ? minimumExpandedBoxHeight : collapsedBoxHeight ) + lineWidth;
 
     // Our resulting sizes (allow setting preferred width/height on the box)
-    // REVIEW: What happens if the preferredWidth is smaller than the minimumWidth?
+    // TODO: use Math.max to ignore localPreferredWidth is minimumWidth is larger: https://github.com/phetsims/scenery/issues/1557
     const preferredWidth: number = this.accordionBox.localPreferredWidth === null ? minimumWidth : this.accordionBox.localPreferredWidth;
     const preferredHeight: number = this.accordionBox.localPreferredHeight === null ? minimumHeight : this.accordionBox.localPreferredHeight;
 
