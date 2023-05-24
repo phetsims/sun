@@ -418,8 +418,8 @@ class ButtonNodeConstraint extends LayoutConstraint {
   private isFirstLayout = true;
 
   // Stored so that we can prevent updates if we're not marked sizable in a certain direction
-  private localPreferredWidth = 0;
-  private localPreferredHeight = 0;
+  private lastLocalPreferredWidth = 0;
+  private lastLocalPreferredHeight = 0;
 
   public constructor( buttonNode: ButtonNode, options: ButtonNodeConstraintOptions ) {
 
@@ -463,16 +463,16 @@ class ButtonNodeConstraint extends LayoutConstraint {
     );
 
     // Our resulting sizes (allow setting preferred width/height on the buttonNode)
-    this.localPreferredWidth = this.isFirstLayout || isWidthSizable( buttonNode )
-                               ? ( buttonNode.localPreferredWidth === null ? minimumWidth : buttonNode.localPreferredWidth )
-                               : this.localPreferredWidth;
-    this.localPreferredHeight = this.isFirstLayout || isHeightSizable( buttonNode )
-                                ? ( buttonNode.localPreferredHeight === null ? minimumHeight : buttonNode.localPreferredHeight )
-                                : this.localPreferredHeight;
+    this.lastLocalPreferredWidth = this.isFirstLayout || isWidthSizable( buttonNode )
+                                   ? Math.max( minimumWidth, buttonNode.localPreferredWidth || 0 )
+                                   : this.lastLocalPreferredWidth;
+    this.lastLocalPreferredHeight = this.isFirstLayout || isHeightSizable( buttonNode )
+                                    ? Math.max( minimumHeight, buttonNode.localPreferredHeight || 0 )
+                                    : this.lastLocalPreferredHeight;
 
     this.isFirstLayout = false;
 
-    this.layoutSizeProperty.value = new Dimension2( this.localPreferredWidth, this.localPreferredHeight );
+    this.layoutSizeProperty.value = new Dimension2( this.lastLocalPreferredWidth, this.lastLocalPreferredHeight );
 
     // Set minimums at the end
     buttonNode.localMinimumWidth = minimumWidth;

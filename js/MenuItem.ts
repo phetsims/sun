@@ -131,6 +131,9 @@ export default class MenuItem extends WidthSizable( Voicing( Node ) ) {
       if ( preferredWidth === null ) {
         preferredWidth = this.localMinimumWidth;
       }
+      else {
+        preferredWidth = Math.max( this.localMinimumWidth || 0, preferredWidth );
+      }
       if ( preferredWidth ) {
         highlight.rectWidth = preferredWidth;
       }

@@ -598,9 +598,8 @@ class AccordionBoxConstraint extends LayoutConstraint {
     const minimumHeight = ( useExpandedBounds ? minimumExpandedBoxHeight : collapsedBoxHeight ) + lineWidth;
 
     // Our resulting sizes (allow setting preferred width/height on the box)
-    // TODO: use Math.max to ignore localPreferredWidth is minimumWidth is larger: https://github.com/phetsims/scenery/issues/1557
-    const preferredWidth: number = this.accordionBox.localPreferredWidth === null ? minimumWidth : this.accordionBox.localPreferredWidth;
-    const preferredHeight: number = this.accordionBox.localPreferredHeight === null ? minimumHeight : this.accordionBox.localPreferredHeight;
+    const preferredWidth: number = Math.max( minimumWidth, this.accordionBox.localPreferredWidth || 0 );
+    const preferredHeight: number = Math.max( minimumHeight, this.accordionBox.localPreferredHeight || 0 );
 
     const boxWidth = preferredWidth - lineWidth;
     const boxHeight = preferredHeight - lineWidth;

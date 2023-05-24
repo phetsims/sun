@@ -229,8 +229,8 @@ class PanelConstraint extends LayoutConstraint {
     const minimumHeight = Math.max( this.minHeight, minimumContentHeight + ( 2 * this.yMargin ) ) + lineWidth;
 
     // Our resulting sizes (allow setting preferred width/height on the panel)
-    const preferredWidth: number = panel.localPreferredWidth === null ? minimumWidth : panel.localPreferredWidth;
-    const preferredHeight: number = panel.localPreferredHeight === null ? minimumHeight : panel.localPreferredHeight;
+    const preferredWidth: number = Math.max( minimumWidth, panel.localPreferredWidth || 0 );
+    const preferredHeight: number = Math.max( minimumHeight, panel.localPreferredHeight || 0 );
 
     // Determine the size available to our content
     // NOTE: We do NOT set preferred sizes of our content if we don't have a preferred size ourself!

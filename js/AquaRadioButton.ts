@@ -282,7 +282,7 @@ class AquaRadioButtonConstraint<T> extends LayoutConstraint {
 
     const minimumWidth = this.radioNode.width + this.options.xSpacing + contentWidth;
 
-    const preferredWidth = this.radioButton.localPreferredWidth === null ? minimumWidth : this.radioButton.localPreferredWidth;
+    const preferredWidth = Math.max( minimumWidth, this.radioButton.localPreferredWidth || 0 );
 
     // Attempt to set a preferredWidth
     if ( isWidthSizable( this.content ) ) {
