@@ -32,7 +32,8 @@ export default class SliderTick {
 
   public readonly tickNode: Node;
 
-  private readonly manualConstraint?: ManualConstraint<Node[]>;
+  private readonly labelManualConstraint?: ManualConstraint<Node[]>;
+  private readonly labelContainer?: Node;
 
   // NOTE: This could be cleaned up, so we could remove ticks or do other nice things
   public constructor(
@@ -67,26 +68,30 @@ export default class SliderTick {
     // label
     if ( label ) {
 
+      this.labelContainer = new Node( {
+        pickable: false
+      } );
+      this.tickNode.addChild( this.labelContainer );
+      this.labelContainer.addChild( label );
+
       // For a vertical slider, rotate labels opposite the rotation of the slider, so that they appear as expected.
       if ( orientation === Orientation.VERTICAL ) {
-        label.rotation = -SunConstants.SLIDER_VERTICAL_ROTATION;
+        this.labelContainer.rotation = -SunConstants.SLIDER_VERTICAL_ROTATION;
       }
-      this.tickNode.addChild( label );
 
-      this.manualConstraint = ManualConstraint.create( this.tickNode, [ tickPath, label ], ( tickProxy, labelProxy ) => {
+      this.labelManualConstraint = ManualConstraint.create( this.tickNode, [ tickPath, this.labelContainer ], ( tickProxy, labelProxy ) => {
         labelProxy.centerX = tickProxy.centerX;
         labelProxy.bottom = tickProxy.top - tickOptions.tickLabelSpacing;
       } );
-
-      label.pickable = false;
     }
   }
 
   public dispose(): void {
     this.parent.removeChild( this.tickNode );
+    this.labelContainer && this.labelContainer.dispose();
 
     this.labelXProperty.dispose();
-    this.manualConstraint && this.manualConstraint.dispose();
+    this.labelManualConstraint && this.labelManualConstraint.dispose();
   }
 }
 
