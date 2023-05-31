@@ -41,6 +41,7 @@ import SunConstants from './SunConstants.js';
 import createObservableArray, { ObservableArray } from '../../axon/js/createObservableArray.js';
 import LinkableElement from '../../tandem/js/LinkableElement.js';
 import PickRequired from '../../phet-core/js/types/PickRequired.js';
+import isSettingPhetioStateProperty from '../../tandem/js/isSettingPhetioStateProperty.js';
 
 // constants
 const DEFAULT_HORIZONTAL_TRACK_SIZE = new Dimension2( 100, 5 );
@@ -449,11 +450,10 @@ export default class Slider extends Sizable( AccessibleSlider( Node, 0 ) ) {
 
     // when the enabled range changes, the value to position linear function must change as well
     const enabledRangeObserver = ( enabledRange: Range ) => {
-      const joistGlobal = _.get( window, 'phet.joist', null ); // returns null if global isn't found
 
       // When restoring PhET-iO state, prevent the clamp from setting a stale, incorrect value to a deferred Property
       // (which may have already restored the correct value from phet-io state), see https://github.com/phetsims/mean-share-and-balance/issues/21
-      if ( !joistGlobal || !valueProperty.isPhetioInstrumented() || !joistGlobal.sim.isSettingPhetioStateProperty.value ) {
+      if ( !valueProperty.isPhetioInstrumented() || !isSettingPhetioStateProperty.value ) {
 
 
         if ( this.proposedValue === null ) {

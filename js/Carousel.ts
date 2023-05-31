@@ -37,6 +37,7 @@ import Orientation from '../../phet-core/js/Orientation.js';
 import Multilink from '../../axon/js/Multilink.js';
 import Bounds2 from '../../dot/js/Bounds2.js';
 import ButtonNode from './buttons/ButtonNode.js';
+import isSettingPhetioStateProperty from '../../tandem/js/isSettingPhetioStateProperty.js';
 
 const DEFAULT_ARROW_SIZE = new Dimension2( 20, 7 );
 
@@ -372,7 +373,7 @@ export default class Carousel extends Node {
       // in loading a customized state), the carousel should immediately reflect the desired page
       // Do not animate during initialization.
       // Do not animate when our scrollBounds have changed (our content probably resized)
-      if ( this.animationEnabled && !window?.phet?.joist?.sim?.isSettingPhetioStateProperty?.value && isInitialized && !scrollBoundsChanged ) {
+      if ( this.animationEnabled && !isSettingPhetioStateProperty?.value && isInitialized && !scrollBoundsChanged ) {
 
         // create and start the scroll animation
         scrollAnimation = new Animation( combineOptions<AnimationOptions<number>>( {}, options.animationOptions, {
