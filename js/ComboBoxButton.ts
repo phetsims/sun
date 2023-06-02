@@ -261,8 +261,8 @@ export default class ComboBoxButton<T> extends RectangularPushButton {
 
       voicingPatternstringProperty && voicingPatternstringProperty.dispose();
       this.voicingNameResponse = voicingPatternstringProperty = new PatternStringProperty( patternProperty, {
-        value: item.a11yName
-      } );
+        value: item.a11yName!
+      }, { tandem: Tandem.OPT_OUT } );
     };
     property.link( propertyObserver );
 

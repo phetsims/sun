@@ -286,7 +286,7 @@ export default class Dialog extends Popupable( Panel, 1 ) {
     let closeButtonVoicingNameResponseProperty: PatternStringProperty<{ title: TReadOnlyProperty<string> }>;
     if ( options.closeButtonVoicingDialogTitle ) {
       const titleProperty = typeof options.closeButtonVoicingDialogTitle === 'string' ? new TinyProperty( options.closeButtonVoicingDialogTitle ) : options.closeButtonVoicingDialogTitle;
-      closeButtonVoicingNameResponseProperty = closeButton.voicingNameResponse = new PatternStringProperty( SunStrings.a11y.titleClosePatternStringProperty, { title: titleProperty } );
+      closeButtonVoicingNameResponseProperty = closeButton.voicingNameResponse = new PatternStringProperty( SunStrings.a11y.titleClosePatternStringProperty, { title: titleProperty }, { tandem: Tandem.OPT_OUT } );
     }
 
     // touch/mouse areas for the close button

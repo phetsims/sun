@@ -100,8 +100,8 @@ export default class ComboBoxListItemNode<T> extends Voicing( Node ) {
                             new Property( options.comboBoxVoicingNameResponsePattern ) :
                             options.comboBoxVoicingNameResponsePattern;
     const patternStringProperty = new PatternStringProperty( patternProperty, {
-      value: item.a11yName
-    } );
+      value: item.a11yName!
+    }, { tandem: Tandem.OPT_OUT } );
     options.voicingNameResponse = patternStringProperty;
 
     // Highlight that is shown when the pointer is over this item. This is not the a11y focus rectangle.
