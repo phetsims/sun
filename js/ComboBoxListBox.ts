@@ -223,6 +223,10 @@ export default class ComboBoxListBox<T> extends Panel {
       keydown: event => {
         if ( event.domEvent && KeyboardUtils.isAnyKeyEvent( event.domEvent, [ KeyboardUtils.KEY_ESCAPE, KeyboardUtils.KEY_TAB ] ) ) {
 
+          // This keyboard event is captured so that escape doesn't forward to other popupable components. If
+          // ComboBox is ever implemented with generalized popupable/pane system this abort will not be necessary.
+          event.abort();
+
           // Escape and Tab hide the list box and return focus to the button
           hideListBoxCallback();
           focusButtonCallback();

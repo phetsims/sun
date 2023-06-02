@@ -400,6 +400,7 @@ export default class Dialog extends Popupable( Panel, 1 ) {
 
         if ( KeyboardUtils.isKeyEvent( event.domEvent, KeyboardUtils.KEY_ESCAPE ) ) {
           assert && assert( domEvent );
+          console.log( 'escape pressed' );
           domEvent!.preventDefault();
           this.hide();
         }
