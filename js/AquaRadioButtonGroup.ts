@@ -18,6 +18,7 @@ import Property from '../../axon/js/Property.js';
 import Emitter from '../../axon/js/Emitter.js';
 import TEmitter from '../../axon/js/TEmitter.js';
 import GroupItemOptions, { getGroupItemNodes } from './GroupItemOptions.js';
+import TReadOnlyProperty from '../../axon/js/TReadOnlyProperty.js';
 
 // pdom - An id for each instance of AquaRadioButtonGroup, passed to individual buttons in the group.
 // Each button in a radio button group must have the same "name" attribute to be considered in a group, otherwise
@@ -45,7 +46,7 @@ export type AquaRadioButtonGroupOptions = SelfOptions & StrictOmit<FlowBoxOption
 
 export type AquaRadioButtonGroupItem<T> = {
   value: T; // value associated with the button
-  labelContent?: string; // label for a11y
+  labelContent?: string | TReadOnlyProperty<string>; // label for a11y
   options?: StrictOmit<AquaRadioButtonOptions, 'tandem'>; // options passed to AquaRadioButton constructor
 } & GroupItemOptions; // additional options that are common to 'group items'
 
