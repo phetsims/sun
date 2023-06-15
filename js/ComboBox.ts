@@ -418,7 +418,7 @@ export default class ComboBox<T> extends WidthSizable( Node ) {
     } );
 
     this.addLinkedElement( property, {
-      tandem: options.tandem.createTandem( 'property' )
+      tandemName: 'property'
     } );
 
     this.disposeComboBox = () => {

@@ -341,7 +341,7 @@ export default class ToggleSwitch<T> extends Voicing( Node ) {
 
     // Add a link to the Property that this switch controls
     this.addLinkedElement( property, {
-      tandem: options.tandem.createTandem( 'property' )
+      tandemName: 'property'
     } );
 
     // Make the sound players available to external clients that directly set the Property and thus should play the

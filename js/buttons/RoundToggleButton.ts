@@ -58,7 +58,7 @@ export default class RoundToggleButton<T> extends RoundButton {
     super( toggleButtonModel, toggleButtonInteractionStateProperty, options );
 
     this.addLinkedElement( property, {
-      tandem: options.tandem.createTandem( 'property' )
+      tandemName: 'property'
     } );
 
     // sound generation

@@ -87,7 +87,7 @@ type SelfOptions = {
     'touchAreaYDilation' | // use SelfOptions.touchAreaYDilation
     'mouseAreaXDilation' | // use SelfOptions.mouseAreaXDilation
     'mouseAreaYDilation'   // use SelfOptions.mouseAreaYDilation
-    >;
+  >;
 };
 
 export type RectangularRadioButtonGroupOptions = SelfOptions & StrictOmit<FlowBoxOptions,
@@ -320,7 +320,7 @@ export default class RectangularRadioButtonGroup<T> extends FlowBox {
 
     // must be done after this instance is instrumented
     this.addLinkedElement( property, {
-      tandem: options.tandem.createTandem( 'property' )
+      tandemName: 'property'
     } );
 
     this.disposeRadioButtonGroup = () => {

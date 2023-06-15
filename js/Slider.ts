@@ -501,14 +501,14 @@ export default class Slider extends Sizable( AccessibleSlider( Node, 0 ) ) {
     const linkedProperty = options.phetioLinkedProperty || ( valueProperty instanceof ReadOnlyProperty ? valueProperty : null );
     if ( linkedProperty ) {
       this.addLinkedElement( linkedProperty, {
-        tandem: options.tandem.createTandem( 'valueProperty' )
+        tandemName: 'valueProperty'
       } );
     }
 
     // must be after the button is instrumented
     // assert && assert( !this.isPhetioInstrumented() || this.enabledRangeProperty.isPhetioInstrumented() );
     !ownsEnabledRangeProperty && this.enabledRangeProperty instanceof ReadOnlyProperty && this.addLinkedElement( this.enabledRangeProperty, {
-      tandem: options.tandem.createTandem( 'enabledRangeProperty' )
+      tandemName: 'enabledRangeProperty'
     } );
 
     this.mutate( boundsRequiredOptionKeys );

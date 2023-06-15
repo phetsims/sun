@@ -226,7 +226,7 @@ export default class Checkbox extends WidthSizable( Voicing( Node ) ) {
 
     // must be after the Checkbox is instrumented
     options.phetioLinkProperty && this.addLinkedElement( property, {
-      tandem: options.tandem.createTandem( 'property' )
+      tandemName: 'property'
     } );
 
     // support for binder documentation, stripped out in builds and only runs when ?binder is specified

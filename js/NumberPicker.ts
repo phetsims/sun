@@ -501,7 +501,7 @@ export default class NumberPicker extends AccessibleNumberSpinner( Node, 0 ) {
     } );
 
     this.addLinkedElement( valueProperty, {
-      tandem: options.tandem.createTandem( 'valueProperty' )
+      tandemName: 'valueProperty'
     } );
 
     // Mutate options that require bounds after we have children
