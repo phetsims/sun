@@ -1,4 +1,4 @@
-// Copyright 2014-2022, University of Colorado Boulder
+// Copyright 2014-2023, University of Colorado Boulder
 
 /**
  * RoundToggleButton is a round toggle button that toggles the value of a Property between 2 values.
