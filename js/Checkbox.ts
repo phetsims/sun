@@ -115,6 +115,7 @@ export default class Checkbox extends WidthSizable( Voicing( Node ) ) {
 
       // to support properly passing this to children, see https://github.com/phetsims/tandem/issues/60
       phetioReadOnly: PhetioObject.DEFAULT_OPTIONS.phetioReadOnly,
+      phetioFeatured: true,
 
       // pdom
       tagName: 'input',

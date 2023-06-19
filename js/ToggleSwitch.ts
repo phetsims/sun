@@ -134,6 +134,7 @@ export default class ToggleSwitch<T> extends Voicing( Node ) {
       phetioReadOnly: PhetioObject.DEFAULT_OPTIONS.phetioReadOnly,
       visiblePropertyOptions: { phetioFeatured: true },
       phetioEnabledPropertyInstrumented: true, // opt into default PhET-iO instrumented enabledProperty
+      phetioFeatured: true,
 
       // pdom
       tagName: 'button',

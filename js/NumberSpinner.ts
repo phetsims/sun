@@ -117,6 +117,7 @@ export default class NumberSpinner extends AccessibleNumberSpinner( Node, 0 ) {
       // PhET-iO
       tandem: Tandem.REQUIRED,
       tandemNameSuffix: 'Spinner',
+      phetioFeatured: true,
       phetioEnabledPropertyInstrumented: true // opt into default PhET-iO instrumented enabledProperty
     }, providedOptions );
 

@@ -217,6 +217,7 @@ export default class Slider extends Sizable( AccessibleSlider( Node, 0 ) ) {
       tandem: Tandem.REQUIRED,
       tandemNameSuffix: 'Slider',
       phetioType: Slider.SliderIO,
+      phetioFeatured: true,
       visiblePropertyOptions: { phetioFeatured: true },
       phetioEnabledPropertyInstrumented: true // opt into default PhET-iO instrumented enabledProperty
     }, providedOptions );
