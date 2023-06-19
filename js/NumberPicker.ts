@@ -17,7 +17,7 @@ import Range from '../../dot/js/Range.js';
 import Utils from '../../dot/js/Utils.js';
 import { Shape } from '../../kite/js/imports.js';
 import InstanceRegistry from '../../phet-core/js/documentation/InstanceRegistry.js';
-import { Color, FireListener, FireListenerOptions, FocusHighlightPath, Font, TColor, LinearGradient, Node, NodeOptions, PaintColorProperty, Path, Rectangle, SceneryConstants, SceneryEvent, Text } from '../../scenery/js/imports.js';
+import { Color, FireListener, FireListenerOptions, FocusHighlightPath, Font, LinearGradient, Node, NodeOptions, PaintColorProperty, Path, Rectangle, SceneryConstants, SceneryEvent, TColor, Text } from '../../scenery/js/imports.js';
 import AccessibleNumberSpinner, { AccessibleNumberSpinnerOptions } from '../../sun/js/accessibility/AccessibleNumberSpinner.js';
 import generalBoundaryBoopSoundPlayer from '../../tambo/js/shared-sound-players/generalBoundaryBoopSoundPlayer.js';
 import generalSoftClickSoundPlayer from '../../tambo/js/shared-sound-players/generalSoftClickSoundPlayer.js';
