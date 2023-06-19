@@ -26,6 +26,7 @@ import RadioButtonInteractionStateProperty from './RadioButtonInteractionStatePr
 import RectangularButton, { RectangularButtonOptions } from './RectangularButton.js';
 import TButtonAppearanceStrategy, { TButtonAppearanceStrategyOptions } from './TButtonAppearanceStrategy.js';
 import TContentAppearanceStrategy, { TContentAppearanceStrategyOptions } from './TContentAppearanceStrategy.js';
+import StrictOmit from '../../../phet-core/js/types/StrictOmit.js';
 
 type SelfOptions = {
 
@@ -34,7 +35,9 @@ type SelfOptions = {
   soundPlayer?: TSoundPlayer | null;
 };
 
-export type RectangularRadioButtonOptions = SelfOptions & RectangularButtonOptions;
+export type RectangularRadioButtonOptions = SelfOptions &
+  // These options are not appropriate for radio buttons, see https://github.com/phetsims/sun/issues/847
+  StrictOmit<RectangularButtonOptions, 'enabledProperty' | 'enabled'>;
 
 export default class RectangularRadioButton<T> extends RectangularButton {
 
@@ -101,9 +104,15 @@ export default class RectangularRadioButton<T> extends RectangularButton {
     assert && assert( !options.tandem.supplied || options.tandem.name.endsWith( RectangularRadioButton.TANDEM_NAME_SUFFIX ),
       `RectangularRadioButton tandem.name must end with ${RectangularRadioButton.TANDEM_NAME_SUFFIX}: ${options.tandem.phetioID}` );
 
-    // Note it shares a tandem with this, so the emitter will be instrumented as a child of the button
+    // ButtonModel is responsible for enabledProperty, so propagate enabledPropertyOptions.
+    // tandem is also propagated because we want enabledProperty to appear as a child of this button.
+    // Since enabledProperty is unrelated to the look of the button when selected/deselected, we've also included
+    // phetioEnabledPropertyInstrumented so that one can opt out of this potentially confusing instrumentation.
+    // See https://github.com/phetsims/sun/issues/847.
     const buttonModel = new ButtonModel( {
-      tandem: options.tandem
+      enabledPropertyOptions: options.enabledPropertyOptions,
+      tandem: options.tandem,
+      phetioEnabledPropertyInstrumented: options.phetioEnabledPropertyInstrumented
     } );
 
     const interactionStateProperty = new RadioButtonInteractionStateProperty( buttonModel, property, value );
