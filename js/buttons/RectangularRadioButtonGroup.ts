@@ -151,6 +151,7 @@ export default class RectangularRadioButtonGroup<T> extends FlowBox {
       tandemNameSuffix: 'ButtonGroup',
       visiblePropertyOptions: { phetioFeatured: true },
       phetioEnabledPropertyInstrumented: true, // opt into default PhET-iO instrumented enabledProperty
+      phetioFeatured: true,
 
       // pdom
       tagName: 'ul',

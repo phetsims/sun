@@ -48,6 +48,7 @@ export default class RectangularToggleButton<T> extends RectangularButton {
 
       // phet-io support
       tandem: Tandem.REQUIRED,
+      phetioFeatured: true,
       tandemNameSuffix: 'Button'
     }, providedOptions );
 

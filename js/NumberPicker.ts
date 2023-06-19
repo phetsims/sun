@@ -180,8 +180,8 @@ export default class NumberPicker extends AccessibleNumberSpinner( Node, 0 ) {
       tandemNameSuffix: 'Picker',
       phetioReadOnly: PhetioObject.DEFAULT_OPTIONS.phetioReadOnly,
       visiblePropertyOptions: { phetioFeatured: true },
-      phetioEnabledPropertyInstrumented: true
-
+      phetioEnabledPropertyInstrumented: true,
+      phetioFeatured: true
     }, providedOptions );
 
     if ( !options.formatValue ) {

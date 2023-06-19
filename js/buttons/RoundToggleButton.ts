@@ -48,6 +48,7 @@ export default class RoundToggleButton<T> extends RoundButton {
 
       // phet-io support
       tandem: Tandem.REQUIRED,
+      phetioFeatured: true,
       tandemNameSuffix: 'Button'
     }, providedOptions );
 
