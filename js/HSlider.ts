@@ -14,7 +14,7 @@ import Slider, { SliderOptions } from './Slider.js';
 import sun from './sun.js';
 import optionize, { EmptySelfOptions } from '../../phet-core/js/optionize.js';
 import StrictOmit from '../../phet-core/js/types/StrictOmit.js';
-import LinkableProperty from '../../axon/js/LinkableProperty.js';
+import PhetioProperty from '../../axon/js/PhetioProperty.js';
 
 type SelfOptions = EmptySelfOptions;
 
@@ -22,7 +22,7 @@ export type HSliderOptions = SelfOptions & StrictOmit<SliderOptions, 'orientatio
 
 export default class HSlider extends Slider {
 
-  public constructor( valueProperty: LinkableProperty<number>, range: Range, options?: HSliderOptions ) {
+  public constructor( valueProperty: PhetioProperty<number>, range: Range, options?: HSliderOptions ) {
 
     super( valueProperty, range, optionize<HSliderOptions, SelfOptions, SliderOptions>()( {
       orientation: Orientation.HORIZONTAL

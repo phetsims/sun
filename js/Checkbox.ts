@@ -25,7 +25,7 @@ import Utterance, { TAlertable } from '../../utterance-queue/js/Utterance.js';
 import Bounds2 from '../../dot/js/Bounds2.js';
 import { Shape } from '../../kite/js/imports.js';
 import StrictOmit from '../../phet-core/js/types/StrictOmit.js';
-import LinkableProperty from '../../axon/js/LinkableProperty.js';
+import PhetioProperty from '../../axon/js/PhetioProperty.js';
 
 // constants
 const BOOLEAN_VALIDATOR = { valueType: 'boolean' };
@@ -85,7 +85,7 @@ export default class Checkbox extends WidthSizable( Voicing( Node ) ) {
   // Handles layout of the content, rectangles and mouse/touch areas
   private readonly constraint: CheckboxConstraint;
 
-  public constructor( property: LinkableProperty<boolean>, content: Node, providedOptions?: CheckboxOptions ) {
+  public constructor( property: PhetioProperty<boolean>, content: Node, providedOptions?: CheckboxOptions ) {
 
     const options = optionize<CheckboxOptions, SelfOptions, ParentOptions>()( {
 

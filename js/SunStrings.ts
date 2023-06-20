@@ -5,23 +5,23 @@
  */
 /* eslint-disable */
 import getStringModule from '../../chipper/js/getStringModule.js';
-import LinkableProperty from '../../axon/js/LinkableProperty.js';
+import type LocalizedStringProperty from '../../chipper/js/LocalizedStringProperty.js';
 import sun from './sun.js';
 
 type StringsType = {
   'sun': {
-    'titleStringProperty': LinkableProperty<string>;
+    'titleStringProperty': LocalizedStringProperty;
   };
   'screen': {
-    'buttonsStringProperty': LinkableProperty<string>;
-    'componentsStringProperty': LinkableProperty<string>;
-    'dialogsStringProperty': LinkableProperty<string>;
+    'buttonsStringProperty': LocalizedStringProperty;
+    'componentsStringProperty': LocalizedStringProperty;
+    'dialogsStringProperty': LocalizedStringProperty;
   };
   'a11y': {
-    'numberSpinnerRoleDescriptionStringProperty': LinkableProperty<string>;
-    'closeStringProperty': LinkableProperty<string>;
-    'closedStringProperty': LinkableProperty<string>;
-    'titleClosePatternStringProperty': LinkableProperty<string>;
+    'numberSpinnerRoleDescriptionStringProperty': LocalizedStringProperty;
+    'closeStringProperty': LocalizedStringProperty;
+    'closedStringProperty': LocalizedStringProperty;
+    'titleClosePatternStringProperty': LocalizedStringProperty;
   }
 };
 

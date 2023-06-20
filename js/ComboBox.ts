@@ -37,11 +37,11 @@ import SunConstants from './SunConstants.js';
 import DerivedProperty from '../../axon/js/DerivedProperty.js';
 import IntentionalAny from '../../phet-core/js/types/IntentionalAny.js';
 import TReadOnlyProperty from '../../axon/js/TReadOnlyProperty.js';
-import LinkableProperty from '../../axon/js/LinkableProperty.js';
 import { SpeakableResolvedResponse } from '../../utterance-queue/js/ResponsePacket.js';
 import GroupItemOptions, { getGroupItemNodes } from './GroupItemOptions.js';
 import Multilink from '../../axon/js/Multilink.js';
 import StrictOmit from '../../phet-core/js/types/StrictOmit.js';
+import PhetioProperty from '../../axon/js/PhetioProperty.js';
 
 // const
 const LIST_POSITION_VALUES = [ 'above', 'below' ] as const; // where the list pops up relative to the button
@@ -177,7 +177,7 @@ export default class ComboBox<T> extends WidthSizable( Node ) {
    * @param listParent node that will be used as the list's parent, use this to ensure that the list is in front of everything else
    * @param [providedOptions?]
    */
-  public constructor( property: LinkableProperty<T>, items: ComboBoxItem<T>[], listParent: Node, providedOptions?: ComboBoxOptions ) {
+  public constructor( property: PhetioProperty<T>, items: ComboBoxItem<T>[], listParent: Node, providedOptions?: ComboBoxOptions ) {
 
     assert && assert( _.uniqBy( items, ( item: ComboBoxItem<T> ) => item.value ).length === items.length,
       'items must have unique values' );

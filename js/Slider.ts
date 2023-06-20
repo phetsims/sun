@@ -33,15 +33,15 @@ import SliderTrack from './SliderTrack.js';
 import SliderTick, { SliderTickOptions } from './SliderTick.js';
 import sun from './sun.js';
 import PickOptional from '../../phet-core/js/types/PickOptional.js';
-import LinkableProperty from '../../axon/js/LinkableProperty.js';
 import Multilink from '../../axon/js/Multilink.js';
 import TProperty from '../../axon/js/TProperty.js';
 import TinyProperty from '../../axon/js/TinyProperty.js';
 import SunConstants from './SunConstants.js';
 import createObservableArray, { ObservableArray } from '../../axon/js/createObservableArray.js';
-import LinkableElement from '../../tandem/js/LinkableElement.js';
 import PickRequired from '../../phet-core/js/types/PickRequired.js';
 import isSettingPhetioStateProperty from '../../tandem/js/isSettingPhetioStateProperty.js';
+import PhetioObject from '../../tandem/js/PhetioObject.js';
+import PhetioProperty from '../../axon/js/PhetioProperty.js';
 
 // constants
 const DEFAULT_HORIZONTAL_TRACK_SIZE = new Dimension2( 100, 5 );
@@ -99,7 +99,7 @@ type SelfOptions = {
   // of using the passed in Property. This option was created to support passing DynamicProperty or "wrapping"
   // Property that are "implementation  details" to the PhET-iO API, and still support having a LinkedElement that
   // points to the underlying model Property.
-  phetioLinkedProperty?: LinkableElement | null;
+  phetioLinkedProperty?: PhetioObject | null;
 
   // This is used to generate sounds as the slider is moved by the user.  If not provided, the default sound generator
   // will be created. If set to null, the slider will generate no sound.
@@ -149,7 +149,7 @@ export default class Slider extends Sizable( AccessibleSlider( Node, 0 ) ) {
   // This value is set during thumb drag, or null if not currently being dragged.
   private proposedValue: number | null = null;
 
-  public constructor( valueProperty: LinkableProperty<number>,
+  public constructor( valueProperty: PhetioProperty<number>,
                       range: Range | TReadOnlyProperty<Range>,
                       providedOptions?: SliderOptions ) {
 
