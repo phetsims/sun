@@ -69,8 +69,7 @@ export default class VerticalCheckboxGroup extends VBox {
 
       const checkbox = new Checkbox( item.property, node,
         combineOptions<CheckboxOptions>( {
-          tandem: item.tandemName ? options.tandem.createTandem( item.tandemName ) :
-                  Tandem.OPTIONAL,
+          tandem: item.tandemName ? options.tandem.createTandem( item.tandemName ) : Tandem.OPTIONAL,
           mouseAreaXDilation: options.mouseAreaXDilation,
           touchAreaXDilation: options.touchAreaXDilation,
           mouseAreaYDilation: yDilation,

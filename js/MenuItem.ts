@@ -11,7 +11,6 @@ import PhetFont from '../../scenery-phet/js/PhetFont.js';
 import { allowLinksProperty, FireListener, ManualConstraint, Node, NodeOptions, Path, Rectangle, SceneryEvent, Text, TPaint, Voicing, VoicingOptions, WidthSizable } from '../../scenery/js/imports.js';
 import checkSolidShape from '../../sherpa/js/fontawesome-5/checkSolidShape.js';
 import EventType from '../../tandem/js/EventType.js';
-import Tandem from '../../tandem/js/Tandem.js';
 import sun from './sun.js';
 import optionize from '../../phet-core/js/optionize.js';
 import TReadOnlyProperty from '../../axon/js/TReadOnlyProperty.js';
@@ -83,7 +82,6 @@ export default class MenuItem extends WidthSizable( Voicing( Node ) ) {
       cursor: 'pointer',
 
       // phet-io
-      tandem: Tandem.OPTIONAL,
       phetioDocumentation: 'Item buttons shown in a popup menu',
       phetioEventType: EventType.USER,
 
@@ -153,7 +151,7 @@ export default class MenuItem extends WidthSizable( Voicing( Node ) ) {
     } );
 
     this.addInputListener( new FireListener( {
-      tandem: options.tandem.createTandem( 'fireListener' ),
+      tandem: options.tandem?.createTandem( 'fireListener' ),
       fire: ( event: SceneryEvent ) => {
         closeCallback( event );
         callback( event );

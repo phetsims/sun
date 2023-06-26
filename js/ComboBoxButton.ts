@@ -95,9 +95,6 @@ export default class ComboBoxButton<T> extends RectangularPushButton {
       localPreferredWidthProperty: new TinyProperty( null ),
       localMinimumWidthProperty: new TinyProperty( null ),
 
-      // phet-io
-      tandem: Tandem.OPTIONAL,
-
       // pdom
       containerTagName: 'div',
       accessibleNameBehavior: ACCESSIBLE_NAME_BEHAVIOR

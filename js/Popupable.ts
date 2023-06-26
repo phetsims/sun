@@ -18,7 +18,6 @@ import optionize from '../../phet-core/js/optionize.js';
 import Constructor from '../../phet-core/js/types/Constructor.js';
 import PickOptional from '../../phet-core/js/types/PickOptional.js';
 import { FocusManager, Node, NodeOptions } from '../../scenery/js/imports.js';
-import Tandem from '../../tandem/js/Tandem.js';
 import sun from './sun.js';
 
 type SelfOptions = {
@@ -40,7 +39,8 @@ type SelfOptions = {
   // to the Node that had focus when the Dialog opened.
   focusOnHideNode?: Node | null;
 };
-export type PopupableOptions = SelfOptions & PickOptional<NodeOptions, 'tandem'>;
+type ParentOptions = PickOptional<NodeOptions, 'tandem'>;
+export type PopupableOptions = SelfOptions & ParentOptions;
 
 const Popupable = <SuperType extends Constructor<Node>>( type: SuperType, optionsArgPosition: number ) => { // eslint-disable-line @typescript-eslint/explicit-module-boundary-types
 
@@ -78,12 +78,11 @@ const Popupable = <SuperType extends Constructor<Node>>( type: SuperType, option
       const showPopup = gracefulBind( 'phet.joist.sim.showPopup' ) as Exclude<PopupableOptions[ 'showPopup' ], undefined>;
       const hidePopup = gracefulBind( 'phet.joist.sim.hidePopup' ) as Exclude<PopupableOptions[ 'hidePopup' ], undefined>;
 
-      const options = optionize<PopupableOptions>()( {
+      const options = optionize<PopupableOptions, SelfOptions, ParentOptions>()( {
         showPopup: showPopup,
         hidePopup: hidePopup,
         isModal: true,
         layoutBounds: null,
-        tandem: Tandem.OPTIONAL,
         focusOnShowNode: null,
         focusOnHideNode: null
       }, providedOptions );
@@ -102,7 +101,7 @@ const Popupable = <SuperType extends Constructor<Node>>( type: SuperType, option
       } );
 
       this.isShowingProperty = new BooleanProperty( false, {
-        tandem: options.tandem.createTandem( 'isShowingProperty' ),
+        tandem: options.tandem?.createTandem( 'isShowingProperty' ),
         phetioReadOnly: true,
         phetioFeatured: true
       } );

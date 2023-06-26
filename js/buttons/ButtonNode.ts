@@ -15,8 +15,7 @@ import Bounds2 from '../../../dot/js/Bounds2.js';
 import Dimension2 from '../../../dot/js/Dimension2.js';
 import optionize, { combineOptions } from '../../../phet-core/js/optionize.js';
 import StrictOmit from '../../../phet-core/js/types/StrictOmit.js';
-import { AlignBox, AlignBoxXAlign, AlignBoxYAlign, Brightness, Color, Contrast, Grayscale, TColor, TPaint, isHeightSizable, isWidthSizable, Node, NodeOptions, PaintableNode, PaintColorProperty, Path, PressListener, PressListenerOptions, SceneryConstants, Sizable, SizableOptions, Voicing, VoicingOptions, LayoutConstraint } from '../../../scenery/js/imports.js';
-import Tandem from '../../../tandem/js/Tandem.js';
+import { AlignBox, AlignBoxXAlign, AlignBoxYAlign, Brightness, Color, Contrast, Grayscale, isHeightSizable, isWidthSizable, LayoutConstraint, Node, NodeOptions, PaintableNode, PaintColorProperty, Path, PressListener, PressListenerOptions, SceneryConstants, Sizable, SizableOptions, TColor, TPaint, Voicing, VoicingOptions } from '../../../scenery/js/imports.js';
 import ColorConstants from '../ColorConstants.js';
 import sun from '../sun.js';
 import ButtonInteractionState from './ButtonInteractionState.js';
@@ -149,13 +148,12 @@ export default class ButtonNode extends Sizable( Voicing( Node ) ) {
       tagName: 'button',
 
       // phet-io
-      tandem: Tandem.OPTIONAL,
       visiblePropertyOptions: { phetioFeatured: true },
       phetioEnabledPropertyInstrumented: true // opt into default PhET-iO instrumented enabledProperty
     }, providedOptions );
 
     options.listenerOptions = combineOptions<PressListenerOptions>( {
-      tandem: options.tandem.createTandem( 'pressListener' )
+      tandem: options.tandem?.createTandem( 'pressListener' )
     }, options.listenerOptions );
 
     assert && options.enabledProperty && assert( options.enabledProperty === buttonModel.enabledProperty,

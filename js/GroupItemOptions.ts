@@ -24,12 +24,12 @@ export default GroupItemOptions;
 /**
  * Get the nodes for the GroupItemOptions
  */
-export function getGroupItemNodes<T extends Node = Node>( array: GroupItemOptions<T>[], tandem: Tandem ): T[] {
+export function getGroupItemNodes<T extends Node = Node>( array: GroupItemOptions<T>[], tandem?: Tandem ): T[] {
   return array.map( item => {
 
     // @ts-expect-error - runtime check to prevent prior pattern, see https://github.com/phetsims/sun/issues/794
     assert && assert( !item.node, 'Use createNode instead of node' );
 
-    return item.createNode( item.tandemName ? tandem.createTandem( item.tandemName ) : Tandem.OPTIONAL );
+    return item.createNode( tandem && item.tandemName ? tandem.createTandem( item.tandemName ) : Tandem.OPTIONAL );
   } );
 }

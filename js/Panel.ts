@@ -10,8 +10,7 @@
  */
 
 import { optionize3, OptionizeDefaults } from '../../phet-core/js/optionize.js';
-import { TPaint, isHeightSizable, isWidthSizable, LayoutConstraint, Node, NodeOptions, Rectangle, Sizable, SizableOptions } from '../../scenery/js/imports.js';
-import Tandem from '../../tandem/js/Tandem.js';
+import { isHeightSizable, isWidthSizable, LayoutConstraint, Node, NodeOptions, Rectangle, Sizable, SizableOptions, TPaint } from '../../scenery/js/imports.js';
 import sun from './sun.js';
 
 // valid values for options.align
@@ -64,8 +63,7 @@ const DEFAULT_OPTIONS: OptionizeDefaults<SelfOptions, SuperOptions> = {
   excludeInvisibleChildrenFromBounds: true,
   align: 'left',
   minWidth: 0,
-  minHeight: 0,
-  tandem: Tandem.OPTIONAL
+  minHeight: 0
 };
 assert && Object.freeze( DEFAULT_OPTIONS );
 

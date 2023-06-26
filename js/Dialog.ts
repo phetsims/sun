@@ -198,7 +198,6 @@ export default class Dialog extends Popupable( Panel, 1 ) {
       maxWidth: null, // if not provided, then dynamically calculate based on the layoutBounds of the current screen, see updateLayoutMultilink
 
       // phet-io
-      tandem: Tandem.OPTIONAL,
       phetioType: Dialog.DialogIO,
       phetioState: true, // Dialog is often a dynamic element, and thus needs to be in state to trigger element creation.
       phetioVisiblePropertyInstrumented: false, // visible isn't toggled when showing a Dialog
@@ -263,7 +262,7 @@ export default class Dialog extends Popupable( Panel, 1 ) {
       },
 
       // phet-io
-      tandem: options.tandem.createTandem( 'closeButton' ),
+      tandem: options.tandem?.createTandem( 'closeButton' ),
       phetioState: false, // close button should not be in state
 
       // It is a usability concern to change either of these, also there are other ways to exit a Dialog, so using

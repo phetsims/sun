@@ -11,7 +11,6 @@
 import StrictOmit from '../../phet-core/js/types/StrictOmit.js';
 import optionize from '../../phet-core/js/optionize.js';
 import { Node, NodeOptions } from '../../scenery/js/imports.js';
-import Tandem from '../../tandem/js/Tandem.js';
 import sun from './sun.js';
 import TReadOnlyProperty from '../../axon/js/TReadOnlyProperty.js';
 import GroupItemOptions, { getGroupItemNodes } from './GroupItemOptions.js';
@@ -38,13 +37,10 @@ export default class ToggleNode<T, N extends Node = Node> extends Node {
     const options = optionize<ToggleNodeOptions, SelfOptions, NodeOptions>()( {
 
       // SelfOptions
-      alignChildren: ToggleNode.CENTER,
-
-      // NodeOptions
-      tandem: Tandem.OPTIONAL
+      alignChildren: ToggleNode.CENTER
     }, providedOptions );
 
-    const nodes = getGroupItemNodes( elements, options.tandem.createTandem( 'elements' ) );
+    const nodes = getGroupItemNodes( elements, options.tandem?.createTandem( 'elements' ) );
 
     const valueListener = ( value: T ) => {
       let matchCount = 0;
