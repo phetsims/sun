@@ -33,11 +33,18 @@ export default function demoAquaRadioButtonGroup( layoutBounds: Bounds2 ): Node 
     choice => {
       return {
         createNode: () => new Text( choice, { font: font } ),
-        value: choice
+        value: choice,
+
+        // pdom
+        labelContent: choice
       };
     } );
   const verticalGroup = new AquaRadioButtonGroup( verticalProperty, verticalItems, {
-    orientation: 'vertical'
+    orientation: 'vertical',
+
+    // pdom
+    labelContent: 'Vertical AquaRadioButtonGroup',
+    descriptionContent: 'This is a description of the vertical AquaRadioButtonGroup.'
   } );
 
   return new VBox( {

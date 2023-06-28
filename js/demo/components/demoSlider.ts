@@ -50,6 +50,10 @@ function demoSlider( layoutBounds: Bounds2, orientation: 'horizontal' | 'vertica
       thumbMouseAreaYDilation: 5,
       enabledRangeProperty: enabledRangeProperty,
 
+      // pdom
+      labelContent: 'Horizontal Slider',
+      descriptionContent: 'This is a description of the horizontal Slider.',
+
       phetioEnabledPropertyInstrumented: false
     }, options ) );
   }
