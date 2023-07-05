@@ -157,11 +157,6 @@ export default class Panel extends Sizable( Node ) {
     super.setExcludeInvisibleChildrenFromBounds( excludeInvisibleChildrenFromBounds );
     this.constraint.updateLayoutAutomatically();
   }
-
-  public override dispose(): void {
-    this.constraint.dispose();
-    super.dispose();
-  }
 }
 
 class PanelConstraint extends LayoutConstraint {
