@@ -47,6 +47,11 @@ export default function demoAquaRadioButtonGroup( layoutBounds: Bounds2 ): Node 
     descriptionContent: 'This is a description of the vertical AquaRadioButtonGroup.'
   } );
 
+  // pdom - context response for the changing value
+  verticalProperty.link( value => {
+    verticalGroup.alertDescriptionUtterance( `The value of the group changed to ${value}.` );
+  } );
+
   return new VBox( {
     children: [ horizontalGroup, verticalGroup ],
     spacing: 80,
