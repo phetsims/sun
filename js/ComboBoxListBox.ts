@@ -228,7 +228,7 @@ export default class ComboBoxListBox<T> extends Panel {
 
           // This keyboard event is captured so that escape doesn't forward to other popupable components. If
           // ComboBox is ever implemented with generalized popupable/pane system this abort will not be necessary.
-          event!.abort();
+          sceneryEvent.abort();
 
           // Escape and Tab hide the list box and return focus to the button
           hideListBoxCallback();
