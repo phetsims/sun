@@ -17,7 +17,7 @@ import getGlobal from '../../phet-core/js/getGlobal.js';
 import optionize from '../../phet-core/js/optionize.js';
 import StrictOmit from '../../phet-core/js/types/StrictOmit.js';
 import CloseButton from '../../scenery-phet/js/buttons/CloseButton.js';
-import { AlignBox, FocusManager, FullScreen, HBox, KeyboardUtils, Node, PDOMPeer, PDOMUtils, TColor, TInputListener, VBox, voicingManager } from '../../scenery/js/imports.js';
+import { AlignBox, FocusManager, FullScreen, HBox, KeyboardListener, Node, PDOMPeer, PDOMUtils, TColor, VBox, voicingManager } from '../../scenery/js/imports.js';
 import TSoundPlayer from '../../tambo/js/TSoundPlayer.js';
 import generalCloseSoundPlayer from '../../tambo/js/shared-sound-players/generalCloseSoundPlayer.js';
 import generalOpenSoundPlayer from '../../tambo/js/shared-sound-players/generalOpenSoundPlayer.js';
@@ -393,16 +393,17 @@ export default class Dialog extends Popupable( Panel, 1 ) {
     }
 
     // pdom - close the dialog when pressing "escape"
-    const escapeListener: TInputListener = {
-      keydown: event => {
-        const domEvent = event.domEvent; // {DOMEvent|null}
+    const keyboardListener = new KeyboardListener( {
+      keys: [ 'escape', 'tab' ],
+      callback: ( event, listener ) => {
+        assert && assert( event && event.domEvent, 'event should be non-null and defined for this listener' );
+        const domEvent = event!.domEvent!;
 
-        if ( KeyboardUtils.isKeyEvent( event.domEvent, KeyboardUtils.KEY_ESCAPE ) ) {
-          assert && assert( domEvent );
-          domEvent!.preventDefault();
+        if ( listener.keysPressed === 'escape' ) {
+          domEvent.preventDefault();
           this.hide();
         }
-        else if ( KeyboardUtils.isKeyEvent( event.domEvent, KeyboardUtils.KEY_TAB ) && FullScreen.isFullScreen() ) {
+        else if ( listener.keysPressed === 'tab' && FullScreen.isFullScreen() ) {
 
           // prevent a particular bug in Windows 7/8.1 Firefox where focus gets trapped in the document
           // when the navigation bar is hidden and there is only one focusable element in the DOM
@@ -413,18 +414,18 @@ export default class Dialog extends Popupable( Panel, 1 ) {
           const noPreviousFocusable = PDOMUtils.getPreviousFocusable().id === activeId;
 
           if ( noNextFocusable && noPreviousFocusable ) {
-            assert && assert( domEvent );
-            domEvent!.preventDefault();
+            domEvent.preventDefault();
           }
         }
       }
-    };
-    this.addInputListener( escapeListener );
+    } );
+    this.addInputListener( keyboardListener );
 
     this.disposeDialog = () => {
       updateLayoutMultilink.dispose();
       closeButtonWithMargins.dispose();
-      this.removeInputListener( escapeListener );
+      this.removeInputListener( keyboardListener );
+      keyboardListener.dispose();
 
       closeButtonVoicingNameResponseProperty && closeButtonVoicingNameResponseProperty.dispose();
 
