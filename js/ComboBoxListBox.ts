@@ -8,7 +8,7 @@
 
 import PhetioAction from '../../tandem/js/PhetioAction.js';
 import optionize, { combineOptions } from '../../phet-core/js/optionize.js';
-import { KeyboardUtils, Node, SceneryEvent, SpeakingOptions, TInputListener, TPaint, VBox, VoicingNode } from '../../scenery/js/imports.js';
+import { KeyboardListener, KeyboardUtils, Node, SceneryEvent, SpeakingOptions, TInputListener, TPaint, VBox, VoicingNode } from '../../scenery/js/imports.js';
 import multiSelectionSoundPlayerFactory from '../../tambo/js/multiSelectionSoundPlayerFactory.js';
 import generalCloseSoundPlayer from '../../tambo/js/shared-sound-players/generalCloseSoundPlayer.js';
 import generalOpenSoundPlayer from '../../tambo/js/shared-sound-players/generalOpenSoundPlayer.js';
@@ -217,28 +217,33 @@ export default class ComboBoxListBox<T> extends Panel {
       }
     } );
 
-    // pdom listener for the entire list box
-    this.addInputListener( {
-      // Handle keydown
-      keydown: event => {
-        if ( event.domEvent && KeyboardUtils.isAnyKeyEvent( event.domEvent, [ KeyboardUtils.KEY_ESCAPE, KeyboardUtils.KEY_TAB ] ) ) {
+    // pdom - listener that navigates listbox items and closes the box from keyboard input
+    const keyboardListener = new KeyboardListener( {
+      keys: [ 'escape', 'tab', 'arrowUp', 'arrowDown', 'home', 'end' ],
+      callback: ( event, listener ) => {
+        const sceneryEvent = event!;
+        assert && assert( sceneryEvent, 'event is required for this listener' );
+
+        if ( listener.keysPressed === 'escape' || listener.keysPressed === 'tab' ) {
 
           // This keyboard event is captured so that escape doesn't forward to other popupable components. If
           // ComboBox is ever implemented with generalized popupable/pane system this abort will not be necessary.
-          event.abort();
+          event!.abort();
 
           // Escape and Tab hide the list box and return focus to the button
           hideListBoxCallback();
           focusButtonCallback();
         }
-        else if ( event.domEvent && KeyboardUtils.isAnyKeyEvent( event.domEvent, [ KeyboardUtils.KEY_DOWN_ARROW, KeyboardUtils.KEY_UP_ARROW ] ) ) {
+        else if ( listener.keysPressed === 'arrowUp' || listener.keysPressed === 'arrowDown' ) {
+          const domEvent = sceneryEvent.domEvent!;
+          assert && assert( domEvent, 'domEvent is required for this listener' );
 
           // prevent "native" behavior so that Safari doesn't make an error sound with arrow keys in
           // full screen mode, see #210
-          event.domEvent.preventDefault();
+          domEvent.preventDefault();
 
           // Up/down arrow keys move the focus between items in the list box
-          const direction = ( KeyboardUtils.isKeyEvent( event.domEvent, KeyboardUtils.KEY_DOWN_ARROW ) ) ? 1 : -1;
+          const direction = listener.keysPressed === 'arrowDown' ? 1 : -1;
           const focusedItemIndex = this.visibleListItemNodes.indexOf( this.getFocusedItemNode() );
           assert && assert( focusedItemIndex > -1, 'how could we receive keydown without a focused list item?' );
 
@@ -246,16 +251,17 @@ export default class ComboBoxListBox<T> extends Panel {
           this.visibleListItemNodes[ nextIndex ] && this.visibleListItemNodes[ nextIndex ].focus();
 
           // reserve for drag after focus has moved, as the change in focus will clear the intent on the pointer
-          event.pointer.reserveForKeyboardDrag();
+          sceneryEvent.pointer.reserveForKeyboardDrag();
         }
-        else if ( event.domEvent && KeyboardUtils.isKeyEvent( event.domEvent, KeyboardUtils.KEY_HOME ) ) {
+        else if ( listener.keysPressed === 'home' ) {
           this.visibleListItemNodes[ 0 ].focus();
         }
-        else if ( event.domEvent && KeyboardUtils.isKeyEvent( event.domEvent, KeyboardUtils.KEY_END ) ) {
+        else if ( listener.keysPressed === 'end' ) {
           this.visibleListItemNodes[ this.visibleListItemNodes.length - 1 ].focus();
         }
       }
     } );
+    this.addInputListener( keyboardListener );
 
     this.listItemNodes = listItemNodes;
     this.visibleListItemNodes = listItemNodes.slice();
@@ -264,6 +270,9 @@ export default class ComboBoxListBox<T> extends Panel {
       for ( let i = 0; i < listItemNodes.length; i++ ) {
         listItemNodes[ i ].dispose(); // to unregister tandem
       }
+
+      this.removeInputListener( keyboardListener );
+      keyboardListener.dispose();
 
       // Private to ComboBoxListBox, but we need to clean up tandem.
       fireAction.dispose();
