@@ -55,7 +55,7 @@ type SelfOptions = {
   ySpacing?: number;
 
   // NumberDisplay options
-  numberDisplayOptions?: StrictOmit<NumberDisplayOptions, 'tandem'>;
+  numberDisplayOptions?: NumberDisplayOptions;
 
   // arrow button pointer areas
   touchAreaXDilation?: number;
