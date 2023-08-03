@@ -141,7 +141,6 @@ export default class AquaRadioButtonGroup<T> extends FlowBox {
         event && event.pointer.reserveForKeyboardDrag();
       }
     } );
-    // const intentListener = { keydown: ( event: SceneryEvent<KeyboardEvent> ) => event.pointer.reserveForKeyboardDrag() };
     this.addInputListener( intentListener );
 
     const boundOnRadioButtonInput = this.onRadioButtonInput.bind( this );
