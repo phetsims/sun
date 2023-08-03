@@ -9,7 +9,7 @@
 
 import StrictOmit from '../../phet-core/js/types/StrictOmit.js';
 import optionize, { combineOptions } from '../../phet-core/js/optionize.js';
-import { FlowBox, FlowBoxOptions, PDOMPeer, SceneryConstants, SceneryEvent } from '../../scenery/js/imports.js';
+import { FlowBox, FlowBoxOptions, KeyboardListener, PDOMPeer, SceneryConstants } from '../../scenery/js/imports.js';
 import multiSelectionSoundPlayerFactory from '../../tambo/js/multiSelectionSoundPlayerFactory.js';
 import Tandem from '../../tandem/js/Tandem.js';
 import AquaRadioButton, { AquaRadioButtonOptions } from './AquaRadioButton.js';
@@ -135,7 +135,13 @@ export default class AquaRadioButtonGroup<T> extends FlowBox {
 
     // zoom - signify that key input is reserved and we should not pan when user presses arrow keys
     // See https://github.com/phetsims/scenery/issues/974
-    const intentListener = { keydown: ( event: SceneryEvent<KeyboardEvent> ) => event.pointer.reserveForKeyboardDrag() };
+    const intentListener = new KeyboardListener( {
+      keys: [ 'arrowLeft', 'arrowRight', 'arrowUp', 'arrowDown' ],
+      callback: event => {
+        event && event.pointer.reserveForKeyboardDrag();
+      }
+    } );
+    // const intentListener = { keydown: ( event: SceneryEvent<KeyboardEvent> ) => event.pointer.reserveForKeyboardDrag() };
     this.addInputListener( intentListener );
 
     const boundOnRadioButtonInput = this.onRadioButtonInput.bind( this );
@@ -151,6 +157,7 @@ export default class AquaRadioButtonGroup<T> extends FlowBox {
 
     this.disposeAquaRadioButtonGroup = () => {
       this.removeInputListener( intentListener );
+      intentListener.dispose();
       radioButtons.forEach( radioButton => radioButton.dispose() );
       this.onInputEmitter.dispose();
       nodes.forEach( node => node.dispose() );
