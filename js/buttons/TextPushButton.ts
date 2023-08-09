@@ -45,8 +45,7 @@ export default class TextPushButton extends RectangularPushButton {
     const text = new Text( string, combineOptions<TextOptions>( {
       font: options.font,
       fill: options.textFill,
-      maxWidth: options.maxTextWidth,
-      tandem: options.tandem.createTandem( 'text' )
+      maxWidth: options.maxTextWidth
     }, options.textNodeOptions ) );
     options.content = text;
 
