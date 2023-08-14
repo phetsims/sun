@@ -13,7 +13,7 @@
  * ComboBoxListBox - the list box
  * ComboBoxListItemNode - an item in the list box
  *
- * For info on ComboBox UI design, including a11y, see https://github.com/phetsims/sun/blob/master/doc/ComboBox.md
+ * For info on ComboBox UI design, including a11y, see https://github.com/phetsims/sun/blob/main/doc/ComboBox.md
  *
  * @author Chris Malley (PixelZoom, Inc.)
  */

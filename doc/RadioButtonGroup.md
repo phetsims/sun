@@ -12,7 +12,7 @@ Here’s when and why we use radio button groups:
 * All other groups of radio buttons are generally made up of rectangular buttons with images or symbols. Their size, image style, and spacing are visually group the individual radio buttons.
 
 **Note this design pattern covers multiple PhET Component Types**
-* [RectangularRadioButtonGroup.js](https://github.com/phetsims/sun/blob/master/js/buttons/RectangularRadioButtonGroup.js) (rectangular radio buttons)
+* [RectangularRadioButtonGroup.js](https://github.com/phetsims/sun/blob/main/js/buttons/RectangularRadioButtonGroup.js) (rectangular radio buttons)
 * [VerticalAquaRadioButtonGroup.js](../js/VerticalAquaRadioButtonGroup.js) (radio buttons with the macOS Aqua look)
 
 ## Aesthetic Considerations
