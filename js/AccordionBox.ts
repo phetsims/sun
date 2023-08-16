@@ -13,7 +13,7 @@ import { Shape } from '../../kite/js/imports.js';
 import InstanceRegistry from '../../phet-core/js/documentation/InstanceRegistry.js';
 import optionize, { combineOptions } from '../../phet-core/js/optionize.js';
 import StrictOmit from '../../phet-core/js/types/StrictOmit.js';
-import { FocusHighlightFromNode, InteractiveHighlighting, isHeightSizable, isWidthSizable, LayoutConstraint, Node, NodeOptions, PaintableOptions, Path, PathOptions, PDOMBehaviorFunction, PDOMPeer, Rectangle, RectangleOptions, Sizable, Text } from '../../scenery/js/imports.js';
+import { HighlightFromNode, InteractiveHighlighting, isHeightSizable, isWidthSizable, LayoutConstraint, Node, NodeOptions, PaintableOptions, Path, PathOptions, PDOMBehaviorFunction, PDOMPeer, Rectangle, RectangleOptions, Sizable, Text } from '../../scenery/js/imports.js';
 import accordionBoxClosedSoundPlayer from '../../tambo/js/shared-sound-players/accordionBoxClosedSoundPlayer.js';
 import accordionBoxOpenedSoundPlayer from '../../tambo/js/shared-sound-players/accordionBoxOpenedSoundPlayer.js';
 import SoundClipPlayer from '../../tambo/js/sound-generators/SoundClipPlayer.js';
@@ -128,7 +128,7 @@ export default class AccordionBox extends Sizable( Node ) {
   private readonly collapsedBoxOutline: Rectangle | null = null;
 
   private readonly constraint: AccordionBoxConstraint;
-  
+
   public static readonly AccordionBoxIO = new IOType( 'AccordionBoxIO', {
     valueType: AccordionBox,
     supertype: Node.NodeIO,
@@ -341,7 +341,7 @@ export default class AccordionBox extends Sizable( Node ) {
     } );
 
     // Set the focusHighlight for the interactive PDOM element based on the dimensions of the whole title bar.
-    this.expandCollapseButton.setFocusHighlight( new FocusHighlightFromNode( this.expandedTitleBar ) );
+    this.expandCollapseButton.setFocusHighlight( new HighlightFromNode( this.expandedTitleBar ) );
 
     this.expandedBox.addChild( contentNode );
 
