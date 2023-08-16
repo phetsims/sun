@@ -17,7 +17,7 @@ import Range from '../../dot/js/Range.js';
 import Utils from '../../dot/js/Utils.js';
 import { Shape } from '../../kite/js/imports.js';
 import InstanceRegistry from '../../phet-core/js/documentation/InstanceRegistry.js';
-import { Color, FireListener, FireListenerOptions, FocusHighlightPath, Font, LinearGradient, Node, NodeOptions, PaintColorProperty, Path, Rectangle, SceneryConstants, SceneryEvent, TColor, Text } from '../../scenery/js/imports.js';
+import { Color, FireListener, FireListenerOptions, HighlightPath, Font, LinearGradient, Node, NodeOptions, PaintColorProperty, Path, Rectangle, SceneryConstants, SceneryEvent, TColor, Text } from '../../scenery/js/imports.js';
 import AccessibleNumberSpinner, { AccessibleNumberSpinnerOptions } from '../../sun/js/accessibility/AccessibleNumberSpinner.js';
 import generalBoundaryBoopSoundPlayer from '../../tambo/js/shared-sound-players/generalBoundaryBoopSoundPlayer.js';
 import generalSoftClickSoundPlayer from '../../tambo/js/shared-sound-players/generalSoftClickSoundPlayer.js';
@@ -477,10 +477,10 @@ export default class NumberPicker extends AccessibleNumberSpinner( Node, 0 ) {
     } );
 
     // Dilate based on consistent technique which brings into account transform of this node.
-    const focusBounds = this.localBounds.dilated( FocusHighlightPath.getDilationCoefficient( this ) );
+    const focusBounds = this.localBounds.dilated( HighlightPath.getDilationCoefficient( this ) );
 
     // pdom - custom focus highlight that matches rounded background behind the numeric value
-    this.focusHighlight = new FocusHighlightPath( Shape.roundedRectangleWithRadii(
+    this.focusHighlight = new HighlightPath( Shape.roundedRectangleWithRadii(
       focusBounds.minX,
       focusBounds.minY,
       focusBounds.width,

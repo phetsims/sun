@@ -10,7 +10,7 @@
 
 import { Shape } from '../../../kite/js/imports.js';
 import InstanceRegistry from '../../../phet-core/js/documentation/InstanceRegistry.js';
-import { Color, FlowBox, FlowBoxOptions, FocusHighlightPath, Node, PDOMPeer, PDOMValueType, Rectangle, SceneryConstants, TInputListener } from '../../../scenery/js/imports.js';
+import { Color, FlowBox, FlowBoxOptions, HighlightPath, Node, PDOMPeer, PDOMValueType, Rectangle, SceneryConstants, TInputListener } from '../../../scenery/js/imports.js';
 import multiSelectionSoundPlayerFactory from '../../../tambo/js/multiSelectionSoundPlayerFactory.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import ColorConstants from '../ColorConstants.js';
@@ -294,7 +294,7 @@ export default class RectangularRadioButtonGroup<T> extends FlowBox {
         maxButtonHeight + 2 * options.mouseAreaYDilation
       );
 
-      const defaultDilationCoefficient = FocusHighlightPath.getDilationCoefficient( buttonWithLayoutParent.layoutNode );
+      const defaultDilationCoefficient = HighlightPath.getDilationCoefficient( buttonWithLayoutParent.layoutNode );
       buttonWithLayoutParent.radioButton.focusHighlight = Shape.rectangle(
         -options.a11yHighlightXDilation - maxLineWidth / 2 - defaultDilationCoefficient,
         -options.a11yHighlightYDilation - maxLineWidth / 2 - defaultDilationCoefficient,
