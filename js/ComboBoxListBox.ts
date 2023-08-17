@@ -220,11 +220,11 @@ export default class ComboBoxListBox<T> extends Panel {
     // pdom - listener that navigates listbox items and closes the box from keyboard input
     const keyboardListener = new KeyboardListener( {
       keys: [ 'escape', 'tab', 'arrowUp', 'arrowDown', 'home', 'end' ],
-      callback: ( event, listener ) => {
+      callback: ( event, keysPressed ) => {
         const sceneryEvent = event!;
         assert && assert( sceneryEvent, 'event is required for this listener' );
 
-        if ( listener.keysPressed === 'escape' || listener.keysPressed === 'tab' ) {
+        if ( keysPressed === 'escape' || keysPressed === 'tab' ) {
 
           // This keyboard event is captured so that escape doesn't forward to other popupable components. If
           // ComboBox is ever implemented with generalized popupable/pane system this abort will not be necessary.
@@ -234,7 +234,7 @@ export default class ComboBoxListBox<T> extends Panel {
           hideListBoxCallback();
           focusButtonCallback();
         }
-        else if ( listener.keysPressed === 'arrowUp' || listener.keysPressed === 'arrowDown' ) {
+        else if ( keysPressed === 'arrowUp' || keysPressed === 'arrowDown' ) {
           const domEvent = sceneryEvent.domEvent!;
           assert && assert( domEvent, 'domEvent is required for this listener' );
 
@@ -243,7 +243,7 @@ export default class ComboBoxListBox<T> extends Panel {
           domEvent.preventDefault();
 
           // Up/down arrow keys move the focus between items in the list box
-          const direction = listener.keysPressed === 'arrowDown' ? 1 : -1;
+          const direction = keysPressed === 'arrowDown' ? 1 : -1;
           const focusedItemIndex = this.visibleListItemNodes.indexOf( this.getFocusedItemNode() );
           assert && assert( focusedItemIndex > -1, 'how could we receive keydown without a focused list item?' );
 
@@ -253,10 +253,10 @@ export default class ComboBoxListBox<T> extends Panel {
           // reserve for drag after focus has moved, as the change in focus will clear the intent on the pointer
           sceneryEvent.pointer.reserveForKeyboardDrag();
         }
-        else if ( listener.keysPressed === 'home' ) {
+        else if ( keysPressed === 'home' ) {
           this.visibleListItemNodes[ 0 ].focus();
         }
-        else if ( listener.keysPressed === 'end' ) {
+        else if ( keysPressed === 'end' ) {
           this.visibleListItemNodes[ this.visibleListItemNodes.length - 1 ].focus();
         }
       }
