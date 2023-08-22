@@ -39,7 +39,7 @@ type SelfOptions = {
   // to the Node that had focus when the Dialog opened.
   focusOnHideNode?: Node | null;
 
-  // When false, no modal show/hide feature will be supported. This is a way of opting out of the Popupable feature
+  // When true, no modal show/hide feature will be supported. This is a way of opting out of the Popupable feature
   // altogether for this runtime.
   disableModals?: boolean;
 };
