@@ -21,7 +21,7 @@ import TEmitter from '../../axon/js/TEmitter.js';
 // constants
 
 // Uses opacity as the default method of indicating whether a {Node} label is {boolean} enabled.
-const DEFAULT_SET_ENABLED = ( label: Node, enabled: boolean ) => {
+const DEFAULT_SET_LABEL_ENABLED = ( label: Node, enabled: boolean ) => {
   label.opacity = enabled ? 1.0 : SceneryConstants.DISABLED_OPACITY;
 };
 
@@ -30,8 +30,8 @@ type SelfOptions = {
   // options passed to ToggleSwitch
   toggleSwitchOptions?: ToggleSwitchOptions;
 
-  // method of making the labels look disabled
-  setEnabled?: ( labelNode: Node, enabled: boolean ) => void;
+  // method of making a label look disabled
+  setLabelEnabled?: ( labelNode: Node, enabled: boolean ) => void;
 
   // if true, this.center will be at the center of the ToggleSwitch
   centerOnSwitch?: boolean;
@@ -41,6 +41,13 @@ export type ABSwitchOptions = SelfOptions & HBoxOptions;
 
 export default class ABSwitch<T> extends HBox {
 
+  private readonly property: Property<T>;
+  private readonly valueA: T;
+  private readonly valueB: T;
+  private readonly labelA: Node;
+  private readonly labelB: Node;
+  private readonly toggleSwitch: ToggleSwitch<T>;
+  private readonly setLabelEnabled: ( labelNode: Node, enabled: boolean ) => void;
   private readonly disposeABSwitch: () => void;
 
   // Emits on input that results in a change to the Property value, after the Property has changed.
@@ -69,7 +76,7 @@ export default class ABSwitch<T> extends HBox {
           phetioFeatured: false // ABSwitch has an enabledProperty that is preferred to the sub-component's
         }
       },
-      setEnabled: DEFAULT_SET_ENABLED,
+      setLabelEnabled: DEFAULT_SET_LABEL_ENABLED,
       centerOnSwitch: false,
 
       // HBoxOptions
@@ -109,12 +116,15 @@ export default class ABSwitch<T> extends HBox {
 
     super( options );
 
-    const propertyListener = ( value: T ) => {
-      if ( options.setEnabled ) {
-        options.setEnabled( labelA, value === valueA );
-        options.setEnabled( labelB, value === valueB );
-      }
-    };
+    this.property = property;
+    this.valueA = valueA;
+    this.valueB = valueB;
+    this.labelA = labelA;
+    this.labelB = labelB;
+    this.toggleSwitch = toggleSwitch;
+    this.setLabelEnabled = options.setLabelEnabled;
+
+    const propertyListener = () => this.updateLabelsEnabled();
     property.link( propertyListener ); // unlink on dispose
 
     // click on labels to select
@@ -172,6 +182,29 @@ export default class ABSwitch<T> extends HBox {
   public override dispose(): void {
     this.disposeABSwitch();
     super.dispose();
+  }
+
+
+  /**
+   * Provide a custom look for when this switch is disabled. We are overriding the default implementation so that
+   * the unselected label does not appear to be doubly disabled when the ABSwitch is disabled.
+   * See https://github.com/phetsims/sun/issues/853
+   */
+  protected override onEnabledPropertyChange( enabled: boolean ): void {
+    !enabled && this.interruptSubtreeInput();
+    this.inputEnabled = enabled;
+    this.toggleSwitch.enabled = enabled;
+    this.updateLabelsEnabled();
+  }
+
+  /**
+   * Updates the enabled state of the labels based on the current value of the associated Property.
+   * The selected label will appear to be enabled, while the unselected label will appear to be disabled.
+   * If the ABSwitch itself is disabled, both labels will appear to be disabled.
+   */
+  private updateLabelsEnabled(): void {
+    this.setLabelEnabled( this.labelA, this.enabled && this.property.value === this.valueA );
+    this.setLabelEnabled( this.labelB, this.enabled && this.property.value === this.valueB );
   }
 }
 
