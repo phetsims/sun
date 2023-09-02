@@ -36,15 +36,15 @@ class BooleanRoundToggleButton extends RoundToggleButton<boolean> {
       tandemNameSuffix: 'Button'
     }, providedOptions );
 
-    const content = new BooleanToggleNode( booleanProperty, trueNode, falseNode, {
+    const toggleNode = new BooleanToggleNode( booleanProperty, trueNode, falseNode, {
       tandem: options.tandem.createTandem( 'toggleNode' )
     } );
-    options.content = content;
+    options.content = toggleNode;
 
     super( booleanProperty, false, true, options );
 
     this.disposeBooleanRoundToggleButton = function() {
-      content.dispose();
+      toggleNode.dispose();
     };
   }
 
