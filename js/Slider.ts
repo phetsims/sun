@@ -224,8 +224,8 @@ export default class Slider extends Sizable( AccessibleSlider( Node, 0 ) ) {
 
     const rangeProperty = range instanceof Range ? new TinyProperty( range ) : range;
 
-    // assert && assert( options.soundGenerator === Slider.DEFAULT_SOUND || _.isEmpty( options.valueChangeSoundGeneratorOptions ),
-    //   'options should only be supplied when using default sound generator' );
+    assert && assert( options.soundGenerator === Slider.DEFAULT_SOUND || _.isEmpty( options.valueChangeSoundGeneratorOptions ),
+      'options should only be supplied when using default sound generator' );
 
     // If no sound generator was provided, create the default.
     if ( options.soundGenerator === Slider.DEFAULT_SOUND ) {
