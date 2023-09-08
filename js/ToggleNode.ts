@@ -1,7 +1,8 @@
 // Copyright 2013-2023, University of Colorado Boulder
 
 /**
- * Display one of N nodes based on a given Property.  Maintains the bounds of the union of children for layout.
+ * Display one of N nodes based on a given Property. See the option "unselectedChildrenSceneGraphStrategy" for different
+ * child management strategies and how they impact the overall bounds and performance.
  * Supports null and undefined as possible values.  Will not work correctly if the children are changed externally
  * after instantiation (manages its own children and their visibility).
  *
@@ -23,6 +24,14 @@ type SelfOptions = {
 
   // {function} determines the relative layout of element Nodes. See below for pre-defined layout.
   alignChildren?: ( children: Node[] ) => void;
+
+  // Determine whether unselected children (the ones not displayed) are in the scene graph.
+  // - If included (the default), unselected children are in the scene graph and hidden via setVisible(false). In this case
+  //   the layout is the union of the bounds of all children (visible and invisible).
+  // - If excluded, children are added to the scene graph when selected and removed when not selected. The ToggleNode has
+  // the bounds of its selected child. This option can sometimes improve performance. Children added to the ToggleNode
+  // outside the constructor will not be managed correctly.
+  unselectedChildrenSceneGraphStrategy?: 'included' | 'excluded';
 };
 
 export type ToggleNodeOptions = SelfOptions & StrictOmit<NodeOptions, 'children'>;
@@ -37,30 +46,40 @@ export default class ToggleNode<T, N extends Node = Node> extends Node {
     const options = optionize<ToggleNodeOptions, SelfOptions, NodeOptions>()( {
 
       // SelfOptions
-      alignChildren: ToggleNode.CENTER
+      alignChildren: ToggleNode.CENTER,
+
+      unselectedChildrenSceneGraphStrategy: 'included'
     }, providedOptions );
 
     const nodes = getGroupItemNodes( elements, options.tandem?.createTandem( 'elements' ) );
-
-    const valueListener = ( value: T ) => {
-      let matchCount = 0;
-      for ( let i = 0; i < elements.length; i++ ) {
-        const element = elements[ i ];
-        const visible = element.value === value;
-        nodes[ i ].visible = visible;
-        if ( visible ) {
-          matchCount++;
-        }
-      }
-      assert && assert( matchCount === 1, `Wrong number of matches: ${matchCount}` );
-    };
-    valueProperty.link( valueListener );
 
     options.children = nodes;
 
     options.alignChildren( options.children );
 
     super( options );
+
+    const valueListener = ( value: T ) => {
+      const matches: Node[] = [];
+      for ( let i = 0; i < elements.length; i++ ) {
+        const element = elements[ i ];
+        const visible = element.value === value;
+        nodes[ i ].visible = visible;
+        if ( visible ) {
+          matches.push( nodes[ i ] );
+        }
+      }
+
+      assert && assert( matches.length === 1, `Wrong number of matches: ${matches.length}` );
+      if ( options.unselectedChildrenSceneGraphStrategy === 'excluded' ) {
+        this.children = matches;
+      }
+    };
+
+    // Run the link after super so we can change the children if needed. This means that when areUnselectedChildrenInSceneGraph===false,
+    // all children will temporarily be visible: true until this link is called. However, since this ToggleNode is not yet
+    // in the scene graph, this should not cause any visual problems or significant performance issues.
+    valueProperty.link( valueListener );
 
     this.nodes = nodes;
 
