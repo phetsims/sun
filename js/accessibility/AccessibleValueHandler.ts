@@ -20,7 +20,7 @@ import Utils from '../../../dot/js/Utils.js';
 import Range from '../../../dot/js/Range.js';
 import assertHasProperties from '../../../phet-core/js/assertHasProperties.js';
 import Orientation from '../../../phet-core/js/Orientation.js';
-import { KeyboardUtils, Node, NodeOptions, PDOMUtils, PDOMValueType, SceneryEvent, SceneryListenerFunction, TInputListener, Voicing, VoicingOptions } from '../../../scenery/js/imports.js';
+import { animatedPanZoomSingleton, KeyboardUtils, Node, NodeOptions, PDOMUtils, PDOMValueType, SceneryEvent, SceneryListenerFunction, TInputListener, Voicing, VoicingOptions } from '../../../scenery/js/imports.js';
 import Utterance from '../../../utterance-queue/js/Utterance.js';
 import sun from '../sun.js';
 import optionize, { combineOptions, OptionizeDefaults } from '../../../phet-core/js/optionize.js';
@@ -670,6 +670,9 @@ const AccessibleValueHandler = <SuperType extends Constructor<Node>>( Type: Supe
             // optional callback after the valueProperty is set (even if set to the same value) so that the listener
             // can use the new value.
             this._onInput( event );
+
+            // after any keyboard input, make sure that the Node stays in view
+            animatedPanZoomSingleton.initialized && animatedPanZoomSingleton.listener.panToNode( this._panTargetNode || this, false );
           }
         }
       }
