@@ -38,6 +38,7 @@ import Multilink from '../../axon/js/Multilink.js';
 import Bounds2 from '../../dot/js/Bounds2.js';
 import ButtonNode from './buttons/ButtonNode.js';
 import isSettingPhetioStateProperty from '../../tandem/js/isSettingPhetioStateProperty.js';
+import BooleanProperty from '../../axon/js/BooleanProperty.js';
 
 const DEFAULT_ARROW_SIZE = new Dimension2( 20, 7 );
 
@@ -112,6 +113,8 @@ export default class Carousel extends Node {
   private readonly disposeCarousel: () => void;
   private readonly scrollingNode: FlowBox;
   private readonly carouselConstraint: CarouselConstraint;
+
+  public readonly isAnimatingProperty = new BooleanProperty( false );
 
   /**
    * NOTE: This will dispose the item Nodes when the carousel is disposed
@@ -382,8 +385,11 @@ export default class Carousel extends Node {
           // options that are specific to orientation
           getValue: () => scrollingNodeContainer[ orientation.coordinate ],
           setValue: ( value: number ) => { scrollingNodeContainer[ orientation.coordinate ] = value; }
+
         } ) );
+        scrollAnimation.endedEmitter.addListener( () => this.isAnimatingProperty.set( false ) );
         scrollAnimation.start();
+        this.isAnimatingProperty.value = true;
       }
       else {
 
