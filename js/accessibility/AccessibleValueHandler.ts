@@ -673,7 +673,7 @@ const AccessibleValueHandler = <SuperType extends Constructor<Node>>( Type: Supe
 
             // after any keyboard input, make sure that the Node stays in view
             const panTargetNode = this._panTargetNode || this;
-            animatedPanZoomSingleton.initialized && animatedPanZoomSingleton.listener.panToNode( panTargetNode, true, panTargetNode.focusPanDirection );
+            animatedPanZoomSingleton.initialized && animatedPanZoomSingleton.listener.panToNode( panTargetNode, true, panTargetNode.limitPanDirection );
           }
         }
       }
