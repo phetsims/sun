@@ -30,6 +30,10 @@ type SelfOptions = {
   // convenience for adding 1 listener, no args
   listener?: PushButtonListener | null;
 
+  // a listener that gets fired before other listeners on this button, with the express purpose of just interrupting
+  // other input/pointers for better multi-touch support. See https://github.com/phetsims/sun/issues/858
+  interruptListener?: PushButtonListener | null;
+
   // fire-on-hold feature
   // TODO: these options are not supported with PDOM interaction, see https://github.com/phetsims/scenery/issues/1117
   fireOnHold?: boolean; // is the fire-on-hold feature enabled?
@@ -60,6 +64,7 @@ export default class PushButtonModel extends ButtonModel {
 
       fireOnDown: false,
       listener: null,
+      interruptListener: null,
       fireOnHold: false,
       fireOnHoldDelay: 400,
       fireOnHoldInterval: 100,
@@ -76,8 +81,17 @@ export default class PushButtonModel extends ButtonModel {
       tandem: options.tandem.createTandem( 'firedEmitter' ),
       phetioDocumentation: 'Emits when the button is fired',
       phetioReadOnly: options.phetioReadOnly,
-      phetioEventType: EventType.USER
+      phetioEventType: EventType.USER,
+
+      // Order dependencies, so that we can fire our interruptListener before any other listeners without having to
+      // create and maintain other emitters.
+      hasListenerOrderDependencies: true
     } );
+
+    if ( options.interruptListener ) {
+      this.firedEmitter.addListener( options.interruptListener );
+    }
+
     if ( options.listener !== null ) {
       this.firedEmitter.addListener( options.listener );
     }
