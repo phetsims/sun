@@ -19,6 +19,7 @@ import PhetioObject from '../../../tandem/js/PhetioObject.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import sun from '../sun.js';
 import ButtonModel, { ButtonModelOptions } from './ButtonModel.js';
+import { SceneryEvent } from '../../../scenery/js/imports.js';
 
 export type PushButtonListener = () => void;
 
@@ -32,7 +33,7 @@ type SelfOptions = {
 
   // a listener that gets fired before other listeners on this button, with the express purpose of just interrupting
   // other input/pointers for better multi-touch support. See https://github.com/phetsims/sun/issues/858
-  interruptListener?: PushButtonListener | null;
+  interruptListener?: ( ( event: SceneryEvent | null ) => void ) | null;
 
   // fire-on-hold feature
   // TODO: these options are not supported with PDOM interaction, see https://github.com/phetsims/scenery/issues/1117
@@ -57,6 +58,9 @@ export default class PushButtonModel extends ButtonModel {
   private timer?: CallbackTimer | null;
 
   private readonly disposePushButtonModel: () => void;
+
+  // the event that kicked off the latest fire (including delayed fire-on-hold cases)
+  private startEvent: SceneryEvent | null = null;
 
   public constructor( providedOptions?: PushButtonModelOptions ) {
 
@@ -89,7 +93,9 @@ export default class PushButtonModel extends ButtonModel {
     } );
 
     if ( options.interruptListener ) {
-      this.firedEmitter.addListener( options.interruptListener );
+      this.firedEmitter.addListener( () => {
+        options.interruptListener!( this.startEvent );
+      } );
     }
 
     if ( options.listener !== null ) {
@@ -110,6 +116,8 @@ export default class PushButtonModel extends ButtonModel {
     const downPropertyObserver = ( down: boolean ) => {
       if ( down ) {
         if ( this.enabledProperty.get() ) {
+          this.startEvent = phet?.joist?.display?._input?.currentSceneryEvent || null;
+
           if ( options.fireOnDown ) {
             this.fire();
           }
