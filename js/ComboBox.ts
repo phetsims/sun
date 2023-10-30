@@ -42,6 +42,7 @@ import GroupItemOptions, { getGroupItemNodes } from './GroupItemOptions.js';
 import Multilink from '../../axon/js/Multilink.js';
 import StrictOmit from '../../phet-core/js/types/StrictOmit.js';
 import PhetioProperty from '../../axon/js/PhetioProperty.js';
+import Matrix3 from '../../dot/js/Matrix3.js';
 
 // const
 const LIST_POSITION_VALUES = [ 'above', 'below' ] as const; // where the list pops up relative to the button
@@ -330,14 +331,7 @@ export default class ComboBox<T> extends WidthSizable( Node ) {
 
     Multilink.multilink( [ listBoxMatrixProperty, this.button.localBoundsProperty, this.listBox.localBoundsProperty ],
       matrix => {
-        if ( matrix ) {
-          if ( this.listPosition === 'above' ) {
-            this.listBox.leftBottom = matrix.timesVector2( this.button.leftTop );
-          }
-          else {
-            this.listBox.leftTop = matrix.timesVector2( this.button.leftBottom );
-          }
-        }
+        this.scaleAndPositionListBox( matrix );
       } );
 
     // The listBox is not a child Node of ComboBox and, as a result, listen to opacity of the ComboBox and keep
@@ -473,6 +467,21 @@ export default class ComboBox<T> extends WidthSizable( Node ) {
       const buttonScale = this.button.localToGlobalBounds( this.button.localBounds ).width / this.button.localBounds.width;
       const listBoxScale = this.listBox.localToGlobalBounds( this.listBox.localBounds ).width / this.listBox.localBounds.width;
       this.listBox.scale( buttonScale / listBoxScale );
+    }
+  }
+
+  private scaleAndPositionListBox( listBoxMatrix: Matrix3 | null ): void {
+    if ( listBoxMatrix ) {
+
+      // Scale the box before positioning.
+      this.scaleListBox();
+
+      if ( this.listPosition === 'above' ) {
+        this.listBox.leftBottom = listBoxMatrix.timesVector2( this.button.leftTop );
+      }
+      else {
+        this.listBox.leftTop = listBoxMatrix.timesVector2( this.button.leftBottom );
+      }
     }
   }
 
