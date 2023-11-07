@@ -43,6 +43,7 @@ import Multilink from '../../axon/js/Multilink.js';
 import StrictOmit from '../../phet-core/js/types/StrictOmit.js';
 import PhetioProperty from '../../axon/js/PhetioProperty.js';
 import Matrix3 from '../../dot/js/Matrix3.js';
+import { ComboBoxListItemNodeOptions } from './ComboBoxListItemNode.js';
 
 // const
 const LIST_POSITION_VALUES = [ 'above', 'below' ] as const; // where the list pops up relative to the button
@@ -59,6 +60,9 @@ export type ComboBoxItem<T> = {
 
   // pdom - the label for this item's associated Node in the combo box
   a11yName?: PDOMValueType | null;
+
+  // Options passed to ComboBoxListItemNode, the Node that appears in the listBox
+  comboBoxListItemNodeOptions?: ComboBoxListItemNodeOptions;
 } & GroupItemOptions;
 
 // Most usages of the items should not be able to create the Node, but rather should use the corresponding `nodes` array.

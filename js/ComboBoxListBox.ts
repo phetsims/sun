@@ -162,7 +162,7 @@ export default class ComboBoxListBox<T> extends Panel {
           xMargin: 0.5 * options.xMargin,
 
           tandem: item.tandemName ? tandem.createTandem( item.tandemName ) : Tandem.OPTIONAL
-        }, options.comboBoxListItemNodeOptions ) );
+        }, options.comboBoxListItemNodeOptions, item.comboBoxListItemNodeOptions ) );
       listItemNodes.push( listItemNode );
 
       listItemNode.addInputListener( selectionListener );
