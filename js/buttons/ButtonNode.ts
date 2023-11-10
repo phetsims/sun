@@ -78,6 +78,11 @@ type SelfOptions = {
 
   // Alter the appearance when changing the enabled of the button.
   enabledAppearanceStrategy?: EnabledAppearanceStrategy;
+
+  // If non-null, the aspect ratio of the button will be constrained to this value. It will check the minimum sizes,
+  // and will increase the minimum size if necessary to maintain the aspect ratio.
+  // Notably, this is used in RoundButton, so that the button is always a circle.
+  aspectRatio?: number | null;
 };
 type ParentOptions = SizableOptions & VoicingOptions & NodeOptions;
 
@@ -143,6 +148,7 @@ export default class ButtonNode extends Sizable( Voicing( Node ) ) {
         }
       },
       disabledColor: ColorConstants.LIGHT_GRAY,
+      aspectRatio: null,
 
       // pdom
       tagName: 'button',
@@ -159,6 +165,9 @@ export default class ButtonNode extends Sizable( Voicing( Node ) ) {
     assert && options.enabledProperty && assert( options.enabledProperty === buttonModel.enabledProperty,
       'if options.enabledProperty is provided, it must === buttonModel.enabledProperty' );
     options.enabledProperty = buttonModel.enabledProperty;
+
+    assert && assert( options.aspectRatio === null || ( isFinite( options.aspectRatio ) && options.aspectRatio > 0 ),
+      `ButtonNode aspectRatio should be a positive finite value if non-null. Instead received ${options.aspectRatio}.` );
 
     super();
 
@@ -220,7 +229,8 @@ export default class ButtonNode extends Sizable( Voicing( Node ) ) {
         yMargin: options.yMargin,
         maxLineWidth: this.maxLineWidth,
         minUnstrokedWidth: options.minUnstrokedWidth,
-        minUnstrokedHeight: options.minUnstrokedHeight
+        minUnstrokedHeight: options.minUnstrokedHeight,
+        aspectRatio: options.aspectRatio
       } );
       this.layoutSizeProperty = this.buttonNodeConstraint.layoutSizeProperty;
 
@@ -400,6 +410,7 @@ type ButtonNodeConstraintOptions = {
   maxLineWidth: number;
   minUnstrokedWidth: number | null;
   minUnstrokedHeight: number | null;
+  aspectRatio: number | null;
 };
 
 class ButtonNodeConstraint extends LayoutConstraint {
@@ -413,6 +424,7 @@ class ButtonNodeConstraint extends LayoutConstraint {
   private readonly maxLineWidth: number;
   private readonly minUnstrokedWidth: number | null;
   private readonly minUnstrokedHeight: number | null;
+  private readonly aspectRatio: number | null;
   private isFirstLayout = true;
 
   // Stored so that we can prevent updates if we're not marked sizable in a certain direction
@@ -431,6 +443,7 @@ class ButtonNodeConstraint extends LayoutConstraint {
     this.maxLineWidth = options.maxLineWidth;
     this.minUnstrokedWidth = options.minUnstrokedWidth;
     this.minUnstrokedHeight = options.minUnstrokedHeight;
+    this.aspectRatio = options.aspectRatio;
 
     this.buttonNode.localPreferredWidthProperty.lazyLink( this._updateLayoutListener );
     this.buttonNode.localPreferredHeightProperty.lazyLink( this._updateLayoutListener );
@@ -447,18 +460,27 @@ class ButtonNodeConstraint extends LayoutConstraint {
     const content = this.content;
 
     // Only allow an initial update if we are not sizable in that dimension
-    const minimumWidth = Math.max(
+    let minimumWidth = Math.max(
       ( this.isFirstLayout || buttonNode.widthSizable )
       ? ( isWidthSizable( content ) ? content.minimumWidth || 0 : content.width ) + this.xMargin * 2
       : buttonNode.localMinimumWidth!,
       ( this.minUnstrokedWidth === null ? 0 : this.minUnstrokedWidth + this.maxLineWidth )
     );
-    const minimumHeight = Math.max(
+    let minimumHeight = Math.max(
       ( this.isFirstLayout || buttonNode.heightSizable )
       ? ( isHeightSizable( content ) ? content.minimumHeight || 0 : content.height ) + this.yMargin * 2
       : buttonNode.localMinimumHeight!,
       ( this.minUnstrokedHeight === null ? 0 : this.minUnstrokedHeight + this.maxLineWidth )
     );
+
+    if ( this.aspectRatio !== null ) {
+      if ( minimumWidth < minimumHeight * this.aspectRatio ) {
+        minimumWidth = minimumHeight * this.aspectRatio;
+      }
+      if ( minimumHeight < minimumWidth / this.aspectRatio ) {
+        minimumHeight = minimumWidth / this.aspectRatio;
+      }
+    }
 
     // Our resulting sizes (allow setting preferred width/height on the buttonNode)
     this.lastLocalPreferredWidth = this.isFirstLayout || isWidthSizable( buttonNode )

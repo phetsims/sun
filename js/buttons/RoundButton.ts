@@ -62,6 +62,8 @@ export default class RoundButton extends ButtonNode {
       mouseAreaXShift: 0,
       mouseAreaYShift: 0,
 
+      aspectRatio: 1, // This will keep the minimum width and height the same, so our bounding box will be square
+
       // ButtonNodeOptions
       cursor: 'pointer',
 
