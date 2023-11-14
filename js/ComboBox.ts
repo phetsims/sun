@@ -520,7 +520,7 @@ export default class ComboBox<T> extends WidthSizable( Node ) {
     return DerivedProperty.deriveAny( widthProperties, () => {
       return Math.max( ...nodes.map( node => isWidthSizable( node ) ? node.minimumWidth || 0 : node.width ) );
     }, {
-      accessNonDependencies: true
+      accessNonDependencies: true //TODO https://github.com/phetsims/axon/issues/441
     } );
   }
 
