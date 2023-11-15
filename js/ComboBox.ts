@@ -528,6 +528,8 @@ export default class ComboBox<T> extends WidthSizable( Node ) {
     const heightProperties = nodes.map( node => node.boundsProperty );
     return DerivedProperty.deriveAny( heightProperties, () => {
       return Math.max( ...nodes.map( node => node.height ) );
+    }, {
+      accessNonDependencies: true //TODO https://github.com/phetsims/axon/issues/441
     } );
   }
 
