@@ -19,10 +19,10 @@ import RectangularRadioButton, { RectangularRadioButtonOptions } from './Rectang
 import { VoicingResponse } from '../../../utterance-queue/js/ResponsePacket.js';
 import TSoundPlayer from '../../../tambo/js/TSoundPlayer.js';
 import TContentAppearanceStrategy from './TContentAppearanceStrategy.js';
-import Property from '../../../axon/js/Property.js';
 import optionize, { combineOptions } from '../../../phet-core/js/optionize.js';
 import StrictOmit from '../../../phet-core/js/types/StrictOmit.js';
 import GroupItemOptions, { getGroupItemNodes } from '../GroupItemOptions.js';
+import PhetioProperty from '../../../axon/js/PhetioProperty.js';
 
 // pdom - Unique ID for each instance of RectangularRadioButtonGroup. Used to create the 'name' option that is passed
 // to each RectangularRadioButton in the group. All buttons in the group must have the same 'name', and that name
@@ -98,7 +98,7 @@ export default class RectangularRadioButtonGroup<T> extends FlowBox {
   private readonly disposeRadioButtonGroup: () => void;
   private readonly radioButtonMap: Map<T, RectangularRadioButton<T>>;
 
-  public constructor( property: Property<T>, items: RectangularRadioButtonGroupItem<T>[], providedOptions?: RectangularRadioButtonGroupOptions ) {
+  public constructor( property: PhetioProperty<T>, items: RectangularRadioButtonGroupItem<T>[], providedOptions?: RectangularRadioButtonGroupOptions ) {
 
     assert && assert( _.uniqBy( items, item => item.value ).length === items.length,
       'items must have unique values' );
