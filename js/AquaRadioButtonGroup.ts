@@ -14,11 +14,11 @@ import multiSelectionSoundPlayerFactory from '../../tambo/js/multiSelectionSound
 import Tandem from '../../tandem/js/Tandem.js';
 import AquaRadioButton, { AquaRadioButtonOptions } from './AquaRadioButton.js';
 import sun from './sun.js';
-import Property from '../../axon/js/Property.js';
 import Emitter from '../../axon/js/Emitter.js';
 import TEmitter from '../../axon/js/TEmitter.js';
 import GroupItemOptions, { getGroupItemNodes } from './GroupItemOptions.js';
 import TReadOnlyProperty from '../../axon/js/TReadOnlyProperty.js';
+import PhetioProperty from '../../axon/js/PhetioProperty.js';
 
 // pdom - An id for each instance of AquaRadioButtonGroup, passed to individual buttons in the group.
 // Each button in a radio button group must have the same "name" attribute to be considered in a group, otherwise
@@ -56,7 +56,7 @@ export default class AquaRadioButtonGroup<T> extends FlowBox {
   public readonly onInputEmitter: TEmitter = new Emitter();
   private readonly disposeAquaRadioButtonGroup: () => void;
 
-  public constructor( property: Property<T>, items: AquaRadioButtonGroupItem<T>[], providedOptions?: AquaRadioButtonGroupOptions ) {
+  public constructor( property: PhetioProperty<T>, items: AquaRadioButtonGroupItem<T>[], providedOptions?: AquaRadioButtonGroupOptions ) {
 
     instanceCount++;
 
