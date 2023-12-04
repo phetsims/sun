@@ -43,9 +43,6 @@ export default class ComboBoxListBox<T> extends Panel {
   // Nodes that correspond to items in the list
   private readonly listItemNodes: ComboBoxListItemNode<T>[];
 
-  // The visible subset of listItemNodes, used for keyboard traversal.
-  private visibleListItemNodes: ComboBoxListItemNode<T>[];
-
   private readonly disposeComboBoxListBox: () => void;
 
   // We need a separate node to voice through because when a selection occurs, the list box is hidden, silencing any
@@ -228,6 +225,10 @@ export default class ComboBoxListBox<T> extends Panel {
         const sceneryEvent = event!;
         assert && assert( sceneryEvent, 'event is required for this listener' );
 
+        // Only visible items can receive focus - using content children directly because PhET-iO may change
+        // their order
+        const visibleItems = content.children.filter( child => child.visible );
+
         if ( keysPressed === 'escape' || keysPressed === 'tab' ) {
 
           // This keyboard event is captured so that escape doesn't forward to other popupable components. If
@@ -248,32 +249,26 @@ export default class ComboBoxListBox<T> extends Panel {
 
           // Up/down arrow keys move the focus between items in the list box
           const direction = keysPressed === 'arrowDown' ? 1 : -1;
-          const focusedItemIndex = this.visibleListItemNodes.indexOf( this.getFocusedItemNode() );
+          const focusedItemIndex = visibleItems.indexOf( this.getFocusedItemNode() );
           assert && assert( focusedItemIndex > -1, 'how could we receive keydown without a focused list item?' );
 
           const nextIndex = focusedItemIndex + direction;
-          this.visibleListItemNodes[ nextIndex ] && this.visibleListItemNodes[ nextIndex ].focus();
+          visibleItems[ nextIndex ] && visibleItems[ nextIndex ].focus();
 
           // reserve for drag after focus has moved, as the change in focus will clear the intent on the pointer
           sceneryEvent.pointer.reserveForKeyboardDrag();
         }
         else if ( keysPressed === 'home' ) {
-          this.visibleListItemNodes[ 0 ].focus();
+          visibleItems[ 0 ].focus();
         }
         else if ( keysPressed === 'end' ) {
-          this.visibleListItemNodes[ this.visibleListItemNodes.length - 1 ].focus();
+          visibleItems[ visibleItems.length - 1 ].focus();
         }
       }
     } );
     this.addInputListener( keyboardListener );
 
     this.listItemNodes = listItemNodes;
-
-    // When the visibility of any item changes, update visibleListItemNodes
-    this.visibleListItemNodes = [];
-    listItemNodes.forEach( listItemNode => listItemNode.visibleProperty.link( visible => {
-      this.visibleListItemNodes = _.filter( this.listItemNodes, itemNode => itemNode.visible );
-    } ) );
 
     this.disposeComboBoxListBox = () => {
       for ( let i = 0; i < listItemNodes.length; i++ ) {
