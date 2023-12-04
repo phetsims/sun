@@ -65,7 +65,8 @@ export type ComboBoxItem<T> = {
   comboBoxListItemNodeOptions?: ComboBoxListItemNodeOptions;
 } & GroupItemOptions;
 
-// Most usages of the items should not be able to create the Node, but rather should use the corresponding `nodes` array.
+// Most usages of the items should not be able to create the Node, but rather should use the corresponding `nodes` array,
+// hence the type name "No Node".
 export type ComboBoxItemNoNode<T> = StrictOmit<ComboBoxItem<T>, 'createNode'>;
 
 export type ComboBoxListPosition = typeof LIST_POSITION_VALUES[number];
