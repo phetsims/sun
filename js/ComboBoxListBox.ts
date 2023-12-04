@@ -40,8 +40,12 @@ export type ComboBoxListBoxOptions = SelfOptions & PanelOptions;
 
 export default class ComboBoxListBox<T> extends Panel {
 
+  // Nodes that correspond to items in the list
   private readonly listItemNodes: ComboBoxListItemNode<T>[];
+
+  // The visible subset of listItemNodes, used for keyboard traversal.
   private visibleListItemNodes: ComboBoxListItemNode<T>[];
+
   private readonly disposeComboBoxListBox: () => void;
 
   // We need a separate node to voice through because when a selection occurs, the list box is hidden, silencing any
@@ -254,7 +258,12 @@ export default class ComboBoxListBox<T> extends Panel {
     } );
 
     this.listItemNodes = listItemNodes;
-    this.visibleListItemNodes = listItemNodes.slice();
+
+    // When the visibility of any item changes, update visibleListItemNodes
+    this.visibleListItemNodes = [];
+    listItemNodes.forEach( listItemNode => listItemNode.visibleProperty.link( visible => {
+      this.visibleListItemNodes = _.filter( this.listItemNodes, itemNode => itemNode.visible );
+    } ) );
 
     this.disposeComboBoxListBox = () => {
       for ( let i = 0; i < listItemNodes.length; i++ ) {
@@ -282,7 +291,6 @@ export default class ComboBoxListBox<T> extends Panel {
    */
   public setItemVisible( value: T, visible: boolean ): void {
     this.getListItemNode( value ).visible = visible;
-    this.visibleListItemNodes = _.filter( this.listItemNodes, itemNode => itemNode.visible );
   }
 
   /**
