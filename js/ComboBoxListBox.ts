@@ -40,8 +40,8 @@ export type ComboBoxListBoxOptions = SelfOptions & PanelOptions;
 
 export default class ComboBoxListBox<T> extends Panel {
 
-  // Nodes that correspond to items in the list
-  private readonly listItemNodes: ComboBoxListItemNode<T>[];
+  // The container for list items which will be provided to the panel.
+  private readonly content: Node;
 
   private readonly disposeComboBoxListBox: () => void;
 
@@ -181,6 +181,8 @@ export default class ComboBoxListBox<T> extends Panel {
       yMargin: options.yMargin / 2
     } ) );
 
+    this.content = content;
+
     this.voiceOnSelectionNode = voiceOnSelectionNode;
 
     // variable for tracking whether the selected value was changed by the user
@@ -225,7 +227,7 @@ export default class ComboBoxListBox<T> extends Panel {
 
         // Only visible items can receive focus - using content children directly because PhET-iO may change
         // their order
-        const visibleItems = content.children.filter( child => child.visible );
+        const visibleItems = this.getAllListItemNodes().filter( child => child.visible );
 
         if ( event.domEvent && KeyboardUtils.isAnyKeyEvent( event.domEvent, [ KeyboardUtils.KEY_ESCAPE, KeyboardUtils.KEY_TAB ] ) ) {
 
@@ -262,8 +264,6 @@ export default class ComboBoxListBox<T> extends Panel {
         }
       }
     } );
-
-    this.listItemNodes = listItemNodes;
 
     this.disposeComboBoxListBox = () => {
       for ( let i = 0; i < listItemNodes.length; i++ ) {
@@ -302,10 +302,18 @@ export default class ComboBoxListBox<T> extends Panel {
   }
 
   /**
+   * Returns all list item Nodes, as children of the list box content in the correct order which may have changed
+   * from PhET-iO.
+   */
+  private getAllListItemNodes(): ComboBoxListItemNode<T>[] {
+    return this.content.children as ComboBoxListItemNode<T>[];
+  }
+
+  /**
    * Gets the ComboBoxListItemNode that corresponds to a specified value. Assumes that values are unique.
    */
   private getListItemNode( value: T ): ComboBoxListItemNode<T> {
-    const listItemNode = _.find( this.listItemNodes, ( listItemNode: ComboBoxListItemNode<T> ) => listItemNode.item.value === value )!;
+    const listItemNode = _.find( this.getAllListItemNodes(), ( listItemNode: ComboBoxListItemNode<T> ) => listItemNode.item.value === value )!;
     assert && assert( listItemNode, `no item found for value: ${value}` );
     assert && assert( listItemNode instanceof ComboBoxListItemNode, 'invalid listItemNode' ); // eslint-disable-line no-simple-type-checking-assertions
     return listItemNode;
@@ -315,19 +323,28 @@ export default class ComboBoxListBox<T> extends Panel {
    * Gets the item in the ComboBox that currently has focus.
    */
   private getFocusedItemNode(): ComboBoxListItemNode<T> {
-    const listItemNode = _.find( this.listItemNodes, ( listItemNode: ComboBoxListItemNode<T> ) => listItemNode.focused )!;
+    const listItemNode = _.find( this.getAllListItemNodes(), ( listItemNode: ComboBoxListItemNode<T> ) => listItemNode.focused )!;
     assert && assert( listItemNode, 'no item found that has focus' );
     assert && assert( listItemNode instanceof ComboBoxListItemNode, 'invalid listItemNode' ); // eslint-disable-line no-simple-type-checking-assertions
     return listItemNode;
   }
 
   /**
-   * Focuses the ComboBoxListItemNode that corresponds to a specified value
+   * Focuses the ComboBoxListItemNode that corresponds to a specified value. If the item for that value is not
+   * visible, focus is placed on the first visible item.
    */
   public focusListItemNode( value: T ): void {
-    const listItemNode = this.getListItemNode( value );
-    listItemNode.supplyOpenResponseOnNextFocus();
-    listItemNode.focus();
+    let listItemNode: ComboBoxListItemNode<T> | undefined = this.getListItemNode( value );
+
+    // If the item Node is not visible, just place focus on the first available item.
+    if ( !listItemNode.visible ) {
+      listItemNode = _.find( this.getAllListItemNodes(), ( listItemNode: ComboBoxListItemNode<T> ) => listItemNode.visible );
+    }
+
+    if ( listItemNode ) {
+      listItemNode.supplyOpenResponseOnNextFocus();
+      listItemNode.focus();
+    }
   }
 
   /**
