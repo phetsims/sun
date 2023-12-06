@@ -360,7 +360,7 @@ export default class ComboBox<T> extends WidthSizable( Node ) {
     // Clicking on the button toggles visibility of the list box
     this.button.addListener( () => {
       this.listBox.visibleProperty.value = !this.listBox.visibleProperty.value;
-      this.listBox.visibleProperty.value && this.listBox.focus();
+      this.listBox.visibleProperty.value && this.listBox.focusListItemNode( property.value );
     } );
 
     this.display = null;
