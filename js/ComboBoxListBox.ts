@@ -50,6 +50,10 @@ export default class ComboBoxListBox<T> extends Panel {
   // box selection occurs, see https://github.com/phetsims/ratio-and-proportion/issues/474
   private readonly voiceOnSelectionNode: VoicingNode;
 
+  // The selected item from the list box at the start of the fire action.  This is needed for sound generation due to
+  // some order constraints with the setting of the managed Property.
+  private selectionOnFireAction: T;
+
   /**
    * @param property
    * @param items
@@ -93,16 +97,20 @@ export default class ComboBoxListBox<T> extends Panel {
     // Pops down the list box and sets the property.value to match the chosen item.
     const fireAction = new PhetioAction( event => {
 
-      const oldValue = property.value;
-
       const listItemNode = event.currentTarget;
       assert && assert( listItemNode instanceof ComboBoxListItemNode, 'expected a ComboBoxListItemNode' ); // eslint-disable-line no-simple-type-checking-assertions
+
+      // Get the selected value, but don't update the Property value yet because the focus needs to be shifted first.
+      // TODO: Is the comment above correct? See https://github.com/phetsims/sun/issues/861
+      this.selectionOnFireAction = listItemNode.item.value;
+
+      const oldValue = property.value;
 
       // So that something related to the ComboBox has focus before changing Property value.
       focusButtonCallback();
 
-      // set value based on which item was chosen in the list box
-      property.value = listItemNode.item.value;
+      // It is now safe to set the value based on which item was chosen in the list box.
+      property.value = this.selectionOnFireAction;
 
       // hide the list
       hideListBoxCallback();
@@ -185,6 +193,8 @@ export default class ComboBoxListBox<T> extends Panel {
 
     this.voiceOnSelectionNode = voiceOnSelectionNode;
 
+    this.selectionOnFireAction = property.value;
+
     // variable for tracking whether the selected value was changed by the user
     let selectionWhenListBoxOpened: T;
 
@@ -200,21 +210,27 @@ export default class ComboBoxListBox<T> extends Panel {
 
       if ( visible ) {
 
-        // play the 'opened' sound
+        // Play the 'opened' sound when the list box becomes visible.
         options.openedSoundPlayer.play();
 
-        // keep track of what was selected when the list box was shown
+        // Keep track of what was selected when the list box was shown.
         selectionWhenListBoxOpened = property.value;
       }
       else {
 
-        // sound generation - assumes that the property value has been updated before this list box is hidden
+        // Verify that the list box became visible before going invisible and the selected value was saved at that time.
         assert && assert( selectionWhenListBoxOpened !== undefined, 'no value for property when list box opened' );
-        if ( selectionWhenListBoxOpened === property.value ) {
+
+        // Did the user change the selected item?
+        if ( selectionWhenListBoxOpened === this.selectionOnFireAction ) {
+
+          // Play the sound that indicates that this list box was closed with no change.
           options.closedNoChangeSoundPlayer.play();
         }
         else {
-          const indexOfSelection = items.findIndex( item => item.value === property.value );
+
+          // The selection was changed, so play a sound that is unique to the newly selected item.
+          const indexOfSelection = items.findIndex( item => item.value === this.selectionOnFireAction );
           itemSelectedSoundPlayers[ indexOfSelection ].play();
         }
       }
