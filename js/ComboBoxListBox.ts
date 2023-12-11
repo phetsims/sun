@@ -107,6 +107,7 @@ export default class ComboBoxListBox<T> extends Panel {
       const oldValue = property.value;
 
       // So that something related to the ComboBox has focus before changing Property value.
+      // See https://github.com/phetsims/sun/issues/721
       focusButtonCallback();
 
       // It is now safe to set the value based on which item was chosen in the list box.
