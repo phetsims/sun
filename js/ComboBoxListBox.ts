@@ -100,7 +100,6 @@ export default class ComboBoxListBox<T> extends Panel {
       assert && assert( listItemNode instanceof ComboBoxListItemNode, 'expected a ComboBoxListItemNode' ); // eslint-disable-line no-simple-type-checking-assertions
 
       // Get the selected value, but don't update the Property value yet because the focus needs to be shifted first.
-      // TODO: Is the comment above correct? See https://github.com/phetsims/sun/issues/861
       this.selectionOnFireAction = listItemNode.item.value;
 
       const oldValue = property.value;
