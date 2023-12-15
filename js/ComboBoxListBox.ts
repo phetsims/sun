@@ -50,9 +50,9 @@ export default class ComboBoxListBox<T> extends Panel {
   // box selection occurs, see https://github.com/phetsims/ratio-and-proportion/issues/474
   private readonly voiceOnSelectionNode: VoicingNode;
 
-  // The selected item from the list box at the start of the fire action.  This is needed for sound generation due to
-  // some order constraints with the setting of the managed Property.
-  private selectionOnFireAction: T;
+  // The selected list item node from the list box at the start of the fire action.  This is needed for sound generation
+  // because the managed Property isn't always updated when the list box is closed.
+  private selectionOnFireAction: ComboBoxListItemNode<T>;
 
   /**
    * @param property
@@ -66,6 +66,8 @@ export default class ComboBoxListBox<T> extends Panel {
    */
   public constructor( property: TProperty<T>, items: ComboBoxItemNoNode<T>[], nodes: Node[], hideListBoxCallback: () => void,
                       focusButtonCallback: () => void, voiceOnSelectionNode: VoicingNode, tandem: Tandem, providedOptions?: ComboBoxListBoxOptions ) {
+
+    assert && assert( items.length > 0, 'empty list box is not supported' );
 
     const options = optionize<ComboBoxListBoxOptions, SelfOptions, PanelOptions>()( {
       highlightFill: 'rgb( 245, 245, 245 )',
@@ -100,8 +102,9 @@ export default class ComboBoxListBox<T> extends Panel {
       const listItemNode = event.currentTarget;
       assert && assert( listItemNode instanceof ComboBoxListItemNode, 'expected a ComboBoxListItemNode' ); // eslint-disable-line no-simple-type-checking-assertions
 
-      // Get the selected value, but don't update the Property value yet because the focus needs to be shifted first.
-      this.selectionOnFireAction = listItemNode.item.value;
+      // Update the internal state to reflect the selected Node, but don't update the Property value yet because the
+      // focus needs to be shifted first.
+      this.selectionOnFireAction = listItemNode;
 
       const oldValue = property.value;
 
@@ -110,7 +113,7 @@ export default class ComboBoxListBox<T> extends Panel {
       focusButtonCallback();
 
       // It is now safe to set the value based on which item was chosen in the list box.
-      property.value = this.selectionOnFireAction;
+      property.value = this.selectionOnFireAction.item.value;
 
       // hide the list
       hideListBoxCallback();
@@ -193,17 +196,15 @@ export default class ComboBoxListBox<T> extends Panel {
 
     this.voiceOnSelectionNode = voiceOnSelectionNode;
 
-    this.selectionOnFireAction = property.value;
+    this.selectionOnFireAction = listItemNodes[ 0 ];
+
+    // Create a set of default sound generators, one for each item, to use if the item doesn't provide its own.
+    const defaultItemSelectedSoundPlayers = items.map( item =>
+      multiSelectionSoundPlayerFactory.getSelectionSoundPlayer( items.indexOf( item ) )
+    );
 
     // variable for tracking whether the selected value was changed by the user
-    let selectionWhenListBoxOpened: T;
-
-    // Make a list of sound generators for the items, using defaults if nothing was provided.
-    const itemSelectedSoundPlayers = items.map( item => {
-      return item.soundPlayer ?
-             item.soundPlayer :
-             multiSelectionSoundPlayerFactory.getSelectionSoundPlayer( items.indexOf( item ) );
-    } );
+    let selectionWhenListBoxOpened: ComboBoxListItemNode<T>;
 
     // sound generation
     this.visibleProperty.lazyLink( visible => {
@@ -213,25 +214,35 @@ export default class ComboBoxListBox<T> extends Panel {
         // Play the 'opened' sound when the list box becomes visible.
         options.openedSoundPlayer.play();
 
-        // Keep track of what was selected when the list box was shown.
-        selectionWhenListBoxOpened = property.value;
+        // Keep track of what was selected when the list box was presented.
+        selectionWhenListBoxOpened = this.getListItemNode( property.value );
       }
       else {
 
         // Verify that the list box became visible before going invisible and the selected value was saved at that time.
-        assert && assert( selectionWhenListBoxOpened !== undefined, 'no value for property when list box opened' );
+        assert && assert( selectionWhenListBoxOpened, 'no Node for when list box was opened' );
 
-        // Did the user change the selected item?
+        // Did the user change the selection in the list box?
         if ( selectionWhenListBoxOpened === this.selectionOnFireAction ) {
 
-          // Play the sound that indicates that this list box was closed with no change.
+          // No change.  Play the sound that indicates this.
           options.closedNoChangeSoundPlayer.play();
         }
         else {
 
-          // The selection was changed, so play a sound that is unique to the newly selected item.
-          const indexOfSelection = items.findIndex( item => item.value === this.selectionOnFireAction );
-          itemSelectedSoundPlayers[ indexOfSelection ].play();
+          // Play a sound for the selected item.
+          const selectedItem = this.selectionOnFireAction.item;
+          if ( selectedItem.soundPlayer ) {
+            selectedItem.soundPlayer.play();
+          }
+          else {
+
+            // The selected item didn't provide a sound player, so use a default based on its position within the list
+            // of visible selections.
+            const selectionIndex = this.getVisibleListItemNodes().indexOf( this.selectionOnFireAction );
+            assert && assert( selectionIndex !== -1, 'sound generation does not support adding new items' );
+            defaultItemSelectedSoundPlayers[ selectionIndex ].play();
+          }
         }
       }
     } );
@@ -243,9 +254,9 @@ export default class ComboBoxListBox<T> extends Panel {
         const sceneryEvent = event!;
         assert && assert( sceneryEvent, 'event is required for this listener' );
 
-        // Only visible items can receive focus - using content children directly because PhET-iO may change
-        // their order
-        const visibleItems = this.getAllListItemNodes().filter( child => child.visible );
+        // Only visible item nodes can receive focus - using content children directly because PhET-iO may change their
+        // order.
+        const visibleItemNodes = this.getVisibleListItemNodes();
 
         if ( keysPressed === 'escape' || keysPressed === 'tab' ) {
 
@@ -267,20 +278,20 @@ export default class ComboBoxListBox<T> extends Panel {
 
           // Up/down arrow keys move the focus between items in the list box
           const direction = keysPressed === 'arrowDown' ? 1 : -1;
-          const focusedItemIndex = visibleItems.indexOf( this.getFocusedItemNode() );
+          const focusedItemIndex = visibleItemNodes.indexOf( this.getFocusedItemNode() );
           assert && assert( focusedItemIndex > -1, 'how could we receive keydown without a focused list item?' );
 
           const nextIndex = focusedItemIndex + direction;
-          visibleItems[ nextIndex ] && visibleItems[ nextIndex ].focus();
+          visibleItemNodes[ nextIndex ] && visibleItemNodes[ nextIndex ].focus();
 
           // reserve for drag after focus has moved, as the change in focus will clear the intent on the pointer
           sceneryEvent.pointer.reserveForKeyboardDrag();
         }
         else if ( keysPressed === 'home' ) {
-          visibleItems[ 0 ].focus();
+          visibleItemNodes[ 0 ].focus();
         }
         else if ( keysPressed === 'end' ) {
-          visibleItems[ visibleItems.length - 1 ].focus();
+          visibleItemNodes[ visibleItemNodes.length - 1 ].focus();
         }
       }
     } );
@@ -331,6 +342,13 @@ export default class ComboBoxListBox<T> extends Panel {
    */
   private getAllListItemNodes(): ComboBoxListItemNode<T>[] {
     return this.content.children as ComboBoxListItemNode<T>[];
+  }
+
+  /**
+   * Returns an array containing all the visible list item Nodes in top-to-bottom order.
+   */
+  private getVisibleListItemNodes(): ComboBoxListItemNode<T>[] {
+    return this.getAllListItemNodes().filter( child => child.visible );
   }
 
   /**
