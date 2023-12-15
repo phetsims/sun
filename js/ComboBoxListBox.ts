@@ -194,7 +194,7 @@ export default class ComboBoxListBox<T> extends Panel {
 
     this.voiceOnSelectionNode = voiceOnSelectionNode;
 
-    this.selectionOnFireAction = listItemNodes[ 0 ];
+    this.selectionOnFireAction = this.getListItemNode( property.value );
 
     // Create a set of default sound generators, one for each item, to use if the item doesn't provide its own.
     const defaultItemSelectedSoundPlayers = items.map( item =>
