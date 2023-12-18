@@ -222,7 +222,7 @@ export default class ComboBoxListBox<T> extends Panel {
 
     // pdom - listener that navigates listbox items and closes the box from keyboard input
     const keyboardListener = new KeyboardListener( {
-      keys: [ 'escape', 'tab', 'arrowUp', 'arrowDown', 'home', 'end' ],
+      keys: [ 'escape', 'tab', 'shift+tab', 'arrowUp', 'arrowDown', 'home', 'end' ],
       callback: ( event, keysPressed ) => {
         const sceneryEvent = event!;
         assert && assert( sceneryEvent, 'event is required for this listener' );
@@ -231,7 +231,7 @@ export default class ComboBoxListBox<T> extends Panel {
         // their order
         const visibleItems = this.getAllListItemNodes().filter( child => child.visible );
 
-        if ( keysPressed === 'escape' || keysPressed === 'tab' ) {
+        if ( keysPressed === 'escape' || keysPressed === 'tab' || keysPressed === 'shift+tab' ) {
 
           // This keyboard event is captured so that escape doesn't forward to other popupable components. If
           // ComboBox is ever implemented with generalized popupable/pane system this abort will not be necessary.
