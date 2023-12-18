@@ -82,7 +82,6 @@ export default class ComboBoxListBox<T> extends Panel {
       tagName: 'ul',
       ariaRole: 'listbox',
       groupFocusHighlight: true,
-      focusable: true,
 
       openedSoundPlayer: generalOpenSoundPlayer,
       closedNoChangeSoundPlayer: generalCloseSoundPlayer,
