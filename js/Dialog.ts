@@ -394,7 +394,7 @@ export default class Dialog extends Popupable( Panel, 1 ) {
 
     // pdom - close the dialog when pressing "escape"
     const keyboardListener = new KeyboardListener( {
-      keys: [ 'escape', 'tab' ],
+      keys: [ 'escape', 'tab', 'shift+tab' ],
       callback: ( event, keysPressed ) => {
         assert && assert( event && event.domEvent, 'event should be non-null and defined for this listener' );
         const domEvent = event!.domEvent!;
@@ -403,7 +403,7 @@ export default class Dialog extends Popupable( Panel, 1 ) {
           domEvent.preventDefault();
           this.hide();
         }
-        else if ( keysPressed === 'tab' && FullScreen.isFullScreen() ) {
+        else if ( ( keysPressed === 'tab' || keysPressed === 'shift+tab' ) && FullScreen.isFullScreen() ) {
 
           // prevent a particular bug in Windows 7/8.1 Firefox where focus gets trapped in the document
           // when the navigation bar is hidden and there is only one focusable element in the DOM
