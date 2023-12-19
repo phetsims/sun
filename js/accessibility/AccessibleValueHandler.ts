@@ -47,10 +47,10 @@ type CreateTextFunction = {
   /**
    * @param pdomMappedValue - see
    * @param newValue - the new value, unformatted
-   * @param previousValue - just the "oldValue" from the Property listener
+   * @param valueOnStart - the value at the start of the interaction, the value on keydown for press and hold
    * @returns - text/response/string to be set to the primarySibling, null means nothing will happen
    * */
-  ( pdomMappedValue: number, newValue: number, previousValue: number | null ): PDOMValueType | null;
+  ( pdomMappedValue: number, newValue: number, valueOnStart: number | null ): PDOMValueType | null;
 
   // if this function needs resetting, include a `reset` field on this function to be called when the
   // AccessibleValueHandler is reset.
