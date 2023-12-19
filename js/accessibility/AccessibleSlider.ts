@@ -16,10 +16,15 @@
 import assertHasProperties from '../../../phet-core/js/assertHasProperties.js';
 import Constructor from '../../../phet-core/js/types/Constructor.js';
 import IntentionalAny from '../../../phet-core/js/types/IntentionalAny.js';
-import optionize from '../../../phet-core/js/optionize.js';
-import { Node, SceneryEvent } from '../../../scenery/js/imports.js';
+import { DelayedMutate, Node, SceneryEvent } from '../../../scenery/js/imports.js';
 import sun from '../sun.js';
 import AccessibleValueHandler, { AccessibleValueHandlerOptions } from './AccessibleValueHandler.js';
+
+const ACCESSIBLE_SLIDER_OPTIONS = [
+  'startDrag',
+  'drag',
+  'endDrag'
+];
 
 type SelfOptions = {
 
@@ -40,9 +45,13 @@ type AccessibleSliderOptions = SelfOptions & AccessibleValueHandlerOptions;
  * @param optionsArgPosition - zero-indexed number that the options argument is provided at
  */
 const AccessibleSlider = <SuperType extends Constructor<Node>>( Type: SuperType, optionsArgPosition: number ) => { // eslint-disable-line @typescript-eslint/explicit-module-boundary-types
-  return class AccessibleSlider extends AccessibleValueHandler( Type, optionsArgPosition ) {
+  const AccessibleSliderClass = DelayedMutate( 'AccessibleSlider', ACCESSIBLE_SLIDER_OPTIONS, class AccessibleSlider extends AccessibleValueHandler( Type, optionsArgPosition ) {
 
     private readonly _disposeAccessibleSlider: () => void;
+
+    private _startDrag: ( event: SceneryEvent ) => void = _.noop;
+    private _drag: ( event: SceneryEvent ) => void = _.noop;
+    private _endDrag: ( event: SceneryEvent | null ) => void = _.noop;
 
     public constructor( ...args: IntentionalAny[] ) {
 
@@ -51,23 +60,10 @@ const AccessibleSlider = <SuperType extends Constructor<Node>>( Type: SuperType,
       assert && providedOptions && assert( Object.getPrototypeOf( providedOptions ) === Object.prototype,
         'Extra prototype on AccessibleSlider options object is a code smell (or probably a bug)' );
 
-      const options = optionize<AccessibleSliderOptions, SelfOptions, AccessibleValueHandlerOptions>()( {
-        startDrag: _.noop,
-        endDrag: _.noop,
-        drag: _.noop
-      }, providedOptions );
-
       // AccessibleSlider uses 'drag' terminology rather than 'change' for consistency with Slider
-      assert && assert( options.startInput === undefined, 'AccessibleSlider sets startInput through options.startDrag' );
-      options.startInput = options.startDrag;
-
-      assert && assert( options.endInput === undefined, 'AccessibleSlider sets endInput through options.endDrag' );
-      options.endInput = options.endDrag;
-
-      assert && assert( options.onInput === undefined, 'AccessibleSlider sets onInput through options.drag' );
-      options.onInput = options.drag;
-
-      args[ optionsArgPosition ] = options;
+      assert && assert( providedOptions.startInput === undefined, 'AccessibleSlider sets startInput through options.startDrag' );
+      assert && assert( providedOptions.endInput === undefined, 'AccessibleSlider sets endInput through options.endDrag' );
+      assert && assert( providedOptions.onInput === undefined, 'AccessibleSlider sets onInput through options.drag' );
 
       super( ...args );
 
@@ -84,6 +80,39 @@ const AccessibleSlider = <SuperType extends Constructor<Node>>( Type: SuperType,
       };
     }
 
+    public set startDrag( value: ( event: SceneryEvent ) => void ) {
+      this._startDrag = value;
+
+      // Also (unfortunately) forwarding to the startInput
+      this.startInput = value;
+    }
+
+    public get startDrag(): ( event: SceneryEvent ) => void {
+      return this._startDrag;
+    }
+
+    public set drag( value: ( event: SceneryEvent ) => void ) {
+      this._drag = value;
+
+      // Also (unfortunately) forwarding to the onInput
+      this.onInput = value;
+    }
+
+    public get drag(): ( event: SceneryEvent ) => void {
+      return this._drag;
+    }
+
+    public set endDrag( value: ( event: SceneryEvent | null ) => void ) {
+      this._endDrag = value;
+
+      // Also (unfortunately) forwarding to the endInput
+      this.endInput = value;
+    }
+
+    public get endDrag(): ( event: SceneryEvent | null ) => void {
+      return this._endDrag;
+    }
+
     /**
      * Make the accessible slider portions of this node eligible for garbage collection. Call when disposing
      * the type that this trait is mixed into.
@@ -93,7 +122,20 @@ const AccessibleSlider = <SuperType extends Constructor<Node>>( Type: SuperType,
 
       super.dispose();
     }
-  };
+  } );
+
+  /**
+   * {Array.<string>} - String keys for all the allowed options that will be set by Node.mutate( options ), in
+   * the order they will be evaluated.
+   *
+   * NOTE: See Node's _mutatorKeys documentation for more information on how this operates, and potential special
+   *       cases that may apply.
+   */
+  AccessibleSliderClass.prototype._mutatorKeys = ACCESSIBLE_SLIDER_OPTIONS.concat( Type.prototype._mutatorKeys );
+
+  assert && assert( AccessibleSliderClass.prototype._mutatorKeys.length === _.uniq( AccessibleSliderClass.prototype._mutatorKeys ).length, 'duplicate mutator keys in AccessibleSlider' );
+
+  return AccessibleSliderClass;
 };
 
 sun.register( 'AccessibleSlider', AccessibleSlider );

@@ -27,16 +27,24 @@ import validate from '../../../axon/js/validate.js';
 import assertHasProperties from '../../../phet-core/js/assertHasProperties.js';
 import Constructor from '../../../phet-core/js/types/Constructor.js';
 import IntentionalAny from '../../../phet-core/js/types/IntentionalAny.js';
-import optionize from '../../../phet-core/js/optionize.js';
+import { combineOptions } from '../../../phet-core/js/optionize.js';
 import Orientation from '../../../phet-core/js/Orientation.js';
-import { KeyboardUtils, Node, SceneryEvent, TInputListener } from '../../../scenery/js/imports.js';
+import { DelayedMutate, KeyboardUtils, Node, SceneryEvent, TInputListener } from '../../../scenery/js/imports.js';
 import sun from '../sun.js';
 import SunStrings from '../SunStrings.js';
 import AccessibleValueHandler, { AccessibleValueHandlerOptions } from './AccessibleValueHandler.js';
 import TEmitter from '../../../axon/js/TEmitter.js';
 
+const ACCESSIBLE_NUMBER_SPINNER_OPTIONS = [
+  'timerDelay',
+  'timerInterval'
+];
+
 type SelfOptions = {
+  // start to fire continuously after pressing for this long (milliseconds)
   timerDelay?: number;
+
+  // fire continuously at this frequency (milliseconds),
   timerInterval?: number;
 };
 
@@ -48,7 +56,7 @@ type AccessibleNumberSpinnerOptions = SelfOptions & AccessibleValueHandlerOption
  */
 const AccessibleNumberSpinner = <SuperType extends Constructor<Node>>( Type: SuperType, optionsArgPosition: number ) => { // eslint-disable-line @typescript-eslint/explicit-module-boundary-types
 
-  return class AccessibleNumberSpinner extends AccessibleValueHandler( Type, optionsArgPosition ) {
+  const AccessibleNumberSpinnerClass = DelayedMutate( 'AccessibleNumberSpinner', ACCESSIBLE_NUMBER_SPINNER_OPTIONS, class AccessibleNumberSpinner extends AccessibleValueHandler( Type, optionsArgPosition ) {
 
     // Manages timing must be disposed
     private readonly _callbackTimer: CallbackTimer;
@@ -57,6 +65,9 @@ const AccessibleNumberSpinner = <SuperType extends Constructor<Node>>( Type: Sup
     // of keyboardStep and shiftKeyboardStep (not pageKeyboardStep)
     protected readonly incrementDownEmitter: TEmitter<[ boolean ]>;
     protected readonly decrementDownEmitter: TEmitter<[ boolean ]>;
+
+    private _timerDelay = 400;
+    private _timerInterval = 100;
 
     private readonly _disposeAccessibleNumberSpinner: () => void;
 
@@ -67,10 +78,7 @@ const AccessibleNumberSpinner = <SuperType extends Constructor<Node>>( Type: Sup
       assert && providedOptions && assert( Object.getPrototypeOf( providedOptions ) === Object.prototype,
         'Extra prototype on AccessibleSlider options object is a code smell (or probably a bug)' );
 
-      const options = optionize<AccessibleNumberSpinnerOptions, SelfOptions, AccessibleValueHandlerOptions>()( {
-        timerDelay: 400, // start to fire continuously after pressing for this long (milliseconds)
-        timerInterval: 100, // fire continuously at this frequency (milliseconds),
-
+      const options = combineOptions<AccessibleValueHandlerOptions>( {
         ariaOrientation: Orientation.VERTICAL // by default, number spinners should be oriented vertically
       }, providedOptions );
 
@@ -82,8 +90,8 @@ const AccessibleNumberSpinner = <SuperType extends Constructor<Node>>( Type: Sup
       assertHasProperties( this, [ 'addInputListener' ] );
 
       this._callbackTimer = new CallbackTimer( {
-        delay: options.timerDelay,
-        interval: options.timerInterval
+        delay: this._timerDelay,
+        interval: this._timerInterval
       } );
 
       this.incrementDownEmitter = new Emitter( { parameters: [ { valueType: 'boolean' } ] } );
@@ -173,6 +181,30 @@ const AccessibleNumberSpinner = <SuperType extends Constructor<Node>>( Type: Sup
       };
     }
 
+    public set timerDelay( value: number ) {
+      this._timerDelay = value;
+
+      if ( this._callbackTimer ) {
+        this._callbackTimer.delay = value;
+      }
+    }
+
+    public get timerDelay(): number {
+      return this._timerDelay;
+    }
+
+    public set timerInterval( value: number ) {
+      this._timerInterval = value;
+
+      if ( this._callbackTimer ) {
+        this._callbackTimer.interval = value;
+      }
+    }
+
+    public get timerInterval(): number {
+      return this._timerInterval;
+    }
+
     /**
      * Handle the keydown event and emit events related to the user interaction. Ideally, this would
      * override AccessibleValueHandler.handleKeyDown, but overriding is not supported with PhET Trait pattern.
@@ -207,7 +239,20 @@ const AccessibleNumberSpinner = <SuperType extends Constructor<Node>>( Type: Sup
 
       super.dispose();
     }
-  };
+  } );
+
+  /**
+   * {Array.<string>} - String keys for all the allowed options that will be set by Node.mutate( options ), in
+   * the order they will be evaluated.
+   *
+   * NOTE: See Node's _mutatorKeys documentation for more information on how this operates, and potential special
+   *       cases that may apply.
+   */
+  AccessibleNumberSpinnerClass.prototype._mutatorKeys = ACCESSIBLE_NUMBER_SPINNER_OPTIONS.concat( Type.prototype._mutatorKeys );
+
+  assert && assert( AccessibleNumberSpinnerClass.prototype._mutatorKeys.length === _.uniq( AccessibleNumberSpinnerClass.prototype._mutatorKeys ).length, 'duplicate mutator keys in AccessibleNumberSpinner' );
+
+  return AccessibleNumberSpinnerClass;
 };
 
 sun.register( 'AccessibleNumberSpinner', AccessibleNumberSpinner );
