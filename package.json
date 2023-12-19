@@ -18,7 +18,8 @@
     "runnable": true,
     "simFeatures": {
       "supportsInteractiveDescription": true,
-      "supportsDynamicLocale": true
+      "supportsDynamicLocale": true,
+      "supportsSound": true
     },
     "supportedBrands": [
       "phet",
