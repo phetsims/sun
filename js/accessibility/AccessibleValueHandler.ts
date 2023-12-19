@@ -20,10 +20,10 @@ import Utils from '../../../dot/js/Utils.js';
 import Range from '../../../dot/js/Range.js';
 import assertHasProperties from '../../../phet-core/js/assertHasProperties.js';
 import Orientation from '../../../phet-core/js/Orientation.js';
-import { animatedPanZoomSingleton, KeyboardUtils, Node, NodeOptions, PDOMUtils, PDOMValueType, SceneryEvent, SceneryListenerFunction, TInputListener, Voicing, VoicingOptions } from '../../../scenery/js/imports.js';
+import { animatedPanZoomSingleton, DelayedMutate, KeyboardUtils, Node, NodeOptions, PDOMUtils, PDOMValueType, SceneryEvent, SceneryListenerFunction, TInputListener, Voicing, VoicingOptions } from '../../../scenery/js/imports.js';
 import Utterance from '../../../utterance-queue/js/Utterance.js';
 import sun from '../sun.js';
-import optionize, { combineOptions, OptionizeDefaults } from '../../../phet-core/js/optionize.js';
+import optionize, { combineOptions } from '../../../phet-core/js/optionize.js';
 import Multilink, { UnknownMultilink } from '../../../axon/js/Multilink.js';
 import UtteranceQueue from '../../../utterance-queue/js/UtteranceQueue.js';
 import TProperty from '../../../axon/js/TProperty.js';
@@ -71,6 +71,28 @@ export type VoicingOnEndResponseOptions = {
 
 // Function signature for voicingOnEndResponse.
 export type VoicingOnEndResponse = ( valueOnStart: number, providedOptions?: VoicingOnEndResponseOptions ) => void;
+
+const ACCESSIBLE_VALUE_HANDLER_OPTIONS: string[] = [
+  'startInput',
+  'endInput',
+  'onInput',
+  'constrainValue',
+  'keyboardStep',
+  'shiftKeyboardStep',
+  'pageKeyboardStep',
+  'ariaOrientation',
+  'panTargetNode',
+  'roundToStepSize',
+  'a11yMapPDOMValue',
+  'a11yMapValue',
+  'a11yRepeatEqualValueText',
+  'a11yCreateAriaValueText',
+  'a11yCreateContextResponseAlert',
+  'contextResponsePerValueChangeDelay',
+  'contextResponseMaxDelay',
+  'a11yDependencies',
+  'voicingOnEndResponseOptions'
+];
 
 type SelfOptions = {
   valueProperty: TProperty<number>;
@@ -205,25 +227,27 @@ export type AccessibleValueHandlerOptions = SelfOptions & VoicingOptions; // do 
  * @param optionsArgPosition - zero-indexed number that the options argument is provided at
  */
 const AccessibleValueHandler = <SuperType extends Constructor<Node>>( Type: SuperType, optionsArgPosition: number ) => { // eslint-disable-line @typescript-eslint/explicit-module-boundary-types
-  return class AccessibleValueHandler extends Voicing( Type ) {
+  const AccessibleValueHandlerClass = DelayedMutate( 'AccessibleValueHandler', ACCESSIBLE_VALUE_HANDLER_OPTIONS, class AccessibleValueHandler extends Voicing( Type ) {
     private readonly _valueProperty: TProperty<number>;
     private _enabledRangeProperty: TReadOnlyProperty<Range>;
-    private readonly _startInput: SceneryListenerFunction;
-    private readonly _onInput: SceneryListenerFunction;
-    private readonly _endInput: SceneryListenerFunction;
-    private readonly _constrainValue: ( ( value: number ) => number );
-    private readonly _a11yMapValue: ( ( newValue: number, previousValue: number ) => number );
-    private _panTargetNode: Node | null;
-    private _keyboardStep: number;
-    private _shiftKeyboardStep: number;
-    private _pageKeyboardStep: number;
-    private _ariaOrientation: Orientation;
-    private _shiftKey: boolean;
+    private _startInput: SceneryListenerFunction = _.noop;
+    private _onInput: SceneryListenerFunction = _.noop;
+    private _endInput: SceneryListenerFunction = _.noop;
+    private _constrainValue: ( ( value: number ) => number ) = _.identity;
+    private _a11yMapValue: ( ( newValue: number, previousValue: number ) => number ) = _.identity;
+    private _panTargetNode: Node | null = null;
+    private _keyboardStep!: number; // will be initialized based on the enabled range
+    private _shiftKeyboardStep!: number; // will be initialized based on the enabled range
+    private _pageKeyboardStep!: number; // will be initialized based on the enabled range
+    private _ariaOrientation: Orientation = Orientation.HORIZONTAL;
+    private _shiftKey = false;
+
+    private _a11yDependencies: TReadOnlyProperty<IntentionalAny>[] = [];
 
     // track previous values for callbacks outside of Property listeners
-    private _oldValue: number | null;
+    private _oldValue: number | null = null;
 
-    private readonly _a11yCreateContextResponseAlert: CreateTextFunction | null;
+    private _a11yCreateContextResponseAlert: CreateTextFunction | null = null;
 
     // The Property value when an interaction starts, so it can be used as the "old" value
     // when generating a context response at the end of an interaction with a11yCreateContextResponseAlert.
@@ -233,43 +257,44 @@ const AccessibleValueHandler = <SuperType extends Constructor<Node>>( Type: Supe
     // optional a11yCreateContextResponseAlert. The alertStableDelay on this utterance will increase if the input
     // receives many interactions before the utterance can be announced so that VoiceOver has time to read the
     // aria-valuetext (object response) before the alert (context response).
-    private readonly _contextResponseUtterance: Utterance;
+    private readonly _contextResponseUtterance: Utterance = new Utterance();
 
     // Number of times the input has changed in value before the utterance made was able to be spoken, only applicable
     // if using a11yCreateContextResponseAlert
-    private _timesValueTextChangedBeforeAlerting: number;
+    private _timesValueTextChangedBeforeAlerting = 0;
 
     // in ms, see options for documentation.
-    private readonly _contextResponsePerValueChangeDelay: number;
-    private readonly _contextResponseMaxDelay: number;
+    private _contextResponsePerValueChangeDelay = 700;
+    private _contextResponseMaxDelay = 1500;
 
     // Whether an input event has been handled. If handled, we will not respond to the
     // change event. An AT (particularly VoiceOver) may send a change event (and not an input event) to the
     // browser in response to a user gesture. We need to handle that change event, without also handling the
     // input event in case a device sends both events to the browser.
-    private _a11yInputHandled: boolean;
+    private _a11yInputHandled = false;
 
     // Some browsers will receive `input` events when the user tabs away from the slider or
     // on some key presses - if we receive a keydown event for a tab key, do not allow input or change events
-    private _blockInput: boolean;
+    private _blockInput = false;
 
     // setting to enable/disable rounding to the step size
-    private readonly _roundToStepSize: boolean;
+    private _roundToStepSize = false;
 
     // key is the event.code for the range key, value is whether it is down
-    private _rangeKeysDown: Record<string, boolean>;
-    private readonly _a11yMapPDOMValue: ( ( value: number ) => number );
-    private readonly _a11yCreateAriaValueText: CreateTextFunction;
-    private _dependenciesMultilink: UnknownMultilink | null;
-    private readonly _a11yRepeatEqualValueText: boolean;
+    private _rangeKeysDown: Record<string, boolean> = {};
+    private _a11yMapPDOMValue: ( ( value: number ) => number ) = _.identity;
+    private _a11yCreateAriaValueText: CreateTextFunction = toString; // by default make sure it returns a string
+    private _dependenciesMultilink: UnknownMultilink | null = null;
+    private _a11yRepeatEqualValueText = true;
 
     // When context responses are supported, this counter is used to determine a mutable delay between hearing the
     // same response.
-    private _timesChangedBeforeAlerting: number;
+    private _timesChangedBeforeAlerting = 0;
 
     // Options for the Voicing response at the end of interaction with this component.
-    private readonly _voicingOnEndResponseOptions: VoicingOnEndResponseOptions;
+    private _voicingOnEndResponseOptions: VoicingOnEndResponseOptions = DEFAULT_VOICING_ON_END_RESPONSE_OPTIONS;
 
+    private readonly _a11yValueTextUpdateListener: () => void;
     private readonly _disposeAccessibleValueHandler: () => void;
 
     public constructor( ...args: IntentionalAny[] ) {
@@ -279,7 +304,12 @@ const AccessibleValueHandler = <SuperType extends Constructor<Node>>( Type: Supe
       assert && assert( providedOptions, 'providedOptions has required options' );
       assert && assert( providedOptions.enabledRangeProperty, 'enabledRangeProperty is a required option' );
       assert && assert( providedOptions.valueProperty, 'valueProperty is a required option' );
-      const enabledRangeProperty = providedOptions.enabledRangeProperty;
+
+      assert && providedOptions && assert( !providedOptions.hasOwnProperty( 'tagName' ) || providedOptions.tagName === null,
+        'AccessibleValueHandler sets its own tagName. Only provide tagName to clear accessible content from the PDOM' );
+
+      // cannot be set by client
+      assert && providedOptions && assert( !providedOptions.hasOwnProperty( 'inputType' ), 'AccessibleValueHandler sets its own inputType.' );
 
       // if rounding to keyboard step, keyboardStep must be defined so values aren't skipped and the slider
       // doesn't get stuck while rounding to the nearest value, see https://github.com/phetsims/sun/issues/410
@@ -287,127 +317,44 @@ const AccessibleValueHandler = <SuperType extends Constructor<Node>>( Type: Supe
         assert( providedOptions.keyboardStep, 'rounding to keyboardStep, define appropriate keyboardStep to round to' );
       }
 
-      const defaults: OptionizeDefaults<SelfOptions, ParentOptions> = {
-
-        // other
-        startInput: _.noop,
-        endInput: _.noop,
-        onInput: _.noop,
-        constrainValue: _.identity,
-        keyboardStep: ( enabledRangeProperty.get().max - enabledRangeProperty.get().min ) / 20,
-        shiftKeyboardStep: ( enabledRangeProperty.get().max - enabledRangeProperty.get().min ) / 100,
-        pageKeyboardStep: ( enabledRangeProperty.get().max - enabledRangeProperty.get().min ) / 10,
-        ariaOrientation: Orientation.HORIZONTAL,
-        panTargetNode: null,
-        roundToStepSize: false,
-        a11yMapPDOMValue: _.identity,
-        a11yMapValue: _.identity,
-        a11yRepeatEqualValueText: true,
-        a11yCreateAriaValueText: toString, // by default make sure it returns a string
-        a11yCreateContextResponseAlert: null,
-        contextResponsePerValueChangeDelay: 700,
-        contextResponseMaxDelay: 1500,
-        a11yDependencies: [],
-        voicingOnEndResponseOptions: DEFAULT_VOICING_ON_END_RESPONSE_OPTIONS,
-
+      // Override options
+      args[ optionsArgPosition ] = optionize<AccessibleValueHandlerOptions, SelfOptions, ParentOptions>()( {
         // @ts-expect-error - TODO: we should be able to have the public API be just null, and internally set to string, Limitation (IV), see https://github.com/phetsims/phet-core/issues/128
         tagName: DEFAULT_TAG_NAME,
 
         // parent options that we must provide a default to use
-        inputType: null
-      };
-
-      const options = optionize<AccessibleValueHandlerOptions, SelfOptions, ParentOptions>()( defaults, providedOptions );
-
-      assert && providedOptions && assert( !providedOptions.hasOwnProperty( 'tagName' ) || providedOptions.tagName === null,
-        'AccessibleValueHandler sets its own tagName. Only provide tagName to clear accessible content from the PDOM' );
-
-      // cannot be set by client
-      assert && providedOptions && assert( !providedOptions.hasOwnProperty( 'inputType' ), 'AccessibleValueHandler sets its own inputType.' );
-      options.inputType = 'range';
-
-      args[ optionsArgPosition ] = options;
+        inputType: 'range'
+      }, providedOptions );
       super( ...args );
 
       // members of the Node API that are used by this trait
       assertHasProperties( this, [ 'inputValue', 'setPDOMAttribute' ] );
 
-      this._valueProperty = options.valueProperty;
+      const valueProperty = providedOptions.valueProperty;
+      const enabledRangeProperty = providedOptions.enabledRangeProperty;
+
+      this._valueProperty = valueProperty;
       this._enabledRangeProperty = enabledRangeProperty;
-      this._startInput = options.startInput;
-      this._onInput = options.onInput;
-      this._endInput = options.endInput;
-      this._constrainValue = options.constrainValue;
-      this._a11yMapValue = options.a11yMapValue;
-      this._panTargetNode = options.panTargetNode;
 
-      // initialized with setKeyboardStep which does some validating
-      this._keyboardStep = defaults.keyboardStep;
-      this.setKeyboardStep( options.keyboardStep );
+      this._a11yValueTextUpdateListener = this.invalidateAriaValueText.bind( this );
 
-      this._shiftKeyboardStep = defaults.shiftKeyboardStep;
-      this.setShiftKeyboardStep( options.shiftKeyboardStep );
+      // initialized with setters that validate
+      this.keyboardStep = ( enabledRangeProperty.get().max - enabledRangeProperty.get().min ) / 20;
+      this.shiftKeyboardStep = ( enabledRangeProperty.get().max - enabledRangeProperty.get().min ) / 100;
+      this.pageKeyboardStep = ( enabledRangeProperty.get().max - enabledRangeProperty.get().min ) / 10;
 
-      this._pageKeyboardStep = defaults.pageKeyboardStep;
-      this.setPageKeyboardStep( options.pageKeyboardStep );
-
-      this._shiftKey = false;
-
-      this._ariaOrientation = defaults.ariaOrientation;
-      this.ariaOrientation = options.ariaOrientation;
-
-      this._oldValue = null;
-      this._valueOnStart = this._valueProperty.value;
-      this._a11yCreateContextResponseAlert = options.a11yCreateContextResponseAlert;
-      this._timesValueTextChangedBeforeAlerting = 0;
-      this._contextResponseUtterance = new Utterance();
-      this._contextResponsePerValueChangeDelay = options.contextResponsePerValueChangeDelay;
-      this._contextResponseMaxDelay = options.contextResponseMaxDelay;
-      this._a11yInputHandled = false;
-      this._blockInput = false;
-      this._rangeKeysDown = {};
-      this._roundToStepSize = options.roundToStepSize;
-      this._a11yMapPDOMValue = options.a11yMapPDOMValue;
-      this._a11yCreateAriaValueText = options.a11yCreateAriaValueText;
-      this._dependenciesMultilink = null;
-      this._a11yRepeatEqualValueText = options.a11yRepeatEqualValueText;
-      this._timesChangedBeforeAlerting = 0;
-      this._voicingOnEndResponseOptions = options.voicingOnEndResponseOptions;
+      this._valueOnStart = valueProperty.value;
 
       // be called last, after options have been set to `this`.
-      this.setA11yDependencies( options.a11yDependencies );
+      this.invalidateAriaValueText();
 
       // listeners, must be unlinked in dispose
-      const enabledRangeObserver = ( enabledRange: Range ) => {
-
-        const mappedMin = this._getMappedValue( enabledRange.min );
-        const mappedMax = this._getMappedValue( enabledRange.max );
-
-        // pdom - update enabled slider range for AT, required for screen reader events to behave correctly
-        this.setPDOMAttribute( 'min', mappedMin );
-        this.setPDOMAttribute( 'max', mappedMax );
-
-        // update the step attribute slider element - this attribute is only added because it is required to
-        // receive accessibility events on all browsers, and is totally separate from the step values above that
-        // will modify the valueProperty. See function for more information.
-        this._updateSiblingStepAttribute();
-      };
+      const enabledRangeObserver = this.invalidateEnabledRange.bind( this );
       this._enabledRangeProperty.link( enabledRangeObserver );
 
       // when the property changes, be sure to update the accessible input value and aria-valuetext which is read
       // by assistive technology when the value changes
-      const valuePropertyListener = () => {
-
-        const mappedValue = this._getMappedValue();
-
-        // set the aria-valuenow attribute in case the AT requires it to read the value correctly, some may
-        // fall back on this from aria-valuetext see
-        // https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/ARIA_Techniques/Using_the_aria-valuetext_attribute#Possible_effects_on_user_agents_and_assistive_technology
-        this.setPDOMAttribute( 'aria-valuenow', mappedValue );
-
-        // update the PDOM input value on Property change
-        this.inputValue = mappedValue;
-      };
+      const valuePropertyListener = this.invalidateValueProperty.bind( this );
       this._valueProperty.link( valuePropertyListener );
 
       this._disposeAccessibleValueHandler = () => {
@@ -415,7 +362,162 @@ const AccessibleValueHandler = <SuperType extends Constructor<Node>>( Type: Supe
         this._valueProperty.unlink( valuePropertyListener );
         this._dependenciesMultilink && this._dependenciesMultilink.dispose();
         this._panTargetNode = null;
+        this._a11yDependencies = [];
       };
+    }
+
+    public set startInput( value: SceneryListenerFunction ) {
+      this._startInput = value;
+    }
+
+    public get startInput(): SceneryListenerFunction {
+      return this._startInput;
+    }
+
+    public set onInput( value: SceneryListenerFunction ) {
+      this._onInput = value;
+    }
+
+    public get onInput(): SceneryListenerFunction {
+      return this._onInput;
+    }
+
+    public set endInput( value: SceneryListenerFunction ) {
+      this._endInput = value;
+    }
+
+    public get endInput(): SceneryListenerFunction {
+      return this._endInput;
+    }
+
+    public set constrainValue( value: ( ( value: number ) => number ) ) {
+      // NOTE: Not currently re-constraining the value on set, since hopefully other things are doing this action.
+      // If that's not done, we should do something about it here.
+      this._constrainValue = value;
+    }
+
+    public get constrainValue(): ( ( value: number ) => number ) {
+      return this._constrainValue;
+    }
+
+    public set panTargetNode( value: Node | null ) {
+      this._panTargetNode = value;
+    }
+
+    public get panTargetNode(): Node | null {
+      return this._panTargetNode;
+    }
+
+    public set roundToStepSize( value: boolean ) {
+      this._roundToStepSize = value;
+    }
+
+    public get roundToStepSize(): boolean {
+      return this._roundToStepSize;
+    }
+
+    public set a11yMapPDOMValue( value: ( ( value: number ) => number ) ) {
+      this._a11yMapPDOMValue = value;
+
+      this.invalidateEnabledRange( this._enabledRangeProperty.value );
+      this.invalidateValueProperty();
+      this.invalidateAriaValueText();
+    }
+
+    public get a11yMapPDOMValue(): ( ( value: number ) => number ) {
+      return this._a11yMapPDOMValue;
+    }
+
+    public set a11yMapValue( value: ( ( newValue: number, previousValue: number ) => number ) ) {
+      this._a11yMapValue = value;
+    }
+
+    public get a11yMapValue(): ( ( newValue: number, previousValue: number ) => number ) {
+      return this._a11yMapValue;
+    }
+
+    public set a11yRepeatEqualValueText( value: boolean ) {
+      this._a11yRepeatEqualValueText = value;
+
+      this.invalidateAriaValueText();
+    }
+
+    public get a11yRepeatEqualValueText(): boolean {
+      return this._a11yRepeatEqualValueText;
+    }
+
+    public set a11yCreateAriaValueText( value: CreateTextFunction ) {
+      this._a11yCreateAriaValueText = value;
+
+      this.invalidateAriaValueText();
+    }
+
+    public get a11yCreateAriaValueText(): CreateTextFunction {
+      return this._a11yCreateAriaValueText;
+    }
+
+    public set a11yCreateContextResponseAlert( value: CreateTextFunction | null ) {
+      this._a11yCreateContextResponseAlert = value;
+    }
+
+    public get a11yCreateContextResponseAlert(): CreateTextFunction | null {
+      return this._a11yCreateContextResponseAlert;
+    }
+
+    public set contextResponsePerValueChangeDelay( value: number ) {
+      this._contextResponsePerValueChangeDelay = value;
+    }
+
+    public get contextResponsePerValueChangeDelay(): number {
+      return this._contextResponsePerValueChangeDelay;
+    }
+
+    public set contextResponseMaxDelay( value: number ) {
+      this._contextResponseMaxDelay = value;
+    }
+
+    public get contextResponseMaxDelay(): number {
+      return this._contextResponseMaxDelay;
+    }
+
+    public set voicingOnEndResponseOptions( value: VoicingOnEndResponseOptions ) {
+      this._voicingOnEndResponseOptions = value;
+    }
+
+    public get voicingOnEndResponseOptions(): VoicingOnEndResponseOptions {
+      return this._voicingOnEndResponseOptions;
+    }
+
+    private invalidateAriaValueText(): void {
+      this._updateAriaValueText( this._oldValue );
+
+      this._oldValue = this._valueProperty.value;
+    }
+
+    private invalidateEnabledRange( enabledRange: Range ): void {
+      const mappedMin = this._getMappedValue( enabledRange.min );
+      const mappedMax = this._getMappedValue( enabledRange.max );
+
+      // pdom - update enabled slider range for AT, required for screen reader events to behave correctly
+      this.setPDOMAttribute( 'min', mappedMin );
+      this.setPDOMAttribute( 'max', mappedMax );
+
+      // update the step attribute slider element - this attribute is only added because it is required to
+      // receive accessibility events on all browsers, and is totally separate from the step values above that
+      // will modify the valueProperty. See function for more information.
+      this._updateSiblingStepAttribute();
+    }
+
+    private invalidateValueProperty(): void {
+      const mappedValue = this._getMappedValue();
+
+      // set the aria-valuenow attribute in case the AT requires it to read the value correctly, some may
+      // fall back on this from aria-valuetext see
+      // https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/ARIA_Techniques/Using_the_aria-valuetext_attribute#Possible_effects_on_user_agents_and_assistive_technology
+      this.setPDOMAttribute( 'aria-valuenow', mappedValue );
+
+      // update the PDOM input value on Property change
+      this.inputValue = mappedValue;
     }
 
     /**
@@ -427,15 +529,24 @@ const AccessibleValueHandler = <SuperType extends Constructor<Node>>( Type: Supe
       assert && assert( !dependencies.includes( this._valueProperty ),
         'The value Property is already a dependency, and does not need to be added to this list' );
 
+      this._a11yDependencies = dependencies;
+
       // dispose the previous multilink, there is only one set of dependencies, though they can be overwritten.
       this._dependenciesMultilink && this._dependenciesMultilink.dispose();
 
-      this._dependenciesMultilink = Multilink.multilinkAny( dependencies.concat( [ this._valueProperty ] ), () => {
+      this._dependenciesMultilink = Multilink.multilinkAny( dependencies.concat( [ this._valueProperty ] ), this._a11yValueTextUpdateListener );
+    }
 
-        this._updateAriaValueText( this._oldValue );
+    public getA11yDependencies(): TReadOnlyProperty<IntentionalAny>[] {
+      return this._a11yDependencies;
+    }
 
-        this._oldValue = this._valueProperty.value;
-      } );
+    public set a11yDependencies( value: TReadOnlyProperty<IntentionalAny>[] ) {
+      this.setA11yDependencies( value );
+    }
+
+    public get a11yDependencies(): TReadOnlyProperty<IntentionalAny>[] {
+      return this.getA11yDependencies();
     }
 
     private _updateAriaValueText( oldPropertyValue: number | null ): void {
@@ -524,8 +635,7 @@ const AccessibleValueHandler = <SuperType extends Constructor<Node>>( Type: Supe
      * @param [value] - if not provided, will use the current value of the valueProperty
      */
     private _getMappedValue( value: number = this._valueProperty.value ): number {
-      const mappedValue = this._a11yMapPDOMValue( value );
-      return mappedValue;
+      return this._a11yMapPDOMValue( value );
     }
 
     /**
@@ -1009,7 +1119,20 @@ const AccessibleValueHandler = <SuperType extends Constructor<Node>>( Type: Supe
 
       super.dispose();
     }
-  };
+  } );
+
+  /**
+   * {Array.<string>} - String keys for all the allowed options that will be set by Node.mutate( options ), in
+   * the order they will be evaluated.
+   *
+   * NOTE: See Node's _mutatorKeys documentation for more information on how this operates, and potential special
+   *       cases that may apply.
+   */
+  AccessibleValueHandlerClass.prototype._mutatorKeys = ACCESSIBLE_VALUE_HANDLER_OPTIONS.concat( Type.prototype._mutatorKeys );
+
+  assert && assert( AccessibleValueHandlerClass.prototype._mutatorKeys.length === _.uniq( AccessibleValueHandlerClass.prototype._mutatorKeys ).length, 'duplicate mutator keys in AccessibleValueHandler' );
+
+  return AccessibleValueHandlerClass;
 };
 
 sun.register( 'AccessibleValueHandler', AccessibleValueHandler );
