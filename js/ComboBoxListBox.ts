@@ -8,7 +8,7 @@
 
 import PhetioAction from '../../tandem/js/PhetioAction.js';
 import optionize, { combineOptions } from '../../phet-core/js/optionize.js';
-import { KeyboardUtils, SceneryEvent, SpeakingOptions, TInputListener, TPaint, VBox, VoicingNode } from '../../scenery/js/imports.js';
+import { KeyboardUtils, SceneryEvent, SpeakingOptions, TInputListener, TPaint, VBox, Node, VoicingNode } from '../../scenery/js/imports.js';
 import multiSelectionSoundPlayerFactory from '../../tambo/js/multiSelectionSoundPlayerFactory.js';
 import generalCloseSoundPlayer from '../../tambo/js/shared-sound-players/generalCloseSoundPlayer.js';
 import generalOpenSoundPlayer from '../../tambo/js/shared-sound-players/generalOpenSoundPlayer.js';
