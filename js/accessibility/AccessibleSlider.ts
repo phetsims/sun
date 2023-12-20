@@ -1,4 +1,4 @@
-// Copyright 2017-2022, University of Colorado Boulder
+// Copyright 2017-2023, University of Colorado Boulder
 
 /**
  * A trait for subtypes of Node, used to make the Node behave like a 'slider' with assistive technology. This could be
