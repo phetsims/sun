@@ -346,7 +346,7 @@ const AccessibleValueHandler = <SuperType extends Constructor<Node>>( Type: Supe
       this._valueOnStart = valueProperty.value;
 
       // be called last, after options have been set to `this`.
-      this.invalidateAriaValueText();
+      this.invalidateA11yDependencies();
 
       // listeners, must be unlinked in dispose
       const enabledRangeObserver = this.invalidateEnabledRange.bind( this );
@@ -520,6 +520,14 @@ const AccessibleValueHandler = <SuperType extends Constructor<Node>>( Type: Supe
       this.inputValue = mappedValue;
     }
 
+    private invalidateA11yDependencies(): void {
+
+      // dispose the previous multilink, there is only one set of dependencies, though they can be overwritten.
+      this._dependenciesMultilink && this._dependenciesMultilink.dispose();
+
+      this._dependenciesMultilink = Multilink.multilinkAny( this._a11yDependencies.concat( [ this._valueProperty ] ), this._a11yValueTextUpdateListener );
+    }
+
     /**
      * There are some features of AccessibleValueHandler that support updating when more than just the valueProperty
      * changes. Use this method to set the dependency Properties for this value handler. This will blow away the
@@ -531,10 +539,7 @@ const AccessibleValueHandler = <SuperType extends Constructor<Node>>( Type: Supe
 
       this._a11yDependencies = dependencies;
 
-      // dispose the previous multilink, there is only one set of dependencies, though they can be overwritten.
-      this._dependenciesMultilink && this._dependenciesMultilink.dispose();
-
-      this._dependenciesMultilink = Multilink.multilinkAny( dependencies.concat( [ this._valueProperty ] ), this._a11yValueTextUpdateListener );
+      this.invalidateA11yDependencies();
     }
 
     public getA11yDependencies(): TReadOnlyProperty<IntentionalAny>[] {
