@@ -131,7 +131,7 @@ const AccessibleSlider = <SuperType extends Constructor<Node>>( Type: SuperType,
    * NOTE: See Node's _mutatorKeys documentation for more information on how this operates, and potential special
    *       cases that may apply.
    */
-  AccessibleSliderClass.prototype._mutatorKeys = ACCESSIBLE_SLIDER_OPTIONS.concat( Type.prototype._mutatorKeys );
+  AccessibleSliderClass.prototype._mutatorKeys = ACCESSIBLE_SLIDER_OPTIONS.concat( AccessibleSliderClass.prototype._mutatorKeys );
 
   assert && assert( AccessibleSliderClass.prototype._mutatorKeys.length === _.uniq( AccessibleSliderClass.prototype._mutatorKeys ).length, 'duplicate mutator keys in AccessibleSlider' );
 

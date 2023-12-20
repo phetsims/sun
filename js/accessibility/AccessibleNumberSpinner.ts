@@ -248,7 +248,7 @@ const AccessibleNumberSpinner = <SuperType extends Constructor<Node>>( Type: Sup
    * NOTE: See Node's _mutatorKeys documentation for more information on how this operates, and potential special
    *       cases that may apply.
    */
-  AccessibleNumberSpinnerClass.prototype._mutatorKeys = ACCESSIBLE_NUMBER_SPINNER_OPTIONS.concat( Type.prototype._mutatorKeys );
+  AccessibleNumberSpinnerClass.prototype._mutatorKeys = ACCESSIBLE_NUMBER_SPINNER_OPTIONS.concat( AccessibleNumberSpinnerClass.prototype._mutatorKeys );
 
   assert && assert( AccessibleNumberSpinnerClass.prototype._mutatorKeys.length === _.uniq( AccessibleNumberSpinnerClass.prototype._mutatorKeys ).length, 'duplicate mutator keys in AccessibleNumberSpinner' );
 

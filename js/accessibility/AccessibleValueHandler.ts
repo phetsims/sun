@@ -1133,7 +1133,7 @@ const AccessibleValueHandler = <SuperType extends Constructor<Node>>( Type: Supe
    * NOTE: See Node's _mutatorKeys documentation for more information on how this operates, and potential special
    *       cases that may apply.
    */
-  AccessibleValueHandlerClass.prototype._mutatorKeys = ACCESSIBLE_VALUE_HANDLER_OPTIONS.concat( Type.prototype._mutatorKeys );
+  AccessibleValueHandlerClass.prototype._mutatorKeys = ACCESSIBLE_VALUE_HANDLER_OPTIONS.concat( AccessibleValueHandlerClass.prototype._mutatorKeys );
 
   assert && assert( AccessibleValueHandlerClass.prototype._mutatorKeys.length === _.uniq( AccessibleValueHandlerClass.prototype._mutatorKeys ).length, 'duplicate mutator keys in AccessibleValueHandler' );
 
