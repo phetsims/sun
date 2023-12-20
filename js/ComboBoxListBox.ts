@@ -20,7 +20,7 @@ import sun from './sun.js';
 import TSoundPlayer from '../../tambo/js/TSoundPlayer.js';
 import DerivedProperty from '../../axon/js/DerivedProperty.js';
 import TProperty from '../../axon/js/TProperty.js';
-import ComboBox, { ComboBoxItemNoNode } from './ComboBox.js';
+import ComboBox, { ComboBoxA11yNamePropertyMap, ComboBoxItemNoNode } from './ComboBox.js';
 
 type SelfOptions = {
 
@@ -64,8 +64,17 @@ export default class ComboBoxListBox<T> extends Panel {
    * @param tandem
    * @param providedOptions
    */
-  public constructor( property: TProperty<T>, items: ComboBoxItemNoNode<T>[], nodes: Node[], hideListBoxCallback: () => void,
-                      focusButtonCallback: () => void, voiceOnSelectionNode: VoicingNode, tandem: Tandem, providedOptions?: ComboBoxListBoxOptions ) {
+  public constructor(
+    property: TProperty<T>,
+    items: ComboBoxItemNoNode<T>[],
+    nodes: Node[],
+    a11yNamePropertyMap: ComboBoxA11yNamePropertyMap<T>,
+    hideListBoxCallback: () => void,
+    focusButtonCallback: () => void,
+    voiceOnSelectionNode: VoicingNode,
+    tandem: Tandem,
+    providedOptions?: ComboBoxListBoxOptions
+  ) {
 
     assert && assert( items.length > 0, 'empty list box is not supported' );
 
@@ -162,8 +171,11 @@ export default class ComboBoxListBox<T> extends Panel {
     const listItemNodes: ComboBoxListItemNode<T>[] = [];
     items.forEach( ( item, index ) => {
 
+      const a11yNameProperty = a11yNamePropertyMap.get( item.value )!;
+      assert && assert( a11yNameProperty );
+
       // Create the list item node
-      const listItemNode = new ComboBoxListItemNode( item, nodes[ index ], highlightWidthProperty, highlightHeightProperty,
+      const listItemNode = new ComboBoxListItemNode( item, nodes[ index ], a11yNameProperty, highlightWidthProperty, highlightHeightProperty,
         combineOptions<ComboBoxListItemNodeOptions>( {
           align: options.align,
           highlightFill: options.highlightFill,

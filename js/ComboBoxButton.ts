@@ -19,11 +19,13 @@ import TProperty from '../../axon/js/TProperty.js';
 import nullSoundPlayer from '../../tambo/js/shared-sound-players/nullSoundPlayer.js';
 import TinyProperty from '../../axon/js/TinyProperty.js';
 import StrictOmit from '../../phet-core/js/types/StrictOmit.js';
-import ComboBox, { ComboBoxItemNoNode } from './ComboBox.js';
+import ComboBox, { ComboBoxA11yNamePropertyMap, ComboBoxItemNoNode } from './ComboBox.js';
 import Multilink from '../../axon/js/Multilink.js';
 import TReadOnlyProperty from '../../axon/js/TReadOnlyProperty.js';
 import PatternStringProperty from '../../axon/js/PatternStringProperty.js';
 import Property from '../../axon/js/Property.js';
+import DerivedProperty from '../../axon/js/DerivedProperty.js';
+import DynamicProperty from '../../axon/js/DynamicProperty.js';
 
 // constants
 const ALIGN_VALUES = [ 'left', 'center', 'right' ] as const;
@@ -66,7 +68,13 @@ export default class ComboBoxButton<T> extends RectangularPushButton {
   private arrow: Path;
   private separatorLine: Line;
 
-  public constructor( property: TProperty<T>, items: ComboBoxItemNoNode<T>[], nodes: Node[], providedOptions?: ComboBoxButtonOptions ) {
+  public constructor(
+    property: TProperty<T>,
+    items: ComboBoxItemNoNode<T>[],
+    nodes: Node[],
+    a11yNamePropertyMap: ComboBoxA11yNamePropertyMap<T>,
+    providedOptions?: ComboBoxButtonOptions
+  ) {
 
     const options = optionize<ComboBoxButtonOptions, SelfOptions, RectangularPushButtonOptions>()( {
 
@@ -234,34 +242,45 @@ export default class ComboBoxButton<T> extends RectangularPushButton {
     // Keep track for disposal
     let voicingPatternstringProperty: TReadOnlyProperty<string> | null = null;
 
-    // When Property's value changes, show the corresponding item's Node on the button.
-    let item: ComboBoxItemNoNode<T> | null = null;
-    const propertyObserver = ( value: T ) => {
+    const itemProperty = new DerivedProperty( [ property ], value => {
+      const item = _.find( items, item => item.value === value )!;
+      assert && assert( item, `no item found for value: ${value}` );
+      return item;
+    } );
+
+    const nodeProperty = new DerivedProperty( [ itemProperty ], item => {
+      return nodes[ items.indexOf( item ) ];
+    } );
+
+    const a11yNameProperty: TReadOnlyProperty<string | null> = new DynamicProperty( itemProperty, {
+      derive: item => a11yNamePropertyMap.get( item.value )!
+    } );
+
+    // Show the corresponding item's Node on the button.
+    nodeProperty.link( node => {
       // remove the node for the previous item
       itemNodeWrapper.removeAllChildren();
 
-      // find the ComboBoxItem whose value matches the property's value
-      item = _.find( items, item => item.value === value )!;
-      assert && assert( item, `no item found for value: ${value}` );
-      const index = items.indexOf( item );
-      const node = nodes[ index ];
-
       // add the associated node
       itemNodeWrapper.addChild( node );
+    } );
 
+    // Update the button's accessible name when the item changes.
+    a11yNameProperty.link( a11yName => {
       // pdom
-      this.innerContent = ( item.a11yName || null );
+      this.innerContent = a11yName;
 
+      // TODO: We should support this changing, see https://github.com/phetsims/sun/issues/865
       const patternProperty = typeof options.comboBoxVoicingNameResponsePattern === 'string' ?
                               new Property( options.comboBoxVoicingNameResponsePattern ) :
                               options.comboBoxVoicingNameResponsePattern;
 
       voicingPatternstringProperty && voicingPatternstringProperty.dispose();
+      // TODO: DO NOT have this getting recreated, we can simply create one up front, see https://github.com/phetsims/sun/issues/865
       this.voicingNameResponse = voicingPatternstringProperty = new PatternStringProperty( patternProperty, {
-        value: item.a11yName!
+        value: a11yName || ''
       }, { tandem: Tandem.OPT_OUT } );
-    };
-    property.link( propertyObserver );
+    } );
 
     // Add aria-labelledby attribute to the button.
     // The button is aria-labelledby its own label sibling, and then (second) its primary sibling in the PDOM.
@@ -286,7 +305,7 @@ export default class ComboBoxButton<T> extends RectangularPushButton {
       maxItemWidthProperty.dispose();
       maxItemHeightProperty.dispose();
 
-      property.unlink( propertyObserver );
+      itemProperty.dispose();
       options.localPreferredWidthProperty.unlink( preferredWidthListener );
 
       voicingPatternstringProperty && voicingPatternstringProperty.dispose();

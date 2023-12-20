@@ -36,7 +36,7 @@ import sun from './sun.js';
 import SunConstants from './SunConstants.js';
 import DerivedProperty from '../../axon/js/DerivedProperty.js';
 import IntentionalAny from '../../phet-core/js/types/IntentionalAny.js';
-import TReadOnlyProperty from '../../axon/js/TReadOnlyProperty.js';
+import TReadOnlyProperty, { isTReadOnlyProperty } from '../../axon/js/TReadOnlyProperty.js';
 import { SpeakableResolvedResponse } from '../../utterance-queue/js/ResponsePacket.js';
 import GroupItemOptions, { getGroupItemNodes } from './GroupItemOptions.js';
 import Multilink from '../../axon/js/Multilink.js';
@@ -44,6 +44,7 @@ import StrictOmit from '../../phet-core/js/types/StrictOmit.js';
 import PhetioProperty from '../../axon/js/PhetioProperty.js';
 import Matrix3 from '../../dot/js/Matrix3.js';
 import { ComboBoxListItemNodeOptions } from './ComboBoxListItemNode.js';
+import TinyProperty from '../../axon/js/TinyProperty.js';
 
 // const
 const LIST_POSITION_VALUES = [ 'above', 'below' ] as const; // where the list pops up relative to the button
@@ -71,6 +72,8 @@ export type ComboBoxItemNoNode<T> = StrictOmit<ComboBoxItem<T>, 'createNode'>;
 
 export type ComboBoxListPosition = typeof LIST_POSITION_VALUES[number];
 export type ComboBoxAlign = typeof ALIGN_VALUES[number];
+
+export type ComboBoxA11yNamePropertyMap<T> = Map<T, TReadOnlyProperty<string | null>>;
 
 // The definition for how ComboBox sets its accessibleName and helpText in the PDOM. Forward it onto its button. See
 // ComboBox.md for further style guide and documentation on the pattern.
@@ -150,6 +153,11 @@ export default class ComboBox<T> extends WidthSizable( Node ) {
 
   // List of nodes created from ComboBoxItems to be displayed with their corresponding value. See ComboBoxItem.createNode().
   public readonly nodes: Node[];
+
+  // A map from values to dynamic a11y names. This is required for correct operation, since we need to be able to
+  // modify a11y names dynamically (without requiring all ComboBox clients to do the wiring). Since we can't rely on
+  // Properties being passed in, we'll need to create Properties here.
+  public readonly a11yNamePropertyMap: ComboBoxA11yNamePropertyMap<T>;
 
   // button that shows the current selection (internal)
   public button: ComboBoxButton<T>;
@@ -262,10 +270,11 @@ export default class ComboBox<T> extends WidthSizable( Node ) {
     super();
 
     this.nodes = nodes;
+    this.a11yNamePropertyMap = ComboBox.getA11yNamePropertyMap( items );
 
     this.listPosition = options.listPosition;
 
-    this.button = new ComboBoxButton( property, items, nodes, {
+    this.button = new ComboBoxButton( property, items, nodes, this.a11yNamePropertyMap, {
       align: options.align,
       arrowDirection: ( options.listPosition === 'below' ) ? 'down' : 'up',
       cornerRadius: options.cornerRadius,
@@ -290,7 +299,7 @@ export default class ComboBox<T> extends WidthSizable( Node ) {
     } );
     this.addChild( this.button );
 
-    this.listBox = new ComboBoxListBox( property, items, nodes,
+    this.listBox = new ComboBoxListBox( property, items, nodes, this.a11yNamePropertyMap,
       this.hideListBox.bind( this ), // callback to hide the list box
       () => {
         this.button.blockNextVoicingFocusListener();
@@ -532,6 +541,29 @@ export default class ComboBox<T> extends WidthSizable( Node ) {
     }, {
       accessNonDependencies: true //TODO https://github.com/phetsims/axon/issues/441
     } );
+  }
+
+  public static getA11yNamePropertyMap<T>( items: ComboBoxItem<T>[] ): ComboBoxA11yNamePropertyMap<T> {
+    const map = new Map<T, TReadOnlyProperty<string | null>>();
+
+    // Connect a11yNamePropertyMap, creating Properties as needed.
+    items.forEach( item => {
+      let property: TReadOnlyProperty<string | null>;
+
+      if ( isTReadOnlyProperty( item.a11yName ) ) {
+        property = item.a11yName;
+      }
+      else if ( typeof item.a11yName === 'string' ) {
+        property = new TinyProperty( item.a11yName );
+      }
+      else {
+        property = new TinyProperty( null );
+      }
+
+      map.set( item.value, property );
+    } );
+
+    return map;
   }
 
   public static ComboBoxIO = new IOType( 'ComboBoxIO', {

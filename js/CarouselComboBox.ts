@@ -32,7 +32,7 @@ import Carousel, { CarouselOptions } from './Carousel.js';
 import ComboBoxButton, { ComboBoxButtonOptions } from './ComboBoxButton.js';
 import PageControl, { PageControlOptions } from './PageControl.js';
 import sun from './sun.js';
-import { ComboBoxItem } from './ComboBox.js';
+import ComboBox, { ComboBoxA11yNamePropertyMap, ComboBoxItem } from './ComboBox.js';
 import { getGroupItemNodes } from './GroupItemOptions.js';
 
 type SelfOptions = {
@@ -48,6 +48,9 @@ type ParentOptions = NodeOptions & WidthSizableOptions;
 export type CarouselComboBoxOptions = SelfOptions & StrictOmit<ParentOptions, 'children'>;
 
 export default class CarouselComboBox<T> extends WidthSizable( Node ) {
+
+  // See ComboBox for a description of this property.
+  public readonly a11yNamePropertyMap: ComboBoxA11yNamePropertyMap<T>;
 
   private readonly disposeCarouselComboBox: () => void;
 
@@ -113,6 +116,8 @@ export default class CarouselComboBox<T> extends WidthSizable( Node ) {
 
     super();
 
+    this.a11yNamePropertyMap = ComboBox.getA11yNamePropertyMap( comboBoxItems );
+
     // Make items in the carousel have the same width and height.
     const alignGroup = new AlignGroup();
 
@@ -148,7 +153,7 @@ export default class CarouselComboBox<T> extends WidthSizable( Node ) {
     } );
 
     // Pressing this button pops the carousel up and down
-    const button = new ComboBoxButton( property, comboBoxItems, contentNodes, combineOptions<ComboBoxButtonOptions>( {
+    const button = new ComboBoxButton( property, comboBoxItems, contentNodes, this.a11yNamePropertyMap, combineOptions<ComboBoxButtonOptions>( {
       listener: () => {
         carouselAndPageControl.visible = !carouselAndPageControl.visible;
       },
