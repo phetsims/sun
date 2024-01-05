@@ -1,5 +1,9 @@
 // Copyright 2022-2023, University of Colorado Boulder
 
+/**
+ * @author Jonathan Olson <jonathan.olson@colorado.edu>
+ */
+
 import sun from './sun.js';
 
 import './buttons/ArrowButton.js';
