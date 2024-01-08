@@ -326,14 +326,6 @@ export default class NumberSpinner extends AccessibleNumberSpinner( Node, 0 ) {
     this.disposeNumberSpinner();
     super.dispose();
   }
-
-  /**
-   * Sets the numberFormatter for the NumberDisplay.
-   */
-  public setNumberFormatter( numberFormatter: ( n: number ) => string ): void {
-    this.numberDisplay.setNumberFormatter( numberFormatter );
-  }
-
 }
 
 sun.register( 'NumberSpinner', NumberSpinner );
