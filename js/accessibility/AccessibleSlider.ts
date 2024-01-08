@@ -42,7 +42,7 @@ type AccessibleSliderOptions = SelfOptions & AccessibleValueHandlerOptions;
 
 /**
  * @param Type
- * @param optionsArgPosition - zero-indexed number that the options argument is provided at
+ * @param optionsArgPosition - zero-indexed number that the options argument is provided at in the constructor for Type
  */
 const AccessibleSlider = <SuperType extends Constructor<Node>>( Type: SuperType, optionsArgPosition: number ) => { // eslint-disable-line @typescript-eslint/explicit-module-boundary-types
   const AccessibleSliderClass = DelayedMutate( 'AccessibleSlider', ACCESSIBLE_SLIDER_OPTIONS, class AccessibleSlider extends AccessibleValueHandler( Type, optionsArgPosition ) {
