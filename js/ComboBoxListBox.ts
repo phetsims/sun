@@ -249,10 +249,13 @@ export default class ComboBoxListBox<T> extends Panel {
           else {
 
             // The selected item didn't provide a sound player, so use a default based on its position within the list
-            // of visible selections.
+            // of visible selections.  With multitouch, it's possible that the selected item may become invisible before
+            // we attempt to play its sound, so play only if it's still visible.
+            // See https://github.com/phetsims/fourier-making-waves/issues/244
             const selectionIndex = this.getVisibleListItemNodes().indexOf( this.selectionOnFireAction );
-            assert && assert( selectionIndex !== -1, 'sound generation does not support adding new items' );
-            defaultItemSelectedSoundPlayers[ selectionIndex ].play();
+            if ( selectionIndex !== -1 ) {
+              defaultItemSelectedSoundPlayers[ selectionIndex ].play();
+            }
           }
         }
       }
