@@ -2,6 +2,8 @@
 
 /**
  * Demo for Carousel
+ *
+ * @author Chris Malley (PixelZoom, Inc.)
  */
 
 import Carousel, { CarouselItem } from '../../Carousel.js';

@@ -2,6 +2,8 @@
 
 /**
  * Demo for ComboBox
+ *
+ * @author Chris Malley (PixelZoom, Inc.)
  */
 
 import ComboBox, { ComboBoxItem } from '../../ComboBox.js';

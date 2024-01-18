@@ -2,6 +2,8 @@
 
 /**
  * Demo for AccordionBox
+ *
+ * @author Chris Malley (PixelZoom, Inc.)
  */
 
 import RectangularPushButton from '../../buttons/RectangularPushButton.js';

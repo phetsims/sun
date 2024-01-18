@@ -2,6 +2,8 @@
 
 /**
  * Demo for NumberSpinner
+ *
+ * @author Chris Malley (PixelZoom, Inc.)
  */
 
 import NumberSpinner, { NumberSpinnerOptions } from '../../NumberSpinner.js';

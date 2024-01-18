@@ -2,6 +2,8 @@
 
 /**
  * Demo for PageControl
+ *
+ * @author Chris Malley (PixelZoom, Inc.)
  */
 
 import Bounds2 from '../../../../dot/js/Bounds2.js';

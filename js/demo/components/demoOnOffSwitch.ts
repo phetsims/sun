@@ -2,6 +2,8 @@
 
 /**
  * Demo for OnOffSwitch
+ *
+ * @author Chris Malley (PixelZoom, Inc.)
  */
 
 import BooleanProperty from '../../../../axon/js/BooleanProperty.js';

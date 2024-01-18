@@ -2,6 +2,8 @@
 
 /**
  * This toggle button uses a boolean Property and a trueNode and falseNode to display its content.
+ *
+ * @author John Blanco (PhET Interactive Simulations)
  */
 
 import Tandem from '../../../tandem/js/Tandem.js';

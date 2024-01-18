@@ -3,6 +3,8 @@
 /**
  * Base class for button models, which describe the behavior of buttons when users interact with them.  Property values
  * are set by an associated listener, see PressListener for details.
+ *
+ * @author John Blanco (PhET Interactive Simulations)
  */
 
 import BooleanProperty from '../../../axon/js/BooleanProperty.js';

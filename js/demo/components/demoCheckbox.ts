@@ -2,6 +2,8 @@
 
 /**
  * Demo for Checkbox
+ *
+ * @author Chris Malley (PixelZoom, Inc.)
  */
 
 import BooleanProperty from '../../../../axon/js/BooleanProperty.js';

@@ -2,6 +2,8 @@
 
 /**
  * Demo for AlignGroup
+ *
+ * @author Chris Malley (PixelZoom, Inc.)
  */
 
 import Panel from '../../Panel.js';

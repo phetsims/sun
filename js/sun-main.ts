@@ -2,6 +2,8 @@
 
 /**
  * Main file for the Sun library demo.
+ *
+ * @author John Blanco (PhET Interactive Simulations)
  */
 
 import Property from '../../axon/js/Property.js';

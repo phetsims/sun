@@ -2,6 +2,8 @@
 
 /**
  * Demo for NumberPicker
+ *
+ * @author Chris Malley (PixelZoom, Inc.)
  */
 
 import NumberPicker from '../../NumberPicker.js';
