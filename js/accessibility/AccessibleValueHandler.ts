@@ -20,7 +20,7 @@ import Utils from '../../../dot/js/Utils.js';
 import Range from '../../../dot/js/Range.js';
 import assertHasProperties from '../../../phet-core/js/assertHasProperties.js';
 import Orientation from '../../../phet-core/js/Orientation.js';
-import { animatedPanZoomSingleton, DelayedMutate, KeyboardUtils, Node, NodeOptions, PDOMUtils, PDOMValueType, SceneryEvent, SceneryListenerFunction, TInputListener, Voicing, VoicingOptions } from '../../../scenery/js/imports.js';
+import { animatedPanZoomSingleton, DelayedMutate, KeyboardUtils, Node, NodeOptions, PDOMPointer, PDOMUtils, PDOMValueType, SceneryEvent, SceneryListenerFunction, TInputListener, Voicing, VoicingOptions } from '../../../scenery/js/imports.js';
 import Utterance from '../../../utterance-queue/js/Utterance.js';
 import sun from '../sun.js';
 import optionize, { combineOptions } from '../../../phet-core/js/optionize.js';
@@ -232,7 +232,7 @@ const AccessibleValueHandler = <SuperType extends Constructor<Node>>( Type: Supe
     private _enabledRangeProperty: TReadOnlyProperty<Range>;
     private _startInput: SceneryListenerFunction = _.noop;
     private _onInput: SceneryListenerFunction = _.noop;
-    private _endInput: SceneryListenerFunction = _.noop;
+    private _endInput: ( ( event: SceneryEvent | null ) => void ) = _.noop;
     private _constrainValue: ( ( value: number ) => number ) = _.identity;
     private _a11yMapValue: ( ( newValue: number, previousValue: number ) => number ) = _.identity;
     private _panTargetNode: Node | null = null;
@@ -293,6 +293,12 @@ const AccessibleValueHandler = <SuperType extends Constructor<Node>>( Type: Supe
 
     // Options for the Voicing response at the end of interaction with this component.
     private _voicingOnEndResponseOptions: VoicingOnEndResponseOptions = DEFAULT_VOICING_ON_END_RESPONSE_OPTIONS;
+
+    // At the start of input, a listener is attached to the PDOMPointer to prevent listeners closer to the
+    // scene graph root from firing. A reference to the pointer is saved to support interrupt because
+    // there is no SceneryEvent.
+    private _pdomPointer: PDOMPointer | null = null;
+    private _pdomPointerListener: TInputListener;
 
     private readonly _a11yValueTextUpdateListener: () => void;
     private readonly _disposeAccessibleValueHandler: () => void;
@@ -357,6 +363,13 @@ const AccessibleValueHandler = <SuperType extends Constructor<Node>>( Type: Supe
       const valuePropertyListener = this.invalidateValueProperty.bind( this );
       this._valueProperty.link( valuePropertyListener );
 
+      // A listener that will be attached to the pointer to prevent other listeners from attaching.
+      this._pdomPointerListener = {
+        interrupt: (): void => {
+          this._onInteractionEnd( null );
+        }
+      };
+
       this._disposeAccessibleValueHandler = () => {
         this._enabledRangeProperty.unlink( enabledRangeObserver );
         this._valueProperty.unlink( valuePropertyListener );
@@ -382,7 +395,7 @@ const AccessibleValueHandler = <SuperType extends Constructor<Node>>( Type: Supe
       return this._onInput;
     }
 
-    public set endInput( value: SceneryListenerFunction ) {
+    public set endInput( value: ( ( event: SceneryEvent | null ) => void ) ) {
       this._endInput = value;
     }
 
@@ -924,6 +937,9 @@ const AccessibleValueHandler = <SuperType extends Constructor<Node>>( Type: Supe
      * when generating the context response with option a11yCreateContextResponse.
      */
     private _onInteractionStart( event: SceneryEvent ): void {
+      this._pdomPointer = event.pointer as PDOMPointer;
+      this._pdomPointer.addInputListener( this._pdomPointerListener, true );
+
       this._valueOnStart = this._valueProperty.value;
       this._startInput( event );
     }
@@ -931,11 +947,20 @@ const AccessibleValueHandler = <SuperType extends Constructor<Node>>( Type: Supe
     /**
      * Interaction with this input has completed, generate an utterance describing changes if necessary and call
      * optional "end" function.
+     *
+     * @param [event] - Event is not guaranteed because we need to support interruption
      */
-    private _onInteractionEnd( event: SceneryEvent ): void {
+    private _onInteractionEnd( event: SceneryEvent | null ): void {
+
       this.alertContextResponse();
       this.voicingOnEndResponse( this._valueOnStart );
       this._endInput( event );
+
+      // detach the pointer listener that was attached on keydown
+      assert && assert( this._pdomPointer, 'Pointer should be assigned' );
+      assert && assert( this._pdomPointer!.attachedListener === this._pdomPointerListener, 'pointer listener should be attached' );
+      this._pdomPointer!.removeInputListener( this._pdomPointerListener );
+      this._pdomPointer = null;
     }
 
     /**
