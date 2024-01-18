@@ -63,6 +63,9 @@ const Popupable = <SuperType extends Constructor<Node>>( type: SuperType, option
     // The node provided to showPopup, with the transform applied
     public readonly popupParent: Node;
 
+    private readonly disableModals: boolean;
+    private readonly isModal: boolean;
+
     // Whether the popup is being shown
     public readonly isShowingProperty: Property<boolean>;
 
@@ -97,6 +100,8 @@ const Popupable = <SuperType extends Constructor<Node>>( type: SuperType, option
 
       this.layoutBounds = options.layoutBounds;
       this._focusOnShowNode = options.focusOnShowNode;
+      this.disableModals = options.disableModals;
+      this.isModal = options.isModal;
       this._focusOnHideNode = options.focusOnHideNode;
       this._nodeToFocusOnHide = null;
       this.popupParent = new PopupParentNode( this, {
@@ -112,9 +117,6 @@ const Popupable = <SuperType extends Constructor<Node>>( type: SuperType, option
       } );
 
       this.isShowingProperty.lazyLink( isShowing => {
-        if ( options.disableModals && options.isModal ) {
-          return;
-        }
         if ( isShowing ) {
           options.showPopup( this.popupParent, options.isModal );
         }
@@ -131,6 +133,10 @@ const Popupable = <SuperType extends Constructor<Node>>( type: SuperType, option
     }
 
     public show(): void {
+      // Global shutoff when modals are disabled
+      if ( this.disableModals && this.isModal ) {
+        return;
+      }
 
       // save a reference before setting isShowingProperty because listeners on the isShowingProperty may modify or
       // clear focus from FocusManager.pdomFocusedNode.
