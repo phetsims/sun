@@ -132,9 +132,14 @@ const Popupable = <SuperType extends Constructor<Node>>( type: SuperType, option
       }
     }
 
+    // Provide a chance of not showing, see disableModals
+    protected shouldShowPopup(): boolean {
+      const optOut = this.isModal && this.disableModals;
+      return !optOut;
+    }
+
     public show(): void {
-      // Global shutoff when modals are disabled
-      if ( this.disableModals && this.isModal ) {
+      if ( !this.shouldShowPopup() ) {
         return;
       }
 
