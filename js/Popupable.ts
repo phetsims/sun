@@ -38,6 +38,10 @@ type SelfOptions = {
   // The Node that receives focus when the Popupable is closed. If null, focus will return
   // to the Node that had focus when the Dialog opened.
   focusOnHideNode?: Node | null;
+
+  // When true, no modal show/hide feature will be supported. This is a way of opting out of the Popupable feature
+  // altogether for this runtime.
+  disableModals?: boolean;
 };
 type ParentOptions = PickOptional<NodeOptions, 'tandem'>;
 export type PopupableOptions = SelfOptions & ParentOptions;
@@ -84,7 +88,8 @@ const Popupable = <SuperType extends Constructor<Node>>( type: SuperType, option
         isModal: true,
         layoutBounds: null,
         focusOnShowNode: null,
-        focusOnHideNode: null
+        focusOnHideNode: null,
+        disableModals: _.get( window, 'phet.chipper.queryParameters.disableModals' ) || false
       }, providedOptions );
 
       // see https://github.com/phetsims/joist/issues/293
@@ -107,6 +112,9 @@ const Popupable = <SuperType extends Constructor<Node>>( type: SuperType, option
       } );
 
       this.isShowingProperty.lazyLink( isShowing => {
+        if ( options.disableModals && options.isModal ) {
+          return;
+        }
         if ( isShowing ) {
           options.showPopup( this.popupParent, options.isModal );
         }
