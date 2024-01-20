@@ -97,7 +97,7 @@ const AccessibleNumberSpinner = <SuperType extends Constructor<Node>>( Type: Sup
       this.incrementDownEmitter = new Emitter( { parameters: [ { valueType: 'boolean' } ] } );
       this.decrementDownEmitter = new Emitter( { parameters: [ { valueType: 'boolean' } ] } );
 
-      this.setPDOMAttribute( 'aria-roledescription', SunStrings.a11y.numberSpinnerRoleDescriptionStringProperty );
+      this.setPDOMAttribute( 'aria-roledescription', SunStrings.a11y.numberSpinnerRoleDescriptionStringProperty.value );
 
       // a callback that is added and removed from the timer depending on keystate
       let downCallback: CallbackTimerCallback | null = null;
