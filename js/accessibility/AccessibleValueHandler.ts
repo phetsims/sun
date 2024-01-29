@@ -30,6 +30,8 @@ import TProperty from '../../../axon/js/TProperty.js';
 import Constructor from '../../../phet-core/js/types/Constructor.js';
 import IntentionalAny from '../../../phet-core/js/types/IntentionalAny.js';
 import TReadOnlyProperty from '../../../axon/js/TReadOnlyProperty.js';
+import DynamicProperty from '../../../axon/js/DynamicProperty.js';
+import Property from '../../../axon/js/Property.js';
 
 // constants
 const DEFAULT_TAG_NAME = 'input';
@@ -125,6 +127,11 @@ type SelfOptions = {
 
   // delta for the valueProperty for each press of "Page Up" and "Page Down"
   pageKeyboardStep?: number;
+
+  // If true, alternative input will be 'reversed' so that keys that normally increase the value will decrease it,
+  // and vice versa. This is useful for cases where the valueProperty has an inverted behavior from typical slider
+  // input. For example, a knob that moves to the left to increase the valueProperty.
+  reverseAlternativeInput?: boolean;
 
   // specify orientation, read by assistive technology
   ariaOrientation?: Orientation;
@@ -339,7 +346,20 @@ const AccessibleValueHandler = <SuperType extends Constructor<Node>>( Type: Supe
       const valueProperty = providedOptions.valueProperty;
       const enabledRangeProperty = providedOptions.enabledRangeProperty;
 
-      this._valueProperty = valueProperty;
+      if ( providedOptions.reverseAlternativeInput ) {
+
+        // A DynamicProperty will invert the value before setting it to the actual valueProperty, and similarly
+        // invert if the valueProperty changes externally.
+        this._valueProperty = new DynamicProperty( new Property( valueProperty ), {
+          bidirectional: true,
+          map: ( propertyValue: number ) => enabledRangeProperty.value.max - propertyValue,
+          inverseMap: ( propertyValue: number ) => enabledRangeProperty.value.max - propertyValue
+        } );
+      }
+      else {
+        this._valueProperty = valueProperty;
+      }
+
       this._enabledRangeProperty = enabledRangeProperty;
 
       this._a11yValueTextUpdateListener = this.invalidateAriaValueText.bind( this );
@@ -373,6 +393,15 @@ const AccessibleValueHandler = <SuperType extends Constructor<Node>>( Type: Supe
       this._disposeAccessibleValueHandler = () => {
         this._enabledRangeProperty.unlink( enabledRangeObserver );
         this._valueProperty.unlink( valuePropertyListener );
+
+        if ( providedOptions.reverseAlternativeInput ) {
+          assert && assert(
+            this._valueProperty instanceof DynamicProperty,
+            'Only a DynamicProperty can be disposed, otherwise this is disposing a Property that AccessibleValueHandler does not have ownership over.'
+          );
+          this._valueProperty.dispose();
+        }
+
         this._dependenciesMultilink && this._dependenciesMultilink.dispose();
         this._panTargetNode = null;
         this._a11yDependencies = [];
