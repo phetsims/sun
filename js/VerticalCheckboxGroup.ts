@@ -13,11 +13,11 @@ import { VBox, VBoxOptions } from '../../scenery/js/imports.js';
 import Tandem from '../../tandem/js/Tandem.js';
 import Checkbox, { CheckboxOptions } from './Checkbox.js';
 import sun from './sun.js';
-import Property from '../../axon/js/Property.js';
 import GroupItemOptions, { getGroupItemNodes } from './GroupItemOptions.js';
+import PhetioProperty from '../../axon/js/PhetioProperty.js';
 
 export type VerticalCheckboxGroupItem = {
-  property: Property<boolean>; // Property associated with the checkbox
+  property: PhetioProperty<boolean>; // Property associated with the checkbox
   options?: StrictOmit<CheckboxOptions, 'tandem'>; // Item-specific options to be passed to the Checkbox constructor
 } & GroupItemOptions; // additional options that are common to 'group items'
 
