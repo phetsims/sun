@@ -250,7 +250,8 @@ export default class AccordionBox extends Sizable( Node ) {
     this.expandedProperty = options.expandedProperty;
     if ( !this.expandedProperty ) {
       this.expandedProperty = new BooleanProperty( true, {
-        tandem: options.tandem.createTandem( 'expandedProperty' )
+        tandem: options.tandem.createTandem( 'expandedProperty' ),
+        phetioFeatured: true
       } );
       this.disposeEmitter.addListener( () => this.expandedProperty.dispose() );
     }
