@@ -1138,6 +1138,11 @@ const AccessibleValueHandler = <SuperType extends Constructor<Node>>( Type: Supe
       // the max value as a workaround
       if ( stepValue / mappedLength < 1e-5 ) {
         stepValue = mappedMax / 100;
+
+        // Limit the precision of the calculated value.  This is necessary because otherwise floating point inaccuracies
+        // can lead to add behaviors with screen readers, see https://github.com/phetsims/greenhouse-effect/issues/388.
+        // The number of significant digits was chosen somewhat arbitrarily;
+        stepValue = Number( stepValue.toPrecision( 8 ) );
       }
 
       this.setPDOMAttribute( 'step', stepValue );
