@@ -47,14 +47,8 @@ const DEFAULT_VOICING_ON_END_RESPONSE_OPTIONS = {
 type CreateTextFunction = {
 
   /**
-   * A function that takes values and converts it into a description string for the screen reader. Typically
-   * you will wrap the values with some context information like 'The current value is ${newValue}.'
-   *
-   * All values provided in this callback have limited precision so that they sound better when spoken by a screen
-   * readers. See limitPrecision for more information.
-   *
-   * @param pdomMappedValue - The result of a11yMapPDOMValue, see that function for more information
-   * @param newValue - the new value, Property value
+   * @param pdomMappedValue - see
+   * @param newValue - the new value, unformatted
    * @param valueOnStart - the value at the start of the interaction, the value on keydown for press and hold
    * @returns - text/response/string to be set to the primarySibling, null means nothing will happen
    * */
@@ -547,8 +541,8 @@ const AccessibleValueHandler = <SuperType extends Constructor<Node>>( Type: Supe
       const mappedMax = this._getMappedValue( enabledRange.max );
 
       // pdom - update enabled slider range for AT, required for screen reader events to behave correctly
-      this.setPDOMAttribute( 'min', AccessibleValueHandler.limitPrecision( mappedMin ) );
-      this.setPDOMAttribute( 'max', AccessibleValueHandler.limitPrecision( mappedMax ) );
+      this.setPDOMAttribute( 'min', mappedMin );
+      this.setPDOMAttribute( 'max', mappedMax );
 
       // update the step attribute slider element - this attribute is only added because it is required to
       // receive accessibility events on all browsers, and is totally separate from the step values above that
@@ -557,7 +551,7 @@ const AccessibleValueHandler = <SuperType extends Constructor<Node>>( Type: Supe
     }
 
     private invalidateValueProperty(): void {
-      const mappedValue = AccessibleValueHandler.limitPrecision( this._getMappedValue() );
+      const mappedValue = this._getMappedValue();
 
       // set the aria-valuenow attribute in case the AT requires it to read the value correctly, some may
       // fall back on this from aria-valuetext see
@@ -606,11 +600,7 @@ const AccessibleValueHandler = <SuperType extends Constructor<Node>>( Type: Supe
       const mappedValue = this._getMappedValue();
 
       // create the dynamic aria-valuetext from a11yCreateAriaValueText.
-      const newAriaValueTextValueType = this._a11yCreateAriaValueText(
-        AccessibleValueHandler.limitPrecision( mappedValue ),
-        AccessibleValueHandler.limitPrecision( this._valueProperty.value ),
-        oldPropertyValue ? AccessibleValueHandler.limitPrecision( oldPropertyValue ) : null
-      );
+      const newAriaValueTextValueType = this._a11yCreateAriaValueText( mappedValue, this._valueProperty.value, oldPropertyValue );
       let newAriaValueText = PDOMUtils.unwrapStringProperty( newAriaValueTextValueType )!;
 
       // eslint-disable-next-line no-simple-type-checking-assertions
@@ -1148,9 +1138,13 @@ const AccessibleValueHandler = <SuperType extends Constructor<Node>>( Type: Supe
       // the max value as a workaround
       if ( stepValue / mappedLength < 1e-5 ) {
         stepValue = mappedMax / 100;
+
+        // Limit the precision of the calculated value.  This is necessary because otherwise floating point inaccuracies
+        // can lead to add behaviors with screen readers, see https://github.com/phetsims/greenhouse-effect/issues/388.
+        // The number of significant digits was chosen somewhat arbitrarily;
+        stepValue = Number( stepValue.toPrecision( 8 ) );
       }
 
-      stepValue = AccessibleValueHandler.limitPrecision( stepValue );
       this.setPDOMAttribute( 'step', stepValue );
     }
 
@@ -1188,15 +1182,6 @@ const AccessibleValueHandler = <SuperType extends Constructor<Node>>( Type: Supe
       this._disposeAccessibleValueHandler();
 
       super.dispose();
-    }
-
-    /**
-     * Limit the precision of the calculated value.  This is necessary because otherwise floating point inaccuracies
-     * can lead to add behaviors with screen readers, see https://github.com/phetsims/greenhouse-effect/issues/388.
-     * The number of significant digits was chosen somewhat arbitrarily.
-     */
-    public static limitPrecision( value: number ): number {
-      return Number( value.toPrecision( 8 ) );
     }
   } );
 
