@@ -369,11 +369,6 @@ const AccessibleValueHandler = <SuperType extends Constructor<Node>>( Type: Supe
       this.shiftKeyboardStep = ( enabledRangeProperty.get().max - enabledRangeProperty.get().min ) / 100;
       this.pageKeyboardStep = ( enabledRangeProperty.get().max - enabledRangeProperty.get().min ) / 10;
 
-      // Use the 'any' attribute so that the browser allows any value for the input element within the range.
-      // This is important for screen readers to be able to read the value correctly, otherwise they declare
-      // some values as 'invalid' or prevent the user from using the input.
-      this.setPDOMAttribute( 'step', 'any' );
-
       this._valueOnStart = valueProperty.value;
 
       // be called last, after options have been set to `this`.
@@ -548,6 +543,11 @@ const AccessibleValueHandler = <SuperType extends Constructor<Node>>( Type: Supe
       // pdom - update enabled slider range for AT, required for screen reader events to behave correctly
       this.setPDOMAttribute( 'min', mappedMin );
       this.setPDOMAttribute( 'max', mappedMax );
+
+      // update the step attribute slider element - this attribute is only added because it is required to
+      // receive accessibility events on all browsers, and is totally separate from the step values above that
+      // will modify the valueProperty. See function for more information.
+      this._updateSiblingStepAttribute();
     }
 
     private invalidateValueProperty(): void {
@@ -1097,6 +1097,55 @@ const AccessibleValueHandler = <SuperType extends Constructor<Node>>( Type: Supe
      */
     private _anyKeysDown(): boolean {
       return !!_.find( this._rangeKeysDown, entry => entry );
+    }
+
+    /**
+     * Set the `step` attribute on accessible siblings for this Node. The step attribute must be non zero
+     * for the accessible input to receive accessibility events and only certain slider input values are
+     * allowed depending on `step`, `min`, and `max` attributes. Only values which are equal to min value plus
+     * the basis of step are allowed. In other words, the following must always be true:
+     * value = min + n * step where value <= max and n is an integer.
+     *
+     * If the input value is set to anything else, the result is confusing
+     * keyboard behavior and the screen reader will say "Invalid" when the value changes.
+     * See https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/number#step
+     *
+     * This limitation is too restrictive for PhET as many sliders span physical ranges with keyboard steps that
+     * are design to be convenient or pedagogically useful. For example, a slider that spans 0.01 to 15 requires
+     * a step of 1, but DOM specification would only allow values 0.01, 1.01, 2.01, ...
+     * This restriction is why `step` attribute cannot equal keyboardStep of this trait.
+     *
+     * We tried to use the `any` attribute which is valid according to DOM specification but screen readers
+     * generally don't support it. See https://github.com/phetsims/sun/issues/413.
+     *
+     * Also, if the step attribute is too small relative to the entire range of the slider VoiceOver doesn't allow
+     * any input events because...VoiceOver is just interesting like that.
+     *
+     * Current workaround for all of this is to set the step size to support the precision of the value required
+     * by the client so that all values are allowed. If we encounter the VoiceOver case described above we fall
+     * back to setting the step size at 1/100th of the max value since the keyboard step generally evenly divides
+     * the max value rather than the full range.
+     */
+    private _updateSiblingStepAttribute(): void {
+      const smallestStep = Math.min( this.keyboardStep, this.shiftKeyboardStep, this.pageKeyboardStep );
+      let stepValue = Math.pow( 10, -Utils.numberOfDecimalPlaces( smallestStep ) );
+
+      const mappedMin = this._getMappedValue( this._enabledRangeProperty.get().min );
+      const mappedMax = this._getMappedValue( this._enabledRangeProperty.get().max );
+      const mappedLength = mappedMax - mappedMin;
+
+      // step is too small relative to full range for VoiceOver to receive input, fall back to portion of
+      // the max value as a workaround
+      if ( stepValue / mappedLength < 1e-5 ) {
+        stepValue = mappedMax / 100;
+
+        // Limit the precision of the calculated value.  This is necessary because otherwise floating point inaccuracies
+        // can lead to add behaviors with screen readers, see https://github.com/phetsims/greenhouse-effect/issues/388.
+        // The number of significant digits was chosen somewhat arbitrarily;
+        stepValue = Number( stepValue.toPrecision( 8 ) );
+      }
+
+      this.setPDOMAttribute( 'step', stepValue );
     }
 
     /**
