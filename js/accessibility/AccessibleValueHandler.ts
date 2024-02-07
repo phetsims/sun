@@ -32,6 +32,7 @@ import IntentionalAny from '../../../phet-core/js/types/IntentionalAny.js';
 import TReadOnlyProperty from '../../../axon/js/TReadOnlyProperty.js';
 import DynamicProperty from '../../../axon/js/DynamicProperty.js';
 import Property from '../../../axon/js/Property.js';
+import platform from '../../../phet-core/js/platform.js';
 
 // constants
 const DEFAULT_TAG_NAME = 'input';
@@ -1100,9 +1101,11 @@ const AccessibleValueHandler = <SuperType extends Constructor<Node>>( Type: Supe
     }
 
     /**
-     * Set the `step` attribute on accessible siblings for this Node. The step attribute must be non zero
-     * for the accessible input to receive accessibility events and only certain slider input values are
-     * allowed depending on `step`, `min`, and `max` attributes. Only values which are equal to min value plus
+     * Set the `step` attribute on accessible siblings for this Node. Usually, we can use the 'any' value,
+     * which means that any value within the range is allowed. However, iOS VoiceOver does not support 'any'
+     * so we have to calculate a valid step value for mobile Safari.
+     *
+     * The step attribute must be non-zero. Only values which are equal to min value plus
      * the basis of step are allowed. In other words, the following must always be true:
      * value = min + n * step where value <= max and n is an integer.
      *
@@ -1113,6 +1116,7 @@ const AccessibleValueHandler = <SuperType extends Constructor<Node>>( Type: Supe
      * This limitation is too restrictive for PhET as many sliders span physical ranges with keyboard steps that
      * are design to be convenient or pedagogically useful. For example, a slider that spans 0.01 to 15 requires
      * a step of 1, but DOM specification would only allow values 0.01, 1.01, 2.01, ...
+     *
      * This restriction is why `step` attribute cannot equal keyboardStep of this trait.
      *
      * We tried to use the `any` attribute which is valid according to DOM specification but screen readers
@@ -1127,22 +1131,27 @@ const AccessibleValueHandler = <SuperType extends Constructor<Node>>( Type: Supe
      * the max value rather than the full range.
      */
     private _updateSiblingStepAttribute(): void {
-      const smallestStep = Math.min( this.keyboardStep, this.shiftKeyboardStep, this.pageKeyboardStep );
-      let stepValue = Math.pow( 10, -Utils.numberOfDecimalPlaces( smallestStep ) );
+      let stepValue: number | string = 'any';
 
-      const mappedMin = this._getMappedValue( this._enabledRangeProperty.get().min );
-      const mappedMax = this._getMappedValue( this._enabledRangeProperty.get().max );
-      const mappedLength = mappedMax - mappedMin;
+      if ( platform.mobileSafari ) {
 
-      // step is too small relative to full range for VoiceOver to receive input, fall back to portion of
-      // the max value as a workaround
-      if ( stepValue / mappedLength < 1e-5 ) {
-        stepValue = mappedMax / 100;
+        const smallestStep = Math.min( this.keyboardStep, this.shiftKeyboardStep, this.pageKeyboardStep );
+        stepValue = Math.pow( 10, -Utils.numberOfDecimalPlaces( smallestStep ) );
 
-        // Limit the precision of the calculated value.  This is necessary because otherwise floating point inaccuracies
-        // can lead to add behaviors with screen readers, see https://github.com/phetsims/greenhouse-effect/issues/388.
-        // The number of significant digits was chosen somewhat arbitrarily;
-        stepValue = Number( stepValue.toPrecision( 8 ) );
+        const mappedMin = this._getMappedValue( this._enabledRangeProperty.get().min );
+        const mappedMax = this._getMappedValue( this._enabledRangeProperty.get().max );
+        const mappedLength = mappedMax - mappedMin;
+
+        // step is too small relative to full range for VoiceOver to receive input, fall back to portion of
+        // the max value as a workaround
+        if ( stepValue / mappedLength < 1e-5 ) {
+          stepValue = mappedMax / 100;
+
+          // Limit the precision of the calculated value.  This is necessary because otherwise floating point inaccuracies
+          // can lead to add behaviors with screen readers, see https://github.com/phetsims/greenhouse-effect/issues/388.
+          // The number of significant digits was chosen somewhat arbitrarily;
+          stepValue = Number( stepValue.toPrecision( 8 ) );
+        }
       }
 
       this.setPDOMAttribute( 'step', stepValue );
