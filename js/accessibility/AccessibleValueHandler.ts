@@ -1119,9 +1119,6 @@ const AccessibleValueHandler = <SuperType extends Constructor<Node>>( Type: Supe
      *
      * This restriction is why `step` attribute cannot equal keyboardStep of this trait.
      *
-     * We tried to use the `any` attribute which is valid according to DOM specification but screen readers
-     * generally don't support it. See https://github.com/phetsims/sun/issues/413.
-     *
      * Also, if the step attribute is too small relative to the entire range of the slider VoiceOver doesn't allow
      * any input events because...VoiceOver is just interesting like that.
      *
@@ -1129,6 +1126,10 @@ const AccessibleValueHandler = <SuperType extends Constructor<Node>>( Type: Supe
      * by the client so that all values are allowed. If we encounter the VoiceOver case described above we fall
      * back to setting the step size at 1/100th of the max value since the keyboard step generally evenly divides
      * the max value rather than the full range.
+     *
+     * See the following issues for history:
+     * https://github.com/phetsims/sun/issues/413
+     * https://github.com/phetsims/sun/issues/873
      */
     private _updateSiblingStepAttribute(): void {
       let stepValue: number | string = 'any';
