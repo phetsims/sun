@@ -1,14 +1,13 @@
 // Copyright 2024, University of Colorado Boulder
 /**
- * RichDragListener extends DragListener to integrate the drag and drop sound clips.
+ * RichKeyboardDragListener extends KeyboardDragListener to integrate the drag and drop sound clips.
  *
  * @author Agustín Vallejo
  */
 
 import sun from './sun.js';
-import { DragListener, DragListenerOptions } from '../../scenery/js/imports.js';
+import { KeyboardDragListener, KeyboardDragListenerOptions } from '../../scenery/js/imports.js';
 import optionize from '../../phet-core/js/optionize.js';
-import IntentionalAny from '../../phet-core/js/types/IntentionalAny.js';
 import SoundClip, { SoundClipOptions } from '../../tambo/js/sound-generators/SoundClip.js';
 import grab_mp3 from '../../tambo/sounds/grab_mp3.js';
 import release_mp3 from '../../tambo/sounds/release_mp3.js';
@@ -22,10 +21,10 @@ const DEFAULT_DRAG_CLIP_OPTIONS: SoundClipOptions = {
   initialOutputLevel: 0.4
 };
 
-export type RichDragListenerOptions = SelfOptions & DragListenerOptions<IntentionalAny>;
+export type RichKeyboardDragListenerOptions = SelfOptions & KeyboardDragListenerOptions;
 
-export default class RichDragListener extends DragListener {
-  public constructor( providedOptions: RichDragListenerOptions ) {
+export default class RichKeyboardDragListener extends KeyboardDragListener {
+  public constructor( providedOptions: RichKeyboardDragListenerOptions ) {
 
     // Create sound clips.
     const dragClipOptions = providedOptions.dragClipOptions ? providedOptions.dragClipOptions : DEFAULT_DRAG_CLIP_OPTIONS;
@@ -36,9 +35,8 @@ export default class RichDragListener extends DragListener {
     soundManager.addSoundGenerator( grabClip );
     soundManager.addSoundGenerator( releaseClip );
 
-    const options = optionize<RichDragListenerOptions, SelfOptions, DragListenerOptions<IntentionalAny>>()( {
+    const options = optionize<RichKeyboardDragListenerOptions, SelfOptions, KeyboardDragListenerOptions>()( {
 
-      // TODO: https://github.com/phetsims/scenery/issues/1592 how to merge providedOptions.start()
       start: () => {
         grabClip.play();
       },
@@ -55,4 +53,4 @@ export default class RichDragListener extends DragListener {
   }
 }
 
-sun.register( 'RichDragListener', RichDragListener );
+sun.register( 'RichKeyboardDragListener', RichKeyboardDragListener );
