@@ -11,7 +11,7 @@
 import { Shape } from '../../kite/js/imports.js';
 import StrictOmit from '../../phet-core/js/types/StrictOmit.js';
 import optionize from '../../phet-core/js/optionize.js';
-import { IndexedNodeIO, Node, NodeOptions, Rectangle, TPaint, Voicing, VoicingOptions } from '../../scenery/js/imports.js';
+import { IndexedNodeIO, Node, NodeOptions, PressListener, Rectangle, TPaint, Voicing, VoicingOptions } from '../../scenery/js/imports.js';
 import Tandem from '../../tandem/js/Tandem.js';
 import sun from './sun.js';
 import SunConstants from './SunConstants.js';
@@ -173,14 +173,19 @@ export default class ComboBoxListItemNode<T> extends Voicing( Node ) {
       this.focusHighlight = Shape.bounds( localBounds );
     } );
 
+    const pressListener = new PressListener( {
+      attach: false
+    } );
+    this.addInputListener( pressListener );
+
     // Show highlight when pointer is over this item.
     // Change fill instead of visibility so that we don't end up with vertical pointer gaps in the list
-    this.addInputListener( {
-      enter() { highlightRectangle.fill = options.highlightFill; },
-      exit() { highlightRectangle.fill = null; }
+    pressListener.looksOverProperty.link( pressed => {
+      highlightRectangle.fill = pressed ? options.highlightFill : null;
     } );
 
     this.disposeComboBoxListItemNode = () => {
+      pressListener.dispose();
       patternStringProperty.dispose();
       emptyA11yNameProperty.dispose();
       a11yNameProperty.unlink( a11yNameListener );
