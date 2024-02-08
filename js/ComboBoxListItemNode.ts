@@ -174,7 +174,8 @@ export default class ComboBoxListItemNode<T> extends Voicing( Node ) {
     } );
 
     const pressListener = new PressListener( {
-      attach: false
+      attach: false,
+      tandem: Tandem.OPT_OUT
     } );
     this.addInputListener( pressListener );
 
