@@ -242,7 +242,7 @@ export default class AquaRadioButton<T> extends WidthSizable( Voicing( Node ) ) 
     };
 
     // support for binder documentation, stripped out in builds and only runs when ?binder is specified
-    assert && phet.chipper.queryParameters.binder && InstanceRegistry.registerDataURL( 'sun', 'AquaRadioButton', this );
+    assert && phet?.chipper?.queryParameters?.binder && InstanceRegistry.registerDataURL( 'sun', 'AquaRadioButton', this );
   }
 
   public override dispose(): void {

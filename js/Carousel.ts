@@ -427,7 +427,7 @@ export default class Carousel extends Node {
     isInitialized = true;
 
     // support for binder documentation, stripped out in builds and only runs when ?binder is specified
-    assert && phet.chipper.queryParameters.binder && InstanceRegistry.registerDataURL( 'sun', 'Carousel', this );
+    assert && phet?.chipper?.queryParameters?.binder && InstanceRegistry.registerDataURL( 'sun', 'Carousel', this );
   }
 
   /**

@@ -447,7 +447,7 @@ export default class ComboBox<T> extends WidthSizable( Node ) {
     };
 
     // support for binder documentation, stripped out in builds and only runs when ?binder is specified
-    assert && phet.chipper.queryParameters.binder && InstanceRegistry.registerDataURL( 'sun', 'ComboBox', this );
+    assert && phet?.chipper?.queryParameters?.binder && InstanceRegistry.registerDataURL( 'sun', 'ComboBox', this );
   }
 
   public override dispose(): void {
