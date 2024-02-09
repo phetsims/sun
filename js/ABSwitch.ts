@@ -1,4 +1,4 @@
-// Copyright 2014-2023, University of Colorado Boulder
+// Copyright 2014-2024, University of Colorado Boulder
 
 /**
  * ABSwitch is a control for switching between 2 choices, referred to as 'A' & 'B'.

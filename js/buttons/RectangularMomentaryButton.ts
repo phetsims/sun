@@ -1,4 +1,4 @@
-// Copyright 2015-2022, University of Colorado Boulder
+// Copyright 2015-2024, University of Colorado Boulder
 
 /**
  * RectangularMomentaryButton is a rectangular momentary button that toggles a Property between 2 values.
