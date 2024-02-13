@@ -1143,14 +1143,15 @@ const AccessibleValueHandler = <SuperType extends Constructor<Node>>( Type: Supe
         const mappedMax = this._getMappedValue( this._enabledRangeProperty.get().max );
         const mappedLength = mappedMax - mappedMin;
 
-        // step is too small relative to full range for VoiceOver to receive input, fall back to portion of
-        // the max value as a workaround
+        // If the step is too small relative to full range for VoiceOver to receive input, fall back to a portion of
+        // the max value as a workaround.
         if ( stepValue / mappedLength < 1e-5 ) {
           stepValue = mappedMax / 100;
 
-          // Limit the precision of the calculated value.  This is necessary because otherwise floating point inaccuracies
-          // can lead to add behaviors with screen readers, see https://github.com/phetsims/greenhouse-effect/issues/388.
-          // The number of significant digits was chosen somewhat arbitrarily;
+          // Limit the precision of the calculated value.  This is necessary because otherwise floating point
+          // inaccuracies can lead to problematic behaviors with screen readers,
+          // see https://github.com/phetsims/greenhouse-effect/issues/388. The number of significant digits was chosen
+          // somewhat arbitrarily.
           stepValue = Number( stepValue.toPrecision( 8 ) );
         }
       }
