@@ -1134,6 +1134,7 @@ const AccessibleValueHandler = <SuperType extends Constructor<Node>>( Type: Supe
     private _updateSiblingStepAttribute(): void {
       let stepValue: number | string = 'any';
 
+      // TODO: Remove when iOS Safari supports the 'any', see https://github.com/phetsims/a11y-research/issues/191
       if ( platform.mobileSafari ) {
 
         const smallestStep = Math.min( this.keyboardStep, this.shiftKeyboardStep, this.pageKeyboardStep );
