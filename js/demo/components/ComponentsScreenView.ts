@@ -38,7 +38,7 @@ export default class ComponentsScreenView extends DemosScreenView {
       selectedDemoLabel: sunQueryParameters.component
     }, providedOptions );
 
-    // To add a demo, add an entry here of type SunDemo.
+    // To add a demo, add an entry here of type DemoItemData.
     const demos = [
       { label: 'ABSwitch', createNode: demoABSwitch },
       { label: 'Carousel', createNode: demoCarousel },
