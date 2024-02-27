@@ -141,8 +141,8 @@ export default class Slider extends Sizable( AccessibleSlider( Node, 0 ) ) {
 
   private readonly ticks: ObservableArray<SliderTick> = createObservableArray();
 
-  // This is a marker to indicate that we should create the actual default slider sound.
-  public static readonly DEFAULT_SOUND = new ValueChangeSoundPlayer( new Range( 0, 1 ) );
+  // The default sound used if options.soundGenerator is not set.
+  public static readonly DEFAULT_SOUND_GENERATOR = new ValueChangeSoundPlayer( new Range( 0, 1 ) );
 
   // If the user is holding down the thumb outside of the enabled range, and the enabled range expands, the value should
   // adjust to the new extremum of the range, see https://github.com/phetsims/mean-share-and-balance/issues/29
@@ -207,7 +207,7 @@ export default class Slider extends Sizable( AccessibleSlider( Node, 0 ) ) {
 
       disabledOpacity: SceneryConstants.DISABLED_OPACITY,
 
-      soundGenerator: Slider.DEFAULT_SOUND,
+      soundGenerator: Slider.DEFAULT_SOUND_GENERATOR,
       valueChangeSoundGeneratorOptions: {},
 
       // phet-io
@@ -224,11 +224,11 @@ export default class Slider extends Sizable( AccessibleSlider( Node, 0 ) ) {
 
     const rangeProperty = range instanceof Range ? new TinyProperty( range ) : range;
 
-    assert && assert( options.soundGenerator === Slider.DEFAULT_SOUND || _.isEmpty( options.valueChangeSoundGeneratorOptions ),
+    assert && assert( options.soundGenerator === Slider.DEFAULT_SOUND_GENERATOR || _.isEmpty( options.valueChangeSoundGeneratorOptions ),
       'options should only be supplied when using default sound generator' );
 
     // If no sound generator was provided, create the default.
-    if ( options.soundGenerator === Slider.DEFAULT_SOUND ) {
+    if ( options.soundGenerator === Slider.DEFAULT_SOUND_GENERATOR ) {
       options.soundGenerator = new ValueChangeSoundPlayer( rangeProperty.value, options.valueChangeSoundGeneratorOptions || {} );
     }
     else if ( options.soundGenerator === null ) {

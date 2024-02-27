@@ -95,7 +95,7 @@ export default class SliderTrack extends WidthSizable( Node ) {
       endDrag: _.noop, // called when a drag sequence ends
       constrainValue: _.identity, // called before valueProperty is set
       enabledRangeProperty: this.rangeProperty,
-      soundGenerator: Slider.DEFAULT_SOUND,
+      soundGenerator: Slider.DEFAULT_SOUND_GENERATOR,
       valueChangeSoundGeneratorOptions: {},
       voicingOnEndResponse: _.noop,
 
@@ -108,7 +108,7 @@ export default class SliderTrack extends WidthSizable( Node ) {
     }, providedOptions );
 
     // If no sound generator was provided, create the default.
-    if ( options.soundGenerator === Slider.DEFAULT_SOUND ) {
+    if ( options.soundGenerator === Slider.DEFAULT_SOUND_GENERATOR ) {
       // NOTE: We'll want to update ValueChangeSoundPlayer for dynamic ranges if it's used more for that
       options.soundGenerator = new ValueChangeSoundPlayer( this.rangeProperty.value, options.valueChangeSoundGeneratorOptions || {} );
     }
