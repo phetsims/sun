@@ -36,7 +36,7 @@ export default class RectangularToggleButton<T> extends RectangularButton {
    * @param property - axon Property that can be either valueOff or valueOn
    * @param valueOff - value when the button is in the off state
    * @param valueOn - value when the button is in the on state
-   * @param providedOptions?
+   * @param [providedOptions]
    */
   public constructor( property: Property<T>, valueOff: T, valueOn: T, providedOptions?: RectangularButtonOptions ) {
 
@@ -48,8 +48,7 @@ export default class RectangularToggleButton<T> extends RectangularButton {
 
       // phet-io support
       tandem: Tandem.REQUIRED,
-      phetioFeatured: true,
-      tandemNameSuffix: 'Button'
+      phetioFeatured: true
     }, providedOptions );
 
     // Note it shares a tandem with this, so the emitter will be instrumented as a child of the button

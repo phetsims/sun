@@ -48,8 +48,7 @@ export default class RoundToggleButton<T> extends RoundButton {
 
       // phet-io support
       tandem: Tandem.REQUIRED,
-      phetioFeatured: true,
-      tandemNameSuffix: 'Button'
+      phetioFeatured: true
     }, providedOptions );
 
     // Note it shares a tandem with this, so the emitter will be instrumented as a child of the button

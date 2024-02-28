@@ -154,6 +154,7 @@ export default class ButtonNode extends Sizable( Voicing( Node ) ) {
       tagName: 'button',
 
       // phet-io
+      tandemNameSuffix: 'Button',
       visiblePropertyOptions: { phetioFeatured: true },
       phetioEnabledPropertyInstrumented: true // opt into default PhET-iO instrumented enabledProperty
     }, providedOptions );

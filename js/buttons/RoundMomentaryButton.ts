@@ -35,8 +35,7 @@ export default class RoundMomentaryButton<T> extends RoundButton {
   public constructor( property: TProperty<T>, valueOff: T, valueOn: T, providedOptions?: RoundMomentaryButtonOptions ) {
 
     const options = optionize<RoundMomentaryButtonOptions, SelfOptions, RoundButtonOptions>()( {
-      tandem: Tandem.REQUIRED,
-      tandemNameSuffix: 'Button'
+      tandem: Tandem.REQUIRED
     }, providedOptions );
 
     // Note it shares a tandem with this, so the emitter will be instrumented as a child of the button

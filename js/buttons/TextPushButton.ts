@@ -38,7 +38,6 @@ export default class TextPushButton extends RectangularPushButton {
 
       // RectangularPushButtonOptions
       tandem: Tandem.REQUIRED,
-      tandemNameSuffix: 'Button',
       innerContent: string
     }, providedOptions );
 

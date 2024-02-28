@@ -27,15 +27,14 @@ class BooleanRoundToggleButton extends RoundToggleButton<boolean> {
    * @param booleanProperty
    * @param trueNode - shown when booleanProperty is true
    * @param falseNode - shown when booleanProperty is false
-   * @param providedOptions?
+   * @param [providedOptions]
    */
   public constructor( booleanProperty: Property<boolean>, trueNode: Node, falseNode: Node,
                       providedOptions?: BooleanRoundToggleButtonOptions ) {
 
     const options = optionize<BooleanRoundToggleButtonOptions, SelfOptions, RoundToggleButtonOptions>()( {
       content: null,
-      tandem: Tandem.REQUIRED,
-      tandemNameSuffix: 'Button'
+      tandem: Tandem.REQUIRED
     }, providedOptions );
 
     const toggleNode = new BooleanToggleNode( booleanProperty, trueNode, falseNode, {
