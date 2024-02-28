@@ -493,10 +493,10 @@ export default class NumberPicker extends AccessibleNumberSpinner( Node, 0 ) {
     );
 
     // update style with keyboard input, Emitters owned by this instance and disposed in AccessibleNumberSpinner
-    this.incrementDownEmitter.addListener( isDown => {
+    this.pdomIncrementDownEmitter.addListener( isDown => {
       incrementButtonStateProperty.value = ( isDown ? 'down' : 'up' );
     } );
-    this.decrementDownEmitter.addListener( isDown => {
+    this.pdomDecrementDownEmitter.addListener( isDown => {
       decrementButtonStateProperty.value = ( isDown ? 'down' : 'up' );
     } );
 

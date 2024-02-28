@@ -61,10 +61,11 @@ const AccessibleNumberSpinner = <SuperType extends Constructor<Node>>( Type: Sup
     // Manages timing must be disposed
     private readonly _callbackTimer: CallbackTimer;
 
-    // emits events when increment and decrement actions occur, but only for changes
-    // of keyboardStep and shiftKeyboardStep (not pageKeyboardStep)
-    protected readonly incrementDownEmitter: TEmitter<[ boolean ]>;
-    protected readonly decrementDownEmitter: TEmitter<[ boolean ]>;
+    // Emits events when increment and decrement actions occur, but only for changes of keyboardStep and
+    // shiftKeyboardStep (not pageKeyboardStep). Indicates "normal" usage with a keyboard, so that components
+    // composed with this trait can style themselves differently when the keyboard is being used.
+    protected readonly pdomIncrementDownEmitter: TEmitter<[ boolean ]>;
+    protected readonly pdomDecrementDownEmitter: TEmitter<[ boolean ]>;
 
     private _timerDelay = 400;
     private _timerInterval = 100;
@@ -94,8 +95,8 @@ const AccessibleNumberSpinner = <SuperType extends Constructor<Node>>( Type: Sup
         interval: this._timerInterval
       } );
 
-      this.incrementDownEmitter = new Emitter( { parameters: [ { valueType: 'boolean' } ] } );
-      this.decrementDownEmitter = new Emitter( { parameters: [ { valueType: 'boolean' } ] } );
+      this.pdomIncrementDownEmitter = new Emitter( { parameters: [ { valueType: 'boolean' } ] } );
+      this.pdomDecrementDownEmitter = new Emitter( { parameters: [ { valueType: 'boolean' } ] } );
 
       this.setPDOMAttribute( 'aria-roledescription', SunStrings.a11y.numberSpinnerRoleDescriptionStringProperty );
 
@@ -174,8 +175,8 @@ const AccessibleNumberSpinner = <SuperType extends Constructor<Node>>( Type: Sup
         this._callbackTimer.dispose();
 
         // emitters owned by this instance, can be disposed here
-        this.incrementDownEmitter.dispose();
-        this.decrementDownEmitter.dispose();
+        this.pdomIncrementDownEmitter.dispose();
+        this.pdomDecrementDownEmitter.dispose();
 
         this.removeInputListener( accessibleInputListener );
       };
@@ -227,10 +228,10 @@ const AccessibleNumberSpinner = <SuperType extends Constructor<Node>>( Type: Sup
     private _emitKeyState( domEvent: Event, isDown: boolean ): void {
       validate( domEvent, { valueType: Event } );
       if ( KeyboardUtils.isAnyKeyEvent( domEvent, [ KeyboardUtils.KEY_UP_ARROW, KeyboardUtils.KEY_RIGHT_ARROW ] ) ) {
-        this.incrementDownEmitter.emit( isDown );
+        this.pdomIncrementDownEmitter.emit( isDown );
       }
       else if ( KeyboardUtils.isAnyKeyEvent( domEvent, [ KeyboardUtils.KEY_DOWN_ARROW, KeyboardUtils.KEY_LEFT_ARROW ] ) ) {
-        this.decrementDownEmitter.emit( isDown );
+        this.pdomDecrementDownEmitter.emit( isDown );
       }
     }
 
