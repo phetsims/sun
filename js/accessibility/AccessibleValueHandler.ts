@@ -967,7 +967,11 @@ const AccessibleValueHandler = <SuperType extends Constructor<Node>>( Type: Supe
      * when generating the context response with option a11yCreateContextResponse.
      */
     private _onInteractionStart( event: SceneryEvent ): void {
+
+      assert && assert( !this._pdomPointer, 'Pointer should have been cleared and detached on end or interrupt.' );
       this._pdomPointer = event.pointer as PDOMPointer;
+
+      assert && assert( this._pdomPointer.attachedListener !== this._pdomPointerListener, 'This pointer listener was never removed!' );
       this._pdomPointer.addInputListener( this._pdomPointerListener, true );
 
       this._valueOnStart = this._valueProperty.value;
@@ -982,15 +986,19 @@ const AccessibleValueHandler = <SuperType extends Constructor<Node>>( Type: Supe
      */
     private _onInteractionEnd( event: SceneryEvent | null ): void {
 
-      this.alertContextResponse();
-      this.voicingOnEndResponse( this._valueOnStart );
-      this._endInput( event );
+      // It is possible that interaction already ended. This can happen if the pointer is interrupted just before
+      // receiving a keyup event. This is a rare case and should only be possible while fuzzing.
+      if ( this._pdomPointer ) {
 
-      // detach the pointer listener that was attached on keydown
-      assert && assert( this._pdomPointer, 'Pointer should be assigned' );
-      assert && assert( this._pdomPointer!.attachedListener === this._pdomPointerListener, 'pointer listener should be attached' );
-      this._pdomPointer!.removeInputListener( this._pdomPointerListener );
-      this._pdomPointer = null;
+        this.alertContextResponse();
+        this.voicingOnEndResponse( this._valueOnStart );
+        this._endInput( event );
+
+        // detach the pointer listener that was attached on keydown
+        assert && assert( this._pdomPointer.attachedListener === this._pdomPointerListener, 'pointer listener should be attached' );
+        this._pdomPointer.removeInputListener( this._pdomPointerListener );
+        this._pdomPointer = null;
+      }
     }
 
     /**
