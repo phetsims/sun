@@ -1,7 +1,8 @@
 // Copyright 2013-2024, University of Colorado Boulder
 
 /**
- * Radio button with a pseudo-Aqua (Mac OS) look. See "options" comment for list of options.
+ * AquaRadioButton is a radio button whose look is similar to macOS' Aqua theme. The button is circular and
+ * contains a dot when selected.
  *
  * @author Chris Malley (PixelZoom, Inc.)
  */
