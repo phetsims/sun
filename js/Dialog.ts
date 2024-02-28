@@ -22,7 +22,7 @@ import TSoundPlayer from '../../tambo/js/TSoundPlayer.js';
 import generalCloseSoundPlayer from '../../tambo/js/shared-sound-players/generalCloseSoundPlayer.js';
 import generalOpenSoundPlayer from '../../tambo/js/shared-sound-players/generalOpenSoundPlayer.js';
 import nullSoundPlayer from '../../tambo/js/shared-sound-players/nullSoundPlayer.js';
-import Tandem from '../../tandem/js/Tandem.js';
+import Tandem, { DYNAMIC_ARCHETYPE_NAME } from '../../tandem/js/Tandem.js';
 import DynamicMarkerIO from '../../tandem/js/types/DynamicMarkerIO.js';
 import IOType from '../../tandem/js/types/IOType.js';
 import Utterance from '../../utterance-queue/js/Utterance.js';
@@ -198,6 +198,7 @@ export default class Dialog extends Popupable( Panel, 1 ) {
       maxWidth: null, // if not provided, then dynamically calculate based on the layoutBounds of the current screen, see updateLayoutMultilink
 
       // phet-io
+      tandemNameSuffix: [ 'Dialog', DYNAMIC_ARCHETYPE_NAME ], // DYNAMIC_ARCHETYPE_NAME means that this Dialog is an archetype.
       phetioType: Dialog.DialogIO,
       phetioState: true, // Dialog is often a dynamic element, and thus needs to be in state to trigger element creation.
       phetioVisiblePropertyInstrumented: false, // visible isn't toggled when showing a Dialog
