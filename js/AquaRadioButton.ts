@@ -64,8 +64,6 @@ export default class AquaRadioButton<T> extends WidthSizable( Voicing( Node ) ) 
 
   public static readonly DEFAULT_RADIUS = 7;
 
-  public static readonly TANDEM_NAME_SUFFIX = 'RadioButton';
-
   public readonly onInputEmitter: TEmitter = new Emitter();
 
   // Handles layout of the content, rectangles and mouse/touch areas
@@ -122,9 +120,6 @@ export default class AquaRadioButton<T> extends WidthSizable( Voicing( Node ) ) 
       appendDescription: true
 
     }, providedOptions );
-
-    assert && assert( !options.tandem.supplied || options.tandem.name.endsWith( AquaRadioButton.TANDEM_NAME_SUFFIX ),
-      `AquaRadioButton tandem.name must end with ${AquaRadioButton.TANDEM_NAME_SUFFIX}: ${options.tandem.phetioID}` );
 
     super();
 

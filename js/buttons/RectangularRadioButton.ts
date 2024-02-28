@@ -53,8 +53,6 @@ export default class RectangularRadioButton<T> extends RectangularButton {
 
   private readonly disposeRectangularRadioButton: () => void;
 
-  public static readonly TANDEM_NAME_SUFFIX = 'RadioButton';
-
   /**
    * @param property - axon Property that can take on a set of values, one for each radio button in the group
    * @param value - value when this radio button is selected
@@ -97,12 +95,9 @@ export default class RectangularRadioButton<T> extends RectangularButton {
 
       // phet-io
       tandem: Tandem.REQUIRED,
-      tandemNameSuffix: 'Button',
+      tandemNameSuffix: 'RadioButton',
       phetioReadOnly: PhetioObject.DEFAULT_OPTIONS.phetioReadOnly // to support properly passing this to children, see https://github.com/phetsims/tandem/issues/60
     }, providedOptions );
-
-    assert && assert( !options.tandem.supplied || options.tandem.name.endsWith( RectangularRadioButton.TANDEM_NAME_SUFFIX ),
-      `RectangularRadioButton tandem.name must end with ${RectangularRadioButton.TANDEM_NAME_SUFFIX}: ${options.tandem.phetioID}` );
 
     // ButtonModel is responsible for enabledProperty, so propagate enabledPropertyOptions.
     // tandem is also propagated because we want enabledProperty to appear as a child of this button.
