@@ -50,6 +50,9 @@ import TinyProperty from '../../axon/js/TinyProperty.js';
 const LIST_POSITION_VALUES = [ 'above', 'below' ] as const; // where the list pops up relative to the button
 const ALIGN_VALUES = [ 'left', 'right', 'center' ] as const; // alignment of item on button and in list
 
+// Tandem names for ComboBoxItem must have this suffix.
+const ITEM_TANDEM_NAME_SUFFIX = 'Item';
+
 export type ComboBoxItem<T> = {
 
   // the value associated with the item
@@ -183,8 +186,6 @@ export default class ComboBox<T> extends WidthSizable( Node ) {
 
   private readonly disposeComboBox: () => void;
 
-  public static readonly ITEM_TANDEM_NAME_SUFFIX = 'Item';
-
   /**
    * @param property - must be settable and linkable, but needs to support Property, DerivedProperty and DynamicProperty
    * @param items - items, in the order that they appear in the listbox
@@ -196,8 +197,8 @@ export default class ComboBox<T> extends WidthSizable( Node ) {
     assert && assert( _.uniqBy( items, ( item: ComboBoxItem<T> ) => item.value ).length === items.length,
       'items must have unique values' );
     assert && items.forEach( item => {
-      assert && assert( !item.tandemName || item.tandemName.endsWith( ComboBox.ITEM_TANDEM_NAME_SUFFIX ),
-        `ComboBoxItem tandemName must end with '${ComboBox.ITEM_TANDEM_NAME_SUFFIX}': ${item.tandemName}` );
+      assert && assert( !item.tandemName || item.tandemName.endsWith( ITEM_TANDEM_NAME_SUFFIX ),
+        `ComboBoxItem tandemName must end with '${ITEM_TANDEM_NAME_SUFFIX}': ${item.tandemName}` );
     } );
 
     // See https://github.com/phetsims/sun/issues/542
