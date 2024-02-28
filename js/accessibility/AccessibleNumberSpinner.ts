@@ -36,16 +36,17 @@ import AccessibleValueHandler, { AccessibleValueHandlerOptions } from './Accessi
 import TEmitter from '../../../axon/js/TEmitter.js';
 
 const ACCESSIBLE_NUMBER_SPINNER_OPTIONS = [
-  'timerDelay',
-  'timerInterval'
+  'pdomTimerDelay',
+  'pdomTimerInterval'
 ];
 
 type SelfOptions = {
+
   // start to fire continuously after pressing for this long (milliseconds)
-  timerDelay?: number;
+  pdomTimerDelay?: number;
 
   // fire continuously at this frequency (milliseconds),
-  timerInterval?: number;
+  pdomTimerInterval?: number;
 };
 
 type AccessibleNumberSpinnerOptions = SelfOptions & AccessibleValueHandlerOptions;
@@ -67,8 +68,8 @@ const AccessibleNumberSpinner = <SuperType extends Constructor<Node>>( Type: Sup
     protected readonly pdomIncrementDownEmitter: TEmitter<[ boolean ]>;
     protected readonly pdomDecrementDownEmitter: TEmitter<[ boolean ]>;
 
-    private _timerDelay = 400;
-    private _timerInterval = 100;
+    private _pdomTimerDelay = 400;
+    private _pdomTimerInterval = 100;
 
     private readonly _disposeAccessibleNumberSpinner: () => void;
 
@@ -91,8 +92,8 @@ const AccessibleNumberSpinner = <SuperType extends Constructor<Node>>( Type: Sup
       assertHasProperties( this, [ 'addInputListener' ] );
 
       this._callbackTimer = new CallbackTimer( {
-        delay: this._timerDelay,
-        interval: this._timerInterval
+        delay: this._pdomTimerDelay,
+        interval: this._pdomTimerInterval
       } );
 
       this.pdomIncrementDownEmitter = new Emitter( { parameters: [ { valueType: 'boolean' } ] } );
@@ -182,28 +183,28 @@ const AccessibleNumberSpinner = <SuperType extends Constructor<Node>>( Type: Sup
       };
     }
 
-    public set timerDelay( value: number ) {
-      this._timerDelay = value;
+    public set pdomTimerDelay( value: number ) {
+      this._pdomTimerDelay = value;
 
       if ( this._callbackTimer ) {
         this._callbackTimer.delay = value;
       }
     }
 
-    public get timerDelay(): number {
-      return this._timerDelay;
+    public get pdomTimerDelay(): number {
+      return this._pdomTimerDelay;
     }
 
-    public set timerInterval( value: number ) {
-      this._timerInterval = value;
+    public set pdomTimerInterval( value: number ) {
+      this._pdomTimerInterval = value;
 
       if ( this._callbackTimer ) {
         this._callbackTimer.interval = value;
       }
     }
 
-    public get timerInterval(): number {
-      return this._timerInterval;
+    public get pdomTimerInterval(): number {
+      return this._pdomTimerInterval;
     }
 
     /**
