@@ -163,7 +163,7 @@ const Popupable = <SuperType extends Constructor<Node>>( type: SuperType, option
       this.isShowingProperty.value = false;
 
       // return focus to the Node that had focus when the Popupable was opened (or the focusOnHideNode if provided)
-      if ( this._nodeToFocusOnHide && this._nodeToFocusOnHide.focusable ) {
+      if ( this._nodeToFocusOnHide && this._nodeToFocusOnHide.focusable && this._nodeToFocusOnHide.instances[ 0 ]?.visible ) {
         this._nodeToFocusOnHide.focus();
       }
     }
