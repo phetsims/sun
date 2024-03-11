@@ -17,16 +17,19 @@ import { Node, NodeOptions, Text } from '../../../scenery/js/imports.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import CarouselComboBox from '../CarouselComboBox.js';
 import sun from '../sun.js';
+import sunQueryParameters from '../sunQueryParameters.js';
 
 // constants
 const COMBO_BOX_ITEM_FONT = new PhetFont( 14 );
 
 export type SunDemoOptions = NodeOptions;
 
+type DemoItemName = string;
+
 export type DemoItemData = {
 
   // string used to label the demo in ComboBox
-  label: string;
+  label: DemoItemName;
 
   // creates the Node for the demo
   createNode: ( layoutBounds: Bounds2, options: SunDemoOptions ) => Node;
@@ -38,8 +41,8 @@ export type DemoItemData = {
 
 type SelfOptions = {
 
-  // label field of the {DemoItemData} to be selected initially, defaults to the first demo after sorting
-  selectedDemoLabel?: string | null;
+  // label field of the DemoItemData to be selected initially, defaults to the first demo after sorting
+  selectedDemoLabel?: DemoItemName | null;
 
   // See https://github.com/phetsims/sun/issues/386
   // true = caches Nodes for all demos that have been selected
@@ -57,7 +60,7 @@ class DemosScreenView extends ScreenView {
     const options = optionize<DemosScreenViewOptions, SelfOptions, ScreenViewOptions>()( {
 
       // DemosScreenViewOptions
-      selectedDemoLabel: null,
+      selectedDemoLabel: sunQueryParameters.component,
       cacheDemos: false,
 
       // ScreenViewOptions
@@ -73,7 +76,7 @@ class DemosScreenView extends ScreenView {
     if ( Tandem.PHET_IO_ENABLED ) {
       options.cacheDemos = true;
 
-      demos.forEach( ( demo: DemoItemData ) => {
+      demos.forEach( demo => {
         demo.node = demo.createNode( layoutBounds, {
           tandem: options.tandem.createTandem( `demo${demo.tandemName ? demo.tandemName : demo.label}` )
         } );
@@ -86,23 +89,17 @@ class DemosScreenView extends ScreenView {
     this.addChild( demosParent );
 
     // Sort the demos by label, so that they appear in the combo box in alphabetical order
-    demos = _.sortBy( demos, ( demo: DemoItemData ) => {
+    demos = _.sortBy( demos, demo => {
       return demo.label;
     } );
 
-    // The initial demo that is selected
-    let selectedDemo: DemoItemData | undefined = demos[ 0 ];
-    if ( options.selectedDemoLabel ) {
-      selectedDemo = _.find( demos, ( demo: DemoItemData ) => {
-        return ( demo.label === options.selectedDemoLabel );
-      } );
-      if ( !selectedDemo ) {
-        throw new Error( `demo not found: ${options.selectedDemoLabel}` );
-      }
-    }
+    // The initial demo that is selected, allow grace for query parameter support
+    const selectedDemo = options.selectedDemoLabel ?
+                         _.find( demos, demo => demo.label === options.selectedDemoLabel ) || demos[ 0 ] :
+                         demos[ 0 ];
 
     // {Property.<Demo>} the demo that is currently selected
-    const selectedDemoProperty = new Property<DemoItemData>( selectedDemo );
+    const selectedDemoProperty = new Property( selectedDemo );
 
     const selectADemoLabel = new Text( 'Select a Demo:', {
       font: new PhetFont( 16 )
@@ -110,7 +107,7 @@ class DemosScreenView extends ScreenView {
     this.addChild( selectADemoLabel );
 
     // {ComboBoxItem[]}
-    const items = demos.map( ( demo: DemoItemData ) => {
+    const items = demos.map( demo => {
       return {
         value: demo,
         createNode: () => new Text( demo.label, { font: COMBO_BOX_ITEM_FONT } )
@@ -129,7 +126,7 @@ class DemosScreenView extends ScreenView {
     selectADemoLabel.centerY = carouselComboBox.visibleBounds.centerY;
 
     // Make the selected demo visible
-    selectedDemoProperty.link( ( demo: DemoItemData, oldDemo: DemoItemData | null ) => {
+    selectedDemoProperty.link( ( demo, oldDemo ) => {
 
       // clean up the previously selected demo
       if ( oldDemo ) {

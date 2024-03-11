@@ -16,7 +16,7 @@ const sunQueryParameters = QueryStringMachine.getAll( {
     defaultValue: 'white'
   },
 
-  // initial selection on the Components screen, values are the same as the labels on combo box items
+  // initial selection for the component selector for a screen, values are the same as the labels on combo box items
   component: {
     type: 'string',
     defaultValue: null
