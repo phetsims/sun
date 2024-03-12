@@ -16,9 +16,9 @@ Here’s when and why we use accordion boxes:
 
 **Note this design pattern covers multiple PhET Component Types**
 
-* [AccordionBox.js](https://github.com/phetsims/sun/blob/main/js/AccordionBox.js)
-* [ExpandCollapseBar.js](https://github.com/phetsims/sun/blob/main/js/ExpandCollapseBar.js)
-* [ExpandCollpaseButton.js](https://github.com/phetsims/sun/blob/main/js/ExpandCollpaseButton.js)
+* [AccordionBox.ts](https://github.com/phetsims/sun/blob/main/js/AccordionBox.ts)
+* [ExpandCollapseBar.ts](https://github.com/phetsims/sun/blob/main/js/ExpandCollapseBar.ts)
+* [ExpandCollpaseButton.ts](https://github.com/phetsims/sun/blob/main/js/ExpandCollpaseButton.ts)
 
 ## Aesthetic Considerations
 

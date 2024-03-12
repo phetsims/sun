@@ -19,9 +19,9 @@ Here’s when and why we use radio button groups:
 
 **Note this design pattern covers multiple PhET Component Types**
 
-* [RectangularRadioButtonGroup.js](https://github.com/phetsims/sun/blob/main/js/buttons/RectangularRadioButtonGroup.js) (
+* [RectangularRadioButtonGroup.ts](https://github.com/phetsims/sun/blob/main/js/buttons/RectangularRadioButtonGroup.ts) (
   rectangular radio buttons)
-* [VerticalAquaRadioButtonGroup.js](../js/VerticalAquaRadioButtonGroup.js) (radio buttons with the macOS Aqua look)
+* [VerticalAquaRadioButtonGroup.ts](../js/VerticalAquaRadioButtonGroup.ts) (radio buttons with the macOS Aqua look)
 
 ## Aesthetic Considerations
 
@@ -184,7 +184,7 @@ this simulation, so we are moving forward with the `fieldset` examples above.
 
 **Light Sources, Radio Button Group**
 
-- PhET Component: RectangularRadioButtonGroup.js
+- PhET Component: RectangularRadioButtonGroup.ts
 - Group Name via `h3` with `aria-labelledby`: Light Sources (e.g. Sample 1)
 - Radio button group: `fieldset` with `role="radiogroup"`
 - Radio buttons contained in an `ul` with list items, `li`
@@ -198,7 +198,7 @@ this simulation, so we are moving forward with the `fieldset` examples above.
 
 **Area Grid Size, Radio Button Group**
 
-- PhET Component: RectangularRadioButtonGroup.js
+- PhET Component: RectangularRadioButtonGroup.ts
 - Group Name via `legend`: Area Grid Size (e.g. Sample 2)
 - Radio button group: `fieldset` with `role="radiogroup"`
 - Radio buttons contained in an `ul` with list items, `li`

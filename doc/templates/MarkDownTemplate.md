@@ -5,7 +5,7 @@
 
 **Note this design pattern covers multiple PhET Component Types**
 
-* [COMPONENT_NAME.js](../js/COMPONENT_NAME.js) (note about component)
+* [COMPONENT_NAME.ts](../js/COMPONENT_NAME.ts) (note about component)
 
 ## Aesthetic Considerations
 
