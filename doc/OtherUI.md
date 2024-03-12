@@ -3,7 +3,7 @@ title: General UI Components
 category: other-ui
 order: 99
 parent: true
-components: [ AccordionBox, Checkbox, ComboBox, RectangularRadioButtonGroup ]
+components: [ AccordionBox, Checkbox, ComboBox, RectangularRadioButtonGroup, ToolboxPattern ]
 ---
 
 Here's the general information about the misc. UI components listed below.
