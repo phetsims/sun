@@ -143,6 +143,7 @@ export default class RectangularRadioButtonGroup<T> extends FlowBox {
 
       // FlowBoxOptions
       spacing: 10,
+      stretch: true, // have the buttons match size, see https://github.com/phetsims/sun/issues/851
       orientation: 'vertical',
       disabledOpacity: SceneryConstants.DISABLED_OPACITY,
 
