@@ -8,9 +8,8 @@
  * @author Chris Malley (PixelZoom, Inc.)
  */
 
-import { Shape } from '../../../kite/js/imports.js';
 import InstanceRegistry from '../../../phet-core/js/documentation/InstanceRegistry.js';
-import { Color, FlowBox, FlowBoxOptions, HighlightPath, Node, PDOMPeer, PDOMValueType, Rectangle, SceneryConstants, TInputListener } from '../../../scenery/js/imports.js';
+import { Color, FlowBox, FlowBoxOptions, Node, PDOMPeer, PDOMValueType, Rectangle, SceneryConstants, TInputListener } from '../../../scenery/js/imports.js';
 import multiSelectionSoundPlayerFactory from '../../../tambo/js/multiSelectionSoundPlayerFactory.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import ColorConstants from '../ColorConstants.js';
@@ -281,34 +280,6 @@ export default class RectangularRadioButtonGroup<T> extends FlowBox {
     }
 
     options.children = buttons;
-
-    // Pointer areas and focus highlight, sized to fit the largest button. See https://github.com/phetsims/sun/issues/708.
-    const maxButtonWidth = _.maxBy( buttonsWithLayoutNodes, ( buttonWithLayoutParent: ButtonWithLayoutNode<T> ) => buttonWithLayoutParent.layoutNode.width )!.layoutNode.width;
-    const maxButtonHeight = _.maxBy( buttonsWithLayoutNodes, ( buttonWithLayoutParent: ButtonWithLayoutNode<T> ) => buttonWithLayoutParent.layoutNode.height )!.layoutNode.height;
-    buttonsWithLayoutNodes.forEach( ( buttonWithLayoutParent: ButtonWithLayoutNode<T> ) => {
-
-      buttonWithLayoutParent.radioButton.touchArea = Shape.rectangle(
-        -options.touchAreaXDilation - maxLineWidth / 2,
-        -options.touchAreaYDilation - maxLineWidth / 2,
-        maxButtonWidth + 2 * options.touchAreaXDilation,
-        maxButtonHeight + 2 * options.touchAreaYDilation
-      );
-
-      buttonWithLayoutParent.radioButton.mouseArea = Shape.rectangle(
-        -options.mouseAreaXDilation - maxLineWidth / 2,
-        -options.mouseAreaYDilation - maxLineWidth / 2,
-        maxButtonWidth + 2 * options.mouseAreaXDilation,
-        maxButtonHeight + 2 * options.mouseAreaYDilation
-      );
-
-      const defaultDilationCoefficient = HighlightPath.getDilationCoefficient( buttonWithLayoutParent.layoutNode );
-      buttonWithLayoutParent.radioButton.focusHighlight = Shape.rectangle(
-        -options.a11yHighlightXDilation - maxLineWidth / 2 - defaultDilationCoefficient,
-        -options.a11yHighlightYDilation - maxLineWidth / 2 - defaultDilationCoefficient,
-        maxButtonWidth + 2 * ( options.a11yHighlightXDilation + defaultDilationCoefficient ),
-        maxButtonHeight + 2 * ( options.a11yHighlightYDilation + defaultDilationCoefficient )
-      );
-    } );
 
     super( options );
 
