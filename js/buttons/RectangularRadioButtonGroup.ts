@@ -9,7 +9,7 @@
  */
 
 import InstanceRegistry from '../../../phet-core/js/documentation/InstanceRegistry.js';
-import { Color, FlowBox, FlowBoxOptions, Node, PDOMPeer, PDOMValueType, Rectangle, SceneryConstants, TInputListener } from '../../../scenery/js/imports.js';
+import { Color, FlowBox, FlowBoxOptions, Node, PDOMPeer, PDOMValueType, SceneryConstants, TInputListener } from '../../../scenery/js/imports.js';
 import multiSelectionSoundPlayerFactory from '../../../tambo/js/multiSelectionSoundPlayerFactory.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import ColorConstants from '../ColorConstants.js';
@@ -167,12 +167,6 @@ export default class RectangularRadioButtonGroup<T> extends FlowBox {
 
     const radioButtonMap = new Map<T, RectangularRadioButton<T>>();
 
-    // Maximum width of the line that strokes the button.
-    const maxLineWidth = Math.max(
-      options.radioButtonOptions.buttonAppearanceStrategyOptions!.selectedLineWidth!,
-      options.radioButtonOptions.buttonAppearanceStrategyOptions!.deselectedLineWidth!
-    );
-
     const nodes = getGroupItemNodes( items, options.tandem );
     assert && assert( _.every( nodes, node => !node.hasPDOMContent ),
       'Accessibility is provided by RectangularRadioButton and RectangularRadioButtonGroupItem.labelContent. ' +
@@ -234,15 +228,6 @@ export default class RectangularRadioButtonGroup<T> extends FlowBox {
 
       // pdom - so the browser recognizes these buttons are in the same group. See instanceCount for more info.
       radioButton.setPDOMAttribute( 'name', CLASS_NAME + instanceCount );
-
-      // Ensure the buttons don't resize when selected vs unselected, by adding a rectangle with the max size.
-      const maxButtonWidth = maxLineWidth + widestContentWidth + 2 * xMargin;
-      const maxButtonHeight = maxLineWidth + tallestContentHeight + 2 * yMargin;
-      const boundingRect = new Rectangle( 0, 0, maxButtonWidth, maxButtonHeight, {
-        fill: 'rgba(0,0,0,0)',
-        center: radioButton.center
-      } );
-      radioButton.addChild( boundingRect );
 
       let button;
       if ( item.label ) {
