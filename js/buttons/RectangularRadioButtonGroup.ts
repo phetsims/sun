@@ -203,7 +203,13 @@ export default class RectangularRadioButtonGroup<T> extends FlowBox {
         tandem: item.tandemName ? options.tandem.createTandem( item.tandemName ) :
                 options.tandem === Tandem.OPT_OUT ? Tandem.OPT_OUT :
                 Tandem.REQUIRED,
-        phetioDocumentation: item.phetioDocumentation || ''
+        phetioDocumentation: item.phetioDocumentation || '',
+        // NOTE: This does NOT support dynamic orientation changes. If you need that, change RectangularButton to support
+        // dynamic options
+        touchAreaXDilation: options.orientation === 'horizontal' ? options.spacing / 2 : options.touchAreaXDilation,
+        touchAreaYDilation: options.orientation === 'vertical' ? options.spacing / 2 : options.touchAreaYDilation,
+        mouseAreaXDilation: options.orientation === 'horizontal' ? options.spacing / 2 : options.mouseAreaXDilation,
+        mouseAreaYDilation: options.orientation === 'vertical' ? options.spacing / 2 : options.mouseAreaYDilation
       }, options.radioButtonOptions, item.options );
 
       // Create the label and voicing response for the radio button.

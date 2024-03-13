@@ -115,9 +115,11 @@ export default class AquaRadioButtonGroup<T> extends FlowBox {
           tandem: item.tandemName ? options.tandem.createTandem( item.tandemName ) :
                   options.tandem === Tandem.OPT_OUT ? Tandem.OPT_OUT :
                   Tandem.REQUIRED,
-          touchAreaXDilation: options.touchAreaXDilation,
+          // NOTE: This does NOT support dynamic orientation changes. If you need that, change RectangularButton to support
+          // dynamic options
+          touchAreaXDilation: options.orientation === 'horizontal' ? options.spacing / 2 : options.touchAreaXDilation,
           touchAreaYDilation: options.orientation === 'vertical' ? options.spacing / 2 : options.touchAreaYDilation,
-          mouseAreaXDilation: options.mouseAreaXDilation,
+          mouseAreaXDilation: options.orientation === 'horizontal' ? options.spacing / 2 : options.mouseAreaXDilation,
           mouseAreaYDilation: options.orientation === 'vertical' ? options.spacing / 2 : options.mouseAreaYDilation
         }, options.radioButtonOptions, item.options ) );
     } );
