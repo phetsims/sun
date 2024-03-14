@@ -1,4 +1,4 @@
-// Copyright 2013-2023, University of Colorado Boulder
+// Copyright 2013-2024, University of Colorado Boulder
 
 /**
  * AquaRadioButtonGroup creates a group of AquaRadioButtons and manages their layout.
