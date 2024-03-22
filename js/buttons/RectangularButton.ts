@@ -14,7 +14,7 @@ import Dimension2 from '../../../dot/js/Dimension2.js';
 import { Shape } from '../../../kite/js/imports.js';
 import optionize from '../../../phet-core/js/optionize.js';
 import PickRequired from '../../../phet-core/js/types/PickRequired.js';
-import { Color, TPaint, LinearGradient, Node, PaintColorProperty, Path } from '../../../scenery/js/imports.js';
+import { Color, LinearGradient, Node, PaintColorProperty, Path, TPaint } from '../../../scenery/js/imports.js';
 import sun from '../sun.js';
 import ButtonInteractionState from './ButtonInteractionState.js';
 import ButtonModel from './ButtonModel.js';
