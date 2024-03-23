@@ -1,4 +1,4 @@
-// Copyright 2013-2023, University of Colorado Boulder
+// Copyright 2013-2024, University of Colorado Boulder
 
 /**
  * Display one of N nodes based on a given Property. See the option "unselectedChildrenSceneGraphStrategy" for different

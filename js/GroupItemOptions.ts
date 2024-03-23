@@ -1,4 +1,4 @@
-// Copyright 2022-2023, University of Colorado Boulder
+// Copyright 2022-2024, University of Colorado Boulder
 
 /**
  * For groups like radio button groups or checkbox groups, where we need to flow the tandem through to the items.

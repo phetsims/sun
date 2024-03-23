@@ -1,4 +1,4 @@
-// Copyright 2016-2022, University of Colorado Boulder
+// Copyright 2016-2024, University of Colorado Boulder
 
 /**
  * Button with one or more arrows that point up, down, left or right.
