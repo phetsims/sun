@@ -134,6 +134,12 @@ type SelfOptions = {
   openedSoundPlayer?: TSoundPlayer;
   closedNoChangeSoundPlayer?: TSoundPlayer;
 
+  // pdom
+  // The tag name for the label of the ComboBox. The AccessibleNameBehavior forwards the name to the ComboBoxButton,
+  // so if you need a different tag name for the ComboBox, set it here. See the ACCESSIBLE_NAME_BEHAVIOR functions
+  // for ComboBox and ComboBoxButton.
+  buttonLabelTagName?: string;
+
   // Voicing
   // ComboBox does not mix Voicing, so it creates custom options to pass to composed Voicing Nodes.
   // The pattern for the name response string, must include `{{value}}` so that the selected value string can
@@ -235,6 +241,7 @@ export default class ComboBox<T> extends WidthSizable( Node ) {
 
       // pdom
       tagName: 'div', // must have accessible content to support behavior functions
+      buttonLabelTagName: 'p',
       accessibleNameBehavior: ACCESSIBLE_NAME_BEHAVIOR,
       helpTextBehavior: HELP_TEXT_BEHAVIOR,
 
@@ -294,6 +301,7 @@ export default class ComboBox<T> extends WidthSizable( Node ) {
       comboBoxVoicingNameResponsePattern: options.comboBoxVoicingNameResponsePattern,
 
       // pdom - accessibleName and helpText are set via behavior functions on the ComboBox
+      labelTagName: options.buttonLabelTagName,
 
       // phet-io
       tandem: options.tandem.createTandem( 'button' )

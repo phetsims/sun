@@ -1,0 +1,53 @@
+[1mdiff --git a/js/ComboBox.ts b/js/ComboBox.ts[m
+[1mindex bb6e2405..19523899 100644[m
+[1m--- a/js/ComboBox.ts[m
+[1m+++ b/js/ComboBox.ts[m
+[36m@@ -134,6 +134,12 @@[m [mtype SelfOptions = {[m
+   openedSoundPlayer?: TSoundPlayer;[m
+   closedNoChangeSoundPlayer?: TSoundPlayer;[m
+ [m
+[32m+[m[32m  // pdom[m
+[32m+[m[32m  // The tag name for the label of the ComboBox. The AccessibleNameBehavior forwards the name to the ComboBoxButton,[m
+[32m+[m[32m  // so if you need a different tag name for the ComboBox, set it here. See the ACCESSIBLE_NAME_BEHAVIOR functions[m
+[32m+[m[32m  // for ComboBox and ComboBoxButton.[m
+[32m+[m[32m  buttonLabelTagName?: string;[m
+[32m+[m
+   // Voicing[m
+   // ComboBox does not mix Voicing, so it creates custom options to pass to composed Voicing Nodes.[m
+   // The pattern for the name response string, must include `{{value}}` so that the selected value string can[m
+[36m@@ -235,6 +241,7 @@[m [mexport default class ComboBox<T> extends WidthSizable( Node ) {[m
+ [m
+       // pdom[m
+       tagName: 'div', // must have accessible content to support behavior functions[m
+[32m+[m[32m      buttonLabelTagName: 'p',[m
+       accessibleNameBehavior: ACCESSIBLE_NAME_BEHAVIOR,[m
+       helpTextBehavior: HELP_TEXT_BEHAVIOR,[m
+ [m
+[36m@@ -294,6 +301,7 @@[m [mexport default class ComboBox<T> extends WidthSizable( Node ) {[m
+       comboBoxVoicingNameResponsePattern: options.comboBoxVoicingNameResponsePattern,[m
+ [m
+       // pdom - accessibleName and helpText are set via behavior functions on the ComboBox[m
+[32m+[m[32m      labelTagName: options.buttonLabelTagName,[m
+ [m
+       // phet-io[m
+       tandem: options.tandem.createTandem( 'button' )[m
+[1mdiff --git a/js/ComboBoxButton.ts b/js/ComboBoxButton.ts[m
+[1mindex 24124f32..7f267692 100644[m
+[1m--- a/js/ComboBoxButton.ts[m
+[1m+++ b/js/ComboBoxButton.ts[m
+[36m@@ -37,7 +37,6 @@[m [mexport type ComboBoxButtonArrowDirection = typeof ARROW_DIRECTION_VALUES[number][m
+ // The definition for how ComboBoxButton sets its accessibleName in the PDOM. See ComboBox.md for further style guide[m
+ // and documentation on the pattern.[m
+ const ACCESSIBLE_NAME_BEHAVIOR: PDOMBehaviorFunction = ( node, options, accessibleName ) => {[m
+[31m-  options.labelTagName = 'p'; // NOTE: A `span` causes duplicate name-speaking with VO+safari in https://github.com/phetsims/ratio-and-proportion/issues/532[m
+   options.labelContent = accessibleName;[m
+   return options;[m
+ };[m
+[36m@@ -105,6 +104,7 @@[m [mexport default class ComboBoxButton<T> extends RectangularPushButton {[m
+ [m
+       // pdom[m
+       containerTagName: 'div',[m
+[32m+[m[32m      labelTagName: 'p', // NOTE: A `span` causes duplicate name-speaking with VO+safari in https://github.com/phetsims/ratio-and-proportion/issues/532[m
+       accessibleNameBehavior: ACCESSIBLE_NAME_BEHAVIOR[m
+     }, providedOptions );[m
+ [m
