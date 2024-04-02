@@ -36,6 +36,8 @@ export default class ToggleButtonModel<T> extends ButtonModel {
    * @param [providedOptions]
    */
   public constructor( valueOff: T, valueOn: T, property: TProperty<T>, providedOptions?: ToggleButtonModelOptions ) {
+    assert && assert( property.valueComparisonStrategy === 'reference',
+      'ToggleButtonModel depends on "===" equality for value comparison' );
 
     const options = optionize<ToggleButtonModelOptions, SelfOptions, ButtonModelOptions>()( {
       tandem: Tandem.REQUIRED

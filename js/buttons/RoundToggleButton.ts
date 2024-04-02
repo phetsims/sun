@@ -39,6 +39,8 @@ export default class RoundToggleButton<T> extends RoundButton {
    * @param providedOptions?
    */
   public constructor( property: Property<T>, valueOff: T, valueOn: T, providedOptions?: RoundToggleButtonOptions ) {
+    assert && assert( property.valueComparisonStrategy === 'reference',
+      'RoundToggleButton depends on "===" equality for value comparison' );
 
     const options = optionize<RoundToggleButtonOptions, SelfOptions, RoundButtonOptions>()( {
 

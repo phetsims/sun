@@ -35,6 +35,8 @@ export default class RoundStickyToggleButton<T> extends RoundButton {
    * @param providedOptions?
    */
   public constructor( valueProperty: TProperty<T>, valueUp: T, valueDown: T, providedOptions?: RoundStickyToggleButtonOptions ) {
+    assert && assert( valueProperty.valueComparisonStrategy === 'reference',
+      'RoundStickyToggleButton depends on "===" equality for value comparison' );
 
     const options = optionize<RoundStickyToggleButtonOptions, SelfOptions, RoundButtonOptions>()( {
 
@@ -56,7 +58,7 @@ export default class RoundStickyToggleButton<T> extends RoundButton {
     toggleButtonModel.produceSoundEmitter.addListener( playSound );
 
     // pdom - signify button is 'pressed' when down
-    const setAriaPressed = ( value: T ) => this.setPDOMAttribute( 'aria-pressed', valueProperty.value === valueDown );
+    const setAriaPressed = () => this.setPDOMAttribute( 'aria-pressed', valueProperty.value === valueDown );
     valueProperty.link( setAriaPressed );
 
     this.disposeRoundStickyToggleButton = () => {

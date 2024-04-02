@@ -41,6 +41,8 @@ export default class StickyToggleButtonModel<T> extends ButtonModel {
    * @param providedOptions
    */
   public constructor( valueUp: T, valueDown: T, valueProperty: TProperty<T>, providedOptions?: StickyToggleButtonModelOptions ) {
+    assert && assert( valueProperty.valueComparisonStrategy === 'reference',
+      'StickyToggleButtonModel depends on "===" equality for value comparison' );
 
     const options = optionize<StickyToggleButtonModelOptions, SelfOptions, ButtonModelOptions>()( {
       tandem: Tandem.REQUIRED

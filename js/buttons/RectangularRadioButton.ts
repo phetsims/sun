@@ -59,6 +59,8 @@ export default class RectangularRadioButton<T> extends RectangularButton {
    * @param providedOptions
    */
   public constructor( property: TProperty<T>, value: T, providedOptions?: RectangularRadioButtonOptions ) {
+    assert && assert( property.valueComparisonStrategy === 'reference',
+      'RectangularRadioButton depends on "===" equality for value comparison' );
 
     const options = optionize<RectangularRadioButtonOptions, SelfOptions, RectangularButtonOptions>()( {
 

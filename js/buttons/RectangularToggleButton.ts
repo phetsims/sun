@@ -39,6 +39,8 @@ export default class RectangularToggleButton<T> extends RectangularButton {
    * @param [providedOptions]
    */
   public constructor( property: Property<T>, valueOff: T, valueOn: T, providedOptions?: RectangularButtonOptions ) {
+    assert && assert( property.valueComparisonStrategy === 'reference',
+      'RectangularToggleButton depends on "===" equality for value comparison' );
 
     const options = optionize<RectangularToggleButtonOptions, SelfOptions, RectangularButtonOptions>()( {
 

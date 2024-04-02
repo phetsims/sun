@@ -62,6 +62,8 @@ export default class ABSwitch<T> extends HBox {
    * @param providedOptions
    */
   public constructor( property: Property<T>, valueA: T, labelA: Node, valueB: T, labelB: Node, providedOptions?: ABSwitchOptions ) {
+    assert && assert( property.valueComparisonStrategy === 'reference',
+      'ABSwitch depends on "===" equality for value comparison' );
 
     // PhET-iO requirements
     assert && assert( labelA.tandem, 'labelA must have a tandem' );

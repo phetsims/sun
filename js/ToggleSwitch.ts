@@ -100,6 +100,9 @@ export default class ToggleSwitch<T> extends Voicing( Node ) {
    */
   public constructor( property: Property<T>, leftValue: T, rightValue: T, providedOptions?: ToggleSwitchOptions ) {
 
+    assert && assert( property.valueComparisonStrategy === 'reference',
+      'ToggleSwitch depends on "===" equality for value comparison' );
+
     // If you provide the a11yName option, both innerContent and voicingNameResponse will be filled in by its value.
     assert && assertMutuallyExclusiveOptions( providedOptions, [ 'a11yName' ], [ 'innerContent', 'voicingNameResponse' ] );
 
