@@ -65,7 +65,7 @@ type SelfOptions = {
 };
 type ParentOptions = AccessibleNumberSpinnerOptions & NodeOptions;
 export type NumberSpinnerOptions = SelfOptions &
-  StrictOmit<ParentOptions, 'children' | 'valueProperty' | 'enabledRangeProperty'>;
+  StrictOmit<ParentOptions, 'children' | 'valueProperty' | 'enabledRangeProperty' | 'keyboardStep' | 'shiftKeyboardStep' | 'pageKeyboardStep'>;
 
 export default class NumberSpinner extends AccessibleNumberSpinner( Node, 0 ) {
 
@@ -251,7 +251,7 @@ export default class NumberSpinner extends AccessibleNumberSpinner( Node, 0 ) {
     // and shiftKeyboardStep should have the same behavior as the NumberSpinner ArrowButtons AND the ArrowButtons
     // should look depressed when interacting with those keys. To accomplish this we actually press the ArrowButtons
     // in response to input with those keys. keyboardStep and shiftKeyboardStep are set to zero so the value isn't
-    // modified again by AccessibleValueHandler.
+    // modified again by AccessibleValueHandler. See https://github.com/phetsims/scenery/issues/1340.
     assert && assert( options.keyboardStep === undefined, 'NumberSpinner sets keyboardStep, it will be the same as deltaValue' );
     assert && assert( options.shiftKeyboardStep === undefined, 'NumberSpinner sets shiftKeyboardStep, it will be the same as deltaValue' );
     assert && assert( options.pageKeyboardStep === undefined, 'NumberSpinner sets pageKeyboardStep, it should not be used with NumberSpinner' );
