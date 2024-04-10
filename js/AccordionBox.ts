@@ -282,6 +282,10 @@ export default class AccordionBox extends Sizable( Node ) {
     }, options.titleBarOptions ) );
     this.collapsedBox.addChild( this.collapsedTitleBar );
 
+    // Set the focusHighlight for the interactive PDOM element based on the dimensions of the whole title bar (not just the button).
+    const expandedFocusHighlight = new HighlightFromNode( this.expandedTitleBar );
+    const collapsedFocusHighlight = new HighlightFromNode( this.collapsedTitleBar );
+
     this.disposeEmitter.addListener( () => {
       this.collapsedTitleBar.dispose();
       this.expandedTitleBar.dispose();
@@ -340,9 +344,6 @@ export default class AccordionBox extends Sizable( Node ) {
       this.collapsedTitleBar.cursor = showCursor ? ( options.cursor || null ) : null;
       this.expandedTitleBar.cursor = showCursor ? ( options.cursor || null ) : null;
     } );
-
-    // Set the focusHighlight for the interactive PDOM element based on the dimensions of the whole title bar.
-    this.expandCollapseButton.setFocusHighlight( new HighlightFromNode( this.expandedTitleBar ) );
 
     this.expandedBox.addChild( contentNode );
 
@@ -417,6 +418,8 @@ export default class AccordionBox extends Sizable( Node ) {
 
       this.expandedBox.visible = expanded;
       this.collapsedBox.visible = !expanded;
+
+      this.expandCollapseButton.setFocusHighlight( expanded ? expandedFocusHighlight : collapsedFocusHighlight );
 
       titleNode.visible = ( expanded && options.showTitleWhenExpanded ) || !expanded;
 
@@ -553,15 +556,16 @@ class AccordionBoxConstraint extends LayoutConstraint {
       this.titleNode.height + ( 2 * options.titleYMargin )
     );
 
-    const minimumExpandedBoxHeight = options.showTitleWhenExpanded ?
-      // content is below button+title
+    const minimumExpandedBoxHeight =
+      options.showTitleWhenExpanded ?
+        // content is below button+title
       Math.max(
         // content (with optional overlap)
         ( options.allowContentToOverlapTitle ? options.contentYMargin : collapsedBoxHeight + options.contentYSpacing ) + minimumContentHeight + options.contentYMargin,
         // the collapsed box height itself (if we overlap content, this could be larger)
         collapsedBoxHeight
       ) :
-      // content is next to button
+        // content is next to button
       Math.max(
         this.expandCollapseButton.height + ( 2 * options.buttonYMargin ),
         minimumContentHeight + ( 2 * options.contentYMargin )
