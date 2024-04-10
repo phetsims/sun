@@ -22,6 +22,7 @@ import Property from '../../axon/js/Property.js';
 import TReadOnlyProperty from '../../axon/js/TReadOnlyProperty.js';
 import pushButtonSoundPlayer from '../../tambo/js/shared-sound-players/pushButtonSoundPlayer.js';
 import TSoundPlayer from '../../tambo/js/TSoundPlayer.js';
+import nullSoundPlayer from '../../tambo/js/shared-sound-players/nullSoundPlayer.js';
 
 type NumberSpinnerArrowsPosition =
   'leftRight' | // arrow buttons on left and right of value
@@ -136,7 +137,9 @@ export default class NumberSpinner extends AccessibleNumberSpinner( Node, 0 ) {
       stroke: options.arrowButtonStroke,
       lineWidth: options.arrowButtonLineWidth,
       focusable: false,
-      soundPlayer: options.arrowsSoundPlayer,
+
+      // Override the default sound player for the buttons since sound production is handled in this class.
+      soundPlayer: nullSoundPlayer,
 
       // as requested in https://github.com/phetsims/sun/issues/575
       enabledPropertyOptions: {
@@ -148,7 +151,10 @@ export default class NumberSpinner extends AccessibleNumberSpinner( Node, 0 ) {
     // increment button
     const incrementButton = new ArrowButton(
       ( options.arrowsPosition === 'topBottom' || options.arrowsPosition === 'bothRight' ) ? 'up' : 'right',
-      () => numberProperty.set( incrementFunction( numberProperty.get() ) ),
+      () => {
+        numberProperty.set( incrementFunction( numberProperty.get() ) );
+        options.arrowsSoundPlayer.play();
+      },
       combineOptions<ArrowButtonOptions>( {
         tandem: options.tandem.createTandem( 'incrementButton' )
       }, arrowButtonOptions )
@@ -157,7 +163,10 @@ export default class NumberSpinner extends AccessibleNumberSpinner( Node, 0 ) {
     // decrement button
     const decrementButton = new ArrowButton(
       ( options.arrowsPosition === 'topBottom' || options.arrowsPosition === 'bothRight' ) ? 'down' : 'left',
-      () => numberProperty.set( decrementFunction( numberProperty.get() ) ),
+      () => {
+        numberProperty.set( decrementFunction( numberProperty.get() ) );
+        options.arrowsSoundPlayer.play();
+      },
       combineOptions<ArrowButtonOptions>( {
         tandem: options.tandem.createTandem( 'decrementButton' )
       }, arrowButtonOptions )
