@@ -21,6 +21,9 @@ type SelfOptions = {
   centerLineStroke?: TPaint;
 };
 
+export const DEFAULT_FILL = 'rgb( 50, 145, 184 )';
+export const DEFAULT_FILL_HIGHLIGHTED = 'rgb( 71, 207, 255 )';
+
 type SliderThumbOptions = SelfOptions & StrictOmit<RectangleOptions, 'cachedPaints'>;
 
 export default class SliderThumb extends Rectangle {
@@ -31,11 +34,11 @@ export default class SliderThumb extends Rectangle {
 
       // SelfOptions
       size: new Dimension2( 22, 45 ),
-      fillHighlighted: 'rgb( 71, 207, 255 )',
+      fillHighlighted: DEFAULT_FILL_HIGHLIGHTED,
       centerLineStroke: 'white',
 
       // RectangleOptions
-      fill: 'rgb( 50, 145, 184 )',
+      fill: DEFAULT_FILL,
       stroke: 'black',
       lineWidth: 1,
       tandem: Tandem.REQUIRED, // Slider.js adds to this tandem to nest its dragListener under the thumb.
