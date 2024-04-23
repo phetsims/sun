@@ -478,10 +478,8 @@ export default class NumberPicker extends AccessibleNumberSpinner( Node, 0 ) {
       updateColors( state, enabled, decrementBackgroundNode, this.decrementArrow, backgroundColors, arrowColors );
     } );
 
-    // Dilate based on consistent technique which brings into account transform of this node.
-    const focusBounds = this.localBounds.dilated( HighlightPath.getDilationCoefficient( this ) );
-
     // pdom - custom focus highlight that matches rounded background behind the numeric value
+    const focusBounds = this.localBounds.dilated( HighlightPath.getDefaultDilationCoefficient() );
     this.focusHighlight = new HighlightPath( Shape.roundedRectangleWithRadii(
       focusBounds.minX,
       focusBounds.minY,
