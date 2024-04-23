@@ -9,7 +9,7 @@
  */
 
 import InstanceRegistry from '../../../phet-core/js/documentation/InstanceRegistry.js';
-import { Color, FlowBox, FlowBoxOptions, Node, PDOMPeer, PDOMValueType, SceneryConstants, TInputListener } from '../../../scenery/js/imports.js';
+import { Color, FlowBox, FlowBoxOptions, HighlightFromNode, Node, PDOMPeer, PDOMValueType, SceneryConstants, TInputListener } from '../../../scenery/js/imports.js';
 import multiSelectionSoundPlayerFactory from '../../../tambo/js/multiSelectionSoundPlayerFactory.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import ColorConstants from '../ColorConstants.js';
@@ -51,6 +51,7 @@ export type RectangularRadioButtonGroupItem<T> = {
  */
 type ButtonWithLayoutNode<T> = {
   radioButton: RectangularRadioButton<T>;
+  readonly focusHighlight: HighlightFromNode;
   readonly layoutNode: Node;
 };
 
@@ -68,10 +69,6 @@ type SelfOptions = {
 
   // Spacing between the optional label and the button
   labelSpacing?: number;
-
-  // pdom - focus highlight expansion
-  a11yHighlightXDilation?: number;
-  a11yHighlightYDilation?: number;
 
   // Applied to each button, or each button + optional label.
   // This is not handled via radioButtonOptions because we may have an optional label in addition to the button.
@@ -110,8 +107,6 @@ export default class RectangularRadioButtonGroup<T> extends FlowBox {
       soundPlayers: null,
       labelAlign: 'bottom',
       labelSpacing: 0,
-      a11yHighlightXDilation: 0,
-      a11yHighlightYDilation: 0,
       touchAreaXDilation: 0,
       touchAreaYDilation: 0,
       mouseAreaXDilation: 0,
@@ -261,7 +256,11 @@ export default class RectangularRadioButtonGroup<T> extends FlowBox {
         button = radioButton;
       }
       buttons.push( button );
-      buttonsWithLayoutNodes.push( { radioButton: radioButton, layoutNode: button } );
+
+      // The highlight for the radio button should surround the layout Node if one is used.
+      const focusHighlight = new HighlightFromNode( button );
+      buttonsWithLayoutNodes.push( { radioButton: radioButton, layoutNode: button, focusHighlight: focusHighlight } );
+      radioButton.focusHighlight = focusHighlight;
     }
 
     options.children = buttons;
@@ -289,6 +288,17 @@ export default class RectangularRadioButtonGroup<T> extends FlowBox {
 
     this.disposeRadioButtonGroup = () => {
       this.removeInputListener( intentListener );
+
+      buttonsWithLayoutNodes.forEach( buttonWithLayoutNode => {
+        buttonWithLayoutNode.focusHighlight.dispose();
+        buttonWithLayoutNode.radioButton.dispose();
+
+        // A layout Node was created for this button so it should be disposed.
+        if ( buttonWithLayoutNode.radioButton !== buttonWithLayoutNode.layoutNode ) {
+          buttonWithLayoutNode.layoutNode.dispose();
+        }
+      } );
+
       buttons.forEach( button => button.dispose() );
       labelAppearanceStrategies.forEach( strategy => ( strategy.dispose && strategy.dispose() ) );
       nodes.forEach( node => node.dispose() );
