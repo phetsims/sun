@@ -299,7 +299,6 @@ export default class RectangularRadioButtonGroup<T> extends FlowBox {
         }
       } );
 
-      buttons.forEach( button => button.dispose() );
       labelAppearanceStrategies.forEach( strategy => ( strategy.dispose && strategy.dispose() ) );
       nodes.forEach( node => node.dispose() );
     };
