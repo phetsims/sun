@@ -264,7 +264,7 @@ export default class ComboBoxListBox<T> extends Panel {
     // pdom - listener that navigates listbox items and closes the box from keyboard input
     const keyboardListener = new KeyboardListener( {
       keys: [ 'escape', 'tab', 'shift+tab', 'arrowUp', 'arrowDown', 'home', 'end' ],
-      callback: ( event, keysPressed ) => {
+      fire: ( event, keysPressed ) => {
         const sceneryEvent = event!;
         assert && assert( sceneryEvent, 'event is required for this listener' );
 
@@ -274,16 +274,12 @@ export default class ComboBoxListBox<T> extends Panel {
 
         if ( keysPressed === 'escape' || keysPressed === 'tab' || keysPressed === 'shift+tab' ) {
 
-          // This keyboard event is captured so that escape doesn't forward to other popupable components. If
-          // ComboBox is ever implemented with generalized popupable/pane system this abort will not be necessary.
-          sceneryEvent.abort();
-
           // Escape and Tab hide the list box and return focus to the button
           hideListBoxCallback();
           focusButtonCallback();
         }
         else if ( keysPressed === 'arrowUp' || keysPressed === 'arrowDown' ) {
-          const domEvent = sceneryEvent.domEvent!;
+          const domEvent = event!;
           assert && assert( domEvent, 'domEvent is required for this listener' );
 
           // prevent "native" behavior so that Safari doesn't make an error sound with arrow keys in
@@ -297,9 +293,6 @@ export default class ComboBoxListBox<T> extends Panel {
 
           const nextIndex = focusedItemIndex + direction;
           visibleItemNodes[ nextIndex ] && visibleItemNodes[ nextIndex ].focus();
-
-          // reserve for drag after focus has moved, as the change in focus will clear the intent on the pointer
-          sceneryEvent.pointer.reserveForKeyboardDrag();
         }
         else if ( keysPressed === 'home' ) {
           visibleItemNodes[ 0 ].focus();

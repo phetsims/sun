@@ -396,9 +396,9 @@ export default class Dialog extends Popupable( Panel, 1 ) {
     // pdom - close the dialog when pressing "escape"
     const keyboardListener = new KeyboardListener( {
       keys: [ 'escape', 'tab', 'shift+tab' ],
-      callback: ( event, keysPressed ) => {
-        assert && assert( event && event.domEvent, 'event should be non-null and defined for this listener' );
-        const domEvent = event!.domEvent!;
+      fire: ( event, keysPressed ) => {
+        assert && assert( event, 'event should be non-null and defined for this listener' );
+        const domEvent = event!;
 
         if ( keysPressed === 'escape' ) {
           domEvent.preventDefault();
