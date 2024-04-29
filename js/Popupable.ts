@@ -46,9 +46,25 @@ type SelfOptions = {
 type ParentOptions = PickOptional<NodeOptions, 'tandem'>;
 export type PopupableOptions = SelfOptions & ParentOptions;
 
-const Popupable = <SuperType extends Constructor<Node>>( type: SuperType, optionsArgPosition: number ) => { // eslint-disable-line @typescript-eslint/explicit-module-boundary-types
+type TPopupable = {
+  readonly layoutBounds: Bounds2 | null;
+  readonly popupParent: Node;
+  readonly isShowingProperty: Property<boolean>;
+  layout( bounds: Bounds2 ): void;
 
-  return class extends type {
+  // @mixin-protected - made public for use in the mixin only
+  shouldShowPopup(): boolean;
+
+  show(): void;
+  hide(): void;
+
+  // @mixin-protected - made public for use in the mixin only
+  get focusOnHideNode(): Node | null;
+};
+
+const Popupable = <SuperType extends Constructor<Node>>( Type: SuperType, optionsArgPosition: number ): SuperType & Constructor<TPopupable> => {
+
+  return class extends Type implements TPopupable {
 
     public readonly layoutBounds: Bounds2 | null;
 
@@ -133,7 +149,8 @@ const Popupable = <SuperType extends Constructor<Node>>( type: SuperType, option
     }
 
     // Provide a chance of not showing, see disableModals
-    protected shouldShowPopup(): boolean {
+    // @mixin-protected - made public for use in the mixin only
+    public shouldShowPopup(): boolean {
       const optOut = this.isModal && this.disableModals;
       return !optOut;
     }
@@ -168,7 +185,8 @@ const Popupable = <SuperType extends Constructor<Node>>( type: SuperType, option
       }
     }
 
-    protected get focusOnHideNode(): Node | null {
+    // @mixin-protected - made public for use in the mixin only
+    public get focusOnHideNode(): Node | null {
       return this._focusOnHideNode;
     }
 
@@ -212,9 +230,7 @@ class PopupParentNode extends Node {
   }
 }
 
-// Export a type that lets you check if your Node is composed with Popupable
-const wrapper = () => Popupable( Node, 0 );
-export type PopupableNode = InstanceType<ReturnType<typeof wrapper>> & Node;
+export type PopupableNode = Node & TPopupable;
 
 sun.register( 'Popupable', Popupable );
 
