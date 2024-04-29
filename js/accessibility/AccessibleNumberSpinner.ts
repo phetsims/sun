@@ -32,7 +32,7 @@ import Orientation from '../../../phet-core/js/Orientation.js';
 import { DelayedMutate, KeyboardUtils, Node, SceneryEvent, TInputListener } from '../../../scenery/js/imports.js';
 import sun from '../sun.js';
 import SunStrings from '../SunStrings.js';
-import AccessibleValueHandler, { AccessibleValueHandlerOptions } from './AccessibleValueHandler.js';
+import AccessibleValueHandler, { AccessibleValueHandlerOptions, TAccessibleValueHandler } from './AccessibleValueHandler.js';
 import TEmitter from '../../../axon/js/TEmitter.js';
 
 const ACCESSIBLE_NUMBER_SPINNER_OPTIONS = [
@@ -51,13 +51,22 @@ type SelfOptions = {
 
 type AccessibleNumberSpinnerOptions = SelfOptions & AccessibleValueHandlerOptions;
 
+type TAccessibleNumberSpinner = {
+  // @mixin-protected - made public for use in the mixin only
+  readonly pdomIncrementDownEmitter: TEmitter<[ boolean ]>;
+  // @mixin-protected - made public for use in the mixin only
+  readonly pdomDecrementDownEmitter: TEmitter<[ boolean ]>;
+  pdomTimerDelay: number;
+  pdomTimerInterval: number;
+} & TAccessibleValueHandler;
+
 /**
  * @param Type
  * @param optionsArgPosition - zero-indexed number that the options argument is provided at
  */
-const AccessibleNumberSpinner = <SuperType extends Constructor<Node>>( Type: SuperType, optionsArgPosition: number ) => { // eslint-disable-line @typescript-eslint/explicit-module-boundary-types
+const AccessibleNumberSpinner = <SuperType extends Constructor<Node>>( Type: SuperType, optionsArgPosition: number ): SuperType & Constructor<TAccessibleNumberSpinner> => {
 
-  const AccessibleNumberSpinnerClass = DelayedMutate( 'AccessibleNumberSpinner', ACCESSIBLE_NUMBER_SPINNER_OPTIONS, class AccessibleNumberSpinner extends AccessibleValueHandler( Type, optionsArgPosition ) {
+  const AccessibleNumberSpinnerClass = DelayedMutate( 'AccessibleNumberSpinner', ACCESSIBLE_NUMBER_SPINNER_OPTIONS, class AccessibleNumberSpinner extends AccessibleValueHandler( Type, optionsArgPosition ) implements TAccessibleNumberSpinner {
 
     // Manages timing must be disposed
     private readonly _callbackTimer: CallbackTimer;
@@ -65,8 +74,9 @@ const AccessibleNumberSpinner = <SuperType extends Constructor<Node>>( Type: Sup
     // Emits events when increment and decrement actions occur, but only for changes of keyboardStep and
     // shiftKeyboardStep (not pageKeyboardStep). Indicates "normal" usage with a keyboard, so that components
     // composed with this trait can style themselves differently when the keyboard is being used.
-    protected readonly pdomIncrementDownEmitter: TEmitter<[ boolean ]>;
-    protected readonly pdomDecrementDownEmitter: TEmitter<[ boolean ]>;
+    // @mixin-protected - made public for use in the mixin only
+    public readonly pdomIncrementDownEmitter: TEmitter<[ boolean ]>;
+    public readonly pdomDecrementDownEmitter: TEmitter<[ boolean ]>;
 
     private _pdomTimerDelay = 400;
     private _pdomTimerInterval = 100;

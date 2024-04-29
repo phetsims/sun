@@ -20,7 +20,7 @@ import Utils from '../../../dot/js/Utils.js';
 import Range from '../../../dot/js/Range.js';
 import assertHasProperties from '../../../phet-core/js/assertHasProperties.js';
 import Orientation from '../../../phet-core/js/Orientation.js';
-import { animatedPanZoomSingleton, DelayedMutate, KeyboardUtils, Node, NodeOptions, PDOMPointer, PDOMUtils, PDOMValueType, SceneryEvent, SceneryListenerFunction, TInputListener, Voicing, VoicingOptions } from '../../../scenery/js/imports.js';
+import { animatedPanZoomSingleton, DelayedMutate, KeyboardUtils, Node, NodeOptions, PDOMPointer, PDOMUtils, PDOMValueType, SceneryEvent, SceneryListenerFunction, TInputListener, TVoicing, Voicing, VoicingOptions } from '../../../scenery/js/imports.js';
 import Utterance from '../../../utterance-queue/js/Utterance.js';
 import sun from '../sun.js';
 import optionize, { combineOptions } from '../../../phet-core/js/optionize.js';
@@ -230,12 +230,62 @@ type ParentOptions = VoicingOptions & NodeOptions;
 
 export type AccessibleValueHandlerOptions = SelfOptions & VoicingOptions; // do not use ParentOptions here!
 
+export type TAccessibleValueHandler = {
+  startInput: SceneryListenerFunction;
+  onInput: SceneryListenerFunction;
+  set endInput( value: ( ( event: SceneryEvent | null ) => void ) );
+  get endInput(): SceneryListenerFunction; // TODO: getter should support a null event (like the option), https://github.com/phetsims/tasks/issues/1132
+  constrainValue: ( ( value: number ) => number );
+  panTargetNode: Node | null;
+  roundToStepSize: boolean;
+  a11yMapPDOMValue: ( ( value: number ) => number );
+  a11yMapValue: ( ( newValue: number, previousValue: number ) => number );
+  a11yRepeatEqualValueText: boolean;
+  a11yCreateAriaValueText: CreateTextFunction;
+  a11yCreateContextResponseAlert: CreateTextFunction | null;
+  contextResponsePerValueChangeDelay: number;
+  contextResponseMaxDelay: number;
+  voicingOnEndResponseOptions: VoicingOnEndResponseOptions;
+  setA11yDependencies( dependencies: TReadOnlyProperty<IntentionalAny>[] ): void;
+  getA11yDependencies(): TReadOnlyProperty<IntentionalAny>[];
+  a11yDependencies: TReadOnlyProperty<IntentionalAny>[];
+  alertContextResponse(): void;
+  reset(): void;
+  getAccessibleValueHandlerInputListener(): TInputListener;
+  handleKeyDown( event: SceneryEvent<KeyboardEvent> ): void;
+
+  // @mixin-protected - made public for use in the mixin only
+  handleKeyUp( event: SceneryEvent<KeyboardEvent> ): void;
+  // @mixin-protected - made public for use in the mixin only
+  handleChange( event: SceneryEvent ): void;
+  // @mixin-protected - made public for use in the mixin only
+  handleInput( event: SceneryEvent ): void;
+  // @mixin-protected - made public for use in the mixin only
+  handleBlur( event: SceneryEvent<FocusEvent> ): void;
+  setKeyboardStep( keyboardStep: number ): void;
+  keyboardStep: number;
+  getKeyboardStep(): number;
+  setShiftKeyboardStep( shiftKeyboardStep: number ): void;
+  shiftKeyboardStep: number;
+  getShiftKeyboardStep(): number;
+  getShiftKeyDown(): boolean;
+  get shiftKeyDown(): boolean;
+  setPageKeyboardStep( pageKeyboardStep: number ): void;
+  pageKeyboardStep: number;
+  getPageKeyboardStep(): number;
+  setAriaOrientation( orientation: Orientation ): void;
+  ariaOrientation: Orientation;
+  getAriaOrientation(): Orientation;
+  voicingOnEndResponse( valueOnStart: number, providedOptions?: VoicingOnEndResponseOptions ): void;
+} & TVoicing;
+
+
 /**
  * @param Type
  * @param optionsArgPosition - zero-indexed number that the options argument is provided at
  */
-const AccessibleValueHandler = <SuperType extends Constructor<Node>>( Type: SuperType, optionsArgPosition: number ) => { // eslint-disable-line @typescript-eslint/explicit-module-boundary-types
-  const AccessibleValueHandlerClass = DelayedMutate( 'AccessibleValueHandler', ACCESSIBLE_VALUE_HANDLER_OPTIONS, class AccessibleValueHandler extends Voicing( Type ) {
+const AccessibleValueHandler = <SuperType extends Constructor<Node>>( Type: SuperType, optionsArgPosition: number ): SuperType & Constructor<TAccessibleValueHandler> => {
+  const AccessibleValueHandlerClass = DelayedMutate( 'AccessibleValueHandler', ACCESSIBLE_VALUE_HANDLER_OPTIONS, class AccessibleValueHandler extends Voicing( Type ) implements TAccessibleValueHandler {
     private readonly _valueProperty: TProperty<number>;
     private _enabledRangeProperty: TReadOnlyProperty<Range>;
     private _startInput: SceneryListenerFunction = _.noop;
@@ -840,8 +890,9 @@ const AccessibleValueHandler = <SuperType extends Constructor<Node>>( Type: Supe
     /**
      * Handle key up event on this accessible slider, managing the shift key, and calling an optional endDrag
      * function on release. Add this as an input listener to the node mixing in AccessibleValueHandler.
+     * @mixin-protected - made public for use in the mixin only
      */
-    protected handleKeyUp( event: SceneryEvent<KeyboardEvent> ): void {
+    public handleKeyUp( event: SceneryEvent<KeyboardEvent> ): void {
       const key = KeyboardUtils.getEventCode( event.domEvent )!;
 
       // handle case where user tabbed to this input while an arrow key might have been held down
@@ -872,8 +923,9 @@ const AccessibleValueHandler = <SuperType extends Constructor<Node>>( Type: Supe
      * input are sent to the browser by the AT.
      *
      * Add this as a listener to the 'change' input event on the Node that is mixing in AccessibleValueHandler.
+     * @mixin-protected - made public for use in the mixin only
      */
-    protected handleChange( event: SceneryEvent ): void {
+    public handleChange( event: SceneryEvent ): void {
 
       if ( !this._a11yInputHandled ) {
         this.handleInput( event );
@@ -894,8 +946,9 @@ const AccessibleValueHandler = <SuperType extends Constructor<Node>>( Type: Supe
      * navigating away from the element.
      *
      * Add this as a listener to the `input` event on the Node that is mixing in AccessibleValueHandler.
+     * @mixin-protected - made public for use in the mixin only
      */
-    protected handleInput( event: SceneryEvent ): void {
+    public handleInput( event: SceneryEvent ): void {
       if ( this.enabledProperty.get() && !this._blockInput ) {
 
         // don't handle again on "change" event
@@ -944,8 +997,9 @@ const AccessibleValueHandler = <SuperType extends Constructor<Node>>( Type: Supe
      * Fires when the accessible slider loses focus.
      *
      * Add this as a listener on the `blur` event to the Node that is mixing in AccessibleValueHandler.
+     * @mixin-protected - made public for use in the mixin only
      */
-    protected handleBlur( event: SceneryEvent<FocusEvent> ): void {
+    public handleBlur( event: SceneryEvent<FocusEvent> ): void {
 
       // if any range keys are currently down, call end drag because user has stopped dragging to do something else
       if ( this._anyKeysDown() ) {

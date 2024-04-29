@@ -18,7 +18,7 @@ import Constructor from '../../../phet-core/js/types/Constructor.js';
 import IntentionalAny from '../../../phet-core/js/types/IntentionalAny.js';
 import { DelayedMutate, Node, SceneryEvent } from '../../../scenery/js/imports.js';
 import sun from '../sun.js';
-import AccessibleValueHandler, { AccessibleValueHandlerOptions } from './AccessibleValueHandler.js';
+import AccessibleValueHandler, { AccessibleValueHandlerOptions, TAccessibleValueHandler } from './AccessibleValueHandler.js';
 
 const ACCESSIBLE_SLIDER_OPTIONS = [
   'startDrag',
@@ -40,12 +40,18 @@ type SelfOptions = {
 
 type AccessibleSliderOptions = SelfOptions & AccessibleValueHandlerOptions;
 
+type TAccessibleSlider = {
+  startDrag: ( event: SceneryEvent ) => void;
+  drag: ( event: SceneryEvent ) => void;
+  endDrag: ( event: SceneryEvent | null ) => void;
+} & TAccessibleValueHandler;
+
 /**
  * @param Type
  * @param optionsArgPosition - zero-indexed number that the options argument is provided at in the constructor for Type
  */
-const AccessibleSlider = <SuperType extends Constructor<Node>>( Type: SuperType, optionsArgPosition: number ) => { // eslint-disable-line @typescript-eslint/explicit-module-boundary-types
-  const AccessibleSliderClass = DelayedMutate( 'AccessibleSlider', ACCESSIBLE_SLIDER_OPTIONS, class AccessibleSlider extends AccessibleValueHandler( Type, optionsArgPosition ) {
+const AccessibleSlider = <SuperType extends Constructor<Node>>( Type: SuperType, optionsArgPosition: number ): SuperType & Constructor<TAccessibleSlider> => {
+  const AccessibleSliderClass = DelayedMutate( 'AccessibleSlider', ACCESSIBLE_SLIDER_OPTIONS, class AccessibleSlider extends AccessibleValueHandler( Type, optionsArgPosition ) implements TAccessibleSlider {
 
     private readonly _disposeAccessibleSlider: () => void;
 
