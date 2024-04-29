@@ -51,84 +51,85 @@ type TAccessibleSlider = {
  * @param optionsArgPosition - zero-indexed number that the options argument is provided at in the constructor for Type
  */
 const AccessibleSlider = <SuperType extends Constructor<Node>>( Type: SuperType, optionsArgPosition: number ): SuperType & Constructor<TAccessibleSlider> => {
-  const AccessibleSliderClass = DelayedMutate( 'AccessibleSlider', ACCESSIBLE_SLIDER_OPTIONS, class AccessibleSlider extends AccessibleValueHandler( Type, optionsArgPosition ) implements TAccessibleSlider {
+  const AccessibleSliderClass = DelayedMutate( 'AccessibleSlider', ACCESSIBLE_SLIDER_OPTIONS,
+    class AccessibleSlider extends AccessibleValueHandler( Type, optionsArgPosition ) implements TAccessibleSlider {
 
-    private readonly _disposeAccessibleSlider: () => void;
+      private readonly _disposeAccessibleSlider: () => void;
 
-    private _startDrag: ( event: SceneryEvent ) => void = _.noop;
-    private _drag: ( event: SceneryEvent ) => void = _.noop;
-    private _endDrag: ( event: SceneryEvent | null ) => void = _.noop;
+      private _startDrag: ( event: SceneryEvent ) => void = _.noop;
+      private _drag: ( event: SceneryEvent ) => void = _.noop;
+      private _endDrag: ( event: SceneryEvent | null ) => void = _.noop;
 
-    public constructor( ...args: IntentionalAny[] ) {
+      public constructor( ...args: IntentionalAny[] ) {
 
-      const providedOptions = args[ optionsArgPosition ] as AccessibleSliderOptions;
+        const providedOptions = args[ optionsArgPosition ] as AccessibleSliderOptions;
 
-      assert && providedOptions && assert( Object.getPrototypeOf( providedOptions ) === Object.prototype,
-        'Extra prototype on AccessibleSlider options object is a code smell (or probably a bug)' );
+        assert && providedOptions && assert( Object.getPrototypeOf( providedOptions ) === Object.prototype,
+          'Extra prototype on AccessibleSlider options object is a code smell (or probably a bug)' );
 
-      // AccessibleSlider uses 'drag' terminology rather than 'change' for consistency with Slider
-      assert && assert( providedOptions.startInput === undefined, 'AccessibleSlider sets startInput through options.startDrag' );
-      assert && assert( providedOptions.endInput === undefined, 'AccessibleSlider sets endInput through options.endDrag' );
-      assert && assert( providedOptions.onInput === undefined, 'AccessibleSlider sets onInput through options.drag' );
+        // AccessibleSlider uses 'drag' terminology rather than 'change' for consistency with Slider
+        assert && assert( providedOptions.startInput === undefined, 'AccessibleSlider sets startInput through options.startDrag' );
+        assert && assert( providedOptions.endInput === undefined, 'AccessibleSlider sets endInput through options.endDrag' );
+        assert && assert( providedOptions.onInput === undefined, 'AccessibleSlider sets onInput through options.drag' );
 
-      super( ...args );
+        super( ...args );
 
-      // members of the Node API that are used by this trait
-      assertHasProperties( this, [ 'addInputListener', 'removeInputListener' ] );
+        // members of the Node API that are used by this trait
+        assertHasProperties( this, [ 'addInputListener', 'removeInputListener' ] );
 
-      // handle all accessible event input
-      const accessibleInputListener = this.getAccessibleValueHandlerInputListener();
-      this.addInputListener( accessibleInputListener );
+        // handle all accessible event input
+        const accessibleInputListener = this.getAccessibleValueHandlerInputListener();
+        this.addInputListener( accessibleInputListener );
 
-      // called by disposeAccessibleSlider to prevent memory leaks
-      this._disposeAccessibleSlider = () => {
-        this.removeInputListener( accessibleInputListener );
-      };
-    }
+        // called by disposeAccessibleSlider to prevent memory leaks
+        this._disposeAccessibleSlider = () => {
+          this.removeInputListener( accessibleInputListener );
+        };
+      }
 
-    public set startDrag( value: ( event: SceneryEvent ) => void ) {
-      this._startDrag = value;
+      public set startDrag( value: ( event: SceneryEvent ) => void ) {
+        this._startDrag = value;
 
-      // Also (unfortunately) forwarding to the startInput
-      this.startInput = value;
-    }
+        // Also (unfortunately) forwarding to the startInput
+        this.startInput = value;
+      }
 
-    public get startDrag(): ( event: SceneryEvent ) => void {
-      return this._startDrag;
-    }
+      public get startDrag(): ( event: SceneryEvent ) => void {
+        return this._startDrag;
+      }
 
-    public set drag( value: ( event: SceneryEvent ) => void ) {
-      this._drag = value;
+      public set drag( value: ( event: SceneryEvent ) => void ) {
+        this._drag = value;
 
-      // Also (unfortunately) forwarding to the onInput
-      this.onInput = value;
-    }
+        // Also (unfortunately) forwarding to the onInput
+        this.onInput = value;
+      }
 
-    public get drag(): ( event: SceneryEvent ) => void {
-      return this._drag;
-    }
+      public get drag(): ( event: SceneryEvent ) => void {
+        return this._drag;
+      }
 
-    public set endDrag( value: ( event: SceneryEvent | null ) => void ) {
-      this._endDrag = value;
+      public set endDrag( value: ( event: SceneryEvent | null ) => void ) {
+        this._endDrag = value;
 
-      // Also (unfortunately) forwarding to the endInput
-      this.endInput = value;
-    }
+        // Also (unfortunately) forwarding to the endInput
+        this.endInput = value;
+      }
 
-    public get endDrag(): ( event: SceneryEvent | null ) => void {
-      return this._endDrag;
-    }
+      public get endDrag(): ( event: SceneryEvent | null ) => void {
+        return this._endDrag;
+      }
 
-    /**
-     * Make the accessible slider portions of this node eligible for garbage collection. Call when disposing
-     * the type that this trait is mixed into.
-     */
-    public override dispose(): void {
-      this._disposeAccessibleSlider();
+      /**
+       * Make the accessible slider portions of this node eligible for garbage collection. Call when disposing
+       * the type that this trait is mixed into.
+       */
+      public override dispose(): void {
+        this._disposeAccessibleSlider();
 
-      super.dispose();
-    }
-  } );
+        super.dispose();
+      }
+    } );
 
   /**
    * {Array.<string>} - String keys for all the allowed options that will be set by Node.mutate( options ), in

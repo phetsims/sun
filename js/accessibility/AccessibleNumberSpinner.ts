@@ -66,192 +66,193 @@ type TAccessibleNumberSpinner = {
  */
 const AccessibleNumberSpinner = <SuperType extends Constructor<Node>>( Type: SuperType, optionsArgPosition: number ): SuperType & Constructor<TAccessibleNumberSpinner> => {
 
-  const AccessibleNumberSpinnerClass = DelayedMutate( 'AccessibleNumberSpinner', ACCESSIBLE_NUMBER_SPINNER_OPTIONS, class AccessibleNumberSpinner extends AccessibleValueHandler( Type, optionsArgPosition ) implements TAccessibleNumberSpinner {
+  const AccessibleNumberSpinnerClass = DelayedMutate( 'AccessibleNumberSpinner', ACCESSIBLE_NUMBER_SPINNER_OPTIONS,
+    class AccessibleNumberSpinner extends AccessibleValueHandler( Type, optionsArgPosition ) implements TAccessibleNumberSpinner {
 
-    // Manages timing must be disposed
-    private readonly _callbackTimer: CallbackTimer;
+      // Manages timing must be disposed
+      private readonly _callbackTimer: CallbackTimer;
 
-    // Emits events when increment and decrement actions occur, but only for changes of keyboardStep and
-    // shiftKeyboardStep (not pageKeyboardStep). Indicates "normal" usage with a keyboard, so that components
-    // composed with this trait can style themselves differently when the keyboard is being used.
-    // @mixin-protected - made public for use in the mixin only
-    public readonly pdomIncrementDownEmitter: TEmitter<[ boolean ]>;
-    public readonly pdomDecrementDownEmitter: TEmitter<[ boolean ]>;
+      // Emits events when increment and decrement actions occur, but only for changes of keyboardStep and
+      // shiftKeyboardStep (not pageKeyboardStep). Indicates "normal" usage with a keyboard, so that components
+      // composed with this trait can style themselves differently when the keyboard is being used.
+      // @mixin-protected - made public for use in the mixin only
+      public readonly pdomIncrementDownEmitter: TEmitter<[ boolean ]>;
+      public readonly pdomDecrementDownEmitter: TEmitter<[ boolean ]>;
 
-    private _pdomTimerDelay = 400;
-    private _pdomTimerInterval = 100;
+      private _pdomTimerDelay = 400;
+      private _pdomTimerInterval = 100;
 
-    private readonly _disposeAccessibleNumberSpinner: () => void;
+      private readonly _disposeAccessibleNumberSpinner: () => void;
 
-    public constructor( ...args: IntentionalAny[] ) {
+      public constructor( ...args: IntentionalAny[] ) {
 
-      const providedOptions = args[ optionsArgPosition ] as AccessibleValueHandlerOptions;
+        const providedOptions = args[ optionsArgPosition ] as AccessibleValueHandlerOptions;
 
-      assert && providedOptions && assert( Object.getPrototypeOf( providedOptions ) === Object.prototype,
-        'Extra prototype on AccessibleSlider options object is a code smell (or probably a bug)' );
+        assert && providedOptions && assert( Object.getPrototypeOf( providedOptions ) === Object.prototype,
+          'Extra prototype on AccessibleSlider options object is a code smell (or probably a bug)' );
 
-      const options = combineOptions<AccessibleValueHandlerOptions>( {
-        ariaOrientation: Orientation.VERTICAL // by default, number spinners should be oriented vertically
-      }, providedOptions );
+        const options = combineOptions<AccessibleValueHandlerOptions>( {
+          ariaOrientation: Orientation.VERTICAL // by default, number spinners should be oriented vertically
+        }, providedOptions );
 
-      args[ optionsArgPosition ] = options;
+        args[ optionsArgPosition ] = options;
 
-      super( ...args );
+        super( ...args );
 
-      // members of the Node API that are used by this trait
-      assertHasProperties( this, [ 'addInputListener' ] );
+        // members of the Node API that are used by this trait
+        assertHasProperties( this, [ 'addInputListener' ] );
 
-      this._callbackTimer = new CallbackTimer( {
-        delay: this._pdomTimerDelay,
-        interval: this._pdomTimerInterval
-      } );
+        this._callbackTimer = new CallbackTimer( {
+          delay: this._pdomTimerDelay,
+          interval: this._pdomTimerInterval
+        } );
 
-      this.pdomIncrementDownEmitter = new Emitter( { parameters: [ { valueType: 'boolean' } ] } );
-      this.pdomDecrementDownEmitter = new Emitter( { parameters: [ { valueType: 'boolean' } ] } );
+        this.pdomIncrementDownEmitter = new Emitter( { parameters: [ { valueType: 'boolean' } ] } );
+        this.pdomDecrementDownEmitter = new Emitter( { parameters: [ { valueType: 'boolean' } ] } );
 
-      this.setPDOMAttribute( 'aria-roledescription', SunStrings.a11y.numberSpinnerRoleDescriptionStringProperty );
+        this.setPDOMAttribute( 'aria-roledescription', SunStrings.a11y.numberSpinnerRoleDescriptionStringProperty );
 
-      // a callback that is added and removed from the timer depending on keystate
-      let downCallback: CallbackTimerCallback | null = null;
-      let runningTimerCallbackEvent: Event | null = null; // {Event|null}
+        // a callback that is added and removed from the timer depending on keystate
+        let downCallback: CallbackTimerCallback | null = null;
+        let runningTimerCallbackEvent: Event | null = null; // {Event|null}
 
-      // handle all accessible event input
-      const accessibleInputListener: TInputListener = {
-        keydown: event => {
-          if ( this.enabledProperty.get() ) {
+        // handle all accessible event input
+        const accessibleInputListener: TInputListener = {
+          keydown: event => {
+            if ( this.enabledProperty.get() ) {
 
-            // check for relevant keys here
-            if ( KeyboardUtils.isRangeKey( event.domEvent ) ) {
+              // check for relevant keys here
+              if ( KeyboardUtils.isRangeKey( event.domEvent ) ) {
 
-              const domEvent = event.domEvent!;
+                const domEvent = event.domEvent!;
 
-              // If the meta key is down we will not even call the keydown listener of the supertype, so we need
-              // to be sure that default behavior is prevented so we don't receive `input` and `change` events.
-              // See AccessibleValueHandler.handleInput for information on these events and why we don't want
-              // to change in response to them.
-              domEvent.preventDefault();
+                // If the meta key is down we will not even call the keydown listener of the supertype, so we need
+                // to be sure that default behavior is prevented so we don't receive `input` and `change` events.
+                // See AccessibleValueHandler.handleInput for information on these events and why we don't want
+                // to change in response to them.
+                domEvent.preventDefault();
 
-              // When the meta key is down Mac will not send keyup events so do not change values or add timer
-              // listeners because they will never be removed since we fail to get a keyup event. See
-              if ( !domEvent.metaKey ) {
-                if ( !this._callbackTimer.isRunning() ) {
-                  this._accessibleNumberSpinnerHandleKeyDown( event );
+                // When the meta key is down Mac will not send keyup events so do not change values or add timer
+                // listeners because they will never be removed since we fail to get a keyup event. See
+                if ( !domEvent.metaKey ) {
+                  if ( !this._callbackTimer.isRunning() ) {
+                    this._accessibleNumberSpinnerHandleKeyDown( event );
 
-                  downCallback = this._accessibleNumberSpinnerHandleKeyDown.bind( this, event );
-                  runningTimerCallbackEvent = domEvent;
-                  this._callbackTimer.addCallback( downCallback );
-                  this._callbackTimer.start();
+                    downCallback = this._accessibleNumberSpinnerHandleKeyDown.bind( this, event );
+                    runningTimerCallbackEvent = domEvent;
+                    this._callbackTimer.addCallback( downCallback );
+                    this._callbackTimer.start();
+                  }
                 }
               }
             }
-          }
-        },
-        keyup: event => {
+          },
+          keyup: event => {
 
-          const key = KeyboardUtils.getEventCode( event.domEvent );
+            const key = KeyboardUtils.getEventCode( event.domEvent );
 
-          if ( KeyboardUtils.isRangeKey( event.domEvent ) ) {
-            if ( runningTimerCallbackEvent && key === KeyboardUtils.getEventCode( runningTimerCallbackEvent ) ) {
-              this._emitKeyState( event.domEvent!, false );
+            if ( KeyboardUtils.isRangeKey( event.domEvent ) ) {
+              if ( runningTimerCallbackEvent && key === KeyboardUtils.getEventCode( runningTimerCallbackEvent ) ) {
+                this._emitKeyState( event.domEvent!, false );
+                this._callbackTimer.stop( false );
+                assert && assert( downCallback );
+                this._callbackTimer.removeCallback( downCallback! );
+                downCallback = null;
+                runningTimerCallbackEvent = null;
+              }
+
+              this.handleKeyUp( event );
+            }
+          },
+          blur: event => {
+
+            // if a key is currently down when focus leaves the spinner, stop callbacks and emit that the
+            // key is up
+            if ( downCallback ) {
+              assert && assert( runningTimerCallbackEvent !== null, 'key should be down if running downCallback' );
+
+              this._emitKeyState( runningTimerCallbackEvent!, false );
               this._callbackTimer.stop( false );
-              assert && assert( downCallback );
-              this._callbackTimer.removeCallback( downCallback! );
-              downCallback = null;
-              runningTimerCallbackEvent = null;
+              this._callbackTimer.removeCallback( downCallback );
             }
 
-            this.handleKeyUp( event );
-          }
-        },
-        blur: event => {
+            this.handleBlur( event );
+          },
+          input: this.handleInput.bind( this ),
+          change: this.handleChange.bind( this )
+        };
+        this.addInputListener( accessibleInputListener );
 
-          // if a key is currently down when focus leaves the spinner, stop callbacks and emit that the
-          // key is up
-          if ( downCallback ) {
-            assert && assert( runningTimerCallbackEvent !== null, 'key should be down if running downCallback' );
+        this._disposeAccessibleNumberSpinner = () => {
+          this._callbackTimer.dispose();
 
-            this._emitKeyState( runningTimerCallbackEvent!, false );
-            this._callbackTimer.stop( false );
-            this._callbackTimer.removeCallback( downCallback );
-          }
+          // emitters owned by this instance, can be disposed here
+          this.pdomIncrementDownEmitter.dispose();
+          this.pdomDecrementDownEmitter.dispose();
 
-          this.handleBlur( event );
-        },
-        input: this.handleInput.bind( this ),
-        change: this.handleChange.bind( this )
-      };
-      this.addInputListener( accessibleInputListener );
-
-      this._disposeAccessibleNumberSpinner = () => {
-        this._callbackTimer.dispose();
-
-        // emitters owned by this instance, can be disposed here
-        this.pdomIncrementDownEmitter.dispose();
-        this.pdomDecrementDownEmitter.dispose();
-
-        this.removeInputListener( accessibleInputListener );
-      };
-    }
-
-    public set pdomTimerDelay( value: number ) {
-      this._pdomTimerDelay = value;
-
-      if ( this._callbackTimer ) {
-        this._callbackTimer.delay = value;
+          this.removeInputListener( accessibleInputListener );
+        };
       }
-    }
 
-    public get pdomTimerDelay(): number {
-      return this._pdomTimerDelay;
-    }
+      public set pdomTimerDelay( value: number ) {
+        this._pdomTimerDelay = value;
 
-    public set pdomTimerInterval( value: number ) {
-      this._pdomTimerInterval = value;
-
-      if ( this._callbackTimer ) {
-        this._callbackTimer.interval = value;
+        if ( this._callbackTimer ) {
+          this._callbackTimer.delay = value;
+        }
       }
-    }
 
-    public get pdomTimerInterval(): number {
-      return this._pdomTimerInterval;
-    }
-
-    /**
-     * Handle the keydown event and emit events related to the user interaction. Ideally, this would
-     * override AccessibleValueHandler.handleKeyDown, but overriding is not supported with PhET Trait pattern.
-     */
-
-    private _accessibleNumberSpinnerHandleKeyDown( event: SceneryEvent<KeyboardEvent> ): void {
-      assert && assert( event.domEvent, 'must have a domEvent' );
-      this.handleKeyDown( event );
-      this._emitKeyState( event.domEvent!, true );
-    }
-
-    /**
-     * Emit events related to the keystate of the spinner. Typically used to style the spinner during keyboard
-     * interaction.
-     *
-     * @param domEvent - the code of the key changing state
-     * @param isDown - whether or not event was triggered from down or up keys
-     */
-
-    private _emitKeyState( domEvent: Event, isDown: boolean ): void {
-      validate( domEvent, { valueType: Event } );
-      if ( KeyboardUtils.isAnyKeyEvent( domEvent, [ KeyboardUtils.KEY_UP_ARROW, KeyboardUtils.KEY_RIGHT_ARROW ] ) ) {
-        this.pdomIncrementDownEmitter.emit( isDown );
+      public get pdomTimerDelay(): number {
+        return this._pdomTimerDelay;
       }
-      else if ( KeyboardUtils.isAnyKeyEvent( domEvent, [ KeyboardUtils.KEY_DOWN_ARROW, KeyboardUtils.KEY_LEFT_ARROW ] ) ) {
-        this.pdomDecrementDownEmitter.emit( isDown );
+
+      public set pdomTimerInterval( value: number ) {
+        this._pdomTimerInterval = value;
+
+        if ( this._callbackTimer ) {
+          this._callbackTimer.interval = value;
+        }
       }
-    }
 
-    public override dispose(): void {
-      this._disposeAccessibleNumberSpinner();
+      public get pdomTimerInterval(): number {
+        return this._pdomTimerInterval;
+      }
 
-      super.dispose();
-    }
-  } );
+      /**
+       * Handle the keydown event and emit events related to the user interaction. Ideally, this would
+       * override AccessibleValueHandler.handleKeyDown, but overriding is not supported with PhET Trait pattern.
+       */
+
+      private _accessibleNumberSpinnerHandleKeyDown( event: SceneryEvent<KeyboardEvent> ): void {
+        assert && assert( event.domEvent, 'must have a domEvent' );
+        this.handleKeyDown( event );
+        this._emitKeyState( event.domEvent!, true );
+      }
+
+      /**
+       * Emit events related to the keystate of the spinner. Typically used to style the spinner during keyboard
+       * interaction.
+       *
+       * @param domEvent - the code of the key changing state
+       * @param isDown - whether or not event was triggered from down or up keys
+       */
+
+      private _emitKeyState( domEvent: Event, isDown: boolean ): void {
+        validate( domEvent, { valueType: Event } );
+        if ( KeyboardUtils.isAnyKeyEvent( domEvent, [ KeyboardUtils.KEY_UP_ARROW, KeyboardUtils.KEY_RIGHT_ARROW ] ) ) {
+          this.pdomIncrementDownEmitter.emit( isDown );
+        }
+        else if ( KeyboardUtils.isAnyKeyEvent( domEvent, [ KeyboardUtils.KEY_DOWN_ARROW, KeyboardUtils.KEY_LEFT_ARROW ] ) ) {
+          this.pdomDecrementDownEmitter.emit( isDown );
+        }
+      }
+
+      public override dispose(): void {
+        this._disposeAccessibleNumberSpinner();
+
+        super.dispose();
+      }
+    } );
 
   /**
    * {Array.<string>} - String keys for all the allowed options that will be set by Node.mutate( options ), in
