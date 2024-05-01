@@ -233,8 +233,7 @@ export type AccessibleValueHandlerOptions = SelfOptions & VoicingOptions; // do 
 export type TAccessibleValueHandler = {
   startInput: SceneryListenerFunction;
   onInput: SceneryListenerFunction;
-  set endInput( value: ( ( event: SceneryEvent | null ) => void ) );
-  get endInput(): SceneryListenerFunction; // TODO: getter should support a null event (like the option), https://github.com/phetsims/tasks/issues/1132
+  endInput: ( event: SceneryEvent | null ) => void;
   constrainValue: ( ( value: number ) => number );
   panTargetNode: Node | null;
   roundToStepSize: boolean;
@@ -480,7 +479,7 @@ const AccessibleValueHandler = <SuperType extends Constructor<Node>>( Type: Supe
         this._endInput = value;
       }
 
-      public get endInput(): SceneryListenerFunction {
+      public get endInput(): ( event: SceneryEvent | null ) => void {
         return this._endInput;
       }
 
