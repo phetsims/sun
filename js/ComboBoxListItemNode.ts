@@ -11,7 +11,7 @@
 import { Shape } from '../../kite/js/imports.js';
 import StrictOmit from '../../phet-core/js/types/StrictOmit.js';
 import optionize from '../../phet-core/js/optionize.js';
-import { IndexedNodeIO, Node, NodeOptions, PressListener, Rectangle, TPaint, Voicing, VoicingOptions } from '../../scenery/js/imports.js';
+import { IndexedNodeIO, ManualConstraint, Node, NodeOptions, PressListener, Rectangle, TPaint, Voicing, VoicingOptions } from '../../scenery/js/imports.js';
 import Tandem from '../../tandem/js/Tandem.js';
 import sun from './sun.js';
 import SunConstants from './SunConstants.js';
@@ -123,27 +123,25 @@ export default class ComboBoxListItemNode<T> extends Voicing( Node ) {
     };
     highlightHeightProperty.link( highlightHeightListener );
 
-    // Assume that item.node may change (as in ComboBoxDisplay) and adjust layout dynamically.
-    // See https://github.com/phetsims/scenery-phet/issues/482
-    const updateItemLayout = () => {
-      if ( options.align === 'left' ) {
-        itemNodeWrapper.left = highlightRectangle.left + options.xMargin;
-      }
-      else if ( options.align === 'right' ) {
-        itemNodeWrapper.right = highlightRectangle.right - options.xMargin;
-      }
-      else {
-        itemNodeWrapper.centerX = highlightRectangle.centerX;
-      }
-      itemNodeWrapper.centerY = highlightRectangle.centerY;
-    };
-    itemNodeWrapper.boundsProperty.lazyLink( updateItemLayout );
-    updateItemLayout();
-
     options.children = [ highlightRectangle, itemNodeWrapper ];
 
     super( options );
     this._supplyOpenResponseOnNextFocus = false;
+
+    // Assume that item.node may change (as in ComboBoxDisplay) and adjust layout dynamically.
+    // See https://github.com/phetsims/scenery-phet/issues/482
+    ManualConstraint.create( this, [ highlightRectangle, itemNodeWrapper ], ( highlightProxy, itemProxy ) => {
+      if ( options.align === 'left' ) {
+        itemProxy.left = highlightProxy.left + options.xMargin;
+      }
+      else if ( options.align === 'right' ) {
+        itemProxy.right = highlightProxy.right - options.xMargin;
+      }
+      else {
+        itemProxy.centerX = highlightProxy.centerX;
+      }
+      itemProxy.centerY = highlightProxy.centerY;
+    } );
 
     const emptyA11yNameProperty = new DerivedProperty( [ a11yNameProperty ], ( a11yName: string | null ) => {
       return a11yName ? a11yName : '';
