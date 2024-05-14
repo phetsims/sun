@@ -29,8 +29,9 @@ type SelfOptions = {
   // If not provided, a Text node will be supplied. Should have and maintain well-defined bounds if passed in
   titleNode?: Node;
 
-  // If not provided, a BooleanProperty will be created, defaulting to true.
+  // If not provided, a BooleanProperty will be created, defaulting to the value of expandedDefaultValue.
   expandedProperty?: Property<boolean>;
+  expandedDefaultValue?: boolean;
 
   // If true (the default), we'll adjust the title so that it isn't pickable at all
   overrideTitleNodePickable?: boolean;
@@ -142,10 +143,16 @@ export default class AccordionBox extends Sizable( Node ) {
    */
   public constructor( contentNode: Node, providedOptions?: AccordionBoxOptions ) {
 
+    assert && providedOptions && assert(
+      !( providedOptions.hasOwnProperty( 'expandedProperty' ) && providedOptions.hasOwnProperty( 'expandedDefaultValue' ) ),
+      'cannot specify expandedProperty and expandedDefaultValue in providedOptions'
+    );
+
     const options = optionize<AccordionBoxOptions, StrictOmit<SelfOptions, 'expandCollapseButtonOptions'>, NodeOptions>()( {
 
       titleNode: null as unknown as Node,
       expandedProperty: null as unknown as BooleanProperty,
+      expandedDefaultValue: true,
       resize: true,
 
       overrideTitleNodePickable: true,
@@ -249,7 +256,7 @@ export default class AccordionBox extends Sizable( Node ) {
 
     this.expandedProperty = options.expandedProperty;
     if ( !this.expandedProperty ) {
-      this.expandedProperty = new BooleanProperty( true, {
+      this.expandedProperty = new BooleanProperty( options.expandedDefaultValue, {
         tandem: options.tandem.createTandem( 'expandedProperty' ),
         phetioFeatured: true
       } );
