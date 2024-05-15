@@ -36,7 +36,7 @@ Here’s the when and why we use a toolbox pattern.
 |Space or Enter | Activates or grabs the focused tool. |
 |Arrow keys | Move the focused-activated tool. |
 |WASD keys| Work as an alterantive to the Arrow keys to move the focused-activated tool. |
-|Escape | Returns the focused-activated tool to the toolbox. **Note: Visual proximity may also return the focused-activated tool to the toolbox. |
+|Escape | Returns the focused-activated tool to the toolbox. **Note: Visual proximity may also return the focused-activated tool to the toolbox.** |
 **Note: Optional: Sim-specific shortcuts can be designed and implemented to jump a focused-activated tool to useful places in the simulation.**
 
 
