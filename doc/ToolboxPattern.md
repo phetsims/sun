@@ -16,7 +16,7 @@ Here’s the when and why we use a toolbox pattern.
 ## Aesthetic Considerations
 * Toolbox appears in a visually defined space like a outlined box.
 * The toolbox and tools usually appear without any visual names, but in some cases names appear in addition to the tool icons (e.g., Circuit Construction Kit: AC).
-* Title case is used for text-based too names.
+* Title case is used for text-based tool names.
 * An activated tool becomes full size and is placed in its larger form in a useful place in the Play Area of the simulation, or near the toolbox.
 
 
@@ -24,7 +24,7 @@ Here’s the when and why we use a toolbox pattern.
 - Ensure the PDOM placement of the activated tool makes sense to the use of the activated tool.
 - Ensure focus goes on the activated tool so it can be easily moved once activated.
 - Ensure it is not too easy to accidentally return the tool to the tool box when using Alt Input.
-- Ensure the Escape key works to return a focused-activated tool to the tool box.
+- Ensure the Escape key works to return a focused-activated tool to the toolbox.
 - Consider if any sim-specific shortcuts make using the tool more efficient and effective for Alternative Input users.
 
 
