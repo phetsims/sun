@@ -11,7 +11,7 @@ Here’s the when and why we use a toolbox pattern.
 - The tools in the toolbox present as button interactions, and are placed in the PDOM order as single focusable objects (i.e., no grouping behavior yet available on the toolbox).
 - The activated tool is visually transformed, receives focus, and becomes draggable with Arrow keys (and alternatives).
 
-**Note: This pattern is also referred to as the Creator Pattern, (https://phetsims.github.io/scenery/examples/creator-pattern.html)[https://phetsims.github.io/scenery/examples/creator-pattern.html].**
+**Note: This pattern is also referred to as the [Creator Pattern](https://phetsims.github.io/scenery/examples/creator-pattern.html).**
 
 ## Aesthetic Considerations
 * Toolbox appears in a visually defined space like a outlined box.
