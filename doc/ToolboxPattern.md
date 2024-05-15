@@ -25,7 +25,7 @@ Here’s the when and why we use a toolbox pattern.
 - Ensure focus goes on the activated tool so it can be easily moved once activated.
 - Ensure it is not too easy to accidentally return the tool to the tool box when using Alt Input.
 - Ensure the Escape key works to return a focused-activated tool to the toolbox.
-- Consider if any sim-specific shortcuts make using the tool more efficient and effective for Alternative Input users.
+- Consider sim-specific shortcuts to make using the tool more efficient and effective for Alternative Input users.
 
 
 ### Keyboard Interaction & Support
@@ -50,13 +50,13 @@ Here’s the when and why we use a toolbox pattern.
 
 ## Checkbox as Alternative to the Toolbox Pattern
 The checkbox interaction can be used as an alternative work-around to using the toolbox pattern. If a checkbox is used:
-1. The Escape will not work as a shortcut to hide the tool and uncheck the checkbox.
-2. A tool activated by a checkbox does not need an additional two-step drag. Like in the case of the toolbox, the user intentionally activates the tool, and the Arrow keys (or alternatives) can be used to move the draggable tool.
-3. Tools activated by a checkbox would also need to consider the need for sim-specific shortcuts.
+1. The Escape key **does not** work as a shortcut to uncheck the checkbox, and thus hide the activated-focused tool.
+2. A tool activated by a checkbox does not need an additional two-step drag interaction. The action of checking the checkbox is the user's intentional activation of the tool. The Arrow keys (or alternatives) are then immediately operable to move the tool. For tools in a toolbox, the pressing of Space or Enter indicates the user's intention in the same way.
+3. Like other tools, tools activated by a checkbox need consideration for sim-specific shortcuts to make using the tool more efficient and effective for Alternative Input users.
 
 
 ## Description Design Considerations (Future)
-- The tool activation step for both the toolbox and the checkbox tool provides the opportunity to give instructions to blind users once description is implemented. The activation step is what was determined to be needed for BASE's Yellow Balloon, Friction's Chemistry Book, and others (FL, GFLB) where these draggable objects are already in the Play Area.
+- The tool activation step for both the toolbox and the checkbox tool provides the opportunity to give instructions to blind users once description is implemented. The activation step is what was determined to be needed for BASE's Yellow Balloon, Friction's Chemistry Book, and others (FL, GFL) where the cusotm draggable object is already in the Play Area.
 - It's these "already-in-the-Play-Area" draggable sim objects that may need to be revisited once the sims that contain these readily available draggable objects get a description feature.
 
 #### State Descriptions
