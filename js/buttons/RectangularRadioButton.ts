@@ -94,6 +94,7 @@ export default class RectangularRadioButton<T> extends RectangularButton {
       containerTagName: 'li',
       appendDescription: true,
       appendLabel: true,
+      accessibleName: Tandem.toAccessibleName( providedOptions, 'RadioButton' ),
 
       // phet-io
       tandem: Tandem.REQUIRED,
