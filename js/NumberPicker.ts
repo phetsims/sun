@@ -57,10 +57,12 @@ type SelfOptions = {
   mouseAreaYDilation?: number;
   backgroundStroke?: TColor;
   backgroundLineWidth?: number;
+  backgroundDisabledOpacity?: number;
   arrowHeight?: number;
   arrowYSpacing?: number;
   arrowStroke?: TColor;
   arrowLineWidth?: number;
+  arrowDisabledOpacity?: number;
   valueMaxWidth?: number | null; // If non-null, it will cap the value's maxWidth to this value
 
   /**
@@ -156,10 +158,12 @@ export default class NumberPicker extends AccessibleNumberSpinner( Node, 0 ) {
       mouseAreaYDilation: 5,
       backgroundStroke: 'gray',
       backgroundLineWidth: 0.5,
+      backgroundDisabledOpacity: 1,
       arrowHeight: 6,
       arrowYSpacing: 3,
       arrowStroke: 'black',
       arrowLineWidth: 0.25,
+      arrowDisabledOpacity: 1,
       valueMaxWidth: null,
       onInput: _.noop,
       incrementEnabledFunction: ( value: number, range: Range ) => ( value !== null && value !== undefined && value < range.max ),
@@ -312,7 +316,9 @@ export default class NumberPicker extends AccessibleNumberSpinner( Node, 0 ) {
     const strokedBackground = new Rectangle( 0, 0, backgroundWidth, backgroundHeight, backgroundCornerRadius, backgroundCornerRadius, {
       pickable: false,
       stroke: options.backgroundStroke,
-      lineWidth: options.backgroundLineWidth
+      lineWidth: options.backgroundLineWidth,
+      disabledOpacity: options.backgroundDisabledOpacity,
+      enabledProperty: this.enabledProperty
     } );
 
     // compute size of arrows
@@ -321,6 +327,8 @@ export default class NumberPicker extends AccessibleNumberSpinner( Node, 0 ) {
     const arrowOptions = {
       stroke: options.arrowStroke,
       lineWidth: options.arrowLineWidth,
+      disabledOpacity: options.arrowDisabledOpacity,
+      enabledProperty: this.enabledProperty,
       pickable: false
     };
 
@@ -514,6 +522,7 @@ export default class NumberPicker extends AccessibleNumberSpinner( Node, 0 ) {
       decrementEnabledProperty.dispose();
       this.incrementArrow.dispose();
       this.decrementArrow.dispose();
+      strokedBackground.dispose();
 
       if ( valueProperty.hasListener( valueObserver ) ) {
         valueProperty.unlink( valueObserver );
