@@ -11,8 +11,8 @@
 import sun from './sun.js';
 import ToggleNode, { ToggleNodeOptions } from './ToggleNode.js';
 import { Node } from '../../scenery/js/imports.js';
-import TProperty from '../../axon/js/TProperty.js';
 import { EmptySelfOptions } from '../../phet-core/js/optionize.js';
+import TReadOnlyProperty from '../../axon/js/TReadOnlyProperty.js';
 
 type SelfOptions = EmptySelfOptions;
 
@@ -20,13 +20,7 @@ export type BooleanToggleNodeOptions = SelfOptions & ToggleNodeOptions;
 
 export default class BooleanToggleNode extends ToggleNode<boolean> {
 
-  /**
-   * @param booleanProperty
-   * @param trueNode - shown when booleanProperty is true
-   * @param falseNode - shown when booleanProperty is false
-   * @param providedOptions?
-   */
-  public constructor( booleanProperty: TProperty<boolean>,
+  public constructor( booleanProperty: TReadOnlyProperty<boolean>,
                       trueNode: Node,
                       falseNode: Node,
                       providedOptions?: BooleanToggleNodeOptions ) {
