@@ -159,6 +159,8 @@ type SelfOptions = {
    *
    * For this reason, it is important that the mapped "min" would not be bigger than the mapped "max" from the
    * enabledRangeProperty.
+   *
+   * This map is used to control attributes in the PDOM (not the valueProperty).
    */
   a11yMapPDOMValue?: ( value: number ) => number;
 
@@ -166,6 +168,8 @@ type SelfOptions = {
    * Called before constraining and setting the Property. This is useful in rare cases where the value being set
    * by AccessibleValueHandler may change based on outside logic. This is for mapping value changes from input listeners
    * assigned in this type (keyboard/alt-input) to a new value before the value is set.
+   *
+   * This map is used to control the actual valueProperty.
    */
   a11yMapValue?: ( newValue: number, previousValue: number ) => number;
 
