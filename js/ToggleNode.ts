@@ -15,6 +15,7 @@ import { Node, NodeOptions } from '../../scenery/js/imports.js';
 import sun from './sun.js';
 import TReadOnlyProperty from '../../axon/js/TReadOnlyProperty.js';
 import GroupItemOptions, { getGroupItemNodes } from './GroupItemOptions.js';
+import InstanceRegistry from '../../phet-core/js/documentation/InstanceRegistry.js';
 
 export type ToggleNodeElement<T, N extends Node = Node> = {
   value: T;  // a value
@@ -87,6 +88,8 @@ export default class ToggleNode<T, N extends Node = Node> extends Node {
       valueProperty.unlink( valueListener );
       nodes.forEach( node => node.dispose() );
     };
+
+    assert && phet?.chipper?.queryParameters?.binder && InstanceRegistry.registerDataURL( 'sun', 'ToggleNode', this );
   }
 
   public override dispose(): void {
