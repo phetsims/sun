@@ -94,7 +94,9 @@ export default class RectangularRadioButtonGroup<T> extends FlowBox {
   private readonly disposeRadioButtonGroup: () => void;
   private readonly radioButtonMap: Map<T, RectangularRadioButton<T>>;
 
-  public constructor( property: PhetioProperty<T>, items: RectangularRadioButtonGroupItem<T>[], providedOptions?: RectangularRadioButtonGroupOptions ) {
+  public constructor( property: PhetioProperty<T>,
+                      items: RectangularRadioButtonGroupItem<T>[],
+                      providedOptions?: RectangularRadioButtonGroupOptions ) {
 
     assert && assert( _.uniqBy( items, item => item.value ).length === items.length,
       'items must have unique values' );
@@ -193,8 +195,8 @@ export default class RectangularRadioButtonGroup<T> extends FlowBox {
                 options.tandem === Tandem.OPT_OUT ? Tandem.OPT_OUT :
                 Tandem.REQUIRED,
         phetioDocumentation: item.phetioDocumentation || '',
-        // NOTE: This does NOT support dynamic orientation changes. If you need that, change RectangularButton to support
-        // dynamic options
+        // NOTE: This does NOT support dynamic orientation changes. If you need that, change RectangularButton to
+        // support dynamic options.
         touchAreaXDilation: options.orientation === 'horizontal' ? options.spacing / 2 : options.touchAreaXDilation,
         touchAreaYDilation: options.orientation === 'vertical' ? options.spacing / 2 : options.touchAreaYDilation,
         mouseAreaXDilation: options.orientation === 'horizontal' ? options.spacing / 2 : options.mouseAreaXDilation,
@@ -293,7 +295,7 @@ export default class RectangularRadioButtonGroup<T> extends FlowBox {
         buttonWithLayoutNode.focusHighlight.dispose();
         buttonWithLayoutNode.radioButton.dispose();
 
-        // A layout Node was created for this button so it should be disposed.
+        // A layout Node was created for this button, so it should be disposed.
         if ( buttonWithLayoutNode.radioButton !== buttonWithLayoutNode.layoutNode ) {
           buttonWithLayoutNode.layoutNode.dispose();
         }
