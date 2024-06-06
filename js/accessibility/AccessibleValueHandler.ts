@@ -86,14 +86,14 @@ const ACCESSIBLE_VALUE_HANDLER_OPTIONS: string[] = [
   'ariaOrientation',
   'panTargetNode',
   'roundToStepSize',
-  'a11yMapPDOMValue',
-  'a11yMapValue',
-  'a11yRepeatEqualValueText',
-  'a11yCreateAriaValueText',
-  'a11yCreateContextResponseAlert',
+  'pdomMapPDOMValue',
+  'pdomMapValue',
+  'pdomRepeatEqualValueText',
+  'pdomCreateAriaValueText',
+  'pdomCreateContextResponseAlert',
   'contextResponsePerValueChangeDelay',
   'contextResponseMaxDelay',
-  'a11yDependencies',
+  'pdomDependencies',
   'voicingOnEndResponseOptions'
 ];
 
@@ -162,7 +162,7 @@ type SelfOptions = {
    *
    * This map is used to control attributes in the PDOM (not the valueProperty).
    */
-  a11yMapPDOMValue?: ( value: number ) => number;
+  pdomMapPDOMValue?: ( value: number ) => number;
 
   /**
    * Called before constraining and setting the Property. This is useful in rare cases where the value being set
@@ -171,21 +171,21 @@ type SelfOptions = {
    *
    * This map is used to control the actual valueProperty.
    */
-  a11yMapValue?: ( newValue: number, previousValue: number ) => number;
+  pdomMapValue?: ( newValue: number, previousValue: number ) => number;
 
   /**
    * If true, the aria-valuetext will be spoken every value change, even if the aria-valuetext doesn't
    * actually change. By default, screen readers won't speak aria-valuetext if it remains the same for
    * multiple values.
    */
-  a11yRepeatEqualValueText?: boolean;
+  pdomRepeatEqualValueText?: boolean;
 
   /**
    * aria-valuetext creation function, called when the valueProperty changes.
    * This string is read by AT every time the slider value changes. This is often called the "object response"
    * for this interaction.
    */
-  a11yCreateAriaValueText?: CreateTextFunction;
+  pdomCreateAriaValueText?: CreateTextFunction;
 
   /**
    * Create content for an alert that will be sent to the utteranceQueue when the user finishes interacting
@@ -200,7 +200,7 @@ type SelfOptions = {
    *
    * This function can also support a `reset` function on it, to be called when the AccessibleValueHandler is reset
    */
-  a11yCreateContextResponseAlert?: CreateTextFunction | null;
+  pdomCreateContextResponseAlert?: CreateTextFunction | null;
 
   // This coefficient is multiplied by the number of times the value has been changed without the context response
   // alerting. This number is meant to give the screen reader enough chance to finish reading the aria-valuetext,
@@ -219,7 +219,7 @@ type SelfOptions = {
    * List the dependencies this Node's PDOM descriptions have. This should not include the valueProperty, but
    * should list any Properties whose change should trigger a description update for this Node.
    */
-  a11yDependencies?: TReadOnlyProperty<IntentionalAny>[];
+  pdomDependencies?: TReadOnlyProperty<IntentionalAny>[];
 
   // Only provide tagName to AccessibleValueHandler to remove it from the PDOM, otherwise, AccessibleValueHandler
   // sets its own tagName.
@@ -241,17 +241,17 @@ export type TAccessibleValueHandler = {
   constrainValue: ( ( value: number ) => number );
   panTargetNode: Node | null;
   roundToStepSize: boolean;
-  a11yMapPDOMValue: ( ( value: number ) => number );
-  a11yMapValue: ( ( newValue: number, previousValue: number ) => number );
-  a11yRepeatEqualValueText: boolean;
-  a11yCreateAriaValueText: CreateTextFunction;
-  a11yCreateContextResponseAlert: CreateTextFunction | null;
+  pdomMapPDOMValue: ( ( value: number ) => number );
+  pdomMapValue: ( ( newValue: number, previousValue: number ) => number );
+  pdomRepeatEqualValueText: boolean;
+  pdomCreateAriaValueText: CreateTextFunction;
+  pdomCreateContextResponseAlert: CreateTextFunction | null;
   contextResponsePerValueChangeDelay: number;
   contextResponseMaxDelay: number;
   voicingOnEndResponseOptions: VoicingOnEndResponseOptions;
-  setA11yDependencies( dependencies: TReadOnlyProperty<IntentionalAny>[] ): void;
-  getA11yDependencies(): TReadOnlyProperty<IntentionalAny>[];
-  a11yDependencies: TReadOnlyProperty<IntentionalAny>[];
+  setPDOMDependencies( dependencies: TReadOnlyProperty<IntentionalAny>[] ): void;
+  getPDOMDependencies(): TReadOnlyProperty<IntentionalAny>[];
+  pdomDependencies: TReadOnlyProperty<IntentionalAny>[];
   alertContextResponse(): void;
   reset(): void;
   getAccessibleValueHandlerInputListener(): TInputListener;
@@ -296,7 +296,7 @@ const AccessibleValueHandler = <SuperType extends Constructor<Node>>( Type: Supe
       private _onInput: SceneryListenerFunction = _.noop;
       private _endInput: ( ( event: SceneryEvent | null ) => void ) = _.noop;
       private _constrainValue: ( ( value: number ) => number ) = _.identity;
-      private _a11yMapValue: ( ( newValue: number, previousValue: number ) => number ) = _.identity;
+      private _pdomMapValue: ( ( newValue: number, previousValue: number ) => number ) = _.identity;
       private _panTargetNode: Node | null = null;
       private _keyboardStep!: number; // will be initialized based on the enabled range
       private _shiftKeyboardStep!: number; // will be initialized based on the enabled range
@@ -304,25 +304,25 @@ const AccessibleValueHandler = <SuperType extends Constructor<Node>>( Type: Supe
       private _ariaOrientation: Orientation = Orientation.HORIZONTAL;
       private _shiftKey = false;
 
-      private _a11yDependencies: TReadOnlyProperty<IntentionalAny>[] = [];
+      private _pdomDependencies: TReadOnlyProperty<IntentionalAny>[] = [];
 
       // track previous values for callbacks outside of Property listeners
       private _oldValue: number | null = null;
 
-      private _a11yCreateContextResponseAlert: CreateTextFunction | null = null;
+      private _pdomCreateContextResponseAlert: CreateTextFunction | null = null;
 
       // The Property value when an interaction starts, so it can be used as the "old" value
-      // when generating a context response at the end of an interaction with a11yCreateContextResponseAlert.
+      // when generating a context response at the end of an interaction with pdomCreateContextResponseAlert.
       private _valueOnStart: number;
 
       // The utterance sent to the utteranceQueue when the value changes, alert content generated by
-      // optional a11yCreateContextResponseAlert. The alertStableDelay on this utterance will increase if the input
+      // optional pdomCreateContextResponseAlert. The alertStableDelay on this utterance will increase if the input
       // receives many interactions before the utterance can be announced so that VoiceOver has time to read the
       // aria-valuetext (object response) before the alert (context response).
       private readonly _contextResponseUtterance: Utterance = new Utterance();
 
       // Number of times the input has changed in value before the utterance made was able to be spoken, only applicable
-      // if using a11yCreateContextResponseAlert
+      // if using pdomCreateContextResponseAlert
       private _timesValueTextChangedBeforeAlerting = 0;
 
       // in ms, see options for documentation.
@@ -333,7 +333,7 @@ const AccessibleValueHandler = <SuperType extends Constructor<Node>>( Type: Supe
       // change event. An AT (particularly VoiceOver) may send a change event (and not an input event) to the
       // browser in response to a user gesture. We need to handle that change event, without also handling the
       // input event in case a device sends both events to the browser.
-      private _a11yInputHandled = false;
+      private _pdomInputHandled = false;
 
       // Some browsers will receive `input` events when the user tabs away from the slider or
       // on some key presses - if we receive a keydown event for a tab key, do not allow input or change events
@@ -344,10 +344,10 @@ const AccessibleValueHandler = <SuperType extends Constructor<Node>>( Type: Supe
 
       // key is the event.code for the range key, value is whether it is down
       private _rangeKeysDown: Record<string, boolean> = {};
-      private _a11yMapPDOMValue: ( ( value: number ) => number ) = _.identity;
-      private _a11yCreateAriaValueText: CreateTextFunction = toString; // by default make sure it returns a string
+      private _pdomMapPDOMValue: ( ( value: number ) => number ) = _.identity;
+      private _pdomCreateAriaValueText: CreateTextFunction = toString; // by default make sure it returns a string
       private _dependenciesMultilink: UnknownMultilink | null = null;
-      private _a11yRepeatEqualValueText = true;
+      private _pdomRepeatEqualValueText = true;
 
       // When context responses are supported, this counter is used to determine a mutable delay between hearing the
       // same response.
@@ -362,7 +362,7 @@ const AccessibleValueHandler = <SuperType extends Constructor<Node>>( Type: Supe
       private _pdomPointer: PDOMPointer | null = null;
       private _pdomPointerListener: TInputListener;
 
-      private readonly _a11yValueTextUpdateListener: () => void;
+      private readonly _pdomValueTextUpdateListener: () => void;
       private readonly _disposeAccessibleValueHandler: () => void;
 
       public constructor( ...args: IntentionalAny[] ) {
@@ -417,7 +417,7 @@ const AccessibleValueHandler = <SuperType extends Constructor<Node>>( Type: Supe
 
         this._enabledRangeProperty = enabledRangeProperty;
 
-        this._a11yValueTextUpdateListener = this.invalidateAriaValueText.bind( this );
+        this._pdomValueTextUpdateListener = this.invalidateAriaValueText.bind( this );
 
         // initialized with setters that validate
         this.keyboardStep = ( enabledRangeProperty.get().max - enabledRangeProperty.get().min ) / 20;
@@ -427,7 +427,7 @@ const AccessibleValueHandler = <SuperType extends Constructor<Node>>( Type: Supe
         this._valueOnStart = valueProperty.value;
 
         // be called last, after options have been set to `this`.
-        this.invalidateA11yDependencies();
+        this.invalidatePDOMDependencies();
 
         // listeners, must be unlinked in dispose
         const enabledRangeObserver = this.invalidateEnabledRange.bind( this );
@@ -459,7 +459,7 @@ const AccessibleValueHandler = <SuperType extends Constructor<Node>>( Type: Supe
 
           this._dependenciesMultilink && this._dependenciesMultilink.dispose();
           this._panTargetNode = null;
-          this._a11yDependencies = [];
+          this._pdomDependencies = [];
         };
       }
 
@@ -513,52 +513,52 @@ const AccessibleValueHandler = <SuperType extends Constructor<Node>>( Type: Supe
         return this._roundToStepSize;
       }
 
-      public set a11yMapPDOMValue( value: ( ( value: number ) => number ) ) {
-        this._a11yMapPDOMValue = value;
+      public set pdomMapPDOMValue( value: ( ( value: number ) => number ) ) {
+        this._pdomMapPDOMValue = value;
 
         this.invalidateEnabledRange( this._enabledRangeProperty.value );
         this.invalidateValueProperty();
         this.invalidateAriaValueText();
       }
 
-      public get a11yMapPDOMValue(): ( ( value: number ) => number ) {
-        return this._a11yMapPDOMValue;
+      public get pdomMapPDOMValue(): ( ( value: number ) => number ) {
+        return this._pdomMapPDOMValue;
       }
 
-      public set a11yMapValue( value: ( ( newValue: number, previousValue: number ) => number ) ) {
-        this._a11yMapValue = value;
+      public set pdomMapValue( value: ( ( newValue: number, previousValue: number ) => number ) ) {
+        this._pdomMapValue = value;
       }
 
-      public get a11yMapValue(): ( ( newValue: number, previousValue: number ) => number ) {
-        return this._a11yMapValue;
+      public get pdomMapValue(): ( ( newValue: number, previousValue: number ) => number ) {
+        return this._pdomMapValue;
       }
 
-      public set a11yRepeatEqualValueText( value: boolean ) {
-        this._a11yRepeatEqualValueText = value;
+      public set pdomRepeatEqualValueText( value: boolean ) {
+        this._pdomRepeatEqualValueText = value;
 
         this.invalidateAriaValueText();
       }
 
-      public get a11yRepeatEqualValueText(): boolean {
-        return this._a11yRepeatEqualValueText;
+      public get pdomRepeatEqualValueText(): boolean {
+        return this._pdomRepeatEqualValueText;
       }
 
-      public set a11yCreateAriaValueText( value: CreateTextFunction ) {
-        this._a11yCreateAriaValueText = value;
+      public set pdomCreateAriaValueText( value: CreateTextFunction ) {
+        this._pdomCreateAriaValueText = value;
 
         this.invalidateAriaValueText();
       }
 
-      public get a11yCreateAriaValueText(): CreateTextFunction {
-        return this._a11yCreateAriaValueText;
+      public get pdomCreateAriaValueText(): CreateTextFunction {
+        return this._pdomCreateAriaValueText;
       }
 
-      public set a11yCreateContextResponseAlert( value: CreateTextFunction | null ) {
-        this._a11yCreateContextResponseAlert = value;
+      public set pdomCreateContextResponseAlert( value: CreateTextFunction | null ) {
+        this._pdomCreateContextResponseAlert = value;
       }
 
-      public get a11yCreateContextResponseAlert(): CreateTextFunction | null {
-        return this._a11yCreateContextResponseAlert;
+      public get pdomCreateContextResponseAlert(): CreateTextFunction | null {
+        return this._pdomCreateContextResponseAlert;
       }
 
       public set contextResponsePerValueChangeDelay( value: number ) {
@@ -617,12 +617,12 @@ const AccessibleValueHandler = <SuperType extends Constructor<Node>>( Type: Supe
         this.inputValue = mappedValue;
       }
 
-      private invalidateA11yDependencies(): void {
+      private invalidatePDOMDependencies(): void {
 
         // dispose the previous multilink, there is only one set of dependencies, though they can be overwritten.
         this._dependenciesMultilink && this._dependenciesMultilink.dispose();
 
-        this._dependenciesMultilink = Multilink.multilinkAny( this._a11yDependencies.concat( [ this._valueProperty ] ), this._a11yValueTextUpdateListener );
+        this._dependenciesMultilink = Multilink.multilinkAny( this._pdomDependencies.concat( [ this._valueProperty ] ), this._pdomValueTextUpdateListener );
       }
 
       /**
@@ -630,32 +630,32 @@ const AccessibleValueHandler = <SuperType extends Constructor<Node>>( Type: Supe
        * changes. Use this method to set the dependency Properties for this value handler. This will blow away the
        * previous list (like Node.children).
        */
-      public setA11yDependencies( dependencies: TReadOnlyProperty<IntentionalAny>[] ): void {
+      public setPDOMDependencies( dependencies: TReadOnlyProperty<IntentionalAny>[] ): void {
         assert && assert( !dependencies.includes( this._valueProperty ),
           'The value Property is already a dependency, and does not need to be added to this list' );
 
-        this._a11yDependencies = dependencies;
+        this._pdomDependencies = dependencies;
 
-        this.invalidateA11yDependencies();
+        this.invalidatePDOMDependencies();
       }
 
-      public getA11yDependencies(): TReadOnlyProperty<IntentionalAny>[] {
-        return this._a11yDependencies;
+      public getPDOMDependencies(): TReadOnlyProperty<IntentionalAny>[] {
+        return this._pdomDependencies;
       }
 
-      public set a11yDependencies( value: TReadOnlyProperty<IntentionalAny>[] ) {
-        this.setA11yDependencies( value );
+      public set pdomDependencies( value: TReadOnlyProperty<IntentionalAny>[] ) {
+        this.setPDOMDependencies( value );
       }
 
-      public get a11yDependencies(): TReadOnlyProperty<IntentionalAny>[] {
-        return this.getA11yDependencies();
+      public get pdomDependencies(): TReadOnlyProperty<IntentionalAny>[] {
+        return this.getPDOMDependencies();
       }
 
       private _updateAriaValueText( oldPropertyValue: number | null ): void {
         const mappedValue = this._getMappedValue();
 
-        // create the dynamic aria-valuetext from a11yCreateAriaValueText.
-        const newAriaValueTextValueType = this._a11yCreateAriaValueText( mappedValue, this._valueProperty.value, oldPropertyValue );
+        // create the dynamic aria-valuetext from pdomCreateAriaValueText.
+        const newAriaValueTextValueType = this._pdomCreateAriaValueText( mappedValue, this._valueProperty.value, oldPropertyValue );
         let newAriaValueText = PDOMUtils.unwrapStringProperty( newAriaValueTextValueType )!;
 
         // eslint-disable-next-line no-simple-type-checking-assertions
@@ -665,7 +665,7 @@ const AccessibleValueHandler = <SuperType extends Constructor<Node>>( Type: Supe
         // the screen reader will still read the new text - adding a hairSpace registers as a new string, but the
         // screen reader won't read that character.
         const hairSpace = '\u200A';
-        if ( this._a11yRepeatEqualValueText && this.ariaValueText && newAriaValueText === this.ariaValueText.replace( new RegExp( hairSpace, 'g' ), '' ) ) {
+        if ( this._pdomRepeatEqualValueText && this.ariaValueText && newAriaValueText === this.ariaValueText.replace( new RegExp( hairSpace, 'g' ), '' ) ) {
           newAriaValueText = this.ariaValueText + hairSpace;
         }
 
@@ -683,10 +683,10 @@ const AccessibleValueHandler = <SuperType extends Constructor<Node>>( Type: Supe
         // Alerting will occur to each connected display's UtteranceQueue, but we should only increment delay once per
         // time this function is called.
         let timesChangedBeforeAlertingIncremented = false;
-        if ( this._a11yCreateContextResponseAlert ) {
+        if ( this._pdomCreateContextResponseAlert ) {
 
           const mappedValue = this._getMappedValue();
-          const endInteractionAlert = this._a11yCreateContextResponseAlert( mappedValue, this._valueProperty.value, this._valueOnStart );
+          const endInteractionAlert = this._pdomCreateContextResponseAlert( mappedValue, this._valueProperty.value, this._valueOnStart );
 
           // only if it returned an alert
           if ( endInteractionAlert ) {
@@ -724,8 +724,8 @@ const AccessibleValueHandler = <SuperType extends Constructor<Node>>( Type: Supe
       public reset(): void {
 
         // reset the aria-valuetext creator if it supports that
-        this._a11yCreateAriaValueText.reset && this._a11yCreateAriaValueText.reset();
-        this._a11yCreateContextResponseAlert && this._a11yCreateContextResponseAlert.reset && this._a11yCreateContextResponseAlert.reset();
+        this._pdomCreateAriaValueText.reset && this._pdomCreateAriaValueText.reset();
+        this._pdomCreateContextResponseAlert && this._pdomCreateContextResponseAlert.reset && this._pdomCreateContextResponseAlert.reset();
 
         this._timesChangedBeforeAlerting = 0;
         // on reset, make sure that the PDOM descriptions are completely up to date.
@@ -737,7 +737,7 @@ const AccessibleValueHandler = <SuperType extends Constructor<Node>>( Type: Supe
        * @param [value] - if not provided, will use the current value of the valueProperty
        */
       private _getMappedValue( value: number = this._valueProperty.value ): number {
-        return this._a11yMapPDOMValue( value );
+        return this._pdomMapPDOMValue( value );
       }
 
       /**
@@ -864,7 +864,7 @@ const AccessibleValueHandler = <SuperType extends Constructor<Node>>( Type: Supe
               }
 
               // Map the value.
-              const mappedValue = this._a11yMapValue( newValue, this._valueProperty.get() );
+              const mappedValue = this._pdomMapValue( newValue, this._valueProperty.get() );
 
               // Optionally constrain the value. Only constrain if modifying by shiftKeyboardStep because that step size
               // may allow finer precision than constrainValue. This is a workaround for
@@ -931,11 +931,11 @@ const AccessibleValueHandler = <SuperType extends Constructor<Node>>( Type: Supe
        */
       public handleChange( event: SceneryEvent ): void {
 
-        if ( !this._a11yInputHandled ) {
+        if ( !this._pdomInputHandled ) {
           this.handleInput( event );
         }
 
-        this._a11yInputHandled = false;
+        this._pdomInputHandled = false;
       }
 
       /**
@@ -956,7 +956,7 @@ const AccessibleValueHandler = <SuperType extends Constructor<Node>>( Type: Supe
         if ( this.enabledProperty.get() && !this._blockInput ) {
 
           // don't handle again on "change" event
-          this._a11yInputHandled = true;
+          this._pdomInputHandled = true;
 
           let newValue = this._valueProperty.get();
 
@@ -982,7 +982,7 @@ const AccessibleValueHandler = <SuperType extends Constructor<Node>>( Type: Supe
           newValue = Utils.clamp( newValue, this._enabledRangeProperty.get().min, this._enabledRangeProperty.get().max );
 
           // optionally constrain value
-          this._valueProperty.set( this._constrainValue( this._a11yMapValue( newValue, this._valueProperty.get() ) ) );
+          this._valueProperty.set( this._constrainValue( this._pdomMapValue( newValue, this._valueProperty.get() ) ) );
 
           // only one change per input, but still call optional onInput function - after valueProperty is set (even if
           // set to the same value) so listener can use new value.
@@ -1022,7 +1022,7 @@ const AccessibleValueHandler = <SuperType extends Constructor<Node>>( Type: Supe
 
       /**
        * Interaction with this input has started, save the value on start so that it can be used as an "old" value
-       * when generating the context response with option a11yCreateContextResponse.
+       * when generating the context response with option pdomCreateContextResponse.
        */
       private _onInteractionStart( event: SceneryEvent ): void {
 
