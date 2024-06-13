@@ -538,8 +538,6 @@ export default class ComboBox<T> extends WidthSizable( Node ) {
     } ) );
     return DerivedProperty.deriveAny( widthProperties, () => {
       return Math.max( ...nodes.map( node => isWidthSizable( node ) ? node.minimumWidth || 0 : node.width ) );
-    }, {
-      strictAxonDependencies: false //TODO https://github.com/phetsims/sun/issues/870
     } );
   }
 
@@ -547,8 +545,6 @@ export default class ComboBox<T> extends WidthSizable( Node ) {
     const heightProperties = nodes.map( node => node.boundsProperty );
     return DerivedProperty.deriveAny( heightProperties, () => {
       return Math.max( ...nodes.map( node => node.height ) );
-    }, {
-      strictAxonDependencies: false //TODO https://github.com/phetsims/sun/issues/870
     } );
   }
 
