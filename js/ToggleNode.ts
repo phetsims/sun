@@ -11,7 +11,7 @@
 
 import StrictOmit from '../../phet-core/js/types/StrictOmit.js';
 import optionize from '../../phet-core/js/optionize.js';
-import { Node, NodeOptions } from '../../scenery/js/imports.js';
+import { Layoutable, ManualConstraint, Node, NodeOptions } from '../../scenery/js/imports.js';
 import sun from './sun.js';
 import TReadOnlyProperty from '../../axon/js/TReadOnlyProperty.js';
 import GroupItemOptions, { getGroupItemNodes } from './GroupItemOptions.js';
@@ -24,7 +24,7 @@ export type ToggleNodeElement<T, N extends Node = Node> = {
 type SelfOptions = {
 
   // {function} determines the relative layout of element Nodes. See below for pre-defined layout.
-  alignChildren?: ( children: Node[] ) => void;
+  alignChildren?: ( children: Layoutable[] ) => void;
 
   // Determine whether unselected children (the ones not displayed) are in the scene graph.
   // - If included (the default), unselected children are in the scene graph and hidden via setVisible(false). In this case
@@ -60,6 +60,10 @@ export default class ToggleNode<T, N extends Node = Node> extends Node {
 
     super( options );
 
+    const alignmentConstraint = new ManualConstraint( this, options.children, ( ...x: Layoutable[] ) => {
+      options.alignChildren( x );
+    } );
+
     const valueListener = ( value: T ) => {
       const matches: Node[] = [];
       for ( let i = 0; i < elements.length; i++ ) {
@@ -86,6 +90,7 @@ export default class ToggleNode<T, N extends Node = Node> extends Node {
 
     this.disposeToggleNode = function() {
       valueProperty.unlink( valueListener );
+      alignmentConstraint.dispose();
       nodes.forEach( node => node.dispose() );
     };
 
@@ -101,7 +106,7 @@ export default class ToggleNode<T, N extends Node = Node> extends Node {
    * A value for the alignChildren option.
    * Centers the latter nodes on the x,y center of the first node.
    */
-  public static CENTER( children: Node[] ): void {
+  public static CENTER( children: Layoutable[] ): void {
     for ( let i = 1; i < children.length; i++ ) {
       children[ i ].center = children[ 0 ].center;
     }
@@ -111,7 +116,7 @@ export default class ToggleNode<T, N extends Node = Node> extends Node {
    * A value for the alignChildren option.
    * Centers the latter nodes on the x center of the first node.
    */
-  public static CENTER_X( children: Node[] ): void {
+  public static CENTER_X( children: Layoutable[] ): void {
     for ( let i = 1; i < children.length; i++ ) {
       children[ i ].centerX = children[ 0 ].centerX;
     }
@@ -121,7 +126,7 @@ export default class ToggleNode<T, N extends Node = Node> extends Node {
    * A value for the alignChildren option.
    * Centers the latter nodes on the y center of the first node.
    */
-  public static CENTER_Y( children: Node[] ): void {
+  public static CENTER_Y( children: Layoutable[] ): void {
     for ( let i = 1; i < children.length; i++ ) {
       children[ i ].centerY = children[ 0 ].centerY;
     }
@@ -131,7 +136,7 @@ export default class ToggleNode<T, N extends Node = Node> extends Node {
    * A value for the alignChildren option.
    * Left aligns nodes on the left of the first node.
    */
-  public static LEFT( children: Node[] ): void {
+  public static LEFT( children: Layoutable[] ): void {
     for ( let i = 1; i < children.length; i++ ) {
       children[ i ].left = children[ 0 ].left;
     }
@@ -141,7 +146,7 @@ export default class ToggleNode<T, N extends Node = Node> extends Node {
    * A value for the alignChildren option.
    * Aligns nodes on the bottom of the first node.
    */
-  public static BOTTOM( children: Node[] ): void {
+  public static BOTTOM( children: Layoutable[] ): void {
     for ( let i = 1; i < children.length; i++ ) {
       children[ i ].bottom = children[ 0 ].bottom;
     }
@@ -151,7 +156,7 @@ export default class ToggleNode<T, N extends Node = Node> extends Node {
    * A value for the alignChildren option.
    * Aligns nodes on the bottom of the first node.
    */
-  public static CENTER_BOTTOM( children: Node[] ): void {
+  public static CENTER_BOTTOM( children: Layoutable[] ): void {
     for ( let i = 1; i < children.length; i++ ) {
       children[ i ].centerBottom = children[ 0 ].centerBottom;
     }
@@ -161,7 +166,7 @@ export default class ToggleNode<T, N extends Node = Node> extends Node {
    * A value for the alignChildren option.
    * Right aligns nodes on the right of the first node.
    */
-  public static RIGHT( children: Node[] ): void {
+  public static RIGHT( children: Layoutable[] ): void {
     for ( let i = 1; i < children.length; i++ ) {
       children[ i ].right = children[ 0 ].right;
     }
@@ -171,7 +176,7 @@ export default class ToggleNode<T, N extends Node = Node> extends Node {
    * A value for the alignChildren option.
    * No alignment is performed.
    */
-  public static NONE( children: Node[] ): void {
+  public static NONE( children: Layoutable[] ): void {
     // do nothing
   }
 }
