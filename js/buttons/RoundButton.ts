@@ -11,13 +11,15 @@ import DerivedProperty from '../../../axon/js/DerivedProperty.js';
 import TReadOnlyProperty from '../../../axon/js/TReadOnlyProperty.js';
 import { Shape } from '../../../kite/js/imports.js';
 import optionize from '../../../phet-core/js/optionize.js';
-import { Circle, Color, Node, PaintableNode, PaintColorProperty, RadialGradient, TPaint } from '../../../scenery/js/imports.js';
+import { Circle, Color, isHeightSizable, isWidthSizable, LayoutConstraint, Node, PaintableNode, PaintColorProperty, RadialGradient, TPaint } from '../../../scenery/js/imports.js';
 import sun from '../sun.js';
 import ButtonInteractionState from './ButtonInteractionState.js';
 import ButtonModel from './ButtonModel.js';
 import ButtonNode, { ButtonNodeOptions, ExternalButtonNodeOptions } from './ButtonNode.js';
 import RadioButtonInteractionState from './RadioButtonInteractionState.js';
 import TButtonAppearanceStrategy, { TButtonAppearanceStrategyOptions } from './TButtonAppearanceStrategy.js';
+import TinyProperty from '../../../axon/js/TinyProperty.js';
+import Dimension2 from '../../../dot/js/Dimension2.js';
 
 // constants
 const HIGHLIGHT_GRADIENT_LENGTH = 5; // In screen coords, which are roughly pixels.
@@ -45,11 +47,13 @@ export default class RoundButton extends ButtonNode {
 
   public static ThreeDAppearanceStrategy: TButtonAppearanceStrategy;
 
+  private readonly buttonNodeConstraint: RoundButtonNodeConstraint;
+
   protected constructor( buttonModel: ButtonModel,
                          interactionStateProperty: TReadOnlyProperty<ButtonInteractionState>,
                          providedOptions?: RoundButtonOptions ) {
 
-    const options = optionize<RoundButtonOptions, SelfOptions, ButtonNodeOptions>()( {
+    let options = optionize<RoundButtonOptions, SelfOptions, ButtonNodeOptions>()( {
 
       // SelfOptions
       radius: ( providedOptions && providedOptions.content ) ? null : 30,
@@ -83,9 +87,6 @@ export default class RoundButton extends ButtonNode {
     if ( options.radius ) {
       assert && assert( options.xMargin < options.radius, 'xMargin cannot be larger than radius' );
       assert && assert( options.yMargin < options.radius, 'yMargin cannot be larger than radius' );
-
-      options.minUnstrokedWidth = options.radius * 2;
-      options.minUnstrokedHeight = options.radius * 2;
     }
 
     // If no options were explicitly passed in for the button appearance strategy, pass through the general appearance
@@ -97,10 +98,7 @@ export default class RoundButton extends ButtonNode {
       };
     }
 
-    // Compute the radius of the button. radius will not be falsey if content is also falsey
-    const buttonRadius = options.radius ||
-                         Math.max( options.content!.width + options.xMargin * 2, options.content!.height + options.yMargin * 2 ) / 2;
-
+    // TODO: get this to work dynamically? Or do we always want things scaled down?
     if ( options.content && options.radius ) {
       const previousContent = options.content;
       const minScale = Math.min(
@@ -114,24 +112,32 @@ export default class RoundButton extends ButtonNode {
     }
 
     // Create the circular part of the button.
-    const buttonBackground = new Circle( buttonRadius );
+    const buttonBackground = new Circle( 1 );
+
+    const boundsRequiredOptionKeys = _.pick( options, Node.REQUIRES_BOUNDS_OPTION_KEYS );
+    options = _.omit( options, Node.REQUIRES_BOUNDS_OPTION_KEYS ) as typeof options;
 
     super( buttonModel, buttonBackground, interactionStateProperty, options );
 
-    // Get the actual button radius after calling super, so that buttonAppearanceStrategy has applied the stroke.
-    // This accounts for stroke + lineWidth, which is important when setting pointer areas and focus highlight.
-    // See https://github.com/phetsims/sun/issues/660
-    const buttonBackgroundRadius = buttonBackground.localBounds.width / 2;
 
-    // Set pointer areas.
-    this.touchArea = Shape.circle( options.touchAreaXShift, options.touchAreaYShift,
-      buttonBackgroundRadius + options.touchAreaDilation );
-    this.mouseArea = Shape.circle( options.mouseAreaXShift, options.mouseAreaYShift,
-      buttonBackgroundRadius + options.mouseAreaDilation );
+    this.buttonNodeConstraint = new RoundButtonNodeConstraint( this, this.layoutSizeProperty, {
+      content: options.content ?? null,
+      radius: options.radius,
+      buttonBackground: buttonBackground,
+      xMargin: options.xMargin,
+      yMargin: options.yMargin,
+      maxLineWidth: this.maxLineWidth,
+      aspectRatio: options.aspectRatio,
+      touchAreaDilation: options.touchAreaDilation,
+      touchAreaXShift: options.touchAreaXShift,
+      touchAreaYShift: options.touchAreaYShift,
+      mouseAreaDilation: options.mouseAreaDilation,
+      mouseAreaXShift: options.mouseAreaXShift,
+      mouseAreaYShift: options.mouseAreaYShift
+    } );
+    this.disposeEmitter.addListener( () => this.buttonNodeConstraint.dispose() );
 
-    // pdom - focus highlight is circular for round buttons, with a little bit of padding
-    // between button shape and inner edge of highlight
-    this.focusHighlight = Shape.circle( 0, 0, buttonBackgroundRadius + 5 );
+    this.mutate( boundsRequiredOptionKeys );
   }
 }
 
@@ -192,36 +198,8 @@ export class ThreeDAppearanceStrategy {
     const baseDarker5Property = new PaintColorProperty( baseColorProperty, { luminanceFactor: -0.5 } );
     const baseTransparentProperty = new DerivedProperty( [ baseColorProperty ], color => color.withAlpha( 0 ) );
 
-    // Set up variables needed to create the various gradient fills and otherwise modify the appearance
-    const buttonRadius = buttonBackground.width / 2;
-    const innerGradientRadius = buttonRadius - HIGHLIGHT_GRADIENT_LENGTH / 2;
-    const outerGradientRadius = buttonRadius + HIGHLIGHT_GRADIENT_LENGTH / 2;
-    const gradientOffset = HIGHLIGHT_GRADIENT_LENGTH / 2;
-
-    const upFillHighlight = new RadialGradient( gradientOffset, gradientOffset, innerGradientRadius, gradientOffset, gradientOffset, outerGradientRadius )
-      .addColorStop( 0, baseColorProperty )
-      .addColorStop( 1, baseBrighter7Property );
-
-    const upFillShadow = new RadialGradient( -gradientOffset, -gradientOffset, innerGradientRadius, -gradientOffset, -gradientOffset, outerGradientRadius )
-      .addColorStop( 0, baseTransparentProperty )
-      .addColorStop( 1, baseDarker5Property );
-
-    const overFillHighlight = new RadialGradient( gradientOffset, gradientOffset, innerGradientRadius, gradientOffset, gradientOffset, outerGradientRadius )
-      .addColorStop( 0, baseBrighter3Property )
-      .addColorStop( 1, baseBrighter8Property );
-
-    const overFillShadow = new RadialGradient( -gradientOffset, -gradientOffset, innerGradientRadius, -gradientOffset, -gradientOffset, outerGradientRadius )
-      .addColorStop( 0, baseTransparentProperty )
-      .addColorStop( 1, baseDarker5Property );
-
-    const pressedFill = new RadialGradient( -gradientOffset, -gradientOffset, 0, 0, 0, outerGradientRadius )
-      .addColorStop( 0, baseDarker1Property )
-      .addColorStop( 0.6, baseDarker2Property )
-      .addColorStop( 0.8, baseColorProperty )
-      .addColorStop( 1, baseBrighter8Property );
-
     // Create and add the overlay that is used to add shading.
-    const shadowNode = new Circle( buttonRadius, {
+    const shadowNode = new Circle( 1, {
       stroke: !options.stroke ? baseDarker4Property : options.stroke,
       lineWidth: options.lineWidth,
       pickable: false
@@ -230,50 +208,87 @@ export class ThreeDAppearanceStrategy {
 
     this.maxLineWidth = shadowNode.hasStroke() && options && typeof options.lineWidth === 'number' ? options.lineWidth : 0;
 
-    // Cache gradients
-    buttonBackground.cachedPaints = [ upFillHighlight, overFillHighlight, pressedFill ];
-    shadowNode.cachedPaints = [ upFillShadow, overFillShadow ];
+    let interactionStateListener: ( interactionState: ButtonInteractionState ) => void;
 
-    // Change colors to match interactionState
-    function interactionStateListener( interactionState: ButtonInteractionState ): void {
+    // We'll need to listen to the shape changes in order to update our appearance.
+    const listener = () => {
+      // Set up variables needed to create the various gradient fills and otherwise modify the appearance
+      const buttonRadius = buttonBackground.width / 2;
+      const innerGradientRadius = buttonRadius - HIGHLIGHT_GRADIENT_LENGTH / 2;
+      const outerGradientRadius = buttonRadius + HIGHLIGHT_GRADIENT_LENGTH / 2;
+      const gradientOffset = HIGHLIGHT_GRADIENT_LENGTH / 2;
 
-      switch( interactionState ) {
+      const upFillHighlight = new RadialGradient( gradientOffset, gradientOffset, innerGradientRadius, gradientOffset, gradientOffset, outerGradientRadius )
+        .addColorStop( 0, baseColorProperty )
+        .addColorStop( 1, baseBrighter7Property );
 
-        case ButtonInteractionState.IDLE:
-          buttonBackground.fill = upFillHighlight;
-          buttonBackground.stroke = options.deselectedStroke;
-          buttonBackground.lineWidth = options.deselectedLineWidth;
-          buttonBackground.opacity = options.deselectedButtonOpacity;
-          shadowNode.fill = upFillShadow;
-          shadowNode.opacity = options.deselectedButtonOpacity;
-          break;
+      const upFillShadow = new RadialGradient( -gradientOffset, -gradientOffset, innerGradientRadius, -gradientOffset, -gradientOffset, outerGradientRadius )
+        .addColorStop( 0, baseTransparentProperty )
+        .addColorStop( 1, baseDarker5Property );
 
-        case ButtonInteractionState.OVER:
-          buttonBackground.fill = overFillHighlight;
-          buttonBackground.stroke = options.overStroke;
-          buttonBackground.lineWidth = options.overLineWidth;
-          buttonBackground.opacity = options.overButtonOpacity;
-          shadowNode.fill = overFillShadow;
-          shadowNode.opacity = options.overButtonOpacity;
-          break;
+      const overFillHighlight = new RadialGradient( gradientOffset, gradientOffset, innerGradientRadius, gradientOffset, gradientOffset, outerGradientRadius )
+        .addColorStop( 0, baseBrighter3Property )
+        .addColorStop( 1, baseBrighter8Property );
 
-        case ButtonInteractionState.PRESSED:
-          buttonBackground.fill = pressedFill;
-          buttonBackground.stroke = options.selectedStroke;
-          buttonBackground.lineWidth = options.selectedLineWidth;
-          buttonBackground.opacity = options.selectedButtonOpacity;
-          shadowNode.fill = overFillShadow;
-          shadowNode.opacity = options.selectedButtonOpacity;
-          break;
+      const overFillShadow = new RadialGradient( -gradientOffset, -gradientOffset, innerGradientRadius, -gradientOffset, -gradientOffset, outerGradientRadius )
+        .addColorStop( 0, baseTransparentProperty )
+        .addColorStop( 1, baseDarker5Property );
 
-        default:
-          throw new Error( `unsupported interactionState: ${interactionState}` );
-      }
-    }
+      const pressedFill = new RadialGradient( -gradientOffset, -gradientOffset, 0, 0, 0, outerGradientRadius )
+        .addColorStop( 0, baseDarker1Property )
+        .addColorStop( 0.6, baseDarker2Property )
+        .addColorStop( 0.8, baseColorProperty )
+        .addColorStop( 1, baseBrighter8Property );
 
-    interactionStateProperty.link( interactionStateListener );
+      shadowNode.radius = buttonRadius;
+
+      // Cache gradients
+      buttonBackground.cachedPaints = [ upFillHighlight, overFillHighlight, pressedFill ];
+      shadowNode.cachedPaints = [ upFillShadow, overFillShadow ];
+
+      interactionStateListener && interactionStateProperty.unlink( interactionStateListener );
+
+      // Change colors to match interactionState
+      interactionStateListener = ( interactionState: ButtonInteractionState ) => {
+        switch( interactionState ) {
+
+          case ButtonInteractionState.IDLE:
+            buttonBackground.fill = upFillHighlight;
+            buttonBackground.stroke = options.deselectedStroke;
+            buttonBackground.lineWidth = options.deselectedLineWidth;
+            buttonBackground.opacity = options.deselectedButtonOpacity;
+            shadowNode.fill = upFillShadow;
+            shadowNode.opacity = options.deselectedButtonOpacity;
+            break;
+
+          case ButtonInteractionState.OVER:
+            buttonBackground.fill = overFillHighlight;
+            buttonBackground.stroke = options.overStroke;
+            buttonBackground.lineWidth = options.overLineWidth;
+            buttonBackground.opacity = options.overButtonOpacity;
+            shadowNode.fill = overFillShadow;
+            shadowNode.opacity = options.overButtonOpacity;
+            break;
+
+          case ButtonInteractionState.PRESSED:
+            buttonBackground.fill = pressedFill;
+            buttonBackground.stroke = options.selectedStroke;
+            buttonBackground.lineWidth = options.selectedLineWidth;
+            buttonBackground.opacity = options.selectedButtonOpacity;
+            shadowNode.fill = overFillShadow;
+            shadowNode.opacity = options.selectedButtonOpacity;
+            break;
+
+          default:
+            throw new Error( `unsupported interactionState: ${interactionState}` );
+        }
+      };
+      interactionStateProperty.link( interactionStateListener );
+    };
+    buttonBackground.selfBoundsProperty.link( listener );
 
     this.disposeThreeDAppearanceStrategy = () => {
+      buttonBackground.selfBoundsProperty.unlink( listener );
       if ( interactionStateProperty.hasListener( interactionStateListener ) ) {
         interactionStateProperty.unlink( interactionStateListener );
       }
@@ -295,5 +310,166 @@ export class ThreeDAppearanceStrategy {
 }
 
 RoundButton.ThreeDAppearanceStrategy = ThreeDAppearanceStrategy;
+
+type RoundButtonNodeConstraintOptions = {
+  content: Node | null;
+  radius: number | null;
+  buttonBackground: Circle;
+  xMargin: number;
+  yMargin: number;
+  maxLineWidth: number;
+  aspectRatio: number | null;
+  touchAreaDilation: number;
+  touchAreaXShift: number;
+  touchAreaYShift: number;
+  mouseAreaDilation: number;
+  mouseAreaXShift: number;
+  mouseAreaYShift: number;
+};
+
+class RoundButtonNodeConstraint extends LayoutConstraint {
+
+  private readonly content: Node | null;
+  private readonly radius: number | null;
+  private readonly buttonBackground: Circle;
+  private readonly xMargin: number;
+  private readonly yMargin: number;
+  private readonly maxLineWidth: number;
+  private readonly aspectRatio: number | null;
+  private readonly touchAreaDilation: number;
+  private readonly touchAreaXShift: number;
+  private readonly touchAreaYShift: number;
+  private readonly mouseAreaDilation: number;
+  private readonly mouseAreaXShift: number;
+  private readonly mouseAreaYShift: number;
+  private isFirstLayout = true;
+
+  // Stored so that we can prevent updates if we're not marked sizable in a certain direction
+  private lastLocalWidth = 0;
+  private lastLocalHeight = 0;
+
+  public constructor(
+    public readonly buttonNode: ButtonNode,
+    public readonly layoutSizeProperty: TinyProperty<Dimension2>,
+    options: RoundButtonNodeConstraintOptions
+  ) {
+
+    super( buttonNode );
+
+    // Save everything, so we can run things in the layout method
+    // TODO: clean up this and use options
+    this.buttonNode = buttonNode;
+    this.content = options.content;
+    this.radius = options.radius;
+    this.buttonBackground = options.buttonBackground;
+    this.xMargin = options.xMargin;
+    this.yMargin = options.yMargin;
+    this.maxLineWidth = options.maxLineWidth;
+    this.aspectRatio = options.aspectRatio;
+    this.touchAreaDilation = options.touchAreaDilation;
+    this.touchAreaXShift = options.touchAreaXShift;
+    this.touchAreaYShift = options.touchAreaYShift;
+    this.mouseAreaDilation = options.mouseAreaDilation;
+    this.mouseAreaXShift = options.mouseAreaXShift;
+    this.mouseAreaYShift = options.mouseAreaYShift;
+
+    this.buttonNode.localPreferredWidthProperty.lazyLink( this._updateLayoutListener );
+    this.buttonNode.localPreferredHeightProperty.lazyLink( this._updateLayoutListener );
+
+    if ( this.content ) {
+      this.addNode( this.content, false );
+    }
+
+    this.layout();
+  }
+
+  protected override layout(): void {
+    super.layout();
+
+    const buttonNode = this.buttonNode;
+    const content = this.content;
+
+    // TODO: add infinite loop protection with equalsEpsilon
+
+    const widthSizable = buttonNode.widthSizable;
+    const heightSizable = buttonNode.heightSizable;
+    const contentWidthSizable = !!content && isWidthSizable( content );
+    const contentHeightSizable = !!content && isHeightSizable( content );
+
+    const contentMinimumWidthWithMargins = content ? ( contentWidthSizable ? content.minimumWidth ?? 0 : content.width ) + this.xMargin * 2 : 0;
+    const contentMinimumHeightWithMargins = content ? ( contentHeightSizable ? content.minimumHeight ?? 0 : content.height ) + this.yMargin * 2 : 0;
+
+    let contentMinimumRadius = Math.max( contentMinimumWidthWithMargins, contentMinimumHeightWithMargins ) / 2;
+
+    if ( this.radius !== null ) {
+      contentMinimumRadius = Math.max( this.radius, contentMinimumRadius );
+    }
+
+    // Only allow an initial update if we are not sizable in that dimension
+    let minimumWidth =
+      ( this.isFirstLayout || widthSizable )
+      ? 2 * contentMinimumRadius + this.maxLineWidth
+      : buttonNode.localMinimumWidth!;
+    let minimumHeight = ( this.isFirstLayout || heightSizable )
+      ? 2 * contentMinimumRadius + this.maxLineWidth
+      : buttonNode.localMinimumHeight!;
+
+    assert && assert( this.aspectRatio === 1 );
+
+    // Our resulting sizes (allow setting preferred width/height on the buttonNode)
+    this.lastLocalWidth = this.isFirstLayout || widthSizable
+      ? Math.max( minimumWidth, widthSizable ? buttonNode.localPreferredWidth ?? 0 : 0 )
+      : this.lastLocalWidth;
+    this.lastLocalHeight = this.isFirstLayout || heightSizable
+      ? Math.max( minimumHeight, heightSizable ? buttonNode.localPreferredHeight ?? 0 : 0 )
+      : this.lastLocalHeight;
+
+    // If we have a single sizable direction, we will adjust the minimum width of the OTHER direction to match.
+    if ( !widthSizable ) {
+      minimumWidth = this.lastLocalWidth;
+    }
+    if ( !heightSizable ) {
+      minimumHeight = this.lastLocalHeight;
+    }
+
+    if ( this.isFirstLayout || widthSizable || heightSizable ) {
+      const preferredRadius = ( Math.max( this.lastLocalWidth, this.lastLocalHeight ) - this.maxLineWidth ) / 2;
+
+      this.buttonBackground.radius = preferredRadius;
+    }
+
+    if ( this.isFirstLayout || widthSizable || heightSizable ) {
+        // Get the actual button radius after calling super, so that buttonAppearanceStrategy has applied the stroke.
+        // This accounts for stroke + lineWidth, which is important when setting pointer areas and focus highlight.
+        // See https://github.com/phetsims/sun/issues/660
+        const buttonBackgroundRadius = this.buttonBackground.localBounds.width / 2;
+
+        // Set pointer areas.
+        this.buttonNode.touchArea = Shape.circle( this.touchAreaXShift, this.touchAreaYShift,
+          buttonBackgroundRadius + this.touchAreaDilation );
+        this.buttonNode.mouseArea = Shape.circle( this.mouseAreaXShift, this.mouseAreaYShift,
+          buttonBackgroundRadius + this.mouseAreaDilation );
+
+        // pdom - focus highlight is circular for round buttons, with a little bit of padding
+        // between button shape and inner edge of highlight
+        this.buttonNode.focusHighlight = Shape.circle( 0, 0, buttonBackgroundRadius + 5 );
+    }
+
+    this.isFirstLayout = false;
+
+    this.layoutSizeProperty.value = new Dimension2( this.lastLocalWidth, this.lastLocalHeight );
+
+    // Set minimums at the end
+    buttonNode.localMinimumWidth = minimumWidth;
+    buttonNode.localMinimumHeight = minimumHeight;
+  }
+
+  public override dispose(): void {
+    this.buttonNode.localPreferredWidthProperty.unlink( this._updateLayoutListener );
+    this.buttonNode.localPreferredHeightProperty.unlink( this._updateLayoutListener );
+
+    super.dispose();
+  }
+}
 
 sun.register( 'RoundButton', RoundButton );
