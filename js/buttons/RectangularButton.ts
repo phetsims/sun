@@ -147,19 +147,6 @@ export default class RectangularButton extends ButtonNode {
 
     super( buttonModel, buttonBackground, interactionStateProperty, options );
 
-    // TODO: get this to work dynamically? Or do we always want things scaled down?
-    if ( options.size && options.content ) {
-      const previousContent = options.content;
-      const minScale = Math.min(
-        ( options.size.width - options.xMargin * 2 ) / previousContent.width,
-        ( options.size.height - options.yMargin * 2 ) / previousContent.height );
-
-      options.content = new Node( {
-        children: [ previousContent ],
-        scale: minScale
-      } );
-    }
-
     this.buttonNodeConstraint = new RectangularButtonNodeConstraint( this, this.layoutSizeProperty, {
       content: options.content ?? null,
       size: options.size,
@@ -498,13 +485,18 @@ class RectangularButtonNodeConstraint extends LayoutConstraint {
     const contentWidthSizable = !!content && isWidthSizable( content );
     const contentHeightSizable = !!content && isHeightSizable( content );
 
-    let contentMinimumWidthWithMargins = Math.max( this.minWidth, content ? ( contentWidthSizable ? content.minimumWidth ?? 0 : content.width ) + this.xMargin * 2 : 0 );
-    let contentMinimumHeightWithMargins = Math.max( this.minHeight, content ? ( contentHeightSizable ? content.minimumHeight ?? 0 : content.height ) + this.yMargin * 2 : 0 );
+    let contentMinimumWidthWithMargins = content ? ( contentWidthSizable ? content.minimumWidth ?? 0 : content.width ) + this.xMargin * 2 : 0;
+    let contentMinimumHeightWithMargins = content ? ( contentHeightSizable ? content.minimumHeight ?? 0 : content.height ) + this.yMargin * 2 : 0;
 
+    // If a initial (minimum) size is specified, use this as an override (and we will scale the content down to fit)
     if ( this.size ) {
-      contentMinimumWidthWithMargins = Math.max( contentMinimumWidthWithMargins, this.size.width );
-      contentMinimumHeightWithMargins = Math.max( contentMinimumHeightWithMargins, this.size.height );
+      contentMinimumWidthWithMargins = this.size.width;
+      contentMinimumHeightWithMargins = this.size.height;
     }
+
+    // Apply minWidth/minHeight
+    contentMinimumWidthWithMargins = Math.max( this.minWidth, contentMinimumWidthWithMargins );
+    contentMinimumHeightWithMargins = Math.max( this.minHeight, contentMinimumHeightWithMargins );
 
     // Only allow an initial update if we are not sizable in that dimension
     let minimumWidth =
@@ -548,6 +540,27 @@ class RectangularButtonNodeConstraint extends LayoutConstraint {
       this.buttonNode.mouseArea = this.buttonBackground.localBounds
         .dilatedXY( this.mouseAreaXDilation, this.mouseAreaYDilation )
         .shiftedXY( this.mouseAreaXShift, this.mouseAreaYShift );
+    }
+
+    const preferredContentWidth = this.lastLocalWidth - this.xMargin * 2;
+    const preferredContentHeight = this.lastLocalHeight - this.yMargin * 2;
+
+    assert && assert( preferredContentWidth > 0 );
+    assert && assert( preferredContentHeight > 0 );
+
+    if ( this.content ) {
+      if ( contentWidthSizable ) {
+        content.preferredWidth = Math.max( preferredContentWidth, content.minimumWidth ?? 0 );
+      }
+      if ( contentHeightSizable ) {
+        content.preferredHeight = Math.max( preferredContentHeight, content.minimumHeight ?? 0 );
+      }
+
+      const contentContainer = this.buttonNode.contentContainer!;
+      assert && assert( contentContainer );
+
+      contentContainer.maxWidth = preferredContentWidth;
+      contentContainer.maxHeight = preferredContentHeight;
     }
 
     this.isFirstLayout = false;

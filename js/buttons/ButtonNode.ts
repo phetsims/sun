@@ -93,6 +93,7 @@ export default class ButtonNode extends Sizable( Voicing( Node ) ) {
   private readonly _pressListener: PressListener;
   private readonly disposeButtonNode: () => void;
   protected readonly content: Node | null;
+  public readonly contentContainer: Node | null = null; // (sun-only)
   protected readonly layoutSizeProperty: TinyProperty<Dimension2> = new TinyProperty<Dimension2>( new Dimension2( 0, 0 ) );
 
   // The maximum lineWidth our buttonBackground can have. We'll lay things out so that if we adjust our lineWidth below
@@ -205,14 +206,19 @@ export default class ButtonNode extends Sizable( Voicing( Node ) ) {
     let updateAlignBounds: UnknownMultilink | null = null;
 
     if ( options.content ) {
-      const content = options.content;
+      // Container here that can get scaled/positioned/pickable-modified, without affecting the provided content.
+      this.contentContainer = new Node( {
+        children: [
+          options.content
+        ],
 
-      // For performance, in case content is a complicated icon or shape.
-      // See https://github.com/phetsims/sun/issues/654#issuecomment-718944669
-      content.pickable = false;
+        // For performance, in case content is a complicated icon or shape.
+        // See https://github.com/phetsims/sun/issues/654#issuecomment-718944669
+        pickable: false
+      } );
 
       // Align content in the button rectangle. Must be disposed since it adds listener to content bounds.
-      alignBox = new AlignBox( content, {
+      alignBox = new AlignBox( this.contentContainer, {
         xAlign: options.xAlign,
         yAlign: options.yAlign,
 
