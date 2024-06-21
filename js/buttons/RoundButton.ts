@@ -70,8 +70,6 @@ export default class RoundButton extends ButtonNode {
       mouseAreaXShift: 0,
       mouseAreaYShift: 0,
 
-      aspectRatio: 1, // This will keep the minimum width and height the same, so our bounding box will be square
-
       // ButtonNodeOptions
       cursor: 'pointer',
 
@@ -118,7 +116,6 @@ export default class RoundButton extends ButtonNode {
       xMargin: options.xMargin,
       yMargin: options.yMargin,
       maxLineWidth: this.maxLineWidth,
-      aspectRatio: options.aspectRatio,
       touchAreaDilation: options.touchAreaDilation,
       touchAreaXShift: options.touchAreaXShift,
       touchAreaYShift: options.touchAreaYShift,
@@ -306,7 +303,7 @@ type RoundButtonNodeConstraintOptions = {
   buttonBackground: Circle;
   maxLineWidth: number;
 } & Required<Pick<RoundButtonOptions,
-  'content' | 'radius' | 'xMargin' | 'yMargin' | 'aspectRatio' |
+  'content' | 'radius' | 'xMargin' | 'yMargin' |
   'touchAreaDilation' | 'touchAreaXShift' | 'touchAreaYShift' | 'mouseAreaDilation' | 'mouseAreaXShift' | 'mouseAreaYShift'
 >>;
 
@@ -346,8 +343,6 @@ class RoundButtonNodeConstraint extends LayoutConstraint {
     const buttonNode = this.buttonNode;
     const content = this.options.content;
 
-    // TODO: add infinite loop protection with equalsEpsilon
-
     const widthSizable = buttonNode.widthSizable;
     const heightSizable = buttonNode.heightSizable;
     const contentWidthSizable = !!content && isWidthSizable( content );
@@ -371,8 +366,6 @@ class RoundButtonNodeConstraint extends LayoutConstraint {
     let minimumHeight = ( this.isFirstLayout || heightSizable )
       ? 2 * contentMinimumRadius + this.options.maxLineWidth
       : buttonNode.localMinimumHeight!;
-
-    assert && assert( this.options.aspectRatio === 1 );
 
     // Our resulting sizes (allow setting preferred width/height on the buttonNode)
     this.lastLocalWidth = this.isFirstLayout || widthSizable

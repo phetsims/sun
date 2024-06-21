@@ -73,11 +73,6 @@ type SelfOptions = {
 
   // Alter the appearance when changing the enabled of the button.
   enabledAppearanceStrategy?: EnabledAppearanceStrategy;
-
-  // If non-null, the aspect ratio of the button will be constrained to this value. It will check the minimum sizes,
-  // and will increase the minimum size if necessary to maintain the aspect ratio.
-  // Notably, this is used in RoundButton, so that the button is always a circle.
-  aspectRatio?: number | null;
 };
 type ParentOptions = SizableOptions & VoicingOptions & NodeOptions;
 
@@ -137,7 +132,6 @@ export default class ButtonNode extends Sizable( Voicing( Node ) ) {
         }
       },
       disabledColor: ColorConstants.LIGHT_GRAY,
-      aspectRatio: null,
 
       // pdom
       tagName: 'button',
@@ -155,9 +149,6 @@ export default class ButtonNode extends Sizable( Voicing( Node ) ) {
     assert && options.enabledProperty && assert( options.enabledProperty === buttonModel.enabledProperty,
       'if options.enabledProperty is provided, it must === buttonModel.enabledProperty' );
     options.enabledProperty = buttonModel.enabledProperty;
-
-    assert && assert( options.aspectRatio === null || ( isFinite( options.aspectRatio ) && options.aspectRatio > 0 ),
-      `ButtonNode aspectRatio should be a positive finite value if non-null. Instead received ${options.aspectRatio}.` );
 
     super();
 

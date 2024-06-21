@@ -157,7 +157,6 @@ export default class RectangularButton extends ButtonNode {
       xMargin: options.xMargin,
       yMargin: options.yMargin,
       maxLineWidth: this.maxLineWidth,
-      aspectRatio: options.aspectRatio,
       touchAreaXDilation: options.touchAreaXDilation,
       touchAreaYDilation: options.touchAreaYDilation,
       touchAreaXShift: options.touchAreaXShift,
@@ -390,7 +389,7 @@ type RectangularButtonNodeConstraintOptions = {
   buttonBackgroundOptions: ButtonShapeOptions;
   maxLineWidth: number;
 } & Required<Pick<RectangularButtonOptions,
-  'content' | 'size' | 'xMargin' | 'yMargin' | 'minWidth' | 'minHeight' | 'aspectRatio' |
+  'content' | 'size' | 'xMargin' | 'yMargin' | 'minWidth' | 'minHeight' |
   'touchAreaXDilation' | 'touchAreaYDilation' | 'touchAreaXShift' | 'touchAreaYShift' |
   'mouseAreaXDilation' | 'mouseAreaYDilation' | 'mouseAreaXShift' | 'mouseAreaYShift'
 >>;
@@ -431,8 +430,6 @@ class RectangularButtonNodeConstraint extends LayoutConstraint {
     const buttonNode = this.buttonNode;
     const content = this.options.content;
 
-    // TODO: add infinite loop protection with equalsEpsilon
-
     const widthSizable = buttonNode.widthSizable;
     const heightSizable = buttonNode.heightSizable;
     const contentWidthSizable = !!content && isWidthSizable( content );
@@ -452,25 +449,13 @@ class RectangularButtonNodeConstraint extends LayoutConstraint {
     contentMinimumHeightWithMargins = Math.max( this.options.minHeight, contentMinimumHeightWithMargins );
 
     // Only allow an initial update if we are not sizable in that dimension
-    let minimumWidth =
+    const minimumWidth =
       ( this.isFirstLayout || widthSizable )
       ? contentMinimumWidthWithMargins + this.options.maxLineWidth
       : buttonNode.localMinimumWidth!;
-    let minimumHeight = ( this.isFirstLayout || heightSizable )
+    const minimumHeight = ( this.isFirstLayout || heightSizable )
       ? contentMinimumHeightWithMargins + this.options.maxLineWidth
       : buttonNode.localMinimumHeight!;
-
-    // TODO: potentially ditch aspectRatio? Are we using it?
-    if ( this.options.aspectRatio !== null ) {
-      // TODO: for circular, check whether we are widthSizable/etc.
-
-      if ( minimumWidth < minimumHeight * this.options.aspectRatio ) {
-        minimumWidth = minimumHeight * this.options.aspectRatio;
-      }
-      if ( minimumHeight < minimumWidth / this.options.aspectRatio ) {
-        minimumHeight = minimumWidth / this.options.aspectRatio;
-      }
-    }
 
     // Our resulting sizes (allow setting preferred width/height on the buttonNode)
     this.lastLocalWidth = this.isFirstLayout || widthSizable
