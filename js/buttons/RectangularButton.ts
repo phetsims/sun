@@ -418,8 +418,7 @@ class RectangularButtonNodeConstraint extends LayoutConstraint {
     this.buttonNode.localPreferredHeightProperty.lazyLink( this._updateLayoutListener );
 
     if ( this.options.content ) {
-      // TODO: set lock true
-      this.addNode( this.options.content, false );
+      this.addNode( this.options.content );
     }
 
     this.layout();
