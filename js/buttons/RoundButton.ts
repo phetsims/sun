@@ -11,7 +11,7 @@ import DerivedProperty from '../../../axon/js/DerivedProperty.js';
 import TReadOnlyProperty from '../../../axon/js/TReadOnlyProperty.js';
 import { Shape } from '../../../kite/js/imports.js';
 import optionize from '../../../phet-core/js/optionize.js';
-import { Circle, Color, isHeightSizable, isWidthSizable, LayoutConstraint, Node, PaintableNode, PaintColorProperty, RadialGradient, TPaint } from '../../../scenery/js/imports.js';
+import { Circle, Color, isHeightSizable, isWidthSizable, LayoutConstraint, Node, PaintColorProperty, Path, RadialGradient, TPaint } from '../../../scenery/js/imports.js';
 import sun from '../sun.js';
 import ButtonInteractionState from './ButtonInteractionState.js';
 import ButtonModel from './ButtonModel.js';
@@ -146,7 +146,7 @@ export class ThreeDAppearanceStrategy {
    * @param baseColorProperty
    * @param [providedOptions]
    */
-  public constructor( buttonBackground: PaintableNode,
+  public constructor( buttonBackground: Path,
                       interactionStateProperty: TReadOnlyProperty<ButtonInteractionState | RadioButtonInteractionState>,
                       baseColorProperty: TReadOnlyProperty<Color>,
                       providedOptions?: TButtonAppearanceStrategyOptions ) {
@@ -201,10 +201,18 @@ export class ThreeDAppearanceStrategy {
     // We'll need to listen to the shape changes in order to update our appearance.
     const listener = () => {
       // Set up variables needed to create the various gradient fills and otherwise modify the appearance
-      const buttonRadius = buttonBackground.width / 2;
+      // eslint-disable-next-line no-simple-type-checking-assertions
+      assert && assert( buttonBackground instanceof Circle );
+      const buttonRadius = ( buttonBackground as Circle ).radius;
+
       const innerGradientRadius = buttonRadius - HIGHLIGHT_GRADIENT_LENGTH / 2;
       const outerGradientRadius = buttonRadius + HIGHLIGHT_GRADIENT_LENGTH / 2;
       const gradientOffset = HIGHLIGHT_GRADIENT_LENGTH / 2;
+
+      // If our button is not large enough for the gradients to be visible, don't bother setting them up.
+      if ( buttonRadius < gradientOffset ) {
+        return;
+      }
 
       const upFillHighlight = new RadialGradient( gradientOffset, gradientOffset, innerGradientRadius, gradientOffset, gradientOffset, outerGradientRadius )
         .addColorStop( 0, baseColorProperty )
@@ -361,10 +369,10 @@ class RoundButtonNodeConstraint extends LayoutConstraint {
     // Only allow an initial update if we are not sizable in that dimension
     let minimumWidth =
       ( this.isFirstLayout || widthSizable )
-      ? 2 * contentMinimumRadius + this.options.maxLineWidth
+      ? 2 * contentMinimumRadius
       : buttonNode.localMinimumWidth!;
     let minimumHeight = ( this.isFirstLayout || heightSizable )
-      ? 2 * contentMinimumRadius + this.options.maxLineWidth
+      ? 2 * contentMinimumRadius
       : buttonNode.localMinimumHeight!;
 
     // Our resulting sizes (allow setting preferred width/height on the buttonNode)

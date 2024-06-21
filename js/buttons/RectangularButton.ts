@@ -418,6 +418,7 @@ class RectangularButtonNodeConstraint extends LayoutConstraint {
     this.buttonNode.localPreferredHeightProperty.lazyLink( this._updateLayoutListener );
 
     if ( this.options.content ) {
+      // TODO: set lock true
       this.addNode( this.options.content, false );
     }
 
@@ -445,16 +446,20 @@ class RectangularButtonNodeConstraint extends LayoutConstraint {
     }
 
     // Apply minWidth/minHeight
-    contentMinimumWidthWithMargins = Math.max( this.options.minWidth, contentMinimumWidthWithMargins );
-    contentMinimumHeightWithMargins = Math.max( this.options.minHeight, contentMinimumHeightWithMargins );
+    if ( this.options.minWidth ) {
+      contentMinimumWidthWithMargins = Math.max( this.options.minWidth + this.options.maxLineWidth, contentMinimumWidthWithMargins );
+    }
+    if ( this.options.minHeight ) {
+      contentMinimumHeightWithMargins = Math.max( this.options.minHeight + this.options.maxLineWidth, contentMinimumHeightWithMargins );
+    }
 
     // Only allow an initial update if we are not sizable in that dimension
     const minimumWidth =
       ( this.isFirstLayout || widthSizable )
-      ? contentMinimumWidthWithMargins + this.options.maxLineWidth
+      ? contentMinimumWidthWithMargins
       : buttonNode.localMinimumWidth!;
     const minimumHeight = ( this.isFirstLayout || heightSizable )
-      ? contentMinimumHeightWithMargins + this.options.maxLineWidth
+      ? contentMinimumHeightWithMargins
       : buttonNode.localMinimumHeight!;
 
     // Our resulting sizes (allow setting preferred width/height on the buttonNode)
