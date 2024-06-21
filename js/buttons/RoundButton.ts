@@ -15,7 +15,7 @@ import { Circle, Color, isHeightSizable, isWidthSizable, LayoutConstraint, Node,
 import sun from '../sun.js';
 import ButtonInteractionState from './ButtonInteractionState.js';
 import ButtonModel from './ButtonModel.js';
-import ButtonNode, { ButtonNodeOptions, ExternalButtonNodeOptions } from './ButtonNode.js';
+import ButtonNode, { ButtonNodeOptions } from './ButtonNode.js';
 import RadioButtonInteractionState from './RadioButtonInteractionState.js';
 import TButtonAppearanceStrategy, { TButtonAppearanceStrategyOptions } from './TButtonAppearanceStrategy.js';
 import TinyProperty from '../../../axon/js/TinyProperty.js';
@@ -41,7 +41,7 @@ type SelfOptions = {
   mouseAreaYShift?: number;
 };
 
-export type RoundButtonOptions = SelfOptions & ExternalButtonNodeOptions;
+export type RoundButtonOptions = SelfOptions & ButtonNodeOptions;
 
 export default class RoundButton extends ButtonNode {
 

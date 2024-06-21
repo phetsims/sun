@@ -84,11 +84,6 @@ type ParentOptions = SizableOptions & VoicingOptions & NodeOptions;
 // Normal options, for use in optionize
 export type ButtonNodeOptions = SelfOptions & ParentOptions;
 
-// TODO: remove this, just use ButtonNodeOptions now (since we removed the difference)
-// However we'll want subtypes to provide these options to their clients, since some options ideally should not be
-// used directly.
-export type ExternalButtonNodeOptions = ButtonNodeOptions;
-
 export default class ButtonNode extends Sizable( Voicing( Node ) ) {
 
   protected buttonModel: ButtonModel;

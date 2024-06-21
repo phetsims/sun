@@ -17,7 +17,7 @@ import { Color, isHeightSizable, isWidthSizable, LayoutConstraint, LinearGradien
 import sun from '../sun.js';
 import ButtonInteractionState from './ButtonInteractionState.js';
 import ButtonModel from './ButtonModel.js';
-import ButtonNode, { ButtonNodeOptions, ExternalButtonNodeOptions } from './ButtonNode.js';
+import ButtonNode, { ButtonNodeOptions } from './ButtonNode.js';
 import RadioButtonInteractionState from './RadioButtonInteractionState.js';
 import TButtonAppearanceStrategy, { TButtonAppearanceStrategyOptions } from './TButtonAppearanceStrategy.js';
 import TinyProperty from '../../../axon/js/TinyProperty.js';
@@ -70,7 +70,7 @@ type SelfOptions = {
   rightBottomCornerRadius?: number | null;
 };
 
-export type RectangularButtonOptions = SelfOptions & ExternalButtonNodeOptions;
+export type RectangularButtonOptions = SelfOptions & ButtonNodeOptions;
 
 type ButtonShapeOptions = PickRequired<RectangularButtonOptions, 'cornerRadius' | 'leftTopCornerRadius' | 'rightTopCornerRadius' | 'leftBottomCornerRadius' | 'rightBottomCornerRadius'>;
 
